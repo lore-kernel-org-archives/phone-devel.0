@@ -1,100 +1,105 @@
-Return-Path: <SRS0=Zjk+=C3=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <SRS0=KOWR=C7=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_INVALID,DKIM_SIGNED,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 742EFC43464
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Sep 2020 22:03:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E956FC2D0E2
+	for <phone-devel@archiver.kernel.org>; Tue, 22 Sep 2020 12:09:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3A38F21734
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Sep 2020 22:03:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8EFAF239E5
+	for <phone-devel@archiver.kernel.org>; Tue, 22 Sep 2020 12:09:16 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PqcBVJ7U"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726157AbgIRWD1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Sep 2020 18:03:27 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:38678 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726154AbgIRWD0 (ORCPT
+        id S1726604AbgIVMJQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 22 Sep 2020 08:09:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44420 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726531AbgIVMJQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Sep 2020 18:03:26 -0400
-X-Greylist: delayed 545 seconds by postgrey-1.27 at vger.kernel.org; Fri, 18 Sep 2020 18:03:25 EDT
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 3C3901C0B78; Fri, 18 Sep 2020 23:54:19 +0200 (CEST)
-Date:   Fri, 18 Sep 2020 23:54:18 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     phone-devel@vger.kernel.org
-Subject: Welcome to phone-dev... and good news for Droid 4 modem
-Message-ID: <20200918215418.GB7443@duo.ucw.cz>
+        Tue, 22 Sep 2020 08:09:16 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B449DC061755;
+        Tue, 22 Sep 2020 05:09:15 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id r7so22451405ejs.11;
+        Tue, 22 Sep 2020 05:09:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=steyxlT4LVPBsfe8IJH2NOc1f2Mr0MYY3HiC50X/c/0=;
+        b=PqcBVJ7UteV28rSmL9CuvhOhID/Uowd4Vi5TEe7GA2bzJUzqbTmmZm7SWjiPB2GWLl
+         Zl8QrP2PohhWHRpBtKC0fYkFrUo2P40E0n0SjX/zq5YKu7gSpNmgKTPEGxMy5yEeu8dB
+         m1C4jOnOFn9Kdc1XxkKDBXNa+VCReqLMFADIZjD/gyAGo/I+3Ees8nlVC+00UJ+9KGi7
+         6eVmzJV6g5GaH2rmaFYxhC56lyJt//9Ct3th439Vw0eY6AIwMrEVnCIHORO9e6pRPAvF
+         2m6xbPbL8r35BI85U4lbUH9Z1LGOsHYHeWBQ/FOi1FopTp+Nlj8hqPSnDaAQHPLKN6SO
+         HZBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=steyxlT4LVPBsfe8IJH2NOc1f2Mr0MYY3HiC50X/c/0=;
+        b=fTkiT/GVD5Z311TMhJZp3EbFLYyTuRlExLNsjRTQ0uh016p+ftRHcuUC04v0vKuV7r
+         f9SvRMnBf00qMRuG0X6sS/06yaVUAtnZxtJIo6oQJi8jGf02fRUCCtx+VJOH0LbBVi5l
+         mi+VBF7m4WLrSvOMJcjLB+2o6K310igUoBnnnU871k2pU7ohaTjNcl5Oqifx3y+NJCyv
+         qNxlcchFwiPvQqpg05xOCj9SfrxiVYXye+FJkz2clYcnl9RcEGKC4GB7jOXYOLUGYoXJ
+         23G2EONnPWchq1e4O60FEnwhtktXHY91acnAI4abrvDF5UXOJd/4/cJV1k0Nss7S2ivx
+         aPKQ==
+X-Gm-Message-State: AOAM533cDZq3TZsOfGbpE/fgEuubLV4+5bj8ZBSlpBoTAaEnJHOOt9t9
+        +xkZ3zkjROwmoAkaE6V9A4Q=
+X-Google-Smtp-Source: ABdhPJzlCM3Uyjl7gfhzf06ug/kOBwEhcs+oi+eQu3ZTZlZOD1QO+qA+foqWGCToItKWcrF5S8Bsgg==
+X-Received: by 2002:a17:906:474f:: with SMTP id j15mr4786337ejs.468.1600776554474;
+        Tue, 22 Sep 2020 05:09:14 -0700 (PDT)
+Received: from localhost.localdomain (abab42.neoplus.adsl.tpnet.pl. [83.6.165.42])
+        by smtp.googlemail.com with ESMTPSA id c25sm3575013ejd.88.2020.09.22.05.09.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2020 05:09:13 -0700 (PDT)
+From:   Konrad Dybcio <konradybcio@gmail.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Konrad Dybcio <konradybcio@gmail.com>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] clk: qcom: gcc-sdm660: Fix wrong parent_map
+Date:   Tue, 22 Sep 2020 14:09:09 +0200
+Message-Id: <20200922120909.97203-1-konradybcio@gmail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="5/uDoXvLw7AC5HRs"
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+This was likely overlooked while porting the driver upstream.
 
---5/uDoXvLw7AC5HRs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reported-by: Pavel Dubrova <pashadubrova@gmail.com>
+Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
+---
+ drivers/clk/qcom/gcc-sdm660.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hi!
+diff --git a/drivers/clk/qcom/gcc-sdm660.c b/drivers/clk/qcom/gcc-sdm660.c
+index 3cffadc77bce..1a5e98e5c965 100644
+--- a/drivers/clk/qcom/gcc-sdm660.c
++++ b/drivers/clk/qcom/gcc-sdm660.c
+@@ -666,7 +666,7 @@ static struct clk_rcg2 hmss_rbcpr_clk_src = {
+ 	.cmd_rcgr = 0x48044,
+ 	.mnd_width = 0,
+ 	.hid_width = 5,
+-	.parent_map = gcc_parent_map_xo_gpll0_gpll0_early_div,
++	.parent_map = gcc_parent_map_xo_gpll0,
+ 	.freq_tbl = ftbl_hmss_rbcpr_clk_src,
+ 	.clkr.hw.init = &(struct clk_init_data){
+ 		.name = "hmss_rbcpr_clk_src",
+-- 
+2.28.0
 
-Welcome to mailing list.
-
-We should have mail list archives set up, at
-https://lore.kernel.org/phone-devel/ .
-
-And to have some real news, Droid 4's modem should be supported (using
-AT commands over USB) by latest ofono.
-
-commit 07e00b7215cd98aa033f2ebc4ff169662d95d34c (HEAD -> master, ofic/maste=
-r)
-Author: Pavel Machek <pavel@ucw.cz>
-Date:   Tue Sep 15 15:23:25 2020 +0200
-
-    droid 4: Add probing.
-   =20
-    Probe Droid 4 modem. This should result in basic support working.
-
-I'm using this to keep the USB alive, so that incoming calls and SMSes
-working. It also burns power...
-
-# writing to ttyUSB3 eventually crashes the modem
-# ttyUSB0 -- works w/o delay for an hour.
-date
-DEV=3D/dev/ttyUSB0
-while test -e $DEV; do
-  echo > $DEV
-  sleep .3
-  done
-date
-
-Oh and... I'm still looking for phone running mainline kernel I could
-_use_. N900 is close, with exception of voice calls. Droid still waits
-for patches to be merged, and needs a bit more work with SMSes (and at
-least mixers).
-
-Best regards,
-									Pavel
-
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---5/uDoXvLw7AC5HRs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX2UsigAKCRAw5/Bqldv6
-8oqVAKC3jvf6maE56VnRWx5NruUdGA2jAACfV4Tp6MDNKEMplMOHO4ExP6UogrM=
-=fnGM
------END PGP SIGNATURE-----
-
---5/uDoXvLw7AC5HRs--
