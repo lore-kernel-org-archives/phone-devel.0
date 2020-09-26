@@ -7,66 +7,66 @@ X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8695EC47423
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:02:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB3EFC2D0A8
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:03:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4F262221EA
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:02:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 95A5922211
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:03:14 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sEHCAQGs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eV/P+PpD"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726316AbgIZNCb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 26 Sep 2020 09:02:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36800 "EHLO
+        id S1729289AbgIZNDL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 26 Sep 2020 09:03:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725208AbgIZNCa (ORCPT
+        with ESMTP id S1728330AbgIZNDL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Sep 2020 09:02:30 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47DBCC0613CE;
-        Sat, 26 Sep 2020 06:02:30 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id s12so6837782wrw.11;
-        Sat, 26 Sep 2020 06:02:30 -0700 (PDT)
+        Sat, 26 Sep 2020 09:03:11 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F27EC0613CE;
+        Sat, 26 Sep 2020 06:03:11 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id z4so6899374wrr.4;
+        Sat, 26 Sep 2020 06:03:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=gWD386RbrjVWz9wUaxhS4DhH04wCa0t53FVu1zLb3Fw=;
-        b=sEHCAQGsKoDwWrmQ6FtIuU2px3BYbknciMgCPQrGLcJdBxfqn6Y3jxVVLZIb8S9DBC
-         L4Gvq1IEVaYu4mOdl9l9wwTwcmOFjzIc9c9xsTC54iQasR5dgWWHaWpghzeI+gC43rp6
-         NpuJnqbVPRrHUiQq8c/pkpSUDTTiLsZm/FXSK0f2gsuqlastG9SgMOMsrrjOR06MsK+S
-         eIwJFkCSzJCUM9uFBqC/COIxjbVZ/ksBGe5UAdhI2NwXoXx73FbvbpIzUUty6obxjHrA
-         e9s7hL3MOprksjk0Hy8Mfx1TJ15Sqeo/t+Y0qmtNaMsBTZuk5+Es6AIs/oz+C4c6viGT
-         IoXA==
+        bh=TK14iUVfpjj01NGyLgnHpcNoTopba5SYsdekqr19l7g=;
+        b=eV/P+PpD2SP+2FjP15F4Uytb/y1/dNoVWdz/ARCZ+JAjhL5gDmyU9pkiYxOhar2yMq
+         ikxGh3w/C6rvCvOxbIwwusY4izUGypZHt72mV+iYsIxJTHpkkLNvxMGmHnzrQfcp0llt
+         CJhbHFY8jhxI1KzwfcnZOedBvcbLaao71Z4NHsf9G/pdBNpt7FBtmkLWBUs/FjEIh39m
+         6fNVqR2ellQGTJtZw95cuSFEd4j/d5tvUlL8LFwFB2QzHBgRjxab+KnKT1/cTzlO5OFo
+         T9bYuDVhiBWpiiJteeX+WbwXaFgrpVV2nnqhBpQuXRWhlbbKZvQ+FkcK6Qw8t2KepexX
+         4Lvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=gWD386RbrjVWz9wUaxhS4DhH04wCa0t53FVu1zLb3Fw=;
-        b=DeKCOPPVtYG6SPT8F1lY92AGtty+IcCpRrZAjh9vscfoK+gbNjekEguCE+pIYGFjkq
-         S7auFh7jQ06m3AdTO63JxBH9u8O00IhqNXcxAOM4EgdCoskjWojysNS1i2OSmzNiAExo
-         vmwnnCUcKxeBBNN2Le/6gX0jo8cekQm8sfky3+RyCiP6xiVetnxl1ODctD8BfHmiSeUV
-         /NtrIydVkRdwptCH94yAglWGYYXG+rz2Huvkk4/Kw8SalFPq99Rg2czcISf040Q9jFP9
-         yXMw8QwLlkCB7h7xH9zoC0Rp+BvhCprk0YK7YDVwu9212x7QAninGHRbKgDj45P8n2Is
-         372A==
-X-Gm-Message-State: AOAM530LrEG80JQKxgK37w9hV5y8jdTbuZ6foSaPoV0qk6ir2tFd7g9Z
-        iLX0w6PyzhqLh/a0WHWtVVs=
-X-Google-Smtp-Source: ABdhPJxkYxM4pEeDHZkFNxfWCC49y44fnY3uZl1NSqZkU9fvM9fL3+jOLfTHkSL80ob69JkIb/JgxQ==
-X-Received: by 2002:adf:dccd:: with SMTP id x13mr10167307wrm.403.1601125348902;
-        Sat, 26 Sep 2020 06:02:28 -0700 (PDT)
+        bh=TK14iUVfpjj01NGyLgnHpcNoTopba5SYsdekqr19l7g=;
+        b=R+U5lvPwrdYvFRhwQTHA4lRnCizh/VPJ9u4+nQ4rhpyzsEHC3GGbvI1szN89cLt6CA
+         2S7KpcXbyksVlTAEKKs9BXjqPG/W2VYAp5nRABn1V/fMzrk/aDIVAs7QrSDAMqKDlnxp
+         hsPFgiaaRjR/u54DwyNC7oByBz/uTjgtLKBdrugEkkE1MA5IeVwy3OC8ogEpL5jGvKQR
+         xYbrLTsB0MtTd8YOGBElHPjhvK1UTVTxCMhT+JkQ/EbFMxf+GzgTX96gmJ1EGD/DUNlt
+         UOiqNz2ueolPdxgsjKF2nztuK9/BAEIDNS3LX52fzeN2MrIhBORtTzXxyUJUZEqGCDoG
+         /ivA==
+X-Gm-Message-State: AOAM533yOKeW2XdbKhdVIDLLFDVYv2nC2iQSwtvKDKHfpZLJVsYv5GVc
+        oI2CMaZxDddoYxY0QiqeqCw=
+X-Google-Smtp-Source: ABdhPJyHCG+B0Ff4UamiK4dS63fUpUY7qdVc7IIoxCqLiUv5J9x00p97+b1KBz8DlMaT/DtXMUd9kw==
+X-Received: by 2002:adf:f10a:: with SMTP id r10mr9096112wro.86.1601125389698;
+        Sat, 26 Sep 2020 06:03:09 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id f14sm7137738wrt.53.2020.09.26.06.02.28
+        by smtp.gmail.com with ESMTPSA id d83sm2853213wmf.23.2020.09.26.06.03.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2020 06:02:28 -0700 (PDT)
+        Sat, 26 Sep 2020 06:03:09 -0700 (PDT)
 From:   kholk11@gmail.com
 To:     agross@kernel.org
 Cc:     bjorn.andersson@linaro.org, sboyd@kernel.org, kholk11@gmail.com,
         marijns95@gmail.com, konradybcio@gmail.com,
         martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
         phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 0/4] Qualcomm clock fixes and preparation for SDM660
-Date:   Sat, 26 Sep 2020 15:02:21 +0200
-Message-Id: <20200926130225.13733-1-kholk11@gmail.com>
+Subject: [PATCH 0/5] SDM630/660 Multimedia and GPU clock controllers
+Date:   Sat, 26 Sep 2020 15:03:01 +0200
+Message-Id: <20200926130306.13843-1-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -76,14 +76,13 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-This patch series includes two fixes for the SDM660 GCC, and a
-change in the rcg2 gfx3d ops, which are essential for a later
-series that will add the MMCC and GPUCC for this SoC.
+This patch series brings up the MultiMedia Clock Controller (MMCC)
+and the GPU Clock Controller (GPUCC) on the SDM660 series of SoCs,
+including SDM630, SDM636, SDM660 and SDA variants, where applicable.
 
-The change in rcg2 gfx3d is only about generalizing the functions
-in order to reuse them for more than just one MMCC for one SoC and
-brings no functional changes on MSM8996. For more informations,
-look at the commit description for patch 3/4.
+This series depends on "Qualcomm clock fixes and preparation for SDM660",
+which is required for the drivers to work correctly and to even compile
+(due to the gfx3d rcg2 changes).
 
 This patch series has been tested against the following devices:
  - Sony Xperia XA2 Ultra (SDM630 Nile Discovery)
@@ -91,16 +90,28 @@ This patch series has been tested against the following devices:
  - Sony Xperia 10 Plus   (SDM636 Ganges Mermaid)
 
 AngeloGioacchino Del Regno (4):
-  clk: qcom: gcc-sdm660: Mark MMSS NoC CFG AHB clock as critical
-  clk: qcom: gcc-sdm660: Mark GPU CFG AHB clock as critical
-  clk: qcom: rcg2: Stop hardcoding gfx3d pingpong parent numbers
-  clk: qcom: mmcc-msm8996: Migrate gfx3d clock to clk_rcg2_gfx3d
+  dt-bindings: clock: Add support for the SDM630 and SDM660 mmcc
+  clk: qcom: mmcc-sdm660: Add MDP clock source CXC to MDSS GDSC
+  clk: qcom: Add SDM660 GPU Clock Controller (GPUCC) driver
+  dt-bindings: clock: Add QCOM SDM630 and SDM660 graphics clock bindings
 
- drivers/clk/qcom/clk-rcg.h      |  9 ++++++
- drivers/clk/qcom/clk-rcg2.c     | 56 +++++++++++++++++++++------------
- drivers/clk/qcom/gcc-sdm660.c   |  7 +++++
- drivers/clk/qcom/mmcc-msm8996.c | 29 ++++++++++-------
- 4 files changed, 70 insertions(+), 31 deletions(-)
+Martin Botka (1):
+  clk: qcom: Add SDM660 Multimedia Clock Controller (MMCC) driver
+
+ .../devicetree/bindings/clock/qcom,mmcc.yaml  |    2 +
+ .../bindings/clock/qcom,sdm660-gpucc.yaml     |   75 +
+ drivers/clk/qcom/Kconfig                      |   18 +
+ drivers/clk/qcom/Makefile                     |    2 +
+ drivers/clk/qcom/gpucc-sdm660.c               |  349 ++
+ drivers/clk/qcom/mmcc-sdm660.c                | 2857 +++++++++++++++++
+ include/dt-bindings/clock/qcom,gpucc-sdm660.h |   28 +
+ include/dt-bindings/clock/qcom,mmcc-sdm660.h  |  162 +
+ 8 files changed, 3493 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/qcom,sdm660-gpucc.yaml
+ create mode 100644 drivers/clk/qcom/gpucc-sdm660.c
+ create mode 100644 drivers/clk/qcom/mmcc-sdm660.c
+ create mode 100644 include/dt-bindings/clock/qcom,gpucc-sdm660.h
+ create mode 100644 include/dt-bindings/clock/qcom,mmcc-sdm660.h
 
 -- 
 2.28.0
