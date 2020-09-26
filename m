@@ -5,73 +5,73 @@ X-Spam-Level:
 X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DDE9DC47420
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:56:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FF61C4741F
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:00:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AA14A22207
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:56:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DC40223119
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:00:14 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BvPmQZk6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bh7kQkJw"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729444AbgIZM4T (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 26 Sep 2020 08:56:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35808 "EHLO
+        id S1729294AbgIZNAO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 26 Sep 2020 09:00:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729263AbgIZM4T (ORCPT
+        with ESMTP id S1728466AbgIZNAM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Sep 2020 08:56:19 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A914CC0613D7;
-        Sat, 26 Sep 2020 05:56:15 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id x23so1935065wmi.3;
-        Sat, 26 Sep 2020 05:56:15 -0700 (PDT)
+        Sat, 26 Sep 2020 09:00:12 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F39DDC0613D4;
+        Sat, 26 Sep 2020 06:00:11 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id m6so6910440wrn.0;
+        Sat, 26 Sep 2020 06:00:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=HvvCj9L50q446ASJQ6JemqcTXtlES5Mqm7WP1YDvdM0=;
-        b=BvPmQZk6+HCEJPsbi1uyRvJuGpEFZNs9DlWQK5yk0P/mnixC7o75rmTAuNrMoW2kY9
-         4GdJN8PSGPL3FSeIvZlMVNcRwCmtNr1c766Oolf5WuhThwsiqvG5i2VArYAMn7+Zid4u
-         2Fy/RctgyEX5CP5HhD2kCEi5oq295r0uos+c2v71+k9Bn9fMgFABd/vFKYA+mribGZJ+
-         GXxFRMWN0HuRjqSSPiL+H1n4wPreUAsN9IXB9y6C+kNe3BeovmrxdOQfAPGBKm6Ql9Kv
-         vG6G/4/+fgJ/PAV8Ok4PRnO9eH4MkuuzAsj5Jo3BFzWKr6Az5y85nDZQNRwF4GWv3HXg
-         hTjg==
+        bh=bY8xzUZwfiRgG++8UhbUZ4PhMonRbvfxxs1/C1VhNr8=;
+        b=bh7kQkJwX2m931m/aoB/kEq4oBF/pUu4FaDCgI1FK44ZubMuxK8CfmGFL2NtcUaa4g
+         4jorXQKRCP3vcizvjaFTUCq8GEvfZdiPQ1qqEGcewDwl3NB+DTBN6fJm3jiZq0zSc0p5
+         +mhGTmRvvtT6T9Fua4KpcGCTS+8y69RKs2/9cCsAMivHwFHUl+4RPoBTzeeP68vav2BQ
+         e6Nd+2DO9dnIiksFJ7+S7UJEJuuduiic1yT3YG0ItIyrNzBVbuaJUeSdyCXEoZmflDhM
+         k5p8XCyrT9ajdJOyXOlSzThp4PVmk9NWuO3zkYKnNAWymwRa5CapmPc54KF0dVFikUja
+         BFBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=HvvCj9L50q446ASJQ6JemqcTXtlES5Mqm7WP1YDvdM0=;
-        b=G3qDsdbrPnNmoaiAgQa7Ba1NFPbYY0Dw3ddoXbE+W5GN8qRD1uUIV8RuwqKujeY3Js
-         RaiTq0V1vc/Twx6HiLukXfBG8s3eoeM8zlHq6jBsK7M3DxfySC4AwazkGh3ueC5XMARj
-         MuZnMrKMuK12fPuMMZZKQhVGT0apV3rhXMKNnV1dKEUY4tvNPguiRzY4rgYcJSQ8lV0p
-         Ml86Gqx2t0QYLL0sFcou2qR7IuADgeWGUvUvuJ+WG5HZCLb9ovTk2B2H6TWKv8RqRIkC
-         +ckHDksXyFn9O+bCPHrcRMAYllE2uiaY4+X3Y+qV/dBAB8MMTa0HoTscaIAs0GED/P76
-         keDg==
-X-Gm-Message-State: AOAM530zTJ6clrjQsruFuqPR32x/VhsJs8n3obfcPmJQmYSEupG7SSMB
-        mgBRs1QLEZKjzWcdl1LCH8c=
-X-Google-Smtp-Source: ABdhPJygyB/xfN29OwI0oMJ9mp9qD4itqXeYt+6CgXmhUsW9L+Sjtt9wsiRQdQ6/N0uhMImFtAXIkg==
-X-Received: by 2002:a1c:bb88:: with SMTP id l130mr2567043wmf.143.1601124974329;
-        Sat, 26 Sep 2020 05:56:14 -0700 (PDT)
+        bh=bY8xzUZwfiRgG++8UhbUZ4PhMonRbvfxxs1/C1VhNr8=;
+        b=Hy+l16mecyjyM3mlkRaEoLgBsCWBGsX8E/MSpPlc7T0kB8pi3SvqxQ3dFZb1QXqSyA
+         5mnjyrzbW4j2VzVkcSi7Fu6krvOaPjGBuZA18tT4UDJCRRWDMQWKfQj3BHv+H2Xh/QAB
+         NwGYcTXq1qZFyoDKVC+fIMZcH5h3vwBlKMbQrFLOnq2XErofzyvyvVGbfUQBWFOwX5Nq
+         PohRzs/XO6AGtyVA7YhXavfTzlEIfBLqXL1uQSelTTX0nicxmmrXJoCdBENH4rmpctSh
+         x5LSNwOv4bqpjyNiHB0Ja81oWM3Lg1h8rT4djVmfHrY4qWjrVmoUZ4cxYkh3YZDr2A5Y
+         wiTw==
+X-Gm-Message-State: AOAM530VIBlxatZ/2ZPuzRf6cex9bTwIjyIJrS+moojrEQEQXb7mGqYO
+        VJu9ZdvExOQM8J7TdSkAJN8PPHljwQkHAw==
+X-Google-Smtp-Source: ABdhPJyVK04EKr7pFq0l3qQczUszF+ln+iNUYNkyLlGdTas05FXQL/BmnqnjiRQDIhHluJ1TDk4wnA==
+X-Received: by 2002:adf:b306:: with SMTP id j6mr9052769wrd.279.1601125210585;
+        Sat, 26 Sep 2020 06:00:10 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id h1sm6503024wrx.33.2020.09.26.05.56.13
+        by smtp.gmail.com with ESMTPSA id b11sm6462896wrt.38.2020.09.26.06.00.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2020 05:56:13 -0700 (PDT)
+        Sat, 26 Sep 2020 06:00:10 -0700 (PDT)
 From:   kholk11@gmail.com
-To:     broonie@kernel.org
-Cc:     lgirdwood@gmail.com, agross@kernel.org, bjorn.andersson@linaro.org,
-        robh+dt@kernel.org, kholk11@gmail.com, marijns95@gmail.com,
-        konradybcio@gmail.com, martin.botka1@gmail.com,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 7/7] regulator: dt-bindings: Document the PM660/PM660L PMICs entries
-Date:   Sat, 26 Sep 2020 14:55:49 +0200
-Message-Id: <20200926125549.13191-8-kholk11@gmail.com>
+To:     will@kernel.org
+Cc:     robin.murphy@arm.com, joro@8bytes.org, bjorn.andersson@linaro.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        kholk11@gmail.com, marijns95@gmail.com, konradybcio@gmail.com,
+        martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 2/8] iommu/arm-smmu-qcom: Add QC SMMUv2 VA Size quirk for SDM660
+Date:   Sat, 26 Sep 2020 14:59:58 +0200
+Message-Id: <20200926130004.13528-3-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200926125549.13191-1-kholk11@gmail.com>
-References: <20200926125549.13191-1-kholk11@gmail.com>
+In-Reply-To: <20200926130004.13528-1-kholk11@gmail.com>
+References: <20200926130004.13528-1-kholk11@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -80,42 +80,93 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-The PM660 and PM660L combo is found on boards featuring the
-SDM630, SDM636, SDM660 (and SDA variants) and it is used to
-give power to practically everything, from core to peripherals.
+Some IOMMUs are getting set-up for Shared Virtual Address, but:
+1. They are secured by the Hypervisor, so any configuration
+   change will generate a hyp-fault and crash the system
+2. This 39-bits Virtual Address size deviates from the ARM
+   System MMU Architecture specification for SMMUv2, hence
+   it is non-standard. In this case, the only way to keep the
+   IOMMU as the firmware did configure it, is to hardcode a
+   maximum VA size of 39 bits (because of point 1).
 
-Document the SMD-RPM regulator entries for both.
+This gives the need to add implementation details bits for
+at least some of the SoCs having this kind of configuration,
+which are at least SDM630, SDM636 and SDM660.
+
+These implementation details will be enabled on finding the
+qcom,sdm660-smmu-v2 compatible.
 
 Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
 ---
- .../bindings/regulator/qcom,smd-rpm-regulator.yaml         | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/iommu/arm/arm-smmu/arm-smmu-impl.c |  3 ++-
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 31 +++++++++++++++++++++-
+ 2 files changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
-index c0d7700afee7..8ef3033444b9 100644
---- a/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
-+++ b/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
-@@ -41,6 +41,11 @@ description:
-   l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19,
-   l20, l21, l22, l23, l24, l25, l26, l27, l28, lvs1, lvs2
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
+index f4ff124a1967..9d753f8af2cc 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
+@@ -216,7 +216,8 @@ struct arm_smmu_device *arm_smmu_impl_init(struct arm_smmu_device *smmu)
+ 	if (of_device_is_compatible(np, "nvidia,tegra194-smmu"))
+ 		return nvidia_smmu_impl_init(smmu);
  
-+  For pm660, s1, s2, s3, s4, s5, s6, l1, l2, l3, l5, l6, l7, l8, l9, l10, l22,
-+  l12, l13, l14, l15, l16, l17, l18, l19
+-	if (of_device_is_compatible(np, "qcom,sdm845-smmu-500") ||
++	if (of_device_is_compatible(np, "qcom,sdm660-smmu-v2") ||
++	    of_device_is_compatible(np, "qcom,sdm845-smmu-500") ||
+ 	    of_device_is_compatible(np, "qcom,sc7180-smmu-500") ||
+ 	    of_device_is_compatible(np, "qcom,sm8150-smmu-500") ||
+ 	    of_device_is_compatible(np, "qcom,sm8250-smmu-500"))
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index 7859fd0db22a..f5bbfe86ef30 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -65,8 +65,33 @@ static const struct arm_smmu_impl qcom_smmu500_impl = {
+ 	.reset = qcom_smmu500_reset,
+ };
+ 
++static int qcom_smmuv2_cfg_probe(struct arm_smmu_device *smmu)
++{
++	/*
++	 * Some IOMMUs are getting set-up for Shared Virtual Address, but:
++	 * 1. They are secured by the Hypervisor, so any configuration
++	 *    change will generate a hyp-fault and crash the system
++	 * 2. This 39-bits Virtual Address size deviates from the ARM
++	 *    System MMU Architecture specification for SMMUv2, hence
++	 *    it is non-standard. In this case, the only way to keep the
++	 *    IOMMU as the firmware did configure it, is to hardcode a
++	 *    maximum VA size of 39 bits (because of point 1).
++	 */
++	if (smmu->va_size > 39UL)
++		dev_notice(smmu->dev,
++			   "\tenabling workaround for QCOM SMMUv2 VA size\n");
++	smmu->va_size = min(smmu->va_size, 39UL);
 +
-+  For pm660l s1, s2, s3, s5, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, bob
++	return 0;
++}
 +
-   For pma8084, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, l1, l2, l3,
-   l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19,
-   l20, l21, l22, l23, l24, l25, l26, l27, lvs1, lvs2, lvs3, lvs4, 5vs1
-@@ -65,6 +70,8 @@ properties:
-       - qcom,rpm-pm8950-regulators
-       - qcom,rpm-pm8994-regulators
-       - qcom,rpm-pm8998-regulators
-+      - qcom,rpm-pm660-regulators
-+      - qcom,rpm-pm660l-regulators
-       - qcom,rpm-pma8084-regulators
-       - qcom,rpm-pmi8994-regulators
-       - qcom,rpm-pmi8998-regulators
++static const struct arm_smmu_impl qcom_smmuv2_impl = {
++	.cfg_probe = qcom_smmuv2_cfg_probe,
++};
++
+ struct arm_smmu_device *qcom_smmu_impl_init(struct arm_smmu_device *smmu)
+ {
++	const struct device_node *np = smmu->dev->of_node;
+ 	struct qcom_smmu *qsmmu;
+ 
+ 	qsmmu = devm_kzalloc(smmu->dev, sizeof(*qsmmu), GFP_KERNEL);
+@@ -75,7 +100,11 @@ struct arm_smmu_device *qcom_smmu_impl_init(struct arm_smmu_device *smmu)
+ 
+ 	qsmmu->smmu = *smmu;
+ 
+-	qsmmu->smmu.impl = &qcom_smmu500_impl;
++	if (of_device_is_compatible(np, "qcom,sdm660-smmu-v2")) {
++		qsmmu->smmu.impl = &qcom_smmuv2_impl;
++	} else {
++		qsmmu->smmu.impl = &qcom_smmu500_impl;
++	}
+ 	devm_kfree(smmu->dev, smmu);
+ 
+ 	return &qsmmu->smmu;
 -- 
 2.28.0
 
