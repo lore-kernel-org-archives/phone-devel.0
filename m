@@ -5,60 +5,60 @@ X-Spam-Level:
 X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CCCDC2D0A8
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:52:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C955C47420
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:52:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 15980221EC
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:52:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F0C6E221EC
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:52:13 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="izIYuruD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IzmQm6Xb"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729426AbgIZMwC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 26 Sep 2020 08:52:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35126 "EHLO
+        id S1729425AbgIZMwE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 26 Sep 2020 08:52:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729425AbgIZMwB (ORCPT
+        with ESMTP id S1726183AbgIZMv7 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Sep 2020 08:52:01 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91B2EC0613D6;
-        Sat, 26 Sep 2020 05:52:01 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id c18so6823908wrm.9;
-        Sat, 26 Sep 2020 05:52:01 -0700 (PDT)
+        Sat, 26 Sep 2020 08:51:59 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87246C0613D4;
+        Sat, 26 Sep 2020 05:51:59 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id s12so6820224wrw.11;
+        Sat, 26 Sep 2020 05:51:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ffJxais4qGP0gvCu5GJ1ov8h/Ob+gH0ZybsxZFb8CJU=;
-        b=izIYuruDFNqXltczjPsA76PTw+n862sTor1TddTJvNUgDDa2BvRL9Vzs1uzG5NOhTM
-         XoSUS6FGEBarLJWx/a+UBeNjt0X7+XqzUZ6CQrW0tF1uTTrfFHRg93otdCE1Gl0SVzbO
-         SKLCRHJujWHhSuPVTpjE/nfqWcrHs+1ijjGxJ4gdBfZIhBty8Lt1wjH9TGS8hq7NIMu5
-         xh8+1vVgqorRd8aW40KfrnAsviUQ3DSjh5+R4CR1pBd/oG2d+DyevmFHrX2/2XgmljIH
-         b6QEB8NsrIE0VAnMIQniDcWcUGNrAQTY6b9pCC4NjAfSmMAkz2COsWcUHU23C7N0gE8w
-         suqg==
+        bh=bfU07Sm/xnGk1ZoqGi3z7IAKufG/nzCUlkWJYq8AY8E=;
+        b=IzmQm6XbCQ69LpzKcQnuxob4HVKpjYiqdfqLjsIaRcZAMmkQkIn3BvISKHfk/iCC1r
+         PyFNQ0ZGQyqBQECOlSP5Ii8Xye9vAp/tVeTZeipry5JoAOouu63UUipFnmQg5ainNyxn
+         K04MVpXax6XxOTW4is5uLY0V2K9p6IYvput9Q3hRaPAobWrVVniKCJLbpyikrbWS6E1D
+         UnlVEZ3byGqm2bmkH0rV2qag+phoVusP6M3RMiZRany0Q37pdfrhTbROzMBh38hv9isU
+         Mg1gZ2AqiXBNIqsq497nzXSU6PRuXTQv8Tb2iDtwQ50+5gkXLaZmmCqSp3LmL6kFR5SQ
+         zLCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ffJxais4qGP0gvCu5GJ1ov8h/Ob+gH0ZybsxZFb8CJU=;
-        b=leK7Fjrel6KRJ6hoKdN5o94IuD45HWBpje4sOD8E4WDchyDc97pIxR+b6KKiK9f/om
-         L5mWzZ3QvZwaTrX06dR7Dj9/q0ZmxKgVnwgFV3KxlacfHBx30hC13qU4ZYhmTHFV9/nS
-         0eLcy8yNciWlw1gpCOWTn1Y4SRFutMdTA4rhjCGvS/MHU28c4CnUhaUd95qZ9ISraTpe
-         3vT+gG8n/HnAYQdxmPhTLLwe2mhPga+uj0CLvL+yDCMFOlmI4VAQWSMwGNJ9Na/K6BvW
-         jcr7SE6Xqpki9W6wIjtggLGqIxn5WzUbP29zOquJY5bUlkKnulW0x6MghQVwpyKIOZTo
-         j9mg==
-X-Gm-Message-State: AOAM531YtHGGyvjFvYnDO4ZrJ1wLaSaloW0yibnxPgbnqbIV0XvseM8z
-        Bq1eug+weoS/fpWFmCnLOQHh1hoCUqIapg==
-X-Google-Smtp-Source: ABdhPJzeh/cPOy171Ct8PCqoVlJxp4O7WFQ7ahtAhPDNX1aSK65lu0g3sgP+HxnGbJxVLw9sVIPkPw==
-X-Received: by 2002:a05:6000:12c3:: with SMTP id l3mr9997979wrx.164.1601124720185;
-        Sat, 26 Sep 2020 05:52:00 -0700 (PDT)
+        bh=bfU07Sm/xnGk1ZoqGi3z7IAKufG/nzCUlkWJYq8AY8E=;
+        b=uaDGW6fxZbGFvvcfQCwYRuK9M23vpdz4vt20Y3f+c/b7WCu9wbQKB9GsNLf9Fy62z1
+         AljPHzRLYY48/jeGVcGVXrSjqka1oEEuDjoEz+RtBJt1S8sFaqIfeNGYJNkI6EKDDdI0
+         5dIIMgo90+ywGAsFy4M8ML5KHJOcyrZ8kVo2VacvuUKObD7n2JObhI30ypLwwEb55XRW
+         QiQpKUuNPqVxxaCde6uJl6FFJ5/fNriE7sxTpIb4rvVPuA2dHU2xaCUoZWu43oNxAgsD
+         MqYbUYo+t/Liq/6FT9AdHm4Eliq3X1tjd8W91qzGY15eCXge8X+ogQ9EbrV80Owbfx5z
+         iIuA==
+X-Gm-Message-State: AOAM532JNDdPHRELJkUA14vpFmE3KcouMTft2RdgZO7JuxlwCLgVJ4/b
+        ZvPkUG3kGKuWbYHXswnDROM=
+X-Google-Smtp-Source: ABdhPJymVrWyxKk8FPpBnafiDwxaLvCuGCbsK3Nt3czYF4XZeLZxOK6gm8PUJoJ+LrliQnqQ2ZLqCw==
+X-Received: by 2002:adf:b306:: with SMTP id j6mr9029874wrd.279.1601124718190;
+        Sat, 26 Sep 2020 05:51:58 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id a10sm2520451wmj.38.2020.09.26.05.51.59
+        by smtp.gmail.com with ESMTPSA id a10sm2520451wmj.38.2020.09.26.05.51.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2020 05:51:59 -0700 (PDT)
+        Sat, 26 Sep 2020 05:51:57 -0700 (PDT)
 From:   kholk11@gmail.com
 To:     robdclark@gmail.com
 Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
@@ -66,9 +66,9 @@ Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
         marijns95@gmail.com, martin.botka1@gmail.com,
         linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
         phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 6/7] drm/msm/a5xx: Disable flat shading optimization
-Date:   Sat, 26 Sep 2020 14:51:45 +0200
-Message-Id: <20200926125146.12859-7-kholk11@gmail.com>
+Subject: [PATCH 4/7] drm/msm/a5xx: Reset VBIF before PC only on A510 and A530
+Date:   Sat, 26 Sep 2020 14:51:43 +0200
+Message-Id: <20200926125146.12859-5-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200926125146.12859-1-kholk11@gmail.com>
 References: <20200926125146.12859-1-kholk11@gmail.com>
@@ -78,31 +78,43 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Konrad Dybcio <konradybcio@gmail.com>
+From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-Port over the command from downstream to prevent undefined
-behaviour.
+Resetting the VBIF before power collapse is done to avoid getting
+bogus FIFO entries during the suspend sequence or subsequent resume,
+but this is doable only on Adreno 510 and Adreno 530, as the other
+units will tendentially lock up.
+Especially on Adreno 508, the GPU will show lockups and very bad
+slownesses after processing the first frame.
 
-Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
+Avoiding to execute the RBBM SW Reset before suspend will stop the
+lockup issue from happening on at least Adreno 508/509/512.
+
 Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index b2670af638a3..bdc852e7d979 100644
+index 9bcbf6cd5a28..00df5de3c8e3 100644
 --- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
 +++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -759,6 +759,9 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
- 	    adreno_is_a540(adreno_gpu))
- 		gpu_write(gpu, REG_A5XX_UCHE_DBG_ECO_CNTL_2, bit);
+@@ -1306,10 +1306,12 @@ static int a5xx_pm_suspend(struct msm_gpu *gpu)
  
-+	/* Disable All flat shading optimization */
-+	gpu_rmw(gpu, 0x00000E60, 0, 0x1 << 10);
-+
- 	/* Protect registers from the CP */
- 	gpu_write(gpu, REG_A5XX_CP_PROTECT_CNTL, 0x00000007);
+ 	/*
+ 	 * Reset the VBIF before power collapse to avoid issue with FIFO
+-	 * entries
++	 * entries on Adreno A510 and A530 (the others will tend to lock up)
+ 	 */
+-	gpu_write(gpu, REG_A5XX_RBBM_BLOCK_SW_RESET_CMD, 0x003C0000);
+-	gpu_write(gpu, REG_A5XX_RBBM_BLOCK_SW_RESET_CMD, 0x00000000);
++	if (adreno_is_a510(adreno_gpu) || adreno_is_a530(adreno_gpu)) {
++		gpu_write(gpu, REG_A5XX_RBBM_BLOCK_SW_RESET_CMD, 0x003C0000);
++		gpu_write(gpu, REG_A5XX_RBBM_BLOCK_SW_RESET_CMD, 0x00000000);
++	}
  
+ 	return msm_gpu_pm_suspend(gpu);
+ }
 -- 
 2.28.0
 
