@@ -2,63 +2,62 @@ Return-Path: <SRS0=mJHj=DD=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13338C4741F
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:52:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C931DC47423
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:52:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B670D2080C
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:52:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8AAA622211
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:52:19 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HZ5zxkP2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xzgm6wn4"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726183AbgIZMwO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 26 Sep 2020 08:52:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35132 "EHLO
+        id S1729041AbgIZMvz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 26 Sep 2020 08:51:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729448AbgIZMwD (ORCPT
+        with ESMTP id S1726183AbgIZMvz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Sep 2020 08:52:03 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D7B5C0613CE;
-        Sat, 26 Sep 2020 05:52:02 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id k15so6806555wrn.10;
-        Sat, 26 Sep 2020 05:52:02 -0700 (PDT)
+        Sat, 26 Sep 2020 08:51:55 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 500D4C0613CE;
+        Sat, 26 Sep 2020 05:51:55 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id o5so6797016wrn.13;
+        Sat, 26 Sep 2020 05:51:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=foqK6d6PeFS41hCQFnmZHZLvMNZeja8GwkTNzpenNPE=;
-        b=HZ5zxkP2mVnrLayUJOr3gUjOa49srhi8RntJAa++LZmdX4rp3uW0qGuZBgLxsOBB14
-         qOJ8QQqciOxgx6cjavko9c0jfKNfSyAKC02HUBiwGszIzhTG9jf8O7Vmq7uTm/acLfPo
-         6G1n9WMFR0r/PxgAYrmlQZDp0lcqDTq4Q0D+2Vjg3GghubLw2PPsl8x9qOYkab1LTl7h
-         4k4YlEGyVYrCFXpDvdQ05hGKmVqqeJhaj6i0YS1a9vLC3aD40D7/1+V2wDmJ90K7GPw0
-         W23gaq6402ta5qnpbhx4eISlTXdHEOleAHtnPofynlrq/zr0fuGyx5liHS7gm1f1t9Va
-         9YJA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/qMNYE0eTMh5KJYROOdw24uWxCTrmW6gJQZgul1FUS4=;
+        b=Xzgm6wn4J/4NiC0PcNx8YtYeNMwbwXmxSLid0z2d+VUC+C06JsbAJyjzvy2PhtHPho
+         0dwgsF1gedNsTidLRJYBwjVdt8WBilvjeFyfluf5FI3OY7zja0xBhJhVCXTdzVldMroA
+         IqqUZk1NK5oI/tlf5F4AzkiQdnEtQ/Ol+yajZAqSQcC7FhSkLZIhzsyFcOzArkfqtL/5
+         e6EySKwVJ6UAq8nR/g3gxHW/W8LB1KYNA3tjowSrZb86RcOdCpKfPa1OqUzO33eR/Lwo
+         eBA3UefYyj7IivosPGHfV/koKrG2fDZuzBJLLVit2stJm7eceY9CJ1Bdk+/CaYwuyhEd
+         ZYGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=foqK6d6PeFS41hCQFnmZHZLvMNZeja8GwkTNzpenNPE=;
-        b=Eow24aJ9OLfdLKG+y7w2GEG7KqSvDYfhZWPN4bCZOpMFaeSAGlgGgoXpgq8iGcFIOJ
-         DaJBfmTU3XzJG3MMhu0o63YfDFA57MhxwOiU4PnA1S/rw3sN0AKes6de3vxV1ZeHwKzC
-         a5Ak9J3UmNys6xSAS7WBvHcx7V05cpI+1VNegUfFAHFW6Vf0iY8ozVHKxHv9lMYjOebQ
-         Zjj/gIaWLe7WLEJTWWtCu6Zod0rLFZM6Hvu2XREhkbuz0lLb/dqMnkXrsU2PSP1RIFI4
-         eiNROPj6fl91wgxPuv+sDK7FrQSPwWpogeAVe4YCfF0YX+Ij14mv+qATC57tsfpfQXMY
-         MsqA==
-X-Gm-Message-State: AOAM532rr0xchNHNvfnEjGF8jonpb//K3iMPnwpc75p1A2a3X9vFwOLe
-        D7AT4zKQ9pOVv2eUQNowHyk=
-X-Google-Smtp-Source: ABdhPJzj57ykvAkR8sPQK4WXT9fZ19k0L75upjkVIzxAPQQFacUyUnq9zlGMYnqhP+HWrKhHLLJlLw==
-X-Received: by 2002:adf:cd05:: with SMTP id w5mr9428546wrm.62.1601124721243;
-        Sat, 26 Sep 2020 05:52:01 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/qMNYE0eTMh5KJYROOdw24uWxCTrmW6gJQZgul1FUS4=;
+        b=iX8kxXFf6m888fA//M+vL+qJKg2lS97phIMG1zuhZqxvp/ze/hQxyCJsy2uZabNC4k
+         zZAG/Em8tGHaHkOZgXjEjT3/R5wla3rklOfzqj3Fr4p63zvwZGsf89JYXhrVXaWNqim8
+         ecLh9Hb2O25czxvyLtt3E0g+1Antyt76xLBw5rOL5KYld6hLYYXsN2vmiDUetghr0CcJ
+         OtDaSP+v+CyGRBSHTZv5gR252ImISIz2gv2V9qVCXknE3iWsQzz5LsbSPYtcLVyXs/iJ
+         l7RWJ03DHFjErHENprj06MwnFZgQhX8NrYcwUJ0nO0GYsWb/YawEkYBZWZDjRYXDmxBn
+         gmKA==
+X-Gm-Message-State: AOAM533NlQdJFqMFqlKzwtZf+uMGXNHw2sgK1Fx/rB4wnNKK3o8f9vek
+        EzlvK8h9geZGK+TEGAlU/pc=
+X-Google-Smtp-Source: ABdhPJykRj8XBuin0jimtNNCc6XvuRCYJBYE70paF0aDxhecfU/Oo4M7P/54UjKiEqXlKS+mazYOJQ==
+X-Received: by 2002:adf:f508:: with SMTP id q8mr8979753wro.233.1601124713966;
+        Sat, 26 Sep 2020 05:51:53 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id a10sm2520451wmj.38.2020.09.26.05.52.00
+        by smtp.gmail.com with ESMTPSA id a10sm2520451wmj.38.2020.09.26.05.51.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2020 05:52:00 -0700 (PDT)
+        Sat, 26 Sep 2020 05:51:53 -0700 (PDT)
 From:   kholk11@gmail.com
 To:     robdclark@gmail.com
 Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
@@ -66,43 +65,57 @@ Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
         marijns95@gmail.com, martin.botka1@gmail.com,
         linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
         phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 7/7] drm/msm/a5xx: Disable UCHE global filter
-Date:   Sat, 26 Sep 2020 14:51:46 +0200
-Message-Id: <20200926125146.12859-8-kholk11@gmail.com>
+Subject: [PATCH 0/7] Add support for Adreno 508/509/512
+Date:   Sat, 26 Sep 2020 14:51:39 +0200
+Message-Id: <20200926125146.12859-1-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200926125146.12859-1-kholk11@gmail.com>
-References: <20200926125146.12859-1-kholk11@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Konrad Dybcio <konradybcio@gmail.com>
+From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-Port over the command from downstream to prevent undefined
-behaviour.
+In this patch series, we are adding support for lower end Adreno 5
+series GPUs, such as A508, A509 and A512 that we have found in the
+Qualcomm SDM630, SDM636 and SDM660 SoCs.
 
-Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
-Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
----
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 3 +++
- 1 file changed, 3 insertions(+)
+On a note, adding support for these three units, also adds 99% of
+the required "things" for another two GPUs, A505 and A506 but, even
+if adding them requires literally two lines of code, noone of us has
+got any SoC equipped with these ones hence we wouldn't be able to
+test. Even though there is basically no reason for them to not work
+correctly, kernel side, I chose to avoid adding the two "magic" lines.
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index bdc852e7d979..71cd8a3a6bf1 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -722,6 +722,9 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
- 	    adreno_is_a512(adreno_gpu))
- 		gpu_rmw(gpu, REG_A5XX_RB_DBG_ECO_CNTL, 0, (1 << 9));
- 
-+	/* Disable UCHE global filter as SP can invalidate/flush independently */
-+	gpu_write(gpu, 0x00000E81, BIT(29));
-+
- 	/* Enable USE_RETENTION_FLOPS */
- 	gpu_write(gpu, REG_A5XX_CP_CHICKEN_DBG, 0x02000000);
- 
+Anyway, this patchset also addresses some issues that we've found in
+the A5XX part of the Adreno driver, regarding a logic mistake in one
+of the VPC protect values and a forced overwrite of the register named
+A5XX_PC_DBG_ECO_CNTL, forcing the setting of vtxFifo and primFifo
+thresholds that was valid only for higher end GPUs.
+
+This patch series has been tested on the following devices:
+ - Sony Xperia XA2 Ultra (SDM630 Nile Discovery)
+ - Sony Xperia 10        (SDM630 Ganges Kirin)
+ - Sony Xperia 10 Plus   (SDM636 Ganges Mermaid)
+
+AngeloGioacchino Del Regno (4):
+  drm/msm/a5xx: Remove overwriting A5XX_PC_DBG_ECO_CNTL register
+  drm/msm/a5xx: Separate A5XX_PC_DBG_ECO_CNTL write from main branch
+  drm/msm/a5xx: Add support for Adreno 508, 509, 512 GPUs
+  drm/msm/a5xx: Reset VBIF before PC only on A510 and A530
+
+Konrad Dybcio (3):
+  drm/msm/a5xx: Fix VPC protect value in gpu_write()
+  drm/msm/a5xx: Disable flat shading optimization
+  drm/msm/a5xx: Disable UCHE global filter
+
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c      | 195 ++++++++++++++++++---
+ drivers/gpu/drm/msm/adreno/a5xx_power.c    |   4 +-
+ drivers/gpu/drm/msm/adreno/adreno_device.c |  60 +++++++
+ drivers/gpu/drm/msm/adreno/adreno_gpu.h    |  15 ++
+ 4 files changed, 247 insertions(+), 27 deletions(-)
+
 -- 
 2.28.0
 
