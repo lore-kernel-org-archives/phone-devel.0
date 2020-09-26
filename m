@@ -5,60 +5,60 @@ X-Spam-Level:
 X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98BCCC4727E
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:56:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EDE32C2D0A8
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:56:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5D99A221EC
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:56:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9BBD2221EA
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:56:19 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dUc9QEox"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q/GMNQZS"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729294AbgIZM4K (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 26 Sep 2020 08:56:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35772 "EHLO
+        id S1729363AbgIZM4T (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 26 Sep 2020 08:56:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726316AbgIZM4J (ORCPT
+        with ESMTP id S1729260AbgIZM4O (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Sep 2020 08:56:09 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D8F8C0613CE;
-        Sat, 26 Sep 2020 05:56:09 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id e16so6892728wrm.2;
-        Sat, 26 Sep 2020 05:56:09 -0700 (PDT)
+        Sat, 26 Sep 2020 08:56:14 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5A1EC0613D5;
+        Sat, 26 Sep 2020 05:56:13 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id d4so1923149wmd.5;
+        Sat, 26 Sep 2020 05:56:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=iWbBh4wEsI+3oKMbFeIqVzya6+vka++Z1j+OucMUxWY=;
-        b=dUc9QEox4/Z1jVdI1Z61Jy1FMR1K6SYHTAE6aJwawQtULBWgsK4sJlbRIs3u922igH
-         8pccKNlWo5Ae/ZngxEU/B0dEOlvqWBE1wFdqgsbE7Lc4hG3NykHj7o/DAakb92C4rC9/
-         flghAapyAoXOAnKj2fQpj332AkGbehOS+va2lbY3oV+cLsDA+QURaOSSCq4z9p59bawp
-         d7D5YpUrDiefPUWmixDqhn8v4iPpF1HSys8plJbv/ju3DU/2QHBwkabEeOQRJCim1fwG
-         mMohvzMlnJev/LXoQ1QuYIyQoEvyk9+Poy4CkCy7CSufEH1lg5IHEWcwyWG1kernyOYK
-         dbEw==
+        bh=jbWyLKo/DYEBINJqHYUULxfe0FewV7XWDc0CVq7Buvg=;
+        b=q/GMNQZSX2ICDDs5zuJYMR+ZW5lq3k6fgp25FkCrUpasC/+/JGdO7Q4UU0zauV7ov2
+         /xcfYShk8ck+nNnHueRtMjvYvaTKakHbwGaKqWOSNWKHx7SswyJIUxG6iBZMz+l+ahGF
+         IY/vO2d5IwPPG5lXZPIDeGAhTCQOSrt3Cb7V/Jh+gGrMI13yUh8hSW/zT6tE49+oIjve
+         Za8mqKrbdtzp5U15FbE0iEOlaYFUCgFivdoyTvZpiQ8kSSxZv/h1V209Yt/CGkNuIUJJ
+         Qsx4QO9tdOvoqR7AHUlEI5CpPW86euIYQ/xkH/hxtq4mrnyWGFKr2uKAz3H+oH0ul7ZF
+         +0sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=iWbBh4wEsI+3oKMbFeIqVzya6+vka++Z1j+OucMUxWY=;
-        b=jAgPgrLE0Rba7sGyS1AFrOg81/Qy+364EXsrKzjRHZSQFIyjH5cmeycUHqPRB3QI1y
-         cnehYBM8sox8PQK8hOD04a7nlss3XvTd5Xd2uL7IGaJWyhTolzhUpHTy9pc0A+2KSwvQ
-         WUl4jYlgxkXO+/T/iV9NERuXGBmBQKrhUaH77svkxqfG9ZqvI4eSX+Z9U9/hwgavNeV1
-         n7v93mmVHQ82nXOLqP7kphP7+9uyi95pmv1+x4drwNQmzWvFYC8sfYBSp2SzLxMAdKs2
-         lvbQ8gutjDmc4v/d7ZN10sNrbleI9FjgdgqjpgHloQ4d6FL+DzXvcQyXtW1NuHXc66nN
-         pGwg==
-X-Gm-Message-State: AOAM530YTK7f1jqQ3PKynb4YgGYhCd3vMSrRBd/Gnj+Ch/tPyVS1vVZB
-        eKyTf03Mlg6AXOc1U6E8yFiJ12c650GLdA==
-X-Google-Smtp-Source: ABdhPJwqv+JFFCPEOx0SDe5gJ9pdEbkFuio/iCJMbGKii72NeZF2ohRBb7+AtqGK0NlOfd2HjaIMww==
-X-Received: by 2002:adf:ef4a:: with SMTP id c10mr9055793wrp.13.1601124968265;
-        Sat, 26 Sep 2020 05:56:08 -0700 (PDT)
+        bh=jbWyLKo/DYEBINJqHYUULxfe0FewV7XWDc0CVq7Buvg=;
+        b=few0D4XuNkKATBc1ZT5FWMgSs4+E6ZjbRvbaTHP33WcX/pOvFvLlyByH8PwSXGn3pw
+         Kd7FeGMDNWHCJfHF0Vgn+PL/dH4iCtnXgh5MVDpA0o0fEguXZHGbGIWBtsoTtspGIER+
+         fe/wPQ4HIC5+/He9VgMxqV9dJeOaU5GU+O7WgJ0MHTFJPAhFpbSDqEkosWeYkvP24q5R
+         lr6ybaDz5ayOkZYJv3gc4zJRlfzyl//wyI5kjQkt7WlQ6AKnT57qDZ8XZVIjQgFD0NQS
+         y8u2x75AFG8OVb5lpKxoq3MGrczPQFwzytPigEsDahJwpWyxIZQfMV7OWU7hdfSbkJwC
+         wKlQ==
+X-Gm-Message-State: AOAM532vTnFBUgf4y/OqbZ442uElmJD/kT04lOlTEq76tINqPte7XnHI
+        iavTGYE7HJJszjRbOveKzaw=
+X-Google-Smtp-Source: ABdhPJwrw6ipZM4wjYL1JT4uYmQsbkYpoyrT/1w5ePyAkxR5j+1KkuJ1HtGL86GOFH6+3flr7sUtpQ==
+X-Received: by 2002:a1c:28a:: with SMTP id 132mr2514384wmc.9.1601124972412;
+        Sat, 26 Sep 2020 05:56:12 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id h1sm6503024wrx.33.2020.09.26.05.56.07
+        by smtp.gmail.com with ESMTPSA id h1sm6503024wrx.33.2020.09.26.05.56.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2020 05:56:07 -0700 (PDT)
+        Sat, 26 Sep 2020 05:56:11 -0700 (PDT)
 From:   kholk11@gmail.com
 To:     broonie@kernel.org
 Cc:     lgirdwood@gmail.com, agross@kernel.org, bjorn.andersson@linaro.org,
@@ -66,9 +66,9 @@ Cc:     lgirdwood@gmail.com, agross@kernel.org, bjorn.andersson@linaro.org,
         konradybcio@gmail.com, martin.botka1@gmail.com,
         linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 1/7] regulator: core: Enlarge max OF property name length to 64 chars
-Date:   Sat, 26 Sep 2020 14:55:43 +0200
-Message-Id: <20200926125549.13191-2-kholk11@gmail.com>
+Subject: [PATCH 5/5] regulator: qcom_smd: Add PM660/PM660L regulator support
+Date:   Sat, 26 Sep 2020 14:55:47 +0200
+Message-Id: <20200926125549.13191-6-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200926125549.13191-1-kholk11@gmail.com>
 References: <20200926125549.13191-1-kholk11@gmail.com>
@@ -80,53 +80,176 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-Some regulator drivers may be defining very long names: this is the
-case with the qcom_smd and qcom_spmi regulators, where we need to
-parse the regulator parents from DT.
+The PM660 and PM660L are a very very common PMIC combo, found on
+boards using the SDM630, SDM636, SDM660 (and SDA variants) SoC.
 
-For clarity, this is an example:
-{ "l13a", QCOM_SMD_RPM_LDOA, 13, &pm660_ht_lvpldo,
-  "vdd_l8_l9_l10_l11_l12_l13_l14" },
-pm660-regulators {
-	...
-	vdd_l8_l9_l10_l11_l12_l13_l14-supply = <&vreg_s4a_2p04>
-	...
-};
-Now, with a 32 characters limit, the function is trying to parse,
-exactly, "vdd_l8_l9_l10_l11_l12_l13_l14-s" (32 chars) instead of
-the right one, which is 37 chars long in this specific case.
+PM660 provides 6 SMPS and 19 LDOs (of which one is unaccesible),
+while PM660L provides 5 SMPS (of which S3 and S4 are combined),
+10 LDOs and a Buck-or-Boost (BoB) regulator.
 
-... And this is not only the case with PM660/PM660L, but also with
-PMA8084, PM8916, PM8950 and others that are not implemented yet.
-
-The length of 64 chars was chosen based on the longest parsed property
-name that I could find, which is in PM8916, and would be 53 characters
-long.
-At that point, rounding that to 64 looked like being the best idea.
+The PM660L IC also provides other regulators that are very
+specialized (for example, for the display) and will be managed
+in the other appropriate drivers (for example, labibb).
 
 Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
 ---
- drivers/regulator/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/regulator/qcom_smd-regulator.c | 113 +++++++++++++++++++++++++
+ include/linux/soc/qcom/smd-rpm.h       |   4 +
+ 2 files changed, 117 insertions(+)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 7fed8cd134f8..d88bd846d866 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -409,11 +409,11 @@ static struct device_node *of_get_child_regulator(struct device_node *parent,
- static struct device_node *of_get_regulator(struct device *dev, const char *supply)
- {
- 	struct device_node *regnode = NULL;
--	char prop_name[32]; /* 32 is max size of property name */
-+	char prop_name[64]; /* 64 is max size of property name */
+diff --git a/drivers/regulator/qcom_smd-regulator.c b/drivers/regulator/qcom_smd-regulator.c
+index a87b56bc29fa..007e27cbf186 100644
+--- a/drivers/regulator/qcom_smd-regulator.c
++++ b/drivers/regulator/qcom_smd-regulator.c
+@@ -541,6 +541,69 @@ static const struct regulator_desc pmi8998_bob = {
+ 	.ops = &rpm_bob_ops,
+ };
  
- 	dev_dbg(dev, "Looking up %s-supply from device tree\n", supply);
++static const struct regulator_desc pm660_ftsmps = {
++	.linear_ranges = (struct linear_range[]) {
++		REGULATOR_LINEAR_RANGE(355000, 0, 199, 5000),
++	},
++	.n_linear_ranges = 1,
++	.n_voltages = 200,
++	.ops = &rpm_smps_ldo_ops,
++};
++
++static const struct regulator_desc pm660_hfsmps = {
++	.linear_ranges = (struct linear_range[]) {
++		REGULATOR_LINEAR_RANGE(320000, 0, 216, 8000),
++	},
++	.n_linear_ranges = 1,
++	.n_voltages = 217,
++	.ops = &rpm_smps_ldo_ops,
++};
++
++static const struct regulator_desc pm660_ht_nldo = {
++	.linear_ranges = (struct linear_range[]) {
++		REGULATOR_LINEAR_RANGE(312000, 0, 124, 8000),
++	},
++	.n_linear_ranges = 1,
++	.n_voltages = 125,
++	.ops = &rpm_smps_ldo_ops,
++};
++
++static const struct regulator_desc pm660_ht_lvpldo = {
++	.linear_ranges = (struct linear_range[]) {
++		REGULATOR_LINEAR_RANGE(1504000, 0, 62, 8000),
++	},
++	.n_linear_ranges = 1,
++	.n_voltages = 63,
++	.ops = &rpm_smps_ldo_ops,
++};
++
++static const struct regulator_desc pm660_nldo660 = {
++	.linear_ranges = (struct linear_range[]) {
++		REGULATOR_LINEAR_RANGE(320000, 0, 123, 8000),
++	},
++	.n_linear_ranges = 1,
++	.n_voltages = 124,
++	.ops = &rpm_smps_ldo_ops,
++};
++
++static const struct regulator_desc pm660_pldo660 = {
++	.linear_ranges = (struct linear_range[]) {
++		REGULATOR_LINEAR_RANGE(1504000, 0, 255, 8000),
++	},
++	.n_linear_ranges = 1,
++	.n_voltages = 256,
++	.ops = &rpm_smps_ldo_ops,
++};
++
++static const struct regulator_desc pm660l_bob = {
++	.linear_ranges = (struct linear_range[]) {
++		REGULATOR_LINEAR_RANGE(1800000, 0, 84, 32000),
++	},
++	.n_linear_ranges = 1,
++	.n_voltages = 85,
++	.ops = &rpm_bob_ops,
++};
++
+ static const struct regulator_desc pms405_hfsmps3 = {
+ 	.linear_ranges = (struct linear_range[]) {
+ 		REGULATOR_LINEAR_RANGE(320000, 0, 215, 8000),
+@@ -902,6 +965,54 @@ static const struct rpm_regulator_data rpm_pmi8998_regulators[] = {
+ 	{}
+ };
  
--	snprintf(prop_name, 32, "%s-supply", supply);
-+	snprintf(prop_name, 64, "%s-supply", supply);
- 	regnode = of_parse_phandle(dev->of_node, prop_name, 0);
- 
- 	if (!regnode) {
++static const struct rpm_regulator_data rpm_pm660_regulators[] = {
++	{ "s1", QCOM_SMD_RPM_SMPA, 1, &pm660_ftsmps, "vdd_s1" },
++	{ "s2", QCOM_SMD_RPM_SMPA, 2, &pm660_ftsmps, "vdd_s2" },
++	{ "s3", QCOM_SMD_RPM_SMPA, 3, &pm660_ftsmps, "vdd_s3" },
++	{ "s4", QCOM_SMD_RPM_SMPA, 4, &pm660_hfsmps, "vdd_s4" },
++	{ "s5", QCOM_SMD_RPM_SMPA, 5, &pm660_hfsmps, "vdd_s5" },
++	{ "s6", QCOM_SMD_RPM_SMPA, 6, &pm660_hfsmps, "vdd_s6" },
++	{ "l1", QCOM_SMD_RPM_LDOA, 1, &pm660_nldo660, "vdd_l1_l6_l7" },
++	{ "l2", QCOM_SMD_RPM_LDOA, 2, &pm660_ht_nldo, "vdd_l2_l3" },
++	{ "l3", QCOM_SMD_RPM_LDOA, 3, &pm660_nldo660, "vdd_l2_l3" },
++	/* l4 is unaccessible on PM660 */
++	{ "l5", QCOM_SMD_RPM_LDOA, 5, &pm660_ht_nldo, "vdd_l5" },
++	{ "l6", QCOM_SMD_RPM_LDOA, 6, &pm660_ht_nldo, "vdd_l1_l6_l7" },
++	{ "l7", QCOM_SMD_RPM_LDOA, 7, &pm660_ht_nldo, "vdd_l1_l6_l7" },
++	{ "l8", QCOM_SMD_RPM_LDOA, 8, &pm660_ht_lvpldo, "vdd_l8_l9_l10_l11_l12_l13_l14" },
++	{ "l9", QCOM_SMD_RPM_LDOA, 9, &pm660_ht_lvpldo, "vdd_l8_l9_l10_l11_l12_l13_l14" },
++	{ "l10", QCOM_SMD_RPM_LDOA, 10, &pm660_ht_lvpldo, "vdd_l8_l9_l10_l11_l12_l13_l14" },
++	{ "l11", QCOM_SMD_RPM_LDOA, 11, &pm660_ht_lvpldo, "vdd_l8_l9_l10_l11_l12_l13_l14" },
++	{ "l12", QCOM_SMD_RPM_LDOA, 12, &pm660_ht_lvpldo, "vdd_l8_l9_l10_l11_l12_l13_l14" },
++	{ "l13", QCOM_SMD_RPM_LDOA, 13, &pm660_ht_lvpldo, "vdd_l8_l9_l10_l11_l12_l13_l14" },
++	{ "l14", QCOM_SMD_RPM_LDOA, 14, &pm660_ht_lvpldo, "vdd_l8_l9_l10_l11_l12_l13_l14" },
++	{ "l15", QCOM_SMD_RPM_LDOA, 15, &pm660_pldo660, "vdd_l15_l16_l17_l18_l19" },
++	{ "l16", QCOM_SMD_RPM_LDOA, 16, &pm660_pldo660, "vdd_l15_l16_l17_l18_l19" },
++	{ "l17", QCOM_SMD_RPM_LDOA, 17, &pm660_pldo660, "vdd_l15_l16_l17_l18_l19" },
++	{ "l18", QCOM_SMD_RPM_LDOA, 18, &pm660_pldo660, "vdd_l15_l16_l17_l18_l19" },
++	{ "l19", QCOM_SMD_RPM_LDOA, 19, &pm660_pldo660, "vdd_l15_l16_l17_l18_l19" },
++	{ }
++};
++
++static const struct rpm_regulator_data rpm_pm660l_regulators[] = {
++	{ "s1", QCOM_SMD_RPM_SMPB, 1, &pm660_ftsmps, "vdd_s1" },
++	{ "s2", QCOM_SMD_RPM_SMPB, 2, &pm660_ftsmps, "vdd_s2" },
++	{ "s3", QCOM_SMD_RPM_RWCX, 0, &pm660_ftsmps, "vdd_s3_s4" },
++	{ "s5", QCOM_SMD_RPM_RWMX, 0, &pm660_ftsmps, "vdd_s5" },
++	{ "l1", QCOM_SMD_RPM_LDOB, 1, &pm660_nldo660, "vdd_l1_l9_l10" },
++	{ "l2", QCOM_SMD_RPM_LDOB, 2, &pm660_pldo660, "vdd_l2" },
++	{ "l3", QCOM_SMD_RPM_LDOB, 3, &pm660_pldo660, "vdd_l3_l5_l7_l8" },
++	{ "l4", QCOM_SMD_RPM_LDOB, 4, &pm660_pldo660, "vdd_l4_l6" },
++	{ "l5", QCOM_SMD_RPM_LDOB, 5, &pm660_pldo660, "vdd_l3_l5_l7_l8" },
++	{ "l6", QCOM_SMD_RPM_LDOB, 6, &pm660_pldo660, "vdd_l4_l6" },
++	{ "l7", QCOM_SMD_RPM_LDOB, 7, &pm660_pldo660, "vdd_l3_l5_l7_l8" },
++	{ "l8", QCOM_SMD_RPM_LDOB, 8, &pm660_pldo660, "vdd_l3_l5_l7_l8" },
++	{ "l9", QCOM_SMD_RPM_RWLC, 0, &pm660_ht_nldo, "vdd_l1_l9_l10" },
++	{ "l10", QCOM_SMD_RPM_RWLM, 0, &pm660_ht_nldo, "vdd_l1_l9_l10" },
++	{ "bob", QCOM_SMD_RPM_BOBB, 1, &pm660l_bob, "vdd_bob", },
++	{ }
++};
++
+ static const struct rpm_regulator_data rpm_pms405_regulators[] = {
+ 	{ "s1", QCOM_SMD_RPM_SMPA, 1, &pms405_hfsmps3, "vdd_s1" },
+ 	{ "s2", QCOM_SMD_RPM_SMPA, 2, &pms405_hfsmps3, "vdd_s2" },
+@@ -932,6 +1043,8 @@ static const struct of_device_id rpm_of_match[] = {
+ 	{ .compatible = "qcom,rpm-pm8950-regulators", .data = &rpm_pm8950_regulators },
+ 	{ .compatible = "qcom,rpm-pm8994-regulators", .data = &rpm_pm8994_regulators },
+ 	{ .compatible = "qcom,rpm-pm8998-regulators", .data = &rpm_pm8998_regulators },
++	{ .compatible = "qcom,rpm-pm660-regulators", .data = &rpm_pm660_regulators },
++	{ .compatible = "qcom,rpm-pm660l-regulators", .data = &rpm_pm660l_regulators },
+ 	{ .compatible = "qcom,rpm-pma8084-regulators", .data = &rpm_pma8084_regulators },
+ 	{ .compatible = "qcom,rpm-pmi8994-regulators", .data = &rpm_pmi8994_regulators },
+ 	{ .compatible = "qcom,rpm-pmi8998-regulators", .data = &rpm_pmi8998_regulators },
+diff --git a/include/linux/soc/qcom/smd-rpm.h b/include/linux/soc/qcom/smd-rpm.h
+index da304ce8c8f7..f2645ec52520 100644
+--- a/include/linux/soc/qcom/smd-rpm.h
++++ b/include/linux/soc/qcom/smd-rpm.h
+@@ -19,6 +19,10 @@ struct qcom_smd_rpm;
+ #define QCOM_SMD_RPM_CLK_BUF_A	0x616B6C63
+ #define QCOM_SMD_RPM_LDOA	0x616f646c
+ #define QCOM_SMD_RPM_LDOB	0x626F646C
++#define QCOM_SMD_RPM_RWCX	0x78637772
++#define QCOM_SMD_RPM_RWMX	0x786d7772
++#define QCOM_SMD_RPM_RWLC	0x636c7772
++#define QCOM_SMD_RPM_RWLM	0x6d6c7772
+ #define QCOM_SMD_RPM_MEM_CLK	0x326b6c63
+ #define QCOM_SMD_RPM_MISC_CLK	0x306b6c63
+ #define QCOM_SMD_RPM_NCPA	0x6170636E
 -- 
 2.28.0
 
