@@ -8,66 +8,66 @@ X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C7DAEC4727E
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:03:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8AF4C4741F
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:03:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9BB3F22204
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:03:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 72CB822204
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:03:16 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fu+fFhMb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bGRR18hz"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729638AbgIZNDP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S1729774AbgIZNDP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Sat, 26 Sep 2020 09:03:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36932 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729391AbgIZNDO (ORCPT
+        with ESMTP id S1728330AbgIZNDN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Sep 2020 09:03:14 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBD6EC0613D4;
+        Sat, 26 Sep 2020 09:03:13 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06168C0613D3;
         Sat, 26 Sep 2020 06:03:13 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id v12so2117620wmh.3;
-        Sat, 26 Sep 2020 06:03:13 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id t10so6913811wrv.1;
+        Sat, 26 Sep 2020 06:03:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=7xRN6JM6gVfHYFeOzAKEvV3V8gg06g9vTPez6zHGQOE=;
-        b=fu+fFhMbAdn+utrBsyfDXK2kOfKO2jHdUXkN+4eWjxuQeaAaqAuUOS546QeveDU7fn
-         AT0YkK2Qo5FUw0YHfnD8ZYON3/0ESlVpwurpPxoEy/5JrIuQzRqzOCX7PBvWHH+FXwHg
-         DVqhGAbWdlrcJ2kWV5zvCydsF0TM/8PD+kzTgFjiBDGgMbqAPdK8GlRq5bjXvKHCmdpq
-         DtcECehTcmDZq6boDRa5UkplBx9pl3USN1MuAEfPvYCiFCKv3xEy4hX44ToTT7N6EHd+
-         qYwSfL9FemZPJqbs5g7LQX9N8/m/IbwqsfIcpNnE0Q3xpPn81h9KpV/0IEMXVEaNIlv1
-         4sLg==
+        bh=FAc2c7I/7YEuxUzctA0YH35pOjmz1ksRdsyMMrlFOcI=;
+        b=bGRR18hzsA2Fo6YoEc8o6GWL8EVQ3GLguIhP47dCAnYhC4zcB0rZ07zhgHdwIYwTjA
+         2SCIAf7FWD4FG4W16fmzSb4J79spKbMV3Bbny0B2wQVo8TpOuGjz35HSeTn1UzWIROZw
+         iGVr4KisT1Hq6CzeD2xQFMRf/YSNgwyew6/WmzVx+tW2qmRRoVYpNC+QiESp3T9cLvvj
+         mzW7yHWnb9R62AJezq8FuNLu5EgWBPckSWl350St3Gj+cxCB4L52+BsiOGyi6VYXO06L
+         3EjH381j/xSIxgZLsydF+e/Uh9WAJNEYIryiElQVhp053k6Py2sPcRHdrHiyb8++2L4N
+         AgZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=7xRN6JM6gVfHYFeOzAKEvV3V8gg06g9vTPez6zHGQOE=;
-        b=PuYaH1lQ8MneqIc33BQXVEpWfb52dnrS/js7rua1tv0i94hWxaYArJ6Kjs7IXKeXXS
-         77XZFwS7fIBWVLMXisOwvdJCjLC3/6NwtAbAi5VSlLuFdhV9Kz4xfDjd/YcG5Q/eq29n
-         lS6OSLfhS01rQV8F60O9dlNjer08wRU6X9MFhq+eep530dNKMsTewTjUtETScNPAa3Vm
-         2vBFY7ynxQysVObXm+vfUukEX8moj+M4d03Lueg0ctWou7cSnZKUrH8WpZEO1JnimgVh
-         WJCpcb7p0prsS2n9An8WzKlmN6idJz9bc9OeDLk3PnfJWp4U2LhKU2RQMgmQRfBxYdKk
-         RbGA==
-X-Gm-Message-State: AOAM531dTtkajtW4hSWJPh8RypJP2sf+iAJsbM3zK7NsXuNkledLWDxB
-        2Doy/d5AZDMzlZbuadhgZ46dAKB/+77KgA==
-X-Google-Smtp-Source: ABdhPJyiwc6uccnkTQUaHiHSNCRW3WnKv8dZ9vDjqU2c0SQw5NSlLor9g1OVqEyvHxnIT6geGs4jMw==
-X-Received: by 2002:a05:600c:210c:: with SMTP id u12mr2725954wml.185.1601125392593;
-        Sat, 26 Sep 2020 06:03:12 -0700 (PDT)
+        bh=FAc2c7I/7YEuxUzctA0YH35pOjmz1ksRdsyMMrlFOcI=;
+        b=gjGapfpQzUXFG5rvH/plhV/YTpoSEXFH2lApPTSPa3CFU492FxTf2bdHsZ7eVnOslK
+         AQsNpMm/nFWZgPWmFOFeJRQZEK5mfP++WYbdsqFRtdsgoIG+/2LKQdpBwJKVcASMCeiK
+         /1ScHPoyQOR30xZMuweV5W9VHmedlNyJH+++crhVDce75Z4TST7SOpvyhfP7H4O/uxZy
+         Hhl+kaEV3yrCsEL5KQDBP5mcvGbXee7qX4TCoynZK/5D1siZpQWLkLcrTi4Ot+imKSvF
+         MIF1hCtFvGxtoTUr+R7E6qzudtiFnVwaRQ+6FsC1MEG/bgnszSbMGQFAvlHFMMv9ZL6D
+         glEg==
+X-Gm-Message-State: AOAM532moCVKwKxbs8tJqb0YFGRmRAxboAmGoIncQrW0w1qBC1iAKiWd
+        IDebKQ+HBDtk3A71MIi3WlQ=
+X-Google-Smtp-Source: ABdhPJyFSWOfpYdYrSVP28ElgXESAJLVp3y2EneLR7ymncQP0H/CPGOmyO045Qb+a7Fr3DEHDqeXRg==
+X-Received: by 2002:a5d:60cc:: with SMTP id x12mr9359265wrt.84.1601125391673;
+        Sat, 26 Sep 2020 06:03:11 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id d83sm2853213wmf.23.2020.09.26.06.03.11
+        by smtp.gmail.com with ESMTPSA id d83sm2853213wmf.23.2020.09.26.06.03.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2020 06:03:12 -0700 (PDT)
+        Sat, 26 Sep 2020 06:03:11 -0700 (PDT)
 From:   kholk11@gmail.com
 To:     agross@kernel.org
 Cc:     bjorn.andersson@linaro.org, sboyd@kernel.org, kholk11@gmail.com,
         marijns95@gmail.com, konradybcio@gmail.com,
         martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
         phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/5] clk: qcom: mmcc-sdm660: Add MDP clock source CXC to MDSS GDSC
-Date:   Sat, 26 Sep 2020 15:03:04 +0200
-Message-Id: <20200926130306.13843-4-kholk11@gmail.com>
+Subject: [PATCH 2/5] dt-bindings: clock: Add support for the SDM630 and SDM660 mmcc
+Date:   Sat, 26 Sep 2020 15:03:03 +0200
+Message-Id: <20200926130306.13843-3-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200926130306.13843-1-kholk11@gmail.com>
 References: <20200926130306.13843-1-kholk11@gmail.com>
@@ -79,28 +79,26 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-It is required for optimal performance and to avoid MDP stalls to
-retain mem/periph on GDSC enablement: to achieve this, let's add
-the required CXC to the MDSS GDSC.
+Document the multimedia clock controller found on SDM630/660.
 
 Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
 ---
- drivers/clk/qcom/mmcc-sdm660.c | 2 ++
+ Documentation/devicetree/bindings/clock/qcom,mmcc.yaml | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/qcom/mmcc-sdm660.c b/drivers/clk/qcom/mmcc-sdm660.c
-index 234aca7c873b..7b1384cf8506 100644
---- a/drivers/clk/qcom/mmcc-sdm660.c
-+++ b/drivers/clk/qcom/mmcc-sdm660.c
-@@ -2572,6 +2572,8 @@ static struct gdsc mdss_gdsc = {
- 	.pd = {
- 		.name = "mdss",
- 	},
-+	.cxcs = (unsigned int []){ 0x2040 },
-+	.cxc_count = 1,
- 	.pwrsts = PWRSTS_OFF_ON,
- };
+diff --git a/Documentation/devicetree/bindings/clock/qcom,mmcc.yaml b/Documentation/devicetree/bindings/clock/qcom,mmcc.yaml
+index af32dee14fc6..8b0b1c56f354 100644
+--- a/Documentation/devicetree/bindings/clock/qcom,mmcc.yaml
++++ b/Documentation/devicetree/bindings/clock/qcom,mmcc.yaml
+@@ -24,6 +24,8 @@ properties:
+       - qcom,mmcc-msm8974
+       - qcom,mmcc-msm8996
+       - qcom,mmcc-msm8998
++      - qcom,mmcc-sdm630
++      - qcom,mmcc-sdm660
  
+   clocks:
+     items:
 -- 
 2.28.0
 
