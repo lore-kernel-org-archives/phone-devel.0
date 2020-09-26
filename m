@@ -2,76 +2,73 @@ Return-Path: <SRS0=mJHj=DD=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7877C47427
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:52:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 076D4C2D0A8
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:54:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B056C2311D
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:52:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id ADB2A221EA
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:54:24 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iUl9jLvl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IZDiXn3r"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729616AbgIZMwT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 26 Sep 2020 08:52:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35108 "EHLO
+        id S1726409AbgIZMyY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 26 Sep 2020 08:54:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729399AbgIZMv5 (ORCPT
+        with ESMTP id S1726210AbgIZMyX (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Sep 2020 08:51:57 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60A34C0613CE;
-        Sat, 26 Sep 2020 05:51:57 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id e2so2108558wme.1;
-        Sat, 26 Sep 2020 05:51:57 -0700 (PDT)
+        Sat, 26 Sep 2020 08:54:23 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44A31C0613CE;
+        Sat, 26 Sep 2020 05:54:23 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id y15so2114513wmi.0;
+        Sat, 26 Sep 2020 05:54:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=b1cxEWVtTchv9LulFIq5cTpW0TIwhYIam0Ax8XR7gpQ=;
-        b=iUl9jLvlfWcKeH+Yw4X0PQOfTIudyWMz0fQTsHxVRomHClbQEjXWjpweVcW1W0AQaR
-         QKyIEKdtaYwQeMM6nkSOcBETwg1sKbFfvi4YELIVMlnoAdGPyrntjn59raMcHUuR1HC5
-         xFEJcKonKy7Zx030gD7d6U8pvViEbYLuTWOBrt0bxwajBHMPCVWe6NoWwPBcbbEF6Q0O
-         SWYUysbXgPlXQ2wMHfFiqVYoY2H6Fp4sJkC8d74vbFhWaVmHSu7/z/i4u10ClqrZZfCU
-         vpTktjziitJfehmosT7Dy+RR6nCcqHz7rrh7t4/24qvDOZebHEBtg6egU26ckjKSDiS5
-         XJJg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3xaKMAWzpL5OM2zoqzxxMUrIQNf25ypkmGgsbg09Cgc=;
+        b=IZDiXn3rjGnfLR2cV5Tv5kVbno5CaOpHkPVPdXopCAC8o8TcK7gLBgSsZktmajXO+e
+         9PlukDTdO3ZQLO6/wXMUMYM9zuE0YDjRt3eiDi+jdnRur/n71H+Cn3qbfryNTWoIr6hR
+         Er4J8gnV7pNOqqzT5qsj7moCaUNBwN1e1v3TCy6fVCQoegxCUIYFt9b//CWc5gqwxDKE
+         OMUty7Cy75byX08Zey/O/7GLAgbEXl1vOkI8s0L402nJEgjD79MVtsycIGfWVoDnQZRm
+         FRJ4HGkkMMCxxjiQ/epPbjSzyd8YqrA/uezoxSBxWZa4NYi1gTtYEmWq+fu4k7TQ7sRd
+         7NnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=b1cxEWVtTchv9LulFIq5cTpW0TIwhYIam0Ax8XR7gpQ=;
-        b=jx6xSLhF2gwUySVyjSqqKnGmpPH0UomYIGCxPUWuS9KrGrBHq9QqDYB1+drt359S1a
-         mJgmZygGPdTXKomnCQzfJGFuJdjiO0lrTDh42NKKhRyxIx0kxdNyVY4OYOznon0z2lf5
-         x6lPA6zkVnxJC6AV4v940G+/TUZuD+/vcxY5xsEhs2R8+yRTS0fyIzdbLpfOvqTOPWdz
-         PCBhdNaUxcA7yt6SwjBvODh6RePYOxlHd6XpZFwLoSN/d8274CFMAl3OdLSnDUKK7EP0
-         I6w4u3hZSOwNNwegEuWtbhHq+XBYCZxUDcoMvLaeJfo3T1p8YY54wFzOWZztH0EeMSo/
-         477Q==
-X-Gm-Message-State: AOAM530QXr8XZoKl5KYBxlWy/TV5HocfeE1BUTj06pzlxbaaiDNPchjA
-        YnoA0c6xL7VmYCgmKPR+W+Y=
-X-Google-Smtp-Source: ABdhPJy7la5lEzdeHF2t0BlcyTOiYk2AU/h/MX3uOvPeWKgvVLnOfRYQMeImquyCmu1XpVvVYIliiw==
-X-Received: by 2002:a1c:4455:: with SMTP id r82mr2498441wma.60.1601124716004;
-        Sat, 26 Sep 2020 05:51:56 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3xaKMAWzpL5OM2zoqzxxMUrIQNf25ypkmGgsbg09Cgc=;
+        b=IBVwRYtys9gyI+gH3qN8WGcm2t5+U0bo2GfEJ4Uu5btB1Etbp02BeVIzaAU66lPegr
+         DCBBGPEkG6TcwU3fWiPDK1vIwOu2GXRtefLFCDocEEchAqGiU2avetiMTf3VQo/i5iDj
+         6s66NiWGQd2NC1fZztQaLuIU25d4O0ZWtpn1JTsPDc1iIPokBN10GFZbaDTR3lHY1xil
+         HmoN6MAt46NDaAn9Iod6V4ufx8941WNzFW2yuOF8mjX28xwgoUb+07N/dNy7vUZg7zSi
+         qKh3pPpcoI1JtEOR0vuFGgWcZ29XVyl9ZuIfQiSAQ70szY+JRx+egR96KnqfdSE3b6PX
+         tDYg==
+X-Gm-Message-State: AOAM530PCDSdmYJL5pPhGqKS8u7Hh9sO/8KbNqTlR+zv14XAIVVKsdyt
+        WHPwPdIxFC5StqF1+j7A+mw=
+X-Google-Smtp-Source: ABdhPJyrzC8zmEPPomIiUMO+khLzkLVQ3GUjv3E5rknio4D3BKwDHE9DKFk5ldcd7GJN6glPGBvOxA==
+X-Received: by 2002:a1c:5988:: with SMTP id n130mr2616027wmb.95.1601124861907;
+        Sat, 26 Sep 2020 05:54:21 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id a10sm2520451wmj.38.2020.09.26.05.51.55
+        by smtp.gmail.com with ESMTPSA id 70sm2617707wmb.41.2020.09.26.05.54.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2020 05:51:55 -0700 (PDT)
+        Sat, 26 Sep 2020 05:54:21 -0700 (PDT)
 From:   kholk11@gmail.com
-To:     robdclark@gmail.com
-Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
-        jcrouse@codeaurora.org, konradybcio@gmail.com, kholk11@gmail.com,
-        marijns95@gmail.com, martin.botka1@gmail.com,
-        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+To:     stanimir.varbanov@linaro.org
+Cc:     agross@kernel.org, bjorn.andersson@linaro.org,
+        linux-media@vger.kernel.org, kholk11@gmail.com,
+        marijns95@gmail.com, konradybcio@gmail.com,
+        martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
         phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/7] drm/msm/a5xx: Separate A5XX_PC_DBG_ECO_CNTL write from main branch
-Date:   Sat, 26 Sep 2020 14:51:41 +0200
-Message-Id: <20200926125146.12859-3-kholk11@gmail.com>
+Subject: [PATCH 0/3] Qualcomm Venus enablement for SDM630/636/660
+Date:   Sat, 26 Sep 2020 14:54:09 +0200
+Message-Id: <20200926125412.13024-1-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200926125146.12859-1-kholk11@gmail.com>
-References: <20200926125146.12859-1-kholk11@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -80,47 +77,49 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-The "main" if branch where we program the other regsiters for the
-Adreno 5xx family of GPUs should not contain the PC_DBG_ECO_CNTL
-register programming because this has logical similarity
-differences from all the others.
+In this patch series, I am enabling the Venus video (enc/dec)oding
+functionality on SDM630, SDM636, SDM660 and their SDA variants.
 
-A later commit will show the entire sense of this.
+To reliably achieve this, commonizing most of the v3/v4 pm_helper
+functions (while keeping compatibility with the previous bindings)
+seemed to be totally legit, as (almost) the whole logic that's been
+introduced in the v4 helpers does actually apply to all (in my knowledge)
+of the SoCs that are currently needing the v3 ops to *at least*
+optimize the power consumption while using this remote processor.
 
-Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
----
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+In the specific case of the SDM630/660 family, this was necessary in
+order to correctly bring up the clocks required by the Venus subsystem
+without using particular hacks in the clock drivers.
+This patch series achieves functional video encoding and decoding on
+the SDM630/660 family of SoCs.
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index 6262603e6e2e..f98f0844838c 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -577,8 +577,6 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
- 		gpu_write(gpu, REG_A5XX_CP_MERCIU_SIZE, 0x20);
- 		gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_2, 0x40000030);
- 		gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_1, 0x20100D0A);
--		gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL,
--			  (0x200 << 11 | 0x200 << 22));
- 	} else {
- 		gpu_write(gpu, REG_A5XX_CP_MEQ_THRESHOLDS, 0x40);
- 		if (adreno_is_a530(adreno_gpu))
-@@ -587,9 +585,14 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
- 			gpu_write(gpu, REG_A5XX_CP_MERCIU_SIZE, 0x400);
- 		gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_2, 0x80000060);
- 		gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_1, 0x40201B16);
-+	}
-+
-+	if (adreno_is_a510(adreno_gpu))
-+		gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL,
-+			  (0x200 << 11 | 0x200 << 22));
-+	else
- 		gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL,
- 			  (0x400 << 11 | 0x300 << 22));
--	}
- 
- 	if (adreno_gpu->info->quirks & ADRENO_QUIRK_TWO_PASS_USE_WFI)
- 		gpu_rmw(gpu, REG_A5XX_PC_DBG_ECO_CNTL, 0, (1 << 8));
+The testing was done with the following methodology:
+ - Boot the system (libc with GNOME DE on Wayland)
+ - Upload a 720p mp4 h264 sample video file [1] on the device
+ - Open gnome-terminal and use FFMPEG to transcode:
+   1. Software H264 decoder to Venus HW encoder (wow it's so fast!)
+   2. Venus HW decoder to Software H264 decoder
+ - Download the resulting files on a PC and start playback
+   - Playing back both files works
+
+This patch series has been tested against the following devices:
+ - Sony Xperia XA2 Ultra (SDM630 Nile Discovery)
+ - Sony Xperia 10        (SDM630 Ganges Kirin)
+
+[1] https://dvdloc8.com/clip.php?movieid=12167&clipid=1
+
+AngeloGioacchino Del Regno (3):
+  media: venus: pm_helper: Commonize v3/v4 pmdomains and clocks
+    management
+  media: venus: core: Add sdm660 DT compatible and resource struct
+  media: dt-bindings: media: venus: Add sdm660 DT schema
+
+ .../bindings/media/qcom,sdm660-venus.yaml     | 153 +++++
+ drivers/media/platform/qcom/venus/core.c      |  68 +++
+ .../media/platform/qcom/venus/pm_helpers.c    | 525 +++++++++---------
+ 3 files changed, 498 insertions(+), 248 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/media/qcom,sdm660-venus.yaml
+
 -- 
 2.28.0
 
