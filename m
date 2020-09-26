@@ -2,150 +2,154 @@ Return-Path: <SRS0=mJHj=DD=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_2 autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82ADBC2D0A8
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 16:28:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC9A5C2D0A8
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 17:18:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 44D3821D7F
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 16:28:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1601137720;
-	bh=tAOkEq+Uq4aZCc8Thn8EfXKEczi/Z4vaECBoh1u9kv4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:List-ID:From;
-	b=ZdF9cqw9rPUGjszVj8a5SvnJtDS7zR+piuB/lc9GGGWCSFoEJ/gl/MSWAapB4FUej
-	 TiA6zt3wNjYAo481QrNQMX56QkZyInf84YXuKH1LwoTv7eyogmBCAaq33BWvy/iMiU
-	 xpD6oKEUuoFxk3njwLJSPHafvlK9v8GhQx78UGg4=
+	by mail.kernel.org (Postfix) with ESMTP id 844892177B
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 17:18:43 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MaueTk1y"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729981AbgIZQ2j (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 26 Sep 2020 12:28:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32780 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729960AbgIZQ2h (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Sep 2020 12:28:37 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 30F2A21D95;
-        Sat, 26 Sep 2020 16:28:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601137716;
-        bh=tAOkEq+Uq4aZCc8Thn8EfXKEczi/Z4vaECBoh1u9kv4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Qaz5ywQ6Hgxqf+uXzC3XNF6nj9FYDzAbGHyNvpeQvWd2eNC1NAlaypLjHNVJqREaE
-         L33ILOOiXx0kpHxbs/ZRYU7HvW0vzSilxihTxrLGeYMrCe3YilvvfcFv3BtFSfS1yi
-         leEBE7Co69IxK01rmx8LvfRwnEVLGumeoDhVvXKI=
-Date:   Sat, 26 Sep 2020 17:28:31 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     kholk11@gmail.com
-Cc:     agross@kernel.org, bjorn.andersson@linaro.org, robh+dt@kernel.org,
-        marijns95@gmail.com, konradybcio@gmail.com,
+        id S1729047AbgIZRSn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 26 Sep 2020 13:18:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48192 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726309AbgIZRSn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Sat, 26 Sep 2020 13:18:43 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA13AC0613CE;
+        Sat, 26 Sep 2020 10:18:42 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id s12so7260434wrw.11;
+        Sat, 26 Sep 2020 10:18:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bl53+IHBE7yXiOLq6WRfnfhUTBMnGEZtbf1LqSaqfOk=;
+        b=MaueTk1yEtJ7GzSgrXw9tmwckv/94rigKyb+hYnwA4mrGQVzJNB5sjMe6y2xd4IBeT
+         3zkQ9HbFbDy2HsnjEzWPRD0Y0WO7UoGKjIxD+WFa4PQoTYvzULDT06j5a3uoJ3DXDEuB
+         kwBeb9FSSZOMVJb9QpJOm1IZ76qUyTUG04nCCPF74hjYkr7zD2KCdCnP9ID5ZmR8Nzmg
+         C7MsQtBPYqbYzatYImp4itw+59MOMc+2ezR9fnuhOMJ3/LKjf0riQt/EiAWmQToz5Wcb
+         rhdKstdxImdK1Ec5krm8r230l7kWzYOa0U20CsBBZOhjsabFERo9xzDUDPJXk0vj+k8p
+         muuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bl53+IHBE7yXiOLq6WRfnfhUTBMnGEZtbf1LqSaqfOk=;
+        b=GdxjOrt3qfc2NDShUkPm+FhikafObXAx2zB0+2hrT4kBCuBTuTvLLBHAbFkAKdB/Ku
+         IZGOitadgmm6+WNFAVaT+RKwzM/lx0X4l4wegbDB4gyY/e7/KxRFXjLc1pvSR5JArkMb
+         awTf/31Kr/WwJPfdxNzSryi/IjO+oxV1hLcmgAu6Ac/HkGCs0aJbbiqIO3jVcCCX1Dk0
+         S+4MnZn7fBM+V3YfbuZ3jFboztl6A2uv9QQDh4v5JDiragvx51WLWHRU9Kno2ol7L4WK
+         KA9rTIo0IITNo4X6n+AE1+RPMnYmgfXEDreQ5gczkca3K28s/USwexOzCIZicBMpAg6U
+         66lg==
+X-Gm-Message-State: AOAM531pXjsQZY//J/ZpDbxh4kk4Bpy7g/eE/zgeUanDyNxfN+ZI6jYN
+        6O9r2WZZrPBI/C45AtSFAyA=
+X-Google-Smtp-Source: ABdhPJyzlxbTOBiEV6UjiHZ8TzGIgyhnXIRMmB49mXLck6hVgqRUzmKf7TuHcYyH3cOFuQuh7oKS5Q==
+X-Received: by 2002:adf:f903:: with SMTP id b3mr10611592wrr.142.1601140721323;
+        Sat, 26 Sep 2020 10:18:41 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
+        by smtp.gmail.com with ESMTPSA id l4sm7427125wrc.14.2020.09.26.10.18.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2020 10:18:40 -0700 (PDT)
+From:   kholk11@gmail.com
+To:     agross@kernel.org
+Cc:     bjorn.andersson@linaro.org, jic23@kernel.org, robh+dt@kernel.org,
+        kholk11@gmail.com, marijns95@gmail.com, konradybcio@gmail.com,
         martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: adc: qcom-spmi-vadc: Use right ratiometric
- range for 8998,660,845
-Message-ID: <20200926172831.4774b444@archlinux>
-In-Reply-To: <20200926131009.14483-1-kholk11@gmail.com>
-References: <20200926131009.14483-1-kholk11@gmail.com>
-X-Mailer: Claws Mail 3.17.6 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: [RESEND] [PATCH 1/2] iio: adc: qcom-spmi-vadc: Use right ratiometric range for 8998,660,845
+Date:   Sat, 26 Sep 2020 19:18:34 +0200
+Message-Id: <20200926171835.27154-1-kholk11@gmail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 26 Sep 2020 15:10:08 +0200
-kholk11@gmail.com wrote:
+From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
->=20
-> The ratiometric range for MSM8998, SDM630/636/660 and SDM845 is 1875mV
-> instead of the standard 1800mV: address this by adding a new compatible
-> "qcom,spmi-vadc-8998" and assigning the different range to the machines
-> declaring this one.
->=20
-> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+The ratiometric range for MSM8998, SDM630/636/660 and SDM845 is 1875mV
+instead of the standard 1800mV: address this by adding a new compatible
+"qcom,spmi-vadc-8998" and assigning the different range to the machines
+declaring this one.
 
-Please resend series making sure to cc
-linux-iio@vger.kernel.org=20
+Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+---
+ drivers/iio/adc/qcom-spmi-vadc.c   | 10 +++++++++-
+ drivers/iio/adc/qcom-vadc-common.h |  1 +
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-=46rom a quick glance, patch looks fine.
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/adc/qcom-spmi-vadc.c   | 10 +++++++++-
->  drivers/iio/adc/qcom-vadc-common.h |  1 +
->  2 files changed, 10 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi=
--vadc.c
-> index b0388f8a69f4..59a94ea7bf78 100644
-> --- a/drivers/iio/adc/qcom-spmi-vadc.c
-> +++ b/drivers/iio/adc/qcom-spmi-vadc.c
-> @@ -101,6 +101,7 @@ struct vadc_channel_prop {
->   * @dev: pointer to struct device.
->   * @base: base address for the ADC peripheral.
->   * @nchannels: number of VADC channels.
-> + * @ratio_range: ratiometric range for ref points.
->   * @chan_props: array of VADC channel properties.
->   * @iio_chans: array of IIO channels specification.
->   * @are_ref_measured: are reference points measured.
-> @@ -114,6 +115,7 @@ struct vadc_priv {
->  	struct device		 *dev;
->  	u16			 base;
->  	unsigned int		 nchannels;
-> +	unsigned int		 ratio_range;
->  	struct vadc_channel_prop *chan_props;
->  	struct iio_chan_spec	 *iio_chans;
->  	bool			 are_ref_measured;
-> @@ -355,7 +357,7 @@ static int vadc_measure_ref_points(struct vadc_priv *=
-vadc)
->  	u16 read_1, read_2;
->  	int ret;
-> =20
-> -	vadc->graph[VADC_CALIB_RATIOMETRIC].dx =3D VADC_RATIOMETRIC_RANGE;
-> +	vadc->graph[VADC_CALIB_RATIOMETRIC].dx =3D vadc->ratio_range;
->  	vadc->graph[VADC_CALIB_ABSOLUTE].dx =3D VADC_ABSOLUTE_RANGE_UV;
-> =20
->  	prop =3D vadc_get_channel(vadc, VADC_REF_1250MV);
-> @@ -885,6 +887,11 @@ static int vadc_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
-> =20
-> +	if (of_device_is_compatible(node, "qcom,spmi-vadc-8998"))
-> +		vadc->ratio_range =3D VADC_RATIOMETRIC_RANGE_8998;
-> +	else
-> +		vadc->ratio_range =3D VADC_RATIOMETRIC_RANGE;
-> +
->  	irq_eoc =3D platform_get_irq(pdev, 0);
->  	if (irq_eoc < 0) {
->  		if (irq_eoc =3D=3D -EPROBE_DEFER || irq_eoc =3D=3D -EINVAL)
-> @@ -918,6 +925,7 @@ static int vadc_probe(struct platform_device *pdev)
-> =20
->  static const struct of_device_id vadc_match_table[] =3D {
->  	{ .compatible =3D "qcom,spmi-vadc" },
-> +	{ .compatible =3D "qcom-spmi-vadc-8998" },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, vadc_match_table);
-> diff --git a/drivers/iio/adc/qcom-vadc-common.h b/drivers/iio/adc/qcom-va=
-dc-common.h
-> index 17b2fc4d8bf2..b10d5fd59034 100644
-> --- a/drivers/iio/adc/qcom-vadc-common.h
-> +++ b/drivers/iio/adc/qcom-vadc-common.h
-> @@ -16,6 +16,7 @@
-> =20
->  #define VADC_ABSOLUTE_RANGE_UV			625000
->  #define VADC_RATIOMETRIC_RANGE			1800
-> +#define VADC_RATIOMETRIC_RANGE_8998		1875
-> =20
->  #define VADC_DEF_PRESCALING			0 /* 1:1 */
->  #define VADC_DEF_DECIMATION			0 /* 512 */
+diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
+index b0388f8a69f4..59a94ea7bf78 100644
+--- a/drivers/iio/adc/qcom-spmi-vadc.c
++++ b/drivers/iio/adc/qcom-spmi-vadc.c
+@@ -101,6 +101,7 @@ struct vadc_channel_prop {
+  * @dev: pointer to struct device.
+  * @base: base address for the ADC peripheral.
+  * @nchannels: number of VADC channels.
++ * @ratio_range: ratiometric range for ref points.
+  * @chan_props: array of VADC channel properties.
+  * @iio_chans: array of IIO channels specification.
+  * @are_ref_measured: are reference points measured.
+@@ -114,6 +115,7 @@ struct vadc_priv {
+ 	struct device		 *dev;
+ 	u16			 base;
+ 	unsigned int		 nchannels;
++	unsigned int		 ratio_range;
+ 	struct vadc_channel_prop *chan_props;
+ 	struct iio_chan_spec	 *iio_chans;
+ 	bool			 are_ref_measured;
+@@ -355,7 +357,7 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
+ 	u16 read_1, read_2;
+ 	int ret;
+ 
+-	vadc->graph[VADC_CALIB_RATIOMETRIC].dx = VADC_RATIOMETRIC_RANGE;
++	vadc->graph[VADC_CALIB_RATIOMETRIC].dx = vadc->ratio_range;
+ 	vadc->graph[VADC_CALIB_ABSOLUTE].dx = VADC_ABSOLUTE_RANGE_UV;
+ 
+ 	prop = vadc_get_channel(vadc, VADC_REF_1250MV);
+@@ -885,6 +887,11 @@ static int vadc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
++	if (of_device_is_compatible(node, "qcom,spmi-vadc-8998"))
++		vadc->ratio_range = VADC_RATIOMETRIC_RANGE_8998;
++	else
++		vadc->ratio_range = VADC_RATIOMETRIC_RANGE;
++
+ 	irq_eoc = platform_get_irq(pdev, 0);
+ 	if (irq_eoc < 0) {
+ 		if (irq_eoc == -EPROBE_DEFER || irq_eoc == -EINVAL)
+@@ -918,6 +925,7 @@ static int vadc_probe(struct platform_device *pdev)
+ 
+ static const struct of_device_id vadc_match_table[] = {
+ 	{ .compatible = "qcom,spmi-vadc" },
++	{ .compatible = "qcom-spmi-vadc-8998" },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, vadc_match_table);
+diff --git a/drivers/iio/adc/qcom-vadc-common.h b/drivers/iio/adc/qcom-vadc-common.h
+index 17b2fc4d8bf2..b10d5fd59034 100644
+--- a/drivers/iio/adc/qcom-vadc-common.h
++++ b/drivers/iio/adc/qcom-vadc-common.h
+@@ -16,6 +16,7 @@
+ 
+ #define VADC_ABSOLUTE_RANGE_UV			625000
+ #define VADC_RATIOMETRIC_RANGE			1800
++#define VADC_RATIOMETRIC_RANGE_8998		1875
+ 
+ #define VADC_DEF_PRESCALING			0 /* 1:1 */
+ #define VADC_DEF_DECIMATION			0 /* 512 */
+-- 
+2.28.0
 
