@@ -8,57 +8,57 @@ X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37D61C4727E
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:00:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59170C47420
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:00:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 028D22311D
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:00:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 164E6235FD
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 13:00:41 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iUHAdBiM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PMlg9ZK3"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729582AbgIZNAc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 26 Sep 2020 09:00:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36460 "EHLO
+        id S1729656AbgIZNAk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 26 Sep 2020 09:00:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729445AbgIZNAR (ORCPT
+        with ESMTP id S1729424AbgIZNAQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Sep 2020 09:00:17 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 767A5C0613D4;
-        Sat, 26 Sep 2020 06:00:17 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id o5so6810275wrn.13;
-        Sat, 26 Sep 2020 06:00:17 -0700 (PDT)
+        Sat, 26 Sep 2020 09:00:16 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65F1DC0613CE;
+        Sat, 26 Sep 2020 06:00:16 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id z4so6893634wrr.4;
+        Sat, 26 Sep 2020 06:00:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=YJru3Yf9kUEHtScNf7bPezrHXeNo+5yqG0dd6MucAIM=;
-        b=iUHAdBiM4Ztclp83OHMT5Spe42ecEdk6Ebg6KRMLcO5EmTMcu3595Gzo5uBdbdSJqb
-         maGTK5QGoXom4E650DbDb87MPdXVAaDqOwD4oKu0TsU1J9T8mOi8H+WejzIl7RKnSViW
-         CA0OjHc2YAetYFdlmdgrT4YVJjB7DM8GwRHz/cQIfuUF+Qg/yskAecqitcS4q9LwyaOT
-         5Ccxz5MQ5vdBM31N3pDL+7ocPQuIFCyc7cHqLoLTwPav8e5Bn/r7GILrJ5VXCovKeJXt
-         yhhLmdUj6OH9g9wnN3VNY4Fr9b6XT7Nd8CJFpGUFvaHAgoYttdtta0XdT/rFx01BhuIo
-         eTXQ==
+        bh=70iPHflSEGgCFhe7eol4g0//LPxM9Uw4CZ8Bcxeu3u8=;
+        b=PMlg9ZK3JuN7Y6fqEN8tuT9ELtastIFo61T1CCaYeRV+bqqTB6DqjIJKqHwQ2cXt3V
+         s5MyRrRF/S8xe3R0jrqCx60Sjm34FSgQjy/KbYNAeD4FhyGNs+vSszskn6IVw8EsiBD+
+         YSpPIpStoZK2QiMM9FJ/qLLRyjzM1noqesSS3yLbm379G9sXx2HUC5+OuFNLZTCGqdeZ
+         +tah/3wCH2xYYFfVEVS0jIG3AvQKtI+ECFC7JPa0YAGr6gms231zW2ZwfUv4ZOgtJpDO
+         Cqvn7XhmDD6Zx23kdcY2hOSbVLnUPA1WXS0oNoSMIjUdYN0BZZQaabuRDad9Y9/hMcK0
+         4jQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=YJru3Yf9kUEHtScNf7bPezrHXeNo+5yqG0dd6MucAIM=;
-        b=PDY8wS6vfYtrcojNFdh9h9uRFIV1eLeSLbOZxi9XJ2nqXTMDwUHIwGlAbk/3UruYbn
-         Q3TGKiwWtIy6KmhKxbCSnJJgS3r8iA1k+J9KU8k9L/d/uPgT8pjh7PPoZNLwovwuOADX
-         a/Dx/khPvqMD1Wf8aqQSMQwEUfrzPnS9+hqqKyNHAUGMiNM3heMAF8PQ67ojDJZ6Fvbg
-         DoFrj6IpoOinp4GtYY8AzsxKVFoqreclCcr3fvBFyH2IHS/e7B+DCp29pM6cYZF2fBQl
-         uzU95lIRyp3/2ca1Tz9rNd9OyEJbRy8rbPTm/GQbuDsbSqBwTWtY3d8uJ+6qn3VkCuDh
-         3bCQ==
-X-Gm-Message-State: AOAM530UaN/CSrgV7FduD4fAE0M1e4o0gFiKPTkYsJdBh90SXrFFMBfJ
-        98wUXWM0aBuX2cMOtBsKKj8=
-X-Google-Smtp-Source: ABdhPJyFsQlj8vbeDAz3ASb3mPXPpgHdSK0AAp1BxkI4M+J1BqiaypCACxgG7WA9tqBFM1sOkflgEg==
-X-Received: by 2002:adf:e6cf:: with SMTP id y15mr9453310wrm.346.1601125216046;
-        Sat, 26 Sep 2020 06:00:16 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id b11sm6462896wrt.38.2020.09.26.06.00.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        bh=70iPHflSEGgCFhe7eol4g0//LPxM9Uw4CZ8Bcxeu3u8=;
+        b=P9m8kqH8jzR2pYQD7RxgXTMb++gHWWFAefM8yFQH9JGzYEbT3Bo4vFHndMfBdtYywo
+         XK1M9gKOE9v5xJXYHrQ2vfk1VOU0yVbCB6NYInSSB/3lK0mXGnj2PeuWVBfl4mEalqf5
+         Xs5k+jNG7cUQeOCkvVY3PwBDK6UciC716bFMGawTBCLz2ePtO4EFfzO6STVCbVkZcj25
+         0uyYhLmjMwFD/p2YaKQl+nL7kyW7l8nHh8wSlO4/rJAefOsxWHCTkN6eiNI5RJLHq3Pi
+         o8CQipwgKw+sG3LwJvp19IdJL0XYFg2aVqSxXwmO8Obf+fJBt+JnN0xo3pv3WNz+IaFS
+         F/xw==
+X-Gm-Message-State: AOAM533HIgD+WKLXbJTqj3bA22Qg7Z+/ykcc5t3AgwDnsWxYxsRpjXJQ
+        uEHi1gEtqe8J8cEKKrzwEok=
+X-Google-Smtp-Source: ABdhPJzuLf5KNnk1jEMc1alD8vO2sG/Pon0y40jQ0yj4ie8CDb8avchUdJHdJd04Wubyb10gAyaHGQ==
+X-Received: by 2002:adf:f24f:: with SMTP id b15mr10117061wrp.301.1601125215004;
         Sat, 26 Sep 2020 06:00:15 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
+        by smtp.gmail.com with ESMTPSA id b11sm6462896wrt.38.2020.09.26.06.00.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2020 06:00:14 -0700 (PDT)
 From:   kholk11@gmail.com
 To:     will@kernel.org
 Cc:     robin.murphy@arm.com, joro@8bytes.org, bjorn.andersson@linaro.org,
@@ -66,9 +66,9 @@ Cc:     robin.murphy@arm.com, joro@8bytes.org, bjorn.andersson@linaro.org,
         kholk11@gmail.com, marijns95@gmail.com, konradybcio@gmail.com,
         martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
         phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 7/8] iommu/arm-smmu: Support stream_mapping_reset implementation detail
-Date:   Sat, 26 Sep 2020 15:00:03 +0200
-Message-Id: <20200926130004.13528-8-kholk11@gmail.com>
+Subject: [PATCH 6/8] iommu/arm-smmu: Move stream mapping reset to separate function
+Date:   Sat, 26 Sep 2020 15:00:02 +0200
+Message-Id: <20200926130004.13528-7-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200926130004.13528-1-kholk11@gmail.com>
 References: <20200926130004.13528-1-kholk11@gmail.com>
@@ -80,45 +80,56 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-Some IOMMUs may be in need of overriding the stream mapping reset
-function and this is seen on at least some Qualcomm SoCs:
-add a stream_mapping_reset function to the implementation details
-and call it in the appropriate function.
+Move the stream mapping reset logic from arm_smmu_device_reset into
+a separate arm_smmu_stream_mapping_reset function, in preparation
+for implementing an implementation detail.
+
+This commit brings no functional changes.
 
 Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu.c | 5 +++++
- drivers/iommu/arm/arm-smmu/arm-smmu.h | 1 +
- 2 files changed, 6 insertions(+)
+ drivers/iommu/arm/arm-smmu/arm-smmu.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-index 8c070c493315..44571873f148 100644
+index 446a78dde9cd..8c070c493315 100644
 --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
 +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-@@ -1656,6 +1656,11 @@ static void arm_smmu_stream_mapping_reset(struct arm_smmu_device *smmu)
+@@ -1652,14 +1652,9 @@ static struct iommu_ops arm_smmu_ops = {
+ 	.pgsize_bitmap		= -1UL, /* Restricted during device attach */
+ };
+ 
+-static void arm_smmu_device_reset(struct arm_smmu_device *smmu)
++static void arm_smmu_stream_mapping_reset(struct arm_smmu_device *smmu)
  {
  	int i;
+-	u32 reg;
+-
+-	/* clear global FSR */
+-	reg = arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_sGFSR);
+-	arm_smmu_gr0_write(smmu, ARM_SMMU_GR0_sGFSR, reg);
  
-+	if (smmu->impl && smmu->impl->stream_mapping_reset) {
-+		smmu->impl->stream_mapping_reset(smmu);
-+		return;
-+	}
-+
  	/*
  	 * Reset stream mapping groups: Initial values mark all SMRn as
- 	 * invalid and all S2CRn as bypass unless overridden.
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.h b/drivers/iommu/arm/arm-smmu/arm-smmu.h
-index 2cd3d126f675..9c045594b8cf 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu.h
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu.h
-@@ -387,6 +387,7 @@ struct arm_smmu_impl {
- 	int (*cfg_probe)(struct arm_smmu_device *smmu);
- 	int (*reset)(struct arm_smmu_device *smmu);
- 	int (*init_context)(struct arm_smmu_domain *smmu_domain);
-+	void (*stream_mapping_reset)(struct arm_smmu_device *smmu);
- 	void (*test_smr_masks)(struct arm_smmu_device *smmu);
- 	void (*tlb_sync)(struct arm_smmu_device *smmu, int page, int sync,
- 			 int status);
+@@ -1673,6 +1668,18 @@ static void arm_smmu_device_reset(struct arm_smmu_device *smmu)
+ 		arm_smmu_write_context_bank(smmu, i);
+ 		arm_smmu_cb_write(smmu, i, ARM_SMMU_CB_FSR, ARM_SMMU_FSR_FAULT);
+ 	}
++}
++
++static void arm_smmu_device_reset(struct arm_smmu_device *smmu)
++{
++	u32 reg;
++
++	/* clear global FSR */
++	reg = arm_smmu_gr0_read(smmu, ARM_SMMU_GR0_sGFSR);
++	arm_smmu_gr0_write(smmu, ARM_SMMU_GR0_sGFSR, reg);
++
++	/* Reset stream mapping */
++	arm_smmu_stream_mapping_reset(smmu);
+ 
+ 	/* Invalidate the TLB, just in case */
+ 	arm_smmu_gr0_write(smmu, ARM_SMMU_GR0_TLBIALLH, QCOM_DUMMY_VAL);
 -- 
 2.28.0
 
