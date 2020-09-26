@@ -5,60 +5,60 @@ X-Spam-Level:
 X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A5BDC47425
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:56:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 960D5C4727E
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:56:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1646523119
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:56:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 621F820BED
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 12:56:40 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iMYbrgxL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZHIJyohz"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729541AbgIZM4U (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S1729487AbgIZM4U (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Sat, 26 Sep 2020 08:56:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35778 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729332AbgIZM4L (ORCPT
+        with ESMTP id S1726316AbgIZM4N (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Sep 2020 08:56:11 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA779C0613CE;
-        Sat, 26 Sep 2020 05:56:10 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id c18so6830250wrm.9;
-        Sat, 26 Sep 2020 05:56:10 -0700 (PDT)
+        Sat, 26 Sep 2020 08:56:13 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB3CCC0613D4;
+        Sat, 26 Sep 2020 05:56:12 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id s13so1927048wmh.4;
+        Sat, 26 Sep 2020 05:56:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=8uSfqxa/BOSJ683q8K6M24iSA6dxQW4lKoYvb7lVTZM=;
-        b=iMYbrgxLI2MrOK2pyZREh6RdWcqtL3eZaiExNtVRmMz/2bAN+WUS7IRpwNitcOqoru
-         blfa0ZEM8ILvSsZ56JhoIBi4u0TUIGkJBt3jVfxsCpOlwqq1V3lvAvYN2o99/WlaLfKP
-         Mnqme+d1ue62pfo7Jhj8mLiRRWY7r6/R67t/ahl09+vWPb1Qixx9O8QyNTEFbIr6P34v
-         VzezQrsq+T0k0aDVCGgfstYbLSWosy4+oOk5KyGuXPU5J0tF4RWLZpn+c6MSCs8Gkeog
-         nOFOML4ztzNGkszkmSvVyJFdkc3I7uQ8r6IgIwi6YU3032eg2wHcE6K4/tjy0Wj2QgEt
-         rw5Q==
+        bh=pYObQ/2gJ7K9tSHSm5lbOuv027cbv+9FVqTnbwYvt7k=;
+        b=ZHIJyohzJ3LZJsfoOea+vGxLqZVKtS++Eg8tjeK1wsbBQ+2shvm5cdlRO1fG7545PQ
+         Cp+2fcVDyvilT5yj7hlwBxU91ATy+9YxnT7nqAcgdb68HkrNpWXtNZIwlPnNx3X9uwBC
+         cNPXz5HL7nRBehefBNobijiKTneoOxWc1NB7gKvM+s3sMzQtnMoN/uSFhsBhKoXcO5Xn
+         tSqPgq6iodUZiP0isbKUM73hWbQ41iA95QZf9i0k3EKIDwgDsfh0pCtYLHgwnpHfsAd+
+         dJwyNreS30Y90CMmsiij71p5z575tyOnqIzPkmPJIkopwFMguVdN6+bOTFQEmNeP5HHF
+         yHdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=8uSfqxa/BOSJ683q8K6M24iSA6dxQW4lKoYvb7lVTZM=;
-        b=djd5wXCgKZICf65ywzO+WOK+N7MqOUwqs0O0475I+vy/tzaZjCHFBTMD767o5aRUeB
-         W27/v/029TxZJWExcl84tWyDmjqqhnzVMe+at1vZa1KAnu6xDH1SD9PKZVU+Vp+l0zVx
-         ed1SB0xtGMhJU/I3C6cCMbmSNpP1ixjGIuTAXpAaFCBpcrPT9PGGVL+reYerIPht0Ojr
-         YkKH9ZnfiXIbQTUV2F0FmvDsDf1IT5GP7gQy5G8fIL1EZIC3h5Cl7r3H8fiSIItXgT+Y
-         bUVN181sAxa8NxMteriQXuQkh1G0JGEDVINY/ntkGV6372Xvw/mpQj3fF+lOoeEu6Gdq
-         deog==
-X-Gm-Message-State: AOAM533W3IFvqRmiZFuIBTQkRMn8nxEtfebwgbNwOXl8nnaNBT4rUdab
-        +xcRq/7TvxvJ0DVqbhFDECg=
-X-Google-Smtp-Source: ABdhPJwDp9eXBRmt6PfaE4aWU65vPotGj3HWlCgJB/arSQr1OvCnFpSgV04HOnI3aXwa2GfnZetP9A==
-X-Received: by 2002:a5d:6a47:: with SMTP id t7mr9214090wrw.75.1601124969266;
-        Sat, 26 Sep 2020 05:56:09 -0700 (PDT)
+        bh=pYObQ/2gJ7K9tSHSm5lbOuv027cbv+9FVqTnbwYvt7k=;
+        b=edye2GeibEunCaCEc25df9YEWUE8LLdfj+BAaO7SRvfcpLEKRZcvT8L7ajKGSZ5pFb
+         i9VnDsJZHxH0taBah06GuaoeZyB+DYju19R87R2gWCF3bKTGsZUYmk1FZ0AlYjDY+b8/
+         Ktb8ufrpedv7mRMDxzZ+FWZkbElcdAYkJ/bNlLER+1o4TH+HMcWpkMYFePqNRi/Qbz2U
+         KnmumZJF568+A0bpFb/wHWW5FcvAsLAcsP05fFm9kJOXqDUeyVQpdHbmtiCe4mtnUpvK
+         Z6wC2WjQ9P8hqTDVmlRsOiwUs1rHW9RJ85w7NSDy4lSC0BiBe0eX5woPumNI9XZlfHkk
+         JgHA==
+X-Gm-Message-State: AOAM532jqU0dyFTrZ4Woc3zZ72vJ8e/x3vBJTzzLWCm1hpF2WDjXw9Bn
+        +LKCEjkmH0bZly/fdK6Zfik=
+X-Google-Smtp-Source: ABdhPJyxbftpA9/QaqlgFktKlDArp5kHmsmaQ77mGWNtrS/OFHyupeRppD7j+5w1Yerzsxxqiz70yA==
+X-Received: by 2002:a1c:a444:: with SMTP id n65mr2527954wme.122.1601124971365;
+        Sat, 26 Sep 2020 05:56:11 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id h1sm6503024wrx.33.2020.09.26.05.56.08
+        by smtp.gmail.com with ESMTPSA id h1sm6503024wrx.33.2020.09.26.05.56.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2020 05:56:08 -0700 (PDT)
+        Sat, 26 Sep 2020 05:56:10 -0700 (PDT)
 From:   kholk11@gmail.com
 To:     broonie@kernel.org
 Cc:     lgirdwood@gmail.com, agross@kernel.org, bjorn.andersson@linaro.org,
@@ -66,9 +66,9 @@ Cc:     lgirdwood@gmail.com, agross@kernel.org, bjorn.andersson@linaro.org,
         konradybcio@gmail.com, martin.botka1@gmail.com,
         linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 2/7] regulator: qcom_spmi: Add support for new regulator types
-Date:   Sat, 26 Sep 2020 14:55:44 +0200
-Message-Id: <20200926125549.13191-3-kholk11@gmail.com>
+Subject: [PATCH 4/7] regulator: dt-bindings: Document the PM660/660L SPMI PMIC entries
+Date:   Sat, 26 Sep 2020 14:55:46 +0200
+Message-Id: <20200926125549.13191-5-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200926125549.13191-1-kholk11@gmail.com>
 References: <20200926125549.13191-1-kholk11@gmail.com>
@@ -80,106 +80,65 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-This commit adds the support for some regulator types that are
-missing in this driver, such as the ht nmos-ldo, ht-lv nmos-ldo
-and new gen n/pmos-ldo, all belonging to the FTSMPS426 register
-layout.
-This is done in preparation for adding support for the PM660 and
-PM660L PMICs.
+The PM660 and PM660L combo is found on boards featuring the
+SDM630, SDM636, SDM660 (and SDA variants) and it is used to
+give power to practically everything, from core to peripherals.
+Document the SPMI regulator bindings for both.
 
 Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
 ---
- drivers/regulator/qcom_spmi-regulator.c | 56 +++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ .../regulator/qcom,spmi-regulator.txt         | 31 +++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/drivers/regulator/qcom_spmi-regulator.c b/drivers/regulator/qcom_spmi-regulator.c
-index 05080483fe1b..0a507c7f4ae1 100644
---- a/drivers/regulator/qcom_spmi-regulator.c
-+++ b/drivers/regulator/qcom_spmi-regulator.c
-@@ -135,6 +135,18 @@ enum spmi_regulator_subtype {
- 	SPMI_REGULATOR_SUBTYPE_LV_P600		= 0x2b,
- 	SPMI_REGULATOR_SUBTYPE_LV_P1200		= 0x2c,
- 	SPMI_REGULATOR_SUBTYPE_LV_P450		= 0x2d,
-+	SPMI_REGULATOR_SUBTYPE_HT_N300_ST	= 0x30,
-+	SPMI_REGULATOR_SUBTYPE_HT_N600_ST	= 0x31,
-+	SPMI_REGULATOR_SUBTYPE_HT_N1200_ST	= 0x32,
-+	SPMI_REGULATOR_SUBTYPE_HT_LVP150	= 0x3b,
-+	SPMI_REGULATOR_SUBTYPE_HT_LVP300	= 0x3c,
-+	SPMI_REGULATOR_SUBTYPE_L660_N300_ST	= 0x42,
-+	SPMI_REGULATOR_SUBTYPE_L660_N600_ST	= 0x43,
-+	SPMI_REGULATOR_SUBTYPE_L660_P50		= 0x46,
-+	SPMI_REGULATOR_SUBTYPE_L660_P150	= 0x47,
-+	SPMI_REGULATOR_SUBTYPE_L660_P600	= 0x49,
-+	SPMI_REGULATOR_SUBTYPE_L660_LVP150	= 0x4d,
-+	SPMI_REGULATOR_SUBTYPE_L660_LVP600	= 0x4f,
- 	SPMI_REGULATOR_SUBTYPE_LV100		= 0x01,
- 	SPMI_REGULATOR_SUBTYPE_LV300		= 0x02,
- 	SPMI_REGULATOR_SUBTYPE_MV300		= 0x08,
-@@ -511,6 +523,22 @@ static struct spmi_voltage_range ult_pldo_ranges[] = {
- 	SPMI_VOLTAGE_RANGE(0, 1750000, 1750000, 3337500, 3337500, 12500),
- };
+diff --git a/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.txt b/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.txt
+index 8b005192f6e8..2b544059e029 100644
+--- a/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.txt
++++ b/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.txt
+@@ -12,6 +12,8 @@ Qualcomm SPMI Regulators
+ 			"qcom,pm8950-regulators"
+ 			"qcom,pm8994-regulators"
+ 			"qcom,pmi8994-regulators"
++			"qcom,pm660-regulators"
++			"qcom,pm660l-regulators"
+ 			"qcom,pms405-regulators"
  
-+static struct spmi_voltage_range pldo660_ranges[] = {
-+	SPMI_VOLTAGE_RANGE(0, 1504000, 1504000, 3544000, 3544000, 8000),
-+};
-+
-+static struct spmi_voltage_range nldo660_ranges[] = {
-+	SPMI_VOLTAGE_RANGE(0,  320000,  320000, 1304000, 1304000, 8000),
-+};
-+
-+static struct spmi_voltage_range ht_lvpldo_ranges[] = {
-+	SPMI_VOLTAGE_RANGE(0, 1504000, 1504000, 2000000, 2000000, 8000),
-+};
-+
-+static struct spmi_voltage_range ht_nldo_ranges[] = {
-+	SPMI_VOLTAGE_RANGE(0,  312000,  312000, 1304000, 1304000, 8000),
-+};
-+
- static struct spmi_voltage_range hfs430_ranges[] = {
- 	SPMI_VOLTAGE_RANGE(0, 320000, 320000, 2040000, 2040000, 8000),
- };
-@@ -530,6 +558,10 @@ static DEFINE_SPMI_SET_POINTS(ult_lo_smps);
- static DEFINE_SPMI_SET_POINTS(ult_ho_smps);
- static DEFINE_SPMI_SET_POINTS(ult_nldo);
- static DEFINE_SPMI_SET_POINTS(ult_pldo);
-+static DEFINE_SPMI_SET_POINTS(pldo660);
-+static DEFINE_SPMI_SET_POINTS(nldo660);
-+static DEFINE_SPMI_SET_POINTS(ht_lvpldo);
-+static DEFINE_SPMI_SET_POINTS(ht_nldo);
- static DEFINE_SPMI_SET_POINTS(hfs430);
+ - interrupts:
+@@ -134,6 +136,35 @@ Qualcomm SPMI Regulators
+ 	Definition: Reference to regulator supplying the input pin, as
+ 		    described in the data sheet.
  
- static inline int spmi_vreg_read(struct spmi_regulator *vreg, u16 addr, u8 *buf,
-@@ -1443,6 +1475,30 @@ static const struct spmi_regulator_mapping supported_regulators[] = {
- 	SPMI_VREG(LDO,   LV_P300,  0, INF, LDO,    ldo,    pldo,    10000),
- 	SPMI_VREG(LDO,   LV_P600,  0, INF, LDO,    ldo,    pldo,    10000),
- 	SPMI_VREG(LDO,   LV_P1200, 0, INF, LDO,    ldo,    pldo,    10000),
-+	SPMI_VREG(LDO, HT_N300_ST,   0, INF, FTSMPS426, ftsmps426,
-+							ht_nldo,   30000),
-+	SPMI_VREG(LDO, HT_N600_ST,   0, INF, FTSMPS426, ftsmps426,
-+							ht_nldo,   30000),
-+	SPMI_VREG(LDO, HT_N1200_ST,  0, INF, FTSMPS426, ftsmps426,
-+							ht_nldo,   30000),
-+	SPMI_VREG(LDO, HT_LVP150,    0, INF, FTSMPS426, ftsmps426,
-+							ht_lvpldo, 10000),
-+	SPMI_VREG(LDO, HT_LVP300,    0, INF, FTSMPS426, ftsmps426,
-+							ht_lvpldo, 10000),
-+	SPMI_VREG(LDO, L660_N300_ST, 0, INF, FTSMPS426, ftsmps426,
-+							nldo660,   10000),
-+	SPMI_VREG(LDO, L660_N600_ST, 0, INF, FTSMPS426, ftsmps426,
-+							nldo660,   10000),
-+	SPMI_VREG(LDO, L660_P50,     0, INF, FTSMPS426, ftsmps426,
-+							pldo660,   10000),
-+	SPMI_VREG(LDO, L660_P150,    0, INF, FTSMPS426, ftsmps426,
-+							pldo660,   10000),
-+	SPMI_VREG(LDO, L660_P600,    0, INF, FTSMPS426, ftsmps426,
-+							pldo660,   10000),
-+	SPMI_VREG(LDO, L660_LVP150,  0, INF, FTSMPS426, ftsmps426,
-+							ht_lvpldo, 10000),
-+	SPMI_VREG(LDO, L660_LVP600,  0, INF, FTSMPS426, ftsmps426,
-+							ht_lvpldo, 10000),
- 	SPMI_VREG_VS(LV100,        0, INF),
- 	SPMI_VREG_VS(LV300,        0, INF),
- 	SPMI_VREG_VS(MV300,        0, INF),
++- vdd_l1_l6_l7-supply:
++- vdd_l2_l3-supply:
++- vdd_l5-supply:
++- vdd_l8_l9_l10_l11_l12_l13_l14-supply:
++- vdd_l15_l16_l17_l18_l19-supply:
++- vdd_s1-supply:
++- vdd_s2-supply:
++- vdd_s3-supply:
++- vdd_s5-supply:
++- vdd_s6-supply:
++	Usage: optional (pm660 only)
++	Value type: <phandle>
++	Definition: Reference to regulator supplying the input pin, as
++		    described in the data sheet.
++
++- vdd_l1_l9_l10-supply:
++- vdd_l2-supply:
++- vdd_l3_l5_l7_l8-supply:
++- vdd_l4_l6-supply:
++- vdd_s1-supply:
++- vdd_s2-supply:
++- vdd_s3-supply:
++- vdd_s4-supply:
++- vdd_s5-supply:
++	Usage: optional (pm660l only)
++	Value type: <phandle>
++	Definition: Reference to regulator supplying the input pin, as
++		    described in the data sheet.
++
+ - vdd_l1_l2-supply:
+ - vdd_l3_l8-supply:
+ - vdd_l4-supply:
 -- 
 2.28.0
 
