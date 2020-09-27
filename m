@@ -1,77 +1,73 @@
-Return-Path: <SRS0=mJHj=DD=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <SRS0=XNyC=DE=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 36164C2D0A8
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 17:18:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C10A8C4346E
+	for <phone-devel@archiver.kernel.org>; Sun, 27 Sep 2020 12:35:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0170E2177B
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Sep 2020 17:18:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 799FD23718
+	for <phone-devel@archiver.kernel.org>; Sun, 27 Sep 2020 12:35:54 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dVhPJD/W"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SBd66uAM"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729987AbgIZRSo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 26 Sep 2020 13:18:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48196 "EHLO
+        id S1726393AbgI0Mfy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 27 Sep 2020 08:35:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726309AbgIZRSo (ORCPT
+        with ESMTP id S1726149AbgI0Mfy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Sep 2020 13:18:44 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C68A6C0613CE;
-        Sat, 26 Sep 2020 10:18:43 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id g4so7297670wrs.5;
-        Sat, 26 Sep 2020 10:18:43 -0700 (PDT)
+        Sun, 27 Sep 2020 08:35:54 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A960AC0613CE;
+        Sun, 27 Sep 2020 05:35:53 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id w2so3635645wmi.1;
+        Sun, 27 Sep 2020 05:35:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=c8nPtqvHXCkUTvUezerS3EWetfGCD8LGrLlldVmFG+I=;
-        b=dVhPJD/W+PLgXlmj9+7F9WqTsSSMJb48hu4R+kdlQujgkQ6XzU432IFkDwFdVVxuxJ
-         gDV8OM6mwf8Mf4qnJTbX4HMwNATlkfCDCanHsuKsor20zHsG9hZ4PuSWHr2v09IKnO2i
-         vbZ+ERCrqxrcghCLeECSx/ul9OoXmTmbQaiZaDIL2b+SjTr4AsdZpQvlxcZSov/sS3nj
-         g+mvWf+W49DRmFqSerZEYmTIL+zH0PjQk1Lj7i1sB/DboD9xwhABBVeN0X6rnbA/asIb
-         /IJ3Q7nZBhYlfH3dNiMW6qd2wLg0bXfn8Likzz/ilQiiriehEN4DyybKA3MFFU11tT9u
-         C28g==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SES3DZ4a0IImJFsUJIvWgnAMy9Zb1WlVH702l/NNI7U=;
+        b=SBd66uAMWJzhyUq/17TPpwJ6JRaH9vkRwbCsPbPLaCxe1JRaJGU7L2hem51LqBclmS
+         YQfV+rCj57WDXd+rA8VhzzyA1AewQc6NsIW1s7Al1DQlKxdjHYWhfZqxxuolM0BsOAZj
+         KMjqaQ2D0ksMGH0c5uSP4GqN6KssFZCKMoUd57tDuKip/fqQBirW2GcQsA7u/LnuTQW+
+         pRQPOcy8/h36aroFICA+h66B+YH6fNqZndN7hOiw0tIXyU/7Owze00sazhtEPvdSj2IT
+         pbkgAUebuNEDFruk3HHtUHzBTdXHecpG6JdU4BcwPdDa9pK+XQ4gg/Ch3N3kLT1U2pZc
+         ++fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=c8nPtqvHXCkUTvUezerS3EWetfGCD8LGrLlldVmFG+I=;
-        b=QU1EH3BmX86/9jDUsRQOpsa7WuOFON0KNsIv0JN0GiheDlpfcCEnyrfjUIhOTv66p/
-         WE9sqIbruwusngmKEbAfiqOiESNxar3H/sGZtRY4M1BkTr8I65gGk/7lgMribCtCmtgf
-         PwtZGpEdhYol9yMCGFenGXGhlJQHHxgRZYI7/1AYtm51Xw82DHi52FVT5oM6djHOhE2t
-         uTEjbJEB4hQgA1dxcJ5NG1A3/gU96W23vpv1q0XOJLzWEQcdCeVe1Z7OpHuYVswak/tZ
-         g9sUhFAZD+TYplTIZ1G5nFwhbu3Cg7zyncJYOH0P3Six8RTvI2ltaqq0C+eQQ2sL+/s2
-         Z/zw==
-X-Gm-Message-State: AOAM531buLG0DaBg+pKg8hh1Yu+Via3fi3mmn5XJYR5SOC4IQlzb2eI1
-        XQB9UdQT69+ABQUCGeSgtYA=
-X-Google-Smtp-Source: ABdhPJwQP2F6G4uixs1tEIh0Q5eW4AEu9eRwSzqVBJLGnMX+M/dFuiQjw/chmrOvkkurE4Two1VoSw==
-X-Received: by 2002:adf:83c3:: with SMTP id 61mr9987667wre.287.1601140722463;
-        Sat, 26 Sep 2020 10:18:42 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SES3DZ4a0IImJFsUJIvWgnAMy9Zb1WlVH702l/NNI7U=;
+        b=Qjmak8vR04xJd1UqJONIcXceihbTzixbcRn19YFwkCogyLxwnnMKwK1yc6S/9n3JHZ
+         QZ3dIBY9ZXIfYSgilRmqzMeeoJXTN+DtW+J60gQWX7jY0xRBh5C/gbw0w5L7tbft0KpD
+         k0JnqGB8tO1Zhg9p8MUVIXuryyrWm7ZjNn3jtaB3mDUur1W1sZ71oLs65LbZil0jaOXf
+         NYBgumvt+00/FYrDu3V7+8vxJWYW8x5NtpTJOSQakt3mewKSywEu4uDimq55NbuN62mL
+         Yw5+WkOhkcvARqn3sKMqJxDLUH64icGwh9ddi266V+J6FG2aL0txPXIh7s3RjgoZayz4
+         oCVQ==
+X-Gm-Message-State: AOAM530LRBDZsA/yu8o/m65K8+r8KsF64VP0JUTFOzRsuiPrnjioZUaq
+        2QxnF+3/ERDtEGzjubMpti4=
+X-Google-Smtp-Source: ABdhPJyf3xFJ4IgWwgAsinRT1W5gv8ZMpnNcHu6EDP4QCLudZTHmf+FNYshzNeuWsd9pC1jC8Cdh1A==
+X-Received: by 2002:a7b:c307:: with SMTP id k7mr7109490wmj.31.1601210152228;
+        Sun, 27 Sep 2020 05:35:52 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id l4sm7427125wrc.14.2020.09.26.10.18.41
+        by smtp.gmail.com with ESMTPSA id y6sm9470090wrn.41.2020.09.27.05.35.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2020 10:18:42 -0700 (PDT)
+        Sun, 27 Sep 2020 05:35:51 -0700 (PDT)
 From:   kholk11@gmail.com
-To:     agross@kernel.org
-Cc:     bjorn.andersson@linaro.org, jic23@kernel.org, robh+dt@kernel.org,
+To:     dmitry.torokhov@gmail.com
+Cc:     robh+dt@kernel.org, rydberg@bitmath.org, priv.luk@gmail.com,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
         kholk11@gmail.com, marijns95@gmail.com, konradybcio@gmail.com,
-        martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: [PATCH 2/2] dt-bindings: qcom-spmi-vadc: Document qcom,spmi-vadc-8998 compatible
-Date:   Sat, 26 Sep 2020 19:18:35 +0200
-Message-Id: <20200926171835.27154-2-kholk11@gmail.com>
+        martin.botka1@gmail.com, phone-devel@vger.kernel.org
+Subject: [PATCH v2 0/3] Add Novatek NT36xxx touchscreen driver
+Date:   Sun, 27 Sep 2020 14:35:39 +0200
+Message-Id: <20200927123542.553852-1-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200926171835.27154-1-kholk11@gmail.com>
-References: <20200926171835.27154-1-kholk11@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -80,27 +76,33 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-This compatible is used in the qcom-spmi-vadc driver to select a
-variation in the ratiometric range, valid for MSM8998-style VADCs,
-like MSM8998 itself, SDM630, SDM636, SDM660, SDM845 and others.
+This patch series adds support for the Novatek NT36xxx Series' In-Cell
+touchscreen (integrated into the DriverIC).
 
-Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
----
- Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml | 1 +
- 1 file changed, 1 insertion(+)
+This patch series has been tested against the following devices:
+ - Sony Xperia 10        (SDM630 Ganges Kirin)
+ - Sony Xperia 10 Plus   (SDM636 Ganges Mermaid)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-index 0ca992465a21..e9f0ebba5e2a 100644
---- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-@@ -26,6 +26,7 @@ properties:
-       - items:
-           - enum:
-               - qcom,spmi-vadc
-+              - qcom,spmi-vadc-8998
-               - qcom,spmi-adc5
-               - qcom,spmi-adc-rev2
-               - qcom,spmi-adc7
+Changes in v2:
+- Fixed sparse warnings from lkp kernel test robot
+
+AngeloGioacchino Del Regno (3):
+  dt-bindings: Add vendor prefix for Novatek Microelectronics Corp.
+  Input: Add Novatek NT36xxx touchscreen driver
+  dt-bindings: touchscreen: Add binding for Novatek NT36xxx series
+    driver
+
+ .../input/touchscreen/novatek,nt36xxx.yaml    |  56 ++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ drivers/input/touchscreen/Kconfig             |  12 +
+ drivers/input/touchscreen/Makefile            |   1 +
+ drivers/input/touchscreen/nt36xxx.c           | 742 ++++++++++++++++++
+ drivers/input/touchscreen/nt36xxx.h           | 122 +++
+ 6 files changed, 935 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
+ create mode 100644 drivers/input/touchscreen/nt36xxx.c
+ create mode 100644 drivers/input/touchscreen/nt36xxx.h
+
 -- 
 2.28.0
 
