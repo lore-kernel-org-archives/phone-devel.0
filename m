@@ -2,103 +2,117 @@ Return-Path: <SRS0=XNyC=DE=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D9BBC47425
-	for <phone-devel@archiver.kernel.org>; Sun, 27 Sep 2020 12:36:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72F56C4346E
+	for <phone-devel@archiver.kernel.org>; Sun, 27 Sep 2020 18:50:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E7C5323977
-	for <phone-devel@archiver.kernel.org>; Sun, 27 Sep 2020 12:36:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 26A8121582
+	for <phone-devel@archiver.kernel.org>; Sun, 27 Sep 2020 18:50:53 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b+8A5E3E"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FfJglfhi"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726613AbgI0Mf4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 27 Sep 2020 08:35:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55222 "EHLO
+        id S1726255AbgI0Suw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 27 Sep 2020 14:50:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726149AbgI0Mfz (ORCPT
+        with ESMTP id S1726239AbgI0Suw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 27 Sep 2020 08:35:55 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99AAFC0613CE;
-        Sun, 27 Sep 2020 05:35:54 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id w5so8683366wrp.8;
-        Sun, 27 Sep 2020 05:35:54 -0700 (PDT)
+        Sun, 27 Sep 2020 14:50:52 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E1DFC0613CE;
+        Sun, 27 Sep 2020 11:50:52 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id x14so9419257wrl.12;
+        Sun, 27 Sep 2020 11:50:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=cGK0y4DdjN+ht1VXSEDsJItbDCIWKoPEWxNpiJk8/U4=;
-        b=b+8A5E3E0c29+ifkXvz/ENqbKfpvVI6/D+a29XgN3s9Fct2d80iPkZnKO3/SfUnSy5
-         z3qHH3ZEEx8tLppXWVcMVGJr/zpyW9O24N9ddGU36JEfdxxfnnotkWjTymeCI9rPkDIi
-         C8ZWZ4thODtLkYO2yFDuFIzwChC5J3U01XvlyNy2PjORneecI1OhyXyJmb63QuAO03ek
-         xkeGvDNW8LH3gwhbt4OL1rIRLOZQZCERNrlAaikcPpi5cWDqVSNJ5B4uKr/1VNVTdfRV
-         uUXrUqLaNTVoMPSXv7RTBsKC6tOgm9llra9PNVZRAyAMCXiUe8KEV7fo+A3xa2JSFuBr
-         CtOw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=g+t9R4EAtEIISULglZW0aLkA0SSVKLPzn9R1Q498LHQ=;
+        b=FfJglfhij6sPHhMkXQYWrIyFodAjuGnK198UmhbKgvEU4nYuMphPdhTGhpPhIzXvTD
+         heTAoND4AxD42O+xHl8M0e0c4gDmdtaJrlMHBh8ksBkiC+oFANGc7Jugcko0augs8lUf
+         Qc0+TyQgEqN5kDUYtCWc4ufK3sQmmDpad/6XyUPDshBWiQlbpNCMvMk38Ni+3B9Vll6U
+         CZEV4rsfW8Yx+ZJQZGfyhl/HmW/ifpDmtXAVlvF1n6WSxaPXm296SxyStdvjiHW5B/fo
+         FAGqQdHNR2aunhQMS+KQJLd/mb4zgOZw9IVxqf9Db2t9C1VdCAvMpU6shpPoGiYZHqXo
+         +U1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=cGK0y4DdjN+ht1VXSEDsJItbDCIWKoPEWxNpiJk8/U4=;
-        b=CTJ4Q9YsSsqhVruEqQHMqC4HY12whWlpV8uE4MxZkFlFczQ2UbLGhtuT9qi+hKdMED
-         jzMK4rjOUAyNWmFjNSXM/rIWo/0lJnSgQRfnqEjuPAMLm0qXjiUswV39hPxOACV3QMO9
-         WSFTjkt6sYWuW3gQo2XOWtVkVhJRqUVkIsuSia51Emi+CLp//JVRlwrwOHpbuWtn7gUc
-         cGWCuVVQORbjoCTXnNrsmyLOUSwlt9ZcyupGrdPrx9k+w7z74KuSMMbath7Jjn1qvx+Y
-         /diYWNspCSKbhNuutDqdn6R/L0vd+BwoSqmn1OYc0kugHS4bjYPX8NnMERqcejNIgk1O
-         e3fw==
-X-Gm-Message-State: AOAM531+aYonRw5AJ57FYzr4W1ABkDyy0fg0beRsPNkwp0nAoHwFVGX0
-        ofY5jPEr8P6aXLbMApc/TcU=
-X-Google-Smtp-Source: ABdhPJw9BrxAV84oScdxoCChMHSDZc3QO9KFTgLfGor3M/MDhrV444ieBsb3D5R41Oqg2qV08RMv2w==
-X-Received: by 2002:adf:eb04:: with SMTP id s4mr14857095wrn.81.1601210153176;
-        Sun, 27 Sep 2020 05:35:53 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id y6sm9470090wrn.41.2020.09.27.05.35.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2020 05:35:52 -0700 (PDT)
-From:   kholk11@gmail.com
-To:     dmitry.torokhov@gmail.com
-Cc:     robh+dt@kernel.org, rydberg@bitmath.org, priv.luk@gmail.com,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kholk11@gmail.com, marijns95@gmail.com, konradybcio@gmail.com,
-        martin.botka1@gmail.com, phone-devel@vger.kernel.org
-Subject: [PATCH v2 1/3] dt-bindings: Add vendor prefix for Novatek Microelectronics Corp.
-Date:   Sun, 27 Sep 2020 14:35:40 +0200
-Message-Id: <20200927123542.553852-2-kholk11@gmail.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200927123542.553852-1-kholk11@gmail.com>
-References: <20200927123542.553852-1-kholk11@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=g+t9R4EAtEIISULglZW0aLkA0SSVKLPzn9R1Q498LHQ=;
+        b=IO/cbOaPo15kEgO7Tz+Wgc5mCBRXHJK4JMiVB9d+oVD+ct/IgsIjhdqA74n1Dc48Av
+         QP6cjVPf4Urf1xhEQD7tYzz0yJjV3QwAuc5nGwFyT5KYOm52xS97Urw1GbBpLVcd1q+h
+         pIDM3dm3eN0uTS6rCW5RMjowDqcQ01f7XXp3/S8hk3BbIXNNyT5lgUfYXFXDrKIUiANV
+         C63u6UE7/QdX1789bPcl31OSw3Id2VAqCyZVKODqQNWHkkCcvZ6+bk+sQ3NN5WXtQC2x
+         R+Ju8iWzOBNUPA3ogQH9G0LuEbeBJ4B2bq5X/9rq8GgJ9Kpkud7Bkxcz8N9p10eMok5s
+         uNwQ==
+X-Gm-Message-State: AOAM533Xuttu1td6wbWOFv8Cb5b/BcivJ1V93ewgbxGEUVpReHPE5Ar2
+        bv2LUwZA2RFzMkDw4wYzllfYdZ6kGwrpzRjvZc8=
+X-Google-Smtp-Source: ABdhPJwReFAlPBA6bUsKMfNlvNTagxLjBdCxdBbMVAxawsEUEhQO6mmWgIpDc1xFg1fg+gnJfmbaZCa5NF13iGOIXSI=
+X-Received: by 2002:adf:f382:: with SMTP id m2mr14295407wro.327.1601232650778;
+ Sun, 27 Sep 2020 11:50:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200926125146.12859-1-kholk11@gmail.com> <20200926125146.12859-8-kholk11@gmail.com>
+In-Reply-To: <20200926125146.12859-8-kholk11@gmail.com>
+From:   Rob Clark <robdclark@gmail.com>
+Date:   Sun, 27 Sep 2020 11:51:54 -0700
+Message-ID: <CAF6AEGud+uR5J8aJ_FK544-nCuFVQ6AgbJGQPkxMm_RH-i37xg@mail.gmail.com>
+Subject: Re: [PATCH 7/7] drm/msm/a5xx: Disable UCHE global filter
+To:     AngeloGioacchino Del Regno <kholk11@gmail.com>
+Cc:     Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Jordan Crouse <jcrouse@codeaurora.org>,
+        Konrad Dybcio <konradybcio@gmail.com>, marijns95@gmail.com,
+        martin.botka1@gmail.com,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        freedreno <freedreno@lists.freedesktop.org>,
+        phone-devel@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+On Sat, Sep 26, 2020 at 5:52 AM <kholk11@gmail.com> wrote:
+>
+> From: Konrad Dybcio <konradybcio@gmail.com>
+>
+> Port over the command from downstream to prevent undefined
+> behaviour.
+>
+> Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
+> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> ---
+>  drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+> index bdc852e7d979..71cd8a3a6bf1 100644
+> --- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+> +++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+> @@ -722,6 +722,9 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+>             adreno_is_a512(adreno_gpu))
+>                 gpu_rmw(gpu, REG_A5XX_RB_DBG_ECO_CNTL, 0, (1 << 9));
+>
+> +       /* Disable UCHE global filter as SP can invalidate/flush independently */
+> +       gpu_write(gpu, 0x00000E81, BIT(29));
 
-Add prefix for Novatek Microelectronics Corp.
+Looks like this is REG_A5XX_UCHE_MODE_CNTL?  We should define a name
+for this, rather than open coding.
 
-Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
----
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+(It's ok if you just add it to a5xx.xml.h, I can push a MR to add this
+to mesa a5xx.xml)
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 66e45112a8d7..f98ea0af487d 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -740,6 +740,8 @@ patternProperties:
-     description: Nokia
-   "^nordic,.*":
-     description: Nordic Semiconductor
-+  "^novatek,.*":
-+    description: Novatek Microelectronics Corp.
-   "^novtech,.*":
-     description: NovTech, Inc.
-   "^nutsboard,.*":
--- 
-2.28.0
+BR,
+-R
 
+> +
+>         /* Enable USE_RETENTION_FLOPS */
+>         gpu_write(gpu, REG_A5XX_CP_CHICKEN_DBG, 0x02000000);
+>
+> --
+> 2.28.0
+>
