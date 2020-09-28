@@ -2,130 +2,126 @@ Return-Path: <SRS0=lb+U=DF=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-6.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B1C8C2D0A8
-	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 20:29:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3B11C2D0A8
+	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 20:47:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AA13C20717
-	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 20:29:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 961662080A
+	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 20:47:16 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fhf3QkDE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nY5cddHK"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726590AbgI1U3N (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 28 Sep 2020 16:29:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39242 "EHLO
+        id S1726692AbgI1UrN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 28 Sep 2020 16:47:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726500AbgI1U3N (ORCPT
+        with ESMTP id S1726409AbgI1UrN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 28 Sep 2020 16:29:13 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED840C061755;
-        Mon, 28 Sep 2020 13:29:12 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id s13so2381688wmh.4;
-        Mon, 28 Sep 2020 13:29:12 -0700 (PDT)
+        Mon, 28 Sep 2020 16:47:13 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00662C061755;
+        Mon, 28 Sep 2020 13:47:12 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id d4so2427583wmd.5;
+        Mon, 28 Sep 2020 13:47:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=Q0lp3rLeok0/LIdGZMtUWTk4DBwvlYpBiYMCH4mTDmo=;
-        b=Fhf3QkDEZWbN0+nOjdtpyln7D1G4Eg0gOZ0V85gztOZtw3D4HokakiOvkEHSt2DMQ9
-         J4imFtjqxjsawJ/oK8B0CHI391+yBig73WrUDicb1lskeeQBw+AzTAvKZ3QM4G5hs8ks
-         PfD5Y7VpmAqKVcxEGGMJxSxyjwXIDcAkxfR1RixzNXhz5ksJkWGPAzILXJTIuK8ikvV6
-         Lm30bFHamzfANT8UXmgF1hAax5msCyr1et6izPYswrgqZt9loWONpYuiZBn1EtysnitB
-         6cR4cwNeXksQcZfqIsrHdAA5ZKpBVJgty5VnsbOhGggfMPg+7wNt50dapZtA6I0F6diC
-         fagQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nb9J0IHiYZyiiI0yNoQU8kntPHSf2s+jSr0KCIhtaEk=;
+        b=nY5cddHKnN1vrtLRd+xPWeQFOAhMkKwC1OMapCOhg225IIFY/tTqfcwiU4lY9Yd5sJ
+         vTV7RZmDN8mGB8523uI9NVE+BQIeebJNEtk9t1+kZmqwqSVMDY0abaQFwUBaDXb4jLh5
+         EtF+8OnAZMbvCXPPnebXaAPG3oZllQc29vmiIZrnmb0wMbFThR/42N+spfTWPJcZafhv
+         iFyIGHA+zNFE1d3ADms6kfFLlT9lv/Qc1DL0pA+SD3ELdysfM6o76we2gZ+KQfqd8NuB
+         kYhFxwasSDQX0XZYFq8rTSyM7mTVRI8cgyhcELpe+7CW/w2MO+wK0pNYrdZi335EfvOW
+         ucVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=Q0lp3rLeok0/LIdGZMtUWTk4DBwvlYpBiYMCH4mTDmo=;
-        b=K64YMXTIYNCAC885+wXeHll+0UrJ16ImneIyZtSHde3OzgzBTT9pglKAbkOSKoIJXj
-         G0m3mDVQNW1BsFt3NPwJxM9u1n3c58mJ8eUZKeJduTwrz/ZI4t3jD9iBO4+Ro/xeYeR3
-         +f77qsXmA8nFuNS3qrN+W6JDIMoHi5b6Xo5dao/6BqgXK3lt5YYo7LLtE/c1/+bYuvOh
-         z64nJ6n7T0DS/qm6tIs8wITSUUpT/x9otwm7fU+XVMepjm6wdDHlzhlMsdTdFBd84RWy
-         kVKRMMHh33SKctK4Hay6fbgPgePSjhYINC4JiH1HUJ5MX9nlkUqO5Sg/JrtMtHN5bYsb
-         CWXg==
-X-Gm-Message-State: AOAM530B/gPK7PTkIIAlWBYY2r2w15L+yaR+gFIsMxdnNGV3Lenk8Eds
-        0cUTvhfTUJIv72i3ZyQhhQHapw7rVlI1N3ohTI8=
-X-Google-Smtp-Source: ABdhPJyksvtNI+Mg0NDn1Hk0jA3e3slOwaUrbYwi4zR1ZbqKf/he+sN9D9+vk5PIDwTYGc5l0l2sKw9NOq2Iwl1J0xk=
-X-Received: by 2002:a1c:5988:: with SMTP id n130mr910267wmb.95.1601324951481;
- Mon, 28 Sep 2020 13:29:11 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200926125146.12859-1-kholk11@gmail.com> <20200926125146.12859-6-kholk11@gmail.com>
- <20200928161546.GB29832@jcrouse1-lnx.qualcomm.com>
-In-Reply-To: <20200928161546.GB29832@jcrouse1-lnx.qualcomm.com>
-From:   AngeloGioacchino Del Regno <kholk11@gmail.com>
-Date:   Mon, 28 Sep 2020 22:29:00 +0200
-Message-ID: <CAK7fi1Z8uVRE+HRUSTz8bdDS5hYXaH8=D8KDUz+7mGs-H-TGpw@mail.gmail.com>
-Subject: Re: [PATCH 5/7] drm/msm/a5xx: Fix VPC protect value in gpu_write()
-To:     AngeloGioacchino Del Regno <kholk11@gmail.com>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        Dave Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, konradybcio@gmail.com,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nb9J0IHiYZyiiI0yNoQU8kntPHSf2s+jSr0KCIhtaEk=;
+        b=Tp4qzNBMeea5AnOnVZajsTe13GZMbnOYNBOR1Cum4H59OTWbZR/luCzG5mzVpM18Hl
+         hWCB5q2THApCn1fzFkcXbx2MijRLG+mgdTi+4XxR+FdX1dZ3dCxMxptePS/95YVjpy41
+         RHsokZnN18ayaMuicgFBmU5GlqJdhCwI0gvj4DPNVXPuScjdmU+ir3IX8MuqOiQlqvhI
+         p1MbaTxuF0V+fNi1s2w0K5jW1wp898RTtkREHwKIHiDr4hwYxrkejequf2WpvU1pVlFW
+         OCtCJ1nJv6QS8D1Q1l1WxCtSnJd+0jjItDTHIfczrQn3Bx4wIgjBDJDIe/332miIwpLu
+         e/Bg==
+X-Gm-Message-State: AOAM532PbpYeGiRmTmugLoOaBa0ik2L4f0VsTe7XmotEUjoFtf4po060
+        CAOVvwtFNH0GhjhaXAx5PGc=
+X-Google-Smtp-Source: ABdhPJxZGUUQLn23xBCKNF6y5ZS2rKRzE/3ozQLK02zrD2dYVMAoHtRujiS6Qsc/HjpHQLZejmN13w==
+X-Received: by 2002:a05:600c:22d2:: with SMTP id 18mr882422wmg.145.1601326031552;
+        Mon, 28 Sep 2020 13:47:11 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
+        by smtp.gmail.com with ESMTPSA id r206sm2677878wma.47.2020.09.28.13.47.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2020 13:47:11 -0700 (PDT)
+From:   kholk11@gmail.com
+To:     robdclark@gmail.com
+Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
+        jcrouse@codeaurora.org, konradybcio@gmail.com, kholk11@gmail.com,
         marijns95@gmail.com, martin.botka1@gmail.com,
-        MSM <linux-arm-msm@vger.kernel.org>,
-        freedreno <freedreno@lists.freedesktop.org>,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
         phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: [PATCH v2 0/7] Add support for Adreno 508/509/512
+Date:   Mon, 28 Sep 2020 22:47:02 +0200
+Message-Id: <20200928204709.45746-1-kholk11@gmail.com>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il giorno lun 28 set 2020 alle ore 18:16 Jordan Crouse
-<jcrouse@codeaurora.org> ha scritto:
->
-> On Sat, Sep 26, 2020 at 02:51:44PM +0200, kholk11@gmail.com wrote:
-> > From: Konrad Dybcio <konradybcio@gmail.com>
-> >
-> > The upstream API for some reason uses logbase2 instead of
-> > just passing the argument as-is, whereas downstream CAF
-> > kernel does the latter.
-> >
-> > Hence, a mistake has been made when porting:
-> > 4 is the value that's supposed to be passed, but
-> > log2(4) = 2. Changing the value to 16 (= 2^4) fixes
-> > the issue.
->
-> FWIW I think downstream is wrong. Its a lot more intuitive to pass the number of
-> registers that should be protected than to force a human to do math.
->
-> Jordan
->
-Uhm, actually, it's upstream the one forcing to do math... :P
-In any case, downstream you have some calls with an explicit log2 and
-some others with the "real" number of registers.
+From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-Hardware magic register layouts, maybe.... :)))
+In this patch series, we are adding support for lower end Adreno 5
+series GPUs, such as A508, A509 and A512 that we have found in the
+Qualcomm SDM630, SDM636 and SDM660 SoCs.
 
--- Angelo
+On a note, adding support for these three units, also adds 99% of
+the required "things" for another two GPUs, A505 and A506 but, even
+if adding them requires literally two lines of code, noone of us has
+got any SoC equipped with these ones hence we wouldn't be able to
+test. Even though there is basically no reason for them to not work
+correctly, kernel side, I chose to avoid adding the two "magic" lines.
 
-> > Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
-> > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> > ---
-> >  drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-> > index 00df5de3c8e3..b2670af638a3 100644
-> > --- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-> > +++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-> > @@ -789,7 +789,7 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
-> >
-> >       /* VPC */
-> >       gpu_write(gpu, REG_A5XX_CP_PROTECT(14), ADRENO_PROTECT_RW(0xE68, 8));
-> > -     gpu_write(gpu, REG_A5XX_CP_PROTECT(15), ADRENO_PROTECT_RW(0xE70, 4));
-> > +     gpu_write(gpu, REG_A5XX_CP_PROTECT(15), ADRENO_PROTECT_RW(0xE70, 16));
-> >
-> >       /* UCHE */
-> >       gpu_write(gpu, REG_A5XX_CP_PROTECT(16), ADRENO_PROTECT_RW(0xE80, 16));
-> > --
-> > 2.28.0
-> >
->
-> --
-> The Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-> a Linux Foundation Collaborative Project
+Anyway, this patchset also addresses some issues that we've found in
+the A5XX part of the Adreno driver, regarding a logic mistake in one
+of the VPC protect values and a forced overwrite of the register named
+A5XX_PC_DBG_ECO_CNTL, forcing the setting of vtxFifo and primFifo
+thresholds that was valid only for higher end GPUs.
+
+This patch series has been tested on the following devices:
+ - Sony Xperia XA2 Ultra (SDM630 Nile Discovery)
+ - Sony Xperia 10        (SDM630 Ganges Kirin)
+ - Sony Xperia 10 Plus   (SDM636 Ganges Mermaid)
+
+Changes in v2:
+ - Define REG_A5XX_UCHE_MODE_CNTL and fix open-coded
+   REG_A5XX_VPC_DBG_ECO_CNTL in the all flat shading optimization
+   disablement commit, as requested by Rob Clark.
+
+AngeloGioacchino Del Regno (4):
+  drm/msm/a5xx: Remove overwriting A5XX_PC_DBG_ECO_CNTL register
+  drm/msm/a5xx: Separate A5XX_PC_DBG_ECO_CNTL write from main branch
+  drm/msm/a5xx: Add support for Adreno 508, 509, 512 GPUs
+  drm/msm/a5xx: Reset VBIF before PC only on A510 and A530
+
+Konrad Dybcio (3):
+  drm/msm/a5xx: Fix VPC protect value in gpu_write()
+  drm/msm/a5xx: Disable flat shading optimization
+  drm/msm/a5xx: Disable UCHE global filter
+
+ drivers/gpu/drm/msm/adreno/a5xx.xml.h      |   2 +
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c      | 195 ++++++++++++++++++---
+ drivers/gpu/drm/msm/adreno/a5xx_power.c    |   4 +-
+ drivers/gpu/drm/msm/adreno/adreno_device.c |  60 +++++++
+ drivers/gpu/drm/msm/adreno/adreno_gpu.h    |  15 ++
+ 5 files changed, 249 insertions(+), 27 deletions(-)
+
+-- 
+2.28.0
+
