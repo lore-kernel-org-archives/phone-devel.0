@@ -7,47 +7,47 @@ X-Spam-Status: No, score=-11.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72A10C2D0A8
-	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 16:21:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E561C2D0A8
+	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 16:22:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3AC1B2076D
-	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 16:21:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 28F10206DB
+	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 16:22:42 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="iMocCOMr"
+	dkim=pass (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="ILxaqEeA"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726573AbgI1QVO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 28 Sep 2020 12:21:14 -0400
-Received: from z5.mailgun.us ([104.130.96.5]:27351 "EHLO z5.mailgun.us"
+        id S1726674AbgI1QWl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 28 Sep 2020 12:22:41 -0400
+Received: from m42-4.mailgun.net ([69.72.42.4]:32494 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726325AbgI1QVN (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 28 Sep 2020 12:21:13 -0400
+        id S1726477AbgI1QWl (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 28 Sep 2020 12:22:41 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1601310073; h=In-Reply-To: Content-Type: MIME-Version:
+ s=smtp; t=1601310161; h=In-Reply-To: Content-Type: MIME-Version:
  References: Message-ID: Subject: Cc: To: From: Date: Sender;
- bh=Sm53MN0Nsth9oBSfppoCnKROL+IxuKurKYR4irdjh7s=; b=iMocCOMrmQHBOGkqc4rBW7qV/HHjU7eilD+74usGmDRB1CCR8Yy3wu3vlRAXfIIEtRHzuC/Q
- LYPoV7LNtLqSAEdMMBu5DR0MVeh2RNvQMza0kwpUZElpyoJTKqBLFac4GbuyHz8r8ltApGYg
- mQmDALMi27+5daFJ7slgim5cAjs=
-X-Mailgun-Sending-Ip: 104.130.96.5
+ bh=7wc+udAnlObk7sQtgo19cUIvXMdE8f3c8WFWBuqci+A=; b=ILxaqEeAJb/PtaBnRVE7pk63fijXKtqbKqEHcq+FE+KDZpBmVdSCnXDvi+3fTziLui0dLSBM
+ +eBxu833WLweMbqIbGiSQB09/zNdnEVM5pWRcwalCS6M6QAsUhlhlnTLz355nRdjZQiy9GF+
+ 7nNebGTeGMJ6gGx5rCKuEdttZs8=
+X-Mailgun-Sending-Ip: 69.72.42.4
 X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 5f720d7819fe605f25643905 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 28 Sep 2020 16:21:12
+ smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
+ 5f720dbcbebf546dbb734985 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 28 Sep 2020 16:22:20
  GMT
 Sender: jcrouse=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A1DFEC433CB; Mon, 28 Sep 2020 16:21:12 +0000 (UTC)
+        id 9404FC433CA; Mon, 28 Sep 2020 16:22:20 +0000 (UTC)
 Received: from jcrouse1-lnx.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: jcrouse)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 34D45C433CA;
-        Mon, 28 Sep 2020 16:21:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 34D45C433CA
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C3552C433C8;
+        Mon, 28 Sep 2020 16:22:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C3552C433C8
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jcrouse@codeaurora.org
-Date:   Mon, 28 Sep 2020 10:21:08 -0600
+Date:   Mon, 28 Sep 2020 10:22:15 -0600
 From:   Jordan Crouse <jcrouse@codeaurora.org>
 To:     kholk11@gmail.com
 Cc:     robdclark@gmail.com, sean@poorly.run, airlied@linux.ie,
@@ -55,65 +55,75 @@ Cc:     robdclark@gmail.com, sean@poorly.run, airlied@linux.ie,
         martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
         freedreno@lists.freedesktop.org, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/7] drm/msm/a5xx: Remove overwriting
- A5XX_PC_DBG_ECO_CNTL register
-Message-ID: <20200928162107.GC29832@jcrouse1-lnx.qualcomm.com>
+Subject: Re: [PATCH 2/7] drm/msm/a5xx: Separate A5XX_PC_DBG_ECO_CNTL write
+ from main branch
+Message-ID: <20200928162215.GD29832@jcrouse1-lnx.qualcomm.com>
 Mail-Followup-To: kholk11@gmail.com, robdclark@gmail.com, sean@poorly.run,
         airlied@linux.ie, daniel@ffwll.ch, konradybcio@gmail.com,
         marijns95@gmail.com, martin.botka1@gmail.com,
         linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
         phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20200926125146.12859-1-kholk11@gmail.com>
- <20200926125146.12859-2-kholk11@gmail.com>
+ <20200926125146.12859-3-kholk11@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200926125146.12859-2-kholk11@gmail.com>
+In-Reply-To: <20200926125146.12859-3-kholk11@gmail.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Sep 26, 2020 at 02:51:40PM +0200, kholk11@gmail.com wrote:
+On Sat, Sep 26, 2020 at 02:51:41PM +0200, kholk11@gmail.com wrote:
 > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 > 
-> The PC_DBG_ECO_CNTL register on the Adreno A5xx family gets
-> programmed to some different values on a per-model basis.
-> At least, this is what we intend to do here;
+> The "main" if branch where we program the other regsiters for the
+
+Nit - regsiters -> registers
+
+> Adreno 5xx family of GPUs should not contain the PC_DBG_ECO_CNTL
+> register programming because this has logical similarity
+> differences from all the others.
 > 
-> Unfortunately, though, this register is being overwritten with a
-> static magic number, right after applying the GPU-specific
-> configuration (including the GPU-specific quirks) and that is
-> effectively nullifying the efforts.
-> 
-> Let's remove the redundant and wrong write to the PC_DBG_ECO_CNTL
-> register in order to retain the wanted configuration for the
-> target GPU.
+> A later commit will show the entire sense of this.
 
-This was probably inherited from downstream which doesn't mind RMWing the same
-register multiple times.
-
-
+With that
 Reviewed-by: Jordan Crouse <jcrouse@codeaurora.org>
 
 > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
 > ---
->  drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 2 --
->  1 file changed, 2 deletions(-)
+>  drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 > 
 > diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-> index 91726da82ed6..6262603e6e2e 100644
+> index 6262603e6e2e..f98f0844838c 100644
 > --- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
 > +++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-> @@ -594,8 +594,6 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+> @@ -577,8 +577,6 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+>  		gpu_write(gpu, REG_A5XX_CP_MERCIU_SIZE, 0x20);
+>  		gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_2, 0x40000030);
+>  		gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_1, 0x20100D0A);
+> -		gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL,
+> -			  (0x200 << 11 | 0x200 << 22));
+>  	} else {
+>  		gpu_write(gpu, REG_A5XX_CP_MEQ_THRESHOLDS, 0x40);
+>  		if (adreno_is_a530(adreno_gpu))
+> @@ -587,9 +585,14 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+>  			gpu_write(gpu, REG_A5XX_CP_MERCIU_SIZE, 0x400);
+>  		gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_2, 0x80000060);
+>  		gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_1, 0x40201B16);
+> +	}
+> +
+> +	if (adreno_is_a510(adreno_gpu))
+> +		gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL,
+> +			  (0x200 << 11 | 0x200 << 22));
+> +	else
+>  		gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL,
+>  			  (0x400 << 11 | 0x300 << 22));
+> -	}
+>  
 >  	if (adreno_gpu->info->quirks & ADRENO_QUIRK_TWO_PASS_USE_WFI)
 >  		gpu_rmw(gpu, REG_A5XX_PC_DBG_ECO_CNTL, 0, (1 << 8));
->  
-> -	gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL, 0xc0200100);
-> -
->  	/* Enable USE_RETENTION_FLOPS */
->  	gpu_write(gpu, REG_A5XX_CP_CHICKEN_DBG, 0x02000000);
->  
 > -- 
 > 2.28.0
 > 
