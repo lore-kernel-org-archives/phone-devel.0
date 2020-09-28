@@ -2,63 +2,63 @@ Return-Path: <SRS0=lb+U=DF=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BC4CC2D0A8
-	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 20:47:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DDE21C2D0A8
+	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 20:47:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3CCF7208D5
-	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 20:47:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A1CF62083B
+	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 20:47:33 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RNrMdmxs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ig1SWwAt"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726915AbgI1UrR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 28 Sep 2020 16:47:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41996 "EHLO
+        id S1726979AbgI1Ur1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 28 Sep 2020 16:47:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726875AbgI1UrQ (ORCPT
+        with ESMTP id S1726943AbgI1UrU (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 28 Sep 2020 16:47:16 -0400
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1066AC061755;
-        Mon, 28 Sep 2020 13:47:14 -0700 (PDT)
-Received: by mail-wm1-x344.google.com with SMTP id k18so2484175wmj.5;
-        Mon, 28 Sep 2020 13:47:13 -0700 (PDT)
+        Mon, 28 Sep 2020 16:47:20 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64627C061755;
+        Mon, 28 Sep 2020 13:47:19 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id v12so2488277wmh.3;
+        Mon, 28 Sep 2020 13:47:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=AVg2siFSODBM8KrUjl/IWCFyPa/t9twpYMidcGJD0tw=;
-        b=RNrMdmxsQtKunrZgNizedOFXQDLtQx4wUgn+Dt5NeZunqDjrYtKYxeVvhLJgj3biwC
-         ZEFzzVc5FDM5Vb8PjDdPrzpK3GAuxO5m63JH8u5XUPA/f8oRT4t+wPfMmMasJFZWZTpX
-         JbUaTe4ewU705ewL9cRPz41vBbAh0Ugb7pBb75lVHA2rS0ltWTH2Y2QGjH4Wz1UsVMw7
-         Lgj2uvUI7LOhKW8t4iUEpJJ7lnuHpVe2sURDaUBv9H6fEZuzhlzm8y/ZviJi+GEe6D2K
-         rd1FP22dxi9JMI6PSPCL3td9FxS7SnGhCa9UVGr3W8ylrG71kf1if1UsRLYFXz+VktFW
-         mObQ==
+        bh=QaDlg5umR5Bq6B37KlnZ9oyPSfCM/hAhsQpiLPmGTZU=;
+        b=ig1SWwAtJ0I1VGjmzmZ1x8L6Qx9iHAd7GvhIsifd7PPNmAekFI8V8btr15kSOpr66P
+         6Ya9AB9WPJmG1GpJWFbvoPchv8iQ9lcyzOwufKaZkl9xs0Hyf4EExaVoH1aIksMS4NJh
+         sdVTglFNEDgZV12DqoOb+ld+mu6IrEzbks2MxWMDHu1asaCnC4JFE++xaNmRtdohvXTV
+         vQjviJwJYV/i5gIUhkY7y0NtDUcJMgLRGcOmf3cd2M8sGR/pdYp3vToGtTrVLDtsR+6L
+         3jfOqTzrEHWVD7xajuiqTqXnvi62XFKA4Nd9fOCg+GFr3vxl+ut2CfQAWOlCmKgRO/D+
+         QhxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=AVg2siFSODBM8KrUjl/IWCFyPa/t9twpYMidcGJD0tw=;
-        b=q8+LitYRoNfyIDw2/OYozW7m5dWu4t/EOYnYIwZO5jk+kHduyrGVo6weha+QaVAPTZ
-         FvbzzY8RAoSumwu+79qD7GwuonKmh78CiBaiwJyLhn/Bgs1ZOt3CrpMI8sptRanUkzLB
-         C3TVGPH7IuESbQs7PIeLUHcaELodeQeGwCUKV1UP2QNN8VjHZP9r43mXtsM/gYjsQOBw
-         UFhm7mHgBoD7jzrHjgDzpCSWqM/mY8mjRMgIB2z++Uhk7X6bOmXL8i+ztjY+vmJliIaA
-         /WC9XiJfemYdXAag58uIAG/Oh5iOkItFvknSS70CgqCObIIn/e+QrE4TIolfl0czyb1d
-         vMFw==
-X-Gm-Message-State: AOAM531X2reiKdakKXYEtAhXJji2gcDUgkXS4BrKkbwXkaU1p1nYNcJJ
-        QjU7o0k1gqBFVNJrqwSfNH8=
-X-Google-Smtp-Source: ABdhPJxgcqsHAISZw/02HIspGIwANjmZ24ND6sAhCncfMEDQkXl6xlOKfCNa3KpS4eudQtRHZDJBSQ==
-X-Received: by 2002:a1c:6a08:: with SMTP id f8mr948374wmc.151.1601326032682;
-        Mon, 28 Sep 2020 13:47:12 -0700 (PDT)
+        bh=QaDlg5umR5Bq6B37KlnZ9oyPSfCM/hAhsQpiLPmGTZU=;
+        b=idj5wXTr+9BU2KToNMG2tbusILe7zTs4W0CsauqUUqEMwi+0OBBhUAm6f+E3r52AW8
+         BsAQ4rHogqq86JNFTiClOPWCgwMfaUNYREiOwCh15WU5HrEU+nnVdDKFrkXsFSa3fvB3
+         ISChshfr6mRZcsfOZqJYRICk6X8R49HHB04PCwvlJIS/U+69uPVwfuxLQfkDYtXtEYmx
+         ePc2lANghSeBaQNXlgYmo/v+mPuHg87ThZiJ3ulqQpwhNiji+LY5ypKgsySpIhHbk29d
+         v8ooWhLHidJACu3nv0rtCPJL4Gq5McgGqqlFw+rfY/vNIzwO658DiGAgWQ6YELJNx+Qc
+         iUmg==
+X-Gm-Message-State: AOAM533jYRso7zbEqbafFNDAzeVW6b2nN6EEGZgxxuYXi9ejZPDh0PWc
+        0PeD6qOtc/gikvxdCJsJLh8=
+X-Google-Smtp-Source: ABdhPJxLxyRLBTsYddKkS0vagFHtgTYoh1tugkQ8sTKZR6M0eDFqGkM+4DqKN/aTT3u3yZMtxk1dWg==
+X-Received: by 2002:a7b:cb17:: with SMTP id u23mr924797wmj.166.1601326038050;
+        Mon, 28 Sep 2020 13:47:18 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id r206sm2677878wma.47.2020.09.28.13.47.11
+        by smtp.gmail.com with ESMTPSA id r206sm2677878wma.47.2020.09.28.13.47.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2020 13:47:12 -0700 (PDT)
+        Mon, 28 Sep 2020 13:47:17 -0700 (PDT)
 From:   kholk11@gmail.com
 To:     robdclark@gmail.com
 Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
@@ -66,9 +66,9 @@ Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
         marijns95@gmail.com, martin.botka1@gmail.com,
         linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
         phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/7] drm/msm/a5xx: Remove overwriting A5XX_PC_DBG_ECO_CNTL register
-Date:   Mon, 28 Sep 2020 22:47:03 +0200
-Message-Id: <20200928204709.45746-2-kholk11@gmail.com>
+Subject: [PATCH v2 6/7] drm/msm/a5xx: Disable flat shading optimization
+Date:   Mon, 28 Sep 2020 22:47:08 +0200
+Message-Id: <20200928204709.45746-7-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200928204709.45746-1-kholk11@gmail.com>
 References: <20200928204709.45746-1-kholk11@gmail.com>
@@ -78,39 +78,30 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+From: Konrad Dybcio <konradybcio@gmail.com>
 
-The PC_DBG_ECO_CNTL register on the Adreno A5xx family gets
-programmed to some different values on a per-model basis.
-At least, this is what we intend to do here;
+Port over the command from downstream to prevent undefined
+behaviour.
 
-Unfortunately, though, this register is being overwritten with a
-static magic number, right after applying the GPU-specific
-configuration (including the GPU-specific quirks) and that is
-effectively nullifying the efforts.
-
-Let's remove the redundant and wrong write to the PC_DBG_ECO_CNTL
-register in order to retain the wanted configuration for the
-target GPU.
-
+Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
 Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
-Reviewed-by: Jordan Crouse <jcrouse@codeaurora.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index 91726da82ed6..6262603e6e2e 100644
+index 448fded571d3..6dac060902a3 100644
 --- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
 +++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -594,8 +594,6 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
- 	if (adreno_gpu->info->quirks & ADRENO_QUIRK_TWO_PASS_USE_WFI)
- 		gpu_rmw(gpu, REG_A5XX_PC_DBG_ECO_CNTL, 0, (1 << 8));
+@@ -759,6 +759,9 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+ 	    adreno_is_a540(adreno_gpu))
+ 		gpu_write(gpu, REG_A5XX_UCHE_DBG_ECO_CNTL_2, bit);
  
--	gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL, 0xc0200100);
--
- 	/* Enable USE_RETENTION_FLOPS */
- 	gpu_write(gpu, REG_A5XX_CP_CHICKEN_DBG, 0x02000000);
++	/* Disable All flat shading optimization (ALLFLATOPTDIS) */
++	gpu_rmw(gpu, REG_A5XX_VPC_DBG_ECO_CNTL, 0, (1 << 10));
++
+ 	/* Protect registers from the CP */
+ 	gpu_write(gpu, REG_A5XX_CP_PROTECT_CNTL, 0x00000007);
  
 -- 
 2.28.0
