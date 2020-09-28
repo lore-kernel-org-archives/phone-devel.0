@@ -2,63 +2,63 @@ Return-Path: <SRS0=lb+U=DF=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F46CC4727C
-	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 20:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4328C4727C
+	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 20:47:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2442B2083B
-	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 20:47:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 50F4D2080A
+	for <phone-devel@archiver.kernel.org>; Mon, 28 Sep 2020 20:47:37 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FFkHwlEI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HlSmtN3q"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726970AbgI1Ur1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 28 Sep 2020 16:47:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42028 "EHLO
+        id S1726931AbgI1UrS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 28 Sep 2020 16:47:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726409AbgI1UrU (ORCPT
+        with ESMTP id S1726891AbgI1UrR (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 28 Sep 2020 16:47:20 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74922C0613CE;
-        Mon, 28 Sep 2020 13:47:20 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id v12so2488312wmh.3;
-        Mon, 28 Sep 2020 13:47:20 -0700 (PDT)
+        Mon, 28 Sep 2020 16:47:17 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D203C0613D0;
+        Mon, 28 Sep 2020 13:47:17 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id e11so5181230wme.0;
+        Mon, 28 Sep 2020 13:47:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Qi3QBbwTIzLJyLiPTKqArtAX17f0oV+sDtlvdTST9EI=;
-        b=FFkHwlEIKY9lkTUKPFFQJf5c4ZIzjNYFW7ukX1xoz7kGJ27+encAVjvi5xqmUaKSdX
-         Yy0XbmQ5rFoCHUvrndTlTQ8Ym6wQICT1CCtk0d4TnwebxYk4hsPbMCviuYxD2bS6bR5S
-         wjQCODFycwrSCMKqigHrPKdRHKG+X0nQ7Amf8X5A7DcyVIH6j3wT6Q+q9P1NJX4+Ba8t
-         vmnTDiVzSAPamuTFEKNY7YNqmmxxczAqJW9eXb24P+GcI31uO41x1ZW3EcR9IWt4FFdI
-         4YD5VI6giABZpkf2tsGoz9gMzuiYt3uT9+WUKBJCqMYzo4JWUCFM2dsRcopJizyvrG8o
-         cHyQ==
+        bh=VAXek25jtpefT57W6f2ieoFbKeRkwzBYBFbfBYFgMFQ=;
+        b=HlSmtN3qAsaXa66jR0vokh6Lz9EEULyPGeLoPDbJuZG8A783rEruOVWIMPC/D9rE2y
+         7AtWakZ9lNh23pv1qofxD6BlgbIhr/iQcl9dmaM/foNTI5xfaIVUAEk82IgFP+yGDvJ7
+         HeUWIMNTOFCEtf3H7/GUC099cNuOCWcsBvJPprfKxG1tcxHQ/8uX2VWWL2HhI8vlqJ80
+         sipSHx5TEb29x13VoAkRIFYMrRbwc016HGIJFvuOe1S2Twaio1ArGD+VQA22EpSFg5A6
+         tJbduZznAi2i1ncWwIqR1moILvWGjX0YE9WnFL4CHBHhaWR6jV+mHBKOkOMsyuXLJmrr
+         psyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Qi3QBbwTIzLJyLiPTKqArtAX17f0oV+sDtlvdTST9EI=;
-        b=gBgh0fGSUz+3iz4n4mv1xPMfUxxZdWRDR62aGoEN3/bW/97W85ASo5vETv1z8ewcyE
-         RW2FaINSEHQFFRo6J5wGClPkk58gZzPV+eROnWnK3QKLRDLlfDvcf293iqwb+jV5mZqc
-         JFptmO7DiBZ12fiBBM8L7GV82GOxXeTcqmdZI+lRpyRv6LlkzSLxtsF/M+zpCB5uqzS2
-         f4P6bejX/YaMwBRh1ntNk4QwiliDJ02aNBU3Y75s6t8zNsOYyvtRSO8s5NAOTz2G9v6W
-         UuoVwMQeK2pc6JuW1O7Ny0ImwU2NLi8qQ2GRk29TvuTFAIKhFwJe5w599hhsABGP4kz6
-         iZmw==
-X-Gm-Message-State: AOAM532sHGBJoJZNOX4Lrr7CJfyqVrYk8UmOdPHKMjKa79pnuhaa17P0
-        PZH+YBFOkIUeK2wQKA2MZ9U=
-X-Google-Smtp-Source: ABdhPJyjrWTObYZdK4RIzlZ1/TcPmklnjYiF4GcGB15/SN8U/IaNASVA1MBBGzulQH3waVkTRb7abg==
-X-Received: by 2002:a7b:c2a9:: with SMTP id c9mr929365wmk.87.1601326039069;
-        Mon, 28 Sep 2020 13:47:19 -0700 (PDT)
+        bh=VAXek25jtpefT57W6f2ieoFbKeRkwzBYBFbfBYFgMFQ=;
+        b=lsSK9954MBfzwQzZtU+99YOZCkunKxaws2kW19e3vTL9TAcGPmM7G4bdwqmAKHQGG1
+         PeOCIULrpCQLH031vW4vkUsEDZ9khC7dIZBQZTxmyYc7AHcaj9SreqyVOA6PdyhyJwJI
+         uSSrq6zvNBuG4yo9Sa8qo4Un9hdISVoiHH0qCA9phZYw6p5lZ3B+PJ7Biwppi78g55mO
+         5i5M4kXyXaYB7CQAbCAvPgpTfX9Jozy67Tyz67MOaJbkaJ1lVYFThRv74RvLyUuwi0qV
+         gyl1F6o+lzx1VNCWotMfgSVIM0Z8UHfG/Oghhps1zm035hURz9NBP0XhlKLoRA1WxUXc
+         FPgQ==
+X-Gm-Message-State: AOAM533WLKVTwEzaCRmE0/W6bAX+PNh8gdcPV2Xo5P9/sV5rhY9ePLUI
+        aFyCD7w0X3huXpZ+E+cMBJ8=
+X-Google-Smtp-Source: ABdhPJxFk4WhCEHF6JvTPb5ulS5tFeC+UJl80+kXrcBNXujIWb6/7EsQcyj2AvgKCVDLY1SycuvcAQ==
+X-Received: by 2002:a7b:c397:: with SMTP id s23mr981783wmj.174.1601326035960;
+        Mon, 28 Sep 2020 13:47:15 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id r206sm2677878wma.47.2020.09.28.13.47.18
+        by smtp.gmail.com with ESMTPSA id r206sm2677878wma.47.2020.09.28.13.47.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2020 13:47:18 -0700 (PDT)
+        Mon, 28 Sep 2020 13:47:15 -0700 (PDT)
 From:   kholk11@gmail.com
 To:     robdclark@gmail.com
 Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
@@ -66,9 +66,9 @@ Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
         marijns95@gmail.com, martin.botka1@gmail.com,
         linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
         phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 7/7] drm/msm/a5xx: Disable UCHE global filter
-Date:   Mon, 28 Sep 2020 22:47:09 +0200
-Message-Id: <20200928204709.45746-8-kholk11@gmail.com>
+Subject: [PATCH v2 4/7] drm/msm/a5xx: Reset VBIF before PC only on A510 and A530
+Date:   Mon, 28 Sep 2020 22:47:06 +0200
+Message-Id: <20200928204709.45746-5-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200928204709.45746-1-kholk11@gmail.com>
 References: <20200928204709.45746-1-kholk11@gmail.com>
@@ -78,45 +78,44 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Konrad Dybcio <konradybcio@gmail.com>
+From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-Port over the command from downstream to prevent undefined
-behaviour.
+Resetting the VBIF before power collapse is done to avoid getting
+bogus FIFO entries during the suspend sequence or subsequent resume,
+but this is doable only on Adreno 510 and Adreno 530, as the other
+units will tendentially lock up.
+Especially on Adreno 508, the GPU will show lockups and very bad
+slownesses after processing the first frame.
 
-Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
+Avoiding to execute the RBBM SW Reset before suspend will stop the
+lockup issue from happening on at least Adreno 508/509/512.
+
 Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+Reviewed-by: Jordan Crouse <jcrouse@codeaurora.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx.xml.h | 2 ++
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 3 +++
- 2 files changed, 5 insertions(+)
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx.xml.h b/drivers/gpu/drm/msm/adreno/a5xx.xml.h
-index 346cc6ff3a36..7b9fcfe95c04 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx.xml.h
-+++ b/drivers/gpu/drm/msm/adreno/a5xx.xml.h
-@@ -2367,6 +2367,8 @@ static inline uint32_t A5XX_VSC_RESOLVE_CNTL_Y(uint32_t val)
- 
- #define REG_A5XX_UCHE_ADDR_MODE_CNTL				0x00000e80
- 
-+#define REG_A5XX_UCHE_MODE_CNTL					0x00000e81
-+
- #define REG_A5XX_UCHE_SVM_CNTL					0x00000e82
- 
- #define REG_A5XX_UCHE_WRITE_THRU_BASE_LO			0x00000e87
 diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index 6dac060902a3..979397372505 100644
+index fd33a34961cc..6163c3b61a69 100644
 --- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
 +++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -722,6 +722,9 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
- 	    adreno_is_a512(adreno_gpu))
- 		gpu_rmw(gpu, REG_A5XX_RB_DBG_ECO_CNTL, 0, (1 << 9));
+@@ -1306,10 +1306,12 @@ static int a5xx_pm_suspend(struct msm_gpu *gpu)
  
-+	/* Disable UCHE global filter as SP can invalidate/flush independently */
-+	gpu_write(gpu, REG_A5XX_UCHE_MODE_CNTL, BIT(29));
-+
- 	/* Enable USE_RETENTION_FLOPS */
- 	gpu_write(gpu, REG_A5XX_CP_CHICKEN_DBG, 0x02000000);
+ 	/*
+ 	 * Reset the VBIF before power collapse to avoid issue with FIFO
+-	 * entries
++	 * entries on Adreno A510 and A530 (the others will tend to lock up)
+ 	 */
+-	gpu_write(gpu, REG_A5XX_RBBM_BLOCK_SW_RESET_CMD, 0x003C0000);
+-	gpu_write(gpu, REG_A5XX_RBBM_BLOCK_SW_RESET_CMD, 0x00000000);
++	if (adreno_is_a510(adreno_gpu) || adreno_is_a530(adreno_gpu)) {
++		gpu_write(gpu, REG_A5XX_RBBM_BLOCK_SW_RESET_CMD, 0x003C0000);
++		gpu_write(gpu, REG_A5XX_RBBM_BLOCK_SW_RESET_CMD, 0x00000000);
++	}
  
+ 	return msm_gpu_pm_suspend(gpu);
+ }
 -- 
 2.28.0
 
