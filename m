@@ -2,66 +2,58 @@ Return-Path: <SRS0=eYEv=DG=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75A69C47423
-	for <phone-devel@archiver.kernel.org>; Tue, 29 Sep 2020 19:25:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC5FCC4727C
+	for <phone-devel@archiver.kernel.org>; Tue, 29 Sep 2020 19:46:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 229F72083B
-	for <phone-devel@archiver.kernel.org>; Tue, 29 Sep 2020 19:25:51 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fekZ2UsJ"
+	by mail.kernel.org (Postfix) with ESMTP id 577882083B
+	for <phone-devel@archiver.kernel.org>; Tue, 29 Sep 2020 19:46:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1601408791;
+	bh=jjEzi8lg/fixZ8RSJmRBsh7VZs4uZ4cmuyV6enGSxv4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
+	b=LYsliqADAGQTCMBn4Zcka+WfTGdELOucXnzMmn7uBProntpMLVJ+1PD715SAhJmdn
+	 3T7azA0Dx3Vdk65aI/4L/pv8WAaSK/Bc8+B2Y+C+MmB9kHbV3IBbyjXyNNfliubzb8
+	 ATd+71d6gsqJaIXKE9ncb65X/IJFcl9UaibYtDtw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728229AbgI2TZr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 29 Sep 2020 15:25:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54570 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbgI2TZr (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 29 Sep 2020 15:25:47 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E860FC061755;
-        Tue, 29 Sep 2020 12:25:46 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id e22so7653944edq.6;
-        Tue, 29 Sep 2020 12:25:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=g6+kJ55sXzOmwmwx9ZTrexXhkDG+xOy1vdxvjesyS3E=;
-        b=fekZ2UsJff5Fo/fquhVVcLd7DJo38TXfDDcfa9WNpccH/w5A7ZPdVpE4YPpTBKG0x4
-         2jj90Fx/MBH3J+xgc5fMag3qqxTNPMNukujCZ0r++7KJnBzn5xRpvA2miMdugDt1Ak4I
-         JAP2yHj/stbfo+tZFarr7EBpTMp1eeWtVnUNUh0d0CI1OzM72X1SdO8vTC/qxRkznUx3
-         lLDYJ4PleobtMkocP5PCM7PBZC6bWGezzbpx4qxuGrtZ4hj8qtaZaWGRobOhAQSBf1HJ
-         lZKaXcsuoClAc4mTRRxqIz7xnuv4J7aTMhphIW3BME7N+8YDWuwFLgnc8G5rtU2B6Mgy
-         qe7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=g6+kJ55sXzOmwmwx9ZTrexXhkDG+xOy1vdxvjesyS3E=;
-        b=kS65DuBxu+GXUWf4uln3Oym4ZZBas6rp/dXr9TJuJEN4+OWn1T30U90wOvzsHWsRMq
-         /jn6t66LdE6RxomUBfsfP0/d4K3YyO0ONoPJsUdrzEbJmvAJ0Eu0qzcI1uJP6YjbpgNg
-         D8FK5ULRcuLSiTtlQ05l0HwDjJfOiQ+BNaA1vAz5/ae7xh7YWmXNm/nsrGcDiTJ1RQ4p
-         679LLioRUHdluA/5z8WRSuYrzw534Xomxd4/OS1IquAESa+KaRMeFHR2SHvW/hciD6BW
-         Rd6u6D0SUnoOuZ+ELBENc4H5on1hBwM2VLN4DQGyHHkfmwWVocqs+nllQbDCDfPM5Uxv
-         s3iA==
-X-Gm-Message-State: AOAM531Xlf4cx4b+0N2Rr6NEFvGwMxFMrdbSy+pCcxfS3RMRWoYWmlPQ
-        o5luSe7j9WcziMuMEHtmu6fKrsHQawuXkD4vz0U=
-X-Google-Smtp-Source: ABdhPJxVukE7f6YEqDOXDGw1ClqJ8AKKsQ4JtjfxA2abYjKa5h7grAnSKBIP/65FUN4gesERb5tF0eLd7mAbJQ32/zc=
-X-Received: by 2002:aa7:ca4f:: with SMTP id j15mr4931708edt.233.1601407545661;
- Tue, 29 Sep 2020 12:25:45 -0700 (PDT)
+        id S1727758AbgI2Tqa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 29 Sep 2020 15:46:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43474 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727700AbgI2Tqa (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 29 Sep 2020 15:46:30 -0400
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D6A9C2083B;
+        Tue, 29 Sep 2020 19:46:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601408790;
+        bh=jjEzi8lg/fixZ8RSJmRBsh7VZs4uZ4cmuyV6enGSxv4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Kpj8AilVQM5xcmwB1Vb5LrYlzGb2bJ3ug0FO3i3lKqqT6+bQVh7OTRej29MV5LnRV
+         psaTnlyAqXAIu8B02xUOFooNMugUfaHjJwE7dKKfCJFzGf7f6aln2133qYvfH/UIrW
+         uYKbeYC+vvdFVf3B0Na3rUddE8UxIy8jMDLBlGNk=
+Received: by mail-ot1-f54.google.com with SMTP id m13so5643364otl.9;
+        Tue, 29 Sep 2020 12:46:29 -0700 (PDT)
+X-Gm-Message-State: AOAM531UbWK847ffND11rL5wNQ6uTrCI7j5D3ljb4HBtlYZGHOJ3kfbR
+        xhnFSqO5QOQVNjY8Vr37ipcgNrptxpi/uTUXww==
+X-Google-Smtp-Source: ABdhPJwn8glarH4xnTwvOThxWuXdjV7eB4z3CGp5Z7Qqwtx9a47NmAh96i2eJuXIc3W9IlW8LNcb2k3TadFysAdRT+g=
+X-Received: by 2002:a9d:6b0d:: with SMTP id g13mr3933936otp.129.1601408789102;
+ Tue, 29 Sep 2020 12:46:29 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200926131157.14633-1-kholk11@gmail.com> <20200929191254.GA984478@bogus>
-In-Reply-To: <20200929191254.GA984478@bogus>
-From:   Konrad Dybcio <konradybcio@gmail.com>
-Date:   Tue, 29 Sep 2020 21:25:09 +0200
-Message-ID: <CAMS8qEX_eB1pMLfqVCh5sHVaRevCYnpr+846LyZf9dH1-DQvzQ@mail.gmail.com>
+ <CAMS8qEX_eB1pMLfqVCh5sHVaRevCYnpr+846LyZf9dH1-DQvzQ@mail.gmail.com>
+In-Reply-To: <CAMS8qEX_eB1pMLfqVCh5sHVaRevCYnpr+846LyZf9dH1-DQvzQ@mail.gmail.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 29 Sep 2020 14:46:17 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJF6gxtFMtQ7A3-rT7LSH07T8u=PdfVFAXtTDm4peiFEg@mail.gmail.com>
+Message-ID: <CAL_JsqJF6gxtFMtQ7A3-rT7LSH07T8u=PdfVFAXtTDm4peiFEg@mail.gmail.com>
 Subject: Re: [PATCH] phy: qcom-qusb2: Add support for SDM630/660
-To:     Rob Herring <robh@kernel.org>
+To:     Konrad Dybcio <konradybcio@gmail.com>
 Cc:     AngeloGioacchino Del Regno <kholk11@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -76,11 +68,14 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
->You should just pull this from the driver data.
+On Tue, Sep 29, 2020 at 2:25 PM Konrad Dybcio <konradybcio@gmail.com> wrote:
+>
+> >You should just pull this from the driver data.
+>
+> I reused 8996's phy_cfg so as to change one line and not repeat dozens
+> for what's essentially the same thing, so I don't think it's the
+> better option..
 
-I reused 8996's phy_cfg so as to change one line and not repeat dozens
-for what's essentially the same thing, so I don't think it's the
-better option..
+Okay, save it for the next person when the if statement grows.
 
-
-Konrad
+Rob
