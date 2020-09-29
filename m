@@ -2,129 +2,85 @@ Return-Path: <SRS0=eYEv=DG=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECBC6C4727C
-	for <phone-devel@archiver.kernel.org>; Tue, 29 Sep 2020 19:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75A69C47423
+	for <phone-devel@archiver.kernel.org>; Tue, 29 Sep 2020 19:25:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A8301207F7
-	for <phone-devel@archiver.kernel.org>; Tue, 29 Sep 2020 19:13:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1601406780;
-	bh=LXxUuQFRaJ9yzmZZE9wnSi3qs/FrbpXcjdE/ZWC3UKA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=Uw/66pyu8bSSZRMRZVodCY9iShYVaDfTGYyzHgqA6ut5g9ukckw8a0ffBpef1sZh8
-	 1I0ULY2nfuk4907fdmsI6fEvonrAHpOxE1CAGKQow4NorX6fQJkyFT0rEosvLHh00Z
-	 mkjPTzrl30/KedNh+wXoa7eLMuKMCYiNQBpbi01Y=
+	by mail.kernel.org (Postfix) with ESMTP id 229F72083B
+	for <phone-devel@archiver.kernel.org>; Tue, 29 Sep 2020 19:25:51 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fekZ2UsJ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728698AbgI2TM5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 29 Sep 2020 15:12:57 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:46410 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728166AbgI2TM4 (ORCPT
+        id S1728229AbgI2TZr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 29 Sep 2020 15:25:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54570 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725306AbgI2TZr (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 29 Sep 2020 15:12:56 -0400
-Received: by mail-ot1-f68.google.com with SMTP id 95so5517115ota.13;
-        Tue, 29 Sep 2020 12:12:56 -0700 (PDT)
+        Tue, 29 Sep 2020 15:25:47 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E860FC061755;
+        Tue, 29 Sep 2020 12:25:46 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id e22so7653944edq.6;
+        Tue, 29 Sep 2020 12:25:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=g6+kJ55sXzOmwmwx9ZTrexXhkDG+xOy1vdxvjesyS3E=;
+        b=fekZ2UsJff5Fo/fquhVVcLd7DJo38TXfDDcfa9WNpccH/w5A7ZPdVpE4YPpTBKG0x4
+         2jj90Fx/MBH3J+xgc5fMag3qqxTNPMNukujCZ0r++7KJnBzn5xRpvA2miMdugDt1Ak4I
+         JAP2yHj/stbfo+tZFarr7EBpTMp1eeWtVnUNUh0d0CI1OzM72X1SdO8vTC/qxRkznUx3
+         lLDYJ4PleobtMkocP5PCM7PBZC6bWGezzbpx4qxuGrtZ4hj8qtaZaWGRobOhAQSBf1HJ
+         lZKaXcsuoClAc4mTRRxqIz7xnuv4J7aTMhphIW3BME7N+8YDWuwFLgnc8G5rtU2B6Mgy
+         qe7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=GgjKuyQJoERzQMpEMuhlPCE13zkCByWUan2/5brhiCU=;
-        b=ahYCxdjGh6vc+8vs84tn5CP4iJMl3GXT6gnodJscDP47jLs032Q9ElcLIwO+I8Jhak
-         1JY1JC3kdcZG64eg2bthagAuxpjsdb6QYBpIxR4P868Z/vFK2ZxK5PgB6bpHEqoRk2Tb
-         7cWTxXlB/WOX8ZzIVXiHmYRwhhrvlG0IETfeNQW89H5zfo/4OYdwvkDMn8UssEr7o19s
-         QEmuYyuofv6LxHb+jCQ7xkqZoTUR6KPJi5L/AtQVM3LDtvnalXmREI4IhvVWvWxTZdMo
-         4+jAcS9I9PDCZ0Xa0pJfAV3aVLwTCfI+E9dyx7Goc+rBdttVadDZBzj+1kkXxTV5/gO8
-         V2Rg==
-X-Gm-Message-State: AOAM530zWxyi8/Lze2Sz758r9T28hoBRgu5hdo/GgP1k8SNaXVNgYpyJ
-        1dY9fGZgu4KWyINDEIzjvw==
-X-Google-Smtp-Source: ABdhPJzWyMYcV45E2qABB4g0dlueAf1l8Bg8xQxbnk8POFF0QM48+jRHidYaB2vtazxWKOyqiyLcMg==
-X-Received: by 2002:a05:6830:ca:: with SMTP id x10mr3612103oto.344.1601406775723;
-        Tue, 29 Sep 2020 12:12:55 -0700 (PDT)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id k16sm1201190oij.56.2020.09.29.12.12.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2020 12:12:55 -0700 (PDT)
-Received: (nullmailer pid 987780 invoked by uid 1000);
-        Tue, 29 Sep 2020 19:12:54 -0000
-Date:   Tue, 29 Sep 2020 14:12:54 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     kholk11@gmail.com
-Cc:     agross@kernel.org, bjorn.andersson@linaro.org, kishon@ti.com,
-        marijns95@gmail.com, konradybcio@gmail.com,
-        martin.botka1@gmail.com, devicetree@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] phy: qcom-qusb2: Add support for SDM630/660
-Message-ID: <20200929191254.GA984478@bogus>
-References: <20200926131157.14633-1-kholk11@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=g6+kJ55sXzOmwmwx9ZTrexXhkDG+xOy1vdxvjesyS3E=;
+        b=kS65DuBxu+GXUWf4uln3Oym4ZZBas6rp/dXr9TJuJEN4+OWn1T30U90wOvzsHWsRMq
+         /jn6t66LdE6RxomUBfsfP0/d4K3YyO0ONoPJsUdrzEbJmvAJ0Eu0qzcI1uJP6YjbpgNg
+         D8FK5ULRcuLSiTtlQ05l0HwDjJfOiQ+BNaA1vAz5/ae7xh7YWmXNm/nsrGcDiTJ1RQ4p
+         679LLioRUHdluA/5z8WRSuYrzw534Xomxd4/OS1IquAESa+KaRMeFHR2SHvW/hciD6BW
+         Rd6u6D0SUnoOuZ+ELBENc4H5on1hBwM2VLN4DQGyHHkfmwWVocqs+nllQbDCDfPM5Uxv
+         s3iA==
+X-Gm-Message-State: AOAM531Xlf4cx4b+0N2Rr6NEFvGwMxFMrdbSy+pCcxfS3RMRWoYWmlPQ
+        o5luSe7j9WcziMuMEHtmu6fKrsHQawuXkD4vz0U=
+X-Google-Smtp-Source: ABdhPJxVukE7f6YEqDOXDGw1ClqJ8AKKsQ4JtjfxA2abYjKa5h7grAnSKBIP/65FUN4gesERb5tF0eLd7mAbJQ32/zc=
+X-Received: by 2002:aa7:ca4f:: with SMTP id j15mr4931708edt.233.1601407545661;
+ Tue, 29 Sep 2020 12:25:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200926131157.14633-1-kholk11@gmail.com>
+References: <20200926131157.14633-1-kholk11@gmail.com> <20200929191254.GA984478@bogus>
+In-Reply-To: <20200929191254.GA984478@bogus>
+From:   Konrad Dybcio <konradybcio@gmail.com>
+Date:   Tue, 29 Sep 2020 21:25:09 +0200
+Message-ID: <CAMS8qEX_eB1pMLfqVCh5sHVaRevCYnpr+846LyZf9dH1-DQvzQ@mail.gmail.com>
+Subject: Re: [PATCH] phy: qcom-qusb2: Add support for SDM630/660
+To:     Rob Herring <robh@kernel.org>
+Cc:     AngeloGioacchino Del Regno <kholk11@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        marijns95@gmail.com, Martin Botka <martin.botka1@gmail.com>,
+        DTML <devicetree@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        phone-devel@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Sep 26, 2020 at 03:11:57PM +0200, kholk11@gmail.com wrote:
-> From: Konrad Dybcio <konradybcio@gmail.com>
-> 
-> QUSB on these SoCs actually uses *almost* the same
-> configuration that msm8996 does, so we can reuse
-> the phy_cfg from there with just a single change
-> (se clock scheme).
-> 
-> Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
-> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> ---
->  Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml | 1 +
->  drivers/phy/qualcomm/phy-qcom-qusb2.c                     | 7 ++++++-
->  2 files changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
-> index ccda92859eca..97dae24752b4 100644
-> --- a/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
-> +++ b/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
-> @@ -21,6 +21,7 @@ properties:
->                - qcom,ipq8074-qusb2-phy
->                - qcom,msm8996-qusb2-phy
->                - qcom,msm8998-qusb2-phy
-> +              - qcom,sdm660-qusb2-phy
->        - items:
->            - enum:
->                - qcom,sc7180-qusb2-phy
-> diff --git a/drivers/phy/qualcomm/phy-qcom-qusb2.c b/drivers/phy/qualcomm/phy-qcom-qusb2.c
-> index 557547dabfd5..a4d706b361b9 100644
-> --- a/drivers/phy/qualcomm/phy-qcom-qusb2.c
-> +++ b/drivers/phy/qualcomm/phy-qcom-qusb2.c
-> @@ -702,7 +702,8 @@ static int qusb2_phy_init(struct phy *phy)
->  	usleep_range(150, 160);
->  
->  	/* Default is single-ended clock on msm8996 */
-> -	qphy->has_se_clk_scheme = true;
-> +	if (!of_device_is_compatible(phy->dev.of_node, "qcom,sdm660-qusb2-phy"))
-> +		qphy->has_se_clk_scheme = true;
+>You should just pull this from the driver data.
 
-You should just pull this from the driver data.
+I reused 8996's phy_cfg so as to change one line and not repeat dozens
+for what's essentially the same thing, so I don't think it's the
+better option..
 
->  	/*
->  	 * read TCSR_PHY_CLK_SCHEME register to check if single-ended
->  	 * clock scheme is selected. If yes, then disable differential
-> @@ -818,6 +819,10 @@ static const struct of_device_id qusb2_phy_of_match_table[] = {
->  	}, {
->  		.compatible	= "qcom,msm8998-qusb2-phy",
->  		.data		= &msm8998_phy_cfg,
-> +	}, {
-> +		.compatible	= "qcom,sdm660-qusb2-phy",
-> +		/* sdm630/660 use the same config as msm8996. */
-> +		.data		= &msm8996_phy_cfg,
->  	}, {
->  		/*
->  		 * Deprecated. Only here to support legacy device
-> -- 
-> 2.28.0
-> 
+
+Konrad
