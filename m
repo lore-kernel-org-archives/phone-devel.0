@@ -2,93 +2,104 @@ Return-Path: <SRS0=tENq=DI=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67C2EC4727E
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Oct 2020 17:02:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50737C4727F
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Oct 2020 22:48:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 37E7A208B6
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Oct 2020 17:02:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1CEFC207DE
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Oct 2020 22:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1601571752;
-	bh=sgTI1pReU0OH6N+t9LIFaXFWSw9Gg4El0/cro75I080=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=nHCj+O2JwIpliUQOvlTfPse+yUrAV2XI9TabzSSxWNNr42euJ+NCpuSUptAMlCj8S
-	 d1vBMlchpeHd0SYG4cP7JzkNVz3PPFdeT6zjaOFKU3zxCLEBpFLLxYnzKgp5Ekh066
-	 oH0Py9RR64jskKnDaiUjiiLOpA1M7ciXeUY4AcdY=
+	s=default; t=1601592502;
+	bh=ZdismrIrzDFufmTFsLx3DkSFP3z8hChR5m3PaFMvsTk=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
+	b=RjZhvgzf7QBzBzhAhzk+/5c7ft29gqe2ItJPF9jQxJqKC4HN+eIAlVNxeVDoyy5HZ
+	 fRUSoNtFeyygZgfKUf0RPPun/GNRdY9rq7BggSif7QMor+BM/2Ag9ENNGfXSLb8P8C
+	 9CMAAmkwQe6cHW+mBEtNyw2WnykbNupGjpnxH6EI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732704AbgJARCW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Oct 2020 13:02:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35674 "EHLO mail.kernel.org"
+        id S1733271AbgJAWsV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 1 Oct 2020 18:48:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56288 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732360AbgJARCR (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 1 Oct 2020 13:02:17 -0400
+        id S1726741AbgJAWsV (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 1 Oct 2020 18:48:21 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1D57A208B6;
-        Thu,  1 Oct 2020 17:02:15 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7CF582074B;
+        Thu,  1 Oct 2020 22:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601571736;
-        bh=sgTI1pReU0OH6N+t9LIFaXFWSw9Gg4El0/cro75I080=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tleQxA9Usy8EMlbjjfcLgW1O5nEP666Fx0SDN5uWndimLCercOPoQ0lMjbsyLow4P
-         Smg2YxuBRvFvcFyqm3VJN8B0dMIJjMaDKcnRI4QAb32mRLC7QXwzYByg6oNGBe4GAZ
-         kwZhSdohSm1E5gCYck+018Oj/4mgdXiqlF/PMSAc=
-Date:   Thu, 1 Oct 2020 18:01:17 +0100
+        s=default; t=1601592501;
+        bh=ZdismrIrzDFufmTFsLx3DkSFP3z8hChR5m3PaFMvsTk=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=srr0ipw9YVb4cj0nj4QUsXqEKnrqtWSWCbq0SXcuT4C1uKlM7FyGMsSXzqenbPZPm
+         riFSmN6FEmo2QfFMcFE7e+zOFW4nr2D2d7Kk0RMzCvZkVj1ZPdyDODOdAVpLbds5KB
+         XHH0WXsHZJsRvH3Zt/HpUeYb9ONRvu4NbmWOnp0Y=
+Date:   Thu, 01 Oct 2020 23:47:21 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     kholk11@gmail.com
-Cc:     lgirdwood@gmail.com, agross@kernel.org, bjorn.andersson@linaro.org,
-        robh+dt@kernel.org, marijns95@gmail.com, konradybcio@gmail.com,
+To:     "kholk11@gmail.com" <kholk11@gmail.com>
+Cc:     konradybcio@gmail.com, bjorn.andersson@linaro.org,
         martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/5] Support for PM660/PM660L SPMI and SMD regulators
-Message-ID: <20201001170117.GR6715@sirena.org.uk>
-References: <20200926125549.13191-1-kholk11@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="tuFXEhzhBeitrIAu"
-Content-Disposition: inline
+        robh+dt@kernel.org, lgirdwood@gmail.com,
+        phone-devel@vger.kernel.org, marijns95@gmail.com,
+        agross@kernel.org, linux-kernel@vger.kernel.org
 In-Reply-To: <20200926125549.13191-1-kholk11@gmail.com>
-X-Cookie: Stay away from flying saucers today.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200926125549.13191-1-kholk11@gmail.com>
+Subject: Re: [PATCH 0/5] Support for PM660/PM660L SPMI and SMD regulators
+Message-Id: <160159243691.44970.9175489185107541886.b4-ty@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Sat, 26 Sep 2020 14:55:42 +0200, kholk11@gmail.com wrote:
+> This patch series enables support for the regulators as found in
+> the PM660 and PM660L PMICs.
+> While at it, and to make them work, along with other regulators
+> for other qcom PMICs, enlarge the maximum property name length in
+> the regulator core, so that we're able to correctly parse the
+> supply parents, which have got very long names (details in patch 1/5).
+> 
+> [...]
 
---tuFXEhzhBeitrIAu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Sat, Sep 26, 2020 at 02:55:42PM +0200, kholk11@gmail.com wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
-> AngeloGioacchino Del Regno (7):
->   regulator: core: Enlarge max OF property name length to 64 chars
->   regulator: qcom_spmi: Add support for new regulator types
->   regulator: qcom_spmi: Add PM660/PM660L regulators
->   regulator: dt-bindings: Document the PM660/660L SPMI PMIC entries
->   regulator: qcom_smd: Add PM660/PM660L regulator support
->   mfd: qcom-spmi-pmic: Add support for PM660/PM660L
->   regulator: dt-bindings: Document the PM660/PM660L PMICs entries
+Thanks!
 
-This said patch 0/5 but there are 7 patches here...
+[1/6] regulator: core: Enlarge max OF property name length to 64 chars
+      commit: e9bb4a068b206f61ef01057cfeafdb852fb244c5
+[2/6] regulator: qcom_spmi: Add support for new regulator types
+      commit: 328816c2033160a6929fb0c6f0018b7c8d75cefe
+[3/6] regulator: qcom_spmi: Add PM660/PM660L regulators
+      commit: 0074c4472dcb20e989d9870c0b3aba42d0aa44b8
+[4/6] regulator: dt-bindings: Document the PM660/660L SPMI PMIC entries
+      commit: f9f061a5486f6a87e32fac80223ae44d4aefc06f
+[5/6] regulator: qcom_smd: Add PM660/PM660L regulator support
+      commit: 6d849653b00f2336efcd371fe85a7eb31bb094e9
+[6/6] regulator: dt-bindings: Document the PM660/PM660L PMICs entries
+      commit: f627691db72921f300e333fbbfe8349142a94807
 
---tuFXEhzhBeitrIAu
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl92C1wACgkQJNaLcl1U
-h9Apowf+M8mQLNlk5C94v/lobmqDbp7yeHjIkO29sX/+IA/8l3WhZdODZBZympxf
-4MX9afgFpZBbdIhbd+010VVDItDmhoFKMf7pAR8x/ZiGropxJxejerfNnDNUGLeB
-gTc2lMBvuaJjJ5uzFiKDhQl+1jBAwhfN64/mVbZREPXleJck4OXEuwCDpO2lMzM8
-wYCczlhHpRsqdDWvmIXGs0430LJrlnxMcV1B1Tp2KKH4Wl40qkqtv4a9xw2WriWl
-GU7XDUFGRazpyOY1zrZC7XiwFx4VwD1ECupoq8DzF+wwR9XYfBeFhteHb2hhKIlK
-3TQOhIHxtwr7ZmM9915GK388ZkhucA==
-=AhOy
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---tuFXEhzhBeitrIAu--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
