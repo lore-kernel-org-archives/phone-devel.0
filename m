@@ -1,105 +1,197 @@
-Return-Path: <SRS0=tENq=DI=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <SRS0=3YM9=DJ=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50737C4727F
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Oct 2020 22:48:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CE0ECC4363D
+	for <phone-devel@archiver.kernel.org>; Fri,  2 Oct 2020 05:43:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1CEFC207DE
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Oct 2020 22:48:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1601592502;
-	bh=ZdismrIrzDFufmTFsLx3DkSFP3z8hChR5m3PaFMvsTk=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=RjZhvgzf7QBzBzhAhzk+/5c7ft29gqe2ItJPF9jQxJqKC4HN+eIAlVNxeVDoyy5HZ
-	 fRUSoNtFeyygZgfKUf0RPPun/GNRdY9rq7BggSif7QMor+BM/2Ag9ENNGfXSLb8P8C
-	 9CMAAmkwQe6cHW+mBEtNyw2WnykbNupGjpnxH6EI=
+	by mail.kernel.org (Postfix) with ESMTP id 8512C20708
+	for <phone-devel@archiver.kernel.org>; Fri,  2 Oct 2020 05:43:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733271AbgJAWsV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Oct 2020 18:48:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56288 "EHLO mail.kernel.org"
+        id S1725985AbgJBFnF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 2 Oct 2020 01:43:05 -0400
+Received: from mga04.intel.com ([192.55.52.120]:26482 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726741AbgJAWsV (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 1 Oct 2020 18:48:21 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7CF582074B;
-        Thu,  1 Oct 2020 22:48:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601592501;
-        bh=ZdismrIrzDFufmTFsLx3DkSFP3z8hChR5m3PaFMvsTk=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=srr0ipw9YVb4cj0nj4QUsXqEKnrqtWSWCbq0SXcuT4C1uKlM7FyGMsSXzqenbPZPm
-         riFSmN6FEmo2QfFMcFE7e+zOFW4nr2D2d7Kk0RMzCvZkVj1ZPdyDODOdAVpLbds5KB
-         XHH0WXsHZJsRvH3Zt/HpUeYb9ONRvu4NbmWOnp0Y=
-Date:   Thu, 01 Oct 2020 23:47:21 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     "kholk11@gmail.com" <kholk11@gmail.com>
-Cc:     konradybcio@gmail.com, bjorn.andersson@linaro.org,
-        martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
-        robh+dt@kernel.org, lgirdwood@gmail.com,
-        phone-devel@vger.kernel.org, marijns95@gmail.com,
-        agross@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20200926125549.13191-1-kholk11@gmail.com>
-References: <20200926125549.13191-1-kholk11@gmail.com>
-Subject: Re: [PATCH 0/5] Support for PM660/PM660L SPMI and SMD regulators
-Message-Id: <160159243691.44970.9175489185107541886.b4-ty@kernel.org>
+        id S1725926AbgJBFnF (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 2 Oct 2020 01:43:05 -0400
+IronPort-SDR: xbkfglkvbs/NHnKIVqQC1l3E9ih8qTzfKKbysxz4TbreY3DWSXunq6KhRzOqon6HUFdbETi3SE
+ dpsWba1oAgmA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9761"; a="160323883"
+X-IronPort-AV: E=Sophos;i="5.77,326,1596524400"; 
+   d="scan'208";a="160323883"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2020 22:43:04 -0700
+IronPort-SDR: AxnjzFZxCJcGCJ01krNjA9yqQ3Hppk2xj3mUyAgZpP5mDuAFvTb/8OjbG0gLu34sSQgyjQ+huk
+ f/JH3NWh+Zvw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,326,1596524400"; 
+   d="scan'208";a="416349376"
+Received: from pl-dbox.sh.intel.com (HELO intel.com) ([10.239.159.39])
+  by fmsmga001.fm.intel.com with ESMTP; 01 Oct 2020 22:43:01 -0700
+Date:   Fri, 2 Oct 2020 13:39:44 +0800
+From:   Philip Li <philip.li@intel.com>
+To:     AngeloGioacchino Del Regno <kholk11@gmail.com>
+Cc:     kernel test robot <lkp@intel.com>, Andy Gross <agross@kernel.org>,
+        kbuild-all@lists.01.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, marijns95@gmail.com,
+        konradybcio@gmail.com, martin.botka1@gmail.com,
+        MSM <linux-arm-msm@vger.kernel.org>, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/5] clk: qcom: Add SDM660 GPU Clock Controller (GPUCC)
+ driver
+Message-ID: <20201002053944.GD30771@intel.com>
+References: <20200926130306.13843-5-kholk11@gmail.com>
+ <202010010458.1600JqDl-lkp@intel.com>
+ <CAK7fi1Yvaj+Emad8GboLHSu6v-E81pX=GmCtmwm=utzQEtu2Cg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK7fi1Yvaj+Emad8GboLHSu6v-E81pX=GmCtmwm=utzQEtu2Cg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 26 Sep 2020 14:55:42 +0200, kholk11@gmail.com wrote:
-> This patch series enables support for the regulators as found in
-> the PM660 and PM660L PMICs.
-> While at it, and to make them work, along with other regulators
-> for other qcom PMICs, enlarge the maximum property name length in
-> the regulator core, so that we're able to correctly parse the
-> supply parents, which have got very long names (details in patch 1/5).
+On Wed, Sep 30, 2020 at 11:58:50PM +0200, AngeloGioacchino Del Regno wrote:
+> The kernel test robot is wrong: this commit builds fine by
+Thanks for the info and sorry for the wrong report. Currently it is
+hard to detect the base in this case automatically, if possible, we
+recommend to use --base option when git format patch, this provides
+extra hint to us when looking for the base.
+
+> merging in the required patch series (464958) named
+> "Qualcomm clock fixes and preparation for SDM660"
+> https://lore.kernel.org/patchwork/project/lkml/list/?series=464958
 > 
-> [...]
-
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
-
-Thanks!
-
-[1/6] regulator: core: Enlarge max OF property name length to 64 chars
-      commit: e9bb4a068b206f61ef01057cfeafdb852fb244c5
-[2/6] regulator: qcom_spmi: Add support for new regulator types
-      commit: 328816c2033160a6929fb0c6f0018b7c8d75cefe
-[3/6] regulator: qcom_spmi: Add PM660/PM660L regulators
-      commit: 0074c4472dcb20e989d9870c0b3aba42d0aa44b8
-[4/6] regulator: dt-bindings: Document the PM660/660L SPMI PMIC entries
-      commit: f9f061a5486f6a87e32fac80223ae44d4aefc06f
-[5/6] regulator: qcom_smd: Add PM660/PM660L regulator support
-      commit: 6d849653b00f2336efcd371fe85a7eb31bb094e9
-[6/6] regulator: dt-bindings: Document the PM660/PM660L PMICs entries
-      commit: f627691db72921f300e333fbbfe8349142a94807
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+> In that series there is a commit that generalizes the MSM8996-only
+> gfx3d clock ops and introduces the definition of clk_rcg2_gfx3d.
+> 
+> Il giorno mer 30 set 2020 alle ore 22:46 kernel test robot
+> <lkp@intel.com> ha scritto:
+> >
+> > Hi,
+> >
+> > Thank you for the patch! Yet something to improve:
+> >
+> > [auto build test ERROR on clk/clk-next]
+> > [also build test ERROR on robh/for-next linux/master linus/master v5.9-rc7 next-20200930]
+> > [If your patch is applied to the wrong git tree, kindly drop us a note.
+> > And when submitting patch, we suggest to use '--base' as documented in
+> > https://git-scm.com/docs/git-format-patch]
+> >
+> > url:    https://github.com/0day-ci/linux/commits/kholk11-gmail-com/SDM630-660-Multimedia-and-GPU-clock-controllers/20200926-210437
+> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/clk/linux.git clk-next
+> > config: m68k-allmodconfig (attached as .config)
+> > compiler: m68k-linux-gcc (GCC) 9.3.0
+> > reproduce (this is a W=1 build):
+> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+> >         chmod +x ~/bin/make.cross
+> >         # https://github.com/0day-ci/linux/commit/0551514b1ab723837163a8c4cd84d22831e38019
+> >         git remote add linux-review https://github.com/0day-ci/linux
+> >         git fetch --no-tags linux-review kholk11-gmail-com/SDM630-660-Multimedia-and-GPU-clock-controllers/20200926-210437
+> >         git checkout 0551514b1ab723837163a8c4cd84d22831e38019
+> >         # save the attached .config to linux build tree
+> >         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-9.3.0 make.cross ARCH=m68k
+> >
+> > If you fix the issue, kindly add following tag as appropriate
+> > Reported-by: kernel test robot <lkp@intel.com>
+> >
+> > All errors (new ones prefixed by >>):
+> >
+> > >> drivers/clk/qcom/gpucc-sdm660.c:106:15: error: variable 'gfx3d_clk_src' has initializer but incomplete type
+> >      106 | static struct clk_rcg2_gfx3d gfx3d_clk_src = {
+> >          |               ^~~~~~~~~~~~~~
+> > >> drivers/clk/qcom/gpucc-sdm660.c:107:3: error: 'struct clk_rcg2_gfx3d' has no member named 'div'
+> >      107 |  .div = 2,
+> >          |   ^~~
+> >    drivers/clk/qcom/gpucc-sdm660.c:107:9: warning: excess elements in struct initializer
+> >      107 |  .div = 2,
+> >          |         ^
+> >    drivers/clk/qcom/gpucc-sdm660.c:107:9: note: (near initialization for 'gfx3d_clk_src')
+> > >> drivers/clk/qcom/gpucc-sdm660.c:108:3: error: 'struct clk_rcg2_gfx3d' has no member named 'rcg'
+> >      108 |  .rcg = {
+> >          |   ^~~
+> > >> drivers/clk/qcom/gpucc-sdm660.c:108:9: error: extra brace group at end of initializer
+> >      108 |  .rcg = {
+> >          |         ^
+> >    drivers/clk/qcom/gpucc-sdm660.c:108:9: note: (near initialization for 'gfx3d_clk_src')
+> >    drivers/clk/qcom/gpucc-sdm660.c:108:9: warning: excess elements in struct initializer
+> >    drivers/clk/qcom/gpucc-sdm660.c:108:9: note: (near initialization for 'gfx3d_clk_src')
+> > >> drivers/clk/qcom/gpucc-sdm660.c:121:3: error: 'struct clk_rcg2_gfx3d' has no member named 'hws'
+> >      121 |  .hws = (struct clk_hw*[]){
+> >          |   ^~~
+> >    drivers/clk/qcom/gpucc-sdm660.c:121:9: warning: excess elements in struct initializer
+> >      121 |  .hws = (struct clk_hw*[]){
+> >          |         ^
+> >    drivers/clk/qcom/gpucc-sdm660.c:121:9: note: (near initialization for 'gfx3d_clk_src')
+> > >> drivers/clk/qcom/gpucc-sdm660.c:139:25: error: invalid use of undefined type 'struct clk_rcg2_gfx3d'
+> >      139 |     .hw = &gfx3d_clk_src.rcg.clkr.hw,
+> >          |                         ^
+> >    drivers/clk/qcom/gpucc-sdm660.c:257:45: error: 'NO_RET_PERIPH' undeclared here (not in a function)
+> >      257 |  .flags = CLAMP_IO | SW_RESET | AON_RESET | NO_RET_PERIPH,
+> >          |                                             ^~~~~~~~~~~~~
+> >    drivers/clk/qcom/gpucc-sdm660.c:277:34: error: invalid use of undefined type 'struct clk_rcg2_gfx3d'
+> >      277 |  [GFX3D_CLK_SRC] = &gfx3d_clk_src.rcg.clkr,
+> >          |                                  ^
+> > >> drivers/clk/qcom/gpucc-sdm660.c:106:30: error: storage size of 'gfx3d_clk_src' isn't known
+> >      106 | static struct clk_rcg2_gfx3d gfx3d_clk_src = {
+> >          |                              ^~~~~~~~~~~~~
+> >
+> > vim +/gfx3d_clk_src +106 drivers/clk/qcom/gpucc-sdm660.c
+> >
+> >    105
+> >  > 106  static struct clk_rcg2_gfx3d gfx3d_clk_src = {
+> >  > 107          .div = 2,
+> >  > 108          .rcg = {
+> >    109                  .cmd_rcgr = 0x1070,
+> >    110                  .mnd_width = 0,
+> >    111                  .hid_width = 5,
+> >    112                  .parent_map = gpucc_parent_map_1,
+> >    113                  .clkr.hw.init = &(struct clk_init_data){
+> >    114                          .name = "gfx3d_clk_src",
+> >    115                          .parent_data = gpucc_parent_data_1,
+> >    116                          .num_parents = 4,
+> >    117                          .ops = &clk_gfx3d_ops,
+> >    118                          .flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
+> >    119                  },
+> >    120          },
+> >  > 121          .hws = (struct clk_hw*[]){
+> >    122                  &gpucc_cxo_clk.clkr.hw,
+> >    123                  &gpu_pll0_pll_out_main.clkr.hw,
+> >    124                  &gpu_pll1_pll_out_main.clkr.hw,
+> >    125          }
+> >    126  };
+> >    127
+> >    128  static struct clk_branch gpucc_gfx3d_clk = {
+> >    129          .halt_reg = 0x1098,
+> >    130          .halt_check = BRANCH_HALT,
+> >    131          .hwcg_reg = 0x1098,
+> >    132          .hwcg_bit = 1,
+> >    133          .clkr = {
+> >    134                  .enable_reg = 0x1098,
+> >    135                  .enable_mask = BIT(0),
+> >    136                  .hw.init = &(struct clk_init_data){
+> >    137                          .name = "gpucc_gfx3d_clk",
+> >    138                          .parent_data = &(const struct clk_parent_data){
+> >  > 139                                  .hw = &gfx3d_clk_src.rcg.clkr.hw,
+> >    140                          },
+> >    141                          .num_parents = 1,
+> >    142                          .ops = &clk_branch2_ops,
+> >    143                          .flags = CLK_SET_RATE_PARENT,
+> >    144                  },
+> >    145          },
+> >    146  };
+> >    147
+> >
+> > ---
+> > 0-DAY CI Kernel Test Service, Intel Corporation
+> > https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> 
