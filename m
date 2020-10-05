@@ -2,65 +2,67 @@ Return-Path: <SRS0=vNnj=DM=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38F51C4727F
-	for <phone-devel@archiver.kernel.org>; Mon,  5 Oct 2020 15:40:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF5F2C46466
+	for <phone-devel@archiver.kernel.org>; Mon,  5 Oct 2020 15:41:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EE7F42085B
-	for <phone-devel@archiver.kernel.org>; Mon,  5 Oct 2020 15:40:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9956320E65
+	for <phone-devel@archiver.kernel.org>; Mon,  5 Oct 2020 15:41:40 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jUNtrqld"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HWbxr7g2"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728281AbgJEPkW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 5 Oct 2020 11:40:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50442 "EHLO
+        id S1728815AbgJEPlj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 5 Oct 2020 11:41:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728126AbgJEPj7 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 5 Oct 2020 11:39:59 -0400
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDAAAC0613CE
-        for <phone-devel@vger.kernel.org>; Mon,  5 Oct 2020 08:39:58 -0700 (PDT)
-Received: by mail-wm1-x343.google.com with SMTP id v12so9284652wmh.3
-        for <phone-devel@vger.kernel.org>; Mon, 05 Oct 2020 08:39:58 -0700 (PDT)
+        with ESMTP id S1727480AbgJEP2y (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 5 Oct 2020 11:28:54 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9D80C0613A7;
+        Mon,  5 Oct 2020 08:28:52 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id b12so9796176edz.11;
+        Mon, 05 Oct 2020 08:28:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=C1vg2Q6l5F4FqJLE1Bb5zbVtOaKa/d+4nMiq5xRdW9Y=;
-        b=jUNtrqld89Z5bRCRojNuzReM+r6JS6TOjo3LHRpNTCp6R6aoqghNbysIlGI0Cq5x/u
-         oFokmONxGKij9rh2UROqxhkr1Yj/3NaUnc8jQYNwAi0NL+rC53HVlNBezK6SEqHjTU0U
-         Pcpuyq8NhrAMshWDcSXa2GMQhncJMg2TJz80XavjIZo8xo2U17MIdMGd6HCPAo7CcYup
-         5ear5n9cfVdO4JQTTWhf/3KiHQ2ElEpD48KfoJHcDkMFsDsWRQlquyRkr433z8yfni5o
-         dglUXTK46Tc/6V6zA4gmXplvBXXkRqVhIgufa3N5ce6vvK3ixzLYfxK3HHwZ+l8KrLd8
-         i6Rw==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cenGKJzkLKJNDoOLw4v3WNu1rdhsMcz91gS2ZObX+fE=;
+        b=HWbxr7g218E/jgD/+3VtUzYLXTq9LiHkq9FQIOpDCcL3MbGRW/XjhYgC9dLzVBW1UG
+         JYevzJ37I+usd6wJA06EKErrcAojBLVxWq8GEBiyv2HW9ZSmcyfQxdYYuedpJ5L0zAer
+         HmWKJhXMIdL3yR8P6uXlxQlMSrh7yVyPzR+cwWIpB220d1sKVID4azq8XXB0lVmtfZVO
+         2CIQT3ZUT+ph14mt8sg8FSqdpMDDs05Kmk264J+uEpsVni5+uNCiQ+2kTtjuAv6ghu3I
+         7yIll7ZK+E72YXJ7+SCCL+PBLyCtTIxQjTx+kiIjuOLzkqeNw/N2XvM6d/1qN9QI6Wto
+         ZOgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=C1vg2Q6l5F4FqJLE1Bb5zbVtOaKa/d+4nMiq5xRdW9Y=;
-        b=eGyvVyEnvUIG5P0b7zol6Xfn+diRQveKGmXXFQCndOHSQIckrTVxeXgRfewj/O3tfs
-         fudgpVNSaW5K9seL2wgtaQqdy5LQDyxbmU/7jN4aOkIr6iozPW0Lte+r7ZDF8DWkHZeW
-         cCxe5dZVL+NKRP5MAGq8OGaM4CsuAPTHPZLfurVzcfZXksRY8ZIVmkSziTSNAmLsnm5N
-         XnfMf2yj8JH/NCnJfVHENqx5tgJwZV1GoxSLJRT9S0ACnRToceJI5hhDWeQJEqkxiYjO
-         OnVyKvNtWh8E3zzehKKv3yj1K0e0kptilhOxhy6sgf0jRh1MKhDoRorm1mwc+v6TmUhH
-         BFnA==
-X-Gm-Message-State: AOAM532YixK3b0ZbWFUTOhXXnR9Btw+voIFVbvZIZmtEZa1LdOdvD0+u
-        kfgfnJaOONYBudhkh9MMiIVC0A==
-X-Google-Smtp-Source: ABdhPJxiZm+vESjN0gChJKTJxn9dUw/2Iu2EArIoK2MZBfIfQLbryNdgReBDi7q9GobTXGDWIiz3EQ==
-X-Received: by 2002:a1c:e309:: with SMTP id a9mr240476wmh.90.1601912394300;
-        Mon, 05 Oct 2020 08:39:54 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:4892:2327:f1c5:e39c? ([2a01:e34:ed2f:f020:4892:2327:f1c5:e39c])
-        by smtp.googlemail.com with ESMTPSA id b11sm422714wrt.38.2020.10.05.08.39.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Oct 2020 08:39:53 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cenGKJzkLKJNDoOLw4v3WNu1rdhsMcz91gS2ZObX+fE=;
+        b=B5AHOxaxfzbjRdLP2RTM429AVo3dAfBojns3CNBLPo6QYuxBAMJgjS0M8Wdt/DTU7H
+         GQ8ac5vKn5RWT2go29GDbWJyQ4KK9bqNFULqqC1TQ6xFjPory4UUe0yzka23PDjx1n+1
+         3xKdIxjvkdCrKL2ZBbt9VpOajNQOS53oqEJs+85g64hIV3fLENP4i6sBThA+IuNUGgIK
+         OAQILZHOgAp7UDaTUJW0FO6b9qOP+MOpG856f3iKHIWAgSRCnx/JmekpNgwzjiKBZ+5R
+         ygn8oUpDcba7pp7qzWH8N2VmaHy2Z1WBN8qCnDtjGT8CjKDXDUi61PFihzNx9IqGPHew
+         h/Nw==
+X-Gm-Message-State: AOAM531MmyGfG+p+z4cs+fPt6GzPTdoyhyehNXt8hxMUNr83PdZm4Z6x
+        o+/z0zMiT2kdqwp+P22qb8y9z28fMWi8jIiz9LA=
+X-Google-Smtp-Source: ABdhPJzR/+JcgozZaRVsiD5h30TjNMV/X/qN/nhWubBMpVT8nvxNFVNUQ/eZNBuDiofxzGginvn+g6ps0WTKzHYh6UM=
+X-Received: by 2002:a05:6402:3c1:: with SMTP id t1mr126673edw.231.1601911731452;
+ Mon, 05 Oct 2020 08:28:51 -0700 (PDT)
+MIME-Version: 1.0
+References: <20201005150313.149754-1-konradybcio@gmail.com>
+ <20201005150313.149754-4-konradybcio@gmail.com> <c03ace9d-d983-c1f8-ab74-ed585aeb2364@linaro.org>
+In-Reply-To: <c03ace9d-d983-c1f8-ab74-ed585aeb2364@linaro.org>
+From:   Konrad Dybcio <konradybcio@gmail.com>
+Date:   Mon, 5 Oct 2020 17:28:15 +0200
+Message-ID: <CAMS8qEXBrF-j5ObahFVcJFMuC7=ucz+y7XBzTyuJAqejsE0F+g@mail.gmail.com>
 Subject: Re: [PATCH 03/11] arm64: dts: qcom: pm8994: Add thermal-zones for
  temp alarm
-To:     Konrad Dybcio <konradybcio@gmail.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -68,44 +70,20 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-arm-msm <linux-arm-msm@vger.kernel.org>,
         DTML <devicetree@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20201005150313.149754-1-konradybcio@gmail.com>
- <20201005150313.149754-4-konradybcio@gmail.com>
- <c03ace9d-d983-c1f8-ab74-ed585aeb2364@linaro.org>
- <CAMS8qEXBrF-j5ObahFVcJFMuC7=ucz+y7XBzTyuJAqejsE0F+g@mail.gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <0eb34c71-3e1c-9950-de30-6b163d7cca3a@linaro.org>
-Date:   Mon, 5 Oct 2020 17:39:49 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <CAMS8qEXBrF-j5ObahFVcJFMuC7=ucz+y7XBzTyuJAqejsE0F+g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 05/10/2020 17:28, Konrad Dybcio wrote:
->> Don't you want to add a 'hot' trip point, so userspace can get the
->> notification and have an opportunity to do some action like unplugging
->> some CPU before a wild shutdown happens ?
-> 
-> PM8998 doesn't do that and so I followed.
-> 
-> Anyway, msm8992/4 will never have all CPUs online at once, unless
-> it's put in a freezer, so unplugging isn't much of an argument :D
+>Don't you want to add a 'hot' trip point, so userspace can get the
+>notification and have an opportunity to do some action like unplugging
+>some CPU before a wild shutdown happens ?
 
-What do you mean by they are not "online at once" ?
+PM8998 doesn't do that and so I followed.
 
-> If you want though, I can resend this patch AND add a hot point to pm8998.
+Anyway, msm8992/4 will never have all CPUs online at once, unless
+it's put in a freezer, so unplugging isn't much of an argument :D
 
-It is just a suggestion, it is up to you and the SoC maintainer.
+If you want though, I can resend this patch AND add a hot point to pm8998.
 
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Konrad
