@@ -5,59 +5,59 @@ X-Spam-Level:
 X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84851C4363D
-	for <phone-devel@archiver.kernel.org>; Mon,  5 Oct 2020 15:04:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99390C4363D
+	for <phone-devel@archiver.kernel.org>; Mon,  5 Oct 2020 15:10:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 49296208C7
-	for <phone-devel@archiver.kernel.org>; Mon,  5 Oct 2020 15:04:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 489AB2078A
+	for <phone-devel@archiver.kernel.org>; Mon,  5 Oct 2020 15:10:56 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s9SJz8A7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fKPbnOC5"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726754AbgJEPD3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 5 Oct 2020 11:03:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44698 "EHLO
+        id S1726731AbgJEPKz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 5 Oct 2020 11:10:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726743AbgJEPD2 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 5 Oct 2020 11:03:28 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50C8AC0613A8;
-        Mon,  5 Oct 2020 08:03:28 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id m6so10006287wrn.0;
-        Mon, 05 Oct 2020 08:03:28 -0700 (PDT)
+        with ESMTP id S1725970AbgJEPKl (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 5 Oct 2020 11:10:41 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5314C0613CE;
+        Mon,  5 Oct 2020 08:10:40 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id o5so9993491wrn.13;
+        Mon, 05 Oct 2020 08:10:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=tlH8tFGN06glbZKMWD61GjMvPfq2+LXNjuTVVLpB//g=;
-        b=s9SJz8A70o7kQXfyEHA2+fqpr1v0t6DJkIOB3/DT7NoCYKzxu7ONMJyLAqIW6u7Qro
-         XVpKabWOskzSu3rq8yxAHkWWIMMqE3v0qOC2NOcIm0mUejN+4TEiHSYhPQ2lboJ8PFCF
-         Lf5CUP3vnJs/Ejeh59V59qmDhBHKn4K3QNxGxBiPNDW6uqd1aeoUvRiAu3M7CCmdTCRA
-         yAWGm1aczWV/3JsGDsgVwYRYFYxgufXjoNwPmqk5IRduUNZ+d+pRSnVSXNzDvL6ETjFz
-         ZIZmTW+kPFNPHbj4cNWdyY/T7l6gmuco1xIpVxqA3jMmNxO3IVB8eMzZeN9gnKJ5mbiw
-         U1QA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=61sqlqf5DafArIIzaf0d46tvaomigu2E5aU6czoyheo=;
+        b=fKPbnOC5Qfro2yRVg/8ttKDTcR68Xp1AFBF4tFOJcZpABp/DW1n4OBnHimGABy6goK
+         weB/jWAdzvEGvcaWdZ4ncXiOXrVFSpDXHJKt+kFzRPK7woCFTxbUtBAMl2o+gyMoUjhV
+         rg3My3copnFbsZG+Tw7vAPFHs2ONjkFQM9cxxaKCQtV2EzQV6nXx8UhMBR8wuFG1I7yb
+         5thw9MACHLD9E2DOAbs3KI1IdgvDG6yXJ+4FNK3rvjDIWouW5tU9fMdyEspJj3a2Lwxy
+         Mdek3/vEDHLjV9pVHzQX+hcpOHiZ2dm771+GnsL08iPCK8iOwaZSpzCYYvnTSslOMjRa
+         T1IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=tlH8tFGN06glbZKMWD61GjMvPfq2+LXNjuTVVLpB//g=;
-        b=WqZw+1uUYZ5la8fH9VffB/DXJZr59ROXUN9lzvoUzx4Iba5uey+J+tL8mRH3J7LEv+
-         qpsntlEemL2cqU9ZaOZ9uUJaY0tzVocTOsEteKV+hyLd4OfA6FE3uAa6dM4FJ0N1BoAx
-         eI1p9FkS+BmTeFX45AMmy0fsDOEasoxYojlwq808WcG+7lByRA4KCnf+WNJE8UxysFvc
-         7GmpnHzoap/XlK+oT1UtX3F0+1utcl57qmT6vx3P/0/npGOSwiWdzRkrNUp65jH6j+qz
-         /b9SJ4Iq+ltmGmRGg6/2QHeMoTFaJGdXTXkFMFGCxf84RqlR0LU3ORo4S3bYks6I99/0
-         Dz8A==
-X-Gm-Message-State: AOAM531gXtKlUb8bGdVcYlbptHNGA7FVjOOKA8Fs6sMvz6Bd2Taqpff8
-        hyHYzQ2ZMLI8elxL7beJmvg=
-X-Google-Smtp-Source: ABdhPJwKU8vlzAt0OEbt2AoXNmvxhtk218aJRlJH7VFsGPITYJGlL3qz2XiXRITp9PEuMq2rEHAsgg==
-X-Received: by 2002:a5d:40cd:: with SMTP id b13mr18280179wrq.297.1601910206921;
-        Mon, 05 Oct 2020 08:03:26 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=61sqlqf5DafArIIzaf0d46tvaomigu2E5aU6czoyheo=;
+        b=sQ6rd1MGw26rimlB6uP4m7jYjoO3rjRnpJ4hmd3/uydq6nlH/hdoCYLbnKMFM3H09M
+         bpRkmpIGcK2StEEfY3rMLT2oibvvgtcOZE/z0wu3RixptjIktQGjy1DzAbef68LShu3h
+         4LUUV3HesABsku2WGamGTjFa8by++kAQXP8eYVRNl9SVQhG3RJqo2hMDjXbJ3Ol4NdbS
+         ggWlLNOMLLpsj4SUgtga6WiTxkqYmP/v4+aFBlxVO9hcNj0JakFd7QwYn51KwoYZNokZ
+         uiBNgQcBYzo8vuIsG6dp697JUeQgn1zNT23ruVH/SZH45SXwuckhfwGITeU85JMS+lgW
+         s1hA==
+X-Gm-Message-State: AOAM531qwzaJMgdLVquIeuuUnW424y44G9CDnyqzr9QD1Fjmeu3m7bhC
+        Ly8LmrwpJbB4hCQ1wyxPaYQ=
+X-Google-Smtp-Source: ABdhPJzefvGCaBYqbP/hvMMN1mJnJ/1FqfCGGlhKbYKSGmu5atq5gT6wCf4aE5JBGmiA9PmuaHMJKA==
+X-Received: by 2002:adf:e7c4:: with SMTP id e4mr12076173wrn.113.1601910639541;
+        Mon, 05 Oct 2020 08:10:39 -0700 (PDT)
 Received: from localhost.localdomain (abab191.neoplus.adsl.tpnet.pl. [83.6.165.191])
-        by smtp.googlemail.com with ESMTPSA id c132sm4662wmf.25.2020.10.05.08.03.25
+        by smtp.googlemail.com with ESMTPSA id 67sm18077wmb.31.2020.10.05.08.10.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2020 08:03:26 -0700 (PDT)
+        Mon, 05 Oct 2020 08:10:38 -0700 (PDT)
 From:   Konrad Dybcio <konradybcio@gmail.com>
 To:     konradybcio@gmail.com
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -66,43 +66,155 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 02/11] arm64: dts: qcom: pm8994: Add temperature alarm node
-Date:   Mon,  5 Oct 2020 17:03:02 +0200
-Message-Id: <20201005150313.149754-3-konradybcio@gmail.com>
+Subject: [PATCH] arm64: dts: Add support for remaining Sony Kitakami boards
+Date:   Mon,  5 Oct 2020 17:10:34 +0200
+Message-Id: <20201005151035.150936-1-konradybcio@gmail.com>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201005150313.149754-1-konradybcio@gmail.com>
-References: <20201005150313.149754-1-konradybcio@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+This patch adds support for the following Xperias:
+
+* Z3+ [aka Z4 in some regions] (Ivy)
+* Z4 Tablet (Karin)
+* Z5 Compact (Suzuran)
+* Z5 Premium (Satsuki)
+
+These devices are very similar in terms of hardware, with the main
+differences being display and touch panels.
+
 Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
 ---
- arch/arm64/boot/dts/qcom/pm8994.dtsi | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm64/boot/dts/qcom/Makefile                |  4 ++++
+ .../qcom/msm8994-sony-xperia-kitakami-ivy.dts    | 16 ++++++++++++++++
+ .../qcom/msm8994-sony-xperia-kitakami-karin.dts  | 16 ++++++++++++++++
+ .../msm8994-sony-xperia-kitakami-satsuki.dts     | 15 +++++++++++++++
+ .../msm8994-sony-xperia-kitakami-suzuran.dts     | 15 +++++++++++++++
+ .../dts/qcom/msm8994-sony-xperia-kitakami.dtsi   |  2 +-
+ 6 files changed, 67 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-ivy.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-karin.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-satsuki.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-suzuran.dts
 
-diff --git a/arch/arm64/boot/dts/qcom/pm8994.dtsi b/arch/arm64/boot/dts/qcom/pm8994.dtsi
-index ea2a3d53f859..7825208b0d8b 100644
---- a/arch/arm64/boot/dts/qcom/pm8994.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pm8994.dtsi
-@@ -36,6 +36,15 @@ pwrkey {
- 
- 		};
- 
-+		pm8994_temp: temp-alarm@2400 {
-+			compatible = "qcom,spmi-temp-alarm";
-+			reg = <0x2400>;
-+			interrupts = <0x0 0x24 0x0 IRQ_TYPE_EDGE_RISING>;
-+			io-channels = <&pm8994_vadc VADC_DIE_TEMP>;
-+			io-channel-names = "thermal";
-+			#thermal-sensor-cells = <0>;
-+		};
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+index 030d9648fb11..88c0c9fd8495 100644
+--- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -13,7 +13,11 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8992-msft-lumia-talkman.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8992-xiaomi-libra.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-angler-rev-101.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-msft-lumia-cityman.dts
++dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-ivy.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-karin.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-satsuki.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-sumire.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-suzuran.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8996-mtp.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8998-asus-novago-tp370ql.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8998-hp-envy-x2.dtb
+diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-ivy.dts b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-ivy.dts
+new file mode 100644
+index 000000000000..ff631e5de257
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-ivy.dts
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2020, Konrad Dybcio
++ */
 +
- 		pm8994_vadc: adc@3100 {
- 			compatible = "qcom,spmi-vadc";
- 			reg = <0x3100>;
++/dts-v1/;
++
++#include "msm8994-sony-xperia-kitakami.dtsi"
++
++/ {
++	model = "Sony Xperia Z3+/Z4";
++	compatible = "sony,ivy-row", "qcom,msm8994";
++
++	qcom,msm-id = <0xcf 0x00>, <0xcf 0x10000>, <0xcf 0x20000>;
++	qcom,board-id = <0x08 0x00>, <0x10008 0x00>;
++};
+diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-karin.dts b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-karin.dts
+new file mode 100644
+index 000000000000..e46036daf817
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-karin.dts
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2020, Konrad Dybcio
++ */
++
++/dts-v1/;
++
++#include "msm8994-sony-xperia-kitakami.dtsi"
++
++/ {
++	model = "Sony Xperia Z4 Tablet";
++	compatible = "sony,karin-row", "qcom,msm8994";
++
++	qcom,msm-id = <0xcf 0x00>, <0xcf 0x10000>, <0xcf 0x20000>;
++	qcom,board-id = <0x08 0x00>, <0x10008 0x00>;
++};
+diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-satsuki.dts b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-satsuki.dts
+new file mode 100644
+index 000000000000..3aa95e3474de
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-satsuki.dts
+@@ -0,0 +1,15 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2020, Konrad Dybcio
++ */
++
++/dts-v1/;
++
++#include "msm8994-sony-xperia-kitakami.dtsi"
++
++/ {
++	model = "Sony Xperia Z5 Premium";
++	compatible = "sony,satsuki-row", "qcom,msm8994";
++
++	qcom,msm-id = <0xcf 0x20000>, <0xcf 0x20000>;
++};
+diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-suzuran.dts b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-suzuran.dts
+new file mode 100644
+index 000000000000..79c48a7bb8f9
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-suzuran.dts
+@@ -0,0 +1,15 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2020, Konrad Dybcio
++ */
++
++/dts-v1/;
++
++#include "msm8994-sony-xperia-kitakami.dtsi"
++
++/ {
++	model = "Sony Xperia Z5 Compact";
++	compatible = "sony,suzuran-row", "qcom,msm8994";
++
++	qcom,msm-id = <0xcf 0x20000>;
++};
+diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
+index 791f254ac3f8..af1bbb0be1c5 100644
+--- a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
+@@ -11,7 +11,7 @@
+ 
+ / {
+ 	/* required for bootloader to select correct board */
+-	qcom,msm-id = <0xcf 0x20001>;
++	qcom,msm-id = <0xcf 0x20000>, <0xcf 0x20001>;
+ 	qcom,pmic-id = <0x10009 0x1000a 0x00 0x00>;
+ 	qcom,board-id = <8 0>;
+ 
 -- 
 2.28.0
 
