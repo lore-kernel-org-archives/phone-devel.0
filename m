@@ -8,56 +8,56 @@ X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53987C4363D
-	for <phone-devel@archiver.kernel.org>; Mon,  5 Oct 2020 15:03:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10022C46466
+	for <phone-devel@archiver.kernel.org>; Mon,  5 Oct 2020 15:03:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1B1A82078A
-	for <phone-devel@archiver.kernel.org>; Mon,  5 Oct 2020 15:03:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D18C42078A
+	for <phone-devel@archiver.kernel.org>; Mon,  5 Oct 2020 15:03:40 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eE5U32q4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LrUl1Vub"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726745AbgJEPD2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 5 Oct 2020 11:03:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44686 "EHLO
+        id S1726814AbgJEPDk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 5 Oct 2020 11:03:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726637AbgJEPDZ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 5 Oct 2020 11:03:25 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61A8EC0613CE;
-        Mon,  5 Oct 2020 08:03:25 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id t9so1329994wrq.11;
-        Mon, 05 Oct 2020 08:03:25 -0700 (PDT)
+        with ESMTP id S1726795AbgJEPDe (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 5 Oct 2020 11:03:34 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C131AC0613A7;
+        Mon,  5 Oct 2020 08:03:33 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id v12so9147613wmh.3;
+        Mon, 05 Oct 2020 08:03:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=1RG5O/blRX088Gf+ChfJZxqZON6Zi0SmLcrgY0NHzZU=;
-        b=eE5U32q4J8OCVWaOdW3/PJpFoCfS6AAVQm9eTgbi93rZR5nbVgvY6jg3wLTVSVzqA9
-         lDWl3Mfctfen6dcJAFhpEfB+vyb7XKf/EbbuNTvGn+OFCxUJ/Pe13Q7Wwzq0LT8Mv2eb
-         J4NfeYRKR0zn184450Y/uR5sl+HIipqAcK8ZL1j1YIX+ywVpiZ7uXpJQQrfVnDKdUMpZ
-         58Dzomy4ER6t4+mB9laQoLcmoKk/WlIImrPWZnCa3GpVrpnpsjLb7obowoR1fAPU7l+J
-         m5QIYvPibFXgbybuUtpJQJHY+2lu1oFsUyy+JukLW/rNG21ixCx81bgXO1XTvqhUJhir
-         55tw==
+        bh=ekPdQa1xmNKs7v3pWlFdm/XtGh/8ZRLvEzXqbsequUk=;
+        b=LrUl1Vuba6cCvOnDZ2s5MWWgrXdvy/hkE8hrvl0Yy8GxO1rlDw93Miwn8ugtBP/vA5
+         mrvgjXGZLhKtroF9eXHOJ3JJaiPT/dbHKxtflt0zum4SXil9IE+dUKMNO6MAl2vl1FjW
+         mwetzCdwV0LirsnXDF4CR08WqMYWtQj7K9NOMmazzriOyURChLyVVVgczGzj4eknrdzh
+         pz6R15qTQRWYYrFuyY9WXKuaEO48nWe+c4/eEamGwdL1RrAXBCiW43FSxw8LaWHpqSh9
+         2vp2wgO5/Pb3ibgSjR5z+zP651Dj+h51vBUb2JkfAVW1u7tB+0D9ODIqPbv+/6t7aQgu
+         M12A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=1RG5O/blRX088Gf+ChfJZxqZON6Zi0SmLcrgY0NHzZU=;
-        b=hZNuPJYiJPWz/vlbvBFoUS7KyTveN1grbnkOqbIMD5HO2NaRN94EJ7YESV6IascsEW
-         KLkXECNJ3F0AnMaZ6ASzx3Lu+UlKHAMJrmEz/ESp1uUgKc6j8B7CM7lr1KJlBZmMYO0N
-         wFqpSe3h+NpTIsLv9mN/bAp2V0eUwogANSVIDl5z5lfJvAAJAcmT02kZcdm6bWsNM+ZB
-         Uoa+bB9XsKaqNxP1bwxFepjNeSinRxymc6ClVVKo4zufeM8HqQRpFbAFQLVAdNNHF0Gu
-         W29ZBkwASGiXBqOUvdfsSFNNv5XBAsgM1tmuLToYkp0FPPKgmZ0TXs1tbmCT8uTXnD9B
-         tI0Q==
-X-Gm-Message-State: AOAM533zrAwokYKgwd6LGgOf0wodCCSUTY7mJ7neMatL2oOxrNLw2P0/
-        FaF5B5uHjqqOXfpWYsYHuBg=
-X-Google-Smtp-Source: ABdhPJytBOxbYlIVvXxNG0jVtNFycKep6mZQv1jCqxUnOC4v0KiopSbE4QroV2dV4BeZxqPSX/WQFg==
-X-Received: by 2002:adf:f4c6:: with SMTP id h6mr12104118wrp.310.1601910204126;
-        Mon, 05 Oct 2020 08:03:24 -0700 (PDT)
+        bh=ekPdQa1xmNKs7v3pWlFdm/XtGh/8ZRLvEzXqbsequUk=;
+        b=odC7jPbfFOYr6D6NS21tneckAHS7Jr6AGWou3KdhgQoZ5IkKHQMH5T/kXkTF57IRmP
+         9BvBHAENByKyT9e2IaXo8Gl3MfEMASjRYal2eLL5PIQR2hL9iPoq43/N824ZV9FG9tJf
+         vCntQC6v3tuYrvJ/sRCuBOwwFe8/XtHdBgMhBKpkSR1O0Nk6rtPR2XS97ycRDJ461+Nr
+         oEkMucFP2i/KQNenc0G516OrccEaD3KApN0tMCdPJL6pq8K/Qn9TgtT9YlOeEtFlsKtd
+         GgxcG876tSXkPTD1Z+IbL4t3Wrz7OvBQFy+4cogduYAKltCOah/3HDFGvX8oZurU2FCZ
+         MU/w==
+X-Gm-Message-State: AOAM531M8/fmPSoqD+Mc1wE7oLDkJA4jzxj7MtyCR480N9BH7TgQ5lQz
+        SezWG7Wmc1Hykk9j2RmQqLI=
+X-Google-Smtp-Source: ABdhPJwsxuNvDZPavDBF0khnTAJv2VsW/kagDfVoHVe7bW2LChyS+RTQZrdg25/QIrsXp/4g6nyWzw==
+X-Received: by 2002:a1c:e444:: with SMTP id b65mr16596146wmh.147.1601910212433;
+        Mon, 05 Oct 2020 08:03:32 -0700 (PDT)
 Received: from localhost.localdomain (abab191.neoplus.adsl.tpnet.pl. [83.6.165.191])
-        by smtp.googlemail.com with ESMTPSA id c132sm4662wmf.25.2020.10.05.08.03.22
+        by smtp.googlemail.com with ESMTPSA id c132sm4662wmf.25.2020.10.05.08.03.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2020 08:03:23 -0700 (PDT)
+        Mon, 05 Oct 2020 08:03:32 -0700 (PDT)
 From:   Konrad Dybcio <konradybcio@gmail.com>
 To:     konradybcio@gmail.com
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -66,9 +66,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 01/11] arm64: dts: qcom: pm8994: Add VADC node
-Date:   Mon,  5 Oct 2020 17:03:01 +0200
-Message-Id: <20201005150313.149754-2-konradybcio@gmail.com>
+Subject: [PATCH 04/11] arm64: dts: qcom: pm8994: Fix up spmi-gpio node
+Date:   Mon,  5 Oct 2020 17:03:04 +0200
+Message-Id: <20201005150313.149754-5-konradybcio@gmail.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201005150313.149754-1-konradybcio@gmail.com>
 References: <20201005150313.149754-1-konradybcio@gmail.com>
@@ -78,68 +78,54 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add VADC note and some of its channels to allow
-for voltage/temperature reading.
+Add a common compatible and switch to gpio-ranges.
 
 Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
 ---
- arch/arm64/boot/dts/qcom/pm8994.dtsi | 36 +++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/pm8994.dtsi | 27 ++++-----------------------
+ 1 file changed, 4 insertions(+), 23 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/pm8994.dtsi b/arch/arm64/boot/dts/qcom/pm8994.dtsi
-index 7e4f777746cb..ea2a3d53f859 100644
+index 9ab5657f7d23..5ffdf37d8e31 100644
 --- a/arch/arm64/boot/dts/qcom/pm8994.dtsi
 +++ b/arch/arm64/boot/dts/qcom/pm8994.dtsi
-@@ -1,7 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
-+#include <dt-bindings/iio/qcom,spmi-vadc.h>
-+#include <dt-bindings/input/linux-event-codes.h>
- #include <dt-bindings/interrupt-controller/irq.h>
- #include <dt-bindings/spmi/spmi.h>
--#include <dt-bindings/input/linux-event-codes.h>
- 
- &spmi_bus {
- 
-@@ -35,6 +36,39 @@ pwrkey {
- 
+@@ -103,32 +103,13 @@ adc-chan@f {
  		};
  
-+		pm8994_vadc: adc@3100 {
-+			compatible = "qcom,spmi-vadc";
-+			reg = <0x3100>;
-+			interrupts = <0x0 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			#io-channel-cells = <1>;
-+
-+			adc-chan@7 {
-+				reg = <VADC_VSYS>;
-+				qcom,pre-scaling = <1 3>;
-+				label = "vph_pwr";
-+			};
-+			adc-chan@8 {
-+				reg = <VADC_DIE_TEMP>;
-+				label = "die_temp";
-+			};
-+			adc-chan@9 {
-+				reg = <VADC_REF_625MV>;
-+				label = "ref_625mv";
-+			};
-+			adc-chan@a {
-+				reg = <VADC_REF_1250MV>;
-+				label = "ref_1250mv";
-+			};
-+			adc-chan@e {
-+				reg = <VADC_GND_REF>;
-+			};
-+			adc-chan@f {
-+				reg = <VADC_VDD_VADC>;
-+			};
-+		};
-+
  		pm8994_gpios: gpios@c000 {
- 			compatible = "qcom,pm8994-gpio";
+-			compatible = "qcom,pm8994-gpio";
++			compatible = "qcom,pm8994-gpio", "qcom,spmi-gpio";
  			reg = <0xc000>;
+ 			gpio-controller;
++			gpio-ranges = <&pm8994_gpios 0 0 22>;
+ 			#gpio-cells = <2>;
+-			interrupts = <0 0xc0 0 IRQ_TYPE_NONE>,
+-				     <0 0xc1 0 IRQ_TYPE_NONE>,
+-				     <0 0xc2 0 IRQ_TYPE_NONE>,
+-				     <0 0xc3 0 IRQ_TYPE_NONE>,
+-				     <0 0xc4 0 IRQ_TYPE_NONE>,
+-				     <0 0xc5 0 IRQ_TYPE_NONE>,
+-				     <0 0xc6 0 IRQ_TYPE_NONE>,
+-				     <0 0xc7 0 IRQ_TYPE_NONE>,
+-				     <0 0xc8 0 IRQ_TYPE_NONE>,
+-				     <0 0xc9 0 IRQ_TYPE_NONE>,
+-				     <0 0xca 0 IRQ_TYPE_NONE>,
+-				     <0 0xcb 0 IRQ_TYPE_NONE>,
+-				     <0 0xcc 0 IRQ_TYPE_NONE>,
+-				     <0 0xcd 0 IRQ_TYPE_NONE>,
+-				     <0 0xce 0 IRQ_TYPE_NONE>,
+-				     <0 0xcf 0 IRQ_TYPE_NONE>,
+-				     <0 0xd0 0 IRQ_TYPE_NONE>,
+-				     <0 0xd1 0 IRQ_TYPE_NONE>,
+-				     <0 0xd2 0 IRQ_TYPE_NONE>,
+-				     <0 0xd3 0 IRQ_TYPE_NONE>,
+-				     <0 0xd4 0 IRQ_TYPE_NONE>,
+-				     <0 0xd5 0 IRQ_TYPE_NONE>;
++			interrupt-controller;
++			#interrupt-cells = <2>;
+ 		};
+ 
+ 		pm8994_mpps: mpps@a000 {
 -- 
 2.28.0
 
