@@ -2,100 +2,79 @@ Return-Path: <SRS0=Yphv=DN=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED821C41604
-	for <phone-devel@archiver.kernel.org>; Tue,  6 Oct 2020 18:19:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC16AC4363D
+	for <phone-devel@archiver.kernel.org>; Tue,  6 Oct 2020 21:16:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9D72A206F7
-	for <phone-devel@archiver.kernel.org>; Tue,  6 Oct 2020 18:19:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1602008383;
-	bh=gKTY0xOCa2gbtQtFOSWqRuFPnxDijRdogDaT6R/agxE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=mbUh5399G5C0I7E0k538020hdkwMLS2Hs8O8y9RYUNTmLhuVxoF7c7heWpODYQS/D
-	 9l3zphiEtzyZnmhBIM0TEAwaOf5VS6/glpAVTXj2rlHtFdMprTaGpEvcphBcEWmLlF
-	 lkG63L7TsMEtv0FwRbv+dNQ6JVQO0uoOecmitj0g=
+	by mail.kernel.org (Postfix) with ESMTP id 4BC6720897
+	for <phone-devel@archiver.kernel.org>; Tue,  6 Oct 2020 21:16:24 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B174AjMW"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726777AbgJFSTk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 6 Oct 2020 14:19:40 -0400
-Received: from mail-oo1-f68.google.com ([209.85.161.68]:43197 "EHLO
-        mail-oo1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725906AbgJFSTk (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Oct 2020 14:19:40 -0400
-Received: by mail-oo1-f68.google.com with SMTP id w25so3420645oos.10;
-        Tue, 06 Oct 2020 11:19:39 -0700 (PDT)
+        id S1727358AbgJFVQU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 6 Oct 2020 17:16:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41988 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727301AbgJFVQU (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Oct 2020 17:16:20 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69E84C061755;
+        Tue,  6 Oct 2020 14:16:20 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id l24so15126201edj.8;
+        Tue, 06 Oct 2020 14:16:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OUkZ8Np/B9A5Tr2kvzOhcQInYr++ig9zgQwFFSAu5tQ=;
+        b=B174AjMWaVkO+6KTLUNvwpCBr7+lgVZQ8qWbkXUHz0/+M+xToZFzJBph0HD4WkF6w8
+         6ozCOwRRcFGwIQE15f74mYCFidd++dbwpD6x/FTKS1JMocfWzn8yIeDA2FkmeWjsMSW9
+         B3Zaq/pTLKbq/qzcgD+7oQsDUsrKhrO4oRG+qZNtXO7m0qs+kaa+9EGFm/Umq3Q8KDBk
+         JGYRz2UrXKgEmxZ7Peie1qDurKMUH6zc8KI82o/vAH3yjU62EJXQGTxvTGo+WdjArslf
+         gFN47emE+HQprl9Wtjmubxxg2SXrvAnhLssEVOP/ebY1zpNw+QyGMzplimP2g3jBgcGM
+         C3CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=BJWbJD2f71Np9nV5SqEsQ+f8lbMmKTYWc1i1BZ6eq58=;
-        b=PYYYZ1nNYPucm9eR/p5eizeUA8MmHER68Kjj5hpRnxNq8WnDao82AAnGBUMYm1BY99
-         BdJZvVaQhr/IXN0usxfvjZuiOFrTdPhmHbvZxHdsA9o4SfK3B5pYdZrio2i3ctXKC+ua
-         pOEGu0D0AgSFs7JhpbTjTt+v0pXcWcv+Z7BeDMVIFFlUY3Ss5zjB0i+neKq3uCCh8gZE
-         KoJqYNsafDNoeV3Xxy3L8RhJsjIuXzLcu4VfeCHPyLXZ0aS8AZrQOxqlzG/x3Ghy7QqX
-         dSPPftGjREqCF2Xo3bOZzrZ/dhLPJHiHAnLEIGZwu5uqcj6S7dcaLPKnvGzg7uW/W/Yi
-         4Zbw==
-X-Gm-Message-State: AOAM533ZO28l5Lk6/Snn8dCJzzBfTTWDYtet40FHj1CmSobj0lWp6Gg0
-        zS3DQc5VyRAyBi4YCaQejA==
-X-Google-Smtp-Source: ABdhPJwFL4l3f1wRexJyo8j2AuIR3ZQtB3DQa+PNN69rLAGMCtIaGFZl8KBStXM7MZMo3OrJBwy+jA==
-X-Received: by 2002:a4a:3954:: with SMTP id x20mr3995362oog.6.1602008379203;
-        Tue, 06 Oct 2020 11:19:39 -0700 (PDT)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id q8sm1331026otf.7.2020.10.06.11.19.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2020 11:19:38 -0700 (PDT)
-Received: (nullmailer pid 2573852 invoked by uid 1000);
-        Tue, 06 Oct 2020 18:19:37 -0000
-Date:   Tue, 6 Oct 2020 13:19:37 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     kholk11@gmail.com
-Cc:     bjorn.andersson@linaro.org, agross@kernel.org,
-        georgi.djakov@linaro.org, marijns95@gmail.com,
-        konradybcio@gmail.com, martin.botka1@gmail.com,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] interconnect: qcom: Add SDM660 interconnect
- provider driver
-Message-ID: <20201006181937.GA2572634@bogus>
-References: <20200928195853.40084-1-kholk11@gmail.com>
- <20200928195853.40084-2-kholk11@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OUkZ8Np/B9A5Tr2kvzOhcQInYr++ig9zgQwFFSAu5tQ=;
+        b=R+NbmFrnneazgk/ACZ7cfSSzde9Wq2fgMHoWX304X8DoyzF5ymC354ee2Sbe7WGvci
+         o5CBd8nYyjcG79Id/WfNgp05yAY5AbU9BzwF8/Avf+TMD4wemMKfyDIZhPtwdCBQpvEg
+         U2Y8oAmJ9IlTQOKD2k1O3OmDxzmltCnnBxu1A2BSwtSTP7kCfFWDAAgSJY3h0q6HbMyY
+         w5tlv/MGyrk9TXMYiUUuqy4CtT7srsuJI0azOZP1lp7Bk52oBUIIV9HbGG5YEk9vEsYw
+         7mdhYnncqmOHP+Nm5pOBZ7NR8xZnR2iePoncUl2JgVq+3IpJJUg8y98UWoPp18Tnf5ub
+         2AXQ==
+X-Gm-Message-State: AOAM5332n5/0VNDZQdL+5OGmg3IdmanaNtgsatWM9pCPcSgBjz9X+1CB
+        aikZ/qiQ/ov15yqD0FMRts6A75P49f7oqr8lIoY=
+X-Google-Smtp-Source: ABdhPJw/6Zfp8xcXnJLtHO8aGQ2XkYGNMbuzpVQDOmwKNeknUVV9pO1fIsyCNinlHc/7TjB3cs54SvDo9UNfvzkm2NE=
+X-Received: by 2002:a50:9e87:: with SMTP id a7mr18518edf.297.1602018978939;
+ Tue, 06 Oct 2020 14:16:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200928195853.40084-2-kholk11@gmail.com>
+References: <20201005150313.149754-7-konradybcio@gmail.com> <202010062217.7j4tkUkR-lkp@intel.com>
+In-Reply-To: <202010062217.7j4tkUkR-lkp@intel.com>
+From:   Konrad Dybcio <konradybcio@gmail.com>
+Date:   Tue, 6 Oct 2020 23:15:43 +0200
+Message-ID: <CAMS8qEWM8oMnPx7=c3=toQ0quUbbFRWXHf=eTMNXtRdORLSMJA@mail.gmail.com>
+Subject: Re: [PATCH 06/11] arm64: dts: qcom: msm8994: Add SDHCI2 node
+To:     kernel test robot <lkp@intel.com>
+Cc:     kbuild-all@lists.01.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Sep 28, 2020 at 09:58:52PM +0200, kholk11@gmail.com wrote:
-> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> 
-> Introduce a driver for the Qualcomm interconnect busses found in
-> the SDM630/SDM636/SDM660 SoCs.
-> The topology consists of several NoCs that are controlled by a
-> remote processor that collects the aggregated bandwidth for each
-> master-slave pairs.
-> 
-> On a note, these chips are managing the "bus QoS" in a "hybrid"
-> fashion: some of the paths in the topology are managed through
-> (and by, of course) the RPM uC, while some others are "AP Owned",
-> meaning that the AP shall do direct writes to the appropriate
-> QoS registers for the specific paths and ports, instead of sending
-> an indication to the RPM and leaving the job to that one.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> ---
->  drivers/interconnect/qcom/Kconfig             |   9 +
->  drivers/interconnect/qcom/Makefile            |   2 +
->  drivers/interconnect/qcom/sdm660.c            | 919 ++++++++++++++++++
->  .../dt-bindings/interconnect/qcom,sdm660.h    | 116 +++
+Please note that the bot is correct (this patch does not build if
+applied on its own), but I mentioned its dependence on a clk patch in
+the cover letter.
 
-This goes with the binding.
-
->  4 files changed, 1046 insertions(+)
->  create mode 100644 drivers/interconnect/qcom/sdm660.c
->  create mode 100644 include/dt-bindings/interconnect/qcom,sdm660.h
+Konrad
