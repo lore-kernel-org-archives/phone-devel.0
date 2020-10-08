@@ -1,153 +1,156 @@
-Return-Path: <SRS0=efga=DO=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <SRS0=dZqH=DP=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-10.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93272C41604
-	for <phone-devel@archiver.kernel.org>; Wed,  7 Oct 2020 18:06:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E1D6C433E7
+	for <phone-devel@archiver.kernel.org>; Thu,  8 Oct 2020 06:54:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3034E21707
-	for <phone-devel@archiver.kernel.org>; Wed,  7 Oct 2020 18:06:01 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="el+wTqBu"
+	by mail.kernel.org (Postfix) with ESMTP id 336B421897
+	for <phone-devel@archiver.kernel.org>; Thu,  8 Oct 2020 06:54:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1602140081;
+	bh=xets6aocGoBonJWZWZR/AqSEf1Th8uPkmzNNEDt6KFE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
+	b=p0h2r9I9Z3Kxgq27LkE27uLUUaePOEnRrr2zH8v6BnznLc9++evdSYBaXErJ12/dR
+	 TjgWzyv5juhb1swrkc5Yrwn0vu7p0LOaj41RYDzmtOK9AREo26JztdRp9MV9LkxT/0
+	 7nC2Uyk8IFO/DyGCbi0l76kVMUsLpINPgaw+b7Ag=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728699AbgJGSFz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 7 Oct 2020 14:05:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37264 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728652AbgJGSFt (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Oct 2020 14:05:49 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23841C061755;
-        Wed,  7 Oct 2020 11:05:49 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id e2so3482480wme.1;
-        Wed, 07 Oct 2020 11:05:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=8/E0E86V4qlrZqRVabn3V9YxZrtSiuCT+gPTjZhmgR0=;
-        b=el+wTqBuLl7i6DNDUwkJJPoio0xSSkwDERpuSW2YCDZ+TIOR+TbTxdrfAG6bV1L1R8
-         oSk5LbCNvetkOnDO80eAUnFhlSzGATRqFn8rxxFVYBT72HU2syRkSwp15Q5sMUAgZ9w6
-         d9xcbDKB+H+FZ+Yr4TL0pa1g01nT+zFjNVJc9GCN3s1YFfLZYy2zSjuhYCCX2psxzDti
-         PUyCT2Rue7hwC3+UbZxUmUBdx2KR6Tosc9AC9vZ8CGDjOPqVB29YCTkVQKty2Z8ikXUd
-         AczWxpX70BBTUhaRsq1M8x3Bf/bcOhZhdqzH+KFs8SCVMAyum84kY0kLHp20BbinsWQL
-         VPtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=8/E0E86V4qlrZqRVabn3V9YxZrtSiuCT+gPTjZhmgR0=;
-        b=e6s+ovT00q7e/hUJIjvXswEKq6+x4HQ3+xrVXiDamImKiNHCFSd9iNlxXelBhUzgp0
-         7J0+4oU1mC0dbxIt4r6+6xyhnjFo8ke38fWlkkYYUBJSfDK1amGrA8700VZFA2gMBAiZ
-         FhIYjS1tB16K2XaQmhZgbbEJEevQMNNdBQDWvNEIq0sDm29egWIqVWy4fAOaqca9gqlE
-         h3iQrUmRQBITrh6ALnvZvTeSdTNe45olnlNM6gQuuKRb17UHg72JYW8ZL6LiD0EqslFO
-         adAAiQi0xN2oqIXPh6o4XBSXGb0pDYlaAvRCg74XcKLnNoe/sih5ngmEneWPPJVsE/+X
-         cydA==
-X-Gm-Message-State: AOAM531l6+zeuhjK0Aq0nxx4IqR4PLcTl8cr32oLmnjN6GvcQGqTwSpI
-        ikceHIhfY4tKnSidaCJtghJ4LNt/HhXEnQ==
-X-Google-Smtp-Source: ABdhPJwdS6sp3VKVidmda8KeJeB8mQzj+55i0oqRb3hbsjV1jSOuHmwe2tJ4ErpJCClKG4iiotsheg==
-X-Received: by 2002:a1c:f005:: with SMTP id a5mr4595433wmb.160.1602093947675;
-        Wed, 07 Oct 2020 11:05:47 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id a17sm3814496wra.29.2020.10.07.11.05.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2020 11:05:47 -0700 (PDT)
-From:   kholk11@gmail.com
-To:     dmitry.torokhov@gmail.com
-Cc:     robh+dt@kernel.org, rydberg@bitmath.org, priv.luk@gmail.com,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kholk11@gmail.com, marijns95@gmail.com, konradybcio@gmail.com,
-        martin.botka1@gmail.com, phone-devel@vger.kernel.org
-Subject: [PATCH v3 3/3] dt-bindings: touchscreen: Add binding for Novatek NT36xxx series driver
-Date:   Wed,  7 Oct 2020 20:05:40 +0200
-Message-Id: <20201007180540.322257-4-kholk11@gmail.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201007180540.322257-1-kholk11@gmail.com>
-References: <20201007180540.322257-1-kholk11@gmail.com>
+        id S1726361AbgJHGyk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 8 Oct 2020 02:54:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54544 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726013AbgJHGyk (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 8 Oct 2020 02:54:40 -0400
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 98AD22168B;
+        Thu,  8 Oct 2020 06:54:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602140079;
+        bh=xets6aocGoBonJWZWZR/AqSEf1Th8uPkmzNNEDt6KFE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=i+OlTFuEwT0wNF5dNY+Nzl3gOhkaJuibi5BepaLzFGvx5DXa78zYIvpWM0kiEYORz
+         PvmM8m0qQtj15D+PuMK+zXFVXicCZU9w2FQtaF/DeFl70rD/UB9IY7YFmzII//Rh1v
+         GFhzzj9yKyGwVzc3iVHM6EWIPCVYJ2RWCEPheOmk=
+Received: by mail-ed1-f46.google.com with SMTP id l24so4690306edj.8;
+        Wed, 07 Oct 2020 23:54:39 -0700 (PDT)
+X-Gm-Message-State: AOAM531GtgvLd0ViYeChmmjbtrWWZ6Rw4maOm0nU7tcOp70SIG9aI23p
+        g9yrXo8zxRvNfXTMokwmCf5pJJN217cAUL/neAs=
+X-Google-Smtp-Source: ABdhPJy+9gE89PnSy3HmXagIvjctuY9MSJe7IsZxoIYvJsTYc0E89DdzYTlR+ULlO53SZOEjz53Yn+Jdef1VUgHPX+E=
+X-Received: by 2002:a50:cc8d:: with SMTP id q13mr7286456edi.298.1602140078091;
+ Wed, 07 Oct 2020 23:54:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201007180540.322257-1-kholk11@gmail.com> <20201007180540.322257-4-kholk11@gmail.com>
+In-Reply-To: <20201007180540.322257-4-kholk11@gmail.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Thu, 8 Oct 2020 08:54:26 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPcKPXFehzoa65YxjY8+qs-8JxAzj-ER58Y2V43RMD1qYQ@mail.gmail.com>
+Message-ID: <CAJKOXPcKPXFehzoa65YxjY8+qs-8JxAzj-ER58Y2V43RMD1qYQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] dt-bindings: touchscreen: Add binding for Novatek
+ NT36xxx series driver
+To:     kholk11@gmail.com
+Cc:     dmitry.torokhov@gmail.com, robh+dt@kernel.org, rydberg@bitmath.org,
+        priv.luk@gmail.com, linux-input@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        marijns95@gmail.com, konradybcio@gmail.com,
+        martin.botka1@gmail.com, phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+On Wed, 7 Oct 2020 at 20:22, <kholk11@gmail.com> wrote:
+>
+> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+>
+> Add binding for the Novatek NT36xxx series touchscreen driver.
+>
+> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> ---
+>  .../input/touchscreen/novatek,nt36xxx.yaml    | 56 +++++++++++++++++++
+>  1 file changed, 56 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml b/Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
+> new file mode 100644
+> index 000000000000..9f350f4e6d6a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
+> @@ -0,0 +1,56 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/input/touchscreen/novatek,nt36xxx.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Novatek NT36xxx series touchscreen controller Bindings
+> +
+> +maintainers:
+> +  - TBD
 
-Add binding for the Novatek NT36xxx series touchscreen driver.
+Hi,
 
-Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
----
- .../input/touchscreen/novatek,nt36xxx.yaml    | 56 +++++++++++++++++++
- 1 file changed, 56 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
+It is surprising that this is your v3 and you put here TBD. In such
+case, add here subsystem maintainer:
+Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml b/Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
-new file mode 100644
-index 000000000000..9f350f4e6d6a
---- /dev/null
-+++ b/Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
-@@ -0,0 +1,56 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/input/touchscreen/novatek,nt36xxx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Novatek NT36xxx series touchscreen controller Bindings
-+
-+maintainers:
-+  - TBD
-+
-+allOf:
-+  - $ref: touchscreen.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - novatek,nt36xxx
-+
-+  reg:
-+    enum: [ 0x62 ]
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  reset-gpio:
-+    maxItems: 1
-+
-+  vdd-supply:
-+    description: Power supply regulator for VDD pin
-+
-+  vio-reg-name:
-+    description: Power supply regulator on VDD-IO pin
-+
-+additionalProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+examples:
-+  - |
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      nt36xxx@62 {
-+        compatible = "novatek,nt36xxx";
-+        reg = <0x62>;
-+        interrupt-parent = <&tlmm>;
-+        interrupts = <45 IRQ_TYPE_EDGE_RISING>;
-+        reset-gpio = <&tlmm 102 GPIO_ACTIVE_HIGH>;
-+      };
-+    };
-+
-+...
--- 
-2.28.0
 
+> +
+> +allOf:
+> +  - $ref: touchscreen.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - novatek,nt36xxx
+
+This is not an enum, but one const.
+
+> +
+> +  reg:
+> +    enum: [ 0x62 ]
+
+Usually addresses are fixed in schema, because they could change (e.g.
+by some pin configuration). Just use maxItems: 1.
+
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reset-gpio:
+> +    maxItems: 1
+> +
+> +  vdd-supply:
+> +    description: Power supply regulator for VDD pin
+> +
+> +  vio-reg-name:
+> +    description: Power supply regulator on VDD-IO pin
+
+What is this for? Is it a supply for the device or the device is a
+regulator provider?
+
+> +
+> +additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      nt36xxx@62 {
+
+Incorrect node name - should be touchscreen.
+
+Best regards,
+Krzysztof
