@@ -1,89 +1,150 @@
-Return-Path: <SRS0=O7xo=DQ=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <SRS0=oBjE=DT=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC6DAC43457
-	for <phone-devel@archiver.kernel.org>; Fri,  9 Oct 2020 14:31:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8320DC433E7
+	for <phone-devel@archiver.kernel.org>; Mon, 12 Oct 2020 16:52:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AEE63222E7
-	for <phone-devel@archiver.kernel.org>; Fri,  9 Oct 2020 14:31:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2C80020878
+	for <phone-devel@archiver.kernel.org>; Mon, 12 Oct 2020 16:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1602253904;
-	bh=BO/Ydr83JoMnLhe5mW8uG4UKTr7ZOnqLgjq1B3hJxcE=;
+	s=default; t=1602521535;
+	bh=6pC4qhFTCw2my+IhNbDMtdquoa7yTkUcSxPa802/oHg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=h/DEyim/VQKRq6LsDsxfHNIpwpcpTPaNppU7cLcm1w6YdXHAkEqAjzlmQxQq1aRvS
-	 hbp5a1NAbvcsniOEIBw8+cEo3CjNagXdEv49ETJajL0wCXNN89xL+x4JacdjMvJqYo
-	 HPMTZCw/0D793bt1XfIPvP/0EJcUkAWGs8jWm9OI=
+	b=dcovi8/w+wdGmzn6FwDPTAyZeqZh/5t2NiD4x0koTNtVMhIX1R6fMbpeA+e2V/tUe
+	 BccWEJrWvcl29bU6JVkmFaJGMPlY36pjg0ydqNmYRhy0C6w1soGXLjPbqqOzCg4wou
+	 dSRKJFIw4gWJFvZ3qgi5zuuU+V4CGIizL4QojZKQ=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388888AbgJIObl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 9 Oct 2020 10:31:41 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:37527 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388908AbgJIObX (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Oct 2020 10:31:23 -0400
-Received: by mail-oi1-f195.google.com with SMTP id t77so10410677oie.4;
-        Fri, 09 Oct 2020 07:31:22 -0700 (PDT)
+        id S2390670AbgJLQwO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 12 Oct 2020 12:52:14 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:35752 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390683AbgJLQwO (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 12 Oct 2020 12:52:14 -0400
+Received: by mail-ed1-f66.google.com with SMTP id cq12so17746914edb.2;
+        Mon, 12 Oct 2020 09:52:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=fSY177QCDHA506ltAJfX+pyNUH3460/blci6wiOpURg=;
-        b=Dz3C4A04lOAU2/DC7VW/OvzSNx9wH8P11EnW33vywHUiY1EGjN3G6AuwrNOn2DOBgJ
-         cgYclT0jTClNTOmCEmNBKWR8A+p1URBZ7Ir/cNpwGutO8FjonOk0oUMtdnS6hg5TV/te
-         X0d6G2oPvhp0CBve3bd4LdW0CZOValsvsWjHKBWY7FaDFicqqF+MFMb52Ov6CFEw4G70
-         xumNSpUwU/dcVj6Ohpp55kExGjRyEdFWbDSMhm8JIQhB1VOe+TbLVzpVFVf8uBp+f3aF
-         JhzqpBb/CxrLSMEyVe2yxe3TzVV+09b33QlAmRLFDDomH1EgwULjHP6fZBNuFReSdfpK
-         kKzw==
-X-Gm-Message-State: AOAM533bXiYLJC90T4RsQs7RRpvriDhRYi/mGzUsgTHreDoVqM2okjfa
-        K/weLJpM4esNPhi9+1ceEoM6G2IlHGL+
-X-Google-Smtp-Source: ABdhPJxyqYEZTKZUYGot+5w2hJJtIfWrX5UV1nuE4AmB8RyXv8PbfdnyYX0HugcKNhLpSLyxvRMYCA==
-X-Received: by 2002:aca:4188:: with SMTP id o130mr2424926oia.167.1602253880742;
-        Fri, 09 Oct 2020 07:31:20 -0700 (PDT)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id y23sm8328527ooj.34.2020.10.09.07.31.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2020 07:31:20 -0700 (PDT)
-Received: (nullmailer pid 4109836 invoked by uid 1000);
-        Fri, 09 Oct 2020 14:31:19 -0000
-Date:   Fri, 9 Oct 2020 09:31:19 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     kholk11@gmail.com
-Cc:     martin.botka1@gmail.com, linux-pm@vger.kernel.org,
-        phone-devel@vger.kernel.org, georgi.djakov@linaro.org,
-        konradybcio@gmail.com, agross@kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, bjorn.andersson@linaro.org,
-        marijns95@gmail.com, robh+dt@kernel.org
-Subject: Re: [PATCH v3 1/2] dt-bindings: interconnect: Add bindings for
- Qualcomm SDM660 NoC
-Message-ID: <20201009143119.GA4109583@bogus>
-References: <20201008204515.695210-1-kholk11@gmail.com>
- <20201008204515.695210-2-kholk11@gmail.com>
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=3mboFW4RncTKtOa1W24m1Ae7YyE66jcNb5+APhjiUo8=;
+        b=TrFiW84TQByeVqD+r/u6Dikvtsw+SSUrb3fD1oAMSmQLye5TpAMe0S328tHQZHkKZu
+         62w8UyLsbmLCo+g9Xm9MD4hzVoTfuej4AclSEYbme/86OcLxhQ+gtQsFkh33kAxbrB3R
+         WkU6plJRoyc9szXsj96GBPNlfBfwWjeUD+cbc0iGfr/rNacd69LJXogZvoz+je28VKWL
+         8iOFVEowAGFfK4KXXb1fGLHGEI/TnXol9ZCe0OZa7Q9BquLdUYTKCGW5HuxzNzXRlBNu
+         RAFPxx5nZPJ4CEp4lpXuRonql3vSVsMkfHeMdY6Ny+1tR+tfA/D8CbWY3K4u+sp6JXP1
+         lu0Q==
+X-Gm-Message-State: AOAM532VXj1t5abkHx/Rpjp/wcfyqavBcx2nhtnIZ6/BRzk+T3x3aeyV
+        42V4pCoJnTlqW80f8cAIfmA=
+X-Google-Smtp-Source: ABdhPJwHfSMlR1K1xguOC5H0QrsWlq5j9g7EhtvzQgZS6un/QQ7FKO5pQ+6qmTh33FDIeD4VYJr+Hw==
+X-Received: by 2002:aa7:dc16:: with SMTP id b22mr15155239edu.252.1602521532271;
+        Mon, 12 Oct 2020 09:52:12 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.215])
+        by smtp.googlemail.com with ESMTPSA id j24sm10475455edq.29.2020.10.12.09.52.09
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 12 Oct 2020 09:52:10 -0700 (PDT)
+Date:   Mon, 12 Oct 2020 18:52:08 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     AngeloGioacchino Del Regno <kholk11@gmail.com>
+Cc:     dmitry.torokhov@gmail.com, Rob Herring <robh+dt@kernel.org>,
+        rydberg@bitmath.org, priv.luk@gmail.com,
+        linux-input@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        marijns95@gmail.com, konradybcio@gmail.com,
+        martin.botka1@gmail.com, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] dt-bindings: touchscreen: Add binding for Novatek
+ NT36xxx series driver
+Message-ID: <20201012165208.GA3706@kozik-lap>
+References: <20201008181514.668548-1-kholk11@gmail.com>
+ <20201008181514.668548-4-kholk11@gmail.com>
+ <CAJKOXPdZ_zo0bPwQd=_dKHhA2KWHgsH4KTH=+cX8hNxSVrqrig@mail.gmail.com>
+ <CAK7fi1ZJN=AbkusWqDEbAkZ=AgKEPCvWH43hBpX0-EUDJWOC5g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201008204515.695210-2-kholk11@gmail.com>
+In-Reply-To: <CAK7fi1ZJN=AbkusWqDEbAkZ=AgKEPCvWH43hBpX0-EUDJWOC5g@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 08 Oct 2020 22:45:14 +0200, kholk11@gmail.com wrote:
-> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+On Thu, Oct 08, 2020 at 10:30:35PM +0200, AngeloGioacchino Del Regno wrote:
+> Il giorno gio 8 ott 2020 alle ore 20:21 Krzysztof Kozlowski
+> <krzk@kernel.org> ha scritto:
+> >
+> > On Thu, 8 Oct 2020 at 20:15, <kholk11@gmail.com> wrote:
+> > >
+> > > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> > >
+> > > Add binding for the Novatek NT36xxx series touchscreen driver.
+> > >
+> > > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> > > ---
+> > >  .../input/touchscreen/novatek,nt36xxx.yaml    | 59 +++++++++++++++++++
+> > >  1 file changed, 59 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml b/Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
+> > > new file mode 100644
+> > > index 000000000000..e747cacae036
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
+> > > @@ -0,0 +1,59 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/input/touchscreen/novatek,nt36xxx.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Novatek NT36xxx series touchscreen controller Bindings
+> > > +
+> > > +maintainers:
+> > > +  - Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> > > +
+> > > +allOf:
+> > > +  - $ref: touchscreen.yaml#
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    const: novatek,nt36xxx
+> >
+> > Thanks for the changes, they look good except this part here which I
+> > missed before. The compatible should not contain wildcards. If all
+> > devices are really compatible, just add here one const, e.g. "const:
+> > novatek,nt36525". If they are different, you could add multiple
+> > compatibles in enum.
+> >
+> > Best regards,
+> > Krzysztof
 > 
-> Add the bindings for the Qualcomm SDM660-class NoC, valid for
-> SDM630, SDM636, SDM660 and SDA variants.
+> They are all managed the same way, but the page addresses are
+> changing between all of them... the driver is reading the chip ID
+> while the TS MCU is in "boot mode", then checking in a ID table
+> if the chip is supported and finally assigning a page address table.
+> This is done for the entire NT36*** series.
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> ---
->  .../bindings/interconnect/qcom,sdm660.yaml    | 147 ++++++++++++++++++
->  .../dt-bindings/interconnect/qcom,sdm660.h    | 116 ++++++++++++++
->  2 files changed, 263 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,sdm660.yaml
->  create mode 100644 include/dt-bindings/interconnect/qcom,sdm660.h
+> If wildcards are not permitted, perhaps I can change it to something
+> like "novatek,nt36" or "novatek,nt36-ts"... as then specifying the
+> specific IC model into the DT means that I would have to logically
+> change the driver itself to also crosscheck a DT-specified model
+> with whatever gets recognized by reading the chip (which then would
+> be a triple check of what's going on, imo overcomplicating the logic).
 > 
+> What would you propose, at this point?
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+If you want the autodetection based on chip ID, then use the
+oldest/earliest device as compatible, so "novatek,nt36525" and keep
+everything else as is. In your case the HW description for all devices
+is the same, thus one compatible is enough.  This way if in future you
+need to bring a difference for a new HW (let's say some imaginary
+NT36999), you can simply add a new compatible.
+
+Best regards,
+Krzysztof
