@@ -1,150 +1,86 @@
-Return-Path: <SRS0=oBjE=DT=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <SRS0=5x40=DU=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8320DC433E7
-	for <phone-devel@archiver.kernel.org>; Mon, 12 Oct 2020 16:52:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A38DC433DF
+	for <phone-devel@archiver.kernel.org>; Tue, 13 Oct 2020 14:23:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2C80020878
-	for <phone-devel@archiver.kernel.org>; Mon, 12 Oct 2020 16:52:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C947C24817
+	for <phone-devel@archiver.kernel.org>; Tue, 13 Oct 2020 14:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1602521535;
-	bh=6pC4qhFTCw2my+IhNbDMtdquoa7yTkUcSxPa802/oHg=;
+	s=default; t=1602598988;
+	bh=wE4eltHGZTUlzaGPk8Yh4kAxVhgQeozztlsakA3JcE0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=dcovi8/w+wdGmzn6FwDPTAyZeqZh/5t2NiD4x0koTNtVMhIX1R6fMbpeA+e2V/tUe
-	 BccWEJrWvcl29bU6JVkmFaJGMPlY36pjg0ydqNmYRhy0C6w1soGXLjPbqqOzCg4wou
-	 dSRKJFIw4gWJFvZ3qgi5zuuU+V4CGIizL4QojZKQ=
+	b=a/4Rw+3b2H9K/yVET5iGGvgaHH1pke0ZSsvLm16e19R8j+k6WBIRWSGzPKM/mCua8
+	 H2kqG0H0MhO7Pao25t97afM3pf/nQIN/gBtHSX29K/vnVAGMj86yQ/cxrcy6VqL2qC
+	 2vCgIOGqA5HeZ6kySeTY4l6XCaEUj0hNgUpJ3nMA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390670AbgJLQwO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 12 Oct 2020 12:52:14 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:35752 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390683AbgJLQwO (ORCPT
+        id S1729687AbgJMOXI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 13 Oct 2020 10:23:08 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:34464 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726822AbgJMOXI (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 12 Oct 2020 12:52:14 -0400
-Received: by mail-ed1-f66.google.com with SMTP id cq12so17746914edb.2;
-        Mon, 12 Oct 2020 09:52:12 -0700 (PDT)
+        Tue, 13 Oct 2020 10:23:08 -0400
+Received: by mail-oi1-f196.google.com with SMTP id w204so7459761oiw.1;
+        Tue, 13 Oct 2020 07:23:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=3mboFW4RncTKtOa1W24m1Ae7YyE66jcNb5+APhjiUo8=;
-        b=TrFiW84TQByeVqD+r/u6Dikvtsw+SSUrb3fD1oAMSmQLye5TpAMe0S328tHQZHkKZu
-         62w8UyLsbmLCo+g9Xm9MD4hzVoTfuej4AclSEYbme/86OcLxhQ+gtQsFkh33kAxbrB3R
-         WkU6plJRoyc9szXsj96GBPNlfBfwWjeUD+cbc0iGfr/rNacd69LJXogZvoz+je28VKWL
-         8iOFVEowAGFfK4KXXb1fGLHGEI/TnXol9ZCe0OZa7Q9BquLdUYTKCGW5HuxzNzXRlBNu
-         RAFPxx5nZPJ4CEp4lpXuRonql3vSVsMkfHeMdY6Ny+1tR+tfA/D8CbWY3K4u+sp6JXP1
-         lu0Q==
-X-Gm-Message-State: AOAM532VXj1t5abkHx/Rpjp/wcfyqavBcx2nhtnIZ6/BRzk+T3x3aeyV
-        42V4pCoJnTlqW80f8cAIfmA=
-X-Google-Smtp-Source: ABdhPJwHfSMlR1K1xguOC5H0QrsWlq5j9g7EhtvzQgZS6un/QQ7FKO5pQ+6qmTh33FDIeD4VYJr+Hw==
-X-Received: by 2002:aa7:dc16:: with SMTP id b22mr15155239edu.252.1602521532271;
-        Mon, 12 Oct 2020 09:52:12 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.215])
-        by smtp.googlemail.com with ESMTPSA id j24sm10475455edq.29.2020.10.12.09.52.09
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 12 Oct 2020 09:52:10 -0700 (PDT)
-Date:   Mon, 12 Oct 2020 18:52:08 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     AngeloGioacchino Del Regno <kholk11@gmail.com>
-Cc:     dmitry.torokhov@gmail.com, Rob Herring <robh+dt@kernel.org>,
-        rydberg@bitmath.org, priv.luk@gmail.com,
-        linux-input@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        marijns95@gmail.com, konradybcio@gmail.com,
-        martin.botka1@gmail.com, phone-devel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] dt-bindings: touchscreen: Add binding for Novatek
- NT36xxx series driver
-Message-ID: <20201012165208.GA3706@kozik-lap>
+         :mime-version:content-disposition:in-reply-to;
+        bh=vDm5xdsSsTMam4e94bVOwkhlRC57aQgO+FTINBCvZcc=;
+        b=clkKBDJlheEEeRiN9/9higdmwhhZBwCB6nvUTgj0KUK0actg3lXkkGwTPmPLQLitDJ
+         gYVQZzy4F/o5vpthmzKT0vypfnU0KVCHniIq0/mdHt9jQRoYgq06W2/bgol/PMaW/7xT
+         JoxMiQdsVC2TgdvCu8YrDQHE776Ur7w/DDPqGtfqHVWCrEdD5vPCzmkhzIOZauUpzuzD
+         LJ7L6TLH/bxKnX6TlcfhI5O4AtljTYze/Ak+8zKnzmkloqZYBBCmO/a5r0ufQB7jJClS
+         Aew18gSjrIqpdlmqMgIsVpwSWkr+6+tuYUMzsQeLl2lZ3rVl0RO9Cziq8tbrAdfm22qw
+         QskA==
+X-Gm-Message-State: AOAM5314001a/MUuZ+utnopPvHcSqaHpDpmLIS7wBRIk9YqdYRvmsDI5
+        yDpjW/2iO3bnL4JykWj+SA==
+X-Google-Smtp-Source: ABdhPJwGxR1ydZVCcZA3/LNdoB3o6c/rDHsR48dQfgr0s3+Yb8pk+b+UmQFGyGRHLKZUE/FFURHkNg==
+X-Received: by 2002:aca:4d14:: with SMTP id a20mr6635oib.46.1602598987496;
+        Tue, 13 Oct 2020 07:23:07 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id f9sm3140361ooq.9.2020.10.13.07.23.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2020 07:23:06 -0700 (PDT)
+Received: (nullmailer pid 3449471 invoked by uid 1000);
+        Tue, 13 Oct 2020 14:23:06 -0000
+Date:   Tue, 13 Oct 2020 09:23:06 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     kholk11@gmail.com
+Cc:     priv.luk@gmail.com, konradybcio@gmail.com,
+        linux-input@vger.kernel.org, martin.botka1@gmail.com,
+        rydberg@bitmath.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org, dmitry.torokhov@gmail.com, marijns95@gmail.com,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        krzk@kernel.org
+Subject: Re: [PATCH v4 1/3] dt-bindings: Add vendor prefix for Novatek
+ Microelectronics Corp.
+Message-ID: <20201013142306.GA3449425@bogus>
 References: <20201008181514.668548-1-kholk11@gmail.com>
- <20201008181514.668548-4-kholk11@gmail.com>
- <CAJKOXPdZ_zo0bPwQd=_dKHhA2KWHgsH4KTH=+cX8hNxSVrqrig@mail.gmail.com>
- <CAK7fi1ZJN=AbkusWqDEbAkZ=AgKEPCvWH43hBpX0-EUDJWOC5g@mail.gmail.com>
+ <20201008181514.668548-2-kholk11@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK7fi1ZJN=AbkusWqDEbAkZ=AgKEPCvWH43hBpX0-EUDJWOC5g@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20201008181514.668548-2-kholk11@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Oct 08, 2020 at 10:30:35PM +0200, AngeloGioacchino Del Regno wrote:
-> Il giorno gio 8 ott 2020 alle ore 20:21 Krzysztof Kozlowski
-> <krzk@kernel.org> ha scritto:
-> >
-> > On Thu, 8 Oct 2020 at 20:15, <kholk11@gmail.com> wrote:
-> > >
-> > > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> > >
-> > > Add binding for the Novatek NT36xxx series touchscreen driver.
-> > >
-> > > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> > > ---
-> > >  .../input/touchscreen/novatek,nt36xxx.yaml    | 59 +++++++++++++++++++
-> > >  1 file changed, 59 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml b/Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
-> > > new file mode 100644
-> > > index 000000000000..e747cacae036
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/input/touchscreen/novatek,nt36xxx.yaml
-> > > @@ -0,0 +1,59 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/input/touchscreen/novatek,nt36xxx.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Novatek NT36xxx series touchscreen controller Bindings
-> > > +
-> > > +maintainers:
-> > > +  - Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > > +
-> > > +allOf:
-> > > +  - $ref: touchscreen.yaml#
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    const: novatek,nt36xxx
-> >
-> > Thanks for the changes, they look good except this part here which I
-> > missed before. The compatible should not contain wildcards. If all
-> > devices are really compatible, just add here one const, e.g. "const:
-> > novatek,nt36525". If they are different, you could add multiple
-> > compatibles in enum.
-> >
-> > Best regards,
-> > Krzysztof
+On Thu, 08 Oct 2020 20:15:12 +0200, kholk11@gmail.com wrote:
+> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 > 
-> They are all managed the same way, but the page addresses are
-> changing between all of them... the driver is reading the chip ID
-> while the TS MCU is in "boot mode", then checking in a ID table
-> if the chip is supported and finally assigning a page address table.
-> This is done for the entire NT36*** series.
+> Add prefix for Novatek Microelectronics Corp.
 > 
-> If wildcards are not permitted, perhaps I can change it to something
-> like "novatek,nt36" or "novatek,nt36-ts"... as then specifying the
-> specific IC model into the DT means that I would have to logically
-> change the driver itself to also crosscheck a DT-specified model
-> with whatever gets recognized by reading the chip (which then would
-> be a triple check of what's going on, imo overcomplicating the logic).
+> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> What would you propose, at this point?
 
-If you want the autodetection based on chip ID, then use the
-oldest/earliest device as compatible, so "novatek,nt36525" and keep
-everything else as is. In your case the HW description for all devices
-is the same, thus one compatible is enough.  This way if in future you
-need to bring a difference for a new HW (let's say some imaginary
-NT36999), you can simply add a new compatible.
-
-Best regards,
-Krzysztof
+Acked-by: Rob Herring <robh@kernel.org>
