@@ -1,79 +1,72 @@
-Return-Path: <SRS0=5x40=DU=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <SRS0=VkML=DV=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE0F1C433E7
-	for <phone-devel@archiver.kernel.org>; Tue, 13 Oct 2020 15:02:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E073EC43457
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Oct 2020 01:04:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6E4C7248B9
-	for <phone-devel@archiver.kernel.org>; Tue, 13 Oct 2020 15:02:06 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cCFzG0nS"
+	by mail.kernel.org (Postfix) with ESMTP id 8922D21D40
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Oct 2020 01:04:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1602637485;
+	bh=aRDby6Tf6kApngD6WPLRPBLIWKE1Nq1LU0dmXuOlRQ8=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:List-ID:From;
+	b=oKZb0tT8es2voCvrCYOFwOv/bI4Ft723h/fUtlZKvq4zmzvkepT2vmwxHDe01xi2H
+	 gDH2s693owmf0ppt4FXOls3+wWtD4vPRb7KUajL6yE2oWeFKz5aO7CxeYknUs4krmt
+	 id0204sp0q8Jp2TZfF0Sj0GBwsV+BSQ3h3nwbftg=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730840AbgJMPCG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 13 Oct 2020 11:02:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41164 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726097AbgJMPCF (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 13 Oct 2020 11:02:05 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D4B7C0613D0;
-        Tue, 13 Oct 2020 08:02:05 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id e22so260354ejr.4;
-        Tue, 13 Oct 2020 08:02:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GAM7EfDFr9OR4YTNHPZeLuBVp+G6gnuevym7qFvJmzA=;
-        b=cCFzG0nSIoaJVyZq/8/NbfYxRPJPfh6g979j0moPFY6+KCJnnsD+YbMdtLeN5jL8Ao
-         XX9VFC3sz29NyQWOg+jqJftmwVTKFcQBNFAHKVqSHI1uk7su1Q09NvlSVzbwi1lZTaeh
-         xCRU013Dzdm/Al8TuOjcIsA8+AZM5wcLMtNhHqsgMYjP+nMAVzxoULw1SHutBjM0sl4M
-         Za53Ym9fumir8CxXAHEPqxTF3nACdLpFwmsfhmSG0F1zjpADE6JNQPQ943qtzwTkTvNk
-         UMHsOW1wj+RFxvwwjhcsa6ixiWPyTENeiOEbeToPfArvd7kvlVH9zuvRUAk3ERVKmqUo
-         UViw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GAM7EfDFr9OR4YTNHPZeLuBVp+G6gnuevym7qFvJmzA=;
-        b=QRMhBd/F4OcmUG9WqHHoNP5OZUoDyJc1AiBVKd+wx4lmMBg9QZc+Z8cBzyzAjSK4Xx
-         vvIcQdSdd4ZnqZPVmp65V89h/hODQkwDsHxGe6B8hZK7Om7Pw+D4s44RWbr0hC9rzQUY
-         bCZmhcIo16DlA9ul2q9mfj7TKZk9UOltPkplTnlRdm00wx69CEO8jQVhQViEyrWXloVp
-         0HP1Msdb+dBdJrvyyA+emlTCpr0AFRFl/ClFk0dFEQanfDGCquntTEoiHz+1LDV3CzUP
-         pYwJ1ko2AUESP8V0biN7whtQPKntsSQq0iizMtga1B+9U+He+0WO3IlWg347G8hqboLc
-         z9Tw==
-X-Gm-Message-State: AOAM533OeKyEO0NEIFfSlXG3n0IGCkd3i9ablZwXHFPZLiS546YNGo++
-        YiEZvYGKpNYJ2ZSU5SyyKxypjndy3aTNC+wh5O0=
-X-Google-Smtp-Source: ABdhPJwNJpJ3E1wbgnfSaQUJh1ehigdh2cdQqotQ19UT/u4WKtCnuc+Jb/3TAXQ1geS6WfT2Afr2CpRStFl2IbGOlYw=
-X-Received: by 2002:a17:906:234d:: with SMTP id m13mr109679eja.497.1602601323813;
- Tue, 13 Oct 2020 08:02:03 -0700 (PDT)
+        id S1726719AbgJNBEm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 13 Oct 2020 21:04:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36404 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726111AbgJNBEm (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 13 Oct 2020 21:04:42 -0400
+Received: from kernel.org (unknown [104.132.1.79])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 81B14208B3;
+        Wed, 14 Oct 2020 01:04:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602637481;
+        bh=aRDby6Tf6kApngD6WPLRPBLIWKE1Nq1LU0dmXuOlRQ8=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=BH59Cqu66D0PzaM+IS0XDCugZ2tLznqGPlx1Bt4D+8klumtcftrrKUaqhiK2CC7+D
+         OBUJG7DOAVItF3Hnh09u1tVMUzFr/77zUYRTbEK75tAWajPsSwvU51HTPI4WcgrdTB
+         TCjlfEyJfV4wy3F7qRy03Ow153oiBTLcPSFOSgrY=
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20200926130306.13843-2-kholk11@gmail.com> <202010010401.JGjaiuVi-lkp@intel.com>
- <CADQ2G_H7ey8tfneOjtmDx1-hyzq1RvZzLeLZPtTM=2qOezrinA@mail.gmail.com>
-In-Reply-To: <CADQ2G_H7ey8tfneOjtmDx1-hyzq1RvZzLeLZPtTM=2qOezrinA@mail.gmail.com>
-From:   Martin Botka <martin.botka1@gmail.com>
-Date:   Tue, 13 Oct 2020 17:01:51 +0200
-Message-ID: <CADQ2G_E2-CYMADwwBjhmhOmHWXEVrzMTBxxVb7UHqn=ReLH+HQ@mail.gmail.com>
-Subject: Re: [PATCH 1/5] clk: qcom: Add SDM660 Multimedia Clock Controller
- (MMCC) driver
-To:     kernel test robot <lkp@intel.com>
-Cc:     kholk11@gmail.com, Andy Gross <agross@kernel.org>,
-        kbuild-all@lists.01.org, clang-built-linux@googlegroups.com,
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20201005145855.149206-1-konradybcio@gmail.com>
+References: <20201005145855.149206-1-konradybcio@gmail.com>
+Subject: Re: [PATCH] clk: qcom: gcc-msm8994: Add missing clocks, resets and GDSCs
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, marijns95@gmail.com,
-        Konrad Dybcio <konradybcio@gmail.com>,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+To:     konradybcio@gmail.com
+Date:   Tue, 13 Oct 2020 18:04:40 -0700
+Message-ID: <160263748035.310579.4403245633255183131@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Actually, correction. This parent is used by cpp_clk_src.
+Quoting Konrad Dybcio (2020-10-05 07:58:55)
+> This change adds GDSCs, resets and most of the missing
+> clocks to the msm8994 GCC driver. The remaining ones
+> are of local_vote_clk and gate_clk type, which are not
+> yet supported upstream. Also reorder them to match the
+> original downstream driver.
+>=20
+> Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
+> ---
+
+Applied to clk-next
