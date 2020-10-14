@@ -2,71 +2,172 @@ Return-Path: <SRS0=VkML=DV=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E073EC43457
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Oct 2020 01:04:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7055C43467
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Oct 2020 15:44:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8922D21D40
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Oct 2020 01:04:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1602637485;
-	bh=aRDby6Tf6kApngD6WPLRPBLIWKE1Nq1LU0dmXuOlRQ8=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:List-ID:From;
-	b=oKZb0tT8es2voCvrCYOFwOv/bI4Ft723h/fUtlZKvq4zmzvkepT2vmwxHDe01xi2H
-	 gDH2s693owmf0ppt4FXOls3+wWtD4vPRb7KUajL6yE2oWeFKz5aO7CxeYknUs4krmt
-	 id0204sp0q8Jp2TZfF0Sj0GBwsV+BSQ3h3nwbftg=
+	by mail.kernel.org (Postfix) with ESMTP id 8FE132222E
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Oct 2020 15:44:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726719AbgJNBEm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 13 Oct 2020 21:04:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36404 "EHLO mail.kernel.org"
+        id S1730492AbgJNPoC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Oct 2020 11:44:02 -0400
+Received: from foss.arm.com ([217.140.110.172]:51940 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726111AbgJNBEm (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 13 Oct 2020 21:04:42 -0400
-Received: from kernel.org (unknown [104.132.1.79])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 81B14208B3;
-        Wed, 14 Oct 2020 01:04:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602637481;
-        bh=aRDby6Tf6kApngD6WPLRPBLIWKE1Nq1LU0dmXuOlRQ8=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=BH59Cqu66D0PzaM+IS0XDCugZ2tLznqGPlx1Bt4D+8klumtcftrrKUaqhiK2CC7+D
-         OBUJG7DOAVItF3Hnh09u1tVMUzFr/77zUYRTbEK75tAWajPsSwvU51HTPI4WcgrdTB
-         TCjlfEyJfV4wy3F7qRy03Ow153oiBTLcPSFOSgrY=
-Content-Type: text/plain; charset="utf-8"
+        id S1726954AbgJNPoC (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 14 Oct 2020 11:44:02 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2AF31D6E;
+        Wed, 14 Oct 2020 08:44:01 -0700 (PDT)
+Received: from [10.57.48.76] (unknown [10.57.48.76])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4D4633F71F;
+        Wed, 14 Oct 2020 08:43:59 -0700 (PDT)
+Subject: Re: [PATCH 2/8] iommu/arm-smmu-qcom: Add QC SMMUv2 VA Size quirk for
+ SDM660
+To:     kholk11@gmail.com, will@kernel.org
+Cc:     joro@8bytes.org, bjorn.andersson@linaro.org,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        marijns95@gmail.com, konradybcio@gmail.com,
+        martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200926130004.13528-1-kholk11@gmail.com>
+ <20200926130004.13528-3-kholk11@gmail.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <466419ba-99e5-8ad6-ed0a-76e5afd44e7b@arm.com>
+Date:   Wed, 14 Oct 2020 16:43:57 +0100
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20201005145855.149206-1-konradybcio@gmail.com>
-References: <20201005145855.149206-1-konradybcio@gmail.com>
-Subject: Re: [PATCH] clk: qcom: gcc-msm8994: Add missing clocks, resets and GDSCs
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-To:     konradybcio@gmail.com
-Date:   Tue, 13 Oct 2020 18:04:40 -0700
-Message-ID: <160263748035.310579.4403245633255183131@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+In-Reply-To: <20200926130004.13528-3-kholk11@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Quoting Konrad Dybcio (2020-10-05 07:58:55)
-> This change adds GDSCs, resets and most of the missing
-> clocks to the msm8994 GCC driver. The remaining ones
-> are of local_vote_clk and gate_clk type, which are not
-> yet supported upstream. Also reorder them to match the
-> original downstream driver.
->=20
-> Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
-> ---
+On 2020-09-26 13:59, kholk11@gmail.com wrote:
+> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> 
+> Some IOMMUs are getting set-up for Shared Virtual Address, but:
+> 1. They are secured by the Hypervisor, so any configuration
+>     change will generate a hyp-fault and crash the system
+> 2. This 39-bits Virtual Address size deviates from the ARM
+>     System MMU Architecture specification for SMMUv2, hence
 
-Applied to clk-next
+This is a little confusing, since it reads like the 39-bit VA 
+configuration is itself non-architectural, which it obviously isn't.
+
+>     it is non-standard. In this case, the only way to keep the
+>     IOMMU as the firmware did configure it, is to hardcode a
+>     maximum VA size of 39 bits (because of point 1).
+
+The *only* way to preserve an existing configuration is to make a 
+hard-coded assumption about what it probably is? Really? Not, say, 
+actually reading back the currently-configured value? :/
+
+> This gives the need to add implementation details bits for
+> at least some of the SoCs having this kind of configuration,
+> which are at least SDM630, SDM636 and SDM660.
+> 
+> These implementation details will be enabled on finding the
+> qcom,sdm660-smmu-v2 compatible.
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> ---
+>   drivers/iommu/arm/arm-smmu/arm-smmu-impl.c |  3 ++-
+>   drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 31 +++++++++++++++++++++-
+>   2 files changed, 32 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
+> index f4ff124a1967..9d753f8af2cc 100644
+> --- a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
+> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
+> @@ -216,7 +216,8 @@ struct arm_smmu_device *arm_smmu_impl_init(struct arm_smmu_device *smmu)
+>   	if (of_device_is_compatible(np, "nvidia,tegra194-smmu"))
+>   		return nvidia_smmu_impl_init(smmu);
+>   
+> -	if (of_device_is_compatible(np, "qcom,sdm845-smmu-500") ||
+> +	if (of_device_is_compatible(np, "qcom,sdm660-smmu-v2") ||
+> +	    of_device_is_compatible(np, "qcom,sdm845-smmu-500") ||
+>   	    of_device_is_compatible(np, "qcom,sc7180-smmu-500") ||
+>   	    of_device_is_compatible(np, "qcom,sm8150-smmu-500") ||
+>   	    of_device_is_compatible(np, "qcom,sm8250-smmu-500"))
+> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+> index 7859fd0db22a..f5bbfe86ef30 100644
+> --- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+> @@ -65,8 +65,33 @@ static const struct arm_smmu_impl qcom_smmu500_impl = {
+>   	.reset = qcom_smmu500_reset,
+>   };
+>   
+> +static int qcom_smmuv2_cfg_probe(struct arm_smmu_device *smmu)
+> +{
+> +	/*
+> +	 * Some IOMMUs are getting set-up for Shared Virtual Address, but:
+> +	 * 1. They are secured by the Hypervisor, so any configuration
+> +	 *    change will generate a hyp-fault and crash the system
+> +	 * 2. This 39-bits Virtual Address size deviates from the ARM
+> +	 *    System MMU Architecture specification for SMMUv2, hence
+> +	 *    it is non-standard. In this case, the only way to keep the
+> +	 *    IOMMU as the firmware did configure it, is to hardcode a
+> +	 *    maximum VA size of 39 bits (because of point 1).
+> +	 */
+
+What's the actual UBS value reported? If it's 40 then arguably the main 
+driver could be cleverer and use 39 bits for stage 1 domains anyway to 
+save a level of pagetable. However...
+
+I'm concerned that "any configuration change" and "maximum" don't appear 
+to add up. What if we decided we want to use short-descriptor format (or 
+just pick a 32-bit VA size for other reasons)? That's happily less than 
+39 bits, but would still represent a change *from* 39 bits, so would it 
+also kill the system? IIRC Jordan's split pagetable support will end up 
+configuring contexts with TxSZ based on va_bits / 2, so now 38 bits - is 
+that going to work?
+
+If you need to impose specific restrictions on context bank format, just 
+bodging va_bits isn't going to cut it. You'd need to adjust the domain 
+and pagetable configuration directly in ->init_context() in very much 
+the same way as the split pagetable support itself does.
+
+That said, I still hold the opinion that if you can't reprogram the 
+context banks then this is qcom-iommu territory, not arm-smmu.
+
+Robin.
+
+> +	if (smmu->va_size > 39UL)
+> +		dev_notice(smmu->dev,
+> +			   "\tenabling workaround for QCOM SMMUv2 VA size\n");
+> +	smmu->va_size = min(smmu->va_size, 39UL);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct arm_smmu_impl qcom_smmuv2_impl = {
+> +	.cfg_probe = qcom_smmuv2_cfg_probe,
+> +};
+> +
+>   struct arm_smmu_device *qcom_smmu_impl_init(struct arm_smmu_device *smmu)
+>   {
+> +	const struct device_node *np = smmu->dev->of_node;
+>   	struct qcom_smmu *qsmmu;
+>   
+>   	qsmmu = devm_kzalloc(smmu->dev, sizeof(*qsmmu), GFP_KERNEL);
+> @@ -75,7 +100,11 @@ struct arm_smmu_device *qcom_smmu_impl_init(struct arm_smmu_device *smmu)
+>   
+>   	qsmmu->smmu = *smmu;
+>   
+> -	qsmmu->smmu.impl = &qcom_smmu500_impl;
+> +	if (of_device_is_compatible(np, "qcom,sdm660-smmu-v2")) {
+> +		qsmmu->smmu.impl = &qcom_smmuv2_impl;
+> +	} else {
+> +		qsmmu->smmu.impl = &qcom_smmu500_impl;
+> +	}
+>   	devm_kfree(smmu->dev, smmu);
+>   
+>   	return &qsmmu->smmu;
+> 
