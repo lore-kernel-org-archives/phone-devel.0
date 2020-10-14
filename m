@@ -7,26 +7,26 @@ X-Spam-Status: No, score=-11.3 required=3.0 tests=BAYES_00,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7055C43467
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Oct 2020 15:44:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F507C43457
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Oct 2020 15:53:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8FE132222E
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Oct 2020 15:44:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 00C992222C
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Oct 2020 15:53:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730492AbgJNPoC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Oct 2020 11:44:02 -0400
-Received: from foss.arm.com ([217.140.110.172]:51940 "EHLO foss.arm.com"
+        id S1727630AbgJNPxA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Oct 2020 11:53:00 -0400
+Received: from foss.arm.com ([217.140.110.172]:52200 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726954AbgJNPoC (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Oct 2020 11:44:02 -0400
+        id S1726439AbgJNPw7 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 14 Oct 2020 11:52:59 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2AF31D6E;
-        Wed, 14 Oct 2020 08:44:01 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 21EBFD6E;
+        Wed, 14 Oct 2020 08:52:59 -0700 (PDT)
 Received: from [10.57.48.76] (unknown [10.57.48.76])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4D4633F71F;
-        Wed, 14 Oct 2020 08:43:59 -0700 (PDT)
-Subject: Re: [PATCH 2/8] iommu/arm-smmu-qcom: Add QC SMMUv2 VA Size quirk for
- SDM660
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F2A23F71F;
+        Wed, 14 Oct 2020 08:52:57 -0700 (PDT)
+Subject: Re: [PATCH 4/8] iommu/arm-smmu: Support test_smr_masks implementation
+ detail deviation
 To:     kholk11@gmail.com, will@kernel.org
 Cc:     joro@8bytes.org, bjorn.andersson@linaro.org,
         linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
@@ -34,14 +34,14 @@ Cc:     joro@8bytes.org, bjorn.andersson@linaro.org,
         martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
         phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20200926130004.13528-1-kholk11@gmail.com>
- <20200926130004.13528-3-kholk11@gmail.com>
+ <20200926130004.13528-5-kholk11@gmail.com>
 From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <466419ba-99e5-8ad6-ed0a-76e5afd44e7b@arm.com>
-Date:   Wed, 14 Oct 2020 16:43:57 +0100
+Message-ID: <00afa417-d897-22ee-25a5-cba1bf96c669@arm.com>
+Date:   Wed, 14 Oct 2020 16:52:56 +0100
 User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
  Thunderbird/78.3.2
 MIME-Version: 1.0
-In-Reply-To: <20200926130004.13528-3-kholk11@gmail.com>
+In-Reply-To: <20200926130004.13528-5-kholk11@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
@@ -49,125 +49,55 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2020-09-26 13:59, kholk11@gmail.com wrote:
+On 2020-09-26 14:00, kholk11@gmail.com wrote:
 > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 > 
-> Some IOMMUs are getting set-up for Shared Virtual Address, but:
-> 1. They are secured by the Hypervisor, so any configuration
->     change will generate a hyp-fault and crash the system
-> 2. This 39-bits Virtual Address size deviates from the ARM
->     System MMU Architecture specification for SMMUv2, hence
-
-This is a little confusing, since it reads like the 39-bit VA 
-configuration is itself non-architectural, which it obviously isn't.
-
->     it is non-standard. In this case, the only way to keep the
->     IOMMU as the firmware did configure it, is to hardcode a
->     maximum VA size of 39 bits (because of point 1).
-
-The *only* way to preserve an existing configuration is to make a 
-hard-coded assumption about what it probably is? Really? Not, say, 
-actually reading back the currently-configured value? :/
-
-> This gives the need to add implementation details bits for
-> at least some of the SoCs having this kind of configuration,
-> which are at least SDM630, SDM636 and SDM660.
-> 
-> These implementation details will be enabled on finding the
-> qcom,sdm660-smmu-v2 compatible.
+> At least some Qualcomm SoCs do need to override the function
+> arm_smmu_test_smr_masks entirely: add a test_smr_masks function
+> to the implementation details structure and call it properly.
 > 
 > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
 > ---
->   drivers/iommu/arm/arm-smmu/arm-smmu-impl.c |  3 ++-
->   drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 31 +++++++++++++++++++++-
->   2 files changed, 32 insertions(+), 2 deletions(-)
+>   drivers/iommu/arm/arm-smmu/arm-smmu.c | 6 ++++++
+>   drivers/iommu/arm/arm-smmu/arm-smmu.h | 1 +
+>   2 files changed, 7 insertions(+)
 > 
-> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-> index f4ff124a1967..9d753f8af2cc 100644
-> --- a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
-> @@ -216,7 +216,8 @@ struct arm_smmu_device *arm_smmu_impl_init(struct arm_smmu_device *smmu)
->   	if (of_device_is_compatible(np, "nvidia,tegra194-smmu"))
->   		return nvidia_smmu_impl_init(smmu);
+> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> index 09c42af9f31e..446a78dde9cd 100644
+> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> @@ -977,6 +977,12 @@ static void arm_smmu_test_smr_masks(struct arm_smmu_device *smmu)
 >   
-> -	if (of_device_is_compatible(np, "qcom,sdm845-smmu-500") ||
-> +	if (of_device_is_compatible(np, "qcom,sdm660-smmu-v2") ||
-> +	    of_device_is_compatible(np, "qcom,sdm845-smmu-500") ||
->   	    of_device_is_compatible(np, "qcom,sc7180-smmu-500") ||
->   	    of_device_is_compatible(np, "qcom,sm8150-smmu-500") ||
->   	    of_device_is_compatible(np, "qcom,sm8250-smmu-500"))
-> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-> index 7859fd0db22a..f5bbfe86ef30 100644
-> --- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-> @@ -65,8 +65,33 @@ static const struct arm_smmu_impl qcom_smmu500_impl = {
->   	.reset = qcom_smmu500_reset,
->   };
->   
-> +static int qcom_smmuv2_cfg_probe(struct arm_smmu_device *smmu)
-> +{
-> +	/*
-> +	 * Some IOMMUs are getting set-up for Shared Virtual Address, but:
-> +	 * 1. They are secured by the Hypervisor, so any configuration
-> +	 *    change will generate a hyp-fault and crash the system
-> +	 * 2. This 39-bits Virtual Address size deviates from the ARM
-> +	 *    System MMU Architecture specification for SMMUv2, hence
-> +	 *    it is non-standard. In this case, the only way to keep the
-> +	 *    IOMMU as the firmware did configure it, is to hardcode a
-> +	 *    maximum VA size of 39 bits (because of point 1).
-> +	 */
+>   	if (!smmu->smrs)
+>   		return;
+> +
+> +	if (smmu->impl && smmu->impl->test_smr_masks) {
+> +		smmu->impl->test_smr_masks(smmu);
 
-What's the actual UBS value reported? If it's 40 then arguably the main 
-driver could be cleverer and use 39 bits for stage 1 domains anyway to 
-save a level of pagetable. However...
-
-I'm concerned that "any configuration change" and "maximum" don't appear 
-to add up. What if we decided we want to use short-descriptor format (or 
-just pick a 32-bit VA size for other reasons)? That's happily less than 
-39 bits, but would still represent a change *from* 39 bits, so would it 
-also kill the system? IIRC Jordan's split pagetable support will end up 
-configuring contexts with TxSZ based on va_bits / 2, so now 38 bits - is 
-that going to work?
-
-If you need to impose specific restrictions on context bank format, just 
-bodging va_bits isn't going to cut it. You'd need to adjust the domain 
-and pagetable configuration directly in ->init_context() in very much 
-the same way as the split pagetable support itself does.
-
-That said, I still hold the opinion that if you can't reprogram the 
-context banks then this is qcom-iommu territory, not arm-smmu.
+Meh, this doesn't need a special hook - just have ->cfg_probe() 
+initialise your masks early and bail out here if smr_mask_mask is 
+already set. You could actually bypass this test as-is by marking all 
+your SMR entries as valid, but that's likely to cause far more problems 
+elsewhere than it solves here ;)
 
 Robin.
 
-> +	if (smmu->va_size > 39UL)
-> +		dev_notice(smmu->dev,
-> +			   "\tenabling workaround for QCOM SMMUv2 VA size\n");
-> +	smmu->va_size = min(smmu->va_size, 39UL);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct arm_smmu_impl qcom_smmuv2_impl = {
-> +	.cfg_probe = qcom_smmuv2_cfg_probe,
-> +};
-> +
->   struct arm_smmu_device *qcom_smmu_impl_init(struct arm_smmu_device *smmu)
->   {
-> +	const struct device_node *np = smmu->dev->of_node;
->   	struct qcom_smmu *qsmmu;
->   
->   	qsmmu = devm_kzalloc(smmu->dev, sizeof(*qsmmu), GFP_KERNEL);
-> @@ -75,7 +100,11 @@ struct arm_smmu_device *qcom_smmu_impl_init(struct arm_smmu_device *smmu)
->   
->   	qsmmu->smmu = *smmu;
->   
-> -	qsmmu->smmu.impl = &qcom_smmu500_impl;
-> +	if (of_device_is_compatible(np, "qcom,sdm660-smmu-v2")) {
-> +		qsmmu->smmu.impl = &qcom_smmuv2_impl;
-> +	} else {
-> +		qsmmu->smmu.impl = &qcom_smmu500_impl;
+> +		return;
 > +	}
->   	devm_kfree(smmu->dev, smmu);
->   
->   	return &qsmmu->smmu;
+> +
+>   	/*
+>   	 * If we've had to accommodate firmware memory regions, we may
+>   	 * have live SMRs by now; tread carefully...
+> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.h b/drivers/iommu/arm/arm-smmu/arm-smmu.h
+> index d890a4a968e8..2cd3d126f675 100644
+> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.h
+> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.h
+> @@ -387,6 +387,7 @@ struct arm_smmu_impl {
+>   	int (*cfg_probe)(struct arm_smmu_device *smmu);
+>   	int (*reset)(struct arm_smmu_device *smmu);
+>   	int (*init_context)(struct arm_smmu_domain *smmu_domain);
+> +	void (*test_smr_masks)(struct arm_smmu_device *smmu);
+>   	void (*tlb_sync)(struct arm_smmu_device *smmu, int page, int sync,
+>   			 int status);
+>   	int (*def_domain_type)(struct device *dev);
 > 
