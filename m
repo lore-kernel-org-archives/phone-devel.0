@@ -1,152 +1,163 @@
-Return-Path: <SRS0=TJvm=DW=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <SRS0=XcTP=DX=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5309BC433DF
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Oct 2020 01:54:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 404F7C433DF
+	for <phone-devel@archiver.kernel.org>; Fri, 16 Oct 2020 08:41:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id ED88522257
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Oct 2020 01:54:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DC8A220848
+	for <phone-devel@archiver.kernel.org>; Fri, 16 Oct 2020 08:41:33 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mv4K9pQT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="g6aDk1qZ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732425AbgJOByu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Oct 2020 21:54:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53094 "EHLO
+        id S2394725AbgJPIld (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 16 Oct 2020 04:41:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732401AbgJOByh (ORCPT
+        with ESMTP id S2394722AbgJPIla (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Oct 2020 21:54:37 -0400
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E445C0613BD
-        for <phone-devel@vger.kernel.org>; Wed, 14 Oct 2020 15:19:24 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id 32so1169739otm.3
-        for <phone-devel@vger.kernel.org>; Wed, 14 Oct 2020 15:19:24 -0700 (PDT)
+        Fri, 16 Oct 2020 04:41:30 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 472AEC061755
+        for <phone-devel@vger.kernel.org>; Fri, 16 Oct 2020 01:41:29 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id g12so1752358wrp.10
+        for <phone-devel@vger.kernel.org>; Fri, 16 Oct 2020 01:41:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=RRjGeO/tlzjrZ9J3RrPGuGS/1yOeW5L71HWGM1q9PqM=;
-        b=mv4K9pQTVn31rCM+RtELHJJEN9cJcDk1Vd6rueXFN+ur+DaBM9Qq6TK1m1WezBf4hr
-         MQc4sM/fZNpoQKwJNk0jefV/29a2Gbpvzk8lFhkPydaWTLr63a2DTl1r3yhg6YPa/3X7
-         GMmiNAEf3/5wkoQNpNIufrrELvJm1hzUZ4d5PU3Jto2lwEFOoxAzKXsFath4PAacm8Rk
-         ZlO1sQURY4EWIvlOqPlPAW3Y0R6KtQ9uEyAF0kwX1a/HsEDfF9f3sScPa4odkSIEPkkR
-         oQt72Sd4vg9XkFEeqhqZrGx1AchS1N4vkcJYy7b4nnFinyY/IYoOdPvA8MVmt/JKcj4Z
-         llKg==
+        h=subject:to:cc:references:from:autocrypt:message-id:date
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=uQtk+JkWwMEwATgr+OhTpaNDc3LvbNZB+56/tR3CRGc=;
+        b=g6aDk1qZRqu1sSIfLksRLGEGveUEmd6U/VdaytxMoY0CorU/S7i/BkT8/apGW/zW1N
+         lgcFmP1nvE9rPx++8e7QLcq5x527D2uDlPLHc1wsExoqv5wNOW1luL0pNdjw+RzMzzQd
+         M/1xkXnkJNZfYRq9tvIRKJkdg0JWL/MY3NOCO6ssEC4V8aThV6KznIHCGQLDpm4UqX7u
+         x6C9swI0ag55gIGoOkSmN9haSiyPkeZgPMjJqhHSYZrRnKv5k0J6WcLcH+wdQBdZoEeu
+         z6ywXa+E0CwLcugppe7h6mG4iLaIQ5Ry05Jb1O9RpHN75B+p5Ej2a9v0P++Nwrf+13lY
+         znRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RRjGeO/tlzjrZ9J3RrPGuGS/1yOeW5L71HWGM1q9PqM=;
-        b=RbYL7H43hL3X8pb1s9FVwoGeplaefdbPUeaVMeGaYGgrSPih9Wj+DX+c5Fd2MbE1i8
-         oEt1I0rSj/nD3TszlV0+G8rwB6/8fDSpyNy8hXmAVtKelnWkam8oLdlpyWechelckYvP
-         /7P/vtFz0ImEcBy9tPKBZnMclMzwYekoRTlzc9+QUjw+HnwSyRS0XzniHJSPWZvCFE1Y
-         agJeveRGcO0xddr0XFZMhIEOkYxtm1ZgiKWTk9b+h/UG1mkLPlzR06E1SykJWv0YLTkw
-         PBhJy7mhQHZGTgNj759Kx4RKjPX3/HxeKdbjvw8FkWUzoJTsTotdfPwnMo+ztRMiQ6x/
-         MZRw==
-X-Gm-Message-State: AOAM531Tho0dFeCGbOLgd8nxzYhcQ9j30HSXtBBrqsAHD3LRiM88zsWb
-        igFWdz8pJqnPYzfj+WfFPY4tuw==
-X-Google-Smtp-Source: ABdhPJxDI9ig5Teru80krEOu8rMTShtx9klUW2MoC+kc1i2hN5KpLmX7EJYBnDsiZFyWnkmRIXuaHQ==
-X-Received: by 2002:a9d:6a55:: with SMTP id h21mr607071otn.297.1602713963840;
-        Wed, 14 Oct 2020 15:19:23 -0700 (PDT)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id q81sm337035oia.46.2020.10.14.15.19.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2020 15:19:23 -0700 (PDT)
-Date:   Wed, 14 Oct 2020 17:14:40 -0500
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     kholk11@gmail.com
-Cc:     will@kernel.org, robin.murphy@arm.com, joro@8bytes.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        marijns95@gmail.com, konradybcio@gmail.com,
-        martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 8/8] iommu/arm-smmu-qcom: Add stream_mapping_reset detail
- to QCOM SMMUv2
-Message-ID: <20201014221440.GA299663@builder.lan>
-References: <20200926130004.13528-1-kholk11@gmail.com>
- <20200926130004.13528-9-kholk11@gmail.com>
+        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+         :message-id:date:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=uQtk+JkWwMEwATgr+OhTpaNDc3LvbNZB+56/tR3CRGc=;
+        b=PbjXVJdDl2ZgXyswmUxRRWgCN86Zx+dJu3EDjCJ25wzV//FwXJqq0T1FD6T1rjMrBX
+         st0ik7ImFc4cQhEgk5hoXeWBNs46EPCrLjavSWeNOWahI2SBdb73XFq9eloLRgbtFHj2
+         c/qNLHR46WInbWdaLQUdVTwkllOoAvwUkC3mojMj3b1f565U2ATEChrm/URaQo7cBJ8+
+         cq7CHZRtKfn6cTvUskoiSS+wJXkTNGIXDwWIgBcR8Ho+ecWCtYmJP/To9yHcEEj8CLsN
+         einPPcPkjLhs32PLP/YwnXYwOD0zA9YpM80/s49woHn2QW/vrRvYVUeWn+25plOlnKYG
+         ySHQ==
+X-Gm-Message-State: AOAM531LTtEAwBje8f6yDMDEYkGCG/JP5jYkGLtRvRYAfiBQVpuMcdJN
+        +JmbOQrPAom6WjeEhKPW7FBL5A==
+X-Google-Smtp-Source: ABdhPJz9m3JGp984AVtKeGBkdjCiktIcI1tKy4izElWyZLcVxTVch5Uw/IS4XIpF8j0oVFqEOw92Mg==
+X-Received: by 2002:adf:dd46:: with SMTP id u6mr2609097wrm.295.1602837688010;
+        Fri, 16 Oct 2020 01:41:28 -0700 (PDT)
+Received: from [10.44.66.8] ([212.45.67.2])
+        by smtp.googlemail.com with ESMTPSA id j7sm2577408wrn.81.2020.10.16.01.41.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Oct 2020 01:41:27 -0700 (PDT)
+Subject: Re: [PATCH v3 1/2] dt-bindings: interconnect: Add bindings for
+ Qualcomm SDM660 NoC
+To:     kholk11@gmail.com, bjorn.andersson@linaro.org
+Cc:     robh+dt@kernel.org, agross@kernel.org, marijns95@gmail.com,
+        konradybcio@gmail.com, martin.botka1@gmail.com,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20201008204515.695210-1-kholk11@gmail.com>
+ <20201008204515.695210-2-kholk11@gmail.com>
+From:   Georgi Djakov <georgi.djakov@linaro.org>
+Autocrypt: addr=georgi.djakov@linaro.org; prefer-encrypt=mutual; keydata=
+ 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
+ KEmKjLDvB0pePJkdTw==
+Message-ID: <51622859-3c60-9547-7253-8df5cf5ccd0d@linaro.org>
+Date:   Fri, 16 Oct 2020 11:41:24 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200926130004.13528-9-kholk11@gmail.com>
+In-Reply-To: <20201008204515.695210-2-kholk11@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat 26 Sep 08:00 CDT 2020, kholk11@gmail.com wrote:
+Hi,
 
+On 10/8/20 23:45, kholk11@gmail.com wrote:
 > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 > 
-> On some Qualcomm SoCs with certain hypervisor configurations,
-> some context banks are hyp-protected and cannot be disabled,
-> nor the relative S2CRs can be set as bypass, or a hyp-fault
-> will be triggered and the system will hang.
-> 
-> This is seen on at least Qualcomm SDM630, SDM636 and SDM660.
+> Add the bindings for the Qualcomm SDM660-class NoC, valid for
+> SDM630, SDM636, SDM660 and SDA variants.
 > 
 > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
 > ---
->  drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  .../bindings/interconnect/qcom,sdm660.yaml    | 147 ++++++++++++++++++
+>  .../dt-bindings/interconnect/qcom,sdm660.h    | 116 ++++++++++++++
+>  2 files changed, 263 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,sdm660.yaml
+>  create mode 100644 include/dt-bindings/interconnect/qcom,sdm660.h
 > 
-> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-> index b18e70bddf29..364908cc2adf 100644
-> --- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-> @@ -85,6 +85,18 @@ static int qcom_smmuv2_cfg_probe(struct arm_smmu_device *smmu)
->  	return 0;
->  }
->  
-> +static void qcom_smmuv2_stream_mapping_reset(struct arm_smmu_device *smmu)
-> +{
-> +	/*
-> +	 * Broken firmware quirk:
-> +	 * On some Qualcomm SoCs with certain hypervisor configurations,
-> +	 * some context banks are hyp-protected and cannot be disabled,
-
-Wouldn't you run into the same problem when init_domain_context() later
-comes along and "accidentally" pick one of these context banks?
-
-Do we have any way of knowing which banks this is, so we can mark them
-as busy?
-
-> +	 * nor the relative S2CRs can be set as bypass, or a hyp-fault
-
-On platforms such as SDM845, SM8150, SM8250 etc, writing S2CR of type
-BYPASS is trapped by the hypervisor and FAULT is actually written to the
-hardware - resulting in a system reset when the associated hardware
-tries to perform a memory access.
-
-
-Is it the actual S2CR write that causes the problem you're seeing or the
-fact that it happens to be that you shoot down the display stream as
-soon as you touch these registers?
-
-Regards,
-Bjorn
-
-> +	 * will be triggered and the system will hang.
-> +	 */
-> +	return;
-> +}
+> diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sdm660.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sdm660.yaml
+> new file mode 100644
+> index 000000000000..440e9bc1382a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interconnect/qcom,sdm660.yaml
+> @@ -0,0 +1,147 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/interconnect/qcom,sdm660.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
->  static void qcom_smmuv2_test_smr_masks(struct arm_smmu_device *smmu)
->  {
->  	/*
-> @@ -99,6 +111,7 @@ static void qcom_smmuv2_test_smr_masks(struct arm_smmu_device *smmu)
->  
->  static const struct arm_smmu_impl qcom_smmuv2_impl = {
->  	.cfg_probe = qcom_smmuv2_cfg_probe,
-> +	.stream_mapping_reset = qcom_smmuv2_stream_mapping_reset,
->  	.test_smr_masks = qcom_smmuv2_test_smr_masks,
->  };
->  
-> -- 
-> 2.28.0
-> 
+> +title: Qualcomm SDM660 Network-On-Chip interconnect
+> +
+> +maintainers:
+> +  - Georgi Djakov <georgi.djakov@linaro.org>
+
+Why me? This should be you.
+
+Thanks,
+Georgi
