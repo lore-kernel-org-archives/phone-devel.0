@@ -1,4 +1,4 @@
-Return-Path: <SRS0=BEVE=DY=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <SRS0=sBFj=DZ=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
@@ -8,98 +8,121 @@ X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6801CC388D1
-	for <phone-devel@archiver.kernel.org>; Sat, 17 Oct 2020 19:02:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 857F5C433E7
+	for <phone-devel@archiver.kernel.org>; Sun, 18 Oct 2020 12:26:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3600220829
-	for <phone-devel@archiver.kernel.org>; Sat, 17 Oct 2020 19:02:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 38EA521582
+	for <phone-devel@archiver.kernel.org>; Sun, 18 Oct 2020 12:26:27 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sHLOFZo0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J34eS6XG"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439316AbgJQTCO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 17 Oct 2020 15:02:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35556 "EHLO
+        id S1726698AbgJRM00 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 18 Oct 2020 08:26:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2439282AbgJQTB7 (ORCPT
+        with ESMTP id S1726530AbgJRM00 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 17 Oct 2020 15:01:59 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED2F3C0613CE;
-        Sat, 17 Oct 2020 12:01:58 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id b8so7111705wrn.0;
-        Sat, 17 Oct 2020 12:01:58 -0700 (PDT)
+        Sun, 18 Oct 2020 08:26:26 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AA95C061755;
+        Sun, 18 Oct 2020 05:26:26 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id b127so9994599wmb.3;
+        Sun, 18 Oct 2020 05:26:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=cGK0y4DdjN+ht1VXSEDsJItbDCIWKoPEWxNpiJk8/U4=;
-        b=sHLOFZo0TFodQdq0qeEmrvShlmZ9eatFXSn/LuchFBPmbSuFAU516t9DD2NTSSImFC
-         RiKvAXlN1HKK5i/kbFWTKJjtqyTZ9SsShSmumUZpvBmzNJ1zJGywy4fl8TwP9wklWJZ2
-         RGg5il/MWZHHAvlcxuzDEcm0PDysDd2XzqdsG+SroXNpttNCz5o3/hCtKPrZgAvSfmdi
-         XNIKE1RIAmElXN+N3Ra3DNBqOJKrvUiRL7IR8wPiI6/7RbEeIuYnc10VmC4O1ZOrie7Y
-         mR+uddUt09jG5KofZfS549gi4E7GogKQZZkxCHXiWlL7ahJBhI0N8Y3nvsoAombkAhsZ
-         zY/Q==
+        bh=t1weUtNO96dKRYI1qRIuX5UtXeM+HTLPsujZT7Xa7/8=;
+        b=J34eS6XGO0akDnelvkfungKI6IkF1hKyMmZan7/+qUOEb8FH1vZOlrcb8J79zEpy7A
+         AgF3GsCGzNoVyDURN8pnEo5KeI1ey9zk+vw14vcOHdDgI04uJ7vSbBZ+nf113v5KPGkA
+         ecPPXxvHn3Xcojz+IP9vUWlCluy0ZBDSJUsuml1BTpHqyXuZWQuwdaWoDjQwtAPPT6Ro
+         23wfGPbjKDHphsfgNr+xBvZfHO5hYLq2WIX/tGAZ1MFlIXEdGCb4JidfDccb3vfwMCi3
+         L/bL0qgLuKn5spigzjskMLk3bledQtykrqGy+bGu4CjQ62fMoILT/gr9LSaJ5N+MhIMz
+         pD/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=cGK0y4DdjN+ht1VXSEDsJItbDCIWKoPEWxNpiJk8/U4=;
-        b=HFZvjCPJMn7eTVcB5kI5j07Fg5cGHZQGUqVvNzlNz+nwGdLv1ZbKd4JiJrlJf7Gc5L
-         owuo/xR8YGCk7U4yT/AHDdV91cDPV//15ExGS2XI2W1qFpffnxwqjj7pzIOp1uunkzuG
-         2JTV1eoQ8DSzRYWZuH++3k/zMfhWoNnZkVX70JJmCf+qJHzFdM7AV1FIyH06Ha3WFq6w
-         vziVGohYmHd2/pah1jVVbgH4ScnXwFTs62CmPITnlmHsG26VdEHs+d6WsVyxJSSpwYmS
-         jt3Hla2FDU/U9g7xpoOq21KBo909vx2ebYgR2dH+yjK8liVTPKo9LUIzBY15EpC5hkvo
-         5hkQ==
-X-Gm-Message-State: AOAM5309/jGNV4HfBc5XqG10YZ2SObJGZuIw2hrd0i4tlmCiVkpuTLsZ
-        keBJRMqWBwVa1kJAvyGtQSI=
-X-Google-Smtp-Source: ABdhPJz0JPQGmg+LIR8g2ZD9ObwpMtMW49aqa3s+67amfCe2GuE5bgSKXXXqESy27IzwYfmhtthYhw==
-X-Received: by 2002:adf:ee4c:: with SMTP id w12mr10878393wro.22.1602961317536;
-        Sat, 17 Oct 2020 12:01:57 -0700 (PDT)
+        bh=t1weUtNO96dKRYI1qRIuX5UtXeM+HTLPsujZT7Xa7/8=;
+        b=uZdz6GHbBTWbnAQkhWjgPgRad/fnE2/iQE70H/FqItaY/owSeUKS08bpLT4mcg3R0V
+         /lJKa5hYIUdqTn05YCoDgIThN6L4tvESeRxyHpR1m+befmx/zAmxCQ6vu2M38WG/Kk+W
+         iQCvYXM5ZKUqVEa6lc3xuj0BU6y9klcjMu0uhLYptOlShx5pBq1Y2zvOaEv1vPKPwrkT
+         kTMEHnGNTTCu+vxNw3ObhWVO9GP+FY7HajS9lXOqGzxy7zDPLJi8l36kGzulRcl1ZHED
+         q4s5cyjC10xT+QRLHjJA49UrOSgsNN7LcltpaCr0lVpcXC1m8+EHQ+j9qg6RvyOIN2nu
+         QCiA==
+X-Gm-Message-State: AOAM530IbN9rPytj7Xb2a3VOK8zihuvzvS49cxFVfqLMWqiztd3bf2Nv
+        SKrCF75EfDw63mdOZsXQQOA=
+X-Google-Smtp-Source: ABdhPJwBw/m+riHlVkJZa1sTgXszJEXQDAniU85jnTt4ZvQCc9CQqO6e3/f4MTK+xjb0jH0a6HflPg==
+X-Received: by 2002:a7b:c341:: with SMTP id l1mr13209534wmj.80.1603023984609;
+        Sun, 18 Oct 2020 05:26:24 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id a5sm9583793wrt.80.2020.10.17.12.01.56
+        by smtp.gmail.com with ESMTPSA id 14sm11744400wmf.27.2020.10.18.05.26.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Oct 2020 12:01:57 -0700 (PDT)
+        Sun, 18 Oct 2020 05:26:24 -0700 (PDT)
 From:   kholk11@gmail.com
-To:     dmitry.torokhov@gmail.com
-Cc:     robh+dt@kernel.org, rydberg@bitmath.org, priv.luk@gmail.com,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kholk11@gmail.com, marijns95@gmail.com, konradybcio@gmail.com,
-        martin.botka1@gmail.com, phone-devel@vger.kernel.org,
-        devicetree@vger.kernel.org, krzk@kernel.org
-Subject: [PATCH v5 1/3] dt-bindings: Add vendor prefix for Novatek Microelectronics Corp.
-Date:   Sat, 17 Oct 2020 21:01:50 +0200
-Message-Id: <20201017190152.12780-2-kholk11@gmail.com>
+To:     agross@kernel.org
+Cc:     bjorn.andersson@linaro.org, robh+dt@kernel.org, kholk11@gmail.com,
+        marijns95@gmail.com, konradybcio@gmail.com,
+        martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 2/2] dt-bindings: power: rpmpd: Add SDM660 power-domains bindings
+Date:   Sun, 18 Oct 2020 14:26:20 +0200
+Message-Id: <20201018122620.9735-2-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201017190152.12780-1-kholk11@gmail.com>
-References: <20201017190152.12780-1-kholk11@gmail.com>
+In-Reply-To: <20201018122620.9735-1-kholk11@gmail.com>
+References: <20201018122620.9735-1-kholk11@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+From: Konrad Dybcio <konradybcio@gmail.com>
 
-Add prefix for Novatek Microelectronics Corp.
+Add the new bindings for SDM660 rpmpd power domains.
 
+Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
 Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ .../devicetree/bindings/power/qcom,rpmpd.yaml        |  1 +
+ include/dt-bindings/power/qcom-rpmpd.h               | 12 ++++++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 66e45112a8d7..f98ea0af487d 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -740,6 +740,8 @@ patternProperties:
-     description: Nokia
-   "^nordic,.*":
-     description: Nordic Semiconductor
-+  "^novatek,.*":
-+    description: Novatek Microelectronics Corp.
-   "^novtech,.*":
-     description: NovTech, Inc.
-   "^nutsboard,.*":
+diff --git a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
+index 8058955fb3b9..45ec2439ff51 100644
+--- a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
++++ b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
+@@ -20,6 +20,7 @@ properties:
+       - qcom,msm8996-rpmpd
+       - qcom,msm8998-rpmpd
+       - qcom,qcs404-rpmpd
++      - qcom,sdm660-rpmpd
+       - qcom,sc7180-rpmhpd
+       - qcom,sdm845-rpmhpd
+       - qcom,sm8150-rpmhpd
+diff --git a/include/dt-bindings/power/qcom-rpmpd.h b/include/dt-bindings/power/qcom-rpmpd.h
+index 5e61eaf73bdd..2a39dc40483d 100644
+--- a/include/dt-bindings/power/qcom-rpmpd.h
++++ b/include/dt-bindings/power/qcom-rpmpd.h
+@@ -102,6 +102,18 @@
+ #define QCS404_LPIMX		5
+ #define QCS404_LPIMX_VFL	6
+ 
++/* SDM660 Power Domains */
++#define SDM660_VDDCX		0
++#define SDM660_VDDCX_AO		1
++#define SDM660_VDDCX_VFL	2
++#define SDM660_VDDMX		3
++#define SDM660_VDDMX_AO		4
++#define SDM660_VDDMX_VFL	5
++#define SDM660_SSCCX		6
++#define SDM660_SSCCX_VFL	7
++#define SDM660_SSCMX		8
++#define SDM660_SSCMX_VFL	9
++
+ /* RPM SMD Power Domain performance levels */
+ #define RPM_SMD_LEVEL_RETENTION       16
+ #define RPM_SMD_LEVEL_RETENTION_PLUS  32
 -- 
 2.28.0
 
