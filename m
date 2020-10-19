@@ -2,148 +2,229 @@ Return-Path: <SRS0=ZZsz=D2=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	MENTIONS_GIT_HOSTING,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A03B8C433DF
-	for <phone-devel@archiver.kernel.org>; Mon, 19 Oct 2020 16:08:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B9CBC43467
+	for <phone-devel@archiver.kernel.org>; Mon, 19 Oct 2020 16:26:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 563632224D
-	for <phone-devel@archiver.kernel.org>; Mon, 19 Oct 2020 16:08:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DA7ED222EA
+	for <phone-devel@archiver.kernel.org>; Mon, 19 Oct 2020 16:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1603123709;
-	bh=nZ5GlJ6OEocBy94UtmZs05Io4CEF+m2Y3tuEe1qO3zI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=FMcGNilGIam35P0/b+/tRK69Rm9t77FIGzdqEAQ0h3yJC+Kp7ui56R/mGOenRgBAr
-	 QLYZ98ezRSI4u5OWbqzKkWg+D8UMPKTLcW9eznYX2NzWzqKCWUv8Gh7y8xdrbbCasZ
-	 dTwRcI17FjHr40GXmsNfJjt1S0N5kxc09qPZdJE4=
+	s=default; t=1603124790;
+	bh=1tJbuVlWIhR9+3W7fjyD1W3o3IhxC52MeE1RdO8F+xU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
+	b=EJ/mflxd3a+vEVvsColZ0wrsu18jA4sEJJ44LU4jT8sF6wKdhfXmAxBWkmc7uqvOy
+	 NTMtmsQQoqnAGdi2hpNXyQnaM4QJiiOfaHtmGdm28y+1m6wSwW1SnsWUHxq8zFbi5t
+	 E2J2HdzasXRFDy60h99h9VTVhDmehjed/oPlYgj4=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730570AbgJSQI0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 19 Oct 2020 12:08:26 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:41260 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730447AbgJSQI0 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 19 Oct 2020 12:08:26 -0400
-Received: by mail-wr1-f65.google.com with SMTP id s9so334628wro.8;
-        Mon, 19 Oct 2020 09:08:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=zoO2hDHZETk3IyeB0Cl94Uv+82asuWViFYsWJmUXsmY=;
-        b=M7s0WnuEMEbRcoFCLXp83U7kuz5sPJ8bGq4/OJMIO0F/KsQryhDvXoZHktR8j8fUe3
-         MQ941POGhRvUJ2cyzgHJ+x6NZGw6dh/s6E4uRY6lybJHSa6MQIiuK3OguB6nC3mjvT+V
-         RBbvfr6GQTjCrNRpXJ3jGNNEayHtCc6jOh30CHQ4ZQFGwR9RXlajbVX7RifbUtxh9P/R
-         +zUqJD/I8/kzZxplHEXYsWoDmDKfsFZakdqlLjj4n/RhR1OSzhLBWNFob/pX3jTkLI5S
-         2eYaE4ziVnYj3IgU7Y91rqsNRin/1RWTzZgOqJbH1r92C8D3vzczosk/L4Y3MP4xa9uY
-         CX1A==
-X-Gm-Message-State: AOAM532fso6b/S7HG7GMNbv2bO/ELHlYIPiO+2oGotFR9bn+rLTgWTVZ
-        kUNODkI3EoKqRt/pUehmZ68=
-X-Google-Smtp-Source: ABdhPJzn9211CyF1TlFXeRqXKkFp4steoLCXGDe3zss3JH2vfd8GJc4eMWny+D3BIHIjIfO5L0ip7A==
-X-Received: by 2002:adf:d84e:: with SMTP id k14mr266926wrl.251.1603123703705;
-        Mon, 19 Oct 2020 09:08:23 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.171])
-        by smtp.googlemail.com with ESMTPSA id f8sm201290wrw.85.2020.10.19.09.08.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2020 09:08:22 -0700 (PDT)
-Date:   Mon, 19 Oct 2020 18:08:20 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     kholk11@gmail.com
-Cc:     dmitry.torokhov@gmail.com, robh+dt@kernel.org, rydberg@bitmath.org,
-        priv.luk@gmail.com, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org, marijns95@gmail.com,
-        konradybcio@gmail.com, martin.botka1@gmail.com,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 3/3] dt-bindings: touchscreen: Add binding for Novatek
- NT36xxx series driver
-Message-ID: <20201019160820.GB34785@kozik-lap>
-References: <20201017190152.12780-1-kholk11@gmail.com>
- <20201017190152.12780-4-kholk11@gmail.com>
+        id S1730201AbgJSQ00 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 19 Oct 2020 12:26:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50580 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730025AbgJSQ0Z (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 19 Oct 2020 12:26:25 -0400
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id D891421D81;
+        Mon, 19 Oct 2020 16:26:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603124784;
+        bh=1tJbuVlWIhR9+3W7fjyD1W3o3IhxC52MeE1RdO8F+xU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=SWa14kOW/ZS7j+YS7HC0xhVYkzuE1IacaPzN6lRnXr0I9u8CN8um8dVCnxEW3egu7
+         UYfGwgnwUqJemWweEsQoLbNZ5bEbU1P3IeI08CekRsOdDSqtPUxUJU5vLIJrDgAluR
+         162T9gUjhtw/wPsJ4dt1SXsoRZQni0Fg2BUEsCdQ=
+Received: by mail-ed1-f41.google.com with SMTP id l16so10922126eds.3;
+        Mon, 19 Oct 2020 09:26:23 -0700 (PDT)
+X-Gm-Message-State: AOAM532KsCOVDlnWQl4tUqOgTx0Mha5KbYZVH8jB8h5rGD9jHmEr9uYw
+        7zo49dwdEEanhrPRfOqGcDh/HwjsYqmfd2mveo0=
+X-Google-Smtp-Source: ABdhPJy9MdlUDwZRpI2rSd2NdAovXzospjx8uacv1HDyzeoY++bGYjByZvkOGAVKznThlskx7qEcN1U0g81yC5Ps+4E=
+X-Received: by 2002:aa7:d1d5:: with SMTP id g21mr631324edp.348.1603124782290;
+ Mon, 19 Oct 2020 09:26:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20201017190152.12780-4-kholk11@gmail.com>
+References: <20201018123106.14917-1-kholk11@gmail.com> <20201018123106.14917-3-kholk11@gmail.com>
+In-Reply-To: <20201018123106.14917-3-kholk11@gmail.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Date:   Mon, 19 Oct 2020 18:26:10 +0200
+X-Gmail-Original-Message-ID: <CAJKOXPcNth=+V7sWQV7-o9+mHseP0RJGXrPbU7smMFZgFcxGPQ@mail.gmail.com>
+Message-ID: <CAJKOXPcNth=+V7sWQV7-o9+mHseP0RJGXrPbU7smMFZgFcxGPQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] media: dt-bindings: media: i2c: Add IMX300 CMOS
+ sensor binding
+To:     kholk11@gmail.com
+Cc:     mchehab@kernel.org, robh+dt@kernel.org, marijns95@gmail.com,
+        konradybcio@gmail.com, martin.botka1@gmail.com,
+        devicetree@vger.kernel.org, linux-media@vger.kernel.org,
+        phone-devel@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Oct 17, 2020 at 09:01:52PM +0200, kholk11@gmail.com wrote:
+On Sun, 18 Oct 2020 at 14:36, <kholk11@gmail.com> wrote:
+>
 > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> 
-> Add binding for the Novatek NT36xxx series touchscreen driver.
-> 
+>
+> Add YAML device tree binding for IMX300 CMOS image sensor, and
+> the relevant MAINTAINERS entries.
+>
 > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
 > ---
->  .../bindings/input/touchscreen/nt36xxx.yaml   | 59 +++++++++++++++++++
->  1 file changed, 59 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml b/Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml
+>  .../devicetree/bindings/media/i2c/imx300.yaml | 115 ++++++++++++++++++
+>  MAINTAINERS                                   |   8 ++
+>  2 files changed, 123 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/media/i2c/imx300.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/media/i2c/imx300.yaml b/Documentation/devicetree/bindings/media/i2c/imx300.yaml
 > new file mode 100644
-> index 000000000000..1486b20d6c49
+> index 000000000000..82fb19c5018c
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml
-> @@ -0,0 +1,59 @@
+> +++ b/Documentation/devicetree/bindings/media/i2c/imx300.yaml
+> @@ -0,0 +1,115 @@
 > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/input/touchscreen/nt36xxx.yaml#
+> +$id: http://devicetree.org/schemas/media/i2c/imx300.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Novatek NT36xxx series touchscreen controller Bindings
+> +title: Sony 1/2.3-Inch 8Mpixel Stacked CMOS Digital Image Sensor
 > +
 > +maintainers:
 > +  - AngeloGioacchino Del Regno <kholk11@gmail.com>
 > +
-> +allOf:
-> +  - $ref: touchscreen.yaml#
+> +description: |-
+> +  The Sony IMX300 is a 1/2.3-inch Stacked CMOS (Exmor-RS) digital image
+> +  sensor with a pixel size of 1.08um and an active array size of
+> +  5948H x 4140V. It is programmable through I2C interface at address 0x10.
+> +  Image data is sent through MIPI CSI-2, which is configured as either 2 or
+> +  4 data lanes.
 > +
 > +properties:
 > +  compatible:
-> +    const: novatek,nt36525
+> +    const: sony,imx300
 > +
 > +  reg:
+> +    description: I2C device address
+
+Skip the description, it is obvious.
+
 > +    maxItems: 1
 > +
-> +  interrupts:
+> +  clocks:
 > +    maxItems: 1
+> +
+> +  VDIG-supply:
+> +    description:
+> +      Digital I/O voltage supply, 1.15-1.20 volts
+> +
+> +  VANA-supply:
+> +    description:
+> +      Analog voltage supply, 2.2 volts
+> +
+> +  VDDL-supply:
+
+Lower-case for all three supplies.
+
+> +    description:
+> +      Digital core voltage supply, 1.8 volts
 > +
 > +  reset-gpios:
-> +    maxItems: 1
+> +    description: |-
+> +      Reference to the GPIO connected to the xclr pin, if any.
+> +      Must be released (set high) after all supplies are applied.
 > +
-> +  vdd-supply:
-> +    description: Power supply regulator for VDD pin
+> +  # See ../video-interfaces.txt for more details
+> +  port:
+> +    type: object
+> +    properties:
+> +      endpoint:
+> +        type: object
+> +        properties:
+> +          data-lanes:
+> +            description: |-
+> +              The sensor supports either two-lane, or four-lane operation.
+> +              If this property is omitted four-lane operation is assumed.
+> +              For four-lane operation the property must be set to <0 1 2 3>.
+> +            items:
+> +              - const: 0
+> +              - const: 1
+> +              - const: 2
+> +              - const: 3
+
+You miss here two-lane option (oneOf). Seems there is a default, so
+you could add here "default: <0 1 2 3>
+
 > +
-> +  vio-supply:
-> +    description: Power supply regulator on VDD-IO pin
+> +          clock-noncontinuous:
+> +            type: boolean
+> +            description: |-
+> +              MIPI CSI-2 clock is non-continuous if this property is present,
+> +              otherwise it's continuous.
 > +
-> +unevaluatedProperties: false
+> +          link-frequencies:
+> +            $ref: /schemas/types.yaml#/definitions/uint64-array
+> +            description:
+> +              Allowed data bus frequencies.
+> +
+> +        required:
+> +          - link-frequencies
 > +
 > +required:
 > +  - compatible
 > +  - reg
-> +  - interrupts
+> +  - clocks
+> +  - VANA-supply
+> +  - VDIG-supply
+> +  - VDDL-supply
+> +  - port
+> +
+> +additionalProperties: false
 > +
 > +examples:
 > +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/gpio/gpio.h>
+> +    i2c0 {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
 > +
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
+> +        imx300: sensor@10 {
+> +            compatible = "sony,imx300";
+> +            reg = <0x10>;
+> +            clocks = <&imx300_xclk>;
+> +            VANA-supply = <&imx300_vana>;   /* 2.2v */
+> +            VDIG-supply = <&imx300_vdig>;   /* 1.2v */
+> +            VDDL-supply = <&imx300_vddl>;   /* 1.8v */
 > +
-> +      touchscreen@62 {
-> +        compatible = "novatek,nt36525";
-> +        reg = <0x62>;
-> +        interrupt-parent = <&tlmm>;
-> +        interrupts = <45 IRQ_TYPE_EDGE_RISING>;
-> +        reset-gpio = <&tlmm 102 GPIO_ACTIVE_HIGH>;
+> +            port {
+> +                imx300_0: endpoint {
+> +                    remote-endpoint = <&csi1_ep>;
+> +                    data-lanes = <0 1 2 3>;
+> +                    clock-noncontinuous;
+> +                    link-frequencies = /bits/ 64 <780000000 480000000>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +
+> +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c66710dd7e0a..231937d9d16a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16279,6 +16279,14 @@ T:     git git://linuxtv.org/media_tree.git
+>  F:     Documentation/devicetree/bindings/media/i2c/imx290.txt
+>  F:     drivers/media/i2c/imx290.c
+>
+> +SONY IMX300 SENSOR DRIVER
+> +M:     AngeloGioacchino Del Regno <kholk11@gmail.com>
+> +L:     linux-media@vger.kernel.org
+> +S:     Maintained
+> +T:     git git://linuxtv.org/media_tree.git
 
-reset-gpios
+Skip the Git tree, unless you manage it.
 
 Best regards,
 Krzysztof
