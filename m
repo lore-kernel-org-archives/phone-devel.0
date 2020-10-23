@@ -2,58 +2,70 @@ Return-Path: <SRS0=B2mx=D6=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98E35C388F9
-	for <phone-devel@archiver.kernel.org>; Fri, 23 Oct 2020 09:53:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DED61C388F9
+	for <phone-devel@archiver.kernel.org>; Fri, 23 Oct 2020 10:09:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 43A6C2225F
-	for <phone-devel@archiver.kernel.org>; Fri, 23 Oct 2020 09:53:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 90F452225F
+	for <phone-devel@archiver.kernel.org>; Fri, 23 Oct 2020 10:09:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1603447763;
+	bh=3CvqND3B/r9FgUnaPVy66ZEPqSWux4dAPas8kYiz8bo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=VEjyWYtKm3Yj5jlwObHsrCunIuAm4OBYyLlKeNkATuFi551rKcdLeHk2qxYA28yDq
+	 8nFNuhjXyvL8C6EMfJ7fj4hYNQzG1mlSYgqgv9doH7uuv1TL9xlU4Hlbq7UD7uhH0t
+	 jzzWFAiC/by9QhNeWAHay36qqZ014uWSnp+zsaqs=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S461756AbgJWJxq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 23 Oct 2020 05:53:46 -0400
-Received: from mx2.suse.de ([195.135.220.15]:46150 "EHLO mx2.suse.de"
+        id S375609AbgJWKJX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 23 Oct 2020 06:09:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43486 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S461703AbgJWJxp (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 23 Oct 2020 05:53:45 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id A99ADABD1;
-        Fri, 23 Oct 2020 09:53:44 +0000 (UTC)
+        id S373889AbgJWKJV (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 23 Oct 2020 06:09:21 -0400
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 88E0B20874;
+        Fri, 23 Oct 2020 10:09:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603447761;
+        bh=3CvqND3B/r9FgUnaPVy66ZEPqSWux4dAPas8kYiz8bo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kLv11VZktS/yepN7/ATAybDmwD5O5mDmMEtyj3UoGqDFMyHwr1PikVaD8wJ+Fd7sZ
+         e4wzDoH4XPMS9Tsmhs93kQ6mx1hVTXGpsbEqtOGvSVHsYq6Rxin0s6O0jLN/FtJLYe
+         H1uogVz1WViFCttZaViLtbvpyewRgmgNQalXkvCE=
+Date:   Fri, 23 Oct 2020 12:09:56 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Pavel Machek <pavel@denx.de>
+Cc:     jslaby@suse.cz, jhovold@gmail.com,
+        kernel list <linux-kernel@vger.kernel.org>, tony@atomide.com,
+        phone-devel@vger.kernel.org
 Subject: Re: gsm muxing for Droid 4
-To:     Pavel Machek <pavel@denx.de>, gregkh@linuxfoundation.org,
-        jhovold@gmail.com, kernel list <linux-kernel@vger.kernel.org>,
-        tony@atomide.com, phone-devel@vger.kernel.org
+Message-ID: <20201023100956.GA2285537@kroah.com>
 References: <20201023095113.GA18590@amd>
-From:   Jiri Slaby <jslaby@suse.cz>
-Message-ID: <f3a783cc-2299-9258-46c9-70afa2f06276@suse.cz>
-Date:   Fri, 23 Oct 2020 11:53:43 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.3
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20201023095113.GA18590@amd>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
-
-On 23. 10. 20, 11:51, Pavel Machek wrote:
+On Fri, Oct 23, 2020 at 11:51:14AM +0200, Pavel Machek wrote:
+> Hi!
+> 
 > a579767c1 interferes with gsmmux patches for Droid 4.
-
-Would it be possible to upstream the patches?
-
+> 
 > Reverting it gets the stuff to compile again in 5.10-rc0.9.
 
-As there are no in-tree users, Droid needs to carry one more patch, I'm 
-afraid.
+As Jiri said, we don't support out-of-tree users of apis, you know this.
+
+Please work to get the code you rely on upstream in order to ensure it
+stays working.
 
 thanks,
--- 
-js
-suse labs
+
+greg k-h
