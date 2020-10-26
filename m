@@ -5,57 +5,57 @@ X-Spam-Level:
 X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EA32C2D0A3
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Oct 2020 17:30:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D84EAC5517A
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Oct 2020 17:30:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D59AC2224A
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Oct 2020 17:30:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8E6CD22404
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Oct 2020 17:30:57 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q/rB2Ryw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bBA8MqRL"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1787809AbgJZRax (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 26 Oct 2020 13:30:53 -0400
-Received: from mail-wm1-f50.google.com ([209.85.128.50]:32799 "EHLO
-        mail-wm1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393463AbgJZRaw (ORCPT
+        id S1787820AbgJZRa4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Oct 2020 13:30:56 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:42174 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1787816AbgJZRa4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 26 Oct 2020 13:30:52 -0400
-Received: by mail-wm1-f50.google.com with SMTP id l20so5655311wme.0;
-        Mon, 26 Oct 2020 10:30:50 -0700 (PDT)
+        Mon, 26 Oct 2020 13:30:56 -0400
+Received: by mail-wr1-f66.google.com with SMTP id j7so13577077wrt.9;
+        Mon, 26 Oct 2020 10:30:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=M7Vqgqp5RCTym5rMfv9j6RqUwYhfreT6N/fOFNGIusQ=;
-        b=q/rB2RywKggVlQCSJsk637rsN8lr2OE8iewhWnMIiWUcwNNPYMzPIB0UZEtI5YcRKU
-         wi2Ufc7vOlhql6MNicbhfh1HKU7Wz8Mrs3kNV7HtzKhOthOqL9oogyiVPKI7wtS9YQQ8
-         pj46qgpDydiRuSVunhGjHh5oTUEoMPTRCY5js+CxAqVdBshEuI32uPYyfAHVF6lnWHwh
-         OMP5BvJG8I3t8lxKNFv4AvUxNCqdlwu+xi2ONQEAdjDakXB/e65R/gTswZMnEhxzVMnV
-         filfXNuox1lPrF9b1nMpXqesREpe2wgnrcn/cwOI6HLyVFU9qTwkCCKl8WpGf96tMN9o
-         dw8g==
+        bh=QvBGUd61w/7tEXVgF8EUgTiK9j75XxkEhyKk9v88LB8=;
+        b=bBA8MqRLULTGesfibrZZHFRM6E7Le6D7dr/TXOM7gEXeoAH37oEO6xCKsWThG4FGD1
+         FTFFue+YNqngvqLb1VHj55t2trJadPGJWRkdreGswmZfwS5+9WNXEijKGcJOGgPfsixs
+         mONto8PFovBPSYWsiJVvlyNuJg6fD/O66Ku/+UzriBnkyu7710A7lWgsw5oQqepDiGyo
+         JaeV1EwjySVAxPPHz03d9c6Xzil0MyyalsPvuECv+Njq4GG1QjxBmqHeEAzS12fxyFdM
+         72lLqQQMnfqH6iQ3d0Gz/N+/UGu4izXMx9w9+lkEou+Ue4h7fca53ueltMVcMlQ4fiJd
+         HCvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=M7Vqgqp5RCTym5rMfv9j6RqUwYhfreT6N/fOFNGIusQ=;
-        b=XR8M2jlyQUb/+sGk6jWoRP/UjXxLCoWO7W2sa9M3sRrlpHYGjxhASz8grKQUql6qT1
-         gUbTRMXbwp6bX2vSq3L0uGfSdNjfYrRES6YAo9LkIezAD1uM71NOa//TmQLoD9A4uTla
-         U/9WTqB17+orNH/bQr3VFNtonRxk+NQIXcJUsfqS3KW+moAc+rpyKaDL+6QxMD2K2GGo
-         HLjdDMWCItQmH+y+EpJvpOY2HPwaEtqt/jiVmCd+f1Wyo8ILmrdXX4YmHT63K5T5ptUR
-         bbQJG3od0fy2G3GKwQI5IzrtbXiP+wDLWgjl6cyFmet6nW3Nl3GZoiHk0Rkm5qsepGNq
-         O0OA==
-X-Gm-Message-State: AOAM5335jGSU5luRWBiHcNQHUd484RP42+sVfYYIm5GEFk8w1tGEveh5
-        91rccxaow9X0AolZYfUBbXM=
-X-Google-Smtp-Source: ABdhPJxEsIQeiLxNtqR1jh8jCWo56KmV0OQyJYidcdeThJ131tFq9OJAKcBhwqONu0ibEny30UsjJA==
-X-Received: by 2002:a1c:2402:: with SMTP id k2mr16937198wmk.158.1603733449948;
-        Mon, 26 Oct 2020 10:30:49 -0700 (PDT)
+        bh=QvBGUd61w/7tEXVgF8EUgTiK9j75XxkEhyKk9v88LB8=;
+        b=A0uPeMadrnHhibgre4QUTcbrwGiyUYzZn5detF0bQcAYKRfN6WYdqFfUmI1U5GlnS9
+         MbRytrTOg839UWJKUK8mhKiK8miVdCqKks2Uj9Q1hwsduS/gmBPfNjGS0zNx6NoGSWhP
+         xkHN/d1y2kk5I1jjY2OdrAqYvM3MRjNTERL0uz1ZJV9hPDViYZftYQNQPTFDhsaH7ITB
+         +7naFCDJloSh4D2WANJStzYET4Co2Fxwkj3ckW5gwlTxM55Qg16DodeTFJPd02504S5V
+         BB2XRlebA/gvRlpct0Cki6+UUkfvpSEqDH99ulmm088Hklz8dboFzgK1+VOiz97X8wYG
+         9GoA==
+X-Gm-Message-State: AOAM532H0OP4lkGlBtForjsKH+gNJ9hjymK/RceUEJ9uh2Dcxj1it2Ck
+        PV4+dEpeOQuaDkUrjJEQNro=
+X-Google-Smtp-Source: ABdhPJwgrNUVD2JO6c5eSV0iQfzSWLUjLmhRUux4XK26TGaoIXvZLpNWCz3/lNi3v0bhX3edi7ddxQ==
+X-Received: by 2002:adf:ff88:: with SMTP id j8mr18352247wrr.69.1603733452246;
+        Mon, 26 Oct 2020 10:30:52 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id b18sm1996808wmj.41.2020.10.26.10.30.48
+        by smtp.gmail.com with ESMTPSA id b18sm1996808wmj.41.2020.10.26.10.30.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2020 10:30:49 -0700 (PDT)
+        Mon, 26 Oct 2020 10:30:51 -0700 (PDT)
 From:   kholk11@gmail.com
 To:     dmitry.torokhov@gmail.com
 Cc:     robh+dt@kernel.org, rydberg@bitmath.org, priv.luk@gmail.com,
@@ -63,10 +63,10 @@ Cc:     robh+dt@kernel.org, rydberg@bitmath.org, priv.luk@gmail.com,
         kholk11@gmail.com, marijns95@gmail.com, konradybcio@gmail.com,
         martin.botka1@gmail.com, phone-devel@vger.kernel.org,
         devicetree@vger.kernel.org, krzk@kernel.org,
-        andy.shevchenko@gmail.com, Rob Herring <robh@kernel.org>
-Subject: [PATCH v8 1/3] dt-bindings: Add vendor prefix for Novatek Microelectronics Corp.
-Date:   Mon, 26 Oct 2020 18:30:43 +0100
-Message-Id: <20201026173045.165236-2-kholk11@gmail.com>
+        andy.shevchenko@gmail.com
+Subject: [PATCH v8 3/3] dt-bindings: touchscreen: Add binding for Novatek NT36xxx series driver
+Date:   Mon, 26 Oct 2020 18:30:45 +0100
+Message-Id: <20201026173045.165236-4-kholk11@gmail.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201026173045.165236-1-kholk11@gmail.com>
 References: <20201026173045.165236-1-kholk11@gmail.com>
@@ -78,27 +78,79 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-Add prefix for Novatek Microelectronics Corp.
+Add binding for the Novatek NT36xxx series touchscreen driver.
 
 Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
-Acked-by: Rob Herring <robh@kernel.org>
 ---
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ .../bindings/input/touchscreen/nt36xxx.yaml   | 59 +++++++++++++++++++
+ 1 file changed, 59 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 66e45112a8d7..f98ea0af487d 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -740,6 +740,8 @@ patternProperties:
-     description: Nokia
-   "^nordic,.*":
-     description: Nordic Semiconductor
-+  "^novatek,.*":
-+    description: Novatek Microelectronics Corp.
-   "^novtech,.*":
-     description: NovTech, Inc.
-   "^nutsboard,.*":
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml b/Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml
+new file mode 100644
+index 000000000000..1486b20d6c49
+--- /dev/null
++++ b/Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml
+@@ -0,0 +1,59 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/input/touchscreen/nt36xxx.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Novatek NT36xxx series touchscreen controller Bindings
++
++maintainers:
++  - AngeloGioacchino Del Regno <kholk11@gmail.com>
++
++allOf:
++  - $ref: touchscreen.yaml#
++
++properties:
++  compatible:
++    const: novatek,nt36525
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  reset-gpios:
++    maxItems: 1
++
++  vdd-supply:
++    description: Power supply regulator for VDD pin
++
++  vio-supply:
++    description: Power supply regulator on VDD-IO pin
++
++unevaluatedProperties: false
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/gpio/gpio.h>
++
++    i2c {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      touchscreen@62 {
++        compatible = "novatek,nt36525";
++        reg = <0x62>;
++        interrupt-parent = <&tlmm>;
++        interrupts = <45 IRQ_TYPE_EDGE_RISING>;
++        reset-gpios = <&tlmm 102 GPIO_ACTIVE_HIGH>;
++      };
++    };
++
++...
 -- 
 2.28.0
 
