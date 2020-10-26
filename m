@@ -2,149 +2,186 @@ Return-Path: <SRS0=T9tv=EB=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00213C5DF9E
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Oct 2020 17:31:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 13810C4363A
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Oct 2020 18:24:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C35A92231B
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Oct 2020 17:31:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BDD3C2087C
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Oct 2020 18:24:21 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="uoKXPEMk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qLXPG59G"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1787800AbgJZRav (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 26 Oct 2020 13:30:51 -0400
-Received: from mail-wm1-f47.google.com ([209.85.128.47]:54806 "EHLO
-        mail-wm1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1774034AbgJZRav (ORCPT
+        id S1786764AbgJZSYS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Oct 2020 14:24:18 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:33245 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1784549AbgJZSYS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 26 Oct 2020 13:30:51 -0400
-Received: by mail-wm1-f47.google.com with SMTP id w23so11397214wmi.4;
-        Mon, 26 Oct 2020 10:30:49 -0700 (PDT)
+        Mon, 26 Oct 2020 14:24:18 -0400
+Received: by mail-wm1-f66.google.com with SMTP id l20so5752588wme.0;
+        Mon, 26 Oct 2020 11:24:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=G4qqXRgm4LeNt9OId7TxB7hpNixh8yG80r+na0xzUmA=;
-        b=uoKXPEMkxYQNlOD01+ydycobz0fsk091jFO6eP5tKCfx4FNeWS32Y1950WZ2lyzLMT
-         7wundIsZKZDTmhaHOOS6d9WGBJKay1iFFIPutFAV3ndzMN/gG2exfgfXPSrZ9dD2sgyT
-         F6C7m1JOj4fak6m97VOp3BbfhPI1ljEVxdo4dM5fxe8XqaxeLcc9H4N75ZUGippHXglk
-         Nom/R5Sf3v4kvjE77FYL9QFIsLxNztNw4DYynkuBs0/01UUllmp9aCZhbwJSWBlMMDUb
-         HIqBpQVrUZ3iiBbb9djUaBwMoRZl+Y/6OXjCwea5V/fvujGHm0p5d4Qq6zRYdL/vtsHx
-         o+ZQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=etvGadW+3Q8LgTJlwqBN3viqL9TDU3OPQW5Mj92hM1M=;
+        b=qLXPG59Gsqt6ffBX+s9FGywFCFRT0zE8R13zd7HwUYgijswWoDpF1+vlhjm+1ugFy2
+         5L0d3I9u7f5H+lrBF/Sz6T3p+d210t/EerXOhoVshoDA0jSjvaJQxWxmHEAfknVJb52j
+         RKAssGt+lmq1obeLlddpx8KDPBf5eautdn5/iArOGB4vGZ9AN2zfn07tx+B5cKmRV1/U
+         QoQZtIl5lslAuBh9KcmEEGJOYNCej+AeOaePm5cTYTOLeL3BjTvnD1hsDSp152NyFVTz
+         /+7IULo/SGTFPcGJKvKdF/30yPY2wGJiV3wWU6q9EMzx0csN3wyJlrJVz57mHQUneXWl
+         9+tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=G4qqXRgm4LeNt9OId7TxB7hpNixh8yG80r+na0xzUmA=;
-        b=kdHUDv9azimVU2+/DgTDQhNBUUaSSmlicYeMD33cWmsxotQ7P1KheRqa79Q9bM2woB
-         6jaxD4tj2ywk/PkTEg8JsqO16wvLxUxJgXjV/e/Mg2Ea92VNuozgEhOlLgmQLr3YhRDo
-         9yT9jgtRkAJZXBGGz0RfT7gB1NwQk0HpacPTsGfGWYtbgq/+MN2EhtA4SDshzlCQ1feg
-         ej3TneNJjggl/ETqg/paap/TlFoGJ/ouD8ZMfWxY31IbRUZySjczenS4Gds3FClBqqxC
-         2noUOod8UBFsg+a10iANHvWueB/4ieJY/zjubcgPFgDCkUs6WxB4KaNalIEqdN7cYaqe
-         HObQ==
-X-Gm-Message-State: AOAM530dvDwco5BJCEVtXkthTO+J3OinOnMiF4rRMo5quqVFCXrggW7f
-        OtbOwVplOVVf83qL0vj338U=
-X-Google-Smtp-Source: ABdhPJyBbKaiW8XKAYNkwotvpJMm28FEhpDE5GtfRf5SsEel4z1rKHYo5QktDg8CHkgMxnkw2TzRaQ==
-X-Received: by 2002:a7b:cd0c:: with SMTP id f12mr16618677wmj.62.1603733448687;
-        Mon, 26 Oct 2020 10:30:48 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id b18sm1996808wmj.41.2020.10.26.10.30.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Oct 2020 10:30:48 -0700 (PDT)
-From:   kholk11@gmail.com
-To:     dmitry.torokhov@gmail.com
-Cc:     robh+dt@kernel.org, rydberg@bitmath.org, priv.luk@gmail.com,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kholk11@gmail.com, marijns95@gmail.com, konradybcio@gmail.com,
-        martin.botka1@gmail.com, phone-devel@vger.kernel.org,
-        devicetree@vger.kernel.org, krzk@kernel.org,
-        andy.shevchenko@gmail.com
-Subject: [PATCH v8 0/3] Add Novatek NT36xxx touchscreen driver
-Date:   Mon, 26 Oct 2020 18:30:42 +0100
-Message-Id: <20201026173045.165236-1-kholk11@gmail.com>
-X-Mailer: git-send-email 2.28.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=etvGadW+3Q8LgTJlwqBN3viqL9TDU3OPQW5Mj92hM1M=;
+        b=gPC5WRYKJo/2kZBGayPHYGUX2PQXR6VomQDKJOhFbJY815h9f/Utrluo48st8unUCH
+         lrynVP7C3f71ZM+e+Sc6j0dChxd/iUzKYbSWKtnaBd/P+HjdTCnCBWsPx3igGK+FZxw3
+         ARZ2J2sjQHJvaIMVTW47FZQQhIrpaixB9pplQoMuYO0tGhc1LSrZ89xiJ6bxdKARDuFz
+         7/Z3+6YymUF8sabizynNaUJsfO/oDLDaSoDLsHKGJV/XEZV3kKSpdWpVCX9wSuF5FJn/
+         3KhvCZj+JfL4WV28JWlEoKswJbMFlXX0F0H0HSTJa7OMP3mpn7mIYpb2vFBGIEQUgxh3
+         4tsg==
+X-Gm-Message-State: AOAM532wrHjNGM8tytXpU/5HromyxRMpltHQuvzRUIYfzJbvC209AO4V
+        o4nFDfSgEfCTclS9Qe7v6ex6lBrNBtLOnwdJT6M=
+X-Google-Smtp-Source: ABdhPJz4bV0JFM77SRaYXyikcLHwfMO2Klyg87DVyBh54afs+S1MvMFy+2Gf0p/1uh68laXhnC3XK5+CSuwk/4yMaks=
+X-Received: by 2002:a7b:c015:: with SMTP id c21mr17167222wmb.22.1603736655213;
+ Mon, 26 Oct 2020 11:24:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201024105111.15829-1-kholk11@gmail.com> <20201024105111.15829-3-kholk11@gmail.com>
+In-Reply-To: <20201024105111.15829-3-kholk11@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 26 Oct 2020 20:24:39 +0200
+Message-ID: <CAHp75VeRagDvpZBFZ4+T8JgsjOKxuZjxRHw_azXKQx5O3Cx5yw@mail.gmail.com>
+Subject: Re: [PATCH v7 2/3] Input: Add Novatek NT36xxx touchscreen driver
+To:     kholk11@gmail.com
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Henrik Rydberg <rydberg@bitmath.org>, priv.luk@gmail.com,
+        linux-input <linux-input@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        marijns95@gmail.com, Konrad Dybcio <konradybcio@gmail.com>,
+        Martin Botka <martin.botka1@gmail.com>,
+        phone-devel@vger.kernel.org,
+        devicetree <devicetree@vger.kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+On Sat, Oct 24, 2020 at 1:51 PM <kholk11@gmail.com> wrote:
+>
+> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+>
+> This is a driver for the Novatek in-cell touch controller and
+> supports various chips from the NT36xxx family, currently
+> including NT36525, NT36672A, NT36676F, NT36772 and NT36870.
+>
+> Functionality like wake gestures and firmware flashing is not
+> included: I am not aware of any of these DrIC+Touch combo
+> chips not including a non-volatile memory and it should be
+> highly unlikely to find one, since the touch firmware is
+> embedded into the DriverIC one, which is obviously necessary
+> to drive the display unit.
+>
+> However, the necessary address for the firmware update
+> procedure was included into the address table in this driver
+> so, in the event that someone finds the need to implement it
+> for a reason or another, it will be pretty straightforward to.
+>
+> This driver is lightly based on the downstream implementation [1].
+> [1] https://github.com/Rasenkai/caf-tsoft-Novatek-nt36xxx
 
-This patch series adds support for the Novatek NT36xxx Series' In-Cell
-touchscreen (integrated into the DriverIC).
+(From drafts, didn't have time to finish and see already v8, so please revisit)
 
-This patch series has been tested against the following devices:
- - Sony Xperia 10        (SDM630 Ganges Kirin)
- - Sony Xperia 10 Plus   (SDM636 Ganges Mermaid)
+...
 
-Changes in v2:
-- Fixed sparse warnings from lkp kernel test robot
+> +#include <asm/unaligned.h>
+> +#include <linux/delay.h>
+> +#include <linux/i2c.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/input/mt.h>
+> +#include <linux/input/touchscreen.h>
+> +#include <linux/regulator/consumer.h>
 
-Changes in v3 (as requested by Dmitry Torokhov):
-- Using shorthand u16/u32 (sorry for the overlook!)
-- Now using more input and touchscreen APIs
-- Fixed useless workqueue involvements
-- Removed useless locking
-- Switched reads and writes to use regmap
-- Moved header contents to nt36xxx.c
-- Fixed reset gpio handling
-- Other cleanups
-- P.S.: Thanks, Dmitry!
+Perhaps sorted? Also, asm/* usually go after linux/*.
 
-Changes in v4:
-- Fixed regmap read length for CRC_ERR_FLAG final check
-- Fixed YAML binding, as requested by Krzysztof Kozlowski
+...
 
-Changes in v5:
-- Replaced subsystem maintainer's name with .. mine,
-  usage of additionalProperties to unevaluatedProperties
-  and a typo fix for reset-gpios as per Rob Herring's review
-- Changed compatible string as per Krzysztof K. request
-- Renamed the novatek,nt36xxx.yaml file to just nt36xxx.yaml
-  in order to now reflect the driver name instead of the DT
-  compatible
-- Fixed blank line at EOF
+> +#define TOUCH_MAX_PRESSURE      1000
 
-Changes in v6:
-- Removed include of_gpio.h, added mod_devicetable.h and
-  gpio/consumer.h
-- Added kerneldoc to relevant functions/enum
-- Used traditional patterns for error checking where possible
-- Documented calls to usleep/msleep
-- Using be16_to_cpu / get_unaligned_be16 where possible
-- Added helper for CRC error check on retrieved buffer
-- Decreased indentation in the CRC reboot recovery function
-- Removed instances of error code sum
-- Dropped all likely/unlikely optimization as per request
-- Removed redundant reset_gpio checks
-- Dropped of_match_ptr and ifdefs for CONFIG_OF
+Any units?
 
-Changes in v7:
-- Fixed typo in nt36xxx.c
+...
 
-Changes in v8:
-- Fixed typo reset-gpio -> reset-gpios in dt-bindings
+> +       ts = devm_kzalloc(&hw_client->dev, sizeof(struct nt36xxx_i2c), GFP_KERNEL);
 
-AngeloGioacchino Del Regno (3):
-  dt-bindings: Add vendor prefix for Novatek Microelectronics Corp.
-  Input: Add Novatek NT36xxx touchscreen driver
-  dt-bindings: touchscreen: Add binding for Novatek NT36xxx series
-    driver
+sizeof(*ts) ?
 
- .../bindings/input/touchscreen/nt36xxx.yaml   |  59 ++
- .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
- drivers/input/touchscreen/Kconfig             |  12 +
- drivers/input/touchscreen/Makefile            |   1 +
- drivers/input/touchscreen/nt36xxx.c           | 895 ++++++++++++++++++
- 5 files changed, 969 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml
- create mode 100644 drivers/input/touchscreen/nt36xxx.c
+> +       if (!ts)
+> +               return -ENOMEM;
+> +
+> +       ts->supplies = devm_kcalloc(&hw_client->dev,
+> +                                   NT36XXX_NUM_SUPPLIES,
 
--- 
-2.28.0
+> +                                   sizeof(struct regulator_bulk_data),
 
+sizeof(*ts->supplies) ?
+
+> +                                   GFP_KERNEL);
+> +       if (!ts->supplies)
+> +               return -ENOMEM;
+
+...
+
+> +       ret = devm_regulator_bulk_get(&hw_client->dev,
+> +                                     NT36XXX_NUM_SUPPLIES,
+> +                                     ts->supplies);
+
+> +       if (ret != 0) {
+
+if (ret)
+
+> +               if (ret != -EPROBE_DEFER)
+> +                       dev_err(&hw_client->dev,
+> +                               "Cannot get supplies: %d\n", ret);
+> +               return ret;
+> +       }
+
+...
+
+> +       input->phys = devm_kasprintf(&hw_client->dev, GFP_KERNEL,
+> +                                    "%s/input0", dev_name(&hw_client->dev));
+
+NULL check?
+
+...
+
+> +       ret = devm_request_threaded_irq(&hw_client->dev, hw_client->irq, NULL,
+> +                                       nt36xxx_i2c_irq_handler, IRQF_ONESHOT,
+> +                                       hw_client->name, ts);
+> +       if (ret) {
+> +               dev_err(&hw_client->dev, "request irq failed: %d\n", ret);
+
+> +               return ret;
+> +       }
+> +
+> +       return 0;
+
+return ret; ?
+
+> +}
+
+
+--
+With Best Regards,
+Andy Shevchenko
