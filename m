@@ -1,4 +1,4 @@
-Return-Path: <SRS0=vgtn=EC=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <SRS0=NDp5=ED=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
@@ -6,71 +6,73 @@ X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03C20C55179
-	for <phone-devel@archiver.kernel.org>; Tue, 27 Oct 2020 08:20:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3548EC55179
+	for <phone-devel@archiver.kernel.org>; Wed, 28 Oct 2020 21:46:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9EFA020878
-	for <phone-devel@archiver.kernel.org>; Tue, 27 Oct 2020 08:20:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DA6D9246CD
+	for <phone-devel@archiver.kernel.org>; Wed, 28 Oct 2020 21:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1603786820;
-	bh=EJkX0WLAQU4S6K/aRUlU50RCxGynlyB1E/Ax+BDhxT0=;
+	s=default; t=1603921614;
+	bh=LiuBL+ajxgK/05zso7lW3tr1FQ9436dztCx5AnPxyeU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=jO3E0dzdrlqtaCpx2tJK3XM1tMcrKZLVPn5X2u7RZj4DZ0QJtIZ5ykpEWDfB1KlXY
-	 GE08DIowFo2/Zhjy1bYGRr/3k04YneHm/r78k76J+1pnJomjkKZDdwqjM8JhTVJqoJ
-	 f5Bls/Li3ImzZRtOO3isNhyLcms5wTsPN5Z6FJqQ=
+	b=eqJKdhKmY569S25VEZjvTatdTn5fV/H0MA9G+9WvGZ7bB96bgr8b8kX0SKitASKWF
+	 hEYe5I2lwKjVXfEG7fHy0bIeTG3c3uB7/+B1QnHuz3ynZ4Gp1q5YgV9Q31p/NWiL9H
+	 HFnjsUliywkiUH7OQjfLSTgjIinoncbnAc6LSMMU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2507631AbgJ0IUU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 27 Oct 2020 04:20:20 -0400
-Received: from mail-ej1-f65.google.com ([209.85.218.65]:36622 "EHLO
-        mail-ej1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2894590AbgJ0IUC (ORCPT
+        id S1727536AbgJ1Vqx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 28 Oct 2020 17:46:53 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:40550 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727554AbgJ1Vqq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 27 Oct 2020 04:20:02 -0400
-Received: by mail-ej1-f65.google.com with SMTP id w27so955962ejb.3;
-        Tue, 27 Oct 2020 01:20:01 -0700 (PDT)
+        Wed, 28 Oct 2020 17:46:46 -0400
+Received: by mail-ot1-f66.google.com with SMTP id f97so531107otb.7;
+        Wed, 28 Oct 2020 14:46:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=tO5qsH1OWw10E78OhL3eoRQtmzTRnL6ZkVFi6MpMJoM=;
-        b=XwXuheGT00h8aVYfSnGZFuU9/V242LP/msPOKwYCikPnWUriRUKxwy18hde868YtY5
-         ONYv150muGhkUU+F/osSVKjjNziJhBZEcl3vagJeXZ3soIkDnUsdZKZ7GPRbyKZ0n3ld
-         nBfk1zeqa+pRYLlU6cX4krlZSZyBvE3Hkmj39Pxf4C+DtcJM3wqZgiCdMF9DULSB/Swu
-         Uh38t91g6qOnJEikLbxNt+Q+JzmE2WTOJGvobwINH/45ZjXfjuZxf9gouFzfLM05IWoR
-         Fr2oXXTFTNaGN9QRze1DCMq12q/uj7UTZtwgkzrZgrR16ud7j/mj/jgK1EwTub9glNi7
-         z88w==
-X-Gm-Message-State: AOAM530N28CR+UrkLzH1xyy9D60yq95RQe1aaWZvIP7nUDLzIsaN2b3/
-        1tFrIps5KKg4zbg325HAaOs=
-X-Google-Smtp-Source: ABdhPJzrbiglGDTadhp1qyM361NkPCwGDqE2U+kX4jccCq1tqL3ugkBaUhUlDWkqkP6rTadd3QIdDw==
-X-Received: by 2002:a17:906:5bc8:: with SMTP id w8mr1209774ejs.101.1603786800319;
-        Tue, 27 Oct 2020 01:20:00 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.184])
-        by smtp.googlemail.com with ESMTPSA id h8sm442738eds.51.2020.10.27.01.19.58
+        bh=d3/K5+XcED3p9NTK0JBEc3k0+bdVtoWznxcAQJyccp4=;
+        b=j/txmiTx32e0b0AXuO83r4B03jcKtca/g5DjqoMsgphQJPjfyI40ZGHOWiCCofWW3f
+         c1ntowPz1BJYGlzvGMzjK4v1uKyZxoDhUrlaaHoYXb/WaM9vqXC/sJKxO7inpQ0AfPtK
+         32Zfu0u+whsFZuxquLP/l8JMXpjcfOlaTLlTzx05eh6P5rI4AlXuqY4TXoYZDQLsqKQG
+         o0KR0hufvrXDnVFHZIOrI7ESEwh4v2VkqeXMSMhjpznx8B+7q3lJsRT+BsSpzhDE8O6+
+         3/ZTmjocgM+o8jhF0tSugsJIMld/EXGQH/qKeTwBP/LLbD2DguPvvPq2Aeb9E+OfSLgX
+         qmWQ==
+X-Gm-Message-State: AOAM532ts8zZvTHPugm7um5Z0UQxRyhE5f2gk/Yk6pL2oo2FRJBHhfdD
+        EmbIcclXPQ1SW8INT8IRgq48Gf6B/w==
+X-Google-Smtp-Source: ABdhPJxwv/u+gGhkTQAd+a1VYtJctn3VyVn+NtJrI9T39kVYiX54LDZ5860k5i/giAZkP2pJYTXxPA==
+X-Received: by 2002:a4a:d848:: with SMTP id g8mr6143739oov.35.1603897864482;
+        Wed, 28 Oct 2020 08:11:04 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id h15sm2182854ots.31.2020.10.28.08.11.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2020 01:19:59 -0700 (PDT)
-Date:   Tue, 27 Oct 2020 09:19:57 +0100
-From:   Krzysztof Kozlowski <krzk@kernel.org>
+        Wed, 28 Oct 2020 08:11:03 -0700 (PDT)
+Received: (nullmailer pid 4034187 invoked by uid 1000);
+        Wed, 28 Oct 2020 15:11:02 -0000
+Date:   Wed, 28 Oct 2020 10:11:02 -0500
+From:   Rob Herring <robh@kernel.org>
 To:     kholk11@gmail.com
-Cc:     dmitry.torokhov@gmail.com, robh+dt@kernel.org, rydberg@bitmath.org,
-        priv.luk@gmail.com, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org, marijns95@gmail.com,
-        konradybcio@gmail.com, martin.botka1@gmail.com,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
-        andy.shevchenko@gmail.com
+Cc:     linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        priv.luk@gmail.com, robh+dt@kernel.org, marijns95@gmail.com,
+        krzk@kernel.org, konradybcio@gmail.com,
+        linux-input@vger.kernel.org, rydberg@bitmath.org,
+        andy.shevchenko@gmail.com, martin.botka1@gmail.com,
+        devicetree@vger.kernel.org, dmitry.torokhov@gmail.com
 Subject: Re: [PATCH v8 3/3] dt-bindings: touchscreen: Add binding for Novatek
  NT36xxx series driver
-Message-ID: <20201027081957.GB4244@kozik-lap>
+Message-ID: <20201028151102.GA4034049@bogus>
 References: <20201026173045.165236-1-kholk11@gmail.com>
  <20201026173045.165236-4-kholk11@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20201026173045.165236-4-kholk11@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Oct 26, 2020 at 06:30:45PM +0100, kholk11@gmail.com wrote:
+On Mon, 26 Oct 2020 18:30:45 +0100, kholk11@gmail.com wrote:
 > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 > 
 > Add binding for the Novatek NT36xxx series touchscreen driver.
@@ -82,7 +84,4 @@ On Mon, Oct 26, 2020 at 06:30:45PM +0100, kholk11@gmail.com wrote:
 >  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml
 > 
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-
-Best regards,
-Krzysztof
+Reviewed-by: Rob Herring <robh@kernel.org>
