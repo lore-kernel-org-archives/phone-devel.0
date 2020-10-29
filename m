@@ -2,92 +2,105 @@ Return-Path: <SRS0=+vok=EE=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77BACC4363A
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 15:51:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19972C4363A
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 17:22:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1B769207DE
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 15:51:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1603986661;
-	bh=VkgAGjIXeX1QGXzX2I8kG7JkQqPuCLCdVAYF03ftWSs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=g/2/JHmclDUgAK6abEN/PCxretDKJCD5Gxu8Mq+HmIn50h5rhXNKtKnd2DjY9FuFm
-	 nKC88+kusdpBg8QV5dsgn8aRO5n7RkwODfvvkX7vcLseWWWyERGR8NLDPesJ7wV1fP
-	 EePd0eLK2aV1QqxNMcBsr365kBf8WfoR4cREmJ68=
+	by mail.kernel.org (Postfix) with ESMTP id B067620706
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 17:22:50 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cpKWHh/n"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728482AbgJ2Pu4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Oct 2020 11:50:56 -0400
-Received: from mail-oo1-f68.google.com ([209.85.161.68]:35305 "EHLO
-        mail-oo1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728225AbgJ2Pu4 (ORCPT
+        id S1725803AbgJ2RWu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Oct 2020 13:22:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36032 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725730AbgJ2RWt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Oct 2020 11:50:56 -0400
-Received: by mail-oo1-f68.google.com with SMTP id n16so822810ooj.2;
-        Thu, 29 Oct 2020 08:50:55 -0700 (PDT)
+        Thu, 29 Oct 2020 13:22:49 -0400
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B8EDC0613CF;
+        Thu, 29 Oct 2020 10:22:49 -0700 (PDT)
+Received: by mail-wr1-x443.google.com with SMTP id a9so3614766wrg.12;
+        Thu, 29 Oct 2020 10:22:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FgiZbK6pWCFNNx9QFeZngzu7fh5OqvaG7wkwgkOFjSU=;
+        b=cpKWHh/noLvJenv/13DypTzJLrHma44Acp5C9pOHg6D3H7IFNvJnp0zTiuqvH9C2QF
+         mz8XA29iaaASTJ2RMZR7Uy8GZ+Za9cW65iG7rVFQOl4n+jJ5oZTIyhCvYjttlx4YdtNF
+         mbVNpDTFS7Qy9/JQM2MaY5Mx1Cai/NXG2z1Ssg1kITEdnHUIYuN/9UXZa9rJHRwNKQpo
+         L7aIVN0lBeXhSaAww99pKrbIsEZxwmNT8+wUZ4mGiVj/7lXzKBv41/XMvRStA1Ts4IOT
+         1R59FKz1O9s+lrPtw3Od2T1sBWxxN5RVQAdsSpsOuABB+3M0+lkV6zekSTUkzp0/FsHM
+         JAAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=iNrItceSx1kMGmkUqnj6iHlC9+yjJU/megR871MH1s4=;
-        b=mCQ/VPJSZmlk+GktZFGxZGnhRM42IVSV/lBJEavqslAbikCQ6RvOaqtct7sUcJdl4/
-         CXknJi2+ZlyiTpF60mzmrgyI4vE/q/vODWDxa2iukxZZF7lz5g0rdQINF3OMd7AiYnqS
-         wuirLazlhAiP48Y0h2yPh9o0Oj0hlT5jt+ggptBGIm7fSAbRQdKuOjvbHTZ+xevSbRzV
-         a8CqQ1lkNIj9lnzsp+zL8xAw5fcoy9VH3pvyspKnCwNoBBADKVmaU72zZrYfNi8H3FFM
-         Vr7cts2GEGtiCauLweBUM3a0zTcQV5ifi+eLsIaDZGzAsdgul6/BY4WlBpKMo46bLuJC
-         RRhg==
-X-Gm-Message-State: AOAM531EhCHPLER39hYPS3qZ3o09XCsce34DC5gRu3mWEow201XTwCVO
-        EZe67CaGySTHYYDqjoR/nQ==
-X-Google-Smtp-Source: ABdhPJyTP+mCicpc5AnG/HZYKCTQJtVyQOPkORFZReqYr/zd44XZQERaPinW/ElNg0S3NKukxqwgHA==
-X-Received: by 2002:a4a:c302:: with SMTP id c2mr3725486ooq.26.1603986655094;
-        Thu, 29 Oct 2020 08:50:55 -0700 (PDT)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id r21sm157018otc.0.2020.10.29.08.50.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2020 08:50:54 -0700 (PDT)
-Received: (nullmailer pid 1937485 invoked by uid 1000);
-        Thu, 29 Oct 2020 15:50:53 -0000
-Date:   Thu, 29 Oct 2020 10:50:53 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     kholk11@gmail.com
-Cc:     robh+dt@kernel.org, konradybcio@gmail.com,
-        linux-kernel@vger.kernel.org, dmitry.torokhov@gmail.com,
-        priv.luk@gmail.com, marijns95@gmail.com,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
-        andy.shevchenko@gmail.com, rydberg@bitmath.org,
-        martin.botka1@gmail.com, krzk@kernel.org,
-        linux-input@vger.kernel.org
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FgiZbK6pWCFNNx9QFeZngzu7fh5OqvaG7wkwgkOFjSU=;
+        b=gwTzWkPNh9+XxEmNyrK3/eMkE+weUQZYI4cWM1XOlarSPNvEFST2G3lERcV/qlAtQ5
+         Wbf5Yjz3QzHO9G58LTxDv45XbPYECtqOvpx7o6fHSdNQ2WXT9x+g0XW57wfu/pKQLqJh
+         dyn0lNk2jmQ1mBu6LjrUFMussk+/5U15oXKDSS7//t6y030bdbYIeAcFBdMGrKS53zcZ
+         62WmO22ze1RV6av4udJ5QM84H4Sxoq/TM1nODdGfL6fmOyAJChkV5+l1TkvFNWqSCF8E
+         zj7cuMqs3n1y928pmhp4giQgskkf6xDHwynbMTTqU5WeKfwi6I/yCAtwBXQ4xPYb5WvT
+         qNfA==
+X-Gm-Message-State: AOAM532mIiMIAoA+dDvDcVgtlX5iieeqsSI0ulk0Ea1F6zsmZnBVgJsh
+        K8QaLWanjcHcI4a4YXZDb4MLZK5N5MEqkScy1Mfeoo7Rq6gqlg==
+X-Google-Smtp-Source: ABdhPJzQqF47WuTZrrAWUm6UKRHFxSNxk2UxPVzZmh961NjEWLxLE1pT8IuMdscuOyDzwnx3gGWJapGFwC0H5g6Eni8=
+X-Received: by 2002:adf:81e5:: with SMTP id 92mr6842917wra.411.1603992168004;
+ Thu, 29 Oct 2020 10:22:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <20201028221302.66583-1-kholk11@gmail.com> <20201028221302.66583-2-kholk11@gmail.com>
+ <20201029155053.GA1936493@bogus>
+In-Reply-To: <20201029155053.GA1936493@bogus>
+From:   AngeloGioacchino Del Regno <kholk11@gmail.com>
+Date:   Thu, 29 Oct 2020 18:22:36 +0100
+Message-ID: <CAK7fi1aRTKkA2ouidjB4tyPoCyfTa2-POhUM_9Y2DNphL7=W2A@mail.gmail.com>
 Subject: Re: [PATCH v9 1/3] dt-bindings: Add vendor prefix for Novatek
  Microelectronics Corp.
-Message-ID: <20201029155053.GA1936493@bogus>
-References: <20201028221302.66583-1-kholk11@gmail.com>
- <20201028221302.66583-2-kholk11@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201028221302.66583-2-kholk11@gmail.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Rob Herring <robh+dt@kernel.org>, konradybcio@gmail.com,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        dmitry.torokhov@gmail.com, priv.luk@gmail.com, marijns95@gmail.com,
+        phone-devel@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, andy.shevchenko@gmail.com,
+        rydberg@bitmath.org, martin.botka1@gmail.com,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        linux-input@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 28 Oct 2020 23:13:00 +0100, kholk11@gmail.com wrote:
-> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> 
-> Add prefix for Novatek Microelectronics Corp.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> ---
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+Il giorno gio 29 ott 2020 alle ore 16:50 Rob Herring <robh@kernel.org>
+ha scritto:
+>
+> On Wed, 28 Oct 2020 23:13:00 +0100, kholk11@gmail.com wrote:
+> > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> >
+> > Add prefix for Novatek Microelectronics Corp.
+> >
+> > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> > ---
+> >  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+>
+>
+> Please add Acked-by/Reviewed-by tags when posting new versions. However,
+> there's no need to repost patches *only* to add the tags. The upstream
+> maintainer will do that for acks received on the version they apply.
+>
+> If a tag was not added on purpose, please state why and what changed.
+>
+The intention was to add the tag and I even recall adding it... probably
+my finger slipped and the changes didn't get saved, my bad disattention.
+I should probably stop developing when I'm overtired.
 
-
-Please add Acked-by/Reviewed-by tags when posting new versions. However,
-there's no need to repost patches *only* to add the tags. The upstream
-maintainer will do that for acks received on the version they apply.
-
-If a tag was not added on purpose, please state why and what changed.
-
+I'm sorry for that.
