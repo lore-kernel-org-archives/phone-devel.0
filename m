@@ -2,161 +2,92 @@ Return-Path: <SRS0=+vok=EE=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECA12C56201
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 01:02:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77BACC4363A
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 15:51:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A3F5120790
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 01:02:14 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VSb7dfpw"
+	by mail.kernel.org (Postfix) with ESMTP id 1B769207DE
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 15:51:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1603986661;
+	bh=VkgAGjIXeX1QGXzX2I8kG7JkQqPuCLCdVAYF03ftWSs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=g/2/JHmclDUgAK6abEN/PCxretDKJCD5Gxu8Mq+HmIn50h5rhXNKtKnd2DjY9FuFm
+	 nKC88+kusdpBg8QV5dsgn8aRO5n7RkwODfvvkX7vcLseWWWyERGR8NLDPesJ7wV1fP
+	 EePd0eLK2aV1QqxNMcBsr365kBf8WfoR4cREmJ68=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730707AbgJ2BCE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 28 Oct 2020 21:02:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52728 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730946AbgJ1WNI (ORCPT
+        id S1728482AbgJ2Pu4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Oct 2020 11:50:56 -0400
+Received: from mail-oo1-f68.google.com ([209.85.161.68]:35305 "EHLO
+        mail-oo1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728225AbgJ2Pu4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:13:08 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3625C0613CF;
-        Wed, 28 Oct 2020 15:13:07 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id g12so669762wrp.10;
-        Wed, 28 Oct 2020 15:13:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DT6U3Rrpw03NL9wb6+e07l8WiQkrdkKgWOSxMXogg6U=;
-        b=VSb7dfpw4irGstLagBSk6VtAJq3e8StKJ/EKo44Q0eHd+TYB/LWh2yU2pqTlCBmf3A
-         9iGN+2Be/Snri6YY9ZRj+/4xosGc6ESHVDf56SnrAPg+fEna/A01URaYdIY471NOKDO8
-         bTxfi4jRdF6iFIDvlPmi0dgN9JlutgOxM90nQ9oaATWal1ucddnI+R3q78QDATBjEF61
-         wj3NSovgfL4vrSl01Z8TE4SG8ro+6tUteKl6xqDKZNhW2qH+/ldEpeHePm74RXEldwSZ
-         1CsxzzxMle5WHlz29QZMfb3ShjSppnXrCFrAYMebdZJhur0ASoJ5FYg4VO0gDl085K3z
-         sA4w==
+        Thu, 29 Oct 2020 11:50:56 -0400
+Received: by mail-oo1-f68.google.com with SMTP id n16so822810ooj.2;
+        Thu, 29 Oct 2020 08:50:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DT6U3Rrpw03NL9wb6+e07l8WiQkrdkKgWOSxMXogg6U=;
-        b=dFqVSFA8B9GEjbvyzewO4QlJQXGa4W5Z/wKJPN+R22tZzvBhHyD+zi7ko9Qu2NsOqM
-         MQrVhJ7eRvWPTdafcSLc0W6UUVSiwbgnmtbVON2oLFFFpYHqrDBc+7DSMgWptYMWkuo8
-         7lsBlGmtebktdvASq9pckOwMJ2OVHZ+067xDzKTbVKWfMYy8MfjvqNoD1B9cD0hgsfMK
-         /SKPHU+xr0dKkgAiGyposEavyGGaOrTiki2T9A/I/KyFsbMN2yATFPchw3fQ62Li2H/f
-         U/sXtf7t+nspz7X0YDznPQxO3jRTylyCBKxYq5LvW4kZKl6wMj0Ztyk44nMzzSGmIa0q
-         orJw==
-X-Gm-Message-State: AOAM531QgxUI9Fbr6MSY84ZsV1aXfgOEeylgp0QKQ4u4CtT8E0qY/vm6
-        GDijsAPR90xC++TMNv5ynCw=
-X-Google-Smtp-Source: ABdhPJw2ck6qSNW3Dpk0b4qFpYtA9DOZDGAtqNDpTEFwJbNrpXE8Hb/+Cv07B6lJk8KqL6F4H7IByw==
-X-Received: by 2002:a5d:6652:: with SMTP id f18mr592183wrw.186.1603923186483;
-        Wed, 28 Oct 2020 15:13:06 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id x1sm1318928wrl.41.2020.10.28.15.13.04
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=iNrItceSx1kMGmkUqnj6iHlC9+yjJU/megR871MH1s4=;
+        b=mCQ/VPJSZmlk+GktZFGxZGnhRM42IVSV/lBJEavqslAbikCQ6RvOaqtct7sUcJdl4/
+         CXknJi2+ZlyiTpF60mzmrgyI4vE/q/vODWDxa2iukxZZF7lz5g0rdQINF3OMd7AiYnqS
+         wuirLazlhAiP48Y0h2yPh9o0Oj0hlT5jt+ggptBGIm7fSAbRQdKuOjvbHTZ+xevSbRzV
+         a8CqQ1lkNIj9lnzsp+zL8xAw5fcoy9VH3pvyspKnCwNoBBADKVmaU72zZrYfNi8H3FFM
+         Vr7cts2GEGtiCauLweBUM3a0zTcQV5ifi+eLsIaDZGzAsdgul6/BY4WlBpKMo46bLuJC
+         RRhg==
+X-Gm-Message-State: AOAM531EhCHPLER39hYPS3qZ3o09XCsce34DC5gRu3mWEow201XTwCVO
+        EZe67CaGySTHYYDqjoR/nQ==
+X-Google-Smtp-Source: ABdhPJyTP+mCicpc5AnG/HZYKCTQJtVyQOPkORFZReqYr/zd44XZQERaPinW/ElNg0S3NKukxqwgHA==
+X-Received: by 2002:a4a:c302:: with SMTP id c2mr3725486ooq.26.1603986655094;
+        Thu, 29 Oct 2020 08:50:55 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id r21sm157018otc.0.2020.10.29.08.50.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 15:13:05 -0700 (PDT)
-From:   kholk11@gmail.com
-To:     dmitry.torokhov@gmail.com
-Cc:     robh+dt@kernel.org, rydberg@bitmath.org, priv.luk@gmail.com,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kholk11@gmail.com, marijns95@gmail.com, konradybcio@gmail.com,
-        martin.botka1@gmail.com, phone-devel@vger.kernel.org,
-        devicetree@vger.kernel.org, krzk@kernel.org,
-        andy.shevchenko@gmail.com
-Subject: [PATCH v9 0/3] Add Novatek NT36xxx touchscreen driver
-Date:   Wed, 28 Oct 2020 23:12:59 +0100
-Message-Id: <20201028221302.66583-1-kholk11@gmail.com>
-X-Mailer: git-send-email 2.28.0
+        Thu, 29 Oct 2020 08:50:54 -0700 (PDT)
+Received: (nullmailer pid 1937485 invoked by uid 1000);
+        Thu, 29 Oct 2020 15:50:53 -0000
+Date:   Thu, 29 Oct 2020 10:50:53 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     kholk11@gmail.com
+Cc:     robh+dt@kernel.org, konradybcio@gmail.com,
+        linux-kernel@vger.kernel.org, dmitry.torokhov@gmail.com,
+        priv.luk@gmail.com, marijns95@gmail.com,
+        phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
+        andy.shevchenko@gmail.com, rydberg@bitmath.org,
+        martin.botka1@gmail.com, krzk@kernel.org,
+        linux-input@vger.kernel.org
+Subject: Re: [PATCH v9 1/3] dt-bindings: Add vendor prefix for Novatek
+ Microelectronics Corp.
+Message-ID: <20201029155053.GA1936493@bogus>
+References: <20201028221302.66583-1-kholk11@gmail.com>
+ <20201028221302.66583-2-kholk11@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201028221302.66583-2-kholk11@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+On Wed, 28 Oct 2020 23:13:00 +0100, kholk11@gmail.com wrote:
+> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> 
+> Add prefix for Novatek Microelectronics Corp.
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
 
-This patch series adds support for the Novatek NT36xxx Series' In-Cell
-touchscreen (integrated into the DriverIC).
 
-This patch series has been tested against the following devices:
- - Sony Xperia 10        (SDM630 Ganges Kirin)
- - Sony Xperia 10 Plus   (SDM636 Ganges Mermaid)
+Please add Acked-by/Reviewed-by tags when posting new versions. However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for acks received on the version they apply.
 
-Changes in v2:
-- Fixed sparse warnings from lkp kernel test robot
-
-Changes in v3 (as requested by Dmitry Torokhov):
-- Using shorthand u16/u32 (sorry for the overlook!)
-- Now using more input and touchscreen APIs
-- Fixed useless workqueue involvements
-- Removed useless locking
-- Switched reads and writes to use regmap
-- Moved header contents to nt36xxx.c
-- Fixed reset gpio handling
-- Other cleanups
-- P.S.: Thanks, Dmitry!
-
-Changes in v4:
-- Fixed regmap read length for CRC_ERR_FLAG final check
-- Fixed YAML binding, as requested by Krzysztof Kozlowski
-
-Changes in v5:
-- Replaced subsystem maintainer's name with .. mine,
-  usage of additionalProperties to unevaluatedProperties
-  and a typo fix for reset-gpios as per Rob Herring's review
-- Changed compatible string as per Krzysztof K. request
-- Renamed the novatek,nt36xxx.yaml file to just nt36xxx.yaml
-  in order to now reflect the driver name instead of the DT
-  compatible
-- Fixed blank line at EOF
-
-Changes in v6:
-- Removed include of_gpio.h, added mod_devicetable.h and
-  gpio/consumer.h
-- Added kerneldoc to relevant functions/enum
-- Used traditional patterns for error checking where possible
-- Documented calls to usleep/msleep
-- Using be16_to_cpu / get_unaligned_be16 where possible
-- Added helper for CRC error check on retrieved buffer
-- Decreased indentation in the CRC reboot recovery function
-- Removed instances of error code sum
-- Dropped all likely/unlikely optimization as per request
-- Removed redundant reset_gpio checks
-- Dropped of_match_ptr and ifdefs for CONFIG_OF
-
-Changes in v7:
-- Fixed typo in nt36xxx.c
-
-Changes in v8:
-- Fixed typo reset-gpio -> reset-gpios in dt-bindings
-
-Changes in v9:
-- Includes are now sorted
-- Used proposed sizeof variable instead of sizeof type
-- Fixed a return value check for common pattern
-- Added NULL check to devm_kasprintf call
-- Returning ret on probe function to be consistent
-
-AngeloGioacchino Del Regno (3):
-  dt-bindings: Add vendor prefix for Novatek Microelectronics Corp.
-  Input: Add Novatek NT36xxx touchscreen driver
-  dt-bindings: touchscreen: Add binding for Novatek NT36xxx series
-    driver
-
- .../bindings/input/touchscreen/nt36xxx.yaml   |  59 ++
- .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
- drivers/input/touchscreen/Kconfig             |  12 +
- drivers/input/touchscreen/Makefile            |   1 +
- drivers/input/touchscreen/nt36xxx.c           | 894 ++++++++++++++++++
- drivers/input/touchscreen/nt36xxx.h           | 122 +++
- 6 files changed, 1090 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml
- create mode 100644 drivers/input/touchscreen/nt36xxx.c
- create mode 100644 drivers/input/touchscreen/nt36xxx.h
-
--- 
-2.28.0
+If a tag was not added on purpose, please state why and what changed.
 
