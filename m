@@ -4,103 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19972C4363A
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 17:22:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1789C4363A
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 17:29:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B067620706
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 17:22:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 807E0206CA
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 17:29:52 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cpKWHh/n"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GbM6ENuT"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725803AbgJ2RWu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Oct 2020 13:22:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36032 "EHLO
+        id S1726037AbgJ2R3w (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Oct 2020 13:29:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725730AbgJ2RWt (ORCPT
+        with ESMTP id S1725730AbgJ2R3w (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Oct 2020 13:22:49 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B8EDC0613CF;
-        Thu, 29 Oct 2020 10:22:49 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id a9so3614766wrg.12;
-        Thu, 29 Oct 2020 10:22:49 -0700 (PDT)
+        Thu, 29 Oct 2020 13:29:52 -0400
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFB40C0613D5;
+        Thu, 29 Oct 2020 10:29:51 -0700 (PDT)
+Received: by mail-wm1-x342.google.com with SMTP id k21so1688149wmi.1;
+        Thu, 29 Oct 2020 10:29:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FgiZbK6pWCFNNx9QFeZngzu7fh5OqvaG7wkwgkOFjSU=;
-        b=cpKWHh/noLvJenv/13DypTzJLrHma44Acp5C9pOHg6D3H7IFNvJnp0zTiuqvH9C2QF
-         mz8XA29iaaASTJ2RMZR7Uy8GZ+Za9cW65iG7rVFQOl4n+jJ5oZTIyhCvYjttlx4YdtNF
-         mbVNpDTFS7Qy9/JQM2MaY5Mx1Cai/NXG2z1Ssg1kITEdnHUIYuN/9UXZa9rJHRwNKQpo
-         L7aIVN0lBeXhSaAww99pKrbIsEZxwmNT8+wUZ4mGiVj/7lXzKBv41/XMvRStA1Ts4IOT
-         1R59FKz1O9s+lrPtw3Od2T1sBWxxN5RVQAdsSpsOuABB+3M0+lkV6zekSTUkzp0/FsHM
-         JAAg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tsIIeip0c9OlJdC8NFlOSS5E1Z7oDwE4UBzxXI1dq7s=;
+        b=GbM6ENuT0F23wMLW0DhxPoEL5YTO4sypFhgCg/Cya8YiHIqmjhEvz9a4gyqPbNG4oi
+         9WNEcxOzrjcxV8esnGytuW8318rfFhDdd/8Tc8hpsPepdJ1FH/x8CQfMHQFQDJdPqKMX
+         +hgfeNncnMqxW6CamPNF3/2yW9YoEKbF8rEw/kzyIPQOCNa3Mp9kdePAqHTFLHsoueAa
+         MSq+0DLegSEY3DT1mBOoDew7YFd8NlO3sbToMv3hu92SovAX4MniCJZkVIlWb/DqsnCO
+         CIrjteUgpmRxKphROrGURmyfzoPI09qWT7Ve8tcpGJoSpupgDW2UyvyNshfJ1zhho36C
+         Ms2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FgiZbK6pWCFNNx9QFeZngzu7fh5OqvaG7wkwgkOFjSU=;
-        b=gwTzWkPNh9+XxEmNyrK3/eMkE+weUQZYI4cWM1XOlarSPNvEFST2G3lERcV/qlAtQ5
-         Wbf5Yjz3QzHO9G58LTxDv45XbPYECtqOvpx7o6fHSdNQ2WXT9x+g0XW57wfu/pKQLqJh
-         dyn0lNk2jmQ1mBu6LjrUFMussk+/5U15oXKDSS7//t6y030bdbYIeAcFBdMGrKS53zcZ
-         62WmO22ze1RV6av4udJ5QM84H4Sxoq/TM1nODdGfL6fmOyAJChkV5+l1TkvFNWqSCF8E
-         zj7cuMqs3n1y928pmhp4giQgskkf6xDHwynbMTTqU5WeKfwi6I/yCAtwBXQ4xPYb5WvT
-         qNfA==
-X-Gm-Message-State: AOAM532mIiMIAoA+dDvDcVgtlX5iieeqsSI0ulk0Ea1F6zsmZnBVgJsh
-        K8QaLWanjcHcI4a4YXZDb4MLZK5N5MEqkScy1Mfeoo7Rq6gqlg==
-X-Google-Smtp-Source: ABdhPJzQqF47WuTZrrAWUm6UKRHFxSNxk2UxPVzZmh961NjEWLxLE1pT8IuMdscuOyDzwnx3gGWJapGFwC0H5g6Eni8=
-X-Received: by 2002:adf:81e5:: with SMTP id 92mr6842917wra.411.1603992168004;
- Thu, 29 Oct 2020 10:22:48 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tsIIeip0c9OlJdC8NFlOSS5E1Z7oDwE4UBzxXI1dq7s=;
+        b=Tml08oooq6VBELs5oOR5r25dfd5NRI/atnPjYd4A7wHtVTMGJsdodjcsFDdtTJpZoy
+         7fGEI93raZUlmkklahI4SjIoPfIgnGYudlB2juh9IZXt3abGqtQ6RJH6g/qcl3mO4xDK
+         vWI6Fn+vUTsvsyqoSyetJIrAaQh8I+n3Ju0AIynHqP/CtVIbeSkqjmeSU/0d7kgP8C0v
+         t0Ugjpk9KtzTfvCpnsapBkDNaqTL58pBTmme1zGqongpYMZNKJ9lAra5tufUbhST8L+A
+         njsJM0Hg0eQwhxNDFbr+NKK+SZ+V38/QjZC7zdjyAMv0xK6uPT88n8tZRfbHiJTqDhJV
+         fyBw==
+X-Gm-Message-State: AOAM5331H5ZTDXS4MT1ogaz+izI8J7ZcnDujQAyzpeD8Ug2IaT0H6bJt
+        NZaIgGKFBeq0BFhWkmn4S4YdNIR6HtP7vE8I
+X-Google-Smtp-Source: ABdhPJzBKlcpXFAQxlmhKefQ9tQW3qGj5R/Jh5QlUeUBoCbKG1Yj4j7c02bQAjc54td9cBzFIPtWWQ==
+X-Received: by 2002:a1c:ddc4:: with SMTP id u187mr961117wmg.156.1603992590441;
+        Thu, 29 Oct 2020 10:29:50 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
+        by smtp.gmail.com with ESMTPSA id e11sm5866054wrj.75.2020.10.29.10.29.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Oct 2020 10:29:49 -0700 (PDT)
+From:   kholk11@gmail.com
+To:     mchehab@kernel.org
+Cc:     robh+dt@kernel.org, marijns95@gmail.com, konradybcio@gmail.com,
+        martin.botka1@gmail.com, devicetree@vger.kernel.org,
+        linux-media@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        AngeloGioacchino Del Regno <kholk11@gmail.com>
+Subject: [PATCH v2 0/2] Add support for the Sony Exmor-RS IMX300 camera sensor
+Date:   Thu, 29 Oct 2020 18:29:45 +0100
+Message-Id: <20201029172947.34315-1-kholk11@gmail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-References: <20201028221302.66583-1-kholk11@gmail.com> <20201028221302.66583-2-kholk11@gmail.com>
- <20201029155053.GA1936493@bogus>
-In-Reply-To: <20201029155053.GA1936493@bogus>
-From:   AngeloGioacchino Del Regno <kholk11@gmail.com>
-Date:   Thu, 29 Oct 2020 18:22:36 +0100
-Message-ID: <CAK7fi1aRTKkA2ouidjB4tyPoCyfTa2-POhUM_9Y2DNphL7=W2A@mail.gmail.com>
-Subject: Re: [PATCH v9 1/3] dt-bindings: Add vendor prefix for Novatek
- Microelectronics Corp.
-To:     Rob Herring <robh@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>, konradybcio@gmail.com,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        dmitry.torokhov@gmail.com, priv.luk@gmail.com, marijns95@gmail.com,
-        phone-devel@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, andy.shevchenko@gmail.com,
-        rydberg@bitmath.org, martin.botka1@gmail.com,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-input@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il giorno gio 29 ott 2020 alle ore 16:50 Rob Herring <robh@kernel.org>
-ha scritto:
->
-> On Wed, 28 Oct 2020 23:13:00 +0100, kholk11@gmail.com wrote:
-> > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> >
-> > Add prefix for Novatek Microelectronics Corp.
-> >
-> > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> > ---
-> >  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
->
->
-> Please add Acked-by/Reviewed-by tags when posting new versions. However,
-> there's no need to repost patches *only* to add the tags. The upstream
-> maintainer will do that for acks received on the version they apply.
->
-> If a tag was not added on purpose, please state why and what changed.
->
-The intention was to add the tag and I even recall adding it... probably
-my finger slipped and the changes didn't get saved, my bad disattention.
-I should probably stop developing when I'm overtired.
+From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-I'm sorry for that.
+This patch series adds support for the IMX300 camera sensor, (one of the)
+first Exmor-RS Stacked CMOS sensor(s), with support for both of the
+supported aspect ratios (4:3 and 16:9).
+This driver came out from reverse engineering of so called "userspace
+drivers" from Sony Xperia smartphones.
+
+I tried to document all of my findings and giving a sense to the registers
+as much as possible, but that was only partially possible and resembles
+some names from the IMX219 public datasheet, even though the addresses are
+basically completely different.
+
+This camera sensor driver was tested with all the resolutions declared in
+it on two phones: Sony Xperia XA2 and XA2 Ultra, on a SDM630 SoC (camss
+patches for this SoC will come in a later series) and is working great.
+
+- Changes in v2:
+  - Changed dt-binding name and fixed a misconception about lane
+    operation (sensor supports 2/4-Lane, driver supports 4-Lane only)
+  - Now using lowercase names for regulator supplies
+  - Fixed redefinition of clock-noncontinuous property
+  - Added informations about constraints on data bus frequencies
+  - Fixed MAINTAINERS: removed git tree
+
+AngeloGioacchino Del Regno (2):
+  media: i2c: Add driver for the Sony Exmor-RS IMX300 camera sensor
+  media: dt-bindings: media: i2c: Add IMX300 CMOS sensor binding
+
+ .../bindings/media/i2c/sony,imx300.yaml       |  112 +
+ MAINTAINERS                                   |    7 +
+ drivers/media/i2c/Kconfig                     |   13 +
+ drivers/media/i2c/Makefile                    |    1 +
+ drivers/media/i2c/imx300.c                    | 3089 +++++++++++++++++
+ 5 files changed, 3222 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
+ create mode 100644 drivers/media/i2c/imx300.c
+
+-- 
+2.28.0
+
