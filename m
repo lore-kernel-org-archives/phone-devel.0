@@ -1,231 +1,526 @@
-Return-Path: <SRS0=+vok=EE=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <SRS0=jEY4=EH=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E595DC55179
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 17:30:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43A50C2D0A3
+	for <phone-devel@archiver.kernel.org>; Sun,  1 Nov 2020 18:58:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8AD9520790
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Oct 2020 17:30:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E245A208A9
+	for <phone-devel@archiver.kernel.org>; Sun,  1 Nov 2020 18:58:23 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jg9dI0DW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SYpB+HRR"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727157AbgJ2R3z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Oct 2020 13:29:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37182 "EHLO
+        id S1727180AbgKAS6X (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 1 Nov 2020 13:58:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725730AbgJ2R3y (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Oct 2020 13:29:54 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27DE3C0613D6;
-        Thu, 29 Oct 2020 10:29:54 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id y12so3672471wrp.6;
-        Thu, 29 Oct 2020 10:29:54 -0700 (PDT)
+        with ESMTP id S1727023AbgKAS6X (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 1 Nov 2020 13:58:23 -0500
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A7EC0617A6;
+        Sun,  1 Nov 2020 10:58:22 -0800 (PST)
+Received: by mail-wr1-x442.google.com with SMTP id g12so12052792wrp.10;
+        Sun, 01 Nov 2020 10:58:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=b8xtaYZtF6tBNMSiTaNwsHNLtKPePHMoGLnn9Qilxp8=;
-        b=Jg9dI0DWQx+EPMcDotJ/S9UkqAOzqU3a24V8hivOx8bS4R3dTwkWJFeH5H6azvXArq
-         QH3o47ZtiDCy0G26d0CrT67GyyRmh0WlDNY2fzDtmm+3g/9WQFm+g0aaNIJdtrP9dvH9
-         00/PSYB9xmJQ2z43fLaek6/RnVObxNUmKmnlS2VOO64A2neVylYHpFXcS1+xKBAyuuFs
-         AVOMFKBISgZ0dyWW3U9C3ptyQbdggYC9Os16rZSqJWQs0B+Egx38PlDNhz8eKuAKNvgv
-         G1j+GS+Y5JedZsQOKwPvRATJj5ca3QEU0ouAcpg7rg/YFUCD+L1geLIzB/yWG0ww4ySL
-         I+2A==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=LUksBSwbHmiStbFPBWAnedNi5XI0ZtKX5tvRKMpeNho=;
+        b=SYpB+HRRNbMLXUXreeK+68/RUKt2uoQes77kwsZLCUFNX2GH28cPRjEUlhB3QtL2gr
+         i1Bno3QdhBITw2JyfWqjI1pO0yay6NbnRo+FfSqW6Ve79aXb6zKaAGFxIULHHOpkLObV
+         RnW35mQv1sgs0wIwoVKtvyfYF0vZ33HiwxU+dFSeJs+LZLzWKh/Na2eGqaUe6mvW/ZIU
+         As6vFvluCotheP2+S8xuA+M2Hza7He7e3Ej3flW5JVRw5LWhF15dnaaPyz0rXjYjLeCh
+         oerZegJQB1FmEQLaOYypJ9F+qzYY8cI1KxSxT2RXgXyNRAqDGpf3qgnXHWKFuiXc52R1
+         0zPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=b8xtaYZtF6tBNMSiTaNwsHNLtKPePHMoGLnn9Qilxp8=;
-        b=Q7/VZP6ZmgNFRU97dC4U1+f6661jPMjAsRek+lvJDrAFVaU63i/66ZcYMJZ9yHeqbB
-         RHC+IOqpRwSSoQuQ0yAx0dE70tvURmfXOui9UjGkVSS/4PxmVb/sRrJRfx0e9NoTsVNT
-         8UwGRr0j0JdM6B2DDyUcvXFrs7AcFwcEMtGDkKOIx9oT4YnVaxA5w1G3K8xePQFiU31t
-         ZoNEsSMtVd6ul5xJwBICZ/6VioUqybGrRT25+4idlGtTroZ0h5z9PqS6T6yk1dbgnm68
-         AG2fvhMfVi1UPzgi6L9Fzzz/JSJAsu+VPwOyOL4icqPK1CCd8e9LMkNERD/qVbPnngvj
-         SOfw==
-X-Gm-Message-State: AOAM5323O2kUJt/pU1QayIaS9W8WHI50yB434hMV/5Ctky6HpxhX+a7k
-        VMekQyGrWP0bpZF3sSVDcdQ=
-X-Google-Smtp-Source: ABdhPJybn/uhkktHVvjTIvdGWKBIHtvbNmYS9LtHLs0YBj4cKb6hVmsBuCMvfzl5ZgDENZJRS7sDWw==
-X-Received: by 2002:adf:f20e:: with SMTP id p14mr6748810wro.376.1603992592717;
-        Thu, 29 Oct 2020 10:29:52 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
-        by smtp.gmail.com with ESMTPSA id e11sm5866054wrj.75.2020.10.29.10.29.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2020 10:29:52 -0700 (PDT)
-From:   kholk11@gmail.com
-To:     mchehab@kernel.org
-Cc:     robh+dt@kernel.org, marijns95@gmail.com, konradybcio@gmail.com,
-        martin.botka1@gmail.com, devicetree@vger.kernel.org,
-        linux-media@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        AngeloGioacchino Del Regno <kholk11@gmail.com>
-Subject: [PATCH v2 2/2] media: dt-bindings: media: i2c: Add IMX300 CMOS sensor binding
-Date:   Thu, 29 Oct 2020 18:29:47 +0100
-Message-Id: <20201029172947.34315-3-kholk11@gmail.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201029172947.34315-1-kholk11@gmail.com>
-References: <20201029172947.34315-1-kholk11@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LUksBSwbHmiStbFPBWAnedNi5XI0ZtKX5tvRKMpeNho=;
+        b=rzKpd+0hK6rffb/DaFl6sPvcuhcea1LR6DGDjg8Gj5nKcHrtvXiXYODyk0Ja24uE+w
+         3+9YWQM7Sa70tFn+YldYlZvxafeoIhInv/GBzKYYU8VVVnIJXnXG9Li2Ml0l01tvwjj5
+         EZf4HdhxDG24h/IReocbo7LA1/ghC0P6UtqSu94RDjFhry6UY0YbACszJ+e6/jw0fNAN
+         QMdtLKe0i3P/YrL2Tftif17Asfm5CORSz+JC1CO+Ikh56HOA2RULypLaElXrvmlPY1aO
+         gQxAMuVEYV9mnCbDI2s51Ek4cPX3jsNSkgucDGI0LR7qsh2fkJcWaMKM/+OzxFeuChby
+         uRnA==
+X-Gm-Message-State: AOAM533xvMVwHYQs/8t1ZY7A9eWZxCaBKe5ew6t32r9bw9p48iNNLRv5
+        IWG9xtvz+/Pvv+gdM1J+nkCQFhkqCyc/mknXLGfOM6SxEiNSYA==
+X-Google-Smtp-Source: ABdhPJwCHu/96+pX5wnQPcn8dRu9PYxmkCwQj/vS1VNcXtrDLSCNPs4+DOTeNsX2WO0B8fYHX6uNdINZiyh443+JZ5Y=
+X-Received: by 2002:adf:a195:: with SMTP id u21mr8682825wru.132.1604257100830;
+ Sun, 01 Nov 2020 10:58:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200928204709.45746-1-kholk11@gmail.com> <20200928204709.45746-4-kholk11@gmail.com>
+In-Reply-To: <20200928204709.45746-4-kholk11@gmail.com>
+From:   Rob Clark <robdclark@gmail.com>
+Date:   Sun, 1 Nov 2020 10:58:09 -0800
+Message-ID: <CAF6AEGvQNjo+2FdyxaAWiwKOJN8Nx=mqGt+Tzu95nQbpJWbMAg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/7] drm/msm/a5xx: Add support for Adreno 508, 509, 512 GPUs
+To:     AngeloGioacchino Del Regno <kholk11@gmail.com>
+Cc:     Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Jordan Crouse <jcrouse@codeaurora.org>,
+        Konrad Dybcio <konradybcio@gmail.com>,
+        Marijn Suijten <marijns95@gmail.com>, martin.botka1@gmail.com,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        freedreno <freedreno@lists.freedesktop.org>,
+        phone-devel@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+On Mon, Sep 28, 2020 at 1:47 PM <kholk11@gmail.com> wrote:
+>
+> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+>
+> The Adreno 508/509/512 GPUs are stripped versions of the Adreno
+> 5xx found in the mid-end SoCs such as SDM630, SDM636, SDM660 and
+> SDA variants; these SoCs are usually provided with ZAP firmwares,
+> but they have no available GPMU.
+>
+> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> Tested-by: Martin Botka <martin.botka1@gmail.com>
+> Reviewed-by: Jordan Crouse <jcrouse@codeaurora.org>
+> ---
+>  drivers/gpu/drm/msm/adreno/a5xx_gpu.c      | 172 ++++++++++++++++++---
+>  drivers/gpu/drm/msm/adreno/a5xx_power.c    |   4 +-
+>  drivers/gpu/drm/msm/adreno/adreno_device.c |  60 +++++++
+>  drivers/gpu/drm/msm/adreno/adreno_gpu.h    |  15 ++
+>  4 files changed, 231 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+> index f98f0844838c..fd33a34961cc 100644
+> --- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+> +++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+> @@ -212,7 +212,7 @@ static void a5xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
+>         a5xx_preempt_trigger(gpu);
+>  }
+>
+> -static const struct {
+> +static const struct adreno_five_hwcg_regs {
+>         u32 offset;
+>         u32 value;
+>  } a5xx_hwcg[] = {
+> @@ -308,16 +308,124 @@ static const struct {
+>         {REG_A5XX_RBBM_CLOCK_DELAY_TSE_RAS_RBBM, 0x00004000},
+>         {REG_A5XX_RBBM_CLOCK_DELAY_GPC, 0x00000200},
+>         {REG_A5XX_RBBM_CLOCK_DELAY_VFD, 0x00002222}
+> +}, a50x_hwcg[] = {
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_SP0, 0x02222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_SP0, 0x02222220},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_SP0, 0x0000F3CF},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_SP0, 0x00000080},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_TP0, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_TP0, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL3_TP0, 0x00002222},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_TP0, 0x77777777},
+> +       {REG_A5XX_RBBM_CLOCK_HYST2_TP0, 0x77777777},
+> +       {REG_A5XX_RBBM_CLOCK_HYST3_TP0, 0x00007777},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_TP0, 0x11111111},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY2_TP0, 0x11111111},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY3_TP0, 0x00001111},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_UCHE, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL3_UCHE, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL4_UCHE, 0x00222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_UCHE, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_UCHE, 0x00FFFFF4},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_UCHE, 0x00000002},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_RB0, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_RB0, 0x00222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_CCU0, 0x00022220},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_RAC, 0x05522222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_RAC, 0x00505555},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_RB_CCU0, 0x04040404},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_RAC, 0x07444044},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_0, 0x00000002},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_RAC, 0x00010011},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_TSE_RAS_RBBM, 0x04222222},
+> +       {REG_A5XX_RBBM_CLOCK_MODE_GPC, 0x02222222},
+> +       {REG_A5XX_RBBM_CLOCK_MODE_VFD, 0x00002222},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_TSE_RAS_RBBM, 0x00000000},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_GPC, 0x04104004},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_VFD, 0x00000000},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_HLSQ, 0x00000000},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_TSE_RAS_RBBM, 0x00004000},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_GPC, 0x00000200},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_VFD, 0x00002222},
+> +}, a512_hwcg[] = {
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_SP0, 0x02222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_SP1, 0x02222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_SP0, 0x02222220},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_SP1, 0x02222220},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_SP0, 0x0000F3CF},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_SP1, 0x0000F3CF},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_SP0, 0x00000080},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_SP1, 0x00000080},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_TP0, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_TP1, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_TP0, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_TP1, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL3_TP0, 0x00002222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL3_TP1, 0x00002222},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_TP0, 0x77777777},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_TP1, 0x77777777},
+> +       {REG_A5XX_RBBM_CLOCK_HYST2_TP0, 0x77777777},
+> +       {REG_A5XX_RBBM_CLOCK_HYST2_TP1, 0x77777777},
+> +       {REG_A5XX_RBBM_CLOCK_HYST3_TP0, 0x00007777},
+> +       {REG_A5XX_RBBM_CLOCK_HYST3_TP1, 0x00007777},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_TP0, 0x11111111},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_TP1, 0x11111111},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY2_TP0, 0x11111111},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY2_TP1, 0x11111111},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY3_TP0, 0x00001111},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY3_TP1, 0x00001111},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_UCHE, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_UCHE, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL3_UCHE, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL4_UCHE, 0x00222222},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_UCHE, 0x00444444},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_UCHE, 0x00000002},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_RB0, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_RB1, 0x22222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_RB0, 0x00222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_RB1, 0x00222222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_CCU0, 0x00022220},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_CCU1, 0x00022220},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_RAC, 0x05522222},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL2_RAC, 0x00505555},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_RB_CCU0, 0x04040404},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_RB_CCU1, 0x04040404},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_RAC, 0x07444044},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_0, 0x00000002},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_1, 0x00000002},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_RAC, 0x00010011},
+> +       {REG_A5XX_RBBM_CLOCK_CNTL_TSE_RAS_RBBM, 0x04222222},
+> +       {REG_A5XX_RBBM_CLOCK_MODE_GPC, 0x02222222},
+> +       {REG_A5XX_RBBM_CLOCK_MODE_VFD, 0x00002222},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_TSE_RAS_RBBM, 0x00000000},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_GPC, 0x04104004},
+> +       {REG_A5XX_RBBM_CLOCK_HYST_VFD, 0x00000000},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_HLSQ, 0x00000000},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_TSE_RAS_RBBM, 0x00004000},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_GPC, 0x00000200},
+> +       {REG_A5XX_RBBM_CLOCK_DELAY_VFD, 0x00002222},
+>  };
+>
+>  void a5xx_set_hwcg(struct msm_gpu *gpu, bool state)
+>  {
+>         struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+> -       unsigned int i;
+> +       const struct adreno_five_hwcg_regs *regs;
+> +       unsigned int i, sz;
+> +
+> +       if (adreno_is_a508(adreno_gpu)) {
+> +               regs = a50x_hwcg;
+> +               sz = ARRAY_SIZE(a50x_hwcg);
+> +       } else if (adreno_is_a509(adreno_gpu) || adreno_is_a512(adreno_gpu)) {
+> +               regs = a512_hwcg;
+> +               sz = ARRAY_SIZE(a512_hwcg);
+> +       } else {
+> +               regs = a5xx_hwcg;
+> +               sz = ARRAY_SIZE(a5xx_hwcg);
+> +       }
+>
+> -       for (i = 0; i < ARRAY_SIZE(a5xx_hwcg); i++)
+> -               gpu_write(gpu, a5xx_hwcg[i].offset,
+> -                       state ? a5xx_hwcg[i].value : 0);
+> +       for (i = 0; i < sz; i++)
+> +               gpu_write(gpu, regs[i].offset,
+> +                         state ? regs[i].value : 0);
+>
+>         if (adreno_is_a540(adreno_gpu)) {
+>                 gpu_write(gpu, REG_A5XX_RBBM_CLOCK_DELAY_GPMU, state ? 0x00000770 : 0);
+> @@ -506,11 +614,13 @@ static int a5xx_zap_shader_init(struct msm_gpu *gpu)
+>  static int a5xx_hw_init(struct msm_gpu *gpu)
+>  {
+>         struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+> +       u32 bit;
+>         int ret;
+>
+>         gpu_write(gpu, REG_A5XX_VBIF_ROUND_ROBIN_QOS_ARB, 0x00000003);
+>
+> -       if (adreno_is_a540(adreno_gpu))
+> +       if (adreno_is_a509(adreno_gpu) || adreno_is_a512(adreno_gpu) ||
+> +           adreno_is_a540(adreno_gpu))
+>                 gpu_write(gpu, REG_A5XX_VBIF_GATE_OFF_WRREQ_EN, 0x00000009);
+>
+>         /* Make all blocks contribute to the GPU BUSY perf counter */
+> @@ -572,22 +682,29 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+>                 0x00100000 + adreno_gpu->gmem - 1);
+>         gpu_write(gpu, REG_A5XX_UCHE_GMEM_RANGE_MAX_HI, 0x00000000);
+>
+> -       if (adreno_is_a510(adreno_gpu)) {
+> +       if (adreno_is_a508(adreno_gpu) || adreno_is_a510(adreno_gpu)) {
+>                 gpu_write(gpu, REG_A5XX_CP_MEQ_THRESHOLDS, 0x20);
+> -               gpu_write(gpu, REG_A5XX_CP_MERCIU_SIZE, 0x20);
+> +               if (adreno_is_a508(adreno_gpu))
+> +                       gpu_write(gpu, REG_A5XX_CP_MERCIU_SIZE, 0x400);
+> +               else
+> +                       gpu_write(gpu, REG_A5XX_CP_MERCIU_SIZE, 0x20);
+>                 gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_2, 0x40000030);
+>                 gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_1, 0x20100D0A);
+>         } else {
+>                 gpu_write(gpu, REG_A5XX_CP_MEQ_THRESHOLDS, 0x40);
+>                 if (adreno_is_a530(adreno_gpu))
+>                         gpu_write(gpu, REG_A5XX_CP_MERCIU_SIZE, 0x40);
+> -               if (adreno_is_a540(adreno_gpu))
+> +               else
+>                         gpu_write(gpu, REG_A5XX_CP_MERCIU_SIZE, 0x400);
+>                 gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_2, 0x80000060);
+>                 gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_1, 0x40201B16);
+>         }
+>
+> -       if (adreno_is_a510(adreno_gpu))
+> +       if (adreno_is_a508(adreno_gpu))
+> +               gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL,
+> +                         (0x100 << 11 | 0x100 << 22));
+> +       else if (adreno_is_a509(adreno_gpu) || adreno_is_a510(adreno_gpu) ||
+> +                adreno_is_a512(adreno_gpu))
+>                 gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL,
+>                           (0x200 << 11 | 0x200 << 22));
+>         else
+> @@ -597,6 +714,14 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+>         if (adreno_gpu->info->quirks & ADRENO_QUIRK_TWO_PASS_USE_WFI)
+>                 gpu_rmw(gpu, REG_A5XX_PC_DBG_ECO_CNTL, 0, (1 << 8));
+>
+> +       /*
+> +        * Disable the RB sampler datapath DP2 clock gating optimization
+> +        * for 1-SP GPUs, as it is enabled by default.
+> +        */
+> +       if (adreno_is_a508(adreno_gpu) || adreno_is_a509(adreno_gpu) ||
+> +           adreno_is_a512(adreno_gpu))
+> +               gpu_rmw(gpu, REG_A5XX_RB_DBG_ECO_CNTL, 0, (1 << 9));
+> +
+>         /* Enable USE_RETENTION_FLOPS */
+>         gpu_write(gpu, REG_A5XX_CP_CHICKEN_DBG, 0x02000000);
+>
+> @@ -622,10 +747,17 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+>         gpu_write(gpu, REG_A5XX_RBBM_AHB_CNTL2, 0x0000003F);
+>
+>         /* Set the highest bank bit */
+> -       gpu_write(gpu, REG_A5XX_TPL1_MODE_CNTL, 2 << 7);
+> -       gpu_write(gpu, REG_A5XX_RB_MODE_CNTL, 2 << 1);
+>         if (adreno_is_a540(adreno_gpu))
+> -               gpu_write(gpu, REG_A5XX_UCHE_DBG_ECO_CNTL_2, 2);
+> +               bit = 2;
+> +       else
+> +               bit = 1;
+> +
+> +       gpu_write(gpu, REG_A5XX_TPL1_MODE_CNTL, bit << 7);
+> +       gpu_write(gpu, REG_A5XX_RB_MODE_CNTL, bit << 1);
+> +
+> +       if (adreno_is_a509(adreno_gpu) || adreno_is_a512(adreno_gpu) ||
+> +           adreno_is_a540(adreno_gpu))
+> +               gpu_write(gpu, REG_A5XX_UCHE_DBG_ECO_CNTL_2, bit);
+>
+>         /* Protect registers from the CP */
+>         gpu_write(gpu, REG_A5XX_CP_PROTECT_CNTL, 0x00000007);
+> @@ -662,7 +794,9 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+>         /* UCHE */
+>         gpu_write(gpu, REG_A5XX_CP_PROTECT(16), ADRENO_PROTECT_RW(0xE80, 16));
+>
+> -       if (adreno_is_a530(adreno_gpu) || adreno_is_a510(adreno_gpu))
+> +       if (adreno_is_a508(adreno_gpu) || adreno_is_a509(adreno_gpu) ||
+> +           adreno_is_a510(adreno_gpu) || adreno_is_a512(adreno_gpu) ||
+> +           adreno_is_a530(adreno_gpu))
+>                 gpu_write(gpu, REG_A5XX_CP_PROTECT(17),
+>                         ADRENO_PROTECT_RW(0x10000, 0x8000));
+>
+> @@ -704,7 +838,8 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+>         if (ret)
+>                 return ret;
+>
+> -       if (!adreno_is_a510(adreno_gpu))
+> +       if (!(adreno_is_a508(adreno_gpu) || adreno_is_a509(adreno_gpu) ||
+> +             adreno_is_a510(adreno_gpu) || adreno_is_a512(adreno_gpu)))
+>                 a5xx_gpmu_ucode_init(gpu);
+>
+>         ret = a5xx_ucode_init(gpu);
+> @@ -1117,7 +1252,8 @@ static int a5xx_pm_resume(struct msm_gpu *gpu)
+>         if (ret)
+>                 return ret;
+>
+> -       if (adreno_is_a510(adreno_gpu)) {
+> +       /* Adreno 508, 509, 510, 512 needs manual RBBM sus/res control */
+> +       if (!(adreno_is_a530(adreno_gpu) || adreno_is_a540(adreno_gpu))) {
+>                 /* Halt the sp_input_clk at HM level */
+>                 gpu_write(gpu, REG_A5XX_RBBM_CLOCK_CNTL, 0x00000055);
+>                 a5xx_set_hwcg(gpu, true);
+> @@ -1157,8 +1293,8 @@ static int a5xx_pm_suspend(struct msm_gpu *gpu)
+>         struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+>         u32 mask = 0xf;
+>
+> -       /* A510 has 3 XIN ports in VBIF */
+> -       if (adreno_is_a510(adreno_gpu))
+> +       /* A508, A510 have 3 XIN ports in VBIF */
+> +       if (adreno_is_a508(adreno_gpu) || adreno_is_a510(adreno_gpu))
+>                 mask = 0x7;
+>
+>         /* Clear the VBIF pipe before shutting down */
+> diff --git a/drivers/gpu/drm/msm/adreno/a5xx_power.c b/drivers/gpu/drm/msm/adreno/a5xx_power.c
+> index 321a8061fd32..31c45ae6875e 100644
+> --- a/drivers/gpu/drm/msm/adreno/a5xx_power.c
+> +++ b/drivers/gpu/drm/msm/adreno/a5xx_power.c
+> @@ -298,7 +298,7 @@ int a5xx_power_init(struct msm_gpu *gpu)
+>         int ret;
+>
+>         /* Not all A5xx chips have a GPMU */
+> -       if (adreno_is_a510(adreno_gpu))
+> +       if (!(adreno_is_a530(adreno_gpu) || adreno_is_a540(adreno_gpu)))
+>                 return 0;
+>
+>         /* Set up the limits management */
+> @@ -330,7 +330,7 @@ void a5xx_gpmu_ucode_init(struct msm_gpu *gpu)
+>         unsigned int *data, *ptr, *cmds;
+>         unsigned int cmds_size;
+>
+> -       if (adreno_is_a510(adreno_gpu))
+> +       if (!(adreno_is_a530(adreno_gpu) || adreno_is_a540(adreno_gpu)))
+>                 return;
+>
+>         if (a5xx_gpu->gpmu_bo)
+> diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c b/drivers/gpu/drm/msm/adreno/adreno_device.c
+> index 9eeb46bf2a5d..40465b4e9da8 100644
+> --- a/drivers/gpu/drm/msm/adreno/adreno_device.c
+> +++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
+> @@ -129,6 +129,41 @@ static const struct adreno_info gpulist[] = {
+>                 .gmem  = (SZ_1M + SZ_512K),
+>                 .inactive_period = DRM_MSM_INACTIVE_PERIOD,
+>                 .init  = a4xx_gpu_init,
+> +       }, {
+> +               .rev   = ADRENO_REV(5, 0, 8, ANY_ID),
+> +               .revn = 508,
+> +               .name = "A508",
+> +               .fw = {
+> +                       [ADRENO_FW_PM4] = "a530_pm4.fw",
+> +                       [ADRENO_FW_PFP] = "a530_pfp.fw",
+> +               },
+> +               .gmem = (SZ_128K + SZ_8K),
+> +               /*
+> +                * Increase inactive period to 250 to avoid bouncing
+> +                * the GDSC which appears to make it grumpy
+> +                */
+> +               .inactive_period = 250,
+> +               .quirks = ADRENO_QUIRK_LMLOADKILL_DISABLE,
+> +               .init = a5xx_gpu_init,
+> +               .zapfw = "a508_zap.mdt",
+> +       }, {
+> +               .rev   = ADRENO_REV(5, 0, 9, ANY_ID),
+> +               .revn = 509,
+> +               .name = "A509",
+> +               .fw = {
+> +                       [ADRENO_FW_PM4] = "a530_pm4.fw",
+> +                       [ADRENO_FW_PFP] = "a530_pfp.fw",
+> +               },
+> +               .gmem = (SZ_256K + SZ_16K),
+> +               /*
+> +                * Increase inactive period to 250 to avoid bouncing
+> +                * the GDSC which appears to make it grumpy
+> +                */
+> +               .inactive_period = 250,
+> +               .quirks = ADRENO_QUIRK_LMLOADKILL_DISABLE,
+> +               .init = a5xx_gpu_init,
+> +               /* Adreno 509 uses the same ZAP as 512 */
+> +               .zapfw = "a512_zap.mdt",
+>         }, {
+>                 .rev   = ADRENO_REV(5, 1, 0, ANY_ID),
+>                 .revn = 510,
+> @@ -144,6 +179,23 @@ static const struct adreno_info gpulist[] = {
+>                  */
+>                 .inactive_period = 250,
+>                 .init = a5xx_gpu_init,
+> +       }, {
+> +               .rev   = ADRENO_REV(5, 1, 2, ANY_ID),
+> +               .revn = 512,
+> +               .name = "A512",
+> +               .fw = {
+> +                       [ADRENO_FW_PM4] = "a530_pm4.fw",
+> +                       [ADRENO_FW_PFP] = "a530_pfp.fw",
+> +               },
+> +               .gmem = (SZ_256K + SZ_16K),
+> +               /*
+> +                * Increase inactive period to 250 to avoid bouncing
+> +                * the GDSC which appears to make it grumpy
+> +                */
+> +               .inactive_period = 250,
+> +               .quirks = ADRENO_QUIRK_LMLOADKILL_DISABLE,
+> +               .init = a5xx_gpu_init,
+> +               .zapfw = "a512_zap.mdt",
+>         }, {
+>                 .rev = ADRENO_REV(5, 3, 0, 2),
+>                 .revn = 530,
+> @@ -240,6 +292,14 @@ MODULE_FIRMWARE("qcom/a330_pm4.fw");
+>  MODULE_FIRMWARE("qcom/a330_pfp.fw");
+>  MODULE_FIRMWARE("qcom/a420_pm4.fw");
+>  MODULE_FIRMWARE("qcom/a420_pfp.fw");
+> +MODULE_FIRMWARE("qcom/a508_zap.mdt");
+> +MODULE_FIRMWARE("qcom/a508_zap.b00");
+> +MODULE_FIRMWARE("qcom/a508_zap.b01");
+> +MODULE_FIRMWARE("qcom/a508_zap.b02");
+> +MODULE_FIRMWARE("qcom/a512_zap.mdt");
+> +MODULE_FIRMWARE("qcom/a512_zap.b00");
+> +MODULE_FIRMWARE("qcom/a512_zap.b01");
+> +MODULE_FIRMWARE("qcom/a512_zap.b02");
 
-Add YAML device tree binding for IMX300 CMOS image sensor, and
-the relevant MAINTAINERS entries.
+Maybe just add:
 
-Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
----
- .../bindings/media/i2c/sony,imx300.yaml       | 112 ++++++++++++++++++
- MAINTAINERS                                   |   7 ++
- 2 files changed, 119 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
+MODULE_FIRMWARE("qcom/a508_zap.mbn");
+MODULE_FIRMWARE("qcom/a512_zap.mbn");
 
-diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-new file mode 100644
-index 000000000000..8f1d795f8072
---- /dev/null
-+++ b/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-@@ -0,0 +1,112 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/media/i2c/sony,imx300.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Sony 1/2.3-Inch 8Mpixel Stacked CMOS Digital Image Sensor
-+
-+maintainers:
-+  - AngeloGioacchino Del Regno <kholk11@gmail.com>
-+
-+description: |-
-+  The Sony IMX300 is a 1/2.3-inch Stacked CMOS (Exmor-RS) digital image
-+  sensor with a pixel size of 1.08um and an active array size of
-+  5948H x 4140V. It is programmable through I2C interface at address 0x10.
-+  Image data is sent through MIPI CSI-2, which is configured as either 2 or
-+  4 data lanes.
-+
-+properties:
-+  compatible:
-+    const: sony,imx300
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  vdig-supply:
-+    description:
-+      Digital I/O voltage supply, 1.15-1.20 volts
-+
-+  vana-supply:
-+    description:
-+      Analog voltage supply, 2.2 volts
-+
-+  vddl-supply:
-+    description:
-+      Digital core voltage supply, 1.8 volts
-+
-+  reset-gpios:
-+    description: |-
-+      Reference to the GPIO connected to the xclr pin, if any.
-+      Must be released (set high) after all supplies are applied.
-+
-+  # See ../video-interfaces.txt for more details
-+  port:
-+    type: object
-+    properties:
-+      endpoint:
-+        type: object
-+
-+        properties:
-+          data-lanes:
-+            description: |-
-+              The sensor supports either two-lane, or four-lane operation,
-+              but the driver currently supports only four-lane.
-+            items:
-+              - const: 0
-+              - const: 1
-+              - const: 2
-+              - const: 3
-+
-+          clock-noncontinuous: true
-+
-+          link-frequencies:
-+            $ref: /schemas/types.yaml#/definitions/uint64-array
-+            description:
-+              Allowed data bus frequencies. The driver currently needs
-+              to switch between 780000000 and 480000000 Hz in order to
-+              guarantee functionality of all modes.
-+
-+        required:
-+          - link-frequencies
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - vana-supply
-+  - vdig-supply
-+  - vddl-supply
-+  - port
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        imx300: sensor@10 {
-+            compatible = "sony,imx300";
-+            reg = <0x10>;
-+            clocks = <&imx300_xclk>;
-+            vana-supply = <&imx300_vana>;   /* 2.2v */
-+            vdig-supply = <&imx300_vdig>;   /* 1.2v */
-+            vddl-supply = <&imx300_vddl>;   /* 1.8v */
-+
-+            port {
-+                imx300_0: endpoint {
-+                    remote-endpoint = <&csi1_ep>;
-+                    data-lanes = <0 1 2 3>;
-+                    clock-noncontinuous;
-+                    link-frequencies = /bits/ 64 <780000000 480000000>;
-+                };
-+            };
-+        };
-+    };
-+
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c66710dd7e0a..21ba41db0063 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16279,6 +16279,13 @@ T:	git git://linuxtv.org/media_tree.git
- F:	Documentation/devicetree/bindings/media/i2c/imx290.txt
- F:	drivers/media/i2c/imx290.c
- 
-+SONY IMX300 SENSOR DRIVER
-+M:	AngeloGioacchino Del Regno <kholk11@gmail.com>
-+L:	linux-media@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-+F:	drivers/media/i2c/imx300.c
-+
- SONY IMX319 SENSOR DRIVER
- M:	Bingbu Cao <bingbu.cao@intel.com>
- L:	linux-media@vger.kernel.org
--- 
-2.28.0
+instead?  The upstream kernel doesn't need the firmware to be
+pre-split.  (No idea why the went the route of split fw in downstream
+kernel, the firmware is basically an elf file, which they pre-split
+into sections.)
 
+Note also, I recommend that dts uses firmware-name for zap (and in the
+case of other drivers, any other signed firmwares) so that a single
+/lib/firmware can support multiple different devices (where the fw
+needs to be signed differently)
+
+BR,
+-R
+
+>  MODULE_FIRMWARE("qcom/a530_pm4.fw");
+>  MODULE_FIRMWARE("qcom/a530_pfp.fw");
+>  MODULE_FIRMWARE("qcom/a530v3_gpmu.fw2");
+> diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+> index e55abae365b5..61d86a52e6ea 100644
+> --- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+> +++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+> @@ -227,11 +227,26 @@ static inline int adreno_is_a430(struct adreno_gpu *gpu)
+>         return gpu->revn == 430;
+>  }
+>
+> +static inline int adreno_is_a508(struct adreno_gpu *gpu)
+> +{
+> +       return gpu->revn == 508;
+> +}
+> +
+> +static inline int adreno_is_a509(struct adreno_gpu *gpu)
+> +{
+> +       return gpu->revn == 509;
+> +}
+> +
+>  static inline int adreno_is_a510(struct adreno_gpu *gpu)
+>  {
+>         return gpu->revn == 510;
+>  }
+>
+> +static inline int adreno_is_a512(struct adreno_gpu *gpu)
+> +{
+> +       return gpu->revn == 512;
+> +}
+> +
+>  static inline int adreno_is_a530(struct adreno_gpu *gpu)
+>  {
+>         return gpu->revn == 530;
+> --
+> 2.28.0
+>
