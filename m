@@ -7,25 +7,24 @@ X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BBE5C4741F
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DFA1C388F7
 	for <phone-devel@archiver.kernel.org>; Wed,  4 Nov 2020 23:32:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 33C0522210
+	by mail.kernel.org (Postfix) with ESMTP id 59F30221FA
 	for <phone-devel@archiver.kernel.org>; Wed,  4 Nov 2020 23:32:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732661AbgKDXck (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 4 Nov 2020 18:32:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46282 "EHLO
+        id S1732650AbgKDXcl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 4 Nov 2020 18:32:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732650AbgKDXck (ORCPT
+        with ESMTP id S1732652AbgKDXck (ORCPT
         <rfc822;phone-devel@vger.kernel.org>); Wed, 4 Nov 2020 18:32:40 -0500
-X-Greylist: delayed 611 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 04 Nov 2020 15:32:40 PST
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77456C0613CF
+Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8084CC0613D2
         for <phone-devel@vger.kernel.org>; Wed,  4 Nov 2020 15:32:40 -0800 (PST)
 Received: from localhost.localdomain (abag227.neoplus.adsl.tpnet.pl [83.6.170.227])
-        by m-r2.th.seeweb.it (Postfix) with ESMTPA id E6CE540263;
-        Thu,  5 Nov 2020 00:22:38 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPA id F388C4025F;
+        Thu,  5 Nov 2020 00:22:33 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
@@ -45,10 +44,11 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         Amit Daniel Kachhap <amit.kachhap@arm.com>,
         Ionela Voinescu <ionela.voinescu@arm.com>,
         Kristina Martsenko <kristina.martsenko@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/4] arm64: proton-pack: Add KRYO2XX silver CPUs to spectre-v2 safe-list
-Date:   Thu,  5 Nov 2020 00:22:12 +0100
-Message-Id: <20201104232218.198800-4-konrad.dybcio@somainline.org>
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>
+Subject: [PATCH 2/4] arm64: kpti: Add KRYO2XX gold/silver CPU cores to kpti safelist
+Date:   Thu,  5 Nov 2020 00:22:11 +0100
+Message-Id: <20201104232218.198800-3-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201104232218.198800-1-konrad.dybcio@somainline.org>
 References: <20201104232218.198800-1-konrad.dybcio@somainline.org>
@@ -58,22 +58,24 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-KRYO2XX silver (LITTLE) CPUs are based on Cortex-A53
-and they are not affected by spectre-v2.
+QCOM KRYO2XX gold (big) silver (LITTLE) CPU cores are based on
+Cortex-A73 and Cortex-A53 respectively and are meltdown safe,
+hence add them to kpti_safe_list[].
 
 Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
- arch/arm64/kernel/proton-pack.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/kernel/cpufeature.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
-index c18eb7d41274..f6e4e3737405 100644
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -118,6 +118,7 @@ static enum mitigation_state spectre_v2_get_cpu_hw_mitigation_state(void)
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A55),
- 		MIDR_ALL_VERSIONS(MIDR_BRAHMA_B53),
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index dcc165b3fc04..6f36c4f62f69 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -1337,6 +1337,8 @@ static bool unmap_kernel_at_el0(const struct arm64_cpu_capabilities *entry,
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A73),
  		MIDR_ALL_VERSIONS(MIDR_HISI_TSV110),
+ 		MIDR_ALL_VERSIONS(MIDR_NVIDIA_CARMEL),
++		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_2XX_GOLD),
 +		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_2XX_SILVER),
  		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_3XX_SILVER),
  		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_SILVER),
