@@ -2,80 +2,75 @@ Return-Path: <SRS0=bCAi=EL=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 66920C388F7
-	for <phone-devel@archiver.kernel.org>; Thu,  5 Nov 2020 11:04:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D9C7C00A89
+	for <phone-devel@archiver.kernel.org>; Thu,  5 Nov 2020 11:25:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E877C20867
-	for <phone-devel@archiver.kernel.org>; Thu,  5 Nov 2020 11:04:12 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ahA3Ejn0"
+	by mail.kernel.org (Postfix) with ESMTP id 430DD22210
+	for <phone-devel@archiver.kernel.org>; Thu,  5 Nov 2020 11:25:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727851AbgKELEJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 5 Nov 2020 06:04:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40652 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725827AbgKELEG (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 5 Nov 2020 06:04:06 -0500
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52DF9C0613CF;
-        Thu,  5 Nov 2020 03:04:06 -0800 (PST)
-Received: by mail-ej1-x644.google.com with SMTP id i19so1977678ejx.9;
-        Thu, 05 Nov 2020 03:04:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ynCqF4YiUezCSPQ7194PLMEnjm8PrstjeoJ0KVa9cJg=;
-        b=ahA3Ejn0liKlmgInTOt+2w1C7kppiTmgLwvp1nYH8sKjn4XlTeLqwLUC6GMnV//nW4
-         FAmjnIAKv9lL590hq/9DAgPq/QUwiIGIgrtoMJEy2jK4HOLM5dk+kPW2uVJaCSqbyCkQ
-         HApAGMBo2cXvtgJS3/DXN1ThVWKzWnjo6+Ub3D7ElKXDxXxOegUKxBujBxw03mvspHd+
-         kBPlV8MSzY1CXqltXzv7tvps1rBFSBudtzxb0N5b3oVCk3bS8iaQ/fPj230M/QQ4XjJ6
-         QWXvLgUXWZ6N8/E8af5EyvXrp20GBqs3BOvXWqHS8t8RyaSPFLDL2w/PEtQsRWEcJ+1l
-         106g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ynCqF4YiUezCSPQ7194PLMEnjm8PrstjeoJ0KVa9cJg=;
-        b=AYJTVraS5iBRkBn7qaAQJdT9prNfOuhscbo5O761iPr1iv+LU6jwPSPoV4Kd6WW/qC
-         6g34Lej6LBHVR84gR+g1SQ5xJs5/s+KNxuwtFj79ecE4G7B/dQQ4LhT9HNlXH534GPB0
-         K272JOehKymUzzT1k+lMg4dR5L6lsGC1iByG+rT4C37J9MrTLdLhqwcc+VEgz3j4UWG/
-         X8TQ/RM89FBKxUDY8j9jPSXOi2mO8W7rx2v9DviH4a+YJN2ftJpNL2OZV9g7xZICrRy7
-         5vv27cBNkZWSB6Bd1Wp5iIEhrMizTbu4no/25IYnlJ2UfqlEYBPE+SpRTDelCZxW8AvR
-         8CBQ==
-X-Gm-Message-State: AOAM531qpWzFGin9SIHUjTc/xoEn/r9Czde+rqeh6NCsaMOC165tl2bH
-        re8sXBnoLeGxGkXC/INGxpaRIQV0ipVYhoizzz4=
-X-Google-Smtp-Source: ABdhPJx9s+CDagKcABRO0g1oKumFBjgLd+X7U6xI+IVnIGQp8q8C86wBtBuuXTU5LTckB6HwfYYEWiQxmo72vgzn1zA=
-X-Received: by 2002:a17:906:2ddb:: with SMTP id h27mr1680630eji.213.1604574245119;
- Thu, 05 Nov 2020 03:04:05 -0800 (PST)
+        id S1730182AbgKELZA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 5 Nov 2020 06:25:00 -0500
+Received: from relay01.th.seeweb.it ([5.144.164.162]:44555 "EHLO
+        relay01.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730258AbgKELY7 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 5 Nov 2020 06:24:59 -0500
+Received: from [192.168.1.110] (abag72.neoplus.adsl.tpnet.pl [83.6.170.72])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 6DB4C20095;
+        Thu,  5 Nov 2020 12:24:55 +0100 (CET)
+Subject: Re: [PATCH 4/4] arm64: cpu_errata: Apply Erratum 845719 to KRYO2XX
+ Silver
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Rob Herring <robh@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Steven Price <steven.price@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Andrew Scull <ascull@google.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Amit Daniel Kachhap <amit.kachhap@arm.com>,
+        Ionela Voinescu <ionela.voinescu@arm.com>,
+        Kristina Martsenko <kristina.martsenko@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20201104232218.198800-1-konrad.dybcio@somainline.org>
+ <20201104232218.198800-5-konrad.dybcio@somainline.org>
+ <3faa81d537320dfb20bb3f882cfaea1b@kernel.org>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+Message-ID: <23d2ed0c-ab7f-e65a-4590-d58a1e1a3771@somainline.org>
+Date:   Thu, 5 Nov 2020 12:24:54 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-References: <20201005150313.149754-1-konradybcio@gmail.com>
-In-Reply-To: <20201005150313.149754-1-konradybcio@gmail.com>
-From:   Konrad Dybcio <konradybcio@gmail.com>
-Date:   Thu, 5 Nov 2020 12:03:29 +0100
-Message-ID: <CAMS8qEU3C3Jhde1XHK30-FuYo77w+wZNcjRzTqa3Y712r-NjFw@mail.gmail.com>
-Subject: Re: [PATCH 00/11] pm8994 / msm8992/4 DT updates
-To:     Konrad Dybcio <konradybcio@gmail.com>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        DTML <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <3faa81d537320dfb20bb3f882cfaea1b@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+> Is this the only affected version? If this is actually an A53, how do the
+
+> revisions map between Kryo and Cortex cores?
+
+
 Hi,
 
-bumping this series as it's been quite a while and the required clk
-patch has since been merged.
+sadly, I do not have access to such information. Only this specific revision has been marked as affected in the BSP kernel.
 
-Konrad Dybcio
+
+Konrad
+
