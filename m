@@ -2,97 +2,80 @@ Return-Path: <SRS0=bCAi=EL=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 081A2C00A89
-	for <phone-devel@archiver.kernel.org>; Thu,  5 Nov 2020 09:33:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66920C388F7
+	for <phone-devel@archiver.kernel.org>; Thu,  5 Nov 2020 11:04:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 943BF21556
-	for <phone-devel@archiver.kernel.org>; Thu,  5 Nov 2020 09:33:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1604568838;
-	bh=iWSRERkC/LfV2CVxk1yU2P6qcmSeHGDgDs/NaKLTet0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=vDeievTnHJ9dXMXEyzreic7eOw9NeZTYbRb22EjNLDLNFrZTdmqpIH6vkSWAEqbpe
-	 wNmoZyln4GoHAXSB6SdSCkRpqjdmGrKtGJU20DOheZfRsvsSPK6IovNMm/wPA5IJ4Z
-	 YE3fI84wO+w3NyxLRDbSjrLtHXIiyyFIbH+KtKX0=
+	by mail.kernel.org (Postfix) with ESMTP id E877C20867
+	for <phone-devel@archiver.kernel.org>; Thu,  5 Nov 2020 11:04:12 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ahA3Ejn0"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726428AbgKEJd6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 5 Nov 2020 04:33:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60270 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725827AbgKEJd5 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 5 Nov 2020 04:33:57 -0500
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5C0E72080D;
-        Thu,  5 Nov 2020 09:33:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604568837;
-        bh=iWSRERkC/LfV2CVxk1yU2P6qcmSeHGDgDs/NaKLTet0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HEaD68BnGh3Zwcv0U3b5cKS7Mi5m/d5QnC3E8AVdik0bOeKQlnZcLdT/kPArORZ0J
-         9H5Bu2roGr4h+ZC6TQQVasX7hgfaQpnGtbMJ78+n7FPC+zRb3XN71oypHOPzwWby2Q
-         DSq2UVehupaPumkcUExNDWEi9e3E9N8CuhW6w0Os=
-Date:   Thu, 5 Nov 2020 09:33:49 +0000
-From:   Will Deacon <will@kernel.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Jeffrey Hugo <jhugo@codeaurora.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Rob Herring <robh@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Steven Price <steven.price@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Andrew Scull <ascull@google.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Amit Daniel Kachhap <amit.kachhap@arm.com>,
-        Ionela Voinescu <ionela.voinescu@arm.com>,
-        Kristina Martsenko <kristina.martsenko@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/4] Add KRYO2XX Errata / mitigations data
-Message-ID: <20201105093349.GA7902@willie-the-truck>
-References: <20201104232218.198800-1-konrad.dybcio@somainline.org>
+        id S1727851AbgKELEJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 5 Nov 2020 06:04:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40652 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725827AbgKELEG (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 5 Nov 2020 06:04:06 -0500
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52DF9C0613CF;
+        Thu,  5 Nov 2020 03:04:06 -0800 (PST)
+Received: by mail-ej1-x644.google.com with SMTP id i19so1977678ejx.9;
+        Thu, 05 Nov 2020 03:04:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ynCqF4YiUezCSPQ7194PLMEnjm8PrstjeoJ0KVa9cJg=;
+        b=ahA3Ejn0liKlmgInTOt+2w1C7kppiTmgLwvp1nYH8sKjn4XlTeLqwLUC6GMnV//nW4
+         FAmjnIAKv9lL590hq/9DAgPq/QUwiIGIgrtoMJEy2jK4HOLM5dk+kPW2uVJaCSqbyCkQ
+         HApAGMBo2cXvtgJS3/DXN1ThVWKzWnjo6+Ub3D7ElKXDxXxOegUKxBujBxw03mvspHd+
+         kBPlV8MSzY1CXqltXzv7tvps1rBFSBudtzxb0N5b3oVCk3bS8iaQ/fPj230M/QQ4XjJ6
+         QWXvLgUXWZ6N8/E8af5EyvXrp20GBqs3BOvXWqHS8t8RyaSPFLDL2w/PEtQsRWEcJ+1l
+         106g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ynCqF4YiUezCSPQ7194PLMEnjm8PrstjeoJ0KVa9cJg=;
+        b=AYJTVraS5iBRkBn7qaAQJdT9prNfOuhscbo5O761iPr1iv+LU6jwPSPoV4Kd6WW/qC
+         6g34Lej6LBHVR84gR+g1SQ5xJs5/s+KNxuwtFj79ecE4G7B/dQQ4LhT9HNlXH534GPB0
+         K272JOehKymUzzT1k+lMg4dR5L6lsGC1iByG+rT4C37J9MrTLdLhqwcc+VEgz3j4UWG/
+         X8TQ/RM89FBKxUDY8j9jPSXOi2mO8W7rx2v9DviH4a+YJN2ftJpNL2OZV9g7xZICrRy7
+         5vv27cBNkZWSB6Bd1Wp5iIEhrMizTbu4no/25IYnlJ2UfqlEYBPE+SpRTDelCZxW8AvR
+         8CBQ==
+X-Gm-Message-State: AOAM531qpWzFGin9SIHUjTc/xoEn/r9Czde+rqeh6NCsaMOC165tl2bH
+        re8sXBnoLeGxGkXC/INGxpaRIQV0ipVYhoizzz4=
+X-Google-Smtp-Source: ABdhPJx9s+CDagKcABRO0g1oKumFBjgLd+X7U6xI+IVnIGQp8q8C86wBtBuuXTU5LTckB6HwfYYEWiQxmo72vgzn1zA=
+X-Received: by 2002:a17:906:2ddb:: with SMTP id h27mr1680630eji.213.1604574245119;
+ Thu, 05 Nov 2020 03:04:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201104232218.198800-1-konrad.dybcio@somainline.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20201005150313.149754-1-konradybcio@gmail.com>
+In-Reply-To: <20201005150313.149754-1-konradybcio@gmail.com>
+From:   Konrad Dybcio <konradybcio@gmail.com>
+Date:   Thu, 5 Nov 2020 12:03:29 +0100
+Message-ID: <CAMS8qEU3C3Jhde1XHK30-FuYo77w+wZNcjRzTqa3Y712r-NjFw@mail.gmail.com>
+Subject: Re: [PATCH 00/11] pm8994 / msm8992/4 DT updates
+To:     Konrad Dybcio <konradybcio@gmail.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Konrad,
+Hi,
 
-[+Jeffrey]
+bumping this series as it's been quite a while and the required clk
+patch has since been merged.
 
-On Thu, Nov 05, 2020 at 12:22:09AM +0100, Konrad Dybcio wrote:
-> This series adds Spectre mitigations and errata data for
-> Qualcomm KRYO2XX Gold (big) and Silver (LITTLE) series of
-> CPU cores, used for example in MSM8998 and SDM660-series SoCs.
-> 
-> Konrad Dybcio (4):
->   arm64: Add MIDR value for KRYO2XX gold/silver CPU cores
->   arm64: kpti: Add KRYO2XX gold/silver CPU cores to kpti safelist
->   arm64: proton-pack: Add KRYO2XX silver CPUs to spectre-v2 safe-list
->   arm64: cpu_errata: Apply Erratum 845719 to KRYO2XX Silver
-
-This mostly looks fine to me, but I've added Jeffrey to check the MIDRs
-because he's my go-to person for the Qualcomm numbering scheme.
-
-Jeffrey -- please can you check these patches [1], especially the last patch
-which has some cryptic revision number in there too?
-
-Cheers,
-
-Will
-
-[1] http://lkml.kernel.org/r/20201104232218.198800-1-konrad.dybcio@somainline.org
+Konrad Dybcio
