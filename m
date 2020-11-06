@@ -7,47 +7,47 @@ X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C62A7C2D0A3
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Nov 2020 04:17:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 128AEC388F2
+	for <phone-devel@archiver.kernel.org>; Fri,  6 Nov 2020 04:17:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5204D206E3
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Nov 2020 04:17:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9C05D2078B
+	for <phone-devel@archiver.kernel.org>; Fri,  6 Nov 2020 04:17:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726202AbgKFEPe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 5 Nov 2020 23:15:34 -0500
-Received: from new3-smtp.messagingengine.com ([66.111.4.229]:40601 "EHLO
-        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726027AbgKFEPR (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
+        id S1726096AbgKFEPR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Thu, 5 Nov 2020 23:15:17 -0500
+Received: from new3-smtp.messagingengine.com ([66.111.4.229]:48103 "EHLO
+        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725837AbgKFEPQ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 5 Nov 2020 23:15:16 -0500
 Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 6474258054D;
-        Thu,  5 Nov 2020 23:15:16 -0500 (EST)
+        by mailnew.nyi.internal (Postfix) with ESMTP id 4AD0558054B;
+        Thu,  5 Nov 2020 23:15:15 -0500 (EST)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Thu, 05 Nov 2020 23:15:16 -0500
+  by compute5.internal (MEProxy); Thu, 05 Nov 2020 23:15:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sholland.org; h=
         from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=fm1; bh=LPrGREj8LnC7H
-        4kT27R+89/vsU1CuTFnKI4ITrAeHRM=; b=L4PBzOvYizZM8pY68bEa7Mb+pVhy6
-        WGH8jt33WtBDSU1lOCf6pTGzXml2Xz9VZaouoe1vX9kvW4NM8U5ZufMQ5UubdYya
-        gvyFsbzMsZJajlr24frzHvFJqLh9j+N2m9VrdwXuWx0LZsBmzo0wqZUspIsEr0L2
-        VibWp8RJN3FY3LKMcww3HyetlEPpGrxzncWZniPFzamfbAid6NwLSHNqnA8+p47g
-        qL5k4D3v9f8SWKCrX8JcAaP57coqxGFLe2Of6G4bbL2Z2OwTQOqV0fs1r7sTpfBf
-        5GxeIsaD/17NbJ4lUmPuxgTT8Jx54fccEuBW2Uxpewu8fFNtrQxS8/ryQ==
+        :mime-version:content-transfer-encoding; s=fm1; bh=fM+mBIXLYcK3O
+        mS1n9AWddTUKsKTi5ZEVIA4pgh+LXo=; b=qP3Y7zh0nuyqmDe2Zmj0O2CARqUzr
+        b5necBApgGlt3XJEx8sOppxkmVH6WHv9YKvcFx72IMoF4xXX9MjhB2dSD5eyOPrC
+        91urB2kA9sMtBhmI1WbiaAYeWzr2gBBXDenjS3+kh79Vvx8WB48yvoSGUokT5bVH
+        Nm8RfYYSUjiXXlEFzMlZomCiiOim3vweKWg8TONRzeO+F28/CX1RZwKepwif7B/k
+        DAYzqInnAiOJE0KcsUDDhyXnjNVtli18G3cjZYNxZM3ZOWxt2SGsXjaVA/uqPsBq
+        XFxAyGQRRTVA/lH6/UfwdkHmMSla24T8T9LLqbc18eBN9tIA0M1RZCscQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:content-transfer-encoding:date:from
         :in-reply-to:message-id:mime-version:references:subject:to
         :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm1; bh=LPrGREj8LnC7H4kT27R+89/vsU1CuTFnKI4ITrAeHRM=; b=OJ85DmjV
-        zN8KKXU3KomZCxapK1LKs304mkkFGfblyjBFt3cxHNSXNpcUn+i9oJykm5IIOge5
-        dxOqyAwENCvgipHKwTfbQWAhK0ghbNDZsPxb6o/wT0KMvMDqTwWZ3BhcLxXMxQU0
-        MC1nn0VPlrzGtncWUzhRIPTSpWPMXBoWTcvPyPA1nFCScGIqBVcIg2F10J4Tq7Hp
-        c2IVMHb9XrFID5wguKEOTuzxCb+ov35VlXRbie7Px2GPZ4k6eOLz4Eg5fRYQZnvX
-        fT9/wQNMPePSlVmoxlkcP95FncpEyIwBhU9aLQeCwx3bCcNRVoGtGFE0d7FEd9e1
-        3QAHsS6AVRuQqA==
-X-ME-Sender: <xms:1M2kX4Zcwgm42ZGuw8pqfLg_GytHF8Q0jTemh_HJRWQ6Rfk8zpDUNA>
-    <xme:1M2kXzblX44RBnKio72B1HEm3zkNYmTcLh0h5-mMS0EW18CsEgrTmNDEXT_eq3yFU
-    lwGSoRCifvlP5x1Zg>
+        fm1; bh=fM+mBIXLYcK3OmS1n9AWddTUKsKTi5ZEVIA4pgh+LXo=; b=L6eMSLRs
+        wgjhVdUGJjWzbu1S/k0P+OasGaua9Rg7Vmww0ZnmML7PT3aJg6KcccEb90rpCWky
+        z/fa/AQW4snqs10I4CUVYQt8TKmCe1sFaA2U3cYAytIWfsBjXSnpz/o/Yf/jWV9j
+        5HncSId2x5BK0L/ROvME9hQqBF5gDF2k9N5Inf0sErRepkqLW0GKeM++/7HTk93j
+        6cVllQwl1eMHNNuXOFDow2ajRiXvW/N+JofygYt9ZllvWat5oxKsW9JlDoaVtKNu
+        e46MonYQN+kdbDtxafoCWrgUWqcDlLZaW9rnHbxpluW8ChDSd2+BX1PE+Eyxua5X
+        jb2/7CdTRkbAJg==
+X-ME-Sender: <xms:0s2kX5VE5Our2X_bgrzvAu4m8yxvMweaWLiXr_TUtmR0Lte2mJh4_Q>
+    <xme:0s2kX5ktIT3Mnd4cwnio9Yf3kL2MdLUvkUdvHapGESjr_rcnTQUq_be6HScVzkipR
+    aVolwi5DWDg0mXvUQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedruddtkedgjedtucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
@@ -57,13 +57,13 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedruddtkedgjedtucetufdoteggod
     gfejheeuieenucfkphepjedtrddufeehrddugeekrdduhedunecuvehluhhsthgvrhfuih
     iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepshgrmhhuvghlsehshhholhhlrghn
     ugdrohhrgh
-X-ME-Proxy: <xmx:1M2kXy9069_7WN3DkcOkqTG-5JteHVeQk685WrWMr9w2Np4FkNN-Nw>
-    <xmx:1M2kXyoe2gOUBOlxLXULMQzQvi-B4nIsPijrkzhjg_0WTZoYDk33og>
-    <xmx:1M2kXzpY9BFGV4KPJAVASa7o4_E0nHLdhJaXVKpOQ327q4uNKiirEw>
-    <xmx:1M2kX20duzaBUtR9zT6fl94OVq5c5fItlzotqzSTgjMYKZCE2ZdYfA>
+X-ME-Proxy: <xmx:0s2kX1Y4hITkQLECWWP4VitUCx0NeUxTRzyPes9u4H0uOWPNgVo0JQ>
+    <xmx:0s2kX8WsFP9waegg5_yVvcJJnmFMUjD6NEmSPnzfGfTnELlDJq_EOA>
+    <xmx:0s2kXzlS5oZDZZ538XMargNqpCpIWwsDIjS8RILFhuDNOuuB93b6IQ>
+    <xmx:082kX8iI8jM7-yVPGVLbJS5AuiR3fhjWC7IkW2ZeJMmAVq_WWZx1uA>
 Received: from titanium.stl.sholland.net (70-135-148-151.lightspeed.stlsmo.sbcglobal.net [70.135.148.151])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 9CBC03060057;
-        Thu,  5 Nov 2020 23:15:15 -0500 (EST)
+        by mail.messagingengine.com (Postfix) with ESMTPA id 21F333060060;
+        Thu,  5 Nov 2020 23:15:14 -0500 (EST)
 From:   Samuel Holland <samuel@sholland.org>
 To:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
         Jernej Skrabec <jernej.skrabec@siol.net>,
@@ -73,9 +73,9 @@ To:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
 Cc:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org, Samuel Holland <samuel@sholland.org>
-Subject: [PATCH 4/7] arm64: dts: allwinner: a64: Add pinmux nodes for AIF2/AIF3
-Date:   Thu,  5 Nov 2020 22:15:10 -0600
-Message-Id: <20201106041513.38481-5-samuel@sholland.org>
+Subject: [PATCH 1/7] ASoC: dt-bindings: sun8i-codec: Increase #sound-dai-cells
+Date:   Thu,  5 Nov 2020 22:15:07 -0600
+Message-Id: <20201106041513.38481-2-samuel@sholland.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20201106041513.38481-1-samuel@sholland.org>
 References: <20201106041513.38481-1-samuel@sholland.org>
@@ -85,37 +85,30 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Now that the sun8i-codec driver supports AIF2 and AIF3, boards can use
-them in DAI links. Add the necessary pinmux nodes.
+Increase sound-dai-cells to 1 to allow using the DAIs in the codec
+corresponding to AIF2 and AIF3.
+
+The generic ASoC OF code supports a #sound-dai-cells value of 0 or 1
+with no impact to the driver, so this is a backward-compatible change.
 
 Signed-off-by: Samuel Holland <samuel@sholland.org>
 ---
- arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ .../devicetree/bindings/sound/allwinner,sun8i-a33-codec.yaml    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-index b70596c06c4f..97334e25ddd3 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-@@ -654,6 +654,18 @@ pio: pinctrl@1c20800 {
- 			interrupt-controller;
- 			#interrupt-cells = <3>;
+diff --git a/Documentation/devicetree/bindings/sound/allwinner,sun8i-a33-codec.yaml b/Documentation/devicetree/bindings/sound/allwinner,sun8i-a33-codec.yaml
+index 67405e6d8168..1a2590f54b9b 100644
+--- a/Documentation/devicetree/bindings/sound/allwinner,sun8i-a33-codec.yaml
++++ b/Documentation/devicetree/bindings/sound/allwinner,sun8i-a33-codec.yaml
+@@ -12,7 +12,7 @@ maintainers:
  
-+			/omit-if-no-ref/
-+			aif2_pins: aif2-pins {
-+				pins = "PB4", "PB5", "PB6", "PB7";
-+				function = "aif2";
-+			};
-+
-+			/omit-if-no-ref/
-+			aif3_pins: aif3-pins {
-+				pins = "PG10", "PG11", "PG12", "PG13";
-+				function = "aif3";
-+			};
-+
- 			csi_pins: csi-pins {
- 				pins = "PE0", "PE2", "PE3", "PE4", "PE5", "PE6",
- 				       "PE7", "PE8", "PE9", "PE10", "PE11";
+ properties:
+   "#sound-dai-cells":
+-    const: 0
++    const: 1
+ 
+   compatible:
+     oneOf:
 -- 
 2.26.2
 
