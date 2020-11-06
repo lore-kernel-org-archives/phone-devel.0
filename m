@@ -2,119 +2,132 @@ Return-Path: <SRS0=kqbb=EM=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72EF5C55ABD
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Nov 2020 04:18:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84C32C2D0A3
+	for <phone-devel@archiver.kernel.org>; Fri,  6 Nov 2020 04:28:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1A3DD206E3
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Nov 2020 04:18:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1EDCB20724
+	for <phone-devel@archiver.kernel.org>; Fri,  6 Nov 2020 04:28:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726239AbgKFEPl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 5 Nov 2020 23:15:41 -0500
-Received: from new3-smtp.messagingengine.com ([66.111.4.229]:60055 "EHLO
-        new3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726001AbgKFEPR (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 5 Nov 2020 23:15:17 -0500
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailnew.nyi.internal (Postfix) with ESMTP id DD721580518;
-        Thu,  5 Nov 2020 23:15:15 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Thu, 05 Nov 2020 23:15:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sholland.org; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding; s=fm1; bh=HjPRAtmWDHpsB
-        ofnlqe6mFYpt2u4m3UE5sd2bFJ0WRM=; b=e2SH2GrMmX2wf3rPvikRLJ52mcVo1
-        XmIYCIfbR3VluFuOOb4IR4gD7dXTAMdz3A9iaSrU+NVwYmjp9ZDh4gCnumnqjGNZ
-        AVE4Pt0kJQuZnKs4iX42j2MClXhzimIpRoVcWOsTVLaJjr33hmn8cZdaAZihq9Db
-        xKGs6yPkWw2a1hnEE5mEsY0l2VhNFlGuAGt/unmvMLdVEoHQOubYFJjXDy645c3Q
-        lfIA4+rKJlRhSHw5QywGybQggyxEfw80vBUMHaeJ2AclviSmQ2pLk2bFNBCxtFZG
-        u2Ile7bPPBfOda5/IgytA/bOrItLl1FM/4wXEH5JXpTcvWlJxxQ3rlFcg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:date:from
-        :in-reply-to:message-id:mime-version:references:subject:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm1; bh=HjPRAtmWDHpsBofnlqe6mFYpt2u4m3UE5sd2bFJ0WRM=; b=UYbbbBWk
-        cd0XnNAR3UdUR7aW7NfzI7JUuxvArRX+QsSgYDml9b02oq7+/SpZeSG5h7ZvbTJw
-        xdCOqxxzxz/j9q4HToLNJAU/575ZpaT9gnAT01u/97HZdHlVdmaEl9S42rxmfm1J
-        oAhz3HXGDvM104xo9uwnTexD3yU1aFwnlb6uHgcjJzsdE+qsgtpLm80wLQVPLlVW
-        xZ/Zloo2oHTSawgSecWYIogSjGWtZ3CZy6XeOW8A7G5avQs2XsAx93U3210BPgi5
-        +KjTi24TRl+iS4Zmhs39QEN59DQnEPGG8WTbuzWzL+upouO6AN8AKvpHs3Hmq1jB
-        s0axFguMuDXPPA==
-X-ME-Sender: <xms:082kX49-UKwZc8QvAmRNhtJz4bvp9pqP0KwoaMmBoOqQ7Pw1lWshOw>
-    <xme:082kXwt5xKWHhqR2Kv4gS7lU8gKGoUrPCuxEJdvflUUbPOcZfqcbk6lZCyZYLH30f
-    x5Auia31d3QjxtSmA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedruddtkedgjedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhephffvufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefurghmuhgv
-    lhcujfholhhlrghnugcuoehsrghmuhgvlhesshhhohhllhgrnhgurdhorhhgqeenucggtf
-    frrghtthgvrhhnpeduhfejfedvhffgfeehtefghfeiiefgfeehgfdvvdevfeegjeehjedv
-    gfejheeuieenucfkphepjedtrddufeehrddugeekrdduhedunecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepshgrmhhuvghlsehshhholhhlrghn
-    ugdrohhrgh
-X-ME-Proxy: <xmx:082kX-DD6zBd2x4E8aKr-LeO_paPnD9fjvUhum6hFzfYm2rYBHWsZw>
-    <xmx:082kX4cSwb257mhJxFF2nS7bq91jJXl9vNUkiBlv3R1PkGIc_zYGoA>
-    <xmx:082kX9PxkaTdGqVzakvMGbpvFtlHO5Eu_Bx0lSN_faeNezclk6WICw>
-    <xmx:082kXwrja9JmCygt17FK8RoykY1Vh1RMaYKl5fcgNVVx0xLQ3esNWg>
-Received: from titanium.stl.sholland.net (70-135-148-151.lightspeed.stlsmo.sbcglobal.net [70.135.148.151])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 22E3E3060064;
-        Thu,  5 Nov 2020 23:15:15 -0500 (EST)
-From:   Samuel Holland <samuel@sholland.org>
-To:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        id S1726103AbgKFE2U (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 5 Nov 2020 23:28:20 -0500
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:44551 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725925AbgKFE2T (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 5 Nov 2020 23:28:19 -0500
+Received: by mail-lf1-f67.google.com with SMTP id b1so42135lfp.11;
+        Thu, 05 Nov 2020 20:28:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CERvrJlC+TQNJo6snGdkL35sMbOGXywHtBhjsrxgyFA=;
+        b=QXzy6gYnp8SsTb3RwR2/5rEpwbZJFZfuzIsvfSv+BELjkTFy4NAMtD1n2f2USs1RhV
+         bAbYI33bgSyVNznCsOpaHWy/1R02ey0WfOX/NOK6CwHAq2JnQk2tpmBwjY2hkCO7fcHm
+         tsWPFsFjMwdWQ8jFjLwyZTnGGaUa2z0+48pJqTbecLbOSaeU90gRSXoPw5APPJ+s7Rpb
+         o2xewZABbFi8G59HzwlTUOwqNrV+xleksTqzBx4JCu6PReC0mEeG7WmDOYczmvqgKSrz
+         SYlDLcNiVs8pcfwxdj2Za/aPgGDQ8qrJJFFMt9pRPZJp3Tnwahspm9kqPBsbhPw57J1b
+         YzGQ==
+X-Gm-Message-State: AOAM53378JxtOMYD9x0BGIQUsuBtrfM7PRsFYABQU4CAWksjlP3hBCUL
+        qlzeMlvFG1S3KTHIFbpp6JfwbWpM6EmuCQ==
+X-Google-Smtp-Source: ABdhPJwIIOwFvUSCFxqAVlkLt1XAFT7Jv9Bcvx3EtbcqPbmS5i9LBwfXla4d+nq9ZHqu7HX/XsVGRA==
+X-Received: by 2002:ac2:4aca:: with SMTP id m10mr118271lfp.26.1604636896891;
+        Thu, 05 Nov 2020 20:28:16 -0800 (PST)
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com. [209.85.208.173])
+        by smtp.gmail.com with ESMTPSA id l6sm16661lfc.8.2020.11.05.20.28.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Nov 2020 20:28:16 -0800 (PST)
+Received: by mail-lj1-f173.google.com with SMTP id m16so9630ljo.6;
+        Thu, 05 Nov 2020 20:28:16 -0800 (PST)
+X-Received: by 2002:a2e:9243:: with SMTP id v3mr48234ljg.47.1604636895947;
+ Thu, 05 Nov 2020 20:28:15 -0800 (PST)
+MIME-Version: 1.0
+References: <20201106041513.38481-1-samuel@sholland.org>
+In-Reply-To: <20201106041513.38481-1-samuel@sholland.org>
+From:   Chen-Yu Tsai <wens@csie.org>
+Date:   Fri, 6 Nov 2020 12:28:04 +0800
+X-Gmail-Original-Message-ID: <CAGb2v67c-ywkh_s77f4sm3fmL9DuxeYMrAJAgp=_jKHBd6GdHA@mail.gmail.com>
+Message-ID: <CAGb2v67c-ywkh_s77f4sm3fmL9DuxeYMrAJAgp=_jKHBd6GdHA@mail.gmail.com>
+Subject: Re: [PATCH 0/7] PinePhone BT audio bringup
+To:     Samuel Holland <samuel@sholland.org>
+Cc:     Maxime Ripard <mripard@kernel.org>,
         Jernej Skrabec <jernej.skrabec@siol.net>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, Samuel Holland <samuel@sholland.org>
-Subject: [PATCH 3/7] arm64: dts: allwinner: a64: Allow using multiple codec DAIs
-Date:   Thu,  5 Nov 2020 22:15:09 -0600
-Message-Id: <20201106041513.38481-4-samuel@sholland.org>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201106041513.38481-1-samuel@sholland.org>
-References: <20201106041513.38481-1-samuel@sholland.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Rob Herring <robh+dt@kernel.org>,
+        Linux-ALSA <alsa-devel@alsa-project.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Increase #sound-dai-cells on the digital codec to allow using the other
-DAIs provided by the codec for AIF2 and AIF3.
+Hi,
 
-Signed-off-by: Samuel Holland <samuel@sholland.org>
----
- arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Fri, Nov 6, 2020 at 12:15 PM Samuel Holland <samuel@sholland.org> wrote:
+>
+> This series makes use of the additional DAIs recently added to the
+> sun8i-codec driver to add hardware routing for BT SCO (headset) audio
+> on the PinePhone.
+>
+> The BT audio connection is represented by the "dummy" bt-sco codec. The
+> connection to the Quectel EG-25G modem via AIF2 works as well, but I do
+> not include it here because there is no appropriate codec driver in
+> tree. We have been using an out-of-tree "dummy" codec driver similar to
+> bt-sco, and I'm not sure if such a driver would be desired upstream.
+>
+> The modem has a similar amount of configurability as the rtl8723cs BT
+> chip. For the BT chip, the DAI format and PCM parameters are set in a
+> configuration firmware file and loaded at driver load time. For the
+> modem, the DAI format and PCM parameters are set by (and can be queried
+> from) an AT command. However, this AT command requires a modem restart
+> to take effect, so the parameters cannot feasibly be changed at runtime.
+>
+> With a dummy driver, we pick some "standard" set of PCM parameters, e.g.
+> 16 bit mono at 8 or 16 kHz, and assume the hardware agrees. Similarly,
+> we assume the DAI format pre-programmed in the remote hardware matches
+> what is configured in the DAI link (in this case, in the device tree).
+>
+> Is that the right way to model this? Or does the modem (and maybe even
+> the BT chip) deserve a more featureful driver that reads and/or programs
+> the format and params at probe time?
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-index dc238814013c..b70596c06c4f 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-@@ -150,7 +150,7 @@ cpudai: simple-audio-card,cpu {
- 		};
- 
- 		link_codec: simple-audio-card,codec {
--			sound-dai = <&codec>;
-+			sound-dai = <&codec 0>;
- 		};
- 	};
- 
-@@ -860,7 +860,7 @@ dai: dai@1c22c00 {
- 		};
- 
- 		codec: codec@1c22e00 {
--			#sound-dai-cells = <0>;
-+			#sound-dai-cells = <1>;
- 			compatible = "allwinner,sun50i-a64-codec",
- 				     "allwinner,sun8i-a33-codec";
- 			reg = <0x01c22e00 0x600>;
--- 
-2.26.2
+FYI there's a "Bluetooth: Allow to use configure SCO socket codec parameters"
+thread on the bluetooth mailing list which is still unresolved AFAICT.
 
+You might want to take a look at it.
+
+ChenYu
+
+> Because of those unanswered questions, I'm sending BT SCO support
+> first/only.
+>
+> Regards,
+> Samuel
+>
+> Arnaud Ferraris (1):
+>   arm64: dts: allwinner: pinephone: Set audio card name
+>
+> Samuel Holland (6):
+>   ASoC: dt-bindings: sun8i-codec: Increase #sound-dai-cells
+>   ARM: dts: sun8i-a33: Allow using multiple codec DAIs
+>   arm64: dts: allwinner: a64: Allow using multiple codec DAIs
+>   arm64: dts: allwinner: a64: Add pinmux nodes for AIF2/AIF3
+>   arm64: dts: allwinner: a64: Allow multiple DAI links
+>   arm64: dts: allwinner: pinephone: Add support for Bluetooth audio
+>
+>  .../sound/allwinner,sun8i-a33-codec.yaml      |  2 +-
+>  arch/arm/boot/dts/sun8i-a33.dtsi              |  4 +-
+>  .../dts/allwinner/sun50i-a64-pinephone.dtsi   | 25 +++++++++++++
+>  arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi | 37 ++++++++++++++-----
+>  4 files changed, 55 insertions(+), 13 deletions(-)
+>
+> --
+> 2.26.2
+>
