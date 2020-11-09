@@ -1,112 +1,127 @@
-Return-Path: <SRS0=kqbb=EM=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <SRS0=hDgD=EP=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98E8AC4741F
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Nov 2020 16:15:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 13D7EC2D0A3
+	for <phone-devel@archiver.kernel.org>; Mon,  9 Nov 2020 09:36:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 422E222202
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Nov 2020 16:15:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1604679345;
-	bh=tEoiuLbNsHKQItaIYzqe9jxuzG62kVQlNP8jI5wChAo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=mPVE35rRmaUQUoburti8KqhIly/qGzub4xxZJ4qDjn8qJyMiHY+TxjifG8ZSoK3QH
-	 sSKfLY8A0q9/yC3rgmHrkwEPxG6NRiYC/dBrLOXmz/1V4q8Cah7iSAuQtsu5w4QcyM
-	 9xZLpAOQ7sCGDJqrWG9/GEoQ85MeRBAKvAKD7gp0=
+	by mail.kernel.org (Postfix) with ESMTP id 94F442084C
+	for <phone-devel@archiver.kernel.org>; Mon,  9 Nov 2020 09:36:41 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="h92gxcIK"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726702AbgKFQPm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 6 Nov 2020 11:15:42 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:42515 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725868AbgKFQPm (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 6 Nov 2020 11:15:42 -0500
-Received: by mail-oi1-f195.google.com with SMTP id w145so1836025oie.9;
-        Fri, 06 Nov 2020 08:15:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=JKTC9t6U56PdRSRllEeWLwbdLXcSPIAe13lQUZ7E930=;
-        b=h0l/rECBx07Qu9q3Ucm2HMr4e6uC3PsP23sbW+kXJT8H2gh1R9TiDBPb5xJ5f+E012
-         XLarOFE3UQYA31ec7l6ABq88iI3VHn675ILRz5rbn0wtfABAPTn6CTDeWcxnnbmBic1u
-         wtu0i3QMRP8cAFju0JR41hKfGdQBkc0Ox/fdM5TqRuIfmTqtctevVYl6ySfy75fp50+M
-         Qz7hCSsLSYsx9jf66BmDvrqo0MTHaUcWoRR8JhMCvtfGUUM5TBKh/Cfc27u0gHW3M3Oj
-         0wvklJ8fGpbzZbjzXDSOC7J+FrCkmFD0bMFMOPcplHPU2KvhdE5/NbCVasln5qBxgLoA
-         XiJQ==
-X-Gm-Message-State: AOAM5335Zgd+Ws+t2QzHjlqFAhBuun+VhTQkji/IsnihPyyCxYJL7l6F
-        Rdta4ZhULoIlwWuY7tOlMg==
-X-Google-Smtp-Source: ABdhPJyrNJ22bUa+bEB3u2wV8J2lLCG70ySvIv54k7b/vpLloNjlu10MYF+8PMmPZQweX552ICB7lg==
-X-Received: by 2002:aca:4454:: with SMTP id r81mr1481777oia.43.1604679341288;
-        Fri, 06 Nov 2020 08:15:41 -0800 (PST)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id u16sm402311ooj.8.2020.11.06.08.15.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2020 08:15:40 -0800 (PST)
-Received: (nullmailer pid 3296044 invoked by uid 1000);
-        Fri, 06 Nov 2020 16:15:39 -0000
-Date:   Fri, 6 Nov 2020 10:15:39 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Samuel Holland <samuel@sholland.org>
-Cc:     linux-arm-kernel@lists.infradead.org, Chen-Yu Tsai <wens@csie.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH 1/7] ASoC: dt-bindings: sun8i-codec: Increase
- #sound-dai-cells
-Message-ID: <20201106161539.GA3295779@bogus>
-References: <20201106041513.38481-1-samuel@sholland.org>
- <20201106041513.38481-2-samuel@sholland.org>
+        id S1726535AbgKIJgl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 9 Nov 2020 04:36:41 -0500
+Received: from z5.mailgun.us ([104.130.96.5]:52907 "EHLO z5.mailgun.us"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725854AbgKIJgl (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 9 Nov 2020 04:36:41 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1604914600; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=NUG+xe2aYnHYm1NJnJvLO3G8nDtGuTSPGCrIjMUoJg4=;
+ b=h92gxcIKZpvk04cPZECsxiRolv45l/5trU/z4kXnpqJN7TshMn9fTeGRItkP1CxCHdIqB+c8
+ GyyAp7zAEbbV5DKAmpb1CD0R8V8NntngtV1AKPg86E+b+m1XaQTfySriVxMdWuRJywUOs0j/
+ /zx5GR4Wr4CWcdemXbMihlOoUcA=
+X-Mailgun-Sending-Ip: 104.130.96.5
+X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 5fa90da4dd52edb7344d1385 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 09 Nov 2020 09:36:36
+ GMT
+Sender: saiprakash.ranjan=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 693EBC433FF; Mon,  9 Nov 2020 09:36:36 +0000 (UTC)
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: saiprakash.ranjan)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2CE19C433C6;
+        Mon,  9 Nov 2020 09:36:35 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201106041513.38481-2-samuel@sholland.org>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 09 Nov 2020 15:06:35 +0530
+From:   Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
+To:     Marc Zyngier <maz@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Rob Herring <robh@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Steven Price <steven.price@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Andrew Scull <ascull@google.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Amit Daniel Kachhap <amit.kachhap@arm.com>,
+        Ionela Voinescu <ionela.voinescu@arm.com>,
+        Kristina Martsenko <kristina.martsenko@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] arm64: cpu_errata: Apply Erratum 845719 to KRYO2XX
+ Silver
+In-Reply-To: <3faa81d537320dfb20bb3f882cfaea1b@kernel.org>
+References: <20201104232218.198800-1-konrad.dybcio@somainline.org>
+ <20201104232218.198800-5-konrad.dybcio@somainline.org>
+ <3faa81d537320dfb20bb3f882cfaea1b@kernel.org>
+Message-ID: <8771f66911522ab87fe1b9b16e4e9921@codeaurora.org>
+X-Sender: saiprakash.ranjan@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 05 Nov 2020 22:15:07 -0600, Samuel Holland wrote:
-> Increase sound-dai-cells to 1 to allow using the DAIs in the codec
-> corresponding to AIF2 and AIF3.
+Hi Marc,
+
+On 2020-11-05 14:59, Marc Zyngier wrote:
+> On 2020-11-04 23:22, Konrad Dybcio wrote:
+>> QCOM KRYO2XX Silver cores are Cortex-A53 based and are
+>> susceptible to the 845719 erratum. Add them to the lookup
+>> list to apply the erratum.
+>> 
+>> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+>> ---
+>>  arch/arm64/kernel/cpu_errata.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>> 
+>> diff --git a/arch/arm64/kernel/cpu_errata.c 
+>> b/arch/arm64/kernel/cpu_errata.c
+>> index 61314fd70f13..cafaf0da05b7 100644
+>> --- a/arch/arm64/kernel/cpu_errata.c
+>> +++ b/arch/arm64/kernel/cpu_errata.c
+>> @@ -299,6 +299,8 @@ static const struct midr_range 
+>> erratum_845719_list[] = {
+>>  	MIDR_REV_RANGE(MIDR_CORTEX_A53, 0, 0, 4),
+>>  	/* Brahma-B53 r0p[0] */
+>>  	MIDR_REV(MIDR_BRAHMA_B53, 0, 0),
+>> +	/* Kryo2XX Silver rAp4 */
+>> +	MIDR_REV(MIDR_QCOM_KRYO_2XX_SILVER, 0xa, 0x4),
 > 
-> The generic ASoC OF code supports a #sound-dai-cells value of 0 or 1
-> with no impact to the driver, so this is a backward-compatible change.
-> 
-> Signed-off-by: Samuel Holland <samuel@sholland.org>
-> ---
->  .../devicetree/bindings/sound/allwinner,sun8i-a33-codec.yaml    | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Is this the only affected version? If this is actually an A53, how do 
+> the
+> revisions map between Kryo and Cortex cores?
 > 
 
+ From what I see from the docs, this is the only version used
+in MSM8998(silver cores are based on Cortex A53) and it maps
+to r0p4. @Konrad, can you include (rap4 => r0p4) in comment.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Thanks,
+Sai
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/sound/allwinner,sun8i-a33-codec.example.dt.yaml: audio-codec@1c22e00: #sound-dai-cells:0:0: 1 was expected
-	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/sound/allwinner,sun8i-a33-codec.yaml
-
-
-See https://patchwork.ozlabs.org/patch/1395481
-
-The base for the patch is generally the last rc1. Any dependencies
-should be noted.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+-- 
+QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a 
+member
+of Code Aurora Forum, hosted by The Linux Foundation
