@@ -6,59 +6,60 @@ X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
 	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07904C388F7
-	for <phone-devel@archiver.kernel.org>; Tue, 10 Nov 2020 05:56:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DFD2C5517A
+	for <phone-devel@archiver.kernel.org>; Tue, 10 Nov 2020 07:03:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8099620795
-	for <phone-devel@archiver.kernel.org>; Tue, 10 Nov 2020 05:56:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 31E6C2068D
+	for <phone-devel@archiver.kernel.org>; Tue, 10 Nov 2020 07:03:06 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="r/Vf30xn"
+	dkim=pass (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="fkruV/Xb"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728085AbgKJF4P (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 10 Nov 2020 00:56:15 -0500
-Received: from z5.mailgun.us ([104.130.96.5]:48042 "EHLO z5.mailgun.us"
+        id S1727013AbgKJHDD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 10 Nov 2020 02:03:03 -0500
+Received: from m42-4.mailgun.net ([69.72.42.4]:24566 "EHLO m42-4.mailgun.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727089AbgKJF4O (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 10 Nov 2020 00:56:14 -0500
+        id S1726006AbgKJHDD (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 10 Nov 2020 02:03:03 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604987774; h=Message-ID: References: In-Reply-To: Subject:
+ s=smtp; t=1604991782; h=Message-ID: References: In-Reply-To: Subject:
  Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=FKAuo/Zq2exToLBX9+VpGGEXEAgv5nXZIwk88hvnnlI=;
- b=r/Vf30xnu7k1oEmxatrYkrvLlLv/w63kCnyYIZ8aKNl8Afw24SlP4aiAn50YnKycNtKXkXN0
- a8zJAnQKSNexo2X/3NsKpbCl6IrazSKeyFqSD9kQ8ucw5vaQHDRBw1SNED75yIx3RUytkj1A
- F7NU2wlwyq7Bpz2up3X9SikoZVk=
-X-Mailgun-Sending-Ip: 104.130.96.5
+ MIME-Version: Sender; bh=m04j0QpJO9qcRWC3HxEWNEPuhJSjvuC1ax5Nw9puc4I=;
+ b=fkruV/Xbps3aAoB7mhjZM8Bzc9jIj/yPGpHd1aBZeEPhAXsr3SBJ/Bw6HMWRWTxXuHBy4GKC
+ jx0pGnVEb6jbpNsTtQcJVs9BiNexMmpfK2VtcjcOSzm6vUVlNYS3a6KjTvsz+Dg7Gck0qDVE
+ WxK8Ohh+nykMz2ukpUnLi+A5pyA=
+X-Mailgun-Sending-Ip: 69.72.42.4
 X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-west-2.postgun.com with SMTP id
- 5faa2b7460d947565289b04b (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 10 Nov 2020 05:56:04
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 5faa3a7ef8c560b580952187 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 10 Nov 2020 07:00:14
  GMT
 Sender: saiprakash.ranjan=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 358E4C433C9; Tue, 10 Nov 2020 05:56:04 +0000 (UTC)
+        id 0C04FC433FE; Tue, 10 Nov 2020 07:00:14 +0000 (UTC)
 Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
         (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: saiprakash.ranjan)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 84F08C433C6;
-        Tue, 10 Nov 2020 05:56:02 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C8AD4C433C9;
+        Tue, 10 Nov 2020 07:00:11 +0000 (UTC)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
-Date:   Tue, 10 Nov 2020 11:26:02 +0530
+Date:   Tue, 10 Nov 2020 12:30:11 +0530
 From:   Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     Marc Zyngier <maz@kernel.org>, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+To:     Will Deacon <will@kernel.org>
+Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Jeffrey Hugo <jhugo@codeaurora.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        martin.botka@somainline.org,
         angelogioacchino.delregno@somainline.org,
         marijn.suijten@somainline.org,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
         Stephen Boyd <swboyd@chromium.org>,
-        Rob Herring <robh@kernel.org>,
+        Rob Herring <robh@kernel.org>, Marc Zyngier <maz@kernel.org>,
         Suzuki K Poulose <suzuki.poulose@arm.com>,
         Steven Price <steven.price@arm.com>,
         Mark Brown <broonie@kernel.org>,
@@ -68,36 +69,42 @@ Cc:     Marc Zyngier <maz@kernel.org>, phone-devel@vger.kernel.org,
         Ionela Voinescu <ionela.voinescu@arm.com>,
         Kristina Martsenko <kristina.martsenko@arm.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] arm64: cpu_errata: Apply Erratum 845719 to KRYO2XX
- Silver
-In-Reply-To: <0b09111d-f5cc-226b-bbc5-0277d6b597cd@somainline.org>
+Subject: Re: [PATCH 0/4] Add KRYO2XX Errata / mitigations data
+In-Reply-To: <20201105093349.GA7902@willie-the-truck>
 References: <20201104232218.198800-1-konrad.dybcio@somainline.org>
- <20201104232218.198800-5-konrad.dybcio@somainline.org>
- <3faa81d537320dfb20bb3f882cfaea1b@kernel.org>
- <8771f66911522ab87fe1b9b16e4e9921@codeaurora.org>
- <0b09111d-f5cc-226b-bbc5-0277d6b597cd@somainline.org>
-Message-ID: <17837d78a921161dd73a92ec28437763@codeaurora.org>
+ <20201105093349.GA7902@willie-the-truck>
+Message-ID: <f21f5a133f129c7f49ab780e3ef60325@codeaurora.org>
 X-Sender: saiprakash.ranjan@codeaurora.org
 User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
+On 2020-11-05 15:03, Will Deacon wrote:
+> Hi Konrad,
+> 
+> [+Jeffrey]
+> 
+> On Thu, Nov 05, 2020 at 12:22:09AM +0100, Konrad Dybcio wrote:
+>> This series adds Spectre mitigations and errata data for
+>> Qualcomm KRYO2XX Gold (big) and Silver (LITTLE) series of
+>> CPU cores, used for example in MSM8998 and SDM660-series SoCs.
+>> 
+>> Konrad Dybcio (4):
+>>   arm64: Add MIDR value for KRYO2XX gold/silver CPU cores
+>>   arm64: kpti: Add KRYO2XX gold/silver CPU cores to kpti safelist
+>>   arm64: proton-pack: Add KRYO2XX silver CPUs to spectre-v2 safe-list
+>>   arm64: cpu_errata: Apply Erratum 845719 to KRYO2XX Silver
+> 
+> This mostly looks fine to me, but I've added Jeffrey to check the MIDRs
+> because he's my go-to person for the Qualcomm numbering scheme.
+> 
+> Jeffrey -- please can you check these patches [1], especially the last 
+> patch
+> which has some cryptic revision number in there too?
 
-On 2020-11-10 00:58, Konrad Dybcio wrote:
->> From what I see from the docs, this is the only version used
->> in MSM8998(silver cores are based on Cortex A53) and it maps
->> to r0p4. @Konrad, can you include (rap4 => r0p4) in comment.
-> 
-> 
-> Hi,
-> 
-> Thanks for looking into it. Could you perhaps check if it's also the
-> case on sdm630/636/660?
-> 
-
-Yes I checked with CPU team now and its the same.
+Jeffrey can confirm this, but the MIDR is right and the cryptic revision
+maps to cortex r0p4.
 
 Thanks,
 Sai
