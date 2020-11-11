@@ -2,114 +2,95 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DFD2C5517A
-	for <phone-devel@archiver.kernel.org>; Tue, 10 Nov 2020 07:03:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89DE5C388F9
+	for <phone-devel@archiver.kernel.org>; Wed, 11 Nov 2020 04:56:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 31E6C2068D
-	for <phone-devel@archiver.kernel.org>; Tue, 10 Nov 2020 07:03:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 34E2921D91
+	for <phone-devel@archiver.kernel.org>; Wed, 11 Nov 2020 04:56:34 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="fkruV/Xb"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uBI8CuLz"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727013AbgKJHDD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 10 Nov 2020 02:03:03 -0500
-Received: from m42-4.mailgun.net ([69.72.42.4]:24566 "EHLO m42-4.mailgun.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726006AbgKJHDD (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 10 Nov 2020 02:03:03 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1604991782; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=m04j0QpJO9qcRWC3HxEWNEPuhJSjvuC1ax5Nw9puc4I=;
- b=fkruV/Xbps3aAoB7mhjZM8Bzc9jIj/yPGpHd1aBZeEPhAXsr3SBJ/Bw6HMWRWTxXuHBy4GKC
- jx0pGnVEb6jbpNsTtQcJVs9BiNexMmpfK2VtcjcOSzm6vUVlNYS3a6KjTvsz+Dg7Gck0qDVE
- WxK8Ohh+nykMz2ukpUnLi+A5pyA=
-X-Mailgun-Sending-Ip: 69.72.42.4
-X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
- 5faa3a7ef8c560b580952187 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 10 Nov 2020 07:00:14
- GMT
-Sender: saiprakash.ranjan=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 0C04FC433FE; Tue, 10 Nov 2020 07:00:14 +0000 (UTC)
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: saiprakash.ranjan)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C8AD4C433C9;
-        Tue, 10 Nov 2020 07:00:11 +0000 (UTC)
+        id S1725945AbgKKE4c (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 10 Nov 2020 23:56:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54886 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725895AbgKKE4a (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 10 Nov 2020 23:56:30 -0500
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60E03C0613D4
+        for <phone-devel@vger.kernel.org>; Tue, 10 Nov 2020 20:56:30 -0800 (PST)
+Received: by mail-oi1-x242.google.com with SMTP id j7so768121oie.12
+        for <phone-devel@vger.kernel.org>; Tue, 10 Nov 2020 20:56:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=cRAt4batTICDyiJ/8EINRniP/Smx50wMzUnQPTpJLC4=;
+        b=uBI8CuLzxljYP3u+E78DkW3m3Rfy6G2IhHNK/5HfWTn5eePeEUQoBcbrb/e078wTW2
+         6EhoCAzvv7vFr3n/UFqL9dIICXh8IwjE6dOAhzeyHQ68Y0lQHEIq49BU1QL+Z01xXGb0
+         PkhcFdkS+ysJYAWoKi1BLDq8ctgdAGizX6tKYZN0doev6pPWfGEUMEqzhS6Wno4EemL3
+         WGTF/wk1s9/qAHf3+Qnz0Fyg37I64BRCyRWtMp6juIYEg0Y30to+wWRkVfYJ8hYvSIah
+         WqyZKj1VHMW+QaBRHTZSYhhZRS6kIodIDDs/PIby2Fv1P393mKmwGe1ushuTb/bKGPTy
+         omFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=cRAt4batTICDyiJ/8EINRniP/Smx50wMzUnQPTpJLC4=;
+        b=Alz0qoRV3OhNHwxN2de+eObWoPeskZ6h+tNxQpMqlJgW1Elnl3twsgkHFIDLPVHJtA
+         t6S7U0pSYmbuGGhTjj2xIRiBdsaX6N00gjTTx2EcPhDL1bbrtE0LNvELgr9rn6TuQP4C
+         op9CZsX/ivMfpnCweqexBw9woIjG43Gzs8Lb9FWhunDeczeyeHOEJr9hYzDNRFLJMT05
+         3Swx28RXxNBVdnrn/hjSw6pWaP4xuL9LXmB9ZnFDA5Ix0POAI06K6X6O2J/s3amwIECJ
+         KyXKN8o/xEz9gt1SbBv6RXpKWL2/aN+fY41AcoCKZFgZmt0H/Fsa81R9JPXj6WxrDIdy
+         ghbA==
+X-Gm-Message-State: AOAM531v0Zq3QcBsM/t7ub3KW7fAeLNULX3+ppnXWAvmzTYNRLy7rZlJ
+        A8+OHz8NXwSg0LIT5JwNz4M7nw==
+X-Google-Smtp-Source: ABdhPJzWDF0IOu9gSQFJfDqj3LfmtrAjDRSYMXzJ5+OE3Zhn38zbdsFXQi+R41CdnEX4GzqTp4n3sA==
+X-Received: by 2002:aca:c6cb:: with SMTP id w194mr1045129oif.27.1605070589680;
+        Tue, 10 Nov 2020 20:56:29 -0800 (PST)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id y15sm277264otq.79.2020.11.10.20.56.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Nov 2020 20:56:28 -0800 (PST)
+Date:   Tue, 10 Nov 2020 22:56:27 -0600
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Konrad Dybcio <konradybcio@gmail.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 11/11] arm64: dts: qcom: Add support for Microsoft Lumia
+ 950 XL (Cityman)
+Message-ID: <20201111045627.GF173948@builder.lan>
+References: <20201005150313.149754-1-konradybcio@gmail.com>
+ <20201005150313.149754-12-konradybcio@gmail.com>
+ <CAMS8qEV3kFgCZ34GsOSoy19YceF9q=01JazQHknvxnVJg4thcA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 10 Nov 2020 12:30:11 +0530
-From:   Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
-To:     Will Deacon <will@kernel.org>
-Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Jeffrey Hugo <jhugo@codeaurora.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Rob Herring <robh@kernel.org>, Marc Zyngier <maz@kernel.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Steven Price <steven.price@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Andrew Scull <ascull@google.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Amit Daniel Kachhap <amit.kachhap@arm.com>,
-        Ionela Voinescu <ionela.voinescu@arm.com>,
-        Kristina Martsenko <kristina.martsenko@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/4] Add KRYO2XX Errata / mitigations data
-In-Reply-To: <20201105093349.GA7902@willie-the-truck>
-References: <20201104232218.198800-1-konrad.dybcio@somainline.org>
- <20201105093349.GA7902@willie-the-truck>
-Message-ID: <f21f5a133f129c7f49ab780e3ef60325@codeaurora.org>
-X-Sender: saiprakash.ranjan@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMS8qEV3kFgCZ34GsOSoy19YceF9q=01JazQHknvxnVJg4thcA@mail.gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2020-11-05 15:03, Will Deacon wrote:
-> Hi Konrad,
-> 
-> [+Jeffrey]
-> 
-> On Thu, Nov 05, 2020 at 12:22:09AM +0100, Konrad Dybcio wrote:
->> This series adds Spectre mitigations and errata data for
->> Qualcomm KRYO2XX Gold (big) and Silver (LITTLE) series of
->> CPU cores, used for example in MSM8998 and SDM660-series SoCs.
->> 
->> Konrad Dybcio (4):
->>   arm64: Add MIDR value for KRYO2XX gold/silver CPU cores
->>   arm64: kpti: Add KRYO2XX gold/silver CPU cores to kpti safelist
->>   arm64: proton-pack: Add KRYO2XX silver CPUs to spectre-v2 safe-list
->>   arm64: cpu_errata: Apply Erratum 845719 to KRYO2XX Silver
-> 
-> This mostly looks fine to me, but I've added Jeffrey to check the MIDRs
-> because he's my go-to person for the Qualcomm numbering scheme.
-> 
-> Jeffrey -- please can you check these patches [1], especially the last 
-> patch
-> which has some cryptic revision number in there too?
+On Mon 05 Oct 10:14 CDT 2020, Konrad Dybcio wrote:
 
-Jeffrey can confirm this, but the MIDR is right and the cryptic revision
-maps to cortex r0p4.
+> >+dtb-$(CONFIG_ARCH_QCOM)        += msm8994-msft-lumia-cityman.dts
+> 
+> I made a typo and instead of .dtb I wrote .dts here. Could that be
+> fixed when applying so that I don't have to spam you guys with 11 more
+> mails?
+> 
 
-Thanks,
-Sai
+Thanks for letting me know, I fixed this up and applied the series for
+5.11.
 
--- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a 
-member
-of Code Aurora Forum, hosted by The Linux Foundation
+Regards,
+Bjorn
