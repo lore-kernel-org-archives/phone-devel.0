@@ -7,69 +7,68 @@ X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B6BFC56201
-	for <phone-devel@archiver.kernel.org>; Thu, 12 Nov 2020 11:57:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE185C5519F
+	for <phone-devel@archiver.kernel.org>; Thu, 12 Nov 2020 14:29:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 45AC02222A
-	for <phone-devel@archiver.kernel.org>; Thu, 12 Nov 2020 11:57:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 30E792224B
+	for <phone-devel@archiver.kernel.org>; Thu, 12 Nov 2020 14:29:35 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S22X0xD4"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zeYQGaCk"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728224AbgKLL5U (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 12 Nov 2020 06:57:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35474 "EHLO
+        id S1728032AbgKLO3f (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 12 Nov 2020 09:29:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728235AbgKLL4x (ORCPT
+        with ESMTP id S1727035AbgKLO3e (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 12 Nov 2020 06:56:53 -0500
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F996C0613D6
-        for <phone-devel@vger.kernel.org>; Thu, 12 Nov 2020 03:56:52 -0800 (PST)
-Received: by mail-lf1-x142.google.com with SMTP id d17so7942466lfq.10
-        for <phone-devel@vger.kernel.org>; Thu, 12 Nov 2020 03:56:52 -0800 (PST)
+        Thu, 12 Nov 2020 09:29:34 -0500
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54244C0613D1
+        for <phone-devel@vger.kernel.org>; Thu, 12 Nov 2020 06:29:32 -0800 (PST)
+Received: by mail-lf1-x143.google.com with SMTP id f11so8739111lfs.3
+        for <phone-devel@vger.kernel.org>; Thu, 12 Nov 2020 06:29:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=2QnFX94ue+MfUcZEh811vnO774W9JyKEs6qXHdD7T6s=;
-        b=S22X0xD4Oq76x0B/GT0nueMl18VR4qJt2SNmPXKqeWc8UKg6kPL3fyGoaV2LWTK8jx
-         dDTCl2gOYfvv8mwyyEaSvT5FAF20wj2en61DghZjYyglEM55lym3rOXo4DE3zwoLZfhu
-         7kSJuORfsKSYTRGrqEQmfksmos1wCENuuS1rF0Usn+DM0CACglczSL8Xt0eZ5Cavq3Ue
-         8R6JYFVqAAcpthrlwTWVXzo6SPGMEE3E2Uzns7hbHmmfotteVtbssTTq7dADQ9T+ChbO
-         Pp2ZrzNOstE8jv5WZoF8/BBXM/343O21vdBgmPQFPHbg4WdP/q/XqdigwLPf8wXifRo7
-         ZXgQ==
+        bh=m1ZZkgdRolUng3Hq596bCz1VgHevBtnaN/RxMVu/NJ0=;
+        b=zeYQGaCkfRKlST5Cd3yVcDUXNuXEF4DTqo+QLCHAg/89DSinbV7hyWdFPDJtBytcYt
+         5/99vDt51t3uyovHkSEWGXOQBKAN2JDznAZeHObt0Kc0d/gBx52gxkOUQ6ydj+rs6N4P
+         eXeocuPGyAFR0ZuQ5V03ZX0JYg8mFmuJ/AVVKrhgjTyf5VX2chcBt7XYhY6+ng+eOHuI
+         b7uYQmOAxatSIImeao8FWeNCIgziuIbJ750NcuzQgjeo8pJXF17V/VqntQPHNXRKYDdQ
+         1GWJFceZHHkC66smfqN9fgVBpLhRKtUMxpsNNbvItKcjjlV6MZivHs82nKEhd1cFVA/C
+         UCWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=2QnFX94ue+MfUcZEh811vnO774W9JyKEs6qXHdD7T6s=;
-        b=PeiFAbLKbybbc8xIeMC/60OU8TxYTvyBV/bXbxQnIjvwbuhio0aaI20oCevrgxgVjq
-         s/kldskI+mzmps8MMblDCNac8K/GJa5xoC7QqEoSnoTO2xFAa8BGyEtQoDDfyKn3WnMT
-         sJq6gBfqooj7bIms+TT2P5pSlAo6sxlMAHzMcBF8UdIdS4t9F9aM5TGXVYEnbZkV++OY
-         YI/RkdZgUFL6r/RF7X5PU25PXpoaR6eW4SQkbCwOYEWBaT/stJbIfisGcr3ft8DyP6D0
-         LB7B/Hr85VrjKVOFTz3FeglamJV3382N77o3GphAW+xUSK9o4TyveAMYt4YO5zAsHOzY
-         xLNA==
-X-Gm-Message-State: AOAM530jjKz42LS4ONy/nvSlKdHLgCB3Vepqq47EbpKYlJtZjy6j1snb
-        TKOBd2LKmMwvBGRmdYTxQ+b2cw==
-X-Google-Smtp-Source: ABdhPJzF529uyx3/2mb9dv20cuXcbVHoUUik5NdvECpoIC6r6k0i0Xwq9a+wk4XCbTohLgsxglVEUw==
-X-Received: by 2002:a19:be13:: with SMTP id o19mr8527924lff.445.1605182211115;
-        Thu, 12 Nov 2020 03:56:51 -0800 (PST)
+        bh=m1ZZkgdRolUng3Hq596bCz1VgHevBtnaN/RxMVu/NJ0=;
+        b=MiSsWXxFonV6vta4KiBSGq1NGw4cySJF/oTYBcWOIv3xQkMZ/0ZF9B90qkTrc8JzjA
+         jDjfWputkZibyb1c4vG5i2UP/wg8IJbsY2euJ7cBU1pc12ai+cbw6aflKlk0knFXQXGN
+         NYhdldQd2gOkfYzzP0wdSH+iafqJ4BQeAD1lHABtAbgsNcUfJ4UIrJ3LU4S+qwnA5Xc7
+         KdopMJkaDHyd7OcI5EtzjfSdXu3UPfNEJJTkN4YKJ7khVDu0NZHRMhJdfaCQW15rwaM/
+         jqDpJQE1y1AIVS9xY8ekWOqEnM1OeRIBr35JrT/PgV4ttmPzbRn7lVlvgPBNtv1tU3IX
+         TUDA==
+X-Gm-Message-State: AOAM533VSVYP2RlLUNYfGoJjeJYv0XpT34u0NT3sClre4CzVOdTyJWeH
+        Irx2u5sNmSZtB6je7J8Q6BwJQw==
+X-Google-Smtp-Source: ABdhPJwRG5K6waVOySwjA0m/u1JXvBb17oUD05ZeiByjVgs9+dUGDsm+VTMrxbDJpf5k2PXLbsOAXw==
+X-Received: by 2002:a19:7f8e:: with SMTP id a136mr12754104lfd.524.1605191370804;
+        Thu, 12 Nov 2020 06:29:30 -0800 (PST)
 Received: from localhost.bredbandsbolaget (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
-        by smtp.gmail.com with ESMTPSA id v4sm534624lfa.309.2020.11.12.03.56.49
+        by smtp.gmail.com with ESMTPSA id o21sm206956lfg.40.2020.11.12.06.29.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2020 03:56:50 -0800 (PST)
+        Thu, 12 Nov 2020 06:29:30 -0800 (PST)
 From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>
-Cc:     linux-leds@vger.kernel.org,
+To:     dri-devel@lists.freedesktop.org,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>, Sean Paul <sean@poorly.run>
+Cc:     linux-arm-kernel@lists.infradead.org,
         Linus Walleij <linus.walleij@linaro.org>,
-        Sakari Ailus <sakari.ailus@iki.fi>, newbytee@protonmail.com,
         Stephan Gerhold <stephan@gerhold.net>,
-        phone-devel@vger.kernel.org, linux-media@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH 1/2 v4] dt-bindings: leds: Add DT binding for Richtek RT8515
-Date:   Thu, 12 Nov 2020 12:56:45 +0100
-Message-Id: <20201112115646.2562467-1-linus.walleij@linaro.org>
+        phone-devel@vger.kernel.org, upstreaming@lists.sr.ht
+Subject: [PATCH 1/2] drm/mcde: Break out DSI set-up routine
+Date:   Thu, 12 Nov 2020 15:29:24 +0100
+Message-Id: <20201112142925.2571179-1-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -77,174 +76,206 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add a YAML devicetree binding for the Richtek RT8515
-dual channel flash/torch LED driver.
+To be able to support DPI without messing things up we
+first break out the DSI set-up to a separate function.
 
-Cc: Sakari Ailus <sakari.ailus@iki.fi>
-Cc: newbytee@protonmail.com
 Cc: Stephan Gerhold <stephan@gerhold.net>
 Cc: phone-devel@vger.kernel.org
-Cc: linux-media@vger.kernel.org
-Cc: devicetree@vger.kernel.org
+Cc: upstreaming@lists.sr.ht
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
-ChangeLog v3->v4:
-- Add DT attributes for the RFS and RTS resistors, so that
-  the hardware-defined maximum current can be determined.
-- Add torch-max-microamp to the common bindings so we can
-  set an attribute for the max microamp in torch mode.
-- Add flash-max-microamp and torch-max-microamp as optional
-  to the LED node.
-- Slot in some elabortative descriptions of the new
-  properties and describe what the hardware is doing.
-- Cc phone-devel@vger.kernel.org
-ChangeLog v2->v3:
-- Add Sakari to CC
-- Resend
-ChangeLog v1->v2:
-- Explicitly inherit function, color and flash-max-timeout-us
-  from common.yaml
-- Add "led" node as required.
----
- .../devicetree/bindings/leds/common.yaml      |   6 +
- .../bindings/leds/richtek,rt8515.yaml         | 111 ++++++++++++++++++
- 2 files changed, 117 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
+ drivers/gpu/drm/mcde/mcde_display.c | 135 +++++++++++++++-------------
+ 1 file changed, 75 insertions(+), 60 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/leds/common.yaml b/Documentation/devicetree/bindings/leds/common.yaml
-index 08b6700ca61e..28bdf09b4af4 100644
---- a/Documentation/devicetree/bindings/leds/common.yaml
-+++ b/Documentation/devicetree/bindings/leds/common.yaml
-@@ -151,6 +151,12 @@ properties:
-       Maximum flash LED supply current in microamperes. Required for flash LED
-       nodes with configurable current.
+diff --git a/drivers/gpu/drm/mcde/mcde_display.c b/drivers/gpu/drm/mcde/mcde_display.c
+index c271e5bf042e..66a07e340f8a 100644
+--- a/drivers/gpu/drm/mcde/mcde_display.c
++++ b/drivers/gpu/drm/mcde/mcde_display.c
+@@ -860,74 +860,44 @@ static int mcde_dsi_get_pkt_div(int ppl, int fifo_size)
+ 	return 1;
+ }
  
-+  torch-max-microamp:
-+    description:
-+      Maximum flash LED supply current in microamperes, when the flash LED is
-+      used as a torch (flashlight). This is usually lower than the flash mode
-+      maximum current, if the LED supports torch mode.
+-static void mcde_display_enable(struct drm_simple_display_pipe *pipe,
+-				struct drm_crtc_state *cstate,
+-				struct drm_plane_state *plane_state)
++static void mcde_setup_dsi(struct mcde *mcde, const struct drm_display_mode *mode,
++			   int cpp, int *fifo_wtrmrk_lvl, int *dsi_formatter_frame,
++			   int *dsi_pkt_size)
+ {
+-	struct drm_crtc *crtc = &pipe->crtc;
+-	struct drm_plane *plane = &pipe->plane;
+-	struct drm_device *drm = crtc->dev;
+-	struct mcde *mcde = to_mcde(drm);
+-	const struct drm_display_mode *mode = &cstate->mode;
+-	struct drm_framebuffer *fb = plane->state->fb;
+-	u32 format = fb->format->format;
+ 	u32 formatter_ppl = mode->hdisplay; /* pixels per line */
+ 	u32 formatter_lpf = mode->vdisplay; /* lines per frame */
+-	int pkt_size, fifo_wtrmrk;
+-	int cpp = fb->format->cpp[0];
++	int formatter_frame;
+ 	int formatter_cpp;
+-	struct drm_format_name_buf tmp;
+-	u32 formatter_frame;
++	int fifo_wtrmrk;
+ 	u32 pkt_div;
++	int pkt_size;
+ 	u32 val;
+-	int ret;
+ 
+-	/* This powers up the entire MCDE block and the DSI hardware */
+-	ret = regulator_enable(mcde->epod);
+-	if (ret) {
+-		dev_err(drm->dev, "can't re-enable EPOD regulator\n");
+-		return;
+-	}
+-
+-	dev_info(drm->dev, "enable MCDE, %d x %d format %s\n",
+-		 mode->hdisplay, mode->vdisplay,
+-		 drm_get_format_name(format, &tmp));
+-	if (!mcde->mdsi) {
+-		/* TODO: deal with this for non-DSI output */
+-		dev_err(drm->dev, "no DSI master attached!\n");
+-		return;
+-	}
++	dev_info(mcde->dev, "output in %s mode, format %dbpp\n",
++		 (mcde->mdsi->mode_flags & MIPI_DSI_MODE_VIDEO) ?
++		 "VIDEO" : "CMD",
++		 mipi_dsi_pixel_format_to_bpp(mcde->mdsi->format));
++	formatter_cpp =
++		mipi_dsi_pixel_format_to_bpp(mcde->mdsi->format) / 8;
++	dev_info(mcde->dev, "Overlay CPP: %d bytes, DSI formatter CPP %d bytes\n",
++		 cpp, formatter_cpp);
+ 
+ 	/* Set up the main control, watermark level at 7 */
+ 	val = 7 << MCDE_CONF0_IFIFOCTRLWTRMRKLVL_SHIFT;
+-	/* 24 bits DPI: connect LSB Ch B to D[0:7] */
 +
-   flash-max-timeout-us:
-     description:
-       Maximum timeout in microseconds after which the flash LED is turned off.
-diff --git a/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml b/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
-new file mode 100644
-index 000000000000..5f65a20b997d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
-@@ -0,0 +1,111 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/leds/richtek,rt8515.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++	/*
++	 * This is the internal silicon muxing of the DPI
++	 * (parallell display) lines. Since we are not using
++	 * this at all (we are using DSI) these are just
++	 * dummy values from the vendor tree.
++	 */
+ 	val |= 3 << MCDE_CONF0_OUTMUX0_SHIFT;
+-	/* TV out: connect LSB Ch B to D[8:15] */
+ 	val |= 3 << MCDE_CONF0_OUTMUX1_SHIFT;
+-	/* Don't care about this muxing */
+ 	val |= 0 << MCDE_CONF0_OUTMUX2_SHIFT;
+-	/* 24 bits DPI: connect MID Ch B to D[24:31] */
+ 	val |= 4 << MCDE_CONF0_OUTMUX3_SHIFT;
+-	/* 5: 24 bits DPI: connect MSB Ch B to D[32:39] */
+ 	val |= 5 << MCDE_CONF0_OUTMUX4_SHIFT;
+-	/* Syncmux bits zero: DPI channel A and B on output pins A and B resp */
+ 	writel(val, mcde->regs + MCDE_CONF0);
+ 
+-	/* Clear any pending interrupts */
+-	mcde_display_disable_irqs(mcde);
+-	writel(0, mcde->regs + MCDE_IMSCERR);
+-	writel(0xFFFFFFFF, mcde->regs + MCDE_RISERR);
+-
+-	dev_info(drm->dev, "output in %s mode, format %dbpp\n",
+-		 (mcde->mdsi->mode_flags & MIPI_DSI_MODE_VIDEO) ?
+-		 "VIDEO" : "CMD",
+-		 mipi_dsi_pixel_format_to_bpp(mcde->mdsi->format));
+-	formatter_cpp =
+-		mipi_dsi_pixel_format_to_bpp(mcde->mdsi->format) / 8;
+-	dev_info(drm->dev, "overlay CPP %d bytes, DSI CPP %d bytes\n",
+-		 cpp,
+-		 formatter_cpp);
+-
+ 	/* Calculations from mcde_fmtr_dsi.c, fmtr_dsi_enable_video() */
+ 
+ 	/*
+@@ -948,9 +918,9 @@ static void mcde_display_enable(struct drm_simple_display_pipe *pipe,
+ 		/* The FIFO is 640 entries deep on this v3 hardware */
+ 		pkt_div = mcde_dsi_get_pkt_div(mode->hdisplay, 640);
+ 	}
+-	dev_dbg(drm->dev, "FIFO watermark after flooring: %d bytes\n",
++	dev_dbg(mcde->dev, "FIFO watermark after flooring: %d bytes\n",
+ 		fifo_wtrmrk);
+-	dev_dbg(drm->dev, "Packet divisor: %d bytes\n", pkt_div);
++	dev_dbg(mcde->dev, "Packet divisor: %d bytes\n", pkt_div);
+ 
+ 	/* NOTE: pkt_div is 1 for video mode */
+ 	pkt_size = (formatter_ppl * formatter_cpp) / pkt_div;
+@@ -958,16 +928,61 @@ static void mcde_display_enable(struct drm_simple_display_pipe *pipe,
+ 	if (!(mcde->mdsi->mode_flags & MIPI_DSI_MODE_VIDEO))
+ 		pkt_size++;
+ 
+-	dev_dbg(drm->dev, "DSI packet size: %d * %d bytes per line\n",
++	dev_dbg(mcde->dev, "DSI packet size: %d * %d bytes per line\n",
+ 		pkt_size, pkt_div);
+-	dev_dbg(drm->dev, "Overlay frame size: %u bytes\n",
++	dev_dbg(mcde->dev, "Overlay frame size: %u bytes\n",
+ 		mode->hdisplay * mode->vdisplay * cpp);
+-	mcde->stride = mode->hdisplay * cpp;
+-	dev_dbg(drm->dev, "Overlay line stride: %u bytes\n",
+-		mcde->stride);
+ 	/* NOTE: pkt_div is 1 for video mode */
+ 	formatter_frame = pkt_size * pkt_div * formatter_lpf;
+-	dev_dbg(drm->dev, "Formatter frame size: %u bytes\n", formatter_frame);
++	dev_dbg(mcde->dev, "Formatter frame size: %u bytes\n", formatter_frame);
 +
-+title: Richtek RT8515 1.5A dual channel LED driver
++	*fifo_wtrmrk_lvl = fifo_wtrmrk;
++	*dsi_pkt_size = pkt_size;
++	*dsi_formatter_frame = formatter_frame;
++}
 +
-+maintainers:
-+  - Linus Walleij <linus.walleij@linaro.org>
++static void mcde_display_enable(struct drm_simple_display_pipe *pipe,
++				struct drm_crtc_state *cstate,
++				struct drm_plane_state *plane_state)
++{
++	struct drm_crtc *crtc = &pipe->crtc;
++	struct drm_plane *plane = &pipe->plane;
++	struct drm_device *drm = crtc->dev;
++	struct mcde *mcde = to_mcde(drm);
++	const struct drm_display_mode *mode = &cstate->mode;
++	struct drm_framebuffer *fb = plane->state->fb;
++	u32 format = fb->format->format;
++	int dsi_pkt_size;
++	int fifo_wtrmrk;
++	int cpp = fb->format->cpp[0];
++	struct drm_format_name_buf tmp;
++	u32 dsi_formatter_frame;
++	u32 val;
++	int ret;
 +
-+description: |
-+  The Richtek RT8515 is a dual channel (two mode) LED driver that
-+  supports driving a white LED in flash or torch mode. The maximum
-+  current for each mode is defined in hardware using two resistors
-+  RFS and RTS.
++	/* This powers up the entire MCDE block and the DSI hardware */
++	ret = regulator_enable(mcde->epod);
++	if (ret) {
++		dev_err(drm->dev, "can't re-enable EPOD regulator\n");
++		return;
++	}
 +
-+properties:
-+  compatible:
-+    const: richtek,rt8515
++	dev_info(drm->dev, "enable MCDE, %d x %d format %s\n",
++		 mode->hdisplay, mode->vdisplay,
++		 drm_get_format_name(format, &tmp));
 +
-+  enf-gpios:
-+    maxItems: 1
-+    description: A connection to the 'ENF' (enable flash) pin.
 +
-+  ent-gpios:
-+    maxItems: 1
-+    description: A connection to the 'ENT' (enable torch) pin.
++	/* Clear any pending interrupts */
++	mcde_display_disable_irqs(mcde);
++	writel(0, mcde->regs + MCDE_IMSCERR);
++	writel(0xFFFFFFFF, mcde->regs + MCDE_RISERR);
 +
-+  richtek,rfs:
-+    maxItems: 1
-+    minimum: 7680
-+    maximum: 367000
-+    description: The resistance value of the RFS resisitor. This
-+      resistors limits the maximum flash current. This must be set
-+      for the property flash-max-microamp to work, the RFS resistor
-+      defines the range of the dimmer setting (brightness) of the
-+      flash LED.
++	mcde_setup_dsi(mcde, mode, cpp, &fifo_wtrmrk,
++		       &dsi_formatter_frame, &dsi_pkt_size);
 +
-+  richtek,rts:
-+    maxItems: 1
-+    minimum: 7680
-+    maximum: 367000
-+    description: The resistance value of the RTS resisitor. This
-+      resistors limits the maximum torch current. This must be set
-+      for the property torch-max-microamp to work, the RTS resistor
-+      defines the range of the dimmer setting (brightness) of the
-+      torch LED.
-+
-+  led:
-+    type: object
-+    $ref: common.yaml#
-+    properties:
-+      function: true
-+      color: true
-+      flash-max-timeout-us: true
-+
-+      flash-max-microamp:
-+        maximum: 700000
-+        description: The maximum current for flash mode
-+          is hardwired to the component using the RFS resistor to
-+          ground. The maximum hardware current setting is calculated
-+          according to the formula Imax = 5500 / RFS. The lowest
-+          allowed resistance value is 7.86 kOhm giving an absolute
-+          maximum current of 700mA. By setting this attribute in
-+          the device tree, you can further restrict the maximum
-+          current below the hardware limit. This requires the RFS
-+          to be defined as it defines the maximum range.
-+
-+      torch-max-microamp:
-+        maximum: 700000
-+        description: The maximum current for torch mode
-+          is hardwired to the component using the RTS resistor to
-+          ground. The maximum hardware current setting is calculated
-+          according to the formula Imax = 5500 / RTS. The lowest
-+          allowed resistance value is 7.86 kOhm giving an absolute
-+          maximum current of 700mA. By setting this attribute in
-+          the device tree, you can further restrict the maximum
-+          current below the hardware limit. This requires the RTS
-+          to be defined as it defines the maximum range.
-+
-+required:
-+  - compatible
-+  - ent-gpios
-+  - enf-gpios
-+  - led
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/leds/common.h>
-+
-+    led-controller {
-+        compatible = "richtek,rt8515";
-+        enf-gpios = <&gpio4 12 GPIO_ACTIVE_HIGH>;
-+        ent-gpios = <&gpio4 13 GPIO_ACTIVE_HIGH>;
-+        richtek,rfs = <16000>;
-+        richtek,rts = <100000>;
-+
-+        led {
-+            function = LED_FUNCTION_FLASH;
-+            color = <LED_COLOR_ID_WHITE>;
-+            flash-max-timeout-us = <250000>;
-+            flash-max-microamp = <150000>;
-+            torch-max-microamp = <25000>;
-+        };
-+    };
-+
-+...
++	mcde->stride = mode->hdisplay * cpp;
++	dev_dbg(drm->dev, "Overlay line stride: %u bytes\n",
++		 mcde->stride);
+ 
+ 	/* Drain the FIFO A + channel 0 pipe so we have a clean slate */
+ 	mcde_drain_pipe(mcde, MCDE_FIFO_A, MCDE_CHANNEL_0);
+@@ -1011,7 +1026,7 @@ static void mcde_display_enable(struct drm_simple_display_pipe *pipe,
+ 
+ 	/* Configure the DSI formatter 0 for the DSI panel output */
+ 	mcde_configure_dsi_formatter(mcde, MCDE_DSI_FORMATTER_0,
+-				     formatter_frame, pkt_size);
++				     dsi_formatter_frame, dsi_pkt_size);
+ 
+ 	switch (mcde->flow_mode) {
+ 	case MCDE_COMMAND_TE_FLOW:
 -- 
 2.26.2
 
