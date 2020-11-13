@@ -2,99 +2,118 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B960BC4742C
-	for <phone-devel@archiver.kernel.org>; Fri, 13 Nov 2020 11:28:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB9FBC4742C
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Nov 2020 12:23:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7C66A22240
-	for <phone-devel@archiver.kernel.org>; Fri, 13 Nov 2020 11:28:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 86BD32224B
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Nov 2020 12:23:26 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=kernel.org header.i=@kernel.org header.b="an66mwnd"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CMSkbrn1"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726430AbgKML24 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 Nov 2020 06:28:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55604 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726541AbgKML1u (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 Nov 2020 06:27:50 -0500
-Received: from localhost.localdomain (236.31.169.217.in-addr.arpa [217.169.31.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D947022240;
-        Fri, 13 Nov 2020 11:27:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605266868;
-        bh=1zomMHvWXcdsFEpY4sbXNcY1W66L8ptaoK6dS+ccIoE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=an66mwndtupBdyKycEKWTmObkunIbRrerl5BGTN98MB9my5eCUcIfj7adhLNxHtJK
-         msfwqP2bauhj2rsMGFDV7X2OOa2HY57rUERf+iaDB9p1AaMcy6nPivgirr3vgOkisR
-         +a1SZflwyZuFCDOGNkxnJC7uQNoAjWkxFJL9cLnc=
-From:   Will Deacon <will@kernel.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     catalin.marinas@arm.com, kernel-team@android.com,
-        Will Deacon <will@kernel.org>,
-        Steven Price <steven.price@arm.com>,
-        Ionela Voinescu <ionela.voinescu@arm.com>,
-        linux-kernel@vger.kernel.org,
-        angelogioacchino.delregno@somainline.org,
-        Kristina Martsenko <kristina.martsenko@arm.com>,
-        martin.botka@somainline.org,
-        Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Marc Zyngier <maz@kernel.org>, marijn.suijten@somainline.org,
-        Mark Brown <broonie@kernel.org>,
-        Amit Daniel Kachhap <amit.kachhap@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Andrew Scull <ascull@google.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-kernel@lists.infradead.org,
-        Rob Herring <robh@kernel.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH 0/4] Add KRYO2XX Errata / mitigations data
-Date:   Fri, 13 Nov 2020 11:27:36 +0000
-Message-Id: <160526082925.1979134.2091241052935700050.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20201104232218.198800-1-konrad.dybcio@somainline.org>
-References: <20201104232218.198800-1-konrad.dybcio@somainline.org>
+        id S1726449AbgKMMX0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 Nov 2020 07:23:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38854 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726374AbgKMMXZ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 13 Nov 2020 07:23:25 -0500
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA065C061A04
+        for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2020 04:23:18 -0800 (PST)
+Received: by mail-lj1-x241.google.com with SMTP id r17so10425299ljg.5
+        for <phone-devel@vger.kernel.org>; Fri, 13 Nov 2020 04:23:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dmgC8A97V7x5suiNCMl412lXX/jW6+OasEq3qdC5flo=;
+        b=CMSkbrn1HlJPVpVE5iZcjuQxcDUTIWwFuKKqwZXujVWGnXLWK4DDEEfcqYBHCHKfzi
+         FFfPZvOMv/MUgqIYJG23Np3juKPHHK2T4rmXPag7QeCU/+MXfIDaygPW5C+Zepp/oPzU
+         0qNl56ZhdMPj7FkJ5XebIKjfzqEK9E4LzWbWsGQ4RcM2U6qfkRRuvVkusrKf9Fqe/dr9
+         zjNnheFeJxD6WXypSe2B+tSldZUXMSqp06lhbLx5WPbMoz1agRQY9ZsQVlMl3c5UIcCO
+         Nm78AqHC5noJoqg5YsYB1rbRcB61vY9SYSokvtSzoEt9w42zVNKzaf+b3Yx50D2QufnQ
+         DsLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dmgC8A97V7x5suiNCMl412lXX/jW6+OasEq3qdC5flo=;
+        b=rTqj7xeGo450ELeD05pJlLtjiDXL3n7HmTUHDctKi5qYhd1EmwvcdCwGf8if2U59pP
+         pMbphx52oTChveYRCNErUL+A8PomhE21yzeWyTECAFN4//Rga/ZccLHG1zEMEn7e8li5
+         /T4vHpui3wQEXmX0XNyMbERr7bvC8IWMLh7NkokQRrRFyf2fc/Z4BYcwSlyv+z5vg4n6
+         tcsbPvDMpA1zAdLMbWw1jiFN9E8KT6zo6o05xc2hL7ZL8IX8ppK2XvVO8wO+vXOaRLuW
+         FptlaxItTP8aCSPGaYT/CApgWYMExLwfNroNOKFQgNJrxklJn3etN2odEei36x1dmFgJ
+         cuZw==
+X-Gm-Message-State: AOAM530j09ew+Mq9vJZbSilpGdAGMjJBVMgpCQW8AB5OY8TKsPuipUIR
+        lBMGOfKXpbeg91qTUwTvkXFOPaOoTFj1mHhRqlxZhA==
+X-Google-Smtp-Source: ABdhPJyWNf6qJzeTJtgKr//xb7A2QSRZxAGqltnhtV3A8/WBgSRjeKeRngG5/KcF97gs3wY+HSUr9vPazrCEEPEl6Co=
+X-Received: by 2002:a2e:95d2:: with SMTP id y18mr1069890ljh.286.1605270197017;
+ Fri, 13 Nov 2020 04:23:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201112115646.2562467-1-linus.walleij@linaro.org>
+ <20201112145846.GA3588803@bogus> <CACRpkdbciyjbe6p-ckvXezyVvaExgdq8T2soqAhVPQQpCWmFpA@mail.gmail.com>
+ <CAL_JsqK91Pd=iZhMb8EYHgaMNgxaQ7xpO_9TP_i+Q-i_UTFQPg@mail.gmail.com> <CAL_JsqKgV6jjW-Z9Ekgy3w0+u8gbCLYJZnu3=nsBV7MBmsZ7rQ@mail.gmail.com>
+In-Reply-To: <CAL_JsqKgV6jjW-Z9Ekgy3w0+u8gbCLYJZnu3=nsBV7MBmsZ7rQ@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 13 Nov 2020 13:23:05 +0100
+Message-ID: <CACRpkdZyQZjOotrmD+otPU8VfWYjc_B+FDmbnKY2v1togXCcYw@mail.gmail.com>
+Subject: Re: [PATCH 1/2 v4] dt-bindings: leds: Add DT binding for Richtek RT8515
+To:     Rob Herring <robh@kernel.org>
+Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        newbytee@protonmail.com,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        Dan Murphy <dmurphy@ti.com>,
+        Sakari Ailus <sakari.ailus@iki.fi>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, phone-devel@vger.kernel.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Pavel Machek <pavel@ucw.cz>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 5 Nov 2020 00:22:09 +0100, Konrad Dybcio wrote:
-> This series adds Spectre mitigations and errata data for
-> Qualcomm KRYO2XX Gold (big) and Silver (LITTLE) series of
-> CPU cores, used for example in MSM8998 and SDM660-series SoCs.
-> 
-> Konrad Dybcio (4):
->   arm64: Add MIDR value for KRYO2XX gold/silver CPU cores
->   arm64: kpti: Add KRYO2XX gold/silver CPU cores to kpti safelist
->   arm64: proton-pack: Add KRYO2XX silver CPUs to spectre-v2 safe-list
->   arm64: cpu_errata: Apply Erratum 845719 to KRYO2XX Silver
-> 
-> [...]
+On Thu, Nov 12, 2020 at 11:20 PM Rob Herring <robh@kernel.org> wrote:
+> On Thu, Nov 12, 2020 at 9:45 AM Rob Herring <robh@kernel.org> wrote:
+> > On Thu, Nov 12, 2020 at 9:04 AM Linus Walleij <linus.walleij@linaro.org> wrote:
+> > > On Thu, Nov 12, 2020 at 3:58 PM Rob Herring <robh@kernel.org> wrote:
+> > >
+> > > > My bot found errors running 'make dt_binding_check' on your patch:
+> > >
+> > > I have a real hard time even testing YAML bindings after updating to the lates
+> > > dtschema, I just get so many errors from all over the tree and then it stops:
+> > >
+> > > make[3]: *** [../Documentation/devicetree/bindings/Makefile:59:
+> > > Documentation/devicetree/bindings/processed-schema-examples.json]
+> >
+> > I assume there was some error message more useful before this.
+> >
+> > > Error 123
+> > > make[3]: Target '__build' not remade because of errors.
+> > > make[2]: *** [/var/linus/linux-nomadik/Makefile:1364: dt_binding_check] Error 2
+> > > make[2]: Leaving directory '/var/linus/linux-nomadik/build-ux500'
+> > > make[1]: *** [Makefile:185: __sub-make] Error 2
+> > > make[1]: Target 'dt_binding_check' not remade because of errors.
+> > > make[1]: Leaving directory '/var/linus/linux-nomadik'
+> > > make: *** [ux500.mak:573: check-bindings] Error 2
+> > >
+> > > Is it necessary to run on linux-next to test schema/DTS for the moment?
+> >
+> > next and rc3 are broken thanks to flexcan changes that should be v5.11
+> > material. next pretty much always has something warning. It's like
+> > maintainers just apply bindings without checking or something. rc2 and
+> > rc1 should be good.
+>
+> Actually, rc1 was not good. I didn't get all the fixes in since armsoc
+> changes came in so late.
 
-Applied to arm64 (for-next/fixes), thanks!
+OK I try to rebase onto -rc2 and see if that solves my problem.
 
-[1/4] arm64: Add MIDR value for KRYO2XX gold/silver CPU cores
-      https://git.kernel.org/arm64/c/77473cffef21
-[2/4] arm64: kpti: Add KRYO2XX gold/silver CPU cores to kpti safelist
-      https://git.kernel.org/arm64/c/e3dd11a9f252
-[3/4] arm64: proton-pack: Add KRYO2XX silver CPUs to spectre-v2 safe-list
-      https://git.kernel.org/arm64/c/38328d401167
-[4/4] arm64: cpu_errata: Apply Erratum 845719 to KRYO2XX Silver
-      https://git.kernel.org/arm64/c/23c216416056
-
-Cheers,
--- 
-Will
-
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+Yours,
+Linus Walleij
