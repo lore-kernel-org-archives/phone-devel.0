@@ -2,130 +2,95 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.0 required=3.0 tests=BAYES_00,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A342C5519F
-	for <phone-devel@archiver.kernel.org>; Mon, 16 Nov 2020 14:53:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43E46C63697
+	for <phone-devel@archiver.kernel.org>; Mon, 16 Nov 2020 22:02:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CFA6923A32
-	for <phone-devel@archiver.kernel.org>; Mon, 16 Nov 2020 14:53:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F15D02223D
+	for <phone-devel@archiver.kernel.org>; Mon, 16 Nov 2020 22:02:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729750AbgKPOxz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 Nov 2020 09:53:55 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:42163 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728396AbgKPOxz (ORCPT
+        id S1727278AbgKPWCC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 Nov 2020 17:02:02 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:54682 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726791AbgKPWCC (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 Nov 2020 09:53:55 -0500
-Received: by mail-oi1-f194.google.com with SMTP id w145so19052521oie.9;
-        Mon, 16 Nov 2020 06:53:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=YlpjPvTQYT+rqdni5qJzLiGhROd+f/379cy54KdKCm0=;
-        b=UdOkcRVeKkKulfhfAgp40GpUXlbmHBzCKUguCuO95nYxA9ASiDUEYr5CPA89WxW7cQ
-         +x/J/dZKZgjB2EW/GDwWBuJUDYK52ndSDmdS/xv43ypAUIcJIWe/UM+eTMjkCtZJusIT
-         Tzz4PIXxThWvx5YTrXOGE2kcgoF2YZ0rCEEOhx5SLQfXGb3bjkRrF7ORhO/i58pXwOH5
-         n5ICp68r0HYnFk+A0QQLe4US9qUiBJhb1F10Sll5VId95k5PrYnk9fvC/PNOM2GOMXAs
-         8HNhVKgOx5AQZciY0lljJ4N1de+Q/vnPRs4UCKR4pf/Tg4yCmn5UdnLpSFbQw5TuYANv
-         DOyA==
-X-Gm-Message-State: AOAM532EYrqPmk8ImgS/XBsRfzZyXEsCFT+TCQbhuPZgFfHJN6wpdKdY
-        b/b3ebLFT26YTc1L4RTxTXUY/Q+HNw==
-X-Google-Smtp-Source: ABdhPJysYAvyeMCmUOQIRzey6h9TQ6Yjr9KAi3Sw8KNdrUru374RMQwgv+i8cZ3MEKgNmhT2nujfMg==
-X-Received: by 2002:aca:1e13:: with SMTP id m19mr4492399oic.176.1605538434197;
-        Mon, 16 Nov 2020 06:53:54 -0800 (PST)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id 64sm4702013otq.26.2020.11.16.06.53.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2020 06:53:53 -0800 (PST)
-Received: (nullmailer pid 1634415 invoked by uid 1000);
-        Mon, 16 Nov 2020 14:53:52 -0000
-Date:   Mon, 16 Nov 2020 08:53:52 -0600
-From:   Rob Herring <robh@kernel.org>
+        Mon, 16 Nov 2020 17:02:02 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 328C91C0BA1; Mon, 16 Nov 2020 23:01:55 +0100 (CET)
+Date:   Mon, 16 Nov 2020 23:01:53 +0100
+From:   Pavel Machek <pavel@ucw.cz>
 To:     Caleb Connolly <caleb@connolly.tech>
-Cc:     linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+Cc:     linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/5] dt-bindings: add vendor bindings for OnePlus
-Message-ID: <20201116145352.GB1625774@bogus>
+Subject: Re: [PATCH 3/5] arm64: dts: sdm845: add oneplus 6/t devices
+Message-ID: <20201116220153.GA1003@bug>
 References: <20201112161920.2671430-1-caleb@connolly.tech>
- <20201112161920.2671430-5-caleb@connolly.tech>
+ <20201112161920.2671430-4-caleb@connolly.tech>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201112161920.2671430-5-caleb@connolly.tech>
+In-Reply-To: <20201112161920.2671430-4-caleb@connolly.tech>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Nov 12, 2020 at 04:21:54PM +0000, Caleb Connolly wrote:
-> Used by the OnePlus 6/T device trees
-> 
-> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
-> ---
->  .../bindings/arm/oneplus/oneplus-boards.yaml  | 25 +++++++++++++++++++
->  .../devicetree/bindings/vendor-prefixes.yaml  |  2 ++
->  2 files changed, 27 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/arm/oneplus/oneplus-boards.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/arm/oneplus/oneplus-boards.yaml b/Documentation/devicetree/bindings/arm/oneplus/oneplus-boards.yaml
-> new file mode 100644
-> index 000000000000..a4d9bbd5681f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/arm/oneplus/oneplus-boards.yaml
-> @@ -0,0 +1,25 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/arm/oneplus/oneplus-boards.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: OnePlus based boards
-> +
-> +maintainers:
-> +  - Caleb Connolly <caleb@connolly.tech>
-> +
-> +properties:
-> +  $nodename:
-> +    const: '/'
-> +  compatible:
-> +    oneOf:
-> +      - description: SDM845 based boards
+Hi!
 
-There should be a sdm845 fallback compatible. Also, board level 
-compatibles are documented in a per SoC family schema (qcom.yaml) which 
-should already define the fallback.
+> Add initial support for the OnePlus 6 (enchilada) and 6T (fajita) based
+> on the sdm845-mtp DT. Support includes:
+> 
+> * Display panels and Adreno 630
+> * Touch screen support with synaptics rmi4
+> * All remoteprocs start correctly
+> * WLAN / Bluetooth
+> * Volume / power buttons and OnePlus Tri-State switch are functional
+>     The tri-state switch is a 3 state mute slider on the side of the phone * USB 
+> support, currently forced to peripheral as type C detection isn't functional.
 
-> +        items:
-> +          - enum:
-> +              - oneplus,enchilada               # OnePlus 6
-> +              - oneplus,fajita                  # OnePlus 6T
-> +          - const: oneplus,oneplus6             # OnePlus 6 and derivatives
+I have similar switches on my joystick... but I don't believe modelling it as 3 separate
+keys with "macro" keysym is the right way to go.
 
-With a SoC fallback, having this as a 3rd compatible probably isn't too 
-useful. 3 levels of compatible is mainly done when there's a SoM plus 
-baseboard.
-
+> +		state-top {
+> +			label = "Tri-state key top";
+> +			linux,code = <KEY_MACRO1>;
+> +			interrupt-parent = <&tlmm>;
+> +			interrupts = <24 IRQ_TYPE_EDGE_FALLING>;
+> +			debounce-interval = <500>;
+> +			linux,can-disable;
+> +		};
 > +
-> +required:
-> +  - compatible
-> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> index 2735be1a8470..372c1136081e 100644
-> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> @@ -768,6 +768,8 @@ patternProperties:
->      description: OLIMEX Ltd.
->    "^olpc,.*":
->      description: One Laptop Per Child
-> +  "^oneplus,.*":
-> +    description: One Plus Technology (Shenzhen) Co., Ltd.
->    "^onion,.*":
->      description: Onion Corporation
->    "^onnn,.*":
-> -- 
-> 2.29.2
-> 
-> 
+> +		state-middle {
+> +			label = "Tri-state key middle";
+> +			linux,code = <KEY_MACRO2>;
+> +			interrupt-parent = <&tlmm>;
+> +			interrupts = <52 IRQ_TYPE_EDGE_FALLING>;
+> +			debounce-interval = <500>;
+> +			linux,can-disable;
+> +		};
+> +
+> +		state-bottom {
+> +			label = "Tri-state key bottom";
+> +			linux,code = <KEY_MACRO3>;
+> +			interrupt-parent = <&tlmm>;
+> +			interrupts = <126 IRQ_TYPE_EDGE_FALLING>;
+> +			debounce-interval = <500>;
+> +			linux,can-disable;
+> +		};
+
+Best regards,
+									Pavel
+-- 
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
