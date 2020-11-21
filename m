@@ -2,201 +2,97 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_2
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73C26C63777
-	for <phone-devel@archiver.kernel.org>; Sat, 21 Nov 2020 16:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F1CFC388F9
+	for <phone-devel@archiver.kernel.org>; Sat, 21 Nov 2020 17:45:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2E7C422206
-	for <phone-devel@archiver.kernel.org>; Sat, 21 Nov 2020 16:02:03 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=kernel.org header.i=@kernel.org header.b="r40Fsk0C"
+	by mail.kernel.org (Postfix) with ESMTP id 43CE922202
+	for <phone-devel@archiver.kernel.org>; Sat, 21 Nov 2020 17:45:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726227AbgKUQCC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 21 Nov 2020 11:02:02 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54566 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725997AbgKUQCC (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 21 Nov 2020 11:02:02 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 413D7221FE;
-        Sat, 21 Nov 2020 16:02:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1605974521;
-        bh=CVqXC4OjPnHXii9zDQpZBX7hMR9t5WEAwNB9FUhz1OY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=r40Fsk0CX+rLxEiL6OYrx/aQd/lFw6bYV2DtuqLpQeLio9lrk7lWoCVlVciebUUnI
-         BJuXnzszJWUW+wGvqHujRvulXjYBwViXYubN9D/ZmTUZNJInDK1m505l6Dsn7e96zr
-         gKnUKSYiUJGV6F8t3SMGHjoWeiVhSHtQhH97rdjA=
-Date:   Sat, 21 Nov 2020 16:01:56 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: accel: yamaha-yas: Add DT bindings
-Message-ID: <20201121160156.3d9d32c1@archlinux>
-In-Reply-To: <20201117121810.830743-1-linus.walleij@linaro.org>
-References: <20201117121810.830743-1-linus.walleij@linaro.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726701AbgKURoq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 21 Nov 2020 12:44:46 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:57494 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726305AbgKURop (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Sat, 21 Nov 2020 12:44:45 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 86DE91C0B7C; Sat, 21 Nov 2020 18:44:42 +0100 (CET)
+Date:   Sat, 21 Nov 2020 18:44:42 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/5] arm64: dts: sdm845: add oneplus 6/t devices
+Message-ID: <20201121174442.GA12057@duo.ucw.cz>
+References: <20201112161920.2671430-1-caleb@connolly.tech>
+ <20201112161920.2671430-4-caleb@connolly.tech>
+ <20201116220153.GA1003@bug>
+ <a20145ef-31a1-a72d-2d60-87a5282ace87@connolly.tech>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="opJtzjQTFsWo+cga"
+Content-Disposition: inline
+In-Reply-To: <a20145ef-31a1-a72d-2d60-87a5282ace87@connolly.tech>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 17 Nov 2020 13:18:10 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> This adds device tree bindings for the Yamaha YAS5xx
-> magnetometers/compass sensors.
-> 
-> Cc: devicetree@vger.kernel.org
-> Cc: phone-devel@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Hi Linus,
+--opJtzjQTFsWo+cga
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-A few minor things inline.  Looking forward to the driver :)
+On Mon 2020-11-16 23:49:32, Caleb Connolly wrote:
+> On 2020-11-16 22:01, Pavel Machek wrote:
+> > Hi!
+> >
+> >> Add initial support for the OnePlus 6 (enchilada) and 6T (fajita) based
+> >> on the sdm845-mtp DT. Support includes:
+> >>
+> >> * Display panels and Adreno 630
+> >> * Touch screen support with synaptics rmi4
+> >> * All remoteprocs start correctly
+> >> * WLAN / Bluetooth
+> >> * Volume / power buttons and OnePlus Tri-State switch are functional
+> >>      The tri-state switch is a 3 state mute slider on the side of the =
+phone * USB
+> >> support, currently forced to peripheral as type C detection isn't func=
+tional.
+> > I have similar switches on my joystick... but I don't believe modelling=
+ it as 3 separate
+> > keys with "macro" keysym is the right way to go.
+>=20
+> Hi! I agree that this is a bit of a weird way to model the switch, do=20
+> you have any ideas for a better solution?
 
-Jonathan
+You should ask on the input mailing list, I guess.
 
-> ---
-> ChangeLog v1->v2:
-> - Add Yamaha to the vendor list, I was surprised to find
->   they were not yet listed.
-> 
-> I am still working on the actual driver for the magnetometer
-> but why not send out the DT bindings for review, the
-> hardware variants are easy to describe. This makes it possibe
-> for people to include these magnetometers in device
-> trees.
-> ---
->  .../bindings/iio/magnetometer/yamaha,yas.yaml | 80 +++++++++++++++++++
->  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
->  2 files changed, 82 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
-> new file mode 100644
-> index 000000000000..6fc4cfe4a417
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
-> @@ -0,0 +1,80 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/magnetometer/yamaha,yas.yaml#
+Best regards,
+									Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
 
-Hmm. Is the generic name safe?   Might we get some future devices
-that this binding doesn't cover?
+--opJtzjQTFsWo+cga
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Yamaha YAS5xx magnetometer sensors
-> +
-> +maintainers:
-> +  - Linus Walleij <linus.walleij@linaro.org>
-> +
-> +description:
-> +  The Yamaha YAS5xx magnetometers is a line of 3-axis magnetometers
-> +  first introduced by Yamaha in 2006 with the YAS529. Over the years
-> +  this magnetometer has been minatyrized and appeared in a number of
-> +  different variants.
+-----BEGIN PGP SIGNATURE-----
 
-Run a spell checker over this.  miniaturised
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX7lSCgAKCRAw5/Bqldv6
+8jxNAKC4o5ygVLVd+at56gz7xUlBzH8xVACdFWV2UYjfFsDiF/QZkq9jDna2iSU=
+=SfAe
+-----END PGP SIGNATURE-----
 
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - enum:
-> +          - yamaha,yas529
-> +          - yamaha,yas530
-> +          - yamaha,yas532
-> +          - yamaha,yas533
-> +          - yamaha,yas535
-> +          - yamaha,yas536
-> +          - yamaha,yas537
-> +          - yamaha,yas539
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +    description: The YAS5xx sensors has a RSTN pin used to reset
-> +      the logic inside the sensor. This GPIO line should connect
-> +      to that pin and be marked as GPIO_ACTIVE_LOW.
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +    description: Interrupt for INT pin for variants that support
-> +      interrupt generation. This polarity, whether the interrupt
-> +      is active on the rising or the falling edge, is configurable
-> +      in the hardware.
-
-Worth adding the if magic to check this isn't provide for variants
-that don't have an interrupt pin?
-I guess it's fairly unlikely anyone would have a dt file that claims
-there is an interrupt that doesn't exist, but nice to keep the
-bindings as restrictive as can be easily done.
-
-> +
-> +  vdd-supply:
-> +    description: An optional regulator providing core power supply
-> +      on the VDD pin, typically 1.8 V or 3.0 V.
-> +
-> +  iovdd-supply:
-> +    description: An optional regulator providing I/O power supply
-> +      for the I2C interface on the IOVDD pin, typically 1.8 V.
-> +      This is not present on all variants of the component, some
-> +      have only the VDD voltage.
-
-Likewise, can we restrict this to the right variants.
-
-> +
-> +  mount-matrix:
-> +    description: An optional 3x3 mounting rotation matrix.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        magnetometer@2e {
-> +          compatible = "yamaha,yas530";
-> +          reg = <0x2e>;
-> +          vdd-supply = <&ldo1_reg>;
-> +          iovdd-supply = <&ldo2_reg>;
-> +          reset-gpios = <&gpio6 12 GPIO_ACTIVE_LOW>;
-> +        };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> index 2735be1a8470..0340674c72bd 100644
-> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> @@ -1210,6 +1210,8 @@ patternProperties:
->      description: Shenzhen Xunlong Software CO.,Limited
->    "^xylon,.*":
->      description: Xylon
-> +  "^yamaha,.*":
-> +    description: Yamaha Corporation
->    "^ylm,.*":
->      description: Shenzhen Yangliming Electronic Technology Co., Ltd.
->    "^yna,.*":
-
+--opJtzjQTFsWo+cga--
