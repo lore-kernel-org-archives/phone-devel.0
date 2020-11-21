@@ -2,91 +2,229 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F543C63697
-	for <phone-devel@archiver.kernel.org>; Tue, 17 Nov 2020 20:04:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C811C388F9
+	for <phone-devel@archiver.kernel.org>; Sat, 21 Nov 2020 04:28:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9D7E1238E6
-	for <phone-devel@archiver.kernel.org>; Tue, 17 Nov 2020 20:04:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3F61621741
+	for <phone-devel@archiver.kernel.org>; Sat, 21 Nov 2020 04:28:47 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j9v1QVq5"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GQUkUyQR"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730802AbgKQUE3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 Nov 2020 15:04:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37492 "EHLO
+        id S1726479AbgKUE20 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 Nov 2020 23:28:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730801AbgKQUE3 (ORCPT
+        with ESMTP id S1726454AbgKUE20 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 Nov 2020 15:04:29 -0500
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEC4AC0613CF
-        for <phone-devel@vger.kernel.org>; Tue, 17 Nov 2020 12:04:28 -0800 (PST)
-Received: by mail-lf1-x142.google.com with SMTP id e139so12402922lfd.1
-        for <phone-devel@vger.kernel.org>; Tue, 17 Nov 2020 12:04:28 -0800 (PST)
+        Fri, 20 Nov 2020 23:28:26 -0500
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70840C061A48
+        for <phone-devel@vger.kernel.org>; Fri, 20 Nov 2020 20:28:26 -0800 (PST)
+Received: by mail-ot1-x344.google.com with SMTP id 92so7733789otd.5
+        for <phone-devel@vger.kernel.org>; Fri, 20 Nov 2020 20:28:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tQkFGL0XDFRfUFUn+hfgyMvSdBv+O+SQSvUfUOZsWGc=;
-        b=j9v1QVq5imwxYgPbp8Ohc1CbtdxQOUcbqbnPp9806Kh42QMTEFGhoXSEV1yz6rZoW1
-         yuKZH9xjnzULdpb0vqerCV7xUqnV7KIUvSgooQjmY+wSn4BKMm+ISRuYpXE3UaCVkAxv
-         qhbQpvUz15qGv/WB8a9+7Q2QqU9MdblhS3SA3RB0OeMrwb3l+JIqGRlohrtxjqj6/ql4
-         Uv+UtucdgpLjWe2jW92468oZverdsEOxiqTUW+nRBRF39CLso9btz7N5/TdZZqkeSmQW
-         ZBis7fEQQqK4/k+rbuU24Wil+iXr6WzEQIf7igT+Ddcdlg+t2be8sdisnksjrTU7BUOu
-         SmKw==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=RrVnhY0xrtX6cR24sK+ovHu3EWIBRCE8PhOJl9rEWDw=;
+        b=GQUkUyQRpyly/oDa3dMP5A+gQHJz2hBEmNlC83tHBJUagwei/0Ulh6kQWb95h2POhl
+         pXlNDF+SbIr9jsuaRS+DjXMJ7+1kVpugsQDRVyqIwo3CJFs04hNf3TnyTbvMPofgMzGN
+         AlqBox4+gu8wNd+wDneX5djCFxAwssnyGEriQ5RjLgtFGHqBnvN3a0pou3dsVglfbjkd
+         4y1cu10c+h/ug7w5cJ4p8uQklZeUR1yLjk19+0anTkoscq76WU+DsFzFLnd1XvailJOo
+         ByKHTpqEZNS2pvjRdTvo4jPqxwdZ0UJ4BCIFHnOcpaP5tiQtIccZYxIY+Dr63ztgHQHx
+         VR1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tQkFGL0XDFRfUFUn+hfgyMvSdBv+O+SQSvUfUOZsWGc=;
-        b=m5pmTfg6OQx1QkFA8aAZ56qfe8MVG4YK0jQkrE/E9fNSX1Vk+4OzZtzIvI/8XB6hlj
-         VS1fTFSlaj0E13owGk0uvKPn1SF8c19K9WTZ4s7LUEMyFswpHlpbVyDmzMwCOxddXYzf
-         a/wNoGFPQ8m1+1LCZawiI03DeEKdfcRwTSpTNB2n7rltJrC/vmr/sTKkbHEXVawQbcin
-         Gx8rkK0bbWErKIZpXjXumQ0XDM/u5s5ti61jSJ/ZFtYaBdGuzxpEiv1wYITkHRXV2Emg
-         KyehJAZr2sIMvze8eknjJQbWMxmubm3Z9xcd0S/7noe5k4FPkUqhBg/Yf3gVKGdnfeDg
-         /9pg==
-X-Gm-Message-State: AOAM532SWW3pAVmaR/DDlDDhCwcDYTot6T93Cxey6JPD+84ukRKanpMd
-        YNf0tfVlGg0u72/jgziJQ5tHZULf9Y/F6ulTJ1ZAqQ==
-X-Google-Smtp-Source: ABdhPJxFcnxMsym+ODrdjo/sAR80MZBssvUBZYTC1Ydoe4+uK74fFf8Juxfuz6bcr46XzPf965ATqBLRvXSIoSwyenA=
-X-Received: by 2002:a05:6512:3e7:: with SMTP id n7mr2218700lfq.585.1605643467292;
- Tue, 17 Nov 2020 12:04:27 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=RrVnhY0xrtX6cR24sK+ovHu3EWIBRCE8PhOJl9rEWDw=;
+        b=NeczIB8cp69dH1nBlZcBUuelXJfhyxgIjTVEU4xFOnd5Z3QA2mwmttUhaopLHrLnrU
+         zSHZZDOBMTO6QjOFp+JqWTjm6RZrZ32BHPe1kunxeialunqAdDPGAicf8OY75tkvULE4
+         XnsyaXWBhHEuyFkyw0PPl0vyHbHwsfxPSVko0S2rkZLIjR81Ra4SSA5DHEP0NOMoAEbs
+         jyGMY6XniqlV1ztTh2f2Z1gCRBy+4nrRpLgm/DUkV19CmElID0S2W55LCmtJKtef/e54
+         DtGpG0g0qVWZS9IkpfvBwc2N26v5YtSJT9nQLqHdIOnWWCkyx28i8yznpeW6Yn/BlhVl
+         cTGA==
+X-Gm-Message-State: AOAM532BiOFmgcfxDc7AMNmcp/f94CYrIGu4NUp9qXggKK+APc8Fawen
+        ngyL/7cMLIv6NyrHTIdORqJU2A==
+X-Google-Smtp-Source: ABdhPJwSyOT/wgZnmmxQndxC5aRFDY7aF/v4m9IczY3MdDxKFtfG+54j0fELNhNf6ZdclQiK/Nyi3A==
+X-Received: by 2002:a05:6830:1308:: with SMTP id p8mr14898630otq.330.1605932905627;
+        Fri, 20 Nov 2020 20:28:25 -0800 (PST)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id t19sm2522035otp.51.2020.11.20.20.28.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Nov 2020 20:28:24 -0800 (PST)
+Date:   Fri, 20 Nov 2020 22:28:23 -0600
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/5] arm64: dts: sdm845: add oneplus 6/t devices
+Message-ID: <20201121042823.GM8532@builder.lan>
+References: <20201112161920.2671430-1-caleb@connolly.tech>
+ <20201112161920.2671430-4-caleb@connolly.tech>
 MIME-Version: 1.0
-References: <20201117175413.869871-1-linus.walleij@linaro.org> <20201117192414.GA15239@ravnborg.org>
-In-Reply-To: <20201117192414.GA15239@ravnborg.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 17 Nov 2020 21:04:16 +0100
-Message-ID: <CACRpkdbNeqTfTme9jygtdRnZuB=_3JN5HGr=LcrO94By-G7UHA@mail.gmail.com>
-Subject: Re: [PATCH] drm/mcde: Fix RGB/BGR bug
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Sean Paul <sean@poorly.run>, phone-devel@vger.kernel.org,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201112161920.2671430-4-caleb@connolly.tech>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Nov 17, 2020 at 8:24 PM Sam Ravnborg <sam@ravnborg.org> wrote:
+On Thu 12 Nov 10:21 CST 2020, Caleb Connolly wrote:
+[..]
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> new file mode 100644
+> index 000000000000..4e6477f1e574
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+> @@ -0,0 +1,822 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * SDM845 OnePlus 6(T) (enchilada / fajita) common device tree source
+> + *
+> + * Copyright (c) 2020, The Linux Foundation. All rights reserved.
+> + */
+> +
+> +/dts-v1/;
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+> +#include <dt-bindings/input/linux-event-codes.h>
 
-> > Cc: phone-devel@vger.kernel.org
-> > Cc: Stephan Gerhold <stephan@gerhold.net>
-> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Please keep these sorted alphabetically.
 
-> Fixes: ??
+> +#include "sdm845.dtsi"
+> +
+> +// Needed for some GPIO (like the volume buttons)
 
-It's no regression actually: for the current hardware we just
-invert the buffers twice and it looks OK. Buffers are declared
-BGR and then BGR-switched again by the DSI formatter.
+This is or is going to be needed for more things, so feel free to skip
+this comment.
 
-But when adding DPI (I have some two other patches on the
-list) this needs to be corrected.
+> +#include "pm8998.dtsi"
+> +#include "pmi8998.dtsi"
+> +
+> +/ {
+> +
+> +	aliases {
+> +		hsuart0 = &uart6;
+> +	};
+> +
+> +	vph_pwr: vph-pwr-regulator {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vph_pwr";
+> +		regulator-min-microvolt = <3700000>;
+> +		regulator-max-microvolt = <3700000>;
+> +	};
+> +
+> +	/*
+> +	 * Apparently RPMh does not provide support for PM8998 S4 because it
+> +	 * is always-on; model it as a fixed regulator.
+> +	 */
+> +	vreg_s4a_1p8: pm8998-smps4 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vreg_s4a_1p8";
+> +
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <1800000>;
+> +
+> +		regulator-always-on;
+> +		regulator-boot-on;
+> +
+> +		vin-supply = <&vph_pwr>;
+> +	};
+> +
+> +	/*
+> +	 * The touchscreen regulator seems to be controlled somehow by a gpio.
+> +	 */
+> +	ts_1p8_supply: ts_1v8_regulator {
 
-Yours,
-Linus Walleij
+Please don't use _ in the node name.
+
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "ts_1p8_supply";
+> +
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <1800000>;
+> +
+> +		gpio = <&tlmm 88 0>;
+> +		enable-active-high;
+> +		regulator-boot-on;
+> +	};
+> +
+> +	gpio_tristate_key: gpio-keys {
+> +		compatible = "gpio-keys";
+> +		label = "Tri-state keys";
+
+What kind of button is this?
+
+> +
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&tri_state_key_default>;
+> +
+> +		state-top {
+> +			label = "Tri-state key top";
+> +			linux,code = <KEY_MACRO1>;
+> +			interrupt-parent = <&tlmm>;
+> +			interrupts = <24 IRQ_TYPE_EDGE_FALLING>;
+> +			debounce-interval = <500>;
+> +			linux,can-disable;
+> +		};
+> +
+> +		state-middle {
+> +			label = "Tri-state key middle";
+> +			linux,code = <KEY_MACRO2>;
+> +			interrupt-parent = <&tlmm>;
+> +			interrupts = <52 IRQ_TYPE_EDGE_FALLING>;
+> +			debounce-interval = <500>;
+> +			linux,can-disable;
+> +		};
+> +
+> +		state-bottom {
+> +			label = "Tri-state key bottom";
+> +			linux,code = <KEY_MACRO3>;
+> +			interrupt-parent = <&tlmm>;
+> +			interrupts = <126 IRQ_TYPE_EDGE_FALLING>;
+> +			debounce-interval = <500>;
+> +			linux,can-disable;
+> +		};
+> +	};
+[..]
+> +/* Reserved memory changes */
+> +/delete-node/ &rmtfs_mem;
+> +
+> +/ {
+
+You already have one top-level section higher up, please group this in
+there as well.
+
+> +	reserved-memory {
+[..]
+> +&mdss {
+
+To avoid trouble finding your way around this file in the future I would
+prefer if you sorted the nodes alphabetically.
+
+> +	status = "okay";
+> +};
+> +
+[..]
+> +&i2c12 {
+> +	status = "okay";
+> +
+> +	touchscreen: synaptics-rmi4-i2c@20 {
+
+You don't reference &touchscreen, so please omit this..
+
+Regards,
+Bjorn
