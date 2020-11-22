@@ -2,108 +2,118 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5E01C56202
-	for <phone-devel@archiver.kernel.org>; Sun, 22 Nov 2020 12:20:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DBDE4C63798
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Nov 2020 18:00:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 817322078D
-	for <phone-devel@archiver.kernel.org>; Sun, 22 Nov 2020 12:20:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A092D21D91
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Nov 2020 18:00:12 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=connolly.tech header.i=@connolly.tech header.b="N9wfKYz9"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727634AbgKVMTo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 Nov 2020 07:19:44 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:42492 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727318AbgKVMTn (ORCPT
+        id S1728069AbgKVR7z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 Nov 2020 12:59:55 -0500
+Received: from mail-40134.protonmail.ch ([185.70.40.134]:15899 "EHLO
+        mail-40134.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727317AbgKVR7z (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 22 Nov 2020 07:19:43 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id E22721C0B92; Sun, 22 Nov 2020 13:19:40 +0100 (CET)
-Date:   Sun, 22 Nov 2020 13:19:40 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
-        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        martin_rysavy@centrum.cz, phone-devel@vger.kernel.org,
-        maemo-leste@lists.dyne.org
-Subject: Droid 4 in next-20201120: cpcap-usb-phy.0: could not initialize VBUS
- or ID IIO:
-Message-ID: <20201122121940.GA26145@duo.ucw.cz>
+        Sun, 22 Nov 2020 12:59:55 -0500
+Date:   Sun, 22 Nov 2020 17:59:44 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1606067987;
+        bh=0tDIIuf1Tt9UO5w2d7UPKWMd7FZ0ye8L9YX/ZJ0uO48=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=N9wfKYz9xQLTcAPvtTX7NH1mNJcxIOInJfKomsHFIQ6O4eZjlNIfHWG2cyw0hNIti
+         gPNQoCZ0l10nk9fpcdC46Ob7SMUr6JYkC6GU2aH18O8fzIpTCxcNVsnqbpmbslZR9i
+         n2v/z/qSRtJbnDTuG2b0X2jbSxTkzQdXak+buDYw=
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Akash Asthana <akashast@codeaurora.org>,
+        Mukesh Savaliya <msavaliy@codeaurora.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
+Reply-To: Caleb Connolly <caleb@connolly.tech>
+Subject: Re: [PATCH 5/5] i2c: geni: sdm845: dont perform DMA for OnePlus 6 devices
+Message-ID: <72a37c8c-12e4-eb51-2644-3436d19cf314@connolly.tech>
+In-Reply-To: <20201122034709.GA95182@builder.lan>
+References: <20201112161920.2671430-1-caleb@connolly.tech> <20201112161920.2671430-6-caleb@connolly.tech> <20201122034709.GA95182@builder.lan>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="gKMricLos+KVdGMg"
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Bjorn,
 
---gKMricLos+KVdGMg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It looks like I still have the same issue even with this patch applied.
 
-Hi!
+Regards,
+Caleb
 
-I'm getting this warning during boot:
+On 2020-11-22 03:47, Bjorn Andersson wrote:
+> On Thu 12 Nov 10:22 CST 2020, Caleb Connolly wrote:
+>
+>> The OnePlus 6/T has the same issue as the Yoga c630 causing a crash when=
+ DMA
+>> is used for i2c, so disable it.
+>>
+>> https://patchwork.kernel.org/patch/11133827/
+>>
+>> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+>> ---
+>>   drivers/i2c/busses/i2c-qcom-geni.c | 6 ++++--
+>>   1 file changed, 4 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c=
+-qcom-geni.c
+>> index 8b4c35f47a70..9acdcfe73be2 100644
+>> --- a/drivers/i2c/busses/i2c-qcom-geni.c
+>> +++ b/drivers/i2c/busses/i2c-qcom-geni.c
+>> @@ -357,7 +357,8 @@ static int geni_i2c_rx_one_msg(struct geni_i2c_dev *=
+gi2c, struct i2c_msg *msg,
+>>   =09struct geni_se *se =3D &gi2c->se;
+>>   =09size_t len =3D msg->len;
+>>
+>> -=09if (!of_machine_is_compatible("lenovo,yoga-c630"))
+>> +=09if (!of_machine_is_compatible("lenovo,yoga-c630") &&
+>> +=09    !of_machine_is_compatible("oneplus,oneplus6"))
+> This hack seems to have been working around two separate issues. First
+> with iommu active the GENI wrappers needs to have their stream mapping
+> configured. Secondly there was a bug in the transaction setup that was
+> recently fixed by Doug Anderson.
+>
+> So can you please give the following patch a go? I've yet to test it on
+> the Lenovo machine, but I think it allows us to remove the quirk.
+>
+> https://lore.kernel.org/lkml/20201122034149.626045-1-bjorn.andersson@lina=
+ro.org/T/#u
+>
+> Regards,
+> Bjorn
+>
+>>   =09=09dma_buf =3D i2c_get_dma_safe_msg_buf(msg, 32);
+>>
+>>   =09if (dma_buf)
+>> @@ -399,7 +400,8 @@ static int geni_i2c_tx_one_msg(struct geni_i2c_dev *=
+gi2c, struct i2c_msg *msg,
+>>   =09struct geni_se *se =3D &gi2c->se;
+>>   =09size_t len =3D msg->len;
+>>
+>> -=09if (!of_machine_is_compatible("lenovo,yoga-c630"))
+>> +=09if (!of_machine_is_compatible("lenovo,yoga-c630") &&
+>> +=09    !of_machine_is_compatible("oneplus,oneplus6"))
+>>   =09=09dma_buf =3D i2c_get_dma_safe_msg_buf(msg, 32);
+>>
+>>   =09if (dma_buf)
+>> --
+>> 2.29.2
+>>
+>>
 
-[    3.413299] gpio gpiochip1: Persistence not supported for GPIO 0
-[    3.419494] cpcap-usb-phy cpcap-usb-phy.0: could not initialize VBUS or =
-ID IIO: -517
-[    3.427398] ------------[ cut here ]------------
-[    3.432067] WARNING: CPU: 0 PID: 1 at drivers/regulator/core.c:2123 _reg=
-ulator_put.part.2+0x168/0x17c
-[    3.441406] Modules linked in:
-[    3.444519] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.10.0-rc4-next-20=
-201120-dirty #198
-[    3.452728] Hardware name: Generic OMAP4 (Flattened Device Tree)
-[    3.458801] [<c010db44>] (unwind_backtrace) from [<c0109ec0>] (show_stac=
-k+0x10/0x14)
-[    3.466613] [<c0109ec0>] (show_stack) from [<c095561c>] (dump_stack+0xb8=
-/0xd4)
-[    3.473876] [<c095561c>] (dump_stack) from [<c0953208>] (__warn+0xa8/0xd=
-0)
-[    3.480804] [<c0953208>] (__warn) from [<c095327c>] (warn_slowpath_fmt+0=
-x4c/0x98)
-[    3.488311] [<c095327c>] (warn_slowpath_fmt) from [<c0479b90>] (_regulat=
-or_put.part.2+0x168/0x17c)
-[    3.497344] [<c0479b90>] (_regulator_put.part.2) from [<c0479bcc>] (regu=
-lator_put+0x28/0x38)
-[    3.505828] [<c0479bcc>] (regulator_put) from [<c053a86c>] (release_node=
-s+0x1a0/0x248)
-[    3.513793] [<c053a86c>] (release_nodes) from [<c05366b8>] (really_probe=
-+0x104/0x3b4)
-[    3.521667] [<c05366b8>] (really_probe) from [<c0536acc>] (driver_probe_=
-device+0x58/0xb4)
-[    3.529907] [<c0536acc>] (driver_probe_device) from [<c0534b34>] (bus_fo=
-r_each_drv+0x70/0x94)
-[    3.538482] [<c0534b34>] (bus_for_each_drv) from [<c0536540>] (__device_=
-attach+0xbc/0x128)
 
-(and then cpcap does not work). Is my configuration missing something?
-
-Later I get warnings about framedone interrupt not being done (IIRC)
-=66rom HDMI audio module, and I have screen freezing in framebuffer.
-
-Any ideas?
-
-Best regards,
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
-
---gKMricLos+KVdGMg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX7pXXAAKCRAw5/Bqldv6
-8v2DAJ4479P2CJHSxpGpQflJ32jkWO6TjACgqBhdPnebCowchVQfHHPwU7Y3crc=
-=IraW
------END PGP SIGNATURE-----
-
---gKMricLos+KVdGMg--
