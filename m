@@ -2,134 +2,73 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18417C6379D
-	for <phone-devel@archiver.kernel.org>; Sun, 22 Nov 2020 03:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD02CC56202
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Nov 2020 12:00:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CF6F2207C3
-	for <phone-devel@archiver.kernel.org>; Sun, 22 Nov 2020 03:47:34 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aa2/Rh+J"
+	by mail.kernel.org (Postfix) with ESMTP id 7EA9B208C3
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Nov 2020 12:00:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727048AbgKVDrN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 21 Nov 2020 22:47:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37162 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726806AbgKVDrM (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 21 Nov 2020 22:47:12 -0500
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87199C0613D2
-        for <phone-devel@vger.kernel.org>; Sat, 21 Nov 2020 19:47:12 -0800 (PST)
-Received: by mail-oi1-x243.google.com with SMTP id d9so15681810oib.3
-        for <phone-devel@vger.kernel.org>; Sat, 21 Nov 2020 19:47:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=9bzkqkqMFaR/ganaOll7ayccgMCfPXmcey+XH9oBqhg=;
-        b=aa2/Rh+JjXLKi8OUwog4xO9t4g+KNYkAfuuj+e4dn2+GJUV22FxyxOP+W+aSsUQHJd
-         /J5tCHlSjhPU07SuSg/IaUNdNm9Sz9R5vdXBjLm0oEepLDdsguvbfbpTn+mquJgpJaGn
-         HRWye9BotTzdyGxQMmKCOKwbXLqWS4mbjal7C1UlQctSOS9OqSW3eeBtk1VQdlbiiwpe
-         fNC9p8EpUyyYsk9BCNZRaSyiGbc7P4Od3QuZbrn0OZYK7OTVDyfnyj3FdxF8YA6G8pf+
-         E9mFUn2m8kzTorSZ+pTa4jMAH7yv7hr1QCYLeh79trK/UrwnQMmsiolrATRkEnrcGK8c
-         LQfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=9bzkqkqMFaR/ganaOll7ayccgMCfPXmcey+XH9oBqhg=;
-        b=QJP0ov3OiS9j0a68CdBVEhnKV2Sgp4cIEWXi7PzOCIHKzs4AXmDt2ANYHhtRkKGNP0
-         /IAtkZvWM6VeQHTLtSmTikkQFKt4p2kRCdG0WCB5CBBB/DeqJDB7TvxZlP4ynyGpbsXf
-         0F2vup9y6CyZkAungdLRDHWGQI9/awF79RQmrzXCeWiPbq+8bQ1Jwc7Q3nBtysaJQ2x8
-         Q/rR4fLHkI2MCr5eXDYY0HiqPSNAAO96LLTh2+qrg58Q0VXJzDV2Ec4YWcceyxvca+JV
-         IGuTLJsx5HwucV7OALVdF8dR8BKcjBAJ5ZvW5nBAvyZi0xTnO9yH2BsYlc34LS3iMCch
-         og2g==
-X-Gm-Message-State: AOAM533iuEDYaE2tXLwgahkVDT6lndpS+9i6fB/9DWXs2iNLeUPhp2Xt
-        oM8s32ZTrSyBIV0cLzdI0+XLzQ==
-X-Google-Smtp-Source: ABdhPJyK8ijYdJrAvlJEIIfbU4CWi7ihqn3hpJ/dtK2uPElIoEjnF4OG5E6lHALphvX6ezKY3qBNZw==
-X-Received: by 2002:aca:ecca:: with SMTP id k193mr11308974oih.27.1606016831704;
-        Sat, 21 Nov 2020 19:47:11 -0800 (PST)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id 1sm4720133oig.16.2020.11.21.19.47.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Nov 2020 19:47:10 -0800 (PST)
-Date:   Sat, 21 Nov 2020 21:47:09 -0600
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Caleb Connolly <caleb@connolly.tech>
-Cc:     linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Akash Asthana <akashast@codeaurora.org>,
-        Mukesh Savaliya <msavaliy@codeaurora.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] i2c: geni: sdm845: dont perform DMA for OnePlus 6
- devices
-Message-ID: <20201122034709.GA95182@builder.lan>
-References: <20201112161920.2671430-1-caleb@connolly.tech>
- <20201112161920.2671430-6-caleb@connolly.tech>
+        id S1727424AbgKVMAd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 Nov 2020 07:00:33 -0500
+Received: from retiisi.eu ([95.216.213.190]:56310 "EHLO hillosipuli.retiisi.eu"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727318AbgKVMAd (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Sun, 22 Nov 2020 07:00:33 -0500
+X-Greylist: delayed 573 seconds by postgrey-1.27 at vger.kernel.org; Sun, 22 Nov 2020 07:00:32 EST
+Received: from valkosipuli.localdomain (unknown [IPv6:fd35:1bc8:1a6:d3d5::80:2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by hillosipuli.retiisi.eu (Postfix) with ESMTPS id A4F7A634C24;
+        Sun, 22 Nov 2020 13:50:28 +0200 (EET)
+Received: from sailus by valkosipuli.localdomain with local (Exim 4.92)
+        (envelope-from <sakari.ailus@retiisi.org.uk>)
+        id 1kgnsy-0001Fz-Vy; Sun, 22 Nov 2020 13:50:28 +0200
+Date:   Sun, 22 Nov 2020 13:50:28 +0200
+From:   Sakari Ailus <sakari.ailus@iki.fi>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        linux-leds@vger.kernel.org, newbytee@protonmail.com,
+        Stephan Gerhold <stephan@gerhold.net>,
+        linux-media@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 2/2 v5] leds: rt8515: Add Richtek RT8515 LED driver
+Message-ID: <20201122115028.GB4351@valkosipuli.retiisi.org.uk>
+References: <20201113124239.2667502-1-linus.walleij@linaro.org>
+ <20201113124239.2667502-2-linus.walleij@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201112161920.2671430-6-caleb@connolly.tech>
+In-Reply-To: <20201113124239.2667502-2-linus.walleij@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu 12 Nov 10:22 CST 2020, Caleb Connolly wrote:
+Hi Linus,
 
-> The OnePlus 6/T has the same issue as the Yoga c630 causing a crash when DMA
-> is used for i2c, so disable it.
-> 
-> https://patchwork.kernel.org/patch/11133827/
-> 
-> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
-> ---
->  drivers/i2c/busses/i2c-qcom-geni.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
-> index 8b4c35f47a70..9acdcfe73be2 100644
-> --- a/drivers/i2c/busses/i2c-qcom-geni.c
-> +++ b/drivers/i2c/busses/i2c-qcom-geni.c
-> @@ -357,7 +357,8 @@ static int geni_i2c_rx_one_msg(struct geni_i2c_dev *gi2c, struct i2c_msg *msg,
->  	struct geni_se *se = &gi2c->se;
->  	size_t len = msg->len;
->  
-> -	if (!of_machine_is_compatible("lenovo,yoga-c630"))
-> +	if (!of_machine_is_compatible("lenovo,yoga-c630") &&
-> +	    !of_machine_is_compatible("oneplus,oneplus6"))
+Thanks for the update.
 
-This hack seems to have been working around two separate issues. First
-with iommu active the GENI wrappers needs to have their stream mapping
-configured. Secondly there was a bug in the transaction setup that was
-recently fixed by Doug Anderson.
+On Fri, Nov 13, 2020 at 01:42:39PM +0100, Linus Walleij wrote:
+...
+> +static int rt8515_led_flash_strobe_set(struct led_classdev_flash *fled,
+> +				       bool state)
+> +{
+> +	struct rt8515 *rt = to_rt8515(fled);
+> +	struct led_flash_setting *timeout = &fled->timeout;
+> +	int brightness = 4; /* max 16 */
 
-So can you please give the following patch a go? I've yet to test it on
-the Lenovo machine, but I think it allows us to remove the quirk.
+Just a question on the unit --- did the other spec shed any light on what
+the relation between this setting and the current might be?
 
-https://lore.kernel.org/lkml/20201122034149.626045-1-bjorn.andersson@linaro.org/T/#u
+But if it's not known, or even estimated, then I guess you could use these
+values.
 
-Regards,
-Bjorn
+4 seems like a random number though. I'd use maximum as the default.
 
->  		dma_buf = i2c_get_dma_safe_msg_buf(msg, 32);
->  
->  	if (dma_buf)
-> @@ -399,7 +400,8 @@ static int geni_i2c_tx_one_msg(struct geni_i2c_dev *gi2c, struct i2c_msg *msg,
->  	struct geni_se *se = &gi2c->se;
->  	size_t len = msg->len;
->  
-> -	if (!of_machine_is_compatible("lenovo,yoga-c630"))
-> +	if (!of_machine_is_compatible("lenovo,yoga-c630") &&
-> +	    !of_machine_is_compatible("oneplus,oneplus6"))
->  		dma_buf = i2c_get_dma_safe_msg_buf(msg, 32);
->  
->  	if (dma_buf)
-> -- 
-> 2.29.2
-> 
-> 
+-- 
+Sakari Ailus
