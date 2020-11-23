@@ -2,172 +2,133 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE2D1C56202
-	for <phone-devel@archiver.kernel.org>; Mon, 23 Nov 2020 10:13:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50ECEC56202
+	for <phone-devel@archiver.kernel.org>; Mon, 23 Nov 2020 10:29:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4C4412078E
-	for <phone-devel@archiver.kernel.org>; Mon, 23 Nov 2020 10:13:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E06CB20731
+	for <phone-devel@archiver.kernel.org>; Mon, 23 Nov 2020 10:29:34 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zPiVI/dQ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ddt6tz3j"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728211AbgKWKNJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 23 Nov 2020 05:13:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34610 "EHLO
+        id S1728586AbgKWK26 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 23 Nov 2020 05:28:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728082AbgKWKNI (ORCPT
+        with ESMTP id S1728203AbgKWK25 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 23 Nov 2020 05:13:08 -0500
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70EACC0613CF
-        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2020 02:13:08 -0800 (PST)
-Received: by mail-yb1-xb44.google.com with SMTP id g15so15426963ybq.6
-        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2020 02:13:08 -0800 (PST)
+        Mon, 23 Nov 2020 05:28:57 -0500
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4899AC061A4E
+        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2020 02:28:56 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id u2so8620631pls.10
+        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2020 02:28:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Lvn4+bjYbxxCbS7L/QCzyvRpE+ItUgyiLMioWuZNw0g=;
-        b=zPiVI/dQ12Jth9bMBDSqmQOmWkH5ziZh0ycmMbl3yW9lANMDaBW/jc0DiVo/+1Mvtb
-         QnWJWQ+IrlF4J6L3qvAPtw8EmiuOa2Ez2vx43FJeiIdL1dA4qnGHNPVCJ9xsHsSmEpMT
-         eOiWC6867AktKIRRe+Rns4P22awgSl5t4FXtbH6TP98D/wiGPePxRw4JaqzwcV3j3onf
-         xqEmszGQRlsBMTY6yBsxwzDLcXoIe8LD7oMWL2hAy+++ltg/x8aCBlQ3CqMJTa3cJJ6Z
-         bK6O8vuUGEK5Pe7SgoSYTH44sHS1ABxvw2L0O1pMymtEOTzYttpkEA2wd6TZ8+B4xN0q
-         jX+A==
+        h=from:to:cc:subject:date:message-id;
+        bh=O0ThdxcJNO6zV2BphVWbiZgpVdrlhVR1MlXKPXk6EbI=;
+        b=Ddt6tz3jFBvHqbvtkEjGa7L62ThxISp2m8mvGVC+V1ccsa8/1Ot5o77bK78xEnPc0J
+         MH+t7qj5sfeU+eSLEx/bduYC1u6HCIpk1dzUPdVsFVLBc9GHQbjj6XWxYZNYEBYb8rPB
+         Pn8qhkZviZe2uOs3RGXTL0Qn15Uj/YBzZyn6etVgszZjSwAelMmM5Y9cPXeWQLynyXgo
+         mPeAQ/PyvMXJoMBd88T/Pd5Luhyg75lWegpDVhZuorfXkssRLWqEoYvkE0riB1N9K31U
+         VNJuwlKXFyjWMKcvzzc5dscMTaq2nbpZeZEZAwjz+pQT+C8Gl/p1s528maryBgipn02N
+         p4eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Lvn4+bjYbxxCbS7L/QCzyvRpE+ItUgyiLMioWuZNw0g=;
-        b=mRb7dIlA14qIHETRTvdxon4PAf6CEMt1GHY3qXryVVKpc9rZ7bAILGu5nduWxxcd38
-         zYZfXxsDeRBd7UueJI6YYIFQ0QaA1kyEURYKEgJRPzFLfOQ3j/RuYQUw0oMMmy96mzwM
-         1lDB9v+taOJ37w5OiyY2Gmj1vTe5WHnkGQaupGgD1pRMh1NTm9OVBdIamMVVor7W2Hwg
-         UGyZXpYyTBnSpG+DJgY0dUwofHOCcY78/O+85PwstqHt6lioGZcI+EYEhSMB6HktDxgU
-         nWVjD3RDVHmyAZh6ORg/YxvgCjMrfTiHi74ILcp1cr1EDuY9puLcoYrHLqjBwlWFDwgM
-         /oYQ==
-X-Gm-Message-State: AOAM532LQ7Y46bo+2autj1PfDyo09EVUtcqR1WG2tVDHqniXNTagNRXq
-        39B+oBMMeDyApk6LHKz7vOOiUNPr1//a03sCzSXYFw==
-X-Google-Smtp-Source: ABdhPJzIY/SaDA417dFn6lslJn7PBUUzQ1eYf5tPZpZKaIjf/lLLOk3BgqB+rXma5/8S4sS9JW8vit8t9UbXTS5zfrU=
-X-Received: by 2002:a25:c7c6:: with SMTP id w189mr32070799ybe.403.1606126387667;
- Mon, 23 Nov 2020 02:13:07 -0800 (PST)
-MIME-Version: 1.0
-References: <20201028221302.66583-1-kholk11@gmail.com>
-In-Reply-To: <20201028221302.66583-1-kholk11@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=O0ThdxcJNO6zV2BphVWbiZgpVdrlhVR1MlXKPXk6EbI=;
+        b=UADqgV5wBsDtMQkUEEDBDQG2MhCIwqqI7xXW+cT8K0rZaW2+fPGaTxmTsmimGP7jL+
+         dkrM1zqaNRo8VT71nRmM1oQcRF8gifbDN7SI2m9Sb5s5fWKhnE9+xpXUBV8DNVyG/ncK
+         H/3wQakGv8BDChyjdTuP/Cilrbz6DtF1yRGmoOFITt2tTSm3Dps44dV8gycqeTnDNEFm
+         TNaq1LA4Pc+NXIWQWaqabpL/PpjFCGDDu++gGVX+qgDCF8ikSZOrMBF5VLFPrG+niaOq
+         5zm6ir+cjnHuQ8IQi0hV9Swxohu4oxeg4GEUk83VO/Ek0rYSugNHNx1q+GmSMgOgmXvE
+         qTdA==
+X-Gm-Message-State: AOAM530+aolXMFiWbAzR6nxF7ZOh+1FCkwypBpj96Qhu8Q03wQlw/kK2
+        1CcCkM2FB9J2rl2LLNXD1t6xjg==
+X-Google-Smtp-Source: ABdhPJx5Okx2LQszu8quy1RjI/nmR2bxDLBqR3NRA4lVEd2Xmc3JlWdZObGlJnsZ/N141rt3QbbTLw==
+X-Received: by 2002:a17:902:8ec4:b029:d7:eb0d:84c0 with SMTP id x4-20020a1709028ec4b02900d7eb0d84c0mr22751917plo.23.1606127335664;
+        Mon, 23 Nov 2020 02:28:55 -0800 (PST)
+Received: from localhost.localdomain ([49.207.198.226])
+        by smtp.gmail.com with ESMTPSA id s18sm11907655pfc.5.2020.11.23.02.28.51
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 23 Nov 2020 02:28:55 -0800 (PST)
 From:   Amit Pundir <amit.pundir@linaro.org>
-Date:   Mon, 23 Nov 2020 15:42:32 +0530
-Message-ID: <CAMi1Hd1hh3NYuFTs3C39ha1Jy_0LxQ4Akg36sm0x1+uicWYRjQ@mail.gmail.com>
-Subject: Re: [PATCH v9 0/3] Add Novatek NT36xxx touchscreen driver
-To:     kholk11@gmail.com
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, rydberg@bitmath.org,
-        priv.luk@gmail.com, linux-input@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>, marijns95@gmail.com,
-        Konrad Dybcio <konradybcio@gmail.com>, martin.botka1@gmail.com,
-        phone-devel@vger.kernel.org, dt <devicetree@vger.kernel.org>,
-        krzk@kernel.org, andy.shevchenko@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        David S Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Cc:     John Stultz <john.stultz@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Konrad Dybcio <konradybcio@gmail.com>, Joel S <jo@jsfamily.in>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, phone-devel@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] ath10k: qmi: Skip host capability request for Xiaomi Poco F1
+Date:   Mon, 23 Nov 2020 15:58:49 +0530
+Message-Id: <1606127329-6942-1-git-send-email-amit.pundir@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
+Workaround to get WiFi working on Xiaomi Poco F1 (sdm845)
+phone. We get a non-fatal QMI_ERR_MALFORMED_MSG_V01 error
+message in ath10k_qmi_host_cap_send_sync(), but we can still
+bring up WiFi services successfully on AOSP if we ignore it.
 
-On Thu, 29 Oct 2020 at 06:32, <kholk11@gmail.com> wrote:
->
-> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
->
-> This patch series adds support for the Novatek NT36xxx Series' In-Cell
-> touchscreen (integrated into the DriverIC).
->
-> This patch series has been tested against the following devices:
->  - Sony Xperia 10        (SDM630 Ganges Kirin)
->  - Sony Xperia 10 Plus   (SDM636 Ganges Mermaid)
+We suspect either the host cap is not implemented or there
+may be firmware specific issues. Firmware version is
+QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1
 
-Tested the patch series on Xiaomi Poco F1 (SDM845 Beryllium) using
-Novatek NT36672A IC. May I suggest adding "novatek,nt36672a" in the
-list of compatible of_device_id{} as well.
+qcom,snoc-host-cap-8bit-quirk didn't help. If I use this
+quirk, then the host capability request does get accepted,
+but we run into fatal "msa info req rejected" error and
+WiFi interface doesn't come up.
 
-Regards,
-Amit Pundir
+Attempts are being made to debug the failure reasons but no
+luck so far. Hence this device specific workaround instead
+of checking for QMI_ERR_MALFORMED_MSG_V01 error message.
+Tried ath10k/WCN3990/hw1.0/wlanmdsp.mbn from the upstream
+linux-firmware project but it didn't help and neither did
+building board-2.bin file from stock bdwlan* files.
 
+This workaround will be removed once we have a viable fix.
+Thanks to postmarketOS guys for catching this.
 
->
-> Changes in v2:
-> - Fixed sparse warnings from lkp kernel test robot
->
-> Changes in v3 (as requested by Dmitry Torokhov):
-> - Using shorthand u16/u32 (sorry for the overlook!)
-> - Now using more input and touchscreen APIs
-> - Fixed useless workqueue involvements
-> - Removed useless locking
-> - Switched reads and writes to use regmap
-> - Moved header contents to nt36xxx.c
-> - Fixed reset gpio handling
-> - Other cleanups
-> - P.S.: Thanks, Dmitry!
->
-> Changes in v4:
-> - Fixed regmap read length for CRC_ERR_FLAG final check
-> - Fixed YAML binding, as requested by Krzysztof Kozlowski
->
-> Changes in v5:
-> - Replaced subsystem maintainer's name with .. mine,
->   usage of additionalProperties to unevaluatedProperties
->   and a typo fix for reset-gpios as per Rob Herring's review
-> - Changed compatible string as per Krzysztof K. request
-> - Renamed the novatek,nt36xxx.yaml file to just nt36xxx.yaml
->   in order to now reflect the driver name instead of the DT
->   compatible
-> - Fixed blank line at EOF
->
-> Changes in v6:
-> - Removed include of_gpio.h, added mod_devicetable.h and
->   gpio/consumer.h
-> - Added kerneldoc to relevant functions/enum
-> - Used traditional patterns for error checking where possible
-> - Documented calls to usleep/msleep
-> - Using be16_to_cpu / get_unaligned_be16 where possible
-> - Added helper for CRC error check on retrieved buffer
-> - Decreased indentation in the CRC reboot recovery function
-> - Removed instances of error code sum
-> - Dropped all likely/unlikely optimization as per request
-> - Removed redundant reset_gpio checks
-> - Dropped of_match_ptr and ifdefs for CONFIG_OF
->
-> Changes in v7:
-> - Fixed typo in nt36xxx.c
->
-> Changes in v8:
-> - Fixed typo reset-gpio -> reset-gpios in dt-bindings
->
-> Changes in v9:
-> - Includes are now sorted
-> - Used proposed sizeof variable instead of sizeof type
-> - Fixed a return value check for common pattern
-> - Added NULL check to devm_kasprintf call
-> - Returning ret on probe function to be consistent
->
-> AngeloGioacchino Del Regno (3):
->   dt-bindings: Add vendor prefix for Novatek Microelectronics Corp.
->   Input: Add Novatek NT36xxx touchscreen driver
->   dt-bindings: touchscreen: Add binding for Novatek NT36xxx series
->     driver
->
->  .../bindings/input/touchscreen/nt36xxx.yaml   |  59 ++
->  .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
->  drivers/input/touchscreen/Kconfig             |  12 +
->  drivers/input/touchscreen/Makefile            |   1 +
->  drivers/input/touchscreen/nt36xxx.c           | 894 ++++++++++++++++++
->  drivers/input/touchscreen/nt36xxx.h           | 122 +++
->  6 files changed, 1090 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml
->  create mode 100644 drivers/input/touchscreen/nt36xxx.c
->  create mode 100644 drivers/input/touchscreen/nt36xxx.h
->
-> --
-> 2.28.0
->
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+---
+We dropped this workaround last time in the favor of
+a generic dts quirk to skip host cap check. But that
+is under under discussion for a while now,
+https://lkml.org/lkml/2020/9/25/1119, so resending
+this short term workaround for the time being.
+
+v2: ath10k-check complained about a too long line last
+    time, so moved the comment to a new line.
+    
+ drivers/net/wireless/ath/ath10k/qmi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+index ae6b1f402adf..1c58b0ff1d29 100644
+--- a/drivers/net/wireless/ath/ath10k/qmi.c
++++ b/drivers/net/wireless/ath/ath10k/qmi.c
+@@ -653,7 +653,9 @@ static int ath10k_qmi_host_cap_send_sync(struct ath10k_qmi *qmi)
+ 
+ 	/* older FW didn't support this request, which is not fatal */
+ 	if (resp.resp.result != QMI_RESULT_SUCCESS_V01 &&
+-	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01) {
++	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01 &&
++	    /* Xiaomi Poco F1 workaround */
++	    !of_machine_is_compatible("xiaomi,beryllium")) {
+ 		ath10k_err(ar, "host capability request rejected: %d\n", resp.resp.error);
+ 		ret = -EINVAL;
+ 		goto out;
+-- 
+2.7.4
+
