@@ -2,133 +2,96 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50ECEC56202
-	for <phone-devel@archiver.kernel.org>; Mon, 23 Nov 2020 10:29:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34436C2D0E4
+	for <phone-devel@archiver.kernel.org>; Mon, 23 Nov 2020 13:49:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E06CB20731
-	for <phone-devel@archiver.kernel.org>; Mon, 23 Nov 2020 10:29:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C7C2620729
+	for <phone-devel@archiver.kernel.org>; Mon, 23 Nov 2020 13:49:20 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ddt6tz3j"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xyHkmCEB"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728586AbgKWK26 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 23 Nov 2020 05:28:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37042 "EHLO
+        id S1731409AbgKWNtU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 23 Nov 2020 08:49:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728203AbgKWK25 (ORCPT
+        with ESMTP id S1729975AbgKWNtU (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 23 Nov 2020 05:28:57 -0500
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4899AC061A4E
-        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2020 02:28:56 -0800 (PST)
-Received: by mail-pl1-x636.google.com with SMTP id u2so8620631pls.10
-        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2020 02:28:56 -0800 (PST)
+        Mon, 23 Nov 2020 08:49:20 -0500
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4E2AC061A4D
+        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2020 05:49:19 -0800 (PST)
+Received: by mail-lj1-x241.google.com with SMTP id o24so18041094ljj.6
+        for <phone-devel@vger.kernel.org>; Mon, 23 Nov 2020 05:49:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id;
-        bh=O0ThdxcJNO6zV2BphVWbiZgpVdrlhVR1MlXKPXk6EbI=;
-        b=Ddt6tz3jFBvHqbvtkEjGa7L62ThxISp2m8mvGVC+V1ccsa8/1Ot5o77bK78xEnPc0J
-         MH+t7qj5sfeU+eSLEx/bduYC1u6HCIpk1dzUPdVsFVLBc9GHQbjj6XWxYZNYEBYb8rPB
-         Pn8qhkZviZe2uOs3RGXTL0Qn15Uj/YBzZyn6etVgszZjSwAelMmM5Y9cPXeWQLynyXgo
-         mPeAQ/PyvMXJoMBd88T/Pd5Luhyg75lWegpDVhZuorfXkssRLWqEoYvkE0riB1N9K31U
-         VNJuwlKXFyjWMKcvzzc5dscMTaq2nbpZeZEZAwjz+pQT+C8Gl/p1s528maryBgipn02N
-         p4eA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cALLdyIGhIcYa+yZMOrmTa8LFbCTBghd/fpPDcmloEk=;
+        b=xyHkmCEBQ3MVFceIjt3I0NGS8o7fVNOGgPaId2vNfBysRauom0De6SfYwcKry5IBri
+         pNXnwileIREKxTPcxi/R+C832zSYhb2FySqt2+JlxigdhHrTEWBHP7BCiCNCGOWTnTCb
+         xRvkYkqOSxvow/ldk5fAIngGUFgGxAyRIvtAk9OdUKohjMCe0LpW3TaS+tQnT1Aw1Sw0
+         V7j7qpdN69H0UjkBk6uoJe0RaL+r606bGf0xq3IR29xtJTL4CRypONCyrgu+MShn7T+1
+         E5pp4Sp/uK7QKlrmOlVIaBqK7kWhLu/RG5OMK6G3mafhL8Qza3C6w+wNMuXkGp42POFM
+         Qqww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=O0ThdxcJNO6zV2BphVWbiZgpVdrlhVR1MlXKPXk6EbI=;
-        b=UADqgV5wBsDtMQkUEEDBDQG2MhCIwqqI7xXW+cT8K0rZaW2+fPGaTxmTsmimGP7jL+
-         dkrM1zqaNRo8VT71nRmM1oQcRF8gifbDN7SI2m9Sb5s5fWKhnE9+xpXUBV8DNVyG/ncK
-         H/3wQakGv8BDChyjdTuP/Cilrbz6DtF1yRGmoOFITt2tTSm3Dps44dV8gycqeTnDNEFm
-         TNaq1LA4Pc+NXIWQWaqabpL/PpjFCGDDu++gGVX+qgDCF8ikSZOrMBF5VLFPrG+niaOq
-         5zm6ir+cjnHuQ8IQi0hV9Swxohu4oxeg4GEUk83VO/Ek0rYSugNHNx1q+GmSMgOgmXvE
-         qTdA==
-X-Gm-Message-State: AOAM530+aolXMFiWbAzR6nxF7ZOh+1FCkwypBpj96Qhu8Q03wQlw/kK2
-        1CcCkM2FB9J2rl2LLNXD1t6xjg==
-X-Google-Smtp-Source: ABdhPJx5Okx2LQszu8quy1RjI/nmR2bxDLBqR3NRA4lVEd2Xmc3JlWdZObGlJnsZ/N141rt3QbbTLw==
-X-Received: by 2002:a17:902:8ec4:b029:d7:eb0d:84c0 with SMTP id x4-20020a1709028ec4b02900d7eb0d84c0mr22751917plo.23.1606127335664;
-        Mon, 23 Nov 2020 02:28:55 -0800 (PST)
-Received: from localhost.localdomain ([49.207.198.226])
-        by smtp.gmail.com with ESMTPSA id s18sm11907655pfc.5.2020.11.23.02.28.51
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 23 Nov 2020 02:28:55 -0800 (PST)
-From:   Amit Pundir <amit.pundir@linaro.org>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        David S Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Cc:     John Stultz <john.stultz@linaro.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Konrad Dybcio <konradybcio@gmail.com>, Joel S <jo@jsfamily.in>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, phone-devel@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2] ath10k: qmi: Skip host capability request for Xiaomi Poco F1
-Date:   Mon, 23 Nov 2020 15:58:49 +0530
-Message-Id: <1606127329-6942-1-git-send-email-amit.pundir@linaro.org>
-X-Mailer: git-send-email 2.7.4
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cALLdyIGhIcYa+yZMOrmTa8LFbCTBghd/fpPDcmloEk=;
+        b=imRkWripxfRVC0b+GoxM601gbFXaU8MPazl51nUdCIHO7V3XXraWb/C/KEjwiHVVS3
+         9SqKAOHd7e9N8v/0hHxTqmwdJwbgbMu5NwPuOwf2Irj42EPfuBUJLn1EVtGin9/xo5ud
+         /ZwzZ7QOKBT5np7PKuHdaG7yR82GGcarJmPz7xLlQre57/N/8qvfEGgMRB/OYLimNQI1
+         SI142V9cVYUsMF7UEb/5H3X6OjVtCCkrvjRg33L3N0a7D6llZAt1gP8O+Ajlm3atnCIy
+         ExHEUPC0LWaoTWyeTSxzaeVj+tXKI6/XTD1kdv+xm2dHg8F/tfBV1UTmgu1mVM33yCrw
+         +2vg==
+X-Gm-Message-State: AOAM532jaFNlhQ4HMqN2eo/RxQCk3NQU2f4LPKAYw18MynBgoszLK4fj
+        /CHQUfRhrFtcMzD/hzsDHH1nKKLtCTcYQxOUKt+KAA==
+X-Google-Smtp-Source: ABdhPJzFez98v9zAgNlGYnlrLONH8AqW1j6A8vSWChWi6qex8ZUVebcGav1oEn82K9ah23xBYE1S3711jwgwbsB32AU=
+X-Received: by 2002:a2e:321a:: with SMTP id y26mr13817426ljy.293.1606139356744;
+ Mon, 23 Nov 2020 05:49:16 -0800 (PST)
+MIME-Version: 1.0
+References: <20201113124239.2667502-1-linus.walleij@linaro.org>
+ <20201113124239.2667502-2-linus.walleij@linaro.org> <20201122115028.GB4351@valkosipuli.retiisi.org.uk>
+In-Reply-To: <20201122115028.GB4351@valkosipuli.retiisi.org.uk>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 23 Nov 2020 14:49:04 +0100
+Message-ID: <CACRpkdbju5M_atEmJTbg8bS+DuEawGs3m1CoVJkpMZzzF5gjEg@mail.gmail.com>
+Subject: Re: [PATCH 2/2 v5] leds: rt8515: Add Richtek RT8515 LED driver
+To:     Sakari Ailus <sakari.ailus@iki.fi>
+Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        newbytee@protonmail.com, Stephan Gerhold <stephan@gerhold.net>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Workaround to get WiFi working on Xiaomi Poco F1 (sdm845)
-phone. We get a non-fatal QMI_ERR_MALFORMED_MSG_V01 error
-message in ath10k_qmi_host_cap_send_sync(), but we can still
-bring up WiFi services successfully on AOSP if we ignore it.
+On Sun, Nov 22, 2020 at 12:50 PM Sakari Ailus <sakari.ailus@iki.fi> wrote:
 
-We suspect either the host cap is not implemented or there
-may be firmware specific issues. Firmware version is
-QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1
+> > +static int rt8515_led_flash_strobe_set(struct led_classdev_flash *fled,
+> > +                                    bool state)
+> > +{
+> > +     struct rt8515 *rt = to_rt8515(fled);
+> > +     struct led_flash_setting *timeout = &fled->timeout;
+> > +     int brightness = 4; /* max 16 */
+>
+> Just a question on the unit --- did the other spec shed any light on what
+> the relation between this setting and the current might be?
 
-qcom,snoc-host-cap-8bit-quirk didn't help. If I use this
-quirk, then the host capability request does get accepted,
-but we run into fatal "msa info req rejected" error and
-WiFi interface doesn't come up.
+They just say:
+"There are a total of 16 steps of current
+level which can be set by users."
 
-Attempts are being made to debug the failure reasons but no
-luck so far. Hence this device specific workaround instead
-of checking for QMI_ERR_MALFORMED_MSG_V01 error message.
-Tried ath10k/WCN3990/hw1.0/wlanmdsp.mbn from the upstream
-linux-firmware project but it didn't help and neither did
-building board-2.bin file from stock bdwlan* files.
+They do not say whether this is linear or not. So I have
+assumed linear. The above is just a bug, it should should be
+the configured max or max available of course. I'll fix!
 
-This workaround will be removed once we have a viable fix.
-Thanks to postmarketOS guys for catching this.
-
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
----
-We dropped this workaround last time in the favor of
-a generic dts quirk to skip host cap check. But that
-is under under discussion for a while now,
-https://lkml.org/lkml/2020/9/25/1119, so resending
-this short term workaround for the time being.
-
-v2: ath10k-check complained about a too long line last
-    time, so moved the comment to a new line.
-    
- drivers/net/wireless/ath/ath10k/qmi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-index ae6b1f402adf..1c58b0ff1d29 100644
---- a/drivers/net/wireless/ath/ath10k/qmi.c
-+++ b/drivers/net/wireless/ath/ath10k/qmi.c
-@@ -653,7 +653,9 @@ static int ath10k_qmi_host_cap_send_sync(struct ath10k_qmi *qmi)
- 
- 	/* older FW didn't support this request, which is not fatal */
- 	if (resp.resp.result != QMI_RESULT_SUCCESS_V01 &&
--	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01) {
-+	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01 &&
-+	    /* Xiaomi Poco F1 workaround */
-+	    !of_machine_is_compatible("xiaomi,beryllium")) {
- 		ath10k_err(ar, "host capability request rejected: %d\n", resp.resp.error);
- 		ret = -EINVAL;
- 		goto out;
--- 
-2.7.4
-
+Yours,
+Linus Walleij
