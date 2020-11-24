@@ -2,88 +2,153 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.2 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46C2FC2D0E4
-	for <phone-devel@archiver.kernel.org>; Mon, 23 Nov 2020 22:46:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 207CDC64E7A
+	for <phone-devel@archiver.kernel.org>; Tue, 24 Nov 2020 17:50:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0C63E20708
-	for <phone-devel@archiver.kernel.org>; Mon, 23 Nov 2020 22:46:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B9E9220757
+	for <phone-devel@archiver.kernel.org>; Tue, 24 Nov 2020 17:50:41 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CIAKGGvo"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733244AbgKWWqT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 23 Nov 2020 17:46:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38482 "EHLO
+        id S2404068AbgKXRui (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 24 Nov 2020 12:50:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732867AbgKWWqS (ORCPT
+        with ESMTP id S2404067AbgKXRue (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 23 Nov 2020 17:46:18 -0500
-X-Greylist: delayed 125720 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 Nov 2020 14:46:18 PST
-Received: from hillosipuli.retiisi.eu (unknown [IPv6:2a01:4f9:c010:4572::e8:2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40917C0613CF;
-        Mon, 23 Nov 2020 14:46:18 -0800 (PST)
-Received: from valkosipuli.localdomain (unknown [IPv6:fd35:1bc8:1a6:d3d5::80:2])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 3180F634C24;
-        Tue, 24 Nov 2020 00:45:43 +0200 (EET)
-Received: from sailus by valkosipuli.localdomain with local (Exim 4.92)
-        (envelope-from <sakari.ailus@retiisi.org.uk>)
-        id 1khKad-0001Se-Jj; Tue, 24 Nov 2020 00:45:43 +0200
-Date:   Tue, 24 Nov 2020 00:45:43 +0200
-From:   Sakari Ailus <sakari.ailus@iki.fi>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        linux-leds@vger.kernel.org, newbytee@protonmail.com,
-        Stephan Gerhold <stephan@gerhold.net>,
-        phone-devel@vger.kernel.org, linux-media@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2 v6] dt-bindings: leds: Add DT binding for Richtek
- RT8515
-Message-ID: <20201123224543.GC4351@valkosipuli.retiisi.org.uk>
-References: <20201123214439.1279464-1-linus.walleij@linaro.org>
+        Tue, 24 Nov 2020 12:50:34 -0500
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0616AC061A4E
+        for <phone-devel@vger.kernel.org>; Tue, 24 Nov 2020 09:50:33 -0800 (PST)
+Received: by mail-ot1-x344.google.com with SMTP id y24so14612821otk.3
+        for <phone-devel@vger.kernel.org>; Tue, 24 Nov 2020 09:50:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=CxnIfXHdix7GS8g6GFHW2wnM4FONLsoFnSqqsSh6GHc=;
+        b=CIAKGGvoM96bHX3qTKMq571WXskFxiweMjicyDzm9KHiiheeWHdpTze+EgY18uIFGx
+         TXFUYqijSsUYaxZiQcM7TYGH3z11FfmFvQNv2y3S2sIjM3xz6X9Dv3/H71SwBzYqqehJ
+         HzjZ8sV6azFHmOF4wsalz23pw0MbUDHblBMgZc1G4Mq3HT85EILFV28n0mWxd09wBj18
+         CBTshWNFG/8o2TuKB972+0ln4ohBt/IOIzkYBfbGgUBtgBnE0DZujjGJ3ECGLzzLonFi
+         a9nA/bXdldgtzi2sb+U0j2TAu+sT8TMQJG0Vwb/FZiGMNGbCzD3f292aS5hLoEeyqePk
+         yKYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=CxnIfXHdix7GS8g6GFHW2wnM4FONLsoFnSqqsSh6GHc=;
+        b=OZQJ0fN+G+J0NVx79TDsIG5rGb0ru18C7uTL6nv2d+a75g/kHuLeFEQeBjs4ArwtiJ
+         z+qlA90XTAvOb72bb3ms9hLsOgDmWh536T8N/mdfQjmMAXKdZhkOomRGED5AcO/B1+7O
+         WWZ5znRp6b0AxNUPkdkiV/+cXpuWJSRvCaq0wPx2i9neISlwW3rfKH5cy2+DUoJhnZW0
+         DwAhkTWsXXoA8xFWMpD9YEt4Doqce8nGeMO00IBrizY7KTpuil0xqnAJrWGeH0jkp0ne
+         5aRahjza0X9l6v5xKI3cllubdFByFdizFGjO4go1uamEHSQNh5bEn6PmwEagwzwrPh8J
+         iwfQ==
+X-Gm-Message-State: AOAM531ikC8Km3Ms+Pk4HwLKd7Q7B4FITurM3eX0zeXk7uUCbmjrhaWn
+        8UaQOniBvcNGZexEjefr+XC3OQ==
+X-Google-Smtp-Source: ABdhPJyZvx5cnvHRa/z/iiGkOzVz/4uQCaX+SxK6/doJ9JNN3u9FKbqfKaLVCF+7bhrzd4wOCRtp/w==
+X-Received: by 2002:a9d:3d06:: with SMTP id a6mr4103420otc.368.1606240232274;
+        Tue, 24 Nov 2020 09:50:32 -0800 (PST)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id t126sm9735070oih.51.2020.11.24.09.50.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2020 09:50:31 -0800 (PST)
+Date:   Tue, 24 Nov 2020 11:50:29 -0600
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Amit Pundir <amit.pundir@linaro.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        David S Miller <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>,
+        John Stultz <john.stultz@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Konrad Dybcio <konradybcio@gmail.com>, Joel S <jo@jsfamily.in>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, phone-devel@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] ath10k: qmi: Skip host capability request for Xiaomi
+ Poco F1
+Message-ID: <20201124175029.GF185852@builder.lan>
+References: <1606127329-6942-1-git-send-email-amit.pundir@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201123214439.1279464-1-linus.walleij@linaro.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <1606127329-6942-1-git-send-email-amit.pundir@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Linus,
+On Mon 23 Nov 04:28 CST 2020, Amit Pundir wrote:
 
-On Mon, Nov 23, 2020 at 10:44:38PM +0100, Linus Walleij wrote:
-> diff --git a/Documentation/devicetree/bindings/leds/common.yaml b/Documentation/devicetree/bindings/leds/common.yaml
-> index f1211e7045f1..92fa90b4a671 100644
-> --- a/Documentation/devicetree/bindings/leds/common.yaml
-> +++ b/Documentation/devicetree/bindings/leds/common.yaml
-> @@ -151,6 +151,12 @@ properties:
->        Maximum flash LED supply current in microamperes. Required for flash LED
->        nodes with configurable current.
+> Workaround to get WiFi working on Xiaomi Poco F1 (sdm845)
+> phone. We get a non-fatal QMI_ERR_MALFORMED_MSG_V01 error
+> message in ath10k_qmi_host_cap_send_sync(), but we can still
+> bring up WiFi services successfully on AOSP if we ignore it.
+> 
+> We suspect either the host cap is not implemented or there
+> may be firmware specific issues. Firmware version is
+> QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c3-00257-QCAHLSWMTPLZ-1
+> 
+> qcom,snoc-host-cap-8bit-quirk didn't help. If I use this
+> quirk, then the host capability request does get accepted,
+> but we run into fatal "msa info req rejected" error and
+> WiFi interface doesn't come up.
+> 
+> Attempts are being made to debug the failure reasons but no
+> luck so far. Hence this device specific workaround instead
+> of checking for QMI_ERR_MALFORMED_MSG_V01 error message.
+> Tried ath10k/WCN3990/hw1.0/wlanmdsp.mbn from the upstream
+> linux-firmware project but it didn't help and neither did
+> building board-2.bin file from stock bdwlan* files.
+> 
+> This workaround will be removed once we have a viable fix.
+> Thanks to postmarketOS guys for catching this.
+> 
+> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> ---
+> We dropped this workaround last time in the favor of
+> a generic dts quirk to skip host cap check. But that
+> is under under discussion for a while now,
+> https://lkml.org/lkml/2020/9/25/1119, so resending
+> this short term workaround for the time being.
+> 
+
+I still want the quirk, because we have this on other machines as well.
+
+> v2: ath10k-check complained about a too long line last
+>     time, so moved the comment to a new line.
+>     
+>  drivers/net/wireless/ath/ath10k/qmi.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+> index ae6b1f402adf..1c58b0ff1d29 100644
+> --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> @@ -653,7 +653,9 @@ static int ath10k_qmi_host_cap_send_sync(struct ath10k_qmi *qmi)
 >  
-> +  torch-max-microamp:
-> +    description:
-> +      Maximum flash LED supply current in microamperes, when the flash LED is
-> +      used as a torch (flashlight). This is usually lower than the flash mode
-> +      maximum current, if the LED supports torch mode.
+>  	/* older FW didn't support this request, which is not fatal */
+>  	if (resp.resp.result != QMI_RESULT_SUCCESS_V01 &&
+> -	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01) {
+> +	    resp.resp.error != QMI_ERR_NOT_SUPPORTED_V01 &&
+> +	    /* Xiaomi Poco F1 workaround */
 
-Thanks for the update.
+If we go with a temporary approach this comment should describe why this
+is here. (And it probably shouldn't be in the middle of the expression
+list in the conditional.
 
-One more thing. The other flash LED DT bindings are using led-max-microamp
-for the torch mode --- for it's what the non-flash LEDs do.
+Regards,
+Bjorn
 
-Could you use the same here?
-
-With that, for the set:
-
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-
--- 
-Kind regards,
-
-Sakari Ailus
+> +	    !of_machine_is_compatible("xiaomi,beryllium")) {
+>  		ath10k_err(ar, "host capability request rejected: %d\n", resp.resp.error);
+>  		ret = -EINVAL;
+>  		goto out;
+> -- 
+> 2.7.4
+> 
