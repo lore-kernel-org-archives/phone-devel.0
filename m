@@ -2,184 +2,255 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-17.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4033DC63798
-	for <phone-devel@archiver.kernel.org>; Thu, 26 Nov 2020 17:10:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2929DC63798
+	for <phone-devel@archiver.kernel.org>; Thu, 26 Nov 2020 17:15:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F23C121D1A
-	for <phone-devel@archiver.kernel.org>; Thu, 26 Nov 2020 17:10:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D773D221F8
+	for <phone-devel@archiver.kernel.org>; Thu, 26 Nov 2020 17:15:52 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jqIvnc/J"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="uRl2J2b9"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403958AbgKZRKK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 26 Nov 2020 12:10:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34634 "EHLO
+        id S2403979AbgKZRPg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 26 Nov 2020 12:15:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403791AbgKZRKJ (ORCPT
+        with ESMTP id S2391544AbgKZRPg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 26 Nov 2020 12:10:09 -0500
-Received: from mail-vk1-xa43.google.com (mail-vk1-xa43.google.com [IPv6:2607:f8b0:4864:20::a43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61195C0613D4;
-        Thu, 26 Nov 2020 09:10:09 -0800 (PST)
-Received: by mail-vk1-xa43.google.com with SMTP id m6so607409vkl.2;
-        Thu, 26 Nov 2020 09:10:09 -0800 (PST)
+        Thu, 26 Nov 2020 12:15:36 -0500
+Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49F6BC0613D4;
+        Thu, 26 Nov 2020 09:15:36 -0800 (PST)
+Received: by mail-ua1-x942.google.com with SMTP id q4so723520ual.8;
+        Thu, 26 Nov 2020 09:15:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=eiVvdawmrHkkFbsTAsLVy02rzVF/6bcsRLkbJ87vgq4=;
-        b=jqIvnc/J0peqmBZs3k7obuCMl2j29mfgb4YUuBWNztlZGYaIhpWfy6SGuarIeesLKN
-         d1wy50SZ/TprSJSAWhLiHdQG93Lh4qKVZhpPjXe4HC/hrOp2okCFluI3XP3+hS2Gq8U+
-         pz4NDHGDUKC7qLr9JbK5AHtiE9ysmyxoPi4KBav1txbU+fC1GEw/Rdp42yzqODTPpMZ+
-         QtJWnBLyRIl09y5YnGIiRpIEb3RNU2eCDEvYuaJgANV6b/TyKUbvjW3obbqBsIAwCeWh
-         QMLrAYlO0+iGL8JgVyqCiyBvv7ws+5whZ9uhw0S367VyPWp+AvOlsaget9wtHuo3kmXd
-         mH5A==
+        bh=pUVKuoWZA/P27xH4AfMqFfzecx2gpzbW2/mbWqy1KHY=;
+        b=uRl2J2b9fv3xQG4VNSHpc8v54V7XtD9frG75nRQiFYqqDW4MDOcGaInf4J9V6brt7r
+         lYSoUmwl3JmFL8EQyl+hs/xI73ABG3/BvcHi3MAEj6YNKwYS0QfpG01AZXhjc7xVypHW
+         qBTmSgBAJkfCoWHeBN/MiC6YqzpX4OsiOc/+iFHtCG8ZlZjoIaifxiq1+ZpOzPN1FSOt
+         GcuylkFVYSBGdjkFl2+0IMHPL2J7CWAmI4k/7C7Z8wuL3/8TnufWaP2k64ecLeSrrk73
+         RQVnTOGphtJeyEQu1VcVTgC49lmMKrb7I3kg3Fxt+nKoXr6a+NqJK09aFXnPYLWyE8Dc
+         dfVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=eiVvdawmrHkkFbsTAsLVy02rzVF/6bcsRLkbJ87vgq4=;
-        b=uSaMN30uASs5sEoQsVMmDtAs1WU4dE12BD75MCBENsUVlE2VK+UG9eOv7u43+76H1C
-         2Gdx484yOgvrbFLs2pN38qwlhSd3/n6qGVPzfOI733CGHIDuEUgHsiUW3oivngZpUnhR
-         bDex42HnuM2Ici7tk07yoUzfIZTt6KV8lbrWehCIJ8bPIMJ9J2HtOxh98wvxY2Q3PU5R
-         oJvo2TC5m0rtccbOs0OItHyalVP+3I/8g7mMeB1QXP9qBISfHLLqEp5e6bxtyqnOCwj8
-         JmW7p7hYejzJVipT2UGBFrj1fcchhy/cWBL7VoWxsgQasCso/nHl1xv0+rTwBdfny7s3
-         yfzQ==
-X-Gm-Message-State: AOAM533xvL5qKkV+PGwW/Tm4aMFEYqS0I6fZM2UXLC6po1Za/mE2eaLX
-        YoPI1W+eenbNwN1/HO5C7YZNGL6xbYsVYkUqi1Q=
-X-Google-Smtp-Source: ABdhPJyBK5JvfFayn6xTjWYBLJT53TYMBwMWS0VfffWnSMcMiikLUZqjlHbyJDFIv9mPlR+t/ORQ2ppJO8dBmi2qn14=
-X-Received: by 2002:a1f:1e46:: with SMTP id e67mr2668290vke.8.1606410608466;
- Thu, 26 Nov 2020 09:10:08 -0800 (PST)
+        bh=pUVKuoWZA/P27xH4AfMqFfzecx2gpzbW2/mbWqy1KHY=;
+        b=C58YzkeSmo8goUc9/UNvIKNP3IHLmUSbjCvv9OJ1yVkNBNDd++i9Ul9S0Jfy0VTSbz
+         XNIJqKcuDAV10rNnanE/z/HL6Jg8dVX4zTKu1f0w9F3A3g7eA+rbnnKE4CH5rdj9spHI
+         NSSWYvcZQgT/NfRD/w2K+Cwt/rr/wU3puIv/4UOLY9npCJfQyTJvPUORD0o81oDFX8xn
+         72mWWKwzfFLXLNpzyz5aiCptFBshk8PATg/bZmzjSCV//IdV7Y4+nK/tsAoWtMbDLwQA
+         k/LFnbU6DLjxoppwRYyCk2dPcPxdoog88cgDLzmzyaky6vN3vO/xnzpyJqeU2pTOv4SY
+         xlBw==
+X-Gm-Message-State: AOAM5335CyX/4B/hpwqfvhgJlFkgCWkoU58G4QhC7K3vwFmFcpZdv7t0
+        QInJ0mRicIJXmAHLa9jtoOrbPDbypnJykGqpnnosDHQc1uk=
+X-Google-Smtp-Source: ABdhPJzG/FdsWLFORa9ZtHNjvUVR7Wu+zJF5b1sD7g0IThUu6UfgA2wiLw3YWNthTclOPNh4f3BUMaS1rCz75Z4iC1w=
+X-Received: by 2002:ab0:743:: with SMTP id h61mr2350174uah.4.1606410935365;
+ Thu, 26 Nov 2020 09:15:35 -0800 (PST)
 MIME-Version: 1.0
-References: <20201028221302.66583-1-kholk11@gmail.com> <CAMi1Hd1hh3NYuFTs3C39ha1Jy_0LxQ4Akg36sm0x1+uicWYRjQ@mail.gmail.com>
-In-Reply-To: <CAMi1Hd1hh3NYuFTs3C39ha1Jy_0LxQ4Akg36sm0x1+uicWYRjQ@mail.gmail.com>
+References: <20201029172947.34315-1-kholk11@gmail.com> <20201029172947.34315-3-kholk11@gmail.com>
+ <20201104214806.GA4175708@bogus>
+In-Reply-To: <20201104214806.GA4175708@bogus>
 From:   AngeloGioacchino Del Regno <kholk11@gmail.com>
-Date:   Thu, 26 Nov 2020 18:09:57 +0100
-Message-ID: <CAK7fi1a3m_5aT=G4BpPFqU53Z4j9s_FkVtp0qQ8C3xbQ8W4Y1Q@mail.gmail.com>
-Subject: Re: [PATCH v9 0/3] Add Novatek NT36xxx touchscreen driver
-To:     Amit Pundir <amit.pundir@linaro.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, rydberg@bitmath.org,
-        priv.luk@gmail.com, linux-input@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>, marijns95@gmail.com,
+Date:   Thu, 26 Nov 2020 18:15:22 +0100
+Message-ID: <CAK7fi1a_Gtu9Bt_E6=5no7XKg4dsySz4tiuPzSYhR7mE2PHLrw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] media: dt-bindings: media: i2c: Add IMX300 CMOS
+ sensor binding
+To:     Rob Herring <robh@kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>, marijns95@gmail.com,
         Konrad Dybcio <konradybcio@gmail.com>, martin.botka1@gmail.com,
-        phone-devel@vger.kernel.org, dt <devicetree@vger.kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        andy.shevchenko@gmail.com
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        linux-media <linux-media@vger.kernel.org>,
+        phone-devel@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il giorno lun 23 nov 2020 alle ore 11:13 Amit Pundir
-<amit.pundir@linaro.org> ha scritto:
+Il giorno mer 4 nov 2020 alle ore 22:48 Rob Herring <robh@kernel.org>
+ha scritto:
 >
-> Hi,
->
-> On Thu, 29 Oct 2020 at 06:32, <kholk11@gmail.com> wrote:
-> >
+> On Thu, Oct 29, 2020 at 06:29:47PM +0100, kholk11@gmail.com wrote:
 > > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 > >
-> > This patch series adds support for the Novatek NT36xxx Series' In-Cell
-> > touchscreen (integrated into the DriverIC).
+> > Add YAML device tree binding for IMX300 CMOS image sensor, and
+> > the relevant MAINTAINERS entries.
 > >
-> > This patch series has been tested against the following devices:
-> >  - Sony Xperia 10        (SDM630 Ganges Kirin)
-> >  - Sony Xperia 10 Plus   (SDM636 Ganges Mermaid)
+> > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> > ---
+> >  .../bindings/media/i2c/sony,imx300.yaml       | 112 ++++++++++++++++++
+> >  MAINTAINERS                                   |   7 ++
+> >  2 files changed, 119 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
+> > new file mode 100644
+> > index 000000000000..8f1d795f8072
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
+> > @@ -0,0 +1,112 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/media/i2c/sony,imx300.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Sony 1/2.3-Inch 8Mpixel Stacked CMOS Digital Image Sensor
+> > +
+> > +maintainers:
+> > +  - AngeloGioacchino Del Regno <kholk11@gmail.com>
+> > +
+> > +description: |-
+> > +  The Sony IMX300 is a 1/2.3-inch Stacked CMOS (Exmor-RS) digital image
+> > +  sensor with a pixel size of 1.08um and an active array size of
+> > +  5948H x 4140V. It is programmable through I2C interface at address 0x10.
+> > +  Image data is sent through MIPI CSI-2, which is configured as either 2 or
+> > +  4 data lanes.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: sony,imx300
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  clocks:
+> > +    maxItems: 1
+> > +
+> > +  vdig-supply:
+> > +    description:
+> > +      Digital I/O voltage supply, 1.15-1.20 volts
+> > +
+> > +  vana-supply:
+> > +    description:
+> > +      Analog voltage supply, 2.2 volts
+> > +
+> > +  vddl-supply:
+> > +    description:
+> > +      Digital core voltage supply, 1.8 volts
+> > +
+> > +  reset-gpios:
 >
-> Tested the patch series on Xiaomi Poco F1 (SDM845 Beryllium) using
-> Novatek NT36672A IC. May I suggest adding "novatek,nt36672a" in the
-> list of compatible of_device_id{} as well.
+> maxItems: 1
+Agreed.
+
 >
-> Regards,
-> Amit Pundir
+> > +    description: |-
+> > +      Reference to the GPIO connected to the xclr pin, if any.
+> > +      Must be released (set high) after all supplies are applied.
+> > +
+> > +  # See ../video-interfaces.txt for more details
+> > +  port:
+> > +    type: object
+> > +    properties:
+> > +      endpoint:
+> > +        type: object
+> > +
+> > +        properties:
+> > +          data-lanes:
+> > +            description: |-
+> > +              The sensor supports either two-lane, or four-lane operation,
+> > +              but the driver currently supports only four-lane.
 >
+> What the driver is not relevant. Please define all possible
+> configurations. Or just omit? What's the behavior if omitted?
 >
+I wrote this as to document the hardware (there is no datasheet around and
+I fear that findings will be forgotten one day)... but if you say it's
+not relevant...
+...well, then I can as well just write it in my local notes and remove the info
+from here.
+
+> > +            items:
+> > +              - const: 0
+> > +              - const: 1
+> > +              - const: 2
+> > +              - const: 3
+> > +
+> > +          clock-noncontinuous: true
+> > +
+> > +          link-frequencies:
+> > +            $ref: /schemas/types.yaml#/definitions/uint64-array
+> > +            description:
+> > +              Allowed data bus frequencies. The driver currently needs
+> > +              to switch between 780000000 and 480000000 Hz in order to
+> > +              guarantee functionality of all modes.
+> > +
+> > +        required:
+> > +          - link-frequencies
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - clocks
+> > +  - vana-supply
+> > +  - vdig-supply
+> > +  - vddl-supply
+> > +  - port
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    i2c0 {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        imx300: sensor@10 {
+> > +            compatible = "sony,imx300";
+> > +            reg = <0x10>;
+> > +            clocks = <&imx300_xclk>;
+> > +            vana-supply = <&imx300_vana>;   /* 2.2v */
+> > +            vdig-supply = <&imx300_vdig>;   /* 1.2v */
+> > +            vddl-supply = <&imx300_vddl>;   /* 1.8v */
+> > +
+> > +            port {
+> > +                imx300_0: endpoint {
+> > +                    remote-endpoint = <&csi1_ep>;
+> > +                    data-lanes = <0 1 2 3>;
+> > +                    clock-noncontinuous;
+> > +                    link-frequencies = /bits/ 64 <780000000 480000000>;
+> > +                };
+> > +            };
+> > +        };
+> > +    };
+> > +
+> > +...
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index c66710dd7e0a..21ba41db0063 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -16279,6 +16279,13 @@ T:   git git://linuxtv.org/media_tree.git
+> >  F:   Documentation/devicetree/bindings/media/i2c/imx290.txt
+> >  F:   drivers/media/i2c/imx290.c
 > >
-> > Changes in v2:
-> > - Fixed sparse warnings from lkp kernel test robot
-> >
-> > Changes in v3 (as requested by Dmitry Torokhov):
-> > - Using shorthand u16/u32 (sorry for the overlook!)
-> > - Now using more input and touchscreen APIs
-> > - Fixed useless workqueue involvements
-> > - Removed useless locking
-> > - Switched reads and writes to use regmap
-> > - Moved header contents to nt36xxx.c
-> > - Fixed reset gpio handling
-> > - Other cleanups
-> > - P.S.: Thanks, Dmitry!
-> >
-> > Changes in v4:
-> > - Fixed regmap read length for CRC_ERR_FLAG final check
-> > - Fixed YAML binding, as requested by Krzysztof Kozlowski
-> >
-> > Changes in v5:
-> > - Replaced subsystem maintainer's name with .. mine,
-> >   usage of additionalProperties to unevaluatedProperties
-> >   and a typo fix for reset-gpios as per Rob Herring's review
-> > - Changed compatible string as per Krzysztof K. request
-> > - Renamed the novatek,nt36xxx.yaml file to just nt36xxx.yaml
-> >   in order to now reflect the driver name instead of the DT
-> >   compatible
-> > - Fixed blank line at EOF
-> >
-> > Changes in v6:
-> > - Removed include of_gpio.h, added mod_devicetable.h and
-> >   gpio/consumer.h
-> > - Added kerneldoc to relevant functions/enum
-> > - Used traditional patterns for error checking where possible
-> > - Documented calls to usleep/msleep
-> > - Using be16_to_cpu / get_unaligned_be16 where possible
-> > - Added helper for CRC error check on retrieved buffer
-> > - Decreased indentation in the CRC reboot recovery function
-> > - Removed instances of error code sum
-> > - Dropped all likely/unlikely optimization as per request
-> > - Removed redundant reset_gpio checks
-> > - Dropped of_match_ptr and ifdefs for CONFIG_OF
-> >
-> > Changes in v7:
-> > - Fixed typo in nt36xxx.c
-> >
-> > Changes in v8:
-> > - Fixed typo reset-gpio -> reset-gpios in dt-bindings
-> >
-> > Changes in v9:
-> > - Includes are now sorted
-> > - Used proposed sizeof variable instead of sizeof type
-> > - Fixed a return value check for common pattern
-> > - Added NULL check to devm_kasprintf call
-> > - Returning ret on probe function to be consistent
-> >
-> > AngeloGioacchino Del Regno (3):
-> >   dt-bindings: Add vendor prefix for Novatek Microelectronics Corp.
-> >   Input: Add Novatek NT36xxx touchscreen driver
-> >   dt-bindings: touchscreen: Add binding for Novatek NT36xxx series
-> >     driver
-> >
-> >  .../bindings/input/touchscreen/nt36xxx.yaml   |  59 ++
-> >  .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
-> >  drivers/input/touchscreen/Kconfig             |  12 +
-> >  drivers/input/touchscreen/Makefile            |   1 +
-> >  drivers/input/touchscreen/nt36xxx.c           | 894 ++++++++++++++++++
-> >  drivers/input/touchscreen/nt36xxx.h           | 122 +++
-> >  6 files changed, 1090 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml
-> >  create mode 100644 drivers/input/touchscreen/nt36xxx.c
-> >  create mode 100644 drivers/input/touchscreen/nt36xxx.h
-> >
+> > +SONY IMX300 SENSOR DRIVER
+> > +M:   AngeloGioacchino Del Regno <kholk11@gmail.com>
+> > +L:   linux-media@vger.kernel.org
+> > +S:   Maintained
+> > +F:   Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
+> > +F:   drivers/media/i2c/imx300.c
+> > +
+> >  SONY IMX319 SENSOR DRIVER
+> >  M:   Bingbu Cao <bingbu.cao@intel.com>
+> >  L:   linux-media@vger.kernel.org
 > > --
 > > 2.28.0
 > >
-Mind releasing a Tested-By tag for this?
 
-Anyway, I was suggested to add a compatible only for the "oldest" IC that
-is supported in this driver, since there is autodetection, that's why you see
-only the 36525 compatible here!
+Also, I'm sorry for the *very* late reply. I've been busy quite a lot
+in these days!
+By the way, I'll push a v3 for this one ASAP!
 
 Yours,
 Angelo
