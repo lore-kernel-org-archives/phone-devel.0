@@ -2,255 +2,445 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2929DC63798
-	for <phone-devel@archiver.kernel.org>; Thu, 26 Nov 2020 17:15:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08C2FC64E7A
+	for <phone-devel@archiver.kernel.org>; Thu, 26 Nov 2020 18:55:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D773D221F8
-	for <phone-devel@archiver.kernel.org>; Thu, 26 Nov 2020 17:15:52 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="uRl2J2b9"
+	by mail.kernel.org (Postfix) with ESMTP id C5627221F7
+	for <phone-devel@archiver.kernel.org>; Thu, 26 Nov 2020 18:55:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403979AbgKZRPg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 26 Nov 2020 12:15:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35476 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391544AbgKZRPg (ORCPT
+        id S2405055AbgKZSy6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 26 Nov 2020 13:54:58 -0500
+Received: from m-r2.th.seeweb.it ([5.144.164.171]:60915 "EHLO
+        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404956AbgKZSy6 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 26 Nov 2020 12:15:36 -0500
-Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49F6BC0613D4;
-        Thu, 26 Nov 2020 09:15:36 -0800 (PST)
-Received: by mail-ua1-x942.google.com with SMTP id q4so723520ual.8;
-        Thu, 26 Nov 2020 09:15:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pUVKuoWZA/P27xH4AfMqFfzecx2gpzbW2/mbWqy1KHY=;
-        b=uRl2J2b9fv3xQG4VNSHpc8v54V7XtD9frG75nRQiFYqqDW4MDOcGaInf4J9V6brt7r
-         lYSoUmwl3JmFL8EQyl+hs/xI73ABG3/BvcHi3MAEj6YNKwYS0QfpG01AZXhjc7xVypHW
-         qBTmSgBAJkfCoWHeBN/MiC6YqzpX4OsiOc/+iFHtCG8ZlZjoIaifxiq1+ZpOzPN1FSOt
-         GcuylkFVYSBGdjkFl2+0IMHPL2J7CWAmI4k/7C7Z8wuL3/8TnufWaP2k64ecLeSrrk73
-         RQVnTOGphtJeyEQu1VcVTgC49lmMKrb7I3kg3Fxt+nKoXr6a+NqJK09aFXnPYLWyE8Dc
-         dfVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pUVKuoWZA/P27xH4AfMqFfzecx2gpzbW2/mbWqy1KHY=;
-        b=C58YzkeSmo8goUc9/UNvIKNP3IHLmUSbjCvv9OJ1yVkNBNDd++i9Ul9S0Jfy0VTSbz
-         XNIJqKcuDAV10rNnanE/z/HL6Jg8dVX4zTKu1f0w9F3A3g7eA+rbnnKE4CH5rdj9spHI
-         NSSWYvcZQgT/NfRD/w2K+Cwt/rr/wU3puIv/4UOLY9npCJfQyTJvPUORD0o81oDFX8xn
-         72mWWKwzfFLXLNpzyz5aiCptFBshk8PATg/bZmzjSCV//IdV7Y4+nK/tsAoWtMbDLwQA
-         k/LFnbU6DLjxoppwRYyCk2dPcPxdoog88cgDLzmzyaky6vN3vO/xnzpyJqeU2pTOv4SY
-         xlBw==
-X-Gm-Message-State: AOAM5335CyX/4B/hpwqfvhgJlFkgCWkoU58G4QhC7K3vwFmFcpZdv7t0
-        QInJ0mRicIJXmAHLa9jtoOrbPDbypnJykGqpnnosDHQc1uk=
-X-Google-Smtp-Source: ABdhPJzG/FdsWLFORa9ZtHNjvUVR7Wu+zJF5b1sD7g0IThUu6UfgA2wiLw3YWNthTclOPNh4f3BUMaS1rCz75Z4iC1w=
-X-Received: by 2002:ab0:743:: with SMTP id h61mr2350174uah.4.1606410935365;
- Thu, 26 Nov 2020 09:15:35 -0800 (PST)
+        Thu, 26 Nov 2020 13:54:58 -0500
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 53D6340635;
+        Thu, 26 Nov 2020 19:46:37 +0100 (CET)
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-pm@vger.kernel.org, ulf.hansson@linaro.org,
+        jorge.ramirez-ortiz@linaro.org, broonie@kernel.org,
+        lgirdwood@gmail.com, daniel.lezcano@linaro.org, nks@flawful.org,
+        bjorn.andersson@linaro.org, agross@kernel.org, robh+dt@kernel.org,
+        viresh.kumar@linaro.org, rjw@rjwysocki.net,
+        konrad.dybcio@somainline.org, martin.botka@somainline.org,
+        marijn.suijten@somainline.org, phone-devel@vger.kernel.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: [PATCH 11/13] dt-bindings: cpufreq: Convert qcom-cpufreq-hw to YAML binding
+Date:   Thu, 26 Nov 2020 19:45:57 +0100
+Message-Id: <20201126184559.3052375-12-angelogioacchino.delregno@somainline.org>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20201126184559.3052375-1-angelogioacchino.delregno@somainline.org>
+References: <20201126184559.3052375-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
-References: <20201029172947.34315-1-kholk11@gmail.com> <20201029172947.34315-3-kholk11@gmail.com>
- <20201104214806.GA4175708@bogus>
-In-Reply-To: <20201104214806.GA4175708@bogus>
-From:   AngeloGioacchino Del Regno <kholk11@gmail.com>
-Date:   Thu, 26 Nov 2020 18:15:22 +0100
-Message-ID: <CAK7fi1a_Gtu9Bt_E6=5no7XKg4dsySz4tiuPzSYhR7mE2PHLrw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] media: dt-bindings: media: i2c: Add IMX300 CMOS
- sensor binding
-To:     Rob Herring <robh@kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>, marijns95@gmail.com,
-        Konrad Dybcio <konradybcio@gmail.com>, martin.botka1@gmail.com,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        linux-media <linux-media@vger.kernel.org>,
-        phone-devel@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il giorno mer 4 nov 2020 alle ore 22:48 Rob Herring <robh@kernel.org>
-ha scritto:
->
-> On Thu, Oct 29, 2020 at 06:29:47PM +0100, kholk11@gmail.com wrote:
-> > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> >
-> > Add YAML device tree binding for IMX300 CMOS image sensor, and
-> > the relevant MAINTAINERS entries.
-> >
-> > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> > ---
-> >  .../bindings/media/i2c/sony,imx300.yaml       | 112 ++++++++++++++++++
-> >  MAINTAINERS                                   |   7 ++
-> >  2 files changed, 119 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-> > new file mode 100644
-> > index 000000000000..8f1d795f8072
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-> > @@ -0,0 +1,112 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/media/i2c/sony,imx300.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Sony 1/2.3-Inch 8Mpixel Stacked CMOS Digital Image Sensor
-> > +
-> > +maintainers:
-> > +  - AngeloGioacchino Del Regno <kholk11@gmail.com>
-> > +
-> > +description: |-
-> > +  The Sony IMX300 is a 1/2.3-inch Stacked CMOS (Exmor-RS) digital image
-> > +  sensor with a pixel size of 1.08um and an active array size of
-> > +  5948H x 4140V. It is programmable through I2C interface at address 0x10.
-> > +  Image data is sent through MIPI CSI-2, which is configured as either 2 or
-> > +  4 data lanes.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: sony,imx300
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  clocks:
-> > +    maxItems: 1
-> > +
-> > +  vdig-supply:
-> > +    description:
-> > +      Digital I/O voltage supply, 1.15-1.20 volts
-> > +
-> > +  vana-supply:
-> > +    description:
-> > +      Analog voltage supply, 2.2 volts
-> > +
-> > +  vddl-supply:
-> > +    description:
-> > +      Digital core voltage supply, 1.8 volts
-> > +
-> > +  reset-gpios:
->
-> maxItems: 1
-Agreed.
+Convert the qcom-cpufreq-hw documentation to YAML binding as
+qcom,cpufreq-hw.yaml.
 
->
-> > +    description: |-
-> > +      Reference to the GPIO connected to the xclr pin, if any.
-> > +      Must be released (set high) after all supplies are applied.
-> > +
-> > +  # See ../video-interfaces.txt for more details
-> > +  port:
-> > +    type: object
-> > +    properties:
-> > +      endpoint:
-> > +        type: object
-> > +
-> > +        properties:
-> > +          data-lanes:
-> > +            description: |-
-> > +              The sensor supports either two-lane, or four-lane operation,
-> > +              but the driver currently supports only four-lane.
->
-> What the driver is not relevant. Please define all possible
-> configurations. Or just omit? What's the behavior if omitted?
->
-I wrote this as to document the hardware (there is no datasheet around and
-I fear that findings will be forgotten one day)... but if you say it's
-not relevant...
-...well, then I can as well just write it in my local notes and remove the info
-from here.
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
+ .../bindings/cpufreq/cpufreq-qcom-hw.txt      | 173 +---------------
+ .../bindings/cpufreq/qcom,cpufreq-hw.yaml     | 196 ++++++++++++++++++
+ 2 files changed, 197 insertions(+), 172 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
 
-> > +            items:
-> > +              - const: 0
-> > +              - const: 1
-> > +              - const: 2
-> > +              - const: 3
-> > +
-> > +          clock-noncontinuous: true
-> > +
-> > +          link-frequencies:
-> > +            $ref: /schemas/types.yaml#/definitions/uint64-array
-> > +            description:
-> > +              Allowed data bus frequencies. The driver currently needs
-> > +              to switch between 780000000 and 480000000 Hz in order to
-> > +              guarantee functionality of all modes.
-> > +
-> > +        required:
-> > +          - link-frequencies
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - clocks
-> > +  - vana-supply
-> > +  - vdig-supply
-> > +  - vddl-supply
-> > +  - port
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    i2c0 {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        imx300: sensor@10 {
-> > +            compatible = "sony,imx300";
-> > +            reg = <0x10>;
-> > +            clocks = <&imx300_xclk>;
-> > +            vana-supply = <&imx300_vana>;   /* 2.2v */
-> > +            vdig-supply = <&imx300_vdig>;   /* 1.2v */
-> > +            vddl-supply = <&imx300_vddl>;   /* 1.8v */
-> > +
-> > +            port {
-> > +                imx300_0: endpoint {
-> > +                    remote-endpoint = <&csi1_ep>;
-> > +                    data-lanes = <0 1 2 3>;
-> > +                    clock-noncontinuous;
-> > +                    link-frequencies = /bits/ 64 <780000000 480000000>;
-> > +                };
-> > +            };
-> > +        };
-> > +    };
-> > +
-> > +...
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index c66710dd7e0a..21ba41db0063 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -16279,6 +16279,13 @@ T:   git git://linuxtv.org/media_tree.git
-> >  F:   Documentation/devicetree/bindings/media/i2c/imx290.txt
-> >  F:   drivers/media/i2c/imx290.c
-> >
-> > +SONY IMX300 SENSOR DRIVER
-> > +M:   AngeloGioacchino Del Regno <kholk11@gmail.com>
-> > +L:   linux-media@vger.kernel.org
-> > +S:   Maintained
-> > +F:   Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-> > +F:   drivers/media/i2c/imx300.c
-> > +
-> >  SONY IMX319 SENSOR DRIVER
-> >  M:   Bingbu Cao <bingbu.cao@intel.com>
-> >  L:   linux-media@vger.kernel.org
-> > --
-> > 2.28.0
-> >
+diff --git a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.txt b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.txt
+index 9299028ee712..bd4e81f6f835 100644
+--- a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.txt
++++ b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.txt
+@@ -1,172 +1 @@
+-Qualcomm Technologies, Inc. CPUFREQ Bindings
+-
+-CPUFREQ HW is a hardware engine used by some Qualcomm Technologies, Inc. (QTI)
+-SoCs to manage frequency in hardware. It is capable of controlling frequency
+-for multiple clusters.
+-
+-Properties:
+-- compatible
+-	Usage:		required
+-	Value type:	<string>
+-	Definition:	must be "qcom,cpufreq-hw" or "qcom,cpufreq-epss".
+-
+-- clocks
+-	Usage:		required
+-	Value type:	<phandle> From common clock binding.
+-	Definition:	clock handle for XO clock and GPLL0 clock.
+-
+-- clock-names
+-	Usage:		required
+-	Value type:	<string> From common clock binding.
+-	Definition:	must be "xo", "alternate".
+-
+-- reg
+-	Usage:		required
+-	Value type:	<prop-encoded-array>
+-	Definition:	Addresses and sizes for the memory of the HW bases in
+-			each frequency domain.
+-- reg-names
+-	Usage:		Optional
+-	Value type:	<string>
+-	Definition:	Frequency domain name i.e.
+-			"freq-domain0", "freq-domain1".
+-
+-- #freq-domain-cells:
+-	Usage:		required.
+-	Definition:	Number of cells in a freqency domain specifier.
+-
+-* Property qcom,freq-domain
+-Devices supporting freq-domain must set their "qcom,freq-domain" property with
+-phandle to a cpufreq_hw followed by the Domain ID(0/1) in the CPU DT node.
+-
+-
+-Example:
+-
+-Example 1: Dual-cluster, Quad-core per cluster. CPUs within a cluster switch
+-DCVS state together.
+-
+-/ {
+-	cpus {
+-		#address-cells = <2>;
+-		#size-cells = <0>;
+-
+-		CPU0: cpu@0 {
+-			device_type = "cpu";
+-			compatible = "qcom,kryo385";
+-			reg = <0x0 0x0>;
+-			enable-method = "psci";
+-			next-level-cache = <&L2_0>;
+-			qcom,freq-domain = <&cpufreq_hw 0>;
+-			L2_0: l2-cache {
+-				compatible = "cache";
+-				next-level-cache = <&L3_0>;
+-				L3_0: l3-cache {
+-				      compatible = "cache";
+-				};
+-			};
+-		};
+-
+-		CPU1: cpu@100 {
+-			device_type = "cpu";
+-			compatible = "qcom,kryo385";
+-			reg = <0x0 0x100>;
+-			enable-method = "psci";
+-			next-level-cache = <&L2_100>;
+-			qcom,freq-domain = <&cpufreq_hw 0>;
+-			L2_100: l2-cache {
+-				compatible = "cache";
+-				next-level-cache = <&L3_0>;
+-			};
+-		};
+-
+-		CPU2: cpu@200 {
+-			device_type = "cpu";
+-			compatible = "qcom,kryo385";
+-			reg = <0x0 0x200>;
+-			enable-method = "psci";
+-			next-level-cache = <&L2_200>;
+-			qcom,freq-domain = <&cpufreq_hw 0>;
+-			L2_200: l2-cache {
+-				compatible = "cache";
+-				next-level-cache = <&L3_0>;
+-			};
+-		};
+-
+-		CPU3: cpu@300 {
+-			device_type = "cpu";
+-			compatible = "qcom,kryo385";
+-			reg = <0x0 0x300>;
+-			enable-method = "psci";
+-			next-level-cache = <&L2_300>;
+-			qcom,freq-domain = <&cpufreq_hw 0>;
+-			L2_300: l2-cache {
+-				compatible = "cache";
+-				next-level-cache = <&L3_0>;
+-			};
+-		};
+-
+-		CPU4: cpu@400 {
+-			device_type = "cpu";
+-			compatible = "qcom,kryo385";
+-			reg = <0x0 0x400>;
+-			enable-method = "psci";
+-			next-level-cache = <&L2_400>;
+-			qcom,freq-domain = <&cpufreq_hw 1>;
+-			L2_400: l2-cache {
+-				compatible = "cache";
+-				next-level-cache = <&L3_0>;
+-			};
+-		};
+-
+-		CPU5: cpu@500 {
+-			device_type = "cpu";
+-			compatible = "qcom,kryo385";
+-			reg = <0x0 0x500>;
+-			enable-method = "psci";
+-			next-level-cache = <&L2_500>;
+-			qcom,freq-domain = <&cpufreq_hw 1>;
+-			L2_500: l2-cache {
+-				compatible = "cache";
+-				next-level-cache = <&L3_0>;
+-			};
+-		};
+-
+-		CPU6: cpu@600 {
+-			device_type = "cpu";
+-			compatible = "qcom,kryo385";
+-			reg = <0x0 0x600>;
+-			enable-method = "psci";
+-			next-level-cache = <&L2_600>;
+-			qcom,freq-domain = <&cpufreq_hw 1>;
+-			L2_600: l2-cache {
+-				compatible = "cache";
+-				next-level-cache = <&L3_0>;
+-			};
+-		};
+-
+-		CPU7: cpu@700 {
+-			device_type = "cpu";
+-			compatible = "qcom,kryo385";
+-			reg = <0x0 0x700>;
+-			enable-method = "psci";
+-			next-level-cache = <&L2_700>;
+-			qcom,freq-domain = <&cpufreq_hw 1>;
+-			L2_700: l2-cache {
+-				compatible = "cache";
+-				next-level-cache = <&L3_0>;
+-			};
+-		};
+-	};
+-
+- soc {
+-	cpufreq_hw: cpufreq@17d43000 {
+-		compatible = "qcom,cpufreq-hw";
+-		reg = <0x17d43000 0x1400>, <0x17d45800 0x1400>;
+-		reg-names = "freq-domain0", "freq-domain1";
+-
+-		clocks = <&rpmhcc RPMH_CXO_CLK>, <&gcc GPLL0>;
+-		clock-names = "xo", "alternate";
+-
+-		#freq-domain-cells = <1>;
+-	};
+-}
++This file has been moved to qcom,cpufreq-hw.yaml
+diff --git a/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml b/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
+new file mode 100644
+index 000000000000..94a56317b14b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
+@@ -0,0 +1,196 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/cpufreq/qcom,cpufreq-hw.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++
++title: Qualcomm Technologies, Inc. CPUFREQ HW Bindings
++
++description: |
++  CPUFREQ HW is a hardware engine used by some Qualcomm Technologies, Inc. (QTI)
++  SoCs to manage frequency in hardware. It is capable of controlling frequency
++  for multiple clusters.
++
++maintainers:
++  - TBD
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - qcom,cpufreq-hw
++          - qcom,cpufreq-hw-8998
++          - qcom,cpufreq-epss
++
++  reg:
++    minItems: 2
++    maxItems: 2
++
++  reg-names:
++    description:
++      Frequency domain register region for each domain.
++    items:
++      - const: "freq-domain0"
++      - const: "freq-domain1"
++
++  clock-names:
++    - const: xo
++    - const: ref
++
++  clocks:
++    maxItems: 2
++
++  '#freq-domain-cells':
++    description: Number of cells in a freqency domain specifier.
++    const: 1
++
++  operating-points-v2: true
++
++  qcom,freq-domain:
++    $ref: '/schemas/types.yaml#/definitions/phandle'
++    description: |
++      Devices supporting freq-domain must set their "qcom,freq-domain"
++      property with phandle to a cpufreq_hw followed by the Domain ID(0/1)
++      in the CPU DT node.
++
++required:
++  - compatible
++  - reg
++  - clock-names
++  - clocks
++  - "#freq-domain-cells"
++
++additionalProperties: false
++
++examples:
++  - |
++    // Example 1: Dual-cluster, Quad-core per cluster. CPUs within a
++    //            cluster switch DCVS state together.
++
++    #include <dt-bindings/clock/qcom,rpmh.h>
++    #include <dt-bindings/clock/qcom,gcc-sc7180.h>
++
++    cpus {
++        #address-cells = <2>;
++        #size-cells = <0>;
++
++        CPU0: cpu@0 {
++            device_type = "cpu";
++            compatible = "qcom,kryo385";
++            reg = <0x0 0x0>;
++            enable-method = "psci";
++            next-level-cache = <&L2_0>;
++            qcom,freq-domain = <&cpufreq_hw 0>;
++            L2_0: l2-cache {
++                compatible = "cache";
++                next-level-cache = <&L3_0>;
++                L3_0: l3-cache {
++                      compatible = "cache";
++                };
++            };
++        };
++
++        CPU1: cpu@100 {
++            device_type = "cpu";
++            compatible = "qcom,kryo385";
++            reg = <0x0 0x100>;
++            enable-method = "psci";
++            next-level-cache = <&L2_100>;
++            qcom,freq-domain = <&cpufreq_hw 0>;
++            L2_100: l2-cache {
++                compatible = "cache";
++                next-level-cache = <&L3_0>;
++            };
++        };
++
++        CPU2: cpu@200 {
++            device_type = "cpu";
++            compatible = "qcom,kryo385";
++            reg = <0x0 0x200>;
++            enable-method = "psci";
++            next-level-cache = <&L2_200>;
++            qcom,freq-domain = <&cpufreq_hw 0>;
++            L2_200: l2-cache {
++                compatible = "cache";
++                next-level-cache = <&L3_0>;
++            };
++        };
++
++        CPU3: cpu@300 {
++            device_type = "cpu";
++            compatible = "qcom,kryo385";
++            reg = <0x0 0x300>;
++            enable-method = "psci";
++            next-level-cache = <&L2_300>;
++            qcom,freq-domain = <&cpufreq_hw 0>;
++            L2_300: l2-cache {
++                compatible = "cache";
++                next-level-cache = <&L3_0>;
++            };
++        };
++
++        CPU4: cpu@400 {
++            device_type = "cpu";
++            compatible = "qcom,kryo385";
++            reg = <0x0 0x400>;
++            enable-method = "psci";
++            next-level-cache = <&L2_400>;
++            qcom,freq-domain = <&cpufreq_hw 1>;
++            L2_400: l2-cache {
++                compatible = "cache";
++                next-level-cache = <&L3_0>;
++            };
++        };
++
++        CPU5: cpu@500 {
++            device_type = "cpu";
++            compatible = "qcom,kryo385";
++            reg = <0x0 0x500>;
++            enable-method = "psci";
++            next-level-cache = <&L2_500>;
++            qcom,freq-domain = <&cpufreq_hw 1>;
++            L2_500: l2-cache {
++                compatible = "cache";
++                next-level-cache = <&L3_0>;
++            };
++        };
++
++        CPU6: cpu@600 {
++            device_type = "cpu";
++            compatible = "qcom,kryo385";
++            reg = <0x0 0x600>;
++            enable-method = "psci";
++            next-level-cache = <&L2_600>;
++            qcom,freq-domain = <&cpufreq_hw 1>;
++            L2_600: l2-cache {
++                compatible = "cache";
++                next-level-cache = <&L3_0>;
++            };
++        };
++
++        CPU7: cpu@700 {
++            device_type = "cpu";
++            compatible = "qcom,kryo385";
++            reg = <0x0 0x700>;
++            enable-method = "psci";
++            next-level-cache = <&L2_700>;
++            qcom,freq-domain = <&cpufreq_hw 1>;
++            L2_700: l2-cache {
++                compatible = "cache";
++                next-level-cache = <&L3_0>;
++            };
++        };
++    };
++
++    soc {
++        cpufreq_hw: cpufreq@17d43000 {
++            compatible = "qcom,cpufreq-hw";
++            reg = <0x17d43000 0x1400>, <0x17d45800 0x1400>;
++            reg-names = "freq-domain0", "freq-domain1";
++
++            clocks = <&rpmhcc RPMH_CXO_CLK>, <&gcc GPLL0>;
++            clock-names = "xo", "alternate";
++
++            #freq-domain-cells = <1>;
++    };
++...
+-- 
+2.29.2
 
-Also, I'm sorry for the *very* late reply. I've been busy quite a lot
-in these days!
-By the way, I'll push a v3 for this one ASAP!
-
-Yours,
-Angelo
