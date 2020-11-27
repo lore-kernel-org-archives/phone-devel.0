@@ -2,245 +2,124 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-22.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,NICE_REPLY_A,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7B5EC2D0E4
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Nov 2020 08:33:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72A97C3E8C5
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Nov 2020 22:33:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4D435221FF
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Nov 2020 08:33:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 313DE2223D
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Nov 2020 22:33:56 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JaNyx2ie"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hv7hKNXh"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726099AbgK0IdV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Nov 2020 03:33:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34676 "EHLO
+        id S1731032AbgK0WdH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Nov 2020 17:33:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728443AbgK0IdR (ORCPT
+        with ESMTP id S1731664AbgK0Wb1 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Nov 2020 03:33:17 -0500
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 553FBC0613D4
-        for <phone-devel@vger.kernel.org>; Fri, 27 Nov 2020 00:33:17 -0800 (PST)
-Received: by mail-lj1-x243.google.com with SMTP id o24so5032557ljj.6
-        for <phone-devel@vger.kernel.org>; Fri, 27 Nov 2020 00:33:17 -0800 (PST)
+        Fri, 27 Nov 2020 17:31:27 -0500
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BFD6C0613D1;
+        Fri, 27 Nov 2020 14:31:02 -0800 (PST)
+Received: by mail-wr1-x442.google.com with SMTP id s8so7006732wrw.10;
+        Fri, 27 Nov 2020 14:31:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=I+H3fJkSgBlTxVS9rYGiWqkCeTc902bQ8DxJtfiOThs=;
-        b=JaNyx2iexljpy6hvd6XlycFhYx1R1ajuk05YStvrMMnQP/z0iRfim4o+y5JA83ZvQU
-         oPtXdVDvKiErUG4esJL8MT/OHrL8CJVZE8/CuuXCdm58viyAu4FN3JgBerHXJufYCNS6
-         WEZadT+mgedJBTHaQur/O+/qcmt3pwoQ8uO6Iv+mCexAdSfnDe1/h8naM9AF+RCBhTSo
-         H0uumXW9QK1vuJMOyAF5pwlmQOdySf1g+i6R1IB50y7LqPuGZiGhW9JqgEb5s13fC+jC
-         7XvDJ9wNH70gBzi5HivLV3Jr4UGcPOR/0s8rzeXKBIf7Xz5eV/gz91tzjUvf+s5CMGIv
-         hUZw==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=usJ3A0+AEcyPFYMCun2w2vVyj54EaMcegACm6ZHIIqs=;
+        b=Hv7hKNXh5ewYlUwLqPovTxP6piN42zRTWsKdKi5VP9nO3DAsJgEZw7P0N2geE2AeBL
+         AS2jPRT6ZA2AG/W6q3BrZ2nF2kpwcXcY8sV+u6VTnZIDQz6eqR5/kV/Qaf+vAb9LmIDg
+         bkdL9mPxcK+Ev2fXorKKP+BLG5DUkL/2gkmmvHZPIL6/tEfoJWAmaSkHgqWOzUOr+mtC
+         5qo0ROEIh9sNN+vBBIr09isyGQFXnDsMto9JgpR8XajmU0klF6iUtI5jWGPt09q+B/y4
+         wC6LgLiuA9O7GDBJpwynh4W2zDbmx1W2ApYyqTHmqdPT+LH45AQDXXe8I8vNitPZvq/7
+         8TfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=I+H3fJkSgBlTxVS9rYGiWqkCeTc902bQ8DxJtfiOThs=;
-        b=tG0iHL5hbAR2lmYS7lBzpDSZT6cxWAw58kXIyEOrVEkd12JiI6QilK90x4N/EKC3wd
-         +PTePKcgPhLHnIdaiDJSsEBf2dt9jevLgepZOPOeERMd4KezvhEhditTc7ky5X1JfZ4b
-         PKsTMNNTQDIrxEl+3+1Zi5aCUd0Ld8hInBpm3S+TlwjgcTf1IopGLyuUSHHBJKVLmhbV
-         2Kph9BkGRcOGlCf7b9mY1/esJ4XpTiMTpQIaF+XsmeyFeSn3pgH2l2bu2oq1rRsg3/Sg
-         zTKrROEHL6pH9obUJX82UDSIyf8DwG+uWQXrPtJwOCvC5zna4tfrgfRShWLI5cyHbsaJ
-         ZarQ==
-X-Gm-Message-State: AOAM532c1bz3T+zqeYtscmHDVA5OUWy4a9mo/pOlSWGbTo2SOcyXeb9T
-        Y/o4Gx53NHu6Ysl/aJu6BSnWnw==
-X-Google-Smtp-Source: ABdhPJySdztVzZF4ZsyqH58OsuTk1YILpaMSPVYlTJztjSDF9Ypk6ZiDca43rxm3cE4op+/Xg1sMJA==
-X-Received: by 2002:a2e:9550:: with SMTP id t16mr2735829ljh.117.1606465995753;
-        Fri, 27 Nov 2020 00:33:15 -0800 (PST)
-Received: from [192.168.118.216] ([85.249.45.205])
-        by smtp.gmail.com with ESMTPSA id w72sm606592lff.89.2020.11.27.00.33.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Nov 2020 00:33:15 -0800 (PST)
-Subject: Re: [PATCH v2 2/2] media: dt-bindings: media: i2c: Add IMX300 CMOS
- sensor binding
-To:     kholk11@gmail.com, mchehab@kernel.org
-Cc:     robh+dt@kernel.org, marijns95@gmail.com, konradybcio@gmail.com,
-        martin.botka1@gmail.com, devicetree@vger.kernel.org,
-        linux-media@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20201029172947.34315-1-kholk11@gmail.com>
- <20201029172947.34315-3-kholk11@gmail.com>
-From:   Andrey Konovalov <andrey.konovalov@linaro.org>
-Message-ID: <8d3f5fb3-802d-0e54-3854-9c119dbd0ed4@linaro.org>
-Date:   Fri, 27 Nov 2020 11:33:12 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        bh=usJ3A0+AEcyPFYMCun2w2vVyj54EaMcegACm6ZHIIqs=;
+        b=jEzlYsobkFIl7XIDu956om6zxA50LfRfp4E7Jj0BXI2uzowXrEcECyo4pc1ZnNsUfW
+         nAAr4FJW+7bdXAvPnzX0s+6f9sZYjfgqUid7hOJR9ORupmDy6K7lqHZDWgXxqRlWsF2T
+         Y/WqLPtsXpu+JIJsywELMfWMQyqHXftkHW5+rcSOnKBcKctsHDq+q8xu/wmiOJSpwVJM
+         o/2TDOnQJyx0eaBSpNRUOhi7H/TpvTc1NhexRT8kZmgsaA+L6a2o9nIaqAYEydwftKR7
+         GxymziFplXhVam3S51vX+paucO2WYJcCZlPV0QNOwxWJMOeOxnQaBKQsgviuKG2jwieM
+         I3sA==
+X-Gm-Message-State: AOAM530tEDOHtolEg50T1QWZfRVgBAABRDWY5rTGuoY97Zb+ek+LzTxa
+        Zp3l2h/wG9jwHvk9J1Lulz0=
+X-Google-Smtp-Source: ABdhPJyMvlVKabX/YwPo/pxpexAiMvONIINt4aYxVa0VIzBxunZlG4sFzih0FyqVnqn+xh0XV9opIw==
+X-Received: by 2002:a05:6000:120c:: with SMTP id e12mr13777860wrx.59.1606516261315;
+        Fri, 27 Nov 2020 14:31:01 -0800 (PST)
+Received: from IcarusMOD.eternityproject.eu ([2.237.20.237])
+        by smtp.gmail.com with ESMTPSA id v188sm3308696wmb.20.2020.11.27.14.30.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2020 14:31:00 -0800 (PST)
+From:   kholk11@gmail.com
+To:     mchehab@kernel.org
+Cc:     robh+dt@kernel.org, marijn.suijten@somainline.org,
+        konrad.dybcio@somainline.org, martin.botka@somainline.org,
+        devicetree@vger.kernel.org, linux-media@vger.kernel.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        sakari.ailus@iki.fi, andrey.konovalov@linaro.org,
+        angelogioacchino.delregno@somainline.org, kholk11@gmail.com
+Subject: [PATCH v3 0/2] Add support for the Sony Exmor-RS IMX300 camera sensor
+Date:   Fri, 27 Nov 2020 23:30:45 +0100
+Message-Id: <20201127223047.2764643-1-kholk11@gmail.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <20201029172947.34315-3-kholk11@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi AngeloGioacchino,
+From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-On 29.10.2020 20:29, kholk11@gmail.com wrote:
-> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> 
-> Add YAML device tree binding for IMX300 CMOS image sensor, and
-> the relevant MAINTAINERS entries.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> ---
->   .../bindings/media/i2c/sony,imx300.yaml       | 112 ++++++++++++++++++
->   MAINTAINERS                                   |   7 ++
->   2 files changed, 119 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-> new file mode 100644
-> index 000000000000..8f1d795f8072
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-> @@ -0,0 +1,112 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/i2c/sony,imx300.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Sony 1/2.3-Inch 8Mpixel Stacked CMOS Digital Image Sensor
+This patch series adds support for the IMX300 camera sensor, (one of the)
+first Exmor-RS Stacked CMOS sensor(s), with support for both of the
+supported aspect ratios (4:3 and 16:9).
+This driver came out from reverse engineering of so called "userspace
+drivers" from Sony Xperia smartphones.
 
-You said this is an 8 MP sensor,
+I tried to document all of my findings and giving a sense to the registers
+as much as possible, but that was only partially possible and resembles
+some names from the IMX219 public datasheet, even though the addresses are
+basically completely different.
 
-> +
-> +maintainers:
-> +  - AngeloGioacchino Del Regno <kholk11@gmail.com>
-> +
-> +description: |-
-> +  The Sony IMX300 is a 1/2.3-inch Stacked CMOS (Exmor-RS) digital image
-> +  sensor with a pixel size of 1.08um and an active array size of
-> +  5948H x 4140V. It is programmable through I2C interface at address 0x10.
+This camera sensor driver was tested with all the resolutions declared in
+it on two phones: Sony Xperia XA2 and XA2 Ultra, on a SDM630 SoC (camss
+patches for this SoC will come in a later series) and is working great.
 
-- but 5948H x 4140V is more than 8 MP.
+- Changes in v3:
+  - Removed unneeded fallthrough statements
+  - Fixed double mode initialization at probe time
+  - Fixed typo in the dt-binding description (8->25MPixels)
+  - Fixed dt-binding data-lanes description, added to required properties
 
-Thanks,
-Andrey
+- Changes in v2:
+  - Changed dt-binding name and fixed a misconception about lane
+    operation (sensor supports 2/4-Lane, driver supports 4-Lane only)
+  - Now using lowercase names for regulator supplies
+  - Fixed redefinition of clock-noncontinuous property
+  - Added informations about constraints on data bus frequencies
+  - Fixed MAINTAINERS: removed git tree
 
-> +  Image data is sent through MIPI CSI-2, which is configured as either 2 or
-> +  4 data lanes.
-> +
-> +properties:
-> +  compatible:
-> +    const: sony,imx300
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  vdig-supply:
-> +    description:
-> +      Digital I/O voltage supply, 1.15-1.20 volts
-> +
-> +  vana-supply:
-> +    description:
-> +      Analog voltage supply, 2.2 volts
-> +
-> +  vddl-supply:
-> +    description:
-> +      Digital core voltage supply, 1.8 volts
-> +
-> +  reset-gpios:
-> +    description: |-
-> +      Reference to the GPIO connected to the xclr pin, if any.
-> +      Must be released (set high) after all supplies are applied.
-> +
-> +  # See ../video-interfaces.txt for more details
-> +  port:
-> +    type: object
-> +    properties:
-> +      endpoint:
-> +        type: object
-> +
-> +        properties:
-> +          data-lanes:
-> +            description: |-
-> +              The sensor supports either two-lane, or four-lane operation,
-> +              but the driver currently supports only four-lane.
-> +            items:
-> +              - const: 0
-> +              - const: 1
-> +              - const: 2
-> +              - const: 3
-> +
-> +          clock-noncontinuous: true
-> +
-> +          link-frequencies:
-> +            $ref: /schemas/types.yaml#/definitions/uint64-array
-> +            description:
-> +              Allowed data bus frequencies. The driver currently needs
-> +              to switch between 780000000 and 480000000 Hz in order to
-> +              guarantee functionality of all modes.
-> +
-> +        required:
-> +          - link-frequencies
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - vana-supply
-> +  - vdig-supply
-> +  - vddl-supply
-> +  - port
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c0 {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        imx300: sensor@10 {
-> +            compatible = "sony,imx300";
-> +            reg = <0x10>;
-> +            clocks = <&imx300_xclk>;
-> +            vana-supply = <&imx300_vana>;   /* 2.2v */
-> +            vdig-supply = <&imx300_vdig>;   /* 1.2v */
-> +            vddl-supply = <&imx300_vddl>;   /* 1.8v */
-> +
-> +            port {
-> +                imx300_0: endpoint {
-> +                    remote-endpoint = <&csi1_ep>;
-> +                    data-lanes = <0 1 2 3>;
-> +                    clock-noncontinuous;
-> +                    link-frequencies = /bits/ 64 <780000000 480000000>;
-> +                };
-> +            };
-> +        };
-> +    };
-> +
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c66710dd7e0a..21ba41db0063 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16279,6 +16279,13 @@ T:	git git://linuxtv.org/media_tree.git
->   F:	Documentation/devicetree/bindings/media/i2c/imx290.txt
->   F:	drivers/media/i2c/imx290.c
->   
-> +SONY IMX300 SENSOR DRIVER
-> +M:	AngeloGioacchino Del Regno <kholk11@gmail.com>
-> +L:	linux-media@vger.kernel.org
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-> +F:	drivers/media/i2c/imx300.c
-> +
->   SONY IMX319 SENSOR DRIVER
->   M:	Bingbu Cao <bingbu.cao@intel.com>
->   L:	linux-media@vger.kernel.org
-> 
+AngeloGioacchino Del Regno (2):
+  media: i2c: Add driver for the Sony Exmor-RS IMX300 camera sensor
+  media: dt-bindings: media: i2c: Add IMX300 CMOS sensor binding
+
+ .../bindings/media/i2c/sony,imx300.yaml       |  112 +
+ MAINTAINERS                                   |    7 +
+ drivers/media/i2c/Kconfig                     |   13 +
+ drivers/media/i2c/Makefile                    |    1 +
+ drivers/media/i2c/imx300.c                    | 3081 +++++++++++++++++
+ 5 files changed, 3214 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
+ create mode 100644 drivers/media/i2c/imx300.c
+
+-- 
+2.29.2
+
