@@ -2,245 +2,162 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_2
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UPPERCASE_50_75,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C279C64E90
-	for <phone-devel@archiver.kernel.org>; Sat, 28 Nov 2020 22:05:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3E8BC83016
+	for <phone-devel@archiver.kernel.org>; Sat, 28 Nov 2020 22:05:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EF9122344C
-	for <phone-devel@archiver.kernel.org>; Sat, 28 Nov 2020 22:05:29 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQG3BooR"
+	by mail.kernel.org (Postfix) with ESMTP id 8E27824073
+	for <phone-devel@archiver.kernel.org>; Sat, 28 Nov 2020 22:05:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730891AbgK1Vu1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S2389960AbgK1Vu1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Sat, 28 Nov 2020 16:50:27 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50318 "EHLO mail.kernel.org"
+Received: from honk.sigxcpu.org ([24.134.29.49]:46130 "EHLO honk.sigxcpu.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733181AbgK1TG1 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 28 Nov 2020 14:06:27 -0500
-Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4727F22280;
-        Sat, 28 Nov 2020 11:37:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606563462;
-        bh=dajrluPFv/MMnGz60kB91fo5W/wkirHOn7T3qG/8ZKE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JQG3BooRJ/Y5lkVO2Eca4Yef4KitY91DjUhFBYohTvEdVKoj7WrFsgPsBzkWw2m2V
-         8VJPLC3pv0IdUdwjbysogvEJOZVnpuTsj0AEPjveXpwTYGnPCCnr2Hsia9oDhxRQUA
-         WEvSES76avqD08I4k48rZ5g1GBrGXdQCs1jWdJBg=
-Date:   Sat, 28 Nov 2020 11:37:39 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-iio@vger.kernel.org, Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 1/2 v2] iio: accel: yamaha-yas53x: Add DT bindings
-Message-ID: <20201128113739.72697868@archlinux>
-In-Reply-To: <20201128004038.883289-1-linus.walleij@linaro.org>
-References: <20201128004038.883289-1-linus.walleij@linaro.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1733166AbgK1TFs (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Sat, 28 Nov 2020 14:05:48 -0500
+X-Greylist: delayed 519 seconds by postgrey-1.27 at vger.kernel.org; Sat, 28 Nov 2020 14:05:47 EST
+Received: from localhost (localhost [127.0.0.1])
+        by honk.sigxcpu.org (Postfix) with ESMTP id C8A41FB02;
+        Sat, 28 Nov 2020 19:56:27 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
+Received: from honk.sigxcpu.org ([127.0.0.1])
+        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id SkhrUiKWInlS; Sat, 28 Nov 2020 19:56:24 +0100 (CET)
+Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
+        id 1B65A40266; Sat, 28 Nov 2020 19:56:24 +0100 (CET)
+From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
+To:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
+        Anson Huang <Anson.Huang@nxp.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Michael Walle <michael@walle.cc>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Olof Johansson <olof@lixom.net>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org
+Subject: [PATCH v2 1/1] arm64: defconfig: Enable more Librem 5 hardware
+Date:   Sat, 28 Nov 2020 19:56:23 +0100
+Message-Id: <2d0b05e9a70790e7b3d7d38703efff95aa059090.1606589670.git.agx@sigxcpu.org>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <cover.1606589670.git.agx@sigxcpu.org>
+References: <cover.1606589670.git.agx@sigxcpu.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 28 Nov 2020 01:40:37 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+This enables
 
-> This adds device tree bindings for the Yamaha YAS53x
-> magnetometers/compass sensors.
-> 
-> Cc: devicetree@vger.kernel.org
-> Cc: phone-devel@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> ChangeLog v2->v3:
-> - Restrict to cover the YAS53x variants, it turns out that
->   YAS529 is a very different component from the others so
->   keep that for a separate document when/if needed.
-> - Rename the file and binding yamaha,53x.yaml
+- CONFIG_BATTERY_MAX17042: battery chip
+- CONFIG_CHARGER_BQ25980: charge controller
+- CONFIG_DRM_PANEL_MANTIX_MLAF057WE5: LCD panel
+- CONFIG_GNSS/CONFIG_GNSS_MTK_SERIAL: GNSS receiver
+- CONFIG_IIO_ST_LSM6DSX: IMU
+- CONFIG_IMX_DCSS: 2nd display controller
+- CONFIG_LEDS_LM3692X: LCD backlight
+- CONFIG_REGULATOR_TPS65132: regulator for the LCD panel
+- CONFIG_TOUCHSCREEN_EDT_FT5X06: touch controller
+- CONFIG_TYPEC_TPS6598X: USB PD controller
+- CONFIG_VCNL4000: ambient light and proximity sensor
 
-I'd rather see it named after a specific component.
-As you probably noticed I'm not fond of wild cards in file names
-as they have a habit of biting us years later.
+as modules.
 
-> - Use - if: clauses to restrict some properties.
-> - Fix some spelling mistakes.
-> - Restrict the nodename to be "magnetometer@[0-9a-f]"
-> ChangeLog v1->v2:
-> - Add Yamaha to the vendor list, I was surprised to find
->   they were not yet listed.
-> 
-> I am still working on the actual driver for the magnetometer
-> but why not send out the DT bindings for review, the
-> hardware variants are easy to describe. This makes it possibe
-> for people to include these magnetometers in device
-> trees.
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+---
+ arch/arm64/configs/defconfig | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-You probably want to drop that now :)
-
-> ---
->  .../iio/magnetometer/yamaha,yas53x.yaml       | 116 ++++++++++++++++++
->  .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
->  2 files changed, 118 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas53x.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas53x.yaml b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas53x.yaml
-> new file mode 100644
-> index 000000000000..e14668a6388d
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas53x.yaml
-> @@ -0,0 +1,116 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/magnetometer/yamaha,yas53x.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Yamaha YAS53x magnetometer sensors
-> +
-> +maintainers:
-> +  - Linus Walleij <linus.walleij@linaro.org>
-> +
-> +description:
-> +  The Yamaha YAS53x magnetometers is a line of 3-axis magnetometers
-> +  first introduced by Yamaha in 2009 with the YAS530. They are successors
-> +  of Yamaha's first magnetometer YAS529. Over the years this magnetometer
-> +  has been miniaturized and appeared in a number of different variants.
-> +
-> +properties:
-> +  $nodename:
-> +    pattern: '^magnetometer@[0-9a-f]+$'
-> +
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - yamaha,yas530
-> +          - yamaha,yas532
-> +          - yamaha,yas533
-> +          - yamaha,yas535
-> +          - yamaha,yas536
-> +          - yamaha,yas537
-> +          - yamaha,yas539
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    description: The YAS530 sensor has a RSTN pin used to reset
-> +      the logic inside the sensor. This GPIO line should connect
-> +      to that pin and be marked as GPIO_ACTIVE_LOW.
-> +
-> +  interrupts:
-> +    description: Interrupt for INT pin for interrupt generation.
-> +      The polarity, whether the interrupt is active on the rising
-> +      or the falling edge, is software-configurable in the hardware.
-> +
-> +  vdd-supply:
-> +    description: An optional regulator providing core power supply
-> +      on the VDD pin, typically 1.8 V or 3.0 V.
-> +
-> +  iovdd-supply:
-> +    description: An optional regulator providing I/O power supply
-> +      for the I2C interface on the IOVDD pin, typically 1.8 V.
-> +
-> +  mount-matrix:
-> +    description: An optional 3x3 mounting rotation matrix.
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          items:
-> +            const: yamaha,yas530
-> +    then:
-> +      properties:
-> +        reset-gpios:
-> +          maxItems: 1
-       else:
-         properties:
-            reset-gpios: false
-
-You can probably also simplify this by moving the maxItems up to the
-original block and making this a not:
-
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - yamaha,yas530
-> +            - yamaha,yas532
-> +            - yamaha,yas533
-> +            - yamaha,yas535
-> +            - yamaha,yas536
-> +            - yamaha,yas537
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          maxItems: 1
-
-Similar to the reset line one above.   You could flip this and explicity
-state they others don't have an interrupt with whilst moving maxItems
-up to the block where you first introduce interrupts.
-i.e. not: and
-interrupt: false
-
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    i2c-0 {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        magnetometer@2e {
-> +          compatible = "yamaha,yas530";
-> +          reg = <0x2e>;
-> +          vdd-supply = <&ldo1_reg>;
-> +          iovdd-supply = <&ldo2_reg>;
-> +          reset-gpios = <&gpio6 12 GPIO_ACTIVE_LOW>;
-> +          interrupts = <&gpio6 13 IRQ_TYPE_EDGE_RISING>;
-> +        };
-> +    };
-> +
-> +    i2c-1 {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        magnetometer@2e {
-> +          compatible = "yamaha,yas539";
-> +          reg = <0x2e>;
-> +          vdd-supply = <&ldo1_reg>;
-> +        };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> index 2735be1a8470..0340674c72bd 100644
-> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> @@ -1210,6 +1210,8 @@ patternProperties:
->      description: Shenzhen Xunlong Software CO.,Limited
->    "^xylon,.*":
->      description: Xylon
-> +  "^yamaha,.*":
-> +    description: Yamaha Corporation
->    "^ylm,.*":
->      description: Shenzhen Yangliming Electronic Technology Co., Ltd.
->    "^yna,.*":
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 270d326d5f28..34b837b866c2 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -240,6 +240,8 @@ CONFIG_HISILICON_LPC=y
+ CONFIG_SIMPLE_PM_BUS=y
+ CONFIG_FSL_MC_BUS=y
+ CONFIG_TEGRA_ACONNECT=m
++CONFIG_GNSS=m
++CONFIG_GNSS_MTK_SERIAL=m
+ CONFIG_MTD=y
+ CONFIG_MTD_BLOCK=y
+ CONFIG_MTD_CFI=y
+@@ -381,6 +383,7 @@ CONFIG_KEYBOARD_IMX_SC_KEY=m
+ CONFIG_KEYBOARD_CROS_EC=y
+ CONFIG_INPUT_TOUCHSCREEN=y
+ CONFIG_TOUCHSCREEN_ATMEL_MXT=m
++CONFIG_TOUCHSCREEN_EDT_FT5X06=m
+ CONFIG_INPUT_MISC=y
+ CONFIG_INPUT_PM8941_PWRKEY=y
+ CONFIG_INPUT_PM8XXX_VIBRATOR=m
+@@ -521,6 +524,8 @@ CONFIG_POWER_RESET_SYSCON=y
+ CONFIG_SYSCON_REBOOT_MODE=y
+ CONFIG_BATTERY_SBS=m
+ CONFIG_BATTERY_BQ27XXX=y
++CONFIG_BATTERY_MAX17042=m
++CONFIG_CHARGER_BQ25980=m
+ CONFIG_SENSORS_ARM_SCPI=y
+ CONFIG_SENSORS_LM90=m
+ CONFIG_SENSORS_PWM_FAN=m
+@@ -595,6 +600,7 @@ CONFIG_REGULATOR_QCOM_SMD_RPM=y
+ CONFIG_REGULATOR_QCOM_SPMI=y
+ CONFIG_REGULATOR_RK808=y
+ CONFIG_REGULATOR_S2MPS11=y
++CONFIG_REGULATOR_TPS65132=m
+ CONFIG_REGULATOR_VCTRL=m
+ CONFIG_RC_CORE=m
+ CONFIG_RC_DECODERS=y
+@@ -655,6 +661,7 @@ CONFIG_DRM_MSM=m
+ CONFIG_DRM_TEGRA=m
+ CONFIG_DRM_PANEL_LVDS=m
+ CONFIG_DRM_PANEL_SIMPLE=m
++CONFIG_DRM_PANEL_MANTIX_MLAF057WE51=m
+ CONFIG_DRM_PANEL_RAYDIUM_RM67191=m
+ CONFIG_DRM_PANEL_SITRONIX_ST7703=m
+ CONFIG_DRM_PANEL_TRULY_NT35597_WQXGA=m
+@@ -669,6 +676,7 @@ CONFIG_DRM_I2C_ADV7511=m
+ CONFIG_DRM_I2C_ADV7511_AUDIO=y
+ CONFIG_DRM_DW_HDMI_AHB_AUDIO=m
+ CONFIG_DRM_DW_HDMI_CEC=m
++CONFIG_DRM_IMX_DCSS=m
+ CONFIG_DRM_VC4=m
+ CONFIG_DRM_ETNAVIV=m
+ CONFIG_DRM_HISI_HIBMC=m
+@@ -777,6 +785,7 @@ CONFIG_TYPEC=m
+ CONFIG_TYPEC_TCPM=m
+ CONFIG_TYPEC_FUSB302=m
+ CONFIG_TYPEC_HD3SS3220=m
++CONFIG_TYPEC_TPS6598X=m
+ CONFIG_MMC=y
+ CONFIG_MMC_BLOCK_MINORS=32
+ CONFIG_MMC_ARMMMCI=y
+@@ -806,6 +815,7 @@ CONFIG_MMC_SDHCI_AM654=y
+ CONFIG_MMC_OWL=y
+ CONFIG_NEW_LEDS=y
+ CONFIG_LEDS_CLASS=y
++CONFIG_LEDS_LM3692X=m
+ CONFIG_LEDS_GPIO=y
+ CONFIG_LEDS_PWM=y
+ CONFIG_LEDS_SYSCON=y
+@@ -978,8 +988,10 @@ CONFIG_QCOM_SPMI_ADC5=m
+ CONFIG_ROCKCHIP_SARADC=m
+ CONFIG_IIO_CROS_EC_SENSORS_CORE=m
+ CONFIG_IIO_CROS_EC_SENSORS=m
++CONFIG_IIO_ST_LSM6DSX=m
+ CONFIG_IIO_CROS_EC_LIGHT_PROX=m
+ CONFIG_SENSORS_ISL29018=m
++CONFIG_VCNL4000=m
+ CONFIG_IIO_CROS_EC_BARO=m
+ CONFIG_MPL3115=m
+ CONFIG_PWM=y
+-- 
+2.29.2
 
