@@ -2,244 +2,196 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B730C3E8C5
-	for <phone-devel@archiver.kernel.org>; Sat, 28 Nov 2020 01:11:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FBA0C71156
+	for <phone-devel@archiver.kernel.org>; Sat, 28 Nov 2020 17:56:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F237220809
-	for <phone-devel@archiver.kernel.org>; Sat, 28 Nov 2020 01:11:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 29765246E1
+	for <phone-devel@archiver.kernel.org>; Sat, 28 Nov 2020 17:56:55 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="p2ZmCu99"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AJXFp55m"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728268AbgK1BJC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Nov 2020 20:09:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43392 "EHLO
+        id S1733135AbgK1Rzz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 28 Nov 2020 12:55:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731807AbgK1Aks (ORCPT
+        with ESMTP id S1731830AbgK1E1T (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Nov 2020 19:40:48 -0500
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCDC8C0613D2
-        for <phone-devel@vger.kernel.org>; Fri, 27 Nov 2020 16:40:42 -0800 (PST)
-Received: by mail-lj1-x22a.google.com with SMTP id i17so7746117ljd.3
-        for <phone-devel@vger.kernel.org>; Fri, 27 Nov 2020 16:40:42 -0800 (PST)
+        Fri, 27 Nov 2020 23:27:19 -0500
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E4CFC0613D4
+        for <phone-devel@vger.kernel.org>; Fri, 27 Nov 2020 20:09:25 -0800 (PST)
+Received: by mail-oi1-x242.google.com with SMTP id w15so7966073oie.13
+        for <phone-devel@vger.kernel.org>; Fri, 27 Nov 2020 20:09:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=i4MNSv4gC+pj1p9yYQOx1CnSc25gU9FzxQHw5nZNAz8=;
-        b=p2ZmCu99QuXp11puTEU9+0EBkB2vn2swUXMkZh7xaXqLDfbom0RMT0HZzICgtfJmPP
-         kPFOrc7bjeILmS2Z9biQ9mvQnUEYzQ9f/QpRfto0v0SgLWue7bdfvyYOT0BdWcJsHbtK
-         OweCNZcyyH2jhu6WS1/NDGX7ibuDRPoHh8FZV3am+zTPtraYavzv7ZHVlxDb6HVLSv8y
-         xA5Mx0+WP7PkMtZzCymF2vqrxxoQGwD6nkPHjIdKV17tv3TAHJQk6xnytnk9Dzv1V+hQ
-         pRRWMiTX9sRQg00Melsl/RzraO89ysAHYbYY5yFveOaT0Jcr5Ryf+ZHeAYL1tj216pZL
-         oEqg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=RQ32THJAgzk/g+0fz9fFMpn2nsurcrio7fOwJN4HhE0=;
+        b=AJXFp55mKdFrves/zgdHNzY9dzK1u5qX/vlAqz+g0rAf2CAdKRXRpOfWYCLOm12up+
+         2tYYw7RqfNlPjOfjObJLgnWnghU7on96rhnr3QoBkIa8Jxabgo+aBFHhnocJ4OUicgCs
+         fjKP1IL5u2wlpjYtMt5TfuQyC/Me8y44lZAfvsNoH43xCJCHSF1+f5JpsBT8VM+DlC40
+         nmLM+cMqMGRQas9sX8CM6Ju7wJTKsUel2pRaXa+5oL0uHNP28evSJgLZMqymtohj1OMb
+         XcwhAVdYsq6c//tGd0YiOseW2Lx7vG77dJs+tshykHw2gfeZpfDQZ9mr0Z9m+yDwO33n
+         Q0CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=i4MNSv4gC+pj1p9yYQOx1CnSc25gU9FzxQHw5nZNAz8=;
-        b=WrNm/6mmvYDCbygX+eN7mkDYy4LEOYEYw/ArxDdvlZ1VbMQj+E8mjN5rAZISfvAbVf
-         1K4N7ZdM18gorjv4fCxb6Bn2UeZlaaSN3L51CKoOEynxBc5FqBXvZBXLz101LnULIb3W
-         3WA59rqVp8LU+Bsyb6KHH3oEaoYmiI7P7hyKjve11hGJKg1k7loYYBcVU1r4uyB9bOGR
-         QB2z2fe6YOYKEvap9csp8WYebw2oQlAZRg/LLOl+rwweBStSnZHBCGRYQZt2O0p4BFmo
-         y0RmZDYgxN6QwP5oJGu3F3j5ziY90I571NUsbTaUt7WafFwn4hNoCr9nDXu/amPmW4Pm
-         jiCQ==
-X-Gm-Message-State: AOAM531GkUvqQPLwWaRDt/bs+X9yOfxQVONjbkPlTYaVKBvJN4luFzdf
-        PJ7oBpbk82FmIA8JTRVopG4MBw==
-X-Google-Smtp-Source: ABdhPJxtQfnTIdZMpyl/YY61Q2nkfdUYtJUK36a6HJf004y0Fx3S3eosiEoVeEqUVrMqrFFV59Cbdw==
-X-Received: by 2002:a2e:a202:: with SMTP id h2mr5079119ljm.346.1606524041071;
-        Fri, 27 Nov 2020 16:40:41 -0800 (PST)
-Received: from localhost.bredbandsbolaget (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
-        by smtp.gmail.com with ESMTPSA id z7sm906892lfq.50.2020.11.27.16.40.40
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=RQ32THJAgzk/g+0fz9fFMpn2nsurcrio7fOwJN4HhE0=;
+        b=asndR4JukkRXKV/S/F9eUIMVkVwPIoTdhNmq/eThthEB7IBYdRmPT95nwS+fRs+5Kh
+         37ydSXHa4WIIFchIvU9N+4ZmvZ2WDxoXOIYH8P1tzqR/D5vq6s7/8/qtDsYv9vNtuUkj
+         2Pm8fE/iOE89IVZ7VnVFleXskjKqgbNuEAXriMLXD0FhKfVgRvRQeS7PFjI4sMupYhD8
+         y+BpM1t+xgt3Twdrq2xpL4jAWc/DyUHTtWYEOY6tgCIaUa4jVTMrXLjb6+KM5Gu1KJp8
+         iW0RRBNVHCNGZqVaDhI5l5segt8XFknIVTwpBNMVzU7fM0GPaOdFOY6wBN8OEmrRylvM
+         zCZQ==
+X-Gm-Message-State: AOAM531HfipFq6DQcDpOckNFzuBgF852nUT1x5lMrAOkwKVaDChJV9M/
+        wGfuZ5qZecaW7Zaj7X0vwIgC8A==
+X-Google-Smtp-Source: ABdhPJxCxa1IqjsKIOyOC7KWtjILCHCUlRB2itoqFfBxbLeno4VQhZIwF/j0ZUS3ebdcaeYsqAS3JA==
+X-Received: by 2002:aca:54ca:: with SMTP id i193mr7788504oib.42.1606536564766;
+        Fri, 27 Nov 2020 20:09:24 -0800 (PST)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id l1sm5511706otj.17.2020.11.27.20.09.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2020 16:40:40 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Fri, 27 Nov 2020 20:09:24 -0800 (PST)
+Date:   Fri, 27 Nov 2020 22:09:22 -0600
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: [PATCH 1/2 v2] iio: accel: yamaha-yas53x: Add DT bindings
-Date:   Sat, 28 Nov 2020 01:40:37 +0100
-Message-Id: <20201128004038.883289-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.26.2
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH 2/2 v2] iio: magnetometer: Add driver for Yamaha YAS5xx
+Message-ID: <X8HNcg4fQKbo8yd5@builder.lan>
+References: <20201128004038.883289-1-linus.walleij@linaro.org>
+ <20201128004038.883289-2-linus.walleij@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201128004038.883289-2-linus.walleij@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This adds device tree bindings for the Yamaha YAS53x
-magnetometers/compass sensors.
+On Fri 27 Nov 18:40 CST 2020, Linus Walleij wrote:
 
-Cc: devicetree@vger.kernel.org
-Cc: phone-devel@vger.kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-ChangeLog v2->v3:
-- Restrict to cover the YAS53x variants, it turns out that
-  YAS529 is a very different component from the others so
-  keep that for a separate document when/if needed.
-- Rename the file and binding yamaha,53x.yaml
-- Use - if: clauses to restrict some properties.
-- Fix some spelling mistakes.
-- Restrict the nodename to be "magnetometer@[0-9a-f]"
-ChangeLog v1->v2:
-- Add Yamaha to the vendor list, I was surprised to find
-  they were not yet listed.
+> This adds an IIO magnetometer driver for the Yamaha
+> YAS53x magnetometer/compass chips YAS530 and YAS532.
+> A quick survey of the source code released by different
+> vendors reveal that we have these variants in the family
+> with some deployments listed:
+> 
+>  * YAS529 MS-3C (2005 Samsung Aries)
+>  * YAS530 MS-3E (2011 Samsung Galaxy S Advance)
+>  * YAS532 MS-3R (2011 Samsung Galaxy S4)
+>  * YAS533 MS-3F (Vivo 1633, 1707, V3, Y21L)
+>  * (YAS534 is a magnetic switch)
+>  * YAS535 MS-6C
+>  * YAS536 MS-3W
+>  * YAS537 MS-3T (2015 Samsung Galaxy S6, Note 5)
+>  * YAS539 MS-3S (2018 Samsung Galaxy A7 SM-A750FN)
+> 
+> The YAS529 is so significantly different from the
+> YAS53x variants that it will require its own driver.
+> The YAS537 and YAS539 have slightly different register
+> sets but have strong similarities so a common driver
+> will probably be reasonable.
+> 
+> The source code for Samsung Galaxy A7's YAS539 is not
+> that significantly different from the YAS530 in the
+> Galaxy S Advance, so I believe we will only need this
+> one driver with quirks to handle all of them.
+> 
+> The YAS539 is actively announced on Yamaha's devices
+> site:
+> https://device.yamaha.com/en/lsi/products/e_compass/
+> 
+> This is a driver written from scratch using buffered
+> IIO and runtime PM handling regulators and reset.
+> 
 
-I am still working on the actual driver for the magnetometer
-but why not send out the DT bindings for review, the
-hardware variants are easy to describe. This makes it possibe
-for people to include these magnetometers in device
-trees.
----
- .../iio/magnetometer/yamaha,yas53x.yaml       | 116 ++++++++++++++++++
- .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
- 2 files changed, 118 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas53x.yaml
+Looks quite nice, just spotted some small things as I was skimming
+through the patch.
 
-diff --git a/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas53x.yaml b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas53x.yaml
-new file mode 100644
-index 000000000000..e14668a6388d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas53x.yaml
-@@ -0,0 +1,116 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/magnetometer/yamaha,yas53x.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Yamaha YAS53x magnetometer sensors
-+
-+maintainers:
-+  - Linus Walleij <linus.walleij@linaro.org>
-+
-+description:
-+  The Yamaha YAS53x magnetometers is a line of 3-axis magnetometers
-+  first introduced by Yamaha in 2009 with the YAS530. They are successors
-+  of Yamaha's first magnetometer YAS529. Over the years this magnetometer
-+  has been miniaturized and appeared in a number of different variants.
-+
-+properties:
-+  $nodename:
-+    pattern: '^magnetometer@[0-9a-f]+$'
-+
-+  compatible:
-+    items:
-+      - enum:
-+          - yamaha,yas530
-+          - yamaha,yas532
-+          - yamaha,yas533
-+          - yamaha,yas535
-+          - yamaha,yas536
-+          - yamaha,yas537
-+          - yamaha,yas539
-+
-+  reg:
-+    maxItems: 1
-+
-+  reset-gpios:
-+    description: The YAS530 sensor has a RSTN pin used to reset
-+      the logic inside the sensor. This GPIO line should connect
-+      to that pin and be marked as GPIO_ACTIVE_LOW.
-+
-+  interrupts:
-+    description: Interrupt for INT pin for interrupt generation.
-+      The polarity, whether the interrupt is active on the rising
-+      or the falling edge, is software-configurable in the hardware.
-+
-+  vdd-supply:
-+    description: An optional regulator providing core power supply
-+      on the VDD pin, typically 1.8 V or 3.0 V.
-+
-+  iovdd-supply:
-+    description: An optional regulator providing I/O power supply
-+      for the I2C interface on the IOVDD pin, typically 1.8 V.
-+
-+  mount-matrix:
-+    description: An optional 3x3 mounting rotation matrix.
-+
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          items:
-+            const: yamaha,yas530
-+    then:
-+      properties:
-+        reset-gpios:
-+          maxItems: 1
-+
-+  - if:
-+      properties:
-+        compatible:
-+          enum:
-+            - yamaha,yas530
-+            - yamaha,yas532
-+            - yamaha,yas533
-+            - yamaha,yas535
-+            - yamaha,yas536
-+            - yamaha,yas537
-+    then:
-+      properties:
-+        interrupts:
-+          maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/gpio/gpio.h>
-+    i2c-0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        magnetometer@2e {
-+          compatible = "yamaha,yas530";
-+          reg = <0x2e>;
-+          vdd-supply = <&ldo1_reg>;
-+          iovdd-supply = <&ldo2_reg>;
-+          reset-gpios = <&gpio6 12 GPIO_ACTIVE_LOW>;
-+          interrupts = <&gpio6 13 IRQ_TYPE_EDGE_RISING>;
-+        };
-+    };
-+
-+    i2c-1 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        magnetometer@2e {
-+          compatible = "yamaha,yas539";
-+          reg = <0x2e>;
-+          vdd-supply = <&ldo1_reg>;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 2735be1a8470..0340674c72bd 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -1210,6 +1210,8 @@ patternProperties:
-     description: Shenzhen Xunlong Software CO.,Limited
-   "^xylon,.*":
-     description: Xylon
-+  "^yamaha,.*":
-+    description: Yamaha Corporation
-   "^ylm,.*":
-     description: Shenzhen Yangliming Electronic Technology Co., Ltd.
-   "^yna,.*":
--- 
-2.26.2
+> Cc: phone-devel@vger.kernel.org
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> ChangeLog v1->v3:
+> - This is posted along with the DT bindings which are
+>   in v3 so just number everything as v3.
 
+$subject still says v2...
+
+[..]
+> diff --git a/drivers/iio/magnetometer/yamaha-yas53x.c b/drivers/iio/magnetometer/yamaha-yas53x.c
+[..]
+> +/* On YAS532 the x, y1 and y2 values are 13 bits */
+> +static u16 yas532_extract_axis(u8 *data)
+> +{
+> +	u16 val;
+> +
+> +	/*
+> +	 * These are the bits used in a 16bit word:
+> +	 * 15 14 13 12 11 10 9  8  7  6  5  4  3  2  1  0
+> +	 *    x  x  x  x  x  x  x  x  x  x  x  x  x
+> +	 */
+> +	val = get_unaligned_be16(&data[0]);
+> +	val >>= 2;
+> +	val &= GENMASK(12, 0);
+
+Wouldn't it be easier to follow if you GENMASK out the bits you document
+above, then shift them right?
+
+> +	return val;
+> +}
+[..]
+> +/**
+> + * yas5xx_measure() - Make a measure from the hardware*
+> + * @yas5xx: The device state
+> + * @t: the raw temperature measurement
+> + * @x: the raw x axis measurement
+> + * @y1: the y1 axis measurement
+> + * @y2: the y2 axis measurement
+
+* Return: 
+
+To complete the kerneldoc.
+
+> + */
+> +static int yas5xx_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y2)
+> +{
+[..]
+> +/**
+
+This will result in someone feeling inclined to send a patch to fix the
+incomplete kerneldoc.
+
+So please either fill it out, or drop the second '*'.
+
+> + * yas5xx_get_measure() - Measure a sample of all axis and process
+> + *
+> + * Returned valued are in nanotesla according to some code.
+> + */
+> +static int yas5xx_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo, s32 *zo)
+> +{
+[..]
+> +static int __maybe_unused yas5xx_runtime_resume(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> +	struct yas5xx *yas5xx = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	ret = regulator_bulk_enable(ARRAY_SIZE(yas5xx->regs), yas5xx->regs);
+> +	if (ret) {
+> +		dev_err(dev, "cannot enable regulators\n");
+
+regulator_bulk_enable() will log which of the regs it failed ot enable,
+so you can omit this.
+
+Regards,
+Bjorn
