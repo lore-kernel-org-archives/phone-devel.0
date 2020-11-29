@@ -2,334 +2,242 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84DC2C3E8C5
-	for <phone-devel@archiver.kernel.org>; Sun, 29 Nov 2020 20:53:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67AACC64E8A
+	for <phone-devel@archiver.kernel.org>; Sun, 29 Nov 2020 21:55:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 403AB20829
-	for <phone-devel@archiver.kernel.org>; Sun, 29 Nov 2020 20:53:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 171072078D
+	for <phone-devel@archiver.kernel.org>; Sun, 29 Nov 2020 21:55:25 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="A8NUZbje"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726293AbgK2Uwp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 29 Nov 2020 15:52:45 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:54226 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725882AbgK2Uwp (ORCPT
+        id S1728015AbgK2VzO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 29 Nov 2020 16:55:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36034 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727968AbgK2VzL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 29 Nov 2020 15:52:45 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 727651C0B7C; Sun, 29 Nov 2020 21:51:45 +0100 (CET)
-Date:   Sun, 29 Nov 2020 21:51:45 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Tony Lindgren <tony@atomide.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh@kernel.org>,
-        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 1/6] tty: n_gsm: Add support for serdev drivers
-Message-ID: <20201129205144.GA15038@duo.ucw.cz>
-References: <20200512214713.40501-1-tony@atomide.com>
- <20200512214713.40501-2-tony@atomide.com>
- <20200528093102.GC10358@localhost>
+        Sun, 29 Nov 2020 16:55:11 -0500
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2018FC0613D3
+        for <phone-devel@vger.kernel.org>; Sun, 29 Nov 2020 13:54:31 -0800 (PST)
+Received: by mail-lf1-x12b.google.com with SMTP id l11so17067394lfg.0
+        for <phone-devel@vger.kernel.org>; Sun, 29 Nov 2020 13:54:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=22v+25uLTpzoU6j998AK5X4aT/wXdw1+Ijxp1BLCpE8=;
+        b=A8NUZbjezyMvrsQv/uqg7rzmqp2cVN8OcJVFDHRBvPy2ys5HPVB8vr/QAg/4hBjY9F
+         /l7h0ctiklIIVnMNzgKhHjZoO4DItwuY9tjQBWsURDkfLzoyzw0BWbTuyKnxN+svZGZq
+         iXaY8M5BNPXdb6uoQ0NX8Pf+a5I/TbUpVelpVs7t2tIjl8+v5lfZKigHISQBCnj+Y6HT
+         cIhdSSkODDq+rOqvNQqY28XVNo1pPfFZghIU9ba5V4k+TN3pcqCQtA3FJ5UG+zGy658p
+         6wu/OHAgRpkUSR6GH+28HZy9mWNlNaj+2dlWeHp2ctLsKb4Dnk2GhlmA8lqY+7jCHmCC
+         xH5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=22v+25uLTpzoU6j998AK5X4aT/wXdw1+Ijxp1BLCpE8=;
+        b=IYPAJkLJYnGh9MAynPnXiBnVSDuPldCO9jJcKLMbETHAkYcHcz8RBUVbAmPIOw5pEM
+         AKW7gOjVhIVJ/6HLw0wMf072H70Ec+LVkU/Kk4/mRrNDTa5bSUTdrnsotBCiF1J9s1cT
+         +A3vBMM3wyhsEuSyTwcnIOMG4CgAu+zpEdLPUPtCdmuwE6GUty2GhO6kk3wI8ObMCNu4
+         yfwac9sCG7/CVEmkpytPPuMP3ofsXNLVMC6m+qToTyfraIhigotdjT3rQ4dFqGY0pQ49
+         YIf4mVLHFKegbDeqU1FvgqxU/NDc/oDzIs46wLXABfsIPEc0/9mxnJJKNkNJTfmMpuRB
+         qN1g==
+X-Gm-Message-State: AOAM530b2sj8VYq1uG5MTAnbPCIPh2QxUpOGmMnXPb6OWwxku2iM2mb9
+        0nfFxz57n+1GC2CzhHobYxkvKw==
+X-Google-Smtp-Source: ABdhPJzudox51pF9Kzryw57vD8MLgv9T2fSKBN+wQO7xB3e4M6fY/+wCDEuulZhtw7he1t/AwYoJcQ==
+X-Received: by 2002:a19:8a46:: with SMTP id m67mr7791662lfd.515.1606686869439;
+        Sun, 29 Nov 2020 13:54:29 -0800 (PST)
+Received: from localhost.bredbandsbolaget (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
+        by smtp.gmail.com with ESMTPSA id b18sm2268654ljp.124.2020.11.29.13.54.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Nov 2020 13:54:28 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: [PATCH 1/2 v4] iio: accel: yamaha-yas530: Add DT bindings
+Date:   Sun, 29 Nov 2020 22:54:20 +0100
+Message-Id: <20201129215421.1177990-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="ReaqsoxgOBHFXBhH"
-Content-Disposition: inline
-In-Reply-To: <20200528093102.GC10358@localhost>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+This adds device tree bindings for the Yamaha YAS530
+family of magnetometers/compass sensors.
 
---ReaqsoxgOBHFXBhH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Cc: devicetree@vger.kernel.org
+Cc: phone-devel@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ChangeLog v3->v4:
+- Rename the bindings and file yas530 after the first
+  introduced component in the family.
+- Simplify conditional logic using the if: not: YAML
+  constructions.
+- Use the possibility to set a property to false to just
+  remvove reset GPIOs and interrupts from variants that
+  do not have them.
+ChangeLog v2->v3:
+- Restrict to cover the YAS53x variants, it turns out that
+  YAS529 is a very different component from the others so
+  keep that for a separate document when/if needed.
+- Rename the file and binding yamaha,53x.yaml
+- Use - if: clauses to restrict some properties.
+- Fix some spelling mistakes.
+- Restrict the nodename to be "magnetometer@[0-9a-f]"
+ChangeLog v1->v2:
+- Add Yamaha to the vendor list, I was surprised to find
+  they were not yet listed.
+---
+ .../iio/magnetometer/yamaha,yas530.yaml       | 112 ++++++++++++++++++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ 2 files changed, 114 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas530.yaml
 
-Hi!
+diff --git a/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas530.yaml b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas530.yaml
+new file mode 100644
+index 000000000000..4b0ef1ef5445
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas530.yaml
+@@ -0,0 +1,112 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/magnetometer/yamaha,yas530.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Yamaha YAS530 family of magnetometer sensors
++
++maintainers:
++  - Linus Walleij <linus.walleij@linaro.org>
++
++description:
++  The Yamaha YAS530 magnetometers is a line of 3-axis magnetometers
++  first introduced by Yamaha in 2009 with the YAS530. They are successors
++  of Yamaha's first magnetometer YAS529. Over the years this magnetometer
++  has been miniaturized and appeared in a number of different variants.
++
++properties:
++  $nodename:
++    pattern: '^magnetometer@[0-9a-f]+$'
++
++  compatible:
++    items:
++      - enum:
++          - yamaha,yas530
++          - yamaha,yas532
++          - yamaha,yas533
++          - yamaha,yas535
++          - yamaha,yas536
++          - yamaha,yas537
++          - yamaha,yas539
++
++  reg:
++    maxItems: 1
++
++  reset-gpios:
++    maxItems: 1
++    description: The YAS530 sensor has a RSTN pin used to reset
++      the logic inside the sensor. This GPIO line should connect
++      to that pin and be marked as GPIO_ACTIVE_LOW.
++
++  interrupts:
++    maxItems: 1
++    description: Interrupt for INT pin for interrupt generation.
++      The polarity, whether the interrupt is active on the rising
++      or the falling edge, is software-configurable in the hardware.
++
++  vdd-supply:
++    description: An optional regulator providing core power supply
++      on the VDD pin, typically 1.8 V or 3.0 V.
++
++  iovdd-supply:
++    description: An optional regulator providing I/O power supply
++      for the I2C interface on the IOVDD pin, typically 1.8 V.
++
++  mount-matrix:
++    description: An optional 3x3 mounting rotation matrix.
++
++allOf:
++  - if:
++      not:
++        properties:
++          compatible:
++            items:
++              const: yamaha,yas530
++    then:
++      properties:
++        reset-gpios: false
++
++  - if:
++      properties:
++        compatible:
++          items:
++            const: yamaha,yas539
++    then:
++      properties:
++        interrupts: false
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/gpio/gpio.h>
++    i2c-0 {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        magnetometer@2e {
++          compatible = "yamaha,yas530";
++          reg = <0x2e>;
++          vdd-supply = <&ldo1_reg>;
++          iovdd-supply = <&ldo2_reg>;
++          reset-gpios = <&gpio6 12 GPIO_ACTIVE_LOW>;
++          interrupts = <&gpio6 13 IRQ_TYPE_EDGE_RISING>;
++        };
++    };
++
++    i2c-1 {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        magnetometer@2e {
++          compatible = "yamaha,yas539";
++          reg = <0x2e>;
++          vdd-supply = <&ldo1_reg>;
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 2735be1a8470..0340674c72bd 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -1210,6 +1210,8 @@ patternProperties:
+     description: Shenzhen Xunlong Software CO.,Limited
+   "^xylon,.*":
+     description: Xylon
++  "^yamaha,.*":
++    description: Yamaha Corporation
+   "^ylm,.*":
+     description: Shenzhen Yangliming Electronic Technology Co., Ltd.
+   "^yna,.*":
+-- 
+2.26.2
 
-This is neccessary for having useful Droid 4 support, so let me try to
-ressurect this.
-
-If there's newer version (I took mine from for-5.7 branch), let me
-know.
-
-On Thu 2020-05-28 11:31:02, Johan Hovold wrote:
-> On Tue, May 12, 2020 at 02:47:08PM -0700, Tony Lindgren wrote:
-> > I initially though about adding the serdev support into a separate file,
-> > but that will take some refactoring of n_gsm.c. And I'd like to have
-> > things working first. Then later on we might want to consider splitting
-> > n_gsm.c into three pieces for core, tty and serdev parts. And then maybe
-> > the serdev related parts can be just moved to live under something like
-> > drivers/tty/serdev/protocol/ngsm.c.
->=20
-> Yeah, perhaps see where this lands first, but it should probably be done
-> before merging anything.
-
-Is drivers/tty/serdev/protocol/ngsm.c acceptable place for you?
-
-> And it doesn't really make sense exporting these interfaces without the
-> actual serdev driver as they are closely tied and cannot be reviewed
-> separately anyway.
-
-Ok, I guess keeping this in series with gnss driver makes sense? That
-one should be good example.
-
-> > @@ -150,6 +152,7 @@ struct gsm_dlci {
-> >  	/* Data handling callback */
-> >  	void (*data)(struct gsm_dlci *dlci, const u8 *data, int len);
-> >  	void (*prev_data)(struct gsm_dlci *dlci, const u8 *data, int len);
-> > +	struct gsm_serdev_dlci *ops; /* serdev dlci ops, if used */
->=20
-> Please rename the struct with a "_operations" suffix as you refer to
-> this as "ops" throughout.
-
-"struct gsm_serdev_dlci_operations" is rather long, but I can do
-that; unless there's better idea? ...OTOH... yes, "ops" variable is
-used for this, but it is more than "operations" structure, so the new
-name is misleading. I may have to rename it back.
-
-> > +/**
-> > + * gsm_serdev_get_config - read ts 27.010 config
-> > + * @gsd:	serdev-gsm instance
-> > + * @c:		ts 27.010 config data
-> > + *
-> > + * See gsm_copy_config_values() for more information.
->=20
-> Please document this properly since you're exporting these
-> interfaces.
-
-Actually, let me drop this for now.
-
-> > +/**
-> > + * gsm_serdev_set_config - set ts 27.010 config
-> > + * @gsd:	serdev-gsm instance
-> > + * @c:		ts 27.010 config data
-> > + *
-> > + * See gsm_config() for more information.
-> > + */
-> > +int gsm_serdev_set_config(struct gsm_serdev *gsd, struct gsm_config *c)
-> > +{
-> > +	struct gsm_mux *gsm;
-> > +
-> > +	if (!gsd || !gsd->serdev || !gsd->gsm)
-> > +		return -ENODEV;
->=20
-> And why check for serdev here?
-
-Having exported interfaces somehow robust looks like good thing. Do
-you want me to remove it?
-
-> > +	gsm =3D gsd->gsm;
-> > +
-> > +	if (line < 1 || line >=3D 63)
->=20
-> Line 62 is reserved as well.
-
-Thanks, fixed.
-
-> > +static int gsd_dlci_receive_buf(struct gsm_serdev_dlci *ops,
-> > +				const unsigned char *buf,
-> > +				size_t len)
-> > +{
-> > +	struct gsm_serdev *gsd =3D ops->gsd;
->=20
-> This looks backwards, why not pass in gsd instead?
-
-gsm_serdev does not specify concrete dlci; we can go from dlci to gsd
-but not the other way around.
-
-=2E..which shows that gsm_serdev_dlci is not really "operations"
-structure and should not be named as such.
-
-> > +	struct gsm_mux *gsm =3D dlci->gsm;
-> > +	struct gsm_serdev *gsd =3D gsm->gsd;
-> > +
-> > +	if (!gsd || !dlci->ops)
-> > +		return;
-> > +
-> > +	switch (dlci->adaption) {
-> > +	case 0:
->=20
-> 0 isn't valid, right?
->=20
-> > +	case 1:
-> > +		if (dlci->ops->receive_buf)
-> > +			dlci->ops->receive_buf(dlci->ops, buf, len);
-> > +		break;
->=20
-> What about adaption 2 with modem status? Why are you not reusing
-> gsm_dlci_data()?
-
-It is not needed in my application, I guess, so it would be difficult
-to test.
-
-> > +	default:
-> > +		pr_warn("dlci%i adaption %i not yet implemented\n",
-> > +			dlci->addr, dlci->adaption);
->=20
-> This needs to be rate limited. Use the dev_ versions when you can.
-
-Ok.
-
-> > +	mutex_lock(&dlci->mutex);
-> > +	ops->gsd =3D gsd;
-> > +	dlci->ops =3D ops;
-> > +	dlci->modem_rx =3D 0;
-> > +	dlci->prev_data =3D dlci->data;
->=20
-> I think this one is only used when bringing up a network interface.
-
-prev_data is used to store data pointer, so that it can be restored on
-unregister. Are you saying it is not neccessary?
-
-> > +	dlci->data =3D gsd_dlci_data;
-> > +	mutex_unlock(&dlci->mutex);
-> > +
-> > +	gsm_dlci_begin_open(dlci);
->=20
-> Why is this here? This should be handled when opening the serial device
-> (i.e. by gsmtty_open()).
-
-This is for in-kernel users. When gnss device is opened, this is called.
-
-> > +	/*
-> > +	 * Allow some time for dlci to move to DLCI_OPEN state. Otherwise
-> > +	 * the serdev consumer driver can start sending data too early during
-> > +	 * the setup, and the response will be missed by gms_queue() if we
-> > +	 * still have DLCI_CLOSED state.
-> > +	 */
-> > +	for (retries =3D 10; retries > 0; retries--) {
-> > +		if (dlci->state =3D=3D DLCI_OPEN)
-> > +			break;
-> > +		msleep(100);
-> > +	}
->=20
-> What if you time out? This should be handled properly.
-
-Ok.
-
-> > +static int gsd_receive_buf(struct serdev_device *serdev, const u8 *dat=
-a,
-> > +			   size_t count)
-> > +{
-> > +	struct gsm_serdev *gsd =3D serdev_device_get_drvdata(serdev);
-> > +	struct gsm_mux *gsm;
-> > +	const unsigned char *dp;
-> > +	int i;
-> > +
-> > +	if (WARN_ON(!gsd))
-> > +		return 0;
->=20
-> Probably better to take the NULL-deref. Can this ever happen?
-
-Well, with warn_on we continue, so easier debugging. It obviously
-should not happen.
-
-> > +int gsm_serdev_register_tty_port(struct gsm_serdev *gsd, int line)
-> > +{
-> > +	struct gsm_serdev_dlci *ops;
-> > +	unsigned int base;
-> > +	int error;
-> > +
-> > +	if (line < 1)
-> > +		return -EINVAL;
->=20
-> Upper limit?
-
-Actually, check should not be needed, as gsd_dlci_get() will check
-both limits for us. Let me remove it.
-
-> > +	ops =3D kzalloc(sizeof(*ops), GFP_KERNEL);
-> > +	if (!ops)
-> > +		return -ENOMEM;
-> > +
-> > +	ops->line =3D line;
-> > +	ops->receive_buf =3D gsd_dlci_receive_buf;
-> > +
-> > +	error =3D gsm_serdev_register_dlci(gsd, ops);
-> > +	if (error) {
-> > +		kfree(ops);
-> > +
-> > +		return error;
-> > +	}
-> > +
-> > +	base =3D mux_num_to_base(gsd->gsm);
-> > +	tty_register_device(gsm_tty_driver, base + ops->line, NULL);
->=20
-> I would expect this to be tty_port_register_device_serdev() so that
-> serdev gets initialised properly for any client devices (e.g. gnss).
->=20
-
-> > +void gsm_serdev_unregister_tty_port(struct gsm_serdev *gsd, int line)
-> > +{
-> > +	struct gsm_dlci *dlci;
-> > +	unsigned int base;
-> > +
-> > +	if (line < 1)
-> > +		return;
->=20
-> As above.
-
-Ok.
-
-> > +int gsm_serdev_register_device(struct gsm_serdev *gsd)
-> > +{
-> > +	struct gsm_mux *gsm;
-> > +	int error;
-> > +
-> > +	if (WARN(!gsd || !gsd->serdev || !gsd->output,
-> > +		 "serdev and output must be initialized\n"))
-> > +		return -EINVAL;
->=20
-> Just oops if the driver is buggy and fails to set essential fields.
-
-I find such robustness helpful, but I can remove it if you insist.
-
-> > +void gsm_serdev_unregister_device(struct gsm_serdev *gsd)
-> > +{
-> > +	gsm_cleanup_mux(gsd->gsm);
-> > +	mux_put(gsd->gsm);
-> > +	gsd->gsm =3D NULL;
-> > +}
-> > +EXPORT_SYMBOL_GPL(gsm_serdev_unregister_device);
-> > +
-> > +#endif	/* CONFIG_SERIAL_DEV_BUS */
->=20
-> It looks like you may also have a problem with tty hangups, which serdev
-> does not support currently. There are multiple paths in n_gsm which can
-> trigger a hangup (e.g. based on remote input) and would likely lead to a
-> crash
-
-I don't believe we need to support hangups for the Droid 4, but
-obviously it would be good not to crash. But I don't know where to
-start looking, do you have any hints?
-
-Best regards,
-								Pavel
-
---=20
-http://www.livejournal.com/~pavelmachek
-
---ReaqsoxgOBHFXBhH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX8QJ4AAKCRAw5/Bqldv6
-8ktlAJ4m4hfWc5FzWTdYyw0pcc2XZ1mn4QCgm/mP6cPGLsq7dSJVn1zYcUbKyv8=
-=cPhV
------END PGP SIGNATURE-----
-
---ReaqsoxgOBHFXBhH--
