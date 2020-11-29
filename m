@@ -2,118 +2,334 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43371C3E8C5
-	for <phone-devel@archiver.kernel.org>; Sun, 29 Nov 2020 20:43:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84DC2C3E8C5
+	for <phone-devel@archiver.kernel.org>; Sun, 29 Nov 2020 20:53:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EACE320727
-	for <phone-devel@archiver.kernel.org>; Sun, 29 Nov 2020 20:43:08 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ltAUV8xc"
+	by mail.kernel.org (Postfix) with ESMTP id 403AB20829
+	for <phone-devel@archiver.kernel.org>; Sun, 29 Nov 2020 20:53:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725950AbgK2UnI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 29 Nov 2020 15:43:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53230 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725882AbgK2UnI (ORCPT
+        id S1726293AbgK2Uwp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 29 Nov 2020 15:52:45 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:54226 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbgK2Uwp (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 29 Nov 2020 15:43:08 -0500
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FEDBC0613CF
-        for <phone-devel@vger.kernel.org>; Sun, 29 Nov 2020 12:42:28 -0800 (PST)
-Received: by mail-lf1-x143.google.com with SMTP id d20so16672562lfe.11
-        for <phone-devel@vger.kernel.org>; Sun, 29 Nov 2020 12:42:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5uBLY7Ua4rfHubKZI/G+6QMI6J0iMgJ9HGZNIZryQbY=;
-        b=ltAUV8xcjgqKSy62ciPxDWEgXuyJ1B2kI6+cb44w6G19toyVP0D6HZddlG1zwZCpva
-         h6ieZY5Ieh6NkyaYxLt9nWFxGZwboGuSe/k5zeOV70Ls4tl0EN7blQUHu8fbFcOrAQlG
-         7b9yXAJ9nH0Z0LWOU09A81+U3gO6LRGTE65dfgXaOzWQpSCo0CpaUIJircI680ZNI4LW
-         8wM40VohlpKEDOCs2bSSCt2kf0kgc3MAliO1g+rqyuQMdjl9KE03oIEYg8dcIBtki7ql
-         ks0WaeFPO63yC6XAP/LdRFPFgQVIFsXrCfODbTPM9KQOdrpzcWJgGAaRLckjVpmhwf+G
-         KCDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5uBLY7Ua4rfHubKZI/G+6QMI6J0iMgJ9HGZNIZryQbY=;
-        b=RpNqrtLPGxJCHWSCnPXG/jjd2M7nBl0mXOp9EeaJ6XgEKsyxKonvSSLgOkn+3w22Xb
-         8O1aaKGut4HWJlDW6OIcwXSWdvmQWANKME2hqdyW0oWVlmYuRPDS2PhA6qf5guqjTX3y
-         44K11pTyBP05StAiTBfkZIcNcoKi2xXwk5G2VPBDCpf1Q4p8HQLEVdIVYL5NQUpbZgeB
-         TJ32R2nsNjPfZLqy3UEMTBYAtpgJ9udt6NalidhvB9mJjGpPqBrcG0IJIiy1rG7fDnN4
-         XAz8tQ6SjLel0g9o9kbdfb0CJmyqwbdS9Zz8RFnKaYZ2fwuVTOeqoIapxtuWdhNdEWcn
-         67fQ==
-X-Gm-Message-State: AOAM533tcLp0cLSEdpX8wwGl44SReZQoJs7WsA4nXZb91Dtcgsaraupd
-        +NOWxIX37rIhDdOBAXWKnk50ctUQXk50DJ8EN7xEPA==
-X-Google-Smtp-Source: ABdhPJzY1JviYd7H5LSLECyBaOqpwEM2KhxmJ+AniJVEswZixjGqXiHBl5M93+TInnvMzvW81pJoUhC2J6S082yRyCY=
-X-Received: by 2002:a19:5f11:: with SMTP id t17mr7417427lfb.572.1606682546304;
- Sun, 29 Nov 2020 12:42:26 -0800 (PST)
-MIME-Version: 1.0
-References: <20201128004038.883289-1-linus.walleij@linaro.org>
- <20201128004038.883289-2-linus.walleij@linaro.org> <20201128122153.44c1052c@archlinux>
- <CACRpkdYvkV0Xrw9fseQneHwhJ-EkcX+RQKVcCF8hhidE479AmQ@mail.gmail.com> <20201129112603.1644e5a5@archlinux>
-In-Reply-To: <20201129112603.1644e5a5@archlinux>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 29 Nov 2020 21:42:15 +0100
-Message-ID: <CACRpkdYFGRsk28hLGxNB4jOE2vVMMmSLEGSxucsBQGnuzxPCeg@mail.gmail.com>
-Subject: Re: [PATCH 2/2 v2] iio: magnetometer: Add driver for Yamaha YAS5xx
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Sun, 29 Nov 2020 15:52:45 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 727651C0B7C; Sun, 29 Nov 2020 21:51:45 +0100 (CET)
+Date:   Sun, 29 Nov 2020 21:51:45 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh@kernel.org>,
+        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
         phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 1/6] tty: n_gsm: Add support for serdev drivers
+Message-ID: <20201129205144.GA15038@duo.ucw.cz>
+References: <20200512214713.40501-1-tony@atomide.com>
+ <20200512214713.40501-2-tony@atomide.com>
+ <20200528093102.GC10358@localhost>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="ReaqsoxgOBHFXBhH"
+Content-Disposition: inline
+In-Reply-To: <20200528093102.GC10358@localhost>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Nov 29, 2020 at 12:26 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Sat, 28 Nov 2020 22:04:56 +0100  Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> > > > + * YAS530 MS-3E (2011 Samsung Galaxy S Advance)
-> > > > + * YAS532 MS-3R (2011 Samsung Galaxy S4)
-> > > > + * YAS533 MS-3F (Vivo 1633, 1707, V3, Y21L)
-> > > > + * (YAS534 is a magnetic switch, not handled)
-> > >
-> > > And there is your reason not to use wild cards in the dt file name etc!
-> >
-> > It's pretty safe as we definately account for all magnetometers
-> > of the naming scheme YAS53x. The YAS534 would be in another
-> > subsystem (proximity, I guess) so the path to the file gives the
-> > right info: this covers all magnetometers named yas53x, goes
-> > for both the bindings and the driver I think?
->
-> I'd just name it after a specific part.
+--ReaqsoxgOBHFXBhH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-OK no problem I just name it yas530 everywhere as it is the
-oldest supported part number.
+Hi!
 
-> > > > +     c->a2 = yas5xx_extract_bits(&data[3], 10, 15) - 32;
-> > > > +     c->a3 = yas5xx_extract_bits(&data[3], 6, 9) - 8;
-> > > > +     c->a4 = yas5xx_extract_bits(&data[4], 8, 13) - 32;
-> > > > +     c->a5 = yas5xx_extract_bits(&data[5], 10, 15) + 38;
-> > > > +     c->a6 = yas5xx_extract_bits(&data[5], 4, 9) - 32;
-> > > > +     c->a7 = yas5xx_extract_bits(&data[6], 5, 11) - 64;
-> > > > +     c->a8 = yas5xx_extract_bits(&data[7], 7, 12) - 32;
-> > > > +     c->a9 = yas5xx_extract_bits(&data[8], 7, 14);
-> > > > +     c->k = yas5xx_extract_bits(&data[9], 10, 14) + 10;
-> >
-> > Since this segment easily fits in a u64 I thought about
-> > extracing a u64 and then use FIELD_GET on that.
->
-> Could do, but to a degree what makes sense here is dependent on what
-> aligns well with the datasheet as that's what people will check against.
-> Is there a public datasheet with this in?
+This is neccessary for having useful Droid 4 support, so let me try to
+ressurect this.
 
-There are public data sheets, but no public register descriptions.
-The only documentation is code looking worse than what I
-wrote (IMO).
+If there's newer version (I took mine from for-5.7 branch), let me
+know.
 
-Yours,
-Linus Walleij
+On Thu 2020-05-28 11:31:02, Johan Hovold wrote:
+> On Tue, May 12, 2020 at 02:47:08PM -0700, Tony Lindgren wrote:
+> > I initially though about adding the serdev support into a separate file,
+> > but that will take some refactoring of n_gsm.c. And I'd like to have
+> > things working first. Then later on we might want to consider splitting
+> > n_gsm.c into three pieces for core, tty and serdev parts. And then maybe
+> > the serdev related parts can be just moved to live under something like
+> > drivers/tty/serdev/protocol/ngsm.c.
+>=20
+> Yeah, perhaps see where this lands first, but it should probably be done
+> before merging anything.
+
+Is drivers/tty/serdev/protocol/ngsm.c acceptable place for you?
+
+> And it doesn't really make sense exporting these interfaces without the
+> actual serdev driver as they are closely tied and cannot be reviewed
+> separately anyway.
+
+Ok, I guess keeping this in series with gnss driver makes sense? That
+one should be good example.
+
+> > @@ -150,6 +152,7 @@ struct gsm_dlci {
+> >  	/* Data handling callback */
+> >  	void (*data)(struct gsm_dlci *dlci, const u8 *data, int len);
+> >  	void (*prev_data)(struct gsm_dlci *dlci, const u8 *data, int len);
+> > +	struct gsm_serdev_dlci *ops; /* serdev dlci ops, if used */
+>=20
+> Please rename the struct with a "_operations" suffix as you refer to
+> this as "ops" throughout.
+
+"struct gsm_serdev_dlci_operations" is rather long, but I can do
+that; unless there's better idea? ...OTOH... yes, "ops" variable is
+used for this, but it is more than "operations" structure, so the new
+name is misleading. I may have to rename it back.
+
+> > +/**
+> > + * gsm_serdev_get_config - read ts 27.010 config
+> > + * @gsd:	serdev-gsm instance
+> > + * @c:		ts 27.010 config data
+> > + *
+> > + * See gsm_copy_config_values() for more information.
+>=20
+> Please document this properly since you're exporting these
+> interfaces.
+
+Actually, let me drop this for now.
+
+> > +/**
+> > + * gsm_serdev_set_config - set ts 27.010 config
+> > + * @gsd:	serdev-gsm instance
+> > + * @c:		ts 27.010 config data
+> > + *
+> > + * See gsm_config() for more information.
+> > + */
+> > +int gsm_serdev_set_config(struct gsm_serdev *gsd, struct gsm_config *c)
+> > +{
+> > +	struct gsm_mux *gsm;
+> > +
+> > +	if (!gsd || !gsd->serdev || !gsd->gsm)
+> > +		return -ENODEV;
+>=20
+> And why check for serdev here?
+
+Having exported interfaces somehow robust looks like good thing. Do
+you want me to remove it?
+
+> > +	gsm =3D gsd->gsm;
+> > +
+> > +	if (line < 1 || line >=3D 63)
+>=20
+> Line 62 is reserved as well.
+
+Thanks, fixed.
+
+> > +static int gsd_dlci_receive_buf(struct gsm_serdev_dlci *ops,
+> > +				const unsigned char *buf,
+> > +				size_t len)
+> > +{
+> > +	struct gsm_serdev *gsd =3D ops->gsd;
+>=20
+> This looks backwards, why not pass in gsd instead?
+
+gsm_serdev does not specify concrete dlci; we can go from dlci to gsd
+but not the other way around.
+
+=2E..which shows that gsm_serdev_dlci is not really "operations"
+structure and should not be named as such.
+
+> > +	struct gsm_mux *gsm =3D dlci->gsm;
+> > +	struct gsm_serdev *gsd =3D gsm->gsd;
+> > +
+> > +	if (!gsd || !dlci->ops)
+> > +		return;
+> > +
+> > +	switch (dlci->adaption) {
+> > +	case 0:
+>=20
+> 0 isn't valid, right?
+>=20
+> > +	case 1:
+> > +		if (dlci->ops->receive_buf)
+> > +			dlci->ops->receive_buf(dlci->ops, buf, len);
+> > +		break;
+>=20
+> What about adaption 2 with modem status? Why are you not reusing
+> gsm_dlci_data()?
+
+It is not needed in my application, I guess, so it would be difficult
+to test.
+
+> > +	default:
+> > +		pr_warn("dlci%i adaption %i not yet implemented\n",
+> > +			dlci->addr, dlci->adaption);
+>=20
+> This needs to be rate limited. Use the dev_ versions when you can.
+
+Ok.
+
+> > +	mutex_lock(&dlci->mutex);
+> > +	ops->gsd =3D gsd;
+> > +	dlci->ops =3D ops;
+> > +	dlci->modem_rx =3D 0;
+> > +	dlci->prev_data =3D dlci->data;
+>=20
+> I think this one is only used when bringing up a network interface.
+
+prev_data is used to store data pointer, so that it can be restored on
+unregister. Are you saying it is not neccessary?
+
+> > +	dlci->data =3D gsd_dlci_data;
+> > +	mutex_unlock(&dlci->mutex);
+> > +
+> > +	gsm_dlci_begin_open(dlci);
+>=20
+> Why is this here? This should be handled when opening the serial device
+> (i.e. by gsmtty_open()).
+
+This is for in-kernel users. When gnss device is opened, this is called.
+
+> > +	/*
+> > +	 * Allow some time for dlci to move to DLCI_OPEN state. Otherwise
+> > +	 * the serdev consumer driver can start sending data too early during
+> > +	 * the setup, and the response will be missed by gms_queue() if we
+> > +	 * still have DLCI_CLOSED state.
+> > +	 */
+> > +	for (retries =3D 10; retries > 0; retries--) {
+> > +		if (dlci->state =3D=3D DLCI_OPEN)
+> > +			break;
+> > +		msleep(100);
+> > +	}
+>=20
+> What if you time out? This should be handled properly.
+
+Ok.
+
+> > +static int gsd_receive_buf(struct serdev_device *serdev, const u8 *dat=
+a,
+> > +			   size_t count)
+> > +{
+> > +	struct gsm_serdev *gsd =3D serdev_device_get_drvdata(serdev);
+> > +	struct gsm_mux *gsm;
+> > +	const unsigned char *dp;
+> > +	int i;
+> > +
+> > +	if (WARN_ON(!gsd))
+> > +		return 0;
+>=20
+> Probably better to take the NULL-deref. Can this ever happen?
+
+Well, with warn_on we continue, so easier debugging. It obviously
+should not happen.
+
+> > +int gsm_serdev_register_tty_port(struct gsm_serdev *gsd, int line)
+> > +{
+> > +	struct gsm_serdev_dlci *ops;
+> > +	unsigned int base;
+> > +	int error;
+> > +
+> > +	if (line < 1)
+> > +		return -EINVAL;
+>=20
+> Upper limit?
+
+Actually, check should not be needed, as gsd_dlci_get() will check
+both limits for us. Let me remove it.
+
+> > +	ops =3D kzalloc(sizeof(*ops), GFP_KERNEL);
+> > +	if (!ops)
+> > +		return -ENOMEM;
+> > +
+> > +	ops->line =3D line;
+> > +	ops->receive_buf =3D gsd_dlci_receive_buf;
+> > +
+> > +	error =3D gsm_serdev_register_dlci(gsd, ops);
+> > +	if (error) {
+> > +		kfree(ops);
+> > +
+> > +		return error;
+> > +	}
+> > +
+> > +	base =3D mux_num_to_base(gsd->gsm);
+> > +	tty_register_device(gsm_tty_driver, base + ops->line, NULL);
+>=20
+> I would expect this to be tty_port_register_device_serdev() so that
+> serdev gets initialised properly for any client devices (e.g. gnss).
+>=20
+
+> > +void gsm_serdev_unregister_tty_port(struct gsm_serdev *gsd, int line)
+> > +{
+> > +	struct gsm_dlci *dlci;
+> > +	unsigned int base;
+> > +
+> > +	if (line < 1)
+> > +		return;
+>=20
+> As above.
+
+Ok.
+
+> > +int gsm_serdev_register_device(struct gsm_serdev *gsd)
+> > +{
+> > +	struct gsm_mux *gsm;
+> > +	int error;
+> > +
+> > +	if (WARN(!gsd || !gsd->serdev || !gsd->output,
+> > +		 "serdev and output must be initialized\n"))
+> > +		return -EINVAL;
+>=20
+> Just oops if the driver is buggy and fails to set essential fields.
+
+I find such robustness helpful, but I can remove it if you insist.
+
+> > +void gsm_serdev_unregister_device(struct gsm_serdev *gsd)
+> > +{
+> > +	gsm_cleanup_mux(gsd->gsm);
+> > +	mux_put(gsd->gsm);
+> > +	gsd->gsm =3D NULL;
+> > +}
+> > +EXPORT_SYMBOL_GPL(gsm_serdev_unregister_device);
+> > +
+> > +#endif	/* CONFIG_SERIAL_DEV_BUS */
+>=20
+> It looks like you may also have a problem with tty hangups, which serdev
+> does not support currently. There are multiple paths in n_gsm which can
+> trigger a hangup (e.g. based on remote input) and would likely lead to a
+> crash
+
+I don't believe we need to support hangups for the Droid 4, but
+obviously it would be good not to crash. But I don't know where to
+start looking, do you have any hints?
+
+Best regards,
+								Pavel
+
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--ReaqsoxgOBHFXBhH
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX8QJ4AAKCRAw5/Bqldv6
+8ktlAJ4m4hfWc5FzWTdYyw0pcc2XZ1mn4QCgm/mP6cPGLsq7dSJVn1zYcUbKyv8=
+=cPhV
+-----END PGP SIGNATURE-----
+
+--ReaqsoxgOBHFXBhH--
