@@ -2,51 +2,33 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34A80C71155
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Nov 2020 17:24:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36173C64E7B
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Nov 2020 18:24:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0591D2076E
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Nov 2020 17:24:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DF0E120870
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Nov 2020 18:24:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387459AbgK3RXu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 30 Nov 2020 12:23:50 -0500
-Received: from mail-io1-f67.google.com ([209.85.166.67]:34102 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387405AbgK3RXu (ORCPT
+        id S2387633AbgK3SYE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 30 Nov 2020 13:24:04 -0500
+Received: from m-r2.th.seeweb.it ([5.144.164.171]:44685 "EHLO
+        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727125AbgK3SYE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 30 Nov 2020 12:23:50 -0500
-Received: by mail-io1-f67.google.com with SMTP id d7so3744445iok.1;
-        Mon, 30 Nov 2020 09:23:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=X/gmjfv5NQeyFB8RGSzSz0Neo/S0f9fPQTdy4U5esOc=;
-        b=XgQFaeN5wERbBGWH+RulQEmrxtpF4GdRqVuAAheKeCE/0XeFKtmXUl4DCRbrUomEUq
-         Yc/YA38ddDTqGjFcr8o+B7J5aiSAFpULjqiDK6nqhq4PaVC/eBLC7XthwrWZ5+7ulXNm
-         +K3hN2zeOQBgJn+jSiRS6LCOlvITEsGsAZTLqYjCgC6QZkLyGWkKUREKABARD7EpxRy0
-         urgdKGqeFf8jg+blKT/E3iGksUiSJDiHbXHcZpbbCNhplboGAgesQfl9mmE9xxSO3LeX
-         Vw/QesfQJKhp+betMQecpLmo5ywE04SOhVVvAb12Rr/n3eGEPf6USCfFonSj0L4siVvG
-         ragw==
-X-Gm-Message-State: AOAM530nOt1rr09QGFAMf5Bu0iKWvpR0ZH1JiXS3Nxg9QJY65jUOh+E7
-        kaAoNN4EqSCXteiwj/uCOQ==
-X-Google-Smtp-Source: ABdhPJynQgQFRwwrLb/PKBWFaFLkRalheSJSvHZUa1Map+UJYqXcPISSJkCcGmeBawITCQwPKR+5Lg==
-X-Received: by 2002:a5e:9242:: with SMTP id z2mr12844435iop.175.1606756988771;
-        Mon, 30 Nov 2020 09:23:08 -0800 (PST)
-Received: from xps15 ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id x17sm11141097ilj.67.2020.11.30.09.23.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Nov 2020 09:23:07 -0800 (PST)
-Received: (nullmailer pid 2662313 invoked by uid 1000);
-        Mon, 30 Nov 2020 17:23:05 -0000
-Date:   Mon, 30 Nov 2020 10:23:05 -0700
-From:   Rob Herring <robh@kernel.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
+        Mon, 30 Nov 2020 13:24:04 -0500
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 2858E40266;
+        Mon, 30 Nov 2020 19:23:21 +0100 (CET)
+Subject: Re: [PATCH 11/13] dt-bindings: cpufreq: Convert qcom-cpufreq-hw to
+ YAML binding
+To:     Rob Herring <robh@kernel.org>
 Cc:     viresh.kumar@linaro.org, rjw@rjwysocki.net,
         jorge.ramirez-ortiz@linaro.org, robh+dt@kernel.org,
         konrad.dybcio@somainline.org, linux-pm@vger.kernel.org,
@@ -56,58 +38,79 @@ Cc:     viresh.kumar@linaro.org, rjw@rjwysocki.net,
         phone-devel@vger.kernel.org, broonie@kernel.org,
         linux-arm-msm@vger.kernel.org, agross@kernel.org,
         marijn.suijten@somainline.org, martin.botka@somainline.org
-Subject: Re: [PATCH 11/13] dt-bindings: cpufreq: Convert qcom-cpufreq-hw to
- YAML binding
-Message-ID: <20201130172305.GA2661895@robh.at.kernel.org>
 References: <20201126184559.3052375-1-angelogioacchino.delregno@somainline.org>
  <20201126184559.3052375-12-angelogioacchino.delregno@somainline.org>
+ <20201130172305.GA2661895@robh.at.kernel.org>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <9fc67c3f-4753-fe4f-ca1b-7faeee2abe7d@somainline.org>
+Date:   Mon, 30 Nov 2020 19:23:20 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201126184559.3052375-12-angelogioacchino.delregno@somainline.org>
+In-Reply-To: <20201130172305.GA2661895@robh.at.kernel.org>
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 26 Nov 2020 19:45:57 +0100, AngeloGioacchino Del Regno wrote:
-> Convert the qcom-cpufreq-hw documentation to YAML binding as
-> qcom,cpufreq-hw.yaml.
+Il 30/11/20 18:23, Rob Herring ha scritto:
+> On Thu, 26 Nov 2020 19:45:57 +0100, AngeloGioacchino Del Regno wrote:
+>> Convert the qcom-cpufreq-hw documentation to YAML binding as
+>> qcom,cpufreq-hw.yaml.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>> ---
+>>   .../bindings/cpufreq/cpufreq-qcom-hw.txt      | 173 +---------------
+>>   .../bindings/cpufreq/qcom,cpufreq-hw.yaml     | 196 ++++++++++++++++++
+>>   2 files changed, 197 insertions(+), 172 deletions(-)
+>>   create mode 100644 Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
+>>
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> ---
->  .../bindings/cpufreq/cpufreq-qcom-hw.txt      | 173 +---------------
->  .../bindings/cpufreq/qcom,cpufreq-hw.yaml     | 196 ++++++++++++++++++
->  2 files changed, 197 insertions(+), 172 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
+> 
+> My bot found errors running 'make dt_binding_check' on your patch:
+> 
+> yamllint warnings/errors:
+> 
+> dtschema/dtc warnings/errors:
+> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml: properties:clock-names: [{'const': 'xo'}, {'const': 'ref'}] is not of type 'object', 'boolean'
+> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml: maintainers:0: 'TBD' is not a 'email'
+> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml: ignoring, error in schema: properties: clock-names
+> warning: no schema found in file: ./Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
+> Error: Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.example.dts:150.3-151.1 syntax error
+> FATAL ERROR: Unable to parse input tree
+> make[1]: *** [scripts/Makefile.lib:342: Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.example.dt.yaml] Error 1
+> make[1]: *** Waiting for unfinished jobs....
+> make: *** [Makefile:1364: dt_binding_check] Error 2
+> 
+> 
+> See https://patchwork.ozlabs.org/patch/1406857
+> 
+> The base for the patch is generally the last rc1. Any dependencies
+> should be noted.
+> 
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+> 
+> pip3 install dtschema --upgrade
+> 
+> Please check and re-submit.
 > 
 
+Hello!
+All the errors that you've pointed out have been fixed on both the CPR,
+CPR3 and cpufreq-hw, but before pushing a V2 of this patch series...
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Well, I have a question: the qcom-cpufreq-hw driver has no MAINTAINERS
+entry and there was no maintainer for this driver specified in the old
+txt format binding.
 
-yamllint warnings/errors:
+What should I write in the "maintainers" field of the YAML binding for
+this driver?
+Should I assign it to the subsystem maintainer?
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml: properties:clock-names: [{'const': 'xo'}, {'const': 'ref'}] is not of type 'object', 'boolean'
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml: maintainers:0: 'TBD' is not a 'email'
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml: ignoring, error in schema: properties: clock-names
-warning: no schema found in file: ./Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
-Error: Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.example.dts:150.3-151.1 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:342: Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.example.dt.yaml] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1364: dt_binding_check] Error 2
-
-
-See https://patchwork.ozlabs.org/patch/1406857
-
-The base for the patch is generally the last rc1. Any dependencies
-should be noted.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Thanks,
+- Angelo
