@@ -2,104 +2,108 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 358DBC64E8A
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Nov 2020 14:53:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9F83C83013
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Nov 2020 17:04:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CDA3820719
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Nov 2020 14:53:15 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KN3UUO6N"
+	by mail.kernel.org (Postfix) with ESMTP id 7F9D42074A
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Nov 2020 17:04:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726885AbgK3OxA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 30 Nov 2020 09:53:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51000 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726871AbgK3Ow7 (ORCPT
+        id S1729264AbgK3RD4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 30 Nov 2020 12:03:56 -0500
+Received: from mail-io1-f65.google.com ([209.85.166.65]:38390 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727936AbgK3RD4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 30 Nov 2020 09:52:59 -0500
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84201C0613D3
-        for <phone-devel@vger.kernel.org>; Mon, 30 Nov 2020 06:52:19 -0800 (PST)
-Received: by mail-wm1-x344.google.com with SMTP id g25so64041wmh.1
-        for <phone-devel@vger.kernel.org>; Mon, 30 Nov 2020 06:52:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=xRnSTPJtYHlLo5f9Pcsa1HU4sAtrN1byx2aGSuuHdV8=;
-        b=KN3UUO6NsVuwUQVEDTZ2eiYecoqvNhR/NsquvyGZPENcBLAyo8q/C4dYMO+H+VQ96t
-         5h9oUwxaBfOaLvuQ0L6H5f+d+IFUQEoUu1ofoqdOG/b9fvX7vUCmEyny6PlmOwJSQW3v
-         AuI3AqTN2jX/dBo9wJwQMxb8MU8C63QRPm6wrG05BXMo4no3DMFCJosPhHrn+eKzznQO
-         HI9tXsU0w7Z69+PrGI3zDrz9SK8Co0CXu+NmXIifeWxOWSCVo8lgXrvezUV5WGTw6Y76
-         h80FhNNmb9WkXBX/jH2mGOv9iABOrVq11bdvGVIpU3ZsseaaIAt++1dt/x4ZgoaIFFgE
-         LLwg==
+        Mon, 30 Nov 2020 12:03:56 -0500
+Received: by mail-io1-f65.google.com with SMTP id y5so11443257iow.5;
+        Mon, 30 Nov 2020 09:03:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=xRnSTPJtYHlLo5f9Pcsa1HU4sAtrN1byx2aGSuuHdV8=;
-        b=XRzUoCgFjkdnx8EHfxMXZfHtDvwDHY9m45KtyT3XrBaaVC1sz1RAxZ44/w/VpMaG8Y
-         hATX/osPfuOLxYtsn0MSNCiKPJStn+FwYfPvDX+WDbfk97YWFWrrRfVApoxbGTlQvhVL
-         tkwc/p1cK2c+LWUmY6BEd+1I7Ux0NEbJnll42OC8rCMDlSxrFPPvXnUuKiKYz183RA5F
-         QD5YrOHIOJME+0ykkxzXQVQF5VBzCLTfOTEjsWX9MAfzdc7rYfhMZ0bGq+LXz4Kysasa
-         8OLrBSMhW3iQ5ABSwx0p1wmcGWKEBBlB0FX9X3gcNyesb0ZWnNt42OBl53yG3RM9XcTy
-         cPGA==
-X-Gm-Message-State: AOAM533TfluB6HdhFEQK0SX7PPpq5L2wV+1/cJuHIOv0gjLpcztunLq6
-        lMAjVE4YPA1NBH6Rf4w+3n1ciA==
-X-Google-Smtp-Source: ABdhPJzh786ywQLuYKfZnHtZFKJOE4q0GObaoeKTiokZ7B8y0EIQtjGY+u9FB3q3p8aiNx3HcptlMg==
-X-Received: by 2002:a1c:a9cc:: with SMTP id s195mr1189482wme.97.1606747938163;
-        Mon, 30 Nov 2020 06:52:18 -0800 (PST)
-Received: from MacBook-Pro.local ([212.45.64.13])
-        by smtp.googlemail.com with ESMTPSA id n189sm1072983wmf.20.2020.11.30.06.52.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Nov 2020 06:52:17 -0800 (PST)
-Subject: Re: [PATCH v4 1/2] dt-bindings: interconnect: Add bindings for
- Qualcomm SDM660 NoC
-To:     Rob Herring <robh@kernel.org>,
-        Martin Botka <martin.botka1@gmail.com>
-Cc:     AngeloGioacchino Del Regno <kholk11@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        devicetree <devicetree@vger.kernel.org>, marijns95@gmail.com,
-        Konrad Dybcio <konradybcio@gmail.com>,
-        phone-devel@vger.kernel.org,
-        "open list:THERMAL" <linux-pm@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>
-References: <20201017133718.31327-1-kholk11@gmail.com>
- <20201017133718.31327-2-kholk11@gmail.com> <20201019195807.GA3508546@bogus>
- <CADQ2G_HZ9nt88vW9MNiC-+Rdjzsu-hSHoqmqLC75vyiG2JKpQQ@mail.gmail.com>
- <CAL_Jsq+ZsOP1=+N0yu1Dc+2ZpkJic8XSGhTf0H8yRzYfbk1T9g@mail.gmail.com>
-From:   Georgi Djakov <georgi.djakov@linaro.org>
-Message-ID: <f9096036-b47a-bc0e-af32-041d800b19e1@linaro.org>
-Date:   Mon, 30 Nov 2020 16:52:15 +0200
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ZVRcg2DyYnY2T86oR8Te89KJ9jB7+OaNC7lMLPrhpP8=;
+        b=ahmXBkPUBEU9PzW+agYRUZ498p92yF8F3lYqdX9XwtbaVVkuEdalYc03l2nK+eKt9L
+         xJ2s14a/VuBPS7DsdSe3c1MCp6kXu9ITEEAIYfZh0KL74rjbgZrfN/h6IytLT36VybOs
+         7u4xMVLn9+vRBDMaltPyniZ89Qr3fH/IrWqjv+iXk3B+ZEClLJ96l1u5nnTlXAjJVCJQ
+         QTdVvLYftHt3UBo6w94BRuTcsZsdHAQcVer8eT9lEQ9blCDUw87dBbfKsHhT1JlN40OL
+         hO3KfGS4e6GVOvMFNzsKuqt6xG5Po1UBJfAic1ksh1hf342w+OK9nOSgoTGrdJopQ9yb
+         ADnQ==
+X-Gm-Message-State: AOAM530t0+PA0vKX/pCVj4Zu5ZGBPAiiPfuSR5RPBpB6qy96u8laYSgG
+        HyQqwERvHmOsBivEVsQq+w==
+X-Google-Smtp-Source: ABdhPJyjovkgkPmew9hFyzwW0sWCRJdcvlG4zeJ8246X7c+JB13zmvU3zgYWciFKeDBC2ZGXUfxVAQ==
+X-Received: by 2002:a5e:d717:: with SMTP id v23mr12204718iom.60.1606755794761;
+        Mon, 30 Nov 2020 09:03:14 -0800 (PST)
+Received: from xps15 ([64.188.179.253])
+        by smtp.gmail.com with ESMTPSA id t12sm8339755ilu.46.2020.11.30.09.03.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Nov 2020 09:03:13 -0800 (PST)
+Received: (nullmailer pid 2631520 invoked by uid 1000);
+        Mon, 30 Nov 2020 17:03:11 -0000
+Date:   Mon, 30 Nov 2020 10:03:11 -0700
+From:   Rob Herring <robh@kernel.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     linux-pm@vger.kernel.org, viresh.kumar@linaro.org,
+        linux-kernel@vger.kernel.org, martin.botka@somainline.org,
+        rjw@rjwysocki.net, phone-devel@vger.kernel.org,
+        ulf.hansson@linaro.org, linux-arm-msm@vger.kernel.org,
+        marijn.suijten@somainline.org, jorge.ramirez-ortiz@linaro.org,
+        agross@kernel.org, robh+dt@kernel.org, devicetree@vger.kernel.org,
+        lgirdwood@gmail.com, nks@flawful.org, konrad.dybcio@somainline.org,
+        daniel.lezcano@linaro.org, bjorn.andersson@linaro.org,
+        broonie@kernel.org
+Subject: Re: [PATCH 07/13] dt-bindings: avs: cpr: Convert binding to YAML
+ schema
+Message-ID: <20201130170311.GA2630904@robh.at.kernel.org>
+References: <20201126184559.3052375-1-angelogioacchino.delregno@somainline.org>
+ <20201126184559.3052375-8-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
-In-Reply-To: <CAL_Jsq+ZsOP1=+N0yu1Dc+2ZpkJic8XSGhTf0H8yRzYfbk1T9g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201126184559.3052375-8-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 30.11.20 16:29, Rob Herring wrote:
-> On Mon, Oct 19, 2020 at 2:45 PM Martin Botka <martin.botka1@gmail.com> wrote:
->>
->>> Documentation/devicetree/bindings/interconnect/qcom,sdm660.example.dts:20:18: fatal error: dt-bindings/clock/qcom,mmcc-sdm660.h: No such file or directory
->>>     20 |         #include <dt-bindings/clock/qcom,mmcc-sdm660.h>
->>>        |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>
->> This patch depends on my MMCC patch (sent by angelo).
+On Thu, 26 Nov 2020 19:45:53 +0100, AngeloGioacchino Del Regno wrote:
+> Convert the qcom,cpr.txt document to YAML schema and place it in the
+> appropriate directory, since commit a7305e684fc moves this driver
+> from power/avs to soc/qcom, but forgets to move the documentation.
 > 
-> Seems this landed in linux-next now and the dependency is not there.
-> Revert, drop, or fix the dependency please.
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  .../bindings/power/avs/qcom,cpr.txt           | 131 +-----------------
+>  .../bindings/soc/qcom/qcom,cpr.yaml           | 115 +++++++++++++++
+>  MAINTAINERS                                   |   2 +-
+>  3 files changed, 117 insertions(+), 131 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
 > 
 
-Thanks Rob. I'll drop it for now.
 
-BR,
-Georgi
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml: properties:clock-names: [{'const': 'ref'}] is not of type 'object', 'boolean'
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml: ignoring, error in schema: properties: clock-names
+warning: no schema found in file: ./Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
+
+
+See https://patchwork.ozlabs.org/patch/1406855
+
+The base for the patch is generally the last rc1. Any dependencies
+should be noted.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+
