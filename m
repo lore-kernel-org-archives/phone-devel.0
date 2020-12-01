@@ -2,96 +2,98 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=BAYES_00,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B43B4C71155
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Nov 2020 21:50:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C3A22C64E90
+	for <phone-devel@archiver.kernel.org>; Tue,  1 Dec 2020 02:08:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5D19F208C3
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Nov 2020 21:50:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7499F20857
+	for <phone-devel@archiver.kernel.org>; Tue,  1 Dec 2020 02:08:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730327AbgK3VuU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 30 Nov 2020 16:50:20 -0500
-Received: from mail-il1-f195.google.com ([209.85.166.195]:46592 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726158AbgK3VuU (ORCPT
+        id S1726530AbgLACIf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 30 Nov 2020 21:08:35 -0500
+Received: from mail-il1-f196.google.com ([209.85.166.196]:35474 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725900AbgLACIf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 30 Nov 2020 16:50:20 -0500
-Received: by mail-il1-f195.google.com with SMTP id b8so12808785ila.13;
-        Mon, 30 Nov 2020 13:50:04 -0800 (PST)
+        Mon, 30 Nov 2020 21:08:35 -0500
+Received: by mail-il1-f196.google.com with SMTP id t13so174879ilp.2;
+        Mon, 30 Nov 2020 18:08:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=uyqMdc65sguiCBb2tLMESdiNVTjI093Y/QUo7pdzJWY=;
-        b=XNwbnkpZtjnc0stjZ7Td+xXjBjLxwXfN84j/FrXrPgZ1fW1OqAxZ525d3ec9bjaxDx
-         R+y51IQnPT7PNgTh3A98keYi48XfdfIDEXK68PVKWt1o1jE/9I/37/NH3iIOufYSP5pc
-         BpqJRZuiFFtEr5TMO2qX1HumtC2wBrNJAHA/Cg1oouf1JpZbwXkWItrYRGAlfXi6YGkW
-         78tt83aMP3c/CuGe16sYfDdVMHnrRlGWnfF6hckx83udzsPzigfvq1IheAmEz79TFDPF
-         at7mrDctvyiGKdeA+pPzNHrflBdiDRNuVNsB0Xo/HRFbhOGDIYWuHGweG1zocC3XfyfV
-         +Ucg==
-X-Gm-Message-State: AOAM532jVLFx8mK7+D6YecSPAbmuqMcsniMWIdQCyT0v223V8hSzZLkV
-        qd7/Gpo+jjKhDr1D/VEpTA==
-X-Google-Smtp-Source: ABdhPJyxQYgOMHBJXBZXCv8wIYwln5AiOOCrTYiGFYjmkCW654Mc/fNyfvCBXBLvpjgplB+n7/5OTQ==
-X-Received: by 2002:a05:6e02:120f:: with SMTP id a15mr18966070ilq.97.1606772978956;
-        Mon, 30 Nov 2020 13:49:38 -0800 (PST)
+        bh=Wmb1E9vwJ20mbsZfVtg7o1J8TNNKrE+DCJCeq7P0tQw=;
+        b=pysRKWhT42B98wNkRIZYcCmslx5G30b3qu8k0aqO9hm4ucGcrr6Yq78Mll5AwNYtzg
+         Q5BsqZLcSDSpPoMX61BX5koUJkVhpjg7cgm8CQ0HdEYrAJ3ffnKsaJNBm/yHofRO7oOh
+         5vt7ZcheIz0ktvik9QL/9NqMZzVHSwfd++nauMAXCMBGVnSAgUPQNtOxP5fOP5bRfUZm
+         L1TyTwXPwsHNjffylnK76lcbjTWMUsd5jx8TYe8c7eIv7Te8d4njeCWT2b0GFbQ82RLA
+         61B9ZJDLMrcN+FPcN0VX9DXKW6ZVAHUZy0RcF37CGJBPTke9kngvz76yTChM976RwWGX
+         wuXw==
+X-Gm-Message-State: AOAM531t4QCXJr1KVnu7eqjAQCmBFSYE0Okun8HtEw5LfWbWjOPBShTb
+        MA1hCgEsyJ2syMN1Nu9IUA==
+X-Google-Smtp-Source: ABdhPJw+YP5JQ39895685yf6gbmiiehuqB9qVkocRfkDD2sFBTw28pMjbGcSkhIKB8CwvBwoRMckqA==
+X-Received: by 2002:a92:da87:: with SMTP id u7mr670427iln.230.1606788468742;
+        Mon, 30 Nov 2020 18:07:48 -0800 (PST)
 Received: from xps15 ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id c2sm11427211iln.70.2020.11.30.13.49.37
+        by smtp.gmail.com with ESMTPSA id w14sm222589ilu.54.2020.11.30.18.07.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Nov 2020 13:49:38 -0800 (PST)
-Received: (nullmailer pid 3089193 invoked by uid 1000);
-        Mon, 30 Nov 2020 21:49:35 -0000
-Date:   Mon, 30 Nov 2020 14:49:35 -0700
+        Mon, 30 Nov 2020 18:07:47 -0800 (PST)
+Received: (nullmailer pid 3492586 invoked by uid 1000);
+        Tue, 01 Dec 2020 02:07:46 -0000
+Date:   Mon, 30 Nov 2020 19:07:46 -0700
 From:   Rob Herring <robh@kernel.org>
-To:     Sakari Ailus <sakari.ailus@iki.fi>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        linux-leds@vger.kernel.org, newbytee@protonmail.com,
-        Stephan Gerhold <stephan@gerhold.net>,
-        phone-devel@vger.kernel.org, linux-media@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2 v6] dt-bindings: leds: Add DT binding for Richtek
- RT8515
-Message-ID: <20201130214935.GA3085708@robh.at.kernel.org>
-References: <20201123214439.1279464-1-linus.walleij@linaro.org>
- <20201123224543.GC4351@valkosipuli.retiisi.org.uk>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/2 v4] iio: accel: yamaha-yas530: Add DT bindings
+Message-ID: <20201201020746.GA3492504@robh.at.kernel.org>
+References: <20201129215421.1177990-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201123224543.GC4351@valkosipuli.retiisi.org.uk>
+In-Reply-To: <20201129215421.1177990-1-linus.walleij@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Nov 24, 2020 at 12:45:43AM +0200, Sakari Ailus wrote:
-> Hi Linus,
+On Sun, 29 Nov 2020 22:54:20 +0100, Linus Walleij wrote:
+> This adds device tree bindings for the Yamaha YAS530
+> family of magnetometers/compass sensors.
 > 
-> On Mon, Nov 23, 2020 at 10:44:38PM +0100, Linus Walleij wrote:
-> > diff --git a/Documentation/devicetree/bindings/leds/common.yaml b/Documentation/devicetree/bindings/leds/common.yaml
-> > index f1211e7045f1..92fa90b4a671 100644
-> > --- a/Documentation/devicetree/bindings/leds/common.yaml
-> > +++ b/Documentation/devicetree/bindings/leds/common.yaml
-> > @@ -151,6 +151,12 @@ properties:
-> >        Maximum flash LED supply current in microamperes. Required for flash LED
-> >        nodes with configurable current.
-> >  
-> > +  torch-max-microamp:
-> > +    description:
-> > +      Maximum flash LED supply current in microamperes, when the flash LED is
-> > +      used as a torch (flashlight). This is usually lower than the flash mode
-> > +      maximum current, if the LED supports torch mode.
+> Cc: devicetree@vger.kernel.org
+> Cc: phone-devel@vger.kernel.org
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> ChangeLog v3->v4:
+> - Rename the bindings and file yas530 after the first
+>   introduced component in the family.
+> - Simplify conditional logic using the if: not: YAML
+>   constructions.
+> - Use the possibility to set a property to false to just
+>   remvove reset GPIOs and interrupts from variants that
+>   do not have them.
+> ChangeLog v2->v3:
+> - Restrict to cover the YAS53x variants, it turns out that
+>   YAS529 is a very different component from the others so
+>   keep that for a separate document when/if needed.
+> - Rename the file and binding yamaha,53x.yaml
+> - Use - if: clauses to restrict some properties.
+> - Fix some spelling mistakes.
+> - Restrict the nodename to be "magnetometer@[0-9a-f]"
+> ChangeLog v1->v2:
+> - Add Yamaha to the vendor list, I was surprised to find
+>   they were not yet listed.
+> ---
+>  .../iio/magnetometer/yamaha,yas530.yaml       | 112 ++++++++++++++++++
+>  .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+>  2 files changed, 114 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas530.yaml
 > 
-> Thanks for the update.
-> 
-> One more thing. The other flash LED DT bindings are using led-max-microamp
-> for the torch mode --- for it's what the non-flash LEDs do.
-> 
-> Could you use the same here?
 
-Good point. Seems like it as led-max-microamp should be the max steady 
-state current whereas flash-max-microamp is the max for a limited time.
-
-Rob
+Reviewed-by: Rob Herring <robh@kernel.org>
