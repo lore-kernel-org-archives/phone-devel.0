@@ -2,116 +2,100 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80CA5C83014
-	for <phone-devel@archiver.kernel.org>; Wed,  2 Dec 2020 16:36:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C82C4C6369E
+	for <phone-devel@archiver.kernel.org>; Wed,  2 Dec 2020 20:23:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 44D332173E
-	for <phone-devel@archiver.kernel.org>; Wed,  2 Dec 2020 16:36:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 765B82223C
+	for <phone-devel@archiver.kernel.org>; Wed,  2 Dec 2020 20:23:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728241AbgLBQgl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 2 Dec 2020 11:36:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34052 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728196AbgLBQgk (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 2 Dec 2020 11:36:40 -0500
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89BB9C0617A6
-        for <phone-devel@vger.kernel.org>; Wed,  2 Dec 2020 08:36:23 -0800 (PST)
-Received: by mail-ot1-x341.google.com with SMTP id 11so2173839oty.9
-        for <phone-devel@vger.kernel.org>; Wed, 02 Dec 2020 08:36:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=P7hmM1tissJj2yPjhe+PqhvR3xfSKGv9uE8kLqD386k=;
-        b=zozlhoiZY38HuWdwtw0EfFSCY/OnO0dJNjplv+Wu5YUiRfHnruVzxTVgzgN6nwkYP1
-         GB9YAV/5ZDbvc784xCjvRk06nPguoODsuKONeC0zl8MQ3VOhdkt7x3nLPpQ9s/SlS55h
-         qjBkoN8MEzGQ0Gxpz9Dag8mEaE5ezwrI89MCZRutQfwYH4VsUck5Cn2preFqChUCVULy
-         GJ1BZXwMHWWd5Flkhc7RZq9Kjm3WFA/rsXSgonGhWzsEnLK+hTV7kwhDZE3Aw7YvCVsS
-         zNdFsIcH0EEkIyh+M3I0nKba2VEYCG2VnwOvLewHB/OlJni9XoJOqeNrMgppGit/cjxk
-         wFkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=P7hmM1tissJj2yPjhe+PqhvR3xfSKGv9uE8kLqD386k=;
-        b=a8XzPTbijx3au25lEvTms3lMkM6uG/G28tlwRDpYFfbSiY7OvsJNMp/vGQEYABnwFE
-         pEOYNCAI1w7Wl2LCNx29L8iqHD4Z/aKi/bdsKeUQ1TJezEnz6uhQ6983kXWWGRNd6DoC
-         jdYxlng7nxXaKt8Ak0U33VfptmhSBs35tP1NslBBmURq/oBzg/eCPA8r94QZw2HSMsKR
-         MVldgWylPRc7d2/uWrmgTSrVLq83OZAwGMdlb9oS4vFZrvP75fZ9NtVnd3K3zckEbMzv
-         tp4CC2sv+9hyWON4zhqLhwMg+M7I5F2yabeHKUlo+xQiGpg8mEEHngDucddr+RI3eWcC
-         KnvQ==
-X-Gm-Message-State: AOAM531pnCrWwsIp78JhL1XjMRns0FRBFis5svJc3eNwQM8EWSR4nUyR
-        I+xwlZpg1EsLZD0p+d2wqlDEfw==
-X-Google-Smtp-Source: ABdhPJyoz7We9E/K/HbiLH7uRNCn/0K2tMkzPEZdiv92j8yFvsEWmTTv7jYaaRZvjzCCMQprxSC2sA==
-X-Received: by 2002:a9d:6752:: with SMTP id w18mr2554816otm.256.1606926982858;
-        Wed, 02 Dec 2020 08:36:22 -0800 (PST)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id 186sm459554oof.16.2020.12.02.08.36.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Dec 2020 08:36:22 -0800 (PST)
-Date:   Wed, 2 Dec 2020 10:36:20 -0600
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Wolfram Sang <wsa@kernel.org>, Caleb Connolly <caleb@connolly.tech>
-Cc:     linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        id S1726532AbgLBUWj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 2 Dec 2020 15:22:39 -0500
+Received: from mail.kernel.org ([198.145.29.99]:32828 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726112AbgLBUWj (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 2 Dec 2020 15:22:39 -0500
+Date:   Wed, 2 Dec 2020 21:21:54 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1606940518;
+        bh=ueg/zJjTxGAs8U1nROVdU9HzadqSPknnRlyTBb1+clo=;
+        h=From:To:Cc:Subject:References:In-Reply-To:From;
+        b=S8XoSdf3EQvNz0AYe11wyF6oKwZSpXcmejsw102NNC39pH1hjo02oGwo2AH6tgeUy
+         7CEUqv/ELQUKvoDeRuY/HX6ux3I1jqYQAsHTzr3SoKk1fNGh776F+hFiwKew6M2Qwr
+         nZGihllXocPhQr5YBeQEnLe1k37+Xdw5rU9gMCvxhVk3S7LdKzKLgJ3YHKNHIBx2B3
+         YJ0eZVpZzejuiq9U0mE2D3KX7YyKYoTyjj7YRoeE+VkbxHqQOkjaZA/gswJdC7iBNJ
+         6gOlRjocDoURXg3hdAMINRYlv5FCyHvloK1+A6/z5J1DO4ZOF/fbgPsCX8OOx6eigI
+         7/NQpkMPVUO/g==
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Caleb Connolly <caleb@connolly.tech>,
+        linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Akash Asthana <akashast@codeaurora.org>,
         Mukesh Savaliya <msavaliy@codeaurora.org>,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 5/5] i2c: geni: sdm845: dont perform DMA for OnePlus 6
  devices
-Message-ID: <X8fChCDbfLfdNoZL@builder.lan>
+Message-ID: <20201202202154.GA33335@kunai>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Caleb Connolly <caleb@connolly.tech>, linux-arm-msm@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Akash Asthana <akashast@codeaurora.org>,
+        Mukesh Savaliya <msavaliy@codeaurora.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20201112161920.2671430-1-caleb@connolly.tech>
  <20201112161920.2671430-6-caleb@connolly.tech>
  <20201122034709.GA95182@builder.lan>
  <72a37c8c-12e4-eb51-2644-3436d19cf314@connolly.tech>
  <20201202153949.GI874@kunai>
+ <X8fChCDbfLfdNoZL@builder.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="FCuugMFkClbJLl1L"
 Content-Disposition: inline
-In-Reply-To: <20201202153949.GI874@kunai>
+In-Reply-To: <X8fChCDbfLfdNoZL@builder.lan>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed 02 Dec 09:39 CST 2020, Wolfram Sang wrote:
 
-> 
-> > >> -	if (!of_machine_is_compatible("lenovo,yoga-c630"))
-> > >> +	if (!of_machine_is_compatible("lenovo,yoga-c630") &&
-> > >> +	    !of_machine_is_compatible("oneplus,oneplus6"))
-> > > This hack seems to have been working around two separate issues. First
-> > > with iommu active the GENI wrappers needs to have their stream mapping
-> > > configured. Secondly there was a bug in the transaction setup that was
-> > > recently fixed by Doug Anderson.
-> > >
-> > > So can you please give the following patch a go? I've yet to test it on
-> > > the Lenovo machine, but I think it allows us to remove the quirk.
-> > >
-> > > https://lore.kernel.org/lkml/20201122034149.626045-1-bjorn.andersson@linaro.org/T/#u
-> 
-> Please don't top-post. I fixed it this time.
-> 
-> > It looks like I still have the same issue even with this patch applied.
-> 
-> So we still need your patch, am I reading correctly?
-> 
+--FCuugMFkClbJLl1L
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-With Doug's recent fixes in the DMA handling and the introduction of
-proper iommu configuration, which Caleb tested [1], I think we're good
-without this on the OnePlus. Caleb, please confirm.
 
-If I understood Caleb's report he saw exactly the same problem that Lee
-Jones did that lead to the workaround for the Lenovo Yoga C630, and with
-the two changes the i2c-hid keyboard came up nicely on my Yoga. So I
-posted [2].
+> With Doug's recent fixes in the DMA handling and the introduction of
+> proper iommu configuration, which Caleb tested [1], I think we're good
+> without this on the OnePlus. Caleb, please confirm.
 
-[1] https://lore.kernel.org/linux-arm-msm/3ba39a64-122b-ebe9-04b3-3a23478334a4@connolly.tech/
-[2] https://lore.kernel.org/linux-arm-msm/20201124185743.401946-1-bjorn.andersson@linaro.org/
+Yes, he confirmed already. I missed it was private only.
 
-Regards,
-Bjorn
+Thanks for your heads up, too!
+
+
+--FCuugMFkClbJLl1L
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl/H914ACgkQFA3kzBSg
+KbaiHhAAgD1IlhFStyErta5vzS6wC5zsEuphCcHRQgsNUkwfJi4/38j4T60Eei7h
+DxZig4jnpnsOsSzE9rRB8g5eUCKvU9UaGNt0P7k76omvcLzsHiqyyxjQbLbZO5hr
+18szai4x5NYzHb3wJtroHTva+3vne8MFag9CipuizaA5CjXXg9XFG0XI8oF4U5nw
+JhHfCBefOzBPcyZrG3WK4t7Ml1GTPRfYC+qcx+tTeicFJ1+M/uwss3+xHdvUE4Iy
+cr+YNy00NEDaOY8OUYaaOEoOw5oc7sS2atkRzQQcuzhbbcMHlm4Eqgo4fXE1aEQx
+d4TMR+2GuGyiFFfHjVfgzRdM0WqKa3XIESzeZSydb2uRwxVfBKsqEGLTUqmPBYxN
+KZsJgOPCyFOoI5XAQeF/TbOzUtN6wSdAd6En4SRUysVS9POhmlJMsNizit7pGhB5
+Ewe6hJQ/mv1lqa0ZHjQfswHYsUwm73xcvDWwqFO7HIIGuI+6GtBu9HupOxwbnHeJ
+k2S2kgiSfN+3dEBY+2Zx+5T4qBRzsH12cMu+mnmRmH3wxO5vUIcLEPo/wWlNjgdn
+q0aGrsd6tKLpf5i3GtR8RB7wqgyoDQq7+HJAR5rTlvhfrgHcQ3yNnk5w57YLAqaW
+wrgI/zcdKISZcYjvRESIGnp4AaUI3wUYzmwnSUmlr7lN1skdL80=
+=qnQn
+-----END PGP SIGNATURE-----
+
+--FCuugMFkClbJLl1L--
