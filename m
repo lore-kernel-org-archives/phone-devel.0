@@ -2,119 +2,143 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.2 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E76AC433FE
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Dec 2020 00:14:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3181C4361A
+	for <phone-devel@archiver.kernel.org>; Fri,  4 Dec 2020 18:07:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 46359222F9
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Dec 2020 00:14:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A31C222AAF
+	for <phone-devel@archiver.kernel.org>; Fri,  4 Dec 2020 18:07:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728099AbgLDAOv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 3 Dec 2020 19:14:51 -0500
-Received: from relay06.th.seeweb.it ([5.144.164.167]:55167 "EHLO
-        relay06.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727787AbgLDAOu (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 3 Dec 2020 19:14:50 -0500
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 9B0F640548;
-        Fri,  4 Dec 2020 01:13:52 +0100 (CET)
-Subject: Re: [PATCH 11/13] dt-bindings: cpufreq: Convert qcom-cpufreq-hw to
- YAML binding
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     viresh.kumar@linaro.org, rjw@rjwysocki.net,
-        jorge.ramirez-ortiz@linaro.org, robh+dt@kernel.org,
-        konrad.dybcio@somainline.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ulf.hansson@linaro.org,
-        nks@flawful.org, lgirdwood@gmail.com, daniel.lezcano@linaro.org,
-        devicetree@vger.kernel.org, bjorn.andersson@linaro.org,
-        phone-devel@vger.kernel.org, broonie@kernel.org,
-        linux-arm-msm@vger.kernel.org, agross@kernel.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        robh@kernel.org
-References: <20201126184559.3052375-1-angelogioacchino.delregno@somainline.org>
- <20201126184559.3052375-12-angelogioacchino.delregno@somainline.org>
- <20201130172305.GA2661895@robh.at.kernel.org>
- <20201203111427.GA3937@thinkpad>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Message-ID: <d66e05be-4ea1-dfb7-40ee-bfe417ab1a77@somainline.org>
-Date:   Fri, 4 Dec 2020 01:13:52 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+        id S2387444AbgLDSHC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 4 Dec 2020 13:07:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43002 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727997AbgLDSHC (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Dec 2020 13:07:02 -0500
+Received: from mail-vk1-xa43.google.com (mail-vk1-xa43.google.com [IPv6:2607:f8b0:4864:20::a43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE059C061A52;
+        Fri,  4 Dec 2020 10:06:21 -0800 (PST)
+Received: by mail-vk1-xa43.google.com with SMTP id 145so1472250vky.2;
+        Fri, 04 Dec 2020 10:06:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QRr0ZNZnscQyUTRMXdBCHRyqUplZRl6ao3xQwu2hQ2c=;
+        b=SwFYmamExdBbtafEcD80BWi/4ObSmCg6tPhL99ALH+TnOB+ciAjv+wwX/Rx9Y9eC7H
+         tuadWc23kn14xUXEg1v3Ht60WGKcZwF0iTCnlZkrZJrfxEEACzjeRp7jZTIzxqBHq5Vb
+         oMmxp23xbsPtovYk43rZfQT92XRfOv9w3pId1E9p6vzwd5Xay51g6NMOPte9LtqDHhib
+         VKjHegbVtHakbwLvSDU1nwA7+/mGR8ncPyIia2HoZUuHl/VmBmNA2aX4X32ROouN61iS
+         tc/vogbnG+rOCZDSfE0WW9Uf2m8hApyPYKyC9hOKmSba1xrrIl2nzRiqoLP5gAFoA+8K
+         TPqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QRr0ZNZnscQyUTRMXdBCHRyqUplZRl6ao3xQwu2hQ2c=;
+        b=N/Mr14vcuiQNqrNITcM0DwP/QpH4N4Sgf1uswcQd9zwAuiZey9SpudPvFmUay9+n6K
+         IPo+CI5zHUHJGUwnL2OqMinRJvaoDnPjnyDh7Gn0ZWuhyb02i9+OakGnJ0/s0wDQAT6h
+         Wi9Ha3C5T8YdWiTCwXTi8kfLYOOcG1vLAD4FubQKbWV5RJdRIG/5L28FdrUDxfYciAXd
+         B/QNpTt2CjXmeFvzq3JFGO/8u14xvBsUjcogVvzyoTPtzt+LQHzoSusKISJEQTGLGKKN
+         W0qyw7nrf/faPNCMMpVD/a/yo7T/F/xNyRH/CCUsZlTAuBouz920VN/f4B10GHsraEVx
+         NZyg==
+X-Gm-Message-State: AOAM532MCR8Mj2kGRj8Bb7SqIZr5SIZdXXtZh2bg7sgPVLnaR1sQN3Zm
+        Gicuu7aJpqv/qe1o1WsL5aDr8RuFRYoYeTjfLio=
+X-Google-Smtp-Source: ABdhPJyusVJ4WEj3a2Jdt5TrXQ+w/i8ds4OcB/ET0MCxSaqFofz6EYNZnNg1a/Z82p839eKaiwoJf6wxgSL+s55Y0dg=
+X-Received: by 2002:a1f:e7c2:: with SMTP id e185mr4937438vkh.23.1607105180783;
+ Fri, 04 Dec 2020 10:06:20 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20201203111427.GA3937@thinkpad>
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20201017133718.31327-1-kholk11@gmail.com> <20201017133718.31327-3-kholk11@gmail.com>
+ <24ad51dd-ff54-35af-a7bc-92d8cfa30c48@linaro.org>
+In-Reply-To: <24ad51dd-ff54-35af-a7bc-92d8cfa30c48@linaro.org>
+From:   AngeloGioacchino Del Regno <kholk11@gmail.com>
+Date:   Fri, 4 Dec 2020 19:06:09 +0100
+Message-ID: <CAK7fi1ZC8F57WmDg57tAS=b++ewjPcMhBXmeuM7Cjqkp-5Zu9Q@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] interconnect: qcom: Add SDM660 interconnect
+ provider driver
+To:     Georgi Djakov <georgi.djakov@linaro.org>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>, marijns95@gmail.com,
+        Konrad Dybcio <konradybcio@gmail.com>, martin.botka1@gmail.com,
+        MSM <linux-arm-msm@vger.kernel.org>, phone-devel@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, linux-pm@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 03/12/20 12:14, Manivannan Sadhasivam ha scritto:
-> Hi,
-> 
-> On Mon, Nov 30, 2020 at 10:23:05AM -0700, Rob Herring wrote:
->> On Thu, 26 Nov 2020 19:45:57 +0100, AngeloGioacchino Del Regno wrote:
->>> Convert the qcom-cpufreq-hw documentation to YAML binding as
->>> qcom,cpufreq-hw.yaml.
->>>
->>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> 
-> There is already a patch floating for this. Please see:
-> https://lkml.org/lkml/2020/10/20/676
-> 
+Il giorno mar 3 nov 2020 alle ore 17:24 Georgi Djakov
+<georgi.djakov@linaro.org> ha scritto:
+>
+> On 10/17/20 16:37, kholk11@gmail.com wrote:
+> > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> >
+> > Introduce a driver for the Qualcomm interconnect busses found in
+> > the SDM630/SDM636/SDM660 SoCs.
+> > The topology consists of several NoCs that are controlled by a
+> > remote processor that collects the aggregated bandwidth for each
+> > master-slave pairs.
+> >
+> > On a note, these chips are managing the "bus QoS" in a "hybrid"
+> > fashion: some of the paths in the topology are managed through
+> > (and by, of course) the RPM uC, while some others are "AP Owned",
+> > meaning that the AP shall do direct writes to the appropriate
+> > QoS registers for the specific paths and ports, instead of sending
+> > an indication to the RPM and leaving the job to that one.
+> >
+> > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> > ---
+> >  drivers/interconnect/qcom/Kconfig  |   9 +
+> >  drivers/interconnect/qcom/Makefile |   2 +
+> >  drivers/interconnect/qcom/sdm660.c | 922 +++++++++++++++++++++++++++++
+> >  3 files changed, 933 insertions(+)
+> >  create mode 100644 drivers/interconnect/qcom/sdm660.c
+> >
+> [..]> +static const struct of_device_id sdm660_noc_of_match[] = {
+> > +     { .compatible = "qcom,sdm660-a2noc", .data = &sdm660_a2noc },
+> > +     { .compatible = "qcom,sdm660-bimc", .data = &sdm660_bimc },
+> > +     { .compatible = "qcom,sdm660-cnoc", .data = &sdm660_cnoc },
+> > +     { .compatible = "qcom,sdm660-gnoc", .data = &sdm660_gnoc },
+> > +     { .compatible = "qcom,sdm660-mnoc", .data = &sdm660_mnoc },
+> > +     { .compatible = "qcom,sdm660-snoc", .data = &sdm660_snoc },
+> > +     { },
+> > +};
+> > +MODULE_DEVICE_TABLE(of, sdm660_noc_of_match);
+> > +
+> > +static struct platform_driver sdm660_noc_driver = {
+> > +     .probe = qnoc_probe,
+> > +     .remove = qnoc_remove,
+> > +     .driver = {
+> > +             .name = "qnoc-sdm660",
+> > +             .of_match_table = sdm660_noc_of_match,
+>
+> Just noticed that here we should set the sync_state callback:
+>                 .sync_state = icc_sync_state,
+>
+> I will fix it up before applying. Are you planning to send a patch
+> that adds the DT nodes?
+>
 > Thanks,
-> Mani
-> 
-Oh, I'm sorry, I wasn't aware of that, didn't want to step on you.
+> Georgi
+>
+I'm sorry for the extremely late reply... Anyway, yes, we have lots of
+patches that are bringing up almost the entire feature set in the
+SDM630/660 SoCs and we are waiting for them to get merged in
+before sending the DT updates.
 
-Should I rebase patch 1345789 (patch 13/13 of this series) on top of
-the one that you pointed out and drop this one?
+Cheers,
+Angelo
 
-- Angelo
-
->>> ---
->>>   .../bindings/cpufreq/cpufreq-qcom-hw.txt      | 173 +---------------
->>>   .../bindings/cpufreq/qcom,cpufreq-hw.yaml     | 196 ++++++++++++++++++
->>>   2 files changed, 197 insertions(+), 172 deletions(-)
->>>   create mode 100644 Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
->>>
->>
->>
->> My bot found errors running 'make dt_binding_check' on your patch:
->>
->> yamllint warnings/errors:
->>
->> dtschema/dtc warnings/errors:
->> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml: properties:clock-names: [{'const': 'xo'}, {'const': 'ref'}] is not of type 'object', 'boolean'
->> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml: maintainers:0: 'TBD' is not a 'email'
->> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml: ignoring, error in schema: properties: clock-names
->> warning: no schema found in file: ./Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
->> Error: Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.example.dts:150.3-151.1 syntax error
->> FATAL ERROR: Unable to parse input tree
->> make[1]: *** [scripts/Makefile.lib:342: Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.example.dt.yaml] Error 1
->> make[1]: *** Waiting for unfinished jobs....
->> make: *** [Makefile:1364: dt_binding_check] Error 2
->>
->>
->> See https://patchwork.ozlabs.org/patch/1406857
->>
->> The base for the patch is generally the last rc1. Any dependencies
->> should be noted.
->>
->> If you already ran 'make dt_binding_check' and didn't see the above
->> error(s), then make sure 'yamllint' is installed and dt-schema is up to
->> date:
->>
->> pip3 install dtschema --upgrade
->>
->> Please check and re-submit.
->>
-
+> > +     },
+> > +};
+> > +module_platform_driver(sdm660_noc_driver);
+> > +MODULE_DESCRIPTION("Qualcomm sdm660 NoC driver");
+> > +MODULE_LICENSE("GPL v2");
