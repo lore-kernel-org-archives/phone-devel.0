@@ -2,120 +2,157 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 442A2C433FE
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Dec 2020 18:17:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D063C433FE
+	for <phone-devel@archiver.kernel.org>; Sat,  5 Dec 2020 05:00:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 07DB522B2E
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Dec 2020 18:17:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6338222D07
+	for <phone-devel@archiver.kernel.org>; Sat,  5 Dec 2020 05:00:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727729AbgLDSRC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 4 Dec 2020 13:17:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44564 "EHLO
+        id S1725764AbgLEFAh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 5 Dec 2020 00:00:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726173AbgLDSRC (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Dec 2020 13:17:02 -0500
-Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20375C061A4F;
-        Fri,  4 Dec 2020 10:16:22 -0800 (PST)
-Received: by mail-vs1-xe42.google.com with SMTP id v8so3775189vso.2;
-        Fri, 04 Dec 2020 10:16:22 -0800 (PST)
+        with ESMTP id S1725536AbgLEFAg (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 5 Dec 2020 00:00:36 -0500
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35204C0613D1
+        for <phone-devel@vger.kernel.org>; Fri,  4 Dec 2020 20:59:56 -0800 (PST)
+Received: by mail-ot1-x344.google.com with SMTP id h19so7427359otr.1
+        for <phone-devel@vger.kernel.org>; Fri, 04 Dec 2020 20:59:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MWLXASZeJdeOYt8fL09ZQPfBaLmTlB8Z4GJYyPClGmQ=;
-        b=F10kPjFs82ueAXZxmYIVvOxf9FXPj3+r2qdCN/5ca2g3MmKnI2Z2A9E2Ioeoskx/C1
-         eU4jb/YzfvljD+sjAVtjE/wAu3pR/Ao/DDa7k7ygenA+1/szzwi+xoeh/c58Jtg+wIZL
-         uT5V5Gv8FZVKQYSxbevXTflbBQZtUiJFxkF7MRssg/MUaBiZmXFXQE7aJc4zoOqrxlZX
-         JPwbEcETrsjkAjStGfRn9xlQgrUV7h4QDhQ0WHmyrr1VO7Bal6g4fKyiawc8E1xH0aay
-         SylZka02VmmbtQ6BtxEUO7QE7LXbETHuPg3K2rpb/bgyVVq0TEyMnK9bXKGC7zDcdNfz
-         vmhw==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=wSgUGUXnFDKhHhb8WtgZMF/PzYufjbjvE9QiZ+cHEwU=;
+        b=wNe+86mm6puGFc4cLUdEco/Xg9dylu4KR3rHFgk/5vH/fN/B2WDFuN1yI8Q0gzhA+m
+         EXDCccbDopJF8zmUciXtRO9A97qjI2q+D/TpwlGtQAfR1tAOvT62SkT+q9GbPT7FmOIt
+         BUjHulnXCu6Hsia4155jBq8j9VeaNDQzjNGyb4tlrBUEZtW6fNoY2H8A+tJ+XrY/lrBz
+         rkyfEi4ZG+1s2GDI1k2UvvS9mKJAPBB8O9EcQX0etgEGCvVPlFkHKqhGlOlMo+72TZAI
+         4HTkHETvC7CZowht4H9tcc5fgWajbcU8VuvDT84H1L9choH2nqZfT7WXGmsuvj0O6Phx
+         kYPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MWLXASZeJdeOYt8fL09ZQPfBaLmTlB8Z4GJYyPClGmQ=;
-        b=YoUv8tQF3oZqOqoX30udCcZ3I6CHuUK7MZjE6acTVZI8bNYQip1LbIsrtwMWDhZP6D
-         awEM6aq/P6xlOtgKXD5IfPfDu1B6QbyiX9lqjM6qKTZpEt6w7QJHY79f+irKUCul1qQ2
-         nbNCSykxGwTqbj/Ea7kzxtkp6BChDD57cOiOds9e+7DAa4GMm5WLfa2Ei5TXiMlNDVbF
-         1N9QdpG4rOTfEu9h5/T4Caq1VW8u8gUA4NN0jf7KeHu/clTN11DnF5EFN6JQ2j0bdT2M
-         ZkpyjAzlC7T+t2MySSpbj3o+DCEMVpgUW+UieGhRfMn07kWWNIFEW+EAbfdSs9cmA3Ri
-         zp+A==
-X-Gm-Message-State: AOAM532kX0iMdCwmR70Nh8uO7jrHaJ4MSwYtPCrldi3BfMC8Hwqjhapj
-        YLNZ23JVqyTm5EW3UYGpDqGgTUTIa3CD/bQZK6w=
-X-Google-Smtp-Source: ABdhPJyyI719dKemAEBYCPWMicMfo1HL0TntavWPGmAgnlq2JCZqAnUumEcXhfEDlnCV9u1TKUNYvdvxwl0IavHd7xw=
-X-Received: by 2002:a67:ea02:: with SMTP id g2mr5281276vso.3.1607105781297;
- Fri, 04 Dec 2020 10:16:21 -0800 (PST)
-MIME-Version: 1.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=wSgUGUXnFDKhHhb8WtgZMF/PzYufjbjvE9QiZ+cHEwU=;
+        b=nWQIGYVDPYyT9KILtWMRJEZmf0NmeeZW2F50t3ZYvPFrRYlGaRIyGAqrn4wb45bQFx
+         xkJBj4p+BhJLWSzIh/RUecaS2SKq8Z4AzBG8PHFxv+q4/MG0V0+1bLsZO2G1PMbziFoA
+         PyvH2RMfrLHTgLCjdEEevHObO5Yq84QWQRXbt+m5XTwD8pWREZvoFF7y8c8SS5pPyEEP
+         COfaoJI7oxsBbYVoCU06ffgeb2YiQW42IfNXkfoRr9DOjQYFA73KtNQmdMITjYpCCyXb
+         VV/Yih3ZeQb4X/sUlYFIe8Ha5/hkZ78KfZhoy1LYEqbFZaTka/hPKfmg6Nv7TNYEImrz
+         7+1Q==
+X-Gm-Message-State: AOAM531qDYm23eUVPP54KPHvdKbOTikon/S2Ed7uaYN3Jqmj8tW/bm+R
+        fPN6nKr2VNxhbFpJlUOZkNqsyA==
+X-Google-Smtp-Source: ABdhPJwstogV1jeXnSfg4AfmH0pdZThD9cHD4d9HCGJkiYftNyN/ePerd0utakaOsDm0rmg+t10Ymw==
+X-Received: by 2002:a9d:3435:: with SMTP id v50mr6044996otb.292.1607144395452;
+        Fri, 04 Dec 2020 20:59:55 -0800 (PST)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id h17sm1136458oor.1.2020.12.04.20.59.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Dec 2020 20:59:54 -0800 (PST)
+Date:   Fri, 4 Dec 2020 22:59:52 -0600
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     kholk11@gmail.com
+Cc:     agross@kernel.org, sboyd@kernel.org, marijns95@gmail.com,
+        konradybcio@gmail.com, martin.botka1@gmail.com,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] clk: qcom: Add SDM660 Multimedia Clock Controller
+ (MMCC) driver
+Message-ID: <X8sTyHGhYeCpqQ/B@builder.lan>
 References: <20200926130306.13843-1-kholk11@gmail.com>
-In-Reply-To: <20200926130306.13843-1-kholk11@gmail.com>
-From:   AngeloGioacchino Del Regno <kholk11@gmail.com>
-Date:   Fri, 4 Dec 2020 19:16:10 +0100
-Message-ID: <CAK7fi1akLi8uJTwCtT4pY50JwSYjr8TkwMqyK7pcWxAGCvuqDA@mail.gmail.com>
-Subject: Re: [PATCH 0/5] SDM630/660 Multimedia and GPU clock controllers
-To:     Andy Gross <agross@kernel.org>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, marijns95@gmail.com,
-        Konrad Dybcio <konradybcio@gmail.com>, martin.botka1@gmail.com,
-        MSM <linux-arm-msm@vger.kernel.org>, phone-devel@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+ <20200926130306.13843-2-kholk11@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200926130306.13843-2-kholk11@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il giorno sab 26 set 2020 alle ore 15:03 <kholk11@gmail.com> ha scritto:
->
-> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
->
-> This patch series brings up the MultiMedia Clock Controller (MMCC)
-> and the GPU Clock Controller (GPUCC) on the SDM660 series of SoCs,
-> including SDM630, SDM636, SDM660 and SDA variants, where applicable.
->
-> This series depends on "Qualcomm clock fixes and preparation for SDM660",
-> which is required for the drivers to work correctly and to even compile
-> (due to the gfx3d rcg2 changes).
->
-> This patch series has been tested against the following devices:
->  - Sony Xperia XA2 Ultra (SDM630 Nile Discovery)
->  - Sony Xperia 10        (SDM630 Ganges Kirin)
->  - Sony Xperia 10 Plus   (SDM636 Ganges Mermaid)
->
-> AngeloGioacchino Del Regno (4):
->   dt-bindings: clock: Add support for the SDM630 and SDM660 mmcc
->   clk: qcom: mmcc-sdm660: Add MDP clock source CXC to MDSS GDSC
->   clk: qcom: Add SDM660 GPU Clock Controller (GPUCC) driver
->   dt-bindings: clock: Add QCOM SDM630 and SDM660 graphics clock bindings
->
-> Martin Botka (1):
->   clk: qcom: Add SDM660 Multimedia Clock Controller (MMCC) driver
->
->  .../devicetree/bindings/clock/qcom,mmcc.yaml  |    2 +
->  .../bindings/clock/qcom,sdm660-gpucc.yaml     |   75 +
->  drivers/clk/qcom/Kconfig                      |   18 +
->  drivers/clk/qcom/Makefile                     |    2 +
->  drivers/clk/qcom/gpucc-sdm660.c               |  349 ++
->  drivers/clk/qcom/mmcc-sdm660.c                | 2857 +++++++++++++++++
->  include/dt-bindings/clock/qcom,gpucc-sdm660.h |   28 +
->  include/dt-bindings/clock/qcom,mmcc-sdm660.h  |  162 +
->  8 files changed, 3493 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/clock/qcom,sdm660-gpucc.yaml
->  create mode 100644 drivers/clk/qcom/gpucc-sdm660.c
->  create mode 100644 drivers/clk/qcom/mmcc-sdm660.c
->  create mode 100644 include/dt-bindings/clock/qcom,gpucc-sdm660.h
->  create mode 100644 include/dt-bindings/clock/qcom,mmcc-sdm660.h
->
-> --
-> 2.28.0
->
-Hello!
-Is this patch series getting lost and forgotten?
-Can this please get some attention before it gets buried forever?
+On Sat 26 Sep 08:03 CDT 2020, kholk11@gmail.com wrote:
+> diff --git a/drivers/clk/qcom/mmcc-sdm660.c b/drivers/clk/qcom/mmcc-sdm660.c
+[..]
+> +static int mmcc_660_probe(struct platform_device *pdev)
+> +{
+> +	struct regmap *regmap;
+> +	bool is_sdm630 = 0;
 
-Thanks,
-Angelo
+This shouldn't be 0, but there's no need for initializing it either, as
+the first reference is an assignment. On the other hand, you could
+without loss of clarity just move the of_device_is_compatible() into the
+if statement directly.
+
+> +
+> +	regmap = qcom_cc_map(pdev, &mmcc_660_desc);
+> +	if (IS_ERR(regmap))
+> +		return PTR_ERR(regmap);
+> +
+> +	is_sdm630 = of_device_is_compatible(pdev->dev.of_node,
+> +					    "qcom,mmcc-sdm630");
+> +
+> +	clk_alpha_pll_configure(&mmpll3, regmap, &mmpll3_config);
+> +	clk_alpha_pll_configure(&mmpll4, regmap, &mmpll4_config);
+> +	clk_alpha_pll_configure(&mmpll5, regmap, &mmpll5_config);
+> +	clk_alpha_pll_configure(&mmpll7, regmap, &mmpll7_config);
+> +	clk_alpha_pll_configure(&mmpll8, regmap, &mmpll8_config);
+> +	clk_alpha_pll_configure(&mmpll10, regmap, &mmpll10_config);
+> +
+> +	if (is_sdm630) {
+> +		mmcc_660_desc.clks[BYTE1_CLK_SRC] = 0;
+> +		mmcc_660_desc.clks[MDSS_BYTE1_CLK] = 0;
+> +		mmcc_660_desc.clks[MDSS_BYTE1_INTF_DIV_CLK] = 0;
+> +		mmcc_660_desc.clks[MDSS_BYTE1_INTF_CLK] = 0;
+> +		mmcc_660_desc.clks[ESC1_CLK_SRC] = 0;
+> +		mmcc_660_desc.clks[MDSS_ESC1_CLK] = 0;
+> +		mmcc_660_desc.clks[PCLK1_CLK_SRC] = 0;
+> +		mmcc_660_desc.clks[MDSS_PCLK1_CLK] = 0;
+> +	}
+> +
+> +	return qcom_cc_really_probe(pdev, &mmcc_660_desc, regmap);
+> +}
+> +
+> +static struct platform_driver mmcc_660_driver = {
+> +	.probe		= mmcc_660_probe,
+> +	.driver		= {
+> +		.name	= "mmcc-sdm660",
+> +		.of_match_table = mmcc_660_match_table,
+> +	},
+> +};
+> +
+> +static int __init mmcc_660_init(void)
+> +{
+> +	return platform_driver_register(&mmcc_660_driver);
+> +}
+> +core_initcall_sync(mmcc_660_init);
+> +
+> +static void __exit mmcc_660_exit(void)
+> +{
+> +	platform_driver_unregister(&mmcc_660_driver);
+> +}
+> +module_exit(mmcc_660_exit);
+> +
+
+The driver is tristate (which is correct), but for that you need a
+MODULE_LICENSE at least.
+
+> diff --git a/include/dt-bindings/clock/qcom,mmcc-sdm660.h b/include/dt-bindings/clock/qcom,mmcc-sdm660.h
+
+Please move this to the dt-binding patch, and reorder the two.
+
+> new file mode 100644
+> index 000000000000..f9dbc21cb5c7
+> --- /dev/null
+> +++ b/include/dt-bindings/clock/qcom,mmcc-sdm660.h
+> @@ -0,0 +1,162 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+
+And please make this "GPL-2.0-only OR BSD-2-Clause".
+
+Regards,
+Bjorn
