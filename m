@@ -2,46 +2,46 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=3.0 tests=BAYES_00,DKIM_INVALID,
+X-Spam-Status: No, score=-5.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no
-	autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DD53C4361B
-	for <phone-devel@archiver.kernel.org>; Mon,  7 Dec 2020 22:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 440FEC0018C
+	for <phone-devel@archiver.kernel.org>; Mon,  7 Dec 2020 23:02:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4DBBD239FD
-	for <phone-devel@archiver.kernel.org>; Mon,  7 Dec 2020 22:56:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 19EAE23A33
+	for <phone-devel@archiver.kernel.org>; Mon,  7 Dec 2020 23:02:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725814AbgLGW45 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 7 Dec 2020 17:56:57 -0500
-Received: from a80-127-99-228.adsl.xs4all.nl ([80.127.99.228]:43050 "EHLO
+        id S1728249AbgLGXCq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 7 Dec 2020 18:02:46 -0500
+Received: from a80-127-99-228.adsl.xs4all.nl ([80.127.99.228]:43072 "EHLO
         hetgrotebos.org" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727226AbgLGW44 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Dec 2020 17:56:56 -0500
-X-Greylist: delayed 503 seconds by postgrey-1.27 at vger.kernel.org; Mon, 07 Dec 2020 17:56:56 EST
+        with ESMTP id S1728248AbgLGXCp (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Dec 2020 18:02:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
          s=mail; h=Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:
         References:To:Subject:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID
         :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
         Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
         :List-Post:List-Owner:List-Archive;
-        bh=ussz/iXnKzGL0V1k7KBsRv+yUqCLgN1fL40037XKbXs=; b=S/lfae1GgBC+PSYiCM0yCTx//Z
-        sXr0wyTvA6sdng1HGyPtuN7e+BeTLBMX5vycub1zX8wUe+bIuiZHAdoN4i2t5yfIIOQW/wbYYu/4P
-        uUOpm6I5FlI11elHUOd5v97vNlm43S0Oz++MSOmRVdAVh0WdyqcZDxdt/WPSpzDUhaVbW8Ydusslo
-        aPhnaAra/JraRWRdYcNVzpM+nwmWO/+p14lYDuKS533aLedM394EnOPyZGqwMTafIKU6e1g+ckROn
-        WiX/CCkmpnCvQPy/6a8WnSWqsAyvfaJ80HASMQBU3EoBZaaszw4PtWwxz8iLl43KkpxxylqJj4v2F
-        Ez3IHqlw==;
+        bh=mQooy4ut5PSYaX1oMLBVMaNCE7C55t2pdq25Dq7BFvw=; b=eDfN8v0/NQa07qR+A+fyUb5AJR
+        YeyghYxevET1JdbdOY2nRC6nHZ+zJygoT2CGvLRaiRNFiCyo0Cg4mbeh1ZqR5YLJU1fL7gRizhCFb
+        ob+bFifwHhFKqfnHScsRromFtgl/X/yoqKWDtyDsgCUiRnijYFOFWqXGSjD5ZJqsAXEAUoLpyJ0Af
+        9norbdEp55pYLI2qSDu8esncDpMc41hOxesZRSymZucYXxOJ+Ro1/89S06KA6Vy4yIUdZoYGYSW0Q
+        CnJ1jUnjw8bxRZK7Ztc5fozQe+OHlRajiNtm7SkvuOkbIMYC8y53fnS0RLx0eNlKGD4chQTfTY3xb
+        IFuJXvoA==;
 Received: from deepwater.fritz.box ([192.168.178.25] helo=[0.0.0.0])
         by hetgrotebos.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
         (Exim 4.93)
         (envelope-from <merlijn@wizzup.org>)
-        id 1kmPQW-0001vf-DE; Mon, 07 Dec 2020 22:56:16 +0000
-Subject: Re: [maemo-leste] D4 after leste update: rotated touchscreen
+        id 1kmPIE-0001un-5C; Mon, 07 Dec 2020 22:47:42 +0000
+Subject: Re: D4 after leste update: rotated touchscreen
 To:     Pavel Machek <pavel@ucw.cz>, tony@atomide.com, sre@kernel.org,
         nekit1000@gmail.com, mpartap@gmx.net, martin_rysavy@centrum.cz,
-        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
-References: <20201207223323.GA322@amd> <20201207224953.GA596@amd>
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
+        "Ivan J." <parazyd@dyne.org>
+References: <20201207223323.GA322@amd>
 From:   Merlijn Wajer <merlijn@wizzup.org>
 Autocrypt: addr=merlijn@wizzup.org; prefer-encrypt=mutual; keydata=
  mQINBFESzAkBEACuLy46KxYl4IfKuNhz3UWXSlA1GqMwgOhGUJw/ineKS6T1FiRqcbhO/Zj8
@@ -104,79 +104,62 @@ Autocrypt: addr=merlijn@wizzup.org; prefer-encrypt=mutual; keydata=
  auuXY5GfVPDcxjPwzm4Yjj4YvbfRLpAiQOOciMgiJlbn4A+BhvSSS54scJMln1Jh7KkDgeqz
  aP0nj9EfQy1vMXGp1i0sYzhMKaM9nsmV/q1Iisqc8ojjpmR00jVnz/aSX3eHexXOlB3Y6Qs+
  /XslHw==
-Message-ID: <e5d7848f-2fdb-929f-f7b5-53687ba65685@wizzup.org>
-Date:   Mon, 7 Dec 2020 23:57:24 +0100
+Message-ID: <54ee7625-1407-ce50-19a8-6ca844c08932@wizzup.org>
+Date:   Mon, 7 Dec 2020 23:48:46 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20201207224953.GA596@amd>
+In-Reply-To: <20201207223323.GA322@amd>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="cSBFRkGLAIVabVLYIKm0LJ6c37GKRamdM"
+ boundary="qrvgM2Z0Owvb97Bh4sVplObDnwN9dTDSc"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---cSBFRkGLAIVabVLYIKm0LJ6c37GKRamdM
-Content-Type: multipart/mixed; boundary="RskRkqDpsNwS0cs3wT0oXVoO80zDD1sRv"
+--qrvgM2Z0Owvb97Bh4sVplObDnwN9dTDSc
+Content-Type: multipart/mixed; boundary="GtDQlpf6qsPghx4IkWWTRq97H2cDUGPXC"
 
---RskRkqDpsNwS0cs3wT0oXVoO80zDD1sRv
+--GtDQlpf6qsPghx4IkWWTRq97H2cDUGPXC
 Content-Type: text/plain; charset=windows-1252
 Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On 07/12/2020 23:49, Pavel Machek wrote:
+On 07/12/2020 23:33, Pavel Machek wrote:
 > Hi!
 >=20
->> I did apt-get update/upgrade on Leste, and results are not good.
->>
->> It still boots, but it looks like touchscreen is "rotated" 90 degrees
->> or so, so touches are registered at wrong places.
->>
->> If someone knows how to fix that, let me know.
+> I did apt-get update/upgrade on Leste, and results are not good.
 >=20
-> Aha, I only had partial update. elogind held some packages
-> back. I did explicit install of elogind and rebooted. Now I have black
-> screen in portrait mode, which has top overlayed with one icon. Not
-> good.
+> It still boots, but it looks like touchscreen is "rotated" 90 degrees
+> or so, so touches are registered at wrong places.
+>=20
+> If someone knows how to fix that, let me know.
 
-Definitely not good.
+Hrm, I thought this problem was resolved now. Does the problem persist
+after reboot?
 
-Do you have usbnet access? You might just need to remove a few leftover
-configuration files.
-
-That said ...
-
-> Any ideas would be welcome. But I guess it is "back up and re-install
-> with fresh image"...
-
-there should be new images now.
-
-Perhaps you'd be willing to test this version (I have not tested it yet!)=
-
-
-https://phoenix.maemo.org/view/Images/job/leste-image-droid4/
+Parazyd, any idea what's up here?
 
 Cheers,
 Merlijn
 
 
---RskRkqDpsNwS0cs3wT0oXVoO80zDD1sRv--
+--GtDQlpf6qsPghx4IkWWTRq97H2cDUGPXC--
 
---cSBFRkGLAIVabVLYIKm0LJ6c37GKRamdM
+--qrvgM2Z0Owvb97Bh4sVplObDnwN9dTDSc
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYIAB0WIQRM5LT7NbLF9yb6a/UGN09rynK8WgUCX86zVAAKCRAGN09rynK8
-WnsKAQCVrtS8Fk+5Q0+8W+iA8vHre9+EZE5t2ae6HjTm32AMnwEAheKd1gj/ul+9
-Cjidt3hL2S64mXrZGKhZ3ezSk0pCBAU=
-=4oKH
+iHUEARYIAB0WIQRM5LT7NbLF9yb6a/UGN09rynK8WgUCX86xUgAKCRAGN09rynK8
+WtKqAPwNnAA7WFz+SySwfJVLW6GQ/DY20MKaiZ9aDzNEzV72aQD7Bn4KsbFm0kId
+N0b6qH40iOJdEEPo1G6vIux0ijtb9Ak=
+=OtGU
 -----END PGP SIGNATURE-----
 
---cSBFRkGLAIVabVLYIKm0LJ6c37GKRamdM--
+--qrvgM2Z0Owvb97Bh4sVplObDnwN9dTDSc--
