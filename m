@@ -2,107 +2,190 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=0.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	FSL_HELO_FAKE,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 60CA8C0018C
-	for <phone-devel@archiver.kernel.org>; Mon,  7 Dec 2020 06:44:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 502FCC0018C
+	for <phone-devel@archiver.kernel.org>; Mon,  7 Dec 2020 19:45:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 29B7522A85
-	for <phone-devel@archiver.kernel.org>; Mon,  7 Dec 2020 06:44:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 128F7238E1
+	for <phone-devel@archiver.kernel.org>; Mon,  7 Dec 2020 19:45:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725853AbgLGGoJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 7 Dec 2020 01:44:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52584 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725681AbgLGGoJ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Dec 2020 01:44:09 -0500
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D623DC0613D0;
-        Sun,  6 Dec 2020 22:43:28 -0800 (PST)
-Received: by mail-pf1-x444.google.com with SMTP id 131so8813039pfb.9;
-        Sun, 06 Dec 2020 22:43:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=qx6YS0mIUJ0wDKcdijGuZVewPoru0FmkFXCzv4uYK/g=;
-        b=J7wb/1h6//TSJi0L/gu18/CgEVvCUfSkTdW5Ipbn8Y6cWVwAFTF1GRNT2twJQGQbbI
-         rSNrn3BtOD3OXSASTN4MCwacCP0gUzOB99CczYylJ/nqYy9fAa9096Emald2D42mcSaI
-         pHwyR0spaBY7/l1HpEBCbtRIJQkdVki50CjdX66b5H355r9pi4CppcdPrv9VGWm7PLdh
-         PqOwV2GNvrPSGXSXV82WwUPvJgk4ENt7Vjb3BCsKONfsT/TX7tWFWSPO6TDW9CYIfMXy
-         kf0owEWMkFMoL7ULWGcAvJ8DOer7oz+S9j2XgMq7BSrxzzQ87A38yZNHK2B8/MCGoxfL
-         4pkw==
+        id S1726703AbgLGTpF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 7 Dec 2020 14:45:05 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:44135 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725822AbgLGTpE (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Dec 2020 14:45:04 -0500
+Received: by mail-ot1-f67.google.com with SMTP id f16so13615243otl.11;
+        Mon, 07 Dec 2020 11:44:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=qx6YS0mIUJ0wDKcdijGuZVewPoru0FmkFXCzv4uYK/g=;
-        b=aDrmbEjiMbkh73mr4XqxEy8uP9m3VLStdP6BFQtdz1SnsdMtrlbMyDJ+N5eQA0GgDJ
-         UaEr8tyFdphkDbx/syDphCATf2ZAh5s1KsNJBCRwfTRD4z1OAwTHdRPsbARaT6dm44Kw
-         qWEs4pjHU5z5l7cHQCYVce04Af9/Yhq8uCnSDwuBDL7uNE8KAkeXSrX6Xt6OiKAbcaDP
-         pyReRFuvVDbQJ0riX+M8QTfP+5/mDxUXWzHs5nS/F+fTTTy4lMGLxIXjhWaZjz3mn4lP
-         x5LU5zaGu9edBG3qp90xEH6W9+smt8fk+z/BfmyO21pe3HyrMxfNIIIb2FbC+e7JjJmL
-         NQ4w==
-X-Gm-Message-State: AOAM530g6ALe+k6pudCTh9Vsa6z91NpbCp6KhL4y+Tzxd6OcI0/gpckW
-        cQoxHhrtmNFbPyXz1nngecdRJRpFtTk=
-X-Google-Smtp-Source: ABdhPJw4KtlvCSJv/e3r2iVipvylZQ0K18ya7T5fV4AOwssNTbfbY9FPKwD149LlfDS9rhTp1ynm7g==
-X-Received: by 2002:a17:902:c395:b029:da:9aca:c972 with SMTP id g21-20020a170902c395b02900da9acac972mr14694983plg.32.1607323408407;
-        Sun, 06 Dec 2020 22:43:28 -0800 (PST)
-Received: from google.com ([2620:15c:202:201:a6ae:11ff:fe11:fcc3])
-        by smtp.gmail.com with ESMTPSA id z7sm2596426pgz.43.2020.12.06.22.43.26
+        bh=AhK8azJXWaOhT9u0I2B7GYfjgFYWzydwBriQMLb5Em0=;
+        b=cAft83RLca2yyTgILQWM3342IYnBJ94wgzZQ1YUGytlZCmow6gmdBAjvbLSyvahOAx
+         Wy42OYn3LnEFugbZK4HmRESzpRU6FPBlfdWrYbgyJRq5aLvwhSEbrOawWV63HF6s5UAJ
+         w0tRjvNN0LEk3gO9LiX3DVPljflO4U51FCXNgBQ4VMSgOzOz/V+kG/RF/pxvzjQT9/KQ
+         idSdRsEPUZ+p44cbAf3b/A0y/H+BppKW4tnseMsoO0g0mXNtpeEfWv8QMTlsD8SedqPN
+         i0XFduhkgbGtE5Rhv7Ku7BBRZwRj04RfLO5aM7IHFD6fI6P5unToL8ai3Ah5IxW7NFBZ
+         mO/g==
+X-Gm-Message-State: AOAM533hddqbzI+ks+VXZ7d5UwKS2qBAVZPx3FPT4KAH6bYMubLzaUxI
+        qysR+L0ekW70oC4co3/T+w==
+X-Google-Smtp-Source: ABdhPJzar/2L/kBCLPpqKN416SMza5c10XHro4jQnrbcsPwD71S/q9qHTg2i72xffmpH93Ezirq54w==
+X-Received: by 2002:a9d:2643:: with SMTP id a61mr14311564otb.353.1607370263618;
+        Mon, 07 Dec 2020 11:44:23 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id c18sm2974379oib.31.2020.12.07.11.44.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Dec 2020 22:43:27 -0800 (PST)
-Date:   Sun, 6 Dec 2020 22:43:24 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     kholk11@gmail.com
-Cc:     robh+dt@kernel.org, rydberg@bitmath.org, priv.luk@gmail.com,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        marijns95@gmail.com, konradybcio@gmail.com,
-        martin.botka1@gmail.com, phone-devel@vger.kernel.org,
-        devicetree@vger.kernel.org, krzk@kernel.org,
-        andy.shevchenko@gmail.com
-Subject: Re: [PATCH v9 2/3] Input: Add Novatek NT36xxx touchscreen driver
-Message-ID: <X83PDBKOq9bwSI0N@google.com>
-References: <20201028221302.66583-1-kholk11@gmail.com>
- <20201028221302.66583-3-kholk11@gmail.com>
+        Mon, 07 Dec 2020 11:44:21 -0800 (PST)
+Received: (nullmailer pid 694231 invoked by uid 1000);
+        Mon, 07 Dec 2020 19:44:20 -0000
+Date:   Mon, 7 Dec 2020 13:44:20 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: accel: yamaha-yas: Add DT bindings
+Message-ID: <20201207194420.GA692505@robh.at.kernel.org>
+References: <20201117121810.830743-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201028221302.66583-3-kholk11@gmail.com>
+In-Reply-To: <20201117121810.830743-1-linus.walleij@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi AngeloGioacchino,
-
-On Wed, Oct 28, 2020 at 11:13:01PM +0100, kholk11@gmail.com wrote:
-> +/**
-> + * nt36xxx_set_page - Set page number for read/write
-> + * @ts: Main driver structure
-> + *
-> + * Return: Always zero for success, negative number for error
-> + */
-> +static int nt36xxx_set_page(struct nt36xxx_i2c *ts, u32 pageaddr)
-> +{
-> +	u32 data = cpu_to_be32(pageaddr) >> 8;
-> +	int ret;
+On Tue, Nov 17, 2020 at 01:18:10PM +0100, Linus Walleij wrote:
+> This adds device tree bindings for the Yamaha YAS5xx
+> magnetometers/compass sensors.
+> 
+> Cc: devicetree@vger.kernel.org
+> Cc: phone-devel@vger.kernel.org
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> ChangeLog v1->v2:
+> - Add Yamaha to the vendor list, I was surprised to find
+>   they were not yet listed.
+> 
+> I am still working on the actual driver for the magnetometer
+> but why not send out the DT bindings for review, the
+> hardware variants are easy to describe. This makes it possibe
+> for people to include these magnetometers in device
+> trees.
+> ---
+>  .../bindings/iio/magnetometer/yamaha,yas.yaml | 80 +++++++++++++++++++
+>  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
+>  2 files changed, 82 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
+> new file mode 100644
+> index 000000000000..6fc4cfe4a417
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
+> @@ -0,0 +1,80 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/magnetometer/yamaha,yas.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +	ret = regmap_noinc_write(ts->fw_regmap, NT36XXX_CMD_SET_PAGE,
-> +				 &data, sizeof(data));
-> +	if (ret)
-> +		return ret;
+> +title: Yamaha YAS5xx magnetometer sensors
 > +
-> +	usleep_range(100, 200);
-> +	return ret;
-> +}
+> +maintainers:
+> +  - Linus Walleij <linus.walleij@linaro.org>
+> +
+> +description:
+> +  The Yamaha YAS5xx magnetometers is a line of 3-axis magnetometers
+> +  first introduced by Yamaha in 2006 with the YAS529. Over the years
+> +  this magnetometer has been minatyrized and appeared in a number of
+> +  different variants.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - enum:
 
-Regmap is supposed to handle paged access for you as long as you set it
-up for paged access. Why do you need custom page handling here?
+Don't need oneOf when there's only 1 entry.
 
-Thanks.
-
--- 
-Dmitry
+> +          - yamaha,yas529
+> +          - yamaha,yas530
+> +          - yamaha,yas532
+> +          - yamaha,yas533
+> +          - yamaha,yas535
+> +          - yamaha,yas536
+> +          - yamaha,yas537
+> +          - yamaha,yas539
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +    description: The YAS5xx sensors has a RSTN pin used to reset
+> +      the logic inside the sensor. This GPIO line should connect
+> +      to that pin and be marked as GPIO_ACTIVE_LOW.
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +    description: Interrupt for INT pin for variants that support
+> +      interrupt generation. This polarity, whether the interrupt
+> +      is active on the rising or the falling edge, is configurable
+> +      in the hardware.
+> +
+> +  vdd-supply:
+> +    description: An optional regulator providing core power supply
+> +      on the VDD pin, typically 1.8 V or 3.0 V.
+> +
+> +  iovdd-supply:
+> +    description: An optional regulator providing I/O power supply
+> +      for the I2C interface on the IOVDD pin, typically 1.8 V.
+> +      This is not present on all variants of the component, some
+> +      have only the VDD voltage.
+> +
+> +  mount-matrix:
+> +    description: An optional 3x3 mounting rotation matrix.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        magnetometer@2e {
+> +          compatible = "yamaha,yas530";
+> +          reg = <0x2e>;
+> +          vdd-supply = <&ldo1_reg>;
+> +          iovdd-supply = <&ldo2_reg>;
+> +          reset-gpios = <&gpio6 12 GPIO_ACTIVE_LOW>;
+> +        };
+> +    };
+> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> index 2735be1a8470..0340674c72bd 100644
+> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+> @@ -1210,6 +1210,8 @@ patternProperties:
+>      description: Shenzhen Xunlong Software CO.,Limited
+>    "^xylon,.*":
+>      description: Xylon
+> +  "^yamaha,.*":
+> +    description: Yamaha Corporation
+>    "^ylm,.*":
+>      description: Shenzhen Yangliming Electronic Technology Co., Ltd.
+>    "^yna,.*":
+> -- 
+> 2.26.2
+> 
