@@ -2,190 +2,70 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 502FCC0018C
-	for <phone-devel@archiver.kernel.org>; Mon,  7 Dec 2020 19:45:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 02873C4361B
+	for <phone-devel@archiver.kernel.org>; Mon,  7 Dec 2020 22:34:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 128F7238E1
-	for <phone-devel@archiver.kernel.org>; Mon,  7 Dec 2020 19:45:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C4CBF239A1
+	for <phone-devel@archiver.kernel.org>; Mon,  7 Dec 2020 22:34:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726703AbgLGTpF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 7 Dec 2020 14:45:05 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:44135 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725822AbgLGTpE (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Dec 2020 14:45:04 -0500
-Received: by mail-ot1-f67.google.com with SMTP id f16so13615243otl.11;
-        Mon, 07 Dec 2020 11:44:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=AhK8azJXWaOhT9u0I2B7GYfjgFYWzydwBriQMLb5Em0=;
-        b=cAft83RLca2yyTgILQWM3342IYnBJ94wgzZQ1YUGytlZCmow6gmdBAjvbLSyvahOAx
-         Wy42OYn3LnEFugbZK4HmRESzpRU6FPBlfdWrYbgyJRq5aLvwhSEbrOawWV63HF6s5UAJ
-         w0tRjvNN0LEk3gO9LiX3DVPljflO4U51FCXNgBQ4VMSgOzOz/V+kG/RF/pxvzjQT9/KQ
-         idSdRsEPUZ+p44cbAf3b/A0y/H+BppKW4tnseMsoO0g0mXNtpeEfWv8QMTlsD8SedqPN
-         i0XFduhkgbGtE5Rhv7Ku7BBRZwRj04RfLO5aM7IHFD6fI6P5unToL8ai3Ah5IxW7NFBZ
-         mO/g==
-X-Gm-Message-State: AOAM533hddqbzI+ks+VXZ7d5UwKS2qBAVZPx3FPT4KAH6bYMubLzaUxI
-        qysR+L0ekW70oC4co3/T+w==
-X-Google-Smtp-Source: ABdhPJzar/2L/kBCLPpqKN416SMza5c10XHro4jQnrbcsPwD71S/q9qHTg2i72xffmpH93Ezirq54w==
-X-Received: by 2002:a9d:2643:: with SMTP id a61mr14311564otb.353.1607370263618;
-        Mon, 07 Dec 2020 11:44:23 -0800 (PST)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id c18sm2974379oib.31.2020.12.07.11.44.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Dec 2020 11:44:21 -0800 (PST)
-Received: (nullmailer pid 694231 invoked by uid 1000);
-        Mon, 07 Dec 2020 19:44:20 -0000
-Date:   Mon, 7 Dec 2020 13:44:20 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: accel: yamaha-yas: Add DT bindings
-Message-ID: <20201207194420.GA692505@robh.at.kernel.org>
-References: <20201117121810.830743-1-linus.walleij@linaro.org>
+        id S1727842AbgLGWeI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 7 Dec 2020 17:34:08 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:49272 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726747AbgLGWeI (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Dec 2020 17:34:08 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 863341C0B76; Mon,  7 Dec 2020 23:33:24 +0100 (CET)
+Date:   Mon, 7 Dec 2020 23:33:23 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     tony@atomide.com, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
+Subject: D4 after leste update: rotated touchscreen
+Message-ID: <20201207223323.GA322@amd>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="Dxnq1zWXvFF0Q93v"
 Content-Disposition: inline
-In-Reply-To: <20201117121810.830743-1-linus.walleij@linaro.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Nov 17, 2020 at 01:18:10PM +0100, Linus Walleij wrote:
-> This adds device tree bindings for the Yamaha YAS5xx
-> magnetometers/compass sensors.
-> 
-> Cc: devicetree@vger.kernel.org
-> Cc: phone-devel@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> ChangeLog v1->v2:
-> - Add Yamaha to the vendor list, I was surprised to find
->   they were not yet listed.
-> 
-> I am still working on the actual driver for the magnetometer
-> but why not send out the DT bindings for review, the
-> hardware variants are easy to describe. This makes it possibe
-> for people to include these magnetometers in device
-> trees.
-> ---
->  .../bindings/iio/magnetometer/yamaha,yas.yaml | 80 +++++++++++++++++++
->  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
->  2 files changed, 82 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
-> new file mode 100644
-> index 000000000000..6fc4cfe4a417
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/magnetometer/yamaha,yas.yaml
-> @@ -0,0 +1,80 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/magnetometer/yamaha,yas.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Yamaha YAS5xx magnetometer sensors
-> +
-> +maintainers:
-> +  - Linus Walleij <linus.walleij@linaro.org>
-> +
-> +description:
-> +  The Yamaha YAS5xx magnetometers is a line of 3-axis magnetometers
-> +  first introduced by Yamaha in 2006 with the YAS529. Over the years
-> +  this magnetometer has been minatyrized and appeared in a number of
-> +  different variants.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - enum:
 
-Don't need oneOf when there's only 1 entry.
+--Dxnq1zWXvFF0Q93v
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> +          - yamaha,yas529
-> +          - yamaha,yas530
-> +          - yamaha,yas532
-> +          - yamaha,yas533
-> +          - yamaha,yas535
-> +          - yamaha,yas536
-> +          - yamaha,yas537
-> +          - yamaha,yas539
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +    description: The YAS5xx sensors has a RSTN pin used to reset
-> +      the logic inside the sensor. This GPIO line should connect
-> +      to that pin and be marked as GPIO_ACTIVE_LOW.
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +    description: Interrupt for INT pin for variants that support
-> +      interrupt generation. This polarity, whether the interrupt
-> +      is active on the rising or the falling edge, is configurable
-> +      in the hardware.
-> +
-> +  vdd-supply:
-> +    description: An optional regulator providing core power supply
-> +      on the VDD pin, typically 1.8 V or 3.0 V.
-> +
-> +  iovdd-supply:
-> +    description: An optional regulator providing I/O power supply
-> +      for the I2C interface on the IOVDD pin, typically 1.8 V.
-> +      This is not present on all variants of the component, some
-> +      have only the VDD voltage.
-> +
-> +  mount-matrix:
-> +    description: An optional 3x3 mounting rotation matrix.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        magnetometer@2e {
-> +          compatible = "yamaha,yas530";
-> +          reg = <0x2e>;
-> +          vdd-supply = <&ldo1_reg>;
-> +          iovdd-supply = <&ldo2_reg>;
-> +          reset-gpios = <&gpio6 12 GPIO_ACTIVE_LOW>;
-> +        };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> index 2735be1a8470..0340674c72bd 100644
-> --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-> @@ -1210,6 +1210,8 @@ patternProperties:
->      description: Shenzhen Xunlong Software CO.,Limited
->    "^xylon,.*":
->      description: Xylon
-> +  "^yamaha,.*":
-> +    description: Yamaha Corporation
->    "^ylm,.*":
->      description: Shenzhen Yangliming Electronic Technology Co., Ltd.
->    "^yna,.*":
-> -- 
-> 2.26.2
-> 
+Hi!
+
+I did apt-get update/upgrade on Leste, and results are not good.
+
+It still boots, but it looks like touchscreen is "rotated" 90 degrees
+or so, so touches are registered at wrong places.
+
+If someone knows how to fix that, let me know.
+
+Best regards,
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--Dxnq1zWXvFF0Q93v
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl/OrbMACgkQMOfwapXb+vIOPwCdHGCeksgaQ5CB5U1y1Dwb/A4y
+U20AoKgwr0h4PofH+EnFhAwybAyI/MrD
+=bm7z
+-----END PGP SIGNATURE-----
+
+--Dxnq1zWXvFF0Q93v--
