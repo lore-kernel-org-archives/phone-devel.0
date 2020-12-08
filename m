@@ -2,155 +2,176 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BF20C433FE
-	for <phone-devel@archiver.kernel.org>; Tue,  8 Dec 2020 15:43:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64887C433FE
+	for <phone-devel@archiver.kernel.org>; Tue,  8 Dec 2020 18:11:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4D45523A9B
-	for <phone-devel@archiver.kernel.org>; Tue,  8 Dec 2020 15:43:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 32EBE23B6E
+	for <phone-devel@archiver.kernel.org>; Tue,  8 Dec 2020 18:11:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730172AbgLHPmr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 8 Dec 2020 10:42:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48868 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730168AbgLHPmr (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 8 Dec 2020 10:42:47 -0500
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDF1BC06179C
-        for <phone-devel@vger.kernel.org>; Tue,  8 Dec 2020 07:42:06 -0800 (PST)
-Received: by mail-pg1-x541.google.com with SMTP id q3so12512642pgr.3
-        for <phone-devel@vger.kernel.org>; Tue, 08 Dec 2020 07:42:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=jmDvSPRVcyFiUTh9P/9tgxR63Fy7Ex8sd1a89ZzSMyc=;
-        b=d6sGHdDKnkJinKcYD9aW5HuYKEFF3OfjEUqAtYD5wc6upJs5m5wpSzwGzVpVxBgzA8
-         /PSxlxqYS/Bzj04qXWkVIoxjj67Y81tl/oWZbDECCLvYS8kd7bE75u/yzA+ioVIBzJLB
-         snBKRKoHWVzQ2Rl/6CG5GA0OANMhp6YSB0tXM9+wP+O/DCezuqoXEGczNczF9NtkjQCk
-         1fsQGReKEPEJm2+8+1bo0eOYZaafbstyt+SrGP3Vw/aCP0Mn87SqUOvYQLkH9xdEzi4Q
-         Gc732c3U7Xk7FoMpa2ZHBFWWdN4BsocaYjbfElOkDxhhbzrNkXawJnbQIcbJarlIHCW2
-         GIlg==
+        id S1730859AbgLHSLr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 8 Dec 2020 13:11:47 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:34804 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730456AbgLHSLq (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 8 Dec 2020 13:11:46 -0500
+Received: by mail-ot1-f68.google.com with SMTP id a109so1047034otc.1;
+        Tue, 08 Dec 2020 10:11:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=jmDvSPRVcyFiUTh9P/9tgxR63Fy7Ex8sd1a89ZzSMyc=;
-        b=aGo7EF4uFSzYatcJeS54HnE2rvqBSwJ0lPQW0m27h3Js8yDWb1CbPpiy4TrBjt16Si
-         E5pcxoBxd+nUfKBcSE9xxOqpUEa3rICAuCQSlJxi3/xChlgW8sBhLAj00T7k4lcGWbSe
-         fgiMoYY5CwsnILHhpe1X5ysPpSdCTflezlwGt2MAHrlIefNM0QVpZkeNXnLbBVdZJmyD
-         KudeOhY0sqTEC/FAiL+z1vcCR25+bZQNyQADnvkh6Ifubm/Fv9FIN4hZ5LnX6ga1aa7u
-         E87MRFVbrBLsev+pse/GDUsPX+xN+h2FIrZAkO5q1oRW/yga9sK5XNzyCqaXwA/cSDGT
-         quMA==
-X-Gm-Message-State: AOAM5329VPKuRegY9EDA9EqOPXRsXQMODC2fBNwTdzhVADXwl3jz57B1
-        +/x3KgltNhVrRAoH67zvIhy+
-X-Google-Smtp-Source: ABdhPJy583cwUkBWFf5ggCavTrTu465iNtib6m3+T2n3nlybT7JEEZweJdzcPVW4TJ9udxotaMWd4Q==
-X-Received: by 2002:a17:90a:178b:: with SMTP id q11mr4791029pja.132.1607442126108;
-        Tue, 08 Dec 2020 07:42:06 -0800 (PST)
-Received: from work ([103.59.133.81])
-        by smtp.gmail.com with ESMTPSA id f7sm3680833pjs.25.2020.12.08.07.41.59
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 08 Dec 2020 07:42:05 -0800 (PST)
-Date:   Tue, 8 Dec 2020 21:11:55 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+         :mime-version:content-disposition:in-reply-to;
+        bh=oBNTyUWhSAqkBnW8hBY2mAf7KmbIaIYVcQeU3Ce+eq4=;
+        b=NhFkkEMNIpWL8Z0MBvAjsknS507ICs50jF/qLdZ4olT0hwJbBr/p5BaEugIpzxVN7z
+         XD3nxOKshz5FbtdTW2yRV0Nk9TrI8nTjf5i6fkXvyyENQNU6k7Xt6NhOFvK8ubEBKotI
+         3f3xcUPQopt69zMv5cZuq73b2lA+CPZSUKszeiB1R/cB1mbMosSa1YhvhB1O0+hFxPM+
+         /8/WGvG56EmgwGRcT9VtcjMCvNQayQNt1AWvFG3GxsEpalQ3LAzJEfTXsb1rQpnHrejD
+         Nlqk3sFM+91CfOpUA7h975Ml96ewTAfFQ87G/XWtMAB0GhHY6xOn3ERpro8iXwtnz37B
+         UVww==
+X-Gm-Message-State: AOAM530s4odEveaUw0KpY9sAfpdH20hzp/GwPCPoIiF3H/2FgLtNUFvW
+        qUjrDRrHqZOjb8MwVEvHWA==
+X-Google-Smtp-Source: ABdhPJy+BHGNYI3+qlqJeH91NS1xoptQd/XHGygt8zXvnsSo0KUnlavQziPe5xK2II+//WW4zBIrIA==
+X-Received: by 2002:a9d:6d83:: with SMTP id x3mr17523152otp.285.1607451065760;
+        Tue, 08 Dec 2020 10:11:05 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id i4sm3498940oos.31.2020.12.08.10.11.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Dec 2020 10:11:04 -0800 (PST)
+Received: (nullmailer pid 2810507 invoked by uid 1000);
+        Tue, 08 Dec 2020 18:11:03 -0000
+Date:   Tue, 8 Dec 2020 12:11:03 -0600
+From:   Rob Herring <robh@kernel.org>
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Cc:     viresh.kumar@linaro.org, rjw@rjwysocki.net,
-        jorge.ramirez-ortiz@linaro.org, robh+dt@kernel.org,
-        konrad.dybcio@somainline.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ulf.hansson@linaro.org,
-        nks@flawful.org, lgirdwood@gmail.com, daniel.lezcano@linaro.org,
-        devicetree@vger.kernel.org, bjorn.andersson@linaro.org,
-        phone-devel@vger.kernel.org, broonie@kernel.org,
-        linux-arm-msm@vger.kernel.org, agross@kernel.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        robh@kernel.org
-Subject: Re: [PATCH 11/13] dt-bindings: cpufreq: Convert qcom-cpufreq-hw to
- YAML binding
-Message-ID: <20201208154155.GC9925@work>
+Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
+        ulf.hansson@linaro.org, jorge.ramirez-ortiz@linaro.org,
+        broonie@kernel.org, lgirdwood@gmail.com, daniel.lezcano@linaro.org,
+        nks@flawful.org, bjorn.andersson@linaro.org, agross@kernel.org,
+        viresh.kumar@linaro.org, rjw@rjwysocki.net,
+        konrad.dybcio@somainline.org, martin.botka@somainline.org,
+        marijn.suijten@somainline.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 13/13] dt-bindings: cpufreq: qcom-hw: Add bindings for
+ 8998
+Message-ID: <20201208181103.GA2795715@robh.at.kernel.org>
 References: <20201126184559.3052375-1-angelogioacchino.delregno@somainline.org>
- <20201126184559.3052375-12-angelogioacchino.delregno@somainline.org>
- <20201130172305.GA2661895@robh.at.kernel.org>
- <20201203111427.GA3937@thinkpad>
- <d66e05be-4ea1-dfb7-40ee-bfe417ab1a77@somainline.org>
+ <20201126184559.3052375-14-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d66e05be-4ea1-dfb7-40ee-bfe417ab1a77@somainline.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20201126184559.3052375-14-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Dec 04, 2020 at 01:13:52AM +0100, AngeloGioacchino Del Regno wrote:
-> Il 03/12/20 12:14, Manivannan Sadhasivam ha scritto:
-> > Hi,
-> > 
-> > On Mon, Nov 30, 2020 at 10:23:05AM -0700, Rob Herring wrote:
-> > > On Thu, 26 Nov 2020 19:45:57 +0100, AngeloGioacchino Del Regno wrote:
-> > > > Convert the qcom-cpufreq-hw documentation to YAML binding as
-> > > > qcom,cpufreq-hw.yaml.
-> > > > 
-> > > > Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> > 
-> > There is already a patch floating for this. Please see:
-> > https://lkml.org/lkml/2020/10/20/676
-> > 
-> > Thanks,
-> > Mani
-> > 
-> Oh, I'm sorry, I wasn't aware of that, didn't want to step on you.
+On Thu, Nov 26, 2020 at 07:45:59PM +0100, AngeloGioacchino Del Regno wrote:
+> The OSM programming addition has been done under the
+> qcom,cpufreq-hw-8998 compatible name: specify the requirement
+> of two additional register spaces for this functionality.
 > 
-> Should I rebase patch 1345789 (patch 13/13 of this series) on top of
-> the one that you pointed out and drop this one?
-
-Yes please.
-
-Thanks,
-Mani
-
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  .../bindings/cpufreq/qcom,cpufreq-hw.yaml     | 31 ++++++++++++++++---
+>  1 file changed, 27 insertions(+), 4 deletions(-)
 > 
-> - Angelo
-> 
-> > > > ---
-> > > >   .../bindings/cpufreq/cpufreq-qcom-hw.txt      | 173 +---------------
-> > > >   .../bindings/cpufreq/qcom,cpufreq-hw.yaml     | 196 ++++++++++++++++++
-> > > >   2 files changed, 197 insertions(+), 172 deletions(-)
-> > > >   create mode 100644 Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
-> > > > 
-> > > 
-> > > 
-> > > My bot found errors running 'make dt_binding_check' on your patch:
-> > > 
-> > > yamllint warnings/errors:
-> > > 
-> > > dtschema/dtc warnings/errors:
-> > > /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml: properties:clock-names: [{'const': 'xo'}, {'const': 'ref'}] is not of type 'object', 'boolean'
-> > > /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml: maintainers:0: 'TBD' is not a 'email'
-> > > /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml: ignoring, error in schema: properties: clock-names
-> > > warning: no schema found in file: ./Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
-> > > Error: Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.example.dts:150.3-151.1 syntax error
-> > > FATAL ERROR: Unable to parse input tree
-> > > make[1]: *** [scripts/Makefile.lib:342: Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.example.dt.yaml] Error 1
-> > > make[1]: *** Waiting for unfinished jobs....
-> > > make: *** [Makefile:1364: dt_binding_check] Error 2
-> > > 
-> > > 
-> > > See https://patchwork.ozlabs.org/patch/1406857
-> > > 
-> > > The base for the patch is generally the last rc1. Any dependencies
-> > > should be noted.
-> > > 
-> > > If you already ran 'make dt_binding_check' and didn't see the above
-> > > error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> > > date:
-> > > 
-> > > pip3 install dtschema --upgrade
-> > > 
-> > > Please check and re-submit.
-> > > 
+> diff --git a/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml b/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
+> index 94a56317b14b..f64cea73037e 100644
+> --- a/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
+> +++ b/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
+> @@ -23,17 +23,21 @@ properties:
+>            - qcom,cpufreq-epss
+>  
+>    reg:
+> +    description: Base address and size of the RBCPR register region
+
+That doesn't make sense given you have 2 regions.
+
+>      minItems: 2
+>      maxItems: 2
+
+maxItems: 4
+
+>  
+>    reg-names:
+>      description:
+> -      Frequency domain register region for each domain.
+> -    items:
+> -      - const: "freq-domain0"
+> -      - const: "freq-domain1"
+> +      Frequency domain register region for each domain. If OSM programming
+> +      does not happen in the bootloader and has to be done in this driver,
+> +      then also the OSM domain region osm-domain[0-1] has to be provided.
+
+Don't write free form text for what can be expressed as schema.
+
+> +    minItems: 2
+> +    maxItems: 2
+
+You obviously haven't tried this change with 8998. It will fail with 
+more than 2. What you need here is:
+
+minItems: 2
+maxItems: 4
+
+items:
+  - const: "freq-domain0"
+  - const: "freq-domain1"
+  - const: "osm-domain0"
+  - const: "osm-domain1"
+
+And then...
+
+>  
+>    clock-names:
+> +    minItems: 2
+> +    maxItems: 2
+>      - const: xo
+>      - const: ref
+>  
+> @@ -53,9 +57,28 @@ properties:
+>        property with phandle to a cpufreq_hw followed by the Domain ID(0/1)
+>        in the CPU DT node.
+>  
+> +allOf:
+> + - if:
+> +     properties:
+> +       reg-names:
+> +         contains:
+> +           const: qcom,cpufreq-hw-8998
+> +   then:
+> +     properties:
+> +       reg:
+> +         minItems: 4
+> +         maxItems: 4
+> +       reg-names:
+
+...here just:
+
+minItems: 4
+
+And you'll need an 'else' clause with 'maxItems: 2' for reg and 
+reg-names.
+
+> +         items:
+> +           - const: "freq-domain0"
+> +           - const: "freq-domain1"
+> +           - const: "osm-domain0"
+> +           - const: "osm-domain1"
+> +
+>  required:
+>    - compatible
+>    - reg
+> +  - reg-names
+
+You can't make something that was optional now required. (Unless it was 
+a mistake and all existing users always had 'reg-names'.)
+
+>    - clock-names
+>    - clocks
+>    - "#freq-domain-cells"
+> -- 
+> 2.29.2
 > 
