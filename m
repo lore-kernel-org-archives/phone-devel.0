@@ -2,180 +2,241 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8127C1B0D8
-	for <phone-devel@archiver.kernel.org>; Wed,  9 Dec 2020 09:58:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8884DC4167B
+	for <phone-devel@archiver.kernel.org>; Wed,  9 Dec 2020 16:32:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 82D3A2343F
-	for <phone-devel@archiver.kernel.org>; Wed,  9 Dec 2020 09:58:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 594CC23B51
+	for <phone-devel@archiver.kernel.org>; Wed,  9 Dec 2020 16:32:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728613AbgLIJ6z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 9 Dec 2020 04:58:55 -0500
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:16281 "EHLO
-        relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729007AbgLIJ6z (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 9 Dec 2020 04:58:55 -0500
-X-Originating-IP: 93.34.118.233
-Received: from uno.localdomain (93-34-118-233.ip49.fastwebnet.it [93.34.118.233])
-        (Authenticated sender: jacopo@jmondi.org)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id DA8FB240004;
-        Wed,  9 Dec 2020 09:58:09 +0000 (UTC)
-Date:   Wed, 9 Dec 2020 10:58:19 +0100
-From:   Jacopo Mondi <jacopo@jmondi.org>
-To:     kholk11@gmail.com
-Cc:     mchehab@kernel.org, robh+dt@kernel.org,
-        marijn.suijten@somainline.org, konrad.dybcio@somainline.org,
-        martin.botka@somainline.org, devicetree@vger.kernel.org,
-        linux-media@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, sakari.ailus@iki.fi,
-        andrey.konovalov@linaro.org,
-        angelogioacchino.delregno@somainline.org
-Subject: Re: [PATCH v3 1/2] media: i2c: Add driver for the Sony Exmor-RS
- IMX300 camera sensor
-Message-ID: <20201209095819.w6lfpga2gqvu2ujn@uno.localdomain>
-References: <20201127223047.2764643-1-kholk11@gmail.com>
- <20201127223047.2764643-2-kholk11@gmail.com>
+        id S1729635AbgLIQcl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 9 Dec 2020 11:32:41 -0500
+Received: from mail-oo1-f68.google.com ([209.85.161.68]:39118 "EHLO
+        mail-oo1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727211AbgLIQcl (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 9 Dec 2020 11:32:41 -0500
+Received: by mail-oo1-f68.google.com with SMTP id k9so523770oop.6;
+        Wed, 09 Dec 2020 08:32:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=4omNtiiO8nUr1G+V5I9a46j4D8iodwqvt8f+y0SyraU=;
+        b=Xa05RSLVMP6EnPX8GqFQIssDu1mUdw6qr7pDeiCfS0r0CFub0bnXoaftoyLqSJhmsz
+         qZE4Fg6BivgTDqOEwBd9iRTNqez4H3o2nYGZ4u5PlrX7hDfoir6UpRa93YUQ8JTj1Pdp
+         JpIFZ7jhub/6OevmQDMKWpo4CEOR6jtnt76LeKM1D6Yf+3NIMR2ZdcRUDS4PpHsBfyJ5
+         APtwTGA6S3WXjFj1HVtu3PiCHnhuAIEL/qxLu+iAKrZO5gNvzarL4Xkt1m6C21FPYUzo
+         EPMdc7VOrFv6yb0nAAOi+JIbForEMJqeZ7qovWnjOpSM6s5qmz0+XqTMt1qgaGJutzqQ
+         M5Ww==
+X-Gm-Message-State: AOAM531AsEPcNUvmMpFDs8LYuOprNMs6Svgcmvivd9M4aT0HQ26tAW25
+        mPrgeXws6jgv277ARLpkcU023K9ioA==
+X-Google-Smtp-Source: ABdhPJwRvn0q1PU1XuHM/CASZ9py7G4ZdWxcb7nyg7InCzL4iRuIiGIYPbIqZXxXaA2ZFBHILIDFAw==
+X-Received: by 2002:a4a:e1b5:: with SMTP id 21mr2555657ooy.64.1607531520022;
+        Wed, 09 Dec 2020 08:32:00 -0800 (PST)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id w66sm427835oib.0.2020.12.09.08.31.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Dec 2020 08:31:58 -0800 (PST)
+Received: (nullmailer pid 564420 invoked by uid 1000);
+        Wed, 09 Dec 2020 16:31:57 -0000
+Date:   Wed, 9 Dec 2020 10:31:57 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        linux-leds@vger.kernel.org, Sakari Ailus <sakari.ailus@iki.fi>,
+        newbytee@protonmail.com, Stephan Gerhold <stephan@gerhold.net>,
+        phone-devel@vger.kernel.org, linux-media@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: Re: [PATCH 1/2 v7] dt-bindings: leds: Add DT binding for Richtek
+ RT8515
+Message-ID: <20201209163157.GA501745@robh.at.kernel.org>
+References: <20201201101350.1401956-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201127223047.2764643-2-kholk11@gmail.com>
+In-Reply-To: <20201201101350.1401956-1-linus.walleij@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hello,
-
-On Fri, Nov 27, 2020 at 11:30:46PM +0100, kholk11@gmail.com wrote:
-> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
->
-> This is a custom multi-aspect 25MegaPixels sensor from Sony,
-> found in many Sony Xperia smartphones from various eras.
->
-> The camera assembly for this sensor usually (at least in Xperia
-> phones) has a lens that does not cover the entire sensor area,
-> which means that the real corners are blind and that, in many
-> lighting conditions, some more pixels in the corners are very
-> getting obscured (as no decent amount of light can get in)...
-> so, the maximum resolution that can produce a good image is:
-> - In 4:3 aspect ratio, 5520x4160 (23.0MP)
-> - In 16:9 aspect ratio, 5984x3392 (20.3MP).
->
-> This sensor supports high frame rates (>=60FPS) when in binning
-> mode and both RAW8 and RAW10 output modes.
-> In this version of the driver, support has been provided for the
-> following resolutions:
->     W x H     SZ   MAX_FPS  BINNING
-> - 5520x4160 23.0MP   23       No
-> - 5984x3392 20.3MP   26       No
-> - 2992x1696  3.8MP   60       Yes
-> - 1424x800   1.2MP   120      Yes
->
-> Note 1: The "standard" camera assy for IMX300 also contains an
-> actuator (to focus the image), but this driver only manages the
-> actual image sensor.
->
-> Note 2: The command tables for this sensor were reverse
-> engineered from a downstream "userspace driver" that has been
-> released in various versions on various Xperia smartphones.
-> Register layout seems to be only vaguely similar to IMX219,
-> which has a public datasheet from where some names for the
-> figured out registers were taken and added to the driver:
-> these names are probably not the right ones, but they surely
-> represent the intended thing.
->
-> Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
-
-Just a few drive-by comments, as I'm looking at selection targets for
-other imx sensors and I've noticed this one on the list
-
+On Tue, Dec 01, 2020 at 11:13:49AM +0100, Linus Walleij wrote:
+> Add a YAML devicetree binding for the Richtek RT8515
+> dual channel flash/torch LED driver.
+> 
+> Cc: Sakari Ailus <sakari.ailus@iki.fi>
+> Cc: newbytee@protonmail.com
+> Cc: Stephan Gerhold <stephan@gerhold.net>
+> Cc: phone-devel@vger.kernel.org
+> Cc: linux-media@vger.kernel.org
+> Cc: devicetree@vger.kernel.org
+> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 > ---
->  drivers/media/i2c/Kconfig  |   13 +
->  drivers/media/i2c/Makefile |    1 +
->  drivers/media/i2c/imx300.c | 3081 ++++++++++++++++++++++++++++++++++++
->  3 files changed, 3095 insertions(+)
->  create mode 100644 drivers/media/i2c/imx300.c
->
-
-[snip]
-
-> +/*
-> + * ** IMX300 native and active pixel array size **
-> + *
-> + * Being this a multi-aspect sensor, the following native W/H apply, but
-> + * beware: the module assembly usually has a (round) lens that is shadowing
-> + * or covering the corners of the (square) image sensor, so the maximum
-> + * output resolution must be lower than the maximum sensor resolution
-> + * otherwise we get something like a view from a porthole... :)
-> + *
-> + * For 4:3  aspect ratio, max is: 5984x4140 (25MP)
-> + * For 16:9 aspect ratio, max is: 5984x3392 (20.3MP)
-> + */
-
-These are the sizes
-
-> +#define IMX300_NATIVE_WIDTH		5980U
-> +#define IMX300_NATIVE_HEIGHT		4140U
-> +#define IMX300_PIXEL_ARRAY_LEFT		0U
-> +#define IMX300_PIXEL_ARRAY_TOP		0U
-> +#define IMX300_PIXEL_ARRAY_WIDTH	5520U
-> +#define IMX300_PIXEL_ARRAY_HEIGHT	4160U
-
-And here is how they are applied to selection targets
-
-> +	case V4L2_SEL_TGT_CROP: {
-> +		struct imx300 *imx300 = to_imx300(sd);
+> ChangeLog v6->v7:
+> - Use led-max-microamp for the torch mode max current.
+> - Drop the torch-specific new property from common.yaml in
+>   favor of this property.
+> - Collect Sakari's review tag.
+> ChangeLog v5->v6:
+> - Use the suffix -ohms for the resistor values as this gets
+>   recognized by default by dtschema and is nominal.
+> ChangeLog v4->v5:
+> - Fix the RFS/RTS resistors to reference the u32 schema.
+> - Fix resisitor speling error.
+> ChangeLog v3->v4:
+> - Add DT attributes for the RFS and RTS resistors, so that
+>   the hardware-defined maximum current can be determined.
+> - Add torch-max-microamp to the common bindings so we can
+>   set an attribute for the max microamp in torch mode.
+> - Add flash-max-microamp and torch-max-microamp as optional
+>   to the LED node.
+> - Slot in some elabortative descriptions of the new
+>   properties and describe what the hardware is doing.
+> - Cc phone-devel@vger.kernel.org
+> ChangeLog v2->v3:
+> - Add Sakari to CC
+> - Resend
+> ChangeLog v1->v2:
+> - Explicitly inherit function, color and flash-max-timeout-us
+>   from common.yaml
+> - Add "led" node as required.
+> ---
+>  .../bindings/leds/richtek,rt8515.yaml         | 109 ++++++++++++++++++
+>  1 file changed, 109 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml b/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
+> new file mode 100644
+> index 000000000000..3190e4fcfdf2
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
+> @@ -0,0 +1,109 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/leds/richtek,rt8515.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +		mutex_lock(&imx300->mutex);
-> +		sel->r = *__imx300_get_pad_crop(imx300, cfg, sel->pad,
-> +						sel->which);
-> +		mutex_unlock(&imx300->mutex);
+> +title: Richtek RT8515 1.5A dual channel LED driver
 > +
-> +		return 0;
-> +	}
+> +maintainers:
+> +  - Linus Walleij <linus.walleij@linaro.org>
 > +
-> +	case V4L2_SEL_TGT_NATIVE_SIZE:
-> +		sel->r.top = 0;
-> +		sel->r.left = 0;
-> +		sel->r.width = IMX300_NATIVE_WIDTH;
-> +		sel->r.height = IMX300_NATIVE_HEIGHT;
+> +description: |
+> +  The Richtek RT8515 is a dual channel (two mode) LED driver that
+> +  supports driving a white LED in flash or torch mode. The maximum
+> +  current for each mode is defined in hardware using two resistors
+> +  RFS and RTS.
 > +
-> +		return 0;
+> +properties:
+> +  compatible:
+> +    const: richtek,rt8515
 > +
-> +	case V4L2_SEL_TGT_CROP_DEFAULT:
-> +		sel->r.top = IMX300_PIXEL_ARRAY_TOP;
-> +		sel->r.left = IMX300_PIXEL_ARRAY_LEFT;
-> +		sel->r.width = IMX300_PIXEL_ARRAY_WIDTH;
-> +		sel->r.height = IMX300_PIXEL_ARRAY_HEIGHT;
+> +  enf-gpios:
+> +    maxItems: 1
+> +    description: A connection to the 'ENF' (enable flash) pin.
 > +
-> +		return 0;
-> +	}
+> +  ent-gpios:
+> +    maxItems: 1
+> +    description: A connection to the 'ENT' (enable torch) pin.
 > +
+> +  richtek,rfs-ohms:
+> +    minimum: 7680
+> +    maximum: 367000
+> +    description: The resistance value of the RFS resistor. This
+> +      resistors limits the maximum flash current. This must be set
+> +      for the property flash-max-microamp to work, the RFS resistor
+> +      defines the range of the dimmer setting (brightness) of the
+> +      flash LED.
+> +
+> +  richtek,rts-ohms:
+> +    minimum: 7680
+> +    maximum: 367000
+> +    description: The resistance value of the RTS resistor. This
+> +      resistors limits the maximum torch current. This must be set
+> +      for the property torch-max-microamp to work, the RTS resistor
+> +      defines the range of the dimmer setting (brightness) of the
+> +      torch LED.
+> +
+> +  led:
+> +    type: object
+> +    $ref: common.yaml#
 
-1) CROP_DEFAULT should be contained in NATIVE_SIZE (actually all
-targets are contained in NATIVE_SIZE, and are defined relatively to
-it). This means that IMX300_PIXEL_ARRAY_HEIGHT > IMX300_NATIVE_HEIGHT
-is probably wrong.
+       additionalProperties: false
 
-2) You need to specify CROP_BOUNDS too. If the driver does not support
-reading optically black pixels using the selection API, it should be
-identical to CROP_DEFAULT (v4l2-compliance should report that, see
-https://git.linuxtv.org/media_tree.git/commit/?id=1ed36ecd1459b653cced8929bfb37dba94b64c5d
+And then fix the error in the example.
 
-3) CROP_DEFAULT (and BOUNDS) should report the sensor readable active
-area. You have one mode where the TGT_CROP rectangle width is bigger
-than the CROP_DEFAULT (and BOUNDS) rectangle width (5984 > 5520). I
-think 5984 should probably be made the CROP_DEFAULT (and BOUNDS) width
-then, as the 5984 mode's width implies the 464 pixels exceeding 5520
-are readable and valid for image capture.
+With that,
 
-It's not easy to get these right with a datasheet sometimes, without
-one it quickly becomes a matter of guessing. But even if the values are
-computed as 'best effort' we should try to respect the relationships
-between the different selection targets.
+Reviewed-by: Rob Herring <robh@kernel.org>
 
-Thanks
-  j
+> +    properties:
+> +      function: true
+> +      color: true
+> +      flash-max-timeout-us: true
+> +
+> +      flash-max-microamp:
+> +        maximum: 700000
+> +        description: The maximum current for flash mode
+> +          is hardwired to the component using the RFS resistor to
+> +          ground. The maximum hardware current setting is calculated
+> +          according to the formula Imax = 5500 / RFS. The lowest
+> +          allowed resistance value is 7.86 kOhm giving an absolute
+> +          maximum current of 700mA. By setting this attribute in
+> +          the device tree, you can further restrict the maximum
+> +          current below the hardware limit. This requires the RFS
+> +          to be defined as it defines the maximum range.
+> +
+> +      led-max-microamp:
+> +        maximum: 700000
+> +        description: The maximum current for torch mode
+> +          is hardwired to the component using the RTS resistor to
+> +          ground. The maximum hardware current setting is calculated
+> +          according to the formula Imax = 5500 / RTS. The lowest
+> +          allowed resistance value is 7.86 kOhm giving an absolute
+> +          maximum current of 700mA. By setting this attribute in
+> +          the device tree, you can further restrict the maximum
+> +          current below the hardware limit. This requires the RTS
+> +          to be defined as it defines the maximum range.
+> +
+> +required:
+> +  - compatible
+> +  - ent-gpios
+> +  - enf-gpios
+> +  - led
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/leds/common.h>
+> +
+> +    led-controller {
+> +        compatible = "richtek,rt8515";
+> +        enf-gpios = <&gpio4 12 GPIO_ACTIVE_HIGH>;
+> +        ent-gpios = <&gpio4 13 GPIO_ACTIVE_HIGH>;
+> +        richtek,rfs-ohms = <16000>;
+> +        richtek,rts-ohms = <100000>;
+> +
+> +        led {
+> +            function = LED_FUNCTION_FLASH;
+> +            color = <LED_COLOR_ID_WHITE>;
+> +            flash-max-timeout-us = <250000>;
+> +            flash-max-microamp = <150000>;
+> +            torch-max-microamp = <25000>;
+
+hint ^^^
+
+> +        };
+> +    };
+> +
+> +...
+> -- 
+> 2.26.2
+> 
