@@ -2,75 +2,247 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EBEBC4167B
-	for <phone-devel@archiver.kernel.org>; Wed,  9 Dec 2020 17:16:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 51F71C433FE
+	for <phone-devel@archiver.kernel.org>; Sat, 12 Dec 2020 11:11:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5B8E523C91
-	for <phone-devel@archiver.kernel.org>; Wed,  9 Dec 2020 17:16:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 17AFD206C3
+	for <phone-devel@archiver.kernel.org>; Sat, 12 Dec 2020 11:11:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731919AbgLIRQT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 9 Dec 2020 12:16:19 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:42306 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726805AbgLIRQN (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 9 Dec 2020 12:16:13 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 3D9251C0B7C; Wed,  9 Dec 2020 18:15:29 +0100 (CET)
-Date:   Wed, 9 Dec 2020 18:15:28 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     tony@atomide.com, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
-        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
-Subject: D4: Control and capslock keyboard mapping
-Message-ID: <20201209171528.GB11203@duo.ucw.cz>
-References: <20201207223323.GA322@amd>
+        id S2407388AbgLLLLj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 12 Dec 2020 06:11:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53516 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405402AbgLLLLd (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Sat, 12 Dec 2020 06:11:33 -0500
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0529FC0613CF
+        for <phone-devel@vger.kernel.org>; Sat, 12 Dec 2020 03:10:53 -0800 (PST)
+Received: by mail-lf1-x142.google.com with SMTP id m25so17991231lfc.11
+        for <phone-devel@vger.kernel.org>; Sat, 12 Dec 2020 03:10:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6D+Cc+FWzkuVAMuJyIf/5H2M4c00AdBlhTqbWNSCZm0=;
+        b=GizqmZW/nzKIZu+I34FDCPOhLvRDExiud2qtvNWshB+8md8EdQN8CqOYwHDq/AhyKi
+         YX+gAcM1So80rzozdxNbBrL2NqprgZz5KZdu3rhkUQQD0Y/jo+IVkdiCed9f73ydUl5e
+         1ZiPxxgLaumyM0iTsfTmZ6I4pUjIN3DWFUwTtGe2o4IVGAHRrTImDMYvp9GysfNP+f6C
+         Gr4QIy4y0Jt0ZGh2VYWhN0FWIuDM+RDNmbvE7oWHXrS1st8LTOqGpEznAK5EWNjXei2Y
+         W35loXav2NFB973puS1Gj980pc6K3pLHxaPRFeYcMwyUCQAlUWGJIC4QzDmT17m1jHR+
+         tgMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6D+Cc+FWzkuVAMuJyIf/5H2M4c00AdBlhTqbWNSCZm0=;
+        b=mueO8ySV7hfXWFJBIlXfkMwqIR0JckDdN2DA0s/usCo/LdoLRmAohyMsNrxV4Jwc7s
+         ASBAPRZNYNj7pUR3njEd/7ZvJaZ+gyEX2XcudP9mYwSXHNdTrX1DcfQ5nk3+B//rM7xb
+         N47sD1h7QSoVHIp+XXLZo4Usuz7tDo9Jk5cXdC8AIWbnGO3wDbis4cc41M9qMcQodXLW
+         cZAcNcmMTs7Y8SeRslf8+gMrlrkkdpMNzDZ3mQ3t++omygsA37C92NKhMZDpz+/109i9
+         VBKcjOmBU+bfL6z/4JMfs+vHnStb9+icOsRsv01v/S5n5lDocSHmJX5XI3oEUBZp6t6Y
+         AjoA==
+X-Gm-Message-State: AOAM533gO6H+Gc586YIKdWhu55v4wcCda34ByDTXYzxP01AXs57wlKzv
+        54SKDVbI17grAjWU8htmAL1d/Q==
+X-Google-Smtp-Source: ABdhPJyXfKgOEIjRFc92p6si3OoJuinKJU1r0rrGNBi5ah36legqEcPex6KMu7sSNuxEVjI8tEkVnw==
+X-Received: by 2002:ac2:5d68:: with SMTP id h8mr6059551lft.448.1607771451504;
+        Sat, 12 Dec 2020 03:10:51 -0800 (PST)
+Received: from localhost.bredbandsbolaget (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
+        by smtp.gmail.com with ESMTPSA id u30sm1187835lfc.238.2020.12.12.03.10.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Dec 2020 03:10:50 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>
+Cc:     linux-leds@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sakari Ailus <sakari.ailus@iki.fi>, newbytee@protonmail.com,
+        Stephan Gerhold <stephan@gerhold.net>,
+        phone-devel@vger.kernel.org, linux-media@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 1/2 v8] dt-bindings: leds: Add DT binding for Richtek RT8515
+Date:   Sat, 12 Dec 2020 12:10:45 +0100
+Message-Id: <20201212111046.2735002-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="+g7M9IMkV8truYOl"
-Content-Disposition: inline
-In-Reply-To: <20201207223323.GA322@amd>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Add a YAML devicetree binding for the Richtek RT8515
+dual channel flash/torch LED driver.
 
---+g7M9IMkV8truYOl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Cc: Sakari Ailus <sakari.ailus@iki.fi>
+Cc: newbytee@protonmail.com
+Cc: Stephan Gerhold <stephan@gerhold.net>
+Cc: phone-devel@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Reviewed-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ChangeLog v7->v8:
+- Add additionalProperties: fals to the leds subnode
+- Fix the bug in the example.
+- Collect Rob's Reviewed-by.
+ChangeLog v6->v7:
+- Use led-max-microamp for the torch mode max current.
+- Drop the torch-specific new property from common.yaml in
+  favor of this property.
+- Collect Sakari's review tag.
+ChangeLog v5->v6:
+- Use the suffix -ohms for the resistor values as this gets
+  recognized by default by dtschema and is nominal.
+ChangeLog v4->v5:
+- Fix the RFS/RTS resistors to reference the u32 schema.
+- Fix resisitor speling error.
+ChangeLog v3->v4:
+- Add DT attributes for the RFS and RTS resistors, so that
+  the hardware-defined maximum current can be determined.
+- Add torch-max-microamp to the common bindings so we can
+  set an attribute for the max microamp in torch mode.
+- Add flash-max-microamp and torch-max-microamp as optional
+  to the LED node.
+- Slot in some elabortative descriptions of the new
+  properties and describe what the hardware is doing.
+- Cc phone-devel@vger.kernel.org
+ChangeLog v2->v3:
+- Add Sakari to CC
+- Resend
+ChangeLog v1->v2:
+- Explicitly inherit function, color and flash-max-timeout-us
+  from common.yaml
+- Add "led" node as required.
+---
+ .../bindings/leds/richtek,rt8515.yaml         | 111 ++++++++++++++++++
+ 1 file changed, 111 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
 
-Hi!
+diff --git a/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml b/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
+new file mode 100644
+index 000000000000..68c328eec03b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
+@@ -0,0 +1,111 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/leds/richtek,rt8515.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Richtek RT8515 1.5A dual channel LED driver
++
++maintainers:
++  - Linus Walleij <linus.walleij@linaro.org>
++
++description: |
++  The Richtek RT8515 is a dual channel (two mode) LED driver that
++  supports driving a white LED in flash or torch mode. The maximum
++  current for each mode is defined in hardware using two resistors
++  RFS and RTS.
++
++properties:
++  compatible:
++    const: richtek,rt8515
++
++  enf-gpios:
++    maxItems: 1
++    description: A connection to the 'ENF' (enable flash) pin.
++
++  ent-gpios:
++    maxItems: 1
++    description: A connection to the 'ENT' (enable torch) pin.
++
++  richtek,rfs-ohms:
++    minimum: 7680
++    maximum: 367000
++    description: The resistance value of the RFS resistor. This
++      resistors limits the maximum flash current. This must be set
++      for the property flash-max-microamp to work, the RFS resistor
++      defines the range of the dimmer setting (brightness) of the
++      flash LED.
++
++  richtek,rts-ohms:
++    minimum: 7680
++    maximum: 367000
++    description: The resistance value of the RTS resistor. This
++      resistors limits the maximum torch current. This must be set
++      for the property torch-max-microamp to work, the RTS resistor
++      defines the range of the dimmer setting (brightness) of the
++      torch LED.
++
++  led:
++    type: object
++    $ref: common.yaml#
++    properties:
++      function: true
++      color: true
++      flash-max-timeout-us: true
++
++      flash-max-microamp:
++        maximum: 700000
++        description: The maximum current for flash mode
++          is hardwired to the component using the RFS resistor to
++          ground. The maximum hardware current setting is calculated
++          according to the formula Imax = 5500 / RFS. The lowest
++          allowed resistance value is 7.86 kOhm giving an absolute
++          maximum current of 700mA. By setting this attribute in
++          the device tree, you can further restrict the maximum
++          current below the hardware limit. This requires the RFS
++          to be defined as it defines the maximum range.
++
++      led-max-microamp:
++        maximum: 700000
++        description: The maximum current for torch mode
++          is hardwired to the component using the RTS resistor to
++          ground. The maximum hardware current setting is calculated
++          according to the formula Imax = 5500 / RTS. The lowest
++          allowed resistance value is 7.86 kOhm giving an absolute
++          maximum current of 700mA. By setting this attribute in
++          the device tree, you can further restrict the maximum
++          current below the hardware limit. This requires the RTS
++          to be defined as it defines the maximum range.
++
++    additionalProperties: false
++
++required:
++  - compatible
++  - ent-gpios
++  - enf-gpios
++  - led
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/leds/common.h>
++
++    led-controller {
++        compatible = "richtek,rt8515";
++        enf-gpios = <&gpio4 12 GPIO_ACTIVE_HIGH>;
++        ent-gpios = <&gpio4 13 GPIO_ACTIVE_HIGH>;
++        richtek,rfs-ohms = <16000>;
++        richtek,rts-ohms = <100000>;
++
++        led {
++            function = LED_FUNCTION_FLASH;
++            color = <LED_COLOR_ID_WHITE>;
++            flash-max-timeout-us = <250000>;
++            flash-max-microamp = <150000>;
++            led-max-microamp = <25000>;
++        };
++    };
++
++...
+-- 
+2.26.2
 
-I'm dual booting between Leste and original ROM, and it is super
-annoying... because Leste uses shift as control and capslock as shift.
-
-Could we use shift as shift and capslock as control? That should make
-keyboard behave more like original ROM and be less confusing
-overall...
-
-There is some precedent for putting control where capslock is today --
-I use that setup on notebooks, sun did that (
-https://deskthority.net/wiki/Sun_Type_3 ), and in fact original IBM PC
-did, too: https://en.wikipedia.org/wiki/File:IBM_Model_F_XT.png
-
-Best regards,
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
-
---+g7M9IMkV8truYOl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX9EGMAAKCRAw5/Bqldv6
-8gWWAJ9oY4gk8riw+WngrxvnQrUYGVcOyQCfZ524UKgBGgXEraH4bme28oO8G4Y=
-=5l02
------END PGP SIGNATURE-----
-
---+g7M9IMkV8truYOl--
