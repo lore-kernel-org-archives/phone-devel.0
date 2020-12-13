@@ -2,32 +2,32 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UPPERCASE_50_75,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4508DC4361B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB6C8C433FE
 	for <phone-devel@archiver.kernel.org>; Sun, 13 Dec 2020 17:19:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0027123380
-	for <phone-devel@archiver.kernel.org>; Sun, 13 Dec 2020 17:19:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B353823380
+	for <phone-devel@archiver.kernel.org>; Sun, 13 Dec 2020 17:19:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395521AbgLMRSV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 13 Dec 2020 12:18:21 -0500
-Received: from honk.sigxcpu.org ([24.134.29.49]:59832 "EHLO honk.sigxcpu.org"
+        id S2405508AbgLMRSD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 13 Dec 2020 12:18:03 -0500
+Received: from honk.sigxcpu.org ([24.134.29.49]:59754 "EHLO honk.sigxcpu.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404443AbgLMRSJ (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 13 Dec 2020 12:18:09 -0500
+        id S2405207AbgLMRSD (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Sun, 13 Dec 2020 12:18:03 -0500
 Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id 33D95FB06;
-        Sun, 13 Dec 2020 18:17:21 +0100 (CET)
+        by honk.sigxcpu.org (Postfix) with ESMTP id C79CAFB02;
+        Sun, 13 Dec 2020 18:17:17 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
 Received: from honk.sigxcpu.org ([127.0.0.1])
         by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id bdHWeTXf-5T6; Sun, 13 Dec 2020 18:17:18 +0100 (CET)
+        with ESMTP id yqMMH0cmVa2p; Sun, 13 Dec 2020 18:17:15 +0100 (CET)
 Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-        id 3F41A43FDF; Sun, 13 Dec 2020 18:17:14 +0100 (CET)
+        id 3765D43BC5; Sun, 13 Dec 2020 18:17:14 +0100 (CET)
 From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
 To:     Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
         Sascha Hauer <s.hauer@pengutronix.de>,
@@ -47,9 +47,9 @@ To:     Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
         Michael Walle <michael@walle.cc>, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org
-Subject: [PATCH 2/4] arm64: dts: imx8mq-librem5-devkit: Disable snvs_rtc
-Date:   Sun, 13 Dec 2020 18:17:12 +0100
-Message-Id: <d66739ead267a9468977801d9ad7f9f23c7de166.1607879709.git.agx@sigxcpu.org>
+Subject: [PATCH 1/4] arm64: defconfig: Enable Librem5 Devkit components
+Date:   Sun, 13 Dec 2020 18:17:11 +0100
+Message-Id: <53657bbcaf1292fe58fa8dce497af6734521fb10.1607879709.git.agx@sigxcpu.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <cover.1607879709.git.agx@sigxcpu.org>
 References: <cover.1607879709.git.agx@sigxcpu.org>
@@ -60,28 +60,88 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The board has it's own rtc chip.
+This enables
+
+- touchscreen: CONFIG_TOUCHSCREEN_GOODIX
+- charge controller: CONFIG_CHARGER_BQ25890
+- audio codec: CONFIG_SND_SOC_IMX_SGTL5000
+- rtc: CONFIG_RTC_DRV_M41T80
+- magnetometer: CONFIG_IIO_ST_MAGN_3AXIS
+- pwm: CONFIG_PWM_IMX27
+- modem codec: CONFIG_SND_SOC_GTM601
+- modem serial: CONFIG_USB_SERIAL_OPTION
 
 Signed-off-by: Guido Günther <agx@sigxcpu.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/configs/defconfig | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
-index af139b283daf..12f5d75a5e44 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
-@@ -886,6 +886,10 @@ &snvs_pwrkey {
- 	status = "okay";
- };
- 
-+&snvs_rtc {
-+	status = "disabled";
-+};
-+
- &sai2 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_sai2>;
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index c8ca76751a34..dd70bf09659d 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -386,6 +386,7 @@ CONFIG_KEYBOARD_IMX_SC_KEY=m
+ CONFIG_KEYBOARD_CROS_EC=y
+ CONFIG_INPUT_TOUCHSCREEN=y
+ CONFIG_TOUCHSCREEN_ATMEL_MXT=m
++CONFIG_TOUCHSCREEN_GOODIX=m
+ CONFIG_TOUCHSCREEN_EDT_FT5X06=m
+ CONFIG_INPUT_MISC=y
+ CONFIG_INPUT_PM8941_PWRKEY=y
+@@ -534,6 +535,7 @@ CONFIG_BATTERY_SBS=m
+ CONFIG_BATTERY_BQ27XXX=y
+ CONFIG_SENSORS_ARM_SCMI=y
+ CONFIG_BATTERY_MAX17042=m
++CONFIG_CHARGER_BQ25890=m
+ CONFIG_CHARGER_BQ25980=m
+ CONFIG_SENSORS_ARM_SCPI=y
+ CONFIG_SENSORS_LM90=m
+@@ -715,6 +717,7 @@ CONFIG_SND_SOC_FSL_ASRC=m
+ CONFIG_SND_SOC_FSL_MICFIL=m
+ CONFIG_SND_SOC_FSL_EASRC=m
+ CONFIG_SND_IMX_SOC=m
++CONFIG_SND_SOC_IMX_SGTL5000=m
+ CONFIG_SND_SOC_IMX_SPDIF=m
+ CONFIG_SND_SOC_IMX_AUDMIX=m
+ CONFIG_SND_MESON_AXG_SOUND_CARD=m
+@@ -740,6 +743,7 @@ CONFIG_SND_SOC_TEGRA210_ADMAIF=m
+ CONFIG_SND_SOC_AK4613=m
+ CONFIG_SND_SOC_ES7134=m
+ CONFIG_SND_SOC_ES7241=m
++CONFIG_SND_SOC_GTM601=m
+ CONFIG_SND_SOC_PCM3168A_I2C=m
+ CONFIG_SND_SOC_SIMPLE_AMPLIFIER=m
+ CONFIG_SND_SOC_TAS571X=m
+@@ -775,6 +779,7 @@ CONFIG_USB_ISP1760=y
+ CONFIG_USB_SERIAL=m
+ CONFIG_USB_SERIAL_CP210X=m
+ CONFIG_USB_SERIAL_FTDI_SIO=m
++CONFIG_USB_SERIAL_OPTION=m
+ CONFIG_USB_HSIC_USB3503=y
+ CONFIG_NOP_USB_XCEIV=y
+ CONFIG_USB_GADGET=y
+@@ -844,6 +849,7 @@ CONFIG_RTC_DRV_HYM8563=m
+ CONFIG_RTC_DRV_MAX77686=y
+ CONFIG_RTC_DRV_RK808=m
+ CONFIG_RTC_DRV_PCF85363=m
++CONFIG_RTC_DRV_M41T80=m
+ CONFIG_RTC_DRV_RX8581=m
+ CONFIG_RTC_DRV_RV8803=m
+ CONFIG_RTC_DRV_S5M=y
+@@ -1008,11 +1014,13 @@ CONFIG_IIO_ST_LSM6DSX=m
+ CONFIG_IIO_CROS_EC_LIGHT_PROX=m
+ CONFIG_SENSORS_ISL29018=m
+ CONFIG_VCNL4000=m
++CONFIG_IIO_ST_MAGN_3AXIS=m
+ CONFIG_IIO_CROS_EC_BARO=m
+ CONFIG_MPL3115=m
+ CONFIG_PWM=y
+ CONFIG_PWM_BCM2835=m
+ CONFIG_PWM_CROS_EC=m
++CONFIG_PWM_IMX27=m
+ CONFIG_PWM_MESON=m
+ CONFIG_PWM_RCAR=m
+ CONFIG_PWM_ROCKCHIP=y
 -- 
 2.29.2
 
