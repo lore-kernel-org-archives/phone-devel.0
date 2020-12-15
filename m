@@ -2,48 +2,48 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=BAYES_00,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E9C8C4361B
-	for <phone-devel@archiver.kernel.org>; Tue, 15 Dec 2020 09:18:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EC2AC4361B
+	for <phone-devel@archiver.kernel.org>; Tue, 15 Dec 2020 09:20:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 01B762222A
-	for <phone-devel@archiver.kernel.org>; Tue, 15 Dec 2020 09:18:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5DFA72072C
+	for <phone-devel@archiver.kernel.org>; Tue, 15 Dec 2020 09:20:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726749AbgLOJSO convert rfc822-to-8bit (ORCPT
+        id S1727536AbgLOJTi convert rfc822-to-8bit (ORCPT
         <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 15 Dec 2020 04:18:14 -0500
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:33814 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726185AbgLOJSO (ORCPT
+        Tue, 15 Dec 2020 04:19:38 -0500
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:36746 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727543AbgLOJT3 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 15 Dec 2020 04:18:14 -0500
-Received: by mail-ed1-f67.google.com with SMTP id dk8so20224728edb.1;
-        Tue, 15 Dec 2020 01:17:58 -0800 (PST)
+        Tue, 15 Dec 2020 04:19:29 -0500
+Received: by mail-ed1-f66.google.com with SMTP id b2so20235075edm.3;
+        Tue, 15 Dec 2020 01:19:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to;
-        bh=dZQENcWGBI+dh1Iu6ct/S1F9dcvge+tYCMiVe0Z+KKs=;
-        b=Gl3ARYbD1g9w0cWv9dVQ9XJIHpDGKNQ0j4eeXeIz+SfssI0chRIEvyXE6c2BlR+Apt
-         j1YQ9wBiPuk11zlNRopJimd4EOkTyRUdhLXnOMI3sP1Z3Wx53f1hrwtrjvXQjvmZvsKm
-         hrXeBEnfYe3ax0kB5YW1AJ3vTQX5oE5z72SiyHUcrmnS/tBGn/wKmnUXljCpjEW5UQk9
-         MICU5LHxCfbb0/9YXcZVV7bVI8Nzubd2ChfufOJhH+kVjW+vnGeG+8YqJr2slFtCK2UY
-         0a2tZW9nm0NfMNTTaTiUVj467eHQQve2D1NNY/1WguYFavlajzph/HwJvoVTgQSPB9nS
-         Qu1g==
-X-Gm-Message-State: AOAM531Cq8OWapRlpwSZh8EuHeenO46ehy+mT1V/tRXc3a8/OGkA+fK6
-        JM5zk1oz9LpAp/mGAMFdTuc=
-X-Google-Smtp-Source: ABdhPJzyj6ItHNGHotBpHYpNXSrGsP+uSjgbyPB4ibTWWi2Ly5OfFzTeJj8EKPMmRG6BpZiVFYn+1A==
-X-Received: by 2002:a50:a692:: with SMTP id e18mr28471961edc.233.1608023852372;
-        Tue, 15 Dec 2020 01:17:32 -0800 (PST)
+        bh=EC1tVeiWQY+DqulLx0ZrfVheJ4LDwFrt9+IjNkA/ogM=;
+        b=sRvIki88Rym1uDVf53pNTZLyVv6JrBghsyikMdhv7UOIpJcAnkt0vITKuzyzAn8Syy
+         sCyShoUmP1hTjTpTa8bBy5f/e121iOnQ9MraRph0tcKoPNiWQjSSpxnIqIhmgH+xY7ZV
+         9yH7iRh6AOZeB34GyVwiAIw4eaxycpp6hUFs85Ar3T28A8pJCoUYDusU5CU0hzdkVy2j
+         rsNSoXYhuDVzcmJZ03Y23cZ/Ax+/DLC7pL9P8f1jWCh6dcW4GVr73vhNi3LgrHEQrXFE
+         fq/purHKps5NlYfC9vdFgh76KqwBA7UZsOhfdHb0Cupx/KYHa7PAZUO7uXCtU2KlZcuT
+         eYxQ==
+X-Gm-Message-State: AOAM5323gdL/Zy2Z+NCi42IGUAAFlAa95XVpmj7pMFrY3RATa9TzHtCg
+        T4OUm38FT7RLmsSv+/8ApaM=
+X-Google-Smtp-Source: ABdhPJwCMmnqLA7MYbA9s0nbI+S7+lVphN4/eZUftV1V4FpgsrzHZ5sJ6ZvmR7Cz8s14D2BOcIJbmQ==
+X-Received: by 2002:a05:6402:379:: with SMTP id s25mr6894300edw.367.1608023927183;
+        Tue, 15 Dec 2020 01:18:47 -0800 (PST)
 Received: from kozik-lap (adsl-84-226-167-205.adslplus.ch. [84.226.167.205])
-        by smtp.googlemail.com with ESMTPSA id ch30sm18207744edb.8.2020.12.15.01.17.30
+        by smtp.googlemail.com with ESMTPSA id n1sm907005ejb.2.2020.12.15.01.18.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Dec 2020 01:17:31 -0800 (PST)
-Date:   Tue, 15 Dec 2020 10:17:29 +0100
+        Tue, 15 Dec 2020 01:18:45 -0800 (PST)
+Date:   Tue, 15 Dec 2020 10:18:44 +0100
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>
 Cc:     Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -63,40 +63,51 @@ Cc:     Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
         Michael Walle <michael@walle.cc>, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org
-Subject: Re: [PATCH 1/4] arm64: defconfig: Enable Librem5 Devkit components
-Message-ID: <20201215091729.GC29321@kozik-lap>
+Subject: Re: [PATCH 2/4] arm64: dts: imx8mq-librem5-devkit: Disable snvs_rtc
+Message-ID: <20201215091844.GD29321@kozik-lap>
 References: <cover.1607879709.git.agx@sigxcpu.org>
- <53657bbcaf1292fe58fa8dce497af6734521fb10.1607879709.git.agx@sigxcpu.org>
+ <d66739ead267a9468977801d9ad7f9f23c7de166.1607879709.git.agx@sigxcpu.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8BIT
-In-Reply-To: <53657bbcaf1292fe58fa8dce497af6734521fb10.1607879709.git.agx@sigxcpu.org>
+In-Reply-To: <d66739ead267a9468977801d9ad7f9f23c7de166.1607879709.git.agx@sigxcpu.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Dec 13, 2020 at 06:17:11PM +0100, Guido Günther wrote:
-> This enables
-> 
-> - touchscreen: CONFIG_TOUCHSCREEN_GOODIX
-> - charge controller: CONFIG_CHARGER_BQ25890
-> - audio codec: CONFIG_SND_SOC_IMX_SGTL5000
-> - rtc: CONFIG_RTC_DRV_M41T80
-> - magnetometer: CONFIG_IIO_ST_MAGN_3AXIS
-> - pwm: CONFIG_PWM_IMX27
-> - modem codec: CONFIG_SND_SOC_GTM601
-> - modem serial: CONFIG_USB_SERIAL_OPTION
+On Sun, Dec 13, 2020 at 06:17:12PM +0100, Guido Günther wrote:
+> The board has it's own rtc chip.
 
-Do not repeat the contents of the patch. We can easily see which configs
-you enable. Instead, please name the devices you want to use, not the
-CONFIG entries.  Several drivers actually support multiple devices.
+s/rtc/RTC/
 
-Describe also the board you are enabling it for. You wrote only
-"Librem5", but I am not sure whether this is specific enough. Is it even
-on NXP i.MX processor? Maybe on something else?
-
-This is a generic defconfig so your change will affect everyone.
+Even if you have on-board RTC, why disabling the SNVS?
 
 Best regards,
 Krzysztof
+
+
+> 
+> Signed-off-by: Guido Günther <agx@sigxcpu.org>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
+> index af139b283daf..12f5d75a5e44 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
+> @@ -886,6 +886,10 @@ &snvs_pwrkey {
+>  	status = "okay";
+>  };
+>  
+> +&snvs_rtc {
+> +	status = "disabled";
+> +};
+> +
+>  &sai2 {
+>  	pinctrl-names = "default";
+>  	pinctrl-0 = <&pinctrl_sai2>;
+> -- 
+> 2.29.2
+> 
