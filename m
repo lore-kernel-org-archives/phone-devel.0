@@ -6,44 +6,44 @@ X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BABCBC0018C
-	for <phone-devel@archiver.kernel.org>; Sat, 19 Dec 2020 12:24:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89C8EC4361B
+	for <phone-devel@archiver.kernel.org>; Sat, 19 Dec 2020 12:25:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7D31223AC6
-	for <phone-devel@archiver.kernel.org>; Sat, 19 Dec 2020 12:24:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5662E23AC6
+	for <phone-devel@archiver.kernel.org>; Sat, 19 Dec 2020 12:25:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726494AbgLSMYO convert rfc822-to-8bit (ORCPT
+        id S1726576AbgLSMZf convert rfc822-to-8bit (ORCPT
         <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 19 Dec 2020 07:24:14 -0500
-Received: from mail-ej1-f45.google.com ([209.85.218.45]:36865 "EHLO
-        mail-ej1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726464AbgLSMYN (ORCPT
+        Sat, 19 Dec 2020 07:25:35 -0500
+Received: from mail-ej1-f46.google.com ([209.85.218.46]:47058 "EHLO
+        mail-ej1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726532AbgLSMZe (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 19 Dec 2020 07:24:13 -0500
-Received: by mail-ej1-f45.google.com with SMTP id ga15so7094972ejb.4;
-        Sat, 19 Dec 2020 04:23:57 -0800 (PST)
+        Sat, 19 Dec 2020 07:25:34 -0500
+Received: by mail-ej1-f46.google.com with SMTP id j22so7037191eja.13;
+        Sat, 19 Dec 2020 04:25:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to;
-        bh=1SgvVIKqtLbX962dHPjPKKjppmglPFbNo/Ixnq6OHrA=;
-        b=Da4XxCcho/nlxpgUHoOQZjtdc+tdh5WBHES/A1Q7rCUmg5aCTBR1KpUG12tZfx82Mp
-         2o3CSy15V6/O/IdRdZrunvQCHV79ZO4F4i/ZfZxh/UOFjDT4hijZ9C+lcW5JgZuavMej
-         x+4smt8qAVDJ8AHFWr5BwqBzaqJtyJwgovkFQ/60iLh9u6a1PipFg1YWA3Mp95PRnSpJ
-         ItGTTEqg9SEm3j0oGXrCHwQK19jsTB8UIgxWZJUCDtuDYyAz6d6VDJlUMWNp0skYG8za
-         3+rIQUJR0CmdfltRBBYHltCqpf/U2QpedY2PlJLNYBgRLpaHUBoBI6bw7QKXIyVGzOvL
-         OqSQ==
-X-Gm-Message-State: AOAM530PoPYxhFTuO+84PWWwc3Ogz/untGU76uEjqseOFaeDgJAmadrI
-        DjJK0T0eB7AuExRKegUVTf0=
-X-Google-Smtp-Source: ABdhPJzig+n69PCVXpe0WbOgbniF4CUUNfeu931xkjzwc7zYqcPzHgUy1CkMHh7l9UjvT7n2owy/9A==
-X-Received: by 2002:a17:906:8151:: with SMTP id z17mr8375380ejw.48.1608380611520;
-        Sat, 19 Dec 2020 04:23:31 -0800 (PST)
+        bh=QJTTKnZRfkcqF9wDHW0U+xjAjeKRMjIdWaAAHbUog2Y=;
+        b=j1R29oFyL8xEsw91hy81Ur5JXccn66vu3gCUgMnBJ14K+bCKqr7D8i19BsNmCAdggV
+         F2k4+4I6ox9DEGdj5KwoJHlJ/fT3Zt3PmMLjo9omyAZ/aYrpsWTi2LyMVv6IgOepEsts
+         YCxhRpbUv5erU6Uh1t5L7Db+ZhtggKadWJo52keIhYVZaXtWOL79ZSDsPbIpMlSNdVRp
+         ygtUNsmhoDPBIcY7NwJCGN24wKF1Vw2oqqsAha1yi38RHyrKUw90/xz26rt3WNWTRgAP
+         N5nPMJwd8zA6/v9G4bVLdGSL3mr1HFY8tQCBrWk+cCPu8pum8kbIl1MaoSXrsf6+eval
+         TcEg==
+X-Gm-Message-State: AOAM531v0FTJDA2iw7rHJ1Lr+EeecKgsEwJGh6O8xzckQa+gUSOx9OXk
+        vSBITIGcgCjGnXRvLyRA0ZY=
+X-Google-Smtp-Source: ABdhPJyuhzVXe+hj/sQomptxPPVWlsKZQKFwfFXyqsvColc8AAQnixoFwtppqCsgCNbtthIZTOUu7A==
+X-Received: by 2002:a17:906:7f0b:: with SMTP id d11mr8275994ejr.7.1608380691879;
+        Sat, 19 Dec 2020 04:24:51 -0800 (PST)
 Received: from kozik-lap (adsl-84-226-167-205.adslplus.ch. [84.226.167.205])
-        by smtp.googlemail.com with ESMTPSA id e11sm6693365ejz.94.2020.12.19.04.23.29
+        by smtp.googlemail.com with ESMTPSA id k2sm6657160ejp.6.2020.12.19.04.24.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Dec 2020 04:23:30 -0800 (PST)
-Date:   Sat, 19 Dec 2020 13:23:28 +0100
+        Sat, 19 Dec 2020 04:24:50 -0800 (PST)
+Date:   Sat, 19 Dec 2020 13:24:49 +0100
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>
 Cc:     Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -63,39 +63,41 @@ Cc:     Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
         Michael Walle <michael@walle.cc>, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] arm64: defconfig: Enable Librem 5 devkit
- components
-Message-ID: <20201219122328.GE13886@kozik-lap>
+Subject: Re: [PATCH v2 4/4] arm64: dts: imx8mq-librem5-devkit: Drop custom
+ clock settings
+Message-ID: <20201219122449.GF13886@kozik-lap>
 References: <cover.1608216796.git.agx@sigxcpu.org>
- <2f23f8a4fd7ccfbb4cacf933dcaebe7d38facdfe.1608216796.git.agx@sigxcpu.org>
+ <3343e82ab52e753b385a3e451c07b774920790fc.1608216796.git.agx@sigxcpu.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8BIT
-In-Reply-To: <2f23f8a4fd7ccfbb4cacf933dcaebe7d38facdfe.1608216796.git.agx@sigxcpu.org>
+In-Reply-To: <3343e82ab52e753b385a3e451c07b774920790fc.1608216796.git.agx@sigxcpu.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Dec 17, 2020 at 04:13:12PM +0100, Guido Günther wrote:
-> The Librem 5 devkit is based on NXP's i.MX8MQ. Schematics are at
-> https://source.puri.sm/Librem5/dvk-mx8m-bsb.
+On Thu, Dec 17, 2020 at 04:13:15PM +0100, Guido Günther wrote:
+> Otherwise the boot hangs early on and the resulting clock tree without
+> this already closely matches the selected rates (722534400 and
+> 786432000).
 > 
-> This enables drivers for the following hardware components that aren't
-> yet enabled in defconfig:
-> 
-> - Goodix GT5688 touchscreen
-> - iMX8MQ's PWM for the LCD backlight
-> - TI BQ25896 charge controller
-> - NXP SGTL5000 audio codec
-> - Microcrystal RV-4162-C7 RTC
-> - magnetometer: CONFIG_IIO_ST_MAGN_3AXIS
-> - the SIMCom SIM7100E/A modem
+>   audio_pll2                  0        0        0   722534397          0     0  50000
+>      audio_pll2_bypass        0        0        0   722534397          0     0  50000
+>         audio_pll2_out        0        0        0   722534397          0     0  50000
+>   audio_pll1                  1        1        0   786431998          0     0  50000
+>      audio_pll1_bypass        1        1        0   786431998          0     0  50000
+>         audio_pll1_out        1        1        0   786431998          0     0  50000
+>            sai2               1        1        0    24576000          0     0  50000
+>               sai2_root_clk       1        1        0    24576000          0     0  50000
+>            sai6               0        0        0    24576000          0     0  50000
+>               sai6_root_clk       0        0        0    24576000          0     0  50000
 > 
 > Signed-off-by: Guido Günther <agx@sigxcpu.org>
 > ---
->  arch/arm64/configs/defconfig | 8 ++++++++
->  1 file changed, 8 insertions(+)
+>  arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts | 5 -----
+>  1 file changed, 5 deletions(-)
+> 
 
 Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
