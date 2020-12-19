@@ -2,137 +2,102 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AEA38C3526B
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Dec 2020 07:17:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BABCBC0018C
+	for <phone-devel@archiver.kernel.org>; Sat, 19 Dec 2020 12:24:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7A34523A62
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Dec 2020 07:17:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7D31223AC6
+	for <phone-devel@archiver.kernel.org>; Sat, 19 Dec 2020 12:24:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732941AbgLRHRF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Dec 2020 02:17:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50098 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732937AbgLRHRF (ORCPT
+        id S1726494AbgLSMYO convert rfc822-to-8bit (ORCPT
+        <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 19 Dec 2020 07:24:14 -0500
+Received: from mail-ej1-f45.google.com ([209.85.218.45]:36865 "EHLO
+        mail-ej1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726464AbgLSMYN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Dec 2020 02:17:05 -0500
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14E4FC061282
-        for <phone-devel@vger.kernel.org>; Thu, 17 Dec 2020 23:16:25 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id j13so849071pjz.3
-        for <phone-devel@vger.kernel.org>; Thu, 17 Dec 2020 23:16:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=ApqerofOaEIKVsWbd43tuQ+Rw2I8tWIcPWDX1I3W53A=;
-        b=UAJIKEGSbpSZkC/GgKXecPne8+PC5lwlixKKGZVu5LyQCxsHV+IMqv5fqFLMjh9vAg
-         OZTlDJoBuLvNqL6EZl2KHKhRN9BNqv92+iIoeedZJAdajhD5a24yUq9sHpBIgTK1ObNI
-         r8z3OwDRSTTJPg9BDvdOHnmx4czylI12E7QJjLtEd96+J7s/8MShT2syR1V4InehVVuM
-         zjPbea09Ef3w73FaW6HVRWPbiE0nVAruH0ORj15ArLqMuBWbePOYVhk7OqEPHmvzksZ4
-         4GinLVyg33Pm7dSLfhOjO3BeIIj9vrUrireY/e1HvK8B5hTYpdD4bfvWWzcqtn0dlKlb
-         quFw==
+        Sat, 19 Dec 2020 07:24:13 -0500
+Received: by mail-ej1-f45.google.com with SMTP id ga15so7094972ejb.4;
+        Sat, 19 Dec 2020 04:23:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ApqerofOaEIKVsWbd43tuQ+Rw2I8tWIcPWDX1I3W53A=;
-        b=LtJWqTqPwXiRg8353mV/FpaKRT90y9KtRe+CxuWzLOVtiKdwjgP32oVn23fcrKhJV1
-         44gVbMmDIjgjlAlnm1zuJinMQWA4y0DE64bltpzkOP8TrVigPps/832dfZ4KG7QHPHxi
-         yiLQWMXsBoxZlD6CU4c/mtotpeKzFNo6Ww6qCQh+fKZMPoC2Sw5hpv8VoE1/z+wTld3t
-         caUcTubDFh4CN41TlcKhDSNy47W6tFNk8YThxhRNaEpi0DJagzkwU6D6SG5CQBXEkhw3
-         edis9KGC3G6tk52suNoChkDxObr/IaSjnsgi6+R05FDMe10qivfi5mdwCztObMY5XXAm
-         2kIw==
-X-Gm-Message-State: AOAM533mcEdH09jrXRoxnpM0qj2XlJIs2CrkXYLuDtVKuNcz+6TQdtRJ
-        6T29l43s3vDObJOJE+KtuxuXlg==
-X-Google-Smtp-Source: ABdhPJwwkdb1HZhf5VmdNZ4g8n96cGhrXc8cKebn9Z8gCoxJuUr7hL/V8at4qPDw1zBoKcKg0fmzpQ==
-X-Received: by 2002:a17:90a:9512:: with SMTP id t18mr3027950pjo.206.1608275784627;
-        Thu, 17 Dec 2020 23:16:24 -0800 (PST)
-Received: from localhost ([122.172.20.109])
-        by smtp.gmail.com with ESMTPSA id e5sm7794908pfc.76.2020.12.17.23.16.23
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 17 Dec 2020 23:16:23 -0800 (PST)
-Date:   Fri, 18 Dec 2020 12:46:21 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     bjorn.andersson@linaro.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
-        ulf.hansson@linaro.org, jorge.ramirez-ortiz@linaro.org,
-        broonie@kernel.org, lgirdwood@gmail.com, daniel.lezcano@linaro.org,
-        nks@flawful.org, agross@kernel.org, robh+dt@kernel.org,
-        rjw@rjwysocki.net, konrad.dybcio@somainline.org,
-        martin.botka@somainline.org, marijn.suijten@somainline.org,
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=1SgvVIKqtLbX962dHPjPKKjppmglPFbNo/Ixnq6OHrA=;
+        b=Da4XxCcho/nlxpgUHoOQZjtdc+tdh5WBHES/A1Q7rCUmg5aCTBR1KpUG12tZfx82Mp
+         2o3CSy15V6/O/IdRdZrunvQCHV79ZO4F4i/ZfZxh/UOFjDT4hijZ9C+lcW5JgZuavMej
+         x+4smt8qAVDJ8AHFWr5BwqBzaqJtyJwgovkFQ/60iLh9u6a1PipFg1YWA3Mp95PRnSpJ
+         ItGTTEqg9SEm3j0oGXrCHwQK19jsTB8UIgxWZJUCDtuDYyAz6d6VDJlUMWNp0skYG8za
+         3+rIQUJR0CmdfltRBBYHltCqpf/U2QpedY2PlJLNYBgRLpaHUBoBI6bw7QKXIyVGzOvL
+         OqSQ==
+X-Gm-Message-State: AOAM530PoPYxhFTuO+84PWWwc3Ogz/untGU76uEjqseOFaeDgJAmadrI
+        DjJK0T0eB7AuExRKegUVTf0=
+X-Google-Smtp-Source: ABdhPJzig+n69PCVXpe0WbOgbniF4CUUNfeu931xkjzwc7zYqcPzHgUy1CkMHh7l9UjvT7n2owy/9A==
+X-Received: by 2002:a17:906:8151:: with SMTP id z17mr8375380ejw.48.1608380611520;
+        Sat, 19 Dec 2020 04:23:31 -0800 (PST)
+Received: from kozik-lap (adsl-84-226-167-205.adslplus.ch. [84.226.167.205])
+        by smtp.googlemail.com with ESMTPSA id e11sm6693365ejz.94.2020.12.19.04.23.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Dec 2020 04:23:30 -0800 (PST)
+Date:   Sat, 19 Dec 2020 13:23:28 +0100
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>
+Cc:     Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Martin Kepplinger <martink@posteo.de>,
+        Angus Ainslie <angus@akkea.ca>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Li Yang <leoyang.li@nxp.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Vinod Koul <vkoul@kernel.org>,
+        Anson Huang <Anson.Huang@nxp.com>,
+        Michael Walle <michael@walle.cc>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org
-Subject: Re: [PATCH 12/13] cpufreq: qcom-hw: Implement CPRh aware OSM
- programming
-Message-ID: <20201218071621.i6bc2xgn6kthvmuw@vireshk-i7>
-References: <20201126184559.3052375-1-angelogioacchino.delregno@somainline.org>
- <20201126184559.3052375-13-angelogioacchino.delregno@somainline.org>
+Subject: Re: [PATCH v2 1/4] arm64: defconfig: Enable Librem 5 devkit
+ components
+Message-ID: <20201219122328.GE13886@kozik-lap>
+References: <cover.1608216796.git.agx@sigxcpu.org>
+ <2f23f8a4fd7ccfbb4cacf933dcaebe7d38facdfe.1608216796.git.agx@sigxcpu.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20201126184559.3052375-13-angelogioacchino.delregno@somainline.org>
-User-Agent: NeoMutt/20180716-391-311a52
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <2f23f8a4fd7ccfbb4cacf933dcaebe7d38facdfe.1608216796.git.agx@sigxcpu.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 26-11-20, 19:45, AngeloGioacchino Del Regno wrote:
-> On new SoCs (SDM845 onwards) the Operating State Manager (OSM) is
-> being programmed in the bootloader and write-protected by the
-> hypervisor, leaving to the OS read-only access to some of its
-> registers (in order to read the Lookup Tables and also some
-> status registers) and write access to the p-state register, for
-> for the OS to request a specific performance state to trigger a
-> DVFS switch on the CPU through the OSM hardware.
+On Thu, Dec 17, 2020 at 04:13:12PM +0100, Guido Günther wrote:
+> The Librem 5 devkit is based on NXP's i.MX8MQ. Schematics are at
+> https://source.puri.sm/Librem5/dvk-mx8m-bsb.
 > 
-> On old SoCs though (MSM8998, SDM630/660 and variants), the
-> bootloader will *not* initialize the OSM (and the CPRh, as it
-> is a requirement for it) before booting the OS, making any
-> request to trigger a performance state change ineffective, as
-> the hardware doesn't have any Lookup Table, nor is storing any
-> parameter to trigger a DVFS switch. In this case, basically all
-> of the OSM registers are *not* write protected for the OS, even
-> though some are - but write access is granted through SCM calls.
+> This enables drivers for the following hardware components that aren't
+> yet enabled in defconfig:
 > 
-> This commit introduces support for OSM programming, which has to
-> be done on these old SoCs that were distributed (almost?) always
-> with a bootloader that does not do any CPRh nor OSM init before
-> booting the kernel.
-> In order to program the OSM on these SoCs, it is necessary to
-> fullfill a "special" requirement: the Core Power Reduction
-> Hardened (CPRh) hardware block must be initialized, as the OSM
-> is "talking" to it in order to perform the Voltage part of DVFS;
-> here, we are calling initialization of this through Linux generic
-> power domains, specifically by requesting a genpd attach from the
-> qcom-cpufreq-hw driver, which will give back voltages associated
-> to each CPU frequency that has been declared in the OPPs, scaled
-> and interpolated with the previous one, and will also give us
-> parameters for the Array Power Mux (APM) and mem-acc, in order
-> for this driver to be then able to generate the Lookup Tables
-> that will be finally programmed to the OSM hardware.
+> - Goodix GT5688 touchscreen
+> - iMX8MQ's PWM for the LCD backlight
+> - TI BQ25896 charge controller
+> - NXP SGTL5000 audio codec
+> - Microcrystal RV-4162-C7 RTC
+> - magnetometer: CONFIG_IIO_ST_MAGN_3AXIS
+> - the SIMCom SIM7100E/A modem
 > 
-> After writing the parameters to the OSM and enabling it, all the
-> programming work will never happen anymore until a OS reboot, so
-> all of the allocations and "the rest" will be disposed-of: this
-> is done mainly to leave the code that was referred only to the
-> new SoCs intact, as to also emphasize on the fact that the OSM
-> HW is, in the end, the exact same; apart some register offsets
-> that are slightly different, the entire logic is the same.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> Signed-off-by: Guido Günther <agx@sigxcpu.org>
 > ---
->  drivers/cpufreq/qcom-cpufreq-hw.c | 914 +++++++++++++++++++++++++++++-
->  1 file changed, 884 insertions(+), 30 deletions(-)
+>  arch/arm64/configs/defconfig | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 
-This is a lot of code, I need someone from Qcom's team to review it
-and make sure it doesn't break anything for the existing platforms.
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
--- 
-viresh
+Best regards,
+Krzysztof
