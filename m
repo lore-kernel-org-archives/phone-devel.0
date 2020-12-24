@@ -2,79 +2,116 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+X-Spam-Status: No, score=-10.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE3E7C433DB
-	for <phone-devel@archiver.kernel.org>; Thu, 24 Dec 2020 12:10:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE6C5C433E9
+	for <phone-devel@archiver.kernel.org>; Thu, 24 Dec 2020 15:00:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 67719223DB
-	for <phone-devel@archiver.kernel.org>; Thu, 24 Dec 2020 12:10:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C97E32246B
+	for <phone-devel@archiver.kernel.org>; Thu, 24 Dec 2020 15:00:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727039AbgLXMKh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 24 Dec 2020 07:10:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36134 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726611AbgLXMKh (ORCPT
+        id S1727861AbgLXO7p (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 24 Dec 2020 09:59:45 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:35460 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726609AbgLXO7p (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 24 Dec 2020 07:10:37 -0500
-X-Greylist: delayed 509 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 24 Dec 2020 04:09:56 PST
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1390C061794;
-        Thu, 24 Dec 2020 04:09:56 -0800 (PST)
-Received: from localhost.localdomain (abac131.neoplus.adsl.tpnet.pl [83.6.166.131])
-        by m-r2.th.seeweb.it (Postfix) with ESMTPA id 606B03F356;
-        Thu, 24 Dec 2020 13:00:42 +0100 (CET)
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: qcom: msm8996: Add missing device_type under pcie[01]
-Date:   Thu, 24 Dec 2020 13:00:25 +0100
-Message-Id: <20201224120025.6282-1-konrad.dybcio@somainline.org>
-X-Mailer: git-send-email 2.29.2
+        Thu, 24 Dec 2020 09:59:45 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 141511C0B96; Thu, 24 Dec 2020 15:59:02 +0100 (CET)
+Date:   Thu, 24 Dec 2020 15:59:01 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Johan Hovold <johan@kernel.org>, phone-devel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh@kernel.org>,
+        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCHv6 0/4] n_gsm serdev support and protocol driver for
+ droid4 modem
+Message-ID: <20201224145901.GA13643@duo.ucw.cz>
+References: <20200421232752.3070-1-tony@atomide.com>
+ <20200423114326.GQ18608@localhost>
+ <20200423153756.GE37466@atomide.com>
+ <20200528082420.GA10358@localhost>
+ <20201220224816.GA28213@duo.ucw.cz>
+ <20201224080239.GF26857@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="tKW2IUtsqtDRztdT"
+Content-Disposition: inline
+In-Reply-To: <20201224080239.GF26857@atomide.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
----
- arch/arm64/boot/dts/qcom/msm8996.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-index fd6ae5464dea..e7eb2c9f37af 100644
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -750,6 +750,8 @@ pcie0: pcie@600000 {
- 				ranges = <0x01000000 0x0 0x0c200000 0x0c200000 0x0 0x100000>,
- 					<0x02000000 0x0 0x0c300000 0x0c300000 0x0 0xd00000>;
- 
-+				device_type = "pci";
-+
- 				interrupts = <GIC_SPI 405 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "msi";
- 				#interrupt-cells = <1>;
-@@ -802,6 +804,8 @@ pcie1: pcie@608000 {
- 				ranges = <0x01000000 0x0 0x0d200000 0x0d200000 0x0 0x100000>,
- 					<0x02000000 0x0 0x0d300000 0x0d300000 0x0 0xd00000>;
- 
-+				device_type = "pci";
-+
- 				interrupts = <GIC_SPI 413 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "msi";
- 				#interrupt-cells = <1>;
--- 
-2.29.2
+--tKW2IUtsqtDRztdT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Hi!
+
+> > My notes say:
+> >=20
+> > /dev/motmdm1 -- basic support, calls, on/off                           =
+        =20
+> > /dev/motmdm3 -- send sms interface                                     =
+        =20
+> > /dev/motmdm9 -- receive sms interface                                  =
+        =20
+> >
+> > (and gsmtty numbering is same)
+>=20
+> Yes I have not had a chance to look at these for several months now,
+> but have the latest set in droid4-pending-v5.10 branch in my github
+> tree.
+>=20
+> The gnss device is at /dev/gsmtty6, see the current droid4-agps tool
+> to upload the almanac also on github. That's has turned out to be a
+> pretty good gsm serdev test too :)
+
+Thanks a lot for the info! Is it this one?
+https://github.com/tmlind/droid4-agps . GPS worked for me even w/o
+AGPS support, but I broke even that, so I need to fix that first.
+
+> > For now I converted gnss driver to use serdev interface, and n_gsm to
+> > provide it... Not yet finished but I believe I'm walking in the right
+> > direction.
+>=20
+> Great, sounds good to me if you got things working with just serdev
+> calls :) I'll try to take a look at this stuff again after I have
+> the other pending droid4 issues out of the way like v5.12 charger
+> and keyboard stuff.
+
+Just ask for latest code :-). I still believe I'm going right
+direction, but now I understand why you did it the way you did. Sound
+code needs to listen on gsmtty1, with the data still being provided
+for userspace.
+
+Best regards,
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--tKW2IUtsqtDRztdT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX+SstQAKCRAw5/Bqldv6
+8q2XAKC32dUkwQADDsKasbqBoLCsPuZZWACeMPhDNUkIk389F+IIFLew3RD5ScE=
+=CsTh
+-----END PGP SIGNATURE-----
+
+--tKW2IUtsqtDRztdT--
