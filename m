@@ -2,190 +2,91 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C762C433E0
-	for <phone-devel@archiver.kernel.org>; Tue, 22 Dec 2020 21:12:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52B6DC433DB
+	for <phone-devel@archiver.kernel.org>; Thu, 24 Dec 2020 08:03:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 39EC222AAF
-	for <phone-devel@archiver.kernel.org>; Tue, 22 Dec 2020 21:12:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 22DC2229CA
+	for <phone-devel@archiver.kernel.org>; Thu, 24 Dec 2020 08:03:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727889AbgLVVMk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 22 Dec 2020 16:12:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45262 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727691AbgLVVMk (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 22 Dec 2020 16:12:40 -0500
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03431C061793
-        for <phone-devel@vger.kernel.org>; Tue, 22 Dec 2020 13:11:59 -0800 (PST)
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 62B943F343;
-        Tue, 22 Dec 2020 22:11:54 +0100 (CET)
-Subject: Re: [PATCH 13/13] dt-bindings: cpufreq: qcom-hw: Add bindings for
- 8998
-To:     Rob Herring <robh@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
-        ulf.hansson@linaro.org, jorge.ramirez-ortiz@linaro.org,
-        broonie@kernel.org, lgirdwood@gmail.com, daniel.lezcano@linaro.org,
-        nks@flawful.org, bjorn.andersson@linaro.org, agross@kernel.org,
-        viresh.kumar@linaro.org, rjw@rjwysocki.net,
-        konrad.dybcio@somainline.org, martin.botka@somainline.org,
-        marijn.suijten@somainline.org, phone-devel@vger.kernel.org
-References: <20201126184559.3052375-1-angelogioacchino.delregno@somainline.org>
- <20201126184559.3052375-14-angelogioacchino.delregno@somainline.org>
- <20201208181103.GA2795715@robh.at.kernel.org>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Message-ID: <ea5cb3fc-3bda-e220-c0ba-6fd50d648737@somainline.org>
-Date:   Tue, 22 Dec 2020 22:11:53 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+        id S1727029AbgLXID0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 24 Dec 2020 03:03:26 -0500
+Received: from muru.com ([72.249.23.125]:40270 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726159AbgLXID0 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 24 Dec 2020 03:03:26 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 779C580C2;
+        Thu, 24 Dec 2020 08:02:51 +0000 (UTC)
+Date:   Thu, 24 Dec 2020 10:02:39 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Johan Hovold <johan@kernel.org>, phone-devel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh@kernel.org>,
+        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCHv6 0/4] n_gsm serdev support and protocol driver for
+ droid4 modem
+Message-ID: <20201224080239.GF26857@atomide.com>
+References: <20200421232752.3070-1-tony@atomide.com>
+ <20200423114326.GQ18608@localhost>
+ <20200423153756.GE37466@atomide.com>
+ <20200528082420.GA10358@localhost>
+ <20201220224816.GA28213@duo.ucw.cz>
 MIME-Version: 1.0
-In-Reply-To: <20201208181103.GA2795715@robh.at.kernel.org>
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201220224816.GA28213@duo.ucw.cz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 08/12/20 19:11, Rob Herring ha scritto:
+Hi,
 
-Hello! Replying very late seem to be obligatory for me nowadays
-so for this and for any other late replies: I'm sorry!
+* Pavel Machek <pavel@ucw.cz> [201220 22:48]:
+> Hi!
+> 
+> > Sorry about the late reply on this.
+> 
+> I'm afraid I'll need some more answers in near future, but for now:
+> 
+> Tony, do you remember / can you figure out what gsmtty GPS is on? I
+> never used it on that interface, and I can't seem to figure it out.
+> 
+> My notes say:
+> 
+> /dev/motmdm1 -- basic support, calls, on/off                                    
+> /dev/motmdm3 -- send sms interface                                              
+> /dev/motmdm9 -- receive sms interface                                           
+>
+> (and gsmtty numbering is same)
 
-> On Thu, Nov 26, 2020 at 07:45:59PM +0100, AngeloGioacchino Del Regno wrote:
->> The OSM programming addition has been done under the
->> qcom,cpufreq-hw-8998 compatible name: specify the requirement
->> of two additional register spaces for this functionality.
->>
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
->> ---
->>   .../bindings/cpufreq/qcom,cpufreq-hw.yaml     | 31 ++++++++++++++++---
->>   1 file changed, 27 insertions(+), 4 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml b/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
->> index 94a56317b14b..f64cea73037e 100644
->> --- a/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
->> +++ b/Documentation/devicetree/bindings/cpufreq/qcom,cpufreq-hw.yaml
->> @@ -23,17 +23,21 @@ properties:
->>             - qcom,cpufreq-epss
->>   
->>     reg:
->> +    description: Base address and size of the RBCPR register region
-> 
-> That doesn't make sense given you have 2 regions.
-> 
->>       minItems: 2
->>       maxItems: 2
-> 
-> maxItems: 4
-> 
-Indeed it doesn't make sense.
+Yes I have not had a chance to look at these for several months now,
+but have the latest set in droid4-pending-v5.10 branch in my github
+tree.
 
->>   
->>     reg-names:
->>       description:
->> -      Frequency domain register region for each domain.
->> -    items:
->> -      - const: "freq-domain0"
->> -      - const: "freq-domain1"
->> +      Frequency domain register region for each domain. If OSM programming
->> +      does not happen in the bootloader and has to be done in this driver,
->> +      then also the OSM domain region osm-domain[0-1] has to be provided.
-> 
-> Don't write free form text for what can be expressed as schema.
-> 
-I guess the later 'if' for 8998 is sufficient to express that, then...
-right?
+The gnss device is at /dev/gsmtty6, see the current droid4-agps tool
+to upload the almanac also on github. That's has turned out to be a
+pretty good gsm serdev test too :)
 
->> +    minItems: 2
->> +    maxItems: 2
-> 
-> You obviously haven't tried this change with 8998. It will fail with
-> more than 2. What you need here is:
-> 
-My testing methodology must be flawed. Or perhaps I just need some more 
-sleep... probably the latter.
+> For now I converted gnss driver to use serdev interface, and n_gsm to
+> provide it... Not yet finished but I believe I'm walking in the right
+> direction.
 
-> minItems: 2
-> maxItems: 4
-> 
-> items:
->    - const: "freq-domain0"
->    - const: "freq-domain1"
->    - const: "osm-domain0"
->    - const: "osm-domain1"
-> 
-> And then...
-> 
->>   
->>     clock-names:
->> +    minItems: 2
->> +    maxItems: 2
->>       - const: xo
->>       - const: ref
->>   
->> @@ -53,9 +57,28 @@ properties:
->>         property with phandle to a cpufreq_hw followed by the Domain ID(0/1)
->>         in the CPU DT node.
->>   
->> +allOf:
->> + - if:
->> +     properties:
->> +       reg-names:
->> +         contains:
->> +           const: qcom,cpufreq-hw-8998
->> +   then:
->> +     properties:
->> +       reg:
->> +         minItems: 4
->> +         maxItems: 4
->> +       reg-names:
-> 
-> ...here just:
-> 
-> minItems: 4
-> 
-> And you'll need an 'else' clause with 'maxItems: 2' for reg and
-> reg-names.
-> 
-Big thank you for that!!!
+Great, sounds good to me if you got things working with just serdev
+calls :) I'll try to take a look at this stuff again after I have
+the other pending droid4 issues out of the way like v5.12 charger
+and keyboard stuff.
 
->> +         items:
->> +           - const: "freq-domain0"
->> +           - const: "freq-domain1"
->> +           - const: "osm-domain0"
->> +           - const: "osm-domain1"
->> +
->>   required:
->>     - compatible
->>     - reg
->> +  - reg-names
-> 
-> You can't make something that was optional now required. (Unless it was
-> a mistake and all existing users always had 'reg-names'.)
-> 
-Well, yes. All existing users are already declaring reg-names, no DT 
-changes to do for them.
+Regards,
 
->>     - clock-names
->>     - clocks
->>     - "#freq-domain-cells"
->> -- 
->> 2.29.2
->>
-
-Thanks for the review.
-A V2 of the entire series will come soon!
-
--- Angelo
+Tony
