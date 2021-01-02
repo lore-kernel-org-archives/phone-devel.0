@@ -2,110 +2,248 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46467C433E9
-	for <phone-devel@archiver.kernel.org>; Sat,  2 Jan 2021 16:24:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90110C433DB
+	for <phone-devel@archiver.kernel.org>; Sat,  2 Jan 2021 23:16:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 12E5A224DF
-	for <phone-devel@archiver.kernel.org>; Sat,  2 Jan 2021 16:24:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5955620798
+	for <phone-devel@archiver.kernel.org>; Sat,  2 Jan 2021 23:16:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726644AbhABQYS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 2 Jan 2021 11:24:18 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:41500 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726598AbhABQYS (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 2 Jan 2021 11:24:18 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 8251B1C0B76; Sat,  2 Jan 2021 17:23:34 +0100 (CET)
-Date:   Sat, 2 Jan 2021 17:23:34 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Johan Hovold <johan@kernel.org>, phone-devel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh@kernel.org>,
-        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
-        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Peter Hurley <peter@hurleysoftware.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
-Subject: Re: [PATCHv6 0/4] n_gsm serdev support and protocol driver for
- droid4 modem
-Message-ID: <20210102162334.GA16186@duo.ucw.cz>
-References: <20200421232752.3070-1-tony@atomide.com>
- <20200423114326.GQ18608@localhost>
- <20200423153756.GE37466@atomide.com>
- <20200528082420.GA10358@localhost>
- <20201220224816.GA28213@duo.ucw.cz>
- <20201224080239.GF26857@atomide.com>
+        id S1726919AbhABXQB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 2 Jan 2021 18:16:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37580 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726861AbhABXQA (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 2 Jan 2021 18:16:00 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65794C0613C1
+        for <phone-devel@vger.kernel.org>; Sat,  2 Jan 2021 15:15:20 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id 23so55992748lfg.10
+        for <phone-devel@vger.kernel.org>; Sat, 02 Jan 2021 15:15:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9u5iq0kakVYuhYGTXnHBQdkf9ffgnEBS99aL91HMqDo=;
+        b=MUFfk9CS9fx2VjHaXZWTy6GR3mmpUKsZ5EOCcU2em3GuTF62+u03OyZ8n5rYX3Hzo9
+         lMkp8FmS2/40hEJL66NEf/IA+tOLSdKwcKhGNLEvjeOmwb1PQqbxi0VKYMiL2YHfIEnN
+         PWCdaDLldw4Ao+FmunpMXDc1VF3vbJZKiUnQ/5etxu55/0PXOUBeq6iGji91OZomG7Jv
+         hNbrNVyy8wO6WusIow2dhDGiXURbZRH4374scdT7XygMpZEUU9UVONV2CgWx1nI4kYLV
+         CelvX2H7QL8ahpjzopZ2lRgRp9dvin+xT574GLTy1I4rUpHKxCIxxzCJCctdGbZFsfGm
+         APUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9u5iq0kakVYuhYGTXnHBQdkf9ffgnEBS99aL91HMqDo=;
+        b=uOSvfE917I6VfaTYQHMDxxWpYWP3iToA2fbI4srJ1zn41swdEDdh3QJsesDnjHN1xe
+         BQAgA3PMZ1kqMzadqCkS8jO20disABVppFi/71rGJaWhW9IRVTAFsoapUY3U5UrHD4yD
+         fb69unFLcdh1Jr86v7P3Gkz+jyqiISoxSibIrWVXLYn+mKSiy3EzdkIO7BdH37UqpyXw
+         ss3cJGOmJkNR9ZQwCEg6lIOKTyD1MOIsUkhYtX7XWE1LWJ1sQy3QnV6bsFIuIPH3PZ1T
+         PX97OEGrn9mNwVgXbqxRQTzf9u9A6utWa1EU5dsUaceoWEWsIkcnvvUuMHjqb7psCtQ0
+         52sA==
+X-Gm-Message-State: AOAM531kpEsAPHZIUxH1YFUKR+OIk+VSY7MBLnPGBluVljVoNlhXJ7DL
+        k0k+fjg6EIz/aeb4hjIX0m/+0A==
+X-Google-Smtp-Source: ABdhPJxmzHUIr58FJHaHzsPt+OG8rCwS6vmlqmBDuEodSdZcFJDmb+pcc+K/jwAABr3P/dGaPUkZ2g==
+X-Received: by 2002:a19:6901:: with SMTP id e1mr28116772lfc.335.1609629318794;
+        Sat, 02 Jan 2021 15:15:18 -0800 (PST)
+Received: from localhost.localdomain (c-92d7225c.014-348-6c756e10.bbcust.telenor.se. [92.34.215.146])
+        by smtp.gmail.com with ESMTPSA id 204sm6833732lfj.269.2021.01.02.15.15.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Jan 2021 15:15:18 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>
+Cc:     linux-leds@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sakari Ailus <sakari.ailus@iki.fi>, newbytee@protonmail.com,
+        Stephan Gerhold <stephan@gerhold.net>,
+        phone-devel@vger.kernel.org, linux-media@vger.kernel.org,
+        devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: [PATCH 1/2 v9] dt-bindings: leds: Add DT binding for Richtek RT8515
+Date:   Sun,  3 Jan 2021 00:15:09 +0100
+Message-Id: <20210102231510.2068851-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="opJtzjQTFsWo+cga"
-Content-Disposition: inline
-In-Reply-To: <20201224080239.GF26857@atomide.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Add a YAML devicetree binding for the Richtek RT8515
+dual channel flash/torch LED driver.
 
---opJtzjQTFsWo+cga
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Cc: Sakari Ailus <sakari.ailus@iki.fi>
+Cc: newbytee@protonmail.com
+Cc: Stephan Gerhold <stephan@gerhold.net>
+Cc: phone-devel@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Reviewed-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ChangeLog v8->v9:
+- No changes, resend with the driver.
+ChangeLog v7->v8:
+- Add additionalProperties: fals to the leds subnode
+- Fix the bug in the example.
+- Collect Rob's Reviewed-by.
+ChangeLog v6->v7:
+- Use led-max-microamp for the torch mode max current.
+- Drop the torch-specific new property from common.yaml in
+  favor of this property.
+- Collect Sakari's review tag.
+ChangeLog v5->v6:
+- Use the suffix -ohms for the resistor values as this gets
+  recognized by default by dtschema and is nominal.
+ChangeLog v4->v5:
+- Fix the RFS/RTS resistors to reference the u32 schema.
+- Fix resisitor speling error.
+ChangeLog v3->v4:
+- Add DT attributes for the RFS and RTS resistors, so that
+  the hardware-defined maximum current can be determined.
+- Add torch-max-microamp to the common bindings so we can
+  set an attribute for the max microamp in torch mode.
+- Add flash-max-microamp and torch-max-microamp as optional
+  to the LED node.
+- Slot in some elabortative descriptions of the new
+  properties and describe what the hardware is doing.
+- Cc phone-devel@vger.kernel.org
+ChangeLog v2->v3:
+- Add Sakari to CC
+- Resend
+ChangeLog v1->v2:
+- Explicitly inherit function, color and flash-max-timeout-us
+  from common.yaml
+- Add "led" node as required.
+---
+ .../bindings/leds/richtek,rt8515.yaml         | 111 ++++++++++++++++++
+ 1 file changed, 111 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
 
-Hi!
+diff --git a/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml b/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
+new file mode 100644
+index 000000000000..68c328eec03b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/leds/richtek,rt8515.yaml
+@@ -0,0 +1,111 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/leds/richtek,rt8515.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Richtek RT8515 1.5A dual channel LED driver
++
++maintainers:
++  - Linus Walleij <linus.walleij@linaro.org>
++
++description: |
++  The Richtek RT8515 is a dual channel (two mode) LED driver that
++  supports driving a white LED in flash or torch mode. The maximum
++  current for each mode is defined in hardware using two resistors
++  RFS and RTS.
++
++properties:
++  compatible:
++    const: richtek,rt8515
++
++  enf-gpios:
++    maxItems: 1
++    description: A connection to the 'ENF' (enable flash) pin.
++
++  ent-gpios:
++    maxItems: 1
++    description: A connection to the 'ENT' (enable torch) pin.
++
++  richtek,rfs-ohms:
++    minimum: 7680
++    maximum: 367000
++    description: The resistance value of the RFS resistor. This
++      resistors limits the maximum flash current. This must be set
++      for the property flash-max-microamp to work, the RFS resistor
++      defines the range of the dimmer setting (brightness) of the
++      flash LED.
++
++  richtek,rts-ohms:
++    minimum: 7680
++    maximum: 367000
++    description: The resistance value of the RTS resistor. This
++      resistors limits the maximum torch current. This must be set
++      for the property torch-max-microamp to work, the RTS resistor
++      defines the range of the dimmer setting (brightness) of the
++      torch LED.
++
++  led:
++    type: object
++    $ref: common.yaml#
++    properties:
++      function: true
++      color: true
++      flash-max-timeout-us: true
++
++      flash-max-microamp:
++        maximum: 700000
++        description: The maximum current for flash mode
++          is hardwired to the component using the RFS resistor to
++          ground. The maximum hardware current setting is calculated
++          according to the formula Imax = 5500 / RFS. The lowest
++          allowed resistance value is 7.86 kOhm giving an absolute
++          maximum current of 700mA. By setting this attribute in
++          the device tree, you can further restrict the maximum
++          current below the hardware limit. This requires the RFS
++          to be defined as it defines the maximum range.
++
++      led-max-microamp:
++        maximum: 700000
++        description: The maximum current for torch mode
++          is hardwired to the component using the RTS resistor to
++          ground. The maximum hardware current setting is calculated
++          according to the formula Imax = 5500 / RTS. The lowest
++          allowed resistance value is 7.86 kOhm giving an absolute
++          maximum current of 700mA. By setting this attribute in
++          the device tree, you can further restrict the maximum
++          current below the hardware limit. This requires the RTS
++          to be defined as it defines the maximum range.
++
++    additionalProperties: false
++
++required:
++  - compatible
++  - ent-gpios
++  - enf-gpios
++  - led
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/leds/common.h>
++
++    led-controller {
++        compatible = "richtek,rt8515";
++        enf-gpios = <&gpio4 12 GPIO_ACTIVE_HIGH>;
++        ent-gpios = <&gpio4 13 GPIO_ACTIVE_HIGH>;
++        richtek,rfs-ohms = <16000>;
++        richtek,rts-ohms = <100000>;
++
++        led {
++            function = LED_FUNCTION_FLASH;
++            color = <LED_COLOR_ID_WHITE>;
++            flash-max-timeout-us = <250000>;
++            flash-max-microamp = <150000>;
++            led-max-microamp = <25000>;
++        };
++    };
++
++...
+-- 
+2.29.2
 
-> > I'm afraid I'll need some more answers in near future, but for now:
-> >=20
-> > Tony, do you remember / can you figure out what gsmtty GPS is on? I
-> > never used it on that interface, and I can't seem to figure it out.
-> >=20
-> > My notes say:
-> >=20
-> > /dev/motmdm1 -- basic support, calls, on/off                           =
-        =20
-> > /dev/motmdm3 -- send sms interface                                     =
-        =20
-> > /dev/motmdm9 -- receive sms interface                                  =
-        =20
-> >
-> > (and gsmtty numbering is same)
->=20
-> Yes I have not had a chance to look at these for several months now,
-> but have the latest set in droid4-pending-v5.10 branch in my github
-> tree.
->=20
-> The gnss device is at /dev/gsmtty6, see the current droid4-agps tool
-> to upload the almanac also on github. That's has turned out to be a
-> pretty good gsm serdev test too :)
-
-Treason uncloaked!
-
-While A-GPS is at gsmtty6 I guess, NMEA data are on gsmtty4. And I
-could not access that one, due to bitmask reserving it for gnss.
-
-But now I have figured it out, and should have something reviewable
-soon.
-
-Thanks for support,
-
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
-
---opJtzjQTFsWo+cga
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX/CeBgAKCRAw5/Bqldv6
-8mDGAJ4hFqCVNfsoBFMmdNHP0ShhK8RkswCfdxhCfUSA2o0TiLEWex10yiMM7yQ=
-=3byw
------END PGP SIGNATURE-----
-
---opJtzjQTFsWo+cga--
