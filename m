@@ -2,116 +2,110 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6954C433DB
-	for <phone-devel@archiver.kernel.org>; Fri,  1 Jan 2021 14:20:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46467C433E9
+	for <phone-devel@archiver.kernel.org>; Sat,  2 Jan 2021 16:24:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A9969221FE
-	for <phone-devel@archiver.kernel.org>; Fri,  1 Jan 2021 14:20:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 12E5A224DF
+	for <phone-devel@archiver.kernel.org>; Sat,  2 Jan 2021 16:24:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727138AbhAAOUi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 1 Jan 2021 09:20:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40214 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727133AbhAAOUh (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 1 Jan 2021 09:20:37 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C4C0C061757
-        for <phone-devel@vger.kernel.org>; Fri,  1 Jan 2021 06:19:57 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id b26so49195241lff.9
-        for <phone-devel@vger.kernel.org>; Fri, 01 Jan 2021 06:19:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=QsPmcpPsnbLYhOMm5UbpDdIc3jRbIuXMnc0dIdfRJHg=;
-        b=ErisSbaPcB8BB4XhBaWiauqo6oXZ2o5NsyVejRrRaKper3qCdYovSNVlXPD3wRx1xB
-         UFwuAu4cpmxBx+mRF7I7XoC1BKvwvLnvuK1PpXRKuLEWxrP9GvrUlmZLJ93tADwZxdyY
-         +b9Ce0wgIDopTSu5KBkkoRIHjCIrQp2SmxDdTKljJzHZzaYpFO8BWikWDK2tXiynpi/Y
-         ayxFzMP5kebCNJvMaiH9BugTZs1fD4mB9U+6Q2J/3i982m/x7bKORtkO3EmFk+kttqrZ
-         i6nwdpUIimpvx3Bc/HiB9YgWmjB88ghyc9bOXY0PAvZTcGzypsqNyKJs/PYXqCjj0K59
-         433A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=QsPmcpPsnbLYhOMm5UbpDdIc3jRbIuXMnc0dIdfRJHg=;
-        b=IYMP2jRSdw6nJk0PAf1PWVJXLnNTp70/QIScY85uJSh8g9vkHu72F8+KmQAv74b5hS
-         GV0/roakiPlsFhrawmbjN7hw/mhVuSGywbv0KVV/6Oeg3IIKAqSySrRL2VWbYYKP/tv7
-         wS4Ca+s5noigkJg6C8f/Zo6RnPLn+cBYC/8X3bQsJgBuCDEfH1NXx9NG77BZxDNauaRd
-         sX3GPzoxjWhwAw8OL6aNCfcRQ7wdb+0CrXFlD7WfjcsC6z3wsIfFQS6vAktn7hWb/kF7
-         HU89t8Rhi4Uu7TxQsQAK1MXOVOYkulKBhB6xa2FUWPihbu37HD0aJSwidlsgeqShHvwa
-         LRZA==
-X-Gm-Message-State: AOAM532gog9nHjpyXeO3F+cO3rlsXFdUS/BJRERs5jehDxL499plMWRp
-        yeU7BA7RhHi9Wx+kKSWSv3D586RlqKOWwlkck1qTsQ==
-X-Google-Smtp-Source: ABdhPJxjCnV8DIPwpx74Q8C5a9/BZjmLvCTVWXleQYJzFd8wFli1vcpOuHDFfoh4HZJiP/V09zBm24OUcYJkBpc5Fmk=
-X-Received: by 2002:a05:6512:3f3:: with SMTP id n19mr28579606lfq.586.1609510795503;
- Fri, 01 Jan 2021 06:19:55 -0800 (PST)
+        id S1726644AbhABQYS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 2 Jan 2021 11:24:18 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:41500 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726598AbhABQYS (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 2 Jan 2021 11:24:18 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 8251B1C0B76; Sat,  2 Jan 2021 17:23:34 +0100 (CET)
+Date:   Sat, 2 Jan 2021 17:23:34 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Johan Hovold <johan@kernel.org>, phone-devel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh@kernel.org>,
+        Alan Cox <gnomes@lxorguk.ukuu.org.uk>,
+        Lee Jones <lee.jones@linaro.org>, Jiri Slaby <jslaby@suse.cz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Peter Hurley <peter@hurleysoftware.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org
+Subject: Re: [PATCHv6 0/4] n_gsm serdev support and protocol driver for
+ droid4 modem
+Message-ID: <20210102162334.GA16186@duo.ucw.cz>
+References: <20200421232752.3070-1-tony@atomide.com>
+ <20200423114326.GQ18608@localhost>
+ <20200423153756.GE37466@atomide.com>
+ <20200528082420.GA10358@localhost>
+ <20201220224816.GA28213@duo.ucw.cz>
+ <20201224080239.GF26857@atomide.com>
 MIME-Version: 1.0
-References: <20201201101350.1401956-1-linus.walleij@linaro.org>
- <20201201101350.1401956-2-linus.walleij@linaro.org> <20201230190907.GE25903@duo.ucw.cz>
-In-Reply-To: <20201230190907.GE25903@duo.ucw.cz>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 1 Jan 2021 15:19:44 +0100
-Message-ID: <CACRpkdYtcmLc3GsJA8H0g_G55Cnffn2Tm2da6UOqyv2DSn_UXQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2 v7] leds: rt8515: Add Richtek RT8515 LED driver
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Dan Murphy <dmurphy@ti.com>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        Sakari Ailus <sakari.ailus@iki.fi>, newbytee@protonmail.com,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        phone-devel@vger.kernel.org,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="opJtzjQTFsWo+cga"
+Content-Disposition: inline
+In-Reply-To: <20201224080239.GF26857@atomide.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Pavel,
 
-will send a new version with some minor tweaks!
+--opJtzjQTFsWo+cga
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 30, 2020 at 8:09 PM Pavel Machek <pavel@ucw.cz> wrote:
+Hi!
 
-> > +     if (ret1 || ret2) {
-> > +             dev_err(rt->dev,
-> > +                     "either %s or %s missing from DT, using HW max\n"=
-,
-> > +                     resistance, max_ua_prop);
-> > +             max_ma =3D RT8515_MAX_IOUT_MA;
-> > +             max_intensity =3D hw_max;
-> > +             goto out_assign_max;
-> > +     }
->
-> I'd go with some minimum values if we don't have complete information
-> from devicetree.
+> > I'm afraid I'll need some more answers in near future, but for now:
+> >=20
+> > Tony, do you remember / can you figure out what gsmtty GPS is on? I
+> > never used it on that interface, and I can't seem to figure it out.
+> >=20
+> > My notes say:
+> >=20
+> > /dev/motmdm1 -- basic support, calls, on/off                           =
+        =20
+> > /dev/motmdm3 -- send sms interface                                     =
+        =20
+> > /dev/motmdm9 -- receive sms interface                                  =
+        =20
+> >
+> > (and gsmtty numbering is same)
+>=20
+> Yes I have not had a chance to look at these for several months now,
+> but have the latest set in droid4-pending-v5.10 branch in my github
+> tree.
+>=20
+> The gnss device is at /dev/gsmtty6, see the current droid4-agps tool
+> to upload the almanac also on github. That's has turned out to be a
+> pretty good gsm serdev test too :)
 
-I think this is safe because of the way the current limiting
-resistors work, the device is designed to have hardware
-constraints on currents. The max brightness is the max
-current as limited by hardware. It is not possible to break
-this LED with software.
+Treason uncloaked!
 
-Of course someone could have mounted the LED in violation
-of the manual but ... we can't protect for everything I think.
+While A-GPS is at gsmtty6 I guess, NMEA data are on gsmtty4. And I
+could not access that one, due to bitmask reserving it for gnss.
 
-The resistances etc is mainly here to give v4l an idea of the
-current since V4L is a current-oriented API. Not a good fit
-in this case, but with these DT properties we can make it fit
-somewhat so ... =C2=AF\_(=E3=83=84)_/=C2=AF
+But now I have figured it out, and should have something reviewable
+soon.
 
-> > +MODULE_LICENSE("GPL v2");
->
-> v2+, iirc?
+Thanks for support,
 
-It seems GPL-2.0-or-late just use "GPL" as license so I changed
-to that.
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
 
-Yours,
-Linus Walleij
+--opJtzjQTFsWo+cga
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCX/CeBgAKCRAw5/Bqldv6
+8mDGAJ4hFqCVNfsoBFMmdNHP0ShhK8RkswCfdxhCfUSA2o0TiLEWex10yiMM7yQ=
+=3byw
+-----END PGP SIGNATURE-----
+
+--opJtzjQTFsWo+cga--
