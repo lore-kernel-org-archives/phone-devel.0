@@ -2,97 +2,124 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F739C4332D
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Jan 2021 12:38:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87FF4C433E0
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Jan 2021 19:32:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 215B920770
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Jan 2021 12:38:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4C8B320784
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Jan 2021 19:32:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726670AbhADMio (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 4 Jan 2021 07:38:44 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.165]:33492 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726434AbhADMin (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Jan 2021 07:38:43 -0500
-X-Greylist: delayed 718 seconds by postgrey-1.27 at vger.kernel.org; Mon, 04 Jan 2021 07:38:42 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1609763751;
-        s=strato-dkim-0002; d=gerhold.net;
-        h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:From:
-        Subject:Sender;
-        bh=QWpoaB8RGoi+G5oQ88j6MdfXq1Dn+JNNjAqXCP9E/Nc=;
-        b=Nv/OvM98SrAookq1nj0S8LWK0sIKBK61ffzc3Q21tXDGnqGEp1QS1WSToFOToGf7yJ
-        niDJySJTemF1b+GusS0DkzxF9PA+Y4Lez2rlmokBbIDb5N1dvsvjYjx9XHU+9vPxgnv+
-        uUXxG/D+kxOQ4wUL25TGI0aaYbi6tA3euQWEEsnwHD4Go+npRIsGslfr+PdXrjzzIwk6
-        AE12A4Y11OHFvqmpm6KmNdXwFNhV5UH9c69EiCs8zkkNTxrvpbk4JpN16o3IZEq4cIPJ
-        bxvTIw5CX1O6F3ehDQ2wA3q6+yZgTmM3vvNOc4e0aV9vzbpCYD9HuSt/qu1F4U2jq9hb
-        uk0A==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8j+IczGa4o="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-        by smtp.strato.de (RZmta 47.10.7 DYNA|AUTH)
-        with ESMTPSA id e09c6dx04CNkaER
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Mon, 4 Jan 2021 13:23:46 +0100 (CET)
-Date:   Mon, 4 Jan 2021 13:23:41 +0100
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
+        id S1726610AbhADTcg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 4 Jan 2021 14:32:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50418 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726606AbhADTcf (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Jan 2021 14:32:35 -0500
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC453C061574
+        for <phone-devel@vger.kernel.org>; Mon,  4 Jan 2021 11:31:55 -0800 (PST)
+Received: from localhost.localdomain (abaf53.neoplus.adsl.tpnet.pl [83.6.169.53])
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 1BCEA20014;
+        Mon,  4 Jan 2021 20:31:48 +0100 (CET)
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Jordan Crouse <jcrouse@codeaurora.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC] remoteproc: qcom: wcnss: Adjust voltage requirements
- for Pronto v2
-Message-ID: <X/MIzTkKZ4jb3iVY@gerhold.net>
-References: <20201226141100.90147-1-konrad.dybcio@somainline.org>
+        Jonathan Marek <jonathan@marek.ca>,
+        Dave Airlie <airlied@redhat.com>,
+        Sharat Masetty <smasetty@codeaurora.org>,
+        Akhil P Oommen <akhilpo@codeaurora.org>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/msm: Only enable A6xx LLCC code on A6xx
+Date:   Mon,  4 Jan 2021 20:30:41 +0100
+Message-Id: <20210104193044.80591-1-konrad.dybcio@somainline.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201226141100.90147-1-konrad.dybcio@somainline.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Konrad,
+Using this code on A5xx (and probably older too) causes a
+smmu bug.
 
-On Sat, Dec 26, 2020 at 03:11:00PM +0100, Konrad Dybcio wrote:
-> This is required for MSM8974 devices that cannot afford to push
-> the regulators further.
-> 
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> ---
->  drivers/remoteproc/qcom_wcnss.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
-> index e2573f79a137..71480be545e4 100644
-> --- a/drivers/remoteproc/qcom_wcnss.c
-> +++ b/drivers/remoteproc/qcom_wcnss.c
-> @@ -124,7 +124,7 @@ static const struct wcnss_data pronto_v2_data = {
->  	.spare_offset = 0x1088,
->  
->  	.vregs = (struct wcnss_vreg_info[]) {
-> -		{ "vddmx", 1287500, 1287500, 0 },
-> +		{ "vddmx", 950000, 1150000, 0 },
->  		{ "vddcx", .super_turbo = true },
->  		{ "vddpx", 1800000, 1800000, 0 },
->  	},
+Fixes: 474dadb8b0d5 ("drm/msm/a6xx: Add support for using system cache(LLC)")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c | 21 ++++++++++++---------
+ drivers/gpu/drm/msm/adreno/adreno_gpu.h |  5 +++++
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
-Correct me if I'm wrong but with this change pronto_v2_data looks
-exactly like pronto_v1_data (qcom,pronto-v1-pil).
-Can you just change the compatible in qcom-msm8974.dtsi?
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+index 6cf9975e951e..f09175698827 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+@@ -191,8 +191,6 @@ adreno_iommu_create_address_space(struct msm_gpu *gpu,
+ 		struct platform_device *pdev)
+ {
+ 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+-	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
+-	struct io_pgtable_domain_attr pgtbl_cfg;
+ 	struct iommu_domain *iommu;
+ 	struct msm_mmu *mmu;
+ 	struct msm_gem_address_space *aspace;
+@@ -202,13 +200,18 @@ adreno_iommu_create_address_space(struct msm_gpu *gpu,
+ 	if (!iommu)
+ 		return NULL;
+ 
+-	/*
+-	 * This allows GPU to set the bus attributes required to use system
+-	 * cache on behalf of the iommu page table walker.
+-	 */
+-	if (!IS_ERR(a6xx_gpu->htw_llc_slice)) {
+-		pgtbl_cfg.quirks = IO_PGTABLE_QUIRK_ARM_OUTER_WBWA;
+-		iommu_domain_set_attr(iommu, DOMAIN_ATTR_IO_PGTABLE_CFG, &pgtbl_cfg);
++
++	if (adreno_is_a6xx(adreno_gpu)) {
++		struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
++		struct io_pgtable_domain_attr pgtbl_cfg;
++		/*
++		* This allows GPU to set the bus attributes required to use system
++		* cache on behalf of the iommu page table walker.
++		*/
++		if (!IS_ERR(a6xx_gpu->htw_llc_slice)) {
++			pgtbl_cfg.quirks = IO_PGTABLE_QUIRK_ARM_OUTER_WBWA;
++			iommu_domain_set_attr(iommu, DOMAIN_ATTR_IO_PGTABLE_CFG, &pgtbl_cfg);
++		}
+ 	}
+ 
+ 	mmu = msm_iommu_new(&pdev->dev, iommu);
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+index 4574d85c5680..08421fa54a50 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+@@ -226,6 +226,11 @@ static inline int adreno_is_a540(struct adreno_gpu *gpu)
+ 	return gpu->revn == 540;
+ }
+ 
++static inline bool adreno_is_a6xx(struct adreno_gpu *gpu)
++{
++	return ((gpu->revn < 700 && gpu->revn > 599));
++}
++
+ static inline int adreno_is_a618(struct adreno_gpu *gpu)
+ {
+        return gpu->revn == 618;
+-- 
+2.29.2
 
-Also, if possible MSM8974 should be also moved to corner votes via rpmpd,
-like in https://lore.kernel.org/linux-arm-msm/20200916104135.25085-1-stephan@gerhold.net/
-Then the actual voltages don't matter anymore (all we need to do here is
-to temporarily scale the power domain to maximum so WCNSS can boot up).
-
-Thanks,
-Stephan
