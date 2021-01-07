@@ -2,72 +2,160 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC98EC43333
-	for <phone-devel@archiver.kernel.org>; Wed,  6 Jan 2021 10:24:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 556E0C433E0
+	for <phone-devel@archiver.kernel.org>; Thu,  7 Jan 2021 04:51:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A2D4B2310F
-	for <phone-devel@archiver.kernel.org>; Wed,  6 Jan 2021 10:24:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1F2B222D01
+	for <phone-devel@archiver.kernel.org>; Thu,  7 Jan 2021 04:51:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725868AbhAFKYy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 6 Jan 2021 05:24:54 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:19711 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725800AbhAFKYy (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Jan 2021 05:24:54 -0500
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxB5G6JlrU="
-X-RZG-CLASS-ID: mo00
-Received: from droid..
-        by smtp.strato.de (RZmta 47.10.7 DYNA|AUTH)
-        with ESMTPSA id e09c6dx06ALj5DT
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Wed, 6 Jan 2021 11:21:45 +0100 (CET)
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Ohad Ben-Cohen <ohad@wizery.com>, linux-arm-msm@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH 0/3] Fix wcn36xx on msm8916-samsung-a5u
-Date:   Wed,  6 Jan 2021 11:21:31 +0100
-Message-Id: <20210106102134.59801-1-stephan@gerhold.net>
-X-Mailer: git-send-email 2.30.0
+        id S1726705AbhAGEvR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 6 Jan 2021 23:51:17 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:47494 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726674AbhAGEvR (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Jan 2021 23:51:17 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1609995051; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=/idK/qn/qYwK24YxIeFblcenK6sv0rtJO1umkF2y1L0=;
+ b=riUeGWZC5LG1kx/v5tS7vc/BIfLgKldeaKWBOm+FHaeIf9VPgBeLG4/jWUg85Wh88OC6Zv6h
+ nisz2YSakgc3tPEhq+UwtC1z2oc62e+7iJ5lxNu6OVjCc2jB6E0EBdXjCNIDSkyj67Wv4+Tu
+ mTP+6q8sZWp04F87+SISwUuKh5w=
+X-Mailgun-Sending-Ip: 198.61.254.31
+X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n03.prod.us-west-2.postgun.com with SMTP id
+ 5ff69308661021aa28e06233 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 07 Jan 2021 04:50:16
+ GMT
+Sender: saiprakash.ranjan=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7FD9DC43468; Thu,  7 Jan 2021 04:50:16 +0000 (UTC)
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: saiprakash.ranjan)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 12866C433CA;
+        Thu,  7 Jan 2021 04:50:14 +0000 (UTC)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 07 Jan 2021 10:20:14 +0530
+From:   Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org, Rob Clark <robdclark@gmail.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Jordan Crouse <jcrouse@codeaurora.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Dave Airlie <airlied@redhat.com>,
+        Sharat Masetty <smasetty@codeaurora.org>,
+        Akhil P Oommen <akhilpo@codeaurora.org>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/msm: Only enable A6xx LLCC code on A6xx
+In-Reply-To: <20210104193044.80591-1-konrad.dybcio@somainline.org>
+References: <20210104193044.80591-1-konrad.dybcio@somainline.org>
+Message-ID: <8847b190c9d03afd731881689d9b28d3@codeaurora.org>
+X-Sender: saiprakash.ranjan@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Unlike most MSM8916 boards, samsung-a5u uses WCN3660B instead of
-WCN3620 to support the 5 GHz band additionally.
+On 2021-01-05 01:00, Konrad Dybcio wrote:
+> Using this code on A5xx (and probably older too) causes a
+> smmu bug.
+> 
+> Fixes: 474dadb8b0d5 ("drm/msm/a6xx: Add support for using system 
+> cache(LLC)")
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Tested-by: AngeloGioacchino Del Regno 
+> <angelogioacchino.delregno@somainline.org>
+> ---
 
-WCN3660B has similar requirements as WCN3620, but it needs the XO
-clock to run at 48 MHz instead of 19.2 MHz. So far it was possible
-to describe that configuration using the qcom,wcn3680 compatible.
+Reviewed-by: Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
 
-However, as of commit 8490987bdb9a ("wcn36xx: Hook and identify RF_IRIS_WCN3680"),
-the wcn36xx driver will now use the qcom,wcn3680 compatible
-to enable functionality specific to WCN3680. In particular,
-WCN3680 supports 802.11ac, which is not available in WCN3660B.
-
-This patch set introduces a new "qcom,wcn3660b" compatible
-to fix the msm8916-samsung-a5u device tree.
-
-Stephan Gerhold (3):
-  dt-bindings: remoteproc: qcom,wcnss-pil: Add qcom,wcn3660b compatible
-  remoteproc: qcom_wcnss_iris: Add qcom,wcn3660b compatible
-  arm64: dts: qcom: msm8916-samsung-a5u: Fix iris compatible
-
- Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.txt | 1 +
- arch/arm64/boot/dts/qcom/msm8916-samsung-a5u-eur.dts            | 2 +-
- drivers/remoteproc/qcom_wcnss_iris.c                            | 1 +
- 3 files changed, 3 insertions(+), 1 deletion(-)
+>  drivers/gpu/drm/msm/adreno/adreno_gpu.c | 21 ++++++++++++---------
+>  drivers/gpu/drm/msm/adreno/adreno_gpu.h |  5 +++++
+>  2 files changed, 17 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+> b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+> index 6cf9975e951e..f09175698827 100644
+> --- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+> +++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+> @@ -191,8 +191,6 @@ adreno_iommu_create_address_space(struct msm_gpu 
+> *gpu,
+>  		struct platform_device *pdev)
+>  {
+>  	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+> -	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
+> -	struct io_pgtable_domain_attr pgtbl_cfg;
+>  	struct iommu_domain *iommu;
+>  	struct msm_mmu *mmu;
+>  	struct msm_gem_address_space *aspace;
+> @@ -202,13 +200,18 @@ adreno_iommu_create_address_space(struct msm_gpu 
+> *gpu,
+>  	if (!iommu)
+>  		return NULL;
+> 
+> -	/*
+> -	 * This allows GPU to set the bus attributes required to use system
+> -	 * cache on behalf of the iommu page table walker.
+> -	 */
+> -	if (!IS_ERR(a6xx_gpu->htw_llc_slice)) {
+> -		pgtbl_cfg.quirks = IO_PGTABLE_QUIRK_ARM_OUTER_WBWA;
+> -		iommu_domain_set_attr(iommu, DOMAIN_ATTR_IO_PGTABLE_CFG, 
+> &pgtbl_cfg);
+> +
+> +	if (adreno_is_a6xx(adreno_gpu)) {
+> +		struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
+> +		struct io_pgtable_domain_attr pgtbl_cfg;
+> +		/*
+> +		* This allows GPU to set the bus attributes required to use system
+> +		* cache on behalf of the iommu page table walker.
+> +		*/
+> +		if (!IS_ERR(a6xx_gpu->htw_llc_slice)) {
+> +			pgtbl_cfg.quirks = IO_PGTABLE_QUIRK_ARM_OUTER_WBWA;
+> +			iommu_domain_set_attr(iommu, DOMAIN_ATTR_IO_PGTABLE_CFG, 
+> &pgtbl_cfg);
+> +		}
+>  	}
+> 
+>  	mmu = msm_iommu_new(&pdev->dev, iommu);
+> diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+> b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+> index 4574d85c5680..08421fa54a50 100644
+> --- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+> +++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+> @@ -226,6 +226,11 @@ static inline int adreno_is_a540(struct adreno_gpu 
+> *gpu)
+>  	return gpu->revn == 540;
+>  }
+> 
+> +static inline bool adreno_is_a6xx(struct adreno_gpu *gpu)
+> +{
+> +	return ((gpu->revn < 700 && gpu->revn > 599));
+> +}
+> +
+>  static inline int adreno_is_a618(struct adreno_gpu *gpu)
+>  {
+>         return gpu->revn == 618;
 
 -- 
-2.30.0
-
+QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a 
+member
+of Code Aurora Forum, hosted by The Linux Foundation
