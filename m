@@ -2,182 +2,70 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.5 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87382C433E0
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 12:58:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C12D4C433E0
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 13:41:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 08E4F23975
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 12:58:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6FBAE239ED
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 13:41:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726919AbhAHM57 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 8 Jan 2021 07:57:59 -0500
-Received: from honk.sigxcpu.org ([24.134.29.49]:44940 "EHLO honk.sigxcpu.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725965AbhAHM56 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 8 Jan 2021 07:57:58 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id 22441FB02;
-        Fri,  8 Jan 2021 13:57:15 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
-Received: from honk.sigxcpu.org ([127.0.0.1])
-        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Ad-lw2qiTfel; Fri,  8 Jan 2021 13:57:11 +0100 (CET)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-        id B15D740887; Fri,  8 Jan 2021 13:57:10 +0100 (CET)
-From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
-To:     Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Martin Kepplinger <martink@posteo.de>,
-        Angus Ainslie <angus@akkea.ca>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Li Yang <leoyang.li@nxp.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Vinod Koul <vkoul@kernel.org>,
-        Anson Huang <Anson.Huang@nxp.com>,
-        Michael Walle <michael@walle.cc>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: [PATCH v3 2/4] arm64: dts: imx8mq-librem5-devkit: Tweak pmic regulators
-Date:   Fri,  8 Jan 2021 13:57:08 +0100
-Message-Id: <a0f7efc0fcd23093706e2958b489383d91d11aca.1610110514.git.agx@sigxcpu.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <cover.1610110514.git.agx@sigxcpu.org>
-References: <cover.1610110514.git.agx@sigxcpu.org>
+        id S1726735AbhAHNlh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 8 Jan 2021 08:41:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47362 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726415AbhAHNlh (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Jan 2021 08:41:37 -0500
+Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0C50C0612F4
+        for <phone-devel@vger.kernel.org>; Fri,  8 Jan 2021 05:40:56 -0800 (PST)
+Received: from [192.168.1.101] (abaf53.neoplus.adsl.tpnet.pl [83.6.169.53])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 252EA3F611;
+        Fri,  8 Jan 2021 14:39:52 +0100 (CET)
+Subject: Re: [PATCH] drm/msm: Only enable A6xx LLCC code on A6xx
+To:     Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
+        robdclark@gmail.com
+Cc:     airlied@linux.ie, airlied@redhat.com, akhilpo@codeaurora.org,
+        angelogioacchino.delregno@somainline.org,
+        bjorn.andersson@linaro.org, daniel@ffwll.ch,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        jcrouse@codeaurora.org, jonathan@marek.ca,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        phone-devel@vger.kernel.org, sean@poorly.run, shawn.guo@linaro.org,
+        smasetty@codeaurora.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <CAF6AEGu0Sv6nYNDn0z61pXRjNyFLpLw5S4_O3opmrQ-UVNR_MA@mail.gmail.com>
+ <20210108122601.14993-1-saiprakash.ranjan@codeaurora.org>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+Message-ID: <fa091855-8096-6377-e173-ce1cd02f74ec@somainline.org>
+Date:   Fri, 8 Jan 2021 14:39:51 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210108122601.14993-1-saiprakash.ranjan@codeaurora.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-BUCK3 needs a regulator-enable-ramp-delay since otherwise the board
-freezes on etnaviv probe. With this pgc_gpu suspends and resumes as
-expected. This must have been always broken since gpcv2 support was
-enabled.
+> Konrad, can you please test this below change without your change?
 
-We also enable all the regulators needed for Deep Sleep Mode (DSM) as
-always-on:
+This brings no difference, a BUG still happens. We're still calling to_a6xx_gpu on ANY device that's probed! Too bad it won't turn my A330 into an A640..
 
-- VDD_SOC supplied by BUCK1
-- VDDA_1P8 supplied by BUCK7
-- VDDA_0P9 supplied by LDO4
-- VDDA_DRAM supplied by LDO3
-- NVCC_DRAM supplied by BUCK8
-- VDD_DRAM supplied by BUCK5
+Also, relying on disabling LLCC in the config is out of question as it makes the arm32 kernel not compile with DRM/MSM and it just removes the functionality on devices with a6xx.. (unless somebody removes the dependency on it, which in my opinion is even worse and will cause more problems for developers!).
 
-Finally LDO5 and LDO6 provide VDD_PHY_1V8 and VDD_PHY_0V9 used by the
-SOCs MIPI, HDMI and USB IP cores. While we would in theory be able to
-turn these off (and I've tested that or LDO6 and mipi with USB disabled)
-it is of little practical use atm since USB doesn't runtime suspend so
-let's revisit this at a later point.
+The bigger question is how and why did that piece of code ever make it to adreno_gpu.c and not a6xx_gpu.c?
 
-Signed-off-by: Guido Günther <agx@sigxcpu.org>
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- .../boot/dts/freescale/imx8mq-librem5-devkit.dts      | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+To solve it in a cleaner way I propose to move it to an a6xx-specific file, or if it's going to be used with next-gen GPUs, perhaps manage calling of this code via an adreno quirk/feature in adreno_device.c. Now that I think about it, A5xx GPMU en/disable could probably managed like that, instead of using tons of if-statements for each GPU model that has it..
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
-index af139b283daf..f35d6897fbf7 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
-@@ -298,6 +298,7 @@ buck1_reg: BUCK1 {
- 				regulator-min-microvolt = <700000>;
- 				regulator-max-microvolt = <1300000>;
- 				regulator-boot-on;
-+				regulator-always-on;
- 				regulator-ramp-delay = <1250>;
- 				rohm,dvs-run-voltage = <900000>;
- 				rohm,dvs-idle-voltage = <850000>;
-@@ -319,6 +320,7 @@ buck3_reg: BUCK3 {
- 				regulator-min-microvolt = <700000>;
- 				regulator-max-microvolt = <1300000>;
- 				regulator-boot-on;
-+				regulator-enable-ramp-delay = <200>;
- 				rohm,dvs-run-voltage = <900000>;
- 			};
- 
-@@ -334,6 +336,7 @@ buck5_reg: BUCK5 {
- 				regulator-min-microvolt = <700000>;
- 				regulator-max-microvolt = <1350000>;
- 				regulator-boot-on;
-+				regulator-always-on;
- 			};
- 
- 			buck6_reg: BUCK6 {
-@@ -341,6 +344,7 @@ buck6_reg: BUCK6 {
- 				regulator-min-microvolt = <3000000>;
- 				regulator-max-microvolt = <3300000>;
- 				regulator-boot-on;
-+				regulator-always-on;
- 			};
- 
- 			buck7_reg: BUCK7 {
-@@ -348,6 +352,7 @@ buck7_reg: BUCK7 {
- 				regulator-min-microvolt = <1605000>;
- 				regulator-max-microvolt = <1995000>;
- 				regulator-boot-on;
-+				regulator-always-on;
- 			};
- 
- 			buck8_reg: BUCK8 {
-@@ -355,6 +360,7 @@ buck8_reg: BUCK8 {
- 				regulator-min-microvolt = <800000>;
- 				regulator-max-microvolt = <1400000>;
- 				regulator-boot-on;
-+				regulator-always-on;
- 			};
- 
- 			ldo1_reg: LDO1 {
-@@ -380,6 +386,7 @@ ldo3_reg: LDO3 {
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3300000>;
- 				regulator-boot-on;
-+				regulator-always-on;
- 			};
- 
- 			ldo4_reg: LDO4 {
-@@ -387,12 +394,14 @@ ldo4_reg: LDO4 {
- 				regulator-min-microvolt = <900000>;
- 				regulator-max-microvolt = <1800000>;
- 				regulator-boot-on;
-+				regulator-always-on;
- 			};
- 
- 			ldo5_reg: LDO5 {
- 				regulator-name = "ldo5";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3300000>;
-+				regulator-always-on;
- 			};
- 
- 			ldo6_reg: LDO6 {
-@@ -400,6 +409,7 @@ ldo6_reg: LDO6 {
- 				regulator-min-microvolt = <900000>;
- 				regulator-max-microvolt = <1800000>;
- 				regulator-boot-on;
-+				regulator-always-on;
- 			};
- 
- 			ldo7_reg: LDO7 {
-@@ -407,6 +417,7 @@ ldo7_reg: LDO7 {
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3300000>;
- 				regulator-boot-on;
-+				regulator-always-on;
- 			};
- 		};
- 	};
--- 
-2.29.2
+While we're at it, do ALL (and I truly do mean ALL, including the low-end ones, this will be important later on) A6xx GPUs make use of that feature?
+
+Konrad
 
