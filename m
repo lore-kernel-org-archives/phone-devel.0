@@ -2,31 +2,32 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 92303C433DB
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 12:58:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F772C4332B
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 12:58:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 226CA23770
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 12:58:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0935D239FD
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 12:58:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726674AbhAHM54 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 8 Jan 2021 07:57:56 -0500
-Received: from honk.sigxcpu.org ([24.134.29.49]:44914 "EHLO honk.sigxcpu.org"
+        id S1727076AbhAHM6B (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 8 Jan 2021 07:58:01 -0500
+Received: from honk.sigxcpu.org ([24.134.29.49]:44992 "EHLO honk.sigxcpu.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725816AbhAHM54 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 8 Jan 2021 07:57:56 -0500
+        id S1726901AbhAHM6A (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 8 Jan 2021 07:58:00 -0500
 Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id 73AE8FB07;
-        Fri,  8 Jan 2021 13:57:13 +0100 (CET)
+        by honk.sigxcpu.org (Postfix) with ESMTP id 92987FB04;
+        Fri,  8 Jan 2021 13:57:17 +0100 (CET)
 X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
 Received: from honk.sigxcpu.org ([127.0.0.1])
         by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id h7VCpUe-W-dd; Fri,  8 Jan 2021 13:57:11 +0100 (CET)
+        with ESMTP id HlweCpLmBIyH; Fri,  8 Jan 2021 13:57:13 +0100 (CET)
 Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-        id 8C0B640885; Fri,  8 Jan 2021 13:57:10 +0100 (CET)
+        id DA98C40889; Fri,  8 Jan 2021 13:57:10 +0100 (CET)
 From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
 To:     Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
         Sascha Hauer <s.hauer@pengutronix.de>,
@@ -46,10 +47,12 @@ To:     Rob Herring <robh+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
         Michael Walle <michael@walle.cc>, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org
-Subject: [PATCH v3 0/4] Config and device tree updates for the Librem 5 development kit
-Date:   Fri,  8 Jan 2021 13:57:06 +0100
-Message-Id: <cover.1610110514.git.agx@sigxcpu.org>
+Subject: [PATCH v3 3/4] arm64: dts: imx8mq-librem5-devkit: Disable snvs_rtc
+Date:   Fri,  8 Jan 2021 13:57:09 +0100
+Message-Id: <2a07bf798ee8b7914b127841ac6f4e9b5949fce5.1610110514.git.agx@sigxcpu.org>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <cover.1610110514.git.agx@sigxcpu.org>
+References: <cover.1610110514.git.agx@sigxcpu.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,41 +60,30 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This enables more components to get a working display, panel, audio and
-sensors. It also updates some device tree bits to make mainline boot.
+The board has it's own RTC chip which is backed by the (optional)
+battery and hence preserves data/time on poweroff when that is inserted.
 
-I've skipped wifi (which needs some more driver work) and devfreq (since Martin
-is working on that).
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+---
+ arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-The config changes don't depend on the DT parts so could be applied
-independently. The series was tested against next-20200108 and i made sure the
-defconfig changes also apply on top of Shawn's /imx/defconfig and the DT
-changes to Shawn's imx/dt64.
-
-changes from v2:
-- Add Reviewed-by from Krzysztof Kozlowski, thanks!
-- Add NXP PTN5110HQZ to defconfig
-
-changes from v1:
-- as per review comments by Krzysztof Kozlowski <krzk@kernel.org>
-  https://lore.kernel.org/linux-arm-kernel/20201215091729.GC29321@kozik-lap/
-  - describe hardware parts not config options
-  - rework commit messages to give more details
-- don't keep buck3 always on but rather make sure the board
-  doesn't hang when resuming the gpu power domain.
-  There's a generic fix pending for that helps all boards
-  https://lore.kernel.org/lkml/beba25e85db20649aa040fc0ae549895c9265f6f.camel@fi.rohmeurope.com/
-
-Guido Günther (4):
-  arm64: defconfig: Enable Librem 5 devkit components
-  arm64: dts: imx8mq-librem5-devkit: Tweak pmic regulators
-  arm64: dts: imx8mq-librem5-devkit: Disable snvs_rtc
-  arm64: dts: imx8mq-librem5-devkit: Drop custom clock settings
-
- .../dts/freescale/imx8mq-librem5-devkit.dts   | 20 ++++++++++++++-----
- arch/arm64/configs/defconfig                  |  9 +++++++++
- 2 files changed, 24 insertions(+), 5 deletions(-)
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
+index f35d6897fbf7..05a43ee6d051 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts
+@@ -897,6 +897,10 @@ &snvs_pwrkey {
+ 	status = "okay";
+ };
+ 
++&snvs_rtc {
++	status = "disabled";
++};
++
+ &sai2 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_sai2>;
 -- 
 2.29.2
 
