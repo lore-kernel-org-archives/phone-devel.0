@@ -2,118 +2,154 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA46AC433DB
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 14:06:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84D49C433E6
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 16:45:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 69DA623A00
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 14:06:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 46F38238E8
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 16:45:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727075AbhAHOG0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 8 Jan 2021 09:06:26 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:31098 "EHLO
-        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726871AbhAHOGZ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Jan 2021 09:06:25 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1610114766; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=NolXsxXc4LnP1hy9iZM7qEDax7wxHeKW7dI9mmmMmqw=;
- b=MMYicWq2rH34P5q0rcq8ez8SKY88Dcly9fZn88IrEHZfW6YQpzBJAONLWOYBpp3/RNqRsYvs
- NS/ekjZYaWVfpUgKV+J3E8e9dVv1bgO3IQKybQhaqVMITgBcXEfYRVauMrjcQwHD1+PhPbtF
- F3WImDzL4daBw0VM+eQ439d97gY=
-X-Mailgun-Sending-Ip: 198.61.254.31
-X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n10.prod.us-west-2.postgun.com with SMTP id
- 5ff866ae4c4e6d4a2bc86c65 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 08 Jan 2021 14:05:34
- GMT
-Sender: saiprakash.ranjan=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 78D35C43465; Fri,  8 Jan 2021 14:05:34 +0000 (UTC)
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: saiprakash.ranjan)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 726EDC433C6;
-        Fri,  8 Jan 2021 14:05:33 +0000 (UTC)
+        id S1727067AbhAHQpQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 8 Jan 2021 11:45:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47730 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725793AbhAHQpP (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Jan 2021 11:45:15 -0500
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39296C061380;
+        Fri,  8 Jan 2021 08:44:35 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id r3so9649988wrt.2;
+        Fri, 08 Jan 2021 08:44:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=wEYZtFdJL8UqOaXWXQmAQtp/FUt4d1Fh9znRYtE/2NQ=;
+        b=TeeWZzx4kG8U/PycJTvDXWk/fVXG6AnGbIYISEzLhpY7z1Bkb1aSo8GkQNnArh6vC8
+         k/OFv/yyZjUOUrz2OxbFwZdr8e5lXRUhY7ch7nXF7pKdMtSGPYmRWfW+hssGMoptMqq5
+         lcOg/61PpUUDeKPOn3j45r+z7ODVCyDF7J58ZBS0wQc/3kEZ7S0YK14k7i+Zor0GFUh8
+         eVTlQMeS2JaiBUm8Nhs6P/5f/FEl8nO/Nmp3vf2AF436FYvoetGTtbVrg4nyVSwFcjfa
+         fRhCObznsFLK179CNjbAuIHuyl4eoscRxB3TgJBhvv+1vQodY77TALD1wmxPGoHVkgU6
+         4WcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wEYZtFdJL8UqOaXWXQmAQtp/FUt4d1Fh9znRYtE/2NQ=;
+        b=rDfJiPdN9teXiHglSt/bhJAIxH/iAEC8Ii4eSgX3fYrK50ngphwCNxNV3k/9fhwX9+
+         oUHMa2s8b3RYJyB55skJn2xC06Y7O33jgWpFJGCjwiifgj50YLV3ZorOe8oXrk898THa
+         uh7hAlMHfEhqUuGH+SgzGlqsIr+9knJF8bsrcJDFg2nI+ELAbC9kIccuVQgdEaQjs1q6
+         LDzPKZGre/kqRWsVEf6PSxWrMZvUtPP5/EXaOpYjTOM0eDHnOdES5HsWCQPZVRWnTQT1
+         6XxtdMzdmLzqXSXHR9z6qaAKU7/dMtpST8IIrZRdExhjTMDnYd3N1VH0fbPlU5NLAegQ
+         zONA==
+X-Gm-Message-State: AOAM53083GgwoRxiL1ANvJtlkUCju7kVz1gx61MUOpkNTbAMXitPeQOr
+        XNNfu494qhcCqXEOmguCbKwpAfAQ1DErwmCUcsU=
+X-Google-Smtp-Source: ABdhPJw37JxMPDRe7QR5V1YZJlzOk9GO4YGeeIgQCPiOCxdK12at+OLtIDEAqjh3WeXyq80BOTTuCEm6la2a3QFWoVY=
+X-Received: by 2002:a5d:54cc:: with SMTP id x12mr4558937wrv.132.1610124273846;
+ Fri, 08 Jan 2021 08:44:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Fri, 08 Jan 2021 19:35:33 +0530
-From:   Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     robdclark@gmail.com, airlied@linux.ie, airlied@redhat.com,
-        akhilpo@codeaurora.org, angelogioacchino.delregno@somainline.org,
-        bjorn.andersson@linaro.org, daniel@ffwll.ch,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        jcrouse@codeaurora.org, jonathan@marek.ca,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        phone-devel@vger.kernel.org, sean@poorly.run, shawn.guo@linaro.org,
-        smasetty@codeaurora.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH] drm/msm: Only enable A6xx LLCC code on A6xx
-In-Reply-To: <fa091855-8096-6377-e173-ce1cd02f74ec@somainline.org>
 References: <CAF6AEGu0Sv6nYNDn0z61pXRjNyFLpLw5S4_O3opmrQ-UVNR_MA@mail.gmail.com>
- <20210108122601.14993-1-saiprakash.ranjan@codeaurora.org>
- <fa091855-8096-6377-e173-ce1cd02f74ec@somainline.org>
-Message-ID: <43c8779bc5f03be2e8072c6484dfcabb@codeaurora.org>
-X-Sender: saiprakash.ranjan@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+ <20210108122601.14993-1-saiprakash.ranjan@codeaurora.org> <fa091855-8096-6377-e173-ce1cd02f74ec@somainline.org>
+ <43c8779bc5f03be2e8072c6484dfcabb@codeaurora.org>
+In-Reply-To: <43c8779bc5f03be2e8072c6484dfcabb@codeaurora.org>
+From:   Rob Clark <robdclark@gmail.com>
+Date:   Fri, 8 Jan 2021 08:46:52 -0800
+Message-ID: <CAF6AEGsd5B0R7H1noO+=LByx4zkdVvu1LALZWnevGbMRj76m2w@mail.gmail.com>
+Subject: Re: [Freedreno] [PATCH] drm/msm: Only enable A6xx LLCC code on A6xx
+To:     Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
+Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Sean Paul <sean@poorly.run>,
+        Jordan Crouse <jcrouse@codeaurora.org>,
+        Jonathan <jonathan@marek.ca>, David Airlie <airlied@linux.ie>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Sharat Masetty <smasetty@codeaurora.org>,
+        martin.botka@somainline.org,
+        Akhil P Oommen <akhilpo@codeaurora.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        marijn.suijten@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Daniel Vetter <daniel@ffwll.ch>,
+        angelogioacchino.delregno@somainline.org,
+        Dave Airlie <airlied@redhat.com>, phone-devel@vger.kernel.org,
+        freedreno <freedreno@lists.freedesktop.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2021-01-08 19:09, Konrad Dybcio wrote:
->> Konrad, can you please test this below change without your change?
-> 
-> This brings no difference, a BUG still happens. We're still calling
-> to_a6xx_gpu on ANY device that's probed! Too bad it won't turn my A330
-> into an A640..
-> 
-> Also, relying on disabling LLCC in the config is out of question as it
-> makes the arm32 kernel not compile with DRM/MSM and it just removes
-> the functionality on devices with a6xx.. (unless somebody removes the
-> dependency on it, which in my opinion is even worse and will cause
-> more problems for developers!).
-> 
+On Fri, Jan 8, 2021 at 6:05 AM Sai Prakash Ranjan
+<saiprakash.ranjan@codeaurora.org> wrote:
+>
+> On 2021-01-08 19:09, Konrad Dybcio wrote:
+> >> Konrad, can you please test this below change without your change?
+> >
+> > This brings no difference, a BUG still happens. We're still calling
+> > to_a6xx_gpu on ANY device that's probed! Too bad it won't turn my A330
+> > into an A640..
+> >
+> > Also, relying on disabling LLCC in the config is out of question as it
+> > makes the arm32 kernel not compile with DRM/MSM and it just removes
+> > the functionality on devices with a6xx.. (unless somebody removes the
+> > dependency on it, which in my opinion is even worse and will cause
+> > more problems for developers!).
+> >
+>
+> Disabling LLCC is not the suggestion, I was under the impression that
+> was the cause here for the smmu bug. Anyways, the check for llc slice
+> in case llcc is disabled is not correct as well. I will send a patch for
+> that as well.
+>
+> > The bigger question is how and why did that piece of code ever make it
+> > to adreno_gpu.c and not a6xx_gpu.c?
+> >
+>
+> My mistake, I will move it.
 
-Disabling LLCC is not the suggestion, I was under the impression that
-was the cause here for the smmu bug. Anyways, the check for llc slice
-in case llcc is disabled is not correct as well. I will send a patch for
-that as well.
+Thanks, since we don't have kernel-CI coverage for gpu, and there
+probably isn't one person who has all the different devices supported
+(or enough hours in the day to test them all), it is probably
+better/safer to keep things in the backend code that is specific to a
+given generation.
 
-> The bigger question is how and why did that piece of code ever make it
-> to adreno_gpu.c and not a6xx_gpu.c?
-> 
+> > To solve it in a cleaner way I propose to move it to an a6xx-specific
+> > file, or if it's going to be used with next-gen GPUs, perhaps manage
+> > calling of this code via an adreno quirk/feature in adreno_device.c.
+> > Now that I think about it, A5xx GPMU en/disable could probably managed
+> > like that, instead of using tons of if-statements for each GPU model
+> > that has it..
+> >
+> > While we're at it, do ALL (and I truly do mean ALL, including the
+> > low-end ones, this will be important later on) A6xx GPUs make use of
+> > that feature?
+> >
+>
+> I do not have a list of all A6XX GPUs with me currently, but from what
+> I know, A618, A630, A640, A650 has the support.
+>
 
-My mistake, I will move it.
+From the PoV of bringing up new a6xx, we should probably consider that
+some of them may not *yet* have LLCC enabled.  I have an 8cx laptop
+and once I find time to get the display working, the next step would
+be bringing up a680.. and I'd probably like to start without LLCC..
 
-> To solve it in a cleaner way I propose to move it to an a6xx-specific
-> file, or if it's going to be used with next-gen GPUs, perhaps manage
-> calling of this code via an adreno quirk/feature in adreno_device.c.
-> Now that I think about it, A5xx GPMU en/disable could probably managed
-> like that, instead of using tons of if-statements for each GPU model
-> that has it..
-> 
-> While we're at it, do ALL (and I truly do mean ALL, including the
-> low-end ones, this will be important later on) A6xx GPUs make use of
-> that feature?
-> 
+BR,
+-R
 
-I do not have a list of all A6XX GPUs with me currently, but from what
-I know, A618, A630, A640, A650 has the support.
-
-Thanks,
-Sai
-
--- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a 
-member
-of Code Aurora Forum, hosted by The Linux Foundation
+> Thanks,
+> Sai
+>
+> --
+> QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a
+> member
+> of Code Aurora Forum, hosted by The Linux Foundation
+> _______________________________________________
+> Freedreno mailing list
+> Freedreno@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/freedreno
