@@ -2,32 +2,33 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-13.9 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 122AEC433E0
-	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:06:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 829E3C43219
+	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:06:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D12CF239FE
-	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:06:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 63C29239FE
+	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:06:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726718AbhAISFo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 9 Jan 2021 13:05:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35002 "EHLO
+        id S1726821AbhAISGE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 9 Jan 2021 13:06:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726497AbhAISFo (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 13:05:44 -0500
+        with ESMTP id S1726819AbhAISGA (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 13:06:00 -0500
 Received: from relay02.th.seeweb.it (relay02.th.seeweb.it [IPv6:2001:4b7a:2000:18::163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9B78C0617A6
-        for <phone-devel@vger.kernel.org>; Sat,  9 Jan 2021 10:04:10 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FD7EC0617B1;
+        Sat,  9 Jan 2021 10:04:13 -0800 (PST)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 01FFB1F5D4;
-        Sat,  9 Jan 2021 19:04:08 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 815C61F5FB;
+        Sat,  9 Jan 2021 19:04:11 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     linux-arm-msm@vger.kernel.org
@@ -40,9 +41,9 @@ Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v2 05/15] cpufreq: blacklist MSM8998 in cpufreq-dt-platdev
-Date:   Sat,  9 Jan 2021 19:03:49 +0100
-Message-Id: <20210109180359.236098-6-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v2 10/15] MAINTAINERS: Add entry for Qualcomm CPRv3/v4/Hardened driver
+Date:   Sat,  9 Jan 2021 19:03:54 +0100
+Message-Id: <20210109180359.236098-11-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210109180359.236098-1-angelogioacchino.delregno@somainline.org>
 References: <20210109180359.236098-1-angelogioacchino.delregno@somainline.org>
@@ -52,26 +53,30 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the MSM8998 to the blacklist since the CPU scaling is handled
-out of this.
+Add maintainers entry for the Qualcomm CPR3/CPR4/CPRh driver.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- drivers/cpufreq/cpufreq-dt-platdev.c | 1 +
- 1 file changed, 1 insertion(+)
+ MAINTAINERS | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
-index d8935e525807..bc1ac5971dbe 100644
---- a/drivers/cpufreq/cpufreq-dt-platdev.c
-+++ b/drivers/cpufreq/cpufreq-dt-platdev.c
-@@ -131,6 +131,7 @@ static const struct of_device_id blacklist[] __initconst = {
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c8c006f08dcc..a37c3ae91f2f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14461,6 +14461,12 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
+ F:	drivers/soc/qcom/cpr.c
  
- 	{ .compatible = "qcom,apq8096", },
- 	{ .compatible = "qcom,msm8996", },
-+	{ .compatible = "qcom,msm8998", },
- 	{ .compatible = "qcom,qcs404", },
- 	{ .compatible = "qcom,sc7180", },
- 	{ .compatible = "qcom,sdm630", },
++QUALCOMM CORE POWER REDUCTION v3/v4/Hardened AVS DRIVER
++M:	AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
++S:	Maintained
++F:	Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml
++F:	drivers/soc/qcom/cpr3.c
++
+ QUALCOMM CPUFREQ DRIVER MSM8996/APQ8096
+ M:	Ilia Lin <ilia.lin@kernel.org>
+ L:	linux-pm@vger.kernel.org
 -- 
 2.29.2
 
