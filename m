@@ -7,24 +7,27 @@ X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4607C43332
-	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:06:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 971BDC433E6
+	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:06:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9A846239FE
-	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:06:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 66BB223A03
+	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:06:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726238AbhAISGV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 9 Jan 2021 13:06:21 -0500
-Received: from m-r1.th.seeweb.it ([5.144.164.170]:56521 "EHLO
-        m-r1.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726113AbhAISEu (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 13:04:50 -0500
+        id S1726884AbhAISGl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 9 Jan 2021 13:06:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35170 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726001AbhAISGk (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 13:06:40 -0500
+Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [IPv6:2001:4b7a:2000:18::164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D90EC061383
+        for <phone-devel@vger.kernel.org>; Sat,  9 Jan 2021 10:04:53 -0800 (PST)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 0FFDD1F5C4;
-        Sat,  9 Jan 2021 19:04:08 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 0068A1F614;
+        Sat,  9 Jan 2021 19:04:13 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     linux-arm-msm@vger.kernel.org
@@ -37,9 +40,9 @@ Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v2 03/15] soc: qcom: spm: Add compatible for MSM8998 SAWv4.1 L2
-Date:   Sat,  9 Jan 2021 19:03:47 +0100
-Message-Id: <20210109180359.236098-4-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v2 15/15] dt-bindings: cpufreq: qcom-hw: Add bindings for 8998
+Date:   Sat,  9 Jan 2021 19:03:59 +0100
+Message-Id: <20210109180359.236098-16-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210109180359.236098-1-angelogioacchino.delregno@somainline.org>
 References: <20210109180359.236098-1-angelogioacchino.delregno@somainline.org>
@@ -49,47 +52,94 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the SAWv4.1 parameters for MSM8998's Gold and Silver clusters.
+The OSM programming addition has been done under the
+qcom,cpufreq-hw-8998 compatible name: specify the requirement
+of two additional register spaces for this functionality.
+This implementation, with the same compatible, has been
+tested on MSM8998 and SDM630.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- drivers/soc/qcom/spm.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ .../bindings/cpufreq/cpufreq-qcom-hw.yaml     | 44 ++++++++++++++++---
+ 1 file changed, 39 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/soc/qcom/spm.c b/drivers/soc/qcom/spm.c
-index 843732d12c54..2e6312663293 100644
---- a/drivers/soc/qcom/spm.c
-+++ b/drivers/soc/qcom/spm.c
-@@ -54,6 +54,18 @@ static const struct spm_reg_data spm_reg_660_silver_l2  = {
- 	.avs_limit = 0x4580458,
- };
+diff --git a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
+index bc81b6203e27..0bf539954558 100644
+--- a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
++++ b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
+@@ -18,6 +18,10 @@ description: |
+ properties:
+   compatible:
+     oneOf:
++      - description: Non-secure v1 of CPUFREQ HW
++        items:
++          - const: qcom,cpufreq-hw-8998
++
+       - description: v1 of CPUFREQ HW
+         items:
+           - const: qcom,cpufreq-hw
+@@ -30,19 +34,27 @@ properties:
  
-+static const struct spm_reg_data spm_reg_8998_gold_l2  = {
-+	.reg_offset = spm_reg_offset_v4_1,
-+	.avs_ctl = 0x1010031,
-+	.avs_limit = 0x4700470,
-+};
+   reg:
+     minItems: 2
+-    maxItems: 3
++    maxItems: 7
+     items:
+       - description: Frequency domain 0 register region
+       - description: Frequency domain 1 register region
+       - description: Frequency domain 2 register region
++      - description: PLL ACD domain 0 register region
++      - description: PLL ACD domain 1 register region
++      - description: Operating State Manager domain 0 register region
++      - description: Operating State Manager domain 1 register region
+ 
+   reg-names:
+     minItems: 2
+-    maxItems: 3
++    maxItems: 7
+     items:
+-      - const: freq-domain0
+-      - const: freq-domain1
+-      - const: freq-domain2
++      - const: "freq-domain0"
++      - const: "freq-domain1"
++      - const: "freq-domain2"
++      - const: "osm-acd0"
++      - const: "osm-acd1"
++      - const: "osm-domain0"
++      - const: "osm-domain1"
+ 
+   clocks:
+     items:
+@@ -57,6 +69,28 @@ properties:
+   '#freq-domain-cells':
+     const: 1
+ 
++allOf:
++ - if:
++     properties:
++       reg-names:
++         contains:
++           const: qcom,cpufreq-hw-8998
++   then:
++     properties:
++       reg:
++         minItems: 4
++         maxItems: 6
++       reg-names:
++         items:
++           minItems: 4
++   else:
++     properties:
++       reg:
++         maxItems: 3
++       reg-names:
++         items:
++           maxItems: 3
 +
-+static const struct spm_reg_data spm_reg_8998_silver_l2  = {
-+	.reg_offset = spm_reg_offset_v4_1,
-+	.avs_ctl = 0x1010031,
-+	.avs_limit = 0x4200420,
-+};
-+
- static const u16 spm_reg_offset_v2_1[SPM_REG_NR] = {
- 	[SPM_REG_CFG]		= 0x08,
- 	[SPM_REG_SPM_CTL]	= 0x30,
-@@ -149,6 +161,10 @@ static const struct of_device_id spm_match_table[] = {
- 	  .data = &spm_reg_660_gold_l2 },
- 	{ .compatible = "qcom,sdm660-silver-saw2-v4.1-l2",
- 	  .data = &spm_reg_660_silver_l2 },
-+	{ .compatible = "qcom,msm8998-gold-saw2-v4.1-l2",
-+	  .data = &spm_reg_8998_gold_l2 },
-+	{ .compatible = "qcom,msm8998-silver-saw2-v4.1-l2",
-+	  .data = &spm_reg_8998_silver_l2 },
- 	{ .compatible = "qcom,msm8974-saw2-v2.1-cpu",
- 	  .data = &spm_reg_8974_8084_cpu },
- 	{ .compatible = "qcom,apq8084-saw2-v2.1-cpu",
+ required:
+   - compatible
+   - reg
 -- 
 2.29.2
 
