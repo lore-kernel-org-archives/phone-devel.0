@@ -2,154 +2,92 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84D49C433E6
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 16:45:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9349DC433DB
+	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 13:30:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 46F38238E8
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Jan 2021 16:45:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 58517239E4
+	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 13:30:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727067AbhAHQpQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 8 Jan 2021 11:45:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47730 "EHLO
+        id S1725850AbhAINaa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 9 Jan 2021 08:30:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725793AbhAHQpP (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Jan 2021 11:45:15 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39296C061380;
-        Fri,  8 Jan 2021 08:44:35 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id r3so9649988wrt.2;
-        Fri, 08 Jan 2021 08:44:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=wEYZtFdJL8UqOaXWXQmAQtp/FUt4d1Fh9znRYtE/2NQ=;
-        b=TeeWZzx4kG8U/PycJTvDXWk/fVXG6AnGbIYISEzLhpY7z1Bkb1aSo8GkQNnArh6vC8
-         k/OFv/yyZjUOUrz2OxbFwZdr8e5lXRUhY7ch7nXF7pKdMtSGPYmRWfW+hssGMoptMqq5
-         lcOg/61PpUUDeKPOn3j45r+z7ODVCyDF7J58ZBS0wQc/3kEZ7S0YK14k7i+Zor0GFUh8
-         eVTlQMeS2JaiBUm8Nhs6P/5f/FEl8nO/Nmp3vf2AF436FYvoetGTtbVrg4nyVSwFcjfa
-         fRhCObznsFLK179CNjbAuIHuyl4eoscRxB3TgJBhvv+1vQodY77TALD1wmxPGoHVkgU6
-         4WcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=wEYZtFdJL8UqOaXWXQmAQtp/FUt4d1Fh9znRYtE/2NQ=;
-        b=rDfJiPdN9teXiHglSt/bhJAIxH/iAEC8Ii4eSgX3fYrK50ngphwCNxNV3k/9fhwX9+
-         oUHMa2s8b3RYJyB55skJn2xC06Y7O33jgWpFJGCjwiifgj50YLV3ZorOe8oXrk898THa
-         uh7hAlMHfEhqUuGH+SgzGlqsIr+9knJF8bsrcJDFg2nI+ELAbC9kIccuVQgdEaQjs1q6
-         LDzPKZGre/kqRWsVEf6PSxWrMZvUtPP5/EXaOpYjTOM0eDHnOdES5HsWCQPZVRWnTQT1
-         6XxtdMzdmLzqXSXHR9z6qaAKU7/dMtpST8IIrZRdExhjTMDnYd3N1VH0fbPlU5NLAegQ
-         zONA==
-X-Gm-Message-State: AOAM53083GgwoRxiL1ANvJtlkUCju7kVz1gx61MUOpkNTbAMXitPeQOr
-        XNNfu494qhcCqXEOmguCbKwpAfAQ1DErwmCUcsU=
-X-Google-Smtp-Source: ABdhPJw37JxMPDRe7QR5V1YZJlzOk9GO4YGeeIgQCPiOCxdK12at+OLtIDEAqjh3WeXyq80BOTTuCEm6la2a3QFWoVY=
-X-Received: by 2002:a5d:54cc:: with SMTP id x12mr4558937wrv.132.1610124273846;
- Fri, 08 Jan 2021 08:44:33 -0800 (PST)
+        with ESMTP id S1725826AbhAINaa (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 08:30:30 -0500
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE2EC06179F
+        for <phone-devel@vger.kernel.org>; Sat,  9 Jan 2021 05:29:50 -0800 (PST)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id A3A781F557;
+        Sat,  9 Jan 2021 14:29:43 +0100 (CET)
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     agross@kernel.org, bjorn.andersson@linaro.org, lgirdwood@gmail.com,
+        broonie@kernel.org, robh+dt@kernel.org, sumit.semwal@linaro.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: [PATCH 0/7] Really implement Qualcomm LAB/IBB regulators
+Date:   Sat,  9 Jan 2021 14:29:14 +0100
+Message-Id: <20210109132921.140932-1-angelogioacchino.delregno@somainline.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-References: <CAF6AEGu0Sv6nYNDn0z61pXRjNyFLpLw5S4_O3opmrQ-UVNR_MA@mail.gmail.com>
- <20210108122601.14993-1-saiprakash.ranjan@codeaurora.org> <fa091855-8096-6377-e173-ce1cd02f74ec@somainline.org>
- <43c8779bc5f03be2e8072c6484dfcabb@codeaurora.org>
-In-Reply-To: <43c8779bc5f03be2e8072c6484dfcabb@codeaurora.org>
-From:   Rob Clark <robdclark@gmail.com>
-Date:   Fri, 8 Jan 2021 08:46:52 -0800
-Message-ID: <CAF6AEGsd5B0R7H1noO+=LByx4zkdVvu1LALZWnevGbMRj76m2w@mail.gmail.com>
-Subject: Re: [Freedreno] [PATCH] drm/msm: Only enable A6xx LLCC code on A6xx
-To:     Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
-Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Sean Paul <sean@poorly.run>,
-        Jordan Crouse <jcrouse@codeaurora.org>,
-        Jonathan <jonathan@marek.ca>, David Airlie <airlied@linux.ie>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Sharat Masetty <smasetty@codeaurora.org>,
-        martin.botka@somainline.org,
-        Akhil P Oommen <akhilpo@codeaurora.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        marijn.suijten@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Daniel Vetter <daniel@ffwll.ch>,
-        angelogioacchino.delregno@somainline.org,
-        Dave Airlie <airlied@redhat.com>, phone-devel@vger.kernel.org,
-        freedreno <freedreno@lists.freedesktop.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Jan 8, 2021 at 6:05 AM Sai Prakash Ranjan
-<saiprakash.ranjan@codeaurora.org> wrote:
->
-> On 2021-01-08 19:09, Konrad Dybcio wrote:
-> >> Konrad, can you please test this below change without your change?
-> >
-> > This brings no difference, a BUG still happens. We're still calling
-> > to_a6xx_gpu on ANY device that's probed! Too bad it won't turn my A330
-> > into an A640..
-> >
-> > Also, relying on disabling LLCC in the config is out of question as it
-> > makes the arm32 kernel not compile with DRM/MSM and it just removes
-> > the functionality on devices with a6xx.. (unless somebody removes the
-> > dependency on it, which in my opinion is even worse and will cause
-> > more problems for developers!).
-> >
->
-> Disabling LLCC is not the suggestion, I was under the impression that
-> was the cause here for the smmu bug. Anyways, the check for llc slice
-> in case llcc is disabled is not correct as well. I will send a patch for
-> that as well.
->
-> > The bigger question is how and why did that piece of code ever make it
-> > to adreno_gpu.c and not a6xx_gpu.c?
-> >
->
-> My mistake, I will move it.
+Okay, the title may be a little "aggressive"? However, the qcom-labibb
+driver wasn't really .. doing much.
+The current form of this driver is only taking care of enabling or
+disabling the regulators, which is pretty useless if they were not
+pre-set from the bootloader, which sets them only if continuous
+splash is enabled.
+Moreover, some bootloaders are setting a higher voltage and/or a higher
+current limit compared to what's actually required by the attached
+hardware (which is, in 99.9% of the cases, a display) and this produces
+a higher power consumption, higher heat output and a risk of actually
+burning the display if kept up for a very long time: for example, this
+is true on at least some Sony Xperia MSM8998 (Yoshino platform) and
+especially on some Sony Xperia SDM845 (Tama platform) smartphones.
 
-Thanks, since we don't have kernel-CI coverage for gpu, and there
-probably isn't one person who has all the different devices supported
-(or enough hours in the day to test them all), it is probably
-better/safer to keep things in the backend code that is specific to a
-given generation.
+In any case, the main reason why this change was necessary for us is
+that, during the bringup of Sony Xperia MSM8998 phones, we had an issue
+with the bootloader not turning on the display and not setting the lab
+and ibb regulators before booting the kernel, making it impossible to
+powerup the display.
 
-> > To solve it in a cleaner way I propose to move it to an a6xx-specific
-> > file, or if it's going to be used with next-gen GPUs, perhaps manage
-> > calling of this code via an adreno quirk/feature in adreno_device.c.
-> > Now that I think about it, A5xx GPMU en/disable could probably managed
-> > like that, instead of using tons of if-statements for each GPU model
-> > that has it..
-> >
-> > While we're at it, do ALL (and I truly do mean ALL, including the
-> > low-end ones, this will be important later on) A6xx GPUs make use of
-> > that feature?
-> >
->
-> I do not have a list of all A6XX GPUs with me currently, but from what
-> I know, A618, A630, A640, A650 has the support.
->
+With this said, this patchset enables setting voltage, current limiting,
+overcurrent and short-circuit protection.. and others, on the LAB/IBB
+regulators.
+Each commit in this patch series provides as many informations as
+possible about what's going on and testing methodology.
 
-From the PoV of bringing up new a6xx, we should probably consider that
-some of them may not *yet* have LLCC enabled.  I have an 8cx laptop
-and once I find time to get the display working, the next step would
-be bringing up a680.. and I'd probably like to start without LLCC..
+AngeloGioacchino Del Regno (7):
+  regulator: qcom-labibb: Implement voltage selector ops
+  regulator: qcom-labibb: Implement current limiting
+  regulator: qcom-labibb: Implement pull-down, softstart, active
+    discharge
+  dt-bindings: regulator: qcom-labibb: Document soft start properties
+  regulator: qcom-labibb: Implement short-circuit and over-current IRQs
+  dt-bindings: regulator: qcom-labibb: Document SCP/OCP interrupts
+  arm64: dts: pmi8998: Add the right interrupts for LAB/IBB SCP and OCP
 
-BR,
--R
+ .../regulator/qcom-labibb-regulator.yaml      |  28 +-
+ arch/arm64/boot/dts/qcom/pmi8998.dtsi         |   8 +-
+ drivers/regulator/qcom-labibb-regulator.c     | 636 +++++++++++++++++-
+ 3 files changed, 660 insertions(+), 12 deletions(-)
 
-> Thanks,
-> Sai
->
-> --
-> QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a
-> member
-> of Code Aurora Forum, hosted by The Linux Foundation
-> _______________________________________________
-> Freedreno mailing list
-> Freedreno@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/freedreno
+-- 
+2.29.2
+
