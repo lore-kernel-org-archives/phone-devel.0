@@ -2,29 +2,29 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC0BCC43333
-	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:05:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70E44C4321A
+	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:05:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B727223A23
-	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:05:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4AC4C23A63
+	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:05:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726641AbhAISFX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 9 Jan 2021 13:05:23 -0500
-Received: from m-r1.th.seeweb.it ([5.144.164.170]:54293 "EHLO
-        m-r1.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726495AbhAISFW (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 13:05:22 -0500
+        id S1726068AbhAISFb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 9 Jan 2021 13:05:31 -0500
+Received: from relay04.th.seeweb.it ([5.144.164.165]:52531 "EHLO
+        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726503AbhAISFR (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 13:05:17 -0500
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id F3BB81F5FA;
-        Sat,  9 Jan 2021 19:04:10 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 739361F613;
+        Sat,  9 Jan 2021 19:04:13 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     linux-arm-msm@vger.kernel.org
@@ -37,9 +37,9 @@ Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v2 09/15] soc: qcom: Add support for Core Power Reduction v3, v4 and Hardened
-Date:   Sat,  9 Jan 2021 19:03:53 +0100
-Message-Id: <20210109180359.236098-10-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v2 14/15] cpufreq: qcom-hw: Implement CPRh aware OSM programming
+Date:   Sat,  9 Jan 2021 19:03:58 +0100
+Message-Id: <20210109180359.236098-15-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210109180359.236098-1-angelogioacchino.delregno@somainline.org>
 References: <20210109180359.236098-1-angelogioacchino.delregno@somainline.org>
@@ -49,3065 +49,1513 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This commit introduces a new driver, based on the one for cpr v1,
-to enable support for the newer Qualcomm Core Power Reduction
-hardware, known downstream as CPR3, CPR4 and CPRh, and support
-for MSM8998 and SDM630 CPU power reduction.
+On new SoCs (SDM845 onwards) the Operating State Manager (OSM) is
+being programmed in the bootloader and write-protected by the
+hypervisor, leaving to the OS read-only access to some of its
+registers (in order to read the Lookup Tables and also some
+status registers) and write access to the p-state register, for
+for the OS to request a specific performance state to trigger a
+DVFS switch on the CPU through the OSM hardware.
 
-In these new versions of the hardware, support for various new
-features was introduced, including voltage reduction for the GPU,
-security hardening and a new way of controlling CPU DVFS,
-consisting in internal communication between microcontrollers,
-specifically the CPR-Hardened and the Operating State Manager.
+On old SoCs though (MSM8998, SDM630/660 and variants), the
+bootloader will *not* initialize the OSM (and the CPRh, as it
+is a requirement for it) before booting the OS, making any
+request to trigger a performance state change ineffective, as
+the hardware doesn't have any Lookup Table, nor is storing any
+parameter to trigger a DVFS switch. In this case, basically all
+of the OSM registers are *not* write protected for the OS, even
+though some are - but write access is granted through SCM calls.
 
-The CPR v3, v4 and CPRh are present in a broad range of SoCs,
-from the mid-range to the high end ones including, but not limited
-to, MSM8953/8996/8998, SDM630/636/660/845.
+This commit introduces support for OSM programming, which has to
+be done on these old SoCs that were distributed (almost?) always
+with a bootloader that does not do any CPRh nor OSM init before
+booting the kernel.
+In order to program the OSM on these SoCs, it is necessary to
+fullfill a "special" requirement: the Core Power Reduction
+Hardened (CPRh) hardware block must be initialized, as the OSM
+is "talking" to it in order to perform the Voltage part of DVFS;
+here, we are calling initialization of this through Linux generic
+power domains, specifically by requesting a genpd attach from the
+qcom-cpufreq-hw driver, which will give back voltages associated
+to each CPU frequency that has been declared in the OPPs, scaled
+and interpolated with the previous one, and will also give us
+parameters for the Array Power Mux (APM) and mem-acc, in order
+for this driver to be then able to generate the Lookup Tables
+that will be finally programmed to the OSM hardware.
+
+After writing the parameters to the OSM and enabling it, all the
+programming work will never happen anymore until a OS reboot, so
+all of the allocations and "the rest" will be disposed-of: this
+is done mainly to leave the code that was referred only to the
+new SoCs intact, as to also emphasize on the fact that the OSM
+HW is, in the end, the exact same; apart some register offsets
+that are slightly different, the entire logic is the same.
+
+This also adds the parameters to support CPU scaling on SDM630
+and MSM8998.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- drivers/soc/qcom/Kconfig      |   17 +
- drivers/soc/qcom/Makefile     |    1 +
- drivers/soc/qcom/cpr-common.c |   35 +-
- drivers/soc/qcom/cpr-common.h |    4 +
- drivers/soc/qcom/cpr3.c       | 2905 +++++++++++++++++++++++++++++++++
- 5 files changed, 2956 insertions(+), 6 deletions(-)
- create mode 100644 drivers/soc/qcom/cpr3.c
+ drivers/cpufreq/qcom-cpufreq-hw.c | 1240 ++++++++++++++++++++++++++++-
+ 1 file changed, 1210 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/soc/qcom/Kconfig b/drivers/soc/qcom/Kconfig
-index 37f22dcd20af..9d3f35fc4ab1 100644
---- a/drivers/soc/qcom/Kconfig
-+++ b/drivers/soc/qcom/Kconfig
-@@ -42,6 +42,23 @@ config QCOM_CPR
- 	  To compile this driver as a module, choose M here: the module will
- 	  be called qcom-cpr
+diff --git a/drivers/cpufreq/qcom-cpufreq-hw.c b/drivers/cpufreq/qcom-cpufreq-hw.c
+index 9ed5341dc515..9d8544bbc842 100644
+--- a/drivers/cpufreq/qcom-cpufreq-hw.c
++++ b/drivers/cpufreq/qcom-cpufreq-hw.c
+@@ -1,33 +1,256 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
++ *
++ * OSM hardware initial programming
++ * Copyright (C) 2020, AngeloGioacchino Del Regno
++ *                     <angelogioacchino.delregno@somainline.org>
+  */
  
-+config QCOM_CPR3
-+	tristate "QCOM Core Power Reduction (CPR v3/v4/Hardened) support"
-+	depends on ARCH_QCOM && HAS_IOMEM
-+	select PM_OPP
-+	select REGMAP
-+	help
-+	  Say Y here to enable support for the CPR hardware found on a broad
-+	  variety of Qualcomm SoCs like MSM8996, MSM8998, SDM630, SDM660,
-+	  SDM845 and others.
-+
-+	  This driver populates OPP tables and makes adjustments to them
-+	  based on feedback from the CPR hardware. If you want to do CPU
-+	  and/or GPU frequency scaling say Y here.
-+
-+	  To compile this driver as a module, choose M here: the module will
-+	  be called qcom-cpr3
-+
- config QCOM_GENI_SE
- 	tristate "QCOM GENI Serial Engine Driver"
- 	depends on ARCH_QCOM || COMPILE_TEST
-diff --git a/drivers/soc/qcom/Makefile b/drivers/soc/qcom/Makefile
-index 778a2a5f07bb..0500283c2dc5 100644
---- a/drivers/soc/qcom/Makefile
-+++ b/drivers/soc/qcom/Makefile
-@@ -4,6 +4,7 @@ obj-$(CONFIG_QCOM_AOSS_QMP) +=	qcom_aoss.o
- obj-$(CONFIG_QCOM_GENI_SE) +=	qcom-geni-se.o
- obj-$(CONFIG_QCOM_COMMAND_DB) += cmd-db.o
- obj-$(CONFIG_QCOM_CPR)		+= cpr-common.o cpr.o
-+obj-$(CONFIG_QCOM_CPR3)		+= cpr-common.o cpr3.o
- obj-$(CONFIG_QCOM_GSBI)	+=	qcom_gsbi.o
- obj-$(CONFIG_QCOM_MDT_LOADER)	+= mdt_loader.o
- obj-$(CONFIG_QCOM_OCMEM)	+= ocmem.o
-diff --git a/drivers/soc/qcom/cpr-common.c b/drivers/soc/qcom/cpr-common.c
-index 70e1e0f441db..8a2650c94a10 100644
---- a/drivers/soc/qcom/cpr-common.c
-+++ b/drivers/soc/qcom/cpr-common.c
-@@ -252,6 +252,29 @@ u32 cpr_get_fuse_corner(struct dev_pm_opp *opp, u32 tid)
- 	of_node_put(np);
+ #include <linux/bitfield.h>
+ #include <linux/cpufreq.h>
++#include <linux/delay.h>
+ #include <linux/init.h>
+ #include <linux/interconnect.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of_address.h>
+ #include <linux/of_platform.h>
++#include <linux/pm_domain.h>
+ #include <linux/pm_opp.h>
+ #include <linux/slab.h>
++#include <linux/qcom_scm.h>
  
- 	return fc;
+ #define LUT_MAX_ENTRIES			40U
+-#define LUT_SRC				GENMASK(31, 30)
++#define LUT_SRC_845			GENMASK(31, 30)
++#define LUT_SRC_8998			GENMASK(27, 26)
++#define LUT_PLL_DIV			GENMASK(25, 24)
+ #define LUT_L_VAL			GENMASK(7, 0)
+ #define LUT_CORE_COUNT			GENMASK(18, 16)
++#define LUT_VOLT_VC			GENMASK(21, 16)
+ #define LUT_VOLT			GENMASK(11, 0)
+-#define CLK_HW_DIV			2
+ #define LUT_TURBO_IND			1
++#define OSM_BOOT_TIME_US		5
 +
-+}
++#define CYCLE_COUNTER_CLK_RATIO		GENMASK(5, 1)
++#define OSM_XO_RATIO_VAL		(10 - 1)
++#define CYCLE_COUNTER_USE_XO_EDGE	BIT(8)
 +
-+void cpr_get_corner_post_vadj(struct dev_pm_opp *opp, u32 tid,
-+			      s32 *open_loop, s32 *closed_loop)
-+{
-+	struct device_node *np;
++/* FSM Boost Control */
++#define CC_BOOST_EN			BIT(0)
++#define PS_BOOST_EN			BIT(1)
++#define DCVS_BOOST_EN			BIT(2)
++#define BOOST_TIMER_REG_HI		GENMASK(31, 16)
++#define BOOST_TIMER_REG_LO		GENMASK(15, 0)
 +
-+	/*
-+	 * There is no of_property_read_s32_index, so we just store the
-+	 * result into a s32 variable. After all, the OF API is doing
-+	 * the exact same for of_property_read_s32...
-+	 */
-+	np = dev_pm_opp_get_of_node(opp);
-+	if (of_property_read_u32_index(np, "qcom,opp-oloop-vadj", tid,
-+				       open_loop))
-+		*open_loop = 0;
++#define PLL_WAIT_LOCK_TIME_NS		2000
++#define SAFE_FREQ_WAIT_NS		1000
++#define DEXT_DECREMENT_WAIT_NS		200
 +
-+	if (of_property_read_u32_index(np, "qcom,opp-cloop-vadj", tid,
-+				       closed_loop))
-+		*closed_loop = 0;
++#define BOOST_SYNC_DELAY		5
 +
-+	of_node_put(np);
- }
++#define HYSTERESIS_UP_MASK		GENMASK(31, 16)
++#define HYSTERESIS_DN_MASK		GENMASK(15, 0)
++#define HYSTERESIS_CC_NS		200
++#define HYSTERESIS_LLM_NS		65535
++
++/* FSM Droop Control */
++#define PC_RET_EXIT_DROOP_EN		BIT(3)
++#define WFX_DROOP_EN			BIT(4)
++#define DCVS_DROOP_EN			BIT(5)
++#define DROOP_TIMER1			GENMASK(31, 16)
++#define DROOP_TIMER0			GENMASK(15, 0)
++#define DROOP_CTRL_VAL			(BIT(3) | BIT(17) | BIT(31))
++#define DROOP_TIMER_NS			100
++#define DROOP_WAIT_RELEASE_TIMER_NS	50
++#define DROOP_RELEASE_TIMER_NS		1
++
++/* PLL Override Control */
++#define PLL_OVERRIDE_DROOP_EN		BIT(0)
++
++/* Sequencer */
++#define SEQUENCER_REG(base, n)		(base + (n * 4))
++#define SEQ_APM_THRESH_VC		15
++#define SEQ_APM_THRESH_PREVC		31
++#define SEQ_MEM_ACC_LVAL		32
++#define SEQ_MEM_ACC_0			55
++#define SEQ_APM_CROSSOVER_VC		72
++#define SEQ_APM_PARAM			76
++#define SEQ_MEM_ACC_CROSSOVER_VC	88
++#define SEQ_MEM_ACC_MAX_LEVELS		4
++#define SEQ_MEMACC_REG(base, n)		SEQUENCER_REG(base, SEQ_MEM_ACC_0 + n)
++
++/* ACD */
++#define ACD_WRITE_CTL_UPDATE_EN		BIT(0)
++#define ACD_WRITE_CTL_SELECT_SHIFT	1
++
++/**
++ * struct qcom_cpufreq_soc_setup_data - Register offsets for OSM setup
++ *
++ * @reg_osm_sequencer:      OSM Sequencer (used to get physical address)
++ * @reg_override:           Override parameters
++ * @reg_spare:              Spare parameters (MEMACC-to-VC)
++ * @reg_cc_zero_behav:      Virtual Corner for cluster power collapse
++ * @reg_spm_cc_hyst:        DCVS-CC Wait time for frequency inc/decrement
++ * @reg_spm_cc_dcvs_dis:    DCVS-CC en/disable control
++ * @reg_spm_core_ret_map:   Treat cores in retention as active/inactive
++ * @reg_llm_freq_vote_hyst: DCVS-LLM Wait time for frequency inc/decrement
++ * @reg_llm_volt_vote_hyst: DCVS-LLM Wait time for voltage inc/decrement
++ * @reg_llm_intf_dcvs_dis:  DCVS-LLM en/disable control
++ * @reg_seq1:               Sequencer extra register
++ * @reg_pdn_fsm_ctrl:       Boost and Droop FSMs en/disable control
++ * @reg_cc_boost_timer:     CC-Boost FSM wait first timer register
++ * @reg_dcvs_boost_timer:   DCVS-Boost FSM wait first timer register
++ * @reg_ps_boost_timer:     PS-Boost FSM wait first timer register
++ * @boost_timer_reg_len:    Length of boost timer registers
++ * @reg_boost_sync_delay:   PLL signal timing control for Boost
++ * @reg_droop_ctrl:         Droop control value
++ * @reg_droop_release_ctrl: Wait for Droop release
++ * @reg_droop_unstall_ctrl: Wait for Droop unstall
++ * @reg_droop_wait_release_ctrl: Time to wait for state release
++ * @reg_droop_timer_ctrl:   Droop timer
++ * @reg_droop_sync_delay:   PLL signal timing control for Droop
++ * @reg_pll_override:       PLL Droop Override en/disable control
++ * @reg_cycle_counter:      OSM CPU cycle counter
++ *
++ * This structure holds the register offsets that are used to set-up
++ * the Operating State Manager (OSM) parameters, when it is not (or
++ * not entirely) configured from the bootloader and TrustZone.
++ *
++ * Acronyms used in this documentation:
++ * CC = Core Count
++ * PS = Power-Save
++ * VC = Virtual Corner
++ * LLM = Limits Load Management
++ * DCVS = Dynamic Clock and Voltage Scaling
++ */
++struct qcom_cpufreq_soc_setup_data {
++	/* OSM phys register offsets */
++	u16 reg_osm_sequencer;
++
++	/* Frequency domain register offsets */
++	u16 reg_override;
++	u16 reg_spare;
++	u16 reg_cc_zero_behav;
++	u16 reg_spm_cc_hyst;
++	u16 reg_spm_cc_dcvs_dis;
++	u16 reg_spm_core_ret_map;
++	u16 reg_llm_freq_vote_hyst;
++	u16 reg_llm_volt_vote_hyst;
++	u16 reg_llm_intf_dcvs_dis;
++	u16 reg_seq1;
++	u16 reg_pdn_fsm_ctrl;
++	u16 reg_cc_boost_timer;
++	u16 reg_dcvs_boost_timer;
++	u16 reg_ps_boost_timer;
++	u16 boost_timer_reg_len;
++	u16 reg_boost_sync_delay;
++	u16 reg_droop_ctrl;
++	u16 reg_droop_release_ctrl;
++	u16 reg_droop_unstall_ctrl;
++	u16 reg_droop_wait_release_ctrl;
++	u16 reg_droop_timer_ctrl;
++	u16 reg_droop_sync_delay;
++	u16 reg_pll_override;
++	u16 reg_cycle_counter;
++};
++
++/**
++ * struct qcom_cpufreq_soc_acd_data - Adaptive Clock Distribution data
++ *
++ * @tl_delay_reg:      Tunable-Length Delay (TLD) register offset
++ * @acd_ctrl_reg:      Control Register (CR) register offset
++ * @softstart_reg:     Soft Start Control Register (SSCR) register offset
++ * @ext_intf_reg:      External interface configuration register offset
++ * @auto_xfer_reg:     Auto Register-Transfer register offset
++ * @auto_xfer_cfg_reg: Auto Register-Transfer Configuration reg offset
++ * @auto_xfer_ctl_reg: Auto Register-Transfer Control register offset
++ * @auto_xfer_sts_reg: Auto Register-Transfer Status register offset
++ * @dcvs_sw_reg:       Software DCVS register offset
++ * @gfmux_cfg_reg:     Glitch-Free MUX configuration register offset
++ * @write_ctl_reg:     Write Control register
++ * @write_sts_reg:     Write Status register
++ * @tl_delay_val:      Tunable-Length Delay (TLD) value
++ * @acd_ctrl_val:      Control Register (CR) value
++ * @softstart_val:     Soft Start Control Register (SSCR) value
++ * @ext_intf0_val:     Initial external interface configuration value
++ * @ext_intf1_val:     Final external interface configuration value
++ * @auto_xfer_val:     Auto-register Transfer Control value
++ *
++ * This structure holds the register offsets (from the ACD iospace base)
++ * and the parameters that are required to configure the OSM to
++ * initialize the Adaptive Clock Distribution (ACD) system.
++ */
++struct qcom_cpufreq_soc_acd_data {
++	u8 tl_delay_reg;
++	u8 acd_ctrl_reg;
++	u8 softstart_reg;
++	u8 ext_intf_reg;
++	u8 auto_xfer_reg;
++	u8 auto_xfer_cfg_reg;
++	u8 auto_xfer_ctl_reg;
++	u8 auto_xfer_sts_reg;
++	u8 dcvs_sw_reg;
++	u8 gfmux_cfg_reg;
++	u8 write_ctl_reg;
++	u8 write_sts_reg;
++	u32 tl_delay_val;
++	u32 acd_ctrl_val;
++	u32 softstart_val;
++	u32 ext_intf0_val;
++	u32 ext_intf1_val;
++	u32 auto_xfer_val;
++};
++
++/**
++ * struct qcom_cpufreq_hw_params - Operating State Manager (OSM) Parameters
++ *
++ * @volt_lut_val: Value composed of: virtual corner (vc) and voltage in mV.
++ * @freq_lut_val: Value composed of: core count, clock source and output
++ *                frequency in MHz.
++ * @override_val: PLL parameters that the OSM uses to override the previous
++ *                setting coming from the bootloader, or when uninitialized.
++ * @spare_val:    Spare register, used by both this driver and the OSM HW
++ *                to identify MEM-ACC levels in relation to virtual corners.
++ * @acc_thresh:   MEM-ACC threshold level
++ *
++ * This structure holds the parameters to write to the OSM registers for
++ * one "Virtual Corner" (VC), or one Performance State (p-state).
++ */
++struct qcom_cpufreq_hw_params {
++	u32 volt_lut_val;
++	u32 freq_lut_val;
++	u32 override_val;
++	u32 spare_val;
++	u32 acc_thresh;
++};
  
- unsigned long cpr_get_opp_hz_for_req(struct dev_pm_opp *ref,
-@@ -294,11 +317,10 @@ int cpr_calculate_scaling(const char *quot_offset,
- 			  const struct fuse_corner_data *fdata,
- 			  const struct corner *corner)
- {
--	u32 quot_diff = 0;
--	unsigned long freq_diff;
--	int scaling;
-+	u64 freq_diff;
- 	const struct fuse_corner *fuse, *prev_fuse;
--	int ret;
-+	u32 quot_diff;
-+	int scaling, ret;
- 
- 	fuse = corner->fuse_corner;
- 	prev_fuse = fuse - 1;
-@@ -315,8 +337,9 @@ int cpr_calculate_scaling(const char *quot_offset,
- 	}
- 
- 	freq_diff = fuse->max_freq - prev_fuse->max_freq;
--	freq_diff /= 1000000; /* Convert to MHz */
--	scaling = 1000 * quot_diff / freq_diff;
-+	freq_diff = div_u64(freq_diff, 1000000); /* Convert to MHz */
-+	scaling = 1000 * quot_diff;
-+	do_div(scaling, freq_diff);
- 	return min(scaling, fdata->max_quot_scale);
- }
- 
-diff --git a/drivers/soc/qcom/cpr-common.h b/drivers/soc/qcom/cpr-common.h
-index 83a1f7c941b8..96ff6301c81e 100644
---- a/drivers/soc/qcom/cpr-common.h
-+++ b/drivers/soc/qcom/cpr-common.h
-@@ -65,6 +65,8 @@ struct corner {
- struct corner_data {
- 	unsigned int fuse_corner;
- 	unsigned long freq;
-+	int oloop_vadj;
-+	int cloop_vadj;
++/**
++ * struct qcom_cpufreq_soc_data - SoC specific register offsets of the OSM
++ *
++ * @reg_enable:            OSM enable status
++ * @reg_index:             Index of the Virtual Corner
++ * @reg_freq_lut:          Frequency Lookup Table
++ * @reg_freq_lut_src_mask: Frequency Lookup Table clock-source mask
++ * @reg_volt_lut:          Voltage Lookup Table
++ * @reg_perf_state:        Performance State request register
++ * @lut_row_size:          Lookup Table row size
++ * @clk_hw_div:            Divider for "alternate" OSM clock-source
++ * @uses_tz:               OSM already set-up and protected by TrustZone
++ * @setup_regs:            Register offsets for OSM setup
++ */
+ struct qcom_cpufreq_soc_data {
+ 	u32 reg_enable;
++	u32 reg_index;
+ 	u32 reg_freq_lut;
++	u32 reg_freq_lut_src_mask;
+ 	u32 reg_volt_lut;
+ 	u32 reg_perf_state;
+-	u8 lut_row_size;
++	u8  lut_row_size;
++	u8  clk_hw_div;
++	bool uses_tz;
++	const struct qcom_cpufreq_soc_setup_data setup_regs;
++	const struct qcom_cpufreq_soc_acd_data acd_data;
  };
  
- struct acc_desc {
-@@ -101,6 +103,8 @@ int cpr_populate_fuse_common(struct device *dev,
- int cpr_find_initial_corner(struct device *dev, struct clk *cpu_clk,
- 			    struct corner *corners, int num_corners);
- u32 cpr_get_fuse_corner(struct dev_pm_opp *opp, u32 tid);
-+void cpr_get_corner_post_vadj(struct dev_pm_opp *opp, u32 tid,
-+			      s32 *open_loop, s32 *closed_loop);
- unsigned long cpr_get_opp_hz_for_req(struct dev_pm_opp *ref,
- 				     struct device *cpu_dev);
- int cpr_calculate_scaling(const char *quot_offset,
-diff --git a/drivers/soc/qcom/cpr3.c b/drivers/soc/qcom/cpr3.c
-new file mode 100644
-index 000000000000..4f19a38c9855
---- /dev/null
-+++ b/drivers/soc/qcom/cpr3.c
-@@ -0,0 +1,2905 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2013-2020, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2019 Linaro Limited
-+ * Copyright (c) 2020, AngeloGioacchino Del Regno
-+ *                     <angelogioacchino.delregno@somainline.org>
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/err.h>
-+#include <linux/debugfs.h>
-+#include <linux/string.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/bitops.h>
-+#include <linux/slab.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+#include <linux/pm_domain.h>
-+#include <linux/pm_opp.h>
-+#include <linux/interrupt.h>
-+#include <linux/regmap.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/workqueue.h>
-+#include <linux/clk.h>
-+#include <linux/nvmem-consumer.h>
-+#include "cpr-common.h"
-+
-+#define CPR3_RO_COUNT				16
-+#define CPR3_RO_MASK				GENMASK(CPR3_RO_COUNT - 1, 0)
-+
-+/* CPR3 registers */
-+#define CPR3_REG_CPR_VERSION			0x0
-+#define CPRH_CPR_VERSION_4P5			0x40050000
-+
-+#define CPR3_REG_CPR_CTL			0x4
-+#define CPR3_CPR_CTL_LOOP_EN_MASK		BIT(0)
-+#define CPR3_CPR_CTL_IDLE_CLOCKS_MASK		GENMASK(5, 1)
-+#define CPR3_CPR_CTL_IDLE_CLOCKS_SHIFT		1
-+#define CPR3_CPR_CTL_COUNT_MODE_MASK		GENMASK(7, 6)
-+#define CPR3_CPR_CTL_COUNT_MODE_SHIFT		6
-+#define CPR3_CPR_CTL_COUNT_MODE_ALL_AT_ONCE_MIN	0
-+#define CPR3_CPR_CTL_COUNT_MODE_ALL_AT_ONCE_MAX	1
-+#define CPR3_CPR_CTL_COUNT_MODE_STAGGERED	2
-+#define CPR3_CPR_CTL_COUNT_MODE_ALL_AT_ONCE_AGE	3
-+#define CPR3_CPR_CTL_COUNT_REPEAT_MASK		GENMASK(31, 9)
-+#define CPR3_CPR_CTL_COUNT_REPEAT_SHIFT		9
-+
-+#define CPR3_REG_CPR_STATUS			0x8
-+#define CPR3_CPR_STATUS_BUSY_MASK		BIT(0)
-+
-+/*
-+ * This register is not present on controllers that support HW closed-loop
-+ * except CPR4 APSS controller.
-+ */
-+#define CPR3_REG_CPR_TIMER_AUTO_CONT		0xC
-+
-+#define CPR3_REG_CPR_STEP_QUOT			0x14
-+#define CPR3_CPR_STEP_QUOT_MIN_MASK		GENMASK(5, 0)
-+#define CPR3_CPR_STEP_QUOT_MIN_SHIFT		0
-+#define CPR3_CPR_STEP_QUOT_MAX_MASK		GENMASK(11, 6)
-+#define CPR3_CPR_STEP_QUOT_MAX_SHIFT		6
-+#define CPRH_DELTA_QUOT_STEP_FACTOR		4
-+
-+#define CPR3_REG_GCNT(ro)			(0xA0 + 0x4 * (ro))
-+#define CPR3_REG_SENSOR_OWNER(sensor)		(0x200 + 0x4 * (sensor))
-+
-+#define CPR3_REG_CONT_CMD			0x800
-+#define CPR3_CONT_CMD_ACK			0x1
-+#define CPR3_CONT_CMD_NACK			0x0
-+
-+#define CPR3_REG_THRESH(thread)			(0x808 + 0x440 * (thread))
-+#define CPR3_THRESH_CONS_DOWN_MASK		GENMASK(3, 0)
-+#define CPR3_THRESH_CONS_DOWN_SHIFT		0
-+#define CPR3_THRESH_CONS_UP_MASK		GENMASK(7, 4)
-+#define CPR3_THRESH_CONS_UP_SHIFT		4
-+#define CPR3_THRESH_DOWN_THRESH_MASK		GENMASK(12, 8)
-+#define CPR3_THRESH_DOWN_THRESH_SHIFT		8
-+#define CPR3_THRESH_UP_THRESH_MASK		GENMASK(17, 13)
-+#define CPR3_THRESH_UP_THRESH_SHIFT		13
-+
-+#define CPR3_REG_RO_MASK(thread)		(0x80C + 0x440 * (thread))
-+
-+#define CPR3_REG_RESULT0(thread)		(0x810 + 0x440 * (thread))
-+#define CPR3_RESULT0_BUSY_MASK			BIT(0)
-+#define CPR3_RESULT0_STEP_DN_MASK		BIT(1)
-+#define CPR3_RESULT0_STEP_UP_MASK		BIT(2)
-+#define CPR3_RESULT0_ERROR_STEPS_MASK		GENMASK(7, 3)
-+#define CPR3_RESULT0_ERROR_STEPS_SHIFT		3
-+#define CPR3_RESULT0_ERROR_MASK			GENMASK(19, 8)
-+#define CPR3_RESULT0_ERROR_SHIFT		8
-+
-+#define CPR3_REG_RESULT1(thread)		(0x814 + 0x440 * (thread))
-+#define CPR3_RESULT1_QUOT_MIN_MASK		GENMASK(11, 0)
-+#define CPR3_RESULT1_QUOT_MIN_SHIFT		0
-+#define CPR3_RESULT1_QUOT_MAX_MASK		GENMASK(23, 12)
-+#define CPR3_RESULT1_QUOT_MAX_SHIFT		12
-+#define CPR3_RESULT1_RO_MIN_MASK		GENMASK(27, 24)
-+#define CPR3_RESULT1_RO_MIN_SHIFT		24
-+#define CPR3_RESULT1_RO_MAX_MASK		GENMASK(31, 28)
-+#define CPR3_RESULT1_RO_MAX_SHIFT		28
-+
-+#define CPR3_REG_RESULT2(thread)		(0x818 + 0x440 * (thread))
-+#define CPR3_RESULT2_STEP_QUOT_MIN_MASK		GENMASK(5, 0)
-+#define CPR3_RESULT2_STEP_QUOT_MIN_SHIFT	0
-+#define CPR3_RESULT2_STEP_QUOT_MAX_MASK		GENMASK(11, 6)
-+#define CPR3_RESULT2_STEP_QUOT_MAX_SHIFT	6
-+#define CPR3_RESULT2_SENSOR_MIN_MASK		GENMASK(23, 16)
-+#define CPR3_RESULT2_SENSOR_MIN_SHIFT		16
-+#define CPR3_RESULT2_SENSOR_MAX_MASK		GENMASK(31, 24)
-+#define CPR3_RESULT2_SENSOR_MAX_SHIFT		24
-+
-+#define CPR3_REG_IRQ_EN				0x81C
-+#define CPR3_REG_IRQ_CLEAR			0x820
-+#define CPR3_REG_IRQ_STATUS			0x824
-+#define CPR3_IRQ_UP				BIT(3)
-+#define CPR3_IRQ_MID				BIT(2)
-+#define CPR3_IRQ_DOWN				BIT(1)
-+#define CPR3_IRQ_ALL				(CPR3_IRQ_UP | CPR3_IRQ_MID | CPR3_IRQ_DOWN)
-+
-+#define CPR3_REG_TARGET_QUOT(thread, ro)	(0x840 + 0x440 * (thread) + 0x4 * (ro))
-+
-+/* Registers found only on controllers that support HW closed-loop. */
-+#define CPR3_REG_PD_THROTTLE			0xE8
-+
-+#define CPR3_REG_HW_CLOSED_LOOP_DISABLED	0x3000
-+#define CPR3_REG_CPR_TIMER_MID_CONT		0x3004
-+#define CPR3_REG_CPR_TIMER_UP_DN_CONT		0x3008
-+
-+/* CPR4 controller specific registers and bit definitions */
-+#define CPR4_REG_CPR_TIMER_CLAMP			0x10
-+#define CPR4_CPR_TIMER_CLAMP_THREAD_AGGREGATION_EN	BIT(27)
-+
-+#define CPR4_REG_MISC				0x700
-+#define CPR4_MISC_RESET_STEP_QUOT_LOOP_EN	BIT(2)
-+#define CPR4_MISC_THREAD_HAS_ALWAYS_VOTE_EN	BIT(3)
-+
-+#define CPR4_REG_SAW_ERROR_STEP_LIMIT		0x7A4
-+#define CPR4_SAW_ERROR_STEP_LIMIT_UP_MASK	GENMASK(4, 0)
-+#define CPR4_SAW_ERROR_STEP_LIMIT_UP_SHIFT	0
-+#define CPR4_SAW_ERROR_STEP_LIMIT_DN_MASK	GENMASK(9, 5)
-+#define CPR4_SAW_ERROR_STEP_LIMIT_DN_SHIFT	5
-+
-+#define CPR4_REG_MARGIN_TEMP_CORE_TIMERS			0x7A8
-+#define CPR4_MARGIN_TEMP_CORE_TIMERS_SETTLE_VOLTAGE_COUNT_MASK	GENMASK(28, 18)
-+#define CPR4_MARGIN_TEMP_CORE_TIMERS_SETTLE_VOLTAGE_COUNT_SHFT	18
-+
-+#define CPR4_REG_MARGIN_ADJ_CTL				0x7F8
-+#define CPR4_MARGIN_ADJ_HW_CLOSED_LOOP_EN		BIT(4)
-+#define CPR4_MARGIN_ADJ_PER_RO_KV_MARGIN_EN		BIT(7)
-+#define CPR4_MARGIN_ADJ_PMIC_STEP_SIZE_MASK		GENMASK(16, 12)
-+#define CPR4_MARGIN_ADJ_PMIC_STEP_SIZE_SHIFT		12
-+#define CPR4_MARGIN_ADJ_KV_MARGIN_ADJ_STEP_QUOT_MASK	GENMASK(31, 26)
-+#define CPR4_MARGIN_ADJ_KV_MARGIN_ADJ_STEP_QUOT_SHIFT	26
-+
-+#define CPR4_REG_CPR_MASK_THREAD(thread)		(0x80C + 0x440 * (thread))
-+#define CPR4_CPR_MASK_THREAD_DISABLE_THREAD		BIT(31)
-+#define CPR4_CPR_MASK_THREAD_RO_MASK4THREAD_MASK	GENMASK(15, 0)
-+
-+/* CPRh controller specific registers and bit definitions */
-+#define __CPRH_REG_CORNER(rbase, tbase, tid, cnum) (rbase + (tbase * tid) + \
-+						    (0x4 * cnum))
-+#define CPRH_REG_CORNER(d, t, c) __CPRH_REG_CORNER(d->reg_corner,     \
-+						   d->reg_corner_tid, \
-+						   t, c)
-+
-+#define CPRH_CTL_OSM_ENABLED			BIT(0)
-+#define CPRH_CTL_BASE_VOLTAGE_MASK		GENMASK(10, 1)
-+#define CPRH_CTL_BASE_VOLTAGE_SHIFT		1
-+#define CPRH_CTL_MODE_SWITCH_DELAY_MASK		GENMASK(24, 17)
-+#define CPRH_CTL_MODE_SWITCH_DELAY_SHIFT	17
-+#define CPRH_CTL_VOLTAGE_MULTIPLIER_MASK	GENMASK(28, 25)
-+#define CPRH_CTL_VOLTAGE_MULTIPLIER_SHIFT	25
-+
-+#define CPRH_CORNER_INIT_VOLTAGE_MASK		GENMASK(7, 0)
-+#define CPRH_CORNER_INIT_VOLTAGE_SHIFT		0
-+#define CPRH_CORNER_FLOOR_VOLTAGE_MASK		GENMASK(15, 8)
-+#define CPRH_CORNER_FLOOR_VOLTAGE_SHIFT		8
-+#define CPRH_CORNER_QUOT_DELTA_MASK		GENMASK(24, 16)
-+#define CPRH_CORNER_QUOT_DELTA_SHIFT		16
-+#define CPRH_CORNER_RO_SEL_MASK			GENMASK(28, 25)
-+#define CPRH_CORNER_RO_SEL_SHIFT		25
-+#define CPRH_CORNER_CPR_CL_DISABLE		BIT(29)
-+
-+#define CPRH_CORNER_INIT_VOLTAGE_MAX_VALUE	255
-+#define CPRH_CORNER_FLOOR_VOLTAGE_MAX_VALUE	255
-+#define CPRH_CORNER_QUOT_DELTA_MAX_VALUE	511
-+
-+enum cpr_type {
-+	CTRL_TYPE_CPR3,
-+	CTRL_TYPE_CPR4,
-+	CTRL_TYPE_CPRH,
-+	CTRL_TYPE_MAX,
-+};
-+
-+/*
-+ * struct cpr_thread_desc - CPR Thread-specific parameters
+ struct qcom_cpufreq_data {
+@@ -35,9 +258,17 @@ struct qcom_cpufreq_data {
+ 	const struct qcom_cpufreq_soc_data *soc_data;
+ };
+ 
++static const char *cprh_genpd_names[] = { "cprh", NULL };
+ static unsigned long cpu_hw_rate, xo_rate;
+ static bool icc_scaling_enabled;
+ 
++/**
++ * qcom_cpufreq_set_bw - Set interconnect bandwidth
++ * @policy:   CPUFreq policy structure
++ * @freq_khz: CPU Frequency in KHz
 + *
-+ * @controller_id:      Identifier of the CPR controller expected by the HW
-+ * @ro_scaling_factor:  Scaling factor for each ring oscillator entry
-+ * @hw_tid:             Identifier of the CPR thread expected by the HW
-+ * @init_voltage_step:  Voltage in uV for number of steps read from fuse array
-+ * @init_voltage_width: Bit-width of the voltage read from the fuse array
-+ * @sensor_range_start: First sensor ID used by a thread
-+ * @sensor_range_end:   Last sensor ID used by a thread
-+ * @num_fuse_corners:   Number of valid entries in fuse_corner_data
-+ * @step_quot_init_min: Minimum achievable step quotient for this corner
-+ * @step_quot_init_max: Maximum achievable step quotient for this corner
-+ * @fuse_corner_data:   Parameters for calculation of each fuse corner
++ * Returns: Zero for success, otherwise negative value on errors
 + */
-+struct cpr_thread_desc {
-+	u8		controller_id;
-+	u8		hw_tid;
-+	const int	(*ro_scaling_factor)[CPR3_RO_COUNT];
-+	int		ro_avail_corners;
-+	int		init_voltage_step;
-+	int		init_voltage_width;
-+	u8		sensor_range_start;
-+	u8		sensor_range_end;
-+	u8		step_quot_init_min;
-+	u8		step_quot_init_max;
-+	unsigned int	num_fuse_corners;
-+	struct fuse_corner_data *fuse_corner_data;
-+};
-+
-+/*
-+ * struct cpr_desc - Driver instance-wide CPR parameters
+ static int qcom_cpufreq_set_bw(struct cpufreq_policy *policy,
+ 			       unsigned long freq_khz)
+ {
+@@ -59,6 +290,20 @@ static int qcom_cpufreq_set_bw(struct cpufreq_policy *policy,
+ 	return ret;
+ }
+ 
++/**
++ * qcom_cpufreq_update_opp - Update CPU OPP tables
++ * @policy:   CPUFreq policy structure
++ * @freq_khz: CPU Frequency for OPP entry in KHz
++ * @volt:     CPU Voltage for OPP entry in microvolts
 + *
-+ * @cpr_type:              Type (base version) of the CPR controller
-+ * @num_threads:           Max. number of threads supported by this controller
-+ * @timer_delay_us:        Loop delay time in uS
-+ * @timer_updn_delay_us:   Voltage after-up/before-down delay time in uS
-+ * @timer_cons_up:         Wait between consecutive up requests in uS
-+ * @timer_cons_down:       Wait between consecutive down requests in uS
-+ * @up_threshold:          Generic corner up threshold
-+ * @down_threshold:        Generic corner down threshold
-+ * @idle_clocks:           CPR Sensor: idle timer in cpr clocks unit
-+ * @count_mode:            CPR Sensor: counting mode
-+ * @count_repeat:          CPR Sensor: number of times to repeat reading
-+ * @gcnt_us:               CPR measurement interval in uS
-+ * @vreg_step_fixed:       Regulator voltage per step (if vreg unusable)
-+ * @vreg_step_up_limit:    Num. of steps up at once before re-measuring sensors
-+ * @vreg_step_down_limit:  Num. of steps dn at once before re-measuring sensors
-+ * @vdd_settle_time_us:    Settling timer to account for one VDD supply step
-+ * @corner_settle_time_us: Settle time for corner switch request
-+ * @mem_acc_threshold:     Memory Accelerator (MEM-ACC) voltage threshold
-+ * @apm_threshold:         Array Power Mux (APM) voltage threshold
-+ * @apm_crossover:         Array Power Mux (APM) corner crossover voltage
-+ * @apm_hysteresis:        Hysteresis for APM V-threshold related calculations
-+ * @cpr_base_voltage:      Safety: Absolute minimum voltage (uV) on this CPR
-+ * @cpr_max_voltage:       Safety: Absolute maximum voltage (uV) on this CPR
-+ * @pd_throttle_val:       CPR Power Domain throttle during voltage switch
-+ * @threads:               Array containing "CPR Thread" specific parameters
-+ * @reduce_to_fuse_uV:     Reduce corner max volts (if higher) to fuse ceiling
-+ * @reduce_to_corner_uV:   Reduce corner max volts (if higher) to corner ceil.
-+ * @hw_closed_loop_en:     Enable CPR HW Closed-Loop voltage auto-adjustment
++ * The CPU frequencies and voltages are being read from the Operating
++ * State Manager (OSM) and the related OPPs, read from DT, need to be
++ * updated to reflect what the hardware will set for each p-state.
++ * If there is no OPP table specified in DT, then this function will
++ * add dynamic ones.
++ *
++ * Returns: Zero for success, otherwise negative value on errors
 + */
-+struct cpr_desc {
-+	enum cpr_type		cpr_type;
-+	unsigned int		num_threads;
-+	unsigned int		timer_delay_us;
-+	u8			timer_updn_delay_us;
-+	u8			timer_cons_up;
-+	u8			timer_cons_down;
-+	u8			up_threshold;
-+	u8			down_threshold;
-+	u8			idle_clocks;
-+	u8			count_mode;
-+	u8			count_repeat;
-+	u8			gcnt_us;
-+	u16			vreg_step_fixed;
-+	u8			vreg_step_up_limit;
-+	u8			vreg_step_down_limit;
-+	u8			vdd_settle_time_us;
-+	u8			corner_settle_time_us;
-+	int			mem_acc_threshold;
-+	int			apm_threshold;
-+	int			apm_crossover;
-+	int			apm_hysteresis;
-+	u32			cpr_base_voltage;
-+	u32			cpr_max_voltage;
-+	u32			pd_throttle_val;
-+
-+	const struct cpr_thread_desc **threads;
-+	bool reduce_to_fuse_uV;
-+	bool reduce_to_corner_uV;
-+	bool hw_closed_loop_en;
-+};
-+
-+struct cpr_drv;
-+struct cpr_thread {
-+	int			num_corners;
-+	int			id;
-+	bool			enabled;
-+	void __iomem		*base;
-+	struct clk		*cpu_clk;
-+	struct corner		*corner;
-+	struct corner		*corners;
-+	struct fuse_corner	*fuse_corners;
-+	struct cpr_drv		*drv;
-+	struct generic_pm_domain pd;
-+	struct device		*attached_cpu_dev;
-+	struct work_struct	restart_work;
-+	bool			restarting;
-+
-+	const struct cpr_fuse	*cpr_fuses;
-+	const struct cpr_thread_desc *desc;
-+};
-+
-+struct cpr_drv {
-+	int			irq;
-+	unsigned int		ref_clk_khz;
-+	struct device		*dev;
-+	struct mutex		lock;
-+	struct regulator	*vreg;
-+	struct regmap		*tcsr;
-+	u32			gcnt;
-+	u32			speed_bin;
-+	u32			fusing_rev;
-+	u32			last_uV;
-+	u32			cpr_hw_rev;
-+	u32			reg_corner;
-+	u32			reg_corner_tid;
-+	u32			reg_ctl;
-+	u32			reg_status;
-+	int			fuse_level_set;
-+	int			extra_corners;
-+	unsigned int		vreg_step;
-+	bool			enabled;
-+
-+	struct cpr_thread	*threads;
-+	struct genpd_onecell_data cell_data;
-+
-+	const struct cpr_desc	*desc;
-+	const struct acc_desc	*acc_desc;
-+	struct dentry		*debugfs;
-+};
-+
-+/*
-+ * cpr_get_ring_osc_factor - Get fuse corner ring oscillator factor
+ static int qcom_cpufreq_update_opp(struct device *cpu_dev,
+ 				   unsigned long freq_khz,
+ 				   unsigned long volt)
+@@ -79,6 +324,17 @@ static int qcom_cpufreq_update_opp(struct device *cpu_dev,
+ 	return dev_pm_opp_enable(cpu_dev, freq_hz);
+ }
+ 
++/**
++ * qcom_cpufreq_hw_target_index - Set frequency/voltage
++ * @policy:   CPUFreq policy structure
++ * @index:    Performance state index to be set
 + *
-+ * Not all threads have different scaling factors for each
-+ * Fuse Corner: if the RO factors are the same for all corners,
-+ * then only one is specified, instead of uselessly repeating
-+ * the same array for FC-times.
-+ * This function checks for the same and gives back the right
-+ * factor for the requested ring oscillator.
++ * This function sends a request to the Operating State Manager
++ * to set a Performance State index, so, to set frequency and
++ * voltage for the target CPU/cluster.
 + *
-+ * Returns: Ring oscillator factor
++ * Returns: Always zero
 + */
-+static int cpr_get_ro_factor(const struct cpr_thread_desc *tdesc,
-+			     int fnum, int ro_idx)
-+{
-+	int ro_fnum;
-+
-+	if (tdesc->ro_avail_corners == tdesc->num_fuse_corners)
-+		ro_fnum = fnum;
-+	else
-+		ro_fnum = 0;
-+
-+	return tdesc->ro_scaling_factor[ro_fnum][ro_idx];
-+}
-+
-+static void cpr_write(struct cpr_thread *thread, u32 offset, u32 value)
-+{
-+	writel_relaxed(value, thread->base + offset);
-+}
-+
-+static u32 cpr_read(struct cpr_thread *thread, u32 offset)
-+{
-+	return readl_relaxed(thread->base + offset);
-+}
-+
-+static void
-+cpr_masked_write(struct cpr_thread *thread, u32 offset, u32 mask, u32 value)
+ static int qcom_cpufreq_hw_target_index(struct cpufreq_policy *policy,
+ 					unsigned int index)
+ {
+@@ -94,6 +350,12 @@ static int qcom_cpufreq_hw_target_index(struct cpufreq_policy *policy,
+ 	return 0;
+ }
+ 
++/**
++ * qcom_cpufreq_hw_get - Get current Performance State from OSM
++ * @cpu:      CPU number
++ *
++ * Returns: Current CPU/Cluster frequency or zero
++ */
+ static unsigned int qcom_cpufreq_hw_get(unsigned int cpu)
+ {
+ 	struct qcom_cpufreq_data *data;
+@@ -127,6 +389,646 @@ static unsigned int qcom_cpufreq_hw_fast_switch(struct cpufreq_policy *policy,
+ 	return policy->freq_table[index].frequency;
+ }
+ 
++static void qcom_cpufreq_hw_boost_setup(void __iomem *timer0_addr, u32 len)
 +{
 +	u32 val;
 +
-+	val = readl_relaxed(thread->base + offset);
-+	val &= ~mask;
-+	val |= value & mask;
-+	writel_relaxed(val, thread->base + offset);
++	/* timer_reg0 */
++	val = FIELD_PREP(BOOST_TIMER_REG_LO, PLL_WAIT_LOCK_TIME_NS);
++	val |= FIELD_PREP(BOOST_TIMER_REG_HI, SAFE_FREQ_WAIT_NS);
++	writel_relaxed(val, timer0_addr);
++
++	/* timer_reg1 */
++	val = FIELD_PREP(BOOST_TIMER_REG_LO, PLL_WAIT_LOCK_TIME_NS);
++	val |= FIELD_PREP(BOOST_TIMER_REG_HI, PLL_WAIT_LOCK_TIME_NS);
++	writel_relaxed(val, timer0_addr + len);
++
++	/* timer_reg2 */
++	val = FIELD_PREP(BOOST_TIMER_REG_LO, DEXT_DECREMENT_WAIT_NS);
++	writel_relaxed(val, timer0_addr + (2 * len));
 +}
 +
-+static void cpr_irq_clr(struct cpr_thread *thread)
-+{
-+	cpr_write(thread, CPR3_REG_IRQ_CLEAR, CPR3_IRQ_ALL);
-+}
-+
-+static void cpr_irq_clr_nack(struct cpr_thread *thread)
-+{
-+	cpr_irq_clr(thread);
-+	cpr_write(thread, CPR3_REG_CONT_CMD, CPR3_CONT_CMD_NACK);
-+}
-+
-+static void cpr_irq_clr_ack(struct cpr_thread *thread)
-+{
-+	cpr_irq_clr(thread);
-+	cpr_write(thread, CPR3_REG_CONT_CMD, CPR3_CONT_CMD_ACK);
-+}
-+
-+static void cpr_irq_set(struct cpr_thread *thread, u32 int_bits)
-+{
-+	/* On CPR-hardened, interrupts are managed by and on firmware */
-+	if (thread->drv->desc->cpr_type == CTRL_TYPE_CPRH)
-+		return;
-+
-+	cpr_write(thread, CPR3_REG_IRQ_EN, int_bits);
-+}
-+
-+/**
-+ * cpr_ctl_enable - Enable CPR thread
-+ * @thread:     Structure holding CPR thread-specific parameters
-+ */
-+static void cpr_ctl_enable(struct cpr_thread *thread)
-+{
-+	if (thread->drv->enabled && !thread->restarting)
-+		cpr_masked_write(thread, CPR3_REG_CPR_CTL,
-+				CPR3_CPR_CTL_LOOP_EN_MASK,
-+				CPR3_CPR_CTL_LOOP_EN_MASK);
-+}
-+
-+/**
-+ * cpr_ctl_disable - Disable CPR thread
-+ * @thread:     Structure holding CPR thread-specific parameters
-+ */
-+static void cpr_ctl_disable(struct cpr_thread *thread)
-+{
-+	const struct cpr_desc *desc = thread->drv->desc;
-+
-+	if (desc->cpr_type != CTRL_TYPE_CPRH) {
-+		cpr_irq_set(thread, 0);
-+		cpr_irq_clr(thread);
-+	}
-+
-+	cpr_masked_write(thread, CPR3_REG_CPR_CTL,
-+			 CPR3_CPR_CTL_LOOP_EN_MASK, 0);
-+}
-+
-+/**
-+ * cpr_ctl_is_enabled - Check if thread is enabled
-+ * @thread:     Structure holding CPR thread-specific parameters
++/*
++ * qcom_cpufreq_gen_params - Generate parameters to send to the hardware
++ * @cpu_dev:   CPU device
++ * @data:      SoC specific register offsets
++ * @hw_tbl:    Pointer to return the array of parameters
++ * @apm_vc:    APM Virtual Corner crossover number, returned to the caller
++ * @acc_vc:    MEMACC Virtual Corner crossover number, returned to the caller
++ * @cpu_count: Number of CPUs in the frequency domain
 + *
-+ * Returns: true if the CPR is enabled, false if it is disabled.
-+ */
-+static bool cpr_ctl_is_enabled(struct cpr_thread *thread)
-+{
-+	u32 reg_val;
-+
-+	reg_val = cpr_read(thread, CPR3_REG_CPR_CTL);
-+	return reg_val & CPR3_CPR_CTL_LOOP_EN_MASK;
-+}
-+
-+/**
-+ * cpr_check_any_thread_busy - Check if HW is done processing
-+ * @thread:     Structure holding CPR thread-specific parameters
++ * This function allocates a 'qcom_cpufreq_hw_params' parameters table,
++ * fills it and returns it to the consumer, ready to get sent to the HW.
++ * Since the APM threshold is just one
++ * Freeing the table after usage is left to the caller.
 + *
-+ * Returns: true if the CPR is busy, false if it is ready.
++ * Returns: Number of allocated (and filled) elements in the table,
++ *          otherwise negative value on errors.
 + */
-+static bool cpr_check_any_thread_busy(struct cpr_thread *thread)
++static int qcom_cpufreq_gen_params(struct device *cpu_dev,
++				   struct qcom_cpufreq_data *data,
++				   struct qcom_cpufreq_hw_params **hw_tbl,
++				   int *apm_vc, int *acc_vc, int cpu_count)
 +{
-+	int i;
-+
-+	for (i = 0; i < thread->drv->desc->num_threads; i++)
-+		if (cpr_read(thread, CPR3_REG_RESULT0(i)) &
-+		    CPR3_RESULT0_BUSY_MASK)
-+			return true;
-+
-+	return false;
-+}
-+
-+static void cpr_restart_worker(struct work_struct *work)
-+{
-+	struct cpr_thread *thread = container_of(work, struct cpr_thread,
-+						 restart_work);
-+	struct cpr_drv *drv = thread->drv;
-+	int i;
-+
-+	mutex_lock(&drv->lock);
-+
-+	thread->restarting = true;
-+	cpr_ctl_disable(thread);
-+	disable_irq(drv->irq);
-+
-+	mutex_unlock(&drv->lock);
-+
-+	for (i = 0; i < 20; i++) {
-+		u32 cpr_status = cpr_read(thread, CPR3_REG_CPR_STATUS);
-+		u32 ctl = cpr_read(thread, CPR3_REG_CPR_CTL);
-+
-+		if ((cpr_status & CPR3_CPR_STATUS_BUSY_MASK) &&
-+		   !(ctl & CPR3_CPR_CTL_LOOP_EN_MASK))
-+			break;
-+
-+		udelay(10);
-+	}
-+
-+	cpr_irq_clr(thread);
-+
-+	for (i = 0; i < 20; i++) {
-+		u32 status = cpr_read(thread, CPR3_REG_IRQ_STATUS);
-+
-+		if (!(status & CPR3_IRQ_ALL))
-+			break;
-+		udelay(10);
-+	}
-+
-+	mutex_lock(&drv->lock);
-+
-+	thread->restarting = false;
-+	enable_irq(drv->irq);
-+	cpr_ctl_enable(thread);
-+
-+	mutex_unlock(&drv->lock);
-+}
-+
-+/**
-+ * cpr_corner_restore - Restore saved corner level
-+ * @thread: Structure holding CPR thread-specific parameters
-+ * @corner: Structure holding the saved corner level
-+ */
-+static void cpr_corner_restore(struct cpr_thread *thread,
-+			       struct corner *corner)
-+{
-+	struct cpr_drv *drv = thread->drv;
-+	struct fuse_corner *fuse = corner->fuse_corner;
-+	const struct cpr_thread_desc *tdesc = thread->desc;
-+	u32 ro_sel = fuse->ring_osc_idx;
-+
-+	cpr_write(thread, CPR3_REG_GCNT(ro_sel), drv->gcnt);
-+
-+	cpr_write(thread, CPR3_REG_RO_MASK(tdesc->hw_tid),
-+		  CPR3_RO_MASK & ~BIT(ro_sel));
-+
-+	cpr_write(thread, CPR3_REG_TARGET_QUOT(tdesc->hw_tid, ro_sel),
-+		  fuse->quot - corner->quot_adjust);
-+
-+	if (drv->desc->cpr_type == CTRL_TYPE_CPR4) {
-+		cpr_masked_write(thread,
-+				 CPR4_REG_CPR_MASK_THREAD(tdesc->hw_tid),
-+				 CPR4_CPR_MASK_THREAD_DISABLE_THREAD |
-+				 CPR4_CPR_MASK_THREAD_RO_MASK4THREAD_MASK, 0);
-+	}
-+
-+	thread->corner = corner;
-+	corner->last_uV = corner->uV;
-+}
-+
-+/**
-+ * cpr_set_acc - Set fuse level to the mem-acc
-+ * @thread: Structure holding CPR thread-specific parameters
-+ * @f:      Fuse level
-+ */
-+static void cpr_set_acc(struct cpr_drv *drv, int f)
-+{
-+	const struct acc_desc *desc = drv->acc_desc;
-+	struct reg_sequence *s = desc->settings;
-+	int n = desc->num_regs_per_fuse;
-+
-+	if (!s || f == drv->fuse_level_set)
-+		return;
-+
-+	regmap_multi_reg_write(drv->tcsr, s + (n * f), n);
-+	drv->fuse_level_set = f;
-+}
-+
-+/**
-+ * cpr_post_voltage - Actions to execute before setting voltage
-+ * @thread:     Structure holding CPR thread-specific parameters
-+ * @dir:        Enumeration for voltage change direction
-+ * @fuse_level: Fuse corner for mem-acc, if supported.
-+ *
-+ * Returns: Zero for success or negative number on errors.
-+ */
-+static int cpr_pre_voltage(struct cpr_thread *thread,
-+			   enum voltage_change_dir dir,
-+			   int fuse_level)
-+{
-+	struct cpr_drv *drv = thread->drv;
-+
-+	if (drv->desc->cpr_type == CTRL_TYPE_CPR3 &&
-+	    drv->desc->pd_throttle_val)
-+		cpr_write(thread, CPR3_REG_PD_THROTTLE,
-+			  drv->desc->pd_throttle_val);
-+
-+	if (drv->tcsr && dir == DOWN)
-+		cpr_set_acc(drv, fuse_level);
-+
-+	return 0;
-+}
-+
-+/**
-+ * cpr_post_voltage - Actions to execute after setting voltage
-+ * @thread:     Structure holding CPR thread-specific parameters
-+ * @dir:        Enumeration for voltage change direction
-+ * @fuse_level: Fuse corner for mem-acc, if supported.
-+ *
-+ * Returns: Zero for success or negative number on errors.
-+ */
-+static int cpr_post_voltage(struct cpr_thread *thread,
-+			    enum voltage_change_dir dir,
-+			    int fuse_level)
-+{
-+	struct cpr_drv *drv = thread->drv;
-+
-+	if (drv->tcsr && dir == UP)
-+		cpr_set_acc(drv, fuse_level);
-+
-+	if (drv->desc->cpr_type == CTRL_TYPE_CPR3)
-+		cpr_write(thread, CPR3_REG_PD_THROTTLE, 0);
-+
-+	return 0;
-+}
-+
-+/**
-+ * cpr_commit_state - Set the newly requested voltage
-+ * @thread:     Structure holding CPR thread-specific parameters
-+ *
-+ * Returns: IRQ_SUCCESS for success, IRQ_NONE if the CPR is disabled.
-+ */
-+static int cpr_commit_state(struct cpr_thread *thread)
-+{
-+	struct cpr_drv *drv = thread->drv;
-+	int min_uV = 0, max_uV = 0, new_uV = 0, fuse_level = 0;
-+	enum voltage_change_dir dir;
-+	u32 next_irqmask = 0;
-+	int ret, i;
-+
-+	/* On CPRhardened, control states are managed in firmware */
-+	if (drv->desc->cpr_type == CTRL_TYPE_CPRH)
-+		return 0;
-+
-+	for (i = 0; i < drv->desc->num_threads; i++) {
-+		struct cpr_thread *thread = &drv->threads[i];
-+
-+		if (!thread->corner)
-+			continue;
-+
-+		fuse_level = max(fuse_level,
-+				 (int) (thread->corner->fuse_corner -
-+				 &thread->fuse_corners[0]));
-+
-+		max_uV = max(max_uV, thread->corner->max_uV);
-+		min_uV = max(min_uV, thread->corner->min_uV);
-+		new_uV = max(new_uV, thread->corner->last_uV);
-+	}
-+	dev_vdbg(drv->dev, "%s: new uV: %d, last uV: %d\n",
-+		 __func__, new_uV, drv->last_uV);
++	struct platform_device *pdev = cpufreq_get_driver_data();
++	const struct qcom_cpufreq_soc_data *soc_data = data->soc_data;
++	struct device **opp_virt_dev;
++	struct opp_table *genpd_opp_table;
++	struct dev_pm_opp *apm_opp, *acc_opp;
++	unsigned long apm_uV, acc_uV, rate;
++	int i, gpd_opp_cnt, ret;
++	u8 last_acc_corner = 0, prev_spare = 0;
 +
 +	/*
-+	 * Safety measure: if the voltage is out of the globally allowed
-+	 * range, then go out and warn the user.
-+	 * This should *never* happen.
++	 * Install the OPP table that we get from DT here already,
++	 * otherwise it gets really messy as we'd have to manually walk
++	 * through the entire OPP DT, manually find frequencies and
++	 * also manually exclude supported-hw (for speed-binning).
++	 * This also makes it easier for the genpd to add info in it.
 +	 */
-+	if (new_uV > drv->desc->cpr_max_voltage ||
-+	    new_uV < drv->desc->cpr_base_voltage) {
-+		dev_warn(drv->dev, "Voltage (%u uV) out of range.", new_uV);
-+		return -EINVAL;
-+	}
-+
-+	if (new_uV == drv->last_uV || fuse_level == drv->fuse_level_set)
-+		goto out;
-+
-+	if (fuse_level > drv->fuse_level_set)
-+		dir = UP;
-+	else
-+		dir = DOWN;
-+
-+	ret = cpr_pre_voltage(thread, fuse_level, dir);
-+	if (ret)
-+		return ret;
-+
-+	dev_vdbg(drv->dev, "setting voltage: %d\n", new_uV);
-+
-+	ret = regulator_set_voltage(drv->vreg, new_uV, new_uV);
++	ret = dev_pm_opp_of_add_table(cpu_dev);
 +	if (ret) {
-+		dev_err_ratelimited(drv->dev, "failed to set voltage %d: %d\n",
-+				    new_uV, ret);
++		dev_err(&pdev->dev, "Cannot install CPU OPP table: %d\n", ret);
 +		return ret;
 +	}
 +
-+	ret = cpr_post_voltage(thread, fuse_level, dir);
-+	if (ret)
-+		return ret;
-+
-+	drv->last_uV = new_uV;
-+out:
-+	if (new_uV > min_uV)
-+		next_irqmask |= CPR3_IRQ_DOWN;
-+	if (new_uV < max_uV)
-+		next_irqmask |= CPR3_IRQ_UP;
-+
-+	cpr_irq_set(thread, next_irqmask);
-+
-+	return 0;
-+}
-+
-+static unsigned int cpr_get_cur_perf_state(struct cpr_thread *thread)
-+{
-+	return thread->corner ? thread->corner - thread->corners + 1 : 0;
-+}
-+
-+/**
-+ * cpr_scale - Calculate new voltage for the received direction
-+ * @thread: Structure holding CPR thread-specific parameters
-+ * @dir:    Enumeration for voltage change direction
-+ *
-+ * The CPR scales one by one: this function calculates the new
-+ * voltage to set when a voltage-UP or voltage-DOWN request comes
-+ * and stores it into the per-thread structure that gets passed.
-+ */
-+static void cpr_scale(struct cpr_thread *thread, enum voltage_change_dir dir)
-+{
-+	struct cpr_drv *drv = thread->drv;
-+	const struct cpr_thread_desc *tdesc = thread->desc;
-+	u32 val, error_steps;
-+	int last_uV, new_uV;
-+	struct corner *corner;
-+
-+	if (dir != UP && dir != DOWN)
-+		return;
-+
-+	corner = thread->corner;
-+	val = cpr_read(thread, CPR3_REG_RESULT0(tdesc->hw_tid));
-+	error_steps = val >> CPR3_RESULT0_ERROR_STEPS_SHIFT;
-+	error_steps &= CPR3_RESULT0_ERROR_STEPS_MASK;
-+
-+	last_uV = corner->last_uV;
-+
-+	if (dir == UP) {
-+		if (!(val & CPR3_RESULT0_STEP_UP_MASK))
-+			return;
-+
-+		/* Calculate new voltage */
-+		new_uV = last_uV + drv->vreg_step;
-+		new_uV = min(new_uV, corner->max_uV);
-+
-+		dev_vdbg(drv->dev,
-+			"[T%u] UP - new_uV=%d last_uV=%d p-state=%u st=%u\n",
-+			thread->id, new_uV, last_uV,
-+			cpr_get_cur_perf_state(thread), error_steps);
-+	} else {
-+		if (!(val & CPR3_RESULT0_STEP_DN_MASK))
-+			return;
-+
-+		/* Calculate new voltage */
-+		new_uV = last_uV - drv->vreg_step;
-+		new_uV = max(new_uV, corner->min_uV);
-+		dev_vdbg(drv->dev,
-+			"[T%u] DOWN - new_uV=%d last_uV=%d p-state=%u st=%u\n",
-+			thread->id, new_uV, last_uV,
-+			cpr_get_cur_perf_state(thread), error_steps);
-+	}
-+	corner->last_uV = new_uV;
-+}
-+
-+/**
-+ * cpr_irq_handler - Handle CPR3/CPR4 status interrupts
-+ * @irq: Number of the interrupt
-+ * @dev: Pointer to the cpr_thread structure
-+ *
-+ * Handle the interrupts coming from non-hardened CPR HW as to get
-+ * an ok to scale voltages immediately, or to pass error status to
-+ * the hardware (either success/ACK or failure/NACK).
-+ *
-+ * Returns: IRQ_SUCCESS for success, IRQ_NONE if the CPR is disabled.
-+ */
-+static irqreturn_t cpr_irq_handler(int irq, void *dev)
-+{
-+	struct cpr_thread *thread = dev;
-+	struct cpr_drv *drv = thread->drv;
-+	irqreturn_t ret = IRQ_HANDLED;
-+	int i, rc;
-+	enum voltage_change_dir dir = NO_CHANGE;
-+	u32 val;
-+
-+	mutex_lock(&drv->lock);
-+
-+	val = cpr_read(thread, CPR3_REG_IRQ_STATUS);
-+
-+	dev_vdbg(drv->dev, "IRQ_STATUS = %#02x\n", val);
-+
-+	if (!cpr_ctl_is_enabled(thread)) {
-+		dev_vdbg(drv->dev, "CPR is disabled\n");
-+		ret = IRQ_NONE;
-+	} else if (cpr_check_any_thread_busy(thread)) {
-+		cpr_irq_clr_nack(thread);
-+		dev_dbg(drv->dev, "CPR measurement is not ready\n");
-+	} else {
-+		/*
-+		 * Following sequence of handling is as per each IRQ's
-+		 * priority
-+		 */
-+		if (val & CPR3_IRQ_UP)
-+			dir = UP;
-+		else if (val & CPR3_IRQ_DOWN)
-+			dir = DOWN;
-+
-+		if (dir != NO_CHANGE) {
-+			for (i = 0; i < drv->desc->num_threads; i++) {
-+				thread = &drv->threads[i];
-+				cpr_scale(thread, dir);
-+			}
-+
-+			rc = cpr_commit_state(thread);
-+			if (rc)
-+				cpr_irq_clr_nack(thread);
-+			else
-+				cpr_irq_clr_ack(thread);
-+		} else if (val & CPR3_IRQ_MID) {
-+			dev_dbg(drv->dev, "IRQ occurred for Mid Flag\n");
-+		} else {
-+			dev_warn(drv->dev,
-+				 "IRQ occurred for unknown flag (%#08x)\n",
-+				 val);
-+			schedule_work(&thread->restart_work);
-+		}
++	/* Get a handle to the genpd virtual device */
++	genpd_opp_table = dev_pm_opp_attach_genpd(cpu_dev, cprh_genpd_names,
++						  &opp_virt_dev);
++	if (IS_ERR(genpd_opp_table)) {
++		ret = PTR_ERR(genpd_opp_table);
++		if (ret != -EPROBE_DEFER)
++			dev_err(&pdev->dev,
++				"Could not attach to pm_domain: %d\n", ret);
++		goto opp_dispose;
 +	}
 +
-+	mutex_unlock(&drv->lock);
-+
-+	return ret;
-+}
-+
-+static int cpr_switch(struct cpr_drv *drv)
-+{
-+	int i, ret;
-+	bool enabled = false;
-+
-+	if (drv->desc->cpr_type == CTRL_TYPE_CPRH)
-+		return 0;
-+
-+	for (i = 0; i < drv->desc->num_threads && !enabled; i++)
-+		enabled = drv->threads[i].enabled;
-+
-+	dev_vdbg(drv->dev, "%s: enabled = %d\n", __func__, enabled);
-+
-+	if (enabled == drv->enabled)
-+		return 0;
-+
-+	if (enabled) {
-+		ret = regulator_enable(drv->vreg);
-+		if (ret)
-+			return ret;
-+
-+		drv->enabled = enabled;
-+
-+		for (i = 0; i < drv->desc->num_threads; i++)
-+			if (drv->threads[i].corner)
-+				break;
-+
-+		if (i < drv->desc->num_threads) {
-+			cpr_irq_clr(&drv->threads[i]);
-+
-+			cpr_commit_state(&drv->threads[i]);
-+			cpr_ctl_enable(&drv->threads[i]);
-+		}
-+	} else {
-+		for (i = 0; i < drv->desc->num_threads && !enabled; i++)
-+			cpr_ctl_disable(&drv->threads[i]);
-+
-+		drv->enabled = enabled;
-+
-+		ret = regulator_disable(drv->vreg);
-+		if (ret < 0)
-+			return ret;
++	/* Get the count of available OPPs coming from the power domain */
++	gpd_opp_cnt = dev_pm_opp_get_opp_count(cpu_dev);
++	if (gpd_opp_cnt < 2) {
++		ret = gpd_opp_cnt > 0 ? -EINVAL : gpd_opp_cnt;
++		goto detach_gpd;
 +	}
 +
-+	return 0;
-+}
-+
-+/**
-+ * cpr_enable - Enables a CPR thread
-+ * @thread: Structure holding CPR thread-specific parameters
-+ *
-+ * Returns: Zero for success or negative number on errors.
-+ */
-+static int cpr_enable(struct cpr_thread *thread)
-+{
-+	struct cpr_drv *drv = thread->drv;
-+	int ret;
-+
-+	dev_dbg(drv->dev, "Enabling thread %d\n", thread->id);
-+
-+	mutex_lock(&drv->lock);
-+
-+	thread->enabled = true;
-+	ret = cpr_switch(thread->drv);
-+
-+	mutex_unlock(&drv->lock);
-+
-+	return ret;
-+}
-+
-+/**
-+ * cpr_disable - Disables a CPR thread
-+ * @thread: Structure holding CPR thread-specific parameters
-+ *
-+ * Returns: Zero for success or negative number on errors.
-+ */
-+static int cpr_disable(struct cpr_thread *thread)
-+{
-+	struct cpr_drv *drv = thread->drv;
-+	int ret;
-+
-+	dev_dbg(drv->dev, "Disabling thread %d\n", thread->id);
-+
-+	mutex_lock(&drv->lock);
-+
-+	thread->enabled = false;
-+	ret = cpr_switch(thread->drv);
-+
-+	mutex_unlock(&drv->lock);
-+
-+	return ret;
-+}
-+
-+/**
-+ * cpr_configure - Configure main HW parameters
-+ * @thread: Structure holding CPR thread-specific parameters
-+ *
-+ * This function configures the main CPR hardware parameters, such as
-+ * internal timers (and delays), sensor ownerships, activates and/or
-+ * deactivates cpr-threads and others, as one sequence for all of the
-+ * versions supported in this driver. By design, the function may
-+ * return a success earlier if the sequence for "a previous version"
-+ * has ended.
-+ *
-+ * NOTE: The CPR must be clocked before calling this function!
-+ *
-+ * Returns: Zero for success or negative number on errors.
-+ */
-+static int cpr_configure(struct cpr_thread *thread)
-+{
-+	struct cpr_drv *drv = thread->drv;
-+	const struct cpr_desc *desc = drv->desc;
-+	const struct cpr_thread_desc *tdesc = thread->desc;
-+	u32 val;
-+	int i;
-+
-+	/* Disable interrupt and CPR */
-+	cpr_irq_set(thread, 0);
-+	cpr_write(thread, CPR3_REG_CPR_CTL, 0);
-+
-+	/* Init and save gcnt */
-+	drv->gcnt = drv->ref_clk_khz * desc->gcnt_us;
-+	do_div(drv->gcnt, 1000);
-+
-+	/* Program the delay count for the timer */
-+	val = drv->ref_clk_khz * desc->timer_delay_us;
-+	do_div(val, 1000);
-+	if (desc->cpr_type == CTRL_TYPE_CPR3) {
-+		cpr_write(thread, CPR3_REG_CPR_TIMER_MID_CONT, val);
-+
-+		val = drv->ref_clk_khz * desc->timer_updn_delay_us;
-+		do_div(val, 1000);
-+		cpr_write(thread, CPR3_REG_CPR_TIMER_UP_DN_CONT, val);
-+	} else {
-+		cpr_write(thread, CPR3_REG_CPR_TIMER_AUTO_CONT, val);
-+	}
-+	dev_dbg(drv->dev, "Timer count: %#0x (for %d us)\n", val,
-+		desc->timer_delay_us);
-+
-+	/* Program the control register */
-+	val = desc->idle_clocks << CPR3_CPR_CTL_IDLE_CLOCKS_SHIFT
-+	    | desc->count_mode << CPR3_CPR_CTL_COUNT_MODE_SHIFT
-+	    | desc->count_repeat << CPR3_CPR_CTL_COUNT_REPEAT_SHIFT;
-+	cpr_write(thread, CPR3_REG_CPR_CTL, val);
-+
-+	/* Configure CPR default step quotients */
-+	val = tdesc->step_quot_init_min << CPR3_CPR_STEP_QUOT_MIN_SHIFT
-+	    | tdesc->step_quot_init_max << CPR3_CPR_STEP_QUOT_MAX_SHIFT;
-+
-+	cpr_write(thread, CPR3_REG_CPR_STEP_QUOT, val);
-+
-+	/*
-+	 * Configure the CPR sensor ownership always on thread 0
-+	 * TODO: SDM845 has different ownership for sensors!!
-+	 */
-+	for (i = tdesc->sensor_range_start; i < tdesc->sensor_range_end; i++)
-+		cpr_write(thread, CPR3_REG_SENSOR_OWNER(i), 0);
-+
-+	/* Program Consecutive Up & Down */
-+	val = desc->timer_cons_up << CPR3_THRESH_CONS_UP_SHIFT;
-+	val |= desc->timer_cons_down << CPR3_THRESH_CONS_DOWN_SHIFT;
-+	val |= desc->up_threshold << CPR3_THRESH_UP_THRESH_SHIFT;
-+	val |= desc->down_threshold << CPR3_THRESH_DOWN_THRESH_SHIFT;
-+	cpr_write(thread, CPR3_REG_THRESH(tdesc->hw_tid), val);
-+
-+	/* Mask all ring oscillators for all threads initially */
-+	cpr_write(thread, CPR3_REG_RO_MASK(tdesc->hw_tid), CPR3_RO_MASK);
-+
-+	/* HW Closed-loop control */
-+	if (desc->cpr_type == CTRL_TYPE_CPR3)
-+		cpr_write(thread, CPR3_REG_HW_CLOSED_LOOP_DISABLED,
-+			  !desc->hw_closed_loop_en);
-+	else
-+		cpr_masked_write(thread, CPR4_REG_MARGIN_ADJ_CTL,
-+				CPR4_MARGIN_ADJ_HW_CLOSED_LOOP_EN,
-+				desc->hw_closed_loop_en ?
-+				CPR4_MARGIN_ADJ_HW_CLOSED_LOOP_EN : 0);
-+
-+	/* Additional configuration for CPR4 and beyond */
-+	if (desc->cpr_type < CTRL_TYPE_CPR4)
-+		return 0;
-+
-+	/* Disable threads initially only on non-hardened CPR4 */
-+	if (desc->cpr_type == CTRL_TYPE_CPR4)
-+		cpr_masked_write(thread, CPR4_REG_CPR_MASK_THREAD(1),
-+				CPR4_CPR_MASK_THREAD_DISABLE_THREAD |
-+				CPR4_CPR_MASK_THREAD_RO_MASK4THREAD_MASK,
-+				CPR4_CPR_MASK_THREAD_DISABLE_THREAD |
-+				CPR4_CPR_MASK_THREAD_RO_MASK4THREAD_MASK);
-+
-+	if (tdesc->hw_tid > 0)
-+		cpr_masked_write(thread, CPR4_REG_MISC,
-+				 CPR4_MISC_RESET_STEP_QUOT_LOOP_EN |
-+				 CPR4_MISC_THREAD_HAS_ALWAYS_VOTE_EN,
-+				 CPR4_MISC_RESET_STEP_QUOT_LOOP_EN |
-+				 CPR4_MISC_THREAD_HAS_ALWAYS_VOTE_EN);
-+
-+	val = drv->vreg_step;
-+	do_div(val, 1000);
-+	cpr_masked_write(thread, CPR4_REG_MARGIN_ADJ_CTL,
-+			 CPR4_MARGIN_ADJ_PMIC_STEP_SIZE_MASK,
-+			 val << CPR4_MARGIN_ADJ_PMIC_STEP_SIZE_SHIFT);
-+
-+	cpr_masked_write(thread, CPR4_REG_SAW_ERROR_STEP_LIMIT,
-+			 CPR4_SAW_ERROR_STEP_LIMIT_DN_MASK,
-+			 desc->vreg_step_down_limit <<
-+			 CPR4_SAW_ERROR_STEP_LIMIT_DN_SHIFT);
-+
-+	cpr_masked_write(thread, CPR4_REG_SAW_ERROR_STEP_LIMIT,
-+			 CPR4_SAW_ERROR_STEP_LIMIT_UP_MASK,
-+			 desc->vreg_step_up_limit <<
-+			 CPR4_SAW_ERROR_STEP_LIMIT_UP_SHIFT);
-+
-+	cpr_masked_write(thread, CPR4_REG_MARGIN_ADJ_CTL,
-+			 CPR4_MARGIN_ADJ_PER_RO_KV_MARGIN_EN,
-+			 CPR4_MARGIN_ADJ_PER_RO_KV_MARGIN_EN);
-+
-+	if (tdesc->hw_tid > 0)
-+		cpr_masked_write(thread, CPR4_REG_CPR_TIMER_CLAMP,
-+				 CPR4_CPR_TIMER_CLAMP_THREAD_AGGREGATION_EN,
-+				 CPR4_CPR_TIMER_CLAMP_THREAD_AGGREGATION_EN);
-+
-+	/* Settling timer to account for one VDD supply step */
-+	if (desc->vdd_settle_time_us > 0) {
-+		u32 m = CPR4_MARGIN_TEMP_CORE_TIMERS_SETTLE_VOLTAGE_COUNT_MASK;
-+		u32 s = CPR4_MARGIN_TEMP_CORE_TIMERS_SETTLE_VOLTAGE_COUNT_SHFT;
-+
-+		cpr_masked_write(thread, CPR4_REG_MARGIN_TEMP_CORE_TIMERS,
-+				 m, desc->vdd_settle_time_us << s);
-+	}
-+
-+	/* Additional configuration for CPR-hardened */
-+	if (desc->cpr_type < CTRL_TYPE_CPRH)
-+		return 0;
-+
-+	/* Settling timer to account for one corner-switch request */
-+	if (desc->corner_settle_time_us > 0)
-+		cpr_masked_write(thread, drv->reg_ctl,
-+				 CPRH_CTL_MODE_SWITCH_DELAY_MASK,
-+				 desc->corner_settle_time_us <<
-+				 CPRH_CTL_MODE_SWITCH_DELAY_SHIFT);
-+
-+	/* Base voltage and multiplier values for CPRh internal calculations */
-+	cpr_masked_write(thread, drv->reg_ctl,
-+			 CPRH_CTL_BASE_VOLTAGE_MASK,
-+			 (DIV_ROUND_UP(desc->cpr_base_voltage,
-+				       drv->vreg_step) <<
-+			  CPRH_CTL_BASE_VOLTAGE_SHIFT));
-+
-+	cpr_masked_write(thread, drv->reg_ctl,
-+			 CPRH_CTL_VOLTAGE_MULTIPLIER_MASK,
-+			 DIV_ROUND_UP(drv->vreg_step, 1000) <<
-+			 CPRH_CTL_VOLTAGE_MULTIPLIER_SHIFT);
-+
-+	return 0;
-+}
-+
-+static int cpr_set_performance_state(struct generic_pm_domain *domain,
-+				     unsigned int state)
-+{
-+	struct cpr_thread *thread = container_of(domain, struct cpr_thread, pd);
-+	struct cpr_drv *drv = thread->drv;
-+	struct corner *corner, *end;
-+	int ret = 0;
-+
-+	/* On CPRhardened, performance states are managed in firmware */
-+	if (drv->desc->cpr_type == CTRL_TYPE_CPRH)
-+		return 0;
-+
-+	mutex_lock(&drv->lock);
-+
-+	dev_dbg(drv->dev,
-+		"setting perf state: %u (prev state: %u thread: %u)\n",
-+		state, cpr_get_cur_perf_state(thread), thread->id);
-+
-+	/*
-+	 * Determine new corner we're going to.
-+	 * Remove one since lowest performance state is 1.
-+	 */
-+	corner = thread->corners + state - 1;
-+	end = &thread->corners[thread->num_corners - 1];
-+	if (corner > end || corner < thread->corners) {
++	/* Find the APM threshold disabled OPP and "annotate" the voltage */
++	apm_opp = dev_pm_opp_find_freq_exact(cpu_dev, 0, false);
++	if (IS_ERR(apm_opp)) {
 +		ret = -EINVAL;
-+		goto unlock;
++		goto detach_gpd;
 +	}
 +
-+	cpr_ctl_disable(thread);
++	/* If we get no APM voltage, the system is going to be unstable */
++	apm_uV = dev_pm_opp_get_voltage(apm_opp);
++	if (apm_uV == 0) {
++		ret = -EINVAL;
++		goto detach_gpd;
++	}
++	*apm_vc = -1;
 +
-+	cpr_irq_clr(thread);
-+	if (thread->corner != corner)
-+		cpr_corner_restore(thread, corner);
-+
-+	ret = cpr_commit_state(thread);
-+	if (ret)
-+		goto unlock;
-+
-+	cpr_ctl_enable(thread);
-+unlock:
-+	mutex_unlock(&drv->lock);
-+
-+	dev_dbg(drv->dev,
-+		"set perf state %u on thread %u\n", state, thread->id);
-+
-+	return ret;
-+}
-+
-+/**
-+ * cpr3_adjust_quot - Adjust the closed-loop quotients
-+ * @thread: Structure holding CPR thread-specific parameters
-+ *
-+ * Calculates the quotient adjustment factor based on closed-loop
-+ * quotients and ring oscillator factor.
-+ *
-+ * Returns: Adjusted quotient
-+ */
-+static int cpr3_adjust_quot(int ring_osc_factor, int volt_closed_loop)
-+{
-+	s64 temp;
-+
-+	if (ring_osc_factor == 0 || volt_closed_loop == 0)
-+		return 0;
-+
-+	temp = (s64)(ring_osc_factor * volt_closed_loop);
-+	return (int)div_s64(temp, 1000000);
-+}
-+
-+/**
-+ * cpr_fuse_corner_init - Calculate fuse corner table
-+ * @thread: Structure holding CPR thread-specific parameters
-+ *
-+ * This function populates the fuse corners table by reading the
-+ * values from the fuses, eventually adjusting them with a fixed
-+ * per-corner offset and doing basic checks about them being
-+ * supported by the regulator that is assigned to this CPR - if
-+ * it is available (on CPR-Hardened, there is no usable vreg, as
-+ * that is protected by the hypervisor).
-+ *
-+ * Returns: Zero for success, negative number on error
-+ */
-+static int cpr_fuse_corner_init(struct cpr_thread *thread)
-+{
-+	struct cpr_drv *drv = thread->drv;
-+	const struct cpr_thread_desc *desc = thread->desc;
-+	const struct cpr_fuse *cpr_fuse = thread->cpr_fuses;
-+	struct fuse_corner_data *fdata;
-+	struct fuse_corner *fuse, *prev_fuse, *end;
-+	int i, ret;
-+
-+	/* Populate fuse_corner members */
-+	fuse = thread->fuse_corners;
-+	prev_fuse = &fuse[0];
-+	end = &fuse[desc->num_fuse_corners - 1];
-+	fdata = desc->fuse_corner_data;
-+
-+	for (i = 0; fuse <= end; fuse++, cpr_fuse++, i++, fdata++) {
-+		int factor = cpr_get_ro_factor(desc, i, fuse->ring_osc_idx);
-+
-+		ret = cpr_populate_fuse_common(drv->dev, fdata, cpr_fuse,
-+					       fuse, drv->vreg_step,
-+					       desc->init_voltage_width,
-+					       desc->init_voltage_step);
-+		if (ret)
-+			return ret;
-+
++	/*
++	 * Find the ACC threshold disabled OPP and "annotate" the voltage:
++	 * this is optional, as not every SoC needs it.
++	 */
++	acc_opp = dev_pm_opp_find_freq_exact(cpu_dev, 1, false);
++	if (IS_ERR(acc_opp)) {
++		acc_uV = ULONG_MAX;
++		*acc_vc = U8_MAX;
++	} else {
 +		/*
-+		 * Adjust the fuse quot with per-fuse-corner closed-loop
-+		 * voltage adjustment parameters.
++		 * If the ACC OPP is present, this means that we *have* to
++		 * set the relative corner on the OSM: if we cannot get the
++		 * voltage at that point, the CPU will inevitably freeze.
 +		 */
-+		fuse->quot += cpr3_adjust_quot(factor,
-+					       fdata->volt_cloop_adjust);
++		acc_uV = dev_pm_opp_get_voltage(acc_opp);
++		if (acc_uV == 0) {
++			ret = -EINVAL;
++			goto detach_gpd;
++		}
++		*acc_vc = -1;
++	}
 +
-+		/* CPRh: no regulator access... */
-+		if (drv->desc->cpr_type == CTRL_TYPE_CPRH)
-+			goto skip_pvs_restrict;
++	*hw_tbl = devm_kmalloc_array(&pdev->dev, gpd_opp_cnt,
++				     sizeof(**hw_tbl), GFP_KERNEL);
++	if (!hw_tbl) {
++		ret = -ENOMEM;
++		goto detach_gpd;
++	}
 +
-+		/* Re-check if corner voltage range is supported by regulator */
-+		ret = cpr_check_vreg_constraints(drv->dev, drv->vreg, fuse);
-+		if (ret)
-+			return ret;
++	for (i = 0, rate = 0; ; rate++, i++) {
++		struct qcom_cpufreq_hw_params *entry = *hw_tbl + i;
++		struct dev_pm_opp *genpd_opp;
++		struct device_node *np;
++		u32 pll_div, millivolts, f_src;
 +
-+skip_pvs_restrict:
-+		if (fuse->uV < prev_fuse->uV)
-+			fuse->uV = prev_fuse->uV;
-+		prev_fuse = fuse;
-+		dev_dbg(drv->dev,
-+			"fuse corner %d: [%d %d %d] RO%hhu quot %d\n",
-+			i, fuse->min_uV, fuse->uV, fuse->max_uV,
-+			fuse->ring_osc_idx, fuse->quot);
++		/* Find the next enabled OPP's frequency (ignores APM/ACC) */
++		genpd_opp = dev_pm_opp_find_freq_ceil(cpu_dev, &rate);
++		if (IS_ERR(genpd_opp))
++			break;
 +
-+		/* Check if constraints are valid */
-+		if (fuse->uV < fuse->min_uV || fuse->uV > fuse->max_uV) {
-+			dev_err(drv->dev,
-+				"fuse corner %d: Bad voltage range.\n", i);
++		/* Get mandatory and optional properties from the OPP DT */
++		np = dev_pm_opp_get_of_node(genpd_opp);
++		if (!np)
++			break;
++
++		if (of_property_read_u32(np, "qcom,pll-override",
++					 &entry->override_val)) {
++			of_node_put(np);
 +			return -EINVAL;
 +		}
++
++		if (of_property_read_u32(np, "qcom,spare-data",
++					 &entry->spare_val))
++			entry->spare_val = 0;
++
++		if (of_property_read_u32(np, "qcom,pll-div", &pll_div))
++			pll_div = 0;
++
++		of_node_put(np);
++
++		/* Get voltage in microvolts, then convert to millivolts */
++		millivolts = dev_pm_opp_get_voltage(genpd_opp);
++		if (millivolts >= apm_uV && *apm_vc < 0)
++			*apm_vc = i;
++		if (millivolts >= acc_uV && *acc_vc < 0)
++			*acc_vc = i;
++
++		do_div(millivolts, 1000);
++
++		if (millivolts < 150 || millivolts > 1400) {
++			dev_err(&pdev->dev,
++				"Read invalid voltage: %u.\n", millivolts);
++			return -EINVAL;
++		}
++
++		/* In the OSM firmware, "Virtual Corner" levels start from 0 */
++		entry->volt_lut_val = FIELD_PREP(LUT_VOLT_VC, i);
++		entry->volt_lut_val |= FIELD_PREP(LUT_VOLT, millivolts);
++
++		/* Only the first frequency can have alternate source */
++		f_src = i ? 1 : 0;
++		f_src <<= ffs(soc_data->reg_freq_lut_src_mask) - 1;
++		entry->freq_lut_val = f_src | div_u64(rate, xo_rate);
++		entry->freq_lut_val |= FIELD_PREP(LUT_CORE_COUNT, cpu_count);
++
++		/*
++		 * PLL divider is not always 0 and there is no way to determine
++		 * it automatically, as setting this value higher than DIV1
++		 * will make the OSM HW to effectively set the PLL at 2-4x
++		 * the CPU frequency and then divide the CPU clock by this div,
++		 * so this value is effectively used as both a multiplier and
++		 * divider.
++		 * This value cannot be calculated because it depends on
++		 * manual calibration and is (most probably) used to choose
++		 * a PLL frequency that gives the least possible jitter.
++		 */
++		entry->freq_lut_val |= FIELD_PREP(LUT_PLL_DIV, pll_div);
++
++		/*
++		 * MEM-ACC Virtual Corner threshold voltage: set the
++		 * acc_thresh to the "next different" spare_val, otherwise
++		 * set it to an invalid value, so that we can recognize it
++		 * and exclude it later, when this set of data will be used
++		 * for programming the OSM.
++		 */
++		if (entry->spare_val != prev_spare) {
++			prev_spare = entry->spare_val;
++			entry->acc_thresh = last_acc_corner;
++		} else {
++			entry->acc_thresh = SEQ_MEM_ACC_MAX_LEVELS + 1;
++		}
++
++		dev_dbg(&pdev->dev,
++			"[%d] freq=0x%x volt=0x%x override=0x%x spare=0x%x\n",
++			i, entry->freq_lut_val, entry->volt_lut_val,
++			entry->override_val, entry->spare_val);
++		dev_pm_opp_put(genpd_opp);
 +	}
 +
++	/*
++	 * If we've got a customized mem-acc corner but we couldn't
++	 * find any suitable crossover, or the corner is less than
++	 * the minimum amount of required corners for mem-acc scaling,
++	 * the values are not valid, hence fall back to LUT values.
++	 */
++	if (acc_uV != ULONG_MAX && *acc_vc < SEQ_MEM_ACC_MAX_LEVELS - 1) {
++		dev_dbg(&pdev->dev,
++			"MEM-ACC corner: invalid values VC%d %luuV\n",
++			*acc_vc, acc_uV);
++		*acc_vc = U8_MAX;
++	}
++
++	/*
++	 * If we have probed less params than what we need, then the
++	 * OPP table that we got from the genpd is malformed for some
++	 * reason: in this case, do not apply the table to the HW.
++	 */
++	if (i < gpd_opp_cnt) {
++		dev_err(&pdev->dev, "Got bad OPP table from power domain.\n");
++		ret = -EINVAL;
++		goto detach_gpd;
++	}
++
++detach_gpd:
++	dev_pm_opp_detach_genpd(genpd_opp_table);
++opp_dispose:
++	/*
++	 * Now that we're totally done with it, dispose of all the dynamic
++	 * OPPs in the table: like this, at the end of the OSM configuration
++	 * we are leaving it like it was magically configured by the TZ or
++	 * by the bootloader and using the rest of the driver as if this
++	 * programming phase has never happened in the OS, like new SoCs.
++	 * This also makes us able to not modify a single bit in the basic
++	 * OSM frequency request logic that was meant for the newest SoCs.
++	 */
++	dev_pm_opp_remove_all_dynamic(cpu_dev);
++	return ret < 0 ? ret : i;
++}
++
++static u32 qcom_cpufreq_acd_regbit(u8 acd_reg_offset)
++{
++	u32 regbit = acd_reg_offset;
++	do_div(regbit, 4);
++	return BIT(regbit);
++}
++
++static int qcom_cpufreq_hw_acd_write_autoxfer(struct qcom_cpufreq_data *data,
++					      void __iomem *acd_base, u32 val)
++{
++	const struct qcom_cpufreq_soc_data *sdata = data->soc_data;
++	const struct qcom_cpufreq_soc_acd_data *aregs = &sdata->acd_data;
++	u32 regval;
++	int retry = 3;
++
++	writel_relaxed(val, acd_base + aregs->auto_xfer_cfg_reg);
++
++	/* (Clear, then) Set AUTOXFER START */
++	writel_relaxed(0, acd_base + aregs->auto_xfer_reg);
++	writel_relaxed(1, acd_base + aregs->auto_xfer_reg);
++
++	/* Poll for status: if the first bit is set the transfer is done. */
++	do {
++		regval = readl_relaxed(acd_base + aregs->auto_xfer_sts_reg);
++		if (regval & BIT(0))
++			break;
++		udelay(1);
++	} while (--retry);
++
++	if (retry <= 0)
++		return -ETIMEDOUT;
 +	return 0;
 +}
 +
-+static void cpr3_restrict_corner(struct corner *corner, int threshold,
-+				 int hysteresis, int step)
++static int qcom_cpufreq_hw_acd_write_xfer(struct qcom_cpufreq_data *data,
++					  void __iomem *acd_base, u8 reg,
++					  u32 val)
 +{
-+	if (threshold > corner->min_uV && threshold <= corner->max_uV) {
-+		if (corner->uV >= threshold) {
-+			corner->min_uV = max(corner->min_uV,
-+					     threshold - hysteresis);
-+			if (corner->min_uV > corner->uV)
-+				corner->uV = corner->min_uV;
-+		} else {
-+			corner->max_uV = threshold;
-+			corner->max_uV -= step;
-+		}
-+	}
-+}
++	const struct qcom_cpufreq_soc_data *sdata = data->soc_data;
++	const struct qcom_cpufreq_soc_acd_data *aregs = &sdata->acd_data;
++	int retry = 2;
++	u32 regval;
 +
-+/*
-+ * cprh_corner_adjust_opps - Set voltage on each CPU OPP table entry
-+ *
-+ * On CPR-Hardened, the voltage level is controlled internally through
-+ * the OSM hardware: in order to initialize the latter, we have to
-+ * communicate the voltage to its driver, so that it will be able to
-+ * write the right parameters (as they have to be set both on the CPRh
-+ * and on the OSM) on it.
-+ * This function is called only for CPRh.
-+ *
-+ * Return: Zero for success, negative number for error.
-+ */
-+static int cprh_corner_adjust_opps(struct cpr_thread *thread)
-+{
-+	struct corner *corner = thread->corners;
-+	struct cpr_drv *drv = thread->drv;
-+	struct opp_table *tbl;
-+	int i, ret;
-+
-+	tbl = dev_pm_opp_get_opp_table(thread->attached_cpu_dev);
-+	if (IS_ERR(tbl))
-+		return PTR_ERR(tbl);
-+
-+	for (i = 0; i < thread->num_corners; i++) {
-+		ret = dev_pm_opp_adjust_voltage(thread->attached_cpu_dev,
-+						corner[i].freq,
-+						corner[i].uV,
-+						corner[i].min_uV,
-+						corner[i].max_uV);
-+		if (ret)
-+			break;
-+
-+		dev_dbg(drv->dev,
-+			"OPP voltage adjusted for %lu kHz, %d uV\n",
-+			corner[i].freq, corner[i].uV);
-+	}
-+
-+	dev_pm_opp_put_opp_table(tbl);
-+	return ret;
-+}
-+
-+/**
-+ * cpr3_corner_init - Calculate and set-up corners for the CPR HW
-+ * @thread: Structure holding CPR thread-specific parameters
-+ *
-+ * This function calculates all the corner parameters by comparing
-+ * and interpolating the values read from the various set-points
-+ * read from the fuses (also called "fuse corners") to generate and
-+ * program to the CPR a lookup table that describes each voltage
-+ * step, mapped to a performance level (or corner number).
-+ *
-+ * It also programs other essential parameters on the CPR and - if
-+ * we are dealing with CPR-Hardened, it will also enable the internal
-+ * interface between the Operating State Manager (OSM) and the CPRh
-+ * in order to achieve CPU DVFS.
-+ *
-+ * Returns: Zero for success, negative number on error
-+ */
-+static int cpr3_corner_init(struct cpr_thread *thread)
-+{
-+	struct cpr_drv *drv = thread->drv;
-+	const struct cpr_desc *desc = drv->desc;
-+	const struct cpr_thread_desc *tdesc = thread->desc;
-+	const struct cpr_fuse *fuses = thread->cpr_fuses;
-+	int i, ret, total_corners, extra_corners, level, scaling = 0;
-+	unsigned int fnum, fc;
-+	const char *quot_offset;
-+	const struct fuse_corner_data *fdata;
-+	struct fuse_corner *fuse, *prev_fuse;
-+	struct corner *corner, *prev_corner, *end;
-+	struct corner_data *cdata;
-+	struct dev_pm_opp *opp;
-+	bool apply_scaling;
-+	unsigned long freq;
-+	u32 ring_osc_mask = CPR3_RO_MASK, min_quotient = U32_MAX;
-+
-+	corner = thread->corners;
-+	prev_corner = &thread->corners[0];
-+	end = &corner[thread->num_corners - 1];
-+
-+	cdata = devm_kcalloc(drv->dev,
-+			     thread->num_corners + drv->extra_corners,
-+			     sizeof(struct corner_data),
-+			     GFP_KERNEL);
-+	if (!cdata)
-+		return -ENOMEM;
-+
-+	for (level = 1; level <= thread->num_corners; level++) {
-+		opp = dev_pm_opp_find_level_exact(&thread->pd.dev, level);
-+		if (IS_ERR(opp))
-+			return -EINVAL;
-+
-+		/*
-+		 * If there is only one specified qcom,opp-fuse-level, then
-+		 * it is assumed that this only one is global and valid for
-+		 * all IDs, so try to get the specific one but, on failure,
-+		 * go for the global one.
-+		 */
-+		fc = cpr_get_fuse_corner(opp, thread->id);
-+		if (fc == 0) {
-+			fc = cpr_get_fuse_corner(opp, 0);
-+			if (fc == 0) {
-+				dev_err(drv->dev,
-+					"qcom,opp-fuse-level is missing!\n");
-+				dev_pm_opp_put(opp);
-+				return -EINVAL;
-+			}
-+		}
-+		fnum = fc - 1;
-+
-+		freq = cpr_get_opp_hz_for_req(opp, thread->attached_cpu_dev);
-+		if (!freq) {
-+			thread->num_corners = max(level - 1, 0);
-+			end = &thread->corners[thread->num_corners - 1];
-+			break;
-+		}
-+
-+		/*
-+		 * If any post-vadj (open/closed loop) is not specified, then
-+		 * it's zero, meaning that it is not required for this corner.
-+		 */
-+		cpr_get_corner_post_vadj(opp, thread->id,
-+					 &cdata[level - 1].oloop_vadj,
-+					 &cdata[level - 1].cloop_vadj);
-+		cdata[level - 1].fuse_corner = fnum;
-+		cdata[level - 1].freq = freq;
-+
-+		fuse = &thread->fuse_corners[fnum];
-+		dev_dbg(drv->dev, "freq: %lu level: %u fuse level: %u\n",
-+			freq, dev_pm_opp_get_level(opp) - 1, fnum);
-+		if (freq > fuse->max_freq)
-+			fuse->max_freq = freq;
-+		dev_pm_opp_put(opp);
-+
-+		/*
-+		 * Make sure that the frequencies in the table are in ascending
-+		 * order, as this is critical for the algorithm to work.
-+		 */
-+		if (cdata[level - 2].freq > freq) {
-+			dev_err(drv->dev,
-+				"Frequency table not in ascending order.\n");
-+			return -EINVAL;
-+		}
-+	}
-+
-+	if (thread->num_corners < 2) {
-+		dev_err(drv->dev, "need at least 2 OPPs to use CPR\n");
-+		return -EINVAL;
-+	}
++	/* Write to the register, then initiate manual transfer */
++	writel_relaxed(val, acd_base + reg);
 +
 +	/*
-+	 * Get the quotient adjustment scaling factor, according to:
-+	 *
-+	 * scaling = min(1000 * (QUOT(corner_N) - QUOT(corner_N-1))
-+	 *		/ (freq(corner_N) - freq(corner_N-1)), max_factor)
-+	 *
-+	 * QUOT(corner_N):	quotient read from fuse for fuse corner N
-+	 * QUOT(corner_N-1):	quotient read from fuse for fuse corner (N - 1)
-+	 * freq(corner_N):	max frequency in MHz supported by fuse corner N
-+	 * freq(corner_N-1):	max frequency in MHz supported by fuse corner
-+	 *			 (N - 1)
-+	 *
-+	 * Then walk through the corners mapped to each fuse corner
-+	 * and calculate the quotient adjustment for each one using the
-+	 * following formula:
-+	 *
-+	 * quot_adjust = (freq_max - freq_corner) * scaling / 1000
-+	 *
-+	 * freq_max: max frequency in MHz supported by the fuse corner
-+	 * freq_corner: frequency in MHz corresponding to the corner
-+	 * scaling: calculated from above equation
-+	 *
-+	 *
-+	 *     +                           +
-+	 *     |                         v |
-+	 *   q |           f c           o |           f c
-+	 *   u |         c               l |         c
-+	 *   o |       f                 t |       f
-+	 *   t |     c                   a |     c
-+	 *     | c f                     g | c f
-+	 *     |                         e |
-+	 *     +---------------            +----------------
-+	 *       0 1 2 3 4 5 6               0 1 2 3 4 5 6
-+	 *          corner                      corner
-+	 *
-+	 *    c = corner
-+	 *    f = fuse corner
-+	 *
-+	 */
-+	for (apply_scaling = false, i = 0; corner <= end; corner++, i++) {
-+		unsigned long freq_diff_mhz;
-+		int ro_fac, vadj, prev_quot;
-+
-+		fnum = cdata[i].fuse_corner;
-+		fdata = &tdesc->fuse_corner_data[fnum];
-+		quot_offset = fuses[fnum].quotient_offset;
-+		fuse = &thread->fuse_corners[fnum];
-+		ring_osc_mask &= (u16)(~BIT(fuse->ring_osc_idx));
-+		if (fnum)
-+			prev_fuse = &thread->fuse_corners[fnum - 1];
-+		else
-+			prev_fuse = NULL;
-+
-+		corner->fuse_corner = fuse;
-+		corner->freq = cdata[i].freq;
-+		corner->uV = fuse->uV;
-+
-+		if (prev_fuse) {
-+			if (prev_fuse->ring_osc_idx == fuse->ring_osc_idx)
-+				quot_offset = NULL;
-+
-+			scaling = cpr_calculate_scaling(quot_offset, drv->dev,
-+							fdata, corner);
-+			if (scaling < 0)
-+				return scaling;
-+
-+			freq_diff_mhz = fuse->max_freq - corner->freq;
-+			do_div(freq_diff_mhz, 1000000); /* now in MHz */
-+
-+			corner->quot_adjust = scaling * freq_diff_mhz;
-+			do_div(corner->quot_adjust, 1000);
-+
-+			/* Fine-tune QUOT (closed-loop) based on fixed values */
-+			ro_fac = cpr_get_ro_factor(tdesc, fnum, fuse->ring_osc_idx);
-+			vadj = cdata[i].cloop_vadj;
-+			corner->quot_adjust -= cpr3_adjust_quot(ro_fac, vadj);
-+			dev_vdbg(drv->dev,
-+				 "Quot fine-tuning to %d for post-vadj=%d\n",
-+				 corner->quot_adjust, vadj);
-+
-+			/*
-+			 * Make sure that we scale (up) monotonically.
-+			 * P.S.: Fuse quots can never be descending.
-+			 */
-+			prev_quot = prev_corner->fuse_corner->quot;
-+			prev_quot -= prev_corner->quot_adjust;
-+			if (fuse->quot - corner->quot_adjust < prev_quot) {
-+				int new_adj = prev_corner->fuse_corner->quot;
-+				new_adj -= fuse->quot;
-+				dev_vdbg(drv->dev,
-+					 "Monotonic increase forced: %d->%d\n",
-+					 corner->quot_adjust, new_adj);
-+				corner->quot_adjust = new_adj;
-+			}
-+
-+			corner->uV = cpr_interpolate(corner,
-+						     drv->vreg_step, fdata);
-+		} else if (corner->freq == fuse->max_freq) {
-+			/* This is a fuse corner; don't scale anything */
-+			apply_scaling = false;
-+		}
-+		/* Negative fuse quotients are nonsense. */
-+		if (fuse->quot < corner->quot_adjust)
-+			return -EINVAL;
-+
-+		min_quotient = min(min_quotient,
-+				   (u32)(fuse->quot - corner->quot_adjust));
-+
-+		/* Fine-tune voltages (open-loop) based on fixed values */
-+		corner->uV += cdata[i].oloop_vadj;
-+		dev_dbg(drv->dev,
-+			 "Voltage fine-tuning to %d for post-vadj=%d\n",
-+			 corner->uV, cdata[i].oloop_vadj);
-+
-+		corner->max_uV = fuse->max_uV;
-+		corner->min_uV = fuse->min_uV;
-+		corner->uV = clamp(corner->uV, corner->min_uV, corner->max_uV);
-+		dev_vdbg(drv->dev, "Clamped after interpolation: [%d %d %d]\n",
-+			corner->min_uV, corner->uV, corner->max_uV);
-+
-+		/* Make sure that we scale monotonically here, too. */
-+		if (corner->uV < prev_corner->uV)
-+			corner->uV = prev_corner->uV;
-+
-+		corner->last_uV = corner->uV;
-+
-+		/* Reduce the ceiling voltage if needed */
-+		if (desc->reduce_to_corner_uV && corner->uV < corner->max_uV)
-+			corner->max_uV = corner->uV;
-+		else if (desc->reduce_to_fuse_uV && fuse->uV < corner->max_uV)
-+			corner->max_uV = max(corner->min_uV, fuse->uV);
-+
-+		corner->min_uV = max(corner->max_uV - fdata->range_uV,
-+				     corner->min_uV);
-+
-+		/*
-+		 * Adjust per-corner floor and ceiling voltages so that
-+		 * they do not overlap the memory Array Power Mux (APM)
-+		 * nor the Memory Accelerator (MEM-ACC) threshold voltages.
-+		 */
-+		if (desc->apm_threshold)
-+			cpr3_restrict_corner(corner, desc->apm_threshold,
-+					     desc->apm_hysteresis,
-+					     drv->vreg_step);
-+		if (desc->mem_acc_threshold)
-+			cpr3_restrict_corner(corner, desc->mem_acc_threshold,
-+					     0, drv->vreg_step);
-+
-+		prev_corner = corner;
-+		dev_dbg(drv->dev, "corner %d: [%d %d %d] scaling %d quot %d\n", i,
-+			corner->min_uV, corner->uV, corner->max_uV, scaling,
-+			fuse->quot - corner->quot_adjust);
-+	}
-+
-+	/* Additional setup for CPRh only */
-+	if (desc->cpr_type < CTRL_TYPE_CPRH)
-+		return 0;
-+
-+	/* If the OPPs can't be adjusted, programming the CPRh is useless */
-+	ret = cprh_corner_adjust_opps(thread);
-+	if (ret) {
-+		dev_err(drv->dev, "Cannot adjust CPU OPP voltages: %d\n", ret);
-+		return ret;
-+	}
-+
-+	total_corners = thread->num_corners;
-+	extra_corners = drv->extra_corners;
-+
-+	/* If the APM extra corner exists, add it now. */
-+	if (desc->apm_crossover && desc->apm_threshold && extra_corners) {
-+		/* Program the APM crossover corner on the CPR-Hardened */
-+		thread->corners[total_corners].uV = desc->apm_crossover;
-+		thread->corners[total_corners].min_uV = desc->apm_crossover;
-+		thread->corners[total_corners].max_uV = desc->apm_crossover;
-+		thread->corners[total_corners].is_open_loop = true;
-+
-+		/*
-+		 * Also add and disable an opp with zero frequency: other
-+		 * drivers will need to know what is the APM *threshold*
-+		 * voltage.
-+		 */
-+		ret = dev_pm_opp_add(thread->attached_cpu_dev, 0,
-+				     desc->apm_threshold);
-+		if (ret)
-+			return ret;
-+
-+		ret = dev_pm_opp_disable(thread->attached_cpu_dev, 0);
-+		if (ret)
-+			return ret;
-+
-+		dev_dbg(drv->dev, "corner %d (APM): [%d %d %d] Open-Loop\n",
-+			total_corners, desc->apm_crossover,
-+			desc->apm_crossover, desc->apm_crossover);
-+
-+		total_corners++;
-+		extra_corners--;
-+	}
-+
-+	if (desc->mem_acc_threshold && extra_corners) {
-+		/* Program the Memory Accelerator threshold corner to CPRh */
-+		thread->corners[total_corners].uV = desc->mem_acc_threshold;
-+		thread->corners[total_corners].min_uV = desc->mem_acc_threshold;
-+		thread->corners[total_corners].max_uV = desc->mem_acc_threshold;
-+		thread->corners[total_corners].is_open_loop = true;
-+
-+		/*
-+		 * Add and disable an opp with zero frequency: other
-+		 * drivers will also need to know about any mem-acc
-+		 * threshold to respect.
-+		 */
-+		ret = dev_pm_opp_add(thread->attached_cpu_dev, 1,
-+				     desc->mem_acc_threshold);
-+		if (ret)
-+			return ret;
-+
-+		ret = dev_pm_opp_disable(thread->attached_cpu_dev, 1);
-+		if (ret)
-+			return ret;
-+
-+		dev_dbg(drv->dev, "corner %d (MEMACC): [%d %d %d] Open-Loop\n",
-+			total_corners, desc->mem_acc_threshold,
-+			desc->mem_acc_threshold, desc->mem_acc_threshold);
-+
-+		total_corners++;
-+		extra_corners--;
-+	}
-+
-+	/*
-+	 * If there are any extra corners left, it means that even though we
-+	 * expect to fill in both APM and MEM-ACC crossovers, one couldn't
-+	 * satisfy requirements, which means that the specified parameters
-+	 * are wrong: in this case, inform the user and bail out, otherwise
-+	 * if we go on writing the (invalid) table to the CPR-Hardened, the
-+	 * hardware (in this case, the CPU) will surely freeze and crash.
-+	 */
-+	if (unlikely(extra_corners)) {
-+		dev_err(drv->dev, "APM/MEM-ACC corners: bad parameters.\n");
-+		return -EINVAL;
-+	}
-+	/* Reassign extra_corners, as we have to exclude delta_quot for them */
-+	extra_corners = drv->extra_corners;
-+
-+	/* Disable the interface between OSM and CPRh */
-+	cpr_masked_write(thread, drv->reg_ctl,
-+			 CPRH_CTL_OSM_ENABLED, 0);
-+
-+	/* Program the GCNT before unmasking ring oscillator(s) */
-+	for (i = 0; i < CPR3_RO_COUNT; i++) {
-+		if (!(ring_osc_mask & BIT(i))) {
-+			cpr_write(thread, CPR3_REG_GCNT(i), drv->gcnt);
-+			dev_vdbg(drv->dev, "RO%d gcnt=%d\n", i, drv->gcnt);
-+		}
-+	}
-+
-+	/*
-+	 * Unmask the ring oscillator(s) that we're going to use: it seems
-+	 * to be mandatory to do this *before* sending the rest of the
-+	 * CPRhardened specific configuration.
-+	 */
-+	dev_dbg(drv->dev,
-+		"Unmasking ring oscillators with mask 0x%x\n", ring_osc_mask);
-+	cpr_write(thread, CPR3_REG_RO_MASK(tdesc->hw_tid), ring_osc_mask);
-+
-+	/* Setup minimum quotients for ring oscillators */
-+	for (i = 0; i < CPR3_RO_COUNT; i++) {
-+		u32 tgt_quot_reg = CPR3_REG_TARGET_QUOT(tdesc->hw_tid, i);
-+		u32 tgt_quot_val = 0;
-+
-+		if (!(ring_osc_mask & BIT(i)))
-+			tgt_quot_val = min_quotient;
-+
-+		cpr_write(thread, tgt_quot_reg, tgt_quot_val);
-+		dev_vdbg(drv->dev,
-+			 "Programmed min quotient %u for Ring Oscillator %d\n",
-+			 tgt_quot_val, tgt_quot_reg);
-+	}
-+
-+	for (i = 0; i < total_corners; i++) {
-+		int volt_oloop_steps, volt_floor_steps, delta_quot_steps;
-+		int ring_osc, min_quot_val;
-+		u32 val;
-+
-+		fnum = cdata[i].fuse_corner;
-+		fuse = &thread->fuse_corners[fnum];
-+
-+		val = thread->corners[i].uV - desc->cpr_base_voltage;
-+		volt_oloop_steps = DIV_ROUND_UP(val, drv->vreg_step);
-+
-+		val = thread->corners[i].min_uV - desc->cpr_base_voltage;
-+		volt_floor_steps = DIV_ROUND_UP(val, drv->vreg_step);
-+
-+		if (i >= (total_corners - extra_corners)) {
-+			delta_quot_steps = 0;
-+			min_quot_val = 0;
-+		} else {
-+			min_quot_val = min_quotient;
-+			val = fuse->quot - thread->corners[i].quot_adjust;
-+			val -= min_quotient;
-+			delta_quot_steps = DIV_ROUND_UP(val,
-+						CPRH_DELTA_QUOT_STEP_FACTOR);
-+		}
-+
-+		/*
-+		 * If we are accessing corners that are not used as
-+		 * an active DCVS set-point, then always select RO 0
-+		 * and zero out the delta quotient.
-+		 */
-+		if (i >= thread->num_corners) {
-+			ring_osc = 0;
-+			delta_quot_steps = 0;
-+		} else {
-+			ring_osc = fuse->ring_osc_idx;
-+		}
-+
-+		if (volt_oloop_steps > CPRH_CORNER_INIT_VOLTAGE_MAX_VALUE  ||
-+		    volt_floor_steps > CPRH_CORNER_FLOOR_VOLTAGE_MAX_VALUE ||
-+		    delta_quot_steps > CPRH_CORNER_QUOT_DELTA_MAX_VALUE) {
-+			dev_err(drv->dev,
-+				"Invalid cfg: oloop=%d, floor=%d, delta=%d\n",
-+				volt_oloop_steps, volt_floor_steps,
-+				delta_quot_steps);
-+			return -EINVAL;
-+		}
-+		/* Green light: Go, Go, Go! */
-+
-+		/* Set number of open-loop steps */
-+		val = volt_oloop_steps << CPRH_CORNER_INIT_VOLTAGE_SHIFT;
-+		val &= CPRH_CORNER_INIT_VOLTAGE_MASK;
-+
-+		/* Set number of floor voltage steps */
-+		val |= (volt_floor_steps << CPRH_CORNER_FLOOR_VOLTAGE_SHIFT) &
-+		       CPRH_CORNER_FLOOR_VOLTAGE_MASK;
-+
-+		/* Set number of target quotient delta steps */
-+		val |= (delta_quot_steps << CPRH_CORNER_QUOT_DELTA_SHIFT) &
-+		       CPRH_CORNER_QUOT_DELTA_MASK;
-+
-+		/* Select ring oscillator for this corner */
-+		val |= (ring_osc << CPRH_CORNER_RO_SEL_SHIFT) &
-+		       CPRH_CORNER_RO_SEL_MASK;
-+
-+		/* Open loop corner is usually APM/ACC crossover */
-+		if (thread->corners[i].is_open_loop) {
-+			dev_dbg(drv->dev,
-+				"Disabling Closed-Loop on corner %d\n", i);
-+			val |= CPRH_CORNER_CPR_CL_DISABLE;
-+		}
-+		cpr_write(thread, CPRH_REG_CORNER(drv, tdesc->hw_tid, i), val);
-+
-+		dev_dbg(drv->dev,
-+			"steps [%d]: open-loop %d, floor %d, delta_quot %d\n",
-+			i, volt_oloop_steps, volt_floor_steps,
-+			delta_quot_steps);
-+	}
-+
-+	/* YAY! Setup is done! Enable the internal loop to start CPR. */
-+	cpr_masked_write(thread, CPR3_REG_CPR_CTL,
-+			CPR3_CPR_CTL_LOOP_EN_MASK,
-+			CPR3_CPR_CTL_LOOP_EN_MASK);
-+
-+	/*
-+	 * Make sure that all the writes go through before enabling
-+	 * internal communication between the OSM and the CPRh
-+	 * controllers, otherwise there is a high risk of hardware
-+	 * lockups due to under-voltage for the selected CPU clock.
-+	 *
-+	 * Please note that the CPR-hardened gets set-up in Linux but
-+	 * then gets actually used in firmware (and only by the OSM);
-+	 * after handing it off we will have no more control on it,
-+	 * hence the only way to get things up properly for sure here
-+	 * is a write barrier.
++	 * Make sure that the write goes through, otherwise the local
++	 * transfer process will wrongly copy the old value.
 +	 */
 +	wmb();
 +
-+	/* Enable the interface between OSM and CPRh */
-+	cpr_masked_write(thread, drv->reg_ctl,
-+			 CPRH_CTL_OSM_ENABLED,
-+			 CPRH_CTL_OSM_ENABLED);
++	/* Clear write control register */
++	writel_relaxed(0, acd_base + aregs->write_ctl_reg);
 +
-+	/* On success, free cdata manually */
-+	devm_kfree(drv->dev, cdata);
++	regval = (reg / 4) << ACD_WRITE_CTL_SELECT_SHIFT;
++	regval |= ACD_WRITE_CTL_UPDATE_EN;
++	writel_relaxed(regval, acd_base + aregs->write_ctl_reg);
++
++	/* Wait until ACD Local Transfer is done */
++	do {
++		regval = readl_relaxed(acd_base + aregs->write_sts_reg);
++		if (regval & qcom_cpufreq_acd_regbit(reg))
++			break;
++		udelay(1);
++	} while (--retry);
++
++	if (retry <= 0)
++		return -ETIMEDOUT;
 +	return 0;
 +}
 +
 +/**
-+ * cpr3_init_parameters - Initialize CPR global parameters
-+ * @drv: Main driver structure
++ * qcom_cpufreq_hw_acd_init - Initialize ACD params in the OSM
++ * @cpu_dev:   CPU device
++ * @policy:    CPUFreq policy structure
++ * @index:     Instance number (CPU cluster number)
 + *
-+ * Initial "integrity" checks and setup for the thread-independent parameters.
++ * On some SoCs it is required to send the ACD configuration parameters
++ * to the OSM. This function takes the parameters from the SoC specific
++ * configuration and writes them only if a "osm-acdN" iospace has been
++ * declared (hence, it's present).
 + *
-+ * Returns: Zero for success, negative number on error
++ * Returns: Zero for success, otherwise negative number on error.
 + */
-+static int cpr3_init_parameters(struct cpr_drv *drv)
++static int qcom_cpufreq_hw_acd_init(struct device *cpu_dev,
++				    struct cpufreq_policy *policy,
++				    int index)
 +{
-+	const struct cpr_desc *desc = drv->desc;
-+	struct clk *clk;
++	struct platform_device *pdev = cpufreq_get_driver_data();
++	struct qcom_cpufreq_data *ddata = policy->driver_data;
++	const struct qcom_cpufreq_soc_data *sdata = ddata->soc_data;
++	const struct qcom_cpufreq_soc_acd_data *aregs = &sdata->acd_data;
++	const char *acd_resname;
++	void __iomem *acd_base;
++	u32 rmask;
++	int ret;
 +
-+	clk = devm_clk_get(drv->dev, "ref");
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
++	acd_resname = kasprintf(GFP_KERNEL, "osm-acd%d", index);
++	if (!acd_resname)
++		return -ENOMEM;
 +
-+	drv->ref_clk_khz = clk_get_rate(clk);
-+	do_div(drv->ref_clk_khz, 1000);
++	acd_base = devm_platform_ioremap_resource_byname(pdev, acd_resname);
++	kfree(acd_resname);
++	if (IS_ERR(acd_base)) {
++		dev_vdbg(cpu_dev, "Skipping ACD initialization.\n");
++		return 0;
++	}
 +
-+	/* On CPRh this clock is not always-on... */
-+	if (desc->cpr_type == CTRL_TYPE_CPRH)
-+		clk_prepare_enable(clk);
-+	else
-+		devm_clk_put(drv->dev, clk);
++	writel_relaxed(aregs->tl_delay_val, acd_base + aregs->tl_delay_reg);
++	writel_relaxed(aregs->acd_ctrl_val, acd_base + aregs->acd_ctrl_reg);
++	writel_relaxed(aregs->softstart_val, acd_base + aregs->softstart_reg);
++	writel_relaxed(aregs->ext_intf0_val, acd_base + aregs->ext_intf_reg);
++	writel_relaxed(aregs->auto_xfer_val,
++		       acd_base + aregs->auto_xfer_ctl_reg);
++	/*
++	 * Before initiating register auto transfer, make sure that all
++	 * the writes go through, otherwise bad values will be transferred.
++	 */
++	wmb();
 +
-+	if (desc->timer_cons_up > CPR3_THRESH_CONS_UP_MASK ||
-+	    desc->timer_cons_down > CPR3_THRESH_CONS_DOWN_MASK ||
-+	    desc->up_threshold > CPR3_THRESH_UP_THRESH_MASK ||
-+	    desc->down_threshold > CPR3_THRESH_DOWN_THRESH_MASK ||
-+	    desc->idle_clocks > CPR3_CPR_CTL_IDLE_CLOCKS_MASK ||
-+	    desc->count_mode > CPR3_CPR_CTL_COUNT_MODE_MASK ||
-+	    desc->count_repeat > CPR3_CPR_CTL_COUNT_REPEAT_MASK)
++	rmask = qcom_cpufreq_acd_regbit(aregs->acd_ctrl_reg) |
++		qcom_cpufreq_acd_regbit(aregs->tl_delay_reg) |
++		qcom_cpufreq_acd_regbit(aregs->softstart_reg) |
++		qcom_cpufreq_acd_regbit(aregs->ext_intf_reg);
++	ret = qcom_cpufreq_hw_acd_write_autoxfer(ddata, acd_base, rmask);
++	if (ret)
++		return ret;
++
++	/* Switch CPUSS clock source to ACD clock */
++	ret = qcom_cpufreq_hw_acd_write_xfer(ddata, acd_base,
++					     aregs->gfmux_cfg_reg, 1);
++	if (ret)
++		return ret;
++
++	/* (Set, then) Clear DCVS_SW */
++	ret = qcom_cpufreq_hw_acd_write_xfer(ddata, acd_base,
++					     aregs->dcvs_sw_reg, 1);
++	if (ret)
++		return ret;
++	ret = qcom_cpufreq_hw_acd_write_xfer(ddata, acd_base,
++					     aregs->dcvs_sw_reg, 0);
++	if (ret)
++		return ret;
++
++	/* Wait for clock switch time */
++	udelay(1);
++
++	/* Program the final ACD external interface */
++	ret = qcom_cpufreq_hw_acd_write_xfer(ddata, acd_base,
++					     aregs->ext_intf_reg,
++					     aregs->ext_intf1_val);
++	if (ret)
++		return ret;
++
++	/* Initiate transfer of the final ACD value */
++	rmask |= qcom_cpufreq_acd_regbit(aregs->gfmux_cfg_reg);
++	writel_relaxed(rmask, acd_base + aregs->auto_xfer_cfg_reg);
++
++	/* Wait for ACD to stabilize. Same wait as the OSM boot time... */
++	udelay(OSM_BOOT_TIME_US);
++	return ret;
++}
++
++/**
++ * qcom_cpufreq_hw_write_lut - Write Lookup Table params to the OSM
++ * @cpu_dev:   CPU device
++ * @policy:    CPUFreq policy structure
++ * @cpu_count: Number of CPUs in the frequency domain
++ * @index:     Instance number (CPU cluster number)
++ *
++ * Program all the Lookup Table (LUT) entries and related thresholds
++ * to the Operating State Manager on platforms where the same hasn't
++ * been done already by the bootloader or TrustZone before booting
++ * the operating system's kernel;
++ * On these platforms, write access to the OSM is (obviously) not
++ * blocked by the hypervisor.
++ *
++ * Returns: Zero for success, otherwise negative number on error.
++ */
++static int qcom_cpufreq_hw_write_lut(struct device *cpu_dev,
++				     struct cpufreq_policy *policy,
++				     int cpu_count, int index)
++{
++	struct platform_device *pdev = cpufreq_get_driver_data();
++	struct qcom_cpufreq_data *ddata = policy->driver_data;
++	const struct qcom_cpufreq_soc_data *sdata = ddata->soc_data;
++	const struct qcom_cpufreq_soc_setup_data *sregs = &sdata->setup_regs;
++	struct qcom_cpufreq_hw_params *hw_tbl;
++	struct resource *osm_rsrc;
++	const char *osm_resname;
++	u32 sreg, seq_addr, acc_lval = 0, last_spare = 1;
++	int apm_vc = INT_MAX, acc_vc = U8_MAX, acc_idx = 0;
++	int acc_val[SEQ_MEM_ACC_MAX_LEVELS];
++	int i, ret, num_entries;
++
++	osm_resname = kasprintf(GFP_KERNEL, "osm-domain%d", index);
++	if (!osm_resname)
++		return -ENOMEM;
++
++	/*
++	 * On some SoCs the OSM is not getting programmed from bootloader
++	 * and needs to be done here: in this case, we need to retrieve
++	 * the base physical address for the "Sequencer", so we will get
++	 * the OSM base phys and apply the sequencer offset.
++	 *
++	 * Note: We are not remapping this iospace because we are really
++	 *       sending the physical address through SCM calls later.
++	 */
++	osm_rsrc = platform_get_resource_byname(pdev, IORESOURCE_MEM,
++						osm_resname);
++	kfree(osm_resname);
++
++	if (!osm_rsrc)
++		return -ENODEV;
++
++	seq_addr = osm_rsrc->start + sregs->reg_osm_sequencer;
++
++	num_entries = qcom_cpufreq_gen_params(cpu_dev, ddata, &hw_tbl,
++					      &apm_vc, &acc_vc, cpu_count);
++	if (num_entries < 0)
++		return num_entries;
++
++	for (i = 0; i < LUT_MAX_ENTRIES; i++) {
++		struct qcom_cpufreq_hw_params *entry;
++		int pos = i * sdata->lut_row_size;
++
++		/*
++		 * If we have reached the end of the params table, write
++		 * the last valid entry until the end of the OSM table.
++		 */
++		if (i < num_entries)
++			entry = &hw_tbl[i];
++		else
++			entry = &hw_tbl[num_entries - 1];
++
++		writel_relaxed(i, ddata->base + sdata->reg_index + pos);
++
++		writel_relaxed(entry->volt_lut_val,
++			       ddata->base + sdata->reg_volt_lut + pos);
++
++		writel_relaxed(entry->freq_lut_val,
++			       ddata->base + sdata->reg_freq_lut + pos);
++
++		writel_relaxed(entry->override_val,
++			       ddata->base + sregs->reg_override + pos);
++
++		writel_relaxed(entry->spare_val,
++			       ddata->base + sregs->reg_spare + pos);
++
++		dev_dbg(cpu_dev,
++			"Writing [%d] v:0x%x f:0x%x ovr:0x%x s:0x%x\n", i,
++			entry->volt_lut_val, entry->freq_lut_val,
++			entry->override_val, entry->spare_val);
++
++		/*
++		 * MEM-ACC Virtual Corner threshold voltage: this gets set
++		 * as the pairs of corners in which there is a transition
++		 * between one MEM-ACC level and the next one.
++		 *
++		 * Notes: The spare_val can never be zero;
++		 *        The first spare_val is always 1;
++		 *        The maximum number of pairs is two (four registers).
++		 *
++		 * Example: (C = Corner Level - M = MEM-ACC Level)
++		 *          C0 M1 - C1 M1 - C2 M2 - C3 M2 - C4 M2 - C5 M3
++		 *          Pairs: 1-2, 4-5
++		 */
++		if (entry->spare_val <= last_spare ||
++		    acc_idx >= SEQ_MEM_ACC_MAX_LEVELS - 1)
++			continue;
++
++		/* Standard mem-acc pairs using spare_val LUT crossovers */
++		last_spare = entry->spare_val;
++		acc_val[acc_idx] = i - 1;
++		acc_idx++;
++		acc_val[acc_idx] = i;
++		acc_idx++;
++	}
++
++	/* Sanity check: we *must* have two mem-acc crossovers (four values) */
++	if (acc_idx < SEQ_MEM_ACC_MAX_LEVELS - 1)
 +		return -EINVAL;
 +
 +	/*
-+	 * Read the CPR version register only from CPR3 onwards:
-+	 * this is needed to get the additional register offsets.
-+	 *
-+	 * Note: When threaded, even if multi-controller, there
-+	 *       is no chance to have different versions at the
-+	 *       same time in the same domain, so it is safe to
-+	 *       check this only on the first controller/thread.
++	 * Customized mem-acc corners, if any; in this case, the last corner
++	 * in the external (CPRh) LUT is this one, placed after the APM one.
 +	 */
-+	drv->cpr_hw_rev = cpr_read(&drv->threads[0],
-+				   CPR3_REG_CPR_VERSION);
-+	dev_dbg(drv->dev,
-+		"CPR hardware revision: 0x%x\n", drv->cpr_hw_rev);
++	if (acc_vc != U8_MAX) {
++		sreg = SEQUENCER_REG(seq_addr, SEQ_MEM_ACC_CROSSOVER_VC);
++		ret = qcom_scm_io_writel(sreg, num_entries + 1);
++		if (ret)
++			return ret;
 +
-+	if (drv->cpr_hw_rev >= CPRH_CPR_VERSION_4P5) {
-+		drv->reg_corner = 0x3500;
-+		drv->reg_corner_tid = 0xa0;
-+		drv->reg_ctl = 0x3a80;
-+		drv->reg_status = 0x3a84;
-+	} else {
-+		drv->reg_corner = 0x3a00;
-+		drv->reg_corner_tid = 0;
-+		drv->reg_ctl = 0x3aa0;
-+		drv->reg_status = 0x3aa4;
++		/*
++		 * At the price of very-slightly higher power consumption,
++		 * switch the ACC at one corner lower than what we've found,
++		 * as this seems to be needed on at least some MSM8998 chips
++		 * to achieve full system stability
++		 */
++		acc_vc--;
++
++		/* Change only if we have to move the corner down */
++		if (acc_vc < acc_val[3]) {
++			acc_val[2] = acc_vc - 1;
++			acc_val[3] = acc_vc;
++		}
++
++		/* If needed, sanitize previously stored vals from the LUT */
++		if (acc_val[2] <= acc_val[1])
++			acc_val[1] = acc_val[2] - 1;
++		if (acc_val[1] <= acc_val[0])
++			acc_val[0] = acc_val[1] - 1;
 +	}
 +
-+	dev_dbg(drv->dev, "up threshold = %u, down threshold = %u\n",
-+		desc->up_threshold, desc->down_threshold);
++	for (i = 0; i < SEQ_MEM_ACC_MAX_LEVELS; i++) {
++		ret = qcom_scm_io_writel(SEQ_MEMACC_REG(seq_addr, i),
++					 acc_val[i]);
++		if (ret)
++			return ret;
++	}
++	dev_dbg(cpu_dev, "Wrote MEM-ACC Pairs: [%u-%u] [%u-%u]\n",
++		 acc_val[0], acc_val[1], acc_val[2], acc_val[3]);
 +
-+	return 0;
++	/*
++	 * Program the L_VAL of the first corner requesting MEM-ACC
++	 * voltage level 3 to the right sequencer register
++	 */
++	acc_lval = FIELD_GET(LUT_L_VAL, hw_tbl[acc_val[3]].freq_lut_val);
++	ret = qcom_scm_io_writel(SEQUENCER_REG(seq_addr, SEQ_MEM_ACC_LVAL),
++				 acc_lval);
++	if (ret) {
++		dev_dbg(cpu_dev, "Cannot send memacc l_val\n");
++		return ret;
++	}
++	dev_dbg(cpu_dev, "MEM-ACC L-Val is %u\n", acc_lval);
++
++	/*
++	 * Array Power Mux threshold level: the first virtual corner
++	 * that requires a switch sequence of the APM from MX to APC.
++	 */
++	if (apm_vc == INT_MAX)
++		apm_vc = LUT_MAX_ENTRIES - 1;
++
++	/*
++	 * APM crossover virtual corner refers to CPRh: there, the APM corner
++	 * is always appended to the table (so, at the end of it, right after
++	 * the cluster dvfs entries).
++	 */
++	writel(num_entries, ddata->base + sregs->reg_seq1);
++	ret = qcom_scm_io_writel(SEQUENCER_REG(seq_addr, SEQ_APM_CROSSOVER_VC),
++				 num_entries);
++	if (ret)
++		return ret;
++
++	ret = qcom_scm_io_writel(SEQUENCER_REG(seq_addr, SEQ_APM_THRESH_VC),
++				 apm_vc);
++	if (ret)
++		return ret;
++
++	ret = qcom_scm_io_writel(SEQUENCER_REG(seq_addr, SEQ_APM_THRESH_PREVC),
++				 apm_vc - 1);
++	if (ret)
++		return ret;
++
++	ret = qcom_scm_io_writel(SEQUENCER_REG(seq_addr, SEQ_APM_PARAM),
++				 (0x39 | apm_vc << 6));
++	if (ret)
++		return ret;
++
++	dev_dbg(cpu_dev, "Wrote APM Pair: [%u-%u]\n", apm_vc - 1, apm_vc);
++	return ret;
 +}
 +
 +/**
-+ * cpr3_find_initial_corner - Finds boot-up p-state and enables CPR
-+ * @thread: Structure holding CPR thread-specific parameters
++ * qcom_cpufreq_hw_read_lut - Read Lookup Table from the OSM
++ * @cpu_dev:   CPU device
++ * @policy:    CPUFreq policy structure
 + *
-+ * Differently from CPRv1, from CPRv3 onwards when we successfully find
-+ * the target boot-up performance state, we must refresh the HW
-+ * immediately to guarantee system stability and to avoid overheating
-+ * during the boot process, thing that would more likely happen without
-+ * this driver doing its job.
++ * The Operating State Manager Lookup Table can always be read, even
++ * in case it was pre-programmed by the bootloader or by TrustZone.
++ * Read the LUT from it in order to build OPPs containing DVFS info.
 + *
-+ * Returns: Zero for success, negative number on error
++ * Returns: Zero for success, otherwise negative number on errors.
 + */
-+static int cpr3_find_initial_corner(struct cpr_thread *thread)
+ static int qcom_cpufreq_hw_read_lut(struct device *cpu_dev,
+ 				    struct cpufreq_policy *policy)
+ {
+@@ -166,7 +1068,9 @@ static int qcom_cpufreq_hw_read_lut(struct device *cpu_dev,
+ 	for (i = 0; i < LUT_MAX_ENTRIES; i++) {
+ 		data = readl_relaxed(drv_data->base + soc_data->reg_freq_lut +
+ 				      i * soc_data->lut_row_size);
+-		src = FIELD_GET(LUT_SRC, data);
++		src = data & soc_data->reg_freq_lut_src_mask;
++		src >>= ffs(soc_data->reg_freq_lut_src_mask) - 1;
++
+ 		lval = FIELD_GET(LUT_L_VAL, data);
+ 		core_count = FIELD_GET(LUT_CORE_COUNT, data);
+ 
+@@ -175,17 +1079,21 @@ static int qcom_cpufreq_hw_read_lut(struct device *cpu_dev,
+ 		volt = FIELD_GET(LUT_VOLT, data) * 1000;
+ 
+ 		if (src)
+-			freq = xo_rate * lval / 1000;
++			freq = xo_rate * lval;
+ 		else
+-			freq = cpu_hw_rate / 1000;
++			freq = cpu_hw_rate;
++		do_div(freq, 1000);
+ 
+ 		if (freq != prev_freq && core_count != LUT_TURBO_IND) {
+ 			if (!qcom_cpufreq_update_opp(cpu_dev, freq, volt)) {
+ 				table[i].frequency = freq;
+-				dev_dbg(cpu_dev, "index=%d freq=%d, core_count %d\n", i,
+-				freq, core_count);
++				dev_dbg(cpu_dev,
++					"index=%d freq=%d, core_count %d\n",
++					i, freq, core_count);
+ 			} else {
+-				dev_warn(cpu_dev, "failed to update OPP for freq=%d\n", freq);
++				dev_warn(cpu_dev,
++					 "failed to update OPP for freq=%d\n",
++					 freq);
+ 				table[i].frequency = CPUFREQ_ENTRY_INVALID;
+ 			}
+ 
+@@ -205,18 +1113,19 @@ static int qcom_cpufreq_hw_read_lut(struct device *cpu_dev,
+ 			 * as the boost frequency
+ 			 */
+ 			if (prev->frequency == CPUFREQ_ENTRY_INVALID) {
+-				if (!qcom_cpufreq_update_opp(cpu_dev, prev_freq, volt)) {
++				if (!qcom_cpufreq_update_opp(cpu_dev, prev_freq,
++							     volt)) {
+ 					prev->frequency = prev_freq;
+ 					prev->flags = CPUFREQ_BOOST_FREQ;
+ 				} else {
+-					dev_warn(cpu_dev, "failed to update OPP for freq=%d\n",
++					dev_warn(cpu_dev,
++						 "can't update OPP for freq=%u\n",
+ 						 freq);
+ 				}
+ 			}
+ 
+ 			break;
+ 		}
+-
+ 		prev_freq = freq;
+ 	}
+ 
+@@ -227,10 +1136,18 @@ static int qcom_cpufreq_hw_read_lut(struct device *cpu_dev,
+ 	return 0;
+ }
+ 
+-static void qcom_get_related_cpus(int index, struct cpumask *m)
++/*
++ * qcom_get_related_cpus - Get mask of CPUs in the same frequency domain
++ * @index: CPU number
++ * @m:     Returned CPU mask
++ *
++ * Returns: Count of CPUs inserted in the cpumask or negative number for error.
++ */
++static int qcom_get_related_cpus(int index, struct cpumask *m)
+ {
+ 	struct device_node *cpu_np;
+ 	struct of_phandle_args args;
++	int count = 0;
+ 	int cpu, ret;
+ 
+ 	for_each_possible_cpu(cpu) {
+@@ -245,34 +1162,237 @@ static void qcom_get_related_cpus(int index, struct cpumask *m)
+ 		if (ret < 0)
+ 			continue;
+ 
+-		if (index == args.args[0])
++		if (index == args.args[0]) {
+ 			cpumask_set_cpu(cpu, m);
++			count++;
++		}
+ 	}
++
++	return count > 0 ? count : -EINVAL;
+ }
+ 
+ static const struct qcom_cpufreq_soc_data qcom_soc_data = {
+ 	.reg_enable = 0x0,
+ 	.reg_freq_lut = 0x110,
++	.reg_freq_lut_src_mask = LUT_SRC_845,
+ 	.reg_volt_lut = 0x114,
+ 	.reg_perf_state = 0x920,
+ 	.lut_row_size = 32,
++	.clk_hw_div = 2,
++	.uses_tz = true,
++};
++
++static const struct qcom_cpufreq_soc_data msm8998_soc_data = {
++	.reg_enable = 0x4,
++	.reg_index = 0x150,
++	.reg_freq_lut = 0x154,
++	.reg_freq_lut_src_mask = LUT_SRC_8998,
++	.reg_volt_lut = 0x158,
++	.reg_perf_state = 0xf10,
++	.lut_row_size = 32,
++	.clk_hw_div = 1,
++	.uses_tz = false,
++	.setup_regs = {
++		/* Physical offset for sequencer scm calls */
++		.reg_osm_sequencer = 0x300,
++
++		/* Frequency domain offsets */
++		.reg_override = 0x15c,
++		.reg_spare = 0x164,
++		.reg_cc_zero_behav = 0x0c,
++		.reg_spm_cc_hyst = 0x1c,
++		.reg_spm_cc_dcvs_dis = 0x20,
++		.reg_spm_core_ret_map = 0x24,
++		.reg_llm_freq_vote_hyst = 0x2c,
++		.reg_llm_volt_vote_hyst = 0x30,
++		.reg_llm_intf_dcvs_dis = 0x34,
++		.reg_seq1 = 0x48,
++		.reg_pdn_fsm_ctrl = 0x70,
++		.reg_cc_boost_timer = 0x74,
++		.reg_dcvs_boost_timer = 0x84,
++		.reg_ps_boost_timer = 0x94,
++		.boost_timer_reg_len = 0x4,
++		.reg_boost_sync_delay = 0xa0,
++		.reg_droop_ctrl = 0xa4,
++		.reg_droop_release_ctrl = 0xa8,
++		.reg_droop_unstall_ctrl = 0xac,
++		.reg_droop_wait_release_ctrl = 0xb0,
++		.reg_droop_timer_ctrl = 0xb8,
++		.reg_droop_sync_delay = 0xbc,
++		.reg_pll_override = 0xc0,
++		.reg_cycle_counter = 0xf00,
++	},
++	.acd_data = {
++		.acd_ctrl_reg = 0x4,
++		.tl_delay_reg = 0x8,
++		.softstart_reg = 0x28,
++		.ext_intf_reg = 0x30,
++		.dcvs_sw_reg = 0x34,
++		.gfmux_cfg_reg = 0x3c,
++		.auto_xfer_cfg_reg = 0x80,
++		.auto_xfer_reg = 0x84,
++		.auto_xfer_ctl_reg = 0x88,
++		.auto_xfer_sts_reg = 0x8c,
++		.write_ctl_reg = 0x90,
++		.write_sts_reg = 0x94,
++		.tl_delay_val = 38417,
++		.acd_ctrl_val = 0x2b5ffd,
++		.softstart_val = 0x501,
++		.ext_intf0_val = 0x2cf9ae8,
++		.ext_intf1_val = 0x2cf9afe,
++		.auto_xfer_val = 0x15,
++	},
+ };
+ 
+ static const struct qcom_cpufreq_soc_data epss_soc_data = {
+ 	.reg_enable = 0x0,
+ 	.reg_freq_lut = 0x100,
++	.reg_freq_lut_src_mask = LUT_SRC_845,
+ 	.reg_volt_lut = 0x200,
+ 	.reg_perf_state = 0x320,
+ 	.lut_row_size = 4,
++	.clk_hw_div = 2,
++	.uses_tz = true,
+ };
+ 
+ static const struct of_device_id qcom_cpufreq_hw_match[] = {
+ 	{ .compatible = "qcom,cpufreq-hw", .data = &qcom_soc_data },
++	{ .compatible = "qcom,cpufreq-hw-8998", .data = &msm8998_soc_data },
+ 	{ .compatible = "qcom,cpufreq-epss", .data = &epss_soc_data },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, qcom_cpufreq_hw_match);
+ 
++/**
++ * qcom_cpufreq_hw_osm_setup - Setup and enable the OSM
++ * @cpu_dev:   CPU device
++ * @policy:    CPUFreq policy structure
++ * @cpu_count: Number of CPUs in the frequency domain
++ *
++ * On some platforms, the Operating State Manager (OSM) is not getting
++ * programmed by the bootloader, nor by TrustZone before booting the OS
++ * and its register space is not write-protected by the hypervisor.
++ * In this case, to achieve CPU DVFS, it is needed to program it from
++ * the OS itself, which includes setting LUT and all the various tunables
++ * that are required for it to manage the CPU frequencies and voltages
++ * on its own.
++ * Calling this function on a platform that had the OSM set-up by TZ
++ * will result in a hypervisor fault with system reboot in most cases.
++ *
++ * Returns: Zero for success, otherwise negative number on errors.
++ */
++static int qcom_cpufreq_hw_osm_setup(struct device *cpu_dev,
++				     struct cpufreq_policy *policy,
++				     int cpu_count, int index)
 +{
-+	struct cpr_drv *drv = thread->drv;
-+	struct corner *corner;
-+	int uV, idx;
++	struct qcom_cpufreq_data *drv_data = policy->driver_data;
++	const struct qcom_cpufreq_soc_setup_data *setup_regs;
++	u32 val;
++	int ret;
 +
-+	idx = cpr_find_initial_corner(drv->dev, thread->cpu_clk,
-+				      thread->corners,
-+				      thread->num_corners);
-+	if (idx < 0)
-+		return idx;
-+
-+	cpr_ctl_disable(thread);
-+
-+	corner = &thread->corners[idx];
-+	cpr_corner_restore(thread, corner);
-+
-+	uV = regulator_get_voltage(drv->vreg);
-+	uV = clamp(uV, corner->min_uV, corner->max_uV);
-+
-+	corner->last_uV = uV;
-+	if (!drv->last_uV)
-+		drv->last_uV = uV;
-+
-+	cpr_commit_state(thread);
-+	thread->enabled = true;
-+	cpr_switch(drv);
-+
-+	return 0;
-+}
-+
-+static const int msm8998_gold_scaling_factor[][CPR3_RO_COUNT] = {
-+	/* Fuse Corner 0 */
-+	{
-+		2857, 3057, 2828, 2952, 2699, 2798, 2446, 2631,
-+		2629, 2578, 2244, 3344, 3289, 3137, 3164, 2655
-+	},
-+	/* Fuse Corner 1 */
-+	{
-+		2857, 3057, 2828, 2952, 2699, 2798, 2446, 2631,
-+		2629, 2578, 2244, 3344, 3289, 3137, 3164, 2655
-+	},
-+	/* Fuse Corner 2 */
-+	{
-+		2603, 2755, 2676, 2777, 2573, 2685, 2465, 2610,
-+		2312, 2423, 2243, 3104, 3022, 3036, 2740, 2303
-+	},
-+	/* Fuse Corner 3 */
-+	{
-+		1901, 2016, 2096, 2228, 2034, 2161, 2077, 2188,
-+		1565, 1870, 1925, 2235, 2205, 2413, 1762, 1478
-+	}
-+};
-+
-+static const int msm8998_silver_scaling_factor[][CPR3_RO_COUNT] = {
-+	/* Fuse Corner 0 */
-+	{
-+		2595, 2794, 2577, 2762, 2471, 2674, 2199, 2553,
-+		3189, 3255, 3192, 2962, 3054, 2982, 2042, 2945
-+	},
-+	/* Fuse Corner 1 */
-+	{
-+		2595, 2794, 2577, 2762, 2471, 2674, 2199, 2553,
-+		3189, 3255, 3192, 2962, 3054, 2982, 2042, 2945
-+	},
-+	/* Fuse Corner 2 */
-+	{
-+		2391, 2550, 2483, 2638, 2382, 2564, 2259, 2555,
-+		2766, 3041, 2988, 2935, 2873, 2688, 2013, 2784
-+	},
-+	/* Fuse Corner 3 */
-+	{
-+		2066, 2153, 2300, 2434, 2220, 2386, 2288, 2465,
-+		2028, 2511, 2487, 2734, 2554, 2117, 1892, 2377
-+	}
-+};
-+
-+static const struct cpr_thread_desc msm8998_thread_gold = {
-+	.controller_id = 1,
-+	.hw_tid = 0,
-+	.ro_scaling_factor = msm8998_gold_scaling_factor,
-+	.ro_avail_corners = ARRAY_SIZE(msm8998_gold_scaling_factor),
-+	.sensor_range_start = 0,
-+	.sensor_range_end = 9,
-+	.init_voltage_step = 10000,
-+	.init_voltage_width = 6,
-+	.step_quot_init_min = 9,
-+	.step_quot_init_max = 14,
-+	.num_fuse_corners = 4,
-+	.fuse_corner_data = (struct fuse_corner_data[]){
-+		/* fuse corner 0 */
-+		{
-+			.ref_uV = 756000,
-+			.max_uV = 828000,
-+			.min_uV = 568000,
-+			.range_uV = 32000,
-+			.volt_cloop_adjust = 0,
-+			.volt_oloop_adjust = 8000,
-+			.max_volt_scale = 4,
-+			.max_quot_scale = 10,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+		/* fuse corner 1 */
-+		{
-+			.ref_uV = 756000,
-+			.max_uV = 900000,
-+			.min_uV = 624000,
-+			.range_uV = 32000,
-+			.volt_cloop_adjust = 0,
-+			.volt_oloop_adjust = 0,
-+			.max_volt_scale = 320,
-+			.max_quot_scale = 350,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+		/* fuse corner 2 */
-+		{
-+			.ref_uV = 828000,
-+			.max_uV = 952000,
-+			.min_uV = 632000,
-+			.range_uV = 32000,
-+			.volt_cloop_adjust = 12000,
-+			.volt_oloop_adjust = 12000,
-+			.max_volt_scale = 620,
-+			.max_quot_scale = 750,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+		/* fuse corner 3 */
-+		{
-+			.ref_uV = 1056000,
-+			.max_uV = 1136000,
-+			.min_uV = 772000,
-+			.range_uV = 40000,
-+			.volt_cloop_adjust = 50000,
-+			.volt_oloop_adjust = 52000,
-+			.max_volt_scale = 580,
-+			.max_quot_scale = 1040,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+	},
-+};
-+
-+static const struct cpr_thread_desc msm8998_thread_silver = {
-+	.controller_id = 0,
-+	.hw_tid = 0,
-+	.ro_scaling_factor = msm8998_silver_scaling_factor,
-+	.ro_avail_corners = ARRAY_SIZE(msm8998_silver_scaling_factor),
-+	.sensor_range_start = 0,
-+	.sensor_range_end = 6,
-+	.init_voltage_step = 10000,
-+	.init_voltage_width = 6,
-+	.step_quot_init_min = 11,
-+	.step_quot_init_max = 12,
-+	.num_fuse_corners = 4,
-+	.fuse_corner_data = (struct fuse_corner_data[]){
-+		/* fuse corner 0 */
-+		{
-+			.ref_uV = 688000,
-+			.max_uV = 828000,
-+			.min_uV = 568000,
-+			.range_uV = 32000,
-+			.volt_cloop_adjust = 20000,
-+			.volt_oloop_adjust = 40000,
-+			.max_volt_scale = 4,
-+			.max_quot_scale = 10,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+		/* fuse corner 1 */
-+		{
-+			.ref_uV = 756000,
-+			.max_uV = 900000,
-+			.min_uV = 632000,
-+			.range_uV = 32000,
-+			.volt_cloop_adjust = 26000,
-+			.volt_oloop_adjust = 24000,
-+			.max_volt_scale = 500,
-+			.max_quot_scale = 800,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+		/* fuse corner 2 */
-+		{
-+			.ref_uV = 828000,
-+			.max_uV = 952000,
-+			.min_uV = 664000,
-+			.range_uV = 32000,
-+			.volt_cloop_adjust = 12000,
-+			.volt_oloop_adjust = 12000,
-+			.max_volt_scale = 280,
-+			.max_quot_scale = 650,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+
-+		},
-+		/* fuse corner 3 */
-+		{
-+			.ref_uV = 1056000,
-+			.max_uV = 1056000,
-+			.min_uV = 772000,
-+			.range_uV = 40000,
-+			.volt_cloop_adjust = 30000,
-+			.volt_oloop_adjust = 30000,
-+			.max_volt_scale = 430,
-+			.max_quot_scale = 800,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+	},
-+};
-+
-+static const struct cpr_desc msm8998_cpr_desc = {
-+	.cpr_type = CTRL_TYPE_CPRH,
-+	.num_threads = 2,
-+	.mem_acc_threshold = 852000,
-+	.apm_threshold = 800000,
-+	.apm_crossover = 880000,
-+	.apm_hysteresis = 0,
-+	.cpr_base_voltage = 352000,
-+	.cpr_max_voltage = 1200000,
-+	.timer_delay_us = 5000,
-+	.timer_cons_up = 0,
-+	.timer_cons_down = 2,
-+	.up_threshold = 2,
-+	.down_threshold = 2,
-+	.idle_clocks = 15,
-+	.count_mode = CPR3_CPR_CTL_COUNT_MODE_ALL_AT_ONCE_MIN,
-+	.count_repeat = 14,
-+	.gcnt_us = 1,
-+	.vreg_step_fixed = 4000,
-+	.vreg_step_up_limit = 1,
-+	.vreg_step_down_limit = 1,
-+	.vdd_settle_time_us = 34,
-+	.corner_settle_time_us = 6,
-+	.reduce_to_corner_uV = true,
-+	.hw_closed_loop_en = true,
-+	.threads = (const struct cpr_thread_desc *[]) {
-+		&msm8998_thread_silver,
-+		&msm8998_thread_gold,
-+	},
-+};
-+
-+static const struct cpr_acc_desc msm8998_cpr_acc_desc = {
-+	.cpr_desc = &msm8998_cpr_desc,
-+};
-+
-+static const int sdm630_gold_scaling_factor[][CPR3_RO_COUNT] = {
-+	/* Same RO factors for all fuse corners */
-+	{
-+		4040, 3230,    0, 2210, 2560, 2450, 2230, 2220,
-+		2410, 2300, 2560, 2470, 1600, 3120, 2620, 2280
-+	}
-+};
-+
-+static const int sdm630_silver_scaling_factor[][CPR3_RO_COUNT] = {
-+	/* Same RO factors for all fuse corners */
-+	{
-+		3600, 3600, 3830, 2430, 2520, 2700, 1790, 1760,
-+		1970, 1880, 2110, 2010, 2510, 4900, 4370, 4780,
-+	}
-+};
-+
-+static const struct cpr_thread_desc sdm630_thread_gold = {
-+	.controller_id = 0,
-+	.hw_tid = 0,
-+	.ro_scaling_factor = sdm630_gold_scaling_factor,
-+	.ro_avail_corners = ARRAY_SIZE(sdm630_gold_scaling_factor),
-+	.sensor_range_start = 0,
-+	.sensor_range_end = 6,
-+	.init_voltage_step = 10000,
-+	.init_voltage_width = 6,
-+	.step_quot_init_min = 12,
-+	.step_quot_init_max = 14,
-+	.num_fuse_corners = 5,
-+	.fuse_corner_data = (struct fuse_corner_data[]){
-+		/* fuse corner 0 */
-+		{
-+			.ref_uV = 644000,
-+			.max_uV = 724000,
-+			.min_uV = 588000,
-+			.range_uV = 40000,
-+			.volt_cloop_adjust = -30000,
-+			.volt_oloop_adjust = 15000,
-+			.max_volt_scale = 10,
-+			.max_quot_scale = 300,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+		/* fuse corner 1 */
-+		{
-+			.ref_uV = 788000,
-+			.max_uV = 788000,
-+			.min_uV = 652000,
-+			.range_uV = 40000,
-+			.volt_cloop_adjust = -30000,
-+			.volt_oloop_adjust = 5000,
-+			.max_volt_scale = 320,
-+			.max_quot_scale = 275,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+		/* fuse corner 2 */
-+		{
-+			.ref_uV = 868000,
-+			.max_uV = 868000,
-+			.min_uV = 712000,
-+			.range_uV = 40000,
-+			.volt_cloop_adjust = -30000,
-+			.volt_oloop_adjust = 5000,
-+			.max_volt_scale = 350,
-+			.max_quot_scale = 800,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+		/* fuse corner 3 */
-+		{
-+			.ref_uV = 988000,
-+			.max_uV = 988000,
-+			.min_uV = 784000,
-+			.range_uV = 66000,
-+			.volt_cloop_adjust = -30000,
-+			.volt_oloop_adjust = 0,
-+			.max_volt_scale = 868,
-+			.max_quot_scale = 980,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+		/* fuse corner 4 */
-+		{
-+			.ref_uV = 1068000,
-+			.max_uV = 1068000,
-+			.min_uV = 844000,
-+			.range_uV = 40000,
-+			.volt_cloop_adjust = -30000,
-+			.volt_oloop_adjust = 0,
-+			.max_volt_scale = 868,
-+			.max_quot_scale = 980,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+	},
-+};
-+
-+static const struct cpr_thread_desc sdm630_thread_silver = {
-+	.controller_id = 1,
-+	.hw_tid = 0,
-+	.ro_scaling_factor = sdm630_silver_scaling_factor,
-+	.ro_avail_corners = ARRAY_SIZE(sdm630_silver_scaling_factor),
-+	.sensor_range_start = 0,
-+	.sensor_range_end = 6,
-+	.init_voltage_step = 10000,
-+	.init_voltage_width = 6,
-+	.step_quot_init_min = 12,
-+	.step_quot_init_max = 14,
-+	.num_fuse_corners = 3,
-+	.fuse_corner_data = (struct fuse_corner_data[]){
-+		/* fuse corner 0 */
-+		{
-+			.ref_uV = 644000,
-+			.max_uV = 724000,
-+			.min_uV = 588000,
-+			.range_uV = 32000,
-+			.volt_cloop_adjust = -30000,
-+			.volt_oloop_adjust = 0,
-+			.max_volt_scale = 10,
-+			.max_quot_scale = 360,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+		/* fuse corner 1 */
-+		{
-+			.ref_uV = 788000,
-+			.max_uV = 788000,
-+			.min_uV = 652000,
-+			.range_uV = 40000,
-+			.volt_cloop_adjust = -30000,
-+			.volt_oloop_adjust = 0,
-+			.max_volt_scale = 500,
-+			.max_quot_scale = 550,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+		/* fuse corner 2 */
-+		{
-+			.ref_uV = 1068000,
-+			.max_uV = 1068000,
-+			.min_uV = 800000,
-+			.range_uV = 40000,
-+			.volt_cloop_adjust = -30000,
-+			.volt_oloop_adjust = 0,
-+			.max_volt_scale = 2370,
-+			.max_quot_scale = 550,
-+			.quot_offset = 0,
-+			.quot_scale = 1,
-+			.quot_adjust = 0,
-+			.quot_offset_scale = 5,
-+			.quot_offset_adjust = 0,
-+		},
-+	},
-+};
-+
-+static const struct cpr_desc sdm630_cpr_desc = {
-+	.cpr_type = CTRL_TYPE_CPRH,
-+	.num_threads = 2,
-+	.apm_threshold = 872000,
-+	.apm_crossover = 872000,
-+	.apm_hysteresis = 20000,
-+	.cpr_base_voltage = 400000,
-+	.cpr_max_voltage = 1300000,
-+	.timer_delay_us = 5000,
-+	.timer_cons_up = 0,
-+	.timer_cons_down = 2,
-+	.up_threshold = 2,
-+	.down_threshold = 2,
-+	.idle_clocks = 15,
-+	.count_mode = CPR3_CPR_CTL_COUNT_MODE_ALL_AT_ONCE_MIN,
-+	.count_repeat = 14,
-+	.gcnt_us = 1,
-+	.vreg_step_fixed = 4000,
-+	.vreg_step_up_limit = 1,
-+	.vreg_step_down_limit = 1,
-+	.vdd_settle_time_us = 34,
-+	.corner_settle_time_us = 5,
-+	.reduce_to_corner_uV = true,
-+	.hw_closed_loop_en = true,
-+	.threads = (const struct cpr_thread_desc *[]) {
-+		&sdm630_thread_gold,
-+		&sdm630_thread_silver,
-+	},
-+};
-+
-+static const struct cpr_acc_desc sdm630_cpr_acc_desc = {
-+	.cpr_desc = &sdm630_cpr_desc,
-+};
-+
-+static unsigned int cpr_get_performance_state(struct generic_pm_domain *genpd,
-+					      struct dev_pm_opp *opp)
-+{
-+	return dev_pm_opp_get_level(opp);
-+}
-+
-+static int cpr_power_off(struct generic_pm_domain *domain)
-+{
-+	struct cpr_thread *thread = container_of(domain, struct cpr_thread, pd);
-+
-+	return cpr_disable(thread);
-+}
-+
-+static int cpr_power_on(struct generic_pm_domain *domain)
-+{
-+	struct cpr_thread *thread = container_of(domain, struct cpr_thread, pd);
-+
-+	return cpr_enable(thread);
-+}
-+
-+static void cpr_pd_detach_dev(struct generic_pm_domain *domain,
-+			      struct device *dev)
-+{
-+	struct cpr_thread *thread = container_of(domain, struct cpr_thread, pd);
-+	struct cpr_drv *drv = thread->drv;
-+
-+	mutex_lock(&drv->lock);
-+
-+	dev_dbg(drv->dev, "detach callback for: %s\n", dev_name(dev));
-+	thread->attached_cpu_dev = NULL;
-+
-+	mutex_unlock(&drv->lock);
-+}
-+
-+static int cpr_pd_attach_dev(struct generic_pm_domain *domain,
-+			     struct device *dev)
-+{
-+	struct cpr_thread *thread = container_of(domain, struct cpr_thread, pd);
-+	struct cpr_drv *drv = thread->drv;
-+	const struct acc_desc *acc_desc = drv->acc_desc;
-+	int ret = 0;
-+
-+	mutex_lock(&drv->lock);
-+
-+	dev_dbg(drv->dev, "attach callback for: %s\n", dev_name(dev));
-+
-+	/*
-+	 * This driver only supports scaling voltage for a CPU cluster
-+	 * where all CPUs in the cluster share a single regulator.
-+	 * Therefore, save the struct device pointer only for the first
-+	 * CPU device that gets attached. There is no need to do any
-+	 * additional initialization when further CPUs get attached.
-+	 */
-+	if (thread->attached_cpu_dev)
-+		goto unlock;
-+
-+	/*
-+	 * cpr_scale_voltage() requires the direction (if we are changing
-+	 * to a higher or lower OPP). The first time
-+	 * cpr_set_performance_state() is called, there is no previous
-+	 * performance state defined. Therefore, we call
-+	 * cpr_find_initial_corner() that gets the CPU clock frequency
-+	 * set by the bootloader, so that we can determine the direction
-+	 * the first time cpr_set_performance_state() is called.
-+	 */
-+	thread->cpu_clk = devm_clk_get(dev, NULL);
-+	if (drv->desc->cpr_type < CTRL_TYPE_CPRH &&
-+	    IS_ERR(thread->cpu_clk)) {
-+		ret = PTR_ERR(thread->cpu_clk);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(drv->dev, "could not get cpu clk: %d\n", ret);
-+		goto unlock;
-+	}
-+	thread->attached_cpu_dev = dev;
-+
-+	dev_dbg(drv->dev, "using cpu clk from: %s\n",
-+		dev_name(thread->attached_cpu_dev));
-+
-+	/*
-+	 * Everything related to (virtual) corners has to be initialized
-+	 * here, when attaching to the power domain, since we need to know
-+	 * the maximum frequency for each fuse corner, and this is only
-+	 * available after the cpufreq driver has attached to us.
-+	 * The reason for this is that we need to know the highest
-+	 * frequency associated with each fuse corner.
-+	 */
-+	ret = dev_pm_opp_get_opp_count(&thread->pd.dev);
-+	if (ret < 0) {
-+		dev_err(drv->dev, "could not get OPP count\n");
-+		thread->attached_cpu_dev = NULL;
-+		goto unlock;
-+	}
-+	thread->num_corners = ret;
-+
-+	thread->corners = devm_kcalloc(drv->dev,
-+				       thread->num_corners +
-+				       drv->extra_corners,
-+				       sizeof(*thread->corners),
-+				       GFP_KERNEL);
-+	if (!thread->corners) {
-+		ret = -ENOMEM;
-+		goto unlock;
-+	}
-+
-+	ret = cpr3_corner_init(thread);
++	ret = qcom_cpufreq_hw_write_lut(cpu_dev, policy, cpu_count, index);
 +	if (ret)
-+		goto unlock;
++		return ret;
 +
-+	if (drv->desc->cpr_type < CTRL_TYPE_CPRH) {
-+		ret = cpr3_find_initial_corner(thread);
-+		if (ret)
-+			goto unlock;
++	setup_regs = &drv_data->soc_data->setup_regs;
 +
-+		if (acc_desc->config)
-+			regmap_multi_reg_write(drv->tcsr, acc_desc->config,
-+					       acc_desc->num_regs_per_fuse);
++	/* Set OSM to XO clock ratio and use XO edge for the cycle counter */
++	val = FIELD_PREP(CYCLE_COUNTER_CLK_RATIO, OSM_XO_RATIO_VAL);
++	val |= CYCLE_COUNTER_USE_XO_EDGE;
 +
-+		/* Enable ACC if required */
-+		if (acc_desc->enable_mask)
-+			regmap_update_bits(drv->tcsr, acc_desc->enable_reg,
-+					   acc_desc->enable_mask,
-+					   acc_desc->enable_mask);
-+	}
-+	dev_info(drv->dev, "thread %d initialized with %u OPPs\n",
-+		 thread->id, thread->num_corners);
++	/* Enable the CPU cycle counter */
++	val |= BIT(0);
++	writel_relaxed(val, drv_data->base + setup_regs->reg_cycle_counter);
 +
-+unlock:
-+	mutex_unlock(&drv->lock);
++	/* CoreCount DCVS Policy: Wait time for frequency inc/decrement */
++	val = FIELD_PREP(HYSTERESIS_UP_MASK, HYSTERESIS_CC_NS);
++	val |= FIELD_PREP(HYSTERESIS_DN_MASK, HYSTERESIS_CC_NS);
++	writel_relaxed(val, drv_data->base + setup_regs->reg_spm_cc_hyst);
++
++	/* Set the frequency index 0 and override for cluster power collapse */
++	writel_relaxed(BIT(0), drv_data->base + setup_regs->reg_cc_zero_behav);
++
++	/* Treat cores in retention as active */
++	writel_relaxed(0, drv_data->base + setup_regs->reg_spm_core_ret_map);
++
++	/* Enable CoreCount based DCVS */
++	writel_relaxed(0, drv_data->base + setup_regs->reg_spm_cc_dcvs_dis);
++
++	/* CoreCount DCVS-LLM Policy: Wait time for frequency inc/decrement */
++	val = FIELD_PREP(HYSTERESIS_UP_MASK, HYSTERESIS_LLM_NS);
++	val |= FIELD_PREP(HYSTERESIS_DN_MASK, HYSTERESIS_LLM_NS);
++	writel_relaxed(val, drv_data->base + setup_regs->reg_llm_freq_vote_hyst);
++
++	/* CoreCount DCVS-LLM Policy: Wait time for voltage inc/decrement */
++	val = FIELD_PREP(HYSTERESIS_UP_MASK, HYSTERESIS_LLM_NS);
++	val |= FIELD_PREP(HYSTERESIS_DN_MASK, HYSTERESIS_LLM_NS);
++	writel_relaxed(val, drv_data->base + setup_regs->reg_llm_volt_vote_hyst);
++
++	/* Enable LLM frequency+voltage voting */
++	writel_relaxed(0, drv_data->base + setup_regs->reg_llm_intf_dcvs_dis);
++
++	/* Setup Boost FSM Timers */
++	qcom_cpufreq_hw_boost_setup(drv_data->base +
++				    setup_regs->reg_cc_boost_timer,
++				    setup_regs->boost_timer_reg_len);
++	qcom_cpufreq_hw_boost_setup(drv_data->base +
++				    setup_regs->reg_dcvs_boost_timer,
++				    setup_regs->boost_timer_reg_len);
++	qcom_cpufreq_hw_boost_setup(drv_data->base +
++				    setup_regs->reg_ps_boost_timer,
++				    setup_regs->boost_timer_reg_len);
++
++	/* PLL signal timing control for Boost */
++	writel_relaxed(BOOST_SYNC_DELAY,
++		       drv_data->base + setup_regs->reg_boost_sync_delay);
++
++	/* Setup WFx and PC/RET droop unstall */
++	val = FIELD_PREP(DROOP_TIMER1, DROOP_TIMER_NS);
++	val |= FIELD_PREP(DROOP_TIMER0, DROOP_TIMER_NS);
++	writel_relaxed(val, drv_data->base + setup_regs->reg_droop_unstall_ctrl);
++
++	/* Setup WFx and PC/RET droop wait-to-release */
++	val = FIELD_PREP(DROOP_TIMER1, DROOP_WAIT_RELEASE_TIMER_NS);
++	val |= FIELD_PREP(DROOP_TIMER0, DROOP_WAIT_RELEASE_TIMER_NS);
++	writel_relaxed(val,
++		       drv_data->base + setup_regs->reg_droop_wait_release_ctrl);
++
++	/* PLL signal timing control for Droop */
++	writel_relaxed(1, drv_data->base + setup_regs->reg_droop_sync_delay);
++
++	/* Setup DCVS timers */
++	writel_relaxed(DROOP_RELEASE_TIMER_NS,
++		       drv_data->base + setup_regs->reg_droop_release_ctrl);
++	writel_relaxed(DROOP_TIMER_NS,
++		       drv_data->base + setup_regs->reg_droop_timer_ctrl);
++
++	/* Setup Droop control */
++	val = readl_relaxed(drv_data->base + setup_regs->reg_droop_ctrl);
++	val |= DROOP_CTRL_VAL;
++	writel_relaxed(val, drv_data->base + setup_regs->reg_droop_ctrl);
++
++	/* Enable CC-Boost, DCVS-Boost, PS-Boost, WFx, PC/RET, DCVS FSM */
++	val = readl_relaxed(drv_data->base + setup_regs->reg_pdn_fsm_ctrl);
++	val |= CC_BOOST_EN | PS_BOOST_EN | DCVS_BOOST_EN;
++	val |= WFX_DROOP_EN | PC_RET_EXIT_DROOP_EN | DCVS_DROOP_EN;
++	writel_relaxed(val, drv_data->base + setup_regs->reg_pdn_fsm_ctrl);
++
++	/* Enable PLL Droop Override */
++	val = PLL_OVERRIDE_DROOP_EN;
++	writel_relaxed(val, drv_data->base + setup_regs->reg_pll_override);
++
++	/* Initialize the Adaptive Clock Distribution */
++	ret = qcom_cpufreq_hw_acd_init(cpu_dev, policy, index);
++	if (ret)
++		return ret;
++
++	/* We're ready: enable the OSM and give it time to boot (5uS) */
++	writel_relaxed(1, drv_data->base + drv_data->soc_data->reg_enable);
++	udelay(OSM_BOOT_TIME_US);
 +
 +	return ret;
 +}
 +
-+static int cpr3_debug_info_show(struct seq_file *s, void *unused)
-+{
-+	u32 ro_sel, ctl, irq_status, reg, quot;
-+	struct cpr_thread *thread = s->private;
-+	struct corner *corner = thread->corners;
-+	struct fuse_corner *fuse = thread->fuse_corners;
-+	unsigned int i;
-+
-+	const struct {
-+		const char *name;
-+		uint32_t mask;
-+		uint8_t shift;
-+	} result0_fields[] = {
-+		{ "busy", 1, 0 },
-+		{ "step_dn", 1, 1 },
-+		{ "step_up", 1, 2 },
-+		{ "error_steps", CPR3_RESULT0_ERROR_STEPS_MASK,
-+				 CPR3_RESULT0_ERROR_STEPS_SHIFT },
-+		{ "error", CPR3_RESULT0_ERROR_MASK, CPR3_RESULT0_ERROR_SHIFT },
-+		{ "negative", 1, 20 },
-+	}, result1_fields[] = {
-+		{ "quot_min", CPR3_RESULT1_QUOT_MIN_MASK,
-+			      CPR3_RESULT1_QUOT_MIN_SHIFT },
-+		{ "quot_max", CPR3_RESULT1_QUOT_MAX_MASK,
-+			      CPR3_RESULT1_QUOT_MAX_SHIFT },
-+		{ "ro_min", CPR3_RESULT1_RO_MIN_MASK,
-+			    CPR3_RESULT1_RO_MIN_SHIFT },
-+		{ "ro_max", CPR3_RESULT1_RO_MAX_MASK,
-+			    CPR3_RESULT1_RO_MAX_SHIFT },
-+	}, result2_fields[] = {
-+		{ "qout_step_min", CPR3_RESULT2_STEP_QUOT_MIN_MASK,
-+				   CPR3_RESULT2_STEP_QUOT_MIN_SHIFT },
-+		{ "qout_step_max", CPR3_RESULT2_STEP_QUOT_MAX_MASK,
-+				   CPR3_RESULT2_STEP_QUOT_MAX_SHIFT },
-+		{ "sensor_min", CPR3_RESULT2_SENSOR_MIN_MASK,
-+				CPR3_RESULT2_SENSOR_MIN_SHIFT },
-+		{ "sensor_max", CPR3_RESULT2_SENSOR_MAX_MASK,
-+				CPR3_RESULT2_SENSOR_MAX_SHIFT },
-+	};
-+
-+	if (thread->drv->desc->cpr_type < CTRL_TYPE_CPRH)
-+		seq_printf(s, "current_volt = %d uV\n", thread->drv->last_uV);
-+
-+	irq_status = cpr_read(thread, CPR3_REG_IRQ_STATUS);
-+	seq_printf(s, "irq_status = %#02X\n", irq_status);
-+
-+	ctl = cpr_read(thread, CPR3_REG_CPR_CTL);
-+	seq_printf(s, "cpr_ctl = %#02X\n", ctl);
-+
-+	seq_printf(s, "thread %d - hw tid: %u - enabled: %d:\n",
-+		   thread->id, thread->desc->hw_tid, thread->enabled);
-+	seq_printf(s, "%d corners, derived from %d fuse corners\n",
-+		   thread->num_corners, thread->desc->num_fuse_corners);
-+
-+	for (i = 0; i < thread->num_corners; i++, corner++)
-+		seq_printf(s, "corner %d - uV=[%d %d %d] quot=%d freq=%lu\n",
-+			   i, corner->min_uV, corner->uV, corner->max_uV,
-+			   corner->quot_adjust, corner->freq);
-+
-+	for (i = 0; i < thread->desc->num_fuse_corners; i++, fuse++)
-+		seq_printf(s, "fuse %d - uV=[%d %d %d] quot=%d freq=%lu\n",
-+			   i, fuse->min_uV, fuse->uV, fuse->max_uV,
-+			   fuse->quot, corner->freq);
-+
-+	seq_printf(s, "requested voltage: %d uV\n",
-+		   thread->corner->last_uV);
-+
-+	ro_sel = corner->fuse_corner->ring_osc_idx;
-+	quot = cpr_read(thread, CPR3_REG_TARGET_QUOT(i, ro_sel));
-+	seq_printf(s, "quot_target (%u) = %#02X\n", ro_sel, quot);
-+
-+	reg = cpr_read(thread, CPR3_REG_RESULT0(i));
-+	seq_printf(s, "cpr_result_0 = %#02X\n  [", reg);
-+	for (i = 0; i < ARRAY_SIZE(result0_fields); i++)
-+		seq_printf(s, "%s%s = %u",
-+			   i ? ", " : "",
-+			   result0_fields[i].name,
-+			   (reg >> result0_fields[i].shift) &
-+				result0_fields[i].mask);
-+	seq_puts(s, "]\n");
-+	reg = cpr_read(thread, CPR3_REG_RESULT1(i));
-+	seq_printf(s, "cpr_result_1 = %#02X\n  [", reg);
-+	for (i = 0; i < ARRAY_SIZE(result1_fields); i++)
-+		seq_printf(s, "%s%s = %u",
-+			   i ? ", " : "",
-+			   result1_fields[i].name,
-+			   (reg >> result1_fields[i].shift) &
-+				result1_fields[i].mask);
-+	seq_puts(s, "]\n");
-+	reg = cpr_read(thread, CPR3_REG_RESULT2(i));
-+	seq_printf(s, "cpr_result_2 = %#02X\n  [", reg);
-+	for (i = 0; i < ARRAY_SIZE(result2_fields); i++)
-+		seq_printf(s, "%s%s = %u",
-+			   i ? ", " : "",
-+			   result2_fields[i].name,
-+			   (reg >> result2_fields[i].shift) &
-+				result2_fields[i].mask);
-+	seq_puts(s, "]\n");
-+
-+	return 0;
-+}
-+DEFINE_SHOW_ATTRIBUTE(cpr3_debug_info);
-+
-+static void cpr3_debugfs_init(struct cpr_drv *drv)
-+{
-+	int i;
-+
-+	drv->debugfs = debugfs_create_dir("qcom_cpr3", NULL);
-+
-+	for (i = 0; i < drv->desc->num_threads; i++) {
-+		char buf[50];
-+
-+		snprintf(buf, sizeof(buf), "thread%d", i);
-+
-+		debugfs_create_file(buf, 0444, drv->debugfs, &drv->threads[i],
-+				    &cpr3_debug_info_fops);
-+	}
-+}
-+
-+/**
-+ * cpr_thread_init - Initialize CPR thread related parameters
-+ * @drv: Main driver structure
-+ * @tid: Thread ID
-+ *
-+ * Returns: Zero for success, negative number on error
-+ */
-+static int cpr_thread_init(struct cpr_drv *drv, int tid)
-+{
-+	const struct cpr_desc *desc = drv->desc;
-+	const struct cpr_thread_desc *tdesc = desc->threads[tid];
-+	struct cpr_thread *thread = &drv->threads[tid];
-+	int ret;
-+
-+	if (tdesc->step_quot_init_min > CPR3_CPR_STEP_QUOT_MIN_MASK ||
-+	    tdesc->step_quot_init_max > CPR3_CPR_STEP_QUOT_MAX_MASK)
-+		return -EINVAL;
-+
-+	thread->id = tid;
-+	thread->drv = drv;
-+	thread->desc = tdesc;
-+	thread->fuse_corners = devm_kcalloc(drv->dev,
-+					    tdesc->num_fuse_corners +
-+					    drv->extra_corners,
-+					    sizeof(*thread->fuse_corners),
-+					    GFP_KERNEL);
-+	if (!thread->fuse_corners)
+ static int qcom_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
+ {
+ 	struct platform_device *pdev = cpufreq_get_driver_data();
+@@ -282,7 +1402,9 @@ static int qcom_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
+ 	struct device *cpu_dev;
+ 	void __iomem *base;
+ 	struct qcom_cpufreq_data *data;
+-	int ret, index;
++	unsigned int transition_latency;
++	const char *fdom_resname;
++	int cpu_count, index, ret;
+ 
+ 	cpu_dev = get_cpu_device(policy->cpu);
+ 	if (!cpu_dev) {
+@@ -303,9 +1425,14 @@ static int qcom_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
+ 
+ 	index = args.args[0];
+ 
+-	base = devm_platform_ioremap_resource(pdev, index);
++	fdom_resname = kasprintf(GFP_KERNEL, "freq-domain%d", index);
++	if (!fdom_resname)
 +		return -ENOMEM;
 +
-+	thread->cpr_fuses = cpr_get_fuses(drv->dev, tid,
-+					  tdesc->num_fuse_corners);
-+	if (IS_ERR(thread->cpr_fuses))
-+		return PTR_ERR(thread->cpr_fuses);
-+
-+	ret = cpr_populate_ring_osc_idx(thread->drv->dev, thread->fuse_corners,
-+					thread->cpr_fuses,
-+					tdesc->num_fuse_corners);
-+	if (ret)
-+		return ret;
-+
-+	ret = cpr_fuse_corner_init(thread);
-+	if (ret)
-+		return ret;
-+
-+	thread->pd.name = devm_kasprintf(drv->dev, GFP_KERNEL,
-+					 "%s_thread%d",
-+					 drv->dev->of_node->full_name,
-+					 thread->id);
-+	if (!thread->pd.name)
-+		return -EINVAL;
-+
-+	thread->pd.power_off = cpr_power_off;
-+	thread->pd.power_on = cpr_power_on;
-+	thread->pd.set_performance_state = cpr_set_performance_state;
-+	thread->pd.opp_to_performance_state = cpr_get_performance_state;
-+	thread->pd.attach_dev = cpr_pd_attach_dev;
-+	thread->pd.detach_dev = cpr_pd_detach_dev;
-+
-+	/* Anything later than CPR1 must be always-on for now */
-+	thread->pd.flags = GENPD_FLAG_ALWAYS_ON;
-+
-+	drv->cell_data.domains[tid] = &thread->pd;
-+
-+	ret = pm_genpd_init(&thread->pd, NULL, false);
-+	if (ret)
-+		return ret;
-+
-+	/* On CPRhardened, the interrupts are managed in firmware */
-+	if (desc->cpr_type < CTRL_TYPE_CPRH) {
-+		INIT_WORK(&thread->restart_work, cpr_restart_worker);
-+
-+		ret = devm_request_threaded_irq(drv->dev, drv->irq,
-+						NULL, cpr_irq_handler,
-+						IRQF_ONESHOT |
-+						IRQF_TRIGGER_RISING,
-+						"cpr", drv);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * cpr3_resources_init - Initialize resources used by this driver
-+ * @pdev: Platform device
-+ * @drv:  Main driver structure
-+ *
-+ * Returns: Zero for success, negative number on error
-+ */
-+static int cpr3_resources_init(struct platform_device *pdev,
-+			       struct cpr_drv *drv)
-+{
-+	const struct cpr_desc *desc = drv->desc;
-+	struct cpr_thread *threads = drv->threads;
-+	unsigned int i;
-+	u8 cid_mask = 0;
-+
-+	/*
-+	 * Here, we are accounting for the following usecases:
-+	 * - One controller
-+	 *   - One or multiple threads on the same iospace
-+	 *
-+	 * - Multiple controllers
-+	 *   - Each controller has its own iospace and each
-+	 *     may have one or multiple threads in their
-+	 *     parent controller's iospace
-+	 *
-+	 * Then, to avoid complicating the code for no reason,
-+	 * this also needs a mandatory order in the list of
-+	 * threads which implies that all of them from the same
-+	 * controllers are specified sequentially. As an example:
-+	 *
-+	 *      C0-T0, C0-T1...C0-Tn, C1-T0, C1-T1...C1-Tn
-+	 */
-+	for (i = 0; i < desc->num_threads; i++) {
-+		u8 cid = desc->threads[i]->controller_id;
-+
-+		if (cid_mask & BIT(cid)) {
-+			if (desc->threads[i - 1]->controller_id != cid) {
-+				dev_err(drv->dev,
-+					"Bad threads order. Please fix!\n");
-+				return -EINVAL;
-+			}
-+			threads[i].base = threads[i - 1].base;
-+			continue;
++	base = devm_platform_ioremap_resource_byname(pdev, fdom_resname);
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
++	kfree(fdom_resname);
+ 
+ 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
+ 	if (!data) {
+@@ -315,22 +1442,31 @@ static int qcom_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
+ 
+ 	data->soc_data = of_device_get_match_data(&pdev->dev);
+ 	data->base = base;
++	policy->driver_data = data;
+ 
+-	/* HW should be in enabled state to proceed */
+-	if (!(readl_relaxed(base + data->soc_data->reg_enable) & 0x1)) {
+-		dev_err(dev, "Domain-%d cpufreq hardware not enabled\n", index);
+-		ret = -ENODEV;
+-		goto error;
+-	}
+-
+-	qcom_get_related_cpus(index, policy->cpus);
++	cpu_count = qcom_get_related_cpus(index, policy->cpus);
+ 	if (!cpumask_weight(policy->cpus)) {
+ 		dev_err(dev, "Domain-%d failed to get related CPUs\n", index);
+ 		ret = -ENOENT;
+ 		goto error;
+ 	}
+ 
+-	policy->driver_data = data;
++	if (!data->soc_data->uses_tz) {
++		ret = qcom_cpufreq_hw_osm_setup(cpu_dev, policy,
++						cpu_count, index);
++		if (ret) {
++			dev_err(dev, "Cannot setup the OSM for CPU%d: %d\n",
++				policy->cpu, ret);
++			goto error;
 +		}
-+		threads[i].base = devm_platform_ioremap_resource(pdev, cid);
-+		if (IS_ERR(threads[i].base))
-+			return PTR_ERR(threads[i].base);
-+		cid_mask |= BIT(cid);
-+	}
-+	return 0;
-+}
-+
-+static int cpr_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct cpr_drv *drv;
-+	const struct cpr_desc *desc;
-+	const struct cpr_acc_desc *data;
-+	struct device_node *np;
-+	unsigned int i;
-+	int ret;
-+
-+	data = of_device_get_match_data(dev);
-+	if (!data || !data->cpr_desc)
-+		return -EINVAL;
-+
-+	desc = data->cpr_desc;
-+
-+	/* CPRh disallows MEM-ACC access from the HLOS */
-+	if (!data->acc_desc && desc->cpr_type < CTRL_TYPE_CPRH)
-+		return -EINVAL;
-+
-+	drv = devm_kzalloc(dev, sizeof(*drv), GFP_KERNEL);
-+	if (!drv)
-+		return -ENOMEM;
-+
-+	drv->dev = dev;
-+	drv->desc = desc;
-+	drv->threads = devm_kcalloc(dev, desc->num_threads,
-+				    sizeof(*drv->threads), GFP_KERNEL);
-+	if (!drv->threads)
-+		return -ENOMEM;
-+
-+	drv->cell_data.num_domains = desc->num_threads;
-+	drv->cell_data.domains = devm_kcalloc(drv->dev,
-+					      drv->cell_data.num_domains,
-+					      sizeof(*drv->cell_data.domains),
-+					      GFP_KERNEL);
-+	if (!drv->cell_data.domains)
-+		return -ENOMEM;
-+
-+	if (data->acc_desc)
-+		drv->acc_desc = data->acc_desc;
-+
-+	mutex_init(&drv->lock);
-+
-+	if (desc->cpr_type < CTRL_TYPE_CPRH) {
-+		np = of_parse_phandle(dev->of_node, "acc-syscon", 0);
-+		if (!np)
-+			return -ENODEV;
-+
-+		drv->tcsr = syscon_node_to_regmap(np);
-+		of_node_put(np);
-+		if (IS_ERR(drv->tcsr))
-+			return PTR_ERR(drv->tcsr);
 +	}
 +
-+	ret = cpr3_resources_init(pdev, drv);
-+	if (ret)
-+		return ret;
-+
-+	drv->irq = platform_get_irq_optional(pdev, 0);
-+	if ((desc->cpr_type != CTRL_TYPE_CPRH) && (drv->irq < 0))
-+		return -EINVAL;
-+
-+	/* On CPRhardened, vreg access it not allowed */
-+	drv->vreg = devm_regulator_get_optional(dev, "vdd");
-+	if (desc->cpr_type != CTRL_TYPE_CPRH && IS_ERR(drv->vreg))
-+		return PTR_ERR(drv->vreg);
-+
-+	/*
-+	 * On at least CPRhardened, vreg is unaccessible and there is no
-+	 * way to read linear step from that regulator, hence it is hardcoded
-+	 * in the driver;
-+	 * When the vreg_step is not declared in the cpr data (or is zero),
-+	 * then having access to the vreg regulator is mandatory, as this
-+	 * will be retrieved through the regulator API.
-+	 */
-+	if (desc->vreg_step_fixed)
-+		drv->vreg_step = desc->vreg_step_fixed;
-+	else
-+		drv->vreg_step = regulator_get_linear_step(drv->vreg);
-+
-+	if (!drv->vreg_step)
-+		return -EINVAL;
-+
-+	/*
-+	 * Initialize fuse corners, since it simply depends
-+	 * on data in efuses.
-+	 * Everything related to (virtual) corners has to be
-+	 * initialized after attaching to the power domain,
-+	 * since it depends on the CPU's OPP table.
-+	 */
-+	ret = cpr_read_efuse(dev, "cpr_fuse_revision", &drv->fusing_rev);
-+	if (ret)
-+		return ret;
-+
-+	ret = cpr_read_efuse(dev, "cpr_speed_bin", &drv->speed_bin);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Some SoCs require extra corners for MEM-ACC or APM: if
-+	 * the related parameters have been specified, then reserve
-+	 * a corner for the APM and/or MEM-ACC crossover, used by
-+	 * OSM and CPRh HW to set the supply voltage during the APM
-+	 * and/or MEM-ACC switch routine.
-+	 */
-+	if (desc->cpr_type == CTRL_TYPE_CPRH) {
-+		if (desc->apm_crossover && desc->apm_hysteresis >= 0)
-+			drv->extra_corners++;
-+
-+		if (desc->mem_acc_threshold)
-+			drv->extra_corners++;
++	/* HW should be in enabled state to proceed */
++	if (!(readl_relaxed(base + data->soc_data->reg_enable) & 0x1)) {
++		dev_err(dev, "Domain-%d cpufreq hardware not enabled\n", index);
++		ret = -ENODEV;
++		goto error;
 +	}
+ 
+ 	ret = qcom_cpufreq_hw_read_lut(cpu_dev, policy);
+ 	if (ret) {
+@@ -345,10 +1481,18 @@ static int qcom_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
+ 		goto error;
+ 	}
+ 
++	transition_latency = dev_pm_opp_get_max_transition_latency(cpu_dev);
++	if (!transition_latency)
++		transition_latency = CPUFREQ_ETERNAL;
 +
-+	/* Initialize all threads */
-+	for (i = 0; i < desc->num_threads; i++) {
-+		ret = cpr_thread_init(drv, i);
-+		if (ret)
++	policy->cpuinfo.transition_latency = transition_latency;
++	policy->dvfs_possible_from_any_cpu = true;
++
+ 	dev_pm_opp_of_register_em(cpu_dev, policy->cpus);
+ 
+ 	return 0;
+ error:
++	policy->driver_data = NULL;
+ 	devm_iounmap(dev, base);
+ 	return ret;
+ }
+@@ -389,10 +1533,49 @@ static struct cpufreq_driver cpufreq_qcom_hw_driver = {
+ 
+ static int qcom_cpufreq_hw_driver_probe(struct platform_device *pdev)
+ {
++	const struct qcom_cpufreq_soc_data *soc_data;
++	struct device_node *pd_node;
++	struct platform_device *pd_dev;
+ 	struct device *cpu_dev;
+ 	struct clk *clk;
+ 	int ret;
+ 
++	cpu_dev = get_cpu_device(0);
++	if (!cpu_dev)
++		return -EPROBE_DEFER;
++
++	soc_data = of_device_get_match_data(&pdev->dev);
++	if (!soc_data->uses_tz) {
++		/*
++		 * When the OSM is not pre-programmed from TZ, we will
++		 * need to program the sequencer through SCM calls.
++		 */
++		if (!qcom_scm_is_available())
++			return -EPROBE_DEFER;
++
++		/*
++		 * If there are no power-domains, OSM programming cannot be
++		 * performed, as in that case, we wouldn't know where to take
++		 * the params from...
++		 */
++		pd_node = of_parse_phandle(cpu_dev->of_node,
++					   "power-domains", 0);
++		if (!pd_node) {
++			ret = PTR_ERR(pd_node);
++			dev_err(cpu_dev, "power domain not found: %d\n", ret);
 +			return ret;
++		}
++
++		/*
++		 * If the power domain device is not registered yet, then
++		 * defer probing this driver until that is available.
++		 */
++		pd_dev = of_find_device_by_node(pd_node);
++		if (!pd_dev || !pd_dev->dev.driver ||
++		    !device_is_bound(&pd_dev->dev))
++			return -EPROBE_DEFER;
 +	}
 +
-+	/* Initialize global parameters */
-+	ret = cpr3_init_parameters(drv);
-+	if (ret)
-+		return ret;
-+
-+	/* Write initial configuration on all threads */
-+	for (i = 0; i < desc->num_threads; i++) {
-+		ret = cpr_configure(&drv->threads[i]);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = of_genpd_add_provider_onecell(dev->of_node, &drv->cell_data);
-+	if (ret)
-+		return ret;
-+
-+	platform_set_drvdata(pdev, drv);
-+	cpr3_debugfs_init(drv);
-+
-+	return 0;
-+}
-+
-+static int cpr_remove(struct platform_device *pdev)
-+{
-+	struct cpr_drv *drv = platform_get_drvdata(pdev);
-+	int i;
-+
-+	of_genpd_del_provider(pdev->dev.of_node);
-+
-+	for (i = 0; i < drv->desc->num_threads; i++) {
-+		cpr_ctl_disable(&drv->threads[i]);
-+		cpr_irq_set(&drv->threads[i], 0);
-+		pm_genpd_remove(&drv->threads[i].pd);
-+	}
-+
-+	debugfs_remove_recursive(drv->debugfs);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id cpr3_match_table[] = {
-+	{ .compatible = "qcom,msm8998-cprh", .data = &msm8998_cpr_acc_desc },
-+	{ .compatible = "qcom,sdm630-cprh", .data = &sdm630_cpr_acc_desc },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, cpr3_match_table);
-+
-+static struct platform_driver cpr3_driver = {
-+	.probe		= cpr_probe,
-+	.remove		= cpr_remove,
-+	.driver		= {
-+		.name	= "qcom-cpr3",
-+		.of_match_table = cpr3_match_table,
-+	},
-+};
-+module_platform_driver(cpr3_driver)
-+
-+MODULE_DESCRIPTION("Core Power Reduction (CPR) v3/v4 driver");
-+MODULE_LICENSE("GPL v2");
+ 	clk = clk_get(&pdev->dev, "xo");
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
+@@ -404,16 +1587,13 @@ static int qcom_cpufreq_hw_driver_probe(struct platform_device *pdev)
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
+ 
+-	cpu_hw_rate = clk_get_rate(clk) / CLK_HW_DIV;
++	cpu_hw_rate = clk_get_rate(clk);
++	do_div(cpu_hw_rate, soc_data->clk_hw_div);
+ 	clk_put(clk);
+ 
+ 	cpufreq_qcom_hw_driver.driver_data = pdev;
+ 
+ 	/* Check for optional interconnect paths on CPU0 */
+-	cpu_dev = get_cpu_device(0);
+-	if (!cpu_dev)
+-		return -EPROBE_DEFER;
+-
+ 	ret = dev_pm_opp_of_find_icc_paths(cpu_dev, NULL);
+ 	if (ret)
+ 		return ret;
 -- 
 2.29.2
 
