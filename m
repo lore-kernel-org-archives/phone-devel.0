@@ -7,24 +7,27 @@ X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA919C4332B
-	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 13:39:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23DCAC43332
+	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 13:39:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B3FE423A60
+	by mail.kernel.org (Postfix) with ESMTP id E8CBA23A04
 	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 13:39:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726359AbhAINis (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 9 Jan 2021 08:38:48 -0500
-Received: from relay06.th.seeweb.it ([5.144.164.167]:35553 "EHLO
-        relay06.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726367AbhAINih (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 08:38:37 -0500
+        id S1726263AbhAINjB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 9 Jan 2021 08:39:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34454 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726357AbhAINjB (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 08:39:01 -0500
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BE07C0617A6
+        for <phone-devel@vger.kernel.org>; Sat,  9 Jan 2021 05:37:41 -0800 (PST)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 7F6463EF18;
-        Sat,  9 Jan 2021 14:37:40 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 9C4703EEC2;
+        Sat,  9 Jan 2021 14:37:39 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     linux-arm-msm@vger.kernel.org
@@ -35,9 +38,9 @@ Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         linux-kernel@vger.kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH 7/9] drm/msm/dpu: Remove unused call in wait_for_commit_done
-Date:   Sat,  9 Jan 2021 14:37:34 +0100
-Message-Id: <20210109133736.143469-8-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH 4/9] drm/msm/dpu1: Allow specifying features and sblk in DSPP_BLK macro
+Date:   Sat,  9 Jan 2021 14:37:31 +0100
+Message-Id: <20210109133736.143469-5-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210109133736.143469-1-angelogioacchino.delregno@somainline.org>
 References: <20210109133736.143469-1-angelogioacchino.delregno@somainline.org>
@@ -47,45 +50,46 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The call to dpu_encoder_phys_cmd_prepare_for_kickoff is useless as
-it's unused because the serialize_wait4pp variable is never set to
-true by .. anything, literally: remove the call.
-While at it, also reduce indentation by inverting the check for
-dpu_encoder_phys_cmd_is_master.
+The DSPP_BLK macro was ad-hoc made for SC7180, but this is wrong
+because not all of the DPU DSPP versions can use the same DSPP block
+configuration, and not all of them have got the same features.
 
+For this reason, add two more params to the DSPP_BLK macro, so that
+it is possible to specify the feature mask and the sblk config for
+each DSPP.
+
+Fixes: 4259ff7ae509 ("drm/msm/dpu: add support for pcc color block in dpu driver")
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-index c5cf59b5bd41..2311e98480b9 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-@@ -687,20 +687,15 @@ static int dpu_encoder_phys_cmd_wait_for_tx_complete(
- static int dpu_encoder_phys_cmd_wait_for_commit_done(
- 		struct dpu_encoder_phys *phys_enc)
- {
--	int rc = 0;
- 	struct dpu_encoder_phys_cmd *cmd_enc;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+index 253075091409..d1aebb5f48c1 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+@@ -454,16 +454,17 @@ static const struct dpu_dspp_sub_blks sc7180_dspp_sblk = {
+ 		.len = 0x90, .version = 0x10000},
+ };
  
- 	cmd_enc = to_dpu_encoder_phys_cmd(phys_enc);
+-#define DSPP_BLK(_name, _id, _base) \
++#define DSPP_BLK(_name, _id, _base, _mask, _desc) \
+ 		{\
+ 		.name = _name, .id = _id, \
+ 		.base = _base, .len = 0x1800, \
+-		.features = DSPP_SC7180_MASK, \
+-		.sblk = &sc7180_dspp_sblk \
++		.features = _mask, \
++		.sblk = _desc \
+ 		}
  
- 	/* only required for master controller */
--	if (dpu_encoder_phys_cmd_is_master(phys_enc))
--		rc = _dpu_encoder_phys_cmd_wait_for_ctl_start(phys_enc);
--
--	/* required for both controllers */
--	if (!rc && cmd_enc->serialize_wait4pp)
--		dpu_encoder_phys_cmd_prepare_for_kickoff(phys_enc);
-+	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
-+		return 0;
+ static const struct dpu_dspp_cfg sc7180_dspp[] = {
+-	DSPP_BLK("dspp_0", DSPP_0, 0x54000),
++	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
++		 &sc7180_dspp_sblk),
+ };
  
--	return rc;
-+	return _dpu_encoder_phys_cmd_wait_for_ctl_start(phys_enc);
- }
- 
- static int dpu_encoder_phys_cmd_wait_for_vblank(
+ /*************************************************************
 -- 
 2.29.2
 
