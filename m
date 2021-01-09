@@ -7,23 +7,23 @@ X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F38AC4332B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4607C43332
 	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:06:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 600CF23A04
+	by mail.kernel.org (Postfix) with ESMTP id 9A846239FE
 	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 18:06:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726376AbhAISFD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 9 Jan 2021 13:05:03 -0500
-Received: from m-r1.th.seeweb.it ([5.144.164.170]:33489 "EHLO
+        id S1726238AbhAISGV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 9 Jan 2021 13:06:21 -0500
+Received: from m-r1.th.seeweb.it ([5.144.164.170]:56521 "EHLO
         m-r1.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726132AbhAISEu (ORCPT
+        with ESMTP id S1726113AbhAISEu (ORCPT
         <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 13:04:50 -0500
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 835101F5D0;
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 0FFDD1F5C4;
         Sat,  9 Jan 2021 19:04:08 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
@@ -37,9 +37,9 @@ Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v2 04/15] cpufreq: blacklist SDM630/636/660 in cpufreq-dt-platdev
-Date:   Sat,  9 Jan 2021 19:03:48 +0100
-Message-Id: <20210109180359.236098-5-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v2 03/15] soc: qcom: spm: Add compatible for MSM8998 SAWv4.1 L2
+Date:   Sat,  9 Jan 2021 19:03:47 +0100
+Message-Id: <20210109180359.236098-4-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210109180359.236098-1-angelogioacchino.delregno@somainline.org>
 References: <20210109180359.236098-1-angelogioacchino.delregno@somainline.org>
@@ -49,28 +49,47 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the SDM630, SDM636 and SDM660 to the blacklist since the CPU
-scaling is handled out of this.
+Add the SAWv4.1 parameters for MSM8998's Gold and Silver clusters.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- drivers/cpufreq/cpufreq-dt-platdev.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/soc/qcom/spm.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
-index 3776d960f405..d8935e525807 100644
---- a/drivers/cpufreq/cpufreq-dt-platdev.c
-+++ b/drivers/cpufreq/cpufreq-dt-platdev.c
-@@ -133,6 +133,9 @@ static const struct of_device_id blacklist[] __initconst = {
- 	{ .compatible = "qcom,msm8996", },
- 	{ .compatible = "qcom,qcs404", },
- 	{ .compatible = "qcom,sc7180", },
-+	{ .compatible = "qcom,sdm630", },
-+	{ .compatible = "qcom,sdm636", },
-+	{ .compatible = "qcom,sdm660", },
- 	{ .compatible = "qcom,sdm845", },
+diff --git a/drivers/soc/qcom/spm.c b/drivers/soc/qcom/spm.c
+index 843732d12c54..2e6312663293 100644
+--- a/drivers/soc/qcom/spm.c
++++ b/drivers/soc/qcom/spm.c
+@@ -54,6 +54,18 @@ static const struct spm_reg_data spm_reg_660_silver_l2  = {
+ 	.avs_limit = 0x4580458,
+ };
  
- 	{ .compatible = "st,stih407", },
++static const struct spm_reg_data spm_reg_8998_gold_l2  = {
++	.reg_offset = spm_reg_offset_v4_1,
++	.avs_ctl = 0x1010031,
++	.avs_limit = 0x4700470,
++};
++
++static const struct spm_reg_data spm_reg_8998_silver_l2  = {
++	.reg_offset = spm_reg_offset_v4_1,
++	.avs_ctl = 0x1010031,
++	.avs_limit = 0x4200420,
++};
++
+ static const u16 spm_reg_offset_v2_1[SPM_REG_NR] = {
+ 	[SPM_REG_CFG]		= 0x08,
+ 	[SPM_REG_SPM_CTL]	= 0x30,
+@@ -149,6 +161,10 @@ static const struct of_device_id spm_match_table[] = {
+ 	  .data = &spm_reg_660_gold_l2 },
+ 	{ .compatible = "qcom,sdm660-silver-saw2-v4.1-l2",
+ 	  .data = &spm_reg_660_silver_l2 },
++	{ .compatible = "qcom,msm8998-gold-saw2-v4.1-l2",
++	  .data = &spm_reg_8998_gold_l2 },
++	{ .compatible = "qcom,msm8998-silver-saw2-v4.1-l2",
++	  .data = &spm_reg_8998_silver_l2 },
+ 	{ .compatible = "qcom,msm8974-saw2-v2.1-cpu",
+ 	  .data = &spm_reg_8974_8084_cpu },
+ 	{ .compatible = "qcom,apq8084-saw2-v2.1-cpu",
 -- 
 2.29.2
 
