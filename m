@@ -5,29 +5,27 @@ X-Spam-Level:
 X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03DE9C43331
-	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 13:38:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB3A4C4332D
+	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 13:38:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BE12323A23
+	by mail.kernel.org (Postfix) with ESMTP id A88C62396F
 	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 13:38:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726381AbhAINig (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 9 Jan 2021 08:38:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34308 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726370AbhAINig (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 08:38:36 -0500
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1248FC0617A3
-        for <phone-devel@vger.kernel.org>; Sat,  9 Jan 2021 05:37:40 -0800 (PST)
+        id S1726254AbhAINic (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 9 Jan 2021 08:38:32 -0500
+Received: from m-r2.th.seeweb.it ([5.144.164.171]:46805 "EHLO
+        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725854AbhAINiW (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 08:38:22 -0500
+X-Greylist: delayed 476 seconds by postgrey-1.27 at vger.kernel.org; Sat, 09 Jan 2021 08:38:21 EST
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id B534D3EEBA;
-        Sat,  9 Jan 2021 14:37:38 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id E3A443EF11;
+        Sat,  9 Jan 2021 14:37:39 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     linux-arm-msm@vger.kernel.org
@@ -38,9 +36,9 @@ Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         linux-kernel@vger.kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH 1/9] drm/msm/dpu: Fix VBIF_XINL_QOS_LVL_REMAP_000 register offset
-Date:   Sat,  9 Jan 2021 14:37:28 +0100
-Message-Id: <20210109133736.143469-2-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH 5/9] drm/msm/dpu: Disable autorefresh in command mode
+Date:   Sat,  9 Jan 2021 14:37:32 +0100
+Message-Id: <20210109133736.143469-6-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210109133736.143469-1-angelogioacchino.delregno@somainline.org>
 References: <20210109133736.143469-1-angelogioacchino.delregno@somainline.org>
@@ -50,59 +48,208 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On DPUs prior to version 4 the VBIF_XINL_QOS_LVL_REMAP_000 register
-is at 0x570 offset from vbif base instead of 0x590, due to the
-VBIF_XINL_QOS_RP_REMAP_000 having less instances (less possible XINs).
+When a command mode display is used, it may be retaining the bootloader
+configuration which, in most of the cases, enables the autorefresh
+feature in order to keep the splash up.
+
+Since there is no autorefresh management in this driver, wire up the
+autorefresh ops in the dpu_hw_pingpong and disable the feature when
+preparing for cmd commit: instead of disabling it when initializing
+the command mode, this road was chosen as to open future possibility
+of enabling and managing the autorefresh feature in the driver.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_vbif.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ .../drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c  | 68 +++++++++++++++++++
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.c   | 26 +++++++
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.h   | 14 ++++
+ 3 files changed, 108 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_vbif.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_vbif.c
-index cf867f3f7c36..b757054e1c23 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_vbif.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_vbif.c
-@@ -30,7 +30,7 @@
- #define VBIF_XIN_HALT_CTRL0		0x0200
- #define VBIF_XIN_HALT_CTRL1		0x0204
- #define VBIF_XINL_QOS_RP_REMAP_000	0x0550
--#define VBIF_XINL_QOS_LVL_REMAP_000	0x0590
-+#define VBIF_XINL_QOS_LVL_REMAP_000(v)	(v < DPU_HW_VER_400 ? 0x570 : 0x0590)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+index 8493d68ad841..a367b093c888 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+@@ -4,8 +4,10 @@
+  */
  
- static void dpu_hw_clear_errors(struct dpu_hw_vbif *vbif,
- 		u32 *pnd_errors, u32 *src_errors)
-@@ -156,18 +156,19 @@ static void dpu_hw_set_qos_remap(struct dpu_hw_vbif *vbif,
- 		u32 xin_id, u32 level, u32 remap_level)
+ #define pr_fmt(fmt)	"[drm:%s:%d] " fmt, __func__, __LINE__
++#include <linux/delay.h>
+ #include "dpu_encoder_phys.h"
+ #include "dpu_hw_interrupts.h"
++#include "dpu_hw_pingpong.h"
+ #include "dpu_core_irq.h"
+ #include "dpu_formats.h"
+ #include "dpu_trace.h"
+@@ -35,6 +37,8 @@
+ 
+ #define DPU_ENC_WR_PTR_START_TIMEOUT_US 20000
+ 
++#define DPU_ENC_MAX_POLL_TIMEOUT_US	2000
++
+ static bool dpu_encoder_phys_cmd_is_master(struct dpu_encoder_phys *phys_enc)
  {
- 	struct dpu_hw_blk_reg_map *c;
--	u32 reg_val, reg_val_lvl, mask, reg_high, reg_shift;
-+	u32 reg_lvl, reg_val, reg_val_lvl, mask, reg_high, reg_shift;
- 
- 	if (!vbif)
- 		return;
- 
- 	c = &vbif->hw;
- 
-+	reg_lvl = VBIF_XINL_QOS_LVL_REMAP_000(c->hwversion);
- 	reg_high = ((xin_id & 0x8) >> 3) * 4 + (level * 8);
- 	reg_shift = (xin_id & 0x7) * 4;
- 
- 	reg_val = DPU_REG_READ(c, VBIF_XINL_QOS_RP_REMAP_000 + reg_high);
--	reg_val_lvl = DPU_REG_READ(c, VBIF_XINL_QOS_LVL_REMAP_000 + reg_high);
-+	reg_val_lvl = DPU_REG_READ(c, reg_lvl + reg_high);
- 
- 	mask = 0x7 << reg_shift;
- 
-@@ -178,7 +179,7 @@ static void dpu_hw_set_qos_remap(struct dpu_hw_vbif *vbif,
- 	reg_val_lvl |= (remap_level << reg_shift) & mask;
- 
- 	DPU_REG_WRITE(c, VBIF_XINL_QOS_RP_REMAP_000 + reg_high, reg_val);
--	DPU_REG_WRITE(c, VBIF_XINL_QOS_LVL_REMAP_000 + reg_high, reg_val_lvl);
-+	DPU_REG_WRITE(c, reg_lvl + reg_high, reg_val_lvl);
+ 	return (phys_enc->split_role != ENC_ROLE_SLAVE) ? true : false;
+@@ -582,6 +586,69 @@ static void dpu_encoder_phys_cmd_prepare_for_kickoff(
+ 			atomic_read(&phys_enc->pending_kickoff_cnt));
  }
  
- static void dpu_hw_set_write_gather_en(struct dpu_hw_vbif *vbif, u32 xin_id)
++static bool dpu_encoder_phys_cmd_is_ongoing_pptx(
++		struct dpu_encoder_phys *phys_enc)
++{
++	struct dpu_hw_pp_vsync_info info;
++
++	if (!phys_enc)
++		return false;
++
++	phys_enc->hw_pp->ops.get_vsync_info(phys_enc->hw_pp, &info);
++	if (info.wr_ptr_line_count > 0 &&
++	    info.wr_ptr_line_count < phys_enc->cached_mode.vdisplay)
++		return true;
++
++	return false;
++}
++
++static void dpu_encoder_phys_cmd_prepare_commit(
++		struct dpu_encoder_phys *phys_enc)
++{
++	struct dpu_encoder_phys_cmd *cmd_enc =
++		to_dpu_encoder_phys_cmd(phys_enc);
++	int trial = 0;
++
++	if (!phys_enc)
++		return;
++	if (!phys_enc->hw_pp)
++		return;
++	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
++		return;
++
++	/* If autorefresh is already disabled, we have nothing to do */
++	if (!phys_enc->hw_pp->ops.get_autorefresh(phys_enc->hw_pp, NULL))
++		return;
++
++	/*
++	 * If autorefresh is enabled, disable it and make sure it is safe to
++	 * proceed with current frame commit/push. Sequence fallowed is,
++	 * 1. Disable TE
++	 * 2. Disable autorefresh config
++	 * 4. Poll for frame transfer ongoing to be false
++	 * 5. Enable TE back
++	 */
++	_dpu_encoder_phys_cmd_connect_te(phys_enc, false);
++	phys_enc->hw_pp->ops.setup_autorefresh(phys_enc->hw_pp, 0, false);
++
++	do {
++		udelay(DPU_ENC_MAX_POLL_TIMEOUT_US);
++		if ((trial * DPU_ENC_MAX_POLL_TIMEOUT_US)
++				> (KICKOFF_TIMEOUT_MS * USEC_PER_MSEC)) {
++			DPU_ERROR_CMDENC(cmd_enc,
++					"disable autorefresh failed\n");
++			break;
++		}
++
++		trial++;
++	} while (dpu_encoder_phys_cmd_is_ongoing_pptx(phys_enc));
++
++	_dpu_encoder_phys_cmd_connect_te(phys_enc, true);
++
++	DPU_DEBUG_CMDENC(to_dpu_encoder_phys_cmd(phys_enc),
++			 "disabled autorefresh\n");
++}
++
+ static int _dpu_encoder_phys_cmd_wait_for_ctl_start(
+ 		struct dpu_encoder_phys *phys_enc)
+ {
+@@ -683,6 +750,7 @@ static void dpu_encoder_phys_cmd_trigger_start(
+ static void dpu_encoder_phys_cmd_init_ops(
+ 		struct dpu_encoder_phys_ops *ops)
+ {
++	ops->prepare_commit = dpu_encoder_phys_cmd_prepare_commit;
+ 	ops->is_master = dpu_encoder_phys_cmd_is_master;
+ 	ops->mode_set = dpu_encoder_phys_cmd_mode_set;
+ 	ops->mode_fixup = dpu_encoder_phys_cmd_mode_fixup;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.c
+index bea4ab5c58c5..245a7a62b5c6 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.c
+@@ -23,6 +23,7 @@
+ #define PP_WR_PTR_IRQ                   0x024
+ #define PP_OUT_LINE_COUNT               0x028
+ #define PP_LINE_COUNT                   0x02C
++#define PP_AUTOREFRESH_CONFIG           0x030
+ 
+ #define PP_FBC_MODE                     0x034
+ #define PP_FBC_BUDGET_CTL               0x038
+@@ -120,6 +121,29 @@ static int dpu_hw_pp_setup_te_config(struct dpu_hw_pingpong *pp,
+ 	return 0;
+ }
+ 
++static void dpu_hw_pp_setup_autorefresh_config(struct dpu_hw_pingpong *pp,
++					       u32 frame_count, bool enable)
++{
++	DPU_REG_WRITE(&pp->hw, PP_AUTOREFRESH_CONFIG,
++		      enable ? (BIT(31) | frame_count) : 0);
++}
++
++/*
++ * dpu_hw_pp_get_autorefresh_config - Get autorefresh config from HW
++ * @pp:          DPU pingpong structure
++ * @frame_count: Used to return the current frame count from hw
++ *
++ * Returns: True if autorefresh enabled, false if disabled.
++ */
++static bool dpu_hw_pp_get_autorefresh_config(struct dpu_hw_pingpong *pp,
++					     u32 *frame_count)
++{
++	u32 val = DPU_REG_READ(&pp->hw, PP_AUTOREFRESH_CONFIG);
++	if (frame_count != NULL)
++		*frame_count = val & 0xffff;
++	return !!((val & BIT(31)) >> 31);
++}
++
+ static int dpu_hw_pp_poll_timeout_wr_ptr(struct dpu_hw_pingpong *pp,
+ 		u32 timeout_us)
+ {
+@@ -228,6 +252,8 @@ static void _setup_pingpong_ops(struct dpu_hw_pingpong *c,
+ 	c->ops.enable_tearcheck = dpu_hw_pp_enable_te;
+ 	c->ops.connect_external_te = dpu_hw_pp_connect_external_te;
+ 	c->ops.get_vsync_info = dpu_hw_pp_get_vsync_info;
++	c->ops.setup_autorefresh = dpu_hw_pp_setup_autorefresh_config;
++	c->ops.get_autorefresh = dpu_hw_pp_get_autorefresh_config;
+ 	c->ops.poll_timeout_wr_ptr = dpu_hw_pp_poll_timeout_wr_ptr;
+ 	c->ops.get_line_count = dpu_hw_pp_get_line_count;
+ 
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.h
+index 065996b3ece9..96f7dc4e7e9b 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.h
+@@ -63,6 +63,8 @@ struct dpu_hw_dither_cfg {
+  *  @setup_tearcheck : program tear check values
+  *  @enable_tearcheck : enables tear check
+  *  @get_vsync_info : retries timing info of the panel
++ *  @setup_autorefresh : configure and enable the autorefresh config
++ *  @get_autorefresh : retrieve autorefresh config from hardware
+  *  @setup_dither : function to program the dither hw block
+  *  @get_line_count: obtain current vertical line counter
+  */
+@@ -94,6 +96,18 @@ struct dpu_hw_pingpong_ops {
+ 	int (*get_vsync_info)(struct dpu_hw_pingpong *pp,
+ 			struct dpu_hw_pp_vsync_info  *info);
+ 
++	/**
++	 * configure and enable the autorefresh config
++	 */
++	void (*setup_autorefresh)(struct dpu_hw_pingpong *pp,
++				  u32 frame_count, bool enable);
++
++	/**
++	 * retrieve autorefresh config from hardware
++	 */
++	bool (*get_autorefresh)(struct dpu_hw_pingpong *pp,
++				u32 *frame_count);
++
+ 	/**
+ 	 * poll until write pointer transmission starts
+ 	 * @Return: 0 on success, -ETIMEDOUT on timeout
 -- 
 2.29.2
 
