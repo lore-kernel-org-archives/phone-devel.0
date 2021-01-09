@@ -2,28 +2,29 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A61C5C433E9
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA919C4332B
 	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 13:39:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7FF2A23A60
+	by mail.kernel.org (Postfix) with ESMTP id B3FE423A60
 	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 13:39:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726364AbhAINih (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 9 Jan 2021 08:38:37 -0500
-Received: from relay06.th.seeweb.it ([5.144.164.167]:48167 "EHLO
+        id S1726359AbhAINis (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 9 Jan 2021 08:38:48 -0500
+Received: from relay06.th.seeweb.it ([5.144.164.167]:35553 "EHLO
         relay06.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725872AbhAINig (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 08:38:36 -0500
+        with ESMTP id S1726367AbhAINih (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 08:38:37 -0500
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 673623EEB9;
-        Sat,  9 Jan 2021 14:37:38 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 7F6463EF18;
+        Sat,  9 Jan 2021 14:37:40 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     linux-arm-msm@vger.kernel.org
@@ -34,48 +35,57 @@ Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         linux-kernel@vger.kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH 0/9] Qualcomm DRM DPU fixes
-Date:   Sat,  9 Jan 2021 14:37:27 +0100
-Message-Id: <20210109133736.143469-1-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH 7/9] drm/msm/dpu: Remove unused call in wait_for_commit_done
+Date:   Sat,  9 Jan 2021 14:37:34 +0100
+Message-Id: <20210109133736.143469-8-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210109133736.143469-1-angelogioacchino.delregno@somainline.org>
+References: <20210109133736.143469-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This patch series brings some fixes to the Qualcomm DPU driver, aim is
-to get it prepared for "legacy" SoCs (like MSM8998, SDM630/660) and to
-finally get command-mode displays working on this driver.
+The call to dpu_encoder_phys_cmd_prepare_for_kickoff is useless as
+it's unused because the serialize_wait4pp variable is never set to
+true by .. anything, literally: remove the call.
+While at it, also reduce indentation by inverting the check for
+dpu_encoder_phys_cmd_is_master.
 
-The series was tested against MSM8998 (the commit that introduces it to
-the hw-catalog is not included in this series, as it needs to be cleaned
-up a little more) and specifically on:
-- Sony Xperia XZ Premium (MSM8998), 4K dual-dsi LCD display, command-mode
-- F(x)Tec Pro1 (MSM8998), single-dsi OLED display, video-mode
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-... And it obviously worked just perfect!
-
-AngeloGioacchino Del Regno (9):
-  drm/msm/dpu: Fix VBIF_XINL_QOS_LVL_REMAP_000 register offset
-  drm/msm/dpu1: Move DPU_SSPP_QOS_8LVL bit to SDM845 and SC7180 masks
-  drm/msm/dpu1: Add prog_fetch_lines_worst_case to INTF_BLK macro
-  drm/msm/dpu1: Allow specifying features and sblk in DSPP_BLK macro
-  drm/msm/dpu: Disable autorefresh in command mode
-  drm/msm/dpu: Correctly configure vsync tearcheck for command mode
-  drm/msm/dpu: Remove unused call in wait_for_commit_done
-  drm/msm/dpu: Add a function to retrieve the current CTL status
-  drm/msm/dpu: Fix timeout issues on command mode panels
-
- .../drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c  | 91 ++++++++++++++++---
- .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 39 ++++----
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c    |  6 ++
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h    |  7 ++
- .../gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.c   | 26 ++++++
- .../gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.h   | 14 +++
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_vbif.c   |  9 +-
- 7 files changed, 155 insertions(+), 37 deletions(-)
-
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+index c5cf59b5bd41..2311e98480b9 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+@@ -687,20 +687,15 @@ static int dpu_encoder_phys_cmd_wait_for_tx_complete(
+ static int dpu_encoder_phys_cmd_wait_for_commit_done(
+ 		struct dpu_encoder_phys *phys_enc)
+ {
+-	int rc = 0;
+ 	struct dpu_encoder_phys_cmd *cmd_enc;
+ 
+ 	cmd_enc = to_dpu_encoder_phys_cmd(phys_enc);
+ 
+ 	/* only required for master controller */
+-	if (dpu_encoder_phys_cmd_is_master(phys_enc))
+-		rc = _dpu_encoder_phys_cmd_wait_for_ctl_start(phys_enc);
+-
+-	/* required for both controllers */
+-	if (!rc && cmd_enc->serialize_wait4pp)
+-		dpu_encoder_phys_cmd_prepare_for_kickoff(phys_enc);
++	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
++		return 0;
+ 
+-	return rc;
++	return _dpu_encoder_phys_cmd_wait_for_ctl_start(phys_enc);
+ }
+ 
+ static int dpu_encoder_phys_cmd_wait_for_vblank(
 -- 
 2.29.2
 
