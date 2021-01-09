@@ -2,26 +2,26 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CC89C4332D
-	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 16:31:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 535B2C433E0
+	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 16:31:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 23B9222D01
-	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 16:31:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 25BB922527
+	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 16:31:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725966AbhAIQba (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 9 Jan 2021 11:31:30 -0500
-Received: from relay08.th.seeweb.it ([5.144.164.169]:39143 "EHLO
-        relay08.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726005AbhAIQba (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 11:31:30 -0500
+        id S1726407AbhAIQbh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 9 Jan 2021 11:31:37 -0500
+Received: from relay07.th.seeweb.it ([5.144.164.168]:56189 "EHLO
+        relay07.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726005AbhAIQbg (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 11:31:36 -0500
 Received: from localhost.localdomain (abaf53.neoplus.adsl.tpnet.pl [83.6.169.53])
-        by m-r2.th.seeweb.it (Postfix) with ESMTPA id E473D3E8E7;
-        Sat,  9 Jan 2021 17:30:29 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPA id 2F9223EFD1;
+        Sat,  9 Jan 2021 17:30:38 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
@@ -33,9 +33,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 3/5] arm64: dts: qcom: msm8998: Add I2C pinctrl and fix BLSP2_I2C naming
-Date:   Sat,  9 Jan 2021 17:29:57 +0100
-Message-Id: <20210109163001.146867-4-konrad.dybcio@somainline.org>
+Subject: [PATCH 5/5] arm64: dts: qcom: msm8998: Disable some components by default
+Date:   Sat,  9 Jan 2021 17:29:59 +0100
+Message-Id: <20210109163001.146867-6-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210109163001.146867-1-konrad.dybcio@somainline.org>
 References: <20210109163001.146867-1-konrad.dybcio@somainline.org>
@@ -45,369 +45,132 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The BLSP2-connected interfaces started from 0 which is.. misleading
-to say the least.. the clock names corresponding to these started
-from 1, so let's align to that so as to reduce confusion.
+Some components (like PCIe) are not used on all devices and
+with a certain firmware configuration they might end up triggering
+a force reboot or a Synchronous Abort.
+
+This commit brings no functional difference as the nodes are
+enabled on devices which didn't disable them previously.
 
 Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi | 216 +++++++++++++++++++++++++-
- 1 file changed, 210 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8998-clamshell.dtsi | 16 ++++++++++++++++
+ arch/arm64/boot/dts/qcom/msm8998-mtp.dtsi       | 10 ++++++++++
+ arch/arm64/boot/dts/qcom/msm8998.dtsi           |  6 +++++-
+ 3 files changed, 31 insertions(+), 1 deletion(-)
 
+diff --git a/arch/arm64/boot/dts/qcom/msm8998-clamshell.dtsi b/arch/arm64/boot/dts/qcom/msm8998-clamshell.dtsi
+index 00d84fb21798..b500f24d47bc 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998-clamshell.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998-clamshell.dtsi
+@@ -74,6 +74,14 @@ &CPU7 {
+ 	cpu-idle-states = <&BIG_CPU_SLEEP_1>;
+ };
+ 
++&pcie0 {
++	status = "okay";
++};
++
++&pcie_phy {
++	status = "okay";
++};
++
+ &pm8005_lsid1 {
+ 	pm8005-regulators {
+ 		compatible = "qcom,pm8005-regulators";
+@@ -295,6 +303,14 @@ &sdhc2 {
+ 	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off &sdc2_cd_off>;
+ };
+ 
++&ufshc {
++	status = "okay";
++};
++
++&ufsphy {
++	status = "okay";
++};
++
+ &usb3 {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/qcom/msm8998-mtp.dtsi b/arch/arm64/boot/dts/qcom/msm8998-mtp.dtsi
+index cec42437b302..c1ef0c71d5f5 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998-mtp.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998-mtp.dtsi
+@@ -106,6 +106,14 @@ &funnel5 {
+ 	// status = "okay";
+ };
+ 
++&pcie0 {
++	status = "okay";
++};
++
++&pcie_phy {
++	status = "okay";
++};
++
+ &pm8005_lsid1 {
+ 	pm8005-regulators {
+ 		compatible = "qcom,pm8005-regulators";
+@@ -345,6 +353,7 @@ &stm {
+ };
+ 
+ &ufshc {
++	status = "okay";
+ 	vcc-supply = <&vreg_l20a_2p95>;
+ 	vccq-supply = <&vreg_l26a_1p2>;
+ 	vccq2-supply = <&vreg_s4a_1p8>;
+@@ -354,6 +363,7 @@ &ufshc {
+ };
+ 
+ &ufsphy {
++	status = "okay";
+ 	vdda-phy-supply = <&vreg_l1a_0p875>;
+ 	vdda-pll-supply = <&vreg_l2a_1p2>;
+ 	vddp-ref-clk-supply = <&vreg_l26a_1p2>;
 diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index eadac13ff975..c7d6dbd24f1e 100644
+index b2481043205a..65c87a8be5a2 100644
 --- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
 +++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -1177,6 +1177,174 @@ rfr {
- 					bias-disable;
- 				};
- 			};
-+
-+			blsp1_i2c1_default: blsp1-i2c1-default {
-+				pins = "gpio2", "gpio3";
-+				function = "blsp_i2c1";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp1_i2c1_sleep: blsp1-i2c1-sleep {
-+				pins = "gpio2", "gpio3";
-+				function = "blsp_i2c1";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			blsp1_i2c2_default: blsp1-i2c2-default {
-+				pins = "gpio32", "gpio33";
-+				function = "blsp_i2c2";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp1_i2c2_sleep: blsp1-i2c2-sleep {
-+				pins = "gpio32", "gpio33";
-+				function = "blsp_i2c2";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			blsp1_i2c3_default: blsp1-i2c3-default {
-+				pins = "gpio47", "gpio48";
-+				function = "blsp_i2c3";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp1_i2c3_sleep: blsp1-i2c3-sleep {
-+				pins = "gpio47", "gpio48";
-+				function = "blsp_i2c3";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			blsp1_i2c4_default: blsp1-i2c4-default {
-+				pins = "gpio10", "gpio11";
-+				function = "blsp_i2c4";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp1_i2c4_sleep: blsp1-i2c4-sleep {
-+				pins = "gpio10", "gpio11";
-+				function = "blsp_i2c4";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			blsp1_i2c5_default: blsp1-i2c5-default {
-+				pins = "gpio87", "gpio88";
-+				function = "blsp_i2c5";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp1_i2c5_sleep: blsp1-i2c5-sleep {
-+				pins = "gpio87", "gpio88";
-+				function = "blsp_i2c5";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			blsp1_i2c6_default: blsp1-i2c6-default {
-+				pins = "gpio43", "gpio44";
-+				function = "blsp_i2c6";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp1_i2c6_sleep: blsp1-i2c6-sleep {
-+				pins = "gpio43", "gpio44";
-+				function = "blsp_i2c6";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+			/* 6 interfaces per QUP, BLSP2 indexes are numbered (n)+6 */
-+			blsp2_i2c1_default: blsp2-i2c1-default {
-+				pins = "gpio55", "gpio56";
-+				function = "blsp_i2c7";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp2_i2c1_sleep: blsp2-i2c1-sleep {
-+				pins = "gpio55", "gpio56";
-+				function = "blsp_i2c7";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			blsp2_i2c2_default: blsp2-i2c2-default {
-+				pins = "gpio6", "gpio7";
-+				function = "blsp_i2c8";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp2_i2c2_sleep: blsp2-i2c2-sleep {
-+				pins = "gpio6", "gpio7";
-+				function = "blsp_i2c8";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			blsp2_i2c3_default: blsp2-i2c3-default {
-+				pins = "gpio51", "gpio52";
-+				function = "blsp_i2c9";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp2_i2c3_sleep: blsp2-i2c3-sleep {
-+				pins = "gpio51", "gpio52";
-+				function = "blsp_i2c9";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			blsp2_i2c4_default: blsp2-i2c4-default {
-+				pins = "gpio67", "gpio68";
-+				function = "blsp_i2c10";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp2_i2c4_sleep: blsp2-i2c4-sleep {
-+				pins = "gpio67", "gpio68";
-+				function = "blsp_i2c10";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			blsp2_i2c5_default: blsp2-i2c5-default {
-+				pins = "gpio60", "gpio61";
-+				function = "blsp_i2c11";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp2_i2c5_sleep: blsp2-i2c5-sleep {
-+				pins = "gpio60", "gpio61";
-+				function = "blsp_i2c11";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			blsp2_i2c6_default: blsp2-i2c6-default {
-+				pins = "gpio83", "gpio84";
-+				function = "blsp_i2c12";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp2_i2c6_sleep: blsp2-i2c6-sleep {
-+				pins = "gpio83", "gpio84";
-+				function = "blsp_i2c12";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
+@@ -945,6 +945,7 @@ pcie0: pci@1c00000 {
+ 			num-lanes = <1>;
+ 			phys = <&pciephy>;
+ 			phy-names = "pciephy";
++			status = "disabled";
+ 
+ 			ranges = <0x01000000 0x0 0x1b200000 0x1b200000 0x0 0x100000>,
+ 				 <0x02000000 0x0 0x1b300000 0x1b300000 0x0 0xd00000>;
+@@ -970,11 +971,12 @@ pcie0: pci@1c00000 {
+ 			perst-gpios = <&tlmm 35 GPIO_ACTIVE_LOW>;
  		};
  
- 		remoteproc_mss: remoteproc@4080000 {
-@@ -1895,6 +2063,9 @@ blsp1_i2c1: i2c@c175000 {
- 			clock-names = "core", "iface";
- 			dmas = <&blsp1_dma 6>, <&blsp1_dma 7>;
- 			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp1_i2c1_default>;
-+			pinctrl-1 = <&blsp1_i2c1_sleep>;
- 			clock-frequency = <400000>;
+-		phy@1c06000 {
++		pcie_phy: phy@1c06000 {
+ 			compatible = "qcom,msm8998-qmp-pcie-phy";
+ 			reg = <0x01c06000 0x18c>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
++			status = "disabled";
+ 			ranges;
  
- 			status = "disabled";
-@@ -1912,6 +2083,9 @@ blsp1_i2c2: i2c@c176000 {
- 			clock-names = "core", "iface";
- 			dmas = <&blsp1_dma 8>, <&blsp1_dma 9>;
- 			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp1_i2c2_default>;
-+			pinctrl-1 = <&blsp1_i2c2_sleep>;
- 			clock-frequency = <400000>;
+ 			clocks = <&gcc GCC_PCIE_PHY_AUX_CLK>,
+@@ -1007,6 +1009,7 @@ ufshc: ufshc@1da4000 {
+ 			phy-names = "ufsphy";
+ 			lanes-per-direction = <2>;
+ 			power-domains = <&gcc UFS_GDSC>;
++			status = "disabled";
+ 			#reset-cells = <1>;
  
- 			status = "disabled";
-@@ -1929,6 +2103,9 @@ blsp1_i2c3: i2c@c177000 {
- 			clock-names = "core", "iface";
- 			dmas = <&blsp1_dma 10>, <&blsp1_dma 11>;
- 			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp1_i2c3_default>;
-+			pinctrl-1 = <&blsp1_i2c3_sleep>;
- 			clock-frequency = <400000>;
+ 			clock-names =
+@@ -1046,6 +1049,7 @@ ufsphy: phy@1da7000 {
+ 			reg = <0x01da7000 0x18c>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
++			status = "disabled";
+ 			ranges;
  
- 			status = "disabled";
-@@ -1946,6 +2123,9 @@ blsp1_i2c4: i2c@c178000 {
- 			clock-names = "core", "iface";
- 			dmas = <&blsp1_dma 12>, <&blsp1_dma 13>;
- 			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp1_i2c4_default>;
-+			pinctrl-1 = <&blsp1_i2c4_sleep>;
- 			clock-frequency = <400000>;
- 
- 			status = "disabled";
-@@ -1963,6 +2143,9 @@ blsp1_i2c5: i2c@c179000 {
- 			clock-names = "core", "iface";
- 			dmas = <&blsp1_dma 14>, <&blsp1_dma 15>;
- 			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp1_i2c5_default>;
-+			pinctrl-1 = <&blsp1_i2c5_sleep>;
- 			clock-frequency = <400000>;
- 
- 			status = "disabled";
-@@ -1980,6 +2163,9 @@ blsp1_i2c6: i2c@c17a000 {
- 			clock-names = "core", "iface";
- 			dmas = <&blsp1_dma 16>, <&blsp1_dma 17>;
- 			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp1_i2c6_default>;
-+			pinctrl-1 = <&blsp1_i2c6_sleep>;
- 			clock-frequency = <400000>;
- 
- 			status = "disabled";
-@@ -2010,7 +2196,7 @@ blsp2_uart1: serial@c1b0000 {
- 			status = "disabled";
- 		};
- 
--		blsp2_i2c0: i2c@c1b5000 {
-+		blsp2_i2c1: i2c@c1b5000 {
- 			compatible = "qcom,i2c-qup-v2.2.1";
- 			reg = <0x0c1b5000 0x600>;
- 			interrupts = <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2020,6 +2206,9 @@ blsp2_i2c0: i2c@c1b5000 {
- 			clock-names = "core", "iface";
- 			dmas = <&blsp2_dma 6>, <&blsp2_dma 7>;
- 			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp2_i2c1_default>;
-+			pinctrl-1 = <&blsp2_i2c1_sleep>;
- 			clock-frequency = <400000>;
- 
- 			status = "disabled";
-@@ -2027,7 +2216,7 @@ blsp2_i2c0: i2c@c1b5000 {
- 			#size-cells = <0>;
- 		};
- 
--		blsp2_i2c1: i2c@c1b6000 {
-+		blsp2_i2c2: i2c@c1b6000 {
- 			compatible = "qcom,i2c-qup-v2.2.1";
- 			reg = <0x0c1b6000 0x600>;
- 			interrupts = <GIC_SPI 102 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2037,6 +2226,9 @@ blsp2_i2c1: i2c@c1b6000 {
- 			clock-names = "core", "iface";
- 			dmas = <&blsp2_dma 8>, <&blsp2_dma 9>;
- 			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp2_i2c2_default>;
-+			pinctrl-1 = <&blsp2_i2c2_sleep>;
- 			clock-frequency = <400000>;
- 
- 			status = "disabled";
-@@ -2044,7 +2236,7 @@ blsp2_i2c1: i2c@c1b6000 {
- 			#size-cells = <0>;
- 		};
- 
--		blsp2_i2c2: i2c@c1b7000 {
-+		blsp2_i2c3: i2c@c1b7000 {
- 			compatible = "qcom,i2c-qup-v2.2.1";
- 			reg = <0x0c1b7000 0x600>;
- 			interrupts = <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2054,6 +2246,9 @@ blsp2_i2c2: i2c@c1b7000 {
- 			clock-names = "core", "iface";
- 			dmas = <&blsp2_dma 10>, <&blsp2_dma 11>;
- 			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp2_i2c3_default>;
-+			pinctrl-1 = <&blsp2_i2c3_sleep>;
- 			clock-frequency = <400000>;
- 
- 			status = "disabled";
-@@ -2061,7 +2256,7 @@ blsp2_i2c2: i2c@c1b7000 {
- 			#size-cells = <0>;
- 		};
- 
--		blsp2_i2c3: i2c@c1b8000 {
-+		blsp2_i2c4: i2c@c1b8000 {
- 			compatible = "qcom,i2c-qup-v2.2.1";
- 			reg = <0x0c1b8000 0x600>;
- 			interrupts = <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2071,6 +2266,9 @@ blsp2_i2c3: i2c@c1b8000 {
- 			clock-names = "core", "iface";
- 			dmas = <&blsp2_dma 12>, <&blsp2_dma 13>;
- 			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp2_i2c4_default>;
-+			pinctrl-1 = <&blsp2_i2c4_sleep>;
- 			clock-frequency = <400000>;
- 
- 			status = "disabled";
-@@ -2078,7 +2276,7 @@ blsp2_i2c3: i2c@c1b8000 {
- 			#size-cells = <0>;
- 		};
- 
--		blsp2_i2c4: i2c@c1b9000 {
-+		blsp2_i2c5: i2c@c1b9000 {
- 			compatible = "qcom,i2c-qup-v2.2.1";
- 			reg = <0x0c1b9000 0x600>;
- 			interrupts = <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2088,6 +2286,9 @@ blsp2_i2c4: i2c@c1b9000 {
- 			clock-names = "core", "iface";
- 			dmas = <&blsp2_dma 14>, <&blsp2_dma 15>;
- 			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp2_i2c5_default>;
-+			pinctrl-1 = <&blsp2_i2c5_sleep>;
- 			clock-frequency = <400000>;
- 
- 			status = "disabled";
-@@ -2095,7 +2296,7 @@ blsp2_i2c4: i2c@c1b9000 {
- 			#size-cells = <0>;
- 		};
- 
--		blsp2_i2c5: i2c@c1ba000 {
-+		blsp2_i2c6: i2c@c1ba000 {
- 			compatible = "qcom,i2c-qup-v2.2.1";
- 			reg = <0x0c1ba000 0x600>;
- 			interrupts = <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2105,6 +2306,9 @@ blsp2_i2c5: i2c@c1ba000 {
- 			clock-names = "core", "iface";
- 			dmas = <&blsp2_dma 16>, <&blsp2_dma 17>;
- 			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp2_i2c6_default>;
-+			pinctrl-1 = <&blsp2_i2c6_sleep>;
- 			clock-frequency = <400000>;
- 
- 			status = "disabled";
+ 			clock-names =
 -- 
 2.29.2
 
