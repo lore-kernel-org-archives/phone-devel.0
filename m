@@ -2,96 +2,99 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51EABC433E6
-	for <phone-devel@archiver.kernel.org>; Sun, 10 Jan 2021 15:07:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EE20C43332
+	for <phone-devel@archiver.kernel.org>; Sun, 10 Jan 2021 17:19:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 14D492389A
-	for <phone-devel@archiver.kernel.org>; Sun, 10 Jan 2021 15:07:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 458E422581
+	for <phone-devel@archiver.kernel.org>; Sun, 10 Jan 2021 17:19:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726394AbhAJPHk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 10 Jan 2021 10:07:40 -0500
-Received: from honk.sigxcpu.org ([24.134.29.49]:33372 "EHLO honk.sigxcpu.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726069AbhAJPHj (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 10 Jan 2021 10:07:39 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id 8CE8BFB03;
-        Sun, 10 Jan 2021 16:06:56 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
-Received: from honk.sigxcpu.org ([127.0.0.1])
-        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id suGH5Iqrk0OG; Sun, 10 Jan 2021 16:06:55 +0100 (CET)
-Received: by bogon.sigxcpu.org (Postfix, from userid 1000)
-        id 19D4940885; Sun, 10 Jan 2021 16:06:55 +0100 (CET)
-Date:   Sun, 10 Jan 2021 16:06:55 +0100
-From:   Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
-To:     Shawn Guo <shawnguo@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Martin Kepplinger <martink@posteo.de>,
-        Angus Ainslie <angus@akkea.ca>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Li Yang <leoyang.li@nxp.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Vinod Koul <vkoul@kernel.org>,
-        Anson Huang <Anson.Huang@nxp.com>,
-        Michael Walle <michael@walle.cc>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] Config and device tree updates for the Librem 5
- devkit
-Message-ID: <20210110150654.GA9546@bogon.m.sigxcpu.org>
-References: <cover.1608216796.git.agx@sigxcpu.org>
- <20210110122617.GM28365@dragon>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210110122617.GM28365@dragon>
+        id S1727005AbhAJRTo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 10 Jan 2021 12:19:44 -0500
+Received: from mail-oi1-f172.google.com ([209.85.167.172]:32906 "EHLO
+        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726394AbhAJRTn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Sun, 10 Jan 2021 12:19:43 -0500
+Received: by mail-oi1-f172.google.com with SMTP id d203so17759042oia.0;
+        Sun, 10 Jan 2021 09:19:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=dpRmxYlnzoK4Lg6qNYsLrabnqdmAajbzQvyDJX0Sah8=;
+        b=lSTAfPZ8ldEvDWRDiGt6CZ8Temh1k6D3iy0fi4V8e/HEQTyG0GxW2mpcFq92oAbCMY
+         A4TQuF6yrpog7BcKmRImitC0/9jZ2FBXg2YgTxYZy2V7BPgRtc0cA2s6WegM522UlVFx
+         ljLzJWm5NAx5z4YosHksres36ZjfpAt4jEfpE5S27U/4bpoxD+dawfdaH6DFMsuGHbdo
+         qqNjEBeu+cc8hNlvGfSUpLj0E1r6qWCbR+s6D94621KRWoyHkc0PshvM4OryB8zRYlMl
+         5u9qjiks6waU0C62kqA6ELZ2MIzD0IG5630lVYAZBowJ3SG2x17PBys5MBqtGsS7kP1v
+         xHZQ==
+X-Gm-Message-State: AOAM532HxDmL2VR1rd8Egytjm0+rHeg0iZyuvXvvAt5ItsSrB/td1Y/5
+        9RekOMuUmiMlf9f48rSClg==
+X-Google-Smtp-Source: ABdhPJwLUuMmsbYJA5pNeqvmXXoVg51UlNhmRIQluJbm9TYeOig/e6tOEclqP/USGyTB9k81oNqCEw==
+X-Received: by 2002:a54:4785:: with SMTP id o5mr8249939oic.139.1610299142715;
+        Sun, 10 Jan 2021 09:19:02 -0800 (PST)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id g5sm3128772otq.43.2021.01.10.09.19.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Jan 2021 09:19:01 -0800 (PST)
+Received: (nullmailer pid 785285 invoked by uid 1000);
+        Sun, 10 Jan 2021 17:18:46 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     marijn.suijten@somainline.org, linux-arm-msm@vger.kernel.org,
+        manivannan.sadhasivam@linaro.org, phone-devel@vger.kernel.org,
+        martin.botka@somainline.org, linux-pm@vger.kernel.org,
+        bjorn.andersson@linaro.org, nks@flawful.org,
+        viresh.kumar@linaro.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
+        konrad.dybcio@somainline.org, linux-kernel@vger.kernel.org,
+        agross@kernel.org
+In-Reply-To: <20210109180359.236098-16-angelogioacchino.delregno@somainline.org>
+References: <20210109180359.236098-1-angelogioacchino.delregno@somainline.org> <20210109180359.236098-16-angelogioacchino.delregno@somainline.org>
+Subject: Re: [PATCH v2 15/15] dt-bindings: cpufreq: qcom-hw: Add bindings for 8998
+Date:   Sun, 10 Jan 2021 11:18:46 -0600
+Message-Id: <1610299126.062379.785284.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Shawn,
-On Sun, Jan 10, 2021 at 08:26:18PM +0800, Shawn Guo wrote:
-> On Thu, Dec 17, 2020 at 04:13:11PM +0100, Guido Günther wrote:
-> > This enables more components to get a working display, panel, audio and
-> > sensors. It also updates some device tree bits to make mainline boot.
-> > 
-> > I've skipped wifi (which needs some more driver work) and devfreq (since Martin
-> > is working on that).
-> > 
-> > The config changes don't depend on the DT parts so could be applied
-> > independently. The series was tested against next-20201214 and i made sure the
-> > defconfig changes also apply on top of shawnguo/imx/defconfig.
+On Sat, 09 Jan 2021 19:03:59 +0100, AngeloGioacchino Del Regno wrote:
+> The OSM programming addition has been done under the
+> qcom,cpufreq-hw-8998 compatible name: specify the requirement
+> of two additional register spaces for this functionality.
+> This implementation, with the same compatible, has been
+> tested on MSM8998 and SDM630.
 > 
-> Sorry.  It doesn't apply any more.
-
-v3 of this patch
-
-    https://lore.kernel.org/linux-arm-kernel/5636a3d6e3217475e2a479248250d5c0e0a50e26.1610110514.git.agx@sigxcpu.org/)
-
-applies for me on top of
-
-    https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git/log/?h=imx/defconfig
-
-(which is at 773fcbcdf9d66b4aec964238b613e93804cba24c) - am i looking at
-the wrong tree?
-
-Cheers and sorry for any inconvenience,
- -- Guido
-
-
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  .../bindings/cpufreq/cpufreq-qcom-hw.yaml     | 44 ++++++++++++++++---
+>  1 file changed, 39 insertions(+), 5 deletions(-)
 > 
-> Shawn
-> 
+
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml:73:2: [warning] wrong indentation: expected 2 but found 1 (indentation)
+
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.example.dt.yaml: cpufreq@17d43000: reg: [[399781888, 5120], [399792128, 5120]] is too short
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
+
+See https://patchwork.ozlabs.org/patch/1424138
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+
