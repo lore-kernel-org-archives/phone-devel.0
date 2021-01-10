@@ -2,107 +2,99 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D705CC433E0
-	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 23:14:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3876AC433E6
+	for <phone-devel@archiver.kernel.org>; Sun, 10 Jan 2021 00:25:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A668323998
-	for <phone-devel@archiver.kernel.org>; Sat,  9 Jan 2021 23:14:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0AD722389F
+	for <phone-devel@archiver.kernel.org>; Sun, 10 Jan 2021 00:25:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726666AbhAIXOR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 9 Jan 2021 18:14:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44312 "EHLO
+        id S1726249AbhAJAZb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 9 Jan 2021 19:25:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726663AbhAIXOR (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 18:14:17 -0500
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 121D0C06179F
-        for <phone-devel@vger.kernel.org>; Sat,  9 Jan 2021 15:13:37 -0800 (PST)
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 4154E3F32C;
-        Sun, 10 Jan 2021 00:13:35 +0100 (CET)
-Subject: Re: [PATCH 2/2] dt-bindings: pinctrl: Add bindings for Awinic
- AW9523/AW9523B
-To:     Linus Walleij <linus.walleij@linaro.org>
+        with ESMTP id S1726210AbhAJAZb (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 9 Jan 2021 19:25:31 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92111C0617A2
+        for <phone-devel@vger.kernel.org>; Sat,  9 Jan 2021 16:24:49 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id u25so11429896lfc.2
+        for <phone-devel@vger.kernel.org>; Sat, 09 Jan 2021 16:24:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MaNjSrG8taLJEzXd4CfVhlhv+S87fFrkBRWdE4GXbNU=;
+        b=G8CJ6yX91fKSLE4hDDwBLWMD7zoM/coT9SC/zm9kWRyySwDSMvvyHUFNWSMzgok6SO
+         Lxn5dJDH31e0i0pe1U/qnjX/hiAuZbs90ZAqY53pPMVzmMtdgDerq08JTffI9NWSBSZB
+         IfDutdLr9GtspwSxrBNesP1zKWI00tRSii4fBGexW6C4Ohc2o38OTrpecKWH23DWz6i2
+         bowTwVCAvxljAKg9BdqEjSeu2IgVTWok6FxoKbkoB5v6Icvu5MCHgA0lOGkOWlts6Tpe
+         NpwdN2lgiOrjYeo1D8JDG442LUnAaM5m2E4VpvSD8San20rdGlIh90BG+347KxbSHL+X
+         m1iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MaNjSrG8taLJEzXd4CfVhlhv+S87fFrkBRWdE4GXbNU=;
+        b=kNqoXybO8Iom6/APk3Q6nboJR0JG066S9xOdk3No8OAo2PqRUpx8UU4kgQgM0SpShH
+         2V73tmFVKWn5kVwAJQIl1O6t/TaviA92qhBYLJ0UrBC2Lta/OjaNyHUTe7BtV3BRIs5M
+         Xze2TTpcjOby7UL9I0o8ix50mMuMpjIGs3XkOgVRZwtKIi1OpLoycWBEXy0FiooeKHee
+         SfKxBYLrzCIK9Xs92VfJRNYKmtCW2Cl3Xo6OSkjMaxM6DdR/VXiC7xpG9ohy/dkbzWb5
+         YpRxaKlGy58b+I8meojJz2cI7fAIHvicJ1GMN51gDWmjlQCpmLpCNdnp0pB8cgFaYknQ
+         OFHQ==
+X-Gm-Message-State: AOAM531LYhsDAyJSx1C2NHxvzTF3clAT7iL+U8nuCLJinqL3OL9lCaef
+        S+qU0neo6NjfwGB6ur78jS9sweou73VdL2LfR8zqHA==
+X-Google-Smtp-Source: ABdhPJzWhUb8OaCqZ+wGW3wghfI4OfSe4HcyYD2SElJtQEE0jHkfmLE53PIQAkoRBbNxCjll818U9BU6+WvJ1RvEg5U=
+X-Received: by 2002:a19:6557:: with SMTP id c23mr4137115lfj.157.1610238288101;
+ Sat, 09 Jan 2021 16:24:48 -0800 (PST)
+MIME-Version: 1.0
+References: <20210109140204.151340-1-angelogioacchino.delregno@somainline.org>
+ <20210109140204.151340-2-angelogioacchino.delregno@somainline.org>
+ <CACRpkdbETKnhgR2-T+s3ChY4v-C5ErdPEp2WcMSZHzJ=O-fHig@mail.gmail.com> <111b918d-2b43-be81-2dbf-e984750b0ef7@somainline.org>
+In-Reply-To: <111b918d-2b43-be81-2dbf-e984750b0ef7@somainline.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 10 Jan 2021 01:24:37 +0100
+Message-ID: <CACRpkdZXgN91jKBDvf=P5_6ObOaacQa2PGL3-jP1gBW__ZyOaA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] pinctrl: Add driver for Awinic AW9523/B I2C GPIO Expander
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Mark Brown <broonie@kernel.org>
 Cc:     "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         martin.botka@somainline.org, phone-devel@vger.kernel.org,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>
-References: <20210109140204.151340-1-angelogioacchino.delregno@somainline.org>
- <20210109140204.151340-3-angelogioacchino.delregno@somainline.org>
- <CACRpkdaB4ejWUzBpkYWtRC=_On0tw2H1=3beaVmnLkjncUzn_Q@mail.gmail.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Message-ID: <3f8e772a-4e2f-2384-e2bf-f71e393d11d6@somainline.org>
-Date:   Sun, 10 Jan 2021 00:13:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
-MIME-Version: 1.0
-In-Reply-To: <CACRpkdaB4ejWUzBpkYWtRC=_On0tw2H1=3beaVmnLkjncUzn_Q@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 09/01/21 23:14, Linus Walleij ha scritto:
-> Hi Angelo,
-> 
-> thanks for your patch!
-> 
-> On Sat, Jan 9, 2021 at 3:02 PM AngeloGioacchino Del Regno
-> <angelogioacchino.delregno@somainline.org> wrote:
-> 
->> +#PIN CONFIGURATION NODES
->> +patternProperties:
->> +  '^.*$':
->> +    if:
->> +      type: object
->> +    then:
->> +      properties:
->> +        pins:
->> +          description:
->> +            List of gpio pins affected by the properties specified in
->> +            this subnode.
->> +          items:
->> +            pattern: "^gpio([0-9]|1[0-5])$"
->> +          minItems: 1
->> +          maxItems: 16
->> +
->> +        function:
->> +          description:
->> +            Specify the alternative function to be configured for the
->> +            specified pins.
->> +
->> +          enum: [ gpio, pwm ]
->> +
->> +        bias-disable: true
->> +        bias-pull-down: true
->> +        bias-pull-up: true
->> +        drive-open-drain: true
->> +        drive-push-pull: true
->> +        input-enable: true
->> +        output-high: true
->> +        output-low: true
->> +
->> +      required:
->> +        - pins
->> +        - function
-> 
-> Is it possible to just $ref /pinctrl/pincfg-node.yaml# for some of this?
-> 
-Sure, I will try to reference that for V2!
+On Sun, Jan 10, 2021 at 12:11 AM AngeloGioacchino Del Regno
+<angelogioacchino.delregno@somainline.org> wrote:
+> Il 09/01/21 23:11, Linus Walleij ha scritto:
 
-> Yours,
-> Linus Walleij
-> 
+> > The major review comment is that it'd be nice if you look into
+> > using regmaps register cache instead of rolling your own,
+> > and also possibly using regmaps locking rather than your own
+> > as a result of that.
+> >
+> Actually, I really tried to use regmap's FLAT register cache and after
+> many, many tries... I had to give up. I just couldn't get it working. :(
 
+This needs to be root-caused. The register cache in regmap is for
+using not for decoration.
+
+What is the problems you are seeing?
+
+If it is fundamentally so that regmap has limitations that is one thing,
+but I want to rule out that we're just not using it wrong or that there
+is a bug in it that we should fix.
+
+Looping in Mark Brown the regmap maintainer.
+
+Yours,
+Linus Walleij
