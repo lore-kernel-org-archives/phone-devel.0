@@ -2,36 +2,35 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BFB2C433E0
-	for <phone-devel@archiver.kernel.org>; Sun, 10 Jan 2021 12:26:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F26FC433E0
+	for <phone-devel@archiver.kernel.org>; Sun, 10 Jan 2021 12:27:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5F525229C7
-	for <phone-devel@archiver.kernel.org>; Sun, 10 Jan 2021 12:26:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2B0A42250E
+	for <phone-devel@archiver.kernel.org>; Sun, 10 Jan 2021 12:27:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726484AbhAJM0K (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 10 Jan 2021 07:26:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53352 "EHLO mail.kernel.org"
+        id S1726447AbhAJM1F (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 10 Jan 2021 07:27:05 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53604 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726479AbhAJM0J (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 10 Jan 2021 07:26:09 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D458D2250E;
-        Sun, 10 Jan 2021 12:25:24 +0000 (UTC)
+        id S1726418AbhAJM1F (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Sun, 10 Jan 2021 07:27:05 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3B17E224D2;
+        Sun, 10 Jan 2021 12:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610281528;
-        bh=tpQi5dhPDHJXJjfIpmdIZMwrGNm8niVLLpqxQMMz7Lg=;
+        s=k20201202; t=1610281585;
+        bh=wgwc5pZ2wCCwctYNUxDibkCWCm5JG3BzKhsS7z1kKsA=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qr7lfKrMQbBGbdO8VANtEcFTu1KKtE6EiiVjwYYki5DGVxpHC/M/03ebkD2pBzX2j
-         +fqky41110PB/vckgD9ABc//e4FwVgxmgmwPwbHxs5XZf/7wzRIfVYRPl8lA7EkKwU
-         2mT6eXvOXkk+QW6T9d7OyMNA1sTnUUQYphvHz96Qp5fezkH7yPT0EilLMOH3wVQKhF
-         L3J2+vz4h7uTzvDDZffjW27L6XJsNjIKd/URIXwcqOiBIcsjJsul9QyuCn59z/0Y/o
-         0lUr92Gt8IyyouUeTV9d/8AjyvimAcSsjnEilhUwueaQqhs/66YQOcBFqfjqjeECxJ
-         AN2s2xB7+508w==
-Date:   Sun, 10 Jan 2021 20:25:21 +0800
+        b=lB6rDrVh0s1UqTJrtDyLDg3nJ0JsycKE19vLrBzn6EPcwPk6QQHyehPg1tHkm5YI5
+         RJgxg0bTZURHP+aYWGU5H12LQkwOjHGfBPT+hwdmfDTt6TiQ6VoQsbYPBlMAZxGmwD
+         2SbrQRmDCobvQGESjQGE5AnJkKSftRW6xsmUHfsBNFYmof941dJdt8bpipcXOEa/Hp
+         Tqoq27/7AUo3vRAlK9PhzsxuC5QiF2Eu5CTPZByup70RTIQTgPzGK7hQkQJTpz1SFh
+         cfPZSvO3OLFE/XxPUsELv6DIf0Kc1ubRGEAwJBHYfd0wapZu75uShfd1/MadAEzpOp
+         DxdZTDY9t+hKA==
+Date:   Sun, 10 Jan 2021 20:26:18 +0800
 From:   Shawn Guo <shawnguo@kernel.org>
 To:     Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
 Cc:     Rob Herring <robh+dt@kernel.org>,
@@ -52,37 +51,31 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         Michael Walle <michael@walle.cc>, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] arm64: dts: imx8mq-librem5-devkit: Drop custom
- clock settings
-Message-ID: <20210110122521.GL28365@dragon>
+Subject: Re: [PATCH v2 0/4] Config and device tree updates for the Librem 5
+ devkit
+Message-ID: <20210110122617.GM28365@dragon>
 References: <cover.1608216796.git.agx@sigxcpu.org>
- <3343e82ab52e753b385a3e451c07b774920790fc.1608216796.git.agx@sigxcpu.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3343e82ab52e753b385a3e451c07b774920790fc.1608216796.git.agx@sigxcpu.org>
+In-Reply-To: <cover.1608216796.git.agx@sigxcpu.org>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Dec 17, 2020 at 04:13:15PM +0100, Guido Günther wrote:
-> Otherwise the boot hangs early on and the resulting clock tree without
-> this already closely matches the selected rates (722534400 and
-> 786432000).
+On Thu, Dec 17, 2020 at 04:13:11PM +0100, Guido Günther wrote:
+> This enables more components to get a working display, panel, audio and
+> sensors. It also updates some device tree bits to make mainline boot.
 > 
->   audio_pll2                  0        0        0   722534397          0     0  50000
->      audio_pll2_bypass        0        0        0   722534397          0     0  50000
->         audio_pll2_out        0        0        0   722534397          0     0  50000
->   audio_pll1                  1        1        0   786431998          0     0  50000
->      audio_pll1_bypass        1        1        0   786431998          0     0  50000
->         audio_pll1_out        1        1        0   786431998          0     0  50000
->            sai2               1        1        0    24576000          0     0  50000
->               sai2_root_clk       1        1        0    24576000          0     0  50000
->            sai6               0        0        0    24576000          0     0  50000
->               sai6_root_clk       0        0        0    24576000          0     0  50000
+> I've skipped wifi (which needs some more driver work) and devfreq (since Martin
+> is working on that).
 > 
-> Signed-off-by: Guido Günther <agx@sigxcpu.org>
+> The config changes don't depend on the DT parts so could be applied
+> independently. The series was tested against next-20201214 and i made sure the
+> defconfig changes also apply on top of shawnguo/imx/defconfig.
 
-Applied, thanks.
+Sorry.  It doesn't apply any more.
+
+Shawn
