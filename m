@@ -2,59 +2,55 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 198B9C433DB
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 13:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99530C433DB
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 13:59:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DF397221EC
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 13:43:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 70F6A225AB
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 13:59:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730787AbhAKNLz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 11 Jan 2021 08:11:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59032 "EHLO mail.kernel.org"
+        id S2387687AbhAKN67 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 11 Jan 2021 08:58:59 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55962 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730752AbhAKNLy (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 11 Jan 2021 08:11:54 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E240122AAB;
-        Mon, 11 Jan 2021 13:11:12 +0000 (UTC)
+        id S2387908AbhAKN66 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 11 Jan 2021 08:58:58 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BCB2D223E8;
+        Mon, 11 Jan 2021 13:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610370673;
-        bh=AmODotHhHqE5rQ7jrjw/zpMa0EF2YxLtNlbdQq2dKFY=;
+        s=k20201202; t=1610373497;
+        bh=W82HKcWU3D5Ryo3ShBlAvfn9wpslSYr5mBG/7GxjaAU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jPsLXfVKxGo3XvOdA/kWPru4HQo3uHlHD7WTD7Z+jg4EeHklB+xudWVRvumR8ZEjp
-         IH1MR0hhEoUQeQCROZC/qInMMcaTVRe39vLogAayU40d8kFEh0Hr0KdmxxiZHciE8i
-         Bi+Bvg0z4iUKqYnCcxQrtOE0mairMCBQ3xKaMgTVQQg/kxtVMx5oS28GgyURVl45Ry
-         ih7dP2NS4jhasdDwjWmdGYfRc84rctt53Ae9aTrlN3GsatNGHdETOt26lJljgOY0Rg
-         xfTX0bdwO3EZqK7i5iS4JI8GqCQIsDfGYFK3iW5wLuh9f8E2VkF0kncAL6/yZzU6gm
-         X9FeLFZdmtlWA==
-Date:   Mon, 11 Jan 2021 13:10:40 +0000
+        b=WlLfwHBpSpB4mRqjRwzR1ZZJ6UjYn92nALj2E2l4ufIyxobFQHpKfebEL5RVPgxxF
+         0okCBq6a6vNghxuWenmsE5aoIQzw+y7KYsiTTti553FUIkOASme2Weg4XKOP+bzCp+
+         MSe9WjqLVrAwS4ViIXSPwIabSJKNLf+YLiU5JNyoXrXgSg2ucRTbmi+8hU+HAdWT8j
+         pW97PMcNChh+IF7MflkvgipRpFiGvsZsfZ8f7wbH9I6MZJ2WothkT3TJJKi94QmU5/
+         Nyhk36sQrn3l1Z3RrE9C5LphK8+PS2dw3iPaMkakMLp4/vhTCYxdsi/B7ZOkTi2mGW
+         qSXfwR0sdH4SQ==
+Date:   Mon, 11 Jan 2021 13:57:45 +0000
 From:   Mark Brown <broonie@kernel.org>
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, phone-devel@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH 1/2] pinctrl: Add driver for Awinic AW9523/B I2C GPIO
- Expander
-Message-ID: <20210111131040.GA4728@sirena.org.uk>
-References: <20210109140204.151340-1-angelogioacchino.delregno@somainline.org>
- <20210109140204.151340-2-angelogioacchino.delregno@somainline.org>
- <CACRpkdbETKnhgR2-T+s3ChY4v-C5ErdPEp2WcMSZHzJ=O-fHig@mail.gmail.com>
- <111b918d-2b43-be81-2dbf-e984750b0ef7@somainline.org>
- <CACRpkdZXgN91jKBDvf=P5_6ObOaacQa2PGL3-jP1gBW__ZyOaA@mail.gmail.com>
- <744125a7-ffb6-a3f5-70cb-2ab48fcf31b8@somainline.org>
+Cc:     linux-arm-msm@vger.kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, lgirdwood@gmail.com,
+        robh+dt@kernel.org, sumit.semwal@linaro.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org
+Subject: Re: [PATCH 5/7] regulator: qcom-labibb: Implement short-circuit and
+ over-current IRQs
+Message-ID: <20210111135745.GC4728@sirena.org.uk>
+References: <20210109132921.140932-1-angelogioacchino.delregno@somainline.org>
+ <20210109132921.140932-6-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="cNdxnHkX5QqsyA0e"
+        protocol="application/pgp-signature"; boundary="qtZFehHsKgwS5rPz"
 Content-Disposition: inline
-In-Reply-To: <744125a7-ffb6-a3f5-70cb-2ab48fcf31b8@somainline.org>
+In-Reply-To: <20210109132921.140932-6-angelogioacchino.delregno@somainline.org>
 X-Cookie: Too much is not enough.
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
@@ -62,47 +58,82 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
---cNdxnHkX5QqsyA0e
+--qtZFehHsKgwS5rPz
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sun, Jan 10, 2021 at 03:32:47PM +0100, AngeloGioacchino Del Regno wrote:
+On Sat, Jan 09, 2021 at 02:29:19PM +0100, AngeloGioacchino Del Regno wrote:
 
-> Then, the set_bit/clear_bit in aw9523_irq_mask(), aw9523_irq_unmask were
-> replaced with calls to regmap_update_bits_async, example:
+> +	/* If the regulator is not enabled, this is a fake event */
+> +	if (!ops->is_enabled(vreg->rdev))
+> +		return 0;
 
-Why are you trying to use the _async() versions here?  Don't you need
-the I/O to complete synchronously, and what would be the benefit of
-dealing with the complexity of making things async?  The genirq
-framework is definitely going to expect things to be complete before you
-return to it...
+Or handling the interrupt raced with a disable initiated from elsewhere.
+Does the hardware actually have a problem with reporting spurious errors?
 
-Note also that this only really does anything for SPI, I2C doesn't offer
-an aynchronous API.
+> +	return ret ? IRQ_NONE : IRQ_HANDLED;
 
-> <4>[    1.064060]  regmap_i2c_write+0x1c/0x50
+Here and elsewhere please write normal conditional statements to improve
+legibility.
 
-regmap will only use spinlocks if you explictly ask it to do so by
-setting fast_io.  You can't use spinlock based locking for your register
-cache if your device is attached via I2C, I2C is a very slow bus and I2C
-controllers will need to sleep.  I'd be very surprised if there were any
-benefit from using a flat cache with such a device frankly, the I/O is
-going to be so slow that any performance gain from using a flat cache is
-lost in the noise.
+> +	/* This function should be called only once, anyway. */
+> +	if (unlikely(vreg->ocp_irq_requested))
+> +		return 0;
 
---cNdxnHkX5QqsyA0e
+If this is not a fast path it doesn't need an unlikely() annotation;
+indeed it sounds more like there should be a warning printed if this
+isn't supposed to be called multiple times.
+
+> +	/* IRQ polarities - LAB: trigger-low, IBB: trigger-high */
+> +	if (vreg->type == QCOM_LAB_TYPE) {
+> +		irq_flags |= IRQF_TRIGGER_LOW;
+> +		irq_trig_low = 1;
+> +	} else {
+> +		irq_flags |= IRQF_TRIGGER_HIGH;
+> +		irq_trig_low = 0;
+> +	}
+
+This would be more clearly written as a switch statement.
+
+> +	return devm_request_threaded_irq(vreg->dev, vreg->ocp_irq, NULL,
+> +					 qcom_labibb_ocp_isr, irq_flags,
+> +					 ocp_irq_name, vreg);
+
+Are you *sure* that devm_ is appropriate here and the interrupt handler
+won't attempt to use things that will be deallocated before devm gets
+round to freeing the interrupt?
+
+> +		if (!!(val & LABIBB_CONTROL_ENABLE)) {
+
+The !! is redundant here and makes things less clear.
+
+> @@ -166,8 +560,37 @@ static int qcom_labibb_of_parse_cb(struct device_node *np,
+>  				   struct regulator_config *config)
+>  {
+>  	struct labibb_regulator *vreg = config->driver_data;
+> +	char *sc_irq_name;
+
+I really, really wouldn't expect to see interrupts being requested in
+the DT parsing callback - apart from anything else the device is going
+to have the physical interrupts with or without DT binding information.
+These callbacks are for regulator specific properties, not basic probing.
+Just request the interrupts in the main probe function, this also means
+you can avoid using all the DT specific APIs which are generally a
+warning sign.
+
+--qtZFehHsKgwS5rPz
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/8TlAACgkQJNaLcl1U
-h9By5gf9GtyGBDOfQulWOZeMoyUphHU9j0RN7pN2FPc5guPc3ihmcnQMo0qTp5MD
-+Kt5kV85ysVR/vwhrMyGkfKuvh8mAqXxYxSzPruo6Iy23c2YPasuIGqhJEILrfB4
-sB5JYtsjDXrWqwaFk3jnhmRljiyG6QIeXoQwc9bGmXsV6lcYkFN/WP/w1zUo9j2t
-NfNQ4ao/O1hpRY1+2pgoZ0bjPeo8ck4kow8sDl2KKnNDudJZcTiHLswOQ+rkwrhE
-ekktFQknw8BaqGRFpyxJgM822hHKtKROIIE9u+L/wiDp2d5+RDkVCGw7XLzU6Wcm
-U3XKnRsGfi2xxnO2VzInFjWfAqv6uQ==
-=6nWa
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/8WVgACgkQJNaLcl1U
+h9BUYAf/TRPb+bKAijDciE8hEa+oPUUE1PWOxG2ZLTi57IfR8ggOxbhy4sbegUBQ
+PRK1JWlxq+cGBBOqjnUxknfHdNVrooqk2X0nm0X7r10qxrbK2gdNr1JKEcUnskAo
+hv4H1yMVLwj49CBUxRckZXELgCg3szojgvbRChICSlZR+/4kXukrdId8DtPWwP0V
+UJoMRVhUqJ84mRDzpKfdaNSSWavsNGJRpSDpJzjAMOrthb9n/2viTi7J7rzEi3zS
+3E7RkEueq8xfVfmlPDFHQijeAVsd5KropNTrl5GJtppnYTOGGgLIreUyepAfLLN6
+8R4Xka5ROuNUm3qKNlIOwzPb9iLgcA==
+=bBx5
 -----END PGP SIGNATURE-----
 
---cNdxnHkX5QqsyA0e--
+--qtZFehHsKgwS5rPz--
