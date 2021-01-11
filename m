@@ -2,189 +2,172 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77F41C433DB
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 16:12:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 12A2DC433E6
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 17:55:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4B2C122AAF
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 16:12:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C596C22BF3
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 17:55:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732498AbhAKQM2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 11 Jan 2021 11:12:28 -0500
-Received: from m43-15.mailgun.net ([69.72.43.15]:20675 "EHLO
-        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730356AbhAKQM2 (ORCPT
+        id S2389419AbhAKRzQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 11 Jan 2021 12:55:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53672 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732124AbhAKRzP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 11 Jan 2021 11:12:28 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1610381524; h=In-Reply-To: Content-Type: MIME-Version:
- References: Message-ID: Subject: Cc: To: From: Date: Sender;
- bh=P5+Mis721Z6vZ3WqvVWUlOlPJxsnwl96h64oYHY/Qv4=; b=AN3fNe1Wco8BjwLtmEdXtAwI/p/huZDkTJ36s172Pbce9Y3eNjHkcUclhwhXAnoRIO2CXvPc
- setm2JgsiHyvBIT9SrDA8Ac4iJ0C4ZSFc7UwEjIxyhDWpL9Djr8EcaVvzTImLXoq6eipOUz1
- /2zAm4dBjfFcQQ2HU6RHEInLX2s=
-X-Mailgun-Sending-Ip: 69.72.43.15
-X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 5ffc78ab415a6293c5a395fd (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 11 Jan 2021 16:11:23
- GMT
-Sender: jcrouse=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 95A15C43466; Mon, 11 Jan 2021 16:11:22 +0000 (UTC)
-Received: from jcrouse1-lnx.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        Mon, 11 Jan 2021 12:55:15 -0500
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B3CDC06179F
+        for <phone-devel@vger.kernel.org>; Mon, 11 Jan 2021 09:54:35 -0800 (PST)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        (Authenticated sender: jcrouse)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BAD3DC43463;
-        Mon, 11 Jan 2021 16:11:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BAD3DC43463
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jcrouse@codeaurora.org
-Date:   Mon, 11 Jan 2021 09:11:15 -0700
-From:   Jordan Crouse <jcrouse@codeaurora.org>
-To:     Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
-Cc:     Rob Clark <robdclark@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Sean Paul <sean@poorly.run>, Jonathan <jonathan@marek.ca>,
-        David Airlie <airlied@linux.ie>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Sharat Masetty <smasetty@codeaurora.org>,
-        martin.botka@somainline.org,
-        Akhil P Oommen <akhilpo@codeaurora.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        marijn.suijten@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Daniel Vetter <daniel@ffwll.ch>,
-        angelogioacchino.delregno@somainline.org,
-        Dave Airlie <airlied@redhat.com>, phone-devel@vger.kernel.org,
-        freedreno <freedreno@lists.freedesktop.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [Freedreno] [PATCH] drm/msm: Only enable A6xx LLCC code on A6xx
-Message-ID: <20210111161115.GB29638@jcrouse1-lnx.qualcomm.com>
-Mail-Followup-To: Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Sean Paul <sean@poorly.run>, Jonathan <jonathan@marek.ca>,
-        David Airlie <airlied@linux.ie>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Sharat Masetty <smasetty@codeaurora.org>,
-        martin.botka@somainline.org,
-        Akhil P Oommen <akhilpo@codeaurora.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Shawn Guo <shawn.guo@linaro.org>, marijn.suijten@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Daniel Vetter <daniel@ffwll.ch>,
-        angelogioacchino.delregno@somainline.org,
-        Dave Airlie <airlied@redhat.com>, phone-devel@vger.kernel.org,
-        freedreno <freedreno@lists.freedesktop.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <CAF6AEGu0Sv6nYNDn0z61pXRjNyFLpLw5S4_O3opmrQ-UVNR_MA@mail.gmail.com>
- <20210108122601.14993-1-saiprakash.ranjan@codeaurora.org>
- <fa091855-8096-6377-e173-ce1cd02f74ec@somainline.org>
- <43c8779bc5f03be2e8072c6484dfcabb@codeaurora.org>
- <CAF6AEGsd5B0R7H1noO+=LByx4zkdVvu1LALZWnevGbMRj76m2w@mail.gmail.com>
- <73609df52188588bf7d023e16a706a7a@codeaurora.org>
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 05B3A3E822;
+        Mon, 11 Jan 2021 18:54:33 +0100 (CET)
+Subject: Re: [PATCH 1/2] pinctrl: Add driver for Awinic AW9523/B I2C GPIO
+ Expander
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Mark Brown <broonie@kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, phone-devel@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        marek.vasut@gmail.com
+References: <20210109140204.151340-1-angelogioacchino.delregno@somainline.org>
+ <20210109140204.151340-2-angelogioacchino.delregno@somainline.org>
+ <CACRpkdbETKnhgR2-T+s3ChY4v-C5ErdPEp2WcMSZHzJ=O-fHig@mail.gmail.com>
+ <111b918d-2b43-be81-2dbf-e984750b0ef7@somainline.org>
+ <CACRpkdZXgN91jKBDvf=P5_6ObOaacQa2PGL3-jP1gBW__ZyOaA@mail.gmail.com>
+ <744125a7-ffb6-a3f5-70cb-2ab48fcf31b8@somainline.org>
+ <CACRpkdYmVpEZMruu3UcqiGr2q7xSdTQKmwnu7eq2-MPJte8ATA@mail.gmail.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <985163d2-9e22-52f2-9632-594c5502bd10@somainline.org>
+Date:   Mon, 11 Jan 2021 18:54:32 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <73609df52188588bf7d023e16a706a7a@codeaurora.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <CACRpkdYmVpEZMruu3UcqiGr2q7xSdTQKmwnu7eq2-MPJte8ATA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Jan 11, 2021 at 09:54:12AM +0530, Sai Prakash Ranjan wrote:
-> Hi Rob,
+Il 10/01/21 20:35, Linus Walleij ha scritto:
+> On Sun, Jan 10, 2021 at 3:32 PM AngeloGioacchino Del Regno
+> <angelogioacchino.delregno@somainline.org> wrote:
 > 
-> On 2021-01-08 22:16, Rob Clark wrote:
-> >On Fri, Jan 8, 2021 at 6:05 AM Sai Prakash Ranjan
-> ><saiprakash.ranjan@codeaurora.org> wrote:
-> >>
-> >>On 2021-01-08 19:09, Konrad Dybcio wrote:
-> >>>> Konrad, can you please test this below change without your change?
-> >>>
-> >>> This brings no difference, a BUG still happens. We're still calling
-> >>> to_a6xx_gpu on ANY device that's probed! Too bad it won't turn my A330
-> >>> into an A640..
-> >>>
-> >>> Also, relying on disabling LLCC in the config is out of question as it
-> >>> makes the arm32 kernel not compile with DRM/MSM and it just removes
-> >>> the functionality on devices with a6xx.. (unless somebody removes the
-> >>> dependency on it, which in my opinion is even worse and will cause
-> >>> more problems for developers!).
-> >>>
-> >>
-> >>Disabling LLCC is not the suggestion, I was under the impression that
-> >>was the cause here for the smmu bug. Anyways, the check for llc slice
-> >>in case llcc is disabled is not correct as well. I will send a patch for
-> >>that as well.
-> >>
-> >>> The bigger question is how and why did that piece of code ever make it
-> >>> to adreno_gpu.c and not a6xx_gpu.c?
-> >>>
-> >>
-> >>My mistake, I will move it.
-> >
-> >Thanks, since we don't have kernel-CI coverage for gpu, and there
-> >probably isn't one person who has all the different devices supported
-> >(or enough hours in the day to test them all), it is probably
-> >better/safer to keep things in the backend code that is specific to a
-> >given generation.
-> >
+>> So, I've retried some basic usage of the regcache, relevant snippets here:
+>> static bool aw9523_volatile_reg(struct device *dev, unsigned int reg)
+>> {
+>>
+>>          return reg == AW9523_REG_IN_STATE(0) ||
+>>                 reg == AW9523_REG_IN_STATE(AW9523_PINS_PER_PORT) ||
+>>                 reg == AW9523_REG_CHIPID;
+>> }
+> (...)
+>> Since REG_IN_STATE is used to read the GPIO input level, it's not
+>> cacheable,
 > 
-> Agreed, I will post this change soon and will introduce some feature
-> check as well because we will need it for iommu prot flag as per discussion
-> here - https://lore.kernel.org/lkml/20210108181830.GA5457@willie-the-truck/
+> Fair enough.
 > 
-> >>> To solve it in a cleaner way I propose to move it to an a6xx-specific
-> >>> file, or if it's going to be used with next-gen GPUs, perhaps manage
-> >>> calling of this code via an adreno quirk/feature in adreno_device.c.
-> >>> Now that I think about it, A5xx GPMU en/disable could probably managed
-> >>> like that, instead of using tons of if-statements for each GPU model
-> >>> that has it..
-> >>>
-> >>> While we're at it, do ALL (and I truly do mean ALL, including the
-> >>> low-end ones, this will be important later on) A6xx GPUs make use of
-> >>> that feature?
-> >>>
-> >>
-> >>I do not have a list of all A6XX GPUs with me currently, but from what
-> >>I know, A618, A630, A640, A650 has the support.
-> >>
-> >
-> >From the PoV of bringing up new a6xx, we should probably consider that
-> >some of them may not *yet* have LLCC enabled.  I have an 8cx laptop
-> >and once I find time to get the display working, the next step would
-> >be bringing up a680.. and I'd probably like to start without LLCC..
-> >
+>> then CHIPID was set as not cacheable for safety: that may be
+>> avoided, but that may make no sense.. since it's a one-time readout for
+>> init putposes, it'd be useless to keep it cached.
 > 
-> Right, once I move the LLCC code to a6xx specific address space creation,
-> without LLCC slices for GPU specified in qcom llcc driver, we will not
-> be using it.
+> I guess.
+> 
+>> Then, the set_bit/clear_bit in aw9523_irq_mask(), aw9523_irq_unmask were
+>> replaced with calls to regmap_update_bits_async, example:
+>>
+>>          regmap_update_bits_async(awi->regmap,
+>>                                   AW9523_REG_INTR_DIS(d->hwirq),
+>>                                   BIT(n), BIT(n));
+>>
+>> Where of course the value is either BIT(n) or 0 for mask and unmask
+>> respectively.
+>> Also, the bus_sync_unlock callback was changed as follows:
+>>
+>> static void aw9523_irq_bus_sync_unlock(struct irq_data *d)
+>>
+>> {
+>>        struct aw9523 *awi = gpiochip_get_data(irq_data_get_irq_chip_data(d));
+>>        regcache_mark_dirty(awi->regmap);
+>>        regcache_sync_region(awi->regmap, AW9523_REG_INTR_DIS(0),
+>>                             AW9523_REG_INTR_DIS(AW9523_PINS_PER_PORT));
+>>         mutex_unlock(&awi->irq->lock);
+> (...)
+>> One of the biggest / oddest issues that I get when trying to use
+>> regcache is that I'm getting badbadbad scheduling while atomic warnings
+>> all over and I don't get why, since regcache_default_sync is just
+>> calling _regmap_write, which is exactly what (non _prefix) regmap_write
+>> also calls...
+> 
+> OK that is the real problem to solve then.
+> 
+>> As a reference, this is one out of "many" (as you can imagine) stacktraces:
+>>
+>> <3>[    1.061428] BUG: scheduling while atomic: kworker/3:1/119/0x00000000
+> (...)
+>> <4>[    1.063134]  wait_for_completion_timeout+0x8c/0x110
+>> <4>[    1.063257]  qup_i2c_wait_for_complete.isra.18+0x1c/0x80
+>> <4>[    1.063429]  qup_i2c_xfer_v2_msg+0x2d4/0x3f0
+>> <4>[    1.063543]  qup_i2c_xfer_v2+0x290/0xa28
+>> <4>[    1.063652]  __i2c_transfer+0x16c/0x380
+>> <4>[    1.063798]  i2c_transfer+0x5c/0x138
+>> <4>[    1.063903]  i2c_transfer_buffer_flags+0x58/0x80
+>> <4>[    1.064060]  regmap_i2c_write+0x1c/0x50
+>> <4>[    1.064168]  _regmap_raw_write_impl+0x35c/0x688
+>> <4>[    1.064285]  _regmap_bus_raw_write+0x64/0x80
+>> <4>[    1.064440]  _regmap_write+0x58/0xa8
+>> <4>[    1.064545]  regcache_default_sync+0xcc/0x1a0
+>> <4>[    1.064660]  regcache_sync_region+0xdc/0xe8
+>> <4>[    1.064811]  aw9523_irq_bus_sync_unlock+0x30/0x48
+>> <4>[    1.064931]  __setup_irq+0x798/0x890
+>> <4>[    1.065034]  request_threaded_irq+0xe0/0x198
+>> <4>[    1.065188]  devm_request_threaded_irq+0x78/0xf8
+>> <4>[    1.065311]  gpio_keyboard_probe+0x2a8/0x468
+> 
+> scheduling while atomic happens when this trace gets called with interrupts
+> disabled, usually because someone has taken a spinlock.
+> 
+> Looking in __setup_irq() it looks safe.
+> 
+> I would turn on lock debugging (lockdep) and see if I can find it that way.
+> 
+> Yours,
+> Linus Walleij
+> 
 
-Right. The problem here was that we were assuming an a6xx container in generic
-code. Testing the existence of LLCC or not is a different problem but it is my
-understanding that if we set the attribute without LLCC enabled it just gets
-ignored. Is that correct Sai?
+Hey!
+Good news around the corner!
 
-Jordan
+So, the issues were relative to the gpio matrix_keypad driver, which is 
+protecting with spinlocks (!), "throwing" us in atomic context and 
+obviously producing this kind of havoc.
 
-> Thanks,
-> Sai
-> 
-> -- 
-> QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member
-> of Code Aurora Forum, hosted by The Linux Foundation
+Regarding this, I feel like we should bring this to the attention of the 
+matrix_keypad driver maintainer, Marek Vasut, which I'm including to the 
+Cc list of this email... but at the same time, that driver seems to be 
+largely outdated and for this reason I've decided to make one on-the-fly 
+that uses modern APIs instead and also seems to solve slowness issues on 
+my KB matrix connected to the AW9523.
 
--- 
-The Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-a Linux Foundation Collaborative Project
+Back to our topic, I have solved the issues that were preventing the 
+usage of a FLAT regcache, cleaned up a bit and tested the entire thing 
+again.
+This works even better than before.
+
+The V2 of this series is coming in a few minutes.
+A huge thank you for your help!
+
+-- Angelo
