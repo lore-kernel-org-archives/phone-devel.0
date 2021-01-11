@@ -2,138 +2,189 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99530C433DB
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 13:59:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77F41C433DB
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 16:12:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 70F6A225AB
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 13:59:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4B2C122AAF
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 16:12:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387687AbhAKN67 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 11 Jan 2021 08:58:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55962 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387908AbhAKN66 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 11 Jan 2021 08:58:58 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BCB2D223E8;
-        Mon, 11 Jan 2021 13:58:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610373497;
-        bh=W82HKcWU3D5Ryo3ShBlAvfn9wpslSYr5mBG/7GxjaAU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WlLfwHBpSpB4mRqjRwzR1ZZJ6UjYn92nALj2E2l4ufIyxobFQHpKfebEL5RVPgxxF
-         0okCBq6a6vNghxuWenmsE5aoIQzw+y7KYsiTTti553FUIkOASme2Weg4XKOP+bzCp+
-         MSe9WjqLVrAwS4ViIXSPwIabSJKNLf+YLiU5JNyoXrXgSg2ucRTbmi+8hU+HAdWT8j
-         pW97PMcNChh+IF7MflkvgipRpFiGvsZsfZ8f7wbH9I6MZJ2WothkT3TJJKi94QmU5/
-         Nyhk36sQrn3l1Z3RrE9C5LphK8+PS2dw3iPaMkakMLp4/vhTCYxdsi/B7ZOkTi2mGW
-         qSXfwR0sdH4SQ==
-Date:   Mon, 11 Jan 2021 13:57:45 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Cc:     linux-arm-msm@vger.kernel.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, lgirdwood@gmail.com,
-        robh+dt@kernel.org, sumit.semwal@linaro.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org
-Subject: Re: [PATCH 5/7] regulator: qcom-labibb: Implement short-circuit and
- over-current IRQs
-Message-ID: <20210111135745.GC4728@sirena.org.uk>
-References: <20210109132921.140932-1-angelogioacchino.delregno@somainline.org>
- <20210109132921.140932-6-angelogioacchino.delregno@somainline.org>
+        id S1732498AbhAKQM2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 11 Jan 2021 11:12:28 -0500
+Received: from m43-15.mailgun.net ([69.72.43.15]:20675 "EHLO
+        m43-15.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730356AbhAKQM2 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 11 Jan 2021 11:12:28 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1610381524; h=In-Reply-To: Content-Type: MIME-Version:
+ References: Message-ID: Subject: Cc: To: From: Date: Sender;
+ bh=P5+Mis721Z6vZ3WqvVWUlOlPJxsnwl96h64oYHY/Qv4=; b=AN3fNe1Wco8BjwLtmEdXtAwI/p/huZDkTJ36s172Pbce9Y3eNjHkcUclhwhXAnoRIO2CXvPc
+ setm2JgsiHyvBIT9SrDA8Ac4iJ0C4ZSFc7UwEjIxyhDWpL9Djr8EcaVvzTImLXoq6eipOUz1
+ /2zAm4dBjfFcQQ2HU6RHEInLX2s=
+X-Mailgun-Sending-Ip: 69.72.43.15
+X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5ffc78ab415a6293c5a395fd (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 11 Jan 2021 16:11:23
+ GMT
+Sender: jcrouse=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 95A15C43466; Mon, 11 Jan 2021 16:11:22 +0000 (UTC)
+Received: from jcrouse1-lnx.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: jcrouse)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BAD3DC43463;
+        Mon, 11 Jan 2021 16:11:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BAD3DC43463
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=jcrouse@codeaurora.org
+Date:   Mon, 11 Jan 2021 09:11:15 -0700
+From:   Jordan Crouse <jcrouse@codeaurora.org>
+To:     Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
+Cc:     Rob Clark <robdclark@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Sean Paul <sean@poorly.run>, Jonathan <jonathan@marek.ca>,
+        David Airlie <airlied@linux.ie>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Sharat Masetty <smasetty@codeaurora.org>,
+        martin.botka@somainline.org,
+        Akhil P Oommen <akhilpo@codeaurora.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        marijn.suijten@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Daniel Vetter <daniel@ffwll.ch>,
+        angelogioacchino.delregno@somainline.org,
+        Dave Airlie <airlied@redhat.com>, phone-devel@vger.kernel.org,
+        freedreno <freedreno@lists.freedesktop.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [Freedreno] [PATCH] drm/msm: Only enable A6xx LLCC code on A6xx
+Message-ID: <20210111161115.GB29638@jcrouse1-lnx.qualcomm.com>
+Mail-Followup-To: Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Sean Paul <sean@poorly.run>, Jonathan <jonathan@marek.ca>,
+        David Airlie <airlied@linux.ie>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Sharat Masetty <smasetty@codeaurora.org>,
+        martin.botka@somainline.org,
+        Akhil P Oommen <akhilpo@codeaurora.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Shawn Guo <shawn.guo@linaro.org>, marijn.suijten@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Daniel Vetter <daniel@ffwll.ch>,
+        angelogioacchino.delregno@somainline.org,
+        Dave Airlie <airlied@redhat.com>, phone-devel@vger.kernel.org,
+        freedreno <freedreno@lists.freedesktop.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <CAF6AEGu0Sv6nYNDn0z61pXRjNyFLpLw5S4_O3opmrQ-UVNR_MA@mail.gmail.com>
+ <20210108122601.14993-1-saiprakash.ranjan@codeaurora.org>
+ <fa091855-8096-6377-e173-ce1cd02f74ec@somainline.org>
+ <43c8779bc5f03be2e8072c6484dfcabb@codeaurora.org>
+ <CAF6AEGsd5B0R7H1noO+=LByx4zkdVvu1LALZWnevGbMRj76m2w@mail.gmail.com>
+ <73609df52188588bf7d023e16a706a7a@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qtZFehHsKgwS5rPz"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210109132921.140932-6-angelogioacchino.delregno@somainline.org>
-X-Cookie: Too much is not enough.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <73609df52188588bf7d023e16a706a7a@codeaurora.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Mon, Jan 11, 2021 at 09:54:12AM +0530, Sai Prakash Ranjan wrote:
+> Hi Rob,
+> 
+> On 2021-01-08 22:16, Rob Clark wrote:
+> >On Fri, Jan 8, 2021 at 6:05 AM Sai Prakash Ranjan
+> ><saiprakash.ranjan@codeaurora.org> wrote:
+> >>
+> >>On 2021-01-08 19:09, Konrad Dybcio wrote:
+> >>>> Konrad, can you please test this below change without your change?
+> >>>
+> >>> This brings no difference, a BUG still happens. We're still calling
+> >>> to_a6xx_gpu on ANY device that's probed! Too bad it won't turn my A330
+> >>> into an A640..
+> >>>
+> >>> Also, relying on disabling LLCC in the config is out of question as it
+> >>> makes the arm32 kernel not compile with DRM/MSM and it just removes
+> >>> the functionality on devices with a6xx.. (unless somebody removes the
+> >>> dependency on it, which in my opinion is even worse and will cause
+> >>> more problems for developers!).
+> >>>
+> >>
+> >>Disabling LLCC is not the suggestion, I was under the impression that
+> >>was the cause here for the smmu bug. Anyways, the check for llc slice
+> >>in case llcc is disabled is not correct as well. I will send a patch for
+> >>that as well.
+> >>
+> >>> The bigger question is how and why did that piece of code ever make it
+> >>> to adreno_gpu.c and not a6xx_gpu.c?
+> >>>
+> >>
+> >>My mistake, I will move it.
+> >
+> >Thanks, since we don't have kernel-CI coverage for gpu, and there
+> >probably isn't one person who has all the different devices supported
+> >(or enough hours in the day to test them all), it is probably
+> >better/safer to keep things in the backend code that is specific to a
+> >given generation.
+> >
+> 
+> Agreed, I will post this change soon and will introduce some feature
+> check as well because we will need it for iommu prot flag as per discussion
+> here - https://lore.kernel.org/lkml/20210108181830.GA5457@willie-the-truck/
+> 
+> >>> To solve it in a cleaner way I propose to move it to an a6xx-specific
+> >>> file, or if it's going to be used with next-gen GPUs, perhaps manage
+> >>> calling of this code via an adreno quirk/feature in adreno_device.c.
+> >>> Now that I think about it, A5xx GPMU en/disable could probably managed
+> >>> like that, instead of using tons of if-statements for each GPU model
+> >>> that has it..
+> >>>
+> >>> While we're at it, do ALL (and I truly do mean ALL, including the
+> >>> low-end ones, this will be important later on) A6xx GPUs make use of
+> >>> that feature?
+> >>>
+> >>
+> >>I do not have a list of all A6XX GPUs with me currently, but from what
+> >>I know, A618, A630, A640, A650 has the support.
+> >>
+> >
+> >From the PoV of bringing up new a6xx, we should probably consider that
+> >some of them may not *yet* have LLCC enabled.  I have an 8cx laptop
+> >and once I find time to get the display working, the next step would
+> >be bringing up a680.. and I'd probably like to start without LLCC..
+> >
+> 
+> Right, once I move the LLCC code to a6xx specific address space creation,
+> without LLCC slices for GPU specified in qcom llcc driver, we will not
+> be using it.
 
---qtZFehHsKgwS5rPz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Right. The problem here was that we were assuming an a6xx container in generic
+code. Testing the existence of LLCC or not is a different problem but it is my
+understanding that if we set the attribute without LLCC enabled it just gets
+ignored. Is that correct Sai?
 
-On Sat, Jan 09, 2021 at 02:29:19PM +0100, AngeloGioacchino Del Regno wrote:
+Jordan
 
-> +	/* If the regulator is not enabled, this is a fake event */
-> +	if (!ops->is_enabled(vreg->rdev))
-> +		return 0;
+> Thanks,
+> Sai
+> 
+> -- 
+> QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member
+> of Code Aurora Forum, hosted by The Linux Foundation
 
-Or handling the interrupt raced with a disable initiated from elsewhere.
-Does the hardware actually have a problem with reporting spurious errors?
-
-> +	return ret ? IRQ_NONE : IRQ_HANDLED;
-
-Here and elsewhere please write normal conditional statements to improve
-legibility.
-
-> +	/* This function should be called only once, anyway. */
-> +	if (unlikely(vreg->ocp_irq_requested))
-> +		return 0;
-
-If this is not a fast path it doesn't need an unlikely() annotation;
-indeed it sounds more like there should be a warning printed if this
-isn't supposed to be called multiple times.
-
-> +	/* IRQ polarities - LAB: trigger-low, IBB: trigger-high */
-> +	if (vreg->type == QCOM_LAB_TYPE) {
-> +		irq_flags |= IRQF_TRIGGER_LOW;
-> +		irq_trig_low = 1;
-> +	} else {
-> +		irq_flags |= IRQF_TRIGGER_HIGH;
-> +		irq_trig_low = 0;
-> +	}
-
-This would be more clearly written as a switch statement.
-
-> +	return devm_request_threaded_irq(vreg->dev, vreg->ocp_irq, NULL,
-> +					 qcom_labibb_ocp_isr, irq_flags,
-> +					 ocp_irq_name, vreg);
-
-Are you *sure* that devm_ is appropriate here and the interrupt handler
-won't attempt to use things that will be deallocated before devm gets
-round to freeing the interrupt?
-
-> +		if (!!(val & LABIBB_CONTROL_ENABLE)) {
-
-The !! is redundant here and makes things less clear.
-
-> @@ -166,8 +560,37 @@ static int qcom_labibb_of_parse_cb(struct device_node *np,
->  				   struct regulator_config *config)
->  {
->  	struct labibb_regulator *vreg = config->driver_data;
-> +	char *sc_irq_name;
-
-I really, really wouldn't expect to see interrupts being requested in
-the DT parsing callback - apart from anything else the device is going
-to have the physical interrupts with or without DT binding information.
-These callbacks are for regulator specific properties, not basic probing.
-Just request the interrupts in the main probe function, this also means
-you can avoid using all the DT specific APIs which are generally a
-warning sign.
-
---qtZFehHsKgwS5rPz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/8WVgACgkQJNaLcl1U
-h9BUYAf/TRPb+bKAijDciE8hEa+oPUUE1PWOxG2ZLTi57IfR8ggOxbhy4sbegUBQ
-PRK1JWlxq+cGBBOqjnUxknfHdNVrooqk2X0nm0X7r10qxrbK2gdNr1JKEcUnskAo
-hv4H1yMVLwj49CBUxRckZXELgCg3szojgvbRChICSlZR+/4kXukrdId8DtPWwP0V
-UJoMRVhUqJ84mRDzpKfdaNSSWavsNGJRpSDpJzjAMOrthb9n/2viTi7J7rzEi3zS
-3E7RkEueq8xfVfmlPDFHQijeAVsd5KropNTrl5GJtppnYTOGGgLIreUyepAfLLN6
-8R4Xka5ROuNUm3qKNlIOwzPb9iLgcA==
-=bBx5
------END PGP SIGNATURE-----
-
---qtZFehHsKgwS5rPz--
+-- 
+The Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
+a Linux Foundation Collaborative Project
