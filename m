@@ -2,207 +2,178 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F8C7C433E0
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 21:07:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C0DDC433DB
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 06:50:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3102822D03
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Jan 2021 21:07:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 596D322CA2
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 06:50:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732747AbhAKVHR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 11 Jan 2021 16:07:17 -0500
-Received: from relay06.th.seeweb.it ([5.144.164.167]:51951 "EHLO
-        relay06.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728539AbhAKVHQ (ORCPT
+        id S1728072AbhALGuP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 12 Jan 2021 01:50:15 -0500
+Received: from so254-31.mailgun.net ([198.61.254.31]:57066 "EHLO
+        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727690AbhALGuP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 11 Jan 2021 16:07:16 -0500
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Tue, 12 Jan 2021 01:50:15 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1610434194; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=J/gXo0SfG2tE4eEiy9hfkib22kuMNt3ssI4CovuJIXE=;
+ b=J8dAYNeVIKpku5Ssk09/ecJcxvfulB3n3FAdR3WszVLZBAEZ2u5hx1Xgf8HH/ZrwL/9ili+S
+ ik3lqH2abeObiT8jVkmK4SWDBXfjNaO7WI0AEMn0afIScajBy7CqISPk2kbDvnxcjdc2oKOB
+ FnRLv6XgStdDSlhRJv7797Eoz0Q=
+X-Mailgun-Sending-Ip: 198.61.254.31
+X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
+ 5ffd4678415a6293c5d551e9 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 12 Jan 2021 06:49:28
+ GMT
+Sender: saiprakash.ranjan=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7826FC43467; Tue, 12 Jan 2021 06:49:28 +0000 (UTC)
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id E39D03E8CF;
-        Mon, 11 Jan 2021 22:06:18 +0100 (CET)
-Subject: Re: [PATCH 5/7] regulator: qcom-labibb: Implement short-circuit and
- over-current IRQs
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, lgirdwood@gmail.com,
-        robh+dt@kernel.org, sumit.semwal@linaro.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org
-References: <20210109132921.140932-1-angelogioacchino.delregno@somainline.org>
- <20210109132921.140932-6-angelogioacchino.delregno@somainline.org>
- <20210111135745.GC4728@sirena.org.uk>
- <6dee36e4-fc78-c21b-daf8-120ee44535a3@somainline.org>
- <8115a574-ad43-d3c6-70d4-28c8a2f4a5f6@somainline.org>
-Message-ID: <09d70d24-5d0d-f1cd-d99e-5c213c8ea98c@somainline.org>
-Date:   Mon, 11 Jan 2021 22:06:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+        (Authenticated sender: saiprakash.ranjan)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2B029C433CA;
+        Tue, 12 Jan 2021 06:49:27 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <8115a574-ad43-d3c6-70d4-28c8a2f4a5f6@somainline.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 12 Jan 2021 12:19:27 +0530
+From:   Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
+To:     Jordan Crouse <jcrouse@codeaurora.org>
+Cc:     Rob Clark <robdclark@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Sean Paul <sean@poorly.run>, Jonathan <jonathan@marek.ca>,
+        David Airlie <airlied@linux.ie>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Sharat Masetty <smasetty@codeaurora.org>,
+        martin.botka@somainline.org,
+        Akhil P Oommen <akhilpo@codeaurora.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        marijn.suijten@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Daniel Vetter <daniel@ffwll.ch>,
+        angelogioacchino.delregno@somainline.org,
+        Dave Airlie <airlied@redhat.com>, phone-devel@vger.kernel.org,
+        freedreno <freedreno@lists.freedesktop.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [Freedreno] [PATCH] drm/msm: Only enable A6xx LLCC code on A6xx
+In-Reply-To: <20210111161115.GB29638@jcrouse1-lnx.qualcomm.com>
+References: <CAF6AEGu0Sv6nYNDn0z61pXRjNyFLpLw5S4_O3opmrQ-UVNR_MA@mail.gmail.com>
+ <20210108122601.14993-1-saiprakash.ranjan@codeaurora.org>
+ <fa091855-8096-6377-e173-ce1cd02f74ec@somainline.org>
+ <43c8779bc5f03be2e8072c6484dfcabb@codeaurora.org>
+ <CAF6AEGsd5B0R7H1noO+=LByx4zkdVvu1LALZWnevGbMRj76m2w@mail.gmail.com>
+ <73609df52188588bf7d023e16a706a7a@codeaurora.org>
+ <20210111161115.GB29638@jcrouse1-lnx.qualcomm.com>
+Message-ID: <bfa4a5e84e427b6dca429136daa94693@codeaurora.org>
+X-Sender: saiprakash.ranjan@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 11/01/21 20:23, AngeloGioacchino Del Regno ha scritto:
-> Il 11/01/21 20:14, AngeloGioacchino Del Regno ha scritto:
->> Il 11/01/21 14:57, Mark Brown ha scritto:
->>> On Sat, Jan 09, 2021 at 02:29:19PM +0100, AngeloGioacchino Del Regno 
->>> wrote:
->>>
->>>> +    /* If the regulator is not enabled, this is a fake event */
->>>> +    if (!ops->is_enabled(vreg->rdev))
->>>> +        return 0;
->>>
->>> Or handling the interrupt raced with a disable initiated from elsewhere.
->>> Does the hardware actually have a problem with reporting spurious 
->>> errors?
->>>
-> Sorry, I forgot to answer to this one in the previous email.
+Hi Jordan,
+
+On 2021-01-11 21:41, Jordan Crouse wrote:
+> On Mon, Jan 11, 2021 at 09:54:12AM +0530, Sai Prakash Ranjan wrote:
+>> Hi Rob,
+>> 
+>> On 2021-01-08 22:16, Rob Clark wrote:
+>> >On Fri, Jan 8, 2021 at 6:05 AM Sai Prakash Ranjan
+>> ><saiprakash.ranjan@codeaurora.org> wrote:
+>> >>
+>> >>On 2021-01-08 19:09, Konrad Dybcio wrote:
+>> >>>> Konrad, can you please test this below change without your change?
+>> >>>
+>> >>> This brings no difference, a BUG still happens. We're still calling
+>> >>> to_a6xx_gpu on ANY device that's probed! Too bad it won't turn my A330
+>> >>> into an A640..
+>> >>>
+>> >>> Also, relying on disabling LLCC in the config is out of question as it
+>> >>> makes the arm32 kernel not compile with DRM/MSM and it just removes
+>> >>> the functionality on devices with a6xx.. (unless somebody removes the
+>> >>> dependency on it, which in my opinion is even worse and will cause
+>> >>> more problems for developers!).
+>> >>>
+>> >>
+>> >>Disabling LLCC is not the suggestion, I was under the impression that
+>> >>was the cause here for the smmu bug. Anyways, the check for llc slice
+>> >>in case llcc is disabled is not correct as well. I will send a patch for
+>> >>that as well.
+>> >>
+>> >>> The bigger question is how and why did that piece of code ever make it
+>> >>> to adreno_gpu.c and not a6xx_gpu.c?
+>> >>>
+>> >>
+>> >>My mistake, I will move it.
+>> >
+>> >Thanks, since we don't have kernel-CI coverage for gpu, and there
+>> >probably isn't one person who has all the different devices supported
+>> >(or enough hours in the day to test them all), it is probably
+>> >better/safer to keep things in the backend code that is specific to a
+>> >given generation.
+>> >
+>> 
+>> Agreed, I will post this change soon and will introduce some feature
+>> check as well because we will need it for iommu prot flag as per 
+>> discussion
+>> here - 
+>> https://lore.kernel.org/lkml/20210108181830.GA5457@willie-the-truck/
+>> 
+>> >>> To solve it in a cleaner way I propose to move it to an a6xx-specific
+>> >>> file, or if it's going to be used with next-gen GPUs, perhaps manage
+>> >>> calling of this code via an adreno quirk/feature in adreno_device.c.
+>> >>> Now that I think about it, A5xx GPMU en/disable could probably managed
+>> >>> like that, instead of using tons of if-statements for each GPU model
+>> >>> that has it..
+>> >>>
+>> >>> While we're at it, do ALL (and I truly do mean ALL, including the
+>> >>> low-end ones, this will be important later on) A6xx GPUs make use of
+>> >>> that feature?
+>> >>>
+>> >>
+>> >>I do not have a list of all A6XX GPUs with me currently, but from what
+>> >>I know, A618, A630, A640, A650 has the support.
+>> >>
+>> >
+>> >From the PoV of bringing up new a6xx, we should probably consider that
+>> >some of them may not *yet* have LLCC enabled.  I have an 8cx laptop
+>> >and once I find time to get the display working, the next step would
+>> >be bringing up a680.. and I'd probably like to start without LLCC..
+>> >
+>> 
+>> Right, once I move the LLCC code to a6xx specific address space 
+>> creation,
+>> without LLCC slices for GPU specified in qcom llcc driver, we will not
+>> be using it.
 > 
-> Yes, apparently the hardware has this issue: when the current draw is 
-> very high and you disable the regulator while the attached device is 
-> still drawing a lot of current (like on the Xperia XZ2 smartphone, but I 
-> don't want to comment on that phone's HW quirks...) then the OCP 
-> interrupt fires *after* disabling the LAB/IBB regulators.
-> 
-> This doesn't seem to happen if the current draw is low in the exact 
-> moment the regulator gets disabled, but that's not always possible since 
-> it depends on external HW design / board design sometimes...
-> 
-> 
->>>> +    return ret ? IRQ_NONE : IRQ_HANDLED;
->>>
->>> Here and elsewhere please write normal conditional statements to improve
->>> legibility.
->>>
->> No problem. Will do.
->>
->>>> +    /* This function should be called only once, anyway. */
->>>> +    if (unlikely(vreg->ocp_irq_requested))
->>>> +        return 0;
->>>
->>> If this is not a fast path it doesn't need an unlikely() annotation;
->>> indeed it sounds more like there should be a warning printed if this
->>> isn't supposed to be called multiple times.
->>>
->> That was extra-paranoid safety, looking at this one again, that should 
->> be totally unnecessary.
->> I think that removing this check entirely would be just fine also 
->> because.. anyway.. writing to these registers more than once won't do 
->> any harm, nor break functionality: I mean, even if it happens for 
->> whatever reason, there's *no real need* to avoid it from the hw 
->> perspective.
->>
->>>> +    /* IRQ polarities - LAB: trigger-low, IBB: trigger-high */
->>>> +    if (vreg->type == QCOM_LAB_TYPE) {
->>>> +        irq_flags |= IRQF_TRIGGER_LOW;
->>>> +        irq_trig_low = 1;
->>>> +    } else {
->>>> +        irq_flags |= IRQF_TRIGGER_HIGH;
->>>> +        irq_trig_low = 0;
->>>> +    }
->>>
->>> This would be more clearly written as a switch statement.
->>>
->> A switch statement looked like being a bit "too much" for just two 
->> cases where vreg->type cannot be anything else but QCOM_LAB_TYPE or 
->> QCOM_IBB_TYPE... but okay, let's write a switch statement in place of 
->> that.
->>
->>>> +    return devm_request_threaded_irq(vreg->dev, vreg->ocp_irq, NULL,
->>>> +                     qcom_labibb_ocp_isr, irq_flags,
->>>> +                     ocp_irq_name, vreg);
->>>
->>> Are you *sure* that devm_ is appropriate here and the interrupt handler
->>> won't attempt to use things that will be deallocated before devm gets
->>> round to freeing the interrupt?
->>>
->> Yeah, I'm definitely sure.
->>
->>>> +        if (!!(val & LABIBB_CONTROL_ENABLE)) {
->>>
->>> The !! is redundant here and makes things less clear.
->>>
->> My bad, I forgot to clean this one up before sending.
->>
->>>> @@ -166,8 +560,37 @@ static int qcom_labibb_of_parse_cb(struct 
->>>> device_node *np,
->>>>                      struct regulator_config *config)
->>>>   {
->>>>       struct labibb_regulator *vreg = config->driver_data;
->>>> +    char *sc_irq_name;
->>>
->>> I really, really wouldn't expect to see interrupts being requested in
->>> the DT parsing callback - apart from anything else the device is going
->>> to have the physical interrupts with or without DT binding information.
->>> These callbacks are for regulator specific properties, not basic 
->>> probing.
->>> Just request the interrupts in the main probe function, this also means
->>> you can avoid using all the DT specific APIs which are generally a
->>> warning sign.
->>>
->>
->> ...And I even wrote a comment saying "The Short Circuit interrupt is 
->> critical: fail if not found"!!! Whoa! That was bad.
->> Yeah, I'm definitely moving that to the appropriate place.
+> Right. The problem here was that we were assuming an a6xx container in 
+> generic
+> code. Testing the existence of LLCC or not is a different problem but 
+> it is my
+> understanding that if we set the attribute without LLCC enabled it just 
+> gets
+> ignored. Is that correct Sai?
 > 
 
-I'm sorry for the triple e-mail... but I've just acknowledged that using 
-platform_get_irq is actually impossible with the current schema.
-As you can see in the dt-bindings documentation, the driver is supposed 
-to be declared in DT as
+Yes that is correct, I just confirmed now with LLCC team.
 
-		labibb {
+Thanks,
+Sai
 
-			compatible = "qcom,pmi8998-lab-ibb";
-
-
-
-			ibb: ibb {
-
-				interrupts = <0x3 0xdc 0x2 IRQ_TYPE_EDGE_RISING>,
-
-					     <0x3 0xdc 0x0 IRQ_TYPE_LEVEL_HIGH>;
-
-				interrupt-names = "sc-err", "ocp";
-
-			};
-
-
-
-			lab: lab {
-
-				interrupts = <0x3 0xde 0x1 IRQ_TYPE_EDGE_RISING>,
-
-					     <0x3 0xde 0x0 IRQ_TYPE_LEVEL_LOW>;
-
-				interrupt-names = "sc-err", "ocp";
-
-			};
-
-		};
-
-...which was already a requirement before I touched it.
-Now, this leaves two options here:
-1. Keep the of_get_irq way, or
-2. Move the interrupts, change the documentation (currently, only 
-pmi8998.dtsi) and also fix pmi8998.dtsi to reflect the new changes.
-
-I am asking before proceeding because I know that changing a schema that 
-is already set sometimes gets "negated".
-
-How should I proceed?
-
--- Angelo
+-- 
+QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a 
+member
+of Code Aurora Forum, hosted by The Linux Foundation
