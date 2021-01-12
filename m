@@ -2,178 +2,99 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C0DDC433DB
-	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 06:50:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DA5CC433E6
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 17:31:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 596D322CA2
-	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 06:50:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5E8972311D
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 17:31:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728072AbhALGuP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 12 Jan 2021 01:50:15 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:57066 "EHLO
-        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727690AbhALGuP (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 12 Jan 2021 01:50:15 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1610434194; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=J/gXo0SfG2tE4eEiy9hfkib22kuMNt3ssI4CovuJIXE=;
- b=J8dAYNeVIKpku5Ssk09/ecJcxvfulB3n3FAdR3WszVLZBAEZ2u5hx1Xgf8HH/ZrwL/9ili+S
- ik3lqH2abeObiT8jVkmK4SWDBXfjNaO7WI0AEMn0afIScajBy7CqISPk2kbDvnxcjdc2oKOB
- FnRLv6XgStdDSlhRJv7797Eoz0Q=
-X-Mailgun-Sending-Ip: 198.61.254.31
-X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-west-2.postgun.com with SMTP id
- 5ffd4678415a6293c5d551e9 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 12 Jan 2021 06:49:28
- GMT
-Sender: saiprakash.ranjan=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7826FC43467; Tue, 12 Jan 2021 06:49:28 +0000 (UTC)
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: saiprakash.ranjan)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2B029C433CA;
-        Tue, 12 Jan 2021 06:49:27 +0000 (UTC)
+        id S2392780AbhALRae (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 12 Jan 2021 12:30:34 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34084 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2392771AbhALRad (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 12 Jan 2021 12:30:33 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2BCE222AED;
+        Tue, 12 Jan 2021 17:29:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610472592;
+        bh=/okVfTyIj/1mLwVi8GFdAvJo0sfLP8xwmTZIQcrLdeM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=C2SF9Uqr2+SKWfy7pcG1YN9iKQ38GXT50DMyyDI2jNVqN34HNYQ67oYh5pcCW9DB7
+         QDVpgd5uO1GTuiHMAuSLP0koYJ3Fqv6CsIuOT1JZaxvEmH8BCl27rDWEiiXvEmLP+D
+         nQG2NoGqi7UxLXDkf0+1AzjAGCX0/Mp1jN0ScvW+36IHz0aWJIiKnuBqK3EvNpxdNk
+         WZMuiXKwXeBCM+M0P5vc5HaTpFXqqZkaGMKK5m+15t8XaPfsM4gggwn37zVpRSXEyo
+         XKHbn+F+h2muoqx+q9hClctvzD7lGQSlyZLrVsPZZPsvUO91hZQ8GEwmL3r3zQzxF0
+         j1JHf5SR/UZKw==
+Date:   Tue, 12 Jan 2021 17:29:19 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     linux-arm-msm@vger.kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, lgirdwood@gmail.com,
+        robh+dt@kernel.org, sumit.semwal@linaro.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org
+Subject: Re: [PATCH 5/7] regulator: qcom-labibb: Implement short-circuit and
+ over-current IRQs
+Message-ID: <20210112172919.GD4646@sirena.org.uk>
+References: <20210109132921.140932-1-angelogioacchino.delregno@somainline.org>
+ <20210109132921.140932-6-angelogioacchino.delregno@somainline.org>
+ <20210111135745.GC4728@sirena.org.uk>
+ <6dee36e4-fc78-c21b-daf8-120ee44535a3@somainline.org>
+ <8115a574-ad43-d3c6-70d4-28c8a2f4a5f6@somainline.org>
+ <09d70d24-5d0d-f1cd-d99e-5c213c8ea98c@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 12 Jan 2021 12:19:27 +0530
-From:   Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
-To:     Jordan Crouse <jcrouse@codeaurora.org>
-Cc:     Rob Clark <robdclark@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Sean Paul <sean@poorly.run>, Jonathan <jonathan@marek.ca>,
-        David Airlie <airlied@linux.ie>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Sharat Masetty <smasetty@codeaurora.org>,
-        martin.botka@somainline.org,
-        Akhil P Oommen <akhilpo@codeaurora.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        marijn.suijten@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Daniel Vetter <daniel@ffwll.ch>,
-        angelogioacchino.delregno@somainline.org,
-        Dave Airlie <airlied@redhat.com>, phone-devel@vger.kernel.org,
-        freedreno <freedreno@lists.freedesktop.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [Freedreno] [PATCH] drm/msm: Only enable A6xx LLCC code on A6xx
-In-Reply-To: <20210111161115.GB29638@jcrouse1-lnx.qualcomm.com>
-References: <CAF6AEGu0Sv6nYNDn0z61pXRjNyFLpLw5S4_O3opmrQ-UVNR_MA@mail.gmail.com>
- <20210108122601.14993-1-saiprakash.ranjan@codeaurora.org>
- <fa091855-8096-6377-e173-ce1cd02f74ec@somainline.org>
- <43c8779bc5f03be2e8072c6484dfcabb@codeaurora.org>
- <CAF6AEGsd5B0R7H1noO+=LByx4zkdVvu1LALZWnevGbMRj76m2w@mail.gmail.com>
- <73609df52188588bf7d023e16a706a7a@codeaurora.org>
- <20210111161115.GB29638@jcrouse1-lnx.qualcomm.com>
-Message-ID: <bfa4a5e84e427b6dca429136daa94693@codeaurora.org>
-X-Sender: saiprakash.ranjan@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="n2Pv11Ogg/Ox8ay5"
+Content-Disposition: inline
+In-Reply-To: <09d70d24-5d0d-f1cd-d99e-5c213c8ea98c@somainline.org>
+X-Cookie: Stay away from hurricanes for a while.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Jordan,
 
-On 2021-01-11 21:41, Jordan Crouse wrote:
-> On Mon, Jan 11, 2021 at 09:54:12AM +0530, Sai Prakash Ranjan wrote:
->> Hi Rob,
->> 
->> On 2021-01-08 22:16, Rob Clark wrote:
->> >On Fri, Jan 8, 2021 at 6:05 AM Sai Prakash Ranjan
->> ><saiprakash.ranjan@codeaurora.org> wrote:
->> >>
->> >>On 2021-01-08 19:09, Konrad Dybcio wrote:
->> >>>> Konrad, can you please test this below change without your change?
->> >>>
->> >>> This brings no difference, a BUG still happens. We're still calling
->> >>> to_a6xx_gpu on ANY device that's probed! Too bad it won't turn my A330
->> >>> into an A640..
->> >>>
->> >>> Also, relying on disabling LLCC in the config is out of question as it
->> >>> makes the arm32 kernel not compile with DRM/MSM and it just removes
->> >>> the functionality on devices with a6xx.. (unless somebody removes the
->> >>> dependency on it, which in my opinion is even worse and will cause
->> >>> more problems for developers!).
->> >>>
->> >>
->> >>Disabling LLCC is not the suggestion, I was under the impression that
->> >>was the cause here for the smmu bug. Anyways, the check for llc slice
->> >>in case llcc is disabled is not correct as well. I will send a patch for
->> >>that as well.
->> >>
->> >>> The bigger question is how and why did that piece of code ever make it
->> >>> to adreno_gpu.c and not a6xx_gpu.c?
->> >>>
->> >>
->> >>My mistake, I will move it.
->> >
->> >Thanks, since we don't have kernel-CI coverage for gpu, and there
->> >probably isn't one person who has all the different devices supported
->> >(or enough hours in the day to test them all), it is probably
->> >better/safer to keep things in the backend code that is specific to a
->> >given generation.
->> >
->> 
->> Agreed, I will post this change soon and will introduce some feature
->> check as well because we will need it for iommu prot flag as per 
->> discussion
->> here - 
->> https://lore.kernel.org/lkml/20210108181830.GA5457@willie-the-truck/
->> 
->> >>> To solve it in a cleaner way I propose to move it to an a6xx-specific
->> >>> file, or if it's going to be used with next-gen GPUs, perhaps manage
->> >>> calling of this code via an adreno quirk/feature in adreno_device.c.
->> >>> Now that I think about it, A5xx GPMU en/disable could probably managed
->> >>> like that, instead of using tons of if-statements for each GPU model
->> >>> that has it..
->> >>>
->> >>> While we're at it, do ALL (and I truly do mean ALL, including the
->> >>> low-end ones, this will be important later on) A6xx GPUs make use of
->> >>> that feature?
->> >>>
->> >>
->> >>I do not have a list of all A6XX GPUs with me currently, but from what
->> >>I know, A618, A630, A640, A650 has the support.
->> >>
->> >
->> >From the PoV of bringing up new a6xx, we should probably consider that
->> >some of them may not *yet* have LLCC enabled.  I have an 8cx laptop
->> >and once I find time to get the display working, the next step would
->> >be bringing up a680.. and I'd probably like to start without LLCC..
->> >
->> 
->> Right, once I move the LLCC code to a6xx specific address space 
->> creation,
->> without LLCC slices for GPU specified in qcom llcc driver, we will not
->> be using it.
-> 
-> Right. The problem here was that we were assuming an a6xx container in 
-> generic
-> code. Testing the existence of LLCC or not is a different problem but 
-> it is my
-> understanding that if we set the attribute without LLCC enabled it just 
-> gets
-> ignored. Is that correct Sai?
-> 
+--n2Pv11Ogg/Ox8ay5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Yes that is correct, I just confirmed now with LLCC team.
+On Mon, Jan 11, 2021 at 10:06:18PM +0100, AngeloGioacchino Del Regno wrote:
 
-Thanks,
-Sai
+> ...which was already a requirement before I touched it.
+> Now, this leaves two options here:
+> 1. Keep the of_get_irq way, or
+> 2. Move the interrupts, change the documentation (currently, only
+> pmi8998.dtsi) and also fix pmi8998.dtsi to reflect the new changes.
 
--- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a 
-member
-of Code Aurora Forum, hosted by The Linux Foundation
+> I am asking before proceeding because I know that changing a schema that is
+> already set sometimes gets "negated".
+
+Well, if the binding isn't actually used changing it is a possibility.
+If we keep the current binding you can still continue to use
+of_get_irq() even from within the probe function, you know the name of
+the node it's supposed to be in so you don't need to iterate or anything
+to get it so not really any reason to use the callback.
+
+--n2Pv11Ogg/Ox8ay5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/93G4ACgkQJNaLcl1U
+h9CCJQf/XQpVoAeBxaPWks++Bdxf1rAlHECDuS/el7BrR98BEMGZ65QEz1Pi1fO7
+4+abqstgMzY3phe3BzzS/Qf0FpwoSAW71k+L2RWNa1K+5an2uiCbQhW1UvXjqhwy
+VRmurbOyG1RmmNfg9r+q3GnRwqmdZK7f2Uip0OQTQq/PRFZkW/cQfuFg6HWebaSb
+trUCLU81jUQLuyBJF/Cc7na4+PaIbhNPIDfuxzcsV7fVVdebtXADHPU+7thHbnw5
+3BgSpSBfYVdkHnEU1Zix/c67tJXRqOSAf5WujVnOXNG5XJL7eCGwUgrPOnjRo3sZ
+xf7/xKVSKeZQhSNTgjcEbvasnE2GKw==
+=sGHd
+-----END PGP SIGNATURE-----
+
+--n2Pv11Ogg/Ox8ay5--
