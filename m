@@ -2,109 +2,94 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69399C433DB
-	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 19:30:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 561CDC43332
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 21:49:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2C73323117
-	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 19:30:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 10A4F2078E
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 21:49:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436556AbhALT20 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 12 Jan 2021 14:28:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45118 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406872AbhALT20 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 12 Jan 2021 14:28:26 -0500
-Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F90C0617A4
-        for <phone-devel@vger.kernel.org>; Tue, 12 Jan 2021 11:26:49 -0800 (PST)
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 2F4C33EAF1;
-        Tue, 12 Jan 2021 20:26:48 +0100 (CET)
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, phone-devel@vger.kernel.org,
-        robdclark@gmail.com, sean@poorly.run,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v2 4/7] drm/msm/dpu: Allow specifying features and sblk in DSPP_BLK macro
-Date:   Tue, 12 Jan 2021 20:26:29 +0100
-Message-Id: <20210112192632.502897-5-angelogioacchino.delregno@somainline.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210112192632.502897-1-angelogioacchino.delregno@somainline.org>
-References: <20210112192632.502897-1-angelogioacchino.delregno@somainline.org>
+        id S2393321AbhALVgR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 12 Jan 2021 16:36:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59910 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2406940AbhALT6a (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 12 Jan 2021 14:58:30 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 824A5206C3;
+        Tue, 12 Jan 2021 19:57:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610481469;
+        bh=z2DPQkl8j3oNPm3GhJ8TMRR7bamYAtVZ1voeLiWbMM8=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=NMenzqaWfNOWIcxf5UoRPKmW/Qc4ecdCxabu0U4W1H9MccT0Z9wNL6P73LKufTcKT
+         YnjLp7gRbSks9kfkPR3OvrAc7I2dd8q7fQLhmgNcQ2YmHgEyRFqkBq2M+NrG9otogt
+         8FqA+Xd1dqSkqDLjH5nZDEhFjoe74xygFmoPOuYnclBrKzjQCyturU24uwRcqTeijq
+         65tMAMwwYTvRRA0h5nEkj+mkeGrCD4XVl/PpAg005fXDhkF5glZk8E7tsxj/f103OU
+         K1N0kf0ccBZF0ZsVLmdQyX9fKlFtGBpF9Q+7XBqcYi68vN0z2dP6n1VUWZEnDBPTMU
+         VnELaShy2mpsg==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20201226140934.89856-1-konrad.dybcio@somainline.org>
+References: <20201226140934.89856-1-konrad.dybcio@somainline.org>
+Subject: Re: [PATCH] clk: qcom: mmcc-msm8974: Fix mmss_s0_axi clock
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Mike Turquette <mturquette@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>,
+        phone-devel@vger.kernel.org
+Date:   Tue, 12 Jan 2021 11:57:46 -0800
+Message-ID: <161048146613.3661239.17638637385414531449@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The DSPP_BLK macro was ad-hoc made for SC7180, but this is wrong
-because not all of the DPU DSPP versions can use the same DSPP block
-configuration, and not all of them have got the same features.
+Quoting Konrad Dybcio (2020-12-26 06:09:34)
+> On boards without cont_splash the clock wouldn't get enabled.
+> Reparent it and strongly depend on the parent to make sure
+> it's accessible. Access to MMSS depends on mmss_s0_axi being
 
-For this reason, add two more params to the DSPP_BLK macro, so that
-it is possible to specify the feature mask and the sblk config for
-each DSPP.
+It's not a dependency. The parent is supposed to be the actual parent
+clk that is directly upstream of the clk. I understand that some
+dependency isn't enabled but maybe that just means we need to write some
+enable bit when this driver probes instead?
 
-Fixes: 4259ff7ae509 ("drm/msm/dpu: add support for pcc color block in dpu driver")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
----
- .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-index 48d490f65840..2e0f6f726a1b 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-@@ -532,23 +532,28 @@ static const struct dpu_dspp_sub_blks sm8150_dspp_sblk = {
- 		.len = 0x90, .version = 0x40000},
- };
- 
--#define DSPP_BLK(_name, _id, _base, _sblk) \
-+#define DSPP_BLK(_name, _id, _base, _mask, _sblk) \
- 		{\
- 		.name = _name, .id = _id, \
- 		.base = _base, .len = 0x1800, \
--		.features = DSPP_SC7180_MASK, \
-+		.features = _mask, \
- 		.sblk = _sblk \
- 		}
- 
- static const struct dpu_dspp_cfg sc7180_dspp[] = {
--	DSPP_BLK("dspp_0", DSPP_0, 0x54000, &sc7180_dspp_sblk),
-+	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
-+		 &sc7180_dspp_sblk),
- };
- 
- static const struct dpu_dspp_cfg sm8150_dspp[] = {
--	DSPP_BLK("dspp_0", DSPP_0, 0x54000, &sm8150_dspp_sblk),
--	DSPP_BLK("dspp_1", DSPP_1, 0x56000, &sm8150_dspp_sblk),
--	DSPP_BLK("dspp_2", DSPP_2, 0x58000, &sm8150_dspp_sblk),
--	DSPP_BLK("dspp_3", DSPP_3, 0x5a000, &sm8150_dspp_sblk),
-+	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
-+		 &sm8150_dspp_sblk),
-+	DSPP_BLK("dspp_1", DSPP_1, 0x56000, DSPP_SC7180_MASK,
-+		 &sm8150_dspp_sblk),
-+	DSPP_BLK("dspp_2", DSPP_2, 0x58000, DSPP_SC7180_MASK,
-+		 &sm8150_dspp_sblk),
-+	DSPP_BLK("dspp_3", DSPP_3, 0x5a000, DSPP_SC7180_MASK,
-+		 &sm8150_dspp_sblk),
- };
- 
- /*************************************************************
--- 
-2.29.2
-
+> up and alive.
+>=20
+> Fixes: d8b212014e69 ("clk: qcom: Add support for MSM8974's multimedia clo=
+ck controller (MMCC)")
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> ---
+>  drivers/clk/qcom/mmcc-msm8974.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/clk/qcom/mmcc-msm8974.c b/drivers/clk/qcom/mmcc-msm8=
+974.c
+> index 015426262d08..6220b62ece1e 100644
+> --- a/drivers/clk/qcom/mmcc-msm8974.c
+> +++ b/drivers/clk/qcom/mmcc-msm8974.c
+> @@ -2101,11 +2101,11 @@ static struct clk_branch mmss_s0_axi_clk =3D {
+>                 .hw.init =3D &(struct clk_init_data){
+>                         .name =3D "mmss_s0_axi_clk",
+>                         .parent_names =3D (const char *[]){
+> -                               "mmss_axi_clk_src",
+> +                               "mmss_mmssnoc_axi_clk",
+>                         },
+>                         .num_parents =3D 1,
+>                         .ops =3D &clk_branch2_ops,
+> -                       .flags =3D CLK_IGNORE_UNUSED,
+> +                       .flags =3D CLK_IGNORE_UNUSED | CLK_SET_RATE_PAREN=
+T | CLK_OPS_PARENT_ENABLE,
+>                 },
+>         },
