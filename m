@@ -2,78 +2,108 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B577C433DB
-	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 19:04:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43A41C43381
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 19:27:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AEC312312A
-	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 19:04:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EE49E2070B
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 19:27:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392862AbhALTEJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 12 Jan 2021 14:04:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41564 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729923AbhALTEJ (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 12 Jan 2021 14:04:09 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7B93E230F9;
-        Tue, 12 Jan 2021 19:03:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610478208;
-        bh=arJYye6Gv+8BuVsZc+5AV+LIkT34tlazeQkU3YPaluM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DJx7vokyB5+qhEnSmUd0eR+wmyyCD0UMA411LAhNUBO5eknScs5nLleFxQ9uCG9OZ
-         gsZ8SkoRr1t7DrFPG4dy756LV/FwGIKOjPCKFwSmmUbjWWjnl8xLcONV/tvActX/nY
-         6M9bJGW7vLRwM+tjCs4wYFWhd4/roFfBc1he8QPr+r3qrRYilSJqWBcqqFBY4Dhsqn
-         L5h84UpX57SC6H+tNiFO0x8Lwwxi0CLS5n7++OaIbDQcfXYhB3ESsz3PTxewbFWMRa
-         pcXjsB3pdqMQIq+LZezGBVWU0xfaavcgDVAPUakFmjiXUZlJIjfsKoY4/2NpYiz1vx
-         bEesUrjXb23MQ==
-From:   Will Deacon <will@kernel.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     catalin.marinas@arm.com, kernel-team@android.com,
-        Will Deacon <will@kernel.org>, martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        Robin Murphy <robin.murphy@arm.com>,
-        linux-kernel@vger.kernel.org, marijn.suijten@somainline.org,
-        John Stultz <john.stultz@linaro.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Jordan Crouse <jcrouse@codeaurora.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        iommu@lists.linux-foundation.org, Joerg Roedel <joro@8bytes.org>,
-        Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>
-Subject: Re: [PATCH v2] iommu: arm-smmu-qcom: Add sdm630/msm8998 compatibles for qcom quirks
-Date:   Tue, 12 Jan 2021 19:03:20 +0000
-Message-Id: <161046656595.1107648.16027501350781316856.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210109165622.149777-1-konrad.dybcio@somainline.org>
-References: <20210109165622.149777-1-konrad.dybcio@somainline.org>
+        id S1732584AbhALT1p (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 12 Jan 2021 14:27:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44960 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2436566AbhALT1o (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 12 Jan 2021 14:27:44 -0500
+Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D305C061794
+        for <phone-devel@vger.kernel.org>; Tue, 12 Jan 2021 11:26:49 -0800 (PST)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 63EC03E7CC;
+        Tue, 12 Jan 2021 20:26:47 +0100 (CET)
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, phone-devel@vger.kernel.org,
+        robdclark@gmail.com, sean@poorly.run,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v2 1/7] drm/msm/dpu: Fix VBIF_XINL_QOS_LVL_REMAP_000 register offset
+Date:   Tue, 12 Jan 2021 20:26:26 +0100
+Message-Id: <20210112192632.502897-2-angelogioacchino.delregno@somainline.org>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210112192632.502897-1-angelogioacchino.delregno@somainline.org>
+References: <20210112192632.502897-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 9 Jan 2021 17:56:21 +0100, Konrad Dybcio wrote:
-> SDM630 and MSM8998 are among the SoCs that use Qualcomm's implementation
-> of SMMUv2 which has already proven to be problematic over the years. Add
-> their compatibles to the lookup list to prevent the platforms from being
-> shut down by the hypervisor at MMU probe.
+On DPUs prior to version 4 the VBIF_XINL_QOS_LVL_REMAP_000 register
+is at 0x570 offset from vbif base instead of 0x590, due to the
+VBIF_XINL_QOS_RP_REMAP_000 having less instances (less possible XINs).
 
-Applied to arm64 (for-next/iommu/fixes), thanks!
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_vbif.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-[1/1] iommu: arm-smmu-qcom: Add sdm630/msm8998 compatibles for qcom quirks
-      https://git.kernel.org/arm64/c/b812834b5329
-
-Cheers,
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_vbif.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_vbif.c
+index cf867f3f7c36..b757054e1c23 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_vbif.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_vbif.c
+@@ -30,7 +30,7 @@
+ #define VBIF_XIN_HALT_CTRL0		0x0200
+ #define VBIF_XIN_HALT_CTRL1		0x0204
+ #define VBIF_XINL_QOS_RP_REMAP_000	0x0550
+-#define VBIF_XINL_QOS_LVL_REMAP_000	0x0590
++#define VBIF_XINL_QOS_LVL_REMAP_000(v)	(v < DPU_HW_VER_400 ? 0x570 : 0x0590)
+ 
+ static void dpu_hw_clear_errors(struct dpu_hw_vbif *vbif,
+ 		u32 *pnd_errors, u32 *src_errors)
+@@ -156,18 +156,19 @@ static void dpu_hw_set_qos_remap(struct dpu_hw_vbif *vbif,
+ 		u32 xin_id, u32 level, u32 remap_level)
+ {
+ 	struct dpu_hw_blk_reg_map *c;
+-	u32 reg_val, reg_val_lvl, mask, reg_high, reg_shift;
++	u32 reg_lvl, reg_val, reg_val_lvl, mask, reg_high, reg_shift;
+ 
+ 	if (!vbif)
+ 		return;
+ 
+ 	c = &vbif->hw;
+ 
++	reg_lvl = VBIF_XINL_QOS_LVL_REMAP_000(c->hwversion);
+ 	reg_high = ((xin_id & 0x8) >> 3) * 4 + (level * 8);
+ 	reg_shift = (xin_id & 0x7) * 4;
+ 
+ 	reg_val = DPU_REG_READ(c, VBIF_XINL_QOS_RP_REMAP_000 + reg_high);
+-	reg_val_lvl = DPU_REG_READ(c, VBIF_XINL_QOS_LVL_REMAP_000 + reg_high);
++	reg_val_lvl = DPU_REG_READ(c, reg_lvl + reg_high);
+ 
+ 	mask = 0x7 << reg_shift;
+ 
+@@ -178,7 +179,7 @@ static void dpu_hw_set_qos_remap(struct dpu_hw_vbif *vbif,
+ 	reg_val_lvl |= (remap_level << reg_shift) & mask;
+ 
+ 	DPU_REG_WRITE(c, VBIF_XINL_QOS_RP_REMAP_000 + reg_high, reg_val);
+-	DPU_REG_WRITE(c, VBIF_XINL_QOS_LVL_REMAP_000 + reg_high, reg_val_lvl);
++	DPU_REG_WRITE(c, reg_lvl + reg_high, reg_val_lvl);
+ }
+ 
+ static void dpu_hw_set_write_gather_en(struct dpu_hw_vbif *vbif, u32 xin_id)
 -- 
-Will
+2.29.2
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
