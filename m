@@ -4,28 +4,31 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A9EBC4332D
-	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 18:21:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C227C43217
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 18:22:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 61D9D23122
-	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 18:21:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6D3282311D
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 18:22:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406050AbhALSVs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 12 Jan 2021 13:21:48 -0500
-Received: from relay07.th.seeweb.it ([5.144.164.168]:54719 "EHLO
-        relay07.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404585AbhALSVr (ORCPT
+        id S2406269AbhALSWI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 12 Jan 2021 13:22:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58950 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406168AbhALSV4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 12 Jan 2021 13:21:47 -0500
+        Tue, 12 Jan 2021 13:21:56 -0500
+Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC455C061795;
+        Tue, 12 Jan 2021 10:21:00 -0800 (PST)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 35BF93EEC4;
-        Tue, 12 Jan 2021 19:21:02 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 909983EBD8;
+        Tue, 12 Jan 2021 19:20:58 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     linux-arm-msm@vger.kernel.org
@@ -38,9 +41,9 @@ Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v3 11/15] dt-bindings: soc: qcom: cpr3: Add bindings for CPR3 driver
-Date:   Tue, 12 Jan 2021 19:20:48 +0100
-Message-Id: <20210112182052.481888-12-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v3 01/15] cpuidle: qcom_spm: Detach state machine from main SPM handling
+Date:   Tue, 12 Jan 2021 19:20:38 +0100
+Message-Id: <20210112182052.481888-2-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210112182052.481888-1-angelogioacchino.delregno@somainline.org>
 References: <20210112182052.481888-1-angelogioacchino.delregno@somainline.org>
@@ -50,261 +53,684 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the bindings for the CPR3 driver to the documentation.
+In commit a871be6b8eee ("cpuidle: Convert Qualcomm SPM driver to a generic
+CPUidle driver") the SPM driver has been converted to a
+generic CPUidle driver: that was mainly made to simplify the
+driver and that was a great accomplishment;
+Though, it was ignored that the SPM driver is not used only
+on the ARM architecture.
+
+In preparation for the enablement of SPM features on AArch64/ARM64,
+split the cpuidle-qcom-spm driver in two: the CPUIdle related
+state machine (currently used only on ARM SoCs) stays there, while
+the SPM communication handling lands back in soc/qcom/spm.c and
+also making sure to not discard the simplifications that were
+introduced in the aforementioned commit.
+
+Since now the "two drivers" are split, the SCM dependency in the
+main SPM handling is gone and for this reason it was also possible
+to move the SPM initialization early: this will also make sure that
+whenever the SAW CPUIdle driver is getting initialized, the SPM
+driver will be ready to do the job.
+
+Please note that the anticipation of the SPM initialization was
+also done to optimize the boot times on platforms that have their
+CPU/L2 idle states managed by other means (such as PSCI), while
+needing SAW initialization for other purposes, like AVS control.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- .../bindings/soc/qcom/qcom,cpr3.yaml          | 241 ++++++++++++++++++
- 1 file changed, 241 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml
+ drivers/cpuidle/Kconfig.arm        |   1 +
+ drivers/cpuidle/cpuidle-qcom-spm.c | 294 ++++++-----------------------
+ drivers/soc/qcom/Kconfig           |   9 +
+ drivers/soc/qcom/Makefile          |   1 +
+ drivers/soc/qcom/spm.c             | 198 +++++++++++++++++++
+ include/soc/qcom/spm.h             |  45 +++++
+ 6 files changed, 312 insertions(+), 236 deletions(-)
+ create mode 100644 drivers/soc/qcom/spm.c
+ create mode 100644 include/soc/qcom/spm.h
 
-diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml
+diff --git a/drivers/cpuidle/Kconfig.arm b/drivers/cpuidle/Kconfig.arm
+index 0844fadc4be8..c5e2f4d0df04 100644
+--- a/drivers/cpuidle/Kconfig.arm
++++ b/drivers/cpuidle/Kconfig.arm
+@@ -112,6 +112,7 @@ config ARM_QCOM_SPM_CPUIDLE
+ 	select CPU_IDLE_MULTIPLE_DRIVERS
+ 	select DT_IDLE_STATES
+ 	select QCOM_SCM
++	select QCOM_SPM
+ 	help
+ 	  Select this to enable cpuidle for Qualcomm processors.
+ 	  The Subsystem Power Manager (SPM) controls low power modes for the
+diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
+index adf91a6e4d7d..3dd7bb10b82d 100644
+--- a/drivers/cpuidle/cpuidle-qcom-spm.c
++++ b/drivers/cpuidle/cpuidle-qcom-spm.c
+@@ -18,146 +18,13 @@
+ #include <linux/cpuidle.h>
+ #include <linux/cpu_pm.h>
+ #include <linux/qcom_scm.h>
++#include <soc/qcom/spm.h>
+ 
+ #include <asm/proc-fns.h>
+ #include <asm/suspend.h>
+ 
+ #include "dt_idle_states.h"
+ 
+-#define MAX_PMIC_DATA		2
+-#define MAX_SEQ_DATA		64
+-#define SPM_CTL_INDEX		0x7f
+-#define SPM_CTL_INDEX_SHIFT	4
+-#define SPM_CTL_EN		BIT(0)
+-
+-enum pm_sleep_mode {
+-	PM_SLEEP_MODE_STBY,
+-	PM_SLEEP_MODE_RET,
+-	PM_SLEEP_MODE_SPC,
+-	PM_SLEEP_MODE_PC,
+-	PM_SLEEP_MODE_NR,
+-};
+-
+-enum spm_reg {
+-	SPM_REG_CFG,
+-	SPM_REG_SPM_CTL,
+-	SPM_REG_DLY,
+-	SPM_REG_PMIC_DLY,
+-	SPM_REG_PMIC_DATA_0,
+-	SPM_REG_PMIC_DATA_1,
+-	SPM_REG_VCTL,
+-	SPM_REG_SEQ_ENTRY,
+-	SPM_REG_SPM_STS,
+-	SPM_REG_PMIC_STS,
+-	SPM_REG_NR,
+-};
+-
+-struct spm_reg_data {
+-	const u8 *reg_offset;
+-	u32 spm_cfg;
+-	u32 spm_dly;
+-	u32 pmic_dly;
+-	u32 pmic_data[MAX_PMIC_DATA];
+-	u8 seq[MAX_SEQ_DATA];
+-	u8 start_index[PM_SLEEP_MODE_NR];
+-};
+-
+-struct spm_driver_data {
+-	struct cpuidle_driver cpuidle_driver;
+-	void __iomem *reg_base;
+-	const struct spm_reg_data *reg_data;
+-};
+-
+-static const u8 spm_reg_offset_v2_1[SPM_REG_NR] = {
+-	[SPM_REG_CFG]		= 0x08,
+-	[SPM_REG_SPM_CTL]	= 0x30,
+-	[SPM_REG_DLY]		= 0x34,
+-	[SPM_REG_SEQ_ENTRY]	= 0x80,
+-};
+-
+-/* SPM register data for 8974, 8084 */
+-static const struct spm_reg_data spm_reg_8974_8084_cpu  = {
+-	.reg_offset = spm_reg_offset_v2_1,
+-	.spm_cfg = 0x1,
+-	.spm_dly = 0x3C102800,
+-	.seq = { 0x03, 0x0B, 0x0F, 0x00, 0x20, 0x80, 0x10, 0xE8, 0x5B, 0x03,
+-		0x3B, 0xE8, 0x5B, 0x82, 0x10, 0x0B, 0x30, 0x06, 0x26, 0x30,
+-		0x0F },
+-	.start_index[PM_SLEEP_MODE_STBY] = 0,
+-	.start_index[PM_SLEEP_MODE_SPC] = 3,
+-};
+-
+-static const u8 spm_reg_offset_v1_1[SPM_REG_NR] = {
+-	[SPM_REG_CFG]		= 0x08,
+-	[SPM_REG_SPM_CTL]	= 0x20,
+-	[SPM_REG_PMIC_DLY]	= 0x24,
+-	[SPM_REG_PMIC_DATA_0]	= 0x28,
+-	[SPM_REG_PMIC_DATA_1]	= 0x2C,
+-	[SPM_REG_SEQ_ENTRY]	= 0x80,
+-};
+-
+-/* SPM register data for 8064 */
+-static const struct spm_reg_data spm_reg_8064_cpu = {
+-	.reg_offset = spm_reg_offset_v1_1,
+-	.spm_cfg = 0x1F,
+-	.pmic_dly = 0x02020004,
+-	.pmic_data[0] = 0x0084009C,
+-	.pmic_data[1] = 0x00A4001C,
+-	.seq = { 0x03, 0x0F, 0x00, 0x24, 0x54, 0x10, 0x09, 0x03, 0x01,
+-		0x10, 0x54, 0x30, 0x0C, 0x24, 0x30, 0x0F },
+-	.start_index[PM_SLEEP_MODE_STBY] = 0,
+-	.start_index[PM_SLEEP_MODE_SPC] = 2,
+-};
+-
+-static inline void spm_register_write(struct spm_driver_data *drv,
+-					enum spm_reg reg, u32 val)
+-{
+-	if (drv->reg_data->reg_offset[reg])
+-		writel_relaxed(val, drv->reg_base +
+-				drv->reg_data->reg_offset[reg]);
+-}
+-
+-/* Ensure a guaranteed write, before return */
+-static inline void spm_register_write_sync(struct spm_driver_data *drv,
+-					enum spm_reg reg, u32 val)
+-{
+-	u32 ret;
+-
+-	if (!drv->reg_data->reg_offset[reg])
+-		return;
+-
+-	do {
+-		writel_relaxed(val, drv->reg_base +
+-				drv->reg_data->reg_offset[reg]);
+-		ret = readl_relaxed(drv->reg_base +
+-				drv->reg_data->reg_offset[reg]);
+-		if (ret == val)
+-			break;
+-		cpu_relax();
+-	} while (1);
+-}
+-
+-static inline u32 spm_register_read(struct spm_driver_data *drv,
+-					enum spm_reg reg)
+-{
+-	return readl_relaxed(drv->reg_base + drv->reg_data->reg_offset[reg]);
+-}
+-
+-static void spm_set_low_power_mode(struct spm_driver_data *drv,
+-					enum pm_sleep_mode mode)
+-{
+-	u32 start_index;
+-	u32 ctl_val;
+-
+-	start_index = drv->reg_data->start_index[mode];
+-
+-	ctl_val = spm_register_read(drv, SPM_REG_SPM_CTL);
+-	ctl_val &= ~(SPM_CTL_INDEX << SPM_CTL_INDEX_SHIFT);
+-	ctl_val |= start_index << SPM_CTL_INDEX_SHIFT;
+-	ctl_val |= SPM_CTL_EN;
+-	spm_register_write_sync(drv, SPM_REG_SPM_CTL, ctl_val);
+-}
+-
+ static int qcom_pm_collapse(unsigned long int unused)
+ {
+ 	qcom_scm_cpu_power_down(QCOM_SCM_CPU_PWR_DOWN_L2_ON);
+@@ -213,132 +80,87 @@ static const struct of_device_id qcom_idle_state_match[] = {
+ 	{ },
+ };
+ 
+-static int spm_cpuidle_init(struct cpuidle_driver *drv, int cpu)
++static int spm_cpuidle_register(int cpu)
+ {
++	struct platform_device *pdev = NULL;
++	struct spm_driver_data *spm = NULL;
++	struct device_node *cpu_node, *saw_node;
+ 	int ret;
+ 
+-	memcpy(drv, &qcom_spm_idle_driver, sizeof(*drv));
+-	drv->cpumask = (struct cpumask *)cpumask_of(cpu);
++	cpu_node = of_cpu_device_node_get(cpu);
++	if (!cpu_node)
++		return -ENODEV;
+ 
+-	/* Parse idle states from device tree */
+-	ret = dt_init_idle_driver(drv, qcom_idle_state_match, 1);
+-	if (ret <= 0)
+-		return ret ? : -ENODEV;
++	saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
++	if (!saw_node)
++		return -ENODEV;
+ 
+-	/* We have atleast one power down mode */
+-	return qcom_scm_set_warm_boot_addr(cpu_resume_arm, drv->cpumask);
+-}
++	pdev = of_find_device_by_node(saw_node);
++	of_node_put(saw_node);
++	of_node_put(cpu_node);
++	if (!pdev)
++		return -ENODEV;
+ 
+-static struct spm_driver_data *spm_get_drv(struct platform_device *pdev,
+-		int *spm_cpu)
+-{
+-	struct spm_driver_data *drv = NULL;
+-	struct device_node *cpu_node, *saw_node;
+-	int cpu;
+-	bool found = 0;
++	spm = dev_get_drvdata(&pdev->dev);
++	if (!spm)
++		return -EINVAL;
+ 
+-	for_each_possible_cpu(cpu) {
+-		cpu_node = of_cpu_device_node_get(cpu);
+-		if (!cpu_node)
+-			continue;
+-		saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
+-		found = (saw_node == pdev->dev.of_node);
+-		of_node_put(saw_node);
+-		of_node_put(cpu_node);
+-		if (found)
+-			break;
+-	}
++	spm->cpuidle_driver = qcom_spm_idle_driver;
+ 
+-	if (found) {
+-		drv = devm_kzalloc(&pdev->dev, sizeof(*drv), GFP_KERNEL);
+-		if (drv)
+-			*spm_cpu = cpu;
+-	}
++	ret = dt_init_idle_driver(&spm->cpuidle_driver,
++				  qcom_idle_state_match, 1);
++	if (ret <= 0)
++		return ret ? : -ENODEV;
+ 
+-	return drv;
+-}
++	ret = qcom_scm_set_warm_boot_addr(cpu_resume_arm, cpumask_of(cpu));
++	if (ret)
++		return ret;
+ 
+-static const struct of_device_id spm_match_table[] = {
+-	{ .compatible = "qcom,msm8974-saw2-v2.1-cpu",
+-	  .data = &spm_reg_8974_8084_cpu },
+-	{ .compatible = "qcom,apq8084-saw2-v2.1-cpu",
+-	  .data = &spm_reg_8974_8084_cpu },
+-	{ .compatible = "qcom,apq8064-saw2-v1.1-cpu",
+-	  .data = &spm_reg_8064_cpu },
+-	{ },
+-};
++	return cpuidle_register(&spm->cpuidle_driver, NULL);
++}
+ 
+-static int spm_dev_probe(struct platform_device *pdev)
++static int spm_cpuidle_drv_probe(struct platform_device *pdev)
+ {
+-	struct spm_driver_data *drv;
+-	struct resource *res;
+-	const struct of_device_id *match_id;
+-	void __iomem *addr;
+ 	int cpu, ret;
+ 
+ 	if (!qcom_scm_is_available())
+ 		return -EPROBE_DEFER;
+ 
+-	drv = spm_get_drv(pdev, &cpu);
+-	if (!drv)
+-		return -EINVAL;
+-	platform_set_drvdata(pdev, drv);
++	for_each_possible_cpu(cpu) {
++		ret = spm_cpuidle_register(cpu);
++		if (ret != -ENODEV) {
++			dev_err(&pdev->dev,
++				"Cannot register for CPU%d: %d\n", cpu, ret);
++			break;
++		}
++	}
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	drv->reg_base = devm_ioremap_resource(&pdev->dev, res);
+-	if (IS_ERR(drv->reg_base))
+-		return PTR_ERR(drv->reg_base);
++	return ret;
++}
+ 
+-	match_id = of_match_node(spm_match_table, pdev->dev.of_node);
+-	if (!match_id)
+-		return -ENODEV;
++static struct platform_driver spm_cpuidle_driver = {
++	.probe = spm_cpuidle_drv_probe,
++	.driver = {
++		.name = "qcom-spm-cpuidle",
++	},
++};
+ 
+-	drv->reg_data = match_id->data;
++static int __init qcom_spm_cpuidle_init(void)
++{
++	struct platform_device *pdev;
++	int ret;
+ 
+-	ret = spm_cpuidle_init(&drv->cpuidle_driver, cpu);
++	ret = platform_driver_register(&spm_cpuidle_driver);
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Write the SPM sequences first.. */
+-	addr = drv->reg_base + drv->reg_data->reg_offset[SPM_REG_SEQ_ENTRY];
+-	__iowrite32_copy(addr, drv->reg_data->seq,
+-			ARRAY_SIZE(drv->reg_data->seq) / 4);
+-
+-	/*
+-	 * ..and then the control registers.
+-	 * On some SoC if the control registers are written first and if the
+-	 * CPU was held in reset, the reset signal could trigger the SPM state
+-	 * machine, before the sequences are completely written.
+-	 */
+-	spm_register_write(drv, SPM_REG_CFG, drv->reg_data->spm_cfg);
+-	spm_register_write(drv, SPM_REG_DLY, drv->reg_data->spm_dly);
+-	spm_register_write(drv, SPM_REG_PMIC_DLY, drv->reg_data->pmic_dly);
+-	spm_register_write(drv, SPM_REG_PMIC_DATA_0,
+-				drv->reg_data->pmic_data[0]);
+-	spm_register_write(drv, SPM_REG_PMIC_DATA_1,
+-				drv->reg_data->pmic_data[1]);
+-
+-	/* Set up Standby as the default low power mode */
+-	spm_set_low_power_mode(drv, PM_SLEEP_MODE_STBY);
+-
+-	return cpuidle_register(&drv->cpuidle_driver, NULL);
+-}
+-
+-static int spm_dev_remove(struct platform_device *pdev)
+-{
+-	struct spm_driver_data *drv = platform_get_drvdata(pdev);
++	pdev = platform_device_register_simple("qcom-spm-cpuidle",
++					       -1, NULL, 0);
++	if (IS_ERR(pdev)) {
++		platform_driver_unregister(&spm_cpuidle_driver);
++		return PTR_ERR(pdev);
++	}
+ 
+-	cpuidle_unregister(&drv->cpuidle_driver);
+ 	return 0;
+ }
+-
+-static struct platform_driver spm_driver = {
+-	.probe = spm_dev_probe,
+-	.remove = spm_dev_remove,
+-	.driver = {
+-		.name = "saw",
+-		.of_match_table = spm_match_table,
+-	},
+-};
+-
+-builtin_platform_driver(spm_driver);
++device_initcall(qcom_spm_cpuidle_init);
+diff --git a/drivers/soc/qcom/Kconfig b/drivers/soc/qcom/Kconfig
+index 79b568f82a1c..fe3c486ae32d 100644
+--- a/drivers/soc/qcom/Kconfig
++++ b/drivers/soc/qcom/Kconfig
+@@ -190,6 +190,15 @@ config QCOM_SOCINFO
+ 	 Say yes here to support the Qualcomm socinfo driver, providing
+ 	 information about the SoC to user space.
+ 
++config QCOM_SPM
++	tristate "Qualcomm Subsystem Power Manager (SPM)"
++	depends on ARCH_QCOM
++	select QCOM_SCM
++	help
++	  Enable the support for the Qualcomm Subsystem Power Manager, used
++	  to manage cores, L2 low power modes and to configure the internal
++	  Adaptive Voltage Scaler parameters, where supported.
++
+ config QCOM_WCNSS_CTRL
+ 	tristate "Qualcomm WCNSS control driver"
+ 	depends on ARCH_QCOM || COMPILE_TEST
+diff --git a/drivers/soc/qcom/Makefile b/drivers/soc/qcom/Makefile
+index ad675a6593d0..24514c722832 100644
+--- a/drivers/soc/qcom/Makefile
++++ b/drivers/soc/qcom/Makefile
+@@ -20,6 +20,7 @@ obj-$(CONFIG_QCOM_SMEM_STATE) += smem_state.o
+ obj-$(CONFIG_QCOM_SMP2P)	+= smp2p.o
+ obj-$(CONFIG_QCOM_SMSM)	+= smsm.o
+ obj-$(CONFIG_QCOM_SOCINFO)	+= socinfo.o
++obj-$(CONFIG_QCOM_SPM)		+= spm.o
+ obj-$(CONFIG_QCOM_WCNSS_CTRL) += wcnss_ctrl.o
+ obj-$(CONFIG_QCOM_APR) += apr.o
+ obj-$(CONFIG_QCOM_LLCC) += llcc-qcom.o
+diff --git a/drivers/soc/qcom/spm.c b/drivers/soc/qcom/spm.c
 new file mode 100644
-index 000000000000..e2753740c86b
+index 000000000000..0c8aa9240c41
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml
-@@ -0,0 +1,241 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/soc/qcom/qcom,cpr3.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++++ b/drivers/soc/qcom/spm.c
+@@ -0,0 +1,198 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
++ * Copyright (c) 2014,2015, Linaro Ltd.
++ *
++ * SAW power controller driver
++ */
 +
-+title: Qualcomm Core Power Reduction v3/v4/Hardened (CPR3, CPR4, CPRh)
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/slab.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
++#include <linux/of_device.h>
++#include <linux/err.h>
++#include <linux/platform_device.h>
++#include <soc/qcom/spm.h>
 +
-+description: |
-+  CPR (Core Power Reduction) is a technology to reduce core power on a CPU
-+  or other device. Each OPP of a device corresponds to a "corner" that has
-+  a range of valid voltages for a particular frequency. While the device is
-+  running at a particular frequency, CPR monitors dynamic factors such as
-+  temperature, etc. and suggests or, in the CPR-Hardened case performs,
-+  adjustments to the voltage to save power and meet silicon characteristic
-+  requirements.
++#define SPM_CTL_INDEX		0x7f
++#define SPM_CTL_INDEX_SHIFT	4
++#define SPM_CTL_EN		BIT(0)
 +
-+maintainers:
-+  - AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
++enum spm_reg {
++	SPM_REG_CFG,
++	SPM_REG_SPM_CTL,
++	SPM_REG_DLY,
++	SPM_REG_PMIC_DLY,
++	SPM_REG_PMIC_DATA_0,
++	SPM_REG_PMIC_DATA_1,
++	SPM_REG_VCTL,
++	SPM_REG_SEQ_ENTRY,
++	SPM_REG_SPM_STS,
++	SPM_REG_PMIC_STS,
++	SPM_REG_NR,
++};
 +
-+properties:
-+  compatible:
-+    oneOf:
-+      - description: CPRv3 controller
-+        items:
-+          - const: qcom,cpr3
-+      - description: CPRv4 controller
-+        items:
-+          - const: qcom,cpr4
-+      - description: CPRv4-Hardened controller
-+        items:
-+          - enum:
-+              - qcom,msm8998-cprh
-+              - qcom,sdm630-cprh
-+          - const: qcom,cprh
++static const u16 spm_reg_offset_v2_1[SPM_REG_NR] = {
++	[SPM_REG_CFG]		= 0x08,
++	[SPM_REG_SPM_CTL]	= 0x30,
++	[SPM_REG_DLY]		= 0x34,
++	[SPM_REG_SEQ_ENTRY]	= 0x80,
++};
 +
-+  reg:
-+    description: Base address and size of the CPR controller(s)
-+    minItems: 1
-+    maxItems: 2
++/* SPM register data for 8974, 8084 */
++static const struct spm_reg_data spm_reg_8974_8084_cpu  = {
++	.reg_offset = spm_reg_offset_v2_1,
++	.spm_cfg = 0x1,
++	.spm_dly = 0x3C102800,
++	.seq = { 0x03, 0x0B, 0x0F, 0x00, 0x20, 0x80, 0x10, 0xE8, 0x5B, 0x03,
++		0x3B, 0xE8, 0x5B, 0x82, 0x10, 0x0B, 0x30, 0x06, 0x26, 0x30,
++		0x0F },
++	.start_index[PM_SLEEP_MODE_STBY] = 0,
++	.start_index[PM_SLEEP_MODE_SPC] = 3,
++};
 +
-+  interrupts:
-+    maxItems: 1
++static const u16 spm_reg_offset_v1_1[SPM_REG_NR] = {
++	[SPM_REG_CFG]		= 0x08,
++	[SPM_REG_SPM_CTL]	= 0x20,
++	[SPM_REG_PMIC_DLY]	= 0x24,
++	[SPM_REG_PMIC_DATA_0]	= 0x28,
++	[SPM_REG_PMIC_DATA_1]	= 0x2C,
++	[SPM_REG_SEQ_ENTRY]	= 0x80,
++};
 +
-+  clock-names:
-+    items:
-+      - const: "ref"
++/* SPM register data for 8064 */
++static const struct spm_reg_data spm_reg_8064_cpu = {
++	.reg_offset = spm_reg_offset_v1_1,
++	.spm_cfg = 0x1F,
++	.pmic_dly = 0x02020004,
++	.pmic_data[0] = 0x0084009C,
++	.pmic_data[1] = 0x00A4001C,
++	.seq = { 0x03, 0x0F, 0x00, 0x24, 0x54, 0x10, 0x09, 0x03, 0x01,
++		0x10, 0x54, 0x30, 0x0C, 0x24, 0x30, 0x0F },
++	.start_index[PM_SLEEP_MODE_STBY] = 0,
++	.start_index[PM_SLEEP_MODE_SPC] = 2,
++};
 +
-+  clocks:
-+    items:
-+      - description: CPR reference clock
++static inline void spm_register_write(struct spm_driver_data *drv,
++					enum spm_reg reg, u32 val)
++{
++	if (drv->reg_data->reg_offset[reg])
++		writel_relaxed(val, drv->reg_base +
++				drv->reg_data->reg_offset[reg]);
++}
 +
-+  vdd-supply:
-+    description: Autonomous Phase Control (APC) or other power supply
++/* Ensure a guaranteed write, before return */
++static inline void spm_register_write_sync(struct spm_driver_data *drv,
++					enum spm_reg reg, u32 val)
++{
++	u32 ret;
 +
-+  '#power-domain-cells':
-+    const: 1
++	if (!drv->reg_data->reg_offset[reg])
++		return;
 +
-+  acc-syscon:
-+    description: phandle to syscon for writing ACC settings
++	do {
++		writel_relaxed(val, drv->reg_base +
++				drv->reg_data->reg_offset[reg]);
++		ret = readl_relaxed(drv->reg_base +
++				drv->reg_data->reg_offset[reg]);
++		if (ret == val)
++			break;
++		cpu_relax();
++	} while (1);
++}
 +
-+  nvmem-cells:
-+    description: Cells containing the fuse corners and revision data
-+    minItems: 10
-+    maxItems: 32
++static inline u32 spm_register_read(struct spm_driver_data *drv,
++					enum spm_reg reg)
++{
++	return readl_relaxed(drv->reg_base + drv->reg_data->reg_offset[reg]);
++}
 +
-+  nvmem-cell-names:
-+    minItems: 10
-+    maxItems: 32
++void spm_set_low_power_mode(struct spm_driver_data *drv,
++					enum pm_sleep_mode mode)
++{
++	u32 start_index;
++	u32 ctl_val;
 +
-+  operating-points-v2: true
++	start_index = drv->reg_data->start_index[mode];
 +
-+required:
-+  - compatible
-+  - reg
-+  - clock-names
-+  - clocks
-+  - "#power-domain-cells"
-+  - nvmem-cells
-+  - nvmem-cell-names
-+  - operating-points-v2
++	ctl_val = spm_register_read(drv, SPM_REG_SPM_CTL);
++	ctl_val &= ~(SPM_CTL_INDEX << SPM_CTL_INDEX_SHIFT);
++	ctl_val |= start_index << SPM_CTL_INDEX_SHIFT;
++	ctl_val |= SPM_CTL_EN;
++	spm_register_write_sync(drv, SPM_REG_SPM_CTL, ctl_val);
++}
 +
-+additionalProperties: false
++static const struct of_device_id spm_match_table[] = {
++	{ .compatible = "qcom,msm8974-saw2-v2.1-cpu",
++	  .data = &spm_reg_8974_8084_cpu },
++	{ .compatible = "qcom,apq8084-saw2-v2.1-cpu",
++	  .data = &spm_reg_8974_8084_cpu },
++	{ .compatible = "qcom,apq8064-saw2-v1.1-cpu",
++	  .data = &spm_reg_8064_cpu },
++	{ },
++};
 +
-+examples:
-+  - |
-+    #include <dt-bindings/clock/qcom,gcc-msm8998.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
++static int spm_dev_probe(struct platform_device *pdev)
++{
++	const struct of_device_id *match_id;
++	struct spm_driver_data *drv;
++	struct resource *res;
++	void __iomem *addr;
 +
-+    cpus {
-+        #address-cells = <2>;
-+        #size-cells = <0>;
++	drv = devm_kzalloc(&pdev->dev, sizeof(*drv), GFP_KERNEL);
++	if (!drv)
++		return -ENOMEM;
 +
-+        cpu@0 {
-+            compatible = "qcom,kryo280";
-+            device_type = "cpu";
-+            reg = <0x0 0x0>;
-+            operating-points-v2 = <&cpu_gold_opp_table>;
-+            power-domains = <&apc_cprh 0>;
-+            power-domain-names = "cprh";
-+        };
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	drv->reg_base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(drv->reg_base))
++		return PTR_ERR(drv->reg_base);
 +
-+        cpu@100 {
-+            compatible = "qcom,kryo280";
-+            device_type = "cpu";
-+            reg = <0x0 0x0>;
-+            operating-points-v2 = <&cpu_silver_opp_table>;
-+            power-domains = <&apc_cprh 1>;
-+            power-domain-names = "cprh";
-+        };
-+    };
++	match_id = of_match_node(spm_match_table, pdev->dev.of_node);
++	if (!match_id)
++		return -ENODEV;
 +
-+    cpu_silver_opp_table: cpu-silver-opp-table {
-+        compatible = "operating-points-v2";
-+        opp-shared;
++	drv->reg_data = match_id->data;
++	platform_set_drvdata(pdev, drv);
 +
-+        opp-1843200000 {
-+            opp-hz = /bits/ 64 <1843200000>;
-+            required-opps = <&cprh_opp3>;
-+        };
-+        opp-1094400000 {
-+            opp-hz = /bits/ 64 <1094400000>;
-+            required-opps = <&cprh_opp2>;
-+        };
-+        opp-300000000 {
-+            opp-hz = /bits/ 64 <300000000>;
-+            required-opps = <&cprh_opp1>;
-+        };
-+    };
++	/* Write the SPM sequences first.. */
++	addr = drv->reg_base + drv->reg_data->reg_offset[SPM_REG_SEQ_ENTRY];
++	__iowrite32_copy(addr, drv->reg_data->seq,
++			ARRAY_SIZE(drv->reg_data->seq) / 4);
 +
-+    cpu_gold_opp_table: cpu-gold-opp-table {
-+        compatible = "operating-points-v2";
-+        opp-shared;
++	/*
++	 * ..and then the control registers.
++	 * On some SoC if the control registers are written first and if the
++	 * CPU was held in reset, the reset signal could trigger the SPM state
++	 * machine, before the sequences are completely written.
++	 */
++	spm_register_write(drv, SPM_REG_CFG, drv->reg_data->spm_cfg);
++	spm_register_write(drv, SPM_REG_DLY, drv->reg_data->spm_dly);
++	spm_register_write(drv, SPM_REG_PMIC_DLY, drv->reg_data->pmic_dly);
++	spm_register_write(drv, SPM_REG_PMIC_DATA_0,
++				drv->reg_data->pmic_data[0]);
++	spm_register_write(drv, SPM_REG_PMIC_DATA_1,
++				drv->reg_data->pmic_data[1]);
 +
-+        opp-2208000000 {
-+            opp-hz = /bits/ 64 <2208000000>;
-+            required-opps = <&cprh_opp3>;
-+        };
-+        opp-1113600000 {
-+            opp-hz = /bits/ 64 <1113600000>;
-+            required-opps = <&cprh_opp2>;
-+        };
-+        opp-300000000 {
-+            opp-hz = /bits/ 64 <300000000>;
-+            required-opps = <&cprh_opp1>;
-+        };
-+    };
++	/* Set up Standby as the default low power mode */
++	spm_set_low_power_mode(drv, PM_SLEEP_MODE_STBY);
 +
-+    cprh_opp_table: cpr-hardened-opp-table {
-+        compatible = "operating-points-v2-qcom-level";
++	return 0;
++}
 +
-+        cprh_opp1: opp1 {
-+            opp-level = <1>;
-+            qcom,opp-fuse-level = <1>;
-+        };
-+        cprh_opp2: opp2 {
-+            opp-level = <2>;
-+            qcom,opp-fuse-level = <2>;
-+        };
-+        cprh_opp3: opp3 {
-+            opp-level = <3>;
-+            qcom,opp-fuse-level = <2 3>;
-+        };
-+    };
++static struct platform_driver spm_driver = {
++	.probe = spm_dev_probe,
++	.driver = {
++		.name = "qcom_spm",
++		.of_match_table = spm_match_table,
++	},
++};
 +
-+    apc_cprh: power-controller@179c8000 {
-+        compatible = "qcom,msm8998-cprh", "qcom,cprh";
-+        reg = <0x0179c8000 0x4000>, <0x0179c4000 0x4000>;
-+        clocks = <&gcc GCC_HMSS_RBCPR_CLK>;
-+        clock-names = "ref";
++static int __init qcom_spm_init(void)
++{
++	return platform_driver_register(&spm_driver);
++}
++arch_initcall(qcom_spm_init);
+diff --git a/include/soc/qcom/spm.h b/include/soc/qcom/spm.h
+new file mode 100644
+index 000000000000..604eca2c4d4a
+--- /dev/null
++++ b/include/soc/qcom/spm.h
+@@ -0,0 +1,45 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
++ * Copyright (c) 2014,2015, Linaro Ltd.
++ * Copyright (C) 2020, AngeloGioacchino Del Regno <kholk11@gmail.com>
++ */
 +
-+        #power-domain-cells = <1>;
-+        operating-points-v2 = <&cprh_opp_table>;
++#ifndef __SPM_H__
++#define __SPM_H__
 +
-+        nvmem-cells = <&cpr_efuse_speedbin>,
-+                      <&cpr_fuse_revision>,
-+                      <&cpr_quot0_pwrcl>,
-+                      <&cpr_quot1_pwrcl>,
-+                      <&cpr_quot2_pwrcl>,
-+                      <&cpr_quot3_pwrcl>,
-+                      <&cpr_quot_offset1_pwrcl>,
-+                      <&cpr_quot_offset2_pwrcl>,
-+                      <&cpr_quot_offset3_pwrcl>,
-+                      <&cpr_init_voltage0_pwrcl>,
-+                      <&cpr_init_voltage1_pwrcl>,
-+                      <&cpr_init_voltage2_pwrcl>,
-+                      <&cpr_init_voltage3_pwrcl>,
-+                      <&cpr_ro_sel0_pwrcl>,
-+                      <&cpr_ro_sel1_pwrcl>,
-+                      <&cpr_ro_sel2_pwrcl>,
-+                      <&cpr_ro_sel3_pwrcl>,
-+                      <&cpr_quot0_perfcl>,
-+                      <&cpr_quot1_perfcl>,
-+                      <&cpr_quot2_perfcl>,
-+                      <&cpr_quot3_perfcl>,
-+                      <&cpr_quot_offset1_perfcl>,
-+                      <&cpr_quot_offset2_perfcl>,
-+                      <&cpr_quot_offset3_perfcl>,
-+                      <&cpr_init_voltage0_perfcl>,
-+                      <&cpr_init_voltage1_perfcl>,
-+                      <&cpr_init_voltage2_perfcl>,
-+                      <&cpr_init_voltage3_perfcl>,
-+                      <&cpr_ro_sel0_perfcl>,
-+                      <&cpr_ro_sel1_perfcl>,
-+                      <&cpr_ro_sel2_perfcl>,
-+                      <&cpr_ro_sel3_perfcl>;
++#include <linux/cpuidle.h>
 +
-+        nvmem-cell-names = "cpr_speed_bin",
-+                           "cpr_fuse_revision",
-+                           "cpr0_quotient1",
-+                           "cpr0_quotient2",
-+                           "cpr0_quotient3",
-+                           "cpr0_quotient4",
-+                           "cpr0_quotient_offset2",
-+                           "cpr0_quotient_offset3",
-+                           "cpr0_quotient_offset4",
-+                           "cpr0_init_voltage1",
-+                           "cpr0_init_voltage2",
-+                           "cpr0_init_voltage3",
-+                           "cpr0_init_voltage4",
-+                           "cpr0_ring_osc1",
-+                           "cpr0_ring_osc2",
-+                           "cpr0_ring_osc3",
-+                           "cpr0_ring_osc4",
-+                           "cpr1_quotient1",
-+                           "cpr1_quotient2",
-+                           "cpr1_quotient3",
-+                           "cpr1_quotient4",
-+                           "cpr1_quotient_offset2",
-+                           "cpr1_quotient_offset3",
-+                           "cpr1_quotient_offset4",
-+                           "cpr1_init_voltage1",
-+                           "cpr1_init_voltage2",
-+                           "cpr1_init_voltage3",
-+                           "cpr1_init_voltage4",
-+                           "cpr1_ring_osc1",
-+                           "cpr1_ring_osc2",
-+                           "cpr1_ring_osc3",
-+                           "cpr1_ring_osc4";
-+    };
-+...
++#define MAX_PMIC_DATA		2
++#define MAX_SEQ_DATA		64
++
++enum pm_sleep_mode {
++	PM_SLEEP_MODE_STBY,
++	PM_SLEEP_MODE_RET,
++	PM_SLEEP_MODE_SPC,
++	PM_SLEEP_MODE_PC,
++	PM_SLEEP_MODE_NR,
++};
++
++struct spm_reg_data {
++	const u16 *reg_offset;
++	u32 spm_cfg;
++	u32 spm_dly;
++	u32 pmic_dly;
++	u32 pmic_data[MAX_PMIC_DATA];
++	u32 avs_ctl;
++	u32 avs_limit;
++	u8 seq[MAX_SEQ_DATA];
++	u8 start_index[PM_SLEEP_MODE_NR];
++};
++
++struct spm_driver_data {
++	struct cpuidle_driver cpuidle_driver;
++	void __iomem *reg_base;
++	const struct spm_reg_data *reg_data;
++};
++
++void spm_set_low_power_mode(struct spm_driver_data *drv,
++					enum pm_sleep_mode mode);
++
++#endif /* __SPM_H__ */
 -- 
 2.29.2
 
