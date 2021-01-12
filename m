@@ -2,99 +2,180 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D05BC433DB
-	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 21:54:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D827C4332B
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 23:13:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B97D32078E
-	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 21:53:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2406A2312F
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jan 2021 23:13:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732124AbhALVxp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 12 Jan 2021 16:53:45 -0500
-Received: from mail-oi1-f171.google.com ([209.85.167.171]:44997 "EHLO
-        mail-oi1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726952AbhALVxk (ORCPT
+        id S1728220AbhALXNg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 12 Jan 2021 18:13:36 -0500
+Received: from m-r1.th.seeweb.it ([5.144.164.170]:50495 "EHLO
+        m-r1.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726543AbhALXNg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 12 Jan 2021 16:53:40 -0500
-Received: by mail-oi1-f171.google.com with SMTP id d189so3954141oig.11;
-        Tue, 12 Jan 2021 13:53:24 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=ngbxvbs9Rj1earjppnfOPpPMVrmf1dzRw0Kyw1CoJEk=;
-        b=Rla/h2rBLLWLLF5ao66IH9OMMGUfdZwdUjT89DfMdrlTxW8QqhzY4gLtgQG0+RYaLS
-         6NJZhGi8un46J2NbZBrXfqajP/5uXStRzPg3VnmajuG0X62c6DzjorePlOg1UGOMpWrQ
-         tLNBKvSWF8tmBzsDhCh2But0i/iYte3AMTX2TjlyL+WJ9IL8JRoUDTY8GaaW19F9UI9B
-         U9Ple/QX1tkPnHXoLqBEECZCjY8k9Ul+hZPeniZ6uzSXzFDgD3t2YZqKJKHk8Gj6Vefp
-         5+G3ttWiFjBTr1+Yhb8dKLuYWuo/oilP6qOqMnr/smhuP59juNSKOdGX9kPZi+PgMUnu
-         Dwfw==
-X-Gm-Message-State: AOAM530zwCDhMBEevGNe1knu/idfN+fXzTJRkSbOOC0trIBTN61UcaqJ
-        XqLQMGwlMhA+IdCzfiut9mcXkoo9tg==
-X-Google-Smtp-Source: ABdhPJw5qFKjKiuF5jl8AImxNuNfc8/UkpJDKdATyLyXBwQFhEavjlqrxbEsTxjgXYJm3KcYv3TU8w==
-X-Received: by 2002:aca:df0b:: with SMTP id w11mr719128oig.111.1610488378965;
-        Tue, 12 Jan 2021 13:52:58 -0800 (PST)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id h2sm842833ooa.25.2021.01.12.13.52.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Jan 2021 13:52:58 -0800 (PST)
-Received: (nullmailer pid 1037769 invoked by uid 1000);
-        Tue, 12 Jan 2021 21:52:56 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     AngeloGioacchino Del Regno 
+        Tue, 12 Jan 2021 18:13:36 -0500
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 133FB1F698;
+        Wed, 13 Jan 2021 00:12:38 +0100 (CET)
+From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Cc:     martin.botka@somainline.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linus.walleij@linaro.org,
-        marijn.suijten@somainline.org, linux-gpio@vger.kernel.org,
-        robh+dt@kernel.org, phone-devel@vger.kernel.org,
-        konrad.dybcio@somainline.org
-In-Reply-To: <20210111182928.587285-2-angelogioacchino.delregno@somainline.org>
-References: <20210111182928.587285-1-angelogioacchino.delregno@somainline.org> <20210111182928.587285-2-angelogioacchino.delregno@somainline.org>
-Subject: Re: [PATCH v2 2/2] dt-bindings: pinctrl: Add bindings for Awinic AW9523/AW9523B
-Date:   Tue, 12 Jan 2021 15:52:56 -0600
-Message-Id: <1610488376.946823.1037768.nullmailer@robh.at.kernel.org>
+To:     linus.walleij@linaro.org
+Cc:     linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        phone-devel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v3 2/2] dt-bindings: pinctrl: Add bindings for Awinic AW9523/AW9523B
+Date:   Wed, 13 Jan 2021 00:12:36 +0100
+Message-Id: <20210112231236.585632-2-angelogioacchino.delregno@somainline.org>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210112231236.585632-1-angelogioacchino.delregno@somainline.org>
+References: <20210112231236.585632-1-angelogioacchino.delregno@somainline.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 11 Jan 2021 19:29:28 +0100, AngeloGioacchino Del Regno wrote:
-> Add bindings for the Awinic AW9523/AW9523B I2C GPIO Expander driver.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> ---
->  .../pinctrl/awinic,aw9523-pinctrl.yaml        | 112 ++++++++++++++++++
->  1 file changed, 112 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml
-> 
+Add bindings for the Awinic AW9523/AW9523B I2C GPIO Expander driver.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
+ .../pinctrl/awinic,aw9523-pinctrl.yaml        | 115 ++++++++++++++++++
+ 1 file changed, 115 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.example.dts:25.21-34: Warning (reg_format): /example-0/i2c_node/gpio-expander@58:reg: property has invalid length (4 bytes) (#address-cells == 2, #size-cells == 1)
-Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.example.dt.yaml: Warning (pci_device_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.example.dt.yaml: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.example.dt.yaml: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.example.dt.yaml: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.example.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
-Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.example.dts:23.30-34.15: Warning (avoid_default_addr_size): /example-0/i2c_node/gpio-expander@58: Relying on default #address-cells value
-Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.example.dts:23.30-34.15: Warning (avoid_default_addr_size): /example-0/i2c_node/gpio-expander@58: Relying on default #size-cells value
-Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.example.dt.yaml: Warning (unique_unit_address): Failed prerequisite 'avoid_default_addr_size'
-
-See https://patchwork.ozlabs.org/patch/1424757
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+diff --git a/Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml
+new file mode 100644
+index 000000000000..3c14e7f55726
+--- /dev/null
++++ b/Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml
+@@ -0,0 +1,115 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/pinctrl/awinic,aw9523-pinctrl.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Awinic AW9523/AW9523B I2C GPIO Expander
++
++maintainers:
++  - AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
++
++description: |
++  The Awinic AW9523/AW9523B I2C GPIO Expander featuring 16 multi-function
++  I/O, 256 steps PWM mode and interrupt support.
++
++properties:
++  compatible:
++    const: awinic,aw9523-pinctrl
++
++  reg:
++    maxItems: 1
++
++  '#gpio-cells':
++    description: |
++      Specifying the pin number and flags, as defined in
++      include/dt-bindings/gpio/gpio.h
++    const: 2
++
++  gpio-controller: true
++
++  gpio-ranges:
++    maxItems: 1
++
++  interrupt-controller: true
++
++  interrupts:
++    maxItems: 1
++    description: Specifies the INTN pin IRQ.
++
++  '#interrupt-cells':
++    description:
++      Specifies the PIN numbers and Flags, as defined in defined in
++      include/dt-bindings/interrupt-controller/irq.h
++    const: 2
++
++#PIN CONFIGURATION NODES
++patternProperties:
++  '^.*$':
++    if:
++      type: object
++      $ref: "/schemas/pinctrl/pincfg-node.yaml"
++    then:
++      properties:
++        pins:
++          description:
++            List of gpio pins affected by the properties specified in
++            this subnode.
++          items:
++            pattern: "^gpio([0-9]|1[0-5])$"
++          minItems: 1
++          maxItems: 16
++
++        function:
++          description:
++            Specify the alternative function to be configured for the
++            specified pins.
++
++          enum: [ gpio, pwm ]
++
++        bias-disable: true
++        bias-pull-down: true
++        bias-pull-up: true
++        drive-open-drain: true
++        drive-push-pull: true
++        input-enable: true
++        output-high: true
++        output-low: true
++
++      required:
++        - pins
++        - function
++
++      additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - gpio-controller
++  - '#gpio-cells'
++  - gpio-ranges
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        aw9523: gpio-expander@58 {
++                compatible = "awinic,aw9523-pinctrl";
++                reg = <0x58>;
++                interrupt-parent = <&tlmm>;
++                interrupts = <50 IRQ_TYPE_EDGE_FALLING>;
++                gpio-controller;
++                #gpio-cells = <2>;
++                gpio-ranges = <&tlmm 0 0 16>;
++                interrupt-controller;
++                #interrupt-cells = <2>;
++                reset-gpios = <&tlmm 51 GPIO_ACTIVE_HIGH>;
++        };
++    };
+-- 
+2.29.2
 
