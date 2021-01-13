@@ -2,30 +2,31 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BB84C43603
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 19:43:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37300C433E0
+	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 19:43:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 02A7C23343
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 19:43:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DBEEF2333E
+	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 19:43:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728650AbhAMTnQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 13 Jan 2021 14:43:16 -0500
-Received: from relay02.th.seeweb.it ([5.144.164.163]:52319 "EHLO
+        id S1728792AbhAMTnP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 13 Jan 2021 14:43:15 -0500
+Received: from relay02.th.seeweb.it ([5.144.164.163]:46865 "EHLO
         relay02.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728695AbhAMTnP (ORCPT
+        with ESMTP id S1728650AbhAMTnP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Wed, 13 Jan 2021 14:43:15 -0500
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id BFBC11FFC1;
-        Wed, 13 Jan 2021 20:42:18 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 249A71FD21;
+        Wed, 13 Jan 2021 20:42:17 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     linux-arm-msm@vger.kernel.org
@@ -36,9 +37,9 @@ Cc:     agross@kernel.org, bjorn.andersson@linaro.org, lgirdwood@gmail.com,
         marijn.suijten@somainline.org, martin.botka@somainline.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v2 7/7] arm64: dts: pmi8998: Add the right interrupts for LAB/IBB SCP and OCP
-Date:   Wed, 13 Jan 2021 20:42:14 +0100
-Message-Id: <20210113194214.522238-8-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v2 2/7] regulator: qcom-labibb: Implement current limiting
+Date:   Wed, 13 Jan 2021 20:42:09 +0100
+Message-Id: <20210113194214.522238-3-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210113194214.522238-1-angelogioacchino.delregno@somainline.org>
 References: <20210113194214.522238-1-angelogioacchino.delregno@somainline.org>
@@ -48,50 +49,174 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-In commit 208921bae696 ("arm64: dts: qcom: pmi8998: Add nodes for
-LAB and IBB regulators") bindings for the lab/ibb regulators were
-added to the pmi8998 dt, but the original committer has never
-specified what the interrupts were for.
-LAB and IBB regulators provide two interrupts, SC-ERR (short
-circuit error) and VREG-OK but, in that commit, the regulators
-were provided with two different types of interrupts;
-specifically, IBB had the SC-ERR interrupt, while LAB had the
-VREG-OK one, none of which were (luckily) used, since the driver
-didn't actually use these at all.
-Assuming that the original intention was to have the SC IRQ in
-both LAB and IBB, as per the names appearing in documentation,
-fix the SCP interrupt.
+LAB and IBB regulators can be current-limited by setting the
+appropriate registers, but this operation is granted only after
+sending an unlock code for secure access.
 
-While at it, also add the OCP interrupt in order to be able to
-enable the Over-Current Protection feature, if requested.
+Besides the secure access, it would be possible to use the
+regmap helper for get_current_limit, as there is no security
+blocking reads, but I chose not to as to avoid having a very
+big array containing current limits, especially for IBB.
+
+That said, these regulators support current limiting for:
+- LAB (pos): 200-1600mA, with 200mA per step (8 steps),
+- IBB (neg):   0-1550mA, with  50mA per step (32 steps).
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- arch/arm64/boot/dts/qcom/pmi8998.dtsi | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/regulator/qcom-labibb-regulator.c | 92 +++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/pmi8998.dtsi b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-index d016b12967eb..d230c510d4b7 100644
---- a/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-@@ -30,11 +30,15 @@ labibb {
- 			compatible = "qcom,pmi8998-lab-ibb";
+diff --git a/drivers/regulator/qcom-labibb-regulator.c b/drivers/regulator/qcom-labibb-regulator.c
+index 9f51c96f16fb..d364f54ad294 100644
+--- a/drivers/regulator/qcom-labibb-regulator.c
++++ b/drivers/regulator/qcom-labibb-regulator.c
+@@ -29,6 +29,15 @@
+ #define LABIBB_STATUS1_VREG_OK_BIT	BIT(7)
+ #define LABIBB_CONTROL_ENABLE		BIT(7)
  
- 			ibb: ibb {
--				interrupts = <0x3 0xdc 0x2 IRQ_TYPE_EDGE_RISING>;
-+				interrupts = <0x3 0xdc 0x2 IRQ_TYPE_EDGE_RISING>,
-+					     <0x3 0xdc 0x0 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupt-names = "sc-err", "ocp";
- 			};
++#define REG_LABIBB_CURRENT_LIMIT	0x4b
++ #define LAB_CURRENT_LIMIT_MASK		GENMASK(2, 0)
++ #define IBB_CURRENT_LIMIT_MASK		GENMASK(4, 0)
++ #define LAB_CURRENT_LIMIT_OVERRIDE_EN	BIT(3)
++ #define LABIBB_CURRENT_LIMIT_EN	BIT(7)
++
++#define REG_LABIBB_SEC_ACCESS		0xd0
++ #define LABIBB_SEC_UNLOCK_CODE		0xa5
++
+ #define LAB_ENABLE_CTL_MASK		BIT(7)
+ #define IBB_ENABLE_CTL_MASK		(BIT(7) | BIT(6))
  
- 			lab: lab {
--				interrupts = <0x3 0xde 0x0 IRQ_TYPE_EDGE_RISING>;
-+				interrupts = <0x3 0xde 0x1 IRQ_TYPE_EDGE_RISING>,
-+					     <0x3 0xde 0x0 IRQ_TYPE_LEVEL_LOW>;
-+				interrupt-names = "sc-err", "ocp";
- 			};
- 		};
- 	};
+@@ -37,11 +46,18 @@
+ #define IBB_ENABLE_TIME			(LABIBB_OFF_ON_DELAY * 10)
+ #define LABIBB_POLL_ENABLED_TIME	1000
+ 
++struct labibb_current_limits {
++	u32				uA_min;
++	u32				uA_step;
++	u8				ovr_val;
++};
++
+ struct labibb_regulator {
+ 	struct regulator_desc		desc;
+ 	struct device			*dev;
+ 	struct regmap			*regmap;
+ 	struct regulator_dev		*rdev;
++	struct labibb_current_limits	uA_limits;
+ 	u16				base;
+ 	u8				type;
+ };
+@@ -53,6 +69,57 @@ struct labibb_regulator_data {
+ 	const struct regulator_desc	*desc;
+ };
+ 
++static int qcom_labibb_set_current_limit(struct regulator_dev *rdev,
++					 int min_uA, int max_uA)
++{
++	struct labibb_regulator *vreg = rdev_get_drvdata(rdev);
++	struct regulator_desc *desc = &vreg->desc;
++	struct labibb_current_limits *lim = &vreg->uA_limits;
++	u32 mask, val;
++	int i, ret, sel = -1;
++
++	if (min_uA < lim->uA_min || max_uA < lim->uA_min)
++		return -EINVAL;
++
++	for (i = 0; i < desc->n_current_limits; i++) {
++		int uA_limit = (lim->uA_step * i) + lim->uA_min;
++
++		if (max_uA >= uA_limit && min_uA <= uA_limit)
++			sel = i;
++	}
++	if (sel < 0)
++		return -EINVAL;
++
++	/* Current limit setting needs secure access */
++	ret = regmap_write(vreg->regmap, vreg->base + REG_LABIBB_SEC_ACCESS,
++			   LABIBB_SEC_UNLOCK_CODE);
++	if (ret)
++		return ret;
++
++	mask = desc->csel_mask | lim->ovr_val;
++	mask |= LABIBB_CURRENT_LIMIT_EN;
++	val = (u32)sel | lim->ovr_val;
++	val |= LABIBB_CURRENT_LIMIT_EN;
++
++	return regmap_update_bits(vreg->regmap, desc->csel_reg, mask, val);
++}
++
++static int qcom_labibb_get_current_limit(struct regulator_dev *rdev)
++{
++	struct labibb_regulator *vreg = rdev_get_drvdata(rdev);
++	struct regulator_desc *desc = &vreg->desc;
++	struct labibb_current_limits *lim = &vreg->uA_limits;
++	unsigned int cur_step;
++	int ret;
++
++	ret = regmap_read(vreg->regmap, desc->csel_reg, &cur_step);
++	if (ret)
++		return ret;
++	cur_step &= desc->csel_mask;
++
++	return (cur_step * lim->uA_step) + lim->uA_min;
++}
++
+ static const struct regulator_ops qcom_labibb_ops = {
+ 	.enable			= regulator_enable_regmap,
+ 	.disable		= regulator_disable_regmap,
+@@ -61,6 +128,8 @@ static const struct regulator_ops qcom_labibb_ops = {
+ 	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+ 	.list_voltage		= regulator_list_voltage_linear_range,
+ 	.map_voltage		= regulator_map_voltage_linear_range,
++	.set_current_limit	= qcom_labibb_set_current_limit,
++	.get_current_limit	= qcom_labibb_get_current_limit,
+ };
+ 
+ static const struct regulator_desc pmi8998_lab_desc = {
+@@ -73,6 +142,9 @@ static const struct regulator_desc pmi8998_lab_desc = {
+ 	.vsel_mask		= LAB_VOLTAGE_SET_MASK,
+ 	.apply_reg		= (PMI8998_LAB_REG_BASE + REG_LABIBB_VOLTAGE),
+ 	.apply_bit		= LABIBB_VOLTAGE_OVERRIDE_EN,
++	.csel_reg		= (PMI8998_LAB_REG_BASE + REG_LABIBB_CURRENT_LIMIT),
++	.csel_mask		= LAB_CURRENT_LIMIT_MASK,
++	.n_current_limits	= 8,
+ 	.off_on_delay		= LABIBB_OFF_ON_DELAY,
+ 	.owner			= THIS_MODULE,
+ 	.type			= REGULATOR_VOLTAGE,
+@@ -94,6 +166,9 @@ static const struct regulator_desc pmi8998_ibb_desc = {
+ 	.vsel_mask		= IBB_VOLTAGE_SET_MASK,
+ 	.apply_reg		= (PMI8998_IBB_REG_BASE + REG_LABIBB_VOLTAGE),
+ 	.apply_bit		= LABIBB_VOLTAGE_OVERRIDE_EN,
++	.csel_reg		= (PMI8998_IBB_REG_BASE + REG_LABIBB_CURRENT_LIMIT),
++	.csel_mask		= IBB_CURRENT_LIMIT_MASK,
++	.n_current_limits	= 32,
+ 	.off_on_delay		= LABIBB_OFF_ON_DELAY,
+ 	.owner			= THIS_MODULE,
+ 	.type			= REGULATOR_VOLTAGE,
+@@ -167,6 +242,23 @@ static int qcom_labibb_regulator_probe(struct platform_device *pdev)
+ 		vreg->base = reg_data->base;
+ 		vreg->type = reg_data->type;
+ 
++		switch (vreg->type) {
++		case QCOM_LAB_TYPE:
++			/* LAB Limits: 200-1600mA */
++			vreg->uA_limits.uA_min  = 200000;
++			vreg->uA_limits.uA_step = 200000;
++			vreg->uA_limits.ovr_val = LAB_CURRENT_LIMIT_OVERRIDE_EN;
++			break;
++		case QCOM_IBB_TYPE:
++			/* IBB Limits: 0-1550mA */
++			vreg->uA_limits.uA_min  = 0;
++			vreg->uA_limits.uA_step = 50000;
++			vreg->uA_limits.ovr_val = 0; /* No override bit */
++			break;
++		default:
++			return -EINVAL;
++		}
++
+ 		memcpy(&vreg->desc, reg_data->desc, sizeof(vreg->desc));
+ 		vreg->desc.of_match = reg_data->name;
+ 		vreg->desc.name = reg_data->name;
 -- 
 2.29.2
 
