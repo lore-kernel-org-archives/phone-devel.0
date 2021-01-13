@@ -7,25 +7,28 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7A24C4332B
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 18:34:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E98BC43332
+	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 18:34:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B55E52054F
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 18:34:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3D85C205CA
+	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 18:34:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728377AbhAMSeZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 13 Jan 2021 13:34:25 -0500
-Received: from relay05.th.seeweb.it ([5.144.164.166]:38807 "EHLO
-        relay05.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728441AbhAMSeZ (ORCPT
+        id S1728448AbhAMSeY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 13 Jan 2021 13:34:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33802 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728387AbhAMSeY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 13 Jan 2021 13:34:25 -0500
+        Wed, 13 Jan 2021 13:34:24 -0500
+Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 935BAC06179F;
+        Wed, 13 Jan 2021 10:33:43 -0800 (PST)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 18CA83F1D8;
-        Wed, 13 Jan 2021 19:33:43 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id F24223F1E5;
+        Wed, 13 Jan 2021 19:33:41 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     robdclark@gmail.com
@@ -37,9 +40,9 @@ Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
         martin.botka@somainline.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v3 5/7] drm/msm/a5xx: Fix VPC protect value in gpu_write()
-Date:   Wed, 13 Jan 2021 19:33:37 +0100
-Message-Id: <20210113183339.446239-6-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v3 2/7] drm/msm/a5xx: Separate A5XX_PC_DBG_ECO_CNTL write from main branch
+Date:   Wed, 13 Jan 2021 19:33:34 +0100
+Message-Id: <20210113183339.446239-3-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210113183339.446239-1-angelogioacchino.delregno@somainline.org>
 References: <20210113183339.446239-1-angelogioacchino.delregno@somainline.org>
@@ -49,36 +52,48 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Konrad Dybcio <konrad.dybcio@somainline.org>
+The "main" if branch where we program the other registers for the
+Adreno 5xx family of GPUs should not contain the PC_DBG_ECO_CNTL
+register programming because this has logical similarity
+differences from all the others.
 
-The upstream API for some reason uses logbase2 instead of
-just passing the argument as-is, whereas downstream CAF
-kernel does the latter.
+A later commit will show the entire sense of this.
 
-Hence, a mistake has been made when porting:
-4 is the value that's supposed to be passed, but
-log2(4) = 2. Changing the value to 16 (= 2^4) fixes
-the issue.
-
-Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Reviewed-by: Jordan Crouse <jcrouse@codeaurora.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index 66980f4cd93e..24ab51bb5a01 100644
+index 81506d2539b0..8c96fc0fc1b7 100644
 --- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
 +++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -821,7 +821,7 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+@@ -609,8 +609,6 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+ 		gpu_write(gpu, REG_A5XX_CP_MERCIU_SIZE, 0x20);
+ 		gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_2, 0x40000030);
+ 		gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_1, 0x20100D0A);
+-		gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL,
+-			  (0x200 << 11 | 0x200 << 22));
+ 	} else {
+ 		gpu_write(gpu, REG_A5XX_CP_MEQ_THRESHOLDS, 0x40);
+ 		if (adreno_is_a530(adreno_gpu))
+@@ -619,9 +617,14 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
+ 			gpu_write(gpu, REG_A5XX_CP_MERCIU_SIZE, 0x400);
+ 		gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_2, 0x80000060);
+ 		gpu_write(gpu, REG_A5XX_CP_ROQ_THRESHOLDS_1, 0x40201B16);
++	}
++
++	if (adreno_is_a510(adreno_gpu))
++		gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL,
++			  (0x200 << 11 | 0x200 << 22));
++	else
+ 		gpu_write(gpu, REG_A5XX_PC_DBG_ECO_CNTL,
+ 			  (0x400 << 11 | 0x300 << 22));
+-	}
  
- 	/* VPC */
- 	gpu_write(gpu, REG_A5XX_CP_PROTECT(14), ADRENO_PROTECT_RW(0xE68, 8));
--	gpu_write(gpu, REG_A5XX_CP_PROTECT(15), ADRENO_PROTECT_RW(0xE70, 4));
-+	gpu_write(gpu, REG_A5XX_CP_PROTECT(15), ADRENO_PROTECT_RW(0xE70, 16));
- 
- 	/* UCHE */
- 	gpu_write(gpu, REG_A5XX_CP_PROTECT(16), ADRENO_PROTECT_RW(0xE80, 16));
+ 	if (adreno_gpu->info->quirks & ADRENO_QUIRK_TWO_PASS_USE_WFI)
+ 		gpu_rmw(gpu, REG_A5XX_PC_DBG_ECO_CNTL, 0, (1 << 8));
 -- 
 2.29.2
 
