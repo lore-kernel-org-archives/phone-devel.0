@@ -2,160 +2,92 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 94C8DC433E0
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 13:05:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3AFAEC433E0
+	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 17:41:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4590023405
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 13:05:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DAC8A23370
+	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 17:41:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726113AbhAMNEs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 13 Jan 2021 08:04:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46992 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726011AbhAMNEs (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 13 Jan 2021 08:04:48 -0500
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FAA7C061786;
-        Wed, 13 Jan 2021 05:04:08 -0800 (PST)
-Received: by mail-vs1-xe33.google.com with SMTP id h18so1048709vsg.8;
-        Wed, 13 Jan 2021 05:04:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=D8lh1l6ZLQaTdOGk6daqASYfqhv/iz1lSmX/JechmhY=;
-        b=uPzOhwF2vqlNK184Al+jGmiwNMBMZJKSwCTqX2FydGcIlv4Qc6FupcXoz058JWTfaS
-         il28OO3LTFnM3dGLEfDV7VPOq4OT7AcTVQAvMur6w53JKQaccDjE61X1AHjq3V7Az1+H
-         4c3eraOST0UKez3/JeXcK3Xj1RjnynYznFsK+lHsNkMhily5i8XTgJmlWkEAfuUh/NgX
-         nkjkjbi5qQ+3ux4uWt42NUA/1zRYi6sYnBUac+4zR3Wk6XQgTz+z/EDULs3+n5To9tS9
-         PpfHD/hZY3c3T325BHOqNeYNm4Z+ptt54YNh2x+Jbh+gh0hEQScIJbhBVLwAcvHMpYRq
-         IwEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=D8lh1l6ZLQaTdOGk6daqASYfqhv/iz1lSmX/JechmhY=;
-        b=OnZgqltD/NlRpc3RbpcKiBGZ7rPHiMKzNjfKuXQnOfzpD7H/ON5VgweAZXWqa1DzLn
-         uFYEhD5uL88yqllKfzipD58+j1kpaE+InmoG5L3X3JoyhwdZDbTY3b44FGa/bUfAUmmp
-         kOxnxEzZmvQcweiah8voC7NNRohw5sUbBSofq4ITcABihmp54KygWofZepgEdTmwxOkv
-         B7V6qKKxDtwbzoBx7GOpX+s6/bvX7muAEcjiS+gWpu3tQQtN0GM9YL8zSGKvYHT8Ld9Q
-         LdCIpS/yWhEEAkQoKBz+6IwBlBXZnKeNSJxa+ADk+IMUX0ch8zZKvfsDvUEpCeZltf4/
-         hxbg==
-X-Gm-Message-State: AOAM532woUj7v2PfMOGBfCN+2TMNqZY7wPhqmTNqXalEP+ZJeIVZ4a3E
-        jvLhRfkfltovDzFm4tZIiFLgfPlMLs8dOCAVREDPWP4a
-X-Google-Smtp-Source: ABdhPJxH4pUKl3HjC4qDdhMbscxyVzUV6v+3zgFfTI+63OdVYs19Au57LoQPJO5Nog4B3Hsls09YfBfGPNcqvypURvA=
-X-Received: by 2002:a05:6102:93:: with SMTP id t19mr1610961vsp.57.1610543047338;
- Wed, 13 Jan 2021 05:04:07 -0800 (PST)
+        id S1727307AbhAMRlY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 13 Jan 2021 12:41:24 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57502 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727198AbhAMRlY (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 13 Jan 2021 12:41:24 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4026E23370;
+        Wed, 13 Jan 2021 17:40:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610559642;
+        bh=8yOVzvugYKAaC/tjc5pFPVw9JmJZhfvsxaSRH5F+3Zs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QTHPw1Zb8Yk1vf7sNy6XJj2KhbPWiuB0ONvJxMhh0WOizzQSBDZy4OdTUBF1kGqMO
+         PeRjSKHPayllWLengAsbxkWhPyPfKCLGJCA0wD+ERutiI0DNb7WrwNMdrQo1TwTRi1
+         c+6hn/QEMjXnH6QdN8HPv1n2qVGCWIbe0/SfAC6u/03exnpWwdxTm1RRIAadMlFDoD
+         Ct38GYr3HjhhxqdAMFsTnJVoBL5m8nR67XiTTFtfBXUNqGnQ6vt8NrWRVrGrvkrg+z
+         g8CklRz8aBszuHQaLvpPMkPpHvkVAD6GB10MnCRnls4LWTNzYiy/Fo5kPGrdHK+l8P
+         KdCPt2BynYIXw==
+Date:   Wed, 13 Jan 2021 17:40:07 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     linux-arm-msm@vger.kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, lgirdwood@gmail.com,
+        robh+dt@kernel.org, sumit.semwal@linaro.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org
+Subject: Re: [PATCH 5/7] regulator: qcom-labibb: Implement short-circuit and
+ over-current IRQs
+Message-ID: <20210113174007.GG4641@sirena.org.uk>
+References: <20210109132921.140932-1-angelogioacchino.delregno@somainline.org>
+ <20210109132921.140932-6-angelogioacchino.delregno@somainline.org>
+ <20210111135745.GC4728@sirena.org.uk>
+ <6dee36e4-fc78-c21b-daf8-120ee44535a3@somainline.org>
+ <8115a574-ad43-d3c6-70d4-28c8a2f4a5f6@somainline.org>
+ <09d70d24-5d0d-f1cd-d99e-5c213c8ea98c@somainline.org>
+ <20210112172919.GD4646@sirena.org.uk>
+ <e872bc39-a941-d552-5145-49f40d6fa657@somainline.org>
 MIME-Version: 1.0
-References: <20201028221302.66583-1-kholk11@gmail.com> <20201028221302.66583-3-kholk11@gmail.com>
- <X83PDBKOq9bwSI0N@google.com>
-In-Reply-To: <X83PDBKOq9bwSI0N@google.com>
-From:   AngeloGioacchino Del Regno <kholk11@gmail.com>
-Date:   Wed, 13 Jan 2021 14:03:56 +0100
-Message-ID: <CAK7fi1Y62YhoQvsU++_u=Z5Y3d6KC1_C4bWr6R8QZmDgyVV86g@mail.gmail.com>
-Subject: Re: [PATCH v9 2/3] Input: Add Novatek NT36xxx touchscreen driver
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, rydberg@bitmath.org,
-        priv.luk@gmail.com, linux-input@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>, marijns95@gmail.com,
-        Konrad Dybcio <konradybcio@gmail.com>, martin.botka1@gmail.com,
-        phone-devel@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        andy.shevchenko@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="EDJsL2R9iCFAt7IV"
+Content-Disposition: inline
+In-Reply-To: <e872bc39-a941-d552-5145-49f40d6fa657@somainline.org>
+X-Cookie: Ignore previous fortune.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il giorno lun 7 dic 2020 alle ore 07:43 Dmitry Torokhov
-<dmitry.torokhov@gmail.com> ha scritto:
->
-> Hi AngeloGioacchino,
->
-> On Wed, Oct 28, 2020 at 11:13:01PM +0100, kholk11@gmail.com wrote:
-> > +/**
-> > + * nt36xxx_set_page - Set page number for read/write
-> > + * @ts: Main driver structure
-> > + *
-> > + * Return: Always zero for success, negative number for error
-> > + */
-> > +static int nt36xxx_set_page(struct nt36xxx_i2c *ts, u32 pageaddr)
-> > +{
-> > +     u32 data = cpu_to_be32(pageaddr) >> 8;
-> > +     int ret;
-> > +
-> > +     ret = regmap_noinc_write(ts->fw_regmap, NT36XXX_CMD_SET_PAGE,
-> > +                              &data, sizeof(data));
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     usleep_range(100, 200);
-> > +     return ret;
-> > +}
->
-> Regmap is supposed to handle paged access for you as long as you set it
-> up for paged access. Why do you need custom page handling here?
->
-> Thanks.
->
-> --
-> Dmitry
 
-Regmap's page handling is using regmap_update_bits, hence calling a
-regmap_read for each page switch and this is not always possible on
-this MCU: especially, but not only, in the CRC reboot case, calling
-a regmap_read before the page-switch will result in invalid data.
+--EDJsL2R9iCFAt7IV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hacking through the invalid data, we would still be able to set the
-page at this point, but then in the reset-idle sequence handling the
-CRC failure, we are setting page again: keeping in mind that this is
-a i2c connected MCU, calling a regmap_read while sending the "special"
-reset sequence is not in the likes of this MCU SW design, as it is
-expecting a specific, precise command sequence.
+On Tue, Jan 12, 2021 at 06:49:53PM +0100, AngeloGioacchino Del Regno wrote:
 
-If that happens, the MCU won't recognize the CRC reset-idle sequence
-and will never recover from the error.
+> I would go for keeping the current binding for the aforementioned reasons.
+> Before I go on sending a V2, I would like to know your opinion.
+> Do you agree?
 
-This can surely be solved by setting up a FLAT regcache and resetting
-the register cache in (many) strategic places but, in my opinion,
-that's going to be seriously messy, as I would have to do that in
-basically every place - but the CRC reboot loop function, so we'd have
-a register cache for *only* one special case in one function (which is
-not even supposed to be ever called during regular functionality,
-unless the MCU firmware panics somehow).
+Sure.
 
-There is also another reason why I dislike using the paged access that
-comes from the regmap API here: as you see, the event buffer address
-is different for some ICs (probably for MCU FW differences) and this
-would require me to dynamically set the regmap_range_cfg structure in
-the probe function, then casting it to a const and setting it into the
-regmap_config before registering regmap (which, by the way, is another
-const struct).
+--EDJsL2R9iCFAt7IV
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Ah, also, as you can see the set_page function is doing:
-        u32 data = cpu_to_be32(pageaddr) >> 8;
-clearly, using the regmap page switching, I would have to change the
-pages definitions *and* the nt36xxx_mem_map at least partially (because
-"win_page << range->selector_shift"), and all of these definitions,
-right now, are representing the same addresses that are referenced into
-the MCU firmware, other than being basically 1:1 with what the downstream
-driver provides.
-Changing them around would not only, in some way, "hide" precious infos
-on a series of MCUs that are not publicly documented, but would also make
-the eventual porting of new ICs/MCUs that would be compatible with this
-driver harder for who knows what's going on and *way harder* for other
-"casual" developers.
+-----BEGIN PGP SIGNATURE-----
 
-So, for the aforementioned reasons, all summed together, I chose to not
-use the regmap paged access.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl//MHYACgkQJNaLcl1U
+h9Clowf8CivDid8GP+sEfZILAYJv+b2figb0SJwgw/SiGtk5nrCYsqCGQoF/oqHg
+Gi2skkFvpJNE87ZSdRaRXIGH8P6boLOwioxP2lvNDGjMA5k0oBZQqMiZ068s96XP
++dstLibEM9EugCwcWb4glxtEU2wijycJaJ8FD5su7d0geGQVNb+HYs/isdSQQ9w0
+ZL4arp46cpej18ODy4jHzMv8jpfLwJjYrep1NuF8OJ4Lx0s3jRP7tEG8d0AKeGlO
+PdpucFoFPtwxwzr5OyN7Qlt8PA7bBdiV5YL/usR7TPeRoDNhy4167OdUD7uFrzt/
+LvwjXIxJjae0Fv2jdsTlZz3yk2pXHw==
+=0h9C
+-----END PGP SIGNATURE-----
 
-Yours,
--- Angelo
+--EDJsL2R9iCFAt7IV--
