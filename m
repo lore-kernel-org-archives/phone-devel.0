@@ -2,201 +2,103 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-21.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 40722C433E9
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 18:31:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8BF0C433DB
+	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 18:34:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DC770233ED
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 18:31:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8FEA6233FC
+	for <phone-devel@archiver.kernel.org>; Wed, 13 Jan 2021 18:34:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728273AbhAMSak (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 13 Jan 2021 13:30:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32946 "EHLO
+        id S1728389AbhAMSeX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 13 Jan 2021 13:34:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728234AbhAMSak (ORCPT
+        with ESMTP id S1728386AbhAMSeX (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 13 Jan 2021 13:30:40 -0500
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9EC7C0617A3
-        for <phone-devel@vger.kernel.org>; Wed, 13 Jan 2021 10:29:44 -0800 (PST)
+        Wed, 13 Jan 2021 13:34:23 -0500
+Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5B0DC061786
+        for <phone-devel@vger.kernel.org>; Wed, 13 Jan 2021 10:33:42 -0800 (PST)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 4596E3F27C;
-        Wed, 13 Jan 2021 19:29:43 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 3AC653F0E3;
+        Wed, 13 Jan 2021 19:33:41 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-To:     mchehab@kernel.org
-Cc:     robh+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+To:     robdclark@gmail.com
+Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
+        jcrouse@codeaurora.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         martin.botka@somainline.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v4 2/2] media: dt-bindings: media: i2c: Add IMX300 CMOS sensor binding
-Date:   Wed, 13 Jan 2021 19:29:34 +0100
-Message-Id: <20210113182934.444727-3-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v3 0/7] Add support for Adreno 508/509/512
+Date:   Wed, 13 Jan 2021 19:33:32 +0100
+Message-Id: <20210113183339.446239-1-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210113182934.444727-1-angelogioacchino.delregno@somainline.org>
-References: <20210113182934.444727-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add YAML device tree binding for IMX300 CMOS image sensor, and
-the relevant MAINTAINERS entries.
+In this patch series, we are adding support for lower end Adreno 5
+series GPUs, such as A508, A509 and A512 that we have found in the
+Qualcomm SDM630, SDM636 and SDM660 SoCs.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
----
- .../bindings/media/i2c/sony,imx300.yaml       | 112 ++++++++++++++++++
- MAINTAINERS                                   |   7 ++
- 2 files changed, 119 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
+On a note, adding support for these three units, also adds 99% of
+the required "things" for another two GPUs, A505 and A506 but, even
+if adding them requires literally two lines of code, noone of us has
+got any SoC equipped with these ones hence we wouldn't be able to
+test. Even though there is basically no reason for them to not work
+correctly, kernel side, I chose to avoid adding the two "magic" lines.
 
-diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-new file mode 100644
-index 000000000000..4fa767feea80
---- /dev/null
-+++ b/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-@@ -0,0 +1,112 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/media/i2c/sony,imx300.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Sony 1/2.3-Inch 25Mpixel Stacked CMOS Digital Image Sensor
-+
-+maintainers:
-+  - AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-+
-+description: |-
-+  The Sony IMX300 is a 1/2.3-inch Stacked CMOS (Exmor-RS) digital image
-+  sensor with a pixel size of 1.08um and an active array size of
-+  5948H x 4140V. It is programmable through I2C interface at address 0x10.
-+  Image data is sent through MIPI CSI-2, which is configured as either 2 or
-+  4 data lanes.
-+
-+properties:
-+  compatible:
-+    const: sony,imx300
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  vdig-supply:
-+    description:
-+      Digital I/O voltage supply, 1.15-1.20 volts
-+
-+  vana-supply:
-+    description:
-+      Analog voltage supply, 2.2 volts
-+
-+  vddl-supply:
-+    description:
-+      Digital core voltage supply, 1.8 volts
-+
-+  reset-gpios:
-+    description: |-
-+      Reference to the GPIO connected to the xclr pin, if any.
-+      Must be released (set high) after all supplies are applied.
-+
-+  # See ../video-interfaces.txt for more details
-+  port:
-+    type: object
-+    properties:
-+      endpoint:
-+        type: object
-+
-+        properties:
-+          data-lanes:
-+            description: |-
-+              The driver only supports four-lane operation.
-+            items:
-+              - const: 0
-+              - const: 1
-+              - const: 2
-+              - const: 3
-+
-+          clock-noncontinuous: true
-+
-+          link-frequencies:
-+            $ref: /schemas/types.yaml#/definitions/uint64-array
-+            description:
-+              Allowed data bus frequencies. The driver currently needs
-+              to switch between 780000000 and 480000000 Hz in order to
-+              guarantee functionality of all modes.
-+
-+        required:
-+          - data-lanes
-+          - link-frequencies
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - vana-supply
-+  - vdig-supply
-+  - vddl-supply
-+  - port
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        imx300: sensor@10 {
-+            compatible = "sony,imx300";
-+            reg = <0x10>;
-+            clocks = <&imx300_xclk>;
-+            vana-supply = <&imx300_vana>;   /* 2.2v */
-+            vdig-supply = <&imx300_vdig>;   /* 1.2v */
-+            vddl-supply = <&imx300_vddl>;   /* 1.8v */
-+
-+            port {
-+                imx300_0: endpoint {
-+                    remote-endpoint = <&csi1_ep>;
-+                    data-lanes = <0 1 2 3>;
-+                    clock-noncontinuous;
-+                    link-frequencies = /bits/ 64 <780000000 480000000>;
-+                };
-+            };
-+        };
-+    };
-+
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ad9abb42f852..5e0f08f48d48 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16633,6 +16633,13 @@ T:	git git://linuxtv.org/media_tree.git
- F:	Documentation/devicetree/bindings/media/i2c/imx290.txt
- F:	drivers/media/i2c/imx290.c
- 
-+SONY IMX300 SENSOR DRIVER
-+M:	AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-+L:	linux-media@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
-+F:	drivers/media/i2c/imx300.c
-+
- SONY IMX319 SENSOR DRIVER
- M:	Bingbu Cao <bingbu.cao@intel.com>
- L:	linux-media@vger.kernel.org
+Anyway, this patchset also addresses some issues that we've found in
+the A5XX part of the Adreno driver, regarding a logic mistake in one
+of the VPC protect values and a forced overwrite of the register named
+A5XX_PC_DBG_ECO_CNTL, forcing the setting of vtxFifo and primFifo
+thresholds that was valid only for higher end GPUs.
+
+This patch series has been tested on the following devices:
+ - Sony Xperia XA2 Ultra (SDM630 Nile Discovery)
+ - Sony Xperia 10        (SDM630 Ganges Kirin)
+ - Sony Xperia 10 Plus   (SDM636 Ganges Mermaid)
+
+Changes in v3:
+ - Rebased on 5.11-rc3
+ - Changed emails to reflect new ones
+ - Tested on F(x)Tec Pro1 and Xperia XZ Premium (MSM8998)
+
+Changes in v2:
+ - Define REG_A5XX_UCHE_MODE_CNTL and fix open-coded
+   REG_A5XX_VPC_DBG_ECO_CNTL in the all flat shading optimization
+   disablement commit, as requested by Rob Clark.
+
+AngeloGioacchino Del Regno (4):
+  drm/msm/a5xx: Remove overwriting A5XX_PC_DBG_ECO_CNTL register
+  drm/msm/a5xx: Separate A5XX_PC_DBG_ECO_CNTL write from main branch
+  drm/msm/a5xx: Add support for Adreno 508, 509, 512 GPUs
+  drm/msm/a5xx: Reset VBIF before PC only on A510 and A530
+
+Konrad Dybcio (3):
+  drm/msm/a5xx: Fix VPC protect value in gpu_write()
+  drm/msm/a5xx: Disable flat shading optimization
+  drm/msm/a5xx: Disable UCHE global filter
+
+ drivers/gpu/drm/msm/adreno/a5xx.xml.h      |   2 +
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c      | 195 ++++++++++++++++++---
+ drivers/gpu/drm/msm/adreno/a5xx_power.c    |   4 +-
+ drivers/gpu/drm/msm/adreno/adreno_device.c |  52 ++++++
+ drivers/gpu/drm/msm/adreno/adreno_gpu.h    |  15 ++
+ 5 files changed, 241 insertions(+), 27 deletions(-)
+
 -- 
 2.29.2
 
