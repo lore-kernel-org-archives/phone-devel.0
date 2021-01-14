@@ -2,86 +2,118 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E584C433E0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD966C43331
 	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:13:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C7D302310A
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:13:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 86E7B2310A
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:13:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730617AbhANWNC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 14 Jan 2021 17:13:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52134 "EHLO
+        id S1730645AbhANWNK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 14 Jan 2021 17:13:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730613AbhANWNA (ORCPT
+        with ESMTP id S1730613AbhANWNK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 14 Jan 2021 17:13:00 -0500
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E9FAC0613CF;
-        Thu, 14 Jan 2021 14:12:15 -0800 (PST)
-Received: by mail-io1-xd2a.google.com with SMTP id y19so14441575iov.2;
-        Thu, 14 Jan 2021 14:12:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=n0eEtOJf3DuTltNNg0E2LGjviIdDUwv2RhU3h48SMLE=;
-        b=WqUKpyiHsfcwHBtvQbwdCeC4JeGV65LI01A/TCT0FHOA2ZRgz9mF0ZdkohwCTE2siM
-         Igw3Z54jWvHjNlWyBjpMlU3DyEgH8KZhuXVK77Z55ntaG8hO/A1p57jNx5xE/XEVKpCE
-         layn3JT8yIN9X7mP/lWKES29vOdcajkmaBspLAYAajdVdJxwSGaLQJN16xJWHuxC2OMd
-         ryxH5otfV+REhC9JjZ8fH+/Yn6xduo6Nxo/cF/EtZdMJ7hKO6hjXjlrH//rJrXrr/7JU
-         EwTU/Y1E16v6mIfmv/airDLqw/nSi9BHG/x6lZ4NTsxw+6DeFNdXKJVxKbRdV32cNGJu
-         7lbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=n0eEtOJf3DuTltNNg0E2LGjviIdDUwv2RhU3h48SMLE=;
-        b=QGkuWVDa4QrSLrkCsgqBGx8ZmqdyPVmU8NPAGaUUbSuYzGrRAZbCVKdcV8Iokm3W55
-         YhkUkq51FhJMD/XjhFiYE4ZWEwkD6G3WCL/IO3+8wTQ3WiWuGtcqxMCyy5fSuIbB/u4o
-         oBkheEGZLSHBvhDSl9K/8l/7ZLCxsdHKfUmJpMPWOfLZCDUS/FxIusTSc1IevI83rp5m
-         pvos5MZpwYrUi2+VycADHjBWpcthD2x1JXAMsLUxSmiu9f1kN80cQSh6zaizII4NiMAE
-         lJ75TBpeZeKFvB817tP+XKm9mCoC4bUDpjehnXrsAZ6mcXOeR0yq/TuB1WoEewtt0Or0
-         nO+g==
-X-Gm-Message-State: AOAM532td0cY50wO8IE4HQa5uCUWagcA06YflvbDBfVznPj/YwwirmSM
-        nNIT9VYQnC504CK4vOS7ly+6gzX2oIoBLe1Gb4OMJaZC
-X-Google-Smtp-Source: ABdhPJw+ZvLMWbpW9dueEEwcs4nX1wlCOUNiMZEPp3z5ItbnX/0L8tJcl0PADX8/3ekrzuG5e/YLkJ+1dJO6oRsfL1o=
-X-Received: by 2002:a6b:6f17:: with SMTP id k23mr6815806ioc.147.1610662334949;
- Thu, 14 Jan 2021 14:12:14 -0800 (PST)
-MIME-Version: 1.0
-References: <20210109134617.146275-1-angelogioacchino.delregno@somainline.org> <20210109134617.146275-2-angelogioacchino.delregno@somainline.org>
-In-Reply-To: <20210109134617.146275-2-angelogioacchino.delregno@somainline.org>
-From:   Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Date:   Thu, 14 Jan 2021 15:12:03 -0700
-Message-ID: <CAOCk7NqUpa0DqW=han49MtwUqNkNsQC3OPpO7B-872bvNukDJw@mail.gmail.com>
-Subject: Re: [PATCH 1/9] clk: qcom: gcc-msm8998: Wire up gcc_mmss_gpll0 clock
-To:     AngeloGioacchino Del Regno 
+        Thu, 14 Jan 2021 17:13:10 -0500
+Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B065C06179C;
+        Thu, 14 Jan 2021 14:11:11 -0800 (PST)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id DACAB3F1E5;
+        Thu, 14 Jan 2021 23:11:09 +0100 (CET)
+From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Cc:     MSM <linux-arm-msm@vger.kernel.org>, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        phone-devel@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-clk@vger.kernel.org,
-        DTML <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     linux-arm-msm@vger.kernel.org
+Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, mturquette@baylibre.com,
+        sboyd@kernel.org, robh+dt@kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v2 08/11] clk: qcom: mmcc-msm8998: Add hardware clockgating registers to some clks
+Date:   Thu, 14 Jan 2021 23:10:56 +0100
+Message-Id: <20210114221059.483390-9-angelogioacchino.delregno@somainline.org>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210114221059.483390-1-angelogioacchino.delregno@somainline.org>
+References: <20210114221059.483390-1-angelogioacchino.delregno@somainline.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Jan 9, 2021 at 6:47 AM AngeloGioacchino Del Regno
-<angelogioacchino.delregno@somainline.org> wrote:
->
-> This clock enables the GPLL0 output to the multimedia subsystem
-> clock controller.
->
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Hardware clock gating is supported on some of the clocks declared in
+there: ignoring that it does exist may lead to unstabilities on some
+firmwares.
+Add the HWCG registers where applicable to stop potential crashes.
 
-Any reason why you are not also adding the div_clk?
+This was verified on a smartphone shipped with a recent MSM8998
+firmware, which will experience random crashes without this change.
+
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
+ drivers/clk/qcom/mmcc-msm8998.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/drivers/clk/qcom/mmcc-msm8998.c b/drivers/clk/qcom/mmcc-msm8998.c
+index 475e00a5fdf4..f9510a248a36 100644
+--- a/drivers/clk/qcom/mmcc-msm8998.c
++++ b/drivers/clk/qcom/mmcc-msm8998.c
+@@ -1211,6 +1211,8 @@ static struct clk_rcg2 vfe1_clk_src = {
+ 
+ static struct clk_branch misc_ahb_clk = {
+ 	.halt_reg = 0x328,
++	.hwcg_reg = 0x328,
++	.hwcg_bit = 1,
+ 	.clkr = {
+ 		.enable_reg = 0x328,
+ 		.enable_mask = BIT(0),
+@@ -1241,6 +1243,8 @@ static struct clk_branch video_core_clk = {
+ 
+ static struct clk_branch video_ahb_clk = {
+ 	.halt_reg = 0x1030,
++	.hwcg_reg = 0x1030,
++	.hwcg_bit = 1,
+ 	.clkr = {
+ 		.enable_reg = 0x1030,
+ 		.enable_mask = BIT(0),
+@@ -1315,6 +1319,8 @@ static struct clk_branch video_subcore1_clk = {
+ 
+ static struct clk_branch mdss_ahb_clk = {
+ 	.halt_reg = 0x2308,
++	.hwcg_reg = 0x2308,
++	.hwcg_bit = 1,
+ 	.clkr = {
+ 		.enable_reg = 0x2308,
+ 		.enable_mask = BIT(0),
+@@ -2496,6 +2502,8 @@ static struct clk_branch mnoc_ahb_clk = {
+ 
+ static struct clk_branch bimc_smmu_ahb_clk = {
+ 	.halt_reg = 0xe004,
++	.hwcg_reg = 0xe004,
++	.hwcg_bit = 1,
+ 	.clkr = {
+ 		.enable_reg = 0xe004,
+ 		.enable_mask = BIT(0),
+@@ -2511,6 +2519,8 @@ static struct clk_branch bimc_smmu_ahb_clk = {
+ 
+ static struct clk_branch bimc_smmu_axi_clk = {
+ 	.halt_reg = 0xe008,
++	.hwcg_reg = 0xe008,
++	.hwcg_bit = 1,
+ 	.clkr = {
+ 		.enable_reg = 0xe008,
+ 		.enable_mask = BIT(0),
+-- 
+2.29.2
+
