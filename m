@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 94A6CC432C3
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E338CC4321A
 	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:12:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7D2A423976
+	by mail.kernel.org (Postfix) with ESMTP id BD71923A5C
 	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:12:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730356AbhANWLz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S1729594AbhANWLz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Thu, 14 Jan 2021 17:11:55 -0500
-Received: from relay07.th.seeweb.it ([5.144.164.168]:53049 "EHLO
-        relay07.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729846AbhANWLx (ORCPT
+Received: from relay08.th.seeweb.it ([5.144.164.169]:41459 "EHLO
+        relay08.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729729AbhANWLy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 14 Jan 2021 17:11:53 -0500
+        Thu, 14 Jan 2021 17:11:54 -0500
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id B910E3F1EB;
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 2CB513F1E7;
         Thu, 14 Jan 2021 23:11:10 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
@@ -37,9 +37,9 @@ Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         devicetree@vger.kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v2 11/11] clk: qcom: gpucc-msm8998: Allow fabia gpupll0 rate setting
-Date:   Thu, 14 Jan 2021 23:10:59 +0100
-Message-Id: <20210114221059.483390-12-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v2 09/11] clk: qcom: mmcc-msm8998: Set bimc_smmu_gdsc always on
+Date:   Thu, 14 Jan 2021 23:10:57 +0100
+Message-Id: <20210114221059.483390-10-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210114221059.483390-1-angelogioacchino.delregno@somainline.org>
 References: <20210114221059.483390-1-angelogioacchino.delregno@somainline.org>
@@ -49,62 +49,32 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The GPU PLL0 is not a fixed PLL and the rate can be set on it:
-this is necessary especially on boards which bootloader is setting
-a very low rate on this PLL before booting Linux, which would be
-unsuitable for postdividing to reach the maximum allowed Adreno GPU
-frequency of 710MHz (or, actually, even 670MHz..) on this SoC.
+This GDSC enables (or cuts!) power to the Multimedia Subsystem IOMMU
+(mmss smmu), which has bootloader pre-set secure contexts.
+In the event of a complete power loss, the secure contexts will be
+reset and the hypervisor will crash the SoC.
 
-To allow setting rates on the GPU PLL0, also define VCO boundaries
-and set the CLK_SET_RATE_PARENT flag to the GPU PLL0 postdivider.
-
-With this change, the Adreno GPU is now able to scale through all
-the available frequencies.
+To prevent this, and get a working multimedia subsystem, set this
+GDSC as always on.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- drivers/clk/qcom/gpucc-msm8998.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/mmcc-msm8998.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gpucc-msm8998.c b/drivers/clk/qcom/gpucc-msm8998.c
-index 1a518c4915b4..fedfffaf0a8d 100644
---- a/drivers/clk/qcom/gpucc-msm8998.c
-+++ b/drivers/clk/qcom/gpucc-msm8998.c
-@@ -50,6 +50,11 @@ static struct clk_branch gpucc_cxo_clk = {
+diff --git a/drivers/clk/qcom/mmcc-msm8998.c b/drivers/clk/qcom/mmcc-msm8998.c
+index f9510a248a36..b49c4137b7d7 100644
+--- a/drivers/clk/qcom/mmcc-msm8998.c
++++ b/drivers/clk/qcom/mmcc-msm8998.c
+@@ -2663,7 +2663,7 @@ static struct gdsc bimc_smmu_gdsc = {
+ 		.name = "bimc_smmu",
  	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL,
++	.flags = HW_CTRL | ALWAYS_ON,
  };
  
-+static struct pll_vco fabia_vco[] = {
-+	{ 249600000, 2000000000, 0 },
-+	{ 125000000, 1000000000, 1 },
-+};
-+
- static const struct clk_div_table post_div_table_fabia_even[] = {
- 	{ 0x0, 1 },
- 	{ 0x1, 2 },
-@@ -61,11 +66,13 @@ static const struct clk_div_table post_div_table_fabia_even[] = {
- static struct clk_alpha_pll gpupll0 = {
- 	.offset = 0x0,
- 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_FABIA],
-+	.vco_table = fabia_vco,
-+	.num_vco = ARRAY_SIZE(fabia_vco),
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gpupll0",
- 		.parent_hws = (const struct clk_hw *[]){ &gpucc_cxo_clk.clkr.hw },
- 		.num_parents = 1,
--		.ops = &clk_alpha_pll_fixed_fabia_ops,
-+		.ops = &clk_alpha_pll_fabia_ops,
- 	},
- };
- 
-@@ -80,6 +87,7 @@ static struct clk_alpha_pll_postdiv gpupll0_out_even = {
- 		.name = "gpupll0_out_even",
- 		.parent_hws = (const struct clk_hw *[]){ &gpupll0.clkr.hw },
- 		.num_parents = 1,
-+		.flags = CLK_SET_RATE_PARENT,
- 		.ops = &clk_alpha_pll_postdiv_fabia_ops,
- 	},
- };
+ static struct clk_regmap *mmcc_msm8998_clocks[] = {
 -- 
 2.29.2
 
