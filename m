@@ -2,149 +2,150 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F3A9C433E6
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:43:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7346EC43331
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:45:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 171A323977
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:43:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 45F0723977
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:45:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728452AbhANWnp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 14 Jan 2021 17:43:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58226 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727116AbhANWnp (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 14 Jan 2021 17:43:45 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3D19C23977;
-        Thu, 14 Jan 2021 22:43:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610664184;
-        bh=qZ/MNWQydkUDlIXZVZ6/n8TRZAwyFdzsMQwirrjnwqg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=uXi0wsURRyW96Ia0XZFtD90Th4/U5vBJcmFnHbz7JtRMhSIF8BsKA2t60WnJSd5vW
-         XsLysC2M4Y+2uJoq5j3Sbwk2pxe69+CS9bFqbfevBo/DnnP1MqRIZCdtBEQk/V0BFh
-         Satflho+t/kbS48q0pLfiLSvj8FykKhbaU2w3uWGQQW7WsHHVLI66ey5RZLtnzx5S5
-         OnkTpXwFW5toZYBdNkq0IDo2PmNV44o69xKCVV243epTvVQJSp5OX5a18VEJxWbj6Z
-         +vUni3uKQ6gT6065hdOSP/CiSv3msLTl/TuLXhX5WMSkt0exAt/vmYK+k88ZMEYrKh
-         eCYt6jjyF72lw==
-Received: by mail-ej1-f42.google.com with SMTP id d17so10575111ejy.9;
-        Thu, 14 Jan 2021 14:43:04 -0800 (PST)
-X-Gm-Message-State: AOAM533v3yKaUhEOMW81J8TEpupWzunW22bIZgv/np0d2CFvwappAvRc
-        Lp/8s0F96ZlL6YVy+c7u2qrLX/YirJj5hXx3zA==
-X-Google-Smtp-Source: ABdhPJycUNMxM59kfx7C+D7nZiNTZvcRLWLTpIbtqYITZAWtuPES6DqIj+XHr5HIDaFEUrPXVXNKrgkhBjPZuzwV3vY=
-X-Received: by 2002:a17:906:25c4:: with SMTP id n4mr6691033ejb.359.1610664182813;
- Thu, 14 Jan 2021 14:43:02 -0800 (PST)
+        id S1730841AbhANWo6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 14 Jan 2021 17:44:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59030 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730835AbhANWo5 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 14 Jan 2021 17:44:57 -0500
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 403F5C061575;
+        Thu, 14 Jan 2021 14:44:17 -0800 (PST)
+Received: by mail-io1-xd34.google.com with SMTP id n4so14482767iow.12;
+        Thu, 14 Jan 2021 14:44:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pkhyc2t9glEsHQiUVXVw+wftpHcvqftfhtLebN1B4GM=;
+        b=aDpVHRhIa0UQiPZpRGsIZu6jTc74AQlrsVgPq/p7fzooPuQnPybSmezFI0Uo4uptc8
+         OIOExYULGmcuo30er7nPC4z0fFmqWyMc4q3inwmqv5PQtZ1gOjWDE7ZosukzXSSkqlnh
+         4zkh58YyElVvTt4Liz26Ex39c3YHlE46COyjYYvPZglJCAVo4HwlgdMz1dfbnUzQxD9P
+         8I1641COoEaAYF193YHaFmT82roJZU+0vfXxapT1bTorPgDa/gfxVB3vQtWzmaHmLFIF
+         PRwgS8Ml6WXo4Mgsg0WJpahVgTsiFGRyPDFWDjsuq/4wFtWJYSOLBn0vcqtPj0MSzuos
+         cOIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pkhyc2t9glEsHQiUVXVw+wftpHcvqftfhtLebN1B4GM=;
+        b=sTpgTdBj7Is3wc7meUON8FBKTkKgUFQvIbfcAGnTFGeOb4YsO/IvvRSXSZNTOxcYbz
+         S38bprwFyzn0JLIkwkixDF+30g8aN38GPxv8xETBd9jG062M/FNjVhdhMPRFKCMTZ+i2
+         QvNpUBZKtlVtylq0bBzaNztGAzkS1i0kUSkCYgeck6XSkcLRxJYkAerZLuo5nw28TazR
+         hKWfIFh9jWEkixUD021Mo26+0wtPZigFcFPjfn4QrvaApcSEb3Di5sjXGuoyO9uADO6K
+         sH+tRWrqr40WbbfffwaewR2djSrEacdf/rs3oSOy5HAP+S5m+qQgrrlfXTfQft1i4IEb
+         v4jQ==
+X-Gm-Message-State: AOAM531RVLB7ZdZ2/MIgn4CVjtRwjt6KdmowSChzDcbRHQexnyFVQALa
+        WbkN1UtHLAE0lwEFyqrwplNID5KY5B+Uov0oqTk=
+X-Google-Smtp-Source: ABdhPJyjNshFtC2R8KjGh5aliFkbeTYnXidFEFmbprWnRP4gnd85hPFaXEittR8O/zDFoO3Fm5KYtO/Z6yydbR/wUd8=
+X-Received: by 2002:a5d:83c8:: with SMTP id u8mr6727380ior.160.1610664256671;
+ Thu, 14 Jan 2021 14:44:16 -0800 (PST)
 MIME-Version: 1.0
-References: <20210111182928.587285-1-angelogioacchino.delregno@somainline.org>
- <20210111182928.587285-2-angelogioacchino.delregno@somainline.org>
- <20210113024118.GA1404906@robh.at.kernel.org> <3857e97d-2505-6a93-03cd-c36562035445@somainline.org>
-In-Reply-To: <3857e97d-2505-6a93-03cd-c36562035445@somainline.org>
-From:   Rob Herring <robh@kernel.org>
-Date:   Thu, 14 Jan 2021 16:42:51 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqL4nbF_gfkN9KYvQ6Je_xiPLfQg9-bP9nsnsjtv8PvRYg@mail.gmail.com>
-Message-ID: <CAL_JsqL4nbF_gfkN9KYvQ6Je_xiPLfQg9-bP9nsnsjtv8PvRYg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] dt-bindings: pinctrl: Add bindings for Awinic AW9523/AW9523B
+References: <20210109134617.146275-1-angelogioacchino.delregno@somainline.org>
+ <20210109134617.146275-2-angelogioacchino.delregno@somainline.org>
+ <CAOCk7NqUpa0DqW=han49MtwUqNkNsQC3OPpO7B-872bvNukDJw@mail.gmail.com>
+ <9942f98c-c186-5cd0-d6ac-a18a4e20583e@somainline.org> <CAOCk7Nod9a+5EUUWGpso+EBb2dJVLMvjrOoMpqeTcm+L6mxvtQ@mail.gmail.com>
+ <b5f6095d-ed74-26a9-a485-df0dc1203f8e@somainline.org>
+In-Reply-To: <b5f6095d-ed74-26a9-a485-df0dc1203f8e@somainline.org>
+From:   Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Date:   Thu, 14 Jan 2021 15:44:05 -0700
+Message-ID: <CAOCk7NqJ7=Rpwzx9ZQ9p=YHrxYeE69YphRq3BbzFwK_TyiVGFA@mail.gmail.com>
+Subject: Re: [PATCH 1/9] clk: qcom: gcc-msm8998: Wire up gcc_mmss_gpll0 clock
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, phone-devel@vger.kernel.org,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        devicetree@vger.kernel.org
+Cc:     MSM <linux-arm-msm@vger.kernel.org>, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        phone-devel@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-clk@vger.kernel.org,
+        DTML <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Jan 13, 2021 at 6:30 AM AngeloGioacchino Del Regno
+On Thu, Jan 14, 2021 at 3:40 PM AngeloGioacchino Del Regno
 <angelogioacchino.delregno@somainline.org> wrote:
 >
-> Il 13/01/21 03:41, Rob Herring ha scritto:
-> > On Mon, Jan 11, 2021 at 07:29:28PM +0100, AngeloGioacchino Del Regno wrote:
-> >> Add bindings for the Awinic AW9523/AW9523B I2C GPIO Expander driver.
+> Il 14/01/21 23:33, Jeffrey Hugo ha scritto:
+> > On Thu, Jan 14, 2021 at 3:13 PM AngeloGioacchino Del Regno
+> > <angelogioacchino.delregno@somainline.org> wrote:
 > >>
-> >> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> >> ---
-> >>   .../pinctrl/awinic,aw9523-pinctrl.yaml        | 112 ++++++++++++++++++
-> >>   1 file changed, 112 insertions(+)
-> >>   create mode 100644 Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml
+> >> Il 14/01/21 23:12, Jeffrey Hugo ha scritto:
+> >>> On Sat, Jan 9, 2021 at 6:47 AM AngeloGioacchino Del Regno
+> >>> <angelogioacchino.delregno@somainline.org> wrote:
+> >>>>
+> >>>> This clock enables the GPLL0 output to the multimedia subsystem
+> >>>> clock controller.
+> >>>>
+> >>>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> >>>
+> >>> Any reason why you are not also adding the div_clk?
+> >>>
 > >>
-> >> diff --git a/Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml
-> >> new file mode 100644
-> >> index 000000000000..a705c05bb5a2
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml
-> >> @@ -0,0 +1,112 @@
-> >> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> >> +%YAML 1.2
-> >> +---
-> >> +$id: http://devicetree.org/schemas/pinctrl/awinic,aw9523-pinctrl.yaml#
-> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> >> +
-> >> +title: Awinic AW9523/AW9523B I2C GPIO Expander
-> >> +
-> >> +maintainers:
-> >> +  - AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> >> +
-> >> +description: |
-> >> +  The Awinic AW9523/AW9523B I2C GPIO Expander featuring 16 multi-function
-> >> +  I/O, 256 steps PWM mode and interrupt support.
-> >> +
-> >> +properties:
-> >> +  compatible:
-> >> +    const: awinic,aw9523-pinctrl
-> >> +
-> >> +  reg:
-> >> +    maxItems: 1
-> >> +
-> >> +  '#gpio-cells':
-> >> +    description: |
-> >> +      Specifying the pin number and flags, as defined in
-> >> +      include/dt-bindings/gpio/gpio.h
-> >> +    const: 2
-> >> +
-> >> +  gpio-controller: true
-> >> +
-> >> +  gpio-ranges:
-> >> +    maxItems: 1
-> >> +
-> >> +  interrupt-controller: true
-> >> +
-> >> +  interrupts:
-> >> +    maxItems: 1
-> >> +    description: Specifies the INTN pin IRQ.
-> >> +
-> >> +  '#interrupt-cells':
-> >> +    description:
-> >> +      Specifies the PIN numbers and Flags, as defined in defined in
-> >> +      include/dt-bindings/interrupt-controller/irq.h
-> >> +    const: 2
-> >> +
-> >> +#PIN CONFIGURATION NODES
-> >> +patternProperties:
-> >> +  '^.*$':
-> >> +    if:
-> >> +      type: object
-> >> +      $ref: "/schemas/pinctrl/pincfg-node.yaml"
-> >> +    then:
+> >> Yes, just one: I haven't tested it... and my devices worked without.
+> >> Perhaps we can add it whenever we find out if something really needs it?
 > >
-> > I wish people would stop copying this if/then hack...
+> > I'm mildly surprised you need to turn on the gate to the PLL0 out, but
+> > not the div_out.  The div_out/div_clk is also fed into every RCG that
+> > exists in the MMCC.
 > >
-> > For new bindings, just name your nodes something sensible you can match
-> > on like '-pins$'.
+> > Per the frequency plan the following RCGs require it -
 > >
-> I always check the newest available yaml that I can find in the same
-> folder before writing mine... in this case, it was sm8250-pinctrl.yaml
-> and I thought that this was the accepted way, since.. that's.. the
-> newest one.
+> > cci
+> > cpp
+> > fd_core
+> > camss_gp[0-1]
+> > jpeg0
+> > mclk[0-3]
+> > csi[0-2]phytimer
+> > dp_gtc
+> > maxi
+> > axi
+> > ahb
+> >
+> > Also, I'm very interested in all things 8998, and would generally
+> > appreciate being added to the to: list.
+> >
+>
+> To be honest, I was surprised as well because.. yes, I know that these
+> RCGs seem to need it, but then their clock tables don't contain any
+> reference to the gpll0 divider, hence it's never getting used - and that
+> works great, for now.
+>
+> I am aware of the fact that the clocks that you've mentioned are using
+> the divider to reduce jitter, but I haven't done any camera test on my
+> devices yet: that's definitely in my plans and I really can't wait to do
+> that (as I successfully did for SDM630/660), but... we have more than
+> 100 patches in our trees.
+> We need to get upstream in the same working order as what we have here,
+> so that we don't diverge that much and our work is kept in a
+> maintainable state (avoiding to lose pieces around).
+>
+> I'm sure that I'll send a commit adding the gpll0 divider branch as soon
+> as I will start the camera work: I feel it, it's going to give me issues
+> without, in that field.
+>
+> By the way, noted. I'll make sure to add you in the to/cc for all of the
+> next series regarding 8998 that I'll send.
+>
+> Meanwhile, you may want to check out all the recent patches that I've
+> sent, as like 90% are MSM8998-centric... :))
 
-Normally, that's a good strategy. Unfortunately, this one went in
-without my review. There was supposed to be a follow-up to fix some of
-the issues, but seems that never happened.
-
-Rob
+I noticed, and I'm excited to see additional work since I've had a
+lack of spare time, although I think you've monopolized my backlog  :)
