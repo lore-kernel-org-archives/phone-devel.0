@@ -2,38 +2,45 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DC39C433E6
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 20:32:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33C89C4332E
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 20:33:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2720723A5E
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 20:32:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F16B023A81
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 20:33:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726573AbhANUc1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 14 Jan 2021 15:32:27 -0500
-Received: from mail-40134.protonmail.ch ([185.70.40.134]:39067 "EHLO
-        mail-40134.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726459AbhANUc1 (ORCPT
+        id S1728483AbhANUcy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 14 Jan 2021 15:32:54 -0500
+Received: from mail-40131.protonmail.ch ([185.70.40.131]:20178 "EHLO
+        mail-40131.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728475AbhANUcy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 14 Jan 2021 15:32:27 -0500
-Date:   Thu, 14 Jan 2021 20:31:32 +0000
+        Thu, 14 Jan 2021 15:32:54 -0500
+Date:   Thu, 14 Jan 2021 20:32:06 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1610656299;
-        bh=Yg6RHGgCddPCyY4Nm0i4HjwCtKqjYWU1hX1p6lV+HIE=;
-        h=Date:To:From:Cc:Reply-To:Subject:From;
-        b=iKjr+CmTbD7nblZYC4Dxqp7M5OrdwycAETYnJi6A29EhDqR36qUqBRZ+SVxejlvjR
-         JETusAYeEP4bfYGVlmX4H2WfWv5vZvLZ7tQxfr4ovg3JFQZK7x1vKSSqCz9LH5gtWd
-         iWOBTVNPYGzqfRfQBvbIuDXtKf/V8TVYGMb1QrP0=
-To:     caleb@connolly.tech, linux-arm-msm@vger.kernel.org
+        s=protonmail; t=1610656331;
+        bh=ZjEeyA413RNzpU9DT+FNrhe0K3Gvid9ETDUGt0k6xos=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=FQtJcXyrSzOzQhCejPr+Moq0CVLEOGugaxaLGZttMZzQkR99WOVg7Vq5T8sSuvQx4
+         QZTOB8nq3TtFm4ahmKS2ib8YutPvZ4NQYmd67EqJRWPy3ePeai9HpI3WN0Wdtrnvsd
+         rNJajI6e+ymDq6H4qlpFP+QdmgQcOBCZpThTBoHk=
+To:     caleb@connolly.tech, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Stephen Boyd <sboyd@codeaurora.org>
 From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Rob Herring <robh@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: [PATCH v4] Add support for the OnePlus 6 and 6T
-Message-ID: <20210114203057.64541-1-caleb@connolly.tech>
+Subject: [PATCH v4 2/2] dt-bindings: Document bindings for new SDM845 devices
+Message-ID: <20210114203057.64541-3-caleb@connolly.tech>
+In-Reply-To: <20210114203057.64541-1-caleb@connolly.tech>
+References: <20210114203057.64541-1-caleb@connolly.tech>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -41,48 +48,46 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
- * Display panels and hardware accelerated graphics
- * Touch screen with Synaptics RMI4
- * Modem and other remoteprocessors
- * WiFi / Bluetooth
- * Buttons
- * USB gadget mode
+Document compatible bindings for the new OnePlus 6/6T devices.
 
-Both devices are almost identical, but use different display panels,
-with the 6T lacking a headphone jack and notification LED.
-
-The panel driver for the devices is already upstream, however the driver
-doesn't seem to work on the 6T, all other functionality does however.
-I'm in the process of obtaining a device to get the driver fixed ASAP.
+Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 ---
-Changes since v1
- * Remove unused pinctrl nodes
- * Properly model touchscreen vio supply GPIO
- * Improve comments
- * Remove bq27541 battery as it doesn't work
+ Documentation/devicetree/bindings/arm/qcom.yaml        | 5 +++++
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 2 files changed, 7 insertions(+)
 
-Changes since v2
- * Specify clock frequency of touchscreen i2c
- * Remove tri-state-key nodes until a better solution can be found
- * Cleaned up pinctrl nodes
- * Remove unused regulators
- * Improve formatting
- * Address Bjorn's comments
- * Remove unused regulators
-
-Changes since v3
- * Address Konrad's comments
----
-Caleb Connolly (2):
-      arm64: dts: sdm845: add oneplus6/6t devices
-      dt-bindings: Document bindings for new SDM845 devices
-
-Documentation/devicetree/bindings/arm/qcom.yaml  |   5 +
-.../devicetree/bindings/vendor-prefixes.yaml     |   2 +
-arch/arm64/boot/dts/qcom/Makefile                |   2 +
-.../boot/dts/qcom/sdm845-oneplus-common.dtsi     | 622 +++++++++++++++++++
-.../boot/dts/qcom/sdm845-oneplus-enchilada.dts   |  19 +
-.../boot/dts/qcom/sdm845-oneplus-fajita.dts      |  23 +
-6 files changed, 673 insertions(+)
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentatio=
+n/devicetree/bindings/arm/qcom.yaml
+index c97d4a580f47..f3ad845754d3 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -171,6 +171,11 @@ properties:
+           - enum:
+               - qcom,ipq6018-cp01-c1
+           - const: qcom,ipq6018
++      - items:
++          - enum:
++              - oneplus,enchilada
++              - oneplus,fajita
++          - const: qcom,sdm845
+=20
+       - items:
+           - enum:
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Docum=
+entation/devicetree/bindings/vendor-prefixes.yaml
+index 041ae90b0d8f..aff440b18293 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -800,6 +800,8 @@ patternProperties:
+     description: OLIMEX Ltd.
+   "^olpc,.*":
+     description: One Laptop Per Child
++  "^oneplus,.*":
++    description: One Plus Technology (Shenzhen) Co., Ltd.
+   "^onion,.*":
+     description: Onion Corporation
+   "^onnn,.*":
+--=20
+2.29.2
 
 
