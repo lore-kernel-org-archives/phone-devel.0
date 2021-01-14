@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A3EDC433E0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9A48C4332B
 	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:12:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 187C82310A
+	by mail.kernel.org (Postfix) with ESMTP id B6A1823976
 	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:12:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729962AbhANWLw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 14 Jan 2021 17:11:52 -0500
-Received: from relay07.th.seeweb.it ([5.144.164.168]:58617 "EHLO
-        relay07.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729123AbhANWLu (ORCPT
+        id S1730487AbhANWMH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 14 Jan 2021 17:12:07 -0500
+Received: from relay05.th.seeweb.it ([5.144.164.166]:55649 "EHLO
+        relay05.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730458AbhANWMG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 14 Jan 2021 17:11:50 -0500
+        Thu, 14 Jan 2021 17:12:06 -0500
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 1854C3F116;
-        Thu, 14 Jan 2021 23:11:08 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 9413F3F1DE;
+        Thu, 14 Jan 2021 23:11:09 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     linux-arm-msm@vger.kernel.org
@@ -37,9 +37,9 @@ Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         devicetree@vger.kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v2 02/11] clk: qcom: gcc-msm8998: Wire up gcc_mmss_gpll0 clock
-Date:   Thu, 14 Jan 2021 23:10:50 +0100
-Message-Id: <20210114221059.483390-3-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v2 07/11] clk: qcom: mmcc-msm8998: Set CLK_GET_RATE_NOCACHE to pixel/byte clks
+Date:   Thu, 14 Jan 2021 23:10:55 +0100
+Message-Id: <20210114221059.483390-8-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210114221059.483390-1-angelogioacchino.delregno@somainline.org>
 References: <20210114221059.483390-1-angelogioacchino.delregno@somainline.org>
@@ -49,49 +49,57 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This clock enables the GPLL0 output to the multimedia subsystem
-clock controller.
+The pixel and byte clocks rate should not be cached, as a VCO shutdown
+may clear the frequency setup and this may not be set again due to the
+cached rate being present.
+This will also be useful when shadow clocks will be implemented in
+the DSI PLL for seamless timing/resolution switch.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- drivers/clk/qcom/gcc-msm8998.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/clk/qcom/mmcc-msm8998.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-msm8998.c b/drivers/clk/qcom/gcc-msm8998.c
-index 9d7016bcd680..d51c556851ca 100644
---- a/drivers/clk/qcom/gcc-msm8998.c
-+++ b/drivers/clk/qcom/gcc-msm8998.c
-@@ -1341,6 +1341,22 @@ static struct clk_branch gcc_boot_rom_ahb_clk = {
+diff --git a/drivers/clk/qcom/mmcc-msm8998.c b/drivers/clk/qcom/mmcc-msm8998.c
+index dd68983fe22e..475e00a5fdf4 100644
+--- a/drivers/clk/qcom/mmcc-msm8998.c
++++ b/drivers/clk/qcom/mmcc-msm8998.c
+@@ -520,7 +520,7 @@ static struct clk_rcg2 byte0_clk_src = {
+ 		.parent_data = mmss_xo_dsibyte,
+ 		.num_parents = 4,
+ 		.ops = &clk_byte2_ops,
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_GET_RATE_NOCACHE,
  	},
  };
  
-+static struct clk_branch gcc_mmss_gpll0_clk = {
-+	.halt_check = BRANCH_HALT_DELAY,
-+	.clkr = {
-+		.enable_reg = 0x5200c,
-+		.enable_mask = BIT(1),
-+		.hw.init = &(struct clk_init_data){
-+			.name = "gcc_mmss_gpll0_clk",
-+			.parent_names = (const char *[]){
-+				"gpll0_out_main",
-+			},
-+			.num_parents = 1,
-+			.ops = &clk_branch2_ops,
-+		},
-+	},
-+};
-+
- static struct clk_branch gcc_mss_gpll0_div_clk_src = {
- 	.halt_check = BRANCH_HALT_DELAY,
- 	.clkr = {
-@@ -2944,6 +2960,7 @@ static struct clk_regmap *gcc_msm8998_clocks[] = {
- 	[GCC_MSS_GPLL0_DIV_CLK_SRC] = &gcc_mss_gpll0_div_clk_src.clkr,
- 	[GCC_MSS_SNOC_AXI_CLK] = &gcc_mss_snoc_axi_clk.clkr,
- 	[GCC_MSS_MNOC_BIMC_AXI_CLK] = &gcc_mss_mnoc_bimc_axi_clk.clkr,
-+	[GCC_MMSS_GPLL0_CLK] = &gcc_mmss_gpll0_clk.clkr,
+@@ -533,7 +533,7 @@ static struct clk_rcg2 byte1_clk_src = {
+ 		.parent_data = mmss_xo_dsibyte,
+ 		.num_parents = 4,
+ 		.ops = &clk_byte2_ops,
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_GET_RATE_NOCACHE,
+ 	},
  };
  
- static struct gdsc *gcc_msm8998_gdscs[] = {
+@@ -1084,7 +1084,7 @@ static struct clk_rcg2 pclk0_clk_src = {
+ 		.parent_data = mmss_xo_dsi0pll_dsi1pll,
+ 		.num_parents = 4,
+ 		.ops = &clk_pixel_ops,
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_GET_RATE_NOCACHE,
+ 	},
+ };
+ 
+@@ -1098,7 +1098,7 @@ static struct clk_rcg2 pclk1_clk_src = {
+ 		.parent_data = mmss_xo_dsi0pll_dsi1pll,
+ 		.num_parents = 4,
+ 		.ops = &clk_pixel_ops,
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_GET_RATE_NOCACHE,
+ 	},
+ };
+ 
 -- 
 2.29.2
 
