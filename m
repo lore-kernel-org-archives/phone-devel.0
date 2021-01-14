@@ -2,95 +2,73 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.5 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 83488C43333
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:13:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9DF7C433DB
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:14:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 593192310A
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:13:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A82DD23A24
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Jan 2021 22:14:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730679AbhANWNd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 14 Jan 2021 17:13:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52280 "EHLO
+        id S1730010AbhANWO1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 14 Jan 2021 17:14:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730648AbhANWNZ (ORCPT
+        with ESMTP id S1730442AbhANWO0 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 14 Jan 2021 17:13:25 -0500
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01A59C0617A1;
-        Thu, 14 Jan 2021 14:11:11 -0800 (PST)
+        Thu, 14 Jan 2021 17:14:26 -0500
+Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB3C6C0613C1;
+        Thu, 14 Jan 2021 14:13:45 -0800 (PST)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 737283F1EA;
-        Thu, 14 Jan 2021 23:11:10 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 3214B3EECD;
+        Thu, 14 Jan 2021 23:13:44 +0100 (CET)
+Subject: Re: [PATCH 1/9] clk: qcom: gcc-msm8998: Wire up gcc_mmss_gpll0 clock
+To:     Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Cc:     MSM <linux-arm-msm@vger.kernel.org>, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        phone-devel@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-clk@vger.kernel.org,
+        DTML <devicetree@vger.kernel.org>
+References: <20210109134617.146275-1-angelogioacchino.delregno@somainline.org>
+ <20210109134617.146275-2-angelogioacchino.delregno@somainline.org>
+ <CAOCk7NqUpa0DqW=han49MtwUqNkNsQC3OPpO7B-872bvNukDJw@mail.gmail.com>
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, mturquette@baylibre.com,
-        sboyd@kernel.org, robh+dt@kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v2 10/11] clk: qcom: gpucc-msm8998: Add resets, cxc, fix flags on gpu_gx_gdsc
-Date:   Thu, 14 Jan 2021 23:10:58 +0100
-Message-Id: <20210114221059.483390-11-angelogioacchino.delregno@somainline.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210114221059.483390-1-angelogioacchino.delregno@somainline.org>
-References: <20210114221059.483390-1-angelogioacchino.delregno@somainline.org>
+Message-ID: <9942f98c-c186-5cd0-d6ac-a18a4e20583e@somainline.org>
+Date:   Thu, 14 Jan 2021 23:13:44 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOCk7NqUpa0DqW=han49MtwUqNkNsQC3OPpO7B-872bvNukDJw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The GPU GX GDSC has GPU_GX_BCR reset and gfx3d_clk CXC, as stated
-on downstream kernels (and as verified upstream, because otherwise
-random lockups happen).
-Also, add PWRSTS_RET and NO_RET_PERIPH: also as found downstream,
-and also as verified here, to avoid GPU related lockups it is
-necessary to force retain mem, but *not* peripheral when enabling
-this GDSC (and, of course, the inverse on disablement).
+Il 14/01/21 23:12, Jeffrey Hugo ha scritto:
+> On Sat, Jan 9, 2021 at 6:47 AM AngeloGioacchino Del Regno
+> <angelogioacchino.delregno@somainline.org> wrote:
+>>
+>> This clock enables the GPLL0 output to the multimedia subsystem
+>> clock controller.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> 
+> Any reason why you are not also adding the div_clk?
+> 
 
-With this change, the GPU finally works flawlessly on my four
-different MSM8998 devices from two different manufacturers.
-
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
----
- drivers/clk/qcom/gpucc-msm8998.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/clk/qcom/gpucc-msm8998.c b/drivers/clk/qcom/gpucc-msm8998.c
-index 9b3923af02a1..1a518c4915b4 100644
---- a/drivers/clk/qcom/gpucc-msm8998.c
-+++ b/drivers/clk/qcom/gpucc-msm8998.c
-@@ -253,12 +253,16 @@ static struct gdsc gpu_cx_gdsc = {
- static struct gdsc gpu_gx_gdsc = {
- 	.gdscr = 0x1094,
- 	.clamp_io_ctrl = 0x130,
-+	.resets = (unsigned int []){ GPU_GX_BCR },
-+	.reset_count = 1,
-+	.cxcs = (unsigned int []){ 0x1098 },
-+	.cxc_count = 1,
- 	.pd = {
- 		.name = "gpu_gx",
- 	},
- 	.parent = &gpu_cx_gdsc.pd,
--	.pwrsts = PWRSTS_OFF_ON,
--	.flags = CLAMP_IO | AON_RESET,
-+	.pwrsts = PWRSTS_OFF_ON | PWRSTS_RET,
-+	.flags = CLAMP_IO | SW_RESET | AON_RESET | NO_RET_PERIPH,
- };
- 
- static struct clk_regmap *gpucc_msm8998_clocks[] = {
--- 
-2.29.2
-
+Yes, just one: I haven't tested it... and my devices worked without.
+Perhaps we can add it whenever we find out if something really needs it?
