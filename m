@@ -2,29 +2,30 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C7CBC4332D
-	for <phone-devel@archiver.kernel.org>; Fri, 15 Jan 2021 18:54:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 16DCAC4361A
+	for <phone-devel@archiver.kernel.org>; Fri, 15 Jan 2021 18:54:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DFAF423603
-	for <phone-devel@archiver.kernel.org>; Fri, 15 Jan 2021 18:54:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E8293239E5
+	for <phone-devel@archiver.kernel.org>; Fri, 15 Jan 2021 18:54:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387848AbhAOSxv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 15 Jan 2021 13:53:51 -0500
-Received: from relay01.th.seeweb.it ([5.144.164.162]:33413 "EHLO
+        id S2387831AbhAOSxy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 15 Jan 2021 13:53:54 -0500
+Received: from relay01.th.seeweb.it ([5.144.164.162]:43021 "EHLO
         relay01.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387830AbhAOSxv (ORCPT
+        with ESMTP id S2387841AbhAOSxw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 15 Jan 2021 13:53:51 -0500
+        Fri, 15 Jan 2021 13:53:52 -0500
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id C49401F659;
-        Fri, 15 Jan 2021 19:52:53 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 68F691F67F;
+        Fri, 15 Jan 2021 19:52:54 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     stanimir.varbanov@linaro.org
@@ -35,41 +36,25 @@ Cc:     agross@kernel.org, bjorn.andersson@linaro.org, mchehab@kernel.org,
         marijn.suijten@somainline.org, phone-devel@vger.kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH 0/2] SDM630/660 Venus hardware video decoder/encoder
-Date:   Fri, 15 Jan 2021 19:52:50 +0100
-Message-Id: <20210115185252.333562-1-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH 2/2] media: dt-bindings: media: venus: Add sdm660 DT schema
+Date:   Fri, 15 Jan 2021 19:52:52 +0100
+Message-Id: <20210115185252.333562-3-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210115185252.333562-1-angelogioacchino.delregno@somainline.org>
+References: <20210115185252.333562-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This patch series enables the Venus hardware video decoder/encoder
-on the SDM630/660 series of SoCs.
+Add new qcom,sdm660-venus DT binding schema.
 
-Please keep in mind that these patches (especially the dt-bindings one)
-depend on series 480030 (SDM630/660 GCC/MMCC/GPUCC clock controllers),
-as the MultiMedia Clock Controller and related fixes in the GCC one
-are needed to enable functionality of the Venus block.
-
-This series was tested on SDM630 and SDM636 on the following smartphones:
-- Sony Xperia 10 (SDM630)
-- Sony Xperia 10 Plus (SDM636)
-- Sony Xperia XA2 (SDM630)
-- Sony Xperia XA2 Ultra (SDM630)
-
-P.S.: Remember! SDM636 is a variant of SDM660, *not* a variant of 630.
-
-AngeloGioacchino Del Regno (2):
-  media: venus: core: Add sdm660 DT compatible and resource struct
-  media: dt-bindings: media: venus: Add sdm660 DT schema
-
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
  .../bindings/media/qcom,sdm660-venus.yaml     | 164 ++++++++++++++++++
- drivers/media/platform/qcom/venus/core.c      |  66 +++++++
- 2 files changed, 230 insertions(+)
+ 1 file changed, 164 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/media/qcom,sdm660-venus.yaml
-
 
 base-commit: 012bd807cf654b992cdc4db7eab85c1e95f9d571
 prerequisite-patch-id: 734bdefdb043a8f91a48916246cc9a36fb5966e5
@@ -77,6 +62,177 @@ prerequisite-patch-id: 999517c02973237996492a41ed5bfc2990083932
 prerequisite-patch-id: a48910425fac61948a7a26bec4d40d63e3368569
 prerequisite-patch-id: b1a1a4216eed0d04dd16e6e8e1053dee185d06d8
 prerequisite-patch-id: dff12be2631cc21ef1c3c930fba49d979f5055fe
+
+diff --git a/Documentation/devicetree/bindings/media/qcom,sdm660-venus.yaml b/Documentation/devicetree/bindings/media/qcom,sdm660-venus.yaml
+new file mode 100644
+index 000000000000..e7568d4007af
+--- /dev/null
++++ b/Documentation/devicetree/bindings/media/qcom,sdm660-venus.yaml
+@@ -0,0 +1,164 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/media/qcom,sdm660-venus.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++
++title: Qualcomm Venus video encode and decode accelerators
++
++maintainers:
++  - Stanimir Varbanov <stanimir.varbanov@linaro.org>
++
++description: |
++  The Venus IP is a video encode and decode accelerator present
++  on Qualcomm platforms
++
++properties:
++  compatible:
++    const: qcom,sdm660-venus
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    maxItems: 5
++
++  clock-names:
++    items:
++      - const: core
++      - const: iface
++      - const: bus
++      - const: bus_throttle
++      - const: vcodec0_core
++
++  interconnects:
++    maxItems: 2
++
++  interconnect-names:
++    items:
++      - const: video-mem
++      - const: cpu-cfg
++
++  iommus:
++    maxItems: 20
++
++  memory-region:
++    maxItems: 1
++
++  power-domains:
++    minItems: 3
++
++  power-domain-names:
++    items:
++      - const: cx
++      - const: vcodec0
++      - const: venus
++
++  video-decoder:
++    type: object
++
++    properties:
++      compatible:
++        const: venus-decoder
++
++    required:
++      - compatible
++
++    additionalProperties: false
++
++  video-encoder:
++    type: object
++
++    properties:
++      compatible:
++        const: venus-encoder
++
++    required:
++      - compatible
++
++    additionalProperties: false
++
++  video-firmware:
++    type: object
++
++    description: |
++      Firmware subnode is needed when the platform does not
++      have TrustZone.
++
++    properties:
++      iommus:
++        maxItems: 2
++
++    required:
++      - iommus
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - power-domains
++  - power-domain-names
++  - clocks
++  - clock-names
++  - iommus
++  - memory-region
++  - video-decoder
++  - video-encoder
++
++additionalProperties: false
++
++examples:
++  - |
++        #include <dt-bindings/interrupt-controller/arm-gic.h>
++        #include <dt-bindings/clock/qcom,mmcc-sdm660.h>
++        #include <dt-bindings/power/qcom-rpmpd.h>
++
++        video-codec@cc00000 {
++                compatible = "qcom,sdm660-venus";
++                reg = <0x0cc00000 0xff000>;
++                interrupts = <GIC_SPI 287 IRQ_TYPE_LEVEL_HIGH>;
++                power-domains = <&rpmpd SDM660_VDDCX>,
++                                <&mmcc VENUS_CORE0_GDSC>,
++                                <&mmcc VENUS_GDSC>;
++                power-domain-names = "cx", "vcodec0", "venus";
++                clocks = <&mmcc VIDEO_CORE_CLK>,
++                         <&mmcc VIDEO_AHB_CLK>,
++                         <&mmcc VIDEO_AXI_CLK>,
++                         <&mmcc THROTTLE_VIDEO_AXI_CLK>,
++                         <&mmcc VIDEO_SUBCORE0_CLK>;
++                clock-names = "core", "iface", "bus", "bus_throttle",
++                              "vcodec0_core";
++                iommus = <&mmss_smmu 0x400>,
++                         <&mmss_smmu 0x401>,
++                         <&mmss_smmu 0x40a>,
++                         <&mmss_smmu 0x407>,
++                         <&mmss_smmu 0x40e>,
++                         <&mmss_smmu 0x40f>,
++                         <&mmss_smmu 0x408>,
++                         <&mmss_smmu 0x409>,
++                         <&mmss_smmu 0x40b>,
++                         <&mmss_smmu 0x40c>,
++                         <&mmss_smmu 0x40d>,
++                         <&mmss_smmu 0x410>,
++                         <&mmss_smmu 0x421>,
++                         <&mmss_smmu 0x428>,
++                         <&mmss_smmu 0x429>,
++                         <&mmss_smmu 0x42b>,
++                         <&mmss_smmu 0x42c>,
++                         <&mmss_smmu 0x42d>,
++                         <&mmss_smmu 0x411>,
++                         <&mmss_smmu 0x431>;
++                memory-region = <&venus_region>;
++
++                video-decoder {
++                        compatible = "venus-decoder";
++                };
++
++                video-encoder {
++                        compatible = "venus-encoder";
++                };
++        };
 -- 
 2.29.2
 
