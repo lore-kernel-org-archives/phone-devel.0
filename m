@@ -2,84 +2,96 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC9FEC433E6
-	for <phone-devel@archiver.kernel.org>; Fri, 15 Jan 2021 17:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C87FC433E6
+	for <phone-devel@archiver.kernel.org>; Fri, 15 Jan 2021 18:21:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7BFCF238EF
-	for <phone-devel@archiver.kernel.org>; Fri, 15 Jan 2021 17:13:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4C20423AF8
+	for <phone-devel@archiver.kernel.org>; Fri, 15 Jan 2021 18:21:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387594AbhAORMu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 15 Jan 2021 12:12:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43116 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387589AbhAORMt (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 15 Jan 2021 12:12:49 -0500
-Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 097B7C061796;
-        Fri, 15 Jan 2021 09:11:36 -0800 (PST)
-Received: from localhost.localdomain (abaf224.neoplus.adsl.tpnet.pl [83.6.169.224])
-        by m-r2.th.seeweb.it (Postfix) with ESMTPA id 001003EA6A;
-        Fri, 15 Jan 2021 18:11:33 +0100 (CET)
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] pinctrl: qcom: spmi-mpp: Add PM8019 compatible
-Date:   Fri, 15 Jan 2021 18:11:14 +0100
-Message-Id: <20210115171115.123155-2-konrad.dybcio@somainline.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210115171115.123155-1-konrad.dybcio@somainline.org>
-References: <20210115171115.123155-1-konrad.dybcio@somainline.org>
+        id S2388269AbhAOSVM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 15 Jan 2021 13:21:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43792 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1733119AbhAOSVL (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 15 Jan 2021 13:21:11 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BD0CE23AFC;
+        Fri, 15 Jan 2021 18:20:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610734831;
+        bh=Rzl9zISM7Y5XM+HBsSUTizk0jJUUmy+FRaBFRx/4l6k=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=WauPeOggsiDQYj0OYxsMCCfd4Qi5EIRi4zXd5ufHqyld595ou5xlTPNnupVLBKImw
+         umdSQZn7wRsIHf1W7FoQ5VxIbQi/2Fw9lcO+3JuRlyDZyG+vwriyr7yxAHRmHezdFY
+         0JbZccCcEXcnOnWNlLZ5XeFjbgjecPoDef8TiEn1Fw03dbA5q4bZ3r87BBDMNut3gF
+         Q6ypZWdMaSIChCuP6QCpxiemsZ7lu0mWjZuAoraDm/woIi/+b2B2Xw2fBwUtZhz7Lx
+         Qy7JMzAaVWvaUQlL5h5q5P497kY/DCdCW4eAcmJegvJbAb3hrAvzTDJyMCm0qL1NMK
+         VCcPW+azH7DUA==
+From:   Mark Brown <broonie@kernel.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        linux-arm-msm@vger.kernel.org
+Cc:     bjorn.andersson@linaro.org, sumit.semwal@linaro.org,
+        martin.botka@somainline.org, robh+dt@kernel.org, agross@kernel.org,
+        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        phone-devel@vger.kernel.org, marijn.suijten@somainline.org,
+        devicetree@vger.kernel.org, lgirdwood@gmail.com
+In-Reply-To: <20210113194214.522238-1-angelogioacchino.delregno@somainline.org>
+References: <20210113194214.522238-1-angelogioacchino.delregno@somainline.org>
+Subject: Re: (subset) [PATCH v2 0/7] Really implement Qualcomm LAB/IBB regulators
+Message-Id: <161073479108.12431.17135576809621290489.b4-ty@kernel.org>
+Date:   Fri, 15 Jan 2021 18:19:51 +0000
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-PM8019 provides 6 MPPs. Add a compatible to support them.
+On Wed, 13 Jan 2021 20:42:07 +0100, AngeloGioacchino Del Regno wrote:
+> Okay, the title may be a little "aggressive"? However, the qcom-labibb
+> driver wasn't really .. doing much.
+> The current form of this driver is only taking care of enabling or
+> disabling the regulators, which is pretty useless if they were not
+> pre-set from the bootloader, which sets them only if continuous
+> splash is enabled.
+> Moreover, some bootloaders are setting a higher voltage and/or a higher
+> current limit compared to what's actually required by the attached
+> hardware (which is, in 99.9% of the cases, a display) and this produces
+> a higher power consumption, higher heat output and a risk of actually
+> burning the display if kept up for a very long time: for example, this
+> is true on at least some Sony Xperia MSM8998 (Yoshino platform) and
+> especially on some Sony Xperia SDM845 (Tama platform) smartphones.
+> 
+> [...]
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
----
- Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.txt | 1 +
- drivers/pinctrl/qcom/pinctrl-spmi-mpp.c                     | 1 +
- 2 files changed, 2 insertions(+)
+Applied to
 
-diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.txt b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.txt
-index 448d36a85730..0ba07bc96c55 100644
---- a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.txt
-+++ b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.txt
-@@ -8,6 +8,7 @@ of PMIC's from Qualcomm.
- 	Value type: <string>
- 	Definition: Should contain one of:
- 		    "qcom,pm8018-mpp",
-+		    "qcom,pm8019-mpp",
- 		    "qcom,pm8038-mpp",
- 		    "qcom,pm8058-mpp",
- 		    "qcom,pm8821-mpp",
-diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c b/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-index 48602dba4967..3c213f799feb 100644
---- a/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-+++ b/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-@@ -912,6 +912,7 @@ static int pmic_mpp_remove(struct platform_device *pdev)
- }
- 
- static const struct of_device_id pmic_mpp_of_match[] = {
-+	{ .compatible = "qcom,pm8019-mpp" },	/* 6 MPP's */
- 	{ .compatible = "qcom,pm8841-mpp" },	/* 4 MPP's */
- 	{ .compatible = "qcom,pm8916-mpp" },	/* 4 MPP's */
- 	{ .compatible = "qcom,pm8941-mpp" },	/* 8 MPP's */
--- 
-2.29.2
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
+Thanks!
+
+[1/7] regulator: qcom-labibb: Implement voltage selector ops
+      commit: dd582369c6c1f39ec475af6191a934f3e57fda35
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
