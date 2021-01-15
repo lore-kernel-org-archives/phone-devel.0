@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3D1CC433E0
-	for <phone-devel@archiver.kernel.org>; Fri, 15 Jan 2021 04:41:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03380C433E0
+	for <phone-devel@archiver.kernel.org>; Fri, 15 Jan 2021 04:53:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 990FE23106
-	for <phone-devel@archiver.kernel.org>; Fri, 15 Jan 2021 04:41:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A63542339E
+	for <phone-devel@archiver.kernel.org>; Fri, 15 Jan 2021 04:53:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726997AbhAOElB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 14 Jan 2021 23:41:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50600 "EHLO
+        id S1731489AbhAOExo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 14 Jan 2021 23:53:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726451AbhAOElA (ORCPT
+        with ESMTP id S1726795AbhAOExn (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 14 Jan 2021 23:41:00 -0500
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB213C061575
-        for <phone-devel@vger.kernel.org>; Thu, 14 Jan 2021 20:40:19 -0800 (PST)
-Received: by mail-oi1-x22a.google.com with SMTP id n186so485536oia.5
-        for <phone-devel@vger.kernel.org>; Thu, 14 Jan 2021 20:40:19 -0800 (PST)
+        Thu, 14 Jan 2021 23:53:43 -0500
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 847C7C061575
+        for <phone-devel@vger.kernel.org>; Thu, 14 Jan 2021 20:53:03 -0800 (PST)
+Received: by mail-ot1-x334.google.com with SMTP id j20so7451453otq.5
+        for <phone-devel@vger.kernel.org>; Thu, 14 Jan 2021 20:53:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=WvxX8eMBKQeiOYu3rBDxAoazeGoPgEH+0ctDwdLMVo0=;
-        b=W2HgaemMy4iB1sZmL7hLe9+by+EyQ1kr1/vQL3BGusbPuIIJ2iOYmza+iCfiyeM0PN
-         pgf3sams192fZsdXo/DiVBJjsvd6Y04x64qMcm4A5FurpHj+vuMAEhgdyaYgUTywuSEq
-         qyAvZN9KtI2OeeRIueDYuo7XJBaRf6XSBSOJSgFOtfCRy3GBxbkqb+byDIND53Zyn5wI
-         vuQfUnHVkCnnyQAQhMWVA8N22IR971nj/WjhxirsSOU394SZACZ4PgSH30KTsdmximye
-         xy8VKkVBfsDoEZVWjGNDV2+KivufmzY+XCzQK+R1A5eoipU+Su+DhNRNofwbEcFNJAi0
-         SCnA==
+        bh=kw9AhzRyZK2nl5NYrpMkQfnyJ0KegvY7i2qry966wKA=;
+        b=Viahv/oGVWlwJJ5kbQq0t5rJEEGrhnea8t5w0ctvsI1E3sUmLehcwc5TW9ZTonYLWY
+         yIGGrJ3ljxhclwGJHPca5Hiv+qxLJKC4BCzM17R9GMunbQNvUIpK9m0qJkFTVBRNKVKh
+         b81wM/P1kor4egLFm1vM9BOWLddPW6F8BOQ2X3+oQm6a8yF0/LbMnofxfAg8or+ChraM
+         mBz+49lStKhomKj6BO0zSKHc6k7H/8QjGoGP/pdKzZiIQNKwurizeh5gofqdMi5ex2B/
+         I3BvP5UBeCCdBfWK+l72b0IJ365GQ27T6FXfdBr0fAOVUEqCefqLII0yh9EuKciqzDO5
+         XzyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=WvxX8eMBKQeiOYu3rBDxAoazeGoPgEH+0ctDwdLMVo0=;
-        b=GuYVQo99UMcrkd8iuIQpRENlMJAr4Z9W9T77JsOGjZtp2712iKznVYB007g8+HEmL9
-         /k2S9tOBsWu/KES+WRhxV+OzB6SLlb9VKU6L5JGG5vcT0os1+k34jXrB28crLOwgxbXf
-         mV8jelNvDg3c9cB/1YopC81Axlu78Ay4DKwdYIfbq1pgbkByAPxRDC/MNoF8y9A3jnDj
-         Dmr1MLAJtHJsTKaRqE+My5m7l1dDiWyxGJp/UannKBdRkQeQb/ExktDQLQYLvArwGKan
-         2MXMX8oUPwVV2cEavMB2IeVfyf0yKXOE0+NAR/ZO62DMk/iGj2yMircQ+VTeeXLhFQuW
-         LAGQ==
-X-Gm-Message-State: AOAM533TLfD3a4OqqlXxXrOycSKlMw+10Cp9bWQH+yEDvc2KnSA4RalY
-        UWRtfq1pAY6ZhsSRvZpANn2uUg==
-X-Google-Smtp-Source: ABdhPJwjB9VsEmpjfnUvly0rRpkB9ZsEiqGnVoDB20LOGXKbkVbwxBmIp48WVJyz/GAsnZ0CwxPhTQ==
-X-Received: by 2002:aca:b03:: with SMTP id 3mr4657072oil.157.1610685619237;
-        Thu, 14 Jan 2021 20:40:19 -0800 (PST)
+        bh=kw9AhzRyZK2nl5NYrpMkQfnyJ0KegvY7i2qry966wKA=;
+        b=meTAWKLnY76Hd2YHiht0+NuGcPfsqN4SDQEIb7M7sei3VTI425YMzTZ00UZ3CqqsRY
+         b3NxeFY7zIiBoqQdxjEw0J0M1Zb6MSZjjm2iKlvG0iPk+SIXY75fOzDd43luw9/p1MVJ
+         gjl1IqJiyrwBJJKcklExphph4rU9u2RBZhzfujB7ydi32tjYwbzu0mH8b3S0qbTL1wGx
+         CbZUt0/NvYBN49a4/RSTCHnprqwtZJPpDqVLYaKiggcq8ZPJOGDCsAyGlC2eIHfrCoDe
+         LF7d+ilyNcHeokAduklriVEGK32Ia3PA1Jv0q5EOFJA9c6iGNTB2EbKhDr9tPXIolqPq
+         vJXw==
+X-Gm-Message-State: AOAM532wX0qozzu0mvpkZjJnfx4ZPVyci1KsFgoaP7vgT3z5Rg3tWGEE
+        EZodhdocSZ6nk6A5cVSfOaEbMA==
+X-Google-Smtp-Source: ABdhPJzRna1Zhp4kzclLUnXVi5k8JOAXkkAdTc61rLcJOZQuWFJycLxzDD/9XP/saEKa0KbDH4unsg==
+X-Received: by 2002:a9d:62d7:: with SMTP id z23mr7224875otk.353.1610686382852;
+        Thu, 14 Jan 2021 20:53:02 -0800 (PST)
 Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id z38sm1547056ooi.34.2021.01.14.20.40.18
+        by smtp.gmail.com with ESMTPSA id f67sm1548807otb.60.2021.01.14.20.53.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Jan 2021 20:40:18 -0800 (PST)
-Date:   Thu, 14 Jan 2021 22:40:16 -0600
+        Thu, 14 Jan 2021 20:53:02 -0800 (PST)
+Date:   Thu, 14 Jan 2021 22:53:00 -0600
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
@@ -66,106 +66,127 @@ Cc:     linux-arm-msm@vger.kernel.org, agross@kernel.org,
         devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
         konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         martin.botka@somainline.org
-Subject: Re: [PATCH v2 1/7] regulator: qcom-labibb: Implement voltage
- selector ops
-Message-ID: <YAEcsNmsPsi11kkM@builder.lan>
+Subject: Re: [PATCH v2 3/7] regulator: qcom-labibb: Implement pull-down,
+ softstart, active discharge
+Message-ID: <YAEfrIR/HZmQLeQM@builder.lan>
 References: <20210113194214.522238-1-angelogioacchino.delregno@somainline.org>
- <20210113194214.522238-2-angelogioacchino.delregno@somainline.org>
+ <20210113194214.522238-4-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210113194214.522238-2-angelogioacchino.delregno@somainline.org>
+In-Reply-To: <20210113194214.522238-4-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On Wed 13 Jan 13:42 CST 2021, AngeloGioacchino Del Regno wrote:
 
-> Implement {get,set}_voltage_sel, list_voltage, map_voltage with
-> the useful regulator regmap helpers in order to be able to manage
-> the voltage of LAB (positive) and IBB (negative) regulators.
+> Soft start is required to avoid inrush current during LAB ramp-up and
+> IBB ramp-down, protecting connected hardware to which we supply voltage.
 > 
-> In particular, the supported ranges are the following:
-> - LAB (pos):  4600mV to  6100mV with 100mV stepping,
-> - IBB (neg): -7700mV to -1400mV with 100mV stepping.
+> Since soft start is configurable on both LAB and IBB regulators, it
+> was necessary to add two DT properties, respectively "qcom,soft-start-us"
+> to control LAB ramp-up and "qcom,discharge-resistor-kohms" to control
+> the discharge resistor for IBB ramp-down, which obviously brought the
+> need of implementing a of_parse callback for both regulators.
 > 
+> Finally, also implement pull-down mode in order to avoid unpredictable
+> behavior when the regulators are disabled (random voltage spikes etc).
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  drivers/regulator/qcom-labibb-regulator.c | 94 +++++++++++++++++++++++
+>  1 file changed, 94 insertions(+)
+> 
+> diff --git a/drivers/regulator/qcom-labibb-regulator.c b/drivers/regulator/qcom-labibb-regulator.c
+> index d364f54ad294..38ab1eba1c59 100644
+> --- a/drivers/regulator/qcom-labibb-regulator.c
+> +++ b/drivers/regulator/qcom-labibb-regulator.c
+> @@ -29,12 +29,23 @@
+>  #define LABIBB_STATUS1_VREG_OK_BIT	BIT(7)
+>  #define LABIBB_CONTROL_ENABLE		BIT(7)
+>  
+> +#define REG_LABIBB_PD_CTL		0x47
+> + #define LAB_PD_CTL_MASK		GENMASK(1, 0)
+> + #define IBB_PD_CTL_MASK		(BIT(0) | BIT(7))
+> + #define LAB_PD_CTL_STRONG_PULL		BIT(0)
+> + #define IBB_PD_CTL_HALF_STRENGTH	BIT(0)
+> + #define IBB_PD_CTL_EN			BIT(7)
+> +
+>  #define REG_LABIBB_CURRENT_LIMIT	0x4b
+>   #define LAB_CURRENT_LIMIT_MASK		GENMASK(2, 0)
+>   #define IBB_CURRENT_LIMIT_MASK		GENMASK(4, 0)
+>   #define LAB_CURRENT_LIMIT_OVERRIDE_EN	BIT(3)
+>   #define LABIBB_CURRENT_LIMIT_EN	BIT(7)
+>  
+> +#define REG_IBB_PWRUP_PWRDN_CTL_1	0x58
+> + #define IBB_CTL_1_DISCHARGE_EN		BIT(2)
+> +
+> +#define REG_LABIBB_SOFT_START_CTL	0x5f
+>  #define REG_LABIBB_SEC_ACCESS		0xd0
+>   #define LABIBB_SEC_UNLOCK_CODE		0xa5
+>  
+> @@ -60,6 +71,8 @@ struct labibb_regulator {
+>  	struct labibb_current_limits	uA_limits;
+>  	u16				base;
+>  	u8				type;
+> +	u8				dischg_sel;
+> +	u8				soft_start_sel;
+>  };
+>  
+>  struct labibb_regulator_data {
+> @@ -120,6 +133,70 @@ static int qcom_labibb_get_current_limit(struct regulator_dev *rdev)
+>  	return (cur_step * lim->uA_step) + lim->uA_min;
+>  }
+>  
+> +static int qcom_labibb_set_soft_start(struct regulator_dev *rdev)
+> +{
+> +	struct labibb_regulator *vreg = rdev_get_drvdata(rdev);
+> +	u32 val = 0;
+> +
+> +	if (vreg->type == QCOM_IBB_TYPE)
+> +		val = vreg->dischg_sel;
+> +	else
+> +		val = vreg->soft_start_sel;
+> +
+> +	return regmap_write(rdev->regmap, rdev->desc->soft_start_reg, val);
+> +}
+> +
+> +static int qcom_labibb_get_table_sel(const int *table, int sz, u32 value)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < sz; i++)
+> +		if (table[i] == value)
+> +			return i;
+> +	return -EINVAL;
+> +}
+> +
+> +/* IBB discharge resistor values in KOhms */
+> +static const int dischg_resistor_values[] = { 300, 64, 32, 16 };
+> +
+> +/* Soft start time in microseconds */
+> +static const int soft_start_values[] = { 200, 400, 600, 800 };
+> +
+> +static int qcom_labibb_of_parse_cb(struct device_node *np,
+> +				   const struct regulator_desc *desc,
+> +				   struct regulator_config *config)
+> +{
+> +	struct labibb_regulator *vreg = config->driver_data;
+> +	u32 dischg_kohms, soft_start_time;
+> +	int ret;
+> +
+> +	ret = of_property_read_u32(np, "qcom,discharge-resistor-kohms",
+> +				       &dischg_kohms);
+> +	if (ret)
+> +		dischg_kohms = 300;
+
+Nit, if you just initialize dischg_kohms to 300 during definition you
+can rely on of_property_read_u32() not updating the value on failure...
+
+That said, I think this patch looks good.
 
 Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 
 Regards,
 Bjorn
-
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> ---
->  drivers/regulator/qcom-labibb-regulator.c | 28 +++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
-> 
-> diff --git a/drivers/regulator/qcom-labibb-regulator.c b/drivers/regulator/qcom-labibb-regulator.c
-> index 8ccf572394a2..9f51c96f16fb 100644
-> --- a/drivers/regulator/qcom-labibb-regulator.c
-> +++ b/drivers/regulator/qcom-labibb-regulator.c
-> @@ -19,6 +19,12 @@
->  #define PMI8998_IBB_REG_BASE		0xdc00
->  
->  #define REG_LABIBB_STATUS1		0x08
-> +
-> +#define REG_LABIBB_VOLTAGE		0x41
-> + #define LABIBB_VOLTAGE_OVERRIDE_EN	BIT(7)
-> + #define LAB_VOLTAGE_SET_MASK		GENMASK(3, 0)
-> + #define IBB_VOLTAGE_SET_MASK		GENMASK(5, 0)
-> +
->  #define REG_LABIBB_ENABLE_CTL		0x46
->  #define LABIBB_STATUS1_VREG_OK_BIT	BIT(7)
->  #define LABIBB_CONTROL_ENABLE		BIT(7)
-> @@ -51,6 +57,10 @@ static const struct regulator_ops qcom_labibb_ops = {
->  	.enable			= regulator_enable_regmap,
->  	.disable		= regulator_disable_regmap,
->  	.is_enabled		= regulator_is_enabled_regmap,
-> +	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-> +	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-> +	.list_voltage		= regulator_list_voltage_linear_range,
-> +	.map_voltage		= regulator_map_voltage_linear_range,
->  };
->  
->  static const struct regulator_desc pmi8998_lab_desc = {
-> @@ -59,9 +69,18 @@ static const struct regulator_desc pmi8998_lab_desc = {
->  	.enable_val		= LABIBB_CONTROL_ENABLE,
->  	.enable_time		= LAB_ENABLE_TIME,
->  	.poll_enabled_time	= LABIBB_POLL_ENABLED_TIME,
-> +	.vsel_reg		= (PMI8998_LAB_REG_BASE + REG_LABIBB_VOLTAGE),
-> +	.vsel_mask		= LAB_VOLTAGE_SET_MASK,
-> +	.apply_reg		= (PMI8998_LAB_REG_BASE + REG_LABIBB_VOLTAGE),
-> +	.apply_bit		= LABIBB_VOLTAGE_OVERRIDE_EN,
->  	.off_on_delay		= LABIBB_OFF_ON_DELAY,
->  	.owner			= THIS_MODULE,
->  	.type			= REGULATOR_VOLTAGE,
-> +	.linear_ranges		= (struct linear_range[]) {
-> +		REGULATOR_LINEAR_RANGE(4600000, 0, 15, 100000),
-> +	},
-> +	.n_linear_ranges	= 1,
-> +	.n_voltages		= 16,
->  	.ops			= &qcom_labibb_ops,
->  };
->  
-> @@ -71,9 +90,18 @@ static const struct regulator_desc pmi8998_ibb_desc = {
->  	.enable_val		= LABIBB_CONTROL_ENABLE,
->  	.enable_time		= IBB_ENABLE_TIME,
->  	.poll_enabled_time	= LABIBB_POLL_ENABLED_TIME,
-> +	.vsel_reg		= (PMI8998_IBB_REG_BASE + REG_LABIBB_VOLTAGE),
-> +	.vsel_mask		= IBB_VOLTAGE_SET_MASK,
-> +	.apply_reg		= (PMI8998_IBB_REG_BASE + REG_LABIBB_VOLTAGE),
-> +	.apply_bit		= LABIBB_VOLTAGE_OVERRIDE_EN,
->  	.off_on_delay		= LABIBB_OFF_ON_DELAY,
->  	.owner			= THIS_MODULE,
->  	.type			= REGULATOR_VOLTAGE,
-> +	.linear_ranges		= (struct linear_range[]) {
-> +		REGULATOR_LINEAR_RANGE(1400000, 0, 63, 100000),
-> +	},
-> +	.n_linear_ranges	= 1,
-> +	.n_voltages		= 64,
->  	.ops			= &qcom_labibb_ops,
->  };
->  
-> -- 
-> 2.29.2
-> 
