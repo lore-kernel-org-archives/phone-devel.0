@@ -2,49 +2,49 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-20.5 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-15.5 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D78FC433DB
-	for <phone-devel@archiver.kernel.org>; Sun, 17 Jan 2021 17:52:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 050F7C433E6
+	for <phone-devel@archiver.kernel.org>; Sun, 17 Jan 2021 18:14:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CACD3224D3
-	for <phone-devel@archiver.kernel.org>; Sun, 17 Jan 2021 17:52:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BF01D225AB
+	for <phone-devel@archiver.kernel.org>; Sun, 17 Jan 2021 18:14:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729279AbhAQRwJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 17 Jan 2021 12:52:09 -0500
-Received: from relay03.th.seeweb.it ([5.144.164.164]:53541 "EHLO
-        relay03.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729078AbhAQRwH (ORCPT
+        id S1729853AbhAQSOX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 17 Jan 2021 13:14:23 -0500
+Received: from relay04.th.seeweb.it ([5.144.164.165]:48517 "EHLO
+        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729812AbhAQSOW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 17 Jan 2021 12:52:07 -0500
+        Sun, 17 Jan 2021 13:14:22 -0500
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 3DE8A1F498;
-        Sun, 17 Jan 2021 18:51:05 +0100 (CET)
-Subject: Re: [PATCH v4 2/2] media: dt-bindings: media: i2c: Add IMX300 CMOS
- sensor binding
-To:     Sakari Ailus <sakari.ailus@iki.fi>
-Cc:     mchehab@kernel.org, robh+dt@kernel.org, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, linux-media@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org
-References: <20210113182934.444727-1-angelogioacchino.delregno@somainline.org>
- <20210113182934.444727-3-angelogioacchino.delregno@somainline.org>
- <20210116234404.GX850@valkosipuli.retiisi.org.uk>
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 0DAF01F50A;
+        Sun, 17 Jan 2021 19:13:20 +0100 (CET)
+Subject: Re: [PATCH v2 2/7] regulator: qcom-labibb: Implement current limiting
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, agross@kernel.org,
+        lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
+        sumit.semwal@linaro.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org
+References: <20210113194214.522238-1-angelogioacchino.delregno@somainline.org>
+ <20210113194214.522238-3-angelogioacchino.delregno@somainline.org>
+ <YAEcFhFFsYIumI2e@builder.lan>
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Message-ID: <b681819b-1fc9-a6ea-bb20-f234dcdb3cb7@somainline.org>
-Date:   Sun, 17 Jan 2021 18:51:04 +0100
+Message-ID: <dcc2b3ae-445d-1fcc-a654-2c0384247e72@somainline.org>
+Date:   Sun, 17 Jan 2021 19:13:19 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.5.0
 MIME-Version: 1.0
-In-Reply-To: <20210116234404.GX850@valkosipuli.retiisi.org.uk>
+In-Reply-To: <YAEcFhFFsYIumI2e@builder.lan>
 Content-Type: text/plain; charset=iso-8859-15; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -52,219 +52,259 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 17/01/21 00:44, Sakari Ailus ha scritto:
-> Hi AngeloGioacchino,
+Il 15/01/21 05:37, Bjorn Andersson ha scritto:
+> On Wed 13 Jan 13:42 CST 2021, AngeloGioacchino Del Regno wrote:
 > 
-> On Wed, Jan 13, 2021 at 07:29:34PM +0100, AngeloGioacchino Del Regno wrote:
->> Add YAML device tree binding for IMX300 CMOS image sensor, and
->> the relevant MAINTAINERS entries.
+>> LAB and IBB regulators can be current-limited by setting the
+>> appropriate registers, but this operation is granted only after
+>> sending an unlock code for secure access.
+>>
+>> Besides the secure access, it would be possible to use the
+>> regmap helper for get_current_limit, as there is no security
+>> blocking reads, but I chose not to as to avoid having a very
+>> big array containing current limits, especially for IBB.
+>>
+>> That said, these regulators support current limiting for:
+>> - LAB (pos): 200-1600mA, with 200mA per step (8 steps),
+>> - IBB (neg):   0-1550mA, with  50mA per step (32 steps).
 >>
 >> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 >> ---
->>   .../bindings/media/i2c/sony,imx300.yaml       | 112 ++++++++++++++++++
->>   MAINTAINERS                                   |   7 ++
->>   2 files changed, 119 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
+>>   drivers/regulator/qcom-labibb-regulator.c | 92 +++++++++++++++++++++++
+>>   1 file changed, 92 insertions(+)
 >>
->> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
->> new file mode 100644
->> index 000000000000..4fa767feea80
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
->> @@ -0,0 +1,112 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/media/i2c/sony,imx300.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Sony 1/2.3-Inch 25Mpixel Stacked CMOS Digital Image Sensor
->> +
->> +maintainers:
->> +  - AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
->> +
->> +description: |-
->> +  The Sony IMX300 is a 1/2.3-inch Stacked CMOS (Exmor-RS) digital image
->> +  sensor with a pixel size of 1.08um and an active array size of
->> +  5948H x 4140V. It is programmable through I2C interface at address 0x10.
->> +  Image data is sent through MIPI CSI-2, which is configured as either 2 or
->> +  4 data lanes.
->> +
->> +properties:
->> +  compatible:
->> +    const: sony,imx300
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  clocks:
->> +    maxItems: 1
-> 
-> Please add assigned clock related properties; see
-> Documentation/driver-api/media/camera-sensor.rst .
-> 
-Will do!
-
->> +
->> +  vdig-supply:
->> +    description:
->> +      Digital I/O voltage supply, 1.15-1.20 volts
->> +
->> +  vana-supply:
->> +    description:
->> +      Analog voltage supply, 2.2 volts
->> +
->> +  vddl-supply:
->> +    description:
->> +      Digital core voltage supply, 1.8 volts
->> +
->> +  reset-gpios:
->> +    description: |-
->> +      Reference to the GPIO connected to the xclr pin, if any.
->> +      Must be released (set high) after all supplies are applied.
->> +
->> +  # See ../video-interfaces.txt for more details
->> +  port:
->> +    type: object
->> +    properties:
->> +      endpoint:
->> +        type: object
->> +
->> +        properties:
->> +          data-lanes:
->> +            description: |-
->> +              The driver only supports four-lane operation.
-> 
-> This can be removed as bindings describe hardware, not driver operation.
-> 
-Ack.
-
->> +            items:
->> +              - const: 0
->> +              - const: 1
->> +              - const: 2
->> +              - const: 3
-> 
-> Two lanes here, too?
-> 
-
-The driver only supports four-lane operation.
-I am 100% sure that this sensor can also work with two lanes, but it 
-needs special configuration which I'm not able to produce, nor test.
-
-As you may imagine (and as you can read in the driver itself), all of 
-this was reverse-engineering work, as Sony has never released any 
-datasheet for this sensor - and I have a hunch - they never will (but 
-that's another story).
-
->> +
->> +          clock-noncontinuous: true
->> +
->> +          link-frequencies:
->> +            $ref: /schemas/types.yaml#/definitions/uint64-array
->> +            description:
->> +              Allowed data bus frequencies. The driver currently needs
->> +              to switch between 780000000 and 480000000 Hz in order to
->> +              guarantee functionality of all modes.
-> 
-> You can omit this description, too.
-> 
-
-The intention here was to be clear and provide as much information as I 
-could gather during the very time-consuming reverse engineering process 
-that took place in the making of this driver.
-
-But okay, I will remove this.
-
->> +
->> +        required:
->> +          - data-lanes
->> +          - link-frequencies
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - clocks
->> +  - vana-supply
->> +  - vdig-supply
->> +  - vddl-supply
-> 
-> Are the regulators really required? I'm not quite sure about the
-> established practices; still the common case is that one or two of these
-> are hard-wired.
-> 
-
-On all the Sony phones that I have (....many), with MSM8956, MSM8996, 
-SDM630, equipped with the IMX300 camera assy, none of these three are 
-hard-wired: sometimes they're wired to the LDOs of the PMIC, sometimes 
-they're wired to fixed LDOs, enabled through GPIOs (fixed-regulator 
-binding in this case).
-
-So.. yeah, they're really required.
-
->> +  - port
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    i2c0 {
->> +        #address-cells = <1>;
->> +        #size-cells = <0>;
->> +
->> +        imx300: sensor@10 {
->> +            compatible = "sony,imx300";
->> +            reg = <0x10>;
->> +            clocks = <&imx300_xclk>;
->> +            vana-supply = <&imx300_vana>;   /* 2.2v */
->> +            vdig-supply = <&imx300_vdig>;   /* 1.2v */
->> +            vddl-supply = <&imx300_vddl>;   /* 1.8v */
->> +
->> +            port {
->> +                imx300_0: endpoint {
->> +                    remote-endpoint = <&csi1_ep>;
->> +                    data-lanes = <0 1 2 3>;
->> +                    clock-noncontinuous;
->> +                    link-frequencies = /bits/ 64 <780000000 480000000>;
->> +                };
->> +            };
->> +        };
->> +    };
->> +
->> +...
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index ad9abb42f852..5e0f08f48d48 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -16633,6 +16633,13 @@ T:	git git://linuxtv.org/media_tree.git
->>   F:	Documentation/devicetree/bindings/media/i2c/imx290.txt
->>   F:	drivers/media/i2c/imx290.c
+>> diff --git a/drivers/regulator/qcom-labibb-regulator.c b/drivers/regulator/qcom-labibb-regulator.c
+>> index 9f51c96f16fb..d364f54ad294 100644
+>> --- a/drivers/regulator/qcom-labibb-regulator.c
+>> +++ b/drivers/regulator/qcom-labibb-regulator.c
+>> @@ -29,6 +29,15 @@
+>>   #define LABIBB_STATUS1_VREG_OK_BIT	BIT(7)
+>>   #define LABIBB_CONTROL_ENABLE		BIT(7)
 >>   
->> +SONY IMX300 SENSOR DRIVER
->> +M:	AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
->> +L:	linux-media@vger.kernel.org
-> 
-> Please also add the git tree.
-> 
-> Ideally also the MAINTAINERS change comes with the first patch adding the
-> files, which should be the DT bindings. I.e. just reverse the order of the
-> patches.
-> 
-
-I haven't added it because last time I did that I got reviews saying 
-that if I'm not the owner of the git tree I shall not put it in.
-Though, if that's a requirement for media, then I didn't know that...
-
->> +S:	Maintained
->> +F:	Documentation/devicetree/bindings/media/i2c/sony,imx300.yaml
->> +F:	drivers/media/i2c/imx300.c
+>> +#define REG_LABIBB_CURRENT_LIMIT	0x4b
+>> + #define LAB_CURRENT_LIMIT_MASK		GENMASK(2, 0)
+>> + #define IBB_CURRENT_LIMIT_MASK		GENMASK(4, 0)
+>> + #define LAB_CURRENT_LIMIT_OVERRIDE_EN	BIT(3)
+>> + #define LABIBB_CURRENT_LIMIT_EN	BIT(7)
 >> +
->>   SONY IMX319 SENSOR DRIVER
->>   M:	Bingbu Cao <bingbu.cao@intel.com>
->>   L:	linux-media@vger.kernel.org
+>> +#define REG_LABIBB_SEC_ACCESS		0xd0
+>> + #define LABIBB_SEC_UNLOCK_CODE		0xa5
+>> +
+>>   #define LAB_ENABLE_CTL_MASK		BIT(7)
+>>   #define IBB_ENABLE_CTL_MASK		(BIT(7) | BIT(6))
+>>   
+>> @@ -37,11 +46,18 @@
+>>   #define IBB_ENABLE_TIME			(LABIBB_OFF_ON_DELAY * 10)
+>>   #define LABIBB_POLL_ENABLED_TIME	1000
+>>   
+>> +struct labibb_current_limits {
+>> +	u32				uA_min;
+>> +	u32				uA_step;
+>> +	u8				ovr_val;
+>> +};
+>> +
+>>   struct labibb_regulator {
+>>   	struct regulator_desc		desc;
+>>   	struct device			*dev;
+>>   	struct regmap			*regmap;
+>>   	struct regulator_dev		*rdev;
+>> +	struct labibb_current_limits	uA_limits;
+>>   	u16				base;
+>>   	u8				type;
+>>   };
+>> @@ -53,6 +69,57 @@ struct labibb_regulator_data {
+>>   	const struct regulator_desc	*desc;
+>>   };
+>>   
+>> +static int qcom_labibb_set_current_limit(struct regulator_dev *rdev,
+>> +					 int min_uA, int max_uA)
+> 
+> I was under the impression that a regulator driver should either
+> implement set_voltage_* or set_current_limit, depending on which type of
+> regulator it is - i.e. this API isn't supposed to be setting the current
+> limit. Perhaps I'm wrong though?
 > 
 
-Thank you for your review!
+As far as I've understood, these are two entirely different things - set 
+voltage and set current limits - that's how I'm using them, exactly, and 
+I'm really sure that I'm right on this.
 
-Yours,
-- Angelo
+Besides what I think, though, obviously Mark has the last word on this.
+
+>> +{
+>> +	struct labibb_regulator *vreg = rdev_get_drvdata(rdev);
+>> +	struct regulator_desc *desc = &vreg->desc;
+>> +	struct labibb_current_limits *lim = &vreg->uA_limits;
+>> +	u32 mask, val;
+>> +	int i, ret, sel = -1;
+>> +
+>> +	if (min_uA < lim->uA_min || max_uA < lim->uA_min)
+>> +		return -EINVAL;
+>> +
+>> +	for (i = 0; i < desc->n_current_limits; i++) {
+>> +		int uA_limit = (lim->uA_step * i) + lim->uA_min;
+>> +
+>> +		if (max_uA >= uA_limit && min_uA <= uA_limit)
+> 
+> I presume here you rely on the client passing something like min_uA = 0
+> and max_uA 500? Because if the client where to
+> regulator_set_current_limit(475, 475) you will pass through this loop
+> without finding a match, but 450 would probably be a really good
+> pick...
+
+This regulator does not support setting a minimum limit, but only a 
+ceiling limit, and that's used to raise an interrupt for over-current 
+protection.
+As far as I've understood, the Portable Batch System does its job only 
+in the specific case of *short circuit* detection, but the OCP is 
+totally left to the driver.
+
+The reason why I am restricting the match in a sort of paranoid way is 
+that this regulator can set the current limit in steps, but what I 
+wanted to avoid was a scenario like:
+
+- My display hardware draws a maximum of 475mA
+- I set the current limit on LAB/IBB to 475mA
+- The driver picks 450mA because it likes that value more
+- I get Over Current Protection interrupts and I think that my hardware
+   will get fried if I keep going on
+- This points me to fix the display driver
+   - Wrong! It was the regulator driver doing something different from
+     what I asked it to.
+
+So that's what I am avoiding here. I don't want developers to go crazy 
+over their eventually new driver design for their new HW for "no reason".
+
+> 
+> But what does it even mean to pass min/max uA for a current limit?
+> 
+
+As I explained above, in this specific case, it means setting a limit to 
+trigger the over current interrupt in order to protect the hardware that 
+is attached to this regulator.
+
+In other cases, meanings may be *slightly* different (at least, from my 
+understanding of it).
+
+> That said, I think this loop would be better expressed as a single
+> subtract uA_min and then divide by uA_step.
+> 
+> 
+Yes I can write it shorter... and even more... but I wanted to improve 
+human readability of this function (and this entire driver) because 
+regulators may be dangerous, if badly understood and/or badly set.
+
+I just wanted two things:
+1. Whoever reviewed my patches couldn't misunderstand what I wrote
+    as much as possible;
+2. Any other developer reading this driver (which may not be really
+    familiar with this HW) gets the meaning of what I'm doing in less
+    time, without doing too much time-expensive research.
+
+After all, sometimes, writing shorter code decreases human readability
+without improving performance in any way, and I think that this would
+be one of these times... so... :))
+
+> Apart from that, this patch looks good to me.
+> 
+
+Thank you!
+
+> Regards,
+> Bjorn
+> 
+>> +			sel = i;
+>> +	}
+>> +	if (sel < 0)
+>> +		return -EINVAL;
+>> +
+>> +	/* Current limit setting needs secure access */
+>> +	ret = regmap_write(vreg->regmap, vreg->base + REG_LABIBB_SEC_ACCESS,
+>> +			   LABIBB_SEC_UNLOCK_CODE);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	mask = desc->csel_mask | lim->ovr_val;
+>> +	mask |= LABIBB_CURRENT_LIMIT_EN;
+>> +	val = (u32)sel | lim->ovr_val;
+>> +	val |= LABIBB_CURRENT_LIMIT_EN;
+>> +
+>> +	return regmap_update_bits(vreg->regmap, desc->csel_reg, mask, val);
+>> +}
+>> +
+>> +static int qcom_labibb_get_current_limit(struct regulator_dev *rdev)
+>> +{
+>> +	struct labibb_regulator *vreg = rdev_get_drvdata(rdev);
+>> +	struct regulator_desc *desc = &vreg->desc;
+>> +	struct labibb_current_limits *lim = &vreg->uA_limits;
+>> +	unsigned int cur_step;
+>> +	int ret;
+>> +
+>> +	ret = regmap_read(vreg->regmap, desc->csel_reg, &cur_step);
+>> +	if (ret)
+>> +		return ret;
+>> +	cur_step &= desc->csel_mask;
+>> +
+>> +	return (cur_step * lim->uA_step) + lim->uA_min;
+>> +}
+>> +
+>>   static const struct regulator_ops qcom_labibb_ops = {
+>>   	.enable			= regulator_enable_regmap,
+>>   	.disable		= regulator_disable_regmap,
+>> @@ -61,6 +128,8 @@ static const struct regulator_ops qcom_labibb_ops = {
+>>   	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+>>   	.list_voltage		= regulator_list_voltage_linear_range,
+>>   	.map_voltage		= regulator_map_voltage_linear_range,
+>> +	.set_current_limit	= qcom_labibb_set_current_limit,
+>> +	.get_current_limit	= qcom_labibb_get_current_limit,
+>>   };
+>>   
+>>   static const struct regulator_desc pmi8998_lab_desc = {
+>> @@ -73,6 +142,9 @@ static const struct regulator_desc pmi8998_lab_desc = {
+>>   	.vsel_mask		= LAB_VOLTAGE_SET_MASK,
+>>   	.apply_reg		= (PMI8998_LAB_REG_BASE + REG_LABIBB_VOLTAGE),
+>>   	.apply_bit		= LABIBB_VOLTAGE_OVERRIDE_EN,
+>> +	.csel_reg		= (PMI8998_LAB_REG_BASE + REG_LABIBB_CURRENT_LIMIT),
+>> +	.csel_mask		= LAB_CURRENT_LIMIT_MASK,
+>> +	.n_current_limits	= 8,
+>>   	.off_on_delay		= LABIBB_OFF_ON_DELAY,
+>>   	.owner			= THIS_MODULE,
+>>   	.type			= REGULATOR_VOLTAGE,
+>> @@ -94,6 +166,9 @@ static const struct regulator_desc pmi8998_ibb_desc = {
+>>   	.vsel_mask		= IBB_VOLTAGE_SET_MASK,
+>>   	.apply_reg		= (PMI8998_IBB_REG_BASE + REG_LABIBB_VOLTAGE),
+>>   	.apply_bit		= LABIBB_VOLTAGE_OVERRIDE_EN,
+>> +	.csel_reg		= (PMI8998_IBB_REG_BASE + REG_LABIBB_CURRENT_LIMIT),
+>> +	.csel_mask		= IBB_CURRENT_LIMIT_MASK,
+>> +	.n_current_limits	= 32,
+>>   	.off_on_delay		= LABIBB_OFF_ON_DELAY,
+>>   	.owner			= THIS_MODULE,
+>>   	.type			= REGULATOR_VOLTAGE,
+>> @@ -167,6 +242,23 @@ static int qcom_labibb_regulator_probe(struct platform_device *pdev)
+>>   		vreg->base = reg_data->base;
+>>   		vreg->type = reg_data->type;
+>>   
+>> +		switch (vreg->type) {
+>> +		case QCOM_LAB_TYPE:
+>> +			/* LAB Limits: 200-1600mA */
+>> +			vreg->uA_limits.uA_min  = 200000;
+>> +			vreg->uA_limits.uA_step = 200000;
+>> +			vreg->uA_limits.ovr_val = LAB_CURRENT_LIMIT_OVERRIDE_EN;
+>> +			break;
+>> +		case QCOM_IBB_TYPE:
+>> +			/* IBB Limits: 0-1550mA */
+>> +			vreg->uA_limits.uA_min  = 0;
+>> +			vreg->uA_limits.uA_step = 50000;
+>> +			vreg->uA_limits.ovr_val = 0; /* No override bit */
+>> +			break;
+>> +		default:
+>> +			return -EINVAL;
+>> +		}
+>> +
+>>   		memcpy(&vreg->desc, reg_data->desc, sizeof(vreg->desc));
+>>   		vreg->desc.of_match = reg_data->name;
+>>   		vreg->desc.name = reg_data->name;
+>> -- 
+>> 2.29.2
+>>
+
