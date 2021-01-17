@@ -2,29 +2,33 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8192BC432C3
-	for <phone-devel@archiver.kernel.org>; Sun, 17 Jan 2021 22:10:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 128DBC433E9
+	for <phone-devel@archiver.kernel.org>; Sun, 17 Jan 2021 22:10:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 57DF7221EB
-	for <phone-devel@archiver.kernel.org>; Sun, 17 Jan 2021 22:10:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DBC39221EB
+	for <phone-devel@archiver.kernel.org>; Sun, 17 Jan 2021 22:10:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730270AbhAQWKE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 17 Jan 2021 17:10:04 -0500
-Received: from relay04.th.seeweb.it ([5.144.164.165]:42689 "EHLO
-        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730122AbhAQWJd (ORCPT
+        id S1730122AbhAQWKF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 17 Jan 2021 17:10:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41652 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730391AbhAQWKD (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 17 Jan 2021 17:09:33 -0500
+        Sun, 17 Jan 2021 17:10:03 -0500
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9AF2C061786
+        for <phone-devel@vger.kernel.org>; Sun, 17 Jan 2021 14:08:38 -0800 (PST)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 1C2801F4CA;
-        Sun, 17 Jan 2021 23:08:34 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 89BFE1F55A;
+        Sun, 17 Jan 2021 23:08:36 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     linux-arm-msm@vger.kernel.org
@@ -35,84 +39,63 @@ Cc:     agross@kernel.org, bjorn.andersson@linaro.org, lgirdwood@gmail.com,
         marijn.suijten@somainline.org, martin.botka@somainline.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v3 0/7] Really implement Qualcomm LAB/IBB regulators
-Date:   Sun, 17 Jan 2021 23:08:23 +0100
-Message-Id: <20210117220830.150948-1-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v3 7/7] arm64: dts: pmi8998: Add the right interrupts for LAB/IBB SCP and OCP
+Date:   Sun, 17 Jan 2021 23:08:30 +0100
+Message-Id: <20210117220830.150948-8-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210117220830.150948-1-angelogioacchino.delregno@somainline.org>
+References: <20210117220830.150948-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Okay, the title may be a little "aggressive"? However, the qcom-labibb
-driver wasn't really .. doing much.
-The current form of this driver is only taking care of enabling or
-disabling the regulators, which is pretty useless if they were not
-pre-set from the bootloader, which sets them only if continuous
-splash is enabled.
-Moreover, some bootloaders are setting a higher voltage and/or a higher
-current limit compared to what's actually required by the attached
-hardware (which is, in 99.9% of the cases, a display) and this produces
-a higher power consumption, higher heat output and a risk of actually
-burning the display if kept up for a very long time: for example, this
-is true on at least some Sony Xperia MSM8998 (Yoshino platform) and
-especially on some Sony Xperia SDM845 (Tama platform) smartphones.
+In commit 208921bae696 ("arm64: dts: qcom: pmi8998: Add nodes for
+LAB and IBB regulators") bindings for the lab/ibb regulators were
+added to the pmi8998 dt, but the original committer has never
+specified what the interrupts were for.
+LAB and IBB regulators provide two interrupts, SC-ERR (short
+circuit error) and VREG-OK but, in that commit, the regulators
+were provided with two different types of interrupts;
+specifically, IBB had the SC-ERR interrupt, while LAB had the
+VREG-OK one, none of which were (luckily) used, since the driver
+didn't actually use these at all.
+Assuming that the original intention was to have the SC IRQ in
+both LAB and IBB, as per the names appearing in documentation,
+fix the SCP interrupt.
 
-In any case, the main reason why this change was necessary for us is
-that, during the bringup of Sony Xperia MSM8998 phones, we had an issue
-with the bootloader not turning on the display and not setting the lab
-and ibb regulators before booting the kernel, making it impossible to
-powerup the display.
+While at it, also add the OCP interrupt in order to be able to
+enable the Over-Current Protection feature, if requested.
 
-With this said, this patchset enables setting voltage, current limiting,
-overcurrent and short-circuit protection.. and others, on the LAB/IBB
-regulators.
-Each commit in this patch series provides as many informations as
-possible about what's going on and testing methodology.
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+---
+ arch/arm64/boot/dts/qcom/pmi8998.dtsi | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Changes in v3:
- - Improved check for PBS disable and short-circuit condition:
-   during the testing of short-circuit, coincidentally another
-   register reading zero on the interesting bit was probed,
-   which didn't trigger a malfunction of the SC logic, but was
-   also wrong.
-   After the change, the short-circuit test was re-done in the
-   same way as described in the commit that is implementing it.
- - From Bjorn Andersson review:
-   - Improved documentation about over-current and short-circuit
-     protection in the driver
-   - Improved maintainability of qcom_labibb_sc_recovery_worker()
-   - Flipped around check for PBS vreg disabled in for loop of
-     function labibb_sc_err_handler()
- - From Mark Brown (forgotten in v2):
-   - Changed regulator_{list,map}_voltage_linear_range usages to
-     regulator_{list,map}_voltage_linear (and fixed regulator
-     descs to reflect the change).
-
-Changes in v2:
- - From Mark Brown review:
-   - Replaced some if branches with switch statements
-   - Moved irq get and request in probe function
-   - Changed short conditionals to full ones
-   - Removed useless check for ocp_irq_requested
- -  Fixed issues with YAML documentation
-
-AngeloGioacchino Del Regno (7):
-  regulator: qcom-labibb: Implement voltage selector ops
-  regulator: qcom-labibb: Implement current limiting
-  regulator: qcom-labibb: Implement pull-down, softstart, active
-    discharge
-  dt-bindings: regulator: qcom-labibb: Document soft start properties
-  regulator: qcom-labibb: Implement short-circuit and over-current IRQs
-  dt-bindings: regulator: qcom-labibb: Document SCP/OCP interrupts
-  arm64: dts: pmi8998: Add the right interrupts for LAB/IBB SCP and OCP
-
- .../regulator/qcom-labibb-regulator.yaml      |  30 +-
- arch/arm64/boot/dts/qcom/pmi8998.dtsi         |   8 +-
- drivers/regulator/qcom-labibb-regulator.c     | 728 +++++++++++++++++-
- 3 files changed, 753 insertions(+), 13 deletions(-)
-
+diff --git a/arch/arm64/boot/dts/qcom/pmi8998.dtsi b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
+index d016b12967eb..d230c510d4b7 100644
+--- a/arch/arm64/boot/dts/qcom/pmi8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
+@@ -30,11 +30,15 @@ labibb {
+ 			compatible = "qcom,pmi8998-lab-ibb";
+ 
+ 			ibb: ibb {
+-				interrupts = <0x3 0xdc 0x2 IRQ_TYPE_EDGE_RISING>;
++				interrupts = <0x3 0xdc 0x2 IRQ_TYPE_EDGE_RISING>,
++					     <0x3 0xdc 0x0 IRQ_TYPE_LEVEL_HIGH>;
++				interrupt-names = "sc-err", "ocp";
+ 			};
+ 
+ 			lab: lab {
+-				interrupts = <0x3 0xde 0x0 IRQ_TYPE_EDGE_RISING>;
++				interrupts = <0x3 0xde 0x1 IRQ_TYPE_EDGE_RISING>,
++					     <0x3 0xde 0x0 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-names = "sc-err", "ocp";
+ 			};
+ 		};
+ 	};
 -- 
 2.29.2
 
