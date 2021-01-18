@@ -2,30 +2,28 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9036CC433E0
-	for <phone-devel@archiver.kernel.org>; Mon, 18 Jan 2021 16:28:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D4F4C433E6
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Jan 2021 16:28:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5B841206D8
-	for <phone-devel@archiver.kernel.org>; Mon, 18 Jan 2021 16:28:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4D5BE22BE9
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Jan 2021 16:28:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406772AbhARQ1i (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 18 Jan 2021 11:27:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50964 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406730AbhARQ0q (ORCPT
+        id S2406613AbhARQ2V (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 18 Jan 2021 11:28:21 -0500
+Received: from relay02.th.seeweb.it ([5.144.164.163]:59397 "EHLO
+        relay02.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406660AbhARQ0o (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 18 Jan 2021 11:26:46 -0500
-Received: from relay02.th.seeweb.it (relay02.th.seeweb.it [IPv6:2001:4b7a:2000:18::163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFA99C061786;
-        Mon, 18 Jan 2021 08:25:12 -0800 (PST)
+        Mon, 18 Jan 2021 11:26:44 -0500
 Received: from localhost.localdomain (abaf224.neoplus.adsl.tpnet.pl [83.6.169.224])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id D2ACB1FD06;
-        Mon, 18 Jan 2021 17:25:10 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id BE4321FD13;
+        Mon, 18 Jan 2021 17:25:17 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
@@ -35,9 +33,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 08/11] arm64: dts: qcom: msm8994-kitakami: Add VDD_GFX regulator
-Date:   Mon, 18 Jan 2021 17:24:28 +0100
-Message-Id: <20210118162432.107275-8-konrad.dybcio@somainline.org>
+Subject: [PATCH 11/11] arm64: dts: qcom: msm8994-kitakami: Add missing email in the copyright
+Date:   Mon, 18 Jan 2021 17:24:31 +0100
+Message-Id: <20210118162432.107275-11-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210118162432.107275-1-konrad.dybcio@somainline.org>
 References: <20210118162432.107275-1-konrad.dybcio@somainline.org>
@@ -47,42 +45,38 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This is required for the GPU to function.
+I forgot to do this the first time around.
 
 Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
- .../dts/qcom/msm8994-sony-xperia-kitakami.dtsi | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ .../arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-sumire.dts | 2 +-
+ arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-sumire.dts b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-sumire.dts
+index 868a2c9d6496..d3ba9867a369 100644
+--- a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-sumire.dts
++++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-sumire.dts
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: BSD-3-Clause
+ /*
+- * Copyright (c) 2020, Konrad Dybcio
++ * Copyright (c) 2020, Konrad Dybcio <konrad.dybcio@somainline.org>
+  */
+ 
+ /dts-v1/;
 diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
-index 26b54f360fc3..05155859cf6a 100644
+index e962fc5f8b1b..586d866188d7 100644
 --- a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
 +++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
-@@ -185,6 +185,24 @@ &blsp2_uart2 {
- 	status = "okay";
- };
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: BSD-3-Clause
+ /*
+- * Copyright (c) 2020, Konrad Dybcio
++ * Copyright (c) 2020, Konrad Dybcio <konrad.dybcio@somainline.org>
+  */
  
-+&pmi8994_spmi_regulators {
-+	/*
-+	 * Yeah, this one *is* managed by RPMPD, but also needs
-+	 * to be hacked up as a-o due to the GPU device only accepting a single
-+	 * power domain.. which still isn't enough and forces us to bind
-+	 * OXILI_CX and OXILI_GX together!
-+	 */
-+	vdd_gfx: s2@1700 {
-+		reg = <0x1700 0x100>;
-+		regulator-name = "VDD_GFX";
-+		regulator-min-microvolt = <980000>;
-+		regulator-max-microvolt = <980000>;
-+
-+		/* hack until we rig up the gpu consumer */
-+		regulator-always-on;
-+	};
-+};
-+
- &rpm_requests {
- 	pm8994_regulators: pm8994-regulators {
- 		compatible = "qcom,rpm-pm8994-regulators";
+ #include "msm8994.dtsi"
 -- 
 2.29.2
 
