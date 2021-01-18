@@ -2,251 +2,154 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-17.4 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D04BC433E0
-	for <phone-devel@archiver.kernel.org>; Mon, 18 Jan 2021 16:30:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33C8AC433E6
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Jan 2021 17:26:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6CFD622BE9
-	for <phone-devel@archiver.kernel.org>; Mon, 18 Jan 2021 16:30:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DFDE722CA1
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Jan 2021 17:26:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405976AbhARQaJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 18 Jan 2021 11:30:09 -0500
-Received: from relay04.th.seeweb.it ([5.144.164.165]:33633 "EHLO
-        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406654AbhARQZk (ORCPT
+        id S2393617AbhARRZN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 18 Jan 2021 12:25:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34822 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406940AbhARRWc (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 18 Jan 2021 11:25:40 -0500
-Received: from localhost.localdomain (abaf224.neoplus.adsl.tpnet.pl [83.6.169.224])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 1D41C1FAD3;
-        Mon, 18 Jan 2021 17:24:53 +0100 (CET)
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 01/11] arm64: dts: qcom: Add support for remaining Sony Kitakami boards
-Date:   Mon, 18 Jan 2021 17:24:21 +0100
-Message-Id: <20210118162432.107275-1-konrad.dybcio@somainline.org>
-X-Mailer: git-send-email 2.29.2
+        Mon, 18 Jan 2021 12:22:32 -0500
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7569FC0613D6
+        for <phone-devel@vger.kernel.org>; Mon, 18 Jan 2021 09:21:19 -0800 (PST)
+Received: by mail-ej1-x635.google.com with SMTP id rv9so5952468ejb.13
+        for <phone-devel@vger.kernel.org>; Mon, 18 Jan 2021 09:21:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=qnB4DzrPNMnXyDRbW/fKIhjUt28zZRbhzh0syUvRk8Q=;
+        b=YIQ8rQ7m+skTr2gsWSut5kKgsn+UN/xcZJprMyG77RdQPxlWcYPiJLNYm4mEpDPT0G
+         +vU+4sR02Ed+1D3Vvs4h+BO8xakl4k+2le+CFLKmy7VqiloX7g87Db6GXMwUGQYOGrff
+         1FeGgKAIHMltpMhff2H9IE6DaIo0FjKQda0goLLiasS3cNFLsz2eaCglkRkbhaCd8b2Y
+         qJQ8pAUZudVIiFwwm65t7esoUtAVP91WkyfaNQS5GKKVb/vrCEAfqt/hEL+uvA7P3rCJ
+         wU2m6lHNRDtLSnDwL3WiDqT7ohcd2PW6AOq8Ygx7yrcGG79ze62ZGWT5QmCmArzKyCE9
+         dx/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=qnB4DzrPNMnXyDRbW/fKIhjUt28zZRbhzh0syUvRk8Q=;
+        b=URoSTaviXf1nUI3RjdAybouvuCF9FxXVQ7nO9emfHTN6VzqDgF78AdOAuPGgbFGP0p
+         3FctOfQ0hnB1xeRtzLTwyykiHqnCKhIOvB1FB7TYhvKNs0Qzr0sskZ6AwFtIclKJmMkf
+         tKXJXJJ/cTnPI1Un5Y1ghcUx3KuF4bpNOpQKCRsSjXBlgbXEGNnehMskUh81o4orMnSR
+         tUZSoVvEGdPFob7PHTu8jJ0xdQ3JQh/RhJTM+4mjhM/IAvN7Pb2r2kpnls2/sHvjfeun
+         293vDCP+/ni/PLqW1x7kltyfMKhFEn+VIIszSC04tUYN6RkETDeD0OUDgo1B8TZ29DSi
+         YZeg==
+X-Gm-Message-State: AOAM532QP8nrcLrsroR5ogXNd1S40wMsEUOpM7dPq08G6GKk80ezpzSg
+        pZ6qc8JZOecPQpsCUXadi5jvxw==
+X-Google-Smtp-Source: ABdhPJyH5KG45YKLMKvbjHjl4OUqQ13N/a16EaRojSEzxLiHZCTfWc+mJFgK069gFA6roAqQuupqWg==
+X-Received: by 2002:a17:906:1958:: with SMTP id b24mr450993eje.263.1610990478214;
+        Mon, 18 Jan 2021 09:21:18 -0800 (PST)
+Received: from [192.168.0.3] ([84.238.208.220])
+        by smtp.googlemail.com with ESMTPSA id h16sm9107900eds.21.2021.01.18.09.21.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Jan 2021 09:21:17 -0800 (PST)
+Subject: Re: [PATCH 2/2] media: dt-bindings: media: venus: Add sdm660 DT
+ schema
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Rob Herring <robh@kernel.org>
+Cc:     mchehab@kernel.org, phone-devel@vger.kernel.org,
+        linux-media@vger.kernel.org, robh+dt@kernel.org,
+        stanimir.varbanov@linaro.org, linux-kernel@vger.kernel.org,
+        marijn.suijten@somainline.org, konrad.dybcio@somainline.org,
+        devicetree@vger.kernel.org, bjorn.andersson@linaro.org,
+        agross@kernel.org, linux-arm-msm@vger.kernel.org
+References: <20210115185252.333562-1-angelogioacchino.delregno@somainline.org>
+ <20210115185252.333562-3-angelogioacchino.delregno@somainline.org>
+ <1610898357.209470.1730313.nullmailer@robh.at.kernel.org>
+ <890cbed0-0f4c-f8e4-5d91-c0cd40edde1d@somainline.org>
+From:   Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Message-ID: <3f28fa3f-b86b-0c63-a8b7-1c5e18ab9a49@linaro.org>
+Date:   Mon, 18 Jan 2021 19:21:16 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
+In-Reply-To: <890cbed0-0f4c-f8e4-5d91-c0cd40edde1d@somainline.org>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This patch adds support for the following Xperias:
 
-* Z3+ [aka Z4 in some regions] (Ivy)
-* Z4 Tablet (Karin)
-* Z4 Tablet Wi-Fi (Karin_windy) [APQ8094]
-* Z5 Compact (Suzuran)
-* Z5 Premium (Satsuki)
 
-These devices are very similar in terms of hardware, with main
-differences being display panels.
+On 1/17/21 9:23 PM, AngeloGioacchino Del Regno wrote:
+> Il 17/01/21 16:45, Rob Herring ha scritto:
+>> On Fri, 15 Jan 2021 19:52:52 +0100, AngeloGioacchino Del Regno wrote:
+>>> Add new qcom,sdm660-venus DT binding schema.
+>>>
+>>> Signed-off-by: AngeloGioacchino Del Regno
+>>> <angelogioacchino.delregno@somainline.org>
+>>> ---
+>>>   .../bindings/media/qcom,sdm660-venus.yaml     | 164 ++++++++++++++++++
+>>>   1 file changed, 164 insertions(+)
+>>>   create mode 100644
+>>> Documentation/devicetree/bindings/media/qcom,sdm660-venus.yaml
+>>>
+>>> base-commit: 012bd807cf654b992cdc4db7eab85c1e95f9d571
+>>> prerequisite-patch-id: 734bdefdb043a8f91a48916246cc9a36fb5966e5
+>>> prerequisite-patch-id: 999517c02973237996492a41ed5bfc2990083932
+>>> prerequisite-patch-id: a48910425fac61948a7a26bec4d40d63e3368569
+>>> prerequisite-patch-id: b1a1a4216eed0d04dd16e6e8e1053dee185d06d8
+>>> prerequisite-patch-id: dff12be2631cc21ef1c3c930fba49d979f5055fe
+>>>
+>>
+>> My bot found errors running 'make dt_binding_check' on your patch:
+>>
+>> yamllint warnings/errors:
+>>
+>> dtschema/dtc warnings/errors:
+>> Documentation/devicetree/bindings/media/qcom,sdm660-venus.example.dts:20:18:
+>> fatal error: dt-bindings/clock/qcom,mmcc-sdm660.h: No such file or
+>> directory
+>>     20 |         #include <dt-bindings/clock/qcom,mmcc-sdm660.h>
+>>        |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> compilation terminated.
+>> make[1]: *** [scripts/Makefile.lib:344:
+>> Documentation/devicetree/bindings/media/qcom,sdm660-venus.example.dt.yaml]
+>> Error 1
+>> make[1]: *** Waiting for unfinished jobs....
+>> make: *** [Makefile:1370: dt_binding_check] Error 2
+>>
+>> See https://patchwork.ozlabs.org/patch/1427279
+>>
+>> This check can fail if there are any dependencies. The base for a patch
+>> series is generally the most recent rc1.
+>>
+>> If you already ran 'make dt_binding_check' and didn't see the above
+>> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+>> date:
+>>
+>> pip3 install dtschema --upgrade
+>>
+>> Please check and re-submit.
+>>
+> 
+> Yes, because this depends on the commits that are mentioned in the tags.
+> Is there any better way to add a dependency on another patch series?
+> 
 
-While at it, update comments describing hardware used:
-SMB charger seems to not be used after all, PMI8994 charger
-is in use instead.
+What is the status of mmcc-sdm660 clk driver? I guess we have to
+postpone this until clock driver is ready for merge?
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
----
- arch/arm64/boot/dts/qcom/Makefile             |  5 +++++
- ...q8094-sony-xperia-kitakami-karin_windy.dts | 20 ++++++++++++++++++
- .../qcom/msm8994-sony-xperia-kitakami-ivy.dts | 13 ++++++++++++
- .../msm8994-sony-xperia-kitakami-karin.dts    | 21 +++++++++++++++++++
- .../msm8994-sony-xperia-kitakami-satsuki.dts  | 13 ++++++++++++
- .../msm8994-sony-xperia-kitakami-suzuran.dts  | 13 ++++++++++++
- .../qcom/msm8994-sony-xperia-kitakami.dtsi    | 15 ++++++++++---
- 7 files changed, 97 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm64/boot/dts/qcom/apq8094-sony-xperia-kitakami-karin_windy.dts
- create mode 100644 arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-ivy.dts
- create mode 100644 arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-karin.dts
- create mode 100644 arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-satsuki.dts
- create mode 100644 arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-suzuran.dts
+> - Angelo
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index 5113fac80b7a..6e784c7b0621 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- dtb-$(CONFIG_ARCH_QCOM)	+= apq8016-sbc.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= apq8094-sony-xperia-kitakami-karin_windy.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= apq8096-db820c.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= apq8096-ifc6640.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= ipq6018-cp01-c1.dtb
-@@ -13,7 +14,11 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8992-msft-lumia-talkman.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8992-xiaomi-libra.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-angler-rev-101.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-msft-lumia-cityman.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-ivy.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-karin.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-satsuki.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-sumire.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-suzuran.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8996-mtp.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8998-asus-novago-tp370ql.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8998-hp-envy-x2.dtb
-diff --git a/arch/arm64/boot/dts/qcom/apq8094-sony-xperia-kitakami-karin_windy.dts b/arch/arm64/boot/dts/qcom/apq8094-sony-xperia-kitakami-karin_windy.dts
-new file mode 100644
-index 000000000000..60497457a555
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/apq8094-sony-xperia-kitakami-karin_windy.dts
-@@ -0,0 +1,20 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) 2020, Konrad Dybcio <konrad.dybcio@somainline.org>
-+ */
-+
-+/dts-v1/;
-+
-+/* As the names may imply, there is quite a bunch of duplication there. */
-+#include "msm8994-sony-xperia-kitakami-karin.dts"
-+
-+/ {
-+	model = "Sony Xperia Z4 Tablet (Wi-Fi)";
-+	compatible = "sony,karin_windy", "qcom,apq8094";
-+
-+	/*
-+	 * This model uses the APQ variant of MSM8994 (APQ8094).
-+	 * The v1/v2/v2.1 story (from kitakami.dtsi) also applies here.
-+	 */
-+	qcom,msm-id = <253 0x20000>, <253 0x20001>;
-+};
-diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-ivy.dts b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-ivy.dts
-new file mode 100644
-index 000000000000..4c7a90987f08
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-ivy.dts
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) 2020, Konrad Dybcio <konrad.dybcio@somainline.org>
-+ */
-+
-+/dts-v1/;
-+
-+#include "msm8994-sony-xperia-kitakami.dtsi"
-+
-+/ {
-+	model = "Sony Xperia Z3+/Z4";
-+	compatible = "sony,ivy-row", "qcom,msm8994";
-+};
-diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-karin.dts b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-karin.dts
-new file mode 100644
-index 000000000000..7e657861387b
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-karin.dts
-@@ -0,0 +1,21 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) 2020, Konrad Dybcio <konrad.dybcio@somainline.org>
-+ */
-+
-+/dts-v1/;
-+
-+#include "msm8994-sony-xperia-kitakami.dtsi"
-+
-+/ {
-+	model = "Sony Xperia Z4 Tablet (LTE)";
-+	compatible = "sony,karin-row", "qcom,msm8994";
-+};
-+
-+&blsp_i2c5 {
-+	/*
-+	 * TI LP8557 backlight driver @ 2c
-+	 * AD AD7146 touch controller @ 2f
-+	 * sii8620 HDMI/MHL bridge @ 72 (kitakami-common)
-+	 */
-+};
-diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-satsuki.dts b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-satsuki.dts
-new file mode 100644
-index 000000000000..1081fe6a4d67
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-satsuki.dts
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) 2020, Konrad Dybcio <konrad.dybcio@somainline.org>
-+ */
-+
-+/dts-v1/;
-+
-+#include "msm8994-sony-xperia-kitakami.dtsi"
-+
-+/ {
-+	model = "Sony Xperia Z5 Premium";
-+	compatible = "sony,satsuki-row", "qcom,msm8994";
-+};
-diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-suzuran.dts b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-suzuran.dts
-new file mode 100644
-index 000000000000..2c670ab28613
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-suzuran.dts
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) 2020, Konrad Dybcio <konrad.dybcio@somainline.org>
-+ */
-+
-+/dts-v1/;
-+
-+#include "msm8994-sony-xperia-kitakami.dtsi"
-+
-+/ {
-+	model = "Sony Xperia Z5 Compact";
-+	compatible = "sony,suzuran-row", "qcom,msm8994";
-+};
-diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
-index 791f254ac3f8..71d7187eb090 100644
---- a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
-@@ -11,8 +11,17 @@
- 
- / {
- 	/* required for bootloader to select correct board */
--	qcom,msm-id = <0xcf 0x20001>;
-+
-+	/*
-+	 * We support MSM8994 v2 (0x20000) and v2.1 (0x20001).
-+	 * The V1 chip (0x0 and 0x10000) is significantly different
-+	 * and requires driver-side changes (including CPR, be warned!!).
-+	 * Besides that, it's very rare.
-+	 */
-+	qcom,msm-id = <207 0x20000>, <207 0x20001>;
-+	/* We only use pm8994+pmi8994. */
- 	qcom,pmic-id = <0x10009 0x1000a 0x00 0x00>;
-+	/* This property is shared across all kitakami devices. */
- 	qcom,board-id = <8 0>;
- 
- 	/* Kitakami firmware doesn't support PSCI */
-@@ -120,7 +129,7 @@ &blsp_spi0 {
- &blsp_i2c2 {
- 	status = "okay";
- 
--	/* NXP NFC */
-+	/* NXP PN547 NFC */
- };
- 
- &blsp_i2c4 {
-@@ -132,7 +141,7 @@ &blsp_i2c4 {
- &blsp_i2c5 {
- 	status = "okay";
- 
--	/* SMB1357 charger and sii8620 HDMI/MHL bridge */
-+	/* sii8620 HDMI/MHL bridge */
- };
- 
- &blsp_i2c6 {
 -- 
-2.29.2
-
+regards,
+Stan
