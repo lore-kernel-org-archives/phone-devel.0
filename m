@@ -2,99 +2,115 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C27F7C433E6
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Jan 2021 20:21:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C490C43381
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Jan 2021 20:21:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 601BE2313A
+	by mail.kernel.org (Postfix) with ESMTP id AB8ED23133
 	for <phone-devel@archiver.kernel.org>; Tue, 19 Jan 2021 20:21:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387750AbhASSw2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Jan 2021 13:52:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39988 "EHLO
+        id S2390587AbhASSwV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Jan 2021 13:52:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392094AbhASRzv (ORCPT
+        with ESMTP id S2392082AbhASRzg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Jan 2021 12:55:51 -0500
+        Tue, 19 Jan 2021 12:55:36 -0500
 Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFE45C0612A6;
-        Tue, 19 Jan 2021 09:49:38 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D64FCC061794
+        for <phone-devel@vger.kernel.org>; Tue, 19 Jan 2021 09:48:32 -0800 (PST)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 57B5E3F17F;
-        Tue, 19 Jan 2021 18:45:30 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 1C5913F116;
+        Tue, 19 Jan 2021 18:44:25 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-To:     nks@flawful.org
-Cc:     bjorn.andersson@linaro.org, agross@kernel.org, robh+dt@kernel.org,
-        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     linux-arm-msm@vger.kernel.org
+Cc:     agross@kernel.org, bjorn.andersson@linaro.org, lgirdwood@gmail.com,
+        broonie@kernel.org, robh+dt@kernel.org, sumit.semwal@linaro.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
         marijn.suijten@somainline.org, martin.botka@somainline.org,
-        jeffrey.l.hugo@gmail.com,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v4 0/3] CPR commonization in preparation for CPR3 driver
-Date:   Tue, 19 Jan 2021 18:45:26 +0100
-Message-Id: <20210119174529.227074-1-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v4 6/7] dt-bindings: regulator: qcom-labibb: Document SCP/OCP interrupts
+Date:   Tue, 19 Jan 2021 18:44:20 +0100
+Message-Id: <20210119174421.226541-7-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210119174421.226541-1-angelogioacchino.delregno@somainline.org>
+References: <20210119174421.226541-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-  **
-  ** NOTE: To "view the full picture", please look at the following
-  ** patch series:
-  ** https://patchwork.kernel.org/project/linux-arm-msm/list/?series=413355
-  **              This is a subset of that series.
-  **
+Short-Circuit Protection (SCP) and Over-Current Protection (OCP) are
+now implemented in the driver: document the interrupts.
+This also fixes wrong documentation about the SCP interrupt for LAB.
 
-In preparation for adding a driver for CPR3, CPR4 and CPR4-Hardened,
-commonize some functions in the CPR driver, as they will be used by
-both drivers, drastically reducing code duplication.
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+---
+ .../regulator/qcom-labibb-regulator.yaml      | 20 +++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-Changes in v4:
-- Huge patch series has been split for better reviewability,
-  as suggested by Bjorn
-
-Changes in v3:
-- Fixed YAML doc issues
-
-Changes in v2:
-- Minor Cleanups
-
-Tested on the following smartphones:
-- Sony Xperia XA2        (SDM630)
-- Sony Xperia XA2 Ultra  (SDM630)
-- Sony Xperia 10         (SDM630)
-- Sony Xperia XZ Premium (MSM8998)
-- F(x)Tec Pro 1          (MSM8998)
-
-AngeloGioacchino Del Regno (3):
-  soc: qcom: cpr: Move common functions to new file
-  dt-bindings: avs: cpr: Convert binding to YAML schema
-  arm64: qcom: qcs404: Change CPR nvmem-names
-
- .../bindings/power/avs/qcom,cpr.txt           | 131 +-----
- .../bindings/soc/qcom/qcom,cpr.yaml           | 167 +++++++
- MAINTAINERS                                   |   2 +-
- arch/arm64/boot/dts/qcom/qcs404.dtsi          |  26 +-
- drivers/soc/qcom/Makefile                     |   2 +-
- drivers/soc/qcom/cpr-common.c                 | 382 +++++++++++++++
- drivers/soc/qcom/cpr-common.h                 | 113 +++++
- drivers/soc/qcom/cpr.c                        | 441 ++----------------
- 8 files changed, 705 insertions(+), 559 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
- create mode 100644 drivers/soc/qcom/cpr-common.c
- create mode 100644 drivers/soc/qcom/cpr-common.h
-
+diff --git a/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml
+index 7a507692f1ba..cf784bd1f5e5 100644
+--- a/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml
++++ b/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml
+@@ -29,9 +29,10 @@ properties:
+         default: 200
+ 
+       interrupts:
+-        maxItems: 1
++        minItems: 1
++        maxItems: 2
+         description:
+-          Short-circuit interrupt for lab.
++          Short-circuit and over-current interrupts for lab.
+ 
+     required:
+       - interrupts
+@@ -47,9 +48,10 @@ properties:
+         default: 300
+ 
+       interrupts:
+-        maxItems: 1
++        minItems: 1
++        maxItems: 2
+         description:
+-          Short-circuit interrupt for lab.
++          Short-circuit and over-current interrupts for ibb.
+ 
+     required:
+       - interrupts
+@@ -67,13 +69,15 @@ examples:
+       compatible = "qcom,pmi8998-lab-ibb";
+ 
+       lab {
+-        interrupts = <0x3 0x0 IRQ_TYPE_EDGE_RISING>;
+-        interrupt-names = "sc-err";
++        interrupts = <0x3 0xde 0x1 IRQ_TYPE_EDGE_RISING>,
++                     <0x3 0xde 0x0 IRQ_TYPE_LEVEL_LOW>;
++        interrupt-names = "sc-err", "ocp";
+       };
+ 
+       ibb {
+-        interrupts = <0x3 0x2 IRQ_TYPE_EDGE_RISING>;
+-        interrupt-names = "sc-err";
++        interrupts = <0x3 0xdc 0x2 IRQ_TYPE_EDGE_RISING>,
++                     <0x3 0xdc 0x0 IRQ_TYPE_LEVEL_LOW>;
++        interrupt-names = "sc-err", "ocp";
+       };
+     };
+ 
 -- 
 2.30.0
 
