@@ -2,122 +2,256 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FF2EC433E0
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Jan 2021 22:29:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11E33C433DB
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Jan 2021 23:20:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DBBEA230FE
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Jan 2021 22:29:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C604123108
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Jan 2021 23:20:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727364AbhASW31 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Jan 2021 17:29:27 -0500
-Received: from relay07.th.seeweb.it ([5.144.164.168]:41263 "EHLO
-        relay07.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728467AbhASRpM (ORCPT
+        id S1727768AbhASXUj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Jan 2021 18:20:39 -0500
+Received: from relay03.th.seeweb.it ([5.144.164.164]:38041 "EHLO
+        relay03.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730649AbhASXT7 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Jan 2021 12:45:12 -0500
+        Tue, 19 Jan 2021 18:19:59 -0500
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 980D43F0B4;
-        Tue, 19 Jan 2021 18:44:22 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 6DB131F9D2;
+        Wed, 20 Jan 2021 00:19:11 +0100 (CET)
+Subject: Re: [PATCH 2/2] media: dt-bindings: media: venus: Add sdm660 DT
+ schema
+To:     Rob Herring <robh@kernel.org>
+Cc:     stanimir.varbanov@linaro.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, mchehab@kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        phone-devel@vger.kernel.org
+References: <20210115185252.333562-1-angelogioacchino.delregno@somainline.org>
+ <20210115185252.333562-3-angelogioacchino.delregno@somainline.org>
+ <20210119231709.GA2775697@robh.at.kernel.org>
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     agross@kernel.org, bjorn.andersson@linaro.org, lgirdwood@gmail.com,
-        broonie@kernel.org, robh+dt@kernel.org, sumit.semwal@linaro.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v4 0/7] Really implement Qualcomm LAB/IBB regulators
-Date:   Tue, 19 Jan 2021 18:44:14 +0100
-Message-Id: <20210119174421.226541-1-angelogioacchino.delregno@somainline.org>
-X-Mailer: git-send-email 2.30.0
+Message-ID: <22723c30-514e-5181-adb0-414fb5e32a26@somainline.org>
+Date:   Wed, 20 Jan 2021 00:19:11 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210119231709.GA2775697@robh.at.kernel.org>
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Okay, the title may be a little "aggressive"? However, the qcom-labibb
-driver wasn't really .. doing much.
-The current form of this driver is only taking care of enabling or
-disabling the regulators, which is pretty useless if they were not
-pre-set from the bootloader, which sets them only if continuous
-splash is enabled.
-Moreover, some bootloaders are setting a higher voltage and/or a higher
-current limit compared to what's actually required by the attached
-hardware (which is, in 99.9% of the cases, a display) and this produces
-a higher power consumption, higher heat output and a risk of actually
-burning the display if kept up for a very long time: for example, this
-is true on at least some Sony Xperia MSM8998 (Yoshino platform) and
-especially on some Sony Xperia SDM845 (Tama platform) smartphones.
+Il 20/01/21 00:17, Rob Herring ha scritto:
+> On Fri, Jan 15, 2021 at 07:52:52PM +0100, AngeloGioacchino Del Regno wrote:
+>> Add new qcom,sdm660-venus DT binding schema.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>> ---
+>>   .../bindings/media/qcom,sdm660-venus.yaml     | 164 ++++++++++++++++++
+>>   1 file changed, 164 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/media/qcom,sdm660-venus.yaml
+>>
+>> base-commit: 012bd807cf654b992cdc4db7eab85c1e95f9d571
+>> prerequisite-patch-id: 734bdefdb043a8f91a48916246cc9a36fb5966e5
+>> prerequisite-patch-id: 999517c02973237996492a41ed5bfc2990083932
+>> prerequisite-patch-id: a48910425fac61948a7a26bec4d40d63e3368569
+>> prerequisite-patch-id: b1a1a4216eed0d04dd16e6e8e1053dee185d06d8
+>> prerequisite-patch-id: dff12be2631cc21ef1c3c930fba49d979f5055fe
+>>
+>> diff --git a/Documentation/devicetree/bindings/media/qcom,sdm660-venus.yaml b/Documentation/devicetree/bindings/media/qcom,sdm660-venus.yaml
+>> new file mode 100644
+>> index 000000000000..e7568d4007af
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/media/qcom,sdm660-venus.yaml
+>> @@ -0,0 +1,164 @@
+>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>> +
+>> +%YAML 1.2
+>> +---
+>> +$id: "http://devicetree.org/schemas/media/qcom,sdm660-venus.yaml#"
+>> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+>> +
+>> +title: Qualcomm Venus video encode and decode accelerators
+>> +
+>> +maintainers:
+>> +  - Stanimir Varbanov <stanimir.varbanov@linaro.org>
+>> +
+>> +description: |
+>> +  The Venus IP is a video encode and decode accelerator present
+>> +  on Qualcomm platforms
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: qcom,sdm660-venus
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  interrupts:
+>> +    maxItems: 1
+>> +
+>> +  clocks:
+>> +    maxItems: 5
+>> +
+>> +  clock-names:
+>> +    items:
+>> +      - const: core
+>> +      - const: iface
+>> +      - const: bus
+>> +      - const: bus_throttle
+>> +      - const: vcodec0_core
+>> +
+>> +  interconnects:
+>> +    maxItems: 2
+>> +
+>> +  interconnect-names:
+>> +    items:
+>> +      - const: video-mem
+>> +      - const: cpu-cfg
+>> +
+>> +  iommus:
+>> +    maxItems: 20
+> 
+> Perhaps some explanation as to what all these are. Looks like it is just
+> 1 iommu, but lots of ids?
+> 
 
-In any case, the main reason why this change was necessary for us is
-that, during the bringup of Sony Xperia MSM8998 phones, we had an issue
-with the bootloader not turning on the display and not setting the lab
-and ibb regulators before booting the kernel, making it impossible to
-powerup the display.
+Sincerely? I have no idea. These are all of the non-secure IDs that
+are used downstream, but as you can imagine, there is zero documentation
+about them.
 
-With this said, this patchset enables setting voltage, current limiting,
-overcurrent and short-circuit protection.. and others, on the LAB/IBB
-regulators.
-Each commit in this patch series provides as many informations as
-possible about what's going on and testing methodology.
+Though, that's what works and that's what I've pushed... that's all :\
 
-Changes in v4:
- - Remove already applied commit
- - Add commit to switch to regulator_{list,map}_voltage_linear
-   which in v3 got squashed in the commit that got removed in v4.
-
-Changes in v3:
- - Improved check for PBS disable and short-circuit condition:
-   during the testing of short-circuit, coincidentally another
-   register reading zero on the interesting bit was probed,
-   which didn't trigger a malfunction of the SC logic, but was
-   also wrong.
-   After the change, the short-circuit test was re-done in the
-   same way as described in the commit that is implementing it.
- - From Bjorn Andersson review:
-   - Improved documentation about over-current and short-circuit
-     protection in the driver
-   - Improved maintainability of qcom_labibb_sc_recovery_worker()
-   - Flipped around check for PBS vreg disabled in for loop of
-     function labibb_sc_err_handler()
- - From Mark Brown (forgotten in v2):
-   - Changed regulator_{list,map}_voltage_linear_range usages to
-     regulator_{list,map}_voltage_linear (and fixed regulator
-     descs to reflect the change).
-
-Changes in v2:
- - From Mark Brown review:
-   - Replaced some if branches with switch statements
-   - Moved irq get and request in probe function
-   - Changed short conditionals to full ones
-   - Removed useless check for ocp_irq_requested
- -  Fixed issues with YAML documentation
-
-AngeloGioacchino Del Regno (7):
-  regulator: qcom-labibb: Switch voltage ops from linear_range to linear
-  regulator: qcom-labibb: Implement current limiting
-  regulator: qcom-labibb: Implement pull-down, softstart, active
-    discharge
-  dt-bindings: regulator: qcom-labibb: Document soft start properties
-  regulator: qcom-labibb: Implement short-circuit and over-current IRQs
-  dt-bindings: regulator: qcom-labibb: Document SCP/OCP interrupts
-  arm64: dts: pmi8998: Add the right interrupts for LAB/IBB SCP and OCP
-
- .../regulator/qcom-labibb-regulator.yaml      |  30 +-
- arch/arm64/boot/dts/qcom/pmi8998.dtsi         |   8 +-
- drivers/regulator/qcom-labibb-regulator.c     | 720 +++++++++++++++++-
- 3 files changed, 735 insertions(+), 23 deletions(-)
-
--- 
-2.30.0
+>> +
+>> +  memory-region:
+>> +    maxItems: 1
+>> +
+>> +  power-domains:
+>> +    minItems: 3
+>> +
+>> +  power-domain-names:
+>> +    items:
+>> +      - const: cx
+>> +      - const: vcodec0
+>> +      - const: venus
+>> +
+>> +  video-decoder:
+>> +    type: object
+>> +
+>> +    properties:
+>> +      compatible:
+>> +        const: venus-decoder
+>> +
+>> +    required:
+>> +      - compatible
+>> +
+>> +    additionalProperties: false
+>> +
+>> +  video-encoder:
+>> +    type: object
+>> +
+>> +    properties:
+>> +      compatible:
+>> +        const: venus-encoder
+>> +
+>> +    required:
+>> +      - compatible
+>> +
+>> +    additionalProperties: false
+>> +
+>> +  video-firmware:
+>> +    type: object
+>> +
+>> +    description: |
+>> +      Firmware subnode is needed when the platform does not
+>> +      have TrustZone.
+>> +
+>> +    properties:
+>> +      iommus:
+>> +        maxItems: 2
+>> +
+>> +    required:
+>> +      - iommus
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - interrupts
+>> +  - power-domains
+>> +  - power-domain-names
+>> +  - clocks
+>> +  - clock-names
+>> +  - iommus
+>> +  - memory-region
+>> +  - video-decoder
+>> +  - video-encoder
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +        #include <dt-bindings/interrupt-controller/arm-gic.h>
+>> +        #include <dt-bindings/clock/qcom,mmcc-sdm660.h>
+>> +        #include <dt-bindings/power/qcom-rpmpd.h>
+>> +
+>> +        video-codec@cc00000 {
+>> +                compatible = "qcom,sdm660-venus";
+>> +                reg = <0x0cc00000 0xff000>;
+>> +                interrupts = <GIC_SPI 287 IRQ_TYPE_LEVEL_HIGH>;
+>> +                power-domains = <&rpmpd SDM660_VDDCX>,
+>> +                                <&mmcc VENUS_CORE0_GDSC>,
+>> +                                <&mmcc VENUS_GDSC>;
+>> +                power-domain-names = "cx", "vcodec0", "venus";
+>> +                clocks = <&mmcc VIDEO_CORE_CLK>,
+>> +                         <&mmcc VIDEO_AHB_CLK>,
+>> +                         <&mmcc VIDEO_AXI_CLK>,
+>> +                         <&mmcc THROTTLE_VIDEO_AXI_CLK>,
+>> +                         <&mmcc VIDEO_SUBCORE0_CLK>;
+>> +                clock-names = "core", "iface", "bus", "bus_throttle",
+>> +                              "vcodec0_core";
+>> +                iommus = <&mmss_smmu 0x400>,
+>> +                         <&mmss_smmu 0x401>,
+>> +                         <&mmss_smmu 0x40a>,
+>> +                         <&mmss_smmu 0x407>,
+>> +                         <&mmss_smmu 0x40e>,
+>> +                         <&mmss_smmu 0x40f>,
+>> +                         <&mmss_smmu 0x408>,
+>> +                         <&mmss_smmu 0x409>,
+>> +                         <&mmss_smmu 0x40b>,
+>> +                         <&mmss_smmu 0x40c>,
+>> +                         <&mmss_smmu 0x40d>,
+>> +                         <&mmss_smmu 0x410>,
+>> +                         <&mmss_smmu 0x421>,
+>> +                         <&mmss_smmu 0x428>,
+>> +                         <&mmss_smmu 0x429>,
+>> +                         <&mmss_smmu 0x42b>,
+>> +                         <&mmss_smmu 0x42c>,
+>> +                         <&mmss_smmu 0x42d>,
+>> +                         <&mmss_smmu 0x411>,
+>> +                         <&mmss_smmu 0x431>;
+>> +                memory-region = <&venus_region>;
+>> +
+>> +                video-decoder {
+>> +                        compatible = "venus-decoder";
+>> +                };
+>> +
+>> +                video-encoder {
+>> +                        compatible = "venus-encoder";
+>> +                };
+>> +        };
+>> -- 
+>> 2.29.2
+>>
 
