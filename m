@@ -7,27 +7,27 @@ X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12846C4332E
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Jan 2021 22:27:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A55AC433E0
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Jan 2021 22:27:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 066D523104
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Jan 2021 22:27:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4786C230FE
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Jan 2021 22:27:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730049AbhASW1K (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Jan 2021 17:27:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38354 "EHLO
+        id S1731022AbhASW13 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Jan 2021 17:27:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729072AbhASRqN (ORCPT
+        with ESMTP id S1728810AbhASRqM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Jan 2021 12:46:13 -0500
-Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E2D6C061796
+        Tue, 19 Jan 2021 12:46:12 -0500
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99716C061795
         for <phone-devel@vger.kernel.org>; Tue, 19 Jan 2021 09:44:26 -0800 (PST)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id D4A893EFCD;
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 6BF3A3F179;
         Tue, 19 Jan 2021 18:44:23 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
@@ -39,9 +39,9 @@ Cc:     agross@kernel.org, bjorn.andersson@linaro.org, lgirdwood@gmail.com,
         marijn.suijten@somainline.org, martin.botka@somainline.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v4 3/7] regulator: qcom-labibb: Implement pull-down, softstart, active discharge
-Date:   Tue, 19 Jan 2021 18:44:17 +0100
-Message-Id: <20210119174421.226541-4-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v4 2/7] regulator: qcom-labibb: Implement current limiting
+Date:   Tue, 19 Jan 2021 18:44:16 +0100
+Message-Id: <20210119174421.226541-3-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210119174421.226541-1-angelogioacchino.delregno@somainline.org>
 References: <20210119174421.226541-1-angelogioacchino.delregno@somainline.org>
@@ -51,186 +51,174 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Soft start is required to avoid inrush current during LAB ramp-up and
-IBB ramp-down, protecting connected hardware to which we supply voltage.
+LAB and IBB regulators can be current-limited by setting the
+appropriate registers, but this operation is granted only after
+sending an unlock code for secure access.
 
-Since soft start is configurable on both LAB and IBB regulators, it
-was necessary to add two DT properties, respectively "qcom,soft-start-us"
-to control LAB ramp-up and "qcom,discharge-resistor-kohms" to control
-the discharge resistor for IBB ramp-down, which obviously brought the
-need of implementing a of_parse callback for both regulators.
+Besides the secure access, it would be possible to use the
+regmap helper for get_current_limit, as there is no security
+blocking reads, but I chose not to as to avoid having a very
+big array containing current limits, especially for IBB.
 
-Finally, also implement pull-down mode in order to avoid unpredictable
-behavior when the regulators are disabled (random voltage spikes etc).
+That said, these regulators support current limiting for:
+- LAB (pos): 200-1600mA, with 200mA per step (8 steps),
+- IBB (neg):   0-1550mA, with  50mA per step (32 steps).
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 ---
- drivers/regulator/qcom-labibb-regulator.c | 94 +++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+ drivers/regulator/qcom-labibb-regulator.c | 92 +++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
 diff --git a/drivers/regulator/qcom-labibb-regulator.c b/drivers/regulator/qcom-labibb-regulator.c
-index 0643713d6aad..4d68b69b5a52 100644
+index 0fe0f6bce4cf..0643713d6aad 100644
 --- a/drivers/regulator/qcom-labibb-regulator.c
 +++ b/drivers/regulator/qcom-labibb-regulator.c
-@@ -29,12 +29,23 @@
+@@ -29,6 +29,15 @@
  #define LABIBB_STATUS1_VREG_OK_BIT	BIT(7)
  #define LABIBB_CONTROL_ENABLE		BIT(7)
  
-+#define REG_LABIBB_PD_CTL		0x47
-+ #define LAB_PD_CTL_MASK		GENMASK(1, 0)
-+ #define IBB_PD_CTL_MASK		(BIT(0) | BIT(7))
-+ #define LAB_PD_CTL_STRONG_PULL		BIT(0)
-+ #define IBB_PD_CTL_HALF_STRENGTH	BIT(0)
-+ #define IBB_PD_CTL_EN			BIT(7)
++#define REG_LABIBB_CURRENT_LIMIT	0x4b
++ #define LAB_CURRENT_LIMIT_MASK		GENMASK(2, 0)
++ #define IBB_CURRENT_LIMIT_MASK		GENMASK(4, 0)
++ #define LAB_CURRENT_LIMIT_OVERRIDE_EN	BIT(3)
++ #define LABIBB_CURRENT_LIMIT_EN	BIT(7)
 +
- #define REG_LABIBB_CURRENT_LIMIT	0x4b
-  #define LAB_CURRENT_LIMIT_MASK		GENMASK(2, 0)
-  #define IBB_CURRENT_LIMIT_MASK		GENMASK(4, 0)
-  #define LAB_CURRENT_LIMIT_OVERRIDE_EN	BIT(3)
-  #define LABIBB_CURRENT_LIMIT_EN	BIT(7)
- 
-+#define REG_IBB_PWRUP_PWRDN_CTL_1	0x58
-+ #define IBB_CTL_1_DISCHARGE_EN		BIT(2)
++#define REG_LABIBB_SEC_ACCESS		0xd0
++ #define LABIBB_SEC_UNLOCK_CODE		0xa5
 +
-+#define REG_LABIBB_SOFT_START_CTL	0x5f
- #define REG_LABIBB_SEC_ACCESS		0xd0
-  #define LABIBB_SEC_UNLOCK_CODE		0xa5
+ #define LAB_ENABLE_CTL_MASK		BIT(7)
+ #define IBB_ENABLE_CTL_MASK		(BIT(7) | BIT(6))
  
-@@ -60,6 +71,8 @@ struct labibb_regulator {
- 	struct labibb_current_limits	uA_limits;
+@@ -37,11 +46,18 @@
+ #define IBB_ENABLE_TIME			(LABIBB_OFF_ON_DELAY * 10)
+ #define LABIBB_POLL_ENABLED_TIME	1000
+ 
++struct labibb_current_limits {
++	u32				uA_min;
++	u32				uA_step;
++	u8				ovr_val;
++};
++
+ struct labibb_regulator {
+ 	struct regulator_desc		desc;
+ 	struct device			*dev;
+ 	struct regmap			*regmap;
+ 	struct regulator_dev		*rdev;
++	struct labibb_current_limits	uA_limits;
  	u16				base;
  	u8				type;
-+	u8				dischg_sel;
-+	u8				soft_start_sel;
+ };
+@@ -53,6 +69,57 @@ struct labibb_regulator_data {
+ 	const struct regulator_desc	*desc;
  };
  
- struct labibb_regulator_data {
-@@ -120,6 +133,70 @@ static int qcom_labibb_get_current_limit(struct regulator_dev *rdev)
- 	return (cur_step * lim->uA_step) + lim->uA_min;
- }
- 
-+static int qcom_labibb_set_soft_start(struct regulator_dev *rdev)
++static int qcom_labibb_set_current_limit(struct regulator_dev *rdev,
++					 int min_uA, int max_uA)
 +{
 +	struct labibb_regulator *vreg = rdev_get_drvdata(rdev);
-+	u32 val = 0;
++	struct regulator_desc *desc = &vreg->desc;
++	struct labibb_current_limits *lim = &vreg->uA_limits;
++	u32 mask, val;
++	int i, ret, sel = -1;
 +
-+	if (vreg->type == QCOM_IBB_TYPE)
-+		val = vreg->dischg_sel;
-+	else
-+		val = vreg->soft_start_sel;
++	if (min_uA < lim->uA_min || max_uA < lim->uA_min)
++		return -EINVAL;
 +
-+	return regmap_write(rdev->regmap, rdev->desc->soft_start_reg, val);
++	for (i = 0; i < desc->n_current_limits; i++) {
++		int uA_limit = (lim->uA_step * i) + lim->uA_min;
++
++		if (max_uA >= uA_limit && min_uA <= uA_limit)
++			sel = i;
++	}
++	if (sel < 0)
++		return -EINVAL;
++
++	/* Current limit setting needs secure access */
++	ret = regmap_write(vreg->regmap, vreg->base + REG_LABIBB_SEC_ACCESS,
++			   LABIBB_SEC_UNLOCK_CODE);
++	if (ret)
++		return ret;
++
++	mask = desc->csel_mask | lim->ovr_val;
++	mask |= LABIBB_CURRENT_LIMIT_EN;
++	val = (u32)sel | lim->ovr_val;
++	val |= LABIBB_CURRENT_LIMIT_EN;
++
++	return regmap_update_bits(vreg->regmap, desc->csel_reg, mask, val);
 +}
 +
-+static int qcom_labibb_get_table_sel(const int *table, int sz, u32 value)
++static int qcom_labibb_get_current_limit(struct regulator_dev *rdev)
 +{
-+	int i;
-+
-+	for (i = 0; i < sz; i++)
-+		if (table[i] == value)
-+			return i;
-+	return -EINVAL;
-+}
-+
-+/* IBB discharge resistor values in KOhms */
-+static const int dischg_resistor_values[] = { 300, 64, 32, 16 };
-+
-+/* Soft start time in microseconds */
-+static const int soft_start_values[] = { 200, 400, 600, 800 };
-+
-+static int qcom_labibb_of_parse_cb(struct device_node *np,
-+				   const struct regulator_desc *desc,
-+				   struct regulator_config *config)
-+{
-+	struct labibb_regulator *vreg = config->driver_data;
-+	u32 dischg_kohms, soft_start_time;
++	struct labibb_regulator *vreg = rdev_get_drvdata(rdev);
++	struct regulator_desc *desc = &vreg->desc;
++	struct labibb_current_limits *lim = &vreg->uA_limits;
++	unsigned int cur_step;
 +	int ret;
 +
-+	ret = of_property_read_u32(np, "qcom,discharge-resistor-kohms",
-+				       &dischg_kohms);
++	ret = regmap_read(vreg->regmap, desc->csel_reg, &cur_step);
 +	if (ret)
-+		dischg_kohms = 300;
-+
-+	ret = qcom_labibb_get_table_sel(dischg_resistor_values,
-+					ARRAY_SIZE(dischg_resistor_values),
-+					dischg_kohms);
-+	if (ret < 0)
 +		return ret;
-+	vreg->dischg_sel = (u8)ret;
++	cur_step &= desc->csel_mask;
 +
-+	ret = of_property_read_u32(np, "qcom,soft-start-us",
-+				   &soft_start_time);
-+	if (ret)
-+		soft_start_time = 200;
-+
-+	ret = qcom_labibb_get_table_sel(soft_start_values,
-+					ARRAY_SIZE(soft_start_values),
-+					soft_start_time);
-+	if (ret < 0)
-+		return ret;
-+	vreg->soft_start_sel = (u8)ret;
-+
-+	return 0;
++	return (cur_step * lim->uA_step) + lim->uA_min;
 +}
 +
  static const struct regulator_ops qcom_labibb_ops = {
  	.enable			= regulator_enable_regmap,
  	.disable		= regulator_disable_regmap,
-@@ -128,8 +205,11 @@ static const struct regulator_ops qcom_labibb_ops = {
+@@ -61,6 +128,8 @@ static const struct regulator_ops qcom_labibb_ops = {
  	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
  	.list_voltage		= regulator_list_voltage_linear,
  	.map_voltage		= regulator_map_voltage_linear,
-+	.set_active_discharge	= regulator_set_active_discharge_regmap,
-+	.set_pull_down		= regulator_set_pull_down_regmap,
- 	.set_current_limit	= qcom_labibb_set_current_limit,
- 	.get_current_limit	= qcom_labibb_get_current_limit,
-+	.set_soft_start		= qcom_labibb_set_soft_start,
++	.set_current_limit	= qcom_labibb_set_current_limit,
++	.get_current_limit	= qcom_labibb_get_current_limit,
  };
  
  static const struct regulator_desc pmi8998_lab_desc = {
-@@ -138,6 +218,10 @@ static const struct regulator_desc pmi8998_lab_desc = {
- 	.enable_val		= LABIBB_CONTROL_ENABLE,
- 	.enable_time		= LAB_ENABLE_TIME,
- 	.poll_enabled_time	= LABIBB_POLL_ENABLED_TIME,
-+	.soft_start_reg		= (PMI8998_LAB_REG_BASE + REG_LABIBB_SOFT_START_CTL),
-+	.pull_down_reg		= (PMI8998_LAB_REG_BASE + REG_LABIBB_PD_CTL),
-+	.pull_down_mask		= LAB_PD_CTL_MASK,
-+	.pull_down_val_on	= LAB_PD_CTL_STRONG_PULL,
- 	.vsel_reg		= (PMI8998_LAB_REG_BASE + REG_LABIBB_VOLTAGE),
+@@ -73,6 +142,9 @@ static const struct regulator_desc pmi8998_lab_desc = {
  	.vsel_mask		= LAB_VOLTAGE_SET_MASK,
  	.apply_reg		= (PMI8998_LAB_REG_BASE + REG_LABIBB_VOLTAGE),
-@@ -152,6 +236,7 @@ static const struct regulator_desc pmi8998_lab_desc = {
- 	.uV_step		= 100000,
- 	.n_voltages		= 16,
- 	.ops			= &qcom_labibb_ops,
-+	.of_parse_cb		= qcom_labibb_of_parse_cb,
- };
- 
- static const struct regulator_desc pmi8998_ibb_desc = {
-@@ -160,6 +245,14 @@ static const struct regulator_desc pmi8998_ibb_desc = {
- 	.enable_val		= LABIBB_CONTROL_ENABLE,
- 	.enable_time		= IBB_ENABLE_TIME,
- 	.poll_enabled_time	= LABIBB_POLL_ENABLED_TIME,
-+	.soft_start_reg		= (PMI8998_IBB_REG_BASE + REG_LABIBB_SOFT_START_CTL),
-+	.active_discharge_off	= 0,
-+	.active_discharge_on	= IBB_CTL_1_DISCHARGE_EN,
-+	.active_discharge_mask	= IBB_CTL_1_DISCHARGE_EN,
-+	.active_discharge_reg	= (PMI8998_IBB_REG_BASE + REG_IBB_PWRUP_PWRDN_CTL_1),
-+	.pull_down_reg		= (PMI8998_IBB_REG_BASE + REG_LABIBB_PD_CTL),
-+	.pull_down_mask		= IBB_PD_CTL_MASK,
-+	.pull_down_val_on	= IBB_PD_CTL_HALF_STRENGTH | IBB_PD_CTL_EN,
- 	.vsel_reg		= (PMI8998_IBB_REG_BASE + REG_LABIBB_VOLTAGE),
+ 	.apply_bit		= LABIBB_VOLTAGE_OVERRIDE_EN,
++	.csel_reg		= (PMI8998_LAB_REG_BASE + REG_LABIBB_CURRENT_LIMIT),
++	.csel_mask		= LAB_CURRENT_LIMIT_MASK,
++	.n_current_limits	= 8,
+ 	.off_on_delay		= LABIBB_OFF_ON_DELAY,
+ 	.owner			= THIS_MODULE,
+ 	.type			= REGULATOR_VOLTAGE,
+@@ -92,6 +164,9 @@ static const struct regulator_desc pmi8998_ibb_desc = {
  	.vsel_mask		= IBB_VOLTAGE_SET_MASK,
  	.apply_reg		= (PMI8998_IBB_REG_BASE + REG_LABIBB_VOLTAGE),
-@@ -174,6 +267,7 @@ static const struct regulator_desc pmi8998_ibb_desc = {
- 	.uV_step		= 100000,
- 	.n_voltages		= 64,
- 	.ops			= &qcom_labibb_ops,
-+	.of_parse_cb		= qcom_labibb_of_parse_cb,
- };
+ 	.apply_bit		= LABIBB_VOLTAGE_OVERRIDE_EN,
++	.csel_reg		= (PMI8998_IBB_REG_BASE + REG_LABIBB_CURRENT_LIMIT),
++	.csel_mask		= IBB_CURRENT_LIMIT_MASK,
++	.n_current_limits	= 32,
+ 	.off_on_delay		= LABIBB_OFF_ON_DELAY,
+ 	.owner			= THIS_MODULE,
+ 	.type			= REGULATOR_VOLTAGE,
+@@ -163,6 +238,23 @@ static int qcom_labibb_regulator_probe(struct platform_device *pdev)
+ 		vreg->base = reg_data->base;
+ 		vreg->type = reg_data->type;
  
- static const struct labibb_regulator_data pmi8998_labibb_data[] = {
++		switch (vreg->type) {
++		case QCOM_LAB_TYPE:
++			/* LAB Limits: 200-1600mA */
++			vreg->uA_limits.uA_min  = 200000;
++			vreg->uA_limits.uA_step = 200000;
++			vreg->uA_limits.ovr_val = LAB_CURRENT_LIMIT_OVERRIDE_EN;
++			break;
++		case QCOM_IBB_TYPE:
++			/* IBB Limits: 0-1550mA */
++			vreg->uA_limits.uA_min  = 0;
++			vreg->uA_limits.uA_step = 50000;
++			vreg->uA_limits.ovr_val = 0; /* No override bit */
++			break;
++		default:
++			return -EINVAL;
++		}
++
+ 		memcpy(&vreg->desc, reg_data->desc, sizeof(vreg->desc));
+ 		vreg->desc.of_match = reg_data->name;
+ 		vreg->desc.name = reg_data->name;
 -- 
 2.30.0
 
