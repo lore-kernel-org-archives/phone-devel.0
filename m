@@ -2,107 +2,76 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.9 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2D45C4332B
-	for <phone-devel@archiver.kernel.org>; Thu, 21 Jan 2021 01:25:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9011DC433E6
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Jan 2021 19:42:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C484C2388D
-	for <phone-devel@archiver.kernel.org>; Thu, 21 Jan 2021 01:25:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4DB0923A3A
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Jan 2021 19:42:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732966AbhAUA7o (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 20 Jan 2021 19:59:44 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54592 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390369AbhAUAJI (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 20 Jan 2021 19:09:08 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 79B7C23730;
-        Thu, 21 Jan 2021 00:08:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611187700;
-        bh=AtC5q2W2oLkfDoZzLgASSBt9b4kFplLrpoUru6BPG4g=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=VwRIy3GP+8gDpjzd9jJZMwZrpCuYm+Z5t82CXBMh8nTKRUNV2jjRLu20Gm/yA3CT1
-         6+ducthmEeo2uO5q0NDMipcdYhbAJLJ+8aVvS+q7YLLZ/dA9m9b8xXDn1so1g9LV8t
-         +jiTJJHWvrppzaBPfkEwMZ45MsE2FPd6sQdv7XcXF3uRES4YzRxBrnB4Ry7/TQTI4T
-         5ztrKsd4UCtj3zGN6mfa/4qeAmKmBWaycDwOs6ckJWph83CVDEEh7/OkIYkE0eCElx
-         9+X6K91Ic9dl+9IDsaTdZ0ysTa2w2xEw3FNtff35RfyEMfH4YzdJIDGqeHIiKDYNan
-         god6FAfLcBzTw==
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-arm-msm@vger.kernel.org,
+        id S1727312AbhAUTmh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 21 Jan 2021 14:42:37 -0500
+Received: from relay06.th.seeweb.it ([5.144.164.167]:46135 "EHLO
+        relay06.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726769AbhAUTmU (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 21 Jan 2021 14:42:20 -0500
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id C88833EEEC;
+        Thu, 21 Jan 2021 20:40:53 +0100 (CET)
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+To:     bjorn.andersson@linaro.org
+Cc:     agross@kernel.org, robh+dt@kernel.org, lgirdwood@gmail.com,
+        broonie@kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, jeffrey.l.hugo@gmail.com,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Cc:     bjorn.andersson@linaro.org, agross@kernel.org,
-        phone-devel@vger.kernel.org, sumit.semwal@linaro.org,
-        linux-kernel@vger.kernel.org, martin.botka@somainline.org,
-        devicetree@vger.kernel.org, konrad.dybcio@somainline.org,
-        robh+dt@kernel.org, marijn.suijten@somainline.org,
-        lgirdwood@gmail.com
-In-Reply-To: <20210119174421.226541-1-angelogioacchino.delregno@somainline.org>
-References: <20210119174421.226541-1-angelogioacchino.delregno@somainline.org>
-Subject: Re: (subset) [PATCH v4 0/7] Really implement Qualcomm LAB/IBB regulators
-Message-Id: <161118766212.46058.17597385912492952608.b4-ty@kernel.org>
-Date:   Thu, 21 Jan 2021 00:07:42 +0000
+Subject: [PATCH v5 2/3] MAINTAINERS: Add entry for Qualcomm CPRv3/v4/Hardened driver
+Date:   Thu, 21 Jan 2021 20:40:50 +0100
+Message-Id: <20210121194051.484209-3-angelogioacchino.delregno@somainline.org>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210121194051.484209-1-angelogioacchino.delregno@somainline.org>
+References: <20210121194051.484209-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 19 Jan 2021 18:44:14 +0100, AngeloGioacchino Del Regno wrote:
-> Okay, the title may be a little "aggressive"? However, the qcom-labibb
-> driver wasn't really .. doing much.
-> The current form of this driver is only taking care of enabling or
-> disabling the regulators, which is pretty useless if they were not
-> pre-set from the bootloader, which sets them only if continuous
-> splash is enabled.
-> Moreover, some bootloaders are setting a higher voltage and/or a higher
-> current limit compared to what's actually required by the attached
-> hardware (which is, in 99.9% of the cases, a display) and this produces
-> a higher power consumption, higher heat output and a risk of actually
-> burning the display if kept up for a very long time: for example, this
-> is true on at least some Sony Xperia MSM8998 (Yoshino platform) and
-> especially on some Sony Xperia SDM845 (Tama platform) smartphones.
-> 
-> [...]
+Add maintainers entry for the Qualcomm CPR3/CPR4/CPRh driver.
 
-Applied to
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
+ MAINTAINERS | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3f50d126dfcc..5c458052dbf4 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14684,6 +14684,12 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
+ F:	drivers/soc/qcom/cpr.c
+ 
++QUALCOMM CORE POWER REDUCTION v3/v4/Hardened AVS DRIVER
++M:	AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
++S:	Maintained
++F:	Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml
++F:	drivers/soc/qcom/cpr3.c
++
+ QUALCOMM CPUFREQ DRIVER MSM8996/APQ8096
+ M:	Ilia Lin <ilia.lin@kernel.org>
+ L:	linux-pm@vger.kernel.org
+-- 
+2.30.0
 
-Thanks!
-
-[1/7] regulator: qcom-labibb: Switch voltage ops from linear_range to linear
-      commit: 9a12eb704ea27826ece4414cb8822388ec54883c
-[2/7] regulator: qcom-labibb: Implement current limiting
-      commit: 8056704ba948c1c54c7a67d78a8399a749f2d04b
-[3/7] regulator: qcom-labibb: Implement pull-down, softstart, active discharge
-      commit: 3bc7cb99fb6eafae5a40bf71ded444df70a425f7
-[4/7] dt-bindings: regulator: qcom-labibb: Document soft start properties
-      commit: 5581304004659ddc8d0d45561c1f2abfe080b4d4
-[5/7] regulator: qcom-labibb: Implement short-circuit and over-current IRQs
-      commit: 390af53e04114f790d60b63802a4de9d815ade03
-[6/7] dt-bindings: regulator: qcom-labibb: Document SCP/OCP interrupts
-      commit: 9499200484669fe33c20c735a3d5a29a0dc0e9d4
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
