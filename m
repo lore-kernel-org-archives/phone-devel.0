@@ -5,307 +5,72 @@ X-Spam-Level:
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF6FDC43381
-	for <phone-devel@archiver.kernel.org>; Thu, 21 Jan 2021 19:44:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11377C433E0
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Jan 2021 19:54:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B3A5123A56
-	for <phone-devel@archiver.kernel.org>; Thu, 21 Jan 2021 19:44:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C8D3D23A54
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Jan 2021 19:54:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726644AbhAUTnZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 21 Jan 2021 14:43:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35302 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726683AbhAUTln (ORCPT
+        id S1726567AbhAUTyH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 21 Jan 2021 14:54:07 -0500
+Received: from relay07.th.seeweb.it ([5.144.164.168]:36913 "EHLO
+        relay07.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725794AbhAUTx6 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 21 Jan 2021 14:41:43 -0500
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7109DC061786
-        for <phone-devel@vger.kernel.org>; Thu, 21 Jan 2021 11:40:56 -0800 (PST)
+        Thu, 21 Jan 2021 14:53:58 -0500
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 332A93EEED;
-        Thu, 21 Jan 2021 20:40:54 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id B5B303EEBD;
+        Thu, 21 Jan 2021 20:52:52 +0100 (CET)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-To:     bjorn.andersson@linaro.org
-Cc:     agross@kernel.org, robh+dt@kernel.org, lgirdwood@gmail.com,
-        broonie@kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, jeffrey.l.hugo@gmail.com,
+To:     viresh.kumar@linaro.org
+Cc:     bjorn.andersson@linaro.org, agross@kernel.org, rjw@rjwysocki.net,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
+        amit.kucheria@linaro.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v5 3/3] dt-bindings: soc: qcom: cpr3: Add bindings for CPR3 driver
-Date:   Thu, 21 Jan 2021 20:40:51 +0100
-Message-Id: <20210121194051.484209-4-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v5 1/7] cpufreq: blacklist SDM630/636/660 in cpufreq-dt-platdev
+Date:   Thu, 21 Jan 2021 20:52:44 +0100
+Message-Id: <20210121195250.492500-2-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210121194051.484209-1-angelogioacchino.delregno@somainline.org>
-References: <20210121194051.484209-1-angelogioacchino.delregno@somainline.org>
+In-Reply-To: <20210121195250.492500-1-angelogioacchino.delregno@somainline.org>
+References: <20210121195250.492500-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the bindings for the CPR3 driver to the documentation.
+Add the SDM630, SDM636 and SDM660 to the blacklist since the CPU
+scaling is handled out of this.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- .../bindings/soc/qcom/qcom,cpr3.yaml          | 241 ++++++++++++++++++
- 1 file changed, 241 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml
+ drivers/cpufreq/cpufreq-dt-platdev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml
-new file mode 100644
-index 000000000000..e2753740c86b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml
-@@ -0,0 +1,241 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/soc/qcom/qcom,cpr3.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: Qualcomm Core Power Reduction v3/v4/Hardened (CPR3, CPR4, CPRh)
-+
-+description: |
-+  CPR (Core Power Reduction) is a technology to reduce core power on a CPU
-+  or other device. Each OPP of a device corresponds to a "corner" that has
-+  a range of valid voltages for a particular frequency. While the device is
-+  running at a particular frequency, CPR monitors dynamic factors such as
-+  temperature, etc. and suggests or, in the CPR-Hardened case performs,
-+  adjustments to the voltage to save power and meet silicon characteristic
-+  requirements.
-+
-+maintainers:
-+  - AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - description: CPRv3 controller
-+        items:
-+          - const: qcom,cpr3
-+      - description: CPRv4 controller
-+        items:
-+          - const: qcom,cpr4
-+      - description: CPRv4-Hardened controller
-+        items:
-+          - enum:
-+              - qcom,msm8998-cprh
-+              - qcom,sdm630-cprh
-+          - const: qcom,cprh
-+
-+  reg:
-+    description: Base address and size of the CPR controller(s)
-+    minItems: 1
-+    maxItems: 2
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clock-names:
-+    items:
-+      - const: "ref"
-+
-+  clocks:
-+    items:
-+      - description: CPR reference clock
-+
-+  vdd-supply:
-+    description: Autonomous Phase Control (APC) or other power supply
-+
-+  '#power-domain-cells':
-+    const: 1
-+
-+  acc-syscon:
-+    description: phandle to syscon for writing ACC settings
-+
-+  nvmem-cells:
-+    description: Cells containing the fuse corners and revision data
-+    minItems: 10
-+    maxItems: 32
-+
-+  nvmem-cell-names:
-+    minItems: 10
-+    maxItems: 32
-+
-+  operating-points-v2: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - clock-names
-+  - clocks
-+  - "#power-domain-cells"
-+  - nvmem-cells
-+  - nvmem-cell-names
-+  - operating-points-v2
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/qcom,gcc-msm8998.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    cpus {
-+        #address-cells = <2>;
-+        #size-cells = <0>;
-+
-+        cpu@0 {
-+            compatible = "qcom,kryo280";
-+            device_type = "cpu";
-+            reg = <0x0 0x0>;
-+            operating-points-v2 = <&cpu_gold_opp_table>;
-+            power-domains = <&apc_cprh 0>;
-+            power-domain-names = "cprh";
-+        };
-+
-+        cpu@100 {
-+            compatible = "qcom,kryo280";
-+            device_type = "cpu";
-+            reg = <0x0 0x0>;
-+            operating-points-v2 = <&cpu_silver_opp_table>;
-+            power-domains = <&apc_cprh 1>;
-+            power-domain-names = "cprh";
-+        };
-+    };
-+
-+    cpu_silver_opp_table: cpu-silver-opp-table {
-+        compatible = "operating-points-v2";
-+        opp-shared;
-+
-+        opp-1843200000 {
-+            opp-hz = /bits/ 64 <1843200000>;
-+            required-opps = <&cprh_opp3>;
-+        };
-+        opp-1094400000 {
-+            opp-hz = /bits/ 64 <1094400000>;
-+            required-opps = <&cprh_opp2>;
-+        };
-+        opp-300000000 {
-+            opp-hz = /bits/ 64 <300000000>;
-+            required-opps = <&cprh_opp1>;
-+        };
-+    };
-+
-+    cpu_gold_opp_table: cpu-gold-opp-table {
-+        compatible = "operating-points-v2";
-+        opp-shared;
-+
-+        opp-2208000000 {
-+            opp-hz = /bits/ 64 <2208000000>;
-+            required-opps = <&cprh_opp3>;
-+        };
-+        opp-1113600000 {
-+            opp-hz = /bits/ 64 <1113600000>;
-+            required-opps = <&cprh_opp2>;
-+        };
-+        opp-300000000 {
-+            opp-hz = /bits/ 64 <300000000>;
-+            required-opps = <&cprh_opp1>;
-+        };
-+    };
-+
-+    cprh_opp_table: cpr-hardened-opp-table {
-+        compatible = "operating-points-v2-qcom-level";
-+
-+        cprh_opp1: opp1 {
-+            opp-level = <1>;
-+            qcom,opp-fuse-level = <1>;
-+        };
-+        cprh_opp2: opp2 {
-+            opp-level = <2>;
-+            qcom,opp-fuse-level = <2>;
-+        };
-+        cprh_opp3: opp3 {
-+            opp-level = <3>;
-+            qcom,opp-fuse-level = <2 3>;
-+        };
-+    };
-+
-+    apc_cprh: power-controller@179c8000 {
-+        compatible = "qcom,msm8998-cprh", "qcom,cprh";
-+        reg = <0x0179c8000 0x4000>, <0x0179c4000 0x4000>;
-+        clocks = <&gcc GCC_HMSS_RBCPR_CLK>;
-+        clock-names = "ref";
-+
-+        #power-domain-cells = <1>;
-+        operating-points-v2 = <&cprh_opp_table>;
-+
-+        nvmem-cells = <&cpr_efuse_speedbin>,
-+                      <&cpr_fuse_revision>,
-+                      <&cpr_quot0_pwrcl>,
-+                      <&cpr_quot1_pwrcl>,
-+                      <&cpr_quot2_pwrcl>,
-+                      <&cpr_quot3_pwrcl>,
-+                      <&cpr_quot_offset1_pwrcl>,
-+                      <&cpr_quot_offset2_pwrcl>,
-+                      <&cpr_quot_offset3_pwrcl>,
-+                      <&cpr_init_voltage0_pwrcl>,
-+                      <&cpr_init_voltage1_pwrcl>,
-+                      <&cpr_init_voltage2_pwrcl>,
-+                      <&cpr_init_voltage3_pwrcl>,
-+                      <&cpr_ro_sel0_pwrcl>,
-+                      <&cpr_ro_sel1_pwrcl>,
-+                      <&cpr_ro_sel2_pwrcl>,
-+                      <&cpr_ro_sel3_pwrcl>,
-+                      <&cpr_quot0_perfcl>,
-+                      <&cpr_quot1_perfcl>,
-+                      <&cpr_quot2_perfcl>,
-+                      <&cpr_quot3_perfcl>,
-+                      <&cpr_quot_offset1_perfcl>,
-+                      <&cpr_quot_offset2_perfcl>,
-+                      <&cpr_quot_offset3_perfcl>,
-+                      <&cpr_init_voltage0_perfcl>,
-+                      <&cpr_init_voltage1_perfcl>,
-+                      <&cpr_init_voltage2_perfcl>,
-+                      <&cpr_init_voltage3_perfcl>,
-+                      <&cpr_ro_sel0_perfcl>,
-+                      <&cpr_ro_sel1_perfcl>,
-+                      <&cpr_ro_sel2_perfcl>,
-+                      <&cpr_ro_sel3_perfcl>;
-+
-+        nvmem-cell-names = "cpr_speed_bin",
-+                           "cpr_fuse_revision",
-+                           "cpr0_quotient1",
-+                           "cpr0_quotient2",
-+                           "cpr0_quotient3",
-+                           "cpr0_quotient4",
-+                           "cpr0_quotient_offset2",
-+                           "cpr0_quotient_offset3",
-+                           "cpr0_quotient_offset4",
-+                           "cpr0_init_voltage1",
-+                           "cpr0_init_voltage2",
-+                           "cpr0_init_voltage3",
-+                           "cpr0_init_voltage4",
-+                           "cpr0_ring_osc1",
-+                           "cpr0_ring_osc2",
-+                           "cpr0_ring_osc3",
-+                           "cpr0_ring_osc4",
-+                           "cpr1_quotient1",
-+                           "cpr1_quotient2",
-+                           "cpr1_quotient3",
-+                           "cpr1_quotient4",
-+                           "cpr1_quotient_offset2",
-+                           "cpr1_quotient_offset3",
-+                           "cpr1_quotient_offset4",
-+                           "cpr1_init_voltage1",
-+                           "cpr1_init_voltage2",
-+                           "cpr1_init_voltage3",
-+                           "cpr1_init_voltage4",
-+                           "cpr1_ring_osc1",
-+                           "cpr1_ring_osc2",
-+                           "cpr1_ring_osc3",
-+                           "cpr1_ring_osc4";
-+    };
-+...
+diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
+index bd2db0188cbb..f82f4ec17ff2 100644
+--- a/drivers/cpufreq/cpufreq-dt-platdev.c
++++ b/drivers/cpufreq/cpufreq-dt-platdev.c
+@@ -135,6 +135,9 @@ static const struct of_device_id blacklist[] __initconst = {
+ 	{ .compatible = "qcom,msm8996", },
+ 	{ .compatible = "qcom,qcs404", },
+ 	{ .compatible = "qcom,sc7180", },
++	{ .compatible = "qcom,sdm630", },
++	{ .compatible = "qcom,sdm636", },
++	{ .compatible = "qcom,sdm660", },
+ 	{ .compatible = "qcom,sdm845", },
+ 
+ 	{ .compatible = "st,stih407", },
 -- 
 2.30.0
 
