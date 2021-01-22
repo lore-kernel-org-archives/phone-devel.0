@@ -2,79 +2,117 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.5 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DDF47C433DB
-	for <phone-devel@archiver.kernel.org>; Fri, 22 Jan 2021 21:43:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B056C433E0
+	for <phone-devel@archiver.kernel.org>; Fri, 22 Jan 2021 23:40:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9A8C923ACA
-	for <phone-devel@archiver.kernel.org>; Fri, 22 Jan 2021 21:43:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 039FC23A3A
+	for <phone-devel@archiver.kernel.org>; Fri, 22 Jan 2021 23:40:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729282AbhAVVm5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 22 Jan 2021 16:42:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60574 "EHLO
+        id S1728140AbhAVXkA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 22 Jan 2021 18:40:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728531AbhAVVlD (ORCPT
+        with ESMTP id S1728009AbhAVXj7 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 22 Jan 2021 16:41:03 -0500
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD6B4C06178B
-        for <phone-devel@vger.kernel.org>; Fri, 22 Jan 2021 13:40:22 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id p21so4460137lfu.11
-        for <phone-devel@vger.kernel.org>; Fri, 22 Jan 2021 13:40:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fVQGipISqL+GidmgskuqE54mrZNWSegyyQUFD/qGixM=;
-        b=DBYc+xh+//BuisFJO7Qj1/JPZY3GmA6Q6VyAQhmchMrcnNdQgI3jZFePMXCHUuaEGg
-         5RGO80cSZyrTGMfD5NST6y8FzE5ZHd23XF5yoG3UYaBQDzFj4EBslBBv+RMkVdaje+V7
-         1w8G104HZiAVP9Xw4H9rO76cPe9oNYOh3DJhL4jOXrv0KPDJz0j53J/JhIHOT3M43fAm
-         w0FEQ+PVt5C4c9c+XLzX44lm3z0UUqXZrPr489pWycIYpyiq4GPqoBcsQfZi8tPWdPI3
-         PJGhLhoQrjfWBxZf2vgIATJgsgdEu5EAdBl5KswwMCDnuF9udk8RL7pcv6HehjvmkuOr
-         eezw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fVQGipISqL+GidmgskuqE54mrZNWSegyyQUFD/qGixM=;
-        b=OFPbkf44vKcwm2I2rsKxzygOT5HQPQmfrg0ckujVeQIzdRnr79exSliPD3dbYI63Sc
-         VD3M9twiAhfFjPlydz5LWzRsbSF8PKzS9STDg7XA6q5zJp8RF2lwbPocPsRWDgyAxT91
-         XFBejJQOIFjr7lX84Nxi4gR0Fr5LGpTbiQ15cbFoqp4ql6E2Q2Kh6WGYEu/oegYJWam6
-         yGX6L44cFZN4q6WewbTw1YSYGn4PZqMOn5wMnap0kRMpxYlNjp6RBhNXdutsYuTQWfeL
-         NVHpaf49036VA8dOIG+AeugJO/IHvdItSLKmCdBtA8PbisEC9n9dTe8RUPPy+vIouRLK
-         lFXQ==
-X-Gm-Message-State: AOAM532QGaEiA12behYh6i8qCrONQ9TVdMaOMYjzw+1jYnzFxMUCMMbO
-        0eGutm9SgeE2XDjU8ThicZMSb2kfx/ypT2Guoy121A==
-X-Google-Smtp-Source: ABdhPJxfbwAudp1weWzfAaiCkKvD4TAjwf6Rim6UybIVL3cqXpXKCe6HdRAIpeeYqM+DRPelpzMSFkQEYdi9Ys2JH6I=
-X-Received: by 2002:a05:6512:3238:: with SMTP id f24mr3247513lfe.29.1611351619532;
- Fri, 22 Jan 2021 13:40:19 -0800 (PST)
+        Fri, 22 Jan 2021 18:39:59 -0500
+Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0691AC0613D6
+        for <phone-devel@vger.kernel.org>; Fri, 22 Jan 2021 15:39:18 -0800 (PST)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 77B203EEDE;
+        Sat, 23 Jan 2021 00:39:13 +0100 (CET)
+Subject: Re: [PATCH v2 1/2] pinctrl: Add driver for Awinic AW9523/B I2C GPIO
+ Expander
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, phone-devel@vger.kernel.org,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>
+References: <20210111182928.587285-1-angelogioacchino.delregno@somainline.org>
+ <CACRpkdZp3oqj4VeUZEPu=POwAdf-7R3NzNoN9XehtEi_R_fgkw@mail.gmail.com>
+ <1e34145b-a04a-1cbb-7fbc-87c69b8dcfd7@somainline.org>
+ <CACRpkdacfa6usOZtc+A=ZxEpB1ij_gAKX2PLMOaX0mY_0qHp6A@mail.gmail.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <f9cc7046-1855-cbe5-51ed-ab5f76716805@somainline.org>
+Date:   Sat, 23 Jan 2021 00:39:13 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-References: <20210102231510.2068851-1-linus.walleij@linaro.org> <20210102231510.2068851-2-linus.walleij@linaro.org>
-In-Reply-To: <20210102231510.2068851-2-linus.walleij@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 22 Jan 2021 22:40:08 +0100
-Message-ID: <CACRpkdbihCo+OYuu8ffokOO=eXeTDAYG1k91dFh+2HGh0jQCWQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2 v9] leds: rt8515: Add Richtek RT8515 LED driver
-To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>
-Cc:     Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        Sakari Ailus <sakari.ailus@iki.fi>, newbytee@protonmail.com,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        phone-devel@vger.kernel.org,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CACRpkdacfa6usOZtc+A=ZxEpB1ij_gAKX2PLMOaX0mY_0qHp6A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi LED folks,
+Il 22/01/21 10:59, Linus Walleij ha scritto:
+> On Mon, Jan 18, 2021 at 3:38 PM AngeloGioacchino Del Regno
+> <angelogioacchino.delregno@somainline.org> wrote:
+> 
+>> By the way, this is really LEVEL irq, not EDGE... To avoid any
+>> misunderstanding, I think that the best way to show you what I
+>> am seeing is to just copy-paste the relevant piece from the
+>> datasheet for this hardware (it's not a confidential datasheet
+>> and freely found on the internet).
+>>
+>> Check this out:
+>> " External MCU is required acknowledge by INTN pin. INTN is open-drain
+>> out-
+>> put, low-level active, and need external pull-up resistor.
+> 
+> This talks about what polarity (active low) the pin from the expander
+> to the SoC/CPU is. It has nothing to do with the line into the
+> expander.
+> 
+>> When AW9523B detect port change, any input state from high-level to
+>> low-level or from
+>>    low-level to high-level will generate interrupt after
+>> 8us internal deglitch. "
+>>
+>> ...but since the datasheet is sometimes unclear about "things" (I am
+>> mostly sure that they have translated it to english from chinese), I
+>> have actually checked whether the INTN pin was pushed LOW when one of
+>> the inputs goes from HIGH to LOW.. and.. it does... and as you imagine
+>> yeah.. it's slow.. and yes, as slow as you can imagine. :)
+>>
+>> So, in short, this chip is raising an interrupt when any input changes
+>> state, regardless of the change being LOW->HIGH or HIGH->LOW.
+> 
+> This means that the expander only supports
+> IRQ_TYPE_EDGE_BOTH and nothing else.
+> 
+> "port change" above means edges.
+> 
+> Augment your driver to only accept this type.
+> 
+> The consumers better request IRQ_TYPE_EDGE_BOTH
+> (from a device tree for example) and consumers better
+> handle the fact that they get interrupts on both rising
+> and falling edge as well, else they may need special
+> code to handle it. This is not a very nice feature of
+> the expander, it would be more helpful to users to
+> get interrupts on only rising or only falling edges, but
+> as written, it will generate interrupts on both transitions.
+> 
+> Yours,
+> Linus Walleij
+> 
 
-I think this version has covered all review comments, at least it's been silent,
-can the driver be merged?
+I see the reading mistake now... oh wow, that was... sad, from me.
+I will fix this ASAP and will send back a v3.
 
-Yours,
-Linus Walleij
+Thank you!
+
+- Angelo
