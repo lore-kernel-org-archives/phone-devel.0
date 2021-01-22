@@ -2,137 +2,79 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE7A8C433E0
-	for <phone-devel@archiver.kernel.org>; Fri, 22 Jan 2021 17:12:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DDF47C433DB
+	for <phone-devel@archiver.kernel.org>; Fri, 22 Jan 2021 21:43:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B06ED233FA
-	for <phone-devel@archiver.kernel.org>; Fri, 22 Jan 2021 17:12:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9A8C923ACA
+	for <phone-devel@archiver.kernel.org>; Fri, 22 Jan 2021 21:43:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729645AbhAVRLi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 22 Jan 2021 12:11:38 -0500
-Received: from mail-oi1-f180.google.com ([209.85.167.180]:42539 "EHLO
-        mail-oi1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729620AbhAVRKn (ORCPT
+        id S1729282AbhAVVm5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 22 Jan 2021 16:42:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60574 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728531AbhAVVlD (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 22 Jan 2021 12:10:43 -0500
-Received: by mail-oi1-f180.google.com with SMTP id x71so6695408oia.9;
-        Fri, 22 Jan 2021 09:10:27 -0800 (PST)
+        Fri, 22 Jan 2021 16:41:03 -0500
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD6B4C06178B
+        for <phone-devel@vger.kernel.org>; Fri, 22 Jan 2021 13:40:22 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id p21so4460137lfu.11
+        for <phone-devel@vger.kernel.org>; Fri, 22 Jan 2021 13:40:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fVQGipISqL+GidmgskuqE54mrZNWSegyyQUFD/qGixM=;
+        b=DBYc+xh+//BuisFJO7Qj1/JPZY3GmA6Q6VyAQhmchMrcnNdQgI3jZFePMXCHUuaEGg
+         5RGO80cSZyrTGMfD5NST6y8FzE5ZHd23XF5yoG3UYaBQDzFj4EBslBBv+RMkVdaje+V7
+         1w8G104HZiAVP9Xw4H9rO76cPe9oNYOh3DJhL4jOXrv0KPDJz0j53J/JhIHOT3M43fAm
+         w0FEQ+PVt5C4c9c+XLzX44lm3z0UUqXZrPr489pWycIYpyiq4GPqoBcsQfZi8tPWdPI3
+         PJGhLhoQrjfWBxZf2vgIATJgsgdEu5EAdBl5KswwMCDnuF9udk8RL7pcv6HehjvmkuOr
+         eezw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=VO4YDPSPk3X4YanEL+ISpxl4y2bC3b4d4yYT6txBL0A=;
-        b=eAUceQnYb5SVZXmi1uyDnrO29qMQqCsBX/P0nq0ErCbL+NID++ZGUhR6hluf6XlchT
-         3ykwry98dTV1Vn+d98fOVFZMbnvBRqHxmeBD4B4cwfTqK+w7ABhsZW7Fo3PRatpyG+Cq
-         iJ43bZRr9xCuC+z95Fq1sGbSGJF/nTq4lzdJY04tlnP7AQVn4KXNq2lHpQ+BqwJTr+Wp
-         sf3ryDKvCCVGVRLIkiSb2aal89o2D/Vmu1NIUFE3IqKcjAKYbtzs20TBCM6U6tgiXFqu
-         7vFfCpHIqjMgXg6xQavPB9+TQzIkBkDB53q8d0Vbrnuhl9qdjzooq0YzD9yv+7JTO+18
-         FF/A==
-X-Gm-Message-State: AOAM530o5Abxnhi39/LKqAVf4kHtG3Luwkv13mRgT3j50kdldNmcyml1
-        92gft1KV/EeMft2ijOJySw==
-X-Google-Smtp-Source: ABdhPJx0C16VS8PjIIah78I3ttMMkQwNvl1FVW/XVbfR9XwakTiy+bbXofid0kkR0SqiLbzL5z12JA==
-X-Received: by 2002:aca:cdd0:: with SMTP id d199mr3938456oig.118.1611335399575;
-        Fri, 22 Jan 2021 09:09:59 -0800 (PST)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id d17sm1787016otk.3.2021.01.22.09.09.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Jan 2021 09:09:58 -0800 (PST)
-Received: (nullmailer pid 981079 invoked by uid 1000);
-        Fri, 22 Jan 2021 17:09:56 -0000
-Date:   Fri, 22 Jan 2021 11:09:56 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Cc:     linux-arm-msm@vger.kernel.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, lgirdwood@gmail.com,
-        broonie@kernel.org, sumit.semwal@linaro.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org
-Subject: Re: [PATCH v4 6/7] dt-bindings: regulator: qcom-labibb: Document
- SCP/OCP interrupts
-Message-ID: <20210122170956.GA977073@robh.at.kernel.org>
-References: <20210119174421.226541-1-angelogioacchino.delregno@somainline.org>
- <20210119174421.226541-7-angelogioacchino.delregno@somainline.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fVQGipISqL+GidmgskuqE54mrZNWSegyyQUFD/qGixM=;
+        b=OFPbkf44vKcwm2I2rsKxzygOT5HQPQmfrg0ckujVeQIzdRnr79exSliPD3dbYI63Sc
+         VD3M9twiAhfFjPlydz5LWzRsbSF8PKzS9STDg7XA6q5zJp8RF2lwbPocPsRWDgyAxT91
+         XFBejJQOIFjr7lX84Nxi4gR0Fr5LGpTbiQ15cbFoqp4ql6E2Q2Kh6WGYEu/oegYJWam6
+         yGX6L44cFZN4q6WewbTw1YSYGn4PZqMOn5wMnap0kRMpxYlNjp6RBhNXdutsYuTQWfeL
+         NVHpaf49036VA8dOIG+AeugJO/IHvdItSLKmCdBtA8PbisEC9n9dTe8RUPPy+vIouRLK
+         lFXQ==
+X-Gm-Message-State: AOAM532QGaEiA12behYh6i8qCrONQ9TVdMaOMYjzw+1jYnzFxMUCMMbO
+        0eGutm9SgeE2XDjU8ThicZMSb2kfx/ypT2Guoy121A==
+X-Google-Smtp-Source: ABdhPJxfbwAudp1weWzfAaiCkKvD4TAjwf6Rim6UybIVL3cqXpXKCe6HdRAIpeeYqM+DRPelpzMSFkQEYdi9Ys2JH6I=
+X-Received: by 2002:a05:6512:3238:: with SMTP id f24mr3247513lfe.29.1611351619532;
+ Fri, 22 Jan 2021 13:40:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210119174421.226541-7-angelogioacchino.delregno@somainline.org>
+References: <20210102231510.2068851-1-linus.walleij@linaro.org> <20210102231510.2068851-2-linus.walleij@linaro.org>
+In-Reply-To: <20210102231510.2068851-2-linus.walleij@linaro.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 22 Jan 2021 22:40:08 +0100
+Message-ID: <CACRpkdbihCo+OYuu8ffokOO=eXeTDAYG1k91dFh+2HGh0jQCWQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2 v9] leds: rt8515: Add Richtek RT8515 LED driver
+To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>
+Cc:     Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        Sakari Ailus <sakari.ailus@iki.fi>, newbytee@protonmail.com,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        phone-devel@vger.kernel.org,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Jan 19, 2021 at 06:44:20PM +0100, AngeloGioacchino Del Regno wrote:
-> Short-Circuit Protection (SCP) and Over-Current Protection (OCP) are
-> now implemented in the driver: document the interrupts.
-> This also fixes wrong documentation about the SCP interrupt for LAB.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-> ---
->  .../regulator/qcom-labibb-regulator.yaml      | 20 +++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml
-> index 7a507692f1ba..cf784bd1f5e5 100644
-> --- a/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml
-> +++ b/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml
-> @@ -29,9 +29,10 @@ properties:
->          default: 200
->  
->        interrupts:
-> -        maxItems: 1
-> +        minItems: 1
-> +        maxItems: 2
->          description:
-> -          Short-circuit interrupt for lab.
-> +          Short-circuit and over-current interrupts for lab.
+Hi LED folks,
 
-minItems: 1
-items:
-  - description: Short-circuit interrupt
-  - description: over-current interrupt
+I think this version has covered all review comments, at least it's been silent,
+can the driver be merged?
 
->  
->      required:
->        - interrupts
-> @@ -47,9 +48,10 @@ properties:
->          default: 300
->  
->        interrupts:
-> -        maxItems: 1
-> +        minItems: 1
-> +        maxItems: 2
->          description:
-> -          Short-circuit interrupt for lab.
-> +          Short-circuit and over-current interrupts for ibb.
->  
->      required:
->        - interrupts
-> @@ -67,13 +69,15 @@ examples:
->        compatible = "qcom,pmi8998-lab-ibb";
->  
->        lab {
-> -        interrupts = <0x3 0x0 IRQ_TYPE_EDGE_RISING>;
-> -        interrupt-names = "sc-err";
-> +        interrupts = <0x3 0xde 0x1 IRQ_TYPE_EDGE_RISING>,
-> +                     <0x3 0xde 0x0 IRQ_TYPE_LEVEL_LOW>;
-> +        interrupt-names = "sc-err", "ocp";
->        };
->  
->        ibb {
-> -        interrupts = <0x3 0x2 IRQ_TYPE_EDGE_RISING>;
-> -        interrupt-names = "sc-err";
-> +        interrupts = <0x3 0xdc 0x2 IRQ_TYPE_EDGE_RISING>,
-> +                     <0x3 0xdc 0x0 IRQ_TYPE_LEVEL_LOW>;
-> +        interrupt-names = "sc-err", "ocp";
->        };
->      };
->  
-> -- 
-> 2.30.0
-> 
+Yours,
+Linus Walleij
