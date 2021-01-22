@@ -2,124 +2,117 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC26DC433DB
-	for <phone-devel@archiver.kernel.org>; Fri, 22 Jan 2021 10:04:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5293FC433E6
+	for <phone-devel@archiver.kernel.org>; Fri, 22 Jan 2021 17:03:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 729342376F
-	for <phone-devel@archiver.kernel.org>; Fri, 22 Jan 2021 10:04:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 22756233FA
+	for <phone-devel@archiver.kernel.org>; Fri, 22 Jan 2021 17:03:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727329AbhAVKCw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 22 Jan 2021 05:02:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50742 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727767AbhAVKBF (ORCPT
+        id S1729587AbhAVRCn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 22 Jan 2021 12:02:43 -0500
+Received: from mail-ot1-f47.google.com ([209.85.210.47]:44115 "EHLO
+        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729525AbhAVRCY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 22 Jan 2021 05:01:05 -0500
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D6EAC061786
-        for <phone-devel@vger.kernel.org>; Fri, 22 Jan 2021 02:00:02 -0800 (PST)
-Received: by mail-lf1-x131.google.com with SMTP id q8so6696988lfm.10
-        for <phone-devel@vger.kernel.org>; Fri, 22 Jan 2021 02:00:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3b6S2/z3tpa4MkB+bZqY5tPcMx97QoLNDAPmEmPnGt0=;
-        b=CD6w0ZgUypDgjE9zR0ZJVOxq+rlOgFypR7WRO0P5wQjcTwWxl7hRP3Ql2htnVNIAcX
-         a6IqCbfY2yRx6C5mdcNVOsZuG69XJvCbRsJ9Uwt9kAhwZJKg1z4WKyK8EfJxQXhrmawK
-         jvFt+Si3bh4KoOEFtnIjQlVBRf7/v7+F49qvweV/jRKr+KlXm110gJzTsJCQIWgstzaw
-         67MyDzp+6NUBDMO2GYmaWO2h4m36KrN07K4BoFPv7KykDmlqx27YNW9ojW1K0wkSNu+M
-         JNGZPmD0ZAsv4GIQ7hMVzNvVvRqICKOZ5otGgE3Bh6ATdVkrvErsTghZo2d4jrVmARuI
-         cncg==
+        Fri, 22 Jan 2021 12:02:24 -0500
+Received: by mail-ot1-f47.google.com with SMTP id e70so5687054ote.11;
+        Fri, 22 Jan 2021 09:02:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3b6S2/z3tpa4MkB+bZqY5tPcMx97QoLNDAPmEmPnGt0=;
-        b=qwi+pxyH/nH1wP8Q48jvHi+48E8pEUcQSDrc5ciHyoroQwPVx2lc1pkH2ZcBXpO0Fc
-         HQuCxm8AjcIlmzFh1rmnaWjdHTFa1EbMuIsChFtXVEffVodtjOylPl1AAOhH1quQZapi
-         Wk9H2utH1qKFbs9g2tVLNjs3CkdRM2/mK8uiGGvDR1Qf3AClCqM+jspslCiM7OhqaEfe
-         YRLEZsgRiHikIRNHEMdacXNXEkldfWp19g9cHu4/p35dZx8bBuKDu1LqoTSL8DVBW8H/
-         fLGVePhNWjxI76rggzt9m/LBfgkrtSQoWJh4ckpLgWZ5Oem7hN7N/YDDsDKXk4eTsHUw
-         +ZAQ==
-X-Gm-Message-State: AOAM533507tVeEwdjb1p0t6iKR/NvQF3ex8S6xUW0ncO9DnK0AyQCe7F
-        Z/fB2qnJICPDV9pdaroW9r1PKAcSKMVgw87cjnJ/Jg==
-X-Google-Smtp-Source: ABdhPJwUwANyZtTNJ+wpcGjC0EBfyorEBi8TdaoRhCKcIcRkNc2spagF6/gcNBcB8Dn2Aspuc2waqUkn0aaoZM6u8JY=
-X-Received: by 2002:ac2:5c45:: with SMTP id s5mr19528lfp.586.1611309601102;
- Fri, 22 Jan 2021 02:00:01 -0800 (PST)
-MIME-Version: 1.0
-References: <20210111182928.587285-1-angelogioacchino.delregno@somainline.org>
- <CACRpkdZp3oqj4VeUZEPu=POwAdf-7R3NzNoN9XehtEi_R_fgkw@mail.gmail.com> <1e34145b-a04a-1cbb-7fbc-87c69b8dcfd7@somainline.org>
-In-Reply-To: <1e34145b-a04a-1cbb-7fbc-87c69b8dcfd7@somainline.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 22 Jan 2021 10:59:50 +0100
-Message-ID: <CACRpkdacfa6usOZtc+A=ZxEpB1ij_gAKX2PLMOaX0mY_0qHp6A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] pinctrl: Add driver for Awinic AW9523/B I2C GPIO Expander
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=6sVAS8McQtykZSKMD8TJfco5bmcxCKrGxCBO63fTSXE=;
+        b=JVavhHJNLPJuuaCdoodJe5nUYDQ5EC8hmBHmQqPBzqpBNdw+9aSK6CEvMZUE3TqDBJ
+         GH3BGHVvnI4durnnJXaL7GUxb8F5/gwhyZutobSqIRB3O9jF7ZER5tTN/LDQilpTzLjO
+         W/3bXdLfMoq64bqVL0ojgk1dvnxzpNJtKYcq9LUwjoa37+aRY/DEY4FyE41JymqKzsI8
+         p6CZAs3h3VmSTeiiHvczZdYuyF7VvKK7qZxACY3Rlnf925maz+v/iBdwKO/aBgq+v7ib
+         JdNMae3RRIpqEynH3MYNtiqKjEE6SSq+gcgWG/ccRl3P4nquvkIy+6jsLCkEJXIz3kho
+         YMQw==
+X-Gm-Message-State: AOAM530HzZr/3KVarNsXgbBJ83rej4dpcsuc+qyb3cZGnRB73doc6Cwy
+        oZjkZk+/xsj7P+Hd8d6OUA==
+X-Google-Smtp-Source: ABdhPJw6HJVLhsFnLETDiHvMJKo7SqxjASi5pXnzmYTpS34geiMln/JrZncuiromxmbZbCWYTmaKnw==
+X-Received: by 2002:a05:6830:3495:: with SMTP id c21mr3965016otu.97.1611334899943;
+        Fri, 22 Jan 2021 09:01:39 -0800 (PST)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id p11sm1751250oif.55.2021.01.22.09.01.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Jan 2021 09:01:38 -0800 (PST)
+Received: (nullmailer pid 968208 invoked by uid 1000);
+        Fri, 22 Jan 2021 17:01:37 -0000
+Date:   Fri, 22 Jan 2021 11:01:37 -0600
+From:   Rob Herring <robh@kernel.org>
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, phone-devel@vger.kernel.org,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     linux-arm-msm@vger.kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, lgirdwood@gmail.com,
+        broonie@kernel.org, sumit.semwal@linaro.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org
+Subject: Re: [PATCH v4 4/7] dt-bindings: regulator: qcom-labibb: Document
+ soft start properties
+Message-ID: <20210122170137.GA962214@robh.at.kernel.org>
+References: <20210119174421.226541-1-angelogioacchino.delregno@somainline.org>
+ <20210119174421.226541-5-angelogioacchino.delregno@somainline.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210119174421.226541-5-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Jan 18, 2021 at 3:38 PM AngeloGioacchino Del Regno
-<angelogioacchino.delregno@somainline.org> wrote:
+On Tue, Jan 19, 2021 at 06:44:18PM +0100, AngeloGioacchino Del Regno wrote:
+> Document properties to configure soft start and discharge resistor
+> for LAB and IBB respectively.
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+> ---
+>  .../bindings/regulator/qcom-labibb-regulator.yaml      | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml
+> index 53853ec20fe2..7a507692f1ba 100644
+> --- a/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml
+> +++ b/Documentation/devicetree/bindings/regulator/qcom-labibb-regulator.yaml
+> @@ -22,6 +22,11 @@ properties:
+>      type: object
+>  
+>      properties:
+> +      qcom,soft-start-us:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
 
-> By the way, this is really LEVEL irq, not EDGE... To avoid any
-> misunderstanding, I think that the best way to show you what I
-> am seeing is to just copy-paste the relevant piece from the
-> datasheet for this hardware (it's not a confidential datasheet
-> and freely found on the internet).
->
-> Check this out:
-> " External MCU is required acknowledge by INTN pin. INTN is open-drain
-> out-
-> put, low-level active, and need external pull-up resistor.
+Don't need a type when you have standard units.
 
-This talks about what polarity (active low) the pin from the expander
-to the SoC/CPU is. It has nothing to do with the line into the
-expander.
+> +        description: Regulator soft start time in microseconds.
+> +        enum: [200, 400, 600, 800]
+> +        default: 200
+>  
+>        interrupts:
+>          maxItems: 1
+> @@ -35,6 +40,11 @@ properties:
+>      type: object
+>  
+>      properties:
+> +      qcom,discharge-resistor-kohms:
 
-> When AW9523B detect port change, any input state from high-level to
-> low-level or from
->   low-level to high-level will generate interrupt after
-> 8us internal deglitch. "
->
-> ...but since the datasheet is sometimes unclear about "things" (I am
-> mostly sure that they have translated it to english from chinese), I
-> have actually checked whether the INTN pin was pushed LOW when one of
-> the inputs goes from HIGH to LOW.. and.. it does... and as you imagine
-> yeah.. it's slow.. and yes, as slow as you can imagine. :)
->
-> So, in short, this chip is raising an interrupt when any input changes
-> state, regardless of the change being LOW->HIGH or HIGH->LOW.
+-kohms is not standard units as documented in property-units.txt (and 
+.yaml in dtschema). Please use '-ohms'.
 
-This means that the expander only supports
-IRQ_TYPE_EDGE_BOTH and nothing else.
+Given this is already applied, send an incremental patch.
 
-"port change" above means edges.
-
-Augment your driver to only accept this type.
-
-The consumers better request IRQ_TYPE_EDGE_BOTH
-(from a device tree for example) and consumers better
-handle the fact that they get interrupts on both rising
-and falling edge as well, else they may need special
-code to handle it. This is not a very nice feature of
-the expander, it would be more helpful to users to
-get interrupts on only rising or only falling edges, but
-as written, it will generate interrupts on both transitions.
-
-Yours,
-Linus Walleij
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: Discharge resistor value in KiloOhms.
+> +        enum: [300, 64, 32, 16]
+> +        default: 300
+>  
+>        interrupts:
+>          maxItems: 1
+> -- 
+> 2.30.0
+> 
