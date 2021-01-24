@@ -2,219 +2,108 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 846D8C433E6
-	for <phone-devel@archiver.kernel.org>; Sun, 24 Jan 2021 09:28:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FDC9C433E0
+	for <phone-devel@archiver.kernel.org>; Sun, 24 Jan 2021 21:52:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3F5F322CF6
-	for <phone-devel@archiver.kernel.org>; Sun, 24 Jan 2021 09:28:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C84A7222BB
+	for <phone-devel@archiver.kernel.org>; Sun, 24 Jan 2021 21:52:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726482AbhAXJ2E (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 24 Jan 2021 04:28:04 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:60594 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726038AbhAXJ16 (ORCPT
+        id S1726103AbhAXVwQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 24 Jan 2021 16:52:16 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.166]:24516 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726023AbhAXVwP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 24 Jan 2021 04:27:58 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id F151C1C0B7F; Sun, 24 Jan 2021 10:27:13 +0100 (CET)
-Date:   Sun, 24 Jan 2021 10:27:13 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     broonie@kernel.org, aaro.koskinen@iki.fi, spinal.by@gmail.com,
-        jarkko.nikula@bitmer.com, merlijn@wizzup.org, pavel@ucw.cz,
-        peter.ujfalusi@ti.com, sre@kernel.org, tony@atomide.com,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        Sun, 24 Jan 2021 16:52:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1611524961;
+        s=strato-dkim-0002; d=gerhold.net;
+        h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:From:
+        Subject:Sender;
+        bh=NSnGwwqn9sdPtkfoFA8tFRtFDL/birwrCnYk8NJrUB4=;
+        b=hr2pt92cWBv0ZHnyCVwblXzqlJtwGiz41JFpTxG9UAd+HF3cHOsEEVRQouX1xLQywy
+        qSHDqREvtSEWeO85I3z4s5hwBRRlNWPxBKF1st5s3hQM18a56MGfEM5fkH9TjYUtegpy
+        lxd/6sS2ik9a6VYXNfWpr2AJlAEfaepProdZ2oY1rvKfi1Ul+ugqh2RJ8WyWtqYEccfM
+        BQP7O6ODK6jxhvpazxyQjUZ9o2QT8g/QMjdxyP2lBLLjXc3Uwcoefcuf72tnldrdQsL0
+        uCeFrDkqCnmPGCbYWgjY4P5IqvErg/OmQo96XH+0jjpkBJ5gaBcgVD3vbyFzY9FIlvLV
+        jgpg==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8j7IczBa4o="
+X-RZG-CLASS-ID: mo00
+Received: from gerhold.net
+        by smtp.strato.de (RZmta 47.12.1 DYNA|AUTH)
+        with ESMTPSA id R0a218x0OLnGiXN
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+        Sun, 24 Jan 2021 22:49:16 +0100 (CET)
+Date:   Sun, 24 Jan 2021 22:49:12 +0100
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org
-Subject: [PATCH] ASoC: ti: Allocate dais dynamically for TDM and audio graph
- card
-Message-ID: <20210124092713.GA22195@amd>
+Subject: Re: [PATCH 0/3] Add initial support for BQ Aquaris X5
+Message-ID: <YA3rTAx2vfOXPCMq@gerhold.net>
+References: <20210124135409.5473-1-jonathan.albrieux@gmail.com>
+ <20210124210119.GA27676@amd>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="wac7ysb48OaltWcw"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20210124210119.GA27676@amd>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Pavel,
 
---wac7ysb48OaltWcw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sun, Jan 24, 2021 at 10:01:19PM +0100, Pavel Machek wrote:
+> Hi!
+> 
+> > Aquaris X5 (Longcheer L8910) is a smartphone released by BQ in 2015.
+> > 
+> > As part of msm8916-mainline project, this series aims to bring initial
+> > mainline support for it.
+> 
+> Good to see another phone being supported. Can I ask you to cc:
+> phone-devel@vger.kernel.org with phone stuff?
+> 
+> > Features added:
+> >  - SDHCI (internal and external storage)
+> >  - USB Device Mode
+> >  - UART
+> >  - Regulators
+> >  - WiFi/BT
+> >  - Volume buttons
+> >  - Vibrator
+> >  - Touchkeys backlight
+> >  - Accelerometer and gyroscope sensor
+> >  - Magnetometer sensor
+> 
+> How close are you to having useful phone calls?
+> 
 
-=46rom: Tony Lindgren <tony@atomide.com>
+You can do phone calls (with audio) and you can use mobile data, if you
+have the patches for that. :) I'm trying to find time to finish up the
+drivers needed for that, but I've been a bit short on time lately.
 
-We can have multiple connections on a single McBSP instance configured
-with audio graph card when using TDM (Time Division Multiplexing). Let's
-allow that by configuring dais dynamically.
+Actually we have come pretty far with MSM8916-based smartphones.
+Most functionality is (somewhat) working at this point, the primary
+open task is optimizing suspend/power consumption. Battery/charging
+and camera is also tricky but works somewhat on some of the devices.
 
-See Documentation/devicetree/bindings/sound/audio-graph-card.txt and
-Documentation/devicetree/bindings/graph.txt for more details for
-multiple endpoints.
+Most of the functionality is packaged in postmarketOS [1] and you can
+find a list of the devices in the postmarketOS wiki [2]. Especially
+the ones in the "community" category are quite similar in terms of
+working functionality.
 
-I've tested this with droid4 where cpcap pmic and modem voice are both
-both wired to mcbsp3. I've also tested this on droid4 both with and
-without the pending modem audio codec driver that is waiting for n_gsm
-serdev dependencies to clear.
+Stephan
 
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
-Cc: Arthur D. <spinal.by@gmail.com>
-Cc: Jarkko Nikula <jarkko.nikula@bitmer.com>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc: Sebastian Reichel <sre@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Pavel Machek <pavel@ucw.cz>
-
----
- sound/soc/ti/omap-mcbsp-priv.h |  2 ++
- sound/soc/ti/omap-mcbsp.c      | 76 +++++++++++++++++++++++++++++---------=
-----
- 2 files changed, 55 insertions(+), 23 deletions(-)
-
-diff --git a/sound/soc/ti/omap-mcbsp-priv.h b/sound/soc/ti/omap-mcbsp-priv.h
-index 7865cda4bf0a..9464f5d35822 100644
---- a/sound/soc/ti/omap-mcbsp-priv.h
-+++ b/sound/soc/ti/omap-mcbsp-priv.h
-@@ -262,6 +262,8 @@ struct omap_mcbsp {
- 	struct omap_mcbsp_platform_data *pdata;
- 	struct omap_mcbsp_st_data *st_data;
- 	struct omap_mcbsp_reg_cfg cfg_regs;
-+	struct snd_soc_dai_driver *dais;
-+	int dai_count;
- 	struct snd_dmaengine_dai_dma_data dma_data[2];
- 	unsigned int dma_req[2];
- 	int dma_op_mode;
-diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-index 6025b30bbe77..189a6461b671 100644
---- a/sound/soc/ti/omap-mcbsp.c
-+++ b/sound/soc/ti/omap-mcbsp.c
-@@ -14,6 +14,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
-+#include <linux/of_graph.h>
- #include <sound/core.h>
- #include <sound/pcm.h>
- #include <sound/pcm_params.h>
-@@ -1299,23 +1300,53 @@ static int omap_mcbsp_remove(struct snd_soc_dai *da=
-i)
- 	return 0;
- }
-=20
--static struct snd_soc_dai_driver omap_mcbsp_dai =3D {
--	.probe =3D omap_mcbsp_probe,
--	.remove =3D omap_mcbsp_remove,
--	.playback =3D {
--		.channels_min =3D 1,
--		.channels_max =3D 16,
--		.rates =3D OMAP_MCBSP_RATES,
--		.formats =3D SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
--	},
--	.capture =3D {
--		.channels_min =3D 1,
--		.channels_max =3D 16,
--		.rates =3D OMAP_MCBSP_RATES,
--		.formats =3D SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
--	},
--	.ops =3D &mcbsp_dai_ops,
--};
-+static int omap_mcbsp_init_dais(struct omap_mcbsp *mcbsp)
-+{
-+	struct device_node *np =3D mcbsp->dev->of_node;
-+	int i;
-+
-+	if (np)
-+		mcbsp->dai_count =3D of_graph_get_endpoint_count(np);
-+
-+	if (!mcbsp->dai_count)
-+		mcbsp->dai_count =3D 1;
-+
-+	mcbsp->dais =3D devm_kcalloc(mcbsp->dev, mcbsp->dai_count,
-+				   sizeof(*mcbsp->dais), GFP_KERNEL);
-+	if (!mcbsp->dais)
-+		return -ENOMEM;
-+
-+	for (i =3D 0; i < mcbsp->dai_count; i++) {
-+		struct snd_soc_dai_driver *dai =3D &mcbsp->dais[i];
-+
-+		dai->name =3D devm_kasprintf(mcbsp->dev, GFP_KERNEL, "%s-dai%i",
-+					   dev_name(mcbsp->dev), i);
-+
-+		if (i =3D=3D 0) {
-+			dai->probe =3D omap_mcbsp_probe;
-+			dai->remove =3D omap_mcbsp_remove;
-+			dai->ops =3D &mcbsp_dai_ops;
-+		}
-+		dai->playback.channels_min =3D 1;
-+		dai->playback.channels_max =3D 16;
-+		dai->playback.rates =3D OMAP_MCBSP_RATES;
-+		if (mcbsp->pdata->reg_size =3D=3D 2)
-+			dai->playback.formats =3D SNDRV_PCM_FMTBIT_S16_LE;
-+		else
-+			dai->playback.formats =3D SNDRV_PCM_FMTBIT_S16_LE |
-+						SNDRV_PCM_FMTBIT_S32_LE;
-+		dai->capture.channels_min =3D 1;
-+		dai->capture.channels_max =3D 16;
-+		dai->capture.rates =3D OMAP_MCBSP_RATES;
-+		if (mcbsp->pdata->reg_size =3D=3D 2)
-+			dai->capture.formats =3D SNDRV_PCM_FMTBIT_S16_LE;
-+		else
-+			dai->capture.formats =3D SNDRV_PCM_FMTBIT_S16_LE |
-+					       SNDRV_PCM_FMTBIT_S32_LE;
-+	}
-+
-+	return 0;
-+}
-=20
- static const struct snd_soc_component_driver omap_mcbsp_component =3D {
- 	.name		=3D "omap-mcbsp",
-@@ -1404,18 +1435,17 @@ static int asoc_mcbsp_probe(struct platform_device =
-*pdev)
- 	mcbsp->dev =3D &pdev->dev;
- 	platform_set_drvdata(pdev, mcbsp);
-=20
--	ret =3D omap_mcbsp_init(pdev);
-+	ret =3D omap_mcbsp_init_dais(mcbsp);
- 	if (ret)
- 		return ret;
-=20
--	if (mcbsp->pdata->reg_size =3D=3D 2) {
--		omap_mcbsp_dai.playback.formats =3D SNDRV_PCM_FMTBIT_S16_LE;
--		omap_mcbsp_dai.capture.formats =3D SNDRV_PCM_FMTBIT_S16_LE;
--	}
-+	ret =3D omap_mcbsp_init(pdev);
-+	if (ret)
-+		return ret;
-=20
- 	ret =3D devm_snd_soc_register_component(&pdev->dev,
- 					      &omap_mcbsp_component,
--					      &omap_mcbsp_dai, 1);
-+					      mcbsp->dais, mcbsp->dai_count);
- 	if (ret)
- 		return ret;
-=20
---=20
-2.11.0
-
---=20
-http://www.livejournal.com/~pavelmachek
-
---wac7ysb48OaltWcw
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAmANPXAACgkQMOfwapXb+vLfrgCeNvSRS9g22zGEyaBrP8dM+pds
-zs8Ani6OgW/IB2/CcypeT+4Dp1n+GCMc
-=zxjB
------END PGP SIGNATURE-----
-
---wac7ysb48OaltWcw--
+[1]: https://postmarketos.org
+[2]: https://wiki.postmarketos.org/wiki/Qualcomm_Snapdragon_410/412_(MSM8916)
