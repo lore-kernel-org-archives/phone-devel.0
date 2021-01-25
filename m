@@ -2,87 +2,84 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+X-Spam-Status: No, score=-4.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20E34C433E6
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 18:39:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A669DC433E0
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 19:08:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E8A3122240
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 18:39:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 72DBE230FC
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 19:08:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391166AbhAZRVx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Jan 2021 12:21:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55356 "EHLO
+        id S1732212AbhAZF7O (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Jan 2021 00:59:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390536AbhAZIpe (ORCPT
+        with ESMTP id S1728489AbhAYNEw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Jan 2021 03:45:34 -0500
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C32D6C0613ED
-        for <phone-devel@vger.kernel.org>; Tue, 26 Jan 2021 00:44:54 -0800 (PST)
-Received: by mail-ej1-x635.google.com with SMTP id hs11so21864809ejc.1
-        for <phone-devel@vger.kernel.org>; Tue, 26 Jan 2021 00:44:54 -0800 (PST)
+        Mon, 25 Jan 2021 08:04:52 -0500
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BEE7C06174A;
+        Mon, 25 Jan 2021 05:03:45 -0800 (PST)
+Received: by mail-ej1-x633.google.com with SMTP id r12so17829236ejb.9;
+        Mon, 25 Jan 2021 05:03:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=eji12R6gCX6BEtC0hEE+44yMlKnt13zaBvqRPlDNOuc=;
-        b=PQoCDVWAVbJM1hi5GLiYL0t3gI53bWAiY2QgADmfc35vPnzuoOhxIkP9UsdEuCA587
-         /p5fzyEineh6m2JIkEh1ex0o5AI2hW+JSjtvSxAjwngO0Mwg1ko4EzQGj7n+0fMSpnw7
-         pXIAGXVIjAGqsZx4JJ6op25GEVzDBpOuKD0E3WFPxxx9AQmCdHy8IaE+k/jq+ePpWid+
-         gE1pEdzkax0axxeJY3ocV1jkJZgtYl2ohGg6CLjWHlhjRg7zbPWv5NDKvoV8EMZu/qOx
-         AqfvLiiZN2yOAOll6kala2zOq2xosj+gALGgiKZ5fItjVzYDNNBHINlEaZMbay1aHg5h
-         0OsA==
+        bh=5BtAz/bpqn5E3fKEbGDIqpaPzkxzUwSHMlIJU+EClb0=;
+        b=XzpCnQQWDyE42zz/8z0OjMguAGw1ihehqyESZVWYsnWQI6ax9813rW9GOFmn254QAS
+         MXgJmPIhpSbHwIsa8Hkqx8KklsrWj20TQU5pHTB59GA+gnCIcYbr9qUtlTKzUD9u1aLI
+         kv3w6sE0KkqsVfKirCnEGqmoL3Wiigwv38wv/T7fuZs83brjLpcjmlqQKj0OVTdoJelS
+         /CAEjphsAdKz2SE7iDMtnNNee0qHA9Syoq1J/Uea7ow+XJ7IFBA492zI2iSV8vksUBZ0
+         xcG/2/TDuZvFwzToPu9r0hhP50AaoOW8C7NXyqGnVIDTop+3HFn75wxigohLuYfY+cI1
+         FVTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=eji12R6gCX6BEtC0hEE+44yMlKnt13zaBvqRPlDNOuc=;
-        b=Jl7mF6nIpjo88rAYTiy2V0parjFp380j2M+izlg4YPe0vhRvyAKV8grljyplp94HHZ
-         IqUYZ+XkQfLm9d2hnx8qgKnZlpwSPCPCU1M9bzFBG+fWqiVEhMDCH5OE32cMOsSMiZNs
-         x0HEXQT4VT3U/BA3WKg1e7Le4VeKIEkP8t5SbaNg2WmuYxmievdyQ6WsoSDwCR7k7i+j
-         HRDp0np6ruAqy2FVLEQyFAt+06RgTcBtan3fri1C5o34toq/fBRbUyOL7g+5Ip1wHe8F
-         NmMXG12vFJJJR6/w22T2GPrknSw0Eoo5VEd+WoW8MybsVl0UYjIXEza6H6MnItAZnB8A
-         R+aQ==
-X-Gm-Message-State: AOAM531avy6b+3p8BUX0GS1tlCQ9aA1NgBJa39G3/10abn6s9B6WSqty
-        dhRMiSZFktT4n9gPwoh5dikDh7f9HAip0HCp
-X-Google-Smtp-Source: ABdhPJzV2BuJu8DMCJn/QOuR5oWv0SJ08MU4W2rVgFGMuLKyCmqR6IcDkFoAlIHHx7f8UfKezwsyZg==
-X-Received: by 2002:a17:906:dbe7:: with SMTP id yd7mr2843644ejb.242.1611650693279;
-        Tue, 26 Jan 2021 00:44:53 -0800 (PST)
-Received: from [192.168.0.2] ([84.238.208.206])
-        by smtp.googlemail.com with ESMTPSA id h12sm9501891ejf.95.2021.01.26.00.44.52
+        bh=5BtAz/bpqn5E3fKEbGDIqpaPzkxzUwSHMlIJU+EClb0=;
+        b=lVhJfm5nwg0piYkkD7iY1Xcp7kgxleW8KqNZA54uP8o5V5bqo4y5CzVcKM0T3bvKjR
+         YXbCMlZy+SuidzNwIw3fLeTUy8PbGu3W/NmCPajbA4/eNo08V9G3mN1584fomrjDj4fP
+         UHsVegenBdXursZo8UH4AeUheduQVCJQJoDkX82eYB1Wmf/cI8BS8db/vANSY/bDGaQP
+         9rgbDA1LM7cGs0/PWsW5vPZ8+XntInW7PxqtidY4GNx96lW8owDl8JGx6aPFmf+1jeCB
+         5FreqYBOgM+LktuPWR/NvEK4Dx3xViFxSIbDmLmeylJrF+YvYKIycexMSptNw5teRked
+         eT1g==
+X-Gm-Message-State: AOAM531ZF/YD7tuzQXMYhgWUfm3fDq9xzBstpmtnYw+Scu0LNS4ZgZgL
+        2d98YG0mABBaGDSkZLvJY5QLqX3BIQ+esg==
+X-Google-Smtp-Source: ABdhPJwPrRzjjiIXXpH8oj4ahx1fjvueIZ6h1f1UhC2xPD8O5Q7iFPsAWpILsXO5lDPpcY4RcoK7wQ==
+X-Received: by 2002:a17:907:2458:: with SMTP id yw24mr278853ejb.333.1611579824230;
+        Mon, 25 Jan 2021 05:03:44 -0800 (PST)
+Received: from [192.168.74.106] (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
+        by smtp.gmail.com with ESMTPSA id w4sm10443005eds.40.2021.01.25.05.03.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Jan 2021 00:44:52 -0800 (PST)
-Subject: Re: [PATCH 1/2] media: venus: core: Add sdm660 DT compatible and
- resource struct
-To:     Hans Verkuil <hverkuil@xs4all.nl>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Cc:     agross@kernel.org, bjorn.andersson@linaro.org, mchehab@kernel.org,
-        robh+dt@kernel.org, devicetree@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, phone-devel@vger.kernel.org
-References: <20210115185252.333562-1-angelogioacchino.delregno@somainline.org>
- <20210115185252.333562-2-angelogioacchino.delregno@somainline.org>
- <2dc8a95f-110f-526f-18a8-6393e508c3a6@linaro.org>
- <eabc91cc-de96-08ef-756c-87fe43d6fadc@somainline.org>
- <cfc1998f-8d9b-5237-f286-7fdc69874b30@xs4all.nl>
- <40c38734-a69d-2314-c342-244ee5a0e6b1@somainline.org>
- <58f76830-7af5-0507-ce3f-2c1cd9b101d1@xs4all.nl>
-From:   Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Message-ID: <0c4cce0b-fdb8-d094-14a5-2ed527afd9da@linaro.org>
-Date:   Tue, 26 Jan 2021 10:44:51 +0200
+        Mon, 25 Jan 2021 05:03:43 -0800 (PST)
+Subject: Re: [PATCH 1/4] ARM: dts: qcom: msm8974: add gpu support
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Samuel Pascua <pascua.samuel.14@gmail.com>,
+        Alexey Minnekhanov <alexeymin@postmarketos.org>,
+        Brian Masney <masneyb@onstation.org>,
+        phone-devel@vger.kernel.org
+References: <20210124135610.1779295-1-iskren.chernev@gmail.com>
+ <20210124210527.GB27676@amd>
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+Message-ID: <14a9bef3-bff6-1f25-7a15-485277b0b1ad@gmail.com>
+Date:   Mon, 25 Jan 2021 15:03:41 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-In-Reply-To: <58f76830-7af5-0507-ce3f-2c1cd9b101d1@xs4all.nl>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20210124210527.GB27676@amd>
+Content-Type: text/plain; charset=windows-1252
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -91,176 +88,24 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 
 
-On 1/25/21 5:01 PM, Hans Verkuil wrote:
-> On 25/01/2021 15:51, AngeloGioacchino Del Regno wrote:
->> Il 25/01/21 11:40, Hans Verkuil ha scritto:
->>> On 18/01/2021 18:45, AngeloGioacchino Del Regno wrote:
->>>> Il 18/01/21 18:21, Stanimir Varbanov ha scritto:
->>>>> Hi Angelo,
->>>>>
->>>>> Thanks for the patch!
->>>>>
->>>>> On 1/15/21 8:52 PM, AngeloGioacchino Del Regno wrote:
->>>>>> Add the SDM660 DT compatible and its resource structure, also
->>>>>> including support for the Venus pmdomains, in order to support
->>>>>> the Venus block in SDM630, SDM636, SDM660 and SDA variants.
->>>>>>
->>>>>> This SoC features Venus 4.4 (HFI3XX), with one vcodec used for
->>>>>> both encoding and decoding, switched on through two GDSCs.
->>>>>> The core clock for this Venus chip is powered by the RPM VDD_CX
->>>>>> power domain.
->>>>>>
->>>>>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
->>>>>> ---
->>>>>>    drivers/media/platform/qcom/venus/core.c | 66 ++++++++++++++++++++++++
->>>>>>    1 file changed, 66 insertions(+)
->>>>>>
->>>>>> diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
->>>>>> index bdd293faaad0..83ca86a63241 100644
->>>>>> --- a/drivers/media/platform/qcom/venus/core.c
->>>>>> +++ b/drivers/media/platform/qcom/venus/core.c
->>>>>> @@ -565,6 +565,71 @@ static const struct venus_resources sdm845_res_v2 = {
->>>>>>    	.fwname = "qcom/venus-5.2/venus.mdt",
->>>>>>    };
->>>>>>    
->>>>>> +static const struct freq_tbl sdm660_freq_table[] = {
->>>>>> +	{ 0, 518400000 },
->>>>>> +	{ 0, 441600000 },
->>>>>> +	{ 0, 404000000 },
->>>>>> +	{ 0, 320000000 },
->>>>>> +	{ 0, 269330000 },
->>>>>> +	{ 0, 133330000 },
->>>>>> +};
->>>>>> +
->>>>>> +static const struct reg_val sdm660_reg_preset[] = {
->>>>>> +	{ 0x80010, 0x001f001f },
->>>>>> +	{ 0x80018, 0x00000156 },
->>>>>> +	{ 0x8001C, 0x00000156 },
->>>>>> +};
->>>>>> +
->>>>>> +static const struct bw_tbl sdm660_bw_table_enc[] = {
->>>>>> +	{  979200,  1044000, 0, 2446336, 0 },	/* 4k UHD @ 30 */
->>>>>> +	{  864000,   887000, 0, 2108416, 0 },	/* 720p @ 240 */
->>>>>> +	{  489600,   666000, 0, 1207296, 0 },	/* 1080p @ 60 */
->>>>>> +	{  432000,   578000, 0, 1058816, 0 },	/* 720p @ 120 */
->>>>>> +	{  244800,   346000, 0,  616448, 0 },	/* 1080p @ 30 */
->>>>>> +	{  216000,   293000, 0,  534528, 0 },	/* 720p @ 60 */
->>>>>> +	{  108000,   151000, 0,  271360, 0 },	/* 720p @ 30 */
->>>>>> +};
->>>>>> +
->>>>>> +static const struct bw_tbl sdm660_bw_table_dec[] = {
->>>>>> +	{  979200,  2365000, 0, 1892000, 0 },	/* 4k UHD @ 30 */
->>>>>> +	{  864000,  1978000, 0, 1554000, 0 },	/* 720p @ 240 */
->>>>>> +	{  489600,  1133000, 0,  895000, 0 },	/* 1080p @ 60 */
->>>>>> +	{  432000,   994000, 0,  781000, 0 },	/* 720p @ 120 */
->>>>>> +	{  244800,   580000, 0,  460000, 0 },	/* 1080p @ 30 */
->>>>>> +	{  216000,   501000, 0,  301000, 0 },	/* 720p @ 60 */
->>>>>> +	{  108000,   255000, 0,  202000, 0 },	/* 720p @ 30 */
->>>>>> +};
->>>>>> +
->>>>>> +static const struct venus_resources sdm660_res = {
->>>>>> +	.freq_tbl = sdm660_freq_table,
->>>>>> +	.freq_tbl_size = ARRAY_SIZE(sdm660_freq_table),
->>>>>> +	.reg_tbl = sdm660_reg_preset,
->>>>>> +	.reg_tbl_size = ARRAY_SIZE(sdm660_reg_preset),
->>>>>> +	.bw_tbl_enc = sdm660_bw_table_enc,
->>>>>> +	.bw_tbl_enc_size = ARRAY_SIZE(sdm660_bw_table_enc),
->>>>>> +	.bw_tbl_dec = sdm660_bw_table_dec,
->>>>>> +	.bw_tbl_dec_size = ARRAY_SIZE(sdm660_bw_table_dec),
->>>>>> +	.clks = {"core", "iface", "bus_throttle", "bus" },
->>>>>> +	.clks_num = 4,
->>>>>> +	.vcodec0_clks = { "vcodec0_core" },
->>>>>> +	.vcodec_clks_num = 1,
->>>>>> +	.vcodec_pmdomains = { "venus", "vcodec0" },
->>>>>> +	.vcodec_pmdomains_num = 2,
->>>>>> +	.opp_pmdomain = (const char *[]) { "cx", NULL },
->>>>>> +	.vcodec_num = 1,
->>>>>> +	.max_load = 1036800,
->>>>>> +	.hfi_version = HFI_VERSION_3XX,
->>>>>> +	.vmem_id = VIDC_RESOURCE_NONE,
->>>>>> +	.vmem_size = 0,
->>>>>> +	.vmem_addr = 0,
->>>>>> +	.cp_start = 0,
->>>>>> +	.cp_size = 0x79000000,
->>>>>> +	.cp_nonpixel_start = 0x1000000,
->>>>>> +	.cp_nonpixel_size = 0x28000000,
->>>>>> +	.dma_mask = 0xd9000000 - 1,
->>>>>> +	.fwname = "qcom/venus-4.4/venus.mdt",
->>>>>
->>>>> Did you try venus-4.2 firmware from linux-firmware tree [1] ?
->>>>>
->>>>
->>>> No I haven't.. and I can't... my Sony devices (but I think that this is
->>>> a practice of all OEMs/ODMs) are using a Sony signed venus firmware, so
->>>> I am totally limited to use the firmware that comes with the device.
->>>>
->>>> Besides that, the version is still different so, even if I had any
->>>> possibility to try that, I don't think that it would work anyway...
+On 1/24/21 11:05 PM, Pavel Machek wrote:
+> On Sun 2021-01-24 15:56:07, Iskren Chernev wrote:
+>> From: Brian Masney <masneyb@onstation.org>
 >>
->> Hello!
->>
->>>
->>> I'm a bit confused. "qcom/venus-4.4/venus.mdt" is the Sony signed FW?
->>>
->>
->> In my case it is, but this follows the generic firmware path as was done
->> for all the other Venus firmwares, so my code is not pointing at Sony
->> specific things, but just generic ones.
->>
->> Every Qualcomm-powered consumer device (smartphones, tablets etc) have
->> got a double sigcheck: one for qcom, one for OEM specific and most of
->> the times the TZ is configured to accept only firmwares that also have
->> the OEM signature.
->>
->> This is not true for all the firmwares - for example, Adreno has this
->> mechanism only for the ZAP part - but unfortunately I'm not aware of
->> any consumer device accepting a Venus firmware with the "generic"
->> Qualcomm signature only (so - without the OEM signature).
->>
->> Short answer:
->> 1. qcom/venus-4.4/venus.mdt is a generic firmware for Venus
+>> Add support for the a3xx GPU
 > 
-> So can this FW be made available in the linux-firmware repo? Stanimir?
-> 
->> 2. 99% of the people needs a different firmware for signature issues
->>
->>
->>> This patch can't be merged unless there is a corresponding firmware available
->>> in linux-firmware. Is the current 4.2 firmware in linux-firmware signed by
->>> Qualcomm? Can they provided 4.4 firmware as well?
->>>
->>
->> If there is such issue, then maybe we should do "something" about it: I
->> would then propose to remove all references to fwname and just get this
->> done in DT, where every qcom board already specifies its own path for
->> its own firmware.
->>
->> In any case, the issue that you're raising here has been raised multiple
->> times on LKML, I don't precisely remember, but I recall seeing this for
->> something like 4 years (or even more) being raised every now and then...
->>
->>> I have no idea how this works for the venus driver, but I hope Stanimir does.
->>>
->>
->> As far as I've understood, this driver just uses the firmware which
->> path is hardcoded in fwname, even though at this point I would like
->> to get an opinion from Stanimir.
->>
->> Would you be ok if we start parsing firmware-name from DT for this
->> driver? The flow would be something like:
->>
->> Is firmware-name DT property present?
->>     Yes -> Use FW path from firmware-name property
->>     No  -> Use the FW path from the fwname field of struct
->>            venus_resources
->>
->> This is a common flow in at least freedreno and remoteproc (modem).
-> 
-> I would have no problem with this, but it is up to Stanimir to decide.
-> 
+> This is phone, right? Can I ask phone-devel@vger.kernel.org to be
+> cc-ed?
 
-I sent a patch for that. Thanks for raising this issue.
+CC-ing phone-devel@vger.kernel.org.
 
--- 
-regards,
-Stan
+I'm not sure why you didn't do it :-/
+
+>
+> Thank you,
+> 							Pavel
+> 							
+>
+
+Regards,
+Iskren
