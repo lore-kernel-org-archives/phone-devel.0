@@ -2,110 +2,146 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A669DC433E0
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 19:08:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68F06C433DB
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 19:08:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 72DBE230FC
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 19:08:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 33C7D22EBD
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 19:08:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732212AbhAZF7O (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Jan 2021 00:59:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54726 "EHLO
+        id S1729517AbhAZF7E (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Jan 2021 00:59:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728489AbhAYNEw (ORCPT
+        with ESMTP id S1727210AbhAYJsu (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Jan 2021 08:04:52 -0500
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BEE7C06174A;
-        Mon, 25 Jan 2021 05:03:45 -0800 (PST)
-Received: by mail-ej1-x633.google.com with SMTP id r12so17829236ejb.9;
-        Mon, 25 Jan 2021 05:03:45 -0800 (PST)
+        Mon, 25 Jan 2021 04:48:50 -0500
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB2D2C06178A;
+        Mon, 25 Jan 2021 01:47:41 -0800 (PST)
+Received: by mail-wr1-x433.google.com with SMTP id q7so11530038wre.13;
+        Mon, 25 Jan 2021 01:47:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=5BtAz/bpqn5E3fKEbGDIqpaPzkxzUwSHMlIJU+EClb0=;
-        b=XzpCnQQWDyE42zz/8z0OjMguAGw1ihehqyESZVWYsnWQI6ax9813rW9GOFmn254QAS
-         MXgJmPIhpSbHwIsa8Hkqx8KklsrWj20TQU5pHTB59GA+gnCIcYbr9qUtlTKzUD9u1aLI
-         kv3w6sE0KkqsVfKirCnEGqmoL3Wiigwv38wv/T7fuZs83brjLpcjmlqQKj0OVTdoJelS
-         /CAEjphsAdKz2SE7iDMtnNNee0qHA9Syoq1J/Uea7ow+XJ7IFBA492zI2iSV8vksUBZ0
-         xcG/2/TDuZvFwzToPu9r0hhP50AaoOW8C7NXyqGnVIDTop+3HFn75wxigohLuYfY+cI1
-         FVTQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=ThFiDlyMsgJrXidZg0Gd3b2g1YMJoXR4frCyMrY3dEo=;
+        b=rFMsWq5mqWz8g4OnEwKNaaQxuUHXznbDq25XNx+77jqsrKrcEu9zY1M9EDfmexjXTq
+         7xxzwOmxxzxlz6Fc3kWRhl7Ol5U8yP/kSGfInHDosyH++Xd6+tcCwstBOq24SAI2KY61
+         Pwasj6BJYgf2/SYgT26AUxpWz2VbkMiiC148PuTF3c+Wsjh6dgNnEXLPl7aoN3gjSWDu
+         15WxIQq6g1C+9PCvqkdSVyIaEOSAG41ylsn9Zsv6AxVwxG1S9O/dQ7Bj7csYiGA55gDq
+         992VlXTs0VHAlzQRD8377LyFE+DRt5HffhnAksZ0Dk6MWYsT4p/ZFJHvImWtpJiJyZW9
+         bxOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=5BtAz/bpqn5E3fKEbGDIqpaPzkxzUwSHMlIJU+EClb0=;
-        b=lVhJfm5nwg0piYkkD7iY1Xcp7kgxleW8KqNZA54uP8o5V5bqo4y5CzVcKM0T3bvKjR
-         YXbCMlZy+SuidzNwIw3fLeTUy8PbGu3W/NmCPajbA4/eNo08V9G3mN1584fomrjDj4fP
-         UHsVegenBdXursZo8UH4AeUheduQVCJQJoDkX82eYB1Wmf/cI8BS8db/vANSY/bDGaQP
-         9rgbDA1LM7cGs0/PWsW5vPZ8+XntInW7PxqtidY4GNx96lW8owDl8JGx6aPFmf+1jeCB
-         5FreqYBOgM+LktuPWR/NvEK4Dx3xViFxSIbDmLmeylJrF+YvYKIycexMSptNw5teRked
-         eT1g==
-X-Gm-Message-State: AOAM531ZF/YD7tuzQXMYhgWUfm3fDq9xzBstpmtnYw+Scu0LNS4ZgZgL
-        2d98YG0mABBaGDSkZLvJY5QLqX3BIQ+esg==
-X-Google-Smtp-Source: ABdhPJwPrRzjjiIXXpH8oj4ahx1fjvueIZ6h1f1UhC2xPD8O5Q7iFPsAWpILsXO5lDPpcY4RcoK7wQ==
-X-Received: by 2002:a17:907:2458:: with SMTP id yw24mr278853ejb.333.1611579824230;
-        Mon, 25 Jan 2021 05:03:44 -0800 (PST)
-Received: from [192.168.74.106] (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
-        by smtp.gmail.com with ESMTPSA id w4sm10443005eds.40.2021.01.25.05.03.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Jan 2021 05:03:43 -0800 (PST)
-Subject: Re: [PATCH 1/4] ARM: dts: qcom: msm8974: add gpu support
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=ThFiDlyMsgJrXidZg0Gd3b2g1YMJoXR4frCyMrY3dEo=;
+        b=X9I5zQhAVAcvUQctV3MNwhdnQ7ZQEb1BAE0Bi9dhtO8wL0xXbW2qGTe6m3UL33U3Aj
+         /oc4c2KiXDsP6ze/EFUqHK8F4a/vxdjFpoyyxmNKEMdvhVZ0rBa8u4fI90ZOFw+N+t9r
+         C0X6z6UbxGe3MNocQXDOHrp0L0JUscRSYqaZUWSktGuhMFS/AzZP2kZWDu6oaOFkucEZ
+         9BDCXSJBqvgxCqZTJQBmU0Nshn2FZrTFxKXd/Zw5KhHz3mn6p4GyEVOdTrbi1dmp+M+I
+         lPUAl+Olr3Kt4+8ibrU4bcviB84szKah/ZOzoe7t7czzBeRhMAtv12Ob4AIg9Lo2eedp
+         IZ/A==
+X-Gm-Message-State: AOAM5323iYqGB26EncXrf7FjHPMCW5YLU6wDvA4mkNSjJCzB/DFkkK0Q
+        rsAv8O49mN4XKrP8R2H0EuKaFYhXLv8=
+X-Google-Smtp-Source: ABdhPJwye/iD5yC8aoVnnGkOVK2lInc+mxJqz7DsbgQJqaKDMrYISLO3Hh63kKEax6PF3L/7qEssZA==
+X-Received: by 2002:adf:902a:: with SMTP id h39mr903641wrh.147.1611568060096;
+        Mon, 25 Jan 2021 01:47:40 -0800 (PST)
+Received: from jonathan-N53SV.station ([151.81.101.204])
+        by smtp.googlemail.com with ESMTPSA id u5sm22154052wmg.9.2021.01.25.01.47.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Jan 2021 01:47:39 -0800 (PST)
+From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, stephan@gerhold.net,
+        phone-devel@vger.kernel.org,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
         Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Samuel Pascua <pascua.samuel.14@gmail.com>,
-        Alexey Minnekhanov <alexeymin@postmarketos.org>,
-        Brian Masney <masneyb@onstation.org>,
-        phone-devel@vger.kernel.org
-References: <20210124135610.1779295-1-iskren.chernev@gmail.com>
- <20210124210527.GB27676@amd>
-From:   Iskren Chernev <iskren.chernev@gmail.com>
-Message-ID: <14a9bef3-bff6-1f25-7a15-485277b0b1ad@gmail.com>
-Date:   Mon, 25 Jan 2021 15:03:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
-MIME-Version: 1.0
-In-Reply-To: <20210124210527.GB27676@amd>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH v2 3/3] arm64: dts: qcom: msm8916-longcheer-l8910: Add imu/magnetometer
+Date:   Mon, 25 Jan 2021 10:44:32 +0100
+Message-Id: <20210125094435.7528-4-jonathan.albrieux@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210125094435.7528-1-jonathan.albrieux@gmail.com>
+References: <20210125094435.7528-1-jonathan.albrieux@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+BQ Aquaris X5 (Longcheer L8910) has:
+ - BMI160 accelerometer and gyroscope sensor
+ - AK09911 magnetometer sensor
+Add them to the device tree.
 
+This patch depends on patch "arm64: dts: qcom: msm8916: Add blsp_i2c3".
 
-On 1/24/21 11:05 PM, Pavel Machek wrote:
-> On Sun 2021-01-24 15:56:07, Iskren Chernev wrote:
->> From: Brian Masney <masneyb@onstation.org>
->>
->> Add support for the a3xx GPU
-> 
-> This is phone, right? Can I ask phone-devel@vger.kernel.org to be
-> cc-ed?
+Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+---
+ .../boot/dts/qcom/msm8916-longcheer-l8910.dts | 37 +++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-CC-ing phone-devel@vger.kernel.org.
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
+index 7d5eff922f41..27845189ac2b 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
+@@ -56,6 +56,35 @@
+ 	};
+ };
+ 
++&blsp_i2c3 {
++	status = "okay";
++
++	magnetometer@d {
++		compatible = "asahi-kasei,ak09911";
++		reg = <0x0d>;
++
++		vdd-supply = <&pm8916_l17>;
++		vid-supply = <&pm8916_l6>;
++
++		reset-gpios = <&msmgpio 111 GPIO_ACTIVE_LOW>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&mag_reset_default>;
++	};
++
++	imu@68 {
++		compatible = "bosch,bmi160";
++		reg = <0x68>;
++
++		vdd-supply = <&pm8916_l17>;
++		vddio-supply = <&pm8916_l6>;
++
++		mount-matrix = "0", "1", "0",
++			      "-1", "0", "0",
++			       "0", "0", "1";
++	};
++};
++
+ &blsp1_uart2 {
+ 	status = "okay";
+ };
+@@ -220,6 +249,14 @@
+ 		bias-pull-up;
+ 	};
+ 
++	mag_reset_default: mag-reset-default {
++		pins = "gpio111";
++		function = "gpio";
++
++		drive-strength = <2>;
++		bias-disable;
++	};
++
+ 	usb_id_default: usb-id-default {
+ 		pins = "gpio110";
+ 		function = "gpio";
+-- 
+2.17.1
 
-I'm not sure why you didn't do it :-/
-
->
-> Thank you,
-> 							Pavel
-> 							
->
-
-Regards,
-Iskren
