@@ -6,73 +6,71 @@ X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A039C433DB
-	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 22:25:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23971C433DB
+	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 22:44:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6186120756
-	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 22:25:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DCEBC20756
+	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 22:44:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732171AbhAYWX7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 25 Jan 2021 17:23:59 -0500
-Received: from mail-ot1-f51.google.com ([209.85.210.51]:35807 "EHLO
-        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732259AbhAYWS4 (ORCPT
+        id S1731606AbhAYWnj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 25 Jan 2021 17:43:39 -0500
+Received: from mail-oi1-f179.google.com ([209.85.167.179]:37452 "EHLO
+        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732706AbhAYWnP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Jan 2021 17:18:56 -0500
-Received: by mail-ot1-f51.google.com with SMTP id 36so14376524otp.2;
-        Mon, 25 Jan 2021 14:18:40 -0800 (PST)
+        Mon, 25 Jan 2021 17:43:15 -0500
+Received: by mail-oi1-f179.google.com with SMTP id r189so16550431oih.4;
+        Mon, 25 Jan 2021 14:42:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=yuRJ5XXNmCcnnSjJmwKB5dtvH2780WSd0v/kIk+gCHw=;
-        b=UOBjE7rzXGxGRCFXUGCz+UIR05MX2vMw+wrqaxqtQycXhWLuZ8x+mq4Wn784ifyBg7
-         w/CPZJhyA00lU7QGVg8V+qXLop+2vX4aSQ+YrspduFdPOY5HnQtg38TAVgJBnRC5XsM9
-         u2bCwLgDQ79E8aw9WnA6dSHFyNgDDKN/0n0TxBUHQqUSfRp0444FV/A8D/3mI6gVlUEn
-         M7zo1YTCZ410VYtdN/6rCZumb6hSfe512cWkTKuBy4EQ8Njma4z+x97lq4sVFQLJepv1
-         EocP97Svm+AQBKpLCvyxPBmIXL+VIR9N0khbiUoc4yVPnuwyBG7ZBxk3RWMtiXNDa6dh
-         Fmvw==
-X-Gm-Message-State: AOAM5322L3RydLHr2deX14X0Z8aryb77h3s3COm9ZBG+rAfRXjKA0L7s
-        Ox4vqND/3eu+heWB/FPWsNVyNmPYnQ==
-X-Google-Smtp-Source: ABdhPJxLmwOp2RDIRETQouyajpF6d+Q1vWI5hgWCBBP+Wckj414QPqg+qNxlc15tQpggvc6DqEhTZA==
-X-Received: by 2002:a05:6830:1f02:: with SMTP id u2mr1956465otg.124.1611613095102;
-        Mon, 25 Jan 2021 14:18:15 -0800 (PST)
+        bh=RG2OD+U32R5mTlXKaJSdwx5Qmsh0fQnS2Kh57eD3bpA=;
+        b=PCQ3L+aWRaaWHPpK59HJmldsA5iV22eykf8SUCkgA8cCXY4m/p9NWGToGkhJmnNzjx
+         Hi36aalLC84Rdq2qV0pZ55D2dsMenuiPNXWGzAQa0tpv2mODgKwtts+sNi1bSmMBKWyk
+         a2Ox9IckCNycL2uxMnwg0vcMYkutyk9y33d66ZsOarDZD9KeGCH7HGNh0pgh/Z4025H6
+         hlWBZqLxgnydN+3XX/3k1nl1IimLHOABTiq7Ow849TQ8aKbp5fYrkAy7yCK1HWh+u/tY
+         vwPW6ZlbVMTizW7q3hI/7PNE8m+ckEUoK8FsI4j/d/+rdU2tKbuYsRytClg7IRGEHT2Z
+         5oJw==
+X-Gm-Message-State: AOAM5317jkJfC8NrZVMpHxw05rcINm2m8BQCGeynauPAbF/XOpDMCifS
+        AHwZnDLwMbk+swNOSOctPQ==
+X-Google-Smtp-Source: ABdhPJygr0QmXj2Butg7FfRjf1eJch08Q2pQHX10bZEgYH7lmXjrX3IUcvL47V3Bo4WaLw62tqLopg==
+X-Received: by 2002:aca:ecc8:: with SMTP id k191mr1485929oih.179.1611614554463;
+        Mon, 25 Jan 2021 14:42:34 -0800 (PST)
 Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id w5sm3113210ote.29.2021.01.25.14.18.13
+        by smtp.gmail.com with ESMTPSA id z10sm1559123oid.51.2021.01.25.14.42.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jan 2021 14:18:13 -0800 (PST)
-Received: (nullmailer pid 1120980 invoked by uid 1000);
-        Mon, 25 Jan 2021 22:18:12 -0000
-Date:   Mon, 25 Jan 2021 16:18:12 -0600
+        Mon, 25 Jan 2021 14:42:33 -0800 (PST)
+Received: (nullmailer pid 1164611 invoked by uid 1000);
+        Mon, 25 Jan 2021 22:42:32 -0000
+Date:   Mon, 25 Jan 2021 16:42:32 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Caleb Connolly <caleb@connolly.tech>
-Cc:     linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, Stephen Boyd <sboyd@codeaurora.org>,
-        Andy Gross <agross@kernel.org>, devicetree@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Subject: Re: [PATCH v4 2/2] dt-bindings: Document bindings for new SDM845
- devices
-Message-ID: <20210125221812.GA1120729@robh.at.kernel.org>
-References: <20210114203057.64541-1-caleb@connolly.tech>
- <20210114203057.64541-3-caleb@connolly.tech>
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Gross <agross@kernel.org>, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH] pinctrl: qcom-pmic-gpio: Add support for pm8019
+Message-ID: <20210125224232.GA1164555@robh.at.kernel.org>
+References: <20210115171115.123155-1-konrad.dybcio@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210114203057.64541-3-caleb@connolly.tech>
+In-Reply-To: <20210115171115.123155-1-konrad.dybcio@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 14 Jan 2021 20:32:06 +0000, Caleb Connolly wrote:
-> Document compatible bindings for the new OnePlus 6/6T devices.
+On Fri, 15 Jan 2021 18:11:13 +0100, Konrad Dybcio wrote:
+> PM8019 provides 6 GPIOs. Add a compatible to support that.
 > 
-> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 > ---
->  Documentation/devicetree/bindings/arm/qcom.yaml        | 5 +++++
->  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
->  2 files changed, 7 insertions(+)
+>  Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.txt | 1 +
+>  drivers/pinctrl/qcom/pinctrl-spmi-gpio.c                     | 1 +
+>  2 files changed, 2 insertions(+)
 > 
 
 Acked-by: Rob Herring <robh@kernel.org>
