@@ -8,55 +8,55 @@ X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1FB8C433E6
-	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 18:07:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7EE1C433DB
+	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 18:09:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9263922B3F
-	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 18:07:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A11B322583
+	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 18:09:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731009AbhAYSF5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 25 Jan 2021 13:05:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35426 "EHLO
+        id S1730901AbhAYSFz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 25 Jan 2021 13:05:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729481AbhAYSFo (ORCPT
+        with ESMTP id S1728142AbhAYSFv (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Jan 2021 13:05:44 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B42C1C06174A;
-        Mon, 25 Jan 2021 10:05:02 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id n6so16545403edt.10;
-        Mon, 25 Jan 2021 10:05:02 -0800 (PST)
+        Mon, 25 Jan 2021 13:05:51 -0500
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B75AC061794;
+        Mon, 25 Jan 2021 10:05:10 -0800 (PST)
+Received: by mail-ed1-x535.google.com with SMTP id bx12so16549914edb.8;
+        Mon, 25 Jan 2021 10:05:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=UDJrM+VObhQM/htR7xUxXEq8/3SNBalypsfeL4EmF2w=;
-        b=pLxYuLaVuy9i9RrCOeTt+Ra3ac0FztbvVloblfhJa4KR0vf+aRF/AGcPVs8eLWXEAT
-         xAAsSVzYrNjygz8Jxo+IaWXyXOU9r0qXIRgQEYsQM1ZlS6iYFeBDyFi702OHMuKtJTTw
-         5lv1VG/r3+PtnAmeXzyDN5XfuiCIxecaBj/nEMeKr3zyHdkHCEd2WKr174UgOhbOMbWY
-         5I5ul7scP8Tne+Bshl84snibgjyTkNNZ/l/hk6zGbpeVwjKTGJN/FL0Tm9OnqJadgCKJ
-         o3u116RB3tQJADnZRZ4DfLMXCm55zA7JfMrcdFZRNRoqMJ2+tW1T/IkKelNz6ZJCzKnl
-         dU0g==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=aTj+3LRHlPTMkRPTqwqbdcRuQaEmUjPAcJHSK59V7eE=;
+        b=UOEOeYU3rcw1xy/tNvKdhQmfq0C5RSvTClxgyb3kaBjWUC0f4rhEzYs7xDWxp6EdVB
+         HkEvjYpHq1Xq2s1UUkq1fqdOTMlocChnQsB96396Hgk5ErPELPqSTeN2/BNwy/8IqyNs
+         CdAdVyVYjJm34+qgDnRXqylWoFtEsKLvKktXN2tSQiDJGXTC/QOoKy/NjFF1J7nIo5I8
+         TZE0j3wXGIOMCP6Ym26A7JW8pfGaec8QgaHU8Kz7BEjFeoP+1evAHgrHAFg72PoEqXdD
+         TmlG+0jNFS5RKN2nBXpHxwFyhrtFBD8QLyZojtRvKIG2COzQfZh8+Dd8ZWefkvjMitNb
+         FgAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=UDJrM+VObhQM/htR7xUxXEq8/3SNBalypsfeL4EmF2w=;
-        b=TsowLmgzojYlLt4VldgzoIlEiCMhMThRxn2oVFXw+gMxx0F2B8HBgjGgRBd7mP19Bp
-         rrsmfoINfJF6+PPT39oHsGduBI36BECHmIP4i51DeYU4jWNwjJYne1soacDl4bVgN4ie
-         0oa1u1NntCPJmd2uJoYsz2pBW4UEoNf+uMNVVLWPaO+5PutyFdETT0H5sKYNQa1/8mMi
-         WsW36kPUGtghReFJuludnvG260VoW5gUT6VKJJLJT8A5A4WdFa+ybMFKJiy4C9Dm2udD
-         elGcXMlOuUrbH3pUAMfNX3w6BFDSK4KDtF6R2qhu443q7R1aIPexucGVlDxCe+SKRk25
-         /2cg==
-X-Gm-Message-State: AOAM532dGeBc2U/sJ7DQr9sqGGPcUcCq+RiVNuwYZoIWpjr1z3UHX/Ea
-        PElOMGUT8xD8rozVXM1tZuA=
-X-Google-Smtp-Source: ABdhPJyprG2pZ2VHd1B+QLdm2O8aTju8TlntahMjrmU4U0TiTm5jEK4KNLZuCxKXkv3STAbF1mTg7Q==
-X-Received: by 2002:a05:6402:1701:: with SMTP id y1mr1446570edu.251.1611597901034;
-        Mon, 25 Jan 2021 10:05:01 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=aTj+3LRHlPTMkRPTqwqbdcRuQaEmUjPAcJHSK59V7eE=;
+        b=Zu5ju4eA9cYRTG1gerdB/lwLE0a9MQRjAzyJeUhQhRwLd80I7dleY40iidGoaTD0X9
+         Vi3onjHTjQ2rvg0lIW6OiPvMHb7iXURohFDb9UL9nukVMApCbhpk3YOy22Ac76WICYOg
+         uHJajr6PJBBTmM1zz85pgWZMZCbSHpejNGj4aJ9xYa4hdDVFWScgvKvi2TG49WfAittq
+         dNOdeTZAD1BodZDsCGeMB23LeQ/TMEcDh0c/TV80ttH+j96YQu0nEnwfOmVCAS28ZXGq
+         ebCH2bVceABxAKl3DafINUa3hhk+Unj47CFC6vP4bMMnQHHf3rEM9RpsCWkNzsjXd0WN
+         qouQ==
+X-Gm-Message-State: AOAM533GDzxcyggf7KweMDDuEjv0vk+nyCdyVzFmj4LNCUyqXIklcZ01
+        HngkWHJyyAD3Qui5+7jEr84=
+X-Google-Smtp-Source: ABdhPJxlLRhEzWEWlVJ7fwkfE5Fjyg29GwITNIRE8vYgPvRON2p1QE+jIXMXs9i4evlIfcnnqONkDA==
+X-Received: by 2002:a50:9310:: with SMTP id m16mr1533461eda.94.1611597909297;
+        Mon, 25 Jan 2021 10:05:09 -0800 (PST)
 Received: from localhost (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
-        by smtp.gmail.com with ESMTPSA id gb13sm5590778ejc.81.2021.01.25.10.04.58
+        by smtp.gmail.com with ESMTPSA id s12sm11083800edu.28.2021.01.25.10.05.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Jan 2021 10:04:59 -0800 (PST)
+        Mon, 25 Jan 2021 10:05:08 -0800 (PST)
 From:   Iskren Chernev <iskren.chernev@gmail.com>
 To:     Bjorn Andersson <bjorn.andersson@linaro.org>
 Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
@@ -67,93 +67,48 @@ Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Alexey Minnekhanov <alexeymin@postmarketos.org>,
         Brian Masney <masneyb@onstation.org>,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: [PATCH v3 1/4] ARM: dts: qcom: msm8974: add gpu support
-Date:   Mon, 25 Jan 2021 20:04:24 +0200
-Message-Id: <20210125180427.3109269-1-iskren.chernev@gmail.com>
+Subject: [PATCH v3 4/4] ARM: dts: qcom: msm8974-klte: Mark essential regulators
+Date:   Mon, 25 Jan 2021 20:04:27 +0200
+Message-Id: <20210125180427.3109269-4-iskren.chernev@gmail.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210125180427.3109269-1-iskren.chernev@gmail.com>
+References: <20210125180427.3109269-1-iskren.chernev@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Brian Masney <masneyb@onstation.org>
+s1 and l12 regulators are used for the memory and cache on the Samsung
+S5 (klte). If they are turned off the phone shuts down. So mark them as
+always-on to prevent that from happening.
 
-Add support for the a3xx GPU. opp_table is chosen to include lower
-frequencies common to all different msm8974 variants.
-
-Signed-off-by: Brian Masney <masneyb@onstation.org>
-[iskren.chernev@gmail.com: change opp-table values in v3]
 Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+Tested-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
 ---
-Changes in v3:
-- change opp-table as suggested by Konrad Dybcio
-- remove tested-by/reviewed-by because of code changes
+ arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v2: https://lkml.org/lkml/2021/1/24/142
-v1: https://lkml.org/lkml/2020/12/30/322
-
- arch/arm/boot/dts/qcom-msm8974.dtsi | 45 +++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
-
-diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
-index 51f5f904f9eb9..683622d6c8954 100644
---- a/arch/arm/boot/dts/qcom-msm8974.dtsi
-+++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
-@@ -1399,6 +1399,51 @@ cnoc: interconnect@fc480000 {
- 			         <&rpmcc RPM_SMD_CNOC_A_CLK>;
- 		};
-
-+		gpu_opp_table: opp_table {
-+			status = "disabled";
-+
-+			compatible = "operating-points-v2";
-+
-+			opp-320000000 {
-+				opp-hz = /bits/ 64 <320000000>;
-+			};
-+
-+			opp-200000000 {
-+				opp-hz = /bits/ 64 <200000000>;
-+			};
-+
-+			opp-27000000 {
-+				opp-hz = /bits/ 64 <27000000>;
-+			};
-+		};
-+
-+		gpu: adreno@fdb00000 {
-+			status = "disabled";
-+
-+			compatible = "qcom,adreno-330.2",
-+			             "qcom,adreno";
-+			reg = <0xfdb00000 0x10000>;
-+			reg-names = "kgsl_3d0_reg_memory";
-+			interrupts = <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "kgsl_3d0_irq";
-+			clock-names = "core",
-+			              "iface",
-+			              "mem_iface";
-+			clocks = <&mmcc OXILI_GFX3D_CLK>,
-+			         <&mmcc OXILICX_AHB_CLK>,
-+			         <&mmcc OXILICX_AXI_CLK>;
-+			sram = <&gmu_sram>;
-+			power-domains = <&mmcc OXILICX_GDSC>;
-+			operating-points-v2 = <&gpu_opp_table>;
-+
-+			interconnects = <&mmssnoc MNOC_MAS_GRAPHICS_3D &bimc BIMC_SLV_EBI_CH0>,
-+			                <&ocmemnoc OCMEM_VNOC_MAS_GFX3D &ocmemnoc OCMEM_SLV_OCMEM>;
-+			interconnect-names = "gfx-mem",
-+			                     "ocmem";
-+
-+			// iommus = <&gpu_iommu 0>;
-+		};
-+
- 		mdss: mdss@fd900000 {
- 			status = "disabled";
-
-
-base-commit: 226871e2eda4832d94c3239add7e52ad17b81ce5
---
+diff --git a/arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts b/arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts
+index 19c96b47a5dbd..27323403aa71d 100644
+--- a/arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts
++++ b/arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts
+@@ -30,6 +30,7 @@ pma8084-regulators {
+ 					pma8084_s1: s1 {
+ 						regulator-min-microvolt = <675000>;
+ 						regulator-max-microvolt = <1050000>;
++						regulator-always-on;
+ 					};
+ 
+ 					pma8084_s2: s2 {
+@@ -115,6 +116,7 @@ pma8084_l11: l11 {
+ 					pma8084_l12: l12 {
+ 						regulator-min-microvolt = <1800000>;
+ 						regulator-max-microvolt = <1800000>;
++						regulator-always-on;
+ 					};
+ 
+ 					pma8084_l13: l13 {
+-- 
 2.30.0
 
