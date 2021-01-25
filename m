@@ -2,136 +2,258 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3B5DC433E9
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA90EC43381
 	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 05:59:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 99EA1221EA
+	by mail.kernel.org (Postfix) with ESMTP id B206222583
 	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 05:59:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730672AbhAZF7L (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Jan 2021 00:59:11 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:20619 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727330AbhAYKNY (ORCPT
+        id S1731796AbhAZF7N (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Jan 2021 00:59:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49710 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728133AbhAYMmZ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Jan 2021 05:13:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1611569227;
-        s=strato-dkim-0002; d=gerhold.net;
-        h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:From:
-        Subject:Sender;
-        bh=/pQs1UTSU8NSB7mRfB8RlJZdZ2fKeEBAAIz/2cLj9Tw=;
-        b=UyxYqe2M5YG7v7fe90gyZFldrQy/iVcLbWogXFce6/sXJHP6+bESS/mANHsTCf5ysT
-        hj5SdPHfksh3nCx5wrANcA7jYcGZ/dhiSXua1wq+3Niyl1U/55PX3g/gesGdUixqb7YU
-        F6MjOK4H+4+c5KTv5WFfOj8XK82zd7DzHGSF3o84wO+4IGghXWGhy0hPFhGvmFUJXS28
-        CN1AcrdPsfoOTofWaw0W+p/MQNky0q3lFjrsurxh7rdm7VPCpuO6PFdJJYckTklG01Uk
-        Wz3rHPIsbWkHY65UwUpyk0aCCmI2dxw2akgPFBu7o01qd8nlNr3VJX8MESvyNTiULFFR
-        5RDw==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8j9IczEaYo="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-        by smtp.strato.de (RZmta 47.12.1 DYNA|AUTH)
-        with ESMTPSA id R0a218x0PA72kv7
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Mon, 25 Jan 2021 11:07:02 +0100 (CET)
-Date:   Mon, 25 Jan 2021 11:06:56 +0100
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Jonathan Albrieux <jonathan.albrieux@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: msm8916-longcheer-l8910: Add
- imu/magnetometer
-Message-ID: <YA6YQMHDk4Nx1dDE@gerhold.net>
-References: <20210125094435.7528-1-jonathan.albrieux@gmail.com>
- <20210125094435.7528-4-jonathan.albrieux@gmail.com>
+        Mon, 25 Jan 2021 07:42:25 -0500
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8730C061220;
+        Mon, 25 Jan 2021 03:40:46 -0800 (PST)
+Received: by mail-lf1-x129.google.com with SMTP id i187so6954457lfd.4;
+        Mon, 25 Jan 2021 03:40:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:references:cc:from:subject:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=PMgg2luzI+jv/8tT/PbY1/txpikMhuVrg+F0w7+xUaQ=;
+        b=fUDbEVemeYrdAIYNi6hwdm3B4+Co85z3n6IkM5VeTKlGMjNLRRrS6MxejkUpPtP0uN
+         NGu1ONUNIYs/uQOSPmvT+R9BjxTsdBCW4VC9sC7dU1Et6jWw2S29258ck3wjZrJNI6S4
+         mJa0DIZTesmHECHOguXWpmO6FTUw4CYrp+JIP8RlfuoIONqkJ6ylIAo7eUH0XMxg41oM
+         qV+jU/nJAbInpcnVomm0oGILMw7rQwu98lbB4iigx2DAH3Xu+kr22Cz0d8F7BHVQ9bt0
+         1mNhoddFsLV0t9wmz9k2LgUNBt+n78tXcxUAcLDuB0gB3EKA77gSi6C//JvMCeHF6W88
+         oFdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:references:cc:from:subject:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=PMgg2luzI+jv/8tT/PbY1/txpikMhuVrg+F0w7+xUaQ=;
+        b=kQ5xLdKuDwg9Tx/3twovUOlxRq0UX/rZxakcMMbGczG70jNQFUxGgeQ0UhFxmAMj80
+         2KD54qC+61YB7q9NIO1cEfqsyVwFij3tahc4TN0Ur3JLXoX6setmVoJUqMRAzb7QOSSx
+         KzXutKGmIFeVcRCf2uvjd+fowYzKFJ6fsnMi342EnuNANHgyRMs00F0qSOKVDhfb7qnM
+         OJWJXDBMrn4T0qnWrfmyhFeydghLRyMKbz2qHxeX31NrnfJZEIjG3f/TCZJQ76cWOVGj
+         O2FwRZc7S3JcpGW7OeqNL49RD94Lfpys+Vu3gC/DclyHVEJ4up6CEmfFvntztbMcZWUx
+         Dljw==
+X-Gm-Message-State: AOAM5313wQwXqVCJjFOgVOP47M+qV6Tl0XNb+pA5LzvGUA3W6V5CfJ5f
+        IQ/sV8KamK5qkg1UYCTMww4=
+X-Google-Smtp-Source: ABdhPJy87Gc29+0wrax5LB9cFZHchKa03iCgfQ6KNpN7/FtekfRdihhuzTE08d+w+CzGYxAECdcs+g==
+X-Received: by 2002:ac2:57c9:: with SMTP id k9mr67155lfo.165.1611574845303;
+        Mon, 25 Jan 2021 03:40:45 -0800 (PST)
+Received: from [10.0.0.42] (91-157-86-155.elisa-laajakaista.fi. [91.157.86.155])
+        by smtp.gmail.com with ESMTPSA id s22sm1605927ljh.102.2021.01.25.03.40.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Jan 2021 03:40:44 -0800 (PST)
+To:     Pavel Machek <pavel@ucw.cz>, broonie@kernel.org,
+        aaro.koskinen@iki.fi, spinal.by@gmail.com,
+        jarkko.nikula@bitmer.com, merlijn@wizzup.org, sre@kernel.org,
+        tony@atomide.com, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org, phone-devel@vger.kernel.org
+References: <20210124092713.GA22195@amd>
+Cc:     kuninori.morimoto.gx@renesas.com
+From:   =?UTF-8?Q?P=c3=a9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
+Subject: Re: [PATCH] ASoC: ti: Allocate dais dynamically for TDM and audio
+ graph card
+Message-ID: <2a9e7655-3d32-feb5-080c-8928a96f417e@gmail.com>
+Date:   Mon, 25 Jan 2021 13:43:04 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210125094435.7528-4-jonathan.albrieux@gmail.com>
+In-Reply-To: <20210124092713.GA22195@amd>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Jan 25, 2021 at 10:44:32AM +0100, Jonathan Albrieux wrote:
-> BQ Aquaris X5 (Longcheer L8910) has:
->  - BMI160 accelerometer and gyroscope sensor
->  - AK09911 magnetometer sensor
-> Add them to the device tree.
-> 
-> This patch depends on patch "arm64: dts: qcom: msm8916: Add blsp_i2c3".
-> 
-> Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Hi Pavel,
 
-Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
+On 1/24/21 11:27 AM, Pavel Machek wrote:
+> From: Tony Lindgren <tony@atomide.com>
+> 
+> We can have multiple connections on a single McBSP instance configured
+> with audio graph card when using TDM (Time Division Multiplexing). Let's
+> allow that by configuring dais dynamically.
 
+Still we have _one_ DAI per McBSP. TDM slots are not DAIs.
+
+> See Documentation/devicetree/bindings/sound/audio-graph-card.txt and
+> Documentation/devicetree/bindings/graph.txt for more details for
+> multiple endpoints.
+
+Documentation/devicetree/bindings/sound/audio-graph-card.yaml
+Documentation/devicetree/bindings/sound/audio-graph.yaml
+
+However the schemas does not provide too much insight (the txts were a 
+bit more verbose).
+
+> I've tested this with droid4 where cpcap pmic and modem voice are both
+> both wired to mcbsp3. I've also tested this on droid4 both with and
+> without the pending modem audio codec driver that is waiting for n_gsm
+> serdev dependencies to clear.
+ >
+> Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+> Cc: Arthur D. <spinal.by@gmail.com>
+> Cc: Jarkko Nikula <jarkko.nikula@bitmer.com>
+> Cc: Merlijn Wajer <merlijn@wizzup.org>
+> Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> Signed-off-by: Pavel Machek <pavel@ucw.cz>
+> 
 > ---
->  .../boot/dts/qcom/msm8916-longcheer-l8910.dts | 37 +++++++++++++++++++
->  1 file changed, 37 insertions(+)
+>   sound/soc/ti/omap-mcbsp-priv.h |  2 ++
+>   sound/soc/ti/omap-mcbsp.c      | 76 +++++++++++++++++++++++++++++-------------
+>   2 files changed, 55 insertions(+), 23 deletions(-)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-> index 7d5eff922f41..27845189ac2b 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-> @@ -56,6 +56,35 @@
->  	};
->  };
->  
-> +&blsp_i2c3 {
-> +	status = "okay";
+> diff --git a/sound/soc/ti/omap-mcbsp-priv.h b/sound/soc/ti/omap-mcbsp-priv.h
+> index 7865cda4bf0a..9464f5d35822 100644
+> --- a/sound/soc/ti/omap-mcbsp-priv.h
+> +++ b/sound/soc/ti/omap-mcbsp-priv.h
+> @@ -262,6 +262,8 @@ struct omap_mcbsp {
+>   	struct omap_mcbsp_platform_data *pdata;
+>   	struct omap_mcbsp_st_data *st_data;
+>   	struct omap_mcbsp_reg_cfg cfg_regs;
+> +	struct snd_soc_dai_driver *dais;
+> +	int dai_count;
+>   	struct snd_dmaengine_dai_dma_data dma_data[2];
+>   	unsigned int dma_req[2];
+>   	int dma_op_mode;
+> diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+> index 6025b30bbe77..189a6461b671 100644
+> --- a/sound/soc/ti/omap-mcbsp.c
+> +++ b/sound/soc/ti/omap-mcbsp.c
+> @@ -14,6 +14,7 @@
+>   #include <linux/pm_runtime.h>
+>   #include <linux/of.h>
+>   #include <linux/of_device.h>
+> +#include <linux/of_graph.h>
+>   #include <sound/core.h>
+>   #include <sound/pcm.h>
+>   #include <sound/pcm_params.h>
+> @@ -1299,23 +1300,53 @@ static int omap_mcbsp_remove(struct snd_soc_dai *dai)
+>   	return 0;
+>   }
+>   
+> -static struct snd_soc_dai_driver omap_mcbsp_dai = {
+> -	.probe = omap_mcbsp_probe,
+> -	.remove = omap_mcbsp_remove,
+> -	.playback = {
+> -		.channels_min = 1,
+> -		.channels_max = 16,
+> -		.rates = OMAP_MCBSP_RATES,
+> -		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
+> -	},
+> -	.capture = {
+> -		.channels_min = 1,
+> -		.channels_max = 16,
+> -		.rates = OMAP_MCBSP_RATES,
+> -		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE,
+> -	},
+> -	.ops = &mcbsp_dai_ops,
+> -};
+> +static int omap_mcbsp_init_dais(struct omap_mcbsp *mcbsp)
+> +{
+> +	struct device_node *np = mcbsp->dev->of_node;
+> +	int i;
 > +
-> +	magnetometer@d {
-> +		compatible = "asahi-kasei,ak09911";
-> +		reg = <0x0d>;
+> +	if (np)
+> +		mcbsp->dai_count = of_graph_get_endpoint_count(np);
 > +
-> +		vdd-supply = <&pm8916_l17>;
-> +		vid-supply = <&pm8916_l6>;
+> +	if (!mcbsp->dai_count)
+> +		mcbsp->dai_count = 1;
 > +
-> +		reset-gpios = <&msmgpio 111 GPIO_ACTIVE_LOW>;
+> +	mcbsp->dais = devm_kcalloc(mcbsp->dev, mcbsp->dai_count,
+> +				   sizeof(*mcbsp->dais), GFP_KERNEL);
+> +	if (!mcbsp->dais)
+> +		return -ENOMEM;
 > +
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&mag_reset_default>;
-> +	};
+> +	for (i = 0; i < mcbsp->dai_count; i++) {
+> +		struct snd_soc_dai_driver *dai = &mcbsp->dais[i];
 > +
-> +	imu@68 {
-> +		compatible = "bosch,bmi160";
-> +		reg = <0x68>;
+> +		dai->name = devm_kasprintf(mcbsp->dev, GFP_KERNEL, "%s-dai%i",
+> +					   dev_name(mcbsp->dev), i);
 > +
-> +		vdd-supply = <&pm8916_l17>;
-> +		vddio-supply = <&pm8916_l6>;
+> +		if (i == 0) {
+> +			dai->probe = omap_mcbsp_probe;
+> +			dai->remove = omap_mcbsp_remove;
+> +			dai->ops = &mcbsp_dai_ops;
+> +		}
+
+You are effectively creating extra dummy-dais (no ops), but naming them 
+as McBSP.
+The dummy-dais will only work if the real dai is in use and the dai link 
+which contains the real dai must be configured (TDM slots, format, 
+channels) to accomodate the link which contains the dummy-dai.
+
+The idea did not aged well for me ;)
+It still looks and sounds like a hack to model the TDM slots on a single 
+DAI as multiple DAIs just to satisfy a generic binding which is not 
+aimed to satisfy the droid4 setup (which is far from anything simple).
+
+> +		dai->playback.channels_min = 1;
+> +		dai->playback.channels_max = 16;
+> +		dai->playback.rates = OMAP_MCBSP_RATES;
+> +		if (mcbsp->pdata->reg_size == 2)
+> +			dai->playback.formats = SNDRV_PCM_FMTBIT_S16_LE;
+> +		else
+> +			dai->playback.formats = SNDRV_PCM_FMTBIT_S16_LE |
+> +						SNDRV_PCM_FMTBIT_S32_LE;
+> +		dai->capture.channels_min = 1;
+> +		dai->capture.channels_max = 16;
+> +		dai->capture.rates = OMAP_MCBSP_RATES;
+> +		if (mcbsp->pdata->reg_size == 2)
+> +			dai->capture.formats = SNDRV_PCM_FMTBIT_S16_LE;
+> +		else
+> +			dai->capture.formats = SNDRV_PCM_FMTBIT_S16_LE |
+> +					       SNDRV_PCM_FMTBIT_S32_LE;
+> +	}
 > +
-> +		mount-matrix = "0", "1", "0",
-> +			      "-1", "0", "0",
-> +			       "0", "0", "1";
-> +	};
-> +};
-> +
->  &blsp1_uart2 {
->  	status = "okay";
->  };
-> @@ -220,6 +249,14 @@
->  		bias-pull-up;
->  	};
->  
-> +	mag_reset_default: mag-reset-default {
-> +		pins = "gpio111";
-> +		function = "gpio";
-> +
-> +		drive-strength = <2>;
-> +		bias-disable;
-> +	};
-> +
->  	usb_id_default: usb-id-default {
->  		pins = "gpio110";
->  		function = "gpio";
-> -- 
-> 2.17.1
+> +	return 0;
+> +}
+>   
+>   static const struct snd_soc_component_driver omap_mcbsp_component = {
+>   	.name		= "omap-mcbsp",
+> @@ -1404,18 +1435,17 @@ static int asoc_mcbsp_probe(struct platform_device *pdev)
+>   	mcbsp->dev = &pdev->dev;
+>   	platform_set_drvdata(pdev, mcbsp);
+>   
+> -	ret = omap_mcbsp_init(pdev);
+> +	ret = omap_mcbsp_init_dais(mcbsp);
+>   	if (ret)
+>   		return ret;
+>   
+> -	if (mcbsp->pdata->reg_size == 2) {
+> -		omap_mcbsp_dai.playback.formats = SNDRV_PCM_FMTBIT_S16_LE;
+> -		omap_mcbsp_dai.capture.formats = SNDRV_PCM_FMTBIT_S16_LE;
+> -	}
+> +	ret = omap_mcbsp_init(pdev);
+> +	if (ret)
+> +		return ret;
+>   
+>   	ret = devm_snd_soc_register_component(&pdev->dev,
+>   					      &omap_mcbsp_component,
+> -					      &omap_mcbsp_dai, 1);
+> +					      mcbsp->dais, mcbsp->dai_count);
+>   	if (ret)
+>   		return ret;
+>   
 > 
+
+-- 
+Péter
