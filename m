@@ -2,352 +2,249 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0699C433DB
-	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 09:47:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8D03C433DB
+	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 14:56:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9643122CF6
-	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 09:47:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A3A6621D81
+	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 14:56:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727190AbhAYJru (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 25 Jan 2021 04:47:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40264 "EHLO
+        id S1729859AbhAYOzy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 25 Jan 2021 09:55:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726883AbhAYJrT (ORCPT
+        with ESMTP id S1729821AbhAYOwr (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Jan 2021 04:47:19 -0500
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB72AC06178A;
-        Mon, 25 Jan 2021 01:46:38 -0800 (PST)
-Received: by mail-wr1-x434.google.com with SMTP id 6so11547161wri.3;
-        Mon, 25 Jan 2021 01:46:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=pxvcpCO85zMxQnOkjIoCHct3c15zWE1fr4RG244k1XA=;
-        b=h0/r1QifBhbXGGh8ZgHU6T9Ko3dHYzteiwtBzbfvLhXjb8H3iiSL13K4jArfYoTQEb
-         VyFpkeqcXcUIQHJUHCnafQOheslO6DqsWpb0tje5XxUIqCBFgaplWMPXLQLXRSTxkOV/
-         AVg7rUNZr9M6NYZKTS/mRK3Hw9C+SlpuZYgf5bVmEK3vElq63sxi20Hk+fP3PTNTrstn
-         j9kLuO1aAajhcCGq31GUg4xRCvn9NIEYd4uBySulEa+b0iOkgzIKrSik9W3rRnVar9me
-         QzkH2m0IBNF6i+7XncL2a7D767f8j8VnQt86aKQ+O4WpoKpgOlItm1MU3y67FOfv6dhZ
-         0D/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=pxvcpCO85zMxQnOkjIoCHct3c15zWE1fr4RG244k1XA=;
-        b=uEVorICYTIweXaFNtfqECIg22vZkFXgVBUMBX9aqOXRPBpLCNs0WeukzM3L0L2qX8L
-         7FmY3rgigaEVdcI+ql71Qh2bFr3EZvokxu0EusNUDgfp5cc1EVPRR6m+vEwDYr1+WCAA
-         KMf5pnNioTxYUEEDwU6MIbkkLlCmD1+GIEpAQB9arXrDl2+pBegH9mQQ5RTnNau9znGF
-         xDuWSaCScBnMbHxffUSMGhNpkk6B3/yE22mXUiJV4cIAK0A4z01Yy/wX5Srd5yGKDimH
-         RlwP1Ja28UityyZRB8ERYRe8lKyHOJZziOrkC9pF//Ox4fSpFm2bZ/3/l2BWc6W4+V07
-         zTpQ==
-X-Gm-Message-State: AOAM530aOWdjgQAU9JmXf0hCCOyVgnVYPVIf73GwOAT40lAmCsswWlbg
-        kmw7THvySuQjnBO96qPxd/uOXKeBWkY=
-X-Google-Smtp-Source: ABdhPJxFWFKlwhBVhM0bukT0G25UtwzZS7hWLPg4Rn+KdyzQ7/quSYlpcdj1tNvvqVpVfZnX8vZYqg==
-X-Received: by 2002:adf:f9cb:: with SMTP id w11mr771538wrr.199.1611567997100;
-        Mon, 25 Jan 2021 01:46:37 -0800 (PST)
-Received: from jonathan-N53SV.station ([151.81.101.204])
-        by smtp.googlemail.com with ESMTPSA id u5sm22154052wmg.9.2021.01.25.01.46.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jan 2021 01:46:36 -0800 (PST)
-From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, stephan@gerhold.net,
-        phone-devel@vger.kernel.org,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH v2 1/3] arm64: dts: qcom: Add device tree for BQ Aquaris X5 (Longcheer L8910)
-Date:   Mon, 25 Jan 2021 10:44:30 +0100
-Message-Id: <20210125094435.7528-2-jonathan.albrieux@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210125094435.7528-1-jonathan.albrieux@gmail.com>
-References: <20210125094435.7528-1-jonathan.albrieux@gmail.com>
+        Mon, 25 Jan 2021 09:52:47 -0500
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E475C06174A;
+        Mon, 25 Jan 2021 06:51:58 -0800 (PST)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id A764B1F8AC;
+        Mon, 25 Jan 2021 15:51:54 +0100 (CET)
+Subject: Re: [PATCH 1/2] media: venus: core: Add sdm660 DT compatible and
+ resource struct
+To:     Hans Verkuil <hverkuil@xs4all.nl>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Cc:     agross@kernel.org, bjorn.andersson@linaro.org, mchehab@kernel.org,
+        robh+dt@kernel.org, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, phone-devel@vger.kernel.org
+References: <20210115185252.333562-1-angelogioacchino.delregno@somainline.org>
+ <20210115185252.333562-2-angelogioacchino.delregno@somainline.org>
+ <2dc8a95f-110f-526f-18a8-6393e508c3a6@linaro.org>
+ <eabc91cc-de96-08ef-756c-87fe43d6fadc@somainline.org>
+ <cfc1998f-8d9b-5237-f286-7fdc69874b30@xs4all.nl>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <40c38734-a69d-2314-c342-244ee5a0e6b1@somainline.org>
+Date:   Mon, 25 Jan 2021 15:51:54 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
+MIME-Version: 1.0
+In-Reply-To: <cfc1998f-8d9b-5237-f286-7fdc69874b30@xs4all.nl>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-BQ Aquaris X5 (Longcheer L8910) is a smartphone using the MSM8916 SoC.
+Il 25/01/21 11:40, Hans Verkuil ha scritto:
+> On 18/01/2021 18:45, AngeloGioacchino Del Regno wrote:
+>> Il 18/01/21 18:21, Stanimir Varbanov ha scritto:
+>>> Hi Angelo,
+>>>
+>>> Thanks for the patch!
+>>>
+>>> On 1/15/21 8:52 PM, AngeloGioacchino Del Regno wrote:
+>>>> Add the SDM660 DT compatible and its resource structure, also
+>>>> including support for the Venus pmdomains, in order to support
+>>>> the Venus block in SDM630, SDM636, SDM660 and SDA variants.
+>>>>
+>>>> This SoC features Venus 4.4 (HFI3XX), with one vcodec used for
+>>>> both encoding and decoding, switched on through two GDSCs.
+>>>> The core clock for this Venus chip is powered by the RPM VDD_CX
+>>>> power domain.
+>>>>
+>>>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>>>> ---
+>>>>    drivers/media/platform/qcom/venus/core.c | 66 ++++++++++++++++++++++++
+>>>>    1 file changed, 66 insertions(+)
+>>>>
+>>>> diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
+>>>> index bdd293faaad0..83ca86a63241 100644
+>>>> --- a/drivers/media/platform/qcom/venus/core.c
+>>>> +++ b/drivers/media/platform/qcom/venus/core.c
+>>>> @@ -565,6 +565,71 @@ static const struct venus_resources sdm845_res_v2 = {
+>>>>    	.fwname = "qcom/venus-5.2/venus.mdt",
+>>>>    };
+>>>>    
+>>>> +static const struct freq_tbl sdm660_freq_table[] = {
+>>>> +	{ 0, 518400000 },
+>>>> +	{ 0, 441600000 },
+>>>> +	{ 0, 404000000 },
+>>>> +	{ 0, 320000000 },
+>>>> +	{ 0, 269330000 },
+>>>> +	{ 0, 133330000 },
+>>>> +};
+>>>> +
+>>>> +static const struct reg_val sdm660_reg_preset[] = {
+>>>> +	{ 0x80010, 0x001f001f },
+>>>> +	{ 0x80018, 0x00000156 },
+>>>> +	{ 0x8001C, 0x00000156 },
+>>>> +};
+>>>> +
+>>>> +static const struct bw_tbl sdm660_bw_table_enc[] = {
+>>>> +	{  979200,  1044000, 0, 2446336, 0 },	/* 4k UHD @ 30 */
+>>>> +	{  864000,   887000, 0, 2108416, 0 },	/* 720p @ 240 */
+>>>> +	{  489600,   666000, 0, 1207296, 0 },	/* 1080p @ 60 */
+>>>> +	{  432000,   578000, 0, 1058816, 0 },	/* 720p @ 120 */
+>>>> +	{  244800,   346000, 0,  616448, 0 },	/* 1080p @ 30 */
+>>>> +	{  216000,   293000, 0,  534528, 0 },	/* 720p @ 60 */
+>>>> +	{  108000,   151000, 0,  271360, 0 },	/* 720p @ 30 */
+>>>> +};
+>>>> +
+>>>> +static const struct bw_tbl sdm660_bw_table_dec[] = {
+>>>> +	{  979200,  2365000, 0, 1892000, 0 },	/* 4k UHD @ 30 */
+>>>> +	{  864000,  1978000, 0, 1554000, 0 },	/* 720p @ 240 */
+>>>> +	{  489600,  1133000, 0,  895000, 0 },	/* 1080p @ 60 */
+>>>> +	{  432000,   994000, 0,  781000, 0 },	/* 720p @ 120 */
+>>>> +	{  244800,   580000, 0,  460000, 0 },	/* 1080p @ 30 */
+>>>> +	{  216000,   501000, 0,  301000, 0 },	/* 720p @ 60 */
+>>>> +	{  108000,   255000, 0,  202000, 0 },	/* 720p @ 30 */
+>>>> +};
+>>>> +
+>>>> +static const struct venus_resources sdm660_res = {
+>>>> +	.freq_tbl = sdm660_freq_table,
+>>>> +	.freq_tbl_size = ARRAY_SIZE(sdm660_freq_table),
+>>>> +	.reg_tbl = sdm660_reg_preset,
+>>>> +	.reg_tbl_size = ARRAY_SIZE(sdm660_reg_preset),
+>>>> +	.bw_tbl_enc = sdm660_bw_table_enc,
+>>>> +	.bw_tbl_enc_size = ARRAY_SIZE(sdm660_bw_table_enc),
+>>>> +	.bw_tbl_dec = sdm660_bw_table_dec,
+>>>> +	.bw_tbl_dec_size = ARRAY_SIZE(sdm660_bw_table_dec),
+>>>> +	.clks = {"core", "iface", "bus_throttle", "bus" },
+>>>> +	.clks_num = 4,
+>>>> +	.vcodec0_clks = { "vcodec0_core" },
+>>>> +	.vcodec_clks_num = 1,
+>>>> +	.vcodec_pmdomains = { "venus", "vcodec0" },
+>>>> +	.vcodec_pmdomains_num = 2,
+>>>> +	.opp_pmdomain = (const char *[]) { "cx", NULL },
+>>>> +	.vcodec_num = 1,
+>>>> +	.max_load = 1036800,
+>>>> +	.hfi_version = HFI_VERSION_3XX,
+>>>> +	.vmem_id = VIDC_RESOURCE_NONE,
+>>>> +	.vmem_size = 0,
+>>>> +	.vmem_addr = 0,
+>>>> +	.cp_start = 0,
+>>>> +	.cp_size = 0x79000000,
+>>>> +	.cp_nonpixel_start = 0x1000000,
+>>>> +	.cp_nonpixel_size = 0x28000000,
+>>>> +	.dma_mask = 0xd9000000 - 1,
+>>>> +	.fwname = "qcom/venus-4.4/venus.mdt",
+>>>
+>>> Did you try venus-4.2 firmware from linux-firmware tree [1] ?
+>>>
+>>
+>> No I haven't.. and I can't... my Sony devices (but I think that this is
+>> a practice of all OEMs/ODMs) are using a Sony signed venus firmware, so
+>> I am totally limited to use the firmware that comes with the device.
+>>
+>> Besides that, the version is still different so, even if I had any
+>> possibility to try that, I don't think that it would work anyway...
 
-Add device tree with initial support for:
+Hello!
 
- - SDHCI (internal and external storage)
- - USB Device Mode
- - UART
- - Regulators
- - WiFi/BT
- - Volume buttons
- - Vibrator
- - Touchkeys backlight
+> 
+> I'm a bit confused. "qcom/venus-4.4/venus.mdt" is the Sony signed FW?
+> 
 
-This device tree is based on downstream device tree from BQ and from
-Longcheer L8915 device tree.
+In my case it is, but this follows the generic firmware path as was done
+for all the other Venus firmwares, so my code is not pointing at Sony
+specific things, but just generic ones.
 
-Co-developed-by: Stephan Gerhold <stephan@gerhold.net>
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
----
- arch/arm64/boot/dts/qcom/Makefile             |   1 +
- .../boot/dts/qcom/msm8916-longcheer-l8910.dts | 230 ++++++++++++++++++
- 2 files changed, 231 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
+Every Qualcomm-powered consumer device (smartphones, tablets etc) have
+got a double sigcheck: one for qcom, one for OEM specific and most of
+the times the TZ is configured to accept only firmwares that also have
+the OEM signature.
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index b5d86739f781..94b76a7ac6ba 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -6,6 +6,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= ipq6018-cp01-c1.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= ipq8074-hk01.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-asus-z00l.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-longcheer-l8150.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-longcheer-l8910.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-mtp.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-a3u-eur.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-a5u-eur.dtb
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-new file mode 100644
-index 000000000000..7d5eff922f41
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-@@ -0,0 +1,230 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/dts-v1/;
-+
-+#include "msm8916-pm8916.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/leds/common.h>
-+
-+/ {
-+	model = "BQ Aquaris X5 (Longcheer L8910)";
-+	compatible = "longcheer,l8910", "qcom,msm8916";
-+
-+	aliases {
-+		serial0 = &blsp1_uart2;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0";
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&gpio_keys_default>;
-+
-+		label = "GPIO Buttons";
-+
-+		volume-up {
-+			label = "Volume Up";
-+			gpios = <&msmgpio 107 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEUP>;
-+		};
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		led-0 {
-+			gpios = <&msmgpio 17 GPIO_ACTIVE_HIGH>;
-+			color = <LED_COLOR_ID_WHITE>;
-+			default-state = "off";
-+			function = LED_FUNCTION_KBD_BACKLIGHT;
-+
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&button_backlight_default>;
-+		};
-+	};
-+
-+	usb_id: usb-id {
-+		compatible = "linux,extcon-usb-gpio";
-+		id-gpio = <&msmgpio 110 GPIO_ACTIVE_HIGH>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&usb_id_default>;
-+	};
-+};
-+
-+&blsp1_uart2 {
-+	status = "okay";
-+};
-+
-+&pm8916_resin {
-+	status = "okay";
-+	linux,code = <KEY_VOLUMEDOWN>;
-+};
-+
-+&pm8916_vib {
-+	status = "okay";
-+};
-+
-+&pronto {
-+	status = "okay";
-+};
-+
-+&sdhc_1 {
-+	status = "okay";
-+
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&sdc1_clk_on &sdc1_cmd_on &sdc1_data_on>;
-+	pinctrl-1 = <&sdc1_clk_off &sdc1_cmd_off &sdc1_data_off>;
-+};
-+
-+&sdhc_2 {
-+	status = "okay";
-+
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on &sdc2_cd_on>;
-+	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off &sdc2_cd_off>;
-+
-+	cd-gpios = <&msmgpio 38 GPIO_ACTIVE_LOW>;
-+};
-+
-+&usb {
-+	status = "okay";
-+	extcon = <&usb_id>, <&usb_id>;
-+};
-+
-+&usb_hs_phy {
-+	extcon = <&usb_id>;
-+};
-+
-+&smd_rpm_regulators {
-+	vdd_l1_l2_l3-supply = <&pm8916_s3>;
-+	vdd_l4_l5_l6-supply = <&pm8916_s4>;
-+	vdd_l7-supply = <&pm8916_s4>;
-+
-+	s3 {
-+		regulator-min-microvolt = <1200000>;
-+		regulator-max-microvolt = <1300000>;
-+	};
-+
-+	s4 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <2100000>;
-+	};
-+
-+	l1 {
-+		regulator-min-microvolt = <1225000>;
-+		regulator-max-microvolt = <1225000>;
-+	};
-+
-+	l2 {
-+		regulator-min-microvolt = <1200000>;
-+		regulator-max-microvolt = <1200000>;
-+	};
-+
-+	l4 {
-+		regulator-min-microvolt = <2050000>;
-+		regulator-max-microvolt = <2050000>;
-+	};
-+
-+	l5 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
-+	l6 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
-+	l7 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
-+	l8 {
-+		regulator-min-microvolt = <2850000>;
-+		regulator-max-microvolt = <2900000>;
-+	};
-+
-+	l9 {
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
-+	l10 {
-+		regulator-min-microvolt = <2700000>;
-+		regulator-max-microvolt = <2800000>;
-+	};
-+
-+	l11 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <2950000>;
-+		regulator-allow-set-load;
-+		regulator-system-load = <200000>;
-+	};
-+
-+	l12 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <2950000>;
-+	};
-+
-+	l13 {
-+		regulator-min-microvolt = <3075000>;
-+		regulator-max-microvolt = <3075000>;
-+	};
-+
-+	l14 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
-+	l15 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
-+	l16 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
-+	l17 {
-+		regulator-min-microvolt = <2850000>;
-+		regulator-max-microvolt = <2850000>;
-+	};
-+
-+	l18 {
-+		regulator-min-microvolt = <2700000>;
-+		regulator-max-microvolt = <2700000>;
-+	};
-+};
-+
-+&msmgpio {
-+	button_backlight_default: button-backlight-default {
-+		pins = "gpio17";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	gpio_keys_default: gpio-keys-default {
-+		pins = "gpio107";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
-+
-+	usb_id_default: usb-id-default {
-+		pins = "gpio110";
-+		function = "gpio";
-+
-+		drive-strength = <8>;
-+		bias-pull-up;
-+	};
-+};
--- 
-2.17.1
+This is not true for all the firmwares - for example, Adreno has this
+mechanism only for the ZAP part - but unfortunately I'm not aware of
+any consumer device accepting a Venus firmware with the "generic"
+Qualcomm signature only (so - without the OEM signature).
+
+Short answer:
+1. qcom/venus-4.4/venus.mdt is a generic firmware for Venus
+2. 99% of the people needs a different firmware for signature issues
+
+
+> This patch can't be merged unless there is a corresponding firmware available
+> in linux-firmware. Is the current 4.2 firmware in linux-firmware signed by
+> Qualcomm? Can they provided 4.4 firmware as well?
+> 
+
+If there is such issue, then maybe we should do "something" about it: I
+would then propose to remove all references to fwname and just get this
+done in DT, where every qcom board already specifies its own path for
+its own firmware.
+
+In any case, the issue that you're raising here has been raised multiple
+times on LKML, I don't precisely remember, but I recall seeing this for
+something like 4 years (or even more) being raised every now and then...
+
+> I have no idea how this works for the venus driver, but I hope Stanimir does.
+> 
+
+As far as I've understood, this driver just uses the firmware which
+path is hardcoded in fwname, even though at this point I would like
+to get an opinion from Stanimir.
+
+Would you be ok if we start parsing firmware-name from DT for this
+driver? The flow would be something like:
+
+Is firmware-name DT property present?
+    Yes -> Use FW path from firmware-name property
+    No  -> Use the FW path from the fwname field of struct
+           venus_resources
+
+This is a common flow in at least freedreno and remoteproc (modem).
+
+-- Angelo
+
+> Regards,
+> 
+> 	Hans
+> 
+>>
+>>>> +};
+>>>> +
+>>>>    static const struct freq_tbl sc7180_freq_table[] = {
+>>>>    	{  0, 500000000 },
+>>>>    	{  0, 434000000 },
+>>>> @@ -613,6 +678,7 @@ static const struct venus_resources sc7180_res = {
+>>>>    static const struct of_device_id venus_dt_match[] = {
+>>>>    	{ .compatible = "qcom,msm8916-venus", .data = &msm8916_res, },
+>>>>    	{ .compatible = "qcom,msm8996-venus", .data = &msm8996_res, },
+>>>> +	{ .compatible = "qcom,sdm660-venus", .data = &sdm660_res, },
+>>>>    	{ .compatible = "qcom,sdm845-venus", .data = &sdm845_res, },
+>>>>    	{ .compatible = "qcom,sdm845-venus-v2", .data = &sdm845_res_v2, },
+>>>>    	{ .compatible = "qcom,sc7180-venus", .data = &sc7180_res, },
+>>>>
+>>>
+>>> Reviewed-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+>>>
+>>
+>> Thank you!
+>> - Angelo
+>>
+> 
 
