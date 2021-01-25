@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 68F06C433DB
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 19:08:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C5ADC433DB
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 19:08:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 33C7D22EBD
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 19:08:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0666222EBD
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 19:08:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729517AbhAZF7E (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Jan 2021 00:59:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40494 "EHLO
+        id S1728007AbhAZF7A (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Jan 2021 00:59:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727210AbhAYJsu (ORCPT
+        with ESMTP id S1727182AbhAYJrr (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Jan 2021 04:48:50 -0500
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB2D2C06178A;
-        Mon, 25 Jan 2021 01:47:41 -0800 (PST)
-Received: by mail-wr1-x433.google.com with SMTP id q7so11530038wre.13;
-        Mon, 25 Jan 2021 01:47:41 -0800 (PST)
+        Mon, 25 Jan 2021 04:47:47 -0500
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEE5EC06174A;
+        Mon, 25 Jan 2021 01:47:27 -0800 (PST)
+Received: by mail-wm1-x330.google.com with SMTP id u14so10121459wmq.4;
+        Mon, 25 Jan 2021 01:47:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=ThFiDlyMsgJrXidZg0Gd3b2g1YMJoXR4frCyMrY3dEo=;
-        b=rFMsWq5mqWz8g4OnEwKNaaQxuUHXznbDq25XNx+77jqsrKrcEu9zY1M9EDfmexjXTq
-         7xxzwOmxxzxlz6Fc3kWRhl7Ol5U8yP/kSGfInHDosyH++Xd6+tcCwstBOq24SAI2KY61
-         Pwasj6BJYgf2/SYgT26AUxpWz2VbkMiiC148PuTF3c+Wsjh6dgNnEXLPl7aoN3gjSWDu
-         15WxIQq6g1C+9PCvqkdSVyIaEOSAG41ylsn9Zsv6AxVwxG1S9O/dQ7Bj7csYiGA55gDq
-         992VlXTs0VHAlzQRD8377LyFE+DRt5HffhnAksZ0Dk6MWYsT4p/ZFJHvImWtpJiJyZW9
-         bxOg==
+        bh=B+TvUBR4F7qwpXaxM7BOb6i7WPhpcifu1ieFC/m280w=;
+        b=NpAlLEnnFQO/egJf0teABmtLY0tYXbVxOCE0f2ARR7GrOvA0y3ldkHMrFIorWa4hjY
+         QL5TC82p4VDJzXWiw0MS6V2KsLUM/y8YpgisO12rmokoVqfFEsIXjQuqnbboGDyf5OoP
+         b3Qc3BuWvP3RoWqdHQrBytVfPntkdOUWnzw98x6oKgl6K3va6I/Uawj4ShS2cp7qXghl
+         OEB7xkgzdDJq9q5ZUpE30AcD04xwik7tkLcqBO0qYFdVtQPN6mpBJuFfkgMlmO/J1JM5
+         uMTBcVUBANxrIYE2SiPJ+wrw28BF0RAMz2ZkHAvM6MA2n6GItbpk1Z5xFFIXTkU/lHaY
+         mqWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=ThFiDlyMsgJrXidZg0Gd3b2g1YMJoXR4frCyMrY3dEo=;
-        b=X9I5zQhAVAcvUQctV3MNwhdnQ7ZQEb1BAE0Bi9dhtO8wL0xXbW2qGTe6m3UL33U3Aj
-         /oc4c2KiXDsP6ze/EFUqHK8F4a/vxdjFpoyyxmNKEMdvhVZ0rBa8u4fI90ZOFw+N+t9r
-         C0X6z6UbxGe3MNocQXDOHrp0L0JUscRSYqaZUWSktGuhMFS/AzZP2kZWDu6oaOFkucEZ
-         9BDCXSJBqvgxCqZTJQBmU0Nshn2FZrTFxKXd/Zw5KhHz3mn6p4GyEVOdTrbi1dmp+M+I
-         lPUAl+Olr3Kt4+8ibrU4bcviB84szKah/ZOzoe7t7czzBeRhMAtv12Ob4AIg9Lo2eedp
-         IZ/A==
-X-Gm-Message-State: AOAM5323iYqGB26EncXrf7FjHPMCW5YLU6wDvA4mkNSjJCzB/DFkkK0Q
-        rsAv8O49mN4XKrP8R2H0EuKaFYhXLv8=
-X-Google-Smtp-Source: ABdhPJwye/iD5yC8aoVnnGkOVK2lInc+mxJqz7DsbgQJqaKDMrYISLO3Hh63kKEax6PF3L/7qEssZA==
-X-Received: by 2002:adf:902a:: with SMTP id h39mr903641wrh.147.1611568060096;
-        Mon, 25 Jan 2021 01:47:40 -0800 (PST)
+        bh=B+TvUBR4F7qwpXaxM7BOb6i7WPhpcifu1ieFC/m280w=;
+        b=L3ZUZIum1McsTZlp1JmB4Ozu8s/2fBAbv0p1rfvAiLnRZ5LBJLyZpq7ye2v6e2c4We
+         1vnyA8IOkesyK0YuRJuPJpV8HOMLzpVZu0XO7RJVm3e7MwE2XBjXWandEyspLTHX7UPl
+         Fstks/kIosmjIlVyUdWRvYKLlE2B8W8+6nponXg6QAT4f6qf1Dae/DlzhU8KL6Qwtho3
+         AkpL+RhmSSaq0oKMLcnVtsoPBh/VswxoPu4YAEjR7dqzLhZvqgC5AHuUoLph7hdxSFpY
+         lgTwq0L0FaodGK0h+ZOfOJ0pZMdgM/NjYJ64MV7Ll9UEdijBLYqf4/FdVmO64DaWCiYh
+         hPlQ==
+X-Gm-Message-State: AOAM531MnkKlA8MbVumRFqL4xBUT1FDfg35JyLv8XGhUHnZK5/HUB+ON
+        B9/KtOnFfQ4fgux77haAjcq28USOIwY=
+X-Google-Smtp-Source: ABdhPJxwOgzRO2LRzg4hgbYCV3I3MTgNqxlNi5sJ3TNssmvgKKgFfqvu54+tu53gd10WGUEjbQTd9Q==
+X-Received: by 2002:a1c:e043:: with SMTP id x64mr696120wmg.48.1611568046155;
+        Mon, 25 Jan 2021 01:47:26 -0800 (PST)
 Received: from jonathan-N53SV.station ([151.81.101.204])
-        by smtp.googlemail.com with ESMTPSA id u5sm22154052wmg.9.2021.01.25.01.47.38
+        by smtp.googlemail.com with ESMTPSA id u5sm22154052wmg.9.2021.01.25.01.47.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jan 2021 01:47:39 -0800 (PST)
+        Mon, 25 Jan 2021 01:47:25 -0800 (PST)
 From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, stephan@gerhold.net,
@@ -65,9 +65,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, stephan@gerhold.net,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH v2 3/3] arm64: dts: qcom: msm8916-longcheer-l8910: Add imu/magnetometer
-Date:   Mon, 25 Jan 2021 10:44:32 +0100
-Message-Id: <20210125094435.7528-4-jonathan.albrieux@gmail.com>
+Subject: [PATCH v2 2/3] arm64: dts: qcom: msm8916: Add blsp_i2c3
+Date:   Mon, 25 Jan 2021 10:44:31 +0100
+Message-Id: <20210125094435.7528-3-jonathan.albrieux@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210125094435.7528-1-jonathan.albrieux@gmail.com>
 References: <20210125094435.7528-1-jonathan.albrieux@gmail.com>
@@ -75,73 +75,72 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-BQ Aquaris X5 (Longcheer L8910) has:
- - BMI160 accelerometer and gyroscope sensor
- - AK09911 magnetometer sensor
-Add them to the device tree.
+MSM8916 has another I2C QUP controller that can be enabled on
+GPIO 10 and 11.
 
-This patch depends on patch "arm64: dts: qcom: msm8916: Add blsp_i2c3".
+Add blsp_i2c3 to msm8916.dtsi and disable it by default.
 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
 Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
 ---
- .../boot/dts/qcom/msm8916-longcheer-l8910.dts | 37 +++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8916-pins.dtsi | 16 ++++++++++++++++
+ arch/arm64/boot/dts/qcom/msm8916.dtsi      | 15 +++++++++++++++
+ 2 files changed, 31 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-index 7d5eff922f41..27845189ac2b 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-@@ -56,6 +56,35 @@
- 	};
- };
- 
-+&blsp_i2c3 {
-+	status = "okay";
-+
-+	magnetometer@d {
-+		compatible = "asahi-kasei,ak09911";
-+		reg = <0x0d>;
-+
-+		vdd-supply = <&pm8916_l17>;
-+		vid-supply = <&pm8916_l6>;
-+
-+		reset-gpios = <&msmgpio 111 GPIO_ACTIVE_LOW>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&mag_reset_default>;
-+	};
-+
-+	imu@68 {
-+		compatible = "bosch,bmi160";
-+		reg = <0x68>;
-+
-+		vdd-supply = <&pm8916_l17>;
-+		vddio-supply = <&pm8916_l6>;
-+
-+		mount-matrix = "0", "1", "0",
-+			      "-1", "0", "0",
-+			       "0", "0", "1";
-+	};
-+};
-+
- &blsp1_uart2 {
- 	status = "okay";
- };
-@@ -220,6 +249,14 @@
- 		bias-pull-up;
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-pins.dtsi b/arch/arm64/boot/dts/qcom/msm8916-pins.dtsi
+index 4dc437f13fa5..7dedb91b9930 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-pins.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916-pins.dtsi
+@@ -220,6 +220,22 @@
+ 		bias-disable;
  	};
  
-+	mag_reset_default: mag-reset-default {
-+		pins = "gpio111";
++	i2c3_default: i2c3-default {
++		pins = "gpio10", "gpio11";
++		function = "blsp_i2c3";
++
++		drive-strength = <2>;
++		bias-disable;
++	};
++
++	i2c3_sleep: i2c3-sleep {
++		pins = "gpio10", "gpio11";
 +		function = "gpio";
 +
 +		drive-strength = <2>;
 +		bias-disable;
 +	};
 +
- 	usb_id_default: usb-id-default {
- 		pins = "gpio110";
- 		function = "gpio";
+ 	i2c4_default: i2c4-default {
+ 		pins = "gpio14", "gpio15";
+ 		function = "blsp_i2c4";
+diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+index 402e891a84ab..1045d7e518f3 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+@@ -1528,6 +1528,21 @@
+ 			status = "disabled";
+ 		};
+ 
++		blsp_i2c3: i2c@78b7000 {
++			compatible = "qcom,i2c-qup-v2.2.1";
++			reg = <0x078b7000 0x500>;
++			interrupts = <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
++				 <&gcc GCC_BLSP1_QUP3_I2C_APPS_CLK>;
++			clock-names = "iface", "core";
++			pinctrl-names = "default", "sleep";
++			pinctrl-0 = <&i2c3_default>;
++			pinctrl-1 = <&i2c3_sleep>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			status = "disabled";
++		};
++
+ 		blsp_spi3: spi@78b7000 {
+ 			compatible = "qcom,spi-qup-v2.2.1";
+ 			reg = <0x078b7000 0x500>;
 -- 
 2.17.1
 
