@@ -2,170 +2,207 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C87DC433DB
-	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 18:10:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B817C433E6
+	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 18:23:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2E8EA22583
-	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 18:10:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0C74A22D58
+	for <phone-devel@archiver.kernel.org>; Mon, 25 Jan 2021 18:23:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730874AbhAYSFy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 25 Jan 2021 13:05:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35448 "EHLO
+        id S1726541AbhAYSXU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 25 Jan 2021 13:23:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730782AbhAYSFs (ORCPT
+        with ESMTP id S1726725AbhAYSXN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Jan 2021 13:05:48 -0500
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2356C061793;
-        Mon, 25 Jan 2021 10:05:07 -0800 (PST)
-Received: by mail-ej1-x633.google.com with SMTP id rv9so19350477ejb.13;
-        Mon, 25 Jan 2021 10:05:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ziK2Od2k39Z62ncVmgdUDN/de74gT1B9UQQ5KttbPwk=;
-        b=mIRe7x+1tAxXDmixKHiplQXDClgoNaTIKk6UK3Ek6Tcdh2MceDgngS8y7XmP/qpeZl
-         UWsJsUBbcCp8k5w6YqjIKJmrZYu0TUAtAFVIljGK57l/aepK0HdfrQhFESnsnYYvehKK
-         AaaJPb2LaU2KBQ/tKAwd6VN95S2dJXhtqAy8hneR6UKwdaWDd6UXHwWgOWD/av/QY6uq
-         6HLmbZuAJmdaJQDxEYekw1njaL/+hUcIJem46QlLRw6Xwt+M+9OhvAyG5c921Nxd5nOC
-         5Ts7EtFpC6Ojl2Oc2dQnmae1GjQBLlwajOQZkBFLz3/pwC+TJb+9P/wJ1vlZ/T2pGAoG
-         nOcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ziK2Od2k39Z62ncVmgdUDN/de74gT1B9UQQ5KttbPwk=;
-        b=MNpcd+OhjZpwSBQGBYHLL/YdwjW+4WNEZ6yyDN5Y4ndQcCXQBjOjtJPKdN+mhIowL1
-         8yHL5Y5nQwlAjdY3PZd0Bd+bnaP7HfmYtAz1ICCaUdrHgPpi4J5n4bPxtn+iyYd3S+Ut
-         pjJkGek3bOwCSfQAmOKzsx93CscQRmZgrrkiZQIQoxypViz7PWrO/TVxWKdF1jqguaRh
-         UtT7Smg4atPcfzbsPUXPqwwttltzsckvnE7S7eOXjYWmeq96l7tBhiNl+Jhc6wRuRvVN
-         mjZipd+QZfi9sEt/f1VRnyt/YIYAO8fWls2Qjh7nKa4GeYLQ3ZJC3ZMCMwPUbkZ2pPIm
-         k2FQ==
-X-Gm-Message-State: AOAM531+xkTMfP/j/ZJluGcHEPaaejHVfuYP5osi1EnEl+ozqOsN56nJ
-        6aAsSSIpFSiNrTl/XHQIU4w=
-X-Google-Smtp-Source: ABdhPJxhkZ8b62II4XGF7lnr96Bhyceuok0wLWXx8RpSBP9C3idXtRpj4+JZJBGNIRdssgp24SuXTw==
-X-Received: by 2002:a17:907:3e02:: with SMTP id hp2mr1080256ejc.411.1611597906603;
-        Mon, 25 Jan 2021 10:05:06 -0800 (PST)
-Received: from localhost (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
-        by smtp.gmail.com with ESMTPSA id g14sm8684002ejr.105.2021.01.25.10.05.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Jan 2021 10:05:05 -0800 (PST)
-From:   Iskren Chernev <iskren.chernev@gmail.com>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Iskren Chernev <iskren.chernev@gmail.com>,
-        Samuel Pascua <pascua.samuel.14@gmail.com>,
-        Alexey Minnekhanov <alexeymin@postmarketos.org>,
-        Brian Masney <masneyb@onstation.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: [PATCH v3 3/4] ARM: dts: qcom: msm8974-klte: add support for display
-Date:   Mon, 25 Jan 2021 20:04:26 +0200
-Message-Id: <20210125180427.3109269-3-iskren.chernev@gmail.com>
+        Mon, 25 Jan 2021 13:23:13 -0500
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3327AC0613ED;
+        Mon, 25 Jan 2021 10:21:59 -0800 (PST)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 784623E84E;
+        Mon, 25 Jan 2021 19:21:55 +0100 (CET)
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+To:     linus.walleij@linaro.org
+Cc:     linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        phone-devel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: [PATCH 2/2] dt-bindings: pinctrl: Add bindings for Awinic AW9523/AW9523B
+Date:   Mon, 25 Jan 2021 19:21:53 +0100
+Message-Id: <20210125182153.212998-2-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210125180427.3109269-1-iskren.chernev@gmail.com>
-References: <20210125180427.3109269-1-iskren.chernev@gmail.com>
+In-Reply-To: <20210125182153.212998-1-angelogioacchino.delregno@somainline.org>
+References: <20210125182153.212998-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Samuel Pascua <pascua.samuel.14@gmail.com>
+Add bindings for the Awinic AW9523/AW9523B I2C GPIO Expander driver.
 
-Add initial support for the display found on the Samsung Galaxy 5 (klte)
-phone. This is based on work from Jonathan Marek & Brian Masney.
-
-Signed-off-by: Samuel Pascua <pascua.samuel.14@gmail.com>
-Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- .../boot/dts/qcom-msm8974-samsung-klte.dts    | 58 +++++++++++++++++++
- 1 file changed, 58 insertions(+)
+ .../pinctrl/awinic,aw9523-pinctrl.yaml        | 139 ++++++++++++++++++
+ 1 file changed, 139 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml
 
-diff --git a/arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts b/arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts
-index 5a7ac4a31031f..19c96b47a5dbd 100644
---- a/arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts
-+++ b/arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts
-@@ -453,6 +453,16 @@ int {
- 				bias-pull-down;
- 			};
- 		};
+diff --git a/Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml
+new file mode 100644
+index 000000000000..640d4d7e4cab
+--- /dev/null
++++ b/Documentation/devicetree/bindings/pinctrl/awinic,aw9523-pinctrl.yaml
+@@ -0,0 +1,139 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/pinctrl/awinic,aw9523-pinctrl.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+		panel_pin: panel {
-+			te {
-+				pins = "gpio12";
-+				function = "mdp_vsync";
++title: Awinic AW9523/AW9523B I2C GPIO Expander
 +
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+		};
- 	};
-
- 	sdhc_1: sdhci@f9824900 {
-@@ -705,6 +715,54 @@ opp_table {
- 	adreno@fdb00000 {
- 		status = "ok";
- 	};
++maintainers:
++  - AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 +
-+	mdss@fd900000 {
-+		status = "ok";
++description: |
++  The Awinic AW9523/AW9523B I2C GPIO Expander featuring 16 multi-function
++  I/O, 256 steps PWM mode and interrupt support.
 +
-+		mdp@fd900000 {
-+			status = "ok";
-+		};
++properties:
++  compatible:
++    const: awinic,aw9523-pinctrl
 +
-+		dsi@fd922800 {
-+			status = "ok";
++  reg:
++    maxItems: 1
 +
-+			vdda-supply = <&pma8084_l2>;
-+			vdd-supply = <&pma8084_l22>;
-+			vddio-supply = <&pma8084_l12>;
++  '#gpio-cells':
++    description: |
++      Specifying the pin number and flags, as defined in
++      include/dt-bindings/gpio/gpio.h
++    const: 2
 +
-+			#address-cells = <1>;
-+			#size-cells = <0>;
++  gpio-controller: true
 +
-+			ports {
-+				port@1 {
-+					endpoint {
-+						remote-endpoint = <&panel_in>;
-+						data-lanes = <0 1 2 3>;
-+					};
-+				};
-+			};
++  gpio-ranges:
++    maxItems: 1
 +
-+			panel: panel@0 {
-+				reg = <0>;
-+				compatible = "samsung,s6e3fa2";
++  interrupt-controller: true
 +
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&panel_pin>;
++  interrupts:
++    maxItems: 1
++    description: Specifies the INTN pin IRQ.
 +
-+				port {
-+					panel_in: endpoint {
-+						remote-endpoint = <&dsi0_out>;
-+					};
-+				};
-+			};
-+		};
++  '#interrupt-cells':
++    description:
++      Specifies the PIN numbers and Flags, as defined in defined in
++      include/dt-bindings/interrupt-controller/irq.h
++    const: 2
 +
-+		dsi-phy@fd922a00 {
-+			status = "ok";
++  reset-gpios:
++    maxItems: 1
 +
-+			vddio-supply = <&pma8084_l12>;
-+		};
-+	};
- };
-
- &spmi_bus {
---
++#PIN CONFIGURATION NODES
++patternProperties:
++  '-pins$':
++    type: object
++    description:
++      Pinctrl node's client devices use subnodes for desired pin configuration.
++      Client device subnodes use below standard properties.
++    $ref: "/schemas/pinctrl/pincfg-node.yaml"
++
++    properties:
++      pins:
++        description:
++          List of gpio pins affected by the properties specified in
++          this subnode.
++        items:
++          pattern: "^gpio([0-9]|1[0-5])$"
++        minItems: 1
++        maxItems: 16
++
++      function:
++        description:
++          Specify the alternative function to be configured for the
++          specified pins.
++
++        enum: [ gpio, pwm ]
++
++      bias-disable: true
++      bias-pull-down: true
++      bias-pull-up: true
++      drive-open-drain: true
++      drive-push-pull: true
++      input-enable: true
++      input-disable: true
++      output-high: true
++      output-low: true
++
++    required:
++      - pins
++      - function
++
++    additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - gpio-controller
++  - '#gpio-cells'
++  - gpio-ranges
++
++additionalProperties: false
++
++examples:
++  # Example configuration to drive pins for a keyboard matrix
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        aw9523: gpio-expander@58 {
++                compatible = "awinic,aw9523-pinctrl";
++                reg = <0x58>;
++                interrupt-parent = <&tlmm>;
++                interrupts = <50 IRQ_TYPE_EDGE_FALLING>;
++                gpio-controller;
++                #gpio-cells = <2>;
++                gpio-ranges = <&tlmm 0 0 16>;
++                interrupt-controller;
++                #interrupt-cells = <2>;
++                reset-gpios = <&tlmm 51 GPIO_ACTIVE_HIGH>;
++
++                keyboard-matrix-col-pins {
++                        pins = "gpio8", "gpio9", "gpio10", "gpio11",
++                               "gpio12", "gpio13", "gpio14", "gpio15";
++                        function = "gpio";
++                        input-disable;
++                        output-low;
++                };
++
++                keyboard-matrix-row-pins {
++                        pins = "gpio0", "gpio1", "gpio2", "gpio3",
++                               "gpio4", "gpio5", "gpio6", "gpio7";
++                        function = "gpio";
++                        bias-pull-up;
++                        drive-open-drain;
++                        input-enable;
++                };
++        };
++    };
+-- 
 2.30.0
 
