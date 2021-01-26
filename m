@@ -2,184 +2,150 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE0B1C433DB
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 14:13:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B59AC433E9
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 14:34:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 91AFB22B3B
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 14:13:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6AC0C23122
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 14:34:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405725AbhAZOM4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Jan 2021 09:12:56 -0500
-Received: from relay05.th.seeweb.it ([5.144.164.166]:44613 "EHLO
-        relay05.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405603AbhAZOMz (ORCPT
+        id S2391730AbhAZOdv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Jan 2021 09:33:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45912 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2392778AbhAZOc5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Jan 2021 09:12:55 -0500
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 8105C3F277;
-        Tue, 26 Jan 2021 15:11:53 +0100 (CET)
-Subject: Re: [PATCH v2 3/9] clk: qcom: Add SDM660 Multimedia Clock Controller
- (MMCC) driver
-To:     Stanimir Varbanov <stanimir.varbanov@linaro.org>, agross@kernel.org
-Cc:     bjorn.andersson@linaro.org, mturquette@baylibre.com,
-        robh+dt@kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org
-References: <20210113183817.447866-1-angelogioacchino.delregno@somainline.org>
- <20210113183817.447866-4-angelogioacchino.delregno@somainline.org>
- <2453cbae-bd30-416c-4432-9b27754670e1@linaro.org>
-From:   AngeloGioacchino Del Regno 
+        Tue, 26 Jan 2021 09:32:57 -0500
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871DBC0698C0
+        for <phone-devel@vger.kernel.org>; Tue, 26 Jan 2021 06:31:46 -0800 (PST)
+Received: by mail-oi1-x232.google.com with SMTP id d18so9318626oic.3
+        for <phone-devel@vger.kernel.org>; Tue, 26 Jan 2021 06:31:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=x6tVYXjcGXzNXZxyVCBc4DKHqr1b7rN/QElcPclacOU=;
+        b=vSrsycdey3StwHFqJuLGo+R0VECFeYNIRyrxwGUcJSMY4yikk2x1TKsA0/WRyMrAuL
+         /+XTLYQJteqJMTnVsffFbl/MRoHqeWXYeZs/d0Jw6ly5CVtg96Q5pZ8zzimOwr7wKqPV
+         JBNiU/TRsLJiv2Wgl4hKeqEEHxcP2UpnAGi5j6f4nP09mBACcgdMD7R+Wu16VPokobRG
+         4MzQ+X85UKupxPELsqBHJiaSCOaszlNFNggxd4aSktuK0gyoDvQEB4rBzvt9ZpsVmOCG
+         wXi/YRcr2+tCTBjow6AqXtVT/+7qQdeUFB3F3xe9dtTV00L18HjOPYbD/p7aETs7yS8J
+         ymnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=x6tVYXjcGXzNXZxyVCBc4DKHqr1b7rN/QElcPclacOU=;
+        b=CBZaYKe7G3IrNY5Wl2FLqZrpzaYSAv0vs6sggqQ6QQPnYxMczGb1pRsWVDiQ92WPaA
+         n9jmBGFukR7KY5vc4pS/2KuQvcBc4lu/69Zm0b0vgqw1BfvbeJiERQ445o4N9hdEIn1I
+         dNHM1xRQWdny7qo5ea3KTtU+7ol3oI2eYToaKM1bV9+MY8QAKMBFACuw2d14oDxm41qA
+         8Vxt8avgyL8xsBbgoQhDggjQZySwtH+pHuJNcvVKx0Ts9Vqq/exoUFEeQZIfqVTIpu0g
+         mzCX0wptm1hhFcj5aJBgj7dHbnfnZGdTi5YZOOoq8m0GnDl4hpxptipkaYsdT7WUAhy0
+         rpHQ==
+X-Gm-Message-State: AOAM531MeBaCt1J/5OlxZRAcNz1rzsofJhhqWtYVa1C9+5++XYlc9tRf
+        rJtYghuVmhVmEn1fc8/XIDM7Dw==
+X-Google-Smtp-Source: ABdhPJz4Zd2SZhbL/LKNIbsqGw0wOfzJ6aYpWcONYfvPc50JMY/RbxKsyyPuaQEr5ZQiJ7gU6f3YCQ==
+X-Received: by 2002:aca:ef46:: with SMTP id n67mr8302oih.103.1611671505721;
+        Tue, 26 Jan 2021 06:31:45 -0800 (PST)
+Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id 70sm4125510otf.39.2021.01.26.06.31.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Jan 2021 06:31:45 -0800 (PST)
+Date:   Tue, 26 Jan 2021 08:31:43 -0600
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Message-ID: <6ba8ac3c-d33b-3ab2-5855-f99d431b397a@somainline.org>
-Date:   Tue, 26 Jan 2021 15:11:53 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+Cc:     agross@kernel.org, mturquette@baylibre.com, robh+dt@kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org
+Subject: Re: [PATCH v2 6/9] clk: qcom: mmcc-msm8996: Migrate gfx3d clock to
+ clk_rcg2_gfx3d
+Message-ID: <20210126143143.GI1241218@yoga>
+References: <20210113183817.447866-1-angelogioacchino.delregno@somainline.org>
+ <20210113183817.447866-7-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
-In-Reply-To: <2453cbae-bd30-416c-4432-9b27754670e1@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210113183817.447866-7-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 26/01/21 14:39, Stanimir Varbanov ha scritto:
-> 
-> 
-> On 1/13/21 8:38 PM, AngeloGioacchino Del Regno wrote:
->> From: Martin Botka <martin.botka@somainline.org>
->>
->> Add a driver for the multimedia clock controller found on SDM660
->> based devices. This should allow most multimedia device drivers
->> to probe and control their clocks.
->>
->> Signed-off-by: Martin Botka <martin.botka@somainline.org>
->> Co-developed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
->> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
->> [angelogioacchino.delregno@somainline.org: Cleaned up SDM630 clock fixups]
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
->> ---
->>   drivers/clk/qcom/Kconfig                     |    9 +
->>   drivers/clk/qcom/Makefile                    |    1 +
->>   drivers/clk/qcom/mmcc-sdm660.c               | 2864 ++++++++++++++++++
->>   include/dt-bindings/clock/qcom,mmcc-sdm660.h |  162 +
->>   4 files changed, 3036 insertions(+)
->>   create mode 100644 drivers/clk/qcom/mmcc-sdm660.c
->>   create mode 100644 include/dt-bindings/clock/qcom,mmcc-sdm660.h
->>
->> diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
->> index d32bb12cd8d0..eb9746e84556 100644
->> --- a/drivers/clk/qcom/Kconfig
->> +++ b/drivers/clk/qcom/Kconfig
->> @@ -366,6 +366,15 @@ config SDM_GCC_660
->>   	  Say Y if you want to use peripheral devices such as UART, SPI,
->>   	  i2C, USB, UFS, SDDC, PCIe, etc.
->>   
->> +config SDM_MMCC_660
->> +	tristate "SDM660 Multimedia Clock Controller"
->> +	select SDM_GCC_660
->> +	select QCOM_GDSC
->> +	help
->> +	  Support for the multimedia clock controller on SDM660 devices.
->> +	  Say Y if you want to support multimedia devices such as display,
->> +	  graphics, video encode/decode, camera, etc.
->> +
->>   config QCS_TURING_404
->>   	tristate "QCS404 Turing Clock Controller"
->>   	help
->> diff --git a/drivers/clk/qcom/Makefile b/drivers/clk/qcom/Makefile
->> index 9e5e0e3cb7b4..bfa8350f088d 100644
->> --- a/drivers/clk/qcom/Makefile
->> +++ b/drivers/clk/qcom/Makefile
->> @@ -62,6 +62,7 @@ obj-$(CONFIG_SC_VIDEOCC_7180) += videocc-sc7180.o
->>   obj-$(CONFIG_SDM_CAMCC_845) += camcc-sdm845.o
->>   obj-$(CONFIG_SDM_DISPCC_845) += dispcc-sdm845.o
->>   obj-$(CONFIG_SDM_GCC_660) += gcc-sdm660.o
->> +obj-$(CONFIG_SDM_MMCC_660) += mmcc-sdm660.o
->>   obj-$(CONFIG_SDM_GCC_845) += gcc-sdm845.o
->>   obj-$(CONFIG_SDM_GPUCC_845) += gpucc-sdm845.o
->>   obj-$(CONFIG_SDM_LPASSCC_845) += lpasscc-sdm845.o
->> diff --git a/drivers/clk/qcom/mmcc-sdm660.c b/drivers/clk/qcom/mmcc-sdm660.c
->> new file mode 100644
->> index 000000000000..d268e1c89f57
->> --- /dev/null
->> +++ b/drivers/clk/qcom/mmcc-sdm660.c
->> @@ -0,0 +1,2864 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * Copyright (c) 2020, The Linux Foundation. All rights reserved.
->> + * Copyright (c) 2020, Martin Botka <martin.botka@somainline.org>
->> + * Copyright (c) 2020, Konrad Dybcio <konrad.dybcio@somainline.org>
->> + */
->> +
->> +#include <linux/kernel.h>
->> +#include <linux/bitops.h>
->> +#include <linux/err.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/module.h>
->> +#include <linux/of.h>
->> +#include <linux/of_device.h>
->> +#include <linux/clk-provider.h>
->> +#include <linux/regmap.h>
->> +#include <linux/reset-controller.h>
->> +#include <linux/clk.h>
->> +
->> +
->> +#include <dt-bindings/clock/qcom,mmcc-sdm660.h>
->> +
->> +#include "common.h"
->> +#include "clk-regmap.h"
->> +#include "clk-regmap-divider.h"
->> +#include "clk-alpha-pll.h"
->> +#include "clk-rcg.h"
->> +#include "clk-branch.h"
->> +#include "reset.h"
->> +#include "gdsc.h"
->> +
-> 
-> <cut>
-> 
->> +
->> +static struct gdsc venus_gdsc = {
->> +	.gdscr = 0x1024,
->> +	.pd = {
->> +		.name = "venus",
->> +	},
->> +	.pwrsts = PWRSTS_OFF_ON,
->> +};
->> +
->> +static struct gdsc venus_core0_gdsc = {
->> +	.gdscr = 0x1040,
->> +	.pd = {
->> +		.name = "venus_core0",
->> +	},
->> +	.parent = &venus_gdsc.pd,
->> +	.pwrsts = PWRSTS_OFF_ON,
-> 
-> I think this gdsc should be under hw control?
-> 
-> +	.flags = HW_CTRL,
-> 
+On Wed 13 Jan 12:38 CST 2021, AngeloGioacchino Del Regno wrote:
 
-Feels strange, eh? Was the same for me, but then noupe, there is no
-hw control for this GDSC downstream, nor a hw_ctrl address for it, so
-on this SoC it shouldn't be under hw control.
+> In commit 734bdefdb043 ("clk: qcom: rcg2: Stop hardcoding gfx3d
+> pingpong parent numbers") the gfx3d ping-pong ops (clk_gfx3d_ops)
 
-Besides that, testing also agrees with this (enc/dec works)...
+I believe you're referring to patch 5 here, which when merged won't have
+this hash. So you'd need to say "in the previous commit (...)" or
+something like that.
 
-P.S.: Thanks for the review!
--- Angelo
+Regards,
+Bjorn
 
->> +};
->> +
-
+> were generalized in order to be able to reuse the same ops for
+> more than just one clock for one SoC: follow the change here in
+> the MSM8996 MMCC.
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  drivers/clk/qcom/mmcc-msm8996.c | 29 ++++++++++++++++++-----------
+>  1 file changed, 18 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/clk/qcom/mmcc-msm8996.c b/drivers/clk/qcom/mmcc-msm8996.c
+> index 3b3aac07fb2d..24843e4f2599 100644
+> --- a/drivers/clk/qcom/mmcc-msm8996.c
+> +++ b/drivers/clk/qcom/mmcc-msm8996.c
+> @@ -528,16 +528,23 @@ static struct clk_rcg2 maxi_clk_src = {
+>  	},
+>  };
+>  
+> -static struct clk_rcg2 gfx3d_clk_src = {
+> -	.cmd_rcgr = 0x4000,
+> -	.hid_width = 5,
+> -	.parent_map = mmss_xo_mmpll0_mmpll9_mmpll2_mmpll8_gpll0_map,
+> -	.clkr.hw.init = &(struct clk_init_data){
+> -		.name = "gfx3d_clk_src",
+> -		.parent_names = mmss_xo_mmpll0_mmpll9_mmpll2_mmpll8_gpll0,
+> -		.num_parents = 6,
+> -		.ops = &clk_gfx3d_ops,
+> -		.flags = CLK_SET_RATE_PARENT,
+> +static struct clk_rcg2_gfx3d gfx3d_clk_src = {
+> +	.rcg = {
+> +		.cmd_rcgr = 0x4000,
+> +		.hid_width = 5,
+> +		.parent_map = mmss_xo_mmpll0_mmpll9_mmpll2_mmpll8_gpll0_map,
+> +		.clkr.hw.init = &(struct clk_init_data){
+> +			.name = "gfx3d_clk_src",
+> +			.parent_names = mmss_xo_mmpll0_mmpll9_mmpll2_mmpll8_gpll0,
+> +			.num_parents = 6,
+> +			.ops = &clk_gfx3d_ops,
+> +			.flags = CLK_SET_RATE_PARENT,
+> +		},
+> +	},
+> +	.hws = (struct clk_hw*[]) {
+> +		&mmpll9.clkr.hw,
+> +		&mmpll2.clkr.hw,
+> +		&mmpll8.clkr.hw
+>  	},
+>  };
+>  
+> @@ -3089,7 +3096,7 @@ static struct clk_regmap *mmcc_msm8996_clocks[] = {
+>  	[AHB_CLK_SRC] = &ahb_clk_src.clkr,
+>  	[AXI_CLK_SRC] = &axi_clk_src.clkr,
+>  	[MAXI_CLK_SRC] = &maxi_clk_src.clkr,
+> -	[GFX3D_CLK_SRC] = &gfx3d_clk_src.clkr,
+> +	[GFX3D_CLK_SRC] = &gfx3d_clk_src.rcg.clkr,
+>  	[RBBMTIMER_CLK_SRC] = &rbbmtimer_clk_src.clkr,
+>  	[ISENSE_CLK_SRC] = &isense_clk_src.clkr,
+>  	[RBCPR_CLK_SRC] = &rbcpr_clk_src.clkr,
+> -- 
+> 2.29.2
+> 
