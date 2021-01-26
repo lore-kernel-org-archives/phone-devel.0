@@ -2,111 +2,206 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.5 required=3.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-	DKIM_INVALID,DKIM_SIGNED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 990CCC433E6
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 05:59:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CB0AC433E6
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 13:40:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4CDEB223E4
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 05:59:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 24E9E2223D
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 13:40:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728612AbhAZF67 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Jan 2021 00:58:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40224 "EHLO
+        id S2404777AbhAZNkm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Jan 2021 08:40:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727166AbhAYJrO (ORCPT
+        with ESMTP id S2391707AbhAZNkg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Jan 2021 04:47:14 -0500
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BA2DC061786;
-        Mon, 25 Jan 2021 01:46:27 -0800 (PST)
-Received: by mail-wm1-x329.google.com with SMTP id c127so10118336wmf.5;
-        Mon, 25 Jan 2021 01:46:27 -0800 (PST)
+        Tue, 26 Jan 2021 08:40:36 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D5CBC061D7F
+        for <phone-devel@vger.kernel.org>; Tue, 26 Jan 2021 05:39:55 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id g1so19791655edu.4
+        for <phone-devel@vger.kernel.org>; Tue, 26 Jan 2021 05:39:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=TV0xw0urZWA7yxhi2valt8DXJLxBV/z7jKveKN9m6ds=;
-        b=ksPQsC1nyqO+hH9ep9+kZ9SMdnnJhY6fJ9CkJknO3o36nva3MH/duQt3Udm7n/flT9
-         Jm8qaUB8ragyj99W6FbJ1bx12lcMj0ajZsLh5MfUSX6UoSZlNIeIQ3IS4Cs807DaLdv5
-         M6raw4K7eljJYmIjxavEeoAEMDr+aBaL8I1WUg2eA93aQKcllkmaGfsj7Zes6fQpQmLP
-         vRW22Y9IB8DHC9a4pe8zANO5roi20X9hHWyYjZ5NSDOlwLxi/1T+VxXV5ZdtPvZy300r
-         6X4hmcF+A6rf6YD1G4p46vVTboNpZu2xAbCRZngsHrWl9NYtJWh3hozj9qbkhBWM46Ft
-         Jsbw==
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=lk4JPRwUYALCNG2igi4afiTcBYEM/7rNUk9OAWBcEKk=;
+        b=UdoDKTi1sbPTjTJ0MhX4Kqhq+E/25MT5yDvXGL4Lw/8bOvznJXP0tqAV6gvt012HI+
+         Ev2hEmfTso5JGXBtKJzZbcauz+6G/Vvob9aAIfSyQNzR3UP9aahETacfBhUH4NMTqJfG
+         28ukc1xDY2V1dNFw8EENwGvTAvF4JJm+odDaZLsWpTT+zftemxavbyks/bP4UmIwGc93
+         385PhrWn3eVRLJ3fIQnswzQTh+fCRfMHcTyBLtbwzr8FDksAL/nOSFGlZVaegBrGmeG3
+         OUUASyq5mxgl8H68jPCJmXHuT4pZgDs9KVTjHiZQ2L9LRUYwbKzH/atU7ZJ1n3Ht+28F
+         lKVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=TV0xw0urZWA7yxhi2valt8DXJLxBV/z7jKveKN9m6ds=;
-        b=qE0yAAZcfbAbhhqgkICuJH5OY5zw6IR803A2cvr0wlsRpMWI43JVEpXF+ctWyOk9JZ
-         25QG9hYeSmLRzMAqRQ5F8ynyKFkJyD5bdJR9fIkZBcTSBewPTs/zEAGBBV1khzegmsIo
-         2CgXRPdhPBaaRC5cmT8wMD4ycQoVHT3ACRglldTytKPLIQ7ks+gnnPTrPDTyL3tdTCn+
-         tpVr0ToT6/qg6mkTjSx/uCi0wbplnhDP1+KmiLpxPnukaYlzO3e2+icZV3JlRxvaKodN
-         9s7x+H63QGpsro7SLHUKnPLeZIpOb6RSiP5QF+vKSYeRCQ1il5GkeNR7S4IPLpxWKSXz
-         Nijg==
-X-Gm-Message-State: AOAM533/tvIye7/YGXjnzbqDMRu3s3R6felbR7kiiKUBRZoRT4VntN48
-        n5tXOiaBZbF3+D1E0Ad6lqTeJZi0OCU=
-X-Google-Smtp-Source: ABdhPJy1oQ/Ef4RY0U1iiHDEM5BlNCP4W/7PSDGr2G5l/6GJTQZunZNIiiPPIokMN5NYb0I0QoxUeg==
-X-Received: by 2002:a05:600c:2253:: with SMTP id a19mr1599635wmm.75.1611567985825;
-        Mon, 25 Jan 2021 01:46:25 -0800 (PST)
-Received: from jonathan-N53SV.station ([151.81.101.204])
-        by smtp.googlemail.com with ESMTPSA id u5sm22154052wmg.9.2021.01.25.01.46.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jan 2021 01:46:25 -0800 (PST)
-From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, stephan@gerhold.net,
-        phone-devel@vger.kernel.org,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH v2 0/3] Add initial support for BQ Aquaris X5
-Date:   Mon, 25 Jan 2021 10:44:29 +0100
-Message-Id: <20210125094435.7528-1-jonathan.albrieux@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=lk4JPRwUYALCNG2igi4afiTcBYEM/7rNUk9OAWBcEKk=;
+        b=pv/JdhEGd4G9/AYVjr7VAV3dZjw/WxwTjTY8YgBullqj2aiacHtR8jU4Mo+T8frxe1
+         OU3c7ooeXPGi5RKtrvcPJ+taqiANIZ0rQ10V7UrL8201PPG7i4LumsLuubUBYoZAyVDA
+         /mwGtaY5ezDKRa2mDnk9P6BXsbpsINX7+t11CEdpRSuR/QTTF2FgkQWiCwNzWrkaeEvc
+         lP4/1/+5LfyI25fOsQ59Xt5TOA4Ena8SPmRETv0ZHAdNfakgh9tjqDY4Bv8yws0V21w6
+         LNg1w09bD9jmwTwhK5i/wicAVk7LUSkKboVzyDm8zlJZkCIwP0cuW+C0RhcyffOOmR0e
+         D9eA==
+X-Gm-Message-State: AOAM5336cKq4jq576lfvJBZbQQ+YPnsF66lnrcOn/ypR8t5RcCl8OPKv
+        qQLnM9V88ZVSipMUJo/ZQRKf5g==
+X-Google-Smtp-Source: ABdhPJzfsUKl3nbwig8RQGGsmtTC3iiYEKOK8dCvoMmrGeiWyq+JIptIf9wgNf3sl7zWKgCI0XMpiQ==
+X-Received: by 2002:a50:fc97:: with SMTP id f23mr4882928edq.307.1611668393900;
+        Tue, 26 Jan 2021 05:39:53 -0800 (PST)
+Received: from [192.168.0.4] (hst-221-115.medicom.bg. [84.238.221.115])
+        by smtp.googlemail.com with ESMTPSA id w2sm9932644ejn.73.2021.01.26.05.39.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Jan 2021 05:39:53 -0800 (PST)
+Subject: Re: [PATCH v2 3/9] clk: qcom: Add SDM660 Multimedia Clock Controller
+ (MMCC) driver
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>, agross@kernel.org
+Cc:     bjorn.andersson@linaro.org, mturquette@baylibre.com,
+        robh+dt@kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org
+References: <20210113183817.447866-1-angelogioacchino.delregno@somainline.org>
+ <20210113183817.447866-4-angelogioacchino.delregno@somainline.org>
+From:   Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Message-ID: <2453cbae-bd30-416c-4432-9b27754670e1@linaro.org>
+Date:   Tue, 26 Jan 2021 15:39:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
+MIME-Version: 1.0
+In-Reply-To: <20210113183817.447866-4-angelogioacchino.delregno@somainline.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-v2:
- - reorder I2C devices sorting them by address
 
-v1:
- - initial patch submission
-https://lore.kernel.org/linux-arm-msm/20210124135409.5473-1-jonathan.albrieux@gmail.com/
 
-Aquaris X5 (Longcheer L8910) is a smartphone released by BQ in 2015.
+On 1/13/21 8:38 PM, AngeloGioacchino Del Regno wrote:
+> From: Martin Botka <martin.botka@somainline.org>
+> 
+> Add a driver for the multimedia clock controller found on SDM660
+> based devices. This should allow most multimedia device drivers
+> to probe and control their clocks.
+> 
+> Signed-off-by: Martin Botka <martin.botka@somainline.org>
+> Co-developed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> [angelogioacchino.delregno@somainline.org: Cleaned up SDM630 clock fixups]
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  drivers/clk/qcom/Kconfig                     |    9 +
+>  drivers/clk/qcom/Makefile                    |    1 +
+>  drivers/clk/qcom/mmcc-sdm660.c               | 2864 ++++++++++++++++++
+>  include/dt-bindings/clock/qcom,mmcc-sdm660.h |  162 +
+>  4 files changed, 3036 insertions(+)
+>  create mode 100644 drivers/clk/qcom/mmcc-sdm660.c
+>  create mode 100644 include/dt-bindings/clock/qcom,mmcc-sdm660.h
+> 
+> diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
+> index d32bb12cd8d0..eb9746e84556 100644
+> --- a/drivers/clk/qcom/Kconfig
+> +++ b/drivers/clk/qcom/Kconfig
+> @@ -366,6 +366,15 @@ config SDM_GCC_660
+>  	  Say Y if you want to use peripheral devices such as UART, SPI,
+>  	  i2C, USB, UFS, SDDC, PCIe, etc.
+>  
+> +config SDM_MMCC_660
+> +	tristate "SDM660 Multimedia Clock Controller"
+> +	select SDM_GCC_660
+> +	select QCOM_GDSC
+> +	help
+> +	  Support for the multimedia clock controller on SDM660 devices.
+> +	  Say Y if you want to support multimedia devices such as display,
+> +	  graphics, video encode/decode, camera, etc.
+> +
+>  config QCS_TURING_404
+>  	tristate "QCS404 Turing Clock Controller"
+>  	help
+> diff --git a/drivers/clk/qcom/Makefile b/drivers/clk/qcom/Makefile
+> index 9e5e0e3cb7b4..bfa8350f088d 100644
+> --- a/drivers/clk/qcom/Makefile
+> +++ b/drivers/clk/qcom/Makefile
+> @@ -62,6 +62,7 @@ obj-$(CONFIG_SC_VIDEOCC_7180) += videocc-sc7180.o
+>  obj-$(CONFIG_SDM_CAMCC_845) += camcc-sdm845.o
+>  obj-$(CONFIG_SDM_DISPCC_845) += dispcc-sdm845.o
+>  obj-$(CONFIG_SDM_GCC_660) += gcc-sdm660.o
+> +obj-$(CONFIG_SDM_MMCC_660) += mmcc-sdm660.o
+>  obj-$(CONFIG_SDM_GCC_845) += gcc-sdm845.o
+>  obj-$(CONFIG_SDM_GPUCC_845) += gpucc-sdm845.o
+>  obj-$(CONFIG_SDM_LPASSCC_845) += lpasscc-sdm845.o
+> diff --git a/drivers/clk/qcom/mmcc-sdm660.c b/drivers/clk/qcom/mmcc-sdm660.c
+> new file mode 100644
+> index 000000000000..d268e1c89f57
+> --- /dev/null
+> +++ b/drivers/clk/qcom/mmcc-sdm660.c
+> @@ -0,0 +1,2864 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (c) 2020, The Linux Foundation. All rights reserved.
+> + * Copyright (c) 2020, Martin Botka <martin.botka@somainline.org>
+> + * Copyright (c) 2020, Konrad Dybcio <konrad.dybcio@somainline.org>
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/bitops.h>
+> +#include <linux/err.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_device.h>
+> +#include <linux/clk-provider.h>
+> +#include <linux/regmap.h>
+> +#include <linux/reset-controller.h>
+> +#include <linux/clk.h>
+> +
+> +
+> +#include <dt-bindings/clock/qcom,mmcc-sdm660.h>
+> +
+> +#include "common.h"
+> +#include "clk-regmap.h"
+> +#include "clk-regmap-divider.h"
+> +#include "clk-alpha-pll.h"
+> +#include "clk-rcg.h"
+> +#include "clk-branch.h"
+> +#include "reset.h"
+> +#include "gdsc.h"
+> +
 
-As part of msm8916-mainline project, this series aims to bring initial
-mainline support for it.
+<cut>
 
-Features added:
- - SDHCI (internal and external storage)
- - USB Device Mode
- - UART
- - Regulators
- - WiFi/BT
- - Volume buttons
- - Vibrator
- - Touchkeys backlight
- - Accelerometer and gyroscope sensor
- - Magnetometer sensor
+> +
+> +static struct gdsc venus_gdsc = {
+> +	.gdscr = 0x1024,
+> +	.pd = {
+> +		.name = "venus",
+> +	},
+> +	.pwrsts = PWRSTS_OFF_ON,
+> +};
+> +
+> +static struct gdsc venus_core0_gdsc = {
+> +	.gdscr = 0x1040,
+> +	.pd = {
+> +		.name = "venus_core0",
+> +	},
+> +	.parent = &venus_gdsc.pd,
+> +	.pwrsts = PWRSTS_OFF_ON,
 
-Jonathan Albrieux (3):
-  arm64: dts: qcom: Add device tree for BQ Aquaris X5 (Longcheer L8910)
-  arm64: dts: qcom: msm8916: Add blsp_i2c3
-  arm64: dts: qcom: msm8916-longcheer-l8910: Add imu/magnetometer
+I think this gdsc should be under hw control?
 
- arch/arm64/boot/dts/qcom/Makefile             |   1 +
- .../boot/dts/qcom/msm8916-longcheer-l8910.dts | 267 ++++++++++++++++++
- arch/arm64/boot/dts/qcom/msm8916-pins.dtsi    |  16 ++
- arch/arm64/boot/dts/qcom/msm8916.dtsi         |  15 +
- 4 files changed, 299 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
++	.flags = HW_CTRL,
 
+> +};
+> +
 -- 
-2.17.1
-
+-- 
+regards,
+Stan
