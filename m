@@ -2,82 +2,92 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CDDABC43381
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Jan 2021 18:45:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A771AC433DB
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Jan 2021 22:17:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id ABD6464DAF
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Jan 2021 18:45:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6397C61601
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Jan 2021 22:17:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344066AbhA0SpU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Jan 2021 13:45:20 -0500
-Received: from m-r2.th.seeweb.it ([5.144.164.171]:60519 "EHLO
-        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344016AbhA0SpK (ORCPT
+        id S237034AbhA0WRa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Jan 2021 17:17:30 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:37548 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234153AbhA0WR0 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Jan 2021 13:45:10 -0500
-Received: from [192.168.1.101] (abaf219.neoplus.adsl.tpnet.pl [83.6.169.219])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 33EB53F0A3;
-        Wed, 27 Jan 2021 19:44:17 +0100 (CET)
-Subject: Re: [PATCH] thermal: qcom: tsens-v0_1: Add support for MDM9607
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Amit Kucheria <amitk@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210127181400.44642-1-konrad.dybcio@somainline.org>
- <YBGxgSb8TJeYH6mw@builder.lan>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-Message-ID: <e08f75be-4520-395d-599b-a2cbd7fbefe8@somainline.org>
-Date:   Wed, 27 Jan 2021 19:44:16 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+        Wed, 27 Jan 2021 17:17:26 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 5FED01C0B92; Wed, 27 Jan 2021 23:16:29 +0100 (CET)
+Date:   Wed, 27 Jan 2021 23:16:29 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Dan Murphy <dmurphy@ti.com>, linux-leds@vger.kernel.org,
+        Sakari Ailus <sakari.ailus@iki.fi>, newbytee@protonmail.com,
+        Stephan Gerhold <stephan@gerhold.net>,
+        linux-media@vger.kernel.org, phone-devel@vger.kernel.org,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: Re: [PATCH 2/2 v9] leds: rt8515: Add Richtek RT8515 LED driver
+Message-ID: <20210127221628.GC24799@amd>
+References: <20210102231510.2068851-1-linus.walleij@linaro.org>
+ <20210102231510.2068851-2-linus.walleij@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <YBGxgSb8TJeYH6mw@builder.lan>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="Clx92ZfkiYIKRjnr"
+Content-Disposition: inline
+In-Reply-To: <20210102231510.2068851-2-linus.walleij@linaro.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-> Afaict, there's no need to initialize base0 and base1, they are both
-> assigned to before used.
->
-> Also, they are temporary variables within each case (even with the
-> fallthrough), so you should only need a single "base".
->
-Right. Fixed, will send in a v3 (I sent a v2 shortly after this one because I misplaced the #defines).
+--Clx92ZfkiYIKRjnr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
 
 
-> How about:
->
-> 	mode = field_get(MDM9607_CAL_SEL_MASK, qfprom_cdata[2]);
->
-> and same below.
->
-> (I see that this would break the style of the file, perhaps we can clean
-> that up?)
->
-I'd rather not change that to keep it comparable to the downstream driver, should anything ever break and need investigation..
+> This adds a driver for the Richtek RT8515 dual channel
+> torch/flash white LED driver.
+>=20
+> This LED driver is found in some mobile phones from
+> Samsung such as the GT-S7710 and GT-I8190.
+>=20
+> A V4L interface is added.
+>=20
+> We do not have a proper datasheet for the RT8515 but
+> it turns out that RT9387A has a public datasheet and
+> is essentially the same chip. We designed the driver
+> in accordance with this datasheet. The day someone
+> needs to drive a RT9387A this driver can probably
+> easily be augmented to handle that chip too.
+>=20
+> Sakari Ailus, Pavel Machek and Andy Shevchenko helped
+> significantly in getting this driver right.
 
+Thanks, applied... And sorry for the delay.
 
-> qfprom_csel seems unused and uninitialized.
+Best regards,
+							Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
 
-Fixed as well.
+--Clx92ZfkiYIKRjnr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
 
-Konrad
+iEYEARECAAYFAmAR5jwACgkQMOfwapXb+vK7tQCgjBTTX7ltWeMIzgiTlMBYeSMd
++NsAn19D36vUOKYf7mIjjzhuY/gFlci9
+=FDqQ
+-----END PGP SIGNATURE-----
 
-
+--Clx92ZfkiYIKRjnr--
