@@ -2,145 +2,229 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C5ADC433DB
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 19:08:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64385C433E0
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Jan 2021 18:15:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0666222EBD
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jan 2021 19:08:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2110464D9F
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Jan 2021 18:15:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728007AbhAZF7A (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Jan 2021 00:59:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40264 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727182AbhAYJrr (ORCPT
+        id S233231AbhA0SPK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Jan 2021 13:15:10 -0500
+Received: from relay04.th.seeweb.it ([5.144.164.165]:34101 "EHLO
+        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233569AbhA0SPH (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Jan 2021 04:47:47 -0500
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEE5EC06174A;
-        Mon, 25 Jan 2021 01:47:27 -0800 (PST)
-Received: by mail-wm1-x330.google.com with SMTP id u14so10121459wmq.4;
-        Mon, 25 Jan 2021 01:47:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=B+TvUBR4F7qwpXaxM7BOb6i7WPhpcifu1ieFC/m280w=;
-        b=NpAlLEnnFQO/egJf0teABmtLY0tYXbVxOCE0f2ARR7GrOvA0y3ldkHMrFIorWa4hjY
-         QL5TC82p4VDJzXWiw0MS6V2KsLUM/y8YpgisO12rmokoVqfFEsIXjQuqnbboGDyf5OoP
-         b3Qc3BuWvP3RoWqdHQrBytVfPntkdOUWnzw98x6oKgl6K3va6I/Uawj4ShS2cp7qXghl
-         OEB7xkgzdDJq9q5ZUpE30AcD04xwik7tkLcqBO0qYFdVtQPN6mpBJuFfkgMlmO/J1JM5
-         uMTBcVUBANxrIYE2SiPJ+wrw28BF0RAMz2ZkHAvM6MA2n6GItbpk1Z5xFFIXTkU/lHaY
-         mqWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=B+TvUBR4F7qwpXaxM7BOb6i7WPhpcifu1ieFC/m280w=;
-        b=L3ZUZIum1McsTZlp1JmB4Ozu8s/2fBAbv0p1rfvAiLnRZ5LBJLyZpq7ye2v6e2c4We
-         1vnyA8IOkesyK0YuRJuPJpV8HOMLzpVZu0XO7RJVm3e7MwE2XBjXWandEyspLTHX7UPl
-         Fstks/kIosmjIlVyUdWRvYKLlE2B8W8+6nponXg6QAT4f6qf1Dae/DlzhU8KL6Qwtho3
-         AkpL+RhmSSaq0oKMLcnVtsoPBh/VswxoPu4YAEjR7dqzLhZvqgC5AHuUoLph7hdxSFpY
-         lgTwq0L0FaodGK0h+ZOfOJ0pZMdgM/NjYJ64MV7Ll9UEdijBLYqf4/FdVmO64DaWCiYh
-         hPlQ==
-X-Gm-Message-State: AOAM531MnkKlA8MbVumRFqL4xBUT1FDfg35JyLv8XGhUHnZK5/HUB+ON
-        B9/KtOnFfQ4fgux77haAjcq28USOIwY=
-X-Google-Smtp-Source: ABdhPJxwOgzRO2LRzg4hgbYCV3I3MTgNqxlNi5sJ3TNssmvgKKgFfqvu54+tu53gd10WGUEjbQTd9Q==
-X-Received: by 2002:a1c:e043:: with SMTP id x64mr696120wmg.48.1611568046155;
-        Mon, 25 Jan 2021 01:47:26 -0800 (PST)
-Received: from jonathan-N53SV.station ([151.81.101.204])
-        by smtp.googlemail.com with ESMTPSA id u5sm22154052wmg.9.2021.01.25.01.47.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jan 2021 01:47:25 -0800 (PST)
-From:   Jonathan Albrieux <jonathan.albrieux@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, stephan@gerhold.net,
-        phone-devel@vger.kernel.org,
-        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        Wed, 27 Jan 2021 13:15:07 -0500
+Received: from localhost.localdomain (abaf219.neoplus.adsl.tpnet.pl [83.6.169.219])
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 5FF9B200A5;
+        Wed, 27 Jan 2021 19:14:06 +0100 (CET)
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Amit Kucheria <amitk@kernel.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH v2 2/3] arm64: dts: qcom: msm8916: Add blsp_i2c3
-Date:   Mon, 25 Jan 2021 10:44:31 +0100
-Message-Id: <20210125094435.7528-3-jonathan.albrieux@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210125094435.7528-1-jonathan.albrieux@gmail.com>
-References: <20210125094435.7528-1-jonathan.albrieux@gmail.com>
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] thermal: qcom: tsens-v0_1: Add support for MDM9607
+Date:   Wed, 27 Jan 2021 19:14:00 +0100
+Message-Id: <20210127181400.44642-1-konrad.dybcio@somainline.org>
+X-Mailer: git-send-email 2.30.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-MSM8916 has another I2C QUP controller that can be enabled on
-GPIO 10 and 11.
+MDM9607 TSENS IP is very similar to the one of MSM8916, with
+minor adjustments to various tuning values.
 
-Add blsp_i2c3 to msm8916.dtsi and disable it by default.
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
-Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
- arch/arm64/boot/dts/qcom/msm8916-pins.dtsi | 16 ++++++++++++++++
- arch/arm64/boot/dts/qcom/msm8916.dtsi      | 15 +++++++++++++++
- 2 files changed, 31 insertions(+)
+ .../bindings/thermal/qcom-tsens.yaml          |   2 +
+ drivers/thermal/qcom/tsens-v0_1.c             | 100 +++++++++++++++++-
+ drivers/thermal/qcom/tsens.c                  |   3 +
+ drivers/thermal/qcom/tsens.h                  |   2 +-
+ 4 files changed, 105 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-pins.dtsi b/arch/arm64/boot/dts/qcom/msm8916-pins.dtsi
-index 4dc437f13fa5..7dedb91b9930 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-pins.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-pins.dtsi
-@@ -220,6 +220,22 @@
- 		bias-disable;
- 	};
+diff --git a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
+index 95462e071ab4..8ad9dc139c23 100644
+--- a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
++++ b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
+@@ -22,6 +22,7 @@ properties:
+       - description: v0.1 of TSENS
+         items:
+           - enum:
++              - qcom,mdm9607-tsens
+               - qcom,msm8916-tsens
+               - qcom,msm8939-tsens
+               - qcom,msm8974-tsens
+@@ -94,6 +95,7 @@ allOf:
+         compatible:
+           contains:
+             enum:
++              - qcom,mdm9607-tsens
+               - qcom,msm8916-tsens
+               - qcom,msm8974-tsens
+               - qcom,msm8976-tsens
+diff --git a/drivers/thermal/qcom/tsens-v0_1.c b/drivers/thermal/qcom/tsens-v0_1.c
+index 4ffa2e2c0145..8efe925b860f 100644
+--- a/drivers/thermal/qcom/tsens-v0_1.c
++++ b/drivers/thermal/qcom/tsens-v0_1.c
+@@ -126,6 +126,39 @@
+ #define CAL_SEL_SHIFT		30
+ #define CAL_SEL_SHIFT_2		28
  
-+	i2c3_default: i2c3-default {
-+		pins = "gpio10", "gpio11";
-+		function = "blsp_i2c3";
++/* eeprom layout data for mdm9607 */
++#define MDM9607_BASE0_MASK	0x000000ff
++#define MDM9607_BASE1_MASK	0x000ff000
++#define MDM9607_BASE0_SHIFT	0
++#define MDM9607_BASE1_SHIFT	12
 +
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
++#define MDM9607_S0_P1_MASK	0x00003f00
++#define MDM9607_S1_P1_MASK	0x03f00000
++#define MDM9607_S2_P1_MASK	0x0000003f
++#define MDM9607_S3_P1_MASK	0x0003f000
++#define MDM9607_S4_P1_MASK	0x0000003f
 +
-+	i2c3_sleep: i2c3-sleep {
-+		pins = "gpio10", "gpio11";
-+		function = "gpio";
++#define MDM9607_S0_P2_MASK	0x000fc000
++#define MDM9607_S1_P2_MASK	0xfc000000
++#define MDM9607_S2_P2_MASK	0x00000fc0
++#define MDM9607_S3_P2_MASK	0x00fc0000
++#define MDM9607_S4_P2_MASK	0x00000fc0
 +
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
++#define MDM9607_S0_P1_SHIFT	8
++#define MDM9607_S1_P1_SHIFT	20
++#define MDM9607_S2_P1_SHIFT	0
++#define MDM9607_S3_P1_SHIFT	12
++#define MDM9607_S4_P1_SHIFT	0
 +
- 	i2c4_default: i2c4-default {
- 		pins = "gpio14", "gpio15";
- 		function = "blsp_i2c4";
-diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-index 402e891a84ab..1045d7e518f3 100644
---- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-@@ -1528,6 +1528,21 @@
- 			status = "disabled";
- 		};
++#define MDM9607_S0_P2_SHIFT	14
++#define MDM9607_S1_P2_SHIFT	26
++#define MDM9607_S2_P2_SHIFT	6
++#define MDM9607_S3_P2_SHIFT	18
++#define MDM9607_S4_P2_SHIFT	6
++
++#define MDM9607_CAL_SEL_MASK	0x00700000
++#define MDM9607_CAL_SEL_SHIFT	20
++
+ #define S0_P1_SHIFT		8
+ #define S1_P1_SHIFT		14
+ #define S2_P1_SHIFT		20
+@@ -452,7 +485,57 @@ static int calibrate_8974(struct tsens_priv *priv)
+ 	return 0;
+ }
  
-+		blsp_i2c3: i2c@78b7000 {
-+			compatible = "qcom,i2c-qup-v2.2.1";
-+			reg = <0x078b7000 0x500>;
-+			interrupts = <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
-+				 <&gcc GCC_BLSP1_QUP3_I2C_APPS_CLK>;
-+			clock-names = "iface", "core";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&i2c3_default>;
-+			pinctrl-1 = <&i2c3_sleep>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+		};
+-/* v0.1: 8916, 8939, 8974 */
++static int calibrate_9607(struct tsens_priv *priv)
++{
++	int base0 = 0, base1 = 0, i;
++	u32 p1[5], p2[5];
++	int mode = 0;
++	u32 *qfprom_cdata, *qfprom_csel;
 +
- 		blsp_spi3: spi@78b7000 {
- 			compatible = "qcom,spi-qup-v2.2.1";
- 			reg = <0x078b7000 0x500>;
++	qfprom_cdata = (u32 *)qfprom_read(priv->dev, "calib");
++	if (IS_ERR(qfprom_cdata))
++		return PTR_ERR(qfprom_cdata);
++
++	mode = (qfprom_cdata[2] & MDM9607_CAL_SEL_MASK) >> MDM9607_CAL_SEL_SHIFT;
++	dev_dbg(priv->dev, "calibration mode is %d\n", mode);
++
++	switch (mode) {
++	case TWO_PT_CALIB:
++		base1 = (qfprom_cdata[2] & MDM9607_BASE1_MASK) >> MDM9607_BASE1_SHIFT;
++		p2[0] = (qfprom_cdata[0] & MDM9607_S0_P2_MASK) >> MDM9607_S0_P2_SHIFT;
++		p2[1] = (qfprom_cdata[0] & MDM9607_S1_P2_MASK) >> MDM9607_S1_P2_SHIFT;
++		p2[2] = (qfprom_cdata[1] & MDM9607_S2_P2_MASK) >> MDM9607_S2_P2_SHIFT;
++		p2[3] = (qfprom_cdata[1] & MDM9607_S3_P2_MASK) >> MDM9607_S3_P2_SHIFT;
++		p2[4] = (qfprom_cdata[2] & MDM9607_S4_P2_MASK) >> MDM9607_S4_P2_SHIFT;
++		for (i = 0; i < priv->num_sensors; i++)
++			p2[i] = ((base1 + p2[i]) << 2);
++		fallthrough;
++	case ONE_PT_CALIB2:
++		base0 = (qfprom_cdata[0] & MDM9607_BASE0_MASK);
++		p1[0] = (qfprom_cdata[0] & MDM9607_S0_P1_MASK) >> MDM9607_S0_P1_SHIFT;
++		p1[1] = (qfprom_cdata[0] & MDM9607_S1_P1_MASK) >> MDM9607_S1_P1_SHIFT;
++		p1[2] = (qfprom_cdata[1] & MDM9607_S2_P1_MASK) >> MDM9607_S2_P1_SHIFT;
++		p1[3] = (qfprom_cdata[1] & MDM9607_S3_P1_MASK) >> MDM9607_S3_P1_SHIFT;
++		p1[4] = (qfprom_cdata[2] & MDM9607_S4_P1_MASK) >> MDM9607_S4_P1_SHIFT;
++		for (i = 0; i < priv->num_sensors; i++)
++			p1[i] = (((base0) + p1[i]) << 2);
++		break;
++	default:
++		for (i = 0; i < priv->num_sensors; i++) {
++			p1[i] = 500;
++			p2[i] = 780;
++		}
++		break;
++	}
++
++	compute_intercept_slope(priv, p1, p2, mode);
++	kfree(qfprom_cdata);
++	kfree(qfprom_csel);
++
++	return 0;
++}
++
++/* v0.1: 8916, 8939, 8974, 9607 */
+ 
+ static struct tsens_features tsens_v0_1_feat = {
+ 	.ver_major	= VER_0_1,
+@@ -540,3 +623,18 @@ struct tsens_plat_data data_8974 = {
+ 	.feat		= &tsens_v0_1_feat,
+ 	.fields	= tsens_v0_1_regfields,
+ };
++
++static const struct tsens_ops ops_9607 = {
++	.init		= init_common,
++	.calibrate	= calibrate_9607,
++	.get_temp	= get_temp_common,
++};
++
++struct tsens_plat_data data_9607 = {
++	.num_sensors	= 5,
++	.ops		= &ops_9607,
++	.hw_ids		= (unsigned int []){ 0, 1, 2, 3, 4 },
++
++	.feat		= &tsens_v0_1_feat,
++	.fields	= tsens_v0_1_regfields,
++};
+diff --git a/drivers/thermal/qcom/tsens.c b/drivers/thermal/qcom/tsens.c
+index d8ce3a687b80..51c36b9e8e69 100644
+--- a/drivers/thermal/qcom/tsens.c
++++ b/drivers/thermal/qcom/tsens.c
+@@ -895,6 +895,9 @@ static SIMPLE_DEV_PM_OPS(tsens_pm_ops, tsens_suspend, tsens_resume);
+ 
+ static const struct of_device_id tsens_table[] = {
+ 	{
++		.compatible = "qcom,mdm9607-tsens",
++		.data = &data_9607,
++	}, {
+ 		.compatible = "qcom,msm8916-tsens",
+ 		.data = &data_8916,
+ 	}, {
+diff --git a/drivers/thermal/qcom/tsens.h b/drivers/thermal/qcom/tsens.h
+index f40b625f897e..cba64c33b4f9 100644
+--- a/drivers/thermal/qcom/tsens.h
++++ b/drivers/thermal/qcom/tsens.h
+@@ -585,7 +585,7 @@ int get_temp_common(const struct tsens_sensor *s, int *temp);
+ extern struct tsens_plat_data data_8960;
+ 
+ /* TSENS v0.1 targets */
+-extern struct tsens_plat_data data_8916, data_8939, data_8974;
++extern struct tsens_plat_data data_8916, data_8939, data_8974, data_9607;
+ 
+ /* TSENS v1 targets */
+ extern struct tsens_plat_data data_tsens_v1, data_8976;
 -- 
-2.17.1
+2.30.0
 
