@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64385C433E0
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Jan 2021 18:15:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75022C433E9
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Jan 2021 18:26:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2110464D9F
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Jan 2021 18:15:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3091064DA5
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Jan 2021 18:26:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233231AbhA0SPK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Jan 2021 13:15:10 -0500
-Received: from relay04.th.seeweb.it ([5.144.164.165]:34101 "EHLO
-        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233569AbhA0SPH (ORCPT
+        id S236008AbhA0S0P (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Jan 2021 13:26:15 -0500
+Received: from relay01.th.seeweb.it ([5.144.164.162]:49689 "EHLO
+        relay01.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235776AbhA0S0M (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Jan 2021 13:15:07 -0500
+        Wed, 27 Jan 2021 13:26:12 -0500
 Received: from localhost.localdomain (abaf219.neoplus.adsl.tpnet.pl [83.6.169.219])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 5FF9B200A5;
-        Wed, 27 Jan 2021 19:14:06 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 6EB0F200A4;
+        Wed, 27 Jan 2021 19:25:10 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Amit Kucheria <amitk@kernel.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
         Zhang Rui <rui.zhang@intel.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] thermal: qcom: tsens-v0_1: Add support for MDM9607
-Date:   Wed, 27 Jan 2021 19:14:00 +0100
-Message-Id: <20210127181400.44642-1-konrad.dybcio@somainline.org>
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] thermal: qcom: tsens-v0_1: Add support for MDM9607
+Date:   Wed, 27 Jan 2021 19:25:05 +0100
+Message-Id: <20210127182506.52311-1-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -50,6 +50,9 @@ minor adjustments to various tuning values.
 
 Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
+Changes since v1:
+- Move the defines so as not to cut into the middle of 8974 regs
+
  .../bindings/thermal/qcom-tsens.yaml          |   2 +
  drivers/thermal/qcom/tsens-v0_1.c             | 100 +++++++++++++++++-
  drivers/thermal/qcom/tsens.c                  |   3 +
@@ -77,12 +80,12 @@ index 95462e071ab4..8ad9dc139c23 100644
                - qcom,msm8974-tsens
                - qcom,msm8976-tsens
 diff --git a/drivers/thermal/qcom/tsens-v0_1.c b/drivers/thermal/qcom/tsens-v0_1.c
-index 4ffa2e2c0145..8efe925b860f 100644
+index 4ffa2e2c0145..7b13c01a1693 100644
 --- a/drivers/thermal/qcom/tsens-v0_1.c
 +++ b/drivers/thermal/qcom/tsens-v0_1.c
-@@ -126,6 +126,39 @@
- #define CAL_SEL_SHIFT		30
- #define CAL_SEL_SHIFT_2		28
+@@ -190,6 +190,39 @@
+ 
+ #define BIT_APPEND		0x3
  
 +/* eeprom layout data for mdm9607 */
 +#define MDM9607_BASE0_MASK	0x000000ff
@@ -117,9 +120,9 @@ index 4ffa2e2c0145..8efe925b860f 100644
 +#define MDM9607_CAL_SEL_MASK	0x00700000
 +#define MDM9607_CAL_SEL_SHIFT	20
 +
- #define S0_P1_SHIFT		8
- #define S1_P1_SHIFT		14
- #define S2_P1_SHIFT		20
+ static int calibrate_8916(struct tsens_priv *priv)
+ {
+ 	int base0 = 0, base1 = 0, i;
 @@ -452,7 +485,57 @@ static int calibrate_8974(struct tsens_priv *priv)
  	return 0;
  }
