@@ -2,99 +2,176 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90DFDC433E9
-	for <phone-devel@archiver.kernel.org>; Thu, 28 Jan 2021 09:39:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44737C433E6
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Jan 2021 10:37:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4EF0F64DDE
-	for <phone-devel@archiver.kernel.org>; Thu, 28 Jan 2021 09:39:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F011664DE0
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Jan 2021 10:37:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232085AbhA1Jj3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 28 Jan 2021 04:39:29 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167]:19547 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232466AbhA1Jag (ORCPT
+        id S231217AbhA1Khc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 28 Jan 2021 05:37:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49618 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231140AbhA1KhW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 28 Jan 2021 04:30:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1611826058;
-        s=strato-dkim-0002; d=gerhold.net;
-        h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-        From:Subject:Sender;
-        bh=ggZcq1KRQ/pdSEYJdxgcAOgsVpYsxLJwddK5gt6xtlg=;
-        b=a+te04OOr9mo/KRqXVvzw3BBi/E+Jc/Sdv3h/v4T+kfmGG++zHgXOyrdCNOACpdHrr
-        1xQ98/ASaqS/PuPn1lfNY4oBlTMZS9ektTIncbfqowGJcnVfX79TbsHiDX76RfdYFObn
-        ayXHyoj5VoTN1pxiiyMIc1Rjk1i63KYFcDvpU2rgdG6cF3qt8GGd8WGgKOq00r2uILrx
-        5/d/mVTMPm7C68IajcEi6HHGC0UxNFeEeXusnHKi9KJSYxj7B9bagRBuhmPHRhNT5S6N
-        rENCbMYEhcJ5CR2SYc+wHxmSjVrrovwYF1YcdDt1oiZ6EIBK/i/n2dVksjguFYuaS9rB
-        JB7g==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8j9IczEaYo="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-        by smtp.strato.de (RZmta 47.16.0 DYNA|AUTH)
-        with ESMTPSA id L06318x0S9RV36x
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-        Thu, 28 Jan 2021 10:27:31 +0100 (CET)
-Date:   Thu, 28 Jan 2021 10:27:19 +0100
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        Thu, 28 Jan 2021 05:37:22 -0500
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 738D0C061573;
+        Thu, 28 Jan 2021 02:36:41 -0800 (PST)
+Received: by mail-ej1-x633.google.com with SMTP id w1so6943918ejf.11;
+        Thu, 28 Jan 2021 02:36:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WliAbs0AXbBON4RTolMaPpk8w9g9sLeQ3AynxGb88hg=;
+        b=DR3polTTyai5gaK3RUCFc9J2VW/iVlkeS1q/SgWa0kUurctF4oLZTBu4tJSj31SSL6
+         Ps8/RfqXjMS6mr5t+MmOyTNvfklzzcxzm0wWgm7g39+YfiRzX0O6wnQZSLHFc8sz/bai
+         n6Vxf5RBdYCQtZGGoq9ulMRPYoUHnu1Q/xEhywNAiGgwkebcTP1XQ4snQUSl/zhhui6p
+         hlW38HlDSTfyx99JUpsf7RThJcrZkVJa0aVkusIxj4pXygK0sWpc6V0YmBsxDA6qR4iO
+         RlbR4iSpdXQlsVh8tAcEDQ0zYOvQHOGJowszBBIDQJzqQ5w4qKsSh41c6Ux0/OL07w6N
+         8uAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WliAbs0AXbBON4RTolMaPpk8w9g9sLeQ3AynxGb88hg=;
+        b=bULeWzsu+iq1iZFpv0aHtgWYC3O2pm2kmbOYhFG3hIsQgB8Gy9nRkhEn1+FgE0BvO/
+         ttH54K/pRKbjoBHAuWeuhiGYq/YBiUc+JWYAeGFj7toAgBeyyFzyfZREKLTjtLMuF1l2
+         toYzod05Jikyy1hwd/dwFw/WXMFOj0bSmcYORWZwoqs55TvJMirg6rRQ2bwY7KqO+N1w
+         WSz0XYSG07V8RdJ8vbgWpr3u8Phd3y0Bry1cCUV6JpMD2XB6045DDwE4ZNitaT7x3cRg
+         q9PPrPMHZX+hFqTbJHWo40ov3nVphWlH64ANAjUEokiL7yEncB0RrWDGfwjyEGDYl6nQ
+         cfjA==
+X-Gm-Message-State: AOAM530KWdxL3HKdRh5nCiiZE+lg9fiR9EzIzHylVv2BoYZbCssjLN9s
+        KPjubcqcSSBsJ6tnALGS9UU=
+X-Google-Smtp-Source: ABdhPJyCACLmBTxT+XTF4RW7KFXzXOkIiuEyvQv5TH4jGeGI1Pc35lRzfZjGX4HnhMIgnB5+khxOig==
+X-Received: by 2002:a17:906:58d3:: with SMTP id e19mr1556863ejs.373.1611830200260;
+        Thu, 28 Jan 2021 02:36:40 -0800 (PST)
+Received: from localhost (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
+        by smtp.gmail.com with ESMTPSA id q2sm2783991edn.91.2021.01.28.02.36.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Jan 2021 02:36:39 -0800 (PST)
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 0/3] Add initial support for BQ Aquaris X5
-Message-ID: <YBKDa1irydOUaXag@gerhold.net>
-References: <20210124135409.5473-1-jonathan.albrieux@gmail.com>
- <20210124210119.GA27676@amd>
- <YA3rTAx2vfOXPCMq@gerhold.net>
- <20210127222407.GD24799@amd>
+        linux-kernel@vger.kernel.org,
+        Iskren Chernev <iskren.chernev@gmail.com>,
+        Samuel Pascua <pascua.samuel.14@gmail.com>,
+        Alexey Minnekhanov <alexeymin@postmarketos.org>,
+        Brian Masney <masneyb@onstation.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: [PATCH v4 1/4] ARM: dts: qcom: msm8974: add gpu support
+Date:   Thu, 28 Jan 2021 12:36:28 +0200
+Message-Id: <20210128103632.1723952-1-iskren.chernev@gmail.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210127222407.GD24799@amd>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Jan 27, 2021 at 11:24:07PM +0100, Pavel Machek wrote:
-> > > How close are you to having useful phone calls?
-> > 
-> > You can do phone calls (with audio) and you can use mobile data, if you
-> > have the patches for that. :) I'm trying to find time to finish up the
-> > drivers needed for that, but I've been a bit short on time lately.
-> 
-> > Most of the functionality is packaged in postmarketOS [1] and you can
-> > find a list of the devices in the postmarketOS wiki [2]. Especially
-> > the ones in the "community" category are quite similar in terms of
-> > working functionality.
-> 
-> I know about postmarketOS (I even contributed a bit some time ago),
-> and watch it from time to time. Currently I'm using old Nokia 6151 for
-> phone calls, but would not mind switching. Work is ongoing in Droid 4
-> land -- phone calls are also "almost there". But the almost seems to
-> be a lot of work :-(.
-> 
+From: Brian Masney <masneyb@onstation.org>
 
-It's fairly simple on Qualcomm SoCs once audio DSP and modem are working
-(which is not that simple). I basically just tell the audio DSP to
-stream voice call audio to the audio ports and then it does that without
-involving the kernel.
+Add support for the a3xx GPU. opp_table is chosen to include lower
+frequencies common to all different msm8974 variants.
 
-It seems to work quite well, so far no one complained about quality or
-something like that. Not sure if anyone is actively using it already
-though :)
+Also correctly set gpu compat string on msm8974 and msm8974pro.
 
-The work left is mainly making the driver more generic so it can work on
-other Qualcomm SoCs as well (right now I have some things hardcoded).
-Also, I still haven't fully figured out what is the best way to
-integrate it into ASoC/UCM/..., so that it can be easily activated when
-starting a voice call.
+Signed-off-by: Brian Masney <masneyb@onstation.org>
+[iskren.chernev@gmail.com: change after v1]
+Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+---
+Changes in v4:
+- change adreno compat string to 330.1 in msm8974 and 330.2 in msm8974pro
+- put opp_table node inside gpu node (similar to msm8916)
+- fix tabs-whenever-possible lint warning
 
-Stephan
+v3: https://lkml.org/lkml/2021/1/25/398
+v2: https://lkml.org/lkml/2021/1/24/142
+v1: https://lkml.org/lkml/2020/12/30/322
+
+ arch/arm/boot/dts/qcom-msm8974.dtsi    | 43 ++++++++++++++++++++++++++
+ arch/arm/boot/dts/qcom-msm8974pro.dtsi |  5 +++
+ 2 files changed, 48 insertions(+)
+
+diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
+index 51f5f904f9eb9..bae9ea3a3b871 100644
+--- a/arch/arm/boot/dts/qcom-msm8974.dtsi
++++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
+@@ -1399,6 +1399,49 @@ cnoc: interconnect@fc480000 {
+ 			         <&rpmcc RPM_SMD_CNOC_A_CLK>;
+ 		};
+
++		gpu: adreno@fdb00000 {
++			status = "disabled";
++
++			compatible = "qcom,adreno-330.1",
++				     "qcom,adreno";
++			reg = <0xfdb00000 0x10000>;
++			reg-names = "kgsl_3d0_reg_memory";
++			interrupts = <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "kgsl_3d0_irq";
++			clock-names = "core",
++				      "iface",
++				      "mem_iface";
++			clocks = <&mmcc OXILI_GFX3D_CLK>,
++				 <&mmcc OXILICX_AHB_CLK>,
++				 <&mmcc OXILICX_AXI_CLK>;
++			sram = <&gmu_sram>;
++			power-domains = <&mmcc OXILICX_GDSC>;
++			operating-points-v2 = <&gpu_opp_table>;
++
++			interconnects = <&mmssnoc MNOC_MAS_GRAPHICS_3D &bimc BIMC_SLV_EBI_CH0>,
++					<&ocmemnoc OCMEM_VNOC_MAS_GFX3D &ocmemnoc OCMEM_SLV_OCMEM>;
++			interconnect-names = "gfx-mem",
++					     "ocmem";
++
++			// iommus = <&gpu_iommu 0>;
++
++			gpu_opp_table: opp_table {
++				compatible = "operating-points-v2";
++
++				opp-320000000 {
++					opp-hz = /bits/ 64 <320000000>;
++				};
++
++				opp-200000000 {
++					opp-hz = /bits/ 64 <200000000>;
++				};
++
++				opp-27000000 {
++					opp-hz = /bits/ 64 <27000000>;
++				};
++			};
++		};
++
+ 		mdss: mdss@fd900000 {
+ 			status = "disabled";
+
+diff --git a/arch/arm/boot/dts/qcom-msm8974pro.dtsi b/arch/arm/boot/dts/qcom-msm8974pro.dtsi
+index 6740a4cb7da8d..b87de3c3f461a 100644
+--- a/arch/arm/boot/dts/qcom-msm8974pro.dtsi
++++ b/arch/arm/boot/dts/qcom-msm8974pro.dtsi
+@@ -14,5 +14,10 @@ sdhci@f9824900 {
+ 		clock-controller@fc400000 {
+ 				compatible = "qcom,gcc-msm8974pro";
+ 		};
++
++		adreno@fdb00000 {
++			compatible = "qcom,adreno-330.2",
++				     "qcom,adreno";
++		};
+ 	};
+ };
+
+base-commit: 226871e2eda4832d94c3239add7e52ad17b81ce5
+--
+2.30.0
+
