@@ -2,124 +2,117 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-3.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 936E6C4332B
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Jan 2021 22:56:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B86E5C433DB
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Jan 2021 06:36:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5B25164DDC
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Jan 2021 22:56:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6953164DD6
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Jan 2021 06:36:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232102AbhA0W4N (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Jan 2021 17:56:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40678 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231825AbhA0W4I (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Jan 2021 17:56:08 -0500
-X-Greylist: delayed 474 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 27 Jan 2021 14:32:47 PST
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [IPv6:2a00:da80:fff0:2::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA43C06174A;
-        Wed, 27 Jan 2021 14:32:47 -0800 (PST)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 708311C0B8E; Wed, 27 Jan 2021 23:24:08 +0100 (CET)
-Date:   Wed, 27 Jan 2021 23:24:07 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 0/3] Add initial support for BQ Aquaris X5
-Message-ID: <20210127222407.GD24799@amd>
-References: <20210124135409.5473-1-jonathan.albrieux@gmail.com>
- <20210124210119.GA27676@amd>
- <YA3rTAx2vfOXPCMq@gerhold.net>
+        id S229804AbhA1GgU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 28 Jan 2021 01:36:20 -0500
+Received: from muru.com ([72.249.23.125]:53788 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231251AbhA1GgT (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 28 Jan 2021 01:36:19 -0500
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 2C6A680A9;
+        Thu, 28 Jan 2021 06:35:39 +0000 (UTC)
+Date:   Thu, 28 Jan 2021 08:35:30 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     =?utf-8?B?UMOpdGVy?= Ujfalusi <peter.ujfalusi@gmail.com>
+Cc:     Pavel Machek <pavel@ucw.cz>, broonie@kernel.org,
+        aaro.koskinen@iki.fi, spinal.by@gmail.com,
+        jarkko.nikula@bitmer.com, merlijn@wizzup.org, sre@kernel.org,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        phone-devel@vger.kernel.org, kuninori.morimoto.gx@renesas.com,
+        Carl Philipp Klemm <philipp@uvos.xyz>
+Subject: Re: [PATCH] ASoC: ti: Allocate dais dynamically for TDM and audio
+ graph card
+Message-ID: <YBJbMqt4PbeU/fD4@atomide.com>
+References: <20210124092713.GA22195@amd>
+ <2a9e7655-3d32-feb5-080c-8928a96f417e@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="BI5RvnYi6R4T2M87"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YA3rTAx2vfOXPCMq@gerhold.net>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2a9e7655-3d32-feb5-080c-8928a96f417e@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+* Péter Ujfalusi <peter.ujfalusi@gmail.com> [210126 06:00]:
+> On 1/24/21 11:27 AM, Pavel Machek wrote:
+> > From: Tony Lindgren <tony@atomide.com>
+> > +	for (i = 0; i < mcbsp->dai_count; i++) {
+> > +		struct snd_soc_dai_driver *dai = &mcbsp->dais[i];
+> > +
+> > +		dai->name = devm_kasprintf(mcbsp->dev, GFP_KERNEL, "%s-dai%i",
+> > +					   dev_name(mcbsp->dev), i);
+> > +
+> > +		if (i == 0) {
+> > +			dai->probe = omap_mcbsp_probe;
+> > +			dai->remove = omap_mcbsp_remove;
+> > +			dai->ops = &mcbsp_dai_ops;
+> > +		}
+> 
+> You are effectively creating extra dummy-dais (no ops), but naming them as
+> McBSP.
+> The dummy-dais will only work if the real dai is in use and the dai link
+> which contains the real dai must be configured (TDM slots, format, channels)
+> to accomodate the link which contains the dummy-dai.
+> 
+> The idea did not aged well for me ;)
+> It still looks and sounds like a hack to model the TDM slots on a single DAI
+> as multiple DAIs just to satisfy a generic binding which is not aimed to
+> satisfy the droid4 setup (which is far from anything simple).
 
---BI5RvnYi6R4T2M87
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+After thinking about this a bit more, I think the voice call dai should be
+created by the voice dai. When we have an active voice call, the data
+transfer is completely out of control of the kernel mcbsp driver. It needs
+to be only configured on the pmic.
 
-Hi!
+So I'm suggesting tha we create the modem voice call dai as a child for
+sound/soc/codecs/cpcap.c, does that sound OK to you guys?
 
-> > > Aquaris X5 (Longcheer L8910) is a smartphone released by BQ in 2015.
-> > >=20
-> > > As part of msm8916-mainline project, this series aims to bring initial
-> > > mainline support for it.
-> >=20
-> > Good to see another phone being supported. Can I ask you to cc:
-> > phone-devel@vger.kernel.org with phone stuff?
-> >=20
-> > > Features added:
-> > >  - SDHCI (internal and external storage)
-> > >  - USB Device Mode
-> > >  - UART
-> > >  - Regulators
-> > >  - WiFi/BT
-> > >  - Volume buttons
-> > >  - Vibrator
-> > >  - Touchkeys backlight
-> > >  - Accelerometer and gyroscope sensor
-> > >  - Magnetometer sensor
-> >=20
-> > How close are you to having useful phone calls?
->=20
-> You can do phone calls (with audio) and you can use mobile data, if you
-> have the patches for that. :) I'm trying to find time to finish up the
-> drivers needed for that, but I've been a bit short on time lately.
+I think from snd-soc-audio-graph-card binding point of view, we'd just move
+the cpu_dai_mdm endpoint out of the mcbsp in the device tree and drop the
+$subject patch. Then the dts for the pmic voice codec becomes something
+like this (untested):
 
-:-).=20
+cpcap_audio: audio-codec {
+	#sound-dai-cells = <1>;
+	#address-cells = <1>;
+	#size-cells = <0>;
 
-> Actually we have come pretty far with MSM8916-based smartphones.
-> Most functionality is (somewhat) working at this point, the primary
-> open task is optimizing suspend/power consumption. Battery/charging
-> and camera is also tricky but works somewhat on some of the devices.
+	port@0 {
+		reg = <0>;
+		cpcap_audio_codec0: endpoint {
+		};
+	};
+	port@1 {
+		reg = <1>;
+		cpcap_audio_codec1: endpoint@0 {
+		};
+		cpu_dai_mdm: endpoint@1 {
+			reg = <1>;
+			dai-format = "dsp_a";
+			frame-master = <&cpcap_audio_codec1>;
+			bitclock-master = <&cpcap_audio_codec1>;
+			remote-endpoint = <&mot_mdm6600_audio_codec0>;
+		};
+        };
+};
 
-Yes, power consumption is a lot of fun :-(.
+For things like recording a voice call, I think mcbsp could be configured
+to also listen on the traffic and dump it out. I guess that could also
+happen directly with calls from the sound/soc/codecs/cpcap.c driver to
+the mcbsp driver since we havethe audio graph mapping. Anyways, that's a
+separate series of patches, still something to consider.
 
-> Most of the functionality is packaged in postmarketOS [1] and you can
-> find a list of the devices in the postmarketOS wiki [2]. Especially
-> the ones in the "community" category are quite similar in terms of
-> working functionality.
+Regards,
 
-I know about postmarketOS (I even contributed a bit some time ago),
-and watch it from time to time. Currently I'm using old Nokia 6151 for
-phone calls, but would not mind switching. Work is ongoing in Droid 4
-land -- phone calls are also "almost there". But the almost seems to
-be a lot of work :-(.
-
-Best regards,
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
-
---BI5RvnYi6R4T2M87
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAmAR6AcACgkQMOfwapXb+vJIwwCcDASqiP104rhpm8QJgQ160Qda
-GUgAn3bYBt4Yh25JM6rh0GIsEKcoCrH9
-=trfK
------END PGP SIGNATURE-----
-
---BI5RvnYi6R4T2M87--
+Tony
