@@ -2,117 +2,93 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B86E5C433DB
-	for <phone-devel@archiver.kernel.org>; Thu, 28 Jan 2021 06:36:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 97CA3C43381
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Jan 2021 09:16:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6953164DD6
-	for <phone-devel@archiver.kernel.org>; Thu, 28 Jan 2021 06:36:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5643864DBD
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Jan 2021 09:16:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbhA1GgU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 28 Jan 2021 01:36:20 -0500
-Received: from muru.com ([72.249.23.125]:53788 "EHLO muru.com"
+        id S232386AbhA1JQR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 28 Jan 2021 04:16:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50742 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231251AbhA1GgT (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 28 Jan 2021 01:36:19 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 2C6A680A9;
-        Thu, 28 Jan 2021 06:35:39 +0000 (UTC)
-Date:   Thu, 28 Jan 2021 08:35:30 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     =?utf-8?B?UMOpdGVy?= Ujfalusi <peter.ujfalusi@gmail.com>
-Cc:     Pavel Machek <pavel@ucw.cz>, broonie@kernel.org,
-        aaro.koskinen@iki.fi, spinal.by@gmail.com,
-        jarkko.nikula@bitmer.com, merlijn@wizzup.org, sre@kernel.org,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        phone-devel@vger.kernel.org, kuninori.morimoto.gx@renesas.com,
-        Carl Philipp Klemm <philipp@uvos.xyz>
-Subject: Re: [PATCH] ASoC: ti: Allocate dais dynamically for TDM and audio
- graph card
-Message-ID: <YBJbMqt4PbeU/fD4@atomide.com>
-References: <20210124092713.GA22195@amd>
- <2a9e7655-3d32-feb5-080c-8928a96f417e@gmail.com>
+        id S231975AbhA1JNq (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 28 Jan 2021 04:13:46 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DAB2D64DBD;
+        Thu, 28 Jan 2021 09:13:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611825185;
+        bh=nCoc08hyKcJ5vfOd6TzDee2uuvisAAk6p0qjWq14A2o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kzlWs2Dcyzckg43G6RflwpFzr0VJqgFzXsVPvlb8RNe76r9kWJudG65uiq+lraOdc
+         G9g2Z3woBHci3VOmC6wOEUfwNUzjYtKCkHkPmEOvZ8TvJYRzMtwTxCbW60JZEW7AEY
+         /fdFNCGGBdR75gw0Yj7UyPfah1Z2hQQ9wwCEDyQxujoesiGAZNVgpQ0HZfTD1M+EiI
+         zKJCg5FsSlODr9FwmmCZ1fsPQXPhxQVSgpZVGShuEhIsuommTcA/WJt6/JY5CvC9Vz
+         0yFhbAK8s+5psQXd1xSpgO4oxjffyvvPTENStWhlNtEGLMWWjz/d/cCmELYsMXLJqa
+         B4hTktMgNxSuw==
+Date:   Thu, 28 Jan 2021 10:13:02 +0100
+From:   Wolfram Sang <wsa@kernel.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     agross@kernel.org, linux-kernel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, bjorn.andersson@linaro.org,
+        robh+dt@kernel.org, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] dt-bindings: i2c: qcom,i2c-qup: Document noise
+ rejection properties
+Message-ID: <20210128091302.GG963@ninjato>
+References: <20210114180415.404418-1-angelogioacchino.delregno@somainline.org>
+ <20210114180415.404418-4-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="gm5TwAJMO0F2iVRz"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2a9e7655-3d32-feb5-080c-8928a96f417e@gmail.com>
+In-Reply-To: <20210114180415.404418-4-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-* Péter Ujfalusi <peter.ujfalusi@gmail.com> [210126 06:00]:
-> On 1/24/21 11:27 AM, Pavel Machek wrote:
-> > From: Tony Lindgren <tony@atomide.com>
-> > +	for (i = 0; i < mcbsp->dai_count; i++) {
-> > +		struct snd_soc_dai_driver *dai = &mcbsp->dais[i];
-> > +
-> > +		dai->name = devm_kasprintf(mcbsp->dev, GFP_KERNEL, "%s-dai%i",
-> > +					   dev_name(mcbsp->dev), i);
-> > +
-> > +		if (i == 0) {
-> > +			dai->probe = omap_mcbsp_probe;
-> > +			dai->remove = omap_mcbsp_remove;
-> > +			dai->ops = &mcbsp_dai_ops;
-> > +		}
-> 
-> You are effectively creating extra dummy-dais (no ops), but naming them as
-> McBSP.
-> The dummy-dais will only work if the real dai is in use and the dai link
-> which contains the real dai must be configured (TDM slots, format, channels)
-> to accomodate the link which contains the dummy-dai.
-> 
-> The idea did not aged well for me ;)
-> It still looks and sounds like a hack to model the TDM slots on a single DAI
-> as multiple DAIs just to satisfy a generic binding which is not aimed to
-> satisfy the droid4 setup (which is far from anything simple).
 
-After thinking about this a bit more, I think the voice call dai should be
-created by the voice dai. When we have an active voice call, the data
-transfer is completely out of control of the kernel mcbsp driver. It needs
-to be only configured on the pmic.
+--gm5TwAJMO0F2iVRz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-So I'm suggesting tha we create the modem voice call dai as a child for
-sound/soc/codecs/cpcap.c, does that sound OK to you guys?
 
-I think from snd-soc-audio-graph-card binding point of view, we'd just move
-the cpu_dai_mdm endpoint out of the mcbsp in the device tree and drop the
-$subject patch. Then the dts for the pmic voice codec becomes something
-like this (untested):
+> +  qcom,noise-reject-sda:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: Noise rejection level for the SDA line.
+> +    minimum: 0
+> +    maximum: 3
+> +    default: 0
 
-cpcap_audio: audio-codec {
-	#sound-dai-cells = <1>;
-	#address-cells = <1>;
-	#size-cells = <0>;
+What does this u32 describe? I wonder if we can introduce a generic
+property instead of a vendor-specific one.
 
-	port@0 {
-		reg = <0>;
-		cpcap_audio_codec0: endpoint {
-		};
-	};
-	port@1 {
-		reg = <1>;
-		cpcap_audio_codec1: endpoint@0 {
-		};
-		cpu_dai_mdm: endpoint@1 {
-			reg = <1>;
-			dai-format = "dsp_a";
-			frame-master = <&cpcap_audio_codec1>;
-			bitclock-master = <&cpcap_audio_codec1>;
-			remote-endpoint = <&mot_mdm6600_audio_codec0>;
-		};
-        };
-};
 
-For things like recording a voice call, I think mcbsp could be configured
-to also listen on the traffic and dump it out. I guess that could also
-happen directly with calls from the sound/soc/codecs/cpcap.c driver to
-the mcbsp driver since we havethe audio graph mapping. Anyways, that's a
-separate series of patches, still something to consider.
+--gm5TwAJMO0F2iVRz
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Regards,
+-----BEGIN PGP SIGNATURE-----
 
-Tony
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmASgB4ACgkQFA3kzBSg
+Kbav/BAAoZZxCeFm2JgyZX5Iyv10zaVI7zevlrKrhcHrYWLaAQux2y2c+b4UCz7r
+nR2SLFgjRWELz2oomSb25ckMaNtBohgQurjk+lisKJoaar41C9mkFxFiQpWuFm8r
+QnTuwScs1CXAxK2zETbZNRrkoHtC4zSeVM9ut6q0hMl2Apfz8NDIZnySrz13AAjC
+UDGlZi3aqaa0iypPeRiuqABOlJ+0IGz72ZzlicH3RDazX4u6s51paxM59XessQQ5
+QnBMWpcO8H1aeLGhFsuJtk8LH8wx7PP5jxl1dq8h4JpGRX84ge1itFytwBBfiBHl
+q14hxVGg1bmCyTjJfnhWOANxi/wSdfYhnR/IVILAqJtjhxVeZp3Ry+QjqQpZBzHb
+uTwUF+mz6MtK3a0bsl57d7z76519Lk4Pdh0PyXUm2s8IAjpjSmMiYUZP/GkSNf2a
+7CZ0VjcqYA8RXs4nszb35HEY9hRCR3of11ZDDWtDCfm9VQonIYt1xTqG9mi+cTAy
+AylaZ+4rsKCLbp52Ik38uFGwwsdLw68TkLI5Teq5gXnQJZSpQz6Otdrdaxb6/K0f
+GZEQxOfFzoAiL08ejQ0vYub4vloDorZFVRLRCoYyDPtClIBcxkj6eNHR7KXqR26v
+Ij/6kxBNFSu6cZxtfwjXHa5NF6J+Sv8dvJ1C19sN6xrt76HnWjM=
+=dkAk
+-----END PGP SIGNATURE-----
+
+--gm5TwAJMO0F2iVRz--
