@@ -2,34 +2,34 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BE58C433DB
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 282F0C433E9
 	for <phone-devel@archiver.kernel.org>; Sat, 30 Jan 2021 10:59:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CE7E664E08
+	by mail.kernel.org (Postfix) with ESMTP id ECF1C64E0B
 	for <phone-devel@archiver.kernel.org>; Sat, 30 Jan 2021 10:59:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231696AbhA3K7J (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 30 Jan 2021 05:59:09 -0500
-Received: from msg-1.mailo.com ([213.182.54.11]:50040 "EHLO msg-1.mailo.com"
+        id S231639AbhA3K7I (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 30 Jan 2021 05:59:08 -0500
+Received: from msg-2.mailo.com ([213.182.54.12]:46758 "EHLO msg-2.mailo.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230170AbhA3K6m (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 30 Jan 2021 05:58:42 -0500
+        id S230009AbhA3K6n (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Sat, 30 Jan 2021 05:58:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1612004258; bh=whS05SjI/ZJcqckFcwr0XxJmx2yKN/7Vf8CO7ruzMN8=;
-        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
-         References:MIME-Version:Content-Transfer-Encoding;
-        b=kjCtrDgd8+06tjV4cGEhePhrtaUXMtJ3ZWxzN3fTshJVK79ozq6CiZOXQH98dpwLI
-         u8D5mihD0ZiYTfKIamudgyz6jQUL3qpJkQzUtPr0I7cjuoYn9bJ0BEfYZyvHpmdRc4
-         zxslNeNH7MJ8j/BvNhdDT+HaaVVpBVZs6+gagAnY=
+        t=1612004251; bh=DX0KTTrFGVD0t8K/Hn6+CMiQus9x+I24Qko3gjp+37o=;
+        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+         MIME-Version:Content-Transfer-Encoding;
+        b=fITOEhLDZUVK0LAY4vivrIqzYBfoHj0Omhr34V+/150U6bWVKcG+K9lTolRZBQ00L
+         uOSHgsm9EeX5qg1JAkEfmw5jg0vC8+OdFBaaPaz7WLCK2ir6FvpGslwTqIvrm1OrU3
+         e3J00OMiK4Ktz3sWGPSM89F1mCAUxAdaJRhoptpo=
 Received: by b-5.in.mailobj.net [192.168.90.15] with ESMTP
         via proxy.mailoo.org [213.182.55.207]
-        Sat, 30 Jan 2021 11:57:38 +0100 (CET)
-X-EA-Auth: pj+zDgzOY6II64NJ1/FC4qeJu5Q355DppMimo9NhxXXRZ9Dy49gZuR2xkwkvoUtBomZDLaG9DA9vuaFsisOLKrZsJCjdiksHxAEW7DN8o84=
+        Sat, 30 Jan 2021 11:57:31 +0100 (CET)
+X-EA-Auth: LFW7+Bv4Fnp8Hhx30FmQbEE8yD9U4xVFuXeArjH+MWCgIqvOTvrq7gQGkmDf26svri6JeKDresRMgFvlD4aNAgUrDEGIqU87hpXv1D2Z+HE=
 From:   Vincent Knecht <vincent.knecht@mailoo.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
@@ -40,44 +40,51 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Sam Ravnborg <sam@ravnborg.org>,
         Krzysztof Kozlowski <krzk@kernel.org>,
         Arnd Bergmann <arnd@arndb.de>, Shawn Guo <shawnguo@kernel.org>,
+        Daniel Palmer <daniel@0x0f.com>,
         Oleksij Rempel <linux@rempel-privat.de>,
-        Daniel Palmer <daniel@0x0f.com>, allen <allen.chen@ite.com.tw>,
+        Max Merchel <Max.Merchel@tq-group.com>,
+        allen <allen.chen@ite.com.tw>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org
-Subject: [PATCH v2 1/4] dt-bindings: vendor-prefixes: add Alcatel
-Date:   Sat, 30 Jan 2021 11:57:10 +0100
-Message-Id: <20210130105717.2628781-2-vincent.knecht@mailoo.org>
+Subject: [PATCH v2 0/4] Alcatel Idol 3 (4.7") smartphone support
+Date:   Sat, 30 Jan 2021 11:57:09 +0100
+Message-Id: <20210130105717.2628781-1-vincent.knecht@mailoo.org>
 X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20210130105717.2628781-1-vincent.knecht@mailoo.org>
-References: <20210130105717.2628781-1-vincent.knecht@mailoo.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Document vendor prefix for Alcatel
+Changes in v2:
+- Disable MDSS by default in msm8916.dtsi
+- Split framebuffer suppport in its own patch
+- v1 sent on 2021-01-29 didn't make it to the MLs for some reason...
 
-Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
----
- Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+The Alcatel Idol 3 (4.7") is a msm8916-based smartphone released in 2015.
+This series adds support for framebuffer, USB, eMMC, SD-Card, WiFi,
+BT, power/volume buttons, vibrator and the following sensors:
+magnetometer, accelerometer, gyroscope, ambient light+proximity
 
-diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 076d4b26261b..7b30fe135d83 100644
---- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
-+++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -59,6 +59,8 @@ patternProperties:
-     description: Aeroflex Gaisler AB
-   "^al,.*":
-     description: Annapurna Labs
-+  "^alcatel,.*":
-+    description: Alcatel
-   "^allegro,.*":
-     description: Allegro DVT
-   "^allo,.*":
+Touchscreen support will be added later when MStar msg26xx is merged:
+https://lore.kernel.org/linux-input/20210121174359.1455393-1-vincent.knecht@mailoo.org/T/
+
+Vincent Knecht (4):
+  dt-bindings: vendor-prefixes: add Alcatel
+  arm64: dts: qcom: Add device tree for Alcatel Idol 3 (4.7")
+  arm64: dts: qcom: Disable MDSS by default for 8916/8016 devices
+  arm64: dts: qcom: msm8916-alcatel-idol347: Add framebuffer support
+
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ arch/arm64/boot/dts/qcom/Makefile             |   1 +
+ arch/arm64/boot/dts/qcom/apq8016-sbc.dtsi     |   4 +
+ .../boot/dts/qcom/msm8916-alcatel-idol347.dts | 322 ++++++++++++++++++
+ .../qcom/msm8916-samsung-a2015-common.dtsi    |   4 +
+ arch/arm64/boot/dts/qcom/msm8916.dtsi         |   1 +
+ 6 files changed, 334 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
+
 -- 
 2.29.2
 
