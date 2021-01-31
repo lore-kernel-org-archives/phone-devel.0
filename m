@@ -2,425 +2,197 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 25CBEC433E0
-	for <phone-devel@archiver.kernel.org>; Sun, 31 Jan 2021 01:45:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6BF6C433E0
+	for <phone-devel@archiver.kernel.org>; Sun, 31 Jan 2021 20:03:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DAFC364E13
-	for <phone-devel@archiver.kernel.org>; Sun, 31 Jan 2021 01:45:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8F35E64E24
+	for <phone-devel@archiver.kernel.org>; Sun, 31 Jan 2021 20:03:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232732AbhAaBpL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 30 Jan 2021 20:45:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39774 "EHLO
+        id S231477AbhAaUDP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 31 Jan 2021 15:03:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232503AbhAaBkU (ORCPT
+        with ESMTP id S231582AbhAaTs1 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 30 Jan 2021 20:40:20 -0500
-Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4DFDC061788
-        for <phone-devel@vger.kernel.org>; Sat, 30 Jan 2021 17:39:17 -0800 (PST)
-Received: from localhost.localdomain (abaf219.neoplus.adsl.tpnet.pl [83.6.169.219])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id C7C441F6C5;
-        Sun, 31 Jan 2021 02:39:15 +0100 (CET)
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Gustave Monce <gustave.monce@outlook.com>
-Subject: [PATCH 02/18] arm64: dts: qcom: msm8994: Fix remaining BLSP errors/mistakes
-Date:   Sun, 31 Jan 2021 02:38:33 +0100
-Message-Id: <20210131013853.55810-3-konrad.dybcio@somainline.org>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210131013853.55810-1-konrad.dybcio@somainline.org>
-References: <20210131013853.55810-1-konrad.dybcio@somainline.org>
+        Sun, 31 Jan 2021 14:48:27 -0500
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55519C061788;
+        Sun, 31 Jan 2021 11:47:56 -0800 (PST)
+Received: by mail-wm1-x329.google.com with SMTP id o5so1215992wmq.2;
+        Sun, 31 Jan 2021 11:47:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=H6wXPb6paYLXQl2pKsLEiIISXfXS8Hhcf27+U5ECNao=;
+        b=UL6u9v++SVqEzWWq9c2IkrsMhf/Y2G1hktNz+etSCKnNhwzy6ljwWfgBOp1Enf30Fw
+         yuB5ny4xWdX+XQK0LD7OF1X9qMM6AxajVBvLpy72hTpzltOqnIFyrcZpgI7wkALlB5Jo
+         Pg3jpoR6CURyXPXRJOP9H3hcTvDycn+tIqHBoDkY8fUN0JJMP2shi16aAOKzhZtbMcZ0
+         t4d/g/DNCkGs8WuMgT11L30CfQ8e1Fu5Q2JAZrMC48/iXll3VjHG6he8m9x/+qpzZbfR
+         FeSBo/0cx4e5IvLgjmlNHwif9UUMC/49OFgSieWzV67INAg6qp4Mgqt1PeVgdlnbaWU1
+         vvQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=H6wXPb6paYLXQl2pKsLEiIISXfXS8Hhcf27+U5ECNao=;
+        b=VnchKmQjSgRbnbWpBY6ZedMWY8nx46lfWynVABIiGDhLXzEL0e1zyr9zt7Zws5lu8Y
+         uu+Ytn2eac1YlhO4Fyg2PetxI5gR9LI3SnRtZTaavSXIUNlRESJzbBDGjO967VXNLxkz
+         hDt2wMN++GJWiac9gtmStmOMmT9w4p1Sv0adcOeLpSgyWt//QD18RXA8WQFlpspAb4CN
+         1aOMmHU29CFl0YPjHtfmytG6vESDbrfw8gq3oN+WyfyiydS/UXxNKhtGdlBgCo4Bl+kf
+         ceeBFnbU7rNezFE3pJOChgkT6EmJc139I/OWz4UWwhVQBj/J11t8igtpFrRzVjdZjw7V
+         6xDQ==
+X-Gm-Message-State: AOAM533FgnWq9TX3PrHHpHAKUiNqaON2eW770aZXI27yLJSdgoeoUW9N
+        Oz91HJZhlZfnBAisYQA/VzPlBIWGgv2VYfaB1WY=
+X-Google-Smtp-Source: ABdhPJxd6a+y2rJ9k825JiSPM8mEOyTrNoapVicPm39kXx0f+YJCfL63uiL+RjJBa8SkSBvsse6ESUUDXkBY6B03OvY=
+X-Received: by 2002:a7b:c45a:: with SMTP id l26mr12019059wmi.164.1612122474995;
+ Sun, 31 Jan 2021 11:47:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210109135112.147759-1-angelogioacchino.delregno@somainline.org> <20210109135112.147759-4-angelogioacchino.delregno@somainline.org>
+In-Reply-To: <20210109135112.147759-4-angelogioacchino.delregno@somainline.org>
+From:   Rob Clark <robdclark@gmail.com>
+Date:   Sun, 31 Jan 2021 11:50:29 -0800
+Message-ID: <CAF6AEGvDzdgDy7Znw6dQCV7Z=YxnF2_XsqkV+7BT+oY777TqHA@mail.gmail.com>
+Subject: Re: [PATCH 3/5] drm/msm/dsi_pll_10nm: Fix bad VCO rate calculation
+ and prescaler
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        phone-devel@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        freedreno <freedreno@lists.freedesktop.org>,
+        Abhinav Kumar <abhinavk@codeaurora.org>,
+        Douglas Anderson <dianders@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Gustave Monce <gustave.monce@outlook.com>
+On Sat, Jan 9, 2021 at 5:51 AM AngeloGioacchino Del Regno
+<angelogioacchino.delregno@somainline.org> wrote:
+>
+> The VCO rate was being miscalculated due to a big overlook during
+> the process of porting this driver from downstream to upstream:
+> here we are really recalculating the rate of the VCO by reading
+> the appropriate registers and returning a real frequency, while
+> downstream the driver was doing something entirely different.
+>
+> In our case here, the recalculated rate was wrong, as it was then
+> given back to the set_rate function, which was erroneously doing
+> a division on the fractional value, based on the prescaler being
+> either enabled or disabled: this was actually producing a bug for
+> which the final VCO rate was being doubled, causing very obvious
+> issues when trying to drive a DSI panel because the actual divider
+> value was multiplied by two!
+>
+> To make things work properly, remove the multiplication of the
+> reference clock by two from function dsi_pll_calc_dec_frac and
+> account for the prescaler enablement in the vco_recalc_rate (if
+> the prescaler is enabled, then the hardware will divide the rate
+> by two).
+>
+> This will make the vco_recalc_rate function to pass the right
+> frequency to the (clock framework) set_rate function when called,
+> which will - in turn - program the right values in both the
+> DECIMAL_DIV_START_1 and the FRAC_DIV_START_{LOW/MID/HIGH}_1
+> registers, finally making the PLL to output the right clock.
+>
+> Also, while at it, remove the prescaler TODO by also adding the
+> possibility of disabling the prescaler on the PLL (it is in the
+> PLL_ANALOG_CONTROLS_ONE register).
+> Of course, both prescaler-ON and OFF cases were tested.
 
-* Move 35500 clock-frequency to kitakami (turns out it's a Sony specific)
-* Add missing interfaces
-* Fix the naming scheme
-* Fix up pin assignments to make all BLSPs work
-* Add DMA where previously omitted
+This somehow breaks things on sc7180 (display gets stuck at first
+frame of splash screen).  (This is a setup w/ an ti-sn65dsi86 dsi->eDP
+bridge)
 
-Co-authored-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-Signed-off-by: Gustave Monce <gustave.monce@outlook.com>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
----
- .../dts/qcom/msm8994-msft-lumia-cityman.dts   |   2 +-
- .../msm8994-sony-xperia-kitakami-karin.dts    |   2 +-
- .../qcom/msm8994-sony-xperia-kitakami.dtsi    |  24 +--
- arch/arm64/boot/dts/qcom/msm8994.dtsi         | 163 ++++++++++++++----
- 4 files changed, 149 insertions(+), 42 deletions(-)
+Also, something (I assume DSI related) that I was testing on
+msm-next-staging seems to have effected the colors on the panel (ie.
+they are more muted).. which seems to persist across reboots (ie. when
+switching back to a good kernel), and interestingly if I reboot from a
+good kernel I see part of the login prompt (or whatever was previously
+on-screen) in the firmware ui screen !?!  (so maybe somehow triggered
+the display to think it is in PSR mode??)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8994-msft-lumia-cityman.dts b/arch/arm64/boot/dts/qcom/msm8994-msft-lumia-cityman.dts
-index ed9034b96013..2d989a70e0b5 100644
---- a/arch/arm64/boot/dts/qcom/msm8994-msft-lumia-cityman.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8994-msft-lumia-cityman.dts
-@@ -32,7 +32,7 @@ chosen {
- 	};
- };
- 
--&blsp_i2c1 {
-+&blsp1_i2c1 {
- 	status = "okay";
- 
- 	rmi4-i2c-dev@4b {
-diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-karin.dts b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-karin.dts
-index 4dcf42eafb3a..a1d1a075941a 100644
---- a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-karin.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami-karin.dts
-@@ -12,7 +12,7 @@ / {
- 	compatible = "sony,karin-row", "qcom,msm8994";
- };
- 
--&blsp_i2c5 {
-+&blsp2_i2c5 {
- 	/*
- 	 * TI LP8557 backlight driver @ 2c
- 	 * AD AD7146 touch controller @ 2f
-diff --git a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
-index 586d866188d7..48de66bf19c4 100644
---- a/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8994-sony-xperia-kitakami.dtsi
-@@ -94,7 +94,7 @@ tzapp: memory@c7800000 {
- 	};
- };
- 
--&blsp_spi0 {
-+&blsp1_spi1 {
- 	status = "okay";
- 
- 	/* FPC fingerprint reader */
-@@ -102,26 +102,23 @@ &blsp_spi0 {
- 
- /* I2C1 is disabled on this board */
- 
--&blsp_i2c2 {
-+&blsp1_i2c2 {
- 	status = "okay";
-+	clock-frequency = <355000>;
- 
- 	/* NXP PN547 NFC */
- };
- 
--&blsp_i2c4 {
-+&blsp1_i2c4 {
- 	status = "okay";
-+	clock-frequency = <355000>;
- 
- 	/* Empty but active */
- };
- 
--&blsp_i2c5 {
--	status = "okay";
--
--	/* sii8620 HDMI/MHL bridge */
--};
--
--&blsp_i2c6 {
-+&blsp1_i2c6 {
- 	status = "okay";
-+	clock-frequency = <355000>;
- 
- 	touchscreen: rmi4-i2c-dev@2c {
- 		compatible = "syna,rmi4-i2c";
-@@ -157,6 +154,13 @@ &blsp1_uart2 {
- 	status = "okay";
- };
- 
-+&blsp2_i2c5 {
-+	status = "okay";
-+	clock-frequency = <355000>;
-+
-+	/* sii8620 HDMI/MHL bridge */
-+};
-+
- &blsp2_uart2 {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/qcom/msm8994.dtsi b/arch/arm64/boot/dts/qcom/msm8994.dtsi
-index af1a9f7907b8..a6148b00e82c 100644
---- a/arch/arm64/boot/dts/qcom/msm8994.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8994.dtsi
-@@ -507,7 +507,7 @@ blsp1_uart2: serial@f991e000 {
- 			status = "disabled";
- 		};
- 
--		blsp_i2c1: i2c@f9923000 {
-+		blsp1_i2c1: i2c@f9923000 {
- 			compatible = "qcom,i2c-qup-v2.2.1";
- 			reg = <0xf9923000 0x500>;
- 			interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
-@@ -515,6 +515,8 @@ blsp_i2c1: i2c@f9923000 {
- 						<&gcc GCC_BLSP1_QUP1_I2C_APPS_CLK>;
- 			clock-names = "iface", "core";
- 			clock-frequency = <400000>;
-+			dmas = <&blsp1_dma 12>, <&blsp1_dma 13>;
-+			dma-names = "tx", "rx";
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&i2c1_default>;
- 			pinctrl-1 = <&i2c1_sleep>;
-@@ -523,7 +525,7 @@ blsp_i2c1: i2c@f9923000 {
- 			status = "disabled";
- 		};
- 
--		blsp_spi0: spi@f9923000 {
-+		blsp1_spi1: spi@f9923000 {
- 			compatible = "qcom,spi-qup-v2.2.1";
- 			reg = <0xf9923000 0x500>;
- 			interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
-@@ -534,21 +536,21 @@ blsp_spi0: spi@f9923000 {
- 			dmas = <&blsp1_dma 12>, <&blsp1_dma 13>;
- 			dma-names = "tx", "rx";
- 			pinctrl-names = "default", "sleep";
--			pinctrl-0 = <&blsp1_spi0_default>;
--			pinctrl-1 = <&blsp1_spi0_sleep>;
-+			pinctrl-0 = <&blsp1_spi1_default>;
-+			pinctrl-1 = <&blsp1_spi1_sleep>;
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			status = "disabled";
- 		};
- 
--		blsp_i2c2: i2c@f9924000 {
-+		blsp1_i2c2: i2c@f9924000 {
- 			compatible = "qcom,i2c-qup-v2.2.1";
- 			reg = <0xf9924000 0x500>;
- 			interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
- 						<&gcc GCC_BLSP1_QUP2_I2C_APPS_CLK>;
- 			clock-names = "iface", "core";
--			clock-frequency = <355000>;
-+			clock-frequency = <400000>;
- 			dmas = <&blsp1_dma 14>, <&blsp1_dma 15>;
- 			dma-names = "tx", "rx";
- 			pinctrl-names = "default", "sleep";
-@@ -561,14 +563,16 @@ blsp_i2c2: i2c@f9924000 {
- 
- 		/* I2C3 doesn't exist */
- 
--		blsp_i2c4: i2c@f9926000 {
-+		blsp1_i2c4: i2c@f9926000 {
- 			compatible = "qcom,i2c-qup-v2.2.1";
- 			reg = <0xf9926000 0x500>;
- 			interrupts = <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
- 						<&gcc GCC_BLSP1_QUP4_I2C_APPS_CLK>;
- 			clock-names = "iface", "core";
--			clock-frequency = <355000>;
-+			clock-frequency = <400000>;
-+			dmas = <&blsp1_dma 18>, <&blsp1_dma 19>;
-+			dma-names = "tx", "rx";
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&i2c4_default>;
- 			pinctrl-1 = <&i2c4_sleep>;
-@@ -577,31 +581,32 @@ blsp_i2c4: i2c@f9926000 {
- 			status = "disabled";
- 		};
- 
--		blsp2_dma: dma-controller@f9944000 {
--			compatible = "qcom,bam-v1.7.0";
--			reg = <0xf9944000 0x19000>;
--			interrupts = <GIC_SPI 239 IRQ_TYPE_LEVEL_HIGH>;
--			clocks = <&gcc GCC_BLSP2_AHB_CLK>;
--			clock-names = "bam_clk";
--			#dma-cells = <1>;
--			qcom,ee = <0>;
--			qcom,controlled-remotely;
--			num-channels = <18>;
--			qcom,num-ees = <4>;
-+		blsp1_i2c5: i2c@f9927000 {
-+			compatible = "qcom,i2c-qup-v2.2.1";
-+			reg = <0xf9927000 0x500>;
-+			interrupts = <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
-+						<&gcc GCC_BLSP1_QUP5_I2C_APPS_CLK>;
-+			clock-names = "iface", "core";
-+			clock-frequency = <400000>;
-+			dmas = <&blsp2_dma 20>, <&blsp2_dma 21>;
-+			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&i2c5_default>;
-+			pinctrl-1 = <&i2c5_sleep>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
- 		};
- 
--		/* According to downstream kernels, i2c6
--		 * comes before i2c5 address-wise...
--		 */
--
--		blsp_i2c6: i2c@f9928000 {
-+		blsp1_i2c6: i2c@f9928000 {
- 			compatible = "qcom,i2c-qup-v2.2.1";
- 			reg = <0xf9928000 0x500>;
- 			interrupts = <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
- 						<&gcc GCC_BLSP1_QUP6_I2C_APPS_CLK>;
- 			clock-names = "iface", "core";
--			clock-frequency = <355000>;
-+			clock-frequency = <400000>;
- 			dmas = <&blsp1_dma 22>, <&blsp1_dma 23>;
- 			dma-names = "tx", "rx";
- 			pinctrl-names = "default", "sleep";
-@@ -612,6 +617,19 @@ blsp_i2c6: i2c@f9928000 {
- 			status = "disabled";
- 		};
- 
-+		blsp2_dma: dma-controller@f9944000 {
-+			compatible = "qcom,bam-v1.7.0";
-+			reg = <0xf9944000 0x19000>;
-+			interrupts = <GIC_SPI 239 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&gcc GCC_BLSP2_AHB_CLK>;
-+			clock-names = "bam_clk";
-+			#dma-cells = <1>;
-+			qcom,ee = <0>;
-+			qcom,controlled-remotely;
-+			num-channels = <18>;
-+			qcom,num-ees = <4>;
-+		};
-+
- 		blsp2_uart2: serial@f995e000 {
- 			compatible = "qcom,msm-uartdm-v1.4", "qcom,msm-uartdm";
- 			reg = <0xf995e000 0x1000>;
-@@ -627,7 +645,43 @@ blsp2_uart2: serial@f995e000 {
- 			status = "disabled";
- 		};
- 
--		blsp_i2c5: i2c@f9967000 {
-+		blsp2_i2c1: i2c@f9963000 {
-+			compatible = "qcom,i2c-qup-v2.2.1";
-+			reg = <0xf9963000 0x500>;
-+			interrupts = <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&gcc GCC_BLSP2_AHB_CLK>,
-+					<&gcc GCC_BLSP2_QUP1_I2C_APPS_CLK>;
-+			clock-names = "iface", "core";
-+			clock-frequency = <400000>;
-+			dmas = <&blsp2_dma 12>, <&blsp2_dma 13>;
-+			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&i2c7_default>;
-+			pinctrl-1 = <&i2c7_sleep>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+		};
-+
-+		blsp2_spi4: spi@f9966000 {
-+			compatible = "qcom,spi-qup-v2.2.1";
-+			reg = <0xf9966000 0x500>;
-+			interrupts = <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&gcc GCC_BLSP2_QUP4_SPI_APPS_CLK>,
-+				 <&gcc GCC_BLSP2_AHB_CLK>;
-+			clock-names = "core", "iface";
-+			spi-max-frequency = <19200000>;
-+			dmas = <&blsp2_dma 18>, <&blsp2_dma 19>;
-+			dma-names = "tx", "rx";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&blsp2_spi10_default>;
-+			pinctrl-1 = <&blsp2_spi10_sleep>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+		};
-+
-+		blsp2_i2c5: i2c@f9967000 {
- 			compatible = "qcom,i2c-qup-v2.2.1";
- 			reg = <0xf9967000 0x500>;
- 			interrupts = <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>;
-@@ -638,8 +692,8 @@ blsp_i2c5: i2c@f9967000 {
- 			dmas = <&blsp2_dma 20>, <&blsp2_dma 21>;
- 			dma-names = "tx", "rx";
- 			pinctrl-names = "default", "sleep";
--			pinctrl-0 = <&i2c5_default>;
--			pinctrl-1 = <&i2c5_sleep>;
-+			pinctrl-0 = <&i2c11_default>;
-+			pinctrl-1 = <&i2c11_sleep>;
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			status = "disabled";
-@@ -795,7 +849,56 @@ i2c6_sleep: i2c6-sleep {
- 				bias-disable;
- 			};
- 
--			blsp1_spi0_default: blsp1-spi0-default {
-+			i2c7_default: i2c7-default {
-+				function = "blsp_i2c7";
-+				pins = "gpio44", "gpio43";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			i2c7_sleep: i2c7-sleep {
-+				function = "gpio";
-+				pins = "gpio44", "gpio43";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp2_spi10_default: blsp2-spi10-default {
-+				default {
-+					function = "blsp_spi10";
-+					pins = "gpio53", "gpio54", "gpio55";
-+					drive-strength = <10>;
-+					bias-pull-down;
-+				};
-+				cs {
-+					function = "gpio";
-+					pins = "gpio55";
-+					drive-strength = <2>;
-+					bias-disable;
-+				};
-+			};
-+
-+			blsp2_spi10_sleep: blsp2-spi10-sleep {
-+				pins = "gpio53", "gpio54", "gpio55";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			i2c11_default: i2c11-default {
-+				function = "blsp_i2c11";
-+				pins = "gpio83", "gpio84";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			i2c11_sleep: i2c11-sleep {
-+				function = "gpio";
-+				pins = "gpio83", "gpio84";
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			blsp1_spi1_default: blsp1-spi1-default {
- 				default {
- 					function = "blsp_spi1";
- 					pins = "gpio0", "gpio1", "gpio3";
-@@ -810,7 +913,7 @@ cs {
- 				};
- 			};
- 
--			blsp1_spi0_sleep: blsp1-spi0-sleep {
-+			blsp1_spi1_sleep: blsp1-spi1-sleep {
- 				pins = "gpio0", "gpio1", "gpio3";
- 				drive-strength = <2>;
- 				bias-disable;
--- 
-2.30.0
+Not sure if that is caused by these patches, but if I can figure out
+how to get the panel back to normal I can bisect.  I think for now
+I'll drop this series.  Possibly it could be a
+two-wrongs-makes-a-right situation that had things working before, but
+I think someone from qcom who knows the DSI IP should take a look.
 
+BR,
+-R
+
+
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c | 22 +++++++++-------------
+>  1 file changed, 9 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c b/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c
+> index 8b66e852eb36..5be562dfbf06 100644
+> --- a/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c
+> +++ b/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c
+> @@ -165,11 +165,7 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_10nm *pll)
+>
+>         pll_freq = pll->vco_current_rate;
+>
+> -       if (config->disable_prescaler)
+> -               divider = fref;
+> -       else
+> -               divider = fref * 2;
+> -
+> +       divider = fref;
+>         multiplier = 1 << config->frac_bits;
+>         dec_multiple = div_u64(pll_freq * multiplier, divider);
+>         dec = div_u64_rem(dec_multiple, multiplier, &frac);
+> @@ -266,9 +262,11 @@ static void dsi_pll_ssc_commit(struct dsi_pll_10nm *pll)
+>
+>  static void dsi_pll_config_hzindep_reg(struct dsi_pll_10nm *pll)
+>  {
+> +       struct dsi_pll_config *config = &pll->pll_configuration;
+>         void __iomem *base = pll->mmio;
+> +       u32 val = config->disable_prescaler ? 0x0 : 0x80;
+>
+> -       pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_ONE, 0x80);
+> +       pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_ONE, val);
+>         pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_TWO, 0x03);
+>         pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_THREE, 0x00);
+>         pll_write(base + REG_DSI_10nm_PHY_PLL_DSM_DIVIDER, 0x00);
+> @@ -499,17 +497,15 @@ static unsigned long dsi_pll_10nm_vco_recalc_rate(struct clk_hw *hw,
+>         frac |= ((pll_read(base + REG_DSI_10nm_PHY_PLL_FRAC_DIV_START_HIGH_1) &
+>                   0x3) << 16);
+>
+> -       /*
+> -        * TODO:
+> -        *      1. Assumes prescaler is disabled
+> -        */
+>         multiplier = 1 << config->frac_bits;
+> -       pll_freq = dec * (ref_clk * 2);
+> -       tmp64 = (ref_clk * 2 * frac);
+> +       pll_freq = dec * ref_clk;
+> +       tmp64 = ref_clk * frac;
+>         pll_freq += div_u64(tmp64, multiplier);
+> -
+>         vco_rate = pll_freq;
+>
+> +       if (config->disable_prescaler)
+> +               vco_rate = div_u64(vco_rate, 2);
+> +
+>         DBG("DSI PLL%d returning vco rate = %lu, dec = %x, frac = %x",
+>             pll_10nm->id, (unsigned long)vco_rate, dec, frac);
+>
+> --
+> 2.29.2
+>
