@@ -4,25 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB36BC433E0
-	for <phone-devel@archiver.kernel.org>; Sun, 31 Jan 2021 01:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20AA3C433E9
+	for <phone-devel@archiver.kernel.org>; Sun, 31 Jan 2021 01:41:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8D23164E13
-	for <phone-devel@archiver.kernel.org>; Sun, 31 Jan 2021 01:41:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E63F064E13
+	for <phone-devel@archiver.kernel.org>; Sun, 31 Jan 2021 01:41:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232728AbhAaBlU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 30 Jan 2021 20:41:20 -0500
-Received: from m-r1.th.seeweb.it ([5.144.164.170]:38791 "EHLO
-        m-r1.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232670AbhAaBlS (ORCPT
+        id S232798AbhAaBli (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 30 Jan 2021 20:41:38 -0500
+Received: from relay02.th.seeweb.it ([5.144.164.163]:41053 "EHLO
+        relay02.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232781AbhAaBlb (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 30 Jan 2021 20:41:18 -0500
+        Sat, 30 Jan 2021 20:41:31 -0500
 Received: from localhost.localdomain (abaf219.neoplus.adsl.tpnet.pl [83.6.169.219])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id A10931F87F;
-        Sun, 31 Jan 2021 02:40:22 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 61E821F6CF;
+        Sun, 31 Jan 2021 02:40:27 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
@@ -33,9 +33,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Gustave Monce <gustave.monce@outlook.com>
-Subject: [PATCH 17/18] arm64: dts: qcom: msm8994-octagon: Add TAS2553 codec
-Date:   Sun, 31 Jan 2021 02:38:48 +0100
-Message-Id: <20210131013853.55810-18-konrad.dybcio@somainline.org>
+Subject: [PATCH 18/18] arm64: dts: qcom: msm8994-octagon: Add AD7147 and APDS9930 sensors
+Date:   Sun, 31 Jan 2021 02:38:49 +0100
+Message-Id: <20210131013853.55810-19-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210131013853.55810-1-konrad.dybcio@somainline.org>
 References: <20210131013853.55810-1-konrad.dybcio@somainline.org>
@@ -47,46 +47,82 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: Gustave Monce <gustave.monce@outlook.com>
 
-Lumia 950/XL feature a TAS2553 codec. Configure it using the
-TAS2552 driver.
+Add and configure AD7147 grip sensor and APDS9930 proximity sensor.
 
 Signed-off-by: Gustave Monce <gustave.monce@outlook.com>
 Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
- .../dts/qcom/msm8994-msft-lumia-octagon.dtsi  | 20 +++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ .../dts/qcom/msm8994-msft-lumia-octagon.dtsi  | 50 +++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/msm8994-msft-lumia-octagon.dtsi b/arch/arm64/boot/dts/qcom/msm8994-msft-lumia-octagon.dtsi
-index 4aa33682f975..c0aa8cd80f7c 100644
+index c0aa8cd80f7c..0b2a4afb34d6 100644
 --- a/arch/arm64/boot/dts/qcom/msm8994-msft-lumia-octagon.dtsi
 +++ b/arch/arm64/boot/dts/qcom/msm8994-msft-lumia-octagon.dtsi
-@@ -300,6 +300,26 @@ rmi4-f12@12 {
- 	};
+@@ -376,6 +376,42 @@ &blsp1_uart2 {
+ 	status = "okay";
  };
  
-+&blsp1_i2c2 {
++&blsp2_i2c1 {
 +	status = "okay";
 +
++	sideinteraction: ad7147_captouch@2c {
++		compatible = "ad,ad7147_captouch";
++		reg = <0x2c>;
++
++		pinctrl-names = "default", "sleep";
++		pinctrl-0 = <&grip_default>;
++		pinctrl-1 = <&grip_sleep>;
++
++		interrupts = <&tlmm 96 IRQ_TYPE_EDGE_FALLING>;
++
++		button_num = <8>;
++		touchpad_num = <0>;
++		wheel_num = <0>;
++		slider_num = <0>;
++
++		vcc-supply = <&vreg_l18a_2p85>;
++	};
++
 +	/*
-+	 * This device uses the Texas Instruments TAS2553, however the TAS2552 driver
-+	 * seems to work here. In the future a proper driver might need to
-+	 * be written for this device.
++	 * The QPDS-T900/QPDS-T930 is a customized part built for Nokia
++	 * by Avago. It is very similar to the Avago APDS-9930 with some
++	 * minor differences. In the future a proper driver might need to
++	 * be written for this device. For now this works fine.
 +	 */
-+	tas2553: tas2553@40 {
-+		compatible = "ti,tas2552";
-+		reg = <0x40>;
++	qpdst900: qpdst900@39 {
++		compatible = "avago,apds9930";
++		reg = <0x39>;
 +
-+		vbat-supply = <&vph_pwr>;
-+		iovdd-supply = <&vreg_s4a_1p8>;
-+		avdd-supply = <&vreg_s4a_1p8>;
-+
-+		enable-gpio = <&pm8994_gpios 12 GPIO_ACTIVE_HIGH>;
++		interrupt-parent = <&tlmm>;
++		interrupts = <40 IRQ_TYPE_EDGE_FALLING>;
 +	};
 +};
 +
- &blsp1_i2c5 {
+ &blsp2_i2c5 {
  	status = "okay";
  
+@@ -843,6 +879,20 @@ &sdhc2 {
+ };
+ 
+ &tlmm {
++	grip_default: grip-default {
++		pins = "gpio39";
++		function = "gpio";
++		drive-strength = <6>;
++		bias-pull-down;
++	};
++
++	grip_sleep: grip-sleep {
++		pins = "gpio39";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-pull-down;
++	};
++
+ 	hall_front_default: hall-front-default {
+ 		pins = "gpio42";
+ 		function = "gpio";
 -- 
 2.30.0
 
