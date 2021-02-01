@@ -2,223 +2,166 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.2 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37F78C433DB
-	for <phone-devel@archiver.kernel.org>; Mon,  1 Feb 2021 10:13:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 38340C433E0
+	for <phone-devel@archiver.kernel.org>; Mon,  1 Feb 2021 10:39:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E0A8F64E08
-	for <phone-devel@archiver.kernel.org>; Mon,  1 Feb 2021 10:13:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EA1F364E9F
+	for <phone-devel@archiver.kernel.org>; Mon,  1 Feb 2021 10:39:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233169AbhBAKNO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 1 Feb 2021 05:13:14 -0500
-Received: from relay08.th.seeweb.it ([5.144.164.169]:55461 "EHLO
-        relay08.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233256AbhBAKMS (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 Feb 2021 05:12:18 -0500
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 4C1473E7DE;
-        Mon,  1 Feb 2021 11:11:31 +0100 (CET)
-Subject: Re: [PATCH 3/5] drm/msm/dsi_pll_10nm: Fix bad VCO rate calculation
- and prescaler
-To:     Rob Clark <robdclark@gmail.com>
-Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        phone-devel@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        freedreno <freedreno@lists.freedesktop.org>,
-        Abhinav Kumar <abhinavk@codeaurora.org>,
-        Douglas Anderson <dianders@chromium.org>
-References: <20210109135112.147759-1-angelogioacchino.delregno@somainline.org>
- <20210109135112.147759-4-angelogioacchino.delregno@somainline.org>
- <CAF6AEGvDzdgDy7Znw6dQCV7Z=YxnF2_XsqkV+7BT+oY777TqHA@mail.gmail.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Message-ID: <8f8c7c37-f7b2-f763-19e1-d89e5c454ab4@somainline.org>
-Date:   Mon, 1 Feb 2021 11:11:30 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+        id S233290AbhBAKjl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 1 Feb 2021 05:39:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35590 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233281AbhBAKjF (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 Feb 2021 05:39:05 -0500
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A36F9C0617A7;
+        Mon,  1 Feb 2021 02:37:49 -0800 (PST)
+Received: by mail-wm1-x329.google.com with SMTP id f16so12169817wmq.5;
+        Mon, 01 Feb 2021 02:37:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Y4HDfAIXn4csaJdLWtNsEmq7IQCGJl8To6HPJWasocw=;
+        b=KDyMx9ldojQIM8AwkDVYF8F1ETlxUKunw92WGM4JluCVPQT9YLW+qKb3DCCNyzOIEw
+         NP4PtcLXRr3lHSJyC1yTWAfnHvtTD4Ap/wDHG6AdbHLck8aVffJXZlWGdeKoOq1aPjjm
+         d5YIQa99intc7jlL6wVD4JMbtMmRYvYSl47idsrQEFyuIhjgewEewXTLXYIBcQVAkVI4
+         0Nx0wYogCKbwJzV0llHwUADc9lRSDCmM0cDD4i3/1sQ5Y1KPaKmvzpC0/TDtwYzoip+M
+         sXRexM2tIl1DLv3NpYQcfeQ/Q0R5RPGe51z6W+/6ThTyRf3Zxff+5AeviBAEyHHMO/K1
+         QZlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Y4HDfAIXn4csaJdLWtNsEmq7IQCGJl8To6HPJWasocw=;
+        b=RXcIsz/vxiJOOBNsXRDtVLMRAtrdeS4D06+OFCsVn8J0h2i/+zDUvY0jveYdEZ+6tA
+         m0FRIjO9TEzIySzBSyIf7q5yH+Y40Eg7S/5+4FjUKWfTMjEAdTaVSB/pAJnWglQLG5OK
+         ILiR7NSThfxhye/ZoMvcavPOEtGATt/WeTnExuex3oWxLgjfglm8EhrS9jFmBKXQ5+wg
+         4v8mHPuUjiMQrgyM+qOieicRC905JtodcK/9klyDsM994LOtcRIzla6h3VavcNZw87IE
+         8pMDNxJhujSs4X+gB6eiMjaVHM4W0EG6fmHkV/+QnJ/m1W7fqfB40DjWb0e8jJBRWjfR
+         bBzQ==
+X-Gm-Message-State: AOAM533xbFXyoECD6GIreUhvPHQPQTVgK5/Al6aBU6biPRH+/EC7WpFo
+        JWMNkqT0Lztlw4DMFs1xcVL9j3KsHTg=
+X-Google-Smtp-Source: ABdhPJwnmYdI8hHeNi9Yhcx2VLE+xn7/xCz3CN08L3cPwx5ZZ0HUnj7/Ym4SfDktzPrKQoBLNeqXzQ==
+X-Received: by 2002:a7b:c76e:: with SMTP id x14mr1297910wmk.17.1612175868447;
+        Mon, 01 Feb 2021 02:37:48 -0800 (PST)
+Received: from localhost (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
+        by smtp.gmail.com with ESMTPSA id m18sm2243760wmq.1.2021.02.01.02.37.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Feb 2021 02:37:47 -0800 (PST)
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+To:     Rob Herring <robh+dt@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
+        Thierry Reding <thierry.reding@gmail.com>
+Cc:     Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@linux.ie>,
+        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Iskren Chernev <iskren.chernev@gmail.com>
+Subject: [PATCH v2 1/2] dt-bindings: panel: Add Samsung S6E3FA2 panel
+Date:   Mon,  1 Feb 2021 12:37:10 +0200
+Message-Id: <20210201103712.1619585-1-iskren.chernev@gmail.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-In-Reply-To: <CAF6AEGvDzdgDy7Znw6dQCV7Z=YxnF2_XsqkV+7BT+oY777TqHA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 31/01/21 20:50, Rob Clark ha scritto:
-> On Sat, Jan 9, 2021 at 5:51 AM AngeloGioacchino Del Regno
-> <angelogioacchino.delregno@somainline.org> wrote:
->>
->> The VCO rate was being miscalculated due to a big overlook during
->> the process of porting this driver from downstream to upstream:
->> here we are really recalculating the rate of the VCO by reading
->> the appropriate registers and returning a real frequency, while
->> downstream the driver was doing something entirely different.
->>
->> In our case here, the recalculated rate was wrong, as it was then
->> given back to the set_rate function, which was erroneously doing
->> a division on the fractional value, based on the prescaler being
->> either enabled or disabled: this was actually producing a bug for
->> which the final VCO rate was being doubled, causing very obvious
->> issues when trying to drive a DSI panel because the actual divider
->> value was multiplied by two!
->>
->> To make things work properly, remove the multiplication of the
->> reference clock by two from function dsi_pll_calc_dec_frac and
->> account for the prescaler enablement in the vco_recalc_rate (if
->> the prescaler is enabled, then the hardware will divide the rate
->> by two).
->>
->> This will make the vco_recalc_rate function to pass the right
->> frequency to the (clock framework) set_rate function when called,
->> which will - in turn - program the right values in both the
->> DECIMAL_DIV_START_1 and the FRAC_DIV_START_{LOW/MID/HIGH}_1
->> registers, finally making the PLL to output the right clock.
->>
->> Also, while at it, remove the prescaler TODO by also adding the
->> possibility of disabling the prescaler on the PLL (it is in the
->> PLL_ANALOG_CONTROLS_ONE register).
->> Of course, both prescaler-ON and OFF cases were tested.
-> 
-> This somehow breaks things on sc7180 (display gets stuck at first
-> frame of splash screen).  (This is a setup w/ an ti-sn65dsi86 dsi->eDP
-> bridge)
-> 
+The Samsung S6E3FA2 AMOLED cmd LCD panel is used on the Samsung Galaxy
+S5 (klte).
 
-First frame of the splash means that something is "a bit" wrong...
-...like the DSI clock is a little off.
+Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+---
+OK, miraculously the panel turns on and off now, so the simple-panel can
+graduate into its own driver.
 
-I don't have such hardware, otherwise I would've tried... but what you
-describe is a bit strange.
-Is there any other older qcom platform using this chip? Any other
-non-qcom platform? Is the driver for the SN65DSI86 surely fine?
-Anyway, as you know, I would never propose untested patches nor
-partially working ones for any reason: I'm sorry that this happened.
+v1: https://lkml.org/lkml/2020/12/30/293
 
-In any case, just to be perfectly transparent, while being here waiting
-for review, this patch series got tested on more smartphones, even ones
-that I don't personally own, with different displays.
+Changes in v2:
+- move bindings to separate file, add 2 regulators
+- add standalone panel driver
 
-For your reference, here's a list (all MSM8998..):
-- OnePlus 5               (1920x1080)
-- F(x)Tec Pro 1           (2160x1080)
-- Sony Xperia XZ1 Compact (1280x720)
-- Sony Xperia XZ1         (1920x1080)
-- Sony Xperia XZ Premium  (3840x2160)
+ .../display/panel/samsung,s6e3fa2.yaml        | 62 +++++++++++++++++++
+ 1 file changed, 62 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6e3fa2.yaml
 
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e3fa2.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e3fa2.yaml
+new file mode 100644
+index 000000000000..a759150bd539
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e3fa2.yaml
+@@ -0,0 +1,62 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/samsung,s6e3fa2.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Samsung s6e3fa2 AMOLED CMD LCD panel
++
++maintainers:
++  - Iskren Chernev <iskren.chernev@gmail.com>
++
++allOf:
++  - $ref: panel-common.yaml#
++
++properties:
++  compatible:
++    const: samsung,s6e3fa2
++
++  reg: true
++  reset-gpios: true
++  port: true
++
++  iovdd-supply:
++    description: IOVDD regulator
++
++  vddr-supply:
++    description: VDDR regulator
++
++required:
++  - compatible
++  - reset-gpios
++  - iovdd-supply
++  - vddr-supply
++  - port
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    /* from Samsung Galaxy S5 klte */
++    dsi@fd922800 {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "samsung,s6e3fa2";
++            reg = <0>;
++
++            reset-gpios = <&pma8084_gpios 17 GPIO_ACTIVE_LOW>;
++
++            iovdd-supply = <&pma8084_lvs4>;
++            vddr-supply = <&vreg_panel>;
++
++            port {
++                panel_in: endpoint {
++                    remote-endpoint = <&dsi0_out>;
++                };
++            };
++        };
++    };
++
++...
 
-> Also, something (I assume DSI related) that I was testing on
-> msm-next-staging seems to have effected the colors on the panel (ie.
-> they are more muted).. which seems to persist across reboots (ie. when
-
-So much "fun". This makes me think something about the PCC block doing
-the wrong thing (getting misconfigured).
-
-> switching back to a good kernel), and interestingly if I reboot from a
-> good kernel I see part of the login prompt (or whatever was previously
-> on-screen) in the firmware ui screen !?!  (so maybe somehow triggered
-> the display to think it is in PSR mode??)
-> 
-
- From a fast read, the SN65DSI86 is on I2C.. giving it a wrong dsi clock
-cannot produce (logically, at least) this, so I say that it is very
-unlikely for this to be a consequence of the 10nm pll fixes...
-
-...unless the bootloader is not configuring the DSI rates, but that's
-also veeeeery unlikely (it always does, or it always does not).
-
-> Not sure if that is caused by these patches, but if I can figure out
-> how to get the panel back to normal I can bisect.  I think for now
-> I'll drop this series.  Possibly it could be a
-> two-wrongs-makes-a-right situation that had things working before, but
-> I think someone from qcom who knows the DSI IP should take a look.
-> 
-
-I would be happy if someone from Qualcomm takes a look: after all, there
-is no documentation and they're the only ones that can verify this kind
-of stuff. Please, Qualcomm.
-
-Besides that, if there's anything I can help with to solve this riddle,
-I'm here for you.
-
-Yours,
--- Angelo
-
-> BR,
-> -R
-> 
-> 
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
->> ---
->>   drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c | 22 +++++++++-------------
->>   1 file changed, 9 insertions(+), 13 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c b/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c
->> index 8b66e852eb36..5be562dfbf06 100644
->> --- a/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c
->> +++ b/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c
->> @@ -165,11 +165,7 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_10nm *pll)
->>
->>          pll_freq = pll->vco_current_rate;
->>
->> -       if (config->disable_prescaler)
->> -               divider = fref;
->> -       else
->> -               divider = fref * 2;
->> -
->> +       divider = fref;
->>          multiplier = 1 << config->frac_bits;
->>          dec_multiple = div_u64(pll_freq * multiplier, divider);
->>          dec = div_u64_rem(dec_multiple, multiplier, &frac);
->> @@ -266,9 +262,11 @@ static void dsi_pll_ssc_commit(struct dsi_pll_10nm *pll)
->>
->>   static void dsi_pll_config_hzindep_reg(struct dsi_pll_10nm *pll)
->>   {
->> +       struct dsi_pll_config *config = &pll->pll_configuration;
->>          void __iomem *base = pll->mmio;
->> +       u32 val = config->disable_prescaler ? 0x0 : 0x80;
->>
->> -       pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_ONE, 0x80);
->> +       pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_ONE, val);
->>          pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_TWO, 0x03);
->>          pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_THREE, 0x00);
->>          pll_write(base + REG_DSI_10nm_PHY_PLL_DSM_DIVIDER, 0x00);
->> @@ -499,17 +497,15 @@ static unsigned long dsi_pll_10nm_vco_recalc_rate(struct clk_hw *hw,
->>          frac |= ((pll_read(base + REG_DSI_10nm_PHY_PLL_FRAC_DIV_START_HIGH_1) &
->>                    0x3) << 16);
->>
->> -       /*
->> -        * TODO:
->> -        *      1. Assumes prescaler is disabled
->> -        */
->>          multiplier = 1 << config->frac_bits;
->> -       pll_freq = dec * (ref_clk * 2);
->> -       tmp64 = (ref_clk * 2 * frac);
->> +       pll_freq = dec * ref_clk;
->> +       tmp64 = ref_clk * frac;
->>          pll_freq += div_u64(tmp64, multiplier);
->> -
->>          vco_rate = pll_freq;
->>
->> +       if (config->disable_prescaler)
->> +               vco_rate = div_u64(vco_rate, 2);
->> +
->>          DBG("DSI PLL%d returning vco rate = %lu, dec = %x, frac = %x",
->>              pll_10nm->id, (unsigned long)vco_rate, dec, frac);
->>
->> --
->> 2.29.2
->>
+base-commit: fd821bf0ed9a7db09d2e007df697f4d9ecfda99a
+--
+2.30.0
 
