@@ -5,57 +5,57 @@ X-Spam-Level:
 X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48460C433E6
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE78BC4332B
 	for <phone-devel@archiver.kernel.org>; Mon,  1 Feb 2021 10:58:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F327E64E96
-	for <phone-devel@archiver.kernel.org>; Mon,  1 Feb 2021 10:58:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 92EC864E56
+	for <phone-devel@archiver.kernel.org>; Mon,  1 Feb 2021 10:58:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233481AbhBAK6A (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 1 Feb 2021 05:58:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39596 "EHLO
+        id S233494AbhBAK6L (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 1 Feb 2021 05:58:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233465AbhBAK5u (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 Feb 2021 05:57:50 -0500
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56267C061573;
-        Mon,  1 Feb 2021 02:57:10 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id e15so12757875wme.0;
-        Mon, 01 Feb 2021 02:57:10 -0800 (PST)
+        with ESMTP id S233471AbhBAK5z (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 Feb 2021 05:57:55 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D28D2C06174A;
+        Mon,  1 Feb 2021 02:57:14 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id y187so12779205wmd.3;
+        Mon, 01 Feb 2021 02:57:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=z9U5qAvLPZfBvC02hJlam9+wJ4Vyi+4HXT6Um1JeroE=;
-        b=BbhNP880rpCY7Vd1Tg4OM0RIYQ55sLcQlhQugf7syGtj3D8COddXZaULz9DVclFwBq
-         PFx9g20DTWK4sIkbBXSDjcuZsEf1Im7gOE75shsb+kxyYTHH1snO9UP6eikG0FtgaMLX
-         FzvAOq2/PZQPWguyfxhU/9w209Dx2xwVRk6+hLms+Et/G3kJqHw/E1oti+2vV4upPBlU
-         XTlIv7co05wbq43wnSTRhz1xcM3LsLTkiDZfQ7BdiFqM1jTAzZRTJtCJksr6sOAhgUhd
-         UPOXLq3GgAgv1KWl27mhwXyQl07CrljKDxKSxPbAz210EoAyAdtQoBd5VYiMeLyyiZ19
-         ZAEg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=4I8ErFOno3uwCucPYSZXnpLUqg3DiJdUblt9zB0jwOM=;
+        b=QlkEIXciFbfLfRpiLtCue9HgvRPzl9NFRdum3W8/OI1oPiRQSg684AMiig7HHOeZdV
+         SgvgfXTcN9kolL6qfo/TIok+1TsdKh0Z0MuA+UA2+x2P96LrSmJZ0q8bf0wOpiQ3Qhg7
+         Ag35KY0GdXSQEGNp796qXU3W2Jbs8U8rzJP6l59QjoN51OpAYC4gEP4YaeGNMMyaKAmQ
+         B4ls73yFXMQCPbQIPmTZwEU9KhPutepkHISm4G/qbSwsc3GlCU2oQYVRC6y8ffJzs1jH
+         /ViPRx/V9mYb36eBX1cn7LcOr8jcgXrr3ocMsYjtlBvxgvK7A1udYqBjayi3Y8cWJhYr
+         8Uqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=z9U5qAvLPZfBvC02hJlam9+wJ4Vyi+4HXT6Um1JeroE=;
-        b=HE8QplC1UQKvuSvWVXanphmNitr6q0WxxgS2ugRmUg9oiZWvLN+qlz1DY2d/EDJ4EM
-         TGqL0/XGuDZCVSSGzEx0wrZEX951Py7e+PmEZ85aNGpV72O365oWCP49X/1rrp7pyLPy
-         3cNxQujCUw0DPdFHGvGmXRV0/N6opYFzAWTrdPRTKbMyhtsjazmYElOReWFuBIQS8v9L
-         A5HtxrD710pbi0F98vJIZXjYA93b1Z3ZScmrQkJcMME700nPqTEo3zr0xuxLPeW/J4+X
-         h7sdHgqLE+RgbNOJw1n31F9dkEi27tK/Q9xsa10wMxIOg6BRZwoE9ZF2jTwe6fN2TYbe
-         jogA==
-X-Gm-Message-State: AOAM533NmNM3WRqmfGm32ZsSGc4QQCZoxzwMfLJiNfpxv8Ap9K2Sh9lw
-        x2cHfZC7MrRFpOTRmI0CsntEmrlJUHslzw==
-X-Google-Smtp-Source: ABdhPJwSVMWdyAbw4Am5mKl1w1ea/SGNq4YfGLeZMhomQGx51lKydKSFQqLetpY4YHxg2ez3iQrnFA==
-X-Received: by 2002:a1c:4e17:: with SMTP id g23mr14839911wmh.171.1612177029114;
-        Mon, 01 Feb 2021 02:57:09 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=4I8ErFOno3uwCucPYSZXnpLUqg3DiJdUblt9zB0jwOM=;
+        b=fgudWPLQAdYwCKSMEIybB93qcQI7kICHb+VLRnE4dSfPjBz5gfzZq/tw0oieWWsGNs
+         zVKxJmMi3+p5WVConBRpb658srqj00lnocJGnQqmTUDxdM4hzc26vewWH6fty52AjYXU
+         DiIdllr5l9gE2hzbBVcFJwDfcUbAZteaa6Lr54FOvjhC+kpvUiwC4A6XvtkOI4aSYNuB
+         Di3JORVB8aNYNIS/ANH0LvNuG/DuK6ULDVK5EYgDP+SreqsNUVLx6Tlhmo4K5IMATjf7
+         BLCcoPQmzZSBJDtMAwgGN65rnAbELn8b5YQRqNtFS1jFgizA3xOos5t/ioS4W2bBFPpV
+         CYlA==
+X-Gm-Message-State: AOAM530Mj4nUX1beqdU13UBiddCwJ9xVqxK0AG4VntUQrzeMcnx6s/+B
+        ilJqRUhsE9rQThSZqY/0C6w=
+X-Google-Smtp-Source: ABdhPJwz1qaGuuIjwj5DHzR1UQztWVHtbiU13RneKBe4MPLPsnmkF/uebiMWbrzoxEjB2mJlv4rB6w==
+X-Received: by 2002:a1c:2587:: with SMTP id l129mr14089772wml.13.1612177033669;
+        Mon, 01 Feb 2021 02:57:13 -0800 (PST)
 Received: from localhost (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
-        by smtp.gmail.com with ESMTPSA id i8sm27905794wry.90.2021.02.01.02.57.07
+        by smtp.gmail.com with ESMTPSA id m11sm20200367wmc.15.2021.02.01.02.57.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Feb 2021 02:57:08 -0800 (PST)
+        Mon, 01 Feb 2021 02:57:13 -0800 (PST)
 From:   Iskren Chernev <iskren.chernev@gmail.com>
 To:     Bjorn Andersson <bjorn.andersson@linaro.org>
 Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
@@ -66,113 +66,168 @@ Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Alexey Minnekhanov <alexeymin@postmarketos.org>,
         Brian Masney <masneyb@onstation.org>,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: [PATCH v5 1/4] ARM: dts: qcom: msm8974: add gpu support
-Date:   Mon,  1 Feb 2021 12:56:54 +0200
-Message-Id: <20210201105657.1642825-1-iskren.chernev@gmail.com>
+Subject: [PATCH v5 3/4] ARM: dts: qcom: msm8974-klte: add support for display
+Date:   Mon,  1 Feb 2021 12:56:56 +0200
+Message-Id: <20210201105657.1642825-3-iskren.chernev@gmail.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210201105657.1642825-1-iskren.chernev@gmail.com>
+References: <20210201105657.1642825-1-iskren.chernev@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Brian Masney <masneyb@onstation.org>
+From: Samuel Pascua <pascua.samuel.14@gmail.com>
 
-Add support for the a3xx GPU. opp_table is chosen to include lower
-frequencies common to all different msm8974 variants.
+Add initial support for the display found on the Samsung Galaxy 5 (klte)
+phone. This is based on work from Jonathan Marek & Brian Masney.
 
-Signed-off-by: Brian Masney <masneyb@onstation.org>
-[iskren.chernev@gmail.com: change after v1]
+Signed-off-by: Samuel Pascua <pascua.samuel.14@gmail.com>
+[iskren.chernev@gmail.com: add reset gpio, regulators]
 Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
 ---
-Update the panel/dsi patch according to new dt bindigs in
-panel-v2: https://lkml.org/lkml/2021/2/1/313
+On downstream the panel uses a regulator and an enable pin, but it is hinted
+that the enable pin is actually another regulator, so wrap the enable pin into
+a regulator and put the two new regulator in the panel node.
 
-v1: https://lkml.org/lkml/2020/12/30/322
-v2: https://lkml.org/lkml/2021/1/24/142
-v3: https://lkml.org/lkml/2021/1/25/398
-v4: https://lkml.org/lkml/2021/1/28/374
+ .../boot/dts/qcom-msm8974-samsung-klte.dts    | 95 +++++++++++++++++++
+ 1 file changed, 95 insertions(+)
 
-Changes in v5:
-- panel/dsi patch contains 2 regulators, now that the display can turn off
-
- arch/arm/boot/dts/qcom-msm8974.dtsi    | 43 ++++++++++++++++++++++++++
- arch/arm/boot/dts/qcom-msm8974pro.dtsi |  5 +++
- 2 files changed, 48 insertions(+)
-
-diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
-index 51f5f904f9eb..c65d33591efa 100644
---- a/arch/arm/boot/dts/qcom-msm8974.dtsi
-+++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
-@@ -1399,6 +1399,49 @@ cnoc: interconnect@fc480000 {
- 			         <&rpmcc RPM_SMD_CNOC_A_CLK>;
+diff --git a/arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts b/arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts
+index 86be4ae743f4..d042c7cbab71 100644
+--- a/arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts
++++ b/arch/arm/boot/dts/qcom-msm8974-samsung-klte.dts
+@@ -298,6 +298,20 @@ vreg_wlan: wlan-regulator {
+ 		enable-active-high;
+ 	};
+ 
++	vreg_panel: panel-regulator {
++		compatible = "regulator-fixed";
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&panel_en_pin>;
++
++		regulator-name = "panel-vddr-reg";
++		regulator-min-microvolt = <1500000>;
++		regulator-max-microvolt = <1500000>;
++
++		gpio = <&pma8084_gpios 14 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++
+ 	/delete-node/ vreg-boost;
+ };
+ 
+@@ -453,6 +467,16 @@ int {
+ 				bias-pull-down;
+ 			};
  		};
-
-+		gpu: adreno@fdb00000 {
-+			status = "disabled";
 +
-+			compatible = "qcom,adreno-330.1",
-+				     "qcom,adreno";
-+			reg = <0xfdb00000 0x10000>;
-+			reg-names = "kgsl_3d0_reg_memory";
-+			interrupts = <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "kgsl_3d0_irq";
-+			clock-names = "core",
-+				      "iface",
-+				      "mem_iface";
-+			clocks = <&mmcc OXILI_GFX3D_CLK>,
-+				 <&mmcc OXILICX_AHB_CLK>,
-+				 <&mmcc OXILICX_AXI_CLK>;
-+			sram = <&gmu_sram>;
-+			power-domains = <&mmcc OXILICX_GDSC>;
-+			operating-points-v2 = <&gpu_opp_table>;
++		panel_te_pin: panel {
++			te {
++				pins = "gpio12";
++				function = "mdp_vsync";
 +
-+			interconnects = <&mmssnoc MNOC_MAS_GRAPHICS_3D &bimc BIMC_SLV_EBI_CH0>,
-+					<&ocmemnoc OCMEM_VNOC_MAS_GFX3D &ocmemnoc OCMEM_SLV_OCMEM>;
-+			interconnect-names = "gfx-mem",
-+					     "ocmem";
++				drive-strength = <2>;
++				bias-disable;
++			};
++		};
+ 	};
+ 
+ 	sdhc_1: sdhci@f9824900 {
+@@ -701,6 +725,60 @@ fuelgauge@36 {
+ 	adreno@fdb00000 {
+ 		status = "ok";
+ 	};
 +
-+			// iommus = <&gpu_iommu 0>;
++	mdss@fd900000 {
++		status = "ok";
 +
-+			gpu_opp_table: opp_table {
-+				compatible = "operating-points-v2";
++		mdp@fd900000 {
++			status = "ok";
++		};
 +
-+				opp-320000000 {
-+					opp-hz = /bits/ 64 <320000000>;
++		dsi@fd922800 {
++			status = "ok";
++
++			vdda-supply = <&pma8084_l2>;
++			vdd-supply = <&pma8084_l22>;
++			vddio-supply = <&pma8084_l12>;
++
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			ports {
++				port@1 {
++					endpoint {
++						remote-endpoint = <&panel_in>;
++						data-lanes = <0 1 2 3>;
++					};
 +				};
++			};
 +
-+				opp-200000000 {
-+					opp-hz = /bits/ 64 <200000000>;
-+				};
++			panel: panel@0 {
++				reg = <0>;
++				compatible = "samsung,s6e3fa2";
 +
-+				opp-27000000 {
-+					opp-hz = /bits/ 64 <27000000>;
++				pinctrl-names = "default";
++				pinctrl-0 = <&panel_te_pin &panel_rst_pin>;
++
++				iovdd-supply = <&pma8084_lvs4>;
++				vddr-supply = <&vreg_panel>;
++
++				reset-gpios = <&pma8084_gpios 17 GPIO_ACTIVE_LOW>;
++				te-gpios = <&msmgpio 12 GPIO_ACTIVE_HIGH>;
++
++				port {
++					panel_in: endpoint {
++						remote-endpoint = <&dsi0_out>;
++					};
 +				};
 +			};
 +		};
 +
- 		mdss: mdss@fd900000 {
- 			status = "disabled";
-
-diff --git a/arch/arm/boot/dts/qcom-msm8974pro.dtsi b/arch/arm/boot/dts/qcom-msm8974pro.dtsi
-index 6740a4cb7da8..b64c28036dd0 100644
---- a/arch/arm/boot/dts/qcom-msm8974pro.dtsi
-+++ b/arch/arm/boot/dts/qcom-msm8974pro.dtsi
-@@ -14,5 +14,10 @@ sdhci@f9824900 {
- 		clock-controller@fc400000 {
- 				compatible = "qcom,gcc-msm8974pro";
- 		};
++		dsi-phy@fd922a00 {
++			status = "ok";
 +
-+		adreno@fdb00000 {
-+			compatible = "qcom,adreno-330.2",
-+				     "qcom,adreno";
++			vddio-supply = <&pma8084_l12>;
 +		};
- 	};
++	};
  };
-
-base-commit: fd821bf0ed9a7db09d2e007df697f4d9ecfda99a
-prerequisite-patch-id: b55fe8485f5dbf29159fb3130d81d93926be23d1
-prerequisite-patch-id: 47e70201c831fab5fb987d9b0092ad46e1855efc
---
+ 
+ &spmi_bus {
+@@ -730,6 +808,14 @@ touch_pin: touchscreen-int-pin {
+ 				power-source = <PMA8084_GPIO_S4>;
+ 			};
+ 
++			panel_en_pin: panel-en-pin {
++				pins = "gpio14";
++				function = "normal";
++				bias-pull-up;
++				power-source = <PMA8084_GPIO_S4>;
++				qcom,drive-strength = <PMIC_GPIO_STRENGTH_LOW>;
++			};
++
+ 			wlan_sleep_clk_pin: wlan-sleep-clk-pin {
+ 				pins = "gpio16";
+ 				function = "func2";
+@@ -739,6 +825,15 @@ wlan_sleep_clk_pin: wlan-sleep-clk-pin {
+ 				qcom,drive-strength = <PMIC_GPIO_STRENGTH_HIGH>;
+ 			};
+ 
++			panel_rst_pin: panel-rst-pin {
++				pins = "gpio17";
++				function = "normal";
++				bias-disable;
++				power-source = <PMA8084_GPIO_S4>;
++				qcom,drive-strength = <PMIC_GPIO_STRENGTH_LOW>;
++			};
++
++
+ 			fuelgauge_pin: fuelgauge-int-pin {
+ 				pins = "gpio21";
+ 				function = "normal";
+-- 
 2.30.0
 
