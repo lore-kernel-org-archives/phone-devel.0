@@ -2,430 +2,296 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,
-	UNWANTED_LANGUAGE_BODY,USER_AGENT_GIT autolearn=unavailable
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1C79C433E6
-	for <phone-devel@archiver.kernel.org>; Mon,  1 Feb 2021 16:54:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 262D4C433DB
+	for <phone-devel@archiver.kernel.org>; Mon,  1 Feb 2021 17:03:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 513DF64DB1
-	for <phone-devel@archiver.kernel.org>; Mon,  1 Feb 2021 16:54:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DBB6264EA9
+	for <phone-devel@archiver.kernel.org>; Mon,  1 Feb 2021 17:03:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231928AbhBAQyi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 1 Feb 2021 11:54:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59786 "EHLO
+        id S231131AbhBARD4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 1 Feb 2021 12:03:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231865AbhBAQyT (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 Feb 2021 11:54:19 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B57DC06174A;
-        Mon,  1 Feb 2021 08:53:38 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id q7so17329040wre.13;
-        Mon, 01 Feb 2021 08:53:38 -0800 (PST)
+        with ESMTP id S230110AbhBARDy (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 Feb 2021 12:03:54 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6072AC061756;
+        Mon,  1 Feb 2021 09:03:14 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id q7so17367220wre.13;
+        Mon, 01 Feb 2021 09:03:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=dBHdALdEus3O4u73yaAo51PuLorYWKAPerj4FWe40+s=;
-        b=TVsiha+XNfdW0LDdez60wodKt/zg1ZEnoFTFM8aNL2Wg0oLQ/RfrZXMHMwFE+HLMi+
-         1f3/awSvrym2gDoS67TW1iX0iC8ty6sQz1+Q7x0u6hKv3jtcXVRPaF8M4mVcEYnRVniK
-         eBHsCpkGuGkMX//wXBTTm1+Vquo+hjJHXfTBTrPhKYWQB1IKlvho8MsI2FDwIeqSCjYu
-         j2e5IfWSWTdOvoyTFqOgNMUlLSHVTUOB4vwUjjugppI8XbcEQ7PhwPhD8sGIun345nE4
-         IHWu0UdSYfKG68HisqhCVDBbEJaSmdUfk1C8b5bd5fsDj/kD4xt+oky+KmfdffDz0zJV
-         wb4g==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4XpIqMTxiPl1u/vZSNC4Lfvq35vHO2o8tdpi31fPPS4=;
+        b=NQENQ3sKSfnCCWZNZads57GT/TPjyGI8+M73fUH7lR1Ot/kInwJ2Avm+Di51ZV6w9l
+         X1OFgQazGwEfQJ/zmSWuoz5nh2lsvU5zFcLkumBQ2Iya9E/vT8KxnFuBm0MYboBYIV8g
+         vSCr+dmaqPTlLyfAkYZOFvyPGqkZg1b0vW1UEIUvZXDULuxWnBNdjYpWXuZnwvFIv6JQ
+         a5e/HdshQ5wUGzs/dZ3sGIxxntXFNIcX0kIs3RHGs5uKkXgzg112VVk8vm8gM2aGFzO+
+         ManIClm+0NTERQfypLyNFfvTrai8exXRVhtUcYBgCOPLIjmanXnHVijkeG+NSFMt0re8
+         VD9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=dBHdALdEus3O4u73yaAo51PuLorYWKAPerj4FWe40+s=;
-        b=eCFL94AGYB5NBfpEzjOmhg+UbSEZ07vzkC6//zM0YfxgrHUj+1hmuu8ddebNzXYExt
-         S3sXt+QI4Rvh2MtDTxpbXDlbT5rs6UDHdKEYDTJgxCLEGX4qYVvvP+zEFtLrkPRXIqsy
-         nvSIl66UR8d4aKLcI6LkJTMVuy2lQPDJ/R1IWeka2wHfOzvqszHDoFd3YpIwzK4KFH40
-         MbvNG16JaZDXmVpGIa5gkiV+TYhQNYDmO/zL9qxR14t0iQmlYhTurqD0fEu43LpS39IN
-         2//04gdAkzjWvZdEN28E10iOs+THRzcM7lQR7KhfjKPeVPyFDyHtS2QeW9oVrtmanuoY
-         tYPw==
-X-Gm-Message-State: AOAM533UAB+wSkzyhTD1uOaTQhUOgpkyI3TAfBsc0ei5SEcqXrWnQqK3
-        4hA1QAOZXLzMYa12pFVva+oqObDCcxMP9g==
-X-Google-Smtp-Source: ABdhPJzUXIa09h6pTBqLSNvpje1ZAig60yeOMCH75zlEujWHi5874WGLfn4bzWAD7rx5CoC4OCcxpw==
-X-Received: by 2002:a5d:4d08:: with SMTP id z8mr19282280wrt.240.1612198416954;
-        Mon, 01 Feb 2021 08:53:36 -0800 (PST)
-Received: from localhost (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
-        by smtp.gmail.com with ESMTPSA id l18sm21171015wme.37.2021.02.01.08.53.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Feb 2021 08:53:36 -0800 (PST)
-From:   Iskren Chernev <iskren.chernev@gmail.com>
-To:     Rob Herring <robh+dt@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
-        Thierry Reding <thierry.reding@gmail.com>
-Cc:     Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@linux.ie>,
-        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Iskren Chernev <iskren.chernev@gmail.com>
-Subject: [PATCH v3 2/2] drm/panel: Add panel for Samsung Galaxy S5
-Date:   Mon,  1 Feb 2021 18:53:06 +0200
-Message-Id: <20210201165307.51443-2-iskren.chernev@gmail.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210201165307.51443-1-iskren.chernev@gmail.com>
-References: <20210201165307.51443-1-iskren.chernev@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4XpIqMTxiPl1u/vZSNC4Lfvq35vHO2o8tdpi31fPPS4=;
+        b=djCxmkIY8DlWX/n1hY2uBrTjeSg1ZnitzbMvEW5MDNLInBJEPSmOEudVYzc2LL6LXz
+         8m+/fNuYtDpQVMMUGai5E9rAAVZxPU+czdWkYOeRScQuijctpR3SCxCpIfDpfwNciHoy
+         L9NRH0+VuzHDb4xtLTMdeKrUkh6rYn//5t+vcl91J1nCXq9J3v6OZv+GqwujkDxjripI
+         fwmfAqtW6wseXcZ0TEPYdYduNID45QCkK952FQxR4xOWPc7uSESDc7CvgBR1YZNnK82j
+         t5WF2iTBqOVGkNwxcNfaZls88FXc5WEx4vbtf5uvRJNrTZsUmZfhUEHA4rSmeUIdpx2Y
+         CxvQ==
+X-Gm-Message-State: AOAM532DMr0luBAR5eTcGVIEvPat4G0NJ3dxgA0hxo5UemG3gV1pMvqD
+        Pplk8enEWbnuiKRFy/c5cBeXNG1HlmzcHifxG/8=
+X-Google-Smtp-Source: ABdhPJyh9DlgUiUfElTEXzXXdzq0tFW7ZJGEVYqpzz9oWLuIAJjdLuqueejEYKVQV3W8DWNCKZvelMKWo09CPxJKjwo=
+X-Received: by 2002:adf:f8c8:: with SMTP id f8mr19452006wrq.132.1612198992884;
+ Mon, 01 Feb 2021 09:03:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210109135112.147759-1-angelogioacchino.delregno@somainline.org>
+ <20210109135112.147759-4-angelogioacchino.delregno@somainline.org>
+ <CAF6AEGvDzdgDy7Znw6dQCV7Z=YxnF2_XsqkV+7BT+oY777TqHA@mail.gmail.com>
+ <8f8c7c37-f7b2-f763-19e1-d89e5c454ab4@somainline.org> <CAF6AEGsQp4xHpH2brUdHmAX1ic2k88EFJRVVWDRxWXUqF9njfw@mail.gmail.com>
+In-Reply-To: <CAF6AEGsQp4xHpH2brUdHmAX1ic2k88EFJRVVWDRxWXUqF9njfw@mail.gmail.com>
+From:   Rob Clark <robdclark@gmail.com>
+Date:   Mon, 1 Feb 2021 09:05:46 -0800
+Message-ID: <CAF6AEGueo71HVBcLW2Mtu5GQ=9HgwL43WczUGLuTk2JWLoH=ew@mail.gmail.com>
+Subject: Re: [PATCH 3/5] drm/msm/dsi_pll_10nm: Fix bad VCO rate calculation
+ and prescaler
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        phone-devel@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        freedreno <freedreno@lists.freedesktop.org>,
+        Abhinav Kumar <abhinavk@codeaurora.org>,
+        Douglas Anderson <dianders@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The Samsung Galaxy S5 uses the samsung s6e3fa2 AMOLED cmd LCD panel.
+On Mon, Feb 1, 2021 at 7:47 AM Rob Clark <robdclark@gmail.com> wrote:
+>
+> On Mon, Feb 1, 2021 at 2:11 AM AngeloGioacchino Del Regno
+> <angelogioacchino.delregno@somainline.org> wrote:
+> >
+> > Il 31/01/21 20:50, Rob Clark ha scritto:
+> > > On Sat, Jan 9, 2021 at 5:51 AM AngeloGioacchino Del Regno
+> > > <angelogioacchino.delregno@somainline.org> wrote:
+> > >>
+> > >> The VCO rate was being miscalculated due to a big overlook during
+> > >> the process of porting this driver from downstream to upstream:
+> > >> here we are really recalculating the rate of the VCO by reading
+> > >> the appropriate registers and returning a real frequency, while
+> > >> downstream the driver was doing something entirely different.
+> > >>
+> > >> In our case here, the recalculated rate was wrong, as it was then
+> > >> given back to the set_rate function, which was erroneously doing
+> > >> a division on the fractional value, based on the prescaler being
+> > >> either enabled or disabled: this was actually producing a bug for
+> > >> which the final VCO rate was being doubled, causing very obvious
+> > >> issues when trying to drive a DSI panel because the actual divider
+> > >> value was multiplied by two!
+> > >>
+> > >> To make things work properly, remove the multiplication of the
+> > >> reference clock by two from function dsi_pll_calc_dec_frac and
+> > >> account for the prescaler enablement in the vco_recalc_rate (if
+> > >> the prescaler is enabled, then the hardware will divide the rate
+> > >> by two).
+> > >>
+> > >> This will make the vco_recalc_rate function to pass the right
+> > >> frequency to the (clock framework) set_rate function when called,
+> > >> which will - in turn - program the right values in both the
+> > >> DECIMAL_DIV_START_1 and the FRAC_DIV_START_{LOW/MID/HIGH}_1
+> > >> registers, finally making the PLL to output the right clock.
+> > >>
+> > >> Also, while at it, remove the prescaler TODO by also adding the
+> > >> possibility of disabling the prescaler on the PLL (it is in the
+> > >> PLL_ANALOG_CONTROLS_ONE register).
+> > >> Of course, both prescaler-ON and OFF cases were tested.
+> > >
+> > > This somehow breaks things on sc7180 (display gets stuck at first
+> > > frame of splash screen).  (This is a setup w/ an ti-sn65dsi86 dsi->eDP
+> > > bridge)
+> > >
+> >
+> > First frame of the splash means that something is "a bit" wrong...
+> > ...like the DSI clock is a little off.
+> >
+> > I don't have such hardware, otherwise I would've tried... but what you
+> > describe is a bit strange.
+> > Is there any other older qcom platform using this chip? Any other
+> > non-qcom platform? Is the driver for the SN65DSI86 surely fine?
+> > Anyway, as you know, I would never propose untested patches nor
+> > partially working ones for any reason: I'm sorry that this happened.
+>
+> I don't think there is anything publicly avail w/ sc7180 (yet.. but very soon)
+>
+> The ti-sn65dsi86 bridge is used on a bunch of 845/850 devices (like
+> the snapdragon windows laptops).. and I think also the older 835
+> laptops.. ofc that doesn't mean that there isn't some bug, but I'd
+> guess maybe more likely that there is some small difference in DSI vs
+> older devices, or some cmd vs video mode difference.
+>
+> Anyways, seems like the screen did eventually recover so that gives me
+> a bit of confidence to bisect this series, which I'll do a bit later
+> today.
 
-This driver was generated with [1], with the addition of
-mipi_dsi_dcs_set_display_on at the end of the on method.
+fwiw, this series minus this patch, and everything looks ok.. let me
+take a closer look at what changes with this patch
 
-[1] https://github.com/msm8916-mainline/linux-mdss-dsi-panel-driver-generator
+BR,
+-R
 
-Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
----
- drivers/gpu/drm/panel/Kconfig                 |   6 +
- drivers/gpu/drm/panel/Makefile                |   1 +
- drivers/gpu/drm/panel/panel-samsung-s6e3fa2.c | 299 ++++++++++++++++++
- 3 files changed, 306 insertions(+)
- create mode 100644 drivers/gpu/drm/panel/panel-samsung-s6e3fa2.c
-
-diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index 4894913936e9..82dff2afd5f1 100644
---- a/drivers/gpu/drm/panel/Kconfig
-+++ b/drivers/gpu/drm/panel/Kconfig
-@@ -348,6 +348,12 @@ config DRM_PANEL_SAMSUNG_S6D16D0
- 	depends on DRM_MIPI_DSI
- 	select VIDEOMODE_HELPERS
- 
-+config DRM_PANEL_SAMSUNG_S6E3FA2
-+	tristate "Samsung S6E3FA2 DSI cmd mode panel"
-+	depends on OF
-+	depends on DRM_MIPI_DSI
-+	select VIDEOMODE_HELPERS
-+
- config DRM_PANEL_SAMSUNG_S6E3HA2
- 	tristate "Samsung S6E3HA2 DSI video mode panel"
- 	depends on OF
-diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
-index cae4d976c069..87d3f76f050e 100644
---- a/drivers/gpu/drm/panel/Makefile
-+++ b/drivers/gpu/drm/panel/Makefile
-@@ -35,6 +35,7 @@ obj-$(CONFIG_DRM_PANEL_RAYDIUM_RM68200) += panel-raydium-rm68200.o
- obj-$(CONFIG_DRM_PANEL_RONBO_RB070D30) += panel-ronbo-rb070d30.o
- obj-$(CONFIG_DRM_PANEL_SAMSUNG_LD9040) += panel-samsung-ld9040.o
- obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6D16D0) += panel-samsung-s6d16d0.o
-+obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E3FA2) += panel-samsung-s6e3fa2.o
- obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E3HA2) += panel-samsung-s6e3ha2.o
- obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E63J0X03) += panel-samsung-s6e63j0x03.o
- obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E63M0) += panel-samsung-s6e63m0.o
-diff --git a/drivers/gpu/drm/panel/panel-samsung-s6e3fa2.c b/drivers/gpu/drm/panel/panel-samsung-s6e3fa2.c
-new file mode 100644
-index 000000000000..8985fccf9792
---- /dev/null
-+++ b/drivers/gpu/drm/panel/panel-samsung-s6e3fa2.c
-@@ -0,0 +1,299 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+// Copyright (c) 2021 Iskren Chernev <iskren.chernev@gmail.com>
-+// Generated with linux-mdss-dsi-panel-driver-generator from vendor device tree:
-+// Copyright (c) 2021, The Linux Foundation. All rights reserved.
-+
-+#include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/regulator/consumer.h>
-+
-+#include <drm/drm_mipi_dsi.h>
-+#include <drm/drm_modes.h>
-+#include <drm/drm_panel.h>
-+
-+struct samsung_s6e3fa2 {
-+	struct drm_panel panel;
-+	struct mipi_dsi_device *dsi;
-+	struct regulator_bulk_data supplies[2];
-+	struct gpio_desc *reset_gpio;
-+	bool prepared;
-+};
-+
-+static inline
-+struct samsung_s6e3fa2 *to_samsung_s6e3fa2(struct drm_panel *panel)
-+{
-+	return container_of(panel, struct samsung_s6e3fa2, panel);
-+}
-+
-+#define dsi_generic_write_seq(dsi, seq...) do {				\
-+		static const u8 d[] = { seq };				\
-+		int ret;						\
-+		ret = mipi_dsi_generic_write(dsi, d, ARRAY_SIZE(d));	\
-+		if (ret < 0)						\
-+			return ret;					\
-+	} while (0)
-+
-+#define dsi_dcs_write_seq(dsi, seq...) do {				\
-+		static const u8 d[] = { seq };				\
-+		int ret;						\
-+		ret = mipi_dsi_dcs_write_buffer(dsi, d, ARRAY_SIZE(d));	\
-+		if (ret < 0)						\
-+			return ret;					\
-+	} while (0)
-+
-+static void samsung_s6e3fa2_reset(struct samsung_s6e3fa2 *ctx)
-+{
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-+	usleep_range(5000, 6000);
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+	usleep_range(5000, 6000);
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-+	usleep_range(7000, 8000);
-+}
-+
-+static int samsung_s6e3fa2_on(struct samsung_s6e3fa2 *ctx)
-+{
-+	struct mipi_dsi_device *dsi = ctx->dsi;
-+	struct device *dev = &dsi->dev;
-+	int ret;
-+
-+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-+
-+	dsi_generic_write_seq(dsi, 0xf0, 0x5a, 0x5a);
-+	dsi_generic_write_seq(dsi, 0xfc, 0x5a, 0x5a);
-+	dsi_dcs_write_seq(dsi, 0xf2);
-+	dsi_dcs_write_seq(dsi, 0xf9);
-+	usleep_range(5000, 6000);
-+
-+	ret = mipi_dsi_dcs_exit_sleep_mode(dsi);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to exit sleep mode: %d\n", ret);
-+		return ret;
-+	}
-+	msleep(20);
-+
-+	dsi_generic_write_seq(dsi, 0xca,
-+			      0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x80, 0x80,
-+			      0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80,
-+			      0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80,
-+			      0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x00, 0x00,
-+			      0x00);
-+	dsi_generic_write_seq(dsi, 0xb2, 0x00, 0x0e, 0x00, 0x0e);
-+	dsi_generic_write_seq(dsi, 0xb6,
-+			      0x98, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03,
-+			      0x55, 0x54, 0x20, 0x00, 0x0a, 0xaa, 0xaf, 0x0f,
-+			      0x02, 0x22, 0x22, 0x10);
-+	dsi_generic_write_seq(dsi, 0xb5, 0x41);
-+	dsi_generic_write_seq(dsi, 0xf7, 0x03);
-+	dsi_generic_write_seq(dsi, 0xf7, 0x00);
-+	dsi_generic_write_seq(dsi, 0xb0, 0x02);
-+	dsi_generic_write_seq(dsi, 0xfd, 0x0a);
-+	dsi_generic_write_seq(dsi, 0xfe, 0x80);
-+	dsi_generic_write_seq(dsi, 0xfe, 0x00);
-+	dsi_generic_write_seq(dsi, 0x35, 0x00);
-+	dsi_generic_write_seq(dsi, 0xbd, 0x05, 0x02, 0x02);
-+	dsi_generic_write_seq(dsi, 0xf0, 0xa5, 0xa5);
-+	dsi_generic_write_seq(dsi, 0xfc, 0xa5, 0xa5);
-+
-+	ret = mipi_dsi_dcs_set_display_on(dsi);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to set display on: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int samsung_s6e3fa2_off(struct samsung_s6e3fa2 *ctx)
-+{
-+	struct mipi_dsi_device *dsi = ctx->dsi;
-+	struct device *dev = &dsi->dev;
-+	int ret;
-+
-+	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-+
-+	ret = mipi_dsi_dcs_set_display_off(dsi);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to set display off: %d\n", ret);
-+		return ret;
-+	}
-+	usleep_range(10000, 11000);
-+
-+	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to enter sleep mode: %d\n", ret);
-+		return ret;
-+	}
-+	msleep(120);
-+
-+	return 0;
-+}
-+
-+static int samsung_s6e3fa2_prepare(struct drm_panel *panel)
-+{
-+	struct samsung_s6e3fa2 *ctx = to_samsung_s6e3fa2(panel);
-+	struct device *dev = &ctx->dsi->dev;
-+	int ret;
-+
-+	if (ctx->prepared)
-+		return 0;
-+
-+	ret = regulator_bulk_enable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to enable regulators: %d\n", ret);
-+		return ret;
-+	}
-+
-+	samsung_s6e3fa2_reset(ctx);
-+
-+	ret = samsung_s6e3fa2_on(ctx);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to initialize panel: %d\n", ret);
-+		gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+		regulator_bulk_disable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
-+		return ret;
-+	}
-+
-+	ctx->prepared = true;
-+	return 0;
-+}
-+
-+static int samsung_s6e3fa2_unprepare(struct drm_panel *panel)
-+{
-+	struct samsung_s6e3fa2 *ctx = to_samsung_s6e3fa2(panel);
-+	struct device *dev = &ctx->dsi->dev;
-+	int ret;
-+
-+	if (!ctx->prepared)
-+		return 0;
-+
-+	ret = samsung_s6e3fa2_off(ctx);
-+	if (ret < 0)
-+		dev_err(dev, "Failed to un-initialize panel: %d\n", ret);
-+
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+	regulator_bulk_disable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
-+
-+	ctx->prepared = false;
-+	return 0;
-+}
-+
-+static const struct drm_display_mode samsung_s6e3fa2_mode = {
-+	.clock = (1080 + 162 + 10 + 36) * (1920 + 13 + 2 + 3) * 60 / 1000,
-+	.hdisplay = 1080,
-+	.hsync_start = 1080 + 162,
-+	.hsync_end = 1080 + 162 + 10,
-+	.htotal = 1080 + 162 + 10 + 36,
-+	.vdisplay = 1920,
-+	.vsync_start = 1920 + 13,
-+	.vsync_end = 1920 + 13 + 2,
-+	.vtotal = 1920 + 13 + 2 + 3,
-+	.width_mm = 65,
-+	.height_mm = 115,
-+};
-+
-+static int samsung_s6e3fa2_get_modes(struct drm_panel *panel,
-+				     struct drm_connector *connector)
-+{
-+	struct drm_display_mode *mode;
-+
-+	mode = drm_mode_duplicate(connector->dev, &samsung_s6e3fa2_mode);
-+	if (!mode)
-+		return -ENOMEM;
-+
-+	drm_mode_set_name(mode);
-+
-+	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
-+	connector->display_info.width_mm = mode->width_mm;
-+	connector->display_info.height_mm = mode->height_mm;
-+	drm_mode_probed_add(connector, mode);
-+
-+	return 1;
-+}
-+
-+static const struct drm_panel_funcs samsung_s6e3fa2_panel_funcs = {
-+	.prepare = samsung_s6e3fa2_prepare,
-+	.unprepare = samsung_s6e3fa2_unprepare,
-+	.get_modes = samsung_s6e3fa2_get_modes,
-+};
-+
-+static int samsung_s6e3fa2_probe(struct mipi_dsi_device *dsi)
-+{
-+	struct device *dev = &dsi->dev;
-+	struct samsung_s6e3fa2 *ctx;
-+	int ret;
-+
-+	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx)
-+		return -ENOMEM;
-+
-+	ctx->supplies[0].supply = "iovdd";
-+	ctx->supplies[1].supply = "vddr";
-+	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(ctx->supplies),
-+				      ctx->supplies);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to get regulators\n");
-+
-+	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(ctx->reset_gpio))
-+		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
-+				     "Failed to get reset-gpios\n");
-+
-+	ctx->dsi = dsi;
-+	mipi_dsi_set_drvdata(dsi, ctx);
-+
-+	dsi->lanes = 4;
-+	dsi->format = MIPI_DSI_FMT_RGB888;
-+	dsi->mode_flags = MIPI_DSI_MODE_VIDEO_BURST |
-+			  MIPI_DSI_CLOCK_NON_CONTINUOUS;
-+
-+	drm_panel_init(&ctx->panel, dev, &samsung_s6e3fa2_panel_funcs,
-+		       DRM_MODE_CONNECTOR_DSI);
-+
-+	drm_panel_add(&ctx->panel);
-+
-+	ret = mipi_dsi_attach(dsi);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to attach to DSI host: %d\n", ret);
-+		drm_panel_remove(&ctx->panel);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int samsung_s6e3fa2_remove(struct mipi_dsi_device *dsi)
-+{
-+	struct samsung_s6e3fa2 *ctx = mipi_dsi_get_drvdata(dsi);
-+	int ret;
-+
-+	ret = mipi_dsi_detach(dsi);
-+	if (ret < 0)
-+		dev_err(&dsi->dev, "Failed to detach from DSI host: %d\n", ret);
-+
-+	drm_panel_remove(&ctx->panel);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id samsung_s6e3fa2_of_match[] = {
-+	{ .compatible = "samsung,s6e3fa2" },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, samsung_s6e3fa2_of_match);
-+
-+static struct mipi_dsi_driver samsung_s6e3fa2_driver = {
-+	.probe = samsung_s6e3fa2_probe,
-+	.remove = samsung_s6e3fa2_remove,
-+	.driver = {
-+		.name = "panel-samsung-s6e3fa2",
-+		.of_match_table = samsung_s6e3fa2_of_match,
-+	},
-+};
-+module_mipi_dsi_driver(samsung_s6e3fa2_driver);
-+
-+MODULE_AUTHOR("Iskren Chernev <iskren.chernev@gmail.com>");
-+MODULE_DESCRIPTION("DRM driver for samsung,s6e3fa2 panel");
-+MODULE_LICENSE("GPL v2");
--- 
-2.30.0
-
+> > In any case, just to be perfectly transparent, while being here waiting
+> > for review, this patch series got tested on more smartphones, even ones
+> > that I don't personally own, with different displays.
+> >
+> > For your reference, here's a list (all MSM8998..):
+> > - OnePlus 5               (1920x1080)
+> > - F(x)Tec Pro 1           (2160x1080)
+> > - Sony Xperia XZ1 Compact (1280x720)
+> > - Sony Xperia XZ1         (1920x1080)
+> > - Sony Xperia XZ Premium  (3840x2160)
+> >
+>
+> Yeah, no worries, I wasn't trying to imply that the patch was untested.
+>
+> Out of curiosity, are any of those video mode panels?
+>
+> >
+> > > Also, something (I assume DSI related) that I was testing on
+> > > msm-next-staging seems to have effected the colors on the panel (ie.
+> > > they are more muted).. which seems to persist across reboots (ie. when
+> >
+> > So much "fun". This makes me think something about the PCC block doing
+> > the wrong thing (getting misconfigured).
+> >
+> > > switching back to a good kernel), and interestingly if I reboot from a
+> > > good kernel I see part of the login prompt (or whatever was previously
+> > > on-screen) in the firmware ui screen !?!  (so maybe somehow triggered
+> > > the display to think it is in PSR mode??)
+> > >
+> >
+> >  From a fast read, the SN65DSI86 is on I2C.. giving it a wrong dsi clock
+> > cannot produce (logically, at least) this, so I say that it is very
+> > unlikely for this to be a consequence of the 10nm pll fixes...
+> >
+>
+> Note that the bridge can also be programmed via dsi cmd mode packets,
+> which I believe is the case on the 835 laptops (or at least one of
+> them).. but all the things I have are using i2c as the control path.
+>
+> > ...unless the bootloader is not configuring the DSI rates, but that's
+> > also veeeeery unlikely (it always does, or it always does not).
+>
+> I haven't looked at the bootloader display code, but booting back to
+> an old/good kernel didn't change anything..  even powering off didn't.
+> But the ghost image seemed to fade after some time, and by the next
+> morning it was fine.  Which is strange. (But tbf, I'm more a gpu guy
+> who works on display only when necessary.. ie. a gpu without a display
+> isn't so much fun ;-))
+>
+> > > Not sure if that is caused by these patches, but if I can figure out
+> > > how to get the panel back to normal I can bisect.  I think for now
+> > > I'll drop this series.  Possibly it could be a
+> > > two-wrongs-makes-a-right situation that had things working before, but
+> > > I think someone from qcom who knows the DSI IP should take a look.
+> > >
+> >
+> > I would be happy if someone from Qualcomm takes a look: after all, there
+> > is no documentation and they're the only ones that can verify this kind
+> > of stuff. Please, Qualcomm.
+>
+> Hopefully someone can take a look.
+>
+> > Besides that, if there's anything I can help with to solve this riddle,
+> > I'm here for you.
+>
+> Thanks, like I said I'll try applying the patches one by one and see
+> if I can narrow down what made the panel go funny, and we can go from
+> there
+>
+> BR,
+> -R
+>
+> > Yours,
+> > -- Angelo
+> >
+> > > BR,
+> > > -R
+> > >
+> > >
+> > >> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> > >> ---
+> > >>   drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c | 22 +++++++++-------------
+> > >>   1 file changed, 9 insertions(+), 13 deletions(-)
+> > >>
+> > >> diff --git a/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c b/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c
+> > >> index 8b66e852eb36..5be562dfbf06 100644
+> > >> --- a/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c
+> > >> +++ b/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c
+> > >> @@ -165,11 +165,7 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_10nm *pll)
+> > >>
+> > >>          pll_freq = pll->vco_current_rate;
+> > >>
+> > >> -       if (config->disable_prescaler)
+> > >> -               divider = fref;
+> > >> -       else
+> > >> -               divider = fref * 2;
+> > >> -
+> > >> +       divider = fref;
+> > >>          multiplier = 1 << config->frac_bits;
+> > >>          dec_multiple = div_u64(pll_freq * multiplier, divider);
+> > >>          dec = div_u64_rem(dec_multiple, multiplier, &frac);
+> > >> @@ -266,9 +262,11 @@ static void dsi_pll_ssc_commit(struct dsi_pll_10nm *pll)
+> > >>
+> > >>   static void dsi_pll_config_hzindep_reg(struct dsi_pll_10nm *pll)
+> > >>   {
+> > >> +       struct dsi_pll_config *config = &pll->pll_configuration;
+> > >>          void __iomem *base = pll->mmio;
+> > >> +       u32 val = config->disable_prescaler ? 0x0 : 0x80;
+> > >>
+> > >> -       pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_ONE, 0x80);
+> > >> +       pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_ONE, val);
+> > >>          pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_TWO, 0x03);
+> > >>          pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_THREE, 0x00);
+> > >>          pll_write(base + REG_DSI_10nm_PHY_PLL_DSM_DIVIDER, 0x00);
+> > >> @@ -499,17 +497,15 @@ static unsigned long dsi_pll_10nm_vco_recalc_rate(struct clk_hw *hw,
+> > >>          frac |= ((pll_read(base + REG_DSI_10nm_PHY_PLL_FRAC_DIV_START_HIGH_1) &
+> > >>                    0x3) << 16);
+> > >>
+> > >> -       /*
+> > >> -        * TODO:
+> > >> -        *      1. Assumes prescaler is disabled
+> > >> -        */
+> > >>          multiplier = 1 << config->frac_bits;
+> > >> -       pll_freq = dec * (ref_clk * 2);
+> > >> -       tmp64 = (ref_clk * 2 * frac);
+> > >> +       pll_freq = dec * ref_clk;
+> > >> +       tmp64 = ref_clk * frac;
+> > >>          pll_freq += div_u64(tmp64, multiplier);
+> > >> -
+> > >>          vco_rate = pll_freq;
+> > >>
+> > >> +       if (config->disable_prescaler)
+> > >> +               vco_rate = div_u64(vco_rate, 2);
+> > >> +
+> > >>          DBG("DSI PLL%d returning vco rate = %lu, dec = %x, frac = %x",
+> > >>              pll_10nm->id, (unsigned long)vco_rate, dec, frac);
+> > >>
+> > >> --
+> > >> 2.29.2
+> > >>
+> >
