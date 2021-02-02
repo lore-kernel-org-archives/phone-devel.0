@@ -2,113 +2,396 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.4 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A6BDC4332B
-	for <phone-devel@archiver.kernel.org>; Tue,  2 Feb 2021 13:18:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B98B5C433E6
+	for <phone-devel@archiver.kernel.org>; Tue,  2 Feb 2021 14:35:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C9BC364F5D
-	for <phone-devel@archiver.kernel.org>; Tue,  2 Feb 2021 13:18:36 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 838E664DDC
+	for <phone-devel@archiver.kernel.org>; Tue,  2 Feb 2021 14:35:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232292AbhBBNSV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 2 Feb 2021 08:18:21 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:51424 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232225AbhBBNRy (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 Feb 2021 08:17:54 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id CBF041C0B7A; Tue,  2 Feb 2021 14:13:26 +0100 (CET)
-Date:   Tue, 2 Feb 2021 14:13:26 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     Jonathan Albrieux <jonathan.albrieux@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 0/3] Add initial support for BQ Aquaris X5
-Message-ID: <20210202131326.GA23980@duo.ucw.cz>
-References: <20210124135409.5473-1-jonathan.albrieux@gmail.com>
- <20210124210119.GA27676@amd>
- <YA3rTAx2vfOXPCMq@gerhold.net>
- <20210127222407.GD24799@amd>
- <YBKDa1irydOUaXag@gerhold.net>
+        id S232266AbhBBOe7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 2 Feb 2021 09:34:59 -0500
+Received: from relay07.th.seeweb.it ([5.144.164.168]:35883 "EHLO
+        relay07.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234536AbhBBOcv (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 Feb 2021 09:32:51 -0500
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 8807E3EBA0;
+        Tue,  2 Feb 2021 15:32:04 +0100 (CET)
+Subject: Re: [PATCH 3/5] drm/msm/dsi_pll_10nm: Fix bad VCO rate calculation
+ and prescaler
+To:     Rob Clark <robdclark@gmail.com>
+Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        phone-devel@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        freedreno <freedreno@lists.freedesktop.org>,
+        Abhinav Kumar <abhinavk@codeaurora.org>,
+        Douglas Anderson <dianders@chromium.org>
+References: <20210109135112.147759-1-angelogioacchino.delregno@somainline.org>
+ <20210109135112.147759-4-angelogioacchino.delregno@somainline.org>
+ <CAF6AEGvDzdgDy7Znw6dQCV7Z=YxnF2_XsqkV+7BT+oY777TqHA@mail.gmail.com>
+ <8f8c7c37-f7b2-f763-19e1-d89e5c454ab4@somainline.org>
+ <CAF6AEGsQp4xHpH2brUdHmAX1ic2k88EFJRVVWDRxWXUqF9njfw@mail.gmail.com>
+ <CAF6AEGueo71HVBcLW2Mtu5GQ=9HgwL43WczUGLuTk2JWLoH=ew@mail.gmail.com>
+ <CAF6AEGspvnwRrXurmRvvRhr8dsFRc6fNnLsSo52Te0rHXtj4jA@mail.gmail.com>
+ <CAF6AEGsDL-qRyXWftTgzHGn=UTvz=rcyEUcJv+oGtVXCkYibug@mail.gmail.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <e338e4bd-0e8c-9199-caa1-93945ed2b94b@somainline.org>
+Date:   Tue, 2 Feb 2021 15:32:04 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="1yeeQ81UyVL57Vl7"
-Content-Disposition: inline
-In-Reply-To: <YBKDa1irydOUaXag@gerhold.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAF6AEGsDL-qRyXWftTgzHGn=UTvz=rcyEUcJv+oGtVXCkYibug@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Il 01/02/21 18:31, Rob Clark ha scritto:
+> On Mon, Feb 1, 2021 at 9:18 AM Rob Clark <robdclark@gmail.com> wrote:
+>>
+>> On Mon, Feb 1, 2021 at 9:05 AM Rob Clark <robdclark@gmail.com> wrote:
+>>>
+>>> On Mon, Feb 1, 2021 at 7:47 AM Rob Clark <robdclark@gmail.com> wrote:
+>>>>
+>>>> On Mon, Feb 1, 2021 at 2:11 AM AngeloGioacchino Del Regno
+>>>> <angelogioacchino.delregno@somainline.org> wrote:
+>>>>>
+>>>>> Il 31/01/21 20:50, Rob Clark ha scritto:
+>>>>>> On Sat, Jan 9, 2021 at 5:51 AM AngeloGioacchino Del Regno
+>>>>>> <angelogioacchino.delregno@somainline.org> wrote:
+>>>>>>>
+>>>>>>> The VCO rate was being miscalculated due to a big overlook during
+>>>>>>> the process of porting this driver from downstream to upstream:
+>>>>>>> here we are really recalculating the rate of the VCO by reading
+>>>>>>> the appropriate registers and returning a real frequency, while
+>>>>>>> downstream the driver was doing something entirely different.
+>>>>>>>
+>>>>>>> In our case here, the recalculated rate was wrong, as it was then
+>>>>>>> given back to the set_rate function, which was erroneously doing
+>>>>>>> a division on the fractional value, based on the prescaler being
+>>>>>>> either enabled or disabled: this was actually producing a bug for
+>>>>>>> which the final VCO rate was being doubled, causing very obvious
+>>>>>>> issues when trying to drive a DSI panel because the actual divider
+>>>>>>> value was multiplied by two!
+>>>>>>>
+>>>>>>> To make things work properly, remove the multiplication of the
+>>>>>>> reference clock by two from function dsi_pll_calc_dec_frac and
+>>>>>>> account for the prescaler enablement in the vco_recalc_rate (if
+>>>>>>> the prescaler is enabled, then the hardware will divide the rate
+>>>>>>> by two).
+>>>>>>>
+>>>>>>> This will make the vco_recalc_rate function to pass the right
+>>>>>>> frequency to the (clock framework) set_rate function when called,
+>>>>>>> which will - in turn - program the right values in both the
+>>>>>>> DECIMAL_DIV_START_1 and the FRAC_DIV_START_{LOW/MID/HIGH}_1
+>>>>>>> registers, finally making the PLL to output the right clock.
+>>>>>>>
+>>>>>>> Also, while at it, remove the prescaler TODO by also adding the
+>>>>>>> possibility of disabling the prescaler on the PLL (it is in the
+>>>>>>> PLL_ANALOG_CONTROLS_ONE register).
+>>>>>>> Of course, both prescaler-ON and OFF cases were tested.
+>>>>>>
+>>>>>> This somehow breaks things on sc7180 (display gets stuck at first
+>>>>>> frame of splash screen).  (This is a setup w/ an ti-sn65dsi86 dsi->eDP
+>>>>>> bridge)
+>>>>>>
+>>>>>
+>>>>> First frame of the splash means that something is "a bit" wrong...
+>>>>> ...like the DSI clock is a little off.
+>>>>>
+>>>>> I don't have such hardware, otherwise I would've tried... but what you
+>>>>> describe is a bit strange.
+>>>>> Is there any other older qcom platform using this chip? Any other
+>>>>> non-qcom platform? Is the driver for the SN65DSI86 surely fine?
+>>>>> Anyway, as you know, I would never propose untested patches nor
+>>>>> partially working ones for any reason: I'm sorry that this happened.
+>>>>
+>>>> I don't think there is anything publicly avail w/ sc7180 (yet.. but very soon)
+>>>>
+>>>> The ti-sn65dsi86 bridge is used on a bunch of 845/850 devices (like
+>>>> the snapdragon windows laptops).. and I think also the older 835
+>>>> laptops.. ofc that doesn't mean that there isn't some bug, but I'd
+>>>> guess maybe more likely that there is some small difference in DSI vs
+>>>> older devices, or some cmd vs video mode difference.
+>>>>
+>>>> Anyways, seems like the screen did eventually recover so that gives me
+>>>> a bit of confidence to bisect this series, which I'll do a bit later
+>>>> today.
+>>>
+>>> fwiw, this series minus this patch, and everything looks ok.. let me
+>>> take a closer look at what changes with this patch
+>>
+>> Btw, it looks like upstream, config->disable_prescaler is always
+>> false.. I don't suppose you have anything WIP that changes this?
+> 
 
---1yeeQ81UyVL57Vl7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Regarding that one, I have tested the driver in both cases, with
+and without prescaler enabled (both worked fine), then I have decided
+to leave the prescaler option exactly as the previous default.
 
-Hi!
+My plan about this was/still is:
+1. Wait until this one gets merged (gives me time to also look
+    at the other billion patches that I've sent);
+2. Add the prescaler option DT property and explain that it has
+    to be used only with "puny" displays (low resolution, low
+    clocks) as with "good ones", enabling the prescaler gives less
+    clock jitter (and some microamps more power consumption);
+3. Add the Spread Spectrum Clock (SSC) functionality with related
+    DT properties.
 
-> > > > How close are you to having useful phone calls?
-> > >=20
-> > > You can do phone calls (with audio) and you can use mobile data, if y=
-ou
-> > > have the patches for that. :) I'm trying to find time to finish up the
-> > > drivers needed for that, but I've been a bit short on time lately.
-> >=20
-> > > Most of the functionality is packaged in postmarketOS [1] and you can
-> > > find a list of the devices in the postmarketOS wiki [2]. Especially
-> > > the ones in the "community" category are quite similar in terms of
-> > > working functionality.
-> >=20
-> > I know about postmarketOS (I even contributed a bit some time ago),
-> > and watch it from time to time. Currently I'm using old Nokia 6151 for
-> > phone calls, but would not mind switching. Work is ongoing in Droid 4
-> > land -- phone calls are also "almost there". But the almost seems to
-> > be a lot of work :-(.
-> >=20
->=20
-> It's fairly simple on Qualcomm SoCs once audio DSP and modem are working
-> (which is not that simple). I basically just tell the audio DSP to
-> stream voice call audio to the audio ports and then it does that without
-> involving the kernel.
->=20
-> It seems to work quite well, so far no one complained about quality or
-> something like that. Not sure if anyone is actively using it already
-> though :)
+Point 2 and 3 would go in the same series, unless someone does
+N.2 before I do... and N.3 requires a bit of extensive testing,
+which I have already partially started on the FxTec phone.
 
-Ok, thanks for info :-).=20
+> fwiw, this is the clk_summary diff with and without this patch:
+> 
+> ------------------
+> 270,282c270,282
+> <     dsi0_pll_out_div_clk              1        1        0
+> 887039941          0     0  50000         Y
+> <        dsi0_pll_post_out_div_clk       0        0        0
+> 221759985          0     0  50000         Y
+> <        dsi0_pll_bit_clk               2        2        0
+> 887039941          0     0  50000         Y
+> <           dsi0_pclk_mux               1        1        0
+> 887039941          0     0  50000         Y
+> <              dsi0_phy_pll_out_dsiclk       1        1        0
+> 147839991          0     0  50000         Y
+> <                 disp_cc_mdss_pclk0_clk_src       1        1        0
+>    147839991          0     0  50000         Y
+> <                    disp_cc_mdss_pclk0_clk       1        1        0
+>   147839991          0     0  50000         Y
+> <           dsi0_pll_by_2_bit_clk       0        0        0
+> 443519970          0     0  50000         Y
+> <           dsi0_phy_pll_out_byteclk       1        1        0
+> 110879992          0     0  50000         Y
+> <              disp_cc_mdss_byte0_clk_src       2        2        0
+> 110879992          0     0  50000         Y
+> <                 disp_cc_mdss_byte0_div_clk_src       1        1
+>    0    55439996          0     0  50000         Y
+> <                    disp_cc_mdss_byte0_intf_clk       1        1
+>    0    55439996          0     0  50000         Y
+> <                 disp_cc_mdss_byte0_clk       1        1        0
+> 110879992          0     0  50000         Y
+> ---
+>>      dsi0_pll_out_div_clk              1        1        0   887039978          0     0  50000         Y
+>>         dsi0_pll_post_out_div_clk       0        0        0   221759994          0     0  50000         Y
+>>         dsi0_pll_bit_clk               2        2        0   887039978          0     0  50000         Y
+>>            dsi0_pclk_mux               1        1        0   887039978          0     0  50000         Y
+>>               dsi0_phy_pll_out_dsiclk       1        1        0   147839997          0     0  50000         Y
+>>                  disp_cc_mdss_pclk0_clk_src       1        1        0   147839997          0     0  50000         Y
+>>                     disp_cc_mdss_pclk0_clk       1        1        0   147839997          0     0  50000         Y
+>>            dsi0_pll_by_2_bit_clk       0        0        0   443519989          0     0  50000         Y
+>>            dsi0_phy_pll_out_byteclk       1        1        0   110879997          0     0  50000         Y
+>>               disp_cc_mdss_byte0_clk_src       2        2        0   110879997          0     0  50000         Y
+>>                  disp_cc_mdss_byte0_div_clk_src       1        1        0    55439999          0     0  50000         Y
+>>                     disp_cc_mdss_byte0_intf_clk       1        1        0    55439999          0     0  50000         Y
+>>                  disp_cc_mdss_byte0_clk       1        1        0   110879997          0     0  50000         Y
+> ------------------
+> 
+> 
 
-> The work left is mainly making the driver more generic so it can work on
-> other Qualcomm SoCs as well (right now I have some things hardcoded).
-> Also, I still haven't fully figured out what is the best way to
-> integrate it into ASoC/UCM/..., so that it can be easily activated when
-> starting a voice call.
+This is almost exactly what I saw on my devices as well, you get a
+difference of "just some Hz" (which can be totally ignored), because
+of how the calculation is done now.
 
-On droid 4, we use mixer settings to configure audio system for a
-call. Maemo Leste has some kind of component to automatically adjust
-mixers when call is started. We use ofonod.
+Thing is, what you see as PIXEL and BYTE clocks *before* the change is
+Linux thinking that your DSI is at that frequency, while the PLL will
+output *half* the rate, which is exactly what the patch fixes.
 
-Best regards,
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
+"Fun" story is: the Xperia XZ1 (8998) and XZ (8996) have got the same
+display... by lowering the DSI rate on the MSM8996 phone by half, I
+get the same *identical* issues as the 8998 one without this patch.
+The clocks all match between one and another, because.. it's.. the same
+display, after all.
 
---1yeeQ81UyVL57Vl7
-Content-Type: application/pgp-signature; name="signature.asc"
+It is because of the aforementioned test that I have raised doubts about
+the TI chip driver (or anything else really).. but then, anything is
+possible.
 
------BEGIN PGP SIGNATURE-----
+>>>
+>>>>> In any case, just to be perfectly transparent, while being here waiting
+>>>>> for review, this patch series got tested on more smartphones, even ones
+>>>>> that I don't personally own, with different displays.
+>>>>>
+>>>>> For your reference, here's a list (all MSM8998..):
+>>>>> - OnePlus 5               (1920x1080)
+>>>>> - F(x)Tec Pro 1           (2160x1080)
+>>>>> - Sony Xperia XZ1 Compact (1280x720)
+>>>>> - Sony Xperia XZ1         (1920x1080)
+>>>>> - Sony Xperia XZ Premium  (3840x2160)
+>>>>>
+>>>>
+>>>> Yeah, no worries, I wasn't trying to imply that the patch was untested.
+>>>>
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYBlP9gAKCRAw5/Bqldv6
-8tzWAKCdkEFZl9hRFG46yPE3C/spvowpWQCaA6Ukg3wKxEbu1zi+xVIs9ckw2Ks=
-=mY9d
------END PGP SIGNATURE-----
+I know, of course!
 
---1yeeQ81UyVL57Vl7--
+>>>> Out of curiosity, are any of those video mode panels?
+
+Yes and "also":
+The FxTec Pro1 has a video mode panel, for which I'm trying to upstream
+the driver...look here: https://lore.kernel.org/patchwork/patch/1365228/
+
+The Xperia XZ Premium has a Sharp LS055D1SX04 panel under NT35950, which
+can be configured as command or as video mode... I tried both modes, but
+there is some issue with the DPU1/DSI drivers and *DUAL DSI*, as cmd
+does work with some tearing, but video doesn't even start (downstream it
+works).
+
+So the only video mode panel that I could test is that BOE panel on the
+FxTec phone (single dsi), which works just great.
+
+>>>>
+>>>>>
+>>>>>> Also, something (I assume DSI related) that I was testing on
+>>>>>> msm-next-staging seems to have effected the colors on the panel (ie.
+>>>>>> they are more muted).. which seems to persist across reboots (ie. when
+>>>>>
+>>>>> So much "fun". This makes me think something about the PCC block doing
+>>>>> the wrong thing (getting misconfigured).
+>>>>>
+>>>>>> switching back to a good kernel), and interestingly if I reboot from a
+>>>>>> good kernel I see part of the login prompt (or whatever was previously
+>>>>>> on-screen) in the firmware ui screen !?!  (so maybe somehow triggered
+>>>>>> the display to think it is in PSR mode??)
+>>>>>>
+>>>>>
+>>>>>   From a fast read, the SN65DSI86 is on I2C.. giving it a wrong dsi clock
+>>>>> cannot produce (logically, at least) this, so I say that it is very
+>>>>> unlikely for this to be a consequence of the 10nm pll fixes...
+>>>>>
+>>>>
+>>>> Note that the bridge can also be programmed via dsi cmd mode packets,
+>>>> which I believe is the case on the 835 laptops (or at least one of
+>>>> them).. but all the things I have are using i2c as the control path.
+>>>>
+>>>>> ...unless the bootloader is not configuring the DSI rates, but that's
+>>>>> also veeeeery unlikely (it always does, or it always does not).
+>>>>
+>>>> I haven't looked at the bootloader display code, but booting back to
+>>>> an old/good kernel didn't change anything..  even powering off didn't.
+>>>> But the ghost image seemed to fade after some time, and by the next
+>>>> morning it was fine.  Which is strange. (But tbf, I'm more a gpu guy
+>>>> who works on display only when necessary.. ie. a gpu without a display
+>>>> isn't so much fun ;-))
+>>>>
+
+OpenCL all the way! lol :D
+
+On Qualcomm platforms, the first thing that I've ever done was to bring
+up displays on 8974 Sony platforms... (we're talking about years ago).
+
+I'm a lil more on the display side of things (but growing a beard while
+waiting between a frame and another due to no GPU isn't so much fun
+either!).
+
+>>>>>> Not sure if that is caused by these patches, but if I can figure out
+>>>>>> how to get the panel back to normal I can bisect.  I think for now
+>>>>>> I'll drop this series.  Possibly it could be a
+>>>>>> two-wrongs-makes-a-right situation that had things working before, but
+>>>>>> I think someone from qcom who knows the DSI IP should take a look.
+>>>>>>
+>>>>>
+>>>>> I would be happy if someone from Qualcomm takes a look: after all, there
+>>>>> is no documentation and they're the only ones that can verify this kind
+>>>>> of stuff. Please, Qualcomm.
+>>>>
+>>>> Hopefully someone can take a look.
+>>>>
+>>>>> Besides that, if there's anything I can help with to solve this riddle,
+>>>>> I'm here for you.
+>>>>
+>>>> Thanks, like I said I'll try applying the patches one by one and see
+>>>> if I can narrow down what made the panel go funny, and we can go from
+>>>> there
+>>>>
+>>>> BR,
+>>>> -R
+>>>>
+>>>>> Yours,
+>>>>> -- Angelo
+>>>>>
+>>>>>> BR,
+>>>>>> -R
+>>>>>>
+>>>>>>
+>>>>>>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>>>>>>> ---
+>>>>>>>    drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c | 22 +++++++++-------------
+>>>>>>>    1 file changed, 9 insertions(+), 13 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c b/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c
+>>>>>>> index 8b66e852eb36..5be562dfbf06 100644
+>>>>>>> --- a/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c
+>>>>>>> +++ b/drivers/gpu/drm/msm/dsi/pll/dsi_pll_10nm.c
+>>>>>>> @@ -165,11 +165,7 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_10nm *pll)
+>>>>>>>
+>>>>>>>           pll_freq = pll->vco_current_rate;
+>>>>>>>
+>>>>>>> -       if (config->disable_prescaler)
+>>>>>>> -               divider = fref;
+>>>>>>> -       else
+>>>>>>> -               divider = fref * 2;
+>>>>>>> -
+>>>>>>> +       divider = fref;
+>>>>>>>           multiplier = 1 << config->frac_bits;
+>>>>>>>           dec_multiple = div_u64(pll_freq * multiplier, divider);
+>>>>>>>           dec = div_u64_rem(dec_multiple, multiplier, &frac);
+>>>>>>> @@ -266,9 +262,11 @@ static void dsi_pll_ssc_commit(struct dsi_pll_10nm *pll)
+>>>>>>>
+>>>>>>>    static void dsi_pll_config_hzindep_reg(struct dsi_pll_10nm *pll)
+>>>>>>>    {
+>>>>>>> +       struct dsi_pll_config *config = &pll->pll_configuration;
+>>>>>>>           void __iomem *base = pll->mmio;
+>>>>>>> +       u32 val = config->disable_prescaler ? 0x0 : 0x80;
+>>>>>>>
+>>>>>>> -       pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_ONE, 0x80);
+>>>>>>> +       pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_ONE, val);
+>>>>>>>           pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_TWO, 0x03);
+>>>>>>>           pll_write(base + REG_DSI_10nm_PHY_PLL_ANALOG_CONTROLS_THREE, 0x00);
+>>>>>>>           pll_write(base + REG_DSI_10nm_PHY_PLL_DSM_DIVIDER, 0x00);
+>>>>>>> @@ -499,17 +497,15 @@ static unsigned long dsi_pll_10nm_vco_recalc_rate(struct clk_hw *hw,
+>>>>>>>           frac |= ((pll_read(base + REG_DSI_10nm_PHY_PLL_FRAC_DIV_START_HIGH_1) &
+>>>>>>>                     0x3) << 16);
+>>>>>>>
+>>>>>>> -       /*
+>>>>>>> -        * TODO:
+>>>>>>> -        *      1. Assumes prescaler is disabled
+>>>>>>> -        */
+>>>>>>>           multiplier = 1 << config->frac_bits;
+>>>>>>> -       pll_freq = dec * (ref_clk * 2);
+>>>>>>> -       tmp64 = (ref_clk * 2 * frac);
+>>>>>>> +       pll_freq = dec * ref_clk;
+>>>>>>> +       tmp64 = ref_clk * frac;
+>>>>>>>           pll_freq += div_u64(tmp64, multiplier);
+>>>>>>> -
+>>>>>>>           vco_rate = pll_freq;
+>>>>>>>
+>>>>>>> +       if (config->disable_prescaler)
+>>>>>>> +               vco_rate = div_u64(vco_rate, 2);
+>>>>>>> +
+>>>>>>>           DBG("DSI PLL%d returning vco rate = %lu, dec = %x, frac = %x",
+>>>>>>>               pll_10nm->id, (unsigned long)vco_rate, dec, frac);
+>>>>>>>
+>>>>>>> --
+>>>>>>> 2.29.2
+>>>>>>>
+>>>>>
+
