@@ -2,235 +2,175 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5656C433DB
-	for <phone-devel@archiver.kernel.org>; Tue,  2 Feb 2021 21:37:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E85DC433E6
+	for <phone-devel@archiver.kernel.org>; Wed,  3 Feb 2021 10:00:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BCA7364F67
-	for <phone-devel@archiver.kernel.org>; Tue,  2 Feb 2021 21:37:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1465364F7C
+	for <phone-devel@archiver.kernel.org>; Wed,  3 Feb 2021 10:00:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231991AbhBBVgy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 2 Feb 2021 16:36:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35044 "EHLO
+        id S233562AbhBCKAP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 3 Feb 2021 05:00:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229502AbhBBVgw (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 Feb 2021 16:36:52 -0500
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3811BC0613ED;
-        Tue,  2 Feb 2021 13:36:12 -0800 (PST)
-Received: by mail-wm1-x32a.google.com with SMTP id 190so3774095wmz.0;
-        Tue, 02 Feb 2021 13:36:12 -0800 (PST)
+        with ESMTP id S233563AbhBCKAG (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 3 Feb 2021 05:00:06 -0500
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 174A1C06174A
+        for <phone-devel@vger.kernel.org>; Wed,  3 Feb 2021 01:59:23 -0800 (PST)
+Received: by mail-pg1-x535.google.com with SMTP id g15so16970829pgu.9
+        for <phone-devel@vger.kernel.org>; Wed, 03 Feb 2021 01:59:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=u7YwChCFCmx7GzSkTHX1KsXA0x16yyNQloyNQVAkEuk=;
-        b=m51K8ii4QQ+qoG6JIDj9R/YWGGg0l/iOAczNPitgSnBtMvc0VJbLR0XFGgIto1KLBo
-         QsqOvAc6HapUTknKd4kv9dTtjyncuSvxWv0MkyLWDhaH5FHcWQSvYDaZOp9pczNXI5Sg
-         OJlnwWF1tXHF5L94250z+zOltpUHoMd8IJStl9JYyV7V69lSH+yh6aMIAdG5X2joWPRl
-         eK+AzBvwDoYzJwD/wZR/gA/8Vf45yyrrirTptkvxYY0o+G/yyvw5EHqtOAbiIgYNsoJe
-         M0IWdqY27ZxbkWiyioDRN0LAw5QQMa/8fPicD0K13Llnjw/gHkPMJkPnb9RwO8wuPtj7
-         7USQ==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=b/R050Y1V5Ge6RgQndzOtSwrUqfobK01w5MWFMoCoZ8=;
+        b=LKVycDXu0rsyOBfww/WsyR7fnRDdngTyJ0nhdbiq7M5uOFBrBJ9KNZqfmMbVDQL9Sr
+         866hPIsso4aRMM+hkbxVJZ8o/4Pm/6Cti1gadMSOAGnnk6Sfsa463M6nR4eHS178Glbk
+         +35ZJ6gMP9bSlDGW7UVIPsEVWaTPtIlbZjjOxQYwUmy9moXwqZ6NCrqtiLl8g+q2uJ5h
+         /lsPqhs6EaVup+ACAU0KGc0FSwl8Cy5AfzBWiT6z828uJGegzpNX+iVieSc3/HSCEnMA
+         OBfXswsLbTp15zuTgO2pSQtwOgYHSjP/rNR+2SMDFpVHhv2/NGy2yLKK/H+PhpYoIe2I
+         uiHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=u7YwChCFCmx7GzSkTHX1KsXA0x16yyNQloyNQVAkEuk=;
-        b=JeXkVMcVGoWWMz/XbZ8MJCQSgX9QvPNfcbccS8EH/Qoz2Yg4Qmp/tapnAxcEgCgtYu
-         5D+b1pDDpPO4Gyz++ACuNnGK7LQuNvSQjysfr/9VESB6YdxogY0TM7AAZD2rebeEjnMV
-         9CUydYYQq3o+344J9Fr+yRr3eWvhMsPCTpsxYNRvCY1L6KhE7qoXU2+19fMo1AzpE4Ly
-         ZosbBBOTl99bYfHHup3jKrMGUJUpSU2GkKFyqGa9uyltTFNlR5LqExrVnMz618mZZHhj
-         hzTFBa3Ep+0cGyFc6Qopg8c+aH/sD1jretSzRL09DSDNOahH8VdYcSz9Pl9ju93gmKl8
-         qUdA==
-X-Gm-Message-State: AOAM533/1RcE1Lfqbo5ayFgbW2OZ24BAMqzUesqkoP+8Tns/9X1h3u1m
-        9bk9nfOVE8mXTfDxjeE0oYOH7sysdFP5M9o6H0g=
-X-Google-Smtp-Source: ABdhPJwu9RoFvMLEGWbawWPiJHdzW2KJ/fX+VI3SCRJ52NzHm0MZ6fYdakbPQzNUTStq9FMVe3H/QGgS9RDYaksVwEI=
-X-Received: by 2002:a7b:c45a:: with SMTP id l26mr9356wmi.164.1612301770881;
- Tue, 02 Feb 2021 13:36:10 -0800 (PST)
-MIME-Version: 1.0
-References: <20210109135112.147759-1-angelogioacchino.delregno@somainline.org>
- <20210109135112.147759-4-angelogioacchino.delregno@somainline.org>
- <CAF6AEGvDzdgDy7Znw6dQCV7Z=YxnF2_XsqkV+7BT+oY777TqHA@mail.gmail.com>
- <8f8c7c37-f7b2-f763-19e1-d89e5c454ab4@somainline.org> <CAF6AEGsQp4xHpH2brUdHmAX1ic2k88EFJRVVWDRxWXUqF9njfw@mail.gmail.com>
- <CAF6AEGueo71HVBcLW2Mtu5GQ=9HgwL43WczUGLuTk2JWLoH=ew@mail.gmail.com>
- <CAF6AEGspvnwRrXurmRvvRhr8dsFRc6fNnLsSo52Te0rHXtj4jA@mail.gmail.com>
- <CAF6AEGsDL-qRyXWftTgzHGn=UTvz=rcyEUcJv+oGtVXCkYibug@mail.gmail.com>
- <e338e4bd-0e8c-9199-caa1-93945ed2b94b@somainline.org> <CAF6AEGsm4nzU4rJsKFSShb4s6GCi93=+kzcETngQkoC3KD1sqw@mail.gmail.com>
- <3e3e5555-ddeb-c706-0566-7427e71ad761@somainline.org> <CAF6AEGtg2_CNTMMY4adSxiA8Z0=VSYFy7HaK3w_a2rhokmY2Zg@mail.gmail.com>
-In-Reply-To: <CAF6AEGtg2_CNTMMY4adSxiA8Z0=VSYFy7HaK3w_a2rhokmY2Zg@mail.gmail.com>
-From:   Rob Clark <robdclark@gmail.com>
-Date:   Tue, 2 Feb 2021 13:35:59 -0800
-Message-ID: <CAF6AEGurHVQUhNBzkb8iVxHKrFf1sThyUC0mCDHBoEDnVOTk=w@mail.gmail.com>
-Subject: Re: [PATCH 3/5] drm/msm/dsi_pll_10nm: Fix bad VCO rate calculation
- and prescaler
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=b/R050Y1V5Ge6RgQndzOtSwrUqfobK01w5MWFMoCoZ8=;
+        b=tSk8Jx/7JTxrW+BF3VuUgawlPvnRlh96u/zAegoxZFJnuOSgucs/S7QZ+n0RW0vvA/
+         SRTjqz4LkbjdqGRPIrDBANJ4yGEmI7cYQH8yEc+rwsPa8oxR6pdmWGJiI0YdpdkiC/Y5
+         sTA7ItBDN7xCKmAS4xp1KkWQo8hHR9HEnPj8bYeRZu+xDY71OJ+VZFPJvYCs90DWYfNL
+         YgA2oeQc7FUMHHMXU7iJDuEZszPQuN8AHtW2TclMB+4jg/deaGpPeF4ysmo54iXnGhVT
+         DVto91eTUA74RCXZNaYjGN6JjkCIMGNWZkR55YmOmMmxwaMGWqlzsS6kd5Xt8OfplKwu
+         OQhQ==
+X-Gm-Message-State: AOAM531eEukQt7TdRgNwYqKdGCEDNL1NVa64YnDTpvW783L7inWwaaUM
+        8ZEkqP8R8NJvli1crLabSQ0xXQ==
+X-Google-Smtp-Source: ABdhPJzt+iVFoaJcjuLKZlhysrfskisg5TT52CJKFKEDsjf4a4huk6neQOw5FYOuABb5d83ch1bfsA==
+X-Received: by 2002:a63:db03:: with SMTP id e3mr2733397pgg.225.1612346362659;
+        Wed, 03 Feb 2021 01:59:22 -0800 (PST)
+Received: from localhost.localdomain ([2405:201:6803:610b:1c6f:cebf:a887:dd42])
+        by smtp.gmail.com with ESMTPSA id p16sm1757182pfq.28.2021.02.03.01.59.19
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 03 Feb 2021 01:59:22 -0800 (PST)
+From:   Amit Pundir <amit.pundir@linaro.org>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konradybcio@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>
 Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        phone-devel@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        freedreno <freedreno@lists.freedesktop.org>,
-        Abhinav Kumar <abhinavk@codeaurora.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+        dt <devicetree@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>, phone-devel@vger.kernel.org
+Subject: [PATCH] arm64: dts: qcom: sdm845-xiaomi-beryllium: Add DSI and panel bits
+Date:   Wed,  3 Feb 2021 15:29:16 +0530
+Message-Id: <1612346356-26445-1-git-send-email-amit.pundir@linaro.org>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Feb 2, 2021 at 11:08 AM Rob Clark <robdclark@gmail.com> wrote:
->
-> On Tue, Feb 2, 2021 at 10:46 AM AngeloGioacchino Del Regno
-> <angelogioacchino.delregno@somainline.org> wrote:
-> >
-> > Il 02/02/21 19:45, Rob Clark ha scritto:
-> > > On Tue, Feb 2, 2021 at 6:32 AM AngeloGioacchino Del Regno
-> > > <angelogioacchino.delregno@somainline.org> wrote:
-> > >>
-> > >> Il 01/02/21 18:31, Rob Clark ha scritto:
-> > >>> fwiw, this is the clk_summary diff with and without this patch:
-> > >>>
-> > >>> ------------------
-> > >>> 270,282c270,282
-> > >>> <     dsi0_pll_out_div_clk              1        1        0
-> > >>> 887039941          0     0  50000         Y
-> > >>> <        dsi0_pll_post_out_div_clk       0        0        0
-> > >>> 221759985          0     0  50000         Y
-> > >>> <        dsi0_pll_bit_clk               2        2        0
-> > >>> 887039941          0     0  50000         Y
-> > >>> <           dsi0_pclk_mux               1        1        0
-> > >>> 887039941          0     0  50000         Y
-> > >>> <              dsi0_phy_pll_out_dsiclk       1        1        0
-> > >>> 147839991          0     0  50000         Y
-> > >>> <                 disp_cc_mdss_pclk0_clk_src       1        1        0
-> > >>>     147839991          0     0  50000         Y
-> > >>> <                    disp_cc_mdss_pclk0_clk       1        1        0
-> > >>>    147839991          0     0  50000         Y
-> > >>> <           dsi0_pll_by_2_bit_clk       0        0        0
-> > >>> 443519970          0     0  50000         Y
-> > >>> <           dsi0_phy_pll_out_byteclk       1        1        0
-> > >>> 110879992          0     0  50000         Y
-> > >>> <              disp_cc_mdss_byte0_clk_src       2        2        0
-> > >>> 110879992          0     0  50000         Y
-> > >>> <                 disp_cc_mdss_byte0_div_clk_src       1        1
-> > >>>     0    55439996          0     0  50000         Y
-> > >>> <                    disp_cc_mdss_byte0_intf_clk       1        1
-> > >>>     0    55439996          0     0  50000         Y
-> > >>> <                 disp_cc_mdss_byte0_clk       1        1        0
-> > >>> 110879992          0     0  50000         Y
-> > >>> ---
-> > >>>>       dsi0_pll_out_div_clk              1        1        0   887039978          0     0  50000         Y
-> > >>>>          dsi0_pll_post_out_div_clk       0        0        0   221759994          0     0  50000         Y
-> > >>>>          dsi0_pll_bit_clk               2        2        0   887039978          0     0  50000         Y
-> > >>>>             dsi0_pclk_mux               1        1        0   887039978          0     0  50000         Y
-> > >>>>                dsi0_phy_pll_out_dsiclk       1        1        0   147839997          0     0  50000         Y
-> > >>>>                   disp_cc_mdss_pclk0_clk_src       1        1        0   147839997          0     0  50000         Y
-> > >>>>                      disp_cc_mdss_pclk0_clk       1        1        0   147839997          0     0  50000         Y
-> > >>>>             dsi0_pll_by_2_bit_clk       0        0        0   443519989          0     0  50000         Y
-> > >>>>             dsi0_phy_pll_out_byteclk       1        1        0   110879997          0     0  50000         Y
-> > >>>>                disp_cc_mdss_byte0_clk_src       2        2        0   110879997          0     0  50000         Y
-> > >>>>                   disp_cc_mdss_byte0_div_clk_src       1        1        0    55439999          0     0  50000         Y
-> > >>>>                      disp_cc_mdss_byte0_intf_clk       1        1        0    55439999          0     0  50000         Y
-> > >>>>                   disp_cc_mdss_byte0_clk       1        1        0   110879997          0     0  50000         Y
-> > >>> ------------------
-> > >>>
-> > >>>
-> > >>
-> > >> This is almost exactly what I saw on my devices as well, you get a
-> > >> difference of "just some Hz" (which can be totally ignored), because
-> > >> of how the calculation is done now.
-> > >>
-> > >> Thing is, what you see as PIXEL and BYTE clocks *before* the change is
-> > >> Linux thinking that your DSI is at that frequency, while the PLL will
-> > >> output *half* the rate, which is exactly what the patch fixes.
-> > >>
-> > >> "Fun" story is: the Xperia XZ1 (8998) and XZ (8996) have got the same
-> > >> display... by lowering the DSI rate on the MSM8996 phone by half, I
-> > >> get the same *identical* issues as the 8998 one without this patch.
-> > >> The clocks all match between one and another, because.. it's.. the same
-> > >> display, after all.
-> > >>
-> > >> It is because of the aforementioned test that I have raised doubts about
-> > >> the TI chip driver (or anything else really).. but then, anything is
-> > >> possible.
-> > >
-> > > It does look like, *so far* the TI bridge chip is only used on qc
-> > > platforms (according to grep'ing dts), so I suppose I can't rule out
-> > > bugs which cancel each other out.  Although there are various other
-> > > bridges used (for ex, the sdm845 rb3 board has some dsi->hdmi bridge)
-> > >
-> >
-> > Argh...
-> >
-> > > I guess it would be useful if we could measure the clk somehow to
-> > > confirm that it is running at the rate we think it is..
-> > >
-> >
-> > I totally agree with you on this, I actually wanted to do it the proper
-> > way, but then these clocks are really too high for my cheap oscilloscope
-> > and I couldn't... :(
->
-> Ok, there might actually be a way to do this.. there is a testclock
-> utility (added sboyd who wrote it in CC):
->
-> https://chromium.googlesource.com/chromiumos/overlays/board-overlays/+/refs/heads/main/chipset-qc845/dev-util/testclock/files/testclock.py
->
-> there is a similar thing for sc7180.. for other devices, I guess it
-> would require some porting..
->
-> Looking at disp_cc_mdss_byte0_clk and disp_cc_mdss_pclk0_clk on
-> sc7180, the rates returned by testclock roughly match what is in
-> clk_summary, ie. within rounding error
->
+From: Sumit Semwal <sumit.semwal@linaro.org>
 
-So Doug Anderson pointed out that we can actually read the DSI clock
-from the bridge, if we put it in "automatic" mode, from him:
+Enabling the Display panel for beryllium phone (Xiaomi
+Pocophone F1) requires DSI labibb regulators and panel
+dts nodes to be added. It is also required to keep some
+of the regulators as always-on.
 
-1. Boot up.
-2. i2cget -f -y 2 0x2d 0x12 # reads calculated rate that we programmed
-3. i2cset -f -y 2 0x2d 0x12 0 # switch to automatic mode
-4. i2cget -f -y 2 0x2d 0x12 # reads measured rate; repeat this a bunch
-and it should go up/down by 1 since measurement isn't perfect.
+Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+---
+ .../boot/dts/qcom/sdm845-xiaomi-beryllium.dts      | 55 ++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-What I see without this patch:
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+index cd15ae0347e8..e09effa555f1 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+@@ -160,6 +160,14 @@
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+ 		};
+ 
++		vreg_l14a_1p88: ldo14 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-boot-on;
++			regulator-always-on;
++		};
++
+ 		vreg_l17a_1p3: ldo17 {
+ 			regulator-min-microvolt = <1304000>;
+ 			regulator-max-microvolt = <1304000>;
+@@ -194,6 +202,7 @@
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-boot-on;
+ 		};
+ 	};
+ };
+@@ -207,6 +216,44 @@
+ 	firmware-name = "qcom/sdm845/cdsp.mdt";
+ };
+ 
++&dsi0 {
++	status = "okay";
++	vdda-supply = <&vreg_l26a_1p2>;
++
++	ports {
++		port@1 {
++			endpoint {
++				remote-endpoint = <&tianma_nt36672a_in_0>;
++				data-lanes = <0 1 2 3>;
++			};
++		};
++	};
++
++	panel@0 {
++		compatible = "tianma,fhd-video";
++		reg = <0>;
++		vddi0-supply = <&vreg_l14a_1p88>;
++		vddpos-supply = <&lab>;
++		vddneg-supply = <&ibb>;
++
++		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port {
++			tianma_nt36672a_in_0: endpoint {
++				remote-endpoint = <&dsi0_out>;
++			};
++		};
++	};
++};
++
++&dsi0_phy {
++	status = "okay";
++	vdds-supply = <&vreg_l1a_0p875>;
++};
++
+ &gcc {
+ 	protected-clocks = <GCC_QSPI_CORE_CLK>,
+ 			   <GCC_QSPI_CORE_CLK_SRC>,
+@@ -274,6 +321,14 @@
+ 
+ };
+ 
++&mdss {
++	status = "okay";
++};
++
++&mdss_mdp {
++	status = "okay";
++};
++
+ &mss_pil {
+ 	status = "okay";
+ 	firmware-name = "qcom/sdm845/mba.mbn", "qcom/sdm845/modem.mdt";
+-- 
+2.7.4
 
-localhost ~ # i2cget -f -y 2 0x2d 0x12
-0x58
-localhost ~ # i2cset -f -y 2 0x2d 0x12 0
-localhost ~ # i2cget -f -y 2 0x2d 0x12
-0x58
-localhost ~ # i2cget -f -y 2 0x2d 0x12
-0x59
-localhost ~ # i2cget -f -y 2 0x2d 0x12
-0x58
-localhost ~ # i2cget -f -y 2 0x2d 0x12
-0x58
-localhost ~ # i2cget -f -y 2 0x2d 0x12
-0x58
-localhost ~ #
-
-And with this patch:
-
-localhost ~ # i2cget -f -y 2 0x2d 0x12
-0x58
-localhost ~ # i2cset -f -y 2 0x2d 0x12 0
-localhost ~ # i2cget -f -y 2 0x2d 0x12
-0xb1
-localhost ~ # i2cget -f -y 2 0x2d 0x12
-0xb2
-localhost ~ # i2cget -f -y 2 0x2d 0x12
-0xb2
-localhost ~ #
-
-So this patch is doubling the rate
-
-BR,
--R
