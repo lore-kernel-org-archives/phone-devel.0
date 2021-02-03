@@ -2,185 +2,68 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C92CC433E0
-	for <phone-devel@archiver.kernel.org>; Wed,  3 Feb 2021 15:02:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1782C43381
+	for <phone-devel@archiver.kernel.org>; Wed,  3 Feb 2021 23:16:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E421964F84
-	for <phone-devel@archiver.kernel.org>; Wed,  3 Feb 2021 15:01:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 555CB64F55
+	for <phone-devel@archiver.kernel.org>; Wed,  3 Feb 2021 23:16:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233001AbhBCPB5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 3 Feb 2021 10:01:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33898 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232873AbhBCPB4 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 3 Feb 2021 10:01:56 -0500
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB2BC0613D6
-        for <phone-devel@vger.kernel.org>; Wed,  3 Feb 2021 07:01:15 -0800 (PST)
-Received: by mail-yb1-xb30.google.com with SMTP id w204so21431610ybg.2
-        for <phone-devel@vger.kernel.org>; Wed, 03 Feb 2021 07:01:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WJ7CGQhYFtJFl07ok5/69cMGKvlS3zw3sFP/g+CPbqE=;
-        b=uZRRLhF3y0eS4ljMgqi7OwEh7OK1K0i0l31vpn/9XZAt2nrvyjY193G5ODx9d1MwTy
-         CtGWgi7zLNhfBfC4dS/zMN9ASHn+zM2vJMDusoIzh4ufmwXQieEUCQ7QXb9Rl/VCOMNw
-         3+flaW4lom3bFvCog1A2VWA2/65sy9tTQUUfZ8mtd0ClAodwHZYBmr7VC+44oG182xst
-         XYQkG68olRjlOj60fGtXQ8owKFIsLXXCAwQydtPH3kKTNOgXgRRJtjcn2NIak5mN33Sk
-         jf0D6ymnpixxzJccr6sOkGqyLoBTwocxntAAov1uxolPvGX7AEI5sAMqCKnY2i4TB1J8
-         Oj1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WJ7CGQhYFtJFl07ok5/69cMGKvlS3zw3sFP/g+CPbqE=;
-        b=X3cJdEkrqqw01UyMpwsTcIMTd3aP58kUScwHNHJoWKE0spBR151Gsj4nDkqkuBMe3u
-         R343c6zhUmfI3y7I9xwF4l7W1DeyWoAdl3ltjPLiTWgdLsOICaso9Xn/stmyQKAg0gxH
-         1aeh4imzxv/aqrALUX5VMT9kc3QSpBNeMbzYtL5qBMwpNc4/UEvzb+NXayLVOoP3Ybmi
-         WGdddIHVtAyQ2BAk2QYeSQg3wcx0YYL8UoN66nUVRumYP2vdFgHh9aun38+j3CTMD5SL
-         3ZCVjPP0LTpi4xw0xSHxhx2GJnCMTt1NUOv2jNl7VGL/zAt6a3cBPpzg7n9isQVE45u0
-         /M9g==
-X-Gm-Message-State: AOAM530oMt4BRFnVyzySAvp4PzEdbCrzu/5Bm5vPr9hgGY0q7Ae8x4hx
-        udB3x18ut3Zz809xMJZtOyQ9jky/x3H1XE87M5wDeA==
-X-Google-Smtp-Source: ABdhPJwRthCdZBCwaBHOQPF2SrN9ZvGM6S/fgfnLOLSpJL/wn3O50hA0qpEtO0YWCyaTDqZpAcvV9FeDz/C+DXAww/k=
-X-Received: by 2002:a25:1457:: with SMTP id 84mr5080609ybu.74.1612364475171;
- Wed, 03 Feb 2021 07:01:15 -0800 (PST)
+        id S233635AbhBCXQf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 3 Feb 2021 18:16:35 -0500
+Received: from m-r2.th.seeweb.it ([5.144.164.171]:51521 "EHLO
+        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233756AbhBCXQ0 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 3 Feb 2021 18:16:26 -0500
+Received: from localhost.localdomain (abaf219.neoplus.adsl.tpnet.pl [83.6.169.219])
+        by m-r2.th.seeweb.it (Postfix) with ESMTPA id 01ED43F419;
+        Thu,  4 Feb 2021 00:15:41 +0100 (CET)
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        AngeloGioacchino Del Regno <kholk11@gmail.com>,
+        Jordan Crouse <jcrouse@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/msm/disp/mdp5: mdp5_cfg: Fix msm8974v2 max_clk
+Date:   Thu,  4 Feb 2021 00:15:36 +0100
+Message-Id: <20210203231537.77851-1-konrad.dybcio@somainline.org>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-References: <1612346356-26445-1-git-send-email-amit.pundir@linaro.org>
-In-Reply-To: <1612346356-26445-1-git-send-email-amit.pundir@linaro.org>
-From:   Amit Pundir <amit.pundir@linaro.org>
-Date:   Wed, 3 Feb 2021 20:30:39 +0530
-Message-ID: <CAMi1Hd1cCtSFMBjXm6=fwEeSYMYs5xvKPK25TxsxU9YDogxxDQ@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: qcom: sdm845-xiaomi-beryllium: Add DSI and
- panel bits
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konradybcio@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>
-Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        dt <devicetree@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>, phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Argh.. This patch is not formatted on top of mainline. It doesn't
-apply cleanly. Sorry about that. I'll fix that in the next version.
+The maximum mdp clock rate on msm8974v2 is 320MHz. Fix it.
 
-Regards,
-Amit Pundir
+Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+---
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Wed, 3 Feb 2021 at 15:29, Amit Pundir <amit.pundir@linaro.org> wrote:
->
-> From: Sumit Semwal <sumit.semwal@linaro.org>
->
-> Enabling the Display panel for beryllium phone (Xiaomi
-> Pocophone F1) requires DSI labibb regulators and panel
-> dts nodes to be added. It is also required to keep some
-> of the regulators as always-on.
->
-> Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
-> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-> ---
->  .../boot/dts/qcom/sdm845-xiaomi-beryllium.dts      | 55 ++++++++++++++++++++++
->  1 file changed, 55 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-> index cd15ae0347e8..e09effa555f1 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-> @@ -160,6 +160,14 @@
->                         regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
->                 };
->
-> +               vreg_l14a_1p88: ldo14 {
-> +                       regulator-min-microvolt = <1800000>;
-> +                       regulator-max-microvolt = <1800000>;
-> +                       regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +                       regulator-boot-on;
-> +                       regulator-always-on;
-> +               };
-> +
->                 vreg_l17a_1p3: ldo17 {
->                         regulator-min-microvolt = <1304000>;
->                         regulator-max-microvolt = <1304000>;
-> @@ -194,6 +202,7 @@
->                         regulator-min-microvolt = <1200000>;
->                         regulator-max-microvolt = <1200000>;
->                         regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +                       regulator-boot-on;
->                 };
->         };
->  };
-> @@ -207,6 +216,44 @@
->         firmware-name = "qcom/sdm845/cdsp.mdt";
->  };
->
-> +&dsi0 {
-> +       status = "okay";
-> +       vdda-supply = <&vreg_l26a_1p2>;
-> +
-> +       ports {
-> +               port@1 {
-> +                       endpoint {
-> +                               remote-endpoint = <&tianma_nt36672a_in_0>;
-> +                               data-lanes = <0 1 2 3>;
-> +                       };
-> +               };
-> +       };
-> +
-> +       panel@0 {
-> +               compatible = "tianma,fhd-video";
-> +               reg = <0>;
-> +               vddi0-supply = <&vreg_l14a_1p88>;
-> +               vddpos-supply = <&lab>;
-> +               vddneg-supply = <&ibb>;
-> +
-> +               reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
-> +
-> +               #address-cells = <1>;
-> +               #size-cells = <0>;
-> +
-> +               port {
-> +                       tianma_nt36672a_in_0: endpoint {
-> +                               remote-endpoint = <&dsi0_out>;
-> +                       };
-> +               };
-> +       };
-> +};
-> +
-> +&dsi0_phy {
-> +       status = "okay";
-> +       vdds-supply = <&vreg_l1a_0p875>;
-> +};
-> +
->  &gcc {
->         protected-clocks = <GCC_QSPI_CORE_CLK>,
->                            <GCC_QSPI_CORE_CLK_SRC>,
-> @@ -274,6 +321,14 @@
->
->  };
->
-> +&mdss {
-> +       status = "okay";
-> +};
-> +
-> +&mdss_mdp {
-> +       status = "okay";
-> +};
-> +
->  &mss_pil {
->         status = "okay";
->         firmware-name = "qcom/sdm845/mba.mbn", "qcom/sdm845/modem.mdt";
-> --
-> 2.7.4
->
+diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
+index dfffd9cf0613..bd07d2e1ad90 100644
+--- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
++++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
+@@ -177,7 +177,7 @@ static const struct mdp5_cfg_hw msm8x74v2_config = {
+ 			[3] = INTF_HDMI,
+ 		},
+ 	},
+-	.max_clk = 200000000,
++	.max_clk = 320000000,
+ };
+ 
+ static const struct mdp5_cfg_hw apq8084_config = {
+-- 
+2.30.0
+
