@@ -2,176 +2,116 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.6 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 302A5C433E0
-	for <phone-devel@archiver.kernel.org>; Fri,  5 Feb 2021 21:52:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32AF0C433E0
+	for <phone-devel@archiver.kernel.org>; Sat,  6 Feb 2021 02:54:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EF90564FC2
-	for <phone-devel@archiver.kernel.org>; Fri,  5 Feb 2021 21:52:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D117F64F51
+	for <phone-devel@archiver.kernel.org>; Sat,  6 Feb 2021 02:54:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231703AbhBEVwT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 5 Feb 2021 16:52:19 -0500
-Received: from mail-oi1-f177.google.com ([209.85.167.177]:43702 "EHLO
-        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231612AbhBEVwO (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 5 Feb 2021 16:52:14 -0500
-Received: by mail-oi1-f177.google.com with SMTP id d20so9036371oiw.10;
-        Fri, 05 Feb 2021 13:51:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=COL52QGXJvkARFQTtCnDnLk2UkHSuPhjiRfQpCqhUQs=;
-        b=FW7DyoijCD6dtjhZyG8KiVrsjgrKlSR/O5KBRWZ0CbaHD6jgOumphSjD0pEqrIya4l
-         BGRoBqgvqtEkPJUYtLvmf2x4CUSNq78lRguvaQt6UOSZRyxZ6Q8ccQW0VoxZDzUCQWOJ
-         cF++1SC7LWsuE84nGpx/0efGsJIHRZn4rGxpij9wkaTrsWeb2QaUEaS5m7DF+FlvATcT
-         ejLYKi4Ee1lhS1O0IlcPnvMhCH3sQsOdhf2b6wzEdDXLWsaBHAHCsr31GBInoCfx9I64
-         jhPUgpfoKoHn/wva64RUsQZawLpoubKApfuniXn3CqgNz7F9rpw57fVJJ3qV9Ba6i8d9
-         bSwQ==
-X-Gm-Message-State: AOAM532Sr0m//LvunZPrsvyJiMZkWPmAUVw9tnA/28/rYLcUMJbtAm3i
-        f0Vkh8bsWBHiAtjGfDf3rw==
-X-Google-Smtp-Source: ABdhPJwoNAK2aJcbnmBeWAVOjt5glY3+Tq3cZKnS9qalBY1LrIf9g/5VoqrPJl2ZnX20hNYqZE5OWw==
-X-Received: by 2002:a05:6808:140a:: with SMTP id w10mr4460954oiv.146.1612561887610;
-        Fri, 05 Feb 2021 13:51:27 -0800 (PST)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id u73sm2025538oie.30.2021.02.05.13.51.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Feb 2021 13:51:26 -0800 (PST)
-Received: (nullmailer pid 3813194 invoked by uid 1000);
-        Fri, 05 Feb 2021 21:51:25 -0000
-Date:   Fri, 5 Feb 2021 15:51:25 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
+        id S231767AbhBFCxb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 5 Feb 2021 21:53:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38880 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231634AbhBFClL (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 5 Feb 2021 21:41:11 -0500
+Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A059C0698CA;
+        Fri,  5 Feb 2021 14:23:01 -0800 (PST)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 9D6E13F290;
+        Fri,  5 Feb 2021 23:22:56 +0100 (CET)
+Subject: Re: [PATCH v5 3/7] dt-bindings: arm: cpus: Document
+ 'qcom,freq-domain' property
+To:     Rob Herring <robh@kernel.org>
 Cc:     viresh.kumar@linaro.org, bjorn.andersson@linaro.org,
         agross@kernel.org, rjw@rjwysocki.net, devicetree@vger.kernel.org,
         amit.kucheria@linaro.org, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com
-Subject: Re: [PATCH v5 7/7] dt-bindings: cpufreq: qcom-hw: Add bindings for
- 8998
-Message-ID: <20210205215125.GA3810714@robh.at.kernel.org>
+        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 References: <20210121195250.492500-1-angelogioacchino.delregno@somainline.org>
- <20210121195250.492500-8-angelogioacchino.delregno@somainline.org>
+ <20210121195250.492500-4-angelogioacchino.delregno@somainline.org>
+ <20210205214641.GA3802952@robh.at.kernel.org>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <65135511-1360-c094-9eaf-fec75f9ab53a@somainline.org>
+Date:   Fri, 5 Feb 2021 23:22:56 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210121195250.492500-8-angelogioacchino.delregno@somainline.org>
+In-Reply-To: <20210205214641.GA3802952@robh.at.kernel.org>
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jan 21, 2021 at 08:52:50PM +0100, AngeloGioacchino Del Regno wrote:
-> The OSM programming addition has been done under the
-> qcom,cpufreq-hw-8998 compatible name: specify the requirement
-> of two additional register spaces for this functionality.
-> This implementation, with the same compatible, has been
-> tested on MSM8998 and SDM630.
+Il 05/02/21 22:46, Rob Herring ha scritto:
+> On Thu, Jan 21, 2021 at 08:52:46PM +0100, AngeloGioacchino Del Regno wrote:
+>> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>>
+>> Add devicetree documentation for 'qcom,freq-domain' property specific
+>> to Qualcomm CPUs. This property is used to reference the CPUFREQ node
+>> along with Domain ID (0/1).
+>>
+>> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>> ---
+>>   Documentation/devicetree/bindings/arm/cpus.yaml | 6 ++++++
+>>   1 file changed, 6 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/arm/cpus.yaml b/Documentation/devicetree/bindings/arm/cpus.yaml
+>> index 14cd727d3c4b..1d60975df23a 100644
+>> --- a/Documentation/devicetree/bindings/arm/cpus.yaml
+>> +++ b/Documentation/devicetree/bindings/arm/cpus.yaml
+>> @@ -290,6 +290,12 @@ properties:
+>>   
+>>         * arm/msm/qcom,kpss-acc.txt
+>>   
+>> +  qcom,freq-domain:
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> ---
->  .../bindings/cpufreq/cpufreq-qcom-hw.yaml     | 66 +++++++++++++++----
->  1 file changed, 52 insertions(+), 14 deletions(-)
+> What happened to having a standard property here? There were 1 or 2
+> other cases of doing the same thing.
 > 
-> diff --git a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
-> index bc81b6203e27..17fd6a6cefb0 100644
-> --- a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
-> +++ b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
-> @@ -18,6 +18,10 @@ description: |
->  properties:
->    compatible:
->      oneOf:
-> +      - description: Non-secure v1 of CPUFREQ HW
-> +        items:
-> +          - const: qcom,cpufreq-hw-8998
-> +
->        - description: v1 of CPUFREQ HW
->          items:
->            - const: qcom,cpufreq-hw
-> @@ -28,21 +32,9 @@ properties:
->                - qcom,sm8250-cpufreq-epss
->            - const: qcom,cpufreq-epss
->  
-> -  reg:
-> -    minItems: 2
-> -    maxItems: 3
-> -    items:
-> -      - description: Frequency domain 0 register region
-> -      - description: Frequency domain 1 register region
-> -      - description: Frequency domain 2 register region
-> +  reg: {}
->  
-> -  reg-names:
-> -    minItems: 2
-> -    maxItems: 3
-> -    items:
-> -      - const: freq-domain0
-> -      - const: freq-domain1
-> -      - const: freq-domain2
-> +  reg-names: {}
->  
->    clocks:
->      items:
-> @@ -57,6 +49,52 @@ properties:
->    '#freq-domain-cells':
->      const: 1
->  
-> +if:
-> +  properties:
-> +    compatible:
-> +      contains:
-> +        const: qcom,cpufreq-hw-8998
-> +then:
-> +  properties:
-> +    reg:
-> +      minItems: 2
-> +      maxItems: 6
-> +      items:
-> +        - description: Frequency domain 0 register region
-> +        - description: Operating State Manager domain 0 register region
-> +        - description: Frequency domain 1 register region
-> +        - description: Operating State Manager domain 1 register region
-> +        - description: PLL ACD domain 0 register region (if ACD programming required)
-> +        - description: PLL ACD domain 1 register region (if ACD programming required)
-> +
-> +    reg-names:
-> +      minItems: 2
-> +      maxItems: 6
-> +      items:
-> +        - const: "osm-domain0"
-> +        - const: "freq-domain0"
-> +        - const: "osm-domain1"
-> +        - const: "freq-domain1"
-> +        - const: "osm-acd0"
-> +        - const: "osm-acd1"
 
-Don't need quotes.
+The original discussion didn't have any more replies, so I thought to
+bring it back on the table.
+I have no idea about what are the other cases, but if you can suggest
+a different property name (just "frequency-domain"?) I can send a new
+one with the suggested one!
 
-> +
-> +else:
-> +  properties:
-> +    reg:
-> +      minItems: 2
-> +      maxItems: 3
-> +      items:
-> +        - description: Frequency domain 0 register region
-> +        - description: Frequency domain 1 register region
-> +        - description: Frequency domain 2 register region
-> +    reg-names:
-> +      minItems: 2
-> +      maxItems: 3
-> +      items:
-> +        - const: "freq-domain0"
-> +        - const: "freq-domain1"
-> +        - const: "freq-domain2"
-> +
->  required:
->    - compatible
->    - reg
-> -- 
-> 2.30.0
-> 
+Though, since I don't know about other cases, how would this get
+described?
+
+frequency-domain:
+"CPUs supporting frequency-domain must set this property with phandle
+  to the appropriate [domain node or cpufreq node?] followed by the
+  Domain ID"
+
+Would this be fine?
+
+Thanks,
+- Angelo
+
+>> +    $ref: '/schemas/types.yaml#/definitions/phandle-array'
+>> +    description: |
+>> +      CPUs supporting freq-domain must set their "qcom,freq-domain" property
+>> +      with phandle to a cpufreq_hw node followed by the Domain ID(0/1).
+>> +
+>>     rockchip,pmu:
+>>       $ref: '/schemas/types.yaml#/definitions/phandle'
+>>       description: |
+>> -- 
+>> 2.30.0
+>>
+
