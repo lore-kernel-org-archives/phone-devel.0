@@ -2,132 +2,77 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1359C433DB
-	for <phone-devel@archiver.kernel.org>; Fri,  5 Feb 2021 13:23:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B7CCC433E6
+	for <phone-devel@archiver.kernel.org>; Fri,  5 Feb 2021 21:46:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9EB2C64FC0
-	for <phone-devel@archiver.kernel.org>; Fri,  5 Feb 2021 13:23:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 57BA764DD5
+	for <phone-devel@archiver.kernel.org>; Fri,  5 Feb 2021 21:46:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229729AbhBENWf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 5 Feb 2021 08:22:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37580 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229981AbhBENQh (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 5 Feb 2021 08:16:37 -0500
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A958AC061794
-        for <phone-devel@vger.kernel.org>; Fri,  5 Feb 2021 05:15:57 -0800 (PST)
-Received: by mail-yb1-xb2e.google.com with SMTP id v123so6638002yba.13
-        for <phone-devel@vger.kernel.org>; Fri, 05 Feb 2021 05:15:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eMddkzoLtzudk6Saw9haOw0jx/RFJpF2riNKCfwuqgA=;
-        b=RF4nwrg/bI2QEh/WsUpLibjI3mQomXHb2vuTc+uJUHticYqHRHVZN4pY7kach2qUP3
-         b2ivhKJ38YAJghUzI2MwT8xBhEbUWyI0TmRmDSecrz6bXz6mpYM7dzVlnIOmK4Z89ffa
-         FfASdFuLG72rqoDVYfG/5MJfikNWmyVgqKX3FHsq+gb0ivvHYmDuabct6s07+8xD2MX1
-         CL+QIU4OwpqVWWzzVusw0VYq912podjjaSzg8cBxTX6i6QyvRR4SWdRbnCRMXta7Z8w0
-         kCqjWhdpHJUMPxBHj764KNf+HLxSGxHKWW3mEP1d3K4yOmwDsN2y2uIGZ/a+iXonm9q6
-         sQ3g==
+        id S230064AbhBEVpu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 5 Feb 2021 16:45:50 -0500
+Received: from mail-oo1-f41.google.com ([209.85.161.41]:39846 "EHLO
+        mail-oo1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232250AbhBEVpX (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 5 Feb 2021 16:45:23 -0500
+Received: by mail-oo1-f41.google.com with SMTP id z36so1997548ooi.6;
+        Fri, 05 Feb 2021 13:45:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eMddkzoLtzudk6Saw9haOw0jx/RFJpF2riNKCfwuqgA=;
-        b=cA8PLZ8KOLGR5pSV7q5WWwNtquG+h8zcGzKLQr+R3CXDyPLkQ0EhS+fTabZWmUFWKq
-         GclOEQK7OKN5Le9LZAqt8Wc7oRXQBHBci7GL/67+HZKiTgvJi9KLsT3MHNefgNhOc+L2
-         81jTkJNMaBc6VmMcxDt2r5gt+uJGiuOsqW3LacOiGRiSl9yYABAlnHWHeinTCybooRXa
-         imJr9HaaRiqaSPicPLPIlzcqbKytXU+hfto30lt3KDBazeGat19CfWp85cZWujeKJlgm
-         +NrGNrY/4mfURZe2R/EWK3ZE5oaSOFmUDK2WtcoEpS4RvwTdvZQ6nlxn+wQbNpkqp0js
-         kpPw==
-X-Gm-Message-State: AOAM5312khRLvGsONTnsIL3oqF3SBFsGPlJ+iBuuqCkjXBZm/VfSEXNL
-        NSXCL0/oeJ/EvukNUv4KlHfQZrIbHFRAoBq5E1834Q==
-X-Google-Smtp-Source: ABdhPJyhGAXEhx3VeGUjX84AVY7g2N8qPiWTR3n4heInBOto2Tcb4lOfLcSIy1g6eC9M61iOlCDdJrlNah6gn/LAJa8=
-X-Received: by 2002:a25:41cb:: with SMTP id o194mr5820275yba.167.1612530956948;
- Fri, 05 Feb 2021 05:15:56 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Hsz7Ey1JFDQmMfxpBF1H2V+O94ZWTJgl9lxbzZpoLIw=;
+        b=RCjyNEFOPzpAmK+FG/YXeenCFejtC/GDR+P1i11X+DKUBDHIG6GUiwCIinZXKgO/e7
+         MctniKMkRNAGviPEW8ShCMx/aZFIfzLwTvjnMnfMdLRkp3pn6CS4ICcKlkl6ddPJZZhJ
+         DIPwbjVtG+1C6N+XGMtx++/aiISkR4jt9tEfwHFtuac09diTsnqLi7CdaWIK10PMpB0y
+         6twMTrun4VQuAkrqKcdo4b53SiiAz3mvA5DW7AHnJS5f+Q5vqb1WPRpJ5jD0jJKBTFci
+         sRJEbnkXNVsJdKOyQL5Cuq1V0bIKqSN+qNdI9KVcJ8ddTSIRBe/dPYPoZ+Ah6aIZSeQV
+         NRCA==
+X-Gm-Message-State: AOAM533MZrSf2LSkDe9mrvAl3qm4/5TKmjS7i/Z4Rs6KLwEdHFbZI5MS
+        +IfyNofORVKLTzxlJVVvwkllXvBncQ==
+X-Google-Smtp-Source: ABdhPJyR6XUMXhZLIxuzed25McuHk1y+nK2dADGetjPLYRdw0nMb79Pm91yEkOZZQwM8C4i5A8PAUw==
+X-Received: by 2002:a4a:de94:: with SMTP id v20mr4951546oou.90.1612561482449;
+        Fri, 05 Feb 2021 13:44:42 -0800 (PST)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id p67sm1274685oih.21.2021.02.05.13.44.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Feb 2021 13:44:40 -0800 (PST)
+Received: (nullmailer pid 3802839 invoked by uid 1000);
+        Fri, 05 Feb 2021 21:44:39 -0000
+Date:   Fri, 5 Feb 2021 15:44:39 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        robh+dt@kernel.org, konrad.dybcio@somainline.org,
+        lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
+        bjorn.andersson@linaro.org, broonie@kernel.org,
+        marijn.suijten@somainline.org, agross@kernel.org,
+        devicetree@vger.kernel.org, jeffrey.l.hugo@gmail.com
+Subject: Re: [PATCH v5 3/3] dt-bindings: soc: qcom: cpr3: Add bindings for
+ CPR3 driver
+Message-ID: <20210205214439.GA3802777@robh.at.kernel.org>
+References: <20210121194051.484209-1-angelogioacchino.delregno@somainline.org>
+ <20210121194051.484209-4-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
-References: <1612426177-6611-1-git-send-email-amit.pundir@linaro.org> <889e6ed8-133a-9416-be3b-5b2a97ea7fbb@somainline.org>
-In-Reply-To: <889e6ed8-133a-9416-be3b-5b2a97ea7fbb@somainline.org>
-From:   Amit Pundir <amit.pundir@linaro.org>
-Date:   Fri, 5 Feb 2021 18:45:21 +0530
-Message-ID: <CAMi1Hd3bgDaqsH+txFVEnBc9dsGbrgic5TK7uq4GwqqkM6seiw@mail.gmail.com>
-Subject: Re: [PATCH v2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Add DSI and
- panel bits
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        dt <devicetree@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>, phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210121194051.484209-4-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Konrad,
+On Thu, 21 Jan 2021 20:40:51 +0100, AngeloGioacchino Del Regno wrote:
+> Add the bindings for the CPR3 driver to the documentation.
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  .../bindings/soc/qcom/qcom,cpr3.yaml          | 241 ++++++++++++++++++
+>  1 file changed, 241 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml
+> 
 
-On Thu, 4 Feb 2021 at 19:46, Konrad Dybcio <konrad.dybcio@somainline.org> wrote:
->
-> Hi!
->
-> >vreg_l14a_1p88: ldo14 {
-> >+                      regulator-min-microvolt = <1800000>;
-> >+                      regulator-max-microvolt = <1800000>;
->
-> Should probably be renamed to vreg_l14a_1p8 then.
-
-ack.
-
->
->
-> >+      ports {
-> >+              port@1 {
-> >+                      endpoint {
-> >+                              remote-endpoint = <&tianma_nt36672a_in_0>;
-> >+                              data-lanes = <0 1 2 3>;
-> >+                      };
-> >+              };
-> >+      };
->
-> The endpoint has a label, you can simply use &dsi0_out {};.
-
-I didn't get what you meant there. Care to point to some reference dts
-snippet please?
-
->
-> >+              vddpos-supply = <&lab>;
-> >+              vddneg-supply = <&ibb>;
->
-> With Angelo's latest series [1] merged in, I reckon you should explicitly configure lab/ibb (like in [2]),
-> as wrong settings (which CAN BE SET BY THE BOOTLOADER in some instances!!) can lead to hardware damage.
-
-So iirc in the case of beryllium device, these regulators are pre set
-by the bootloader and I can't find any reference of we
-setting/resetting it explicitly to switch ON the panel and display. So
-far default lab/ibb nodes are working fine for us and I'm hesitant to
-tinker around anything regulator related that can potentially damage
-the hardware. Having said that, I do see lab/ibb nodes being set in
-the downstream dts, with relevant soft-start and discharge-resistor
-properties and I can try switching to that once the new lab/ibb
-changes land upstream.
-
-Regards,
-Amit Pundir
-
-
->
->
->
-> Konrad
->
-> [1] https://lore.kernel.org/linux-arm-msm/20210119174421.226541-1-angelogioacchino.delregno@somainline.org/
-> [2] https://github.com/SoMainline/linux/commit/4f4853b2e252b5f9d03e90119110aac80258fc53
+Reviewed-by: Rob Herring <robh@kernel.org>
