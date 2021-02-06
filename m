@@ -2,171 +2,86 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.6 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CCC8C4332B
-	for <phone-devel@archiver.kernel.org>; Sat,  6 Feb 2021 03:22:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B41B3C433E6
+	for <phone-devel@archiver.kernel.org>; Sat,  6 Feb 2021 13:15:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 12AAE64FD6
-	for <phone-devel@archiver.kernel.org>; Sat,  6 Feb 2021 03:22:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8547364EAC
+	for <phone-devel@archiver.kernel.org>; Sat,  6 Feb 2021 13:15:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbhBFDUd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 5 Feb 2021 22:20:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39902 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231459AbhBFCpi (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 5 Feb 2021 21:45:38 -0500
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7057BC0698CB;
-        Fri,  5 Feb 2021 14:23:15 -0800 (PST)
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id E16573F290;
-        Fri,  5 Feb 2021 23:23:13 +0100 (CET)
-Subject: Re: [PATCH v5 7/7] dt-bindings: cpufreq: qcom-hw: Add bindings for
- 8998
-To:     Rob Herring <robh@kernel.org>
-Cc:     viresh.kumar@linaro.org, bjorn.andersson@linaro.org,
-        agross@kernel.org, rjw@rjwysocki.net, devicetree@vger.kernel.org,
-        amit.kucheria@linaro.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com
-References: <20210121195250.492500-1-angelogioacchino.delregno@somainline.org>
- <20210121195250.492500-8-angelogioacchino.delregno@somainline.org>
- <20210205215125.GA3810714@robh.at.kernel.org>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Message-ID: <8e7efd35-791c-da49-c9db-bc8a94021c42@somainline.org>
-Date:   Fri, 5 Feb 2021 23:23:13 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        id S229742AbhBFNPP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 6 Feb 2021 08:15:15 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:59944 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229529AbhBFNPP (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 6 Feb 2021 08:15:15 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 9ED161C0B77; Sat,  6 Feb 2021 14:14:16 +0100 (CET)
+Date:   Sat, 6 Feb 2021 14:14:15 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
+        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
+        martin_rysavy@centrum.cz, phone-devel@vger.kernel.org,
+        maemo-leste@lists.dyne.org
+Subject: Droid 4 charging
+Message-ID: <20210206131415.GA4499@amd>
 MIME-Version: 1.0
-In-Reply-To: <20210205215125.GA3810714@robh.at.kernel.org>
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="Q68bSM7Ycu6FN28Q"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 05/02/21 22:51, Rob Herring ha scritto:
-> On Thu, Jan 21, 2021 at 08:52:50PM +0100, AngeloGioacchino Del Regno wrote:
->> The OSM programming addition has been done under the
->> qcom,cpufreq-hw-8998 compatible name: specify the requirement
->> of two additional register spaces for this functionality.
->> This implementation, with the same compatible, has been
->> tested on MSM8998 and SDM630.
->>
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
->> ---
->>   .../bindings/cpufreq/cpufreq-qcom-hw.yaml     | 66 +++++++++++++++----
->>   1 file changed, 52 insertions(+), 14 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
->> index bc81b6203e27..17fd6a6cefb0 100644
->> --- a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
->> +++ b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
->> @@ -18,6 +18,10 @@ description: |
->>   properties:
->>     compatible:
->>       oneOf:
->> +      - description: Non-secure v1 of CPUFREQ HW
->> +        items:
->> +          - const: qcom,cpufreq-hw-8998
->> +
->>         - description: v1 of CPUFREQ HW
->>           items:
->>             - const: qcom,cpufreq-hw
->> @@ -28,21 +32,9 @@ properties:
->>                 - qcom,sm8250-cpufreq-epss
->>             - const: qcom,cpufreq-epss
->>   
->> -  reg:
->> -    minItems: 2
->> -    maxItems: 3
->> -    items:
->> -      - description: Frequency domain 0 register region
->> -      - description: Frequency domain 1 register region
->> -      - description: Frequency domain 2 register region
->> +  reg: {}
->>   
->> -  reg-names:
->> -    minItems: 2
->> -    maxItems: 3
->> -    items:
->> -      - const: freq-domain0
->> -      - const: freq-domain1
->> -      - const: freq-domain2
->> +  reg-names: {}
->>   
->>     clocks:
->>       items:
->> @@ -57,6 +49,52 @@ properties:
->>     '#freq-domain-cells':
->>       const: 1
->>   
->> +if:
->> +  properties:
->> +    compatible:
->> +      contains:
->> +        const: qcom,cpufreq-hw-8998
->> +then:
->> +  properties:
->> +    reg:
->> +      minItems: 2
->> +      maxItems: 6
->> +      items:
->> +        - description: Frequency domain 0 register region
->> +        - description: Operating State Manager domain 0 register region
->> +        - description: Frequency domain 1 register region
->> +        - description: Operating State Manager domain 1 register region
->> +        - description: PLL ACD domain 0 register region (if ACD programming required)
->> +        - description: PLL ACD domain 1 register region (if ACD programming required)
->> +
->> +    reg-names:
->> +      minItems: 2
->> +      maxItems: 6
->> +      items:
->> +        - const: "osm-domain0"
->> +        - const: "freq-domain0"
->> +        - const: "osm-domain1"
->> +        - const: "freq-domain1"
->> +        - const: "osm-acd0"
->> +        - const: "osm-acd1"
-> 
-> Don't need quotes.
-> 
 
-Ack
+--Q68bSM7Ycu6FN28Q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->> +
->> +else:
->> +  properties:
->> +    reg:
->> +      minItems: 2
->> +      maxItems: 3
->> +      items:
->> +        - description: Frequency domain 0 register region
->> +        - description: Frequency domain 1 register region
->> +        - description: Frequency domain 2 register region
->> +    reg-names:
->> +      minItems: 2
->> +      maxItems: 3
->> +      items:
->> +        - const: "freq-domain0"
->> +        - const: "freq-domain1"
->> +        - const: "freq-domain2"
->> +
->>   required:
->>     - compatible
->>     - reg
->> -- 
->> 2.30.0
->>
+Hi!
 
+(I'm using Leste 5.10 kernel here).
+
+When battery is full, green light is off and 0.00A being drawn from
+USB.
+
+But that means that phone is now powered from battery, discharging
+it... And soon charging starts again. (Pretty much immediately, for me)
+
+That's bad ... right? It wears the battery out.
+
+If I turn off charging with echo 0 > input_current_limit, 0.2 to 0.4A
+is drawn from USB, and battery is not discharged:
+
+root@devuan-droid4:/sys/class/power_supply/usb# echo 0 >  input_current_lim=
+it
+root@devuan-droid4:/sys/class/power_supply/usb# cat current_now
+0
+
+Is that a better way to handle full battery?
+
+Best regards,
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--Q68bSM7Ycu6FN28Q
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAmAelicACgkQMOfwapXb+vK/bwCguKUzZuXqGMMpi7o3wYZkwua0
+qOAAoKJtVeDNf10adOClXBO+1nl0+ACG
+=hAuc
+-----END PGP SIGNATURE-----
+
+--Q68bSM7Ycu6FN28Q--
