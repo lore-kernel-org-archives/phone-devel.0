@@ -7,93 +7,89 @@ X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 584DAC433E9
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Feb 2021 18:14:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D715C433E0
+	for <phone-devel@archiver.kernel.org>; Mon,  8 Feb 2021 18:20:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3B11264E88
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Feb 2021 18:14:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3FC5264E9A
+	for <phone-devel@archiver.kernel.org>; Mon,  8 Feb 2021 18:20:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235270AbhBHSN6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 Feb 2021 13:13:58 -0500
-Received: from mail.kernel.org ([198.145.29.99]:51546 "EHLO mail.kernel.org"
+        id S234035AbhBHSUP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 Feb 2021 13:20:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53002 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235530AbhBHSMa (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 8 Feb 2021 13:12:30 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2506064DB3;
-        Mon,  8 Feb 2021 18:11:49 +0000 (UTC)
+        id S235418AbhBHSTX (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 8 Feb 2021 13:19:23 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 39ABC64E37;
+        Mon,  8 Feb 2021 18:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1612807909;
-        bh=y2NVL4Yl43eMG6DShygFH6XSRthRihyKlGMQ4QdfkTU=;
+        s=k20201202; t=1612808322;
+        bh=96MNIodpcXR/mW7T1ax+ZYH4V6b346/V4WuZthXRDCM=;
         h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=En1E006nnP3KHMxUQLxhxfyvn/RKeVS6gqvvxNj9dORDZCV27/ZIAF+ny1QllUNbD
-         Mb/dNoY/AZOL+eUW30aFAnnRUaJNgIMseZz/p5box6doSINrHt35IbCgmhYGjgmMMe
-         SxFycZSrBMQLHHv5kIYdHjOxAlx9rJTIU8op/AYjEF+FFsFUnVa0YaldzveZTi2waN
-         uyTft2R7goXnTl8DpGOTob8tSGCcszS/gJ52KoXVDAuV96zxB0K88L0xIQfeml9DLn
-         Y8asfRb5ISqsDkWUgCwxPrGdJD6m1OBalA32DfDvFDn1S+VDZCItUmWKNqSKrPdZeN
-         QDiyaoF8LNMgA==
+        b=N8LW/lRR47VtbE+4a8lW6Jaj0cKLZMWVFpFUVs6JL64Vw8tMQreuygRNPqgsDwabI
+         qgRDXKuvcAkFduYw8UmXDb9C4l1D1aYqSm+mSI8qdRFSmUQopzQpxMma3jUxdDessL
+         FMDYerSWW2kKlTQngJueKtJx+ERg/ghe0tm0gIf1MLKTgcKtshKutGiK5dQaLGpSy5
+         eBUOstCxOO+GygKvlpscvlynqIwWAanVUnkj/dfwopMLMX+jWrZUjV3GYD0V9dnET3
+         nwKZrUsS+rLdtCluF1GGchLP4Sej7YYwmH8fqwZqHj2HCrJQMTvMRufsd5PAEaVpr6
+         +tmVU4FY+YnaQ==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20210131013009.54177-1-konrad.dybcio@somainline.org>
-References: <20210131013009.54177-1-konrad.dybcio@somainline.org>
-Subject: Re: [PATCH] clk: qcom: smd-rpm: Add mdm9607 clocks
+In-Reply-To: <20210114221059.483390-6-angelogioacchino.delregno@somainline.org>
+References: <20210114221059.483390-1-angelogioacchino.delregno@somainline.org> <20210114221059.483390-6-angelogioacchino.delregno@somainline.org>
+Subject: Re: [PATCH v2 05/11] clk: qcom: gcc-msm8998: Mark gpu_cfg_ahb_clk as critical
 From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>,
-        phone-devel@vger.kernel.org
-Date:   Mon, 08 Feb 2021 10:11:47 -0800
-Message-ID: <161280790782.76967.18306042361115021910@swboyd.mtv.corp.google.com>
+Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, mturquette@baylibre.com,
+        robh+dt@kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        linux-arm-msm@vger.kernel.org
+Date:   Mon, 08 Feb 2021 10:18:40 -0800
+Message-ID: <161280832085.76967.5394456316048533384@swboyd.mtv.corp.google.com>
 User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Quoting Konrad Dybcio (2021-01-30 17:30:09)
-> Add support for RPM-managed clocks on the MDM9607 platform.
+Quoting AngeloGioacchino Del Regno (2021-01-14 14:10:53)
+> The GPU IOMMU depends on this clock and the hypervisor will crash
+> the SoC if this clock gets disabled because the secure contexts
+> that have been set on this IOMMU by the bootloader will become
+> unaccessible (or they get reset).
+> Mark this clock as critical to avoid this issue when the Adreno
+> GPU is enabled.
 >=20
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@soma=
+inline.org>
 > ---
->  .../devicetree/bindings/clock/qcom,rpmcc.txt  |  1 +
->  drivers/clk/qcom/clk-smd-rpm.c                | 32 +++++++++++++++++++
->  2 files changed, 33 insertions(+)
+>  drivers/clk/qcom/gcc-msm8998.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >=20
-> diff --git a/Documentation/devicetree/bindings/clock/qcom,rpmcc.txt b/Doc=
-umentation/devicetree/bindings/clock/qcom,rpmcc.txt
-> index b44a0622fb3a..5ac207d4b8ab 100644
-> --- a/Documentation/devicetree/bindings/clock/qcom,rpmcc.txt
-> +++ b/Documentation/devicetree/bindings/clock/qcom,rpmcc.txt
-> @@ -10,6 +10,7 @@ Required properties :
->  - compatible : shall contain only one of the following. The generic
->                 compatible "qcom,rpmcc" should be also included.
-> =20
-> +                       "qcom,rpmcc-mdm9607", "qcom,rpmcc"
->                         "qcom,rpmcc-msm8660", "qcom,rpmcc"
->                         "qcom,rpmcc-apq8060", "qcom,rpmcc"
->                         "qcom,rpmcc-msm8916", "qcom,rpmcc"
-> diff --git a/drivers/clk/qcom/clk-smd-rpm.c b/drivers/clk/qcom/clk-smd-rp=
-m.c
-> index 0e1dfa89489e..ceea50bae8f8 100644
-> --- a/drivers/clk/qcom/clk-smd-rpm.c
-> +++ b/drivers/clk/qcom/clk-smd-rpm.c
-> @@ -406,6 +406,37 @@ static const struct clk_ops clk_smd_rpm_branch_ops =
-=3D {
->         .unprepare      =3D clk_smd_rpm_unprepare,
->  };
-> =20
-> +/* mdm9607 */
-> +DEFINE_CLK_SMD_RPM_BRANCH(mdm9607, xo_clk_src, xo_a_clk_src, QCOM_SMD_RP=
-M_MISC_CLK, 0,
-> +                                                               19200000);
+> diff --git a/drivers/clk/qcom/gcc-msm8998.c b/drivers/clk/qcom/gcc-msm899=
+8.c
+> index c8d4c0348952..afea60a3ef43 100644
+> --- a/drivers/clk/qcom/gcc-msm8998.c
+> +++ b/drivers/clk/qcom/gcc-msm8998.c
+> @@ -2081,6 +2081,12 @@ static struct clk_branch gcc_gpu_cfg_ahb_clk =3D {
+>                 .hw.init =3D &(struct clk_init_data){
+>                         .name =3D "gcc_gpu_cfg_ahb_clk",
+>                         .ops =3D &clk_branch2_ops,
+> +                       /*
+> +                        * The GPU IOMMU depends on this clock and hyperv=
+isor
+> +                        * will crash the SoC if this clock goes down, du=
+e to
+> +                        * secure contexts protection.
+> +                        */
+> +                       .flags =3D CLK_IS_CRITICAL,
+>                 },
+>         },
 
-Same comment about the parent rate being specified here. Please follow
-how clk-rpmh has done it.
-
-> +DEFINE_CLK_SMD_RPM(mdm9607, pcnoc_clk, pcnoc_a_clk, QCOM_SMD_RPM_BUS_CLK=
-, 0);
+Please send a followup patch that hits the branch on at probe time and
+removes this clk from the kernel. That will save some memory and
+overhead of worrying about this clk.
