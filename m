@@ -4,44 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64B1CC433E6
-	for <phone-devel@archiver.kernel.org>; Tue,  9 Feb 2021 19:42:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48CD7C433E6
+	for <phone-devel@archiver.kernel.org>; Tue,  9 Feb 2021 20:10:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2912A64EDC
-	for <phone-devel@archiver.kernel.org>; Tue,  9 Feb 2021 19:42:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E52C464ECD
+	for <phone-devel@archiver.kernel.org>; Tue,  9 Feb 2021 20:10:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233294AbhBITle (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 Feb 2021 14:41:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51412 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233716AbhBITiO (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 Feb 2021 14:38:14 -0500
-Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30876C061A27
-        for <phone-devel@vger.kernel.org>; Tue,  9 Feb 2021 11:27:52 -0800 (PST)
+        id S233302AbhBIUJK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 9 Feb 2021 15:09:10 -0500
+Received: from relay02.th.seeweb.it ([5.144.164.163]:58231 "EHLO
+        relay02.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233392AbhBITzt (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 Feb 2021 14:55:49 -0500
 Received: from localhost.localdomain (abac187.neoplus.adsl.tpnet.pl [83.6.166.187])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id AEEBE1F52D;
-        Tue,  9 Feb 2021 20:25:49 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 1F7C61FA91;
+        Tue,  9 Feb 2021 20:53:57 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         angelogioacchino.delregno@somainline.org,
         marijn.suijten@somainline.org,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh@kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Amit Kucheria <amitk@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Zhang Rui <rui.zhang@intel.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3] thermal: qcom: tsens-v0_1: Add support for MDM9607
-Date:   Tue,  9 Feb 2021 20:25:25 +0100
-Message-Id: <20210209192526.455106-1-konrad.dybcio@somainline.org>
+        Rob Herring <robh+dt@kernel.org>, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH RFC 1/2] thermal: qcom: tsens-v1: Add support for MSM8994 TSENS
+Date:   Tue,  9 Feb 2021 20:53:45 +0100
+Message-Id: <20210209195346.457803-1-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -49,189 +46,404 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-MDM9607 TSENS IP is very similar to the one of MSM8916, with
-minor adjustments to various tuning values.
+MSM8994, despite being heavily based on MSM8974, uses the
+1.2 version of TSENS. Also, 8994 being 8994, it has a custom
+way of calculating the slope.
+
+Also tested on 8976 (by a person who didn't want to be named)
+to make sure the 11->16 max_sensors changes didn't break anything.
 
 Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-Acked-by: Rob Herring <robh@kernel.org>
-
 ---
-Changes since v2:
-- Address Bjorn's comments (remove redundant variable and kfree)
- .../bindings/thermal/qcom-tsens.yaml          |  2 +
- drivers/thermal/qcom/tsens-v0_1.c             | 99 ++++++++++++++++++-
- drivers/thermal/qcom/tsens.c                  |  3 +
- drivers/thermal/qcom/tsens.h                  |  2 +-
- 4 files changed, 104 insertions(+), 2 deletions(-)
+ .../bindings/thermal/qcom-tsens.yaml          |   1 +
+ drivers/thermal/qcom/tsens-v1.c               | 291 +++++++++++++++++-
+ drivers/thermal/qcom/tsens.c                  |   3 +
+ drivers/thermal/qcom/tsens.h                  |   2 +-
+ 4 files changed, 284 insertions(+), 13 deletions(-)
 
 diff --git a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-index 95462e071ab4..8ad9dc139c23 100644
+index 95462e071ab4..f194e914a62e 100644
 --- a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
 +++ b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-@@ -22,6 +22,7 @@ properties:
-       - description: v0.1 of TSENS
+@@ -31,6 +31,7 @@ properties:
          items:
            - enum:
-+              - qcom,mdm9607-tsens
-               - qcom,msm8916-tsens
-               - qcom,msm8939-tsens
-               - qcom,msm8974-tsens
-@@ -94,6 +95,7 @@ allOf:
-         compatible:
-           contains:
-             enum:
-+              - qcom,mdm9607-tsens
-               - qcom,msm8916-tsens
-               - qcom,msm8974-tsens
                - qcom,msm8976-tsens
-diff --git a/drivers/thermal/qcom/tsens-v0_1.c b/drivers/thermal/qcom/tsens-v0_1.c
-index 4ffa2e2c0145..a9fc92a4779b 100644
---- a/drivers/thermal/qcom/tsens-v0_1.c
-+++ b/drivers/thermal/qcom/tsens-v0_1.c
-@@ -190,6 +190,39 @@
++              - qcom,msm8994-tsens
+               - qcom,qcs404-tsens
+           - const: qcom,tsens-v1
  
- #define BIT_APPEND		0x3
+diff --git a/drivers/thermal/qcom/tsens-v1.c b/drivers/thermal/qcom/tsens-v1.c
+index 3c19a3800c6d..2127b6edd1ae 100644
+--- a/drivers/thermal/qcom/tsens-v1.c
++++ b/drivers/thermal/qcom/tsens-v1.c
+@@ -142,6 +142,99 @@
+ #define CAL_SEL_MASK	7
+ #define CAL_SEL_SHIFT	0
  
-+/* eeprom layout data for mdm9607 */
-+#define MDM9607_BASE0_MASK	0x000000ff
-+#define MDM9607_BASE1_MASK	0x000ff000
-+#define MDM9607_BASE0_SHIFT	0
-+#define MDM9607_BASE1_SHIFT	12
++/* eeprom layout data for 8994 */
++#define MSM8994_BASE0_MASK	0x3ff
++#define MSM8994_BASE1_MASK	0xffc00
++#define MSM8994_BASE0_SHIFT	0
++#define MSM8994_BASE1_SHIFT	10
 +
-+#define MDM9607_S0_P1_MASK	0x00003f00
-+#define MDM9607_S1_P1_MASK	0x03f00000
-+#define MDM9607_S2_P1_MASK	0x0000003f
-+#define MDM9607_S3_P1_MASK	0x0003f000
-+#define MDM9607_S4_P1_MASK	0x0000003f
++#define MSM8994_S0_MASK	0xf00000
++#define MSM8994_S1_MASK	0xf000000
++#define MSM8994_S2_MASK	0xf0000000
++#define MSM8994_S3_MASK	0xf
++#define MSM8994_S4_MASK	0xf0
++#define MSM8994_S5_MASK	0xf00
++#define MSM8994_S6_MASK	0xf000
++#define MSM8994_S7_MASK	0xf0000
++#define MSM8994_S8_MASK	0xf00000
++#define MSM8994_S9_MASK	0xf000000
++#define MSM8994_S10_MASK	0xf0000000
++#define MSM8994_S11_MASK	0xf
++#define MSM8994_S12_MASK	0xf0
++#define MSM8994_S13_MASK	0xf00
++#define MSM8994_S14_MASK	0xf000
++#define MSM8994_S15_MASK	0xf0000
 +
-+#define MDM9607_S0_P2_MASK	0x000fc000
-+#define MDM9607_S1_P2_MASK	0xfc000000
-+#define MDM9607_S2_P2_MASK	0x00000fc0
-+#define MDM9607_S3_P2_MASK	0x00fc0000
-+#define MDM9607_S4_P2_MASK	0x00000fc0
++#define MSM8994_S0_SHIFT	20
++#define MSM8994_S1_SHIFT	24
++#define MSM8994_S2_SHIFT	28
++#define MSM8994_S3_SHIFT	0
++#define MSM8994_S4_SHIFT	4
++#define MSM8994_S5_SHIFT	8
++#define MSM8994_S6_SHIFT	12
++#define MSM8994_S7_SHIFT	16
++#define MSM8994_S8_SHIFT	20
++#define MSM8994_S9_SHIFT	24
++#define MSM8994_S10_SHIFT	28
++#define MSM8994_S11_SHIFT	0
++#define MSM8994_S12_SHIFT	4
++#define MSM8994_S13_SHIFT	8
++#define MSM8994_S14_SHIFT	12
++#define MSM8994_S15_SHIFT	16
 +
-+#define MDM9607_S0_P1_SHIFT	8
-+#define MDM9607_S1_P1_SHIFT	20
-+#define MDM9607_S2_P1_SHIFT	0
-+#define MDM9607_S3_P1_SHIFT	12
-+#define MDM9607_S4_P1_SHIFT	0
++#define MSM8994_CAL_SEL_MASK	0x700000
++#define MSM8994_CAL_SEL_SHIFT	20
 +
-+#define MDM9607_S0_P2_SHIFT	14
-+#define MDM9607_S1_P2_SHIFT	26
-+#define MDM9607_S2_P2_SHIFT	6
-+#define MDM9607_S3_P2_SHIFT	18
-+#define MDM9607_S4_P2_SHIFT	6
++#define MSM8994_BASE0_REDUN_MASK	0x7fe00000
++#define MSM8994_BASE1_BIT0_REDUN_MASK	0x80000000
++#define MSM8994_BASE1_BIT1_9_REDUN_MASK	0x1ff
++#define MSM8994_BASE0_REDUN_SHIFT	21
++#define MSM8994_BASE1_BIT0_REDUN_SHIFT_COMPUTE	31
 +
-+#define MDM9607_CAL_SEL_MASK	0x00700000
-+#define MDM9607_CAL_SEL_SHIFT	20
++#define MSM8994_S0_REDUN_MASK	0x1e00
++#define MSM8994_S1_REDUN_MASK	0x1e000
++#define MSM8994_S2_REDUN_MASK	0x1e0000
++#define MSM8994_S3_REDUN_MASK	0x1e00000
++#define MSM8994_S4_REDUN_MASK	0x1e000000
++#define MSM8994_S5_REDUN_MASK_BIT0_2	0xe0000000
++#define MSM8994_S5_REDUN_MASK_BIT3	0x800000
++#define MSM8994_S6_REDUN_MASK	0xf000000
++#define MSM8994_S7_REDUN_MASK	0xf0000000
++#define MSM8994_S8_REDUN_MASK	0xf
++#define MSM8994_S9_REDUN_MASK	0xf0
++#define MSM8994_S10_REDUN_MASK	0xf00
++#define MSM8994_S11_REDUN_MASK	0xf000
++#define MSM8994_S12_REDUN_MASK	0xf0000
++#define MSM8994_S13_REDUN_MASK	0xf00000
++#define MSM8994_S14_REDUN_MASK	0xf000000
++#define MSM8994_S15_REDUN_MASK	0xf0000000
 +
- static int calibrate_8916(struct tsens_priv *priv)
++#define MSM8994_S0_REDUN_SHIFT	9
++#define MSM8994_S1_REDUN_SHIFT	13
++#define MSM8994_S2_REDUN_SHIFT	17
++#define MSM8994_S3_REDUN_SHIFT	21
++#define MSM8994_S4_REDUN_SHIFT	25
++#define MSM8994_S5_REDUN_SHIFT_BIT0_2	29
++#define MSM8994_S5_REDUN_SHIFT_BIT3	23
++#define MSM8994_S6_REDUN_SHIFT	24
++#define MSM8994_S7_REDUN_SHIFT	28
++#define MSM8994_S8_REDUN_SHIFT	0
++#define MSM8994_S9_REDUN_SHIFT	4
++#define MSM8994_S10_REDUN_SHIFT	8
++#define MSM8994_S11_REDUN_SHIFT	12
++#define MSM8994_S12_REDUN_SHIFT	16
++#define MSM8994_S13_REDUN_SHIFT	20
++#define MSM8994_S14_REDUN_SHIFT	24
++#define MSM8994_S15_REDUN_SHIFT	28
++
++#define MSM8994_REDUN_SEL_MASK		0x7
++#define MSM8994_CAL_SEL_REDUN_MASK	0xe0000000
++#define MSM8994_CAL_SEL_REDUN_SHIFT	29
++
++#define BKP_SEL			0x3
++#define BKP_REDUN_SEL		0xe0000000
++#define BKP_REDUN_SHIFT		29
++
+ static void compute_intercept_slope_8976(struct tsens_priv *priv,
+ 			      u32 *p1, u32 *p2, u32 mode)
  {
- 	int base0 = 0, base1 = 0, i;
-@@ -452,7 +485,56 @@ static int calibrate_8974(struct tsens_priv *priv)
+@@ -166,6 +259,37 @@ static void compute_intercept_slope_8976(struct tsens_priv *priv,
+ 	}
+ }
+ 
++static void compute_intercept_slope_8994(struct tsens_priv *priv,
++			      u32 *base0, u32 *base1, u32 *p, u32 mode)
++{
++	int adc_code_of_tempx, i, num, den;
++
++	for (i = 0; i < priv->num_sensors; i++) {
++		dev_dbg(priv->dev,
++			"%s: sensor%d - data_point1:%#x data_point2:%#x\n",
++			__func__, i, base0[i], base1[i]);
++
++		priv->sensor[i].slope = SLOPE_DEFAULT;
++		if (mode == TWO_PT_CALIB) {
++			/*
++			 * slope (m) = adc_code2 - adc_code1 (y2 - y1)/
++			 *	temp_120_degc - temp_30_degc (x2 - x1)
++			 */
++			num = base1[i] - base0[i];
++			num *= SLOPE_FACTOR;
++			den = CAL_DEGC_PT2 - CAL_DEGC_PT1;
++			priv->sensor[i].slope = num / den;
++		}
++
++		adc_code_of_tempx = base0[i] + p[i];
++
++		priv->sensor[i].offset = (adc_code_of_tempx * SLOPE_FACTOR) -
++				(CAL_DEGC_PT1 *	priv->sensor[i].slope);
++		dev_dbg(priv->dev, "%s: offset:%d\n", __func__,
++			priv->sensor[i].offset);
++	}
++}
++
+ static int calibrate_v1(struct tsens_priv *priv)
+ {
+ 	u32 base0 = 0, base1 = 0;
+@@ -297,14 +421,143 @@ static int calibrate_8976(struct tsens_priv *priv)
  	return 0;
  }
  
--/* v0.1: 8916, 8939, 8974 */
-+static int calibrate_9607(struct tsens_priv *priv)
+-/* v1.x: msm8956,8976,qcs404,405 */
++static int calibrate_8994(struct tsens_priv *priv)
 +{
-+	int base, i;
-+	u32 p1[5], p2[5];
++	int base0[16] = { 0 }, base1[16] = { 0 }, i;
++	u32 p[16];
 +	int mode = 0;
-+	u32 *qfprom_cdata;
++	u32 *calib0, *calib1, *calib2, *calib_mode, *calib_rsel;
++	u32 calib_redun_sel;
 +
-+	qfprom_cdata = (u32 *)qfprom_read(priv->dev, "calib");
-+	if (IS_ERR(qfprom_cdata))
-+		return PTR_ERR(qfprom_cdata);
++	/* 0x40d0-0x40dc */
++	calib0 = (u32 *)qfprom_read(priv->dev, "calib");
++	if (IS_ERR(calib0))
++		return PTR_ERR(calib0);
 +
-+	mode = (qfprom_cdata[2] & MDM9607_CAL_SEL_MASK) >> MDM9607_CAL_SEL_SHIFT;
-+	dev_dbg(priv->dev, "calibration mode is %d\n", mode);
++	dev_dbg(priv->dev, "%s: calib0: [0] = %i, [1] = %i, [2] = %i\n",
++		__func__, calib0[0], calib0[1], calib0[2]);
 +
-+	switch (mode) {
-+	case TWO_PT_CALIB:
-+		base = (qfprom_cdata[2] & MDM9607_BASE1_MASK) >> MDM9607_BASE1_SHIFT;
-+		p2[0] = (qfprom_cdata[0] & MDM9607_S0_P2_MASK) >> MDM9607_S0_P2_SHIFT;
-+		p2[1] = (qfprom_cdata[0] & MDM9607_S1_P2_MASK) >> MDM9607_S1_P2_SHIFT;
-+		p2[2] = (qfprom_cdata[1] & MDM9607_S2_P2_MASK) >> MDM9607_S2_P2_SHIFT;
-+		p2[3] = (qfprom_cdata[1] & MDM9607_S3_P2_MASK) >> MDM9607_S3_P2_SHIFT;
-+		p2[4] = (qfprom_cdata[2] & MDM9607_S4_P2_MASK) >> MDM9607_S4_P2_SHIFT;
-+		for (i = 0; i < priv->num_sensors; i++)
-+			p2[i] = ((base + p2[i]) << 2);
-+		fallthrough;
-+	case ONE_PT_CALIB2:
-+		base = (qfprom_cdata[0] & MDM9607_BASE0_MASK);
-+		p1[0] = (qfprom_cdata[0] & MDM9607_S0_P1_MASK) >> MDM9607_S0_P1_SHIFT;
-+		p1[1] = (qfprom_cdata[0] & MDM9607_S1_P1_MASK) >> MDM9607_S1_P1_SHIFT;
-+		p1[2] = (qfprom_cdata[1] & MDM9607_S2_P1_MASK) >> MDM9607_S2_P1_SHIFT;
-+		p1[3] = (qfprom_cdata[1] & MDM9607_S3_P1_MASK) >> MDM9607_S3_P1_SHIFT;
-+		p1[4] = (qfprom_cdata[2] & MDM9607_S4_P1_MASK) >> MDM9607_S4_P1_SHIFT;
-+		for (i = 0; i < priv->num_sensors; i++)
-+			p1[i] = (((base) + p1[i]) << 2);
-+		break;
-+	default:
-+		for (i = 0; i < priv->num_sensors; i++) {
-+			p1[i] = 500;
-+			p2[i] = 780;
++	/* 0x41c0-0x41c8 */
++	calib1 = (u32 *)qfprom_read(priv->dev, "calib_redun1_2");
++	if (IS_ERR(calib1))
++		return PTR_ERR(calib1);
++
++	dev_dbg(priv->dev, "%s: calib1: [0] = %i, [1] = %i\n",
++		__func__, calib1[0], calib1[1]);
++
++	/* 0x41cc-0x41d0 */
++	calib2 = (u32 *)qfprom_read(priv->dev, "calib_redun3");
++	if (IS_ERR(calib2))
++		return PTR_ERR(calib2);
++
++	dev_dbg(priv->dev, "%s: calib2: [0] = %i\n", __func__, calib2[0]);
++
++	/* 0x4440-0x4448 */
++	calib_mode = (u32 *)qfprom_read(priv->dev, "calib_redun4_5");
++	if (IS_ERR(calib_mode))
++		return PTR_ERR(calib_mode);
++
++	dev_dbg(priv->dev, "%s: calib_mode: [0] = %i, [1] = %i\n",
++		__func__, calib1[0], calib1[1]);
++
++	/* 0x4464-0x4468 */
++	calib_rsel = (u32 *)qfprom_read(priv->dev, "calib_rsel");
++	if (IS_ERR(calib_mode))
++		return PTR_ERR(calib_mode);
++
++	dev_dbg(priv->dev, "%s: calib_rsel: [0] = %i\n", __func__, calib_rsel[0]);
++
++	calib_redun_sel =  calib_rsel[0] & MSM8994_CAL_SEL_REDUN_MASK;
++	calib_redun_sel >>= MSM8994_CAL_SEL_REDUN_SHIFT;
++
++	if (calib_redun_sel == BKP_SEL) {
++		dev_dbg(priv->dev, "%s: Calibrating in REDUN mode, calib_redun_sel = %i",
++			__func__, calib_redun_sel);
++		mode = calib_mode[1] & MSM8994_REDUN_SEL_MASK;
++
++		if (mode == TWO_PT_CALIB) {
++			dev_dbg(priv->dev, "%s: REDUN TWO_PT mode, mode = %i", __func__, mode);
++			base0[0] = (calib1[0] & MSM8994_BASE0_REDUN_MASK) >> MSM8994_BASE0_REDUN_SHIFT;
++			base1[0] = (calib1[0] & MSM8994_BASE1_BIT0_REDUN_MASK) >> MSM8994_BASE1_BIT0_REDUN_SHIFT_COMPUTE;
++			base1[0] |= calib1[1] & MSM8994_BASE1_BIT1_9_REDUN_MASK;
++			p[0] = (calib1[1] & MSM8994_S0_REDUN_MASK) >> MSM8994_S0_REDUN_SHIFT;
++			p[1] = (calib1[1] & MSM8994_S1_REDUN_MASK) >> MSM8994_S1_REDUN_SHIFT;
++			p[2] = (calib1[1] & MSM8994_S2_REDUN_MASK) >> MSM8994_S2_REDUN_SHIFT;
++			p[3] = (calib1[1] & MSM8994_S3_REDUN_MASK) >> MSM8994_S3_REDUN_SHIFT;
++			p[4] = (calib1[1] & MSM8994_S4_REDUN_MASK) >> MSM8994_S4_REDUN_SHIFT;
++			p[5] = (calib1[1] & MSM8994_S5_REDUN_MASK_BIT0_2) >> MSM8994_S5_REDUN_SHIFT_BIT0_2;
++			p[5] |= (calib2[0] & MSM8994_S5_REDUN_MASK_BIT3) >> MSM8994_S5_REDUN_SHIFT_BIT3;
++			p[6] = (calib2[0] & MSM8994_S6_REDUN_MASK) >> MSM8994_S6_REDUN_SHIFT;
++			p[7] = (calib2[0] & MSM8994_S7_REDUN_MASK) >> MSM8994_S7_REDUN_SHIFT;
++			p[8] = (calib2[0] & MSM8994_S8_REDUN_MASK) >> MSM8994_S8_REDUN_SHIFT;
++			p[9] = (calib2[0] & MSM8994_S9_REDUN_MASK) >> MSM8994_S9_REDUN_SHIFT;
++			p[10] = (calib2[0] & MSM8994_S10_REDUN_MASK) >> MSM8994_S10_REDUN_SHIFT;
++			p[11] = (calib2[0] & MSM8994_S11_REDUN_MASK) >> MSM8994_S11_REDUN_SHIFT;
++			p[12] = (calib2[0] & MSM8994_S12_REDUN_MASK) >> MSM8994_S12_REDUN_SHIFT;
++			p[13] = (calib2[0] & MSM8994_S13_REDUN_MASK) >> MSM8994_S13_REDUN_SHIFT;
++			p[14] = (calib2[0] & MSM8994_S14_REDUN_MASK) >> MSM8994_S14_REDUN_SHIFT;
++			p[15] = (calib2[0] & MSM8994_S15_REDUN_MASK) >> MSM8994_S15_REDUN_SHIFT;
++		} else {
++			dev_dbg(priv->dev, "%s: REDUN NON-TWO_PT mode, mode = %i",
++			__func__, mode);
++			for (i = 0; i < 16; i++)
++				p[i] = 532;
 +		}
-+		break;
++	} else {
++		dev_dbg(priv->dev, "%s: Calibrating in NOT-REDUN mode, calib_redun_sel = %i",
++			__func__, calib_redun_sel);
++		mode = (calib0[2] & MSM8994_CAL_SEL_MASK) >> MSM8994_CAL_SEL_SHIFT;
++
++		if (mode == TWO_PT_CALIB) {
++			dev_dbg(priv->dev, "%s: NOT-REDUN TWO_PT mode, mode = %i", __func__, mode);
++			base0[0] = (calib0[0] & MSM8994_BASE0_MASK) >> MSM8994_BASE0_SHIFT;
++			base1[0] = (calib0[0] & MSM8994_BASE1_MASK) >> MSM8994_BASE1_SHIFT;
++			p[0] = (calib0[0] & MSM8994_S0_MASK) >> MSM8994_S0_SHIFT;
++			p[1] = (calib0[0] & MSM8994_S1_MASK) >> MSM8994_S1_SHIFT;
++			p[2] = (calib0[1] & MSM8994_S2_MASK) >> MSM8994_S2_SHIFT;
++			p[3] = (calib0[1] & MSM8994_S3_MASK) >> MSM8994_S3_SHIFT;
++			p[4] = (calib0[1] & MSM8994_S4_MASK) >> MSM8994_S4_SHIFT;
++			p[5] = (calib0[1] & MSM8994_S5_MASK) >> MSM8994_S5_SHIFT;
++			p[6] = (calib0[1] & MSM8994_S6_MASK) >> MSM8994_S6_SHIFT;
++			p[7] = (calib0[1] & MSM8994_S7_MASK) >> MSM8994_S7_SHIFT;
++			p[8] = (calib0[1] & MSM8994_S8_MASK) >> MSM8994_S8_SHIFT;
++			p[9] = (calib0[1] & MSM8994_S9_MASK) >> MSM8994_S9_SHIFT;
++			p[10] = (calib0[1] & MSM8994_S10_MASK) >> MSM8994_S10_SHIFT;
++			p[11] = (calib0[2] & MSM8994_S11_MASK) >> MSM8994_S11_SHIFT;
++			p[12] = (calib0[2] & MSM8994_S12_MASK) >> MSM8994_S12_SHIFT;
++			p[13] = (calib0[2] & MSM8994_S13_MASK) >> MSM8994_S13_SHIFT;
++			p[14] = (calib0[2] & MSM8994_S14_MASK) >> MSM8994_S14_SHIFT;
++			p[15] = (calib0[2] & MSM8994_S15_MASK) >> MSM8994_S15_SHIFT;
++		} else {
++			dev_dbg(priv->dev, "%s: NOT-REDUN NON-TWO_PT mode, mode = %i", __func__, mode);
++			for (i = 0; i < 16; i++)
++				p[i] = 532;
++		}
 +	}
 +
-+	compute_intercept_slope(priv, p1, p2, mode);
-+	kfree(qfprom_cdata);
++	/* 8994 does the slope calc a bit differently than others. */
++	for (i = 1; i < 16; i++) {
++		base0[i] = base0[0];
++		base1[i] = base1[0];
++	}
++
++	compute_intercept_slope_8994(priv, base0, base1, p, mode);
++	kfree(calib0);
++	kfree(calib1);
++	kfree(calib2);
++	kfree(calib_mode);
 +
 +	return 0;
 +}
 +
-+/* v0.1: 8916, 8939, 8974, 9607 */
++/* v1.x: msm8956/8976, msm8994 (v1.2), qcs404/qcs405 */
  
- static struct tsens_features tsens_v0_1_feat = {
- 	.ver_major	= VER_0_1,
-@@ -540,3 +622,18 @@ struct tsens_plat_data data_8974 = {
- 	.feat		= &tsens_v0_1_feat,
- 	.fields	= tsens_v0_1_regfields,
+ static struct tsens_features tsens_v1_feat = {
+ 	.ver_major	= VER_1_X,
+ 	.crit_int	= 0,
+ 	.adc		= 1,
+ 	.srot_split	= 1,
+-	.max_sensors	= 11,
++	.max_sensors	= 16,
+ };
+ 
+ static const struct reg_field tsens_v1_regfields[MAX_REGFIELDS] = {
+@@ -323,12 +576,12 @@ static const struct reg_field tsens_v1_regfields[MAX_REGFIELDS] = {
+ 	[INT_EN]     = REG_FIELD(TM_INT_EN_OFF, 0, 0),
+ 
+ 	/* UPPER/LOWER TEMPERATURE THRESHOLDS */
+-	REG_FIELD_FOR_EACH_SENSOR11(LOW_THRESH,    TM_Sn_UPPER_LOWER_STATUS_CTRL_OFF,  0,  9),
+-	REG_FIELD_FOR_EACH_SENSOR11(UP_THRESH,     TM_Sn_UPPER_LOWER_STATUS_CTRL_OFF, 10, 19),
++	REG_FIELD_FOR_EACH_SENSOR16(LOW_THRESH,    TM_Sn_UPPER_LOWER_STATUS_CTRL_OFF,  0,  9),
++	REG_FIELD_FOR_EACH_SENSOR16(UP_THRESH,     TM_Sn_UPPER_LOWER_STATUS_CTRL_OFF, 10, 19),
+ 
+ 	/* UPPER/LOWER INTERRUPTS [CLEAR/STATUS] */
+-	REG_FIELD_FOR_EACH_SENSOR11(LOW_INT_CLEAR, TM_Sn_UPPER_LOWER_STATUS_CTRL_OFF, 20, 20),
+-	REG_FIELD_FOR_EACH_SENSOR11(UP_INT_CLEAR,  TM_Sn_UPPER_LOWER_STATUS_CTRL_OFF, 21, 21),
++	REG_FIELD_FOR_EACH_SENSOR16(LOW_INT_CLEAR, TM_Sn_UPPER_LOWER_STATUS_CTRL_OFF, 20, 20),
++	REG_FIELD_FOR_EACH_SENSOR16(UP_INT_CLEAR,  TM_Sn_UPPER_LOWER_STATUS_CTRL_OFF, 21, 21),
+ 	[LOW_INT_STATUS_0] = REG_FIELD(TM_HIGH_LOW_INT_STATUS_OFF,  0,  0),
+ 	[LOW_INT_STATUS_1] = REG_FIELD(TM_HIGH_LOW_INT_STATUS_OFF,  1,  1),
+ 	[LOW_INT_STATUS_2] = REG_FIELD(TM_HIGH_LOW_INT_STATUS_OFF,  2,  2),
+@@ -349,14 +602,14 @@ static const struct reg_field tsens_v1_regfields[MAX_REGFIELDS] = {
+ 	/* NO CRITICAL INTERRUPT SUPPORT on v1 */
+ 
+ 	/* Sn_STATUS */
+-	REG_FIELD_FOR_EACH_SENSOR11(LAST_TEMP,    TM_Sn_STATUS_OFF,  0,  9),
+-	REG_FIELD_FOR_EACH_SENSOR11(VALID,        TM_Sn_STATUS_OFF, 14, 14),
++	REG_FIELD_FOR_EACH_SENSOR16(LAST_TEMP,    TM_Sn_STATUS_OFF,  0,  9),
++	REG_FIELD_FOR_EACH_SENSOR16(VALID,        TM_Sn_STATUS_OFF, 14, 14),
+ 	/* xxx_STATUS bits: 1 == threshold violated */
+-	REG_FIELD_FOR_EACH_SENSOR11(MIN_STATUS,   TM_Sn_STATUS_OFF, 10, 10),
+-	REG_FIELD_FOR_EACH_SENSOR11(LOWER_STATUS, TM_Sn_STATUS_OFF, 11, 11),
+-	REG_FIELD_FOR_EACH_SENSOR11(UPPER_STATUS, TM_Sn_STATUS_OFF, 12, 12),
++	REG_FIELD_FOR_EACH_SENSOR16(MIN_STATUS,   TM_Sn_STATUS_OFF, 10, 10),
++	REG_FIELD_FOR_EACH_SENSOR16(LOWER_STATUS, TM_Sn_STATUS_OFF, 11, 11),
++	REG_FIELD_FOR_EACH_SENSOR16(UPPER_STATUS, TM_Sn_STATUS_OFF, 12, 12),
+ 	/* No CRITICAL field on v1.x */
+-	REG_FIELD_FOR_EACH_SENSOR11(MAX_STATUS,   TM_Sn_STATUS_OFF, 13, 13),
++	REG_FIELD_FOR_EACH_SENSOR16(MAX_STATUS,   TM_Sn_STATUS_OFF, 13, 13),
+ 
+ 	/* TRDY: 1=ready, 0=in progress */
+ 	[TRDY] = REG_FIELD(TM_TRDY_OFF, 0, 0),
+@@ -388,3 +641,17 @@ struct tsens_plat_data data_8976 = {
+ 	.feat		= &tsens_v1_feat,
+ 	.fields		= tsens_v1_regfields,
  };
 +
-+static const struct tsens_ops ops_9607 = {
++static const struct tsens_ops ops_8994 = {
 +	.init		= init_common,
-+	.calibrate	= calibrate_9607,
-+	.get_temp	= get_temp_common,
++	.calibrate	= calibrate_8994,
++	.get_temp	= get_temp_tsens_valid,
 +};
 +
-+struct tsens_plat_data data_9607 = {
-+	.num_sensors	= 5,
-+	.ops		= &ops_9607,
-+	.hw_ids		= (unsigned int []){ 0, 1, 2, 3, 4 },
-+
-+	.feat		= &tsens_v0_1_feat,
-+	.fields	= tsens_v0_1_regfields,
++struct tsens_plat_data data_8994 = {
++	.num_sensors	= 16,
++	.ops		= &ops_8994,
++	.hw_ids		= (unsigned int []){ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
++	.feat		= &tsens_v1_feat,
++	.fields	= tsens_v1_regfields,
 +};
 diff --git a/drivers/thermal/qcom/tsens.c b/drivers/thermal/qcom/tsens.c
-index d8ce3a687b80..51c36b9e8e69 100644
+index d8ce3a687b80..96d17afe3460 100644
 --- a/drivers/thermal/qcom/tsens.c
 +++ b/drivers/thermal/qcom/tsens.c
-@@ -895,6 +895,9 @@ static SIMPLE_DEV_PM_OPS(tsens_pm_ops, tsens_suspend, tsens_resume);
- 
- static const struct of_device_id tsens_table[] = {
- 	{
-+		.compatible = "qcom,mdm9607-tsens",
-+		.data = &data_9607,
-+	}, {
- 		.compatible = "qcom,msm8916-tsens",
- 		.data = &data_8916,
+@@ -903,6 +903,9 @@ static const struct of_device_id tsens_table[] = {
  	}, {
+ 		.compatible = "qcom,msm8974-tsens",
+ 		.data = &data_8974,
++	}, {
++		.compatible = "qcom,msm8994-tsens",
++		.data = &data_8994,
+ 	}, {
+ 		.compatible = "qcom,msm8976-tsens",
+ 		.data = &data_8976,
 diff --git a/drivers/thermal/qcom/tsens.h b/drivers/thermal/qcom/tsens.h
-index f40b625f897e..cba64c33b4f9 100644
+index f40b625f897e..dfbff7f6442c 100644
 --- a/drivers/thermal/qcom/tsens.h
 +++ b/drivers/thermal/qcom/tsens.h
-@@ -585,7 +585,7 @@ int get_temp_common(const struct tsens_sensor *s, int *temp);
- extern struct tsens_plat_data data_8960;
- 
- /* TSENS v0.1 targets */
--extern struct tsens_plat_data data_8916, data_8939, data_8974;
-+extern struct tsens_plat_data data_8916, data_8939, data_8974, data_9607;
+@@ -588,7 +588,7 @@ extern struct tsens_plat_data data_8960;
+ extern struct tsens_plat_data data_8916, data_8939, data_8974;
  
  /* TSENS v1 targets */
- extern struct tsens_plat_data data_tsens_v1, data_8976;
+-extern struct tsens_plat_data data_tsens_v1, data_8976;
++extern struct tsens_plat_data data_tsens_v1, data_8976, data_8994;
+ 
+ /* TSENS v2 targets */
+ extern struct tsens_plat_data data_8996, data_tsens_v2;
 -- 
 2.30.0
 
