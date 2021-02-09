@@ -6,75 +6,85 @@ X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69D57C433DB
-	for <phone-devel@archiver.kernel.org>; Tue,  9 Feb 2021 20:50:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FB68C433E6
+	for <phone-devel@archiver.kernel.org>; Tue,  9 Feb 2021 21:46:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2C70F64E70
-	for <phone-devel@archiver.kernel.org>; Tue,  9 Feb 2021 20:50:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DFB4B64EE6
+	for <phone-devel@archiver.kernel.org>; Tue,  9 Feb 2021 21:46:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234062AbhBIUtu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 Feb 2021 15:49:50 -0500
-Received: from mail-oi1-f175.google.com ([209.85.167.175]:33357 "EHLO
-        mail-oi1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233847AbhBIUkG (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 Feb 2021 15:40:06 -0500
-Received: by mail-oi1-f175.google.com with SMTP id g84so7084464oib.0;
-        Tue, 09 Feb 2021 12:39:50 -0800 (PST)
+        id S233803AbhBIVqE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 9 Feb 2021 16:46:04 -0500
+Received: from mail-ot1-f42.google.com ([209.85.210.42]:44926 "EHLO
+        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234191AbhBIU4f (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 Feb 2021 15:56:35 -0500
+Received: by mail-ot1-f42.google.com with SMTP id e5so11957232otb.11;
+        Tue, 09 Feb 2021 12:56:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=pQrcr7qodVD4dFMqYIjjfo+nDgak3hQS5PmI2pXPFsU=;
-        b=HvC8K356tSnNRPr2/XjSJqNX7I1WiGPOQuY3JCejxqZ+n1WMMW2wDvjWTDGTIXHuB/
-         EoadAU66O+jIpg+F2akFhxKYa7JMiZs6KE8gUsPgS4Lq7x2/XU6sEvQCgGNINDVzz7Hb
-         am9kh1x/X7RVLwyEhej6x1fqpIF620+T7zHwbilOLl6TM7iLhhPGFHJkS8kMYCNoX9Yu
-         c4F5zfafvPhX5sg2vgbOwpmI/l6X9FqMioEdg/hb7XD8TV22qCTU/+/wM9JLDbtTNqF5
-         6DWF2jydFMGE7Iz5IWTKVudiSfZfGBP7x6zSndR6VwXoh4QAjkqpeKrcnv4zS25Ja6Qm
-         I6IA==
-X-Gm-Message-State: AOAM533oL66RUIIx4gIfPA+JD8l7R+uestZTBLdktnC4/v4SzPIzhotf
-        WHkdp4ijXHG7Ps3XVcdZog==
-X-Google-Smtp-Source: ABdhPJyyV0uETGRfszmy2JoR1ifofA1BkCnLQcxp0SYCDLuFpGm9pxBDDqA1OGSQtyy0USq/IgOprQ==
-X-Received: by 2002:a54:4106:: with SMTP id l6mr3828124oic.110.1612903164902;
-        Tue, 09 Feb 2021 12:39:24 -0800 (PST)
+        bh=RP3dhPMdlKAjivrXGUHAi9hHjPbrEKsu6Dv+Yzctmhw=;
+        b=PoZ93d/ZjJLUEG7Xo15K49AUUoxBwjFKZEAvy/pO0X3csLBYFJPK7sFMP/Q2i4kEEE
+         ATevZw084dYdpE778y0xHwASE8UfUrCHjHoDaDcyY9Kx0LWHIBtTFkxmDcq88ZihX33X
+         SUH9KSVlC8bPJ6CYnut+zAm/BrbblKGrE8ZWJtgAHccYMqUZGMKoLsEcGtkJmrEaTXPT
+         Coo8ep6nElTn2dNX+H0kFOsUfphK5SWAEFj3jQEQmKUxkrgREvIrLjdZpCUj8yJdSa/3
+         1zHbI3aEb0ZX3eUjZy5tdCAoYvi8iSeN6eq80s6WabMgUhGtKzJ0hOQOgFe+1+SZUNBU
+         Y9cQ==
+X-Gm-Message-State: AOAM533XhvZiJggHP3w8x7xQoHKaaMrhhWy2+Xf/u39v+npJ8QwO9xdQ
+        A1mXpozX7m6Je9EovG+Vbw==
+X-Google-Smtp-Source: ABdhPJyKYoGnii7JnW/1A4WdWWq6HpZ+jUyGwMPxsQGjJmlzc/2O4MqhObgvPviB1qdJQgl1D0k8Cw==
+X-Received: by 2002:a05:6830:c6:: with SMTP id x6mr2228694oto.135.1612904151832;
+        Tue, 09 Feb 2021 12:55:51 -0800 (PST)
 Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id i13sm2862667oth.52.2021.02.09.12.39.22
+        by smtp.gmail.com with ESMTPSA id a63sm4597844otc.75.2021.02.09.12.55.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Feb 2021 12:39:23 -0800 (PST)
-Received: (nullmailer pid 134304 invoked by uid 1000);
-        Tue, 09 Feb 2021 20:39:21 -0000
-Date:   Tue, 9 Feb 2021 14:39:21 -0600
+        Tue, 09 Feb 2021 12:55:50 -0800 (PST)
+Received: (nullmailer pid 164883 invoked by uid 1000);
+        Tue, 09 Feb 2021 20:55:49 -0000
+Date:   Tue, 9 Feb 2021 14:55:49 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     phone-devel@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     David Airlie <airlied@linux.ie>, Sam Ravnborg <sam@ravnborg.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org,
-        Rajendra Nayak <rnayak@codeaurora.org>
-Subject: Re: [PATCH] soc: qcom: rpmpd: Add MDM9607 RPM Power Domains
-Message-ID: <20210209203921.GA134215@robh.at.kernel.org>
-References: <20210131013233.54666-1-konrad.dybcio@somainline.org>
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: panel: Add Samsung S6E3FA2 panel
+Message-ID: <20210209205549.GA164827@robh.at.kernel.org>
+References: <20210201165307.51443-1-iskren.chernev@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210131013233.54666-1-konrad.dybcio@somainline.org>
+In-Reply-To: <20210201165307.51443-1-iskren.chernev@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 31 Jan 2021 02:32:32 +0100, Konrad Dybcio wrote:
-> This SoC while being from 8916 era, makes use of the
-> newer-style, floor-level management, instead of the older
-> floor-corner.
+On Mon, 01 Feb 2021 18:53:05 +0200, Iskren Chernev wrote:
+> The Samsung S6E3FA2 AMOLED cmd LCD panel is used on the Samsung Galaxy
+> S5 (klte).
 > 
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
 > ---
->  .../devicetree/bindings/power/qcom,rpmpd.yaml |  1 +
->  drivers/soc/qcom/rpmpd.c                      | 22 +++++++++++++++++++
->  include/dt-bindings/power/qcom-rpmpd.h        |  8 +++++++
->  3 files changed, 31 insertions(+)
+> Add a simple generated panel driver that supports on/off and the corresponding
+> binding documentation.
+> 
+> Changes in v3:
+> - fix dt_binding_check issue with missing include
+> - fix panel type (cmd) in kconfig description
+> 
+> Changes in v2:
+> - move bindings to separate file, add 2 regulators
+> - add standalone panel driver
+> 
+> v1: https://lkml.org/lkml/2020/12/30/293
+> v2: https://lkml.org/lkml/2021/2/1/313
+> 
+>  .../display/panel/samsung,s6e3fa2.yaml        | 64 +++++++++++++++++++
+>  1 file changed, 64 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6e3fa2.yaml
 > 
 
-Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
