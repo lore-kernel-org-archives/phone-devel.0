@@ -2,149 +2,61 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.5 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1DF1C433E0
-	for <phone-devel@archiver.kernel.org>; Tue,  9 Feb 2021 22:37:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B027C433E0
+	for <phone-devel@archiver.kernel.org>; Tue,  9 Feb 2021 22:37:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6D0EB64E25
-	for <phone-devel@archiver.kernel.org>; Tue,  9 Feb 2021 22:37:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5662764E2E
+	for <phone-devel@archiver.kernel.org>; Tue,  9 Feb 2021 22:37:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233676AbhBIWga (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 Feb 2021 17:36:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57310 "EHLO
+        id S233868AbhBIWgx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 9 Feb 2021 17:36:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234160AbhBIWPD (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 Feb 2021 17:15:03 -0500
+        with ESMTP id S234494AbhBIW2g (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 Feb 2021 17:28:36 -0500
 Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4964BC061224
-        for <phone-devel@vger.kernel.org>; Tue,  9 Feb 2021 11:56:06 -0800 (PST)
-Received: from localhost.localdomain (abac187.neoplus.adsl.tpnet.pl [83.6.166.187])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 9F5B61FABC;
-        Tue,  9 Feb 2021 20:54:02 +0100 (CET)
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Amit Kucheria <amitk@kernel.org>,
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3497BC06174A
+        for <phone-devel@vger.kernel.org>; Tue,  9 Feb 2021 14:15:00 -0800 (PST)
+Received: from [192.168.1.101] (abac187.neoplus.adsl.tpnet.pl [83.6.166.187])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 0D1101F968;
+        Tue,  9 Feb 2021 23:14:57 +0100 (CET)
+Subject: Re: [PATCH] firmware: qcom_scm: Add MDM9607 compatible
+To:     Rob Herring <robh@kernel.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-pm@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] thermal: qcom: tsens-v1: Add MSM8992 support
-Date:   Tue,  9 Feb 2021 20:53:46 +0100
-Message-Id: <20210209195346.457803-2-konrad.dybcio@somainline.org>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210209195346.457803-1-konrad.dybcio@somainline.org>
-References: <20210209195346.457803-1-konrad.dybcio@somainline.org>
+References: <20210131013058.54299-1-konrad.dybcio@somainline.org>
+ <20210209203803.GA129939@robh.at.kernel.org>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+Message-ID: <36b0fcf5-a72e-763a-a300-30bc199ee45d@somainline.org>
+Date:   Tue, 9 Feb 2021 23:14:57 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210209203803.GA129939@robh.at.kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-MSM8992 is more or less a cut-down MSM8994, so it only
-makes sense that TSENS support only requires a few lines
-on top of the bigger brother's code.
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
----
- .../bindings/thermal/qcom-tsens.yaml          |  1 +
- drivers/thermal/qcom/tsens-v1.c               | 25 +++++++++++++++++++
- drivers/thermal/qcom/tsens.c                  |  3 +++
- drivers/thermal/qcom/tsens.h                  |  2 +-
- 4 files changed, 30 insertions(+), 1 deletion(-)
+On 09.02.2021 21:38, Rob Herring wrote:
+> In the future, please split binding changes to separate patch.
 
-diff --git a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-index f194e914a62e..c69b8727a09c 100644
---- a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-+++ b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-@@ -31,6 +31,7 @@ properties:
-         items:
-           - enum:
-               - qcom,msm8976-tsens
-+              - qcom,msm8992-tsens
-               - qcom,msm8994-tsens
-               - qcom,qcs404-tsens
-           - const: qcom,tsens-v1
-diff --git a/drivers/thermal/qcom/tsens-v1.c b/drivers/thermal/qcom/tsens-v1.c
-index 2127b6edd1ae..a470b24ae720 100644
---- a/drivers/thermal/qcom/tsens-v1.c
-+++ b/drivers/thermal/qcom/tsens-v1.c
-@@ -541,6 +541,17 @@ static int calibrate_8994(struct tsens_priv *priv)
- 		base1[i] = base1[0];
- 	}
- 
-+	/* 8992 features less sensors and remaps some */
-+	if (priv->num_sensors == 13) {
-+		p[6] = p[7];
-+		p[7] = p[9];
-+		p[8] = p[10];
-+		p[9] = p[11];
-+		p[10] = p[12];
-+		p[11] = p[13];
-+		p[12] = p[14];
-+	}
-+
- 	compute_intercept_slope_8994(priv, base0, base1, p, mode);
- 	kfree(calib0);
- 	kfree(calib1);
-@@ -642,6 +653,20 @@ struct tsens_plat_data data_8976 = {
- 	.fields		= tsens_v1_regfields,
- };
- 
-+static const struct tsens_ops ops_8992 = {
-+	.init		= init_common,
-+	.calibrate	= calibrate_8994,
-+	.get_temp	= get_temp_tsens_valid,
-+};
-+
-+struct tsens_plat_data data_8992 = {
-+	.num_sensors	= 13,
-+	.ops		= &ops_8992,
-+	.hw_ids		= (unsigned int []){ 0, 1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13, 14 },
-+	.feat		= &tsens_v1_feat,
-+	.fields	= tsens_v1_regfields,
-+};
-+
- static const struct tsens_ops ops_8994 = {
- 	.init		= init_common,
- 	.calibrate	= calibrate_8994,
-diff --git a/drivers/thermal/qcom/tsens.c b/drivers/thermal/qcom/tsens.c
-index 96d17afe3460..1c2e9bebc7c0 100644
---- a/drivers/thermal/qcom/tsens.c
-+++ b/drivers/thermal/qcom/tsens.c
-@@ -903,6 +903,9 @@ static const struct of_device_id tsens_table[] = {
- 	}, {
- 		.compatible = "qcom,msm8974-tsens",
- 		.data = &data_8974,
-+	}, {
-+		.compatible = "qcom,msm8992-tsens",
-+		.data = &data_8992,
- 	}, {
- 		.compatible = "qcom,msm8994-tsens",
- 		.data = &data_8994,
-diff --git a/drivers/thermal/qcom/tsens.h b/drivers/thermal/qcom/tsens.h
-index dfbff7f6442c..2548edaa36ec 100644
---- a/drivers/thermal/qcom/tsens.h
-+++ b/drivers/thermal/qcom/tsens.h
-@@ -588,7 +588,7 @@ extern struct tsens_plat_data data_8960;
- extern struct tsens_plat_data data_8916, data_8939, data_8974;
- 
- /* TSENS v1 targets */
--extern struct tsens_plat_data data_tsens_v1, data_8976, data_8994;
-+extern struct tsens_plat_data data_tsens_v1, data_8976, data_8992, data_8994;
- 
- /* TSENS v2 targets */
- extern struct tsens_plat_data data_8996, data_tsens_v2;
--- 
-2.30.0
+
+I will keep that in mind for the upcoming patches!
+
+
+Konrad
 
