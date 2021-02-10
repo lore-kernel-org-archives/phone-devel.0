@@ -2,123 +2,61 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.5 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA4FEC433E0
-	for <phone-devel@archiver.kernel.org>; Wed, 10 Feb 2021 11:44:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 60501C433E0
+	for <phone-devel@archiver.kernel.org>; Wed, 10 Feb 2021 14:44:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B32AC64E45
-	for <phone-devel@archiver.kernel.org>; Wed, 10 Feb 2021 11:44:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3445964D87
+	for <phone-devel@archiver.kernel.org>; Wed, 10 Feb 2021 14:44:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230090AbhBJLo0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 10 Feb 2021 06:44:26 -0500
-Received: from mail-03.mail-europe.com ([91.134.188.129]:40828 "EHLO
-        mail-03.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230051AbhBJLmV (ORCPT
+        id S231148AbhBJOoQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 10 Feb 2021 09:44:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44636 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231629AbhBJOoO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 10 Feb 2021 06:42:21 -0500
-Date:   Wed, 10 Feb 2021 11:40:45 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1612957251;
-        bh=sq5qGtUgy8PiKaUloWYV0Rn3UxNBbao5MT92ExM8mqc=;
-        h=Date:To:From:Cc:Reply-To:Subject:From;
-        b=ZuMGEVfAOj3IxJjy2xeEVTnC/v3rZ8kXzyOAhMCohgRJ4SVD6HGOGpz4CEHmB2HRG
-         PP+V4dIIRlP6kNK6AyK1dM+HkRFaA+CpUu/DfcFCZDt6q4p9urGe/DxH8AoEPeW7ea
-         eTxy7fG3sbjmS2Wn/AwHF0xUs9lxvTerXYWOsz4c=
-To:     "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
-        "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
-From:   Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     "agross@kernel.org" <agross@kernel.org>,
+        Wed, 10 Feb 2021 09:44:14 -0500
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20BB4C061786
+        for <phone-devel@vger.kernel.org>; Wed, 10 Feb 2021 06:43:32 -0800 (PST)
+Received: from [192.168.1.101] (abac187.neoplus.adsl.tpnet.pl [83.6.166.187])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id ED5BF3F3F7;
+        Wed, 10 Feb 2021 15:43:27 +0100 (CET)
+Subject: Re: [PATCH v3] arm64: dts: qcom: sdm845-xiaomi-beryllium: Add DSI and
+ panel bits
+To:     Amit Pundir <amit.pundir@linaro.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
-Subject: [PATCH] arm64: dts: qcom: msm8996: Add gpu cooling support
-Message-ID: <Ku7mRZ_q2mYDZQ048IPlAc8VOVhH8N4uENhMI-JXxjeiZxjbRRs40ZJYwREb_ScgCvtQgtdl1VRjoDd7CR_8vCrbWVe8n3MwyB1S3VbSDis=@protonmail.com>
+        Rob Herring <robh+dt@kernel.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        dt <devicetree@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>, phone-devel@vger.kernel.org
+References: <1612945128-23174-1-git-send-email-amit.pundir@linaro.org>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+Message-ID: <75692378-d864-4862-45dc-aa0fd9594a2d@somainline.org>
+Date:   Wed, 10 Feb 2021 15:43:27 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
+In-Reply-To: <1612945128-23174-1-git-send-email-amit.pundir@linaro.org>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add cooling-cells property and cooling maps for the GPU.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
----
- arch/arm64/boot/dts/qcom/msm8996.dtsi | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qc=
-om/msm8996.dtsi
-index 7eef07e73e25..19bfca3133a4 100644
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -7,6 +7,7 @@
- #include <dt-bindings/clock/qcom,mmcc-msm8996.h>
- #include <dt-bindings/clock/qcom,rpmcc.h>
- #include <dt-bindings/soc/qcom,apr.h>
-+#include <dt-bindings/thermal/thermal.h>
-
- / {
- =09interrupt-parent =3D <&intc>;
-@@ -618,7 +619,7 @@ hdmi_phy: hdmi-phy@9a0600 {
- =09=09=09=09=09      "ref";
- =09=09=09};
- =09=09};
--=09=09gpu@b00000 {
-+=09=09gpu: gpu@b00000 {
- =09=09=09compatible =3D "qcom,adreno-530.2", "qcom,adreno";
- =09=09=09#stream-id-cells =3D <16>;
-
-@@ -650,6 +651,8 @@ gpu@b00000 {
-
- =09=09=09operating-points-v2 =3D <&gpu_opp_table>;
-
-+=09=09=09#cooling-cells =3D <2>;
-+
- =09=09=09gpu_opp_table: opp-table {
- =09=09=09=09compatible  =3D"operating-points-v2";
-
-@@ -2305,7 +2308,14 @@ trips {
- =09=09=09=09gpu1_alert0: trip-point0 {
- =09=09=09=09=09temperature =3D <90000>;
- =09=09=09=09=09hysteresis =3D <2000>;
--=09=09=09=09=09type =3D "hot";
-+=09=09=09=09=09type =3D "passive";
-+=09=09=09=09};
-+=09=09=09};
-+
-+=09=09=09cooling-maps {
-+=09=09=09=09map0 {
-+=09=09=09=09=09trip =3D <&gpu1_alert0>;
-+=09=09=09=09=09cooling-device =3D <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>=
-;
- =09=09=09=09};
- =09=09=09};
- =09=09};
-@@ -2320,7 +2330,14 @@ trips {
- =09=09=09=09gpu2_alert0: trip-point0 {
- =09=09=09=09=09temperature =3D <90000>;
- =09=09=09=09=09hysteresis =3D <2000>;
--=09=09=09=09=09type =3D "hot";
-+=09=09=09=09=09type =3D "passive";
-+=09=09=09=09};
-+=09=09=09};
-+
-+=09=09=09cooling-maps {
-+=09=09=09=09map0 {
-+=09=09=09=09=09trip =3D <&gpu2_alert0>;
-+=09=09=09=09=09cooling-device =3D <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>=
-;
- =09=09=09=09};
- =09=09=09};
- =09=09};
---
-2.30.0
-
+Konrad
