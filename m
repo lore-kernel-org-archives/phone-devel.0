@@ -2,61 +2,193 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.5 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.5 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 60501C433E0
-	for <phone-devel@archiver.kernel.org>; Wed, 10 Feb 2021 14:44:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD6B9C433DB
+	for <phone-devel@archiver.kernel.org>; Wed, 10 Feb 2021 18:59:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3445964D87
-	for <phone-devel@archiver.kernel.org>; Wed, 10 Feb 2021 14:44:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 87F2A64E35
+	for <phone-devel@archiver.kernel.org>; Wed, 10 Feb 2021 18:59:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231148AbhBJOoQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 10 Feb 2021 09:44:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44636 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231629AbhBJOoO (ORCPT
+        id S234049AbhBJS6w (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 10 Feb 2021 13:58:52 -0500
+Received: from relay08.th.seeweb.it ([5.144.164.169]:53121 "EHLO
+        relay08.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232178AbhBJS4q (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 10 Feb 2021 09:44:14 -0500
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20BB4C061786
-        for <phone-devel@vger.kernel.org>; Wed, 10 Feb 2021 06:43:32 -0800 (PST)
-Received: from [192.168.1.101] (abac187.neoplus.adsl.tpnet.pl [83.6.166.187])
+        Wed, 10 Feb 2021 13:56:46 -0500
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id ED5BF3F3F7;
-        Wed, 10 Feb 2021 15:43:27 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 10E853F350;
+        Wed, 10 Feb 2021 19:55:38 +0100 (CET)
 Subject: Re: [PATCH v3] arm64: dts: qcom: sdm845-xiaomi-beryllium: Add DSI and
  panel bits
 To:     Amit Pundir <amit.pundir@linaro.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konradybcio@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         John Stultz <john.stultz@linaro.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
+        Sumit Semwal <sumit.semwal@linaro.org>
 Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
         dt <devicetree@vger.kernel.org>,
         lkml <linux-kernel@vger.kernel.org>, phone-devel@vger.kernel.org
 References: <1612945128-23174-1-git-send-email-amit.pundir@linaro.org>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-Message-ID: <75692378-d864-4862-45dc-aa0fd9594a2d@somainline.org>
-Date:   Wed, 10 Feb 2021 15:43:27 +0100
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <13bd5e9d-3f3b-0b97-aa48-9a7bc551ddf6@somainline.org>
+Date:   Wed, 10 Feb 2021 19:55:37 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.0
 MIME-Version: 1.0
 In-Reply-To: <1612945128-23174-1-git-send-email-amit.pundir@linaro.org>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+Il 10/02/21 09:18, Amit Pundir ha scritto:
+> From: Sumit Semwal <sumit.semwal@linaro.org>
+> 
+> Enabling the Display panel for beryllium requires DSI
+> labibb regulators and panel dts nodes to be added.
+> It is also required to keep some of the regulators as
+> always-on.
+> 
+> Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> ---
 
-Konrad
+Hello!
+Your patch looks good, however, I have a few concerns...
+
+> v3: Addressed Konrad's concerns. Configured labibb regulators
+>      explicitly based on downstream microvolt values. Display
+>      comes up fine with default discharge-resistor-kohms and
+>      soft-start-us properties, so didn't touch them.
+>      Smoke tested on next-20210209.
+> v2: Rebased to mainline (v5.11-rc6) and fixed build warnings.
+> 
+>   .../boot/dts/qcom/sdm845-xiaomi-beryllium.dts      | 64 ++++++++++++++++++++++
+>   1 file changed, 64 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+> index 86cbae63eaf7..5ac049a247e1 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+> @@ -157,6 +157,14 @@
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+> +		vreg_l14a_1p8: ldo14 {
+> +			regulator-min-microvolt = <1800000>;
+> +			regulator-max-microvolt = <1800000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +			regulator-boot-on;
+> +			regulator-always-on;
+> +		};
+> +
+>   		vreg_l17a_1p3: ldo17 {
+>   			regulator-min-microvolt = <1304000>;
+>   			regulator-max-microvolt = <1304000>;
+> @@ -191,6 +199,7 @@
+>   			regulator-min-microvolt = <1200000>;
+>   			regulator-max-microvolt = <1200000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +			regulator-boot-on;
+>   		};
+>   	};
+>   };
+> @@ -200,6 +209,43 @@
+>   	firmware-name = "qcom/sdm845/cdsp.mdt";
+>   };
+>   
+> +&dsi0 {
+> +	status = "okay";
+> +	vdda-supply = <&vreg_l26a_1p2>;
+> +
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +
+> +	panel@0 {
+> +		compatible = "tianma,fhd-video";
+> +		reg = <0>;
+> +		vddi0-supply = <&vreg_l14a_1p8>;
+> +		vddpos-supply = <&lab>;
+> +		vddneg-supply = <&ibb>;
+> +
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
+> +
+> +		port {
+> +			tianma_nt36672a_in_0: endpoint {
+> +				remote-endpoint = <&dsi0_out>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&dsi0_out {
+> +	remote-endpoint = <&tianma_nt36672a_in_0>;
+> +	data-lanes = <0 1 2 3>;
+> +};
+> +
+> +&dsi0_phy {
+> +	status = "okay";
+> +	vdds-supply = <&vreg_l1a_0p875>;
+> +};
+> +
+>   &gcc {
+>   	protected-clocks = <GCC_QSPI_CORE_CLK>,
+>   			   <GCC_QSPI_CORE_CLK_SRC>,
+> @@ -215,6 +261,24 @@
+>   	};
+>   };
+>   
+> +&ibb {
+> +	regulator-min-microvolt = <4600000>;
+> +	regulator-max-microvolt = <6000000>;
+> +};
+> +
+
+I think you want to also configure overvoltage and overcurrent 
+protection values for both LAB and IBB, as these regulators may be a bit 
+dangerous if used without.
+Besides that, even if it wouldn't be that dangerous, since the 
+protection features are present, it would be nice to configure them 
+properly as in the rare event that something bad happens, you would be 
+able to save the hardware (or at least have a chance to!).
+
+> +&lab {
+> +	regulator-min-microvolt = <4600000>;
+> +	regulator-max-microvolt = <6000000>;
+> +};
+> +
+
+Same here.
+
+Yours,
+-- Angelo
+
+> +&mdss {
+> +	status = "okay";
+> +};
+> +
+> +&mdss_mdp {
+> +	status = "okay";
+> +};
+> +
+>   &mss_pil {
+>   	status = "okay";
+>   	firmware-name = "qcom/sdm845/mba.mbn", "qcom/sdm845/modem.mdt";
+> 
+
