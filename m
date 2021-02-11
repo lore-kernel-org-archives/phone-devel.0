@@ -2,80 +2,65 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BEFB3C433E0
-	for <phone-devel@archiver.kernel.org>; Thu, 11 Feb 2021 18:13:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E381C433E0
+	for <phone-devel@archiver.kernel.org>; Thu, 11 Feb 2021 20:20:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 915EF64E13
-	for <phone-devel@archiver.kernel.org>; Thu, 11 Feb 2021 18:13:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BA50564E45
+	for <phone-devel@archiver.kernel.org>; Thu, 11 Feb 2021 20:20:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231614AbhBKSD7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 11 Feb 2021 13:03:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57512 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231831AbhBKSCT (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 11 Feb 2021 13:02:19 -0500
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 534F1C0617A7;
-        Thu, 11 Feb 2021 09:50:21 -0800 (PST)
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 4FEC51F8E3;
-        Thu, 11 Feb 2021 18:50:19 +0100 (CET)
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-To:     elder@kernel.org
-Cc:     bjorn.andersson@linaro.org, agross@kernel.org, davem@davemloft.net,
-        kuba@kernel.org, linux-arm-msm@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, phone-devel@vger.kernel.org,
+        id S231486AbhBKUTt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 11 Feb 2021 15:19:49 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45462 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230382AbhBKUTU (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 11 Feb 2021 15:19:20 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 63CEC64DEA;
+        Thu, 11 Feb 2021 20:18:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1613074720;
+        bh=dBdBd74td7Pi4h4WMiQX1zHS6/dDe+9OwhZJthEgIlM=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=JTjvVZgD6ChIT1lqZ2pVRTBkdu8VdL6hrw6ImOG979wBjKgwrLEHKqAL0xjPqv/lm
+         CzlG8N3R7zS/CNhxPx3wFimTA6fVvGwFdZC4enlihDtWv33voxdqeJCWnpIZraV2Bw
+         nfh6kRfg18o1FzD7hKoxG31A4EqT3asT2Kl+pS0EZ1d7iEapxaJmgZhhUdNgD0i/bH
+         H3Kfy/e30z0cRxzuOSKg78NYt/AAddraggqvK14EHw14kFcKzK6+7nWbAQQ62E22hk
+         nwd3WEn+PmM21YV67qGxIRyLN3eRkwRGG5sGJt00H7oVgcK5Dlg716bmLkLnqV95Hw
+         sXu9V+anCQI6Q==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210113183817.447866-2-angelogioacchino.delregno@somainline.org>
+References: <20210113183817.447866-1-angelogioacchino.delregno@somainline.org> <20210113183817.447866-2-angelogioacchino.delregno@somainline.org>
+Subject: Re: [PATCH v2 1/9] clk: qcom: gcc-sdm660: Mark MMSS NoC CFG AHB clock as critical
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     bjorn.andersson@linaro.org, mturquette@baylibre.com,
+        robh+dt@kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v1 6/7] dt-bindings: net: qcom-ipa: Document qcom,sc7180-ipa compatible
-Date:   Thu, 11 Feb 2021 18:50:14 +0100
-Message-Id: <20210211175015.200772-7-angelogioacchino.delregno@somainline.org>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210211175015.200772-1-angelogioacchino.delregno@somainline.org>
-References: <20210211175015.200772-1-angelogioacchino.delregno@somainline.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>, agross@kernel.org
+Date:   Thu, 11 Feb 2021 12:18:39 -0800
+Message-ID: <161307471912.1254594.16323754724259359108@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The driver supports SC7180, but the binding was not documented.
-Just add it.
+Quoting AngeloGioacchino Del Regno (2021-01-13 10:38:09)
+> Similarly to MSM8998, any access to the MMSS depends on this clock.
+> Gating it will crash the system when RPMCC inits mmssnoc_axi_rpm_clk.
+>=20
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@soma=
+inline.org>
+> ---
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
----
- Documentation/devicetree/bindings/net/qcom,ipa.yaml | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/net/qcom,ipa.yaml b/Documentation/devicetree/bindings/net/qcom,ipa.yaml
-index 8a2d12644675..b063c6c1077a 100644
---- a/Documentation/devicetree/bindings/net/qcom,ipa.yaml
-+++ b/Documentation/devicetree/bindings/net/qcom,ipa.yaml
-@@ -43,7 +43,11 @@ description:
- 
- properties:
-   compatible:
--    const: "qcom,sdm845-ipa"
-+    oneOf:
-+      - items:
-+          - enum:
-+              - "qcom,sdm845-ipa"
-+              - "qcom,sc7180-ipa"
- 
-   reg:
-     items:
--- 
-2.30.0
-
+Applied to clk-next
