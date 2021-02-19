@@ -6,85 +6,132 @@ X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5181CC433E6
-	for <phone-devel@archiver.kernel.org>; Thu, 18 Feb 2021 17:19:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B3FBC43381
+	for <phone-devel@archiver.kernel.org>; Fri, 19 Feb 2021 21:59:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0F97364EC0
-	for <phone-devel@archiver.kernel.org>; Thu, 18 Feb 2021 17:19:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2493564EB8
+	for <phone-devel@archiver.kernel.org>; Fri, 19 Feb 2021 21:59:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231419AbhBRRTM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 18 Feb 2021 12:19:12 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:33732 "EHLO
+        id S229887AbhBSV7g (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 19 Feb 2021 16:59:36 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:53186 "EHLO
         jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231379AbhBRNpC (ORCPT
+        with ESMTP id S229767AbhBSV6y (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 18 Feb 2021 08:45:02 -0500
+        Fri, 19 Feb 2021 16:58:54 -0500
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 543681C0B96; Thu, 18 Feb 2021 14:43:47 +0100 (CET)
-Date:   Thu, 18 Feb 2021 14:43:47 +0100
+        id B64A01C0BC2; Fri, 19 Feb 2021 22:57:53 +0100 (CET)
+Date:   Fri, 19 Feb 2021 22:57:53 +0100
 From:   Pavel Machek <pavel@ucw.cz>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Gustave Monce <gustave.monce@outlook.com>
-Subject: Re: [PATCH 12/18] arm64: dts: qcom: msm8994-octagon: Configure
- Lattice iCE40 FPGA
-Message-ID: <20210218134347.GB14087@duo.ucw.cz>
-References: <20210131013853.55810-1-konrad.dybcio@somainline.org>
- <20210131013853.55810-13-konrad.dybcio@somainline.org>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
+        Carl Philipp Klemm <philipp@uvos.xyz>
+Subject: Re: Droid 4 charging
+Message-ID: <20210219215752.GA31435@amd>
+References: <20210206131415.GA4499@amd>
+ <YCn5+ZPdPojwCz8g@atomide.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="7iMSBzlTiPOCCT2k"
+        protocol="application/pgp-signature"; boundary="qMm9M+Fa2AknHoGS"
 Content-Disposition: inline
-In-Reply-To: <20210131013853.55810-13-konrad.dybcio@somainline.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <YCn5+ZPdPojwCz8g@atomide.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
---7iMSBzlTiPOCCT2k
+--qMm9M+Fa2AknHoGS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun 2021-01-31 02:38:43, Konrad Dybcio wrote:
-> From: Gustave Monce <gustave.monce@outlook.com>
+Hi!
+
+> > (I'm using Leste 5.10 kernel here).
+> >=20
+> > When battery is full, green light is off and 0.00A being drawn from
+> > USB.
+> >=20
+> > But that means that phone is now powered from battery, discharging
+> > it... And soon charging starts again. (Pretty much immediately, for me)
+> >=20
+> > That's bad ... right? It wears the battery out.
 >=20
-> Octagon devices have a Lattice iCE40 FPGA connected over SPI.
-> Configure it.
+> Well maintenance charging at 4.2V sure is better for the battery than
+> what android is doing charging it at 4.31V contantly..
 
-> +	status =3D "okay";
-> +
-> +	/*
-> +	 * This device is a Lattice UC120 USB-C PD PHY.
-> +	 * It is actually a Lattice iCE40 FPGA pre-programmed by
-> +	 * the device firmware with a specific bitstream
-> +	 * enabling USB Type C PHY functionality.
-> +	 * Communication is done via a proprietary protocol over SPI.
-> +	 *
+Well, 4.2 is better than 4.3, but I'm not sure about the rest.
 
-Wow. That's interesting hardware design. Someone should put RISC-V CPU
-in there!
+> > If I turn off charging with echo 0 > input_current_limit, 0.2 to 0.4A
+> > is drawn from USB, and battery is not discharged:
+> >=20
+> > root@devuan-droid4:/sys/class/power_supply/usb# echo 0 >  input_current=
+_limit
+> > root@devuan-droid4:/sys/class/power_supply/usb# cat current_now
+> > 0
+>=20
+> Hmm so have you measured that setting the current limit to 0 actually
+> draws something from the USB?
+
+Yes, it does, if I do the echo when charge is done. (I have small USB
+passthrough with volt and amp meters). It has been behaving weirdly in
+other cases.p
+
+> I recall clearing the ichrgr bits stops the vbus draw completely, but
+> I could be wrong.
+>=20
+> > Is that a better way to handle full battery?
+>=20
+> We could experiment with switching over to usb power when the battery is
+> full. Looking at the docs for mc1378 it might be possible that setting
+> CPCAP_REG_CRM_FET_OVRD and clearing CPCAP_REG_CRM_FET_CTRL after the
+> battery is full disables charging but still keep drawing power from
+> the usb. I'd assume the current limit still needs to be nonzero there
+> too? Totally untested..
+
+I may be able to test patches...
+
+> And switching back to battery power on usb disconnect will potentially
+> only give us very little time based on the different line length for
+> vbus and ground pins compared to data pins on the usb connector.. And
+> uvos had some concerns about the battery capacity putting it back online,
+> so adding him to Cc also.
+
+You mean, we'd have to take interrupt and switch registers in order to
+switch back to battery power, and system would crash if we did not
+make it in time?
+
+> Maybe just clearing ichrgr does all this already though and is enough.
+> It should be measured on the vbus line.
+
+It works for me... measuring current at the usb connector.
+
+> And then we still need to restart the charger at some point, but that
+> could happen based on much longer timeouts that what we currently have.
+
+Li-ion batteries are very slow to self-discharge. This could timeout
+could be week... or maybe a year.
 
 Best regards,
-									Pavel
-								=09
+								Pavel
 --=20
 http://www.livejournal.com/~pavelmachek
 
---7iMSBzlTiPOCCT2k
+--qMm9M+Fa2AknHoGS
 Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYC5vEwAKCRAw5/Bqldv6
-8hkMAJ9j/OMHKcPuiOpUVyyiQeZ1hkCKhgCfZQaNIWK576MCUcmH4AjveKZAs10=
-=3Cbc
+iEYEARECAAYFAmAwNGAACgkQMOfwapXb+vLZhACggmJ4K5ld7AzSt/1ows58as6s
+FKoAn3gFfGas6Mpw6BnpPiX/jRUU1ROZ
+=sZv1
 -----END PGP SIGNATURE-----
 
---7iMSBzlTiPOCCT2k--
+--qMm9M+Fa2AknHoGS--
