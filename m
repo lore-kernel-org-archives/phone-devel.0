@@ -6,132 +6,128 @@ X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B3FBC43381
-	for <phone-devel@archiver.kernel.org>; Fri, 19 Feb 2021 21:59:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80A41C433E0
+	for <phone-devel@archiver.kernel.org>; Fri, 19 Feb 2021 22:07:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2493564EB8
-	for <phone-devel@archiver.kernel.org>; Fri, 19 Feb 2021 21:59:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3346C64E24
+	for <phone-devel@archiver.kernel.org>; Fri, 19 Feb 2021 22:07:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229887AbhBSV7g (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 19 Feb 2021 16:59:36 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:53186 "EHLO
+        id S229812AbhBSWHI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 19 Feb 2021 17:07:08 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:54062 "EHLO
         jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229767AbhBSV6y (ORCPT
+        with ESMTP id S229809AbhBSWHI (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 19 Feb 2021 16:58:54 -0500
+        Fri, 19 Feb 2021 17:07:08 -0500
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id B64A01C0BC2; Fri, 19 Feb 2021 22:57:53 +0100 (CET)
-Date:   Fri, 19 Feb 2021 22:57:53 +0100
+        id 124491C0BBC; Fri, 19 Feb 2021 23:06:27 +0100 (CET)
+Date:   Fri, 19 Feb 2021 23:06:26 +0100
 From:   Pavel Machek <pavel@ucw.cz>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
-        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
-        Carl Philipp Klemm <philipp@uvos.xyz>
-Subject: Re: Droid 4 charging
-Message-ID: <20210219215752.GA31435@amd>
-References: <20210206131415.GA4499@amd>
- <YCn5+ZPdPojwCz8g@atomide.com>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Greg KH <greg@kroah.com>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org, tony@atomide.com
+Subject: Re: [RFC/context] add serdev interfaces to n_gsm
+Message-ID: <20210219220626.GB31435@amd>
+References: <20210107224530.GA23250@duo.ucw.cz>
+ <YBQvvUitX4MtRrh+@hovoldconsulting.com>
+ <20210131170639.GA21067@duo.ucw.cz>
+ <20210210212836.GA18497@duo.ucw.cz>
+ <YCTzKm+70jwqkdLK@hovoldconsulting.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="qMm9M+Fa2AknHoGS"
+        protocol="application/pgp-signature"; boundary="/NkBOFFp2J2Af1nK"
 Content-Disposition: inline
-In-Reply-To: <YCn5+ZPdPojwCz8g@atomide.com>
+In-Reply-To: <YCTzKm+70jwqkdLK@hovoldconsulting.com>
 User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
---qMm9M+Fa2AknHoGS
+--/NkBOFFp2J2Af1nK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> > (I'm using Leste 5.10 kernel here).
+> > > > > +config GNSS_MOTMDM
+> > > > > +	tristate "Motorola Modem TS 27.010 serdev GNSS receiver support"
+> > > > > +	depends on SERIAL_DEV_N_GSM
+> > > >=20
+> > > > You need to post this driver together with the serdev-ngsm driver. =
+This
+> > > > one cannot currently even be built without it, but we also need to =
+see
+> > > > the greater picture here.
+> > >=20
+> > > Well, here it is, for greater picture. But it is not ready. Current
+> > > problem I have is gsm_serdev_register_tty_port(). The way I do
+> > > platform device registration causes oops on module unload. Help with
+> > > that would be welcome
 > >=20
-> > When battery is full, green light is off and 0.00A being drawn from
-> > USB.
+> > I would not mind comments on parent patch and some help here.
 > >=20
-> > But that means that phone is now powered from battery, discharging
-> > it... And soon charging starts again. (Pretty much immediately, for me)
+> > Basically I tried to work around limitation in=20
 > >=20
-> > That's bad ... right? It wears the battery out.
+> > int serdev_device_add(struct serdev_device *serdev)
+> > {
+> > ...
+> >        /* Only a single slave device is currently supported. */
+> >        if (ctrl->serdev) {
+> > ...
 >=20
-> Well maintenance charging at 4.2V sure is better for the battery than
-> what android is doing charging it at 4.31V contantly..
+> I haven't really had time to look at the code yet, but trying to work
+> around the single-client (slave) assumption seems wrong. You still have
+> only one client per port even if the mux driver provides multiple
+> (virtual) ports.
 
-Well, 4.2 is better than 4.3, but I'm not sure about the rest.
+Correct.
 
-> > If I turn off charging with echo 0 > input_current_limit, 0.2 to 0.4A
-> > is drawn from USB, and battery is not discharged:
-> >=20
-> > root@devuan-droid4:/sys/class/power_supply/usb# echo 0 >  input_current=
-_limit
-> > root@devuan-droid4:/sys/class/power_supply/usb# cat current_now
-> > 0
+But this limitation prevents me to registering multiple slave ports
+with master serdev as their parent.
+
+a) There's a physical line
+
+b) Then there's serdev connected to it
+
+c) Mux splits it to many virtual ports, but I still need something to
+specify as their parent. serdev b) would be most suitable, but this
+check prevents that.
+
+> But judging from a quick look it appears that you are indeed registering
+> one tty device per mux channel in gsm_serdev_register_tty_port() (as you
+> should) so perhaps that's not the issue here.
 >=20
-> Hmm so have you measured that setting the current limit to 0 actually
-> draws something from the USB?
-
-Yes, it does, if I do the echo when charge is done. (I have small USB
-passthrough with volt and amp meters). It has been behaving weirdly in
-other cases.p
-
-> I recall clearing the ichrgr bits stops the vbus draw completely, but
-> I could be wrong.
+> Do you have a stack trace from the oops? Are the client drivers holding
+> the ports open while you unload the parent driver? That sounds like
+> something which could go boom unless you pin the parent for example
+> (serdev doesn't support hangups).
 >=20
-> > Is that a better way to handle full battery?
->=20
-> We could experiment with switching over to usb power when the battery is
-> full. Looking at the docs for mc1378 it might be possible that setting
-> CPCAP_REG_CRM_FET_OVRD and clearing CPCAP_REG_CRM_FET_CTRL after the
-> battery is full disables charging but still keep drawing power from
-> the usb. I'd assume the current limit still needs to be nonzero there
-> too? Totally untested..
+> Also, did you forget to post the gsm_tty_driver implementation? I don't
+> see a definition of that symbol in the patch.
 
-I may be able to test patches...
+I'll gather the data in next debugging session.
 
-> And switching back to battery power on usb disconnect will potentially
-> only give us very little time based on the different line length for
-> vbus and ground pins compared to data pins on the usb connector.. And
-> uvos had some concerns about the battery capacity putting it back online,
-> so adding him to Cc also.
-
-You mean, we'd have to take interrupt and switch registers in order to
-switch back to battery power, and system would crash if we did not
-make it in time?
-
-> Maybe just clearing ichrgr does all this already though and is enough.
-> It should be measured on the vbus line.
-
-It works for me... measuring current at the usb connector.
-
-> And then we still need to restart the charger at some point, but that
-> could happen based on much longer timeouts that what we currently have.
-
-Li-ion batteries are very slow to self-discharge. This could timeout
-could be week... or maybe a year.
+But .... this way I have to provide fake platform device parent for
+gsmtty1 and friends, and that just feels wrong.
 
 Best regards,
 								Pavel
 --=20
 http://www.livejournal.com/~pavelmachek
 
---qMm9M+Fa2AknHoGS
+--/NkBOFFp2J2Af1nK
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iEYEARECAAYFAmAwNGAACgkQMOfwapXb+vLZhACggmJ4K5ld7AzSt/1ows58as6s
-FKoAn3gFfGas6Mpw6BnpPiX/jRUU1ROZ
-=sZv1
+iEYEARECAAYFAmAwNmIACgkQMOfwapXb+vKp9ACffT4yVFEV15BkWD5iLeBIEm0n
+O90AniTGK8aO1ojtFj/c5T68cNQHr1aO
+=Ynou
 -----END PGP SIGNATURE-----
 
---qMm9M+Fa2AknHoGS--
+--/NkBOFFp2J2Af1nK--
