@@ -2,132 +2,90 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80A41C433E0
-	for <phone-devel@archiver.kernel.org>; Fri, 19 Feb 2021 22:07:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 058B3C4332D
+	for <phone-devel@archiver.kernel.org>; Sat, 20 Feb 2021 15:57:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3346C64E24
-	for <phone-devel@archiver.kernel.org>; Fri, 19 Feb 2021 22:07:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CEAA364EE1
+	for <phone-devel@archiver.kernel.org>; Sat, 20 Feb 2021 15:57:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbhBSWHI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 19 Feb 2021 17:07:08 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:54062 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229809AbhBSWHI (ORCPT
+        id S229930AbhBTP5V (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 20 Feb 2021 10:57:21 -0500
+Received: from relay01.th.seeweb.it ([5.144.164.162]:60245 "EHLO
+        relay01.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229914AbhBTP5U (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 19 Feb 2021 17:07:08 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 124491C0BBC; Fri, 19 Feb 2021 23:06:27 +0100 (CET)
-Date:   Fri, 19 Feb 2021 23:06:26 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Greg KH <greg@kroah.com>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org, tony@atomide.com
-Subject: Re: [RFC/context] add serdev interfaces to n_gsm
-Message-ID: <20210219220626.GB31435@amd>
-References: <20210107224530.GA23250@duo.ucw.cz>
- <YBQvvUitX4MtRrh+@hovoldconsulting.com>
- <20210131170639.GA21067@duo.ucw.cz>
- <20210210212836.GA18497@duo.ucw.cz>
- <YCTzKm+70jwqkdLK@hovoldconsulting.com>
+        Sat, 20 Feb 2021 10:57:20 -0500
+Received: from localhost.localdomain (abab236.neoplus.adsl.tpnet.pl [83.6.165.236])
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id DA5301F613;
+        Sat, 20 Feb 2021 16:56:36 +0100 (CET)
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Taniya Das <tdas@codeaurora.org>,
+        Craig Tatlor <ctatlor97@gmail.com>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH 4/6] clk: qcom: gcc-sdm660: Remove gds_hw_ctrl from GDSCs
+Date:   Sat, 20 Feb 2021 16:56:15 +0100
+Message-Id: <20210220155618.176559-4-konrad.dybcio@somainline.org>
+X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20210220155618.176559-1-konrad.dybcio@somainline.org>
+References: <20210220155618.176559-1-konrad.dybcio@somainline.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="/NkBOFFp2J2Af1nK"
-Content-Disposition: inline
-In-Reply-To: <YCTzKm+70jwqkdLK@hovoldconsulting.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+These GDSCs do not support HW control, so remove the property.
 
---/NkBOFFp2J2Af1nK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: f2a76a2955c0 ("clk: qcom: Add Global Clock controller (GCC) driver for SDM660")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+---
+ drivers/clk/qcom/gcc-sdm660.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Hi!
+diff --git a/drivers/clk/qcom/gcc-sdm660.c b/drivers/clk/qcom/gcc-sdm660.c
+index 05664d6b612a..bc8dfcd6d629 100644
+--- a/drivers/clk/qcom/gcc-sdm660.c
++++ b/drivers/clk/qcom/gcc-sdm660.c
+@@ -2362,7 +2362,6 @@ static struct clk_branch hlos2_vote_turing_adsp_smmu_clk = {
+ 
+ static struct gdsc ufs_gdsc = {
+ 	.gdscr = 0x75004,
+-	.gds_hw_ctrl = 0x0,
+ 	.pd = {
+ 		.name = "ufs_gdsc",
+ 	},
+@@ -2372,7 +2371,6 @@ static struct gdsc ufs_gdsc = {
+ 
+ static struct gdsc usb_30_gdsc = {
+ 	.gdscr = 0xf004,
+-	.gds_hw_ctrl = 0x0,
+ 	.pd = {
+ 		.name = "usb_30_gdsc",
+ 	},
+@@ -2382,7 +2380,6 @@ static struct gdsc usb_30_gdsc = {
+ 
+ static struct gdsc pcie_0_gdsc = {
+ 	.gdscr = 0x6b004,
+-	.gds_hw_ctrl = 0x0,
+ 	.pd = {
+ 		.name = "pcie_0_gdsc",
+ 	},
+-- 
+2.30.1
 
-> > > > > +config GNSS_MOTMDM
-> > > > > +	tristate "Motorola Modem TS 27.010 serdev GNSS receiver support"
-> > > > > +	depends on SERIAL_DEV_N_GSM
-> > > >=20
-> > > > You need to post this driver together with the serdev-ngsm driver. =
-This
-> > > > one cannot currently even be built without it, but we also need to =
-see
-> > > > the greater picture here.
-> > >=20
-> > > Well, here it is, for greater picture. But it is not ready. Current
-> > > problem I have is gsm_serdev_register_tty_port(). The way I do
-> > > platform device registration causes oops on module unload. Help with
-> > > that would be welcome
-> >=20
-> > I would not mind comments on parent patch and some help here.
-> >=20
-> > Basically I tried to work around limitation in=20
-> >=20
-> > int serdev_device_add(struct serdev_device *serdev)
-> > {
-> > ...
-> >        /* Only a single slave device is currently supported. */
-> >        if (ctrl->serdev) {
-> > ...
->=20
-> I haven't really had time to look at the code yet, but trying to work
-> around the single-client (slave) assumption seems wrong. You still have
-> only one client per port even if the mux driver provides multiple
-> (virtual) ports.
-
-Correct.
-
-But this limitation prevents me to registering multiple slave ports
-with master serdev as their parent.
-
-a) There's a physical line
-
-b) Then there's serdev connected to it
-
-c) Mux splits it to many virtual ports, but I still need something to
-specify as their parent. serdev b) would be most suitable, but this
-check prevents that.
-
-> But judging from a quick look it appears that you are indeed registering
-> one tty device per mux channel in gsm_serdev_register_tty_port() (as you
-> should) so perhaps that's not the issue here.
->=20
-> Do you have a stack trace from the oops? Are the client drivers holding
-> the ports open while you unload the parent driver? That sounds like
-> something which could go boom unless you pin the parent for example
-> (serdev doesn't support hangups).
->=20
-> Also, did you forget to post the gsm_tty_driver implementation? I don't
-> see a definition of that symbol in the patch.
-
-I'll gather the data in next debugging session.
-
-But .... this way I have to provide fake platform device parent for
-gsmtty1 and friends, and that just feels wrong.
-
-Best regards,
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
-
---/NkBOFFp2J2Af1nK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAmAwNmIACgkQMOfwapXb+vKp9ACffT4yVFEV15BkWD5iLeBIEm0n
-O90AniTGK8aO1ojtFj/c5T68cNQHr1aO
-=Ynou
------END PGP SIGNATURE-----
-
---/NkBOFFp2J2Af1nK--
