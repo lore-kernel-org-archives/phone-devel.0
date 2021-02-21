@@ -2,106 +2,147 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.5 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_2
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AC51C433E0
-	for <phone-devel@archiver.kernel.org>; Sat, 20 Feb 2021 21:15:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C3F1C433E0
+	for <phone-devel@archiver.kernel.org>; Sun, 21 Feb 2021 16:41:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 33CD564E5F
-	for <phone-devel@archiver.kernel.org>; Sat, 20 Feb 2021 21:15:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E66C064E61
+	for <phone-devel@archiver.kernel.org>; Sun, 21 Feb 2021 16:41:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229819AbhBTVPP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 20 Feb 2021 16:15:15 -0500
-Received: from jabberwock.ucw.cz ([46.255.230.98]:35354 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229817AbhBTVPO (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 20 Feb 2021 16:15:14 -0500
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 330811C0B77; Sat, 20 Feb 2021 22:14:32 +0100 (CET)
-Date:   Sat, 20 Feb 2021 22:14:31 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     "Ivan J." <parazyd@dyne.org>
-Cc:     tony@atomide.com, sre@kernel.org, merlijn@wizzup.org,
-        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
-Subject: Re: [maemo-leste] Droid4: USB host works in Leste
-Message-ID: <20210220211431.GA22212@duo.ucw.cz>
-References: <20201207223323.GA322@amd>
- <20201209171528.GB11203@duo.ucw.cz>
- <20210220170845.GA11787@amd>
- <20210220204110.h54nvx4mwkx3wrhz@fq>
+        id S229970AbhBUQlT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 21 Feb 2021 11:41:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58204 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229884AbhBUQlT (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Sun, 21 Feb 2021 11:41:19 -0500
+Received: from archlinux (cpc108967-cmbg20-2-0-cust86.5-4.cable.virginm.net [81.101.6.87])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7736661493;
+        Sun, 21 Feb 2021 16:40:36 +0000 (UTC)
+Date:   Sun, 21 Feb 2021 16:40:32 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     kholk11@gmail.com
+Cc:     agross@kernel.org, bjorn.andersson@linaro.org, robh+dt@kernel.org,
+        marijns95@gmail.com, konradybcio@gmail.com,
+        martin.botka1@gmail.com, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [RESEND] [PATCH 1/2] iio: adc: qcom-spmi-vadc: Use right
+ ratiometric range for 8998,660,845
+Message-ID: <20210221164032.0271952a@archlinux>
+In-Reply-To: <20201129131233.4a8f7119@archlinux>
+References: <20200926171835.27154-1-kholk11@gmail.com>
+        <20201129131233.4a8f7119@archlinux>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="2fHTh5uZTiUOsy+g"
-Content-Disposition: inline
-In-Reply-To: <20210220204110.h54nvx4mwkx3wrhz@fq>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Sun, 29 Nov 2020 13:12:33 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
---2fHTh5uZTiUOsy+g
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Sat, 26 Sep 2020 19:18:34 +0200
+> kholk11@gmail.com wrote:
+> 
+> > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> > 
+> > The ratiometric range for MSM8998, SDM630/636/660 and SDM845 is 1875mV
+> > instead of the standard 1800mV: address this by adding a new compatible
+> > "qcom,spmi-vadc-8998" and assigning the different range to the machines
+> > declaring this one.
+> > 
+> > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>  
+> 
+> @Bjorn
+> 
+> Could you take a quick look at this pair of patches.  It's been sat in
+> my queue waiting for appropriate review for rather too long!
+> (mainly because I've been rather lax in checking on status of older
+> series really - sorry about that :(
 
-On Sat 2021-02-20 21:41:10, Ivan J. wrote:
-> On Sat, Feb 20, 2021 at 06:08:45PM +0100, Pavel Machek wrote:
-> > Hi!
-> >=20
-> > I played with USB host and Maemo Leste, and it works with recently
-> > packaged kernel:
-> >=20
-> > devuan-droid4 5.10.4 #1 SMP PREEMPT Mon Jan 18 21:56:35 UTC 2021
-> >=20
-> > USB devices are only detected when you plug them in. If you plug
-> > dongle first, then device to the dongle, it does not work.
-> >=20
-> > Mouse, keyboard and mass storage seems to work.
-> >=20
-> > It is probably possible to charge the battery and use USB host at the
-> > same time. Good.
-> >=20
-> > DisplayLink and USB ethernet does not, as the modules are missing.
-> >=20
-> > Could I get Leste to build neccessary modules? Turning phone into
-> > usable desktop computer sounds like fun.
-> >=20
-> > I'd need:
-> >=20
-> > CONFIG_USB_NET_AX8817X=3Dm
-> > CONFIG_DRM_UDL=3Dm
->=20
-> hmm, I thought usbnet was fine in Leste.
+I still have these marked as outstanding.  Please take a look.
 
-Apparently there are many different types of usbnet devices, and I
-have this one...
+Thanks,
 
-> I will check this soon and add these modules. By the way, for -devel
-> I recently built 5.11, but I haven't changed anything in the kernel
-> config.
+Jonathan
 
-It would be interesting to try, yes. 5.10 has various problems 5.9 did
-not have (rebooting when on USB power), perhaps 5.11 has different
-problems :-).
+> 
+> Thanks
+> 
+> Jonathan
+> 
+> > ---
+> >  drivers/iio/adc/qcom-spmi-vadc.c   | 10 +++++++++-
+> >  drivers/iio/adc/qcom-vadc-common.h |  1 +
+> >  2 files changed, 10 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
+> > index b0388f8a69f4..59a94ea7bf78 100644
+> > --- a/drivers/iio/adc/qcom-spmi-vadc.c
+> > +++ b/drivers/iio/adc/qcom-spmi-vadc.c
+> > @@ -101,6 +101,7 @@ struct vadc_channel_prop {
+> >   * @dev: pointer to struct device.
+> >   * @base: base address for the ADC peripheral.
+> >   * @nchannels: number of VADC channels.
+> > + * @ratio_range: ratiometric range for ref points.
+> >   * @chan_props: array of VADC channel properties.
+> >   * @iio_chans: array of IIO channels specification.
+> >   * @are_ref_measured: are reference points measured.
+> > @@ -114,6 +115,7 @@ struct vadc_priv {
+> >  	struct device		 *dev;
+> >  	u16			 base;
+> >  	unsigned int		 nchannels;
+> > +	unsigned int		 ratio_range;
+> >  	struct vadc_channel_prop *chan_props;
+> >  	struct iio_chan_spec	 *iio_chans;
+> >  	bool			 are_ref_measured;
+> > @@ -355,7 +357,7 @@ static int vadc_measure_ref_points(struct vadc_priv *vadc)
+> >  	u16 read_1, read_2;
+> >  	int ret;
+> >  
+> > -	vadc->graph[VADC_CALIB_RATIOMETRIC].dx = VADC_RATIOMETRIC_RANGE;
+> > +	vadc->graph[VADC_CALIB_RATIOMETRIC].dx = vadc->ratio_range;
+> >  	vadc->graph[VADC_CALIB_ABSOLUTE].dx = VADC_ABSOLUTE_RANGE_UV;
+> >  
+> >  	prop = vadc_get_channel(vadc, VADC_REF_1250MV);
+> > @@ -885,6 +887,11 @@ static int vadc_probe(struct platform_device *pdev)
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > +	if (of_device_is_compatible(node, "qcom,spmi-vadc-8998"))
+> > +		vadc->ratio_range = VADC_RATIOMETRIC_RANGE_8998;
+> > +	else
+> > +		vadc->ratio_range = VADC_RATIOMETRIC_RANGE;
+> > +
+> >  	irq_eoc = platform_get_irq(pdev, 0);
+> >  	if (irq_eoc < 0) {
+> >  		if (irq_eoc == -EPROBE_DEFER || irq_eoc == -EINVAL)
+> > @@ -918,6 +925,7 @@ static int vadc_probe(struct platform_device *pdev)
+> >  
+> >  static const struct of_device_id vadc_match_table[] = {
+> >  	{ .compatible = "qcom,spmi-vadc" },
+> > +	{ .compatible = "qcom-spmi-vadc-8998" },
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(of, vadc_match_table);
+> > diff --git a/drivers/iio/adc/qcom-vadc-common.h b/drivers/iio/adc/qcom-vadc-common.h
+> > index 17b2fc4d8bf2..b10d5fd59034 100644
+> > --- a/drivers/iio/adc/qcom-vadc-common.h
+> > +++ b/drivers/iio/adc/qcom-vadc-common.h
+> > @@ -16,6 +16,7 @@
+> >  
+> >  #define VADC_ABSOLUTE_RANGE_UV			625000
+> >  #define VADC_RATIOMETRIC_RANGE			1800
+> > +#define VADC_RATIOMETRIC_RANGE_8998		1875
+> >  
+> >  #define VADC_DEF_PRESCALING			0 /* 1:1 */
+> >  #define VADC_DEF_DECIMATION			0 /* 512 */  
+> 
 
-Best regards,
-								Pavel
-
---=20
-http://www.livejournal.com/~pavelmachek
-
---2fHTh5uZTiUOsy+g
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYDF7twAKCRAw5/Bqldv6
-8jkHAKDCzU18md5W/F8d6WI+irX4uT7YbgCeMFJJzW6+XUmPlOkCIY3kUhb5RYY=
-=gz8G
------END PGP SIGNATURE-----
-
---2fHTh5uZTiUOsy+g--
