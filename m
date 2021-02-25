@@ -2,164 +2,80 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0775EC433E0
-	for <phone-devel@archiver.kernel.org>; Wed, 24 Feb 2021 11:27:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32A05C433E0
+	for <phone-devel@archiver.kernel.org>; Thu, 25 Feb 2021 19:11:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A6D8064EC3
-	for <phone-devel@archiver.kernel.org>; Wed, 24 Feb 2021 11:27:36 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DF5C864F35
+	for <phone-devel@archiver.kernel.org>; Thu, 25 Feb 2021 19:11:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234385AbhBXL1U (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 24 Feb 2021 06:27:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44498 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234411AbhBXL1Q (ORCPT
+        id S233929AbhBYTLc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 25 Feb 2021 14:11:32 -0500
+Received: from relay02.th.seeweb.it ([5.144.164.163]:48563 "EHLO
+        relay02.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233922AbhBYTKE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 24 Feb 2021 06:27:16 -0500
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8350AC06178B
-        for <phone-devel@vger.kernel.org>; Wed, 24 Feb 2021 03:26:36 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id x16so1472853wmk.3
-        for <phone-devel@vger.kernel.org>; Wed, 24 Feb 2021 03:26:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=4Dupz3O53DL08Or0yk10V+iPvTZYbPsmQwB7yrZKV6w=;
-        b=qONknWsxjLt46Tv+VSk5low1SmhgJvZv/zSwxdxmOApxEXFhrhxhXR7tkOuhwaR7Pv
-         lhIHBX+nNa6U1XaScW2R46NDN0lC0sukXHm1HJmj0zKoxgxzURWdEFBtvPq7ifTIt9MM
-         +8MR0Z3LyW9k+f/2Z88WG4V6bhX4dyGqrWrwpwfHVf6Un/+EjZDH7HzAsO98ON1742tJ
-         PvERobBd1n0p5HW9EYJ1se2+U1S6mNPhiQ91+EMUNHK6i6qtZFxROhfW7oGOyRN61J2B
-         d/55+1eG8qnFVg8tY+POfjRUIFEBf12f+BJMlgxgE/sX/Nd6wWw4bH+Xsq79arT8YkVW
-         vDUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=4Dupz3O53DL08Or0yk10V+iPvTZYbPsmQwB7yrZKV6w=;
-        b=lFG2Zw5ECbIjN2QlFvvPe49jaLqC7RK58+TtTszE1TpNITodz8Iy3YBo1D9PI3o+zg
-         E3Tgfw4rDWwHE8109sWbKxGWqDfaEAQ56kF6aiepdH9s8Q9mkrLp9dXsvDENnSefV8r8
-         Dl9ekHz0XHzcmMn1dCeronvkg6mKGBYUfQ5i0XFZv9gW1HFg5VAlUhqjaVjVjufCf47E
-         2OyYBU7jPk+vVDp5qU0f8KHQtSE0V86rlrBCliUg8E3flXPlBdNmoDL45zHmRP+OMJEU
-         PkIZXBPnv0RjKBqcJsMgGHRRZB6VrLgvBN/HX+RuJAK9bAy16aGd0I1Y0Iqu6zooLP2p
-         vhEg==
-X-Gm-Message-State: AOAM530OBm1Jc8Ay5amB5RdBQGnh/DkuaSewhJ09x/t8XCUXZGtrveE3
-        evhePEyfarUYQFblWvfagH/Pww==
-X-Google-Smtp-Source: ABdhPJwor6keoh6M2L2zgYFANbudE+9Gd7yba6NAmYs8Z4HPgcyGvNCz4XuESN6QjxZbm8V+Zz/k3A==
-X-Received: by 2002:a7b:c417:: with SMTP id k23mr3349896wmi.132.1614165995020;
-        Wed, 24 Feb 2021 03:26:35 -0800 (PST)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id 36sm3369148wrj.97.2021.02.24.03.26.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Feb 2021 03:26:34 -0800 (PST)
-Date:   Wed, 24 Feb 2021 11:26:32 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Kiran Gunda <kgunda@codeaurora.org>
-Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
-        lee.jones@linaro.org, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, jacek.anaszewski@gmail.com,
-        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH V1 2/2] backlight: qcom-wled: Correct the sync_toggle
- sequence
-Message-ID: <20210224112632.lgm2yj6ekayuqg2p@maple.lan>
-References: <1614138648-2963-1-git-send-email-kgunda@codeaurora.org>
- <1614138648-2963-3-git-send-email-kgunda@codeaurora.org>
+        Thu, 25 Feb 2021 14:10:04 -0500
+Received: from [192.168.1.101] (abab236.neoplus.adsl.tpnet.pl [83.6.165.236])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 891011F678;
+        Thu, 25 Feb 2021 20:09:16 +0100 (CET)
+Subject: Re: [PATCH 5/6] clk: qcom: gcc-sdm660: Account for needed adjustments
+ in probe function
+To:     Stephen Boyd <sboyd@kernel.org>, phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Taniya Das <tdas@codeaurora.org>,
+        Craig Tatlor <ctatlor97@gmail.com>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20210220155618.176559-1-konrad.dybcio@somainline.org>
+ <20210220155618.176559-5-konrad.dybcio@somainline.org>
+ <161404077336.1254594.15002572465360321874@swboyd.mtv.corp.google.com>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+Message-ID: <3917fba4-e5b0-911f-9220-f401a90aac38@somainline.org>
+Date:   Thu, 25 Feb 2021 20:09:14 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1614138648-2963-3-git-send-email-kgunda@codeaurora.org>
+In-Reply-To: <161404077336.1254594.15002572465360321874@swboyd.mtv.corp.google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Feb 24, 2021 at 09:20:48AM +0530, Kiran Gunda wrote:
-> Currently the FSC SYNC_BIT and MOD_SYNC_BIT are toggled
-> from 1 to 0 to update the FSC and brightenss settings.
-> Change this sequence form 0 to 1 as per the hardware team
-> recommendation to update the FSC and brightness correctly.
-
-Again... this patch description feels somewhat rushed. A patch
-description is there to support code reviewer and to go on the version
-history to assist with future maintainance. They matter!
-
-Anyhow I don't recognise the "from 1 to 0" in the code since both before
-an after the change it goes "from 0 to 1" and "from 1 to 0" but in a
-different order. Doesn't the code actually currently implement "set then
-clear"? If so then, likewise the new code is adopting "clear then set".
-
-As with patch 1, the sync bits modified by wled3_sync_toggle singular
-or plural?
-
-Finally a description that is more sympathetic to the reviewer would be
-welcome.  For example the following (if my guess is right and it is
-true) makes things much easier for the reviewer:
-
-  "The sync takes place during a 0 to 1 transition of the sync
-  bits so the hardware team recommends a clear-then-set approach in
-  order to guarantee such a transition regardless of the previous
-  register state".
- 
-
-Daniel.
+Hi and sorry for the late reply,
 
 
-> 
-> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
-> ---
->  drivers/video/backlight/qcom-wled.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> index aef52b9..19f83ac 100644
-> --- a/drivers/video/backlight/qcom-wled.c
-> +++ b/drivers/video/backlight/qcom-wled.c
-> @@ -337,13 +337,13 @@ static int wled3_sync_toggle(struct wled *wled)
->  
->  	rc = regmap_update_bits(wled->regmap,
->  				wled->ctrl_addr + WLED3_SINK_REG_SYNC,
-> -				mask, mask);
-> +				mask, WLED3_SINK_REG_SYNC_CLEAR);
->  	if (rc < 0)
->  		return rc;
->  
->  	rc = regmap_update_bits(wled->regmap,
->  				wled->ctrl_addr + WLED3_SINK_REG_SYNC,
-> -				mask, WLED3_SINK_REG_SYNC_CLEAR);
-> +				mask, mask);
->  
->  	return rc;
->  }
-> @@ -353,17 +353,17 @@ static int wled5_mod_sync_toggle(struct wled *wled)
->  	int rc;
->  	u8 val;
->  
-> -	val = (wled->cfg.mod_sel == MOD_A) ? WLED5_SINK_REG_SYNC_MOD_A_BIT :
-> -					     WLED5_SINK_REG_SYNC_MOD_B_BIT;
->  	rc = regmap_update_bits(wled->regmap,
->  				wled->sink_addr + WLED5_SINK_REG_MOD_SYNC_BIT,
-> -				WLED5_SINK_REG_SYNC_MASK, val);
-> +				WLED5_SINK_REG_SYNC_MASK, 0);
->  	if (rc < 0)
->  		return rc;
->  
-> +	val = (wled->cfg.mod_sel == MOD_A) ? WLED5_SINK_REG_SYNC_MOD_A_BIT :
-> +					     WLED5_SINK_REG_SYNC_MOD_B_BIT;
->  	return regmap_update_bits(wled->regmap,
->  				  wled->sink_addr + WLED5_SINK_REG_MOD_SYNC_BIT,
-> -				  WLED5_SINK_REG_SYNC_MASK, 0);
-> +				  WLED5_SINK_REG_SYNC_MASK, val);
->  }
->  
->  static int wled_ovp_fault_status(struct wled *wled, bool *fault_set)
-> -- 
-> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
->  a Linux Foundation Collaborative Project
-> 
+>> +
+>> +       /* Keep bimc gfx clock port on all the time */
+>> +       clk_prepare_enable(gcc_bimc_gfx_clk.clkr.hw.clk);
+>> +
+> Preferably just set these various bits with regmap_update_bits() during
+> probe. Also, please do it before regsitering the clks, not after.
+
+To be fair, now I think that simply adding CLK_IS_CRITICAL flag to the clocks in question is the smartest thing to do. Magic writes don't tell a whole lot.
+
+
+>> +       /* Set the HMSS_GPLL0_SRC for 300MHz to CPU subsystem */
+>> +       clk_set_rate(hmss_gpll0_clk_src.clkr.hw.clk, 300000000);
+> Is this not already the case?
+
+
+This is a mission-critical clock and we cannot trust the bootloader with setting it. Otherwise dragons might appear.
+
+
+Konrad
+
+
