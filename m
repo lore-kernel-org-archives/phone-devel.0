@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5FBFC433DB
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:08:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F06BFC433E6
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:08:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5B86564EED
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:08:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C609264F1B
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:08:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230402AbhBZUIB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 Feb 2021 15:08:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38748 "EHLO
+        id S230408AbhBZUIE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 Feb 2021 15:08:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230210AbhBZUHV (ORCPT
+        with ESMTP id S230207AbhBZUHW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 Feb 2021 15:07:21 -0500
-Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [IPv6:2001:4b7a:2000:18::164])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A85FC061574;
-        Fri, 26 Feb 2021 12:05:26 -0800 (PST)
+        Fri, 26 Feb 2021 15:07:22 -0500
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC26C0617A7;
+        Fri, 26 Feb 2021 12:04:58 -0800 (PST)
 Received: from localhost.localdomain (abab236.neoplus.adsl.tpnet.pl [83.6.165.236])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 1A55C1F87C;
-        Fri, 26 Feb 2021 21:05:23 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 01EA11FAC6;
+        Fri, 26 Feb 2021 21:04:54 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
@@ -40,9 +40,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 11/41] arm64: dts: qcom: sdm630: Add interconnect and opp table to sdhc_1
-Date:   Fri, 26 Feb 2021 21:03:41 +0100
-Message-Id: <20210226200414.167762-12-konrad.dybcio@somainline.org>
+Subject: [PATCH 05/41] arm64: dts: qcom: sdm630: Add MDSS nodes
+Date:   Fri, 26 Feb 2021 21:03:35 +0100
+Message-Id: <20210226200414.167762-6-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210226200414.167762-1-konrad.dybcio@somainline.org>
 References: <20210226200414.167762-1-konrad.dybcio@somainline.org>
@@ -52,65 +52,229 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Add MDSS node along with its children to enable display
+functionality.
 
-The SDHC port 1 has interconnects and can make use of DVFS:
-define the interconnections and the OPP table in order to
-optimize performance and power consumption.
-
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
- arch/arm64/boot/dts/qcom/sdm630.dtsi | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm630.dtsi | 198 ++++++++++++++++++++++++++-
+ 1 file changed, 196 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-index c85a4a71fb0c..ed7d22aa734c 100644
+index c46b7327afbe..e0c6099d0810 100644
 --- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -1106,14 +1106,42 @@ sdhc_1: sdhci@c0c4000 {
- 				 <&gcc GCC_SDCC1_ICE_CORE_CLK>;
- 			clock-names = "core", "iface", "xo", "ice";
- 
-+			interconnects = <&a2noc 2 &a2noc 10>,
-+					<&gnoc 0 &cnoc 27>;
-+			interconnect-names = "sdhc1-ddr", "cpu-sdhc1";
-+			operating-points-v2 = <&sdhc1_opp_table>;
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&sdc1_state_on>;
- 			pinctrl-1 = <&sdc1_state_off>;
-+			power-domains = <&rpmpd SDM660_VDDCX>;
- 
- 			bus-width = <8>;
- 			non-removable;
- 
- 			status = "disabled";
-+
-+			sdhc1_opp_table: sdhc1-opp-table {
-+				compatible = "operating-points-v2";
-+
-+				opp-50000000 {
-+					opp-hz = /bits/ 64 <50000000>;
-+					required-opps = <&rpmpd_opp_low_svs>;
-+					opp-peak-kBps = <200000 140000>;
-+					opp-avg-kBps = <130718 133320>;
-+				};
-+				opp-100000000 {
-+					opp-hz = /bits/ 64 <100000000>;
-+					required-opps = <&rpmpd_opp_svs>;
-+					opp-peak-kBps = <250000 160000>;
-+					opp-avg-kBps = <196078 150000>;
-+				};
-+				opp-384000000 {
-+					opp-hz = /bits/ 64 <384000000>;
-+					required-opps = <&rpmpd_opp_nom>;
-+					opp-peak-kBps = <4096000 4096000>;
-+					opp-avg-kBps = <1338562 1338562>;
-+				};
-+			};
+@@ -941,14 +941,208 @@ mmcc: clock-controller@c8c0000 {
+ 					<&sleep_clk>,
+ 					<&gcc GCC_MMSS_GPLL0_CLK>,
+ 					<&gcc GCC_MMSS_GPLL0_DIV_CLK>,
+-					<0>,
+-					<0>,
++					<&dsi0_phy 1>,
++					<&dsi0_phy 0>,
+ 					<0>,
+ 					<0>,
+ 					<0>,
+ 					<0>;
  		};
  
- 		mmcc: clock-controller@c8c0000 {
++		dsi_opp_table: dsi-opp-table {
++			compatible = "operating-points-v2";
++
++			opp-131250000 {
++				opp-hz = /bits/ 64 <131250000>;
++				required-opps = <&rpmpd_opp_svs>;
++			};
++
++			opp-210000000 {
++				opp-hz = /bits/ 64 <210000000>;
++				required-opps = <&rpmpd_opp_svs_plus>;
++			};
++
++			opp-262500000 {
++				opp-hz = /bits/ 64 <262500000>;
++				required-opps = <&rpmpd_opp_nom>;
++			};
++		};
++
++		mdss: mdss@c900000 {
++			compatible = "qcom,mdss";
++			reg = <0x0c900000 0x1000>,
++			      <0x0c9b0000 0x1040>;
++			reg-names = "mdss_phys", "vbif_phys";
++
++			power-domains = <&mmcc MDSS_GDSC>;
++
++			clocks = <&mmcc MDSS_AHB_CLK>,
++				 <&mmcc MDSS_AXI_CLK>,
++				 <&mmcc MDSS_VSYNC_CLK>,
++				 <&mmcc MDSS_MDP_CLK>;
++			clock-names = "iface",
++				      "bus",
++				      "vsync",
++				      "core";
++
++			interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
++
++			interrupt-controller;
++			#interrupt-cells = <1>;
++
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges;
++			status = "disabled";
++
++			mdp: mdp@c901000 {
++				compatible = "qcom,mdp5";
++				reg = <0x0c901000 0x89000>;
++				reg-names = "mdp_phys";
++
++				interrupt-parent = <&mdss>;
++				interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
++
++				assigned-clocks = <&mmcc MDSS_MDP_CLK>,
++						  <&mmcc MDSS_VSYNC_CLK>;
++				assigned-clock-rates = <300000000>,
++						       <19200000>;
++				clocks = <&mmcc MDSS_AHB_CLK>,
++					 <&mmcc MDSS_AXI_CLK>,
++					 <&mmcc MDSS_MDP_CLK>,
++					 <&mmcc MDSS_VSYNC_CLK>;
++				clock-names = "iface",
++					      "bus",
++					      "core",
++					      "vsync";
++
++				interconnects = <&mnoc 2 &bimc 5>,
++						<&mnoc 3 &bimc 5>,
++						<&gnoc 0 &mnoc 17>;
++				interconnect-names = "mdp0-mem",
++						     "mdp1-mem",
++						     "rotator-mem";
++				iommus = <&mmss_smmu 0>;
++				operating-points-v2 = <&mdp_opp_table>;
++				power-domains = <&rpmpd SDM660_VDDCX>;
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++						mdp5_intf1_out: endpoint {
++							remote-endpoint = <&dsi0_in>;
++						};
++					};
++				};
++
++				mdp_opp_table: mdp-opp {
++					compatible = "operating-points-v2";
++
++					opp-150000000 {
++						opp-hz = /bits/ 64 <150000000>;
++						opp-peak-kBps = <320000 320000 76800>;
++						required-opps = <&rpmpd_opp_low_svs>;
++					};
++					opp-275000000 {
++						opp-hz = /bits/ 64 <275000000>;
++						opp-peak-kBps = <6400000 6400000 160000>;
++						required-opps = <&rpmpd_opp_svs>;
++					};
++					opp-300000000 {
++						opp-hz = /bits/ 64 <300000000>;
++						opp-peak-kBps = <6400000 6400000 190000>;
++						required-opps = <&rpmpd_opp_svs_plus>;
++					};
++					opp-330000000 {
++						opp-hz = /bits/ 64 <330000000>;
++						opp-peak-kBps = <6400000 6400000 240000>;
++						required-opps = <&rpmpd_opp_nom>;
++					};
++					opp-412500000 {
++						opp-hz = /bits/ 64 <412500000>;
++						opp-peak-kBps = <6400000 6400000 320000>;
++						required-opps = <&rpmpd_opp_turbo>;
++					};
++				};
++			};
++
++			dsi0: dsi@c994000 {
++				compatible = "qcom,mdss-dsi-ctrl";
++				reg = <0x0c994000 0x400>;
++				reg-names = "dsi_ctrl";
++
++				operating-points-v2 = <&dsi_opp_table>;
++				power-domains = <&rpmpd SDM660_VDDCX>;
++
++				interrupt-parent = <&mdss>;
++				interrupts = <4 IRQ_TYPE_LEVEL_HIGH>;
++
++				assigned-clocks = <&mmcc BYTE0_CLK_SRC>,
++						  <&mmcc PCLK0_CLK_SRC>;
++				assigned-clock-parents = <&dsi0_phy 0>,
++							 <&dsi0_phy 1>;
++
++				clocks = <&mmcc MDSS_MDP_CLK>,
++					 <&mmcc MDSS_BYTE0_CLK>,
++					 <&mmcc MDSS_BYTE0_INTF_CLK>,
++					 <&mmcc MNOC_AHB_CLK>,
++					 <&mmcc MDSS_AHB_CLK>,
++					 <&mmcc MDSS_AXI_CLK>,
++					 <&mmcc MISC_AHB_CLK>,
++					 <&mmcc MDSS_PCLK0_CLK>,
++					 <&mmcc MDSS_ESC0_CLK>;
++				clock-names = "mdp_core",
++					      "byte",
++					      "byte_intf",
++					      "mnoc",
++					      "iface",
++					      "bus",
++					      "core_mmss",
++					      "pixel",
++					      "core";
++
++				phys = <&dsi0_phy>;
++				phy-names = "dsi";
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++						dsi0_in: endpoint {
++							remote-endpoint = <&mdp5_intf1_out>;
++						};
++					};
++
++					port@1 {
++						reg = <1>;
++						dsi0_out: endpoint {
++						};
++					};
++				};
++			};
++
++			dsi0_phy: dsi-phy@c994400 {
++				compatible = "qcom,dsi-phy-14nm-660";
++				reg = <0x0c994400 0x100>,
++				      <0x0c994500 0x300>,
++				      <0x0c994800 0x188>;
++				reg-names = "dsi_phy",
++					    "dsi_phy_lane",
++					    "dsi_pll";
++
++				#clock-cells = <1>;
++				#phy-cells = <0>;
++
++				clocks = <&mmcc MDSS_AHB_CLK>, <&xo_board>;
++				clock-names = "iface", "ref";
++			};
++		};
++
+ 		blsp1_dma: dma-controller@c144000 {
+ 			compatible = "qcom,bam-v1.7.0";
+ 			reg = <0x0c144000 0x1f000>;
 -- 
 2.30.1
 
