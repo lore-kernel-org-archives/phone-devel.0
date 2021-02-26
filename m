@@ -5,24 +5,27 @@ X-Spam-Level:
 X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A735C4332D
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:08:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5FBFC433DB
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:08:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6BC0A64F0E
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:08:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5B86564EED
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:08:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230304AbhBZUHu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 Feb 2021 15:07:50 -0500
-Received: from relay02.th.seeweb.it ([5.144.164.163]:43505 "EHLO
-        relay02.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230299AbhBZUHO (ORCPT
+        id S230402AbhBZUIB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 Feb 2021 15:08:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38748 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230210AbhBZUHV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 Feb 2021 15:07:14 -0500
+        Fri, 26 Feb 2021 15:07:21 -0500
+Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [IPv6:2001:4b7a:2000:18::164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A85FC061574;
+        Fri, 26 Feb 2021 12:05:26 -0800 (PST)
 Received: from localhost.localdomain (abab236.neoplus.adsl.tpnet.pl [83.6.165.236])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 436611FAF2;
-        Fri, 26 Feb 2021 21:05:54 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 1A55C1F87C;
+        Fri, 26 Feb 2021 21:05:23 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
@@ -37,9 +40,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 18/41] arm64: dts: qcom: sdm630: Add ADSP remoteproc configuration
-Date:   Fri, 26 Feb 2021 21:03:48 +0100
-Message-Id: <20210226200414.167762-19-konrad.dybcio@somainline.org>
+Subject: [PATCH 11/41] arm64: dts: qcom: sdm630: Add interconnect and opp table to sdhc_1
+Date:   Fri, 26 Feb 2021 21:03:41 +0100
+Message-Id: <20210226200414.167762-12-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210226200414.167762-1-konrad.dybcio@somainline.org>
 References: <20210226200414.167762-1-konrad.dybcio@somainline.org>
@@ -49,122 +52,65 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Configure the ADSP remote processor and add a simple sound{}
-node to make way for future development.
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 
+The SDHC port 1 has interconnects and can make use of DVFS:
+define the interconnections and the OPP table in order to
+optimize performance and power consumption.
+
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
- arch/arm64/boot/dts/qcom/sdm630.dtsi | 83 ++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm630.dtsi | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-index 08e499229396..f6abb2e79407 100644
+index c85a4a71fb0c..ed7d22aa734c 100644
 --- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -10,6 +10,7 @@
- #include <dt-bindings/power/qcom-rpmpd.h>
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/interrupt-controller/arm-gic.h>
-+#include <dt-bindings/soc/qcom,apr.h>
+@@ -1106,14 +1106,42 @@ sdhc_1: sdhci@c0c4000 {
+ 				 <&gcc GCC_SDCC1_ICE_CORE_CLK>;
+ 			clock-names = "core", "iface", "xo", "ice";
  
- / {
- 	interrupt-parent = <&intc>;
-@@ -521,6 +522,9 @@ modem_smp2p_in: slave-kernel {
- 		};
- 	};
- 
-+	sound: sound {
-+	};
-+
- 	thermal-zones {
- 		aoss-thermal {
- 			polling-delay-passive = <250>;
-@@ -1885,6 +1889,85 @@ mmss_smmu: iommu@cd00000 {
- 			status = "disabled";
- 		};
- 
-+		adsp_pil: remoteproc@15700000 {
-+			compatible = "qcom,sdm660-adsp-pil";
-+			reg = <0x15700000 0x4040>;
-+
-+			interrupts-extended =
-+				<&intc GIC_SPI 162 IRQ_TYPE_EDGE_RISING>,
-+				<&adsp_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
-+				<&adsp_smp2p_in 1 IRQ_TYPE_EDGE_RISING>,
-+				<&adsp_smp2p_in 2 IRQ_TYPE_EDGE_RISING>,
-+				<&adsp_smp2p_in 3 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "wdog", "fatal", "ready",
-+					  "handover", "stop-ack";
-+
-+			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>;
-+			clock-names = "xo";
-+
-+			memory-region = <&adsp_region>;
++			interconnects = <&a2noc 2 &a2noc 10>,
++					<&gnoc 0 &cnoc 27>;
++			interconnect-names = "sdhc1-ddr", "cpu-sdhc1";
++			operating-points-v2 = <&sdhc1_opp_table>;
+ 			pinctrl-names = "default", "sleep";
+ 			pinctrl-0 = <&sdc1_state_on>;
+ 			pinctrl-1 = <&sdc1_state_off>;
 +			power-domains = <&rpmpd SDM660_VDDCX>;
-+			power-domain-names = "cx";
+ 
+ 			bus-width = <8>;
+ 			non-removable;
+ 
+ 			status = "disabled";
 +
-+			qcom,smem-states = <&adsp_smp2p_out 0>;
-+			qcom,smem-state-names = "stop";
++			sdhc1_opp_table: sdhc1-opp-table {
++				compatible = "operating-points-v2";
 +
-+			glink-edge {
-+				interrupts = <GIC_SPI 157 IRQ_TYPE_EDGE_RISING>;
-+
-+				label = "lpass";
-+				mboxes = <&apcs_glb 9>;
-+				qcom,remote-pid = <2>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				apr {
-+					compatible = "qcom,apr-v2";
-+					qcom,glink-channels = "apr_audio_svc";
-+					qcom,apr-domain = <APR_DOMAIN_ADSP>;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					q6core {
-+						reg = <APR_SVC_ADSP_CORE>;
-+						compatible = "qcom,q6core";
-+					};
-+
-+					q6afe: apr-service@4 {
-+						compatible = "qcom,q6afe";
-+						reg = <APR_SVC_AFE>;
-+						q6afedai: dais {
-+							compatible = "qcom,q6afe-dais";
-+							#address-cells = <1>;
-+							#size-cells = <0>;
-+							#sound-dai-cells = <1>;
-+						};
-+					};
-+
-+					q6asm: apr-service@7 {
-+						compatible = "qcom,q6asm";
-+						reg = <APR_SVC_ASM>;
-+						q6asmdai: dais {
-+							compatible = "qcom,q6asm-dais";
-+							#address-cells = <1>;
-+							#size-cells = <0>;
-+							#sound-dai-cells = <1>;
-+							iommus = <&lpass_smmu 1>;
-+						};
-+					};
-+
-+					q6adm: apr-service@8 {
-+						compatible = "qcom,q6adm";
-+						reg = <APR_SVC_ADM>;
-+						q6routing: routing {
-+							compatible = "qcom,q6adm-routing";
-+							#sound-dai-cells = <0>;
-+						};
-+					};
++				opp-50000000 {
++					opp-hz = /bits/ 64 <50000000>;
++					required-opps = <&rpmpd_opp_low_svs>;
++					opp-peak-kBps = <200000 140000>;
++					opp-avg-kBps = <130718 133320>;
++				};
++				opp-100000000 {
++					opp-hz = /bits/ 64 <100000000>;
++					required-opps = <&rpmpd_opp_svs>;
++					opp-peak-kBps = <250000 160000>;
++					opp-avg-kBps = <196078 150000>;
++				};
++				opp-384000000 {
++					opp-hz = /bits/ 64 <384000000>;
++					required-opps = <&rpmpd_opp_nom>;
++					opp-peak-kBps = <4096000 4096000>;
++					opp-avg-kBps = <1338562 1338562>;
 +				};
 +			};
-+		};
-+
- 		gnoc: interconnect@17900000 {
- 			compatible = "qcom,sdm660-gnoc";
- 			reg = <0x17900000 0xe000>;
+ 		};
+ 
+ 		mmcc: clock-controller@c8c0000 {
 -- 
 2.30.1
 
