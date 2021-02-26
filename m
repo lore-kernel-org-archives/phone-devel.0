@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 11874C433E0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72B6FC43381
 	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:11:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C1F4E64F17
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:11:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 36C6B64F2A
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:11:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230419AbhBZULi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 Feb 2021 15:11:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39140 "EHLO
+        id S230471AbhBZULk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 Feb 2021 15:11:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230148AbhBZULQ (ORCPT
+        with ESMTP id S230439AbhBZULZ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 Feb 2021 15:11:16 -0500
+        Fri, 26 Feb 2021 15:11:25 -0500
 Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D0F1C06174A
-        for <phone-devel@vger.kernel.org>; Fri, 26 Feb 2021 12:08:44 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3830C061224
+        for <phone-devel@vger.kernel.org>; Fri, 26 Feb 2021 12:09:15 -0800 (PST)
 Received: from localhost.localdomain (abab236.neoplus.adsl.tpnet.pl [83.6.165.236])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id BC36C1F995;
-        Fri, 26 Feb 2021 21:06:45 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 1F0FB1F578;
+        Fri, 26 Feb 2021 21:07:16 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
@@ -40,9 +40,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 29/41] arm64: dts: qcom: sdm660: Add required nodes for DSI1
-Date:   Fri, 26 Feb 2021 21:03:59 +0100
-Message-Id: <20210226200414.167762-30-konrad.dybcio@somainline.org>
+Subject: [PATCH 36/41] arm64: dts: qcom: sdm630-nile: Add Synaptics touchscreen.
+Date:   Fri, 26 Feb 2021 21:04:06 +0100
+Message-Id: <20210226200414.167762-37-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210226200414.167762-1-konrad.dybcio@somainline.org>
 References: <20210226200414.167762-1-konrad.dybcio@somainline.org>
@@ -52,128 +52,79 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Configure the second DSI host/phy and account for them in
-the mmcc node.
+Delete the node on Ganges devices, as they use a different one.
 
 Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
- arch/arm64/boot/dts/qcom/sdm660.dtsi | 101 +++++++++++++++++++++++++--
- 1 file changed, 97 insertions(+), 4 deletions(-)
+ .../qcom/sdm630-sony-xperia-ganges-kirin.dts  |  2 ++
+ .../dts/qcom/sdm630-sony-xperia-nile.dtsi     | 36 ++++++++++++++++++-
+ 2 files changed, 37 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm660.dtsi b/arch/arm64/boot/dts/qcom/sdm660.dtsi
-index 13467e2c708a..eccf6fde16b4 100644
---- a/arch/arm64/boot/dts/qcom/sdm660.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm660.dtsi
-@@ -141,12 +141,105 @@ &gpucc {
- 	compatible = "qcom,gpucc-sdm660";
+diff --git a/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-ganges-kirin.dts b/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-ganges-kirin.dts
+index aea949265a2d..a4e1fb8ca52d 100644
+--- a/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-ganges-kirin.dts
++++ b/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-ganges-kirin.dts
+@@ -20,4 +20,6 @@ framebuffer@9d400000 {
+ 	};
  };
  
-+&mdp {
-+	ports {
-+		port@1 {
-+			reg = <1>;
-+			mdp5_intf2_out: endpoint {
-+				remote-endpoint = <&dsi1_in>;
-+			};
++/* Ganges devices feature a Novatek touchscreen instead. */
++/delete-node/ &touchscreen;
+ /delete-node/ &vreg_l18a_1v8;
+diff --git a/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-nile.dtsi b/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-nile.dtsi
+index deadd8f6ff3a..5f1202ae954b 100644
+--- a/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-nile.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-nile.dtsi
+@@ -161,7 +161,29 @@ extcon_usb: extcon-usb {
+ &blsp_i2c1 {
+ 	status = "okay";
+ 
+-	/* Synaptics touchscreen */
++	touchscreen: synaptics-rmi4-i2c@70 {
++		compatible = "syna,rmi4-i2c";
++		reg = <0x70>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		interrupts-extended = <&tlmm 45 0x2008>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&ts_int_active &ts_lcd_id_active>;
++
++		syna,reset-delay-ms = <200>;
++		syna,startup-delay-ms = <220>;
++
++		rmi4-f01@1 {
++			reg = <0x01>;
++			syna,nosleep-mode = <1>;
++		};
++
++		rmi4-f11@11 {
++			reg = <0x11>;
++			syna,sensor-type = <1>;
 +		};
 +	};
-+};
-+
-+&mdss {
-+	dsi1: dsi@c996000 {
-+		compatible = "qcom,mdss-dsi-ctrl";
-+		reg = <0x0c996000 0x400>;
-+		reg-names = "dsi_ctrl";
-+
-+		/* DSI1 shares the OPP table with DSI0 */
-+		operating-points-v2 = <&dsi_opp_table>;
-+		power-domains = <&rpmpd SDM660_VDDCX>;
-+
-+		interrupt-parent = <&mdss>;
-+		interrupts = <5 IRQ_TYPE_LEVEL_HIGH>;
-+
-+		assigned-clocks = <&mmcc BYTE1_CLK_SRC>,
-+					<&mmcc PCLK1_CLK_SRC>;
-+		assigned-clock-parents = <&dsi1_phy 0>,
-+						<&dsi1_phy 1>;
-+
-+		clocks = <&mmcc MDSS_MDP_CLK>,
-+				<&mmcc MDSS_BYTE1_CLK>,
-+				<&mmcc MDSS_BYTE1_INTF_CLK>,
-+				<&mmcc MNOC_AHB_CLK>,
-+				<&mmcc MDSS_AHB_CLK>,
-+				<&mmcc MDSS_AXI_CLK>,
-+				<&mmcc MISC_AHB_CLK>,
-+				<&mmcc MDSS_PCLK1_CLK>,
-+				<&mmcc MDSS_ESC1_CLK>;
-+		clock-names = "mdp_core",
-+					"byte",
-+					"byte_intf",
-+					"mnoc",
-+					"iface",
-+					"bus",
-+					"core_mmss",
-+					"pixel",
-+					"core";
-+
-+		phys = <&dsi1_phy>;
-+		phy-names = "dsi";
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+				dsi1_in: endpoint {
-+					remote-endpoint = <&mdp5_intf2_out>;
-+				};
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+				dsi1_out: endpoint {
-+				};
-+			};
-+		};
-+	};
-+
-+	dsi1_phy: dsi-phy@c996400 {
-+		compatible = "qcom,dsi-phy-14nm-660";
-+		reg = <0x0c996400 0x100>,
-+				<0x0c996500 0x300>,
-+				<0x0c996800 0x188>;
-+		reg-names = "dsi_phy",
-+				"dsi_phy_lane",
-+				"dsi_pll";
-+
-+		#clock-cells = <1>;
-+		#phy-cells = <0>;
-+
-+		clocks = <&mmcc MDSS_AHB_CLK>, <&rpmcc RPM_SMD_XO_CLK_SRC>;
-+		clock-names = "iface", "ref";
-+	};
-+};
-+
- &mmcc {
- 	compatible = "qcom,mmcc-sdm660";
--	/*
--	 * 660 has one more dsi host/phy, which - when implemented
--	 * and tested - should be added to the clocks property.
--	 */
-+	clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>,
-+			<&sleep_clk>,
-+			<&gcc GCC_MMSS_GPLL0_CLK>,
-+			<&gcc GCC_MMSS_GPLL0_DIV_CLK>,
-+			<&dsi0_phy 1>,
-+			<&dsi0_phy 0>,
-+			<&dsi1_phy 1>,
-+			<&dsi1_phy 0>,
-+			<0>,
-+			<0>;
  };
  
+ &blsp_i2c2 {
+@@ -552,6 +574,18 @@ &sdhc_1 {
  &tlmm {
+ 	gpio-reserved-ranges = <8 4>;
+ 
++	ts_int_active: ts-int-active {
++		pins = "gpio45";
++		drive-strength = <8>;
++		bias-pull-up;
++	};
++
++	ts_lcd_id_active: ts-lcd-id-active {
++		pins = "gpio56";
++		drive-strength = <8>;
++		bias-disable;
++	};
++
+ 	imx300_vana_default: imx300-vana-default {
+ 		pins = "gpio50";
+ 		function = "gpio";
 -- 
 2.30.1
 
