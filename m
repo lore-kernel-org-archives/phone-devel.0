@@ -7,30 +7,27 @@ X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,
 	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76C1AC433E0
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 21:10:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CD5EC433DB
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 21:10:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3902764EAF
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 21:10:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F2D2764F13
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 21:10:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230220AbhBZVJh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 Feb 2021 16:09:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52544 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230446AbhBZVJb (ORCPT
+        id S230446AbhBZVK3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 Feb 2021 16:10:29 -0500
+Received: from relay07.th.seeweb.it ([5.144.164.168]:52289 "EHLO
+        relay07.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230475AbhBZVKL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 Feb 2021 16:09:31 -0500
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEB39C061786
-        for <phone-devel@vger.kernel.org>; Fri, 26 Feb 2021 13:08:35 -0800 (PST)
+        Fri, 26 Feb 2021 16:10:11 -0500
 Received: from [192.168.1.101] (abab236.neoplus.adsl.tpnet.pl [83.6.165.236])
         (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 62FC33F211;
-        Fri, 26 Feb 2021 22:08:29 +0100 (CET)
-Subject: Re: [PATCH 25/41] arm64: dts: qcom: sdm660: Make the DTS an overlay
- on top of 630
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id B02103F1EB;
+        Fri, 26 Feb 2021 22:09:24 +0100 (CET)
+Subject: Re: [PATCH 20/41] arm64: dts: qcom: sdm630: Add Adreno 508 GPU
+ configuration
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         angelogioacchino.delregno@somainline.org,
@@ -43,14 +40,14 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20210226200414.167762-1-konrad.dybcio@somainline.org>
- <20210226200414.167762-26-konrad.dybcio@somainline.org>
+ <20210226200414.167762-21-konrad.dybcio@somainline.org>
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-Message-ID: <c0ed64a1-da87-de99-d4fb-8963f69cb13d@somainline.org>
-Date:   Fri, 26 Feb 2021 22:08:28 +0100
+Message-ID: <a0fe9e7b-9872-0ca9-0264-d7fdfa12b12b@somainline.org>
+Date:   Fri, 26 Feb 2021 22:09:24 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <20210226200414.167762-26-konrad.dybcio@somainline.org>
+In-Reply-To: <20210226200414.167762-21-konrad.dybcio@somainline.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
@@ -64,6 +61,4 @@ Ditto,
 AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 
 Konrad Dybcio <konrad.dybcio@somainline.org>
-
-Martin Botka <martin.botka@somainline.org>
 
