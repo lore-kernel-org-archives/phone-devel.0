@@ -5,24 +5,24 @@ X-Spam-Level:
 X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16B97C433E9
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:06:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CE3DC433E9
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:07:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B936364E38
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:06:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2A60364F2B
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:07:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230125AbhBZUFr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 Feb 2021 15:05:47 -0500
-Received: from relay01.th.seeweb.it ([5.144.164.162]:40415 "EHLO
-        relay01.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230128AbhBZUFf (ORCPT
+        id S230213AbhBZUGo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 Feb 2021 15:06:44 -0500
+Received: from relay04.th.seeweb.it ([5.144.164.165]:43151 "EHLO
+        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230203AbhBZUGc (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 Feb 2021 15:05:35 -0500
+        Fri, 26 Feb 2021 15:06:32 -0500
 Received: from localhost.localdomain (abab236.neoplus.adsl.tpnet.pl [83.6.165.236])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id EC2B61FAB7;
-        Fri, 26 Feb 2021 21:04:49 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id B5A891F995;
+        Fri, 26 Feb 2021 21:05:18 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
@@ -37,9 +37,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 04/41] arm64: dts: qcom: sdm630: Add interconnect provider nodes
-Date:   Fri, 26 Feb 2021 21:03:34 +0100
-Message-Id: <20210226200414.167762-5-konrad.dybcio@somainline.org>
+Subject: [PATCH 10/41] arm64: dts: qcom: sdm630: Add SDHCI2 node
+Date:   Fri, 26 Feb 2021 21:03:40 +0100
+Message-Id: <20210226200414.167762-11-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210226200414.167762-1-konrad.dybcio@somainline.org>
 References: <20210226200414.167762-1-konrad.dybcio@somainline.org>
@@ -49,109 +49,78 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add interconnect provider nodes to allow for NoC bus scaling.
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 
+This will enable usage of (generally) uSD cards.
+While at it, add accompanying OPP table for DVFS.
+
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
- arch/arm64/boot/dts/qcom/sdm630.dtsi | 59 ++++++++++++++++++++++++++++
- 1 file changed, 59 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm630.dtsi | 50 ++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-index e2cbe210048e..c46b7327afbe 100644
+index 410a97ea2bb3..c85a4a71fb0c 100644
 --- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -4,6 +4,7 @@
-  */
- 
- #include <dt-bindings/clock/qcom,gcc-sdm660.h>
-+#include <dt-bindings/clock/qcom,mmcc-sdm660.h>
- #include <dt-bindings/clock/qcom,rpmcc.h>
- #include <dt-bindings/power/qcom-rpmpd.h>
- #include <dt-bindings/gpio/gpio.h>
-@@ -516,11 +517,38 @@ rng: rng@793000 {
- 			clock-names = "core";
- 		};
- 
-+		bimc: interconnect@1008000 {
-+			compatible = "qcom,sdm660-bimc";
-+			reg = <0x01008000 0x78000>;
-+			#interconnect-cells = <1>;
-+			clock-names = "bus", "bus_a";
-+			clocks = <&rpmcc RPM_SMD_BIMC_CLK>,
-+				 <&rpmcc RPM_SMD_BIMC_A_CLK>;
-+		};
-+
- 		restart@10ac000 {
- 			compatible = "qcom,pshold";
- 			reg = <0x010ac000 0x4>;
- 		};
- 
-+		cnoc: interconnect@1500000 {
-+			compatible = "qcom,sdm660-cnoc";
-+			reg = <0x01500000 0x10000>;
-+			#interconnect-cells = <1>;
-+			clock-names = "bus", "bus_a";
-+			clocks = <&rpmcc RPM_SMD_CNOC_CLK>,
-+				 <&rpmcc RPM_SMD_CNOC_A_CLK>;
-+		};
-+
-+		snoc: interconnect@1626000 {
-+			compatible = "qcom,sdm660-snoc";
-+			reg = <0x01626000 0x7090>;
-+			#interconnect-cells = <1>;
-+			clock-names = "bus", "bus_a";
-+			clocks = <&rpmcc RPM_SMD_SNOC_CLK>,
-+				 <&rpmcc RPM_SMD_SNOC_A_CLK>;
-+		};
-+
- 		anoc2_smmu: iommu@16c0000 {
- 			compatible = "qcom,sdm630-smmu-v2", "qcom,smmu-v2";
- 			reg = <0x016c0000 0x40000>;
-@@ -564,6 +592,25 @@ anoc2_smmu: iommu@16c0000 {
+@@ -1039,6 +1039,56 @@ qusb2phy: phy@c012000 {
  			status = "disabled";
  		};
  
-+		a2noc: interconnect@1704000 {
-+			compatible = "qcom,sdm660-a2noc";
-+			reg = <0x01704000 0xc100>;
-+			#interconnect-cells = <1>;
-+			clock-names = "bus", "bus_a";
-+			clocks = <&rpmcc RPM_SMD_AGGR2_NOC_CLK>,
-+				 <&rpmcc RPM_SMD_AGGR2_NOC_A_CLK>;
++		sdhc_2: sdhci@c084000 {
++			compatible = "qcom,sdm630-sdhci", "qcom,sdhci-msm-v5";
++			reg = <0x0c084000 0x1000>;
++			reg-names = "hc";
++
++			interrupts = <GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>,
++					<GIC_SPI 221 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "hc_irq", "pwr_irq";
++
++			bus-width = <4>;
++			clocks = <&gcc GCC_SDCC2_APPS_CLK>,
++					<&gcc GCC_SDCC2_AHB_CLK>,
++					<&xo_board>;
++			clock-names = "core", "iface", "xo";
++
++			interconnects = <&a2noc 3 &a2noc 10>,
++				        <&gnoc 0 &cnoc 28>;
++			operating-points-v2 = <&sdhc2_opp_table>;
++
++			pinctrl-names = "default", "sleep";
++			pinctrl-0 = <&sdc2_state_on>;
++			pinctrl-1 = <&sdc2_state_off>;
++			power-domains = <&rpmpd SDM660_VDDCX>;
++
++			status = "disabled";
++
++			sdhc2_opp_table: sdhc1-opp-table {
++				 compatible = "operating-points-v2";
++
++				 opp-50000000 {
++					opp-hz = /bits/ 64 <50000000>;
++					required-opps = <&rpmpd_opp_low_svs>;
++					opp-peak-kBps = <200000 140000>;
++					opp-avg-kBps = <130718 133320>;
++				 };
++				 opp-100000000 {
++					opp-hz = /bits/ 64 <100000000>;
++					required-opps = <&rpmpd_opp_svs>;
++					opp-peak-kBps = <250000 160000>;
++					opp-avg-kBps = <196078 150000>;
++				 };
++				 opp-200000000 {
++					opp-hz = /bits/ 64 <200000000>;
++					required-opps = <&rpmpd_opp_nom>;
++					opp-peak-kBps = <4096000 4096000>;
++					opp-avg-kBps = <1338562 1338562>;
++				 };
++			};
 +		};
 +
-+		mnoc: interconnect@1745000 {
-+			compatible = "qcom,sdm660-mnoc";
-+			reg = <0x01745000 0xA010>;
-+			#interconnect-cells = <1>;
-+			clock-names = "bus", "bus_a", "iface";
-+			clocks = <&rpmcc RPM_SMD_MMSSNOC_AXI_CLK>,
-+				 <&rpmcc RPM_SMD_MMSSNOC_AXI_CLK_A>,
-+				 <&mmcc AHB_CLK_SRC>;
-+		};
-+
- 		tcsr_mutex_regs: syscon@1f40000 {
- 			compatible = "syscon";
- 			reg = <0x01f40000 0x20000>;
-@@ -1156,6 +1203,18 @@ mmss_smmu: iommu@cd00000 {
- 			status = "disabled";
- 		};
- 
-+		gnoc: interconnect@17900000 {
-+			compatible = "qcom,sdm660-gnoc";
-+			reg = <0x17900000 0xe000>;
-+			#interconnect-cells = <1>;
-+			/*
-+			 * This one apparently features no clocks,
-+			 * so let's not mess with the driver needlessly
-+			 */
-+			clock-names = "bus", "bus_a";
-+			clocks = <&xo_board>, <&xo_board>;
-+		};
-+
- 		apcs_glb: mailbox@17911000 {
- 			compatible = "qcom,sdm660-apcs-hmss-global";
- 			reg = <0x17911000 0x1000>;
+ 		sdhc_1: sdhci@c0c4000 {
+ 			compatible = "qcom,sdm630-sdhci", "qcom,sdhci-msm-v5";
+ 			reg = <0x0c0c4000 0x1000>,
 -- 
 2.30.1
 
