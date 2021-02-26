@@ -2,155 +2,124 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3380BC433E9
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 17:26:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 88183C433E6
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:05:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id ECABD64F1B
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 17:26:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 566BD64EE1
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:05:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbhBZR0r (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 Feb 2021 12:26:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33078 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230084AbhBZR0p (ORCPT
+        id S230024AbhBZUFR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 Feb 2021 15:05:17 -0500
+Received: from m-r1.th.seeweb.it ([5.144.164.170]:59141 "EHLO
+        m-r1.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229545AbhBZUFM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 Feb 2021 12:26:45 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCDB5C061788
-        for <phone-devel@vger.kernel.org>; Fri, 26 Feb 2021 09:26:04 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id h98so9300493wrh.11
-        for <phone-devel@vger.kernel.org>; Fri, 26 Feb 2021 09:26:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Bqhbgu1Yp7BWdaUz/Li+kTuQBD64JpudY4kka6cuYOU=;
-        b=de/+gQcXIlBR8jVkGwRajly9Ur7JLImRwKdA+cqTXTZs2N9AXIZdKdqD63bPpunD4X
-         skq0DwsLCISevZLfmV9iOR6B/XV8PPTB0urSK1KY3HiY0yFlCuOSPH1MXrt8FHbRz5dq
-         qm9yXsuQ9A/7hySFuR9vYhZQXbjIhgI0PgCuHk+GmglnrOlbRmcijDueB9SRpR8saq8X
-         Si6LEabKe9dqZqHszSD2dChA8chYp7GnBZgSNV1yPlWZYAX+1UB7xHqJLcqjV4ESJ+mW
-         XmgfxsxOViwwKJgHzfnSA+RUuMgpP09C2JcsYvCwhZoLeuwu+l1MLZTugYxD1FPiG2gG
-         YggA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Bqhbgu1Yp7BWdaUz/Li+kTuQBD64JpudY4kka6cuYOU=;
-        b=AFSBNqZnyk82gr9qnREo9RG2Z7wlxIhSUihAVRBsTOm0CWrrK1R57kZFbdJ2Mnq2Gr
-         eyufVWUZmV8php6jLzfnCDZpKqtmgBuDv3tdjj21fb843d4eu/0lwq2MKchQokjZfzZc
-         cUeln/svnUuu1IQB9yLPt+CB3lXjpOl8hd4JYJPPWGHXiIfSUwInRhI6ZVPM4nS74E3c
-         O7bMqKziEzI61BNBKVt0JvndvkbqqbLMQmqMNih7nnLoiZUaWZuncU0XVK9SJVcK/DMW
-         cJxSXMgnE0oWaSBYwsg6KYFgfmjSnym0ZTgDOeLDXS7lvddiYMmmpQekzqRyq++yl3L/
-         kC4A==
-X-Gm-Message-State: AOAM532gR56IZ1lJj5/RDGuiIpoA8tQHskbFDCptYXKCahhD0vHWOD/2
-        O/zMJ4imhB55FJ1NyhjCHeooXQ==
-X-Google-Smtp-Source: ABdhPJxv59nbOS4VjGoDEpvCB0o1HoLwhHwNNBMlJkKj6HsOImMA6tQWRJDOfwNGqiBMHmLBgvAGBQ==
-X-Received: by 2002:adf:e409:: with SMTP id g9mr4219176wrm.423.1614360363351;
-        Fri, 26 Feb 2021 09:26:03 -0800 (PST)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id m9sm57861wro.52.2021.02.26.09.26.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Feb 2021 09:26:02 -0800 (PST)
-Date:   Fri, 26 Feb 2021 17:26:01 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Kiran Gunda <kgunda@codeaurora.org>
-Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
-        lee.jones@linaro.org, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, jacek.anaszewski@gmail.com,
-        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH V2 2/2] backlight: qcom-wled: Correct the sync_toggle
- sequence
-Message-ID: <20210226172601.aknj2d4hghkkqjol@maple.lan>
-References: <1614341544-5306-1-git-send-email-kgunda@codeaurora.org>
- <1614341544-5306-3-git-send-email-kgunda@codeaurora.org>
+        Fri, 26 Feb 2021 15:05:12 -0500
+Received: from localhost.localdomain (abab236.neoplus.adsl.tpnet.pl [83.6.165.236])
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id E30FF1F995;
+        Fri, 26 Feb 2021 21:04:25 +0100 (CET)
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 00/41] SDM630/636/660/Nile&Ganges DT feature enablement
+Date:   Fri, 26 Feb 2021 21:03:30 +0100
+Message-Id: <20210226200414.167762-1-konrad.dybcio@somainline.org>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1614341544-5306-3-git-send-email-kgunda@codeaurora.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Feb 26, 2021 at 05:42:24PM +0530, Kiran Gunda wrote:
-> As per the current implementation, after FSC (Full Scale Current)
-> and brightness update the sync bits are transitioned from 1 to 0.
+Hi!
 
-This still seems to incorrectly describe the current behaviour.
+In this *mammoth* series we finally wire up things that
+have been ready for far too long.. We weren't able to
+send most of them earlier though, as CLK and ICC review
+took quite some time..
 
-Surely in most cases (i.e. every time except the first) the value of the
-sync bit is 0 when the function is called and we get both a 0 to 1
-and then a 1 to 0 transition.
+Speaking of ICC.. the defines are substituted by numbers,
+so as to allow merging independent of icc-next (Georgi Djakov stated
+the driver would be pulled in for 5.13).
 
-That is why I recommended set-then-clear terminology to describe the
-current behaviour. It is concise and correct.
+AngeloGioacchino Del Regno (14):
+  arm64: dts: qcom: sdm630: Rewrite memory map
+  arm64: dts: qcom: sdm630: Add qfprom subnodes
+  arm64: dts: qcom: sdm630: Fix TLMM node and pinctrl configuration
+  arm64: dts: qcom: sdm630: Add SDHCI2 node
+  arm64: dts: qcom: sdm630: Add interconnect and opp table to sdhc_1
+  arm64: dts: qcom: sdm630: Add GPU Clock Controller node
+  arm64: dts: qcom: sdm630: Add clocks and power domains to SMMU nodes
+  arm64: dts: qcom: sdm630: Add qcom,adreno-smmu compatible
+  arm64: dts: qcom: sdm630: Add Adreno 508 GPU configuration
+  arm64: dts: qcom: pm660: Support SPMI regulators on PMIC sid 1
+  arm64: dts: qcom: pm660l: Support SPMI regulators on PMIC sid 3
+  arm64: dts: qcom: sdm630: Configure the camera subsystem
+  arm64: dts: qcom: sdm630-xperia-nile: Add all RPM and fixed regulators
+  arm64: dts: qcom: sdm630-nile: Configure WCN3990 Bluetooth
 
+Konrad Dybcio (27):
+  arm64: dts: qcom: sdm630: Add RPMPD nodes
+  arm64: dts: qcom: sdm630: Add MMCC node
+  arm64: dts: qcom: sdm630: Add interconnect provider nodes
+  arm64: dts: qcom: sdm630: Add MDSS nodes
+  arm64: dts: qcom: sdm630: Fix intc reg indentation
+  arm64: dts: qcom: sdm630: Add USB configuration
+  arm64: dts: qcom: sdm630: Add TSENS node
+  arm64: dts: qcom: sdm630: Add modem/ADSP SMP2P nodes
+  arm64: dts: qcom: sdm630: Add thermal-zones configuration
+  arm64: dts: qcom: sdm630: Add ADSP remoteproc configuration
+  arm64: dts: qcom: sdm630: Raise tcsr_mutex_regs size
+  arm64: dts: qcom: pm660l: Add WLED support
+  arm64: dts: qcom: pm660(l): Add VADC and temp alarm nodes
+  arm64: dts: qcom: sdm660: Make the DTS an overlay on top of 630
+  arm64: dts: qcom: Add device tree for SDM636
+  arm64: dts: qcom: sdm630: Add IMEM node
+  arm64: dts: qcom: sdm660: Add required nodes for DSI1
+  arm64: dts: qcom: sdm630-nile: Use &labels
+  arm64: dts: qcom: sdm630-nile: Add USB
+  arm64: dts: qcom: sdm630-nile: Add Volume up key
+  arm64: dts: qcom: sdm630-xperia: Retire sdm630-sony-xperia-ganges.dtsi
+  arm64: dts: qcom: sdm630-nile: Add Synaptics touchscreen.
+  arm64: dts: qcom: sdm630-nile: Specify ADSP firmware name
+  arm64: dts: qcom: sdm630-nile: Enable uSD card slot
+  arm64: dts: qcom: sdm630-nile: Remove gpio-keys autorepeat
+  arm64: dts: qcom: sdm630: Add I2C functions to I2C pins
+  arm64: dts: qcom: sdm630: Add DMA to I2C hosts
 
-Daniel.
+ .../bindings/thermal/qcom-tsens.yaml          |    1 +
+ arch/arm64/boot/dts/qcom/pm660.dtsi           |  133 ++
+ arch/arm64/boot/dts/qcom/pm660l.dtsi          |   54 +
+ .../qcom/sdm630-sony-xperia-ganges-kirin.dts  |   14 +-
+ .../dts/qcom/sdm630-sony-xperia-ganges.dtsi   |   40 -
+ .../sdm630-sony-xperia-nile-discovery.dts     |    1 +
+ .../qcom/sdm630-sony-xperia-nile-pioneer.dts  |    1 +
+ .../qcom/sdm630-sony-xperia-nile-voyager.dts  |    1 +
+ .../dts/qcom/sdm630-sony-xperia-nile.dtsi     |  538 +++++-
+ arch/arm64/boot/dts/qcom/sdm630.dtsi          | 1446 +++++++++++++++--
+ .../sdm636-sony-xperia-ganges-mermaid.dts     |   14 +-
+ arch/arm64/boot/dts/qcom/sdm636.dtsi          |   23 +
+ .../boot/dts/qcom/sdm660-xiaomi-lavender.dts  |    2 -
+ arch/arm64/boot/dts/qcom/sdm660.dtsi          |  519 +++---
+ 14 files changed, 2292 insertions(+), 495 deletions(-)
+ delete mode 100644 arch/arm64/boot/dts/qcom/sdm630-sony-xperia-ganges.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/sdm636.dtsi
 
+-- 
+2.30.1
 
-
-> But, the FSC and brightness sync takes place during a 0 to 1
-> transition of the sync bits. So the hardware team recommends a
-> clear-then-set approach in order to guarantee such a transition
-> regardless of the previous register state.
-> 
-> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
-> ---
->  drivers/video/backlight/qcom-wled.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> index aef52b9..19f83ac 100644
-> --- a/drivers/video/backlight/qcom-wled.c
-> +++ b/drivers/video/backlight/qcom-wled.c
-> @@ -337,13 +337,13 @@ static int wled3_sync_toggle(struct wled *wled)
->  
->  	rc = regmap_update_bits(wled->regmap,
->  				wled->ctrl_addr + WLED3_SINK_REG_SYNC,
-> -				mask, mask);
-> +				mask, WLED3_SINK_REG_SYNC_CLEAR);
->  	if (rc < 0)
->  		return rc;
->  
->  	rc = regmap_update_bits(wled->regmap,
->  				wled->ctrl_addr + WLED3_SINK_REG_SYNC,
-> -				mask, WLED3_SINK_REG_SYNC_CLEAR);
-> +				mask, mask);
->  
->  	return rc;
->  }
-> @@ -353,17 +353,17 @@ static int wled5_mod_sync_toggle(struct wled *wled)
->  	int rc;
->  	u8 val;
->  
-> -	val = (wled->cfg.mod_sel == MOD_A) ? WLED5_SINK_REG_SYNC_MOD_A_BIT :
-> -					     WLED5_SINK_REG_SYNC_MOD_B_BIT;
->  	rc = regmap_update_bits(wled->regmap,
->  				wled->sink_addr + WLED5_SINK_REG_MOD_SYNC_BIT,
-> -				WLED5_SINK_REG_SYNC_MASK, val);
-> +				WLED5_SINK_REG_SYNC_MASK, 0);
->  	if (rc < 0)
->  		return rc;
->  
-> +	val = (wled->cfg.mod_sel == MOD_A) ? WLED5_SINK_REG_SYNC_MOD_A_BIT :
-> +					     WLED5_SINK_REG_SYNC_MOD_B_BIT;
->  	return regmap_update_bits(wled->regmap,
->  				  wled->sink_addr + WLED5_SINK_REG_MOD_SYNC_BIT,
-> -				  WLED5_SINK_REG_SYNC_MASK, 0);
-> +				  WLED5_SINK_REG_SYNC_MASK, val);
->  }
->  
->  static int wled_ovp_fault_status(struct wled *wled, bool *fault_set)
-> -- 
-> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
->  a Linux Foundation Collaborative Project
-> 
