@@ -5,27 +5,27 @@ X-Spam-Level:
 X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82A55C43331
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E084FC4321A
 	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:11:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 328CB64F1F
+	by mail.kernel.org (Postfix) with ESMTP id B50B064F44
 	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:11:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230295AbhBZULE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 Feb 2021 15:11:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39162 "EHLO
+        id S230431AbhBZULJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 Feb 2021 15:11:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229618AbhBZUKy (ORCPT
+        with ESMTP id S230203AbhBZUKy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Fri, 26 Feb 2021 15:10:54 -0500
-Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B12FC0617AB;
-        Fri, 26 Feb 2021 12:06:35 -0800 (PST)
+Received: from relay02.th.seeweb.it (relay02.th.seeweb.it [IPv6:2001:4b7a:2000:18::163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2F03C061222;
+        Fri, 26 Feb 2021 12:07:01 -0800 (PST)
 Received: from localhost.localdomain (abab236.neoplus.adsl.tpnet.pl [83.6.165.236])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 7E70D1F87C;
-        Fri, 26 Feb 2021 21:06:32 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 461A81FAB6;
+        Fri, 26 Feb 2021 21:06:58 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
@@ -40,9 +40,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 26/41] arm64: dts: qcom: Add device tree for SDM636
-Date:   Fri, 26 Feb 2021 21:03:56 +0100
-Message-Id: <20210226200414.167762-27-konrad.dybcio@somainline.org>
+Subject: [PATCH 32/41] arm64: dts: qcom: sdm630-nile: Add USB
+Date:   Fri, 26 Feb 2021 21:04:02 +0100
+Message-Id: <20210226200414.167762-33-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210226200414.167762-1-konrad.dybcio@somainline.org>
 References: <20210226200414.167762-1-konrad.dybcio@somainline.org>
@@ -52,44 +52,61 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This SoC is almost identical to its older brother,
-SDM660, with a few minor exceptions like the
-different GPU.
+Enable and configure DWC3 and QUSB2 PHY to enable USB
+functionality on Nile and Ganges boards.
 
 Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
- arch/arm64/boot/dts/qcom/sdm636.dtsi | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/sdm636.dtsi
+ .../dts/qcom/sdm630-sony-xperia-nile.dtsi     | 26 +++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm636.dtsi b/arch/arm64/boot/dts/qcom/sdm636.dtsi
-new file mode 100644
-index 000000000000..ae15d81fa3f9
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/sdm636.dtsi
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) 2020, AngeloGioacchino Del Regno <kholk11@gmail.com>
-+ * Copyright (c) 2020, Konrad Dybcio <konradybcio@gmail.com>
-+ * Copyright (c) 2020, Martin Botka <martin.botka1@gmail.com>
-+ */
+diff --git a/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-nile.dtsi b/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-nile.dtsi
+index 34a38bff09b8..e17a0f0b1e06 100644
+--- a/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-nile.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-nile.dtsi
+@@ -148,6 +148,15 @@ removed_region@85800000 {
+ 			no-map;
+ 		};
+ 	};
 +
-+#include "sdm660.dtsi"
++	/*
++	 * Until we hook up type-c detection, we
++	 * have to stick with this. But it works.
++	 */
++	extcon_usb: extcon-usb {
++		compatible = "linux,extcon-usb-gpio";
++		id-gpio = <&tlmm 58 GPIO_ACTIVE_HIGH>;
++	};
+ };
+ 
+ &blsp_i2c1 {
+@@ -182,6 +191,14 @@ &blsp2_uart1 {
+ 	/* HCI Bluetooth */
+ };
+ 
++&qusb2phy {
++	status = "okay";
 +
-+/*
-+ * According to the downstream DTS,
-+ * 636 is basically a 660 except for
-+ * different CPU frequencies, Adreno
-+ * 509 instead of 512 and lack of
-+ * turing IP. These differences will
-+ * be addressed when the aforementioned
-+ * peripherals will be enabled upstream.
-+ */
++	vdd-supply = <&vreg_l1b_0p925>;
++	vdda-pll-supply = <&vreg_l10a_1p8>;
++	vdda-phy-dpdm-supply = <&vreg_l7b_3p125>;
++};
 +
-+&adreno_gpu {
-+	compatible = "qcom,adreno-509.0", "qcom,adreno";
-+	/* Adreno 509 shares the frequency table with 512 */
+ &rpm_requests {
+ 	pm660l-regulators {
+ 		compatible = "qcom,rpm-pm660l-regulators";
+@@ -536,3 +553,12 @@ cam_vdig_default: cam-vdig-default {
+ 		drive-strength = <2>;
+ 	};
+ };
++
++&usb3 {
++	status = "okay";
++};
++
++&usb3_dwc3 {
++	dr_mode = "peripheral";
++	extcon = <&extcon_usb>;
 +};
 -- 
 2.30.1
