@@ -2,27 +2,27 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E248C433DB
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F037C433E6
 	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:07:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DCD7064E38
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:07:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0FC2764F1F
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:07:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230237AbhBZUHN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 Feb 2021 15:07:13 -0500
-Received: from relay01.th.seeweb.it ([5.144.164.162]:48769 "EHLO
-        relay01.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230261AbhBZUGx (ORCPT
+        id S230316AbhBZUGl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 Feb 2021 15:06:41 -0500
+Received: from relay04.th.seeweb.it ([5.144.164.165]:51519 "EHLO
+        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230195AbhBZUGM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 Feb 2021 15:06:53 -0500
+        Fri, 26 Feb 2021 15:06:12 -0500
 Received: from localhost.localdomain (abab236.neoplus.adsl.tpnet.pl [83.6.165.236])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 1BF051FABA;
-        Fri, 26 Feb 2021 21:05:32 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 1ECFA1FACC;
+        Fri, 26 Feb 2021 21:04:59 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
@@ -36,10 +36,11 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 13/41] arm64: dts: qcom: sdm630: Add clocks and power domains to SMMU nodes
-Date:   Fri, 26 Feb 2021 21:03:43 +0100
-Message-Id: <20210226200414.167762-14-konrad.dybcio@somainline.org>
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Konrad Dybcio <konradybcio@gmail.com>
+Subject: [PATCH 06/41] arm64: dts: qcom: sdm630: Fix intc reg indentation
+Date:   Fri, 26 Feb 2021 21:03:36 +0100
+Message-Id: <20210226200414.167762-7-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210226200414.167762-1-konrad.dybcio@somainline.org>
 References: <20210226200414.167762-1-konrad.dybcio@somainline.org>
@@ -49,77 +50,28 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+From: Konrad Dybcio <konradybcio@gmail.com>
 
-Add the required clocks and power domains for the SMMUs to work.
-
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
 ---
- arch/arm64/boot/dts/qcom/sdm630.dtsi | 31 +++++++++++++++++++++++++---
- 1 file changed, 28 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm630.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-index cc8589cb5095..9e50c9adada6 100644
+index e0c6099d0810..274d39d4ab35 100644
 --- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -563,9 +563,14 @@ snoc: interconnect@1626000 {
- 		anoc2_smmu: iommu@16c0000 {
- 			compatible = "qcom,sdm630-smmu-v2", "qcom,smmu-v2";
- 			reg = <0x016c0000 0x40000>;
--			#iommu-cells = <1>;
+@@ -1477,8 +1477,8 @@ frame@17928000 {
  
-+			assigned-clocks = <&rpmcc RPM_SMD_AGGR2_NOC_CLK>;
-+			assigned-clock-rates = <1000>;
-+			clocks = <&rpmcc RPM_SMD_AGGR2_NOC_CLK>;
-+			clock-names = "bus";
- 			#global-interrupts = <2>;
-+			#iommu-cells = <1>;
-+
- 			interrupts =
- 				<GIC_SPI 229 IRQ_TYPE_LEVEL_HIGH>,
- 				<GIC_SPI 231 IRQ_TYPE_LEVEL_HIGH>,
-@@ -907,9 +912,22 @@ pinconf-sd-cd {
- 		kgsl_smmu: iommu@5040000 {
- 			compatible = "qcom,sdm630-smmu-v2", "qcom,smmu-v2";
- 			reg = <0x05040000 0x10000>;
--			#iommu-cells = <1>;
- 
-+			/*
-+			 * GX GDSC parent is CX. We need to bring up CX for SMMU
-+			 * but we need both up for Adreno. On the other hand, we
-+			 * need to manage the GX rpmpd domain in the adreno driver.
-+			 * Enable CX/GX GDSCs here so that we can manage just the GX
-+			 * RPM Power Domain in the Adreno driver.
-+			 */
-+			power-domains = <&gpucc GPU_GX_GDSC>;
-+			clocks = <&gcc GCC_GPU_CFG_AHB_CLK>,
-+				 <&gcc GCC_BIMC_GFX_CLK>,
-+				 <&gcc GCC_GPU_BIMC_GFX_CLK>;
-+			clock-names = "iface", "mem", "mem_iface";
- 			#global-interrupts = <2>;
-+			#iommu-cells = <1>;
-+
- 			interrupts =
- 				<GIC_SPI 229 IRQ_TYPE_LEVEL_HIGH>,
- 				<GIC_SPI 231 IRQ_TYPE_LEVEL_HIGH>,
-@@ -1600,9 +1618,16 @@ blsp_i2c8: i2c@c1b8000 {
- 		mmss_smmu: iommu@cd00000 {
- 			compatible = "qcom,sdm630-smmu-v2", "qcom,smmu-v2";
- 			reg = <0x0cd00000 0x40000>;
--			#iommu-cells = <1>;
- 
-+			clocks = <&mmcc MNOC_AHB_CLK>,
-+				 <&mmcc BIMC_SMMU_AHB_CLK>,
-+				 <&rpmcc RPM_SMD_MMSSNOC_AXI_CLK>,
-+				 <&mmcc BIMC_SMMU_AXI_CLK>;
-+			clock-names = "iface-mm", "iface-smmu",
-+				      "bus-mm", "bus-smmu";
- 			#global-interrupts = <2>;
-+			#iommu-cells = <1>;
-+
- 			interrupts =
- 				<GIC_SPI 229 IRQ_TYPE_LEVEL_HIGH>,
- 				<GIC_SPI 231 IRQ_TYPE_LEVEL_HIGH>,
+ 		intc: interrupt-controller@17a00000 {
+ 			compatible = "arm,gic-v3";
+-			reg = <0x17a00000 0x10000>,	   /* GICD */
+-				  <0x17b00000 0x100000>;	  /* GICR * 8 */
++			reg = <0x17a00000 0x10000>,	/* GICD */
++			      <0x17b00000 0x100000>;	/* GICR * 8 */
+ 			#interrupt-cells = <3>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
 -- 
 2.30.1
 
