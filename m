@@ -7,22 +7,25 @@ X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6BC3C433DB
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:11:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C7BDC433DB
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:11:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A31B464EFA
-	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:11:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 122A964F0E
+	for <phone-devel@archiver.kernel.org>; Fri, 26 Feb 2021 20:11:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230391AbhBZUKx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 Feb 2021 15:10:53 -0500
-Received: from relay03.th.seeweb.it ([5.144.164.164]:44127 "EHLO
-        relay03.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230299AbhBZUKs (ORCPT
+        id S230420AbhBZUK6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 Feb 2021 15:10:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38928 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230411AbhBZUKu (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 Feb 2021 15:10:48 -0500
+        Fri, 26 Feb 2021 15:10:50 -0500
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E940EC061D7F
+        for <phone-devel@vger.kernel.org>; Fri, 26 Feb 2021 12:07:09 -0800 (PST)
 Received: from localhost.localdomain (abab236.neoplus.adsl.tpnet.pl [83.6.165.236])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 6C11F1F69E;
-        Fri, 26 Feb 2021 21:07:37 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPA id 7B8A11FABA;
+        Fri, 26 Feb 2021 21:07:07 +0100 (CET)
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
@@ -37,9 +40,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         Rob Herring <robh+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 41/41] arm64: dts: qcom: sdm630: Add DMA to I2C hosts
-Date:   Fri, 26 Feb 2021 21:04:11 +0100
-Message-Id: <20210226200414.167762-42-konrad.dybcio@somainline.org>
+Subject: [PATCH 34/41] arm64: dts: qcom: sdm630-nile: Configure WCN3990 Bluetooth
+Date:   Fri, 26 Feb 2021 21:04:04 +0100
+Message-Id: <20210226200414.167762-35-konrad.dybcio@somainline.org>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20210226200414.167762-1-konrad.dybcio@somainline.org>
 References: <20210226200414.167762-1-konrad.dybcio@somainline.org>
@@ -49,89 +52,40 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add DMA properties to I2C hosts to allow for DMA transfers.
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 
+Add a node for WCN3990 HCIUART Bluetooth.
+
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
- arch/arm64/boot/dts/qcom/sdm630.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ .../boot/dts/qcom/sdm630-sony-xperia-nile.dtsi      | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-index fccfc4e9f69d..0ec070fea034 100644
---- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-@@ -1805,6 +1805,8 @@ blsp_i2c1: i2c@c175000 {
- 					<&gcc GCC_BLSP1_AHB_CLK>;
- 			clock-names = "core", "iface";
- 			clock-frequency = <400000>;
-+			dmas = <&blsp1_dma 4>, <&blsp1_dma 5>;
-+			dma-names = "tx", "rx";
+diff --git a/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-nile.dtsi b/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-nile.dtsi
+index 1a8e179cba73..0da6dddd5768 100644
+--- a/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-nile.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm630-sony-xperia-nile.dtsi
+@@ -188,7 +188,18 @@ &blsp1_uart2 {
+ &blsp2_uart1 {
+ 	status = "okay";
  
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&i2c1_default>;
-@@ -1823,6 +1825,8 @@ blsp_i2c2: i2c@c176000 {
- 				 <&gcc GCC_BLSP1_AHB_CLK>;
- 			clock-names = "core", "iface";
- 			clock-frequency = <400000>;
-+			dmas = <&blsp1_dma 6>, <&blsp1_dma 7>;
-+			dma-names = "tx", "rx";
+-	/* HCI Bluetooth */
++	bluetooth: wcn3990-bt {
++		compatible = "qcom,wcn3998-bt";
++
++		vddio-supply = <&vreg_l13a_1p8>;
++		vddxo-suppky = <&vreg_l9a_1p8>;
++		vddrf-supply = <&vreg_l6a_1p3>;
++		vddch0-supply = <&vreg_l19a_3p3>;
++
++		max-speed = <3200000>;
++
++		clocks = <&rpmcc RPM_SMD_RF_CLK1_PIN>;
++	};
+ };
  
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&i2c2_default>;
-@@ -1841,6 +1845,8 @@ blsp_i2c3: i2c@c177000 {
- 				 <&gcc GCC_BLSP1_AHB_CLK>;
- 			clock-names = "core", "iface";
- 			clock-frequency = <400000>;
-+			dmas = <&blsp1_dma 8>, <&blsp1_dma 9>;
-+			dma-names = "tx", "rx";
- 
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&i2c3_default>;
-@@ -1859,6 +1865,8 @@ blsp_i2c4: i2c@c178000 {
- 				 <&gcc GCC_BLSP1_AHB_CLK>;
- 			clock-names = "core", "iface";
- 			clock-frequency = <400000>;
-+			dmas = <&blsp1_dma 10>, <&blsp1_dma 11>;
-+			dma-names = "tx", "rx";
- 
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&i2c4_default>;
-@@ -1905,6 +1913,8 @@ blsp_i2c5: i2c@c1b5000 {
- 				 <&gcc GCC_BLSP2_AHB_CLK>;
- 			clock-names = "core", "iface";
- 			clock-frequency = <400000>;
-+			dmas = <&blsp2_dma 4>, <&blsp2_dma 5>;
-+			dma-names = "tx", "rx";
- 
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&i2c5_default>;
-@@ -1923,6 +1933,8 @@ blsp_i2c6: i2c@c1b6000 {
- 				 <&gcc GCC_BLSP2_AHB_CLK>;
- 			clock-names = "core", "iface";
- 			clock-frequency = <400000>;
-+			dmas = <&blsp2_dma 6>, <&blsp2_dma 7>;
-+			dma-names = "tx", "rx";
- 
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&i2c6_default>;
-@@ -1941,6 +1953,8 @@ blsp_i2c7: i2c@c1b7000 {
- 				 <&gcc GCC_BLSP2_AHB_CLK>;
- 			clock-names = "core", "iface";
- 			clock-frequency = <400000>;
-+			dmas = <&blsp2_dma 8>, <&blsp2_dma 9>;
-+			dma-names = "tx", "rx";
- 
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&i2c7_default>;
-@@ -1959,6 +1973,8 @@ blsp_i2c8: i2c@c1b8000 {
- 				 <&gcc GCC_BLSP2_AHB_CLK>;
- 			clock-names = "core", "iface";
- 			clock-frequency = <400000>;
-+			dmas = <&blsp2_dma 10>, <&blsp2_dma 11>;
-+			dma-names = "tx", "rx";
- 
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&i2c8_default>;
+ &pon {
 -- 
 2.30.1
 
