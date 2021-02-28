@@ -2,78 +2,75 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D250C433E6
-	for <phone-devel@archiver.kernel.org>; Sat, 27 Feb 2021 11:04:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22BA8C433DB
+	for <phone-devel@archiver.kernel.org>; Sun, 28 Feb 2021 12:38:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 27C5564ED5
-	for <phone-devel@archiver.kernel.org>; Sat, 27 Feb 2021 11:04:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DDAC564E6B
+	for <phone-devel@archiver.kernel.org>; Sun, 28 Feb 2021 12:38:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229946AbhB0LDz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 27 Feb 2021 06:03:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60572 "EHLO
+        id S230019AbhB1Mht (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 28 Feb 2021 07:37:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229912AbhB0LDy (ORCPT
+        with ESMTP id S229982AbhB1Mht (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 27 Feb 2021 06:03:54 -0500
-X-Greylist: delayed 385 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 27 Feb 2021 03:02:59 PST
-Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54012C06174A
-        for <phone-devel@vger.kernel.org>; Sat, 27 Feb 2021 03:02:59 -0800 (PST)
-Received: from [192.168.1.57] (adsl-dyn192.91-127-215.t-com.sk [91.127.215.192])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 784991F49F;
-        Sat, 27 Feb 2021 12:02:56 +0100 (CET)
-Date:   Sat, 27 Feb 2021 12:02:50 +0100
-From:   Martin Botka <martin.botka@somainline.org>
-Subject: Re: [PATCH 34/41] arm64: dts: qcom: sdm630-nile: Configure WCN3990
- Bluetooth
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Sun, 28 Feb 2021 07:37:49 -0500
+Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3325DC06174A
+        for <phone-devel@vger.kernel.org>; Sun, 28 Feb 2021 04:37:08 -0800 (PST)
+Received: from localhost.localdomain (abab236.neoplus.adsl.tpnet.pl [83.6.165.236])
+        by m-r2.th.seeweb.it (Postfix) with ESMTPA id E554D3EBAD;
+        Sun, 28 Feb 2021 13:37:01 +0100 (CET)
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
         angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <QCP6PQ.MCHV7FHSE6SG1@somainline.org>
-In-Reply-To: <71ea4ebd-f446-ede3-7623-ae5b339d7905@somainline.org>
-References: <20210226200414.167762-1-konrad.dybcio@somainline.org>
-        <20210226200414.167762-35-konrad.dybcio@somainline.org>
-        <71ea4ebd-f446-ede3-7623-ae5b339d7905@somainline.org>
-X-Mailer: geary/3.36.3.1
+        marijn.suijten@somainline.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Jordan Crouse <jcrouse@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/msm/adreno: a5xx_power: Don't apply A540 lm_setup to other GPUs
+Date:   Sun, 28 Feb 2021 13:36:51 +0100
+Message-Id: <20210228123652.134511-1-konrad.dybcio@somainline.org>
+X-Mailer: git-send-email 2.30.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Signed-off-by: Martin Botka <martin.botka@somainline.org>
+While passing the A530-specific lm_setup func to A530 and A540
+to !A530 was fine back when only these two were supported, it
+certainly is not a good idea to send A540 specifics to smaller
+GPUs like A508 and friends.
 
-Sorry for the second Sob. Previous one was HTML. Sorry
+Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+---
+ drivers/gpu/drm/msm/adreno/a5xx_power.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Sat, Feb 27, 2021 at 11:40, Konrad Dybcio 
-<konrad.dybcio@somainline.org> wrote:
-> 
->>  From: AngeloGioacchino Del Regno 
->> <angelogioacchino.delregno@somainline.org>
-> 
-> From: Martin Botka <martin.botka@somainline.org>
-> 
-> 
-> That got caught in rebasing madness.. Should any additional mistakes 
-> appear, I'll send a V2.
-> 
-> 
-> Konrad
-> 
-
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_power.c b/drivers/gpu/drm/msm/adreno/a5xx_power.c
+index f176a6f3eff6..e58670a61df4 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_power.c
++++ b/drivers/gpu/drm/msm/adreno/a5xx_power.c
+@@ -304,7 +304,7 @@ int a5xx_power_init(struct msm_gpu *gpu)
+ 	/* Set up the limits management */
+ 	if (adreno_is_a530(adreno_gpu))
+ 		a530_lm_setup(gpu);
+-	else
++	else if (adreno_is_a540(adreno_gpu))
+ 		a540_lm_setup(gpu);
+ 
+ 	/* Set up SP/TP power collpase */
+-- 
+2.30.1
 
