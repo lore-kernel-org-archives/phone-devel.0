@@ -2,177 +2,91 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79AABC433E0
-	for <phone-devel@archiver.kernel.org>; Mon,  1 Mar 2021 10:04:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B53DC433DB
+	for <phone-devel@archiver.kernel.org>; Mon,  1 Mar 2021 14:26:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4C46B64E40
-	for <phone-devel@archiver.kernel.org>; Mon,  1 Mar 2021 10:04:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6A29264E01
+	for <phone-devel@archiver.kernel.org>; Mon,  1 Mar 2021 14:26:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231545AbhCAKE1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 1 Mar 2021 05:04:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38458 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231591AbhCAKD2 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 Mar 2021 05:03:28 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEFD7C06178B
-        for <phone-devel@vger.kernel.org>; Mon,  1 Mar 2021 02:02:43 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id n4so15451722wrx.1
-        for <phone-devel@vger.kernel.org>; Mon, 01 Mar 2021 02:02:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=XZipS0r+2O0ULBwm6Jk3yIYPHelEH46+P8E8sbBaM9U=;
-        b=GinUznSYZfF+VzEGo0tJV8PZ9XUk9HjQzr8yHcQVhrjWHd/iSlafH+RzuMh3ru33X/
-         h1wy69UaUYiGTeedXN7yuV0KfkItl42fsYmy3J09hA7jc6zLThAWPsZtDtlmfAYK92VB
-         85zhAumdUGFPzf89n5FCVN7YKcuIIQjY05rmYfVeCuzWPINd9RDF1Lf7PtN1DI9JLyHQ
-         k87xgm0W8J/l6/Vty7+AYRyuEY2xEcO2WLDttvmnn18toZi5rmx3VCB26rUUKMkzKb8u
-         H5Ed6gF96cS44epBs267nIRdnq8blQq9jbam/LnyDOksDi9w1L87zpEfBt0jtPYkNtHz
-         D5IA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=XZipS0r+2O0ULBwm6Jk3yIYPHelEH46+P8E8sbBaM9U=;
-        b=NiSuwxiBeEjvJNGJPrYnB1eT6GoPDRIZIToQpnNNy+3Mffw6DsOinsQ6VENgfXgK/E
-         DjBrD5PM+IeDLWcJmLxq8GvGWRWhmBmGYThALmjCDbaB8Tw+VtU3HRy9RtfFDW/Y2LP4
-         ij/ylVWB0CY6ZAEMHcnltjY3EwN3iEcjIQAxWlZJwSrnWAwqTX6oylvZ5e0jRSRz8WMy
-         hrZXlRjvcaH57hHdWo3zsDRDMVw2YrasphJwFnKstyyxf5SiOQIGDTlk9eedeBaa9IEv
-         dyEMurt/CHxKBfXFaltTTJn78Ed7VCh1Jn3O0QGwupcrZzGKJLsiK+mw7ilrau2LqgNE
-         yy3A==
-X-Gm-Message-State: AOAM532msNliA5M4LQmgovuufJSpgOXw1TFmKWON/+r1BTrKRwzde18K
-        MqUuH/iEsBKiZYKZ/nkoXFYtNQ==
-X-Google-Smtp-Source: ABdhPJzcEOS66BToEGp2vmi7xT4nDMdmFn965xO54Gu11rFVHj40mQNIuRUKldTKzGK+jQljMZLWNA==
-X-Received: by 2002:a5d:4e0e:: with SMTP id p14mr15421982wrt.130.1614592962247;
-        Mon, 01 Mar 2021 02:02:42 -0800 (PST)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id m6sm24444120wrv.73.2021.03.01.02.02.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Mar 2021 02:02:41 -0800 (PST)
-Date:   Mon, 1 Mar 2021 10:02:39 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Kiran Gunda <kgunda@codeaurora.org>
-Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
-        lee.jones@linaro.org, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, jacek.anaszewski@gmail.com,
-        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH V3 2/2] backlight: qcom-wled: Correct the sync_toggle
- sequence
-Message-ID: <20210301100239.orbt7km6lgjwvzii@maple.lan>
-References: <1614590916-27070-1-git-send-email-kgunda@codeaurora.org>
- <1614590916-27070-3-git-send-email-kgunda@codeaurora.org>
+        id S236216AbhCAOZ6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 1 Mar 2021 09:25:58 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54176 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233426AbhCAOZr (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 1 Mar 2021 09:25:47 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7D6EF64DBA;
+        Mon,  1 Mar 2021 14:25:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614608706;
+        bh=2AyFT3heWDrYjZIporM3KVA1yPzZkMjN8fqrhXFySwQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZPfkRP43sq484RRM+wcWVfF5jTryvoZZSK29XOmIBWptTnqGA0j4aad+zoqEt9cbJ
+         M0IvKPdX1h6+qaO/yVN1MY8+bhyuWhAEaDxtcdkvO2QpizLbRkSMyUMVatfyFoKKiv
+         W3TkjmO8e1WlcGIndcjfRizGlXpQ1W5i9iWgoD0YiCsArHvqcShIHLOTmTmdhFckZe
+         innJJVBiWGzBR8dgwTStyeV9jOrl+ZP02WPNW3gKgoZzdBGtx3jJvsUUT5ZIljPCks
+         xFCAmHeewqv3yxZzt2WKmSc2F/7+gw9qMkjLPhfjgxTu6AALygYW99O71z69Mb9rFQ
+         mrSHeZ7JTTopA==
+Date:   Mon, 1 Mar 2021 14:23:59 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] qcom: spmi-regulator: Add support for ULT LV_P50 and ULT
+ P300
+Message-ID: <20210301142359.GA20302@sirena.org.uk>
+References: <20210225213514.117031-1-konrad.dybcio@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="/9DWx/yDrRhgMJTb"
 Content-Disposition: inline
-In-Reply-To: <1614590916-27070-3-git-send-email-kgunda@codeaurora.org>
+In-Reply-To: <20210225213514.117031-1-konrad.dybcio@somainline.org>
+X-Cookie: I will not forget you.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Mar 01, 2021 at 02:58:36PM +0530, Kiran Gunda wrote:
-> As per the current implementation, after FSC (Full Scale Current)
-> and brightness update the sync bits are transitioned from set-then-clear.
 
-This does not makes sense since there are too many verbs. Set and clear
-are both verbs so in this context: "the code will set the bit and then
-the code will clear the bit".
+--/9DWx/yDrRhgMJTb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Either:
+On Thu, Feb 25, 2021 at 10:35:13PM +0100, Konrad Dybcio wrote:
+> From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.or=
+g>
+>=20
+> The ULT LV_P50 shares the same configuration as the other ULT LV_Pxxx
+> and the ULT P300 shares the same as the other ULT Pxxx.
 
-s/transitioned from set-then-clear/set-then-cleared/.
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
 
-Or:
+--/9DWx/yDrRhgMJTb
+Content-Type: application/pgp-signature; name="signature.asc"
 
-s/transitioned from set-then-clear/using a set-then-clear approach/.
+-----BEGIN PGP SIGNATURE-----
 
-> But, the FSC and brightness sync takes place during a clear-then-set
-> transition of the sync bits.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmA8+P4ACgkQJNaLcl1U
+h9D/awf9Es7wlrQZ4YCq1/go52seFRhb18M1iMcnmyVLxFtFyQYWuvKBkX8p8ugD
+E3G2z6vK5oswpVnkZfhzldKvOHU9CLwGrry7R0SE6kLdZFq+6+Rq3rN03OEqnGTc
+OsMiSyH3JOcCphbDUoPbs0wOKta/RF0H9s5uIa1Huub1lC/FRM0TW5fI66zb2+c6
+bRClqz8wcVuWtfklG/qYeqA/CXcNjE1yk8rwa7Vwj8/s9h99x2jkOIozgNGSupy1
+bgd5RhanlgWW1BUfMIoRlxncxDLA6BM/NJJu/8M2DQnNSXN/7R4ltcveUpUCcE2m
+zQAF6pDlwjCEbt1wIgdUEVuj8uMvuw==
+=X8Go
+-----END PGP SIGNATURE-----
 
-Likewise this no longer makes sense and had also become misleading.
-Two changes of state, clear and then set, do not usually result in a
-single transition.
-
-Either:
-
-s/clear-then-set/0 to 1/
-
-Alternatively, if you want to stick exclusively to the set/clear
-terminology then replace the whole quoted section with:
-
-  But, the FSC and brightness sync takes place when the sync bits are
-  set (e.g. on a rising edge).
-
-
-> So the hardware team recommends a
-> clear-then-set approach in order to guarantee such a transition
-> regardless of the previous register state.
-> 
-> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
-
-With one of each of the changes proposed above:
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-
-
-Daniel.
-
-
-> ---
->  drivers/video/backlight/qcom-wled.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> index aef52b9..19f83ac 100644
-> --- a/drivers/video/backlight/qcom-wled.c
-> +++ b/drivers/video/backlight/qcom-wled.c
-> @@ -337,13 +337,13 @@ static int wled3_sync_toggle(struct wled *wled)
->  
->  	rc = regmap_update_bits(wled->regmap,
->  				wled->ctrl_addr + WLED3_SINK_REG_SYNC,
-> -				mask, mask);
-> +				mask, WLED3_SINK_REG_SYNC_CLEAR);
->  	if (rc < 0)
->  		return rc;
->  
->  	rc = regmap_update_bits(wled->regmap,
->  				wled->ctrl_addr + WLED3_SINK_REG_SYNC,
-> -				mask, WLED3_SINK_REG_SYNC_CLEAR);
-> +				mask, mask);
->  
->  	return rc;
->  }
-> @@ -353,17 +353,17 @@ static int wled5_mod_sync_toggle(struct wled *wled)
->  	int rc;
->  	u8 val;
->  
-> -	val = (wled->cfg.mod_sel == MOD_A) ? WLED5_SINK_REG_SYNC_MOD_A_BIT :
-> -					     WLED5_SINK_REG_SYNC_MOD_B_BIT;
->  	rc = regmap_update_bits(wled->regmap,
->  				wled->sink_addr + WLED5_SINK_REG_MOD_SYNC_BIT,
-> -				WLED5_SINK_REG_SYNC_MASK, val);
-> +				WLED5_SINK_REG_SYNC_MASK, 0);
->  	if (rc < 0)
->  		return rc;
->  
-> +	val = (wled->cfg.mod_sel == MOD_A) ? WLED5_SINK_REG_SYNC_MOD_A_BIT :
-> +					     WLED5_SINK_REG_SYNC_MOD_B_BIT;
->  	return regmap_update_bits(wled->regmap,
->  				  wled->sink_addr + WLED5_SINK_REG_MOD_SYNC_BIT,
-> -				  WLED5_SINK_REG_SYNC_MASK, 0);
-> +				  WLED5_SINK_REG_SYNC_MASK, val);
->  }
->  
->  static int wled_ovp_fault_status(struct wled *wled, bool *fault_set)
-> -- 
-> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
->  a Linux Foundation Collaborative Project
-> 
+--/9DWx/yDrRhgMJTb--
