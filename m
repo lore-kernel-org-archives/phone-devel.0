@@ -7,57 +7,57 @@ X-Spam-Status: No, score=-10.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EF991C433DB
-	for <phone-devel@archiver.kernel.org>; Tue,  2 Mar 2021 13:58:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C29DAC433DB
+	for <phone-devel@archiver.kernel.org>; Tue,  2 Mar 2021 13:58:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A162764EF0
-	for <phone-devel@archiver.kernel.org>; Tue,  2 Mar 2021 13:58:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8C8DF64EFC
+	for <phone-devel@archiver.kernel.org>; Tue,  2 Mar 2021 13:58:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1443177AbhCBNwi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 2 Mar 2021 08:52:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49130 "EHLO
+        id S1447746AbhCBNwz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 2 Mar 2021 08:52:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348425AbhCBIwW (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 Mar 2021 03:52:22 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16843C061356
-        for <phone-devel@vger.kernel.org>; Tue,  2 Mar 2021 00:50:43 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id w9so8034273edt.13
-        for <phone-devel@vger.kernel.org>; Tue, 02 Mar 2021 00:50:43 -0800 (PST)
+        with ESMTP id S1344957AbhCBJBf (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 Mar 2021 04:01:35 -0500
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17813C061756
+        for <phone-devel@vger.kernel.org>; Tue,  2 Mar 2021 01:00:18 -0800 (PST)
+Received: by mail-ej1-x62c.google.com with SMTP id c10so7236341ejx.9
+        for <phone-devel@vger.kernel.org>; Tue, 02 Mar 2021 01:00:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1etITy7cj5GhtJLa/FOQQXW7yboxkS0n4AWEfPrYBhE=;
-        b=SVnqXAT2OzXedVGcbW2uy9H4c0GQhemJuAe5rGbGGgyiluQC6AQ918pKVQGYNlLfNK
-         0doPmSURVkoW6gt/foXFqOoCgNjcg+qqQDzS6vaNjwuYPufpikItgpmAVi1eivgcnObQ
-         ZkLzjLUSAYVLD2EWyui64uf1Rk0/bBRO8MubNQzf5dIDq10sD/YXHsPMNYt6wDCQ0zk3
-         oBwZ2Yds2e+oX5+MCwtQrGDnA1TCJKvE9P4N4cZ8JQGqHQFUT2Bw1tkOoFBYuU6YRoH/
-         KZBg2kT94hIyPKzh2E6PpqJo62fgnNjmuxD+y3xiSRsFpDq0n44gb1hqN412y4R5iDyF
-         HQIA==
+         :cc:content-transfer-encoding;
+        bh=OlQhZo66tdfixj0c2XUayC5dC48cYkknFAh4g2s0VB8=;
+        b=VVhxRPrsIbUWjeeEIAfPVav1chwuvvW2ogpbLjn/vg1vGxAANoefHJJk8ETghcW2De
+         KXXv2FUZAzBm01C5763rsWLGWfldabW7sEwRxOVBkTM0nCNK5OFf0iVmQyzj+AMMwDyl
+         ivHp8ULnyNeFH5o010LZ31o2PvxbUekoKg9411FrKaCLYRv3RTaBzeTqPNiQjiDOKzTg
+         39Q9rPMbz9L8K5HwSuS0ixqrts6QVmuKTBwmeoWkMMc76kZQTkznuTfqeM6p0sT7/2Mn
+         QlnS8dfgA/t4gYFKo/O0ODB6obPSs8UmC2bOdfcOWLLd0c0hpCP5YjLDwkHYNv9y1y3T
+         3MCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1etITy7cj5GhtJLa/FOQQXW7yboxkS0n4AWEfPrYBhE=;
-        b=jVix595IivO59jkU8Eo9WvEYdRaHRy3TjmPDI/hw9mNJBLoy9M29FP1YwQUyysWTWd
-         JXk8ok3lDJxHVFab0kowLSwFhfyDCoiDz1my5s2snbJXBp2c6IMznoKJKFSIN6577Ccq
-         mmnA39+j5y0U2VADeDAFSDZ6tXZWug/IUc9clj6/4agRbiZNeO0gTpyHgh8WcK/G6Pyp
-         /T5TTbTNz00l38pRl7iOHMnHGMx7P/aZt6SxB9CVjSDmDvBmCaHCYr0NUl7CpfiP/IrZ
-         5/HWBB6JN/QvfJfgOET3JjOyN1qwj/m7miSdsS3XJBnvthD/wjitT1DKxsTQakHEOWdF
-         5jZw==
-X-Gm-Message-State: AOAM531w5NFahZ5T62fYFVHJm8eDbbf8OSFmnl/LrWm9ik/gcYcj2N5O
-        XEMMEdn4DpJqd3Bu7u8Nvj2xb7BQAU8ekALZwXfywg==
-X-Google-Smtp-Source: ABdhPJyf27d0G3Qc/JOKGJQ1WR1jXyvXZJwqMV4HEIs881pPKts0F6S41TVLXiaBM4XZskAkhgkuyBI08GKfKpBz6fk=
-X-Received: by 2002:aa7:cf16:: with SMTP id a22mr19218786edy.288.1614675041833;
- Tue, 02 Mar 2021 00:50:41 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=OlQhZo66tdfixj0c2XUayC5dC48cYkknFAh4g2s0VB8=;
+        b=dUc9E5jHjFQYnQQdsadgnKen4sZdogKU1XpD1kyAYgYsjUeH9ThBDbj3aRV4sQ7VuX
+         vClukweolms1PhmCsnlILcfy9i0IzIXzg4T5qemNdAK4dRAhrxMfoRGrUemFHXBSx2Ap
+         Nx43Wm9luNv4j+WdQeBPk4Fbu3YQAzaM5W2i1W9HJfq+PIw7KIy9ojTCGxqUGb6hmRxB
+         2q1H/9JBr5C491QTp3tu5eyAkpYcF/bIn42K/NM385v0jJ0aMd7FYSn1ZGuLq3LQ6pOW
+         Z9IP8Rnr1MMkFYIi7v4FJaByWOsY+u3GDM9/pL1fAWJqWPfWhrQP6UYwyPat4xjg2UbJ
+         U8YA==
+X-Gm-Message-State: AOAM5329Qfxvjkh89eHy/4j3S6pm0hq98oKoezmjoZgkcqJ5K2lwIgLi
+        Sj8eQvKT/HEiH+U+ece5lTnidaoie0tDXd5tmUlbo2d3ru2aFQ==
+X-Google-Smtp-Source: ABdhPJzbcdp9yM+SANcB02A7Piji7QgRmHuVFYC2ehQOoZpWEmfM8Re/BPYo+miajM5iedjeo+7jPk+12Cf5EkxQtgE=
+X-Received: by 2002:a17:906:1d44:: with SMTP id o4mr18660019ejh.130.1614675616685;
+ Tue, 02 Mar 2021 01:00:16 -0800 (PST)
 MIME-Version: 1.0
-References: <20210216163647.34264-1-vincent.knecht@mailoo.org>
-In-Reply-To: <20210216163647.34264-1-vincent.knecht@mailoo.org>
+References: <20210216163647.34264-1-vincent.knecht@mailoo.org> <20210216163647.34264-2-vincent.knecht@mailoo.org>
+In-Reply-To: <20210216163647.34264-2-vincent.knecht@mailoo.org>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 2 Mar 2021 09:50:30 +0100
-Message-ID: <CACRpkdacDYg+254gqaNjDMdu8n-LzvguxLwX2w8LeGCyLLGaNQ@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] dt-bindings: input/touchscreen: add bindings for msg2638
+Date:   Tue, 2 Mar 2021 10:00:05 +0100
+Message-ID: <CACRpkdaLJzG3_M7fNC-MHOdQ6HMsqHqVccK7XkvL=PvJnycCHQ@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] Input: add MStar MSG2638 touchscreen driver
 To:     Vincent Knecht <vincent.knecht@mailoo.org>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
@@ -69,19 +69,95 @@ Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Vincent,
+
+thanks for your patch!
+
 On Tue, Feb 16, 2021 at 5:38 PM Vincent Knecht
 <vincent.knecht@mailoo.org> wrote:
 
-> This adds dts bindings for the mstar msg2638 touchscreen.
+> Add support for the msg2638 touchscreen IC from MStar.
+> This driver reuses zinitix.c structure, while the checksum and irq handle=
+r
+> functions are based on out-of-tree driver for Alcatel Idol 3 (4.7").
 >
 > Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+> ---
+> Changed in v5:
+> - use gpiod_set_value_cansleep() (Stephan G)
+> - use msleep/usleep_range() rathen than mdelay() (Stephan G)
 
-This looks good to me:
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+(...)
+
+> +#include <linux/delay.h>
+> +#include <linux/gpio.h>
+
+Please only include
+#include <linux/gpio/consumer.h>
+
+> +#define CHIP_ON_DELAY                  15 // ms
+> +#define FIRMWARE_ON_DELAY              50 // ms
+> +#define RESET_DELAY_MIN                        10000 // =C2=B5s
+> +#define RESET_DELAY_MAX                        11000 // =C2=B5s
+
+Rename the defines with _MS and _US suffixes so you don't
+need the comments, CHIP_ON_DELAY_MS etc.
+
+> +static int msg2638_init_regulators(struct msg2638_ts_data *msg2638)
+> +{
+> +       struct i2c_client *client =3D msg2638->client;
+> +       int error;
+
+I usually prefer a short name like "err" (cognitive load) but your choice.
+
+> +static u8 msg2638_checksum(u8 *data, u32 length)
+> +{
+> +       s32 sum =3D 0;
+> +       u32 i;
+> +
+> +       for (i =3D 0; i < length; i++)
+> +               sum +=3D data[i];
+> +
+> +       return (u8)((-sum) & 0xFF);
+> +}
+
+Interesting checksum algoritm.
+
+> +static int msg2638_start(struct msg2638_ts_data *msg2638)
+> +{
+> +       int error;
+> +
+> +       error =3D regulator_bulk_enable(ARRAY_SIZE(msg2638->supplies),
+> +                                     msg2638->supplies);
+> +       if (error) {
+> +               dev_err(&msg2638->client->dev, "Failed to enable regulato=
+rs: %d\n", error);
+> +               return error;
+> +       }
+> +
+> +       msleep(CHIP_ON_DELAY);
+> +
+> +       msg2638_power_on(msg2638);
+
+Maybe move enable_irq() here from power on to mirror
+the stop() function below?
+
+> +#ifdef CONFIG_OF
+> +static const struct of_device_id msg2638_of_match[] =3D {
+> +       { .compatible =3D "mstar,msg2638" },
+> +       { }
+> +};
+> +MODULE_DEVICE_TABLE(of, msg2638_of_match);
+> +#endif
+
+I think these #ifdefs are not needed anymore. We just have struct of_device=
+_id
+available at all times.
 
 Yours,
 Linus Walleij
