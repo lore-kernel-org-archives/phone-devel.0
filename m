@@ -8,54 +8,54 @@ X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16E77C433E0
-	for <phone-devel@archiver.kernel.org>; Tue,  2 Mar 2021 13:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36345C433DB
+	for <phone-devel@archiver.kernel.org>; Tue,  2 Mar 2021 13:56:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C981760C41
-	for <phone-devel@archiver.kernel.org>; Tue,  2 Mar 2021 13:56:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E74E364EFC
+	for <phone-devel@archiver.kernel.org>; Tue,  2 Mar 2021 13:56:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350418AbhCBNs1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 2 Mar 2021 08:48:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48310 "EHLO
+        id S1351232AbhCBNtY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 2 Mar 2021 08:49:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241871AbhCBCK1 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 Mar 2021 21:10:27 -0500
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89AD4C061222
-        for <phone-devel@vger.kernel.org>; Mon,  1 Mar 2021 18:05:09 -0800 (PST)
-Received: by mail-io1-xd2c.google.com with SMTP id p16so20084690ioj.4
-        for <phone-devel@vger.kernel.org>; Mon, 01 Mar 2021 18:05:09 -0800 (PST)
+        with ESMTP id S241889AbhCBCKk (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 Mar 2021 21:10:40 -0500
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA05C0611BD
+        for <phone-devel@vger.kernel.org>; Mon,  1 Mar 2021 18:05:17 -0800 (PST)
+Received: by mail-io1-xd2e.google.com with SMTP id i8so20075044iog.7
+        for <phone-devel@vger.kernel.org>; Mon, 01 Mar 2021 18:05:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ieee.org; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=YuUOZilAPqtQ1SZQR/vTqn0A0mCysPgz4pmCeU7TVwA=;
-        b=CSXUqM6rGhHKiQX2k8GL6zA4oMI4IxoVfDmGlYXBm2crqJfK0V5wqHl/US8WkpZ0Ak
-         F++JeQlUo36xDmY1/EAjeu6lPL9vMzW2hsEAb23KK7C/VpVEsyVCQY3SPE6xXISgEtT7
-         Px/dEzdrPFrlgENwv+uq4DE/Soj11T57VRLnA=
+        bh=F1s7N0juj9yvJxFuLQgWFIr4bGeoT/Cxs7pLQc/V9KA=;
+        b=R8ran+vxPbhpy6XZ2hQ4TbmdIAohuiBwl15gR5iYXwk7B8avQbJS370Gey6OKJ5PXh
+         Frdq3p8E0MEdpAQcNj+2K39GYpvOY6DsCcevBtVEp5R/IMD7/qsZQfmEA+nlFVC9Qyiy
+         AhSVR1NPfFPJo+dc74FueikX/cYz0SLiJK1S4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=YuUOZilAPqtQ1SZQR/vTqn0A0mCysPgz4pmCeU7TVwA=;
-        b=ewmpyxmcMTsDUlZnJGJjxt9SoGiN6MvYK7RGltqg27T8jpn1kX140yMrjOEHCT/igd
-         M6dLTPtHRZbwGjzAt7YMiw1boQExwym+PuxhNYH7WP5RlYpziuSRQu7N51o7KYQIAHS2
-         VoSIvzeuv66pWrrSJEO3kqxGB2yRF9QyO74fV6Uii0VjybSTMYXGD6VaaOqe8eGx8Vy6
-         BfrBM3w59pwFsMoTotS+xAO8juctsmIzCfcF6ZvYTapGJmsaTIL80JpC0Y17nfuA2z3a
-         rwm7cIxXflTfIBfcqBG+fYiBckajLkl16hgvS8onlNWHDeVuLcOAwb6kiIT9kP0KPfUU
-         OVyg==
-X-Gm-Message-State: AOAM531YJn9jTK/w4wHiNv4O/Ku/k+6foa9pGMSYh1y4KqUuwySHvly4
-        byOq/+epvLZQKWRCB77EpyqPEG2SiMqN3J41
-X-Google-Smtp-Source: ABdhPJwCRrdGCnsEA1cgycV1Nefbv3RWZiKM6W4aDW+mGlSmGj069gmdSe+Z46hECvP08Gsux5qADQ==
-X-Received: by 2002:a5e:cb4b:: with SMTP id h11mr16540014iok.108.1614650708781;
-        Mon, 01 Mar 2021 18:05:08 -0800 (PST)
+        bh=F1s7N0juj9yvJxFuLQgWFIr4bGeoT/Cxs7pLQc/V9KA=;
+        b=J+Kaq+lbtK2SmAMC5cPH1QzpOmz1JTheYEcqugY1StqGEUh4OgktDXHlBOeWmrfMtQ
+         8mtf/2gHc3XWjOIC+FsNEbWgmA8Y1/wcea1USGQH36+tHlyB4WaYWFMQ2bfhcA2MaEPm
+         +S9/htB7K45Br25ly+9VWphQEtqr1YKMXxfQPpAVFYSsixiADUcghYUwImKvXM4GrQN8
+         aDP9l7ic8Zy25+1f9zjbvNvZmuWaifuNGuZ56c48P4cEB7XUYuYn78AeUnHuDE+1sQ39
+         uARHzs67JofEFmFPDbyT3BiCcmYaXxg04+ykJEl9tD7fEBR4E4kPDDolmSFyW4C5wJVR
+         egNw==
+X-Gm-Message-State: AOAM532Fcj1hCUIgZqR9QlO3Dbux0QUrXRyPmpPB1rkQl29YwMNEBp5U
+        HD6AB+mtE4xAr+awRUCOt2ORqIuGjA0wo797
+X-Google-Smtp-Source: ABdhPJxfuF9x4IXqHRKh0yIizTV1EoWuHbxiCdS9p956UncaPEJ/KEOH7JYQR7hTQGxYtatQHocbcw==
+X-Received: by 2002:a05:6602:cc:: with SMTP id z12mr15603462ioe.190.1614650717132;
+        Mon, 01 Mar 2021 18:05:17 -0800 (PST)
 Received: from [172.22.22.26] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
-        by smtp.googlemail.com with ESMTPSA id h13sm10921008ioe.40.2021.03.01.18.05.07
+        by smtp.googlemail.com with ESMTPSA id i12sm9987070ilk.46.2021.03.01.18.05.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Mar 2021 18:05:08 -0800 (PST)
-Subject: Re: [PATCH v1 2/7] net: ipa: endpoint: Don't read unexistant register
- on IPAv3.1
+        Mon, 01 Mar 2021 18:05:16 -0800 (PST)
+Subject: Re: [PATCH v1 4/7] net: ipa: gsi: Use right masks for GSI v1.0
+ channels hw param
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>, elder@kernel.org
 Cc:     bjorn.andersson@linaro.org, agross@kernel.org, davem@davemloft.net,
@@ -64,14 +64,14 @@ Cc:     bjorn.andersson@linaro.org, agross@kernel.org, davem@davemloft.net,
         linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
         marijn.suijten@somainline.org, phone-devel@vger.kernel.org
 References: <20210211175015.200772-1-angelogioacchino.delregno@somainline.org>
- <20210211175015.200772-3-angelogioacchino.delregno@somainline.org>
+ <20210211175015.200772-5-angelogioacchino.delregno@somainline.org>
 From:   Alex Elder <elder@ieee.org>
-Message-ID: <73d19c5a-fddb-05d8-4787-de613091cbeb@ieee.org>
-Date:   Mon, 1 Mar 2021 20:05:07 -0600
+Message-ID: <476ea450-16d6-6a8f-650b-0a9becbebce5@ieee.org>
+Date:   Mon, 1 Mar 2021 20:05:15 -0600
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <20210211175015.200772-3-angelogioacchino.delregno@somainline.org>
+In-Reply-To: <20210211175015.200772-5-angelogioacchino.delregno@somainline.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -80,47 +80,103 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 2/11/21 11:50 AM, AngeloGioacchino Del Regno wrote:
-> On IPAv3.1 there is no such FLAVOR_0 register so it is impossible
-> to read tx/rx channel masks and we have to rely on the correctness
-> on the provided configuration.
+> In GSI v1.0 the register GSI_HW_PARAM_2_OFFSET has different layout
+> so the number of channels and events per EE are, of course, laid out
+> in 8 bits each (0-7, 8-15 respectively).
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  drivers/net/ipa/gsi.c     | 16 +++++++++++++---
+>  drivers/net/ipa/gsi_reg.h |  5 +++++
+>  2 files changed, 18 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ipa/gsi.c b/drivers/net/ipa/gsi.c
+> index b5460cbb085c..3311ffe514c9 100644
+> --- a/drivers/net/ipa/gsi.c
+> +++ b/drivers/net/ipa/gsi.c
+> @@ -1790,7 +1790,7 @@ static void gsi_channel_teardown(struct gsi *gsi)
+>  int gsi_setup(struct gsi *gsi)
+>  {
+>  	struct device *dev = gsi->dev;
+> -	u32 val;
+> +	u32 val, mask;
+>  	int ret;
+>  
+>  	/* Here is where we first touch the GSI hardware */
+> @@ -1804,7 +1804,12 @@ int gsi_setup(struct gsi *gsi)
+>  
+>  	val = ioread32(gsi->virt + GSI_GSI_HW_PARAM_2_OFFSET);
+>  
+> -	gsi->channel_count = u32_get_bits(val, NUM_CH_PER_EE_FMASK);
+> +	if (gsi->version == IPA_VERSION_3_1)
+> +		mask = GSIV1_NUM_CH_PER_EE_FMASK;
+> +	else
+> +		mask = NUM_CH_PER_EE_FMASK;
+> +
+> +	gsi->channel_count = u32_get_bits(val, mask);
 
-This works, and is simple.
+I have a different way of doing this, at least for
+encoding, and I'd rather use a similar convention in
+this case.  At some point it might become obvious
+that "there's got to be a better way" and I might have
+to consider something else, but for now I've been
+doing what I describe below.
 
-I think I would rather populate the available mask here
-with a mask containing the actual version-specific available
-endpoints.  On the other hand, looking at the downstream code,
-it looks like almost any of these endpoints could be used.
+Anyway, what I'd ask for here is to create a a static
+inline function in "ipa_reg.h" (or "gsi_reg.h") to
+extract these values.  In this case it might look
+like this:
 
-So, while I don't know for sure the all-1's value here is
-*correct*, it's more of a validation check anyway, so it's
-probably fine
+static inline u32 num_ev_per_ee_get(enum ipa_version version,
+				    u32 val)
+{
+        if (version == IPA_VERSION_3_0 || version == IPA_VERSION_3_1)
+                return u32_get_bits(val, GENMASK(8, 0));
+
+        return u32_get_bits(val, GENMASK(7, 3));
+}
+
+(I'm not sure if the above is correct for all versions...)
+
+Then the caller would do:
+	gsi->evt_ring_count = num_ev_per_ee_get(ipa->version, val);
+
+I'd want the same general thing for the channel count.
 
 					-Alex
 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> ---
->  drivers/net/ipa/ipa_endpoint.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/net/ipa/ipa_endpoint.c b/drivers/net/ipa/ipa_endpoint.c
-> index 06d8aa34276e..10c477e1bb90 100644
-> --- a/drivers/net/ipa/ipa_endpoint.c
-> +++ b/drivers/net/ipa/ipa_endpoint.c
-> @@ -1659,6 +1659,15 @@ int ipa_endpoint_config(struct ipa *ipa)
->  	u32 max;
->  	u32 val;
+>  	if (!gsi->channel_count) {
+>  		dev_err(dev, "GSI reports zero channels supported\n");
+>  		return -EINVAL;
+> @@ -1816,7 +1821,12 @@ int gsi_setup(struct gsi *gsi)
+>  		gsi->channel_count = GSI_CHANNEL_COUNT_MAX;
+>  	}
 >  
-> +	/* Some IPA versions don't provide a FLAVOR register and we cannot
-> +	 * check the rx/tx masks hence we have to rely on the correctness
-> +	 * of the provided configuration.
-> +	 */
-> +	if (ipa->version == IPA_VERSION_3_1) {
-> +		ipa->available = U32_MAX;
-> +		return 0;
-> +	}
+> -	gsi->evt_ring_count = u32_get_bits(val, NUM_EV_PER_EE_FMASK);
+> +	if (gsi->version == IPA_VERSION_3_1)
+> +		mask = GSIV1_NUM_EV_PER_EE_FMASK;
+> +	else
+> +		mask = NUM_EV_PER_EE_FMASK;
 > +
->  	/* Find out about the endpoints supplied by the hardware, and ensure
->  	 * the highest one doesn't exceed the number we support.
->  	 */
+> +	gsi->evt_ring_count = u32_get_bits(val, mask);
+>  	if (!gsi->evt_ring_count) {
+>  		dev_err(dev, "GSI reports zero event rings supported\n");
+>  		return -EINVAL;
+> diff --git a/drivers/net/ipa/gsi_reg.h b/drivers/net/ipa/gsi_reg.h
+> index 0e138bbd8205..4ba579fa21c2 100644
+> --- a/drivers/net/ipa/gsi_reg.h
+> +++ b/drivers/net/ipa/gsi_reg.h
+> @@ -287,6 +287,11 @@ enum gsi_generic_cmd_opcode {
+>  			GSI_EE_N_GSI_HW_PARAM_2_OFFSET(GSI_EE_AP)
+>  #define GSI_EE_N_GSI_HW_PARAM_2_OFFSET(ee) \
+>  			(0x0001f040 + 0x4000 * (ee))
+> +
+> +/* Fields below are present for IPA v3.1 with GSI version 1 */
+> +#define GSIV1_NUM_EV_PER_EE_FMASK	GENMASK(8, 0)
+> +#define GSIV1_NUM_CH_PER_EE_FMASK	GENMASK(15, 8)
+> +/* Fields below are present for IPA v3.5.1 and above */
+>  #define IRAM_SIZE_FMASK			GENMASK(2, 0)
+>  #define NUM_CH_PER_EE_FMASK		GENMASK(7, 3)
+>  #define NUM_EV_PER_EE_FMASK		GENMASK(12, 8)
 > 
 
