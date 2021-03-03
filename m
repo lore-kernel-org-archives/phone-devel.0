@@ -2,119 +2,55 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8041C15500
-	for <phone-devel@archiver.kernel.org>; Thu,  4 Mar 2021 00:27:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B45CC41620
+	for <phone-devel@archiver.kernel.org>; Thu,  4 Mar 2021 00:27:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 99BEB64EA4
-	for <phone-devel@archiver.kernel.org>; Thu,  4 Mar 2021 00:27:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4C33264EBD
+	for <phone-devel@archiver.kernel.org>; Thu,  4 Mar 2021 00:27:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237583AbhCDA0o (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 3 Mar 2021 19:26:44 -0500
-Received: from m-r2.th.seeweb.it ([5.144.164.171]:53497 "EHLO
-        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233586AbhCBXzB (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 Mar 2021 18:55:01 -0500
-X-Greylist: delayed 474 seconds by postgrey-1.27 at vger.kernel.org; Tue, 02 Mar 2021 18:54:42 EST
-Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        id S233586AbhCDA0x (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 3 Mar 2021 19:26:53 -0500
+Received: from relay02.th.seeweb.it ([5.144.164.163]:46619 "EHLO
+        relay02.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1388052AbhCCUlc (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 3 Mar 2021 15:41:32 -0500
+Received: from [192.168.1.101] (abac94.neoplus.adsl.tpnet.pl [83.6.166.94])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id F157E3ED8B;
-        Wed,  3 Mar 2021 00:42:36 +0100 (CET)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        angelogioacchino.delregno@somainline.org,
-        konrad.dybcio@somainline.org, martin.botka@somainline.org,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] clk: qcom: rcg2: Rectify clk_gfx3d rate rounding without mux division
-Date:   Wed,  3 Mar 2021 00:41:06 +0100
-Message-Id: <20210302234106.3418665-1-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.30.1
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id A48B91FAD9;
+        Wed,  3 Mar 2021 21:40:33 +0100 (CET)
+Subject: Re: [PATCH] arm64: dts: qcom: msm8996: Add usb3 interrupts
+To:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        "linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+        "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
+Cc:     "agross@kernel.org" <agross@kernel.org>,
+        "bjorn.andersson@linaro.org" <bjorn.andersson@linaro.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <dvfyYKA9vnJdunbQ1CL-dgjXtv_1wYpRnezdc3PHoCyrgmfi5KP0Dn4MtaumQEpHIQAHL9tTdqcaCK7YJWyrdWXCrPeGd4uMh-nFeu7xQYw=@protonmail.com>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+Message-ID: <8401b0c6-3386-9041-6f12-e56a24ec3e6e@somainline.org>
+Date:   Wed, 3 Mar 2021 21:40:32 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <dvfyYKA9vnJdunbQ1CL-dgjXtv_1wYpRnezdc3PHoCyrgmfi5KP0Dn4MtaumQEpHIQAHL9tTdqcaCK7YJWyrdWXCrPeGd4uMh-nFeu7xQYw=@protonmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-In case the mux is not divided parent_req was mistakenly not assigned to
-leading __clk_determine_rate to determine the best frequency setting for
-a requested rate of 0, resulting in the msm8996 platform not booting.
-Rectify this by refactoring the logic to unconditionally assign to
-parent_req.rate with the clock rate the caller is expecting.
+Patchwork didn't pick this up for some reason, but I guess it's only important that it hit the maintainers.
 
-Fixes: 7cbb78a99db6 ("clk: qcom: rcg2: Stop hardcoding gfx3d pingpong parent numbers")
-Reported-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+
 Tested-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-Reviewed-By: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- drivers/clk/qcom/clk-rcg2.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
-index 42f13a2d1cc1..05ff3b0d233e 100644
---- a/drivers/clk/qcom/clk-rcg2.c
-+++ b/drivers/clk/qcom/clk-rcg2.c
-@@ -730,7 +730,8 @@ static int clk_gfx3d_determine_rate(struct clk_hw *hw,
- 	struct clk_rate_request parent_req = { };
- 	struct clk_rcg2_gfx3d *cgfx = to_clk_rcg2_gfx3d(hw);
- 	struct clk_hw *xo, *p0, *p1, *p2;
--	unsigned long request, p0_rate;
-+	unsigned long p0_rate;
-+	u8 mux_div = cgfx->div;
- 	int ret;
- 
- 	p0 = cgfx->hws[0];
-@@ -750,14 +751,15 @@ static int clk_gfx3d_determine_rate(struct clk_hw *hw,
- 		return 0;
- 	}
- 
--	request = req->rate;
--	if (cgfx->div > 1)
--		parent_req.rate = request = request * cgfx->div;
-+	if (mux_div == 0)
-+		mux_div = 1;
-+
-+	parent_req.rate = req->rate * mux_div;
- 
- 	/* This has to be a fixed rate PLL */
- 	p0_rate = clk_hw_get_rate(p0);
- 
--	if (request == p0_rate) {
-+	if (parent_req.rate == p0_rate) {
- 		req->rate = req->best_parent_rate = p0_rate;
- 		req->best_parent_hw = p0;
- 		return 0;
-@@ -765,7 +767,7 @@ static int clk_gfx3d_determine_rate(struct clk_hw *hw,
- 
- 	if (req->best_parent_hw == p0) {
- 		/* Are we going back to a previously used rate? */
--		if (clk_hw_get_rate(p2) == request)
-+		if (clk_hw_get_rate(p2) == parent_req.rate)
- 			req->best_parent_hw = p2;
- 		else
- 			req->best_parent_hw = p1;
-@@ -780,8 +782,7 @@ static int clk_gfx3d_determine_rate(struct clk_hw *hw,
- 		return ret;
- 
- 	req->rate = req->best_parent_rate = parent_req.rate;
--	if (cgfx->div > 1)
--		req->rate /= cgfx->div;
-+	req->rate /= mux_div;
- 
- 	return 0;
- }
--- 
-2.30.1
 
