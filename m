@@ -1,111 +1,158 @@
-Return-Path: <phone-devel-owner@kernel.org>
+Return-Path: <SRS0=l4nU=ID=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD4F5C433DB
-	for <phone-devel@archiver.kernel.org>; Fri,  5 Mar 2021 12:34:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB3E9C433E9
+	for <phone-devel@archiver.kernel.org>; Fri,  5 Mar 2021 15:39:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7581865004
-	for <phone-devel@archiver.kernel.org>; Fri,  5 Mar 2021 12:34:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A2CC165090
+	for <phone-devel@archiver.kernel.org>; Fri,  5 Mar 2021 15:39:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232571AbhCEMdy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 5 Mar 2021 07:33:54 -0500
-Received: from 4.mo173.mail-out.ovh.net ([46.105.34.219]:34281 "EHLO
-        4.mo173.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232536AbhCEMdY (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 5 Mar 2021 07:33:24 -0500
-X-Greylist: delayed 1202 seconds by postgrey-1.27 at vger.kernel.org; Fri, 05 Mar 2021 07:33:23 EST
-Received: from player691.ha.ovh.net (unknown [10.110.103.112])
-        by mo173.mail-out.ovh.net (Postfix) with ESMTP id 40A39164217
-        for <phone-devel@vger.kernel.org>; Fri,  5 Mar 2021 12:55:57 +0100 (CET)
-Received: from etezian.org (213-243-141-64.bb.dnainternet.fi [213.243.141.64])
-        (Authenticated sender: andi@etezian.org)
-        by player691.ha.ovh.net (Postfix) with ESMTPSA id 1E23A1BCE06D7;
-        Fri,  5 Mar 2021 11:55:50 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass (GARM-104R0055e4a7d2d-f7ba-4b7b-8661-49069e8a18d8,
-                    8BB957472A3FEC517196918F6D0E8FFF2983C800) smtp.auth=andi@etezian.org
-X-OVh-ClientIp: 213.243.141.64
-Date:   Fri, 5 Mar 2021 13:55:48 +0200
-From:   Andi Shyti <andi@etezian.org>
-To:     Caleb Connolly <caleb@connolly.tech>
-Cc:     Andi Shyti <andi@etezian.org>,
+        id S229779AbhCEPiz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 5 Mar 2021 10:38:55 -0500
+Received: from msg-1.mailo.com ([213.182.54.11]:46954 "EHLO msg-1.mailo.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230409AbhCEPik (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 5 Mar 2021 10:38:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
+        t=1614958706; bh=IJWTVFVLVMiRjAF1EDvvIM29SEwvY2ZYRcWp/GQI8rI=;
+        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+         MIME-Version:Content-Transfer-Encoding;
+        b=XE56SCppg1580xBH8Z+79j67RZrcWDxxVWps1USrIz4qyhBoJHUlH1FCFLlgMrkDz
+         6uExHSltNLRWyFuX2EzbmwDAl0wKYVdxLLsrGl5o07d4lV4KnIFmpWDOcFP+cELucx
+         k/Qj08BSN8c41ktE1ecd2wE3MApTdlb/+12QZ9rI=
+Received: by b-6.in.mailobj.net [192.168.90.16] with ESMTP
+        via proxy.mailoo.org [213.182.55.207]
+        Fri,  5 Mar 2021 16:38:26 +0100 (CET)
+X-EA-Auth: Gd1awqFxyD+mTJVbODcKBi2spwT16i1aNLBodGHcrQIuJUI+URUu2rsIDz+LiL2ptYO6KFQRQzUXBTpUio79cAX56L8w6EAZM5Zc1BIt/FA=
+From:   Vincent Knecht <vincent.knecht@mailoo.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Vincent Knecht <vincent.knecht@mailoo.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] input: s6sy761: fix coordinate read bit shift
-Message-ID: <YEIcRBjVSrAIaB+c@jack.zhora.eu>
-References: <20210305020310.550527-1-caleb@connolly.tech>
+        Rob Herring <robh+dt@kernel.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Michael Srba <Michael.Srba@seznam.cz>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v6 1/2] dt-bindings: input/touchscreen: add bindings for msg2638
+Date:   Fri,  5 Mar 2021 16:38:04 +0100
+Message-Id: <20210305153815.126937-1-vincent.knecht@mailoo.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210305020310.550527-1-caleb@connolly.tech>
-X-Ovh-Tracer-Id: 2039286209993949911
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduledruddtiedgfeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeetnhguihcuufhhhihtihcuoegrnhguihesvghtvgiiihgrnhdrohhrgheqnecuggftrfgrthhtvghrnheptdfgudduhfefueeujeefieehtdeftefggeevhefgueellefhudetgeeikeduieefnecukfhppedtrddtrddtrddtpddvudefrddvgeefrddugedurdeigeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrheiledurdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheprghnughisegvthgviihirghnrdhorhhgpdhrtghpthhtohepphhhohhnvgdquggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Caleb,
+This adds dts bindings for the mstar msg2638 touchscreen.
 
-> -----BEGIN PGP SIGNED MESSAGE-----
-> Hash: SHA256
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+---
+Changed in v6:
+- change touchscreen-size-x/y values in example section to reflect
+  scaling removal in driver (Dmitry)
+- add Linus W. Reviewed-by
+Changed in v5: nothing
+Changed in v4:
+- don't use wildcards in compatible strings (Rob H)
+- rename from msg26xx to msg2638
+- rename example pinctrl-0 to &ts_int_reset_default for consistency
+Changed in v3:
+- added `touchscreen-size-x: true` and `touchscreen-size-y: true` properties
+Changed in v2:
+- changed M-Star to MStar in title line
+- changed reset gpio to active-low in example section
+---
+ .../input/touchscreen/mstar,msg2638.yaml      | 69 +++++++++++++++++++
+ 1 file changed, 69 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml
 
-Please clean up the commit message.
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml b/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml
+new file mode 100644
+index 000000000000..3a42c23faf6f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml
+@@ -0,0 +1,69 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/input/touchscreen/mstar,msg2638.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: MStar msg2638 touchscreen controller Bindings
++
++maintainers:
++  - Vincent Knecht <vincent.knecht@mailoo.org>
++
++allOf:
++  - $ref: touchscreen.yaml#
++
++properties:
++  compatible:
++    const: mstar,msg2638
++
++  reg:
++    const: 0x26
++
++  interrupts:
++    maxItems: 1
++
++  reset-gpios:
++    maxItems: 1
++
++  vdd-supply:
++    description: Power supply regulator for the chip
++
++  vddio-supply:
++    description: Power supply regulator for the I2C bus
++
++  touchscreen-size-x: true
++  touchscreen-size-y: true
++
++additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - reset-gpios
++  - touchscreen-size-x
++  - touchscreen-size-y
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++      #address-cells = <1>;
++      #size-cells = <0>;
++      touchscreen@26 {
++        compatible = "mstar,msg2638";
++        reg = <0x26>;
++        interrupt-parent = <&msmgpio>;
++        interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
++        reset-gpios = <&msmgpio 100 GPIO_ACTIVE_LOW>;
++        pinctrl-names = "default";
++        pinctrl-0 = <&ts_int_reset_default>;
++        vdd-supply = <&pm8916_l17>;
++        vddio-supply = <&pm8916_l5>;
++        touchscreen-size-x = <2048>;
++        touchscreen-size-y = <2048>;
++      };
++    };
++
++...
+-- 
+2.29.2
 
-> The touch coordinates are read by shifting a value left by 3,
-> this is incorrect and effectively causes the coordinates to
-> be half of the correct value.
-> 
-> Shift by 4 bits instead to report the correct value.
-> 
-> This matches downstream examples, and has been confirmed on my
-> device (OnePlus 7 Pro).
 
-The real reason is that from the register we get:
 
-       byte 3             byte 2             byte 1
-+--------+--------+ +-----------------+ +-----------------+
-|        |        | |                 | |                 |
-| X[3:0] | Y[3:0] | |     Y[11:4]     | |     X[11:4]     |
-|        |        | |                 | |                 |
-+--------+--------+ +-----------------+ +-----------------+
-
-and the 12 bit values have to fit in a 16bit variable.
-
-The upper 8 bits (in event[2] and event[1] need to be shifted
-left by '4' and not by '3' in order to leave space to the lower
-4 bits (in event[3]).
-
-> 
-> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
-> ---
->  drivers/input/touchscreen/s6sy761.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/input/touchscreen/s6sy761.c b/drivers/input/touchscreen/s6sy761.c
-> index b63d7fdf0cd2..85a1f465c097 100644
-> --- a/drivers/input/touchscreen/s6sy761.c
-> +++ b/drivers/input/touchscreen/s6sy761.c
-> @@ -145,8 +145,8 @@ static void s6sy761_report_coordinates(struct s6sy761_data *sdata,
->  	u8 major = event[4];
->  	u8 minor = event[5];
->  	u8 z = event[6] & S6SY761_MASK_Z;
-> -	u16 x = (event[1] << 3) | ((event[3] & S6SY761_MASK_X) >> 4);
-> -	u16 y = (event[2] << 3) | (event[3] & S6SY761_MASK_Y);
-> +	u16 x = (event[1] << 4) | ((event[3] & S6SY761_MASK_X) >> 4);
-> +	u16 y = (event[2] << 4) | (event[3] & S6SY761_MASK_Y);
-
-the devil knows how that '3' has ended up there :)
-
-Thanks for catching it!
-
-Reviewed-by: Andi Shyti <andi@etezian.org>
-
-Andi
