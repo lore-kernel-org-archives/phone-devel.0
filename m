@@ -2,115 +2,86 @@ Return-Path: <SRS0=Ozvr=IE=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-20.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26EE0C433E6
-	for <phone-devel@archiver.kernel.org>; Sat,  6 Mar 2021 03:38:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92AAAC433DB
+	for <phone-devel@archiver.kernel.org>; Sat,  6 Mar 2021 10:50:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id ED21164FF0
-	for <phone-devel@archiver.kernel.org>; Sat,  6 Mar 2021 03:38:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 597386501D
+	for <phone-devel@archiver.kernel.org>; Sat,  6 Mar 2021 10:50:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229775AbhCFDhw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 5 Mar 2021 22:37:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34098 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229704AbhCFDhq (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 5 Mar 2021 22:37:46 -0500
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 296DCC061761
-        for <phone-devel@vger.kernel.org>; Fri,  5 Mar 2021 19:37:46 -0800 (PST)
-Received: by mail-oi1-x22d.google.com with SMTP id y131so1940240oia.8
-        for <phone-devel@vger.kernel.org>; Fri, 05 Mar 2021 19:37:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=rHZ5FvfODielV3865BOdOPXLrgDutB9qVkI03AEdwD0=;
-        b=JUOf9T69RwsyubIa9dd8IAYn+3NTYgb3686aVzJpFzA8fuuUpeY9d+dgaYpAMqvyTp
-         Rvp9Jf2ZtJqVhFjiyslVHY8ohHJ4bPl9XnqjTuCS31KhJ5EA75+Begg/ENDNz7aPr3U5
-         NOsBAvluJoQHqvE+0iCb+MZ224+XamSGlKTQRWG0tP4kXZPMJTSpCQRat2QuSYOCSvs2
-         OPq1Pkjd3AGk/gwFdhHOT26gcVmoPn2ZsK4m+mXa3IF8hI2k1YwUZkJF6xcdH66htuMf
-         YJy+7L74DpEYxDmbWwSSZ/EvAkuT2KCpbxF9WmddyabOvDUY/5+WJVhAInyVt+7Pi1aD
-         Wfpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=rHZ5FvfODielV3865BOdOPXLrgDutB9qVkI03AEdwD0=;
-        b=AN94/Y0jPjInVM1EgeBdx0Npu+PzWLpS1D8qgx1rB5/uBhGdUj3Fl7b8wctDlY/1mw
-         AxlRCzUM+JwuPbC1P1sWtrMZXw8mW6pcAPH3euJ1a6S5lXSNmVu6FkLdDQHghHrIgfHz
-         htub4qp30BfpfeOBuuJuAfvnjO2h5j55cGerADG5eoOU/jfOTvTNRmkgPMJ9qzreg8d5
-         Tn+J0A+/12XLMsW62lPvDWpT/0cb9S3GCM4Aa6CVDnxRRH6V1iIzEok9aalMTe4iDk/f
-         noqpGkqRjXobbskKKMtcn/FAxKe3J/Eoo4KCZDQzY/t2gAplbaAu6Psvw7JFOKh5k86K
-         bFWQ==
-X-Gm-Message-State: AOAM530RTAKssXXBkPQsR1r43+buWkJZfUaZfoLj9ujhJ4hod+hlCSJE
-        eOAc0m5Z/Ay2SMzakmLOYftsEQ==
-X-Google-Smtp-Source: ABdhPJwIkZgBOOpKWfQgb//5e3dgWoueQE0112J073vzGiQvAQbiZqluUYFWF34EYSzhj7QLOGrDIw==
-X-Received: by 2002:aca:ea83:: with SMTP id i125mr9688989oih.18.1615001865201;
-        Fri, 05 Mar 2021 19:37:45 -0800 (PST)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id u19sm1041795ote.15.2021.03.05.19.37.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Mar 2021 19:37:44 -0800 (PST)
-Date:   Fri, 5 Mar 2021 21:37:42 -0600
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Caleb Connolly <caleb@connolly.tech>
-Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        id S230093AbhCFKtm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 6 Mar 2021 05:49:42 -0500
+Received: from relay05.th.seeweb.it ([5.144.164.166]:47621 "EHLO
+        relay05.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229738AbhCFKtJ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 6 Mar 2021 05:49:09 -0500
+Received: from [192.168.1.101] (abac94.neoplus.adsl.tpnet.pl [83.6.166.94])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id E9B223E8B8;
+        Sat,  6 Mar 2021 11:49:06 +0100 (CET)
+Subject: Re: [PATCH] arm64: dts: add support for the Pixel 2 XL
+To:     Caleb Connolly <caleb@connolly.tech>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         Anton Vorontsov <anton@enomsg.org>,
         Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Tony Luck <tony.luck@intel.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: add support for the Pixel 2 XL
-Message-ID: <YEL5BuaivN5LgZyG@builder.lan>
 References: <20210305213235.398252-1-caleb@connolly.tech>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+Message-ID: <2e7178e5-9c97-808e-b2ca-19ef0bb667e3@somainline.org>
+Date:   Sat, 6 Mar 2021 11:49:06 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <20210305213235.398252-1-caleb@connolly.tech>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri 05 Mar 15:35 CST 2021, Caleb Connolly wrote:
 
-Please add "qcom: " to $subject as well.
-
+On 05.03.2021 22:35, Caleb Connolly wrote:
 > Add a minimal devicetree capable of booting on the Pixel 2 XL MSM8998
 > device.
-> 
+>
 > It's currently possible to boot the device into postmarketOS with USB
 > networking, however the display panel depends on Display Stream
 > Compression which is not yet supported in the kernel.
-> 
+>
 > The bootloader also requires that the dtbo partition contains a device
 > tree overlay with a particular id which has to be overlayed onto the
 > existing dtb. It's possible to use a specially crafted dtbo partition to
 > workaround this, more information is available here:
-> 
+>
 >     https://gitlab.com/calebccff/dtbo-google-wahoo-mainline
-> 
-
-So it's not possible to just erase the dto, like on most other devices?
-
+>
 > Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 > ---
 > It's possible to get wifi working by running Bjorns diag-router in the
 > background, without this the wifi firmware crashes every 10 seconds or
 > so. This is the same issue encountered on the OnePlus 5.
-> 
+>
 >  arch/arm64/boot/dts/qcom/Makefile             |   1 +
 >  .../boot/dts/qcom/msm8998-google-taimen.dts   |  14 +
 >  .../boot/dts/qcom/msm8998-google-wahoo.dtsi   | 391 ++++++++++++++++++
 >  3 files changed, 406 insertions(+)
 >  create mode 100644 arch/arm64/boot/dts/qcom/msm8998-google-taimen.dts
 >  create mode 100644 arch/arm64/boot/dts/qcom/msm8998-google-wahoo.dtsi
-> 
+>
 > diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
 > index 5113fac80b7a..d942d3ec3928 100644
 > --- a/arch/arm64/boot/dts/qcom/Makefile
@@ -130,9 +101,6 @@ So it's not possible to just erase the dto, like on most other devices?
 > +++ b/arch/arm64/boot/dts/qcom/msm8998-google-taimen.dts
 > @@ -0,0 +1,14 @@
 > +// SPDX-License-Identifier: GPL-2.0-only
-
-Would you be willing to release these as BSD-3-Clause instead?
-
 > +/*
 > + * Copyright (c) 2020, Caleb Connolly <caleb@connolly.tech>
 > + */
@@ -144,7 +112,15 @@ Would you be willing to release these as BSD-3-Clause instead?
 > +/ {
 > +	model = "Google Pixel 2 XL";
 > +	compatible = "google,taimen", "google,wahoo", "qcom,msm8998", "qcom,msm8998-mtp";
+
+Drop the mtp compatible. Also, afaict wahoo is a shared platform name for P2/2XL, so perhaps using the same naming scheme we used for Xperias/Lumias (soc-vendor-platform-board) would clear up some confusion. In this case, I'm not sure about the wahoo compatible, but I reckon it's fine for it to stay so that it's easier to introduce potential quirks that concern both devices.
+
+
 > +	qcom,msm-id = <0x124 0x20001>;
+
+Move it to the common dtsi, unless the other Pixel ships with a different SoC revision.
+
+
 > +};
 > diff --git a/arch/arm64/boot/dts/qcom/msm8998-google-wahoo.dtsi b/arch/arm64/boot/dts/qcom/msm8998-google-wahoo.dtsi
 > new file mode 100644
@@ -177,45 +153,17 @@ Would you be willing to release these as BSD-3-Clause instead?
 > +		/* Add "earlycon" intended to be used in combination with UART serial console */
 > +		bootargs = "clk_ignore_unused earlycon console=ttyGS0,115200";// loglevel=10 drm.debug=15 debug";
 
-Please drop earlycon from this list (user should be able to add it if
-they care later?) and use stdout-path to set the console, like we do on
-other devices.
+clk_ignore_unused is a BIG hack!
 
-> +	};
-> +
-> +	reserved-memory {
-> +		#address-cells = <2>;
-> + 		#size-cells = <2>;
-> + 		ranges;
-> +
-> +		mpss_mem: memory@8cc00000 {
-> +			reg = <0 0x8cc00000 0 0x7800000>;
-> +			no-map;
-> +		};
-> +
-> +		venus_mem: memory@94400000 {
-> +			reg = <0 0x94400000 0 0x500000>;
-> +			no-map;
-> +		};
-> +
-> +		mba_mem: memory@94100000 {
-> +			reg = <0 0x94900000 0 0x200000>;
-> +			no-map;
-> +		};
-> +
-> +		slpi_mem: memory@94b00000 {
-> +			reg = <0 0x94b00000 0 0x700000>;
-> +			no-map;
-> +		};
-> +
-> +		ramoops: ramoops@a1810000 {
-> +			compatible = "ramoops";
-> +			reg = <0 0xa1810000 0 0x200000>;
-> +			record-size = <0x20000>;
-> +			console-size = <0x100000>;
-> +			pmsg-size = <0x80000>;
-> +		};
-> +	};
+You should trace which clocks are important for it to stay alive and fix it on the driver side.
+
+What breaks if it's not there? Does it still happen with Angelo's clk patches that got in for the 5.12
+
+window?
+
+Aside from that, //loglevel... should also go.
+
+
 > +
 > +	vph_pwr: vph-pwr-regulator {
 > +		compatible = "regulator-fixed";
@@ -224,6 +172,10 @@ other devices.
 > +		regulator-boot-on;
 > +	};
 > +};
+
+Don't you need to specify voltage here?
+
+
 > +
 > +&blsp1_uart3 {
 > +	status = "disabled";
@@ -238,13 +190,10 @@ other devices.
 > +		max-speed = <3200000>;
 > +	};
 > +};
-> +
-> +&pcie0 {
-> +	status = "disabled";
 
-Isn't &pcie0 already disabled, from msm8998.dtsi?
+Either enable the UART or rid the bluetooth for now.
 
-> +};
+
 > +
 > +&pm8005_lsid1 {
 > +	pm8005-regulators {
@@ -253,242 +202,18 @@ Isn't &pcie0 already disabled, from msm8998.dtsi?
 > +		vdd_s1-supply = <&vph_pwr>;
 > +
 > +		pm8005_s1: s1 { /* VDD_GFX supply */
-> +			regulator-min-microvolt = <524000>;
-> +			regulator-max-microvolt = <1100000>;
-> +			regulator-enable-ramp-delay = <500>;
-> +
-> +			/* hack until we rig up the gpu consumer */
-> +			regulator-always-on;
-> +		};
-> +	};
-> +};
-> +
-> +&qusb2phy {
-> +	status = "okay";
-> +
-> +	vdda-pll-supply = <&vreg_l12a_1p8>;
-> +	vdda-phy-dpdm-supply = <&vreg_l24a_3p075>;
-> +};
-> +
-> +&remoteproc_adsp {
-> +	status = "okay";
-> +
-> +	firmware-name = "qcom/pixel2/adsp.mdt";
-> +};
-> +
-> +&remoteproc_mss {
-> +	firmware-name = "qcom/pixel2/mba.mbn",
-> +	                "qcom/pixel2/modem.mdt";
-> +};
-> +
-> +&remoteproc_slpi {
-> +	status = "okay";
-> +
-> +	firmware-name = "qcom/pixel2/slpi_v2.mdt";
-> +};
-> +
-> +&rpm_requests {
-> +	pm8998-regulators {
-> +		compatible = "qcom,rpm-pm8998-regulators";
-> +
-> +		vdd_s1-supply = <&vph_pwr>;
-> +		vdd_s2-supply = <&vph_pwr>;
-> +		vdd_s3-supply = <&vph_pwr>;
-> +		vdd_s4-supply = <&vph_pwr>;
-> +		vdd_s5-supply = <&vph_pwr>;
-> +		vdd_s6-supply = <&vph_pwr>;
-> +		vdd_s7-supply = <&vph_pwr>;
-> +		vdd_s8-supply = <&vph_pwr>;
-> +		vdd_s9-supply = <&vph_pwr>;
-> +		vdd_s10-supply = <&vph_pwr>;
-> +		vdd_s11-supply = <&vph_pwr>;
-> +		vdd_s12-supply = <&vph_pwr>;
-> +		vdd_s13-supply = <&vph_pwr>;
-> +		vdd_l1_l27-supply = <&vreg_s7a_1p025>;
-> +		vdd_l2_l8_l17-supply = <&vreg_s3a_1p35>;
-> +		vdd_l3_l11-supply = <&vreg_s7a_1p025>;
-> +		vdd_l4_l5-supply = <&vreg_s7a_1p025>;
-> +		vdd_l6-supply = <&vreg_s5a_2p04>;
-> +		vdd_l7_l12_l14_l15-supply = <&vreg_s5a_2p04>;
-> +		vdd_l9-supply = <&vreg_bob>;
-> +		vdd_l10_l23_l25-supply = <&vreg_bob>;
-> +		vdd_l13_l19_l21-supply = <&vreg_bob>;
-> +		vdd_l16_l28-supply = <&vreg_bob>;
-> +		vdd_l18_l22-supply = <&vreg_bob>;
-> +		vdd_l20_l24-supply = <&vreg_bob>;
-> +		vdd_l26-supply = <&vreg_s3a_1p35>;
-> +		vdd_lvs1_lvs2-supply = <&vreg_s4a_1p8>;
-> +
-> +		vreg_s3a_1p35: s3 {
-> +			regulator-min-microvolt = <1352000>;
-> +			regulator-max-microvolt = <1352000>;
-> +		};
-> +		vreg_s4a_1p8: s4 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +			regulator-allow-set-load;
-> +		};
-> +		vreg_s5a_2p04: s5 {
-> +			regulator-min-microvolt = <1904000>;
-> +			regulator-max-microvolt = <2040000>;
-> +		};
-> +		vreg_s7a_1p025: s7 {
-> +			regulator-min-microvolt = <900000>;
-> +			regulator-max-microvolt = <1028000>;
-> +		};
-> +		vreg_l1a_0p875: l1 {
-> +			regulator-min-microvolt = <880000>;
-> +			regulator-max-microvolt = <880000>;
-> +		};
-> +		vreg_l2a_1p2: l2 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1200000>;
-> +		};
-> +		vreg_l3a_1p0: l3 {
-> +			regulator-min-microvolt = <1000000>;
-> +			regulator-max-microvolt = <1000000>;
-> +		};
-> +		vreg_l5a_0p8: l5 {
-> +			regulator-min-microvolt = <800000>;
-> +			regulator-max-microvolt = <800000>;
-> +		};
-> +		vreg_l6a_1p8: l6 {
-> +			regulator-min-microvolt = <1808000>;
-> +			regulator-max-microvolt = <1808000>;
-> +		};
-> +		vreg_l7a_1p8: l7 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +		vreg_l8a_1p2: l8 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1200000>;
-> +		};
-> +		vreg_l9a_1p8: l9 {
-> +			regulator-min-microvolt = <1808000>;
-> +			regulator-max-microvolt = <2960000>;
-> +		};
-> +		vreg_l10a_1p8: l10 {
-> +			regulator-min-microvolt = <1808000>;
-> +			regulator-max-microvolt = <2960000>;
-> +		};
-> +		vreg_l11a_1p0: l11 {
-> +			regulator-min-microvolt = <1000000>;
-> +			regulator-max-microvolt = <1000000>;
-> +		};
-> +		vreg_l12a_1p8: l12 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +		vreg_l13a_2p95: l13 {
-> +			regulator-min-microvolt = <1808000>;
-> +			regulator-max-microvolt = <2960000>;
-> +		};
-> +		vreg_l14a_1p88: l14 {
-> +			regulator-min-microvolt = <1880000>;
-> +			regulator-max-microvolt = <1880000>;
-> +		};
-> +		vreg_15a_1p8: l15 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +		vreg_l16a_2p7: l16 {
-> +			regulator-min-microvolt = <2704000>;
-> +			regulator-max-microvolt = <2704000>;
-> +		};
-> +		vreg_l17a_1p3: l17 {
-> +			regulator-min-microvolt = <1304000>;
-> +			regulator-max-microvolt = <1304000>;
-> +		};
-> +		vreg_l18a_2p7: l18 {
-> +			regulator-min-microvolt = <2704000>;
-> +			regulator-max-microvolt = <2704000>;
-> +		};
-> +		vreg_l19a_3p0: l19 {
-> +			regulator-min-microvolt = <3008000>;
-> +			regulator-max-microvolt = <3008000>;
-> +		};
-> +		vreg_l20a_2p95: l20 {
-> +			regulator-min-microvolt = <2960000>;
-> +			regulator-max-microvolt = <2960000>;
-> +			regulator-allow-set-load;
-> +		};
-> +		vreg_l21a_2p95: l21 {
-> +			regulator-min-microvolt = <2960000>;
-> +			regulator-max-microvolt = <2960000>;
-> +			regulator-allow-set-load;
-> +			regulator-system-load = <800000>;
-> +		};
-> +		vreg_l22a_2p85: l22 {
-> +			regulator-min-microvolt = <2864000>;
-> +			regulator-max-microvolt = <2864000>;
-> +		};
-> +		vreg_l23a_3p3: l23 {
-> +			regulator-min-microvolt = <3312000>;
-> +			regulator-max-microvolt = <3312000>;
-> +		};
-> +		vreg_l24a_3p075: l24 {
-> +			regulator-min-microvolt = <3088000>;
-> +			regulator-max-microvolt = <3088000>;
-> +		};
-> +		vreg_l25a_3p3: l25 {
-> +			regulator-min-microvolt = <3104000>;
-> +			regulator-max-microvolt = <3312000>;
-> +		};
-> +		vreg_l26a_1p2: l26 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1200000>;
-> +			regulator-allow-set-load;
-> +		};
-> +		vreg_l28_3p0: l28 {
-> +			regulator-min-microvolt = <3008000>;
-> +			regulator-max-microvolt = <3008000>;
-> +		};
-> +
-> +		vreg_lvs1a_1p8: lvs1 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +
-> +		vreg_lvs2a_1p8: lvs2 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +
-> +	};
-> +
-> +	pmi8998-regulators {
-> +		compatible = "qcom,rpm-pmi8998-regulators";
-> +
-> +		vdd_bob-supply = <&vph_pwr>;
-> +
-> +		vreg_bob: bob {
-> +			regulator-min-microvolt = <3312000>;
-> +			regulator-max-microvolt = <3600000>;
-> +		};
-> +	};
-> +};
+
+regulator-name = "vdd_gfx";
+
+
 > +
 > +&spmi_bus {
 > +	pmic@0 {
 > +		compatible = "qcom,pm8994", "qcom,spmi-pmic";
-
-qcom,pm8994?
-
-Per the include of pm8998.dtsi I think you already have pmic@0 defined,
-with compatible of qcom,pm8998 here (which you override).
-
 > +		reg = <0x0 SPMI_USID>;
 > +		#address-cells = <1>;
 > +		#size-cells = <0>;
 > +		pon@800 {
-
-But pmic@0 already has pon@800 defined as &pm8998_pon, which seems to be
-defined identically to yours.
-
-So I think you should be able to drop this entire &spmi_bus node and its
-children, but perhaps I'm just missing something obvious here?
-
 > +			compatible = "qcom,pm8916-pon";
 > +
 > +			reg = <0x800>;
@@ -505,84 +230,9 @@ children, but perhaps I'm just missing something obvious here?
 > +		};
 > +	};
 > +};
-> +
-> +&tlmm {
-> +	gpio-reserved-ranges = <0 4>, <81 4>;
-> +};
-> +
-> +/*
-> + * The device does contain a USB3 capable type-c port,
-> + * however it doesn't seem to work when superspeed mode is
-> + * enabled.
-> + */
-> +&usb3 {
-> +	status = "okay";
-> +
-> +	/* Operate "GCC_USB30_MASTER_CLK" in HS mode (>=60 MHz) */
-> +	assigned-clock-rates = <19200000>, <60000000>;
-> +
-> +	/* Disable USB3 pipe_clk requirement */
-> +	qcom,select-utmi-as-pipe-clk;
-> +};
-> +
-> +&usb3_dwc3 {
-> +	/* Drop USB 3 SuperSpeed PHY to bring up the "usb0" interface */
-> +	phys = <&qusb2phy>;
-> +	phy-names = "usb2-phy";
-> +
-> +	/* We can only operate at USB 2.0 speeds */
-> +	maximum-speed = "high-speed";
-> +
-> +	/* Force to peripheral until we have Type-C hooked up */
-> +	dr_mode = "peripheral";
-> +};
-> +
-> +&ufshc {
-> +	vcc-supply = <&vreg_l20a_2p95>;
-> +	vccq-supply = <&vreg_l26a_1p2>;
-> +	vccq2-supply = <&vreg_s4a_1p8>;
-> +	vcc-max-microamp = <750000>;
-> +	vccq-max-microamp = <560000>;
-> +	vccq2-max-microamp = <750000>;
-> +};
-> +
-> +&ufsphy {
-> +	vdda-phy-supply = <&vreg_l1a_0p875>;
-> +	vdda-pll-supply = <&vreg_l2a_1p2>;
-> +	vddp-ref-clk-supply = <&vreg_l26a_1p2>;
-> +	vdda-phy-max-microamp = <51400>;
-> +	vdda-pll-max-microamp = <14600>;
-> +	vddp-ref-clk-max-microamp = <100>;
-> +	vddp-ref-clk-always-on;
-> +};
-> +
-> +&wifi {
-> +	status = "okay";
-> +
 
-Can you please disable diag-router and try adding this here instead:
-
-	clocks = <&rpmcc RPM_SMD_RF_CLK2_PIN>, <&rpmcc RPM_SMD_QDSS_CLK>;
-	clock-names = "cxo_ref_clk_pin", "qdss";
-
-What you describe in your comment above seems like what I saw on sm8150,
-that launching diag-router would cause something on the modem side to
-keep the debug subsystem clock on - which in turn caused WiFi not to
-crash during loading.
+That's a lot of indentation, it would be better to add a label: somewhere instead.. Moreover, the exact same pwrkey node is already present in pm8998.dtsi, so you should just drop this.
 
 
-I don't know why this was required, or if it's just working around
-some other issue we're having.
+Konrad
 
-Regards,
-Bjorn
-
-> +	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
-> +	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
-> +	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
-> +	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
-> +};
-> -- 
-> 2.29.2
-> 
-> 
