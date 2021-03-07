@@ -2,138 +2,98 @@ Return-Path: <SRS0=kziP=IF=vger.kernel.org=phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-21.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7368FC433E0
-	for <phone-devel@archiver.kernel.org>; Sun,  7 Mar 2021 11:39:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ABE80C433E6
+	for <phone-devel@archiver.kernel.org>; Sun,  7 Mar 2021 23:14:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3DB9A65105
-	for <phone-devel@archiver.kernel.org>; Sun,  7 Mar 2021 11:39:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7920565165
+	for <phone-devel@archiver.kernel.org>; Sun,  7 Mar 2021 23:14:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230184AbhCGLhz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 7 Mar 2021 06:37:55 -0500
-Received: from relay04.th.seeweb.it ([5.144.164.165]:58805 "EHLO
-        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230289AbhCGLhT (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 Mar 2021 06:37:19 -0500
-Received: from localhost.localdomain (abac94.neoplus.adsl.tpnet.pl [83.6.166.94])
-        by m-r1.th.seeweb.it (Postfix) with ESMTPA id B0C891F50F;
-        Sun,  7 Mar 2021 12:37:11 +0100 (CET)
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-Date:   Sun,  7 Mar 2021 12:35:45 +0100
-Message-Id: <20210307113550.7720-1-konrad.dybcio@somainline.org>
-X-Mailer: git-send-email 2.30.1
+        id S229965AbhCGXNx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 7 Mar 2021 18:13:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58130 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233251AbhCGXNb (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 Mar 2021 18:13:31 -0500
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D3C0C06174A;
+        Sun,  7 Mar 2021 15:13:31 -0800 (PST)
+Received: by mail-pj1-x1031.google.com with SMTP id f2-20020a17090a4a82b02900c67bf8dc69so1957657pjh.1;
+        Sun, 07 Mar 2021 15:13:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=jGcwt7DEuJ68Ac2bsaHWCN7LSfJT9ajCQ9YM+pMaaiU=;
+        b=f2SxAqJ3sBOCsYuLf96uInoECdBQ16qxhYvu8ZgXQ5CQaxuTxglbjBwzrn7QiZbmy3
+         67983VSfwGSmDaqtlcPuIO1jVUcrEeUL5Za9/wvxw/vKjO7Urzt/Qu0u+C4u3Rue6v0M
+         qKjHS6DNIGabGu/9zNbLBGx4NywL4QaWglvxFlmUMpyn/INXv5vKXs4qIoHcM+d4lMwK
+         uUAf2ru3eScxGlF6X+xnNmKbOGVPcWJCtoRoJAOcVC5P/cBG83vMY73xnwbbL07bQIcS
+         u0/c2fds35WOuWKxDVcYVcv7oTSylwQiDhgJD+/sbKCRE1qEzhC8E6nio2QvXhXbLvre
+         sJqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=jGcwt7DEuJ68Ac2bsaHWCN7LSfJT9ajCQ9YM+pMaaiU=;
+        b=Sj962aa4aurowgI5VjHbPSE42sxP14qYUVGmvFp9ymuQLq/QMGwrZ6er7IpuDnbCj5
+         shyXby98kcawfW74ZjERr9VhKKbZQcAvlVqgyUeQwinaVbMrjl+lgdzsPiRY7Q+qNJQN
+         5ZfxWsEBhwq8+LH3t2aOGNumAwKdLxGn7Q31DIOqCOjhacf5As/YJqPr5huwwJPsqYWR
+         NW7VUY0BYJtEmUQqV5ehDxwfxDp3eVeL+RfXnobSPLgUxDT/NqLK67I7gAO2EgADtfuB
+         UflDHHR2JNvbmTFAF+ZFjv7c6POARAhcuMK9ACdNr+OUOzALXeQk/+js/mP5DkztccKs
+         FGEA==
+X-Gm-Message-State: AOAM531HiNfy4AYYRW2Q0TNhKNeL/1n8ZbwJg+4dFESJ/pOHR7bxwTPa
+        W0lMLdeNHXYo4g9XJY3P/xQ=
+X-Google-Smtp-Source: ABdhPJwK+sK9iuVv30RZQmzbTOnaCRhhSu58z68pbkVfwTiJUvCz5eD/ZsdzmBkJ/svoOQWvRplM0w==
+X-Received: by 2002:a17:90a:31cc:: with SMTP id j12mr21228287pjf.203.1615158811083;
+        Sun, 07 Mar 2021 15:13:31 -0800 (PST)
+Received: from google.com ([2620:15c:202:201:bc9b:5ab2:d763:15bc])
+        by smtp.gmail.com with ESMTPSA id mz11sm5855009pjb.6.2021.03.07.15.13.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Mar 2021 15:13:30 -0800 (PST)
+Date:   Sun, 7 Mar 2021 15:13:27 -0800
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     andi@etezian.org, Rob Herring <robh@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] input: s6sy761: fix coordinate read bit shift
+Message-ID: <YEVeFz0wFtLXRG7v@google.com>
+References: <20210305185710.225168-1-caleb@connolly.tech>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210305185710.225168-1-caleb@connolly.tech>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add support for BCM43596 dual-band AC chip, found in
-SONY Xperia X Performance, XZ and XZs smartphones (and
-*possibly* other devices from other manufacturers).
-The chip doesn't require any special handling and seems to work
-just fine OOTB.
+On Fri, Mar 05, 2021 at 06:58:10PM +0000, Caleb Connolly wrote:
+> The touch coordinate register contains the following:
+> 
+>         byte 3             byte 2             byte 1
+> +--------+--------+ +-----------------+ +-----------------+
+> |        |        | |                 | |                 |
+> | X[3:0] | Y[3:0] | |     Y[11:4]     | |     X[11:4]     |
+> |        |        | |                 | |                 |
+> +--------+--------+ +-----------------+ +-----------------+
+> 
+> Bytes 2 and 1 need to be shifted left by 4 bits, the least significant
+> nibble of each is stored in byte 3. Currently they are only
+> being shifted by 3 causing the reported coordinates to be incorrect.
+> 
+> This matches downstream examples, and has been confirmed on my
+> device (OnePlus 7 Pro).
+> 
+> Fixes: 0145a7141e59 ("Input: add support for the Samsung S6SY761
+> touchscreen")
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 
-PCIe IDs taken from: https://github.com/sonyxperiadev/kernel/commit/9e43fefbac8e43c3d7792e73ca52a052dd86d7e3.patch
+Applied, thank you.
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c       | 2 ++
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c       | 4 ++++
- drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h | 4 ++++
- 3 files changed, 10 insertions(+)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-index 45037decba40..38ca0517f3cf 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-@@ -723,6 +723,7 @@ static u32 brcmf_chip_tcm_rambase(struct brcmf_chip_priv *ci)
- 	case BRCM_CC_43666_CHIP_ID:
- 		return 0x200000;
- 	case BRCM_CC_4359_CHIP_ID:
-+	case BRCM_CC_43596_CHIP_ID:
- 		return (ci->pub.chiprev < 9) ? 0x180000 : 0x160000;
- 	case BRCM_CC_4364_CHIP_ID:
- 	case CY_CC_4373_CHIP_ID:
-@@ -1411,6 +1412,7 @@ bool brcmf_chip_sr_capable(struct brcmf_chip *pub)
- 		reg = chip->ops->read32(chip->ctx, addr);
- 		return (reg & CC_SR_CTL0_ENABLE_MASK) != 0;
- 	case BRCM_CC_4359_CHIP_ID:
-+	case BRCM_CC_43596_CHIP_ID:
- 	case CY_CC_43012_CHIP_ID:
- 		addr = CORE_CC_REG(pmu->base, retention_ctl);
- 		reg = chip->ops->read32(chip->ctx, addr);
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index ad79e3b7e74a..da604fa17f94 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -71,6 +71,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
- 	BRCMF_FW_ENTRY(BRCM_CC_43570_CHIP_ID, 0xFFFFFFFF, 43570),
- 	BRCMF_FW_ENTRY(BRCM_CC_4358_CHIP_ID, 0xFFFFFFFF, 4358),
- 	BRCMF_FW_ENTRY(BRCM_CC_4359_CHIP_ID, 0xFFFFFFFF, 4359),
-+	BRCMF_FW_ENTRY(BRCM_CC_43596_CHIP_ID, 0xFFFFFFFF, 4359),
- 	BRCMF_FW_ENTRY(BRCM_CC_4364_CHIP_ID, 0xFFFFFFFF, 4364),
- 	BRCMF_FW_ENTRY(BRCM_CC_4365_CHIP_ID, 0x0000000F, 4365B),
- 	BRCMF_FW_ENTRY(BRCM_CC_4365_CHIP_ID, 0xFFFFFFF0, 4365C),
-@@ -2107,6 +2108,9 @@ static const struct pci_device_id brcmf_pcie_devid_table[] = {
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43570_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4358_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4359_DEVICE_ID),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_43596_DEVICE_ID),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_43596_2G_DEVICE_ID),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_43596_5G_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_2G_DEVICE_ID),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43602_5G_DEVICE_ID),
-diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-index 00309b272a0e..03542c096e40 100644
---- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-@@ -43,6 +43,7 @@
- #define BRCM_CC_43570_CHIP_ID		43570
- #define BRCM_CC_4358_CHIP_ID		0x4358
- #define BRCM_CC_4359_CHIP_ID		0x4359
-+#define BRCM_CC_43596_CHIP_ID		43596
- #define BRCM_CC_43602_CHIP_ID		43602
- #define BRCM_CC_4364_CHIP_ID		0x4364
- #define BRCM_CC_4365_CHIP_ID		0x4365
-@@ -72,6 +73,9 @@
- #define BRCM_PCIE_43570_DEVICE_ID	0x43d9
- #define BRCM_PCIE_4358_DEVICE_ID	0x43e9
- #define BRCM_PCIE_4359_DEVICE_ID	0x43ef
-+#define BRCM_PCIE_43596_DEVICE_ID	0x4415
-+#define BRCM_PCIE_43596_2G_DEVICE_ID	0x4416
-+#define BRCM_PCIE_43596_5G_DEVICE_ID	0x4417
- #define BRCM_PCIE_43602_DEVICE_ID	0x43ba
- #define BRCM_PCIE_43602_2G_DEVICE_ID	0x43bb
- #define BRCM_PCIE_43602_5G_DEVICE_ID	0x43bc
 -- 
-2.30.1
-
+Dmitry
