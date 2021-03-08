@@ -1,99 +1,83 @@
-Return-Path: <SRS0=kziP=IF=vger.kernel.org=phone-devel-owner@kernel.org>
+Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ABE80C433E6
-	for <phone-devel@archiver.kernel.org>; Sun,  7 Mar 2021 23:14:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 554A8C433E9
+	for <phone-devel@archiver.kernel.org>; Mon,  8 Mar 2021 17:23:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7920565165
-	for <phone-devel@archiver.kernel.org>; Sun,  7 Mar 2021 23:14:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 11A0165240
+	for <phone-devel@archiver.kernel.org>; Mon,  8 Mar 2021 17:23:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229965AbhCGXNx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 7 Mar 2021 18:13:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58130 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233251AbhCGXNb (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 Mar 2021 18:13:31 -0500
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D3C0C06174A;
-        Sun,  7 Mar 2021 15:13:31 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id f2-20020a17090a4a82b02900c67bf8dc69so1957657pjh.1;
-        Sun, 07 Mar 2021 15:13:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=jGcwt7DEuJ68Ac2bsaHWCN7LSfJT9ajCQ9YM+pMaaiU=;
-        b=f2SxAqJ3sBOCsYuLf96uInoECdBQ16qxhYvu8ZgXQ5CQaxuTxglbjBwzrn7QiZbmy3
-         67983VSfwGSmDaqtlcPuIO1jVUcrEeUL5Za9/wvxw/vKjO7Urzt/Qu0u+C4u3Rue6v0M
-         qKjHS6DNIGabGu/9zNbLBGx4NywL4QaWglvxFlmUMpyn/INXv5vKXs4qIoHcM+d4lMwK
-         uUAf2ru3eScxGlF6X+xnNmKbOGVPcWJCtoRoJAOcVC5P/cBG83vMY73xnwbbL07bQIcS
-         u0/c2fds35WOuWKxDVcYVcv7oTSylwQiDhgJD+/sbKCRE1qEzhC8E6nio2QvXhXbLvre
-         sJqw==
+        id S230517AbhCHRXY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 Mar 2021 12:23:24 -0500
+Received: from mail-io1-f54.google.com ([209.85.166.54]:33931 "EHLO
+        mail-io1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229580AbhCHRXG (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Mar 2021 12:23:06 -0500
+Received: by mail-io1-f54.google.com with SMTP id o11so10802886iob.1;
+        Mon, 08 Mar 2021 09:23:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=jGcwt7DEuJ68Ac2bsaHWCN7LSfJT9ajCQ9YM+pMaaiU=;
-        b=Sj962aa4aurowgI5VjHbPSE42sxP14qYUVGmvFp9ymuQLq/QMGwrZ6er7IpuDnbCj5
-         shyXby98kcawfW74ZjERr9VhKKbZQcAvlVqgyUeQwinaVbMrjl+lgdzsPiRY7Q+qNJQN
-         5ZfxWsEBhwq8+LH3t2aOGNumAwKdLxGn7Q31DIOqCOjhacf5As/YJqPr5huwwJPsqYWR
-         NW7VUY0BYJtEmUQqV5ehDxwfxDp3eVeL+RfXnobSPLgUxDT/NqLK67I7gAO2EgADtfuB
-         UflDHHR2JNvbmTFAF+ZFjv7c6POARAhcuMK9ACdNr+OUOzALXeQk/+js/mP5DkztccKs
-         FGEA==
-X-Gm-Message-State: AOAM531HiNfy4AYYRW2Q0TNhKNeL/1n8ZbwJg+4dFESJ/pOHR7bxwTPa
-        W0lMLdeNHXYo4g9XJY3P/xQ=
-X-Google-Smtp-Source: ABdhPJwK+sK9iuVv30RZQmzbTOnaCRhhSu58z68pbkVfwTiJUvCz5eD/ZsdzmBkJ/svoOQWvRplM0w==
-X-Received: by 2002:a17:90a:31cc:: with SMTP id j12mr21228287pjf.203.1615158811083;
-        Sun, 07 Mar 2021 15:13:31 -0800 (PST)
-Received: from google.com ([2620:15c:202:201:bc9b:5ab2:d763:15bc])
-        by smtp.gmail.com with ESMTPSA id mz11sm5855009pjb.6.2021.03.07.15.13.29
+        bh=RQjWqFD5wtkyfUIW1WZ9F3A9s4yaC+w0TsogpotfHXw=;
+        b=YJqLXI+y1UycUiGHy7us+1mEtGNxS5TYtrlcqV52nobLZZWZgM5X/C8YdbLDW6UpfN
+         0BLw3Q5cw/iJ3oTHCPuekVryQS0dbZJvJ2Rgrvl2jjG6yYkqKKKJO4utHq4yTOo2QBix
+         SgRSeM1uT5SuKCSJt/NKPDV14RuqoX3NZJv8URmiFricGS647eM+STzxtbc7aJDa7hCe
+         h9Vc2RvRrhScy2LqRKKYBE03OOTw00tUTon+DTbn3A1m20LTewVzoTGqYZrff21C2fkt
+         I1o8EyqYyZbUOWPkZ5jjjIKtLdPDvKSwii2O2XftU2Pn31EfcOXwxzcV5ji8JLsK/W52
+         RO9w==
+X-Gm-Message-State: AOAM533E9BQoFCPjTcayuhG1+pNLAhsPRUvOnbA2dA1DtXmjhKf+hdZM
+        SYCWL2FJmIQ0pbjS0PKI6g==
+X-Google-Smtp-Source: ABdhPJwzjYZQ0iKrMYwPPyOUdQ4fQgPZWbVP5rBhyfkE9htYbReu0KOKQeZYX+M1L1juH8ezO0Mfag==
+X-Received: by 2002:a5e:c809:: with SMTP id y9mr19991612iol.192.1615224185972;
+        Mon, 08 Mar 2021 09:23:05 -0800 (PST)
+Received: from robh.at.kernel.org ([64.188.179.253])
+        by smtp.gmail.com with ESMTPSA id c16sm6471107ils.2.2021.03.08.09.23.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Mar 2021 15:13:30 -0800 (PST)
-Date:   Sun, 7 Mar 2021 15:13:27 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Caleb Connolly <caleb@connolly.tech>
-Cc:     andi@etezian.org, Rob Herring <robh@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] input: s6sy761: fix coordinate read bit shift
-Message-ID: <YEVeFz0wFtLXRG7v@google.com>
-References: <20210305185710.225168-1-caleb@connolly.tech>
+        Mon, 08 Mar 2021 09:23:05 -0800 (PST)
+Received: (nullmailer pid 2657013 invoked by uid 1000);
+        Mon, 08 Mar 2021 17:23:02 -0000
+Date:   Mon, 8 Mar 2021 10:23:02 -0700
+From:   Rob Herring <robh@kernel.org>
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc:     Amit Kucheria <amitk@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        martin.botka@somainline.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, marijn.suijten@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        Andy Gross <agross@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Zhang Rui <rui.zhang@intel.com>, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 15/41] arm64: dts: qcom: sdm630: Add TSENS node
+Message-ID: <20210308172302.GA2656960@robh.at.kernel.org>
+References: <20210226200414.167762-1-konrad.dybcio@somainline.org>
+ <20210226200414.167762-16-konrad.dybcio@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210305185710.225168-1-caleb@connolly.tech>
+In-Reply-To: <20210226200414.167762-16-konrad.dybcio@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Mar 05, 2021 at 06:58:10PM +0000, Caleb Connolly wrote:
-> The touch coordinate register contains the following:
+On Fri, 26 Feb 2021 21:03:45 +0100, Konrad Dybcio wrote:
+> This will enable temperature reporting for various SoC
+> components.
 > 
->         byte 3             byte 2             byte 1
-> +--------+--------+ +-----------------+ +-----------------+
-> |        |        | |                 | |                 |
-> | X[3:0] | Y[3:0] | |     Y[11:4]     | |     X[11:4]     |
-> |        |        | |                 | |                 |
-> +--------+--------+ +-----------------+ +-----------------+
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> ---
+>  .../devicetree/bindings/thermal/qcom-tsens.yaml       |  1 +
+>  arch/arm64/boot/dts/qcom/sdm630.dtsi                  | 11 +++++++++++
+>  2 files changed, 12 insertions(+)
 > 
-> Bytes 2 and 1 need to be shifted left by 4 bits, the least significant
-> nibble of each is stored in byte 3. Currently they are only
-> being shifted by 3 causing the reported coordinates to be incorrect.
-> 
-> This matches downstream examples, and has been confirmed on my
-> device (OnePlus 7 Pro).
-> 
-> Fixes: 0145a7141e59 ("Input: add support for the Samsung S6SY761
-> touchscreen")
-> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 
-Applied, thank you.
-
--- 
-Dmitry
+Acked-by: Rob Herring <robh@kernel.org>
