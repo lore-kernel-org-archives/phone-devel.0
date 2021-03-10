@@ -2,100 +2,93 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34E2EC433DB
-	for <phone-devel@archiver.kernel.org>; Wed, 10 Mar 2021 09:22:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C767C4332E
+	for <phone-devel@archiver.kernel.org>; Wed, 10 Mar 2021 16:32:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D8E7C64FC4
-	for <phone-devel@archiver.kernel.org>; Wed, 10 Mar 2021 09:22:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 697E664FD3
+	for <phone-devel@archiver.kernel.org>; Wed, 10 Mar 2021 16:32:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231283AbhCJJVx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 10 Mar 2021 04:21:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49334 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232468AbhCJJVq (ORCPT
+        id S229929AbhCJQbq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 10 Mar 2021 11:31:46 -0500
+Received: from mail-40134.protonmail.ch ([185.70.40.134]:42218 "EHLO
+        mail-40134.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231244AbhCJQbi (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 10 Mar 2021 04:21:46 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D94C061764
-        for <phone-devel@vger.kernel.org>; Wed, 10 Mar 2021 01:21:45 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id f12so22453950wrx.8
-        for <phone-devel@vger.kernel.org>; Wed, 10 Mar 2021 01:21:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=1dMDsRJi6X7RFDQQQ96QgnONRBTG+sEDdR1IWXfZlxI=;
-        b=W+DJoNj9bBYATgZUAqeGOcJC+D6Hm0fUTfpOX/nfrQorUYX0n4GMgTKiGPm9maOEGo
-         jJEbPk9YxrksTMIUWEKLTMMPZUE3K3JD1uzy2/YgERbc+DtReqEclprcHzcXbUZkCtgK
-         dofcYGgRLjspqQ02wswCtKFFlcgHYCG7pI64jxsoFj6wjEdDKRS1gt8ucvtPMr1+wiXH
-         V/ZWINFeo54CPqxA/rG5FASsH7SuIr/xMoPbF+VsDdIRqKv/UxlwLwcteDBdVTSJWc0O
-         mMDifDG6brOm+PToPYN85FgTl6AZyRU9xfUh9opj8fWJz2+IRQ0JWOsQc08QN5F0mrcp
-         5KcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=1dMDsRJi6X7RFDQQQ96QgnONRBTG+sEDdR1IWXfZlxI=;
-        b=n2mDVbyZ/5ao/iJvj4jkqz5Es+Ielj/sbmffet15tU+3lfUpKleyqmkqcDlEIHXQ3z
-         UT7vV827E9Qo6TW6Fn8yO1FngaktTmsit1M/13kiUK3SQG+0bQ8XXJzfZzTJgVoS3Yrn
-         kYwcEC/M2EZ282eDS0x2bjvM8TSUGWvwRyCoTvCDBtSZDAthxd60Umb50SmQ3bDktu/2
-         +l2sixIRxSUv+xx4wINi0fCwfrz4Vdni6XAqbWhYdoCpo/Imt4kLdlor+4cGiBZkyYT2
-         TaKxLmZLE7Um4WB6zhcvV7q49duo/rXO3MzEyQ/hwIxlchKFcd+Ps95ENa2DJWlhoR6t
-         2h2Q==
-X-Gm-Message-State: AOAM530Eb0xnAH2dVB+JDLnlToVuOyzEcqZqqGYP5Wn7gQUA5P4rkHDA
-        Bb2/VFXGb7lnTDZEV630JJCox3fAjTsWzg==
-X-Google-Smtp-Source: ABdhPJxuPtNe3ElR6uJROL0vscwDtpq5CtKpwKbdJ63dZObdhgzH/OA+daBodljwBXleRgt+pFfpUg==
-X-Received: by 2002:a5d:4485:: with SMTP id j5mr2393819wrq.339.1615368104145;
-        Wed, 10 Mar 2021 01:21:44 -0800 (PST)
-Received: from dell ([91.110.221.204])
-        by smtp.gmail.com with ESMTPSA id a131sm8233043wmc.48.2021.03.10.01.21.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Mar 2021 01:21:43 -0800 (PST)
-Date:   Wed, 10 Mar 2021 09:21:41 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Dan Murphy <dmurphy@ti.com>, Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
+        Wed, 10 Mar 2021 11:31:38 -0500
+Date:   Wed, 10 Mar 2021 16:31:28 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1615393897;
+        bh=1w9g8UPSYWUFEG4mnn/+/PQ6Nlg5fhcUX1MDEdc8uNo=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=JWFVdP6byPQhBv9V0SWh5LDJ/pkV7guJ+yAF0jTD4NwhSr66TrlNhSx7zZugT1Hcp
+         LoscplDCfEZt6OTtsiiB45hRlGA12TTHqSEnrxc24GAq8hLQAVUlxUUv0H4KEtN87M
+         GhUafpyYneiQjr5J4vwlitF6yWrC/HGb4ScWX+0w=
+To:     caleb@connolly.tech, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: leds: backlight: qcom-wled: Add PMI8994
- compatible
-Message-ID: <20210310092141.GO4931@dell>
-References: <20210228124106.135812-1-konrad.dybcio@somainline.org>
+        Rob Herring <robh+dt@kernel.org>
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Reply-To: Caleb Connolly <caleb@connolly.tech>
+Subject: [PATCH 2/3] arm64: dts: qcom: sm8150: add iommus to qups
+Message-ID: <20210310163024.393578-3-caleb@connolly.tech>
+In-Reply-To: <20210310163024.393578-1-caleb@connolly.tech>
+References: <20210310163024.393578-1-caleb@connolly.tech>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210228124106.135812-1-konrad.dybcio@somainline.org>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 28 Feb 2021, Konrad Dybcio wrote:
+Hook up the SMMU for doing DMA over i2c. Some peripherals like
+touchscreens easily exceed 32-bytes per transfer, causing errors and
+lockups without this.
 
-> Document the newly added PMI8994 compatible.
-> 
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+---
+Fixes i2c on the OnePlus 7, without this touching the screen with more
+than 4 fingers causes the device to lock up and reboot.
+---
+ arch/arm64/boot/dts/qcom/sm8150.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Applied, thanks.
+diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qco=
+m/sm8150.dtsi
+index 03e05d98daf2..543417d74216 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+@@ -583,6 +583,7 @@ qupv3_id_0: geniqup@8c0000 {
+ =09=09=09clock-names =3D "m-ahb", "s-ahb";
+ =09=09=09clocks =3D <&gcc GCC_QUPV3_WRAP_0_M_AHB_CLK>,
+ =09=09=09=09 <&gcc GCC_QUPV3_WRAP_0_S_AHB_CLK>;
++=09=09=09iommus =3D <&apps_smmu 0xc3 0x0>;
+ =09=09=09#address-cells =3D <2>;
+ =09=09=09#size-cells =3D <2>;
+ =09=09=09ranges;
+@@ -595,6 +596,7 @@ qupv3_id_1: geniqup@ac0000 {
+ =09=09=09clock-names =3D "m-ahb", "s-ahb";
+ =09=09=09clocks =3D <&gcc GCC_QUPV3_WRAP_1_M_AHB_CLK>,
+ =09=09=09=09 <&gcc GCC_QUPV3_WRAP_1_S_AHB_CLK>;
++=09=09=09iommus =3D <&apps_smmu 0x603 0x0>;
+ =09=09=09#address-cells =3D <2>;
+ =09=09=09#size-cells =3D <2>;
+ =09=09=09ranges;
+@@ -617,6 +619,7 @@ qupv3_id_2: geniqup@cc0000 {
+ =09=09=09clock-names =3D "m-ahb", "s-ahb";
+ =09=09=09clocks =3D <&gcc GCC_QUPV3_WRAP_2_M_AHB_CLK>,
+ =09=09=09=09 <&gcc GCC_QUPV3_WRAP_2_S_AHB_CLK>;
++=09=09=09iommus =3D <&apps_smmu 0x7a3 0x0>;
+ =09=09=09#address-cells =3D <2>;
+ =09=09=09#size-cells =3D <2>;
+ =09=09=09ranges;
+--=20
+2.29.2
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+
