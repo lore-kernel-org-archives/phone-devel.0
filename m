@@ -2,104 +2,100 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2863AC4360C
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Mar 2021 23:08:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34E2EC433DB
+	for <phone-devel@archiver.kernel.org>; Wed, 10 Mar 2021 09:22:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E790D65177
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Mar 2021 23:08:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D8E7C64FC4
+	for <phone-devel@archiver.kernel.org>; Wed, 10 Mar 2021 09:22:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230444AbhCHXIZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 Mar 2021 18:08:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56916 "EHLO
+        id S231283AbhCJJVx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 10 Mar 2021 04:21:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230039AbhCHXHw (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Mar 2021 18:07:52 -0500
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C3ECC061761
-        for <phone-devel@vger.kernel.org>; Mon,  8 Mar 2021 15:07:52 -0800 (PST)
-Received: by mail-oi1-x234.google.com with SMTP id x78so12879689oix.1
-        for <phone-devel@vger.kernel.org>; Mon, 08 Mar 2021 15:07:52 -0800 (PST)
+        with ESMTP id S232468AbhCJJVq (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 10 Mar 2021 04:21:46 -0500
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D94C061764
+        for <phone-devel@vger.kernel.org>; Wed, 10 Mar 2021 01:21:45 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id f12so22453950wrx.8
+        for <phone-devel@vger.kernel.org>; Wed, 10 Mar 2021 01:21:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=4hvbKRFY7Gs9YDqGOyz0/NvmnAh1JPz6EfNarEQ6wA8=;
-        b=G674hH9UyzvI0ioSt5BG9expqlepPHZakDtglNtJ5zHcpyc/GmtGTwrnFgcB2qP9rm
-         4PZ3Jqc/kZktu5JHYs1/xTfwjbdNykb0Hay6Rhme+ju/0BFUbMkiUQoaNqbpAmFMDpuQ
-         QY9lCsH61+rJL91wkQ0Bcca/MFDvG9eXHTrzC5Ebb5u5aTQM/nuVdZkdviREq/fFfZIt
-         ogNL0ntfGqyc1ZCeZ8zZUjWu2FdtX7+8CUH+Fv6XJ0m2WKttmicd3C1kZmQMYzfqHMhF
-         x3KfvEdj6wFzQclp85rXq2NLVQId/TdH9WL+57kK+B0nBkLjcA5hoDXRlWYEYt8UogQn
-         005A==
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=1dMDsRJi6X7RFDQQQ96QgnONRBTG+sEDdR1IWXfZlxI=;
+        b=W+DJoNj9bBYATgZUAqeGOcJC+D6Hm0fUTfpOX/nfrQorUYX0n4GMgTKiGPm9maOEGo
+         jJEbPk9YxrksTMIUWEKLTMMPZUE3K3JD1uzy2/YgERbc+DtReqEclprcHzcXbUZkCtgK
+         dofcYGgRLjspqQ02wswCtKFFlcgHYCG7pI64jxsoFj6wjEdDKRS1gt8ucvtPMr1+wiXH
+         V/ZWINFeo54CPqxA/rG5FASsH7SuIr/xMoPbF+VsDdIRqKv/UxlwLwcteDBdVTSJWc0O
+         mMDifDG6brOm+PToPYN85FgTl6AZyRU9xfUh9opj8fWJz2+IRQ0JWOsQc08QN5F0mrcp
+         5KcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=4hvbKRFY7Gs9YDqGOyz0/NvmnAh1JPz6EfNarEQ6wA8=;
-        b=EsS2rT4mLqByFBMs9Q7qvvqt3FnCo5UcstloF9F2ercuGyUQpW9uj4AEXxlqrWa/eC
-         4AqnCxKUrFUTZ0YI8jg4LllKJ7HemZC/8DcfzgqpX6mEnRPMTRLu+NNH8//Sp+tW41NA
-         ReaG+Bjf7O6oLFdPbYpxtpFjUW49wjwtOlpQUj3XxmkYyZp5pwwuix/YQI1P8O8YOzBX
-         mBT8kYCm94qG4HRikQG7/MV0DSkCTgbKTgg+F8qzmh7hFwmiTQspP7dpUf23/YvcS7/A
-         /RwCQv8PQDhJLV+IT4oRG50XLynZQKlbeVdJuHJKDYyLieDEtHWBR5qX9kOduKQi9FBy
-         uwbg==
-X-Gm-Message-State: AOAM532F9/eMusPbqr1vLXXZwuinRPUtxqZXbnmnctjV+lsnj4W2DxUY
-        7zRogD+FDFG/d1lom+c/g1yIQA==
-X-Google-Smtp-Source: ABdhPJxE5DEMhzUk2EXfK4SAN7Gzv+ovKX70wN9qc3D+l1U7WWpQVSjnKb+Y0Q99IB5cclKWi21c1Q==
-X-Received: by 2002:aca:2b13:: with SMTP id i19mr900239oik.148.1615244871809;
-        Mon, 08 Mar 2021 15:07:51 -0800 (PST)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id w7sm2772999oie.7.2021.03.08.15.07.50
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=1dMDsRJi6X7RFDQQQ96QgnONRBTG+sEDdR1IWXfZlxI=;
+        b=n2mDVbyZ/5ao/iJvj4jkqz5Es+Ielj/sbmffet15tU+3lfUpKleyqmkqcDlEIHXQ3z
+         UT7vV827E9Qo6TW6Fn8yO1FngaktTmsit1M/13kiUK3SQG+0bQ8XXJzfZzTJgVoS3Yrn
+         kYwcEC/M2EZ282eDS0x2bjvM8TSUGWvwRyCoTvCDBtSZDAthxd60Umb50SmQ3bDktu/2
+         +l2sixIRxSUv+xx4wINi0fCwfrz4Vdni6XAqbWhYdoCpo/Imt4kLdlor+4cGiBZkyYT2
+         TaKxLmZLE7Um4WB6zhcvV7q49duo/rXO3MzEyQ/hwIxlchKFcd+Ps95ENa2DJWlhoR6t
+         2h2Q==
+X-Gm-Message-State: AOAM530Eb0xnAH2dVB+JDLnlToVuOyzEcqZqqGYP5Wn7gQUA5P4rkHDA
+        Bb2/VFXGb7lnTDZEV630JJCox3fAjTsWzg==
+X-Google-Smtp-Source: ABdhPJxuPtNe3ElR6uJROL0vscwDtpq5CtKpwKbdJ63dZObdhgzH/OA+daBodljwBXleRgt+pFfpUg==
+X-Received: by 2002:a5d:4485:: with SMTP id j5mr2393819wrq.339.1615368104145;
+        Wed, 10 Mar 2021 01:21:44 -0800 (PST)
+Received: from dell ([91.110.221.204])
+        by smtp.gmail.com with ESMTPSA id a131sm8233043wmc.48.2021.03.10.01.21.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Mar 2021 15:07:51 -0800 (PST)
-Date:   Mon, 8 Mar 2021 17:07:49 -0600
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+        Wed, 10 Mar 2021 01:21:43 -0800 (PST)
+Date:   Wed, 10 Mar 2021 09:21:41 +0000
+From:   Lee Jones <lee.jones@linaro.org>
 To:     Konrad Dybcio <konrad.dybcio@somainline.org>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         martin.botka@somainline.org,
         angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org, Andy Gross <agross@kernel.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 34/41] arm64: dts: qcom: sdm630-nile: Configure WCN3990
- Bluetooth
-Message-ID: <YEauRWCv7PENpiIc@builder.lan>
-References: <20210226200414.167762-1-konrad.dybcio@somainline.org>
- <20210226200414.167762-35-konrad.dybcio@somainline.org>
- <71ea4ebd-f446-ede3-7623-ae5b339d7905@somainline.org>
+        marijn.suijten@somainline.org,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Dan Murphy <dmurphy@ti.com>, Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Kiran Gunda <kgunda@codeaurora.org>,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: leds: backlight: qcom-wled: Add PMI8994
+ compatible
+Message-ID: <20210310092141.GO4931@dell>
+References: <20210228124106.135812-1-konrad.dybcio@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <71ea4ebd-f446-ede3-7623-ae5b339d7905@somainline.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210228124106.135812-1-konrad.dybcio@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat 27 Feb 04:40 CST 2021, Konrad Dybcio wrote:
+On Sun, 28 Feb 2021, Konrad Dybcio wrote:
 
+> Document the newly added PMI8994 compatible.
 > 
-> > From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> 
-> From: Martin Botka <martin.botka@somainline.org>
-> 
-> 
-> That got caught in rebasing madness.. Should any additional mistakes appear, I'll send a V2.
-> 
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 
-Patches looks good, but I'm a little bit confused about author and s-o-b
-of the once you replied to.
+Applied, thanks.
 
-Please respin the whole thing with the proper authors/s-o-b, and I'll be
-happy to apply it.
-
-(And please remember to pick up Rob's ack)
-
-Regards,
-Bjorn
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
