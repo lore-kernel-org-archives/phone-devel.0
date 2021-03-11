@@ -2,118 +2,74 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CFA4C43381
-	for <phone-devel@archiver.kernel.org>; Thu, 11 Mar 2021 00:04:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1154C433E0
+	for <phone-devel@archiver.kernel.org>; Thu, 11 Mar 2021 12:04:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 614C664FD6
-	for <phone-devel@archiver.kernel.org>; Thu, 11 Mar 2021 00:04:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 75FD864DCC
+	for <phone-devel@archiver.kernel.org>; Thu, 11 Mar 2021 12:04:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229732AbhCKADr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 10 Mar 2021 19:03:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43008 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229593AbhCKADd (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 10 Mar 2021 19:03:33 -0500
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CF05C061574
-        for <phone-devel@vger.kernel.org>; Wed, 10 Mar 2021 16:03:32 -0800 (PST)
-Received: by mail-oi1-x22b.google.com with SMTP id d20so21178782oiw.10
-        for <phone-devel@vger.kernel.org>; Wed, 10 Mar 2021 16:03:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=MqQxCHeDZzA0xjKB6t0uijMIqsuaZ0QygKTZF6eoP3M=;
-        b=NXamsKAQUqB79kgFV5ijJNzR+eiRCX8NhZsktIT/wau3F0JuKgr90bLIgl3oZeZc70
-         HmTs3WOPVNlbIYyHHt2uxSWe/iWrSkfVcyH757KsxZXbRO+si9DWRTmwueiPQKan5Bzx
-         iGw9KZt3sKrHgA8HEeL+iousAW6DmXv1AnegwLTlOGBtqeBlFwcFutdjE6eJ0bbYgxvD
-         8uMfy3yFiSuhMzs7V/Thm3zYByfirgztVGHQeJmIbDUUURXqoL10YyT/AD0fHNTRw4uQ
-         1Ox4mYmfiY1yEob1pC+94NRwFIv49Op4BZV8lnujHAP/BHoU+mK5ffGbd3pAojAp/mc9
-         6I6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=MqQxCHeDZzA0xjKB6t0uijMIqsuaZ0QygKTZF6eoP3M=;
-        b=CsD183LriBDwNHlsdniN++sPhFThI9vUQjb8SuwjmSDUvRzkaSGKQfFBij2DE8TK+C
-         UqUiDeNyFhO5ZEGvtOOOSwMmPcJIorXIoaimG7hJqeWOh75Ujjty/KCDwYwtyxO7167X
-         Hg6FndyaeFgLxC3dvz5QoClA4vKyDF19EhcIHqf1pBDnypG2DcB0gSxpBxi5LBHcdmGk
-         SYx8XCJVY5Ezv4xyjv3iAO7O+UZSyWEDLM56bbsTTBIgG/F9X2GSTjsbGDWoLGJ+WVx8
-         PRzkdxop5CuPf0039hKvOPvqSuKnucPquf2kAO/3btJwNfa6W2KmYAORMu5w8f4yVclt
-         SLFg==
-X-Gm-Message-State: AOAM530q2OCGONgL7UGIPAZ3yg1In8d1swWjt1yAH1pjBg5cRSiVLax7
-        +9LWp12/2y3BzxxqaunqjaMeRg==
-X-Google-Smtp-Source: ABdhPJyapkzWhfDKQ2HIArCWRyoK3W8H5vkuTbKNebfIJUsVO1F5uteJQ4Qt3NlrDZ0mZ92M24b8rA==
-X-Received: by 2002:aca:f50f:: with SMTP id t15mr4275634oih.53.1615421011975;
-        Wed, 10 Mar 2021 16:03:31 -0800 (PST)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id n1sm209854oog.31.2021.03.10.16.03.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Mar 2021 16:03:31 -0800 (PST)
-Date:   Wed, 10 Mar 2021 18:03:29 -0600
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org, Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] pinctrl: pmic-mpp: Add missing dt-bindings mpp
- function defs
-Message-ID: <YEleUVnFmrBYrAe2@builder.lan>
-References: <20210225213605.117201-1-konrad.dybcio@somainline.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210225213605.117201-1-konrad.dybcio@somainline.org>
+        id S232904AbhCKMDw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 11 Mar 2021 07:03:52 -0500
+Received: from comms.puri.sm ([159.203.221.185]:38976 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232812AbhCKMDV (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 11 Mar 2021 07:03:21 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id 00C80E0D7E;
+        Thu, 11 Mar 2021 04:03:21 -0800 (PST)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id gan9uhhySbxt; Thu, 11 Mar 2021 04:03:20 -0800 (PST)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     robh@kernel.org, shawnguo@kernel.org, kernel@pengutronix.de,
+        festevam@gmail.com, krzk@kernel.org
+Cc:     kernel@puri.sm, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org,
+        =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>
+Subject: [PATCH 1/3] arm64: dts: imx8mq-librem5: Hog the correct gpio
+Date:   Thu, 11 Mar 2021 13:02:57 +0100
+Message-Id: <20210311120259.3310499-2-martin.kepplinger@puri.sm>
+In-Reply-To: <20210311120259.3310499-1-martin.kepplinger@puri.sm>
+References: <20210311120259.3310499-1-martin.kepplinger@puri.sm>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu 25 Feb 15:36 CST 2021, Konrad Dybcio wrote:
+From: Guido Günther <agx@sigxcpu.org>
 
-> From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> 
-> The pinctrl-spmi-mpp driver supports setting more mpp functions
-> than the ones defined in the dt-bindings header, specifically,
-> digital, analog and sink.
-> 
-> To follow the current way of specifying the function config
-> in Device-Tree, add the missing three definitions in the
-> appropriate dt-bindings header as:
-> GPIO_MPP_FUNC_{DIGITAL,ANALOG,SINK}.
-> 
+There was an additional alias in the specifier it hogged line 27
+instead of line 1.
 
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+---
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> ---
->  include/dt-bindings/pinctrl/qcom,pmic-mpp.h | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/include/dt-bindings/pinctrl/qcom,pmic-mpp.h b/include/dt-bindings/pinctrl/qcom,pmic-mpp.h
-> index 32e66ee7e830..3cdca7ee1b3f 100644
-> --- a/include/dt-bindings/pinctrl/qcom,pmic-mpp.h
-> +++ b/include/dt-bindings/pinctrl/qcom,pmic-mpp.h
-> @@ -98,6 +98,9 @@
->  /* To be used with "function" */
->  #define PMIC_MPP_FUNC_NORMAL		"normal"
->  #define PMIC_MPP_FUNC_PAIRED		"paired"
-> +#define PMIC_MPP_FUNC_DIGITAL		"digital"
-> +#define PMIC_MPP_FUNC_ANALOG		"analog"
-> +#define PMIC_MPP_FUNC_SINK		"sink"
->  #define PMIC_MPP_FUNC_DTEST1		"dtest1"
->  #define PMIC_MPP_FUNC_DTEST2		"dtest2"
->  #define PMIC_MPP_FUNC_DTEST3		"dtest3"
-> -- 
-> 2.30.1
-> 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+index 2d248304432b..460ef0d86540 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+@@ -286,8 +286,9 @@ &gpio1 {
+ 
+ 	pmic-5v-hog {
+ 		gpio-hog;
+-		gpios = <&gpio1 1 GPIO_ACTIVE_HIGH>;
++		gpios = <1 GPIO_ACTIVE_HIGH>;
+ 		input;
++		lane-mapping = "pmic-5v";
+ 	};
+ };
+ 
+-- 
+2.30.1
+
