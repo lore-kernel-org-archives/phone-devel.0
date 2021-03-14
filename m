@@ -2,73 +2,96 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39FF7C433E0
-	for <phone-devel@archiver.kernel.org>; Sat, 13 Mar 2021 21:00:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F272C432C3
+	for <phone-devel@archiver.kernel.org>; Sun, 14 Mar 2021 10:13:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 066DF64ED0
-	for <phone-devel@archiver.kernel.org>; Sat, 13 Mar 2021 21:00:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 65FA064EC6
+	for <phone-devel@archiver.kernel.org>; Sun, 14 Mar 2021 10:13:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234331AbhCMVAA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 13 Mar 2021 16:00:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41432 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234593AbhCMU7v (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 13 Mar 2021 15:59:51 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D728C64ECE;
-        Sat, 13 Mar 2021 20:59:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615669191;
-        bh=Prh/GvLlCXahiqAWMZ5suVERYpG5btIIgSbUFPcodtc=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=PPgTBXoHCyaxPOsdFe1ja617sL9z3o/8j7RV1LBDWPKQ6DTMsiHGzlKlwOYvauN8b
-         5gcTiYGkavqvWI8h1kJ52n3CC20ma1eb4rihbtLupNxu3iVWrKvAca5NKbkd5Y+Jq7
-         UrCz/0+/Y56VwLorgCKTDtjlsBp/nnbbFwgMfsdW37mToFKiR9D9iCLy7/WbD+lff8
-         56OmJthmcMU1eScTA/si38mIrUwOeHcVPcXg0LR04+rL93uYwq2aWM8HG83rEmyWW6
-         PEBfYRjvtzgoUAQlkYJYAzzpq5p53i2TPnoNg3eCVF5MxIz9tx9Wri8U8wDZV8cp9m
-         IUlv4W3JubjZQ==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20210302234106.3418665-1-marijn.suijten@somainline.org>
-References: <20210302234106.3418665-1-marijn.suijten@somainline.org>
-Subject: Re: [PATCH] clk: qcom: rcg2: Rectify clk_gfx3d rate rounding without mux division
-From:   Stephen Boyd <sboyd@kernel.org>
+        id S235116AbhCNKM1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 14 Mar 2021 06:12:27 -0400
+Received: from m-r2.th.seeweb.it ([5.144.164.171]:36755 "EHLO
+        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230265AbhCNKMT (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Sun, 14 Mar 2021 06:12:19 -0400
+Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 8F3943E8EC;
+        Sun, 14 Mar 2021 11:12:15 +0100 (CET)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        angelogioacchino.delregno@somainline.org,
-        konrad.dybcio@somainline.org, martin.botka@somainline.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Kiran Gunda <kgunda@codeaurora.org>,
+        Obeida Shamoun <oshmoun100@googlemail.com>,
         Marijn Suijten <marijn.suijten@somainline.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Date:   Sat, 13 Mar 2021 12:59:49 -0800
-Message-ID: <161566918965.1478170.7122514783960594682@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] backlight: qcom-wled: Use sink_addr for sync toggle
+Date:   Sun, 14 Mar 2021 11:11:10 +0100
+Message-Id: <20210314101110.48024-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Quoting Marijn Suijten (2021-03-02 15:41:06)
-> In case the mux is not divided parent_req was mistakenly not assigned to
-> leading __clk_determine_rate to determine the best frequency setting for
-> a requested rate of 0, resulting in the msm8996 platform not booting.
-> Rectify this by refactoring the logic to unconditionally assign to
-> parent_req.rate with the clock rate the caller is expecting.
->=20
-> Fixes: 7cbb78a99db6 ("clk: qcom: rcg2: Stop hardcoding gfx3d pingpong par=
-ent numbers")
-> Reported-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Tested-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Reviewed-By: AngeloGioacchino Del Regno <angelogioacchino.delregno@somain=
-line.org>
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
+From: Obeida Shamoun <oshmoun100@googlemail.com>
 
-Applied to clk-fixes
+WLED3_SINK_REG_SYNC is, as the name implies, a sink register offset.
+Therefore, use the sink address as base instead of the ctrl address.
+
+This fixes the sync toggle on wled4, which can be observed by the fact
+that adjusting brightness now works.
+
+It has no effect on wled3 because sink and ctrl base addresses are the
+same.  This allows adjusting the brightness without having to disable
+then reenable the module.
+
+Signed-off-by: Obeida Shamoun <oshmoun100@googlemail.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+---
+ drivers/video/backlight/qcom-wled.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index 091f07e7c145..fc8b443d10fd 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -336,13 +336,13 @@ static int wled3_sync_toggle(struct wled *wled)
+ 	unsigned int mask = GENMASK(wled->max_string_count - 1, 0);
+ 
+ 	rc = regmap_update_bits(wled->regmap,
+-				wled->ctrl_addr + WLED3_SINK_REG_SYNC,
++				wled->sink_addr + WLED3_SINK_REG_SYNC,
+ 				mask, mask);
+ 	if (rc < 0)
+ 		return rc;
+ 
+ 	rc = regmap_update_bits(wled->regmap,
+-				wled->ctrl_addr + WLED3_SINK_REG_SYNC,
++				wled->sink_addr + WLED3_SINK_REG_SYNC,
+ 				mask, WLED3_SINK_REG_SYNC_CLEAR);
+ 
+ 	return rc;
+-- 
+2.30.2
+
