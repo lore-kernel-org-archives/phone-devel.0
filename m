@@ -2,135 +2,129 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 670C0C433E9
-	for <phone-devel@archiver.kernel.org>; Mon, 15 Mar 2021 12:22:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49100C433E0
+	for <phone-devel@archiver.kernel.org>; Mon, 15 Mar 2021 19:08:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 322A864EE7
-	for <phone-devel@archiver.kernel.org>; Mon, 15 Mar 2021 12:22:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0478464E27
+	for <phone-devel@archiver.kernel.org>; Mon, 15 Mar 2021 19:08:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229960AbhCOMWG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 15 Mar 2021 08:22:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51744 "EHLO
+        id S232290AbhCOTIK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 15 Mar 2021 15:08:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229870AbhCOMWC (ORCPT
+        with ESMTP id S233085AbhCOTIG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 15 Mar 2021 08:22:02 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D1D2C06175F
-        for <phone-devel@vger.kernel.org>; Mon, 15 Mar 2021 05:22:02 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id c10so65727418ejx.9
-        for <phone-devel@vger.kernel.org>; Mon, 15 Mar 2021 05:22:02 -0700 (PDT)
+        Mon, 15 Mar 2021 15:08:06 -0400
+Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEFFFC061762
+        for <phone-devel@vger.kernel.org>; Mon, 15 Mar 2021 12:08:05 -0700 (PDT)
+Received: by mail-oo1-xc34.google.com with SMTP id h3-20020a4ae8c30000b02901b68b39e2d3so3537941ooe.9
+        for <phone-devel@vger.kernel.org>; Mon, 15 Mar 2021 12:08:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=68jlXxwTfNA20UssG/iOwv7H5x/KNjvMb7lpLxpsr3I=;
-        b=yPJ9K0uCd7YGDEC+SW1zRnYgaV/ijooR+XEo2KF+DFUyskFZKPUPdupNDM1Bzmc5rQ
-         TtZpoymKCPamfltgDPQxthzkNZAE2qzehzZ2i2V6Cd9dM2ZKH6NqCN3hiM6tljCNl1fU
-         gkXSxSKbYCbmdKCB/RXQVP8VxFWWip56KDiq+t8B2hH0/3k/jqHAarwhuAH5DG4UQSZN
-         t0YhY5h0cPCKBmQe9zy/rs6Poz+lMk8wKyhOpjT5mA8T6kYuPCUMkyUrqLiwd588bsR6
-         9E58gCUZoI+2Nd78ZYNpRPgTV58Zi/zC/J863ffmLXeqQYu1FDchlegQf4BE4R1t+OAj
-         e+Yw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ngZJachN56urU9J2HoprS9NstFT2AikTUj407DJYrCY=;
+        b=npAFfzz9TJLpBYK5CrDhSAxue1/IJAjgTUEjuVkizNr7mm/lWYXrZOFHsbl6LoD1XM
+         S4Tjetf929rB+fVIwdJ6IX6h9RzRzdRY4yqzilc2sG1ToIMMuKDV/pp2BFw/no9V75q9
+         igVz5RNNPFLg0gw9x3NKF+T39gwWi/MfXo+kfmm0IYhUqLB25Ufpz/Eqb6luJADRCIY8
+         ESG9Iq2yEHaoCdpNB3b76DwuGMG/qBtIExTNlBM5hHrMzv1itm36QZuLMFg0d0iJOxEm
+         USu4D7peVnf6LU4yk0PzO9FkkrUs1KaNlLqsYUBv31dgqQFzdZN/YdB5ifRt6gr2JMPN
+         uWtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=68jlXxwTfNA20UssG/iOwv7H5x/KNjvMb7lpLxpsr3I=;
-        b=sBc1DOAe2ZEGNFNpRW7z4WoP+xdxGBV7uh283ZB6zfTliTRs4bfdvuap4I1fI5cX36
-         k6bDuFftFFZ0IGbiShzhdYJAQdIt/gJhj4xgwk3UIpV8Wzx79xHf9KQkKPgYvfYBrojb
-         Iem1dt0pP9FgYXFtDmRyZ2BgwggOfxzJVgSNhuc0rcKF7Bz/mgHzhQHDzba4H5FBIImc
-         Dbz3Ts9bwzvXACd/irKF+pZ21tJaFwhpL+L0H+/numsieQA//8xkV/NYOLzc+fKBFS2P
-         1yBipfTTr1nq2d9amCuaUO9S70xLTZZoD49zAwJzPte4WqsK+cvFcRNAUWYL2bgvJXET
-         wmdg==
-X-Gm-Message-State: AOAM533bgKhmyUR0/nDt9Jx5Q2gTIZBdkpFnOeie6hy3wKGpBGvUlKrP
-        qYVeY3INEs4Ec26mRygKLLmtQA==
-X-Google-Smtp-Source: ABdhPJyOEJdU7zKKbglgyC3DnGahjOi0AdhGWWGjA6h4Bp8+9nk2Nlz0nQcAh6QvJyPGbwi3KZ/SCA==
-X-Received: by 2002:a17:906:789:: with SMTP id l9mr22968222ejc.161.1615810920902;
-        Mon, 15 Mar 2021 05:22:00 -0700 (PDT)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id z17sm7270134eju.27.2021.03.15.05.21.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Mar 2021 05:22:00 -0700 (PDT)
-Date:   Mon, 15 Mar 2021 12:21:58 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        Obeida Shamoun <oshmoun100@googlemail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] backlight: qcom-wled: Use sink_addr for sync toggle
-Message-ID: <20210315122158.ptqi6xvngf6ihjum@maple.lan>
-References: <20210314101110.48024-1-marijn.suijten@somainline.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ngZJachN56urU9J2HoprS9NstFT2AikTUj407DJYrCY=;
+        b=TD0tdzkbFGtpoaV2ut27raxttmlOTXoip0RKh7AszftTE+viQY8AyHYpFe7P8QftpF
+         jo5KDOaTgncjsaGg0NFDXRYZ34ONsLfOwkKdQuTcAoJE8yhjb2tIwOSgIPQIjZr13HLa
+         ZM+FSLnRdTezoaNDrki9y9v1u9/fNPUFPwsrcdpO0nbBiq+5iGO4i3arzOtm34gdD6Pq
+         Q7F5BmlZ/CYU991Vt/eXFCfOjos46Jc8h+/T+pBtVTCZo9iG/FchUdaOL6GWDkUXfDQO
+         THwP0RUIGpkGq26l+kQMhebT83BpjEfvRZzyxvx9z0SHhroRfxTz+m9tpO8PKQEwWE1v
+         3DyA==
+X-Gm-Message-State: AOAM531B9VGBh3gJtv9amXJijTG9LkjT2+RxVc0QAqYi/mvz9iMmmlum
+        mIYRX+Tl6RssgzDtjsh42Z9wghJ40ceC/BWN/ZqVGA==
+X-Google-Smtp-Source: ABdhPJy/f+pt0WWw9QpskOGeSossTUBuih5lw/4CXpn5yxCz2AQTKeYgPQPhMRjL+SgaSTvh8jLqPbWMEzchh/2E6uQ=
+X-Received: by 2002:a05:6820:129:: with SMTP id i9mr400221ood.80.1615835285169;
+ Mon, 15 Mar 2021 12:08:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210314101110.48024-1-marijn.suijten@somainline.org>
+References: <20210310163024.393578-1-caleb@connolly.tech> <20210310163024.393578-3-caleb@connolly.tech>
+In-Reply-To: <20210310163024.393578-3-caleb@connolly.tech>
+From:   Bhupesh Sharma <bhupesh.sharma@linaro.org>
+Date:   Tue, 16 Mar 2021 00:37:54 +0530
+Message-ID: <CAH=2Ntyd6Ud=2dt_Pa0gNQcCOLaVRp6ZF3yA5O+ZxqV1m64Spw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] arm64: dts: qcom: sm8150: add iommus to qups
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Mar 14, 2021 at 11:11:10AM +0100, Marijn Suijten wrote:
-> From: Obeida Shamoun <oshmoun100@googlemail.com>
-> 
-> WLED3_SINK_REG_SYNC is, as the name implies, a sink register offset.
-> Therefore, use the sink address as base instead of the ctrl address.
-> 
-> This fixes the sync toggle on wled4, which can be observed by the fact
-> that adjusting brightness now works.
-> 
-> It has no effect on wled3 because sink and ctrl base addresses are the
-> same.  This allows adjusting the brightness without having to disable
-> then reenable the module.
-> 
-> Signed-off-by: Obeida Shamoun <oshmoun100@googlemail.com>
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Hello Caleb,
 
-LGTM, although an acked-by from Kiran would be nice to have:
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Thanks for the patch. Some nitpicks inline:
 
-
-Daniel.
-
-
+On Wed, 10 Mar 2021 at 22:02, Caleb Connolly <caleb@connolly.tech> wrote:
+>
+> Hook up the SMMU for doing DMA over i2c. Some peripherals like
+> touchscreens easily exceed 32-bytes per transfer, causing errors and
+> lockups without this.
+>
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 > ---
->  drivers/video/backlight/qcom-wled.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> index 091f07e7c145..fc8b443d10fd 100644
-> --- a/drivers/video/backlight/qcom-wled.c
-> +++ b/drivers/video/backlight/qcom-wled.c
-> @@ -336,13 +336,13 @@ static int wled3_sync_toggle(struct wled *wled)
->  	unsigned int mask = GENMASK(wled->max_string_count - 1, 0);
->  
->  	rc = regmap_update_bits(wled->regmap,
-> -				wled->ctrl_addr + WLED3_SINK_REG_SYNC,
-> +				wled->sink_addr + WLED3_SINK_REG_SYNC,
->  				mask, mask);
->  	if (rc < 0)
->  		return rc;
->  
->  	rc = regmap_update_bits(wled->regmap,
-> -				wled->ctrl_addr + WLED3_SINK_REG_SYNC,
-> +				wled->sink_addr + WLED3_SINK_REG_SYNC,
->  				mask, WLED3_SINK_REG_SYNC_CLEAR);
->  
->  	return rc;
-> -- 
-> 2.30.2
-> 
+> Fixes i2c on the OnePlus 7, without this touching the screen with more
+> than 4 fingers causes the device to lock up and reboot.
+> ---
+>  arch/arm64/boot/dts/qcom/sm8150.dtsi | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+> index 03e05d98daf2..543417d74216 100644
+> --- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+> @@ -583,6 +583,7 @@ qupv3_id_0: geniqup@8c0000 {
+>                         clock-names = "m-ahb", "s-ahb";
+>                         clocks = <&gcc GCC_QUPV3_WRAP_0_M_AHB_CLK>,
+>                                  <&gcc GCC_QUPV3_WRAP_0_S_AHB_CLK>;
+> +                       iommus = <&apps_smmu 0xc3 0x0>;
+
+I think we also need to add the new iommu property to the binding documentation?
+<https://github.com/torvalds/linux/blob/master/Documentation/devicetree/bindings/soc/qcom/qcom%2Cgeni-se.yaml>
+
+Thanks,
+Bhupesh
+
+>                         #address-cells = <2>;
+>                         #size-cells = <2>;
+>                         ranges;
+> @@ -595,6 +596,7 @@ qupv3_id_1: geniqup@ac0000 {
+>                         clock-names = "m-ahb", "s-ahb";
+>                         clocks = <&gcc GCC_QUPV3_WRAP_1_M_AHB_CLK>,
+>                                  <&gcc GCC_QUPV3_WRAP_1_S_AHB_CLK>;
+> +                       iommus = <&apps_smmu 0x603 0x0>;
+>                         #address-cells = <2>;
+>                         #size-cells = <2>;
+>                         ranges;
+> @@ -617,6 +619,7 @@ qupv3_id_2: geniqup@cc0000 {
+>                         clock-names = "m-ahb", "s-ahb";
+>                         clocks = <&gcc GCC_QUPV3_WRAP_2_M_AHB_CLK>,
+>                                  <&gcc GCC_QUPV3_WRAP_2_S_AHB_CLK>;
+> +                       iommus = <&apps_smmu 0x7a3 0x0>;
+>                         #address-cells = <2>;
+>                         #size-cells = <2>;
+>                         ranges;
+> --
+> 2.29.2
+>
+>
