@@ -2,247 +2,94 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+X-Spam-Status: No, score=-17.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EF19EC433E6
-	for <phone-devel@archiver.kernel.org>; Sun, 14 Mar 2021 18:12:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49683C433DB
+	for <phone-devel@archiver.kernel.org>; Mon, 15 Mar 2021 07:25:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BB51664E62
-	for <phone-devel@archiver.kernel.org>; Sun, 14 Mar 2021 18:12:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0679E64E4D
+	for <phone-devel@archiver.kernel.org>; Mon, 15 Mar 2021 07:25:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234084AbhCNSMJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 14 Mar 2021 14:12:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44488 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234080AbhCNSMF (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 14 Mar 2021 14:12:05 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44758C061763
-        for <phone-devel@vger.kernel.org>; Sun, 14 Mar 2021 11:12:03 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id u75so30902917ybi.10
-        for <phone-devel@vger.kernel.org>; Sun, 14 Mar 2021 11:12:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JiLjT7F7TLvwfttlWWQnjBXTcWSnJNejV4NEk/U2uNU=;
-        b=Vs3SmhWd41w0G49v8KGBNDlaN1RnC6zNyvAS8my3/4CXGn34b4H6i44jK1dR6/LNCw
-         0hG/4OwXHBerfP3TinAVCyAMcDV/7g3f3IcIhUpgW4Y6hYZ3azWf1ORfl5qKai2RUIIH
-         /HvpBpBh84RsJWtCc1eQIGB3ttf7p2wXenf/MSi5QwyIhBQ9SWODlKO6SXCm0bJDIBE3
-         u7rStFhPidZq8wB8K9PxTN15m+ul+yN+yn4gTtMKAxzk5s9aqtmh1wrTg/6fETuxwHw/
-         Wt5kWqnSB9yvc4l7cCz6gJUkgW0btQu4OkyZxFElKPYNQSj/pdFQ711xc7zeL07nV9S+
-         A80A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JiLjT7F7TLvwfttlWWQnjBXTcWSnJNejV4NEk/U2uNU=;
-        b=PYvSRyye3WXlj5umY2mRNG9KxC4vmDzkv/OHyzrOBWZVnoqDnY/e53M6cnmwS9sWwh
-         tD565UV2sFYT47hJGC1b/b7pgCA72oNe8WiGH+V7nP022/vKZJbXfYzW3py8feImNeKo
-         T00gfE4a7yoV4LrlivsX/mroqKgmYtWGg7hFbORtFz6hM3ZpnwcVfYYZZ2q8qBmykMiR
-         VVDaN4rEt4rnBRvShNhcFhSzQl5fNxOiIVEERJ0exAyfILOBXauv66qgCndoX5x14TBx
-         WxZsE45afZAmxjD8hqSkT8BJEuLNYZUv2hjkUZn20WqpWNYJ+Zt83lYBwkuOIXiXvEKb
-         Y7/w==
-X-Gm-Message-State: AOAM530EkVFZld+H0kG1IvMRCH+M/aCtpzzW30A5CqQpg5FWgIX9sees
-        WkjQM810pdHEUaofH5VSTzaWa/9AHWSBAYCHqJ55zA==
-X-Google-Smtp-Source: ABdhPJyK7TD9OEpDYsns/BB949SqcXV5VtqVsGvY2LYwRN674CC8N0nqN8/Ap1rojQY0Qfa0XAEMFTgNBJ7+6szurDc=
-X-Received: by 2002:a25:ca42:: with SMTP id a63mr32518347ybg.318.1615745522312;
- Sun, 14 Mar 2021 11:12:02 -0700 (PDT)
+        id S229679AbhCOHYy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 15 Mar 2021 03:24:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33120 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229951AbhCOHYg (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 15 Mar 2021 03:24:36 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DD03E64E61;
+        Mon, 15 Mar 2021 07:24:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1615793075;
+        bh=bPgb6yp7ZSbsjfmG0toGXsrGC81m0xd6Hwvf92I5lQ8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oUirYRY7evorBRjo6TqKpbhwLGoEgD8AgM9VtUN5wUaWR7TJf+qz/+UxXRYeGNMEf
+         nBTO6JPklIvqrqYIgHe1/3MPAP2EXvA5UMPMADzh3JDLHfc6quppRl0dpMA4QTcfMi
+         qWeaiW2J8snFkZJdqopW8WOltMmoBTp5qmdhLRvZ7zmKNE6N4Kt0FWDwmIc65AqmC/
+         fWPBSifh0I8XFbpfZYwGj1xEb6a0U+2e6MsJui0BIEMoKaofeGx8XtqcZmFFde0fTn
+         ugIO+3K3AKZF5o48nKW6y6EzYbZYcGdh6oM7ePmcYycifFzrxBxpC12DWA4A9OxJz3
+         y0N1BINnET0+w==
+Date:   Mon, 15 Mar 2021 15:24:30 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     robh@kernel.org, kernel@pengutronix.de, festevam@gmail.com,
+        krzk@kernel.org, kernel@puri.sm, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Subject: Re: [PATCH 2/3] arm64: dts: imx8mq-librem5-r3: Mark buck3 as always
+ on
+Message-ID: <20210315072429.GQ11246@dragon>
+References: <20210311120259.3310499-1-martin.kepplinger@puri.sm>
+ <20210311120259.3310499-3-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
-References: <BN6PR2001MB1796C76ECAD9DE4807A72F43D96D9@BN6PR2001MB1796.namprd20.prod.outlook.com>
-In-Reply-To: <BN6PR2001MB1796C76ECAD9DE4807A72F43D96D9@BN6PR2001MB1796.namprd20.prod.outlook.com>
-From:   Amit Pundir <amit.pundir@linaro.org>
-Date:   Sun, 14 Mar 2021 23:41:26 +0530
-Message-ID: <CAMi1Hd3pP8BL7T5XHkh5e3a8c9X5aTdY4hES5-Zc9x5Uu7fNqA@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: qcom: sdm845-xiaomi-beryllium: Add audio support
-To:     Joel Selvaraj <jo@jsfamily.in>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        dt <devicetree@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210311120259.3310499-3-martin.kepplinger@puri.sm>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 14 Mar 2021 at 22:32, Joel Selvaraj <jo@jsfamily.in> wrote:
->
-> This patch adds audio support for Xiaomi Poco F1 phone. Phone's primary
-> Mic and 3.5mm Headphone jack are handled through the SDM845 sound card
-> and WCD9340 codec.
->
+On Thu, Mar 11, 2021 at 01:02:58PM +0100, Martin Kepplinger wrote:
+> From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+> 
+> Commit 66d3f246d79f ("arm64: dts: librem5: Don't mark buck3 as always on")
 
-Tested-by: Amit Pundir <amit.pundir@linaro.org>
+I cannot find this commit.
 
-> Signed-off-by: Joel Selvaraj <jo@jsfamily.in>
+Shawn
+
+> removed always-on marking from GPU regulator, which is great for power
+> saving - however it introduces additional i2c0 traffic which can be deadly
+> for devices from the Dogwood batch.
+> 
+> To workaround the i2c0 shutdown issue on Dogwood, this commit marks
+> buck3 as always-on again - but only for Dogwood (r3).
+> 
+> Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
 > ---
->  .../boot/dts/qcom/sdm845-xiaomi-beryllium.dts | 117 ++++++++++++++++++
->  1 file changed, 117 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-> index 86cbae63eaf7..5b5786595cdb 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-> @@ -5,6 +5,8 @@
->  #include <dt-bindings/gpio/gpio.h>
->  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
->  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-> +#include <dt-bindings/sound/qcom,q6afe.h>
-> +#include <dt-bindings/sound/qcom,q6asm.h>
->  #include "sdm845.dtsi"
->  #include "pm8998.dtsi"
->  #include "pmi8998.dtsi"
-> @@ -240,6 +242,28 @@ resin {
->         };
+>  arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
+> index 0d38327043f8..cd3c3edd48fa 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
+> @@ -28,6 +28,10 @@ &bq25895 {
+>  	ti,termination-current = <144000>;  /* uA */
 >  };
->
-> +/* QUAT I2S Uses 1 I2S SD Line for audio on TAS2559/60 amplifiers */
-> +&q6afedai {
-> +       qi2s@22 {
-> +               reg = <22>;
-> +               qcom,sd-lines = <0>;
-> +       };
+>  
+> +&buck3_reg {
+> +	regulator-always-on;
 > +};
 > +
-> +&q6asmdai {
-> +       dai@0 {
-> +               reg = <0>;
-> +       };
-> +
-> +       dai@1 {
-> +               reg = <1>;
-> +       };
-> +
-> +       dai@2 {
-> +               reg = <2>;
-> +       };
-> +};
-> +
->  &qupv3_id_0 {
->         status = "okay";
+>  &proximity {
+>  	proximity-near-level = <25>;
 >  };
-> @@ -257,6 +281,73 @@ &sdhc_2 {
->         cd-gpios = <&tlmm 126 GPIO_ACTIVE_HIGH>;
->  };
->
-> +&sound {
-> +       compatible = "qcom,db845c-sndcard";
-> +       pinctrl-0 = <&quat_mi2s_active
-> +                       &quat_mi2s_sd0_active>;
-> +       pinctrl-names = "default";
-> +       model = "Xiaomi Poco F1";
-> +       audio-routing =
-> +               "RX_BIAS", "MCLK",
-> +               "AMIC1", "MIC BIAS1",
-> +               "AMIC2", "MIC BIAS2",
-> +               "AMIC3", "MIC BIAS3",
-> +               "MM_DL1",  "MultiMedia1 Playback",
-> +               "MM_DL2",  "MultiMedia2 Playback",
-> +               "MultiMedia3 Capture", "MM_UL3";
-> +
-> +       mm1-dai-link {
-> +               link-name = "MultiMedia1";
-> +               cpu {
-> +                       sound-dai = <&q6asmdai  MSM_FRONTEND_DAI_MULTIMEDIA1>;
-> +               };
-> +       };
-> +
-> +       mm2-dai-link {
-> +               link-name = "MultiMedia2";
-> +               cpu {
-> +                       sound-dai = <&q6asmdai  MSM_FRONTEND_DAI_MULTIMEDIA2>;
-> +               };
-> +       };
-> +
-> +       mm3-dai-link {
-> +               link-name = "MultiMedia3";
-> +               cpu {
-> +                       sound-dai = <&q6asmdai  MSM_FRONTEND_DAI_MULTIMEDIA3>;
-> +               };
-> +       };
-> +
-> +       slim-dai-link {
-> +               link-name = "SLIM Playback";
-> +               cpu {
-> +                       sound-dai = <&q6afedai SLIMBUS_0_RX>;
-> +               };
-> +
-> +               platform {
-> +                       sound-dai = <&q6routing>;
-> +               };
-> +
-> +               codec {
-> +                       sound-dai =  <&wcd9340 0>;
-> +               };
-> +       };
-> +
-> +       slimcap-dai-link {
-> +               link-name = "SLIM Capture";
-> +               cpu {
-> +                       sound-dai = <&q6afedai SLIMBUS_0_TX>;
-> +               };
-> +
-> +               platform {
-> +                       sound-dai = <&q6routing>;
-> +               };
-> +
-> +               codec {
-> +                       sound-dai = <&wcd9340 1>;
-> +               };
-> +       };
-> +};
-> +
->  &tlmm {
->         gpio-reserved-ranges = <0 4>, <81 4>;
->
-> @@ -285,6 +376,15 @@ sdc2_card_det_n: sd-card-det-n {
->                 function = "gpio";
->                 bias-pull-up;
->         };
-> +
-> +       wcd_intr_default: wcd_intr_default {
-> +               pins = <54>;
-> +               function = "gpio";
-> +
-> +               input-enable;
-> +               bias-pull-down;
-> +               drive-strength = <2>;
-> +       };
->  };
->
->  &uart6 {
-> @@ -345,6 +445,23 @@ &usb_1_qmpphy {
->         vdda-pll-supply = <&vreg_l1a_0p875>;
->  };
->
-> +&wcd9340{
-> +       pinctrl-0 = <&wcd_intr_default>;
-> +       pinctrl-names = "default";
-> +       clock-names = "extclk";
-> +       clocks = <&rpmhcc RPMH_LN_BB_CLK2>;
-> +       reset-gpios = <&tlmm 64 0>;
-> +       vdd-buck-supply = <&vreg_s4a_1p8>;
-> +       vdd-buck-sido-supply = <&vreg_s4a_1p8>;
-> +       vdd-tx-supply = <&vreg_s4a_1p8>;
-> +       vdd-rx-supply = <&vreg_s4a_1p8>;
-> +       vdd-io-supply = <&vreg_s4a_1p8>;
-> +       qcom,micbias1-microvolt = <2700000>;
-> +       qcom,micbias2-microvolt = <1800000>;
-> +       qcom,micbias3-microvolt = <2700000>;
-> +       qcom,micbias4-microvolt = <2700000>;
-> +};
-> +
->  &wifi {
->         status = "okay";
->
-> --
-> 2.25.1
->
+> -- 
+> 2.30.1
+> 
