@@ -2,76 +2,114 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71315C433DB
-	for <phone-devel@archiver.kernel.org>; Wed, 17 Mar 2021 08:00:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5DBFC433DB
+	for <phone-devel@archiver.kernel.org>; Wed, 17 Mar 2021 09:16:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2E5C864F8F
-	for <phone-devel@archiver.kernel.org>; Wed, 17 Mar 2021 08:00:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6608564F33
+	for <phone-devel@archiver.kernel.org>; Wed, 17 Mar 2021 09:16:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230169AbhCQIAP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 17 Mar 2021 04:00:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36026 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230099AbhCQIAC (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 17 Mar 2021 04:00:02 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BEC8064F7F;
-        Wed, 17 Mar 2021 07:59:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615967997;
-        bh=zHlz/DP1LMQdZ4feA4AUsePng/JL/gc3mcPdR5jADsE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KzJ3KvrVrK6mhM0cJkQf9V2wrc0cZfOOTvhKUWQp13dj4IQcq6rDqazZ3bsKmlAOI
-         SQpg48vUBBSku+AXLMAsxy5Vf1O+bwDZSQiFmRE5duJs0ZHS7PZCmuQIom0r0igEvL
-         c/NzXd2wZQItyd8yzVTQ1AfBE5tk5sQAdNUMSnf9kQDNjLH2AFvvKl9C3wqJMA46Qm
-         /TPEoE8UXG/RbWt91PmQmk0qLsiti/f2u7WxMOPRyDkudeuzayZYMZApxdGN5Um+ES
-         +0G+kYheSI78EXdeSrtDt5QwNBb49LMQpGv8f0to4ylDuVwGVYqAKD/NeV2VX7mEH+
-         x+pHFOsCuMz5Q==
-Date:   Wed, 17 Mar 2021 15:59:51 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     devicetree@vger.kernel.org, festevam@gmail.com,
-        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, robh@kernel.org
-Subject: Re: [PATCH v2 0/3] Librem 5 phone dts fixes
-Message-ID: <20210317075951.GS11246@dragon>
-References: <20210311120259.3310499-1-martin.kepplinger@puri.sm>
- <20210315083531.3743183-1-martin.kepplinger@puri.sm>
+        id S229707AbhCQJQI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 17 Mar 2021 05:16:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43410 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229952AbhCQJQE (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 17 Mar 2021 05:16:04 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEA92C06175F
+        for <phone-devel@vger.kernel.org>; Wed, 17 Mar 2021 02:16:03 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id v4so1000941wrp.13
+        for <phone-devel@vger.kernel.org>; Wed, 17 Mar 2021 02:16:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=oTL9AJaFLnaIJwp+xH/32TIHC+0/+FSk9wN00bes39U=;
+        b=uMXE+VtjZWadyYCebKZ3fIggjz4V1ChdYHWACmzHieC+U5oQgoCuWUExVACd5lgsxw
+         w8s4oFwYG2AfLmamwBO9l9q/0TJ0gCkYFIuji6TWH18CtdAPoR6InemljL7TIsIXKRtt
+         4A7O7wFyg52FK5pUVZzz0oLvx9BjVIqhabtjd6KLq01ti84V3Jhp4GcEDmBBZ3vOAH1e
+         fUDXTKuJbq6ffGadIu8bCA9YpaFqktUqK6fzurFSa82mW9TodOD9yp+4OW+3IXowiWBO
+         aa59V0PpQbYGVaH6WRVool0cghcBDK8OnkTMFtqO/nFZAO4i2WcpJTi7t9ouldiPeFE6
+         4N9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=oTL9AJaFLnaIJwp+xH/32TIHC+0/+FSk9wN00bes39U=;
+        b=bz6BKvDqgaZvsF62LoetA4bF7ehnLTKeKLeCyCDI+ebhiErfafYfQqEYBy9ImpaVlm
+         oZqZPn8vSKPB6GKwqPzkzqBke1YcaJGI+TQha4eDkZOBNZMBBTixuoXrg92wNrqfVmeh
+         LAie35zgAl/oW76A7dpZFaf6ODR6MbzQ6ie7TnmRmRqLYxvZWvz/2S6cBvyuGv97vA7C
+         sX7sGBhXH9maWObcUS07qbuSWyMdrLGOn063wXj9FB6ejSnHON06K3PDNQMXmkGZ9HeP
+         z3K3+19FpNa144yIe9stL+Qho5nmwgAcC0LBGB31Eao4RAErWzZVjPZvMUpiX6H4edp9
+         WbwA==
+X-Gm-Message-State: AOAM531Exzguay6Cxh0Uus1EYIKRUQ7L5MIMTYD3rG9dmO5o7S5+00d4
+        MdSCQwRR3AcesKMuk+u/+LKRxA==
+X-Google-Smtp-Source: ABdhPJzccso7yYfvjZ0BNG+B/bhDroptmdi0xF07T+f0b52aGSdXhB4T8OlAfzgB2MnMHmOq7BNizg==
+X-Received: by 2002:a5d:4587:: with SMTP id p7mr3343208wrq.205.1615972562580;
+        Wed, 17 Mar 2021 02:16:02 -0700 (PDT)
+Received: from dell ([91.110.221.194])
+        by smtp.gmail.com with ESMTPSA id p14sm1765900wmc.30.2021.03.17.02.16.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Mar 2021 02:16:02 -0700 (PDT)
+Date:   Wed, 17 Mar 2021 09:16:00 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Kiran Gunda <kgunda@codeaurora.org>,
+        Obeida Shamoun <oshmoun100@googlemail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] backlight: qcom-wled: Use sink_addr for sync toggle
+Message-ID: <20210317091600.GJ701493@dell>
+References: <20210314101110.48024-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210315083531.3743183-1-martin.kepplinger@puri.sm>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20210314101110.48024-1-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Mar 15, 2021 at 09:35:28AM +0100, Martin Kepplinger wrote:
-> Two fixes for the Librem 5 phone descriptions and one resend of
-> https://lore.kernel.org/linux-arm-kernel/20200915141622.14736-1-festevam@gmail.com/
-> that enables the hantro vpu staging driver. Feel free to ignore that one
-> if we want to wait for it to be out of staging.
-> 
-> revision history
-> ----------------
-> v2: (thanks Shawn)
->  * fix commit hash in commit message
-> 
-> v1:
->  * https://lore.kernel.org/phone-devel/20210311120259.3310499-1-martin.kepplinger@puri.sm/T/
-> 
-> Fabio Estevam (1):
->   arm64: defconfig: Enable the Hantro decoder
-> 
-> Guido G�nther (1):
->   arm64: dts: imx8mq-librem5: Hog the correct gpio
-> 
-> Sebastian Krzyszkowiak (1):
->   arm64: dts: imx8mq-librem5-r3: Mark buck3 as always on
+On Sun, 14 Mar 2021, Marijn Suijten wrote:
 
-Applied all, thanks.
+> From: Obeida Shamoun <oshmoun100@googlemail.com>
+> 
+> WLED3_SINK_REG_SYNC is, as the name implies, a sink register offset.
+> Therefore, use the sink address as base instead of the ctrl address.
+> 
+> This fixes the sync toggle on wled4, which can be observed by the fact
+> that adjusting brightness now works.
+> 
+> It has no effect on wled3 because sink and ctrl base addresses are the
+> same.  This allows adjusting the brightness without having to disable
+> then reenable the module.
+> 
+> Signed-off-by: Obeida Shamoun <oshmoun100@googlemail.com>
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+>  drivers/video/backlight/qcom-wled.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+
+Applied, thanks.
+
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
