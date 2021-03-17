@@ -2,114 +2,126 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5DBFC433DB
-	for <phone-devel@archiver.kernel.org>; Wed, 17 Mar 2021 09:16:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10760C433E9
+	for <phone-devel@archiver.kernel.org>; Wed, 17 Mar 2021 18:24:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6608564F33
-	for <phone-devel@archiver.kernel.org>; Wed, 17 Mar 2021 09:16:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E1F8164F44
+	for <phone-devel@archiver.kernel.org>; Wed, 17 Mar 2021 18:24:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229707AbhCQJQI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 17 Mar 2021 05:16:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43410 "EHLO
+        id S232607AbhCQSYC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 17 Mar 2021 14:24:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229952AbhCQJQE (ORCPT
+        with ESMTP id S232994AbhCQSXa (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 17 Mar 2021 05:16:04 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEA92C06175F
-        for <phone-devel@vger.kernel.org>; Wed, 17 Mar 2021 02:16:03 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id v4so1000941wrp.13
-        for <phone-devel@vger.kernel.org>; Wed, 17 Mar 2021 02:16:03 -0700 (PDT)
+        Wed, 17 Mar 2021 14:23:30 -0400
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87CF7C06174A
+        for <phone-devel@vger.kernel.org>; Wed, 17 Mar 2021 11:23:30 -0700 (PDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id h3so1842822qvh.8
+        for <phone-devel@vger.kernel.org>; Wed, 17 Mar 2021 11:23:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=oTL9AJaFLnaIJwp+xH/32TIHC+0/+FSk9wN00bes39U=;
-        b=uMXE+VtjZWadyYCebKZ3fIggjz4V1ChdYHWACmzHieC+U5oQgoCuWUExVACd5lgsxw
-         w8s4oFwYG2AfLmamwBO9l9q/0TJ0gCkYFIuji6TWH18CtdAPoR6InemljL7TIsIXKRtt
-         4A7O7wFyg52FK5pUVZzz0oLvx9BjVIqhabtjd6KLq01ti84V3Jhp4GcEDmBBZ3vOAH1e
-         fUDXTKuJbq6ffGadIu8bCA9YpaFqktUqK6fzurFSa82mW9TodOD9yp+4OW+3IXowiWBO
-         aa59V0PpQbYGVaH6WRVool0cghcBDK8OnkTMFtqO/nFZAO4i2WcpJTi7t9ouldiPeFE6
-         4N9Q==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=tmX1Ahb9V3sePtb5QZrdh2WMnjcseF+r4zrPIY/87P0=;
+        b=JudSIsB3tY1OwDRAn7q8hOBmIE6Hjy1qoNBEGRre/XSwoESij+AS6HcIN/hmkNSNu1
+         ivMM8k3skN+gbY7zrsbj0nnqggtb5NfaUMzuX5jgjpD4v8G8HoDkWmf84ubJdBIVfg/X
+         90NJTN2cL1LDxvUdV+GVil5aWi4rea7wmX28xHNauSOWh69pyoekrFkAyX52D4j+muyL
+         q2bnxygDzS/3jhqUuLREHC786k+nIPCdY4W69MLHMbcJQfG/ihi5CbjAYs6GJOO3W0i9
+         NQhE4zxErzWw0mjt7D9ORf/XeHWrIX6dHqKw5qnrxOgZrcf5c05LKjTlHFIJYN9OzCbq
+         5HLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=oTL9AJaFLnaIJwp+xH/32TIHC+0/+FSk9wN00bes39U=;
-        b=bz6BKvDqgaZvsF62LoetA4bF7ehnLTKeKLeCyCDI+ebhiErfafYfQqEYBy9ImpaVlm
-         oZqZPn8vSKPB6GKwqPzkzqBke1YcaJGI+TQha4eDkZOBNZMBBTixuoXrg92wNrqfVmeh
-         LAie35zgAl/oW76A7dpZFaf6ODR6MbzQ6ie7TnmRmRqLYxvZWvz/2S6cBvyuGv97vA7C
-         sX7sGBhXH9maWObcUS07qbuSWyMdrLGOn063wXj9FB6ejSnHON06K3PDNQMXmkGZ9HeP
-         z3K3+19FpNa144yIe9stL+Qho5nmwgAcC0LBGB31Eao4RAErWzZVjPZvMUpiX6H4edp9
-         WbwA==
-X-Gm-Message-State: AOAM531Exzguay6Cxh0Uus1EYIKRUQ7L5MIMTYD3rG9dmO5o7S5+00d4
-        MdSCQwRR3AcesKMuk+u/+LKRxA==
-X-Google-Smtp-Source: ABdhPJzccso7yYfvjZ0BNG+B/bhDroptmdi0xF07T+f0b52aGSdXhB4T8OlAfzgB2MnMHmOq7BNizg==
-X-Received: by 2002:a5d:4587:: with SMTP id p7mr3343208wrq.205.1615972562580;
-        Wed, 17 Mar 2021 02:16:02 -0700 (PDT)
-Received: from dell ([91.110.221.194])
-        by smtp.gmail.com with ESMTPSA id p14sm1765900wmc.30.2021.03.17.02.16.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Mar 2021 02:16:02 -0700 (PDT)
-Date:   Wed, 17 Mar 2021 09:16:00 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        Obeida Shamoun <oshmoun100@googlemail.com>,
-        Andy Gross <agross@kernel.org>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=tmX1Ahb9V3sePtb5QZrdh2WMnjcseF+r4zrPIY/87P0=;
+        b=L7XoQYDdU633W64RLm8kdigItoZHOr63aDbMq1m6wakwehe9R6zO7SztD0cLJSh6XG
+         KqQCnd9erRoixyyETfjX5UWXuDOI+VPEmPfeZKNT0ARb4qd1KsyaKCaaDJBTyzrlT05j
+         AR4mSisaQwhQHn2c6YpDrAB/bMcjbRo1EipAK8nLA4KYY7jFQD2PzEbHxP84q2RvxifN
+         mFWxuOWioz/uLeOCO3BdkCUYbvQzggaBOzFh14PNWjR79aPUPIfvA9VZIRtRVgaFr7pK
+         1sc9nv/6Y643G9xqZq9HzihfX0bszcMbJWovsTGS6YQ6jaC53WVzjl6pnHwogaTodEQt
+         0PKw==
+X-Gm-Message-State: AOAM530F2HvmqP5oQNX4PW9zG0xswYjy1XnGAHil45rVWyXV4wLmimTo
+        QVg1zvRAl0P5Aqu4FEHxElo9TQ==
+X-Google-Smtp-Source: ABdhPJy5oMDnLUedtldYvmssFVi0CydnnEM1GUpYPgOHziN330zps7u7+EgaSkhqS4rUZsk5yvDE/Q==
+X-Received: by 2002:ad4:4421:: with SMTP id e1mr455578qvt.48.1616005409600;
+        Wed, 17 Mar 2021 11:23:29 -0700 (PDT)
+Received: from [192.168.1.93] (pool-71-163-245-5.washdc.fios.verizon.net. [71.163.245.5])
+        by smtp.gmail.com with ESMTPSA id z4sm18535935qkb.94.2021.03.17.11.23.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Mar 2021 11:23:29 -0700 (PDT)
+Subject: Re: [PATCH] thermal: qcom: tsens_v1: Enable sensor 3 on MSM8976
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>,
+        phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] backlight: qcom-wled: Use sink_addr for sync toggle
-Message-ID: <20210317091600.GJ701493@dell>
-References: <20210314101110.48024-1-marijn.suijten@somainline.org>
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210225213119.116550-1-konrad.dybcio@somainline.org>
+From:   Thara Gopinath <thara.gopinath@linaro.org>
+Message-ID: <f36f63c7-4427-58fa-fed4-c97c5ee47159@linaro.org>
+Date:   Wed, 17 Mar 2021 14:23:27 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210314101110.48024-1-marijn.suijten@somainline.org>
+In-Reply-To: <20210225213119.116550-1-konrad.dybcio@somainline.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 14 Mar 2021, Marijn Suijten wrote:
 
-> From: Obeida Shamoun <oshmoun100@googlemail.com>
+
+On 2/25/21 4:31 PM, Konrad Dybcio wrote:
+> The sensor *is* in fact used and does report temperature.
+
+I can't find any info that says otherwise. So,
+
+Acked-by: Thara Gopinath <thara.gopinath@linaro.org>
+
+Warm Regards
+Thara
+
 > 
-> WLED3_SINK_REG_SYNC is, as the name implies, a sink register offset.
-> Therefore, use the sink address as base instead of the ctrl address.
-> 
-> This fixes the sync toggle on wled4, which can be observed by the fact
-> that adjusting brightness now works.
-> 
-> It has no effect on wled3 because sink and ctrl base addresses are the
-> same.  This allows adjusting the brightness without having to disable
-> then reenable the module.
-> 
-> Signed-off-by: Obeida Shamoun <oshmoun100@googlemail.com>
 > Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 > ---
->  drivers/video/backlight/qcom-wled.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-
-Applied, thanks.
+>   drivers/thermal/qcom/tsens-v1.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/thermal/qcom/tsens-v1.c b/drivers/thermal/qcom/tsens-v1.c
+> index 3c19a3800c6d..573e261ccca7 100644
+> --- a/drivers/thermal/qcom/tsens-v1.c
+> +++ b/drivers/thermal/qcom/tsens-v1.c
+> @@ -380,11 +380,11 @@ static const struct tsens_ops ops_8976 = {
+>   	.get_temp	= get_temp_tsens_valid,
+>   };
+>   
+> -/* Valid for both MSM8956 and MSM8976. Sensor ID 3 is unused. */
+> +/* Valid for both MSM8956 and MSM8976. */
+>   struct tsens_plat_data data_8976 = {
+>   	.num_sensors	= 11,
+>   	.ops		= &ops_8976,
+> -	.hw_ids		= (unsigned int[]){0, 1, 2, 4, 5, 6, 7, 8, 9, 10},
+> +	.hw_ids		= (unsigned int[]){0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+>   	.feat		= &tsens_v1_feat,
+>   	.fields		= tsens_v1_regfields,
+>   };
+> 
 
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Warm Regards
+Thara
