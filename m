@@ -2,49 +2,48 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C48C5C433E6
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BABD1C433E0
 	for <phone-devel@archiver.kernel.org>; Thu, 18 Mar 2021 12:46:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9207264F6B
+	by mail.kernel.org (Postfix) with ESMTP id 78B7264F59
 	for <phone-devel@archiver.kernel.org>; Thu, 18 Mar 2021 12:46:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231379AbhCRMqA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 18 Mar 2021 08:46:00 -0400
+        id S231288AbhCRMp7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 18 Mar 2021 08:45:59 -0400
 Received: from m42-10.mailgun.net ([69.72.42.10]:60172 "EHLO
         m42-10.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231565AbhCRMpp (ORCPT
+        with ESMTP id S231515AbhCRMp2 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 18 Mar 2021 08:45:45 -0400
+        Thu, 18 Mar 2021 08:45:28 -0400
 X-Greylist: delayed 304 seconds by postgrey-1.27 at vger.kernel.org; Thu, 18 Mar 2021 08:45:28 EDT
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1616071545; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=sXAGynqSLidMzR64Daok0xr8LMCoEyfeck8DvZcB7b4=; b=DTg3QFObfmDs+wozjopiqhSNZCjmX7RqOb8Yt74A60QfE/AKt6bcK3axWsks2KiX0hJA8hkl
- lZ+8TxDsRgIzD3YoE//EsNnWoX8gVqsIbvC6U5pAH14wFYfXMblv8v/9Q9Vhj7az1jrcjfEZ
- x5gF4Tg1gWQqAuef28+EFkctBOY=
+ s=smtp; t=1616071526; h=Message-Id: Date: Subject: Cc: To: From:
+ Sender; bh=s6VV7GTQncp21xvrXYojy8gPu45408PlPCy0aMnUmSc=; b=MqPUzATElztBNtXMd2Umk+WY8ECL9n87oJ/hK2pIVn8rysk0GkGAGYOB9XOzDuS+3KMpEvbV
+ /tCpg71AptqBX01Br3wWPE7hcXkgpT3GUPOXf4pCgJDt69WHEuw+2XzZZTWHytE2BHMaGsTm
+ af+zq/fmHa4bGtrznCre4wuw4Ew=
 X-Mailgun-Sending-Ip: 69.72.42.10
 X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 60534a364db3bb68012ff845 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 18 Mar 2021 12:40:22
+ smtp-out-n04.prod.us-west-2.postgun.com with SMTP id
+ 60534a2a3f267701a4e26bd4 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 18 Mar 2021 12:40:10
  GMT
 Sender: kgunda=codeaurora.org@mg.codeaurora.org
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id DA017C433ED; Thu, 18 Mar 2021 12:40:21 +0000 (UTC)
+        id 1A5ADC4346E; Thu, 18 Mar 2021 12:40:09 +0000 (UTC)
 Received: from kgunda-linux.qualcomm.com (unknown [202.46.22.19])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: kgunda)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AE246C43462;
-        Thu, 18 Mar 2021 12:40:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AE246C43462
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 508BCC433C6;
+        Thu, 18 Mar 2021 12:40:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 508BCC433C6
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kgunda@codeaurora.org
 From:   Kiran Gunda <kgunda@codeaurora.org>
@@ -54,74 +53,55 @@ To:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
         jacek.anaszewski@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
         mark.rutland@arm.com, linux-leds@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
-Cc:     Kiran Gunda <kgunda@codeaurora.org>
-Subject: [PATCH V5 2/2] backlight: qcom-wled: Correct the sync_toggle sequence
-Date:   Thu, 18 Mar 2021 18:09:40 +0530
-Message-Id: <1616071180-24493-3-git-send-email-kgunda@codeaurora.org>
+        phone-devel@vger.kernel.org
+Cc:     linux-arm-msm@vger.kernel.org, Kiran Gunda <kgunda@codeaurora.org>
+Subject: [PATCH V5 0/2] Fix WLED FSC Sync and brightness Sync settings
+Date:   Thu, 18 Mar 2021 18:09:38 +0530
+Message-Id: <1616071180-24493-1-git-send-email-kgunda@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1616071180-24493-1-git-send-email-kgunda@codeaurora.org>
-References: <1616071180-24493-1-git-send-email-kgunda@codeaurora.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-As per the current implementation, after FSC (Full Scale Current)
-and brightness update the sync bits are set-then-cleared.
-But, the FSC and brightness sync takes place when the sync bits are
-set (e.g. on a rising edge). So the hardware team recommends a
-clear-then-set approach in order to guarantee such a transition
-regardless of the previous register state.
+This patch series has the following two WLED fixes
+ 1. As per the current implementation, for WLED5, after
+    the FSC (Full Scale Current) update the driver is incorrectly
+    toggling the MOD_SYNC register instead of toggling the SYNC register.
+    The patch 1/2 fixes this by toggling the SYNC register after
+    FSC update.
 
-Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
----
- drivers/video/backlight/qcom-wled.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ 2. Currently, the sync bits are set-then-cleared after FSC and brightness
+    update. As per hardware team recommendation the FSC and brightness sync
+    takes place from clear-then-set transition of the sync bits.
+    The patch 2/2 fies this issue.
 
-diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-index e9fbe24..7c02f87 100644
---- a/drivers/video/backlight/qcom-wled.c
-+++ b/drivers/video/backlight/qcom-wled.c
-@@ -337,13 +337,13 @@ static int wled3_sync_toggle(struct wled *wled)
+changes from V4:
+  1. Rebased this patch series on the below patch.
+     "backlight-qcom-wled-Use-sink_addr-for-sync-toggle.patch".
+
+Changes from V3:
+  1. Updated the patch description as per Daneil's suggestion.
+  2. Added Daniel's "Reviewed-by" tag for patch 2/2.
+  3. Updated the cover letter to use "set" and "clear" properly.
  
- 	rc = regmap_update_bits(wled->regmap,
- 				wled->sink_addr + WLED3_SINK_REG_SYNC,
--				mask, mask);
-+				mask, WLED3_SINK_REG_SYNC_CLEAR);
- 	if (rc < 0)
- 		return rc;
- 
- 	rc = regmap_update_bits(wled->regmap,
- 				wled->sink_addr + WLED3_SINK_REG_SYNC,
--				mask, WLED3_SINK_REG_SYNC_CLEAR);
-+				mask, mask);
- 
- 	return rc;
- }
-@@ -353,17 +353,17 @@ static int wled5_mod_sync_toggle(struct wled *wled)
- 	int rc;
- 	u8 val;
- 
--	val = (wled->cfg.mod_sel == MOD_A) ? WLED5_SINK_REG_SYNC_MOD_A_BIT :
--					     WLED5_SINK_REG_SYNC_MOD_B_BIT;
- 	rc = regmap_update_bits(wled->regmap,
- 				wled->sink_addr + WLED5_SINK_REG_MOD_SYNC_BIT,
--				WLED5_SINK_REG_SYNC_MASK, val);
-+				WLED5_SINK_REG_SYNC_MASK, 0);
- 	if (rc < 0)
- 		return rc;
- 
-+	val = (wled->cfg.mod_sel == MOD_A) ? WLED5_SINK_REG_SYNC_MOD_A_BIT :
-+					     WLED5_SINK_REG_SYNC_MOD_B_BIT;
- 	return regmap_update_bits(wled->regmap,
- 				  wled->sink_addr + WLED5_SINK_REG_MOD_SYNC_BIT,
--				  WLED5_SINK_REG_SYNC_MASK, 0);
-+				  WLED5_SINK_REG_SYNC_MASK, val);
- }
- 
- static int wled_ovp_fault_status(struct wled *wled, bool *fault_set)
+Changes from V2:
+  1. Added Daniel's "Reviewed-by" tag for patch 1/2.
+  2. Updated the patch 2/2 description with "set" and "clear"
+     terminology instead of "1" and "0".
+  3. Updated the cover letter with "set" and "clear" terminology
+     instead of "1" and "0".
+
+Changes from V1:
+  1. Updated the cover letter.
+  2. Updated the description of the patches as per Daniel's suggestion.
+
+Kiran Gunda (2):
+  backlight: qcom-wled: Fix FSC update issue for WLED5
+  backlight: qcom-wled: Correct the sync_toggle sequence
+
+ drivers/video/backlight/qcom-wled.c | 37 +++++++++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
+
 -- 
 The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
  a Linux Foundation Collaborative Project
