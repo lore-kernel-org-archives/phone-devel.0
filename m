@@ -2,137 +2,107 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22E98C43381
-	for <phone-devel@archiver.kernel.org>; Thu, 18 Mar 2021 12:46:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4B30C433C1
+	for <phone-devel@archiver.kernel.org>; Sat, 20 Mar 2021 17:17:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C117E64F70
-	for <phone-devel@archiver.kernel.org>; Thu, 18 Mar 2021 12:46:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 806956194D
+	for <phone-devel@archiver.kernel.org>; Sat, 20 Mar 2021 17:17:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231373AbhCRMp7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 18 Mar 2021 08:45:59 -0400
-Received: from m42-10.mailgun.net ([69.72.42.10]:35064 "EHLO
-        m42-10.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231376AbhCRMpc (ORCPT
+        id S229840AbhCTRQ6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 20 Mar 2021 13:16:58 -0400
+Received: from mail-40134.protonmail.ch ([185.70.40.134]:16251 "EHLO
+        mail-40134.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229834AbhCTRQy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 18 Mar 2021 08:45:32 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1616071531; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=zMH4KZLVuj26V2WKbkO37kkmJ5LZVxtii7JpvkmoOp0=; b=SQN0eXqZpqNO4nxSyCw4zZ34Ex3LUB7DQKWTWTIBGcCkoEKt8mivFLPvwnKGFJROjTuDib8b
- Dy9h8xTl9vOmVKzkTfY54mlWHlQcZvyJrzJcsOnZTzVAR2CgmCd81mfVPzNflarRs71++m48
- KrjY/F8ifiVwMLEq2fWHt9wXRoo=
-X-Mailgun-Sending-Ip: 69.72.42.10
-X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n07.prod.us-east-1.postgun.com with SMTP id
- 60534a301de5dd7b99bc56e5 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 18 Mar 2021 12:40:16
- GMT
-Sender: kgunda=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id EA1D7C433C6; Thu, 18 Mar 2021 12:40:15 +0000 (UTC)
-Received: from kgunda-linux.qualcomm.com (unknown [202.46.22.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kgunda)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BCBE5C43469;
-        Thu, 18 Mar 2021 12:40:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BCBE5C43469
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kgunda@codeaurora.org
-From:   Kiran Gunda <kgunda@codeaurora.org>
-To:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
-        lee.jones@linaro.org, b.zolnierkie@samsung.com,
-        dri-devel@lists.freedesktop.org, daniel.thompson@linaro.org,
-        jacek.anaszewski@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
-        mark.rutland@arm.com, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
-Cc:     Kiran Gunda <kgunda@codeaurora.org>
-Subject: [PATCH V5 1/2] backlight: qcom-wled: Fix FSC update issue for WLED5
-Date:   Thu, 18 Mar 2021 18:09:39 +0530
-Message-Id: <1616071180-24493-2-git-send-email-kgunda@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1616071180-24493-1-git-send-email-kgunda@codeaurora.org>
-References: <1616071180-24493-1-git-send-email-kgunda@codeaurora.org>
+        Sat, 20 Mar 2021 13:16:54 -0400
+Date:   Sat, 20 Mar 2021 17:16:45 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1616260611;
+        bh=XHD5SNh+JKh0y8dumYp4YnG/TSTm/z8ZjC7Ay7aNkvI=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=Zzcz8jnVlrGykUWjhEwsd3PP2HLzin8LdqVKriRM7EwIUfo5z0kzLyTSHudAeJrwl
+         HRfgu0REkoxNRMdCT1/0JoDJ5Y3ZHVFaluT2bGik2/3b3Z4+06ytW0hLlSt2D41tj+
+         ZxXZddxGiWUNBvl8I9nwWq3WNpdcqsj92l1D3/3U=
+To:     Vinod Koul <vkoul@kernel.org>
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Reply-To: Caleb Connolly <caleb@connolly.tech>
+Subject: Re: [PATCH 2/3] arm64: dts: qcom: sm8150: add iommus to qups
+Message-ID: <5ab5b7df-1624-10bf-f268-c32dc5bf0bb6@connolly.tech>
+In-Reply-To: <YFBM5Up5caWZCMSx@vkoul-mobl>
+References: <20210310163024.393578-1-caleb@connolly.tech> <20210310163024.393578-3-caleb@connolly.tech> <YFBM5Up5caWZCMSx@vkoul-mobl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Currently, for WLED5, the FSC (Full scale current) setting is not
-updated properly due to driver toggling the wrong register after
-an FSC update.
+Hi Vinod,
 
-On WLED5 we should only toggle the MOD_SYNC bit after a brightness
-update. For an FSC update we need to toggle the SYNC bits instead.
+On 16/03/2021 6:15 am, Vinod Koul wrote:
+> On 10-03-21, 16:31, Caleb Connolly wrote:
+>> Hook up the SMMU for doing DMA over i2c. Some peripherals like
+>> touchscreens easily exceed 32-bytes per transfer, causing errors and
+>> lockups without this.
+> Why not squash this to patch 1..?
 
-Fix it by adopting the common wled3_sync_toggle() for WLED5 and
-introducing new code to the brightness update path to compensate.
+I thought it made more sense to separate these patches to keep the=20
+history a bit cleaner. I can squash them if you'd prefer.
 
-Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
----
- drivers/video/backlight/qcom-wled.c | 25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ =C2=A0=C2=A0=C2=A0 Caleb
 
-diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-index fc8b443..e9fbe24 100644
---- a/drivers/video/backlight/qcom-wled.c
-+++ b/drivers/video/backlight/qcom-wled.c
-@@ -348,7 +348,7 @@ static int wled3_sync_toggle(struct wled *wled)
- 	return rc;
- }
- 
--static int wled5_sync_toggle(struct wled *wled)
-+static int wled5_mod_sync_toggle(struct wled *wled)
- {
- 	int rc;
- 	u8 val;
-@@ -445,10 +445,23 @@ static int wled_update_status(struct backlight_device *bl)
- 			goto unlock_mutex;
- 		}
- 
--		rc = wled->wled_sync_toggle(wled);
--		if (rc < 0) {
--			dev_err(wled->dev, "wled sync failed rc:%d\n", rc);
--			goto unlock_mutex;
-+		if (wled->version < 5) {
-+			rc = wled->wled_sync_toggle(wled);
-+			if (rc < 0) {
-+				dev_err(wled->dev, "wled sync failed rc:%d\n", rc);
-+				goto unlock_mutex;
-+			}
-+		} else {
-+			/*
-+			 * For WLED5 toggling the MOD_SYNC_BIT updates the
-+			 * brightness
-+			 */
-+			rc = wled5_mod_sync_toggle(wled);
-+			if (rc < 0) {
-+				dev_err(wled->dev, "wled mod sync failed rc:%d\n",
-+					rc);
-+				goto unlock_mutex;
-+			}
- 		}
- 	}
- 
-@@ -1459,7 +1472,7 @@ static int wled_configure(struct wled *wled)
- 		size = ARRAY_SIZE(wled5_opts);
- 		*cfg = wled5_config_defaults;
- 		wled->wled_set_brightness = wled5_set_brightness;
--		wled->wled_sync_toggle = wled5_sync_toggle;
-+		wled->wled_sync_toggle = wled3_sync_toggle;
- 		wled->wled_cabc_config = wled5_cabc_config;
- 		wled->wled_ovp_delay = wled5_ovp_delay;
- 		wled->wled_auto_detection_required =
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
- a Linux Foundation Collaborative Project
+>
+>> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+>> ---
+>> Fixes i2c on the OnePlus 7, without this touching the screen with more
+>> than 4 fingers causes the device to lock up and reboot.
+>> ---
+>>   arch/arm64/boot/dts/qcom/sm8150.dtsi | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/=
+qcom/sm8150.dtsi
+>> index 03e05d98daf2..543417d74216 100644
+>> --- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
+>> +++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+>> @@ -583,6 +583,7 @@ qupv3_id_0: geniqup@8c0000 {
+>>   =09=09=09clock-names =3D "m-ahb", "s-ahb";
+>>   =09=09=09clocks =3D <&gcc GCC_QUPV3_WRAP_0_M_AHB_CLK>,
+>>   =09=09=09=09 <&gcc GCC_QUPV3_WRAP_0_S_AHB_CLK>;
+>> +=09=09=09iommus =3D <&apps_smmu 0xc3 0x0>;
+>>   =09=09=09#address-cells =3D <2>;
+>>   =09=09=09#size-cells =3D <2>;
+>>   =09=09=09ranges;
+>> @@ -595,6 +596,7 @@ qupv3_id_1: geniqup@ac0000 {
+>>   =09=09=09clock-names =3D "m-ahb", "s-ahb";
+>>   =09=09=09clocks =3D <&gcc GCC_QUPV3_WRAP_1_M_AHB_CLK>,
+>>   =09=09=09=09 <&gcc GCC_QUPV3_WRAP_1_S_AHB_CLK>;
+>> +=09=09=09iommus =3D <&apps_smmu 0x603 0x0>;
+>>   =09=09=09#address-cells =3D <2>;
+>>   =09=09=09#size-cells =3D <2>;
+>>   =09=09=09ranges;
+>> @@ -617,6 +619,7 @@ qupv3_id_2: geniqup@cc0000 {
+>>   =09=09=09clock-names =3D "m-ahb", "s-ahb";
+>>   =09=09=09clocks =3D <&gcc GCC_QUPV3_WRAP_2_M_AHB_CLK>,
+>>   =09=09=09=09 <&gcc GCC_QUPV3_WRAP_2_S_AHB_CLK>;
+>> +=09=09=09iommus =3D <&apps_smmu 0x7a3 0x0>;
+>>   =09=09=09#address-cells =3D <2>;
+>>   =09=09=09#size-cells =3D <2>;
+>>   =09=09=09ranges;
+>> --
+>> 2.29.2
+>>
+> --
+> ~Vinod
 
