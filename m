@@ -7,108 +7,103 @@ X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85AB7C433E1
-	for <phone-devel@archiver.kernel.org>; Mon, 22 Mar 2021 16:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2C77C433E5
+	for <phone-devel@archiver.kernel.org>; Mon, 22 Mar 2021 17:35:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5D64D6198D
-	for <phone-devel@archiver.kernel.org>; Mon, 22 Mar 2021 16:19:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 70C1E619A1
+	for <phone-devel@archiver.kernel.org>; Mon, 22 Mar 2021 17:35:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230247AbhCVQSs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 22 Mar 2021 12:18:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44850 "EHLO
+        id S232099AbhCVRen (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 22 Mar 2021 13:34:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231551AbhCVQSP (ORCPT
+        with ESMTP id S232014AbhCVReV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 22 Mar 2021 12:18:15 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4371CC061574
-        for <phone-devel@vger.kernel.org>; Mon, 22 Mar 2021 09:18:14 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id hq27so22244323ejc.9
-        for <phone-devel@vger.kernel.org>; Mon, 22 Mar 2021 09:18:14 -0700 (PDT)
+        Mon, 22 Mar 2021 13:34:21 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE3FCC061765
+        for <phone-devel@vger.kernel.org>; Mon, 22 Mar 2021 10:34:16 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id ce10so22636144ejb.6
+        for <phone-devel@vger.kernel.org>; Mon, 22 Mar 2021 10:34:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=5fPU70P+apIZaZ90738281RBQVtiFO6xyPzB24/nFj0=;
-        b=PPVMKoO2LmrxB/EqF6MdsVCuOvCwzdnYIGu2CT53plAQh+yZIwJP+JPbBQG8Mez/X4
-         dL+oIx21/VF4Hq39I/bVUmtrzWJmFH7xgszYCiT6J/He6X7upD15585k4QOPFADu+/eD
-         QGre1T0qcLb0GWCg+tAd2MOaQpSFdYMLRvJ9ocygy2vTtaMWSScKS0tdYl6wOAWqz4wo
-         LuanlAHsC/rGWiQE/jkEUFFhBiiHpYDaYCa8eUN8gX7TC4Pna+GrsqForZ85Nrxp3sbW
-         U9FgvTr2gCIpDVhOQvLw9b1r+gGjYEy2RnlbmW5LH+1/GPpC1dGpGaafVjfP69uGspZ+
-         3Chg==
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=itvxu6pseNvAArTXkxBUqpwVqMnWpn85hJGn4Cdpwhg=;
+        b=uNTiuiHb//r+7s512XtcPzPyLF04pqLQ3NrFXgaoxYNR2RU0pDoYy1ZNFTfKaRBx3R
+         qUpdSxsLmTiozn+u05mEF/2mOns8JJqI3whi5eUsFhPYQd4a/eGXutlrOs1KdMC5vKXZ
+         D5NfmKie5T8TXOEpLX3eqXPKF/2ibqi+auQ3HJUAWhdl0PiQcmhIE+gj58H/w7T4dyTb
+         KY/Ex9Y+BtG5FhKLOWVluiKYgNltP/jhOs8Abi1ZipK2VPfsg0P3Rx5+52mA6aIxLF5Q
+         D+A7SD93d2c23HV9ByoiID4u+zWDyy2KubD1XKv/mr87//jjBOOUc3lGWiUyiBSMvn7b
+         dSLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=5fPU70P+apIZaZ90738281RBQVtiFO6xyPzB24/nFj0=;
-        b=KJUOHTC4WuZt7MrwsPoB/591FN/mKrxm3J1/1GzJ3vXywc5F67BN3S122n4c3IkN4J
-         5Pbz9AVUUnqzfDpIhCvnyBRyXB4PrP3+IaWYh14uavaRN65cnnnOichfqm8YQXkLXVRg
-         Q2ky8Li7Dqlu4YqTSurxqDQ/xADT7msG0o9GdceeJ/5AleyWsjGy0EI8U28dBB3YBXFP
-         kWQ2eRC2wqqJz57VP8VGNJQgTI4W9iP/7hhUNzXKQU8kdje7LL4OC3I5pd4zQcoRgz6v
-         bdaUaz3rNEhJb3hJX65ft+fo2r6Fv/SYfippcFboCCxnvTPKgT4FHVK5KDDKU8qUp5Jj
-         zMIg==
-X-Gm-Message-State: AOAM531fYwbREH8UgJkUxN1Vh7REUlFyM+mizS+yS3+ytZqwmFBeOSaM
-        8wZUxC2iI+g9RDsK3I9zDndAqA==
-X-Google-Smtp-Source: ABdhPJxWxOTWcNLPwlbFuHUTnCQvbb7chDavRLIX6ffZBF7loKDa89ZLnniTNDnUEtQqJ6ccAuewSw==
-X-Received: by 2002:a17:906:b316:: with SMTP id n22mr539237ejz.249.1616429892990;
-        Mon, 22 Mar 2021 09:18:12 -0700 (PDT)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id q12sm9950268ejy.91.2021.03.22.09.18.12
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=itvxu6pseNvAArTXkxBUqpwVqMnWpn85hJGn4Cdpwhg=;
+        b=VaDf5hGfMQzWW630CMLY4eFLZV9TiC3e5CkwHmcsriObk4OmMXZAVGDWysVWA0m++e
+         FM0TSiYuLhkPBWNZkUpbPOLjPis3hMCeBH5kLgJl0hNhnLnxmyL8dI/xTdE3Q5cgQpj5
+         lRnPVeH6DYFipSTz4ieF1sa9ldTsUd0E1spE0xx94pX5VCF6l+cYgGINJqdGOb58aHri
+         Hjt+sE2R5BrPHFHclN/k8LB9Rq12W8gk32JGn4r/uPcxBbZ/Z6xW8DtEj45ZAOfOXcYh
+         Z/Q4GlB6jB9EUUD+IlJogZ0nqQPrDMEpztBdV/SbAIJu3LcEOR2k+rWyup9yZwGiv1/d
+         QrMQ==
+X-Gm-Message-State: AOAM533YWlVVK8YzdEHEBaLA3O1uD3grT35FOjopK0c7jUyh5prYN/Tw
+        9Ue/n5ZDNY4g53euqikLHSdu7g==
+X-Google-Smtp-Source: ABdhPJw9FtwQ6aO2ECGVnHO58EnkDcEQ+fGQM9CFtqdocU6sXQqPcqwjPD5Dl/pLvT5flLaGRSP8fw==
+X-Received: by 2002:a17:906:340d:: with SMTP id c13mr934869ejb.29.1616434455577;
+        Mon, 22 Mar 2021 10:34:15 -0700 (PDT)
+Received: from dell ([91.110.221.180])
+        by smtp.gmail.com with ESMTPSA id n3sm9867573ejj.113.2021.03.22.10.34.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Mar 2021 09:18:12 -0700 (PDT)
-Date:   Mon, 22 Mar 2021 16:18:10 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org, Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Dan Murphy <dmurphy@ti.com>, Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH 2/2] video: backlight: qcom-wled: Add PMI8994 compatible
-Message-ID: <20210322161810.biagj2qro66rv4gt@maple.lan>
-References: <20210228124106.135812-1-konrad.dybcio@somainline.org>
- <20210228124106.135812-2-konrad.dybcio@somainline.org>
+        Mon, 22 Mar 2021 10:34:15 -0700 (PDT)
+Date:   Mon, 22 Mar 2021 17:34:13 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Kiran Gunda <kgunda@codeaurora.org>
+Cc:     bjorn.andersson@linaro.org, jingoohan1@gmail.com,
+        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
+        daniel.thompson@linaro.org, jacek.anaszewski@gmail.com,
+        pavel@ucw.cz, robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH V5 1/2] backlight: qcom-wled: Fix FSC update issue for
+ WLED5
+Message-ID: <20210322173413.GC2916463@dell>
+References: <1616071180-24493-1-git-send-email-kgunda@codeaurora.org>
+ <1616071180-24493-2-git-send-email-kgunda@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210228124106.135812-2-konrad.dybcio@somainline.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1616071180-24493-2-git-send-email-kgunda@codeaurora.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Feb 28, 2021 at 01:41:05PM +0100, Konrad Dybcio wrote:
-> Add a compatible for PMI8994 WLED. It uses the V4 of WLED IP.
+On Thu, 18 Mar 2021, Kiran Gunda wrote:
+
+> Currently, for WLED5, the FSC (Full scale current) setting is not
+> updated properly due to driver toggling the wrong register after
+> an FSC update.
 > 
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-
-
-Daniel.
-
-
+> On WLED5 we should only toggle the MOD_SYNC bit after a brightness
+> update. For an FSC update we need to toggle the SYNC bits instead.
+> 
+> Fix it by adopting the common wled3_sync_toggle() for WLED5 and
+> introducing new code to the brightness update path to compensate.
+> 
+> Signed-off-by: Kiran Gunda <kgunda@codeaurora.org>
+> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 > ---
->  drivers/video/backlight/qcom-wled.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> index 3bc7800eb0a9..497b9035a908 100644
-> --- a/drivers/video/backlight/qcom-wled.c
-> +++ b/drivers/video/backlight/qcom-wled.c
-> @@ -1704,6 +1704,7 @@ static int wled_remove(struct platform_device *pdev)
->  
->  static const struct of_device_id wled_match_table[] = {
->  	{ .compatible = "qcom,pm8941-wled", .data = (void *)3 },
-> +	{ .compatible = "qcom,pmi8994-wled", .data = (void *)4 },
->  	{ .compatible = "qcom,pmi8998-wled", .data = (void *)4 },
->  	{ .compatible = "qcom,pm660l-wled", .data = (void *)4 },
->  	{ .compatible = "qcom,pm8150l-wled", .data = (void *)5 },
-> -- 
-> 2.30.1
+>  drivers/video/backlight/qcom-wled.c | 25 +++++++++++++++++++------
+>  1 file changed, 19 insertions(+), 6 deletions(-)
+
+Applied, thanks.
+
+-- 
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
