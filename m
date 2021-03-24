@@ -2,124 +2,82 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E5DFC433E1
-	for <phone-devel@archiver.kernel.org>; Wed, 24 Mar 2021 09:15:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7057C433E5
+	for <phone-devel@archiver.kernel.org>; Wed, 24 Mar 2021 17:10:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E02D5619FE
-	for <phone-devel@archiver.kernel.org>; Wed, 24 Mar 2021 09:15:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8292D61A1B
+	for <phone-devel@archiver.kernel.org>; Wed, 24 Mar 2021 17:10:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231688AbhCXJOk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 24 Mar 2021 05:14:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37810 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230334AbhCXJOg (ORCPT
+        id S237058AbhCXRKM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 24 Mar 2021 13:10:12 -0400
+Received: from mail-il1-f179.google.com ([209.85.166.179]:37492 "EHLO
+        mail-il1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237244AbhCXRJA (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 24 Mar 2021 05:14:36 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DF7AC061763
-        for <phone-devel@vger.kernel.org>; Wed, 24 Mar 2021 02:14:36 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id x7so1171150wrw.10
-        for <phone-devel@vger.kernel.org>; Wed, 24 Mar 2021 02:14:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=4rN1YksKNQ6jMnv83wrys0vsQCA6pM1XeLstkQR9zSk=;
-        b=aaEalBsXBstsM7Ugh18M+hl8k/wTbYlQwQ6ihztFCEL9SFffFl/IlB3eU6LSKJs1k4
-         GjK340N7lCr3K0iNQ2HLCSKfu9qwSSS5Mp8zQ/OAzufhpBV6bxJQJuLmIMW602QW0Z0i
-         CTqj7hTA4262C48pcQPTWxgvKGSQ1LQgks/73S/V10RAeBK5hHJhx7ZbxahrIHGsK5bU
-         crb2aPqZrt9ArMgFvNEf6/iL2Ia25u/EldQEsOKbOrKgyMUfulRjc6gCETsPm62Fki99
-         ayEXOIgKaYa4YohjIIoMQ+HavVGjkXvTiQCd0/ZohrHC0rsOqSu+B+oZ12+Csh5u+2CE
-         xVgg==
+        Wed, 24 Mar 2021 13:09:00 -0400
+Received: by mail-il1-f179.google.com with SMTP id z9so22028638ilb.4;
+        Wed, 24 Mar 2021 10:09:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=4rN1YksKNQ6jMnv83wrys0vsQCA6pM1XeLstkQR9zSk=;
-        b=mFAqjipkTi5yqLS89M5JI5AtXTLmErxpSFrl5KgfudFmFPymhEGrdVmyXy/z6V52r5
-         xqi1GX9t4/6tYZF/aMVrJI3WL1qERznn2FIMmCzzSTRUwVM/Uk8el55xh0moMZVTAg+G
-         3Iu9sSMo6hDdHKJ4l9U6xquaSrmd3OE1DWZCqaMYtaNHHdVsfuuhH8MGSrC0d7dQNVvu
-         iImEZM1fnl8QkSV1jfeQCsz8wxGgHWaZfX53OPiqvi8or7bTP010anHTZI4gS7t3OPyJ
-         cDxWI7iBrE7Oypl+c1ZZXc8wM5u6TdVao3cgha3mcYC8m4s6ZF0AHSoxIWWDTC5tEuJE
-         r9UA==
-X-Gm-Message-State: AOAM530WiNlo/hle1YWDSE64wz2YMeuy+0NIpSF/WtgjJtSE2f1vHdm8
-        zm0jtJsNDzIRzdpfmVnZPE5BDucapgF0QQ==
-X-Google-Smtp-Source: ABdhPJwiwVGAQSOrEM4tqzstTbRBmqfvaxH3KFKNSYNSQI1y++GJvlZicb7puOlrOD6JdzLf3utu9Q==
-X-Received: by 2002:adf:e8c9:: with SMTP id k9mr2327816wrn.315.1616577275230;
-        Wed, 24 Mar 2021 02:14:35 -0700 (PDT)
-Received: from dell ([91.110.221.180])
-        by smtp.gmail.com with ESMTPSA id n1sm2536565wro.36.2021.03.24.02.14.34
+         :mime-version:content-disposition:in-reply-to;
+        bh=t5QlIofBT3IA5excy3udA7XEAyczBGmnESa+x6UIryc=;
+        b=elcYo2WtqJYSBzKYx+WUFOhUVLDogT+kqsAXlM6/KTZtBOahE3FMvN0eGFAdLMLfpd
+         +bxM4T0y/jdOGSWu8vDcxPVIdG4BsmJPEC5fhOYaPLCmtzFTOKGkZoVIAS/7O6GOD8B2
+         DuKJ3R5oThXCPBRfpGNAXOMkWZKaKNBNP6bTPpWlrcUkxw7eflS91y1dTbX0OOJupIhw
+         7w2hDuk9FnTl4L91Aq5vOOKcb0CVLNP7NXyJJ5dHz/ttcQt6qvXFFlxK7ijiwnBEQP09
+         hbnvdh3sy7gPH9fsGymyvVBiUa3ykRfeZXDgDKCpKnJLpFe8rMnkA8hO7/RGqifggQKP
+         Q+cA==
+X-Gm-Message-State: AOAM531mZWh8a4VadfBeEMuCJrFcmJHiMMMXUDuAm15LUJVS9vI/rE03
+        wB6UwhUmp9FTolPpwynwffusHfEAGQ==
+X-Google-Smtp-Source: ABdhPJwp4OYrDLyBQl+w9gceAyQdazHzh08A0HI5YhhfcX99A1SCgubvR3ehOHGKr4bhxf7vMkCMXQ==
+X-Received: by 2002:a92:cd8b:: with SMTP id r11mr3410755ilb.186.1616605739907;
+        Wed, 24 Mar 2021 10:08:59 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.253])
+        by smtp.gmail.com with ESMTPSA id j17sm1346015iok.37.2021.03.24.10.08.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Mar 2021 02:14:34 -0700 (PDT)
-Date:   Wed, 24 Mar 2021 09:14:32 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org, Jingoo Han <jingoohan1@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        Wed, 24 Mar 2021 10:08:58 -0700 (PDT)
+Received: (nullmailer pid 3258475 invoked by uid 1000);
+        Wed, 24 Mar 2021 17:08:55 -0000
+Date:   Wed, 24 Mar 2021 11:08:55 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, martin.botka@somainline.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        DRI Development <dri-devel@lists.freedesktop.org>,
-        linux-leds <linux-leds@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>
-Subject: Re: [PATCH 2/2] video: backlight: qcom-wled: Add PMI8994 compatible
-Message-ID: <20210324091432.GC2916463@dell>
-References: <20210228124106.135812-1-konrad.dybcio@somainline.org>
- <20210228124106.135812-2-konrad.dybcio@somainline.org>
- <20210322161810.biagj2qro66rv4gt@maple.lan>
- <20210323083935.GF2916463@dell>
- <CAMuHMdUamD4rAY1Sn-3Fb9Xf1B9g0FY0Pob8rAFsFR0ZcNZ0rw@mail.gmail.com>
+        angelogioacchino.delregno@somainline.org,
+        Taniya Das <tdas@codeaurora.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        marijn.suijten@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: clock: Add MDM9607 GCC clock bindings
+Message-ID: <20210324170855.GA3258412@robh.at.kernel.org>
+References: <20210313020310.386152-1-konrad.dybcio@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMuHMdUamD4rAY1Sn-3Fb9Xf1B9g0FY0Pob8rAFsFR0ZcNZ0rw@mail.gmail.com>
+In-Reply-To: <20210313020310.386152-1-konrad.dybcio@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 24 Mar 2021, Geert Uytterhoeven wrote:
-
-> Hi Lee,
+On Sat, 13 Mar 2021 03:03:07 +0100, Konrad Dybcio wrote:
+> Add device tree bindings for global clock controller on MDM9607 SoC.
 > 
-> On Tue, Mar 23, 2021 at 9:40 AM Lee Jones <lee.jones@linaro.org> wrote:
-> > On Mon, 22 Mar 2021, Daniel Thompson wrote:
-> > > On Sun, Feb 28, 2021 at 01:41:05PM +0100, Konrad Dybcio wrote:
-> > > > Add a compatible for PMI8994 WLED. It uses the V4 of WLED IP.
-> > > >
-> > > > Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> > >
-> > > Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> >
-> > Why are you Reviewing/Acking a patch that was applied on the 10th?
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> ---
+>  .../devicetree/bindings/clock/qcom,gcc.yaml   |   2 +
+>  include/dt-bindings/clock/qcom,gcc-mdm9607.h  | 104 ++++++++++++++++++
+>  2 files changed, 106 insertions(+)
+>  create mode 100644 include/dt-bindings/clock/qcom,gcc-mdm9607.h
 > 
-> Only 12 days later?!?
-> 
-> It's not uncommon to receive acks for patches after they have been
-> applied upstream. But it is if the patch was applied 10 years and 9
-> months ago!
-> https://lore.kernel.org/linux-m68k/F5513AE92A5A1047AC2F91AEBB9202680288CBBA3983@E2K7-MS2.ds.strath.ac.uk/
 
-That truly is next level! :)
-
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Acked-by: Rob Herring <robh@kernel.org>
