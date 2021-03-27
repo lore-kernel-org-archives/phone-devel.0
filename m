@@ -3,81 +3,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7057C433E5
-	for <phone-devel@archiver.kernel.org>; Wed, 24 Mar 2021 17:10:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25A6FC433E1
+	for <phone-devel@archiver.kernel.org>; Sat, 27 Mar 2021 16:41:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8292D61A1B
-	for <phone-devel@archiver.kernel.org>; Wed, 24 Mar 2021 17:10:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E92DF619E5
+	for <phone-devel@archiver.kernel.org>; Sat, 27 Mar 2021 16:41:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237058AbhCXRKM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 24 Mar 2021 13:10:12 -0400
-Received: from mail-il1-f179.google.com ([209.85.166.179]:37492 "EHLO
-        mail-il1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237244AbhCXRJA (ORCPT
+        id S230411AbhC0QlI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 27 Mar 2021 12:41:08 -0400
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:37483 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230440AbhC0QlC (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 24 Mar 2021 13:09:00 -0400
-Received: by mail-il1-f179.google.com with SMTP id z9so22028638ilb.4;
-        Wed, 24 Mar 2021 10:09:00 -0700 (PDT)
+        Sat, 27 Mar 2021 12:41:02 -0400
+Received: by mail-ot1-f44.google.com with SMTP id t23-20020a0568301e37b02901b65ab30024so8221280otr.4;
+        Sat, 27 Mar 2021 09:41:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=t5QlIofBT3IA5excy3udA7XEAyczBGmnESa+x6UIryc=;
-        b=elcYo2WtqJYSBzKYx+WUFOhUVLDogT+kqsAXlM6/KTZtBOahE3FMvN0eGFAdLMLfpd
-         +bxM4T0y/jdOGSWu8vDcxPVIdG4BsmJPEC5fhOYaPLCmtzFTOKGkZoVIAS/7O6GOD8B2
-         DuKJ3R5oThXCPBRfpGNAXOMkWZKaKNBNP6bTPpWlrcUkxw7eflS91y1dTbX0OOJupIhw
-         7w2hDuk9FnTl4L91Aq5vOOKcb0CVLNP7NXyJJ5dHz/ttcQt6qvXFFlxK7ijiwnBEQP09
-         hbnvdh3sy7gPH9fsGymyvVBiUa3ykRfeZXDgDKCpKnJLpFe8rMnkA8hO7/RGqifggQKP
-         Q+cA==
-X-Gm-Message-State: AOAM531mZWh8a4VadfBeEMuCJrFcmJHiMMMXUDuAm15LUJVS9vI/rE03
-        wB6UwhUmp9FTolPpwynwffusHfEAGQ==
-X-Google-Smtp-Source: ABdhPJwp4OYrDLyBQl+w9gceAyQdazHzh08A0HI5YhhfcX99A1SCgubvR3ehOHGKr4bhxf7vMkCMXQ==
-X-Received: by 2002:a92:cd8b:: with SMTP id r11mr3410755ilb.186.1616605739907;
-        Wed, 24 Mar 2021 10:08:59 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id j17sm1346015iok.37.2021.03.24.10.08.56
+        bh=Wb4sH2K63Zh3SiFRvUPI8IlBfub9eBg1HUipVUt8VBI=;
+        b=Kx0zRUC6uaTQ/N4Vu10Ltddq+l6cGnPHbCRrEh2EI5V84IcKEZSrrNmKzs/upQrVoF
+         TQmNqegVzgBHiZo23FPkig7jMASYfNgXh3eAXFy34FED9WZw/3aAhEJCLNk/2bxaXovi
+         XSvqx+ziXl8Gvp+AMZuo5sRa0WxEo5tb7uSFN6uQ4VWHD9X3iXvvvmkvleNy+btnEyu8
+         1SyB0gHeCQG+NpwsiGNDnkh4K7LQv4GIf74v44vIdCVgG0Q3N5izubJDA1GfXqdWlYRg
+         6xi+udYL0dyJgKFS5f9xwliOPXcJBx8ihzNMCyz9BVbJv0zjg91upSNWVAPEV8EQ4ZlQ
+         FRdw==
+X-Gm-Message-State: AOAM530is/QRXy/oJros2Do3Q5J6Mjyr29MRcCyBGWhEOWbIMQMlVQ5+
+        /+0EBAPzKlY7OL7PsTexlA==
+X-Google-Smtp-Source: ABdhPJywxocBdq+u+4dCiSNTO48Yh6y1yejg1pEi9Bp58/WqcYpE420zdyRI0SRmfytnYuV5CmQtlA==
+X-Received: by 2002:a9d:5a8d:: with SMTP id w13mr16600598oth.145.1616863261384;
+        Sat, 27 Mar 2021 09:41:01 -0700 (PDT)
+Received: from robh.at.kernel.org ([172.58.99.140])
+        by smtp.gmail.com with ESMTPSA id e15sm2842895otk.64.2021.03.27.09.40.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Mar 2021 10:08:58 -0700 (PDT)
-Received: (nullmailer pid 3258475 invoked by uid 1000);
-        Wed, 24 Mar 2021 17:08:55 -0000
-Date:   Wed, 24 Mar 2021 11:08:55 -0600
+        Sat, 27 Mar 2021 09:41:00 -0700 (PDT)
+Received: (nullmailer pid 217627 invoked by uid 1000);
+        Sat, 27 Mar 2021 16:40:56 -0000
+Date:   Sat, 27 Mar 2021 10:40:56 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, martin.botka@somainline.org,
-        Andy Gross <agross@kernel.org>,
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        angelogioacchino.delregno@somainline.org,
-        Taniya Das <tdas@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        marijn.suijten@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: clock: Add MDM9607 GCC clock bindings
-Message-ID: <20210324170855.GA3258412@robh.at.kernel.org>
-References: <20210313020310.386152-1-konrad.dybcio@somainline.org>
+        Mukesh Savaliya <msavaliy@codeaurora.org>,
+        Akash Asthana <akashast@codeaurora.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] dt-bindings: qcom: geni-se: document iommus
+Message-ID: <20210327164056.GA216078@robh.at.kernel.org>
+References: <20210321174522.123036-1-caleb@connolly.tech>
+ <20210321174522.123036-4-caleb@connolly.tech>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210313020310.386152-1-konrad.dybcio@somainline.org>
+In-Reply-To: <20210321174522.123036-4-caleb@connolly.tech>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 13 Mar 2021 03:03:07 +0100, Konrad Dybcio wrote:
-> Add device tree bindings for global clock controller on MDM9607 SoC.
+On Sun, Mar 21, 2021 at 05:46:32PM +0000, Caleb Connolly wrote:
+> Document the iommus property for QCOM Geni SE.
 > 
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 > ---
->  .../devicetree/bindings/clock/qcom,gcc.yaml   |   2 +
->  include/dt-bindings/clock/qcom,gcc-mdm9607.h  | 104 ++++++++++++++++++
->  2 files changed, 106 insertions(+)
->  create mode 100644 include/dt-bindings/clock/qcom,gcc-mdm9607.h
+>  Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
+> diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml
+> index 84671950ca0d..68c4ee55ae7d 100644
+> --- a/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml
+> +++ b/Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml
+> @@ -51,6 +51,9 @@ properties:
+>    interconnect-names:
+>      const: qup-core
+>  
+> +  iommus:
 
-Acked-by: Rob Herring <robh@kernel.org>
+Need to define how many entries (maxItems: 1?)
+
+> +    description: the iommu and adress to be used to configure DMA for large transfers.
+
+The property doesn't define the address to be used.
+
+> +
+>  required:
+>    - compatible
+>    - reg
+> -- 
+> 2.30.2
+> 
+> 
