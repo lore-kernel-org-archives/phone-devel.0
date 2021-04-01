@@ -2,266 +2,92 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3285DC43461
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Apr 2021 09:40:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 081ADC433B4
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Apr 2021 21:10:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E7031610CF
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Apr 2021 09:40:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B7D0F610F8
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Apr 2021 21:10:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232585AbhDAJkP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Apr 2021 05:40:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56122 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233818AbhDAJkH (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 1 Apr 2021 05:40:07 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5540D61057;
-        Thu,  1 Apr 2021 09:40:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617270000;
-        bh=Nq4/v62vTg2f6RpFiWf1fLuE4zBcVBoYR38LVtEOjrA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nXFFV7x4VKr0OE/FIE4ZXGoTpn5GHRpEbdA+wTUTQ3tiRcMQnXduEy8IbfNAlPDvC
-         B1OIyFl1/PR7PDSxoSy1sBlYaqfGRgEbXC7E2+RP92zBJfGllJMJL8282AVO/E2bag
-         0gnx6YBLxfZxuMsXcJtVMyTTO/vCAke2shAkaJiqAG55h4w3HU2WjBTCuQpGsZRcAo
-         ZZA2soacdUIylJIZghY9vZGN+UeAmNqH7CKB8IhqTKX2T+P5T99J3R6Q7h+2/gCP5X
-         mSbJbbeDv4boeM6As6rHumUKre+qU8OiK+Qejrn3ukeK7DQDwlnSxVzqmaKOTCdtib
-         b/NhdGrviunNg==
-Received: from johan by xi.lan with local (Exim 4.93.0.4)
-        (envelope-from <johan@kernel.org>)
-        id 1lRtnx-0008Or-Ni; Thu, 01 Apr 2021 11:39:57 +0200
-Date:   Thu, 1 Apr 2021 11:39:57 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org, tony@atomide.com
-Subject: Re: [PATCHv2] gnss: motmdm: Add support for Motorola Mapphone
- MDM6600 modem
-Message-ID: <YGWU7U1fIkDmc3Mf@hovoldconsulting.com>
-References: <20210107224530.GA23250@duo.ucw.cz>
- <20210129224254.GA28853@duo.ucw.cz>
- <20210228204601.GA20966@duo.ucw.cz>
+        id S234344AbhDAVKK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 1 Apr 2021 17:10:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47374 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234300AbhDAVKJ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Apr 2021 17:10:09 -0400
+Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3C6DC061788;
+        Thu,  1 Apr 2021 14:10:09 -0700 (PDT)
+Received: from [192.168.1.101] (abae153.neoplus.adsl.tpnet.pl [83.6.168.153])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 035EE3F5D2;
+        Thu,  1 Apr 2021 23:10:06 +0200 (CEST)
+Subject: Re: [PATCH 5/6] clk: qcom: gcc-sdm660: Account for needed adjustments
+ in probe function
+To:     Stephen Boyd <sboyd@kernel.org>, phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Taniya Das <tdas@codeaurora.org>,
+        Craig Tatlor <ctatlor97@gmail.com>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20210220155618.176559-1-konrad.dybcio@somainline.org>
+ <20210220155618.176559-5-konrad.dybcio@somainline.org>
+ <161404077336.1254594.15002572465360321874@swboyd.mtv.corp.google.com>
+ <3917fba4-e5b0-911f-9220-f401a90aac38@somainline.org>
+ <161724198675.2260335.14358880292682931985@swboyd.mtv.corp.google.com>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+Message-ID: <abc821cc-ef43-3241-793a-cc4c85b72563@somainline.org>
+Date:   Thu, 1 Apr 2021 23:10:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="fBJ0Cv7dtmHp92KM"
-Content-Disposition: inline
-In-Reply-To: <20210228204601.GA20966@duo.ucw.cz>
+In-Reply-To: <161724198675.2260335.14358880292682931985@swboyd.mtv.corp.google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
---fBJ0Cv7dtmHp92KM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>>>> +
+>>>> +       /* Keep bimc gfx clock port on all the time */
+>>>> +       clk_prepare_enable(gcc_bimc_gfx_clk.clkr.hw.clk);
+>>>> +
+>>> Preferably just set these various bits with regmap_update_bits() during
+>>> probe. Also, please do it before regsitering the clks, not after.
+>> To be fair, now I think that simply adding CLK_IS_CRITICAL flag to the clocks in question is the smartest thing to do. Magic writes don't tell a whole lot.
+> This is how it's been done in various other qcom clk drivers. Usually
+> there is a comment about what is enabled, but really it's just setting
+> random bits that sadly aren't already set by default.
 
-On Sun, Feb 28, 2021 at 09:46:01PM +0100, Pavel Machek wrote:
-> Hi!
->=20
-> > Motorola is using a custom TS 27.010 based multiplexer protocol
-> > for various devices on the modem. These devices can be accessed on
-> > dedicated channels using Linux kernel serdev-ngsm driver.
-> >=20
-> > For the GNSS on these devices, we need to kick the GNSS device at a
-> > desired rate. Otherwise the GNSS device stops sending data after a
-> > few minutes. The rate we poll data defaults to 1000 ms, and can be
-> > specified with a module option rate_ms between 1 to 16 seconds.
-> >=20
-> > [Tony Lindgren did most of the work here, I just converted it to be
-> > normal serdev.]
->=20
-> Could I get some comments on the gnss patch? It is fairly simple, and
-> I believe it is ready for merge.
+But why.. why should we give Linux less information about the hardware it's running on? It's a kernel after all, I know some parties would prefer to keep the hardware away from its users, but cmon, it's OSSLand out there!
 
-Let's get the mux driver in shape first.
+Allocating a few bytes more in memory is proooobably a good trade-off for keeping an eye on the state of various clocks instead of simply setting some seemingly random bits and hoping nothing bad happens under the hood.. This isn't only a case for this clock, but for all ones that are effectively pinky-promise-trusted to function properly with no way of checking if they're even still alive other than poking the registers manually.. As of v5.12-rc2, there are *46* such trust credits..
 
-> Here's new version of the serdev multiplexing patch for reference. And
-> yes, I'd like you to review the design here, too. Yes,
-> gsm_serdev_register_tty_port() needs to be cleaned up, but with ifdefs
-> you can see alternative approach I tried to work around "controller
-> busy" problem.
+It's NOT easy to track down issues in big monolithic kernels, especially when people submitting changes to common code seem to think that only their hardware uses it (no hard feelings, but drm/msm broke on !a6xx *at least* two times within the last year) and since making sure the clocks are ticking properly is one of the most crucial things when looking into more complex issues, which may or may not randomly happen on a platform that is just being brought up for various reasons (e.g. half of mdm9607 hardware doesn't wanna play along without a ICC driver), I *really* think we should use CLK_IS_CRITICAL instead and give developers a way to check if everything's in tact with the clock, while still keeping the "never turn it off, don't touch it!" aspect.
 
-As I said before, if you're trying to work around the one
-client-per-port assumption of serdev, you're doing it wrong. You still
-have one client per *virtual* port.
 
-> Signed-off-by: Pavel Machek <pavel@ucw.cz>
->=20
-> Best regards,
-> 								Pavel
->=20
-> diff --git a/Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml b/=
-Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml
-> new file mode 100644
-> index 000000000000..deec491ee821
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml
+>>>> +       /* Set the HMSS_GPLL0_SRC for 300MHz to CPU subsystem */
+>>>> +       clk_set_rate(hmss_gpll0_clk_src.clkr.hw.clk, 300000000);
+>>> Is this not already the case?
+>>
+>> This is a mission-critical clock and we cannot trust the bootloader with setting it. Otherwise dragons might appear.
+>>
+> What does the bootloader set it to?
 
-> +  ttymask:
-> +    $ref: /schemas/types.yaml#/definitions/uint64
-> +    description: Mask of the TS 27.010 channel TTY interfaces to start (=
-64 bit)
+Sorry but I can't check, nor do I remember right now. But we still shouldn't add a variable that might come from a lazy OEM not incorporating the fix into their release, especially since this one is used for clocking the AP.
 
-How is this intended to be used? Looks too Linux-specific for a binding.
 
-> +examples:
-> +  - |
-> +    modem {
-> +      compatible =3D "motorola,mapphone-mdm6600-serial";
-> +      ttymask =3D <0 0x00001fee>;
-> +      phys =3D <&fsusb1_phy>;
-> +      phy-names =3D "usb";
-> +      #address-cells =3D <1>;
-> +      #size-cells =3D <0>;
-> +
-> +      gnss@4 {
-> +         compatible =3D "motorola,mapphone-mdm6600-gnss";
-> +         reg =3D <4>;
-> +      };
-> +    };
+Konrad
 
-So is this is probably the issue: you're skipping one level of the
-topology and do not describe the virtual ports.
-
-This should instead be something like below; I'm including one level
-above for the full picture:
-
-	serial@nnn {
-		compatible =3D "ns16550a";
-		reg =3D <nnn>;
-
-		modem {
-			compatible =3D "ts27010-mux, motorola,mapphone-mdm6600-serial";
-
-			serial@4 {
-				reg =3D <4>
-
-				gnss {
-					compatible =3D "motorola,mapphone-mdm6600-gnss";
-				};
-			};
-		};
-	};
-
-Here serial@nnn is a normal serial port, modem is the modem (TS 27.010
-mux) connected to the serial port, serial@4 is virtual port number four
-of the mux, and gnss is the gnss device connected to the virtual port.
-
-You should probably just replace the ttymask property with explicit
-nodes for the virtual ports to enable. With no client devices described
-in devicetree, these will then show up as regular tty devices under
-Linux.
-
-If you add a compatible property for the virtual ports (e.g.
-"ts27010-port") you might be able to just use of_platform_populate()
-instead of walking the child nodes in gsm_serdev_register_tty_port().
-
-> +int gsm_serdev_register_tty_port(struct gsm_serdev *gsd, int line)
-> +{
-> +	struct gsm_serdev_dlci_operations *ops;
-> +	unsigned int base;
-> +	int error;
-> +	struct device *dev;
-> +	struct device_node *node;
-> +	struct device *dev2 =3D NULL;
-> +	struct device *ndev;
-> +	=09
-> +	if (line < 1)
-> +		return -EINVAL;
-> +
-> +	ops =3D kzalloc(sizeof(*ops), GFP_KERNEL);
-> +	if (!ops)
-> +		return -ENOMEM;
-> +
-> +	ops->line =3D line;
-> +	ops->receive_buf =3D gsd_dlci_receive_buf;
-> +
-> +	error =3D gsm_serdev_register_dlci(gsd, ops);
-> +	if (error)
-> +		goto error;
-> +
-> +	base =3D mux_num_to_base(gsd->gsm);
-> +	printk("register_tty_port: have port: %p, %d+%d\n", &gsd->gsm->dlci[lin=
-e]->port, base, ops->line);
-> +	dev =3D &gsd->serdev->dev;
-> +
-> +	for_each_available_child_of_node(dev->of_node, node) {
-> +		struct platform_device_info devinfo =3D {};
-> +		static int idx;
-> +		struct platform_device *pdev;
-> +		const char *c =3D of_get_property(node, "compatible", NULL);
-> +		int reg;
-> +	=09
-> +		dev_info(dev, "register_tty: child -- %pOF -- compatible %s\n", node, =
-c);
-> +	=09
-> +		if (!c)
-> +			continue;
-> +#ifdef OLD	=09
-> +		if (strcmp(c, "gsmmux,port"))
-> +			continue;
-> +#endif
-> +		if (of_property_read_u32(node, "reg", &reg)) {
-> +			printk("no reg property\n");
-> +			continue;
-> +		}
-> +
-> +		if (reg !=3D line)
-> +			continue;
-> +
-> +		printk("n_gsm: line %d reg is %d, compatible %s\n", line, reg, c);
-> +		/* Hmm, gnss does not work now? */
-> +		/* Should we pass the "master" serdev here? */
-> +#ifndef OLD
-> +		/* does not work, controller is "BUSY". We already have that in variab=
-le "dev" */
-> +		dev2 =3D dev;
-> +#else
-> +		devinfo.name =3D kasprintf(GFP_KERNEL, "gsm-mux-%d", idx++);
-> +		devinfo.parent =3D dev;
-> +
-> +		/* Thanks to core.c: serdev_device_add */
-> +		pdev =3D platform_device_register_full(&devinfo);
-> +		pdev->dev.of_node =3D node;
-> +
-> +		dev2 =3D &pdev->dev;
-> +		printk("device name is %s / %s\n", dev2->init_name, dev2->kobj.name);
-> +#endif
-> +		break;
-> +	}
-> +
-> +	printk("n_gsm: Registering device at line %d, device is %p\n", line, de=
-v2);
-> +	ndev =3D tty_port_register_device_serdev(&gsd->gsm->dlci[line]->port,
-> +					       gsm_tty_driver, base + ops->line, dev2);
-> +	if (dev2)
-> +		printk("device name is now %s / %s\n", dev2->init_name, dev2->kobj.nam=
-e);
-> +=09
-> +	printk("register_tty_port: got %p\n", ndev);
-> +	return 0;
-> +error:
-> +	kfree(ops);
-> +	return error;
-> +}
-> +EXPORT_SYMBOL_GPL(gsm_serdev_register_tty_port);
-
-Johan
-
---fBJ0Cv7dtmHp92KM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCYGWU6AAKCRALxc3C7H1l
-CCibAPwLN2unYtJaFr6tY+5eTB0E+C4MZZFqsTNCIaKDfH//MAD/TfoCn4gBAkZY
-E9ppNbjzWhM/yssIvrS/OsGB2KSeyAI=
-=5vV6
------END PGP SIGNATURE-----
-
---fBJ0Cv7dtmHp92KM--
