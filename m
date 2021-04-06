@@ -2,59 +2,60 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77B68C433ED
-	for <phone-devel@archiver.kernel.org>; Tue,  6 Apr 2021 01:09:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B86AC43600
+	for <phone-devel@archiver.kernel.org>; Tue,  6 Apr 2021 01:09:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 48124613EE
-	for <phone-devel@archiver.kernel.org>; Tue,  6 Apr 2021 01:09:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6CE4F613F6
+	for <phone-devel@archiver.kernel.org>; Tue,  6 Apr 2021 01:09:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbhDFBKB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 5 Apr 2021 21:10:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38432 "EHLO
+        id S243046AbhDFBKC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 5 Apr 2021 21:10:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232868AbhDFBJ6 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 5 Apr 2021 21:09:58 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F693C06174A;
-        Mon,  5 Apr 2021 18:09:50 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id g8so20031062lfv.12;
-        Mon, 05 Apr 2021 18:09:50 -0700 (PDT)
+        with ESMTP id S232930AbhDFBKB (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 5 Apr 2021 21:10:01 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE9C2C06174A;
+        Mon,  5 Apr 2021 18:09:52 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id o10so20061161lfb.9;
+        Mon, 05 Apr 2021 18:09:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=kZ3de3tHen+IrX3s32+0iqjXHxQleXCQQZ+cp0UblkE=;
-        b=jxajCkzIrE8XykpxOIdp7IU4la7tB63+21UtPEbQA6zAIvhg1hM76GTOMCTU//IVjM
-         dGyp5wKw2TegtExUVrQFZHLhI+JBTDhQmjinK6IDH2c46knoCE4o56eXUWTNLycRaJ8E
-         9Y4Jxh/VKmNQy+oH5th4GF7aexIcS6LVkqWXJy8g0FkCUvRwO0IuhNmcpCyyCqPAnon4
-         h/+SthZpx/mBedvSJNWPI3ogWrZcmB7LZ2vDMgbCqhaX6zEjHW2DU6OgLcnjOdREtJJc
-         IlmOWApDJVPmoHAly/dCc5SVrAoqFXaoMtw6bn/8ZGCB/STwnk/D0QeGiqUEFltpCtSd
-         0j/g==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=xlvbZceZiSW5J9rkdV5PiWAGQnMk+aEwtPdEhXkrh1M=;
+        b=S5E4TYM8CBVO/vEvpM6kXdTmdVXq+Z194+VmXzkoT48fzDhyuJ+HpAw9o3S9lj0byo
+         m48Vev6zZOPpTh42TCucmpaJwvNxo3QDwym51sGBx5S01l2E0bPQfUXH8NO65oenGQb2
+         5s55TZhNN6328gKEeM3fOk6q9PzTGIaFNzfHGDr8q7AieDPP1wUiRVMKEVwzZ0Ctfg2v
+         o2A7DB/0vmNtCpLhEWHbSGUBP9Brak0pjWMtrJLam9qGmCNwRnPKbOBB24y2G+NCJR9Y
+         Hv/7C7BqjmV1kJxA11c8jAscCx6HsJVwAgtNhSUA256Mtq23dHQBr74Ms4no+hSEfxte
+         P1rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=kZ3de3tHen+IrX3s32+0iqjXHxQleXCQQZ+cp0UblkE=;
-        b=ttvldcbxDg2WuOmwMWaErxO6Il9FSLoJ9WVmVCL9IE5JgMGoiJ+oK/VzY6P+ocCsxt
-         BZGaU7YW1nCDAFof/58lXuylITdCVApfJfxx2W6UviHBq7rMTxsWTnNl1KCmtC+Md908
-         Oo9rnkWXYpVdUtOh8j2kYKLcUa70O/JJTarOH0v87xBecBfMtFrpPGr00gQJ3vu5Inzx
-         Frq5jeU9e4x+hvLFlC9r/dxuKRA/vM4RLJTUpBL+KP/bawsl5C49XFJSNjB7R15LO01d
-         KEBgm4CGPm817Fr6Tntm/ZLCsiP/9bLgOOAP/hX5FWTnhfnmlOsA7qq/7l559SNRB2Gd
-         aHWQ==
-X-Gm-Message-State: AOAM532GK0YsDH6IXMnBoS2Hgvvee8tA8sKPAo78SWM608T/wIAGaM89
-        OL1x6gliRSQOeuBmP39QNJWV3jmzlvo=
-X-Google-Smtp-Source: ABdhPJxkecmgjPNtGBwQxxVaji6peqSnx34Qq6kwP9Sx63ty3AeECtOtSgI8ciRiOctgnXuhboFWtg==
-X-Received: by 2002:ac2:490b:: with SMTP id n11mr18511886lfi.491.1617671388853;
-        Mon, 05 Apr 2021 18:09:48 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=xlvbZceZiSW5J9rkdV5PiWAGQnMk+aEwtPdEhXkrh1M=;
+        b=boUe1ZvPzf1+WALNkKAjXPFWVQ1TcBz80/rKmN5za7GX2qbuKZtM47XHctKAAJaE3o
+         5pxoT5e4Ou3yRAOXhsJ426p6pd5JYR3Uquf0NvASpS/GXttl6TL9gYp58TtNTmZBK4uc
+         qFn9f7NlKJIYudzOZ0fhLxLu7L4aUoSVHIyqZ1zAU+Q0uA2AV0IuLm7Pq6ZAkGmmkGff
+         bWkgnw1Pdxb2YEWyZk3jFopgip1nOK5UFQIQYl/OWQ4IyiWijnbrTAPtJ0nEgIB1q/8N
+         47RXMaJAFlnt5t3mIFChvZ24LT1k/11kDlgIaL1rOLJ9tYuL3I7nrTe1s+yq/hXvlXCp
+         8Arw==
+X-Gm-Message-State: AOAM533MTqqIJQ+piYGI2XIvTSK++RlS6D4ICU5DL/Nk96DPkA90//M3
+        iB2XOJGsxbT4yOErrVw/vzwlBEF6pbY=
+X-Google-Smtp-Source: ABdhPJzpxfUqMa63aisHXIY3Ily1S3i8SFR+jRwVDTWotsXtuT8NLLqzkJ0dzTecZSOjDW0dMVHDEw==
+X-Received: by 2002:ac2:485c:: with SMTP id 28mr18868906lfy.68.1617671391504;
+        Mon, 05 Apr 2021 18:09:51 -0700 (PDT)
 Received: from Ryzen-Workstation.localdomain (df76-hyyyyyyyyyyyyyct-3.rev.dnainternet.fi. [2001:14ba:26f5:f300::5])
-        by smtp.googlemail.com with ESMTPSA id p24sm1948063lfj.76.2021.04.05.18.09.47
+        by smtp.googlemail.com with ESMTPSA id p24sm1948063lfj.76.2021.04.05.18.09.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Apr 2021 18:09:48 -0700 (PDT)
+        Mon, 05 Apr 2021 18:09:51 -0700 (PDT)
 From:   Jami Kettunen <jamipkettunen@gmail.com>
 To:     phone-devel@vger.kernel.org
 Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
@@ -64,35 +65,73 @@ Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         tony.luck@intel.com, ~postmarketos/upstreaming@lists.sr.ht,
         konrad.dybcio@somainline.org, martin.botka@somainline.org,
         angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org
-Subject: OnePlus 5/5T support
-Date:   Tue,  6 Apr 2021 04:07:06 +0300
-Message-Id: <20210406010708.2376807-1-jamipkettunen@gmail.com>
+        marijn.suijten@somainline.org,
+        Jami Kettunen <jamipkettunen@gmail.com>
+Subject: [PATCH 2/2] arm64: dts: qcom: msm8998: Disable MSS remoteproc by default
+Date:   Tue,  6 Apr 2021 04:07:08 +0300
+Message-Id: <20210406010708.2376807-3-jamipkettunen@gmail.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210406010708.2376807-1-jamipkettunen@gmail.com>
+References: <20210406010708.2376807-1-jamipkettunen@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add device trees for OnePlus 5 (cheeseburger) and 5T (dumpling)
-MSM8998 SoC smartphones.
+This was already the case for ADSP and SLPI remoteprocs & doesn't affect
+existing boards where it has been re-enabled.
 
-v2:
--License DT under BSD-3-Clause instead of GPL-2.0
--Drop MSS remoteproc node in favor of disabling it by default (see patch 2/2)
--Shorten and move Wi-Fi disable comment inside wifi node
+Signed-off-by: Jami Kettunen <jamipkettunen@gmail.com>
+---
+ arch/arm64/boot/dts/qcom/msm8998-clamshell.dtsi | 4 ++++
+ arch/arm64/boot/dts/qcom/msm8998-mtp.dtsi       | 4 ++++
+ arch/arm64/boot/dts/qcom/msm8998.dtsi           | 2 ++
+ 3 files changed, 10 insertions(+)
 
-Jami Kettunen (2):
-  arm64: dts: qcom: Add support for OnePlus 5/5T
-  arm64: dts: qcom: msm8998: Disable MSS remoteproc by default
-
- arch/arm64/boot/dts/qcom/Makefile             |   2 +
- .../boot/dts/qcom/msm8998-clamshell.dtsi      |   4 +
- arch/arm64/boot/dts/qcom/msm8998-mtp.dtsi     |   4 +
- .../dts/qcom/msm8998-oneplus-cheeseburger.dts |  42 ++
- .../boot/dts/qcom/msm8998-oneplus-common.dtsi | 514 ++++++++++++++++++
- .../dts/qcom/msm8998-oneplus-dumpling.dts     |  25 +
- arch/arm64/boot/dts/qcom/msm8998.dtsi         |   2 +
- 7 files changed, 593 insertions(+)
+diff --git a/arch/arm64/boot/dts/qcom/msm8998-clamshell.dtsi b/arch/arm64/boot/dts/qcom/msm8998-clamshell.dtsi
+index b500f24d47bc..125d7923d713 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998-clamshell.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998-clamshell.dtsi
+@@ -281,6 +281,10 @@ vreg_lvs2a_1p8: lvs2 {
+ 	};
+ };
+ 
++&remoteproc_mss {
++	status = "okay";
++};
++
+ &tlmm {
+ 	gpio-reserved-ranges = <0 4>, <81 4>;
+ 
+diff --git a/arch/arm64/boot/dts/qcom/msm8998-mtp.dtsi b/arch/arm64/boot/dts/qcom/msm8998-mtp.dtsi
+index c1ef0c71d5f5..a1d15eab8553 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998-mtp.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998-mtp.dtsi
+@@ -328,6 +328,10 @@ &remoteproc_adsp {
+ 	status = "okay";
+ };
+ 
++&remoteproc_mss {
++	status = "okay";
++};
++
+ &remoteproc_slpi {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index 1f2e93aa6553..e9d3ce29937c 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -1398,6 +1398,8 @@ remoteproc_mss: remoteproc@4080000 {
+ 					<&rpmpd MSM8998_VDDMX>;
+ 			power-domain-names = "cx", "mx";
+ 
++			status = "disabled";
++
+ 			mba {
+ 				memory-region = <&mba_mem>;
+ 			};
+-- 
+2.31.1
 
