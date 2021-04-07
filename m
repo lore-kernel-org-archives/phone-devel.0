@@ -2,139 +2,127 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E5A1C433B4
-	for <phone-devel@archiver.kernel.org>; Wed,  7 Apr 2021 10:53:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7C04C43460
+	for <phone-devel@archiver.kernel.org>; Wed,  7 Apr 2021 18:20:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 124206108B
-	for <phone-devel@archiver.kernel.org>; Wed,  7 Apr 2021 10:53:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 80DC761104
+	for <phone-devel@archiver.kernel.org>; Wed,  7 Apr 2021 18:20:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351582AbhDGKxI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 7 Apr 2021 06:53:08 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:60222 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234000AbhDGKxH (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Apr 2021 06:53:07 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 2FBEF1C0BD9; Wed,  7 Apr 2021 12:52:56 +0200 (CEST)
-Date:   Wed, 7 Apr 2021 12:52:55 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org, tony@atomide.com
-Subject: Re: [PATCHv2] gnss: motmdm: Add support for Motorola Mapphone
- MDM6600 modem
-Message-ID: <20210407105255.GA15534@amd>
-References: <20210107224530.GA23250@duo.ucw.cz>
- <20210129224254.GA28853@duo.ucw.cz>
- <20210228204601.GA20966@duo.ucw.cz>
- <YGWU7U1fIkDmc3Mf@hovoldconsulting.com>
+        id S1355182AbhDGSUR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 7 Apr 2021 14:20:17 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:10641 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1355181AbhDGSUO (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Apr 2021 14:20:14 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1617819604; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=v5hhCBxMu4t8ymRS5UeQli/Ao4wr7txEYWAKX3ZDl5M=;
+ b=NukT/EdwH3GxrnTSlDxyMK2LcrcOsp8KVpDCTJFK3FWrzj1gDFjO3/35BftI+nffqopudrYN
+ WkGaGMt5Kl4ss7VCSJ01rtPn3CQQR8X593qImQe7K/zlKlcyPzxQXvixCYqS35lNJF4A+xOl
+ /4BwWaS9u82pIXFXccXf2fXtKgw=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 606df7cbf34440a9d4711d3c (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Wed, 07 Apr 2021 18:19:55
+ GMT
+Sender: abhinavk=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 8DFE8C433ED; Wed,  7 Apr 2021 18:19:55 +0000 (UTC)
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: abhinavk)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E9852C43461;
+        Wed,  7 Apr 2021 18:19:53 +0000 (UTC)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="2oS5YaxWCcQjTEyO"
-Content-Disposition: inline
-In-Reply-To: <YGWU7U1fIkDmc3Mf@hovoldconsulting.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 07 Apr 2021 11:19:53 -0700
+From:   abhinavk@codeaurora.org
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, freedreno@lists.freedesktop.org,
+        Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
+        David Airlie <airlied@linux.ie>, linux-arm-msm@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Rob Clark <robdclark@gmail.com>,
+        Martin Botka <martin.botka@somainline.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Daniel Vetter <daniel@ffwll.ch>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Sean Paul <sean@poorly.run>
+Subject: Re: [Freedreno] [PATCH 1/3] drm/msm/mdp5: Configure PP_SYNC_HEIGHT to
+ double the vtotal
+In-Reply-To: <20210406214726.131534-2-marijn.suijten@somainline.org>
+References: <20210406214726.131534-1-marijn.suijten@somainline.org>
+ <20210406214726.131534-2-marijn.suijten@somainline.org>
+Message-ID: <6413863d04df9743e2d7e81beff5c3e8@codeaurora.org>
+X-Sender: abhinavk@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Marijn
 
---2oS5YaxWCcQjTEyO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2021-04-06 14:47, Marijn Suijten wrote:
+> Leaving this at a close-to-maximum register value 0xFFF0 means it takes
+> very long for the MDSS to generate a software vsync interrupt when the
+> hardware TE interrupt doesn't arrive.  Configuring this to double the
+> vtotal (like some downstream kernels) leads to a frame to take at most
+> twice before the vsync signal, until hardware TE comes up.
+> 
+> In this case the hardware interrupt responsible for providing this
+> signal - "disp-te" gpio - is not hooked up to the mdp5 vsync/pp logic 
+> at
+> all.  This solves severe panel update issues observed on at least the
+> Xperia Loire and Tone series, until said gpio is properly hooked up to
+> an irq.
 
-Hi!
+The reason the CONFIG_HEIGHT was at such a high value is to make sure 
+that
+we always get the TE only from the panel vsync and not false positives 
+coming
+from the tear check logic itself.
 
-> > Could I get some comments on the gnss patch? It is fairly simple, and
-> > I believe it is ready for merge.
->=20
-> Let's get the mux driver in shape first.
+When you say that disp-te gpio is not hooked up, is it something 
+incorrect with
+the schematic OR panel is not generating the TE correctly?
 
-Well, gnss driver is now completely independent of that in the new
-versions.
-
-> > Here's new version of the serdev multiplexing patch for reference. And
-> > yes, I'd like you to review the design here, too. Yes,
-> > gsm_serdev_register_tty_port() needs to be cleaned up, but with ifdefs
-> > you can see alternative approach I tried to work around "controller
-> > busy" problem.
->=20
-> As I said before, if you're trying to work around the one
-> client-per-port assumption of serdev, you're doing it wrong. You still
-> have one client per *virtual* port.
-
-Yes, I have one client per virtual port. But those virtual ports need
-their parents.
-
-We can have
-
-serial@ -- motorola,mapphone-mdm6600-serial
-(serdev here)
-modem -- ts27010-mux
-(here is the problem!)
-serial@4 --                                      serial@1 --=20
-(serdev here)                                    (serdev here)
-gnss -- motorola,mapphone-mdm6600-gnss           modem voice -- something
-
-and I believe we agree on that. But serial@1 and serial@4 still need
-some kind of parent, and that's where I'm getting the controller busy
-problem.
-
-> > +++ b/Documentation/devicetree/bindings/serdev/serdev-ngsm.yaml
->=20
-> > +  ttymask:
-> > +    $ref: /schemas/types.yaml#/definitions/uint64
-> > +    description: Mask of the TS 27.010 channel TTY interfaces to start=
- (64 bit)
->=20
-> How is this intended to be used? Looks too Linux-specific for a binding.
-
-The mask says which virtual ports contain "something". We have kernel
-clients for some, and we want to expose the rest of the used ones to
-the userspace.
-
-> So is this is probably the issue: you're skipping one level of the
-> topology and do not describe the virtual ports.
-
-Well, docs need to be updated.
-
-> You should probably just replace the ttymask property with explicit
-> nodes for the virtual ports to enable. With no client devices described
-> in devicetree, these will then show up as regular tty devices under
-> Linux.
-
-Yes, that can be done.
-
-> If you add a compatible property for the virtual ports (e.g.
-> "ts27010-port") you might be able to just use of_platform_populate()
-> instead of walking the child nodes in gsm_serdev_register_tty_port().
-
-I have "gsmmux,port" for that. And yes, I can take a look at
-of_platform_populate.
-
-But as I explained above, there's still problem with the parent
-devices.
-
-Best regards,
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
-
---2oS5YaxWCcQjTEyO
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAmBtjwcACgkQMOfwapXb+vJklwCgis+MEqjZRedqKlYpB5J2L1oq
-jUIAoJyH1QQEEk48890A3alG5/nau3rD
-=osY7
------END PGP SIGNATURE-----
-
---2oS5YaxWCcQjTEyO--
+> 
+> Suggested-by: AngeloGioacchino Del Regno
+> <angelogioacchino.delregno@somainline.org>
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Reviewed-by: AngeloGioacchino Del Regno
+> <angelogioacchino.delregno@somainline.org>
+> ---
+>  drivers/gpu/drm/msm/disp/mdp5/mdp5_cmd_encoder.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_cmd_encoder.c
+> b/drivers/gpu/drm/msm/disp/mdp5/mdp5_cmd_encoder.c
+> index ff2c1d583c79..2d5ac03dbc17 100644
+> --- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_cmd_encoder.c
+> +++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_cmd_encoder.c
+> @@ -51,7 +51,7 @@ static int pingpong_tearcheck_setup(struct
+> drm_encoder *encoder,
+> 
+>  	mdp5_write(mdp5_kms, REG_MDP5_PP_SYNC_CONFIG_VSYNC(pp_id), cfg);
+>  	mdp5_write(mdp5_kms,
+> -		REG_MDP5_PP_SYNC_CONFIG_HEIGHT(pp_id), 0xfff0);
+> +		REG_MDP5_PP_SYNC_CONFIG_HEIGHT(pp_id), (2 * mode->vtotal));
+>  	mdp5_write(mdp5_kms,
+>  		REG_MDP5_PP_VSYNC_INIT_VAL(pp_id), mode->vdisplay);
+>  	mdp5_write(mdp5_kms, REG_MDP5_PP_RD_PTR_IRQ(pp_id), mode->vdisplay + 
+> 1);
