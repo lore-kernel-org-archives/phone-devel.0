@@ -2,87 +2,72 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 594D3C433B4
-	for <phone-devel@archiver.kernel.org>; Wed,  7 Apr 2021 21:48:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C79EC433B4
+	for <phone-devel@archiver.kernel.org>; Thu,  8 Apr 2021 16:20:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2BF0B608FE
-	for <phone-devel@archiver.kernel.org>; Wed,  7 Apr 2021 21:48:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6407A610E8
+	for <phone-devel@archiver.kernel.org>; Thu,  8 Apr 2021 16:20:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234374AbhDGVsM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 7 Apr 2021 17:48:12 -0400
-Received: from msg-1.mailo.com ([213.182.54.11]:35406 "EHLO msg-1.mailo.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234355AbhDGVsL (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 7 Apr 2021 17:48:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1617832078; bh=ZIy8hSp59ll56c4qvqx86LyoTzWGobAhgcqSKpxCnhA=;
-        h=X-EA-Auth:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-         References:Content-Type:MIME-Version:Content-Transfer-Encoding;
-        b=RxQ0OIpHZCBoSv1bNuM2TPUR2wIyxjZLk9Tdt52C/Of1Kx9j9KE92dnP0tj7fj9Zz
-         JJWbRHHmyFTqck3XbXF5fUwg6cXeEWYSe6PIH29wDbaWYbujG1rxGb5PR819ltgWPZ
-         Y8Kv2ZZBuKDxs7uWq9Tn5DieaoLqn1IICvECiz7E=
-Received: by b-5.in.mailobj.net [192.168.90.15] with ESMTP
-        via proxy.mailoo.org [213.182.55.207]
-        Wed,  7 Apr 2021 23:47:58 +0200 (CEST)
-X-EA-Auth: qNlXV06Q65Pry9GERbc3tJje5sYbo8/0f8LxW4cdwtnNQDQ6I2QviKWC73MpDr8+7eED8NDgf3ltgZyRsjBKUkUpcGBc69EIGOMtjUlll90=
-Message-ID: <cfba65e2a8cc2cbcee7cf088a53a226788619b04.camel@mailoo.org>
-Subject: Re: [PATCH v6 2/2] Input: add MStar MSG2638 touchscreen driver
-From:   Vincent Knecht <vincent.knecht@mailoo.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Henrik Rydberg <rydberg@bitmath.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michael Srba <Michael.Srba@seznam.cz>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 07 Apr 2021 23:47:55 +0200
-In-Reply-To: <20210305153815.126937-2-vincent.knecht@mailoo.org>
-References: <20210305153815.126937-1-vincent.knecht@mailoo.org>
-         <20210305153815.126937-2-vincent.knecht@mailoo.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+        id S231655AbhDHQVG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 8 Apr 2021 12:21:06 -0400
+Received: from mail-40136.protonmail.ch ([185.70.40.136]:49242 "EHLO
+        mail-40136.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231893AbhDHQVF (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Apr 2021 12:21:05 -0400
+Date:   Thu, 08 Apr 2021 16:20:48 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1617898852;
+        bh=b+OdMUUk9Eq2QLLRDRz5C3FbA7WlnSCxQu4FqtE4xo8=;
+        h=Date:To:From:Cc:Reply-To:Subject:From;
+        b=pKJurOYqmoOFG3kbgqZ7pJk+tH7bmi/Bxb644wv52Wk71jqIcuZ4pXkqQmcUA9FVa
+         QVhm1UQYF5Gn0NWJusMrjKCkxKkm6T7lQYBNF68MbRXojjuSsqD6FAAz/lo0m+0pju
+         MRMf/4UVMKEvxYD0Kco5F45wH/oisYXYMiDLZers=
+To:     caleb@connolly.tech
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Reply-To: Caleb Connolly <caleb@connolly.tech>
+Subject: v3: arm64: dts: sm8150: start populating qups
+Message-ID: <20210408161953.26298-1-caleb@connolly.tech>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Le vendredi 05 mars 2021 =C3=A0 16:38 +0100, Vincent Knecht a =C3=A9crit=C2=
-=A0:
-> Add support for the msg2638 touchscreen IC from MStar.
-> Firmware handling, wakeup gestures and other specialties are not supporte=
-d.
-> This driver reuses zinitix.c structure, while the checksum and irq handle=
-r
-> functions are based on out-of-tree driver for Alcatel Idol 3 (4.7").
->=20
-> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
-> ---
-> Changed in v6:
-> - minor formatting changes
-> - mention wakeup gestures not being supported (yet?) in commit message
-> - do not scale coordinates in the driver (Dmitry)
-> - multiple suggestions from Linus W.
-> =C2=A0 - include linux/gpio/consumer.h instead of linux/gpio.h
-> =C2=A0 - rename delay defines to include time unit like _MS and _US
-> =C2=A0 - rename `error` variable to `ret`
-> =C2=A0 - move enable_irq() call from msg2638_power_on() to msg2638_start(=
-)
-> =C2=A0 - remove CONFIG_OF #ifdef around of_device_id struct
+The QUPs are rather sparse, lets add the zero-th and second qup nodes,
+the iommus properties for all of them and the i2c nodes.
 
-Hello,
+With this it's now possible to bringup the touchscreen on my
+device, and without crashing!
 
-just a little gentle ping: do I need to change anything to get this merged =
-?
-So far seems to work fine with idol347 port of postmarketOS :-)
+Derived from OnePlus 7 Pro downstream kernel sources.
 
+=09*Caleb
+
+Changes since v1:
+ * Pick up Reviewed-By's from Vinod and Bhupesh
+ * Squash second patch into first
+ * Add iommus property to dt-binding docs for geni
+ * Fix i2c19 being mistakenly enabled by default
+
+Changes since v2:
+ * Fix iommus definition to just declare the property and maxItems (Thanks =
+Bjorn).
+
+Caleb Connolly (3):
+      arm64: dts: qcom: sm8150: add other QUP nodes and iommus
+      arm64: dts: qcom: sm8150: add i2c nodes
+      dt-bindings: qcom: geni-se: document iommus
+
+ arch/arm64/boot/dts/qcom/sm8150.dtsi | 549 +++++++++++++++++++++++++++++++=
+++++
+ 1 file changed, 549 insertions(+)x
 
 
