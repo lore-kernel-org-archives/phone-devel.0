@@ -2,149 +2,75 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91170C43460
-	for <phone-devel@archiver.kernel.org>; Fri,  9 Apr 2021 08:22:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E1A2C433B4
+	for <phone-devel@archiver.kernel.org>; Fri,  9 Apr 2021 18:51:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6473A611C0
-	for <phone-devel@archiver.kernel.org>; Fri,  9 Apr 2021 08:22:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 181AF6115C
+	for <phone-devel@archiver.kernel.org>; Fri,  9 Apr 2021 18:51:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232358AbhDIIWZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 9 Apr 2021 04:22:25 -0400
-Received: from relay04.th.seeweb.it ([5.144.164.165]:34209 "EHLO
-        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232563AbhDIIWY (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Apr 2021 04:22:24 -0400
-Received: from [10.0.20.3] (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 441D91FAF2;
-        Fri,  9 Apr 2021 10:22:06 +0200 (CEST)
-Subject: Re: [Freedreno] [PATCH 1/3] drm/msm/mdp5: Configure PP_SYNC_HEIGHT to
- double the vtotal
-To:     Abhinav Kumar <abhinavk@codeaurora.org>,
-        Rob Clark <robdclark@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Cc:     phone-devel@vger.kernel.org,
-        freedreno <freedreno@lists.freedesktop.org>,
-        Sai Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
-        David Airlie <airlied@linux.ie>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Daniel Vetter <daniel@ffwll.ch>, Sean Paul <sean@poorly.run>
-References: <20210406214726.131534-1-marijn.suijten@somainline.org>
- <20210406214726.131534-2-marijn.suijten@somainline.org>
- <6413863d04df9743e2d7e81beff5c3e8@codeaurora.org>
- <04860f05-f79f-de0b-13d1-aba85065b4da@somainline.org>
- <CAF6AEGuoLgBSZOou1TSb-d2o6tHS-L-E7AQLS5RM4aOogvRG7Q@mail.gmail.com>
- <CAK7fi1aUXy2i8zY0Cb5Svq0s1H9cSAvY4hq+BsiWgdphwm-ebA@mail.gmail.com>
- <CAF6AEGuSav210dMHa3+f-7W1Kgyjam7K7HhWFO4aXWbdjvPTLw@mail.gmail.com>
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-Message-ID: <408460b9-e150-c971-663f-5fa0bd40b873@somainline.org>
-Date:   Fri, 9 Apr 2021 10:22:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        id S234441AbhDISwA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 9 Apr 2021 14:52:00 -0400
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:43749 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233332AbhDISwA (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Apr 2021 14:52:00 -0400
+Received: by mail-ot1-f54.google.com with SMTP id s16-20020a0568301490b02901b83efc84a0so6601954otq.10;
+        Fri, 09 Apr 2021 11:51:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=goXyba68Vq2ZcPnNdvCAyK2pXvjfWkY1wv3QLuidgZY=;
+        b=AtKWDy8sZd+Ft2dcc6eh3x+qKMjw1o6e8Po6RHg3BRBKp8v6Up2+o0WMlDkKeNeXS3
+         IYZ6Mv2YMbCiv9Zy16llrapaoNoY9Bgbq+d9FDO6QwndVu3gqRBwGmKczjLNUT7gmebH
+         3F0vMS9YmDyGTt75eZHKs8bs+MwPR13U9qSlLDgotfpb9+JD9PXc8f38iw8bDket56O4
+         Ng2QAY4kgk6XUWzv93S4URW5GxGGuDhHnIKJytRMF5eVvx+671/UNbjVSLNrydbkMyOO
+         WScN+hwW/sz9RetznBlGZ0gbknsauT+K+QQec+o+J97JTveYx8GbwoLTsH24tT7wMdq+
+         gvaA==
+X-Gm-Message-State: AOAM5308yMUv/QWEtDRptVYIVFXGyTvWD3yXsZ7a7cG7fPvHmrEE12JC
+        ibQhCBua8Y/18KOBoff/STNKnvmpag==
+X-Google-Smtp-Source: ABdhPJyptwoMjzrW0yFqTMlNFcyfZ+neI+EvoGA89Pkg+e3yVlVKSAjalGhlRDLZsfJdn1bfCbGwhw==
+X-Received: by 2002:a05:6830:164e:: with SMTP id h14mr13986993otr.200.1617994305459;
+        Fri, 09 Apr 2021 11:51:45 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id y11sm650098oiv.19.2021.04.09.11.51.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Apr 2021 11:51:44 -0700 (PDT)
+Received: (nullmailer pid 3951380 invoked by uid 1000);
+        Fri, 09 Apr 2021 18:51:43 -0000
+Date:   Fri, 9 Apr 2021 13:51:43 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Akash Asthana <akashast@codeaurora.org>,
+        phone-devel@vger.kernel.org,
+        Mukesh Savaliya <msavaliy@codeaurora.org>,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v2 3/3] dt-bindings: qcom: geni-se: document iommus
+Message-ID: <20210409185143.GA3951334@robh.at.kernel.org>
+References: <20210408161953.26298-4-caleb@connolly.tech>
 MIME-Version: 1.0
-In-Reply-To: <CAF6AEGuSav210dMHa3+f-7W1Kgyjam7K7HhWFO4aXWbdjvPTLw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210408161953.26298-4-caleb@connolly.tech>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Abhinav, Angelo, Rob,
-
-On 4/9/21 2:08 AM, Rob Clark wrote:
-> On Thu, Apr 8, 2021 at 4:16 PM AngeloGioacchino Del Regno
-> <angelogioacchino.delregno@somainline.org> wrote:
->>
->>
->> Il gio 8 apr 2021, 21:05 Rob Clark <robdclark@gmail.com> ha scritto:
->>>
->>> On Wed, Apr 7, 2021 at 12:11 PM AngeloGioacchino Del Regno
->>> <angelogioacchino.delregno@somainline.org> wrote:
->>>>
->>>> Il 07/04/21 20:19, abhinavk@codeaurora.org ha scritto:
->>>>> Hi Marijn
->>>>>
->>>>> On 2021-04-06 14:47, Marijn Suijten wrote:
->>>>>> Leaving this at a close-to-maximum register value 0xFFF0 means it takes
->>>>>> very long for the MDSS to generate a software vsync interrupt when the
->>>>>> hardware TE interrupt doesn't arrive.  Configuring this to double the
->>>>>> vtotal (like some downstream kernels) leads to a frame to take at most
->>>>>> twice before the vsync signal, until hardware TE comes up.
->>>>>>
->>>>>> In this case the hardware interrupt responsible for providing this
->>>>>> signal - "disp-te" gpio - is not hooked up to the mdp5 vsync/pp logic at
->>>>>> all.  This solves severe panel update issues observed on at least the
->>>>>> Xperia Loire and Tone series, until said gpio is properly hooked up to
->>>>>> an irq.
->>>>>
->>>>> The reason the CONFIG_HEIGHT was at such a high value is to make sure that
->>>>> we always get the TE only from the panel vsync and not false positives
->>>>> coming
->>>>> from the tear check logic itself.
-
-
-Correct, most CAF kernels mention such behaviour in comments, with
-fallbacks to vtotal*2 for safety or vtotal when an emulated panel does
-not support hardware TE at all.  We don't seem to (need to) support the 
-latter case but one might at some point want to configure the tearcheck 
-logic to emit a signal for every frame, by means of a DT property or 
-automatically when disp-te is not defined.
-
->>>>>
->>>>> When you say that disp-te gpio is not hooked up, is it something
->>>>> incorrect with
->>>>> the schematic OR panel is not generating the TE correctly?
->>>>>
-
-
-The GPIO is currently not used at all by this kernel driver besides a
-call to devm_gpiod_get_optional.  As mentioned in the cover letter we
-have patches in progress to hook up this interrupt line to the pp_done
-infrastructure and complete vsync requests that way instead of waiting
-for this "simulated" interrupt from the MDP.
-
->>> Currently I have this patch in msm-next-staging but I guess we need to
->>> decide in the next day or so whether to drop it or smash in a comment?
->>
->> Marijn, can you please urgently throw a comment in, reminding that these timers are interacting with TE and send a fast V2?
+On Thu, 08 Apr 2021 16:21:14 +0000, Caleb Connolly wrote:
+> Document the iommus property for QCOM Geni SE.
 > 
-> Or just reply on list w/ a comment to smash in, if that is easier
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+> ---
+>  Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
 
-How about a comment along the lines of:
-
-Tearcheck emits a blanking signal every vclks_line * vtotal * 2 ticks on 
-the vsync_clk equating to roughly half the desired panel refresh rate. 
-This is only necessary as stability fallback if interrupts from the 
-panel arrive too late or not at all, but is currently used by default 
-because these panel interrupts are not wired up yet.
-
-I'd place this comment right above REG_MDP5_PP_SYNC_CONFIG_VSYNC, and 
-perhaps add a newline after REG_MDP5_PP_SYNC_CONFIG_HEIGHT to make it 
-clear this applies to those two registers specifically.  We can also 
-involve MDP5_PP_SYNC_CONFIG_VSYNC_COUNT(vclks_line) in the mix.
-
-Then, when the panel TE is wired up we can be smarter about the 
-situation and print warnings when the user has disp-te hooked up but is 
-receiving interrupts from the MDSS block instead of the panel directly 
-(except if incidentally).  This likely means that SET_TEAR_ON was not 
-sent to the panel or the GPIO is wrong.  In that sense this patch 
-(together with x100 removal) is concealing configuration mistakes, but 
-we might also revert back to 0xfff0 if the GPIO is specified in DT and 
-accept the timeout+recovery which did not seem to hamper devices on 
-downstream kernels anyway.
-
-- Marijn
+Acked-by: Rob Herring <robh@kernel.org>
