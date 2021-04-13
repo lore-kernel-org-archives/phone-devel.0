@@ -2,100 +2,104 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D554BC433ED
-	for <phone-devel@archiver.kernel.org>; Mon, 12 Apr 2021 10:39:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C993AC433B4
+	for <phone-devel@archiver.kernel.org>; Tue, 13 Apr 2021 02:42:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8498A6128B
-	for <phone-devel@archiver.kernel.org>; Mon, 12 Apr 2021 10:39:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E78656135B
+	for <phone-devel@archiver.kernel.org>; Tue, 13 Apr 2021 02:42:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238630AbhDLKj7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 12 Apr 2021 06:39:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60596 "EHLO
+        id S229558AbhDMCmY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 12 Apr 2021 22:42:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237554AbhDLKj7 (ORCPT
+        with ESMTP id S240954AbhDMCmX (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 12 Apr 2021 06:39:59 -0400
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89C3EC061574;
-        Mon, 12 Apr 2021 03:39:41 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id DC0313ED8B;
-        Mon, 12 Apr 2021 12:39:37 +0200 (CEST)
-Subject: Re: [PATCH] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
-        marijn.suijten@somainline.org,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210307113550.7720-1-konrad.dybcio@somainline.org>
- <5e7b575a-7820-3d10-8617-36911d49f4a9@broadcom.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Message-ID: <754923af-407e-05f8-148e-4c2a3faf42ab@somainline.org>
-Date:   Mon, 12 Apr 2021 12:39:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+        Mon, 12 Apr 2021 22:42:23 -0400
+Received: from mail-oo1-xc29.google.com (mail-oo1-xc29.google.com [IPv6:2607:f8b0:4864:20::c29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 193F2C061574
+        for <phone-devel@vger.kernel.org>; Mon, 12 Apr 2021 19:42:03 -0700 (PDT)
+Received: by mail-oo1-xc29.google.com with SMTP id d11-20020a4a520b0000b02901e5e7013daaso1613626oob.10
+        for <phone-devel@vger.kernel.org>; Mon, 12 Apr 2021 19:42:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=TqizwtPBazn4E4BBJNz6As5MhBNbZCtWHV//Y0hIMZs=;
+        b=ufItUzbBA4ZaQvXf4xjPrThPuCmG9xp5YKrfIgj5lJ/k/q31+z1o5Fqxr4FpxNcD2L
+         YYS/8XWFhyE0UlbGwRvmncuhuAZ3sF/ClB4lvmyAFip9MkK7AfUedWjLWrlwD1Mqj4nW
+         SGhRLRC+6K6eYBaDwsEiC/jzBmmuLSD/RM4PA4lvlYchP6CAxOXzZqm32ZIukLfpkuHg
+         IZ/wWYl+qgQQKoLCuFdOTDmeXNqQhVYH7lvSCWnHEtqq4eo9TJqclX66IA2WLdPBQBw9
+         VqiB3uB7qXowzEGR/YgLscEXJFXVp1sGMMYOg51ghSxA9ubAxtdcQBYmVi/8CNz+Me7Y
+         xJCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=TqizwtPBazn4E4BBJNz6As5MhBNbZCtWHV//Y0hIMZs=;
+        b=CX86sGfnBOXB+RZx3aLSGg8pyyvxhyvlnDZOKviDEgZB59kaOI1gm2lZx/HfVP7NgL
+         LxRe5ycyxxPDv+9yU1lf4kJtIOETXDlqBhYZwMl4nW+ia8K9vebLKyrryLfrGvD8fyNG
+         lLHgXnDxX/aQEqGtRTgTUZKtakKawbSa779V3kMGXf5Z7TrY6oiXGNxElK5E2WLIDb2X
+         UL32pO3Xr5VEdj9xQNTk3B2BcrYpNYO1yHiJFs3FDRM1quKOuCzyrgJbL1kJOfabiKiw
+         fKk3gb7zq+jTP6Q84pZj65rwY7H1lU1bcQ8tKxtxth1u0ZH9VfUG7W+cdeoNSWePsb9c
+         r/lA==
+X-Gm-Message-State: AOAM532J2od+JIFXIE7Su2BBKqGUBo31o0vSKYICZCb+OJ7hkGjcP22i
+        dKdq/ghQTx5XU31XEVB2FK4c6g==
+X-Google-Smtp-Source: ABdhPJwln6Bs1UzxhLsh5C748sEIkLCsUk9ZEx7meQ8HiDvRIVlzkHLxp/oktk9yVkRk9+E4wKBhNg==
+X-Received: by 2002:a05:6820:20a:: with SMTP id i10mr25119420oob.6.1618281722315;
+        Mon, 12 Apr 2021 19:42:02 -0700 (PDT)
+Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id q1sm1850149otm.26.2021.04.12.19.42.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Apr 2021 19:42:01 -0700 (PDT)
+Date:   Mon, 12 Apr 2021 21:41:59 -0500
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>, agross@kernel.org,
+        rjw@rjwysocki.net, devicetree@vger.kernel.org, robh+dt@kernel.org,
+        amit.kucheria@linaro.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com
+Subject: Re: [PATCH v4 0/7] cpufreq-qcom-hw: Implement full OSM programming
+Message-ID: <20210413024159.GI1538589@yoga>
+References: <20210119174557.227318-1-angelogioacchino.delregno@somainline.org>
+ <20210412051135.xtpokwrbclaptbot@vireshk-i7>
 MIME-Version: 1.0
-In-Reply-To: <5e7b575a-7820-3d10-8617-36911d49f4a9@broadcom.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210412051135.xtpokwrbclaptbot@vireshk-i7>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 12/04/21 10:36, Arend van Spriel ha scritto:
-> On 07-03-2021 12:35, Konrad Dybcio wrote:
->> Add support for BCM43596 dual-band AC chip, found in
->> SONY Xperia X Performance, XZ and XZs smartphones (and
->> *possibly* other devices from other manufacturers).
->> The chip doesn't require any special handling and seems to work
->> just fine OOTB.
->>
->> PCIe IDs taken from: 
->> https://github.com/sonyxperiadev/kernel/commit/9e43fefbac8e43c3d7792e73ca52a052dd86d7e3.patch 
->>
+On Mon 12 Apr 00:11 CDT 2021, Viresh Kumar wrote:
+
+> On 19-01-21, 18:45, AngeloGioacchino Del Regno wrote:
+> >   **
+> >   ** NOTE: To "view the full picture", please look at the following
+> >   ** patch series:
+> >   ** https://patchwork.kernel.org/project/linux-arm-msm/list/?series=413355
+> >   **              This is a subset of that series.
+> >   **
+> > 
+> > Changes in v4:
+> > - Huge patch series has been split for better reviewability,
+> >   as suggested by Bjorn
+> > - Rebased code on top of 266991721c15 ("cpufreq: qcom-hw: enable boost
+> >   support")
 > 
-> I don't see 4359 firmware in linux-firmware repo so what are you using?
+> Bjorn, what am I supposed to do with patchset ? Is there anyone who can give
+> this some reviews from qcom team ?
 > 
-> Regards,
-> Arend
 
-Hi Arend,
+Sorry Viresh, I've been postponing reviewing this a few times too many.
+I'll take the time in the coming days to look through it properly,
+including Taniya's feedback.
 
-we are using firmwares that come with our specific Sony devices, as we 
-couldn't find any generic one.
-Pushing firmwares around is something that we tend to be careful about 
-because, as you know, they are usually covered with proprietary licenses 
-and such.
-
-If anyone from Broadcom can help us by pushing "generic" firmwares for 
-this chip on linux-firmware, we would largely appreciate that.
-
-Yours,
-- Angelo
+Regards,
+Bjorn
