@@ -2,92 +2,101 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38277C433B4
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Apr 2021 08:14:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5389C433B4
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Apr 2021 22:58:59 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 179D0613A9
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Apr 2021 08:14:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 926326115C
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Apr 2021 22:58:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349957AbhDNIOt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Apr 2021 04:14:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34440 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1348355AbhDNIOs (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Apr 2021 04:14:48 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DA6D261222;
-        Wed, 14 Apr 2021 08:14:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618388067;
-        bh=eyJvos0Ftnqm8tRluK8Dm6HkcCy4KxqjxYjQabzApjU=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=ohPsIJtmb1nHNgk4p25enpaiSwEL5mVy8OlZyhSkK3KzL0pRHNAXNIPMy9acIS/nC
-         pJ8Uue1PJNxrrvC7YgoCOG8eJmKX0vpK576Jk6msgzgqhXY5stgDtPyF6TZAB4b8D/
-         FJQfygBdfM8cVnOSCxkJRX1tI7BhkoSmzGDxrJoRb4NYPWU3rD41exsEgOK2uo7QSG
-         BFy1g8Tgu6Ha+xyIVoQpjj5FswPUWNbKlYRApmldfX/7n3c43YKzUPwloMQbVh8r/v
-         8kwafZ/bRYlLkgsvQ71oKtbzWOvGega/jCmegWZZkJ4GJQMC4FvooKfa2X2BD6//0V
-         m+VSVezor1f9g==
-From:   Felipe Balbi <balbi@kernel.org>
-To:     Caleb Connolly <caleb@connolly.tech>, caleb@connolly.tech,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
-        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] arm64: dts: qcom: sm8150: add i2c nodes
-In-Reply-To: <20210408161953.26298-3-caleb@connolly.tech>
-References: <20210408161953.26298-3-caleb@connolly.tech>
-Date:   Wed, 14 Apr 2021 11:14:19 +0300
-Message-ID: <874kg9p9k4.fsf@kernel.org>
+        id S234744AbhDNW7U (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Apr 2021 18:59:20 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:45432 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234225AbhDNW7M (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 14 Apr 2021 18:59:12 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id EFE111C0B77; Thu, 15 Apr 2021 00:58:48 +0200 (CEST)
+Date:   Thu, 15 Apr 2021 00:58:48 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Chris Talbot <chris@talbothome.com>, marcel@holtmann.org,
+        denkenz@gmail.com, phone-devel@vger.kernel.org
+Cc:     ofono@ofono.org
+Subject: Re: Forking on MMSD
+Message-ID: <20210414225848.GA28307@amd>
+References: <051ae8ae27f5288d64ec6ef2bd9f77c06b829b52.camel@talbothome.com>
+ <634e0debea558b90af2cebfc99518071f1d630e9.camel@talbothome.com>
+ <20210414192958.GA4539@duo.ucw.cz>
+ <c7ffd7e4d62e5d5ed397f69be180d81588a4cfd1.camel@talbothome.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha256; protocol="application/pgp-signature"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="SLDf9lqlvOQaIe6s"
+Content-Disposition: inline
+In-Reply-To: <c7ffd7e4d62e5d5ed397f69be180d81588a4cfd1.camel@talbothome.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
+
+--SLDf9lqlvOQaIe6s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Caleb Connolly <caleb@connolly.tech> writes:
+Hi!
 
-> Tested on the OnePlus 7 Pro (including DMA).
->
-> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
-> Reviewed-by: Vinod Koul <vkoul@kernel.org>
-> Reviewed-by: Bhupesh Sharma <bhupesh.sharma@linaro.org>
+> This is not ofono I am forking, merely MMSD.
 
-Tested on Microsoft Surface Duo (DTS will be sent after -rc1)
+So first, sorry, I was confused, I assumed mmsd is part of ofono.
 
-Tested-by: Felipe Balbi <balbi@kernel.org>
+I guess Marcel Holtmann is right person to talk to. I put him in Cc
+list. I'm also Ccing Denis and phone-devel list.
 
-=2D-=20
-balbi
+> and asking about how to contact the ofono maintainers in kernelnewbies
+> in IRC.=20
 
---=-=-=
+Well, kernelnewbies and netdev mailing list are not really right
+places to ask.
+
+> I have attempted to individually email the mmsd Authors as well as
+> anyone within the past 5 years who contributed to mmsd. I simply do not
+> know of any other way to contact the mmsd maintainers.
+
+Ok, so you did quite a good job.
+
+I still hope Marcel will reply. If not, I believe it makes sense to
+ask kernel.org admins (perhaps konstantin@linuxfoundation.org ?) who
+is maintainer of mmsd repository and how to reach them, or perhaps how
+to take over, as it is not exactly active.
+
+2019-07-24	ofono: Read Firmware version (Revision) for Device
+2019-07-24		ofono: Read IMEI SV for Device Management
+2019-07-24		ofono: Read IMEI for Device Management	Ankit
+2017-07-22	wsputil: Fix fall through comment	Marcel
+2017-07-22	build: Use AM_CPPFLAGS instead of INCLUDES	Marcel
+2015-04-20	gdbus: Close private connection if setup fails	Luiz
+
+Best regards and good luck,
+
+		       	     	     		   	 	Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--SLDf9lqlvOQaIe6s
 Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
 
-iQJFBAEBCAAvFiEElLzh7wn96CXwjh2IzL64meEamQYFAmB2pFsRHGJhbGJpQGtl
-cm5lbC5vcmcACgkQzL64meEamQYJng//f6Mm+/zbynbZedGD4wKL8FFeaOV82DhY
-jNyxofB6UgLAUU2nj6hDGFJ+1Tt/+roi1SPfePBlh5xJkUW3osUZ9uHfBO1EdRHS
-NZ/0U2BVy6Rufzrf8xtXml8WBBnOHp3Qnh0TTyRR0dIPiCLlBFQnsNVs6qD2Kd4k
-1VCmSKE6r6RQecZUubED7wmPL2VuoewRuInuF4ICvO8lLS6GXLohI5vysDD96nK/
-AaWw/4hCnIwU6tXgKnl6GfZIRrfwI5G2rRyBJH9wr2/HhmRuKOuyX2y89AycNpBH
-J4lv2r8hALd0+wp9HkfctDEcT1TDuPWwm/A7x2b6XH5Uv6DPiqoo+1F5LMgzY4t9
-waDfdjtCXHa9Kd4OY8w5AnMdfbhmK/dHpRE6SS9D8K/UGeA8GHRlS9WKMyleC6HY
-DPtJqjJO6K9ma/TJKKONsGFr66nn6T1JzglMAcQ3RVP4gEbljfr6i3KPpGjHQ8ik
-aWL8azCk6qapafkWCJpaXeEKuCwj4NjY22wC1JfYSqXUWomll1V1qO17eQuAP80b
-ELZw8cqi4Pki70YjY2QWHFnMjw4ZuHrNN8m9YxgBWKPA82aNaejuJOoglOkgzuOT
-h10ZK7i9+nb4JIr1NZmrQf2dwKdR3HdeOPKEXCkq26W3q2tMe1kZVRR0YwWYaEy7
-v0sQpjls5OI=
-=vuvI
+iEYEARECAAYFAmB3c6gACgkQMOfwapXb+vKrvgCfbtHPiQ5mSjCMY9kWaxDeADZI
++EoAnjPa6g8IWGPeqG4vIe/eaz0TAtJg
+=lY8c
 -----END PGP SIGNATURE-----
---=-=-=--
+
+--SLDf9lqlvOQaIe6s--
