@@ -2,108 +2,59 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D100DC43461
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Apr 2021 01:31:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 963B8C433B4
+	for <phone-devel@archiver.kernel.org>; Thu, 15 Apr 2021 19:06:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B876A60FF1
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Apr 2021 01:31:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5BF4361184
+	for <phone-devel@archiver.kernel.org>; Thu, 15 Apr 2021 19:06:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229650AbhDOBbp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Apr 2021 21:31:45 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:11202 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229641AbhDOBbm (ORCPT
+        id S234635AbhDOTGq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 15 Apr 2021 15:06:46 -0400
+Received: from m-r1.th.seeweb.it ([5.144.164.170]:59405 "EHLO
+        m-r1.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234505AbhDOTGq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Apr 2021 21:31:42 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1618450280; h=Content-Transfer-Encoding: Content-Type:
- In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
- Subject: Sender; bh=9gnP5pgYelSlV/Rgr0abTb2Kc3chY5fICOH5Ndmud5U=; b=q0J7J7puWBMCrH1OW1Q4Z5/H3O81G5ET5z0PiunIgOuqhWs0lPb628ppXOZiIkpIBClVLqUz
- rXu2fjH21d7LJzfDBjIbVadaezarA7aNiW8iMoAG++KUJMXjyblJ73hTVUkmmS+cLvtSqrq8
- iWa99DZoOsHrBkLsyYVElPqMUEE=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 6077975f8166b7eff72d6a97 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 15 Apr 2021 01:31:11
- GMT
-Sender: tdas=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 017C3C43463; Thu, 15 Apr 2021 01:31:10 +0000 (UTC)
-Received: from [192.168.0.103] (unknown [49.204.182.94])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        Thu, 15 Apr 2021 15:06:46 -0400
+Received: from [192.168.1.101] (abac128.neoplus.adsl.tpnet.pl [83.6.166.128])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        (Authenticated sender: tdas)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E0672C433C6;
-        Thu, 15 Apr 2021 01:31:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E0672C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=tdas@codeaurora.org
-Subject: Re: [PATCH v4 5/7] cpufreq: qcom-hw: Implement CPRh aware OSM
- programming
-To:     Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>, agross@kernel.org,
-        rjw@rjwysocki.net, devicetree@vger.kernel.org, robh+dt@kernel.org,
-        amit.kucheria@linaro.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com
-References: <20210119174557.227318-1-angelogioacchino.delregno@somainline.org>
- <20210119174557.227318-6-angelogioacchino.delregno@somainline.org>
- <c35bfd76-0d7e-d7bc-79ab-041b1074c1af@codeaurora.org>
- <YAh+9/IgRhI8M3ov@builder.lan>
- <92e465e4-a0d9-43eb-84f7-69fa355097a9@codeaurora.org>
- <20210413034940.o6uzjtnh2ylvikbf@vireshk-i7>
-From:   Taniya Das <tdas@codeaurora.org>
-Message-ID: <150e19b9-9ecf-7cac-8aa3-c7c4d7a11468@codeaurora.org>
-Date:   Thu, 15 Apr 2021 07:01:03 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 75FE41F9F3;
+        Thu, 15 Apr 2021 21:06:20 +0200 (CEST)
+Subject: Re: [PATCH RFC 1/2] thermal: qcom: tsens-v1: Add support for MSM8994
+ TSENS
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org, Amit Kucheria <amitk@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210209195346.457803-1-konrad.dybcio@somainline.org>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+Message-ID: <1906acf0-9238-eab2-aac8-20f98e0e1403@somainline.org>
+Date:   Thu, 15 Apr 2021 21:06:19 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-In-Reply-To: <20210413034940.o6uzjtnh2ylvikbf@vireshk-i7>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+In-Reply-To: <20210209195346.457803-1-konrad.dybcio@somainline.org>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Bump, this is very important in 8994's case..
 
-On 4/13/2021 9:19 AM, Viresh Kumar wrote:
-> On 12-04-21, 15:01, Taniya Das wrote:
->> Technically the HW we are trying to program here differs in terms of
->> clocking, the LUT definitions and many more. It will definitely make
->> debugging much more troublesome if we try to accommodate multiple versions of
->> CPUFREQ-HW in the same code.
->>
->> Thus to keep it simple, easy to read, debug, the suggestion is to keep it
->> with "v1" tag as the OSM version we are trying to put here is from OSM1.0.
-> 
-> That is a valid point and is always a case with so many drivers. What
-> I am concerned about is how much code is common across versions, if it
-> is 5-70%, or more, then we should definitely share, arrange to have
-> callbacks or ops per version and call them in a generic fashion instead
-> of writing a new driver. This is what's done across
-> drivers/frameworks, etc.
-> 
 
-The code sharing here between versions should be very minimal as most 
-portion of the code here in V1 would focus on programming to prepare the 
-LUT to be further read by the driver, the programming in itself is huge 
-for v1. I am okay if you move the v1 in a different file and invoke 
-based on version.
+Konrad
 
--- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member
-of Code Aurora Forum, hosted by The Linux Foundation.
-
---
