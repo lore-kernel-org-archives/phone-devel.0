@@ -2,160 +2,108 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C2371C433B4
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Apr 2021 00:01:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D100DC43461
+	for <phone-devel@archiver.kernel.org>; Thu, 15 Apr 2021 01:31:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8AC7461220
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Apr 2021 00:01:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B876A60FF1
+	for <phone-devel@archiver.kernel.org>; Thu, 15 Apr 2021 01:31:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230407AbhDOABg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Apr 2021 20:01:36 -0400
-Received: from out5-smtp.messagingengine.com ([66.111.4.29]:33307 "EHLO
-        out5-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230363AbhDOABf (ORCPT
+        id S229650AbhDOBbp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Apr 2021 21:31:45 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:11202 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229641AbhDOBbm (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Apr 2021 20:01:35 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 98C425C005D;
-        Wed, 14 Apr 2021 20:01:12 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Wed, 14 Apr 2021 20:01:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=talbothome.com;
-         h=message-id:subject:from:to:cc:date:in-reply-to:references
-        :content-type:mime-version:content-transfer-encoding; s=fm2; bh=
-        wtVbuoGlrtFV/uBpZaxPn7pFYEAuCOKHSarDjvlmPAE=; b=RWxz1M33O8qOtK1V
-        tOVM6nPzMnmg9WUBy74zTWADzc0XzSjGLVkH+B/T6MWEh7YLXsyPv/I4b3eySWse
-        HaKSGje3Zo6Vq57GtlFBf2alAmiGyGeYc+GILLel5GwcV/o2ZZ0cBqpaHNLbxsAx
-        M5lAFi6OcEtn90DYqKhVISExjktLv/JUpDxt52HhES4lZqndf8CpoMPKhxNsLTuA
-        Ect5854fiPUB1VTI+KBX3PWqf7s031EtwMu+qzp5DkTgmtNamRYVpha7lPUTdd25
-        8kBWGWpq8W4BuW1eVLoXcOFVVHi/gnwgMMsF6HRiw+m+YxAl/PuexdHRNHdPxrfm
-        WXDEfQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :date:from:in-reply-to:message-id:mime-version:references
-        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; bh=wtVbuoGlrtFV/uBpZaxPn7pFYEAuCOKHSarDjvlmP
-        AE=; b=JjBn7qVBYVHqLwIRAH0mkita7MgQ2Zaz4Zrhx0qRecjzisTNWxcn3o8tp
-        /Uo9Ekw+2cg/NW8xLpzlWE4mCEr24oKnqbO3qwDw7F4phN0rrs9HgDrht1t+4P9W
-        Db+GAg5yrUzodDzSXdyiW5W3NKotck9dwhCcTCJmBa3fsnNRxvRkUOSgr9BrR+7g
-        MsaRHSQry8Cd4HZd2gs7fBC9rhPb6q3671SxnRl//E0dwWxzWJR2b6tpJWfnu+Q7
-        xKm0m+kQikymCj2b66/ISQD+JRrsFJaxM3pQRRFneTThBuL2E99NopjcGyjk/YZh
-        vJqNcvAnV3kBtu3q6BwKISjPhoLxA==
-X-ME-Sender: <xms:R4J3YO0dtz7PL7i8km_ZMW9HkL7rpc4BFoNLxWiuyivHD8rOtZjPMQ>
-    <xme:R4J3YBHITJ0C7B1rf8zVSflWtRae0smXiLWwvwpdOOwbRBTJZr9F_JQpTEvgig6aI
-    8U38wF5zfce9zLP7Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrudelvddgvdejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkffuhffvffgjfhgtfggggfesthekredttderjeenucfhrhhomhepvehhrhhi
-    shcuvfgrlhgsohhtuceotghhrhhishesthgrlhgsohhthhhomhgvrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeduvdegheduveefhfdtffevkeeugfekhfefhedtleelleeuueeffedu
-    leehtdetjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeejvddrleehrd
-    dvgeefrdduheeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomheptghhrhhishesthgrlhgsohhthhhomhgvrdgtohhm
-X-ME-Proxy: <xmx:R4J3YG7NfBpRPgeRHUCwegeSN08Mz9-AbHUZeSfc5Cw1OtgR-nfpCA>
-    <xmx:R4J3YP23_3HLSOLLPqZpwzMA728DNU9PsLDgW9otrLDVr3fuKLaERg>
-    <xmx:R4J3YBFproiiZcv-ULJjDurvc0jWN-Sa3ErfWUSG0PhS08nFacdU-w>
-    <xmx:SIJ3YGQn_WzJjRMzUhXwWu-KA0YK3H9W3VsLaEchM771KqZQcTu9hQ>
-Received: from SpaceballstheLaptop.talbothome.com (unknown [72.95.243.156])
-        by mail.messagingengine.com (Postfix) with ESMTPA id EC012240054;
-        Wed, 14 Apr 2021 20:01:10 -0400 (EDT)
-Message-ID: <a18323cb5f1bfc154826fe250a20a1023e0713f4.camel@talbothome.com>
-Subject: Re: Forking on MMSD
-From:   Chris Talbot <chris@talbothome.com>
-To:     Pavel Machek <pavel@ucw.cz>, marcel@holtmann.org,
-        denkenz@gmail.com, phone-devel@vger.kernel.org
-Cc:     ofono@ofono.org
-Date:   Wed, 14 Apr 2021 20:01:09 -0400
-In-Reply-To: <20210414225848.GA28307@amd>
-References: <051ae8ae27f5288d64ec6ef2bd9f77c06b829b52.camel@talbothome.com>
-         <634e0debea558b90af2cebfc99518071f1d630e9.camel@talbothome.com>
-         <20210414192958.GA4539@duo.ucw.cz>
-         <c7ffd7e4d62e5d5ed397f69be180d81588a4cfd1.camel@talbothome.com>
-         <20210414225848.GA28307@amd>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
+        Wed, 14 Apr 2021 21:31:42 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1618450280; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=9gnP5pgYelSlV/Rgr0abTb2Kc3chY5fICOH5Ndmud5U=; b=q0J7J7puWBMCrH1OW1Q4Z5/H3O81G5ET5z0PiunIgOuqhWs0lPb628ppXOZiIkpIBClVLqUz
+ rXu2fjH21d7LJzfDBjIbVadaezarA7aNiW8iMoAG++KUJMXjyblJ73hTVUkmmS+cLvtSqrq8
+ iWa99DZoOsHrBkLsyYVElPqMUEE=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 6077975f8166b7eff72d6a97 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Thu, 15 Apr 2021 01:31:11
+ GMT
+Sender: tdas=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 017C3C43463; Thu, 15 Apr 2021 01:31:10 +0000 (UTC)
+Received: from [192.168.0.103] (unknown [49.204.182.94])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: tdas)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E0672C433C6;
+        Thu, 15 Apr 2021 01:31:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E0672C433C6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=tdas@codeaurora.org
+Subject: Re: [PATCH v4 5/7] cpufreq: qcom-hw: Implement CPRh aware OSM
+ programming
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>, agross@kernel.org,
+        rjw@rjwysocki.net, devicetree@vger.kernel.org, robh+dt@kernel.org,
+        amit.kucheria@linaro.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com
+References: <20210119174557.227318-1-angelogioacchino.delregno@somainline.org>
+ <20210119174557.227318-6-angelogioacchino.delregno@somainline.org>
+ <c35bfd76-0d7e-d7bc-79ab-041b1074c1af@codeaurora.org>
+ <YAh+9/IgRhI8M3ov@builder.lan>
+ <92e465e4-a0d9-43eb-84f7-69fa355097a9@codeaurora.org>
+ <20210413034940.o6uzjtnh2ylvikbf@vireshk-i7>
+From:   Taniya Das <tdas@codeaurora.org>
+Message-ID: <150e19b9-9ecf-7cac-8aa3-c7c4d7a11468@codeaurora.org>
+Date:   Thu, 15 Apr 2021 07:01:03 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210413034940.o6uzjtnh2ylvikbf@vireshk-i7>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hello!
 
-On Thu, 2021-04-15 at 00:58 +0200, Pavel Machek wrote:
-> Hi!
+On 4/13/2021 9:19 AM, Viresh Kumar wrote:
+> On 12-04-21, 15:01, Taniya Das wrote:
+>> Technically the HW we are trying to program here differs in terms of
+>> clocking, the LUT definitions and many more. It will definitely make
+>> debugging much more troublesome if we try to accommodate multiple versions of
+>> CPUFREQ-HW in the same code.
+>>
+>> Thus to keep it simple, easy to read, debug, the suggestion is to keep it
+>> with "v1" tag as the OSM version we are trying to put here is from OSM1.0.
 > 
-> > This is not ofono I am forking, merely MMSD.
-> 
-> So first, sorry, I was confused, I assumed mmsd is part of ofono.
-> 
-
-No worries! To the best of my knowledge, mmsd is a part of ofono? That
-is why I have tried to submit my patches on the Ofono Mailing list
-several times. However, for the purposes of getting MMS to work in
-Mobian/PostmarketOS/Fedora, I have only been working on mmsd.
-
-The "Open Source Telephony Group" is listed as the maintainers of it on
-kernel.org, which I assumed to be the Ofono group.
-
-> I guess Marcel Holtmann is right person to talk to. I put him in Cc
-> list. I'm also Ccing Denis and phone-devel list.
-> 
-> > and asking about how to contact the ofono maintainers in
-> > kernelnewbies
-> > in IRC. 
-> 
-> Well, kernelnewbies and netdev mailing list are not really right
-> places to ask.
+> That is a valid point and is always a case with so many drivers. What
+> I am concerned about is how much code is common across versions, if it
+> is 5-70%, or more, then we should definitely share, arrange to have
+> callbacks or ops per version and call them in a generic fashion instead
+> of writing a new driver. This is what's done across
+> drivers/frameworks, etc.
 > 
 
-I have attempted to contact Mr. Holtmann and Mr. Kenzior individually
-(as they are listed as Authors on mmsd). However, I do know at least
-Mr. Kenzior is on the Ofono Mailing list. I believe both are on the
-Ofono IRC (guessing by the screen names). I really did not want to spam
-their personal email addresses multiple times, as I feel that is rude.
-
-I contacted the netdev mailing list at the advice of another developer.
-
-kernelnewbies was a guess from myself, as I had no idea who else to
-contact to talk to folks on kernel.org and that seemed like a
-reasonable starting point.
-
-> > I have attempted to individually email the mmsd Authors as well as
-> > anyone within the past 5 years who contributed to mmsd. I simply do
-> > not
-> > know of any other way to contact the mmsd maintainers.
-> 
-> Ok, so you did quite a good job.
-> 
-> I still hope Marcel will reply. If not, I believe it makes sense to
-> ask kernel.org admins (perhaps konstantin@linuxfoundation.org ?) who
-> is maintainer of mmsd repository and how to reach them, or perhaps
-> how
-> to take over, as it is not exactly active.
-> 
-> 2019-07-24      ofono: Read Firmware version (Revision) for Device
-> 2019-07-24              ofono: Read IMEI SV for Device Management
-> 2019-07-24              ofono: Read IMEI for Device Management  Ankit
-> 2017-07-22      wsputil: Fix fall through comment       Marcel
-> 2017-07-22      build: Use AM_CPPFLAGS instead of
-> INCLUDES      Marcel
-> 2015-04-20      gdbus: Close private connection if setup fails  Luiz
-> 
-> Best regards and good luck,
-> 
->                                                                 Pavel
-
-Thank you! I hope so as well. If not, Perhaps the kernel.org admin is
-the right place to go.
+The code sharing here between versions should be very minimal as most 
+portion of the code here in V1 would focus on programming to prepare the 
+LUT to be further read by the driver, the programming in itself is huge 
+for v1. I am okay if you move the v1 in a different file and invoke 
+based on version.
 
 -- 
-Respectfully,
-Chris Talbot
+QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member
+of Code Aurora Forum, hosted by The Linux Foundation.
 
-
+--
