@@ -2,127 +2,127 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CABD9C433B4
-	for <phone-devel@archiver.kernel.org>; Mon, 19 Apr 2021 19:06:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33BB7C433ED
+	for <phone-devel@archiver.kernel.org>; Mon, 19 Apr 2021 19:17:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 844236108B
-	for <phone-devel@archiver.kernel.org>; Mon, 19 Apr 2021 19:06:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DE8EC61107
+	for <phone-devel@archiver.kernel.org>; Mon, 19 Apr 2021 19:17:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239908AbhDSTHY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 19 Apr 2021 15:07:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51404 "EHLO
+        id S240311AbhDSTSX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 19 Apr 2021 15:18:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239604AbhDSTHX (ORCPT
+        with ESMTP id S237147AbhDSTSW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 19 Apr 2021 15:07:23 -0400
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51A10C06138A
-        for <phone-devel@vger.kernel.org>; Mon, 19 Apr 2021 12:06:53 -0700 (PDT)
-Received: by mail-ot1-x330.google.com with SMTP id d3-20020a9d29030000b029027e8019067fso31678716otb.13
-        for <phone-devel@vger.kernel.org>; Mon, 19 Apr 2021 12:06:53 -0700 (PDT)
+        Mon, 19 Apr 2021 15:18:22 -0400
+Received: from mail-oo1-xc2b.google.com (mail-oo1-xc2b.google.com [IPv6:2607:f8b0:4864:20::c2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2EEFC06138A
+        for <phone-devel@vger.kernel.org>; Mon, 19 Apr 2021 12:17:51 -0700 (PDT)
+Received: by mail-oo1-xc2b.google.com with SMTP id i9-20020a4ad0890000b02901efee2118aaso418219oor.7
+        for <phone-devel@vger.kernel.org>; Mon, 19 Apr 2021 12:17:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=nS6lVdjAQFuFmi8OcV/NWRT3J31GQHJ6x1DbiIVFs9c=;
-        b=BPS3XGyjmuDU202kT6j+i4GUG7bH0/UX6id7ANkMV4j6krFsStfFOmpSp1GowHtFqs
-         e+bUAwvY3QxQO1YyLyH69dbyH3NyOXU3oJ+GMp6XG8jvwXdEkmOnrCXZ5jMU9TVDhovZ
-         aE1yuktnSwTYK06qRFKjU5MQ6mLf0UO420Q7FASQEjvUNPtQ/uHChVwio8CoM+EolYX7
-         fkkhhel/1cjHRpx8+jDLmsU0+5YNsad5K05glfAL9ZQisVQF9qiJSFMW8nv1F1mUohLT
-         nc9nsFQjMdgDVRHNURGoBPaMlmkTRKiVAv8rz8heuq/d6zwIDVHb/DDTl/ZfCER06ZJV
-         X2ag==
+        bh=m5D38FPKaVXPaWXHSFPjwGl10L5uuS1G4hWLi/5rSB0=;
+        b=x8en4fC2bgy4uHZ0IMu38lYJhWK5Bbb2VGbO9ieiCefUCXHF0m5MJB8BPR9MhYsyUO
+         Ndz0vzM3qHHnJRY661VVZtSmYlc4bONSPXqw5mR38ppyo0T8hc4a23GmfxEyJdevtK6Y
+         vpEa1PQ4T4YY6Cj5Sizpn7Tyv+tRiAUYP4BDr4bIUYRQdzpBDToOwhazC05QXkroWJoU
+         uGQGKfDDBeA45vDC+TEoHTtUbKv6RlH7riNFKvPJcozKHR9BUZ5lX7Kk2ZpNYL70e6kp
+         y84l4RRhcdfeNAt/L1ywRpTqTx6TrKVMRpbNkJJp5Yu8y3K5ui0Fz43nxNZMT30hRUi1
+         vBKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=nS6lVdjAQFuFmi8OcV/NWRT3J31GQHJ6x1DbiIVFs9c=;
-        b=SdPRdtQd98LjeEPDuv8imNZdF06nfk4VSSxmyOqItp8eRdqEp3oHaSGkJxHoqhd6Wt
-         cce0lXuxCO+Sjb/5j9ntl++s/KPRws6150EFN/Gue+2cM9ErY37RB3cAZB8OsfbqR2Wy
-         F9wI8N/LHiwpWbQSLx4h2n/cwg9fuvwY1lSsxinT4Gm02O0rUgTA/Jk0aD7bHuo9UwjC
-         E0KpMlMh0cbdE4aW6D50eOLnpGJxetCLsLb7gweQC6KGH5zMtkiMbTvDo+7PsRKg1ZV6
-         28KkFnfYF9h7Lc+mQ4+kCcxD8xfRULv7EijTmSQWF98z1g4rAjcAIFOpwkVNllH6Vuuo
-         mNzQ==
-X-Gm-Message-State: AOAM531fcTskBTSB7Yp54GJB7E0SJP+Briq4cxuP+m8RMgvpFnJkbfyk
-        No1WHJDJSj2jjt3fK+AIIm6DNQ==
-X-Google-Smtp-Source: ABdhPJxLe1/3CzYqXXwB0vxZ7+8+NQMslhHXoPfV20wEMFYc4HCiSCuaa98SjiWVXIrgij/eVTVZZg==
-X-Received: by 2002:a9d:4808:: with SMTP id c8mr15759494otf.115.1618859212509;
-        Mon, 19 Apr 2021 12:06:52 -0700 (PDT)
+        bh=m5D38FPKaVXPaWXHSFPjwGl10L5uuS1G4hWLi/5rSB0=;
+        b=Pe+rw46O2KJTd2gISh9N0dMAbNe6y/sk+7zL8o2IfOmBVQnKFX50DZBSLEiXVVqmGd
+         qf2zvlve7gXNffY20QhB4LV1mdY55U2j2FO8QMv0X6JWY4e6gqoz1grRHQ5l1itDBB2c
+         4hFZCh3RNpK1J40eUzY2rEQg0LHje9WzYeD1TrYz9P0W+r/b35+Pzc+gwvgF11eKZauT
+         EU/XWzlI+HBWryiQraFMO4n6BjucFx0Bepu4VLANwitisXbRmDAZGDk5Z5MYpn5hN4LC
+         5ddpAoNg02gOV6atP/45tiDYzJM7vbJ3E4qHJxKvDtYJuFYmBHVSBJFn/7nD8rE7xzfz
+         83pg==
+X-Gm-Message-State: AOAM533TBwXIAtUb7oJTXKAU0M71IQ9tqZbIgb4drKOd98FmgBv9PMEv
+        vTkD0V0exPoxRYtzFaM0kQSCWg==
+X-Google-Smtp-Source: ABdhPJz01Umh6zLfuwwGUusXjOlrZ3VrH1wOZO/VqjtjXCKZvrmxg/RnbVEb76RMNUsymXy7cdAvng==
+X-Received: by 2002:a4a:94c3:: with SMTP id l3mr9789581ooi.12.1618859871144;
+        Mon, 19 Apr 2021 12:17:51 -0700 (PDT)
 Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id h81sm1642638oif.53.2021.04.19.12.06.51
+        by smtp.gmail.com with ESMTPSA id q9sm282031oig.7.2021.04.19.12.17.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Apr 2021 12:06:51 -0700 (PDT)
-Date:   Mon, 19 Apr 2021 14:06:49 -0500
+        Mon, 19 Apr 2021 12:17:50 -0700 (PDT)
+Date:   Mon, 19 Apr 2021 14:17:48 -0500
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Taniya Das <tdas@codeaurora.org>
-Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>, agross@kernel.org,
-        rjw@rjwysocki.net, devicetree@vger.kernel.org, robh+dt@kernel.org,
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc:     viresh.kumar@linaro.org, agross@kernel.org, rjw@rjwysocki.net,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
         amit.kucheria@linaro.org, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         martin.botka@somainline.org, jeffrey.l.hugo@gmail.com
-Subject: Re: [PATCH v4 5/7] cpufreq: qcom-hw: Implement CPRh aware OSM
- programming
-Message-ID: <20210419190649.GR1538589@yoga>
+Subject: Re: [PATCH v4 4/7] dt-bindings: cpufreq: cpufreq-qcom-hw: Convert to
+ YAML bindings
+Message-ID: <20210419191748.GS1538589@yoga>
 References: <20210119174557.227318-1-angelogioacchino.delregno@somainline.org>
- <20210119174557.227318-6-angelogioacchino.delregno@somainline.org>
- <c35bfd76-0d7e-d7bc-79ab-041b1074c1af@codeaurora.org>
- <YAh+9/IgRhI8M3ov@builder.lan>
- <92e465e4-a0d9-43eb-84f7-69fa355097a9@codeaurora.org>
- <20210413034940.o6uzjtnh2ylvikbf@vireshk-i7>
- <150e19b9-9ecf-7cac-8aa3-c7c4d7a11468@codeaurora.org>
+ <20210119174557.227318-5-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <150e19b9-9ecf-7cac-8aa3-c7c4d7a11468@codeaurora.org>
+In-Reply-To: <20210119174557.227318-5-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed 14 Apr 20:31 CDT 2021, Taniya Das wrote:
+On Tue 19 Jan 11:45 CST 2021, AngeloGioacchino Del Regno wrote:
+[..]
+> diff --git a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
+> new file mode 100644
+> index 000000000000..bc81b6203e27
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
+> @@ -0,0 +1,204 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/cpufreq/cpufreq-qcom-hw.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm Technologies, Inc. CPUFREQ
+> +
+> +maintainers:
+> +  - Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> +
 
-> 
-> On 4/13/2021 9:19 AM, Viresh Kumar wrote:
-> > On 12-04-21, 15:01, Taniya Das wrote:
-> > > Technically the HW we are trying to program here differs in terms of
-> > > clocking, the LUT definitions and many more. It will definitely make
-> > > debugging much more troublesome if we try to accommodate multiple versions of
-> > > CPUFREQ-HW in the same code.
-> > > 
-> > > Thus to keep it simple, easy to read, debug, the suggestion is to keep it
-> > > with "v1" tag as the OSM version we are trying to put here is from OSM1.0.
-> > 
-> > That is a valid point and is always a case with so many drivers. What
-> > I am concerned about is how much code is common across versions, if it
-> > is 5-70%, or more, then we should definitely share, arrange to have
-> > callbacks or ops per version and call them in a generic fashion instead
-> > of writing a new driver. This is what's done across
-> > drivers/frameworks, etc.
-> > 
-> 
-> The code sharing here between versions should be very minimal as most
-> portion of the code here in V1 would focus on programming to prepare the LUT
-> to be further read by the driver, the programming in itself is huge for v1.
-> I am okay if you move the v1 in a different file and invoke based on
-> version.
-> 
+Mani, I presume you're still up for the maintainership of this binding?
 
-The initialization of the hardware certainly is a large chunk of code,
-but once initialized it's the same driver. Your argument that this new
-code makes it harder to debug things doesn't seem relevant, as the old
-support doesn't seem to affect the code paths used on the modern
-version.
+> +description: |
+> +
+> +  CPUFREQ HW is a hardware engine used by some Qualcomm Technologies, Inc. (QTI)
+> +  SoCs to manage frequency in hardware. It is capable of controlling frequency
+> +  for multiple clusters.
+[..]
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
 
-Creating a new driver and picking it by compatible is certainly possible
-to do, but looking at Angelo's patch it seems like it would contain 100%
-of what's in qcom-cpufreq-hw today.
+This is optional in the .txt version and as such I would like you to
+make this required in a separate patch following the yaml conversion.
 
-As such, I like the approach suggested in this series.
+Apart from that I think this looks good.
+
+> +  - clocks
+> +  - clock-names
+> +  - '#freq-domain-cells'
+> +
 
 Regards,
 Bjorn
