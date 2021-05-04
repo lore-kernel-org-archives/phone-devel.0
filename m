@@ -2,127 +2,94 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=BAYES_00,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6083C433ED
-	for <phone-devel@archiver.kernel.org>; Tue,  4 May 2021 08:48:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29848C433ED
+	for <phone-devel@archiver.kernel.org>; Tue,  4 May 2021 13:55:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A6512613B4
-	for <phone-devel@archiver.kernel.org>; Tue,  4 May 2021 08:48:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0025D60FD8
+	for <phone-devel@archiver.kernel.org>; Tue,  4 May 2021 13:55:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230151AbhEDItm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 4 May 2021 04:49:42 -0400
-Received: from mail-41103.protonmail.ch ([185.70.41.103]:37305 "EHLO
-        mail-41103.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230024AbhEDItm (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 4 May 2021 04:49:42 -0400
-Received: from mail-03.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        by mail-41103.protonmail.ch (Postfix) with ESMTPS id 4FZD5Y5hcdz4wy54;
-        Tue,  4 May 2021 08:48:33 +0000 (UTC)
-Authentication-Results: mail-41103.protonmail.ch;
-        dkim=pass (1024-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="Vuf1T/J5"
-Date:   Tue, 04 May 2021 08:48:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1620118109;
-        bh=hHNQmF2M5QL+db+MdIn83ZXnlBrsdZ0yLisoXSk5p4M=;
-        h=Date:To:From:Cc:Reply-To:Subject:From;
-        b=Vuf1T/J56yZ0M1wLphGmqMmnxLZLvNb74Tta2dKb3sgpyXogp3kSkqdYKz/usBQWZ
-         Mb7yo3VcZS+v+7DTPQAn8q3KmcOLA7DeQOjFcv1v4XHSQXar7SapKmOt54JpImRmZx
-         eb++HtfvTp6c9F1PWVthXC9ryfRGLm0f3jvfdoNk=
-To:     "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        id S231376AbhEDN4f (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 4 May 2021 09:56:35 -0400
+Received: from mail-oi1-f178.google.com ([209.85.167.178]:46004 "EHLO
+        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231348AbhEDN4f (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 4 May 2021 09:56:35 -0400
+Received: by mail-oi1-f178.google.com with SMTP id n184so8802502oia.12;
+        Tue, 04 May 2021 06:55:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=WZ5pxjNNPTm2l3JODG+DqBDp5b/+2GpgjrzHvwx+hHQ=;
+        b=bi31w9451m/u7YzuTtKvTQ8BYOpKpSAwivbeQK8rxr7+0t9+yB8RU3xcFQ1LOmcDFc
+         tJOpHCUFou4J/IiKU52h6BatGoCoLtdXqWoLInItcQJsgfYtCwSamY6USOD0HZ1eAZUI
+         qvoc7zZ73KCDOex+gFslhV0wtx8ZbBYsdq7052DmY485KLv7s1AypPDc+GM37d1829s7
+         SdCHQ9FgC/Iea3lP4hlO31/vUULhtMZooBlTdoiDm5HdchoFEYFn49K2x+lFOBkBp+5y
+         zEox4zQgctRt6LHUDO8nPoxww+xGrGB5kOpX0L8S8WDErsVObfE6jyP69jLIQV7SB68B
+         tM3w==
+X-Gm-Message-State: AOAM530gwQX50KFe7Cwy3ss+eZgYUOrZsvf77WSChiHv1MXTRey9skHV
+        WrcET0bsF7udopEX59Blqw79AfcdaQ==
+X-Google-Smtp-Source: ABdhPJysUHmtjEPdrD01jgFrUXWS7410DKobwxFJ93Tr2tYYhc99uHjI5qXjC5uHLXdXydJKDgIQBA==
+X-Received: by 2002:a05:6808:64d:: with SMTP id z13mr13100573oih.103.1620136538794;
+        Tue, 04 May 2021 06:55:38 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id f21sm746616otp.52.2021.05.04.06.55.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 May 2021 06:55:37 -0700 (PDT)
+Received: (nullmailer pid 4044730 invoked by uid 1000);
+        Tue, 04 May 2021 13:55:37 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>
-From:   Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>,
         "~postmarketos/upstreaming@lists.sr.ht" 
         <~postmarketos/upstreaming@lists.sr.ht>
-Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
-Subject: [PATCH 2/2] dt-bindings: input: Add binding for cypress-sf
-Message-ID: <_T7bJripXfkFGJcfJVL7E_n7RsT5UQzhvxauebspa-aGiMZkX3jk1yHiWeoqHOYQkd8UZgX2TT964OFeEYqtCMh-ZlPiK5kpb3AJqhZFKSs=@protonmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <_T7bJripXfkFGJcfJVL7E_n7RsT5UQzhvxauebspa-aGiMZkX3jk1yHiWeoqHOYQkd8UZgX2TT964OFeEYqtCMh-ZlPiK5kpb3AJqhZFKSs=@protonmail.com>
+References: <_T7bJripXfkFGJcfJVL7E_n7RsT5UQzhvxauebspa-aGiMZkX3jk1yHiWeoqHOYQkd8UZgX2TT964OFeEYqtCMh-ZlPiK5kpb3AJqhZFKSs=@protonmail.com>
+Subject: Re: [PATCH 2/2] dt-bindings: input: Add binding for cypress-sf
+Date:   Tue, 04 May 2021 08:55:37 -0500
+Message-Id: <1620136537.083522.4044729.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add a device tree binding for Cypress StreetFighter.
----
- .../devicetree/bindings/input/cypress-sf.yaml | 55 +++++++++++++++++++
- 1 file changed, 55 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/input/cypress-sf.yaml
+On Tue, 04 May 2021 08:48:26 +0000, Yassine Oudjana wrote:
+> Add a device tree binding for Cypress StreetFighter.
+> ---
+>  .../devicetree/bindings/input/cypress-sf.yaml | 55 +++++++++++++++++++
+>  1 file changed, 55 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/cypress-sf.yaml
+> 
 
-diff --git a/Documentation/devicetree/bindings/input/cypress-sf.yaml b/Docu=
-mentation/devicetree/bindings/input/cypress-sf.yaml
-new file mode 100644
-index 000000000000..3de13490876f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/input/cypress-sf.yaml
-@@ -0,0 +1,55 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/input/cypress-sf.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Cypress StreetFighter touchkey controller
-+
-+allOf:
-+  - $ref: input.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - cypress,sf3155
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  avdd-supply:
-+    description: Regulator for AVDD analog voltage
-+
-+  vdd-supply:
-+    description: Regulator for VDD digital voltage
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - avdd-supply
-+  - vdd-supply
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/input/input.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    i2c {
-+        #address-cells =3D <1>;
-+        #size-cells =3D <0>;
-+
-+        touchkey@28 {
-+                compatible =3D "cypress,sf3155";
-+                reg =3D <0x28>;
-+                interrupt-parent =3D <&msmgpio>;
-+                interrupts =3D <77 IRQ_TYPE_EDGE_FALLING>;
-+                avdd-supply =3D <&vreg_l6a_1p8>;
-+                vdd-supply =3D <&vdd_3v2_tp>;
-+                linux,keycodes =3D <KEY_BACK KEY_MENU>;
-+        };
-+    };
---
-2.31.1
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/input/cypress-sf.yaml: 'maintainers' is a required property
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/input/cypress-sf.yaml: ignoring, error in schema: 
+warning: no schema found in file: ./Documentation/devicetree/bindings/input/cypress-sf.yaml
+Documentation/devicetree/bindings/input/cypress-sf.example.dt.yaml:0:0: /example-0/i2c/touchkey@28: failed to match any schema with compatible: ['cypress,sf3155']
+
+See https://patchwork.ozlabs.org/patch/1473675
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
 
