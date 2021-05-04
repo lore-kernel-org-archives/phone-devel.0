@@ -2,94 +2,79 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.0 required=3.0 tests=BAYES_00,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29848C433ED
-	for <phone-devel@archiver.kernel.org>; Tue,  4 May 2021 13:55:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF2DDC433ED
+	for <phone-devel@archiver.kernel.org>; Tue,  4 May 2021 19:20:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0025D60FD8
-	for <phone-devel@archiver.kernel.org>; Tue,  4 May 2021 13:55:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 91555613BC
+	for <phone-devel@archiver.kernel.org>; Tue,  4 May 2021 19:20:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231376AbhEDN4f (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 4 May 2021 09:56:35 -0400
-Received: from mail-oi1-f178.google.com ([209.85.167.178]:46004 "EHLO
-        mail-oi1-f178.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231348AbhEDN4f (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 4 May 2021 09:56:35 -0400
-Received: by mail-oi1-f178.google.com with SMTP id n184so8802502oia.12;
-        Tue, 04 May 2021 06:55:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=WZ5pxjNNPTm2l3JODG+DqBDp5b/+2GpgjrzHvwx+hHQ=;
-        b=bi31w9451m/u7YzuTtKvTQ8BYOpKpSAwivbeQK8rxr7+0t9+yB8RU3xcFQ1LOmcDFc
-         tJOpHCUFou4J/IiKU52h6BatGoCoLtdXqWoLInItcQJsgfYtCwSamY6USOD0HZ1eAZUI
-         qvoc7zZ73KCDOex+gFslhV0wtx8ZbBYsdq7052DmY485KLv7s1AypPDc+GM37d1829s7
-         SdCHQ9FgC/Iea3lP4hlO31/vUULhtMZooBlTdoiDm5HdchoFEYFn49K2x+lFOBkBp+5y
-         zEox4zQgctRt6LHUDO8nPoxww+xGrGB5kOpX0L8S8WDErsVObfE6jyP69jLIQV7SB68B
-         tM3w==
-X-Gm-Message-State: AOAM530gwQX50KFe7Cwy3ss+eZgYUOrZsvf77WSChiHv1MXTRey9skHV
-        WrcET0bsF7udopEX59Blqw79AfcdaQ==
-X-Google-Smtp-Source: ABdhPJysUHmtjEPdrD01jgFrUXWS7410DKobwxFJ93Tr2tYYhc99uHjI5qXjC5uHLXdXydJKDgIQBA==
-X-Received: by 2002:a05:6808:64d:: with SMTP id z13mr13100573oih.103.1620136538794;
-        Tue, 04 May 2021 06:55:38 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id f21sm746616otp.52.2021.05.04.06.55.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 May 2021 06:55:37 -0700 (PDT)
-Received: (nullmailer pid 4044730 invoked by uid 1000);
-        Tue, 04 May 2021 13:55:37 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        id S232487AbhEDTVR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 4 May 2021 15:21:17 -0400
+Received: from mail-0301.mail-europe.com ([188.165.51.139]:35910 "EHLO
+        mail-03.mail-europe.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S232483AbhEDTVQ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 4 May 2021 15:21:16 -0400
+X-Greylist: delayed 37908 seconds by postgrey-1.27 at vger.kernel.org; Tue, 04 May 2021 15:21:16 EDT
+Date:   Tue, 04 May 2021 19:20:04 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1620156014;
+        bh=myymaIjj5ngJ2xpB8YfOd3Uo+ydeVz+wGUuzLWk88bg=;
+        h=Date:To:From:Cc:Reply-To:Subject:From;
+        b=nZzpYnNw1Xmk44lT5y0HopPGEYDiTMO4fZy4ABRp7Y6GSdPhNmn2QXfXG29+6smUo
+         9BomWONngShFDiWRFlmwWS/4W12q503Ex4YXN/qZ4BROOWTdg4P6xRm6Oy+kRHIZgB
+         mPAOWyMqHXj/3Dgzo9x3ChOv9/SKJsxCGsuJhidc=
+To:     "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>
+From:   Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>,
         "~postmarketos/upstreaming@lists.sr.ht" 
         <~postmarketos/upstreaming@lists.sr.ht>
-In-Reply-To: <_T7bJripXfkFGJcfJVL7E_n7RsT5UQzhvxauebspa-aGiMZkX3jk1yHiWeoqHOYQkd8UZgX2TT964OFeEYqtCMh-ZlPiK5kpb3AJqhZFKSs=@protonmail.com>
-References: <_T7bJripXfkFGJcfJVL7E_n7RsT5UQzhvxauebspa-aGiMZkX3jk1yHiWeoqHOYQkd8UZgX2TT964OFeEYqtCMh-ZlPiK5kpb3AJqhZFKSs=@protonmail.com>
-Subject: Re: [PATCH 2/2] dt-bindings: input: Add binding for cypress-sf
-Date:   Tue, 04 May 2021 08:55:37 -0500
-Message-Id: <1620136537.083522.4044729.nullmailer@robh.at.kernel.org>
+Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
+Subject: [PATCH v2 0/2] Input: cypress-sf - Add support for Cypress Streetfighter touchkeys
+Message-ID: <235fu6MnvzCoMBgP3Wkhz2ZmKOIG2ZYDBzYNBEJlbk@cp4-web-036.plabs.ch>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 04 May 2021 08:48:26 +0000, Yassine Oudjana wrote:
-> Add a device tree binding for Cypress StreetFighter.
-> ---
->  .../devicetree/bindings/input/cypress-sf.yaml | 55 +++++++++++++++++++
->  1 file changed, 55 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/cypress-sf.yaml
-> 
+This patchset adds support for the Cypress StreetFighter touchkey device.
+This driver is based on the driver from the vendor kernel for the Xiaomi
+Mi Note 2[1][2], which is also the device where this was tested.
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+[1] https://github.com/MiCode/Xiaomi_Kernel_OpenSource/blob/scorpio-m-oss/d=
+rivers/input/touchscreen/cyttsp_button.c
+[2] https://github.com/MiCode/Xiaomi_Kernel_OpenSource/blob/scorpio-m-oss/a=
+rch/arm/boot/dts/qcom/scorpio-msm8996-mtp.dtsi#L300-L322
 
-yamllint warnings/errors:
+Changes in v2:
+ - Changed version variables in probe to int to allow storing error codes.
+ - Fixed some issues in dt binding.
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/input/cypress-sf.yaml: 'maintainers' is a required property
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/input/cypress-sf.yaml: ignoring, error in schema: 
-warning: no schema found in file: ./Documentation/devicetree/bindings/input/cypress-sf.yaml
-Documentation/devicetree/bindings/input/cypress-sf.example.dt.yaml:0:0: /example-0/i2c/touchkey@28: failed to match any schema with compatible: ['cypress,sf3155']
+Yassine Oudjana (2):
+  Input: cypress-sf - Add Cypress StreetFighter touchkey driver
+  dt-bindings: input: Add binding for cypress-sf
 
-See https://patchwork.ozlabs.org/patch/1473675
+ .../devicetree/bindings/input/cypress-sf.yaml |  61 +++++
+ drivers/input/keyboard/Kconfig                |  10 +
+ drivers/input/keyboard/Makefile               |   1 +
+ drivers/input/keyboard/cypress-sf.c           | 219 ++++++++++++++++++
+ 4 files changed, 291 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/cypress-sf.yaml
+ create mode 100644 drivers/input/keyboard/cypress-sf.c
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
+--=20
+2.31.1
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
 
