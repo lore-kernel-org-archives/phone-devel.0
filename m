@@ -8,54 +8,54 @@ X-Spam-Status: No, score=-17.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62CCFC433B4
-	for <phone-devel@archiver.kernel.org>; Wed,  5 May 2021 22:42:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D1ECC433B4
+	for <phone-devel@archiver.kernel.org>; Wed,  5 May 2021 22:43:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 45F22613F1
-	for <phone-devel@archiver.kernel.org>; Wed,  5 May 2021 22:42:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3BDED613C0
+	for <phone-devel@archiver.kernel.org>; Wed,  5 May 2021 22:43:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234414AbhEEWnv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 5 May 2021 18:43:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35640 "EHLO
+        id S234397AbhEEWn4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 5 May 2021 18:43:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234315AbhEEWnq (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 May 2021 18:43:46 -0400
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C398CC06138C
-        for <phone-devel@vger.kernel.org>; Wed,  5 May 2021 15:42:48 -0700 (PDT)
-Received: by mail-io1-xd36.google.com with SMTP id t3so3126230iol.5
-        for <phone-devel@vger.kernel.org>; Wed, 05 May 2021 15:42:48 -0700 (PDT)
+        with ESMTP id S234444AbhEEWnw (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 May 2021 18:43:52 -0400
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21446C06138B
+        for <phone-devel@vger.kernel.org>; Wed,  5 May 2021 15:42:55 -0700 (PDT)
+Received: by mail-io1-xd29.google.com with SMTP id l21so3137351iob.1
+        for <phone-devel@vger.kernel.org>; Wed, 05 May 2021 15:42:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ieee.org; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=eVRAL4I5R3EIThtpHkhCvr3PaZqxvgbDA7g9md7suZ0=;
-        b=NAJY9Hg2QjXPKsUa6VRHa7ZlrvQLdZV5WbT0H4FG5YQX800t2+fWOzVW1GHg3mR+gh
-         P94XdmejdrLRI5m5SSqTdHs4OnPb241mf5Qu/itTHtAbbnpww+FRLdM0TgDIbKXRVt1z
-         S8enQ3S/SCDQ7tOd42GHNNV4uSBbLYisYEdXw=
+        bh=ZblBVntBu4kzepDuyzv4aax5GowXgp9n8cFAbEt9+lk=;
+        b=RPvCc6nCgTrSqCFNGq+3y5bj0pm32MI/YbgzYBIIkctoLehFvXQWhmU+8J8DzO3fhw
+         UPxnd/0z3gJRBg91rPVC8hmoAHJG+MbekynkVTlNpS9Bwr/FqlmHkauGESUxhqcgPKYZ
+         y6sRJubTLY8xALkL3lrzJsqKldIxkRNYaNpVs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=eVRAL4I5R3EIThtpHkhCvr3PaZqxvgbDA7g9md7suZ0=;
-        b=Cy5eoLvehADLXgujYmcTOgK+XtI8Jy759CyRF8GezADh45GxQy7WOrqSrzU+/fckEj
-         rz3uUKn5SoVqA+d8+94sezcNq16HAwvlkwlkE+mIz4h2JpAX5rp209Ti1h/EE6ybaRp5
-         asRIqR2nOZ01AEbS4xcJitvgpna4kPe/a41R+0yI7F8z5vP46rZPvEiUm45vgOe/h6X6
-         f4W/wW5hoHBI/8Y8NebQTtHAewpwIJeOyjhXSByPl0yQvxRbcEup4VlhXDPgRq7kuzJg
-         bi3/1KaGWvNyDCE/Gp4UW5PfwuWfM3gxzOVLJUbwHcFnE1mhj7TlPkrhJdZU7aXN+z/2
-         KO/g==
-X-Gm-Message-State: AOAM5310oWNXX46XEt1mQDi7fFMgTyIXLwx6CX1W2GBvu1I31e6YP6O7
-        +nZ5nSqP3QSJ2IzAPW+QQ2eRJkRFP2tvqccN
-X-Google-Smtp-Source: ABdhPJzRPg1pfHtketnKuyEw5gC3cjUAUj2IyceNo+rC3q5l1fw9d0pKB58HRLXey4W1vzb+15I/VA==
-X-Received: by 2002:a5d:9149:: with SMTP id y9mr661126ioq.159.1620254568052;
-        Wed, 05 May 2021 15:42:48 -0700 (PDT)
+        bh=ZblBVntBu4kzepDuyzv4aax5GowXgp9n8cFAbEt9+lk=;
+        b=Jb8I0WDUoq9miDaDEA+goDeAhPanaXhgU3KCvELT3IkGsDngCC8P8Gux/hi35FzgbB
+         vCpPqquzSBWR0MQdG2C8WC+y3RAd0yin9U8myH32CRqg/5MIT/m0+1U2NNZTrcCBPNgu
+         jH+THPDtOrFWfOUD0S0PXmO5k0n0/N0Pcdvv2ZwOxA4pMC5sq06/xds9BNNOqt9e6dGK
+         wclhsXFHtOM2qMf8StGN6iQ3nyUhl+iK/u0TZPLSVJdn4eZ84HV2KkpGW1EEMUOGXaiD
+         SM0wHHIr0VFzoUxcMUYScw3yE1ktTtLA/6CrAlFfRykuTPHlc9IVREls/FYxk1bYO4c+
+         oB4g==
+X-Gm-Message-State: AOAM531JDxP5ln6L8W7UyzEH+c4frwmwLtXv8W81s5YOwlbAAZnWvpGB
+        i2hytZmLdXTYgJnwsnM9y+hBAdr3KdR5cDjh
+X-Google-Smtp-Source: ABdhPJx+gXh34O3I38YGi+vI9phwWnXAG24eQWTGziMPVpCIlnkmVpi0glI2gCIYZF6COhQHP6ACaw==
+X-Received: by 2002:a6b:7413:: with SMTP id s19mr667141iog.151.1620254574394;
+        Wed, 05 May 2021 15:42:54 -0700 (PDT)
 Received: from [172.22.22.4] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
-        by smtp.googlemail.com with ESMTPSA id s23sm264263iol.49.2021.05.05.15.42.46
+        by smtp.googlemail.com with ESMTPSA id o15sm268894ioh.13.2021.05.05.15.42.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 May 2021 15:42:47 -0700 (PDT)
-Subject: Re: [PATCH v1 3/7] net: ipa: gsi: Avoid some writes during irq setup
- for older IPA
+        Wed, 05 May 2021 15:42:53 -0700 (PDT)
+Subject: Re: [PATCH v1 4/7] net: ipa: gsi: Use right masks for GSI v1.0
+ channels hw param
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>, elder@kernel.org
 Cc:     bjorn.andersson@linaro.org, agross@kernel.org, davem@davemloft.net,
@@ -64,14 +64,14 @@ Cc:     bjorn.andersson@linaro.org, agross@kernel.org, davem@davemloft.net,
         linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
         marijn.suijten@somainline.org, phone-devel@vger.kernel.org
 References: <20210211175015.200772-1-angelogioacchino.delregno@somainline.org>
- <20210211175015.200772-4-angelogioacchino.delregno@somainline.org>
+ <20210211175015.200772-5-angelogioacchino.delregno@somainline.org>
 From:   Alex Elder <elder@ieee.org>
-Message-ID: <cd51718f-b584-11f5-40e0-cdec197881eb@ieee.org>
-Date:   Wed, 5 May 2021 17:42:46 -0500
+Message-ID: <2b4d50e1-7530-a905-99bc-ce7f4f62344e@ieee.org>
+Date:   Wed, 5 May 2021 17:42:52 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <20210211175015.200772-4-angelogioacchino.delregno@somainline.org>
+In-Reply-To: <20210211175015.200772-5-angelogioacchino.delregno@somainline.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -80,51 +80,89 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 2/11/21 11:50 AM, AngeloGioacchino Del Regno wrote:
-> On some IPA versions (v3.1 and older), writing to registers
-> GSI_INTER_EE_SRC_CH_IRQ_OFFSET and GSI_INTER_EE_SRC_EV_CH_IRQ_OFFSET
-> will generate a fault and the SoC will lockup.
-> 
-> Avoid clearing CH and EV_CH interrupts on GSI probe to fix this bad
-> behavior: we are anyway not going to get spurious interrupts.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> In GSI v1.0 the register GSI_HW_PARAM_2_OFFSET has different layout
+> so the number of channels and events per EE are, of course, laid out
+> in 8 bits each (0-7, 8-15 respectively).
 
-Looking at this more closely, I see that you have found
-a *bug* that I will fix.  The bug is that these registers
-are the IRQ status registers, not the IRQ mask registers.
+This is actually wrong.  The fields you are fetching here
+define the total number of channels (events) supported by
+the IPA hardware, not the number of channels (events) per EE.
 
-I have posted a fix for this bug, and once fixed, and I would
-like to know whether this fix makes the fault you were
-observing go away.
-   https://lore.kernel.org/netdev/20210505223636.232527-1-elder@linaro.org
+The fields we want are in the HW_PARAM_2 register, which
+is not present until IPA v3.5.1.
+
+As you did with the FLAVOR_0 register in an earlier patch,
+I will update the code so the HW_PARAM_2 register is not
+read unless it's defined, and will just skip these validity
+checks on the endpoint configuration in that case.  We'll
+just assume the hardware supports the maximum number of
+channels and endpoints supported by the driver if we don't
+know otherwise.
 
 					-Alex
 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 > ---
->   drivers/net/ipa/gsi.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
+>   drivers/net/ipa/gsi.c     | 16 +++++++++++++---
+>   drivers/net/ipa/gsi_reg.h |  5 +++++
+>   2 files changed, 18 insertions(+), 3 deletions(-)
 > 
 > diff --git a/drivers/net/ipa/gsi.c b/drivers/net/ipa/gsi.c
-> index 6315336b3ca8..b5460cbb085c 100644
+> index b5460cbb085c..3311ffe514c9 100644
 > --- a/drivers/net/ipa/gsi.c
 > +++ b/drivers/net/ipa/gsi.c
-> @@ -207,11 +207,14 @@ static void gsi_irq_setup(struct gsi *gsi)
->   	iowrite32(0, gsi->virt + GSI_CNTXT_SRC_IEOB_IRQ_MSK_OFFSET);
+> @@ -1790,7 +1790,7 @@ static void gsi_channel_teardown(struct gsi *gsi)
+>   int gsi_setup(struct gsi *gsi)
+>   {
+>   	struct device *dev = gsi->dev;
+> -	u32 val;
+> +	u32 val, mask;
+>   	int ret;
 >   
->   	/* Reverse the offset adjustment for inter-EE register offsets */
-> -	adjust = gsi->version < IPA_VERSION_4_5 ? 0 : GSI_EE_REG_ADJUST;
-> -	iowrite32(0, gsi->virt + adjust + GSI_INTER_EE_SRC_CH_IRQ_OFFSET);
-> -	iowrite32(0, gsi->virt + adjust + GSI_INTER_EE_SRC_EV_CH_IRQ_OFFSET);
-> +	if (gsi->version > IPA_VERSION_3_1) {
-> +		adjust = gsi->version < IPA_VERSION_4_5 ? 0 : GSI_EE_REG_ADJUST;
-> +		iowrite32(0, gsi->virt + adjust + GSI_INTER_EE_SRC_CH_IRQ_OFFSET);
-> +		iowrite32(0, gsi->virt + adjust + GSI_INTER_EE_SRC_EV_CH_IRQ_OFFSET);
-> +	}
+>   	/* Here is where we first touch the GSI hardware */
+> @@ -1804,7 +1804,12 @@ int gsi_setup(struct gsi *gsi)
 >   
->   	iowrite32(0, gsi->virt + GSI_CNTXT_GSI_IRQ_EN_OFFSET);
+>   	val = ioread32(gsi->virt + GSI_GSI_HW_PARAM_2_OFFSET);
+>   
+> -	gsi->channel_count = u32_get_bits(val, NUM_CH_PER_EE_FMASK);
+> +	if (gsi->version == IPA_VERSION_3_1)
+> +		mask = GSIV1_NUM_CH_PER_EE_FMASK;
+> +	else
+> +		mask = NUM_CH_PER_EE_FMASK;
 > +
->   }
+> +	gsi->channel_count = u32_get_bits(val, mask);
+>   	if (!gsi->channel_count) {
+>   		dev_err(dev, "GSI reports zero channels supported\n");
+>   		return -EINVAL;
+> @@ -1816,7 +1821,12 @@ int gsi_setup(struct gsi *gsi)
+>   		gsi->channel_count = GSI_CHANNEL_COUNT_MAX;
+>   	}
 >   
->   /* Turn off all GSI interrupts when we're all done */
+> -	gsi->evt_ring_count = u32_get_bits(val, NUM_EV_PER_EE_FMASK);
+> +	if (gsi->version == IPA_VERSION_3_1)
+> +		mask = GSIV1_NUM_EV_PER_EE_FMASK;
+> +	else
+> +		mask = NUM_EV_PER_EE_FMASK;
+> +
+> +	gsi->evt_ring_count = u32_get_bits(val, mask);
+>   	if (!gsi->evt_ring_count) {
+>   		dev_err(dev, "GSI reports zero event rings supported\n");
+>   		return -EINVAL;
+> diff --git a/drivers/net/ipa/gsi_reg.h b/drivers/net/ipa/gsi_reg.h
+> index 0e138bbd8205..4ba579fa21c2 100644
+> --- a/drivers/net/ipa/gsi_reg.h
+> +++ b/drivers/net/ipa/gsi_reg.h
+> @@ -287,6 +287,11 @@ enum gsi_generic_cmd_opcode {
+>   			GSI_EE_N_GSI_HW_PARAM_2_OFFSET(GSI_EE_AP)
+>   #define GSI_EE_N_GSI_HW_PARAM_2_OFFSET(ee) \
+>   			(0x0001f040 + 0x4000 * (ee))
+> +
+> +/* Fields below are present for IPA v3.1 with GSI version 1 */
+> +#define GSIV1_NUM_EV_PER_EE_FMASK	GENMASK(8, 0)
+> +#define GSIV1_NUM_CH_PER_EE_FMASK	GENMASK(15, 8)
+> +/* Fields below are present for IPA v3.5.1 and above */
+>   #define IRAM_SIZE_FMASK			GENMASK(2, 0)
+>   #define NUM_CH_PER_EE_FMASK		GENMASK(7, 3)
+>   #define NUM_EV_PER_EE_FMASK		GENMASK(12, 8)
 > 
 
