@@ -2,110 +2,76 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02B8AC433B4
-	for <phone-devel@archiver.kernel.org>; Wed,  5 May 2021 22:43:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BA93C433B4
+	for <phone-devel@archiver.kernel.org>; Thu,  6 May 2021 21:06:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DA797611C0
-	for <phone-devel@archiver.kernel.org>; Wed,  5 May 2021 22:43:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0B7D761289
+	for <phone-devel@archiver.kernel.org>; Thu,  6 May 2021 21:06:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234745AbhEEWo2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 5 May 2021 18:44:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35734 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234717AbhEEWoN (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 May 2021 18:44:13 -0400
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6410C061350
-        for <phone-devel@vger.kernel.org>; Wed,  5 May 2021 15:43:11 -0700 (PDT)
-Received: by mail-il1-x132.google.com with SMTP id p15so3141444iln.3
-        for <phone-devel@vger.kernel.org>; Wed, 05 May 2021 15:43:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=AMvqVLaQgP9SZ02av5Xb9uNNcb2canxCwjD7q3lTwm4=;
-        b=DItsHr6eNdQb25/vXeyH9zREbIvrZUZd2DmN0nwXlUBvYvueQJUH5vo2AUb36lBv2L
-         fodxXzHol4XTKMES5Q+nABfGcDNUS0hedJ8QE3IkoLltrPODrQ4Io901OdQbyQGpI9TW
-         4QcNyUgzSmtnvfkD5gdYrVdq1C9GxbOOpshKo=
+        id S230110AbhEFVHD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 6 May 2021 17:07:03 -0400
+Received: from mail-oi1-f169.google.com ([209.85.167.169]:43792 "EHLO
+        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229672AbhEFVHD (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 6 May 2021 17:07:03 -0400
+Received: by mail-oi1-f169.google.com with SMTP id j75so6760791oih.10;
+        Thu, 06 May 2021 14:06:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=AMvqVLaQgP9SZ02av5Xb9uNNcb2canxCwjD7q3lTwm4=;
-        b=d/ZlvM8WQUKR9LOHUxCYwmpI1iljSM/yCP4hXKGMzOrlUQnFObDgbwJCHxxw4Mw+DR
-         YCV/C9+jIU402jPKoIDLTgkUtucGLiCxLaZWZaaOyj7c82A52MEG+yQc/c/VN2hgRdir
-         TVR63sJPP7KxE8taD/+8HdORzqIot2VQvsqSSXNYI1A9o4+92GDorPpmxpjP7ceons42
-         OHpyfk4tFOOLgPivqNaWZhLH/QAMx/342HN2MbXyMY2TF1Dx8aSwIAmxwjsTSvUDxItZ
-         uVmnASVZzp4UIPsOJMvT7+lKcU8FKb3bDxihzkM3M/p2vyGMbZil7oy2pHdIP8VrRngK
-         kheg==
-X-Gm-Message-State: AOAM531Fdc+MHuVuxxLzR308avJ6q9WHTPIgtbqzrnI6DtOTZnaka7Y+
-        oRBcEZXyqBZ3P+e7qWv7BD7ZfYDFi34hWahI
-X-Google-Smtp-Source: ABdhPJw4+aModkOR1CL4tGwxKVaInDrJMi+2xFdAf4BJf3oqi/3HhawuE8nuXEZmg5LgtQDbSH/z6g==
-X-Received: by 2002:a92:c566:: with SMTP id b6mr1201152ilj.162.1620254591251;
-        Wed, 05 May 2021 15:43:11 -0700 (PDT)
-Received: from [172.22.22.4] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
-        by smtp.googlemail.com with ESMTPSA id q1sm374703ilj.4.2021.05.05.15.43.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 May 2021 15:43:10 -0700 (PDT)
-Subject: Re: [PATCH v1 7/7] dt-bindings: net: qcom-ipa: Document
- qcom,msm8998-ipa compatible
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>, elder@kernel.org
-Cc:     bjorn.andersson@linaro.org, agross@kernel.org, davem@davemloft.net,
-        kuba@kernel.org, linux-arm-msm@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, phone-devel@vger.kernel.org
-References: <20210211175015.200772-1-angelogioacchino.delregno@somainline.org>
- <20210211175015.200772-8-angelogioacchino.delregno@somainline.org>
-From:   Alex Elder <elder@ieee.org>
-Message-ID: <9998f8ed-b656-4496-b70d-83a0ee43d646@ieee.org>
-Date:   Wed, 5 May 2021 17:43:09 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=62X0aGUaM6WdBTo/Cm3BxRFcDkXCvap7yNkBf8S6dTg=;
+        b=c6jrVXWtG3dpOo2TpontA/+gUc6qA/5rL/RtrxVa7mWMrTaBM7QCYv/4s8LEzUj23n
+         uq9Re73K2dGrwCijF8fp2rsv+nv07CiZbAtqozp6CT62mWh+qWjVgipB53W7i3xKzKjr
+         Teb9418Rz4qAeSVfqAJ/WjDuby3Ucr1tpt4VpPRmTzjfIw/9nST0NptBAAJ1Jm3iaek4
+         ylCAEQpBvjKk/abuo7RAenih6JJIt9tOmIP87VuqTbFfk36Dw3wV9ZJFO7uso1z1G/z+
+         5EHTA7+4ijJGjH/FHvcMTEAQKqoKFqBqByGDlzGf7WfwCYmA9g3ZcbXO4EXVhaz06abz
+         uLTw==
+X-Gm-Message-State: AOAM533v26SpjN46knbyek1pz1Fz8LY3ORc+z94fiEesbg1NndpGXWSZ
+        NLJ7Uo87nX+4vMWwd9Z/eg==
+X-Google-Smtp-Source: ABdhPJzL1tkLyA0cg9ifZjde1OBU7ZT8HPm7GimCobQnG2FccbevwgGI8m5l484rIaGHkhMLrVRNDQ==
+X-Received: by 2002:a05:6808:14c8:: with SMTP id f8mr12602518oiw.55.1620335163991;
+        Thu, 06 May 2021 14:06:03 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id k7sm729029ood.36.2021.05.06.14.06.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 May 2021 14:06:03 -0700 (PDT)
+Received: (nullmailer pid 800533 invoked by uid 1000);
+        Thu, 06 May 2021 21:06:02 -0000
+Date:   Thu, 6 May 2021 16:06:02 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "~postmarketos/upstreaming@lists.sr.ht" 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] dt-bindings: input: Add binding for cypress-sf
+Message-ID: <20210506210602.GA800483@robh.at.kernel.org>
+References: <BmgtYLgM0FI0tmBcQQLEPss7D2v0jW1Ci8LWeLLd3g@cp3-web-020.plabs.ch>
 MIME-Version: 1.0
-In-Reply-To: <20210211175015.200772-8-angelogioacchino.delregno@somainline.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BmgtYLgM0FI0tmBcQQLEPss7D2v0jW1Ci8LWeLLd3g@cp3-web-020.plabs.ch>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2/11/21 11:50 AM, AngeloGioacchino Del Regno wrote:
-> MSM8998 support has been added: document the new compatible.
+On Tue, 04 May 2021 19:20:50 +0000, Yassine Oudjana wrote:
+> Add a device tree binding for Cypress StreetFighter.
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-
-The upstream file affected here now has a slightly different
-format.  I will implement this change, credit you for having
-first proposed it, and will include a link to your original
-message.
-
-					-Alex
-
+> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
 > ---
->   Documentation/devicetree/bindings/net/qcom,ipa.yaml | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/qcom,ipa.yaml b/Documentation/devicetree/bindings/net/qcom,ipa.yaml
-> index b063c6c1077a..9dacd224b606 100644
-> --- a/Documentation/devicetree/bindings/net/qcom,ipa.yaml
-> +++ b/Documentation/devicetree/bindings/net/qcom,ipa.yaml
-> @@ -46,6 +46,7 @@ properties:
->       oneOf:
->         - items:
->             - enum:
-> +              - "qcom,msm8998-ipa"
->                 - "qcom,sdm845-ipa"
->                 - "qcom,sc7180-ipa"
->   
+>  .../devicetree/bindings/input/cypress-sf.yaml | 61 +++++++++++++++++++
+>  1 file changed, 61 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/cypress-sf.yaml
 > 
 
+Reviewed-by: Rob Herring <robh@kernel.org>
