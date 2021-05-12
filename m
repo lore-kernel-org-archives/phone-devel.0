@@ -2,76 +2,80 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-10.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BA93C433B4
-	for <phone-devel@archiver.kernel.org>; Thu,  6 May 2021 21:06:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DF3C3C433ED
+	for <phone-devel@archiver.kernel.org>; Wed, 12 May 2021 23:02:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0B7D761289
-	for <phone-devel@archiver.kernel.org>; Thu,  6 May 2021 21:06:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B92DA613E6
+	for <phone-devel@archiver.kernel.org>; Wed, 12 May 2021 23:02:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230110AbhEFVHD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 6 May 2021 17:07:03 -0400
-Received: from mail-oi1-f169.google.com ([209.85.167.169]:43792 "EHLO
-        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229672AbhEFVHD (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 6 May 2021 17:07:03 -0400
-Received: by mail-oi1-f169.google.com with SMTP id j75so6760791oih.10;
-        Thu, 06 May 2021 14:06:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=62X0aGUaM6WdBTo/Cm3BxRFcDkXCvap7yNkBf8S6dTg=;
-        b=c6jrVXWtG3dpOo2TpontA/+gUc6qA/5rL/RtrxVa7mWMrTaBM7QCYv/4s8LEzUj23n
-         uq9Re73K2dGrwCijF8fp2rsv+nv07CiZbAtqozp6CT62mWh+qWjVgipB53W7i3xKzKjr
-         Teb9418Rz4qAeSVfqAJ/WjDuby3Ucr1tpt4VpPRmTzjfIw/9nST0NptBAAJ1Jm3iaek4
-         ylCAEQpBvjKk/abuo7RAenih6JJIt9tOmIP87VuqTbFfk36Dw3wV9ZJFO7uso1z1G/z+
-         5EHTA7+4ijJGjH/FHvcMTEAQKqoKFqBqByGDlzGf7WfwCYmA9g3ZcbXO4EXVhaz06abz
-         uLTw==
-X-Gm-Message-State: AOAM533v26SpjN46knbyek1pz1Fz8LY3ORc+z94fiEesbg1NndpGXWSZ
-        NLJ7Uo87nX+4vMWwd9Z/eg==
-X-Google-Smtp-Source: ABdhPJzL1tkLyA0cg9ifZjde1OBU7ZT8HPm7GimCobQnG2FccbevwgGI8m5l484rIaGHkhMLrVRNDQ==
-X-Received: by 2002:a05:6808:14c8:: with SMTP id f8mr12602518oiw.55.1620335163991;
-        Thu, 06 May 2021 14:06:03 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id k7sm729029ood.36.2021.05.06.14.06.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 May 2021 14:06:03 -0700 (PDT)
-Received: (nullmailer pid 800533 invoked by uid 1000);
-        Thu, 06 May 2021 21:06:02 -0000
-Date:   Thu, 6 May 2021 16:06:02 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "~postmarketos/upstreaming@lists.sr.ht" 
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] dt-bindings: input: Add binding for cypress-sf
-Message-ID: <20210506210602.GA800483@robh.at.kernel.org>
-References: <BmgtYLgM0FI0tmBcQQLEPss7D2v0jW1Ci8LWeLLd3g@cp3-web-020.plabs.ch>
+        id S239858AbhELXBF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 12 May 2021 19:01:05 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:56078 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347719AbhELVsM (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 12 May 2021 17:48:12 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 5765D1C0B87; Wed, 12 May 2021 23:47:02 +0200 (CEST)
+Date:   Wed, 12 May 2021 23:47:02 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     agx@sigxcpu.org, phone-devel@vger.kernel.org, martijn@brixit.nl,
+        linux-media@vger.kernel.org
+Subject: Recording videos on phones and camera on Librem 5 devboard
+Message-ID: <20210512214702.GB27652@duo.ucw.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="wzJLGUyc3ArbnUjN"
 Content-Disposition: inline
-In-Reply-To: <BmgtYLgM0FI0tmBcQQLEPss7D2v0jW1Ci8LWeLLd3g@cp3-web-020.plabs.ch>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 04 May 2021 19:20:50 +0000, Yassine Oudjana wrote:
-> Add a device tree binding for Cypress StreetFighter.
-> 
-> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-> ---
->  .../devicetree/bindings/input/cypress-sf.yaml | 61 +++++++++++++++++++
->  1 file changed, 61 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/cypress-sf.yaml
-> 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+--wzJLGUyc3ArbnUjN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+Who is the right person to talk about Librem 5 cameras? Is there
+mailing list I should use?
+
+AFAICS from bugzillas, it is still not compeletely working. I see
+megapixels packaged in the repository, but without required config
+files. Are there work-in-progress configurations somewhere? Would it
+be useful if I tried to get it to work on the devboard?
+
+I created simple python+gtk+gstreamer application to take photos,
+pictures and record videos. It is in tui repository; it is work on
+progress but some functionality is available on PinePhone, Librem 5
+devboard and a PC. If someone could test it on actual Librem 5... that
+would be nice.
+
+https://gitlab.com/tui/tui/-/tree/master/cam
+
+Best regards,
+										Pavel
+
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+
+
+--wzJLGUyc3ArbnUjN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYJxM1gAKCRAw5/Bqldv6
+8vnoAKC3leq1zUjg3+oG0fXWK1p7bWRBKQCdHMD9RUIo4TUphX7fU7HiTNqy6ZU=
+=5ayr
+-----END PGP SIGNATURE-----
+
+--wzJLGUyc3ArbnUjN--
