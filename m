@@ -2,148 +2,102 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1E51C433B4
-	for <phone-devel@archiver.kernel.org>; Thu, 13 May 2021 15:37:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C90AC43460
+	for <phone-devel@archiver.kernel.org>; Thu, 13 May 2021 16:07:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C87AB61421
-	for <phone-devel@archiver.kernel.org>; Thu, 13 May 2021 15:37:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C7D8C613B6
+	for <phone-devel@archiver.kernel.org>; Thu, 13 May 2021 16:07:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234914AbhEMPit (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 13 May 2021 11:38:49 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:16797 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234932AbhEMPis (ORCPT
+        id S234993AbhEMQIg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 13 May 2021 12:08:36 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:32896 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230435AbhEMQIf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 13 May 2021 11:38:48 -0400
-X-Greylist: delayed 13644 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 May 2021 11:38:44 EDT
-ARC-Seal: i=1; a=rsa-sha256; t=1620920245; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=juU15rfsS9PwAkEcGdmkeIe9uzbV9nhUK1ONhA7Dy+RwT+Wfd4l6SHG1lymDZTsBwO
-    mVnFQ9Diu1qwkoxE1woFU2mD+5o/imo51W/Nye43yi0axFgGolLUs2CaqlB5E1y9Yv67
-    3DpaLnJoYONeK8cRq+ElKZssvclbCW3JJsnPnLAPiIP3LmO4cNmqAucxHIBh+I30Rc1a
-    P+71JXbZ229I9vNUsu0QD3jROHnFroYVNwJLooOPxc3bUGc39wk4QvunxI8HWaplaj8/
-    B6Y7KY9mHfZ7loBok2vOqSCauYMKUdVcp4n2T1Ymt38Uu3hyRTXWp9luF87B/SxInCyV
-    QTVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1620920245;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=p9b5c3IB1K+7is9GeRzTX7tLozoGvL5xMmPv3Z5hQhs=;
-    b=qIRC5Y+VBFsR/r+yc66MJ4wZj1aIi7ALTWP/LhRlaXmdZClLxkp62xGvNFK+h7AoWm
-    OhjndCOpxkZF1cbqgFe37Gf4jKnFHKKWs++oNByhOcksiWqygtTPzhSe59cFfYRMpV9g
-    ytRahTBUlu9hRsC+n9jv7K0AmOuKEsldP1hxhVfxunGV6NBJMSoWF31MmgmIrcLdLNGj
-    /7GJiEZ4OnUoG/zJPHLqliJFgVYYmtZGJ1lvMUkbQoKzWg2k8mjDA+3iuxoRAL7nZjXM
-    gCzPdxKovLsohs1wcMy3AcT7xfeXotN903JEOgu3IpHfjDhNig0fu8Cc7aTlLchN4bQk
-    vbxA==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1620920245;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=p9b5c3IB1K+7is9GeRzTX7tLozoGvL5xMmPv3Z5hQhs=;
-    b=GFwjKEH95MZ8/6NQ1xxSmPYkfTah3tiG+7qFrvRnPsBrP4U1T5l5AnDTImA4W02T35
-    9696eUZFfiP6FhEa7hWb4O15zHX3glmCAmmgeDKS3E9GON/NbTAAZBqVK4wBs4iptFz5
-    POFE3z6RQRf76WBTrziT+5Fy1mqody5GbnC5N/tpkSf68x2nvSRWVgU7h1j7RUCXdn4a
-    ipxRrsPp+0lHp24INxH2kpDIdxIGWPQfDIllFSefvhanttauVoji8fmTn/SFj7s5lnCP
-    C0hDksAYI4ZRkgyN+QmskQxxCyvyKvXxsVFc/Xbw4wLb9V4LvoHzH4LCJrYyc1+hJCfy
-    4b5w==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8j6IczCBg=="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 47.25.7 DYNA|AUTH)
-    with ESMTPSA id j06c13x4DFbOCNR
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Thu, 13 May 2021 17:37:24 +0200 (CEST)
-Date:   Thu, 13 May 2021 17:37:19 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Mark Greer <mgreer@animalcreek.com>
-Cc:     Frieder Schrempf <frieder.schrempf@kontron.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-nfc@lists.01.org,
-        Alex Blasche <alexander.blasche@qt.io>,
-        phone-devel@vger.kernel.org
-Subject: Re: Testing wanted for Linux NFC subsystem
-Message-ID: <YJ1Hr/hov9I42GK1@gerhold.net>
-References: <20210512144319.30852-1-krzysztof.kozlowski@canonical.com>
- <14e78a9a-ed1a-9d7d-b854-db6d811f4622@kontron.de>
- <20210512170135.GB222094@animalcreek.com>
- <YJ0SYWJjq3ZmXMy3@gerhold.net>
- <20210513144855.GA266838@animalcreek.com>
+        Thu, 13 May 2021 12:08:35 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id AC3EC1C0B80; Thu, 13 May 2021 18:07:24 +0200 (CEST)
+Date:   Thu, 13 May 2021 18:07:24 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
+Cc:     phone-devel@vger.kernel.org, martijn@brixit.nl,
+        linux-media@vger.kernel.org, martin.kepplinger@puri.sm,
+        dorota.czaplejewicz@puri.sm
+Subject: Re: Recording videos on phones and camera on Librem 5 devboard
+Message-ID: <20210513160724.GC19588@duo.ucw.cz>
+References: <20210512214702.GB27652@duo.ucw.cz>
+ <YJz0cn4OrXNhRDoO@bogon.m.sigxcpu.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="f+W+jCU1fRNres8c"
 Content-Disposition: inline
-In-Reply-To: <20210513144855.GA266838@animalcreek.com>
+In-Reply-To: <YJz0cn4OrXNhRDoO@bogon.m.sigxcpu.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, May 13, 2021 at 07:48:55AM -0700, Mark Greer wrote:
-> On Thu, May 13, 2021 at 01:49:53PM +0200, Stephan Gerhold wrote:
-> > I have a couple of "recycled" smartphones running mainline Linux
-> > and some of them do have NFC chips. I have two with NXP PN547
-> > (supported by nxp,nxp-nci-i2c), one with Samsung S3FWRN5
-> > (samsung,s3fwrn5-i2c) and even one with Broadcom BCM2079x I think
-> > (this one does not have a driver for the Linux NFC subsystem sadly).
-> > 
-> > +Cc phone-devel@vger.kernel.org, in case other people there are
-> > interested in NFC :)
-> > 
-> > The NXP/Samsung ones seems to work just fine. However, since there are
-> > barely any userspace tools making use of Linux NFC all my testing so far
-> > was limited to polling for devices with "nfctool" and being happy enough
-> > when it realizes that I hold some NFC tag close to the device. :S
-> 
-> There is a user-level daemon that is the counterpart for the in-kernel
-> NFC subsystem.  It is called neard and is available here:
-> 
-> 	git://git.kernel.org/pub/scm/network/nfc/neard.git
-> 
-> There are a few test script in it that will let you read and write NFC
-> tags, and do some other things.  We can add some more tests to that set
-> as we go.
-> 
 
-Yeah, I packaged that for Alpine Linux / postmarketOS.
-"nfctool" also comes from "neard" as far as I can tell :)
+--f+W+jCU1fRNres8c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I think I also played with the Neard test scripts a bit at some point,
-and managed to read some NFC tag thing inside an old Yubikey NEO
-that I found, but didn't really know what else to do.
+Hi!
 
-> > I would be happy to do some more testing if someone has something useful
-> > that can be tested. However, I guess ideally we would have someone who
-> > actually uses Linux NFC actively for some real application. :)
-> 
-> Ideally, you should have some NFC tags of various types.  Types 2, 3,
-> 4A, 4B, and 5 tags are supported.  Peer-to-peer mode is supported too
-> so you should be able to transfer data from one of your phones to the
-> other over NFC (and do a BT hand-over, if you're interested).
-> 
+> > Who is the right person to talk about Librem 5 cameras? Is there
+> > mailing list I should use?
+>=20
+> I think most of the coordination is mostly happening via the gitlab issue=
+s in
+>=20
+> https://source.puri.sm/Librem5/linux-next
+>=20
+> Maybe Martin and Dorota who are working on the camera drivers (put in cc:)
+> have a more suggestions.
 
-I guess this is where I kind of lack hardware as well at the moment,
-I don't have any programmable NFC tags at the moment (although I guess
-those should be quite cheap). I might play with the peer-to-peer mode
-a bit when I find time.
+Thanks for pointers.
 
-> Note that the specified range for NFC is only 4 cm and poor antenna
-> design, etc. means that the actual range is usually much less (e.g.,
-> they amost have to touch).  Also note that there are timing constraints
-> so you may need to make the scheduling priority of the interrupt thread
-> of your NFC driver real-time.
-> 
+In the meantime I got silent video recording to work on Librem 5
+devboard --
 
-Yeah I noticed, always need to search for a while to find the right spot
-on the phone. :)
+https://gitlab.com/tui/tui/-/tree/master/cam
 
-Stephan
+-- but quality is awful, probably either hardware or kernel issue.
+
+Is pulseaudio supposed to be running in Phosh? I have trouble
+capturing any audio and am wondering if I should attempt to do full
+reinstall.
+
+> > AFAICS from bugzillas, it is still not compeletely working. I see
+> > megapixels packaged in the repository, but without required config
+> > files. Are there work-in-progress configurations somewhere? Would it
+> > be useful if I tried to get it to work on the devboard?
+>=20
+> Megapixels work is mostly happening here atm:
+>=20
+> https://source.puri.sm/dorota.czaplejewicz/megapixels
+
+Ok, so you seem to have that one under control.
+
+Best regards,
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--f+W+jCU1fRNres8c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYJ1OvAAKCRAw5/Bqldv6
+8vRzAJ9S2NjEPY9TLbLF/9CzRcycjGaF2gCfW9hg1fQRBVwvt6gebdQsakz0XJ8=
+=b15H
+-----END PGP SIGNATURE-----
+
+--f+W+jCU1fRNres8c--
