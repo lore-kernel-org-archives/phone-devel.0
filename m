@@ -2,139 +2,169 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78D8DC433B4
-	for <phone-devel@archiver.kernel.org>; Fri, 14 May 2021 10:44:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E61BC433B4
+	for <phone-devel@archiver.kernel.org>; Fri, 14 May 2021 15:24:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 57D0E61459
-	for <phone-devel@archiver.kernel.org>; Fri, 14 May 2021 10:44:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DDD5D61458
+	for <phone-devel@archiver.kernel.org>; Fri, 14 May 2021 15:24:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230130AbhENKpY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 14 May 2021 06:45:24 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.171]:19359 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230377AbhENKpX (ORCPT
+        id S233274AbhENPZT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 14 May 2021 11:25:19 -0400
+Received: from new4-smtp.messagingengine.com ([66.111.4.230]:34401 "EHLO
+        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231590AbhENPZT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 14 May 2021 06:45:23 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1620989045; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=pmq7QYHzo+prEMJrMP2cDyBfw41rlani3SzajT0L8ncBkD9Yw6ZtDV7zrYwmSnVCtg
-    HTz6Q48+GynS8gcCOUZ5sWuFgvqchkrHuHxOyOAEjVAn/qDoCjgsHE+AaH0F1Uv6eY+a
-    Hytj7vWJiGKEUEE4DwInz1Oqgih4l6RT0qS7tZ/t2OwzDYOznUN7ALEBFuk/F4mXTArB
-    SNGm2NEORL2rRk8ikqL+PhXxSVSPlQMagQilG5PSgomfR60i2K6e7VaK9FY7Sfz6Lt3G
-    iphiMeGHQarsDY+/K4V4N+bhtSQofGG/KGB9ENaDMRdvY4GYveIQ9k/eNlvgJZcQrGnY
-    +ksg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1620989045;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=onZ1ndtHrNRFqAtDjGioRxEfQXLifJXbNhb184j8N9g=;
-    b=VajhScdtRyhKsBH+lcw6FglMqIysujkiluQYtWQUJFrRQDOL8A1RyHwrIJHVRNm4Pz
-    moMw0y4fkSXby+Rwu3hBtsSwFO3zZvK8cCJ3bJ8EMW7fnwL0GgJr4eFvYXrEAutHqD9i
-    DXqt+MPVzzwX6rbOb06XG+lf6rihO75BFquDDolMZQcw+8r2ufxg8GuXTPNAqE/+co+a
-    8hiLctbPCuoxUp9n5Hh5MU+6wIBXLa6tzHoKXw6qI9/F+5x+GHwDKoOZJj7g2Qzuqzif
-    k+zekgwXcO9ceszHjQ0yxnIqBYHyk+lAEfCHJPYOkSFjk4O0kPx6AEhSdncmHrgWdP5m
-    4gDg==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1620989045;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=onZ1ndtHrNRFqAtDjGioRxEfQXLifJXbNhb184j8N9g=;
-    b=AECLsnTsmsdgQelCoRn/ViLk9exFytmnpVLLEPz1lGdLdx47TNKmi7Ajjrc+KZGnWE
-    C7B/K3DCZoVBHumhiYIXP8YjOAlbDf4Wny4sBxNJ+uPSTyWLXus6Vf5wj1BDcYqNQptE
-    JjwrxGX9vscbBqhOxM5/mCX2X0+W31rYuaKVFmm/3oWdxgIfayqgXi30P0BwmY2cVcgx
-    wiZCBjapX5n0a7exGaxoUBKYh9UH2gsmC1yOxcbcEJiZuCaEUtG84IajIli0rl8XU/xh
-    UZVI8vY1x6ms9Bl/kcjjmqMXkVS974z8Xfc91cHoue8BFt6TtaZkoemtnw2AmVjJ3Zy6
-    Sh9Q==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxB5m6OWA=="
-X-RZG-CLASS-ID: mo00
-Received: from droid..
-    by smtp.strato.de (RZmta 47.25.7 SBL|AUTH)
-    with ESMTPSA id j06c13x4EAi4Fyo
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Fri, 14 May 2021 12:44:04 +0200 (CEST)
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH 5/5] arm64: dts: qcom: msm8916-huawei-g7: Add NFC
-Date:   Fri, 14 May 2021 12:43:28 +0200
-Message-Id: <20210514104328.18756-5-stephan@gerhold.net>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210514104328.18756-1-stephan@gerhold.net>
-References: <20210514104328.18756-1-stephan@gerhold.net>
+        Fri, 14 May 2021 11:25:19 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 36D1C58116B;
+        Fri, 14 May 2021 11:23:55 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Fri, 14 May 2021 11:23:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=animalcreek.com;
+         h=date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm2; bh=yv38+k95PhYFZEV25jgoJeWF+VJ
+        CV6ohBX/tbnUga10=; b=D+0j36r329938MFly65x++2zfGz1IQF9FNzMTWiH87E
+        qVMHVpFPraKxouMhfhGjn2mj0zVBB0b4TqPCUIhosEh175sD6lDD6AJim5rE70fu
+        xQLBCppnO9Vpaz9qlhoXdcFpPCE/tXezth1CDBAiTCvLePjlsYm4hzRsszpAUPzn
+        p0tg3fRDAdbmr1meHB4Pe6+c3Ctqs+Gg/MBouoG6V78BUvyLOCBrDrNYZFTssD9K
+        Qf85m7M0g7GkDEOR6vxFSihE6cTfrR8tC7NiOl6VJlmnbxyQmXZ4jx8VsZRmLbbI
+        C62glRVJIonXNs0fTeMOWKjKf7Sqy8fAT/VXKrm0uOg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=yv38+k
+        95PhYFZEV25jgoJeWF+VJCV6ohBX/tbnUga10=; b=UdtvsxgXZ4lFIBl5K/6m9o
+        tDn+/i5jGGfNjTV0OdUwA7Je1IswP0fQzOV4mEZld36nOgOCm2DuQ20SOp64bSjR
+        XfyG15kqpIl/v/V/q+/sqwkNOV9k9SBQ9GCoRBw2jFlelVn6KGeE5OpObzqOrINf
+        dscRWkQIhXYfD9Zc6U/PNxFJot2pEXkSGUvjc9orE39o2d1diVbaLTt0D8pBelsk
+        NiQJTaLylCI4K1HM5wlua3l9C68oG34Q7GuuFU1vQx9wDb42J8+uGTpv+F4T1Gas
+        gpFEZnhMyzWMz85OwNvPZmZ06eGk+aU0de5dswBRi1qXRlMuLYLOJiEiKuxz3SNw
+        ==
+X-ME-Sender: <xms:CJaeYIyjhwrrCS2aoaJQ5MTtGlq8RxEpzIB2Jnh7zH0VrLpKPCG9YA>
+    <xme:CJaeYMSGts3gMifU6wt81PQi0kLg3moiz1qvK7Hwjz9iSwr3qPwpEyBQkkrUAVVNT
+    wy2Roi_PvCIjLJs3A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdehjedgvdeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjohesthdtredttddtvdenucfhrhhomhepofgrrhhk
+    ucfirhgvvghruceomhhgrhgvvghrsegrnhhimhgrlhgtrhgvvghkrdgtohhmqeenucggtf
+    frrghtthgvrhhnpedujeelgeejleegleevkeekvdevudfhteeuiedtleehtdduleelvdei
+    fffhvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeejtddrudejvd
+    drfedvrddvudeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
+    rhhomhepmhhgrhgvvghrsegrnhhimhgrlhgtrhgvvghkrdgtohhm
+X-ME-Proxy: <xmx:CJaeYKXR27-qZhOXN64kHxQLdKCGi_WYhilI_SiMqsXqSyacnrJliA>
+    <xmx:CJaeYGjt8c1GsnHGru4_06o5CnifHahDLc9omOXr3tSOTZdNol0sWg>
+    <xmx:CJaeYKBJcVMFoFIHC8oTZLHVdUqnpxuyVQuGu85X8HCV2b-VXWf34g>
+    <xmx:C5aeYG1t5oSY0PGig15x7jWyhmPNpHA8-y3Zf2SNOwKCXZvJPiaZ2A>
+Received: from blue.animalcreek.com (ip70-172-32-218.ph.ph.cox.net [70.172.32.218])
+        by mail.messagingengine.com (Postfix) with ESMTPA;
+        Fri, 14 May 2021 11:23:52 -0400 (EDT)
+Received: by blue.animalcreek.com (Postfix, from userid 1000)
+        id E4032136008E; Fri, 14 May 2021 08:23:50 -0700 (MST)
+Date:   Fri, 14 May 2021 08:23:50 -0700
+From:   Mark Greer <mgreer@animalcreek.com>
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Mark Greer <mgreer@animalcreek.com>,
+        Frieder Schrempf <frieder.schrempf@kontron.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nfc@lists.01.org,
+        Alex Blasche <alexander.blasche@qt.io>,
+        phone-devel@vger.kernel.org
+Subject: Re: Testing wanted for Linux NFC subsystem
+Message-ID: <20210514152350.GA301895@animalcreek.com>
+References: <20210512144319.30852-1-krzysztof.kozlowski@canonical.com>
+ <14e78a9a-ed1a-9d7d-b854-db6d811f4622@kontron.de>
+ <20210512170135.GB222094@animalcreek.com>
+ <YJ0SYWJjq3ZmXMy3@gerhold.net>
+ <20210513144855.GA266838@animalcreek.com>
+ <YJ1Hr/hov9I42GK1@gerhold.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YJ1Hr/hov9I42GK1@gerhold.net>
+Organization: Animal Creek Technologies, Inc.
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The Huawei Ascend G7 supports NFC using the NXP PN547, which is
-supported by the nxp-nci-i2c driver in mainline. It seems to detect
-NFC tags using "nfctool" just fine, although it seems like there
-are not really any useful applications making use of the Linux NFC
-subsystem. :(
+On Thu, May 13, 2021 at 05:37:19PM +0200, Stephan Gerhold wrote:
+> On Thu, May 13, 2021 at 07:48:55AM -0700, Mark Greer wrote:
+> > On Thu, May 13, 2021 at 01:49:53PM +0200, Stephan Gerhold wrote:
+> > > I have a couple of "recycled" smartphones running mainline Linux
+> > > and some of them do have NFC chips. I have two with NXP PN547
+> > > (supported by nxp,nxp-nci-i2c), one with Samsung S3FWRN5
+> > > (samsung,s3fwrn5-i2c) and even one with Broadcom BCM2079x I think
+> > > (this one does not have a driver for the Linux NFC subsystem sadly).
+> > > 
+> > > +Cc phone-devel@vger.kernel.org, in case other people there are
+> > > interested in NFC :)
+> > > 
+> > > The NXP/Samsung ones seems to work just fine. However, since there are
+> > > barely any userspace tools making use of Linux NFC all my testing so far
+> > > was limited to polling for devices with "nfctool" and being happy enough
+> > > when it realizes that I hold some NFC tag close to the device. :S
+> > 
+> > There is a user-level daemon that is the counterpart for the in-kernel
+> > NFC subsystem.  It is called neard and is available here:
+> > 
+> > 	git://git.kernel.org/pub/scm/network/nfc/neard.git
+> > 
+> > There are a few test script in it that will let you read and write NFC
+> > tags, and do some other things.  We can add some more tests to that set
+> > as we go.
+> > 
+> 
+> Yeah, I packaged that for Alpine Linux / postmarketOS.
+> "nfctool" also comes from "neard" as far as I can tell :)
+> 
+> I think I also played with the Neard test scripts a bit at some point,
+> and managed to read some NFC tag thing inside an old Yubikey NEO
+> that I found, but didn't really know what else to do.
 
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
----
- .../arm64/boot/dts/qcom/msm8916-huawei-g7.dts | 26 +++++++++++++++++++
- 1 file changed, 26 insertions(+)
+Yeah, there isn't a whole lot you can do but beyond reading/writing
+tags and peer-to-peer, there are things like Bluetooth and Wifi
+handover, Android Application Record support, and at least some
+support for Secure Engine.
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts b/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
-index 5ad4e921b110..e0075b574190 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
-@@ -193,6 +193,24 @@ rmi4-f11@11 {
- 	};
- };
- 
-+&blsp_i2c6 {
-+	status = "okay";
-+
-+	nfc@28 {
-+		compatible = "nxp,pn547", "nxp,nxp-nci-i2c";
-+		reg = <0x28>;
-+
-+		interrupt-parent = <&msmgpio>;
-+		interrupts = <21 IRQ_TYPE_EDGE_RISING>;
-+
-+		enable-gpios = <&msmgpio 20 GPIO_ACTIVE_HIGH>;
-+		firmware-gpios = <&msmgpio 2 GPIO_ACTIVE_HIGH>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&nfc_default>;
-+	};
-+};
-+
- &blsp1_uart2 {
- 	status = "okay";
- };
-@@ -378,6 +396,14 @@ gpio_leds_default: gpio-leds-default {
- 		bias-disable;
- 	};
- 
-+	nfc_default: nfc-default {
-+		pins = "gpio2", "gpio20", "gpio21";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	mag_reset_default: mag-reset-default {
- 		pins = "gpio36";
- 		function = "gpio";
--- 
-2.31.1
+> > > I would be happy to do some more testing if someone has something useful
+> > > that can be tested. However, I guess ideally we would have someone who
+> > > actually uses Linux NFC actively for some real application. :)
+> > 
+> > Ideally, you should have some NFC tags of various types.  Types 2, 3,
+> > 4A, 4B, and 5 tags are supported.  Peer-to-peer mode is supported too
 
+I should have mentioned type 1 as well but I don't have the hardware
+to test it.
+
+> > so you should be able to transfer data from one of your phones to the
+> > other over NFC (and do a BT hand-over, if you're interested).
+> > 
+> 
+> I guess this is where I kind of lack hardware as well at the moment,
+> I don't have any programmable NFC tags at the moment (although I guess
+> those should be quite cheap). I might play with the peer-to-peer mode
+> a bit when I find time.
+
+Please let me/us know how it goes.
+
+> > Note that the specified range for NFC is only 4 cm and poor antenna
+> > design, etc. means that the actual range is usually much less (e.g.,
+> > they amost have to touch).  Also note that there are timing constraints
+> > so you may need to make the scheduling priority of the interrupt thread
+> > of your NFC driver real-time.
+> > 
+> 
+> Yeah I noticed, always need to search for a while to find the right spot
+> on the phone. :)
+
+Yeah, it can be an Easter egg hunt on many phones.  :)
+
+Mark
+--
