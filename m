@@ -2,411 +2,198 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BF81C433B4
-	for <phone-devel@archiver.kernel.org>; Fri, 14 May 2021 10:44:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B25CC433ED
+	for <phone-devel@archiver.kernel.org>; Fri, 14 May 2021 10:44:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0D1F361406
-	for <phone-devel@archiver.kernel.org>; Fri, 14 May 2021 10:44:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4621B6145A
+	for <phone-devel@archiver.kernel.org>; Fri, 14 May 2021 10:44:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230236AbhENKpS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 14 May 2021 06:45:18 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.25]:11092 "EHLO
-        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbhENKpS (ORCPT
+        id S230431AbhENKpV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 14 May 2021 06:45:21 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:10337 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230023AbhENKpT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 14 May 2021 06:45:18 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1620989043; cv=none;
+        Fri, 14 May 2021 06:45:19 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1620989044; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=YZVzSPq8R4i4vFhj2RfblJryE1o9GzqXIIZX16Bvw8ezR8Ci7O6aeHNtNOT5TlT6c7
-    0dnSDGm/2V+br4ypMGH96P0Y0fjsGtbJdsCSLnElqlkPj6qgnJlvBK/LMcC43hmrcW5N
-    LyCpBnC3aLbf4IdANdZLzZ6RHCGiz2P1wS3Nn0speSkqHlIQ4i0AtZ7tsfMwDW2irhxW
-    hcqTArT0E8mtnA9EPr9gOsRFUlAy/+DW/Am3HSX1DgT+Nt8SZp7Yz7qNELY0oCEvMpS2
-    /MOCiJwJaQ+JNCx7vDuKC4xo/TG+gzogk2mBB+NaEXBDJ66fKP0FF+t/Qh+ED/fhUDEr
-    kP5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1620989043;
+    b=H5LsvLVNrc1CX1muc8g5CPtUrD30XAPOoVmASFhLVMbWF6ZwBrNtN+VnBAXiE1wAYz
+    66BDbo3YAME3tif7tgRvG1mdIhm+LglVgYEbGlafQJcG+9pnhqXESg+I2us7VUb/e9w4
+    ZGT1vWGr85r4KmAnqvaaXcCRSeR+MHGtiBmywv+Bb0fohIyW06vm16c+cvZ7YEIlF3b/
+    VHzeqXiLIgOh+htnCGFzPIDrYHMTyuVl4lWJCYrLaC3IH8GeGNI2hQIQfquU32Ao4LHt
+    J+tBUjGcUcaW5ZIFLvBfUYmCxEobJis7bvfN3ODkXuoHInIUOGNv4pk0oRN8DUZgNkTk
+    1iPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1620989044;
     s=strato-dkim-0002; d=strato.com;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=dDRkH6tZiQw//M0zZQKuvlWcP5ZN2kmFHH6Pj9vqSVs=;
-    b=j2F4LubwwSvVC5u4I/UPe/9afKNXJlnrwrsExJEcBz0MaJ9bh2yObPu8gpPagSTOh9
-    uk24TUZA2rGz8p6bzw78p3zaorpuGX/pH9MuokMf37dH6iDnH3s/Vhod+4QwMkazCrrb
-    IGhC7bjARmkSJ5UhuL+U2Mb4yjhcICO3FNH8gPWHaWw3Zs4TNpxDtzpg1JpF1y3qVCoF
-    8yC4f2mxmM1hxTQCfB08gCowzwol0ZoU2zRnm+isfh1Jw4q4iA3qog5m3NVdBAtIw8k+
-    u9IUv6Rhq34bdv1lzWgEupBHUwOezDrGgTDiMmn6cHZIbVVRZ7lN5j+3VeXMNKlRjybM
-    OfVA==
+    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=npGo6RY7cHwUEm6OFef7gBC2N2Rik3ZzNRUu4isJVzw=;
+    b=ovBP+3WAltp1imUt84fN0nTp/8Z0C26If/H3fGWCKzy3w9CWX1IbRP/+ImzU6qvPCg
+    1TdS6BbRmi5aJGui/N2cloL7CP//AMPkr9SY54tJcZk6PiVHZpvYdRQUlPgRk/DaM4ff
+    0/C6sGT5dQmvMKBTa9z/50H2j+pCGphA17oHGo+V7Ip1lB9QAWpax4nZamMU41cHyrZS
+    KiFq8i5/lrDkYzbVmeCDHvGR1fCXGUnq3NLFZUWAcvFL8ZQczhJGLn//ZBHcBTBriQV9
+    o/GJrG9vhIJ+qQHw//BKIdXWZ8o4JMizHjCMIkS9vZjwdsAQZzntuXm9Hfgyu8ZkXMR/
+    BIDg==
 ARC-Authentication-Results: i=1; strato.com;
     dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1620989043;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1620989044;
     s=strato-dkim-0002; d=gerhold.net;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=dDRkH6tZiQw//M0zZQKuvlWcP5ZN2kmFHH6Pj9vqSVs=;
-    b=Fjcy4rNPgh+KcnhPmzEQ6cFcQFEksdovZ4/sW4mek4V18XEqvhlaunEkAa5BknQUzX
-    TYbT4PUHH38Trg4QClFFEMAcaOcSx2Pt7/eDMUJ04BZ/wbUJG2cLz+HonjKLXze+qpvF
-    DZDuROmcGwiQObZopKhLhus28vyNbfr7X5525kGADU48V6GlJcU4RrJonILjMFrZIYfh
-    xdTKCBJCTQwYMWfDAytbkwdTuMx449B90/MgrgA58m9BF2lwHkYxmHXK+2V17ERhTdX+
-    DibSeRLnwdKLo7E+O+hdXXxSglPa799fwuBSA6akraLe0yed8OVr1uHptg9EqpChncQi
-    t4Mg==
+    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=npGo6RY7cHwUEm6OFef7gBC2N2Rik3ZzNRUu4isJVzw=;
+    b=geBCmI37pjERL6cPPrVb4VCZCJA4G31LGebGcWEYNwVwDFUi1q9aE4XtxJPHWaZonI
+    afo+eNTLTsAF6w6QLwV9lTa8m4MB5NdsVotjl34TkS1j31bV7qmREawlfH9qqpCDuwlw
+    LTMkaAVxwRFxyy3oQ+gED11z9O9YKykLLC7R44OBfxUgRnWq3vLLGrEiSInJ2/XpzaUW
+    G9LeTdYQXEdFofycFwlxDQ3FidSKxBElokCgxKkljt5tHbcGdBob//xU7liUR9udHC1z
+    O/bF6/WSdhk+nP6DwCIPuMhAsPcUwoYFvbfvZd6I178T0V5VrOT5cRmyaQoxu2V7xp+z
+    nV/g==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxB5m6OWA=="
 X-RZG-CLASS-ID: mo00
 Received: from droid..
     by smtp.strato.de (RZmta 47.25.7 SBL|AUTH)
-    with ESMTPSA id j06c13x4EAi3Fyk
+    with ESMTPSA id j06c13x4EAi4Fym
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Fri, 14 May 2021 12:44:03 +0200 (CEST)
+    Fri, 14 May 2021 12:44:04 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
 To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
         Andy Gross <agross@kernel.org>
 Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH 1/5] arm64: dts: qcom: msm8916: Add device tree for Huawei Ascend G7
-Date:   Fri, 14 May 2021 12:43:24 +0200
-Message-Id: <20210514104328.18756-1-stephan@gerhold.net>
+Subject: [PATCH 3/5] arm64: dts: qcom: msm8916-huawei-g7: Add sensors
+Date:   Fri, 14 May 2021 12:43:26 +0200
+Message-Id: <20210514104328.18756-3-stephan@gerhold.net>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210514104328.18756-1-stephan@gerhold.net>
+References: <20210514104328.18756-1-stephan@gerhold.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The Huawei Ascend G7 is a smartphone from Huawei based on MSM8916.
-It's fairly similar to the other MSM8916 devices, the only notable
-exception are the "cd-gpios" for detecting if a SD card was inserted:
-It looks like Huawei forgot to re-route this to gpio38, so the correct
-GPIO seems to be gpio56 on this device.
+The Huawei Ascend G7 has 3 sensors, all supported by existing kernel drivers:
 
-Note: The original firmware from Huawei can only boot 32-bit kernels.
-To boot arm64 kernels it is necessary to flash 64-bit TZ/HYP firmware
-with EDL, e.g. taken from the DragonBoard 410c. This works because Huawei
-forgot to set up (firmware) secure boot for some reason.
+  1. Kionix KX023-1025 accelerometer (kxcjk-1023)
+  2. Asahi Kasei AK09911 magnetometer (ak8975)
+  3. Avago APDS9930 proximity/light sensor (tsl2772)
 
-Also note that Huawei no longer provides bootloader unlock codes.
-This can be bypassed by patching the bootloader from a custom HYP firmware,
-making it think the bootloader is unlocked. I use a modified version of
-qhypstub [1], that patches a single instruction in the Huawei bootloader.
-
-The device tree contains initial support for the Huawei Ascend G7 with:
-  - UART (untested, probably available via some test points)
-  - eMMC/SD card
-  - Buttons
-  - Notification LED (combination of 3 GPIO LEDs)
-  - Vibrator
-  - WiFi/Bluetooth (WCNSS)
-  - USB
-
-[1]: https://github.com/msm8916-mainline/qhypstub
+Add them to the huawei-g7 device tree.
 
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- arch/arm64/boot/dts/qcom/Makefile             |   1 +
- .../arm64/boot/dts/qcom/msm8916-huawei-g7.dts | 279 ++++++++++++++++++
- 2 files changed, 280 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
+ .../arm64/boot/dts/qcom/msm8916-huawei-g7.dts | 76 +++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index 456502aeee49..c894de19654e 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -7,6 +7,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= ipq6018-cp01-c1.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= ipq8074-hk01.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-alcatel-idol347.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-asus-z00l.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-huawei-g7.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-longcheer-l8150.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-longcheer-l8910.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-mtp.dtb
 diff --git a/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts b/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
-new file mode 100644
-index 000000000000..d67aa7dd4a21
---- /dev/null
+index f928179f9ded..3b558dc9e90f 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
 +++ b/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
-@@ -0,0 +1,279 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// Copyright (C) 2021 Stephan Gerhold
+@@ -85,6 +85,58 @@ usb_id: usb-id {
+ 	};
+ };
+ 
++&blsp_i2c2 {
++	status = "okay";
 +
-+/dts-v1/;
++	magnetometer@c {
++		compatible = "asahi-kasei,ak09911";
++		reg = <0x0c>;
 +
-+#include "msm8916-pm8916.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/leds/common.h>
++		vdd-supply = <&pm8916_l17>;
++		vid-supply = <&pm8916_l6>;
 +
-+/*
-+ * Note: The original firmware from Huawei can only boot 32-bit kernels.
-+ * To boot arm64 kernels it is necessary to flash 64-bit TZ/HYP firmware
-+ * with EDL, e.g. taken from the DragonBoard 410c. This works because Huawei
-+ * forgot to set up (firmware) secure boot for some reason.
-+ *
-+ * Also note that Huawei no longer provides bootloader unlock codes.
-+ * This can be bypassed by patching the bootloader from a custom HYP firmware,
-+ * making it think the bootloader is unlocked.
-+ *
-+ * See: https://wiki.postmarketos.org/wiki/Huawei_Ascend_G7_(huawei-g7)
-+ */
-+
-+/ {
-+	model = "Huawei Ascend G7";
-+	compatible = "huawei,g7", "qcom,msm8916";
-+
-+	aliases {
-+		serial0 = &blsp1_uart2;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0";
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
++		reset-gpios = <&msmgpio 36 GPIO_ACTIVE_LOW>;
 +
 +		pinctrl-names = "default";
-+		pinctrl-0 = <&gpio_keys_default>;
-+
-+		label = "GPIO Buttons";
-+
-+		volume-up {
-+			label = "Volume Up";
-+			gpios = <&msmgpio 107 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEUP>;
-+		};
++		pinctrl-0 = <&mag_reset_default>;
 +	};
 +
-+	leds {
-+		compatible = "gpio-leds";
++	accelerometer@1e {
++		compatible = "kionix,kx023-1025";
++		reg = <0x1e>;
++
++		interrupt-parent = <&msmgpio>;
++		interrupts = <115 IRQ_TYPE_EDGE_RISING>;
++
++		vdd-supply = <&pm8916_l17>;
++		vddio-supply = <&pm8916_l6>;
 +
 +		pinctrl-names = "default";
-+		pinctrl-0 = <&gpio_leds_default>;
++		pinctrl-0 = <&accel_irq_default>;
 +
-+		led-0 {
-+			gpios = <&msmgpio 8 GPIO_ACTIVE_HIGH>;
-+			color = <LED_COLOR_ID_RED>;
-+			default-state = "off";
-+			function = LED_FUNCTION_INDICATOR;
-+		};
-+
-+		led-1 {
-+			gpios = <&msmgpio 9 GPIO_ACTIVE_HIGH>;
-+			color = <LED_COLOR_ID_GREEN>;
-+			default-state = "off";
-+			function = LED_FUNCTION_INDICATOR;
-+		};
-+
-+		led-2 {
-+			gpios = <&msmgpio 10 GPIO_ACTIVE_HIGH>;
-+			color = <LED_COLOR_ID_BLUE>;
-+			default-state = "off";
-+			function = LED_FUNCTION_INDICATOR;
-+		};
++		mount-matrix = "-1", "0", "0",
++				"0", "1", "0",
++				"0", "0", "1";
 +	};
 +
-+	usb_id: usb-id {
-+		compatible = "linux,extcon-usb-gpio";
-+		id-gpio = <&msmgpio 117 GPIO_ACTIVE_HIGH>;
++	proximity@39 {
++		compatible = "avago,apds9930";
++		reg = <0x39>;
++
++		interrupt-parent = <&msmgpio>;
++		interrupts = <113 IRQ_TYPE_EDGE_FALLING>;
++
++		vdd-supply = <&pm8916_l17>;
++		vddio-supply = <&pm8916_l6>;
++
++		led-max-microamp = <100000>;
++		amstaos,proximity-diodes = <1>;
++
 +		pinctrl-names = "default";
-+		pinctrl-0 = <&usb_id_default>;
++		pinctrl-0 = <&prox_irq_default>;
 +	};
 +};
 +
-+&blsp1_uart2 {
-+	status = "okay";
-+};
-+
-+&pm8916_resin {
-+	status = "okay";
-+	linux,code = <KEY_VOLUMEDOWN>;
-+};
-+
-+&pm8916_vib {
-+	status = "okay";
-+};
-+
-+&pronto {
-+	status = "okay";
-+};
-+
-+&sdhc_1 {
-+	status = "okay";
-+
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&sdc1_clk_on &sdc1_cmd_on &sdc1_data_on>;
-+	pinctrl-1 = <&sdc1_clk_off &sdc1_cmd_off &sdc1_data_off>;
-+};
-+
-+&sdhc_2 {
-+	status = "okay";
-+
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on &sdhc2_cd_default>;
-+	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off &sdhc2_cd_default>;
-+
-+	/*
-+	 * The Huawei device tree sets cd-gpios = <&msmgpio 38 GPIO_ACTIVE_HIGH>.
-+	 * However, gpio38 does not change its state when inserting/removing the
-+	 * SD card, it's just low all the time. The Huawei kernel seems to use
-+	 * polling for SD card detection instead.
-+	 *
-+	 * However, looking closer at the GPIO debug output it turns out that
-+	 * gpio56 switches its state when inserting/removing the SD card.
-+	 * It behaves just like gpio38 normally does. Usually GPIO56 is used as
-+	 * "UIM2_PRESENT", i.e. to check if a second SIM card is inserted.
-+	 * Maybe Huawei decided to replace the second SIM card slot with the
-+	 * SD card slot and forgot to re-route to gpio38.
-+	 */
-+	cd-gpios = <&msmgpio 56 GPIO_ACTIVE_LOW>;
-+};
-+
-+&usb {
-+	status = "okay";
-+	extcon = <&usb_id>, <&usb_id>;
-+};
-+
-+&usb_hs_phy {
-+	extcon = <&usb_id>;
-+};
-+
-+&smd_rpm_regulators {
-+	vdd_l1_l2_l3-supply = <&pm8916_s3>;
-+	vdd_l4_l5_l6-supply = <&pm8916_s4>;
-+	vdd_l7-supply = <&pm8916_s4>;
-+
-+	s3 {
-+		regulator-min-microvolt = <1200000>;
-+		regulator-max-microvolt = <1300000>;
-+	};
-+
-+	s4 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <2100000>;
-+	};
-+
-+	l1 {
-+		regulator-min-microvolt = <1225000>;
-+		regulator-max-microvolt = <1225000>;
-+	};
-+
-+	l2 {
-+		regulator-min-microvolt = <1200000>;
-+		regulator-max-microvolt = <1200000>;
-+	};
-+
-+	l4 {
-+		regulator-min-microvolt = <2050000>;
-+		regulator-max-microvolt = <2050000>;
-+	};
-+
-+	l5 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
-+	l6 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
-+	l7 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
-+	l8 {
-+		regulator-min-microvolt = <2950000>;
-+		regulator-max-microvolt = <2950000>;
-+	};
-+
-+	l9 {
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
-+	l10 {
-+		regulator-min-microvolt = <2700000>;
-+		regulator-max-microvolt = <2800000>;
-+	};
-+
-+	l11 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <2950000>;
-+		regulator-allow-set-load;
-+		regulator-system-load = <200000>;
-+	};
-+
-+	l12 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <2950000>;
-+	};
-+
-+	l13 {
-+		regulator-min-microvolt = <3075000>;
-+		regulator-max-microvolt = <3075000>;
-+	};
-+
-+	l14 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
-+	l15 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
-+	l16 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
-+	l17 {
-+		regulator-min-microvolt = <2850000>;
-+		regulator-max-microvolt = <2850000>;
-+	};
-+
-+	l18 {
-+		regulator-min-microvolt = <2700000>;
-+		regulator-max-microvolt = <2700000>;
-+	};
-+};
-+
-+&msmgpio {
-+	gpio_keys_default: gpio-keys-default {
-+		pins = "gpio107";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
-+
-+	gpio_leds_default: gpio-leds-default {
-+		pins = "gpio8", "gpio9", "gpio10";
+ &blsp_i2c5 {
+ 	status = "okay";
+ 
+@@ -278,6 +330,14 @@ l18 {
+ };
+ 
+ &msmgpio {
++	accel_irq_default: accel-irq-default {
++		pins = "gpio115";
 +		function = "gpio";
 +
 +		drive-strength = <2>;
 +		bias-disable;
 +	};
 +
-+	sdhc2_cd_default: sdhc2-cd-default {
-+		pins = "gpio56";
+ 	gpio_keys_default: gpio-keys-default {
+ 		pins = "gpio107";
+ 		function = "gpio";
+@@ -294,6 +354,22 @@ gpio_leds_default: gpio-leds-default {
+ 		bias-disable;
+ 	};
+ 
++	mag_reset_default: mag-reset-default {
++		pins = "gpio36";
 +		function = "gpio";
 +
 +		drive-strength = <2>;
 +		bias-disable;
 +	};
 +
-+	usb_id_default: usb-id-default {
-+		pins = "gpio117";
++	prox_irq_default: prox-irq-default {
++		pins = "gpio113";
 +		function = "gpio";
 +
-+		drive-strength = <8>;
-+		bias-pull-up;
++		drive-strength = <2>;
++		bias-disable;
 +	};
-+};
++
+ 	sdhc2_cd_default: sdhc2-cd-default {
+ 		pins = "gpio56";
+ 		function = "gpio";
 -- 
 2.31.1
 
