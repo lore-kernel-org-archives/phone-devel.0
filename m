@@ -2,169 +2,128 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E61BC433B4
-	for <phone-devel@archiver.kernel.org>; Fri, 14 May 2021 15:24:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2EDDC433ED
+	for <phone-devel@archiver.kernel.org>; Sat, 15 May 2021 23:04:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DDD5D61458
-	for <phone-devel@archiver.kernel.org>; Fri, 14 May 2021 15:24:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9298D613AF
+	for <phone-devel@archiver.kernel.org>; Sat, 15 May 2021 23:04:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233274AbhENPZT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 14 May 2021 11:25:19 -0400
-Received: from new4-smtp.messagingengine.com ([66.111.4.230]:34401 "EHLO
-        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231590AbhENPZT (ORCPT
+        id S229541AbhEOXGG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 15 May 2021 19:06:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57514 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230210AbhEOXGF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 14 May 2021 11:25:19 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 36D1C58116B;
-        Fri, 14 May 2021 11:23:55 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Fri, 14 May 2021 11:23:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=animalcreek.com;
-         h=date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm2; bh=yv38+k95PhYFZEV25jgoJeWF+VJ
-        CV6ohBX/tbnUga10=; b=D+0j36r329938MFly65x++2zfGz1IQF9FNzMTWiH87E
-        qVMHVpFPraKxouMhfhGjn2mj0zVBB0b4TqPCUIhosEh175sD6lDD6AJim5rE70fu
-        xQLBCppnO9Vpaz9qlhoXdcFpPCE/tXezth1CDBAiTCvLePjlsYm4hzRsszpAUPzn
-        p0tg3fRDAdbmr1meHB4Pe6+c3Ctqs+Gg/MBouoG6V78BUvyLOCBrDrNYZFTssD9K
-        Qf85m7M0g7GkDEOR6vxFSihE6cTfrR8tC7NiOl6VJlmnbxyQmXZ4jx8VsZRmLbbI
-        C62glRVJIonXNs0fTeMOWKjKf7Sqy8fAT/VXKrm0uOg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=yv38+k
-        95PhYFZEV25jgoJeWF+VJCV6ohBX/tbnUga10=; b=UdtvsxgXZ4lFIBl5K/6m9o
-        tDn+/i5jGGfNjTV0OdUwA7Je1IswP0fQzOV4mEZld36nOgOCm2DuQ20SOp64bSjR
-        XfyG15kqpIl/v/V/q+/sqwkNOV9k9SBQ9GCoRBw2jFlelVn6KGeE5OpObzqOrINf
-        dscRWkQIhXYfD9Zc6U/PNxFJot2pEXkSGUvjc9orE39o2d1diVbaLTt0D8pBelsk
-        NiQJTaLylCI4K1HM5wlua3l9C68oG34Q7GuuFU1vQx9wDb42J8+uGTpv+F4T1Gas
-        gpFEZnhMyzWMz85OwNvPZmZ06eGk+aU0de5dswBRi1qXRlMuLYLOJiEiKuxz3SNw
-        ==
-X-ME-Sender: <xms:CJaeYIyjhwrrCS2aoaJQ5MTtGlq8RxEpzIB2Jnh7zH0VrLpKPCG9YA>
-    <xme:CJaeYMSGts3gMifU6wt81PQi0kLg3moiz1qvK7Hwjz9iSwr3qPwpEyBQkkrUAVVNT
-    wy2Roi_PvCIjLJs3A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdehjedgvdeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvffukfhfgggtuggjohesthdtredttddtvdenucfhrhhomhepofgrrhhk
-    ucfirhgvvghruceomhhgrhgvvghrsegrnhhimhgrlhgtrhgvvghkrdgtohhmqeenucggtf
-    frrghtthgvrhhnpedujeelgeejleegleevkeekvdevudfhteeuiedtleehtdduleelvdei
-    fffhvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeejtddrudejvd
-    drfedvrddvudeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomhepmhhgrhgvvghrsegrnhhimhgrlhgtrhgvvghkrdgtohhm
-X-ME-Proxy: <xmx:CJaeYKXR27-qZhOXN64kHxQLdKCGi_WYhilI_SiMqsXqSyacnrJliA>
-    <xmx:CJaeYGjt8c1GsnHGru4_06o5CnifHahDLc9omOXr3tSOTZdNol0sWg>
-    <xmx:CJaeYKBJcVMFoFIHC8oTZLHVdUqnpxuyVQuGu85X8HCV2b-VXWf34g>
-    <xmx:C5aeYG1t5oSY0PGig15x7jWyhmPNpHA8-y3Zf2SNOwKCXZvJPiaZ2A>
-Received: from blue.animalcreek.com (ip70-172-32-218.ph.ph.cox.net [70.172.32.218])
-        by mail.messagingengine.com (Postfix) with ESMTPA;
-        Fri, 14 May 2021 11:23:52 -0400 (EDT)
-Received: by blue.animalcreek.com (Postfix, from userid 1000)
-        id E4032136008E; Fri, 14 May 2021 08:23:50 -0700 (MST)
-Date:   Fri, 14 May 2021 08:23:50 -0700
-From:   Mark Greer <mgreer@animalcreek.com>
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     Mark Greer <mgreer@animalcreek.com>,
-        Frieder Schrempf <frieder.schrempf@kontron.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-nfc@lists.01.org,
-        Alex Blasche <alexander.blasche@qt.io>,
-        phone-devel@vger.kernel.org
-Subject: Re: Testing wanted for Linux NFC subsystem
-Message-ID: <20210514152350.GA301895@animalcreek.com>
-References: <20210512144319.30852-1-krzysztof.kozlowski@canonical.com>
- <14e78a9a-ed1a-9d7d-b854-db6d811f4622@kontron.de>
- <20210512170135.GB222094@animalcreek.com>
- <YJ0SYWJjq3ZmXMy3@gerhold.net>
- <20210513144855.GA266838@animalcreek.com>
- <YJ1Hr/hov9I42GK1@gerhold.net>
+        Sat, 15 May 2021 19:06:05 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E05BC06174A
+        for <phone-devel@vger.kernel.org>; Sat, 15 May 2021 16:04:50 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id 131so2793253ljj.3
+        for <phone-devel@vger.kernel.org>; Sat, 15 May 2021 16:04:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=OIu8Q4sgkPhmvMjd1jdK3ceBv8MZIPFNfCveUuP/nXw=;
+        b=ZAmyTQq+43IOcBhnWLVn47XdIoRwtk0gVIMI4rFsN3bPiDWhZi0EVmlO7HSPttROXs
+         joJR8PNw5g5dkNHzx2vN4FneuEVxYh7/iFDB1j3VopR9p24h8Jy1blZvywqoYSl9NHwU
+         gWL3deAvHtyMYomPNwfz0xLqIH40y4fNN5p7A05xbwpIuwkCRuJKtFpq7pGP503PGrlI
+         ECG2Nzv2DNjX3F5P7om8WxfpqA6P5wwlb2AOWbkFeN2S9k1J1y2GO9MtvY1d16YROogM
+         5iqsSS8NXp2ZwJllBvWrOJ4seW9iV7k6J+wos+KWRkP/qbBNsYZEnLsum6Pm3/VNDood
+         Gxcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=OIu8Q4sgkPhmvMjd1jdK3ceBv8MZIPFNfCveUuP/nXw=;
+        b=Fg5LHnVV8DfF6qb3K7nV0EM2oqP8Eg2T6JhPBqpe2adOaCnxgfTAxoForebmHRZ1zd
+         U6J9MxAtRlXGq4XCxZV+Z3IIivgLwGh58UKntOO5qo9yKZmr+3ipDtXy+jSlVUwd2S7m
+         NTi7RCL2/bRChMvCtrikkHqgLpW/K8w3bHutZnb0OhZZbZ+C8H3N6HMiGUV08Toba42c
+         hnM+RqEqDcSpQKYVrN1KAeV0S3Rj4Ai6/4f91YKmrqjXvkE7GWJr+g6LdFnzQjyJlTXL
+         x75KMGXebVMfyvA1pLjwR2LLJin+/uk3d//n/Xa3QOOc4n/p0Wqh96jf8qkhXydVZ7+J
+         iL6w==
+X-Gm-Message-State: AOAM532oKVEvavU/njeIdjVj0Q+/a1qwC6MqJ5JMKnf8wEXW3j7pLec7
+        +G8YjSo4TOo2uFWYL4HpfAyOoA==
+X-Google-Smtp-Source: ABdhPJy1quJvaV/nck7SUQ5ex6Rk/kzi1csbr7LsYS9BiSb09QbHjGoll6VpORSW9HvLGlmtZIisWg==
+X-Received: by 2002:a2e:8708:: with SMTP id m8mr8691010lji.383.1621119888679;
+        Sat, 15 May 2021 16:04:48 -0700 (PDT)
+Received: from [192.168.1.211] ([37.153.55.125])
+        by smtp.gmail.com with ESMTPSA id q19sm1472998lfu.105.2021.05.15.16.04.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 15 May 2021 16:04:48 -0700 (PDT)
+Subject: Re: [PATCH v2 0/7] Qualcomm DRM DPU fixes
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        linux-arm-msm@vger.kernel.org
+Cc:     konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, phone-devel@vger.kernel.org,
+        robdclark@gmail.com, sean@poorly.run,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+References: <20210112192632.502897-1-angelogioacchino.delregno@somainline.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Message-ID: <ca8dbaa3-a510-d75c-e1cc-c4b964c90e5b@linaro.org>
+Date:   Sun, 16 May 2021 02:04:47 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YJ1Hr/hov9I42GK1@gerhold.net>
-Organization: Animal Creek Technologies, Inc.
+In-Reply-To: <20210112192632.502897-1-angelogioacchino.delregno@somainline.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, May 13, 2021 at 05:37:19PM +0200, Stephan Gerhold wrote:
-> On Thu, May 13, 2021 at 07:48:55AM -0700, Mark Greer wrote:
-> > On Thu, May 13, 2021 at 01:49:53PM +0200, Stephan Gerhold wrote:
-> > > I have a couple of "recycled" smartphones running mainline Linux
-> > > and some of them do have NFC chips. I have two with NXP PN547
-> > > (supported by nxp,nxp-nci-i2c), one with Samsung S3FWRN5
-> > > (samsung,s3fwrn5-i2c) and even one with Broadcom BCM2079x I think
-> > > (this one does not have a driver for the Linux NFC subsystem sadly).
-> > > 
-> > > +Cc phone-devel@vger.kernel.org, in case other people there are
-> > > interested in NFC :)
-> > > 
-> > > The NXP/Samsung ones seems to work just fine. However, since there are
-> > > barely any userspace tools making use of Linux NFC all my testing so far
-> > > was limited to polling for devices with "nfctool" and being happy enough
-> > > when it realizes that I hold some NFC tag close to the device. :S
-> > 
-> > There is a user-level daemon that is the counterpart for the in-kernel
-> > NFC subsystem.  It is called neard and is available here:
-> > 
-> > 	git://git.kernel.org/pub/scm/network/nfc/neard.git
-> > 
-> > There are a few test script in it that will let you read and write NFC
-> > tags, and do some other things.  We can add some more tests to that set
-> > as we go.
-> > 
+Hi Angelo,
+
+On 12/01/2021 22:26, AngeloGioacchino Del Regno wrote:
+> This patch series brings some fixes to the Qualcomm DPU driver, aim is
+> to get it prepared for "legacy" SoCs (like MSM8998, SDM630/660) and to
+> finally get command-mode displays working on this driver.
 > 
-> Yeah, I packaged that for Alpine Linux / postmarketOS.
-> "nfctool" also comes from "neard" as far as I can tell :)
+> The series was tested against MSM8998 (the commit that introduces it to
+> the hw-catalog is not included in this series, as it needs to be cleaned
+> up a little more) and specifically on:
+
+Any updates on submitting hw catalog patches? If they are not yet fully 
+ready, could you please send an RFC or DRAFT patch for the reference?
+
+> - Sony Xperia XZ Premium (MSM8998), 4K dual-dsi LCD display, command-mode
+> - F(x)Tec Pro1 (MSM8998), single-dsi OLED display, video-mode
 > 
-> I think I also played with the Neard test scripts a bit at some point,
-> and managed to read some NFC tag thing inside an old Yubikey NEO
-> that I found, but didn't really know what else to do.
-
-Yeah, there isn't a whole lot you can do but beyond reading/writing
-tags and peer-to-peer, there are things like Bluetooth and Wifi
-handover, Android Application Record support, and at least some
-support for Secure Engine.
-
-> > > I would be happy to do some more testing if someone has something useful
-> > > that can be tested. However, I guess ideally we would have someone who
-> > > actually uses Linux NFC actively for some real application. :)
-> > 
-> > Ideally, you should have some NFC tags of various types.  Types 2, 3,
-> > 4A, 4B, and 5 tags are supported.  Peer-to-peer mode is supported too
-
-I should have mentioned type 1 as well but I don't have the hardware
-to test it.
-
-> > so you should be able to transfer data from one of your phones to the
-> > other over NFC (and do a BT hand-over, if you're interested).
-> > 
+> ... And it obviously worked just perfect!
 > 
-> I guess this is where I kind of lack hardware as well at the moment,
-> I don't have any programmable NFC tags at the moment (although I guess
-> those should be quite cheap). I might play with the peer-to-peer mode
-> a bit when I find time.
-
-Please let me/us know how it goes.
-
-> > Note that the specified range for NFC is only 4 cm and poor antenna
-> > design, etc. means that the actual range is usually much less (e.g.,
-> > they amost have to touch).  Also note that there are timing constraints
-> > so you may need to make the scheduling priority of the interrupt thread
-> > of your NFC driver real-time.
-> > 
+> Changes in v2:
+> - Dropped patches "drm/msm/dpu: Add a function to retrieve the current CTL status"
+>    and "drm/msm/dpu: Fix timeout issues on command mode panels" as the
+>    second patch was wrong.
+> - Fixed patch apply issues on latest linux-next and 5.11-rcX
 > 
-> Yeah I noticed, always need to search for a while to find the right spot
-> on the phone. :)
+> AngeloGioacchino Del Regno (7):
+>    drm/msm/dpu: Fix VBIF_XINL_QOS_LVL_REMAP_000 register offset
+>    drm/msm/dpu: Move DPU_SSPP_QOS_8LVL bit to SDM845 and SC7180 masks
+>    drm/msm/dpu: Add prog_fetch_lines_worst_case to INTF_BLK macro
+>    drm/msm/dpu: Allow specifying features and sblk in DSPP_BLK macro
+>    drm/msm/dpu: Disable autorefresh in command mode
+>    drm/msm/dpu: Correctly configure vsync tearcheck for command mode
+>    drm/msm/dpu: Remove unused call in wait_for_commit_done
+> 
+>   .../drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c  | 90 +++++++++++++++----
+>   .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 49 +++++-----
+>   .../gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.c   | 26 ++++++
+>   .../gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.h   | 14 +++
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_vbif.c   |  9 +-
+>   5 files changed, 147 insertions(+), 41 deletions(-)
+> 
 
-Yeah, it can be an Easter egg hunt on many phones.  :)
 
-Mark
---
+-- 
+With best wishes
+Dmitry
