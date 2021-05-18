@@ -2,81 +2,119 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2FC3C433ED
-	for <phone-devel@archiver.kernel.org>; Tue, 18 May 2021 01:09:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A8A0C433ED
+	for <phone-devel@archiver.kernel.org>; Tue, 18 May 2021 19:43:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C269B61354
-	for <phone-devel@archiver.kernel.org>; Tue, 18 May 2021 01:09:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6743C610A2
+	for <phone-devel@archiver.kernel.org>; Tue, 18 May 2021 19:43:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238739AbhERBLB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 17 May 2021 21:11:01 -0400
-Received: from mail-oi1-f169.google.com ([209.85.167.169]:39510 "EHLO
-        mail-oi1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237751AbhERBLA (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 17 May 2021 21:11:00 -0400
-Received: by mail-oi1-f169.google.com with SMTP id u144so8223042oie.6;
-        Mon, 17 May 2021 18:09:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=JNWjXggEu8J9sL5ZhoPZyw5YSW1iHpwfijjTjQ6C7Ek=;
-        b=SYO85kslVb2v6y03iB1eOERgZGo8f6hrevnGjr/QM99W00FIHDwD1wSa9Wmj1GqkHf
-         06T9nIdURATpxjZys5VaKhf0W4yZQBwL0zAUNfoc07N3BUN9PnxSeiMU4cmvQFttCOwg
-         NRCF2lBf371JyCivCwlinqmltHH70vIWu/ZjBgjqGSc/Oa8bzoFmKGYySaxbg1nGkybw
-         /EsnIuGQ+VlyB16yjax8MpuOkWDyCTwp7RZTnpGZ8vjRGbm++XCJkoUYICx8HkIlP36z
-         THd55yX3E5uUnzNlh8LpKuTklKPwd1Jxmb6fWrHDBvXHNSRFTLjEi5tR1n9mVOJxQ/2P
-         e/JQ==
-X-Gm-Message-State: AOAM531LfOZiSD2zlNdoUn2c4ex+54dCKcTy/DXOQ+NNTZVIYO5IRPy/
-        kinyXvZ3ANBYpTruPXZhGg==
-X-Google-Smtp-Source: ABdhPJxp+pf66Lk1gp+j3TROFkuPYMIg0SSfCQ2Sp4EI5vcyetqOohnvREe2pb0K9qdihUjuiASPAA==
-X-Received: by 2002:aca:afd3:: with SMTP id y202mr1538701oie.90.1621300182965;
-        Mon, 17 May 2021 18:09:42 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id s17sm3423215oog.31.2021.05.17.18.09.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 May 2021 18:09:42 -0700 (PDT)
-Received: (nullmailer pid 3571158 invoked by uid 1000);
-        Tue, 18 May 2021 01:09:41 -0000
-Date:   Mon, 17 May 2021 20:09:41 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Mark Brown <broonie@kernel.org>,
-        Vincent Knecht <vincent.knecht@mailoo.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>
-Subject: Re: [RFC PATCH 1/2] ASoC: dt-bindings: codecs: Add bindings for nxp,
- tfa989x
-Message-ID: <20210518010941.GA3571094@robh.at.kernel.org>
-References: <20210513104129.36583-1-stephan@gerhold.net>
+        id S242893AbhERTod (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 18 May 2021 15:44:33 -0400
+Received: from msg-2.mailo.com ([213.182.54.12]:39160 "EHLO msg-2.mailo.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239361AbhERToc (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 18 May 2021 15:44:32 -0400
+X-Greylist: delayed 1440 seconds by postgrey-1.27 at vger.kernel.org; Tue, 18 May 2021 15:44:32 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
+        t=1621365538; bh=SOKZhfbRC9Pxh+E+B9Jim/4njEcIPdr7MCczTSyxEvg=;
+        h=X-EA-Auth:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+         References:Content-Type:MIME-Version:Content-Transfer-Encoding;
+        b=by1P4bDlrjWbhW8Zu6f1zmqEEAW2AIsAtju8cFtQ0yMmfz4lqcYzKDIRq/UB19TtQ
+         ObpsViLzdB+yijna/wSaTMMxHdYevLbCHIJ/DdxJ/PfjKnIRFj3Ndzl/wUBenkRvgu
+         vj6bnnq7/MtDFaJMfIDu7eZy41GF8rCStSAZN20Y=
+Received: by 192.168.90.13 [192.168.90.13] with ESMTP
+        via proxy.mailoo.org [213.182.55.207]
+        Tue, 18 May 2021 21:18:58 +0200 (CEST)
+X-EA-Auth: azT5fbq4qyjbROh0nktYyillwM9rizpi0s6FGCPrEKSu3cj8CFFiRFl1g9iZf8wMgQSQZ+25ygsivZKugyUJYcgam4kawsWHA62WxPNCb8M=
+Message-ID: <f4ad7e8ebf520e0057ce912ea37b7d0a63112253.camel@mailoo.org>
+Subject: Re: Testing wanted for Linux NFC subsystem
+From:   Vincent Knecht <vincent.knecht@mailoo.org>
+To:     Mark Greer <mgreer@animalcreek.com>,
+        Stephan Gerhold <stephan@gerhold.net>
+Cc:     Frieder Schrempf <frieder.schrempf@kontron.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-nfc@lists.01.org,
+        Alex Blasche <alexander.blasche@qt.io>,
+        phone-devel@vger.kernel.org
+Date:   Tue, 18 May 2021 21:18:56 +0200
+In-Reply-To: <20210514152350.GA301895@animalcreek.com>
+References: <20210512144319.30852-1-krzysztof.kozlowski@canonical.com>
+         <14e78a9a-ed1a-9d7d-b854-db6d811f4622@kontron.de>
+         <20210512170135.GB222094@animalcreek.com> <YJ0SYWJjq3ZmXMy3@gerhold.net>
+         <20210513144855.GA266838@animalcreek.com> <YJ1Hr/hov9I42GK1@gerhold.net>
+         <20210514152350.GA301895@animalcreek.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210513104129.36583-1-stephan@gerhold.net>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 13 May 2021 12:41:28 +0200, Stephan Gerhold wrote:
-> NXP/Goodix TFA989X (TFA1) amplifiers are controlled via an I2C bus.
-> Add simple device tree bindings that describe how to set them up
-> in the device tree.
-> 
-> Right now only nxp,tfa9895 is supported but this will be extended
-> to at least nxp,tfa9897 in the near future.
-> 
-> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> ---
->  .../bindings/sound/nxp,tfa989x.yaml           | 54 +++++++++++++++++++
->  1 file changed, 54 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml
-> 
+Le vendredi 14 mai 2021 =C3=A0 08:23 -0700, Mark Greer a =C3=A9crit=C2=A0:
+> On Thu, May 13, 2021 at 05:37:19PM +0200, Stephan Gerhold wrote:
+> > On Thu, May 13, 2021 at 07:48:55AM -0700, Mark Greer wrote:
+> > > On Thu, May 13, 2021 at 01:49:53PM +0200, Stephan Gerhold wrote:
+> > > > I have a couple of "recycled" smartphones running mainline Linux
+> > > > and some of them do have NFC chips. I have two with NXP PN547
+> > > > (supported by nxp,nxp-nci-i2c), one with Samsung S3FWRN5
+> > > > (samsung,s3fwrn5-i2c) and even one with Broadcom BCM2079x I think
+> > > > (this one does not have a driver for the Linux NFC subsystem sadly)=
+.
+> > > >=20
+> > > > +Cc phone-devel@vger.kernel.org, in case other people there are
+> > > > interested in NFC :)
+> > > >=20
+> > > > The NXP/Samsung ones seems to work just fine. However, since there =
+are
+> > > > barely any userspace tools making use of Linux NFC all my testing s=
+o far
+> > > > was limited to polling for devices with "nfctool" and being happy e=
+nough
+> > > > when it realizes that I hold some NFC tag close to the device. :S
+> > >=20
+> > > There is a user-level daemon that is the counterpart for the in-kerne=
+l
+> > > NFC subsystem.=C2=A0 It is called neard and is available here:
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0git://git.kernel.org/=
+pub/scm/network/nfc/neard.git
+> > >=20
+> > > There are a few test script in it that will let you read and write NF=
+C
+> > > tags, and do some other things.=C2=A0 We can add some more tests to t=
+hat set
+> > > as we go.
+> > >=20
+> >=20
+> > Yeah, I packaged that for Alpine Linux / postmarketOS.
+> > "nfctool" also comes from "neard" as far as I can tell :)
+> >=20
+> > I think I also played with the Neard test scripts a bit at some point,
+> > and managed to read some NFC tag thing inside an old Yubikey NEO
+> > that I found, but didn't really know what else to do.
+>=20
+> Yeah, there isn't a whole lot you can do but beyond reading/writing
+> tags and peer-to-peer, there are things like Bluetooth and Wifi
+> handover, Android Application Record support, and at least some
+> support for Secure Engine.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Could sniffing and injection work, like for wifi ?
+Guess that depends on specific chip drivers, and libpcap support for sniffi=
+ng ?
+
+https://wiki.wireshark.org/SampleCaptures#Radio_Frequency_Identification_.2=
+8RFID.29.2C_and_Near-Field_Communication_.28NFC.29
+
+https://code.google.com/archive/p/wireshark-nfc/
+
+
+
+
