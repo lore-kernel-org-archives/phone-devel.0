@@ -2,119 +2,75 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A8A0C433ED
-	for <phone-devel@archiver.kernel.org>; Tue, 18 May 2021 19:43:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 934F5C433B4
+	for <phone-devel@archiver.kernel.org>; Thu, 20 May 2021 19:21:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6743C610A2
-	for <phone-devel@archiver.kernel.org>; Tue, 18 May 2021 19:43:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 694BF61363
+	for <phone-devel@archiver.kernel.org>; Thu, 20 May 2021 19:21:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242893AbhERTod (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 18 May 2021 15:44:33 -0400
-Received: from msg-2.mailo.com ([213.182.54.12]:39160 "EHLO msg-2.mailo.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239361AbhERToc (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 18 May 2021 15:44:32 -0400
-X-Greylist: delayed 1440 seconds by postgrey-1.27 at vger.kernel.org; Tue, 18 May 2021 15:44:32 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1621365538; bh=SOKZhfbRC9Pxh+E+B9Jim/4njEcIPdr7MCczTSyxEvg=;
-        h=X-EA-Auth:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-         References:Content-Type:MIME-Version:Content-Transfer-Encoding;
-        b=by1P4bDlrjWbhW8Zu6f1zmqEEAW2AIsAtju8cFtQ0yMmfz4lqcYzKDIRq/UB19TtQ
-         ObpsViLzdB+yijna/wSaTMMxHdYevLbCHIJ/DdxJ/PfjKnIRFj3Ndzl/wUBenkRvgu
-         vj6bnnq7/MtDFaJMfIDu7eZy41GF8rCStSAZN20Y=
-Received: by 192.168.90.13 [192.168.90.13] with ESMTP
-        via proxy.mailoo.org [213.182.55.207]
-        Tue, 18 May 2021 21:18:58 +0200 (CEST)
-X-EA-Auth: azT5fbq4qyjbROh0nktYyillwM9rizpi0s6FGCPrEKSu3cj8CFFiRFl1g9iZf8wMgQSQZ+25ygsivZKugyUJYcgam4kawsWHA62WxPNCb8M=
-Message-ID: <f4ad7e8ebf520e0057ce912ea37b7d0a63112253.camel@mailoo.org>
-Subject: Re: Testing wanted for Linux NFC subsystem
-From:   Vincent Knecht <vincent.knecht@mailoo.org>
-To:     Mark Greer <mgreer@animalcreek.com>,
-        Stephan Gerhold <stephan@gerhold.net>
-Cc:     Frieder Schrempf <frieder.schrempf@kontron.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-nfc@lists.01.org,
-        Alex Blasche <alexander.blasche@qt.io>,
+        id S236039AbhETTWV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 20 May 2021 15:22:21 -0400
+Received: from relay03.th.seeweb.it ([5.144.164.164]:48257 "EHLO
+        relay03.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237655AbhETTWV (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 20 May 2021 15:22:21 -0400
+Received: from [192.168.1.101] (83.6.168.18.neoplus.adsl.tpnet.pl [83.6.168.18])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id D60D01FF04;
+        Thu, 20 May 2021 21:20:54 +0200 (CEST)
+Subject: Re: [PATCH] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Arend van Spriel <arend.vanspriel@broadcom.com>,
         phone-devel@vger.kernel.org
-Date:   Tue, 18 May 2021 21:18:56 +0200
-In-Reply-To: <20210514152350.GA301895@animalcreek.com>
-References: <20210512144319.30852-1-krzysztof.kozlowski@canonical.com>
-         <14e78a9a-ed1a-9d7d-b854-db6d811f4622@kontron.de>
-         <20210512170135.GB222094@animalcreek.com> <YJ0SYWJjq3ZmXMy3@gerhold.net>
-         <20210513144855.GA266838@animalcreek.com> <YJ1Hr/hov9I42GK1@gerhold.net>
-         <20210514152350.GA301895@animalcreek.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.4 (3.38.4-1.fc33) 
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+        marijn.suijten@somainline.org,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210307113550.7720-1-konrad.dybcio@somainline.org>
+ <5e7b575a-7820-3d10-8617-36911d49f4a9@broadcom.com>
+ <754923af-407e-05f8-148e-4c2a3faf42ab@somainline.org>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+Message-ID: <bfe3d2d5-6ee6-678f-644f-e5448480d94e@somainline.org>
+Date:   Thu, 20 May 2021 21:20:53 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <754923af-407e-05f8-148e-4c2a3faf42ab@somainline.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Le vendredi 14 mai 2021 =C3=A0 08:23 -0700, Mark Greer a =C3=A9crit=C2=A0:
-> On Thu, May 13, 2021 at 05:37:19PM +0200, Stephan Gerhold wrote:
-> > On Thu, May 13, 2021 at 07:48:55AM -0700, Mark Greer wrote:
-> > > On Thu, May 13, 2021 at 01:49:53PM +0200, Stephan Gerhold wrote:
-> > > > I have a couple of "recycled" smartphones running mainline Linux
-> > > > and some of them do have NFC chips. I have two with NXP PN547
-> > > > (supported by nxp,nxp-nci-i2c), one with Samsung S3FWRN5
-> > > > (samsung,s3fwrn5-i2c) and even one with Broadcom BCM2079x I think
-> > > > (this one does not have a driver for the Linux NFC subsystem sadly)=
-.
-> > > >=20
-> > > > +Cc phone-devel@vger.kernel.org, in case other people there are
-> > > > interested in NFC :)
-> > > >=20
-> > > > The NXP/Samsung ones seems to work just fine. However, since there =
-are
-> > > > barely any userspace tools making use of Linux NFC all my testing s=
-o far
-> > > > was limited to polling for devices with "nfctool" and being happy e=
-nough
-> > > > when it realizes that I hold some NFC tag close to the device. :S
-> > >=20
-> > > There is a user-level daemon that is the counterpart for the in-kerne=
-l
-> > > NFC subsystem.=C2=A0 It is called neard and is available here:
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0git://git.kernel.org/=
-pub/scm/network/nfc/neard.git
-> > >=20
-> > > There are a few test script in it that will let you read and write NF=
-C
-> > > tags, and do some other things.=C2=A0 We can add some more tests to t=
-hat set
-> > > as we go.
-> > >=20
-> >=20
-> > Yeah, I packaged that for Alpine Linux / postmarketOS.
-> > "nfctool" also comes from "neard" as far as I can tell :)
-> >=20
-> > I think I also played with the Neard test scripts a bit at some point,
-> > and managed to read some NFC tag thing inside an old Yubikey NEO
-> > that I found, but didn't really know what else to do.
->=20
-> Yeah, there isn't a whole lot you can do but beyond reading/writing
-> tags and peer-to-peer, there are things like Bluetooth and Wifi
-> handover, Android Application Record support, and at least some
-> support for Secure Engine.
-
-Could sniffing and injection work, like for wifi ?
-Guess that depends on specific chip drivers, and libpcap support for sniffi=
-ng ?
-
-https://wiki.wireshark.org/SampleCaptures#Radio_Frequency_Identification_.2=
-8RFID.29.2C_and_Near-Field_Communication_.28NFC.29
-
-https://code.google.com/archive/p/wireshark-nfc/
+Hi,
 
 
+sorry for the lack of answer from me (I've had a lot going on..), but the one Angelo has given you is right. We have to use the files that SONY ships with their stock Android firmware. Could you look into this patch once again?
 
+
+Konrad
 
