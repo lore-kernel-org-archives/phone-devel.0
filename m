@@ -2,75 +2,77 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 934F5C433B4
-	for <phone-devel@archiver.kernel.org>; Thu, 20 May 2021 19:21:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D00ACC2B9F2
+	for <phone-devel@archiver.kernel.org>; Sat, 22 May 2021 17:18:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 694BF61363
-	for <phone-devel@archiver.kernel.org>; Thu, 20 May 2021 19:21:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 87E5C601FD
+	for <phone-devel@archiver.kernel.org>; Sat, 22 May 2021 17:18:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236039AbhETTWV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 20 May 2021 15:22:21 -0400
-Received: from relay03.th.seeweb.it ([5.144.164.164]:48257 "EHLO
-        relay03.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237655AbhETTWV (ORCPT
+        id S231342AbhEVRUB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 22 May 2021 13:20:01 -0400
+Received: from mail-40136.protonmail.ch ([185.70.40.136]:46300 "EHLO
+        mail-40136.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231272AbhEVRUA (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 20 May 2021 15:22:21 -0400
-Received: from [192.168.1.101] (83.6.168.18.neoplus.adsl.tpnet.pl [83.6.168.18])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id D60D01FF04;
-        Thu, 20 May 2021 21:20:54 +0200 (CEST)
-Subject: Re: [PATCH] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Arend van Spriel <arend.vanspriel@broadcom.com>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
-        marijn.suijten@somainline.org,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
+        Sat, 22 May 2021 13:20:00 -0400
+Date:   Sat, 22 May 2021 17:18:32 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1621703914;
+        bh=WlHj8+hYLpUTFjiTZdr99nZUavHMI2QsMlfTHObc/l8=;
+        h=Date:To:From:Cc:Reply-To:Subject:From;
+        b=MfV4u3OEmc0gkMCptyVJapnyaue9CQJfU2dxSaC2tvGYMRqb5nuBcP4ndMS8zW93R
+         1XsJIBHZuMxb2Xuql43GlaAxniDDP0g2+Bj1eVoGIi8L+5YTKc+oW7sYbej2Sm7vAu
+         UoNjEUqM9c7J6CL/86SeZY54baUvCHlJIoTMg+iA=
+To:     caleb@connolly.tech, Kalle Valo <kvalo@codeaurora.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20210307113550.7720-1-konrad.dybcio@somainline.org>
- <5e7b575a-7820-3d10-8617-36911d49f4a9@broadcom.com>
- <754923af-407e-05f8-148e-4c2a3faf42ab@somainline.org>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-Message-ID: <bfe3d2d5-6ee6-678f-644f-e5448480d94e@somainline.org>
-Date:   Thu, 20 May 2021 21:20:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+Reply-To: Caleb Connolly <caleb@connolly.tech>
+Subject: [PATCH] ath10k: demote chan info without scan request warning
+Message-ID: <20210522171609.299611-1-caleb@connolly.tech>
 MIME-Version: 1.0
-In-Reply-To: <754923af-407e-05f8-148e-4c2a3faf42ab@somainline.org>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
+Some devices/firmwares cause this to be printed every 5-15 seconds,
+though it has no impact on functionality. Demote this to a debug
+message.
 
+Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+---
+ drivers/net/wireless/ath/ath10k/wmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-sorry for the lack of answer from me (I've had a lot going on..), but the one Angelo has given you is right. We have to use the files that SONY ships with their stock Android firmware. Could you look into this patch once again?
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/a=
+th/ath10k/wmi.c
+index d48b922215eb..6c69f7ef0546 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -2795,7 +2795,7 @@ void ath10k_wmi_event_chan_info(struct ath10k *ar, st=
+ruct sk_buff *skb)
+ =09switch (ar->scan.state) {
+ =09case ATH10K_SCAN_IDLE:
+ =09case ATH10K_SCAN_STARTING:
+-=09=09ath10k_warn(ar, "received chan info event without a scan request, ig=
+noring\n");
++=09=09ath10k_dbg(ar, ATH10K_DBG_WMI, "received chan info event without a s=
+can request, ignoring\n");
+ =09=09goto exit;
+ =09case ATH10K_SCAN_RUNNING:
+ =09case ATH10K_SCAN_ABORTING:
+--
+2.31.1
 
-
-Konrad
 
