@@ -2,77 +2,91 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D00ACC2B9F2
-	for <phone-devel@archiver.kernel.org>; Sat, 22 May 2021 17:18:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1791C2B9F8
+	for <phone-devel@archiver.kernel.org>; Mon, 24 May 2021 12:00:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 87E5C601FD
-	for <phone-devel@archiver.kernel.org>; Sat, 22 May 2021 17:18:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B8A6D613CC
+	for <phone-devel@archiver.kernel.org>; Mon, 24 May 2021 12:00:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231342AbhEVRUB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 22 May 2021 13:20:01 -0400
-Received: from mail-40136.protonmail.ch ([185.70.40.136]:46300 "EHLO
-        mail-40136.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231272AbhEVRUA (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 22 May 2021 13:20:00 -0400
-Date:   Sat, 22 May 2021 17:18:32 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1621703914;
-        bh=WlHj8+hYLpUTFjiTZdr99nZUavHMI2QsMlfTHObc/l8=;
-        h=Date:To:From:Cc:Reply-To:Subject:From;
-        b=MfV4u3OEmc0gkMCptyVJapnyaue9CQJfU2dxSaC2tvGYMRqb5nuBcP4ndMS8zW93R
-         1XsJIBHZuMxb2Xuql43GlaAxniDDP0g2+Bj1eVoGIi8L+5YTKc+oW7sYbej2Sm7vAu
-         UoNjEUqM9c7J6CL/86SeZY54baUvCHlJIoTMg+iA=
-To:     caleb@connolly.tech, Kalle Valo <kvalo@codeaurora.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: [PATCH] ath10k: demote chan info without scan request warning
-Message-ID: <20210522171609.299611-1-caleb@connolly.tech>
+        id S232881AbhEXMCG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 24 May 2021 08:02:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48582 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232849AbhEXMB7 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 24 May 2021 08:01:59 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6B9936128B;
+        Mon, 24 May 2021 12:00:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621857629;
+        bh=I/AnOl07xJ78/MlMBrSL4ZrBn/VkAl/y+yaLeCLFMGQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=QvkNw20K223eZiCt9lDwQbruNbPbC126q+a7an9hF/N2qZwgV03A5DoBemDvFntN7
+         TdavodDp4gl8ZZeysenWiG/rFwFVvZuiD2ucvjc9s6ghrFT5VKwyov2camHoQSvVBc
+         4qV11Ugwj87M5vlPKiQlzwEMploNia+14zLDjGHTrhTbfGouGcnim4w1pMzSoCWzlw
+         hncJuw39vN4rrMHTd1ZGv3jKeBApYZvB/qdMqFWa+RRXUCDxPNADAzjDpep5yww9Tr
+         oKg+dQJuMZmp7Pt9kY0la8pOAzWw5eEAzHzBs2hOTUzsgE/KxZSZd+3d7G72eB1JIc
+         KDyRHmbC7GRgQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Mark Brown <broonie@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org,
+        Vincent Knecht <vincent.knecht@mailoo.org>,
+        phone-devel@vger.kernel.org, alsa-devel@alsa-project.org,
+        Liam Girdwood <lgirdwood@gmail.com>
+Subject: Re: [PATCH RFC 1/2] ASoC: dt-bindings: codecs: Add bindings for nxp, tfa989x
+Date:   Mon, 24 May 2021 12:59:56 +0100
+Message-Id: <162185746496.49382.12917440362021007479.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210513104129.36583-1-stephan@gerhold.net>
+References: <20210513104129.36583-1-stephan@gerhold.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Some devices/firmwares cause this to be printed every 5-15 seconds,
-though it has no impact on functionality. Demote this to a debug
-message.
+On Thu, 13 May 2021 12:41:28 +0200, Stephan Gerhold wrote:
+> NXP/Goodix TFA989X (TFA1) amplifiers are controlled via an I2C bus.
+> Add simple device tree bindings that describe how to set them up
+> in the device tree.
+> 
+> Right now only nxp,tfa9895 is supported but this will be extended
+> to at least nxp,tfa9897 in the near future.
 
-Signed-off-by: Caleb Connolly <caleb@connolly.tech>
----
- drivers/net/wireless/ath/ath10k/wmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied to
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/a=
-th/ath10k/wmi.c
-index d48b922215eb..6c69f7ef0546 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -2795,7 +2795,7 @@ void ath10k_wmi_event_chan_info(struct ath10k *ar, st=
-ruct sk_buff *skb)
- =09switch (ar->scan.state) {
- =09case ATH10K_SCAN_IDLE:
- =09case ATH10K_SCAN_STARTING:
--=09=09ath10k_warn(ar, "received chan info event without a scan request, ig=
-noring\n");
-+=09=09ath10k_dbg(ar, ATH10K_DBG_WMI, "received chan info event without a s=
-can request, ignoring\n");
- =09=09goto exit;
- =09case ATH10K_SCAN_RUNNING:
- =09case ATH10K_SCAN_ABORTING:
---
-2.31.1
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
+Thanks!
 
+[1/2] ASoC: dt-bindings: codecs: Add bindings for nxp, tfa989x
+      commit: 17ba36b704692a433d38cb230e99ec333ecd14a2
+[2/2] ASoC: codecs: Add driver for NXP/Goodix TFA989x (TFA1) amplifiers
+      commit: af00978a0a06bab60bd5adf54a65ea69d19ce35d
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
