@@ -2,74 +2,67 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4EADC47082
-	for <phone-devel@archiver.kernel.org>; Wed, 26 May 2021 22:32:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 93012C4707F
+	for <phone-devel@archiver.kernel.org>; Thu, 27 May 2021 16:10:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A9773613DA
-	for <phone-devel@archiver.kernel.org>; Wed, 26 May 2021 22:32:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 778BA613C5
+	for <phone-devel@archiver.kernel.org>; Thu, 27 May 2021 16:10:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234462AbhEZWdx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 26 May 2021 18:33:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51316 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234440AbhEZWdw (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 26 May 2021 18:33:52 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A30D3613D2;
-        Wed, 26 May 2021 22:32:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622068340;
-        bh=xwNSfapbBNFnmlQ74xn76XUJZwmoy9By2PMjUjDn4kc=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=iCJK0HzKnHCXkz5rwjBBUmp2kAL7u15XbB4iQUJdiIHBlEGV91BIb9ntCxFjUxkgl
-         fr6LoKsS+HcD4SMmtwIsoJW5nuYThwuMEOcZGkog/vDiKZ+Mv89Uu0G4JEzaON+niY
-         wdsy3sjmkX+gXIpyIB6VvnVvVsu4kEqE/PaKYV/cORLkvnh7Q0LNC8wXZSvqXNMNXf
-         hLgjjAn/DLMJviaeM5v+Y4HlHpQYjySK/2TmIhloPEDnf99j98ZzlzXY8uWYGjn0KI
-         qtvnOay9FbT/3UFcwHFky7T6Qz/nftbH8PcuooD5YevcC8npZHSSTeceHaE2rExaOZ
-         zM/2PaYGIgxXA==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <dc4539a6-4a8b-91bc-791b-846ab0182a8f@somainline.org>
-References: <20210220155618.176559-1-konrad.dybcio@somainline.org> <20210220155618.176559-5-konrad.dybcio@somainline.org> <161404077336.1254594.15002572465360321874@swboyd.mtv.corp.google.com> <3917fba4-e5b0-911f-9220-f401a90aac38@somainline.org> <161724198675.2260335.14358880292682931985@swboyd.mtv.corp.google.com> <abc821cc-ef43-3241-793a-cc4c85b72563@somainline.org> <dc4539a6-4a8b-91bc-791b-846ab0182a8f@somainline.org>
-Subject: Re: [PATCH 5/6] clk: qcom: gcc-sdm660: Account for needed adjustments in probe function
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+        id S236164AbhE0QLg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 27 May 2021 12:11:36 -0400
+Received: from m-r2.th.seeweb.it ([5.144.164.171]:35129 "EHLO
+        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235709AbhE0QLg (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 27 May 2021 12:11:36 -0400
+Received: from [192.168.1.101] (83.6.168.54.neoplus.adsl.tpnet.pl [83.6.168.54])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 201923F116;
+        Thu, 27 May 2021 18:10:00 +0200 (CEST)
+Subject: Re: [PATCH 2/2] video: backlight: qcom-wled: Add PMI8994 compatible
+To:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        martin.botka@somainline.org,
         angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
+        marijn.suijten@somainline.org, Jingoo Han <jingoohan1@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
         Rob Herring <robh+dt@kernel.org>,
-        Taniya Das <tdas@codeaurora.org>,
-        Craig Tatlor <ctatlor97@gmail.com>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>,
-        phone-devel@vger.kernel.org
-Date:   Wed, 26 May 2021 15:32:19 -0700
-Message-ID: <162206833939.4130789.17552236719284643931@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Kiran Gunda <kgunda@codeaurora.org>,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
+References: <20210228124106.135812-1-konrad.dybcio@somainline.org>
+ <20210228124106.135812-2-konrad.dybcio@somainline.org>
+ <20210322161810.biagj2qro66rv4gt@maple.lan> <20210323083935.GF2916463@dell>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+Message-ID: <a81bfa44-ed86-207c-0f8c-c9bbad62733d@somainline.org>
+Date:   Thu, 27 May 2021 18:09:59 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
+MIME-Version: 1.0
+In-Reply-To: <20210323083935.GF2916463@dell>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Quoting Konrad Dybcio (2021-05-26 12:11:13)
-> Hi,
->=20
->=20
-> I am aware that the comments I left are highly controversial and a bit em=
-otional, but I'd still like to get a response. It's been almost two months =
-and I have phones on the desk waiting for things to be merged, so that I ca=
-n develop more things.
->=20
->=20
-> P.S. I still stand by my stance that the more info we can get about what'=
-s going on in the black boxes that we are not allowed to get docs for, the =
-better for us, developers.
->=20
+Hi,
 
-I marked this patch as "changes requested". Please make the changes
-requested.
+> Why are you Reviewing/Acking a patch that was applied on the 10th?
+
+Forgive me if it turns out I'm blind, but I can't see the patch being in either -next, backlight/for-next, or 5.13-rc3. Perhaps it was omitted after all?
+
+
+Konrad
+
