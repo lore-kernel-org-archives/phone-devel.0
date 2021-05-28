@@ -2,111 +2,115 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA0B5C4707F
-	for <phone-devel@archiver.kernel.org>; Thu, 27 May 2021 16:26:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D103EC47087
+	for <phone-devel@archiver.kernel.org>; Fri, 28 May 2021 10:51:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AAB33613D3
-	for <phone-devel@archiver.kernel.org>; Thu, 27 May 2021 16:26:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AAF52611C9
+	for <phone-devel@archiver.kernel.org>; Fri, 28 May 2021 10:51:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235610AbhE0Q1m (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 27 May 2021 12:27:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47576 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235311AbhE0Q1l (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 27 May 2021 12:27:41 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A37CC061761
-        for <phone-devel@vger.kernel.org>; Thu, 27 May 2021 09:26:08 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id j14so492395wrq.5
-        for <phone-devel@vger.kernel.org>; Thu, 27 May 2021 09:26:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=sYfRojD79IjGqc7nXmoUz1TVBKWvqSb4uV+m+zK9THk=;
-        b=lgrw5ga3WKPAoziTjNoBM5nBMOAQDvKM3uLTPCxqTZFAFeNVTFjk4a/+4JLAdmLVPN
-         Dm8Lu+EttQQjXJO/l5z4zx8rCYTD2Dkleix1U0EhD8B1ugYZT4bFp0taxSuw7tAG8LbV
-         gRWSOodIJOTqgNWQBrtpf+Wo7H9hJlh5/krjKfdoFbTwlXTxymPpXi3YpQA5AqIknzJj
-         ZJnDqjfTLlepY9LvnsOGKpdkltNV0eAgLQSWL5Gv3DIAQQmhT5YCKDYYDHAgH3fPdZ8c
-         +YF9sN8dYhVCHfuLCBkwquugfBQtuLj2l2eWCHbWOOgHbPJOAsTzMzCpESvsFhz8pP++
-         0dAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=sYfRojD79IjGqc7nXmoUz1TVBKWvqSb4uV+m+zK9THk=;
-        b=fPwL3VtSSdaH9Hlc3Uum4bPCfIfMr6Ho8mbw7bQ8yoqAw5UPljX02bA7J3P10HUHp4
-         bOAT/1Iyu/sqWfFRlAuCk+ri7lcfjFZ5p1ylkaqZ5WNlNSkn4mN9T3PxGzyEKI5H/GJQ
-         FauhGsWetexgGvCsc3SgxMnBwBvINgHV3mXaD4AHXqyQpQgV/+DdFh/xCExHOGlXlfyP
-         H4jgCngmfhe2BG1RIIrnxtXQ1fx4zl2afqP+isBmkUvdAbQ95wG1EmWTYChUABcl+eNp
-         16Rqs5OJ2ochi/pGWYuzFkwFp1z58hLxiqaNxyqY2jC3yClbKAP4lIxm8jPxagSGvDPp
-         naqQ==
-X-Gm-Message-State: AOAM530TGvzIsSG7KXhceZBHXU/Oe3LJbiHXUwawhzzh4w8Kuj+lRTK4
-        JpRzP+mzy3Qhir/Yc/Bn6M5dbw==
-X-Google-Smtp-Source: ABdhPJxM+yIpAp4eL9sHrYNbLxW3nG30aoIiJSUnb2poiCGc7Ta6Z2ALK/q7HvKiZyAPXq3UXZYhug==
-X-Received: by 2002:adf:f64b:: with SMTP id x11mr1040670wrp.73.1622132766819;
-        Thu, 27 May 2021 09:26:06 -0700 (PDT)
-Received: from dell ([91.110.221.223])
-        by smtp.gmail.com with ESMTPSA id i5sm3955864wrw.29.2021.05.27.09.26.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 May 2021 09:26:06 -0700 (PDT)
-Date:   Thu, 27 May 2021 17:26:04 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org, Jingoo Han <jingoohan1@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        id S236613AbhE1KxC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 28 May 2021 06:53:02 -0400
+Received: from msg-2.mailo.com ([213.182.54.12]:55416 "EHLO msg-2.mailo.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236543AbhE1KxA (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 28 May 2021 06:53:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
+        t=1622199080; bh=iNxBNW4SSptwhcnpvgl2tbTyOmoi56zJOm9WU01asGI=;
+        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
+         References:MIME-Version:Content-Transfer-Encoding;
+        b=P4AQhR1djESmACH18/d3g73K5J3ldKKGm87I1GuDAYS3ObioRwGV+KwApDIofwlEn
+         l6VpAU2Jo92Eni3JffNKTbuRsKeKpFoJtutjZKTqadb3FOvjYwvF4JO/ajND66jCL+
+         +44qnyyx212Tj+nZ0KWgmkCHlagfpK3aJHInPKjc=
+Received: by 192.168.90.15 [192.168.90.15] with ESMTP
+        via proxy.mailoo.org [213.182.55.207]
+        Fri, 28 May 2021 12:51:19 +0200 (CEST)
+X-EA-Auth: qKy0orTZIIiVMo0/dMQZTXTZ1ji/g72TwrHjujjnoSQ0wvoGfk2lLoGU5PSkvy1IFugCdt7AcjLb6aEvFqXqXtfszauthTo3wbKolVOjGPo=
+From:   Vincent Knecht <vincent.knecht@mailoo.org>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Vincent Knecht <vincent.knecht@mailoo.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Liam Girdwood <lgirdwood@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH 2/2] video: backlight: qcom-wled: Add PMI8994 compatible
-Message-ID: <20210527162604.GL543307@dell>
-References: <20210228124106.135812-1-konrad.dybcio@somainline.org>
- <20210228124106.135812-2-konrad.dybcio@somainline.org>
- <20210322161810.biagj2qro66rv4gt@maple.lan>
- <20210323083935.GF2916463@dell>
- <a81bfa44-ed86-207c-0f8c-c9bbad62733d@somainline.org>
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v1 2/4] ASoC: codecs: tfa989x: Add support for tfa9897
+Date:   Fri, 28 May 2021 12:50:59 +0200
+Message-Id: <20210528105101.508254-2-vincent.knecht@mailoo.org>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210528105101.508254-1-vincent.knecht@mailoo.org>
+References: <20210528105101.508254-1-vincent.knecht@mailoo.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a81bfa44-ed86-207c-0f8c-c9bbad62733d@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 27 May 2021, Konrad Dybcio wrote:
+Add specific init function to poke needed registers & values for this IC
 
-> Hi,
-> 
-> > Why are you Reviewing/Acking a patch that was applied on the 10th?
-> 
-> Forgive me if it turns out I'm blind, but I can't see the patch
-> being in either -next, backlight/for-next, or 5.13-rc3. Perhaps it
-> was omitted after all?
+Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+---
+ sound/soc/codecs/tfa989x.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-Interesting.  It's not you, it's me!
-
-No idea what happened exactly TBH, but it's applied again.
-
-Should be in -next tomorrow.  Apologies for the delay.
-
+diff --git a/sound/soc/codecs/tfa989x.c b/sound/soc/codecs/tfa989x.c
+index 408e26eee108..6d94865c534b 100644
+--- a/sound/soc/codecs/tfa989x.c
++++ b/sound/soc/codecs/tfa989x.c
+@@ -44,6 +44,7 @@
+ #define TFA989X_CURRENTSENSE4		0x49
+ 
+ #define TFA9895_REVISION		0x12
++#define TFA9897_REVISION		0x97
+ 
+ struct tfa989x_rev {
+ 	unsigned int rev;
+@@ -175,6 +176,29 @@ static const struct tfa989x_rev tfa9895_rev = {
+ 	.init	= tfa9895_init,
+ };
+ 
++static int tfa9897_init(struct regmap *regmap)
++{
++	int ret;
++
++	/* Reduce slewrate by clearing iddqtestbst to avoid booster damage */
++	ret = regmap_write(regmap, TFA989X_CURRENTSENSE3, 0x0300);
++	if (ret)
++		return ret;
++
++	/* Enable clipping */
++	ret = regmap_clear_bits(regmap, TFA989X_CURRENTSENSE4, 0x1);
++	if (ret)
++		return ret;
++
++	/* Set required TDM configuration */
++	return regmap_write(regmap, 0x14, 0x0);
++}
++
++static const struct tfa989x_rev tfa9897_rev = {
++	.rev	= TFA9897_REVISION,
++	.init	= tfa9897_init,
++};
++
+ /*
+  * Note: At the moment this driver bypasses the "CoolFlux DSP" built into the
+  * TFA989X amplifiers. Unfortunately, there seems to be absolutely
+@@ -280,6 +304,7 @@ static int tfa989x_i2c_probe(struct i2c_client *i2c)
+ 
+ static const struct of_device_id tfa989x_of_match[] = {
+ 	{ .compatible = "nxp,tfa9895", .data = &tfa9895_rev },
++	{ .compatible = "nxp,tfa9897", .data = &tfa9897_rev },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, tfa989x_of_match);
 -- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.31.1
+
+
+
