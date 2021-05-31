@@ -2,98 +2,188 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A661AC47080
-	for <phone-devel@archiver.kernel.org>; Mon, 31 May 2021 12:08:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4D50C47080
+	for <phone-devel@archiver.kernel.org>; Mon, 31 May 2021 23:13:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8695561287
-	for <phone-devel@archiver.kernel.org>; Mon, 31 May 2021 12:08:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7849D6124B
+	for <phone-devel@archiver.kernel.org>; Mon, 31 May 2021 23:13:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231631AbhEaMKe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 31 May 2021 08:10:34 -0400
-Received: from comms.puri.sm ([159.203.221.185]:33624 "EHLO comms.puri.sm"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231578AbhEaMKI (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 31 May 2021 08:10:08 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 55D33E2131;
-        Mon, 31 May 2021 05:07:57 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id elENs-rrkNFz; Mon, 31 May 2021 05:07:56 -0700 (PDT)
-From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-To:     pavel@ucw.cz, krzysztof.kozlowski@canonical.com,
-        laurent.pinchart@ideasonboard.com, mchehab@kernel.org,
-        paul.kocialkowski@bootlin.com, robh@kernel.org, shawnx.tu@intel.com
-Cc:     devicetree@vger.kernel.org, kernel@puri.sm,
+        id S231629AbhEaXPh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 31 May 2021 19:15:37 -0400
+Received: from perceval.ideasonboard.com ([213.167.242.64]:58268 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231240AbhEaXPg (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 31 May 2021 19:15:36 -0400
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 06D5088C;
+        Tue,  1 Jun 2021 01:13:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1622502834;
+        bh=wQUw5VwZtT+y284T9fA+KUU/zqOWc21ZLpDIQH4/bLc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RcTwO4JDC+Tk9caUXapOez6Dly68vT+0hbAjwknLJeCHkRPCSACXPNJjyBnBWobcx
+         zCv2olVNk/DbvA2KxQwYVLAbfEeHoKLbw7I339IEo46aszIV1rxIV9tZd1RCd7savZ
+         yxu7kInJGJetEPJhnxal8Cl+VjW8joPn6mfAbWfM=
+Date:   Tue, 1 Jun 2021 02:13:43 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     pavel@ucw.cz, krzysztof.kozlowski@canonical.com,
+        mchehab@kernel.org, paul.kocialkowski@bootlin.com, robh@kernel.org,
+        shawnx.tu@intel.com, devicetree@vger.kernel.org, kernel@puri.sm,
         linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        martin.kepplinger@puri.sm, phone-devel@vger.kernel.org
-Subject: [PATCH v3 0/5] Add support for the Hynix Hi-846 camera
-Date:   Mon, 31 May 2021 14:07:32 +0200
-Message-Id: <20210531120737.168496-1-martin.kepplinger@puri.sm>
-Content-Transfer-Encoding: 8bit
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 2/5] dt-bindings: media: document SK Hynix Hi-846 MIPI
+ CSI-2 8M pixel sensor
+Message-ID: <YLVtp/CWouSuEdty@pendragon.ideasonboard.com>
+References: <20210531120737.168496-1-martin.kepplinger@puri.sm>
+ <20210531120737.168496-3-martin.kepplinger@puri.sm>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210531120737.168496-3-martin.kepplinger@puri.sm>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-hi,
+Hi Martin,
 
-This patchset adds support for the SK Hynix Hi-846 CMOS images sensor.
-It includes dt-bindings and the driver.
+Thank you for the patch.
 
-Patches 4 and 5 are basically optional: if i2c-cardlist is deprecated,
-ignore it and act on it appropriately, and the arm64 defconfig is just
-convenience for now.
+On Mon, May 31, 2021 at 02:07:34PM +0200, Martin Kepplinger wrote:
+> Document the bindings used for the SK Hynix Hi-846 CMOS camera driver.
+> 
+> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> ---
+>  .../bindings/media/i2c/hynix,hi846.yaml       | 99 +++++++++++++++++++
+>  1 file changed, 99 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> new file mode 100644
+> index 000000000000..26462f6b5e69
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> @@ -0,0 +1,99 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/i2c/hynix,hi846.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: SK Hynix Hi-846 1/4" 8M Pixel MIPI CSI-2 sensor
+> +
+> +maintainers:
+> +  - Martin Kepplinger <martin.kepplinger@puri.sm>
+> +
+> +description: |-
+> +  The Hi-846 is a raw image sensor with an MIPI CSI-2 image data
+> +  interface and CCI (I2C compatible) control bus. The output format
+> +  is 10bit Bayer.
+> +
+> +properties:
+> +  compatible:
+> +    const: hynix,hi846
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description: Reference to the mclk clock.
+> +
+> +  clock-names:
+> +    items:
+> +      - const: mclk
+> +
+> +  reset-gpios:
+> +    description: Reference to the GPIO connected to the reset pin. Active low.
+> +    maxItems: 1
+> +
+> +  vdd-supply:
+> +    description: Definition of the regulator used as 1.8V digital power supply.
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/properties/port
+> +    additionalProperties: false
 
-(I again send v3 a bit early because the Intel kernel test robot still found
-an error in v2)
+You can drop the additionalProperties, the graph schema has
+unevaluatedProperties set to false already.
 
-best wishes,
+> +
+> +    properties:
+> +      endpoint:
+> +        $ref: /schemas/media/video-interfaces.yaml#
+> +        unevaluatedProperties: false
+> +
+> +        properties:
+> +          data-lanes:
+> +            oneOf:
+> +              - items:
+> +                  - const: 1
+> +                  - const: 2
+> +                  - const: 3
+> +                  - const: 4
+> +              - items:
+> +                  - const: 1
+> +                  - const: 2
+> +
+> +        required:
+> +          - data-lanes
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - reset-gpios
 
-                              martin
+I'd keep the reset-gpios property optional, in case the signal is
+hardwired.
 
-revision history
-----------------
-v3: (thank you, Laurent)
-* use do_div() for divisions
-* reset-gpios DT property name instead of rst-gpios
-* improve the dt-bindings
-* add the phone-devel list
+I don't have access to the sensor datasheet, so I can't provide comments
+on what may be missing. With the above two issues addressed,
 
-v2:
-sent a bit early due to stupid mistakes
-fix build issues
-fix dtschema issues
-add enable for arm64 defconfig
-https://lore.kernel.org/linux-media/20210530212337.GA15366@duo.ucw.cz/T/#t
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-v1:
-https://lore.kernel.org/linux-media/20210527091221.3335998-1-martin.kepplinger@puri.sm/
-
-
-Martin Kepplinger (5):
-  dt-bindings: vendor-prefixes: Add SK Hynix Inc.
-  dt-bindings: media: document SK Hynix Hi-846 MIPI CSI-2 8M pixel
-    sensor
-  media: i2c: add driver for the SK Hynix Hi-846 8M pixel camera
-  arm64: defconfig: enable VIDEO_HI846
-  Documentation: i2c-cardlist: add the Hynix hi846 sensor
-
- .../admin-guide/media/i2c-cardlist.rst        |    1 +
- .../bindings/media/i2c/hynix,hi846.yaml       |   99 +
- .../devicetree/bindings/vendor-prefixes.yaml  |    2 +
- MAINTAINERS                                   |    6 +
- arch/arm64/configs/defconfig                  |    1 +
- drivers/media/i2c/Kconfig                     |   13 +
- drivers/media/i2c/Makefile                    |    1 +
- drivers/media/i2c/hi846.c                     | 2138 +++++++++++++++++
- 8 files changed, 2261 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
- create mode 100644 drivers/media/i2c/hi846.c
+> +  - vdd-supply
+> +  - port
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        hi846: camera@20 {
+> +            compatible = "hynix,hi846";
+> +            reg = <0x20>;
+> +            clocks = <&clk>;
+> +            clock-names = "mclk";
+> +            vdd-supply = <&reg_camera_pwr_en>; /* 1.8v */
+> +            reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
+> +
+> +            port {
+> +                camera_out: endpoint {
+> +                    remote-endpoint = <&csi1_ep1>;
+> +                    data-lanes = <1 2>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +
+> +...
 
 -- 
-2.30.2
+Regards,
 
+Laurent Pinchart
