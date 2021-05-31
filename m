@@ -2,29 +2,28 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 580C0C4708F
-	for <phone-devel@archiver.kernel.org>; Mon, 31 May 2021 12:08:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A661AC47080
+	for <phone-devel@archiver.kernel.org>; Mon, 31 May 2021 12:08:59 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3B07D61287
-	for <phone-devel@archiver.kernel.org>; Mon, 31 May 2021 12:08:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8695561287
+	for <phone-devel@archiver.kernel.org>; Mon, 31 May 2021 12:08:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231548AbhEaMJ5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 31 May 2021 08:09:57 -0400
-Received: from comms.puri.sm ([159.203.221.185]:33496 "EHLO comms.puri.sm"
+        id S231631AbhEaMKe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 31 May 2021 08:10:34 -0400
+Received: from comms.puri.sm ([159.203.221.185]:33624 "EHLO comms.puri.sm"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231478AbhEaMJx (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 31 May 2021 08:09:53 -0400
+        id S231578AbhEaMKI (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 31 May 2021 08:10:08 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 4A54AE2128;
-        Mon, 31 May 2021 05:08:14 -0700 (PDT)
+        by comms.puri.sm (Postfix) with ESMTP id 55D33E2131;
+        Mon, 31 May 2021 05:07:57 -0700 (PDT)
 Received: from comms.puri.sm ([127.0.0.1])
         by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id qB2Vt50Wxx3J; Mon, 31 May 2021 05:08:13 -0700 (PDT)
+        with ESMTP id elENs-rrkNFz; Mon, 31 May 2021 05:07:56 -0700 (PDT)
 From:   Martin Kepplinger <martin.kepplinger@puri.sm>
 To:     pavel@ucw.cz, krzysztof.kozlowski@canonical.com,
         laurent.pinchart@ideasonboard.com, mchehab@kernel.org,
@@ -32,35 +31,69 @@ To:     pavel@ucw.cz, krzysztof.kozlowski@canonical.com,
 Cc:     devicetree@vger.kernel.org, kernel@puri.sm,
         linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
         martin.kepplinger@puri.sm, phone-devel@vger.kernel.org
-Subject: [PATCH v3 5/5] Documentation: i2c-cardlist: add the Hynix hi846 sensor
-Date:   Mon, 31 May 2021 14:07:37 +0200
-Message-Id: <20210531120737.168496-6-martin.kepplinger@puri.sm>
-In-Reply-To: <20210531120737.168496-1-martin.kepplinger@puri.sm>
-References: <20210531120737.168496-1-martin.kepplinger@puri.sm>
+Subject: [PATCH v3 0/5] Add support for the Hynix Hi-846 camera
+Date:   Mon, 31 May 2021 14:07:32 +0200
+Message-Id: <20210531120737.168496-1-martin.kepplinger@puri.sm>
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the SK Hynix Hi-846 8M Pixel CMOS image sensor to the i2c-cardlist.
+hi,
 
-Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
----
- Documentation/admin-guide/media/i2c-cardlist.rst | 1 +
- 1 file changed, 1 insertion(+)
+This patchset adds support for the SK Hynix Hi-846 CMOS images sensor.
+It includes dt-bindings and the driver.
 
-diff --git a/Documentation/admin-guide/media/i2c-cardlist.rst b/Documentation/admin-guide/media/i2c-cardlist.rst
-index e60d459d18a9..185e07a3da43 100644
---- a/Documentation/admin-guide/media/i2c-cardlist.rst
-+++ b/Documentation/admin-guide/media/i2c-cardlist.rst
-@@ -60,6 +60,7 @@ Driver        Name
- ============  ==========================================================
- et8ek8        ET8EK8 camera sensor
- hi556         Hynix Hi-556 sensor
-+hi846         Hynix Hi-846 sensor
- imx214        Sony IMX214 sensor
- imx219        Sony IMX219 sensor
- imx258        Sony IMX258 sensor
+Patches 4 and 5 are basically optional: if i2c-cardlist is deprecated,
+ignore it and act on it appropriately, and the arm64 defconfig is just
+convenience for now.
+
+(I again send v3 a bit early because the Intel kernel test robot still found
+an error in v2)
+
+best wishes,
+
+                              martin
+
+revision history
+----------------
+v3: (thank you, Laurent)
+* use do_div() for divisions
+* reset-gpios DT property name instead of rst-gpios
+* improve the dt-bindings
+* add the phone-devel list
+
+v2:
+sent a bit early due to stupid mistakes
+fix build issues
+fix dtschema issues
+add enable for arm64 defconfig
+https://lore.kernel.org/linux-media/20210530212337.GA15366@duo.ucw.cz/T/#t
+
+v1:
+https://lore.kernel.org/linux-media/20210527091221.3335998-1-martin.kepplinger@puri.sm/
+
+
+Martin Kepplinger (5):
+  dt-bindings: vendor-prefixes: Add SK Hynix Inc.
+  dt-bindings: media: document SK Hynix Hi-846 MIPI CSI-2 8M pixel
+    sensor
+  media: i2c: add driver for the SK Hynix Hi-846 8M pixel camera
+  arm64: defconfig: enable VIDEO_HI846
+  Documentation: i2c-cardlist: add the Hynix hi846 sensor
+
+ .../admin-guide/media/i2c-cardlist.rst        |    1 +
+ .../bindings/media/i2c/hynix,hi846.yaml       |   99 +
+ .../devicetree/bindings/vendor-prefixes.yaml  |    2 +
+ MAINTAINERS                                   |    6 +
+ arch/arm64/configs/defconfig                  |    1 +
+ drivers/media/i2c/Kconfig                     |   13 +
+ drivers/media/i2c/Makefile                    |    1 +
+ drivers/media/i2c/hi846.c                     | 2138 +++++++++++++++++
+ 8 files changed, 2261 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+ create mode 100644 drivers/media/i2c/hi846.c
+
 -- 
 2.30.2
 
