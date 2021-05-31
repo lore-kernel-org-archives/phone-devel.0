@@ -2,147 +2,173 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7412C4708C
-	for <phone-devel@archiver.kernel.org>; Fri, 28 May 2021 11:57:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CDA5C47080
+	for <phone-devel@archiver.kernel.org>; Mon, 31 May 2021 11:24:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B6AB161186
-	for <phone-devel@archiver.kernel.org>; Fri, 28 May 2021 11:57:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5AD3B6135F
+	for <phone-devel@archiver.kernel.org>; Mon, 31 May 2021 11:24:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235671AbhE1L6m (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 28 May 2021 07:58:42 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.168]:14924 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233262AbhE1L6m (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 28 May 2021 07:58:42 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1622203024; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=antOzkoX49nOE9T3UJfhvXSv6XH0ztXYwa5304znwlFmSLtCvKXYkowTgHxBCBGIzN
-    mXvEb6FVQvCcVvla3R7XIwgiha7WXNm+m3mA0dELO3VJf3+SRtRz39EmjwXzvY85Zv8H
-    HvRjHzx79NvQ74WMWC8M9JaO29e9POkHxGEZ9/tGnb7UG8d2ybwzMz0vHYfjv+jXvG5k
-    NiTabIJQnQRhSA1UlWGzx7sGHEakfQQQm77Mj3Dn4eVz4oJRjptKZj/gJHp16bkuNNRk
-    HFPVGzbhzs9n0PGWOj28aZeov+OxGFPusv0B8jNjo3F0J7YNInBsykdRHpOpQBmLNa7r
-    T2Rg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1622203024;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=Q/L9hl8VwyWHuAq5AZ8u3vsGnL+SPsZZXhvKMIEnenY=;
-    b=ovbbj5CIw3nO/nHP+jKkZeIzZXBJmXwzRFXAgB2AFxrs1uJzdMxUC/+XnPw6WT2c+9
-    ofEyiWLD/76dCh1wKXcEAzXo85LZBLN7P9Me2QTA+RlZw3HM+tXn5T7lKaEEfb1cl/Vx
-    MSoSQlilbd3rk6WA5X+6LigkGx/TjlaKHaH56XXvobt4NViY8t6ASgiOBCuH1Ar0HAIz
-    PcXn0AFLAklB2FSslpCpgDr8wO2iHeDwgkCujJeIVSvcs8xlNOKSDhSQ1E3IMunv8COQ
-    pjGpEQkO0iki563RF0jCJHPJ2t7oVYq0scc8sUvvHNdAH5Te7xqUEw7MVWlTQ+/xCt7L
-    EbIA==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1622203024;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=Q/L9hl8VwyWHuAq5AZ8u3vsGnL+SPsZZXhvKMIEnenY=;
-    b=EQA3JCAeZizbYsJpQINZk3qkAIqkhg84lxkkxLR3KcCdtIHF7yYDeU8K7ENdwywS9l
-    bV9vspwlIMQ0heWlTMCIYPnyuF7Rq+kSNwPscNPUqRGfctTnXzfRNuWala5ScOj+HpiB
-    DCCiJwE6CZnf044SLwj0hCVOi7TD60EYbDikBehD2zEvyMNusRyqNqqyQdAJiCqMt051
-    ZO1TdrGPgSv1j1S0aEBVGWNY5zGum2SSY/ehiVSncSXWeYP2PqWmlBdSBbJz5d6Ejr3X
-    iJ/RYD8FrEy4I2MyhrIQWJOZRoF7QPkbQRZgo47FToy5ybHokfFbQgahKyeLDIIztewp
-    ZQdg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8j6IczFY4o="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 47.26.3 DYNA|AUTH)
-    with ESMTPSA id U0b2c9x4SBv366O
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Fri, 28 May 2021 13:57:03 +0200 (CEST)
-Date:   Fri, 28 May 2021 13:57:02 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Vincent Knecht <vincent.knecht@mailoo.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v1] arm64: dts: qcom: msm8916-alcatel-idol347: enable
- touchscreen
-Message-ID: <YLDajqW826vi/edi@gerhold.net>
-References: <20210528114345.543761-1-vincent.knecht@mailoo.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210528114345.543761-1-vincent.knecht@mailoo.org>
+        id S231240AbhEaLZ4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 31 May 2021 07:25:56 -0400
+Received: from comms.puri.sm ([159.203.221.185]:59500 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230518AbhEaLZy (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 31 May 2021 07:25:54 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id DC11DE1B00;
+        Mon, 31 May 2021 04:24:11 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id aVXX4gpULj9V; Mon, 31 May 2021 04:24:11 -0700 (PDT)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     martin.kepplinger@puri.sm, festevam@gmail.com, krzk@kernel.org,
+        laurent.pinchart@ideasonboard.com, mchehab@kernel.org,
+        robh@kernel.org
+Cc:     devicetree@vger.kernel.org, kernel@pengutronix.de, kernel@puri.sm,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-staging@lists.linux.dev, shawnguo@kernel.org,
+        slongerbeam@gmail.com, phone-devel@vger.kernel.org
+Subject: [PATCH v2 3/3] arm64: dts: imx8mq: add mipi csi phy and csi bridge descriptions
+Date:   Mon, 31 May 2021 13:23:26 +0200
+Message-Id: <20210531112326.90094-4-martin.kepplinger@puri.sm>
+In-Reply-To: <20210531112326.90094-1-martin.kepplinger@puri.sm>
+References: <20210531112326.90094-1-martin.kepplinger@puri.sm>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, May 28, 2021 at 01:43:45PM +0200, Vincent Knecht wrote:
-> Enable the MStar msg2638 touchscreen.
-> 
-> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+Describe the 2 available CSI interfaces on the i.MX8MQ with the MIPI-CSI2
+receiver and the CSI Bridge that provides the user buffers, where the
+existing driver can directly be used.
 
-Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
+An image sensor is to be connected to the MIPIs' second port, described in
+board files.
 
-Thanks!
-Stephan
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+---
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi | 102 ++++++++++++++++++++++
+ 1 file changed, 102 insertions(+)
 
-> ---
->  .../boot/dts/qcom/msm8916-alcatel-idol347.dts | 26 +++++++++++++++++++
->  1 file changed, 26 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts b/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
-> index 540b1fa4b260..670bd1bebd73 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
-> @@ -45,6 +45,24 @@ &blsp1_uart2 {
->  	status = "okay";
->  };
->  
-> +&blsp_i2c4 {
-> +	status = "okay";
-> +
-> +	touchscreen@26 {
-> +		compatible = "mstar,msg2638";
-> +		reg = <0x26>;
-> +		interrupt-parent = <&msmgpio>;
-> +		interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
-> +		reset-gpios = <&msmgpio 100 GPIO_ACTIVE_LOW>;
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&ts_int_reset_default>;
-> +		vdd-supply = <&pm8916_l17>;
-> +		vddio-supply = <&pm8916_l5>;
-> +		touchscreen-size-x = <2048>;
-> +		touchscreen-size-y = <2048>;
-> +	};
-> +};
-> +
->  &blsp_i2c5 {
->  	status = "okay";
->  
-> @@ -281,6 +299,14 @@ proximity_int_default: proximity-int-default {
->  		bias-pull-up;
->  	};
->  
-> +	ts_int_reset_default: ts-int-reset-default {
-> +		pins = "gpio13", "gpio100";
-> +		function = "gpio";
-> +
-> +		drive-strength = <2>;
-> +		bias-disable;
-> +	};
-> +
->  	usb_id_default: usb-id-default {
->  		pins = "gpio69";
->  		function = "gpio";
-> -- 
-> 2.31.1
-> 
-> 
-> 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+index 91df9c5350ae..5bf02f4f904d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+@@ -1099,6 +1099,108 @@ uart4: serial@30a60000 {
+ 				status = "disabled";
+ 			};
+ 
++			mipi_csi1: mipi_csi1@30a70000 {
++				compatible = "fsl,imx8mq-mipi-csi2";
++				reg = <0x30a70000 0x1000>;
++				clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
++				   <&clk IMX8MQ_CLK_CSI1_ESC>,
++				   <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
++				   <&clk IMX8MQ_CLK_CLKO2>;
++				clock-names = "core", "esc", "pxl", "clko2";
++				assigned-clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
++				    <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
++				    <&clk IMX8MQ_CLK_CSI1_ESC>;
++				assigned-clock-rates = <266000000>, <200000000>, <66000000>;
++				assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
++					<&clk IMX8MQ_SYS2_PLL_1000M>,
++					<&clk IMX8MQ_SYS1_PLL_800M>;
++				power-domains = <&pgc_mipi_csi1>;
++				phy-reset = <&src>;
++				phy-gpr = <&iomuxc_gpr>;
++				interconnects = <&noc IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
++				interconnect-names = "dram";
++				status = "disabled";
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++
++						csi1_mipi_ep: endpoint {
++							remote-endpoint = <&csi1_ep>;
++						};
++					};
++				};
++			};
++
++			csi1_bridge: csi1_bridge@30a90000 {
++				compatible = "fsl,imx7-csi";
++				reg = <0x30a90000 0x10000>;
++				interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
++				clocks = <&clk IMX8MQ_CLK_CSI1_ROOT>;
++				clock-names = "mclk";
++				status = "disabled";
++
++				port {
++					csi1_ep: endpoint {
++						remote-endpoint = <&csi1_mipi_ep>;
++					};
++				};
++			};
++
++			mipi_csi2: mipi_csi2@30b60000 {
++				compatible = "fsl,imx8mq-mipi-csi2";
++				reg = <0x30b60000 0x1000>;
++				clocks = <&clk IMX8MQ_CLK_CSI2_CORE>,
++				   <&clk IMX8MQ_CLK_CSI2_ESC>,
++				   <&clk IMX8MQ_CLK_CSI2_PHY_REF>,
++				   <&clk IMX8MQ_CLK_CLKO2>;
++				clock-names = "core", "esc", "pxl", "clko2";
++				assigned-clocks = <&clk IMX8MQ_CLK_CSI2_CORE>,
++				    <&clk IMX8MQ_CLK_CSI2_PHY_REF>,
++				    <&clk IMX8MQ_CLK_CSI2_ESC>;
++				assigned-clock-rates = <266000000>, <333000000>, <66000000>;
++				assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
++					<&clk IMX8MQ_SYS2_PLL_1000M>,
++					<&clk IMX8MQ_SYS1_PLL_800M>;
++				power-domains = <&pgc_mipi_csi2>;
++				phy-reset = <&src>;
++				phy-gpr = <&iomuxc_gpr>;
++				interconnects = <&noc IMX8MQ_ICM_CSI2 &noc IMX8MQ_ICS_DRAM>;
++				interconnect-names = "dram";
++				status = "disabled";
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++
++						csi2_mipi_ep: endpoint {
++							remote-endpoint = <&csi2_ep>;
++						};
++					};
++				};
++			};
++
++			csi2_bridge: csi2_bridge@30b80000 {
++				compatible = "fsl,imx7-csi";
++				reg = <0x30b80000 0x10000>;
++				interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
++				clocks = <&clk IMX8MQ_CLK_CSI2_ROOT>;
++				clock-names = "mclk";
++				status = "disabled";
++
++				port {
++					csi2_ep: endpoint {
++						remote-endpoint = <&csi2_mipi_ep>;
++					};
++				};
++			};
++
+ 			mu: mailbox@30aa0000 {
+ 				compatible = "fsl,imx8mq-mu", "fsl,imx6sx-mu";
+ 				reg = <0x30aa0000 0x10000>;
+-- 
+2.30.2
+
