@@ -2,262 +2,53 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CFC5C47080
-	for <phone-devel@archiver.kernel.org>; Tue,  1 Jun 2021 00:46:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77327C4708F
+	for <phone-devel@archiver.kernel.org>; Tue,  1 Jun 2021 09:16:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D34B06100A
-	for <phone-devel@archiver.kernel.org>; Tue,  1 Jun 2021 00:45:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 598E9613AF
+	for <phone-devel@archiver.kernel.org>; Tue,  1 Jun 2021 09:16:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232042AbhFAAri (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 31 May 2021 20:47:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38388 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231714AbhFAAri (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 31 May 2021 20:47:38 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFD05C061574;
-        Mon, 31 May 2021 17:45:57 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 97EE588C;
-        Tue,  1 Jun 2021 02:45:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1622508354;
-        bh=aaRaIinwqCNhQXmrnWaLPdMOsD1/sPsbMK/Wqq0cc9o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hZpfMmrkCtS/ht7hbbbEOf9dQV7C/WtkS2JxTddCj851tjWgVmXd3ev+l2jYpK+Lq
-         5sz09PgOwsdrMexPRg4yAEuKNdsnDuORUqbE65dDqeRuRQYBrTSbJLQn4HD/T1pq49
-         qSAMEc0wkKPzcurbBnx6WsIGxnd4OmEYDeNHRGeM=
-Date:   Tue, 1 Jun 2021 03:45:44 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     festevam@gmail.com, krzk@kernel.org, mchehab@kernel.org,
-        robh@kernel.org, devicetree@vger.kernel.org, kernel@pengutronix.de,
-        kernel@puri.sm, linux-arm-kernel@lists.infradead.org,
-        linux-imx@nxp.com, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        shawnguo@kernel.org, slongerbeam@gmail.com,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: media: document the
- nxp,imx8mq-mipi-csi2 receiver phy and controller
-Message-ID: <YLWDOBHqnDQpXx5Z@pendragon.ideasonboard.com>
-References: <20210531112326.90094-1-martin.kepplinger@puri.sm>
- <20210531112326.90094-2-martin.kepplinger@puri.sm>
+        id S233514AbhFAJRz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 1 Jun 2021 05:17:55 -0400
+Received: from mail-0301.mail-europe.com ([188.165.51.139]:47997 "EHLO
+        mail-03.mail-europe.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S231139AbhFAJRy (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 1 Jun 2021 05:17:54 -0400
+Date:   Tue, 01 Jun 2021 09:16:04 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1622538970;
+        bh=zEBoQZuXbcl3vg0AJIfdTRqG2/JwXZI7r5xWwCgFELM=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=aj8sw0MJvu7B7j34QaU2xex28JPvliA57kkKQuZ0mp38/shxMqPZj1oLtKjBdpsFx
+         5pqBSKkhgIV4doqk8drQHzY8EBZ4/nTozFeSSqBxouKHkgXW3n95kwORJodqSXL4dU
+         mb+VEmWv7ageYdxf9jzPDW+IZiz38Z3KA4ya1lhs=
+To:     "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>
+From:   Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>,
+        "~postmarketos/upstreaming@lists.sr.ht" 
+        <~postmarketos/upstreaming@lists.sr.ht>
+Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
+Subject: Re: [PATCH 1/2] Input: cypress-sf - Add Cypress StreetFighter touchkey driver
+Message-ID: <bj_bmlxlyRbM5zdpsUEqvPyby_NWhFH95Y9wn9b7EIpvi2N48e6x6dBFY9EpyS4mxJhuRRJeC4ReVM3YMawD44RBZDHdSKftdbV6E8AMuoo=@protonmail.com>
+In-Reply-To: <ocb1SNCqWH2dOajA4VYTx5jo9jZ67pS6FTejJN82OnPIUdmqBXL62kjGDQ-ZIMPnmhm3C16FCJz94cs82kGFmFBq7mERwqtHhwr7BgZC_w0=@protonmail.com>
+References: <ocb1SNCqWH2dOajA4VYTx5jo9jZ67pS6FTejJN82OnPIUdmqBXL62kjGDQ-ZIMPnmhm3C16FCJz94cs82kGFmFBq7mERwqtHhwr7BgZC_w0=@protonmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210531112326.90094-2-martin.kepplinger@puri.sm>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Martin,
+Any comments on this patch?
 
-Thank you for the patch.
-
-On Mon, May 31, 2021 at 01:23:24PM +0200, Martin Kepplinger wrote:
-> The i.MX8MQ SoC integrates a different MIPI CSI receiver as the i.MX8MM so
-> describe the DT bindings for it.
-> 
-> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-> ---
->  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 162 ++++++++++++++++++
->  1 file changed, 162 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
-> new file mode 100644
-> index 000000000000..4e3b17c220fc
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
-> @@ -0,0 +1,162 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/nxp,imx8mq-mipi-csi2.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP and i.MX8MQ MIPI CSI-2 receiver
-
-s/and //
-
-> +
-> +maintainers:
-> +  - Martin Kepplinger <martin.kepplinger@puri.sm>
-> +
-> +description: |-
-> +  This binding covers the CSI-2 RX PHY and host controller included in the
-> +  NXP i.MX8MQ SoC. It handles the sensor/image input and process for all the
-> +  input imaging devices.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - fsl,imx8mq-mipi-csi2
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    minItems: 4
-
-A description of each clock would be nice.
-
-> +
-> +  clock-names:
-> +    minItems: 4
-
-You can drop this, it's the default with 4 items listed below.
-
-> +    items:
-> +      - const: core
-> +      - const: esc
-> +      - const: pxl
-> +      - const: clko2
-> +
-> +  assigned-clocks:
-> +    maxItems: 3
-> +
-> +  assigned-clock-rates:
-> +    maxItems: 3
-> +
-> +  assigned-clock-parents:
-> +    maxItems: 3
-
-Those properties shouldn't be part of the bindings, it's a system
-configuration policy.
-
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  phy-reset:
-> +    description:
-> +      The phandle to the imx8mq reset-controller.
-> +    maxItems: 1
-> +
-> +  phy-gpr:
-> +    description:
-> +      The phandle to the imx8mq syscon iomux-gpr.
-> +    maxItems: 1
-> +
-> +  interconnects:
-> +    maxItems: 1
-> +
-> +  interconnect-names:
-> +    const: dram
-> +
-> +  ports:
-> +    $ref: /schemas/graph.yaml#/properties/ports
-> +
-> +    properties:
-> +      port@0:
-> +        $ref: /schemas/graph.yaml#/$defs/port-base
-> +        unevaluatedProperties: false
-> +        description:
-> +          Input port node, single endpoint describing the CSI-2 transmitter.
-> +
-> +        properties:
-> +          endpoint:
-> +            $ref: video-interfaces.yaml#
-> +            unevaluatedProperties: false
-> +
-> +            properties:
-> +              data-lanes:
-> +                items:
-> +                  minItems: 1
-> +                  maxItems: 4
-> +                  items:
-> +                    - const: 1
-> +                    - const: 2
-> +                    - const: 3
-> +                    - const: 4
-> +
-> +            required:
-> +              - data-lanes
-> +
-> +      port@1:
-> +        $ref: /schemas/graph.yaml#/properties/port
-> +        description:
-> +          Output port node
-
-    required:
-      - port@0
-      - port@1
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +  - assigned-clocks
-> +  - assigned-clock-rates
-> +  - assigned-clock-parents
-> +  - power-domains
-> +  - phy-reset
-> +  - phy-gpr
-> +  - ports
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/imx8mq-clock.h>
-> +    #include <dt-bindings/interconnect/imx8mq.h>
-> +
-> +    mipi_csi1@30a70000 {
-> +        compatible = "fsl,imx8mq-mipi-csi2";
-> +        reg = <0x30a70000 0x1000>; /* MIPI CSI1 Controller base addr */
-> +        clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
-> +                 <&clk IMX8MQ_CLK_CSI1_ESC>,
-> +                 <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
-> +                 <&clk IMX8MQ_CLK_CLKO2>;
-> +        clock-names = "core", "esc", "pxl", "clko2";
-> +        assigned-clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
-> +                          <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
-> +                          <&clk IMX8MQ_CLK_CSI1_ESC>;
-> +        assigned-clock-rates = <266000000>, <200000000>, <66000000>;
-> +        assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
-> +                                 <&clk IMX8MQ_SYS2_PLL_1000M>,
-> +                                 <&clk IMX8MQ_SYS1_PLL_800M>;
-> +        power-domains = <&pgc_mipi_csi1>;
-> +        phy-reset = <&src>;
-> +        phy-gpr = <&iomuxc_gpr>;
-> +        interconnects = <&noc IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
-> +        interconnect-names = "dram";
-> +
-> +        ports {
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            port@0 {
-> +                reg = <0>;
-> +
-> +                imx8mm_mipi_csi_in: endpoint {
-> +                    remote-endpoint = <&imx477_out>;
-> +                    data-lanes = <1 2 3 4>;
-> +                };
-> +            };
-> +
-> +            port@1 {
-> +                reg = <1>;
-> +
-> +                imx8mm_mipi_csi_out: endpoint {
-> +                    remote-endpoint = <&csi_in>;
-> +                };
-> +            };
-> +        };
-> +    };
-> +
-> +...
-
--- 
-Regards,
-
-Laurent Pinchart
+Yassine
