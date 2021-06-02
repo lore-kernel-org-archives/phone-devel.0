@@ -2,89 +2,109 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EF7AFC47083
-	for <phone-devel@archiver.kernel.org>; Wed,  2 Jun 2021 16:17:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 28B5BC4708F
+	for <phone-devel@archiver.kernel.org>; Wed,  2 Jun 2021 17:58:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D2DDB61948
-	for <phone-devel@archiver.kernel.org>; Wed,  2 Jun 2021 16:17:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 02A2361DAF
+	for <phone-devel@archiver.kernel.org>; Wed,  2 Jun 2021 17:58:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230161AbhFBQTR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 2 Jun 2021 12:19:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54670 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229911AbhFBQTO (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 2 Jun 2021 12:19:14 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1DF1861943;
-        Wed,  2 Jun 2021 16:17:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622650650;
-        bh=8NTOtVAUlWpijIjD+K59+VsdlOTTwWVBZEPEICpdQiU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gBjTIE9LH9twgKWQYnj4/GAKhRzPCNCrdnNFa9Xr6aOEZ1AFkPtayHjNw+AmqO/mi
-         aBP+qQ2zlR4jaUg/g+wy4DyDTyc+C6XfdQ6rssF2nBHx3Gau5320aMLbTVENlwHDm+
-         W2Hr0xmGUweNXSgS+Fq6WwC125ZIKFs20umhwNctDX7/jOW0TiklK+QVwW85BodTMq
-         ZfjgTix5aLIYIwPzz/bmVwUKnZFmi/gt2UkJc3vQjJCD/d4Mgf0JAfiwU9nZCP7HmL
-         YudRKOfIfyXq01Vd7yUfE+LpPEnknjtRkSGJP8obPh74rrJs2Un9Nc5k3xmkXZoBsx
-         qm0Aafr3SW07w==
-From:   Mark Brown <broonie@kernel.org>
-To:     Vincent Knecht <vincent.knecht@mailoo.org>
-Cc:     Mark Brown <broonie@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, alsa-devel@alsa-project.org,
-        phone-devel@vger.kernel.org, Takashi Iwai <tiwai@suse.com>,
-        devicetree@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Stephan Gerhold <stephan@gerhold.net>
-Subject: Re: [PATCH v1 1/4] ASoC: dt-bindings: nxp,tfa989x: Add tfa9897 support
-Date:   Wed,  2 Jun 2021 17:16:55 +0100
-Message-Id: <162265045454.22459.11419124227044779135.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210528105101.508254-1-vincent.knecht@mailoo.org>
-References: <20210528105101.508254-1-vincent.knecht@mailoo.org>
+        id S229679AbhFBR7o (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 2 Jun 2021 13:59:44 -0400
+Received: from perceval.ideasonboard.com ([213.167.242.64]:33898 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229467AbhFBR7o (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 2 Jun 2021 13:59:44 -0400
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id BE81AD97;
+        Wed,  2 Jun 2021 19:57:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1622656679;
+        bh=j5Dto5uF6GSs+WOklTsW00y8nQqle4dGp7ECq4A6QHk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PG7YMTpI+ungokDfiRoie5c19S7Y0col6BJU4wH8TzxuUfV41QBb+kcrJrjzdo1hU
+         6Qx/WN9u9v2SU2qNzNbQkljQfYvQcvdOWI23DQGCXJqOccqbk4A6Jq1kLt1oGcwkfD
+         pwfNrpPvpVso7mIzfq6rI9aSNqYwOEu4qJHIpiLk=
+Date:   Wed, 2 Jun 2021 20:57:47 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     pavel@ucw.cz, krzysztof.kozlowski@canonical.com,
+        mchehab@kernel.org, paul.kocialkowski@bootlin.com, robh@kernel.org,
+        shawnx.tu@intel.com, devicetree@vger.kernel.org, kernel@puri.sm,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 3/5] media: i2c: add driver for the SK Hynix Hi-846 8M
+ pixel camera
+Message-ID: <YLfGm0TD4m3fXEao@pendragon.ideasonboard.com>
+References: <20210531120737.168496-1-martin.kepplinger@puri.sm>
+ <20210531120737.168496-4-martin.kepplinger@puri.sm>
+ <YLV7+tuTZbr3boTw@pendragon.ideasonboard.com>
+ <84292af283a5a37289940478a25402631018c973.camel@puri.sm>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <84292af283a5a37289940478a25402631018c973.camel@puri.sm>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 28 May 2021 12:50:58 +0200, Vincent Knecht wrote:
-> Document TFA9897 bindings.
+Hi Martin,
 
-Applied to
+On Wed, Jun 02, 2021 at 02:00:11PM +0200, Martin Kepplinger wrote:
+> Am Dienstag, dem 01.06.2021 um 03:14 +0300 schrieb Laurent Pinchart:
+> > On Mon, May 31, 2021 at 02:07:35PM +0200, Martin Kepplinger wrote:
+> > > The SK Hynix Hi-846 is a 1/4" 8M Pixel CMOS Image Sensor. It supports
+> > > usual features like I2C control, CSI-2 for frame data, digital/analog
+> > > gain control or test patterns.
+> > > 
+> > > This driver supports the 640x480, 1280x720 and 1632x1224 resolution
+> > > modes. It supports runtime PM in order not to draw any unnecessary
+> > > power.
+> > > 
+> > > The part is also called YACG4D0C9SHC and a datasheet can be found at
+> > > https://product.skhynix.com/products/cis/cis.go
+> > > 
+> > > The large sets of partly undocumented register values are for example
+> > > found when searching for the hi846_mipi_raw_Sensor.c Android driver.
+> > 
+> > A common story, unfortunately :-S
+> > 
+> > I've done an initial review, I'll likely have more comments on v4, but
+> > you should have quite a few things to address already :-)
+> > 
+> > > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> > > ---
+> > >  MAINTAINERS                |    6 +
+> > >  drivers/media/i2c/Kconfig  |   13 +
+> > >  drivers/media/i2c/Makefile |    1 +
+> > >  drivers/media/i2c/hi846.c  | 2138 ++++++++++++++++++++++++++++++++++++
+> > >  4 files changed, 2158 insertions(+)
+> > >  create mode 100644 drivers/media/i2c/hi846.c
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+[snip]
 
-Thanks!
+> Thank you, Laurent for that wonderful review. It made me rework/fix the
+> power supply interface + sequencing in the driver (and even better
+> understand how it's supplied on my board).
+> 
+> I want to take all your review into account for a next revision, except
+> for the additional bits for the register definitions, that should
+> encode the length, if that's ok. We can choose whether to write 1 or 2
+> bytes at a given address and it just looks nice and simple to me as it
+> is.
 
-[1/4] ASoC: dt-bindings: nxp,tfa989x: Add tfa9897 support
-      commit: 513df99993857863e42bf3d7d65d87c191ce9493
-[2/4] ASoC: codecs: tfa989x: Add support for tfa9897
-      commit: 1ba1d69d8aa938f64cb07604b320a5074c3bb107
-[3/4] ASoC: dt-bindings: nxp, tfa989x: Add vddd-supply property
-      commit: 9cf1a98e2b0171e2586a13197a9a1ad605336166
-[4/4] ASoC: codecs: tfa989x: Add support for optional vddd-supply
-      commit: 8e5607e9941ce915187785bd09805bf7df9f7349
+I won't push strongly, but in my experience it's error-prone, as it's
+easy to select the incorrect number of bytes. That's what led me to
+create this mechanism to bundle register addresses and sizes, it has
+simplified my life when writing drivers. I think it should actually be
+turned into a helper, possibly provided by regmap.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-- 
+Regards,
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Laurent Pinchart
