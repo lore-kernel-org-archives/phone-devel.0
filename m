@@ -2,68 +2,138 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CB77C47092
-	for <phone-devel@archiver.kernel.org>; Wed,  2 Jun 2021 03:25:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 312DEC47092
+	for <phone-devel@archiver.kernel.org>; Wed,  2 Jun 2021 06:50:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2CEEF6128A
-	for <phone-devel@archiver.kernel.org>; Wed,  2 Jun 2021 03:25:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F286A61090
+	for <phone-devel@archiver.kernel.org>; Wed,  2 Jun 2021 06:50:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229913AbhFBD0w (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 1 Jun 2021 23:26:52 -0400
-Received: from mail-0301.mail-europe.com ([188.165.51.139]:50057 "EHLO
-        mail-03.mail-europe.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229691AbhFBD0w (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 1 Jun 2021 23:26:52 -0400
-Date:   Wed, 02 Jun 2021 03:25:02 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1622604306;
-        bh=VEHPJSJC/3rTRLt0HpZHiBB2+tWfV7rQpwuFURen29M=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=r32hjhmEyT4YUalY4tIXbTrFiLuHZIRvuaCFj8iHaGpg0ENikzKL0pODJuuI9PU9Y
-         FM2ZfiaiaW2APETD4G49M+7RSo7p5Ucsn2FIoVtez2kYxT9nm/BUsZTo800y6t6K5k
-         kkrRfKHIgjmmHEJ/PODW1MPUhzJW2lUaSQUyegEU=
-To:     "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>
-From:   Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>,
-        "~postmarketos/upstreaming@lists.sr.ht" 
-        <~postmarketos/upstreaming@lists.sr.ht>
-Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
-Subject: Re: [PATCH 1/2] Input: cypress-sf - Add Cypress StreetFighter touchkey driver
-Message-ID: <vXRJOabHa4SHho3woxsMCZWVVduIWcO_qRQ4yW0cdtpY_fWrFp9epbWdiEPuwnvWbpfrbJ9TV4j9ReiHl5QdprgRVcr2tdxs6mIOMBe0oT4=@protonmail.com>
-In-Reply-To: <bj_bmlxlyRbM5zdpsUEqvPyby_NWhFH95Y9wn9b7EIpvi2N48e6x6dBFY9EpyS4mxJhuRRJeC4ReVM3YMawD44RBZDHdSKftdbV6E8AMuoo=@protonmail.com>
-References: <ocb1SNCqWH2dOajA4VYTx5jo9jZ67pS6FTejJN82OnPIUdmqBXL62kjGDQ-ZIMPnmhm3C16FCJz94cs82kGFmFBq7mERwqtHhwr7BgZC_w0=@protonmail.com> <bj_bmlxlyRbM5zdpsUEqvPyby_NWhFH95Y9wn9b7EIpvi2N48e6x6dBFY9EpyS4mxJhuRRJeC4ReVM3YMawD44RBZDHdSKftdbV6E8AMuoo=@protonmail.com>
+        id S229654AbhFBGv5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 2 Jun 2021 02:51:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37934 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229880AbhFBGvz (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 2 Jun 2021 02:51:55 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9BBAE61242;
+        Wed,  2 Jun 2021 06:50:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622616612;
+        bh=VemZ7psr2OhQF+zfrudEtorjnDEKvdpdz5/6ajamHs0=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=BC0U1s0/XVl/CrX92nOCkvqME2Dxd+cATbgnHRbiSFA7BdFgOwTJcMcLGGuoKOHPB
+         nta+YwGhzJBd+RhXtzUpoPun7NK8cewqRJVEVuHHeRWLaz9G7LspEAS31ivtLYUeN4
+         /4Bj0FFa65+T6/rMVs1HHY6q5bBhJyVCbhB+SuyWjkS/p3O+S/j1OaUINV9rdrFhDl
+         rLUNxGpELJLjPnAlBapJqoOHwZpk0WTD0Ry9axyr9evUFT1pKNqxxT9mRtGXUvEW6V
+         G9+40IJCJjLCZq72xu70DngBNwJCuxyMI2JuM349M53xnTgsO+ok0GJ4tjezwUowfs
+         S4W6vpCNbFw7w==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210313020310.386152-2-konrad.dybcio@somainline.org>
+References: <20210313020310.386152-1-konrad.dybcio@somainline.org> <20210313020310.386152-2-konrad.dybcio@somainline.org>
+Subject: Re: [PATCH 2/2] clk: qcom: Add MDM9607 GCC driver
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Taniya Das <tdas@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>,
+        phone-devel@vger.kernel.org
+Date:   Tue, 01 Jun 2021 23:50:11 -0700
+Message-ID: <162261661130.4130789.14150099315161377490@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Sorry, I have just realized that I replied to v1 of this patch.
+Quoting Konrad Dybcio (2021-03-12 18:03:08)
+> Add Global Clock Controller (GCC) support for MDM9607 SoC.
+>=20
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> ---
 
-Please check v2 instead:
-https://lore.kernel.org/linux-input/7PLVBAKRbtNysjS13InqsN59dLZarOcTPCpRg8H=
-H4@cp3-web-029.plabs.ch/T/#u
+Applied to clk-next
 
-Yassine
+>  drivers/clk/qcom/Kconfig       |    7 +
+>  drivers/clk/qcom/Makefile      |    1 +
+>  drivers/clk/qcom/gcc-mdm9607.c | 1656 ++++++++++++++++++++++++++++++++
+>  3 files changed, 1664 insertions(+)
+>  create mode 100644 drivers/clk/qcom/gcc-mdm9607.c
+>=20
+> diff --git a/drivers/clk/qcom/gcc-mdm9607.c b/drivers/clk/qcom/gcc-mdm960=
+7.c
+> new file mode 100644
+> index 000000000000..a4b3cff7e98f
+> --- /dev/null
+> +++ b/drivers/clk/qcom/gcc-mdm9607.c
+> @@ -0,0 +1,1656 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (c) 2021, Konrad Dybcio <konrad.dybcio@somainline.org>
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/bitops.h>
+> +#include <linux/err.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_device.h>
+> +#include <linux/clk.h>
 
-=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Original Me=
-ssage =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90
-On Tuesday, June 1, 2021 1:16 PM, Yassine Oudjana <y.oudjana@protonmail.com=
-> wrote:
+I dropped this.
 
-> Any comments on this patch?
->
-> Yassine
+> +#include <linux/clk-provider.h>
+> +#include <linux/regmap.h>
+> +#include <linux/reset-controller.h>
+> +
+> +#include <dt-bindings/clock/qcom,gcc-mdm9607.h>
+> +
+> +#include "common.h"
+> +#include "clk-regmap.h"
+> +#include "clk-alpha-pll.h"
+> +#include "clk-pll.h"
+> +#include "clk-rcg.h"
+> +#include "clk-branch.h"
+> +#include "reset.h"
+> +#include "gdsc.h"
+> +
+[...]
+> +
+> +static const struct freq_tbl ftbl_pcnoc_bfdcd_clk_src[] =3D {
+> +       F(19200000, P_XO, 1, 0, 0),
+> +       F(50000000, P_GPLL0, 16, 0, 0),
+> +       F(100000000, P_GPLL0, 8, 0, 0),
+> +       { }
+> +};
+> +
+> +static struct clk_rcg2 pcnoc_bfdcd_clk_src =3D {
+> +       .cmd_rcgr =3D 0x27000,
+> +       .freq_tbl =3D ftbl_pcnoc_bfdcd_clk_src,
+> +       .hid_width =3D 5,
+> +       .parent_map =3D gcc_xo_gpll0_bimc_map,
+> +       .clkr.hw.init =3D &(struct clk_init_data){
+> +               .name =3D "pcnoc_bfdcd_clk_src",
+> +               .parent_data =3D gcc_xo_gpll0_bimc,
+> +               .num_parents =3D ARRAY_SIZE(gcc_xo_gpll0_bimc),
+> +               .ops =3D &clk_rcg2_ops,
+> +               .flags =3D CLK_IS_CRITICAL,
 
+Is this how it is downstream? Because it looks like this will mean that
+xo shutdown can never be achieved.
 
+> +       },
+> +};
+> +
