@@ -2,204 +2,255 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DBECC48BE8
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Jun 2021 17:31:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05A00C4743C
+	for <phone-devel@archiver.kernel.org>; Fri,  4 Jun 2021 21:37:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5C99A61405
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Jun 2021 17:31:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DD4FE61406
+	for <phone-devel@archiver.kernel.org>; Fri,  4 Jun 2021 21:37:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231213AbhFDRdi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 4 Jun 2021 13:33:38 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.81]:13066 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230508AbhFDRdh (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Jun 2021 13:33:37 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1622827906; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=FfNbc5Ygj+VwOZMsmA4zRq9MiRJWkVPuke4BFF2udE1vuzy/u+Fbrxj1/z0lWvhyWG
-    +rml+4a65aHPVk9Z8EQXy3new/0FgB5VtUUW3u7SPsM+1Iloks203FS7zj6IfwnSShX3
-    3sE6v3Kk8aOoyZ2OZuyFy1yaNrNmpoh7IrmM4dNtxCEfvfiCGDFk82Oon4oAgMa6ta/U
-    ikk0RoLbLejKZkmc2MW5A12ct2xUb9qbTVK+lgvBGxtGCVyt3akVzjWp7iLj+hQnOsif
-    UgyOe0JlH8JzcU+UNXUkrKpzz0CiYsnwJErtSqMaAba9+F1bdoYCn5t49jmRK86FGxQ+
-    lS+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1622827906;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=mSYYPDriWafDsRnOq+e+C/pvcp+yUcNz2lLVJri/j88=;
-    b=IWgknCRaeyrVDK3X7+5SLVpW9oIjsi8OhhJP2BpZp9eZf7gLWKf2zyx2fwCdqhJ3fa
-    TTyh4S2p7Hf2MoYlKztNDPPaxXN4lX+Ypv14zXFtYsVzUkTfiAFBWIXaaJR6/xpmndLR
-    vAcslNkCJIM9RXwKf5jzVH28yExCChyfVP8uZIj+7D4tcZwwVp52/NuMWHN3wC1wEVZK
-    BI6jlUGZaXgb2PBNMlQZ72fgOxChnIeG4Wf2RrInaQDCRnISeErCzK1ld4ymMhMhXN3i
-    Jdteudg5irVLG5eUvgyBWzCvKcx+LeptDW/hYqtPx0zgTUeSlK5QrLRGpSad+kz3IqAA
-    LcDg==
-ARC-Authentication-Results: i=1; strato.com;
-    dkim=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1622827906;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=mSYYPDriWafDsRnOq+e+C/pvcp+yUcNz2lLVJri/j88=;
-    b=r+j84QF89zvDdLE7k8FmaZs0SncsfWMPV/vhiKwKMludSV99CLoPjulewG5Ssg0gUr
-    uBrIm3KjpAGFTvQ2RV1qqxBbjUMUpEVguEQt+QtOwcj8Z5eyGymU2MlDoMlTWowkMnjV
-    9d71ikyuzY3cnnOodtK4TXPW8slRswtBsmtabAf7Ix8urHWKlFz2HMPpacAe082WG+wA
-    ue86k32ud6kDRKP1FmNMRshWWa0N28cHaK4xrBGUqb2h6pNWM0Ra7z0drXGRd10ttmME
-    L589hKlcwK1Z2MwVzOuh6S7Z6pw7btCxLx8WTD/yrHGJ2tHmfqTRE/hpuj6F4IeD2yJz
-    4Naw==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxB5m6Pvxo="
-X-RZG-CLASS-ID: mo00
-Received: from droid..
-    by smtp.strato.de (RZmta 47.27.2 DYNA|AUTH)
-    with ESMTPSA id y01375x54HVjH5b
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Fri, 4 Jun 2021 19:31:45 +0200 (CEST)
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Michael Srba <Michael.Srba@seznam.cz>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Subject: [PATCH 5/5] arm64: dts: qcom: msm8916-samsung-a2015: Add NFC
-Date:   Fri,  4 Jun 2021 19:27:42 +0200
-Message-Id: <20210604172742.10593-5-stephan@gerhold.net>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210604172742.10593-1-stephan@gerhold.net>
-References: <20210604172742.10593-1-stephan@gerhold.net>
+        id S230264AbhFDVjc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 4 Jun 2021 17:39:32 -0400
+Received: from mail-oo1-f44.google.com ([209.85.161.44]:45050 "EHLO
+        mail-oo1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230242AbhFDVjb (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Jun 2021 17:39:31 -0400
+Received: by mail-oo1-f44.google.com with SMTP id o5-20020a4a2c050000b0290245d6c7b555so2568585ooo.11;
+        Fri, 04 Jun 2021 14:37:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Utd5Q3vo5MjFZyun8vrWlVKBnn1w3zWcUu6IodeWHUU=;
+        b=TOBCfyd5axBJ2Z5eGacKVay6KjqOkBYxpDxJl6TzLpCn8gRoIWvq1eNIfs26sDkU6S
+         kNdsv3xoqnWG5zNjt4du01udd8AgTMqg2QqLZiBayJRPc6GeREDUHnOoJk0AGU7gzrxn
+         dXDNG608iQPsifVVxU8C7e1Gs9Et6aPMliD5BDHGO85JVAPaugnTkAJ9YFAypKWO6Nn+
+         OYacqgd2c3mEJBFOkHDc9xsYZni3+8mEhyGbRwsDzuj0HkkTn2pyBBPUD472d8iOdR/s
+         kvdwR8hPT+pmeh1FXDl7YjNWYRyaPlliQ+rhBxnGIQRNgXPaubsfENVP1L6kk3e+qzgj
+         0f5g==
+X-Gm-Message-State: AOAM532k3U4JmH2zefCGf2ekIgRwtOvl6nGQ479o7huhd8gV4r6GoYTr
+        goR/OK7Vs9xMB90isx7n6g==
+X-Google-Smtp-Source: ABdhPJzvJgDQDeMiCoKjZthSNJrKCtqHQg3qyuYlPMBVAbp34R47bLfNiQpR/eAri9x8YIz3Ym8j4g==
+X-Received: by 2002:a4a:d85:: with SMTP id 127mr5337961oob.26.1622842648813;
+        Fri, 04 Jun 2021 14:37:28 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id m1sm731257otq.12.2021.06.04.14.37.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Jun 2021 14:37:28 -0700 (PDT)
+Received: (nullmailer pid 3965565 invoked by uid 1000);
+        Fri, 04 Jun 2021 21:37:26 -0000
+Date:   Fri, 4 Jun 2021 16:37:26 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     festevam@gmail.com, krzk@kernel.org,
+        laurent.pinchart@ideasonboard.com, mchehab@kernel.org,
+        devicetree@vger.kernel.org, kernel@pengutronix.de, kernel@puri.sm,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-staging@lists.linux.dev, shawnguo@kernel.org,
+        slongerbeam@gmail.com, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] dt-bindings: media: document the
+ nxp,imx8mq-mipi-csi2 receiver phy and controller
+Message-ID: <20210604213726.GA3960263@robh.at.kernel.org>
+References: <20210531112326.90094-1-martin.kepplinger@puri.sm>
+ <20210531112326.90094-2-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210531112326.90094-2-martin.kepplinger@puri.sm>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The Samsung Galaxy A3/A5 both have a Samsung S3FWRN5 NFC chip that
-works quite well with the s3fwrn5 driver in the Linux NFC subsystem.
+On Mon, May 31, 2021 at 01:23:24PM +0200, Martin Kepplinger wrote:
+> The i.MX8MQ SoC integrates a different MIPI CSI receiver as the i.MX8MM so
+> describe the DT bindings for it.
+> 
+> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> ---
+>  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 162 ++++++++++++++++++
+>  1 file changed, 162 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> new file mode 100644
+> index 000000000000..4e3b17c220fc
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> @@ -0,0 +1,162 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/nxp,imx8mq-mipi-csi2.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP and i.MX8MQ MIPI CSI-2 receiver
+> +
+> +maintainers:
+> +  - Martin Kepplinger <martin.kepplinger@puri.sm>
+> +
+> +description: |-
+> +  This binding covers the CSI-2 RX PHY and host controller included in the
+> +  NXP i.MX8MQ SoC. It handles the sensor/image input and process for all the
+> +  input imaging devices.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - fsl,imx8mq-mipi-csi2
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    minItems: 4
+> +
+> +  clock-names:
+> +    minItems: 4
+> +    items:
+> +      - const: core
+> +      - const: esc
+> +      - const: pxl
+> +      - const: clko2
+> +
+> +  assigned-clocks:
+> +    maxItems: 3
+> +
+> +  assigned-clock-rates:
+> +    maxItems: 3
+> +
+> +  assigned-clock-parents:
+> +    maxItems: 3
+> +
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +  phy-reset:
+> +    description:
+> +      The phandle to the imx8mq reset-controller.
+> +    maxItems: 1
 
-The clock setup for the NFC chip is a bit special (although this
-seems to be a common approach used for Qualcomm devices with NFC):
+Sounds like this should use the reset binding.
 
-The NFC chip has an output GPIO that is asserted whenever the clock
-is needed to function properly. On the A3/A5 this is wired up to
-PM8916 GPIO2, which is then configured with a special function
-(NFC_CLK_REQ or BB_CLK2_REQ).
+> +
+> +  phy-gpr:
+> +    description:
+> +      The phandle to the imx8mq syscon iomux-gpr.
+> +    maxItems: 1
 
-Enabling the rpmcc RPM_SMD_BB_CLK2_PIN clock will then instruct
-PM8916 to automatically enable the clock whenever the NFC chip
-requests it. The advantage is that the clock is only enabled when
-needed and we don't need to manage it ourselves from the NFC driver.
+Should be using the phy binding?
 
-Note that for some reason Samsung decided to connect the I2C pins
-to GPIOs where no hardware I2C bus is available, so we need to
-fall back to software bit-banging with i2c-gpio.
+> +
+> +  interconnects:
+> +    maxItems: 1
+> +
+> +  interconnect-names:
+> +    const: dram
+> +
+> +  ports:
+> +    $ref: /schemas/graph.yaml#/properties/ports
+> +
+> +    properties:
+> +      port@0:
+> +        $ref: /schemas/graph.yaml#/$defs/port-base
+> +        unevaluatedProperties: false
+> +        description:
+> +          Input port node, single endpoint describing the CSI-2 transmitter.
+> +
+> +        properties:
+> +          endpoint:
+> +            $ref: video-interfaces.yaml#
+> +            unevaluatedProperties: false
+> +
+> +            properties:
+> +              data-lanes:
+> +                items:
+> +                  minItems: 1
+> +                  maxItems: 4
+> +                  items:
+> +                    - const: 1
+> +                    - const: 2
+> +                    - const: 3
+> +                    - const: 4
+> +
+> +            required:
+> +              - data-lanes
+> +
+> +      port@1:
+> +        $ref: /schemas/graph.yaml#/properties/port
+> +        description:
+> +          Output port node
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - assigned-clocks
+> +  - assigned-clock-rates
+> +  - assigned-clock-parents
+> +  - power-domains
+> +  - phy-reset
+> +  - phy-gpr
+> +  - ports
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/imx8mq-clock.h>
+> +    #include <dt-bindings/interconnect/imx8mq.h>
+> +
+> +    mipi_csi1@30a70000 {
 
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
----
- .../qcom/msm8916-samsung-a2015-common.dtsi    | 64 +++++++++++++++++++
- 1 file changed, 64 insertions(+)
+csi@...
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
-index 9a6988ded29d..9b4b7de7cec2 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
-@@ -4,6 +4,7 @@
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/input/input.h>
- #include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
- 
- / {
- 	aliases {
-@@ -124,6 +125,34 @@ touchkey: touchkey@20 {
- 			pinctrl-0 = <&tkey_default>;
- 		};
- 	};
-+
-+	i2c-nfc {
-+		compatible = "i2c-gpio";
-+		sda-gpios = <&msmgpio 0 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+		scl-gpios = <&msmgpio 1 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&nfc_i2c_default>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		nfc@27 {
-+			compatible = "samsung,s3fwrn5-i2c";
-+			reg = <0x27>;
-+
-+			interrupt-parent = <&msmgpio>;
-+			interrupts = <21 IRQ_TYPE_EDGE_RISING>;
-+
-+			en-gpios = <&msmgpio 20 GPIO_ACTIVE_HIGH>;
-+			wake-gpios = <&msmgpio 49 GPIO_ACTIVE_HIGH>;
-+
-+			clocks = <&rpmcc RPM_SMD_BB_CLK2_PIN>;
-+
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&nfc_default &nfc_clk_req>;
-+		};
-+	};
- };
- 
- &blsp_i2c2 {
-@@ -384,6 +413,30 @@ muic_int_default: muic-int-default {
- 		bias-disable;
- 	};
- 
-+	nfc_default: nfc-default {
-+		pins = "gpio20", "gpio49";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-disable;
-+
-+		irq {
-+			pins = "gpio21";
-+			function = "gpio";
-+
-+			drive-strength = <2>;
-+			bias-pull-down;
-+		};
-+	};
-+
-+	nfc_i2c_default: nfc-i2c-default {
-+		pins = "gpio0", "gpio1";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	tkey_default: tkey-default {
- 		pins = "gpio98";
- 		function = "gpio";
-@@ -408,3 +461,14 @@ tsp_en_default: tsp-en-default {
- 		bias-disable;
- 	};
- };
-+
-+&pm8916_gpios {
-+	nfc_clk_req: nfc-clk-req {
-+		pins = "gpio2";
-+		function = "func1";
-+
-+		input-enable;
-+		bias-disable;
-+		power-source = <PM8916_GPIO_L2>;
-+	};
-+};
--- 
-2.31.1
-
+> +        compatible = "fsl,imx8mq-mipi-csi2";
+> +        reg = <0x30a70000 0x1000>; /* MIPI CSI1 Controller base addr */
+> +        clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
+> +                 <&clk IMX8MQ_CLK_CSI1_ESC>,
+> +                 <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
+> +                 <&clk IMX8MQ_CLK_CLKO2>;
+> +        clock-names = "core", "esc", "pxl", "clko2";
+> +        assigned-clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
+> +                          <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
+> +                          <&clk IMX8MQ_CLK_CSI1_ESC>;
+> +        assigned-clock-rates = <266000000>, <200000000>, <66000000>;
+> +        assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
+> +                                 <&clk IMX8MQ_SYS2_PLL_1000M>,
+> +                                 <&clk IMX8MQ_SYS1_PLL_800M>;
+> +        power-domains = <&pgc_mipi_csi1>;
+> +        phy-reset = <&src>;
+> +        phy-gpr = <&iomuxc_gpr>;
+> +        interconnects = <&noc IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
+> +        interconnect-names = "dram";
+> +
+> +        ports {
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +
+> +            port@0 {
+> +                reg = <0>;
+> +
+> +                imx8mm_mipi_csi_in: endpoint {
+> +                    remote-endpoint = <&imx477_out>;
+> +                    data-lanes = <1 2 3 4>;
+> +                };
+> +            };
+> +
+> +            port@1 {
+> +                reg = <1>;
+> +
+> +                imx8mm_mipi_csi_out: endpoint {
+> +                    remote-endpoint = <&csi_in>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +
+> +...
+> -- 
+> 2.30.2
