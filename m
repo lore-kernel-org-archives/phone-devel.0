@@ -2,255 +2,112 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 05A00C4743C
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Jun 2021 21:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ECAC4C47082
+	for <phone-devel@archiver.kernel.org>; Sat,  5 Jun 2021 22:09:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DD4FE61406
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Jun 2021 21:37:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C867D6139A
+	for <phone-devel@archiver.kernel.org>; Sat,  5 Jun 2021 22:09:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230264AbhFDVjc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 4 Jun 2021 17:39:32 -0400
-Received: from mail-oo1-f44.google.com ([209.85.161.44]:45050 "EHLO
-        mail-oo1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230242AbhFDVjb (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Jun 2021 17:39:31 -0400
-Received: by mail-oo1-f44.google.com with SMTP id o5-20020a4a2c050000b0290245d6c7b555so2568585ooo.11;
-        Fri, 04 Jun 2021 14:37:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Utd5Q3vo5MjFZyun8vrWlVKBnn1w3zWcUu6IodeWHUU=;
-        b=TOBCfyd5axBJ2Z5eGacKVay6KjqOkBYxpDxJl6TzLpCn8gRoIWvq1eNIfs26sDkU6S
-         kNdsv3xoqnWG5zNjt4du01udd8AgTMqg2QqLZiBayJRPc6GeREDUHnOoJk0AGU7gzrxn
-         dXDNG608iQPsifVVxU8C7e1Gs9Et6aPMliD5BDHGO85JVAPaugnTkAJ9YFAypKWO6Nn+
-         OYacqgd2c3mEJBFOkHDc9xsYZni3+8mEhyGbRwsDzuj0HkkTn2pyBBPUD472d8iOdR/s
-         kvdwR8hPT+pmeh1FXDl7YjNWYRyaPlliQ+rhBxnGIQRNgXPaubsfENVP1L6kk3e+qzgj
-         0f5g==
-X-Gm-Message-State: AOAM532k3U4JmH2zefCGf2ekIgRwtOvl6nGQ479o7huhd8gV4r6GoYTr
-        goR/OK7Vs9xMB90isx7n6g==
-X-Google-Smtp-Source: ABdhPJzvJgDQDeMiCoKjZthSNJrKCtqHQg3qyuYlPMBVAbp34R47bLfNiQpR/eAri9x8YIz3Ym8j4g==
-X-Received: by 2002:a4a:d85:: with SMTP id 127mr5337961oob.26.1622842648813;
-        Fri, 04 Jun 2021 14:37:28 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id m1sm731257otq.12.2021.06.04.14.37.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Jun 2021 14:37:28 -0700 (PDT)
-Received: (nullmailer pid 3965565 invoked by uid 1000);
-        Fri, 04 Jun 2021 21:37:26 -0000
-Date:   Fri, 4 Jun 2021 16:37:26 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     festevam@gmail.com, krzk@kernel.org,
-        laurent.pinchart@ideasonboard.com, mchehab@kernel.org,
-        devicetree@vger.kernel.org, kernel@pengutronix.de, kernel@puri.sm,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-staging@lists.linux.dev, shawnguo@kernel.org,
-        slongerbeam@gmail.com, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: media: document the
- nxp,imx8mq-mipi-csi2 receiver phy and controller
-Message-ID: <20210604213726.GA3960263@robh.at.kernel.org>
-References: <20210531112326.90094-1-martin.kepplinger@puri.sm>
- <20210531112326.90094-2-martin.kepplinger@puri.sm>
+        id S230025AbhFEWLo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 5 Jun 2021 18:11:44 -0400
+Received: from perceval.ideasonboard.com ([213.167.242.64]:49438 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229998AbhFEWLn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 5 Jun 2021 18:11:43 -0400
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id E38C8DD;
+        Sun,  6 Jun 2021 00:09:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1622930994;
+        bh=uqksyTRk5JSFhu6g59/qBO+7A1sgnZJ3iogFrRLlhQI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oo+IfvGhIlMw0nnzACZPJZ8rh4PaMaLUa/wnoiMQCN5sV2tVfTGX+FwK0yF2QXLdi
+         rEbDlqnTMznl9LqDhCwNYPSlA+NZY3L27avd6kVzFNS4XiOeB2D8lc1xR4wg4OMz3x
+         kUP3cHJUK29T2ycEknF5lYzMdn630L3JK9za4TuI=
+Date:   Sun, 6 Jun 2021 01:09:40 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Nicolas Dufresne <nicolas@ndufresne.ca>,
+        Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
+        phone-devel@vger.kernel.org, martijn@brixit.nl,
+        linux-media@vger.kernel.org, martin.kepplinger@puri.sm,
+        dorota.czaplejewicz@puri.sm
+Subject: Re: Recording videos on phones and camera on Librem 5 devboard
+Message-ID: <YLv2JM03idf7DZ17@pendragon.ideasonboard.com>
+References: <20210512214702.GB27652@duo.ucw.cz>
+ <YJz0cn4OrXNhRDoO@bogon.m.sigxcpu.org>
+ <694c6d07525eb5f6d5a19a0c94b4f1f280b03973.camel@ndufresne.ca>
+ <20210513161929.GD19588@duo.ucw.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210531112326.90094-2-martin.kepplinger@puri.sm>
+In-Reply-To: <20210513161929.GD19588@duo.ucw.cz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, May 31, 2021 at 01:23:24PM +0200, Martin Kepplinger wrote:
-> The i.MX8MQ SoC integrates a different MIPI CSI receiver as the i.MX8MM so
-> describe the DT bindings for it.
+Hello,
+
+On Thu, May 13, 2021 at 06:19:29PM +0200, Pavel Machek wrote:
+> Hi!
 > 
-> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-> ---
->  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 162 ++++++++++++++++++
->  1 file changed, 162 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> > > > Who is the right person to talk about Librem 5 cameras? Is there
+> > > > mailing list I should use?
+> > > 
+> > > I think most of the coordination is mostly happening via the gitlab issues in
+> > > 
+> > > https://source.puri.sm/Librem5/linux-next
+> > > 
+> > > Maybe Martin and Dorota who are working on the camera drivers (put in cc:)
+> > > have a more suggestions.
+> > > 
+> > > > 
+> > > > AFAICS from bugzillas, it is still not compeletely working. I see
+> > > > megapixels packaged in the repository, but without required config
+> > > > files. Are there work-in-progress configurations somewhere? Would it
+> > > > be useful if I tried to get it to work on the devboard?
+> > > 
+> > > Megapixels work is mostly happening here atm:
+> > > 
+> > > https://source.puri.sm/dorota.czaplejewicz/megapixels
+> > 
+> > While this is interesting work, I would also keep an eye on libcamera, which I
+> > believe is a better place for HW specific media controller and request handling.
+> > Shouldn't be very hard to port this GTK3 library on top of libcamera.
+> > 
+> > https://libcamera.org/
 > 
-> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
-> new file mode 100644
-> index 000000000000..4e3b17c220fc
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
-> @@ -0,0 +1,162 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/nxp,imx8mq-mipi-csi2.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP and i.MX8MQ MIPI CSI-2 receiver
-> +
-> +maintainers:
-> +  - Martin Kepplinger <martin.kepplinger@puri.sm>
-> +
-> +description: |-
-> +  This binding covers the CSI-2 RX PHY and host controller included in the
-> +  NXP i.MX8MQ SoC. It handles the sensor/image input and process for all the
-> +  input imaging devices.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - fsl,imx8mq-mipi-csi2
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    minItems: 4
-> +
-> +  clock-names:
-> +    minItems: 4
-> +    items:
-> +      - const: core
-> +      - const: esc
-> +      - const: pxl
-> +      - const: clko2
-> +
-> +  assigned-clocks:
-> +    maxItems: 3
-> +
-> +  assigned-clock-rates:
-> +    maxItems: 3
-> +
-> +  assigned-clock-parents:
-> +    maxItems: 3
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  phy-reset:
-> +    description:
-> +      The phandle to the imx8mq reset-controller.
-> +    maxItems: 1
+> Hmm, famous last words :-).
 
-Sounds like this should use the reset binding.
+No humans or animals were terminally injured during libcamera
+development :-)
 
-> +
-> +  phy-gpr:
-> +    description:
-> +      The phandle to the imx8mq syscon iomux-gpr.
-> +    maxItems: 1
+> I view megapixels as hand-optimized camera application tailored to
+> phones and taking photos (and it is good at that).
+> 
+> OTOH Unicsy camera (https://gitlab.com/tui/tui/-/tree/master/cam ) is
+> simple python wrapper over GTK+ and gstreamer aimed at videos. (It can
+> do photos, too; slowly. Hand-coded app would probably have better
+> performance).
+> 
+> Eventually it would be nice to have media controller support in
+> libcamera, gstreamer and probably some other framework I forgot about.
 
-Should be using the phy binding?
+Media controller (and any camera-related kernel API really) support is
+exactly what libcamera is about. While it may make sense for gstreamer
+to deal directly with kernel devices that require configuration through
+the media controller API is some cases, for computational cameras (or
+software-defined cameras as they're also called today) it's increasingly
+a dead end. GStreamer is good as an application API, or as a framework
+wrapped in helpers that offer a simpler, higher-level API, and the
+libcamerasrc element can bridge it to the camera implementation.
 
-> +
-> +  interconnects:
-> +    maxItems: 1
-> +
-> +  interconnect-names:
-> +    const: dram
-> +
-> +  ports:
-> +    $ref: /schemas/graph.yaml#/properties/ports
-> +
-> +    properties:
-> +      port@0:
-> +        $ref: /schemas/graph.yaml#/$defs/port-base
-> +        unevaluatedProperties: false
-> +        description:
-> +          Input port node, single endpoint describing the CSI-2 transmitter.
-> +
-> +        properties:
-> +          endpoint:
-> +            $ref: video-interfaces.yaml#
-> +            unevaluatedProperties: false
-> +
-> +            properties:
-> +              data-lanes:
-> +                items:
-> +                  minItems: 1
-> +                  maxItems: 4
-> +                  items:
-> +                    - const: 1
-> +                    - const: 2
-> +                    - const: 3
-> +                    - const: 4
-> +
-> +            required:
-> +              - data-lanes
-> +
-> +      port@1:
-> +        $ref: /schemas/graph.yaml#/properties/port
-> +        description:
-> +          Output port node
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +  - assigned-clocks
-> +  - assigned-clock-rates
-> +  - assigned-clock-parents
-> +  - power-domains
-> +  - phy-reset
-> +  - phy-gpr
-> +  - ports
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/imx8mq-clock.h>
-> +    #include <dt-bindings/interconnect/imx8mq.h>
-> +
-> +    mipi_csi1@30a70000 {
+-- 
+Regards,
 
-csi@...
-
-> +        compatible = "fsl,imx8mq-mipi-csi2";
-> +        reg = <0x30a70000 0x1000>; /* MIPI CSI1 Controller base addr */
-> +        clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
-> +                 <&clk IMX8MQ_CLK_CSI1_ESC>,
-> +                 <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
-> +                 <&clk IMX8MQ_CLK_CLKO2>;
-> +        clock-names = "core", "esc", "pxl", "clko2";
-> +        assigned-clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
-> +                          <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
-> +                          <&clk IMX8MQ_CLK_CSI1_ESC>;
-> +        assigned-clock-rates = <266000000>, <200000000>, <66000000>;
-> +        assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
-> +                                 <&clk IMX8MQ_SYS2_PLL_1000M>,
-> +                                 <&clk IMX8MQ_SYS1_PLL_800M>;
-> +        power-domains = <&pgc_mipi_csi1>;
-> +        phy-reset = <&src>;
-> +        phy-gpr = <&iomuxc_gpr>;
-> +        interconnects = <&noc IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
-> +        interconnect-names = "dram";
-> +
-> +        ports {
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            port@0 {
-> +                reg = <0>;
-> +
-> +                imx8mm_mipi_csi_in: endpoint {
-> +                    remote-endpoint = <&imx477_out>;
-> +                    data-lanes = <1 2 3 4>;
-> +                };
-> +            };
-> +
-> +            port@1 {
-> +                reg = <1>;
-> +
-> +                imx8mm_mipi_csi_out: endpoint {
-> +                    remote-endpoint = <&csi_in>;
-> +                };
-> +            };
-> +        };
-> +    };
-> +
-> +...
-> -- 
-> 2.30.2
+Laurent Pinchart
