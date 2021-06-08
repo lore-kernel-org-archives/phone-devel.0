@@ -7,127 +7,168 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FD6DC47082
-	for <phone-devel@archiver.kernel.org>; Tue,  8 Jun 2021 07:00:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 080C9C47082
+	for <phone-devel@archiver.kernel.org>; Tue,  8 Jun 2021 10:42:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E32C761263
-	for <phone-devel@archiver.kernel.org>; Tue,  8 Jun 2021 07:00:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D2ADF61263
+	for <phone-devel@archiver.kernel.org>; Tue,  8 Jun 2021 10:42:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbhFHHC3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 8 Jun 2021 03:02:29 -0400
-Received: from comms.puri.sm ([159.203.221.185]:46090 "EHLO comms.puri.sm"
+        id S231283AbhFHKoI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 8 Jun 2021 06:44:08 -0400
+Received: from comms.puri.sm ([159.203.221.185]:55568 "EHLO comms.puri.sm"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229923AbhFHHC3 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 8 Jun 2021 03:02:29 -0400
+        id S231184AbhFHKoI (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 8 Jun 2021 06:44:08 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 7B7C4DFE00;
-        Tue,  8 Jun 2021 00:00:35 -0700 (PDT)
+        by comms.puri.sm (Postfix) with ESMTP id EFDC6DF8FD;
+        Tue,  8 Jun 2021 03:42:14 -0700 (PDT)
 Received: from comms.puri.sm ([127.0.0.1])
         by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id fZ9T855StqfQ; Tue,  8 Jun 2021 00:00:34 -0700 (PDT)
-Message-ID: <e9bfbc6421d2092b652dd2bb466aed54d72809b3.camel@puri.sm>
-Subject: Re: [PATCH v4 2/5] dt-bindings: media: document SK Hynix Hi-846
- MIPI CSI-2 8M pixel sensor
+        with ESMTP id TJmJLB6gP39x; Tue,  8 Jun 2021 03:42:13 -0700 (PDT)
 From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     krzysztof.kozlowski@canonical.com, mchehab@kernel.org,
-        paul.kocialkowski@bootlin.com, pavel@ucw.cz,
-        devicetree@vger.kernel.org, kernel@puri.sm,
+To:     martin.kepplinger@puri.sm, festevam@gmail.com, krzk@kernel.org,
+        laurent.pinchart@ideasonboard.com
+Cc:     devicetree@vger.kernel.org, kernel@pengutronix.de, kernel@puri.sm,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
         linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        phone-devel@vger.kernel.org, robh@kernel.org, shawnx.tu@intel.com
-Date:   Tue, 08 Jun 2021 09:00:28 +0200
-In-Reply-To: <YL6MaFAt2PaJq+2E@pendragon.ideasonboard.com>
-References: <20210607105213.1211722-1-martin.kepplinger@puri.sm>
-         <20210607105213.1211722-3-martin.kepplinger@puri.sm>
-         <YL6MaFAt2PaJq+2E@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
+        linux-staging@lists.linux.dev, mchehab@kernel.org,
+        phone-devel@vger.kernel.org, robh@kernel.org, shawnguo@kernel.org,
+        slongerbeam@gmail.com
+Subject: [PATCH v3 3/3] arm64: dts: imx8mq: add mipi csi phy and csi bridge descriptions
+Date:   Tue,  8 Jun 2021 12:41:28 +0200
+Message-Id: <20210608104128.1616028-4-martin.kepplinger@puri.sm>
+In-Reply-To: <20210608104128.1616028-1-martin.kepplinger@puri.sm>
+References: <20210608104128.1616028-1-martin.kepplinger@puri.sm>
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Am Dienstag, dem 08.06.2021 um 00:15 +0300 schrieb Laurent Pinchart:
-> Hi Martin
-> 
-> Thank you for the patch.
-> 
-> On Mon, Jun 07, 2021 at 12:52:10PM +0200, Martin Kepplinger wrote:
-> > Document the bindings used for the SK Hynix Hi-846 CMOS camera
-> > driver.
-> > 
-> > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-> > ---
-> >  .../bindings/media/i2c/hynix,hi846.yaml       | 105
-> > ++++++++++++++++++
-> >  1 file changed, 105 insertions(+)
-> >  create mode 100644
-> > Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
-> > 
-> > diff --git
-> > a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
-> > b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
-> > new file mode 100644
-> > index 000000000000..19825392fb1f
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
-> > @@ -0,0 +1,105 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/media/i2c/hynix,hi846.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: SK Hynix Hi-846 1/4" 8M Pixel MIPI CSI-2 sensor
-> > +
-> > +maintainers:
-> > +  - Martin Kepplinger <martin.kepplinger@puri.sm>
-> > +
-> > +description: |-
-> > +  The Hi-846 is a raw image sensor with an MIPI CSI-2 image data
-> > +  interface and CCI (I2C compatible) control bus. The output
-> > format
-> > +  is raw Bayer.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: hynix,hi846
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  clocks:
-> > +    items:
-> > +      - description: Reference to the mclk clock.
-> > +
-> > +  reset-gpios:
-> > +    description: Reference to the GPIO connected to the RESETB
-> > pin. Active low.
-> > +    maxItems: 1
-> > +
-> > +  shutdown-gpios:
-> > +    description: Reference to the GPIO connected to the XSHUTDOWN
-> > pin. Active low.
-> > +    maxItems: 1
-> > +
-> > +  vddi-supply:
-> 
-> I think it's called vddio (seems to be a typo on page 8).
-> 
-> > +    description: Definition of the regulator used for the 1.8V or
-> > 2.8V I/O power supply.
-> 
-> You could just say "... for the VDDIO supply". Same below. Up to you.
-> 
-> With the name fixed and the description optionally updated,
-> 
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> 
-> Please add my tag if you post a new version.
+Describe the 2 available CSI interfaces on the i.MX8MQ with the MIPI-CSI2
+receiver and the CSI Bridge that provides the user buffers, where the
+existing driver can directly be used.
 
-I'll rename the binding and add the tag. I haven't added your previous
-tag because you found improvements based on the DS afterwards.
+An image sensor is to be connected to the MIPIs' second port, described in
+board files.
 
-thanks again!
-                              martin
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+---
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi | 102 ++++++++++++++++++++++
+ 1 file changed, 102 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+index 91df9c5350ae..39955d6621f2 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+@@ -1099,6 +1099,108 @@ uart4: serial@30a60000 {
+ 				status = "disabled";
+ 			};
+ 
++			mipi_csi1: csi@30a70000 {
++				compatible = "fsl,imx8mq-mipi-csi2";
++				reg = <0x30a70000 0x1000>;
++				clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
++				   <&clk IMX8MQ_CLK_CSI1_ESC>,
++				   <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
++				   <&clk IMX8MQ_CLK_CLKO2>;
++				clock-names = "core", "esc", "pxl", "clko2";
++				assigned-clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
++				    <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
++				    <&clk IMX8MQ_CLK_CSI1_ESC>;
++				assigned-clock-rates = <266000000>, <333000000>, <66000000>;
++				assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
++					<&clk IMX8MQ_SYS2_PLL_1000M>,
++					<&clk IMX8MQ_SYS1_PLL_800M>;
++				power-domains = <&pgc_mipi_csi1>;
++				reset = <&src>;
++				phy = <&iomuxc_gpr>;
++				interconnects = <&noc IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
++				interconnect-names = "dram";
++				status = "disabled";
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++
++						csi1_mipi_ep: endpoint {
++							remote-endpoint = <&csi1_ep>;
++						};
++					};
++				};
++			};
++
++			csi1: csi@30a90000 {
++				compatible = "fsl,imx7-csi";
++				reg = <0x30a90000 0x10000>;
++				interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
++				clocks = <&clk IMX8MQ_CLK_CSI1_ROOT>;
++				clock-names = "mclk";
++				status = "disabled";
++
++				port {
++					csi1_ep: endpoint {
++						remote-endpoint = <&csi1_mipi_ep>;
++					};
++				};
++			};
++
++			mipi_csi2: csi@30b60000 {
++				compatible = "fsl,imx8mq-mipi-csi2";
++				reg = <0x30b60000 0x1000>;
++				clocks = <&clk IMX8MQ_CLK_CSI2_CORE>,
++				   <&clk IMX8MQ_CLK_CSI2_ESC>,
++				   <&clk IMX8MQ_CLK_CSI2_PHY_REF>,
++				   <&clk IMX8MQ_CLK_CLKO2>;
++				clock-names = "core", "esc", "pxl", "clko2";
++				assigned-clocks = <&clk IMX8MQ_CLK_CSI2_CORE>,
++				    <&clk IMX8MQ_CLK_CSI2_PHY_REF>,
++				    <&clk IMX8MQ_CLK_CSI2_ESC>;
++				assigned-clock-rates = <266000000>, <333000000>, <66000000>;
++				assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
++					<&clk IMX8MQ_SYS2_PLL_1000M>,
++					<&clk IMX8MQ_SYS1_PLL_800M>;
++				power-domains = <&pgc_mipi_csi2>;
++				reset = <&src>;
++				phy = <&iomuxc_gpr>;
++				interconnects = <&noc IMX8MQ_ICM_CSI2 &noc IMX8MQ_ICS_DRAM>;
++				interconnect-names = "dram";
++				status = "disabled";
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++
++						csi2_mipi_ep: endpoint {
++							remote-endpoint = <&csi2_ep>;
++						};
++					};
++				};
++			};
++
++			csi2: csi@30b80000 {
++				compatible = "fsl,imx7-csi";
++				reg = <0x30b80000 0x10000>;
++				interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
++				clocks = <&clk IMX8MQ_CLK_CSI2_ROOT>;
++				clock-names = "mclk";
++				status = "disabled";
++
++				port {
++					csi2_ep: endpoint {
++						remote-endpoint = <&csi2_mipi_ep>;
++					};
++				};
++			};
++
+ 			mu: mailbox@30aa0000 {
+ 				compatible = "fsl,imx8mq-mu", "fsl,imx6sx-mu";
+ 				reg = <0x30aa0000 0x10000>;
+-- 
+2.30.2
 
