@@ -2,170 +2,257 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DA32C48BCF
-	for <phone-devel@archiver.kernel.org>; Wed,  9 Jun 2021 07:53:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CA3CC48BCD
+	for <phone-devel@archiver.kernel.org>; Wed,  9 Jun 2021 13:31:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 049236136D
-	for <phone-devel@archiver.kernel.org>; Wed,  9 Jun 2021 07:53:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2FEB3613AD
+	for <phone-devel@archiver.kernel.org>; Wed,  9 Jun 2021 13:31:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237347AbhFIHyz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 9 Jun 2021 03:54:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34926 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237339AbhFIHyw (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 9 Jun 2021 03:54:52 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FCC9C061574
-        for <phone-devel@vger.kernel.org>; Wed,  9 Jun 2021 00:52:58 -0700 (PDT)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1lqt11-00063s-5n; Wed, 09 Jun 2021 09:52:43 +0200
-Received: from mfe by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1lqt0y-0004m9-RT; Wed, 09 Jun 2021 09:52:40 +0200
-Date:   Wed, 9 Jun 2021 09:52:40 +0200
-From:   Marco Felsch <m.felsch@pengutronix.de>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     festevam@gmail.com, krzk@kernel.org,
-        laurent.pinchart@ideasonboard.com, devicetree@vger.kernel.org,
-        kernel@pengutronix.de, kernel@puri.sm,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-staging@lists.linux.dev, mchehab@kernel.org,
-        phone-devel@vger.kernel.org, robh@kernel.org, shawnguo@kernel.org,
-        slongerbeam@gmail.com
-Subject: Re: [PATCH v3 3/3] arm64: dts: imx8mq: add mipi csi phy and csi
- bridge descriptions
-Message-ID: <20210609075240.ajx6ejvqie4sgkvj@pengutronix.de>
-References: <20210608104128.1616028-1-martin.kepplinger@puri.sm>
- <20210608104128.1616028-4-martin.kepplinger@puri.sm>
+        id S235286AbhFINdO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 9 Jun 2021 09:33:14 -0400
+Received: from relay03.th.seeweb.it ([5.144.164.164]:40595 "EHLO
+        relay03.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235054AbhFINdM (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 9 Jun 2021 09:33:12 -0400
+Received: from [192.168.1.101] (83.6.168.161.neoplus.adsl.tpnet.pl [83.6.168.161])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id CD186200EB;
+        Wed,  9 Jun 2021 15:31:11 +0200 (CEST)
+Subject: Re: [PATCH RFC 1/2] thermal: qcom: tsens-v1: Add support for MSM8994
+ TSENS
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org, Amit Kucheria <amitk@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210209195346.457803-1-konrad.dybcio@somainline.org>
+ <a4b76d12-a659-da87-7d97-9b34e3cf7edf@linaro.org>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+Message-ID: <ce5cac52-473c-a30a-104d-0a175e8848db@somainline.org>
+Date:   Wed, 9 Jun 2021 15:31:10 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210608104128.1616028-4-martin.kepplinger@puri.sm>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 09:46:34 up 188 days, 21:52, 47 users,  load average: 0.18, 0.13,
- 0.11
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: phone-devel@vger.kernel.org
+In-Reply-To: <a4b76d12-a659-da87-7d97-9b34e3cf7edf@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Martin,
-
-On 21-06-08 12:41, Martin Kepplinger wrote:
-
-...
-
-> +			csi1: csi@30a90000 {
-> +				compatible = "fsl,imx7-csi";
-
-AFAIK an unwritten rule (at least for the iMX mach) is to specify the
-SoC specific compatible and the compatible which is supported by the
-driver already, so this should be:
-
-compatible = "fsl,imx8mq-csi", "fsl,imx7-csi";
-
-This is very helpful if we need to handle some quirk for the imx8mq
-later on.
-
-Regards,
-  Marco
+Hi,
 
 
-> +				reg = <0x30a90000 0x10000>;
-> +				interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&clk IMX8MQ_CLK_CSI1_ROOT>;
-> +				clock-names = "mclk";
-> +				status = "disabled";
-> +
-> +				port {
-> +					csi1_ep: endpoint {
-> +						remote-endpoint = <&csi1_mipi_ep>;
-> +					};
-> +				};
-> +			};
-> +
-> +			mipi_csi2: csi@30b60000 {
-> +				compatible = "fsl,imx8mq-mipi-csi2";
-> +				reg = <0x30b60000 0x1000>;
-> +				clocks = <&clk IMX8MQ_CLK_CSI2_CORE>,
-> +				   <&clk IMX8MQ_CLK_CSI2_ESC>,
-> +				   <&clk IMX8MQ_CLK_CSI2_PHY_REF>,
-> +				   <&clk IMX8MQ_CLK_CLKO2>;
-> +				clock-names = "core", "esc", "pxl", "clko2";
-> +				assigned-clocks = <&clk IMX8MQ_CLK_CSI2_CORE>,
-> +				    <&clk IMX8MQ_CLK_CSI2_PHY_REF>,
-> +				    <&clk IMX8MQ_CLK_CSI2_ESC>;
-> +				assigned-clock-rates = <266000000>, <333000000>, <66000000>;
-> +				assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
-> +					<&clk IMX8MQ_SYS2_PLL_1000M>,
-> +					<&clk IMX8MQ_SYS1_PLL_800M>;
-> +				power-domains = <&pgc_mipi_csi2>;
-> +				reset = <&src>;
-> +				phy = <&iomuxc_gpr>;
-> +				interconnects = <&noc IMX8MQ_ICM_CSI2 &noc IMX8MQ_ICS_DRAM>;
-> +				interconnect-names = "dram";
-> +				status = "disabled";
-> +
-> +				ports {
-> +					#address-cells = <1>;
-> +					#size-cells = <0>;
-> +
-> +					port@0 {
-> +						reg = <0>;
-> +
-> +						csi2_mipi_ep: endpoint {
-> +							remote-endpoint = <&csi2_ep>;
-> +						};
-> +					};
-> +				};
-> +			};
-> +
-> +			csi2: csi@30b80000 {
-> +				compatible = "fsl,imx7-csi";
-> +				reg = <0x30b80000 0x10000>;
-> +				interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
-> +				clocks = <&clk IMX8MQ_CLK_CSI2_ROOT>;
-> +				clock-names = "mclk";
-> +				status = "disabled";
-> +
-> +				port {
-> +					csi2_ep: endpoint {
-> +						remote-endpoint = <&csi2_mipi_ep>;
-> +					};
-> +				};
-> +			};
-> +
->  			mu: mailbox@30aa0000 {
->  				compatible = "fsl,imx8mq-mu", "fsl,imx6sx-mu";
->  				reg = <0x30aa0000 0x10000>;
-> -- 
-> 2.30.2
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> 
+> Please split binding and code into two separate patches.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+It's a oneliner, but I might as well.
+
+ 
+
+> That deserves a cartdrige with a good explanation of why this function
+> is doing all this. Without enough details, it is hard to review the code.
+
+I don't really know *why* it's doing all of this. Qualcomm doesn't share any documentation.
+
+It' just based on the freely-available msm-3.10 kernel driver. Probably just a HW specific.
+
+
+
+>> +static void compute_intercept_slope_8994(struct tsens_priv *priv,
+>> +			      u32 *base0, u32 *base1, u32 *p, u32 mode)
+>> +{
+>> +	int adc_code_of_tempx, i, num, den;
+>> +
+>> +	for (i = 0; i < priv->num_sensors; i++) {
+>> +		dev_dbg(priv->dev,
+>> +			"%s: sensor%d - data_point1:%#x data_point2:%#x\n",
+>> +			__func__, i, base0[i], base1[i]);
+>> +
+>> +		priv->sensor[i].slope = SLOPE_DEFAULT;
+>> +		if (mode == TWO_PT_CALIB) {
+>> +			/*
+>> +			 * slope (m) = adc_code2 - adc_code1 (y2 - y1)/
+>> +			 *	temp_120_degc - temp_30_degc (x2 - x1)
+>> +			 */
+>> +			num = base1[i] - base0[i];
+> As the caller of the function is copying the value of base[0] to the
+> entire array, whatever 'i', base[i] == base[0], so the parameters can be
+> replaced by a single int.
+>
+> Then the code becomes:
+>
+> 	num = base1 - base0;
+> 	num *= SLOPE_FACTOR;
+> 	den = CAL_DEGC_PT2 - CAL_DEGC_PT1;
+> 	slope = num / den;
+>
+> There is no change in the values, so 'slope' can be precomputed before
+> the loop. We end up with:
+>
+> 	int adc_code_of_tempx, i, num, den;
+> 	int slope;
+>
+> 	/*
+> 	 * slope (m) = adc_code2 - adc_code1 (y2 - y1)/
+> 	 *	temp_120_degc - temp_30_degc (x2 - x1)
+> 	 */
+> 	num = base1 - base0;
+> 	num *= SLOPE_FACTOR;
+> 	den = CAL_DEGC_PT2 - CAL_DEGC_PT1;
+> 	slope = num / den;
+>
+> 	for (i = 0; i < priv->num_sensors; i++) {
+>
+> 		priv->sensor[i].slope = mode == TWO_PT_CALIB ? slope :
+> 			SLOPE_DEFAULT;
+
+That's sounds very good. I did not think of this approach, but I will incorporate it
+
+into the next revision.
+
+
+
+>> +		adc_code_of_tempx = base0[i] + p[i];
+>> +
+>> +		priv->sensor[i].offset = (adc_code_of_tempx * SLOPE_FACTOR) -
+>> +				(CAL_DEGC_PT1 *	priv->sensor[i].slope);
+>> +		dev_dbg(priv->dev, "%s: offset:%d\n", __func__,
+>> +			priv->sensor[i].offset);
+>> +	}
+>> +}
+>> +
+>>  static int calibrate_v1(struct tsens_priv *priv)
+>>  {
+>>  	u32 base0 = 0, base1 = 0;
+>> @@ -297,14 +421,143 @@ static int calibrate_8976(struct tsens_priv *priv)
+>>  	return 0;
+>>  }
+> Same comment as above. The more the details, the easier for the people
+> to review the code.
+
+Sorry, I am not sure what you're referring to, the calibrate_8976 function?
+
+
+
+>> -/* v1.x: msm8956,8976,qcs404,405 */
+>> +static int calibrate_8994(struct tsens_priv *priv)
+>> +{
+>> +	int base0[16] = { 0 }, base1[16] = { 0 }, i;
+>> +	u32 p[16];
+> p stands for ?
+
+No idea, but judging by the line:
+
+" adc_code_of_tempx = base0[i] + p[i]; "
+
+it's probably some hw-specific offset value.
+
+
+
+>> +	int mode = 0;
+>> +	u32 *calib0, *calib1, *calib2, *calib_mode, *calib_rsel;
+>> +	u32 calib_redun_sel;
+>> +
+>> +	/* 0x40d0-0x40dc */
+>> +	calib0 = (u32 *)qfprom_read(priv->dev, "calib");
+> Fix qfprom_read, by returning an int and using nvmem_cell_read_u32
+> (separate series).
+>
+> It seems like all call sites are expecting an int.
+
+Weird. I did not get slope calculation issues even with this, but perhaps
+
+I was just lucky.
+
+
+
+>> +			p[9] = (calib2[0] & MSM8994_S9_REDUN_MASK) >> MSM8994_S9_REDUN_SHIFT;
+>> +			p[10] = (calib2[0] & MSM8994_S10_REDUN_MASK) >> MSM8994_S10_REDUN_SHIFT;
+>> +			p[11] = (calib2[0] & MSM8994_S11_REDUN_MASK) >> MSM8994_S11_REDUN_SHIFT;
+>> +			p[12] = (calib2[0] & MSM8994_S12_REDUN_MASK) >> MSM8994_S12_REDUN_SHIFT;
+>> +			p[13] = (calib2[0] & MSM8994_S13_REDUN_MASK) >> MSM8994_S13_REDUN_SHIFT;
+>> +			p[14] = (calib2[0] & MSM8994_S14_REDUN_MASK) >> MSM8994_S14_REDUN_SHIFT;
+>> +			p[15] = (calib2[0] & MSM8994_S15_REDUN_MASK) >> MSM8994_S15_REDUN_SHIFT;
+> IMO, it is possible to do something simpler (probably bits.h could have
+> interesting helpers).
+
+All TSENS consumers had this style, probably to make it easier to compare with the
+
+downstream driver should there arise any human errors.
+
+
+
+>> +		} else {
+>> +			dev_dbg(priv->dev, "%s: REDUN NON-TWO_PT mode, mode = %i",
+>> +			__func__, mode);
+>> +			for (i = 0; i < 16; i++)
+>> +				p[i] = 532;
+> No litterals, macros please
+
+Does MSM8994_NON_TWOPT_DEFAULT_VALUE sound good? It doesn't exactly
+
+roll of the tongue but I don't have many better ideas..
+
+
+
+> And it would be simpler to iniatialize the array with the value.
+>
+> u32 p[16] = { [ 0 ... 15 ] = MY_532_MACRO };
+
+> So no need to use this loop and the other one beliw.
+
+Thanks, didn't know about this.
+
+
+
+> What about replacing 16 by TSENS_SENSOR_MAX ?
+
+If you mean this 8994-specific function exactly, then it'd probably cause
+
+more confusion than help as we might find out that some SoC using TSENSv1
+
+has even more sensors.
+
+
+
+>>  static struct tsens_features tsens_v1_feat = {
+>>  	.ver_major	= VER_1_X,
+>>  	.crit_int	= 0,
+>>  	.adc		= 1,
+>>  	.srot_split	= 1,
+>> -	.max_sensors	= 11,
+>> +	.max_sensors	= 16,
+
+Here TSENS_SENSOR_MAX does make sense.
+
+
+
+>> +
+>> +struct tsens_plat_data data_8994 = {
+>> +	.num_sensors	= 16,
+>> +	.ops		= &ops_8994,
+>> +	.hw_ids		= (unsigned int []){ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+> If you have time, in another series, replace this by a single int used
+> as a bitmask and fix the hw_id loop in tsens.c.
+
+I will add this to my to-do list, but no promises on this landing anytime soon :/
+
+
+
+Thanks for the thorough review,
+
+Konrad
