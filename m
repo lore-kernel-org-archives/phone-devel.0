@@ -2,66 +2,85 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4764C49360
-	for <phone-devel@archiver.kernel.org>; Fri, 11 Jun 2021 10:15:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D7ADC48BE5
+	for <phone-devel@archiver.kernel.org>; Sat, 12 Jun 2021 10:36:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CE07D6140B
-	for <phone-devel@archiver.kernel.org>; Fri, 11 Jun 2021 10:15:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 60AF6610A7
+	for <phone-devel@archiver.kernel.org>; Sat, 12 Jun 2021 10:36:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231716AbhFKKRP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 11 Jun 2021 06:17:15 -0400
-Received: from comms.puri.sm ([159.203.221.185]:51780 "EHLO comms.puri.sm"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230407AbhFKKRO (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 11 Jun 2021 06:17:14 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id A6062E0186;
-        Fri, 11 Jun 2021 03:14:46 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id lRNvkGaTfasI; Fri, 11 Jun 2021 03:14:45 -0700 (PDT)
-From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-To:     martin.kepplinger@puri.sm, krzysztof.kozlowski@canonical.com,
-        laurent.pinchart@ideasonboard.com, mchehab@kernel.org,
-        paul.kocialkowski@bootlin.com, pavel@ucw.cz
-Cc:     devicetree@vger.kernel.org, kernel@puri.sm,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        phone-devel@vger.kernel.org, robh@kernel.org, shawnx.tu@intel.com
-Subject: [PATCH v5 4/5] arm64: defconfig: enable VIDEO_HI846
-Date:   Fri, 11 Jun 2021 12:14:03 +0200
-Message-Id: <20210611101404.2553818-5-martin.kepplinger@puri.sm>
-In-Reply-To: <20210611101404.2553818-1-martin.kepplinger@puri.sm>
-References: <20210611101404.2553818-1-martin.kepplinger@puri.sm>
-Content-Transfer-Encoding: 8bit
+        id S231181AbhFLKil (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 12 Jun 2021 06:38:41 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:23179 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229942AbhFLKik (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Sat, 12 Jun 2021 06:38:40 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1623494201; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=brVC1m2uQ7jacnf+j+PhnRqs+Cy6+AllMm/70hQRjPg=;
+ b=xWsZw7lL+v4s/gGWwEKPkgxLsmNLG1Q+7y9/AaElWWYZcgr1v8etz3HYctOaGTRdFN5yAsuA
+ oWjfigxjf08cj3dvBGyR+BsgmnDpFR2KOHJ/xYPitDtD6gIOJ27ge45V+uU2gWYmq/ttjm/d
+ C+d8YCSjPc5C3GxRTmXRFhrq22Y=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n06.prod.us-east-1.postgun.com with SMTP id
+ 60c48e38f726fa41884fba3d (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sat, 12 Jun 2021 10:36:40
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 2FD93C433F1; Sat, 12 Jun 2021 10:36:40 +0000 (UTC)
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id EEF44C433F1;
+        Sat, 12 Jun 2021 10:36:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org EEF44C433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath10k: demote chan info without scan request warning
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210522171609.299611-1-caleb@connolly.tech>
+References: <20210522171609.299611-1-caleb@connolly.tech>
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     caleb@connolly.tech, "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-Id: <20210612103640.2FD93C433F1@smtp.codeaurora.org>
+Date:   Sat, 12 Jun 2021 10:36:40 +0000 (UTC)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-build the driver for the Hi-846 camera by default on arm64, where it's
-going to be used on at least the imx8mq-librem5 board.
+Caleb Connolly <caleb@connolly.tech> wrote:
 
-Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
----
- arch/arm64/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
+> Some devices/firmwares cause this to be printed every 5-15 seconds,
+> though it has no impact on functionality. Demote this to a debug
+> message.
+> 
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 1f1cb5b0dfe0..3a838464d3c1 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -665,6 +665,7 @@ CONFIG_VIDEO_RENESAS_FCP=m
- CONFIG_VIDEO_RENESAS_VSP1=m
- CONFIG_SDR_PLATFORM_DRIVERS=y
- CONFIG_VIDEO_RCAR_DRIF=m
-+CONFIG_VIDEO_HI846=m
- CONFIG_VIDEO_IMX219=m
- CONFIG_VIDEO_OV5645=m
- CONFIG_VIDEO_QCOM_CAMSS=m
+On what hardware and firmware version do you see this?
+
 -- 
-2.30.2
+https://patchwork.kernel.org/project/linux-wireless/patch/20210522171609.299611-1-caleb@connolly.tech/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
