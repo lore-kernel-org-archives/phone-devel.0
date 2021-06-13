@@ -2,127 +2,121 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5775C48BCF
-	for <phone-devel@archiver.kernel.org>; Sun, 13 Jun 2021 04:22:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6EBCC49360
+	for <phone-devel@archiver.kernel.org>; Sun, 13 Jun 2021 09:02:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8C31261205
-	for <phone-devel@archiver.kernel.org>; Sun, 13 Jun 2021 04:22:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C02F161248
+	for <phone-devel@archiver.kernel.org>; Sun, 13 Jun 2021 09:02:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231672AbhFMEYp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 13 Jun 2021 00:24:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38324 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231690AbhFMEYn (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 13 Jun 2021 00:24:43 -0400
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 746A9C061574
-        for <phone-devel@vger.kernel.org>; Sat, 12 Jun 2021 21:22:27 -0700 (PDT)
-Received: by mail-ot1-x32f.google.com with SMTP id w23-20020a9d5a970000b02903d0ef989477so7419994oth.9
-        for <phone-devel@vger.kernel.org>; Sat, 12 Jun 2021 21:22:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=FIZzF+vNdvW8c/xyt8LCztOh3ZfjKKS6HpmIg9OM5VY=;
-        b=rvY1xartR0XzuC5JdSjapKuTtUvr/7VGuU161r7PTcuvr+HypOPsCoYN09MrI6csfx
-         k4j/ApxxkJFRgOgkD7JFv70jie+0DVwUD0UyppFZrJaGFJsi8LbCF5OuFvJ+yp9//VNC
-         Rg5wDKLA4qR1I4dFQdyGiitmAaIvN76W79EYpcXDQtwAGcC199yHcXdmlCA+iNQViC6B
-         n2ZDwYsH+0hWd/xAEPx+uoAZsOZ0KMI8PXfh3+x+C5SyOnxJg3gUYEgVCywQ9hPG/2by
-         bqB1uBi6Y7AyqMJjB8Yx1zFr81PaiaqD5Kpf+oGHmqYQoGOS0lSIGFRVWLwnhseauKtu
-         f3Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=FIZzF+vNdvW8c/xyt8LCztOh3ZfjKKS6HpmIg9OM5VY=;
-        b=KvYPuyE21F22ySyZ2h6SQN0eAN5xthjQjYq2kJm7nm840uvsu2otlWBysAmB7ey/xr
-         YlSc+5b2+lWTSh1djCTgeyfwY+ksyPikany0m4h4XguFuhefFzCBLhp3tFZHj5HJg4wo
-         63UnmZchNzSwic/EWAubHfriY8Y0KUDQmgIOAxv/j+U9etIyMTKacMC1imUB5QWS3Wq9
-         1B5DrsC80emHGrSCckTcBDCg9IlagioXF7VxV1VvvSxaSYX1Tg1IKwgUHP9L8WxCwfT4
-         pk8F2QJmjjj9Sxs79ADVxDQqBf/kZ3ZydjFt5nyKkuh7+rJrne1W6v5BueHmIGOmhK1G
-         04uQ==
-X-Gm-Message-State: AOAM5329z8r2B9QQKFBcouI2YX0j7sClL7M1oVEjM3/lX2tXwEnsximL
-        cfperUJmIKq7TWK8ZyrSzlTPeg==
-X-Google-Smtp-Source: ABdhPJx0kCEOPhXvpn2xjNNrCqf5m6I1JDLPJKDrXVNK4ZZt0cNU+x3XzQgoqDWgMEA3tv+XeknKwA==
-X-Received: by 2002:a05:6830:1da4:: with SMTP id z4mr6169678oti.83.1623558146857;
-        Sat, 12 Jun 2021 21:22:26 -0700 (PDT)
-Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id r2sm1423281otd.54.2021.06.12.21.22.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Jun 2021 21:22:26 -0700 (PDT)
-Date:   Sat, 12 Jun 2021 23:22:24 -0500
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+        id S231270AbhFMJEK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 13 Jun 2021 05:04:10 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:22947 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231192AbhFMJEJ (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Sun, 13 Jun 2021 05:04:09 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1623574929; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=dQoeZwVu2n9jRfR6UQm6hwPctLkAmGru9+XJJja6Lvo=; b=Qqh3W89STF4pJPTlyb85STU/BUJ9/KubiWJb8fulY8eEhzp+GxHYN3p5sgd+YcoBxFIYX96N
+ Wdd2GGBwt+LkTKurzlRfa7j7alnBTL5owb5XTdMi3+wE3g43RE79do0aMx5vldDD9/k3iXrP
+ bXYgwFFwQbtanfk2dpUQJT1fIUU=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n01.prod.us-west-2.postgun.com with SMTP id
+ 60c5c98c8491191eb36e29bc (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 13 Jun 2021 09:02:04
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 7794AC433D3; Sun, 13 Jun 2021 09:02:04 +0000 (UTC)
+Received: from tykki (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3D256C433D3;
+        Sun, 13 Jun 2021 09:02:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3D256C433D3
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
 To:     Caleb Connolly <caleb@connolly.tech>
-Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] arm64: dts: qcom: pmi8998: introduce qpnp haptics
-Message-ID: <YMWIABGYJlDEd+c9@yoga>
-References: <20210612205405.1233588-4-caleb@connolly.tech>
+Subject: Re: [PATCH] ath10k: demote chan info without scan request warning
+References: <20210522171609.299611-1-caleb@connolly.tech>
+        <20210612103640.2FD93C433F1@smtp.codeaurora.org>
+        <f39034ea-f4da-1564-e22f-398e4a1ae077@connolly.tech>
+Date:   Sun, 13 Jun 2021 12:01:56 +0300
+In-Reply-To: <f39034ea-f4da-1564-e22f-398e4a1ae077@connolly.tech> (Caleb
+        Connolly's message of "Sat, 12 Jun 2021 13:00:57 +0000")
+Message-ID: <871r96yw6z.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210612205405.1233588-4-caleb@connolly.tech>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat 12 Jun 15:54 CDT 2021, Caleb Connolly wrote:
+Caleb Connolly <caleb@connolly.tech> writes:
 
-> Add bindings for Qualcomm QPNP haptics, setting default values used on
-> most devices.
-> 
-> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
-> ---
->  arch/arm64/boot/dts/qcom/pmi8998.dtsi | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/pmi8998.dtsi b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-> index d230c510d4b7..ccf64c1898d4 100644
-> --- a/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-> @@ -1,4 +1,5 @@
->  // SPDX-License-Identifier: GPL-2.0
-> +#include <dt-bindings/input/qcom,qpnp-haptics.h>
->  #include <dt-bindings/interrupt-controller/irq.h>
->  #include <dt-bindings/spmi/spmi.h>
-> 
-> @@ -41,5 +42,20 @@ lab: lab {
->  				interrupt-names = "sc-err", "ocp";
->  			};
->  		};
-> +
-> +		qpnp_haptics: qcom,haptics@c000 {
+> Hi Kalle,
+>
+> On 12/06/2021 11:36 am, Kalle Valo wrote:
+>> Caleb Connolly <caleb@connolly.tech> wrote:
+>>
+>>> Some devices/firmwares cause this to be printed every 5-15 seconds,
+>>> though it has no impact on functionality. Demote this to a debug
+>>> message.
+>>>
+>>> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+>>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>
+> Is this meant to be an Ack?
 
-Also, please label this pmi8998_haptics, to make it easier to find where
-it's defined when looking at the .dts.
+No, my patchwork script has few quirks and it actually takes the quoted
+text from my pending branch, not from your actual email. That's why you
+see my s-o-b there. I haven't bothered to fix that yet, but hopefully
+one day.
 
-Thanks,
-Bjorn
+>> On what hardware and firmware version do you see this?
+>
+> I see this on SDM845 and MSM8998 platforms, specifically the OnePlus 6
+> devices, PocoPhone F1 and OnePlus 5.
+> On the OnePlus 6 (SDM845) we are stuck with the following signed vendor fw:
+>
+> [    9.339873] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214
+> chip_family 0x4001 board_id 0xff soc_id 0x40030001
+> [    9.339897] ath10k_snoc 18800000.wifi: qmi fw_version 0x20060029
+> fw_build_timestamp 2019-07-12 02:14 fw_build_id
+> QC_IMAGE_VERSION_STRING=WLAN.HL.2.0.c8-00041-QCAHLSWMTPLZ-1
+>
+> The OnePlus 5 (MSM8998) is using firmware:
+>
+> [ 6096.956799] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214
+> chip_family 0x4001 board_id 0xff soc_id 0x40010002
+> [ 6096.956824] ath10k_snoc 18800000.wifi: qmi fw_version 0x1007007e
+> fw_build_timestamp 2020-04-14 22:45 fw_build_id
+> QC_IMAGE_VERSION_STRING=WLAN.HL.1.0.c6-00126-QCAHLSWMTPLZ-1.211883.1.278648.
 
-> +			compatible = "qcom,qpnp-haptics";
-> +			reg = <0xc000 0x100>;
-> +
-> +			interrupts = <0x3 0xc0 0x0 IRQ_TYPE_EDGE_BOTH>,
-> +				     <0x3 0xc0 0x1 IRQ_TYPE_EDGE_BOTH>;
-> +			interrupt-names = "short", "play";
-> +
-> +			qcom,wave-shape = <HAP_WAVE_SINE>;
-> +			qcom,play-mode = <HAP_PLAY_BUFFER>;
-> +			qcom,brake-pattern = <0x3 0x3 0x2 0x1>;
-> +
-> +			status = "disabled";
-> +		};
->  	};
->  };
-> --
-> 2.31.1
-> 
-> 
+Thanks, I'll include this information to the commit log and then apply
+the patch. And I'll assume you have also tested this patch on those
+platforms so that I can add a Tested-on tag?
+
+BTW, ath10k should strip that ugly "QC_IMAGE_VERSION_STRING=" string in
+the firmware version. Patches very welcome :)
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
