@@ -2,180 +2,97 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B6D1C48BE6
-	for <phone-devel@archiver.kernel.org>; Mon, 14 Jun 2021 12:26:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CD44C2B9F4
+	for <phone-devel@archiver.kernel.org>; Mon, 14 Jun 2021 13:40:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E2BBE61242
-	for <phone-devel@archiver.kernel.org>; Mon, 14 Jun 2021 12:26:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0787A6109E
+	for <phone-devel@archiver.kernel.org>; Mon, 14 Jun 2021 13:40:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233393AbhFNM2Q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 14 Jun 2021 08:28:16 -0400
-Received: from comms.puri.sm ([159.203.221.185]:57366 "EHLO comms.puri.sm"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233076AbhFNM2M (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 14 Jun 2021 08:28:12 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 00B3CE0FEB;
-        Mon, 14 Jun 2021 05:25:39 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id AUCxcWaGoJwN; Mon, 14 Jun 2021 05:25:38 -0700 (PDT)
-From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-To:     martin.kepplinger@puri.sm
-Cc:     devicetree@vger.kernel.org, festevam@gmail.com,
-        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
-        laurent.pinchart@ideasonboard.com,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-staging@lists.linux.dev, m.felsch@pengutronix.de,
-        mchehab@kernel.org, phone-devel@vger.kernel.org, robh@kernel.org,
-        shawnguo@kernel.org, slongerbeam@gmail.com
-Subject: [PATCH v4.1 3/3] arm64: dts: imx8mq: add mipi csi phy and csi bridge descriptions
-Date:   Mon, 14 Jun 2021 14:25:17 +0200
-Message-Id: <20210614122517.2945532-1-martin.kepplinger@puri.sm>
-In-Reply-To: <20210614121522.2944593-4-martin.kepplinger@puri.sm>
-References: <20210614121522.2944593-4-martin.kepplinger@puri.sm>
-Content-Transfer-Encoding: 8bit
+        id S234209AbhFNNmU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 14 Jun 2021 09:42:20 -0400
+Received: from mail-il1-f180.google.com ([209.85.166.180]:44650 "EHLO
+        mail-il1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234200AbhFNNmQ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 14 Jun 2021 09:42:16 -0400
+Received: by mail-il1-f180.google.com with SMTP id i17so12204645ilj.11;
+        Mon, 14 Jun 2021 06:39:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=OxkVXBVM55LDwVRAZPY6AljtXcBqUD2U0cvNY0im0TI=;
+        b=Dl2l5ICfALK0KfquruUxr0jmurOyOla+6ywhgnh4IvG+ZRYbJ5192uXACZCiQbsbIm
+         /ir62VToOl9AWAPOCUe39zJrMTw4sAoKg/aiz5o7Zdhx5UoQirMwfELxn0kjzOhixRJq
+         DhzIru6kIyaATKay3imHHfK47keSyjZQiBl9g6T0aXTAkRBdYURqyc8brIfAI6pd1jUT
+         uMj7nS6Dxc0SyZc+JEmxjaWwrBNIA24clu7A5mpQfQ7vs3FwTnDU7mbMGBfZ9pe0eaAO
+         AbGNQC+HkJDZg9Uw6W8oDI9Zk5ZZRqzEdYtBttMBWEYUobTbZzZClNoqjeP8fkee8ron
+         nY7Q==
+X-Gm-Message-State: AOAM530wWEhr52zDrqrYuL7A4A8HDwvVi9CBszN7ldSUtyXlRajTSkA/
+        LMu6aveanJAoHybo+KyU1djlsFE30w==
+X-Google-Smtp-Source: ABdhPJy6lhmA8NFPbyoWawUnEPz8LESbIgELTYTaG2/ny9Psly+KNDI+gFkFRpNEZ6qgODjZAgjcWg==
+X-Received: by 2002:a92:ccd1:: with SMTP id u17mr13864514ilq.239.1623677998429;
+        Mon, 14 Jun 2021 06:39:58 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id r10sm7695817ilq.46.2021.06.14.06.39.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Jun 2021 06:39:57 -0700 (PDT)
+Received: (nullmailer pid 630749 invoked by uid 1000);
+        Mon, 14 Jun 2021 13:39:48 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-input@vger.kernel.org, phone-devel@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+In-Reply-To: <20210612205405.1233588-2-caleb@connolly.tech>
+References: <20210612205405.1233588-1-caleb@connolly.tech> <20210612205405.1233588-2-caleb@connolly.tech>
+Subject: Re: [PATCH 1/4] dt-bindings: input: add Qualcomm QPNP haptics driver
+Date:   Mon, 14 Jun 2021 07:39:48 -0600
+Message-Id: <1623677988.130611.630748.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Describe the 2 available CSI interfaces on the i.MX8MQ with the MIPI-CSI2
-receiver and the CSI Bridge that provides the user buffers, where the
-existing driver can directly be used.
+On Sat, 12 Jun 2021 20:54:31 +0000, Caleb Connolly wrote:
+> Add bindings for pmi8998 qpnp haptics driver.
+> 
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+> ---
+>  .../bindings/input/qcom,qpnp-haptics.yaml     | 123 ++++++++++++++++++
+>  include/dt-bindings/input/qcom,qpnp-haptics.h |  31 +++++
+>  2 files changed, 154 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/qcom,qpnp-haptics.yaml
+>  create mode 100644 include/dt-bindings/input/qcom,qpnp-haptics.h
+> 
 
-An image sensor is to be connected to the MIPIs' second port, described in
-board files.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
----
+yamllint warnings/errors:
 
-sorry, the csi compatible addition suggested by Marco was missing in
-v4 3/3. here is 3/3 updated.
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/input/qcom,qpnp-haptics.example.dt.yaml:0:0: /example-0/pmic@3: failed to match any schema with compatible: ['qcom,pmi8998', 'qcom,spmi-pmic']
+Documentation/devicetree/bindings/input/qcom,qpnp-haptics.example.dt.yaml:0:0: /example-0/pmic@3: failed to match any schema with compatible: ['qcom,pmi8998', 'qcom,spmi-pmic']
+\ndoc reference errors (make refcheckdocs):
 
+See https://patchwork.ozlabs.org/patch/1491323
 
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
 
- arch/arm64/boot/dts/freescale/imx8mq.dtsi | 102 ++++++++++++++++++++++
- 1 file changed, 102 insertions(+)
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-index 91df9c5350ae..fa83e8294b20 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-@@ -1099,6 +1099,108 @@ uart4: serial@30a60000 {
- 				status = "disabled";
- 			};
- 
-+			mipi_csi1: csi@30a70000 {
-+				compatible = "fsl,imx8mq-mipi-csi2";
-+				reg = <0x30a70000 0x1000>;
-+				clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
-+				   <&clk IMX8MQ_CLK_CSI1_ESC>,
-+				   <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
-+				   <&clk IMX8MQ_CLK_CLKO2>;
-+				clock-names = "core", "esc", "pxl", "clko2";
-+				assigned-clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
-+				    <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
-+				    <&clk IMX8MQ_CLK_CSI1_ESC>;
-+				assigned-clock-rates = <266000000>, <333000000>, <66000000>;
-+				assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
-+					<&clk IMX8MQ_SYS2_PLL_1000M>,
-+					<&clk IMX8MQ_SYS1_PLL_800M>;
-+				power-domains = <&pgc_mipi_csi1>;
-+				resets = <&src>;
-+				fsl,mipi-phy-gpr = <&iomuxc_gpr 0x88>;
-+				interconnects = <&noc IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
-+				interconnect-names = "dram";
-+				status = "disabled";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+
-+						csi1_mipi_ep: endpoint {
-+							remote-endpoint = <&csi1_ep>;
-+						};
-+					};
-+				};
-+			};
-+
-+			csi1: csi@30a90000 {
-+				compatible = "fsl,imx8mq-csi", "fsl,imx7-csi";
-+				reg = <0x30a90000 0x10000>;
-+				interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk IMX8MQ_CLK_CSI1_ROOT>;
-+				clock-names = "mclk";
-+				status = "disabled";
-+
-+				port {
-+					csi1_ep: endpoint {
-+						remote-endpoint = <&csi1_mipi_ep>;
-+					};
-+				};
-+			};
-+
-+			mipi_csi2: csi@30b60000 {
-+				compatible = "fsl,imx8mq-mipi-csi2";
-+				reg = <0x30b60000 0x1000>;
-+				clocks = <&clk IMX8MQ_CLK_CSI2_CORE>,
-+				   <&clk IMX8MQ_CLK_CSI2_ESC>,
-+				   <&clk IMX8MQ_CLK_CSI2_PHY_REF>,
-+				   <&clk IMX8MQ_CLK_CLKO2>;
-+				clock-names = "core", "esc", "pxl", "clko2";
-+				assigned-clocks = <&clk IMX8MQ_CLK_CSI2_CORE>,
-+				    <&clk IMX8MQ_CLK_CSI2_PHY_REF>,
-+				    <&clk IMX8MQ_CLK_CSI2_ESC>;
-+				assigned-clock-rates = <266000000>, <333000000>, <66000000>;
-+				assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
-+					<&clk IMX8MQ_SYS2_PLL_1000M>,
-+					<&clk IMX8MQ_SYS1_PLL_800M>;
-+				power-domains = <&pgc_mipi_csi2>;
-+				resets = <&src>;
-+				fsl,mipi-phy-gpr = <&iomuxc_gpr 0xa4>;
-+				interconnects = <&noc IMX8MQ_ICM_CSI2 &noc IMX8MQ_ICS_DRAM>;
-+				interconnect-names = "dram";
-+				status = "disabled";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+
-+						csi2_mipi_ep: endpoint {
-+							remote-endpoint = <&csi2_ep>;
-+						};
-+					};
-+				};
-+			};
-+
-+			csi2: csi@30b80000 {
-+				compatible = "fsl,imx8mq-csi", "fsl,imx7-csi";
-+				reg = <0x30b80000 0x10000>;
-+				interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk IMX8MQ_CLK_CSI2_ROOT>;
-+				clock-names = "mclk";
-+				status = "disabled";
-+
-+				port {
-+					csi2_ep: endpoint {
-+						remote-endpoint = <&csi2_mipi_ep>;
-+					};
-+				};
-+			};
-+
- 			mu: mailbox@30aa0000 {
- 				compatible = "fsl,imx8mq-mu", "fsl,imx6sx-mu";
- 				reg = <0x30aa0000 0x10000>;
--- 
-2.30.2
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
 
