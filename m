@@ -2,171 +2,234 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLACK
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3D80C48BCF
-	for <phone-devel@archiver.kernel.org>; Sun, 13 Jun 2021 17:12:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B89A6C2B9F4
+	for <phone-devel@archiver.kernel.org>; Mon, 14 Jun 2021 12:15:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CC82C61019
-	for <phone-devel@archiver.kernel.org>; Sun, 13 Jun 2021 17:12:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8EC4C611EE
+	for <phone-devel@archiver.kernel.org>; Mon, 14 Jun 2021 12:15:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232010AbhFMROj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 13 Jun 2021 13:14:39 -0400
-Received: from mail-ot1-f54.google.com ([209.85.210.54]:44659 "EHLO
-        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232008AbhFMROj (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 13 Jun 2021 13:14:39 -0400
-Received: by mail-ot1-f54.google.com with SMTP id q5-20020a9d66450000b02903f18d65089fso8499089otm.11
-        for <phone-devel@vger.kernel.org>; Sun, 13 Jun 2021 10:12:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=vBBy6St8FkUvFoOw7EGXmngtbokUJY/bqhzPml+W86c=;
-        b=MePmkULJTM5oQwk7zs2nFJZpMMpZLySe6JtvZ9xrB0qOe1+nSjmQPIhz5t2oT0EvAm
-         ZmZveNZg1h2ooksoKadmeVXvk0f4JOzw40UOvUcsaENsxjizSw0ZNQlzxosMr6TKk6Mf
-         Zjmzgo2cDx93p2ZWu++A7Hc/nl7jyfc26HyOgsceJNGyx/duN0OBVyHpvwXfCh0r7Oyt
-         hkZUjmf5b1YKFiKE8E+cDQmzpUO0UIZ/DqyWGlJEIz9/4GSr7TJ2ZZvzjvQtjEGCg6l2
-         G/7IIfivjJRuYvqiWS4aQ2ymaej2abz6eGBM9rbVy0v2/o6dFXLqYdga39c9+F+e2w1W
-         T8nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=vBBy6St8FkUvFoOw7EGXmngtbokUJY/bqhzPml+W86c=;
-        b=Pqh7wiAqMtTUZnp/UmQZbXDTS6Cw4B1BN+x9xUgFpi7V+pIr2Ml2G+9jtHXRSnwdov
-         dNSMlnkC2ct/b64abKSkcshrL/DJsems2kWW1iex7YUtUEgVQR6pK78MQXFwOc30uU2N
-         r1QTxoNER1wE20O4URTwkk6oMkhWOvr5I3YmjNSNGk7xs2qc6L0JFvmzOl6N2fE096R5
-         a/t87+rbLdcsO9nYypnSmh9d/MbX0ie4cnXfg3OF10kDbrM0IANonnkYQcn1Kb5r9ISm
-         UYZGoDWh8Gq9td574stgD+Ma7gEqxEjxgTpU213TvV1wnbn7PZ8vVJ1WyYf8hnOMhFnF
-         MCzA==
-X-Gm-Message-State: AOAM532xTzp1zr480XnvhzCm/pbpI7EcBdkV33raIXFH9n34NUcdMJEi
-        1tL3/MlORtl2PEwq91kZ61Rp50NbcOSoTQ==
-X-Google-Smtp-Source: ABdhPJxRafcjqtvKsbQb9zEe9aUB0PnaQaENf16Z38L5f/GmjU8cMUw/qh2LFSOKASFfAWzEPfN6jQ==
-X-Received: by 2002:a9d:1ea5:: with SMTP id n34mr2114978otn.340.1623604285061;
-        Sun, 13 Jun 2021 10:11:25 -0700 (PDT)
-Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id d136sm2401178oib.4.2021.06.13.10.11.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Jun 2021 10:11:24 -0700 (PDT)
-Date:   Sun, 13 Jun 2021 12:11:21 -0500
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Caleb Connolly <caleb@connolly.tech>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-input@vger.kernel.org
-Subject: Re: [PATCH 2/4] input: add Qualcomm QPNP haptics driver
-Message-ID: <YMY8OcMrDh2D4qVg@yoga>
-References: <20210612205405.1233588-1-caleb@connolly.tech>
- <20210612205405.1233588-3-caleb@connolly.tech>
- <YMWE+p5zlntC88ti@yoga>
- <b821c5d4-f406-f4bf-638b-59fb20bc2f36@connolly.tech>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b821c5d4-f406-f4bf-638b-59fb20bc2f36@connolly.tech>
+        id S232791AbhFNMRz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 14 Jun 2021 08:17:55 -0400
+Received: from comms.puri.sm ([159.203.221.185]:56388 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232559AbhFNMRz (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 14 Jun 2021 08:17:55 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id 3EDEBE1FD3;
+        Mon, 14 Jun 2021 05:15:52 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Xdk0FjcwTApp; Mon, 14 Jun 2021 05:15:48 -0700 (PDT)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     martin.kepplinger@puri.sm, laurent.pinchart@ideasonboard.com
+Cc:     devicetree@vger.kernel.org, festevam@gmail.com,
+        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-staging@lists.linux.dev, mchehab@kernel.org,
+        phone-devel@vger.kernel.org, robh@kernel.org, shawnguo@kernel.org,
+        slongerbeam@gmail.com, m.felsch@pengutronix.de
+Subject: [PATCH v4 1/3] dt-bindings: media: document the nxp,imx8mq-mipi-csi2 receiver phy and controller
+Date:   Mon, 14 Jun 2021 14:15:20 +0200
+Message-Id: <20210614121522.2944593-2-martin.kepplinger@puri.sm>
+In-Reply-To: <20210614121522.2944593-1-martin.kepplinger@puri.sm>
+References: <20210614121522.2944593-1-martin.kepplinger@puri.sm>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun 13 Jun 11:24 CDT 2021, Caleb Connolly wrote:
+The i.MX8MQ SoC integrates a different MIPI CSI receiver as the i.MX8MM so
+describe the DT bindings for it.
 
-> Hi Bjorn,
-> 
-> Thanks a lot for your feedback.
-> 
-> On 13/06/2021 5:09 am, Bjorn Andersson wrote:
-> > On Sat 12 Jun 15:54 CDT 2021, Caleb Connolly wrote:
-> >
-> >> Add support for the haptics found in pmi8998 and related PMICs.
-> >> Based on the ff-memless interface. Currently this driver provides
-> >> a partial implementation of hardware features.
-> >>
-> >> This driver only supports LRAs (Linear Resonant Actuators) in the "buffer"
-> >> mode with a single wave pattern.
-> >>
-> >> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
-> >
-> > Please use a cover letter when posting multiple patches.
-> I'm not sure why the cover letter didn't make it to your inbox, here's a
-> link:
-> https://lore.kernel.org/linux-arm-msm/20210612205405.1233588-1-caleb@connolly.tech/
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+---
+ .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 171 ++++++++++++++++++
+ 1 file changed, 171 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
 
-It arrived later, for some reason. Sorry for the fuzz.
+diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+new file mode 100644
+index 000000000000..4fed224ebfdd
+--- /dev/null
++++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+@@ -0,0 +1,171 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/media/nxp,imx8mq-mipi-csi2.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NXP i.MX8MQ MIPI CSI-2 receiver
++
++maintainers:
++  - Martin Kepplinger <martin.kepplinger@puri.sm>
++
++description: |-
++  This binding covers the CSI-2 RX PHY and host controller included in the
++  NXP i.MX8MQ SoC. It handles the sensor/image input and process for all the
++  input imaging devices.
++
++properties:
++  compatible:
++    enum:
++      - fsl,imx8mq-mipi-csi2
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: core is the RX Controller Core Clock input. This clock
++                     must be exactly equal to or faster than the receive
++                     byteclock from the RX DPHY.
++      - description: esc is the Rx Escape Clock. This must be the same escape
++                     clock that the RX DPHY receives.
++      - description: pxl is the pixel clock (phy_ref up to 333Mhz).
++      - description: clko2 is the CLKO2 clock root.
++                     See the reference manual for details.
++
++  clock-names:
++    items:
++      - const: core
++      - const: esc
++      - const: pxl
++      - const: clko2
++
++  power-domains:
++    maxItems: 1
++
++  resets:
++    maxItems: 1
++
++  fsl,mipi-phy-gpr:
++    description: |
++      The phandle to the imx8mq syscon iomux-gpr with the register
++      for setting RX_ENABLE for the mipi receiver.
++
++      The format should be as follows:
++      <gpr req_gpr>
++      gpr is the phandle to general purpose register node.
++      req_gpr is the gpr register offset of RX_ENABLE for the mipi phy.
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    items:
++      items:
++        - description: The 'gpr' is the phandle to general purpose register node.
++        - description: The 'req_gpr' is the gpr register offset containing
++                       CSI2_1_RX_ENABLE or CSI2_2_RX_ENABLE respectively.
++          maximum: 0xff
++
++  interconnects:
++    maxItems: 1
++
++  interconnect-names:
++    const: dram
++
++  ports:
++    $ref: /schemas/graph.yaml#/properties/ports
++
++    properties:
++      port@0:
++        $ref: /schemas/graph.yaml#/$defs/port-base
++        unevaluatedProperties: false
++        description:
++          Input port node, single endpoint describing the CSI-2 transmitter.
++
++        properties:
++          endpoint:
++            $ref: video-interfaces.yaml#
++            unevaluatedProperties: false
++
++            properties:
++              data-lanes:
++                items:
++                  minItems: 1
++                  maxItems: 4
++                  items:
++                    - const: 1
++                    - const: 2
++                    - const: 3
++                    - const: 4
++
++            required:
++              - data-lanes
++
++      port@1:
++        $ref: /schemas/graph.yaml#/properties/port
++        description:
++          Output port node
++
++    required:
++      - port@0
++      - port@1
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++  - power-domains
++  - resets
++  - fsl,mipi-phy-gpr
++  - ports
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/imx8mq-clock.h>
++    #include <dt-bindings/interconnect/imx8mq.h>
++
++    csi@30a70000 {
++        compatible = "fsl,imx8mq-mipi-csi2";
++        reg = <0x30a70000 0x1000>;
++        clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
++                 <&clk IMX8MQ_CLK_CSI1_ESC>,
++                 <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
++                 <&clk IMX8MQ_CLK_CLKO2>;
++        clock-names = "core", "esc", "pxl", "clko2";
++        assigned-clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
++                          <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
++                          <&clk IMX8MQ_CLK_CSI1_ESC>;
++        assigned-clock-rates = <266000000>, <200000000>, <66000000>;
++        assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
++                                 <&clk IMX8MQ_SYS2_PLL_1000M>,
++                                 <&clk IMX8MQ_SYS1_PLL_800M>;
++        power-domains = <&pgc_mipi_csi1>;
++        resets = <&src>;
++        fsl,mipi-phy-gpr = <&iomuxc_gpr 0x88>;
++        interconnects = <&noc IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
++        interconnect-names = "dram";
++
++        ports {
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            port@0 {
++                reg = <0>;
++
++                imx8mm_mipi_csi_in: endpoint {
++                    remote-endpoint = <&imx477_out>;
++                    data-lanes = <1 2 3 4>;
++                };
++            };
++
++            port@1 {
++                reg = <1>;
++
++                imx8mm_mipi_csi_out: endpoint {
++                    remote-endpoint = <&csi_in>;
++                };
++            };
++        };
++    };
++
++...
+-- 
+2.30.2
 
-> >
-> >> ---
-> >>  drivers/input/misc/Kconfig        |   11 +
-> >>  drivers/input/misc/Makefile       |    1 +
-> >>  drivers/input/misc/qpnp-haptics.c | 1022 +++++++++++++++++++++++++++++
-> >>  3 files changed, 1034 insertions(+)
-> >>  create mode 100644 drivers/input/misc/qpnp-haptics.c
-> >>
-> >> diff --git a/drivers/input/misc/Kconfig b/drivers/input/misc/Kconfig
-> >> index 498cde376981..b5ba03e6cf58 100644
-> >> --- a/drivers/input/misc/Kconfig
-> >> +++ b/drivers/input/misc/Kconfig
-> >> @@ -186,6 +186,17 @@ config INPUT_PMIC8XXX_PWRKEY
-> >>  	  To compile this driver as a module, choose M here: the
-> >>  	  module will be called pmic8xxx-pwrkey.
-> >>
-> >> +config INPUT_QPNP_HAPTICS
-> >
-> > No-one knows what "QPNP" really is, so please name this
-> > "INPUT_QCOM_SPMI_HAPTICS"
-> >
-> >> +	tristate "Qualcomm QPNP HAPTICS"
-> >> +	depends on ARCH_QCOM
-> >
-> > "depends on SPMI" makes sense here.
-> >
-> >> +	select INPUT_FF_MEMLESS
-> >> +	help
-> >> +	  This option enables support for the haptics found in pmi8998 and
-> >> +	  related PMICs. Based on the ff-memless interface.
-> >> +
-> >> +	  To compile this driver as module, choose M here: the
-> >> +	  module will be called qpnp-haptics.
-> >> +
-> >>  config INPUT_SPARCSPKR
-> >>  	tristate "SPARC Speaker support"
-> >>  	depends on PCI && SPARC64
-> >> diff --git a/drivers/input/misc/Makefile b/drivers/input/misc/Makefile
-> >> index f593beed7e05..c43290163db0 100644
-> >> --- a/drivers/input/misc/Makefile
-> >> +++ b/drivers/input/misc/Makefile
-> >> @@ -65,6 +65,7 @@ obj-$(CONFIG_INPUT_PMIC8XXX_PWRKEY)	+= pmic8xxx-pwrkey.o
-> >>  obj-$(CONFIG_INPUT_POWERMATE)		+= powermate.o
-> >>  obj-$(CONFIG_INPUT_PWM_BEEPER)		+= pwm-beeper.o
-> >>  obj-$(CONFIG_INPUT_PWM_VIBRA)		+= pwm-vibra.o
-> >> +obj-$(CONFIG_INPUT_QPNP_HAPTICS)	+= qpnp-haptics.o
-> >>  obj-$(CONFIG_INPUT_RAVE_SP_PWRBUTTON)	+= rave-sp-pwrbutton.o
-> >>  obj-$(CONFIG_INPUT_RB532_BUTTON)	+= rb532_button.o
-> >>  obj-$(CONFIG_INPUT_REGULATOR_HAPTIC)	+= regulator-haptic.o
-> >> diff --git a/drivers/input/misc/qpnp-haptics.c b/drivers/input/misc/qpnp-haptics.c
-> >
-> > Again, qcom-spmi-haptics.c
-> >
-> >> new file mode 100644
-> >> index 000000000000..daa7a18ffc7d
-> >> --- /dev/null
-> >> +++ b/drivers/input/misc/qpnp-haptics.c
-> >> @@ -0,0 +1,1022 @@
-> >> +// SPDX-License-Identifier: GPL-2.0-only
-> >> +/*
-> >> + * Copyright (c) 2021, Caleb Connolly <caleb@connolly.tech>
-> >> + * Qualcomm Plug and Play haptics driver for pmi8998 and related PMICs.
-> >> + * Based on ./pm8xxx-vibrator.c
-> >
-> > Enough "based on" to warrant carrying some copyrights?
-> Hmm, I only stole the input device parts, so perhaps not.
-
-Then I think you can drop this comment as well.
-
-Regards,
-Bjorn
