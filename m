@@ -2,259 +2,125 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 303CFC48BE5
-	for <phone-devel@archiver.kernel.org>; Tue, 15 Jun 2021 08:17:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8835AC48BE8
+	for <phone-devel@archiver.kernel.org>; Tue, 15 Jun 2021 13:34:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1075D6141F
-	for <phone-devel@archiver.kernel.org>; Tue, 15 Jun 2021 08:17:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5EA5E601FC
+	for <phone-devel@archiver.kernel.org>; Tue, 15 Jun 2021 13:34:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231153AbhFOITU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 15 Jun 2021 04:19:20 -0400
-Received: from comms.puri.sm ([159.203.221.185]:48442 "EHLO comms.puri.sm"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230494AbhFOITT (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 15 Jun 2021 04:19:19 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 479C0E11DD;
-        Tue, 15 Jun 2021 01:17:15 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id RoN7WlA-jzVk; Tue, 15 Jun 2021 01:17:14 -0700 (PDT)
-Message-ID: <3e12f5d22e7940f4143cb9c55367724cb8cf349a.camel@puri.sm>
-Subject: Re: [PATCH v4.1 3/3] arm64: dts: imx8mq: add mipi csi phy and csi
- bridge descriptions
-From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     devicetree@vger.kernel.org, festevam@gmail.com,
-        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-staging@lists.linux.dev, m.felsch@pengutronix.de,
-        mchehab@kernel.org, phone-devel@vger.kernel.org, robh@kernel.org,
-        shawnguo@kernel.org, slongerbeam@gmail.com
-Date:   Tue, 15 Jun 2021 10:17:06 +0200
-In-Reply-To: <YMfT+swqNAm67EmS@pendragon.ideasonboard.com>
-References: <20210614121522.2944593-4-martin.kepplinger@puri.sm>
-         <20210614122517.2945532-1-martin.kepplinger@puri.sm>
-         <YMfT+swqNAm67EmS@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
+        id S230211AbhFONgh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 15 Jun 2021 09:36:37 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:18906 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231245AbhFONgT (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 15 Jun 2021 09:36:19 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1623764032; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=UqZj6ncVwqbNWU1TATskOVce7fe8wck3w5h3gR2puRTbXZ+nWfxrQKjeZaqUUvl5kX
+    D1ZPSkn3qQznNuMk4POCY//MNRZ2stERRwuORs3X9lueUb2nmHpQJc+IUO+Z+iZTo7nz
+    66FtkKPVk6MYpm3mYxx4eKMhH99ZOxzJ5Rv9HJhrWK2sW/X54nQ1xGU2uiorw4g93SDa
+    HIBSM85rWyVBd3kHySpS3eV3kSK/mEgAQXpkaFxSUthQ7V9fonB7ZQaJAoRMM6Z7BcxG
+    Gwm+rAQiHiF/vxPzKUIYutzvu1PTV2wtXQJu8Zcn4IYvA8mUkqNHAyHFtXkFUYbXR4iN
+    D4bQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1623764032;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=mQRhCw99t46xvu5Um+luLEXQFeXQ4w3N+7RCHyZz/KU=;
+    b=m5eH9bt3+q6eDbQ8EcSxeNBIP+/hILKfT4cpG2uRzFs+xwaBrqjOoGdEklhTvd/RO9
+    OTZ8lxJUfxND7B+nKjkEKVof10w5iMIZxi7hBl+tcorbiQR3kB5/uppXfSaftkOFIDdw
+    5EqP6/AKKOPT3FhvLMG72Z1alSwNi4qxIEWTCtD6/3RVf8aLXCZvQmQr6dv8JAYCm2RA
+    6awcxa8WcnDuecSaay/AMYTfdB9CnlCKav6hgEO6y/RDGOccbUVzLmDaGtLSmVVnIqmd
+    dQnKngo9IVoggOiU3JitXwkE7M9gDXJviMGapO5TDPS9TKaQ+pTw+xvAuJjGuM710i9U
+    uY0A==
+ARC-Authentication-Results: i=1; strato.com;
+    dkim=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1623764032;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=mQRhCw99t46xvu5Um+luLEXQFeXQ4w3N+7RCHyZz/KU=;
+    b=q+QVM9xC4W/uQmucYyxt3nVC54G3iImd89NhNwnkQ2viz+NjmpOqCMsqF4q9yF95xT
+    n5p/kWOptl6JtIPEjTYGFVKeyuruMVbHTNMfzbjIKIsSOTcyUGw7SDubWnqJ28+p+dm3
+    E/8QHwvA1gmivoq5EOYuEobTWak2xlqBBNNvidtyGTl3QLcJZcku6PlJTBvt50g8JaCY
+    tiUMIdunkjGal9qKy+Oe2F5ivno/2hJCad9ekE0SFt8MyU1neYFUfZ49hXE0cwflbOiG
+    n1qo00WMQ1Zjz67TfdN/4f8dtctCmeJ7wzEPyn1FQwBX8nJLTc1sNtFAAhCV3jlzp3jd
+    NXiA==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxA6m6NutzT"
+X-RZG-CLASS-ID: mo00
+Received: from droid..
+    by smtp.strato.de (RZmta 47.27.2 DYNA|AUTH)
+    with ESMTPSA id y01375x5FDXpOsl
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Tue, 15 Jun 2021 15:33:51 +0200 (CEST)
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Loic Poulain <loic.poulain@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Aleksander Morgado <aleksander@aleksander.es>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        netdev@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: [PATCH net-next 0/3] net: wwan: Add RPMSG WWAN CTRL driver
+Date:   Tue, 15 Jun 2021 15:32:26 +0200
+Message-Id: <20210615133229.213064-1-stephan@gerhold.net>
+X-Mailer: git-send-email 2.32.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Am Dienstag, dem 15.06.2021 um 01:11 +0300 schrieb Laurent Pinchart:
-> Hi Martin,
-> 
-> Thank you for the patch.
-> 
-> On Mon, Jun 14, 2021 at 02:25:17PM +0200, Martin Kepplinger wrote:
-> > Describe the 2 available CSI interfaces on the i.MX8MQ with the
-> > MIPI-CSI2
-> > receiver and the CSI Bridge that provides the user buffers, where
-> > the
-> > existing driver can directly be used.
-> > 
-> > An image sensor is to be connected to the MIPIs' second port,
-> > described in
-> > board files.
-> > 
-> > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-> > ---
-> > 
-> > sorry, the csi compatible addition suggested by Marco was missing
-> > in
-> > v4 3/3. here is 3/3 updated.
-> > 
-> > 
-> > 
-> >  arch/arm64/boot/dts/freescale/imx8mq.dtsi | 102
-> > ++++++++++++++++++++++
-> >  1 file changed, 102 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-> > b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-> > index 91df9c5350ae..fa83e8294b20 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-> > @@ -1099,6 +1099,108 @@ uart4: serial@30a60000 {
-> >                                 status = "disabled";
-> >                         };
-> >  
-> > +                       mipi_csi1: csi@30a70000 {
-> > +                               compatible = "fsl,imx8mq-mipi-
-> > csi2";
-> > +                               reg = <0x30a70000 0x1000>;
-> > +                               clocks = <&clk
-> > IMX8MQ_CLK_CSI1_CORE>,
-> > +                                  <&clk IMX8MQ_CLK_CSI1_ESC>,
-> > +                                  <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
-> > +                                  <&clk IMX8MQ_CLK_CLKO2>;
-> > +                               clock-names = "core", "esc", "pxl",
-> > "clko2";
-> 
-> I can't figure out what the clko2 clock is used for based on the
-> datasheet. It seems to be a clock output by the SoC on GPIO1_IO15,
-> and
-> doesn't seem to belong here.
+This patch series adds a WWAN "control" driver for the remote processor
+messaging (rpmsg) subsystem. This subsystem allows communicating with
+an integrated modem DSP on many Qualcomm SoCs, e.g. MSM8916 or MSM8974.
 
-oh, no it doesn't, I'm sorry, that was just a hack that I forgot about!
-That clock is only used by the sensor I'm using -.- I'll remove it
-here. thanks a lot for looking closely.
+The driver is a fairly simple glue layer between WWAN and RPMSG
+and is mostly based on the existing mhi_wwan_ctrl.c and rpmsg_char.c.
 
-> 
-> Regarding core, esc and pix, do these clock correspond to the clk,
-> clk_esc and clk_ui listed in table 13-36 (section 13.8.3.3.1 "RX
-> Local
-> Interface Description") of the TRM ? If so, should they be renamed
-> accordingly, to either "clk", "clk_esc" and "clk_ui", or, if we want
-> to
-> drop the prefixes, "core", "esc" and "ui" ?
+For more information, see commit message in PATCH 2/3.
 
-yes, I think so.
+I already posted a RFC for this a while ago:
+https://lore.kernel.org/linux-arm-msm/YLfL9Q+4860uqS8f@gerhold.net/
+and now I'm looking for some feedback for the actual changes. :)
 
-> 
-> > +                               assigned-clocks = <&clk
-> > IMX8MQ_CLK_CSI1_CORE>,
-> > +                                   <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
-> > +                                   <&clk IMX8MQ_CLK_CSI1_ESC>;
-> > +                               assigned-clock-rates = <266000000>,
-> > <333000000>, <66000000>;
-> > +                               assigned-clock-parents = <&clk
-> > IMX8MQ_SYS1_PLL_266M>,
-> > +                                       <&clk
-> > IMX8MQ_SYS2_PLL_1000M>,
-> > +                                       <&clk
-> > IMX8MQ_SYS1_PLL_800M>;
-> > +                               power-domains = <&pgc_mipi_csi1>;
-> > +                               resets = <&src>;
-> 
-> The src node has #reset-cells set to 1, I think you're missing
-> something
-> here.
+Especially patch 3/3 is still up for discussion, perhaps there is a cleaner
+way to implement the blocking/non-blocking writes for rpmsg_wwan_ctrl?
 
-yes, thank you!
+Stephan Gerhold (3):
+  rpmsg: core: Add driver_data for rpmsg_device_id
+  net: wwan: Add RPMSG WWAN CTRL driver
+  net: wwan: Allow WWAN drivers to provide blocking tx and poll function
 
-> 
-> > +                               fsl,mipi-phy-gpr = <&iomuxc_gpr
-> > 0x88>;
-> > +                               interconnects = <&noc
-> > IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
-> > +                               interconnect-names = "dram";
-> > +                               status = "disabled";
-> > +
-> > +                               ports {
-> > +                                       #address-cells = <1>;
-> > +                                       #size-cells = <0>;
-> > +
-> > +                                       port@0 {
-> > +                                               reg = <0>;
-> > +
-> > +                                               csi1_mipi_ep:
-> > endpoint {
-> > +                                                       remote-
-> > endpoint = <&csi1_ep>;
-> > +                                               };
-> > +                                       };
-> > +                               };
-> > +                       };
-> > +
-> > +                       csi1: csi@30a90000 {
-> > +                               compatible = "fsl,imx8mq-csi",
-> > "fsl,imx7-csi";
-> > +                               reg = <0x30a90000 0x10000>;
-> > +                               interrupts = <GIC_SPI 42
-> > IRQ_TYPE_LEVEL_HIGH>;
-> > +                               clocks = <&clk
-> > IMX8MQ_CLK_CSI1_ROOT>;
-> > +                               clock-names = "mclk";
-> > +                               status = "disabled";
-> > +
-> > +                               port {
-> > +                                       csi1_ep: endpoint {
-> > +                                               remote-endpoint =
-> > <&csi1_mipi_ep>;
-> > +                                       };
-> > +                               };
-> > +                       };
-> > +
-> > +                       mipi_csi2: csi@30b60000 {
-> > +                               compatible = "fsl,imx8mq-mipi-
-> > csi2";
-> > +                               reg = <0x30b60000 0x1000>;
-> > +                               clocks = <&clk
-> > IMX8MQ_CLK_CSI2_CORE>,
-> > +                                  <&clk IMX8MQ_CLK_CSI2_ESC>,
-> > +                                  <&clk IMX8MQ_CLK_CSI2_PHY_REF>,
-> > +                                  <&clk IMX8MQ_CLK_CLKO2>;
-> > +                               clock-names = "core", "esc", "pxl",
-> > "clko2";
-> > +                               assigned-clocks = <&clk
-> > IMX8MQ_CLK_CSI2_CORE>,
-> > +                                   <&clk IMX8MQ_CLK_CSI2_PHY_REF>,
-> > +                                   <&clk IMX8MQ_CLK_CSI2_ESC>;
-> > +                               assigned-clock-rates = <266000000>,
-> > <333000000>, <66000000>;
-> > +                               assigned-clock-parents = <&clk
-> > IMX8MQ_SYS1_PLL_266M>,
-> > +                                       <&clk
-> > IMX8MQ_SYS2_PLL_1000M>,
-> > +                                       <&clk
-> > IMX8MQ_SYS1_PLL_800M>;
-> > +                               power-domains = <&pgc_mipi_csi2>;
-> > +                               resets = <&src>;
-> > +                               fsl,mipi-phy-gpr = <&iomuxc_gpr
-> > 0xa4>;
-> > +                               interconnects = <&noc
-> > IMX8MQ_ICM_CSI2 &noc IMX8MQ_ICS_DRAM>;
-> > +                               interconnect-names = "dram";
-> > +                               status = "disabled";
-> > +
-> > +                               ports {
-> > +                                       #address-cells = <1>;
-> > +                                       #size-cells = <0>;
-> > +
-> > +                                       port@0 {
-> > +                                               reg = <0>;
-> > +
-> > +                                               csi2_mipi_ep:
-> > endpoint {
-> > +                                                       remote-
-> > endpoint = <&csi2_ep>;
-> > +                                               };
-> > +                                       };
-> > +                               };
-> > +                       };
-> > +
-> > +                       csi2: csi@30b80000 {
-> > +                               compatible = "fsl,imx8mq-csi",
-> > "fsl,imx7-csi";
-> > +                               reg = <0x30b80000 0x10000>;
-> > +                               interrupts = <GIC_SPI 43
-> > IRQ_TYPE_LEVEL_HIGH>;
-> > +                               clocks = <&clk
-> > IMX8MQ_CLK_CSI2_ROOT>;
-> > +                               clock-names = "mclk";
-> > +                               status = "disabled";
-> > +
-> > +                               port {
-> > +                                       csi2_ep: endpoint {
-> > +                                               remote-endpoint =
-> > <&csi2_mipi_ep>;
-> > +                                       };
-> > +                               };
-> > +                       };
-> > +
-> >                         mu: mailbox@30aa0000 {
-> >                                 compatible = "fsl,imx8mq-mu",
-> > "fsl,imx6sx-mu";
-> >                                 reg = <0x30aa0000 0x10000>;
-> 
+ MAINTAINERS                           |   7 ++
+ drivers/net/wwan/Kconfig              |  18 +++
+ drivers/net/wwan/Makefile             |   1 +
+ drivers/net/wwan/iosm/iosm_ipc_port.c |   3 +-
+ drivers/net/wwan/mhi_wwan_ctrl.c      |   3 +-
+ drivers/net/wwan/rpmsg_wwan_ctrl.c    | 156 ++++++++++++++++++++++++++
+ drivers/net/wwan/wwan_core.c          |   9 +-
+ drivers/net/wwan/wwan_hwsim.c         |   3 +-
+ drivers/rpmsg/rpmsg_core.c            |   4 +-
+ include/linux/mod_devicetable.h       |   1 +
+ include/linux/wwan.h                  |  13 ++-
+ 11 files changed, 207 insertions(+), 11 deletions(-)
+ create mode 100644 drivers/net/wwan/rpmsg_wwan_ctrl.c
 
+-- 
+2.32.0
 
