@@ -5,29 +5,29 @@ X-Spam-Level:
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DE8EC49361
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:52:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD5C3C48BDF
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:52:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 359DD613ED
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:52:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B2582613F2
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:52:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234630AbhFRRyO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Jun 2021 13:54:14 -0400
-Received: from mail1.protonmail.ch ([185.70.40.18]:48326 "EHLO
-        mail1.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232478AbhFRRyN (ORCPT
+        id S235212AbhFRRyT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Jun 2021 13:54:19 -0400
+Received: from mail-0201.mail-europe.com ([51.77.79.158]:41706 "EHLO
+        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234661AbhFRRyR (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Jun 2021 13:54:13 -0400
-Date:   Fri, 18 Jun 2021 17:51:56 +0000
+        Fri, 18 Jun 2021 13:54:17 -0400
+Date:   Fri, 18 Jun 2021 17:51:31 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1624038721;
-        bh=zHJfb44A7X0HFfXTVEm04fud03pGMpHQweD3iUEqQos=;
+        s=protonmail; t=1624038694;
+        bh=RuYNzlY95bzbDf7R2SMZM/U4vzLJWo+O2oM4PbjonDY=;
         h=Date:To:From:Cc:Reply-To:Subject:From;
-        b=UA26RVxILTeGhbZLSV7Z1m2RLmf0VOYLQNBEpOr6sds9PNAQHSdFxgNyZZpZ0xfde
-         B8igw4/dAvbkpTc6NHKqQzrbvXRh+4+fUvQkVrMibl/dQp8uszJUc85so0gOMKwqXX
-         f8e5UoZNKVQeHaJg1MAhPZYK609iyhN5eU0Y/1c4=
+        b=dJro9oT0atacZDwkNlzZ08mOeqmdaENvGUp5pxvfhrrYudKl+h8X2NcpCnnQO+Afb
+         Uhr6n7oRPbBrRH7Szpc/BqXtQeQ8ACsY33bl/bue7FVnjHCj8uqk5keUvIAzf94mFv
+         vSieEmE87TxGAYBodqgfuU0VQ6R8ttzM6hfB7aw0=
 To:     caleb@connolly.tech, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>
@@ -37,8 +37,8 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         jo@jsfamily.in, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: [RESEND PATCH v2 6/6] arm64: dts: qcom: msm8998-oneplus-common: Enable PMI8998 haptics
-Message-ID: <20210618175041.323495-7-caleb@connolly.tech>
+Subject: [RESEND PATCH v2 4/6] arm64: dts: qcom: sdm845-oneplus-common: add haptics
+Message-ID: <20210618175041.323495-5-caleb@connolly.tech>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -46,22 +46,20 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Jami Kettunen <jami.kettunen@somainline.org>
+Enable the pmi8998 SPMI haptics driver and configure the play rate for the
+hardware.
 
-The OnePlus 5 and 5T both have a haptics engine connected to PMI8998.
-
-Signed-off-by: Jami Kettunen <jami.kettunen@somainline.org>
 Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 ---
- arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi | 6 ++++++
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi b/arch/ar=
-m64/boot/dts/qcom/msm8998-oneplus-common.dtsi
-index 0f5c7828a901..4494eb6794b4 100644
---- a/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi
-@@ -257,6 +257,12 @@ pinconf {
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm=
+64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index 8f617f7b6d34..d4c857c1a73f 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -423,6 +423,12 @@ pinconf {
  =09};
  };
 
@@ -71,9 +69,9 @@ index 0f5c7828a901..4494eb6794b4 100644
 +=09qcom,wave-play-rate-us =3D <4255>;
 +};
 +
- &qusb2phy {
+ &qupv3_id_1 {
  =09status =3D "okay";
-
+ };
 --
 2.31.1
 
