@@ -2,29 +2,30 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16B24C49EA6
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 576CDC49EA7
 	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 18:19:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EBA566140F
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 18:19:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3141A613C2
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 18:19:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236239AbhFRSVL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Jun 2021 14:21:11 -0400
-Received: from m-r1.th.seeweb.it ([5.144.164.170]:38745 "EHLO
-        m-r1.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236244AbhFRSVK (ORCPT
+        id S236244AbhFRSVM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Jun 2021 14:21:12 -0400
+Received: from relay04.th.seeweb.it ([5.144.164.165]:52339 "EHLO
+        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236248AbhFRSVL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Jun 2021 14:21:10 -0400
+        Fri, 18 Jun 2021 14:21:11 -0400
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 282321F5F9;
-        Fri, 18 Jun 2021 20:09:14 +0200 (CEST)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 53C111F5D0;
+        Fri, 18 Jun 2021 20:09:15 +0200 (CEST)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     bjorn.andersson@linaro.org
@@ -37,62 +38,59 @@ Cc:     agross@kernel.org, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
         ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [RESEND PATCH v4 0/3] Implement SPM/SAW for MSM8998 and SDM6xx
-Date:   Fri, 18 Jun 2021 20:09:04 +0200
-Message-Id: <20210618180907.258149-1-angelogioacchino.delregno@somainline.org>
+Subject: [RESEND PATCH v4 3/3] soc: qcom: spm: Add compatible for MSM8998 SAWv4.1 L2
+Date:   Fri, 18 Jun 2021 20:09:07 +0200
+Message-Id: <20210618180907.258149-4-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20210618180907.258149-1-angelogioacchino.delregno@somainline.org>
+References: <20210618180907.258149-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Changes in v4:
-- Huge patch series has been split for better reviewability,
-  as suggested by Bjorn
+Add the SAWv4.1 parameters for MSM8998's Gold and Silver clusters.
 
-Changes in v3:
-- Rebased (no changes - was in previous series' v3)
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
+ drivers/soc/qcom/spm.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-Changes in v2:
-- Fixed MSM8998 SAW parameters on SPM driver
-
-Tested on the following smartphones:
-- Sony Xperia XA2        (SDM630)
-- Sony Xperia XA2 Ultra  (SDM630)
-- Sony Xperia 10         (SDM630)
-- Sony Xperia XZ Premium (MSM8998)
-- F(x)Tec Pro 1          (MSM8998)
-
-This is a component that we can find on very old
-chips, like MSM8974; there, it has been used to actually do the
-power scaling basically "on its own" - sending the cores in a specific
-sleep mode to save power.
-On the newer ones, including MSM8998, SDM630, 660 and others, it is still
-present! Though, this time, it's being used for the cluster caches and it
-has a different firmware (and maybe it's also slightly different HW),
-implementing the SAWv4.1 set and getting controlled *not by the OS* but
-by other controllers in the SoC (like the OSM).
-
-Contrary from MSM8974 and the like, this new version of the SPM just
-requires us to set the initial parameters for AVS and *nothing else*, as
-its states will be totally managed internally.
-
-AngeloGioacchino Del Regno (3):
-  cpuidle: qcom_spm: Detach state machine from main SPM handling
-  soc: qcom: spm: Implement support for SAWv4.1, SDM630/660 L2 AVS
-  soc: qcom: spm: Add compatible for MSM8998 SAWv4.1 L2
-
- drivers/cpuidle/Kconfig.arm        |   1 +
- drivers/cpuidle/cpuidle-qcom-spm.c | 294 ++++++-----------------------
- drivers/soc/qcom/Kconfig           |   9 +
- drivers/soc/qcom/Makefile          |   1 +
- drivers/soc/qcom/spm.c             | 240 +++++++++++++++++++++++
- include/soc/qcom/spm.h             |  45 +++++
- 6 files changed, 354 insertions(+), 236 deletions(-)
- create mode 100644 drivers/soc/qcom/spm.c
- create mode 100644 include/soc/qcom/spm.h
-
+diff --git a/drivers/soc/qcom/spm.c b/drivers/soc/qcom/spm.c
+index 843732d12c54..2e6312663293 100644
+--- a/drivers/soc/qcom/spm.c
++++ b/drivers/soc/qcom/spm.c
+@@ -54,6 +54,18 @@ static const struct spm_reg_data spm_reg_660_silver_l2  = {
+ 	.avs_limit = 0x4580458,
+ };
+ 
++static const struct spm_reg_data spm_reg_8998_gold_l2  = {
++	.reg_offset = spm_reg_offset_v4_1,
++	.avs_ctl = 0x1010031,
++	.avs_limit = 0x4700470,
++};
++
++static const struct spm_reg_data spm_reg_8998_silver_l2  = {
++	.reg_offset = spm_reg_offset_v4_1,
++	.avs_ctl = 0x1010031,
++	.avs_limit = 0x4200420,
++};
++
+ static const u16 spm_reg_offset_v2_1[SPM_REG_NR] = {
+ 	[SPM_REG_CFG]		= 0x08,
+ 	[SPM_REG_SPM_CTL]	= 0x30,
+@@ -149,6 +161,10 @@ static const struct of_device_id spm_match_table[] = {
+ 	  .data = &spm_reg_660_gold_l2 },
+ 	{ .compatible = "qcom,sdm660-silver-saw2-v4.1-l2",
+ 	  .data = &spm_reg_660_silver_l2 },
++	{ .compatible = "qcom,msm8998-gold-saw2-v4.1-l2",
++	  .data = &spm_reg_8998_gold_l2 },
++	{ .compatible = "qcom,msm8998-silver-saw2-v4.1-l2",
++	  .data = &spm_reg_8998_silver_l2 },
+ 	{ .compatible = "qcom,msm8974-saw2-v2.1-cpu",
+ 	  .data = &spm_reg_8974_8084_cpu },
+ 	{ .compatible = "qcom,apq8084-saw2-v2.1-cpu",
 -- 
 2.30.0
 
