@@ -2,176 +2,156 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84DE7C48BDF
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 09:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA0A3C49361
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 10:13:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6E22060C3E
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 09:58:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AC9FC613CB
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 10:13:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232716AbhFRKBC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Jun 2021 06:01:02 -0400
-Received: from comms.puri.sm ([159.203.221.185]:44542 "EHLO comms.puri.sm"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233139AbhFRKBB (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Jun 2021 06:01:01 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id C4965E0172;
-        Fri, 18 Jun 2021 02:58:22 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 03nuqBqAsycZ; Fri, 18 Jun 2021 02:58:22 -0700 (PDT)
-From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-To:     martin.kepplinger@puri.sm, laurent.pinchart@ideasonboard.com,
-        m.felsch@pengutronix.de, robh@kernel.org
-Cc:     devicetree@vger.kernel.org, festevam@gmail.com,
-        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-staging@lists.linux.dev, mchehab@kernel.org,
-        phone-devel@vger.kernel.org, shawnguo@kernel.org,
-        slongerbeam@gmail.com
-Subject: [PATCH v5 3/3] arm64: dts: imx8mq: add mipi csi phy and csi bridge descriptions
-Date:   Fri, 18 Jun 2021 11:57:53 +0200
-Message-Id: <20210618095753.114557-4-martin.kepplinger@puri.sm>
-In-Reply-To: <20210618095753.114557-1-martin.kepplinger@puri.sm>
-References: <20210618095753.114557-1-martin.kepplinger@puri.sm>
-Content-Transfer-Encoding: 8bit
+        id S233197AbhFRKQB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Jun 2021 06:16:01 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:31667 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232796AbhFRKP4 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 18 Jun 2021 06:15:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1624011224;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=TTr19vPZLviTwengBDXkAe6yBwL2HQTHr/uHIs4p14E=;
+    b=QLFXy2wdw1WOFvbKuBMoRdy8FTbEtqmvQMfqPGqjaN7xnO13u6RXJHMA5NFOZdOEee
+    26YIWqXEUd1yx+mgWWhslsxehJ3npRJ8VsF/cpuN/55Bi3sYYmxubYVxtZX18pwhfD7k
+    ZA78Lid+aHiMHI9w9/AFSrD9257wOgVblMbr/C6dkEeooTHppTdFwBI7Wbh5n14RUNIM
+    MbTqMpJBcukKctZE0pEg/6r+LxJvsex6mqfzUFfDbA0GEdr5Znpn6rrix4XuwmnJe8PP
+    WlMgNJHEPljljWVM5WtkT2gFuwsxK22yabnK6eqnPWFRQd6H0sV7BgNCoQYKXXA1Gd2m
+    S7EQ==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8nxIcap"
+X-RZG-CLASS-ID: mo00
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 47.27.3 DYNA|AUTH)
+    with ESMTPSA id 000885x5IADh4yw
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Fri, 18 Jun 2021 12:13:43 +0200 (CEST)
+Date:   Fri, 18 Jun 2021 12:13:37 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Aleksander Morgado <aleksander@aleksander.es>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        linuxwwan@intel.com, Ohad Ben-Cohen <ohad@wizery.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Network Development <netdev@vger.kernel.org>,
+        linux-remoteproc@vger.kernel.org,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        phone-devel@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH net-next v2 2/3] net: wwan: Add RPMSG WWAN CTRL driver
+Message-ID: <YMxx0XimZAEHmeUx@gerhold.net>
+References: <20210618075243.42046-1-stephan@gerhold.net>
+ <20210618075243.42046-3-stephan@gerhold.net>
+ <CAAP7ucKHXv_Wu7dpSmPpy1utMZV5iXGOjGg87AbcR4j+Xcz=WA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAAP7ucKHXv_Wu7dpSmPpy1utMZV5iXGOjGg87AbcR4j+Xcz=WA@mail.gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Describe the 2 available CSI interfaces on the i.MX8MQ with the MIPI-CSI2
-receiver (new driver) and the CSI Bridge that provides the user buffers
-(existing driver).
+Hi Aleksander!
 
-An image sensor is to be connected to the MIPIs' second port, to be described
-in board files.
+On Fri, Jun 18, 2021 at 10:21:18AM +0200, Aleksander Morgado wrote:
+> > +static const struct rpmsg_device_id rpmsg_wwan_ctrl_id_table[] = {
+> > +       /* RPMSG channels for Qualcomm SoCs with integrated modem */
+> > +       { .name = "DATA5_CNTL", .driver_data = WWAN_PORT_QMI },
+> > +       { .name = "DATA4", .driver_data = WWAN_PORT_AT },
+> > +       {},
+> > +};
+> 
+> If I understand this properly, now these rpmsg backed control ports
+> would be automatically exposed without the need of a userspace CLI
+> tool to do that (rpmsgexport).
+> 
 
-Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
----
- arch/arm64/boot/dts/freescale/imx8mq.dtsi | 104 ++++++++++++++++++++++
- 1 file changed, 104 insertions(+)
+Yep, that's the main advantage compared to the current approach.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-index 91df9c5350ae..e026a39bddce 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-@@ -1099,6 +1099,110 @@ uart4: serial@30a60000 {
- 				status = "disabled";
- 			};
- 
-+			mipi_csi1: csi@30a70000 {
-+				compatible = "fsl,imx8mq-mipi-csi2";
-+				reg = <0x30a70000 0x1000>;
-+				clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
-+				   <&clk IMX8MQ_CLK_CSI1_ESC>,
-+				   <&clk IMX8MQ_CLK_CSI1_PHY_REF>;
-+				clock-names = "core", "esc", "ui";
-+				assigned-clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
-+				    <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
-+				    <&clk IMX8MQ_CLK_CSI1_ESC>;
-+				assigned-clock-rates = <266000000>, <333000000>, <66000000>;
-+				assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
-+					<&clk IMX8MQ_SYS2_PLL_1000M>,
-+					<&clk IMX8MQ_SYS1_PLL_800M>;
-+				power-domains = <&pgc_mipi_csi1>;
-+				resets = <&src IMX8MQ_RESET_MIPI_CSI1_CORE_RESET>,
-+					 <&src IMX8MQ_RESET_MIPI_CSI1_PHY_REF_RESET>,
-+					 <&src IMX8MQ_RESET_MIPI_CSI1_ESC_RESET>;
-+				fsl,mipi-phy-gpr = <&iomuxc_gpr 0x88>;
-+				interconnects = <&noc IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
-+				interconnect-names = "dram";
-+				status = "disabled";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+
-+						csi1_mipi_ep: endpoint {
-+							remote-endpoint = <&csi1_ep>;
-+						};
-+					};
-+				};
-+			};
-+
-+			csi1: csi@30a90000 {
-+				compatible = "fsl,imx8mq-csi", "fsl,imx7-csi";
-+				reg = <0x30a90000 0x10000>;
-+				interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk IMX8MQ_CLK_CSI1_ROOT>;
-+				clock-names = "mclk";
-+				status = "disabled";
-+
-+				port {
-+					csi1_ep: endpoint {
-+						remote-endpoint = <&csi1_mipi_ep>;
-+					};
-+				};
-+			};
-+
-+			mipi_csi2: csi@30b60000 {
-+				compatible = "fsl,imx8mq-mipi-csi2";
-+				reg = <0x30b60000 0x1000>;
-+				clocks = <&clk IMX8MQ_CLK_CSI2_CORE>,
-+				   <&clk IMX8MQ_CLK_CSI2_ESC>,
-+				   <&clk IMX8MQ_CLK_CSI2_PHY_REF>;
-+				clock-names = "core", "esc", "ui";
-+				assigned-clocks = <&clk IMX8MQ_CLK_CSI2_CORE>,
-+				    <&clk IMX8MQ_CLK_CSI2_PHY_REF>,
-+				    <&clk IMX8MQ_CLK_CSI2_ESC>;
-+				assigned-clock-rates = <266000000>, <333000000>, <66000000>;
-+				assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
-+					<&clk IMX8MQ_SYS2_PLL_1000M>,
-+					<&clk IMX8MQ_SYS1_PLL_800M>;
-+				power-domains = <&pgc_mipi_csi2>;
-+				resets = <&src IMX8MQ_RESET_MIPI_CSI2_CORE_RESET>,
-+					 <&src IMX8MQ_RESET_MIPI_CSI2_PHY_REF_RESET>,
-+					 <&src IMX8MQ_RESET_MIPI_CSI2_ESC_RESET>;
-+				fsl,mipi-phy-gpr = <&iomuxc_gpr 0xa4>;
-+				interconnects = <&noc IMX8MQ_ICM_CSI2 &noc IMX8MQ_ICS_DRAM>;
-+				interconnect-names = "dram";
-+				status = "disabled";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+
-+						csi2_mipi_ep: endpoint {
-+							remote-endpoint = <&csi2_ep>;
-+						};
-+					};
-+				};
-+			};
-+
-+			csi2: csi@30b80000 {
-+				compatible = "fsl,imx8mq-csi", "fsl,imx7-csi";
-+				reg = <0x30b80000 0x10000>;
-+				interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk IMX8MQ_CLK_CSI2_ROOT>;
-+				clock-names = "mclk";
-+				status = "disabled";
-+
-+				port {
-+					csi2_ep: endpoint {
-+						remote-endpoint = <&csi2_mipi_ep>;
-+					};
-+				};
-+			};
-+
- 			mu: mailbox@30aa0000 {
- 				compatible = "fsl,imx8mq-mu", "fsl,imx6sx-mu";
- 				reg = <0x30aa0000 0x10000>;
--- 
-2.30.2
+> And if I recall correctly, DATA5_CNTL and DATA4 were the only channels
+> actively exported with udev actions using rpmsgexport in postmarketos,
+> but that didn't mean someone could add additional rules to export
+> other channels (i.e. as per the ModemManager port type hint rules,
+> DATA[0-9]*_CNTL as QMI and DATA[0-9]* as AT, except for DATA40_CNTL
+> and DATA_40 which are the USB tethering related ones).
+> 
 
+Yep.
+
+> So, does this mean we're limiting the amount of channels exported to
+> only one QMI control port and one AT control port?
+
+Yep, but I think:
+  - It's easy to extend this with additional ports later
+    if someone has a real use case for that.
+  - It's still possible to export via rpmsgexport.
+
+> Not saying that's wrong, but maybe it makes sense to add a comment
+> somewhere specifying that explicitly.
+
+Given that these channels were only found through reverse engineering,
+saying that DATA*_CNTL/DATA* are fully equivalent QMI/AT ports is just
+a theory, I have no proof for this. Generally these channels had some
+fixed use case on the original Android system, for example DATA1 (AT)
+seems to have been often used for Bluetooth Dial-Up Networking (DUN)
+while DATA4 was often more general purpose.
+
+Perhaps DATA* are all fully equivalent, independent AT channels at the
+end, or perhaps DATA1/DATA4 behave slightly differently because there
+were some special requirements for Bluetooth DUN. I have no way to tell.
+And it can vary from device to device since we're stuck with
+device-specific (and usually signed) firmware.
+
+Another example: I have seen DATA11 on some devices, but it does not
+seem to work as AT port for some reason, there is no reply at all
+from the modem on that channel. Perhaps it needs to be activated
+somehow, perhaps it's not an AT channel at all, I have no way to tell.
+
+My point is: Here I'm only enabling what is proven to work on all
+devices (used in postmarketOS for more than a year). I have insufficient
+data to vouch for the reliability of any other channel. I cannot say if
+the channels are really independent, or influence each other somehow.
+
+As far as I understand, we currently do not have any use case for having
+multiple QMI/AT ports exposed for ModemManager, right? And if someone
+does have a use case, perhaps exposing them through the WWAN subsystem
+is not even what they want, perhaps they want to forward them through
+USB or something.
+
+> Also, would it make sense to have some way to trigger the export of
+> additional channels somehow via userspace? e.g. something like
+> rpmsgexport but using the wwan subsystem. I'm not sure if that's a
+> true need anywhere or just over-engineering the solution, truth be
+> told.
+
+So personally I think we should keep this simple and limited to existing
+use cases. If someone shows up with different requirements we can
+investigate this further.
+
+If I send a v3 I will check if I can clarify this in the commit
+message somewhat. I actually had something related in there but removed
+it shortly before submitting the patch because I thought it's mostly
+just speculation and the message was already quite long. Oh well :)
+
+Stephan
