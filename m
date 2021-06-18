@@ -2,95 +2,114 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 576CDC49EA7
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 18:19:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A414C48BDF
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 18:35:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3141A613C2
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 18:19:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1DDCE613E9
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 18:35:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236244AbhFRSVM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Jun 2021 14:21:12 -0400
-Received: from relay04.th.seeweb.it ([5.144.164.165]:52339 "EHLO
-        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236248AbhFRSVL (ORCPT
+        id S232426AbhFRShN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Jun 2021 14:37:13 -0400
+Received: from mail-4316.protonmail.ch ([185.70.43.16]:49375 "EHLO
+        mail-4316.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231250AbhFRShM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Jun 2021 14:21:11 -0400
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 53C111F5D0;
-        Fri, 18 Jun 2021 20:09:15 +0200 (CEST)
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-To:     bjorn.andersson@linaro.org
-Cc:     agross@kernel.org, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com,
-        jamipkettunen@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Subject: [RESEND PATCH v4 3/3] soc: qcom: spm: Add compatible for MSM8998 SAWv4.1 L2
-Date:   Fri, 18 Jun 2021 20:09:07 +0200
-Message-Id: <20210618180907.258149-4-angelogioacchino.delregno@somainline.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210618180907.258149-1-angelogioacchino.delregno@somainline.org>
-References: <20210618180907.258149-1-angelogioacchino.delregno@somainline.org>
+        Fri, 18 Jun 2021 14:37:12 -0400
+Date:   Fri, 18 Jun 2021 18:34:50 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1624041301;
+        bh=gPJStNIBkyU+EiKyKIcmWvO+oVN/hGtsoDaeZGrgtAM=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=Ccq/7+LgItQsJkh0Xxxpd8NbhZbrDXI7N1Xv3NWVjpArRTWpOqEKSmPKYNXjz1ZuJ
+         jn4T306aVgOByi+oKKxx8GE/hLOIEHqzl0C1EsmpEPJV3v7Eosw2QIfqlBDTNzjHjc
+         VJhJswathmzV+6z5Uz5oUuoKcnZePuKdaboC+rx8=
+To:     Kalle Valo <kvalo@codeaurora.org>
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Reply-To: Caleb Connolly <caleb@connolly.tech>
+Subject: Re: [PATCH] ath10k: demote chan info without scan request warning
+Message-ID: <f983af18-6a17-4cf1-a577-a86e4498b212@connolly.tech>
+In-Reply-To: <871r96yw6z.fsf@codeaurora.org>
+References: <20210522171609.299611-1-caleb@connolly.tech> <20210612103640.2FD93C433F1@smtp.codeaurora.org> <f39034ea-f4da-1564-e22f-398e4a1ae077@connolly.tech> <871r96yw6z.fsf@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the SAWv4.1 parameters for MSM8998's Gold and Silver clusters.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
----
- drivers/soc/qcom/spm.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/soc/qcom/spm.c b/drivers/soc/qcom/spm.c
-index 843732d12c54..2e6312663293 100644
---- a/drivers/soc/qcom/spm.c
-+++ b/drivers/soc/qcom/spm.c
-@@ -54,6 +54,18 @@ static const struct spm_reg_data spm_reg_660_silver_l2  = {
- 	.avs_limit = 0x4580458,
- };
- 
-+static const struct spm_reg_data spm_reg_8998_gold_l2  = {
-+	.reg_offset = spm_reg_offset_v4_1,
-+	.avs_ctl = 0x1010031,
-+	.avs_limit = 0x4700470,
-+};
-+
-+static const struct spm_reg_data spm_reg_8998_silver_l2  = {
-+	.reg_offset = spm_reg_offset_v4_1,
-+	.avs_ctl = 0x1010031,
-+	.avs_limit = 0x4200420,
-+};
-+
- static const u16 spm_reg_offset_v2_1[SPM_REG_NR] = {
- 	[SPM_REG_CFG]		= 0x08,
- 	[SPM_REG_SPM_CTL]	= 0x30,
-@@ -149,6 +161,10 @@ static const struct of_device_id spm_match_table[] = {
- 	  .data = &spm_reg_660_gold_l2 },
- 	{ .compatible = "qcom,sdm660-silver-saw2-v4.1-l2",
- 	  .data = &spm_reg_660_silver_l2 },
-+	{ .compatible = "qcom,msm8998-gold-saw2-v4.1-l2",
-+	  .data = &spm_reg_8998_gold_l2 },
-+	{ .compatible = "qcom,msm8998-silver-saw2-v4.1-l2",
-+	  .data = &spm_reg_8998_silver_l2 },
- 	{ .compatible = "qcom,msm8974-saw2-v2.1-cpu",
- 	  .data = &spm_reg_8974_8084_cpu },
- 	{ .compatible = "qcom,apq8084-saw2-v2.1-cpu",
--- 
-2.30.0
+On 13/06/2021 10:01 am, Kalle Valo wrote:
+> Caleb Connolly <caleb@connolly.tech> writes:
+>
+>> Hi Kalle,
+>>
+>> On 12/06/2021 11:36 am, Kalle Valo wrote:
+>>> Caleb Connolly <caleb@connolly.tech> wrote:
+>>>
+>>>> Some devices/firmwares cause this to be printed every 5-15 seconds,
+>>>> though it has no impact on functionality. Demote this to a debug
+>>>> message.
+>>>>
+>>>> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+>>>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>>
+>> Is this meant to be an Ack?
+>
+> No, my patchwork script has few quirks and it actually takes the quoted
+> text from my pending branch, not from your actual email. That's why you
+> see my s-o-b there. I haven't bothered to fix that yet, but hopefully
+> one day.
+>
+>>> On what hardware and firmware version do you see this?
+>>
+>> I see this on SDM845 and MSM8998 platforms, specifically the OnePlus 6
+>> devices, PocoPhone F1 and OnePlus 5.
+>> On the OnePlus 6 (SDM845) we are stuck with the following signed vendor =
+fw:
+>>
+>> [    9.339873] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214
+>> chip_family 0x4001 board_id 0xff soc_id 0x40030001
+>> [    9.339897] ath10k_snoc 18800000.wifi: qmi fw_version 0x20060029
+>> fw_build_timestamp 2019-07-12 02:14 fw_build_id
+>> QC_IMAGE_VERSION_STRING=3DWLAN.HL.2.0.c8-00041-QCAHLSWMTPLZ-1
+>>
+>> The OnePlus 5 (MSM8998) is using firmware:
+>>
+>> [ 6096.956799] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214
+>> chip_family 0x4001 board_id 0xff soc_id 0x40010002
+>> [ 6096.956824] ath10k_snoc 18800000.wifi: qmi fw_version 0x1007007e
+>> fw_build_timestamp 2020-04-14 22:45 fw_build_id
+>> QC_IMAGE_VERSION_STRING=3DWLAN.HL.1.0.c6-00126-QCAHLSWMTPLZ-1.211883.1.2=
+78648.
+>
+> Thanks, I'll include this information to the commit log and then apply
+> the patch. And I'll assume you have also tested this patch on those
+> platforms so that I can add a Tested-on tag?
+Yeah, go ahead. Sorry for the late reply!
+>
+> BTW, ath10k should strip that ugly "QC_IMAGE_VERSION_STRING=3D" string in
+> the firmware version. Patches very welcome :)
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
+>
+
+--
+Kind Regards,
+Caleb
 
