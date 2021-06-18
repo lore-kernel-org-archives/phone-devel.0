@@ -2,29 +2,30 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CEC8C49361
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 22:56:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0933EC49EA6
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 22:56:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1C448613F0
+	by mail.kernel.org (Postfix) with ESMTP id E5410613E9
 	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 22:56:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232883AbhFRW6j (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S235114AbhFRW6j (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Fri, 18 Jun 2021 18:58:39 -0400
-Received: from relay06.th.seeweb.it ([5.144.164.167]:52685 "EHLO
-        relay06.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231785AbhFRW6i (ORCPT
+Received: from m-r2.th.seeweb.it ([5.144.164.171]:41535 "EHLO
+        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235096AbhFRW6i (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Fri, 18 Jun 2021 18:58:38 -0400
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id B67083F325;
-        Sat, 19 Jun 2021 00:56:22 +0200 (CEST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id DFFBF3F412;
+        Sat, 19 Jun 2021 00:56:23 +0200 (CEST)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     bjorn.andersson@linaro.org
@@ -37,66 +38,112 @@ Cc:     agross@kernel.org, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
         ~postmarketos/upstreaming@lists.sr.ht, stephan@gerhold.net,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v5 0/3] Implement SPM/SAW for MSM8998 and SDM6xx
-Date:   Sat, 19 Jun 2021 00:56:17 +0200
-Message-Id: <20210618225620.623359-1-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v5 2/3] soc: qcom: spm: Implement support for SAWv4.1, SDM630/660 L2 AVS
+Date:   Sat, 19 Jun 2021 00:56:19 +0200
+Message-Id: <20210618225620.623359-3-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20210618225620.623359-1-angelogioacchino.delregno@somainline.org>
+References: <20210618225620.623359-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Changes in v5:
-- Fixed contamination from patch 2/3 in patch 1/3
-- Fixed missing bits in cpuidle-qcom-spm (thanks Stephan)
+Implement the support for SAW v4.1, used in at least MSM8998,
+SDM630, SDM660 and APQ variants and, while at it, also add the
+configuration for the SDM630/660 Silver and Gold cluster L2
+Adaptive Voltage Scaler: this is also one of the prerequisites
+to allow the OSM controller to perform DCVS.
 
-Changes in v4:
-- Huge patch series has been split for better reviewability,
-  as suggested by Bjorn
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
+ drivers/soc/qcom/spm.c | 28 +++++++++++++++++++++++++++-
+ include/soc/qcom/spm.h |  4 +++-
+ 2 files changed, 30 insertions(+), 2 deletions(-)
 
-Changes in v3:
-- Rebased (no changes - was in previous series' v3)
-
-Changes in v2:
-- Fixed MSM8998 SAW parameters on SPM driver
-
-Tested on the following smartphones:
-- Sony Xperia XA2        (SDM630)
-- Sony Xperia XA2 Ultra  (SDM630)
-- Sony Xperia 10         (SDM630)
-- Sony Xperia XZ Premium (MSM8998)
-- F(x)Tec Pro 1          (MSM8998)
-
-This is a component that we can find on very old
-chips, like MSM8974; there, it has been used to actually do the
-power scaling basically "on its own" - sending the cores in a specific
-sleep mode to save power.
-On the newer ones, including MSM8998, SDM630, 660 and others, it is still
-present! Though, this time, it's being used for the cluster caches and it
-has a different firmware (and maybe it's also slightly different HW),
-implementing the SAWv4.1 set and getting controlled *not by the OS* but
-by other controllers in the SoC (like the OSM).
-
-Contrary from MSM8974 and the like, this new version of the SPM just
-requires us to set the initial parameters for AVS and *nothing else*, as
-its states will be totally managed internally.
-
-AngeloGioacchino Del Regno (3):
-  cpuidle: qcom_spm: Detach state machine from main SPM handling
-  soc: qcom: spm: Implement support for SAWv4.1, SDM630/660 L2 AVS
-  soc: qcom: spm: Add compatible for MSM8998 SAWv4.1 L2
-
- drivers/cpuidle/Kconfig.arm        |   1 +
- drivers/cpuidle/cpuidle-qcom-spm.c | 295 ++++++-----------------------
- drivers/soc/qcom/Kconfig           |   9 +
- drivers/soc/qcom/Makefile          |   1 +
- drivers/soc/qcom/spm.c             | 240 +++++++++++++++++++++++
- include/soc/qcom/spm.h             |  45 +++++
- 6 files changed, 355 insertions(+), 236 deletions(-)
- create mode 100644 drivers/soc/qcom/spm.c
- create mode 100644 include/soc/qcom/spm.h
-
+diff --git a/drivers/soc/qcom/spm.c b/drivers/soc/qcom/spm.c
+index 0c8aa9240c41..843732d12c54 100644
+--- a/drivers/soc/qcom/spm.c
++++ b/drivers/soc/qcom/spm.c
+@@ -32,9 +32,28 @@ enum spm_reg {
+ 	SPM_REG_SEQ_ENTRY,
+ 	SPM_REG_SPM_STS,
+ 	SPM_REG_PMIC_STS,
++	SPM_REG_AVS_CTL,
++	SPM_REG_AVS_LIMIT,
+ 	SPM_REG_NR,
+ };
+ 
++static const u16 spm_reg_offset_v4_1[SPM_REG_NR] = {
++	[SPM_REG_AVS_CTL]	= 0x904,
++	[SPM_REG_AVS_LIMIT]	= 0x908,
++};
++
++static const struct spm_reg_data spm_reg_660_gold_l2  = {
++	.reg_offset = spm_reg_offset_v4_1,
++	.avs_ctl = 0x1010031,
++	.avs_limit = 0x4580458,
++};
++
++static const struct spm_reg_data spm_reg_660_silver_l2  = {
++	.reg_offset = spm_reg_offset_v4_1,
++	.avs_ctl = 0x101c031,
++	.avs_limit = 0x4580458,
++};
++
+ static const u16 spm_reg_offset_v2_1[SPM_REG_NR] = {
+ 	[SPM_REG_CFG]		= 0x08,
+ 	[SPM_REG_SPM_CTL]	= 0x30,
+@@ -126,6 +145,10 @@ void spm_set_low_power_mode(struct spm_driver_data *drv,
+ }
+ 
+ static const struct of_device_id spm_match_table[] = {
++	{ .compatible = "qcom,sdm660-gold-saw2-v4.1-l2",
++	  .data = &spm_reg_660_gold_l2 },
++	{ .compatible = "qcom,sdm660-silver-saw2-v4.1-l2",
++	  .data = &spm_reg_660_silver_l2 },
+ 	{ .compatible = "qcom,msm8974-saw2-v2.1-cpu",
+ 	  .data = &spm_reg_8974_8084_cpu },
+ 	{ .compatible = "qcom,apq8084-saw2-v2.1-cpu",
+@@ -169,6 +192,8 @@ static int spm_dev_probe(struct platform_device *pdev)
+ 	 * CPU was held in reset, the reset signal could trigger the SPM state
+ 	 * machine, before the sequences are completely written.
+ 	 */
++	spm_register_write(drv, SPM_REG_AVS_CTL, drv->reg_data->avs_ctl);
++	spm_register_write(drv, SPM_REG_AVS_LIMIT, drv->reg_data->avs_limit);
+ 	spm_register_write(drv, SPM_REG_CFG, drv->reg_data->spm_cfg);
+ 	spm_register_write(drv, SPM_REG_DLY, drv->reg_data->spm_dly);
+ 	spm_register_write(drv, SPM_REG_PMIC_DLY, drv->reg_data->pmic_dly);
+@@ -178,7 +203,8 @@ static int spm_dev_probe(struct platform_device *pdev)
+ 				drv->reg_data->pmic_data[1]);
+ 
+ 	/* Set up Standby as the default low power mode */
+-	spm_set_low_power_mode(drv, PM_SLEEP_MODE_STBY);
++	if (drv->reg_data->reg_offset[SPM_REG_SPM_CTL])
++		spm_set_low_power_mode(drv, PM_SLEEP_MODE_STBY);
+ 
+ 	return 0;
+ }
+diff --git a/include/soc/qcom/spm.h b/include/soc/qcom/spm.h
+index 719c604a8402..5ab40488a9f4 100644
+--- a/include/soc/qcom/spm.h
++++ b/include/soc/qcom/spm.h
+@@ -22,11 +22,13 @@ enum pm_sleep_mode {
+ };
+ 
+ struct spm_reg_data {
+-	const u8 *reg_offset;
++	const u16 *reg_offset;
+ 	u32 spm_cfg;
+ 	u32 spm_dly;
+ 	u32 pmic_dly;
+ 	u32 pmic_data[MAX_PMIC_DATA];
++	u32 avs_ctl;
++	u32 avs_limit;
+ 	u8 seq[MAX_SEQ_DATA];
+ 	u8 start_index[PM_SLEEP_MODE_NR];
+ };
 -- 
 2.32.0
 
