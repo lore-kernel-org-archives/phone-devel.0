@@ -2,99 +2,110 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C7CAFC48BDF
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:27:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B457EC48BDF
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:37:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B2AE861261
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:27:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 91A0B613ED
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:37:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234289AbhFRR3j (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Jun 2021 13:29:39 -0400
-Received: from mail-40133.protonmail.ch ([185.70.40.133]:42873 "EHLO
-        mail-40133.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234235AbhFRR3i (ORCPT
+        id S233939AbhFRRjz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Jun 2021 13:39:55 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:11934 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232482AbhFRRjy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Jun 2021 13:29:38 -0400
-Date:   Fri, 18 Jun 2021 17:27:17 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1624037247;
-        bh=UGyUdkeV2ZHA7c+AHmzTxfljcoGITYoqrqsoltTY2xw=;
-        h=Date:To:From:Cc:Reply-To:Subject:From;
-        b=LDCpbvDegze39IMdgUoR0tbtr5IQ9U+TCBS2kAPDVsbR5qU/4vCgWnts8LrcUqrMq
-         dY+QB1sfzI7+scl04qINLeI9uESnQxZXEkWZi0yK9PT8GcMX06Pi+1Wl9qhO0xWsfO
-         7AXuSskivSHFHXixE8R0cF7ATJ8/6um48hHf5Zvo=
-To:     caleb@connolly.tech
-From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, jami.kettunen@somainline.org,
-        jo@jsfamily.in
-Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: [PATCH v2 0/6] input: Introduce support for SPMI haptics found on Qcom PMICs
-Message-ID: <20210618172657.203365-1-caleb@connolly.tech>
+        Fri, 18 Jun 2021 13:39:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1624037859;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=+4ntWc9603isbf7HF0EFcpYAxugIlsDXx622CtPyy68=;
+    b=Ncfo2Gm6HPO+5lNWhuTodoe5GNDCFiGsu1KXebBMQ1E6MdIgWrzijeAQn1Yc7Bx+Jp
+    +IG194OFB/PkJH9aYGU0DwwaP0LOePamiqlUuVN42kz9R3ySNnplSzdnqh/ZnZ5+vpbm
+    2DokPROFXGVnkN3p4QPfoQ5qZYT+iaK3mhcbAUyOum+BLsBcflRL0+877U2QLqIoT0n0
+    PkbG4qHg0ZJTuPbvcPTsl1rphCben6IFPUvKozPmdgc6y8Y81IKsNn/77FELV6+WVDaw
+    y74PcNBQfh5OMryRVDFuXZz1hLl6NqF2H9dhMfSIt0CwpplgBN5XFWoOr4AhV9G3z1VQ
+    zA9A==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxO426OllE="
+X-RZG-CLASS-ID: mo00
+Received: from droid..
+    by smtp.strato.de (RZmta 47.27.3 DYNA|AUTH)
+    with ESMTPSA id 000885x5IHbb6bb
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Fri, 18 Jun 2021 19:37:37 +0200 (CEST)
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Loic Poulain <loic.poulain@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Aleksander Morgado <aleksander@aleksander.es>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        M Chetan Kumar <m.chetan.kumar@intel.com>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        netdev@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: [PATCH net-next v3 0/3] net: wwan: Add RPMSG WWAN CTRL driver
+Date:   Fri, 18 Jun 2021 19:36:08 +0200
+Message-Id: <20210618173611.134685-1-stephan@gerhold.net>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This series introduces a driver for the SPMI haptics hardware block
-found in Qualcomm PMICs. SPMI haptics support LRA (Linear Resonant
-Actuator) style haptics, as well as ERM (Eccentric Rotating Mass).
-It also supports several modes of driving the haptics, e.g. by loading
-the pattern to play into an internal buffer, or using PWM.
+This patch series adds a WWAN "control" driver for the remote processor
+messaging (rpmsg) subsystem. This subsystem allows communicating with
+an integrated modem DSP on many Qualcomm SoCs, e.g. MSM8916 or MSM8974.
 
-More information about the hardware can be found here:
-        https://gitlab.com/sdm845-mainline/linux/-/wikis/PMI8998-QPNP-Hapti=
-cs
+The driver is a fairly simple glue layer between WWAN and RPMSG
+and is mostly based on the existing mhi_wwan_ctrl.c and rpmsg_char.c.
 
-This driver has been written based on downstream sources as no public
-documentation is available. It includes initial support for LRA haptics
-in buffer mode, this combination seems to be the most common and will
-enable haptics on the OnePlus 6 and 6T, PocoPhone F1, OnePlus 5 and
-several other Qualcomm devices with mainline kernel support.
+For more information, see commit message in PATCH 2/3.
 
-The driver is implemented using the ff-memless (forcefeedback) input
-framework and makes an attempt to control the strength of vibration relativ=
-e
-to the magnitude set from userspace.
+I already posted a RFC for this a while ago:
+https://lore.kernel.org/linux-arm-msm/YLfL9Q+4860uqS8f@gerhold.net/
+and now I'm looking for some feedback for the actual changes. :)
 
- ~ Caleb
+Changes in v3:
+  - PATCH 2/3: Clarify commit message
+  - PATCH 3/3: Fix build error for cdc-wdm.c, use extra tx_blocking() op instead
+v2: https://lore.kernel.org/netdev/20210618075243.42046-1-stephan@gerhold.net/
 
-Changes since v1:
- - Replace old QPNP naming with SPMI
- - Address Bjorn's comments on the driver, various style and code cleanups
- - Address Bjorn's comments on the DT bindings and DTS
- - Pickup patches from Joel and Jami to enable haptics on the OnePlus 5
-   and Poco F1.
+Changes in v2: Only in PATCH 3/3
+  - Fix EPOLLOUT being always set even if poll op is defined
+  - Rename poll() op -> tx_poll() since it should be only used for TX
+v1: https://lore.kernel.org/netdev/20210615133229.213064-1-stephan@gerhold.net/
 
-Caleb Connolly (4):
-      dt-bindings: input: add Qualcomm SPMI haptics driver
-      input: add Qualcomm SPMI haptics driver
-      arm64: dts: qcom: pmi8998: introduce spmi haptics
-      arm64: dts: qcom: sdm845-oneplus-common: add haptics
+Stephan Gerhold (3):
+  rpmsg: core: Add driver_data for rpmsg_device_id
+  net: wwan: Add RPMSG WWAN CTRL driver
+  net: wwan: Allow WWAN drivers to provide blocking tx and poll function
 
-Jami Kettunen (1):
-      arm64: dts: qcom: msm8998-oneplus-common: Enable PMI8998 haptics
+ MAINTAINERS                        |   7 ++
+ drivers/net/wwan/Kconfig           |  18 ++++
+ drivers/net/wwan/Makefile          |   1 +
+ drivers/net/wwan/rpmsg_wwan_ctrl.c | 166 +++++++++++++++++++++++++++++
+ drivers/net/wwan/wwan_core.c       |  16 ++-
+ drivers/rpmsg/rpmsg_core.c         |   4 +-
+ include/linux/mod_devicetable.h    |   1 +
+ include/linux/wwan.h               |  13 ++-
+ 8 files changed, 219 insertions(+), 7 deletions(-)
+ create mode 100644 drivers/net/wwan/rpmsg_wwan_ctrl.c
 
-Joel Selvaraj (1):
-      arm64: dts: qcom: sdm845-xiaomi-beryllium: add haptics
-
- .../bindings/input/qcom,spmi-haptics.yaml          | 128 +++
- .../boot/dts/qcom/msm8998-oneplus-common.dtsi      |   6 +
- arch/arm64/boot/dts/qcom/pmi8998.dtsi              |  16 +
- .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi |   6 +
- .../boot/dts/qcom/sdm845-xiaomi-beryllium.dts      |   5 +
- drivers/input/misc/Kconfig                         |  12 +
- drivers/input/misc/Makefile                        |   1 +
- drivers/input/misc/qcom-spmi-haptics.c             | 980 +++++++++++++++++=
-++++
- include/dt-bindings/input/qcom,spmi-haptics.h      |  32 +
- 9 files changed, 1186 insertions(+)
-
+-- 
+2.32.0
 
