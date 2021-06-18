@@ -2,79 +2,131 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A760DC48BE8
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:52:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E2ABC49361
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 18:19:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8F4F56100A
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:52:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4CF51613F0
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 18:19:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234638AbhFRRyh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Jun 2021 13:54:37 -0400
-Received: from mail-0201.mail-europe.com ([51.77.79.158]:40050 "EHLO
-        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233893AbhFRRyh (ORCPT
+        id S236255AbhFRSVL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Jun 2021 14:21:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41002 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236251AbhFRSVK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Jun 2021 13:54:37 -0400
-Date:   Fri, 18 Jun 2021 17:51:47 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1624038715;
-        bh=ulNHof10tUKifws+o9+Pfwn+8c/swxx+m9+KaSPVwhQ=;
-        h=Date:To:From:Cc:Reply-To:Subject:From;
-        b=DALkSL00qVrgrcx0BtxPsdz3x59IOZHmUClSShPf/E3MiNEUYwqVqRv6ha1XFgWkH
-         6UdCUvk9J1qA9qrcPu4aEJlenv8Rl0BTujwQwlrAXSivIuJD2izatZ7H51UqlEcWed
-         2Q0GMHNAjoGB3sOogNuC93MHe6LnshY8uGvwomjA=
-To:     caleb@connolly.tech, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, jami.kettunen@somainline.org,
-        jo@jsfamily.in, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: [RESEND PATCH v2 5/6] arm64: dts: qcom: sdm845-xiaomi-beryllium: add haptics
-Message-ID: <20210618175041.323495-6-caleb@connolly.tech>
+        Fri, 18 Jun 2021 14:21:10 -0400
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86624C061760
+        for <phone-devel@vger.kernel.org>; Fri, 18 Jun 2021 11:19:00 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id EB1801F8F0;
+        Fri, 18 Jun 2021 20:09:14 +0200 (CEST)
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+To:     bjorn.andersson@linaro.org
+Cc:     agross@kernel.org, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com,
+        jamipkettunen@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: [RESEND PATCH v4 2/3] soc: qcom: spm: Implement support for SAWv4.1, SDM630/660 L2 AVS
+Date:   Fri, 18 Jun 2021 20:09:06 +0200
+Message-Id: <20210618180907.258149-3-angelogioacchino.delregno@somainline.org>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20210618180907.258149-1-angelogioacchino.delregno@somainline.org>
+References: <20210618180907.258149-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Joel Selvaraj <jo@jsfamily.in>
+Implement the support for SAW v4.1, used in at least MSM8998,
+SDM630, SDM660 and APQ variants and, while at it, also add the
+configuration for the SDM630/660 Silver and Gold cluster L2
+Adaptive Voltage Scaler: this is also one of the prerequisites
+to allow the OSM controller to perform DCVS.
 
-Enable the pmi8998 SPMI haptics driver and configure the play rate for the
-hardware.
-
-Signed-off-by: Joel Selvaraj <jo@jsfamily.in>
-Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/soc/qcom/spm.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/ar=
-m64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-index 7d029425336e..07a91e3cd662 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-@@ -311,6 +311,11 @@ resin {
- =09};
+diff --git a/drivers/soc/qcom/spm.c b/drivers/soc/qcom/spm.c
+index 0c8aa9240c41..843732d12c54 100644
+--- a/drivers/soc/qcom/spm.c
++++ b/drivers/soc/qcom/spm.c
+@@ -32,9 +32,28 @@ enum spm_reg {
+ 	SPM_REG_SEQ_ENTRY,
+ 	SPM_REG_SPM_STS,
+ 	SPM_REG_PMIC_STS,
++	SPM_REG_AVS_CTL,
++	SPM_REG_AVS_LIMIT,
+ 	SPM_REG_NR,
  };
-
-+&pmi8998_haptics {
-+=09status =3D "okay";
-+=09qcom,wave-play-rate-us =3D <4878>;
+ 
++static const u16 spm_reg_offset_v4_1[SPM_REG_NR] = {
++	[SPM_REG_AVS_CTL]	= 0x904,
++	[SPM_REG_AVS_LIMIT]	= 0x908,
 +};
 +
- &qupv3_id_0 {
- =09status =3D "okay";
- };
---
-2.31.1
-
++static const struct spm_reg_data spm_reg_660_gold_l2  = {
++	.reg_offset = spm_reg_offset_v4_1,
++	.avs_ctl = 0x1010031,
++	.avs_limit = 0x4580458,
++};
++
++static const struct spm_reg_data spm_reg_660_silver_l2  = {
++	.reg_offset = spm_reg_offset_v4_1,
++	.avs_ctl = 0x101c031,
++	.avs_limit = 0x4580458,
++};
++
+ static const u16 spm_reg_offset_v2_1[SPM_REG_NR] = {
+ 	[SPM_REG_CFG]		= 0x08,
+ 	[SPM_REG_SPM_CTL]	= 0x30,
+@@ -126,6 +145,10 @@ void spm_set_low_power_mode(struct spm_driver_data *drv,
+ }
+ 
+ static const struct of_device_id spm_match_table[] = {
++	{ .compatible = "qcom,sdm660-gold-saw2-v4.1-l2",
++	  .data = &spm_reg_660_gold_l2 },
++	{ .compatible = "qcom,sdm660-silver-saw2-v4.1-l2",
++	  .data = &spm_reg_660_silver_l2 },
+ 	{ .compatible = "qcom,msm8974-saw2-v2.1-cpu",
+ 	  .data = &spm_reg_8974_8084_cpu },
+ 	{ .compatible = "qcom,apq8084-saw2-v2.1-cpu",
+@@ -169,6 +192,8 @@ static int spm_dev_probe(struct platform_device *pdev)
+ 	 * CPU was held in reset, the reset signal could trigger the SPM state
+ 	 * machine, before the sequences are completely written.
+ 	 */
++	spm_register_write(drv, SPM_REG_AVS_CTL, drv->reg_data->avs_ctl);
++	spm_register_write(drv, SPM_REG_AVS_LIMIT, drv->reg_data->avs_limit);
+ 	spm_register_write(drv, SPM_REG_CFG, drv->reg_data->spm_cfg);
+ 	spm_register_write(drv, SPM_REG_DLY, drv->reg_data->spm_dly);
+ 	spm_register_write(drv, SPM_REG_PMIC_DLY, drv->reg_data->pmic_dly);
+@@ -178,7 +203,8 @@ static int spm_dev_probe(struct platform_device *pdev)
+ 				drv->reg_data->pmic_data[1]);
+ 
+ 	/* Set up Standby as the default low power mode */
+-	spm_set_low_power_mode(drv, PM_SLEEP_MODE_STBY);
++	if (drv->reg_data->reg_offset[SPM_REG_SPM_CTL])
++		spm_set_low_power_mode(drv, PM_SLEEP_MODE_STBY);
+ 
+ 	return 0;
+ }
+-- 
+2.30.0
 
