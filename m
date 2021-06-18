@@ -7,27 +7,27 @@ X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C495FC49361
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:51:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DE8EC49361
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:52:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B03156100A
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:51:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 359DD613ED
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 17:52:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234552AbhFRRxq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Jun 2021 13:53:46 -0400
-Received: from mail-0201.mail-europe.com ([51.77.79.158]:42369 "EHLO
-        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234614AbhFRRxq (ORCPT
+        id S234630AbhFRRyO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Jun 2021 13:54:14 -0400
+Received: from mail1.protonmail.ch ([185.70.40.18]:48326 "EHLO
+        mail1.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232478AbhFRRyN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Jun 2021 13:53:46 -0400
-Date:   Fri, 18 Jun 2021 17:51:22 +0000
+        Fri, 18 Jun 2021 13:54:13 -0400
+Date:   Fri, 18 Jun 2021 17:51:56 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1624038691;
-        bh=onAKe/biroI41LpAe7sVhylTtE4hGOfcVD1JV5mJa74=;
+        s=protonmail; t=1624038721;
+        bh=zHJfb44A7X0HFfXTVEm04fud03pGMpHQweD3iUEqQos=;
         h=Date:To:From:Cc:Reply-To:Subject:From;
-        b=SRm9mZT8oVoF2BrDgA8WcpbDHA1+ByBk8Kzsl4MEPGIH2Yhf5/DEryHInoX0JuyjO
-         ayLtXCeFIXhsKaNezQkMiNapLXtDxigPx8oVFTH/zZvXyjvRRk64gLev5qAeXdWFcg
-         Y4t4WnfVTvUZ2Zab/PD087MEZbaK6LRgpKKLKLEA=
+        b=UA26RVxILTeGhbZLSV7Z1m2RLmf0VOYLQNBEpOr6sds9PNAQHSdFxgNyZZpZ0xfde
+         B8igw4/dAvbkpTc6NHKqQzrbvXRh+4+fUvQkVrMibl/dQp8uszJUc85so0gOMKwqXX
+         f8e5UoZNKVQeHaJg1MAhPZYK609iyhN5eU0Y/1c4=
 To:     caleb@connolly.tech, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>
@@ -37,8 +37,8 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         jo@jsfamily.in, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: [RESEND PATCH v2 3/6] arm64: dts: qcom: pmi8998: introduce spmi haptics
-Message-ID: <20210618175041.323495-4-caleb@connolly.tech>
+Subject: [RESEND PATCH v2 6/6] arm64: dts: qcom: msm8998-oneplus-common: Enable PMI8998 haptics
+Message-ID: <20210618175041.323495-7-caleb@connolly.tech>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -46,45 +46,34 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add bindings for Qualcomm SPMI haptics on platforms using pmi8998.
+From: Jami Kettunen <jami.kettunen@somainline.org>
 
+The OnePlus 5 and 5T both have a haptics engine connected to PMI8998.
+
+Signed-off-by: Jami Kettunen <jami.kettunen@somainline.org>
 Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 ---
- arch/arm64/boot/dts/qcom/pmi8998.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/pmi8998.dtsi b/arch/arm64/boot/dts/qc=
-om/pmi8998.dtsi
-index d230c510d4b7..5412cb3af0ae 100644
---- a/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
-+#include <dt-bindings/input/qcom,spmi-haptics.h>
- #include <dt-bindings/interrupt-controller/irq.h>
- #include <dt-bindings/spmi/spmi.h>
-
-@@ -41,5 +42,20 @@ lab: lab {
- =09=09=09=09interrupt-names =3D "sc-err", "ocp";
- =09=09=09};
- =09=09};
-+
-+=09=09pmi8998_haptics: haptics@c000 {
-+=09=09=09compatible =3D "qcom,pmi8998-haptics", "qcom,spmi-haptics";
-+=09=09=09reg =3D <0xc000>;
-+
-+=09=09=09interrupts =3D <0x3 0xc0 0x0 IRQ_TYPE_EDGE_BOTH>,
-+=09=09=09=09     <0x3 0xc0 0x1 IRQ_TYPE_EDGE_BOTH>;
-+=09=09=09interrupt-names =3D "short", "play";
-+
-+=09=09=09qcom,wave-shape =3D <HAP_WAVE_SINE>;
-+=09=09=09qcom,play-mode =3D <HAP_PLAY_BUFFER>;
-+=09=09=09qcom,brake-pattern =3D <0x3 0x3 0x2 0x1>;
-+
-+=09=09=09status =3D "disabled";
-+=09=09};
+diff --git a/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi b/arch/ar=
+m64/boot/dts/qcom/msm8998-oneplus-common.dtsi
+index 0f5c7828a901..4494eb6794b4 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi
+@@ -257,6 +257,12 @@ pinconf {
  =09};
  };
+
++&pmi8998_haptics {
++=09status =3D "okay";
++
++=09qcom,wave-play-rate-us =3D <4255>;
++};
++
+ &qusb2phy {
+ =09status =3D "okay";
+
 --
 2.31.1
 
