@@ -2,114 +2,81 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A414C48BDF
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 18:35:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F358FC48BDF
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 20:20:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1DDCE613E9
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 18:35:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D6205613EB
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Jun 2021 20:20:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232426AbhFRShN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Jun 2021 14:37:13 -0400
-Received: from mail-4316.protonmail.ch ([185.70.43.16]:49375 "EHLO
-        mail-4316.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231250AbhFRShM (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Jun 2021 14:37:12 -0400
-Date:   Fri, 18 Jun 2021 18:34:50 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1624041301;
-        bh=gPJStNIBkyU+EiKyKIcmWvO+oVN/hGtsoDaeZGrgtAM=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=Ccq/7+LgItQsJkh0Xxxpd8NbhZbrDXI7N1Xv3NWVjpArRTWpOqEKSmPKYNXjz1ZuJ
-         jn4T306aVgOByi+oKKxx8GE/hLOIEHqzl0C1EsmpEPJV3v7Eosw2QIfqlBDTNzjHjc
-         VJhJswathmzV+6z5Uz5oUuoKcnZePuKdaboC+rx8=
-To:     Kalle Valo <kvalo@codeaurora.org>
-From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: Re: [PATCH] ath10k: demote chan info without scan request warning
-Message-ID: <f983af18-6a17-4cf1-a577-a86e4498b212@connolly.tech>
-In-Reply-To: <871r96yw6z.fsf@codeaurora.org>
-References: <20210522171609.299611-1-caleb@connolly.tech> <20210612103640.2FD93C433F1@smtp.codeaurora.org> <f39034ea-f4da-1564-e22f-398e4a1ae077@connolly.tech> <871r96yw6z.fsf@codeaurora.org>
+        id S233089AbhFRUWO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Jun 2021 16:22:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47218 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232027AbhFRUWO (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 18 Jun 2021 16:22:14 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id C58CA60240;
+        Fri, 18 Jun 2021 20:20:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1624047604;
+        bh=o5zEoMkF2ffQupfx/waMkLYoyoZ7wz42rldwWf9gxXU=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=Lji5VbqHj5lCPupOp3tOgj+Pj6pXS6T7Hs97yo2gc2ltdF7tsa9nlbfvSR455xHnF
+         ruwb/7eCHy6UYkLO4ycuTbJV84lvowB9w+5+oWg2OS446e1cuMQUBiJqfWJ97NvA8r
+         jMMI5oSKi/nuM5Bxv1KYvJ2BkJQAqlx/tdbZD6peeYwdWZEatUO8CQgB0tjncNqSfe
+         WGT+XllGmuNIjaj69UOMDYqB1L9G0jwyhgidnafLI07UHoaahvOjdl7CvkrhRg/vfg
+         elWSBEebaWsebvrhBi3++yY9Q2odG+082vE9CmQ/SClI0CHKGNj/vEKP53TCeiuO9g
+         QdctsYGpkXQIQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v3 0/3] net: wwan: Add RPMSG WWAN CTRL driver
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <162404760470.11552.8138569124568626440.git-patchwork-notify@kernel.org>
+Date:   Fri, 18 Jun 2021 20:20:04 +0000
+References: <20210618173611.134685-1-stephan@gerhold.net>
+In-Reply-To: <20210618173611.134685-1-stephan@gerhold.net>
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     davem@davemloft.net, kuba@kernel.org, loic.poulain@linaro.org,
+        bjorn.andersson@linaro.org, aleksander@aleksander.es,
+        ryazanov.s.a@gmail.com, johannes.berg@intel.com, leon@kernel.org,
+        m.chetan.kumar@intel.com, ohad@wizery.com,
+        mathieu.poirier@linaro.org, netdev@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hello:
 
+This series was applied to netdev/net-next.git (refs/heads/master):
 
-On 13/06/2021 10:01 am, Kalle Valo wrote:
-> Caleb Connolly <caleb@connolly.tech> writes:
->
->> Hi Kalle,
->>
->> On 12/06/2021 11:36 am, Kalle Valo wrote:
->>> Caleb Connolly <caleb@connolly.tech> wrote:
->>>
->>>> Some devices/firmwares cause this to be printed every 5-15 seconds,
->>>> though it has no impact on functionality. Demote this to a debug
->>>> message.
->>>>
->>>> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
->>>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
->>
->> Is this meant to be an Ack?
->
-> No, my patchwork script has few quirks and it actually takes the quoted
-> text from my pending branch, not from your actual email. That's why you
-> see my s-o-b there. I haven't bothered to fix that yet, but hopefully
-> one day.
->
->>> On what hardware and firmware version do you see this?
->>
->> I see this on SDM845 and MSM8998 platforms, specifically the OnePlus 6
->> devices, PocoPhone F1 and OnePlus 5.
->> On the OnePlus 6 (SDM845) we are stuck with the following signed vendor =
-fw:
->>
->> [    9.339873] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214
->> chip_family 0x4001 board_id 0xff soc_id 0x40030001
->> [    9.339897] ath10k_snoc 18800000.wifi: qmi fw_version 0x20060029
->> fw_build_timestamp 2019-07-12 02:14 fw_build_id
->> QC_IMAGE_VERSION_STRING=3DWLAN.HL.2.0.c8-00041-QCAHLSWMTPLZ-1
->>
->> The OnePlus 5 (MSM8998) is using firmware:
->>
->> [ 6096.956799] ath10k_snoc 18800000.wifi: qmi chip_id 0x30214
->> chip_family 0x4001 board_id 0xff soc_id 0x40010002
->> [ 6096.956824] ath10k_snoc 18800000.wifi: qmi fw_version 0x1007007e
->> fw_build_timestamp 2020-04-14 22:45 fw_build_id
->> QC_IMAGE_VERSION_STRING=3DWLAN.HL.1.0.c6-00126-QCAHLSWMTPLZ-1.211883.1.2=
-78648.
->
-> Thanks, I'll include this information to the commit log and then apply
-> the patch. And I'll assume you have also tested this patch on those
-> platforms so that I can add a Tested-on tag?
-Yeah, go ahead. Sorry for the late reply!
->
-> BTW, ath10k should strip that ugly "QC_IMAGE_VERSION_STRING=3D" string in
-> the firmware version. Patches very welcome :)
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
->
+On Fri, 18 Jun 2021 19:36:08 +0200 you wrote:
+> This patch series adds a WWAN "control" driver for the remote processor
+> messaging (rpmsg) subsystem. This subsystem allows communicating with
+> an integrated modem DSP on many Qualcomm SoCs, e.g. MSM8916 or MSM8974.
+> 
+> The driver is a fairly simple glue layer between WWAN and RPMSG
+> and is mostly based on the existing mhi_wwan_ctrl.c and rpmsg_char.c.
+> 
+> [...]
 
+Here is the summary with links:
+  - [net-next,v3,1/3] rpmsg: core: Add driver_data for rpmsg_device_id
+    https://git.kernel.org/netdev/net-next/c/60302ce4ea07
+  - [net-next,v3,2/3] net: wwan: Add RPMSG WWAN CTRL driver
+    https://git.kernel.org/netdev/net-next/c/5e90abf49c2a
+  - [net-next,v3,3/3] net: wwan: Allow WWAN drivers to provide blocking tx and poll function
+    https://git.kernel.org/netdev/net-next/c/31c143f71275
+
+You are awesome, thank you!
 --
-Kind Regards,
-Caleb
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
