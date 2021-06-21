@@ -6,28 +6,28 @@ X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 195D0C48BC2
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92A80C49EB9
 	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 18:21:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 02210611BD
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 18:21:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6C08F61351
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 18:21:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231912AbhFUSXW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 21 Jun 2021 14:23:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54840 "EHLO
+        id S231604AbhFUSXX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Jun 2021 14:23:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231268AbhFUSXO (ORCPT
+        with ESMTP id S231390AbhFUSXO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Mon, 21 Jun 2021 14:23:14 -0400
 Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C47AC0D9439;
-        Mon, 21 Jun 2021 11:10:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 203ECC0D9436;
+        Mon, 21 Jun 2021 11:10:21 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 71BF03ED53;
-        Mon, 21 Jun 2021 20:10:20 +0200 (CEST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id B3E303EB9E;
+        Mon, 21 Jun 2021 20:10:17 +0200 (CEST)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     bjorn.andersson@linaro.org
@@ -41,69 +41,79 @@ Cc:     agross@kernel.org, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
         robh+dt@kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v6 5/5] dt-bindings: soc: qcom: spm: Document SDM660 and MSM8998 compatibles
-Date:   Mon, 21 Jun 2021 20:10:16 +0200
-Message-Id: <20210621181016.365009-6-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v6 0/5] Implement SPM/SAW for MSM8998 and SDM6xx
+Date:   Mon, 21 Jun 2021 20:10:11 +0200
+Message-Id: <20210621181016.365009-1-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210621181016.365009-1-angelogioacchino.delregno@somainline.org>
-References: <20210621181016.365009-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The driver was updated to add SAW2 v4.1 support for new SoCs: document
-the new compatibles.
----
- .../bindings/soc/qcom/qcom,spm.yaml           | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
+Changes in v6:
+- Moved cpuidle_driver to be private to cpuidle-qcom-spm (unused in spm.c),
+  now we are assigning the cpuidle_driver structure fields inside of the
+  spm_cpuidle_register function; this also fixes the cpumask assignment
+  issue from v5
+- Fixed another contamination from 2/3 in 1/3 (argh!! :])
+- Added dt-bindings documentation for the SPM driver
 
-diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml
-index 4aaa319b2932..a1dffde9b168 100644
---- a/Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml
-+++ b/Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml
-@@ -17,6 +17,11 @@ description: |
- properties:
-   compatible:
-     enum:
-+      - qcom,sdm660-gold-saw2-v4.1-l2
-+      - qcom,sdm660-silver-saw2-v4.1-l2
-+      - qcom,msm8998-silver-saw2-v4.1-l2
-+      - qcom,msm8998-gold-saw2-v4.1-l2
-+      - qcom,msm8998-silver-saw2-v4.1-l2
-       - qcom,msm8974-saw2-v2.1-cpu
-       - qcom,apq8084-saw2-v2.1-cpu
-       - qcom,apq8064-saw2-v1.1-cpu
-@@ -33,6 +38,8 @@ additionalProperties: false
- 
- examples:
-   - |
-+
-+    /* Example 1: SoC using SAW2 and kpss-acc-v2 CPUIdle */
-     cpus {
-         #address-cells = <1>;
-         #size-cells = <0>;
-@@ -52,4 +59,19 @@ examples:
-         reg = <0xf9089000 0x1000>;
-     };
- 
-+  - |
-+
-+    /* Example 2: New-gen multi cluster SoC using SAW only for L2;
-+     * This does not require any cpuidle driver, nor any cpu phandle.
-+     */
-+    power-controller@17812000 {
-+        compatible = "qcom,msm8998-gold-saw2-v4.1-l2", "qcom,saw2";
-+        reg = <0x17812000 0x1000>;
-+    };
-+
-+    power-controller@17912000 {
-+        compatible = "qcom,msm8998-silver-saw2-v4.1-l2", "qcom,saw2";
-+        reg = <0x17912000 0x1000>;
-+    };
-+
- ...
+Changes in v5:
+- Fixed contamination from patch 2/3 in patch 1/3
+- Fixed missing bits in cpuidle-qcom-spm (thanks Stephan)
+
+Changes in v4:
+- Huge patch series has been split for better reviewability,
+  as suggested by Bjorn
+
+Changes in v3:
+- Rebased (no changes - was in previous series' v3)
+
+Changes in v2:
+- Fixed MSM8998 SAW parameters on SPM driver
+
+Tested on the following smartphones:
+- Sony Xperia XA2        (SDM630)
+- Sony Xperia XA2 Ultra  (SDM630)
+- Sony Xperia 10         (SDM630)
+- Sony Xperia XZ Premium (MSM8998)
+- F(x)Tec Pro 1          (MSM8998)
+
+This is a component that we can find on very old
+chips, like MSM8974; there, it has been used to actually do the
+power scaling basically "on its own" - sending the cores in a specific
+sleep mode to save power.
+On the newer ones, including MSM8998, SDM630, 660 and others, it is still
+present! Though, this time, it's being used for the cluster caches and it
+has a different firmware (and maybe it's also slightly different HW),
+implementing the SAWv4.1 set and getting controlled *not by the OS* but
+by other controllers in the SoC (like the OSM).
+
+Contrary from MSM8974 and the like, this new version of the SPM just
+requires us to set the initial parameters for AVS and *nothing else*, as
+its states will be totally managed internally.
+
+
+AngeloGioacchino Del Regno (5):
+  cpuidle: qcom_spm: Detach state machine from main SPM handling
+  dt-bindings: soc: qcom: Add devicetree binding for QCOM SPM
+  soc: qcom: spm: Implement support for SAWv4.1, SDM630/660 L2 AVS
+  soc: qcom: spm: Add compatible for MSM8998 SAWv4.1 L2
+  dt-bindings: soc: qcom: spm: Document SDM660 and MSM8998 compatibles
+
+ .../bindings/soc/qcom/qcom,spm.yaml           |  77 +++++
+ drivers/cpuidle/Kconfig.arm                   |   1 +
+ drivers/cpuidle/cpuidle-qcom-spm.c            | 324 ++++--------------
+ drivers/soc/qcom/Kconfig                      |   9 +
+ drivers/soc/qcom/Makefile                     |   1 +
+ drivers/soc/qcom/spm.c                        | 240 +++++++++++++
+ include/soc/qcom/spm.h                        |  43 +++
+ 7 files changed, 446 insertions(+), 249 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml
+ create mode 100644 drivers/soc/qcom/spm.c
+ create mode 100644 include/soc/qcom/spm.h
+
 -- 
 2.32.0
 
