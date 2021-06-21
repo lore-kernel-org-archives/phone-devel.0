@@ -2,36 +2,49 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CCBAAC48BE5
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 16:12:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D815C4743C
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 17:27:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AE89C61164
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 16:12:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5BEB360FF2
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 17:27:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229915AbhFUQO0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 21 Jun 2021 12:14:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54162 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229789AbhFUQOZ (ORCPT
+        id S231279AbhFUR3w (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Jun 2021 13:29:52 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:24017 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230239AbhFUR3v (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 21 Jun 2021 12:14:25 -0400
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B9C8C061574;
-        Mon, 21 Jun 2021 09:12:11 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 110E81F4AF;
-        Mon, 21 Jun 2021 18:12:07 +0200 (CEST)
-Subject: Re: [PATCH v5 1/3] cpuidle: qcom_spm: Detach state machine from main
- SPM handling
-To:     Stephan Gerhold <stephan@gerhold.net>
+        Mon, 21 Jun 2021 13:29:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1624296453;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=hsoDzzu1giOUqa3P8ZG9xhIVsUbaKTxcoPkDydr9XUE=;
+    b=GG0/r58gjUrXQfLQIh12mBCr+dpsIrAbC+/V2pwvptkCAvfby4flylTQQj15jaUYt/
+    93NNO47vgyKw0PMhKQKhBqD0AenTUSpDWmtMAW1nOxvBHf9LR5IU+hSmvQIRgIoU+Mlk
+    0s579J5DuCP64Esn1aR0FSjb7rYd1KgV2sN0JgQm/jmubIXjOLtra/+1XD3YLlPk9ApL
+    v16iiviubTuATS1xaGW6lZH79B7y0s7sVi4TffpkP9qUybH8/CJO6Avps9iq4vRobj3A
+    BwGMloy5ZkElP8NDpap7r1LVDEkSHbYN5rAXcoleYWuo8mdC5FEOLkqXXF/2vQAwBYR6
+    6IwA==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8f7Ic/Baoo="
+X-RZG-CLASS-ID: mo00
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 47.27.3 DYNA|AUTH)
+    with ESMTPSA id 000885x5LHRWLZF
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Mon, 21 Jun 2021 19:27:32 +0200 (CEST)
+Date:   Mon, 21 Jun 2021 19:27:27 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
 Cc:     bjorn.andersson@linaro.org, agross@kernel.org,
         daniel.lezcano@linaro.org, rjw@rjwysocki.net,
         linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
@@ -39,278 +52,192 @@ Cc:     bjorn.andersson@linaro.org, agross@kernel.org,
         konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         martin.botka@somainline.org, jeffrey.l.hugo@gmail.com,
         jamipkettunen@somainline.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v5 1/3] cpuidle: qcom_spm: Detach state machine from main
+ SPM handling
+Message-ID: <YNDL/yLanerZ4hM9@gerhold.net>
 References: <20210618225620.623359-1-angelogioacchino.delregno@somainline.org>
  <20210618225620.623359-2-angelogioacchino.delregno@somainline.org>
  <YNB92Dkx5MNg64m+@gerhold.net>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Message-ID: <08c80c7d-638f-23e9-e580-bced3648a635@somainline.org>
-Date:   Mon, 21 Jun 2021 18:12:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+ <08c80c7d-638f-23e9-e580-bced3648a635@somainline.org>
 MIME-Version: 1.0
-In-Reply-To: <YNB92Dkx5MNg64m+@gerhold.net>
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <08c80c7d-638f-23e9-e580-bced3648a635@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 21/06/21 13:54, Stephan Gerhold ha scritto:
-> On Sat, Jun 19, 2021 at 12:56:18AM +0200, AngeloGioacchino Del Regno wrote:
->> In commit a871be6b8eee ("cpuidle: Convert Qualcomm SPM driver to a generic
->> CPUidle driver") the SPM driver has been converted to a
->> generic CPUidle driver: that was mainly made to simplify the
->> driver and that was a great accomplishment;
->> Though, it was ignored that the SPM driver is not used only
->> on the ARM architecture.
->>
+On Mon, Jun 21, 2021 at 06:12:06PM +0200, AngeloGioacchino Del Regno wrote:
+> Il 21/06/21 13:54, Stephan Gerhold ha scritto:
+> > On Sat, Jun 19, 2021 at 12:56:18AM +0200, AngeloGioacchino Del Regno wrote:
+> > > In commit a871be6b8eee ("cpuidle: Convert Qualcomm SPM driver to a generic
+> > > CPUidle driver") the SPM driver has been converted to a
+> > > generic CPUidle driver: that was mainly made to simplify the
+> > > driver and that was a great accomplishment;
+> > > Though, it was ignored that the SPM driver is not used only
+> > > on the ARM architecture.
+> > > 
+> > 
+> > Can you please reword this sentence like I suggested in v4? The way you
+> > write it at the moment it sounds like this fixes a regression, but
+> > actually it extends the driver to cover more use cases.
+> > 
 > 
-> Can you please reword this sentence like I suggested in v4? The way you
-> write it at the moment it sounds like this fixes a regression, but
-> actually it extends the driver to cover more use cases.
+> I don't see any regression implied: I'm explaining the reason of this
+> change just one line after that and .. besides that, I haven't put any
+> "Fixes:" tag to this commit.
+> When you fix regressions, bad behavior, or anything else relative to a
+> patch, you add that tag to say that you're fixing something.
 > 
-
-I don't see any regression implied: I'm explaining the reason of this
-change just one line after that and .. besides that, I haven't put any
-"Fixes:" tag to this commit.
-When you fix regressions, bad behavior, or anything else relative to a
-patch, you add that tag to say that you're fixing something.
-
-Moreover, I can't see anything wrong in the description for this change,
-nor anything to clarify about it and that as long as you read it in full
-
->> In preparation for the enablement of SPM features on AArch64/ARM64,
->> split the cpuidle-qcom-spm driver in two: the CPUIdle related
->> state machine (currently used only on ARM SoCs) stays there, while
->> the SPM communication handling lands back in soc/qcom/spm.c and
->> also making sure to not discard the simplifications that were
->> introduced in the aforementioned commit.
->>
->> Since now the "two drivers" are split, the SCM dependency in the
->> main SPM handling is gone and for this reason it was also possible
->> to move the SPM initialization early: this will also make sure that
->> whenever the SAW CPUIdle driver is getting initialized, the SPM
->> driver will be ready to do the job.
->>
->> Please note that the anticipation of the SPM initialization was
->> also done to optimize the boot times on platforms that have their
->> CPU/L2 idle states managed by other means (such as PSCI), while
->> needing SAW initialization for other purposes, like AVS control.
->>
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
->> ---
->>   drivers/cpuidle/Kconfig.arm        |   1 +
->>   drivers/cpuidle/cpuidle-qcom-spm.c | 295 ++++++-----------------------
->>   drivers/soc/qcom/Kconfig           |   9 +
->>   drivers/soc/qcom/Makefile          |   1 +
->>   drivers/soc/qcom/spm.c             | 198 +++++++++++++++++++
->>   include/soc/qcom/spm.h             |  43 +++++
->>   6 files changed, 311 insertions(+), 236 deletions(-)
->>   create mode 100644 drivers/soc/qcom/spm.c
->>   create mode 100644 include/soc/qcom/spm.h
->>
->> [...]
->> diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
->> [...]
->> @@ -213,132 +80,88 @@ static const struct of_device_id qcom_idle_state_match[] = {
->>   	{ },
->>   };
->>   
->> -static int spm_cpuidle_init(struct cpuidle_driver *drv, int cpu)
->> +static int spm_cpuidle_register(int cpu)
->>   {
->> +	struct platform_device *pdev = NULL;
->> +	struct spm_driver_data *spm = NULL;
->> +	struct device_node *cpu_node, *saw_node;
->>   	int ret;
->>   
->> -	memcpy(drv, &qcom_spm_idle_driver, sizeof(*drv));
->> -	drv->cpumask = (struct cpumask *)cpumask_of(cpu);
->> +	cpu_node = of_cpu_device_node_get(cpu);
->> +	if (!cpu_node)
->> +		return -ENODEV;
->>   
->> -	/* Parse idle states from device tree */
->> -	ret = dt_init_idle_driver(drv, qcom_idle_state_match, 1);
->> -	if (ret <= 0)
->> -		return ret ? : -ENODEV;
->> +	saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
->> +	if (!saw_node)
->> +		return -ENODEV;
->>   
->> -	/* We have atleast one power down mode */
->> -	return qcom_scm_set_warm_boot_addr(cpu_resume_arm, drv->cpumask);
->> -}
->> +	pdev = of_find_device_by_node(saw_node);
->> +	of_node_put(saw_node);
->> +	of_node_put(cpu_node);
->> +	if (!pdev)
->> +		return -ENODEV;
->>   
->> -static struct spm_driver_data *spm_get_drv(struct platform_device *pdev,
->> -		int *spm_cpu)
->> -{
->> -	struct spm_driver_data *drv = NULL;
->> -	struct device_node *cpu_node, *saw_node;
->> -	int cpu;
->> -	bool found = 0;
->> +	spm = dev_get_drvdata(&pdev->dev);
->> +	if (!spm)
->> +		return -EINVAL;
->>   
->> -	for_each_possible_cpu(cpu) {
->> -		cpu_node = of_cpu_device_node_get(cpu);
->> -		if (!cpu_node)
->> -			continue;
->> -		saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
->> -		found = (saw_node == pdev->dev.of_node);
->> -		of_node_put(saw_node);
->> -		of_node_put(cpu_node);
->> -		if (found)
->> -			break;
->> -	}
->> +	spm->cpuidle_driver.cpumask = (struct cpumask *)cpumask_of(cpu);
->> +	spm->cpuidle_driver = qcom_spm_idle_driver;
-> 
-> This should be in opposite order.
+> Moreover, I can't see anything wrong in the description for this change,
+> nor anything to clarify about it and that as long as you read it in full
 > 
 
-That was a bad overlook, sorry.
+I don't really want to get into a long discussion about a single
+sentence here but the sentence just doesn't make any sense to me:
 
-> It's still freezing with this patch version. I used the chance to
-> investigate why it freezes, and it's actually not some bug of my
-> platform like you mentioned:
-> 
->> So you have discovered a bug for which your platform dies when SPM
->> does not probe, probably due to something else being dependant on this.
->> In this case, I would encourage you to produce a fix for your platform
->> to not unexpectedly just hang forever if *some driver* doesn't probe:
->> that's definitely not right.
-> 
-> There is a simple reason why this happens: If "cpumask" is not set,
-> the cpuidle_driver applies to *all* CPUs. This means that as soon as
-> CPU1/2/3 go into standalone power collapse the SPM for CPU0 (rather than
-> the one for CPU1/2/3!) is re-configured. Eventually CPU0 will execute WFI
-> (without saving the CPU state) and ends up in power collapse (CPU state
-> destroyed) rather than standby (CPU state preserved).
-> 
+  1. You say that I "ignored" something in my commit, which isn't the case.
+  2. The mainline "SPM driver" *is* only used on ARM*32* at the moment.
+     (This is something you want to change in this patch series!)
 
-That's a big relief!
+To me that sentence suggests the "SPM driver" already had support for
+ARM64/your use case and I *deliberately* ignored that while converting
+the driver to a direct CPU Idle driver.
 
->> [...]
->> diff --git a/drivers/soc/qcom/spm.c b/drivers/soc/qcom/spm.c
->> [...]
->> +static const u16 spm_reg_offset_v2_1[SPM_REG_NR] = {
-> 
-> This should be still u8 in this patch.
-> 
+I'm merely suggesting making the situation a bit more clear by replacing
 
-Ack.
+> > > Though, it was ignored that the SPM driver is not used only
+> > > on the ARM architecture.
 
-> drivers/soc/qcom/spm.c:47:16: error: initialization of 'const u8 *' {aka 'const unsigned char *'} from incompatible pointer type 'const u16 *' {aka 'const short unsigned int *'} [-Werror=incompatible-pointer-types]
->     47 |  .reg_offset = spm_reg_offset_v2_1,
->        |                ^~~~~~~~~~~~~~~~~~~
-> drivers/soc/qcom/spm.c:47:16: note: (near initialization for 'spm_reg_8974_8084_cpu.reg_offset')
-> 
->> [...]
->> +static const u16 spm_reg_offset_v1_1[SPM_REG_NR] = {
-> 
-> drivers/soc/qcom/spm.c:68:16: error: initialization of 'const u8 *' {aka 'const unsigned char *'} from incompatible pointer type 'const u16 *' {aka 'const short unsigned int *'} [-Werror=incompatible-pointer-types]
->     68 |  .reg_offset = spm_reg_offset_v1_1,
->        |                ^~~~~~~~~~~~~~~~~~~
-> drivers/soc/qcom/spm.c:68:16: note: (near initialization for 'spm_reg_8064_cpu.reg_offset')
-> 
->> [...]
->> diff --git a/include/soc/qcom/spm.h b/include/soc/qcom/spm.h
->> new file mode 100644
->> index 000000000000..719c604a8402
->> --- /dev/null
->> +++ b/include/soc/qcom/spm.h
->> @@ -0,0 +1,43 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +/*
->> + * Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
->> + * Copyright (c) 2014,2015, Linaro Ltd.
->> + * Copyright (C) 2021, AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
->> + */
->> +
->> +#ifndef __SPM_H__
->> +#define __SPM_H__
->> +
->> +#include <linux/cpuidle.h>
->> +
->> +#define MAX_PMIC_DATA		2
->> +#define MAX_SEQ_DATA		64
->> +
->> +enum pm_sleep_mode {
->> +	PM_SLEEP_MODE_STBY,
->> +	PM_SLEEP_MODE_RET,
->> +	PM_SLEEP_MODE_SPC,
->> +	PM_SLEEP_MODE_PC,
->> +	PM_SLEEP_MODE_NR,
->> +};
->> +
->> +struct spm_reg_data {
->> +	const u8 *reg_offset;
->> +	u32 spm_cfg;
->> +	u32 spm_dly;
->> +	u32 pmic_dly;
->> +	u32 pmic_data[MAX_PMIC_DATA];
->> +	u8 seq[MAX_SEQ_DATA];
->> +	u8 start_index[PM_SLEEP_MODE_NR];
->> +};
->> +
->> +struct spm_driver_data {
->> +	struct cpuidle_driver cpuidle_driver;
-> 
-> Given that the SPM hardware seems to have several different uses,
-> not just CPUidle, wouldn't it be better to allocate the memory for the
-> cpuidle_driver from cpuidle-qcom-spm.c? Just devm_kzalloc() something
-> like:
-> 
-> struct spm_cpuidle_driver {
-> 	struct cpuidle_driver cpuidle_driver;
-> 	struct spm_driver_data *spm;
-> };
-> 
-> in cpuidle-qcom-spm.c.
-> 
-> And then there wouldn't be a need to have the implementation details of
-> the SPM driver in the spm.h header, all that cpuidle-qcom-spm needs is
-> 
-> struct spm_driver_data;
-> 
-> enum pm_sleep_mode {
-> 	PM_SLEEP_MODE_STBY,
-> 	PM_SLEEP_MODE_RET,
-> 	PM_SLEEP_MODE_SPC,
-> 	PM_SLEEP_MODE_PC,
-> 	PM_SLEEP_MODE_NR,
-> };
-> 
-> void spm_set_low_power_mode(struct spm_driver_data *drv,
-> 			    enum pm_sleep_mode mode);
-> 
-> Everything else can remain private to the spm.c driver,
-> like it was before.
-> 
+with something like:
+"However, on newer ARM64 SoCs the SPM hardware is used for purposes
+other than CPUIdle."
 
-I don't completely dislike the approach but I honestly think that this
-would put some cognitive strain: having a header included in two files
-using "things" defined in there gives people an easy path to follow
-when looking at one of the two files.
-
-Regarding the addition of that one more structure... I am seriously
-undecided on the matter: wasting this kind of amount of memory on a
-ARM64 platform (usually having more than 1GB RAM) is completely
-unnoticeable but, on the other hand, it's still a waste of memory,
-even if it's minimal that much.
-
-I will think about it.
-
-> Thanks,
-> Stephan
+> > > In preparation for the enablement of SPM features on AArch64/ARM64,
+> > > split the cpuidle-qcom-spm driver in two: the CPUIdle related
+> > > state machine (currently used only on ARM SoCs) stays there, while
+> > > the SPM communication handling lands back in soc/qcom/spm.c and
+> > > also making sure to not discard the simplifications that were
+> > > introduced in the aforementioned commit.
+> > > 
+> > > Since now the "two drivers" are split, the SCM dependency in the
+> > > main SPM handling is gone and for this reason it was also possible
+> > > to move the SPM initialization early: this will also make sure that
+> > > whenever the SAW CPUIdle driver is getting initialized, the SPM
+> > > driver will be ready to do the job.
+> > > 
+> > > Please note that the anticipation of the SPM initialization was
+> > > also done to optimize the boot times on platforms that have their
+> > > CPU/L2 idle states managed by other means (such as PSCI), while
+> > > needing SAW initialization for other purposes, like AVS control.
+> > > 
+> > > Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> > > ---
+> > >   drivers/cpuidle/Kconfig.arm        |   1 +
+> > >   drivers/cpuidle/cpuidle-qcom-spm.c | 295 ++++++-----------------------
+> > >   drivers/soc/qcom/Kconfig           |   9 +
+> > >   drivers/soc/qcom/Makefile          |   1 +
+> > >   drivers/soc/qcom/spm.c             | 198 +++++++++++++++++++
+> > >   include/soc/qcom/spm.h             |  43 +++++
+> > >   6 files changed, 311 insertions(+), 236 deletions(-)
+> > >   create mode 100644 drivers/soc/qcom/spm.c
+> > >   create mode 100644 include/soc/qcom/spm.h
+> > > 
+> > > [...]
+> > > diff --git a/include/soc/qcom/spm.h b/include/soc/qcom/spm.h
+> > > new file mode 100644
+> > > index 000000000000..719c604a8402
+> > > --- /dev/null
+> > > +++ b/include/soc/qcom/spm.h
+> > > @@ -0,0 +1,43 @@
+> > > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > > +/*
+> > > + * Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
+> > > + * Copyright (c) 2014,2015, Linaro Ltd.
+> > > + * Copyright (C) 2021, AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> > > + */
+> > > +
+> > > +#ifndef __SPM_H__
+> > > +#define __SPM_H__
+> > > +
+> > > +#include <linux/cpuidle.h>
+> > > +
+> > > +#define MAX_PMIC_DATA		2
+> > > +#define MAX_SEQ_DATA		64
+> > > +
+> > > +enum pm_sleep_mode {
+> > > +	PM_SLEEP_MODE_STBY,
+> > > +	PM_SLEEP_MODE_RET,
+> > > +	PM_SLEEP_MODE_SPC,
+> > > +	PM_SLEEP_MODE_PC,
+> > > +	PM_SLEEP_MODE_NR,
+> > > +};
+> > > +
+> > > +struct spm_reg_data {
+> > > +	const u8 *reg_offset;
+> > > +	u32 spm_cfg;
+> > > +	u32 spm_dly;
+> > > +	u32 pmic_dly;
+> > > +	u32 pmic_data[MAX_PMIC_DATA];
+> > > +	u8 seq[MAX_SEQ_DATA];
+> > > +	u8 start_index[PM_SLEEP_MODE_NR];
+> > > +};
+> > > +
+> > > +struct spm_driver_data {
+> > > +	struct cpuidle_driver cpuidle_driver;
+> > 
+> > Given that the SPM hardware seems to have several different uses,
+> > not just CPUidle, wouldn't it be better to allocate the memory for the
+> > cpuidle_driver from cpuidle-qcom-spm.c? Just devm_kzalloc() something
+> > like:
+> > 
+> > struct spm_cpuidle_driver {
+> > 	struct cpuidle_driver cpuidle_driver;
+> > 	struct spm_driver_data *spm;
+> > };
+> > 
+> > in cpuidle-qcom-spm.c.
+> > 
+> > And then there wouldn't be a need to have the implementation details of
+> > the SPM driver in the spm.h header, all that cpuidle-qcom-spm needs is
+> > 
+> > struct spm_driver_data;
+> > 
+> > enum pm_sleep_mode {
+> > 	PM_SLEEP_MODE_STBY,
+> > 	PM_SLEEP_MODE_RET,
+> > 	PM_SLEEP_MODE_SPC,
+> > 	PM_SLEEP_MODE_PC,
+> > 	PM_SLEEP_MODE_NR,
+> > };
+> > 
+> > void spm_set_low_power_mode(struct spm_driver_data *drv,
+> > 			    enum pm_sleep_mode mode);
+> > 
+> > Everything else can remain private to the spm.c driver,
+> > like it was before.
+> > 
+> 
+> I don't completely dislike the approach but I honestly think that this
+> would put some cognitive strain: having a header included in two files
+> using "things" defined in there gives people an easy path to follow
+> when looking at one of the two files.
 > 
 
+OK, I guess this is personal preference. I don't really mind if you keep
+the structs defined in the shared header...
+
+> Regarding the addition of that one more structure... I am seriously
+> undecided on the matter: wasting this kind of amount of memory on a
+> ARM64 platform (usually having more than 1GB RAM) is completely
+> unnoticeable but, on the other hand, it's still a waste of memory,
+> even if it's minimal that much.
+> 
+
+In my opinion it also makes the two drivers better separated.
+The SPM driver manages the SPM hardware and provides functionality to
+configure it. The CPU idle driver makes use of that functionality
+to implement the CPU idle use case. This does not require the SPM driver
+to know how exactly the CPU idle driver looks.
+
+Stephan
