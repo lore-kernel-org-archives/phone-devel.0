@@ -2,303 +2,315 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E5ABC49EA2
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 14:34:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCBAAC48BE5
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 16:12:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 144A260FDB
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 14:34:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AE89C61164
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 16:12:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230302AbhFUOgl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 21 Jun 2021 10:36:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59828 "EHLO
+        id S229915AbhFUQO0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Jun 2021 12:14:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230118AbhFUOgj (ORCPT
+        with ESMTP id S229789AbhFUQOZ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 21 Jun 2021 10:36:39 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 595ADC06175F
-        for <phone-devel@vger.kernel.org>; Mon, 21 Jun 2021 07:34:25 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id c84so10647841wme.5
-        for <phone-devel@vger.kernel.org>; Mon, 21 Jun 2021 07:34:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ZMqlY+Opiy9e5r7ONByBh1Tft3bA4sYDzsNlt1lPrOs=;
-        b=DmayG4hlCAbRlus1NTyZsmpy2IRkmUaG0624p1FI/yfRRYcp7yxZeo+RvAqD94PX9B
-         5g4wl/xkeaNViXA5ANb/uHXdmhVi2JksF11g0eXlfcDdBDXRb3nTPXFLAsMlgoAbnATG
-         lJLB/qNgFSSJlHRiQG6dDDOcUxdGg0VInan9V40nBe4EmpG0kDKQpyYKPmQgO3xhngkX
-         fLH0aRc9AhZUGbcfHijo0gQN2ZOD1voUhNjTQCkM1ZIrXjf1r0ZjG2HEMtSXDWQ5YCYf
-         uBfeHvhnheljFSLjOwBrrXZKt9QA9g8AgH35he+Mirv+Ak3JDcxPjsLPP98PLC1nf+M0
-         AxzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ZMqlY+Opiy9e5r7ONByBh1Tft3bA4sYDzsNlt1lPrOs=;
-        b=i/x1A1VWWDrHyFedtgeEnrViCfqnpA5HPDauQsV/1P4/2sSxZbjEeu6tZKZou1p6M/
-         f8SjCJaer63Mk42vgDdX9QjhUEu844lL8K2VbYtba8sKCJlhPjek1OCxmFg/WtH8F0US
-         BCkY4yVKXMITBP7vbHHc89xCn+uZs4GSLt+5sLt6elZJXycfXK0iGyaH6WqLhx/S7uWX
-         mRDOpB9D9645pTF3HwU3M6CptFcAkHZjfa0l9Wqi2m5hOswKqAsYxLGgcA7xhf8pFE44
-         mYjE2WGOXCqu6uJFmlohI4fPAheED9FI9e4mPmAYgjXii89SL224J+ukUOPSoJKlzXqu
-         dpxQ==
-X-Gm-Message-State: AOAM532e2pz3y5rXtEQiwxmZa+DQjGx3RlT7UIJnvkQhwIllH6LpSfAu
-        q3s/x93icu2+CXHL5kneXbzWsg==
-X-Google-Smtp-Source: ABdhPJyx5C+eZv7C6XmYqM2hHGJ6eGQ428xrSQ40aZ1ROYYkBDWOZMN8IatGzKARHci8QpvmW7wNqg==
-X-Received: by 2002:a1c:4c16:: with SMTP id z22mr11623184wmf.34.1624286063780;
-        Mon, 21 Jun 2021 07:34:23 -0700 (PDT)
-Received: from ?IPv6:2a01:e34:ed2f:f020:5ebd:8bd9:d549:4211? ([2a01:e34:ed2f:f020:5ebd:8bd9:d549:4211])
-        by smtp.googlemail.com with ESMTPSA id a9sm17596124wrv.37.2021.06.21.07.34.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Jun 2021 07:34:23 -0700 (PDT)
-Subject: Re: [PATCH RFC 1/2] thermal: qcom: tsens-v1: Add support for MSM8994
- TSENS
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org, Amit Kucheria <amitk@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210209195346.457803-1-konrad.dybcio@somainline.org>
- <a4b76d12-a659-da87-7d97-9b34e3cf7edf@linaro.org>
- <ce5cac52-473c-a30a-104d-0a175e8848db@somainline.org>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Message-ID: <35799629-607a-bad2-cdf2-b74a044dd0b6@linaro.org>
-Date:   Mon, 21 Jun 2021 16:34:21 +0200
+        Mon, 21 Jun 2021 12:14:25 -0400
+Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B9C8C061574;
+        Mon, 21 Jun 2021 09:12:11 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 110E81F4AF;
+        Mon, 21 Jun 2021 18:12:07 +0200 (CEST)
+Subject: Re: [PATCH v5 1/3] cpuidle: qcom_spm: Detach state machine from main
+ SPM handling
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     bjorn.andersson@linaro.org, agross@kernel.org,
+        daniel.lezcano@linaro.org, rjw@rjwysocki.net,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com,
+        jamipkettunen@somainline.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <20210618225620.623359-1-angelogioacchino.delregno@somainline.org>
+ <20210618225620.623359-2-angelogioacchino.delregno@somainline.org>
+ <YNB92Dkx5MNg64m+@gerhold.net>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <08c80c7d-638f-23e9-e580-bced3648a635@somainline.org>
+Date:   Mon, 21 Jun 2021 18:12:06 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-In-Reply-To: <ce5cac52-473c-a30a-104d-0a175e8848db@somainline.org>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <YNB92Dkx5MNg64m+@gerhold.net>
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 09/06/2021 15:31, Konrad Dybcio wrote:
-> Hi,
-> 
-> 
->> Please split binding and code into two separate patches.
-> 
-> It's a oneliner, but I might as well.
-> 
->  
-> 
->> That deserves a cartdrige with a good explanation of why this function
->> is doing all this. Without enough details, it is hard to review the code.
-> 
-> I don't really know *why* it's doing all of this. Qualcomm doesn't share any documentation.
-> 
-> It' just based on the freely-available msm-3.10 kernel driver. Probably just a HW specific.
-
-Oh, ok. Let's assume we are in hacking mode then. Hopefully Bjorn can
-give some inputs.
-
->>> +static void compute_intercept_slope_8994(struct tsens_priv *priv,
->>> +			      u32 *base0, u32 *base1, u32 *p, u32 mode)
->>> +{
->>> +	int adc_code_of_tempx, i, num, den;
->>> +
->>> +	for (i = 0; i < priv->num_sensors; i++) {
->>> +		dev_dbg(priv->dev,
->>> +			"%s: sensor%d - data_point1:%#x data_point2:%#x\n",
->>> +			__func__, i, base0[i], base1[i]);
->>> +
->>> +		priv->sensor[i].slope = SLOPE_DEFAULT;
->>> +		if (mode == TWO_PT_CALIB) {
->>> +			/*
->>> +			 * slope (m) = adc_code2 - adc_code1 (y2 - y1)/
->>> +			 *	temp_120_degc - temp_30_degc (x2 - x1)
->>> +			 */
->>> +			num = base1[i] - base0[i];
->> As the caller of the function is copying the value of base[0] to the
->> entire array, whatever 'i', base[i] == base[0], so the parameters can be
->> replaced by a single int.
+Il 21/06/21 13:54, Stephan Gerhold ha scritto:
+> On Sat, Jun 19, 2021 at 12:56:18AM +0200, AngeloGioacchino Del Regno wrote:
+>> In commit a871be6b8eee ("cpuidle: Convert Qualcomm SPM driver to a generic
+>> CPUidle driver") the SPM driver has been converted to a
+>> generic CPUidle driver: that was mainly made to simplify the
+>> driver and that was a great accomplishment;
+>> Though, it was ignored that the SPM driver is not used only
+>> on the ARM architecture.
 >>
->> Then the code becomes:
->>
->> 	num = base1 - base0;
->> 	num *= SLOPE_FACTOR;
->> 	den = CAL_DEGC_PT2 - CAL_DEGC_PT1;
->> 	slope = num / den;
->>
->> There is no change in the values, so 'slope' can be precomputed before
->> the loop. We end up with:
->>
->> 	int adc_code_of_tempx, i, num, den;
->> 	int slope;
->>
->> 	/*
->> 	 * slope (m) = adc_code2 - adc_code1 (y2 - y1)/
->> 	 *	temp_120_degc - temp_30_degc (x2 - x1)
->> 	 */
->> 	num = base1 - base0;
->> 	num *= SLOPE_FACTOR;
->> 	den = CAL_DEGC_PT2 - CAL_DEGC_PT1;
->> 	slope = num / den;
->>
->> 	for (i = 0; i < priv->num_sensors; i++) {
->>
->> 		priv->sensor[i].slope = mode == TWO_PT_CALIB ? slope :
->> 			SLOPE_DEFAULT;
 > 
-> That's sounds very good. I did not think of this approach, but I will incorporate it
-> 
-> into the next revision.
-> 
-> 
-> 
->>> +		adc_code_of_tempx = base0[i] + p[i];
->>> +
->>> +		priv->sensor[i].offset = (adc_code_of_tempx * SLOPE_FACTOR) -
->>> +				(CAL_DEGC_PT1 *	priv->sensor[i].slope);
->>> +		dev_dbg(priv->dev, "%s: offset:%d\n", __func__,
->>> +			priv->sensor[i].offset);
->>> +	}
->>> +}
->>> +
->>>  static int calibrate_v1(struct tsens_priv *priv)
->>>  {
->>>  	u32 base0 = 0, base1 = 0;
->>> @@ -297,14 +421,143 @@ static int calibrate_8976(struct tsens_priv *priv)
->>>  	return 0;
->>>  }
->> Same comment as above. The more the details, the easier for the people
->> to review the code.
-> 
-> Sorry, I am not sure what you're referring to, the calibrate_8976 function?
-
-I was referring to explaining a bit more the code but a comment saying
-it is a verbatim translation of the msm downstream driver should be ok.
-
->>> -/* v1.x: msm8956,8976,qcs404,405 */
->>> +static int calibrate_8994(struct tsens_priv *priv)
->>> +{
->>> +	int base0[16] = { 0 }, base1[16] = { 0 }, i;
->>> +	u32 p[16];
->> p stands for ?
-> 
-> No idea, but judging by the line:
-> 
-> " adc_code_of_tempx = base0[i] + p[i]; "
-> 
-> it's probably some hw-specific offset value.
-> 
-> 
-> 
->>> +	int mode = 0;
->>> +	u32 *calib0, *calib1, *calib2, *calib_mode, *calib_rsel;
->>> +	u32 calib_redun_sel;
->>> +
->>> +	/* 0x40d0-0x40dc */
->>> +	calib0 = (u32 *)qfprom_read(priv->dev, "calib");
->> Fix qfprom_read, by returning an int and using nvmem_cell_read_u32
->> (separate series).
->>
->> It seems like all call sites are expecting an int.
-> 
-> Weird. I did not get slope calculation issues even with this, but perhaps
-> 
-> I was just lucky.
-> 
-> 
-> 
->>> +			p[9] = (calib2[0] & MSM8994_S9_REDUN_MASK) >> MSM8994_S9_REDUN_SHIFT;
->>> +			p[10] = (calib2[0] & MSM8994_S10_REDUN_MASK) >> MSM8994_S10_REDUN_SHIFT;
->>> +			p[11] = (calib2[0] & MSM8994_S11_REDUN_MASK) >> MSM8994_S11_REDUN_SHIFT;
->>> +			p[12] = (calib2[0] & MSM8994_S12_REDUN_MASK) >> MSM8994_S12_REDUN_SHIFT;
->>> +			p[13] = (calib2[0] & MSM8994_S13_REDUN_MASK) >> MSM8994_S13_REDUN_SHIFT;
->>> +			p[14] = (calib2[0] & MSM8994_S14_REDUN_MASK) >> MSM8994_S14_REDUN_SHIFT;
->>> +			p[15] = (calib2[0] & MSM8994_S15_REDUN_MASK) >> MSM8994_S15_REDUN_SHIFT;
->> IMO, it is possible to do something simpler (probably bits.h could have
->> interesting helpers).
-> 
-> All TSENS consumers had this style, probably to make it easier to compare with the
-> 
-> downstream driver should there arise any human errors.
-> 
-> 
-> 
->>> +		} else {
->>> +			dev_dbg(priv->dev, "%s: REDUN NON-TWO_PT mode, mode = %i",
->>> +			__func__, mode);
->>> +			for (i = 0; i < 16; i++)
->>> +				p[i] = 532;
->> No litterals, macros please
-> 
-> Does MSM8994_NON_TWOPT_DEFAULT_VALUE sound good? It doesn't exactly
-> 
-> roll of the tongue but I don't have many better ideas..
-
-Is this driver msm8994 specific ?
-
-
->> And it would be simpler to iniatialize the array with the value.
->>
->> u32 p[16] = { [ 0 ... 15 ] = MY_532_MACRO };
-> 
->> So no need to use this loop and the other one beliw.
-> 
-> Thanks, didn't know about this.
-> 
-> 
-> 
->> What about replacing 16 by TSENS_SENSOR_MAX ?
-> 
-> If you mean this 8994-specific function exactly, then it'd probably cause
-> 
-> more confusion than help as we might find out that some SoC using TSENSv1
-> 
-> has even more sensors.
-> 
-> 
-> 
->>>  static struct tsens_features tsens_v1_feat = {
->>>  	.ver_major	= VER_1_X,
->>>  	.crit_int	= 0,
->>>  	.adc		= 1,
->>>  	.srot_split	= 1,
->>> -	.max_sensors	= 11,
->>> +	.max_sensors	= 16,
-> 
-> Here TSENS_SENSOR_MAX does make sense.
-> 
-> 
-> 
->>> +
->>> +struct tsens_plat_data data_8994 = {
->>> +	.num_sensors	= 16,
->>> +	.ops		= &ops_8994,
->>> +	.hw_ids		= (unsigned int []){ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
->> If you have time, in another series, replace this by a single int used
->> as a bitmask and fix the hw_id loop in tsens.c.
-> 
-> I will add this to my to-do list, but no promises on this landing anytime soon :/
-> 
-> 
-> 
-> Thanks for the thorough review,
-> 
-> Konrad
+> Can you please reword this sentence like I suggested in v4? The way you
+> write it at the moment it sounds like this fixes a regression, but
+> actually it extends the driver to cover more use cases.
 > 
 
+I don't see any regression implied: I'm explaining the reason of this
+change just one line after that and .. besides that, I haven't put any
+"Fixes:" tag to this commit.
+When you fix regressions, bad behavior, or anything else relative to a
+patch, you add that tag to say that you're fixing something.
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+Moreover, I can't see anything wrong in the description for this change,
+nor anything to clarify about it and that as long as you read it in full
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+>> In preparation for the enablement of SPM features on AArch64/ARM64,
+>> split the cpuidle-qcom-spm driver in two: the CPUIdle related
+>> state machine (currently used only on ARM SoCs) stays there, while
+>> the SPM communication handling lands back in soc/qcom/spm.c and
+>> also making sure to not discard the simplifications that were
+>> introduced in the aforementioned commit.
+>>
+>> Since now the "two drivers" are split, the SCM dependency in the
+>> main SPM handling is gone and for this reason it was also possible
+>> to move the SPM initialization early: this will also make sure that
+>> whenever the SAW CPUIdle driver is getting initialized, the SPM
+>> driver will be ready to do the job.
+>>
+>> Please note that the anticipation of the SPM initialization was
+>> also done to optimize the boot times on platforms that have their
+>> CPU/L2 idle states managed by other means (such as PSCI), while
+>> needing SAW initialization for other purposes, like AVS control.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>> ---
+>>   drivers/cpuidle/Kconfig.arm        |   1 +
+>>   drivers/cpuidle/cpuidle-qcom-spm.c | 295 ++++++-----------------------
+>>   drivers/soc/qcom/Kconfig           |   9 +
+>>   drivers/soc/qcom/Makefile          |   1 +
+>>   drivers/soc/qcom/spm.c             | 198 +++++++++++++++++++
+>>   include/soc/qcom/spm.h             |  43 +++++
+>>   6 files changed, 311 insertions(+), 236 deletions(-)
+>>   create mode 100644 drivers/soc/qcom/spm.c
+>>   create mode 100644 include/soc/qcom/spm.h
+>>
+>> [...]
+>> diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
+>> [...]
+>> @@ -213,132 +80,88 @@ static const struct of_device_id qcom_idle_state_match[] = {
+>>   	{ },
+>>   };
+>>   
+>> -static int spm_cpuidle_init(struct cpuidle_driver *drv, int cpu)
+>> +static int spm_cpuidle_register(int cpu)
+>>   {
+>> +	struct platform_device *pdev = NULL;
+>> +	struct spm_driver_data *spm = NULL;
+>> +	struct device_node *cpu_node, *saw_node;
+>>   	int ret;
+>>   
+>> -	memcpy(drv, &qcom_spm_idle_driver, sizeof(*drv));
+>> -	drv->cpumask = (struct cpumask *)cpumask_of(cpu);
+>> +	cpu_node = of_cpu_device_node_get(cpu);
+>> +	if (!cpu_node)
+>> +		return -ENODEV;
+>>   
+>> -	/* Parse idle states from device tree */
+>> -	ret = dt_init_idle_driver(drv, qcom_idle_state_match, 1);
+>> -	if (ret <= 0)
+>> -		return ret ? : -ENODEV;
+>> +	saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
+>> +	if (!saw_node)
+>> +		return -ENODEV;
+>>   
+>> -	/* We have atleast one power down mode */
+>> -	return qcom_scm_set_warm_boot_addr(cpu_resume_arm, drv->cpumask);
+>> -}
+>> +	pdev = of_find_device_by_node(saw_node);
+>> +	of_node_put(saw_node);
+>> +	of_node_put(cpu_node);
+>> +	if (!pdev)
+>> +		return -ENODEV;
+>>   
+>> -static struct spm_driver_data *spm_get_drv(struct platform_device *pdev,
+>> -		int *spm_cpu)
+>> -{
+>> -	struct spm_driver_data *drv = NULL;
+>> -	struct device_node *cpu_node, *saw_node;
+>> -	int cpu;
+>> -	bool found = 0;
+>> +	spm = dev_get_drvdata(&pdev->dev);
+>> +	if (!spm)
+>> +		return -EINVAL;
+>>   
+>> -	for_each_possible_cpu(cpu) {
+>> -		cpu_node = of_cpu_device_node_get(cpu);
+>> -		if (!cpu_node)
+>> -			continue;
+>> -		saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
+>> -		found = (saw_node == pdev->dev.of_node);
+>> -		of_node_put(saw_node);
+>> -		of_node_put(cpu_node);
+>> -		if (found)
+>> -			break;
+>> -	}
+>> +	spm->cpuidle_driver.cpumask = (struct cpumask *)cpumask_of(cpu);
+>> +	spm->cpuidle_driver = qcom_spm_idle_driver;
+> 
+> This should be in opposite order.
+> 
+
+That was a bad overlook, sorry.
+
+> It's still freezing with this patch version. I used the chance to
+> investigate why it freezes, and it's actually not some bug of my
+> platform like you mentioned:
+> 
+>> So you have discovered a bug for which your platform dies when SPM
+>> does not probe, probably due to something else being dependant on this.
+>> In this case, I would encourage you to produce a fix for your platform
+>> to not unexpectedly just hang forever if *some driver* doesn't probe:
+>> that's definitely not right.
+> 
+> There is a simple reason why this happens: If "cpumask" is not set,
+> the cpuidle_driver applies to *all* CPUs. This means that as soon as
+> CPU1/2/3 go into standalone power collapse the SPM for CPU0 (rather than
+> the one for CPU1/2/3!) is re-configured. Eventually CPU0 will execute WFI
+> (without saving the CPU state) and ends up in power collapse (CPU state
+> destroyed) rather than standby (CPU state preserved).
+> 
+
+That's a big relief!
+
+>> [...]
+>> diff --git a/drivers/soc/qcom/spm.c b/drivers/soc/qcom/spm.c
+>> [...]
+>> +static const u16 spm_reg_offset_v2_1[SPM_REG_NR] = {
+> 
+> This should be still u8 in this patch.
+> 
+
+Ack.
+
+> drivers/soc/qcom/spm.c:47:16: error: initialization of 'const u8 *' {aka 'const unsigned char *'} from incompatible pointer type 'const u16 *' {aka 'const short unsigned int *'} [-Werror=incompatible-pointer-types]
+>     47 |  .reg_offset = spm_reg_offset_v2_1,
+>        |                ^~~~~~~~~~~~~~~~~~~
+> drivers/soc/qcom/spm.c:47:16: note: (near initialization for 'spm_reg_8974_8084_cpu.reg_offset')
+> 
+>> [...]
+>> +static const u16 spm_reg_offset_v1_1[SPM_REG_NR] = {
+> 
+> drivers/soc/qcom/spm.c:68:16: error: initialization of 'const u8 *' {aka 'const unsigned char *'} from incompatible pointer type 'const u16 *' {aka 'const short unsigned int *'} [-Werror=incompatible-pointer-types]
+>     68 |  .reg_offset = spm_reg_offset_v1_1,
+>        |                ^~~~~~~~~~~~~~~~~~~
+> drivers/soc/qcom/spm.c:68:16: note: (near initialization for 'spm_reg_8064_cpu.reg_offset')
+> 
+>> [...]
+>> diff --git a/include/soc/qcom/spm.h b/include/soc/qcom/spm.h
+>> new file mode 100644
+>> index 000000000000..719c604a8402
+>> --- /dev/null
+>> +++ b/include/soc/qcom/spm.h
+>> @@ -0,0 +1,43 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-only */
+>> +/*
+>> + * Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
+>> + * Copyright (c) 2014,2015, Linaro Ltd.
+>> + * Copyright (C) 2021, AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>> + */
+>> +
+>> +#ifndef __SPM_H__
+>> +#define __SPM_H__
+>> +
+>> +#include <linux/cpuidle.h>
+>> +
+>> +#define MAX_PMIC_DATA		2
+>> +#define MAX_SEQ_DATA		64
+>> +
+>> +enum pm_sleep_mode {
+>> +	PM_SLEEP_MODE_STBY,
+>> +	PM_SLEEP_MODE_RET,
+>> +	PM_SLEEP_MODE_SPC,
+>> +	PM_SLEEP_MODE_PC,
+>> +	PM_SLEEP_MODE_NR,
+>> +};
+>> +
+>> +struct spm_reg_data {
+>> +	const u8 *reg_offset;
+>> +	u32 spm_cfg;
+>> +	u32 spm_dly;
+>> +	u32 pmic_dly;
+>> +	u32 pmic_data[MAX_PMIC_DATA];
+>> +	u8 seq[MAX_SEQ_DATA];
+>> +	u8 start_index[PM_SLEEP_MODE_NR];
+>> +};
+>> +
+>> +struct spm_driver_data {
+>> +	struct cpuidle_driver cpuidle_driver;
+> 
+> Given that the SPM hardware seems to have several different uses,
+> not just CPUidle, wouldn't it be better to allocate the memory for the
+> cpuidle_driver from cpuidle-qcom-spm.c? Just devm_kzalloc() something
+> like:
+> 
+> struct spm_cpuidle_driver {
+> 	struct cpuidle_driver cpuidle_driver;
+> 	struct spm_driver_data *spm;
+> };
+> 
+> in cpuidle-qcom-spm.c.
+> 
+> And then there wouldn't be a need to have the implementation details of
+> the SPM driver in the spm.h header, all that cpuidle-qcom-spm needs is
+> 
+> struct spm_driver_data;
+> 
+> enum pm_sleep_mode {
+> 	PM_SLEEP_MODE_STBY,
+> 	PM_SLEEP_MODE_RET,
+> 	PM_SLEEP_MODE_SPC,
+> 	PM_SLEEP_MODE_PC,
+> 	PM_SLEEP_MODE_NR,
+> };
+> 
+> void spm_set_low_power_mode(struct spm_driver_data *drv,
+> 			    enum pm_sleep_mode mode);
+> 
+> Everything else can remain private to the spm.c driver,
+> like it was before.
+> 
+
+I don't completely dislike the approach but I honestly think that this
+would put some cognitive strain: having a header included in two files
+using "things" defined in there gives people an easy path to follow
+when looking at one of the two files.
+
+Regarding the addition of that one more structure... I am seriously
+undecided on the matter: wasting this kind of amount of memory on a
+ARM64 platform (usually having more than 1GB RAM) is completely
+unnoticeable but, on the other hand, it's still a waste of memory,
+even if it's minimal that much.
+
+I will think about it.
+
+> Thanks,
+> Stephan
+> 
+
