@@ -2,411 +2,287 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.5 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 52BCBC2B9F4
-	for <phone-devel@archiver.kernel.org>; Sat, 19 Jun 2021 12:19:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ACC3BC4743C
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 11:54:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 209576120A
-	for <phone-devel@archiver.kernel.org>; Sat, 19 Jun 2021 12:19:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 937F76112D
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 11:54:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233983AbhFSMVf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 19 Jun 2021 08:21:35 -0400
-Received: from relay05.th.seeweb.it ([5.144.164.166]:38433 "EHLO
-        relay05.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231461AbhFSMVf (ORCPT
+        id S229641AbhFUL4b (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Jun 2021 07:56:31 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:36365 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229576AbhFUL4a (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 19 Jun 2021 08:21:35 -0400
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 3BC303F347;
-        Sat, 19 Jun 2021 14:19:22 +0200 (CEST)
-Subject: Re: [PATCH v5 1/3] soc: qcom: Add support for Core Power Reduction
- v3, v4 and Hardened
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     agross@kernel.org, robh+dt@kernel.org, lgirdwood@gmail.com,
-        broonie@kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, jeffrey.l.hugo@gmail.com
-References: <20210121194051.484209-1-angelogioacchino.delregno@somainline.org>
- <20210121194051.484209-2-angelogioacchino.delregno@somainline.org>
- <YLV4ZnJ8SUbwpatl@builder.lan>
-From:   AngeloGioacchino Del Regno 
+        Mon, 21 Jun 2021 07:56:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1624276450;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=pM4LwnfWQzSSJj3q4Rt4Fk5pxwNpci9A+bVwbPIo+EQ=;
+    b=b3hqBoacHfQgaKxXtjZwOa0qQVlaGiUWBTWt7pMeu5yeKDUneOV0ZZYamH5C0STY4k
+    O4nglwffFe4LwIgbVbkj2s0m8HORMtPPuNE06eqM2/K8RK+O5yFFE7eqdfa871/2uKKq
+    TIvDZGB8IwdzPikFVVI1o3lAWgdLczLKO8wO61f6prs7Wt4PzkR/O+eL6nvF84Kw6aU6
+    oW0hpf6I3AEY7r/J4dmfBmcluh1S8fnSsBK1W40sx1LlL4/phk/2+cYTV6PhQtMk/xP3
+    LZF99RFyRFqV9TD4aeMFMcj1OX7d2Fw3D+CEcaasYr5A9UpVVAyBs2fjqaJciD9zBxQy
+    9QLg==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u26zEodhPgRDZ8j5IczAb4o="
+X-RZG-CLASS-ID: mo00
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 47.27.3 DYNA|AUTH)
+    with ESMTPSA id 000885x5LBs9HtM
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Mon, 21 Jun 2021 13:54:09 +0200 (CEST)
+Date:   Mon, 21 Jun 2021 13:54:00 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Message-ID: <25dfad85-dbdf-2f33-53b0-2e43d4b59e51@somainline.org>
-Date:   Sat, 19 Jun 2021 14:19:21 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+Cc:     bjorn.andersson@linaro.org, agross@kernel.org,
+        daniel.lezcano@linaro.org, rjw@rjwysocki.net,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com,
+        jamipkettunen@somainline.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v5 1/3] cpuidle: qcom_spm: Detach state machine from main
+ SPM handling
+Message-ID: <YNB92Dkx5MNg64m+@gerhold.net>
+References: <20210618225620.623359-1-angelogioacchino.delregno@somainline.org>
+ <20210618225620.623359-2-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
-In-Reply-To: <YLV4ZnJ8SUbwpatl@builder.lan>
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210618225620.623359-2-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 01/06/21 01:59, Bjorn Andersson ha scritto:
-> On Thu 21 Jan 13:40 CST 2021, AngeloGioacchino Del Regno wrote:
-> 
->> This commit introduces a new driver, based on the one for cpr v1,
->> to enable support for the newer Qualcomm Core Power Reduction
->> hardware, known downstream as CPR3, CPR4 and CPRh, and support
->> for MSM8998 and SDM630 CPU power reduction.
->>
->> In these new versions of the hardware, support for various new
->> features was introduced, including voltage reduction for the GPU,
->> security hardening and a new way of controlling CPU DVFS,
->> consisting in internal communication between microcontrollers,
->> specifically the CPR-Hardened and the Operating State Manager.
->>
->> The CPR v3, v4 and CPRh are present in a broad range of SoCs,
->> from the mid-range to the high end ones including, but not limited
->> to, MSM8953/8996/8998, SDM630/636/660/845.
+On Sat, Jun 19, 2021 at 12:56:18AM +0200, AngeloGioacchino Del Regno wrote:
+> In commit a871be6b8eee ("cpuidle: Convert Qualcomm SPM driver to a generic
+> CPUidle driver") the SPM driver has been converted to a
+> generic CPUidle driver: that was mainly made to simplify the
+> driver and that was a great accomplishment;
+> Though, it was ignored that the SPM driver is not used only
+> on the ARM architecture.
 > 
 
-Hi Bjorn,
-sorry for the very late reply... I've been really too busy lately.
+Can you please reword this sentence like I suggested in v4? The way you
+write it at the moment it sounds like this fixes a regression, but
+actually it extends the driver to cover more use cases.
 
-> Why is 845 in this list? I was under the impression that CPR was dealt
-> with entirely by firmware starting in 845.
+> In preparation for the enablement of SPM features on AArch64/ARM64,
+> split the cpuidle-qcom-spm driver in two: the CPUIdle related
+> state machine (currently used only on ARM SoCs) stays there, while
+> the SPM communication handling lands back in soc/qcom/spm.c and
+> also making sure to not discard the simplifications that were
+> introduced in the aforementioned commit.
 > 
+> Since now the "two drivers" are split, the SCM dependency in the
+> main SPM handling is gone and for this reason it was also possible
+> to move the SPM initialization early: this will also make sure that
+> whenever the SAW CPUIdle driver is getting initialized, the SPM
+> driver will be ready to do the job.
 > 
-
-Unless I got something wrong, yes it's true that CPR-Hardened setup is
-done in FW on 845, but the GPU CPR is not... and that's why it's in the
-list :))
-
-Future plans are to extend this driver to deal with GPU related CPR as
-well as the CPU one.
-
-> Also, you don't happen to have the 8996 data laying around somewhere?
+> Please note that the anticipation of the SPM initialization was
+> also done to optimize the boot times on platforms that have their
+> CPU/L2 idle states managed by other means (such as PSCI), while
+> needing SAW initialization for other purposes, like AVS control.
 > 
-
-Yes, I do. Though, my intention here is to not throw too many things
-into the game in this version of a very complicated driver... besides,
-I currently can't test 8996 efficiently but maybe later!
-
-Since it is our (SoMainline) intention to also get all (or most of) our
-MSM8996 devices kicking on upstream, I'm sure that we'll throw that data
-in the CPR mix as soon as possible.
-
-Eventually, I can also send the 8996 data addition separately even if
-untested and clearly specifying so, even though I don't like sending
-untested things.
-
->> diff --git a/drivers/soc/qcom/cpr3.c b/drivers/soc/qcom/cpr3.c
-> [..]
->> +/*
->> + * cpr_get_ring_osc_factor - Get fuse corner ring oscillator factor
->> + *
->> + * Not all threads have different scaling factors for each
->> + * Fuse Corner: if the RO factors are the same for all corners,
->> + * then only one is specified, instead of uselessly repeating
->> + * the same array for FC-times.
->> + * This function checks for the same and gives back the right
->> + * factor for the requested ring oscillator.
->> + *
->> + * Returns: Ring oscillator factor
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  drivers/cpuidle/Kconfig.arm        |   1 +
+>  drivers/cpuidle/cpuidle-qcom-spm.c | 295 ++++++-----------------------
+>  drivers/soc/qcom/Kconfig           |   9 +
+>  drivers/soc/qcom/Makefile          |   1 +
+>  drivers/soc/qcom/spm.c             | 198 +++++++++++++++++++
+>  include/soc/qcom/spm.h             |  43 +++++
+>  6 files changed, 311 insertions(+), 236 deletions(-)
+>  create mode 100644 drivers/soc/qcom/spm.c
+>  create mode 100644 include/soc/qcom/spm.h
 > 
-> This is almost kerneldoc, how about adding another '*', some parenthesis
-> on the function name, short description of the parameters and dropping
-> the 's' on Return?
-> 
+> [...]
+> diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
+> [...]
+> @@ -213,132 +80,88 @@ static const struct of_device_id qcom_idle_state_match[] = {
+>  	{ },
+>  };
+>  
+> -static int spm_cpuidle_init(struct cpuidle_driver *drv, int cpu)
+> +static int spm_cpuidle_register(int cpu)
+>  {
+> +	struct platform_device *pdev = NULL;
+> +	struct spm_driver_data *spm = NULL;
+> +	struct device_node *cpu_node, *saw_node;
+>  	int ret;
+>  
+> -	memcpy(drv, &qcom_spm_idle_driver, sizeof(*drv));
+> -	drv->cpumask = (struct cpumask *)cpumask_of(cpu);
+> +	cpu_node = of_cpu_device_node_get(cpu);
+> +	if (!cpu_node)
+> +		return -ENODEV;
+>  
+> -	/* Parse idle states from device tree */
+> -	ret = dt_init_idle_driver(drv, qcom_idle_state_match, 1);
+> -	if (ret <= 0)
+> -		return ret ? : -ENODEV;
+> +	saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
+> +	if (!saw_node)
+> +		return -ENODEV;
+>  
+> -	/* We have atleast one power down mode */
+> -	return qcom_scm_set_warm_boot_addr(cpu_resume_arm, drv->cpumask);
+> -}
+> +	pdev = of_find_device_by_node(saw_node);
+> +	of_node_put(saw_node);
+> +	of_node_put(cpu_node);
+> +	if (!pdev)
+> +		return -ENODEV;
+>  
+> -static struct spm_driver_data *spm_get_drv(struct platform_device *pdev,
+> -		int *spm_cpu)
+> -{
+> -	struct spm_driver_data *drv = NULL;
+> -	struct device_node *cpu_node, *saw_node;
+> -	int cpu;
+> -	bool found = 0;
+> +	spm = dev_get_drvdata(&pdev->dev);
+> +	if (!spm)
+> +		return -EINVAL;
+>  
+> -	for_each_possible_cpu(cpu) {
+> -		cpu_node = of_cpu_device_node_get(cpu);
+> -		if (!cpu_node)
+> -			continue;
+> -		saw_node = of_parse_phandle(cpu_node, "qcom,saw", 0);
+> -		found = (saw_node == pdev->dev.of_node);
+> -		of_node_put(saw_node);
+> -		of_node_put(cpu_node);
+> -		if (found)
+> -			break;
+> -	}
+> +	spm->cpuidle_driver.cpumask = (struct cpumask *)cpumask_of(cpu);
+> +	spm->cpuidle_driver = qcom_spm_idle_driver;
 
-Yep, my bad, totally.
+This should be in opposite order.
 
->> + */
->> +static int cpr_get_ro_factor(const struct cpr_thread_desc *tdesc,
->> +			     int fnum, int ro_idx)
->> +{
->> +	int ro_fnum;
->> +
->> +	if (tdesc->ro_avail_corners == tdesc->num_fuse_corners)
->> +		ro_fnum = fnum;
->> +	else
->> +		ro_fnum = 0;
->> +
->> +	return tdesc->ro_scaling_factor[ro_fnum][ro_idx];
->> +}
->> +
->> +static void cpr_write(struct cpr_thread *thread, u32 offset, u32 value)
->> +{
->> +	writel_relaxed(value, thread->base + offset);
-> 
-> I dislike the fact that we default to the _relaxed() version of
-> readl/writel. Can we please switch them for non-relaxed versions, or
-> document why they all need to be _relaxed?
-> 
+It's still freezing with this patch version. I used the chance to
+investigate why it freezes, and it's actually not some bug of my
+platform like you mentioned:
 
-There is little reason, looking at the code size, but here's the deal:
+> So you have discovered a bug for which your platform dies when SPM
+> does not probe, probably due to something else being dependant on this.
+> In this case, I would encourage you to produce a fix for your platform
+> to not unexpectedly just hang forever if *some driver* doesn't probe:
+> that's definitely not right.
 
-On CPRv3/v4 (non-hardened), you do an initial programming sequence,
-then for each frequency step you assign a corner (in software) and
-whenever your driver requests a OPP change, the CPR driver will write
-a corner level (also managing ACC and other stuff "manually") to the
-hardware, which will then behave (blahblah); in this case, we are also
-managing the CPR interrupts (as they are necessary to "play" with the
-states).
+There is a simple reason why this happens: If "cpumask" is not set,
+the cpuidle_driver applies to *all* CPUs. This means that as soon as
+CPU1/2/3 go into standalone power collapse the SPM for CPU0 (rather than
+the one for CPU1/2/3!) is re-configured. Eventually CPU0 will execute WFI
+(without saving the CPU state) and ends up in power collapse (CPU state
+destroyed) rather than standby (CPU state preserved).
 
-On CPR-Hardened (or CPRv4-Hardened if you like), you still do an initial
-programming sequence, but then you do nothing else. Literally.
-CPR-Hardened is not made to be managed from the HLOS - that's made to be
-managed "internally" by the Operating State Manager (OSM) which, after
-getting programmed with matching values from CPR-Hardened, will request
-corners to the CPR (and also manage ACC).
+> [...]
+> diff --git a/drivers/soc/qcom/spm.c b/drivers/soc/qcom/spm.c
+> [...]
+> +static const u16 spm_reg_offset_v2_1[SPM_REG_NR] = {
 
-So, in short, the difference between CPR v3/v4 and CPR Hardened is:
-- CPRv3/v4 is programmed by HLOS and managed by HLOS
-- CPRh is programmed by HLOS and managed by OSM.
+This should be still u8 in this patch.
 
+drivers/soc/qcom/spm.c:47:16: error: initialization of 'const u8 *' {aka 'const unsigned char *'} from incompatible pointer type 'const u16 *' {aka 'const short unsigned int *'} [-Werror=incompatible-pointer-types]
+   47 |  .reg_offset = spm_reg_offset_v2_1,
+      |                ^~~~~~~~~~~~~~~~~~~
+drivers/soc/qcom/spm.c:47:16: note: (near initialization for 'spm_reg_8974_8084_cpu.reg_offset')
 
-Now, the reason why I had defaulted this to relaxed accessors was that
-in the CPRv3/v4 case we're setting the corners from HLOS, so I wanted to
-get the best performance out of that operation.
+> [...]
+> +static const u16 spm_reg_offset_v1_1[SPM_REG_NR] = {
 
-Though, looking back at it, that's not a very safe thing to do, it is
-indeed prone to mistakes, and if some of the writes won't go through, we
-will end up with an undervolted CPU, which may be "catastrophic";
+drivers/soc/qcom/spm.c:68:16: error: initialization of 'const u8 *' {aka 'const unsigned char *'} from incompatible pointer type 'const u16 *' {aka 'const short unsigned int *'} [-Werror=incompatible-pointer-types]
+   68 |  .reg_offset = spm_reg_offset_v1_1,
+      |                ^~~~~~~~~~~~~~~~~~~
+drivers/soc/qcom/spm.c:68:16: note: (near initialization for 'spm_reg_8064_cpu.reg_offset')
 
-Re-analyzing the situation, I would have to put some more wmb() around
-to make sure that this doesn't happen, but then the added overhead of
-having all the registers R/W with non-relaxed accessors happens to be
-very, very minimal.
+> [...]
+> diff --git a/include/soc/qcom/spm.h b/include/soc/qcom/spm.h
+> new file mode 100644
+> index 000000000000..719c604a8402
+> --- /dev/null
+> +++ b/include/soc/qcom/spm.h
+> @@ -0,0 +1,43 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
+> + * Copyright (c) 2014,2015, Linaro Ltd.
+> + * Copyright (C) 2021, AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> + */
+> +
+> +#ifndef __SPM_H__
+> +#define __SPM_H__
+> +
+> +#include <linux/cpuidle.h>
+> +
+> +#define MAX_PMIC_DATA		2
+> +#define MAX_SEQ_DATA		64
+> +
+> +enum pm_sleep_mode {
+> +	PM_SLEEP_MODE_STBY,
+> +	PM_SLEEP_MODE_RET,
+> +	PM_SLEEP_MODE_SPC,
+> +	PM_SLEEP_MODE_PC,
+> +	PM_SLEEP_MODE_NR,
+> +};
+> +
+> +struct spm_reg_data {
+> +	const u8 *reg_offset;
+> +	u32 spm_cfg;
+> +	u32 spm_dly;
+> +	u32 pmic_dly;
+> +	u32 pmic_data[MAX_PMIC_DATA];
+> +	u8 seq[MAX_SEQ_DATA];
+> +	u8 start_index[PM_SLEEP_MODE_NR];
+> +};
+> +
+> +struct spm_driver_data {
+> +	struct cpuidle_driver cpuidle_driver;
 
+Given that the SPM hardware seems to have several different uses,
+not just CPUidle, wouldn't it be better to allocate the memory for the
+cpuidle_driver from cpuidle-qcom-spm.c? Just devm_kzalloc() something
+like:
 
-Which means that, in the end, you're right - I've switched them to their
-non-relaxed counterparts and biting the truly minimal and completely
-unnoticeable overhead.
+struct spm_cpuidle_driver {
+	struct cpuidle_driver cpuidle_driver;
+	struct spm_driver_data *spm;
+};
 
->> +}
->> +
->> +static u32 cpr_read(struct cpr_thread *thread, u32 offset)
->> +{
->> +	return readl_relaxed(thread->base + offset);
->> +}
->> +
->> +static void
->> +cpr_masked_write(struct cpr_thread *thread, u32 offset, u32 mask, u32 value)
->> +{
->> +	u32 val;
->> +
->> +	val = readl_relaxed(thread->base + offset);
->> +	val &= ~mask;
->> +	val |= value & mask;
->> +	writel_relaxed(val, thread->base + offset);
->> +}
->> +
->> +static void cpr_irq_clr(struct cpr_thread *thread)
->> +{
->> +	cpr_write(thread, CPR3_REG_IRQ_CLEAR, CPR3_IRQ_ALL);
->> +}
->> +
->> +static void cpr_irq_clr_nack(struct cpr_thread *thread)
->> +{
->> +	cpr_irq_clr(thread);
->> +	cpr_write(thread, CPR3_REG_CONT_CMD, CPR3_CONT_CMD_NACK);
->> +}
->> +
->> +static void cpr_irq_clr_ack(struct cpr_thread *thread)
->> +{
->> +	cpr_irq_clr(thread);
->> +	cpr_write(thread, CPR3_REG_CONT_CMD, CPR3_CONT_CMD_ACK);
->> +}
->> +
->> +static void cpr_irq_set(struct cpr_thread *thread, u32 int_bits)
->> +{
->> +	/* On CPR-hardened, interrupts are managed by and on firmware */
->> +	if (thread->drv->desc->cpr_type == CTRL_TYPE_CPRH)
->> +		return;
->> +
->> +	cpr_write(thread, CPR3_REG_IRQ_EN, int_bits);
->> +}
->> +
->> +/**
->> + * cpr_ctl_enable - Enable CPR thread
-> 
-> () after the function name, here an in all kerneldoc comments below.
-> 
+in cpuidle-qcom-spm.c.
 
-I am sort of ashamed for this kerneldoc thing.. on the other hand, I
-remember I've went literally crazy with this driver.. hahaha
+And then there wouldn't be a need to have the implementation details of
+the SPM driver in the spm.h header, all that cpuidle-qcom-spm needs is
 
-No, obviously that's not an excuse :))
+struct spm_driver_data;
 
->> + * @thread:     Structure holding CPR thread-specific parameters
->> + */
->> +static void cpr_ctl_enable(struct cpr_thread *thread)
->> +{
->> +	if (thread->drv->enabled && !thread->restarting)
->> +		cpr_masked_write(thread, CPR3_REG_CPR_CTL,
->> +				CPR3_CPR_CTL_LOOP_EN_MASK,
->> +				CPR3_CPR_CTL_LOOP_EN_MASK);
-> 
-> Please wrap this "block" in {}
-> 
+enum pm_sleep_mode {
+	PM_SLEEP_MODE_STBY,
+	PM_SLEEP_MODE_RET,
+	PM_SLEEP_MODE_SPC,
+	PM_SLEEP_MODE_PC,
+	PM_SLEEP_MODE_NR,
+};
 
-Ack.
+void spm_set_low_power_mode(struct spm_driver_data *drv,
+			    enum pm_sleep_mode mode);
 
->> +}
->> +
->> +/**
->> + * cpr_ctl_disable - Disable CPR thread
->> + * @thread:     Structure holding CPR thread-specific parameters
->> + */
->> +static void cpr_ctl_disable(struct cpr_thread *thread)
->> +{
->> +	const struct cpr_desc *desc = thread->drv->desc;
->> +
->> +	if (desc->cpr_type != CTRL_TYPE_CPRH) {
->> +		cpr_irq_set(thread, 0);
->> +		cpr_irq_clr(thread);
->> +	}
->> +
->> +	cpr_masked_write(thread, CPR3_REG_CPR_CTL,
->> +			 CPR3_CPR_CTL_LOOP_EN_MASK, 0);
->> +}
->> +
->> +/**
->> + * cpr_ctl_is_enabled - Check if thread is enabled
->> + * @thread:     Structure holding CPR thread-specific parameters
->> + *
->> + * Returns: true if the CPR is enabled, false if it is disabled.
-> 
-> It's supposed to be "Return:"
-> 
+Everything else can remain private to the spm.c driver,
+like it was before.
 
-Totally.
-
->> + */
->> +static bool cpr_ctl_is_enabled(struct cpr_thread *thread)
->> +{
->> +	u32 reg_val;
->> +
->> +	reg_val = cpr_read(thread, CPR3_REG_CPR_CTL);
->> +	return reg_val & CPR3_CPR_CTL_LOOP_EN_MASK;
->> +}
->> +
-> [..]
->> +/**
->> + * cpr_configure - Configure main HW parameters
->> + * @thread: Structure holding CPR thread-specific parameters
->> + *
->> + * This function configures the main CPR hardware parameters, such as
->> + * internal timers (and delays), sensor ownerships, activates and/or
->> + * deactivates cpr-threads and others, as one sequence for all of the
->> + * versions supported in this driver. By design, the function may
->> + * return a success earlier if the sequence for "a previous version"
->> + * has ended.
->> + *
->> + * NOTE: The CPR must be clocked before calling this function!
-> 
-> I think "Context: " is suitable for this type of comments.
-> 
-
-Agreed.
-
->> + *
->> + * Returns: Zero for success or negative number on errors.
->> + */
->> +static int cpr_configure(struct cpr_thread *thread)
->> +{
->> +	struct cpr_drv *drv = thread->drv;
->> +	const struct cpr_desc *desc = drv->desc;
->> +	const struct cpr_thread_desc *tdesc = thread->desc;
->> +	u32 val;
->> +	int i;
->> +
->> +	/* Disable interrupt and CPR */
->> +	cpr_irq_set(thread, 0);
->> +	cpr_write(thread, CPR3_REG_CPR_CTL, 0);
->> +
->> +	/* Init and save gcnt */
->> +	drv->gcnt = drv->ref_clk_khz * desc->gcnt_us;
->> +	do_div(drv->gcnt, 1000);
->> +
->> +	/* Program the delay count for the timer */
->> +	val = drv->ref_clk_khz * desc->timer_delay_us;
->> +	do_div(val, 1000);
->> +	if (desc->cpr_type == CTRL_TYPE_CPR3) {
->> +		cpr_write(thread, CPR3_REG_CPR_TIMER_MID_CONT, val);
->> +
->> +		val = drv->ref_clk_khz * desc->timer_updn_delay_us;
->> +		do_div(val, 1000);
->> +		cpr_write(thread, CPR3_REG_CPR_TIMER_UP_DN_CONT, val);
->> +	} else {
->> +		cpr_write(thread, CPR3_REG_CPR_TIMER_AUTO_CONT, val);
->> +	}
->> +	dev_dbg(drv->dev, "Timer count: %#0x (for %d us)\n", val,
->> +		desc->timer_delay_us);
->> +
->> +	/* Program the control register */
->> +	val = desc->idle_clocks << CPR3_CPR_CTL_IDLE_CLOCKS_SHIFT
->> +	    | desc->count_mode << CPR3_CPR_CTL_COUNT_MODE_SHIFT
->> +	    | desc->count_repeat << CPR3_CPR_CTL_COUNT_REPEAT_SHIFT;
-> 
-> I think it's idiomatic to have the | at the end of the previous line,
-> rather than start with it. And below you repeat val |=, pick one style
-> and stick with that.
-> 
-
-This is the perfect example of a developer going *nuts*.. hehehe
-Fixed :))
-
->> +	cpr_write(thread, CPR3_REG_CPR_CTL, val);
->> +
->> +	/* Configure CPR default step quotients */
->> +	val = tdesc->step_quot_init_min << CPR3_CPR_STEP_QUOT_MIN_SHIFT
->> +	    | tdesc->step_quot_init_max << CPR3_CPR_STEP_QUOT_MAX_SHIFT;
->> +
->> +	cpr_write(thread, CPR3_REG_CPR_STEP_QUOT, val);
->> +
->> +	/*
->> +	 * Configure the CPR sensor ownership always on thread 0
->> +	 * TODO: SDM845 has different ownership for sensors!!
->> +	 */
->> +	for (i = tdesc->sensor_range_start; i < tdesc->sensor_range_end; i++)
->> +		cpr_write(thread, CPR3_REG_SENSOR_OWNER(i), 0);
->> +
->> +	/* Program Consecutive Up & Down */
->> +	val = desc->timer_cons_up << CPR3_THRESH_CONS_UP_SHIFT;
->> +	val |= desc->timer_cons_down << CPR3_THRESH_CONS_DOWN_SHIFT;
->> +	val |= desc->up_threshold << CPR3_THRESH_UP_THRESH_SHIFT;
->> +	val |= desc->down_threshold << CPR3_THRESH_DOWN_THRESH_SHIFT;
->> +	cpr_write(thread, CPR3_REG_THRESH(tdesc->hw_tid), val);
->> +
->> +	/* Mask all ring oscillators for all threads initially */
->> +	cpr_write(thread, CPR3_REG_RO_MASK(tdesc->hw_tid), CPR3_RO_MASK);
->> +
->> +	/* HW Closed-loop control */
->> +	if (desc->cpr_type == CTRL_TYPE_CPR3)
-> 
-> Some {} here and in various places below, please
-> 
-
-Ack.
-
->> +		cpr_write(thread, CPR3_REG_HW_CLOSED_LOOP_DISABLED,
->> +			  !desc->hw_closed_loop_en);
->> +	else
->> +		cpr_masked_write(thread, CPR4_REG_MARGIN_ADJ_CTL,
->> +				CPR4_MARGIN_ADJ_HW_CLOSED_LOOP_EN,
->> +				desc->hw_closed_loop_en ?
->> +				CPR4_MARGIN_ADJ_HW_CLOSED_LOOP_EN : 0);
-> 
-> Regards,
-> Bjorn
-> 
-
-Thank you for the review, Bjorn. Totally appreciated.
-You will see a new version around soon.
-
-Yours,
-- Angelo
-
+Thanks,
+Stephan
