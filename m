@@ -2,279 +2,106 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A0F0AC2B9F4
-	for <phone-devel@archiver.kernel.org>; Tue, 22 Jun 2021 15:58:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26D3BC48BE5
+	for <phone-devel@archiver.kernel.org>; Tue, 22 Jun 2021 20:05:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 730FF61075
-	for <phone-devel@archiver.kernel.org>; Tue, 22 Jun 2021 15:58:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F2561610C7
+	for <phone-devel@archiver.kernel.org>; Tue, 22 Jun 2021 20:05:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232145AbhFVQA7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 22 Jun 2021 12:00:59 -0400
-Received: from mail-il1-f175.google.com ([209.85.166.175]:37531 "EHLO
-        mail-il1-f175.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231936AbhFVQA6 (ORCPT
+        id S231975AbhFVUHt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 22 Jun 2021 16:07:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38174 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231597AbhFVUHt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 22 Jun 2021 12:00:58 -0400
-Received: by mail-il1-f175.google.com with SMTP id x12so18890922ill.4;
-        Tue, 22 Jun 2021 08:58:41 -0700 (PDT)
+        Tue, 22 Jun 2021 16:07:49 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1C53C061574;
+        Tue, 22 Jun 2021 13:05:32 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id ho18so257846ejc.8;
+        Tue, 22 Jun 2021 13:05:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9sEyzusIpIoy6ANws7r+aDKjofKDHA4aYLWNi0lUzC8=;
+        b=rHbE31+btfAAqxgvgAYEL2ibYvqiem8S6X4P8lh5BLYvA7EYnc0euBDI9TFLyrA+Yj
+         jm9NNGM+0U0O52SIi2AZsn/xFIeb+PnIkdN9j/FBuVKYUAnwh5hbSy6FP/DnVz25Qimi
+         iVHboShrzhkbl2hDkwIfaA5fDM1s+3IqbOBdNOKOTWTFQVADJgUZUTyVYlK/NTF/TSVW
+         0XGWuEY3Ycn+j1lmxScVplQxdCXvMr6/8LDDGHD/gsixa1KV0GMfq1qO79FDT9iD4b1B
+         Eol2ez+r7t05FbLZpUdhwLhkalBvbs+ZVX1ktJTADBd5tNRRcZza+UbPbt+AKmQQFayN
+         cKAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=VR4qkGDWYtdjfgziGh5tyR/mzFAynXqFUJLLjnq0V20=;
-        b=p8DEwFWwcZpNjvV8MomlZvRiDs0y8/u9PeLVn+VoiuJyfdK7TzJ5JPnevyTQUmYLcV
-         1nPnCXr70incadxptnu97pOY1LmMljIe2nvjaJ3LMSXh1SzKT23R3D5100P0L67Y1tC3
-         7bQztl31JftaaHBnkBuHZPAnrx9euO6/CiqxhjXbQBYwyWBRugOsdrtv3lBr4vIoK/mP
-         JIN5Ri/nqpQbGJOt1+vhwOdFzGXllHJzJks7M90XEpbV1hpM4Vv3tanW3MRHyHZjFK7Z
-         3BRPaDSTe/2L3vyorkD7ldtWEyWkGpRo5AHNw2J0w/T/F5uZ25ZLzVD1XAC5OGuExEkN
-         pnMQ==
-X-Gm-Message-State: AOAM532Z9SYWkt9lgQTyN0VnJDBfdVmeobyRQADlNgvEc/rKgMqqHuRQ
-        aj4KFn/vdD7/jYJIVHQCmg==
-X-Google-Smtp-Source: ABdhPJzhwE6GGWNHAo4/uOYQ52b7LZ0FbGdFFI/udfP+fCqx80BFtyeMtlZlfl2czEZpqOLCiinO6Q==
-X-Received: by 2002:a92:b004:: with SMTP id x4mr3209935ilh.121.1624377521556;
-        Tue, 22 Jun 2021 08:58:41 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id x11sm8247636ilg.59.2021.06.22.08.58.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jun 2021 08:58:40 -0700 (PDT)
-Received: (nullmailer pid 3755885 invoked by uid 1000);
-        Tue, 22 Jun 2021 15:58:37 -0000
-Date:   Tue, 22 Jun 2021 09:58:37 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Caleb Connolly <caleb@connolly.tech>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9sEyzusIpIoy6ANws7r+aDKjofKDHA4aYLWNi0lUzC8=;
+        b=q+FtQ6FSG+OPaFmahtYZae2KSX9XUomg9z9qv0zOFGpB7hX86AHFmJG9PAN1hv1WF5
+         42uL2n4Qjx+xLTFAq1RprL7I6dVtzNfy2n/ypvObzaX/7l9HkmHrjFn38cj8zH5A74rd
+         cFLSzhhH+jcUqwdR19A/lsSmok4z/yoSTgXH+ot3u3r+8Pxi34+586d0cMhorlmQfLQC
+         AP8EBACHR2l8LL6q+q82lBc7tENHH6go2WOKG3CweRSFYbQnNDOGFE4VMdpjAo8JclkP
+         zh7aRiPmeGcDtPscDzI7mLesa8CYooECKtiuyB6pTpmHNXefME992oFLdTsgVg+/d8nM
+         yfIw==
+X-Gm-Message-State: AOAM533nkNWWBvlmTzaj3jV2k5VQ8Fa7ndLqCAHrshhZEId7dyGzigS0
+        86NG4jt2aOnAXrsnwDV4ZMw=
+X-Google-Smtp-Source: ABdhPJwwteP3LmrIsB8wx1COQ/ortvzt7nJzuBnDlKy1aTPseYVJrs2NgyFYUx/YcKRaVSn8jdX1qg==
+X-Received: by 2002:a17:906:5294:: with SMTP id c20mr5917072ejm.76.1624392331352;
+        Tue, 22 Jun 2021 13:05:31 -0700 (PDT)
+Received: from localhost (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
+        by smtp.gmail.com with ESMTPSA id a2sm6468972ejp.1.2021.06.22.13.05.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Jun 2021 13:05:30 -0700 (PDT)
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
 Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, jami.kettunen@somainline.org,
-        jo@jsfamily.in, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RESEND PATCH v2 1/6] dt-bindings: input: add Qualcomm SPMI
- haptics driver
-Message-ID: <20210622155837.GA3746854@robh.at.kernel.org>
-References: <20210618175041.323495-1-caleb@connolly.tech>
- <20210618175041.323495-2-caleb@connolly.tech>
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Iskren Chernev <iskren.chernev@gmail.com>
+Subject: [PATCH v1 0/2] Add GCC for SM4250 and SM6115
+Date:   Tue, 22 Jun 2021 23:05:06 +0300
+Message-Id: <20210622200508.525669-1-iskren.chernev@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210618175041.323495-2-caleb@connolly.tech>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Jun 18, 2021 at 05:51:03PM +0000, Caleb Connolly wrote:
-> Add bindings for qcom PMIC SPMI haptics driver.
-> 
-> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
-> ---
->  .../bindings/input/qcom,spmi-haptics.yaml     | 128 ++++++++++++++++++
->  include/dt-bindings/input/qcom,spmi-haptics.h |  32 +++++
->  2 files changed, 160 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml
->  create mode 100644 include/dt-bindings/input/qcom,spmi-haptics.h
-> 
-> diff --git a/Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml b/Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml
-> new file mode 100644
-> index 000000000000..8ef9b4ec3a07
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml
-> @@ -0,0 +1,128 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright 2020 Unisoc Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/input/qcom,spmi-haptics.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm Technologies Inc PMI8998 spmi haptics
-> +
-> +maintainers:
-> +  - Caleb Connolly <caleb@connolly.tech>
-> +
-> +description: |
-> +  Qualcomm SPMI haptics is a peripheral on some QTI PMICs. It supports linear resonant
-> +  actuators and eccentric rotating mass type haptics commonly found in mobile devices.
-> +  It supports multiple sources of wave data such as an internal buffer, direct play
-> +  (from kernel or userspace) as well as an audio output mode.
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +        - qcom,pmi8998-haptics
-> +        - qcom,pmi8996-haptics
-> +        - qcom,pmi8941-haptics
-> +      - const: qcom,spmi-haptics
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    items:
-> +      - description: short circuit interrupt
-> +      - description: play interrupt
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: short
-> +      - const: play
-> +
-> +  qcom,actuator-type:
-> +    description: |
-> +      The type of actuator attached to the hardware.
-> +      Allowed values are,
-> +        0 - HAP_TYPE_LRA
-> +        1 - HAP_TYPE_ERM
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [ 0, 1 ]
-> +    default: 0
-> +
-> +  qcom,wave-shape:
-> +    description: |
-> +      Selects the wave shape to use.
-> +      Allowed values are,
-> +        0 - HAP_WAVE_SINE
-> +        1 - HAP_WAVE_SQUARE
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [ 0, 1 ]
-> +    default: 0
-> +
-> +  qcom,play-mode:
-> +    description: |
-> +      Selects the play mode to use.
-> +      Allowed values are,
-> +        0 - HAP_PLAY_DIRECT
-> +        1 - HAP_PLAY_BUFFER
-> +        2 - HAP_PLAY_AUDIO
-> +        3 - HAP_PLAY_PWM
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [ 0, 1, 2, 3 ]
-> +    default: 2
-> +
-> +  qcom,wave-play-rate-us:
-> +    description: |
-> +      Wave sample durection in microseconds, 1/f where f
-> +      is the resonant frequency of the actuator.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
+This patch adds support for the Global Clock Controller on QCom SM4250 and
+SM6115, codename bengal. The code is taken from OnePlus repo [1], and the
+keyword bengal corresponds to sm4250 and sm6115, so I'm adding both compat
+strings.
 
-Don't need a type for standard units.
+[1]: https://github.com/OnePlusOSS/android_kernel_oneplus_sm4250
 
-> +    minimum: 0
-> +    maximum: 20475
-> +
-> +  qcom,brake-pattern:
-> +    minItems: 4
-> +    maxItems: 4
-> +    description: |
-> +      The brake pattern are the strengths of the pattern
-> +      used to brake the haptics. Allowed values are,
-> +        0 - 0V
-> +        1 - Vmax/4
-> +        2 - Vmax/2
-> +        3 - Vmax
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    default: [0x3, 0x3, 0x2, 0x1]
+Iskren Chernev (2):
+  dt-bindings: clk: qcom: gcc-sm6115: Document SM6115 GCC
+  clk: qcom: Add Global Clock controller (GCC) driver for SM6115
 
-To express the constraints on all items:
+ .../bindings/clock/qcom,gcc-sm6115.yaml       |   74 +
+ drivers/clk/qcom/Kconfig                      |    7 +
+ drivers/clk/qcom/Makefile                     |    1 +
+ drivers/clk/qcom/gcc-sm6115.c                 | 3624 +++++++++++++++++
+ include/dt-bindings/clock/qcom,gcc-sm4250.h   |   11 +
+ include/dt-bindings/clock/qcom,gcc-sm6115.h   |  201 +
+ 6 files changed, 3918 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/qcom,gcc-sm6115.yaml
+ create mode 100644 drivers/clk/qcom/gcc-sm6115.c
+ create mode 100644 include/dt-bindings/clock/qcom,gcc-sm4250.h
+ create mode 100644 include/dt-bindings/clock/qcom,gcc-sm6115.h
 
-items:
-  enum: [ 0, 1, 2, 3 ]
 
-(items is a schema here rather than a list)
+base-commit: e71e3a48a7e89fa71fb70bf4602367528864d2ff
+--
+2.31.1
 
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - qcom,wave-play-rate-us
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/spmi/spmi.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/input/qcom,spmi-haptics.h>
-> +
-> +    pmi8998_lsid1: pmic@3 {
-
-Drop unused labels.
-
-> +      compatible = "qcom,pmi8998", "qcom,spmi-pmic";
-
-Really, this needs to be converted to schema first so we're not adding 
-warnings.
-
-> +      reg = <0x3 SPMI_USID>;
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      pmi8998_haptics: haptics@c000 {
-> +        compatible = "qcom,pmi8998-haptics", "qcom,spmi-haptics";
-> +        reg = <0xc000>;
-> +
-> +        interrupts = <0x3 0xc0 0x0 IRQ_TYPE_EDGE_BOTH>,
-> +                     <0x3 0xc0 0x1 IRQ_TYPE_EDGE_BOTH>;
-> +        interrupt-names = "short", "play";
-> +
-> +        qcom,wave-shape = <HAP_WAVE_SINE>;
-> +        qcom,play-mode = <HAP_PLAY_BUFFER>;
-> +        qcom,brake-pattern = <0x3 0x3 0x2 0x1>;
-> +
-> +        status = "disabled";
-
-Don't show status in examples. 
-
-> +      };
-> +    };
-> diff --git a/include/dt-bindings/input/qcom,spmi-haptics.h b/include/dt-bindings/input/qcom,spmi-haptics.h
-> new file mode 100644
-> index 000000000000..14a7e7d1471e
-> --- /dev/null
-> +++ b/include/dt-bindings/input/qcom,spmi-haptics.h
-> @@ -0,0 +1,32 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-
-Dual license please. DT files are used elsewhere.
-
-> +/*
-> + * This header provides constants for pmi8998 SPMI haptics options.
-> + */
-> +
-> +#ifndef _DT_BINDINGS_QCOM_PMIC_SPMI_HAPTICS_
-> +#define _DT_BINDINGS_QCOM_PMIC_SPMI_HAPTICS_
-> +
-> +// Actuator types
-> +#define HAP_TYPE_LRA		0
-> +#define HAP_TYPE_ERM		1
-> +
-> +// LRA Wave type
-> +#define HAP_WAVE_SINE		0
-> +#define HAP_WAVE_SQUARE		1
-> +
-> +// Play modes
-> +#define HAP_PLAY_DIRECT		0
-> +#define HAP_PLAY_BUFFER		1
-> +#define HAP_PLAY_AUDIO		2
-> +#define HAP_PLAY_PWM		3
-> +
-> +#define HAP_PLAY_MAX		HAP_PLAY_PWM
-> +
-> +// Auto resonance type
-> +#define HAP_AUTO_RES_NONE	0
-> +#define HAP_AUTO_RES_ZXD	1
-> +#define HAP_AUTO_RES_QWD	2
-> +#define HAP_AUTO_RES_MAX_QWD	3
-> +#define HAP_AUTO_RES_ZXD_EOP	4
-> +
-> +#endif /* _DT_BINDINGS_QCOM_PMIC_SPMI_HAPTICS_ */
-> --
-> 2.31.1
-> 
-> 
-> 
