@@ -2,87 +2,142 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F7DBC4743C
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 21:18:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0839C48BE5
+	for <phone-devel@archiver.kernel.org>; Tue, 22 Jun 2021 11:39:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7DA586134F
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Jun 2021 21:18:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D85FF613D1
+	for <phone-devel@archiver.kernel.org>; Tue, 22 Jun 2021 11:39:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231288AbhFUVUn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 21 Jun 2021 17:20:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38408 "EHLO
+        id S230032AbhFVLlg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 22 Jun 2021 07:41:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230363AbhFUVUn (ORCPT
+        with ESMTP id S230031AbhFVLlg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 21 Jun 2021 17:20:43 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DA7C061574;
-        Mon, 21 Jun 2021 14:18:28 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id z22so27145539ljh.8;
-        Mon, 21 Jun 2021 14:18:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2NbTH9ar0bKdnQph/eF5yZcOxbu9PxKBYjUHqqTdkzI=;
-        b=mRYEnZhwG3KK3axCgQymLy1qPD557a10PFVmxbOj3qaC44dvyYgOUkoEQXpn6HGx3s
-         o0uN68IVXQqJpsOqkOgpsXl4rFx/NMKB1WpiUAt9Jx8hNLUkNdsc3NRChsO4mkMJ3LmK
-         vTYq7hR+8ziiKJKzZYFsvJWiz2bk2hqGJqkSXrLnH7qEFd/kE+6Hv3+qWtWgCGZUYayG
-         vHOs3Xu6Beu03I2cQ1Q+G/dqAfXTy7IlktriQYtN0tNe//PpXHIDIftBeSV6yROFfeVg
-         r0H8PPwdHr7NUXLmIuGbBeY+FfXi3qqOraRrRgg6gwA5T9oH/R3IYP+CVgoCEpWcaGdP
-         klIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2NbTH9ar0bKdnQph/eF5yZcOxbu9PxKBYjUHqqTdkzI=;
-        b=f4Q4l6YruyqU+V3t6Z5tZoDA9+uK3RTrtN5j6wDAahEKapL0OmD4x9iTnSBoRPe47y
-         /Z5KF79nqll3q3j+nzRYEcLB4FBtnk7NBf6ygVZxKM9a6fWeeFaaTOr6mj5zqv9HOGSU
-         418RJeZkYOYBG7Ffhs4ie6rN/77ZWq2RXIi0BkJngqEyZFbNkEyrWXw/rwfUoiAMNBU/
-         wvoOvt7JXfJMtA7W+L/I1qjyJzseNg5onTbvoiNG37eCZs3NAILlfajhYZgKzMis8Rr2
-         1jwtZo6pD97cOMuElpH/B5ekh1E0SFzvOC5wJIJbQM6p9AUYWbY5PAo7pS7153qbeMkv
-         8S/w==
-X-Gm-Message-State: AOAM530zXhhnWwSaDtDm+etCkuNYLnStEI5nlz7mraT1xOWESGKxQ4BO
-        z3niZ5QSkzqxU43a4Pck0hs4Z4zbNi8+i7Jtqac=
-X-Google-Smtp-Source: ABdhPJwBygvueFRcR7agUyM89pdogLGvE7AXut20/GrPE26xEenitcbAWknziGnBnmSWl3Dqx9LECqjTbct4myjpGd4=
-X-Received: by 2002:a2e:9104:: with SMTP id m4mr184164ljg.234.1624310306828;
- Mon, 21 Jun 2021 14:18:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210621181016.365009-1-angelogioacchino.delregno@somainline.org> <20210621181016.365009-2-angelogioacchino.delregno@somainline.org>
-In-Reply-To: <20210621181016.365009-2-angelogioacchino.delregno@somainline.org>
-From:   Alexey Minnekhanov <alexey.min@gmail.com>
-Date:   Tue, 22 Jun 2021 00:19:42 +0300
-Message-ID: <CANi4RBTDYdig4bjtLitpt-00TKf2J_cyne0EeynhX=fF8c7iWg@mail.gmail.com>
+        Tue, 22 Jun 2021 07:41:36 -0400
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C62C061574
+        for <phone-devel@vger.kernel.org>; Tue, 22 Jun 2021 04:39:19 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 634BF3E7C0;
+        Tue, 22 Jun 2021 13:39:16 +0200 (CEST)
 Subject: Re: [PATCH v6 1/5] cpuidle: qcom_spm: Detach state machine from main
  SPM handling
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     bjorn.andersson@linaro.org, agross@kernel.org,
         daniel.lezcano@linaro.org, rjw@rjwysocki.net,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
         konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         martin.botka@somainline.org, jeffrey.l.hugo@gmail.com,
-        jami.kettunen@somainline.org, ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
+        jami.kettunen@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
+        robh+dt@kernel.org
+References: <20210621181016.365009-1-angelogioacchino.delregno@somainline.org>
+ <20210621181016.365009-2-angelogioacchino.delregno@somainline.org>
+ <YND/2qJhUB1Iwk1X@gerhold.net>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <229488fe-00ef-ea7e-27d4-6f24fdea1383@somainline.org>
+Date:   Tue, 22 Jun 2021 13:39:15 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
+MIME-Version: 1.0
+In-Reply-To: <YND/2qJhUB1Iwk1X@gerhold.net>
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-21 jun 2021 21:10, AngeloGioacchino Del Regno
-<angelogioacchino.delregno@somainline.org>:
->
-> In commit a871be6b8eee ("cpuidle: Convert Qualcomm SPM driver to a generic
-> CPUidle driver") the SPM driver has been converted to a
-> generic CPUidle driver: that was mainly made to simplify the
-> driver and that was a great accomplishment;
-> Though, it was ignored that the SPM driver is not used only
-> on the ARM architecture.
+Il 21/06/21 23:08, Stephan Gerhold ha scritto:
+> On Mon, Jun 21, 2021 at 08:10:12PM +0200, AngeloGioacchino Del Regno wrote:
+>> In commit a871be6b8eee ("cpuidle: Convert Qualcomm SPM driver to a generic
+>> CPUidle driver") the SPM driver has been converted to a
+>> generic CPUidle driver: that was mainly made to simplify the
+>> driver and that was a great accomplishment;
+>> Though, it was ignored that the SPM driver is not used only
+>> on the ARM architecture.
+>>
+> 
+> I don't really understand why you insist on writing that I deliberately
+> "ignored" your use case when converting the driver. This is not true.
+> Perhaps that's not actually what you meant but that's how it sounds to
+> me.
+> 
 
-How many revisions does it take to reword the last sentence to
-something more neutral
-like"... arm64 use case was not implemented so far." ?
+So much noise for one single word. I will change it since it seems to be
+that much of a deal, and I'm sorry if that hurt you in any way.
+
+For the records, though, I really don't see anything offensive in that,
+and anyway I didn't mean to be offensive in any way.
+
+>> In preparation for the enablement of SPM features on AArch64/ARM64,
+>> split the cpuidle-qcom-spm driver in two: the CPUIdle related
+>> state machine (currently used only on ARM SoCs) stays there, while
+>> the SPM communication handling lands back in soc/qcom/spm.c and
+>> also making sure to not discard the simplifications that were
+>> introduced in the aforementioned commit.
+>>
+>> Since now the "two drivers" are split, the SCM dependency in the
+>> main SPM handling is gone and for this reason it was also possible
+>> to move the SPM initialization early: this will also make sure that
+>> whenever the SAW CPUIdle driver is getting initialized, the SPM
+>> driver will be ready to do the job.
+>>
+>> Please note that the anticipation of the SPM initialization was
+>> also done to optimize the boot times on platforms that have their
+>> CPU/L2 idle states managed by other means (such as PSCI), while
+>> needing SAW initialization for other purposes, like AVS control.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>> ---
+>>   drivers/cpuidle/Kconfig.arm        |   1 +
+>>   drivers/cpuidle/cpuidle-qcom-spm.c | 324 +++++++----------------------
+>>   drivers/soc/qcom/Kconfig           |   9 +
+>>   drivers/soc/qcom/Makefile          |   1 +
+>>   drivers/soc/qcom/spm.c             | 198 ++++++++++++++++++
+>>   include/soc/qcom/spm.h             |  41 ++++
+>>   6 files changed, 325 insertions(+), 249 deletions(-)
+>>   create mode 100644 drivers/soc/qcom/spm.c
+>>   create mode 100644 include/soc/qcom/spm.h
+>>
+>> diff --git a/drivers/cpuidle/cpuidle-qcom-spm.c b/drivers/cpuidle/cpuidle-qcom-spm.c
+>> index adf91a6e4d7d..091453135ea6 100644
+>> --- a/drivers/cpuidle/cpuidle-qcom-spm.c
+>> +++ b/drivers/cpuidle/cpuidle-qcom-spm.c
+>> [...]
+>> +static int spm_cpuidle_register(int cpu)
+>>   {
+>> +	struct platform_device *pdev = NULL;
+>> +	struct device_node *cpu_node, *saw_node;
+>> +	struct cpuidle_qcom_spm_data data = {
+>> +		.cpuidle_driver = {
+>> +			.name = "qcom_spm",
+>> +			.owner = THIS_MODULE,
+>> +			.cpumask = (struct cpumask *)cpumask_of(cpu),
+>> +			.states[0] = {
+>> +				.enter			= spm_enter_idle_state,
+>> +				.exit_latency		= 1,
+>> +				.target_residency	= 1,
+>> +				.power_usage		= UINT_MAX,
+>> +				.name			= "WFI",
+>> +				.desc			= "ARM WFI",
+>> +			}
+>> +		}
+>> +	};
+> 
+> The stack is gone after the function returns.
+> 
+
+Argh, I wrongly assumed that cpuidle was actually copying this locally.
+Okay, let's see what else looking clean I can come up with.
