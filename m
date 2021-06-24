@@ -2,71 +2,72 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-23.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EDA2DC49EAB
-	for <phone-devel@archiver.kernel.org>; Thu, 24 Jun 2021 22:40:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F521C49EA6
+	for <phone-devel@archiver.kernel.org>; Thu, 24 Jun 2021 22:47:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D0C1D613AD
-	for <phone-devel@archiver.kernel.org>; Thu, 24 Jun 2021 22:40:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 32B31613BD
+	for <phone-devel@archiver.kernel.org>; Thu, 24 Jun 2021 22:47:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232693AbhFXWmV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 24 Jun 2021 18:42:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43036 "EHLO
+        id S232300AbhFXWt2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 24 Jun 2021 18:49:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232300AbhFXWmU (ORCPT
+        with ESMTP id S229643AbhFXWt2 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 24 Jun 2021 18:42:20 -0400
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 866FFC061574
-        for <phone-devel@vger.kernel.org>; Thu, 24 Jun 2021 15:39:59 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id c16so9884688ljh.0
-        for <phone-devel@vger.kernel.org>; Thu, 24 Jun 2021 15:39:59 -0700 (PDT)
+        Thu, 24 Jun 2021 18:49:28 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0E18C061574
+        for <phone-devel@vger.kernel.org>; Thu, 24 Jun 2021 15:47:06 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id q4so1529359ljp.13
+        for <phone-devel@vger.kernel.org>; Thu, 24 Jun 2021 15:47:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=DxTs9lTae46Xhf8kLhsZfUlYx/YjM18QvR3O42D40aA=;
-        b=f2MwHX5VBcVkGwZgCMni3tNxJmYesEn8BhxwrYdGMgyrT7r5Deuj5ZZt/E2mL7NItH
-         BsBXjrjyeF4hHqs12NhMfbbtm2veljzqVXSPAn1qxe7SyyiUhRFNUtZS6OqurxTWviI9
-         8DokPhK+KFDp0QjgP6NABbwWKWwtml4P6MgKmPZ+0LwofBDNEksbWp0twSF9q84RPXsh
-         UQpdzaSv4W+horsvvmsFruFL//YULoGxA9CE3w/0xbZfff16nzhZBfsR5FouYlK+0Jxu
-         hmSNXBFZgS7AwSv+8MPRhQXtGYWsRyF3nQIFU5r/jtGy9Xk3GL/CGZcd0upC9foaO8fn
-         wMVQ==
+        bh=i4dvRXIGa3XnHtxkrv5kX8z4dsXDtAlvxqX0HycKbyo=;
+        b=tODqIHAOYM/leDijOqBHhC6+Y1avJ978lXEF7x6hyxL+4vu3LpmHpy+iKWHg0UohVh
+         Pn94OtIkobnmWWP9UmpHS0EYT9sy2YW1FnRnaoKZDGz2EbtpTx5uKiXxclvrdNqwOprM
+         sUvu70+MWKmZW6r4ERT+DFeb27bJLGwdtHU/Zem4ZLY2sUDI1EskxPvufhCmV1L1MEPZ
+         Kxz3ChmFMdS0BuGBERjRf0QqlspwEKpFlq50V1Kn/fTo1NtDzValRKtbHRSRRsTAUELq
+         4MEiRdED8Z8NPvKz3anPWvC1+3f6hfDv/xcPhCVD7m1/qy/V+1pqVbF3wZHEKh87QNJF
+         YT1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=DxTs9lTae46Xhf8kLhsZfUlYx/YjM18QvR3O42D40aA=;
-        b=e22LUxR0whB2p6EWxt5ZlCFwBPhSuyPQDO1K23uTQ+Wjg4WKKiUXw64x3Qyf029C/v
-         AdR0CZ3j7Vo4za6IwoAx16GKRVKx0n4XgWmtm5vCmodSnS80CI68ZPSTvSsNZXBGDvt1
-         s76wvDZkxQrKinx0PgLThnt+6+REmOlNPMOmIQezv+CCuASiCEM5oApSCm+HO6ZhozRh
-         C1OHDPPpqkuuRF/ypPz8veDLaiFXstgENtg2p8ogMcKWWsCLoK8TAOFgI2QNF1Fv2CkF
-         +aNrhnS3uoIqv0TGjmX5Fb5btZddkZ9kE8nVkjo9DI89ucWU3I3jkIoUJQk02xf0rGDR
-         C+uA==
-X-Gm-Message-State: AOAM531MnLYXnqjGc/2MMlj05oRsDKY5K14ElIAB1IxTo7yTYYFskKEV
-        bgAEXTG2hfBA4WuA44iPFMAekw==
-X-Google-Smtp-Source: ABdhPJyWfx/EAsg04pU+FiCKFTcKQS4KhRid92ZjAQ4UTsCxFf7Ko+U/IPFNv0fp9GzDmmrNZfPCBg==
-X-Received: by 2002:a2e:9e18:: with SMTP id e24mr5757701ljk.336.1624574397916;
-        Thu, 24 Jun 2021 15:39:57 -0700 (PDT)
+        bh=i4dvRXIGa3XnHtxkrv5kX8z4dsXDtAlvxqX0HycKbyo=;
+        b=iB48/rwmRLPwuC8dBkGP/JYqKjnt+MnWYwUr3XhWGHNZWvAKSDxwvsxgdjYm9/RVqY
+         gAdr+X0Xnk+9Trs4jJKTb5g8aUzrXlXRk2NMEfnu5NRCC22BQ6ihNhtyW351K+BobZg4
+         ueBl9+1g5XX0PWOiNIoDDO2V4Fw112RGzlCtest7a6bBO4IvQHfdSfW8Y3vl35fl5fZV
+         iO2tpvosOeYiS/8FhLSu0Bwi6XLI974S55igqSsXQD5ivHRoPNr0JeBRbTaOvV0oAW+V
+         6qAO2MlXo+AoSugIgYJ/RA5+dqodagKTlTL8mMgQaO2rTlqbzrhweCP4G6RqLEJXuDfz
+         jNIQ==
+X-Gm-Message-State: AOAM530MDG09fF0fHmuh9HvVxveYL/7O/o5dokvLwXHumaERuAXYJrSf
+        Tt018AAJKsJ5XvjIdlNSbM1uAQ==
+X-Google-Smtp-Source: ABdhPJw4acXsC6/mzFk2rAep5f4QJbJHT7KdsPMtIdkvgxlQnVUTgh1sXnQyigXflePJoBc6cil3wA==
+X-Received: by 2002:a05:651c:210b:: with SMTP id a11mr5569593ljq.240.1624574825016;
+        Thu, 24 Jun 2021 15:47:05 -0700 (PDT)
 Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id e12sm341403lfc.84.2021.06.24.15.39.56
+        by smtp.gmail.com with ESMTPSA id n27sm344120lfq.198.2021.06.24.15.47.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jun 2021 15:39:57 -0700 (PDT)
+        Thu, 24 Jun 2021 15:47:04 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Sam Ravnborg <sam@ravnborg.org>,
         dri-devel@lists.freedesktop.org
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        phone-devel@vger.kernel.org,
         Douglas Anderson <dianders@chromium.org>,
         =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>
-Subject: [PATCH] drm/panel: Add DT bindings for Samsung LMS380KF01
-Date:   Fri, 25 Jun 2021 00:37:43 +0200
-Message-Id: <20210624223743.2486302-1-linus.walleij@linaro.org>
+Subject: [PATCH] drm/panel: ws2401: Add driver for WideChips WS2401
+Date:   Fri, 25 Jun 2021 00:44:58 +0200
+Message-Id: <20210624224458.2486701-1-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -75,121 +76,490 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This adds device tree bindings for the Samsung Mobile Displays
-LMS380KF01 RGB DPI display panel.
+This adds a driver for panels based on the WideChips WS2401 display
+controller. This display controller is used in the Samsung LMS380KF01
+display found in the Samsung GT-I8160 (Codina) mobile phone and
+possibly others.
 
-Cc: devicetree@vger.kernel.org
+As is common with Samsung displays manufacturer commands are necessary
+to configure the display to a working state.
+
+The display optionally supports internal backlight control, but can
+also use an external backlight.
+
+This driver re-uses the DBI infrastructure to communicate with the
+display.
+
 Cc: phone-devel@vger.kernel.org
 Cc: Douglas Anderson <dianders@chromium.org>
 Cc: Noralf Trønnes <noralf@tronnes.org>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- .../display/panel/samsung,lms380kf01.yaml     | 96 +++++++++++++++++++
- 1 file changed, 96 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/display/panel/samsung,lms380kf01.yaml
+ MAINTAINERS                                   |   7 +
+ drivers/gpu/drm/panel/Kconfig                 |   9 +
+ drivers/gpu/drm/panel/Makefile                |   1 +
+ .../gpu/drm/panel/panel-widechips-ws2401.c    | 404 ++++++++++++++++++
+ 4 files changed, 421 insertions(+)
+ create mode 100644 drivers/gpu/drm/panel/panel-widechips-ws2401.c
 
-diff --git a/Documentation/devicetree/bindings/display/panel/samsung,lms380kf01.yaml b/Documentation/devicetree/bindings/display/panel/samsung,lms380kf01.yaml
+diff --git a/MAINTAINERS b/MAINTAINERS
+index bd7aff0c120f..8bfa89f61220 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5946,6 +5946,13 @@ S:	Maintained
+ T:	git git://anongit.freedesktop.org/drm/drm-misc
+ F:	drivers/gpu/drm/vboxvideo/
+ 
++DRM DRIVER FOR WIDECHIPS WS2401 PANELS
++M:	Linus Walleij <linus.walleij@linaro.org>
++S:	Maintained
++T:	git git://anongit.freedesktop.org/drm/drm-misc
++F:	Documentation/devicetree/bindings/display/panel/samsung,lms380kf01.yaml
++F:	drivers/gpu/drm/panel/panel-widechips-ws2401.c
++
+ DRM DRIVER FOR VMWARE VIRTUAL GPU
+ M:	"VMware Graphics" <linux-graphics-maintainer@vmware.com>
+ M:	Roland Scheidegger <sroland@vmware.com>
+diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+index 4894913936e9..f4fe1dba9912 100644
+--- a/drivers/gpu/drm/panel/Kconfig
++++ b/drivers/gpu/drm/panel/Kconfig
+@@ -552,6 +552,15 @@ config DRM_PANEL_VISIONOX_RM69299
+ 	  Say Y here if you want to enable support for Visionox
+ 	  RM69299  DSI Video Mode panel.
+ 
++config DRM_PANEL_WIDECHIPS_WS2401
++	tristate "Widechips WS2401 DPI panel driver"
++	depends on OF && SPI && GPIOLIB
++	depends on BACKLIGHT_CLASS_DEVICE
++	select DRM_MIPI_DBI
++	help
++	  Say Y here if you want to enable support for the Widechips
++	  WS2401 DPI 480x800 display controller.
++
+ config DRM_PANEL_XINPENG_XPP055C272
+ 	tristate "Xinpeng XPP055C272 panel driver"
+ 	depends on OF
+diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
+index cae4d976c069..d94c27df17aa 100644
+--- a/drivers/gpu/drm/panel/Makefile
++++ b/drivers/gpu/drm/panel/Makefile
+@@ -58,4 +58,5 @@ obj-$(CONFIG_DRM_PANEL_TPO_TD043MTEA1) += panel-tpo-td043mtea1.o
+ obj-$(CONFIG_DRM_PANEL_TPO_TPG110) += panel-tpo-tpg110.o
+ obj-$(CONFIG_DRM_PANEL_TRULY_NT35597_WQXGA) += panel-truly-nt35597.o
+ obj-$(CONFIG_DRM_PANEL_VISIONOX_RM69299) += panel-visionox-rm69299.o
++obj-$(CONFIG_DRM_PANEL_WIDECHIPS_WS2401) += panel-widechips-ws2401.o
+ obj-$(CONFIG_DRM_PANEL_XINPENG_XPP055C272) += panel-xinpeng-xpp055c272.o
+diff --git a/drivers/gpu/drm/panel/panel-widechips-ws2401.c b/drivers/gpu/drm/panel/panel-widechips-ws2401.c
 new file mode 100644
-index 000000000000..138be12fc509
+index 000000000000..d15870301174
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/samsung,lms380kf01.yaml
-@@ -0,0 +1,96 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/samsung,lms380kf01.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/gpu/drm/panel/panel-widechips-ws2401.c
+@@ -0,0 +1,404 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Panel driver for the WideChips WS2401 480x800 DPI RGB panel, used in
++ * the Samsung Mobile Display (SMD) LMS380KF01.
++ * Found in the Samsung Galaxy Ace 2 GT-I8160 mobile phone.
++ * Linus Walleij <linus.walleij@linaro.org>
++ * Inspired by code and know-how in the vendor driver by Gareth Phillips.
++ */
++#include <drm/drm_modes.h>
++#include <drm/drm_mipi_dbi.h>
++#include <drm/drm_panel.h>
 +
-+title: Samsung LMS380KF01 display panel
++#include <linux/backlight.h>
++#include <linux/delay.h>
++#include <linux/gpio/consumer.h>
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/media-bus-format.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
 +
-+description: The LMS380KF01 is a 480x800 DPI display panel from Samsung Mobile
-+  Displays (SMD) utilizing the WideChips WS2401 display controller. It can be
-+  used with internal or external backlight control.
++#include <video/mipi_display.h>
 +
-+maintainers:
-+  - Linus Walleij <linus.walleij@linaro.org>
++#define WS2401_RESCTL			0xb8 /* Resolution select control */
++#define WS2401_PSMPS			0xbd /* SMPS positive control */
++#define WS2401_NSMPS			0xbe /* SMPS negative control */
++#define WS2401_SMPS			0xbf
++#define WS2401_BCMODE			0xc1 /* Backlight control mode */
++#define WS2401_WRBLCTL			0xc3 /* Backlight control */
++#define WS2401_WRDISBV			0xc4 /* Write manual brightness */
++#define WS2401_WRCTRLD			0xc6 /* Write BL control */
++#define WS2401_WRMIE			0xc7 /* Write MIE mode */
++#define WS2401_READ_ID1			0xda /* Read panel ID 1 */
++#define WS2401_READ_ID2			0xdb /* Read panel ID 2 */
++#define WS2401_READ_ID3			0xdc /* Read panel ID 3 */
++#define WS2401_PASSWD1			0xf0 /* Password command for level 2 */
++#define WS2401_DISCTL			0xf2 /* Display control */
++#define WS2401_PWRCTL			0xf3 /* Power control */
++#define WS2401_VCOMCTL			0xf4 /* VCOM control */
++#define WS2401_SRCCTL			0xf5 /* Source control */
++#define WS2401_PANELCTL			0xf6 /* Panel control */
 +
-+allOf:
-+  - $ref: panel-common.yaml#
++static const u8 ws2401_dbi_read_commands[] = {
++	WS2401_READ_ID1,
++	WS2401_READ_ID2,
++	WS2401_READ_ID3,
++	0, /* sentinel */
++};
 +
-+properties:
-+  compatible:
-+    const: samsung,lms380kf01
++/**
++ * struct ws2401 - state container for a panel controlled by the WS2401
++ * controller
++ */
++struct ws2401 {
++	/** @dev: the container device */
++	struct device *dev;
++	/** @dbi: the DBI bus abstraction handle */
++	struct mipi_dbi dbi;
++	/** @panel: the DRM panel instance for this device */
++	struct drm_panel panel;
++	/** @width: the width of this panel in mm */
++	u32 width;
++	/** @height: the height of this panel in mm */
++	u32 height;
++	/** @reset: reset GPIO line */
++	struct gpio_desc *reset;
++	/** @regulators: VCCIO and VIO supply regulators */
++	struct regulator_bulk_data regulators[2];
++	/** @bl: Backlight, if using internal backlight */
++	struct backlight_device *bl;
++};
 +
-+  reg: true
++static const struct drm_display_mode lms380kf01_480_800_mode = {
++	/*
++	 * The vendor driver states that the "SMD panel" has a clock
++	 * frequency of 49920000 Hz / 2 = 24960000 Hz.
++	 */
++	.clock = 24960,
++	.hdisplay = 480,
++	.hsync_start = 480 + 8,
++	.hsync_end = 480 + 8 + 10,
++	.htotal = 480 + 8 + 10 + 8,
++	.vdisplay = 800,
++	.vsync_start = 800 + 8,
++	.vsync_end = 800 + 8 + 2,
++	.vtotal = 800 + 8 + 2 + 18,
++	.width_mm = 50,
++	.height_mm = 84,
++	.flags = DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
++};
 +
-+  interrupts:
-+    description: provides an optional ESD (electrostatic discharge)
-+      interrupt that signals abnormalities in the display hardware.
-+      This can also be raised for other reasons like erroneous
-+      configuration.
-+    maxItems: 1
++static inline struct ws2401 *to_ws2401(struct drm_panel *panel)
++{
++	return container_of(panel, struct ws2401, panel);
++}
 +
-+  reset-gpios: true
++#define ws2401_command(ws, cmd, seq...) \
++({ \
++	struct mipi_dbi *dbi = &ws->dbi; \
++	int ret; \
++	ret = mipi_dbi_command(dbi, cmd, seq);	\
++	if (ret) { \
++		dev_err(ws->dev, "failure in writing command %02x\n", cmd); \
++	} \
++})
 +
-+  vci-supply:
-+    description: regulator that supplies the VCI analog voltage
-+      usually around 3.0 V
++static void ws2401_read_mtp_id(struct ws2401 *ws)
++{
++	struct mipi_dbi *dbi = &ws->dbi;
++	u8 id1, id2, id3;
++	int ret;
 +
-+  vccio-supply:
-+    description: regulator that supplies the VCCIO voltage usually
-+      around 1.8 V
++	ret = mipi_dbi_command_read(dbi, WS2401_READ_ID1, &id1);
++	if (ret) {
++		dev_err(ws->dev, "unable to read MTP ID 1\n");
++		return;
++	}
++	ret = mipi_dbi_command_read(dbi, WS2401_READ_ID2, &id1);
++	if (ret) {
++		dev_err(ws->dev, "unable to read MTP ID 2\n");
++		return;
++	}
++	ret = mipi_dbi_command_read(dbi, WS2401_READ_ID3, &id1);
++	if (ret) {
++		dev_err(ws->dev, "unable to read MTP ID 3\n");
++		return;
++	}
++	dev_info(ws->dev, "MTP ID: %02x %02x %02x\n", id1, id2, id3);
++}
 +
-+  backlight: true
++static int ws2401_power_on(struct ws2401 *ws)
++{
++	int ret;
 +
-+  spi-cpha:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description: inherited as a SPI client node. Must be set.
++	/* Power up */
++	ret = regulator_bulk_enable(ARRAY_SIZE(ws->regulators),
++				    ws->regulators);
++	if (ret) {
++		dev_err(ws->dev, "failed to enable regulators: %d\n", ret);
++		return ret;
++	}
++	msleep(10);
 +
-+  spi-cpol:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description: inherited as a SPI client node. Must be set.
++	/* Assert reset >=1 ms */
++	gpiod_set_value_cansleep(ws->reset, 1);
++	usleep_range(1000, 5000);
++	/* De-assert reset */
++	gpiod_set_value_cansleep(ws->reset, 0);
++	/* Wait >= 10 ms */
++	msleep(10);
++	dev_dbg(ws->dev, "de-asserted RESET\n");
 +
-+  spi-max-frequency:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: inherited as a SPI client node.
-+    maximum: 1200000
++	/*
++	 * Exit sleep mode and initialize display - some hammering is
++	 * necessary.
++	 */
++	ws2401_command(ws, MIPI_DCS_EXIT_SLEEP_MODE);
++	ws2401_command(ws, MIPI_DCS_EXIT_SLEEP_MODE);
++	msleep(50);
 +
-+  port: true
++	/* Magic to unlock level 2 control of the display */
++	ws2401_command(ws, WS2401_PASSWD1, 0x5a, 0x5a);
++	/* Configure resolution to 480RGBx800 */
++	ws2401_command(ws, WS2401_RESCTL, 0x12);
++	/*
++	 * Set addressing mode Flip V(d0), Flip H(d1) RGB/BGR(d3)
++	 * The vendor driver has 0x09 here setting d3 and resulting in
++	 * inverted colors when used with DRM.
++	 */
++	ws2401_command(ws, MIPI_DCS_SET_ADDRESS_MODE, 0x01);
++	/* Set pixel format: 24 bpp */
++	ws2401_command(ws, MIPI_DCS_SET_PIXEL_FORMAT, 0x70);
++	ws2401_command(ws, WS2401_PSMPS, 0x06, 0x01, /* DDVDH: 4.6v */
++		       0x78, 0x06, 0x10, 0x37);
++	ws2401_command(ws, WS2401_NSMPS, 0x06, 0x01, /* DDVDH: -4.6v */
++		       0x78, 0x06, 0x12, 0x37);
++	ws2401_command(ws, WS2401_SMPS, 0x02, 0x0d);
++	ws2401_command(ws, WS2401_PWRCTL, 0x10, 0xA9, 0x00, 0x01, 0x44,
++		       0xF4,	/* VGH:16.1v, VGL:-13.8v */
++		       0x50,	/* GREFP:4.2v(dft) */
++		       0x50,	/* GREFN:-4.2v(dft) */
++		       0x00,
++		       0x3C);	/* VOUTL:-10v(dft) */
++	ws2401_command(ws, WS2401_SRCCTL, 0x03, 0x0C, 0x00, 0x00, 0x00,
++		       0x01,	/* 2 dot inversion */
++		       0x01, 0x06, 0x00);
++	ws2401_command(ws, WS2401_PANELCTL, 0x14, 0x00, 0x80, 0x00, 0x00);
 +
-+required:
-+  - compatible
-+  - reg
-+  - spi-cpha
-+  - spi-cpol
++	if (ws->bl)
++		ws2401_command(ws, WS2401_WRCTRLD, 0x2c);
++	else
++		ws2401_command(ws, WS2401_WRCTRLD, 0x00);
 +
-+additionalProperties: false
++	ws2401_read_mtp_id(ws);
 +
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
++	return 0;
++}
 +
-+    spi {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
++static int ws2401_power_off(struct ws2401 *ws)
++{
++	/* Disable backlight */
++	if (ws->bl)
++		ws2401_command(ws, WS2401_WRCTRLD, 0x00);
++	/* Go into RESET and disable regulators */
++	gpiod_set_value_cansleep(ws->reset, 1);
++	return regulator_bulk_disable(ARRAY_SIZE(ws->regulators),
++				      ws->regulators);
++}
 +
-+      panel@0 {
-+        compatible = "samsung,lms380kf01";
-+        spi-max-frequency = <1200000>;
-+        spi-cpha;
-+        spi-cpol;
-+        reg = <0>;
-+        vci-supply = <&lcd_3v0_reg>;
-+        vccio-supply = <&lcd_1v8_reg>;
-+        reset-gpios = <&gpio4 11 GPIO_ACTIVE_LOW>;
-+        interrupt-parent = <&gpio2>;
-+        interrupts = <29 IRQ_TYPE_EDGE_RISING>;
++static int ws2401_unprepare(struct drm_panel *panel)
++{
++	struct ws2401 *ws = to_ws2401(panel);
 +
-+        port {
-+          panel_in: endpoint {
-+            remote-endpoint = <&display_out>;
-+          };
-+        };
-+      };
-+    };
++	ws2401_command(ws, MIPI_DCS_ENTER_SLEEP_MODE);
++	msleep(120);
++	return ws2401_power_off(to_ws2401(panel));
++}
 +
-+...
++static int ws2401_disable(struct drm_panel *panel)
++{
++	struct ws2401 *ws = to_ws2401(panel);
++
++	ws2401_command(ws, MIPI_DCS_SET_DISPLAY_OFF);
++	msleep(25);
++
++	return 0;
++}
++
++static int ws2401_prepare(struct drm_panel *panel)
++{
++	return ws2401_power_on(to_ws2401(panel));
++}
++
++static int ws2401_enable(struct drm_panel *panel)
++{
++	struct ws2401 *ws = to_ws2401(panel);
++
++	ws2401_command(ws, MIPI_DCS_SET_DISPLAY_ON);
++
++	return 0;
++}
++
++/**
++ * ws2401_get_modes() - return the mode
++ * @panel: the panel to get the mode for
++ * @connector: reference to the central DRM connector control structure
++ */
++static int ws2401_get_modes(struct drm_panel *panel,
++			    struct drm_connector *connector)
++{
++	struct ws2401 *ws = to_ws2401(panel);
++	struct drm_display_mode *mode;
++	static const u32 bus_format = MEDIA_BUS_FMT_RGB888_1X24;
++
++	/*
++	 * We just support the LMS380KF01 so far, if we implement more panels
++	 * this mode, the following connector display_info settings and
++	 * probably the custom DCS sequences needs to selected based on what
++	 * the target panel needs.
++	 */
++	mode = drm_mode_duplicate(connector->dev, &lms380kf01_480_800_mode);
++	if (!mode) {
++		dev_err(ws->dev, "failed to add mode\n");
++		return -ENOMEM;
++	}
++
++	connector->display_info.bpc = 8;
++	connector->display_info.width_mm = mode->width_mm;
++	connector->display_info.height_mm = mode->height_mm;
++	connector->display_info.bus_flags =
++		DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE;
++	drm_display_info_set_bus_formats(&connector->display_info,
++					 &bus_format, 1);
++
++	drm_mode_set_name(mode);
++	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
++
++	drm_mode_probed_add(connector, mode);
++
++	return 1;
++}
++
++static const struct drm_panel_funcs ws2401_drm_funcs = {
++	.disable = ws2401_disable,
++	.unprepare = ws2401_unprepare,
++	.prepare = ws2401_prepare,
++	.enable = ws2401_enable,
++	.get_modes = ws2401_get_modes,
++};
++
++static int ws2401_set_brightness(struct backlight_device *bl)
++{
++	struct ws2401 *ws = bl_get_data(bl);
++	u8 brightness = bl->props.brightness;
++
++	ws2401_command(ws, WS2401_WRDISBV, brightness);
++
++	return 0;
++}
++
++static const struct backlight_ops ws2401_bl_ops = {
++	.update_status = ws2401_set_brightness,
++};
++
++const struct backlight_properties ws2401_bl_props = {
++	.type = BACKLIGHT_PLATFORM,
++	.brightness = 120,
++	.max_brightness = U8_MAX,
++};
++
++static int ws2401_probe(struct spi_device *spi)
++{
++	struct device *dev = &spi->dev;
++	struct ws2401 *ws;
++	int ret;
++
++	ws = devm_kzalloc(dev, sizeof(*ws), GFP_KERNEL);
++	if (!ws)
++		return -ENOMEM;
++	ws->dev = dev;
++
++	/*
++	 * VCI   is the analog voltage supply
++	 * VCCIO is the digital I/O voltage supply
++	 */
++	ws->regulators[0].supply = "vci";
++	ws->regulators[1].supply = "vccio";
++	ret = devm_regulator_bulk_get(dev,
++				      ARRAY_SIZE(ws->regulators),
++				      ws->regulators);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to get regulators\n");
++
++	ws->reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(ws->reset)) {
++		ret = PTR_ERR(ws->reset);
++		return dev_err_probe(dev, ret, "no RESET GPIO\n");
++	}
++
++	ret = mipi_dbi_spi_init(spi, &ws->dbi, NULL);
++	if (ret)
++		return dev_err_probe(dev, ret, "MIPI DBI init failed\n");
++	ws->dbi.read_commands = ws2401_dbi_read_commands;
++
++	drm_panel_init(&ws->panel, dev, &ws2401_drm_funcs,
++		       DRM_MODE_CONNECTOR_DPI);
++
++	ret = drm_panel_of_backlight(&ws->panel);
++	if (ret) {
++		dev_info(dev, "no external backlight, using internal backlight\n");
++		ws->bl = devm_backlight_device_register(dev, "ws2401", dev, ws,
++							&ws2401_bl_ops, &ws2401_bl_props);
++		if (IS_ERR(ws->bl)) {
++			ret = PTR_ERR(ws->bl);
++			return dev_err_probe(dev, ret,
++					     "failed to register backlight device\n");
++		}
++		ws->panel.backlight = ws->bl;
++	} else {
++		dev_info(dev, "using external backlight\n");
++	}
++
++	spi_set_drvdata(spi, ws);
++
++	drm_panel_add(&ws->panel);
++	dev_dbg(dev, "added panel\n");
++
++	return 0;
++}
++
++static int ws2401_remove(struct spi_device *spi)
++{
++	struct ws2401 *ws = spi_get_drvdata(spi);
++
++	drm_panel_remove(&ws->panel);
++	return 0;
++}
++
++/*
++ * Samsung LMS380KF01 is the one instance of this display controller that we
++ * know about, but if more are found, the controller can be parameterized
++ * here and used for other configurations.
++ */
++static const struct of_device_id ws2401_match[] = {
++	{ .compatible = "samsung,lms380kf01", },
++	{},
++};
++MODULE_DEVICE_TABLE(of, ws2401_match);
++
++static struct spi_driver ws2401_driver = {
++	.probe		= ws2401_probe,
++	.remove		= ws2401_remove,
++	.driver		= {
++		.name	= "ws2401-panel",
++		.of_match_table = ws2401_match,
++	},
++};
++module_spi_driver(ws2401_driver);
++
++MODULE_AUTHOR("Linus Walleij <linus.walleij@linaro.org>");
++MODULE_DESCRIPTION("Samsung WS2401 panel driver");
++MODULE_LICENSE("GPL v2");
 -- 
 2.31.1
 
