@@ -2,143 +2,126 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B660C2B9F4
-	for <phone-devel@archiver.kernel.org>; Fri, 25 Jun 2021 11:37:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF2F1C48BC2
+	for <phone-devel@archiver.kernel.org>; Fri, 25 Jun 2021 15:59:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F165761582
-	for <phone-devel@archiver.kernel.org>; Fri, 25 Jun 2021 11:37:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BB9F161960
+	for <phone-devel@archiver.kernel.org>; Fri, 25 Jun 2021 15:59:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229723AbhFYLj2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 25 Jun 2021 07:39:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46994 "EHLO
+        id S229922AbhFYQBZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 25 Jun 2021 12:01:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbhFYLj2 (ORCPT
+        with ESMTP id S230050AbhFYQBZ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 25 Jun 2021 07:39:28 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB39BC061766
-        for <phone-devel@vger.kernel.org>; Fri, 25 Jun 2021 04:37:07 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id k10so15676110lfv.13
-        for <phone-devel@vger.kernel.org>; Fri, 25 Jun 2021 04:37:07 -0700 (PDT)
+        Fri, 25 Jun 2021 12:01:25 -0400
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 724ECC061574
+        for <phone-devel@vger.kernel.org>; Fri, 25 Jun 2021 08:59:03 -0700 (PDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id p7so2215979qvn.5
+        for <phone-devel@vger.kernel.org>; Fri, 25 Jun 2021 08:59:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=IL2ShTazcf5mL4VUs+5IwZEMug7nEaknzbx4PS2gI3c=;
-        b=mwZxj4Oh2cTM+KEk7ag3FRQ0dTmwplZ+SYsDu9Obztf/HyQWQoaxMugCnlxAOk+npo
-         rWg2uT2+VhJ/mZZtHSdQ6NGWZrlMujCARK2ktaef88vfZ8n3upwkSNBzr4GkN2bJ1E6Y
-         0qCVwSGgDonNFzW+bGqWYSBheFuYvz45NaSG02C0Vi/IUrR+GkqtVxxBjOuQ2S8RhOtb
-         3PfgqMh49iwvRx4+qcdoTi4Plr7rKxyZwFV7FB+686qBIeY557/+7TI8Sgs2pCOtBPb7
-         eDK4PYnfTwbJ0uaAW3jn9sQkUFuvgkBvWH8J2Z/3oTpK3S8MqyDAdy4Ra7rj75xve/8l
-         sKxQ==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CMFqRamqkQgCF+ySIQhnWpXoURw1WLNbTY9bNZn+W38=;
+        b=ciq0fyJCwg5/hK+oj/CXsEPQ74Dr1RLsBVZh4+AuAUDQH8M9HyGelwOrWBcBE8ev5l
+         t8nYqFeRr3jN7EmUqoRa6Day9kVuUCvo0MK/+3x/SbtOyInz+5B5+iTMU8SvD2yqSxlv
+         bSQp7Uv9ewlRA/0BHRPSkC4W8ju2ek50oD8Og=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=IL2ShTazcf5mL4VUs+5IwZEMug7nEaknzbx4PS2gI3c=;
-        b=S47N60w8NB8y6uZIVJEPhOhGSdpR8j70VZd5yuevQT7p4p4L7zctNKSgKnfcRDdEZO
-         46gAovjg0scsWNazT7IE6BPamAU5oJcrh4ShGfVCjNkUyrZeuOBmZn4wgFV2E9jPTUkC
-         BPU4vDDx0yHdnKuZfl/LSn6K3/oq5wIkLKkuVfJ9SwGq3+YTZ04+NCXHdX2RNEjxvnhA
-         ZacXMiy42KdIwjpQmp7y3q6NKBUQw/3xUMptdwCB/nRcgUHSb/nXATXYLuPvmv93nRo5
-         QI9pGZ2InUVjRn8dbvx1tyU3onlKqOAoaGTxVwudy4uZ/KlTzKyK9h+VYMpjLpOk/oPT
-         UdLw==
-X-Gm-Message-State: AOAM531GcqRjrq787+3DvkqZoC16uHo+/Z/gWID1fLv+oCwc0vVDmtew
-        uVz6X+XqAVRQICae9REX+ALdEQ==
-X-Google-Smtp-Source: ABdhPJybdsBoGjiyznIk7bKHZHJdtIXnVs8HxueVSOHPey6gEwYkhgGfIQRvjJzgCKjeQy9pyKkG8Q==
-X-Received: by 2002:ac2:4650:: with SMTP id s16mr7809807lfo.436.1624621026257;
-        Fri, 25 Jun 2021 04:37:06 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id g24sm489682lfv.228.2021.06.25.04.37.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jun 2021 04:37:06 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Michael Srba <Michael.Srba@seznam.cz>,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH 2/2] Input: zinitix - Handle proper supply names
-Date:   Fri, 25 Jun 2021 13:34:35 +0200
-Message-Id: <20210625113435.2539282-2-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210625113435.2539282-1-linus.walleij@linaro.org>
-References: <20210625113435.2539282-1-linus.walleij@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CMFqRamqkQgCF+ySIQhnWpXoURw1WLNbTY9bNZn+W38=;
+        b=ID+ulEhrdDKQbQR4AL6J4VcFuljeoPVxyb2PVWZEceIENfnM+bP3ZYdMNSjEUrfgit
+         GBxZFSYb19Vh3el7M0tA0ORuHgW/fMYfxoqAk1zTcBVml7aI8DzQmFV2/AetRGE506Xm
+         4fMNG0gPtrgaRJlzNQr5VW5hg0BsGtjxQLJYuEOicX/zJeyIMjo5Q9uzl8/8lMNm92jL
+         4pXhur6ZrhbBDAlTICTmqIIpNGASoI2KC43tv4joWKC/ipnfLIfWPqS717nAjQErNaAn
+         ZiDgdxnAlB6a83+lKyMooZlA12uatsirrS6Qq2zfXtJrou/2cghFiID6dCIEWbG75OTn
+         BiYw==
+X-Gm-Message-State: AOAM530EdIjnPtdZ+ExtizAXLsDPfEZVA/YwuW3VNlBBQzuS2scJeuKD
+        11H5gswlcDm1OjYru0fzB4lqmxHdh7n9/w==
+X-Google-Smtp-Source: ABdhPJx/dIdmu914rCkfBUgfk8NCrL/HSFLbVin2DH1B5mnLsCTPacy3RWgddeiVuBRErfJYPmewuA==
+X-Received: by 2002:a05:6214:186f:: with SMTP id eh15mr11743560qvb.29.1624636742354;
+        Fri, 25 Jun 2021 08:59:02 -0700 (PDT)
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com. [209.85.219.174])
+        by smtp.gmail.com with ESMTPSA id s6sm5170629qks.102.2021.06.25.08.59.01
+        for <phone-devel@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Jun 2021 08:59:02 -0700 (PDT)
+Received: by mail-yb1-f174.google.com with SMTP id 8so5337819ybn.9
+        for <phone-devel@vger.kernel.org>; Fri, 25 Jun 2021 08:59:01 -0700 (PDT)
+X-Received: by 2002:a25:2405:: with SMTP id k5mr13449716ybk.405.1624636741419;
+ Fri, 25 Jun 2021 08:59:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210624223743.2486302-1-linus.walleij@linaro.org>
+In-Reply-To: <20210624223743.2486302-1-linus.walleij@linaro.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Fri, 25 Jun 2021 08:58:49 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=Un00zNuCQ=f5BV0dvi6gSMXgfC_e94OD5ZpS5ad3wJUg@mail.gmail.com>
+Message-ID: <CAD=FV=Un00zNuCQ=f5BV0dvi6gSMXgfC_e94OD5ZpS5ad3wJUg@mail.gmail.com>
+Subject: Re: [PATCH] drm/panel: Add DT bindings for Samsung LMS380KF01
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, phone-devel@vger.kernel.org,
+        =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>,
+        Rob Herring <robh+dt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The supply names of the Zinitix touchscreen were a bit confused, the new
-bindings rectifies this.
+Hi,
 
-To deal with old and new devicetrees, first check if we have "vddo" and in
-case that exists assume the old supply names. Else go and look for the new
-ones.
+On Thu, Jun 24, 2021 at 3:40 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+>
+> +  spi-cpha:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description: inherited as a SPI client node. Must be set.
+> +
+> +  spi-cpol:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description: inherited as a SPI client node. Must be set.
 
-We cannot just get the regulators since we would get an OK and a dummy
-regulator: we need to check explicitly for the old supply name.
+I will defer to Rob Herring (added to CC) to confirm if we really need
+all that stuff for spi-cpha and spi-cpol. I would have expected just:
 
-Use struct device *dev as a local variable instead of the I2C client since
-the device is what we are actually obtaining the resources from.
+spi-cpha: true
+spi-cpol: true
 
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Michael Srba <Michael.Srba@seznam.cz>
-Cc: phone-devel@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-Mark: please check that I'm doing this check the right way, I assume
-that since we get regulator dummies this is the way I need to check
-for the old regulator name but maybe there are better ways.
----
- drivers/input/touchscreen/zinitix.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+As I understand it, the fact that they are flags will already be
+validated as part of the "spi-controller.yaml" so you don't need to
+specify that. ...and the fact that you have them listed as "required"
+properties documents the fact that they must be set for your device,
+so I don't think you need more.
 
-diff --git a/drivers/input/touchscreen/zinitix.c b/drivers/input/touchscreen/zinitix.c
-index b8d901099378..7001307382f0 100644
---- a/drivers/input/touchscreen/zinitix.c
-+++ b/drivers/input/touchscreen/zinitix.c
-@@ -252,16 +252,28 @@ static int zinitix_init_touch(struct bt541_ts_data *bt541)
- 
- static int zinitix_init_regulators(struct bt541_ts_data *bt541)
- {
--	struct i2c_client *client = bt541->client;
-+	struct device *dev = &bt541->client->dev;
- 	int error;
- 
--	bt541->supplies[0].supply = "vdd";
--	bt541->supplies[1].supply = "vddo";
--	error = devm_regulator_bulk_get(&client->dev,
-+	/*
-+	 * Some older device trees have erroneous names for the regulators,
-+	 * so check if "vddo" is present and in that case use these names
-+	 * and warn. Else use the proper supply names on the component.
-+	 */
-+	if (IS_ENABLED(CONFIG_OF) &&
-+	    of_property_read_bool(dev->of_node, "vddo-supply")) {
-+		bt541->supplies[0].supply = "vdd";
-+		bt541->supplies[1].supply = "vddo";
-+	} else {
-+		/* Else use the proper supply names */
-+		bt541->supplies[0].supply = "vcca";
-+		bt541->supplies[1].supply = "vdd";
-+	}
-+	error = devm_regulator_bulk_get(dev,
- 					ARRAY_SIZE(bt541->supplies),
- 					bt541->supplies);
- 	if (error < 0) {
--		dev_err(&client->dev, "Failed to get regulators: %d\n", error);
-+		dev_err(dev, "Failed to get regulators: %d\n", error);
- 		return error;
- 	}
- 
--- 
-2.31.1
+NOTE: if you're testing this using your "example" below I think you
+will find that you could set this to something other than just a flag
+and it won't yell at you. However, that's because your example has a
+bogus SPI controller node in it. I think if you put a real SPI
+controller in the example then it'll pull in the "spi-controller.yaml"
+bindings and magically start validating everything.
 
+
+> +  spi-max-frequency:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+
+You don't need the "$ref" line here either, right? Again it'll be
+validated as part of the "spi-controller.yaml".
+
+
+> +required:
+> +  - compatible
+> +  - reg
+> +  - spi-cpha
+> +  - spi-cpol
+
+Does "port" need to be listed as required too?
