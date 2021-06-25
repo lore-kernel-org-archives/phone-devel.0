@@ -2,176 +2,275 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-19.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A497C49EA7
-	for <phone-devel@archiver.kernel.org>; Fri, 25 Jun 2021 10:38:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7753AC49EA7
+	for <phone-devel@archiver.kernel.org>; Fri, 25 Jun 2021 11:36:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 75D5D61445
-	for <phone-devel@archiver.kernel.org>; Fri, 25 Jun 2021 10:38:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5ED6B61581
+	for <phone-devel@archiver.kernel.org>; Fri, 25 Jun 2021 11:36:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231193AbhFYKlM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 25 Jun 2021 06:41:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33832 "EHLO
+        id S230328AbhFYLjK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 25 Jun 2021 07:39:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230436AbhFYKlL (ORCPT
+        with ESMTP id S229940AbhFYLjJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 25 Jun 2021 06:41:11 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5286C061574;
-        Fri, 25 Jun 2021 03:38:49 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id d16so10905192ejm.7;
-        Fri, 25 Jun 2021 03:38:49 -0700 (PDT)
+        Fri, 25 Jun 2021 07:39:09 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24894C061574
+        for <phone-devel@vger.kernel.org>; Fri, 25 Jun 2021 04:36:48 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id d2so12059559ljj.11
+        for <phone-devel@vger.kernel.org>; Fri, 25 Jun 2021 04:36:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=1/eMB3oQaBdiNnJ8Y7zIUo7wsM74vurfSXPEhMmhvYs=;
-        b=S6gTqGkyCpj6tWjYvKcj2hxMaFjtOKlftr3pLPzXRS/qJMKpoizgtjxrHLuQxGyBBZ
-         aT+hsLuIanjKqN3JJMjY+BCLS+82VHoQ6qRB1LVP6z+LNVcUa5pH3yZVEbtj8GJybIdD
-         bS37wQRe8oGOis5ty6gaRv9w+PTZjBHOK3sYQdf7LcJceHoSPGFcPRTUXiBqK8HPK4VK
-         8vWIbCcmtjkoSNn4ueDCqm2+ustdOXgQZOWKdh+TK6dcrjwPBkLDR5yb8A9phu8wBjr3
-         dM27CY1v/c36Ucb7Ss/8dy/xYpQYRf8coz2svmF38P6cI4dBxGirXcxYelHzfCEXC7F8
-         7nxA==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mFVix5hj4qMWkWTebg8/V8+S9K9ne/G74p8v6BIfU6o=;
+        b=I2So+MXmqnpvFXypMoaFVV6uKyzK7GRRg14dhmjcbQaxRXBweaj2GX5hHc00YS6YRc
+         kqNOoF7S4ESkn2VDsouQFHdx5zMYdbQaHyS1Zouc4VTgJkpdWiyIJHNqK9g91PxbpGRr
+         xustDbI3DEeAOrO8FxjI7O/HA+SC/n2gefMOGdr+DoCU3ihT4wyi8+fmL0XGCq5qcUtk
+         P1tbAxddEoFqC4FFN3rBSJIfI5TkD0WVbng42trX0B0Uy196AUuxCEOQT8l7NzT4mbM/
+         QINoGWYJ2T1KicpeY3kAKyc/rhBfX6kebAjGkl4e4FXYBUSYeu7+P1Gd2oH4g8fLtdfv
+         Jt6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=1/eMB3oQaBdiNnJ8Y7zIUo7wsM74vurfSXPEhMmhvYs=;
-        b=bu3rX1BDOlv2PPumqxC8/+4sEdnfQwTL2O9PY85fplTvKXaHfyE2BtlxRNew6ou+jM
-         fYOG67c3CVdiIP6rAPCclK5jLRE9I8yRefm0RL/78TycJ5gCRB70yzcC9g3PWqPRZBih
-         1fsxBnobar7drjo+vH1nwYuZAUz9201LtJft9b7Han0sScOotzaYmnYcVmQkS/kxDNav
-         MNrYt/PqGi5UEhWT2kfTy5k3wU0hfDj0l0fl/O4F+K/sNsuDB/dRnGMc8SPf0KqrnAOM
-         50Iv7+hveQUnMjpQS9E8fRpiOPwPaHNThfXd2vBJd+TFvh+SfX3Nf6V9uOnITrbrow7j
-         Fnvg==
-X-Gm-Message-State: AOAM533HYpJAzU/qGqN7iju7tcNjh3aw1hHu2ysbg3HMwUpGbl0iWfGE
-        ve8LEo64qEzF1e3Va10O8SA=
-X-Google-Smtp-Source: ABdhPJy3Xru8aPPdjqoS2npd604GtoiksX0HIHMgARWGwYa+NMWrAjYQPNV4yRdyiJty+RcEM1364Q==
-X-Received: by 2002:a17:906:3a8e:: with SMTP id y14mr10204723ejd.153.1624617528371;
-        Fri, 25 Jun 2021 03:38:48 -0700 (PDT)
-Received: from [192.168.74.106] (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
-        by smtp.gmail.com with ESMTPSA id h24sm2492325ejf.20.2021.06.25.03.38.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Jun 2021 03:38:47 -0700 (PDT)
-Subject: Re: [PATCH v1 3/3] phy: qcom-qusb2: Add configuration for SM4250 and
- SM6115
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Manu Gautam <mgautam@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>, devicetree@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-usb@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20210622203240.559979-1-iskren.chernev@gmail.com>
- <20210622203240.559979-4-iskren.chernev@gmail.com> <YNKshSbsf5d5Uyew@yoga>
-From:   Iskren Chernev <iskren.chernev@gmail.com>
-Message-ID: <d42b6bfd-4010-29d2-1701-41979e19d987@gmail.com>
-Date:   Fri, 25 Jun 2021 13:38:46 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        bh=mFVix5hj4qMWkWTebg8/V8+S9K9ne/G74p8v6BIfU6o=;
+        b=i0MVsUzmyQ0ZX5Xt9ESHm/9w1iJ1yOtbANiPkmqOAMTnCH8mn1CpX79UQzFNjD6MNW
+         O82C0VMzHAR8bglqI6W0eNc5AMcV40lVgQ6NSYIH43kFHU0Ye+ukGfUm4oUyVCt2sLRp
+         YcFUpOSo2k5pyuaIGpcJsrMeBLtGnAlIyN6dlJUQwr7CGuJIaEJisc5dDoF1Zp9O0Rc7
+         paD7DcLaBZTvdoR1tT7H1YOUCbe3hrI4uflEhCMsgLNafZ08J90bZVnwJmGsiWT8sNWv
+         n2YXWfnixoo0bD7s2wSdNWnMe3gB7/Qs5Q5WR20l8F4vjscAOXII2fI+ANUVi9uyWPSs
+         Fvxw==
+X-Gm-Message-State: AOAM531DFB7zBhDbxIAwoXh7lk5hJDQolohdD7guK/nR9QCuuXJgAyAy
+        VBFlVn0GlYq7Qvjl2hPuXei9Uw==
+X-Google-Smtp-Source: ABdhPJyhgY8f/6Jz/KKUMwRU1cFzxqjiaNfbIahMe0T7VNKkBkdz3XX3DHfDtNLtGxzoKRkwCUkFIA==
+X-Received: by 2002:a2e:8ecd:: with SMTP id e13mr38921ljl.193.1624621006511;
+        Fri, 25 Jun 2021 04:36:46 -0700 (PDT)
+Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
+        by smtp.gmail.com with ESMTPSA id g24sm489682lfv.228.2021.06.25.04.36.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Jun 2021 04:36:46 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-input@vger.kernel.org
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Michael Srba <Michael.Srba@seznam.cz>,
+        phone-devel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: input/ts/zinitix: Convert to YAML, fix and extend
+Date:   Fri, 25 Jun 2021 13:34:34 +0200
+Message-Id: <20210625113435.2539282-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <YNKshSbsf5d5Uyew@yoga>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+This converts the Zinitix BT4xx and BT5xx touchscreen bindings to YAML, fix
+them up a bit and extends them.
 
+We list all the existing BT4xx and BT5xx components with compatible strings.
+These are all similar, use the same bindings and work in similar ways.
 
-On 6/23/21 6:37 AM, Bjorn Andersson wrote:
-> On Tue 22 Jun 15:32 CDT 2021, Iskren Chernev wrote:
-> 
->> The SM4250 and SM6115 uses the same register layout as MSM8996, but the
->> tune sequence is a bit different.
->>
-> 
-> Didn't review the initialization sequence, but it's different from the
-> existing ones so adding a new compatible and init_tbl seems to be the
-> right choice.
+We rename the supplies from the erroneous vdd/vddo to the actual supply
+names vcca/vdd as specified on the actual component. It is long established
+that supplies shall be named after the supply pin names of a component.
+The confusion probably stems from that in a certain product the rails to the
+component were named vdd/vddo. Drop some notes on how OS implementations should
+avoid confusion by first looking for vddo, and if that exists assume the
+legacy binding pair and otherwise use vcca/vdd.
 
-Here is the init sequence I'm using [1]
+Add reset-gpios as sometimes manufacturers pulls a GPIO line to the reset
+line on the chip.
 
-[1] https://github.com/OnePlusOSS/android_kernel_oneplus_sm4250/blob/oneplus/SM4250_Q_10.0/arch/arm64/boot/dts/vendor/20882/bengal-qrd.dtsi#L130
+Add optional touchscreen-fuzz-x and touchscreen-fuzz-y properties.
 
-> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-> 
-> Regards,
-> Bjorn
-> 
->> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
->> ---
->>  drivers/phy/qualcomm/phy-qcom-qusb2.c | 34 +++++++++++++++++++++++++++
->>  1 file changed, 34 insertions(+)
->>
->> diff --git a/drivers/phy/qualcomm/phy-qcom-qusb2.c b/drivers/phy/qualcomm/phy-qcom-qusb2.c
->> index 8f1bf7e2186b..3c1d3b71c825 100644
->> --- a/drivers/phy/qualcomm/phy-qcom-qusb2.c
->> +++ b/drivers/phy/qualcomm/phy-qcom-qusb2.c
->> @@ -219,6 +219,22 @@ static const struct qusb2_phy_init_tbl msm8998_init_tbl[] = {
->>  	QUSB2_PHY_INIT_CFG(QUSB2PHY_PLL_DIGITAL_TIMERS_TWO, 0x19),
->>  };
->>  
->> +static const struct qusb2_phy_init_tbl sm6115_init_tbl[] = {
->> +	QUSB2_PHY_INIT_CFG_L(QUSB2PHY_PORT_TUNE1, 0xf8),
->> +	QUSB2_PHY_INIT_CFG_L(QUSB2PHY_PORT_TUNE2, 0x53),
->> +	QUSB2_PHY_INIT_CFG_L(QUSB2PHY_PORT_TUNE3, 0x81),
->> +	QUSB2_PHY_INIT_CFG_L(QUSB2PHY_PORT_TUNE4, 0x17),
->> +
->> +	QUSB2_PHY_INIT_CFG(QUSB2PHY_PLL_TUNE, 0x30),
->> +	QUSB2_PHY_INIT_CFG(QUSB2PHY_PLL_USER_CTL1, 0x79),
->> +	QUSB2_PHY_INIT_CFG(QUSB2PHY_PLL_USER_CTL2, 0x21),
->> +
->> +	QUSB2_PHY_INIT_CFG_L(QUSB2PHY_PORT_TEST2, 0x14),
->> +
->> +	QUSB2_PHY_INIT_CFG(QUSB2PHY_PLL_AUTOPGM_CTL1, 0x9f),
->> +	QUSB2_PHY_INIT_CFG(QUSB2PHY_PLL_PWR_CTRL, 0x00),
->> +};
->> +
->>  static const unsigned int qusb2_v2_regs_layout[] = {
->>  	[QUSB2PHY_PLL_CORE_INPUT_OVERRIDE] = 0xa8,
->>  	[QUSB2PHY_PLL_STATUS]		= 0x1a0,
->> @@ -342,6 +358,18 @@ static const struct qusb2_phy_cfg sdm660_phy_cfg = {
->>  	.autoresume_en	 = BIT(3),
->>  };
->>  
->> +static const struct qusb2_phy_cfg sm6115_phy_cfg = {
->> +	.tbl		= sm6115_init_tbl,
->> +	.tbl_num	= ARRAY_SIZE(sm6115_init_tbl),
->> +	.regs		= msm8996_regs_layout,
->> +
->> +	.has_pll_test	= true,
->> +	.se_clk_scheme_default = true,
->> +	.disable_ctrl	= (CLAMP_N_EN | FREEZIO_N | POWER_DOWN),
->> +	.mask_core_ready = PLL_LOCKED,
->> +	.autoresume_en	 = BIT(3),
->> +};
->> +
->>  static const char * const qusb2_phy_vreg_names[] = {
->>  	"vdda-pll", "vdda-phy-dpdm",
->>  };
->> @@ -888,6 +916,12 @@ static const struct of_device_id qusb2_phy_of_match_table[] = {
->>  	}, {
->>  		.compatible	= "qcom,sdm660-qusb2-phy",
->>  		.data		= &sdm660_phy_cfg,
->> +	}, {
->> +		.compatible	= "qcom,sm4250-qusb2-phy",
->> +		.data		= &sm6115_phy_cfg,
->> +	}, {
->> +		.compatible	= "qcom,sm6115-qusb2-phy",
->> +		.data		= &sm6115_phy_cfg,
->>  	}, {
->>  		/*
->>  		 * Deprecated. Only here to support legacy device
->> -- 
->> 2.31.1
->>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Michael Srba <Michael.Srba@seznam.cz>
+Cc: phone-devel@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ .../input/touchscreen/zinitix,bt400.yaml      | 115 ++++++++++++++++++
+ .../bindings/input/touchscreen/zinitix.txt    |  40 ------
+ 2 files changed, 115 insertions(+), 40 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/zinitix,bt400.yaml
+ delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/zinitix.txt
+
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/zinitix,bt400.yaml b/Documentation/devicetree/bindings/input/touchscreen/zinitix,bt400.yaml
+new file mode 100644
+index 000000000000..6e8b4dede9d7
+--- /dev/null
++++ b/Documentation/devicetree/bindings/input/touchscreen/zinitix,bt400.yaml
+@@ -0,0 +1,115 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/input/touchscreen/zinitix,bt400.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Zinitix BT4xx and BT5xx series touchscreen controller bindings
++
++description: The Zinitix BT4xx and BT5xx series of touchscreen controllers
++  are Korea-produced touchscreens with embedded microcontrollers. The
++  BT4xx series was produced 2010-2013 and the BT5xx series 2013-2014.
++
++maintainers:
++  - Michael Srba <Michael.Srba@seznam.cz>
++  - Linus Walleij <linus.walleij@linaro.org>
++
++allOf:
++  - $ref: touchscreen.yaml#
++
++properties:
++  $nodename:
++    pattern: "^touchscreen(@.*)?$"
++
++  compatible:
++    oneOf:
++      - const: zinitix,bt402
++      - const: zinitix,bt403
++      - const: zinitix,bt404
++      - const: zinitix,bt412
++      - const: zinitix,bt413
++      - const: zinitix,bt431
++      - const: zinitix,bt432
++      - const: zinitix,bt531
++      - const: zinitix,bt532
++      - const: zinitix,bt538
++      - const: zinitix,bt541
++      - const: zinitix,bt548
++      - const: zinitix,bt554
++      - const: zinitix,at100
++
++  reg:
++    description: I2C address on the I2C bus
++
++  clock-frequency:
++    description: I2C client clock frequency, defined for host when using
++      the device on the I2C bus
++    minimum: 0
++    maximum: 400000
++
++  interrupts:
++    description: Interrupt to host
++    maxItems: 1
++
++  vcca-supply:
++    description: Analog power supply regulator on the VCCA pin
++
++  vdd-supply:
++    description: Digital power supply regulator on the VDD pin.
++      In older device trees this can be the accidental name for the analog
++      supply on the VCCA pin, and in that case the deprecated vddo-supply is
++      used for the digital power supply.
++
++  vddo-supply:
++    description: Deprecated name for the digital power supply, use vdd-supply
++      as this reflects the real name of the pin. If this supply is present,
++      the vdd-supply represents VCCA instead of VDD. Implementers should first
++      check for this property, and if it is present assume that the vdd-supply
++      represents the analog supply.
++    deprecated: true
++
++  reset-gpios:
++    description: Reset line for the touchscreen, should be tagged
++      as GPIO_ACTIVE_LOW
++
++  zinitix,mode:
++    description: Mode of reporting touch points. Some modes may not work
++      with a particular ts firmware for unknown reasons. Available modes are
++      1 and 2. Mode 2 is the default and preferred.
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [1, 2]
++
++  touchscreen-size-x: true
++  touchscreen-size-y: true
++  touchscreen-fuzz-x: true
++  touchscreen-fuzz-y: true
++
++additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - touchscreen-size-x
++  - touchscreen-size-y
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/gpio/gpio.h>
++    i2c {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      touchscreen@20 {
++        compatible = "zinitix,bt541";
++        reg = <0x20>;
++        interrupt-parent = <&gpio>;
++        interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
++        vcca-supply = <&reg_vcca_tsp>;
++        vdd-supply = <&reg_vdd_tsp>;
++        touchscreen-size-x = <540>;
++        touchscreen-size-y = <960>;
++        zinitix,mode = <2>;
++      };
++    };
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/zinitix.txt b/Documentation/devicetree/bindings/input/touchscreen/zinitix.txt
+deleted file mode 100644
+index 446efb9f5f55..000000000000
+--- a/Documentation/devicetree/bindings/input/touchscreen/zinitix.txt
++++ /dev/null
+@@ -1,40 +0,0 @@
+-Device tree bindings for Zinitx BT541 touchscreen controller
+-
+-Required properties:
+-
+- - compatible		: Should be "zinitix,bt541"
+- - reg			: I2C address of the chip. Should be 0x20
+- - interrupts		: Interrupt to which the chip is connected
+-
+-Optional properties:
+-
+- - vdd-supply		: Analog power supply regulator on VCCA pin
+- - vddo-supply		: Digital power supply regulator on VDD pin
+- - zinitix,mode		: Mode of reporting touch points. Some modes may not work
+-			  with a particular ts firmware for unknown reasons. Available
+-			  modes are 1 and 2. Mode 2 is the default and preferred.
+-
+-The touchscreen-* properties are documented in touchscreen.txt in this
+-directory.
+-
+-Example:
+-
+-	i2c@00000000 {
+-		/* ... */
+-
+-		bt541@20 {
+-			compatible = "zinitix,bt541";
+-			reg = <0x20>;
+-			interrupt-parent = <&msmgpio>;
+-			interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
+-			pinctrl-names = "default";
+-			pinctrl-0 = <&tsp_default>;
+-			vdd-supply = <&reg_vdd_tsp>;
+-			vddo-supply = <&pm8916_l6>;
+-			touchscreen-size-x = <540>;
+-			touchscreen-size-y = <960>;
+-			zinitix,mode = <2>;
+-		};
+-
+-		/* ... */
+-	};
+-- 
+2.31.1
+
