@@ -7,136 +7,101 @@ X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C575C11F68
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Jun 2021 15:28:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8D0BC11F69
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Jun 2021 15:41:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 370A96147D
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Jun 2021 15:28:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 91FD76161C
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Jun 2021 15:41:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235565AbhF3Pam (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Jun 2021 11:30:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40004 "EHLO
+        id S235743AbhF3Pnb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Jun 2021 11:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235466AbhF3Pam (ORCPT
+        with ESMTP id S235508AbhF3Pna (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Jun 2021 11:30:42 -0400
-Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56019C061756
-        for <phone-devel@vger.kernel.org>; Wed, 30 Jun 2021 08:28:12 -0700 (PDT)
-Received: by mail-vs1-xe34.google.com with SMTP id x141so1925496vsx.2
-        for <phone-devel@vger.kernel.org>; Wed, 30 Jun 2021 08:28:12 -0700 (PDT)
+        Wed, 30 Jun 2021 11:43:30 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D610C061756
+        for <phone-devel@vger.kernel.org>; Wed, 30 Jun 2021 08:41:01 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id q18so5907868lfc.7
+        for <phone-devel@vger.kernel.org>; Wed, 30 Jun 2021 08:41:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=IUWiDtJj6RLCmSbjVw2d2AiCqh7YRspmj66BCZBaYbI=;
-        b=xJvjeBR0bkglNo1Ml3d8DB03lWqqJEgTLfwazL9G+kCGbFH5eX3XuY8ja9gyRSDwS/
-         0nMTcziAgE3sbJJYC5HZXheFQaLSheRyYz/X2heLR+OpWON/oUgzyJZ020cpfjBfIEcZ
-         ir7L4/wTjtbQ18XhJqV7D9uYXZV3PAoaH3Kt3+AoBzj0qu8n+9T/iBiugf/krC16XW+J
-         Yxt0IlnH+uhOLjhqH7zy+9cGnaJZWZpKoyZljF26KDApg58x8ZR9wZq3fVeNJse1V/R/
-         rrPjwRYzmur+Av3hZThM4HwG99lodaV0Ftpo8zqAGwvSKz+coZZ80Fn93D9+czUnXnF3
-         V5gw==
+        bh=mcV9E45NKZ7hefc23azn5TjlOzKOt4blMnnIG7hMOYM=;
+        b=WofXnVuKi1awkT5IU8azRO9FORp2TaEsALsyUD/7deHNdYkzYwvx0xwEmgZZ3fsVTh
+         s90qRevq7hppcPMtU2SmpJwY1VRh6MFRN0jdY3rH4bUYSBaN3TtfdHBYJxOL6hOs4cnn
+         wEL/jvincPT8FjquX+gjih9trq7DYKFEqBFyIkdEbkB6I21b33r5q5ppy4iMOmrGLZXY
+         b8lKhl60f3UWc9SHHQdDOZIxpMAfNV/u1irHo0aGtNtEANT14+KEhtMC8USrH9IFEoKz
+         Fgg4VcGnBAYvWK3h7L9UFEJMfBQOsr/lZNHSc9u0k4W4rdcfgd6wV5buq8CWECJt6Irz
+         OpOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=IUWiDtJj6RLCmSbjVw2d2AiCqh7YRspmj66BCZBaYbI=;
-        b=HG1Awy8YW9R2dct7XNsSfTs4ZtYyyGOWneZ711w0TvnBCmBzHRYarsi8zM0BBuryk+
-         nM5m5HOuVGbN9y3TQ9X0b557VUVdIIhRTaOwYU7prBxEPbFSPfWNqxxmn30U3u38eHn9
-         5kSTcVDo8jVaCjgcX1WTzK+iWsXXDTIqAzqlbBd6BIQvigH5R3CH2f3BVMfa/b3O9nJy
-         tGAv+t8m8MCBqcnh7FQgUWTkKc+d6cFPU8YJUKSw0NIfw95E1cST/KIB3kOEzYmKG3LB
-         +4bZLi7OiWvY4s9vQMsh7WoZ6P4xLwHSIka2FDSP3RMKZC9awWTdSAj9RkgrT76A6vxb
-         jmMQ==
-X-Gm-Message-State: AOAM530WLFoD88cqeAPQRZ5eInO0VAAUos3ZjAxYeLmrJ8+vQLOg3IMF
-        rVGaewjSDsIM0kTWYpGAZVQoAeoySqCfjmIt/SSs5w==
-X-Google-Smtp-Source: ABdhPJyEOTGfachURpgXYwFQwVJcnm05uDBGBEsBTBD4/wHhX/upCDNBWpA+ZrfaarCqvQIgMyZlft8Sr2mERuxoUVs=
-X-Received: by 2002:a67:8783:: with SMTP id j125mr8158589vsd.42.1625066891402;
- Wed, 30 Jun 2021 08:28:11 -0700 (PDT)
+        bh=mcV9E45NKZ7hefc23azn5TjlOzKOt4blMnnIG7hMOYM=;
+        b=BdlGDKyLGlSeK1w/liF5GqQw0Du4d+LR/5iWajhB4bF6nNhcb3Tf8UzslnIuExRUTK
+         J26WoaVfrC1lHt+WMXRyu6fX7CvoMZF800KPno4EjwU4KEli1MsxR0oYAOEKiSBThd2L
+         CZP7d7TQb8ausoeYU9+m5J6kRRzjZQaNQiiDCo71uQvSStlZY9dpu9jtASGTMIjpdym3
+         oU4KBAas36XGBvC0IBbIALxjAulzb18j/6hUh0uy3uJrrX9+jjcfpPrQJq0HgxSRtn2U
+         zC/qaJczp0urLX3CvnxH85ube5tvNfqxc851xip/2TvMI6QLb4dTppEHEn0qrVp3kwdJ
+         eOSw==
+X-Gm-Message-State: AOAM532aI5kywFhhTNSrG08976vDYIY4X9gAy/23f2sg993r/+EuvYbt
+        IGpiXaIHJT/qrwdQHfQui7QZj2vU4hd/8uerKERZAQ==
+X-Google-Smtp-Source: ABdhPJzl6dq3J7qwb9y320AWZIMj7FHdoSUgKWNSG+CpcV4qA+zbvtRDrXffwl1urZpHJ2sjIoDTFXssQ3NBLPnqupc=
+X-Received: by 2002:a19:c141:: with SMTP id r62mr2125685lff.157.1625067659809;
+ Wed, 30 Jun 2021 08:40:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210628232955.3327484-1-linus.walleij@linaro.org>
- <CAPDyKFpfJC=KAZ5dGAso2zcgBic4uCkOiDFQ0ZA5Zi7UDUeEug@mail.gmail.com>
- <CACRpkdY4kegTzeqPHNEd3=hOdqSXAvJq+LehLbf09mUybU0VfA@mail.gmail.com>
- <CAPDyKFoj47-4XuKbV6jYkJ2pesAfHK999vudWDGTQA-J5eQXrg@mail.gmail.com> <CACRpkdYX5RiUy7u_SeCqhytbyL1Ta9iVmx500uwAq8sNmW+3Ug@mail.gmail.com>
-In-Reply-To: <CACRpkdYX5RiUy7u_SeCqhytbyL1Ta9iVmx500uwAq8sNmW+3Ug@mail.gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 30 Jun 2021 17:27:35 +0200
-Message-ID: <CAPDyKForEi09uyXL4nDn27bth+btEYAhzd6+YusMrRBygCdtEA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: core: Add a card quirk for broken boot partitions
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>, phone-devel@vger.kernel.org,
-        Stephan Gerhold <stephan@gerhold.net>, newbyte@disroot.org
+References: <20210624224458.2486701-1-linus.walleij@linaro.org> <CAD=FV=UdaGnUk8E9JobeTfS4nQdHxXbc++T2UtCmyzRLu5eeJA@mail.gmail.com>
+In-Reply-To: <CAD=FV=UdaGnUk8E9JobeTfS4nQdHxXbc++T2UtCmyzRLu5eeJA@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 30 Jun 2021 17:40:48 +0200
+Message-ID: <CACRpkdamGu73CMm9N-mNKZ33B76eO32RT9Gw3hUk+p76WyN32g@mail.gmail.com>
+Subject: Re: [PATCH] drm/panel: ws2401: Add driver for WideChips WS2401
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        phone-devel@vger.kernel.org,
+        =?UTF-8?Q?Noralf_Tr=C3=B8nnes?= <noralf@tronnes.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 30 Jun 2021 at 16:26, Linus Walleij <linus.walleij@linaro.org> wrote:
->
-> On Wed, Jun 30, 2021 at 1:50 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> > > We wait forever in mmc_wait_for_req_done() since the completion
-> > > never arrives.
-> >
-> > Thanks for sharing these details. It looks like the mmci driver is
-> > waiting for the busy completion IRQ, forever.
->
-> Yep
->
-> > Either the HW busy detection isn't working properly in mmci or the
-> > eMMC card is behaving a bit odd (continues to deassert the DAT0 line
-> > forever).
->
-> Yep. I think the card is odd because I have this working fine on
-> 3 other ux500 phones, this is the odd one out. I will try to check
-> what eMMC is in the others as well.
->
-> > What certainly is missing in the mmci driver, is a software based
-> > timeout for cases like these. The mmci driver should better complete
-> > the request with -ETIMEDOUT error for the cmd, rather than hanging
-> > forever and waiting for the busy completion IRQ.
->
-> That is true, it would make the driver more robust.
->
-> > > I think you also mentioned the timeout in EXT_CSD maybe not being
-> > > long enough? How do I play around with this?
-> > > MMC_QUIRK_LONG_READ_TIME?
-> >
-> > As mmci doesn't care about busy timeouts, but waits forever, this is
-> > likely not the problem.
-> >
-> > However, I would like to try to narrow down the problem even further.
-> > Would you mind try the below debug patch?
->
-> With this patch mmc2 comes up and I can mount and browse
-> the eMMC.
->
-> I think it is because these lines in mmci_cmd_irq() will not
-> be executed:
->
->         /* Handle busy detection on DAT0 if the variant supports it. */
->         if (busy_resp && host->variant->busy_detect)
->                 if (!host->ops->busy_complete(host, status, err_msk))
->                         return;
->
-> These seemed to be especially problematic to me.
+Hi Doug,
 
-Yes, exactly. The IRQ based busy detection code gets disabled with my
-debug patch.
+thanks for your review! I fixed most things except this:
 
-It looks like there are some race conditions in the HW busy detection
-path for mmci, which gets triggered by this eMMC card.
+On Fri, Jun 25, 2021 at 6:42 PM Doug Anderson <dianders@chromium.org> wrote:
 
+> > +static int ws2401_disable(struct drm_panel *panel)
+> > +{
+> > +       struct ws2401 *ws = to_ws2401(panel);
+> > +
+> > +       ws2401_command(ws, MIPI_DCS_SET_DISPLAY_OFF);
+> > +       msleep(25);
 >
-> However the core can still use ->card_busy() at times?
+> It feels weird / arbitrary the split between "disable" and "unprepare"
+> on this panel driver compared to the "db7430.c" one. In the other
+> driver you put the sleep mode here and in this driver you put the
+> sleep mode un "unpreapre". Is that for a reason, or just arbitrary?
+> Can it be consistent between the two drivers?
+>
+> I guess maybe this is because in "db7430" the power up order was
+> slightly different?
 
-It can and will.
+This arbitrary sequence ordering is part of why we can't just have
+one display driver to rule them all... sadly they also make semantic
+sense.
 
-Although, it's more optimal to receive an IRQ when busy on DAT0 is
-de-asserted, rather than polling with ->card_busy(). Hence we also
-have MMC_CAP_WAIT_WHILE_BUSY.
+The vendor driver needs the display to come out of sleep right
+after the power-on to send the init sequence. The vendor driver
+does exactly this.
 
-I will have another look at the code in mmci, to see if there is
-something we can try to improve.
+The placement of these sleep mode in prepare/unprepare calls
+is because of this.
 
-Kind regards
-Uffe
+Yours,
+Linus Walleij
