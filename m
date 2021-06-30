@@ -2,190 +2,98 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39CA3C11F68
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Jun 2021 19:34:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5EA9C11F66
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Jun 2021 22:33:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1C3F6613ED
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Jun 2021 19:34:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BFE396147D
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Jun 2021 22:33:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233777AbhF3Tgr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Jun 2021 15:36:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38536 "EHLO
+        id S232514AbhF3Wfz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Jun 2021 18:35:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229700AbhF3Tgr (ORCPT
+        with ESMTP id S231864AbhF3Wfz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Jun 2021 15:36:47 -0400
-Received: from smtp.domeneshop.no (smtp.domeneshop.no [IPv6:2a01:5b40:0:3005::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94196C061756
-        for <phone-devel@vger.kernel.org>; Wed, 30 Jun 2021 12:34:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tronnes.org
-        ; s=ds202012; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=whcJQgwr8DoeHtWWkaXWmi8uY3gLtHRcDcBtQybYEqE=; b=LUmNKNj6iigl3hYG+3R3c+WjId
-        3kFMspz4a5zzIVDyJiJ0J4Ic3WgS2TgR5CrCrEHnc2mW3oPTVX4JYOnOcVdoo6fRyxCmvNGPesTyr
-        SH4reAlgBHz2g3o7yv2xo8UL6hZcqo8Ft/Z4yQba27lcuGG+SGeJvRjeL8bccp83stqHATV/2/On+
-        LOluS/sAJ5drGWfhQtnGOnvShCetrth4sbOVOkrnHQK9hw5jZNE0SZSdnRiXEqwD0Pp6OWNPOXuMy
-        4C8E5GCekZwcQDbWuuQ1gfahqfQY5+p/ffdzusQm3qWzI5M0MiLG2D1F7yZo9TDgG9L3A4BB5pXQ5
-        v1fMz4YQ==;
-Received: from 211.81-166-168.customer.lyse.net ([81.166.168.211]:64722 helo=[192.168.10.61])
-        by smtp.domeneshop.no with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <noralf@tronnes.org>)
-        id 1lyfyQ-0005BQ-6J; Wed, 30 Jun 2021 21:34:14 +0200
-Subject: Re: [PATCH 2/2 v2] drm/panel: ws2401: Add driver for WideChips WS2401
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        dri-devel@lists.freedesktop.org
-Cc:     phone-devel@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>
-References: <20210630182804.3628410-1-linus.walleij@linaro.org>
- <20210630182804.3628410-2-linus.walleij@linaro.org>
-From:   =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
-Message-ID: <e73f47eb-2ef3-9214-93e2-1915732bccb9@tronnes.org>
-Date:   Wed, 30 Jun 2021 21:34:11 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Wed, 30 Jun 2021 18:35:55 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7AE1C061756
+        for <phone-devel@vger.kernel.org>; Wed, 30 Jun 2021 15:33:24 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id p24so5540163ljj.1
+        for <phone-devel@vger.kernel.org>; Wed, 30 Jun 2021 15:33:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=NmMtEYQ6S0dKzm7scFp5Sxf68YROktjdsnzfUYcQBhk=;
+        b=kfMdn/+DiE/hYKtQAkcx10sknZqEoddTeQ2TYjIAmWwdYV1r1lE103QPLEZnYF8SDf
+         u9K5Jjbm+bgxTRuEMiquhCkdWq7aR+JrLOsrY9tdiEKg06+Z6iHlBRzS38qiD+79xmfl
+         1JhbpZ4AWGS+P1xRVIKzQVHmw4L5hllgkxHJUBzpEQWODX7SoxUxEhi45Fv1pp5wKf8w
+         JXjz1wcacRYaCcyTkGHlt7xbm3xjZtApsWJRHC1nMnkx5BbIn38NssvV3hW7cTLstB0j
+         OgK+MEjEPY8+G8QK4fMYlZO+UYGpi6ZahR8BX68caD0ZPw68IKT6/uolOPrZSkXHLExJ
+         7HWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NmMtEYQ6S0dKzm7scFp5Sxf68YROktjdsnzfUYcQBhk=;
+        b=k6kdkWKkGAWqubr2/Dlm6q+CO8B20BnYLRlJPew6WYltW5Z5fNn/fBdAOdI3o7ByJ4
+         r1rW210p4uittgo8YW4qqJir9zY1fgM6NfhHojHeBWREzYI6467AfuDST7K6cjbTVZ88
+         qhhuhBEgtchUsO64I5aY2jfnvXGQlpWAUS5b4rb60cuYIgKMAywJGlQg8RabtevfIETM
+         K50xtj3It9aK+OhONP6EFTBJCp16r6E6hDYCJHfr7Y0V5GABUwa2Aw0az/mtEZQBw0YG
+         xxzmoTIGsn8tBWyYRJ3X0NrZfuhsmV7yMIyXqMIZcj6qugietTK1NBHYUa644QnwA3P0
+         dkbQ==
+X-Gm-Message-State: AOAM533UT8bb3uW3UoGDvMuVPSeNP/+wniLOePw9yn6vLN8sJoL5LmWa
+        9/rufjU8IrPfO6lsoI2QniIDQkRGsnOm6FzSvIiAdg==
+X-Google-Smtp-Source: ABdhPJwaxyd1gEtex9L2Kwb+jljmlXTOSQeK34Yv94mrI1exRNPetLvXTw6m43nkszAjt8moy6LAYWiXdENRPig41ok=
+X-Received: by 2002:a05:651c:603:: with SMTP id k3mr9455826lje.368.1625092402941;
+ Wed, 30 Jun 2021 15:33:22 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210630182804.3628410-2-linus.walleij@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+References: <20210628232955.3327484-1-linus.walleij@linaro.org>
+ <CAPDyKFpfJC=KAZ5dGAso2zcgBic4uCkOiDFQ0ZA5Zi7UDUeEug@mail.gmail.com>
+ <CACRpkdY4kegTzeqPHNEd3=hOdqSXAvJq+LehLbf09mUybU0VfA@mail.gmail.com>
+ <CAPDyKFoj47-4XuKbV6jYkJ2pesAfHK999vudWDGTQA-J5eQXrg@mail.gmail.com>
+ <CACRpkdYX5RiUy7u_SeCqhytbyL1Ta9iVmx500uwAq8sNmW+3Ug@mail.gmail.com> <CAPDyKForEi09uyXL4nDn27bth+btEYAhzd6+YusMrRBygCdtEA@mail.gmail.com>
+In-Reply-To: <CAPDyKForEi09uyXL4nDn27bth+btEYAhzd6+YusMrRBygCdtEA@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 1 Jul 2021 00:33:11 +0200
+Message-ID: <CACRpkda7m6HnA7y9coYoXd9YFNjSzAfuYiLNURHe1geb8rF++Q@mail.gmail.com>
+Subject: Re: [PATCH] mmc: core: Add a card quirk for broken boot partitions
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-mmc <linux-mmc@vger.kernel.org>, phone-devel@vger.kernel.org,
+        Stephan Gerhold <stephan@gerhold.net>, newbyte@disroot.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Wed, Jun 30, 2021 at 5:28 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
 
+> >         /* Handle busy detection on DAT0 if the variant supports it. */
+> >         if (busy_resp && host->variant->busy_detect)
+> >                 if (!host->ops->busy_complete(host, status, err_msk))
+> >                         return;
+> >
+> > These seemed to be especially problematic to me.
+>
+> Yes, exactly. The IRQ based busy detection code gets disabled with my
+> debug patch.
+>
+> It looks like there are some race conditions in the HW busy detection
+> path for mmci, which gets triggered by this eMMC card.
+(...)
+> Although, it's more optimal to receive an IRQ when busy on DAT0 is
+> de-asserted, rather than polling with ->card_busy(). Hence we also
+> have MMC_CAP_WAIT_WHILE_BUSY.
 
-Den 30.06.2021 20.28, skrev Linus Walleij:
-> This adds a driver for panels based on the WideChips WS2401 display
-> controller. This display controller is used in the Samsung LMS380KF01
-> display found in the Samsung GT-I8160 (Codina) mobile phone and
-> possibly others.
-> 
-> As is common with Samsung displays manufacturer commands are necessary
-> to configure the display to a working state.
-> 
-> The display optionally supports internal backlight control, but can
-> also use an external backlight.
-> 
-> This driver re-uses the DBI infrastructure to communicate with the
-> display.
-> 
-> Cc: phone-devel@vger.kernel.org
-> Cc: Douglas Anderson <dianders@chromium.org>
-> Cc: Noralf Trønnes <noralf@tronnes.org>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
+Hmmmmm it kind of assumes that DAT0 will be de-asserted *before*
+we get a command response, never after. I think that is what the card
+is doing. If that is out-of-spec then we need to have a quirk like
+this but if it is legal behaviour, we rather need to fix the mmci driver.
 
-> diff --git a/drivers/gpu/drm/panel/panel-widechips-ws2401.c b/drivers/gpu/drm/panel/panel-widechips-ws2401.c
-
-> +static void ws2401_read_mtp_id(struct ws2401 *ws)
-> +{
-> +	struct mipi_dbi *dbi = &ws->dbi;
-> +	u8 id1, id2, id3;
-> +	int ret;
-> +
-> +	ret = mipi_dbi_command_read(dbi, WS2401_READ_ID1, &id1);
-> +	if (ret) {
-> +		dev_err(ws->dev, "unable to read MTP ID 1\n");
-> +		return;
-> +	}
-> +	ret = mipi_dbi_command_read(dbi, WS2401_READ_ID2, &id1);
-
-Didn't spot this earlier, but you're reading ID2 and ID3 into id1.
-
-> +	if (ret) {
-> +		dev_err(ws->dev, "unable to read MTP ID 2\n");
-> +		return;
-> +	}
-> +	ret = mipi_dbi_command_read(dbi, WS2401_READ_ID3, &id1);
-> +	if (ret) {
-> +		dev_err(ws->dev, "unable to read MTP ID 3\n");
-> +		return;
-> +	}
-> +	dev_info(ws->dev, "MTP ID: %02x %02x %02x\n", id1, id2, id3);
-> +}
-
-> +static int ws2401_probe(struct spi_device *spi)
-> +{
-> +	struct device *dev = &spi->dev;
-> +	struct ws2401 *ws;
-> +	int ret;
-> +
-> +	ws = devm_kzalloc(dev, sizeof(*ws), GFP_KERNEL);
-> +	if (!ws)
-> +		return -ENOMEM;
-> +	ws->dev = dev;
-> +
-> +	/*
-> +	 * VCI   is the analog voltage supply
-> +	 * VCCIO is the digital I/O voltage supply
-> +	 */
-> +	ws->regulators[0].supply = "vci";
-> +	ws->regulators[1].supply = "vccio";
-> +	ret = devm_regulator_bulk_get(dev,
-> +				      ARRAY_SIZE(ws->regulators),
-> +				      ws->regulators);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to get regulators\n");
-> +
-> +	ws->reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-> +	if (IS_ERR(ws->reset)) {
-> +		ret = PTR_ERR(ws->reset);
-> +		return dev_err_probe(dev, ret, "no RESET GPIO\n");
-> +	}
-> +
-> +	ret = mipi_dbi_spi_init(spi, &ws->dbi, NULL);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "MIPI DBI init failed\n");
-> +	ws->dbi.read_commands = ws2401_dbi_read_commands;
-> +
-> +	ws2401_power_on(ws);
-> +	ws2401_read_mtp_id(ws);
-> +	ws2401_power_off(ws);
-> +
-> +	drm_panel_init(&ws->panel, dev, &ws2401_drm_funcs,
-> +		       DRM_MODE_CONNECTOR_DPI);
-> +
-> +	ret = drm_panel_of_backlight(&ws->panel);
-
-I still don't see how internal backlight should work, have you tried it?
-
-Tracking down the call chain, drm_panel_of_backlight() can only return
-0, -EINVAL, -ENOMEM and -EPROBE_DEFER. It returns 0 whether the
-backlight property exists or not.
-
-I would do something like this:
-
-	if (ret)
-		return dev_err_probe(dev, ret, "failed to get backlight");
-
-	if (!ws->panel.backlight) {
-> +		dev_dbg(dev, "no external backlight, using internal backlight\n");
-> +		ws->bl = devm_backlight_device_register(dev, "ws2401", dev, ws,
-> +							&ws2401_bl_ops, &ws2401_bl_props);
-> +		if (IS_ERR(ws->bl))
-> +			return dev_err_probe(dev, PTR_ERR(ws->bl),
-> +					     "failed to register backlight device\n");
-> +		ws->panel.backlight = ws->bl;
-> +	} else {
-> +		dev_dbg(dev, "using external backlight\n");
-> +	}
-> +
-> +	spi_set_drvdata(spi, ws);
-> +
-> +	drm_panel_add(&ws->panel);
-> +	dev_dbg(dev, "added panel\n");
-> +
-> +	return 0;
-> +}
-
-Noralf.
+Yours,
+Linus Walleij
