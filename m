@@ -2,98 +2,145 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5EA9C11F66
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Jun 2021 22:33:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D93DFC11F64
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Jul 2021 10:54:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BFE396147D
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Jun 2021 22:33:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B3BE76144F
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Jul 2021 10:54:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232514AbhF3Wfz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Jun 2021 18:35:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49472 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231864AbhF3Wfz (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Jun 2021 18:35:55 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7AE1C061756
-        for <phone-devel@vger.kernel.org>; Wed, 30 Jun 2021 15:33:24 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id p24so5540163ljj.1
-        for <phone-devel@vger.kernel.org>; Wed, 30 Jun 2021 15:33:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NmMtEYQ6S0dKzm7scFp5Sxf68YROktjdsnzfUYcQBhk=;
-        b=kfMdn/+DiE/hYKtQAkcx10sknZqEoddTeQ2TYjIAmWwdYV1r1lE103QPLEZnYF8SDf
-         u9K5Jjbm+bgxTRuEMiquhCkdWq7aR+JrLOsrY9tdiEKg06+Z6iHlBRzS38qiD+79xmfl
-         1JhbpZ4AWGS+P1xRVIKzQVHmw4L5hllgkxHJUBzpEQWODX7SoxUxEhi45Fv1pp5wKf8w
-         JXjz1wcacRYaCcyTkGHlt7xbm3xjZtApsWJRHC1nMnkx5BbIn38NssvV3hW7cTLstB0j
-         OgK+MEjEPY8+G8QK4fMYlZO+UYGpi6ZahR8BX68caD0ZPw68IKT6/uolOPrZSkXHLExJ
-         7HWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NmMtEYQ6S0dKzm7scFp5Sxf68YROktjdsnzfUYcQBhk=;
-        b=k6kdkWKkGAWqubr2/Dlm6q+CO8B20BnYLRlJPew6WYltW5Z5fNn/fBdAOdI3o7ByJ4
-         r1rW210p4uittgo8YW4qqJir9zY1fgM6NfhHojHeBWREzYI6467AfuDST7K6cjbTVZ88
-         qhhuhBEgtchUsO64I5aY2jfnvXGQlpWAUS5b4rb60cuYIgKMAywJGlQg8RabtevfIETM
-         K50xtj3It9aK+OhONP6EFTBJCp16r6E6hDYCJHfr7Y0V5GABUwa2Aw0az/mtEZQBw0YG
-         xxzmoTIGsn8tBWyYRJ3X0NrZfuhsmV7yMIyXqMIZcj6qugietTK1NBHYUa644QnwA3P0
-         dkbQ==
-X-Gm-Message-State: AOAM533UT8bb3uW3UoGDvMuVPSeNP/+wniLOePw9yn6vLN8sJoL5LmWa
-        9/rufjU8IrPfO6lsoI2QniIDQkRGsnOm6FzSvIiAdg==
-X-Google-Smtp-Source: ABdhPJwaxyd1gEtex9L2Kwb+jljmlXTOSQeK34Yv94mrI1exRNPetLvXTw6m43nkszAjt8moy6LAYWiXdENRPig41ok=
-X-Received: by 2002:a05:651c:603:: with SMTP id k3mr9455826lje.368.1625092402941;
- Wed, 30 Jun 2021 15:33:22 -0700 (PDT)
+        id S236040AbhGAK5S (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 1 Jul 2021 06:57:18 -0400
+Received: from relay05.th.seeweb.it ([5.144.164.166]:52541 "EHLO
+        relay05.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229938AbhGAK5S (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Jul 2021 06:57:18 -0400
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 9EDD73F416;
+        Thu,  1 Jul 2021 12:54:45 +0200 (CEST)
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+To:     bjorn.andersson@linaro.org
+Cc:     agross@kernel.org, robh+dt@kernel.org, lgirdwood@gmail.com,
+        broonie@kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, jami.kettunen@somainline.org,
+        paul.bouchara@somainline.org, martin.botka@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, jeffrey.l.hugo@gmail.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v6 0/6] Add support for Core Power Reduction v3, v4 and Hardened
+Date:   Thu,  1 Jul 2021 12:54:35 +0200
+Message-Id: <20210701105441.319572-1-angelogioacchino.delregno@somainline.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-References: <20210628232955.3327484-1-linus.walleij@linaro.org>
- <CAPDyKFpfJC=KAZ5dGAso2zcgBic4uCkOiDFQ0ZA5Zi7UDUeEug@mail.gmail.com>
- <CACRpkdY4kegTzeqPHNEd3=hOdqSXAvJq+LehLbf09mUybU0VfA@mail.gmail.com>
- <CAPDyKFoj47-4XuKbV6jYkJ2pesAfHK999vudWDGTQA-J5eQXrg@mail.gmail.com>
- <CACRpkdYX5RiUy7u_SeCqhytbyL1Ta9iVmx500uwAq8sNmW+3Ug@mail.gmail.com> <CAPDyKForEi09uyXL4nDn27bth+btEYAhzd6+YusMrRBygCdtEA@mail.gmail.com>
-In-Reply-To: <CAPDyKForEi09uyXL4nDn27bth+btEYAhzd6+YusMrRBygCdtEA@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 1 Jul 2021 00:33:11 +0200
-Message-ID: <CACRpkda7m6HnA7y9coYoXd9YFNjSzAfuYiLNURHe1geb8rF++Q@mail.gmail.com>
-Subject: Re: [PATCH] mmc: core: Add a card quirk for broken boot partitions
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     linux-mmc <linux-mmc@vger.kernel.org>, phone-devel@vger.kernel.org,
-        Stephan Gerhold <stephan@gerhold.net>, newbyte@disroot.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Jun 30, 2021 at 5:28 PM Ulf Hansson <ulf.hansson@linaro.org> wrote:
+Changes in v6:
+- Fixes from Bjorn's review
+- After a conversation with Viresh, it turned out I was abusing the
+  OPP API to pass the APM and MEM-ACC thresholds to qcom-cpufreq-hw,
+  so now the driver is using the genpd created virtual device and
+  passing drvdata instead to stop the abuse
+- Since the CPR commonization was ignored for more than 6 months,
+  it is now included in the CPRv3/4/h series, as there is no point
+  in commonizing without having this driver
+- Rebased on v5.13
 
-> >         /* Handle busy detection on DAT0 if the variant supports it. */
-> >         if (busy_resp && host->variant->busy_detect)
-> >                 if (!host->ops->busy_complete(host, status, err_msk))
-> >                         return;
-> >
-> > These seemed to be especially problematic to me.
->
-> Yes, exactly. The IRQ based busy detection code gets disabled with my
-> debug patch.
->
-> It looks like there are some race conditions in the HW busy detection
-> path for mmci, which gets triggered by this eMMC card.
-(...)
-> Although, it's more optimal to receive an IRQ when busy on DAT0 is
-> de-asserted, rather than polling with ->card_busy(). Hence we also
-> have MMC_CAP_WAIT_WHILE_BUSY.
+Changes in v5:
+- Fixed getting OPP table when not yet installed by the caller
+  of power domain attachment
 
-Hmmmmm it kind of assumes that DAT0 will be de-asserted *before*
-we get a command response, never after. I think that is what the card
-is doing. If that is out-of-spec then we need to have a quirk like
-this but if it is legal behaviour, we rather need to fix the mmci driver.
+Changes in v4:
+- Huge patch series has been split for better reviewability,
+  as suggested by Bjorn
 
-Yours,
-Linus Walleij
+Changes in v3:
+- Fixed YAML doc issues
+- Removed unused variables and redundant if branch
+
+Changes in v2:
+- Implemented dynamic Memory Accelerator corners support, needed
+  by MSM8998
+- Added MSM8998 Silver/Gold parameters
+
+This commit introduces a new driver, based on the one for cpr v1,
+to enable support for the newer Qualcomm Core Power Reduction
+hardware, known downstream as CPR3, CPR4 and CPRh, and support
+for MSM8998 and SDM630 CPU power reduction.
+
+In these new versions of the hardware, support for various new
+features was introduced, including voltage reduction for the GPU,
+security hardening and a new way of controlling CPU DVFS,
+consisting in internal communication between microcontrollers,
+specifically the CPR-Hardened and the Operating State Manager.
+
+The CPR v3, v4 and CPRh are present in a broad range of SoCs,
+from the mid-range to the high end ones including, but not limited
+to, MSM8953/8996/8998, SDM630/636/660/845.
+
+As to clarify, SDM845 does the CPR/SAW/OSM setup in TZ firmware, but
+this is limited to the CPU context; despite GPU CPR support being not
+implemented in this series, it is planned for the future, and some
+SDM845 need the CPR (in the context of GPU CPR) to be configured from
+this driver.
+
+It is also planned to add the CPR data for MSM8996, since this driver
+does support the CPRv4 found on that SoC, but I currently have no time
+to properly test that on a real device, so I prefer getting this big
+implementation merged before adding more things on top.
+
+As for MSM8953, we (read: nobody from SoMainline) have no device with
+this chip: since we are unable to test the cpr data and the entire
+driver on that one, we currently have no plans to do this addition
+in the future. This is left to other nice developers: I'm sure that
+somebody will come up with that, sooner or later ;)
+
+Tested on the following smartphones:
+- Sony Xperia XA2        (SDM630)
+- Sony Xperia XA2 Ultra  (SDM630)
+- Sony Xperia 10         (SDM630)
+- Sony Xperia XZ Premium (MSM8998)
+- F(x)Tec Pro 1          (MSM8998)
+
+AngeloGioacchino Del Regno (6):
+  soc: qcom: cpr: Move common functions to new file
+  dt-bindings: avs: cpr: Convert binding to YAML schema
+  arm64: qcom: qcs404: Change CPR nvmem-names
+  soc: qcom: Add support for Core Power Reduction v3, v4 and Hardened
+  MAINTAINERS: Add entry for Qualcomm CPRv3/v4/Hardened driver
+  dt-bindings: soc: qcom: cpr3: Add bindings for CPR3 driver
+
+ .../bindings/power/avs/qcom,cpr.txt           |  131 +-
+ .../bindings/soc/qcom/qcom,cpr.yaml           |  167 +
+ .../bindings/soc/qcom/qcom,cpr3.yaml          |  241 ++
+ MAINTAINERS                                   |    8 +-
+ arch/arm64/boot/dts/qcom/qcs404.dtsi          |   26 +-
+ drivers/soc/qcom/Kconfig                      |   17 +
+ drivers/soc/qcom/Makefile                     |    3 +-
+ drivers/soc/qcom/cpr-common.c                 |  405 +++
+ drivers/soc/qcom/cpr-common.h                 |  117 +
+ drivers/soc/qcom/cpr.c                        |  441 +--
+ drivers/soc/qcom/cpr3.c                       | 2897 +++++++++++++++++
+ include/soc/qcom/cpr.h                        |   17 +
+ 12 files changed, 3911 insertions(+), 559 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
+ create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml
+ create mode 100644 drivers/soc/qcom/cpr-common.c
+ create mode 100644 drivers/soc/qcom/cpr-common.h
+ create mode 100644 drivers/soc/qcom/cpr3.c
+ create mode 100644 include/soc/qcom/cpr.h
+
+-- 
+2.32.0
+
