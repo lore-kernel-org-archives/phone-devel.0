@@ -2,28 +2,29 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D93DFC11F64
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Jul 2021 10:54:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C3C69C11F69
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Jul 2021 10:54:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B3BE76144F
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Jul 2021 10:54:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A805161574
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Jul 2021 10:54:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236040AbhGAK5S (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Jul 2021 06:57:18 -0400
-Received: from relay05.th.seeweb.it ([5.144.164.166]:52541 "EHLO
-        relay05.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbhGAK5S (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Jul 2021 06:57:18 -0400
+        id S236119AbhGAK5V (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 1 Jul 2021 06:57:21 -0400
+Received: from relay08.th.seeweb.it ([5.144.164.169]:57233 "EHLO
+        relay08.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235300AbhGAK5U (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Jul 2021 06:57:20 -0400
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 9EDD73F416;
-        Thu,  1 Jul 2021 12:54:45 +0200 (CEST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id A79ED3F4EA;
+        Thu,  1 Jul 2021 12:54:48 +0200 (CEST)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     bjorn.andersson@linaro.org
@@ -36,111 +37,353 @@ Cc:     agross@kernel.org, robh+dt@kernel.org, lgirdwood@gmail.com,
         ~postmarketos/upstreaming@lists.sr.ht, jeffrey.l.hugo@gmail.com,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v6 0/6] Add support for Core Power Reduction v3, v4 and Hardened
-Date:   Thu,  1 Jul 2021 12:54:35 +0200
-Message-Id: <20210701105441.319572-1-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v6 2/6] dt-bindings: avs: cpr: Convert binding to YAML schema
+Date:   Thu,  1 Jul 2021 12:54:37 +0200
+Message-Id: <20210701105441.319572-3-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20210701105441.319572-1-angelogioacchino.delregno@somainline.org>
+References: <20210701105441.319572-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Changes in v6:
-- Fixes from Bjorn's review
-- After a conversation with Viresh, it turned out I was abusing the
-  OPP API to pass the APM and MEM-ACC thresholds to qcom-cpufreq-hw,
-  so now the driver is using the genpd created virtual device and
-  passing drvdata instead to stop the abuse
-- Since the CPR commonization was ignored for more than 6 months,
-  it is now included in the CPRv3/4/h series, as there is no point
-  in commonizing without having this driver
-- Rebased on v5.13
+Convert the qcom,cpr.txt document to YAML schema and place it in the
+appropriate directory, since this driver was moved from power/avs
+to soc/qcom, but forgets to move the documentation.
 
-Changes in v5:
-- Fixed getting OPP table when not yet installed by the caller
-  of power domain attachment
-
-Changes in v4:
-- Huge patch series has been split for better reviewability,
-  as suggested by Bjorn
-
-Changes in v3:
-- Fixed YAML doc issues
-- Removed unused variables and redundant if branch
-
-Changes in v2:
-- Implemented dynamic Memory Accelerator corners support, needed
-  by MSM8998
-- Added MSM8998 Silver/Gold parameters
-
-This commit introduces a new driver, based on the one for cpr v1,
-to enable support for the newer Qualcomm Core Power Reduction
-hardware, known downstream as CPR3, CPR4 and CPRh, and support
-for MSM8998 and SDM630 CPU power reduction.
-
-In these new versions of the hardware, support for various new
-features was introduced, including voltage reduction for the GPU,
-security hardening and a new way of controlling CPU DVFS,
-consisting in internal communication between microcontrollers,
-specifically the CPR-Hardened and the Operating State Manager.
-
-The CPR v3, v4 and CPRh are present in a broad range of SoCs,
-from the mid-range to the high end ones including, but not limited
-to, MSM8953/8996/8998, SDM630/636/660/845.
-
-As to clarify, SDM845 does the CPR/SAW/OSM setup in TZ firmware, but
-this is limited to the CPU context; despite GPU CPR support being not
-implemented in this series, it is planned for the future, and some
-SDM845 need the CPR (in the context of GPU CPR) to be configured from
-this driver.
-
-It is also planned to add the CPR data for MSM8996, since this driver
-does support the CPRv4 found on that SoC, but I currently have no time
-to properly test that on a real device, so I prefer getting this big
-implementation merged before adding more things on top.
-
-As for MSM8953, we (read: nobody from SoMainline) have no device with
-this chip: since we are unable to test the cpr data and the entire
-driver on that one, we currently have no plans to do this addition
-in the future. This is left to other nice developers: I'm sure that
-somebody will come up with that, sooner or later ;)
-
-Tested on the following smartphones:
-- Sony Xperia XA2        (SDM630)
-- Sony Xperia XA2 Ultra  (SDM630)
-- Sony Xperia 10         (SDM630)
-- Sony Xperia XZ Premium (MSM8998)
-- F(x)Tec Pro 1          (MSM8998)
-
-AngeloGioacchino Del Regno (6):
-  soc: qcom: cpr: Move common functions to new file
-  dt-bindings: avs: cpr: Convert binding to YAML schema
-  arm64: qcom: qcs404: Change CPR nvmem-names
-  soc: qcom: Add support for Core Power Reduction v3, v4 and Hardened
-  MAINTAINERS: Add entry for Qualcomm CPRv3/v4/Hardened driver
-  dt-bindings: soc: qcom: cpr3: Add bindings for CPR3 driver
-
- .../bindings/power/avs/qcom,cpr.txt           |  131 +-
- .../bindings/soc/qcom/qcom,cpr.yaml           |  167 +
- .../bindings/soc/qcom/qcom,cpr3.yaml          |  241 ++
- MAINTAINERS                                   |    8 +-
- arch/arm64/boot/dts/qcom/qcs404.dtsi          |   26 +-
- drivers/soc/qcom/Kconfig                      |   17 +
- drivers/soc/qcom/Makefile                     |    3 +-
- drivers/soc/qcom/cpr-common.c                 |  405 +++
- drivers/soc/qcom/cpr-common.h                 |  117 +
- drivers/soc/qcom/cpr.c                        |  441 +--
- drivers/soc/qcom/cpr3.c                       | 2897 +++++++++++++++++
- include/soc/qcom/cpr.h                        |   17 +
- 12 files changed, 3911 insertions(+), 559 deletions(-)
+Fixes: a7305e684fcf ("PM: AVS: qcom-cpr: Move the driver to the qcom specific drivers")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
+ .../bindings/power/avs/qcom,cpr.txt           | 131 +-------------
+ .../bindings/soc/qcom/qcom,cpr.yaml           | 167 ++++++++++++++++++
+ MAINTAINERS                                   |   2 +-
+ 3 files changed, 169 insertions(+), 131 deletions(-)
  create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
- create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,cpr3.yaml
- create mode 100644 drivers/soc/qcom/cpr-common.c
- create mode 100644 drivers/soc/qcom/cpr-common.h
- create mode 100644 drivers/soc/qcom/cpr3.c
- create mode 100644 include/soc/qcom/cpr.h
 
+diff --git a/Documentation/devicetree/bindings/power/avs/qcom,cpr.txt b/Documentation/devicetree/bindings/power/avs/qcom,cpr.txt
+index ab0d5ebbad4e..2ada8cd08949 100644
+--- a/Documentation/devicetree/bindings/power/avs/qcom,cpr.txt
++++ b/Documentation/devicetree/bindings/power/avs/qcom,cpr.txt
+@@ -1,130 +1 @@
+-QCOM CPR (Core Power Reduction)
+-
+-CPR (Core Power Reduction) is a technology to reduce core power on a CPU
+-or other device. Each OPP of a device corresponds to a "corner" that has
+-a range of valid voltages for a particular frequency. While the device is
+-running at a particular frequency, CPR monitors dynamic factors such as
+-temperature, etc. and suggests adjustments to the voltage to save power
+-and meet silicon characteristic requirements.
+-
+-- compatible:
+-	Usage: required
+-	Value type: <string>
+-	Definition: should be "qcom,qcs404-cpr", "qcom,cpr" for qcs404
+-
+-- reg:
+-	Usage: required
+-	Value type: <prop-encoded-array>
+-	Definition: base address and size of the rbcpr register region
+-
+-- interrupts:
+-	Usage: required
+-	Value type: <prop-encoded-array>
+-	Definition: should specify the CPR interrupt
+-
+-- clocks:
+-	Usage: required
+-	Value type: <prop-encoded-array>
+-	Definition: phandle to the reference clock
+-
+-- clock-names:
+-	Usage: required
+-	Value type: <stringlist>
+-	Definition: must be "ref"
+-
+-- vdd-apc-supply:
+-	Usage: required
+-	Value type: <phandle>
+-	Definition: phandle to the vdd-apc-supply regulator
+-
+-- #power-domain-cells:
+-	Usage: required
+-	Value type: <u32>
+-	Definition: should be 0
+-
+-- operating-points-v2:
+-	Usage: required
+-	Value type: <phandle>
+-	Definition: A phandle to the OPP table containing the
+-		    performance states supported by the CPR
+-		    power domain
+-
+-- acc-syscon:
+-	Usage: optional
+-	Value type: <phandle>
+-	Definition: phandle to syscon for writing ACC settings
+-
+-- nvmem-cells:
+-	Usage: required
+-	Value type: <phandle>
+-	Definition: phandle to nvmem cells containing the data
+-		    that makes up a fuse corner, for each fuse corner.
+-		    As well as the CPR fuse revision.
+-
+-- nvmem-cell-names:
+-	Usage: required
+-	Value type: <stringlist>
+-	Definition: should be "cpr_quotient_offset1", "cpr_quotient_offset2",
+-		    "cpr_quotient_offset3", "cpr_init_voltage1",
+-		    "cpr_init_voltage2", "cpr_init_voltage3", "cpr_quotient1",
+-		    "cpr_quotient2", "cpr_quotient3", "cpr_ring_osc1",
+-		    "cpr_ring_osc2", "cpr_ring_osc3", "cpr_fuse_revision"
+-		    for qcs404.
+-
+-Example:
+-
+-	cpr_opp_table: cpr-opp-table {
+-		compatible = "operating-points-v2-qcom-level";
+-
+-		cpr_opp1: opp1 {
+-			opp-level = <1>;
+-			qcom,opp-fuse-level = <1>;
+-		};
+-		cpr_opp2: opp2 {
+-			opp-level = <2>;
+-			qcom,opp-fuse-level = <2>;
+-		};
+-		cpr_opp3: opp3 {
+-			opp-level = <3>;
+-			qcom,opp-fuse-level = <3>;
+-		};
+-	};
+-
+-	power-controller@b018000 {
+-		compatible = "qcom,qcs404-cpr", "qcom,cpr";
+-		reg = <0x0b018000 0x1000>;
+-		interrupts = <0 15 IRQ_TYPE_EDGE_RISING>;
+-		clocks = <&xo_board>;
+-		clock-names = "ref";
+-		vdd-apc-supply = <&pms405_s3>;
+-		#power-domain-cells = <0>;
+-		operating-points-v2 = <&cpr_opp_table>;
+-		acc-syscon = <&tcsr>;
+-
+-		nvmem-cells = <&cpr_efuse_quot_offset1>,
+-			<&cpr_efuse_quot_offset2>,
+-			<&cpr_efuse_quot_offset3>,
+-			<&cpr_efuse_init_voltage1>,
+-			<&cpr_efuse_init_voltage2>,
+-			<&cpr_efuse_init_voltage3>,
+-			<&cpr_efuse_quot1>,
+-			<&cpr_efuse_quot2>,
+-			<&cpr_efuse_quot3>,
+-			<&cpr_efuse_ring1>,
+-			<&cpr_efuse_ring2>,
+-			<&cpr_efuse_ring3>,
+-			<&cpr_efuse_revision>;
+-		nvmem-cell-names = "cpr_quotient_offset1",
+-			"cpr_quotient_offset2",
+-			"cpr_quotient_offset3",
+-			"cpr_init_voltage1",
+-			"cpr_init_voltage2",
+-			"cpr_init_voltage3",
+-			"cpr_quotient1",
+-			"cpr_quotient2",
+-			"cpr_quotient3",
+-			"cpr_ring_osc1",
+-			"cpr_ring_osc2",
+-			"cpr_ring_osc3",
+-			"cpr_fuse_revision";
+-	};
++This file has been moved to ../../soc/qcom/qcom,cpr.yaml
+diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
+new file mode 100644
+index 000000000000..f58dc6c138a6
+--- /dev/null
++++ b/Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
+@@ -0,0 +1,167 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/soc/qcom/qcom,cpr.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++
++title: Qualcomm Core Power Reduction (CPR)
++
++description: |
++  CPR (Core Power Reduction) is a technology to reduce core power on a CPU
++  or other device. Each OPP of a device corresponds to a "corner" that has
++  a range of valid voltages for a particular frequency. While the device is
++  running at a particular frequency, CPR monitors dynamic factors such as
++  temperature, etc. and suggests adjustments to the voltage to save power
++  and meet silicon characteristic requirements.
++
++maintainers:
++  - Niklas Cassel <nks@flawful.org>
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - qcom,qcs404-cpr
++      - const: qcom,cpr
++
++  reg:
++    description: Base address and size of the RBCPR register region
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clock-names:
++    items:
++      - const: ref
++
++  clocks:
++    items:
++      - description: CPR reference clock
++
++  vdd-apc-supply:
++    description: Autonomous Phase Control (APC) power supply
++
++  '#power-domain-cells':
++    const: 0
++
++  acc-syscon:
++    description: phandle to syscon for writing ACC settings
++
++  nvmem-cells:
++    minItems: 9
++    maxItems: 32
++    description: Cells containing the fuse corners and revision data
++
++  nvmem-cell-names:
++    minItems: 9
++    maxItems: 32
++
++  operating-points-v2: true
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clock-names
++  - clocks
++  - vdd-apc-supply
++  - "#power-domain-cells"
++  - nvmem-cells
++  - nvmem-cell-names
++  - operating-points-v2
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    cpus {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        cpu@100 {
++            compatible = "arm,cortex-a53";
++            device_type = "cpu";
++            reg = <0x100>;
++            operating-points-v2 = <&cpu_opp_table>;
++            power-domains = <&cpr>;
++            power-domain-names = "cpr";
++        };
++    };
++
++    cpu_opp_table: cpu-opp-table {
++        compatible = "operating-points-v2-kryo-cpu";
++        opp-shared;
++
++        opp-1094400000 {
++            opp-hz = /bits/ 64 <1094400000>;
++            required-opps = <&cpr_opp1>;
++        };
++        opp-1248000000 {
++            opp-hz = /bits/ 64 <1248000000>;
++            required-opps = <&cpr_opp2>;
++        };
++        opp-1401600000 {
++            opp-hz = /bits/ 64 <1401600000>;
++            required-opps = <&cpr_opp3>;
++        };
++    };
++
++    cpr_opp_table: cpr-opp-table {
++        compatible = "operating-points-v2-qcom-level";
++
++        cpr_opp1: opp1 {
++            opp-level = <1>;
++            qcom,opp-fuse-level = <1>;
++        };
++        cpr_opp2: opp2 {
++            opp-level = <2>;
++            qcom,opp-fuse-level = <2>;
++        };
++        cpr_opp3: opp3 {
++            opp-level = <3>;
++            qcom,opp-fuse-level = <3>;
++        };
++    };
++
++    power-controller@b018000 {
++        compatible = "qcom,qcs404-cpr", "qcom,cpr";
++        reg = <0x0b018000 0x1000>;
++        interrupts = <0 15 IRQ_TYPE_EDGE_RISING>;
++        clocks = <&xo_board>;
++        clock-names = "ref";
++        vdd-apc-supply = <&pms405_s3>;
++        #power-domain-cells = <0>;
++        operating-points-v2 = <&cpr_opp_table>;
++        acc-syscon = <&tcsr>;
++
++        nvmem-cells = <&cpr_efuse_quot_offset1>,
++                      <&cpr_efuse_quot_offset2>,
++                      <&cpr_efuse_quot_offset3>,
++                      <&cpr_efuse_init_voltage1>,
++                      <&cpr_efuse_init_voltage2>,
++                      <&cpr_efuse_init_voltage3>,
++                      <&cpr_efuse_quot1>,
++                      <&cpr_efuse_quot2>,
++                      <&cpr_efuse_quot3>,
++                      <&cpr_efuse_ring1>,
++                      <&cpr_efuse_ring2>,
++                      <&cpr_efuse_ring3>,
++                      <&cpr_efuse_revision>;
++        nvmem-cell-names = "cpr0_quotient_offset1",
++                           "cpr0_quotient_offset2",
++                           "cpr0_quotient_offset3",
++                           "cpr0_init_voltage1",
++                           "cpr0_init_voltage2",
++                           "cpr0_init_voltage3",
++                           "cpr0_quotient1",
++                           "cpr0_quotient2",
++                           "cpr0_quotient3",
++                           "cpr0_ring_osc1",
++                           "cpr0_ring_osc2",
++                           "cpr0_ring_osc3",
++                           "cpr0_fuse_revision";
++    };
++...
+diff --git a/MAINTAINERS b/MAINTAINERS
+index af0e6efbfa70..8293f1e733aa 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -15127,7 +15127,7 @@ M:	Niklas Cassel <nks@flawful.org>
+ L:	linux-pm@vger.kernel.org
+ L:	linux-arm-msm@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/devicetree/bindings/power/avs/qcom,cpr.txt
++F:	Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
+ F:	drivers/soc/qcom/cpr.c
+ 
+ QUALCOMM CPUFREQ DRIVER MSM8996/APQ8096
 -- 
 2.32.0
 
