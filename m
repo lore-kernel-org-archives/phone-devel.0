@@ -2,137 +2,102 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC940C11F64
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Jul 2021 10:57:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BDEBC11F64
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Jul 2021 14:03:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C66C561403
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Jul 2021 10:57:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 87D16613EF
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Jul 2021 14:03:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236283AbhGALAU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Jul 2021 07:00:20 -0400
-Received: from relay06.th.seeweb.it ([5.144.164.167]:60393 "EHLO
-        relay06.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236192AbhGALAP (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Jul 2021 07:00:15 -0400
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 4C2613F641;
-        Thu,  1 Jul 2021 12:57:39 +0200 (CEST)
-From:   AngeloGioacchino Del Regno 
+        id S233026AbhGAOFw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 1 Jul 2021 10:05:52 -0400
+Received: from mail-il1-f179.google.com ([209.85.166.179]:39923 "EHLO
+        mail-il1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232937AbhGAOFv (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Jul 2021 10:05:51 -0400
+Received: by mail-il1-f179.google.com with SMTP id o10so6467492ils.6;
+        Thu, 01 Jul 2021 07:03:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=t8d1gcUlkdCXseQek+o634xSmPXntZjtCKz3FnexeyQ=;
+        b=c2PRPJImYb/gkLykWLdMEk7gxT5ScxSO4KKdMS/TzfM+lLpsJJv9g0+nQK3sOsx7p5
+         Ap+FIr/wpBBytqOm7clQymF+nymbJTxOUF1Dh5+qvH0886USgogxYT3LnZJVIj8P1cKD
+         zFvYz0tx2i0QiWoE91y5WPZVrpvgE4dZJxZUJRS0ip5y87GhG6gQAAteCRF7/Wm6doU1
+         c1MxEnJFEbvE1LPXwcarlhlvVGfEIiAoJNsoAoxec1o8EzO+9YUfehqzpMS2+FwCJQh8
+         Xyy0H3x1zzY5nXPkaZv8k/nQAkAuzR9DQsMFFVHE0NUNyS7w5lFcEsq2Y7nCWebv8ahi
+         yZ0Q==
+X-Gm-Message-State: AOAM530rsmdFoRLOcXIl7/Xh3i4mHYN8fLCyvc2P6p2fMZ+Yjx5H22yp
+        MHDfg0xYCuzR1mf/ynUe2g==
+X-Google-Smtp-Source: ABdhPJxV8xbMlaPrFfpHEtqKQsveMeqjRFaWu+Wlt5mRgO20OeOD7p8AGoZ4knggGO4SFvX56InEig==
+X-Received: by 2002:a05:6e02:118b:: with SMTP id y11mr4748859ili.3.1625148200775;
+        Thu, 01 Jul 2021 07:03:20 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id h10sm30489ili.27.2021.07.01.07.03.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Jul 2021 07:03:20 -0700 (PDT)
+Received: (nullmailer pid 2278712 invoked by uid 1000);
+        Thu, 01 Jul 2021 14:02:43 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-To:     bjorn.andersson@linaro.org
-Cc:     viresh.kumar@linaro.org, agross@kernel.org, rjw@rjwysocki.net,
-        devicetree@vger.kernel.org, robh+dt@kernel.org,
-        amit.kucheria@linaro.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, jami.kettunen@somainline.org,
-        paul.bouchara@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, jeffrey.l.hugo@gmail.com,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v6 7/9] cpufreq: qcom-hw: Allow getting the maximum transition latency for OPPs
-Date:   Thu,  1 Jul 2021 12:57:28 +0200
-Message-Id: <20210701105730.322718-8-angelogioacchino.delregno@somainline.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210701105730.322718-1-angelogioacchino.delregno@somainline.org>
-References: <20210701105730.322718-1-angelogioacchino.delregno@somainline.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Cc:     bjorn.andersson@linaro.org, lgirdwood@gmail.com,
+        jeffrey.l.hugo@gmail.com, agross@kernel.org,
+        martin.botka@somainline.org, paul.bouchara@somainline.org,
+        marijn.suijten@somainline.org, linux-kernel@vger.kernel.org,
+        broonie@kernel.org, phone-devel@vger.kernel.org,
+        robh+dt@kernel.org, devicetree@vger.kernel.org,
+        jami.kettunen@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        konrad.dybcio@somainline.org, linux-arm-msm@vger.kernel.org
+In-Reply-To: <20210701105441.319572-3-angelogioacchino.delregno@somainline.org>
+References: <20210701105441.319572-1-angelogioacchino.delregno@somainline.org> <20210701105441.319572-3-angelogioacchino.delregno@somainline.org>
+Subject: Re: [PATCH v6 2/6] dt-bindings: avs: cpr: Convert binding to YAML schema
+Date:   Thu, 01 Jul 2021 08:02:43 -0600
+Message-Id: <1625148163.600524.2278711.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-In order to fine-tune the frequency scaling from various governors,
-allow to set a maximum transition latency from OPPs, which may be
-different depending on the SoC.
+On Thu, 01 Jul 2021 12:54:37 +0200, AngeloGioacchino Del Regno wrote:
+> Convert the qcom,cpr.txt document to YAML schema and place it in the
+> appropriate directory, since this driver was moved from power/avs
+> to soc/qcom, but forgets to move the documentation.
+> 
+> Fixes: a7305e684fcf ("PM: AVS: qcom-cpr: Move the driver to the qcom specific drivers")
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  .../bindings/power/avs/qcom,cpr.txt           | 131 +-------------
+>  .../bindings/soc/qcom/qcom,cpr.yaml           | 167 ++++++++++++++++++
+>  MAINTAINERS                                   |   2 +-
+>  3 files changed, 169 insertions(+), 131 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
+> 
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
----
- drivers/cpufreq/qcom-cpufreq-hw.c | 35 +++++++++++++++++++++++--------
- 1 file changed, 26 insertions(+), 9 deletions(-)
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-diff --git a/drivers/cpufreq/qcom-cpufreq-hw.c b/drivers/cpufreq/qcom-cpufreq-hw.c
-index 54b79fe772b6..0b80c65a22a8 100644
---- a/drivers/cpufreq/qcom-cpufreq-hw.c
-+++ b/drivers/cpufreq/qcom-cpufreq-hw.c
-@@ -1331,6 +1331,7 @@ static int qcom_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
- 	void __iomem *base;
- 	struct qcom_cpufreq_data *data;
- 	char fdom_resname[] = "freq-domainX";
-+	unsigned int transition_latency;
- 	int cpu_count, index, ret;
- 
- 	cpu_dev = get_cpu_device(policy->cpu);
-@@ -1381,22 +1382,31 @@ static int qcom_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
- 	data->soc_data = of_device_get_match_data(&pdev->dev);
- 	data->base = base;
- 	data->res = res;
-+	policy->driver_data = data;
- 
--	/* HW should be in enabled state to proceed */
--	if (!(readl_relaxed(base + data->soc_data->reg_enable) & 0x1)) {
--		dev_err(dev, "Domain-%d cpufreq hardware not enabled\n", index);
--		ret = -ENODEV;
--		goto error;
--	}
--
--	qcom_get_related_cpus(index, policy->cpus);
-+	cpu_count = qcom_get_related_cpus(index, policy->cpus);
- 	if (!cpumask_weight(policy->cpus)) {
- 		dev_err(dev, "Domain-%d failed to get related CPUs\n", index);
- 		ret = -ENOENT;
- 		goto error;
- 	}
- 
--	policy->driver_data = data;
-+	if (!data->soc_data->uses_tz) {
-+		ret = qcom_cpufreq_hw_osm_setup(cpu_dev, policy,
-+						cpu_count, index);
-+		if (ret) {
-+			dev_err(dev, "Cannot setup the OSM for CPU%d: %d\n",
-+				policy->cpu, ret);
-+			goto error;
-+		}
-+	}
-+
-+	/* HW should be in enabled state to proceed */
-+	if (!(readl_relaxed(base + data->soc_data->reg_enable) & 0x1)) {
-+		dev_err(dev, "Domain-%d cpufreq hardware not enabled\n", index);
-+		ret = -ENODEV;
-+		goto error;
-+	}
- 
- 	ret = qcom_cpufreq_hw_read_lut(cpu_dev, policy);
- 	if (ret) {
-@@ -1411,6 +1421,12 @@ static int qcom_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
- 		goto error;
- 	}
- 
-+	transition_latency = dev_pm_opp_get_max_transition_latency(cpu_dev);
-+	if (!transition_latency)
-+		transition_latency = CPUFREQ_ETERNAL;
-+
-+	policy->cpuinfo.transition_latency = transition_latency;
-+
- 	dev_pm_opp_of_register_em(cpu_dev, policy->cpus);
- 
- 	if (policy_has_boost_freq(policy)) {
-@@ -1421,6 +1437,7 @@ static int qcom_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
- 
- 	return 0;
- error:
-+	policy->driver_data = NULL;
- 	kfree(data);
- unmap_base:
- 	iounmap(base);
--- 
-2.32.0
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/soc/qcom/qcom,cpr.example.dt.yaml:0:0: /example-0/cpu-opp-table: failed to match any schema with compatible: ['operating-points-v2-kryo-cpu']
+Documentation/devicetree/bindings/soc/qcom/qcom,cpr.example.dt.yaml:0:0: /example-0/cpr-opp-table: failed to match any schema with compatible: ['operating-points-v2-qcom-level']
+\ndoc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1499494
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
 
