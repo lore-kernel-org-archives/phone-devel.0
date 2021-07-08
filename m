@@ -2,86 +2,99 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67494C07E96
-	for <phone-devel@archiver.kernel.org>; Thu,  8 Jul 2021 14:48:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA704C11F66
+	for <phone-devel@archiver.kernel.org>; Thu,  8 Jul 2021 15:18:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 446DB6109D
-	for <phone-devel@archiver.kernel.org>; Thu,  8 Jul 2021 14:48:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B60A76141E
+	for <phone-devel@archiver.kernel.org>; Thu,  8 Jul 2021 15:18:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229741AbhGHOvk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 8 Jul 2021 10:51:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53750 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229738AbhGHOvk (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Jul 2021 10:51:40 -0400
-Received: from smtp.domeneshop.no (smtp.domeneshop.no [IPv6:2a01:5b40:0:3005::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B92C061574
-        for <phone-devel@vger.kernel.org>; Thu,  8 Jul 2021 07:48:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tronnes.org
-        ; s=ds202012; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=eUNuUzJxpWQ9/7mhxGOd+5A5iY6PGJl9Jgs7NRna4RM=; b=VMv6q7UYnm6a1cXRWzTHkrQknJ
-        oMtqroVaoqygowG+iXOnK+LO4V8tdV4SgRi9T+JQkI+dudLqn5cdYQEAhSw7Ceq4OxDFUTNXFb7sp
-        ayYKVY72Kr2qXY6NFQ8XqmU9oYNFQ+IWr3MIg1wuN3Wabzd8Oj5kUeNB7Cutg/ll2JmANtBjaCKfE
-        wRCKeGI5BYVVyNRPpliP7eIqEvdWlWgi8qwcezQf8c+K4uVaUaEvyGpFE2ONdbg7mUzDCigtUXmWk
-        cLfg9paSochPgwvY7r8WaA4ROD2xu1wIiImN7JksvpRjbiPaqOl+yKrBc+BWT43MuooUd7xjRpFcF
-        Kqoq9dAg==;
-Received: from 211.81-166-168.customer.lyse.net ([81.166.168.211]:56397 helo=[192.168.10.61])
-        by smtp.domeneshop.no with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <noralf@tronnes.org>)
-        id 1m1VKg-0002qY-KM; Thu, 08 Jul 2021 16:48:54 +0200
-Subject: Re: [PATCH 2/2 v3] drm/panel: ws2401: Add driver for WideChips WS2401
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        dri-devel@lists.freedesktop.org
-Cc:     phone-devel@vger.kernel.org,
-        Douglas Anderson <dianders@chromium.org>
-References: <20210707234315.242663-1-linus.walleij@linaro.org>
- <20210707234315.242663-2-linus.walleij@linaro.org>
-From:   =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
-Message-ID: <9d1c0730-af71-c0fa-09c1-37dea40edc44@tronnes.org>
-Date:   Thu, 8 Jul 2021 16:48:52 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S231978AbhGHPVO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 8 Jul 2021 11:21:14 -0400
+Received: from honk.sigxcpu.org ([24.134.29.49]:56342 "EHLO honk.sigxcpu.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231876AbhGHPVO (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 8 Jul 2021 11:21:14 -0400
+X-Greylist: delayed 312 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Jul 2021 11:21:13 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by honk.sigxcpu.org (Postfix) with ESMTP id 519C9FB03;
+        Thu,  8 Jul 2021 17:13:16 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
+Received: from honk.sigxcpu.org ([127.0.0.1])
+        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id mJN1dqngT7YZ; Thu,  8 Jul 2021 17:13:15 +0200 (CEST)
+Date:   Thu, 8 Jul 2021 17:13:13 +0200
+From:   Guido =?iso-8859-1?Q?G=FCnther?= <guido.gunther@puri.sm>
+To:     Sakari Ailus <sakari.ailus@iki.fi>
+Cc:     Martin Kepplinger <martin.kepplinger@puri.sm>,
+        krzysztof.kozlowski@canonical.com,
+        laurent.pinchart@ideasonboard.com, devicetree@vger.kernel.org,
+        kernel@puri.sm, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, mchehab@kernel.org,
+        paul.kocialkowski@bootlin.com, pavel@ucw.cz,
+        phone-devel@vger.kernel.org, robh@kernel.org, shawnx.tu@intel.com
+Subject: Re: [PATCH v6 5/5] arm64: defconfig: enable VIDEO_HI846
+Message-ID: <YOcWCVSXfV+cKJ6H@qwark.sigxcpu.org>
+References: <20210628101054.828579-1-martin.kepplinger@puri.sm>
+ <20210628101054.828579-6-martin.kepplinger@puri.sm>
+ <20210708130003.GA3@valkosipuli.retiisi.eu>
 MIME-Version: 1.0
-In-Reply-To: <20210707234315.242663-2-linus.walleij@linaro.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210708130003.GA3@valkosipuli.retiisi.eu>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi,
+On Thu, Jul 08, 2021 at 04:00:04PM +0300, Sakari Ailus wrote:
+> Hi Martin,
+> 
+> On Mon, Jun 28, 2021 at 12:10:54PM +0200, Martin Kepplinger wrote:
+> > Build the driver for the Hi-846 camera by default on arm64 where it's
+> > going to be used on at least the imx8mq-librem5 board.
+> > 
+> > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> > ---
+> >  arch/arm64/configs/defconfig | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+> > index f423d08b9a71..bf27d9cfbdd5 100644
+> > --- a/arch/arm64/configs/defconfig
+> > +++ b/arch/arm64/configs/defconfig
+> > @@ -666,6 +666,7 @@ CONFIG_VIDEO_RENESAS_VSP1=m
+> >  CONFIG_VIDEO_QCOM_VENUS=m
+> >  CONFIG_SDR_PLATFORM_DRIVERS=y
+> >  CONFIG_VIDEO_RCAR_DRIF=m
+> > +CONFIG_VIDEO_HI846=m
+> >  CONFIG_VIDEO_IMX219=m
+> >  CONFIG_VIDEO_OV5645=m
+> >  CONFIG_VIDEO_QCOM_CAMSS=m
+> 
+> The same sensor may be or may not used on a given board (and certainly it's
+> not specific to arm64). Is it desirable all arm64 systems compile this in
+> by default?
+> 
+> There appear to be a other sensor drivers though.
+> 
+> Is there a defconfig for the librem5 board?
 
+arm64 has a single defconfig, there are no board specific ones (and
+afaik they're not wanted either) so I think enabling it as a module is
+the only way.
 
-Den 08.07.2021 01.43, skrev Linus Walleij:
-> This adds a driver for panels based on the WideChips WS2401 display
-> controller. This display controller is used in the Samsung LMS380KF01
-> display found in the Samsung GT-I8160 (Codina) mobile phone and
-> possibly others.
-> 
-> As is common with Samsung displays manufacturer commands are necessary
-> to configure the display to a working state.
-> 
-> The display optionally supports internal backlight control, but can
-> also use an external backlight.
-> 
-> This driver re-uses the DBI infrastructure to communicate with the
-> display.
-> 
-> Cc: phone-devel@vger.kernel.org
-> Cc: Douglas Anderson <dianders@chromium.org>
-> Cc: Noralf Trønnes <noralf@tronnes.org>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
+Cheers,
+ -- Guido
 
-Reviewed-by: Noralf Trønnes <noralf@tronnes.org>
+> 
+> I wonder what others think.
+> 
+> -- 
+> Kind regards,
+> 
+> Sakari Ailus
