@@ -2,110 +2,86 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 085C7C07E9C
-	for <phone-devel@archiver.kernel.org>; Thu,  8 Jul 2021 13:04:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67494C07E96
+	for <phone-devel@archiver.kernel.org>; Thu,  8 Jul 2021 14:48:59 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E1D666190A
-	for <phone-devel@archiver.kernel.org>; Thu,  8 Jul 2021 13:04:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 446DB6109D
+	for <phone-devel@archiver.kernel.org>; Thu,  8 Jul 2021 14:48:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231755AbhGHNGy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 8 Jul 2021 09:06:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58266 "EHLO
+        id S229741AbhGHOvk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 8 Jul 2021 10:51:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231550AbhGHNGy (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Jul 2021 09:06:54 -0400
-Received: from meesny.iki.fi (meesny.iki.fi [IPv6:2001:67c:2b0:1c1::201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D388EC061574;
-        Thu,  8 Jul 2021 06:04:12 -0700 (PDT)
-Received: from hillosipuli.retiisi.eu (89-27-100-251.bb.dnainternet.fi [89.27.100.251])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: sailus)
-        by meesny.iki.fi (Postfix) with ESMTPSA id BC3AF200B9;
-        Thu,  8 Jul 2021 15:57:30 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-        t=1625749050;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=vHwc2iN6bUv/poqxKz5vkCUvi9lnsC7e2XhitOKa43I=;
-        b=GWi5fWrCoNrEnmEO0n68V+MuIf83Pa5GMCwu5NuWaTX32pOylrfWybNp/kULITG189ltIB
-        gUNC7CXtUA1P7OGjGn3YzGdmIPAoJjS2Pq3DHDlXkgmdeTH6fiHDTxGkC64WGQz8vn6S9z
-        R3ZOsbD2+5uNPXlTA8okxTiQiNkuJss=
-Received: from valkosipuli.localdomain (valkosipuli.localdomain [IPv6:fd35:1bc8:1a6:d3d5::80:2])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 84BC3634C87;
-        Thu,  8 Jul 2021 15:56:51 +0300 (EEST)
-Received: from localhost ([127.0.0.1] helo=valkosipuli.retiisi.eu)
-        by valkosipuli.localdomain with esmtp (Exim 4.92)
-        (envelope-from <sakari.ailus@iki.fi>)
-        id 1m1Tar-0001zl-RD; Thu, 08 Jul 2021 15:57:29 +0300
-Date:   Thu, 8 Jul 2021 15:57:29 +0300
-From:   Sakari Ailus <sakari.ailus@iki.fi>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     krzysztof.kozlowski@canonical.com,
-        laurent.pinchart@ideasonboard.com, devicetree@vger.kernel.org,
-        kernel@puri.sm, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, mchehab@kernel.org,
-        paul.kocialkowski@bootlin.com, pavel@ucw.cz,
-        phone-devel@vger.kernel.org, robh@kernel.org, shawnx.tu@intel.com
-Subject: Re: [PATCH v6 3/5] media: i2c: add driver for the SK Hynix Hi-846 8M
- pixel camera
-Message-ID: <20210708125729.GZ3@valkosipuli.retiisi.eu>
-References: <20210628101054.828579-1-martin.kepplinger@puri.sm>
- <20210628101054.828579-4-martin.kepplinger@puri.sm>
+        with ESMTP id S229738AbhGHOvk (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Jul 2021 10:51:40 -0400
+Received: from smtp.domeneshop.no (smtp.domeneshop.no [IPv6:2a01:5b40:0:3005::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B92C061574
+        for <phone-devel@vger.kernel.org>; Thu,  8 Jul 2021 07:48:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tronnes.org
+        ; s=ds202012; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=eUNuUzJxpWQ9/7mhxGOd+5A5iY6PGJl9Jgs7NRna4RM=; b=VMv6q7UYnm6a1cXRWzTHkrQknJ
+        oMtqroVaoqygowG+iXOnK+LO4V8tdV4SgRi9T+JQkI+dudLqn5cdYQEAhSw7Ceq4OxDFUTNXFb7sp
+        ayYKVY72Kr2qXY6NFQ8XqmU9oYNFQ+IWr3MIg1wuN3Wabzd8Oj5kUeNB7Cutg/ll2JmANtBjaCKfE
+        wRCKeGI5BYVVyNRPpliP7eIqEvdWlWgi8qwcezQf8c+K4uVaUaEvyGpFE2ONdbg7mUzDCigtUXmWk
+        cLfg9paSochPgwvY7r8WaA4ROD2xu1wIiImN7JksvpRjbiPaqOl+yKrBc+BWT43MuooUd7xjRpFcF
+        Kqoq9dAg==;
+Received: from 211.81-166-168.customer.lyse.net ([81.166.168.211]:56397 helo=[192.168.10.61])
+        by smtp.domeneshop.no with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.92)
+        (envelope-from <noralf@tronnes.org>)
+        id 1m1VKg-0002qY-KM; Thu, 08 Jul 2021 16:48:54 +0200
+Subject: Re: [PATCH 2/2 v3] drm/panel: ws2401: Add driver for WideChips WS2401
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        dri-devel@lists.freedesktop.org
+Cc:     phone-devel@vger.kernel.org,
+        Douglas Anderson <dianders@chromium.org>
+References: <20210707234315.242663-1-linus.walleij@linaro.org>
+ <20210707234315.242663-2-linus.walleij@linaro.org>
+From:   =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
+Message-ID: <9d1c0730-af71-c0fa-09c1-37dea40edc44@tronnes.org>
+Date:   Thu, 8 Jul 2021 16:48:52 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210628101054.828579-4-martin.kepplinger@puri.sm>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-        s=meesny; t=1625749050;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=vHwc2iN6bUv/poqxKz5vkCUvi9lnsC7e2XhitOKa43I=;
-        b=ZV4eWNlQPCaPsWHai36aWk9In7eCXZhzu8MlWbZnCOzZu3rSIIVknOhIFKJLfOf0pXZ5fw
-        i8VD7HF2Qvny9E1VbkkIMCNfCZUIm29Dlpg9taEhD89X3IB18TZJpskUGb0BlraKUqm1zs
-        Fz2MWDr08EvKhHWWRarbYTnmskUF7LY=
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1625749050; a=rsa-sha256; cv=none;
-        b=SVlRZG8gSwlNfhqRWff+uM6gDMT78kKvN757zxdz904VbX53rSUDseGtrOzNZUgvTB9RHa
-        yODmLtsDAypE8WVV0xg0qJrK47ZpSjqjI6Kk9nxnNMMAnustMGfPkL5Ryhl7rtA3DVgvNH
-        7JZ8SNab3gxjOTv25rpSCOXY3n1iOx8=
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
+In-Reply-To: <20210707234315.242663-2-linus.walleij@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Martin,
 
-On Mon, Jun 28, 2021 at 12:10:52PM +0200, Martin Kepplinger wrote:
-...
-> +	hi846->clock = devm_clk_get(&client->dev, NULL);
-> +	if (IS_ERR(hi846->clock)) {
-> +		dev_err(&client->dev, "failed to get clock: %pe\n", hi846->clock);
-> +		return PTR_ERR(hi846->clock);
-> +	}
-> +
-> +	mclk_freq = clk_get_rate(hi846->clock);
-> +	dev_dbg(&client->dev, "clk rate: %u\n", mclk_freq);
 
-You'll need to check this is the value you expect it to be. The register
-lists are specific to that value.
+Den 08.07.2021 01.43, skrev Linus Walleij:
+> This adds a driver for panels based on the WideChips WS2401 display
+> controller. This display controller is used in the Samsung LMS380KF01
+> display found in the Samsung GT-I8160 (Codina) mobile phone and
+> possibly others.
+> 
+> As is common with Samsung displays manufacturer commands are necessary
+> to configure the display to a working state.
+> 
+> The display optionally supports internal backlight control, but can
+> also use an external backlight.
+> 
+> This driver re-uses the DBI infrastructure to communicate with the
+> display.
+> 
+> Cc: phone-devel@vger.kernel.org
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Cc: Noralf Trønnes <noralf@tronnes.org>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
 
-Could you also check Documentation/driver-api/media/camera-sensor.rst
-regarding the assigned-clocks etc. properties, and align the bindings with
-that?
-
--- 
-Sakari Ailus
+Reviewed-by: Noralf Trønnes <noralf@tronnes.org>
