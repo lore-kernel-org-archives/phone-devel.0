@@ -3,97 +3,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72514C1B08C
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 19:56:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70DC9C1B08C
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 20:46:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 59C41613D0
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 19:56:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 51984613C5
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 20:46:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238191AbhGNT65 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Jul 2021 15:58:57 -0400
-Received: from mail-io1-f54.google.com ([209.85.166.54]:44911 "EHLO
-        mail-io1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241913AbhGNTyv (ORCPT
+        id S230352AbhGNUtm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Jul 2021 16:49:42 -0400
+Received: from mail-il1-f171.google.com ([209.85.166.171]:38572 "EHLO
+        mail-il1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230310AbhGNUtl (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Jul 2021 15:54:51 -0400
-Received: by mail-io1-f54.google.com with SMTP id v26so3603144iom.11;
-        Wed, 14 Jul 2021 12:51:58 -0700 (PDT)
+        Wed, 14 Jul 2021 16:49:41 -0400
+Received: by mail-il1-f171.google.com with SMTP id e2so2933377ilu.5;
+        Wed, 14 Jul 2021 13:46:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=JdBJNAtYvBdjGt7vqYO3Z871VY9xVAV5SBNAA/ScJgk=;
-        b=Iz0cgX5Euf6vI1E3J5bIqggaazD8t9lDsiGC0rN8o1Rjm7+nSv3l59FbCHsP0w4OrK
-         nRI0bifTxroUwXoH/e0vxP9iSn/wy9oLJj1ohTM1pCIhz8jCFllCXMBQTXP4odGLgeON
-         V6QnF15g/UCKtdvlhAojKPcXbtIqDi9z636PzVpbPme8MWZhG2FvvXkNB+y1zKehoGvS
-         a14MzW0Sf6VxmIm2hsAE3kuY/NGFEwU+0KvfSbN012dKQmlpNvBb1Oz2Parn4Vg6+noT
-         ppEs/lGsV3crT+w/l30XSTRKy4+yAr5qsBqpzypmk7ztRqZFsZx5w/QQ17T6CrFi29sE
-         w9Bg==
-X-Gm-Message-State: AOAM532go0EjB+zaZnyfqQL1Lgl0tpeWFxlE8dYGGcFg86JZDlrEwAm0
-        aeDIOTMal+g+FtlxxekADA==
-X-Google-Smtp-Source: ABdhPJztT4eyiIkF00BNIDS67g07hFOMZlkoZzL0+Dum9aBnIYEwwjrOIduGi/sgiIaXyoV76PYBQA==
-X-Received: by 2002:a05:6638:1350:: with SMTP id u16mr4483881jad.19.1626292318228;
-        Wed, 14 Jul 2021 12:51:58 -0700 (PDT)
+        bh=Bgvj/SJ/AqigmGZ6fxs5N5l8G6izL9YxC3iPTOMdD6s=;
+        b=SVA9CX9rAtY8KuE1kpMG4f0GGznAOcvHYY6Kq2WMBAA/AMtTxk4kj+iR15WaqTooke
+         TtVgCcuUYBkdtNgu9aGVqq2mOtdEGW5dzb6WzN/pUi1bdvxofpFZFY7yvKiauCeqSA2k
+         h9vD7VSbeWzDtIAvQ6dGQlAaOSd70LK2Qt4dGdGVsiCxdcvdMC2AFh5hWCy33c6AaRAf
+         v9cFfo+E+loZzAkaSR8Y0BH6WwzFQpZ1O+dWvaXF6AmpaOyV+grWjtdWT5n2yOjOX0sv
+         eyfe9a37p6Paln9GI5fZq+90TPeSvwEoHza9et4aUrfw3CwZYAVuQHm53iMHfgllxyGl
+         ZtVg==
+X-Gm-Message-State: AOAM5305DUo3g15sumRXf+jqPdj2crYrSHcU8dMtu01KfaDBYBUL8ksi
+        JrqAEX1dxzrtVV/RZBfkWQ==
+X-Google-Smtp-Source: ABdhPJyuEc2hl418Ur5eqpgXhulnn/slL25AuA2kwT0+WKbjntZFyl4jzNA/MF3uxvxiked/D64mQQ==
+X-Received: by 2002:a92:d083:: with SMTP id h3mr7978120ilh.157.1626295608626;
+        Wed, 14 Jul 2021 13:46:48 -0700 (PDT)
 Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id p21sm1853042iog.37.2021.07.14.12.51.56
+        by smtp.gmail.com with ESMTPSA id x11sm1680021ilc.40.2021.07.14.13.46.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jul 2021 12:51:57 -0700 (PDT)
-Received: (nullmailer pid 3286595 invoked by uid 1000);
-        Wed, 14 Jul 2021 19:51:54 -0000
-Date:   Wed, 14 Jul 2021 13:51:54 -0600
+        Wed, 14 Jul 2021 13:46:48 -0700 (PDT)
+Received: (nullmailer pid 3492030 invoked by uid 1000);
+        Wed, 14 Jul 2021 20:46:46 -0000
+Date:   Wed, 14 Jul 2021 14:46:46 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Michael Srba <Michael.Srba@seznam.cz>,
-        Mark Brown <broonie@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: input/ts/zinitix: Convert to YAML, fix
- and extend
-Message-ID: <20210714195154.GA3286486@robh.at.kernel.org>
-References: <20210625113435.2539282-1-linus.walleij@linaro.org>
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: clk: qcom: gcc-sm6115: Document
+ SM6115 GCC
+Message-ID: <20210714204646.GA3491973@robh.at.kernel.org>
+References: <20210627185538.690277-1-iskren.chernev@gmail.com>
+ <20210627185538.690277-2-iskren.chernev@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210625113435.2539282-1-linus.walleij@linaro.org>
+In-Reply-To: <20210627185538.690277-2-iskren.chernev@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 25 Jun 2021 13:34:34 +0200, Linus Walleij wrote:
-> This converts the Zinitix BT4xx and BT5xx touchscreen bindings to YAML, fix
-> them up a bit and extends them.
+On Sun, 27 Jun 2021 21:55:37 +0300, Iskren Chernev wrote:
+> Add device tree bindings for global clock controller on SM6115 and
+> SM4250 SoCs (pin and software compatible).
 > 
-> We list all the existing BT4xx and BT5xx components with compatible strings.
-> These are all similar, use the same bindings and work in similar ways.
-> 
-> We rename the supplies from the erroneous vdd/vddo to the actual supply
-> names vcca/vdd as specified on the actual component. It is long established
-> that supplies shall be named after the supply pin names of a component.
-> The confusion probably stems from that in a certain product the rails to the
-> component were named vdd/vddo. Drop some notes on how OS implementations should
-> avoid confusion by first looking for vddo, and if that exists assume the
-> legacy binding pair and otherwise use vcca/vdd.
-> 
-> Add reset-gpios as sometimes manufacturers pulls a GPIO line to the reset
-> line on the chip.
-> 
-> Add optional touchscreen-fuzz-x and touchscreen-fuzz-y properties.
-> 
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Michael Srba <Michael.Srba@seznam.cz>
-> Cc: phone-devel@vger.kernel.org
-> Cc: devicetree@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
 > ---
->  .../input/touchscreen/zinitix,bt400.yaml      | 115 ++++++++++++++++++
->  .../bindings/input/touchscreen/zinitix.txt    |  40 ------
->  2 files changed, 115 insertions(+), 40 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/zinitix,bt400.yaml
->  delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/zinitix.txt
+>  .../bindings/clock/qcom,gcc-sm6115.yaml       |  72 +++++++
+>  include/dt-bindings/clock/qcom,gcc-sm6115.h   | 201 ++++++++++++++++++
+>  2 files changed, 273 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/qcom,gcc-sm6115.yaml
+>  create mode 100644 include/dt-bindings/clock/qcom,gcc-sm6115.h
 > 
 
 Reviewed-by: Rob Herring <robh@kernel.org>
