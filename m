@@ -2,111 +2,101 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EF0AC11F66
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 11:20:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E982EC07E9A
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 15:44:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 899A36044F
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 11:20:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D15CD61374
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 15:44:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239172AbhGNLXJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Jul 2021 07:23:09 -0400
-Received: from comms.puri.sm ([159.203.221.185]:36104 "EHLO comms.puri.sm"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230437AbhGNLXI (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Jul 2021 07:23:08 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 9FB8BDFAF7;
-        Wed, 14 Jul 2021 04:19:46 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id fzSRM8FsYn5l; Wed, 14 Jul 2021 04:19:45 -0700 (PDT)
-From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-To:     martin.kepplinger@puri.sm, festevam@gmail.com, krzk@kernel.org,
-        laurent.pinchart@ideasonboard.com
-Cc:     devicetree@vger.kernel.org, kernel@pengutronix.de, kernel@puri.sm,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-staging@lists.linux.dev, m.felsch@pengutronix.de,
-        mchehab@kernel.org, phone-devel@vger.kernel.org, robh@kernel.org,
-        shawnguo@kernel.org, slongerbeam@gmail.com
-Subject: [PATCH v6 0/3] media: imx: add support for imx8mq MIPI RX
-Date:   Wed, 14 Jul 2021 13:19:28 +0200
-Message-Id: <20210714111931.324485-1-martin.kepplinger@puri.sm>
-Content-Transfer-Encoding: 8bit
+        id S239652AbhGNPrD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Jul 2021 11:47:03 -0400
+Received: from mail-io1-f54.google.com ([209.85.166.54]:38820 "EHLO
+        mail-io1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232318AbhGNPrD (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 14 Jul 2021 11:47:03 -0400
+Received: by mail-io1-f54.google.com with SMTP id k11so2663611ioa.5;
+        Wed, 14 Jul 2021 08:44:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=5YB4Tq0do2Mv/Zmb1piIDXwZsU75wE5dE6JnJKDMhms=;
+        b=QfA5odVldPPLNVItksVYirXp060cc7eyjpma3VRLvfJQdHQl1CONNBsFj+dDTNq7so
+         ZjwYAlfAVUEV7zUf7sfGen1eZD0zUBwjD1Xv59hdcXO8hDyVLxMqhyUr1dlh+9BzmDCU
+         SG4RHMLtA72brIUo+B+SjKecakWDS+DhHJ1JTsRlYTpNxXLTfyUiqN8UwCEYdxHTMzxq
+         FRP+Liq1sEjnaRtxqKLWx+8FcUKgAneuiPrJ//XEO48q43zPsp+6tSgmWbPyE5HGWovs
+         CS9AqCWfYqgusfq/jF779XX0At2TUFQ7xP8OZ/xdfb25XtRfq2hakwxBb7EIrIYXSLOd
+         c7PQ==
+X-Gm-Message-State: AOAM5300equMUXDCPNesPgm+c/eGc68qd7QJg8MVcTWLzYYLW5RLxBei
+        DFfsbUAhUI7ohAF1LTuQVA==
+X-Google-Smtp-Source: ABdhPJyPjXPKcfWDptVloc+ivSzKnBM195jJHUB2Jb10U6MBNPl9P9Vn45YvwEeB2LpgUYCJHEW7Yw==
+X-Received: by 2002:a02:90cb:: with SMTP id c11mr9574373jag.53.1626277451015;
+        Wed, 14 Jul 2021 08:44:11 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id t15sm1377991ile.28.2021.07.14.08.44.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jul 2021 08:44:09 -0700 (PDT)
+Received: (nullmailer pid 2630511 invoked by uid 1000);
+        Wed, 14 Jul 2021 15:44:06 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     linux-media@vger.kernel.org, mchehab@kernel.org,
+        phone-devel@vger.kernel.org, linux-imx@nxp.com,
+        linux-staging@lists.linux.dev, kernel@pengutronix.de,
+        m.felsch@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+        krzk@kernel.org, shawnguo@kernel.org, kernel@puri.sm,
+        slongerbeam@gmail.com, festevam@gmail.com,
+        laurent.pinchart@ideasonboard.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20210714111931.324485-2-martin.kepplinger@puri.sm>
+References: <20210714111931.324485-1-martin.kepplinger@puri.sm> <20210714111931.324485-2-martin.kepplinger@puri.sm>
+Subject: Re: [PATCH v6 1/3] dt-bindings: media: document the nxp,imx8mq-mipi-csi2 receiver phy and controller
+Date:   Wed, 14 Jul 2021 09:44:06 -0600
+Message-Id: <1626277446.705587.2630510.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-hi,
+On Wed, 14 Jul 2021 13:19:29 +0200, Martin Kepplinger wrote:
+> The i.MX8MQ SoC integrates a different MIPI CSI receiver as the i.MX8MM so
+> describe the DT bindings for it.
+> 
+> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> ---
+>  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 173 ++++++++++++++++++
+>  1 file changed, 173 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+> 
 
-This patch series adds a driver for the i.MX8MQ CSI MIPI receiver / controller.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-It includes the driver, the dt-bindings and the DT addition to the SoC dtsi.
-I test it using libcamera. Thanks to Laurent who helped a lot. I'm happy for
-any feedback,
+yamllint warnings/errors:
 
-                           martin
+dtschema/dtc warnings/errors:
+Error: Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.example.dts:37.28-29 syntax error
+FATAL ERROR: Unable to parse input tree
+make[1]: *** [scripts/Makefile.lib:380: Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.example.dt.yaml] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1418: dt_binding_check] Error 2
+\ndoc reference errors (make refcheckdocs):
 
-revision history
-----------------
-v6: (thank you Laurent and Rob)
-* add reviewed-by tag to binding
-* statically allocate clk_bulk_data
-* fix how the hs_settle value is applied
-* remove s_power calls
-* remove the link_setup() callback implementation and make the link immutable
-* more cleanups according to Laurents' review from v5
+See https://patchwork.ozlabs.org/patch/1505152
 
-v5: (thank you Laurent)
-* fix reset usage by using the already supported reset controller driver
-* remove clko2 (totally unrelated clock / had been included by accident)
-* rename pxl clock to ui
-https://lore.kernel.org/linux-media/20210618095753.114557-1-martin.kepplinger@puri.sm/
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
 
-v4: (thank you Rob and Marco)
-* create fsl,mipi-phy-gpr custom dt property instead of confusing "phy"
-* add imx8mq-specific compatibile to imx8mq.dtsi for future use
-https://lore.kernel.org/linux-media/20210614121522.2944593-1-martin.kepplinger@puri.sm/
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
-v3: (thank you, Rob and Laurent)
-among minor other things according to v2 review, changes include:
-* better describe the clocks
-* rename DT property "phy-reset" to "reset" and "phy-gpr" to "phy"
-https://lore.kernel.org/linux-media/20210608104128.1616028-1-martin.kepplinger@puri.sm/T/#t
+pip3 install dtschema --upgrade
 
-v2: (thank you, Dan and Guido)
-among fixes according to v1 reviews, changes include:
-* remove status property from dt-bindings example
-* define a few bits in order to have less magic values
-* use "imx8mq_mipi_csi_" as local function prefix
-* read DT properties only during probe()
-* remove dead code (log_status)
-* add imx8mq_mipi_csi_release_icc()
-* fix imx8mq_mipi_csi_init_icc()
-https://lore.kernel.org/linux-media/20210531112326.90094-1-martin.kepplinger@puri.sm/
-
-v1:
-https://lore.kernel.org/linux-media/20210527075407.3180744-1-martin.kepplinger@puri.sm/T/#t
-
-
-Martin Kepplinger (3):
-  dt-bindings: media: document the nxp,imx8mq-mipi-csi2 receiver phy and
-    controller
-  media: imx: add a driver for i.MX8MQ mipi csi rx phy and controller
-  arm64: dts: imx8mq: add mipi csi phy and csi bridge descriptions
-
- .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 173 ++++
- arch/arm64/boot/dts/freescale/imx8mq.dtsi     | 104 ++
- drivers/staging/media/imx/Makefile            |   1 +
- drivers/staging/media/imx/imx8mq-mipi-csi2.c  | 949 ++++++++++++++++++
- 4 files changed, 1227 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
- create mode 100644 drivers/staging/media/imx/imx8mq-mipi-csi2.c
-
--- 
-2.30.2
+Please check and re-submit.
 
