@@ -2,160 +2,237 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75E42C07E9C
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 08:31:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E745DC07E9A
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 11:19:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 602AC613B2
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 08:31:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CFF72613B7
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 11:19:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238527AbhGNIdx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Jul 2021 04:33:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34754 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238482AbhGNIdx (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Jul 2021 04:33:53 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 462EDC06175F;
-        Wed, 14 Jul 2021 01:31:02 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id BB718CC;
-        Wed, 14 Jul 2021 10:30:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1626251459;
-        bh=poXnfdyvgTHaupRhHBaZrhYV0sx0V+FdC5sEV/PQgAQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nNK9flxhZz5LIw4BqIebzp6118WhoNkdMDxCD9eUg/ezqCZWuMsDoon15HSp+Hbv7
-         WCrRpEeyO7AgI/KBd3kpi+6zGDFOwydGybBmT2ECRjU62aEkQzaC2mmDRJ8S6Bv/OE
-         +mXPSZpZQZzd7t9F8ZujQ9bK2NEq1/ry/7uTNOM0=
-Date:   Wed, 14 Jul 2021 11:30:59 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     m.felsch@pengutronix.de, robh@kernel.org,
-        devicetree@vger.kernel.org, festevam@gmail.com,
-        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
+        id S239172AbhGNLWm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Jul 2021 07:22:42 -0400
+Received: from comms.puri.sm ([159.203.221.185]:35952 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237788AbhGNLWm (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 14 Jul 2021 07:22:42 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id 9BFEADFAFE;
+        Wed, 14 Jul 2021 04:19:50 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Xfk6f2CMVX83; Wed, 14 Jul 2021 04:19:49 -0700 (PDT)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     martin.kepplinger@puri.sm, festevam@gmail.com, krzk@kernel.org,
+        laurent.pinchart@ideasonboard.com
+Cc:     devicetree@vger.kernel.org, kernel@pengutronix.de, kernel@puri.sm,
         linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
         linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-staging@lists.linux.dev, mchehab@kernel.org,
-        phone-devel@vger.kernel.org, shawnguo@kernel.org,
-        slongerbeam@gmail.com
-Subject: Re: [PATCH v5 2/3] media: imx: add a driver for i.MX8MQ mipi csi rx
- phy and controller
-Message-ID: <YO6gwz7OfUAgoAMa@pendragon.ideasonboard.com>
-References: <20210618095753.114557-1-martin.kepplinger@puri.sm>
- <20210618095753.114557-3-martin.kepplinger@puri.sm>
- <YOy5uH6bSzRjO/f8@pendragon.ideasonboard.com>
- <78072a196076789745b5481e26cfb45862e935ed.camel@puri.sm>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+        linux-staging@lists.linux.dev, m.felsch@pengutronix.de,
+        mchehab@kernel.org, phone-devel@vger.kernel.org, robh@kernel.org,
+        shawnguo@kernel.org, slongerbeam@gmail.com
+Subject: [PATCH v6 1/3] dt-bindings: media: document the nxp,imx8mq-mipi-csi2 receiver phy and controller
+Date:   Wed, 14 Jul 2021 13:19:29 +0200
+Message-Id: <20210714111931.324485-2-martin.kepplinger@puri.sm>
+In-Reply-To: <20210714111931.324485-1-martin.kepplinger@puri.sm>
+References: <20210714111931.324485-1-martin.kepplinger@puri.sm>
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <78072a196076789745b5481e26cfb45862e935ed.camel@puri.sm>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Martin,
+The i.MX8MQ SoC integrates a different MIPI CSI receiver as the i.MX8MM so
+describe the DT bindings for it.
 
-On Wed, Jul 14, 2021 at 08:41:58AM +0200, Martin Kepplinger wrote:
-> Am Dienstag, dem 13.07.2021 um 00:52 +0300 schrieb Laurent Pinchart:
-> > Hi Martin,
-> > 
-> > Thank you for the patch.
-> 
-> thank you for reviewing!
-> 
-> > On Fri, Jun 18, 2021 at 11:57:52AM +0200, Martin Kepplinger wrote:
-> > > Add a driver to support the i.MX8MQ MIPI CSI receiver. The hardware
-> > > side
-> > > is based on
-> > >  
-> > > https://source.codeaurora.org/external/imx/linux-imx/tree/drivers/media/platform/imx8/mxc-mipi-csi2_yav.c?h=imx_5.4.70_2.3.0
-> > > 
-> > > It's built as part of VIDEO_IMX7_CSI because that's documented to
-> > > support
-> > > i.MX8M platforms. This driver adds i.MX8MQ support where currently
-> > > only the
-> > > i.MX8MM platform has been supported.
-> > 
-> > Overall this is really nice work. I have quite a few review comments,
-> > but hopefully nothing that should be difficult to handle.
-> 
-> I think so too but right now I have one question:
-> 
-> > > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-> > > ---
-> > >  drivers/staging/media/imx/Makefile           |   1 +
-> > >  drivers/staging/media/imx/imx8mq-mipi-csi2.c | 963 +++++++++++++++++++
-> > >  2 files changed, 964 insertions(+)
-> > >  create mode 100644 drivers/staging/media/imx/imx8mq-mipi-csi2.c
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Reviewed-by: Rob Herring <robh@kernel.org>
+---
+ .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 173 ++++++++++++++++++
+ 1 file changed, 173 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
 
-[snip]
-
-> > > +static int imx8mq_mipi_csi_pm_suspend(struct device *dev, bool runtime)
-> > > +{
-> > > +       struct v4l2_subdev *sd = dev_get_drvdata(dev);
-> > > +       struct csi_state *state = mipi_sd_to_csi2_state(sd);
-> > > +       int ret = 0;
-> > > +
-> > > +       mutex_lock(&state->lock);
-> > > +
-> > > +       if (state->state & ST_POWERED) {
-> > > +               imx8mq_mipi_csi_stop_stream(state);
-> > > +               imx8mq_mipi_csi_clk_disable(state);
-> > > +               state->state &= ~ST_POWERED;
-> > > +               if (!runtime)
-> > > +                       state->state |= ST_SUSPENDED;
-> > > +       }
-> > > +
-> > > +       mutex_unlock(&state->lock);
-> > > +
-> > > +       ret = icc_set_bw(state->icc_path, 0, 0);
-> > > +       if (ret)
-> > > +               dev_err(dev, "icc_set_bw failed with %d\n", ret);
-> > > +
-> > > +       return ret ? -EAGAIN : 0;
-> > > +}
-> > > +
-> > > +static int imx8mq_mipi_csi_pm_resume(struct device *dev, bool runtime)
-> > > +{
-> > > +       struct v4l2_subdev *sd = dev_get_drvdata(dev);
-> > > +       struct csi_state *state = mipi_sd_to_csi2_state(sd);
-> > > +       int ret = 0;
-> > > +
-> > > +       ret = icc_set_bw(state->icc_path, 0, state->icc_path_bw);
-> > > +       if (ret) {
-> > > +               dev_err(dev, "icc_set_bw failed with %d\n", ret);
-> > > +               return ret;
-> > > +       }
-> > > +
-> > > +       mutex_lock(&state->lock);
-> > > +
-> > > +       if (!runtime && !(state->state & ST_SUSPENDED))
-> > > +               goto unlock;
-> > > +
-> > > +       if (!(state->state & ST_POWERED)) {
-> > > +               state->state |= ST_POWERED;
-> > > +               ret = imx8mq_mipi_csi_clk_enable(state);
-> > 
-> > Enabling the clocks in the PM resume handler is correct, but they should
-> > also be disabled in the PM suspend handler.
-> 
-> imx8mq_mipi_csi_clk_disable() is called in suspend(). I don't know what
-> you mean here.
-
-I wonder what I was thinking... You can ignore this comment.
-
-However, imx8mq_mipi_csi_clk_disable() is also called in the error path
-of the probe function and in the remove function. I don't think this is
-right.
-
+diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+new file mode 100644
+index 000000000000..97222485f223
+--- /dev/null
++++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+@@ -0,0 +1,173 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/media/nxp,imx8mq-mipi-csi2.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NXP i.MX8MQ MIPI CSI-2 receiver
++
++maintainers:
++  - Martin Kepplinger <martin.kepplinger@puri.sm>
++
++description: |-
++  This binding covers the CSI-2 RX PHY and host controller included in the
++  NXP i.MX8MQ SoC. It handles the sensor/image input and process for all the
++  input imaging devices.
++
++properties:
++  compatible:
++    enum:
++      - fsl,imx8mq-mipi-csi2
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: core is the RX Controller Core Clock input. This clock
++                     must be exactly equal to or faster than the receive
++                     byteclock from the RX DPHY.
++      - description: esc is the Rx Escape Clock. This must be the same escape
++                     clock that the RX DPHY receives.
++      - description: ui is the pixel clock (phy_ref up to 333Mhz).
++                     See the reference manual for details.
++
++  clock-names:
++    items:
++      - const: core
++      - const: esc
++      - const: ui
++
++  power-domains:
++    maxItems: 1
++
++  resets:
++    items:
++      - description: CORE_RESET reset register bit definition
++      - description: PHY_REF_RESET reset register bit definition
++      - description: ESC_RESET reset register bit definition
++
++  fsl,mipi-phy-gpr:
++    description: |
++      The phandle to the imx8mq syscon iomux-gpr with the register
++      for setting RX_ENABLE for the mipi receiver.
++
++      The format should be as follows:
++      <gpr req_gpr>
++      gpr is the phandle to general purpose register node.
++      req_gpr is the gpr register offset of RX_ENABLE for the mipi phy.
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    items:
++      items:
++        - description: The 'gpr' is the phandle to general purpose register node.
++        - description: The 'req_gpr' is the gpr register offset containing
++                       CSI2_1_RX_ENABLE or CSI2_2_RX_ENABLE respectively.
++          maximum: 0xff
++
++  interconnects:
++    maxItems: 1
++
++  interconnect-names:
++    const: dram
++
++  ports:
++    $ref: /schemas/graph.yaml#/properties/ports
++
++    properties:
++      port@0:
++        $ref: /schemas/graph.yaml#/$defs/port-base
++        unevaluatedProperties: false
++        description:
++          Input port node, single endpoint describing the CSI-2 transmitter.
++
++        properties:
++          endpoint:
++            $ref: video-interfaces.yaml#
++            unevaluatedProperties: false
++
++            properties:
++              data-lanes:
++                items:
++                  minItems: 1
++                  maxItems: 4
++                  items:
++                    - const: 1
++                    - const: 2
++                    - const: 3
++                    - const: 4
++
++            required:
++              - data-lanes
++
++      port@1:
++        $ref: /schemas/graph.yaml#/properties/port
++        description:
++          Output port node
++
++    required:
++      - port@0
++      - port@1
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++  - power-domains
++  - resets
++  - fsl,mipi-phy-gpr
++  - ports
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/imx8mq-clock.h>
++    #include <dt-bindings/interconnect/imx8mq.h>
++
++    csi@30a70000 {
++        compatible = "fsl,imx8mq-mipi-csi2";
++        reg = <0x30a70000 0x1000>;
++        clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
++                 <&clk IMX8MQ_CLK_CSI1_ESC>,
++                 <&clk IMX8MQ_CLK_CSI1_PHY_REF>;
++        clock-names = "core", "esc", "ui";
++        assigned-clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
++                          <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
++                          <&clk IMX8MQ_CLK_CSI1_ESC>;
++        assigned-clock-rates = <266000000>, <200000000>, <66000000>;
++        assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
++                                 <&clk IMX8MQ_SYS2_PLL_1000M>,
++                                 <&clk IMX8MQ_SYS1_PLL_800M>;
++        power-domains = <&pgc_mipi_csi1>;
++        resets = <&src IMX8MQ_RESET_MIPI_CSI1_CORE_RESET>,
++                 <&src IMX8MQ_RESET_MIPI_CSI1_PHY_REF_RESET>,
++                 <&src IMX8MQ_RESET_MIPI_CSI1_ESC_RESET>;
++        fsl,mipi-phy-gpr = <&iomuxc_gpr 0x88>;
++        interconnects = <&noc IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
++        interconnect-names = "dram";
++
++        ports {
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            port@0 {
++                reg = <0>;
++
++                imx8mm_mipi_csi_in: endpoint {
++                    remote-endpoint = <&imx477_out>;
++                    data-lanes = <1 2 3 4>;
++                };
++            };
++
++            port@1 {
++                reg = <1>;
++
++                imx8mm_mipi_csi_out: endpoint {
++                    remote-endpoint = <&csi_in>;
++                };
++            };
++        };
++    };
++
++...
 -- 
-Regards,
+2.30.2
 
-Laurent Pinchart
