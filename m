@@ -2,81 +2,150 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C279C07E96
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 01:55:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC155C07E9A
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 06:42:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4825A61361
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 01:55:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 89E73613AB
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Jul 2021 06:42:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237391AbhGNB6T (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 13 Jul 2021 21:58:19 -0400
-Received: from mail-il1-f169.google.com ([209.85.166.169]:39441 "EHLO
-        mail-il1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229843AbhGNB6S (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 13 Jul 2021 21:58:18 -0400
-Received: by mail-il1-f169.google.com with SMTP id a7so11955iln.6;
-        Tue, 13 Jul 2021 18:55:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=GyixVvvN8xYoDdReijEmK7j+HPjzKgwZBAHLb0q9B1c=;
-        b=QCkXNO/IXcaWz6gPUaz7W+FswU4vgS7sJjvi1fSyx/NZxXIwVsfzg8bSZzcq85jgQi
-         oueK7rQjHrcAIP4w6G/q/T+kpcNUcqpLuoFa5dzW9bANCkqavI4g1e2xbA1NCpB90HjW
-         SZ3ORRR4lkaK2kTULt/DWsVKUebeon0cA07iHfPovrtRIL56QBAjNHM6IktcPk0+MA1n
-         ZSPw4tNk8HSBkHTPX9m0nyumJPCplnct3PqiRFvRCRVGrgDoR4bx4VV4WOPrxyM4FQTJ
-         8S32DpaYYWM/qJgucb/wUW2kyxYna0e95YD0UWYg0QAzEtWfp3+4Uvgrqm/Qpn3SCYpC
-         0zXQ==
-X-Gm-Message-State: AOAM532jmdpU239WSqQySkiQXv4csuF1AgVsYdsBPs+usPUR3dPGNo43
-        RxSp+KNcLDwtcIZI2BF+Sg==
-X-Google-Smtp-Source: ABdhPJzdi/kxKVUi6wh+3oNlY2WUkI3leixL7fD/UzDBGp79/lDvoIMgifqy9i4sE7opJ7yMSN5Djg==
-X-Received: by 2002:a92:360b:: with SMTP id d11mr4929511ila.111.1626227726602;
-        Tue, 13 Jul 2021 18:55:26 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id k10sm338422ion.38.2021.07.13.18.55.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jul 2021 18:55:25 -0700 (PDT)
-Received: (nullmailer pid 1280482 invoked by uid 1000);
-        Wed, 14 Jul 2021 01:55:21 -0000
-Date:   Tue, 13 Jul 2021 19:55:21 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Iskren Chernev <iskren.chernev@gmail.com>
-Cc:     phone-devel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Subject: Re: [PATCH v5 1/2] dt-bindings: pinctrl: qcom: Add SM6115 pinctrl
- bindings
-Message-ID: <20210714015521.GA1280423@robh.at.kernel.org>
-References: <20210627185628.691435-1-iskren.chernev@gmail.com>
- <20210627185628.691435-2-iskren.chernev@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210627185628.691435-2-iskren.chernev@gmail.com>
+        id S238117AbhGNGp1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Jul 2021 02:45:27 -0400
+Received: from comms.puri.sm ([159.203.221.185]:53246 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237948AbhGNGp1 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 14 Jul 2021 02:45:27 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id 57553DFE0D;
+        Tue, 13 Jul 2021 23:42:04 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Xhixhc62P4ws; Tue, 13 Jul 2021 23:42:03 -0700 (PDT)
+Message-ID: <78072a196076789745b5481e26cfb45862e935ed.camel@puri.sm>
+Subject: Re: [PATCH v5 2/3] media: imx: add a driver for i.MX8MQ mipi csi rx
+ phy and controller
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     m.felsch@pengutronix.de, robh@kernel.org,
+        devicetree@vger.kernel.org, festevam@gmail.com,
+        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-staging@lists.linux.dev, mchehab@kernel.org,
+        phone-devel@vger.kernel.org, shawnguo@kernel.org,
+        slongerbeam@gmail.com
+Date:   Wed, 14 Jul 2021 08:41:58 +0200
+In-Reply-To: <YOy5uH6bSzRjO/f8@pendragon.ideasonboard.com>
+References: <20210618095753.114557-1-martin.kepplinger@puri.sm>
+         <20210618095753.114557-3-martin.kepplinger@puri.sm>
+         <YOy5uH6bSzRjO/f8@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 27 Jun 2021 21:56:27 +0300, Iskren Chernev wrote:
-> Add device tree binding Documentation details for Qualcomm SM6115 and
-> SM4250 pinctrl.
+Am Dienstag, dem 13.07.2021 um 00:52 +0300 schrieb Laurent Pinchart:
+> Hi Martin,
 > 
-> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
-> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-> ---
->  .../bindings/pinctrl/qcom,sm6115-pinctrl.yaml | 180 ++++++++++++++++++
->  1 file changed, 180 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/pinctrl/qcom,sm6115-pinctrl.yaml
-> 
+> Thank you for the patch.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+thank you for reviewing!
+
+> 
+> On Fri, Jun 18, 2021 at 11:57:52AM +0200, Martin Kepplinger wrote:
+> > Add a driver to support the i.MX8MQ MIPI CSI receiver. The hardware
+> > side
+> > is based on
+> >  
+> > https://source.codeaurora.org/external/imx/linux-imx/tree/drivers/media/platform/imx8/mxc-mipi-csi2_yav.c?h=imx_5.4.70_2.3.0
+> > 
+> > It's built as part of VIDEO_IMX7_CSI because that's documented to
+> > support
+> > i.MX8M platforms. This driver adds i.MX8MQ support where currently
+> > only the
+> > i.MX8MM platform has been supported.
+> 
+> Overall this is really nice work. I have quite a few review comments,
+> but hopefully nothing that should be difficult to handle.
+
+I think so too but right now I have one question:
+
+> 
+> > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> > ---
+> >  drivers/staging/media/imx/Makefile           |   1 +
+> >  drivers/staging/media/imx/imx8mq-mipi-csi2.c | 963
+> > +++++++++++++++++++
+> >  2 files changed, 964 insertions(+)
+> >  create mode 100644 drivers/staging/media/imx/imx8mq-mipi-csi2.c
+> > 
+> > 
+
+
+> > +static int imx8mq_mipi_csi_pm_suspend(struct device *dev, bool
+> > runtime)
+> > +{
+> > +       struct v4l2_subdev *sd = dev_get_drvdata(dev);
+> > +       struct csi_state *state = mipi_sd_to_csi2_state(sd);
+> > +       int ret = 0;
+> > +
+> > +       mutex_lock(&state->lock);
+> > +
+> > +       if (state->state & ST_POWERED) {
+> > +               imx8mq_mipi_csi_stop_stream(state);
+> > +               imx8mq_mipi_csi_clk_disable(state);
+> > +               state->state &= ~ST_POWERED;
+> > +               if (!runtime)
+> > +                       state->state |= ST_SUSPENDED;
+> > +       }
+> > +
+> > +       mutex_unlock(&state->lock);
+> > +
+> > +       ret = icc_set_bw(state->icc_path, 0, 0);
+> > +       if (ret)
+> > +               dev_err(dev, "icc_set_bw failed with %d\n", ret);
+> > +
+> > +       return ret ? -EAGAIN : 0;
+> > +}
+> > +
+> > +static int imx8mq_mipi_csi_pm_resume(struct device *dev, bool
+> > runtime)
+> > +{
+> > +       struct v4l2_subdev *sd = dev_get_drvdata(dev);
+> > +       struct csi_state *state = mipi_sd_to_csi2_state(sd);
+> > +       int ret = 0;
+> > +
+> > +       ret = icc_set_bw(state->icc_path, 0, state->icc_path_bw);
+> > +       if (ret) {
+> > +               dev_err(dev, "icc_set_bw failed with %d\n", ret);
+> > +               return ret;
+> > +       }
+> > +
+> > +       mutex_lock(&state->lock);
+> > +
+> > +       if (!runtime && !(state->state & ST_SUSPENDED))
+> > +               goto unlock;
+> > +
+> > +       if (!(state->state & ST_POWERED)) {
+> > +               state->state |= ST_POWERED;
+> > +               ret = imx8mq_mipi_csi_clk_enable(state);
+> 
+> Enabling the clocks in the PM resume handler is correct, but they
+> should
+> also be disabled in the PM suspend handler.
+
+imx8mq_mipi_csi_clk_disable() is called in suspend(). I don't know what
+you mean here.
+
+
+again, thank you for reviewing,
+
+                                       martin
+
+
