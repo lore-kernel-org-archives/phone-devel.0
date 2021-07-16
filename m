@@ -2,196 +2,118 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E9466C12002
-	for <phone-devel@archiver.kernel.org>; Fri, 16 Jul 2021 08:47:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32379C12002
+	for <phone-devel@archiver.kernel.org>; Fri, 16 Jul 2021 10:23:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C48D9610C7
-	for <phone-devel@archiver.kernel.org>; Fri, 16 Jul 2021 08:47:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 01650613F5
+	for <phone-devel@archiver.kernel.org>; Fri, 16 Jul 2021 10:23:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238497AbhGPIus (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 16 Jul 2021 04:50:48 -0400
-Received: from comms.puri.sm ([159.203.221.185]:45452 "EHLO comms.puri.sm"
+        id S238830AbhGPK0d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 16 Jul 2021 06:26:33 -0400
+Received: from comms.puri.sm ([159.203.221.185]:50878 "EHLO comms.puri.sm"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229895AbhGPIur (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 16 Jul 2021 04:50:47 -0400
+        id S238196AbhGPK0W (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 16 Jul 2021 06:26:22 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id E961DDFBFB;
-        Fri, 16 Jul 2021 01:47:22 -0700 (PDT)
+        by comms.puri.sm (Postfix) with ESMTP id C2715E0012;
+        Fri, 16 Jul 2021 03:23:12 -0700 (PDT)
 Received: from comms.puri.sm ([127.0.0.1])
         by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id yUenwAsEOUc3; Fri, 16 Jul 2021 01:47:21 -0700 (PDT)
-Message-ID: <e88d99abbdcbd6a1b2c27849f08721e79f237adc.camel@puri.sm>
-Subject: Re: [PATCH v6 2/3] media: imx: add a driver for i.MX8MQ mipi csi rx
- phy and controller
+        with ESMTP id KQ5PrDbyEW8m; Fri, 16 Jul 2021 03:23:11 -0700 (PDT)
 From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     festevam@gmail.com, krzk@kernel.org, devicetree@vger.kernel.org,
-        kernel@pengutronix.de, kernel@puri.sm,
+To:     laurent.pinchart@ideasonboard.com, shawnguo@kernel.org
+Cc:     devicetree@vger.kernel.org, festevam@gmail.com,
+        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
         linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
         linux-staging@lists.linux.dev, m.felsch@pengutronix.de,
         mchehab@kernel.org, phone-devel@vger.kernel.org, robh@kernel.org,
-        shawnguo@kernel.org, slongerbeam@gmail.com
-Date:   Fri, 16 Jul 2021 10:47:14 +0200
-In-Reply-To: <YPCuFA+utjudv11H@pendragon.ideasonboard.com>
-References: <20210714111931.324485-1-martin.kepplinger@puri.sm>
-         <20210714111931.324485-3-martin.kepplinger@puri.sm>
-         <YO8r6pZAduu1ZMK4@pendragon.ideasonboard.com>
-         <ce71a71a358247eca3b72ddcddd703206c90f284.camel@puri.sm>
-         <YPCuFA+utjudv11H@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1 
+        slongerbeam@gmail.com,
+        Martin Kepplinger <martin.kepplinger@puri.sm>
+Subject: [PATCH v7 0/3] media: imx: add support for imx8mq MIPI RX
+Date:   Fri, 16 Jul 2021 12:22:41 +0200
+Message-Id: <20210716102244.581182-1-martin.kepplinger@puri.sm>
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Am Freitag, dem 16.07.2021 um 00:52 +0300 schrieb Laurent Pinchart:
-> Hi Martin,
-> 
-> On Thu, Jul 15, 2021 at 09:37:24AM +0200, Martin Kepplinger wrote:
-> > Am Mittwoch, dem 14.07.2021 um 21:24 +0300 schrieb Laurent
-> > Pinchart:
-> > > On Wed, Jul 14, 2021 at 01:19:30PM +0200, Martin Kepplinger
-> > > wrote:
-> > > > Add a driver to support the i.MX8MQ MIPI CSI receiver. The
-> > > > hardware side
-> > > > is based on
-> > > > https://source.codeaurora.org/external/imx/linux-imx/tree/drivers/media/platform/imx8/mxc-mipi-csi2_yav.c?h=imx_5.4.70_2.3.0
-> > > > 
-> > > > It's built as part of VIDEO_IMX7_CSI because that's documented
-> > > > to support
-> > > > i.MX8M platforms. This driver adds i.MX8MQ support where
-> > > > currently only the
-> > > > i.MX8MM platform has been supported.
-> > > > 
-> > > > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-> > > > ---
-> > > >  drivers/staging/media/imx/Makefile           |   1 +
-> > > >  drivers/staging/media/imx/imx8mq-mipi-csi2.c | 949
-> > > > +++++++++++++++++++
-> > > >  2 files changed, 950 insertions(+)
-> > > >  create mode 100644 drivers/staging/media/imx/imx8mq-mipi-
-> > > > csi2.c
-> > > > 
-> > > > diff --git a/drivers/staging/media/imx/Makefile
-> > > > b/drivers/staging/media/imx/Makefile
-> > > > index 6ac33275cc97..19c2fc54d424 100644
-> > > > --- a/drivers/staging/media/imx/Makefile
-> > > > +++ b/drivers/staging/media/imx/Makefile
-> > > > @@ -16,3 +16,4 @@ obj-$(CONFIG_VIDEO_IMX_CSI) += imx6-mipi-
-> > > > csi2.o
-> 
-> [snip]
-> 
-> > > > +static int imx8mq_mipi_csi_calc_hs_settle(struct csi_state
-> > > > *state)
-> > > > +{
-> > > > +       u32 width = state-
-> > > > >format_mbus[MIPI_CSI2_PAD_SINK].width;
-> > > > +       u32 height = state-
-> > > > >format_mbus[MIPI_CSI2_PAD_SINK].height;
-> > > > +       s64 link_freq;
-> > > > +       u32 lane_rate;
-> > > > +
-> > > > +       /* Calculate the line rate from the pixel rate. */
-> > > > +       link_freq = v4l2_get_link_freq(state->src_sd-
-> > > > >ctrl_handler,
-> > > > +                                      state->csi2_fmt->width,
-> > > > +                                      state-
-> > > > >bus.num_data_lanes * 2);
-> > > > +       if (link_freq < 0) {
-> > > > +               dev_err(state->dev, "Unable to obtain link
-> > > > frequency: %d\n",
-> > > > +                       (int)link_freq);
-> > > > +               return link_freq;
-> > > > +       }
-> > > > +
-> > > > +       lane_rate = link_freq * 2;
-> > > > +       if (lane_rate < 80000000 || lane_rate > 1500000000) {
-> > > > +               dev_dbg(state->dev, "Out-of-bound lane rate
-> > > > %u\n", lane_rate);
-> > > > +               return -EINVAL;
-> > > > +       }
-> > > > +
-> > > > +       /*
-> > > > https://community.nxp.com/t5/i-MX-Processors/Explenation-for-HS-SETTLE-parameter-in-MIPI-CSI-D-PHY-registers/m-p/764275/highlight/true#M118744
-> > > >  */
-> > > > +       if (lane_rate < 250000000)
-> > > > +               state->hs_settle = 0xb;
-> > > > +       else if (lane_rate < 500000000)
-> > > > +               state->hs_settle = 0x8;
-> > > > +       else
-> > > > +               state->hs_settle = 0x6;
-> > > 
-> > > We could possibly compute this value based on the formula from
-> > > the table
-> > > in that page, but maybe that's overkill ? If you want to give it
-> > > a try,
-> > > it would be along those lines.
-> > > 
-> > >         /*
-> > >          * The D-PHY specification requires Ths-settle to be in
-> > > the range
-> > >          * 85ns + 6*UI to 140ns + 10*UI, with the unit interval
-> > > UI being half
-> > >          * the clock period.
-> > >          *
-> > >          * The Ths-settle value is expressed in the hardware as a
-> > > multiple of
-> > >          * the Esc clock period:
-> > >          *
-> > >          * Ths-settle = (PRG_RXHS_SETTLE + 1) * Tperiod of
-> > > RxClkInEsc
-> > >          *
-> > >          * Due to the one cycle inaccuracy introduced by
-> > > rounding, the
-> > >          * documentation recommends picking a value away from the
-> > > boundaries.
-> > >          * Let's pick the average.
-> > >          */
-> > >         esc_clk_rate = clk_get_rate(...);
-> > > 
-> > >         min_ths_settle = 85 + 6 * 1000000 / (lane_rate / 1000);
-> > >         max_ths_settle = 140 + 10 * 1000000 / (lane_rate / 1000);
-> > >         ths_settle = (min_ths_settle + max_ths_settle) / 2;
-> > > 
-> > >         state->hs_settle = ths_settle * esc_clk_rate / 1000000000
-> > > - 1;
-> > 
-> > I experimented a bit but would like to leave this as a task for
-> > later
-> > if that's ok. it's correct and simple now. also, using clks[i].clk
-> > based on the name string would feel better to submit seperately
-> > later.
-> 
-> That's OK with me, but I may then submit a patch on top fairly soon
-> :-)
-> Have you been able to test if this code works on your device ? The
-> main
-> reason why I think it's better is that it doesn't hardcode a specific
-> escape clock frequency assumption, so it should be able to
-> accommodate a
-> wider range of use cases. If we change it later, there's always a
-> risk
-> of regressions, while if we do this from the start, we'll figure out
-> quickly if it doesn't work in some cases.
-> 
+hi,
 
-taking your code basically as-is doesn't yet work, but it helps a bit.
-tbh I don't even know how to correctly read that table / calculation:
-what is the exact relation of the calculated Ths_settle time inverval
-to the hs_settle register bits?
+This patch series adds a driver for the i.MX8MQ CSI MIPI receiver / controller.
 
-if the 2 of us can't quickly figure it out I can ask NXP via that
-community forum issue and I created
-https://source.puri.sm/Librem5/linux-next/-/issues/340 so I won't
-forget about it.
+It includes the driver, the dt-bindings and the DT addition to the SoC dtsi.
+I test it using libcamera. Thanks to Laurent who helped a lot. I'm happy for
+any feedback,
 
-thanks!
+                           martin
+
+revision history
+----------------
+v7: (thank you Laurent and Rob)
+* fix the binding example (include the reset driver)
+* use pm_runtime_resume_and_get()
+* fix some logic in init_cfg()
+* add some useful code comments and fix minor bits found by Laurent in v6
+
+v6: (thank you Laurent and Rob)
+* add reviewed-by tag to binding
+* statically allocate clk_bulk_data
+* fix how the hs_settle value is applied
+* remove s_power calls
+* remove the link_setup() callback implementation and make the link immutable
+* more cleanups according to Laurents' review from v5
+https://lore.kernel.org/linux-media/20210714111931.324485-1-martin.kepplinger@puri.sm/
+
+v5: (thank you Laurent)
+* fix reset usage by using the already supported reset controller driver
+* remove clko2 (totally unrelated clock / had been included by accident)
+* rename pxl clock to ui
+https://lore.kernel.org/linux-media/20210618095753.114557-1-martin.kepplinger@puri.sm/
+
+v4: (thank you Rob and Marco)
+* create fsl,mipi-phy-gpr custom dt property instead of confusing "phy"
+* add imx8mq-specific compatibile to imx8mq.dtsi for future use
+https://lore.kernel.org/linux-media/20210614121522.2944593-1-martin.kepplinger@puri.sm/
+
+v3: (thank you, Rob and Laurent)
+among minor other things according to v2 review, changes include:
+* better describe the clocks
+* rename DT property "phy-reset" to "reset" and "phy-gpr" to "phy"
+https://lore.kernel.org/linux-media/20210608104128.1616028-1-martin.kepplinger@puri.sm/T/#t
+
+v2: (thank you, Dan and Guido)
+among fixes according to v1 reviews, changes include:
+* remove status property from dt-bindings example
+* define a few bits in order to have less magic values
+* use "imx8mq_mipi_csi_" as local function prefix
+* read DT properties only during probe()
+* remove dead code (log_status)
+* add imx8mq_mipi_csi_release_icc()
+* fix imx8mq_mipi_csi_init_icc()
+https://lore.kernel.org/linux-media/20210531112326.90094-1-martin.kepplinger@puri.sm/
+
+v1:
+https://lore.kernel.org/linux-media/20210527075407.3180744-1-martin.kepplinger@puri.sm/T/#t
+
+Martin Kepplinger (3):
+  dt-bindings: media: document the nxp,imx8mq-mipi-csi2 receiver phy and
+    controller
+  media: imx: add a driver for i.MX8MQ mipi csi rx phy and controller
+  arm64: dts: imx8mq: add mipi csi phy and csi bridge descriptions
+
+ .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 174 ++++
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi     | 104 ++
+ drivers/staging/media/imx/Makefile            |   1 +
+ drivers/staging/media/imx/imx8mq-mipi-csi2.c  | 947 ++++++++++++++++++
+ 4 files changed, 1226 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+ create mode 100644 drivers/staging/media/imx/imx8mq-mipi-csi2.c
+
+-- 
+2.30.2
 
