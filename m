@@ -4,258 +4,285 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48587C12002
-	for <phone-devel@archiver.kernel.org>; Fri, 16 Jul 2021 10:49:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54AA5C636CE
+	for <phone-devel@archiver.kernel.org>; Sat, 17 Jul 2021 21:39:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1E9FA613E9
-	for <phone-devel@archiver.kernel.org>; Fri, 16 Jul 2021 10:49:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2FCE2610C7
+	for <phone-devel@archiver.kernel.org>; Sat, 17 Jul 2021 21:39:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232137AbhGPKv4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 16 Jul 2021 06:51:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49442 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231937AbhGPKv4 (ORCPT
+        id S235272AbhGQVl7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 17 Jul 2021 17:41:59 -0400
+Received: from mail-40134.protonmail.ch ([185.70.40.134]:25704 "EHLO
+        mail-40134.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231542AbhGQVlk (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 16 Jul 2021 06:51:56 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7ABDC06175F;
-        Fri, 16 Jul 2021 03:49:01 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8376B3F0;
-        Fri, 16 Jul 2021 12:48:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1626432539;
-        bh=N1ac1SzTjIyKVcWZzvXMxpBtvh+6zyfqWW+6DOMn/44=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=P3lHtiVjrUbjmMV/wIy0TlDd152PWLOhR29u7jTRggbakRv0zFEP/0U701RS+QiEd
-         iqCPQauKeplD4OCrCF8PU+UO7eyR067k1QsFA2nENRh71U9WKcPdm49ilsp7gSHOnu
-         ug4FhpSwBQKFxgoTXccRtozXlxuNtTMX4SeMlGJk=
-Date:   Fri, 16 Jul 2021 13:48:57 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     shawnguo@kernel.org, devicetree@vger.kernel.org,
-        festevam@gmail.com, kernel@pengutronix.de, kernel@puri.sm,
-        krzk@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-imx@nxp.com, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        m.felsch@pengutronix.de, mchehab@kernel.org,
-        phone-devel@vger.kernel.org, robh@kernel.org, slongerbeam@gmail.com
-Subject: Re: [PATCH v7 1/3] dt-bindings: media: document the
- nxp,imx8mq-mipi-csi2 receiver phy and controller
-Message-ID: <YPFkGbF083LpopP0@pendragon.ideasonboard.com>
-References: <20210716102244.581182-1-martin.kepplinger@puri.sm>
- <20210716102244.581182-2-martin.kepplinger@puri.sm>
+        Sat, 17 Jul 2021 17:41:40 -0400
+Date:   Sat, 17 Jul 2021 21:38:31 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1626557921;
+        bh=LCLMKFnO7TvI6Bx3wiF64fZ45WT+b2LT5S9wOpPgDac=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=bxU2nGMqY/sv3aFzrw92jHVnGa1ELjGQJrVmZdMf+cqTN+0zGgfe+jC505pdmZ2ad
+         USF53FQgEiSdwIprHGn47f6RhHk1LWFBWfyDJxs60QhJxU44arjjLX6JztSZsgJKpj
+         5cS35qRrJ+5Q0Hkr1J/8f1eESw7KW1/Wtno3qlXM=
+To:     Rob Herring <robh@kernel.org>
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, jami.kettunen@somainline.org,
+        jo@jsfamily.in, linux-input@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Reply-To: Caleb Connolly <caleb@connolly.tech>
+Subject: Re: [RESEND PATCH v2 1/6] dt-bindings: input: add Qualcomm SPMI haptics driver
+Message-ID: <25d5bce7-401f-f1d5-207f-784e0780c5e0@connolly.tech>
+In-Reply-To: <20210622155837.GA3746854@robh.at.kernel.org>
+References: <20210618175041.323495-1-caleb@connolly.tech> <20210618175041.323495-2-caleb@connolly.tech> <20210622155837.GA3746854@robh.at.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210716102244.581182-2-martin.kepplinger@puri.sm>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Martin,
+Hi Rob,
 
-Thank you for the patch.
+Thanks a lot for your feedback.
 
-On Fri, Jul 16, 2021 at 12:22:42PM +0200, Martin Kepplinger wrote:
-> The i.MX8MQ SoC integrates a different MIPI CSI receiver as the i.MX8MM so
-> describe the DT bindings for it.
-> 
-> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-> Reviewed-by: Rob Herring <robh@kernel.org>
+I'm still struggling a little to get my head around schema, would you
+mind clarifying a few things?
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+On 22/06/2021 16:58, Rob Herring wrote:
+> On Fri, Jun 18, 2021 at 05:51:03PM +0000, Caleb Connolly wrote:
+>> Add bindings for qcom PMIC SPMI haptics driver.
+>>
+>> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+>> ---
+>>   .../bindings/input/qcom,spmi-haptics.yaml     | 128 ++++++++++++++++++
+>>   include/dt-bindings/input/qcom,spmi-haptics.h |  32 +++++
+>>   2 files changed, 160 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/input/qcom,spmi-h=
+aptics.yaml
+>>   create mode 100644 include/dt-bindings/input/qcom,spmi-haptics.h
+>>
+>> diff --git a/Documentation/devicetree/bindings/input/qcom,spmi-haptics.y=
+aml b/Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml
+>> new file mode 100644
+>> index 000000000000..8ef9b4ec3a07
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml
+>> @@ -0,0 +1,128 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +# Copyright 2020 Unisoc Inc.
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/input/qcom,spmi-haptics.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Qualcomm Technologies Inc PMI8998 spmi haptics
+>> +
+>> +maintainers:
+>> +  - Caleb Connolly <caleb@connolly.tech>
+>> +
+>> +description: |
+>> +  Qualcomm SPMI haptics is a peripheral on some QTI PMICs. It supports =
+linear resonant
+>> +  actuators and eccentric rotating mass type haptics commonly found in =
+mobile devices.
+>> +  It supports multiple sources of wave data such as an internal buffer,=
+ direct play
+>> +  (from kernel or userspace) as well as an audio output mode.
+>> +
+>> +properties:
+>> +  compatible:
+>> +    items:
+>> +      - enum:
+>> +        - qcom,pmi8998-haptics
+>> +        - qcom,pmi8996-haptics
+>> +        - qcom,pmi8941-haptics
+>> +      - const: qcom,spmi-haptics
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  interrupts:
+>> +    items:
+>> +      - description: short circuit interrupt
+>> +      - description: play interrupt
+>> +
+>> +  interrupt-names:
+>> +    items:
+>> +      - const: short
+>> +      - const: play
+>> +
+>> +  qcom,actuator-type:
+>> +    description: |
+>> +      The type of actuator attached to the hardware.
+>> +      Allowed values are,
+>> +        0 - HAP_TYPE_LRA
+>> +        1 - HAP_TYPE_ERM
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>> +    enum: [ 0, 1 ]
+>> +    default: 0
+>> +
+>> +  qcom,wave-shape:
+>> +    description: |
+>> +      Selects the wave shape to use.
+>> +      Allowed values are,
+>> +        0 - HAP_WAVE_SINE
+>> +        1 - HAP_WAVE_SQUARE
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>> +    enum: [ 0, 1 ]
+>> +    default: 0
+>> +
+>> +  qcom,play-mode:
+>> +    description: |
+>> +      Selects the play mode to use.
+>> +      Allowed values are,
+>> +        0 - HAP_PLAY_DIRECT
+>> +        1 - HAP_PLAY_BUFFER
+>> +        2 - HAP_PLAY_AUDIO
+>> +        3 - HAP_PLAY_PWM
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>> +    enum: [ 0, 1, 2, 3 ]
+>> +    default: 2
+>> +
+>> +  qcom,wave-play-rate-us:
+>> +    description: |
+>> +      Wave sample durection in microseconds, 1/f where f
+>> +      is the resonant frequency of the actuator.
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+> Don't need a type for standard units.
+>
+>> +    minimum: 0
+>> +    maximum: 20475
+>> +
+>> +  qcom,brake-pattern:
+>> +    minItems: 4
+>> +    maxItems: 4
+>> +    description: |
+>> +      The brake pattern are the strengths of the pattern
+>> +      used to brake the haptics. Allowed values are,
+>> +        0 - 0V
+>> +        1 - Vmax/4
+>> +        2 - Vmax/2
+>> +        3 - Vmax
+>> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+>> +    default: [0x3, 0x3, 0x2, 0x1]
+> To express the constraints on all items:
+>
+> items:
+>    enum: [ 0, 1, 2, 3 ]
+>
+> (items is a schema here rather than a list)
 
-> ---
->  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 174 ++++++++++++++++++
->  1 file changed, 174 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
-> new file mode 100644
-> index 000000000000..9c04fa85ee5c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
-> @@ -0,0 +1,174 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/nxp,imx8mq-mipi-csi2.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP i.MX8MQ MIPI CSI-2 receiver
-> +
-> +maintainers:
-> +  - Martin Kepplinger <martin.kepplinger@puri.sm>
-> +
-> +description: |-
-> +  This binding covers the CSI-2 RX PHY and host controller included in the
-> +  NXP i.MX8MQ SoC. It handles the sensor/image input and process for all the
-> +  input imaging devices.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - fsl,imx8mq-mipi-csi2
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: core is the RX Controller Core Clock input. This clock
-> +                     must be exactly equal to or faster than the receive
-> +                     byteclock from the RX DPHY.
-> +      - description: esc is the Rx Escape Clock. This must be the same escape
-> +                     clock that the RX DPHY receives.
-> +      - description: ui is the pixel clock (phy_ref up to 333Mhz).
-> +                     See the reference manual for details.
-> +
-> +  clock-names:
-> +    items:
-> +      - const: core
-> +      - const: esc
-> +      - const: ui
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  resets:
-> +    items:
-> +      - description: CORE_RESET reset register bit definition
-> +      - description: PHY_REF_RESET reset register bit definition
-> +      - description: ESC_RESET reset register bit definition
-> +
-> +  fsl,mipi-phy-gpr:
-> +    description: |
-> +      The phandle to the imx8mq syscon iomux-gpr with the register
-> +      for setting RX_ENABLE for the mipi receiver.
-> +
-> +      The format should be as follows:
-> +      <gpr req_gpr>
-> +      gpr is the phandle to general purpose register node.
-> +      req_gpr is the gpr register offset of RX_ENABLE for the mipi phy.
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    items:
-> +      items:
-> +        - description: The 'gpr' is the phandle to general purpose register node.
-> +        - description: The 'req_gpr' is the gpr register offset containing
-> +                       CSI2_1_RX_ENABLE or CSI2_2_RX_ENABLE respectively.
-> +          maximum: 0xff
-> +
-> +  interconnects:
-> +    maxItems: 1
-> +
-> +  interconnect-names:
-> +    const: dram
-> +
-> +  ports:
-> +    $ref: /schemas/graph.yaml#/properties/ports
-> +
-> +    properties:
-> +      port@0:
-> +        $ref: /schemas/graph.yaml#/$defs/port-base
-> +        unevaluatedProperties: false
-> +        description:
-> +          Input port node, single endpoint describing the CSI-2 transmitter.
-> +
-> +        properties:
-> +          endpoint:
-> +            $ref: video-interfaces.yaml#
-> +            unevaluatedProperties: false
-> +
-> +            properties:
-> +              data-lanes:
-> +                items:
-> +                  minItems: 1
-> +                  maxItems: 4
-> +                  items:
-> +                    - const: 1
-> +                    - const: 2
-> +                    - const: 3
-> +                    - const: 4
-> +
-> +            required:
-> +              - data-lanes
-> +
-> +      port@1:
-> +        $ref: /schemas/graph.yaml#/properties/port
-> +        description:
-> +          Output port node
-> +
-> +    required:
-> +      - port@0
-> +      - port@1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +  - power-domains
-> +  - resets
-> +  - fsl,mipi-phy-gpr
-> +  - ports
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/imx8mq-clock.h>
-> +    #include <dt-bindings/interconnect/imx8mq.h>
-> +    #include <dt-bindings/reset/imx8mq-reset.h>
-> +
-> +    csi@30a70000 {
-> +        compatible = "fsl,imx8mq-mipi-csi2";
-> +        reg = <0x30a70000 0x1000>;
-> +        clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
-> +                 <&clk IMX8MQ_CLK_CSI1_ESC>,
-> +                 <&clk IMX8MQ_CLK_CSI1_PHY_REF>;
-> +        clock-names = "core", "esc", "ui";
-> +        assigned-clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
-> +                          <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
-> +                          <&clk IMX8MQ_CLK_CSI1_ESC>;
-> +        assigned-clock-rates = <266000000>, <200000000>, <66000000>;
-> +        assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
-> +                                 <&clk IMX8MQ_SYS2_PLL_1000M>,
-> +                                 <&clk IMX8MQ_SYS1_PLL_800M>;
-> +        power-domains = <&pgc_mipi_csi1>;
-> +        resets = <&src IMX8MQ_RESET_MIPI_CSI1_CORE_RESET>,
-> +                 <&src IMX8MQ_RESET_MIPI_CSI1_PHY_REF_RESET>,
-> +                 <&src IMX8MQ_RESET_MIPI_CSI1_ESC_RESET>;
-> +        fsl,mipi-phy-gpr = <&iomuxc_gpr 0x88>;
-> +        interconnects = <&noc IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
-> +        interconnect-names = "dram";
-> +
-> +        ports {
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            port@0 {
-> +                reg = <0>;
-> +
-> +                imx8mm_mipi_csi_in: endpoint {
-> +                    remote-endpoint = <&imx477_out>;
-> +                    data-lanes = <1 2 3 4>;
-> +                };
-> +            };
-> +
-> +            port@1 {
-> +                reg = <1>;
-> +
-> +                imx8mm_mipi_csi_out: endpoint {
-> +                    remote-endpoint = <&csi_in>;
-> +                };
-> +            };
-> +        };
-> +    };
-> +
-> +...
+Ah, that's exactly what I was looking for! Should I replace one of the
+other properties with this?
 
--- 
-Regards,
+Or should I just add it to the list?
 
-Laurent Pinchart
+>
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - interrupts
+>> +  - qcom,wave-play-rate-us
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/spmi/spmi.h>
+>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>> +    #include <dt-bindings/input/qcom,spmi-haptics.h>
+>> +
+>> +    pmi8998_lsid1: pmic@3 {
+> Drop unused labels.
+>
+>> +      compatible =3D "qcom,pmi8998", "qcom,spmi-pmic";
+> Really, this needs to be converted to schema first so we're not adding
+> warnings.
+
+Hmm, is it ok to leave this here? I had a look at converting the spmi-pmic
+
+bindings to schema but it's a bit beyond me in all honestly.
+
+>
+>> +      reg =3D <0x3 SPMI_USID>;
+>> +      #address-cells =3D <1>;
+>> +      #size-cells =3D <0>;
+>> +
+>> +      pmi8998_haptics: haptics@c000 {
+>> +        compatible =3D "qcom,pmi8998-haptics", "qcom,spmi-haptics";
+>> +        reg =3D <0xc000>;
+>> +
+>> +        interrupts =3D <0x3 0xc0 0x0 IRQ_TYPE_EDGE_BOTH>,
+>> +                     <0x3 0xc0 0x1 IRQ_TYPE_EDGE_BOTH>;
+>> +        interrupt-names =3D "short", "play";
+>> +
+>> +        qcom,wave-shape =3D <HAP_WAVE_SINE>;
+>> +        qcom,play-mode =3D <HAP_PLAY_BUFFER>;
+>> +        qcom,brake-pattern =3D <0x3 0x3 0x2 0x1>;
+>> +
+>> +        status =3D "disabled";
+> Don't show status in examples.
+>
+>> +      };
+>> +    };
+>> diff --git a/include/dt-bindings/input/qcom,spmi-haptics.h b/include/dt-=
+bindings/input/qcom,spmi-haptics.h
+>> new file mode 100644
+>> index 000000000000..14a7e7d1471e
+>> --- /dev/null
+>> +++ b/include/dt-bindings/input/qcom,spmi-haptics.h
+>> @@ -0,0 +1,32 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-only */
+> Dual license please. DT files are used elsewhere.
+Will do.
+>
+>> +/*
+>> + * This header provides constants for pmi8998 SPMI haptics options.
+>> + */
+>> +
+>> +#ifndef _DT_BINDINGS_QCOM_PMIC_SPMI_HAPTICS_
+>> +#define _DT_BINDINGS_QCOM_PMIC_SPMI_HAPTICS_
+>> +
+>> +// Actuator types
+>> +#define HAP_TYPE_LRA=09=090
+>> +#define HAP_TYPE_ERM=09=091
+>> +
+>> +// LRA Wave type
+>> +#define HAP_WAVE_SINE=09=090
+>> +#define HAP_WAVE_SQUARE=09=091
+>> +
+>> +// Play modes
+>> +#define HAP_PLAY_DIRECT=09=090
+>> +#define HAP_PLAY_BUFFER=09=091
+>> +#define HAP_PLAY_AUDIO=09=092
+>> +#define HAP_PLAY_PWM=09=093
+>> +
+>> +#define HAP_PLAY_MAX=09=09HAP_PLAY_PWM
+>> +
+>> +// Auto resonance type
+>> +#define HAP_AUTO_RES_NONE=090
+>> +#define HAP_AUTO_RES_ZXD=091
+>> +#define HAP_AUTO_RES_QWD=092
+>> +#define HAP_AUTO_RES_MAX_QWD=093
+>> +#define HAP_AUTO_RES_ZXD_EOP=094
+>> +
+>> +#endif /* _DT_BINDINGS_QCOM_PMIC_SPMI_HAPTICS_ */
+>> --
+>> 2.31.1
+>>
+>>
+>>
+Kind Regards,
+
+Caleb
+
+
