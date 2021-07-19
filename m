@@ -2,287 +2,309 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54AA5C636CE
-	for <phone-devel@archiver.kernel.org>; Sat, 17 Jul 2021 21:39:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C67AC07E9D
+	for <phone-devel@archiver.kernel.org>; Mon, 19 Jul 2021 10:47:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2FCE2610C7
-	for <phone-devel@archiver.kernel.org>; Sat, 17 Jul 2021 21:39:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7977960200
+	for <phone-devel@archiver.kernel.org>; Mon, 19 Jul 2021 10:47:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235272AbhGQVl7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 17 Jul 2021 17:41:59 -0400
-Received: from mail-40134.protonmail.ch ([185.70.40.134]:25704 "EHLO
-        mail-40134.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231542AbhGQVlk (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 17 Jul 2021 17:41:40 -0400
-Date:   Sat, 17 Jul 2021 21:38:31 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1626557921;
-        bh=LCLMKFnO7TvI6Bx3wiF64fZ45WT+b2LT5S9wOpPgDac=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=bxU2nGMqY/sv3aFzrw92jHVnGa1ELjGQJrVmZdMf+cqTN+0zGgfe+jC505pdmZ2ad
-         USF53FQgEiSdwIprHGn47f6RhHk1LWFBWfyDJxs60QhJxU44arjjLX6JztSZsgJKpj
-         5cS35qRrJ+5Q0Hkr1J/8f1eESw7KW1/Wtno3qlXM=
-To:     Rob Herring <robh@kernel.org>
-From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, jami.kettunen@somainline.org,
-        jo@jsfamily.in, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: Re: [RESEND PATCH v2 1/6] dt-bindings: input: add Qualcomm SPMI haptics driver
-Message-ID: <25d5bce7-401f-f1d5-207f-784e0780c5e0@connolly.tech>
-In-Reply-To: <20210622155837.GA3746854@robh.at.kernel.org>
-References: <20210618175041.323495-1-caleb@connolly.tech> <20210618175041.323495-2-caleb@connolly.tech> <20210622155837.GA3746854@robh.at.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+        id S236550AbhGSKGT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 19 Jul 2021 06:06:19 -0400
+Received: from comms.puri.sm ([159.203.221.185]:51808 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235471AbhGSKGS (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 19 Jul 2021 06:06:18 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id 4D3EDE122E;
+        Mon, 19 Jul 2021 03:46:28 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id TgGk5378cSYs; Mon, 19 Jul 2021 03:46:26 -0700 (PDT)
+Message-ID: <afea234be0fd5e8a3ee2cac128169bbf796d5412.camel@puri.sm>
+Subject: Re: [PATCH v6 2/3] media: imx: add a driver for i.MX8MQ mipi csi rx
+ phy and controller
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     festevam@gmail.com, krzk@kernel.org, devicetree@vger.kernel.org,
+        kernel@pengutronix.de, kernel@puri.sm,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-staging@lists.linux.dev, m.felsch@pengutronix.de,
+        mchehab@kernel.org, phone-devel@vger.kernel.org, robh@kernel.org,
+        shawnguo@kernel.org, slongerbeam@gmail.com
+Date:   Mon, 19 Jul 2021 12:46:19 +0200
+In-Reply-To: <YPFjwvjSCuvC1915@pendragon.ideasonboard.com>
+References: <20210714111931.324485-1-martin.kepplinger@puri.sm>
+         <20210714111931.324485-3-martin.kepplinger@puri.sm>
+         <YO8r6pZAduu1ZMK4@pendragon.ideasonboard.com>
+         <ce71a71a358247eca3b72ddcddd703206c90f284.camel@puri.sm>
+         <YPCuFA+utjudv11H@pendragon.ideasonboard.com>
+         <e88d99abbdcbd6a1b2c27849f08721e79f237adc.camel@puri.sm>
+         <YPFjwvjSCuvC1915@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Rob,
+Am Freitag, dem 16.07.2021 um 13:47 +0300 schrieb Laurent Pinchart:
+> Hi Martin,
+> 
+> On Fri, Jul 16, 2021 at 10:47:14AM +0200, Martin Kepplinger wrote:
+> > Am Freitag, dem 16.07.2021 um 00:52 +0300 schrieb Laurent Pinchart:
+> > > On Thu, Jul 15, 2021 at 09:37:24AM +0200, Martin Kepplinger
+> > > wrote:
+> > > > Am Mittwoch, dem 14.07.2021 um 21:24 +0300 schrieb Laurent
+> > > > Pinchart:
+> > > > > On Wed, Jul 14, 2021 at 01:19:30PM +0200, Martin Kepplinger
+> > > > > wrote:
+> > > > > > Add a driver to support the i.MX8MQ MIPI CSI receiver. The
+> > > > > > hardware side
+> > > > > > is based on
+> > > > > > https://source.codeaurora.org/external/imx/linux-imx/tree/drivers/media/platform/imx8/mxc-mipi-csi2_yav.c?h=imx_5.4.70_2.3.0
+> > > > > > 
+> > > > > > It's built as part of VIDEO_IMX7_CSI because that's
+> > > > > > documented to support
+> > > > > > i.MX8M platforms. This driver adds i.MX8MQ support where
+> > > > > > currently only the
+> > > > > > i.MX8MM platform has been supported.
+> > > > > > 
+> > > > > > Signed-off-by: Martin Kepplinger
+> > > > > > <martin.kepplinger@puri.sm>
+> > > > > > ---
+> > > > > >  drivers/staging/media/imx/Makefile           |   1 +
+> > > > > >  drivers/staging/media/imx/imx8mq-mipi-csi2.c | 949
+> > > > > > +++++++++++++++++++
+> > > > > >  2 files changed, 950 insertions(+)
+> > > > > >  create mode 100644 drivers/staging/media/imx/imx8mq-mipi-
+> > > > > > csi2.c
+> > > > > > 
+> > > > > > diff --git a/drivers/staging/media/imx/Makefile
+> > > > > > b/drivers/staging/media/imx/Makefile
+> > > > > > index 6ac33275cc97..19c2fc54d424 100644
+> > > > > > --- a/drivers/staging/media/imx/Makefile
+> > > > > > +++ b/drivers/staging/media/imx/Makefile
+> > > > > > @@ -16,3 +16,4 @@ obj-$(CONFIG_VIDEO_IMX_CSI) += imx6-mipi-
+> > > > > > csi2.o
+> > > 
+> > > [snip]
+> > > 
+> > > > > > +static int imx8mq_mipi_csi_calc_hs_settle(struct csi_state
+> > > > > > *state)
+> > > > > > +{
+> > > > > > +       u32 width = state-
+> > > > > > >format_mbus[MIPI_CSI2_PAD_SINK].width;
+> > > > > > +       u32 height = state-
+> > > > > > >format_mbus[MIPI_CSI2_PAD_SINK].height;
+> > > > > > +       s64 link_freq;
+> > > > > > +       u32 lane_rate;
+> > > > > > +
+> > > > > > +       /* Calculate the line rate from the pixel rate. */
+> > > > > > +       link_freq = v4l2_get_link_freq(state->src_sd-
+> > > > > > >ctrl_handler,
+> > > > > > +                                      state->csi2_fmt-
+> > > > > > >width,
+> > > > > > +                                      state-
+> > > > > > >bus.num_data_lanes * 2);
+> > > > > > +       if (link_freq < 0) {
+> > > > > > +               dev_err(state->dev, "Unable to obtain link
+> > > > > > frequency: %d\n",
+> > > > > > +                       (int)link_freq);
+> > > > > > +               return link_freq;
+> > > > > > +       }
+> > > > > > +
+> > > > > > +       lane_rate = link_freq * 2;
+> > > > > > +       if (lane_rate < 80000000 || lane_rate > 1500000000)
+> > > > > > {
+> > > > > > +               dev_dbg(state->dev, "Out-of-bound lane rate
+> > > > > > %u\n", lane_rate);
+> > > > > > +               return -EINVAL;
+> > > > > > +       }
+> > > > > > +
+> > > > > > +       /*
+> > > > > > https://community.nxp.com/t5/i-MX-Processors/Explenation-for-HS-SETTLE-parameter-in-MIPI-CSI-D-PHY-registers/m-p/764275/highlight/true#M118744
+> > > > > >  */
+> > > > > > +       if (lane_rate < 250000000)
+> > > > > > +               state->hs_settle = 0xb;
+> > > > > > +       else if (lane_rate < 500000000)
+> > > > > > +               state->hs_settle = 0x8;
+> > > > > > +       else
+> > > > > > +               state->hs_settle = 0x6;
+> > > > > 
+> > > > > We could possibly compute this value based on the formula
+> > > > > from the table
+> > > > > in that page, but maybe that's overkill ? If you want to give
+> > > > > it a try,
+> > > > > it would be along those lines.
+> > > > > 
+> > > > >         /*
+> > > > >          * The D-PHY specification requires Ths-settle to be
+> > > > > in the range
+> > > > >          * 85ns + 6*UI to 140ns + 10*UI, with the unit
+> > > > > interval UI being half
+> > > > >          * the clock period.
+> > > > >          *
+> > > > >          * The Ths-settle value is expressed in the hardware
+> > > > > as a multiple of
+> > > > >          * the Esc clock period:
+> > > > >          *
+> > > > >          * Ths-settle = (PRG_RXHS_SETTLE + 1) * Tperiod of
+> > > > > RxClkInEsc
+> > > > >          *
+> > > > >          * Due to the one cycle inaccuracy introduced by
+> > > > > rounding, the
+> > > > >          * documentation recommends picking a value away from
+> > > > > the boundaries.
+> > > > >          * Let's pick the average.
+> > > > >          */
+> > > > >         esc_clk_rate = clk_get_rate(...);
+> > > > > 
+> > > > >         min_ths_settle = 85 + 6 * 1000000 / (lane_rate /
+> > > > > 1000);
+> > > > >         max_ths_settle = 140 + 10 * 1000000 / (lane_rate /
+> > > > > 1000);
+> > > > >         ths_settle = (min_ths_settle + max_ths_settle) / 2;
+> > > > > 
+> > > > >         state->hs_settle = ths_settle * esc_clk_rate /
+> > > > > 1000000000 - 1;
+> > > > 
+> > > > I experimented a bit but would like to leave this as a task for
+> > > > later
+> > > > if that's ok. it's correct and simple now. also, using
+> > > > clks[i].clk
+> > > > based on the name string would feel better to submit seperately
+> > > > later.
+> > > 
+> > > That's OK with me, but I may then submit a patch on top fairly
+> > > soon :-)
+> > > Have you been able to test if this code works on your device ?
+> > > The main
+> > > reason why I think it's better is that it doesn't hardcode a
+> > > specific
+> > > escape clock frequency assumption, so it should be able to
+> > > accommodate a
+> > > wider range of use cases. If we change it later, there's always a
+> > > risk
+> > > of regressions, while if we do this from the start, we'll figure
+> > > out
+> > > quickly if it doesn't work in some cases.
+> > 
+> > taking your code basically as-is doesn't yet work, but it helps a
+> > bit.
+> 
+> Thanks for testing.
+> 
+> > tbh I don't even know how to correctly read that table /
+> > calculation:
+> > what is the exact relation of the calculated Ths_settle time
+> > inverval
+> > to the hs_settle register bits?
+> 
+> The PRG_RXHS_SETTLE field stores a number of timer ticks to cover the
+> Ths-settle internal. The D-PHY arms the timer when it detects the
+> transition to LP-00, and ignores transitions on the lane until the
+> timer
+> expires. The timer is clocked by the escape clock.
+> 
+> What hs_settle value do you currently use, and what value does my
+> code
+> produce ?
+> 
+> > if the 2 of us can't quickly figure it out I can ask NXP via that
+> > community forum issue and I created
+> > https://source.puri.sm/Librem5/linux-next/-/issues/340 so I won't
+> > forget about it.
+> 
 
-Thanks a lot for your feedback.
+hi Laurent,
 
-I'm still struggling a little to get my head around schema, would you
-mind clarifying a few things?
+the below patch for hs_settle works (and calculates either the same or
++/- 1 for the hs_settle value, compared to the table), but getting the
+esc clock looks really scary how I do it: how would you do that?
 
-On 22/06/2021 16:58, Rob Herring wrote:
-> On Fri, Jun 18, 2021 at 05:51:03PM +0000, Caleb Connolly wrote:
->> Add bindings for qcom PMIC SPMI haptics driver.
->>
->> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
->> ---
->>   .../bindings/input/qcom,spmi-haptics.yaml     | 128 ++++++++++++++++++
->>   include/dt-bindings/input/qcom,spmi-haptics.h |  32 +++++
->>   2 files changed, 160 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/input/qcom,spmi-h=
-aptics.yaml
->>   create mode 100644 include/dt-bindings/input/qcom,spmi-haptics.h
->>
->> diff --git a/Documentation/devicetree/bindings/input/qcom,spmi-haptics.y=
-aml b/Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml
->> new file mode 100644
->> index 000000000000..8ef9b4ec3a07
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml
->> @@ -0,0 +1,128 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +# Copyright 2020 Unisoc Inc.
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/input/qcom,spmi-haptics.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Qualcomm Technologies Inc PMI8998 spmi haptics
->> +
->> +maintainers:
->> +  - Caleb Connolly <caleb@connolly.tech>
->> +
->> +description: |
->> +  Qualcomm SPMI haptics is a peripheral on some QTI PMICs. It supports =
-linear resonant
->> +  actuators and eccentric rotating mass type haptics commonly found in =
-mobile devices.
->> +  It supports multiple sources of wave data such as an internal buffer,=
- direct play
->> +  (from kernel or userspace) as well as an audio output mode.
->> +
->> +properties:
->> +  compatible:
->> +    items:
->> +      - enum:
->> +        - qcom,pmi8998-haptics
->> +        - qcom,pmi8996-haptics
->> +        - qcom,pmi8941-haptics
->> +      - const: qcom,spmi-haptics
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  interrupts:
->> +    items:
->> +      - description: short circuit interrupt
->> +      - description: play interrupt
->> +
->> +  interrupt-names:
->> +    items:
->> +      - const: short
->> +      - const: play
->> +
->> +  qcom,actuator-type:
->> +    description: |
->> +      The type of actuator attached to the hardware.
->> +      Allowed values are,
->> +        0 - HAP_TYPE_LRA
->> +        1 - HAP_TYPE_ERM
->> +    $ref: /schemas/types.yaml#/definitions/uint32
->> +    enum: [ 0, 1 ]
->> +    default: 0
->> +
->> +  qcom,wave-shape:
->> +    description: |
->> +      Selects the wave shape to use.
->> +      Allowed values are,
->> +        0 - HAP_WAVE_SINE
->> +        1 - HAP_WAVE_SQUARE
->> +    $ref: /schemas/types.yaml#/definitions/uint32
->> +    enum: [ 0, 1 ]
->> +    default: 0
->> +
->> +  qcom,play-mode:
->> +    description: |
->> +      Selects the play mode to use.
->> +      Allowed values are,
->> +        0 - HAP_PLAY_DIRECT
->> +        1 - HAP_PLAY_BUFFER
->> +        2 - HAP_PLAY_AUDIO
->> +        3 - HAP_PLAY_PWM
->> +    $ref: /schemas/types.yaml#/definitions/uint32
->> +    enum: [ 0, 1, 2, 3 ]
->> +    default: 2
->> +
->> +  qcom,wave-play-rate-us:
->> +    description: |
->> +      Wave sample durection in microseconds, 1/f where f
->> +      is the resonant frequency of the actuator.
->> +    $ref: /schemas/types.yaml#/definitions/uint32
-> Don't need a type for standard units.
->
->> +    minimum: 0
->> +    maximum: 20475
->> +
->> +  qcom,brake-pattern:
->> +    minItems: 4
->> +    maxItems: 4
->> +    description: |
->> +      The brake pattern are the strengths of the pattern
->> +      used to brake the haptics. Allowed values are,
->> +        0 - 0V
->> +        1 - Vmax/4
->> +        2 - Vmax/2
->> +        3 - Vmax
->> +    $ref: /schemas/types.yaml#/definitions/uint32-array
->> +    default: [0x3, 0x3, 0x2, 0x1]
-> To express the constraints on all items:
->
-> items:
->    enum: [ 0, 1, 2, 3 ]
->
-> (items is a schema here rather than a list)
 
-Ah, that's exactly what I was looking for! Should I replace one of the
-other properties with this?
-
-Or should I just add it to the list?
-
->
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - interrupts
->> +  - qcom,wave-play-rate-us
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    #include <dt-bindings/spmi/spmi.h>
->> +    #include <dt-bindings/interrupt-controller/irq.h>
->> +    #include <dt-bindings/input/qcom,spmi-haptics.h>
->> +
->> +    pmi8998_lsid1: pmic@3 {
-> Drop unused labels.
->
->> +      compatible =3D "qcom,pmi8998", "qcom,spmi-pmic";
-> Really, this needs to be converted to schema first so we're not adding
-> warnings.
-
-Hmm, is it ok to leave this here? I had a look at converting the spmi-pmic
-
-bindings to schema but it's a bit beyond me in all honestly.
-
->
->> +      reg =3D <0x3 SPMI_USID>;
->> +      #address-cells =3D <1>;
->> +      #size-cells =3D <0>;
->> +
->> +      pmi8998_haptics: haptics@c000 {
->> +        compatible =3D "qcom,pmi8998-haptics", "qcom,spmi-haptics";
->> +        reg =3D <0xc000>;
->> +
->> +        interrupts =3D <0x3 0xc0 0x0 IRQ_TYPE_EDGE_BOTH>,
->> +                     <0x3 0xc0 0x1 IRQ_TYPE_EDGE_BOTH>;
->> +        interrupt-names =3D "short", "play";
->> +
->> +        qcom,wave-shape =3D <HAP_WAVE_SINE>;
->> +        qcom,play-mode =3D <HAP_PLAY_BUFFER>;
->> +        qcom,brake-pattern =3D <0x3 0x3 0x2 0x1>;
->> +
->> +        status =3D "disabled";
-> Don't show status in examples.
->
->> +      };
->> +    };
->> diff --git a/include/dt-bindings/input/qcom,spmi-haptics.h b/include/dt-=
-bindings/input/qcom,spmi-haptics.h
->> new file mode 100644
->> index 000000000000..14a7e7d1471e
->> --- /dev/null
->> +++ b/include/dt-bindings/input/qcom,spmi-haptics.h
->> @@ -0,0 +1,32 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
-> Dual license please. DT files are used elsewhere.
-Will do.
->
->> +/*
->> + * This header provides constants for pmi8998 SPMI haptics options.
->> + */
->> +
->> +#ifndef _DT_BINDINGS_QCOM_PMIC_SPMI_HAPTICS_
->> +#define _DT_BINDINGS_QCOM_PMIC_SPMI_HAPTICS_
->> +
->> +// Actuator types
->> +#define HAP_TYPE_LRA=09=090
->> +#define HAP_TYPE_ERM=09=091
->> +
->> +// LRA Wave type
->> +#define HAP_WAVE_SINE=09=090
->> +#define HAP_WAVE_SQUARE=09=091
->> +
->> +// Play modes
->> +#define HAP_PLAY_DIRECT=09=090
->> +#define HAP_PLAY_BUFFER=09=091
->> +#define HAP_PLAY_AUDIO=09=092
->> +#define HAP_PLAY_PWM=09=093
->> +
->> +#define HAP_PLAY_MAX=09=09HAP_PLAY_PWM
->> +
->> +// Auto resonance type
->> +#define HAP_AUTO_RES_NONE=090
->> +#define HAP_AUTO_RES_ZXD=091
->> +#define HAP_AUTO_RES_QWD=092
->> +#define HAP_AUTO_RES_MAX_QWD=093
->> +#define HAP_AUTO_RES_ZXD_EOP=094
->> +
->> +#endif /* _DT_BINDINGS_QCOM_PMIC_SPMI_HAPTICS_ */
->> --
->> 2.31.1
->>
->>
->>
-Kind Regards,
-
-Caleb
-
+@@ -284,6 +285,9 @@ static int imx8mq_mipi_csi_calc_hs_settle(struct
+csi_state *state)
+ {
+ 	s64 link_freq;
+ 	u32 lane_rate;
++	u32 esc_clk_rate = 0;
++	u32 i, min_ths_settle, max_ths_settle, ths_settle_ns,
+esc_clk_period_ns;
++	char *p;
+ 
+ 	/* Calculate the line rate from the pixel rate. */
+ 	link_freq = v4l2_get_link_freq(state->src_sd->ctrl_handler,
+@@ -302,20 +306,44 @@ static int imx8mq_mipi_csi_calc_hs_settle(struct
+csi_state *state)
+ 	}
+ 
+ 	/*
+-	 * The following table is the source for this:
+-	 *
+https://community.nxp.com/t5/i-MX-Processors/Explenation-for-HS-SETTLE-parameter-in-MIPI-CSI-D-PHY-registers/m-p/764275/highlight/true#M118744
+-	 * but it would be even better to calculate the value for any
+-	 * given datarate.
++	 * The D-PHY specification requires Ths-settle to be in the
+range
++	 * 85ns + 6*UI to 140ns + 10*UI, with the unit interval UI
+being half
++	 * the clock period.
++	 *
++	 * The Ths-settle value is expressed in the hardware as a
+multiple of
++	 * the Esc clock period:
++	 *
++	 * Ths-settle = (PRG_RXHS_SETTLE + 1) * Tperiod of RxClkInEsc
++	 *
++	 * Due to the one cycle inaccuracy introduced by rounding, the
++	 * documentation recommends picking a value away from the
+boundaries.
++	 * Let's pick the average.
+ 	 */
+-	if (lane_rate < 250000000)
+-		state->hs_settle = 0xb;
+-	else if (lane_rate < 500000000)
+-		state->hs_settle = 0x8;
+-	else
+-		state->hs_settle = 0x6;
+-
+-	dev_dbg(state->dev, "start stream: lane rate %u hs_settle
+%u\n",
+-		lane_rate, state->hs_settle);
++	for (i = 0; i < CSI2_NUM_CLKS; i++) {
++		p = (char *)__clk_get_name(state->clks[i].clk);
++		/* we're getting csi1_esc here */
++		if (strlen(p) > 7)
++			p += 5;
++
++		dev_dbg(state->dev, "comparing: %s to esc\n", p);
++		if (!strcmp(p, "esc"))
++			esc_clk_rate = clk_get_rate(state-
+>clks[i].clk);
++	}
++
++	if (!esc_clk_rate)
++		dev_err(state->dev, "Could not get esc clock rate\n");
++
++	dev_dbg(state->dev, "esc clk rate: %u\n", esc_clk_rate);
++	esc_clk_period_ns = 1000000000 / esc_clk_rate;
++
++	min_ths_settle = 85 + 6 * 1000000 / (lane_rate / 1000);
++	max_ths_settle = 140 + 10 * 1000000 / (lane_rate / 1000);
++	ths_settle_ns = (min_ths_settle + max_ths_settle) / 2;
++
++	state->hs_settle = ths_settle_ns / esc_clk_period_ns - 1;
++
++	dev_dbg(state->dev, "lane rate %u Ths_settle %u hs_settle
+%u\n",
++		lane_rate, ths_settle_ns, state->hs_settle);
+ 
+ 	return 0;
 
