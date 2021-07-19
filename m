@@ -2,44 +2,45 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB90BC6377B
-	for <phone-devel@archiver.kernel.org>; Mon, 19 Jul 2021 15:01:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C519C6377A
+	for <phone-devel@archiver.kernel.org>; Mon, 19 Jul 2021 15:02:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D50F661375
-	for <phone-devel@archiver.kernel.org>; Mon, 19 Jul 2021 15:01:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4A8D461242
+	for <phone-devel@archiver.kernel.org>; Mon, 19 Jul 2021 15:02:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242854AbhGSOVM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 19 Jul 2021 10:21:12 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:11923 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242638AbhGSOUP (ORCPT
+        id S242561AbhGSOVb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 19 Jul 2021 10:21:31 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:25184 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242671AbhGSOU0 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 19 Jul 2021 10:20:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1626706842;
+        Mon, 19 Jul 2021 10:20:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1626706853;
     s=strato-dkim-0002; d=gerhold.net;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=5asqN0lZNo3xHl1CBAymxXSuEQ1yqbDJbz4DcdRrSLk=;
-    b=J9E+jk/CxpvlIzVoB/gE8iHadnpWEZV9qry2QxLZXyEkGS7q4EgvuV9EjmJIRSVpem
-    KeFT3hGVQ6Tj9uCV5zEIE4TqdyV1AFUiM1Hry1Fof7HFo6pNjNOKae5EmecnZ5+DHFRR
-    ayD0gafOmrrg9Tl82I/2xmSaciITVipVQU0LdlBaii+/6w2b6rTJhsuWVkp0VzmKK7rG
-    dTJed3H6EXEJof3peozzJWgjGwHDCJzXg4ijsslOKUowXCcsU+33yb0ApAwQvyh3ituP
-    mZAduTazt+061IzKtbWUOfzTOpzboSLhVsM4fQ9uDmPy2jSNB0JIeCcoNojLHFrxacBP
-    Fy9g==
+    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=D9jLnGFFfl0x5fMc0kVYPG+YxasQE/08QYG4uhDFffU=;
+    b=VRDJu6pIedu+0M3zZ6vkv4+923tP9wgXcSFZQ/2tw+d2f3qsWN0WiD8YEJOBNP2r0b
+    BWJratQFKsng6qGmj11J3rCdtRSXhb6+PumQW0EteVrvQgnnpQ/gAtYtQGJ1Dqn2b90t
+    9w8RnIx4N6StDC+z+aeckG/DjmvqoU3F0aYwljn4sCihFKo3ORTigLRXTwQDn5l7yFJk
+    MjqR+lBP4vp8Z237j52JpkeVC8UQKxVAYWd4Ay9R7ppuAd5RIF2gBoD8Dp+OkM6ra3Kh
+    g2wPhTiLGxm3zjyEeP2NQ9XLeTq20tDAxfE4B32jV5tBqb3qdlWW4obNTiZF35bLDzHY
+    oEFw==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXS7IYBkLahKxB4m6O43/v"
 X-RZG-CLASS-ID: mo00
 Received: from droid..
     by smtp.strato.de (RZmta 47.28.1 DYNA|AUTH)
-    with ESMTPSA id g02a44x6JF0c42H
+    with ESMTPSA id g02a44x6JF0o43M
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Mon, 19 Jul 2021 17:00:38 +0200 (CEST)
+    Mon, 19 Jul 2021 17:00:50 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
 To:     "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>
@@ -56,69 +57,126 @@ Cc:     Loic Poulain <loic.poulain@linaro.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
         Jeffrey Hugo <jeffrey.l.hugo@gmail.com>,
         Stephan Gerhold <stephan@gerhold.net>
-Subject: [RFC PATCH net-next 0/4] net: wwan: Add Qualcomm BAM-DMUX WWAN network driver
-Date:   Mon, 19 Jul 2021 16:53:13 +0200
-Message-Id: <20210719145317.79692-1-stephan@gerhold.net>
+Subject: [RFC PATCH net-next 3/4] dt-bindings: net: Add schema for Qualcomm BAM-DMUX
+Date:   Mon, 19 Jul 2021 16:53:16 +0200
+Message-Id: <20210719145317.79692-4-stephan@gerhold.net>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20210719145317.79692-1-stephan@gerhold.net>
+References: <20210719145317.79692-1-stephan@gerhold.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The BAM Data Multiplexer provides access to the network data channels
-of modems integrated into many older Qualcomm SoCs, e.g. Qualcomm MSM8916
-or MSM8974. This series adds a driver that allows using it.
+The BAM Data Multiplexer provides access to the network data channels of
+modems integrated into many older Qualcomm SoCs, e.g. Qualcomm MSM8916 or
+MSM8974. It is built using a simple protocol layer on top of a DMA engine
+(Qualcomm BAM) and bidirectional interrupts to coordinate power control.
 
-For more information about BAM-DMUX, see PATCH 4/4.
+The device tree node combines the incoming interrupt with the outgoing
+interrupts (smem-states) as well as the two DMA channels, which allows
+the BAM-DMUX driver to request all necessary resources.
 
-Shortly said, BAM-DMUX is built using a simple protocol layer on top of
-a DMA engine (Qualcomm BAM DMA). For BAM-DMUX, the BAM DMA engine runs in
-a quite strange mode that I call "remote power collapse", where the
-modem/remote side is responsible for powering on the BAM when needed but we
-are responsible to initialize it. The BAM is power-collapsed when unneeded
-by coordinating power control via bidirectional interrupts from the
-BAM-DMUX driver.
-
-The series first adds one possible solution for handling this "remote power
-collapse" mode in the bam_dma driver, then it adds the BAM-DMUX driver to
-the WWAN subsystem. Note that the BAM-DMUX driver does not actually make
-use of the WWAN subsystem yet, since I'm not sure how to fit it in there
-yet (see PATCH 4/4).
-
-Please note that all of the changes in this patch series are based on
-a fairly complicated driver from Qualcomm [1].
-I do not have access to any documentation about "BAM-DMUX". :(
-
-The driver has been used in postmarketOS [2] on various smartphones/tablets
-based on Qualcomm MSM8916 and MSM8974 for a year now with no reported
-problems.
-
-At runtime (but not compile-time), the following two patches are needed
-additionally for full functionality:
-  - https://lore.kernel.org/linux-arm-msm/20210712135703.324748-1-stephan@gerhold.net/
-  - https://lore.kernel.org/linux-arm-msm/20210712135703.324748-2-stephan@gerhold.net/
-
-[1]: https://source.codeaurora.org/quic/la/kernel/msm-3.10/tree/drivers/soc/qcom/bam_dmux.c?h=LA.BR.1.2.9.1-02310-8x16.0
-[2]: https://postmarketos.org/
-
-Stephan Gerhold (4):
-  dt-bindings: dmaengine: bam_dma: Add remote power collapse mode
-  dmaengine: qcom: bam_dma: Add remote power collapse mode
-  dt-bindings: net: Add schema for Qualcomm BAM-DMUX
-  net: wwan: Add Qualcomm BAM-DMUX WWAN network driver
-
- .../devicetree/bindings/dma/qcom_bam_dma.txt  |   2 +
- .../bindings/net/qcom,bam-dmux.yaml           |  87 ++
- MAINTAINERS                                   |   8 +
- drivers/dma/qcom/bam_dma.c                    |  88 +-
- drivers/net/wwan/Kconfig                      |  13 +
- drivers/net/wwan/Makefile                     |   1 +
- drivers/net/wwan/qcom_bam_dmux.c              | 907 ++++++++++++++++++
- 7 files changed, 1074 insertions(+), 32 deletions(-)
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+---
+ .../bindings/net/qcom,bam-dmux.yaml           | 87 +++++++++++++++++++
+ 1 file changed, 87 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
- create mode 100644 drivers/net/wwan/qcom_bam_dmux.c
 
+diff --git a/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml b/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
+new file mode 100644
+index 000000000000..33e125e70cb4
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
+@@ -0,0 +1,87 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/qcom,bam-dmux.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm BAM Data Multiplexer
++
++maintainers:
++  - Stephan Gerhold <stephan@gerhold.net>
++
++description: |
++  The BAM Data Multiplexer provides access to the network data channels
++  of modems integrated into many older Qualcomm SoCs, e.g. Qualcomm MSM8916
++  or MSM8974. It is built using a simple protocol layer on top of a DMA engine
++  (Qualcomm BAM DMA) and bidirectional interrupts to coordinate power control.
++
++properties:
++  compatible:
++    const: qcom,bam-dmux
++
++  interrupts:
++    description:
++      Interrupts used by the modem to signal the AP.
++      Both interrupts must be declared as IRQ_TYPE_EDGE_BOTH.
++    items:
++      - description: Power control
++      - description: Power control acknowledgment
++
++  interrupt-names:
++    items:
++      - const: pc
++      - const: pc-ack
++
++  qcom,smem-states:
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    description: State bits used by the AP to signal the modem.
++    items:
++      - description: Power control
++      - description: Power control acknowledgment
++
++  qcom,smem-state-names:
++    description: Names for the state bits used by the AP to signal the modem.
++    items:
++      - const: pc
++      - const: pc-ack
++
++  dmas:
++    items:
++      - description: TX DMA channel phandle
++      - description: RX DMA channel phandle
++
++  dma-names:
++    items:
++      - const: tx
++      - const: rx
++
++required:
++  - compatible
++  - interrupts
++  - interrupt-names
++  - qcom,smem-states
++  - qcom,smem-state-names
++  - dmas
++  - dma-names
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    mpss: remoteproc {
++        bam-dmux {
++            compatible = "qcom,bam-dmux";
++
++            interrupt-parent = <&modem_smsm>;
++            interrupts = <1 IRQ_TYPE_EDGE_BOTH>, <11 IRQ_TYPE_EDGE_BOTH>;
++            interrupt-names = "pc", "pc-ack";
++
++            qcom,smem-states = <&apps_smsm 1>, <&apps_smsm 11>;
++            qcom,smem-state-names = "pc", "pc-ack";
++
++            dmas = <&bam_dmux_dma 4>, <&bam_dmux_dma 5>;
++            dma-names = "tx", "rx";
++        };
++    };
 -- 
 2.32.0
 
