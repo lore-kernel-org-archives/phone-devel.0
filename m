@@ -2,195 +2,317 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CDF60C636C9
-	for <phone-devel@archiver.kernel.org>; Tue, 20 Jul 2021 09:12:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A77C9C07E9B
+	for <phone-devel@archiver.kernel.org>; Tue, 20 Jul 2021 15:14:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A90BA61245
-	for <phone-devel@archiver.kernel.org>; Tue, 20 Jul 2021 09:12:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8CE8D610C7
+	for <phone-devel@archiver.kernel.org>; Tue, 20 Jul 2021 15:14:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234997AbhGTIcM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 20 Jul 2021 04:32:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54772 "EHLO
+        id S237505AbhGTOdw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 20 Jul 2021 10:33:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234857AbhGTIbF (ORCPT
+        with ESMTP id S238910AbhGTOL0 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 20 Jul 2021 04:31:05 -0400
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C165EC061762;
-        Tue, 20 Jul 2021 02:10:54 -0700 (PDT)
-Received: by mail-ot1-x336.google.com with SMTP id o72-20020a9d224e0000b02904bb9756274cso20958605ota.6;
-        Tue, 20 Jul 2021 02:10:54 -0700 (PDT)
+        Tue, 20 Jul 2021 10:11:26 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1690EC05BD18
+        for <phone-devel@vger.kernel.org>; Tue, 20 Jul 2021 07:43:22 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id f30so36209265lfj.1
+        for <phone-devel@vger.kernel.org>; Tue, 20 Jul 2021 07:43:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=p6Is2ssE5TIQVmIGiDn4GSKdJRhQ0anPapx4YCLQJX8=;
-        b=saKX98KeWneAhyQVzO5iKzGFol/XtOEBdaIxSKXVRh9tGcKnrbNpRe2KRcIFNmurDQ
-         M5BzlbGC+kZ8Nppkl61VyuwKm/HhSpZcTsR2CK+HOhdEqtfJdELZ6MH9PXVcVC7dlWNU
-         LScRRBdZKQTC/lkPOAoWRvpwYHusb+1unMDn8nwAJyD78zLDM4R2vpsymo+7yxqhLcAy
-         1eZbYf3F9WtugvGMsxoeOX4uGzJ10c9MJ/Y8IO8qHsFdgvcobUY395aVcdSnOrYmevy8
-         x68W1HYItydrjD4fl1hROEqH6BKH0g8xpv+2lyI23MnzyS2q+4M7PAXAjS2crIBV9Gw5
-         4Y3Q==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hbN53T14Om4XknjkJRRVEnLWblLyHxtME7moXS4dvr8=;
+        b=tlOG8c948eVNBqB5DFbLF1JTo1JHNM+WESED4vAIJ0j9Tr9Kn+rfZa/ImxE4Zldh7e
+         8izJwYmxskV71iIv8NJSH6ZvcBLSYCwbdyZG9qw32PCu/z+XMVPYe93voY1/lHu3nHQP
+         sgriZwFWtZvAAy49neXdcLaPqzB+Fbx2zuFmYgBDpq8IPyW8G7ZwNgQAqS9rsPfNjMJx
+         D2gLslwsyfrPkPf3pZWFFZ8mU267MOw/t7UEcMfaeTa0i5G5IeeTsgxCadu4X3idVVMf
+         xN0mVgSENErsiijghiUBl+Va0Mibjo8dLQNXWmCe2coM3PVCdBPBVIReSszb6FtU/+J3
+         joxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=p6Is2ssE5TIQVmIGiDn4GSKdJRhQ0anPapx4YCLQJX8=;
-        b=ixPFSuy+Vl8dkUlDo3e1JyYuQlGBA9ccXm4J+HGJ8OJoRG61XgRQLv0HuTR/qLzNJ5
-         uRVhecmwy05ESAIVTPVgchniaXSm++Ujlt4F0lcpyvQFUUQ0P5wjCmUT051MeRiR9AA0
-         xMOQRBrRFoAPV4BEHPFQNdIYi1MLd3VdptiCNGg5KTuokand92qXUdmRFJ7rQZ9bbG0G
-         4r6EUyiUo86llZujEGyhHD1Oyy9B6XJfD4WBVRJ+kWRlPrSMcR9KizMPU6Qn7JotuuJG
-         8PdXXI2HG2Kq6JYOOlb2dJ5lEkzJnVbDiHcHHxiJWt/vCIjYwo9sY4ehTg/FTOAoUb60
-         Fi0g==
-X-Gm-Message-State: AOAM531rASAowhpkxm/OU+lCsAMNhsLI2/PVlcAbEJAQJb1h7dY6A7l1
-        1LlUxREa7kEIilqhhfFyW/sAJMYJv5IBGUQgxx0=
-X-Google-Smtp-Source: ABdhPJzy2gyhp2Ac5tFifphlRMk5DJqNOX1IEF1IwKJkNoFCxmsrUUevYLMMx8mXFAQ2CYIBubGyB/3ux8dj5lStF9A=
-X-Received: by 2002:a9d:6d83:: with SMTP id x3mr3179843otp.110.1626772254143;
- Tue, 20 Jul 2021 02:10:54 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hbN53T14Om4XknjkJRRVEnLWblLyHxtME7moXS4dvr8=;
+        b=TjD/k2np0Qh6JcsSHflFDe9adlGTkDQU/RA9WQ87fvXh6eEVODxrItehw31atOh9r7
+         jiE0IlQryXYLMt8i+ImRoDFpNu8Es/yJEmr60Benn2k9D6rKwh3jyQ2neKZvkkuy+MKK
+         vbRjJsmCsxfq0azpBQ/RxRDyfCq+IkUzlsYjqs3ZcDfInjqnqBqJV9Ye8lOqr8cOun7T
+         WK48FEdNAkv5ZIc6wASkDhr7SmVwscruSAEK+8qLPVqbIufGMCNr/TXGcdI8EBAj4SAY
+         9isJwlSjK4CX5710qzPbyveWjBVkdu4hkQus1XUpURkjetMiYODUjPLUqbMSF5dhgxyf
+         fJtQ==
+X-Gm-Message-State: AOAM531lm9s7PpwXgKYwI+zTcEyRc3VPSVKZ+RgV0j142D+wBrniRFIi
+        Hmsbj4wYvrZGdqSWuhbBnV5Vfw==
+X-Google-Smtp-Source: ABdhPJzy9iOAFQqSn9ImdQm0c07+kEoyTOFN9XM67N75/kdIayCJfde4b2bt+IHSdnu5AkeS+yaYeA==
+X-Received: by 2002:a05:6512:92d:: with SMTP id f13mr21954565lft.186.1626792200415;
+        Tue, 20 Jul 2021 07:43:20 -0700 (PDT)
+Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
+        by smtp.gmail.com with ESMTPSA id g14sm1536550lfv.213.2021.07.20.07.43.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jul 2021 07:43:20 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Linus Walleij <linus.walleij@linaro.org>, stable@vger.kernel.org,
+        phone-devel@vger.kernel.org, Ludovic Barre <ludovic.barre@st.com>,
+        Stephan Gerhold <stephan@gerhold.net>, newbyte@disroot.org
+Subject: [PATCH v3] mmc: core: Add a card quirk for non-hw busy detection
+Date:   Tue, 20 Jul 2021 16:41:15 +0200
+Message-Id: <20210720144115.1525257-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20210719145317.79692-1-stephan@gerhold.net> <20210719145317.79692-5-stephan@gerhold.net>
-In-Reply-To: <20210719145317.79692-5-stephan@gerhold.net>
-From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Date:   Tue, 20 Jul 2021 12:10:42 +0300
-Message-ID: <CAHNKnsTVSg5T_ZK3PQ50wuJydHbANFfpJd5NZ-71b1m3B_4dQg@mail.gmail.com>
-Subject: Re: [RFC PATCH net-next 4/4] net: wwan: Add Qualcomm BAM-DMUX WWAN
- network driver
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Aleksander Morgado <aleksander@aleksander.es>,
-        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hello Stephan,
+Some boot partitions on the Samsung 4GB KLM4G1YE4C "4YMD1R" and "M4G1YC"
+cards appear broken when accessed randomly. CMD6 to switch back to the main
+partition randomly stalls after CMD18 access to the boot partition 1, and
+the card never comes back online. The accesses to the boot partitions work
+several times before this happens, but eventually the card access hangs
+while initializing the card.
 
-On Mon, Jul 19, 2021 at 6:01 PM Stephan Gerhold <stephan@gerhold.net> wrote:
-> The BAM Data Multiplexer provides access to the network data channels of
-> modems integrated into many older Qualcomm SoCs, e.g. Qualcomm MSM8916 or
-> MSM8974. It is built using a simple protocol layer on top of a DMA engine
-> (Qualcomm BAM) and bidirectional interrupts to coordinate power control.
->
-> The modem announces a fixed set of channels by sending an OPEN command.
-> The driver exports each channel as separate network interface so that
-> a connection can be established via QMI from userspace. The network
-> interface can work either in Ethernet or Raw-IP mode (configurable via
-> QMI). However, Ethernet mode seems to be broken with most firmwares
-> (network packets are actually received as Raw-IP), therefore the driver
-> only supports Raw-IP mode.
->
-> The driver uses runtime PM to coordinate power control with the modem.
-> TX/RX buffers are put in a kind of "ring queue" and submitted via
-> the bam_dma driver of the DMAEngine subsystem.
->
-> The basic architecture looks roughly like this:
->
->                    +------------+                +-------+
->          [IPv4/6]  |  BAM-DMUX  |                |       |
->          [Data...] |            |                |       |
->         ---------->|rmnet0      | [DMUX chan: x] |       |
->          [IPv4/6]  | (chan: 0)  | [IPv4/6]       |       |
->          [Data...] |            | [Data...]      |       |
->         ---------->|rmnet1      |--------------->| Modem |
->                    | (chan: 1)  |      BAM       |       |
->          [IPv4/6]  | ...        |  (DMA Engine)  |       |
->          [Data...] |            |                |       |
->         ---------->|rmnet7      |                |       |
->                    | (chan: 7)  |                |       |
->                    +------------+                +-------+
->
-> However, on newer SoCs/firmware versions Qualcomm began gradually moving
-> to QMAP (rmnet driver) as backend-independent protocol for multiplexing
-> and data aggegration. Some firmware versions allow using QMAP on top of
-> BAM-DMUX (effectively resulting in a second multiplexing layer plus data
-> aggregation). The architecture with QMAP would look roughly like this:
->
->            +-------------+           +------------+                  +-------+
->  [IPv4/6]  |    RMNET    |           |  BAM-DMUX  |                  |       |
->  [Data...] |             |           |            | [DMUX chan: 0]   |       |
-> ---------->|rmnet_data1  |     ----->|rmnet0      | [QMAP mux-id: x] |       |
->            | (mux-id: 1) |     |     | (chan: 0)  | [IPv4/6]         |       |
->            |             |     |     |            | [Data...]        |       |
->  [IPv4/6]  | ...         |------     |            |----------------->| Modem |
->  [Data...] |             |           |            |       BAM        |       |
-> ---------->|rmnet_data42 | [QMAP: x] |[rmnet1]    |   (DMA Engine)   |       |
->            | (mux-id: 42)| [IPv4/6]  |... unused! |                  |       |
->            |             | [Data...] |[rmnet7]    |                  |       |
->            |             |           |            |                  |       |
->            +-------------+           +------------+                  +-------+
->
-> In this case, rmnet1-7 would remain unused. The firmware used on the most
-> recent SoCs with BAM-DMUX even seems to announce only a single BAM-DMUX
-> channel (rmnet0), which makes QMAP the only option for multiplexing there.
->
-> So far the driver is mainly tested on various smartphones/tablets based on
-> Qualcomm MSM8916/MSM8974 without QMAP. It looks like QMAP depends on a MTU
-> negotiation feature in BAM-DMUX which is not yet supported by the driver.
->
-> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> ---
-> Note that this is my first network driver, so I apologize in advance
-> if I made some obvious mistakes. :)
->
-> I'm not sure how to integrate the driver with the WWAN subsystem yet.
-> At the moment the driver creates network interfaces for all channels
-> announced by the modem, it does not make use of the WWAN link management
-> yet. Unfortunately, this is a bit complicated:
->
-> Both QMAP and the built-in multiplexing layer might be needed at some point.
-> There are firmware versions that do not support QMAP and the other way around
-> (the built-in multiplexing was disabled on very recent firmware versions).
-> Only userspace can check if QMAP is supported in the firmware (via QMI).
+Some problematic eMMC cards are found in the Samsung GT-S7710 (Skomer)
+and SGH-I407 (Kyle) mobile phones.
 
-I am not very familiar with the Qualcomm protocols and am just curious
-whether BAM-DMUX has any control (management) channels or only IPv4/v6
-data channels?
+I tried using only single blocks with CMD17 on the boot partitions with the
+result that it crashed even faster.
 
-The WWAN subsystem began as a framework for exporting management
-interfaces (MBIM, AT, etc.) to user space. And then the network
-interfaces (data channels) management interface was added to
-facilitate management of devices with multiple data channels. That is
-why I am curious about the BAM-DMUX device management interface or in
-other words, how a user space application could control the modem
-work?
+After a bit of root cause analysis it turns out that these old eMMC cards
+probably cannot do hardware busy detection (monitoring DAT0) properly.
 
-> I could ignore QMAP completely for now but I think someone will show up
-> who will need this eventually. And if there is going to be common code for
-> QMAP/rmnet link management it would be nice if BAM-DMUX could also make
-> use of it.
->
-> But the question is, how could this look like? How do we know if we should
-> create a link for QMAP or a BAM-DMUX channel? Does it even make sense
-> to manage the 1-8 channels via the WWAN link management?
->
-> Another problem is that the WWAN subsystem currently creates all network
-> interfaces below the common WWAN device. This means that userspace like
-> ModemManager has no way to check which driver provides them. This is
-> necessary though to decide how to set it up via QMI (ModemManager uses it).
->
-> For reference, example of the channels announced by firmwares on various SoCs:
->   - Qualcomm MSM8974: channel 0-7, QMAP not supported
->   - Qualcomm MSM8916: channel 0-7, QMAP usually supported, but not always
->                                    (depends on firmware version)
->   - Qualcomm MSM8937: channel 0 only, QMAP required for multiplexing(?)
->      (Note: This one is theoretic based on logs, this was not tested so far...)
+The card survives on older kernels, but this is because recent kernels have
+added busy detection handling for the SoC used in these phones, exposing
+the issue.
 
+Construct a quirk that makes the MMC cord avoid using the ->card_busy()
+callback if the card is listed with MMC_QUIRK_BROKEN_HW_BUSY_DETECT and
+register the known problematic cards. The core changes are pretty
+straight-forward with a helper inline to check of we can use hardware
+busy detection.
+
+On the MMCI host we have to counter the fact that if the host was able to
+use busy detect, it would be used unsolicited in the command IRQ callback.
+Rewrite this so that MMCI will not attempt to use hardware busy detection
+in the command IRQ until:
+- A card is attached to the host and
+- We know that the card can handle this busy detection
+
+I have glanced over the ->card_busy() callbacks on some other hosts and
+they seem to mostly read a register reflecting the value of DAT0 for this
+which works fine with the quirk in this patch. However if the error appear
+on other hosts they might need additional fixes.
+
+After applying this patch, the main partition can be accessed and mounted
+without problems on Samsung GT-S7710 and SGH-I407.
+
+Fixes: cb0335b778c7 ("mmc: mmci: add busy_complete callback")
+Cc: stable@vger.kernel.org
+Cc: phone-devel@vger.kernel.org
+Cc: Ludovic Barre <ludovic.barre@st.com>
+Cc: Stephan Gerhold <stephan@gerhold.net>
+Reported-by: newbyte@disroot.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ChangeLog v2->v3:
+- Rebase on v5.14-rc1
+- Reword the commit message slightly.
+ChangeLog v1->v2:
+- Rewrite to reflect the actual problem of broken busy detection.
+---
+ drivers/mmc/core/core.c    |  8 ++++----
+ drivers/mmc/core/core.h    | 17 +++++++++++++++++
+ drivers/mmc/core/mmc_ops.c |  4 ++--
+ drivers/mmc/core/quirks.h  | 21 +++++++++++++++++++++
+ drivers/mmc/host/mmci.c    | 22 ++++++++++++++++++++--
+ include/linux/mmc/card.h   |  1 +
+ 6 files changed, 65 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+index 95fedcf56e4a..e08dd9ea3d46 100644
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -232,7 +232,7 @@ static void __mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
+ 	 * And bypass I/O abort, reset and bus suspend operations.
+ 	 */
+ 	if (sdio_is_io_busy(mrq->cmd->opcode, mrq->cmd->arg) &&
+-	    host->ops->card_busy) {
++	    mmc_hw_busy_detect(host)) {
+ 		int tries = 500; /* Wait aprox 500ms at maximum */
+ 
+ 		while (host->ops->card_busy(host) && --tries)
+@@ -1200,7 +1200,7 @@ int mmc_set_uhs_voltage(struct mmc_host *host, u32 ocr)
+ 	 */
+ 	if (!host->ops->start_signal_voltage_switch)
+ 		return -EPERM;
+-	if (!host->ops->card_busy)
++	if (!mmc_hw_busy_detect(host))
+ 		pr_warn("%s: cannot verify signal voltage switch\n",
+ 			mmc_hostname(host));
+ 
+@@ -1220,7 +1220,7 @@ int mmc_set_uhs_voltage(struct mmc_host *host, u32 ocr)
+ 	 * after the response of cmd11, but wait 1 ms to be sure
+ 	 */
+ 	mmc_delay(1);
+-	if (host->ops->card_busy && !host->ops->card_busy(host)) {
++	if (mmc_hw_busy_detect(host) && !host->ops->card_busy(host)) {
+ 		err = -EAGAIN;
+ 		goto power_cycle;
+ 	}
+@@ -1241,7 +1241,7 @@ int mmc_set_uhs_voltage(struct mmc_host *host, u32 ocr)
+ 	 * Failure to switch is indicated by the card holding
+ 	 * dat[0:3] low
+ 	 */
+-	if (host->ops->card_busy && host->ops->card_busy(host))
++	if (mmc_hw_busy_detect(host) && host->ops->card_busy(host))
+ 		err = -EAGAIN;
+ 
+ power_cycle:
+diff --git a/drivers/mmc/core/core.h b/drivers/mmc/core/core.h
+index 0c4de2030b3f..6a5619eed4a6 100644
+--- a/drivers/mmc/core/core.h
++++ b/drivers/mmc/core/core.h
+@@ -181,4 +181,21 @@ static inline int mmc_flush_cache(struct mmc_host *host)
+ 	return 0;
+ }
+ 
++/**
++ * mmc_hw_busy_detect() - Can we use hw busy detection?
++ * @host: the host in question
++ */
++static inline bool mmc_hw_busy_detect(struct mmc_host *host)
++{
++	struct mmc_card *card = host->card;
++	bool has_ops;
++	bool able = true;
++
++	has_ops = (host->ops->card_busy != NULL);
++	if (card)
++		able = !(card->quirks & MMC_QUIRK_BROKEN_HW_BUSY_DETECT);
++
++	return (has_ops && able);
++}
++
+ #endif
+diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
+index 973756ed4016..546fc799a8e5 100644
+--- a/drivers/mmc/core/mmc_ops.c
++++ b/drivers/mmc/core/mmc_ops.c
+@@ -435,7 +435,7 @@ static int mmc_busy_cb(void *cb_data, bool *busy)
+ 	u32 status = 0;
+ 	int err;
+ 
+-	if (host->ops->card_busy) {
++	if (mmc_hw_busy_detect(host)) {
+ 		*busy = host->ops->card_busy(host);
+ 		return 0;
+ 	}
+@@ -597,7 +597,7 @@ int __mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value,
+ 	 * when it's not allowed to poll by using CMD13, then we need to rely on
+ 	 * waiting the stated timeout to be sufficient.
+ 	 */
+-	if (!send_status && !host->ops->card_busy) {
++	if (!send_status && !mmc_hw_busy_detect(host)) {
+ 		mmc_delay(timeout_ms);
+ 		goto out_tim;
+ 	}
+diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
+index d68e6e513a4f..8da6526f0eb0 100644
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -99,6 +99,27 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
+ 	MMC_FIXUP("V10016", CID_MANFID_KINGSTON, CID_OEMID_ANY, add_quirk_mmc,
+ 		  MMC_QUIRK_TRIM_BROKEN),
+ 
++	/*
++	 * Some older Samsung eMMCs have broken hardware busy detection.
++	 * Enabling this feature in the host controller can make the card
++	 * accesses lock up completely.
++	 */
++	MMC_FIXUP("4YMD1R", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++	/* Samsung KLMxGxxE4x eMMCs from 2012: 4, 8, 16, 32 and 64 GB */
++	MMC_FIXUP("M4G1YC", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++	MMC_FIXUP("M8G1WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++	MMC_FIXUP("MAG2WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++	MMC_FIXUP("MBG4WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++	MMC_FIXUP("MAG2WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++	MMC_FIXUP("MCG8WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
++		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
++
+ 	END_FIXUP
+ };
+ 
+diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+index 984d35055156..3046917b2b67 100644
+--- a/drivers/mmc/host/mmci.c
++++ b/drivers/mmc/host/mmci.c
+@@ -347,6 +347,24 @@ static int mmci_card_busy(struct mmc_host *mmc)
+ 	return busy;
+ }
+ 
++/* Use this if the MMCI variant AND the card supports it */
++static bool mmci_use_busy_detect(struct mmci_host *host)
++{
++	struct mmc_card *card = host->mmc->card;
++
++	if (!host->variant->busy_detect)
++		return false;
++
++	/* We don't allow this until we know that the card can handle it */
++	if (!card)
++		return false;
++
++	if (card->quirks & MMC_QUIRK_BROKEN_HW_BUSY_DETECT)
++		return false;
++
++	return true;
++}
++
+ static void mmci_reg_delay(struct mmci_host *host)
+ {
+ 	/*
+@@ -1381,7 +1399,7 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+ 		return;
+ 
+ 	/* Handle busy detection on DAT0 if the variant supports it. */
+-	if (busy_resp && host->variant->busy_detect)
++	if (busy_resp && mmci_use_busy_detect(host))
+ 		if (!host->ops->busy_complete(host, status, err_msk))
+ 			return;
+ 
+@@ -1725,7 +1743,7 @@ static void mmci_set_max_busy_timeout(struct mmc_host *mmc)
+ 	struct mmci_host *host = mmc_priv(mmc);
+ 	u32 max_busy_timeout = 0;
+ 
+-	if (!host->variant->busy_detect)
++	if (!mmci_use_busy_detect(host))
+ 		return;
+ 
+ 	if (host->variant->busy_timeout && mmc->actual_clock)
+diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+index 74e6c0624d27..525a39951c6d 100644
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -280,6 +280,7 @@ struct mmc_card {
+ 						/* for byte mode */
+ #define MMC_QUIRK_NONSTD_SDIO	(1<<2)		/* non-standard SDIO card attached */
+ 						/* (missing CIA registers) */
++#define MMC_QUIRK_BROKEN_HW_BUSY_DETECT (1<<3)	/* Disable hardware busy detection on DAT0 */
+ #define MMC_QUIRK_NONSTD_FUNC_IF (1<<4)		/* SDIO card has nonstd function interfaces */
+ #define MMC_QUIRK_DISABLE_CD	(1<<5)		/* disconnect CD/DAT[3] resistor */
+ #define MMC_QUIRK_INAND_CMD38	(1<<6)		/* iNAND devices have broken CMD38 */
 -- 
-Sergey
+2.31.1
+
