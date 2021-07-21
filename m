@@ -2,317 +2,196 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.4 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A77C9C07E9B
-	for <phone-devel@archiver.kernel.org>; Tue, 20 Jul 2021 15:14:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FB7DC12002
+	for <phone-devel@archiver.kernel.org>; Wed, 21 Jul 2021 11:34:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8CE8D610C7
-	for <phone-devel@archiver.kernel.org>; Tue, 20 Jul 2021 15:14:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1809460FED
+	for <phone-devel@archiver.kernel.org>; Wed, 21 Jul 2021 11:34:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237505AbhGTOdw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 20 Jul 2021 10:33:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46756 "EHLO
+        id S234468AbhGUKxM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 21 Jul 2021 06:53:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238910AbhGTOL0 (ORCPT
+        with ESMTP id S239984AbhGUKIo (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 20 Jul 2021 10:11:26 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1690EC05BD18
-        for <phone-devel@vger.kernel.org>; Tue, 20 Jul 2021 07:43:22 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id f30so36209265lfj.1
-        for <phone-devel@vger.kernel.org>; Tue, 20 Jul 2021 07:43:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hbN53T14Om4XknjkJRRVEnLWblLyHxtME7moXS4dvr8=;
-        b=tlOG8c948eVNBqB5DFbLF1JTo1JHNM+WESED4vAIJ0j9Tr9Kn+rfZa/ImxE4Zldh7e
-         8izJwYmxskV71iIv8NJSH6ZvcBLSYCwbdyZG9qw32PCu/z+XMVPYe93voY1/lHu3nHQP
-         sgriZwFWtZvAAy49neXdcLaPqzB+Fbx2zuFmYgBDpq8IPyW8G7ZwNgQAqS9rsPfNjMJx
-         D2gLslwsyfrPkPf3pZWFFZ8mU267MOw/t7UEcMfaeTa0i5G5IeeTsgxCadu4X3idVVMf
-         xN0mVgSENErsiijghiUBl+Va0Mibjo8dLQNXWmCe2coM3PVCdBPBVIReSszb6FtU/+J3
-         joxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hbN53T14Om4XknjkJRRVEnLWblLyHxtME7moXS4dvr8=;
-        b=TjD/k2np0Qh6JcsSHflFDe9adlGTkDQU/RA9WQ87fvXh6eEVODxrItehw31atOh9r7
-         jiE0IlQryXYLMt8i+ImRoDFpNu8Es/yJEmr60Benn2k9D6rKwh3jyQ2neKZvkkuy+MKK
-         vbRjJsmCsxfq0azpBQ/RxRDyfCq+IkUzlsYjqs3ZcDfInjqnqBqJV9Ye8lOqr8cOun7T
-         WK48FEdNAkv5ZIc6wASkDhr7SmVwscruSAEK+8qLPVqbIufGMCNr/TXGcdI8EBAj4SAY
-         9isJwlSjK4CX5710qzPbyveWjBVkdu4hkQus1XUpURkjetMiYODUjPLUqbMSF5dhgxyf
-         fJtQ==
-X-Gm-Message-State: AOAM531lm9s7PpwXgKYwI+zTcEyRc3VPSVKZ+RgV0j142D+wBrniRFIi
-        Hmsbj4wYvrZGdqSWuhbBnV5Vfw==
-X-Google-Smtp-Source: ABdhPJzy9iOAFQqSn9ImdQm0c07+kEoyTOFN9XM67N75/kdIayCJfde4b2bt+IHSdnu5AkeS+yaYeA==
-X-Received: by 2002:a05:6512:92d:: with SMTP id f13mr21954565lft.186.1626792200415;
-        Tue, 20 Jul 2021 07:43:20 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id g14sm1536550lfv.213.2021.07.20.07.43.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jul 2021 07:43:20 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>, stable@vger.kernel.org,
-        phone-devel@vger.kernel.org, Ludovic Barre <ludovic.barre@st.com>,
-        Stephan Gerhold <stephan@gerhold.net>, newbyte@disroot.org
-Subject: [PATCH v3] mmc: core: Add a card quirk for non-hw busy detection
-Date:   Tue, 20 Jul 2021 16:41:15 +0200
-Message-Id: <20210720144115.1525257-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.31.1
+        Wed, 21 Jul 2021 06:08:44 -0400
+Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5C6EC061574
+        for <phone-devel@vger.kernel.org>; Wed, 21 Jul 2021 03:48:29 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 283833F74F;
+        Wed, 21 Jul 2021 12:48:25 +0200 (CEST)
+Subject: Re: [PATCH v6 8/9] dt-bindings: cpufreq: qcom-hw: Add bindings for
+ 8998
+To:     Rob Herring <robh@kernel.org>
+Cc:     bjorn.andersson@linaro.org, viresh.kumar@linaro.org,
+        agross@kernel.org, rjw@rjwysocki.net, devicetree@vger.kernel.org,
+        amit.kucheria@linaro.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, jami.kettunen@somainline.org,
+        paul.bouchara@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, jeffrey.l.hugo@gmail.com
+References: <20210701105730.322718-1-angelogioacchino.delregno@somainline.org>
+ <20210701105730.322718-9-angelogioacchino.delregno@somainline.org>
+ <20210714213946.GA3568065@robh.at.kernel.org>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <7d012e8c-4570-9d60-32c3-fb271ce636b8@somainline.org>
+Date:   Wed, 21 Jul 2021 12:48:24 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210714213946.GA3568065@robh.at.kernel.org>
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Some boot partitions on the Samsung 4GB KLM4G1YE4C "4YMD1R" and "M4G1YC"
-cards appear broken when accessed randomly. CMD6 to switch back to the main
-partition randomly stalls after CMD18 access to the boot partition 1, and
-the card never comes back online. The accesses to the boot partitions work
-several times before this happens, but eventually the card access hangs
-while initializing the card.
+Il 14/07/21 23:39, Rob Herring ha scritto:
+> On Thu, Jul 01, 2021 at 12:57:29PM +0200, AngeloGioacchino Del Regno wrote:
+>> The OSM programming addition has been done under the
+>> qcom,cpufreq-hw-8998 compatible name: specify the requirement
+>> of two additional register spaces for this functionality.
+>> This implementation, with the same compatible, has been
+>> tested on MSM8998 and SDM630.
+> 
+> Certainly we should be using the new binding for any new SoCs.
+> 
 
-Some problematic eMMC cards are found in the Samsung GT-S7710 (Skomer)
-and SGH-I407 (Kyle) mobile phones.
+Yes that's totally true, I should've probably added the new bindings directly
+instead of making it implicit that the 8998 model is valid for the others.
+Adding more bindings will explicitly clarify that the support is extended to
+630/660 so yeah, I agree.
 
-I tried using only single blocks with CMD17 on the boot partitions with the
-result that it crashed even faster.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>> ---
+>>   .../bindings/cpufreq/cpufreq-qcom-hw.yaml     | 67 ++++++++++++++-----
+>>   1 file changed, 52 insertions(+), 15 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
+>> index bc81b6203e27..29b663321a0b 100644
+>> --- a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
+>> +++ b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
+>> @@ -18,6 +18,10 @@ description: |
+>>   properties:
+>>     compatible:
+>>       oneOf:
+>> +      - description: Non-secure v1 of CPUFREQ HW
+>> +        items:
+>> +          - const: qcom,cpufreq-hw-8998
+>> +
+>>         - description: v1 of CPUFREQ HW
+>>           items:
+>>             - const: qcom,cpufreq-hw
+>> @@ -28,21 +32,9 @@ properties:
+>>                 - qcom,sm8250-cpufreq-epss
+>>             - const: qcom,cpufreq-epss
+>>   
+>> -  reg:
+>> -    minItems: 2
+>> -    maxItems: 3
+>> -    items:
+>> -      - description: Frequency domain 0 register region
+>> -      - description: Frequency domain 1 register region
+>> -      - description: Frequency domain 2 register region
+>> +  reg: {}
+>>   
+>> -  reg-names:
+>> -    minItems: 2
+>> -    maxItems: 3
+>> -    items:
+>> -      - const: freq-domain0
+>> -      - const: freq-domain1
+>> -      - const: freq-domain2
+>> +  reg-names: {}
+>>   
+>>     clocks:
+>>       items:
+>> @@ -57,10 +49,55 @@ properties:
+>>     '#freq-domain-cells':
+>>       const: 1
+>>   
+>> +if:
+>> +  properties:
+>> +    compatible:
+>> +      contains:
+>> +        const: qcom,cpufreq-hw-8998
+>> +then:
+>> +  properties:
+>> +    reg:
+>> +      minItems: 2
+>> +      maxItems: 6
+>> +      items:
+>> +        - description: Frequency domain 0 register region
+>> +        - description: Operating State Manager domain 0 register region
+>> +        - description: Frequency domain 1 register region
+>> +        - description: Operating State Manager domain 1 register region
+>> +        - description: PLL ACD domain 0 register region (if ACD programming required)
+>> +        - description: PLL ACD domain 1 register region (if ACD programming required)
+>> +
+>> +    reg-names:
+>> +      minItems: 2
+>> +      maxItems: 6
+>> +      items:
+>> +        - const: "osm-domain0"
+>> +        - const: "freq-domain0"
+>> +        - const: "osm-domain1"
+>> +        - const: "freq-domain1"
+>> +        - const: "osm-acd0"
+>> +        - const: "osm-acd1"
+> 
+> This is different enough and there's not much else to this bindings, so
+> I think you should do a separate schema doc.
+> 
+> BTW, Don't need quotes here.
+> 
 
-After a bit of root cause analysis it turns out that these old eMMC cards
-probably cannot do hardware busy detection (monitoring DAT0) properly.
+If you think that this would be appropriate, then I guess it's trivial to
+do that and I will... though, I am 99% sure that these bindings will never
+get updated, as Qualcomm has shifted to do the programming in TZ and there
+surely will never be any new SoC requiring this kind of thing.
 
-The card survives on older kernels, but this is because recent kernels have
-added busy detection handling for the SoC used in these phones, exposing
-the issue.
+The ones that do require this should be around 6, if my memory isn't failing...
 
-Construct a quirk that makes the MMC cord avoid using the ->card_busy()
-callback if the card is listed with MMC_QUIRK_BROKEN_HW_BUSY_DETECT and
-register the known problematic cards. The core changes are pretty
-straight-forward with a helper inline to check of we can use hardware
-busy detection.
-
-On the MMCI host we have to counter the fact that if the host was able to
-use busy detect, it would be used unsolicited in the command IRQ callback.
-Rewrite this so that MMCI will not attempt to use hardware busy detection
-in the command IRQ until:
-- A card is attached to the host and
-- We know that the card can handle this busy detection
-
-I have glanced over the ->card_busy() callbacks on some other hosts and
-they seem to mostly read a register reflecting the value of DAT0 for this
-which works fine with the quirk in this patch. However if the error appear
-on other hosts they might need additional fixes.
-
-After applying this patch, the main partition can be accessed and mounted
-without problems on Samsung GT-S7710 and SGH-I407.
-
-Fixes: cb0335b778c7 ("mmc: mmci: add busy_complete callback")
-Cc: stable@vger.kernel.org
-Cc: phone-devel@vger.kernel.org
-Cc: Ludovic Barre <ludovic.barre@st.com>
-Cc: Stephan Gerhold <stephan@gerhold.net>
-Reported-by: newbyte@disroot.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-ChangeLog v2->v3:
-- Rebase on v5.14-rc1
-- Reword the commit message slightly.
-ChangeLog v1->v2:
-- Rewrite to reflect the actual problem of broken busy detection.
----
- drivers/mmc/core/core.c    |  8 ++++----
- drivers/mmc/core/core.h    | 17 +++++++++++++++++
- drivers/mmc/core/mmc_ops.c |  4 ++--
- drivers/mmc/core/quirks.h  | 21 +++++++++++++++++++++
- drivers/mmc/host/mmci.c    | 22 ++++++++++++++++++++--
- include/linux/mmc/card.h   |  1 +
- 6 files changed, 65 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-index 95fedcf56e4a..e08dd9ea3d46 100644
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -232,7 +232,7 @@ static void __mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
- 	 * And bypass I/O abort, reset and bus suspend operations.
- 	 */
- 	if (sdio_is_io_busy(mrq->cmd->opcode, mrq->cmd->arg) &&
--	    host->ops->card_busy) {
-+	    mmc_hw_busy_detect(host)) {
- 		int tries = 500; /* Wait aprox 500ms at maximum */
- 
- 		while (host->ops->card_busy(host) && --tries)
-@@ -1200,7 +1200,7 @@ int mmc_set_uhs_voltage(struct mmc_host *host, u32 ocr)
- 	 */
- 	if (!host->ops->start_signal_voltage_switch)
- 		return -EPERM;
--	if (!host->ops->card_busy)
-+	if (!mmc_hw_busy_detect(host))
- 		pr_warn("%s: cannot verify signal voltage switch\n",
- 			mmc_hostname(host));
- 
-@@ -1220,7 +1220,7 @@ int mmc_set_uhs_voltage(struct mmc_host *host, u32 ocr)
- 	 * after the response of cmd11, but wait 1 ms to be sure
- 	 */
- 	mmc_delay(1);
--	if (host->ops->card_busy && !host->ops->card_busy(host)) {
-+	if (mmc_hw_busy_detect(host) && !host->ops->card_busy(host)) {
- 		err = -EAGAIN;
- 		goto power_cycle;
- 	}
-@@ -1241,7 +1241,7 @@ int mmc_set_uhs_voltage(struct mmc_host *host, u32 ocr)
- 	 * Failure to switch is indicated by the card holding
- 	 * dat[0:3] low
- 	 */
--	if (host->ops->card_busy && host->ops->card_busy(host))
-+	if (mmc_hw_busy_detect(host) && host->ops->card_busy(host))
- 		err = -EAGAIN;
- 
- power_cycle:
-diff --git a/drivers/mmc/core/core.h b/drivers/mmc/core/core.h
-index 0c4de2030b3f..6a5619eed4a6 100644
---- a/drivers/mmc/core/core.h
-+++ b/drivers/mmc/core/core.h
-@@ -181,4 +181,21 @@ static inline int mmc_flush_cache(struct mmc_host *host)
- 	return 0;
- }
- 
-+/**
-+ * mmc_hw_busy_detect() - Can we use hw busy detection?
-+ * @host: the host in question
-+ */
-+static inline bool mmc_hw_busy_detect(struct mmc_host *host)
-+{
-+	struct mmc_card *card = host->card;
-+	bool has_ops;
-+	bool able = true;
-+
-+	has_ops = (host->ops->card_busy != NULL);
-+	if (card)
-+		able = !(card->quirks & MMC_QUIRK_BROKEN_HW_BUSY_DETECT);
-+
-+	return (has_ops && able);
-+}
-+
- #endif
-diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
-index 973756ed4016..546fc799a8e5 100644
---- a/drivers/mmc/core/mmc_ops.c
-+++ b/drivers/mmc/core/mmc_ops.c
-@@ -435,7 +435,7 @@ static int mmc_busy_cb(void *cb_data, bool *busy)
- 	u32 status = 0;
- 	int err;
- 
--	if (host->ops->card_busy) {
-+	if (mmc_hw_busy_detect(host)) {
- 		*busy = host->ops->card_busy(host);
- 		return 0;
- 	}
-@@ -597,7 +597,7 @@ int __mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value,
- 	 * when it's not allowed to poll by using CMD13, then we need to rely on
- 	 * waiting the stated timeout to be sufficient.
- 	 */
--	if (!send_status && !host->ops->card_busy) {
-+	if (!send_status && !mmc_hw_busy_detect(host)) {
- 		mmc_delay(timeout_ms);
- 		goto out_tim;
- 	}
-diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index d68e6e513a4f..8da6526f0eb0 100644
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -99,6 +99,27 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
- 	MMC_FIXUP("V10016", CID_MANFID_KINGSTON, CID_OEMID_ANY, add_quirk_mmc,
- 		  MMC_QUIRK_TRIM_BROKEN),
- 
-+	/*
-+	 * Some older Samsung eMMCs have broken hardware busy detection.
-+	 * Enabling this feature in the host controller can make the card
-+	 * accesses lock up completely.
-+	 */
-+	MMC_FIXUP("4YMD1R", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
-+		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
-+	/* Samsung KLMxGxxE4x eMMCs from 2012: 4, 8, 16, 32 and 64 GB */
-+	MMC_FIXUP("M4G1YC", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
-+		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
-+	MMC_FIXUP("M8G1WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
-+		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
-+	MMC_FIXUP("MAG2WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
-+		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
-+	MMC_FIXUP("MBG4WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
-+		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
-+	MMC_FIXUP("MAG2WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
-+		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
-+	MMC_FIXUP("MCG8WA", CID_MANFID_SAMSUNG, CID_OEMID_ANY, add_quirk_mmc,
-+		  MMC_QUIRK_BROKEN_HW_BUSY_DETECT),
-+
- 	END_FIXUP
- };
- 
-diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
-index 984d35055156..3046917b2b67 100644
---- a/drivers/mmc/host/mmci.c
-+++ b/drivers/mmc/host/mmci.c
-@@ -347,6 +347,24 @@ static int mmci_card_busy(struct mmc_host *mmc)
- 	return busy;
- }
- 
-+/* Use this if the MMCI variant AND the card supports it */
-+static bool mmci_use_busy_detect(struct mmci_host *host)
-+{
-+	struct mmc_card *card = host->mmc->card;
-+
-+	if (!host->variant->busy_detect)
-+		return false;
-+
-+	/* We don't allow this until we know that the card can handle it */
-+	if (!card)
-+		return false;
-+
-+	if (card->quirks & MMC_QUIRK_BROKEN_HW_BUSY_DETECT)
-+		return false;
-+
-+	return true;
-+}
-+
- static void mmci_reg_delay(struct mmci_host *host)
- {
- 	/*
-@@ -1381,7 +1399,7 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
- 		return;
- 
- 	/* Handle busy detection on DAT0 if the variant supports it. */
--	if (busy_resp && host->variant->busy_detect)
-+	if (busy_resp && mmci_use_busy_detect(host))
- 		if (!host->ops->busy_complete(host, status, err_msk))
- 			return;
- 
-@@ -1725,7 +1743,7 @@ static void mmci_set_max_busy_timeout(struct mmc_host *mmc)
- 	struct mmci_host *host = mmc_priv(mmc);
- 	u32 max_busy_timeout = 0;
- 
--	if (!host->variant->busy_detect)
-+	if (!mmci_use_busy_detect(host))
- 		return;
- 
- 	if (host->variant->busy_timeout && mmc->actual_clock)
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index 74e6c0624d27..525a39951c6d 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -280,6 +280,7 @@ struct mmc_card {
- 						/* for byte mode */
- #define MMC_QUIRK_NONSTD_SDIO	(1<<2)		/* non-standard SDIO card attached */
- 						/* (missing CIA registers) */
-+#define MMC_QUIRK_BROKEN_HW_BUSY_DETECT (1<<3)	/* Disable hardware busy detection on DAT0 */
- #define MMC_QUIRK_NONSTD_FUNC_IF (1<<4)		/* SDIO card has nonstd function interfaces */
- #define MMC_QUIRK_DISABLE_CD	(1<<5)		/* disconnect CD/DAT[3] resistor */
- #define MMC_QUIRK_INAND_CMD38	(1<<6)		/* iNAND devices have broken CMD38 */
--- 
-2.31.1
+>> +
+>> +else:
+>> +  properties:
+>> +    reg:
+>> +      minItems: 2
+>> +      maxItems: 3
+>> +      items:
+>> +        - description: Frequency domain 0 register region
+>> +        - description: Frequency domain 1 register region
+>> +        - description: Frequency domain 2 register region
+>> +    reg-names:
+>> +      minItems: 2
+>> +      maxItems: 3
+>> +      items:
+>> +        - const: "freq-domain0"
+>> +        - const: "freq-domain1"
+>> +        - const: "freq-domain2"
+>> +
+>>   required:
+>>     - compatible
+>>     - reg
+>> -  - reg-names
+>>     - clocks
+>>     - clock-names
+>>     - '#freq-domain-cells'
+>> -- 
+>> 2.32.0
+>>
+>>
 
