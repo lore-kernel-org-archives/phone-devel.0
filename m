@@ -2,186 +2,366 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D5C8C636CA
-	for <phone-devel@archiver.kernel.org>; Wed, 21 Jul 2021 12:17:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D142EC6379A
+	for <phone-devel@archiver.kernel.org>; Thu, 22 Jul 2021 14:51:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2BD2A61242
-	for <phone-devel@archiver.kernel.org>; Wed, 21 Jul 2021 12:17:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1DB9361370
+	for <phone-devel@archiver.kernel.org>; Thu, 22 Jul 2021 14:51:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237005AbhGULgs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 21 Jul 2021 07:36:48 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51]:15463 "EHLO
+        id S232530AbhGVOLG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 22 Jul 2021 10:11:06 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:35200 "EHLO
         mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231680AbhGULgr (ORCPT
+        with ESMTP id S232375AbhGVOLF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 21 Jul 2021 07:36:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1626869837;
+        Thu, 22 Jul 2021 10:11:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1626965496;
     s=strato-dkim-0002; d=gerhold.net;
     h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
     From:Subject:Sender;
-    bh=4CcqRIyqsFHa+Wrw0Xd8JK00I+Bxru7P9shO2wlwNwU=;
-    b=dGicpEYuymH5XiHV1X2jtV6vho0U2eObya9dVNRiN3pM/HV7FpgxOSa5u543RpQDMh
-    hGyTM8ZdlvCiR3veJMxQEyjlZz1XPnXx7H+MikPjsuoSxX+gnH1dGPOf93LixychWWTW
-    ApdUqIJHJJ6CReda6RR+SgboBJX6ctHa3KotJ6JVtf12AcPy+LnVq1k1Zt8PrXOm4hdS
-    n3UupM8cgyapWQyEzMI3hKsJJ2Eu/HoNd+1AVE+Yrs01SohlCCM/veva6y5H2/h/szC0
-    4MsLnlzVre/kSFtBOxMZ6tCUCfs6NP8Rb0xYESNo7p1K4FCgOEuUd8KFltsRvNH6uuEf
-    Gy1A==
+    bh=uP4TsvpFx9nQKeKPbR8DKd9/Fuky9++kCPOybE2K3L0=;
+    b=q/fuMHssTtaUQ5MwO1Nivxs9RaTCt8rQbAexWXTta7ec1lCGilYSyWEHaKxnETzjfF
+    oHUpujefYSynw/ibCelbw+yTDjrJWcZUt3azGq7oipbszwX7iNXhqUXMVfSCJuR6SYW1
+    iamKKSzlcRqNuQo+ke1zMbVwHUTHA6I1+yxueyt/WcXlW99zWwUlyMbCtAlGepA4hT48
+    khK2f32H14AjsGJ7J9ALGEJnfPPcFX/BlEC0YNUA6D+k9onA4eMENAbT9MjnJD+YXXiu
+    cB2SAoDao1QGJLVkd+5hpAohZp+QSm2CwOeMFAZZAad299h3BN0L7E6BDWmBthHJx+Ng
+    P+2A==
 Authentication-Results: strato.com;
     dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA9Z7h"
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA8ZuO1A=="
 X-RZG-CLASS-ID: mo00
 Received: from gerhold.net
     by smtp.strato.de (RZmta 47.28.1 DYNA|AUTH)
-    with ESMTPSA id g02a44x6LCHFHg9
+    with ESMTPSA id g02a44x6MEpYPn2
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Wed, 21 Jul 2021 14:17:15 +0200 (CEST)
-Date:   Wed, 21 Jul 2021 14:17:11 +0200
+    Thu, 22 Jul 2021 16:51:34 +0200 (CEST)
+Date:   Thu, 22 Jul 2021 16:51:29 +0200
 From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
+To:     Jeffrey Hugo <quic_jhugo@quicinc.com>
+Cc:     Jeffrey Hugo <jeffrey.l.hugo@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>,
         Loic Poulain <loic.poulain@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
         Johannes Berg <johannes@sipsolutions.net>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Andy Gross <agross@kernel.org>, Vinod Koul <vkoul@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Aleksander Morgado <aleksander@aleksander.es>,
-        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
-        open list <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Subject: Re: [RFC PATCH net-next 4/4] net: wwan: Add Qualcomm BAM-DMUX WWAN
+        "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+        MSM <linux-arm-msm@vger.kernel.org>, dmaengine@vger.kernel.org,
+        DTML <devicetree@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [RFC PATCH net-next 0/4] net: wwan: Add Qualcomm BAM-DMUX WWAN
  network driver
-Message-ID: <YPgQR/VbNVyxERnb@gerhold.net>
+Message-ID: <YPmF8bzevuabO2K9@gerhold.net>
 References: <20210719145317.79692-1-stephan@gerhold.net>
- <20210719145317.79692-5-stephan@gerhold.net>
- <CAHNKnsTVSg5T_ZK3PQ50wuJydHbANFfpJd5NZ-71b1m3B_4dQg@mail.gmail.com>
+ <CAOCk7NonuOKWrpr-MwdjAwF1F4jviEMf=c04vVBxQ-OmfY2b-g@mail.gmail.com>
+ <YPXC7PDCUopdCdTV@gerhold.net>
+ <e37868ee-2bd0-3b50-eb95-8eb2bf32d956@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHNKnsTVSg5T_ZK3PQ50wuJydHbANFfpJd5NZ-71b1m3B_4dQg@mail.gmail.com>
+In-Reply-To: <e37868ee-2bd0-3b50-eb95-8eb2bf32d956@quicinc.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Sergey,
-
-On Tue, Jul 20, 2021 at 12:10:42PM +0300, Sergey Ryazanov wrote:
-> On Mon, Jul 19, 2021 at 6:01 PM Stephan Gerhold <stephan@gerhold.net> wrote:
-> > The BAM Data Multiplexer provides access to the network data channels of
-> > modems integrated into many older Qualcomm SoCs, e.g. Qualcomm MSM8916 or
-> > MSM8974. It is built using a simple protocol layer on top of a DMA engine
-> > (Qualcomm BAM) and bidirectional interrupts to coordinate power control.
-> >
-> > The modem announces a fixed set of channels by sending an OPEN command.
-> > The driver exports each channel as separate network interface so that
-> > a connection can be established via QMI from userspace. The network
-> > interface can work either in Ethernet or Raw-IP mode (configurable via
-> > QMI). However, Ethernet mode seems to be broken with most firmwares
-> > (network packets are actually received as Raw-IP), therefore the driver
-> > only supports Raw-IP mode.
-> >
-> > The driver uses runtime PM to coordinate power control with the modem.
-> > TX/RX buffers are put in a kind of "ring queue" and submitted via
-> > the bam_dma driver of the DMAEngine subsystem.
-> >
-> > The basic architecture looks roughly like this:
-> >
-> >                    +------------+                +-------+
-> >          [IPv4/6]  |  BAM-DMUX  |                |       |
-> >          [Data...] |            |                |       |
-> >         ---------->|rmnet0      | [DMUX chan: x] |       |
-> >          [IPv4/6]  | (chan: 0)  | [IPv4/6]       |       |
-> >          [Data...] |            | [Data...]      |       |
-> >         ---------->|rmnet1      |--------------->| Modem |
-> >                    | (chan: 1)  |      BAM       |       |
-> >          [IPv4/6]  | ...        |  (DMA Engine)  |       |
-> >          [Data...] |            |                |       |
-> >         ---------->|rmnet7      |                |       |
-> >                    | (chan: 7)  |                |       |
-> >                    +------------+                +-------+
-> >
-> > However, on newer SoCs/firmware versions Qualcomm began gradually moving
-> > to QMAP (rmnet driver) as backend-independent protocol for multiplexing
-> > and data aggegration. Some firmware versions allow using QMAP on top of
-> > BAM-DMUX (effectively resulting in a second multiplexing layer plus data
-> > aggregation). The architecture with QMAP would look roughly like this:
-> >
-> >            +-------------+           +------------+                  +-------+
-> >  [IPv4/6]  |    RMNET    |           |  BAM-DMUX  |                  |       |
-> >  [Data...] |             |           |            | [DMUX chan: 0]   |       |
-> > ---------->|rmnet_data1  |     ----->|rmnet0      | [QMAP mux-id: x] |       |
-> >            | (mux-id: 1) |     |     | (chan: 0)  | [IPv4/6]         |       |
-> >            |             |     |     |            | [Data...]        |       |
-> >  [IPv4/6]  | ...         |------     |            |----------------->| Modem |
-> >  [Data...] |             |           |            |       BAM        |       |
-> > ---------->|rmnet_data42 | [QMAP: x] |[rmnet1]    |   (DMA Engine)   |       |
-> >            | (mux-id: 42)| [IPv4/6]  |... unused! |                  |       |
-> >            |             | [Data...] |[rmnet7]    |                  |       |
-> >            |             |           |            |                  |       |
-> >            +-------------+           +------------+                  +-------+
-> >
-> > In this case, rmnet1-7 would remain unused. The firmware used on the most
-> > recent SoCs with BAM-DMUX even seems to announce only a single BAM-DMUX
-> > channel (rmnet0), which makes QMAP the only option for multiplexing there.
-> >
-> > So far the driver is mainly tested on various smartphones/tablets based on
-> > Qualcomm MSM8916/MSM8974 without QMAP. It looks like QMAP depends on a MTU
-> > negotiation feature in BAM-DMUX which is not yet supported by the driver.
-> >
-> > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> > ---
-> > Note that this is my first network driver, so I apologize in advance
-> > if I made some obvious mistakes. :)
-> >
-> > I'm not sure how to integrate the driver with the WWAN subsystem yet.
-> > At the moment the driver creates network interfaces for all channels
-> > announced by the modem, it does not make use of the WWAN link management
-> > yet. Unfortunately, this is a bit complicated:
-> >
-> > Both QMAP and the built-in multiplexing layer might be needed at some point.
-> > There are firmware versions that do not support QMAP and the other way around
-> > (the built-in multiplexing was disabled on very recent firmware versions).
-> > Only userspace can check if QMAP is supported in the firmware (via QMI).
+On Mon, Jul 19, 2021 at 05:13:32PM -0600, Jeffrey Hugo wrote:
+> On 7/19/2021 12:23 PM, Stephan Gerhold wrote:
+> > On Mon, Jul 19, 2021 at 09:43:27AM -0600, Jeffrey Hugo wrote:
+> > > On Mon, Jul 19, 2021 at 9:01 AM Stephan Gerhold <stephan@gerhold.net> wrote:
+> > > > 
+> > > > The BAM Data Multiplexer provides access to the network data channels
+> > > > of modems integrated into many older Qualcomm SoCs, e.g. Qualcomm MSM8916
+> > > > or MSM8974. This series adds a driver that allows using it.
+> > > > 
+> > > > For more information about BAM-DMUX, see PATCH 4/4.
+> > > > 
+> > > > Shortly said, BAM-DMUX is built using a simple protocol layer on top of
+> > > > a DMA engine (Qualcomm BAM DMA). For BAM-DMUX, the BAM DMA engine runs in
+> > > > a quite strange mode that I call "remote power collapse", where the
+> > > > modem/remote side is responsible for powering on the BAM when needed but we
+> > > > are responsible to initialize it. The BAM is power-collapsed when unneeded
+> > > > by coordinating power control via bidirectional interrupts from the
+> > > > BAM-DMUX driver.
+> > > 
+> > > The hardware is physically located on the modem, and tied to the modem
+> > > regulators, etc.  The modem has the ultimate "off" switch.  However,
+> > > due to the BAM architecture (which is complicated), configuration uses
+> > > cooperation on both ends.
+> > > 
+> > 
+> > What I find strange is that it wasn't done similarly to e.g. Slimbus
+> > which has a fairly similar setup. (I used that driver as inspiration for
+> > how to use the mainline qcom_bam driver instead of the "SPS" from
+> > downstream.)
+> > 
+> > Slimbus uses qcom,controlled-remotely together with the LPASS
+> > remoteproc, so it looks like there LPASS does both power-collapse
+> > and initialization of the BAM. Whereas here the modem does the
+> > power-collapse but we're supposed to do the initialization.
 > 
-> I am not very familiar with the Qualcomm protocols and am just curious
-> whether BAM-DMUX has any control (management) channels or only IPv4/v6
-> data channels?
-> 
-> The WWAN subsystem began as a framework for exporting management
-> interfaces (MBIM, AT, etc.) to user space. And then the network
-> interfaces (data channels) management interface was added to
-> facilitate management of devices with multiple data channels. That is
-> why I am curious about the BAM-DMUX device management interface or in
-> other words, how a user space application could control the modem
-> work?
+> I suspect I don't have a satisfactory answer for you.  The teams that did
+> slimbus were not the teams involved in the bam_dmux, and the two didn't talk
+> to each-other.  The bam_dmux side wasn't aware of the slimbus situation, at
+> the time.  I don't know if the slimbus folks knew about bam_dmux.  If you
+> have two silos working independently, its unlikely they will create exactly
+> the same solution.
 > 
 
-Sorry for the confusion! It's briefly mentioned in the Kconfig option
-but I should have made this more clear in the commit message. It was so
-long already that I wasn't sure where to put it. :)
+Fair enough :)
 
-BAM-DMUX does not have any control channels. Instead I use it together
-with the rpmsg_wwan_ctrl driver [1] that I already submitted for 5.14.
-The control/data channels are pretty much separate in this setup and
-don't have much to do with each other.
+> > 
+> > It's somewhat unrelated to this initial patch set since I'm not using
+> > QMAP at the moment, but I'm quite confused about the "MTU negotiation
+> > feature" that you added support for in [1]. (I *think* that is you,
+> > right?) :)
+> 
+> Yes.  Do I owe you for some brain damage?  :)
+> 
 
-I also had a short overview of some of the many different modem
-protocols Qualcomm has come up with in a related RFC for that driver,
-see [2] if you are curious.
+A bit to be absolutely honest. :D
+But I was able to ignore this feature so far so it was not much of
+a problem. ;)
 
-I hope that clarifies some things, please let me know if I should
-explain something better! :)
+> > 
+> > The part that I somewhat understand is the "signal" sent in the "OPEN"
+> > command from the modem. It tells us the maximum buffer size the modem
+> > is willing to accept for TX packets ("ul_mtu" in that commit).
+> > 
+> > Similarly, if we send "OPEN" to the modem we make the modem aware
+> > of our maximum RX buffer size plus the number of RX buffers.
+> > (create_open_signal() function).
+> > 
+> > The part that is confusing me is the way the "dynamic MTU" is
+> > enabled/disabled based on the "signal" in "DATA" commands as well.
+> > (process_dynamic_mtu() function). When would that happen? The code
+> > suggests that the modem might just suddenly announce that the large
+> > MTU should be used from now on. But the "buffer_size" is only changed
+> > for newly queued RX buffers so I'm not even sure how the modem knows
+> > that it can now send more data at once.
+> > 
+> > Any chance you could clarify how this should work exactly?
+> 
+> So, I think some of this might make more sense after my response to question
+> #2.
+> 
 
-Thanks!
+Indeed, I was worried that you wouldn't be able to answer the second
+one, otherwise I would probably have asked it first. I'll reorder the
+mail because it's clearer:
+
+> > And a second question if you don't mind: What kind of hardware block
+> > am I actually talking to here? I say "modem" above but I just know about
+> > the BAM and the DMUX protocol layer. I have also seen assertion failures
+> > of the modem DSP firmware if I implement something incorrectly.
+> > 
+> > Is the DMUX protocol just some firmware concept or actually something
+> > understood by some hardware block? I've also often seen mentions of some
+> > "A2" hardware block but I have no idea what that actually is. What's
+> > even worse, in a really old kernel A2/BAM-DMUX also appears as part of
+> > the IPA driver [2], and I thought IPA is the new thing after BAM-DMUX...
+> 
+> A2 predates IPA.  IPA is essentially an evolution of A2.
+> 
+> Sit down son, let me tell you the history of the world  :)
+> 
+> A long time ago, there was only a single processor that did both the "modem"
+> and the "apps".  We generally would call these the 6K days as that was the
+> number of the chips (6XXX).  Then it was decided that the roles of Apps and
+> Modem should be separated into two different cores. The modem, handling more
+> "real time" things, and apps, being more "general purpose".  This started
+> with the 7K series.
+> 
+> However, this created a problem as data from a data call may need to be
+> consumed by the modem, or the apps, and it wouldn't be clear until the
+> packet headers were inspected, where the packet needed to be routed to.
+> Sometimes this was handled on apps, sometimes on modem.  Usually via a fully
+> featured IP stack.
+> 
+> With LTE, software couldn't really keep up, and so a hardware engine to
+> parse the fields and route the package based on programmed filters was
+> implemented.  This is the "Algorithm Accelerator", aka AA, aka A2.
+> 
+> The A2 first appeared on the 9600 chip, which was originally intended for
+> Gobi- those dongles you could plug into your laptop to give it a data
+> connection on the go when there was no wifi.  It was then coupled with both
+> 7x30 and 8660 in what we would call "fusion" to create the first LTE capable
+> phones (HTC thunderbolt is the product I recall) until an integrated
+> solution could come along.
+> 
+> That integrated solution was 8960.
+> 
+> Back to the fusion solution for a second, the 9600 was connected to the
+> 7x30/8660 via SDIO.  Prior to this, the data call control and data path was
+> all in chip via SMD.  Each rmnet instance had its own SMD channel, so
+> essentially its own physical pipe.  With SDIO and 9600, there were not
+> enough lanes, so we invented SDIO_CMUX and SDIO_DMUX - the Control and Data
+> multiplexers over SDIO.
+> 
+> With 8960, everything was integrated again, so we could run the control path
+> over SMD and didn't need a mux.  However, the A2 moved from the 9600 modem
+> to the 8960 integrated modem, and now we had a direct connection to its BAM.
+> Again, the BAM had a limited number of physical pipes, so we needed a data
+> multiplexer again.  Thus SDIO_DMUX evolved into BAM_DMUX.
+> 
+> The A2 is a hardware block with an attached BAM, that "hangs off" the modem.
+> There is a software component that also runs on the modem, but in general is
+> limited to configuration.  Processing of data is expected to be all in
+> hardware.  As I think I mentioned, the A2 is a hardware engine that routes
+> IP packets based on programmed filters.
+> 
+> BAM instances (as part of the smart peripheral subsystem or SPS) can either
+> be out in the system, or attached to a peripheral.  The A2 BAM is attached
+> to the A2 peripheral.  BAM instances can run in one of 3 modes - BAM-to-BAM,
+> BAM-to-System, or System-to-System.  BAM-to-BAM is two BAM instances talking
+> to eachother.  If the USB controller has a BAM, and the A2 has a BAM, those
+> two BAMS could talk directly to copy data between the A2 and USB hardware
+> blocks without software interaction (after some configuration).  "System"
+> means system memory, or DDR. Bam-to-System is the mode the A2 BAM runs in
+> where it takes data to/from DDR and gives/takes that data with the A2.
+> System-to-System would be used by a BAM instance not associated with any
+> peripheral to transfer data say from Apps DDR to Modem DDR.
+> 
+> The A2 can get data from the RF interface, and determine if that needs to go
+> to some modem consumer, the apps processor, or on some chips to the wifi
+> processor.  All in hardware, much faster than software for multiple reasons,
+> but mainly because multiple filters can be evaluated in parallel, each
+> filter looking at multiple fields in parallel.  In a nutshell, the IPA is a
+> revised A2 that is not associated with any processor (like the modem), which
+> allows it to route data better (think wifi and audio usecases).
+> 
+> Hope that all helps.  I'm "around" for more questions.
+> 
+
+Wow, I can't thank you enough for all the detailed explanations!
+I've seen many small hints of this in various places but I could never
+really understand how they all relate to each other.
+This is much clearer now. :)
+
+> I don't know how much of this translates to modern platforms.  I don't
+> really work on MSMs anymore, but I can convey what I recall and how things
+> were "back then"
+> 
+> So, essentially the change you are looking at is the bam_dmux portion of an
+> overall feature for improving the performance of what was known as "tethered
+> rmnet".
+> 
+> Per my understanding (which the documentation of this feature reinforces),
+> teathered rmnet was chiefly a test feature.  Your "data" (websites, email,
+> etc) could be consumed by the device itself, or exported off, if you
+> teathered your phone to a laptop so that the laptop could use the phone's
+> data connection.  There ends up being 3 implementations for this.
+> 
+> Consuming the data on the phone would route it to the IP stack via the rmnet
+> driver.
+> 
+> Consuming the data on an external device could take one of 2 routes.
+> 
+> Android would use the "native" routing of the Linux IP stack to essentially
+> NAT the laptop.  The data would go to the rmnet driver, to the IP stack, and
+> the IP stack would route it to USB.
+> 
+> The other route is that the data could be routed directly to USB.  This is
+> "teathered rmnet".  In the case of bam_dmux platforms, the USB stack is a
+> client of bam_dmux.
+> 
+> Teathered rmnet was never an end-user usecase.
+>
+
+I'm pretty sure it's actively used now on typical USB modems based on
+MDM9607. As far as I know that one has BAM-DMUX and "forwards" it via
+USB (without NAT).
+
+> It was essentially a validation feature for both internal testing, and
+> also qualifying the device with the carriers.  The carriers knew that
+> Android teathering involved NAT based routing on the phone, and wanted
+> to figure out if the phone could meet the raw performance specs of the
+> RF technology (LTE Category 4 in this case) in a tethered scenario,
+> without the routing.
+> 
+> For tethered rmnet, USB (at the time) was having issues consistently meeting
+> those data rates (50mbps UL, 100mbps DL concurrently, if I recall
+> correctly).  So, the decided solution was to implement QMAP aggregation.
+> 
+> A QMAP "call" over tethered rmnet would be negotiated between the app on the
+> PC, and "dataservices" or "DS" on the modem.  One of the initial steps of
+> that negotitation causes DS to tell A2 software that QMAP over tethered
+> rmnet is being activated.  That would trigger A2 to activate the
+> process_dynamic_mtu() code path.  Now bam_dmux would allocate future RX
+> buffers of the increased size which could handle the aggregated packets.  I
+> think the part that is confusing you is, what about the already queued
+> buffers that are of the old size?  Well, essentially those get consumed by
+> the rest of the QMAP call negotiation, so by the time actual aggregated data
+> is going to be sent from Modem to bam_dmux, the pool has been consumed and
+> refilled.
+> 
+> When the tethered rmnet connection is "brought down", DS notifies A2, and A2
+> stops requesting the larger buffers.
+> 
+
+Hmm, is this "DS" on the modem something special I don't know about?
+It sounds like the part of the modem that I talk to via QMI to establish
+new connections. However, since QMI does not go through BAM-DMUX
+(RPMSG/SMD or QRTR instead) there should be only very few packets sent
+via BAM-DMUX during negotation of QMAP.
+
+To be sure I just tried QMAP with my BAM-DMUX driver again. It's been
+quite some time since I tried it and it turns out this causes even more
+"brain damage" than I could even remember. :D For reference:
+
+ 1. First I need to set the modem to QMAP mode, this works e.g. with
+    qmicli -pd /dev/wwan0qmi0 \
+    --wda-set-data-format="link-layer-protocol=raw-ip,ul-protocol=qmap,dl-protocol=qmap,dl-datagram-max-size=4096"
+
+    However, it's important that my BAM-DMUX driver OPENs the channel
+    before doing this (together with announcing support for the "dynamic
+    MTU" feature). Otherwise the modem hangs forever and stops responding
+    to any QMI messages. This doesn't happen when switching to Raw-IP mode.
+
+ 2. With QMAP, the struct bam_dmux_hdr->len is always set to 0xffff (65535)
+    instead of the actual packet length, which means my current driver
+    just drops those packets ("Data larger than buffer? (65535 > 4088)").
+
+    This is also handled in your commit (you get the size from the SPS
+    driver instead), but the bam_dma driver in mainline currently does
+    not have this feature. :/
+
+ 3. I sent some ping packets but never got the signal to "enable large
+    MTU" from the modem. Something is still strange here. :/
+
+Given all these complications (that are not present when ignoring QMAP)
+I would generally agree with you that it's not worth supporting this:
+
+> Since this not something an end user should ever exercise, you may want to
+> consider dropping it.
+> 
+
+Personally, I have indeed no need for it. I just suspect someone might
+want this eventually for one of the following two use cases:
+
+  1. Multiplexing on new firmwares: AFAICT there is only one BAM-DMUX
+     channel on recent firmware versions (e.g. MSM8937/MDM9607). In that
+     case multiple connections are only possible through the multiplexing
+     layer in QMAP. I've been told the multiplexing is actually useful and
+     necessary in some cases (maybe it was for some MMS configurations,
+     I don't remember exactly).
+
+  2. USB tethering: I know some people are working on mainline Linux
+     for some MDM9607-based USB modems and they will probably want the
+     weird USB tethering feature at some point.
+
+But all in all given all the trouble involved when making QMAP work
+I think I will just ignore that feature for now and wait until someone
+shows up who absolutely needs this feature...
+
+Thanks again for all the explanations!
 Stephan
-
-[1]: https://lore.kernel.org/netdev/20210618173611.134685-3-stephan@gerhold.net/
-[2]: https://lore.kernel.org/netdev/YLfL9Q+4860uqS8f@gerhold.net/
