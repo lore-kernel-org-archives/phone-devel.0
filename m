@@ -5,35 +5,35 @@ X-Spam-Level:
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99D7BC4338F
-	for <phone-devel@archiver.kernel.org>; Fri, 23 Jul 2021 20:22:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 841EDC4338F
+	for <phone-devel@archiver.kernel.org>; Fri, 23 Jul 2021 20:22:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6F48960F23
-	for <phone-devel@archiver.kernel.org>; Fri, 23 Jul 2021 20:22:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5E38160F02
+	for <phone-devel@archiver.kernel.org>; Fri, 23 Jul 2021 20:22:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229762AbhGWTlm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 23 Jul 2021 15:41:42 -0400
-Received: from mout01.posteo.de ([185.67.36.65]:37727 "EHLO mout01.posteo.de"
+        id S229648AbhGWTlt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 23 Jul 2021 15:41:49 -0400
+Received: from mout02.posteo.de ([185.67.36.66]:59837 "EHLO mout02.posteo.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229530AbhGWTll (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 23 Jul 2021 15:41:41 -0400
+        id S231337AbhGWTlt (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 23 Jul 2021 15:41:49 -0400
 Received: from submission (posteo.de [89.146.220.130]) 
-        by mout01.posteo.de (Postfix) with ESMTPS id 114FD240029
-        for <phone-devel@vger.kernel.org>; Fri, 23 Jul 2021 22:22:13 +0200 (CEST)
+        by mout02.posteo.de (Postfix) with ESMTPS id 22CBE240107
+        for <phone-devel@vger.kernel.org>; Fri, 23 Jul 2021 22:22:21 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
-        t=1627071733; bh=4CbUy4rNMD3BYvfyaGS3gTaifeZzNzWCTH5e5SlwvuI=;
+        t=1627071741; bh=X0rc+/5GGjVkSZK5TaqO7OYWpD1XlkC/UV67N8kNP9g=;
         h=From:To:Cc:Subject:Date:From;
-        b=VLND2wRF61Wb9+S4/yu3FneWYNUXsuAwRM4+HKITPPH6ceRW4mrAf3a0fFjL2qkJk
-         XbqzpJDnAXoLaKSA5/By3P00ui4EOvj0afIvvgmt8pQc4jSyb68aoD1vnRl1P4/Enb
-         MnZcauMA8W+WfOlVZ6ANFQJMPfjnlCPfVHtN1bS/T3Foxvt5dsJsAeCjj5uHjFhd1E
-         5jZTnNL7yeCPrvZm+LKAZqWydhD7otF6L1OQy12faTWdbHB301oElhzKxY0kEDPTV6
-         L6CojVF3ICn5ZNUPEh7h32ifWHtOYpr1RsS8iIce2aeWdrexnECoFvDSM9zQ8XD9wa
-         R3vH+/vBjnQYg==
+        b=gXvRsXEesyFUeO2ci6TAUXnbtS72dQWm/abk76x2nqfyBP24n/2kFUPDnzNt91Fvl
+         ofYWilp1qdyqW2IZXD/ZIjfOMvwUyU6xgD2ufLiGPDnGTqGrG3qfz+Ujt4hRgy8w4e
+         J9Hd5s8mnvfFFRSlcbg2nLRzr1+3hF/rka8QWYcUJvu0foUQPZv/+VoCeLz/8y87rk
+         zWkjtWI2vZdZWRT96xjrBrYBOrRwOKXJCiskqAd/3n30teClDwMgu3btl8aPB87Gfr
+         RdwVgg8JBPcChcbtRtsTuw1TQOevotZFvhHgVnCNx75bnG1/ZUkzgaMgEIfD/DIF95
+         XE9gP/a9Oagog==
 Received: from customer (localhost [127.0.0.1])
-        by submission (posteo.de) with ESMTPSA id 4GWghz2ZhBz9rxY;
-        Fri, 23 Jul 2021 22:22:11 +0200 (CEST)
+        by submission (posteo.de) with ESMTPSA id 4GWgj81QCSz9rxd;
+        Fri, 23 Jul 2021 22:22:20 +0200 (CEST)
 From:   Julian Weigt <juw@posteo.de>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -42,45 +42,149 @@ To:     Andy Gross <agross@kernel.org>,
         devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
         DEVICE TREE BINDINGS), linux-kernel@vger.kernel.org (open list)
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Craig Tatlor <ctatlor97@gmail.com>,
         Julian Weigt <juw@posteo.de>
-Subject: [PATCH 1/2] ARM: dts: qcom-msm8974: Add blsp2_uart7 for bluetooth on sirius
-Date:   Fri, 23 Jul 2021 20:21:00 +0000
-Message-Id: <20210723202101.65371-1-juw@posteo.de>
+Subject: [PATCH 2/2] ARM: dts: msm8974: castor: Add Bluetooth-related nodes
+Date:   Fri, 23 Jul 2021 20:21:01 +0000
+Message-Id: <20210723202101.65371-2-juw@posteo.de>
+In-Reply-To: <20210723202101.65371-1-juw@posteo.de>
+References: <20210723202101.65371-1-juw@posteo.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Craig Tatlor <ctatlor97@gmail.com>
+From: Bjorn Andersson <bjorn.andersson@linaro.org>
 
-Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
+Castor has a BCM4339 attached to BLSP2 UART7, add the necessary nodes to
+define the uart as well as the serdev BCM.
+
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 Signed-off-by: Julian Weigt <juw@posteo.de>
 ---
- arch/arm/boot/dts/qcom-msm8974.dtsi | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ .../dts/qcom-msm8974-sony-xperia-castor.dts   | 81 +++++++++++++++++++
+ 1 file changed, 81 insertions(+)
 
-diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
-index eb398ddab003..27c22dc235c1 100644
---- a/arch/arm/boot/dts/qcom-msm8974.dtsi
-+++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
-@@ -715,6 +715,15 @@ blsp1_uart2: serial@f991e000 {
- 			status = "disabled";
+diff --git a/arch/arm/boot/dts/qcom-msm8974-sony-xperia-castor.dts b/arch/arm/boot/dts/qcom-msm8974-sony-xperia-castor.dts
+index f4ec08f13003..b4dd85bd4faf 100644
+--- a/arch/arm/boot/dts/qcom-msm8974-sony-xperia-castor.dts
++++ b/arch/arm/boot/dts/qcom-msm8974-sony-xperia-castor.dts
+@@ -11,6 +11,7 @@ / {
+ 
+ 	aliases {
+ 		serial0 = &blsp1_uart2;
++		serial1 = &blsp2_uart7;
+ 	};
+ 
+ 	chosen {
+@@ -336,6 +337,27 @@ serial@f991e000 {
+ 		pinctrl-0 = <&blsp1_uart2_pin_a>;
+ 	};
+ 
++	serial@f995d000 {
++		status = "ok";
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&blsp2_uart7_pin_a>;
++
++		bluetooth {
++			compatible = "brcm,bcm43438-bt";
++			max-speed = <3000000>;
++
++			pinctrl-names = "default";
++			pinctrl-0 = <&bt_host_wake_pin>,
++				    <&bt_dev_wake_pin>,
++				    <&bt_reg_on_pin>;
++
++			host-wakeup-gpios = <&msmgpio 95 GPIO_ACTIVE_HIGH>;
++			device-wakeup-gpios = <&msmgpio 96 GPIO_ACTIVE_HIGH>;
++			shutdown-gpios = <&pm8941_gpios 16 GPIO_ACTIVE_HIGH>;
++		};
++	};
++
+ 	usb@f9a55000 {
+ 		status = "okay";
+ 
+@@ -380,6 +402,40 @@ tx {
+ 			};
  		};
  
-+		blsp2_uart7: serial@f995d000 {
-+			compatible = "qcom,msm-uartdm-v1.4", "qcom,msm-uartdm";
-+			reg = <0xf995d000 0x1000>;
-+			interrupts = <GIC_SPI 113 IRQ_TYPE_NONE>;
-+			clocks = <&gcc GCC_BLSP2_UART1_APPS_CLK>, <&gcc GCC_BLSP2_AHB_CLK>;
-+			clock-names = "core", "iface";
-+			status = "disabled";
++		blsp2_uart7_pin_a: blsp2-uart7-pin-active {
++			tx {
++				pins = "gpio41";
++				function = "blsp_uart7";
++
++				drive-strength = <2>;
++				bias-disable;
++			};
++
++			rx {
++				pins = "gpio42";
++				function = "blsp_uart7";
++
++				drive-strength = <2>;
++				bias-pull-up;
++			};
++
++			cts {
++				pins = "gpio43";
++				function = "blsp_uart7";
++
++				drive-strength = <2>;
++				bias-pull-up;
++			};
++
++			rts {
++				pins = "gpio44";
++				function = "blsp_uart7";
++
++				drive-strength = <2>;
++				bias-disable;
++			};
 +		};
 +
- 		blsp2_uart8: serial@f995e000 {
- 			compatible = "qcom,msm-uartdm-v1.4", "qcom,msm-uartdm";
- 			reg = <0xf995e000 0x1000>;
+ 		i2c8_pins: i2c8 {
+ 			mux {
+ 				pins = "gpio47", "gpio48";
+@@ -479,6 +535,23 @@ pin {
+ 				input-enable;
+ 			};
+ 		};
++
++		bt_host_wake_pin: bt-host-wake {
++			pins = "gpio95";
++			function = "gpio";
++
++			drive-strength = <2>;
++			bias-disable;
++			output-low;
++		};
++
++		bt_dev_wake_pin: bt-dev-wake {
++			pins = "gpio96";
++			function = "gpio";
++
++			drive-strength = <2>;
++			bias-disable;
++		};
+ 	};
+ 
+ 	i2c@f9964000 {
+@@ -606,6 +679,14 @@ gpio_keys_pin_a: gpio-keys-active {
+ 				power-source = <PM8941_GPIO_S3>;
+ 			};
+ 
++			bt_reg_on_pin: bt-reg-on {
++				pins = "gpio16";
++				function = "normal";
++
++				output-low;
++				power-source = <PM8941_GPIO_S3>;
++			};
++
+ 			wlan_sleep_clk_pin: wl-sleep-clk {
+ 				pins = "gpio17";
+ 				function = "func2";
 -- 
 2.32.0
 
