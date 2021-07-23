@@ -2,204 +2,123 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE7B5C63798
-	for <phone-devel@archiver.kernel.org>; Thu, 22 Jul 2021 15:40:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF18BC4338F
+	for <phone-devel@archiver.kernel.org>; Fri, 23 Jul 2021 10:23:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 995FF6120C
-	for <phone-devel@archiver.kernel.org>; Thu, 22 Jul 2021 15:40:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8197C60EE6
+	for <phone-devel@archiver.kernel.org>; Fri, 23 Jul 2021 10:23:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232716AbhGVPAJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 22 Jul 2021 11:00:09 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.81]:21935 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232688AbhGVPAH (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 22 Jul 2021 11:00:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1626968437;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=Ry5DhG356ANv2igJZhQ+pgw95Y/FGgirnHdl1TlEnpE=;
-    b=N7LBRXLwjxN2fygdz7IxsyrvPAofyTjsb3lUdoNqrWDdet45Rsgnlf58SBHTqrOjpe
-    XHg4bfCMPMYpXmGRstZFaXLi6EYQSPCNp9drm+BF6qkl6ESZ8XE8Qbyhw76llswIedTh
-    nM/WZt55yHlD44LNUfGFAwBGNjlnkWFkn20tFP8B2CftxGQQphw2VvKn1qQ1buaHT1Dv
-    9UbGUu//UnjTSz5hAAwQ8gV47hius9oTqWqhCEz+2+qcHbflucZWbbyvQrniNWWTrjxa
-    s1CcNUIRQuMe5MuHBsmFSQIVXbl8bBQLQiLTgLZNIgGLXPzG38V7h3TguLLo7nATFDXE
-    s0Cw==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA8ZuO1A=="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 47.28.1 DYNA|AUTH)
-    with ESMTPSA id g02a44x6MFeaQsv
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Thu, 22 Jul 2021 17:40:36 +0200 (CEST)
-Date:   Thu, 22 Jul 2021 17:40:32 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Loic Poulain <loic.poulain@linaro.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Aleksander Morgado <aleksander@aleksander.es>,
-        Network Development <netdev@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        dmaengine@vger.kernel.org, devicetree <devicetree@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Subject: Re: [RFC PATCH net-next 4/4] net: wwan: Add Qualcomm BAM-DMUX WWAN
- network driver
-Message-ID: <YPmRcBXpRtKKSDl8@gerhold.net>
-References: <20210719145317.79692-1-stephan@gerhold.net>
- <20210719145317.79692-5-stephan@gerhold.net>
- <CAMZdPi8oxRMo0erfd0wrUPzD2UsbexoR=86u2N75Fd9RpXHoKg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMZdPi8oxRMo0erfd0wrUPzD2UsbexoR=86u2N75Fd9RpXHoKg@mail.gmail.com>
+        id S231659AbhGWJnW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 23 Jul 2021 05:43:22 -0400
+Received: from comms.puri.sm ([159.203.221.185]:34922 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230238AbhGWJnV (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 23 Jul 2021 05:43:21 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id 28BBDDFDE5;
+        Fri, 23 Jul 2021 03:23:55 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id oK8xjK8x_jat; Fri, 23 Jul 2021 03:23:54 -0700 (PDT)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     laurent.pinchart@ideasonboard.com, shawnguo@kernel.org
+Cc:     devicetree@vger.kernel.org, festevam@gmail.com,
+        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-staging@lists.linux.dev, m.felsch@pengutronix.de,
+        mchehab@kernel.org, phone-devel@vger.kernel.org, robh@kernel.org,
+        slongerbeam@gmail.com,
+        Martin Kepplinger <martin.kepplinger@puri.sm>
+Subject: [PATCH v8 0/3] media: imx: add support for imx8mq MIPI RX
+Date:   Fri, 23 Jul 2021 12:12:14 +0200
+Message-Id: <20210723101217.1954805-1-martin.kepplinger@puri.sm>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Loic,
+hi,
 
-On Mon, Jul 19, 2021 at 06:01:33PM +0200, Loic Poulain wrote:
-> On Mon, 19 Jul 2021 at 17:01, Stephan Gerhold <stephan@gerhold.net> wrote:
-> >
-> > I'm not sure how to integrate the driver with the WWAN subsystem yet.
-> > At the moment the driver creates network interfaces for all channels
-> > announced by the modem, it does not make use of the WWAN link management
-> > yet. Unfortunately, this is a bit complicated:
-> >
-> > Both QMAP and the built-in multiplexing layer might be needed at some point.
-> > There are firmware versions that do not support QMAP and the other way around
-> > (the built-in multiplexing was disabled on very recent firmware versions).
-> > Only userspace can check if QMAP is supported in the firmware (via QMI).
-> >
-> > I could ignore QMAP completely for now but I think someone will show up
-> > who will need this eventually. And if there is going to be common code for
-> > QMAP/rmnet link management it would be nice if BAM-DMUX could also make
-> > use of it.
-> 
-> I have this on my TODO list for mhi-net QMAP.
-> 
+This patch series adds a driver for the i.MX8MQ CSI MIPI receiver / controller.
 
-Great, thanks!
+It includes the driver, the dt-bindings and the DT addition to the SoC dtsi.
+I test it using libcamera. Thanks to Laurent who helped a lot. I'm happy for
+any feedback,
 
-> > But the question is, how could this look like? How do we know if we should
-> > create a link for QMAP or a BAM-DMUX channel? Does it even make sense
-> > to manage the 1-8 channels via the WWAN link management?
-> 
-> Couldn't it be specified via dts (property or different compatible
-> string)?
+                           martin
 
-It would probably work in most cases, but I have to admit that I would
-prefer to avoid this for the following reason: This driver is used on
-some smartphones that have different variants for different parts of the
-world. As far as Linux is concerned the hardware is pretty much
-identical, but the modem firmware is often somewhat device-specific.
+revision history
+----------------
+v8: (thank you Laurent)
+* calculate hs_settle for any clk rate and mode
+* add reviewed-by tag
 
-This means that the same device tree is often used with different
-firmware versions. Perhaps we are lucky enough that the firmware
-versions have the same capabilities, but I'm not fully sure about that.
+v7: (thank you Laurent and Rob)
+* fix the binding example (include the reset driver)
+* use pm_runtime_resume_and_get()
+* fix some logic in init_cfg()
+* add some useful code comments and fix minor bits found by Laurent in v6
+https://lore.kernel.org/linux-media/20210716102244.581182-1-martin.kepplinger@puri.sm/T/#t
 
-I think at the end the situation is fairly similar to qmi_wwan/USB.
-There the kernel also does not know if the modem supports QMAP or not.
-The way it's solved there at the moment is that ModemManager tries to
-enable it from user space and then the mode of the network interface
-can be switched through a sysfs file ("qmi/pass_through").
+v6: (thank you Laurent and Rob)
+* add reviewed-by tag to binding
+* statically allocate clk_bulk_data
+* fix how the hs_settle value is applied
+* remove s_power calls
+* remove the link_setup() callback implementation and make the link immutable
+* more cleanups according to Laurents' review from v5
+https://lore.kernel.org/linux-media/20210714111931.324485-1-martin.kepplinger@puri.sm/
 
-Something like this should probably also work in my case. This should
-also allow me to ignore QMAP for now and deal with it if someone really
-needs it at some point since it's quite complicated for BAM-DMUX.
-(I tried QMAP again today and listed the problems in [1] for reference,
- but it's all BAM-DMUX specific...)
+v5: (thank you Laurent)
+* fix reset usage by using the already supported reset controller driver
+* remove clko2 (totally unrelated clock / had been included by accident)
+* rename pxl clock to ui
+https://lore.kernel.org/linux-media/20210618095753.114557-1-martin.kepplinger@puri.sm/
 
-[1] https://lore.kernel.org/netdev/YPmF8bzevuabO2K9@gerhold.net/
+v4: (thank you Rob and Marco)
+* create fsl,mipi-phy-gpr custom dt property instead of confusing "phy"
+* add imx8mq-specific compatibile to imx8mq.dtsi for future use
+https://lore.kernel.org/linux-media/20210614121522.2944593-1-martin.kepplinger@puri.sm/
 
->
-> would it make sense to have two drivers (with common core) to
-> manage either the multi-bam channel or newer QMAP based single
-> bam-channel modems.
-> 
+v3: (thank you, Rob and Laurent)
+among minor other things according to v2 review, changes include:
+* better describe the clocks
+* rename DT property "phy-reset" to "reset" and "phy-gpr" to "phy"
+https://lore.kernel.org/linux-media/20210608104128.1616028-1-martin.kepplinger@puri.sm/T/#t
 
-There should be fairly little difference between those two usage modes,
-so I don't think it's worth splitting the driver for this. Actually
-right now (ignoring the link management of the WWAN subsystem),
-it's already possible to use both.
+v2: (thank you, Dan and Guido)
+among fixes according to v1 reviews, changes include:
+* remove status property from dt-bindings example
+* define a few bits in order to have less magic values
+* use "imx8mq_mipi_csi_" as local function prefix
+* read DT properties only during probe()
+* remove dead code (log_status)
+* add imx8mq_mipi_csi_release_icc()
+* fix imx8mq_mipi_csi_init_icc()
+https://lore.kernel.org/linux-media/20210531112326.90094-1-martin.kepplinger@puri.sm/
 
-I can use the network interfaces as-is in Raw-IP mode or I do
-"sudo ip link add link rmnet0 name rmnet0_qmap type rmnet mux_id 1"
-on top and use QMAP. The BAM-DMUX driver does not care, because it
-just hands over sent/received packets as-is and the modem data format
-must be always configured via QMI from user space.
+v1:
+https://lore.kernel.org/linux-media/20210527075407.3180744-1-martin.kepplinger@puri.sm/T/#t
 
-> >
-> > Another problem is that the WWAN subsystem currently creates all network
-> > interfaces below the common WWAN device. This means that userspace like
-> > ModemManager has no way to check which driver provides them. This is
-> > necessary though to decide how to set it up via QMI (ModemManager uses it).
-> 
-> Well, I have quite a similar concern since I'm currently porting
-> mhi-net mbim to wwan framework, and I was thinking about not making
-> wwan device parent of the network link/netdev (in the same way as
-> wlan0 is not child of ieee80211 device), but not sure if it's a good
-> idea or not since we can not really consider driver name part of the
-> uapi.
-> 
+Martin Kepplinger (3):
+  dt-bindings: media: document the nxp,imx8mq-mipi-csi2 receiver phy and
+    controller
+  media: imx: add a driver for i.MX8MQ mipi csi rx phy and controller
+  arm64: dts: imx8mq: add mipi csi phy and csi bridge descriptions
 
-Hm, I think the main disadvantage of that would be that the network
-interface is no longer directly related to the WWAN device, right?
-Userspace would then need some special matching to find the network
-interfaces that belong to a certain control port.
+ .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 174 ++++
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi     | 104 ++
+ drivers/staging/media/imx/Makefile            |   1 +
+ drivers/staging/media/imx/imx8mq-mipi-csi2.c  | 979 ++++++++++++++++++
+ 4 files changed, 1258 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+ create mode 100644 drivers/staging/media/imx/imx8mq-mipi-csi2.c
 
-With the current setup, e.g. ModemManager can simply match the WWAN
-device and then look at its children and find the control port and
-network interfaces. How would it find the network interfaces if they are
-no longer below the WWAN device?
+-- 
+2.30.2
 
-> The way links are created is normally abstracted, so if you know which
-> bam variant you have from wwan network driver side (e.g. via dts), you
-> should have nothing to check on the user side, except the session id.
-
-In a perfect world it would probably be like this, but I'm afraid the
-Qualcomm firmware situation isn't as simple. User space needs to know
-which setup it is dealing with because all the setup happens via QMI.
-
-Let's take the BAM-DMUX channels vs QMAP mux-IDs for example:
-
-First, user space needs to configure the data format. This happens with
-the QMI WDA (Wireless Data Administrative Service) "Set Data Format"
-message. Parameter would be link layer format (Raw-IP in both cases)
-but also the uplink/downlink data aggregation protocol. This is either
-one of many QMAP versions (qmap|qmapv2|qmapv3|qmapv4|qmapv5), or simply
-"none" when using BAM-DMUX without QMAP.
-
-Then, the "session ID" (= BAM-DMUX channel or QMAP mux-ID) must be bound
-to a WDS (Wireless Data Service) session. The QMI message for that is
-different for BAM-DMUX and QMAP:
-
-  - BAM-DMUX: WDS "Bind Data Port"
-      (Parameter: SIO port number, can be derived from channel ID)
-
-  - QMAP: WDS "Bind MUX Data Port" (note the "MUX", different message!)
-      (Parameter: MUX ID, port type (USB/embedded/...), port number)
-
-My point here: Since userspace is responsible for QMI at the moment
-we will definitely need to make it aware of the setup that it needs to
-apply. Just having an abstract "session ID" won't be enough to set up
-the connection properly. :/
-
-Thanks!
-Stephan
