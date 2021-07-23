@@ -2,99 +2,138 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F483C4320A
-	for <phone-devel@archiver.kernel.org>; Fri, 23 Jul 2021 15:38:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4636FC4338F
+	for <phone-devel@archiver.kernel.org>; Fri, 23 Jul 2021 19:24:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5671160F02
-	for <phone-devel@archiver.kernel.org>; Fri, 23 Jul 2021 15:38:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 260B960EB2
+	for <phone-devel@archiver.kernel.org>; Fri, 23 Jul 2021 19:24:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235582AbhGWO6A (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 23 Jul 2021 10:58:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50704 "EHLO
+        id S230333AbhGWSnb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 23 Jul 2021 14:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235472AbhGWO57 (ORCPT
+        with ESMTP id S230289AbhGWSna (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 23 Jul 2021 10:57:59 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E51D0C061760
-        for <phone-devel@vger.kernel.org>; Fri, 23 Jul 2021 08:38:31 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id d17so2850343lfv.0
-        for <phone-devel@vger.kernel.org>; Fri, 23 Jul 2021 08:38:31 -0700 (PDT)
+        Fri, 23 Jul 2021 14:43:30 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51ABDC061575;
+        Fri, 23 Jul 2021 12:24:02 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id b7so3432891wri.8;
+        Fri, 23 Jul 2021 12:24:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=b5fKS0W78jBgl+mIxB7Xm3uGD8b8IxeNIeStjZ0bgIs=;
-        b=evLuO9t2y1KdY+CTSGy4BwPos3Vq4zxanoA1hWD9X7Hbicscye1STEqtbg/Sdvkv5C
-         djdQvdh6R9hwgJYEyJMx+uTqi7m8c6OBtGwK0GWXoRd8tfJZw7matlNo2DPmpuF2aHUk
-         DN6Z9qin5+4zvK0UJ6/hqgdLKyYnQrMPO9Daag/g/7r+D+GsVOh0HnaYoZLoYeYKpOG9
-         WsapjxStnD2hyGkzN7Sa3W1CQKpfV8ZxnTwEst9FtevCwZ/8WqwAd2q9p23pIbW6kVAW
-         6JD8VsZ6+32CqGkL6EpMhj6/Ker1hspQRoepWg0g46AoC9zoYnxJU/lufv155kTTjuab
-         uofQ==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=J55q72yArSUbiH3EMJZktqEzhRxtiUpg9a9enEexVsM=;
+        b=N/Aqe8my+wIJybFcu2TUrB0YaL0E11k6jlhvi31yrfZgJCuca8HrwDRbre3LO7D1go
+         vCylF4Hq8pbPw4ZdLm2Y8U2Sd87RZMHsKAn7pkpsU2QWfD8hcgYVojMLqFCwozqx9r8e
+         E+7YDQsMJ4fB1lcGqqoNXvTXKLBlULSzERP5EuOPcdGv7fzrxsCXq1Tu8jeP7r5mD3Vz
+         NzBWvpxuG3xYbI9vvwgE3PmOQYoLhauEFBFU+wtxsE+velrN1jPBCXnZ5/CAPsTwHPTJ
+         UTkKNkKQOC6VOor8mnDP2x/b3vdsKbEOUYqGw/536Qi4ve9vpIzT3xHblMuEFj+pXPn1
+         yUIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=b5fKS0W78jBgl+mIxB7Xm3uGD8b8IxeNIeStjZ0bgIs=;
-        b=jeiouzMq46ldR3/e6MArVRaTQwDFn7rJm1xPooC/YCGj3f9nykXSQxwTs0KiUTZ5Zo
-         nr5Tsvx+EWGa74VD/o5MzZLLFA/iD8KLXEje2aUk+x4vTkoE461Cg6eDObDW1SNMdIBh
-         fJ6SM3KD6OHkE4QSbu6Nv8Y1BsxJpronj4ucSxhNyJOx000guzgUYT+zDE+UEGi8kEOl
-         IKDYXf40KXeYjIisJBYUPCK/CQEYB+b9YvyOl9gLa0qYPxFT6CL3addSJCGajjNyoyIF
-         0RdMfxlR5epQhgkGUq1XHUHZ1OmVq6JE4Gh4iDSENFBQuxjEBOtcBSesLsmLv4r3zzSY
-         JL6g==
-X-Gm-Message-State: AOAM531/JEOAKLJFl9m+T6HhEpEeFAgIMPHFVbgug6m32JxmFGcaQF0N
-        Z4Qp6QCotTxRw1Aa7s58dhnqFiIhZ1Ts+WqMHxN4ug==
-X-Google-Smtp-Source: ABdhPJydD4EvUxZjN8jfbePd6NexZtDbTJWMSw9gG1tEl0IrnQUz8uu1ccPNLmvpaMBm4zlx+ZGvhjPSF5bNqDsr5T0=
-X-Received: by 2002:ac2:5e71:: with SMTP id a17mr3344716lfr.465.1627054710287;
- Fri, 23 Jul 2021 08:38:30 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=J55q72yArSUbiH3EMJZktqEzhRxtiUpg9a9enEexVsM=;
+        b=TxmsWbEFNg8NWhrYG1fkcVAWDtp4dnqNfSnvf4zHKUPkYZyDIvy5+ALnjvoQhn+FdU
+         xscO0qoK9iT+7406yoBsMtbTJpy0kSl1tQnR2qYR5HzLbPeC3sZi/yINzvTnC6UIvi+u
+         Zdydnb1cmuhEHCU07O/YsaERl2KpEmnzH8aCvL3gC6FSl9i2pmSu+zKg754gkaGXRDSA
+         lbAcy6FDDfuaYxhgGyHGU89EJsPK1Vqj23Qtm9H4GBfeeIxeh2kya+X4hAZPZseEZ/Fi
+         IQCgZPDGq5fC7NJD0sa099WMnc1pFJJDdlGpspZ6y5WLj2PVjC91aO8bz9Y5QaoiOpaD
+         zqug==
+X-Gm-Message-State: AOAM531bhJWhPugApP0XbhG+6Xgs5hZ4ZqLVqcPPasP+szBOogAZiI5t
+        m38gTTL4qgl1Sd9CNWZ3dAk=
+X-Google-Smtp-Source: ABdhPJwKl5qm9bsouc5rEmzohrzmVBo6lUMnTF+QMrHrm8AgA2FK13sQ9BUkSrxlDnhpbIymN8KizA==
+X-Received: by 2002:a5d:4751:: with SMTP id o17mr230746wrs.252.1627068240983;
+        Fri, 23 Jul 2021 12:24:00 -0700 (PDT)
+Received: from localhost (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
+        by smtp.gmail.com with ESMTPSA id u16sm40538911wrw.36.2021.07.23.12.23.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Jul 2021 12:24:00 -0700 (PDT)
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Iskren Chernev <iskren.chernev@gmail.com>
+Subject: [PATCH v6 0/2] Add Pinctrl for SM4250/6115
+Date:   Fri, 23 Jul 2021 22:23:50 +0300
+Message-Id: <20210723192352.546902-1-iskren.chernev@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-References: <20210627185628.691435-1-iskren.chernev@gmail.com>
-In-Reply-To: <20210627185628.691435-1-iskren.chernev@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 23 Jul 2021 17:38:19 +0200
-Message-ID: <CACRpkdZa1apQtmwxMeFxA=Mh2DNV_ggX8JtO8AoZ5eR0pWHEEw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/2] Add Pinctrl for SM4250/6115
-To:     Iskren Chernev <iskren.chernev@gmail.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, MSM <linux-arm-msm@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
-        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
-        Shevchenko <andy.shevchenko@gmail.com>," 
-        <~postmarketos/upstreaming@lists.sr.ht>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Jun 27, 2021 at 8:56 PM Iskren Chernev <iskren.chernev@gmail.com> wrote:
+This patch adds support for the TLMM block on QCom SM4250 and SM6115, codename
+bengal. The code is taken from OnePlus repo [1]. The two platforms are
+identical so there is only one compat string.
 
-> This patch adds support for the TLMM block on QCom SM4250 and SM6115, codename
-> bengal. The code is taken from OnePlus repo [1]. The two platforms are
-> identical so there is only one compat string.
->
-> [1]: https://github.com/OnePlusOSS/android_kernel_oneplus_sm4250
->
-> v1: https://lkml.org/lkml/2021/6/22/1163
-> v2: https://lkml.org/lkml/2021/6/25/28
-> v3: https://lkml.org/lkml/2021/6/25/72
-> v4: https://lkml.org/lkml/2021/6/25/351
+[1]: https://github.com/OnePlusOSS/android_kernel_oneplus_sm4250
 
-I wanted to apply this v5 version but it doesn't apply cleanly on v5.14-rc1
-and I am worried about making mistakes.
+v1: https://lkml.org/lkml/2021/6/22/1163
+v2: https://lkml.org/lkml/2021/6/25/28
+v3: https://lkml.org/lkml/2021/6/25/72
+v4: https://lkml.org/lkml/2021/6/25/351
+v5: https://lkml.org/lkml/2021/6/27/160
 
-Can you collect the final review tags, rebase this on a clean
-v5.14-rc1 and resend as v6?
+Changes from v5:
+- suggested from Linus Walleij
+ - applied on top of v5.14-rc1
 
-Thanks!
-Linus Walleij
+Changes from v4:
+- suggested by Konrad
+ - remove sm4250 compat, there will be a single sm6115.dtsi for both platforms
+
+Changes from v3:
+- driver suggestions from Bjorn
+ - merge similarly named functions
+ - sort functions alphabetically
+ - move ufs-reset to 113
+
+Changes from v2:
+- suggestions from Rob:
+ - remove quotes around reg-names
+ - use -state$ subnode regex
+- suggestions from Bjorn
+ - remove '|' from description field
+ - use state def to allow arbitrary nesting
+ - fix gpio pattern to allow valid pin numbers
+ - fix number of gpio pins
+ - add tlmm label to example
+ - remove wakeup parent
+- other
+ - add some pins in example
+ - removed required function
+
+Changes from v1:
+- fix binding example
+- fix cover letter text
+
+Iskren Chernev (2):
+  dt-bindings: pinctrl: qcom: Add SM6115 pinctrl bindings
+  drivers: qcom: pinctrl: Add pinctrl driver for sm6115
+
+ .../bindings/pinctrl/qcom,sm6115-pinctrl.yaml | 180 ++++
+ drivers/pinctrl/qcom/Kconfig                  |   9 +
+ drivers/pinctrl/qcom/Makefile                 |   1 +
+ drivers/pinctrl/qcom/pinctrl-sm6115.c         | 923 ++++++++++++++++++
+ 4 files changed, 1113 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/pinctrl/qcom,sm6115-pinctrl.yaml
+ create mode 100644 drivers/pinctrl/qcom/pinctrl-sm6115.c
+
+
+base-commit: e73f0f0ee7541171d89f2e2491130c7771ba58d3
+--
+
+
