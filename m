@@ -2,164 +2,202 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	FSL_HELO_FAKE,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B3E1AC4338F
-	for <phone-devel@archiver.kernel.org>; Sat, 24 Jul 2021 01:13:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 571DEC4338F
+	for <phone-devel@archiver.kernel.org>; Sat, 24 Jul 2021 10:22:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 898DF60E8B
-	for <phone-devel@archiver.kernel.org>; Sat, 24 Jul 2021 01:13:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3C09E60D07
+	for <phone-devel@archiver.kernel.org>; Sat, 24 Jul 2021 10:22:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233366AbhGXAcg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 23 Jul 2021 20:32:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39704 "EHLO
+        id S234993AbhGXJlk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 24 Jul 2021 05:41:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233296AbhGXAcf (ORCPT
+        with ESMTP id S234232AbhGXJlj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 23 Jul 2021 20:32:35 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65730C061575;
-        Fri, 23 Jul 2021 18:13:07 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id l19so4686628pjz.0;
-        Fri, 23 Jul 2021 18:13:07 -0700 (PDT)
+        Sat, 24 Jul 2021 05:41:39 -0400
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2F33C061575;
+        Sat, 24 Jul 2021 03:22:11 -0700 (PDT)
+Received: by mail-ot1-x336.google.com with SMTP id f20-20020a9d6c140000b02904bb9756274cso4634987otq.6;
+        Sat, 24 Jul 2021 03:22:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=UxGyBTIHhwTyGgmF4lVTY6KQSyR2h+ZEVbUZC6/uyQ0=;
-        b=uchks1WB7cp4XDeGULk8Yv9tpLHvmqUNNJUdM5+D4GcptaqwzpaKUr5YsbigXQA2Bv
-         5PEtUDCTwZk5siIX7PjbsuQUYFSt1YdV2irpQbTYzZkSuV3rgX9DGdJMY7jUeHRfnNAl
-         5iLIgClCbGoYP8XC34FJP6rVS1adQt8A2HZLsPjnFOyhijQ9m5v4FCVE+fNznXQ+qzDZ
-         2VpPPYn1D+h4of/wqVaxMx/61opV7L5ylc5u8ShD5K6OcTUGWj361Hwc9Spyhpyl0P2x
-         gs7L0a4q2Tya2zS4pN1HIbPWtRgV2H9z2/GTha/zv4u5ZWwpcQ0reEQeiVbFu5w5rNYA
-         Ez0A==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=aRoUv1wABabEGBHGqPIcqO0DCv1yalyroN2HGWm8Zyc=;
+        b=ZpBG5Pth38l1GL8iZw9LT6YoGIh2Vig8EYSbVQbIqo3lsSK+Rb0k8O7UEMPdTUZ/4n
+         CnXZNA4W5N6+BGBVH83xffazL9hQx65nvkeBgkgbcmZoKYY4xUes4Z5HMTk1e5kJfSUm
+         kuBlcxCw9fLoPSH5qIFMfYOfMfDcb4490HpA3Zi8L80p/ZzL8ruYX3986d9jK54Wj2cv
+         WCyXvoyRt/8xNYGw8q+Z9aR+fpuSPBdabA1CGaPmgWGw0cTtCH9gDRneYKNmtFSCNV7k
+         5YTqzSFIDYtPh+MMWhFtbYIjDp++TNTljwL97B331mt5/O2V0amzUdzIMn3A+WXn0u0E
+         Lo/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=UxGyBTIHhwTyGgmF4lVTY6KQSyR2h+ZEVbUZC6/uyQ0=;
-        b=cKi2Z9KUJe0ShxIK6m+kaD9IqJcDTS8nHTCOjmMBE9WpKF5M/6BepPRi9354HnsN91
-         EUMpf+YKU1HxlWRX0P8T/xgdeQin37q+HqSebHNUNt/GJJOpzPVRLrsQIFqA8Jr35x8Y
-         f6JauDUKSf0v4q0Li9qngSfTx7F8aKTGTtezgV8SpuPIMdH6wewvcqxKy7EvX52mfmSB
-         bMAwBGIO7oIDZ+dDVOES/U1zBDejM+cbIVSa1K2Obz2xiWJh3SLIibaQWePiw+Y7KVx0
-         1tP6UktxMTDyJaS5cQyaMt8YEby3eYzXN4qGLlvUy/fpyaHGoq4jh8wKkj/OIJyXLPuT
-         A8mA==
-X-Gm-Message-State: AOAM533lpVW18jEK4xOmSWQEbeSqDTyv+94dkgQu0MxtZdej0Tn7FHSs
-        6BM0pGuvkbkpl/4v+9b5WOQ=
-X-Google-Smtp-Source: ABdhPJzgVvJ1mZkT0E1XqWNnB53pR7Yp/6Sd41wzNVZrs8+2LyH6ZcV4Az1nQu02sSMg0ztTNSWyow==
-X-Received: by 2002:aa7:824a:0:b029:2ec:89ee:e798 with SMTP id e10-20020aa7824a0000b02902ec89eee798mr6931561pfn.12.1627089186554;
-        Fri, 23 Jul 2021 18:13:06 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:55b1:90d5:6a79:755f])
-        by smtp.gmail.com with ESMTPSA id v27sm36404110pfi.166.2021.07.23.18.13.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jul 2021 18:13:05 -0700 (PDT)
-Date:   Fri, 23 Jul 2021 18:13:02 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-input@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Michael Srba <Michael.Srba@seznam.cz>,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/2] Input: zinitix - Handle proper supply names
-Message-ID: <YPtpHg2aoGlULuQQ@google.com>
-References: <20210625113435.2539282-1-linus.walleij@linaro.org>
- <20210625113435.2539282-2-linus.walleij@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=aRoUv1wABabEGBHGqPIcqO0DCv1yalyroN2HGWm8Zyc=;
+        b=p3gXqNZtumkaCdnv74uerCVq4UlfaU8m5dzB2t0wRGNUJQE1PO8LKnDv5Mv6iSvmEc
+         8Cd1C+c3nx9FIFItCfbs3tT9TZ6WPFGcYP0ah5G2SdENFoVyFeeNKlK9rtW9XGgOFcXV
+         fTGaSG/NDD+fD5a6Ndy9Q8I8l5okrJxhK1XsqUYLxMKDUBuPFc1AltcKNn8NTk7ILVWd
+         NxXae9wL/yM2zMOdhGPecqDPTBLqwue+GkCX9jseqhQWrcGwxv9Ep+7Oj2UhHOoPGZyK
+         dVbmIl75BFjjDa3km8f14pmrrk2AbjR8cKw+7KAx2ad+aHLrfFkdpPdSWsJMxlX5enX0
+         3uoA==
+X-Gm-Message-State: AOAM531pxEC/GpuEhT2ah0jESCWDWehw4/oYEJsepynByL3PiuHvWttR
+        WWg3A/PYgQ1EA0KJrdlZji6O1Ey6XQb12e2lCbM=
+X-Google-Smtp-Source: ABdhPJyvCXh0jYmGBSOC0D0TYxIXw+zOnL0ZwXIXYQACqxrb4F0ld7fFvBJidMAWaiJja0NqDuBj0twE7d7V1H9aPJs=
+X-Received: by 2002:a9d:3608:: with SMTP id w8mr5886963otb.371.1627122130908;
+ Sat, 24 Jul 2021 03:22:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210625113435.2539282-2-linus.walleij@linaro.org>
+References: <20210719145317.79692-1-stephan@gerhold.net> <20210719145317.79692-5-stephan@gerhold.net>
+ <CAHNKnsTVSg5T_ZK3PQ50wuJydHbANFfpJd5NZ-71b1m3B_4dQg@mail.gmail.com> <YPgQR/VbNVyxERnb@gerhold.net>
+In-Reply-To: <YPgQR/VbNVyxERnb@gerhold.net>
+From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Date:   Sat, 24 Jul 2021 13:22:21 +0300
+Message-ID: <CAHNKnsQXb6H0Ee3sjbVi_UyED0UAXv7LK7mL1aKAG3SQtQ48ng@mail.gmail.com>
+Subject: Re: [RFC PATCH net-next 4/4] net: wwan: Add Qualcomm BAM-DMUX WWAN
+ network driver
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Aleksander Morgado <aleksander@aleksander.es>,
+        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Linus,
+Hello Stephan,
 
-On Fri, Jun 25, 2021 at 01:34:35PM +0200, Linus Walleij wrote:
-> The supply names of the Zinitix touchscreen were a bit confused, the new
-> bindings rectifies this.
-> 
-> To deal with old and new devicetrees, first check if we have "vddo" and in
-> case that exists assume the old supply names. Else go and look for the new
-> ones.
-> 
-> We cannot just get the regulators since we would get an OK and a dummy
-> regulator: we need to check explicitly for the old supply name.
-> 
-> Use struct device *dev as a local variable instead of the I2C client since
-> the device is what we are actually obtaining the resources from.
-> 
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Michael Srba <Michael.Srba@seznam.cz>
-> Cc: phone-devel@vger.kernel.org
-> Cc: devicetree@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> Mark: please check that I'm doing this check the right way, I assume
-> that since we get regulator dummies this is the way I need to check
-> for the old regulator name but maybe there are better ways.
-> ---
->  drivers/input/touchscreen/zinitix.c | 22 +++++++++++++++++-----
->  1 file changed, 17 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/input/touchscreen/zinitix.c b/drivers/input/touchscreen/zinitix.c
-> index b8d901099378..7001307382f0 100644
-> --- a/drivers/input/touchscreen/zinitix.c
-> +++ b/drivers/input/touchscreen/zinitix.c
-> @@ -252,16 +252,28 @@ static int zinitix_init_touch(struct bt541_ts_data *bt541)
->  
->  static int zinitix_init_regulators(struct bt541_ts_data *bt541)
->  {
-> -	struct i2c_client *client = bt541->client;
-> +	struct device *dev = &bt541->client->dev;
->  	int error;
->  
-> -	bt541->supplies[0].supply = "vdd";
-> -	bt541->supplies[1].supply = "vddo";
-> -	error = devm_regulator_bulk_get(&client->dev,
-> +	/*
-> +	 * Some older device trees have erroneous names for the regulators,
-> +	 * so check if "vddo" is present and in that case use these names
-> +	 * and warn. Else use the proper supply names on the component.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_OF) &&
+On Wed, Jul 21, 2021 at 3:17 PM Stephan Gerhold <stephan@gerhold.net> wrote:
+> On Tue, Jul 20, 2021 at 12:10:42PM +0300, Sergey Ryazanov wrote:
+>> On Mon, Jul 19, 2021 at 6:01 PM Stephan Gerhold <stephan@gerhold.net> wrote:
+>>> The BAM Data Multiplexer provides access to the network data channels of
+>>> modems integrated into many older Qualcomm SoCs, e.g. Qualcomm MSM8916 or
+>>> MSM8974. It is built using a simple protocol layer on top of a DMA engine
+>>> (Qualcomm BAM) and bidirectional interrupts to coordinate power control.
+>>>
+>>> The modem announces a fixed set of channels by sending an OPEN command.
+>>> The driver exports each channel as separate network interface so that
+>>> a connection can be established via QMI from userspace. The network
+>>> interface can work either in Ethernet or Raw-IP mode (configurable via
+>>> QMI). However, Ethernet mode seems to be broken with most firmwares
+>>> (network packets are actually received as Raw-IP), therefore the driver
+>>> only supports Raw-IP mode.
+>>>
+>>> The driver uses runtime PM to coordinate power control with the modem.
+>>> TX/RX buffers are put in a kind of "ring queue" and submitted via
+>>> the bam_dma driver of the DMAEngine subsystem.
+>>>
+>>> The basic architecture looks roughly like this:
+>>>
+>>>                    +------------+                +-------+
+>>>          [IPv4/6]  |  BAM-DMUX  |                |       |
+>>>          [Data...] |            |                |       |
+>>>         ---------->|rmnet0      | [DMUX chan: x] |       |
+>>>          [IPv4/6]  | (chan: 0)  | [IPv4/6]       |       |
+>>>          [Data...] |            | [Data...]      |       |
+>>>         ---------->|rmnet1      |--------------->| Modem |
+>>>                    | (chan: 1)  |      BAM       |       |
+>>>          [IPv4/6]  | ...        |  (DMA Engine)  |       |
+>>>          [Data...] |            |                |       |
+>>>         ---------->|rmnet7      |                |       |
+>>>                    | (chan: 7)  |                |       |
+>>>                    +------------+                +-------+
+>>>
+>>> However, on newer SoCs/firmware versions Qualcomm began gradually moving
+>>> to QMAP (rmnet driver) as backend-independent protocol for multiplexing
+>>> and data aggegration. Some firmware versions allow using QMAP on top of
+>>> BAM-DMUX (effectively resulting in a second multiplexing layer plus data
+>>> aggregation). The architecture with QMAP would look roughly like this:
+>>>
+>>>            +-------------+           +------------+                  +-------+
+>>>  [IPv4/6]  |    RMNET    |           |  BAM-DMUX  |                  |       |
+>>>  [Data...] |             |           |            | [DMUX chan: 0]   |       |
+>>> ---------->|rmnet_data1  |     ----->|rmnet0      | [QMAP mux-id: x] |       |
+>>>            | (mux-id: 1) |     |     | (chan: 0)  | [IPv4/6]         |       |
+>>>            |             |     |     |            | [Data...]        |       |
+>>>  [IPv4/6]  | ...         |------     |            |----------------->| Modem |
+>>>  [Data...] |             |           |            |       BAM        |       |
+>>> ---------->|rmnet_data42 | [QMAP: x] |[rmnet1]    |   (DMA Engine)   |       |
+>>>            | (mux-id: 42)| [IPv4/6]  |... unused! |                  |       |
+>>>            |             | [Data...] |[rmnet7]    |                  |       |
+>>>            |             |           |            |                  |       |
+>>>            +-------------+           +------------+                  +-------+
+>>>
+>>> In this case, rmnet1-7 would remain unused. The firmware used on the most
+>>> recent SoCs with BAM-DMUX even seems to announce only a single BAM-DMUX
+>>> channel (rmnet0), which makes QMAP the only option for multiplexing there.
+>>>
+>>> So far the driver is mainly tested on various smartphones/tablets based on
+>>> Qualcomm MSM8916/MSM8974 without QMAP. It looks like QMAP depends on a MTU
+>>> negotiation feature in BAM-DMUX which is not yet supported by the driver.
+>>>
+>>> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+>>> ---
+>>> Note that this is my first network driver, so I apologize in advance
+>>> if I made some obvious mistakes. :)
+>>>
+>>> I'm not sure how to integrate the driver with the WWAN subsystem yet.
+>>> At the moment the driver creates network interfaces for all channels
+>>> announced by the modem, it does not make use of the WWAN link management
+>>> yet. Unfortunately, this is a bit complicated:
+>>>
+>>> Both QMAP and the built-in multiplexing layer might be needed at some point.
+>>> There are firmware versions that do not support QMAP and the other way around
+>>> (the built-in multiplexing was disabled on very recent firmware versions).
+>>> Only userspace can check if QMAP is supported in the firmware (via QMI).
+>>
+>> I am not very familiar with the Qualcomm protocols and am just curious
+>> whether BAM-DMUX has any control (management) channels or only IPv4/v6
+>> data channels?
+>>
+>> The WWAN subsystem began as a framework for exporting management
+>> interfaces (MBIM, AT, etc.) to user space. And then the network
+>> interfaces (data channels) management interface was added to
+>> facilitate management of devices with multiple data channels. That is
+>> why I am curious about the BAM-DMUX device management interface or in
+>> other words, how a user space application could control the modem
+>> work?
+>
+> Sorry for the confusion! It's briefly mentioned in the Kconfig option
+> but I should have made this more clear in the commit message. It was so
+> long already that I wasn't sure where to put it. :)
+>
+> BAM-DMUX does not have any control channels. Instead I use it together
+> with the rpmsg_wwan_ctrl driver [1] that I already submitted for 5.14.
+> The control/data channels are pretty much separate in this setup and
+> don't have much to do with each other.
+>
+> I also had a short overview of some of the many different modem
+> protocols Qualcomm has come up with in a related RFC for that driver,
+> see [2] if you are curious.
+>
+> I hope that clarifies some things, please let me know if I should
+> explain something better! :)
+>
+> [1]: https://lore.kernel.org/netdev/20210618173611.134685-3-stephan@gerhold.net/
+> [2]: https://lore.kernel.org/netdev/YLfL9Q+4860uqS8f@gerhold.net/
 
-Why is this check needed? The of_property_*() are stubbed out properly I
-believe. We might need to check that dev->of_node is not NULL, although
-I think of_* API handles this properly.
+Many thanks for such informative clarification, especially for
+pointing me to  the rpmsg_wwan_ctrl driver. I saw it, but by a some
+reason I did not link it to BAM-DMUX. Reading these links in
+conjunction with your parallel talks make the situation much more
+clear. I could not say that "I know kung fu", but I can say that now I
+know how complex kung fu is.
 
-> +	    of_property_read_bool(dev->of_node, "vddo-supply")) {
-
-If we go with this I do not like using of_property_read_bool() as this
-is not a boolean property, but rather of_find_property().
-
-However maybe we should use regulator_get_optional() which will not give
-a dummy regulator? Still quite awkward, a dedicated API to see if a
-regulator is defined would be nice.
-
-> +		bt541->supplies[0].supply = "vdd";
-> +		bt541->supplies[1].supply = "vddo";
-> +	} else {
-> +		/* Else use the proper supply names */
-> +		bt541->supplies[0].supply = "vcca";
-> +		bt541->supplies[1].supply = "vdd";
-> +	}
-> +	error = devm_regulator_bulk_get(dev,
->  					ARRAY_SIZE(bt541->supplies),
->  					bt541->supplies);
->  	if (error < 0) {
-> -		dev_err(&client->dev, "Failed to get regulators: %d\n", error);
-> +		dev_err(dev, "Failed to get regulators: %d\n", error);
->  		return error;
->  	}
->  
-> -- 
-> 2.31.1
-> 
-
-Thanks.
-
--- 
-Dmitry
+--
+Sergey
