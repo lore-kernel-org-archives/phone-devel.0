@@ -2,95 +2,112 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B783C4320A
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Jul 2021 07:51:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A282FC4338F
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Jul 2021 07:52:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 60FDD60C51
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Jul 2021 07:51:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 85D4460C51
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Jul 2021 07:52:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232299AbhGZHLY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 26 Jul 2021 03:11:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50556 "EHLO
+        id S232087AbhGZHL7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Jul 2021 03:11:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231891AbhGZHLX (ORCPT
+        with ESMTP id S231912AbhGZHL7 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 26 Jul 2021 03:11:23 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2DFEC061757
-        for <phone-devel@vger.kernel.org>; Mon, 26 Jul 2021 00:51:52 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id a26so13798359lfr.11
-        for <phone-devel@vger.kernel.org>; Mon, 26 Jul 2021 00:51:52 -0700 (PDT)
+        Mon, 26 Jul 2021 03:11:59 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C703C061757;
+        Mon, 26 Jul 2021 00:52:27 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id l6so7434806edc.5;
+        Mon, 26 Jul 2021 00:52:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tl2Qb0EKguXyf5h8TxK4SArC6xikKxHnxlhb/8NDBjU=;
-        b=SJHjCQuZMhGwfSeBQR4L3rLs4VKbZBIccH4gbeOpHW/BVx9udpZqj3o5j4DamFiThs
-         bL3DoUZ+QIe+BBc8VIGzcnq9VL9tZwhOFjJQ0ct/oBnk6IBt2m8uNn3ij/V4uVTCbB/I
-         a2oKvN6mtEMrrv7I6NDBFPxM6M0GYo6j1AidMxfK/PI2ZHyQ9YTLjQpjb/rVju8Jzlm5
-         o4LcynEEzM6JW4JdO7q869QoR6NlATPMYcx+0ry/dEm2tp4+dFJm3XbbuTvudA3x4OoT
-         il/ybokPAQM1uspu1uQHrT8Ey5CTSZd6Qy4HULrad+F3jUw7XtoAZOZmlmTuuZzCkzlQ
-         pbNg==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=AaM4y6RazzXQuuDdTjSTqLkohIWqL53KdsjSdPJ6ZEw=;
+        b=Lw/vHgj9KqqEqMBanNNBEybP3JIerZKOywu554T1F+xh9vZ0mJ9fg3/X9DtffhykYB
+         yK0r5GEiAexjzFuBkWLKZ1+TRPJOtuEROPKWVNEfmUxEruoBO6sntrYu/CYYqr0bT7mj
+         e+ZUcVA1A1GAdx+vKk5Uwib3HAhwgdWXzeXLTtuGqr4aHyktEnSeB8z+c4pif2I8zr8Z
+         PxLhFxsFp85u1QZWtqmFJq3Ioi998EPCLptYNcDHfVER6fLAhwLdkaalOSwngDAolD6G
+         bKa8gd4k5HelKtde6ClkB4xK0PM6IltG/Cz/tOk0rFT1cJVDZd9gJPhu4GOjAK2UWzrO
+         x6aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tl2Qb0EKguXyf5h8TxK4SArC6xikKxHnxlhb/8NDBjU=;
-        b=PWBKTrpX34DdssEapoerhSjIM9rGqCNFdSk7Ky22iJghF0bN92EnSqK3xbuOg2kPwn
-         CY7bolLfoFdKnLUK5UlTdoktN7rt0vcmoAXsW4UEuC0I0pNpH3Btvct6Jgc4id36Xpyb
-         25Ws1DS8tVK8dvzsu+OmrJaUbYkeDt/Bfzni1Rd34YMY55gjNiMovUGQNX3TMWzohwt2
-         OGyb+VMPkp3Rww24KAABt5tTpJU3XhS6dubMjS6zmNRAXe9wIo9NgougCFSfmZl9gNiX
-         rsxP8Wc5sQGq13qIXU5y1dTbqQ/crmkNCrVTLuvZvK5OPpUruq7qVzpPU19O84TH3iDP
-         IWpA==
-X-Gm-Message-State: AOAM533wLOzV+nQnxzSW4B+AozLqMkVhoZrqRuZdEOKwa91RmNm4Xox3
-        SCwLr2aECFn8zbxGUduNHpruQOaa4qJlIR5xXeIBjA==
-X-Google-Smtp-Source: ABdhPJwFuU0c5xqlk1yTtibDz1IgPDEmmXCYuw65z4qIHjRgBY4Kzw60Mk8OvTtY2M2qeI14uN2CY31KocEm2fVHUis=
-X-Received: by 2002:a05:6512:3696:: with SMTP id d22mr12343175lfs.586.1627285910999;
- Mon, 26 Jul 2021 00:51:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210725140339.2465677-1-alexeymin@postmarketos.org>
-In-Reply-To: <20210725140339.2465677-1-alexeymin@postmarketos.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 26 Jul 2021 09:51:40 +0200
-Message-ID: <CACRpkdaaQeuVqJbczHndsgmmMv0NycwRDdzFTDwM=BJnc7SseQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: panel: Add Samsung S6E3FA2 panel
-To:     Alexey Minnekhanov <alexeymin@postmarketos.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=AaM4y6RazzXQuuDdTjSTqLkohIWqL53KdsjSdPJ6ZEw=;
+        b=WQzqK2PCS5hd8/gYzINVY3jjuipJCC+jRu03CHBdIkH9PiK8f1Z9gt5kKl+jQ8EMIU
+         rZxYTxVrSkk1faQlFGS8kX2uZFiThz2J8p03GUSR7XbuJusryPigEVmpsem9fxv8piId
+         V53T6UmtIGT9qtfQmxAfooP7/Gfip6LEKdAo8H2nDxkCzptGuU/J4fGeCjpNGnl57aZ4
+         Ql/QEoeEXxrq8FOI7d0+QXv/h92xo0D/q8y47PORRIv2Qi2VClCDgsAsu3Dl2JXihNa2
+         3/0GWmvjq+JSt4Pnc4o4dLe1DN2bxIE+ee6w581v28kZjDpTdKN/WH/mJJ3z7czmcWRf
+         uajg==
+X-Gm-Message-State: AOAM532789QfNzyHM5bidgUEMSmdOJmZs8rQUK+0IBlAGp4vsh2bFdkO
+        k6rMvJfI0iHvBRaU2wcV9dI=
+X-Google-Smtp-Source: ABdhPJyUguAOT5xjjXwhLROhPMHfGYnOQD7SmS2eI9s9NajEmanndl6z0ouP7oTXtWSNBHoGExXmkw==
+X-Received: by 2002:a05:6402:3482:: with SMTP id v2mr20244649edc.116.1627285944910;
+        Mon, 26 Jul 2021 00:52:24 -0700 (PDT)
+Received: from [192.168.74.110] (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
+        by smtp.gmail.com with ESMTPSA id f5sm13826511ejj.45.2021.07.26.00.52.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Jul 2021 00:52:24 -0700 (PDT)
+Subject: Re: [PATCH v3 2/2] drm/panel: Add panel for Samsung Galaxy S5
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        David Airlie <airlied@linux.ie>,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
-        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
-        Shevchenko <andy.shevchenko@gmail.com>," 
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <20210201165307.51443-1-iskren.chernev@gmail.com>
+ <20210201165307.51443-2-iskren.chernev@gmail.com>
+ <CACRpkdai5+vDj0C053qfPkdM-FCC-74HDCVF4=SPtUb7LE=Srw@mail.gmail.com>
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+Message-ID: <9e5d9c5b-8276-6e75-45e5-2296afa90c02@gmail.com>
+Date:   Mon, 26 Jul 2021 10:52:22 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
+MIME-Version: 1.0
+In-Reply-To: <CACRpkdai5+vDj0C053qfPkdM-FCC-74HDCVF4=SPtUb7LE=Srw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Jul 25, 2021 at 4:04 PM Alexey Minnekhanov
-<alexeymin@postmarketos.org> wrote:
 
-> The Samsung S6E3FA2 AMOLED cmd LCD panel is used on Samsung Galaxy
-> S5 (klte) phone.
->
-> Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
 
-Grr gmail put this in my spam folder, sorry for confused mails.
+On 7/26/21 10:34 AM, Linus Walleij wrote:
+> Hi Iskren,
+> 
+> thanks for your patch!
 
-With Sam's comments addressed:
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Thanks a lot for reviewing this. Alexey wrote a new version of the patch [1]
+that was recently reviewed by Sam, and it also includes support for brightness
+and another panel found on the S5. My patch is pretty much untouched out of the
+panel driver generator, so we can definitely improve the generated code based
+on your comments.
 
-Yours,
-Linus Walleij
+[1] https://lists.freedesktop.org/archives/dri-devel/2021-July/316804.html
+
+I guess Alexey will submit a new version with the two panels split, and he
+might incorporate your suggestions (as his code comes from the generator as
+well).
+
+Regards,
+Iskren
