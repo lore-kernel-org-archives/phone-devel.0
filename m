@@ -2,151 +2,176 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9BDEC43214
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Jul 2021 08:11:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D7ECC4338F
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Jul 2021 08:21:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C611560462
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Jul 2021 08:11:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 461B560F46
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Jul 2021 08:21:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232955AbhGZHal (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 26 Jul 2021 03:30:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55048 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232329AbhGZHak (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 26 Jul 2021 03:30:40 -0400
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05379C061757
-        for <phone-devel@vger.kernel.org>; Mon, 26 Jul 2021 01:11:09 -0700 (PDT)
-Received: by mail-oi1-x22f.google.com with SMTP id x15so9964905oic.9
-        for <phone-devel@vger.kernel.org>; Mon, 26 Jul 2021 01:11:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=aleksander-es.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0GP/EHeB2F+joGDHU02CEiGN7OLbvD6PYDzreWGz75Y=;
-        b=bWjvUWCy0CBmB2s70fd3Kkx52yx3LEJ5JZnLcv9ee1cv2SjeoIlDKIDVayngd9K6ks
-         UveqbpPisyT3xluAnHYHLDprWWh2tLvzKadsLyzxne/z2bhqFc6YXb9Qd7fAKIjYLSzg
-         P+LO6KSqbJAfTMh/W7efJ6IRgtWFmAE/jioTo6b4o43BFnu/9mfTiSKzx8wueYiLV3zj
-         ASvdYD9wTNOl+27Jf02f246TWynZ8WNpPHy9rUWftoBYQSbAedJSSjEo2Doqu/h5CuSr
-         3tGPl9uEvYchI/5PtRtMD0nn1Fi69fRKhfwv/G9/NAZJArgg/ouaSEYIe5AXV/A8JMna
-         ntpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0GP/EHeB2F+joGDHU02CEiGN7OLbvD6PYDzreWGz75Y=;
-        b=sU4qZ/5JbVILRX2/PvSshuvlRaXufpoOSEl/nQHj0k0/MVDdlhma9Zpwj5oQizM08b
-         vr3RdXdvl4B3uWEnBjlMu7kp4KESmKxGo0w8S6CjlTTc2LD0EEpGyaZSGPHv1HWREK68
-         ssXqFmDgKBOSpgdEqxetuQTFONDEbxHhx/U2bb9m7+tfPy3GKXCRiaTt6I0HGkmi1yxs
-         4Hy9hk18hLyumdM+aSKc2GlrwAInEs35P/NkV/lV6ZyrJUoD1fSc18wBSYLKSAvAO6i6
-         3S5BRW78omnE14ydTFRGo2XlB11GmCLvVmWw6Dr2oXcPyaJGTckGedXSaRhBA5SRqXnK
-         4zEQ==
-X-Gm-Message-State: AOAM5338t2GwCsaodUiy1f4zDGMK/5TwcyVCze3/PYrMAuwbjKwDwRHA
-        yaJJAHIpCrk+6p8AymAbk1pZCoEIlKFSm9k5Uwyl3g==
-X-Google-Smtp-Source: ABdhPJxsLtxOE30YI4uU9tzXePvXaR+jEzI/+O8buRjlY4pKNDL9jEQFsrUHWJneA04tkY5laBLNP5cPn8JGfpAlsCg=
-X-Received: by 2002:aca:3094:: with SMTP id w142mr8854244oiw.37.1627287068295;
- Mon, 26 Jul 2021 01:11:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210719145317.79692-1-stephan@gerhold.net> <20210719145317.79692-5-stephan@gerhold.net>
- <CAMZdPi8oxRMo0erfd0wrUPzD2UsbexoR=86u2N75Fd9RpXHoKg@mail.gmail.com>
- <YPmRcBXpRtKKSDl8@gerhold.net> <CAHNKnsQr4Ys8q3Ctru-H=L3ZDwb__2D3E08mMZchDLAs1KetAg@mail.gmail.com>
-In-Reply-To: <CAHNKnsQr4Ys8q3Ctru-H=L3ZDwb__2D3E08mMZchDLAs1KetAg@mail.gmail.com>
-From:   Aleksander Morgado <aleksander@aleksander.es>
-Date:   Mon, 26 Jul 2021 10:10:57 +0200
-Message-ID: <CAAP7ucLDEoJzwNvWLCWyCNE+kKBDn4aBU-9XT_Uv_yetnX4h-g@mail.gmail.com>
-Subject: Re: [RFC PATCH net-next 4/4] net: wwan: Add Qualcomm BAM-DMUX WWAN
- network driver
-To:     Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-Cc:     Stephan Gerhold <stephan@gerhold.net>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        dmaengine@vger.kernel.org, devicetree <devicetree@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S233214AbhGZHlU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Jul 2021 03:41:20 -0400
+Received: from comms.puri.sm ([159.203.221.185]:36158 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232454AbhGZHlU (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 26 Jul 2021 03:41:20 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id E5D55DF72B;
+        Mon, 26 Jul 2021 01:21:48 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id R1lqYKh8Gn3j; Mon, 26 Jul 2021 01:21:48 -0700 (PDT)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     laurent.pinchart@ideasonboard.com, shawnguo@kernel.org
+Cc:     devicetree@vger.kernel.org, festevam@gmail.com,
+        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-staging@lists.linux.dev, m.felsch@pengutronix.de,
+        mchehab@kernel.org, phone-devel@vger.kernel.org, robh@kernel.org,
+        slongerbeam@gmail.com,
+        Martin Kepplinger <martin.kepplinger@puri.sm>
+Subject: [PATCH v9 3/3] arm64: dts: imx8mq: add mipi csi phy and csi bridge descriptions
+Date:   Mon, 26 Jul 2021 10:21:17 +0200
+Message-Id: <20210726082117.2423597-4-martin.kepplinger@puri.sm>
+In-Reply-To: <20210726082117.2423597-1-martin.kepplinger@puri.sm>
+References: <20210726082117.2423597-1-martin.kepplinger@puri.sm>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hey!
+Describe the 2 available CSI interfaces on the i.MX8MQ with the MIPI-CSI2
+receiver (new driver) and the CSI Bridge that provides the user buffers
+(existing driver).
 
->
-> But what if we implement the QMI multiplexing management part in the
-> kernel? This way the kernel will take care about modem-to-host
-> communication protocols and interfaces, and provides userspace with a
-> single WWAN device (possibly with multiple network and network
-> management interfaces).
->
-> I do not propose to fully implement QMI protocol inside the kernel,
-> but implement only a mux management part, while passing all other
-> messages between a "modem" and a userspace software as-is.
->
-> What pros and cons of such a design do you see?
->
+An image sensor is to be connected to the MIPIs' second port, to be described
+in board files.
 
-The original GobiNet driver already provided some QMI protocol
-implementation in the driver itself. In addition to initial device
-setup as you suggest, it also allowed userspace applications to
-allocate and release QMI clients for the different services that could
-be used independently by different processes. Not going to say that
-was the wrong way to do it, but the implementation is definitely not
-simple. The decision taken in qmi_wwan to make the driver as simple as
-possible and leave all the QMI management to userspace was quite an
-important one; it made the driver extremely simple, leaving all the
-complexity of managing the protocol to userspace, and while it had
-some initial drawbacks (e.g. only one process could talk QMI at a
-time) the userspace tools have evolved to avoid them (e.g. the
-qmi-proxy).
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+---
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi | 104 ++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
 
-I wrote some time ago about this, maybe it's still relevant today:
-Blogpost https://sigquit.wordpress.com/2014/06/11/qmiwwan-or-gobinet/,
-Article in PDF https://aleksander.es/data/Qualcomm%20Gobi%20devices%20on%20Linux.pdf
-
-Making the driver talk QMI just for device setup would require the
-kernel to know how the QMI protocol works, how QMI client allocations
-and releases are done, how errors are reported, how is the format of
-the requests and responses involved; it would require the kernel to
-wait until the QMI protocol endpoint in the modem is capable of
-returning QMI responses (this could be up to 20 or 30 secs after the
-device is available in the bus), it would require to have possibly
-some specific rules on how the QMI clients are managed after a
-suspend/resume operation. It would also require to sync the access to
-the CTL service, which is the one running QMI service allocations and
-releases, so that both kernel and userspace can perform operations
-with that service at the same time. It would need to know how
-different QMI capable devices behave, because not all devices support
-the same services, and some don't even support the WDA service that
-would be the one needed to setup data aggregation. There is definitely
-some overlap on what the kernel could do and what userspace could do,
-and I'd say that we have much more flexibility in userspace to do all
-this leaving all the complexity out of the kernel driver.
-
-ModemManager already provides a unified API to e.g. setup multiplexed
-data sessions, regardless of what the underlying kernel implementation
-is (qmi_wwan only, qmi_wwan+rmnet, ipa+rmnet, bam-dmux, cdc_mbim...) .
-The logic doing all that is extremely complex and possibly full of
-errors, I would definitely not want to have all that logic in the
-kernel itself, let the errors be in userspace! Unifying stuff in the
-kernel is a good idea, but if you ask me, it should be done in a way
-that is as simple as possible, leaving complexity to userspace, even
-if that means that userspace still needs to know what type of device
-we have behind the wwan subsystem, because userspace will anyway need
-to know all that.
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+index 91df9c5350ae..e026a39bddce 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+@@ -1099,6 +1099,110 @@ uart4: serial@30a60000 {
+ 				status = "disabled";
+ 			};
+ 
++			mipi_csi1: csi@30a70000 {
++				compatible = "fsl,imx8mq-mipi-csi2";
++				reg = <0x30a70000 0x1000>;
++				clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
++				   <&clk IMX8MQ_CLK_CSI1_ESC>,
++				   <&clk IMX8MQ_CLK_CSI1_PHY_REF>;
++				clock-names = "core", "esc", "ui";
++				assigned-clocks = <&clk IMX8MQ_CLK_CSI1_CORE>,
++				    <&clk IMX8MQ_CLK_CSI1_PHY_REF>,
++				    <&clk IMX8MQ_CLK_CSI1_ESC>;
++				assigned-clock-rates = <266000000>, <333000000>, <66000000>;
++				assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
++					<&clk IMX8MQ_SYS2_PLL_1000M>,
++					<&clk IMX8MQ_SYS1_PLL_800M>;
++				power-domains = <&pgc_mipi_csi1>;
++				resets = <&src IMX8MQ_RESET_MIPI_CSI1_CORE_RESET>,
++					 <&src IMX8MQ_RESET_MIPI_CSI1_PHY_REF_RESET>,
++					 <&src IMX8MQ_RESET_MIPI_CSI1_ESC_RESET>;
++				fsl,mipi-phy-gpr = <&iomuxc_gpr 0x88>;
++				interconnects = <&noc IMX8MQ_ICM_CSI1 &noc IMX8MQ_ICS_DRAM>;
++				interconnect-names = "dram";
++				status = "disabled";
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++
++						csi1_mipi_ep: endpoint {
++							remote-endpoint = <&csi1_ep>;
++						};
++					};
++				};
++			};
++
++			csi1: csi@30a90000 {
++				compatible = "fsl,imx8mq-csi", "fsl,imx7-csi";
++				reg = <0x30a90000 0x10000>;
++				interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
++				clocks = <&clk IMX8MQ_CLK_CSI1_ROOT>;
++				clock-names = "mclk";
++				status = "disabled";
++
++				port {
++					csi1_ep: endpoint {
++						remote-endpoint = <&csi1_mipi_ep>;
++					};
++				};
++			};
++
++			mipi_csi2: csi@30b60000 {
++				compatible = "fsl,imx8mq-mipi-csi2";
++				reg = <0x30b60000 0x1000>;
++				clocks = <&clk IMX8MQ_CLK_CSI2_CORE>,
++				   <&clk IMX8MQ_CLK_CSI2_ESC>,
++				   <&clk IMX8MQ_CLK_CSI2_PHY_REF>;
++				clock-names = "core", "esc", "ui";
++				assigned-clocks = <&clk IMX8MQ_CLK_CSI2_CORE>,
++				    <&clk IMX8MQ_CLK_CSI2_PHY_REF>,
++				    <&clk IMX8MQ_CLK_CSI2_ESC>;
++				assigned-clock-rates = <266000000>, <333000000>, <66000000>;
++				assigned-clock-parents = <&clk IMX8MQ_SYS1_PLL_266M>,
++					<&clk IMX8MQ_SYS2_PLL_1000M>,
++					<&clk IMX8MQ_SYS1_PLL_800M>;
++				power-domains = <&pgc_mipi_csi2>;
++				resets = <&src IMX8MQ_RESET_MIPI_CSI2_CORE_RESET>,
++					 <&src IMX8MQ_RESET_MIPI_CSI2_PHY_REF_RESET>,
++					 <&src IMX8MQ_RESET_MIPI_CSI2_ESC_RESET>;
++				fsl,mipi-phy-gpr = <&iomuxc_gpr 0xa4>;
++				interconnects = <&noc IMX8MQ_ICM_CSI2 &noc IMX8MQ_ICS_DRAM>;
++				interconnect-names = "dram";
++				status = "disabled";
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++
++						csi2_mipi_ep: endpoint {
++							remote-endpoint = <&csi2_ep>;
++						};
++					};
++				};
++			};
++
++			csi2: csi@30b80000 {
++				compatible = "fsl,imx8mq-csi", "fsl,imx7-csi";
++				reg = <0x30b80000 0x10000>;
++				interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
++				clocks = <&clk IMX8MQ_CLK_CSI2_ROOT>;
++				clock-names = "mclk";
++				status = "disabled";
++
++				port {
++					csi2_ep: endpoint {
++						remote-endpoint = <&csi2_mipi_ep>;
++					};
++				};
++			};
++
+ 			mu: mailbox@30aa0000 {
+ 				compatible = "fsl,imx8mq-mu", "fsl,imx6sx-mu";
+ 				reg = <0x30aa0000 0x10000>;
 -- 
-Aleksander
-https://aleksander.es
+2.30.2
+
