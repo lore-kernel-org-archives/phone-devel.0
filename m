@@ -2,165 +2,144 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C31A5C43216
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Jul 2021 22:40:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80BC8C4338F
+	for <phone-devel@archiver.kernel.org>; Tue, 27 Jul 2021 01:00:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A8FD66023B
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Jul 2021 22:40:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5AC1560F59
+	for <phone-devel@archiver.kernel.org>; Tue, 27 Jul 2021 01:00:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233878AbhGZV7e (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 26 Jul 2021 17:59:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58448 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233817AbhGZV7d (ORCPT
+        id S233909AbhG0AUV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Jul 2021 20:20:21 -0400
+Received: from perceval.ideasonboard.com ([213.167.242.64]:52056 "EHLO
+        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229524AbhG0AUV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 26 Jul 2021 17:59:33 -0400
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60761C061757;
-        Mon, 26 Jul 2021 15:40:00 -0700 (PDT)
-Received: by mail-ot1-x32a.google.com with SMTP id 19-20020a9d08930000b02904b98d90c82cso11572453otf.5;
-        Mon, 26 Jul 2021 15:40:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fyYS83TJhhxVOfsNmu5c001LjoG5UgZ/hJ8MDBaDVrk=;
-        b=ax0x11gYfKsrv5i8QpmztTa8rW81guRfm6vJ9GoNpNGMhjpJlwvWlmkjrykyNYd4qt
-         CDC8rgfh//cXjINJ1Rsnh553J+QQOHDiBlxr1fTQsbT6ufjzDWUae93YxOLwoXL1KdW4
-         pVybN4jHUxkCZeLnE3lPAL+jsUe9pDRIgYoxRUrvbfTk3fPPThzwtztr8npwTxsXjsMa
-         9UXdRWsV9KmTLHKVGL1Wg8whYZQWNxPHrHS0jY4a5su8RbiR9PcBbdQid9HcbqX9du9n
-         K518pKRvgSLU5SjOMdjehY3TDotw7dnTth0K2euObdN/NoQGSWYctjHdyJXrsdeCH9EH
-         K9zA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fyYS83TJhhxVOfsNmu5c001LjoG5UgZ/hJ8MDBaDVrk=;
-        b=radkGYOQtCzDpc9QD7CwgtyFR/Yc5qsOvk1hiHRmvttudkF2VgH/TqzrwByi1Mhkch
-         /cmwUTBZwO8SfRPbNUJZPoUtwY2axkWQnTHOrcBtiPVUykOxbZZ/SSIvBMDFiwVK/Ol4
-         DM8EPFjnDY++NVjgzPvyXc//7irvq+bDmU0bxDK1GWtxfye7Nj4eGZyEzAq9PKj04nf0
-         PBO6JFuS6uqmeAusBSCC4Ne3s4wKhYXZA9MJLvzKOHa8cGTiLyWoiexajIkLr6nELNXR
-         2VPLGKUMuZXSHJJSmQwTSdBfcBoEEaIOV9koz/rAybmljC73zkp8aIf30v5TVvuQdN5+
-         CcLg==
-X-Gm-Message-State: AOAM533PnQXB0zrl74gvt9psPxaT9imZ8FkY7zAwH9nOy3WododdRVVh
-        kCqkZ1NFFtWJw292goE1R6rCD7HxBemMKGlKA54=
-X-Google-Smtp-Source: ABdhPJwDiHLckB0JbibpoC/Qkq6c662oX2jEeuzB25zfWmbxwwssxd71D586oKFQCzcpzw5AqtAookmewbmv48f+oEg=
-X-Received: by 2002:a9d:6d83:: with SMTP id x3mr12761570otp.110.1627339199143;
- Mon, 26 Jul 2021 15:39:59 -0700 (PDT)
+        Mon, 26 Jul 2021 20:20:21 -0400
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7B0B7EE;
+        Tue, 27 Jul 2021 03:00:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1627347647;
+        bh=h6ed/QhzBLfd0GPoqqSOV/hXs491XnYeRSbJ5MoZhok=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=XmvdmbvKT4T0Gl2GLgXHoQjqYzORw4Uo7rvmWDfK/PuFVaIquNHJXNRxSiKXAaK33
+         QQA82sQ0J6AzYYbW4UtBiEhZlOsIX9q9P93SbuLQuXKyJEqkUecvdQL2mHp4N+DMqR
+         CTDj9Za/Wy99D6HUhG0YOBAkpaLfwrrgLNzDEeVQ=
+Date:   Tue, 27 Jul 2021 04:00:42 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     shawnguo@kernel.org, devicetree@vger.kernel.org,
+        festevam@gmail.com, kernel@pengutronix.de, kernel@puri.sm,
+        krzk@kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-imx@nxp.com, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+        m.felsch@pengutronix.de, mchehab@kernel.org,
+        phone-devel@vger.kernel.org, robh@kernel.org, slongerbeam@gmail.com
+Subject: Re: [PATCH v9 0/3] media: imx: add support for imx8mq MIPI RX
+Message-ID: <YP9aujiWH2Q/ghHK@pendragon.ideasonboard.com>
+References: <20210726082117.2423597-1-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
-References: <20210719145317.79692-1-stephan@gerhold.net> <20210719145317.79692-5-stephan@gerhold.net>
- <CAMZdPi8oxRMo0erfd0wrUPzD2UsbexoR=86u2N75Fd9RpXHoKg@mail.gmail.com>
- <YPmRcBXpRtKKSDl8@gerhold.net> <CAHNKnsQr4Ys8q3Ctru-H=L3ZDwb__2D3E08mMZchDLAs1KetAg@mail.gmail.com>
- <CAAP7ucLDEoJzwNvWLCWyCNE+kKBDn4aBU-9XT_Uv_yetnX4h-g@mail.gmail.com>
-In-Reply-To: <CAAP7ucLDEoJzwNvWLCWyCNE+kKBDn4aBU-9XT_Uv_yetnX4h-g@mail.gmail.com>
-From:   Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Date:   Tue, 27 Jul 2021 01:40:10 +0300
-Message-ID: <CAHNKnsSeX00+oL7uuKw83fRb0zSJWndQXyQH8PvoKf59mFUYgg@mail.gmail.com>
-Subject: Re: [RFC PATCH net-next 4/4] net: wwan: Add Qualcomm BAM-DMUX WWAN
- network driver
-To:     Aleksander Morgado <aleksander@aleksander.es>
-Cc:     =?UTF-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        dmaengine@vger.kernel.org, devicetree <devicetree@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210726082117.2423597-1-martin.kepplinger@puri.sm>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hello Aleksander,
+Hi Martin,
 
-On Mon, Jul 26, 2021 at 11:11 AM Aleksander Morgado
-<aleksander@aleksander.es> wrote:
->> But what if we implement the QMI multiplexing management part in the
->> kernel? This way the kernel will take care about modem-to-host
->> communication protocols and interfaces, and provides userspace with a
->> single WWAN device (possibly with multiple network and network
->> management interfaces).
->>
->> I do not propose to fully implement QMI protocol inside the kernel,
->> but implement only a mux management part, while passing all other
->> messages between a "modem" and a userspace software as-is.
->>
->> What pros and cons of such a design do you see?
->
-> The original GobiNet driver already provided some QMI protocol
-> implementation in the driver itself. In addition to initial device
-> setup as you suggest, it also allowed userspace applications to
-> allocate and release QMI clients for the different services that could
-> be used independently by different processes. Not going to say that
-> was the wrong way to do it, but the implementation is definitely not
-> simple. The decision taken in qmi_wwan to make the driver as simple as
-> possible and leave all the QMI management to userspace was quite an
-> important one; it made the driver extremely simple, leaving all the
-> complexity of managing the protocol to userspace, and while it had
-> some initial drawbacks (e.g. only one process could talk QMI at a
-> time) the userspace tools have evolved to avoid them (e.g. the
-> qmi-proxy).
->
-> I wrote some time ago about this, maybe it's still relevant today:
-> Blogpost https://sigquit.wordpress.com/2014/06/11/qmiwwan-or-gobinet/,
-> Article in PDF https://aleksander.es/data/Qualcomm%20Gobi%20devices%20on%20Linux.pdf
->
-> Making the driver talk QMI just for device setup would require the
-> kernel to know how the QMI protocol works, how QMI client allocations
-> and releases are done, how errors are reported, how is the format of
-> the requests and responses involved; it would require the kernel to
-> wait until the QMI protocol endpoint in the modem is capable of
-> returning QMI responses (this could be up to 20 or 30 secs after the
-> device is available in the bus), it would require to have possibly
-> some specific rules on how the QMI clients are managed after a
-> suspend/resume operation. It would also require to sync the access to
-> the CTL service, which is the one running QMI service allocations and
-> releases, so that both kernel and userspace can perform operations
-> with that service at the same time. It would need to know how
-> different QMI capable devices behave, because not all devices support
-> the same services, and some don't even support the WDA service that
-> would be the one needed to setup data aggregation. There is definitely
-> some overlap on what the kernel could do and what userspace could do,
-> and I'd say that we have much more flexibility in userspace to do all
-> this leaving all the complexity out of the kernel driver.
->
-> ModemManager already provides a unified API to e.g. setup multiplexed
-> data sessions, regardless of what the underlying kernel implementation
-> is (qmi_wwan only, qmi_wwan+rmnet, ipa+rmnet, bam-dmux, cdc_mbim...) .
-> The logic doing all that is extremely complex and possibly full of
-> errors, I would definitely not want to have all that logic in the
-> kernel itself, let the errors be in userspace! Unifying stuff in the
-> kernel is a good idea, but if you ask me, it should be done in a way
-> that is as simple as possible, leaving complexity to userspace, even
-> if that means that userspace still needs to know what type of device
-> we have behind the wwan subsystem, because userspace will anyway need
-> to know all that.
+On Mon, Jul 26, 2021 at 10:21:14AM +0200, Martin Kepplinger wrote:
+> hi,
+> 
+> This patch series adds a driver for the i.MX8MQ CSI MIPI receiver / controller.
+> 
+> It includes the driver, the dt-bindings and the DT addition to the SoC dtsi.
+> I test it using libcamera. Thanks to Laurent who helped a lot. I'm happy for
+> any feedback,
 
-Ouch! All these QMI internals are like a can of worms. Each time I
-start thinking that I learned something I face another complexity.
-Many thanks for your detailed reply and for your blogpost, for me it
-was quite helpful for understanding to see a side by side comparison
-of approaches!
+No more feedback from me :-) I'll take patches 1/3 and 2/3 in my tree
+and send a pull request.
 
-The argument for keeping drivers minimalistic to keep the system
-stable sounds reasonable. But I am still feeling uncomfortable when a
-userspace software manages a device at such a low level. Maybe it is a
-matter of taste, or maybe I still do not realize the whole complexity.
-Anyway, in the context of your clarification, I should be more careful
-in the future with calls to implement QMI in the kernel :)
+Shawn, could you please review 3/3 ?
 
---
-Sergey
+> revision history
+> ----------------
+> v9: (thank you Laurent)
+> * improve getting the esc clock rate for hs_settle
+> 
+> v8: (thank you Laurent)
+> * calculate hs_settle for any clk rate and mode
+> * add reviewed-by tag
+> https://lore.kernel.org/linux-media/20210723101217.1954805-1-martin.kepplinger@puri.sm/T/
+> 
+> v7: (thank you Laurent and Rob)
+> * fix the binding example (include the reset driver)
+> * use pm_runtime_resume_and_get()
+> * fix some logic in init_cfg()
+> * add some useful code comments and fix minor bits found by Laurent in v6
+> https://lore.kernel.org/linux-media/20210716102244.581182-1-martin.kepplinger@puri.sm/T/#t
+> 
+> v6: (thank you Laurent and Rob)
+> * add reviewed-by tag to binding
+> * statically allocate clk_bulk_data
+> * fix how the hs_settle value is applied
+> * remove s_power calls
+> * remove the link_setup() callback implementation and make the link immutable
+> * more cleanups according to Laurents' review from v5
+> https://lore.kernel.org/linux-media/20210714111931.324485-1-martin.kepplinger@puri.sm/
+> 
+> v5: (thank you Laurent)
+> * fix reset usage by using the already supported reset controller driver
+> * remove clko2 (totally unrelated clock / had been included by accident)
+> * rename pxl clock to ui
+> https://lore.kernel.org/linux-media/20210618095753.114557-1-martin.kepplinger@puri.sm/
+> 
+> v4: (thank you Rob and Marco)
+> * create fsl,mipi-phy-gpr custom dt property instead of confusing "phy"
+> * add imx8mq-specific compatibile to imx8mq.dtsi for future use
+> https://lore.kernel.org/linux-media/20210614121522.2944593-1-martin.kepplinger@puri.sm/
+> 
+> v3: (thank you, Rob and Laurent)
+> among minor other things according to v2 review, changes include:
+> * better describe the clocks
+> * rename DT property "phy-reset" to "reset" and "phy-gpr" to "phy"
+> https://lore.kernel.org/linux-media/20210608104128.1616028-1-martin.kepplinger@puri.sm/T/#t
+> 
+> v2: (thank you, Dan and Guido)
+> among fixes according to v1 reviews, changes include:
+> * remove status property from dt-bindings example
+> * define a few bits in order to have less magic values
+> * use "imx8mq_mipi_csi_" as local function prefix
+> * read DT properties only during probe()
+> * remove dead code (log_status)
+> * add imx8mq_mipi_csi_release_icc()
+> * fix imx8mq_mipi_csi_init_icc()
+> https://lore.kernel.org/linux-media/20210531112326.90094-1-martin.kepplinger@puri.sm/
+> 
+> v1:
+> https://lore.kernel.org/linux-media/20210527075407.3180744-1-martin.kepplinger@puri.sm/T/#t
+> 
+> 
+> Martin Kepplinger (3):
+>   dt-bindings: media: document the nxp,imx8mq-mipi-csi2 receiver phy and
+>     controller
+>   media: imx: add a driver for i.MX8MQ mipi csi rx phy and controller
+>   arm64: dts: imx8mq: add mipi csi phy and csi bridge descriptions
+> 
+>  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 174 ++++
+>  arch/arm64/boot/dts/freescale/imx8mq.dtsi     | 104 ++
+>  drivers/staging/media/imx/Makefile            |   1 +
+>  drivers/staging/media/imx/imx8mq-mipi-csi2.c  | 976 ++++++++++++++++++
+>  4 files changed, 1255 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
+>  create mode 100644 drivers/staging/media/imx/imx8mq-mipi-csi2.c
+
+-- 
+Regards,
+
+Laurent Pinchart
