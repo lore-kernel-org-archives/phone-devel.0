@@ -2,121 +2,89 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5838C432BE
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 19:51:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC1D0C432BE
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 22:30:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A7D8160F46
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 19:51:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A605960720
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 22:30:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232169AbhG2TvM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Jul 2021 15:51:12 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:29746 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229606AbhG2TvL (ORCPT
+        id S232487AbhG2WaL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Jul 2021 18:30:11 -0400
+Received: from mail-io1-f46.google.com ([209.85.166.46]:33663 "EHLO
+        mail-io1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229510AbhG2WaK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Jul 2021 15:51:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1627588261;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=a1f/4Mzvy91uylKaEBSa+SbUv2oypgU64QN38rZ/W1A=;
-    b=BhFcK3pVObxgbgbV6J1xl7tDYIcvcsOU6ZLYorGXAWqwHPUe2gEwIbvGh/j5F63rvm
-    XZudNTAUZFotrbXXFDcjDo7N9schc9DbXE0dH+dYZldo0aCHzeob3yid8SmfRXCIWJzf
-    KJTRsqB+Z8kZZJbucHz3eYSSMYEh79Y0Y6me2QB2PJzXC6bDG1Mleo5vTcwAvt/Q3nvU
-    ax6+Fz5bqesHLub+E37q4wkquBD1Nt2BMZmoca33kxypXWrPsFyLeq60GrpY9DeBLMTJ
-    T4zdtqrjxfy6u/zGiY42LM1HPSOAR43XHwViPsYFy9AM6FJYHvOV2Bi78eGArf/VHitk
-    Tgnw==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA8paM1A=="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 47.28.1 DYNA|AUTH)
-    with ESMTPSA id g02a44x6TJp06W6
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Thu, 29 Jul 2021 21:51:00 +0200 (CEST)
-Date:   Thu, 29 Jul 2021 21:50:54 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Rob Herring <robh@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        Aleksander Morgado <aleksander@aleksander.es>,
-        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Subject: Re: [RFC PATCH net-next 1/4] dt-bindings: dmaengine: bam_dma: Add
- remote power collapse mode
-Message-ID: <YQMGnmXEOCmCzKnr@gerhold.net>
-References: <20210719145317.79692-1-stephan@gerhold.net>
- <20210719145317.79692-2-stephan@gerhold.net>
- <YQMDP6+ft/iRJQQr@robh.at.kernel.org>
+        Thu, 29 Jul 2021 18:30:10 -0400
+Received: by mail-io1-f46.google.com with SMTP id n19so9176660ioz.0;
+        Thu, 29 Jul 2021 15:30:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=nxHho6RZxjUuYURjfVw+2b6ILg8EjvBd3YtWTTGJ9Is=;
+        b=S/zN7gDbM3Dqyv9tSR3znu98IIja/mHSyq2yh1eq0kHhXEYEWyk3CG7beVadp7Qgn3
+         PBM+ibUw5xDtoRQLTfEm9fqzmtUuKepwBfVFtE9rlny1/51G63mjRoUpZ1F9iBnEaGvU
+         IcxCBLnWPG24xW9vFaKablZODmnhF6Fba1x77aNMaqPgZaGV1sgFPiApMIbX9IhNus6t
+         trItCwEIyoIkOBw2/FNP5KkFeDjoCUtNdxYcz52RlJjzm6QK8M2rOAz9LoHIseDqjXjq
+         V9fIml6sDffHCwdPuYm6kOxkbaFoEf0v0b+x2mjVVwYhDU/XIEkAYrBEJguXR3LPb3mL
+         B+KQ==
+X-Gm-Message-State: AOAM533MDU7EfLG4EL8ezBJ+JwojnG6vD++7VwYfxb+3br43ZRN4+Ta4
+        9ilLDWSYzCn8m8wnyBZbfg==
+X-Google-Smtp-Source: ABdhPJx3FAFP9axGNQ3Quk45L4+xPnWPLhYc926b4evgK46BUcmGvFDnG8jsDH5SjroGIGATVhBwbQ==
+X-Received: by 2002:a02:6f1c:: with SMTP id x28mr6371373jab.95.1627597804911;
+        Thu, 29 Jul 2021 15:30:04 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id y14sm2335867ilv.76.2021.07.29.15.30.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jul 2021 15:30:04 -0700 (PDT)
+Received: (nullmailer pid 1020064 invoked by uid 1000);
+        Thu, 29 Jul 2021 22:30:02 -0000
+Date:   Thu, 29 Jul 2021 16:30:02 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Alexey Minnekhanov <alexeymin@postmarketos.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
+        Shevchenko <andy.shevchenko@gmail.com>," 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: panel: Add Samsung S6E3FA2 panel
+Message-ID: <YQMr6slu/Nvt6UYr@robh.at.kernel.org>
+References: <20210725140339.2465677-1-alexeymin@postmarketos.org>
+ <CACRpkdaaQeuVqJbczHndsgmmMv0NycwRDdzFTDwM=BJnc7SseQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YQMDP6+ft/iRJQQr@robh.at.kernel.org>
+In-Reply-To: <CACRpkdaaQeuVqJbczHndsgmmMv0NycwRDdzFTDwM=BJnc7SseQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jul 29, 2021 at 01:36:31PM -0600, Rob Herring wrote:
-> On Mon, Jul 19, 2021 at 04:53:14PM +0200, Stephan Gerhold wrote:
-> > In some configurations, the BAM DMA controller is set up by a remote
-> > processor and the local processor can simply start making use of it
-> > without setting up the BAM. This is already supported using the
-> > "qcom,controlled-remotely" property.
-> > 
-> > However, for some reason another possible configuration is that the
-> > remote processor is responsible for powering up the BAM, but we are
-> > still responsible for initializing it (e.g. resetting it etc). Add
-> > a "qcom,remote-power-collapse" property to describe that configuration.
-> > 
-> > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> > ---
-> > NOTE: This is *not* a compile-time requirement for the BAM-DMUX driver
-> >       so this could also go through the dmaengine tree.
-> > 
-> > Also note that there is an ongoing effort to convert these bindings
-> > to DT schema but sadly there were not any updates for a while. :/
-> > https://lore.kernel.org/linux-arm-msm/20210519143700.27392-2-bhupesh.sharma@linaro.org/
-> > ---
-> >  Documentation/devicetree/bindings/dma/qcom_bam_dma.txt | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt b/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt
-> > index cf5b9e44432c..362a4f0905a8 100644
-> > --- a/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt
-> > +++ b/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt
-> > @@ -15,6 +15,8 @@ Required properties:
-> >    the secure world.
-> >  - qcom,controlled-remotely : optional, indicates that the bam is controlled by
-> >    remote proccessor i.e. execution environment.
-> > +- qcom,remote-power-collapse : optional, indicates that the bam is powered up by
-> > +  a remote processor but must be initialized by the local processor.
+On Mon, Jul 26, 2021 at 09:51:40AM +0200, Linus Walleij wrote:
+> On Sun, Jul 25, 2021 at 4:04 PM Alexey Minnekhanov
+> <alexeymin@postmarketos.org> wrote:
 > 
-> Wouldn't 'qcom,remote-power' or 'qcom,remote-powered' be sufficient? I 
-> don't understand what 'collapse' means here. Doesn't sound good though.
+> > The Samsung S6E3FA2 AMOLED cmd LCD panel is used on Samsung Galaxy
+> > S5 (klte) phone.
+> >
+> > Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
 > 
+> Grr gmail put this in my spam folder, sorry for confused mails.
+> 
+> With Sam's comments addressed:
 
-Yeah I can't think of any significant meaning of the "collapse" part
-for the bindings, I probably just picked it up somewhere while trying to
-find some information about how the BAM DMUX setup works. :)
+What comments? Sam's mails seem to have problems getting to the lists.
 
-Just one question, would you prefer "qcom,remote-powered" or rather
-"qcom,powered-remotely" for consistency with the existing
-"qcom,controlled-remotely"? Both sounds fine to me.
-
-Thanks!
-Stephan
+Rob
