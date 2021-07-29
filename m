@@ -2,130 +2,111 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12DFBC432BE
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 15:56:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21C30C4320E
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 19:36:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EC86F60F42
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 15:56:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0301E60D07
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 19:36:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238167AbhG2P4m (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Jul 2021 11:56:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54660 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238083AbhG2P4f (ORCPT
+        id S232217AbhG2Tgl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Jul 2021 15:36:41 -0400
+Received: from mail-io1-f47.google.com ([209.85.166.47]:37451 "EHLO
+        mail-io1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229606AbhG2Tgj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Jul 2021 11:56:35 -0400
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD0BC06179C
-        for <phone-devel@vger.kernel.org>; Thu, 29 Jul 2021 08:56:29 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 3FE2F2004C;
-        Thu, 29 Jul 2021 17:56:27 +0200 (CEST)
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-To:     bjorn.andersson@linaro.org
-Cc:     agross@kernel.org, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com,
-        jami.kettunen@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
-        stephan@gerhold.net, robh@kernel.org, bartosz.dudziak@snejp.pl,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v8 2/5] dt-bindings: soc: qcom: Add devicetree binding for QCOM SPM
-Date:   Thu, 29 Jul 2021 17:56:06 +0200
-Message-Id: <20210729155609.608159-3-angelogioacchino.delregno@somainline.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210729155609.608159-1-angelogioacchino.delregno@somainline.org>
-References: <20210729155609.608159-1-angelogioacchino.delregno@somainline.org>
+        Thu, 29 Jul 2021 15:36:39 -0400
+Received: by mail-io1-f47.google.com with SMTP id r18so8611048iot.4;
+        Thu, 29 Jul 2021 12:36:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=BQ1Wv9ddwXtPpU7j1mUV1G/GqYenPRdcCt53ijsc20g=;
+        b=WnGsS28BWtUdNGNdbnOiUfEmL611UGZceAJruf1AccuMg7zp7Q0Qj27+LUQ7Mtub29
+         XC05o0rvrxNWluPQMlp7XYeQ8Knvuyc809gR9qgsjCKAmQrn2qLbYgD1ATP9ov1vrw3N
+         6Mb3bzn1vmVgEXe/9I1pbewAcLoJTXpdCBSrQ2HGiQMHNUo7/nQniF76GvWVt5UfxVsh
+         WKkOAcjxcoPHTbg0LXXt+LtZ7Tzp/An6slL/l4B3MzRT1xli6RXabhM2i53mDigBN54P
+         8I1JLcmP4olfVdU5far8p3qtVxyTPsjM4J4ef2GKodWZilWkg3kBGk2H22PcqaKnFGTM
+         kEtQ==
+X-Gm-Message-State: AOAM532GDFqw69jWj1DH/y/L0P2A6w+u4bIFae74buqtRCHXgV/waCzm
+        X+Hg+3K+54KjDtWgVgJMmg==
+X-Google-Smtp-Source: ABdhPJw306z8um1VvUQHdgAaAo9WYY6NNurP6o5EaePO37Jj55vvXGbyVjs7e4DyNkNQm+zGyVujOw==
+X-Received: by 2002:a05:6602:2801:: with SMTP id d1mr5299475ioe.73.1627587394656;
+        Thu, 29 Jul 2021 12:36:34 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id n12sm2485056ilo.57.2021.07.29.12.36.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jul 2021 12:36:33 -0700 (PDT)
+Received: (nullmailer pid 747746 invoked by uid 1000);
+        Thu, 29 Jul 2021 19:36:31 -0000
+Date:   Thu, 29 Jul 2021 13:36:31 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Aleksander Morgado <aleksander@aleksander.es>,
+        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Subject: Re: [RFC PATCH net-next 1/4] dt-bindings: dmaengine: bam_dma: Add
+ remote power collapse mode
+Message-ID: <YQMDP6+ft/iRJQQr@robh.at.kernel.org>
+References: <20210719145317.79692-1-stephan@gerhold.net>
+ <20210719145317.79692-2-stephan@gerhold.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210719145317.79692-2-stephan@gerhold.net>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add devicetree binding for Qualcomm Subsystem Power Manager (SPM).
+On Mon, Jul 19, 2021 at 04:53:14PM +0200, Stephan Gerhold wrote:
+> In some configurations, the BAM DMA controller is set up by a remote
+> processor and the local processor can simply start making use of it
+> without setting up the BAM. This is already supported using the
+> "qcom,controlled-remotely" property.
+> 
+> However, for some reason another possible configuration is that the
+> remote processor is responsible for powering up the BAM, but we are
+> still responsible for initializing it (e.g. resetting it etc). Add
+> a "qcom,remote-power-collapse" property to describe that configuration.
+> 
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> ---
+> NOTE: This is *not* a compile-time requirement for the BAM-DMUX driver
+>       so this could also go through the dmaengine tree.
+> 
+> Also note that there is an ongoing effort to convert these bindings
+> to DT schema but sadly there were not any updates for a while. :/
+> https://lore.kernel.org/linux-arm-msm/20210519143700.27392-2-bhupesh.sharma@linaro.org/
+> ---
+>  Documentation/devicetree/bindings/dma/qcom_bam_dma.txt | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt b/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt
+> index cf5b9e44432c..362a4f0905a8 100644
+> --- a/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt
+> +++ b/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt
+> @@ -15,6 +15,8 @@ Required properties:
+>    the secure world.
+>  - qcom,controlled-remotely : optional, indicates that the bam is controlled by
+>    remote proccessor i.e. execution environment.
+> +- qcom,remote-power-collapse : optional, indicates that the bam is powered up by
+> +  a remote processor but must be initialized by the local processor.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
----
- .../bindings/soc/qcom/qcom,spm.yaml           | 58 +++++++++++++++++++
- 1 file changed, 58 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml
+Wouldn't 'qcom,remote-power' or 'qcom,remote-powered' be sufficient? I 
+don't understand what 'collapse' means here. Doesn't sound good though.
 
-diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml
-new file mode 100644
-index 000000000000..507216100e3f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml
-@@ -0,0 +1,58 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/soc/qcom/qcom,spm.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: Qualcomm Subsystem Power Manager binding
-+
-+maintainers:
-+  - Andy Gross <agross@kernel.org>
-+  - Bjorn Andersson <bjorn.andersson@linaro.org>
-+
-+description: |
-+  This binding describes the Qualcomm Subsystem Power Manager, used to control
-+  the peripheral logic surrounding the application cores in Qualcomm platforms.
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - qcom,msm8226-saw2-v2.1-cpu
-+          - qcom,msm8974-saw2-v2.1-cpu
-+          - qcom,apq8084-saw2-v2.1-cpu
-+          - qcom,apq8064-saw2-v1.1-cpu
-+      - const: qcom,saw2
-+
-+  reg:
-+    description: Base address and size of the SPM register region
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    cpus {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        cpu@0 {
-+            compatible = "qcom,kryo";
-+            device_type = "cpu";
-+            enable-method = "qcom,kpss-acc-v2";
-+            qcom,saw = <&saw0>;
-+            reg = <0x0>;
-+            operating-points-v2 = <&cpu_opp_table>;
-+        };
-+    };
-+
-+    saw0: power-manager@f9089000 {
-+        compatible = "qcom,msm8974-saw2-v2.1-cpu", "qcom,saw2";
-+        reg = <0xf9089000 0x1000>;
-+    };
-+
-+...
--- 
-2.32.0
-
+Rob
