@@ -2,100 +2,122 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.4 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03A9AC43216
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 13:28:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B16D1C4320E
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 15:56:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E539460F43
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 13:28:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 90BB860F42
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 15:56:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237661AbhG2N2z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Jul 2021 09:28:55 -0400
-Received: from m-r2.th.seeweb.it ([5.144.164.171]:59415 "EHLO
-        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237716AbhG2N2w (ORCPT
+        id S238100AbhG2P4g (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Jul 2021 11:56:36 -0400
+Received: from relay04.th.seeweb.it ([5.144.164.165]:59875 "EHLO
+        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237891AbhG2P4f (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Jul 2021 09:28:52 -0400
+        Thu, 29 Jul 2021 11:56:35 -0400
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 60C9C3EBCB;
-        Thu, 29 Jul 2021 15:28:47 +0200 (CEST)
-Subject: Re: [PATCH v6 9/9] dt-bindings: cpufreq: qcom-hw: Make reg-names a
- required property
-To:     Rob Herring <robh@kernel.org>
-Cc:     bjorn.andersson@linaro.org, viresh.kumar@linaro.org,
-        agross@kernel.org, rjw@rjwysocki.net, devicetree@vger.kernel.org,
-        amit.kucheria@linaro.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, jami.kettunen@somainline.org,
-        paul.bouchara@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, jeffrey.l.hugo@gmail.com
-References: <20210701105730.322718-1-angelogioacchino.delregno@somainline.org>
- <20210701105730.322718-10-angelogioacchino.delregno@somainline.org>
- <20210713224245.GA981311@robh.at.kernel.org>
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 68E121F6AA;
+        Thu, 29 Jul 2021 17:56:26 +0200 (CEST)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Message-ID: <0a4a4328-0b8b-46d0-53b9-8a3566c46ca9@somainline.org>
-Date:   Thu, 29 Jul 2021 15:28:47 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.0
+To:     bjorn.andersson@linaro.org
+Cc:     agross@kernel.org, daniel.lezcano@linaro.org, rjw@rjwysocki.net,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com,
+        jami.kettunen@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
+        stephan@gerhold.net, robh@kernel.org, bartosz.dudziak@snejp.pl,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: [PATCH v8 0/5] Implement SPM/SAW for MSM8998 and SDM6xx
+Date:   Thu, 29 Jul 2021 17:56:04 +0200
+Message-Id: <20210729155609.608159-1-angelogioacchino.delregno@somainline.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-In-Reply-To: <20210713224245.GA981311@robh.at.kernel.org>
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 14/07/21 00:42, Rob Herring ha scritto:
-> On Thu, Jul 01, 2021 at 12:57:30PM +0200, AngeloGioacchino Del Regno wrote:
->> The property reg-names is required after the addition of the OSM
->> programming sequence, as that mandates specifying different register
->> domains; to avoid confusion and improve devicetree readability,
->> specifying the regions names was made mandatory.
-> 
-> Can't take patches missing a S-o-b.
-> 
+Changes in v8:
+- Rebased on next-20210728
+- Fixed all YAML issues from dt_binding_check
+- Fixed forgotten signoffs (truly, truly sorry about that)
 
-Sorry again. Didn't notice at all.
+Changes in v7:
+- Fixed functionality breakage on ARM for cpuidle-qcom-spm... now it works :))
+- Reworded description of patch 1/5
 
-> Making existing properties required breaks compatibility. That's okay on
-> *all* the platforms using this? If so, that needs to be crystal clear in
-> the commit msg.
-> 
+Changes in v6:
+- Moved cpuidle_driver to be private to cpuidle-qcom-spm (unused in spm.c),
+  now we are assigning the cpuidle_driver structure fields inside of the
+  spm_cpuidle_register function; this also fixes the cpumask assignment
+  issue from v5
+- Fixed another contamination from 2/3 in 1/3 (argh!! :])
+- Added dt-bindings documentation for the SPM driver
 
-Yes that's just fine on all platforms using this. In any case, they all
-do have the reg-names specified in their DT, even if previously not required,
-so there's nothing to update, even.
+Changes in v5:
+- Fixed contamination from patch 2/3 in patch 1/3
+- Fixed missing bits in cpuidle-qcom-spm (thanks Stephan)
 
-I will make it crystal clear in the commit message in the next version.
+Changes in v4:
+- Huge patch series has been split for better reviewability,
+  as suggested by Bjorn
 
->> ---
->>   Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
->> index 29b663321a0b..17fd6a6cefb0 100644
->> --- a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
->> +++ b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
->> @@ -98,6 +98,7 @@ else:
->>   required:
->>     - compatible
->>     - reg
->> +  - reg-names
->>     - clocks
->>     - clock-names
->>     - '#freq-domain-cells'
->> -- 
->> 2.32.0
->>
->>
+Changes in v3:
+- Rebased (no changes - was in previous series' v3)
+
+Changes in v2:
+- Fixed MSM8998 SAW parameters on SPM driver
+
+Tested on the following smartphones:
+- Sony Xperia XA2        (SDM630)
+- Sony Xperia XA2 Ultra  (SDM630)
+- Sony Xperia 10         (SDM630)
+- Sony Xperia XZ Premium (MSM8998)
+- F(x)Tec Pro 1          (MSM8998)
+
+This is a component that we can find on very old
+chips, like MSM8974; there, it has been used to actually do the
+power scaling basically "on its own" - sending the cores in a specific
+sleep mode to save power.
+On the newer ones, including MSM8998, SDM630, 660 and others, it is still
+present! Though, this time, it's being used for the cluster caches and it
+has a different firmware (and maybe it's also slightly different HW),
+implementing the SAWv4.1 set and getting controlled *not by the OS* but
+by other controllers in the SoC (like the OSM).
+
+Contrary from MSM8974 and the like, this new version of the SPM just
+requires us to set the initial parameters for AVS and *nothing else*, as
+its states will be totally managed internally.
+AngeloGioacchino Del Regno (5):
+  cpuidle: qcom_spm: Detach state machine from main SPM handling
+  dt-bindings: soc: qcom: Add devicetree binding for QCOM SPM
+  soc: qcom: spm: Implement support for SAWv4.1, SDM630/660 L2 AVS
+  soc: qcom: spm: Add compatible for MSM8998 SAWv4.1 L2
+  dt-bindings: soc: qcom: spm: Document SDM660 and MSM8998 compatibles
+
+ .../bindings/soc/qcom/qcom,spm.yaml           |  80 +++++
+ drivers/cpuidle/Kconfig.arm                   |   1 +
+ drivers/cpuidle/cpuidle-qcom-spm.c            | 318 ++++--------------
+ drivers/soc/qcom/Kconfig                      |   9 +
+ drivers/soc/qcom/Makefile                     |   1 +
+ drivers/soc/qcom/spm.c                        | 254 ++++++++++++++
+ include/soc/qcom/spm.h                        |  43 +++
+ 7 files changed, 456 insertions(+), 250 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml
+ create mode 100644 drivers/soc/qcom/spm.c
+ create mode 100644 include/soc/qcom/spm.h
+
+-- 
+2.32.0
 
