@@ -2,152 +2,141 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-10.4 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 32529C432BE
-	for <phone-devel@archiver.kernel.org>; Wed, 28 Jul 2021 13:32:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87B50C4338F
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 13:26:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1B31F60EC0
-	for <phone-devel@archiver.kernel.org>; Wed, 28 Jul 2021 13:32:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 694D060184
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Jul 2021 13:26:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236520AbhG1Ncz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 28 Jul 2021 09:32:55 -0400
-Received: from perceval.ideasonboard.com ([213.167.242.64]:54190 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236495AbhG1Ncz (ORCPT
+        id S237575AbhG2N0Q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Jul 2021 09:26:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45576 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237531AbhG2N0O (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 28 Jul 2021 09:32:55 -0400
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 77FBCEE;
-        Wed, 28 Jul 2021 15:32:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1627479171;
-        bh=c1dkUuPXfClOIv5jpAqPkqsyfaPoUtpNHnoR7YUBKtE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JgCARYIVVkDVfEHmvs9gFM9xYM7j/CTlLRSZtKoKNqHJIs0AF6WwqQgMxUr03ru+P
-         ypa7AigHetwOwZZOaGKbE2sakovaTsIV6Ny//st1PPyyR+gwYKG/iCPI81o/tnAtk5
-         iwnjIUWpksVMQze9N4GnXsCRy6iR713Kq6mBzR0U=
-Date:   Wed, 28 Jul 2021 16:32:45 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     dafna.hirschfeld@collabora.com, shawnguo@kernel.org,
-        devicetree@vger.kernel.org, festevam@gmail.com,
-        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-staging@lists.linux.dev, m.felsch@pengutronix.de,
-        mchehab@kernel.org, phone-devel@vger.kernel.org, robh@kernel.org,
-        slongerbeam@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>
-Subject: Re: [PATCH v10 0/3] media: imx: add support for imx8mq MIPI RX
-Message-ID: <YQFcfbrTmGw4kZvQ@pendragon.ideasonboard.com>
-References: <20210728091245.231043-1-martin.kepplinger@puri.sm>
+        Thu, 29 Jul 2021 09:26:14 -0400
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DA9AC0613C1
+        for <phone-devel@vger.kernel.org>; Thu, 29 Jul 2021 06:26:11 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 61D393F359;
+        Thu, 29 Jul 2021 15:26:08 +0200 (CEST)
+Subject: Re: [PATCH v7 5/5] dt-bindings: soc: qcom: spm: Document SDM660 and
+ MSM8998 compatibles
+To:     Rob Herring <robh@kernel.org>
+Cc:     bjorn.andersson@linaro.org, agross@kernel.org,
+        daniel.lezcano@linaro.org, rjw@rjwysocki.net,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, jeffrey.l.hugo@gmail.com,
+        jami.kettunen@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
+        stephan@gerhold.net
+References: <20210622141117.358893-1-angelogioacchino.delregno@somainline.org>
+ <20210622141117.358893-6-angelogioacchino.delregno@somainline.org>
+ <20210713222111.GA944952@robh.at.kernel.org>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <285d7b38-da08-e263-d664-1cdf73d7c0d1@somainline.org>
+Date:   Thu, 29 Jul 2021 15:26:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210728091245.231043-1-martin.kepplinger@puri.sm>
+In-Reply-To: <20210713222111.GA944952@robh.at.kernel.org>
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Martin,
+Il 14/07/21 00:21, Rob Herring ha scritto:
+> On Tue, Jun 22, 2021 at 04:11:17PM +0200, AngeloGioacchino Del Regno wrote:
+>> The driver was updated to add SAW2 v4.1 support for new SoCs: document
+>> the new compatibles.
+> 
+> Can't take patches without a S-o-b. Run checkpatch.pl, it points this
+> out for you.
+> 
 
-On Wed, Jul 28, 2021 at 11:12:42AM +0200, Martin Kepplinger wrote:
-> hi,
-> 
-> This patch series adds a driver for the i.MX8MQ CSI MIPI receiver / controller.
-> 
-> It includes the driver, the dt-bindings and the DT addition to the SoC dtsi.
-> I test it using libcamera. Thanks to Laurent who helped a lot. I'm happy for
-> any feedback,
+I am truly sorry for missing my S-o-b.
 
-Thank you for the series. I've submitted a pull request that contains
-patches 1/3 and 2/3.
+>> ---
+>>   .../bindings/soc/qcom/qcom,spm.yaml           | 21 +++++++++++++++++++
+>>   1 file changed, 21 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml
+>> index 4aaa319b2932..0faf52700dec 100644
+>> --- a/Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml
+>> +++ b/Documentation/devicetree/bindings/soc/qcom/qcom,spm.yaml
+>> @@ -17,6 +17,10 @@ description: |
+>>   properties:
+>>     compatible:
+>>       enum:
+>> +      - qcom,sdm660-gold-saw2-v4.1-l2
+>> +      - qcom,sdm660-silver-saw2-v4.1-l2
+>> +      - qcom,msm8998-gold-saw2-v4.1-l2
+>> +      - qcom,msm8998-silver-saw2-v4.1-l2
+> 
+> What's the difference between gold and silver? Are the h/w instances
+> different (I realize the CPUs are) in some way? How does the OS use the
+> different compatible strings?
+> 
 
-Shawn, Sascha, how would you like to handle 3/3 ?
+They have different configuration parameters and the HW instances should
+be different indeed (at least from what I remember), plus they're always
+at different iostart.
 
-> revision history
-> ----------------
-> v10: (thank you Dafna)
-> * improve send_level documentation.
-> * add some comments to 0x180 and 0x184
-> * after re-reading I could eliminate the unneeded setting of 0x184 (ignored
->   by setting 0x180 to 1).
-> 
-> v9: (thank you Laurent)
-> * improve getting the esc clock rate for hs_settle
-> https://lore.kernel.org/linux-media/20210726082117.2423597-1-martin.kepplinger@puri.sm/
-> 
-> v8: (thank you Laurent)
-> * calculate hs_settle for any clk rate and mode
-> * add reviewed-by tag
-> https://lore.kernel.org/linux-media/20210723101217.1954805-1-martin.kepplinger@puri.sm/T/
-> 
-> v7: (thank you Laurent and Rob)
-> * fix the binding example (include the reset driver)
-> * use pm_runtime_resume_and_get()
-> * fix some logic in init_cfg()
-> * add some useful code comments and fix minor bits found by Laurent in v6
-> https://lore.kernel.org/linux-media/20210716102244.581182-1-martin.kepplinger@puri.sm/T/#t
-> 
-> v6: (thank you Laurent and Rob)
-> * add reviewed-by tag to binding
-> * statically allocate clk_bulk_data
-> * fix how the hs_settle value is applied
-> * remove s_power calls
-> * remove the link_setup() callback implementation and make the link immutable
-> * more cleanups according to Laurents' review from v5
-> https://lore.kernel.org/linux-media/20210714111931.324485-1-martin.kepplinger@puri.sm/
-> 
-> v5: (thank you Laurent)
-> * fix reset usage by using the already supported reset controller driver
-> * remove clko2 (totally unrelated clock / had been included by accident)
-> * rename pxl clock to ui
-> https://lore.kernel.org/linux-media/20210618095753.114557-1-martin.kepplinger@puri.sm/
-> 
-> v4: (thank you Rob and Marco)
-> * create fsl,mipi-phy-gpr custom dt property instead of confusing "phy"
-> * add imx8mq-specific compatibile to imx8mq.dtsi for future use
-> https://lore.kernel.org/linux-media/20210614121522.2944593-1-martin.kepplinger@puri.sm/
-> 
-> v3: (thank you, Rob and Laurent)
-> among minor other things according to v2 review, changes include:
-> * better describe the clocks
-> * rename DT property "phy-reset" to "reset" and "phy-gpr" to "phy"
-> https://lore.kernel.org/linux-media/20210608104128.1616028-1-martin.kepplinger@puri.sm/T/#t
-> 
-> v2: (thank you, Dan and Guido)
-> among fixes according to v1 reviews, changes include:
-> * remove status property from dt-bindings example
-> * define a few bits in order to have less magic values
-> * use "imx8mq_mipi_csi_" as local function prefix
-> * read DT properties only during probe()
-> * remove dead code (log_status)
-> * add imx8mq_mipi_csi_release_icc()
-> * fix imx8mq_mipi_csi_init_icc()
-> https://lore.kernel.org/linux-media/20210531112326.90094-1-martin.kepplinger@puri.sm/
-> 
-> v1:
-> https://lore.kernel.org/linux-media/20210527075407.3180744-1-martin.kepplinger@puri.sm/T/#t
-> 
-> 
-> Martin Kepplinger (3):
->   dt-bindings: media: document the nxp,imx8mq-mipi-csi2 receiver phy and
->     controller
->   media: imx: add a driver for i.MX8MQ mipi csi rx phy and controller
->   arm64: dts: imx8mq: add mipi csi phy and csi bridge descriptions
-> 
->  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml  | 174 +++
->  arch/arm64/boot/dts/freescale/imx8mq.dtsi     | 104 ++
->  drivers/staging/media/imx/Makefile            |   1 +
->  drivers/staging/media/imx/imx8mq-mipi-csi2.c  | 991 ++++++++++++++++++
->  4 files changed, 1270 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
->  create mode 100644 drivers/staging/media/imx/imx8mq-mipi-csi2.c
+The driver is using the different compatible strings to choose which
+configuration gets written. You can also avoid writing the configuration
+to one of them or both (if you wish to lose capabilities given by this
+driver, perhaps also if you want to simply never use the gold cluster, for
+example).
 
--- 
-Regards,
 
-Laurent Pinchart
+>>         - qcom,msm8974-saw2-v2.1-cpu
+>>         - qcom,apq8084-saw2-v2.1-cpu
+>>         - qcom,apq8064-saw2-v1.1-cpu
+>> @@ -33,6 +37,8 @@ additionalProperties: false
+>>   
+>>   examples:
+>>     - |
+>> +
+>> +    /* Example 1: SoC using SAW2 and kpss-acc-v2 CPUIdle */
+>>       cpus {
+>>           #address-cells = <1>;
+>>           #size-cells = <0>;
+>> @@ -52,4 +58,19 @@ examples:
+>>           reg = <0xf9089000 0x1000>;
+>>       };
+>>   
+>> +  - |
+>> +
+>> +    /* Example 2: New-gen multi cluster SoC using SAW only for L2;
+>> +     * This does not require any cpuidle driver, nor any cpu phandle.
+>> +     */
+>> +    power-controller@17812000 {
+>> +        compatible = "qcom,msm8998-gold-saw2-v4.1-l2", "qcom,saw2";
+>> +        reg = <0x17812000 0x1000>;
+>> +    };
+>> +
+>> +    power-controller@17912000 {
+>> +        compatible = "qcom,msm8998-silver-saw2-v4.1-l2", "qcom,saw2";
+>> +        reg = <0x17912000 0x1000>;
+>> +    };
+>> +
+>>   ...
+>> -- 
+>> 2.32.0
+>>
+>>
+
