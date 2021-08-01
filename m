@@ -2,90 +2,102 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71865C4338F
-	for <phone-devel@archiver.kernel.org>; Sat, 31 Jul 2021 21:24:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20CBDC4338F
+	for <phone-devel@archiver.kernel.org>; Sun,  1 Aug 2021 10:27:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4256360F36
-	for <phone-devel@archiver.kernel.org>; Sat, 31 Jul 2021 21:24:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F1DAA61054
+	for <phone-devel@archiver.kernel.org>; Sun,  1 Aug 2021 10:27:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231407AbhGaVX6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 31 Jul 2021 17:23:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53258 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229958AbhGaVX6 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 31 Jul 2021 17:23:58 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80248C061796
-        for <phone-devel@vger.kernel.org>; Sat, 31 Jul 2021 14:23:50 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id z2so25785662lft.1
-        for <phone-devel@vger.kernel.org>; Sat, 31 Jul 2021 14:23:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=UFuagbB68OTvddF9Xywx7UrDN/I21A6uFb3ydrSsaG8=;
-        b=CRqwWc7QBYs7ycsAgYE5p59uP5JVARslAuqr+wmJA6jVq8VD76RE/xwkyEuczrL7y/
-         qYSvp1fOFmy8Nx+lYlnUKnZLLwK9WdJ77KXwxtjV8b4TLO7LGkEQ3cqidhda96VJomgh
-         P9ON+IGk+7tfgw/4t6+joWkbp0yXfGa7NORIxMegHLyEXWrHxTFf5nXnA9PVZ6LVKcC0
-         tkpjQqi+m/+t5CygOoFF9YlqixGOBWaQemI5sZnwY8qSHelPfj5HAOcx+nYtkJxVp++Z
-         2/Z+et95YgDXFLfI+9N5Yc57rewWnvBMlJCJSvT9uKuW7RF7Z53fakh72OQsEsypGe8M
-         jOxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UFuagbB68OTvddF9Xywx7UrDN/I21A6uFb3ydrSsaG8=;
-        b=O99NVTHINcC4od0AYgk9Vko+ba85g2hNmfIX3n9GHRE21AL/Y5vQzVJpoAjubP8fpQ
-         FBT2w2ukhUfDPkK9RD8ho7Ao7UeHQxT557nnOU2HLC1lHgKdatlu2k/lhCPszgzGXDRY
-         Yg0tobZMeUQ/erf/MAG+EHaUGxFzzq2bfwfJgvX1xwMNQbrU6mWK1rfjIAjVuLhGtot2
-         I6IH9W9kl5d7ZzCTjK2pygZhN5AnobUymFdmGQswtKuGQFImhpyzwQtJUNptwMF+FN8m
-         MPQmeeiNV9hYxkuOX+K5xWJXcCpca842Fn1TDH+V+PwtwJGIl6Zol3Bst3oMwXPTujxL
-         tbag==
-X-Gm-Message-State: AOAM532/69cLWLmlF9GefNmF7AJZfY9S3yvz7HrpbVwHdhfW+XNlXtoH
-        +8dYurXiSEnkFwsY+npGQRclhf1AYhVqV6fCbfoW7Q==
-X-Google-Smtp-Source: ABdhPJx7Q9x1W9R0NDVhm+5e93isK61FmR6LCKivpcqNcKWU0TYWxJ+S9YQgwYa7UlNcmN4iPwiV5tUP5zTz9VvOfOc=
-X-Received: by 2002:a19:c7cd:: with SMTP id x196mr5925413lff.465.1627766628769;
- Sat, 31 Jul 2021 14:23:48 -0700 (PDT)
+        id S231575AbhHAK1T (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 1 Aug 2021 06:27:19 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:51457 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231561AbhHAK1T (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Sun, 1 Aug 2021 06:27:19 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1627813631; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=kYUGpLNLoNe6hOlrkiiQolDKGlFSL90Ma12ZjZ661fQ=;
+ b=uYk/q33lDRd5rVR+xnlCztnzCD27r2WJk1Z3zdge/RLR1Yfyk22KgM+4kXgBkzz8Akd14NMc
+ PVjbqCV9KyHW3z/C3SCDyW67e3URVGxnIEYpiihnMB7BBc6Qj3lvKSKTCQXg4QcJ82me9Vwb
+ eDBmlO+AYLjZWW5Nwog3SklSa0w=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 610676ff17c2b4047d61a73a (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Sun, 01 Aug 2021 10:27:11
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 9C541C4338A; Sun,  1 Aug 2021 10:27:10 +0000 (UTC)
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3CAFEC433F1;
+        Sun,  1 Aug 2021 10:27:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3CAFEC433F1
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20210723192352.546902-1-iskren.chernev@gmail.com>
-In-Reply-To: <20210723192352.546902-1-iskren.chernev@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 31 Jul 2021 23:23:37 +0200
-Message-ID: <CACRpkdYVX+AZWto15Buq023cPSodQuyYXr8Fq64-RP8SQ2b0bg@mail.gmail.com>
-Subject: Re: [PATCH v6 0/2] Add Pinctrl for SM4250/6115
-To:     Iskren Chernev <iskren.chernev@gmail.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, MSM <linux-arm-msm@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
-        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
-        Shevchenko <andy.shevchenko@gmail.com>," 
-        <~postmarketos/upstreaming@lists.sr.ht>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] brcmfmac: firmware: Allow per-board firmware binaries
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210711231659.255479-1-linus.walleij@linaro.org>
+References: <20210711231659.255479-1-linus.walleij@linaro.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        linux-wireless@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        phone-devel@vger.kernel.org, newbyte@disroot.org,
+        Stephan Gerhold <stephan@gerhold.net>
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-Id: <20210801102710.9C541C4338A@smtp.codeaurora.org>
+Date:   Sun,  1 Aug 2021 10:27:10 +0000 (UTC)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Jul 23, 2021 at 9:24 PM Iskren Chernev <iskren.chernev@gmail.com> wrote:
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> This patch adds support for the TLMM block on QCom SM4250 and SM6115, codename
-> bengal. The code is taken from OnePlus repo [1]. The two platforms are
-> identical so there is only one compat string.
->
-> [1]: https://github.com/OnePlusOSS/android_kernel_oneplus_sm4250
+> After some crashes in the 3D engine (!) on the Samsung GT-I8530
+> it turns out that the main firmware file can be device dependent,
+> something that was previously only handled for the NVRAM
+> parameter file.
+> 
+> Rewrite the code a bit so we can a per-board suffixed firmware
+> binary as well, if this does not exist we fall back to the
+> canonical firmware name.
+> 
+> Example: a 4330 device with the OF board compatible is
+> "samsung,gavini". We will first try
+> "brcmfmac4330-sdio.samsung,gavini.bin" then "brcmfmac4330-sdio.bin"
+> if that does not work.
+> 
+> Cc: phone-devel@vger.kernel.org
+> Cc: newbyte@disroot.org
+> Cc: Stephan Gerhold <stephan@gerhold.net>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-Patches applied!
+Patch applied to wireless-drivers-next.git, thanks.
 
-Yours,
-Linus Walleij
+5ff013914c62 brcmfmac: firmware: Allow per-board firmware binaries
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210711231659.255479-1-linus.walleij@linaro.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
