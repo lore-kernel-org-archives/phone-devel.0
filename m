@@ -2,80 +2,480 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37FF1C4338F
-	for <phone-devel@archiver.kernel.org>; Mon,  2 Aug 2021 22:54:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0521C4338F
+	for <phone-devel@archiver.kernel.org>; Tue,  3 Aug 2021 10:55:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1049F60F36
-	for <phone-devel@archiver.kernel.org>; Mon,  2 Aug 2021 22:54:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B36AD61037
+	for <phone-devel@archiver.kernel.org>; Tue,  3 Aug 2021 10:55:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232514AbhHBWyY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 2 Aug 2021 18:54:24 -0400
-Received: from mail-il1-f181.google.com ([209.85.166.181]:39865 "EHLO
-        mail-il1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231126AbhHBWyU (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Aug 2021 18:54:20 -0400
-Received: by mail-il1-f181.google.com with SMTP id r1so17933288iln.6;
-        Mon, 02 Aug 2021 15:54:09 -0700 (PDT)
+        id S235059AbhHCKzK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 3 Aug 2021 06:55:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33428 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234904AbhHCKzK (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 3 Aug 2021 06:55:10 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84254C061757;
+        Tue,  3 Aug 2021 03:54:59 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id h14so38985090lfv.7;
+        Tue, 03 Aug 2021 03:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2KXoDmkCLy0mtIQV8YEk8GnrTc8AcGvkB/pIX44UiII=;
+        b=s4yF3mnIh0RL5KmUYYq24h3pLph3YZbj1gPyWqm4zVuxOWCNWpCoFuIEyrZsLwQ1Nb
+         532qFhGKH+82BDDc+eSur6zrCII+gDVC31Hdi4ek3lSsgPcgVnuZdmsP8RMam/XuGsPA
+         iaCCCSVuQ7edhUM7JegfRnq60ND5h+9lvlJaA1c6fTpB2uqRNher8IdS5/BmqC4l5M+V
+         kkgaaJ0i0W7YXv5zFdbCfIeeq/O8J3MYLJDtswk7eY+rWR/Z56u/VTfH6mlxwpqsShV6
+         Rv+/g0jUPpEAm8iZngoQz5X7fIQy4iDC7v7q5l6b/IprK8OHSWLnF+rG9IwOEcXFUr1w
+         SHGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Ws7DlLtnnswMnz4Iv79PgHKEEMwGY+Hyjh4kHnupODQ=;
-        b=T9BBnnXgg7Uz3FTRybQ1tIozJMbDV6yo4ie+/LC6ENaRWaMlvZqFkIhWwstwRcUcm5
-         cpLquYBedVtJlm3VELIPMQYvgA0mFvrCH4EzvFYJuFjIZ3qj6kM4cIPIudMq6EKwXqXZ
-         U4N5DUGsPk3vjJ0bew9X/gid0EX8ikDF+CoB6iW0SUpfjtV8+BnlR9lIvnwkfL9TbbDF
-         p/3OM3ZN22AjqOla8en7aMqabWb4VXwP9oxLKP5XQCP9CRN56RMeNTCLW+/BE0ODJDbh
-         ktOtG/+TaAs7vwodcT0HWiEuKw/kSltFGe3b267g0AdPX68zE85M6pRkGmXk6dBUcJXp
-         rwEw==
-X-Gm-Message-State: AOAM532bmZevb6wfnFhMUvWChZ1ZfoUUMTKCgNrvLxTUoB6E4rPHUeFk
-        gBk1o7AKytj1v1nuhftYAA==
-X-Google-Smtp-Source: ABdhPJxR+DvEPJiW5Ohrap4Z45QueUlCz6siPp+LC7c3y/KSGP97bxFsq9mhb7deasgXjUf0AOOfrg==
-X-Received: by 2002:a92:cb52:: with SMTP id f18mr2529805ilq.97.1627944849513;
-        Mon, 02 Aug 2021 15:54:09 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id t24sm8106777ioh.24.2021.08.02.15.54.07
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2KXoDmkCLy0mtIQV8YEk8GnrTc8AcGvkB/pIX44UiII=;
+        b=MYf0NGLOdQrhLRaafWLMf9VpF6lqlMrHOBkwMfOGJEkjfwyzU9ugVwKzQT44D6ne2j
+         R6xZOnexRCE3MUVuajPig3ez23Hpc3hEIwAKRhI68r2awOOVhFgDvor3apClQV1GhsvA
+         SyrHEBwfEilAAA2B6N7SGKhSSSvM8S3Lq4pMSUQDYegylK5CzmpPBpVFxZlobS1nVuX5
+         MR8oP6CAhV2lj50IFjL3lUmtofmH9Q4oxAHxXlAtUBPqF5xRNTLp2icjbWSg5NXeW9ir
+         0vpoL5yRGjhFkcP36T1WFs0NcEH8iSu1cie3+oLh7h3Zb3/C08WMEoCWO6wYi3jD6OMq
+         Cqfg==
+X-Gm-Message-State: AOAM530uXaUavN3T7Gfto81G0ds/YJloyAjohe62RcaeW5QOtcLBh94Q
+        AjNh2wrcc1IEJ/AjfSqwnFdHtFif+w0ee5cIyCkH6w==
+X-Google-Smtp-Source: ABdhPJz4lkNvpLYsRHkTAYklsfJr1owvBciWveXeKlg/i/pxiBGek2lCSohwnG2cD23jt7l8hfNjIw==
+X-Received: by 2002:a05:6512:3b2a:: with SMTP id f42mr266677lfv.63.1627988097709;
+        Tue, 03 Aug 2021 03:54:57 -0700 (PDT)
+Received: from nergzd-desktop.localdomain ([62.122.67.26])
+        by smtp.gmail.com with ESMTPSA id a6sm1337576lfs.160.2021.08.03.03.54.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Aug 2021 15:54:08 -0700 (PDT)
-Received: (nullmailer pid 1776439 invoked by uid 1000);
-        Mon, 02 Aug 2021 22:54:06 -0000
-Date:   Mon, 2 Aug 2021 16:54:06 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Cc:     marijn.suijten@somainline.org, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, rjw@rjwysocki.net,
-        bartosz.dudziak@snejp.pl, bjorn.andersson@linaro.org,
-        jeffrey.l.hugo@gmail.com, martin.botka@somainline.org,
-        agross@kernel.org, konrad.dybcio@somainline.org,
-        jami.kettunen@somainline.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org, stephan@gerhold.net,
-        linux-arm-msm@vger.kernel.org, daniel.lezcano@linaro.org
-Subject: Re: [PATCH v8 5/5] dt-bindings: soc: qcom: spm: Document SDM660 and
- MSM8998 compatibles
-Message-ID: <YQh3jjIUTnmHyzft@robh.at.kernel.org>
-References: <20210729155609.608159-1-angelogioacchino.delregno@somainline.org>
- <20210729155609.608159-6-angelogioacchino.delregno@somainline.org>
+        Tue, 03 Aug 2021 03:54:57 -0700 (PDT)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linus.walleij@linaro.org, phone-devel@vger.kernel.org,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH] drm/panel: s6d27a1: Add driver for Samsung S6D27A1 display panel
+Date:   Tue,  3 Aug 2021 16:54:18 +0300
+Message-Id: <20210803135419.26495-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210729155609.608159-6-angelogioacchino.delregno@somainline.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 29 Jul 2021 17:56:09 +0200, AngeloGioacchino Del Regno wrote:
-> The driver was updated to add SAW2 v4.1 support for new SoCs: document
-> the new compatibles.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> ---
->  .../bindings/soc/qcom/qcom,spm.yaml           | 22 +++++++++++++++++++
->  1 file changed, 22 insertions(+)
-> 
+This adds a driver for Samsung S6D27A1 display controller and panel.
+This panel is found in the Samsung GT-I8160 mobile phone,
+and possibly some other mobile phones.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+This display needs manufactrer commands to configure it to a working state;
+the commands used in this driver were taken from downstream driver
+by Gareth Phillips; sadly, there is almost no documentation on what they
+actually do.
+
+This driver re-uses the DBI infrastructure to communicate with the display.
+
+This driver is heavily based on WideChips WS2401 display controller
+driver by Linus Walleij and on other panel drivers for reference.
+
+Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+---
+ drivers/gpu/drm/panel/Kconfig                 |   8 +
+ drivers/gpu/drm/panel/Makefile                |   1 +
+ drivers/gpu/drm/panel/panel-samsung-s6d27a1.c | 342 ++++++++++++++++++
+ 3 files changed, 351 insertions(+)
+ create mode 100644 drivers/gpu/drm/panel/panel-samsung-s6d27a1.c
+
+diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
+index f4fe1dba99..21007b2032 100644
+--- a/drivers/gpu/drm/panel/Kconfig
++++ b/drivers/gpu/drm/panel/Kconfig
+@@ -348,6 +348,14 @@ config DRM_PANEL_SAMSUNG_S6D16D0
+ 	depends on DRM_MIPI_DSI
+ 	select VIDEOMODE_HELPERS
+ 
++config DRM_PANEL_SAMSUNG_S6D27A1
++	tristate "Samsung S6D27A1 DPI panel driver"
++	depends on OF && SPI && GPIOLIB
++	select DRM_MIPI_DBI
++	help
++	  Say Y here if you want to enable support for the Samsung
++	  S6D27A1 DPI 480x800 panel.
++
+ config DRM_PANEL_SAMSUNG_S6E3HA2
+ 	tristate "Samsung S6E3HA2 DSI video mode panel"
+ 	depends on OF
+diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
+index d94c27df17..d2a6fe81e9 100644
+--- a/drivers/gpu/drm/panel/Makefile
++++ b/drivers/gpu/drm/panel/Makefile
+@@ -35,6 +35,7 @@ obj-$(CONFIG_DRM_PANEL_RAYDIUM_RM68200) += panel-raydium-rm68200.o
+ obj-$(CONFIG_DRM_PANEL_RONBO_RB070D30) += panel-ronbo-rb070d30.o
+ obj-$(CONFIG_DRM_PANEL_SAMSUNG_LD9040) += panel-samsung-ld9040.o
+ obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6D16D0) += panel-samsung-s6d16d0.o
++obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6D27A1) += panel-samsung-s6d27a1.o
+ obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E3HA2) += panel-samsung-s6e3ha2.o
+ obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E63J0X03) += panel-samsung-s6e63j0x03.o
+ obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E63M0) += panel-samsung-s6e63m0.o
+diff --git a/drivers/gpu/drm/panel/panel-samsung-s6d27a1.c b/drivers/gpu/drm/panel/panel-samsung-s6d27a1.c
+new file mode 100644
+index 0000000000..86cf8d316b
+--- /dev/null
++++ b/drivers/gpu/drm/panel/panel-samsung-s6d27a1.c
+@@ -0,0 +1,342 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Panel driver for the Samsung S6D27A1 480x800 DPI RGB panel.
++ * Found in the Samsung Galaxy Ace 2 GT-I8160 mobile phone.
++ */
++
++#include <drm/drm_modes.h>
++#include <drm/drm_mipi_dbi.h>
++#include <drm/drm_panel.h>
++
++#include <linux/backlight.h>
++#include <linux/delay.h>
++#include <linux/gpio/consumer.h>
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/media-bus-format.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
++
++#include <video/mipi_display.h>
++
++#define S6D27A1_PASSWD_L2	0xF0	/* Password Command for Level 2 Control */
++#define S6D27A1_RESCTL		0xB3	/* Resolution Select Control */
++#define S6D27A1_PANELCTL2	0xB4	/* ASG Signal Control */
++#define S6D27A1_READID1		0xDA	/* Read panel ID 1 */
++#define S6D27A1_READID2		0xDB	/* Read panel ID 2 */
++#define S6D27A1_READID3		0xDC	/* Read panel ID 3 */
++#define S6D27A1_DISPCTL		0xF2	/* Display Control */
++#define S6D27A1_MANPWR		0xF3	/* Manual Control */
++#define S6D27A1_PWRCTL1		0xF4	/* Power Control */
++#define S6D27A1_SRCCTL		0xF6	/* Source Control */
++#define S6D27A1_PANELCTL	0xF7	/* Panel Control*/
++
++static const u8 s6d27a1_dbi_read_commands[] = {
++	S6D27A1_READID1,
++	S6D27A1_READID2,
++	S6D27A1_READID3,
++	0, /* sentinel */
++};
++
++/**
++ * struct s6d27a1 - state container for a panel controlled by the WS2401
++ * controller
++ */
++struct s6d27a1 {
++	/** @dev: the container device */
++	struct device *dev;
++	/** @dbi: the DBI bus abstraction handle */
++	struct mipi_dbi dbi;
++	/** @panel: the DRM panel instance for this device */
++	struct drm_panel panel;
++	/** @width: the width of this panel in mm */
++	u32 width;
++	/** @height: the height of this panel in mm */
++	u32 height;
++	/** @reset: reset GPIO line */
++	struct gpio_desc *reset;
++	/** @regulators: VCCIO and VIO supply regulators */
++	struct regulator_bulk_data regulators[2];
++	/** @bl: Backlight, if using internal backlight */
++	struct backlight_device *bl;
++};
++
++static const struct drm_display_mode s6d27a1_480_800_mode = {
++	/*
++	 * The vendor driver states that the S6D27A1 panel
++	 * has a pixel clock frequency of 49920000 Hz / 2 = 24960000 Hz.
++	 */
++	.clock = 24960,
++	.hdisplay = 480,
++	.hsync_start = 480 + 63,
++	.hsync_end = 480 + 63 + 2,
++	.htotal = 480 + 63 + 2 + 63,
++	.vdisplay = 800,
++	.vsync_start = 800 + 11,
++	.vsync_end = 800 + 11 + 2,
++	.vtotal = 800 + 11 + 2 + 10,
++	.width_mm = 50,
++	.height_mm = 84,
++	.flags = DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
++};
++
++static inline struct s6d27a1 *to_s6d27a1(struct drm_panel *panel)
++{
++	return container_of(panel, struct s6d27a1, panel);
++}
++
++#define s6d27a1_command(ctx, cmd, seq...) \
++({ \
++	struct mipi_dbi *dbi = &ctx->dbi; \
++	int ret; \
++	ret = mipi_dbi_command(dbi, cmd, seq);	\
++	if (ret) { \
++		dev_err(ctx->dev, "failure in writing command %02x\n", cmd); \
++	} \
++})
++
++static void s6d27a1_read_mtp_id(struct s6d27a1 *ctx)
++{
++	struct mipi_dbi *dbi = &ctx->dbi;
++	u8 id1, id2, id3;
++	int ret;
++
++	ret = mipi_dbi_command_read(dbi, S6D27A1_READID1, &id1);
++	if (ret) {
++		dev_err(ctx->dev, "unable to read MTP ID 1\n");
++		return;
++	}
++	ret = mipi_dbi_command_read(dbi, S6D27A1_READID2, &id1);
++	if (ret) {
++		dev_err(ctx->dev, "unable to read MTP ID 2\n");
++		return;
++	}
++	ret = mipi_dbi_command_read(dbi, S6D27A1_READID3, &id1);
++	if (ret) {
++		dev_err(ctx->dev, "unable to read MTP ID 3\n");
++		return;
++	}
++	dev_info(ctx->dev, "MTP ID: %02x %02x %02x\n", id1, id2, id3);
++}
++
++static int s6d27a1_power_on(struct s6d27a1 *ctx)
++{
++	int ret;
++
++	/* Power up */
++	ret = regulator_bulk_enable(ARRAY_SIZE(ctx->regulators),
++				    ctx->regulators);
++	if (ret) {
++		dev_err(ctx->dev, "failed to enable regulators: %d\n", ret);
++		return ret;
++	}
++	msleep(20);
++
++	/* Assert reset >=1 ms */
++	gpiod_set_value_cansleep(ctx->reset, 1);
++	usleep_range(1000, 5000);
++	/* De-assert reset */
++	gpiod_set_value_cansleep(ctx->reset, 0);
++	/* Wait >= 10 ms */
++	msleep(20);
++	dev_dbg(ctx->dev, "de-asserted RESET\n");
++
++	/*
++	 * Exit sleep mode and initialize display - some hammering is
++	 * necessary.
++	 */
++	s6d27a1_command(ctx, MIPI_DCS_EXIT_SLEEP_MODE);
++	s6d27a1_command(ctx, MIPI_DCS_EXIT_SLEEP_MODE);
++	msleep(50);
++
++	/* Magic to unlock level 2 control of the display */
++	s6d27a1_command(ctx, S6D27A1_PASSWD_L2, 0x5A, 0x5A);
++
++	/* Configure resolution to 480RGBx800 */
++	s6d27a1_command(ctx, S6D27A1_RESCTL, 0x22);
++
++	s6d27a1_command(ctx, S6D27A1_PANELCTL2, 0x00, 0x02, 0x03, 0x04, 0x05, 0x08, 0x00, 0x0c);
++
++	s6d27a1_command(ctx, S6D27A1_MANPWR, 0x01, 0x00, 0x00, 0x08, 0x08, 0x02, 0x00);
++
++	s6d27a1_command(ctx, S6D27A1_DISPCTL, 0x19, 0x00, 0x08, 0x0D, 0x03, 0x41, 0x3F);
++
++	s6d27a1_command(ctx, S6D27A1_PWRCTL1, 0x00, 0x00, 0x00, 0x00, 0x55,
++						0x44, 0x05, 0x88, 0x4B, 0x50);
++
++	s6d27a1_command(ctx, S6D27A1_SRCCTL, 0x03, 0x09, 0x8A, 0x00, 0x01, 0x16);
++
++	s6d27a1_command(ctx, S6D27A1_PANELCTL, 0x00, 0x05, 0x06, 0x07, 0x08,
++						0x01, 0x09, 0x0D, 0x0A, 0x0E,
++						0x0B, 0x0F, 0x0C, 0x10, 0x01,
++						0x11, 0x12, 0x13, 0x14, 0x05,
++						0x06, 0x07, 0x08, 0x01, 0x09,
++						0x0D, 0x0A, 0x0E, 0x0B, 0x0F,
++						0x0C, 0x10, 0x01, 0x11, 0x12,
++						0x13, 0x14);
++
++	/* lock the level 2 control */
++	s6d27a1_command(ctx, S6D27A1_PASSWD_L2, 0xA5, 0xA5);
++
++	s6d27a1_read_mtp_id(ctx);
++
++	return 0;
++}
++
++static int s6d27a1_power_off(struct s6d27a1 *ctx)
++{
++	/* Go into RESET and disable regulators */
++	gpiod_set_value_cansleep(ctx->reset, 1);
++	return regulator_bulk_disable(ARRAY_SIZE(ctx->regulators),
++				      ctx->regulators);
++}
++
++static int s6d27a1_unprepare(struct drm_panel *panel)
++{
++	struct s6d27a1 *ctx = to_s6d27a1(panel);
++
++	s6d27a1_command(ctx, MIPI_DCS_ENTER_SLEEP_MODE);
++	msleep(120);
++	return s6d27a1_power_off(to_s6d27a1(panel));
++}
++
++static int s6d27a1_disable(struct drm_panel *panel)
++{
++	struct s6d27a1 *ctx = to_s6d27a1(panel);
++
++	s6d27a1_command(ctx, MIPI_DCS_SET_DISPLAY_OFF);
++	msleep(25);
++
++	return 0;
++}
++
++static int s6d27a1_prepare(struct drm_panel *panel)
++{
++	return s6d27a1_power_on(to_s6d27a1(panel));
++}
++
++static int s6d27a1_enable(struct drm_panel *panel)
++{
++	struct s6d27a1 *ctx = to_s6d27a1(panel);
++
++	s6d27a1_command(ctx, MIPI_DCS_SET_DISPLAY_ON);
++
++	return 0;
++}
++
++/**
++ * s6d27a1_get_modes() - return the mode
++ * @panel: the panel to get the mode for
++ * @connector: reference to the central DRM connector control structure
++ */
++static int s6d27a1_get_modes(struct drm_panel *panel,
++			    struct drm_connector *connector)
++{
++	struct s6d27a1 *ctx = to_s6d27a1(panel);
++	struct drm_display_mode *mode;
++	static const u32 bus_format = MEDIA_BUS_FMT_RGB888_1X24;
++
++	mode = drm_mode_duplicate(connector->dev, &s6d27a1_480_800_mode);
++	if (!mode) {
++		dev_err(ctx->dev, "failed to add mode\n");
++		return -ENOMEM;
++	}
++
++	connector->display_info.bpc = 8;
++	connector->display_info.width_mm = mode->width_mm;
++	connector->display_info.height_mm = mode->height_mm;
++	connector->display_info.bus_flags =
++		DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE;
++	drm_display_info_set_bus_formats(&connector->display_info,
++					 &bus_format, 1);
++
++	drm_mode_set_name(mode);
++	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
++
++	drm_mode_probed_add(connector, mode);
++
++	return 1;
++}
++
++static const struct drm_panel_funcs s6d27a1_drm_funcs = {
++	.disable = s6d27a1_disable,
++	.unprepare = s6d27a1_unprepare,
++	.prepare = s6d27a1_prepare,
++	.enable = s6d27a1_enable,
++	.get_modes = s6d27a1_get_modes,
++};
++
++static int s6d27a1_probe(struct spi_device *spi)
++{
++	struct device *dev = &spi->dev;
++	struct s6d27a1 *ctx;
++	int ret;
++
++	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
++	if (!ctx)
++		return -ENOMEM;
++	ctx->dev = dev;
++
++	/*
++	 * VCI   is the analog voltage supply
++	 * VCCIO is the digital I/O voltage supply
++	 */
++	ctx->regulators[0].supply = "vci";
++	ctx->regulators[1].supply = "vccio";
++	ret = devm_regulator_bulk_get(dev,
++				      ARRAY_SIZE(ctx->regulators),
++				      ctx->regulators);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to get regulators\n");
++
++	ctx->reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(ctx->reset)) {
++		ret = PTR_ERR(ctx->reset);
++		return dev_err_probe(dev, ret, "no RESET GPIO\n");
++	}
++
++	ret = mipi_dbi_spi_init(spi, &ctx->dbi, NULL);
++	if (ret)
++		return dev_err_probe(dev, ret, "MIPI DBI init failed\n");
++	ctx->dbi.read_commands = s6d27a1_dbi_read_commands;
++
++	drm_panel_init(&ctx->panel, dev, &s6d27a1_drm_funcs,
++		       DRM_MODE_CONNECTOR_DPI);
++
++	spi_set_drvdata(spi, ctx);
++
++	drm_panel_add(&ctx->panel);
++	dev_dbg(dev, "added panel\n");
++
++	return 0;
++}
++
++static int s6d27a1_remove(struct spi_device *spi)
++{
++	struct s6d27a1 *ctx = spi_get_drvdata(spi);
++
++	drm_panel_remove(&ctx->panel);
++	return 0;
++}
++
++static const struct of_device_id s6d27a1_match[] = {
++	{ .compatible = "samsung,s6d27a1", },
++	{},
++};
++MODULE_DEVICE_TABLE(of, s6d27a1_match);
++
++static struct spi_driver s6d27a1_driver = {
++	.probe		= s6d27a1_probe,
++	.remove		= s6d27a1_remove,
++	.driver		= {
++		.name	= "s6d27a1-panel",
++		.of_match_table = s6d27a1_match,
++	},
++};
++module_spi_driver(s6d27a1_driver);
++
++MODULE_AUTHOR("Markuss Broks <markuss.broks@gmail.com>");
++MODULE_DESCRIPTION("Samsung S6D27A1 panel driver");
++MODULE_LICENSE("GPL v2");
+-- 
+2.32.0
+
