@@ -2,131 +2,196 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AFCC2C432BE
-	for <phone-devel@archiver.kernel.org>; Tue,  3 Aug 2021 23:30:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B613C4338F
+	for <phone-devel@archiver.kernel.org>; Wed,  4 Aug 2021 08:58:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9BEE860F94
-	for <phone-devel@archiver.kernel.org>; Tue,  3 Aug 2021 23:30:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2BF2260EE9
+	for <phone-devel@archiver.kernel.org>; Wed,  4 Aug 2021 08:58:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233705AbhHCXay (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 3 Aug 2021 19:30:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49226 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233671AbhHCXax (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 3 Aug 2021 19:30:53 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A953EC061757
-        for <phone-devel@vger.kernel.org>; Tue,  3 Aug 2021 16:30:40 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id o2-20020a9d22020000b0290462f0ab0800so45614ota.11
-        for <phone-devel@vger.kernel.org>; Tue, 03 Aug 2021 16:30:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ZYjWA4Yy8yni7nAey7btenmGHZpQImUmJ+PCgx2CI6c=;
-        b=bVYqJBCLY4efufEFB2E8p9Y6SUVjXZJaUScEShKt71dFXvF7/GZLLCOoh1YUZ2k2P+
-         2RWIgKAzqdxMQsihrYyt+2QmR8q5Ui+rwuLSYU2wraL6QlAngaIsgnmwaXYgeOCarDRZ
-         ouC6nTYVuegkgQOV1yZypVmuVQOTNAYAgMA2B/91Gy+u+M82wNqKtiGVrSrszDm3IpVE
-         +InjYjyz7H7gwpvngvFN0PCQV3Yh0Xl4p7l7GkDx95PeH//fwHd6s09MFiLD6l4Hh4re
-         4WikR9UJukc/dH3luRoatBtut+jwCPdWb0pCANiGsQRph00h+rUNmY6Tt/TByXuUAp5b
-         TIIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ZYjWA4Yy8yni7nAey7btenmGHZpQImUmJ+PCgx2CI6c=;
-        b=gW9WFK53/joGWKb15P+c/jsDZpZCAfbjXLsFtgeiUSALvQc64/glvlWvFSEB2k2XQV
-         ZTLW6wNDQpjIyA1TTHxH5WRnLa0u4/Fm3dn91AHUZRhPpUtMhvPRiBml6PiiQCvyjcHv
-         EbPsvvZ1eJy+AZ2FXX0JrVJmqp4m/3xa+x//7CtSnOouqev6Rxq9bdY0YybyZSbMTo1G
-         t3agvhj+YzDT/uMASnWFvziLN7OmaFN3W+sfIyoTb9e6fTBDCO/txgTN+Lid9qPtgEc9
-         S2Kwf+NoODO7ULHOovwVriu4b8NBLqO55QmkIbYvWm7gpSWy7WhIMdIQchfbKQQ3NEVC
-         WneQ==
-X-Gm-Message-State: AOAM5301L5hinI941YtaqsaheV3tFs1WZJVMqlcNoPQnfCkUHhklJSve
-        kX6BfEj+vZs9i6pdfvGjbW86sQ==
-X-Google-Smtp-Source: ABdhPJwMSHS5ss5KuHh+AzQJx+Ub//W7Wr3UaFgd7uxnMp+T0mzLzx/6ihujqjc0PYHJaQOfW46LHw==
-X-Received: by 2002:a05:6830:150e:: with SMTP id k14mr17217030otp.351.1628033440036;
-        Tue, 03 Aug 2021 16:30:40 -0700 (PDT)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id n1sm102746otk.34.2021.08.03.16.30.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Aug 2021 16:30:39 -0700 (PDT)
-Date:   Tue, 3 Aug 2021 18:30:37 -0500
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org, Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] pinctrl: pmic-mpp: Add missing dt-bindings mpp
- function defs
-Message-ID: <YQnRnUsrRfNh+WbB@builder.lan>
-References: <20210225213605.117201-1-konrad.dybcio@somainline.org>
+        id S235909AbhHDI62 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 4 Aug 2021 04:58:28 -0400
+Received: from lpdvsmtp11.broadcom.com ([192.19.166.231]:53570 "EHLO
+        relay.smtp-ext.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235421AbhHDI62 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 4 Aug 2021 04:58:28 -0400
+X-Greylist: delayed 595 seconds by postgrey-1.27 at vger.kernel.org; Wed, 04 Aug 2021 04:58:28 EDT
+Received: from bld-lvn-bcawlan-34.lvn.broadcom.net (bld-lvn-bcawlan-34.lvn.broadcom.net [10.75.138.137])
+        by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 8E6F480D8;
+        Wed,  4 Aug 2021 01:48:20 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 8E6F480D8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1628066900;
+        bh=pt1KK0fcrEO6kMlem5B+QxkgrpxkL407PGTI8pa/FSg=;
+        h=From:Subject:To:Cc:References:Date:In-Reply-To:From;
+        b=ihx49GHxb4Ooinhl4Y65BbwJ/1QvcHNESc4HCJwue3PjKIC7YzVe1W5Q18pdoSPZd
+         BWY284+/OunsAvGR2tGNwcZJMcVSpxTcPjBVsb/X2rXBIcq0+1SHnpZ90+E9j5jDRT
+         cw/TFthwuo4BZ1k5LjzrsRqS8zUcvOZDZEMxmWj8=
+Received: from [10.230.42.155] (unknown [10.230.42.155])
+        by bld-lvn-bcawlan-34.lvn.broadcom.net (Postfix) with ESMTPSA id 5E7EA1874BD;
+        Wed,  4 Aug 2021 01:48:16 -0700 (PDT)
+From:   Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: Re: [PATCH] brcmfmac: firmware: Allow per-board firmware binaries
+To:     Dmitry Osipenko <digetx@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>
+Cc:     linux-wireless@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+        phone-devel@vger.kernel.org, newbyte@disroot.org,
+        Stephan Gerhold <stephan@gerhold.net>
+References: <20210711231659.255479-1-linus.walleij@linaro.org>
+ <fca09928-72a8-a573-a862-7c486a2094d6@gmail.com>
+ <02415358-6635-a974-7682-a721912ca4fc@gmail.com>
+Message-ID: <a2ee7f03-879e-543f-fbaf-06a58e416e9d@broadcom.com>
+Date:   Wed, 4 Aug 2021 10:48:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210225213605.117201-1-konrad.dybcio@somainline.org>
+In-Reply-To: <02415358-6635-a974-7682-a721912ca4fc@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu 25 Feb 15:36 CST 2021, Konrad Dybcio wrote:
+On August 3, 2021 5:53:14 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 
-> From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> 
-> The pinctrl-spmi-mpp driver supports setting more mpp functions
-> than the ones defined in the dt-bindings header, specifically,
-> digital, analog and sink.
-> 
-> To follow the current way of specifying the function config
-> in Device-Tree, add the missing three definitions in the
-> appropriate dt-bindings header as:
-> GPIO_MPP_FUNC_{DIGITAL,ANALOG,SINK}.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> 03.08.2021 18:28, Dmitry Osipenko пишет:
+>> 12.07.2021 02:16, Linus Walleij пишет:
+>>> After some crashes in the 3D engine (!) on the Samsung GT-I8530
+>>> it turns out that the main firmware file can be device dependent,
+>>> something that was previously only handled for the NVRAM
+>>> parameter file.
+>>>
+>>> Rewrite the code a bit so we can a per-board suffixed firmware
+>>> binary as well, if this does not exist we fall back to the
+>>> canonical firmware name.
+>>>
+>>> Example: a 4330 device with the OF board compatible is
+>>> "samsung,gavini". We will first try
+>>> "brcmfmac4330-sdio.samsung,gavini.bin" then "brcmfmac4330-sdio.bin"
+>>> if that does not work.
+>>>
+>>> Cc: phone-devel@vger.kernel.org
+>>> Cc: newbyte@disroot.org
+>>> Cc: Stephan Gerhold <stephan@gerhold.net>
+>>> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+>>> ---
+>>> .../broadcom/brcm80211/brcmfmac/firmware.c    | 53 +++++++++++++++----
+>>> 1 file changed, 42 insertions(+), 11 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c 
+>>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+>>> index d40104b8df55..adfdfc654b10 100644
+>>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+>>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+>>> @@ -594,28 +594,47 @@ static int brcmf_fw_complete_request(const struct 
+>>> firmware *fw,
+>>> return (cur->flags & BRCMF_FW_REQF_OPTIONAL) ? 0 : ret;
+>>> }
+>>>
+>>> +static char *brcm_alt_fw_path(const char *path, const char *board_type)
+>>> +{
+>>> + char alt_path[BRCMF_FW_NAME_LEN];
+>>> + char suffix[5];
+>>> +
+>>> + strscpy(alt_path, path, BRCMF_FW_NAME_LEN);
+>>> + /* At least one character + suffix */
+>>> + if (strlen(alt_path) < 5)
+>>> + return NULL;
+>>> +
+>>> + /* strip .txt or .bin at the end */
+>>> + strscpy(suffix, alt_path + strlen(alt_path) - 4, 5);
+>>> + alt_path[strlen(alt_path) - 4] = 0;
+>>> + strlcat(alt_path, ".", BRCMF_FW_NAME_LEN);
+>>> + strlcat(alt_path, board_type, BRCMF_FW_NAME_LEN);
+>>> + strlcat(alt_path, suffix, BRCMF_FW_NAME_LEN);
+>>> +
+>>> + return kstrdup(alt_path, GFP_KERNEL);
+>>> +}
+>>> +
+>>> static int brcmf_fw_request_firmware(const struct firmware **fw,
+>>>   struct brcmf_fw *fwctx)
+>>> {
+>>> struct brcmf_fw_item *cur = &fwctx->req->items[fwctx->curpos];
+>>> int ret;
+>>>
+>>> - /* nvram files are board-specific, first try a board-specific path */
+>>> + /* Files can be board-specific, first try a board-specific path */
+>>> if (cur->type == BRCMF_FW_TYPE_NVRAM && fwctx->req->board_type) {
+>>> - char alt_path[BRCMF_FW_NAME_LEN];
+>>> + char *alt_path;
+>>>
+>>> - strlcpy(alt_path, cur->path, BRCMF_FW_NAME_LEN);
+>>> - /* strip .txt at the end */
+>>> - alt_path[strlen(alt_path) - 4] = 0;
+>>> - strlcat(alt_path, ".", BRCMF_FW_NAME_LEN);
+>>> - strlcat(alt_path, fwctx->req->board_type, BRCMF_FW_NAME_LEN);
+>>> - strlcat(alt_path, ".txt", BRCMF_FW_NAME_LEN);
+>>> + alt_path = brcm_alt_fw_path(cur->path, fwctx->req->board_type);
+>>> + if (!alt_path)
+>>> + goto fallback;
+>>>
+>>> ret = request_firmware(fw, alt_path, fwctx->dev);
+>>> + kfree(alt_path);
+>>> if (ret == 0)
+>>> return ret;
+>>> }
+>>>
+>>> +fallback:
+>>> return request_firmware(fw, cur->path, fwctx->dev);
+>>> }
+>>>
+>>> @@ -660,6 +679,7 @@ int brcmf_fw_get_firmwares(struct device *dev, struct 
+>>> brcmf_fw_request *req,
+>>> {
+>>> struct brcmf_fw_item *first = &req->items[0];
+>>> struct brcmf_fw *fwctx;
+>>> + char *alt_path;
+>>> int ret;
+>>>
+>>> brcmf_dbg(TRACE, "enter: dev=%s\n", dev_name(dev));
+>>> @@ -677,9 +697,20 @@ int brcmf_fw_get_firmwares(struct device *dev, struct 
+>>> brcmf_fw_request *req,
+>>> fwctx->req = req;
+>>> fwctx->done = fw_cb;
+>>>
+>>> - ret = request_firmware_nowait(THIS_MODULE, true, first->path,
+>>> -      fwctx->dev, GFP_KERNEL, fwctx,
+>>> -      brcmf_fw_request_done);
+>>> + /* First try alternative board-specific path if any */
+>>> + alt_path = brcm_alt_fw_path(first->path, fwctx->req->board_type);
+>>> + if (alt_path) {
+>>> + ret = request_firmware_nowait(THIS_MODULE, true, alt_path,
+>>> +      fwctx->dev, GFP_KERNEL, fwctx,
+>>> +      brcmf_fw_request_done);
+>
+> This return 0 immediately, despite of the missing firmware file. It's
+> not a blocking FW request.
 
-I noticed that this has not been picked up yet.
+Right. I didn't get to looking at this earlier, but indeed the check 
+whether the requested firmware exists is done in another thread context 
+so the return value here only indicates whether the firmware request 
+could be scheduled or not.
 
-As changes to these files typically goes through the respective
-maintainer's tree I think it would be good if you pick up the acks and
-resend them.
-
-Also patch 1 and 2 has no real relationship, and per above request would
-be picked by two different maintainers, so please post them separately
-instead.
-
-PS. I merged the Tone dts using the strings instead of the defines
-(which I still prefer over using these defines).
+My first reaction to the patch was to reject it, but leaning towards 
+supporting this now. OEMs tend to get tailor-made firmware in terms of 
+features. Depending on their requirements they get their mix of firmware 
+features. That such difference lead to a crash in 3d engine is somewhat 
+surprising. I am curious if we can debug this more and learn how a 
+firmware variant could cause such a crash. Maybe some DMA issue?
 
 Regards,
-Bjorn
+Arend
 
-> ---
->  include/dt-bindings/pinctrl/qcom,pmic-mpp.h | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/include/dt-bindings/pinctrl/qcom,pmic-mpp.h b/include/dt-bindings/pinctrl/qcom,pmic-mpp.h
-> index 32e66ee7e830..3cdca7ee1b3f 100644
-> --- a/include/dt-bindings/pinctrl/qcom,pmic-mpp.h
-> +++ b/include/dt-bindings/pinctrl/qcom,pmic-mpp.h
-> @@ -98,6 +98,9 @@
->  /* To be used with "function" */
->  #define PMIC_MPP_FUNC_NORMAL		"normal"
->  #define PMIC_MPP_FUNC_PAIRED		"paired"
-> +#define PMIC_MPP_FUNC_DIGITAL		"digital"
-> +#define PMIC_MPP_FUNC_ANALOG		"analog"
-> +#define PMIC_MPP_FUNC_SINK		"sink"
->  #define PMIC_MPP_FUNC_DTEST1		"dtest1"
->  #define PMIC_MPP_FUNC_DTEST2		"dtest2"
->  #define PMIC_MPP_FUNC_DTEST3		"dtest3"
-> -- 
-> 2.30.1
-> 
