@@ -2,121 +2,74 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FSL_HELO_FAKE,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A4E5C432BE
-	for <phone-devel@archiver.kernel.org>; Thu,  5 Aug 2021 08:00:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43714C4338F
+	for <phone-devel@archiver.kernel.org>; Thu,  5 Aug 2021 09:06:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0C70561040
-	for <phone-devel@archiver.kernel.org>; Thu,  5 Aug 2021 08:00:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 289F0610CC
+	for <phone-devel@archiver.kernel.org>; Thu,  5 Aug 2021 09:06:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239152AbhHEIA2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 5 Aug 2021 04:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37344 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237738AbhHEIA1 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 5 Aug 2021 04:00:27 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C89D8C0613C1
-        for <phone-devel@vger.kernel.org>; Thu,  5 Aug 2021 01:00:12 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id d8so5297150wrm.4
-        for <phone-devel@vger.kernel.org>; Thu, 05 Aug 2021 01:00:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=wumc4OZ7mBGOruxhA75GZYnXNkQhB5mW1nT6BqQbhoM=;
-        b=OzEDvkO70XEjJpSxi59DeN+Dn6kIot+RdgCjtY4yI40znzqsrqBWxOANTs5It1hlVQ
-         wWl7kpglPubk2ubzYbZPHmqRadHU2jbkvRemE5TEh5xjIByLkJxxxZF1Cf1/Hxa/4o3Z
-         EMF1lgFJsvGL3bRxSmf3SLeuUYOo6wZI4xcHtsZiJAqRf7D/EqeGkXU/KmX0OXwXC1gV
-         5gEOrbj+bXMZ35y70DOAqq2L+kXBst0eJJ6YjpuDbcrCIy2GAzQLTnLdHvka4Uw5I6wx
-         xoEfm6xYSKMY3+A+cGWn8XLltL9F0QnvsT7EmpF6gAgRlGKwCmcO9Rq1bnRJFaLnquuS
-         Ggdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=wumc4OZ7mBGOruxhA75GZYnXNkQhB5mW1nT6BqQbhoM=;
-        b=VSb0p8s7Bzmbu/deZbAIcH8QT/w7PLWwpUK6gAbjvkd1ZailCeE2OsaEaWMCG6K8Mm
-         LE06KQUJGCTwq9x2yrKh6YQUqxxT8RARc2xh4y/BUg+ECVGzcjGVqYjvUbWjP/aL64gP
-         4IbzL8bfSzmwjPoVFA0rQVuxcJTqyiJRAnYq6AjIxOXt7fHvqgH1n7U1FVcB5kRKa540
-         5ptbtCdVoW/ks1o3ireHI9PpNyjL1P8FVjsv82554k/YSIhXJQA6yzVc1i+rovyREbr8
-         km3oV7B+66avNWbNvvJkuJdxTmOfpsihN/BIJgoCzARpI9DuC/eCHiO3Tw2AKyHWhglp
-         F7qg==
-X-Gm-Message-State: AOAM531FB6p1zXmGgyQz2AZ72P0kUBHmBai886Ap6/YpbM5VGKb/KquZ
-        XhkYfAF0pykupOAuTJntlLnmrQ==
-X-Google-Smtp-Source: ABdhPJwwI7OpevysCPXVydCiImYOL403jvLwB9REh/tzZacm4rsI/wiorAFciqp4F5XD5r0f76eBSQ==
-X-Received: by 2002:a5d:424d:: with SMTP id s13mr3652510wrr.356.1628150411445;
-        Thu, 05 Aug 2021 01:00:11 -0700 (PDT)
-Received: from google.com ([109.180.115.228])
-        by smtp.gmail.com with ESMTPSA id f15sm5133528wrp.12.2021.08.05.01.00.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Aug 2021 01:00:10 -0700 (PDT)
-Date:   Thu, 5 Aug 2021 09:00:09 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mfd: db8500-prcmu: Handle missing FW variant
-Message-ID: <YQuaiW/MSZY4bmok@google.com>
-References: <20210801233314.3150754-1-linus.walleij@linaro.org>
- <20210801233314.3150754-2-linus.walleij@linaro.org>
- <YQejHNP1AzFHZ6gK@google.com>
- <CACRpkdaK0pBgmFSazjJ5NOj9rF9DzUyCfumxyi8PNaS_61_=Ww@mail.gmail.com>
+        id S238897AbhHEJGx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 5 Aug 2021 05:06:53 -0400
+Received: from mail-0201.mail-europe.com ([51.77.79.158]:40592 "EHLO
+        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238891AbhHEJGw (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 5 Aug 2021 05:06:52 -0400
+Date:   Thu, 05 Aug 2021 09:06:30 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1628154394;
+        bh=j53Cevesc3Wmn62wus/pwHZWo27XvHlCptqo+u/7Ve4=;
+        h=Date:To:From:Cc:Reply-To:Subject:From;
+        b=c2CQNTG4pWH7qBOmB1vWRF2zrbZtUPNOMMA3TlkniqddsodmLqQL0swRkroiUDhsi
+         MHyRKNdtcdLdTpkr83T6lc7b2xJNAXXURM8WrfA9AVkY/SaX8W2Vxw6x8kEGRLApwU
+         Ph5m+ym5lvCfd/5n42unX5tb3Ys0o0LAtDuGuG3s=
+To:     bjorn.andersson@linaro.org
+From:   Sireesh Kodali <sireeshkodali@protonmail.com>
+Cc:     agross@kernel.org, mturquette@baylibre.com, robh+dt@kernel.org,
+        sboyd@kernel.org, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Sireesh Kodali <sireeshkodali@protonmail.com>
+Reply-To: Sireesh Kodali <sireeshkodali@protonmail.com>
+Subject: [PATCH RESEND 0/2] Add GCC for MSM8953
+Message-ID: <KH2Sf97Sip3ObMRsBE9fBPLUML3cSrOXm4zG2qT7Tc@cp7-web-041.plabs.ch>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdaK0pBgmFSazjJ5NOj9rF9DzUyCfumxyi8PNaS_61_=Ww@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 05 Aug 2021, Linus Walleij wrote:
+Apologies, resending because I tried sending from disroot.org, which is
+a banned host on vger. Please ignore the previous patches if they
+reached you.
 
-> On Mon, Aug 2, 2021 at 9:47 AM Lee Jones <lee.jones@linaro.org> wrote:
-> > On Mon, 02 Aug 2021, Linus Walleij wrote:
-> >
-> > > There was an "unknown" firmware variant turning up in the wild
-> > > causing problems in the clock driver. Add this missing variant
-> > > and clarify that varian 11 and 15 are Samsung variants, as this
-> > > is now very well known from released products.
-> > >
-> > > Cc: Michael Turquette <mturquette@baylibre.com>
-> > > Cc: Stephen Boyd <sboyd@kernel.org>
-> > > Cc: linux-clk@vger.kernel.org
-> > > Cc: phone-devel@vger.kernel.org
-> > > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> > > ---
-> > > Clock maintainers: could you please ACK this so Lee can take
-> > > this into the MFD tree? The chances of merge collisions are
-> > > zero, this code changes very seldom.
-> > > ---
-> > >  drivers/clk/ux500/u8500_of_clk.c | 3 ++-
-> >
-> > >  drivers/mfd/db8500-prcmu.c       | 6 ++++--
-> > >  include/linux/mfd/dbx500-prcmu.h | 3 ++-
-> >
-> > Acked-by: Lee Jones <lee.jones@linaro.org>
-> 
-> Actually I intended for the clock people to ACK it for you
-> but since it is completely independent of 1/2 it actually works
-> either way, maybe they will rather pick it up, who knows? :D
+Hi,
 
-That's fine too.
+This patch adds support for the Global Clock Controller found on the
+MSM8953 Platform (SDM450, SDA450, SDM625, SDM632, APQ8053). Since all SoCs
+based on the MSM8953 platform are identical with respect to clocks, a
+single compatible is used.
 
-I assume they will not require an immutable branch, as the turn-over
-in this file is very low.
+Vladimir Lypak (2):
+  dt-bindings: clock: add Qualcomm MSM8953 GCC driver bindings
+  clk: qcom: Add Global Clock Controller driver for MSM8953
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+ .../devicetree/bindings/clock/qcom,gcc.yaml   |    2 +
+ drivers/clk/qcom/Kconfig                      |    8 +
+ drivers/clk/qcom/Makefile                     |    1 +
+ drivers/clk/qcom/gcc-msm8953.c                | 4250 +++++++++++++++++
+ include/dt-bindings/clock/qcom,gcc-msm8953.h  |  234 +
+ 5 files changed, 4495 insertions(+)
+ create mode 100644 drivers/clk/qcom/gcc-msm8953.c
+ create mode 100644 include/dt-bindings/clock/qcom,gcc-msm8953.h
+
+--=20
+2.32.0
+
+
