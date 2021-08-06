@@ -2,102 +2,80 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DF3AC432BE
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Aug 2021 17:03:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4598FC43214
+	for <phone-devel@archiver.kernel.org>; Fri,  6 Aug 2021 20:33:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D0395611ED
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Aug 2021 17:03:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2945461179
+	for <phone-devel@archiver.kernel.org>; Fri,  6 Aug 2021 20:33:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237944AbhHFRDV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 6 Aug 2021 13:03:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37182 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235555AbhHFRDU (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 6 Aug 2021 13:03:20 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AAFAC0613CF;
-        Fri,  6 Aug 2021 10:03:03 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id h14so11893983wrx.10;
-        Fri, 06 Aug 2021 10:03:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=ry90ENKPsYIpGExDy1ZF1IVXMmwBeF90JsJopXkAmdI=;
-        b=PGCsnDqIzxO8nkcTh9TUrZKbU2QHXJZsh87b3VLIEkbg6prQuU45RLKKuS7ZAOj6v2
-         02rApMWyFHocSzlgRR0+FoR9yfoBueg8cgTR3uK7HaEMFQBZXh+EqvhT6xI8nQi7wKJv
-         3gFyj82vjg4znvyDI45YfX/nCmHPkephua5pXU047n5TWj9hYq0Sx4o2lWU64VIDxoje
-         whNnHN9lGN5cMfTveTCKmeyDUonqx0VFN4klLmHjo0FRPVHQIKgi6yTavpu/GZy1PJv5
-         vG07dLzcjCwd3tKaQ7XTXSTZUTt0go2KK/18YopPUwaml5GRgHe56oTFXMIdpq91v208
-         fR4A==
+        id S244954AbhHFUeH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 6 Aug 2021 16:34:07 -0400
+Received: from mail-io1-f50.google.com ([209.85.166.50]:36549 "EHLO
+        mail-io1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244936AbhHFUeB (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 6 Aug 2021 16:34:01 -0400
+Received: by mail-io1-f50.google.com with SMTP id f11so13778409ioj.3;
+        Fri, 06 Aug 2021 13:33:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=ry90ENKPsYIpGExDy1ZF1IVXMmwBeF90JsJopXkAmdI=;
-        b=Gvq2/y4pFgiXCJU3lbLlozuEKjFfSJG7WbwSXsnRzF/r+xEVdu6kJXAaG1nQAPhx3k
-         IoMh3sDT1wo6Ns/SJYS7t+hHHe3AC9wqod/5CKjxr9Ch7I7GN+7gpZ8OdcH5CrtcDwAr
-         7YCbqnVGFK+W1I10uZTR7UXwW5xLUey28hcYVcD5yjlkS5H/cw1zxGi/HeZCw3oJa+ga
-         OcQorzhciqirtQ3MSN6qNv1duBvwQcbT3MmzU9P6f0L7YLOKKmCh2lQ8m6KXMXX1zdaH
-         kxyVybHLhu/sIs2KGF48b6zmpOz6jNmXKngzo+hTzWj9hs98SY4JwelopfI2EDqGJEoq
-         crAQ==
-X-Gm-Message-State: AOAM533vDkYskf07tfZF14cJEHiW5zYsI0+zCNhaEje+0nCvwyf5kcos
-        Bd2EhdTWZwYSDbUI/NUutwudVRcVj1Q=
-X-Google-Smtp-Source: ABdhPJwmqZ3gJaD/WzTPk4XMvORgHGG53THT9WtxsPcNejgkGmoo6xNkSoPMQ1Qf5UhB1LLTL5Wd3w==
-X-Received: by 2002:adf:f707:: with SMTP id r7mr11515538wrp.175.1628269382314;
-        Fri, 06 Aug 2021 10:03:02 -0700 (PDT)
-Received: from [192.168.74.110] (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
-        by smtp.gmail.com with ESMTPSA id j2sm10435637wrd.14.2021.08.06.10.03.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Aug 2021 10:03:01 -0700 (PDT)
-Subject: Re: [PATCH v3 1/2] clk: qcom: smd: Add support for SM6115 rpm clocks
-To:     Stephen Boyd <sboyd@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-References: <20210731164827.2756798-1-iskren.chernev@gmail.com>
- <20210731164827.2756798-2-iskren.chernev@gmail.com>
- <162821413782.19113.1911724221661020342@swboyd.mtv.corp.google.com>
-From:   Iskren Chernev <iskren.chernev@gmail.com>
-Message-ID: <b4abb286-08f8-b7b3-a163-d2d67c72f7b3@gmail.com>
-Date:   Fri, 6 Aug 2021 20:03:00 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=S7njTycsd1XL9PBVTCJA9Q/+rWiN/ju9cjzujGekEbU=;
+        b=PqofKHP6j6id8LSJ8TGtJl42UZzMTLUPFg0PGf2+tFGUAWv8qQ2TwLkB5v3c14SZ6X
+         fpVLIL3D8KuR5mZgo+GRzsqRDF6rIagjcWuofBqe5P6vgySme2f8LgHe1G1TrbMtiluT
+         gwm6N3S7QSS1sseCBbFgEPG01lCT3gYJy2jyOan69s5k1KKHFgeLyfYDNG33QBmXTCpw
+         ++PG/XqjGbTweN5euyRlHf30t191E5OWTvgUY4I6tavHMcolyN82CUSK5SA32CcAv8t+
+         hRtz1SVBzeNt/IBM+jVh+tNBgCb/8J2oEw9eChkC9ef36EIQBiYxbgkQmz2yhvrvhuE9
+         NrRA==
+X-Gm-Message-State: AOAM533QxrJ6xtgDBxFv4YmD2MncxStgYU5L5xLK3EmfWAoLbHmETElb
+        ytq2HK8VriPUXFYtroSYpQ==
+X-Google-Smtp-Source: ABdhPJy+9mDnPUP/HP78FvogBEPKf3tNkk5YNN1moTUm9PWfvvig2Z+9QKjZqD+dQTYPGza1p+KBsA==
+X-Received: by 2002:a6b:c906:: with SMTP id z6mr452309iof.7.1628282024853;
+        Fri, 06 Aug 2021 13:33:44 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id u12sm6294241iog.54.2021.08.06.13.33.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Aug 2021 13:33:44 -0700 (PDT)
+Received: (nullmailer pid 1747070 invoked by uid 1000);
+        Fri, 06 Aug 2021 20:33:43 -0000
+Date:   Fri, 6 Aug 2021 14:33:43 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, linux-clk@vger.kernel.org,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        phone-devel@vger.kernel.org,
+        Michael Turquette <mturquette@baylibre.com>
+Subject: Re: [PATCH v4 1/2] dt-bindings: clk: qcom: gcc-sm6115: Document
+ SM6115 GCC
+Message-ID: <YQ2cp7Ex0EQsmu5A@robh.at.kernel.org>
+References: <20210805161107.1194521-1-iskren.chernev@gmail.com>
+ <20210805161107.1194521-2-iskren.chernev@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <162821413782.19113.1911724221661020342@swboyd.mtv.corp.google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210805161107.1194521-2-iskren.chernev@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-
-On 8/6/21 4:42 AM, Stephen Boyd wrote:
-> Quoting Iskren Chernev (2021-07-31 09:48:26)
->> Add rpm smd clocks, PMIC and bus clocks which are required on
->> SM4250/6115 for clients to vote on.
->>
->> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
->> ---
+On Thu, 05 Aug 2021 19:11:06 +0300, Iskren Chernev wrote:
+> Add device tree bindings for global clock controller on SM6115 and
+> SM4250 SoCs (pin and software compatible).
 > 
-> Applied to clk-next with lots of effort
+> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+> ---
+>  .../bindings/clock/qcom,gcc-sm6115.yaml       |  72 +++++++
+>  include/dt-bindings/clock/qcom,gcc-sm6115.h   | 201 ++++++++++++++++++
+>  2 files changed, 273 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/qcom,gcc-sm6115.yaml
+>  create mode 100644 include/dt-bindings/clock/qcom,gcc-sm6115.h
 > 
 
-Thank you! Now I see - the clock defs align perfectly with 6125, you can thank
-Konrad for suggesting to reuse the defs, therefore making any 2 patches
-conflict due to clock reuse.
-
-Regards,
-Iskren
+Reviewed-by: Rob Herring <robh@kernel.org>
