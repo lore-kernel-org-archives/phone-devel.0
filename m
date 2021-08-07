@@ -2,80 +2,92 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4598FC43214
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Aug 2021 20:33:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A39D2C4338F
+	for <phone-devel@archiver.kernel.org>; Sat,  7 Aug 2021 07:06:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2945461179
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Aug 2021 20:33:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 831E660EE7
+	for <phone-devel@archiver.kernel.org>; Sat,  7 Aug 2021 07:06:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244954AbhHFUeH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 6 Aug 2021 16:34:07 -0400
-Received: from mail-io1-f50.google.com ([209.85.166.50]:36549 "EHLO
-        mail-io1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244936AbhHFUeB (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 6 Aug 2021 16:34:01 -0400
-Received: by mail-io1-f50.google.com with SMTP id f11so13778409ioj.3;
-        Fri, 06 Aug 2021 13:33:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=S7njTycsd1XL9PBVTCJA9Q/+rWiN/ju9cjzujGekEbU=;
-        b=PqofKHP6j6id8LSJ8TGtJl42UZzMTLUPFg0PGf2+tFGUAWv8qQ2TwLkB5v3c14SZ6X
-         fpVLIL3D8KuR5mZgo+GRzsqRDF6rIagjcWuofBqe5P6vgySme2f8LgHe1G1TrbMtiluT
-         gwm6N3S7QSS1sseCBbFgEPG01lCT3gYJy2jyOan69s5k1KKHFgeLyfYDNG33QBmXTCpw
-         ++PG/XqjGbTweN5euyRlHf30t191E5OWTvgUY4I6tavHMcolyN82CUSK5SA32CcAv8t+
-         hRtz1SVBzeNt/IBM+jVh+tNBgCb/8J2oEw9eChkC9ef36EIQBiYxbgkQmz2yhvrvhuE9
-         NrRA==
-X-Gm-Message-State: AOAM533QxrJ6xtgDBxFv4YmD2MncxStgYU5L5xLK3EmfWAoLbHmETElb
-        ytq2HK8VriPUXFYtroSYpQ==
-X-Google-Smtp-Source: ABdhPJy+9mDnPUP/HP78FvogBEPKf3tNkk5YNN1moTUm9PWfvvig2Z+9QKjZqD+dQTYPGza1p+KBsA==
-X-Received: by 2002:a6b:c906:: with SMTP id z6mr452309iof.7.1628282024853;
-        Fri, 06 Aug 2021 13:33:44 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id u12sm6294241iog.54.2021.08.06.13.33.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Aug 2021 13:33:44 -0700 (PDT)
-Received: (nullmailer pid 1747070 invoked by uid 1000);
-        Fri, 06 Aug 2021 20:33:43 -0000
-Date:   Fri, 6 Aug 2021 14:33:43 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Iskren Chernev <iskren.chernev@gmail.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, linux-clk@vger.kernel.org,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        phone-devel@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>
-Subject: Re: [PATCH v4 1/2] dt-bindings: clk: qcom: gcc-sm6115: Document
- SM6115 GCC
-Message-ID: <YQ2cp7Ex0EQsmu5A@robh.at.kernel.org>
-References: <20210805161107.1194521-1-iskren.chernev@gmail.com>
- <20210805161107.1194521-2-iskren.chernev@gmail.com>
+        id S231449AbhHGHGl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 7 Aug 2021 03:06:41 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:53274 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230297AbhHGHGl (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 7 Aug 2021 03:06:41 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 0DAB81C0B7C; Sat,  7 Aug 2021 09:06:23 +0200 (CEST)
+Date:   Sat, 7 Aug 2021 09:06:22 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Guido =?iso-8859-1?Q?G=FCnther?= <guido.gunther@puri.sm>
+Cc:     Sakari Ailus <sakari.ailus@iki.fi>,
+        Martin Kepplinger <martin.kepplinger@puri.sm>,
+        krzysztof.kozlowski@canonical.com,
+        laurent.pinchart@ideasonboard.com, devicetree@vger.kernel.org,
+        kernel@puri.sm, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, mchehab@kernel.org,
+        paul.kocialkowski@bootlin.com, phone-devel@vger.kernel.org,
+        robh@kernel.org, shawnx.tu@intel.com
+Subject: Re: [PATCH v6 5/5] arm64: defconfig: enable VIDEO_HI846
+Message-ID: <20210807070622.GA25211@amd>
+References: <20210628101054.828579-1-martin.kepplinger@puri.sm>
+ <20210628101054.828579-6-martin.kepplinger@puri.sm>
+ <20210708130003.GA3@valkosipuli.retiisi.eu>
+ <YOcWCVSXfV+cKJ6H@qwark.sigxcpu.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="vtzGhvizbBRQ85DL"
 Content-Disposition: inline
-In-Reply-To: <20210805161107.1194521-2-iskren.chernev@gmail.com>
+In-Reply-To: <YOcWCVSXfV+cKJ6H@qwark.sigxcpu.org>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 05 Aug 2021 19:11:06 +0300, Iskren Chernev wrote:
-> Add device tree bindings for global clock controller on SM6115 and
-> SM4250 SoCs (pin and software compatible).
-> 
-> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
-> ---
->  .../bindings/clock/qcom,gcc-sm6115.yaml       |  72 +++++++
->  include/dt-bindings/clock/qcom,gcc-sm6115.h   | 201 ++++++++++++++++++
->  2 files changed, 273 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/clock/qcom,gcc-sm6115.yaml
->  create mode 100644 include/dt-bindings/clock/qcom,gcc-sm6115.h
-> 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+--vtzGhvizbBRQ85DL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+> > > Build the driver for the Hi-846 camera by default on arm64 where it's
+> > > going to be used on at least the imx8mq-librem5 board.
+> > >=20
+> > > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+=2E.
+> > There appear to be a other sensor drivers though.
+> >=20
+> > Is there a defconfig for the librem5 board?
+>=20
+> arm64 has a single defconfig, there are no board specific ones (and
+> afaik they're not wanted either) so I think enabling it as a module is
+> the only way.
+
+Given that other arm64 machines are basically devboards, and librem5
+is a phone... where you expect tighter sw/hw configuration, maybe it
+should have a separate defconfig.
+
+Best regards,
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--vtzGhvizbBRQ85DL
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAmEOMO0ACgkQMOfwapXb+vK77gCgpYzyL9RXKKjc2f7cfW+IWz+B
+gWsAoKsV7p8tytKZYBFKu61kVHuaFkWs
+=ngWb
+-----END PGP SIGNATURE-----
+
+--vtzGhvizbBRQ85DL--
