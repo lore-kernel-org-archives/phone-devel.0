@@ -2,92 +2,94 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.2 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A39D2C4338F
-	for <phone-devel@archiver.kernel.org>; Sat,  7 Aug 2021 07:06:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9F54C4338F
+	for <phone-devel@archiver.kernel.org>; Sat,  7 Aug 2021 13:31:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 831E660EE7
-	for <phone-devel@archiver.kernel.org>; Sat,  7 Aug 2021 07:06:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 76E2160EC0
+	for <phone-devel@archiver.kernel.org>; Sat,  7 Aug 2021 13:31:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231449AbhHGHGl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 7 Aug 2021 03:06:41 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:53274 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230297AbhHGHGl (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 7 Aug 2021 03:06:41 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 0DAB81C0B7C; Sat,  7 Aug 2021 09:06:23 +0200 (CEST)
-Date:   Sat, 7 Aug 2021 09:06:22 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Guido =?iso-8859-1?Q?G=FCnther?= <guido.gunther@puri.sm>
-Cc:     Sakari Ailus <sakari.ailus@iki.fi>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>,
-        krzysztof.kozlowski@canonical.com,
-        laurent.pinchart@ideasonboard.com, devicetree@vger.kernel.org,
-        kernel@puri.sm, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, mchehab@kernel.org,
-        paul.kocialkowski@bootlin.com, phone-devel@vger.kernel.org,
-        robh@kernel.org, shawnx.tu@intel.com
-Subject: Re: [PATCH v6 5/5] arm64: defconfig: enable VIDEO_HI846
-Message-ID: <20210807070622.GA25211@amd>
-References: <20210628101054.828579-1-martin.kepplinger@puri.sm>
- <20210628101054.828579-6-martin.kepplinger@puri.sm>
- <20210708130003.GA3@valkosipuli.retiisi.eu>
- <YOcWCVSXfV+cKJ6H@qwark.sigxcpu.org>
+        id S232210AbhHGNbl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 7 Aug 2021 09:31:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51876 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230291AbhHGNbk (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 7 Aug 2021 09:31:40 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E400DC0613CF;
+        Sat,  7 Aug 2021 06:31:21 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id i10-20020a05600c354ab029025a0f317abfso10930631wmq.3;
+        Sat, 07 Aug 2021 06:31:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=30uracpthIuXSs44lu6RRxWBv7NJjXzBaQjU8TB5510=;
+        b=BO8bcpN1CIWN0qYdxusjoibcUU67AZWWmWilv+lZwrVsDPJleQ9ekpLFEjW7YW03HZ
+         gJP1goMCAonYPOfB++ZDgr0Pm2oRgiQAY4oTO3e0kFNTelCkRLn3NE1uiTARcJFWqT1H
+         yEisMEZAUL3Shh1uCuzbs7P8lawCq8mWFWfkFcZJEueY6yMUsHFfs8gTAQDm4Wtbfggq
+         glZAo0z7mdPSUazEbB2jDMTv6itSKqP9y5x6nW9Y/4RXde3ERHXP8xQceQfM9nKt10q9
+         IIEbi5NMP8rkuuTk+akfQqNkhHHZoATtrmqcqL7qYanRVnsCx2KpEs0CDLhxPiXqxpqa
+         6t3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=30uracpthIuXSs44lu6RRxWBv7NJjXzBaQjU8TB5510=;
+        b=IQ1S0Wh8pH1zJWG7A/VC5O7ztZ/l4DfZVazxjyVmszHoqs0rY9i8Uhr/2p3SDwhpbZ
+         ukhV6QvOA9LQDH4qcjiun4BDYoaZ/ZkrmoeIEn/PdMMXeINYlBODrKNdUfCCESL1KIZU
+         /3dv7RkYmXAJ8Txy/IbIyjJgUZdNr1yh3iaryBfHZkhwKZ6qedccqHTS8F0jr48e1b1d
+         0f0pXCE5noDrCXAq0epy/aVq/COqHKJHbZug4uqCT5cdq7bhGSCeQmsl8qHuv+tphoo3
+         aWNLZOxdGbaEF0zp3wnsAdPZZtwH2PPSZQ8QZe329+P4k/8e9bE8PW9EzbqPdeHSaprs
+         Pv2Q==
+X-Gm-Message-State: AOAM531oQDKy1/OZX5IBGe9i87N2FSsr+5uoEdjYjMPLPt4x3nsmHYe3
+        CCCeBumN/1zxnoOrgqkLXqMTj/Koaqhi915Y
+X-Google-Smtp-Source: ABdhPJwdkY7aIdXNZw3I4FK3IgMpiEezPwawBNuDlPLqTlDrV6SKa/gC1/V+bA6Gy4eIvJ8+36kIqQ==
+X-Received: by 2002:a1c:7fd3:: with SMTP id a202mr25834149wmd.150.1628343080296;
+        Sat, 07 Aug 2021 06:31:20 -0700 (PDT)
+Received: from nergzd-desktop.localdomain ([62.122.67.26])
+        by smtp.gmail.com with ESMTPSA id x12sm13254454wrt.35.2021.08.07.06.31.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Aug 2021 06:31:20 -0700 (PDT)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     thierry.reding@gmail.com, airlied@linux.ie, daniel@ffwll.ch,
+        robh+dt@kernel.org, dri-devel@lists.freedesktop.org,
+        devicetree@vger.kernel.org, linus.walleij@linaro.org,
+        phone-devel@vger.kernel.org,
+        Markuss Broks <markuss.broks@gmail.com>
+Subject: [PATCH 0/2] Add support for Samsung S6D27A1 display panel
+Date:   Sat,  7 Aug 2021 16:31:09 +0300
+Message-Id: <20210807133111.5935-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <YQw7M7OF6OZLcLjk@ravnborg.org>
+References: <YQw7M7OF6OZLcLjk@ravnborg.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="vtzGhvizbBRQ85DL"
-Content-Disposition: inline
-In-Reply-To: <YOcWCVSXfV+cKJ6H@qwark.sigxcpu.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Add support for Samsung Mobile Displays(SMD) Samsung S6D27A1 panel.
+This display panel is used on Samsung mobile devices such as
+Samsung Galaxy Ace 2 (GT-I8160) also known as Codina.
 
---vtzGhvizbBRQ85DL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Markuss Broks (2):
+  drm/panel: Add DT bindings for Samsung S6D27A1 display panel
+  drm/panel: s6d27a1: Add driver for Samsung S6D27A1 display panel
 
-Hi!
+ .../display/panel/samsung,s6d27a1.yaml        |  97 ++++++
+ drivers/gpu/drm/panel/Kconfig                 |  11 +
+ drivers/gpu/drm/panel/Makefile                |   1 +
+ drivers/gpu/drm/panel/panel-samsung-s6d27a1.c | 323 ++++++++++++++++++
+ 4 files changed, 432 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6d27a1.yaml
+ create mode 100644 drivers/gpu/drm/panel/panel-samsung-s6d27a1.c
 
-> > > Build the driver for the Hi-846 camera by default on arm64 where it's
-> > > going to be used on at least the imx8mq-librem5 board.
-> > >=20
-> > > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-=2E.
-> > There appear to be a other sensor drivers though.
-> >=20
-> > Is there a defconfig for the librem5 board?
->=20
-> arm64 has a single defconfig, there are no board specific ones (and
-> afaik they're not wanted either) so I think enabling it as a module is
-> the only way.
+-- 
+2.32.0
 
-Given that other arm64 machines are basically devboards, and librem5
-is a phone... where you expect tighter sw/hw configuration, maybe it
-should have a separate defconfig.
-
-Best regards,
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
-
---vtzGhvizbBRQ85DL
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAmEOMO0ACgkQMOfwapXb+vK77gCgpYzyL9RXKKjc2f7cfW+IWz+B
-gWsAoKsV7p8tytKZYBFKu61kVHuaFkWs
-=ngWb
------END PGP SIGNATURE-----
-
---vtzGhvizbBRQ85DL--
