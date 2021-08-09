@@ -2,84 +2,106 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FSL_HELO_FAKE,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71FD4C4338F
-	for <phone-devel@archiver.kernel.org>; Mon,  9 Aug 2021 04:48:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9B5FC4338F
+	for <phone-devel@archiver.kernel.org>; Mon,  9 Aug 2021 08:34:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 47BC46101D
-	for <phone-devel@archiver.kernel.org>; Mon,  9 Aug 2021 04:48:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A1CD561004
+	for <phone-devel@archiver.kernel.org>; Mon,  9 Aug 2021 08:34:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229516AbhHIEsg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 9 Aug 2021 00:48:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43770 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229483AbhHIEsf (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 9 Aug 2021 00:48:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 0425961028;
-        Mon,  9 Aug 2021 04:48:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628484495;
-        bh=lZznYktlX+2ikqPLn6aMNgz3Py3XN6PikBXUyZCs/W4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uuFWb/MxmKMGFWOxlI6lrvVoAmJNyPUEj0kE/GjgaafOY+d68y4tLyukQq+b4oZJH
-         w0cKfGFVR0HZrwm6AyQgJMJ5HGei94gbhj+bqN8Rrnxhduwbbb8lmWcYPp7qM8pEOp
-         CbHVjBRVgHYsjLRCY88XSkIxQ7LRUj8F9YN8mmDlDHqbQyBcy2gAsBp20ZdafUmCf+
-         Xqx7gomc+gPKVBXd89i7m4jDb2L6qdrheGDat/13xfqD9FKUWq5C35opLmOPU3FwXE
-         E58R73xxk3a9oIHvjLO3PUk+Hk6nLU4uVLpDgVeEwVaK6WqW/9lpKgK+ocmVcn/8ht
-         AePu9e94SuO8Q==
-Date:   Mon, 9 Aug 2021 10:18:11 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Iskren Chernev <iskren.chernev@gmail.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Manu Gautam <mgautam@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-phy@lists.infradead.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v1 2/2] phy: qcom-qmp: Add support for SM6115 UFS phy
-Message-ID: <YRCzi9tXsUVi5kHS@matsya>
-References: <20210805091727.942471-1-iskren.chernev@gmail.com>
- <20210805091727.942471-3-iskren.chernev@gmail.com>
- <YQ0xrgDjxXeNecAS@matsya>
- <86fcdc11-9f2c-0aa0-ebab-a26fa9ac2aca@gmail.com>
+        id S233948AbhHIIeW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 9 Aug 2021 04:34:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47720 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233933AbhHIIeV (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Aug 2021 04:34:21 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FE6DC0613CF
+        for <phone-devel@vger.kernel.org>; Mon,  9 Aug 2021 01:34:01 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id m12so20270130wru.12
+        for <phone-devel@vger.kernel.org>; Mon, 09 Aug 2021 01:34:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=o64k6URbjnsGLsLYFBqolTH4MtMcklgUE4Tf5PdPVug=;
+        b=s3ep9NCza0FhQHnz6E2j2n1lYCjrMfV+4RKP08lfeF8TJYttk+HzgCXUQGraF9oOM4
+         gdzLyVzsfDy8NAY9l9xc+xmMw2hWenipf4H6fyqioVUJJXvdUbtWtmr+AXxaa42nTcFP
+         lRgH1esBC58pkW26LImsnLtHEqJefeksvjR94W3srZpXq/sVjhXHr+oPyJkn8LcCoJw1
+         wXJ+NUCk2LYTQ9fjmcBB20kDXvJB3bimYxpqnMdn+BJv6ixcakvOkC6Nz9v7Ku9Z+5XF
+         2tzdH+GfiW9Lv2FWnkdPNEwmD1+9aNEa9BD1nblP3kbH6Pck+tO2R1uLUPjxO75j7cN8
+         uXog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=o64k6URbjnsGLsLYFBqolTH4MtMcklgUE4Tf5PdPVug=;
+        b=hK715z/kcO0UInLomJliGUXn+9yMb6k6fieM4fjsWdtxlDhH0GqgEhUCj9Yt7PnJsv
+         F7XpDwunNnu9VWN8xNfo19ak+eyI4LJLvFfOlQfc1lbb8jMT/7lKkz+14SVdPBCBwSQg
+         KbKscWXVhxlHJwW8+KU9jOXNktfl/qDfUh8kxnSe7eEbm1u2rPYP5XOcdJKPCjKCX5oJ
+         9QPavkk6hyGHlYIHbRKRxxh5g6G4glzFVJ86h2/j4QZIMvC2hKgdkmIf9qxhQPHqga8o
+         Mxj2XuL8SGVDIA1+fxjiTlG1UwX5ebq0ax/n4afUqvxMkHgispHx7cD1x5cjyXVhVkYb
+         oKlg==
+X-Gm-Message-State: AOAM5328M5RR60ZmhRAt/M9ADfNu1hVlpHxVl9BCgMG/giKe3e0ek/+V
+        mlQMVIa2WOXGbD1vVpLAL5reQQ==
+X-Google-Smtp-Source: ABdhPJxZzeEU/zjbiAqjqFzQa1KsWybz2fuObNORpAwX7a2AmtB49mjZyfYM5kVRRpqySmJ0mEV2Xg==
+X-Received: by 2002:a5d:66d1:: with SMTP id k17mr24513987wrw.251.1628498039938;
+        Mon, 09 Aug 2021 01:33:59 -0700 (PDT)
+Received: from google.com ([95.146.142.85])
+        by smtp.gmail.com with ESMTPSA id e3sm18939963wrw.51.2021.08.09.01.33.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Aug 2021 01:33:59 -0700 (PDT)
+Date:   Mon, 9 Aug 2021 09:33:57 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH 2/2] mfd: db8500-prcmu: Handle missing FW variant
+Message-ID: <YRDodVD62RCS1jNR@google.com>
+References: <20210801233314.3150754-1-linus.walleij@linaro.org>
+ <20210801233314.3150754-2-linus.walleij@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <86fcdc11-9f2c-0aa0-ebab-a26fa9ac2aca@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210801233314.3150754-2-linus.walleij@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 06-08-21, 19:09, Iskren Chernev wrote:
-> On 8/6/21 3:57 PM, Vinod Koul wrote:
-> > On 05-08-21, 12:17, Iskren Chernev wrote:
+On Mon, 02 Aug 2021, Linus Walleij wrote:
 
-> > why are these registers 660 specific and not V3 like we have for
-> > other generations..? Quick looks with V3 regs tells me that seem
-> > similar....
-> >
+> There was an "unknown" firmware variant turning up in the wild
+> causing problems in the clock driver. Add this missing variant
+> and clarify that varian 11 and 15 are Samsung variants, as this
+> is now very well known from released products.
 > 
-> Well, I looked at them for a long time and the only thing that is similar
-> are the first few QSERDES registers from COM_ATB_SEL1=0x000 to
-> COM_BIAS_EN_CLKBUFLR_EN=0x034. Everything else is different. So I can re-use
+> Cc: Michael Turquette <mturquette@baylibre.com>
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: linux-clk@vger.kernel.org
+> Cc: phone-devel@vger.kernel.org
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> Clock maintainers: could you please ACK this so Lee can take
+> this into the MFD tree? The chances of merge collisions are
+> zero, this code changes very seldom.
+> ---
+>  drivers/clk/ux500/u8500_of_clk.c | 3 ++-
+>  drivers/mfd/db8500-prcmu.c       | 6 ++++--
+>  include/linux/mfd/dbx500-prcmu.h | 3 ++-
+>  3 files changed, 8 insertions(+), 4 deletions(-)
 
-Is the offset different? I thought all Vn registers across chips do have
-same offsets..
-
-> the V3 for the similar regs, but they are 10%, so I figured instead of combing
-> through all of the sequences to save 10% of the constants and make it slightly
-> less readable just use new constants.
-> 
-> Let me know if I should reuse the 14 regs from V3.
-
-reuse yes, but would like to understand more why offsets are different,
-
-Can you point me to downstream code reference for this?
+Applied, thanks.
 
 -- 
-~Vinod
+Lee Jones [李琼斯]
+Senior Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
