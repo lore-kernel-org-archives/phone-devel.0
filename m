@@ -2,106 +2,140 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FSL_HELO_FAKE,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B9B5FC4338F
-	for <phone-devel@archiver.kernel.org>; Mon,  9 Aug 2021 08:34:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30FDAC432BE
+	for <phone-devel@archiver.kernel.org>; Mon,  9 Aug 2021 14:21:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A1CD561004
-	for <phone-devel@archiver.kernel.org>; Mon,  9 Aug 2021 08:34:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 173AA60FDA
+	for <phone-devel@archiver.kernel.org>; Mon,  9 Aug 2021 14:21:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233948AbhHIIeW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 9 Aug 2021 04:34:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47720 "EHLO
+        id S233724AbhHIOVW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 9 Aug 2021 10:21:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233933AbhHIIeV (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Aug 2021 04:34:21 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FE6DC0613CF
-        for <phone-devel@vger.kernel.org>; Mon,  9 Aug 2021 01:34:01 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id m12so20270130wru.12
-        for <phone-devel@vger.kernel.org>; Mon, 09 Aug 2021 01:34:01 -0700 (PDT)
+        with ESMTP id S234891AbhHIOVK (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Aug 2021 10:21:10 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E211C061798;
+        Mon,  9 Aug 2021 07:20:50 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id gs8so29184736ejc.13;
+        Mon, 09 Aug 2021 07:20:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=o64k6URbjnsGLsLYFBqolTH4MtMcklgUE4Tf5PdPVug=;
-        b=s3ep9NCza0FhQHnz6E2j2n1lYCjrMfV+4RKP08lfeF8TJYttk+HzgCXUQGraF9oOM4
-         gdzLyVzsfDy8NAY9l9xc+xmMw2hWenipf4H6fyqioVUJJXvdUbtWtmr+AXxaa42nTcFP
-         lRgH1esBC58pkW26LImsnLtHEqJefeksvjR94W3srZpXq/sVjhXHr+oPyJkn8LcCoJw1
-         wXJ+NUCk2LYTQ9fjmcBB20kDXvJB3bimYxpqnMdn+BJv6ixcakvOkC6Nz9v7Ku9Z+5XF
-         2tzdH+GfiW9Lv2FWnkdPNEwmD1+9aNEa9BD1nblP3kbH6Pck+tO2R1uLUPjxO75j7cN8
-         uXog==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=2cUuPYheF7MpNqTwmGksBjO3uT7MgJxG2duLlVpcdEg=;
+        b=HQhlOG1qilaHj8fq09Fqf0ObdBnluClzIRXwKwTDW/AxKwIKrxPxMr/q4MZoYoGDYO
+         s+Zv6Eu0UyeLWMZQmdexaK8aBnXYOR1JtI8oXxw5YVmlTmyRTUgT9zpiO86oaKfuKw44
+         u0yuho9F5bkPEpDyYQYcoEuCL4fZZwONtHkCeYBNRnVPzDnXwtOISZ3rIwng59X4iSon
+         067t52Cydzh0IBlSg4h32h8gygN/jGHwpsTsYc+cjiZvjkqwr0WnYLMXcYeOW3Mh5tub
+         OvccNfKSMokynCAmKxPCDwdc574IgyBX9VYW20p0VK0vUyBYu0FD9Hs3ybxpIE+m11m1
+         1Xrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=o64k6URbjnsGLsLYFBqolTH4MtMcklgUE4Tf5PdPVug=;
-        b=hK715z/kcO0UInLomJliGUXn+9yMb6k6fieM4fjsWdtxlDhH0GqgEhUCj9Yt7PnJsv
-         F7XpDwunNnu9VWN8xNfo19ak+eyI4LJLvFfOlQfc1lbb8jMT/7lKkz+14SVdPBCBwSQg
-         KbKscWXVhxlHJwW8+KU9jOXNktfl/qDfUh8kxnSe7eEbm1u2rPYP5XOcdJKPCjKCX5oJ
-         9QPavkk6hyGHlYIHbRKRxxh5g6G4glzFVJ86h2/j4QZIMvC2hKgdkmIf9qxhQPHqga8o
-         Mxj2XuL8SGVDIA1+fxjiTlG1UwX5ebq0ax/n4afUqvxMkHgispHx7cD1x5cjyXVhVkYb
-         oKlg==
-X-Gm-Message-State: AOAM5328M5RR60ZmhRAt/M9ADfNu1hVlpHxVl9BCgMG/giKe3e0ek/+V
-        mlQMVIa2WOXGbD1vVpLAL5reQQ==
-X-Google-Smtp-Source: ABdhPJxZzeEU/zjbiAqjqFzQa1KsWybz2fuObNORpAwX7a2AmtB49mjZyfYM5kVRRpqySmJ0mEV2Xg==
-X-Received: by 2002:a5d:66d1:: with SMTP id k17mr24513987wrw.251.1628498039938;
-        Mon, 09 Aug 2021 01:33:59 -0700 (PDT)
-Received: from google.com ([95.146.142.85])
-        by smtp.gmail.com with ESMTPSA id e3sm18939963wrw.51.2021.08.09.01.33.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Aug 2021 01:33:59 -0700 (PDT)
-Date:   Mon, 9 Aug 2021 09:33:57 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mfd: db8500-prcmu: Handle missing FW variant
-Message-ID: <YRDodVD62RCS1jNR@google.com>
-References: <20210801233314.3150754-1-linus.walleij@linaro.org>
- <20210801233314.3150754-2-linus.walleij@linaro.org>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=2cUuPYheF7MpNqTwmGksBjO3uT7MgJxG2duLlVpcdEg=;
+        b=YjOhnr7gmzaWrItpWWJwIFunDdBGnxqMNvaFq73hLDCyzLzGPAZCycQGbW9OAWpoP8
+         jqiE3YPylCLLb5KsgRKqOwoTHU36wHU9rhu94E6e2tQMXS0q7mSBAykubVksS8a0ary/
+         G7cFvTly6DE9V6J3kqNfXc42WfeN3iFmv+qwCvYqIRnhGK5M8gSk/5fs2CyBiBdcq2Te
+         IZAJneLgTKwkHykQqgWl8Hee/4R1iXz5rdhe7rpEgLIsOo8xGup/Ziyo1fh7wlAT5JPE
+         wUbu32mXM+owHiPLa/OFT1t/Xjj5w04Ywz3dVhKjxBU0rNYgY0UnS8CW17y1s/qJ/L9I
+         +2gg==
+X-Gm-Message-State: AOAM530GsS3IyF96CpIK9c7H1xfG81hoh9cEuzcaICoi+zVBWeb+lHhu
+        iBAm+BREEV72iGZRjx18zi0=
+X-Google-Smtp-Source: ABdhPJz03F2uAVUGP5q+NA2jld4YbX5aZlleBTxfZ444Es0V26qTKLs/CZWAidCDgUSvQO8vJ8sorA==
+X-Received: by 2002:a17:906:a044:: with SMTP id bg4mr19463635ejb.312.1628518848683;
+        Mon, 09 Aug 2021 07:20:48 -0700 (PDT)
+Received: from [192.168.74.110] (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
+        by smtp.gmail.com with ESMTPSA id i10sm8141488edf.12.2021.08.09.07.20.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Aug 2021 07:20:48 -0700 (PDT)
+Subject: Re: [PATCH v1 2/2] phy: qcom-qmp: Add support for SM6115 UFS phy
+To:     Vinod Koul <vkoul@kernel.org>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Manu Gautam <mgautam@codeaurora.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-phy@lists.infradead.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <20210805091727.942471-1-iskren.chernev@gmail.com>
+ <20210805091727.942471-3-iskren.chernev@gmail.com> <YQ0xrgDjxXeNecAS@matsya>
+ <86fcdc11-9f2c-0aa0-ebab-a26fa9ac2aca@gmail.com> <YRCzi9tXsUVi5kHS@matsya>
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+Message-ID: <c780ad2a-2292-6e06-fa89-4c8a5139c253@gmail.com>
+Date:   Mon, 9 Aug 2021 17:20:45 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
+In-Reply-To: <YRCzi9tXsUVi5kHS@matsya>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210801233314.3150754-2-linus.walleij@linaro.org>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 02 Aug 2021, Linus Walleij wrote:
 
-> There was an "unknown" firmware variant turning up in the wild
-> causing problems in the clock driver. Add this missing variant
-> and clarify that varian 11 and 15 are Samsung variants, as this
-> is now very well known from released products.
+
+On 8/9/21 7:48 AM, Vinod Koul wrote:
+> On 06-08-21, 19:09, Iskren Chernev wrote:
+>> On 8/6/21 3:57 PM, Vinod Koul wrote:
+>>> On 05-08-21, 12:17, Iskren Chernev wrote:
 > 
-> Cc: Michael Turquette <mturquette@baylibre.com>
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: linux-clk@vger.kernel.org
-> Cc: phone-devel@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> Clock maintainers: could you please ACK this so Lee can take
-> this into the MFD tree? The chances of merge collisions are
-> zero, this code changes very seldom.
-> ---
->  drivers/clk/ux500/u8500_of_clk.c | 3 ++-
->  drivers/mfd/db8500-prcmu.c       | 6 ++++--
->  include/linux/mfd/dbx500-prcmu.h | 3 ++-
->  3 files changed, 8 insertions(+), 4 deletions(-)
+>>> why are these registers 660 specific and not V3 like we have for
+>>> other generations..? Quick looks with V3 regs tells me that seem
+>>> similar....
+>>>
+>>
+>> Well, I looked at them for a long time and the only thing that is similar
+>> are the first few QSERDES registers from COM_ATB_SEL1=0x000 to
+>> COM_BIAS_EN_CLKBUFLR_EN=0x034. Everything else is different. So I can re-use
+> 
+> Is the offset different? I thought all Vn registers across chips do have
+> same offsets..
 
-Applied, thanks.
+Upon closer inspection, for the SERDES registers they are 19 common (the first
+19), the others are different (different values, different names). About the
+offsets that stay in DT -- they are the same for V3 and V3-660 (I haven't send
+DT yet). Just to be clear, offset the is thing you add to each register to get
+an actual register value, mainline uses relative offsets (base / offset in DT),
+downstream uses a macro for each register group and the offset is hardcoded in
+code. Link to the DT (will be submitted after core drivers are merged) [1]
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+[1] https://gitlab.com/ichernev/linux-postmarketos/-/blob/b44c853caf37dd73e059628a1831ad185356a33e/arch/arm64/boot/dts/qcom/sm4250.dtsi#L878
+
+> 
+>> the V3 for the similar regs, but they are 10%, so I figured instead of combing
+>> through all of the sequences to save 10% of the constants and make it slightly
+>> less readable just use new constants.
+>>
+>> Let me know if I should reuse the 14 regs from V3.
+> 
+> reuse yes, but would like to understand more why offsets are different,
+> 
+> Can you point me to downstream code reference for this?
+
+As I said, the offsets are the same, the first 19 serdes relative
+addresses/names are the same (can be reused), the rest is all different.
+I wrote a tool to compare names and values, I can paste those as well if
+needed.
+
+
+This is a link to the downstream code (header) [2]
+
+
+[2] https://github.com/OnePlusOSS/android_kernel_oneplus_sm4250/blob/oneplus/SM4250_Q_10.0/drivers/phy/qualcomm/phy-qcom-ufs-qmp-v3-660.h
+
+I will do a v2 with the 19 regs reused from the v3 bunch.
+
+Regards,
+Iskren
