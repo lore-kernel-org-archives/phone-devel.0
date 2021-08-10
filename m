@@ -5,30 +5,30 @@ X-Spam-Level:
 X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 018BBC43214
-	for <phone-devel@archiver.kernel.org>; Tue, 10 Aug 2021 16:45:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90653C4320A
+	for <phone-devel@archiver.kernel.org>; Tue, 10 Aug 2021 16:45:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D71A760EDF
-	for <phone-devel@archiver.kernel.org>; Tue, 10 Aug 2021 16:45:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6CB9B60EDF
+	for <phone-devel@archiver.kernel.org>; Tue, 10 Aug 2021 16:45:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229902AbhHJQpw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 10 Aug 2021 12:45:52 -0400
-Received: from mail-0201.mail-europe.com ([51.77.79.158]:45877 "EHLO
-        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231742AbhHJQpt (ORCPT
+        id S230352AbhHJQqJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 10 Aug 2021 12:46:09 -0400
+Received: from mail-0301.mail-europe.com ([188.165.51.139]:56779 "EHLO
+        mail-0301.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231699AbhHJQpD (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 10 Aug 2021 12:45:49 -0400
-Date:   Tue, 10 Aug 2021 16:44:48 +0000
+        Tue, 10 Aug 2021 12:45:03 -0400
+Date:   Tue, 10 Aug 2021 16:44:26 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1628613891;
-        bh=wF6Dy87Du1yG9BeflrMdG3mGQlQUKJJ0TUMrCckTKAc=;
+        s=protonmail; t=1628613875;
+        bh=Ll0u5Co5TwfTM61G+RgZrA/gi2M1Kdi6N1rb5eGP1qg=;
         h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=AheCFai2visNjRn/5OysJYjT4iBlXvZ8B8+f7d2QZ/Pb9Bk3ERV042s5NN/VQH68A
-         9kMTeqEqTonCoJja6FYKY5GBnamRjqpyxkIIIdlHtxHsrIO+kLWhfmozLUOA/ILztv
-         PY/3gAmkPFP/voBLO8wa3NPlQWU9raRMpzoXbV+M=
+        b=sAOoVWZvDuBdxZDUClA2qKnX4K2YrS2XK0D7JR+DeAAOgN9P45ePyndVl28wWTXlZ
+         4mBEzdYy4Iklx2z8yhZele9MsfB+JUU2IfDN3oY2/J9OoDTYx9kfD/jFipYEkSgsB/
+         1nC+Rt9tMxttJkgLeOyd1gqizQc+1ds25eF2Ocao=
 To:     bjorn.andersson@linaro.org, agross@kernel.org,
         jassisinghbrar@gmail.com
 From:   Sireesh Kodali <sireeshkodali@protonmail.com>
@@ -38,8 +38,8 @@ Cc:     robh+dt@kernel.org, devicetree@vger.kernel.org,
         sivaprak@codeaurora.org, Vladimir Lypak <junak.pub@gmail.com>,
         Sireesh Kodali <sireeshkodali@protonmail.com>
 Reply-To: Sireesh Kodali <sireeshkodali@protonmail.com>
-Subject: [PATCH 4/4] firmware: qcom_scm: Add compatible for MSM8953 SoC
-Message-ID: <20210810164347.45578-5-sireeshkodali@protonmail.com>
+Subject: [PATCH 1/4] dt-bindings: mailbox: Add compatible for the MSM8953
+Message-ID: <20210810164347.45578-2-sireeshkodali@protonmail.com>
 In-Reply-To: <20210810164347.45578-1-sireeshkodali@protonmail.com>
 References: <20210810164347.45578-1-sireeshkodali@protonmail.com>
 MIME-Version: 1.0
@@ -51,32 +51,28 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: Vladimir Lypak <junak.pub@gmail.com>
 
-Add compatible for SCM on MSM8953.
+Add the mailbox compatible for the MSM8953 SoC.
 
 Signed-off-by: Vladimir Lypak <junak.pub@gmail.com>
 Signed-off-by: Sireesh Kodali <sireeshkodali@protonmail.com>
 ---
- drivers/firmware/qcom_scm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml       | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
-index ced1964faf42..3e3d310f9aed 100644
---- a/drivers/firmware/qcom_scm.c
-+++ b/drivers/firmware/qcom_scm.c
-@@ -1290,6 +1290,10 @@ static const struct of_device_id qcom_scm_dt_match[]=
- =3D {
- =09=09=09=09=09=09=09     SCM_HAS_IFACE_CLK |
- =09=09=09=09=09=09=09     SCM_HAS_BUS_CLK)
- =09},
-+=09{ .compatible =3D "qcom,scm-msm8953", .data =3D (void *)(SCM_HAS_CORE_C=
-LK |
-+=09=09=09=09=09=09=09     SCM_HAS_IFACE_CLK |
-+=09=09=09=09=09=09=09     SCM_HAS_BUS_CLK)
-+=09},
- =09{ .compatible =3D "qcom,scm-msm8974", .data =3D (void *)(SCM_HAS_CORE_C=
-LK |
- =09=09=09=09=09=09=09     SCM_HAS_IFACE_CLK |
- =09=09=09=09=09=09=09     SCM_HAS_BUS_CLK)
+diff --git a/Documentation/devicetree/bindings/mailbox/qcom,apcs-kpss-globa=
+l.yaml b/Documentation/devicetree/bindings/mailbox/qcom,apcs-kpss-global.ya=
+ml
+index 8878ec00820e..58e7250a41be 100644
+--- a/Documentation/devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml
++++ b/Documentation/devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml
+@@ -20,6 +20,7 @@ properties:
+       - qcom,ipq8074-apcs-apps-global
+       - qcom,msm8916-apcs-kpss-global
+       - qcom,msm8939-apcs-kpss-global
++      - qcom,msm8953-apcs-kpss-global
+       - qcom,msm8994-apcs-kpss-global
+       - qcom,msm8996-apcs-hmss-global
+       - qcom,msm8998-apcs-hmss-global
 --=20
 2.32.0
 
