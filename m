@@ -3,83 +3,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A2A6C432BE
-	for <phone-devel@archiver.kernel.org>; Fri, 13 Aug 2021 18:31:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 343B6C4338F
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Aug 2021 18:38:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 53FFE610EA
-	for <phone-devel@archiver.kernel.org>; Fri, 13 Aug 2021 18:31:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0E78D610E9
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Aug 2021 18:38:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232789AbhHMSb3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 Aug 2021 14:31:29 -0400
-Received: from mail-oi1-f179.google.com ([209.85.167.179]:41591 "EHLO
-        mail-oi1-f179.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233116AbhHMS3P (ORCPT
+        id S232814AbhHMSjC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 Aug 2021 14:39:02 -0400
+Received: from mail-oi1-f181.google.com ([209.85.167.181]:36528 "EHLO
+        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232611AbhHMSjC (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 Aug 2021 14:29:15 -0400
-Received: by mail-oi1-f179.google.com with SMTP id be20so17146539oib.8;
-        Fri, 13 Aug 2021 11:28:47 -0700 (PDT)
+        Fri, 13 Aug 2021 14:39:02 -0400
+Received: by mail-oi1-f181.google.com with SMTP id bd1so9753428oib.3;
+        Fri, 13 Aug 2021 11:38:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=zZCdGU68OAkJc6X7hI5SXJs2mB8DxFZBfZ+b7CmoJgk=;
-        b=lmIWKug6vRie56/gryTmcDTlhdqs+KT9M6w1XxYnjbMAjNXnVaAoGJGegGGN7sYeDe
-         V99h06LvEvoQCaHgcbdlY38TzRGGnatWa0NO1P17vvLXuXb5sJaR/fc+rH/7AKak4kCT
-         qVqQZpE6OBVBx69gzniXOjrLFa3wqnwwTjecGVFPftw4Y+kRyILLQhsA0pJSwey0fzf6
-         5kPe/al0So2yfVx1bHp+XYNT80Cf0nHEvScZql/3eg+L0md01LTqpT70vfTMW565f3Z3
-         Wax6oDkYcoXFf1LUa5ntTviTg4kH/6wxYengeyVZvWEKcwFv67xqtxh2o8mUFc/Kk1qz
-         HhyQ==
-X-Gm-Message-State: AOAM533ljmzAmTrYCPOvfJcQ27jDIMcO9tdJZzOm3jWDjy8ZHXQGfVyu
-        iFK339z1l/VtiXEHnK2sUw==
-X-Google-Smtp-Source: ABdhPJz9MREtiq35h0kEgBsz0lVLN1iN55g1Kkmm/x/pVF9OxvS3DVnNjeLNGCKCHRJDIPJ+7nUZ4A==
-X-Received: by 2002:aca:5888:: with SMTP id m130mr3183934oib.3.1628879327512;
-        Fri, 13 Aug 2021 11:28:47 -0700 (PDT)
+        bh=T56HoVc5Lj/B99cTGd+Cuo/dhzLwcPEymz3u7dJaCE0=;
+        b=ryV7RnMjVQfnGL9jnOoeWzsMtFnwTOh5ZDBAENMtQx/LP2T5yr8a1brFPcoDsj2ve5
+         O/iasGvSRmzX742TSJiYHZuvqwGDZ3hr3RIIbiuG3pFTpq6ZcBYwQUrs5HG7Go1+G2PK
+         VVbH8pAQO+zPNQ76JoJ/kQXkNEm7Bpd9UAcgx194rxPsFX9yS9wmAaSSoKTRpdEphvcr
+         m17uGqw/0i7Jc4PpZMO9e2i/unMpy7TOLCuOvPPhKFgvhnh0KMcC5zA26IEMpEAzB/3L
+         s+Evv2mSP6B8y/D3FVYXI3qvHtec7xbYc5L4DdlMxntgJv8ZNpUhiwCAZIebTlWsQrhh
+         kUog==
+X-Gm-Message-State: AOAM532ZFRQMS7DclJc4cuqGPzC2UOneF0g4m2ceNFRcyDKxQPLouM9K
+        /bT57KCXlShvxaQQ3KohoQ==
+X-Google-Smtp-Source: ABdhPJxhc7kvlDm0J0LfFE0gYnR8SuSYA7USyLq8H6egEjHcBSEof+weM72q/1XuXequ5NTqhmUTig==
+X-Received: by 2002:aca:34c4:: with SMTP id b187mr3190588oia.139.1628879914709;
+        Fri, 13 Aug 2021 11:38:34 -0700 (PDT)
 Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id c18sm454677ots.81.2021.08.13.11.28.46
+        by smtp.gmail.com with ESMTPSA id j19sm510043oih.34.2021.08.13.11.38.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Aug 2021 11:28:46 -0700 (PDT)
-Received: (nullmailer pid 3814039 invoked by uid 1000);
-        Fri, 13 Aug 2021 18:28:45 -0000
-Date:   Fri, 13 Aug 2021 13:28:45 -0500
+        Fri, 13 Aug 2021 11:38:34 -0700 (PDT)
+Received: (nullmailer pid 3830548 invoked by uid 1000);
+        Fri, 13 Aug 2021 18:38:33 -0000
+Date:   Fri, 13 Aug 2021 13:38:33 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     Sireesh Kodali <sireeshkodali@protonmail.com>
-Cc:     mturquette@baylibre.com, robh+dt@kernel.org,
-        phone-devel@vger.kernel.org, Vladimir Lypak <junak.pub@gmail.com>,
-        devicetree@vger.kernel.org, bjorn.andersson@linaro.org,
-        Adam Skladowski <a_skl39@protonmail.com>,
-        linux-clk@vger.kernel.org, agross@kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        sboyd@kernel.org
-Subject: Re: [PATCH RESEND 1/2] dt-bindings: clock: add Qualcomm MSM8953 GCC
- driver bindings
-Message-ID: <YRa53aqcX5I+8vji@robh.at.kernel.org>
-References: <Q6uB3NRxqtD8Prsmliv8ZdsTXGeviv7lb2jQ743jr1E@cp4-web-036.plabs.ch>
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     linux-arm-msm@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
+        devicetree@vger.kernel.org, linux-phy@lists.infradead.org,
+        Manu Gautam <mgautam@codeaurora.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Subject: Re: [PATCH v1 1/2] dt-bindings: phy: qcom,qmp: Add SM6115 UFS PHY
+ bindings
+Message-ID: <YRa8KfZ6kbMlp3ff@robh.at.kernel.org>
+References: <20210805091727.942471-1-iskren.chernev@gmail.com>
+ <20210805091727.942471-2-iskren.chernev@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Q6uB3NRxqtD8Prsmliv8ZdsTXGeviv7lb2jQ743jr1E@cp4-web-036.plabs.ch>
+In-Reply-To: <20210805091727.942471-2-iskren.chernev@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 05 Aug 2021 09:06:42 +0000, Sireesh Kodali wrote:
-> From: Vladimir Lypak <junak.pub@gmail.com>
+On Thu, 05 Aug 2021 12:17:26 +0300, Iskren Chernev wrote:
+> Add the compatible strings for the UFS PHY found on SM4250/6115 SoC.
 > 
-> Add bindings and compatible to document MSM8953 GCC (Global Clock
-> Controller) driver.
-> 
-> Signed-off-by: Vladimir Lypak <junak.pub@gmail.com>
-> Signed-off-by: Adam Skladowski <a_skl39@protonmail.com>
-> Signed-off-by: Sireesh Kodali <sireeshkodali@protonmail.com>
+> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
 > ---
->  .../devicetree/bindings/clock/qcom,gcc.yaml   |   2 +
->  include/dt-bindings/clock/qcom,gcc-msm8953.h  | 234 ++++++++++++++++++
->  2 files changed, 236 insertions(+)
->  create mode 100644 include/dt-bindings/clock/qcom,gcc-msm8953.h
+>  Documentation/devicetree/bindings/phy/qcom,qmp-phy.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 > 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Acked-by: Rob Herring <robh@kernel.org>
