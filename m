@@ -2,78 +2,109 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 343B6C4338F
-	for <phone-devel@archiver.kernel.org>; Fri, 13 Aug 2021 18:38:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BFFFC4338F
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Aug 2021 20:12:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0E78D610E9
-	for <phone-devel@archiver.kernel.org>; Fri, 13 Aug 2021 18:38:36 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DE21960EE4
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Aug 2021 20:12:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232814AbhHMSjC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 Aug 2021 14:39:02 -0400
-Received: from mail-oi1-f181.google.com ([209.85.167.181]:36528 "EHLO
-        mail-oi1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232611AbhHMSjC (ORCPT
+        id S234037AbhHMUMa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 Aug 2021 16:12:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60020 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233983AbhHMUM3 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 Aug 2021 14:39:02 -0400
-Received: by mail-oi1-f181.google.com with SMTP id bd1so9753428oib.3;
-        Fri, 13 Aug 2021 11:38:35 -0700 (PDT)
+        Fri, 13 Aug 2021 16:12:29 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7CBC061756;
+        Fri, 13 Aug 2021 13:12:02 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id k29so14775289wrd.7;
+        Fri, 13 Aug 2021 13:12:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qnqsJL5RG/oRlU8TcmHp5/K/uq0HSR5XN4HSC4RRnJk=;
+        b=fmotEx4sLKTW9aYn3QpHhxgW1/vvjnaM9CsPVULTOd8EMKtZnCjGMzaoFUrIZEt1CY
+         Rd82/4Oh5VzxyH64bIPNaNq0Y/0xFCHzbwON+4fIEoZ2lk3LfhAwdEb9l6cwAsNTzcrs
+         3ZaPA1AVvHb/OqDUUuoNpFEzeSra2oulTAZNb058UWZqe/JaTISorgHzTa4SksLCHFrh
+         BcO14vzqBpf78VSgckw/uH/jTR+X7Um/oXnEoOltxc+DiXYfaWgOqNRc2gFmDabpK1cY
+         TMSVakbtSZs6befOpjN4LBL+bmDSuxYQMDYc1ho8lgJNslngKNX2V/2anhZboxTYIoqc
+         /SsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=T56HoVc5Lj/B99cTGd+Cuo/dhzLwcPEymz3u7dJaCE0=;
-        b=ryV7RnMjVQfnGL9jnOoeWzsMtFnwTOh5ZDBAENMtQx/LP2T5yr8a1brFPcoDsj2ve5
-         O/iasGvSRmzX742TSJiYHZuvqwGDZ3hr3RIIbiuG3pFTpq6ZcBYwQUrs5HG7Go1+G2PK
-         VVbH8pAQO+zPNQ76JoJ/kQXkNEm7Bpd9UAcgx194rxPsFX9yS9wmAaSSoKTRpdEphvcr
-         m17uGqw/0i7Jc4PpZMO9e2i/unMpy7TOLCuOvPPhKFgvhnh0KMcC5zA26IEMpEAzB/3L
-         s+Evv2mSP6B8y/D3FVYXI3qvHtec7xbYc5L4DdlMxntgJv8ZNpUhiwCAZIebTlWsQrhh
-         kUog==
-X-Gm-Message-State: AOAM532ZFRQMS7DclJc4cuqGPzC2UOneF0g4m2ceNFRcyDKxQPLouM9K
-        /bT57KCXlShvxaQQ3KohoQ==
-X-Google-Smtp-Source: ABdhPJxhc7kvlDm0J0LfFE0gYnR8SuSYA7USyLq8H6egEjHcBSEof+weM72q/1XuXequ5NTqhmUTig==
-X-Received: by 2002:aca:34c4:: with SMTP id b187mr3190588oia.139.1628879914709;
-        Fri, 13 Aug 2021 11:38:34 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id j19sm510043oih.34.2021.08.13.11.38.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Aug 2021 11:38:34 -0700 (PDT)
-Received: (nullmailer pid 3830548 invoked by uid 1000);
-        Fri, 13 Aug 2021 18:38:33 -0000
-Date:   Fri, 13 Aug 2021 13:38:33 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Iskren Chernev <iskren.chernev@gmail.com>
-Cc:     linux-arm-msm@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
-        devicetree@vger.kernel.org, linux-phy@lists.infradead.org,
-        Manu Gautam <mgautam@codeaurora.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=qnqsJL5RG/oRlU8TcmHp5/K/uq0HSR5XN4HSC4RRnJk=;
+        b=D21Udc60RKDPkpHG+DkIaUMNsIGY4hErMe4aEKovOiLn32LBh1yuxKymxmwwFg7W6Q
+         T1M1WSsjYnx4qu+3S1n9h0LSur+r3dCnFgs7WrUpp2c3t7WZwCshdqoxEOmZtTwauE0I
+         tfoZwP1EQfQLH7N5qpT+GKaNNvDtekJePsS6Nsnemfck/FiLrbCQvif0zb9EIAHArASN
+         9dfEqLiUm9jIWoWPxX5CYK9bUMfxPD8FH1fL+Cuzhdnq2NCxSD5Dq+6VdwH7e50UZ/88
+         v+pEuz4kz5fltClLH60N6M3EXlhHqvSw0ulVU4XMUjmar9foUVkR5qHiQXHCeSYibAaW
+         Bv+Q==
+X-Gm-Message-State: AOAM531gPd32VrWZr065Vliv3SZmHxzoIu+d8kOPhgJfU6ibZhkJlzNk
+        cGKoU97eNR5BEiJZ54c4hjY=
+X-Google-Smtp-Source: ABdhPJy2zOj7c5caqJCNnlMGon9MOewZDAv5ABt5Swl4kamuQwtXU9Nc6Vg2Bam4XUxV29KFn6dORg==
+X-Received: by 2002:a5d:6d03:: with SMTP id e3mr5030064wrq.153.1628885521123;
+        Fri, 13 Aug 2021 13:12:01 -0700 (PDT)
+Received: from localhost ([91.92.14.102])
+        by smtp.gmail.com with ESMTPSA id h2sm2354990wmm.33.2021.08.13.13.11.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Aug 2021 13:12:00 -0700 (PDT)
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>,
         Kishon Vijay Abraham I <kishon@ti.com>,
-        Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Subject: Re: [PATCH v1 1/2] dt-bindings: phy: qcom,qmp: Add SM6115 UFS PHY
- bindings
-Message-ID: <YRa8KfZ6kbMlp3ff@robh.at.kernel.org>
-References: <20210805091727.942471-1-iskren.chernev@gmail.com>
- <20210805091727.942471-2-iskren.chernev@gmail.com>
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-phy@lists.infradead.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Iskren Chernev <iskren.chernev@gmail.com>
+Subject: [PATCH v2 0/2] Add UFS PHY support for SM6115/4250
+Date:   Fri, 13 Aug 2021 23:11:49 +0300
+Message-Id: <20210813201151.974512-1-iskren.chernev@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210805091727.942471-2-iskren.chernev@gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 05 Aug 2021 12:17:26 +0300, Iskren Chernev wrote:
-> Add the compatible strings for the UFS PHY found on SM4250/6115 SoC.
-> 
-> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
-> ---
->  Documentation/devicetree/bindings/phy/qcom,qmp-phy.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
+The UFS PHY found on SM6115/4250 is named v3-660, found on cheaper qcom devices
+(possibly starting with sdm660), but up until recently wasn't used much due to
+prevalence of sdhc port for internal storage/sdcard.
 
-Acked-by: Rob Herring <robh@kernel.org>
+The name is a bit misleading, because most of the registers found on v3-660
+don't share much in common with v3.
+
+The register values/sequences are taken from OnePlus repo [1].
+
+[1] https://github.com/OnePlusOSS/android_kernel_oneplus_sm4250
+
+v1: https://lkml.org/lkml/2021/8/5/235
+
+Changes from v1:
+- Suggested by Vinod
+  - removed v3-660 constants for regs with same name and value as v3 regs
+
+Iskren Chernev (2):
+  dt-bindings: phy: qcom,qmp: Add SM6115 UFS PHY bindings
+  phy: qcom-qmp: Add support for SM6115 UFS phy
+
+ .../devicetree/bindings/phy/qcom,qmp-phy.yaml |   1 +
+ drivers/phy/qualcomm/phy-qcom-qmp.c           | 124 ++++++++++++++++
+ drivers/phy/qualcomm/phy-qcom-qmp.h           | 134 ++++++++++++++++++
+ 3 files changed, 259 insertions(+)
+
+
+base-commit: 8d4b477da1a807199ca60e0829357ce7aa6758d5
+-- 
+2.32.0
+
