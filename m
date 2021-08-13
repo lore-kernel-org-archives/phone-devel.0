@@ -2,210 +2,100 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98CFDC4320A
-	for <phone-devel@archiver.kernel.org>; Wed, 11 Aug 2021 18:36:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ECCF0C4338F
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Aug 2021 13:54:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6077E60243
-	for <phone-devel@archiver.kernel.org>; Wed, 11 Aug 2021 18:36:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B807A610A5
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Aug 2021 13:54:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229802AbhHKSga (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 11 Aug 2021 14:36:30 -0400
-Received: from mail-pj1-f51.google.com ([209.85.216.51]:52219 "EHLO
-        mail-pj1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbhHKSg3 (ORCPT
+        id S240672AbhHMNzF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 Aug 2021 09:55:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56820 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240663AbhHMNzF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 11 Aug 2021 14:36:29 -0400
-Received: by mail-pj1-f51.google.com with SMTP id oa17so4942937pjb.1;
-        Wed, 11 Aug 2021 11:36:06 -0700 (PDT)
+        Fri, 13 Aug 2021 09:55:05 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB008C0617AD
+        for <phone-devel@vger.kernel.org>; Fri, 13 Aug 2021 06:54:38 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id d4so19930244lfk.9
+        for <phone-devel@vger.kernel.org>; Fri, 13 Aug 2021 06:54:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=otK/iMJZAO+WUnDkESkc3mIfvbccqZxXw7/cgOsKwuY=;
+        b=q68p0V6YCcitFiRzJYs8VI8mus2v9tDpwSOhqnoaIDSg7LfkH0zLNiHj4gIcFdVYvQ
+         6pdjylWQI5BaGuWgWjHZ5iMzfRiDEPBXSqhek8dE5WElyuuQYfmPQiwuEX4K9IdlMd/h
+         ZRnDuzLR8U8r/otEDJNYndGrqUtXnOAliPlAUoRJThsn+BDTJX0USU6zKmftAO4Bccz3
+         LQChesHq/80o4S4WFPSrfbXZNlJIY6rf9HfkZs7B1FEs39+7DiXkue84G5GLOw6ukWmf
+         daz9pYwB2yrZ2d5XLgizi+FTaSpz3p0gJNiKb4n0TiEjynY4jcr2gA2RT7bF6JZYwnzc
+         KAyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=glqU11Z7nUR7hehweN2GYI7VV4V/0DA8qz5QPW5UH5o=;
-        b=PlhdRNZ4DJTbjf/jYMPHkMqcZmqKkqqHx+xAZ6fYIvh0DsifGaoio635Pi8Aqm+FmK
-         6jYmXRHKwJi4mJ9aF7Wek5UoUuCBVq77SPq/rbA7vxOmCPeKzI7dgT9cnLmHA89NXs8u
-         gPMpfqkSn1kfvg3pfzdMlAITRPGMGbeZ+/W44TWgdfOPhUqrzR3kmw7etTQPlcKJuv3C
-         b/Aw2TmrbbFhnDEiRyy16lsxUgSpAGI7rG6lWTvIIRduP0DeNys0HZFfFsTFguDwpkam
-         SVnXR5lPas3U+WQ4VZ5HK9BCZYNvhSlXsqsKEwVJuH0Rwi9ubUSkvk/bFYRxpz2HkOP4
-         1z8Q==
-X-Gm-Message-State: AOAM531oSzQxBrliEwS98oCo+TInTT56bundBBD6h/u5Evqk6/nL1gwK
-        C57x6dhdOVTEGhr2s7FuSQ==
-X-Google-Smtp-Source: ABdhPJy1lIURcbSLGNDx7psgyKmkVt4jzczQsNUqlJIMdUhGsaoUjTuug+XLYYeIPqnx17C6mREhzw==
-X-Received: by 2002:a63:111f:: with SMTP id g31mr119420pgl.80.1628706965598;
-        Wed, 11 Aug 2021 11:36:05 -0700 (PDT)
-Received: from robh.at.kernel.org ([208.184.162.215])
-        by smtp.gmail.com with ESMTPSA id a11sm153376pgj.75.2021.08.11.11.36.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Aug 2021 11:36:04 -0700 (PDT)
-Received: (nullmailer pid 59304 invoked by uid 1000);
-        Wed, 11 Aug 2021 18:35:59 -0000
-Date:   Wed, 11 Aug 2021 12:35:59 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     =?iso-8859-1?Q?N=EDcolas_F=2E_R=2E_A=2E?= Prado 
-        <nfraprado@collabora.com>
-Cc:     Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        linux-leds@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Brian Masney <masneyb@onstation.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Russell King <linux@armlinux.org.uk>,
-        Georgi Djakov <georgi.djakov@linaro.org>,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, ~lkcamp/patches@lists.sr.ht,
-        =?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@collabora.com>,
-        kernel@collabora.com
-Subject: Re: [PATCH v3 1/5] dt-bindings: leds: Add binding for qcom-spmi-flash
-Message-ID: <YRQYjwaZCcm6blHT@robh.at.kernel.org>
-References: <20210803162641.1525980-1-nfraprado@collabora.com>
- <20210803162641.1525980-2-nfraprado@collabora.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=otK/iMJZAO+WUnDkESkc3mIfvbccqZxXw7/cgOsKwuY=;
+        b=MFCSBMBXtnPpfyYCMJQHd6SUETnPMKJGn3IujelY3JLiIVDdBaYnFA+Fu2CR+PAi9F
+         J6q9DZUEzbnTtUf+ZAw9Le+fICfxOnJynKESz1hu3SuRdnHC9UxmOXXHYqCuLsugif7z
+         yV9xOMgKaV/4Buu3m1cS7rhILEkKCisEBunR9LQabKalLsA10iV/Cm6bjdIV+QJw+W9+
+         kKZBIVJX1Eo9pUBS1GyxuFAcnzFdwUHNXObbhAa+rftGCBz1LDyIUKLjDMMkI+F0okE+
+         eW5A5tHNljFKRMyP8AzoBRyPeHOUvL054AZzKCF1J8gHyxkL4Tjf7RSyW2cozklPDVPD
+         MlqQ==
+X-Gm-Message-State: AOAM531ID09XvQnlvmPK4F17LT4HXJrD3W5Qpjuj+AaWfSsQBNM4xAj+
+        Z0tfg4PR6uaza1hBkFP2mp+bC16gF/It2O6QhUtNIA==
+X-Google-Smtp-Source: ABdhPJxme3U8eSdMjqWto+v2Z1XrKuaTSSrkpLdfLgEk06SuK1WGFzHCiMQBx5H30X5MFWZEaVZ2xe/VjuI/fkr1zX4=
+X-Received: by 2002:a19:ac04:: with SMTP id g4mr1835348lfc.29.1628862877070;
+ Fri, 13 Aug 2021 06:54:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210803162641.1525980-2-nfraprado@collabora.com>
+References: <YQw7M7OF6OZLcLjk@ravnborg.org> <20210807133111.5935-1-markuss.broks@gmail.com>
+ <20210807133111.5935-3-markuss.broks@gmail.com>
+In-Reply-To: <20210807133111.5935-3-markuss.broks@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 13 Aug 2021 15:54:26 +0200
+Message-ID: <CACRpkdaGvd+47zwJ8pwAU_Ce2N7bmBBJe-UwKNTQ9gfxPsCd_g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] drm/panel: s6d27a1: Add driver for Samsung S6D27A1
+ display panel
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     linux-kernel <linux-kernel@vger.kernel.org>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        Dave Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Aug 03, 2021 at 01:26:37PM -0300, Nícolas F. R. A. Prado wrote:
-> Add devicetree binding for Qualcomm's SPMI Flash LEDs which are part of
-> the PM8941 PMIC. These LEDs are used both as lantern and camera flash on
-> phones based on the MSM8974 SoC, like the Nexus 5.
-> 
-> Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-> ---
-> 
-> Changes in v3:
-> - Removed clamp-curr, headroom, startup-dly and safety-timer properties since
->   they didn't impact the behavior. They're now hardcoded in the driver (patch 2)
-> - Added valid ranges for led-max-microamp, flash-max-microamp and
->   flash-max-timeout-us
-> - Removed dt-bindings header file that held some constants (moved to inside the
->   driver in patch 2)
-> 
-> Added in v2
-> 
->  .../bindings/leds/leds-qcom-spmi-flash.yaml   | 93 +++++++++++++++++++
->  1 file changed, 93 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/leds/leds-qcom-spmi-flash.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/leds/leds-qcom-spmi-flash.yaml b/Documentation/devicetree/bindings/leds/leds-qcom-spmi-flash.yaml
-> new file mode 100644
-> index 000000000000..da674d73c033
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/leds/leds-qcom-spmi-flash.yaml
-> @@ -0,0 +1,93 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/leds/leds-qcom-spmi-flash.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm SPMI Flash LEDs
-> +
-> +maintainers:
-> +  - Nícolas F. R. A. Prado <n@nfraprado.net>
-> +
-> +description: |
-> +  The Qualcomm SPMI Flash LEDs are part of Qualcomm PMICs and are used primarily
-> +  as a camera or video flash. They can also be used as a lantern when on torch
-> +  mode.
-> +  The PMIC is connected to Host processor via SPMI bus.
-> +
-> +properties:
-> +  compatible:
-> +    const: qcom,spmi-flash-leds
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  flash-boost-supply:
-> +    description: SMBB regulator for LED flash mode
-> +
-> +  torch-boost-supply:
-> +    description: SMBB regulator for LED torch mode
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +patternProperties:
-> +  "^led@[0-1]$":
-> +    type: object
-> +    $ref: common.yaml#
-> +
-> +    properties:
-> +      reg:
-> +        maxItems: 1
+On Sat, Aug 7, 2021 at 3:31 PM Markuss Broks <markuss.broks@gmail.com> wrote:
 
-Instead of maxItems, this would be a bit more specific:
+> This adds a driver for Samsung S6D27A1 display controller and panel.
+> This panel is found in the Samsung GT-I8160 mobile phone,
+> and possibly some other mobile phones.
+>
+> This display needs manufacturer commands to configure it;
+> the commands used in this driver were taken from downstream driver
+> by Gareth Phillips; sadly, there is almost no documentation on what they
+> actually do.
+>
+> This driver re-uses the DBI infrastructure to communicate with the display.
+>
+> This driver is heavily based on WideChips WS2401 display controller
+> driver by Linus Walleij and on other panel drivers for reference.
+>
+> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+>
+> v2 -> v3:
 
-enum: [ 0, 1 ]
+Both v3 patches applied to drm-misc-next and pushed.
 
-With that,
-
-Reviewed-by: Rob Herring <robh@kernel.org>
-
-> +
-> +      led-max-microamp:
-> +        minimum: 12500
-> +        maximum: 200000
-> +        multipleOf: 12500
-> +
-> +      flash-max-microamp:
-> +        minimum: 12500
-> +        maximum: 1000000
-> +        multipleOf: 12500
-> +
-> +      flash-max-timeout-us:
-> +        minimum: 10000
-> +        maximum: 1280000
-> +        multipleOf: 10000
-> +
-> +    required:
-> +      - reg
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - flash-boost-supply
-> +  - torch-boost-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/leds/common.h>
-> +
-> +    spmi-flash-leds@d300 {
-> +        compatible = "qcom,spmi-flash-leds";
-> +        reg = <0xd300 0x100>;
-> +        flash-boost-supply = <&pm8941_5vs1>;
-> +        torch-boost-supply = <&pm8941_5v>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        led@0 {
-> +            reg = <0>;
-> +            function = LED_FUNCTION_FLASH;
-> +            color = <LED_COLOR_ID_WHITE>;
-> +            led-max-microamp = <200000>;
-> +            flash-max-microamp = <1000000>;
-> +            flash-max-timeout-us = <1280000>;
-> +        };
-> +    };
-> +...
-> -- 
-> 2.32.0
-> 
-> 
+Yours,
+Linus Walleij
