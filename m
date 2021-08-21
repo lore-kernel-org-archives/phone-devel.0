@@ -2,78 +2,113 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8D38C4320E
-	for <phone-devel@archiver.kernel.org>; Tue, 17 Aug 2021 20:28:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43C45C4338F
+	for <phone-devel@archiver.kernel.org>; Sat, 21 Aug 2021 15:57:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C7FB761051
-	for <phone-devel@archiver.kernel.org>; Tue, 17 Aug 2021 20:28:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 132E561207
+	for <phone-devel@archiver.kernel.org>; Sat, 21 Aug 2021 15:57:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234375AbhHQU3P (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 Aug 2021 16:29:15 -0400
-Received: from mail-ot1-f52.google.com ([209.85.210.52]:35569 "EHLO
-        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235132AbhHQU3G (ORCPT
+        id S232213AbhHUP5o (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 21 Aug 2021 11:57:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36052 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231690AbhHUP5n (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 Aug 2021 16:29:06 -0400
-Received: by mail-ot1-f52.google.com with SMTP id f16-20020a056830205000b00519b99d3dcbso5422194otp.2;
-        Tue, 17 Aug 2021 13:28:33 -0700 (PDT)
+        Sat, 21 Aug 2021 11:57:43 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89DBC061575;
+        Sat, 21 Aug 2021 08:57:03 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id v2so18658287edq.10;
+        Sat, 21 Aug 2021 08:57:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=dQeI7rq5UyNj25/cgHXT21cjW1M3absAwcr0nFDGAXQ=;
+        b=fZYtJBeIc2tsEP0dXutmscR7rVvQUGZi7n6iVg6qm9xG1rP4pi4p/BnWh+LLjyF7el
+         VH0X5JUuzLMui8Nqz0/0JYmP/axGa1rnZOCbMlX7qZPNgGErUt1DIfYPvdyDmoSP9n1z
+         eyaFqm4GfgVkGLYbDqfXH48Omo1urK2MSbpGm8BvRn/Vh/TAdtaucJQ2Leu6svNs8goL
+         +GMrsDdWK7NLEqYrcOM7oevwXQ33hmxyyjaRha9a3ZStxSGdIqIOOCuJeiXfAGtDWJe9
+         FX/ww03O2gFBEgrrCyGL9YY+EGQRZJoWImjHquIEfqsPEPz/AF8x/IS8ipY7/PG1DvAL
+         bJ3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Z4dBHooq1bASpBqTk3MDB5KAaY77sV0YTYXYdfTE/+k=;
-        b=Pf/lSK6K0poX/cfBR1jQZtY/kCDdhKT+VnyAdUiZkryk3V77S65SBHbSD9ltALxE0+
-         FIeH1tfFukIJeZDpb4NHMEDAjA5TAsppnhclrqkpx5qFrivhtQn25IaRn+un93sE174q
-         uA+aNc7es8Z9PoIO/3O21qqVp6yuWa3A1IDiYVbr15pzyoBhGK7bs6qDdgIGWdph7ABk
-         +ueC2N5UIKSi5XOeTVAzp5/NG81f1cwNZM2bJ6rrXrL2V92uZ9PJ+Du1w5qhV7mob66R
-         lMino++q86CoIGJ+Lk6JxsDzPL3wzmBKkQyihr3/tCYaOqFWa27w4veGz6mEZiBANYRB
-         TMJA==
-X-Gm-Message-State: AOAM530X6b5BIeo0L1W0eCNzCnBVSpHtAGMXCjNzVggwz04sHSM0zv6L
-        l5iIh0vvhorfpRxx+RxB1A==
-X-Google-Smtp-Source: ABdhPJxHnvFWpPjxlRsJ+Lu3AR9GDkxDl4XHBhooeU0CeF0YsA72ZCUdu6+P8HPKdmkEsbdjHekbjQ==
-X-Received: by 2002:a9d:5cb:: with SMTP id 69mr4144339otd.90.1629232112710;
-        Tue, 17 Aug 2021 13:28:32 -0700 (PDT)
-Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id k16sm630386oor.16.2021.08.17.13.28.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Aug 2021 13:28:32 -0700 (PDT)
-Received: (nullmailer pid 785019 invoked by uid 1000);
-        Tue, 17 Aug 2021 20:28:31 -0000
-Date:   Tue, 17 Aug 2021 15:28:31 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Sireesh Kodali <sireeshkodali@protonmail.com>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        robh+dt@kernel.org, bjorn.andersson@linaro.org, agross@kernel.org,
-        linux-arm-msm@vger.kernel.org, jassisinghbrar@gmail.com,
-        sivaprak@codeaurora.org, Vladimir Lypak <junak.pub@gmail.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 3/4] dt-bindings: firmware: qcom-scm: Document msm8953
- bindings
-Message-ID: <YRwb7ypyByrBsLX6@robh.at.kernel.org>
-References: <20210810164347.45578-1-sireeshkodali@protonmail.com>
- <20210810164347.45578-4-sireeshkodali@protonmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=dQeI7rq5UyNj25/cgHXT21cjW1M3absAwcr0nFDGAXQ=;
+        b=PeYyxmwPtD6y/znCSzhDL38v9IFV+C6oYZRHMWyMUlZhsLPQcY8S8TZywdJewO2JX5
+         p4+3K6gQv1lbINhinwL+Ck+6n1r0CnrnFdSJy4lxmO2OfHEibjSpjY586a9AM2yGrEWl
+         X4nkS+0abI4xAVlamMqmJpyBWmF+oxeW12Vrih3dML7Jv8XfDl9GFZ6KvatG0/GjhQn3
+         HS3pdwlFOYLIiImEDDSnprL9J6LxHhC7pegCYknuDNJvTWMHfSsxTRSsdYxtwXAXbDgV
+         yyuRNOhL8Ul3lUwuogmenfLRFAhLNv/hCcM3odHkHVb9j3gO4DURG5AxffYmbzEF68a4
+         hl0A==
+X-Gm-Message-State: AOAM532Noira9dSBTPPmmG35zkFVYXbvubCJGV6QZM9jOVHQdpyEF2t3
+        gvIDvdFo7/L1PuTe4Eajc/o=
+X-Google-Smtp-Source: ABdhPJzQmYjLjA+FlqyLcD31UFy2RE43X7Yv4nv+8ViR9APl56Rb7LO0JixDaD6gtbVbcIPInHLuNw==
+X-Received: by 2002:a05:6402:3099:: with SMTP id de25mr28016818edb.36.1629561422535;
+        Sat, 21 Aug 2021 08:57:02 -0700 (PDT)
+Received: from localhost (178-169-161-196.razgrad.ddns.bulsat.com. [178.169.161.196])
+        by smtp.gmail.com with ESMTPSA id g10sm4471314ejj.44.2021.08.21.08.57.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Aug 2021 08:57:01 -0700 (PDT)
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-phy@lists.infradead.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Iskren Chernev <iskren.chernev@gmail.com>
+Subject: [PATCH v3 0/2] Add UFS PHY support for SM6115/4250
+Date:   Sat, 21 Aug 2021 18:56:54 +0300
+Message-Id: <20210821155657.893165-1-iskren.chernev@gmail.com>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210810164347.45578-4-sireeshkodali@protonmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 10 Aug 2021 16:44:39 +0000, Sireesh Kodali wrote:
-> From: Vladimir Lypak <junak.pub@gmail.com>
-> 
-> SCM driver on MSM8953 requires 3 clocks.
-> 
-> Signed-off-by: Vladimir Lypak <junak.pub@gmail.com>
-> Signed-off-by: Sireesh Kodali <sireeshkodali@protonmail.com>
-> ---
->  Documentation/devicetree/bindings/firmware/qcom,scm.txt | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
+The UFS PHY found on SM6115/4250 has a lot of common registers with ufs phy v2,
+even though in downstream it is named v3-660. Due to register similarity with
+v2, the few extra registers that are needed are added as v2 registers.
 
-Acked-by: Rob Herring <robh@kernel.org>
+The register values/sequences are taken from OnePlus repo [1].
+
+[1] https://github.com/OnePlusOSS/android_kernel_oneplus_sm4250
+
+v1: https://lkml.org/lkml/2021/8/5/235
+v2: https://lkml.org/lkml/2021/8/13/889
+
+Changes from v2:
+- Suggested by Vinod
+  - the 6115 registers had a lot in common with v2 registers (and not v3, as
+    was initially assumed), so those were reused whenever possible, and new
+    regs were added along other v2 registers.
+
+Changes from v1:
+- Suggested by Vinod
+  - removed v3-660 constants for regs with same name and value as v3 regs
+
+Iskren Chernev (2):
+  dt-bindings: phy: qcom,qmp: Add SM6115 UFS PHY bindings
+  phy: qcom-qmp: Add support for SM6115 UFS phy
+
+ .../devicetree/bindings/phy/qcom,qmp-phy.yaml |   1 +
+ drivers/phy/qualcomm/phy-qcom-qmp.c           | 124 ++++++++++++++++++
+ drivers/phy/qualcomm/phy-qcom-qmp.h           |  18 +++
+ 3 files changed, 143 insertions(+)
+
+
+base-commit: 86ed57fd8c93fdfaabb4f58e78455180fa7d8a84
+-- 
+2.32.0
+
