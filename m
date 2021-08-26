@@ -2,135 +2,67 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E6B0C432BE
-	for <phone-devel@archiver.kernel.org>; Wed, 25 Aug 2021 17:03:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA642C432BE
+	for <phone-devel@archiver.kernel.org>; Thu, 26 Aug 2021 18:54:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 848F861052
-	for <phone-devel@archiver.kernel.org>; Wed, 25 Aug 2021 17:03:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8ADB861052
+	for <phone-devel@archiver.kernel.org>; Thu, 26 Aug 2021 18:54:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242108AbhHYRDp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 25 Aug 2021 13:03:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49438 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241872AbhHYRDp (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 25 Aug 2021 13:03:45 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C335C061757;
-        Wed, 25 Aug 2021 10:02:59 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id n12so3277676plk.10;
-        Wed, 25 Aug 2021 10:02:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=f8hWkye1VrT2Jr3shabyVt0RoAYFpLTM9/fRR/zCCHE=;
-        b=de6kROInW+kDymP6JgUjpBbDWiqEFFkrJAPzZq32zCz6jEGiONLCSKNI38snXlEvXN
-         Wc8cIC3wEgdOOa7LusNiKPI+G2ipshW9tUkKGsOqPUXYxofEJCp9r3ISRE0tCqw8BiCD
-         gk26SU53fxhxF87nBQkahxDS2AL02+GxHaSutCFNkmG51zQelnQ8pvXo6gYOZaA/pcem
-         gBJ+eN8D2GpAkXEC1M19jzY5DvzRg0Y2UdAmvDB2ZJUvDYcyiqhvwiQBcDYog8abeZ3k
-         hfGq/JnmnPF6JWEESE5Du2/uC/gOOLCxvEnm2HXb8rkPUHE4INANlotSiP1hLhCohtvG
-         pXVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=f8hWkye1VrT2Jr3shabyVt0RoAYFpLTM9/fRR/zCCHE=;
-        b=j8W99RmRDJ+WF/tj1xnmIETfjgemqNRlEOsErsKQtexJYzgaza0p6tLaRhzdrguTP7
-         ppG0/dTgk8vATBj+fHmp8okOAR9TIKLRNcY5RnS4pw8+8t5xFFDI+9yqGluUjTNWJOZy
-         lnQ0A+Ldne3sTrSdIVZy/uHiET4jMxkptMygfM5riOrE3QkPkE/fI/9VtaC1o08/5ISi
-         lQU2WMf884XqPu+X2KZ+3rFUVoSDhGKihr/K/FSqgCL55XZ3NpPdlI27uaf5Ks0MIdCr
-         sWKNfVaxEfMvWUQDUElP69mxAkaX0gzMYcpDKb+94O6etBH7oV0kl97Au/GfeXh4VFIE
-         6/Kg==
-X-Gm-Message-State: AOAM532JcHicYlLDZSsWlkLdHCPGsW8PH8mgZmmmUOVEeVbm6bv6Wa9K
-        K0Ce2/s5FKY7y/37JfGTHZE=
-X-Google-Smtp-Source: ABdhPJwTphIk6/GQBKEBkqsUPUdX6FE8gxResfeLV0s4KLTQ+nZOHJzTAjyTkaAci5HX2QdjzMPNBA==
-X-Received: by 2002:a17:902:bc84:b029:12c:f9b9:db98 with SMTP id bb4-20020a170902bc84b029012cf9b9db98mr39189718plb.19.1629910978973;
-        Wed, 25 Aug 2021 10:02:58 -0700 (PDT)
-Received: from skynet-linux.local ([106.201.63.141])
-        by smtp.googlemail.com with ESMTPSA id y21sm331043pfm.52.2021.08.25.10.02.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Aug 2021 10:02:58 -0700 (PDT)
-From:   Sireesh Kodali <sireeshkodali1@gmail.com>
-To:     sireeshkodali1@gmail.com
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Adam Skladowski <a_skl39@protonmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-arm-msm@vger.kernel.org (open list:ARM/QUALCOMM SUPPORT),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 4/4] soc: qcom: rpmpd: Add power domains for MSM8953
-Date:   Wed, 25 Aug 2021 22:32:51 +0530
-Message-Id: <20210825170252.20137-1-sireeshkodali1@gmail.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20210825165251.18358-1-sireeshkodali1@gmail.com>
-References: <20210825165251.18358-1-sireeshkodali1@gmail.com>
+        id S243435AbhHZSzZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 26 Aug 2021 14:55:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36114 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243300AbhHZSzZ (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 26 Aug 2021 14:55:25 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 55BFC61037;
+        Thu, 26 Aug 2021 18:54:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630004077;
+        bh=fyW/PNm/+sS5fgyydXfDRZ5DdiYow6xNkyUdeEK16Ec=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=mll/iuoMgXdxjvdqVXrB5nlsJ0Xr0gGjC18zFF/w33zJTbV1u+sYRMNC+FnaWItHn
+         XkrQ1Xp8lIfs3sSKjlqpzkTncc3yVCrK2HakIc5BHAzlo5jpFntBoVROuznYvfoFOB
+         ptA/2rFlxW71hlNyjp46Snvb/odmbFInA+7IGPIlLWaV8ydEivTcHiRHjJjJTaVEsF
+         eISUVzisY4zEMKAuZ0RoLimyCceWVcoI5Xf5QYyy8YRQjCQGMI3rEJ5LdtOgQuXvPp
+         acBFp5UcNCXXlol4GNFIZhndv3BTYWRTofF3RSv+0hQ3/ChO9luwk3L9lw8HJ0wSxO
+         pTRdob6bpO1Jw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <Q6uB3NRxqtD8Prsmliv8ZdsTXGeviv7lb2jQ743jr1E@cp4-web-036.plabs.ch>
+References: <Q6uB3NRxqtD8Prsmliv8ZdsTXGeviv7lb2jQ743jr1E@cp4-web-036.plabs.ch>
+Subject: Re: [PATCH RESEND 1/2] dt-bindings: clock: add Qualcomm MSM8953 GCC driver bindings
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     agross@kernel.org, mturquette@baylibre.com, robh+dt@kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Vladimir Lypak <junak.pub@gmail.com>,
+        Adam Skladowski <a_skl39@protonmail.com>,
+        Sireesh Kodali <sireeshkodali@protonmail.com>
+To:     Sireesh Kodali <sireeshkodali@protonmail.com>,
+        bjorn.andersson@linaro.org
+Date:   Thu, 26 Aug 2021 11:54:35 -0700
+Message-ID: <163000407599.1317818.2728164587461845498@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Vladimir Lypak <vladimir.lypak@gmail.com>
+Quoting Sireesh Kodali (2021-08-05 02:06:42)
+> From: Vladimir Lypak <junak.pub@gmail.com>
+>=20
+> Add bindings and compatible to document MSM8953 GCC (Global Clock
+> Controller) driver.
+>=20
+> Signed-off-by: Vladimir Lypak <junak.pub@gmail.com>
+> Signed-off-by: Adam Skladowski <a_skl39@protonmail.com>
+> Signed-off-by: Sireesh Kodali <sireeshkodali@protonmail.com>
+> ---
 
-Add support for MSM8953 power domains.
-
-Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-Signed-off-by: Adam Skladowski <a_skl39@protonmail.com>
-Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
----
- drivers/soc/qcom/rpmpd.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/drivers/soc/qcom/rpmpd.c b/drivers/soc/qcom/rpmpd.c
-index dbf494e92574..4f69fb9b2e0e 100644
---- a/drivers/soc/qcom/rpmpd.c
-+++ b/drivers/soc/qcom/rpmpd.c
-@@ -185,6 +185,29 @@ static const struct rpmpd_desc msm8916_desc = {
- 	.max_state = MAX_CORNER_RPMPD_STATE,
- };
- 
-+/* msm8953 RPM Power Domains */
-+DEFINE_RPMPD_PAIR(msm8953, vddmd, vddmd_ao, SMPA, LEVEL, 1);
-+DEFINE_RPMPD_PAIR(msm8953, vddcx, vddcx_ao, SMPA, LEVEL, 2);
-+DEFINE_RPMPD_PAIR(msm8953, vddmx, vddmx_ao, SMPA, LEVEL, 7);
-+
-+DEFINE_RPMPD_VFL(msm8953, vddcx_vfl, SMPA, 2);
-+
-+static struct rpmpd *msm8953_rpmpds[] = {
-+	[MSM8953_VDDMD] =	&msm8953_vddmd,
-+	[MSM8953_VDDMD_AO] =	&msm8953_vddmd_ao,
-+	[MSM8953_VDDCX] =	&msm8953_vddcx,
-+	[MSM8953_VDDCX_AO] =	&msm8953_vddcx_ao,
-+	[MSM8953_VDDCX_VFL] =	&msm8953_vddcx_vfl,
-+	[MSM8953_VDDMX] =	&msm8953_vddmx,
-+	[MSM8953_VDDMX_AO] =	&msm8953_vddmx_ao,
-+};
-+
-+static const struct rpmpd_desc msm8953_desc = {
-+	.rpmpds = msm8953_rpmpds,
-+	.num_pds = ARRAY_SIZE(msm8953_rpmpds),
-+	.max_state = RPM_SMD_LEVEL_TURBO,
-+};
-+
- /* msm8976 RPM Power Domains */
- DEFINE_RPMPD_PAIR(msm8976, vddcx, vddcx_ao, SMPA, LEVEL, 2);
- DEFINE_RPMPD_PAIR(msm8976, vddmx, vddmx_ao, SMPA, LEVEL, 6);
-@@ -377,6 +400,7 @@ static const struct of_device_id rpmpd_match_table[] = {
- 	{ .compatible = "qcom,mdm9607-rpmpd", .data = &mdm9607_desc },
- 	{ .compatible = "qcom,msm8916-rpmpd", .data = &msm8916_desc },
- 	{ .compatible = "qcom,msm8939-rpmpd", .data = &msm8939_desc },
-+	{ .compatible = "qcom,msm8953-rpmpd", .data = &msm8953_desc },
- 	{ .compatible = "qcom,msm8976-rpmpd", .data = &msm8976_desc },
- 	{ .compatible = "qcom,msm8994-rpmpd", .data = &msm8994_desc },
- 	{ .compatible = "qcom,msm8996-rpmpd", .data = &msm8996_desc },
--- 
-2.33.0
-
+Applied to clk-next
