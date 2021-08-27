@@ -2,69 +2,108 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4420CC432BE
-	for <phone-devel@archiver.kernel.org>; Thu, 26 Aug 2021 18:56:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B2B3C4320A
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Aug 2021 15:43:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 20D3360551
-	for <phone-devel@archiver.kernel.org>; Thu, 26 Aug 2021 18:56:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 342ED60FC4
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Aug 2021 15:43:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243432AbhHZS5m (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 26 Aug 2021 14:57:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36684 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243375AbhHZS5l (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 26 Aug 2021 14:57:41 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D603961037;
-        Thu, 26 Aug 2021 18:56:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630004213;
-        bh=w4Uab4AooAYn0N9kq1geOud3mJ+cZq68EOwvt0u2rQo=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=mnwhPIb9BXNGirjTKiFTcKNebA5vOZ+gV1j/kpiFHadoBWBJrLeszaECJOSWVjUaB
-         JxBqJtUPRCpKdeNU4YyGLqsHDKErd0nlPm0QJOHv5xXFpCVO+7SA3qwZ3mrzSzK3zx
-         KIkF6/4OJjyI4WnEE3z3uGF4Uh3cS2ySmLt/1j/3dx9P2IHO/1LewRfY759HDBq82V
-         TJU2NBxr8la5Dk31hnM5Ui7gt3Ngs1iXEXxOVGgC1G1zbg9jegVUAqV8ZPo+W5VHY0
-         enrmfgnKL7zOU4QJlDudK9eeD+P2DuVjExZCgJCAF8DTzCpYJLyWvb/V0inXJxBUGA
-         sxn1DpBXsM/NA==
-Content-Type: text/plain; charset="utf-8"
+        id S245198AbhH0PoA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Aug 2021 11:44:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37470 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245040AbhH0Pn7 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 27 Aug 2021 11:43:59 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40141C0613CF
+        for <phone-devel@vger.kernel.org>; Fri, 27 Aug 2021 08:43:10 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id e21so14687288ejz.12
+        for <phone-devel@vger.kernel.org>; Fri, 27 Aug 2021 08:43:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=oZPGVp92VaS3dLowjetEls763eL/Q9YUNevyNpL1JuM=;
+        b=i5Kxex2KDW8eLSLlwjXmG/+a/FmluMZPNPJFNSy66Tvt+wf9rhzjE8Pd48qZNMetaz
+         G09WE9Q+ms2dF/pP64j3VS3pgUqxMZJqwenYV6987xndMpo/wRdrQ5RokRCSR+fbndIA
+         95ikxf0WSuo4QZUM3T/MxuGC5GmEPfkDQR37HoHMO6FDWY97/V5zqj91aj6nJLRpsjpN
+         duMqcaQ8DmktwD0Kd/WOByzmlEn0pwa4E0UM7u5Rv7+gQjgG5tCtfy0VbwLinKf4Ep6B
+         jzMojJLxZ1QV7IVI6oaR4xlZmRDobHWTOpPWXkCDFrmZv7nxhciY71NYbSo7+esAgCKn
+         1V0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=oZPGVp92VaS3dLowjetEls763eL/Q9YUNevyNpL1JuM=;
+        b=O2Ad3/p/AchGxc181QP9yo/BYRUqtj7O4eQveDewDlb+5rHnbr3TZmrlzC7KB+b5Wo
+         yKhknW5BaN2iQHGLZJE3SXepO1RcC5tEATff9cI5qX/Lz+sAf1hI+ZWLohpzR8cb5vG7
+         BRqMkNfygoSHZXSeLfHXQTou9abAVjogYAGfh2okQSuj8LutSLVDYiUANIVk7IG4f6fs
+         J5FbJyV+DlBDVve/b5sPPMieLTaQeJqt7+HYLOQPLXO31lmTxdTeKi4yEyA+kaG1Xg8J
+         GyrTW/d4yV1h/ewOcRvnrpItYLxUmc1pHL4bJKg+Qfm7aZg27n3P62Y2MT9U1BDAr3wA
+         fEYA==
+X-Gm-Message-State: AOAM53366ECvvS1qh3ZnqCPb0fekwKgvos5uLrzRn3phNdWTYa9UWfQt
+        Ak1fa4JcXzeILt8eFOKdm6CNbHHe8+t89FyCuhzOBQ==
+X-Google-Smtp-Source: ABdhPJyH36GOAC0XBuOQ2fDNT72ll8GhA/IBuvrzOLPOcb/QCzQFNY/p11kajRzZ3QRbsaXgiQXkzZVqanSS1R/qstM=
+X-Received: by 2002:a17:906:fa10:: with SMTP id lo16mr10680576ejb.342.1630078988646;
+ Fri, 27 Aug 2021 08:43:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <IPvVnyRWbHuQFswiFz0W08Kj1dKoH55ddQVyIIPhMJw@cp7-web-043.plabs.ch>
-References: <IPvVnyRWbHuQFswiFz0W08Kj1dKoH55ddQVyIIPhMJw@cp7-web-043.plabs.ch>
-Subject: Re: [PATCH RESEND 2/2] clk: qcom: Add Global Clock Controller driver for MSM8953
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     agross@kernel.org, mturquette@baylibre.com, robh+dt@kernel.org,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Vladimir Lypak <junak.pub@gmail.com>,
-        Adam Skladowski <a_skl39@protonmail.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Sireesh Kodali <sireeshkodali@protonmail.com>
-To:     Sireesh Kodali <sireeshkodali@protonmail.com>,
-        bjorn.andersson@linaro.org
-Date:   Thu, 26 Aug 2021 11:56:52 -0700
-Message-ID: <163000421272.1317818.15533893617596305776@swboyd.mtv.corp.google.com>
-User-Agent: alot/0.9.1
+References: <20210622203759.566716-1-iskren.chernev@gmail.com> <20210622203759.566716-2-iskren.chernev@gmail.com>
+In-Reply-To: <20210622203759.566716-2-iskren.chernev@gmail.com>
+From:   Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Date:   Fri, 27 Aug 2021 17:42:58 +0200
+Message-ID: <CAP71WjxRpdoN9MMTH2Y2Xgc==tC2jWfm7X0_A1CrzZ40N_rg8Q@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] mailbox: qcom: Add support for sm4125 sm6115 APCS IPC
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Sivaprakash Murugesan <sivaprak@codeaurora.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Quoting Sireesh Kodali (2021-08-05 02:06:57)
-> From: Vladimir Lypak <junak.pub@gmail.com>
->=20
-> This driver provides clocks, resets and power domains for MSM8953
-> and compatible SoCs: APQ8053, SDM450, SDA450, SDM632, SDA632.
->=20
-> Signed-off-by: Vladimir Lypak <junak.pub@gmail.com>
-> Signed-off-by: Adam Skladowski <a_skl39@protonmail.com>
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Signed-off-by: Sireesh Kodali <sireeshkodali@protonmail.com>
-> ---
+On Tue, Jun 22, 2021 at 10:38 PM Iskren Chernev
+<iskren.chernev@gmail.com> wrote:
+>
+> SM4125 and SM6115, codename bengal, have APCS mailbox setup similar to
+> msm8998 and msm8916.
 
-Applied to clk-next
+subject and commit refer to SM4125/SM6115, but the diff below is about
+4250/6115. I suppose it's a typo here, since 6115 is similar to 4250,
+not 4125, right?
+
+>
+> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+> ---
+>  drivers/mailbox/qcom-apcs-ipc-mailbox.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/mailbox/qcom-apcs-ipc-mailbox.c b/drivers/mailbox/qcom-apcs-ipc-mailbox.c
+> index f25324d03842..1a4d8cca5881 100644
+> --- a/drivers/mailbox/qcom-apcs-ipc-mailbox.c
+> +++ b/drivers/mailbox/qcom-apcs-ipc-mailbox.c
+> @@ -166,6 +166,8 @@ static const struct of_device_id qcom_apcs_ipc_of_match[] = {
+>         { .compatible = "qcom,sc8180x-apss-shared", .data = &apps_shared_apcs_data },
+>         { .compatible = "qcom,sdm660-apcs-hmss-global", .data = &sdm660_apcs_data },
+>         { .compatible = "qcom,sdm845-apss-shared", .data = &apps_shared_apcs_data },
+> +       { .compatible = "qcom,sm4250-apcs-hmss-global", .data = &sdm660_apcs_data },
+> +       { .compatible = "qcom,sm6115-apcs-hmss-global", .data = &sdm660_apcs_data },
+>         { .compatible = "qcom,sm8150-apss-shared", .data = &apps_shared_apcs_data },
+>         { .compatible = "qcom,sdx55-apcs-gcc", .data = &sdx55_apcs_data },
+>         {}
+> --
+> 2.31.1
+>
