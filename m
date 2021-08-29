@@ -2,205 +2,74 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AA79BC4320A
-	for <phone-devel@archiver.kernel.org>; Sun, 29 Aug 2021 20:39:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85BC6C4320A
+	for <phone-devel@archiver.kernel.org>; Sun, 29 Aug 2021 20:48:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 74D0D60F58
-	for <phone-devel@archiver.kernel.org>; Sun, 29 Aug 2021 20:39:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5FF0660F46
+	for <phone-devel@archiver.kernel.org>; Sun, 29 Aug 2021 20:48:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234878AbhH2UkZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 29 Aug 2021 16:40:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33122 "EHLO
+        id S235483AbhH2UtW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 29 Aug 2021 16:49:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234568AbhH2UkY (ORCPT
+        with ESMTP id S234955AbhH2UtV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 29 Aug 2021 16:40:24 -0400
-Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41916C061760
-        for <phone-devel@vger.kernel.org>; Sun, 29 Aug 2021 13:39:32 -0700 (PDT)
-Received: by mail-qv1-xf33.google.com with SMTP id e18so7282336qvo.1
-        for <phone-devel@vger.kernel.org>; Sun, 29 Aug 2021 13:39:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JcAGpvjZl4otOzegeVlMhd6VrMWnkv2do4HIsVuxhR0=;
-        b=yPuJr/zQ1fgd10+lMFbU0jMaMb0xUflxTZOJrLdglCH24AD9OIydlkW7LJxr9mbnbY
-         BzsTCtgZ9bhvnqZNrYLUmhKM65pfmcyTT/VSXIkqpo3SRLtj8cXY3r1fH036In4nJNAx
-         oZyCZ+0CXvfh0A5s7XazNsdIGRSCOqJqkPML+Z/4QyXPVvO5PY+8KgidnyZmZ87Qj15N
-         zVpb+RR3cuGmbUXpa+88pEMjH0D6XWHuiB0bWjZGM+qsL1UAL79zeHC0vlAuEGM+NugU
-         o7qaUj2M5VqAaUH80JYAK99pNxTKi0Uk0N/p1r3Jxa612//77NvEjSpG6UUjvOm2JeyJ
-         CnWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JcAGpvjZl4otOzegeVlMhd6VrMWnkv2do4HIsVuxhR0=;
-        b=HCNpdh7W0E/x2iozv55wwcIEehaEoPjbnIHJSRMaPz6O/VxUc8tiP0yeEl5IDw2HRn
-         /Ohsnurbzy10V4xkjyabV2/QxNW1FODqrAiXvq79vMxyptMc9dXor7RdHTU7qs5Y+Tun
-         BJahYRMl36Nou+nMyKAN7I1ERuifGOj3F76DMpnYba5QE+WwL7/p13nDLacyg/pI344l
-         1lq6Voay6tvmTrR/rK4C/9ku80Gw5UQpGgiUcjZbOZUCm2WdlmmU5TSfuOZYUrdyl3QL
-         yEx31FO7FTMLkB9eJK/rAmgz4oph1suLSr9wqLfGAvp/X164FXmPpQD6iYA1vbd5Fk47
-         3Mzw==
-X-Gm-Message-State: AOAM530AvQJM0T3eNJqG7nkcmmpJ/OiaFwmCXgaWxrIxhbuXlNrSw88f
-        Im2kEJF/lrmiMt8ZKC4fjLkr3a3gRCpmRb5L/8/E6A==
-X-Google-Smtp-Source: ABdhPJwEpxhX59DMqPkOOqNIn7bPRiH3aQrT3YCKJLPzFyFX/jeI0xmPWz1c5Wupta08Vtloc5VWW7MbXpCMXdIMSIk=
-X-Received: by 2002:ad4:4b14:: with SMTP id r20mr19549901qvw.61.1630269570386;
- Sun, 29 Aug 2021 13:39:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210829203027.276143-1-marijn.suijten@somainline.org> <20210829203027.276143-3-marijn.suijten@somainline.org>
-In-Reply-To: <20210829203027.276143-3-marijn.suijten@somainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Sun, 29 Aug 2021 23:39:19 +0300
-Message-ID: <CAA8EJppmBvohk3CC87N_P3m+CP=bRLWWknS7esDrYb-xArJFvg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] drm/msm/dsi: Use "ref" fw clock instead of global
- name for VCO parent
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Sun, 29 Aug 2021 16:49:21 -0400
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39E08C061575
+        for <phone-devel@vger.kernel.org>; Sun, 29 Aug 2021 13:48:26 -0700 (PDT)
+Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 53D6E1FABE;
+        Sun, 29 Aug 2021 22:48:24 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Pavel Dubrova <pashadubrova@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Abhinav Kumar <abhinavk@codeaurora.org>,
-        Jonathan Marek <jonathan@marek.ca>,
-        "open list:DRM DRIVER FOR MSM ADRENO GPU" 
-        <linux-arm-msm@vger.kernel.org>,
-        "open list:DRM DRIVER FOR MSM ADRENO GPU" 
-        <dri-devel@lists.freedesktop.org>,
-        freedreno <freedreno@lists.freedesktop.org>,
-        open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] sdm660 clock-controller cleanup
+Date:   Sun, 29 Aug 2021 22:48:18 +0200
+Message-Id: <20210829204822.289829-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.33.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
+Following earlier cleanup in gcc to replace parent_names with
+parent_data to use pointers to internal clk_hws, this patchset removes
+more dependencies on global clock names through clk_parent_data's .name
+field, and uses ARRAY_SIZE to determine the number of parent clocks in
+the parent_data arrays instead of hardcoding it.
 
-On Sun, 29 Aug 2021 at 23:30, Marijn Suijten
-<marijn.suijten@somainline.org> wrote:
->
-> All DSI PHY/PLL drivers were referencing their VCO parent clock by a
-> global name, most of which don't exist or have been renamed.  These
-> clock drivers seem to function fine without that except the 14nm driver
-> for the sdm6xx [1].
->
-> At the same time all DTs provide a "ref" clock as per the requirements
-> of dsi-phy-common.yaml, but the clock is never used.  This patchset puts
-> that clock to use without relying on a global clock name, so that all
-> dependencies are explicitly defined in DT (the firmware) in the end.
+Marijn Suijten (4):
+  clk: qcom: gcc-sdm660: Use ARRAY_SIZE for num_parents
+  clk: qcom: gpucc-sdm660: Use ARRAY_SIZE for num_parents
+  clk: qcom: mmcc-sdm660: Use ARRAY_SIZE for num_parents
+  clk: qcom: gpucc-sdm660: Remove fallback to global clock names
 
-msm8974 (28nm-hpm) does not define the "ref" clock. So you'd have to:
-1) add ref clock to the dtsi (should come in a separate patch).
-2) add .name = "xo" as a fallback to the 28nm driver (to be compatible
-with older devices)
-
-Other than that this looks good to me.
-
->
-> [1]: https://lore.kernel.org/linux-arm-msm/386db1a6-a1cd-3c7d-a88e-dc83f8a1be96@somainline.org/
->
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
->  drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c      | 4 +++-
->  drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c      | 4 +++-
->  drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c      | 4 +++-
->  drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c | 4 +++-
->  drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c       | 4 +++-
->  5 files changed, 15 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-> index e46b10fc793a..3cbb1f1475e8 100644
-> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-> @@ -562,7 +562,9 @@ static int pll_10nm_register(struct dsi_pll_10nm *pll_10nm, struct clk_hw **prov
->         char clk_name[32], parent[32], vco_name[32];
->         char parent2[32], parent3[32], parent4[32];
->         struct clk_init_data vco_init = {
-> -               .parent_names = (const char *[]){ "xo" },
-> +               .parent_data = &(const struct clk_parent_data) {
-> +                       .fw_name = "ref",
-> +               },
->                 .num_parents = 1,
->                 .name = vco_name,
->                 .flags = CLK_IGNORE_UNUSED,
-> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
-> index bb31230721bd..406470265408 100644
-> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
-> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
-> @@ -804,7 +804,9 @@ static int pll_14nm_register(struct dsi_pll_14nm *pll_14nm, struct clk_hw **prov
->  {
->         char clk_name[32], parent[32], vco_name[32];
->         struct clk_init_data vco_init = {
-> -               .parent_names = (const char *[]){ "xo" },
-> +               .parent_data = &(const struct clk_parent_data) {
-> +                       .fw_name = "ref",
-> +               },
->                 .num_parents = 1,
->                 .name = vco_name,
->                 .flags = CLK_IGNORE_UNUSED,
-> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
-> index 2da673a2add6..8ee9c9c0548d 100644
-> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
-> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
-> @@ -521,7 +521,9 @@ static int pll_28nm_register(struct dsi_pll_28nm *pll_28nm, struct clk_hw **prov
->  {
->         char clk_name[32], parent1[32], parent2[32], vco_name[32];
->         struct clk_init_data vco_init = {
-> -               .parent_names = (const char *[]){ "xo" },
-> +               .parent_data = &(const struct clk_parent_data) {
-> +                       .fw_name = "ref",
-> +               },
->                 .num_parents = 1,
->                 .name = vco_name,
->                 .flags = CLK_IGNORE_UNUSED,
-> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c
-> index aaa37456f4ee..9662cb236468 100644
-> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c
-> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c
-> @@ -385,7 +385,9 @@ static int pll_28nm_register(struct dsi_pll_28nm *pll_28nm, struct clk_hw **prov
->  {
->         char *clk_name, *parent_name, *vco_name;
->         struct clk_init_data vco_init = {
-> -               .parent_names = (const char *[]){ "pxo" },
-> +               .parent_data = &(const struct clk_parent_data) {
-> +                       .fw_name = "ref",
-> +               },
->                 .num_parents = 1,
->                 .flags = CLK_IGNORE_UNUSED,
->                 .ops = &clk_ops_dsi_pll_28nm_vco,
-> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-> index 7c23d4c47338..c77c30628cca 100644
-> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-> @@ -590,7 +590,9 @@ static int pll_7nm_register(struct dsi_pll_7nm *pll_7nm, struct clk_hw **provide
->         char clk_name[32], parent[32], vco_name[32];
->         char parent2[32], parent3[32], parent4[32];
->         struct clk_init_data vco_init = {
-> -               .parent_names = (const char *[]){ "bi_tcxo" },
-> +               .parent_data = &(const struct clk_parent_data) {
-> +                       .fw_name = "ref",
-> +               },
->                 .num_parents = 1,
->                 .name = vco_name,
->                 .flags = CLK_IGNORE_UNUSED,
-> --
-> 2.33.0
->
-
+ drivers/clk/qcom/gcc-sdm660.c   | 80 ++++++++++++++++-----------------
+ drivers/clk/qcom/gpucc-sdm660.c | 15 +++----
+ drivers/clk/qcom/mmcc-sdm660.c  | 72 ++++++++++++++---------------
+ 3 files changed, 83 insertions(+), 84 deletions(-)
 
 -- 
-With best wishes
-Dmitry
+2.33.0
+
