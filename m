@@ -2,32 +2,67 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FCBEC432BE
-	for <phone-devel@archiver.kernel.org>; Sun, 29 Aug 2021 21:53:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5033C432BE
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 01:17:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7736760F5B
-	for <phone-devel@archiver.kernel.org>; Sun, 29 Aug 2021 21:53:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8363560F51
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 01:17:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235685AbhH2Vyd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 29 Aug 2021 17:54:33 -0400
-Received: from relay03.th.seeweb.it ([5.144.164.164]:38199 "EHLO
-        relay03.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234765AbhH2Vyc (ORCPT
+        id S235570AbhH3BSh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 29 Aug 2021 21:18:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38130 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234794AbhH3BSh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 29 Aug 2021 17:54:32 -0400
-Received: from [10.0.20.3] (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 392761F954;
-        Sun, 29 Aug 2021 23:53:38 +0200 (CEST)
+        Sun, 29 Aug 2021 21:18:37 -0400
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EFF1C061756
+        for <phone-devel@vger.kernel.org>; Sun, 29 Aug 2021 18:17:44 -0700 (PDT)
+Received: by mail-qt1-x835.google.com with SMTP id r21so10446290qtw.11
+        for <phone-devel@vger.kernel.org>; Sun, 29 Aug 2021 18:17:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WfXFIu2YP/cyEtXqUoY+pbv5W2e1wSkIPAhVHrp+0/4=;
+        b=W1ici69Kt2rAChENIXMHZGGffeOYJlATguvIpNwgAHVB7g5juXF2AiTxCQ6wfYSrFA
+         PDa+pXiZVHWIgyW/S7pjve7GPhyvwpUz5M1ZNMF1e9dW21JQy7ZLuO59I53+J8wT3gpB
+         1SC+YO+ue2sAQKcWXpif7QJhykrUotm96p4T56hDFOYsi0KlRpuOPI1N/rJXugV1dSNU
+         Z2itCS+9uIhP/9XHFxX4EzJmD3ObKjuwkF0rNFtLwStYcnPx8QFp5jYPmL8IZuLQMdyS
+         3H5fMitmMhO8ddUQPHreyR4Z+yEoBB+NgWgKoecdEhbWYz2HSttqszHbANPbPAEeiyaB
+         Rh5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WfXFIu2YP/cyEtXqUoY+pbv5W2e1wSkIPAhVHrp+0/4=;
+        b=szwV3JUWzDmHYoPx+/Q0PxzDEIZZbUxqPYy8LVwpf/G7B7ULAUS1jpeo7jW3UbbE5A
+         /egSYPsClt9F6em1kI/8UcfXUTjiVyXSx+qx53lIvPiAC+dU3ZzE+4KkZY45MlbFjoix
+         1MPk3aNTHGLbg0eHxQYWvFDfC1lWIgQ1xxvelLkJmgw7KMjJAjgzhDKcGyOQfv5PrFne
+         tWS42ARvd+wf0IbnSsjruugDQyXfAxdUFhh4L4n6iJHrD5qQPod0PHNZ/NZWXfbeW7tI
+         2bfR6PBDvR4kxszv+bd7fplh6/WYBjZCOc0I5yyqWmz5iXDYIwYYEdesgIH40cacq/5h
+         U2hQ==
+X-Gm-Message-State: AOAM531LjWFoDB7hoqPSB8l2NjqHoaDT6SqGAHVbCHEp3PiM1d1oy2aW
+        Rwqh3tDb2hWmJM7VfO011AruZYs49cv4xb18Ikm8yg==
+X-Google-Smtp-Source: ABdhPJx8aZaQ2hRtqSFrECAuYeiv3KsLCobfsAE1chhz9/GxB0w+F/Ai49RdNUU/F53c3wne99H6s6bjr/joVRjQkpU=
+X-Received: by 2002:ac8:66da:: with SMTP id m26mr18703305qtp.273.1630286263447;
+ Sun, 29 Aug 2021 18:17:43 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210829203027.276143-1-marijn.suijten@somainline.org>
+ <20210829203027.276143-3-marijn.suijten@somainline.org> <CAA8EJppmBvohk3CC87N_P3m+CP=bRLWWknS7esDrYb-xArJFvg@mail.gmail.com>
+ <a27b4e74-3856-8c5c-73af-05e976430ea2@somainline.org>
+In-Reply-To: <a27b4e74-3856-8c5c-73af-05e976430ea2@somainline.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Mon, 30 Aug 2021 04:17:32 +0300
+Message-ID: <CAA8EJpp38fRff+j-+iG2pATSQ9e_R4zRxepmbGqpKP=gcOZotA@mail.gmail.com>
 Subject: Re: [PATCH 2/3] drm/msm/dsi: Use "ref" fw clock instead of global
  name for VCO parent
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
@@ -47,60 +82,61 @@ Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         <dri-devel@lists.freedesktop.org>,
         freedreno <freedreno@lists.freedesktop.org>,
         open list <linux-kernel@vger.kernel.org>
-References: <20210829203027.276143-1-marijn.suijten@somainline.org>
- <20210829203027.276143-3-marijn.suijten@somainline.org>
- <CAA8EJppmBvohk3CC87N_P3m+CP=bRLWWknS7esDrYb-xArJFvg@mail.gmail.com>
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-Message-ID: <a27b4e74-3856-8c5c-73af-05e976430ea2@somainline.org>
-Date:   Sun, 29 Aug 2021 23:53:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-MIME-Version: 1.0
-In-Reply-To: <CAA8EJppmBvohk3CC87N_P3m+CP=bRLWWknS7esDrYb-xArJFvg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Dmitry,
+On Mon, 30 Aug 2021 at 00:53, Marijn Suijten
+<marijn.suijten@somainline.org> wrote:
+>
+> Hi Dmitry,
+>
+> On 8/29/21 10:39 PM, Dmitry Baryshkov wrote:
+> > Hi,
+> >
+> > On Sun, 29 Aug 2021 at 23:30, Marijn Suijten
+> > <marijn.suijten@somainline.org> wrote:
+> >>
+> >> All DSI PHY/PLL drivers were referencing their VCO parent clock by a
+> >> global name, most of which don't exist or have been renamed.  These
+> >> clock drivers seem to function fine without that except the 14nm driver
+> >> for the sdm6xx [1].
+> >>
+> >> At the same time all DTs provide a "ref" clock as per the requirements
+> >> of dsi-phy-common.yaml, but the clock is never used.  This patchset puts
+> >> that clock to use without relying on a global clock name, so that all
+> >> dependencies are explicitly defined in DT (the firmware) in the end.
+> >
+> > msm8974 (28nm-hpm) does not define the "ref" clock. So you'd have to:
+> > 1) add ref clock to the dtsi (should come in a separate patch).
+>
+>
+> Thanks for double-checking and noticing this!  I've queued up this patch
+> for v2.
+>
+> > 2) add .name = "xo" as a fallback to the 28nm driver (to be compatible
+> > with older devices)
+>
+>
+> Are there msm8974 devices out there that might upgrade kernels, but not
+> firmware (DT)?  On other boards (sdm630) I'm removing these from various
+> drivers as to not have any possibility of relying on global names, in
+> favour of having the clock dependencies fully specified in the DT.
 
-On 8/29/21 10:39 PM, Dmitry Baryshkov wrote:
-> Hi,
-> 
-> On Sun, 29 Aug 2021 at 23:30, Marijn Suijten
-> <marijn.suijten@somainline.org> wrote:
->>
->> All DSI PHY/PLL drivers were referencing their VCO parent clock by a
->> global name, most of which don't exist or have been renamed.  These
->> clock drivers seem to function fine without that except the 14nm driver
->> for the sdm6xx [1].
->>
->> At the same time all DTs provide a "ref" clock as per the requirements
->> of dsi-phy-common.yaml, but the clock is never used.  This patchset puts
->> that clock to use without relying on a global clock name, so that all
->> dependencies are explicitly defined in DT (the firmware) in the end.
-> 
-> msm8974 (28nm-hpm) does not define the "ref" clock. So you'd have to:
-> 1) add ref clock to the dtsi (should come in a separate patch).
+IIUC it is a general policy of trying to be (somewhat)
+backwards-compatible. For example because your dts might come from a
+different source/be a part of different build process/etc.
+
+>
+> > Other than that this looks good to me.
+>
+>
+> Any r-b/a-b/t-b I can pick up for the next round?
+
+Let's get those issues fixed and I'll respond with R-B tags
 
 
-Thanks for double-checking and noticing this!  I've queued up this patch 
-for v2.
-
-> 2) add .name = "xo" as a fallback to the 28nm driver (to be compatible
-> with older devices)
-
-
-Are there msm8974 devices out there that might upgrade kernels, but not 
-firmware (DT)?  On other boards (sdm630) I'm removing these from various 
-drivers as to not have any possibility of relying on global names, in 
-favour of having the clock dependencies fully specified in the DT.
-
-> Other than that this looks good to me.
-
-
-Any r-b/a-b/t-b I can pick up for the next round?
-
-- Marijn
+-- 
+With best wishes
+Dmitry
