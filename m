@@ -2,101 +2,130 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+X-Spam-Status: No, score=-16.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F3C2C4320E
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 22:15:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CE61C432BE
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 22:16:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2778A60F5B
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 22:15:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DF1C360F57
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 22:16:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238690AbhH3WQd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 30 Aug 2021 18:16:33 -0400
-Received: from relay02.th.seeweb.it ([5.144.164.163]:60111 "EHLO
-        relay02.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230140AbhH3WQc (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 30 Aug 2021 18:16:32 -0400
-Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 41C541F89E;
-        Tue, 31 Aug 2021 00:15:36 +0200 (CEST)
-Date:   Tue, 31 Aug 2021 00:15:34 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        id S238690AbhH3WRJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 30 Aug 2021 18:17:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39864 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S238281AbhH3WRI (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 30 Aug 2021 18:17:08 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A516B60462;
+        Mon, 30 Aug 2021 22:16:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630361774;
+        bh=fQTfKaZiLXoQnkx1EXqsVQdQpppSFmhkr8OzjVUwZhc=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=MpMZUPXfuhwJdFnuKUDrYy1cJu7+ziEUywHrLu/b5hwbJniwEnOlgqQwKen76YPdT
+         bIBgbzctj0EGFoX/3D4ZKqraQRN1YJyHSHH0abUwDCrNJgN9OD0hoRHEl8zDmDvn6P
+         V+kaXBLhzpzZj4pGNG3vP4IL+1DZD92sv+J8OC5ZKc5qLdg3yB1sgot3lTIjZEKPvw
+         Q9tqdbx9vsZI07eZG2FtZZZfd8QSvDo4iIa73cbS7vo6P7e6rnOWwhsuvf0OZow3Hl
+         ZiBtyjdfBOEeL8zVxCnXsPInzRqqAw/Asi194FGwGlT49lwjnbiZo/MZY6f/WyW9JP
+         AYD0QY46LIcMQ==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210830182445.167527-2-marijn.suijten@somainline.org>
+References: <20210830182445.167527-1-marijn.suijten@somainline.org> <20210830182445.167527-2-marijn.suijten@somainline.org>
+Subject: Re: [PATCH v2 1/2] drm/msm/dsi: Use "ref" fw clock instead of global name for VCO parent
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Pavel Dubrova <pashadubrova@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
         Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Brian Masney <masneyb@onstation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm: dts: qcom-msm8974: Add xo_board reference clock to
- DSI0 PHY
-Message-ID: <YS1YhsT2iIj3Ydd9@Marijn-Arch-PC.localdomain>
-References: <20210830175739.143401-1-marijn.suijten@somainline.org>
- <YS1NbxhPrAPIQwk3@yoga>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YS1NbxhPrAPIQwk3@yoga>
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Abhinav Kumar <abhinavk@codeaurora.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        Stephen Boyd <swboyd@chromium.org>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+Date:   Mon, 30 Aug 2021 15:16:13 -0700
+Message-ID: <163036177339.2676726.12271104951144475163@swboyd.mtv.corp.google.com>
+User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2021-08-30 16:28:15, Bjorn Andersson wrote:
-> On Mon 30 Aug 12:57 CDT 2021, Marijn Suijten wrote:
-> 
-> > According to YAML validation, and for a future patchset putting this
-> > xo_board reference clock to use as VCO reference parent, add the missing
-> > clock to dsi_phy0.
-> > 
-> 
-> And just to confirm on MSM8974 "ref" is supposed to be 19.2Mhz?
+Quoting Marijn Suijten (2021-08-30 11:24:44)
+> All DSI PHY/PLL drivers were referencing their VCO parent clock by a
+> global name, most of which don't exist or have been renamed.  These
+> clock drivers seem to function fine without that except the 14nm driver
+> for the sdm6xx [1].
+>=20
+> At the same time all DTs provide a "ref" clock as per the requirements
+> of dsi-phy-common.yaml, but the clock is never used.  This patchset puts
+> that clock to use without relying on a global clock name, so that all
+> dependencies are explicitly defined in DT (the firmware) in the end.
+>=20
+> Note that msm8974 is the only board not providing this clock, and
+> apq8064 was providing the wrong clock (19.2MHz cxo instead of 27MHz
+> pxo).  Both have been been addressed in separate patches that are
+> supposed to land well in advance of this patchset.
+>=20
+> Furthermore not all board-DTs provided this clock initially but that
+> deficiency has been addressed in followup patches (see the Fixes:
+> below).  Those commits seem to assume that the clock was used, while
+> nothing in history indicates that this "ref" clock was ever retrieved.
+>=20
+> [1]: https://lore.kernel.org/linux-arm-msm/386db1a6-a1cd-3c7d-a88e-dc83f8=
+a1be96@somainline.org/
+>=20
+> Fixes: 79e51645a1dd ("arm64: dts: qcom: msm8916: Set 'xo_board' as ref cl=
+ock of the DSI PHY")
+> Fixes: 6969d1d9c615 ("ARM: dts: qcom-apq8064: Set 'cxo_board' as ref cloc=
+k of the DSI PHY")
+> Fixes: 0c0e72705a33 ("arm64: dts: sdm845: Set 'bi_tcxo' as ref clock of t=
+he DSI PHYs")
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c      | 4 +++-
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c      | 4 +++-
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c      | 4 +++-
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c | 4 +++-
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c       | 4 +++-
+>  5 files changed, 15 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c b/drivers/gpu/drm=
+/msm/dsi/phy/dsi_phy_10nm.c
+> index e46b10fc793a..3cbb1f1475e8 100644
+> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
+> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
+> @@ -562,7 +562,9 @@ static int pll_10nm_register(struct dsi_pll_10nm *pll=
+_10nm, struct clk_hw **prov
+>         char clk_name[32], parent[32], vco_name[32];
+>         char parent2[32], parent3[32], parent4[32];
+>         struct clk_init_data vco_init =3D {
+> -               .parent_names =3D (const char *[]){ "xo" },
+> +               .parent_data =3D &(const struct clk_parent_data) {
+> +                       .fw_name =3D "ref",
 
-Yes, the 28nm-hpm driver (unlike the 28nm-8960 driver for apq8064) uses
-19.2MHz for its hardcoded VCO_REF_CLK_RATE calculations.
+Please also add .name as the old parent_names value so that newer
+kernels can be used without having to use new DT.
 
-Perhaps we should reword the commit message to read "... add the missing
-19.2MHz xo clock ...".
-
-- Marijn
-
-> Regards,
-> Bjorn
-> 
-> > Fixes: 5a9fc531f6ec ("ARM: dts: msm8974: add display support")
-> > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > ---
-> >  arch/arm/boot/dts/qcom-msm8974.dtsi | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
-> > index db4c06bf7888..96722172b064 100644
-> > --- a/arch/arm/boot/dts/qcom-msm8974.dtsi
-> > +++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
-> > @@ -1580,8 +1580,8 @@ dsi_phy0: dsi-phy@fd922a00 {
-> >  				#phy-cells = <0>;
-> >  				qcom,dsi-phy-index = <0>;
-> >  
-> > -				clocks = <&mmcc MDSS_AHB_CLK>;
-> > -				clock-names = "iface";
-> > +				clocks = <&mmcc MDSS_AHB_CLK>, <&xo_board>;
-> > +				clock-names = "iface", "ref";
-> >  			};
-> >  		};
-> >  
-> > -- 
-> > 2.33.0
-> > 
+> +               },
+>                 .num_parents =3D 1,
+>                 .name =3D vco_name,
+>                 .flags =3D CLK_IGNORE_UNUSED,
