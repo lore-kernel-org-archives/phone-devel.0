@@ -2,37 +2,64 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BA69C432BE
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 18:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2975BC432BE
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 21:29:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1ED1260F3A
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 18:33:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 12D7D60F3A
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 21:29:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238842AbhH3SeA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 30 Aug 2021 14:34:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49946 "EHLO
+        id S237969AbhH3VaH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 30 Aug 2021 17:30:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238854AbhH3Sd7 (ORCPT
+        with ESMTP id S238788AbhH3V3M (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 30 Aug 2021 14:33:59 -0400
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B36C061575
-        for <phone-devel@vger.kernel.org>; Mon, 30 Aug 2021 11:33:03 -0700 (PDT)
-Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 5DB493E878;
-        Mon, 30 Aug 2021 20:33:01 +0200 (CEST)
-Date:   Mon, 30 Aug 2021 20:33:00 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Mon, 30 Aug 2021 17:29:12 -0400
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC127C06175F
+        for <phone-devel@vger.kernel.org>; Mon, 30 Aug 2021 14:28:18 -0700 (PDT)
+Received: by mail-oi1-x231.google.com with SMTP id s20so21809356oiw.3
+        for <phone-devel@vger.kernel.org>; Mon, 30 Aug 2021 14:28:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=YWW/ngYDKJNHbc/3izYjMV42ez7lWh8GMqEHdYHK41k=;
+        b=LTOS3AIjU/fMG9OubGJWGN0w2i1ObmwkMRbtiQJEr3rSpJd7VZNj7uRuUApL5gdIsc
+         8QWS0ln8rHeWy0NvK8sADUzKDnRc84KChrv7FeTTVrSuYmDI42pFvlxRJIIIgGOJ6lhC
+         i+dLZ6E66zm6jPUHmvcUt+d0cfHKPk+j8sFNzXpMW4EHJgEkzctsSV1LxZqrOKm/Id6q
+         aRFf3Ith4g7rk+9lAMpCnzSforXls0NtPqR27yOsSdOmtCrGx2v+3UVJ6ZdyUbUjwzVv
+         NEp6kYby9nRNB+XdDOLJ82Y/bmccYtUz9zxAroKAxdPmIi+AwkJ0VY7bBLjFWfmjJeHd
+         q3EA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=YWW/ngYDKJNHbc/3izYjMV42ez7lWh8GMqEHdYHK41k=;
+        b=LUkyZK+R/ii/RsMvBlLtDiuLK3bum3tETNQBqV6ga0Qhy8PiIzbLVSeD9os3Xbugn+
+         MxuQHIZH0+0OGNMYhJzWoKAmwSNsqmpesXwmIQosXaJfxs2VqdA8VOh5vuMpw3ElCRLb
+         I6bA9gzWk5JUPSmDHjpQ6ajBSbn6ioGMrGv44JUfVzaQ88thNqLmqivVwTl7mjWnRbur
+         RoOjaK7uMXNEZyOrCvIay+lWqKDd4mTLh0jUXKIMp7HPrvsKNKLdsxS/H62uAPUkKqGb
+         AcN3WYDFp1ppGJJxmxTw9iJ0T54s9ojWFrauCsQVCB9Kq5sVl6/9QFJqCXAFth8oCbCf
+         5/rA==
+X-Gm-Message-State: AOAM532/QHhZrmh+bUFO6qgTI39TC3jclUyIXdTHsXUs1B05msWWsX+l
+        OoHASzFUNdwI5wE2tSrO9jgnhQ==
+X-Google-Smtp-Source: ABdhPJxQaKR9VZXyTuQ+qlMYZCjuEXrqGCsPi9dzwkfWL0LU4LCvPlDmTwxK60pEtp5Smjo4uWirvQ==
+X-Received: by 2002:a05:6808:7:: with SMTP id u7mr897581oic.63.1630358898186;
+        Mon, 30 Aug 2021 14:28:18 -0700 (PDT)
+Received: from yoga (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id a15sm3467710otq.13.2021.08.30.14.28.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Aug 2021 14:28:17 -0700 (PDT)
+Date:   Mon, 30 Aug 2021 16:28:15 -0500
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
@@ -41,90 +68,55 @@ Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Pavel Dubrova <pashadubrova@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        "open list:DRM DRIVER FOR MSM ADRENO GPU" 
-        <linux-arm-msm@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/3] arm: dts: qcom: apq8064: Use 27MHz PXO clock as DSI
- PLL reference
-Message-ID: <YS0kXJ/Mr+qNMRfq@Marijn-Arch-PC.localdomain>
-References: <20210829203027.276143-2-marijn.suijten@somainline.org>
- <CAA8EJprQ03ipZzO+1vgt9W7jFbLXgsYR0n-oJxVB-142x8dgRA@mail.gmail.com>
- <17d19b93-dbe5-cc85-f302-b52cd8eeed56@somainline.org>
- <CAA8EJpqd7_5510TodALnX13Wo0MufYm2G=r6vw9sy=VURrewyw@mail.gmail.com>
- <YSznouVZ93sUd6xa@Marijn-Arch-PC.localdomain>
- <CAA8EJpoRo6rPgpUeT9X0K4UPu5d8-YBP=BJ3AAejD+wujhmv+g@mail.gmail.com>
- <YSzqR2yq3MtdPnIG@Marijn-Arch-PC.localdomain>
- <YSz2kVKv8jhz7/n8@yoga>
- <YSz7NZD7elH3+XgP@Marijn-Arch-PC.localdomain>
- <YS0AEZR7NhmDhHmk@yoga>
+        Brian Masney <masneyb@onstation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm: dts: qcom-msm8974: Add xo_board reference clock to
+ DSI0 PHY
+Message-ID: <YS1NbxhPrAPIQwk3@yoga>
+References: <20210830175739.143401-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YS0AEZR7NhmDhHmk@yoga>
+In-Reply-To: <20210830175739.143401-1-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2021-08-30 10:58:09, Bjorn Andersson wrote:
-[...]
-> > > 
-> > > Afaik these devices all boots off a boot.img, which means that it's
-> > > unlikely that a new kernel is installed on a device with an older DT.
-> > > None of them would boot mainline off the DT that shipped with the
-> > > original product.
-> > 
-> > That was my understanding as well, DT overlays are a "new thing" afaik
-> > and most devices (at least all Sony's that I'm working with) use an
-> > appended DTB that's always in-sync with the kernel image.
-> > 
+On Mon 30 Aug 12:57 CDT 2021, Marijn Suijten wrote:
+
+> According to YAML validation, and for a future patchset putting this
+> xo_board reference clock to use as VCO reference parent, add the missing
+> clock to dsi_phy0.
 > 
-> I think that with the introduction of DT overlays the system becomes
-> more flexible and as such more susceptible for bugs caused by unexpected
-> DT versions.
 
-Offtopic: We have some problems with this on newer Sony devices where
-the BL indeed tries to overlay this DTBO on the DT, which is usually a
-downstream DT not fitting on top of a mainline kernel+appended-DTB.  The
-solution is to simply wipe DTBO, and afaik it should be fine to compile
-the overlay bits directly inside the appended-DTB anyway.  Leads to
-unsuspecting problems at times, but it is manageable.
+And just to confirm on MSM8974 "ref" is supposed to be 19.2Mhz?
 
-> I think in practice the real issues comes when the DTB is delivered
-> separately (i.e. not by boot.img) or inbetween two kernel releases where
-> the Qualcomm tree might not be in sync with the driver tree.
+Regards,
+Bjorn
 
-Dmitry sees this as a problem for msm8974 but I'm not familiar enough
-with the board.  I take it this doesn't use appended DTBs then?
-
-> > > As such, if I pick this patch up as a fix for 5.15 you can respin the
-> > > other two patches and they can land in 5.16 and I would be surprised if
-> > > anyone will run into any issues with it.
-> > > 
-> > > I.e. I've applied this patch.
-> > 
-> > Sounds good, I'll leave this patch out from v2.  Should it have a Fixes:
-> > tag to get backported too?
-> > 
+> Fixes: 5a9fc531f6ec ("ARM: dts: msm8974: add display support")
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+>  arch/arm/boot/dts/qcom-msm8974.dtsi | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Sounds good, I added to this:
+> diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
+> index db4c06bf7888..96722172b064 100644
+> --- a/arch/arm/boot/dts/qcom-msm8974.dtsi
+> +++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
+> @@ -1580,8 +1580,8 @@ dsi_phy0: dsi-phy@fd922a00 {
+>  				#phy-cells = <0>;
+>  				qcom,dsi-phy-index = <0>;
+>  
+> -				clocks = <&mmcc MDSS_AHB_CLK>;
+> -				clock-names = "iface";
+> +				clocks = <&mmcc MDSS_AHB_CLK>, <&xo_board>;
+> +				clock-names = "iface", "ref";
+>  			};
+>  		};
+>  
+> -- 
+> 2.33.0
 > 
-> Fixes: 6969d1d9c615 ("ARM: dts: qcom-apq8064: Set 'cxo_board' as ref clock of the DSI PHY")
-
-Did the same on the v2 respin since it seems like those patches were
-incomplete without the driver change.
-
-> > Since most review seems to be in I'll respin v2 shortly with the
-> > addition of the "ref" clock to msm8974, that should probably get the
-> > same treatment (added to 5.15 fixes) then we can land this patchset in
-> > 5.16 (maybe without .name= fallback if Dmitry is okay with that).
-> > 
-> 
-> Sounds good.
-
-Sent the msm8974 patch separately and re-spun a v2.  I haven't added the
-.name="xo" fallback yet while awaiting Dmitry to see if that counts as
-enough time for firmware to be delivered between kernel 5.15 and 5.16.
-
-- Marijn
