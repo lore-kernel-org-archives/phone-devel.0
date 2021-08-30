@@ -2,65 +2,33 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2360BC4320A
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 01:18:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EAB3C432BE
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 08:28:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EAAA960F91
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 01:18:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 358E46101B
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 08:28:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236145AbhH3BTo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 29 Aug 2021 21:19:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38384 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236120AbhH3BTo (ORCPT
+        id S234735AbhH3I3E (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 30 Aug 2021 04:29:04 -0400
+Received: from relay04.th.seeweb.it ([5.144.164.165]:49727 "EHLO
+        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234618AbhH3I3E (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 29 Aug 2021 21:19:44 -0400
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 367B9C061760
-        for <phone-devel@vger.kernel.org>; Sun, 29 Aug 2021 18:18:51 -0700 (PDT)
-Received: by mail-qk1-x72f.google.com with SMTP id c10so13940884qko.11
-        for <phone-devel@vger.kernel.org>; Sun, 29 Aug 2021 18:18:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1hhV9nDZ+cplYuMpzE5vj+vUQnOUXDSLgbJtDYIw5iU=;
-        b=l48UbSq5y96b7Dk1nHFjQBTnvGbk1gL0McaWJMIJWZqfj+kqRt+GQGwJJd5YNqTf+F
-         icQUbgnMufMLqa/YYBuvxQ1JyTzyx3mAo+679rU4RFgiFJ4+mhaiEbBAJBuWw7IZ78lu
-         8+aPx0JPVRVEJ5p/6qpHfjlSz7y0fWj//LkFtLptH+njEkcJodvFRNLEWNF5xcc6jaG8
-         fHLWb9sF4yb98dATKbxQnOPhDziP9JstHOfN5Lk3mRvS5qxdNmhFwK9MywC3bFF6y1HW
-         d2QY775IlmnUvQlOI1hlg/8/v3yEPNWURgW69mrpTZ6ej+ZyyNqR/QhbVUKkUe4Dqqz5
-         VzxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1hhV9nDZ+cplYuMpzE5vj+vUQnOUXDSLgbJtDYIw5iU=;
-        b=BRWHueykrhzCauF+ClQ1Qo8w604dG5XiMzcaFHvHOpown3CTQkGXshp/jBAbrtbqtO
-         QPSDYOrjVUDahEMRgj4z3dWmMYlRmvrNNNx5kxl0xzJQZfIAl3xm17untIyaJL9qLHDk
-         IEOqSi9ouHX3wDxUt5pY9UYyPxqzgbjfqertRAmix7z617d9jinwGlo4lHOMZ0YMvkn9
-         az9Dw6QtCdYwd/Pn4nxyutajF5bn/df6Aq8Zc8sSCbcqG6+/XejKqlESVQ/9FT9E4oBn
-         3sAAY/QvxIuT5raqpk2zixVRRb6YnZ6sVODWv4dFHB/h6ez7V4u45st9P63rqyJtcV0h
-         6y4w==
-X-Gm-Message-State: AOAM5309hBz/odiC4+mGWPghLwoXvciNsA1NapCBc4lZ72/tXwSlVCov
-        qSX3OjjNgQRupUGqGj7lf5GtdCLHSGgdiCn8rfq8ZA==
-X-Google-Smtp-Source: ABdhPJzjQAbOyw7RF7SMSFWbofpQGeDuRMHg8J+xdDznT8ceulgiTq42PR9MZKBMAweOZyfYw2CriKpOgNi3EXgRtdQ=
-X-Received: by 2002:a05:620a:1082:: with SMTP id g2mr20776166qkk.138.1630286330330;
- Sun, 29 Aug 2021 18:18:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210829203027.276143-1-marijn.suijten@somainline.org> <20210829203027.276143-2-marijn.suijten@somainline.org>
-In-Reply-To: <20210829203027.276143-2-marijn.suijten@somainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Mon, 30 Aug 2021 04:18:39 +0300
-Message-ID: <CAA8EJprQ03ipZzO+1vgt9W7jFbLXgsYR0n-oJxVB-142x8dgRA@mail.gmail.com>
+        Mon, 30 Aug 2021 04:29:04 -0400
+Received: from [10.0.20.3] (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 160211F68E;
+        Mon, 30 Aug 2021 10:28:09 +0200 (CEST)
 Subject: Re: [PATCH 1/3] arm: dts: qcom: apq8064: Use 27MHz PXO clock as DSI
  PLL reference
-To:     Marijn Suijten <marijn.suijten@somainline.org>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
@@ -76,61 +44,52 @@ Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>,
         open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20210829203027.276143-1-marijn.suijten@somainline.org>
+ <20210829203027.276143-2-marijn.suijten@somainline.org>
+ <CAA8EJprQ03ipZzO+1vgt9W7jFbLXgsYR0n-oJxVB-142x8dgRA@mail.gmail.com>
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+Message-ID: <17d19b93-dbe5-cc85-f302-b52cd8eeed56@somainline.org>
+Date:   Mon, 30 Aug 2021 10:28:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
+MIME-Version: 1.0
+In-Reply-To: <CAA8EJprQ03ipZzO+1vgt9W7jFbLXgsYR0n-oJxVB-142x8dgRA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 29 Aug 2021 at 23:30, Marijn Suijten
-<marijn.suijten@somainline.org> wrote:
->
-> The 28NM DSI PLL driver for msm8960 calculates with a 27MHz reference
-> clock and should hence use PXO, not CXO which runs at 19.2MHz.
->
-> Note that none of the DSI PHY/PLL drivers currently use this "ref"
-> clock; they all rely on (sometimes inexistant) global clock names and
-> usually function normally without a parent clock.  This discrepancy will
-> be corrected in a future patch, for which this change needs to be in
-> place first.
->
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Hi Dmitry,
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
-Checked the downstream driver, it always uses 27 MHz clock in calculations.
-
-> ---
->  arch/arm/boot/dts/qcom-apq8064.dtsi | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/arm/boot/dts/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom-apq8064.dtsi
-> index 2687c4e890ba..77659b783759 100644
-> --- a/arch/arm/boot/dts/qcom-apq8064.dtsi
-> +++ b/arch/arm/boot/dts/qcom-apq8064.dtsi
-> @@ -198,7 +198,7 @@ cxo_board: cxo_board {
->                         clock-frequency = <19200000>;
->                 };
->
-> -               pxo_board {
-> +               pxo_board: pxo_board {
->                         compatible = "fixed-clock";
->                         #clock-cells = <0>;
->                         clock-frequency = <27000000>;
-> @@ -1306,7 +1306,7 @@ dsi0_phy: dsi-phy@4700200 {
->                         reg-names = "dsi_pll", "dsi_phy", "dsi_phy_regulator";
->                         clock-names = "iface_clk", "ref";
->                         clocks = <&mmcc DSI_M_AHB_CLK>,
-> -                                <&cxo_board>;
-> +                                <&pxo_board>;
->                 };
->
->
-> --
-> 2.33.0
->
+On 8/30/21 3:18 AM, Dmitry Baryshkov wrote:
+> On Sun, 29 Aug 2021 at 23:30, Marijn Suijten
+> <marijn.suijten@somainline.org> wrote:
+>>
+>> The 28NM DSI PLL driver for msm8960 calculates with a 27MHz reference
+>> clock and should hence use PXO, not CXO which runs at 19.2MHz.
+>>
+>> Note that none of the DSI PHY/PLL drivers currently use this "ref"
+>> clock; they all rely on (sometimes inexistant) global clock names and
+>> usually function normally without a parent clock.  This discrepancy will
+>> be corrected in a future patch, for which this change needs to be in
+>> place first.
+>>
+>> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+>> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> 
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> 
+> Checked the downstream driver, it always uses 27 MHz clock in calculations.
 
 
--- 
-With best wishes
-Dmitry
+Given our concerns for msm8974 not updating DT in parallel with the 
+kernel (hence the need for a global-name fallback because "ref" is 
+missing from the DT), should we worry about the same for apq8064?  That 
+is, is there a chance that the kernel but not the firmware is upgraded 
+leading to the wrong parent clock being used?  The msm8960 variant of 
+the 28nm PLL driver uses parent_rate in a few places and might read 
+cxo's 19.2MHz erroneously instead of using pxo's 27MHz.
+
+- Marijn
