@@ -4,153 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1DD6C4320E
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 23:10:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0632DC43214
+	for <phone-devel@archiver.kernel.org>; Tue, 31 Aug 2021 13:44:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A880760FD9
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Aug 2021 23:10:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E379960462
+	for <phone-devel@archiver.kernel.org>; Tue, 31 Aug 2021 13:44:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238914AbhH3XLZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 30 Aug 2021 19:11:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56922 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238773AbhH3XLY (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 30 Aug 2021 19:11:24 -0400
-Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68880C061575;
-        Mon, 30 Aug 2021 16:10:30 -0700 (PDT)
-Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id F3FBB1F738;
-        Tue, 31 Aug 2021 01:10:27 +0200 (CEST)
-Date:   Tue, 31 Aug 2021 01:10:26 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Stephen Boyd <sboyd@kernel.org>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Abhinav Kumar <abhinavk@codeaurora.org>,
-        Jonathan Marek <jonathan@marek.ca>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        Stephen Boyd <swboyd@chromium.org>
-Subject: Re: [PATCH v2 1/2] drm/msm/dsi: Use "ref" fw clock instead of global
- name for VCO parent
-Message-ID: <YS1lYui5aXadgkEr@Marijn-Arch-PC.localdomain>
-References: <20210830182445.167527-1-marijn.suijten@somainline.org>
- <20210830182445.167527-2-marijn.suijten@somainline.org>
- <163036177339.2676726.12271104951144475163@swboyd.mtv.corp.google.com>
- <YS1fllEswGQEGWPc@Marijn-Arch-PC.localdomain>
- <163036399040.2676726.5816296584899284140@swboyd.mtv.corp.google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <163036399040.2676726.5816296584899284140@swboyd.mtv.corp.google.com>
+        id S235908AbhHaNo7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 31 Aug 2021 09:44:59 -0400
+Received: from comms.puri.sm ([159.203.221.185]:58998 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233928AbhHaNo6 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 31 Aug 2021 09:44:58 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id 19727DFEFC;
+        Tue, 31 Aug 2021 06:44:03 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id O6LbLQyGHThN; Tue, 31 Aug 2021 06:43:58 -0700 (PDT)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     martin.kepplinger@puri.sm
+Cc:     devicetree@vger.kernel.org, kernel@puri.sm,
+        krzysztof.kozlowski@canonical.com,
+        laurent.pinchart@ideasonboard.com, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, mchehab@kernel.org,
+        paul.kocialkowski@bootlin.com, pavel@ucw.cz,
+        phone-devel@vger.kernel.org, robh@kernel.org, sakari.ailus@iki.fi,
+        shawnx.tu@intel.com
+Subject: [PATCH v8 1/4] dt-bindings: vendor-prefixes: Add SK Hynix Inc.
+Date:   Tue, 31 Aug 2021 15:43:41 +0200
+Message-Id: <20210831134344.1673318-2-martin.kepplinger@puri.sm>
+In-Reply-To: <20210831134344.1673318-1-martin.kepplinger@puri.sm>
+References: <20210831134344.1673318-1-martin.kepplinger@puri.sm>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2021-08-30 15:53:10, Stephen Boyd wrote:
-> Quoting Marijn Suijten (2021-08-30 15:45:42)
-> > Hi Stephen,
-> > 
-> > On 2021-08-30 15:16:13, Stephen Boyd wrote:
-> > > Quoting Marijn Suijten (2021-08-30 11:24:44)
-> > > > All DSI PHY/PLL drivers were referencing their VCO parent clock by a
-> > > > global name, most of which don't exist or have been renamed.  These
-> > > > clock drivers seem to function fine without that except the 14nm driver
-> > > > for the sdm6xx [1].
-> > > > 
-> > > > At the same time all DTs provide a "ref" clock as per the requirements
-> > > > of dsi-phy-common.yaml, but the clock is never used.  This patchset puts
-> > > > that clock to use without relying on a global clock name, so that all
-> > > > dependencies are explicitly defined in DT (the firmware) in the end.
-> > > > 
-> > > > Note that msm8974 is the only board not providing this clock, and
-> > > > apq8064 was providing the wrong clock (19.2MHz cxo instead of 27MHz
-> > > > pxo).  Both have been been addressed in separate patches that are
-> > > > supposed to land well in advance of this patchset.
-> > > > 
-> > > > Furthermore not all board-DTs provided this clock initially but that
-> > > > deficiency has been addressed in followup patches (see the Fixes:
-> > > > below).  Those commits seem to assume that the clock was used, while
-> > > > nothing in history indicates that this "ref" clock was ever retrieved.
-> > > > 
-> > > > [1]: https://lore.kernel.org/linux-arm-msm/386db1a6-a1cd-3c7d-a88e-dc83f8a1be96@somainline.org/
-> > > > 
-> > > > Fixes: 79e51645a1dd ("arm64: dts: qcom: msm8916: Set 'xo_board' as ref clock of the DSI PHY")
-> > > > Fixes: 6969d1d9c615 ("ARM: dts: qcom-apq8064: Set 'cxo_board' as ref clock of the DSI PHY")
-> > > > Fixes: 0c0e72705a33 ("arm64: dts: sdm845: Set 'bi_tcxo' as ref clock of the DSI PHYs")
-> > > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > > > ---
-> > > >  drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c      | 4 +++-
-> > > >  drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c      | 4 +++-
-> > > >  drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c      | 4 +++-
-> > > >  drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c | 4 +++-
-> > > >  drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c       | 4 +++-
-> > > >  5 files changed, 15 insertions(+), 5 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-> > > > index e46b10fc793a..3cbb1f1475e8 100644
-> > > > --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-> > > > +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-> > > > @@ -562,7 +562,9 @@ static int pll_10nm_register(struct dsi_pll_10nm *pll_10nm, struct clk_hw **prov
-> > > >         char clk_name[32], parent[32], vco_name[32];
-> > > >         char parent2[32], parent3[32], parent4[32];
-> > > >         struct clk_init_data vco_init = {
-> > > > -               .parent_names = (const char *[]){ "xo" },
-> > > > +               .parent_data = &(const struct clk_parent_data) {
-> > > > +                       .fw_name = "ref",
-> > > 
-> > > Please also add .name as the old parent_names value so that newer
-> > > kernels can be used without having to use new DT.
-> > 
-> > We discussed that only msm8974 misses this "ref" clock at the time of
-> > writing.  Aforementioned Fixes: patches have all been merged about 3
-> > years ago, are those DTs still in use with a newer kernel?  I suppose
-> > this patch is only backported to kernels including those DT patches, is
-> > it reasonable to assume that at least that DT is in use there?
-> 
-> I have no idea.
-> 
-> > 
-> > Besides, not all clock trees provide this global "xo" or "bi_tcxo" clock
-> > in the first place.
-> > 
-> 
-> It doesn't hurt to also specify a .name to help migrate anything else
-> over. Unless you're confident it won't cause problems to rely on proper
-> DT being used?
+SK Hynix built the already supported hi556 sensor (and probably much
+more). For more information, see https://www.skhynix.com/
 
-I'm 95% sure this shouldn't cause any problems given current DTs and
-their history, but that's probably not enough.  This might also impact
-DTs that have not yet been upstreamed, but afaik the general stance is
-to not care and actually serve as a fair hint/warning before new DTs
-make it to the list.
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Acked-by: Rob Herring <robh@kernel.org>
+---
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-If there is a protocol in place to deprecate, warn, and eventually
-remove this reliance on global clock names I'm more than happy to add
-.name as a temporary fallback, even if likely unneeded.  Otherwise we
-might never get rid of it.
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index a867f7102c35..952553759ac4 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -509,6 +509,8 @@ patternProperties:
+     description: Hycon Technology Corp.
+   "^hydis,.*":
+     description: Hydis Technologies
++  "^hynix,.*":
++    description: SK Hynix Inc.
+   "^hyundai,.*":
+     description: Hyundai Technology
+   "^i2se,.*":
+-- 
+2.30.2
 
-- Marijn
