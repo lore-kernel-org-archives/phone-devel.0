@@ -2,109 +2,79 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39C50C4320E
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 15:57:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 581AAC4320E
+	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 16:53:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2905D610C7
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 15:57:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 45B64610A1
+	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 16:53:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344119AbhIAP6r (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 1 Sep 2021 11:58:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49866 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343926AbhIAP6g (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Sep 2021 11:58:36 -0400
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B09D3C0613C1;
-        Wed,  1 Sep 2021 08:57:39 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id E10993F363;
-        Wed,  1 Sep 2021 17:57:37 +0200 (CEST)
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-To:     bjorn.andersson@linaro.org
-Cc:     agross@kernel.org, robh+dt@kernel.org, lgirdwood@gmail.com,
-        broonie@kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, jami.kettunen@somainline.org,
-        paul.bouchara@somainline.org, martin.botka@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, jeffrey.l.hugo@gmail.com,
-        robh@kernel.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH v7 3/6] arm64: qcom: qcs404: Change CPR nvmem-names
-Date:   Wed,  1 Sep 2021 17:57:32 +0200
-Message-Id: <20210901155735.629282-4-angelogioacchino.delregno@somainline.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210901155735.629282-1-angelogioacchino.delregno@somainline.org>
-References: <20210901155735.629282-1-angelogioacchino.delregno@somainline.org>
+        id S1344725AbhIAQyG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 1 Sep 2021 12:54:06 -0400
+Received: from mail-0301.mail-europe.com ([188.165.51.139]:33989 "EHLO
+        mail-0301.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344646AbhIAQyA (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Sep 2021 12:54:00 -0400
+Date:   Wed, 01 Sep 2021 16:52:48 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1630515179;
+        bh=gt/cf6/XfcH/698kF86Uqsw0P7cStjMWQEnDsNGVdjI=;
+        h=Date:To:From:Cc:Reply-To:Subject:From;
+        b=O7naTcCmTTy1J+CUwMWFfRf+vufMPpWjRxudvOdVNN1yZrMbfFDektMJvI9jheArC
+         pkZDZ48pwxgflKKibqsAIAusmcWbZsL3rOZT0JhwguvhRqimg59/F5+/0rPQix9MRj
+         xFkaTwrckadigA1Inj48rmoExNVMntpNfCBsiQv0=
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>
+From:   Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
+Subject: [PATCH v3 0/2] Input: cypress-sf - Add support for Cypress Streetfighter touchkeys
+Message-ID: <20210901165231.236728-1-y.oudjana@protonmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The CPR driver's common functions were split and put in another
-file in order to support newer CPR revisions: to simplify the
-commonization, the expected names of the fuses had to be changed
-in order for both new and old support to use the same fuse name
-retrieval function and keeping the naming consistent.
+This patchset adds support for Cypress StreetFighter touchkeys.
 
-The thread id was added to the fuse name and, since CPRv1 does
-not support threads, it is expected to always read ID 0, which
-means that the expected name here is now "cpr0_(fuse_name)"
-instead of "cpr_(fuse_name)": luckily, QCS404 is the only user
-so change it accordingly.
+Due to lack of documentation, this driver is entirely based on information
+gathered from a driver written for an old Android kernel fork[1][2].
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
----
- arch/arm64/boot/dts/qcom/qcs404.dtsi | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+[1] https://github.com/LineageOS/android_kernel_xiaomi_msm8996/blob/lineage=
+-18.1/drivers/input/touchscreen/cyttsp_button.c
+[2] https://github.com/LineageOS/android_kernel_xiaomi_msm8996/blob/lineage=
+-18.1/arch/arm/boot/dts/qcom/a4-msm8996-mtp.dtsi#L291-L314
 
-diff --git a/arch/arm64/boot/dts/qcom/qcs404.dtsi b/arch/arm64/boot/dts/qcom/qcs404.dtsi
-index 339790ba585d..23e70f473da4 100644
---- a/arch/arm64/boot/dts/qcom/qcs404.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcs404.dtsi
-@@ -1168,18 +1168,18 @@ cpr: power-controller@b018000 {
- 				<&cpr_efuse_ring2>,
- 				<&cpr_efuse_ring3>,
- 				<&cpr_efuse_revision>;
--			nvmem-cell-names = "cpr_quotient_offset1",
--				"cpr_quotient_offset2",
--				"cpr_quotient_offset3",
--				"cpr_init_voltage1",
--				"cpr_init_voltage2",
--				"cpr_init_voltage3",
--				"cpr_quotient1",
--				"cpr_quotient2",
--				"cpr_quotient3",
--				"cpr_ring_osc1",
--				"cpr_ring_osc2",
--				"cpr_ring_osc3",
-+			nvmem-cell-names = "cpr0_quotient_offset1",
-+				"cpr0_quotient_offset2",
-+				"cpr0_quotient_offset3",
-+				"cpr0_init_voltage1",
-+				"cpr0_init_voltage2",
-+				"cpr0_init_voltage3",
-+				"cpr0_quotient1",
-+				"cpr0_quotient2",
-+				"cpr0_quotient3",
-+				"cpr0_ring_osc1",
-+				"cpr0_ring_osc2",
-+				"cpr0_ring_osc3",
- 				"cpr_fuse_revision";
- 		};
- 
--- 
-2.32.0
+Changes since v2:
+ - Code style fixes.
+ - Added copyright statement.
+Changes since v1:
+ - Changed version variables in probe to int to allow storing error codes.
+ - Fixed some issues in dt binding.
+=20
+Yassine Oudjana (2):
+  Input: cypress-sf - Add Cypress StreetFighter touchkey driver
+  dt-bindings: input: Add binding for cypress-sf
+
+ .../devicetree/bindings/input/cypress-sf.yaml |  61 +++++
+ drivers/input/keyboard/Kconfig                |  10 +
+ drivers/input/keyboard/Makefile               |   1 +
+ drivers/input/keyboard/cypress-sf.c           | 223 ++++++++++++++++++
+ 4 files changed, 295 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/cypress-sf.yaml
+ create mode 100644 drivers/input/keyboard/cypress-sf.c
+
+--=20
+2.33.0
+
 
