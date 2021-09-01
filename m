@@ -2,87 +2,87 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C60F4C432BE
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 18:33:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA163C4320A
+	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 19:33:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id ABE5761058
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 18:33:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 96B2C61059
+	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 19:33:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245205AbhIASev (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 1 Sep 2021 14:34:51 -0400
-Received: from relay06.th.seeweb.it ([5.144.164.167]:39699 "EHLO
-        relay06.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229766AbhIASev (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Sep 2021 14:34:51 -0400
-Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 7829B3F36E;
-        Wed,  1 Sep 2021 20:33:52 +0200 (CEST)
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-To:     bjorn.andersson@linaro.org
-Cc:     agross@kernel.org, robh+dt@kernel.org,
+        id S231206AbhIATe1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 1 Sep 2021 15:34:27 -0400
+Received: from mail-4319.protonmail.ch ([185.70.43.19]:36665 "EHLO
+        mail-4319.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S245715AbhIATeW (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Sep 2021 15:34:22 -0400
+X-Greylist: delayed 26243 seconds by postgrey-1.27 at vger.kernel.org; Wed, 01 Sep 2021 15:34:22 EDT
+Date:   Wed, 01 Sep 2021 19:33:17 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1630524803;
+        bh=sSDzVTTrE408jUhidHBHISAmsEwqh1RTwW36cNCflTc=;
+        h=Date:To:From:Cc:Reply-To:Subject:From;
+        b=v0kUj6kz/dnIVIH4/aaBUJhO7RixPdl2c3PRIvjdYgtt2JSu/8J0sadQ5j/n7w/uj
+         iU3oQQIStTdzfvmdGpLcX4h0b2e3ked3W2fnMwYR0j+Kpu8NpV7h/vWbAiCuEa7Chh
+         nL2FVVawEu9+O8/Ya9PXKvm/2lYCCBQfGHhErKAA=
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+From:   Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        Raffaele Tranquillini <raffaele.tranquillini@gmail.com>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        paul.bouchara@somainline.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        AngeloGioacchino Del Regno <kholk11@gmail.com>
-Subject: [PATCH] arm64: dts: qcom: pmi8998: Add node for WLED
-Date:   Wed,  1 Sep 2021 20:33:51 +0200
-Message-Id: <20210901183351.1090256-1-angelogioacchino.delregno@somainline.org>
-X-Mailer: git-send-email 2.32.0
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
+Subject: [PATCH 0/4] Add support for the Xiaomi MSM8996 platform
+Message-ID: <20210901193214.250375-1-y.oudjana@protonmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The PMI8998 PMIC has a WLED backlight controller, which is used on
-most MSM8998 and SDM845 based devices: add a base configuration for
-it and keep it disabled.
+This series adds support for the Xiaomi MSM8996 platform, which includes 5 =
+devices:
 
-This contains only the PMIC specific configuration that does not
-change across boards; parameters like number of strings, OVP and
-current limits are product specific and shall be specified in the
-product DT in order to achieve functionality.
+ - Mi 5 (gemini): MSM8996 + PMI8994
+ - Mi Note 2 (scorpio): MSM8996 Pro + PMI8996
+ - Mi 5s (capricorn): MSM8996 Pro + PMI8996
+ - Mi Mix (lithium): MSM8996 Pro + PMI8996
+ - Mi 5s Plus (natrium): MSM8996 Pro + PMI8996
 
-Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
----
- arch/arm64/boot/dts/qcom/pmi8998.dtsi | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+These devices share a common board design with only a few differences.
+Out of these 5 devices, this series adds initial support for the Mi Note 2 =
+and the Mi 5.
+Adding support for the remaining 3 would only require adding a DTS for each=
+, while
+accounting for hardware differences such as different panels.
 
-diff --git a/arch/arm64/boot/dts/qcom/pmi8998.dtsi b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-index d230c510d4b7..0fef5f113f05 100644
---- a/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-@@ -41,5 +41,17 @@ lab: lab {
- 				interrupt-names = "sc-err", "ocp";
- 			};
- 		};
-+
-+		pmi8998_wled: leds@d800 {
-+			compatible = "qcom,pmi8998-wled";
-+			reg = <0xd800 0xd900>;
-+			interrupts = <0x3 0xd8 0x1 IRQ_TYPE_EDGE_RISING>,
-+				     <0x3 0xd8 0x2 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "ovp", "short";
-+			label = "backlight";
-+
-+			status = "disabled";
-+		};
-+
- 	};
- };
--- 
-2.32.0
+Raffaele Tranquillini (1):
+  arm64: dts: qcom: msm8996: xiaomi-gemini: Add support for Xiaomi Mi 5
+
+Yassine Oudjana (3):
+  arm64: dts: qcom: db820c: Move blsp1_uart2 pin states to msm8996.dtsi
+  arm64: dts: qcom: msm8996: Add blsp2_i2c3
+  arm64: dts: qcom: Add support for the Xiaomi MSM8996 platform
+
+ arch/arm64/boot/dts/qcom/Makefile             |   2 +
+ arch/arm64/boot/dts/qcom/apq8096-db820c.dtsi  |  29 -
+ .../boot/dts/qcom/msm8996-xiaomi-common.dtsi  | 673 ++++++++++++++++++
+ .../boot/dts/qcom/msm8996-xiaomi-gemini.dts   | 431 +++++++++++
+ .../boot/dts/qcom/msm8996-xiaomi-scorpio.dts  | 431 +++++++++++
+ arch/arm64/boot/dts/qcom/msm8996.dtsi         |  49 ++
+ 6 files changed, 1586 insertions(+), 29 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
+
+--=20
+2.33.0
+
 
