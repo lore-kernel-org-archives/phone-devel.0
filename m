@@ -2,68 +2,77 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C9C0DC432BE
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 18:07:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10307C4320A
+	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 18:11:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B12ED6109E
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 18:07:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F3535610A8
+	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 18:11:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346752AbhIASIv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 1 Sep 2021 14:08:51 -0400
-Received: from mail-0201.mail-europe.com ([51.77.79.158]:34465 "EHLO
-        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346779AbhIASIr (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Sep 2021 14:08:47 -0400
-Date:   Wed, 01 Sep 2021 18:07:09 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1630519637;
-        bh=uir4PzcrAGtJv0MOdHgIa+arRXdiTMZ57zGd4NlaWNs=;
-        h=Date:To:From:Cc:Reply-To:Subject:From;
-        b=Iy273D2utq+j9HfHAKnRbLZ2eW5jhWvz3Ox85lJtkns6/APwMt/ChNwdluULYoacj
-         /aMn1Ssk71m520VWz9Q9XMRifom5KyYYMZJJBjvVnXJHOuVJiyedEgXXkdQtW7FdNP
-         DdIBrUBj4gCV0LfmvsKNZTfQfELf/IVgzjYdGaZM=
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>
-From:   Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org
-Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
-Subject: [PATCH 0/2] drm/panel: Add support for LG.Philips SW43101 DSI video mode panel
-Message-ID: <20210901180644.248177-1-y.oudjana@protonmail.com>
+        id S245362AbhIASMn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 1 Sep 2021 14:12:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53814 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346803AbhIASMj (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Sep 2021 14:12:39 -0400
+Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2140C061575
+        for <phone-devel@vger.kernel.org>; Wed,  1 Sep 2021 11:11:41 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 0DDD23F357;
+        Wed,  1 Sep 2021 20:11:40 +0200 (CEST)
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+To:     robdclark@gmail.com
+Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
+        dmitry.baryshkov@linaro.org, abhinavk@codeaurora.org,
+        robh+dt@kernel.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        paul.bouchara@somainline.org, devicetree@vger.kernel.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: [PATCH 1/3] drm/msm/dpu1: Add DMA2, DMA3 clock control to enum
+Date:   Wed,  1 Sep 2021 20:11:36 +0200
+Message-Id: <20210901181138.1052653-1-angelogioacchino.delregno@somainline.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This adds a driver for the LG.Philips SW43101 FHD (1080x1920) 58Hz OLED DSI
-video mode panel, found on the Xiaomi Mi Note 2.
+The enum dpu_clk_ctrl_type misses DPU_CLK_CTRL_DMA{2,3} even though
+this driver does actually handle both, if present: add the two in
+preparation for adding support for SoCs having them.
 
-Yassine Oudjana (2):
-  drm/panel: Add driver for LG.Philips SW43101 DSI video mode panel
-  dt-bindings: display: Add binding for LG.Philips SW43101
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
- .../display/panel/lgphilips,sw43101.yaml      |  52 +++
- drivers/gpu/drm/panel/Kconfig                 |  10 +
- drivers/gpu/drm/panel/Makefile                |   1 +
- .../gpu/drm/panel/panel-lgphilips-sw43101.c   | 331 ++++++++++++++++++
- 4 files changed, 394 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/display/panel/lgphili=
-ps,sw43101.yaml
- create mode 100644 drivers/gpu/drm/panel/panel-lgphilips-sw43101.c
-
---=20
-2.33.0
-
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
+index d2a945a27cfa..059e1402b7d0 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
+@@ -432,6 +432,8 @@ enum dpu_clk_ctrl_type {
+ 	DPU_CLK_CTRL_RGB3,
+ 	DPU_CLK_CTRL_DMA0,
+ 	DPU_CLK_CTRL_DMA1,
++	DPU_CLK_CTRL_DMA2,
++	DPU_CLK_CTRL_DMA3,
+ 	DPU_CLK_CTRL_CURSOR0,
+ 	DPU_CLK_CTRL_CURSOR1,
+ 	DPU_CLK_CTRL_INLINE_ROT0_SSPP,
+-- 
+2.32.0
 
