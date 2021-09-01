@@ -4,30 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72F99C25AEC
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 18:31:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C60F4C432BE
+	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 18:33:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4CFDE610E9
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 18:31:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id ABE5761058
+	for <phone-devel@archiver.kernel.org>; Wed,  1 Sep 2021 18:33:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237144AbhIAScb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 1 Sep 2021 14:32:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58410 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234164AbhIAScZ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Sep 2021 14:32:25 -0400
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D22E6C061764
-        for <phone-devel@vger.kernel.org>; Wed,  1 Sep 2021 11:31:27 -0700 (PDT)
+        id S245205AbhIASev (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 1 Sep 2021 14:34:51 -0400
+Received: from relay06.th.seeweb.it ([5.144.164.167]:39699 "EHLO
+        relay06.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229766AbhIASev (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Sep 2021 14:34:51 -0400
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 4473020164;
-        Wed,  1 Sep 2021 20:31:26 +0200 (CEST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 7829B3F36E;
+        Wed,  1 Sep 2021 20:33:52 +0200 (CEST)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
 To:     bjorn.andersson@linaro.org
@@ -36,139 +33,56 @@ Cc:     agross@kernel.org, robh+dt@kernel.org,
         linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
         marijn.suijten@somainline.org, martin.botka@somainline.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        paul.bouchara@somainline.org, jeffrey.l.hugo@gmail.com,
+        paul.bouchara@somainline.org,
         AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH 5/5] arm64: dts: msm8998: Configure Adreno GPU and related IOMMU
-Date:   Wed,  1 Sep 2021 20:31:23 +0200
-Message-Id: <20210901183123.1087392-5-angelogioacchino.delregno@somainline.org>
+        <angelogioacchino.delregno@somainline.org>,
+        AngeloGioacchino Del Regno <kholk11@gmail.com>
+Subject: [PATCH] arm64: dts: qcom: pmi8998: Add node for WLED
+Date:   Wed,  1 Sep 2021 20:33:51 +0200
+Message-Id: <20210901183351.1090256-1-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210901183123.1087392-1-angelogioacchino.delregno@somainline.org>
-References: <20210901183123.1087392-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The MSM8998 SoC includes an Adreno 540.1 GPU, with a maximum frequency
-of 710MHz. This GPU may or may not accept a ZAP shader, depending on
-platform configuration, so adding a zap-shader node is left to the
-board DT.
+The PMI8998 PMIC has a WLED backlight controller, which is used on
+most MSM8998 and SDM845 based devices: add a base configuration for
+it and keep it disabled.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+This contains only the PMIC specific configuration that does not
+change across boards; parameters like number of strings, OVP and
+current limits are product specific and shall be specified in the
+product DT in order to achieve functionality.
+
+Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi | 97 +++++++++++++++++++++++++++
- 1 file changed, 97 insertions(+)
+ arch/arm64/boot/dts/qcom/pmi8998.dtsi | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index 221dc61ca5e3..0103fc1dfcfc 100644
---- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -1421,6 +1421,103 @@ glink-edge {
+diff --git a/arch/arm64/boot/dts/qcom/pmi8998.dtsi b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
+index d230c510d4b7..0fef5f113f05 100644
+--- a/arch/arm64/boot/dts/qcom/pmi8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
+@@ -41,5 +41,17 @@ lab: lab {
+ 				interrupt-names = "sc-err", "ocp";
  			};
  		};
- 
-+		adreno_gpu: gpu@5000000 {
-+			compatible = "qcom,adreno-540.1", "qcom,adreno";
-+			reg = <0x05000000 0x40000>;
-+			reg-names = "kgsl_3d0_reg_memory";
 +
-+			clocks = <&gcc GCC_GPU_CFG_AHB_CLK>,
-+				<&gpucc RBBMTIMER_CLK>,
-+				<&gcc GCC_BIMC_GFX_CLK>,
-+				<&gcc GCC_GPU_BIMC_GFX_CLK>,
-+				<&gpucc RBCPR_CLK>,
-+				<&gpucc GFX3D_CLK>;
-+			clock-names = "iface",
-+				"rbbmtimer",
-+				"mem",
-+				"mem_iface",
-+				"rbcpr",
-+				"core";
++		pmi8998_wled: leds@d800 {
++			compatible = "qcom,pmi8998-wled";
++			reg = <0xd800 0xd900>;
++			interrupts = <0x3 0xd8 0x1 IRQ_TYPE_EDGE_RISING>,
++				     <0x3 0xd8 0x2 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "ovp", "short";
++			label = "backlight";
 +
-+			interrupts = <0 300 IRQ_TYPE_LEVEL_HIGH>;
-+			iommus = <&adreno_smmu 0>;
-+			operating-points-v2 = <&gpu_opp_table>;
-+			power-domains = <&rpmpd MSM8998_VDDMX>;
-+			#stream-id-cells = <16>;
-+			status = "disabled";
-+
-+			gpu_opp_table: opp-table {
-+				compatible  = "operating-points-v2";
-+				opp-710000097 {
-+					opp-hz = /bits/ 64 <710000097>;
-+					opp-level = <RPM_SMD_LEVEL_TURBO>;
-+					opp-supported-hw = <0xFF>;
-+				};
-+
-+				opp-670000048 {
-+					opp-hz = /bits/ 64 <670000048>;
-+					opp-level = <RPM_SMD_LEVEL_NOM_PLUS>;
-+					opp-supported-hw = <0xFF>;
-+				};
-+
-+				opp-596000097 {
-+					opp-hz = /bits/ 64 <596000097>;
-+					opp-level = <RPM_SMD_LEVEL_NOM>;
-+					opp-supported-hw = <0xFF>;
-+				};
-+
-+				opp-515000097 {
-+					opp-hz = /bits/ 64 <515000097>;
-+					opp-level = <RPM_SMD_LEVEL_SVS_PLUS>;
-+					opp-supported-hw = <0xFF>;
-+				};
-+
-+				opp-414000000 {
-+					opp-hz = /bits/ 64 <414000000>;
-+					opp-level = <RPM_SMD_LEVEL_SVS>;
-+					opp-supported-hw = <0xFF>;
-+				};
-+
-+				opp-342000000 {
-+					opp-hz = /bits/ 64 <342000000>;
-+					opp-level = <RPM_SMD_LEVEL_LOW_SVS>;
-+					opp-supported-hw = <0xFF>;
-+				};
-+
-+				opp-257000000 {
-+					opp-hz = /bits/ 64 <257000000>;
-+					opp-level = <RPM_SMD_LEVEL_MIN_SVS>;
-+					opp-supported-hw = <0xFF>;
-+				};
-+			};
-+		};
-+
-+		adreno_smmu: iommu@5040000 {
-+			compatible = "qcom,msm8998-smmu-v2", "qcom,smmu-v2";
-+			reg = <0x05040000 0x10000>;
-+			clocks = <&gcc GCC_GPU_CFG_AHB_CLK>,
-+				 <&gcc GCC_BIMC_GFX_CLK>,
-+				 <&gcc GCC_GPU_BIMC_GFX_CLK>;
-+			clock-names = "iface", "mem", "mem_iface";
-+
-+			#global-interrupts = <0>;
-+			#iommu-cells = <1>;
-+			interrupts =
-+				<GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>,
-+				<GIC_SPI 330 IRQ_TYPE_LEVEL_HIGH>,
-+				<GIC_SPI 331 IRQ_TYPE_LEVEL_HIGH>;
-+			/*
-+			 * GPU-GX GDSC's parent is GPU-CX. We need to bring up the
-+			 * GPU-CX for SMMU but we need both of them up for Adreno.
-+			 * Contemporarily, we also need to manage the VDDMX rpmpd
-+			 * domain in the Adreno driver.
-+			 * Enable GPU CX/GX GDSCs here so that we can manage the
-+			 * SoC VDDMX RPM Power Domain in the Adreno driver.
-+			 */
-+			power-domains = <&gpucc GPU_GX_GDSC>;
 +			status = "disabled";
 +		};
 +
- 		gpucc: clock-controller@5065000 {
- 			compatible = "qcom,msm8998-gpucc";
- 			#clock-cells = <1>;
+ 	};
+ };
 -- 
 2.32.0
 
