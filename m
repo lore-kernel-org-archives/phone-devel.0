@@ -7,81 +7,74 @@ X-Spam-Status: No, score=-19.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AE45C433F5
-	for <phone-devel@archiver.kernel.org>; Thu,  2 Sep 2021 22:18:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CDB8C433EF
+	for <phone-devel@archiver.kernel.org>; Thu,  2 Sep 2021 22:21:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4195461054
-	for <phone-devel@archiver.kernel.org>; Thu,  2 Sep 2021 22:18:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DAE5761054
+	for <phone-devel@archiver.kernel.org>; Thu,  2 Sep 2021 22:21:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231684AbhIBWTw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 2 Sep 2021 18:19:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45314 "EHLO
+        id S1344075AbhIBWW2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 2 Sep 2021 18:22:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236148AbhIBWTu (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Sep 2021 18:19:50 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51766C061760
-        for <phone-devel@vger.kernel.org>; Thu,  2 Sep 2021 15:18:51 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id x27so7604442lfu.5
-        for <phone-devel@vger.kernel.org>; Thu, 02 Sep 2021 15:18:51 -0700 (PDT)
+        with ESMTP id S234028AbhIBWW0 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Sep 2021 18:22:26 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C99B9C061575
+        for <phone-devel@vger.kernel.org>; Thu,  2 Sep 2021 15:21:27 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id p15so6395064ljn.3
+        for <phone-devel@vger.kernel.org>; Thu, 02 Sep 2021 15:21:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=I80/njeEuIl/GJzCkVNPmxV3BIOQ6IK40gpDFUmpFPE=;
-        b=tLstc1tkclrh6VOyGN9XpBl8QeZOtuFjU0HMW1kDqb2Ro3mZk9hu2ykmGSK5LV9IO0
-         cnD0qj8qJXnnQGJSjxUeWU9eK5WUXuA/q4LmwChkV3jY/PY+JvPKsNGaH9bYiF6OZ2tZ
-         e252aM2vQxImXCclXV/qCdELwWNFAB+2LfJKcDbC8H6ZQ2fkcbdRJWz2d7WNF3qxobyD
-         cxHCZuA7LdbG6bsMMVrQ93rq/sqzxXo+uiOCkRAW94unqvdYhZVK1FBaV7585PRI59dA
-         Qg4lLcdre8f9qfQYqgBP4/A4VwpdqjwkLUePQVbBmWk1N2xKomIrBd0bI5osbXD0j/xn
-         Ls4w==
+        bh=9rEOZFgWRRBzTrjc1sgzKvt3j7Y9HuVgaQyFS26IehY=;
+        b=JkCeMuzLEtYTo2ErGSbOtDhauLuY9ISqLH+XlnzYhixy4flLEenALZSqTCJngMEvWd
+         QZayWzxlTwOU2L5LrVgPEIXWOgK77MMdMXD3MWH0OcI84M6esyxVHewe7YDYjbgkSpA9
+         Rpc5ceCzCvAg96LA0DjEzr5fnknjaDRUMtSGw+/crwuAA1HP4OracNWUHJZUhIv8tyyE
+         +NphV+3aMOxP1tGBlbN4zxiFETCFHfQ0bfwdz+LDvxsX3YlSg/8wrcWi+cLStgaSKA2z
+         IhbFNlkBtXqv7Qfs+xu2bahai8Rb1ZJQi71jUQeIfZOBxcvkr7qv5UfM9DkwnBAig6Wn
+         QCJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=I80/njeEuIl/GJzCkVNPmxV3BIOQ6IK40gpDFUmpFPE=;
-        b=iFlrlvxOaWRRQ9qF39q2ESK1THscfpfS/NPOM/BW7zmwq4m4b2nwNUY9MEd4vFWdAf
-         4/R+SynxqDvnUSzEbaQk9Ssz1rDDJRRODeJiCjG4dmZKULDMevQmh7BJZRro80BR9Xpb
-         BumI+MFXP6k9O3/Dyl396e7Oyix/KdGkrud23yUpeQ1OLroYHoCI1B0vl8n7OrDjTYjV
-         EF+eNbXiGOJ7c084EoqSi6wcAQ/R40z0Q6Efpx+ApK1I0dQwMi+CYNjT4qGnO2Q5IZbR
-         lj8IE0zD1rPInqlX62XJTx/mbxC594KF242TKu8+b1JAxY3Pss4BPa1oqQtAtvKIveA1
-         EQbA==
-X-Gm-Message-State: AOAM5314eJQaVtVBBKcPO5A8xpqkLjIQKdfzTbcHlNrmGa/MQnzmg4V9
-        4bM6SSeTcwvDmiTY5hwxsmy3Zw==
-X-Google-Smtp-Source: ABdhPJxKIbhDHEhz+WnPbtRExtRO7GyqAmUYcs+ViGPRRMFhDPW3GRnWUUrydse7XnAuWXqHyU6+jw==
-X-Received: by 2002:a19:c3ca:: with SMTP id t193mr262222lff.21.1630621129639;
-        Thu, 02 Sep 2021 15:18:49 -0700 (PDT)
+        bh=9rEOZFgWRRBzTrjc1sgzKvt3j7Y9HuVgaQyFS26IehY=;
+        b=HjuOTpGy/6ekr+hDQTHMqEJjkaltgg6hbwu3UjkRxrKkoJ/QEfPgoYt6Rm5ZUZ+c7m
+         2OXAcEGQMWTGe33Ip9Famfs8l0CXVAWw65uhilQJb3arAn36NjiPlC3duYlEvR+ZB81j
+         WehGNqmyg+O4Nu9DYD4lZOSzvPpXCJdoUIulQgn/g3e5R25Gz04qskPpU9zF6UvktgAN
+         bFRQFVmZ0ApaxTRmvhDYgiqkmWPaeiMwZCRIM/uS6r9nKYvTK+cfepracxLBL+VEmxCc
+         nT7OlGIzdiX0H8h+iMSCXoNPRT1K/koKsfdOBRI45pcPoB87ksa1PK4wcIttImmOdSeK
+         /Kbw==
+X-Gm-Message-State: AOAM533r6DDDHUJGKMFgp1fzoNtL0aPhVdmybZstNuzoHwWDGFit9RT4
+        ENwSkNqkWiv/aBia0dsVsCq/IQ==
+X-Google-Smtp-Source: ABdhPJzgLfjJhFjZHFLjaekUj1FBfy+HD/gqft1OE03PQCNBoCsxY7dcNgpn5zLJxI+SNz6o0uI1vQ==
+X-Received: by 2002:a2e:8107:: with SMTP id d7mr447828ljg.68.1630621286200;
+        Thu, 02 Sep 2021 15:21:26 -0700 (PDT)
 Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id m5sm309732lfk.267.2021.09.02.15.18.48
+        by smtp.gmail.com with ESMTPSA id x1sm371700ljh.113.2021.09.02.15.21.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Sep 2021 15:18:49 -0700 (PDT)
-Subject: Re: [PATCH 1/2] drm/msm/dsi: Add phy configuration for MSM8953
-To:     Sireesh Kodali <sireeshkodali1@gmail.com>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        dri-devel@lists.freedesktop.org, airlied@linux.ie,
-        robdclark@gmail.com, linux-arm-msm@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Sean Paul <sean@poorly.run>, Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Abhinav Kumar <abhinavk@codeaurora.org>,
-        Jonathan Marek <jonathan@marek.ca>,
-        Rajeev Nandan <rajeevny@codeaurora.org>,
-        Krishna Manikandan <mkrishn@codeaurora.org>,
-        "open list:DRM DRIVER FOR MSM ADRENO GPU" 
-        <freedreno@lists.freedesktop.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20210902155951.6672-1-sireeshkodali1@gmail.com>
- <20210902155951.6672-2-sireeshkodali1@gmail.com>
+        Thu, 02 Sep 2021 15:21:25 -0700 (PDT)
+Subject: Re: [PATCH 1/3] drm/msm/dpu1: Add DMA2, DMA3 clock control to enum
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>, robdclark@gmail.com
+Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
+        abhinavk@codeaurora.org, robh+dt@kernel.org,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        devicetree@vger.kernel.org
+References: <20210901181138.1052653-1-angelogioacchino.delregno@somainline.org>
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Message-ID: <70676288-731f-fc14-42bb-c955efc64c57@linaro.org>
-Date:   Fri, 3 Sep 2021 01:18:48 +0300
+Message-ID: <c4a86a25-0996-9849-365c-cc36cbc04f8a@linaro.org>
+Date:   Fri, 3 Sep 2021 01:21:25 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <20210902155951.6672-2-sireeshkodali1@gmail.com>
+In-Reply-To: <20210901181138.1052653-1-angelogioacchino.delregno@somainline.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
@@ -89,93 +82,32 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 02/09/2021 18:59, Sireesh Kodali wrote:
-> From: Vladimir Lypak <vladimir.lypak@gmail.com>
+On 01/09/2021 21:11, AngeloGioacchino Del Regno wrote:
+> The enum dpu_clk_ctrl_type misses DPU_CLK_CTRL_DMA{2,3} even though
+> this driver does actually handle both, if present: add the two in
+> preparation for adding support for SoCs having them.
 > 
-> Add phy configuration for 14nm dsi phy found on MSM8953 SoC. Only
-> difference from existing configurations are io_start addresses.
-> 
-> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-> Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
-> ---
->   .../bindings/display/msm/dsi-phy-14nm.yaml    |  1 +
->   drivers/gpu/drm/msm/dsi/phy/dsi_phy.c         |  2 ++
->   drivers/gpu/drm/msm/dsi/phy/dsi_phy.h         |  1 +
->   drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c    | 21 +++++++++++++++++++
->   4 files changed, 25 insertions(+)
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 
-Please split dt-bindings to a separate patch, to be acked by Rob Herring.
-
-After that, the dsi/phy/* part is:
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
+> ---
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h | 2 ++
+>   1 file changed, 2 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/display/msm/dsi-phy-14nm.yaml b/Documentation/devicetree/bindings/display/msm/dsi-phy-14nm.yaml
-> index 72a00cce0147..7527fb299caa 100644
-> --- a/Documentation/devicetree/bindings/display/msm/dsi-phy-14nm.yaml
-> +++ b/Documentation/devicetree/bindings/display/msm/dsi-phy-14nm.yaml
-> @@ -17,6 +17,7 @@ properties:
->       oneOf:
->         - const: qcom,dsi-phy-14nm
->         - const: qcom,dsi-phy-14nm-660
-> +      - const: qcom,dsi-phy-14nm-8953
->   
->     reg:
->       items:
-> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-> index 8c65ef6968ca..9842e04b5858 100644
-> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-> @@ -627,6 +627,8 @@ static const struct of_device_id dsi_phy_dt_match[] = {
->   	  .data = &dsi_phy_14nm_cfgs },
->   	{ .compatible = "qcom,dsi-phy-14nm-660",
->   	  .data = &dsi_phy_14nm_660_cfgs },
-> +	{ .compatible = "qcom,dsi-phy-14nm-8953",
-> +	  .data = &dsi_phy_14nm_8953_cfgs },
->   #endif
->   #ifdef CONFIG_DRM_MSM_DSI_10NM_PHY
->   	{ .compatible = "qcom,dsi-phy-10nm",
-> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h
-> index b91303ada74f..4c8257581bfc 100644
-> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h
-> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h
-> @@ -48,6 +48,7 @@ extern const struct msm_dsi_phy_cfg dsi_phy_20nm_cfgs;
->   extern const struct msm_dsi_phy_cfg dsi_phy_28nm_8960_cfgs;
->   extern const struct msm_dsi_phy_cfg dsi_phy_14nm_cfgs;
->   extern const struct msm_dsi_phy_cfg dsi_phy_14nm_660_cfgs;
-> +extern const struct msm_dsi_phy_cfg dsi_phy_14nm_8953_cfgs;
->   extern const struct msm_dsi_phy_cfg dsi_phy_10nm_cfgs;
->   extern const struct msm_dsi_phy_cfg dsi_phy_10nm_8998_cfgs;
->   extern const struct msm_dsi_phy_cfg dsi_phy_7nm_cfgs;
-> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
-> index d13552b2213b..9a6b1f0cbbaf 100644
-> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
-> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
-> @@ -1065,3 +1065,24 @@ const struct msm_dsi_phy_cfg dsi_phy_14nm_660_cfgs = {
->   	.io_start = { 0xc994400, 0xc996000 },
->   	.num_dsi_phy = 2,
->   };
-> +
-> +const struct msm_dsi_phy_cfg dsi_phy_14nm_8953_cfgs = {
-> +	.has_phy_lane = true,
-> +	.reg_cfg = {
-> +		.num = 1,
-> +		.regs = {
-> +			{"vcca", 17000, 32},
-> +		},
-> +	},
-> +	.ops = {
-> +		.enable = dsi_14nm_phy_enable,
-> +		.disable = dsi_14nm_phy_disable,
-> +		.pll_init = dsi_pll_14nm_init,
-> +		.save_pll_state = dsi_14nm_pll_save_state,
-> +		.restore_pll_state = dsi_14nm_pll_restore_state,
-> +	},
-> +	.min_pll_rate = VCO_MIN_RATE,
-> +	.max_pll_rate = VCO_MAX_RATE,
-> +	.io_start = { 0x1a94400, 0x1a96400 },
-> +	.num_dsi_phy = 2,
-> +};
+> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
+> index d2a945a27cfa..059e1402b7d0 100644
+> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
+> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
+> @@ -432,6 +432,8 @@ enum dpu_clk_ctrl_type {
+>   	DPU_CLK_CTRL_RGB3,
+>   	DPU_CLK_CTRL_DMA0,
+>   	DPU_CLK_CTRL_DMA1,
+> +	DPU_CLK_CTRL_DMA2,
+> +	DPU_CLK_CTRL_DMA3,
+>   	DPU_CLK_CTRL_CURSOR0,
+>   	DPU_CLK_CTRL_CURSOR1,
+>   	DPU_CLK_CTRL_INLINE_ROT0_SSPP,
 > 
 
 
