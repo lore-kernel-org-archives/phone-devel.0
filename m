@@ -2,98 +2,89 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B3DBC4320A
-	for <phone-devel@archiver.kernel.org>; Thu,  2 Sep 2021 13:05:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7821C432BE
+	for <phone-devel@archiver.kernel.org>; Thu,  2 Sep 2021 16:00:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 64538610E6
-	for <phone-devel@archiver.kernel.org>; Thu,  2 Sep 2021 13:05:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 87B64610A2
+	for <phone-devel@archiver.kernel.org>; Thu,  2 Sep 2021 16:00:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344729AbhIBNGg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 2 Sep 2021 09:06:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57364 "EHLO
+        id S230091AbhIBQBT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 2 Sep 2021 12:01:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344693AbhIBNGg (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Sep 2021 09:06:36 -0400
-Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37760C061575
-        for <phone-devel@vger.kernel.org>; Thu,  2 Sep 2021 06:05:38 -0700 (PDT)
-Received: from Marijn-Arch-Book.localdomain (D57D4C6E.static.ziggozakelijk.nl [213.125.76.110])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id CC4D03F215;
-        Thu,  2 Sep 2021 15:05:35 +0200 (CEST)
-Date:   Thu, 2 Sep 2021 15:05:34 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Stephen Boyd <sboyd@kernel.org>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Abhinav Kumar <abhinavk@codeaurora.org>,
-        Jonathan Marek <jonathan@marek.ca>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
-Subject: Re: [PATCH v2 2/2] clk: qcom: gcc-sdm660: Remove transient global
- "xo" clock
-Message-ID: <YTDMHq3rLUrldNfB@Marijn-Arch-Book.localdomain>
-References: <20210830182445.167527-1-marijn.suijten@somainline.org>
- <20210830182445.167527-3-marijn.suijten@somainline.org>
- <163047455623.42057.15513441659841056105@swboyd.mtv.corp.google.com>
- <YS9Aa0tADAf5KMSl@Marijn-Arch-PC.localdomain>
- <163055439497.405991.16122720273000010218@swboyd.mtv.corp.google.com>
+        with ESMTP id S230088AbhIBQBT (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Sep 2021 12:01:19 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F838C061575;
+        Thu,  2 Sep 2021 09:00:20 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id mj9-20020a17090b368900b001965618d019so1775015pjb.4;
+        Thu, 02 Sep 2021 09:00:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=i2sUtpSLgV2NfNkerlODfWXBzMlFhnFRaVTxnhqZHTs=;
+        b=PvHrgsg6Xh0Nlquhj+NfeC2AlgVgRF+fqPBSedN6fowI+pEeR++wAwZfzlrPYWeJCV
+         ecLEsjwig1wo37v7rAesQnGTCkmsmGnsG3upK+6AKNDGwnLCC4XSFpicXVspVuGi4R03
+         DRxUknCYvORT5ndHwhGenIylHA8WL+o5sm8/pUBfRmmHWldY0NxbQKrhFWMq0nloRadm
+         9snhOvUBwHzIa57gh6xdJkq5iafNmD06GiPyBuxDnFK7J7qvKECsx49BRDkWJm9J5j/m
+         UjWhM7WJ+6S7RlE3gxYWnOmSrt8NaJYdiAzH1QVyDypdczIKqGh/AyxuivW6vCNm4R/r
+         NpaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=i2sUtpSLgV2NfNkerlODfWXBzMlFhnFRaVTxnhqZHTs=;
+        b=SWSbVn62OpdNPnLFL3bwpZxShyrydlhHDi29QL5UiHP5Cs2q9Dkwu5DKUAe195sV3W
+         pFtkQsbv2uJEaHh3cUS0irK8SuH7hS2vi/bPs4wnF1Gjq3DbMZfPLF/QX7nPslU8vLXv
+         +6KzLthi5GUVOYJsT54nY/krKzFW6hch7f8merkrwvqkcCuBa3oWqEjewxkvutJNNBm5
+         LdQPZtjHjXaiDvtqaarVtA1h5sZ3DRG7CMyy2rqfZKz8hcQPdAvH7oyXcsysyRnqDEJ2
+         9GgHaHbZpM8u6EXWmfJ4KCX+cO0KGR3LwXtjNHMbnkTIehYY3bGznWJJJ4sOOnRQ2arX
+         nLPQ==
+X-Gm-Message-State: AOAM532q2mlbRpqfCrtf1bDsOXRWy/RqM9zlCfPXOfLMkvR1do9b34QU
+        JA0JtaWigkASQMCQ01CObcj7M+5WIKw1obQk
+X-Google-Smtp-Source: ABdhPJybKGJKm4mopOmE/lwiDN5iiviwDKWEduGO1PdaspmiazPfOhc6yufIxi4H/ewKaBoYbTPOTA==
+X-Received: by 2002:a17:90a:a88b:: with SMTP id h11mr4586157pjq.44.1630598420051;
+        Thu, 02 Sep 2021 09:00:20 -0700 (PDT)
+Received: from skynet-linux.local ([106.203.214.216])
+        by smtp.googlemail.com with ESMTPSA id a15sm3528540pgn.25.2021.09.02.09.00.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Sep 2021 09:00:19 -0700 (PDT)
+From:   Sireesh Kodali <sireeshkodali1@gmail.com>
+To:     sireeshkodali1@gmail.com
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        dri-devel@lists.freedesktop.org, airlied@linux.ie,
+        robdclark@gmail.com, linux-arm-msm@vger.kernel.org
+Subject: [PATCH 0/2] MSM8953 MDP/DSI PHY enablement
+Date:   Thu,  2 Sep 2021 21:29:49 +0530
+Message-Id: <20210902155951.6672-1-sireeshkodali1@gmail.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <163055439497.405991.16122720273000010218@swboyd.mtv.corp.google.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2021-09-01 20:46:34, Stephen Boyd wrote:
-> Quoting Marijn Suijten (2021-09-01 01:57:15)
-> > On 2021-08-31 22:35:56, Stephen Boyd wrote:
-> > > Quoting Marijn Suijten (2021-08-30 11:24:45)
-> > > > The DSI PHY/PLL was relying on a global "xo" clock to be found, but the
-> > > > real clock is named "xo_board" in the DT.  The standard nowadays is to
-> > > > never use global clock names anymore but require the firmware (DT) to
-> > > > provide every clock binding explicitly with .fw_name.  The DSI PLLs have
-> > > > since been converted to this mechanism (specifically 14nm for SDM660)
-> > > > and this transient clock can now be removed.
-> > > > 
-> > > > This issue was originally discovered in:
-> > > > https://lore.kernel.org/linux-arm-msm/386db1a6-a1cd-3c7d-a88e-dc83f8a1be96@somainline.org/
-> > > > and prevented the removal of "xo" at that time.
-> > > > 
-> > > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > > > ---
-> > > 
-> > > Presumably this wants to go with the first one.
-> > 
-> > What are you referring to with "the first one"?  This patch can only go
-> > in after patch 1/2 of this series, unless you are suggesting to squash
-> > it with Bjorns cleanup and making sure that lands after the fix in the
-> > DSI?
-> 
-> The first patch in this series.
+This patch series adds support for the MDP and DSI PHY as found on the
+MSM8953 platform (APQ8053, SDM450, SDA450, SDM625, SDM626). All the SoCs
+on this platform use the adreno 506 GPU.
 
-Are you suggesting to squash this patch into the first patch in this
-series?  Note that the first patch touches drm/msm/dsi, the second
-(this) patch touches clk/qcom.
+Vladimir Lypak (2):
+  drm/msm/dsi: Add phy configuration for MSM8953
+  drm/msm/mdp5: Add configuration for MDP v1.16
+
+ .../bindings/display/msm/dsi-phy-14nm.yaml    |  1 +
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c      | 89 +++++++++++++++++++
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.c         |  2 +
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.h         |  1 +
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c    | 21 +++++
+ 5 files changed, 114 insertions(+)
+
+-- 
+2.33.0
+
