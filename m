@@ -7,23 +7,26 @@ X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82C6DC4332F
-	for <phone-devel@archiver.kernel.org>; Fri,  3 Sep 2021 18:09:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 072FAC4167D
+	for <phone-devel@archiver.kernel.org>; Fri,  3 Sep 2021 18:09:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6BD13610A1
-	for <phone-devel@archiver.kernel.org>; Fri,  3 Sep 2021 18:09:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D0F3760F92
+	for <phone-devel@archiver.kernel.org>; Fri,  3 Sep 2021 18:09:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350404AbhICSKd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 3 Sep 2021 14:10:33 -0400
-Received: from relay01.th.seeweb.it ([5.144.164.162]:42969 "EHLO
-        relay01.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350379AbhICSKb (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Sep 2021 14:10:31 -0400
+        id S1350380AbhICSKf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 3 Sep 2021 14:10:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33306 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1350397AbhICSKc (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Sep 2021 14:10:32 -0400
+Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [IPv6:2001:4b7a:2000:18::164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74481C0617AD;
+        Fri,  3 Sep 2021 11:09:30 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 08F051F6AF;
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 905421F8E5;
         Fri,  3 Sep 2021 20:09:27 +0200 (CEST)
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
@@ -36,9 +39,9 @@ Cc:     agross@kernel.org, robh+dt@kernel.org,
         paul.bouchara@somainline.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Subject: [PATCH 5/7] arm64: dts: qcom: msm8998-xperia: Configure display boost regulators
-Date:   Fri,  3 Sep 2021 20:09:22 +0200
-Message-Id: <20210903180924.1006044-5-angelogioacchino.delregno@somainline.org>
+Subject: [PATCH 7/7] arm64: dts: qcom: msm8998-xperia: Add audio clock and its pin
+Date:   Fri,  3 Sep 2021 20:09:24 +0200
+Message-Id: <20210903180924.1006044-7-angelogioacchino.delregno@somainline.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210903180924.1006044-1-angelogioacchino.delregno@somainline.org>
 References: <20210903180924.1006044-1-angelogioacchino.delregno@somainline.org>
@@ -48,126 +51,52 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add configuration for the LAB and IBB regulators (in boost mode):
-this platform has smartphones with three different display sizes,
-hence different displays requiring different voltage.
-
-The common configuration parameters have been put in the common
-device-tree, while specific voltage specs and soft-start-us are
-variant specific, so they have been put into the machine specific
-dts file.
+All smartphones of this platform are equipped with a WCD9335 audio
+codec, getting its MCLK from PM8998 gpio13: add this clock to DT.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
- .../msm8998-sony-xperia-yoshino-lilac.dts     | 11 ++++++++
- .../msm8998-sony-xperia-yoshino-maple.dts     | 11 ++++++++
- .../msm8998-sony-xperia-yoshino-poplar.dts    | 11 ++++++++
- .../dts/qcom/msm8998-sony-xperia-yoshino.dtsi | 25 +++++++++++++++++++
- 4 files changed, 58 insertions(+)
+ .../dts/qcom/msm8998-sony-xperia-yoshino.dtsi | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-lilac.dts b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-lilac.dts
-index 550de79e0151..0de919357de4 100644
---- a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-lilac.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-lilac.dts
-@@ -13,6 +13,17 @@ / {
- 	compatible = "sony,xperia-lilac", "qcom,msm8998";
- };
- 
-+&ibb {
-+	regulator-min-microvolt = <5500000>;
-+	regulator-max-microvolt = <5500000>;
-+};
-+
-+&lab {
-+	regulator-min-microvolt = <5500000>;
-+	regulator-max-microvolt = <5500000>;
-+	qcom,soft-start-us = <800>;
-+};
-+
- &vreg_l22a_2p85 {
- 	regulator-min-microvolt = <2800000>;
- 	regulator-max-microvolt = <2800000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-maple.dts b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-maple.dts
-index 35a6cdb55aec..87115d648cef 100644
---- a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-maple.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-maple.dts
-@@ -25,6 +25,17 @@ disp_dvdd_vreg: disp-dvdd-vreg {
- 	};
- };
- 
-+&ibb {
-+	regulator-min-microvolt = <5600000>;
-+	regulator-max-microvolt = <5600000>;
-+};
-+
-+&lab {
-+	regulator-min-microvolt = <5800000>;
-+	regulator-max-microvolt = <5800000>;
-+	qcom,soft-start-us = <200>;
-+};
-+
- &pmi8998_gpio {
- 	disp_dvdd_en: disp-dvdd-en-active {
- 		pins = "gpio10";
-diff --git a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts
-index 6255004b9a09..9fa3583c951b 100644
---- a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts
-@@ -13,6 +13,17 @@ / {
- 	compatible = "sony,xperia-poplar", "qcom,msm8998";
- };
- 
-+&ibb {
-+	regulator-min-microvolt = <5600000>;
-+	regulator-max-microvolt = <5600000>;
-+};
-+
-+&lab {
-+	regulator-min-microvolt = <5600000>;
-+	regulator-max-microvolt = <5600000>;
-+	qcom,soft-start-us = <800>;
-+};
-+
- &vreg_l18a_2p85 {
- 	regulator-min-microvolt = <2850000>;
- 	regulator-max-microvolt = <2850000>;
 diff --git a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
-index 8c7aba8eadee..80c2cd7ae0eb 100644
+index 5fbe5abf4133..7aeebd3b2e9e 100644
 --- a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
 +++ b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
-@@ -207,6 +207,31 @@ &blsp2_uart1 {
- 	status = "okay";
+@@ -20,6 +20,19 @@ / {
+ 	qcom,msm-id = <0x124 0x20000>, <0x124 0x20001>; /* 8998v2, v2.1 */
+ 	qcom,board-id = <8 0>;
+ 
++	clocks {
++		compatible = "simple-bus";
++
++		div1_mclk: divclk1 {
++			compatible = "gpio-gate-clock";
++			pinctrl-0 = <&audio_mclk_pin>;
++			pinctrl-names = "default";
++			clocks = <&rpmcc RPM_SMD_DIV_CLK1>;
++			#clock-cells = <0>;
++			enable-gpios = <&pm8998_gpio 13 GPIO_ACTIVE_HIGH>;
++		};
++	};
++
+ 	board_vbat: vbat-regulator {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "VBAT";
+@@ -313,6 +326,12 @@ cam_snapshot_pin_a: cam-snapshot-btn-active {
+ 		input-enable;
+ 		qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
+ 	};
++
++	audio_mclk_pin: audio-mclk-pin-active {
++		pins = "gpio13";
++		function = "func2";
++		power-source = <0>;
++	};
  };
  
-+&ibb {
-+	regulator-min-microamp = <800000>;
-+	regulator-max-microamp = <800000>;
-+	regulator-enable-ramp-delay = <200>;
-+	regulator-over-current-protection;
-+	regulator-pull-down;
-+	regulator-ramp-delay = <1>;
-+	regulator-settling-time-up-us = <600>;
-+	regulator-settling-time-down-us = <1000>;
-+	regulator-soft-start;
-+	qcom,discharge-resistor-kohms = <300>;
-+};
-+
-+&lab {
-+	regulator-min-microamp = <200000>;
-+	regulator-max-microamp = <200000>;
-+	regulator-enable-ramp-delay = <500>;
-+	regulator-over-current-protection;
-+	regulator-pull-down;
-+	regulator-ramp-delay = <1>;
-+	regulator-settling-time-up-us = <50000>;
-+	regulator-settling-time-down-us = <3000>;
-+	regulator-soft-start;
-+};
-+
- &mmcc {
- 	status = "ok";
- };
+ &pmi8998_gpio {
 -- 
 2.32.0
 
