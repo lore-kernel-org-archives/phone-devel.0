@@ -2,214 +2,96 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.2 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFDB6C433EF
-	for <phone-devel@archiver.kernel.org>; Fri,  3 Sep 2021 16:17:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B760C433EF
+	for <phone-devel@archiver.kernel.org>; Fri,  3 Sep 2021 17:09:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A995061051
-	for <phone-devel@archiver.kernel.org>; Fri,  3 Sep 2021 16:17:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 17AD461059
+	for <phone-devel@archiver.kernel.org>; Fri,  3 Sep 2021 17:09:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237107AbhICQSr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 3 Sep 2021 12:18:47 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:53394 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbhICQSp (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Sep 2021 12:18:45 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id B064A1C0B87; Fri,  3 Sep 2021 18:17:43 +0200 (CEST)
-Date:   Fri, 3 Sep 2021 18:17:43 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     devicetree@vger.kernel.org, kernel@puri.sm,
-        krzysztof.kozlowski@canonical.com,
-        laurent.pinchart@ideasonboard.com, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, mchehab@kernel.org,
-        paul.kocialkowski@bootlin.com, phone-devel@vger.kernel.org,
-        robh@kernel.org, sakari.ailus@iki.fi, shawnx.tu@intel.com
-Subject: Re: [PATCH v8 3/4] media: i2c: add driver for the SK Hynix Hi-846 8M
- pixel camera
-Message-ID: <20210903161742.GD2209@bug>
-References: <20210831134344.1673318-1-martin.kepplinger@puri.sm>
- <20210831134344.1673318-4-martin.kepplinger@puri.sm>
+        id S1350043AbhICRKD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 3 Sep 2021 13:10:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47532 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235689AbhICRKD (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Sep 2021 13:10:03 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2974FC061575;
+        Fri,  3 Sep 2021 10:09:03 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id i24so1895508pfo.12;
+        Fri, 03 Sep 2021 10:09:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=32EQLdfDTCRCdMRemhZOmZoqSg85NLCnv9qxhDUzup4=;
+        b=FqSavnJkeVM8xIg3hQ3VVqpS0xthnfgZNfDX1AaGl4kDvEWoAWI6FMOVP2ZfcE/4YB
+         yFJb5mV4nUddkUN7SopNeCSjlC0p0SP/5ziSfVN/lNXcNDDrxsmTqR6T+/YcTJX6iZQC
+         JfHRJ0FW3e2GnSVXSTKIaEnh8KKsI29iKqEuaPrGY/WULmyy7Ld652r4njvRLASYbpus
+         18hjU2DfMeiRikDvKf37MVRgGI5QMZakziM1PHWWqZ84ueQNbd/fVx8wM0dV6+BXm3l+
+         G2uq+SAAMPJHqxwU3+Ikg8KFOBjxzyTrkgHwaEDMyeibWl/JCq8ut2ElRovtO/3bF9Mz
+         P9+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=32EQLdfDTCRCdMRemhZOmZoqSg85NLCnv9qxhDUzup4=;
+        b=ZVkLWV6kJHyLme1vs08Hr/QOAk0S12ALiAIYSGwL/XxrtO2Jj4obWnfkP3vJyf3xx2
+         MSwjpW+3H73ncU9wvSpgCdl/iZS1LSVNp6QBW6IW5teQ8dw2NiS9Dm39KOrfBON2BD4j
+         piaSrxL/9YUqU4vIWD0qUmCwn2x0TjnXDUmvy79Dj2QF7NwGj7nc5gb1iy9iYp5GvUMd
+         08nzkeAbeMCRgY6Mx316plfW82tJZRIdKlPoDXCxL18nPmOkmim/iIDZccZ8r8axqBLo
+         dwDucc47u1LHNPBXQT6xadyzsXCLYG3WZYj5W2/fiwMLyKspwkiJH4z5Wz3DnHlk9sft
+         l4Yg==
+X-Gm-Message-State: AOAM532Doj4hOf8+U68DJqwxNpMmRBSOmLgM5+V5zfXoIZu5J+EfgV25
+        WIkan+eQl4+xowZVa5colPOAvC6iE+KvTg==
+X-Google-Smtp-Source: ABdhPJxGolyM7co+r0l5xbZhBkdb1JccCKzpw4VmeIZgvlpyTIIH08eZkbmaP+kzlokxfvXmvjxMQw==
+X-Received: by 2002:a65:5a49:: with SMTP id z9mr47166pgs.121.1630688942457;
+        Fri, 03 Sep 2021 10:09:02 -0700 (PDT)
+Received: from skynet-linux.local ([122.171.5.147])
+        by smtp.googlemail.com with ESMTPSA id 130sm5905361pfy.175.2021.09.03.10.09.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Sep 2021 10:09:01 -0700 (PDT)
+From:   Sireesh Kodali <sireeshkodali1@gmail.com>
+To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Cc:     Sireesh Kodali <sireeshkodali1@gmail.com>
+Subject: [PATCH v2 0/3] MSM8953 MDP/DSI PHY enablement
+Date:   Fri,  3 Sep 2021 22:38:41 +0530
+Message-Id: <20210903170844.35694-1-sireeshkodali1@gmail.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210831134344.1673318-4-martin.kepplinger@puri.sm>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi!
+This patch series adds support for the MDP and DSI PHY as found on the
+MSM8953 platform (APQ8053, SDM450, SDA450, SDM625, SDM626). All the SoCs
+on this platform use the adreno 506 GPU.
 
-> The SK Hynix Hi-846 is a 1/4" 8M Pixel CMOS Image Sensor. It supports
-> usual features like I2C control, CSI-2 for frame data, digital/analog
-> gain control or test patterns.
-> 
-> This driver supports the 640x480, 1280x720 and 1632x1224 resolution
-> modes. It supports runtime PM in order not to draw any unnecessary power.
-> 
-> The part is also called YACG4D0C9SHC and a datasheet can be found at
-> https://product.skhynix.com/products/cis/cis.go
-> 
-> The large sets of partly undocumented register values are for example
-> found when searching for the hi846_mipi_raw_Sensor.c Android driver.
-> 
-> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Changes since v1:
+- Split the dsi phy doc changes into a separate commit
+- Add Reviewed-by tag to patch 2
 
-Reviewed-by: Pavel Machek <pavel@ucw.cz>
+Sireesh Kodali (1):
+  dt-bindings: msm: dsi: Add MSM8953 dsi phy
 
-Some nitpicks below..
+Vladimir Lypak (2):
+  drm/msm/dsi: Add phy configuration for MSM8953
+  drm/msm/mdp5: Add configuration for MDP v1.16
 
-> +config VIDEO_HI846
-> +	tristate "Hynix Hi-846 sensor support"
-> +	depends on I2C && VIDEO_V4L2
-> +	select MEDIA_CONTROLLER
-> +	select VIDEO_V4L2_SUBDEV_API
-> +	select V4L2_FWNODE
-> +	help
-> +	  This is a Video4Linux2 sensor driver for the Hynix
-> +	  Hi-846 camera.
-> +
-> +	  To compile this driver as a module, choose M here: the
-> +	  module will be called hi846.
+ .../bindings/display/msm/dsi-phy-14nm.yaml    |  2 +
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c      | 89 +++++++++++++++++++
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.c         |  2 +
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.h         |  1 +
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c    | 21 +++++
+ 5 files changed, 115 insertions(+)
 
-hi846.ko?
-
-
-> +/* Frame length lines / Vertical timings */
-
-vertical
-
-> +/*
-> + * Long exposure time. Actually, exposure is a 20 bit value that
-> + * includes the lower 4 bits of 0x0073 too. only 16 bit are used
-> + * right now
-> + */
-
-Only 16 bits
-now.
-
-> +struct hi846_mode {
-> +	/* Frame width in pixels */
-> +	u32 width;
-> +
-> +	/* Frame height in pixels */
-> +	u32 height;
-> +
-> +	/* Horizontal timing size */
-> +	u32 llp;
-> +
-> +	/* Link frequency needed for this resolution */
-> +	u8 link_freq_index;
-> +
-> +	u16 fps;
-> +
-> +	/* vertical timining size */
-
-Vertical timing
-
-> +	/* position inside of the 3264x2448 pixel array */
-
-Position
-
-> +{
-> +	struct i2c_client *client = v4l2_get_subdevdata(&hi846->sd);
-> +	struct i2c_msg msgs[2];
-> +	u8 addr_buf[2];
-> +	u8 data_buf[1] = {0};
-> +	int ret;
-> +
-> +	put_unaligned_be16(reg, addr_buf);
-> +	msgs[0].addr = client->addr;
-> +	msgs[0].flags = 0;
-> +	msgs[0].len = sizeof(addr_buf);
-> +	msgs[0].buf = addr_buf;
-> +	msgs[1].addr = client->addr;
-> +	msgs[1].flags = I2C_M_RD;
-> +	msgs[1].len = 1;
-> +	msgs[1].buf = &data_buf[0];
-
-= data_buf; To simplify things and for consistency with above.
-
-> +static void hi846_write_reg_16(struct hi846 *hi846, u16 reg, u16 val, int *err)
-> +{
-> +	struct i2c_client *client = v4l2_get_subdevdata(&hi846->sd);
-> +	u8 buf[6];
-> +	int ret;
-> +
-> +	if (*err < 0)
-> +		return;
-> +
-> +	put_unaligned_be16(reg, buf);
-> +	put_unaligned_be32(val << 8 * 2, buf + 2);
-
-Is that obfuscated way of saying put_unaligned_be16(val, buf+2); buf[3] = 0; buf[4] = 0; ?
-
-> +static int hi846_set_stream(struct v4l2_subdev *sd, int enable)
-> +{
-> +	struct hi846 *hi846 = to_hi846(sd);
-> +	struct i2c_client *client = v4l2_get_subdevdata(sd);
-> +	int ret = 0;
-> +
-> +	if (hi846->streaming == enable)
-> +		return 0;
-> +
-> +	mutex_lock(&hi846->mutex);
-> +
-> +	if (enable) {
-> +		ret = pm_runtime_get_sync(&client->dev);
-> +		if (ret < 0) {
-> +			pm_runtime_put_noidle(&client->dev);
-> +			goto out;
-> +		}
-> +
-> +		ret = hi846_start_streaming(hi846);
-> +		if (ret) {
-> +			enable = 0;
-> +			hi846_stop_streaming(hi846);
-> +			pm_runtime_put(&client->dev);
-> +		}
-> +	} else {
-> +		hi846_stop_streaming(hi846);
-> +		pm_runtime_put(&client->dev);
-> +	}
-
-enable = 0 is dead code.
-
-Could this be written as
-
-        }
-        if (!enable || ret) {
-                   stop_streaming()
-                   put()
-        }
-
-But I guess that start_streaming should really do all the cleanup itself if it fails.
-
-
-> +	ret = hi846_identify_module(hi846);
-> +	if (ret)
-> +		goto probe_error_power_off;
-
-Does this go to right place?
-
-> +	hi846->cur_mode = &supported_modes[0];
-> +
-> +	ret = hi846_init_controls(hi846);
-> +	if (ret) {
-> +		dev_err(&client->dev, "failed to init controls: %d", ret);
-> +		return ret;
-> +	}
-
-This should go to cleanup code somewhere.
-
-Best regards,
-									Pavel
 -- 
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
+2.33.0
+
