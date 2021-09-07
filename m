@@ -4,143 +4,308 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F789C433F5
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 18:33:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB581C433F5
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 18:37:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4350561108
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 18:33:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 864326112E
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 18:37:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345906AbhIGSef (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 7 Sep 2021 14:34:35 -0400
-Received: from mail-oo1-f50.google.com ([209.85.161.50]:37636 "EHLO
-        mail-oo1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240131AbhIGSee (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Sep 2021 14:34:34 -0400
-Received: by mail-oo1-f50.google.com with SMTP id k20-20020a4ad114000000b0029133123994so69907oor.4;
-        Tue, 07 Sep 2021 11:33:28 -0700 (PDT)
+        id S1345878AbhIGSih (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 7 Sep 2021 14:38:37 -0400
+Received: from mail-ot1-f48.google.com ([209.85.210.48]:33552 "EHLO
+        mail-ot1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230354AbhIGSih (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Sep 2021 14:38:37 -0400
+Received: by mail-ot1-f48.google.com with SMTP id c42-20020a05683034aa00b0051f4b99c40cso349300otu.0;
+        Tue, 07 Sep 2021 11:37:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=1Y7kz7rPiF3VaPntLj2tLYmDViv0USAD/qIq0pAgQr4=;
-        b=VK5BGQI13gF5eBqMJcrw3GLIhY7sx0Yb4yblXUFfzLQPZUZQ7VLZnB7u1H833ArphM
-         QnBAKCNxYvBNVwoQ484HRaO5DoOiSQg7uC41yQ4PR2HxEnYulzE8rGy5hsViJlGd6vQM
-         H7y1DFzRet1HxEHRWiNXxN7nIPL0/gPCgk3dBlEGi+EWYTwACoqeihjiNRsI8GxUdO9B
-         Jhw/TNIly5D+p4LBvCZlzQORvGJ47uRcQn/5ikiI5KLODlhY8z2fnzFH0JyuRMSn29QW
-         xnpKu9H4BucW8bRHN4f4Xez/MbwS2YSrsOB+FYXrtM3KEMpnB+zRyqcv9RCqBYxc4LNS
-         VvZA==
-X-Gm-Message-State: AOAM5313ZpwkSGosAfxKdMfShbcTppdfiqitoRb7DgRn6Uf4CdoSLib7
-        PPTd+1BoHHR69i1oWAgjIqjckV66hw==
-X-Google-Smtp-Source: ABdhPJxlNBSI5uLOTxCRNzYNIaAk3qH4LtZ7Xee0x34y1IfrAyuuQA05q4QHPwlRCmrwT68IUwD7Cw==
-X-Received: by 2002:a4a:966d:: with SMTP id r42mr1072671ooi.11.1631039607714;
-        Tue, 07 Sep 2021 11:33:27 -0700 (PDT)
+        bh=VGXBiHd8aGiY42ZI/fI58ICBBOHjaU8L6zf9vtrLjgM=;
+        b=nJBCwNDN55C7kWeIdu3aX3sKoAODbBss6uHoykb3ryTf9DVDSMI9lpSAwvxkW3wcj/
+         XX7K8KaiCuQG++WGG5mFmNgTj3APNFSNRJCxom0T0FXAuUKXxd8xN/E+xuoZoy6kI9Jt
+         sqZjZ+WNF130UffmSqT1k8ejM0o5g+X4bjQGKTW16ZA9UvF+D8tWVWlqCjAnZd2s0bjw
+         ySkdffiJUDb5Xv9gYjY1colsPS1VmJWqwdtk16aY3J96eBYVrv76A3BhQl2r+dTBzq4R
+         +Awtn6kFkSByHWs4xeJGlkmyfEy/crhH1WPxQF23+t1i6AEkWBC6FehBzJb2zwZ3UgJe
+         6NBQ==
+X-Gm-Message-State: AOAM531917abJWTuzS8DuIwNepveItjMgOnZ3/BMWgWCznm1WR8sFMQ6
+        7KEh7hwscH6k5Ufn54PmTA==
+X-Google-Smtp-Source: ABdhPJzpedN7Uv+lz7hd5t31kUf84boXO+DYEziXPnP+k2WKfHCFw4wTNB1/H2gD4Z64yRKl0c0l3w==
+X-Received: by 2002:a05:6830:91:: with SMTP id a17mr17024877oto.189.1631039849985;
+        Tue, 07 Sep 2021 11:37:29 -0700 (PDT)
 Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id j14sm2374895oor.33.2021.09.07.11.33.26
+        by smtp.gmail.com with ESMTPSA id b11sm2372980ooi.0.2021.09.07.11.37.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Sep 2021 11:33:27 -0700 (PDT)
-Received: (nullmailer pid 115718 invoked by uid 1000);
-        Tue, 07 Sep 2021 18:33:25 -0000
-Date:   Tue, 7 Sep 2021 13:33:25 -0500
+        Tue, 07 Sep 2021 11:37:29 -0700 (PDT)
+Received: (nullmailer pid 122301 invoked by uid 1000);
+        Tue, 07 Sep 2021 18:37:28 -0000
+Date:   Tue, 7 Sep 2021 13:37:28 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] dt-bindings: display: Add binding for LG.Philips
- SW43101
-Message-ID: <YTewdZBsgmvwSTnb@robh.at.kernel.org>
-References: <20210901180644.248177-1-y.oudjana@protonmail.com>
- <20210901180644.248177-3-y.oudjana@protonmail.com>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     robdclark@gmail.com, sean@poorly.run, airlied@linux.ie,
+        daniel@ffwll.ch, dmitry.baryshkov@linaro.org,
+        abhinavk@codeaurora.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        paul.bouchara@somainline.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 3/3] dt-bindings: display: msm: Add binding for msm8998
+ dpu
+Message-ID: <YTexaJuQSNazh9sn@robh.at.kernel.org>
+References: <20210901181138.1052653-1-angelogioacchino.delregno@somainline.org>
+ <20210901181138.1052653-3-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210901180644.248177-3-y.oudjana@protonmail.com>
+In-Reply-To: <20210901181138.1052653-3-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Sep 01, 2021 at 06:07:30PM +0000, Yassine Oudjana wrote:
-> Add a device tree binding for LG.Philips SW43101.
+On Wed, Sep 01, 2021 at 08:11:38PM +0200, AngeloGioacchino Del Regno wrote:
+> Add yaml binding for msm8998 dpu1 support.
 > 
-> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 > ---
->  .../display/panel/lgphilips,sw43101.yaml      | 52 +++++++++++++++++++
->  1 file changed, 52 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/panel/lgphilips,sw43101.yaml
+>  .../bindings/display/msm/dpu-msm8998.yaml     | 220 ++++++++++++++++++
+>  1 file changed, 220 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/display/msm/dpu-msm8998.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/display/panel/lgphilips,sw43101.yaml b/Documentation/devicetree/bindings/display/panel/lgphilips,sw43101.yaml
+> diff --git a/Documentation/devicetree/bindings/display/msm/dpu-msm8998.yaml b/Documentation/devicetree/bindings/display/msm/dpu-msm8998.yaml
 > new file mode 100644
-> index 000000000000..da049e9f244e
+> index 000000000000..db435342ecbf
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/panel/lgphilips,sw43101.yaml
-> @@ -0,0 +1,52 @@
-> +# SPDX-License-Identifier: BSD-3-Clause
-
-Not the right license(s). checkpatch.pl will tell you.
-
+> +++ b/Documentation/devicetree/bindings/display/msm/dpu-msm8998.yaml
+> @@ -0,0 +1,220 @@
+> +# SPDX-License-Identifier: GPL-2.0-only or BSD-2-Clause
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/display/panel/lgphilips,sw43101.yaml#
+> +$id: http://devicetree.org/schemas/display/msm/dpu-msm8998.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: LG.Philips SW43101 1080x1920 OLED panel
+> +title: Qualcomm Display DPU dt properties for MSM8998 target
 > +
 > +maintainers:
-> +  - Yassine Oudjana <y.oudjana@protonmail.com>
+> +  - AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 > +
-> +allOf:
-> +  - $ref: panel-common.yaml#
+> +description: |
+> +  Device tree bindings for MSM Mobile Display Subsystem(MDSS) that encapsulates
+> +  sub-blocks like DPU display controller, DSI and DP interfaces etc. Device tree
+> +  bindings of MDSS and DPU are mentioned for MSM8998 target.
 > +
 > +properties:
 > +  compatible:
-> +    const: lgphilips,sw43101
-
-Looks like this can be added to panel-simple-dsi.yaml instead. Unless it 
-has more than 1 power rail as you didn't document any.
-
+> +    items:
+> +      - const: qcom,msm8998-mdss
 > +
-> +  port: true
-> +  reg: true
-> +  reset-gpios: true
+> +  reg:
+> +    maxItems: 1
+> +
+> +  reg-names:
+> +    const: mdss
+> +
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description: Display AHB clock
+> +      - description: Display AXI clock
+> +      - description: Display core clock
+> +
+> +  clock-names:
+> +    items:
+> +      - const: iface
+> +      - const: bus
+> +      - const: core
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  interrupt-controller: true
+> +
+> +  "#address-cells": true
+> +
+> +  "#size-cells": true
+> +
+> +  "#interrupt-cells":
+> +    const: 1
+> +
+> +  iommus:
+> +    items:
+> +      - description: Phandle to apps_smmu node with SID mask for Hard-Fail port0
+> +
+> +  ranges: true
+> +
+> +patternProperties:
+> +  "^display-controller@[0-9a-f]+$":
+> +    type: object
+> +    description: Node containing the properties of DPU.
+> +
+> +    properties:
+> +      compatible:
+> +        items:
+> +          - const: qcom,msm8998-dpu
+> +
+> +      reg:
+> +        items:
+> +          - description: Address offset and size for mdp register set
+> +          - description: Address offset and size for regdma register set
+> +          - description: Address offset and size for vbif register set
+> +          - description: Address offset and size for non-realtime vbif register set
+> +
+> +      reg-names:
+> +        items:
+> +          - const: mdp
+> +          - const: regdma
+> +          - const: vbif
+> +          - const: vbif_nrt
+> +
+> +      clocks:
+> +        items:
+> +          - description: Display ahb clock
+> +          - description: Display axi clock
+> +          - description: Display mem-noc clock
+> +          - description: Display core clock
+> +          - description: Display vsync clock
+> +
+> +      clock-names:
+> +        items:
+> +          - const: iface
+> +          - const: bus
+> +          - const: mnoc
+> +          - const: core
+> +          - const: vsync
+> +
+> +      interrupts:
+> +        maxItems: 1
+> +
+> +      power-domains:
+> +        maxItems: 1
+> +
+> +      operating-points-v2: true
+> +      ports:
+> +        $ref: /schemas/graph.yaml#/properties/ports
+> +        description: |
+> +          Contains the list of output ports from DPU device. These ports
+> +          connect to interfaces that are external to the DPU hardware,
+> +          such as DSI, DP etc. Each output port contains an endpoint that
+> +          describes how it is connected to an external interface.
+> +
+> +        properties:
+> +          port@0:
+> +            $ref: /schemas/graph.yaml#/properties/port
+> +            description: DPU_INTF1 (DSI1)
+> +
+> +          port@1:
+> +            $ref: /schemas/graph.yaml#/properties/port
+> +            description: DPU_INTF2 (DSI2)
+> +
+> +        required:
+> +          - port@0
+> +          - port@1
+> +
+> +    required:
+> +      - compatible
+> +      - reg
+> +      - reg-names
+> +      - clocks
+> +      - interrupts
+> +      - power-domains
+> +      - operating-points-v2
+> +      - ports
 > +
 > +required:
 > +  - compatible
 > +  - reg
-> +  - reset-gpios
+> +  - reg-names
+> +  - power-domains
+> +  - clocks
+> +  - interrupts
+> +  - interrupt-controller
+> +  - iommus
+> +  - ranges
 > +
 > +additionalProperties: false
 > +
 > +examples:
 > +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/clock/qcom,mmcc-msm8998.h>
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/power/qcom-rpmpd.h>
 > +
-> +    dsi {
+> +    display-subsystem@c900000 {
+> +        compatible = "qcom,msm8998-mdss";
+> +        reg = <0x0c900000 0x1000>;
+> +        reg-names = "mdss";
+> +
+> +        clocks = <&mmcc MDSS_AHB_CLK>,
+> +                 <&mmcc MDSS_AXI_CLK>,
+> +                 <&mmcc MDSS_MDP_CLK>;
+> +        clock-names = "iface", "bus", "core";
+> +
 > +        #address-cells = <1>;
-> +        #size-cells = <0>;
+> +        #interrupt-cells = <1>;
+> +        #size-cells = <1>;
 > +
-> +        panel@0 {
-> +            compatible = "lgphilips,sw43101";
-> +            reg = <0>;
+> +        interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
+> +        interrupt-controller;
+> +        iommus = <&mmss_smmu 0>;
 > +
-> +            reset-gpios = <&msmgpio 8 GPIO_ACTIVE_LOW>;
+> +        power-domains = <&mmcc MDSS_GDSC>;
+> +        ranges;
+> +        status = "disabled";
+
+Drop. Why disable an example?
+
 > +
-> +            port {
-> +                panel_in: endpoint {
-> +                    remote-endpoint = <&dsi_out>;
+> +        display-controller@c901000 {
+> +            compatible = "qcom,msm8998-dpu";
+> +            reg = <0x0c901000 0x8f000>,
+> +                  <0x0c9a8e00 0xf0>,
+> +                  <0x0c9b0000 0x2008>,
+> +                  <0x0c9b8000 0x1040>;
+> +            reg-names = "mdp", "regdma", "vbif", "vbif_nrt";
+> +
+> +            clocks = <&mmcc MDSS_AHB_CLK>,
+> +                     <&mmcc MDSS_AXI_CLK>,
+> +                     <&mmcc MNOC_AHB_CLK>,
+> +                     <&mmcc MDSS_MDP_CLK>,
+> +                     <&mmcc MDSS_VSYNC_CLK>;
+> +            clock-names = "iface", "bus", "mnoc", "core", "vsync";
+> +
+> +            interrupt-parent = <&mdss>;
+> +            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
+> +            operating-points-v2 = <&mdp_opp_table>;
+> +            power-domains = <&rpmpd MSM8998_VDDMX>;
+> +
+> +            ports {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +
+> +                port@0 {
+> +                    reg = <0>;
+> +                    dpu_intf1_out: endpoint {
+> +                        remote-endpoint = <&dsi0_in>;
+> +                    };
+> +                };
+> +
+> +                port@1 {
+> +                    reg = <1>;
+> +                    dpu_intf2_out: endpoint {
+> +                        remote-endpoint = <&dsi1_in>;
+> +                    };
 > +                };
 > +            };
 > +        };
 > +    };
-> +
 > +...
 > -- 
-> 2.33.0
-> 
+> 2.32.0
 > 
 > 
