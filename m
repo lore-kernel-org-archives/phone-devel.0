@@ -2,414 +2,232 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C8B96C433F5
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 09:01:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4B88C433FE
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 13:03:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AF1CD61102
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 09:01:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8A9E361102
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 13:03:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244625AbhIGJC6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 7 Sep 2021 05:02:58 -0400
-Received: from mail-4319.protonmail.ch ([185.70.43.19]:37799 "EHLO
-        mail-4319.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245159AbhIGJC4 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Sep 2021 05:02:56 -0400
-Date:   Tue, 07 Sep 2021 09:01:17 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1631005283;
-        bh=VX4z0nZhRbkOu8FN8dekK+/P0JFwsoSYZ5ci1w9PVKo=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=KWUCZsCVchTrT743cdlTDPBkyQpp6BQ1w9bS6ePycJ1VXk2m53/t/OzCSp8tXWYN4
-         ZYbfXUDGDu+N1Bz+V8++Hkvu2Qdm4nsDnmA1WglhVh4keALxMgTXfqtrFSFriAJNmI
-         DmCwYkGmoG2NMg9/px463M1wrTdiDDXflBMGNQ48=
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-From:   Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
-Subject: Re: [PATCH v3 1/2] Input: cypress-sf - Add Cypress StreetFighter touchkey driver
-Message-ID: <SO32ZQ.ZZ96JBE1E2N91@protonmail.com>
-In-Reply-To: <YTW1zso4zW4RC6N0@google.com>
-References: <20210901165231.236728-1-y.oudjana@protonmail.com> <20210901165231.236728-2-y.oudjana@protonmail.com> <YTW1zso4zW4RC6N0@google.com>
+        id S1344551AbhIGNEm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 7 Sep 2021 09:04:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51360 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344510AbhIGNEl (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Sep 2021 09:04:41 -0400
+Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31138C0613C1
+        for <phone-devel@vger.kernel.org>; Tue,  7 Sep 2021 06:03:35 -0700 (PDT)
+Received: by mail-oo1-xc31.google.com with SMTP id j11-20020a4a92cb000000b002902ae8cb10so2878231ooh.7
+        for <phone-devel@vger.kernel.org>; Tue, 07 Sep 2021 06:03:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=uhC7nzqpqA4nMheQgFCEgMJ6vQ3bkE9hy3QtYBGq9aI=;
+        b=iy5Pab0mOazD/amTTWfY4e/vbO7jZSzp8XFUAEVZF5cdt5JEs2ep1HTTxrt/Zk14pa
+         o/s3v+TTVyd0ak3Z1LZW11YRp+NebeaPuibrA+9DtLlWi5gUzz4QEd2QWsqaztwapLq2
+         cJITIf3sZo6m4sv2NV0Q3NVHtn3YZ1LOEy46HtKKX/Nts9/SM7sDVwWuTQbGLe0HfADv
+         M8+1AoYk0+oC4BQHkPkfNro6sO0zGvON3xuamnPjeQLKwuBBB25pENgv/UOGw2TUu6pa
+         ii99KCMjSkmG+curuRxyRROdxftAzasoukEQQal97EyGDk6U9tQFgWWFGR0zN++DWKY/
+         Krpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=uhC7nzqpqA4nMheQgFCEgMJ6vQ3bkE9hy3QtYBGq9aI=;
+        b=IgTY/zV8Vxb52eFCSTnSbi4FsaQL6NB9Sm5XPFnKUKjPg0f7Wh+GHFV//qtZqqo1Nw
+         H1cIEUuGlKaTZ1DVs/e+pKHqMS8DTsdbUJnbGaiSzV1Q/EV9xG4bv4g9bP5rXNArVnln
+         xjfnxQqHcSwrGVYrPUp/SQ8RgiLuWa/pZSifc8rE9KfqtCgpSpKCZs7yrA/RwjUu55IO
+         0EEBSe9niWLXtuUODi7n+WLKl0J63EA3v0CyIAKjxpw/p6pqc3JmuSCLwHwUSJdMUZgp
+         T+6rlOdNp0bVlWNtigsOlNUEF1Ji6Bqv3EaxW8YolNtrDOCk2H9JQcUJwRmBu4wLvp6Y
+         OiVA==
+X-Gm-Message-State: AOAM530nO3LvjgdrvIeTAQeA6rUbMExBoi76HyZhOVbRzscRI+RA+mhV
+        MPLL9viqG0eMfZ7KJG0qwHorhg==
+X-Google-Smtp-Source: ABdhPJxXMAZmloUHdgSE5zF9AilK2k10mV+Z9C0H9OxJkTzKVhWtamTncqC0p02F+PqlkciLdix31Q==
+X-Received: by 2002:a4a:dfac:: with SMTP id k12mr17537075ook.41.1631019812044;
+        Tue, 07 Sep 2021 06:03:32 -0700 (PDT)
+Received: from ripper (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id v10sm2425326otp.25.2021.09.07.06.03.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Sep 2021 06:03:31 -0700 (PDT)
+Date:   Tue, 7 Sep 2021 06:04:31 -0700
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     agross@kernel.org, robh+dt@kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        paul.bouchara@somainline.org
+Subject: Re: [PATCH 1/7] arm64: dts: qcom: Introduce support for MSM8998 Sony
+ Yoshino platform
+Message-ID: <YTdjX2/XGZYQQRDW@ripper>
+References: <20210903180924.1006044-1-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210903180924.1006044-1-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Fri 03 Sep 11:09 PDT 2021, AngeloGioacchino Del Regno wrote:
 
+> This commit introduces support for the Sony Yoshino platform, using
+> the MSM8998 SoC, including:
+> - Sony Xperia XZ1 (codename Poplar),
+> - Sony Xperia XZ1 Compact (codename Lilac),
+> - Sony Xperia XZ Premium (codename Maple).
+> 
 
-On Mon, Sep 6 2021 at 10:31:42 +0400, Dmitry Torokhov=20
-<dmitry.torokhov@gmail.com> wrote:
-> Hi Yassine,
->=20
-> On Wed, Sep 01, 2021 at 04:52:58PM +0000, Yassine Oudjana wrote:
->>  This adds support for Cypress StreetFighter touchkey controllers=20
->> such as sf3155.
->>  This driver supports managing regulators and generating input=20
->> events.
->>=20
->>  Due to lack of documentation, this driver is entirely based on=20
->> information
->>  gathered from a driver written for an old Android kernel fork[1][2].
->>=20
->>  Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
->=20
-> Thank you for the patch. Please run your patches through=20
-> checkpatch.pl.
+Nice!
 
-Sure.
+> diff --git a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
+[..]
+> +	vph_pwr: vph-pwr-regulator {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vph_pwr";
+> +		regulator-always-on;
+> +		regulator-boot-on;
+> +	};
+> +
+> +	gpio_keys {
 
-> See additional comments below.
->=20
->=20
->>=20
->>  [1]=20
->> https://github.com/LineageOS/android_kernel_xiaomi_msm8996/blob/lineage-=
-18.1/drivers/input/touchscreen/cyttsp_button.c
->>  [2]=20
->> https://github.com/LineageOS/android_kernel_xiaomi_msm8996/blob/lineage-=
-18.1/arch/arm/boot/dts/qcom/a4-msm8996-mtp.dtsi#L291-L314
->>  ---
->>  Changes since v2:
->>   - Code style fixes.
->>   - Added copyright statement.
->>  Changes since v1:
->>   - Changed version variables in probe to int to allow storing error=20
->> codes.
->>=20
->>   drivers/input/keyboard/Kconfig      |  10 ++
->>   drivers/input/keyboard/Makefile     |   1 +
->>   drivers/input/keyboard/cypress-sf.c | 223=20
->> ++++++++++++++++++++++++++++
->>   3 files changed, 234 insertions(+)
->>   create mode 100644 drivers/input/keyboard/cypress-sf.c
->>=20
->>  diff --git a/drivers/input/keyboard/Kconfig=20
->> b/drivers/input/keyboard/Kconfig
->>  index 40a070a2e7f5..6f3fbea8b803 100644
->>  --- a/drivers/input/keyboard/Kconfig
->>  +++ b/drivers/input/keyboard/Kconfig
->>  @@ -788,4 +788,14 @@ config KEYBOARD_MTK_PMIC
->>   =09  To compile this driver as a module, choose M here: the
->>   =09  module will be called pmic-keys.
->>=20
->>  +config KEYBOARD_CYPRESS_SF
->>  +=09tristate "Cypress StreetFighter touchkey support"
->>  +=09depends on I2C
->>  +=09help
->>  +=09  Say Y here if you want to enable support for Cypress=20
->> StreetFighter
->>  +=09  touchkeys.
->>  +
->>  +=09  To compile this driver as a module, choose M here: the
->>  +=09  module will be called cypress-sf.
->>  +
->>   endif
->>  diff --git a/drivers/input/keyboard/Makefile=20
->> b/drivers/input/keyboard/Makefile
->>  index 1d689fdd5c00..e3c8648f834e 100644
->>  --- a/drivers/input/keyboard/Makefile
->>  +++ b/drivers/input/keyboard/Makefile
->>  @@ -17,6 +17,7 @@ obj-$(CONFIG_KEYBOARD_BCM)=09=09+=3D bcm-keypad.o
->>   obj-$(CONFIG_KEYBOARD_CAP11XX)=09=09+=3D cap11xx.o
->>   obj-$(CONFIG_KEYBOARD_CLPS711X)=09=09+=3D clps711x-keypad.o
->>   obj-$(CONFIG_KEYBOARD_CROS_EC)=09=09+=3D cros_ec_keyb.o
->>  +obj-$(CONFIG_KEYBOARD_CYPRESS_SF)=09+=3D cypress-sf.o
->>   obj-$(CONFIG_KEYBOARD_DAVINCI)=09=09+=3D davinci_keyscan.o
->>   obj-$(CONFIG_KEYBOARD_DLINK_DIR685)=09+=3D dlink-dir685-touchkeys.o
->>   obj-$(CONFIG_KEYBOARD_EP93XX)=09=09+=3D ep93xx_keypad.o
->>  diff --git a/drivers/input/keyboard/cypress-sf.c=20
->> b/drivers/input/keyboard/cypress-sf.c
->>  new file mode 100644
->>  index 000000000000..f2862547f633
->>  --- /dev/null
->>  +++ b/drivers/input/keyboard/cypress-sf.c
->>  @@ -0,0 +1,223 @@
->>  +// SPDX-License-Identifier: GPL-2.0-only
->>  +/*
->>  + * Cypress StreetFighter Touchkey Driver
->>  + *
->>  + * Copyright (c) 2021 Yassine Oudjana <y.oudjana@protonmail.com>
->>  + */
->>  +
->>  +#include <linux/bitops.h>
->>  +#include <linux/device.h>
->>  +#include <linux/i2c.h>
->>  +#include <linux/input.h>
->>  +#include <linux/interrupt.h>
->>  +#include <linux/module.h>
->>  +#include <linux/pm.h>
->>  +#include <linux/regulator/consumer.h>
->>  +
->>  +#define CYPRESS_SF_DEV_NAME "cypress-sf"
->>  +
->>  +#define CYPRESS_SF_REG_FW_VERSION=090x46
->>  +#define CYPRESS_SF_REG_HW_VERSION=090x48
->>  +#define CYPRESS_SF_REG_BUTTON_STATUS=090x4a
->>  +
->>  +struct cypress_sf_data {
->>  +=09struct i2c_client *client;
->>  +=09struct input_dev *input_dev;
->>  +=09struct regulator_bulk_data regulators[2];
->>  +=09u32 *keycodes;
->>  +=09unsigned long keystates;
->>  +=09int num_keys;
->>  +};
->>  +
->>  +static irqreturn_t cypress_sf_irq_handler(int irq, void *devid)
->>  +{
->>  +=09struct cypress_sf_data *touchkey =3D devid;
->>  +=09unsigned long keystates;
->>  +=09bool curr_state, new_state;
->>  +=09int key;
->>  +
->>  +=09keystates =3D i2c_smbus_read_byte_data(touchkey->client,
->>  +=09=09=09=09=09CYPRESS_SF_REG_BUTTON_STATUS);
->>  +=09if (keystates < 0) {
->=20
-> keystates is declared as unsigned, so this condition will never=20
-> trigger.
+Please don't use '_' in node names.
 
-Right. I'll change it.
+> +		compatible = "gpio-keys";
+> +		input-name = "gpio-keys";
+> +		label = "Side buttons";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&vol_down_pin_a>, <&cam_focus_pin_a>,
+> +			    <&cam_snapshot_pin_a>;
+> +		vol-down {
+> +			label = "Volume Down";
+> +			gpios = <&pm8998_gpio 5 GPIO_ACTIVE_LOW>;
+> +			linux,input-type = <1>;
+> +			linux,code = <KEY_VOLUMEDOWN>;
+> +			gpio-key,wakeup;
+> +			debounce-interval = <15>;
+> +		};
+> +
+> +		camera-snapshot {
+> +			label = "Camera Snapshot";
+> +			gpios = <&pm8998_gpio 7 GPIO_ACTIVE_LOW>;
+> +			linux,input-type = <1>;
+> +			linux,code = <KEY_CAMERA>;
+> +			debounce-interval = <15>;
+> +		};
+> +
+> +		camera-focus {
+> +			label = "Camera Focus";
+> +			gpios = <&pm8998_gpio 8 GPIO_ACTIVE_LOW>;
+> +			linux,input-type = <1>;
+> +			linux,code = <KEY_CAMERA_FOCUS>;
+> +			debounce-interval = <15>;
+> +		};
+> +	};
+> +
+> +	gpio_hall_sensor {
 
->=20
->>  +=09=09dev_err(&touchkey->client->dev, "Failed to read button status");
->>  +=09=09return IRQ_NONE;
->>  +=09}
->>  +
->>  +=09for(key =3D 0; key < touchkey->num_keys; ++key) {
->>  +=09=09curr_state =3D test_bit(key, &touchkey->keystates);
->>  +=09=09new_state =3D test_bit(key, &keystates);
->>  +
->>  +=09=09if(curr_state ^ new_state) {
->=20
-> Instead of this please do
->=20
-> =09bitmap_xor(&changed, &keystates, &touchkey->keystates,
-> =09=09   touchkey->num_keys);
-> =09for_each_set_bit(key, &changed, touchkey->num_keys) {
-> =09=09...
-> =09}
->=20
+Ditto.
 
-Noted.
+> +		compatible = "gpio-keys";
+> +		input-name = "hall-sensors";
+> +		label = "Hall sensors";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&hall_sensor0_default>;
+> +
+> +		hall_sensor0 {
 
->>  +=09=09=09dev_dbg(&touchkey->client->dev,\
->>  +=09=09=09=09"Key %d changed to %d", key, new_state);
->>  +=09=09=09input_report_key(touchkey->input_dev,
->>  +=09=09=09=09=09touchkey->keycodes[key],
->>  +=09=09=09=09=09new_state);
->>  +=09=09}
->>  +=09}
->>  +=09input_sync(touchkey->input_dev);
->>  +=09touchkey->keystates =3D keystates;
->>  +
->>  +=09return IRQ_HANDLED;
->>  +}
->>  +
->>  +static int cypress_sf_probe(struct i2c_client *client,
->>  +=09=09=09=09const struct i2c_device_id *id)
->>  +{
->>  +=09struct cypress_sf_data *touchkey;
->>  +=09int hw_version, fw_version;
->>  +=09int i, ret;
->>  +
->>  +=09touchkey =3D devm_kzalloc(&client->dev, sizeof(*touchkey),=20
->> GFP_KERNEL);
->>  +=09if(!touchkey)
->>  +=09=09return -ENOMEM;
->>  +
->>  +=09touchkey->client =3D client;
->>  +=09i2c_set_clientdata(client, touchkey);
->>  +
->>  +=09touchkey->regulators[0].supply =3D "vdd";
->>  +=09touchkey->regulators[1].supply =3D "avdd";
->>  +
->>  +=09ret =3D devm_regulator_bulk_get(&client->dev,
->>  +=09=09=09=09=09ARRAY_SIZE(touchkey->regulators),
->>  +=09=09=09=09=09touchkey->regulators);
->>  +=09if(ret) {
->>  +=09=09dev_err(&client->dev, "Failed to get regulators: %d\n", ret);
->>  +=09=09return ret;
->>  +=09}
->>  +
->>  +=09touchkey->num_keys =3D=20
->> of_property_count_elems_of_size(client->dev.of_node,
->>  +=09=09=09=09=09=09=09"linux,keycodes",
->>  +=09=09=09=09=09=09=09sizeof(u32));
->=20
-> Please use device_property_* API instead of of_property_*.
+And here...
 
-Noted.
+> +			label = "Cover Hall Sensor";
+> +			gpios = <&tlmm 124 GPIO_ACTIVE_LOW>;
+> +			linux,input-type = <EV_SW>;
+> +			linux,code = <SW_LID>;
+> +			gpio-key,wakeup;
+> +			debounce-interval = <30>;
+> +		};
+> +	};
+> +
+> +	reserved-memory {
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		ranges;
+> +
+> +		hyp_mem: memory@85800000 {
+> +			reg = <0x0 0x85800000 0x0 0x3700000>;
+> +			no-map;
+> +		};
+> +
+> +		cont_splash_mem: cont-splash-region@9d400000 {
 
->>  +=09if(touchkey->num_keys < 0)
->>  +=09=09/* Default key count */
->>  +=09=09touchkey->num_keys =3D 2;
->>  +
->>  +=09touchkey->keycodes =3D devm_kzalloc(&client->dev,
->>  +=09=09=09=09sizeof(u32) * touchkey->num_keys, GFP_KERNEL);
->>  +=09if(!touchkey->keycodes)
->>  +=09=09return -ENOMEM;
->>  +
->>  +=09ret =3D of_property_read_u32_array(client->dev.of_node,=20
->> "linux,keycodes",
->>  +=09=09=09=09=09=09touchkey->keycodes, touchkey->num_keys);
->>  +
->>  +=09if(touchkey->num_keys < 0) {
->>  +=09=09/* Default keycodes */
->>  +=09=09touchkey->keycodes[0] =3D KEY_BACK;
->>  +=09=09touchkey->keycodes[1] =3D KEY_MENU;
->>  +=09}
->>  +
->>  +=09ret =3D regulator_bulk_enable(ARRAY_SIZE(touchkey->regulators),
->>  +=09=09=09=09=09touchkey->regulators);
->=20
-> Please call variables that carry error core or 0 for success 'error'.
+Is there any reason for not just naming this "memory"?
 
-I'll rename them.
+> +			reg = <0x0 0x9d400000 0x0 0x2400000>;
+> +			no-map;
+> +		};
+> +
+> +		zap_shader_region: gpu@f6400000 {
 
->=20
->>  +=09if(ret) {
->>  +=09=09dev_err(&client->dev, "Failed to enable regulators: %d\n", ret);
->>  +=09=09return ret;
->>  +=09}
->>  +
->>  +=09touchkey->input_dev =3D devm_input_allocate_device(&client->dev);
->>  +=09if(!touchkey->input_dev) {
->>  +=09=09dev_err(&client->dev, "Failed to allocate input device\n");
->>  +=09=09return -ENOMEM;
->>  +=09}
->>  +
->>  +=09touchkey->input_dev->name =3D CYPRESS_SF_DEV_NAME;
->>  +=09touchkey->input_dev->id.bustype =3D BUS_I2C;
->>  +
->>  +=09hw_version =3D i2c_smbus_read_byte_data(touchkey->client,
->>  +=09=09=09=09CYPRESS_SF_REG_HW_VERSION);
->>  +=09fw_version =3D i2c_smbus_read_word_data(touchkey->client,
->>  +=09=09=09=09CYPRESS_SF_REG_FW_VERSION);
->>  +=09if(hw_version < 0 || fw_version < 0)
->>  +=09=09dev_warn(&client->dev, "Failed to read versions\n");
->>  +=09else
->>  +=09=09dev_info(&client->dev, "HW version %d, FW version %d\n",
->>  +=09=09=09=09hw_version, fw_version);
->=20
-> Why is this needed?
+This is also just "memory" here.
 
-I was using it as an indicator for success finding the chip, but it=20
-isn't
-strictly needed. I'll remove it.
+> +			compatible = "shared-dma-pool";
+> +			reg = <0x0 0xf6400000 0x0 0x2000>;
+> +			no-map;
+> +		};
+> +
+[..]
+> +&rpm_requests {
+> +	pm8998-regulators {
+> +		compatible = "qcom,rpm-pm8998-regulators";
+> +
+[..]
+> +		vreg_lvs1a_1p8: lvs1 { };
+> +		vreg_lvs2a_1p8: lvs2 { };
+> +
 
->=20
->>  +
->>  +=09for(i =3D 0; i < touchkey->num_keys; ++i)
->>  +=09=09input_set_capability(touchkey->input_dev, EV_KEY,
->>  +=09=09=09=09=09touchkey->keycodes[i]);
->>  +
->>  +=09ret =3D input_register_device(touchkey->input_dev);
->>  +=09if(ret) {
->>  +=09=09dev_err(&client->dev,
->>  +=09=09=09"Failed to register input device: %d\n", ret);
->>  +=09=09return ret;
->>  +=09}
->>  +
->>  +=09ret =3D devm_request_threaded_irq(&client->dev, client->irq,
->>  +=09=09=09=09=09NULL, cypress_sf_irq_handler,
->>  +=09=09=09=09=09IRQF_ONESHOT,
->>  +=09=09=09=09=09CYPRESS_SF_DEV_NAME, touchkey);
->>  +=09if(ret) {
->>  +=09=09dev_err(&client->dev,
->>  +=09=09=09"Failed to register threaded irq: %d", ret);
->>  +=09=09return ret;
->>  +=09}
->>  +
->>  +=09return 0;
->>  +};
->>  +
->>  +static int __maybe_unused cypress_sf_suspend(struct device *dev) {
->>  +=09struct i2c_client *client =3D to_i2c_client(dev);
->>  +=09struct cypress_sf_data *touchkey =3D i2c_get_clientdata(client);
->>  +=09int ret;
->>  +
->>  +=09disable_irq(client->irq);
->>  +=09ret =3D regulator_bulk_disable(ARRAY_SIZE(touchkey->regulators),
->>  +=09=09=09=09=09touchkey->regulators);
->>  +=09if(ret) {
->>  +=09=09dev_err(dev, "Failed to disable regulators: %d", ret);
->>  +=09=09enable_irq(client->irq);
->>  +=09=09return ret;
->>  +=09}
->>  +=09dev_dbg(dev, "Suspended device");
->>  +
->>  +=09return 0;
->>  +}
->>  +
->>  +static int __maybe_unused cypress_sf_resume(struct device *dev) {
->>  +=09struct i2c_client *client =3D to_i2c_client(dev);
->>  +=09struct cypress_sf_data *touchkey =3D i2c_get_clientdata(client);
->>  +=09int ret;
->>  +
->>  +=09ret =3D regulator_bulk_enable(ARRAY_SIZE(touchkey->regulators),
->>  +=09=09=09=09=09touchkey->regulators);
->>  +=09if(ret) {
->>  +=09=09dev_err(dev, "Failed to enable regulators: %d", ret);
->>  +=09=09return ret;
->>  +=09}
->>  +=09enable_irq(client->irq);
->>  +=09dev_dbg(dev, "Resumed device");
->>  +
->>  +=09return 0;
->>  +}
->>  +
->>  +static SIMPLE_DEV_PM_OPS(cypress_sf_pm_ops,
->>  +=09=09=09 cypress_sf_suspend, cypress_sf_resume);
->>  +
->>  +static struct i2c_device_id cypress_sf_id_table[] =3D {
->>  +=09{ CYPRESS_SF_DEV_NAME, 0 },
->>  +=09{ }
->>  +};
->>  +MODULE_DEVICE_TABLE(i2c, cypress_sf_id_table);
->>  +
->>  +static const struct of_device_id cypress_sf_of_match[] =3D {
->>  +=09{ .compatible =3D "cypress,sf3155", },
->>  +=09{ },
->>  +};
->>  +MODULE_DEVICE_TABLE(of, cypress_sf_of_match);
->>  +
->>  +static struct i2c_driver cypress_sf_driver =3D {
->>  +=09.driver =3D {
->>  +=09=09.name =3D CYPRESS_SF_DEV_NAME,
->>  +=09=09.pm =3D &cypress_sf_pm_ops,
->>  +=09=09.of_match_table =3D of_match_ptr(cypress_sf_of_match),
->>  +=09},
->>  +=09.id_table =3D cypress_sf_id_table,
->>  +=09.probe =3D cypress_sf_probe,
->>  +};
->>  +module_i2c_driver(cypress_sf_driver);
->>  +
->>  +MODULE_AUTHOR("Yassine Oudjana <y.oudjana@protonmail.com>");
->>  +MODULE_DESCRIPTION("Cypress StreetFighter Touchkey Driver");
->>  +MODULE_LICENSE("GPL v2");
->>  --
->>  2.33.0
->>=20
->>=20
->=20
-> Thanks.
->=20
-> --
-> Dmitry
+Blank line.
 
-Thanks for the review!
-Yassine
+> +	};
+> +
+> +	pmi8998-regulators {
+> +		compatible = "qcom,rpm-pmi8998-regulators";
+> +
+> +		vdd_bob-supply = <&vph_pwr>;
+> +
+> +		vreg_bob: bob {
+> +			regulator-min-microvolt = <3312000>;
+> +			regulator-max-microvolt = <3600000>;
+> +		};
+> +	};
+> +};
+> +
+> +&sdhc2 {
+> +	status = "okay";
+> +	cd-gpios = <&tlmm 95 GPIO_ACTIVE_HIGH>;
+> +
+> +	vmmc-supply = <&vreg_l21a_2p95>;
+> +	vqmmc-supply = <&vreg_l13a_2p95>;
+> +
+> +	pinctrl-names = "default", "sleep";
+> +	pinctrl-0 = <&sdc2_clk_on  &sdc2_cmd_on  &sdc2_data_on  &sdc2_cd_on>;
+> +	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off &sdc2_cd_off>;
 
+How about grouping these various pins as "sdc2_default_state" and
+"sdc2_sleep_state"?
 
-
+> +};
+> +
+Regards,
+Bjorn
