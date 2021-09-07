@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A4B88C433FE
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 13:03:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C02E3C433FE
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 13:40:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8A9E361102
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 13:03:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A33CD61100
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 13:40:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344551AbhIGNEm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 7 Sep 2021 09:04:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51360 "EHLO
+        id S1344513AbhIGNlh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 7 Sep 2021 09:41:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344510AbhIGNEl (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Sep 2021 09:04:41 -0400
-Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31138C0613C1
-        for <phone-devel@vger.kernel.org>; Tue,  7 Sep 2021 06:03:35 -0700 (PDT)
-Received: by mail-oo1-xc31.google.com with SMTP id j11-20020a4a92cb000000b002902ae8cb10so2878231ooh.7
-        for <phone-devel@vger.kernel.org>; Tue, 07 Sep 2021 06:03:35 -0700 (PDT)
+        with ESMTP id S1344768AbhIGNld (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Sep 2021 09:41:33 -0400
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51FAEC061575
+        for <phone-devel@vger.kernel.org>; Tue,  7 Sep 2021 06:40:27 -0700 (PDT)
+Received: by mail-ot1-x32f.google.com with SMTP id i8-20020a056830402800b0051afc3e373aso12804655ots.5
+        for <phone-devel@vger.kernel.org>; Tue, 07 Sep 2021 06:40:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=uhC7nzqpqA4nMheQgFCEgMJ6vQ3bkE9hy3QtYBGq9aI=;
-        b=iy5Pab0mOazD/amTTWfY4e/vbO7jZSzp8XFUAEVZF5cdt5JEs2ep1HTTxrt/Zk14pa
-         o/s3v+TTVyd0ak3Z1LZW11YRp+NebeaPuibrA+9DtLlWi5gUzz4QEd2QWsqaztwapLq2
-         cJITIf3sZo6m4sv2NV0Q3NVHtn3YZ1LOEy46HtKKX/Nts9/SM7sDVwWuTQbGLe0HfADv
-         M8+1AoYk0+oC4BQHkPkfNro6sO0zGvON3xuamnPjeQLKwuBBB25pENgv/UOGw2TUu6pa
-         ii99KCMjSkmG+curuRxyRROdxftAzasoukEQQal97EyGDk6U9tQFgWWFGR0zN++DWKY/
-         Krpg==
+        bh=tMumHBaWGIIP5/UTpugCpS42axBla0cVzMUMpjZ5AD0=;
+        b=SXfjyILwl81VSd/R/Pe4V6mbwbI/bQEIrsTVYoEwW8h3hzmchLYgO+bgCz2BJ5kqIm
+         DGPeGoHuepSvw964fbbrpWofGKXriqpvwbLUdSEd3nohHR41WXw5Kc61XnpYdjx6cHUa
+         OCHCwKuCLztkbklCXiafZK69RXYEGhYZy2FAa8BTDdE14QBPqVi8r1Eno6uzZOavQtsM
+         iXeN3NTH5NnkFBSBc4pLpyeYOXTf6Yc6ZFhRS/XZAyR5M1cvdH6uPtbu1+Yu1EwA8v9y
+         cTxJ0YR4KcIVhSvyjb9lBvLV/RnonIIhCjA18C4/6jE59bsbkSNRJoZX+Mnky6dlEAr1
+         /HWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=uhC7nzqpqA4nMheQgFCEgMJ6vQ3bkE9hy3QtYBGq9aI=;
-        b=IgTY/zV8Vxb52eFCSTnSbi4FsaQL6NB9Sm5XPFnKUKjPg0f7Wh+GHFV//qtZqqo1Nw
-         H1cIEUuGlKaTZ1DVs/e+pKHqMS8DTsdbUJnbGaiSzV1Q/EV9xG4bv4g9bP5rXNArVnln
-         xjfnxQqHcSwrGVYrPUp/SQ8RgiLuWa/pZSifc8rE9KfqtCgpSpKCZs7yrA/RwjUu55IO
-         0EEBSe9niWLXtuUODi7n+WLKl0J63EA3v0CyIAKjxpw/p6pqc3JmuSCLwHwUSJdMUZgp
-         T+6rlOdNp0bVlWNtigsOlNUEF1Ji6Bqv3EaxW8YolNtrDOCk2H9JQcUJwRmBu4wLvp6Y
-         OiVA==
-X-Gm-Message-State: AOAM530nO3LvjgdrvIeTAQeA6rUbMExBoi76HyZhOVbRzscRI+RA+mhV
-        MPLL9viqG0eMfZ7KJG0qwHorhg==
-X-Google-Smtp-Source: ABdhPJxXMAZmloUHdgSE5zF9AilK2k10mV+Z9C0H9OxJkTzKVhWtamTncqC0p02F+PqlkciLdix31Q==
-X-Received: by 2002:a4a:dfac:: with SMTP id k12mr17537075ook.41.1631019812044;
-        Tue, 07 Sep 2021 06:03:32 -0700 (PDT)
+        bh=tMumHBaWGIIP5/UTpugCpS42axBla0cVzMUMpjZ5AD0=;
+        b=FeqdnBrmRCmojOXZsWXDVu6QxfvkMISqCdGd8e0BIECBH1m9Q7zbkDP+7QNZYowHBj
+         fqxJV1EXacw3bHj6okl70DTlVH8opBX06fvtQn9C9FpHNwhUKQGpbVZBPQi5Xp99fpwe
+         /En47Bvem3Yz62CB0BONDa2um6bKSq59u6W5OclAvvXk1acQCOWgya8wLc1SQ5HwRF3P
+         fr7pNc4kCH/+6ZhsR5c6JqlhhUMuPlso0132Hb9fOMxokLV/umegH6gQpUFRHKOIrNVZ
+         5+hN8URa1D9gKoYdFIgo08DSfo4Ucc1EpXqS2qRHMlbW36fMP57KPrHn435S0Vu0D3Zy
+         QvPw==
+X-Gm-Message-State: AOAM530tEZGH/1VHYa5DC6kSTsjf+hLZO9A4odbcGJhJHGJAZWleZNLL
+        9p8iLLP5INtt/RcpDvLHjq03ZA==
+X-Google-Smtp-Source: ABdhPJxy9XRYQeBAnt2z8UdHwFxSM/nekGvwqYS/CN7EHVWFn43k4MFx+x0A9rGLjcPlp/7lRrSu4w==
+X-Received: by 2002:a05:6830:214c:: with SMTP id r12mr15496176otd.200.1631022026614;
+        Tue, 07 Sep 2021 06:40:26 -0700 (PDT)
 Received: from ripper (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id v10sm2425326otp.25.2021.09.07.06.03.31
+        by smtp.gmail.com with ESMTPSA id u27sm2452042otj.6.2021.09.07.06.40.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Sep 2021 06:03:31 -0700 (PDT)
-Date:   Tue, 7 Sep 2021 06:04:31 -0700
+        Tue, 07 Sep 2021 06:40:26 -0700 (PDT)
+Date:   Tue, 7 Sep 2021 06:41:26 -0700
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
@@ -65,169 +65,125 @@ Cc:     agross@kernel.org, robh+dt@kernel.org,
         marijn.suijten@somainline.org, martin.botka@somainline.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         paul.bouchara@somainline.org
-Subject: Re: [PATCH 1/7] arm64: dts: qcom: Introduce support for MSM8998 Sony
- Yoshino platform
-Message-ID: <YTdjX2/XGZYQQRDW@ripper>
+Subject: Re: [PATCH 2/7] arm64: dts: qcom: msm8998-xperia: Add RMI4
+ touchscreen support
+Message-ID: <YTdsBg78ErgxqFXy@ripper>
 References: <20210903180924.1006044-1-angelogioacchino.delregno@somainline.org>
+ <20210903180924.1006044-2-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210903180924.1006044-1-angelogioacchino.delregno@somainline.org>
+In-Reply-To: <20210903180924.1006044-2-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On Fri 03 Sep 11:09 PDT 2021, AngeloGioacchino Del Regno wrote:
 
-> This commit introduces support for the Sony Yoshino platform, using
-> the MSM8998 SoC, including:
-> - Sony Xperia XZ1 (codename Poplar),
-> - Sony Xperia XZ1 Compact (codename Lilac),
-> - Sony Xperia XZ Premium (codename Maple).
+> All of the devices in the Sony Yoshino platform are using a Synaptics
+> RMI4-compatible touch IC with identical pins and supplies: enable the
+> I2C-5 bus and add the rmi4-i2c node along with the required pin
+> configurations.
 > 
-
-Nice!
-
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+>  .../dts/qcom/msm8998-sony-xperia-yoshino.dtsi | 60 +++++++++++++++++++
+>  1 file changed, 60 insertions(+)
+> 
 > diff --git a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
-[..]
-> +	vph_pwr: vph-pwr-regulator {
+> index b07cbc759807..2fe53e4675d5 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
+> @@ -30,6 +30,15 @@ board_vbat: vbat-regulator {
+>  		regulator-boot-on;
+>  	};
+>  
+> +	touch_vddio_vreg: touch-vddio-vreg {
 > +		compatible = "regulator-fixed";
-> +		regulator-name = "vph_pwr";
-> +		regulator-always-on;
-> +		regulator-boot-on;
-> +	};
-> +
-> +	gpio_keys {
-
-Please don't use '_' in node names.
-
-> +		compatible = "gpio-keys";
-> +		input-name = "gpio-keys";
-> +		label = "Side buttons";
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
+> +		regulator-name = "touch_vddio_vreg";
+> +		startup-delay-us = <10000>;
+> +		gpio = <&tlmm 133 GPIO_ACTIVE_HIGH>;
 > +		pinctrl-names = "default";
-> +		pinctrl-0 = <&vol_down_pin_a>, <&cam_focus_pin_a>,
-> +			    <&cam_snapshot_pin_a>;
-> +		vol-down {
-> +			label = "Volume Down";
-> +			gpios = <&pm8998_gpio 5 GPIO_ACTIVE_LOW>;
-> +			linux,input-type = <1>;
-> +			linux,code = <KEY_VOLUMEDOWN>;
-> +			gpio-key,wakeup;
-> +			debounce-interval = <15>;
-> +		};
-> +
-> +		camera-snapshot {
-> +			label = "Camera Snapshot";
-> +			gpios = <&pm8998_gpio 7 GPIO_ACTIVE_LOW>;
-> +			linux,input-type = <1>;
-> +			linux,code = <KEY_CAMERA>;
-> +			debounce-interval = <15>;
-> +		};
-> +
-> +		camera-focus {
-> +			label = "Camera Focus";
-> +			gpios = <&pm8998_gpio 8 GPIO_ACTIVE_LOW>;
-> +			linux,input-type = <1>;
-> +			linux,code = <KEY_CAMERA_FOCUS>;
-> +			debounce-interval = <15>;
-> +		};
+> +		pinctrl-0 = <&ts_vddio_en>;
 > +	};
 > +
-> +	gpio_hall_sensor {
-
-Ditto.
-
-> +		compatible = "gpio-keys";
-> +		input-name = "hall-sensors";
-> +		label = "Hall sensors";
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&hall_sensor0_default>;
-> +
-> +		hall_sensor0 {
-
-And here...
-
-> +			label = "Cover Hall Sensor";
-> +			gpios = <&tlmm 124 GPIO_ACTIVE_LOW>;
-> +			linux,input-type = <EV_SW>;
-> +			linux,code = <SW_LID>;
-> +			gpio-key,wakeup;
-> +			debounce-interval = <30>;
-> +		};
-> +	};
-> +
-> +	reserved-memory {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		hyp_mem: memory@85800000 {
-> +			reg = <0x0 0x85800000 0x0 0x3700000>;
-> +			no-map;
-> +		};
-> +
-> +		cont_splash_mem: cont-splash-region@9d400000 {
-
-Is there any reason for not just naming this "memory"?
-
-> +			reg = <0x0 0x9d400000 0x0 0x2400000>;
-> +			no-map;
-> +		};
-> +
-> +		zap_shader_region: gpu@f6400000 {
-
-This is also just "memory" here.
-
-> +			compatible = "shared-dma-pool";
-> +			reg = <0x0 0xf6400000 0x0 0x2000>;
-> +			no-map;
-> +		};
-> +
-[..]
-> +&rpm_requests {
-> +	pm8998-regulators {
-> +		compatible = "qcom,rpm-pm8998-regulators";
-> +
-[..]
-> +		vreg_lvs1a_1p8: lvs1 { };
-> +		vreg_lvs2a_1p8: lvs2 { };
-> +
-
-Blank line.
-
-> +	};
-> +
-> +	pmi8998-regulators {
-> +		compatible = "qcom,rpm-pmi8998-regulators";
-> +
-> +		vdd_bob-supply = <&vph_pwr>;
-> +
-> +		vreg_bob: bob {
-> +			regulator-min-microvolt = <3312000>;
-> +			regulator-max-microvolt = <3600000>;
-> +		};
-> +	};
-> +};
-> +
-> +&sdhc2 {
+>  	vph_pwr: vph-pwr-regulator {
+>  		compatible = "regulator-fixed";
+>  		regulator-name = "vph_pwr";
+> @@ -134,6 +143,42 @@ ramoops@ffc00000 {
+>  	};
+>  };
+>  
+> +&blsp1_i2c5 {
 > +	status = "okay";
-> +	cd-gpios = <&tlmm 95 GPIO_ACTIVE_HIGH>;
+> +	clock-frequency = <355000>;
 > +
-> +	vmmc-supply = <&vreg_l21a_2p95>;
-> +	vqmmc-supply = <&vreg_l13a_2p95>;
-> +
-> +	pinctrl-names = "default", "sleep";
-> +	pinctrl-0 = <&sdc2_clk_on  &sdc2_cmd_on  &sdc2_data_on  &sdc2_cd_on>;
-> +	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off &sdc2_cd_off>;
+> +	touchscreen: synaptics-rmi4-i2c@2c {
 
-How about grouping these various pins as "sdc2_default_state" and
-"sdc2_sleep_state"?
+"touchscreen" sounds like a better "generic name" for the node.
 
-> +};
-> +
+Haven't checked the following patches yet, do you need the label?
+
 Regards,
 Bjorn
+
+> +		compatible = "syna,rmi4-i2c";
+> +		reg = <0x2c>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		interrupts-extended = <&tlmm 125 IRQ_TYPE_EDGE_FALLING>;
+> +
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&ts_int_n>;
+> +
+> +		vdd-supply = <&vreg_l28_3p0>;
+> +		vio-supply = <&touch_vddio_vreg>;
+> +
+> +		syna,reset-delay-ms = <220>;
+> +		syna,startup-delay-ms = <1000>;
+> +
+> +		rmi4-f01@1 {
+> +			reg = <0x01>;
+> +			syna,nosleep-mode = <1>;
+> +		};
+> +
+> +		rmi4-f11@11 {
+> +			reg = <0x11>;
+> +			syna,sensor-type = <1>;
+> +		};
+> +	};
+> +};
+> +
+> +&blsp1_i2c5_sleep {
+> +	bias-disable;
+> +};
+> +
+>  &blsp2_uart1 {
+>  	status = "okay";
+>  };
+> @@ -448,6 +493,21 @@ hall_sensor0_default: acc-cover-open {
+>  		drive-strength = <2>;
+>  		input-enable;
+>  	};
+> +
+> +	ts_int_n: ts-int-n {
+> +		pins = "gpio125";
+> +		function = "gpio";
+> +		drive-strength = <8>;
+> +		bias-pull-up;
+> +	};
+> +
+> +	ts_vddio_en: ts-vddio-en-default {
+> +		pins = "gpio133";
+> +		function = "gpio";
+> +		bias-disable;
+> +		drive-strength = <2>;
+> +		output-low;
+> +	};
+>  };
+>  
+>  /*
+> -- 
+> 2.32.0
+> 
