@@ -2,102 +2,127 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B06FBC433EF
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 19:13:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F22AC433EF
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 22:58:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 917466112F
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 19:13:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4563661102
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Sep 2021 22:58:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345698AbhIGTOJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 7 Sep 2021 15:14:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52382 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233374AbhIGTOI (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Sep 2021 15:14:08 -0400
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F33FC061575;
-        Tue,  7 Sep 2021 12:13:02 -0700 (PDT)
-Received: by mail-io1-xd32.google.com with SMTP id z1so72091ioh.7;
-        Tue, 07 Sep 2021 12:13:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bDAmrQspvTHk4pXz96SxgqAEoYvB8Qdlb33lW2JOQKI=;
-        b=iiaLA9iMJ1l/ZVUFBUL09riUqd8KCAFHSBgHpVV94Te6gjyYNUe468qaok1x0albDO
-         IxsvhA9VjWjL68B2TtpsU79ayleQF+6eLhi3eOsxorE/xnyq5VsPeAV1G5rXH1XH4vwH
-         25yrQ3QdtaqOUQIimvO98kzNHEgIBnJK+fxLSSjhoy1U+KonCL69C9Bgpzhxv8L4t87q
-         pIeQ+5LilhJTDuERHH0MjhPzDQ45jkofDeejMgOpldFf6hdwGuc4xMtsgv3Ic7qEriOW
-         0OThCYpCF6l7sjDKKUHyqwFX4HJ/ejjXla4KWYGl3ARlMipeZTb3UNq6WeacvSz51VB0
-         blPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bDAmrQspvTHk4pXz96SxgqAEoYvB8Qdlb33lW2JOQKI=;
-        b=luG6hfsF6DBrD5SoSpjAdSEfhcocreNMLdAg+A7l495VlKkKKPntkN/TBjmO6vUA12
-         leZ6GmULSA1qvCB7IiUqDaWgNMgD+yX7FFjXZzczNpMpbJnrTv5eLPItuWbo/GSP+x0w
-         rPRtqa1qgtVzSHGNpoO1IJP8zRYmRMp+L7O402gHpqepORMg3UVErN8I/zFv913Jmnoq
-         JZ7EbMHJy91tbq7DM0/9AapsKWxgNhkd/5VflIUIQx2SEIvIBaJg6a9akZYWwglSNpyV
-         to7//ZjnT8b1gXyO2RSVJOAVS1RH8BnDU1F7EeuV7cjzsVNr5mVf1sq+Mg7AU5hkzoPo
-         EZDg==
-X-Gm-Message-State: AOAM5321RdWHcmqtNHBkpOFxTCPJPvBLb7vuF2yWUKg0SFGX/m/Xvnr8
-        VwruOf8ZJD9X74kXi2Up5ida+7Mv/AMrjk8ON2A=
-X-Google-Smtp-Source: ABdhPJwzbaiPi0tOgc36KfgAKqrn62eE1qk9JEH9OxgwGowNbmENlYJ37v4PzRRODGJoiIfiZTATjqiN8fzzPEMm/24=
-X-Received: by 2002:a05:6638:2690:: with SMTP id o16mr17203558jat.65.1631041981634;
- Tue, 07 Sep 2021 12:13:01 -0700 (PDT)
+        id S1344398AbhIGXAC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 7 Sep 2021 19:00:02 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:47944 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243371AbhIGXAB (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 7 Sep 2021 19:00:01 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1631055534; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=YHLJt++Yk8SoMmB1dGCCJS5cBmhjYlM8QhmxUbhnFP4=;
+ b=dkVgVqZVUpd+DtsMWn4GrHQen61/CFo+BQsxALg+JpDe4TOgTaRXjSILq2dUoD1sfdGR0cOI
+ /VkK4CJltmLw/uxxjundA5cnqVQEcafPSHtIKyxu6sO6zaV3jBCtqPWRGCBm/1FFc5M2z/Rg
+ YowYQe46NdValPQG8FgadZq1FLc=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 6137eeaec603a0154f94beeb (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 07 Sep 2021 22:58:54
+ GMT
+Sender: abhinavk=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id BC9C1C43618; Tue,  7 Sep 2021 22:58:53 +0000 (UTC)
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: abhinavk)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id C9FACC4338F;
+        Tue,  7 Sep 2021 22:58:52 +0000 (UTC)
 MIME-Version: 1.0
-References: <20210901181138.1052653-1-angelogioacchino.delregno@somainline.org>
- <20210901181138.1052653-2-angelogioacchino.delregno@somainline.org>
-In-Reply-To: <20210901181138.1052653-2-angelogioacchino.delregno@somainline.org>
-From:   Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Date:   Tue, 7 Sep 2021 13:12:50 -0600
-Message-ID: <CAOCk7NoOdjxp0vxu9XJzYsi7a04kpqpTOZHm42ApAN3MqkqtDw@mail.gmail.com>
-Subject: Re: [Freedreno] [PATCH 2/3] drm/msm/dpu1: Add MSM8998 to hw catalog
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Cc:     Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        Dave Airlie <airlied@linux.ie>,
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 07 Sep 2021 15:58:52 -0700
+From:   abhinavk@codeaurora.org
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Abhinav Kumar <abhinavk@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        MSM <linux-arm-msm@vger.kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        freedreno <freedreno@lists.freedesktop.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
-        DTML <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Jonathan Marek <jonathan@marek.ca>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/msm/dsi: Use division result from div_u64_rem in 7nm
+ and 14nm PLL
+In-Reply-To: <20210906202535.824233-1-marijn.suijten@somainline.org>
+References: <20210906202535.824233-1-marijn.suijten@somainline.org>
+Message-ID: <37d3d27f56787ebe608121ce05bb2ad0@codeaurora.org>
+X-Sender: abhinavk@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Sep 1, 2021 at 12:11 PM AngeloGioacchino Del Regno
-<angelogioacchino.delregno@somainline.org> wrote:
->
-> Bringup functionality for MSM8998 in the DPU, driver which is mostly
-> the same as SDM845 (just a few variations).
->
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-
-I don't seem to see a cover letter for this series.
-
-Eh, there are a fair number of differences between the MDSS versions
-for 8998 and 845.
-
-Probably a bigger question, why extend the DPU driver for 8998, when
-the MDP5 driver already supports it[1]?  The MDP/DPU split is pretty
-dumb, but I don't see a valid reason for both drivers supporting the
-same target/display revision.  IMO, if you want this support in DPU,
-remove it from MDP5.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v5.14&id=d6c7b2284b14c66a268a448a7a8d54f585d38785
+On 2021-09-06 13:25, Marijn Suijten wrote:
+> div_u64_rem provides the result of the divison and additonally the
+> remainder; don't use this function to solely calculate the remainder
+> while calculating the division again with div_u64.
+> 
+> A similar improvement was applied earlier to the 10nm pll in
+> 5c191fef4ce2 ("drm/msm/dsi_pll_10nm: Fix dividing the same numbers
+> twice").
+> 
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Abhinav Kumar <abhinavk@codeaurora.org>
+> ---
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c | 4 +---
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c  | 4 +---
+>  2 files changed, 2 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
+> b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
+> index 3c1e2106d962..8905f365c932 100644
+> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
+> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
+> @@ -213,9 +213,7 @@ static void pll_14nm_dec_frac_calc(struct
+> dsi_pll_14nm *pll, struct dsi_pll_conf
+>  	DBG("vco_clk_rate=%lld ref_clk_rate=%lld", vco_clk_rate, fref);
+> 
+>  	dec_start_multiple = div_u64(vco_clk_rate * multiplier, fref);
+> -	div_u64_rem(dec_start_multiple, multiplier, &div_frac_start);
+> -
+> -	dec_start = div_u64(dec_start_multiple, multiplier);
+> +	dec_start = div_u64_rem(dec_start_multiple, multiplier, 
+> &div_frac_start);
+> 
+>  	pconf->dec_start = (u32)dec_start;
+>  	pconf->div_frac_start = div_frac_start;
+> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+> b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+> index c77c30628cca..1a5abbd9fb76 100644
+> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+> @@ -114,9 +114,7 @@ static void dsi_pll_calc_dec_frac(struct
+> dsi_pll_7nm *pll, struct dsi_pll_config
+> 
+>  	multiplier = 1 << FRAC_BITS;
+>  	dec_multiple = div_u64(pll_freq * multiplier, divider);
+> -	div_u64_rem(dec_multiple, multiplier, &frac);
+> -
+> -	dec = div_u64(dec_multiple, multiplier);
+> +	dec = div_u64_rem(dec_multiple, multiplier, &frac);
+> 
+>  	if (!(pll->phy->cfg->quirks & DSI_PHY_7NM_QUIRK_V4_1))
+>  		config->pll_clock_inverters = 0x28;
