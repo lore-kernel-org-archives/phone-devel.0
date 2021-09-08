@@ -2,117 +2,95 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B043C433F5
-	for <phone-devel@archiver.kernel.org>; Wed,  8 Sep 2021 08:26:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DE3EC433EF
+	for <phone-devel@archiver.kernel.org>; Wed,  8 Sep 2021 12:00:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 551FA61154
-	for <phone-devel@archiver.kernel.org>; Wed,  8 Sep 2021 08:26:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E26A861153
+	for <phone-devel@archiver.kernel.org>; Wed,  8 Sep 2021 12:00:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348133AbhIHI1K (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 8 Sep 2021 04:27:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33040 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348084AbhIHI1J (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Sep 2021 04:27:09 -0400
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E8D9C0613C1
-        for <phone-devel@vger.kernel.org>; Wed,  8 Sep 2021 01:26:02 -0700 (PDT)
-Received: by mail-qt1-x835.google.com with SMTP id 2so1179962qtw.1
-        for <phone-devel@vger.kernel.org>; Wed, 08 Sep 2021 01:26:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=I2GYoAF05W4QlTQNUCm2X4ED9hxXNWtrDyXhLShUptk=;
-        b=e7g/IsbTln55dVeqTe5gmEnqabfSh7kHTb727uLUnyovBvkSGw8go8jXg95jjjF7tX
-         R3bxp8omNg2Es3zR/CXIfV9ZMzXzQv+UEh4eSsWJkGl23Kssli7oOmRZQy9Pkaz7gEQy
-         T44E5FFPOfRGx0HrA7fHZ6ZY2+IQ+KdzAvmJAeRJMA//xqk3Km7DEs34HVTG8+rE4tdi
-         Nbz5dPeEyxoWv4I3QLfTHj1lYqM5Pp+pZfwjb075mSYqkvPbTo02Io6Avm0Rim4MyC0R
-         4CYSQPxj0VXCNf6T7mcbGmua46gZ5pVoJTpvZBN/cJg4xb18jQYmvSm3Laik4qD63ecW
-         Eo7g==
+        id S1351606AbhIHMB7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 8 Sep 2021 08:01:59 -0400
+Received: from mail-oo1-f50.google.com ([209.85.161.50]:44683 "EHLO
+        mail-oo1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234758AbhIHMB7 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Sep 2021 08:01:59 -0400
+Received: by mail-oo1-f50.google.com with SMTP id k18-20020a4abd92000000b002915ed21fb8so678287oop.11;
+        Wed, 08 Sep 2021 05:00:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=I2GYoAF05W4QlTQNUCm2X4ED9hxXNWtrDyXhLShUptk=;
-        b=PInc+RvPSMls4RV9m49Wiq1HCeMFgCIeOEZhjx+OvG0rzEtoAVqcHfeJQLS66ZCybH
-         b8iUWOqKs351TDhEVvfl2woB1OFTltFWegdE8S2BjO/hfuSOZC3OgPy3TtEVLGon0bSY
-         GEAcRuWZpeQteeOdCan2NUOr6WAasg8JDyhQKblihWUYaJI6GSjzr98ulqbv+hVX0KBc
-         HgkfEGJsgnJzlQzntmlmC0bqGAfyv2PDb/xj3+bGOXIsV1N5zghSuzzIVryiBGIiZ9G5
-         WQEMvvUfu964+hwCu9H1T8on0jzeps99PDSKu1m9VtMTYJdX8J+pG4D30rX71R6SKypj
-         OSlw==
-X-Gm-Message-State: AOAM533ZLqUbiBYz5thF0E6nZYNbOOxh/R4XGXY6jLerRuyoKX/sQH94
-        9XVuYq37bMj6R4IVgXgqFDkPKjuH675xrzCPEvMARw==
-X-Google-Smtp-Source: ABdhPJxJhjzUMRnWrBQrlHB5E1FH9Zjc6focYT3nA4MBbnlIPOsA5Rm9xuH5jYYfBZrGvUDOGlMTALwyLQ7v5Mh8YaQ=
-X-Received: by 2002:ac8:578e:: with SMTP id v14mr2471269qta.285.1631089561173;
- Wed, 08 Sep 2021 01:26:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210901181138.1052653-1-angelogioacchino.delregno@somainline.org>
- <20210901181138.1052653-2-angelogioacchino.delregno@somainline.org> <CAOCk7NoOdjxp0vxu9XJzYsi7a04kpqpTOZHm42ApAN3MqkqtDw@mail.gmail.com>
-In-Reply-To: <CAOCk7NoOdjxp0vxu9XJzYsi7a04kpqpTOZHm42ApAN3MqkqtDw@mail.gmail.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Wed, 8 Sep 2021 11:25:50 +0300
-Message-ID: <CAA8EJpp6tj10A0QUR1E75t7BZf2Y3jHUyVNniYhEUd9rXj8Vrg@mail.gmail.com>
-Subject: Re: [Freedreno] [PATCH 2/3] drm/msm/dpu1: Add MSM8998 to hw catalog
-To:     Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Cc:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        Dave Airlie <airlied@linux.ie>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=pIa+Ymh64lyH4Ksb3GNVCGfVEEWsQqehYzNJo9Tvkgw=;
+        b=qRaXBTHa6465lpNtcdAEdj+GR9GIsPkZNudW23/QV3PEGox7yH7wBoxng8hdu9uTih
+         jdKNUvE6uooBv5GwaJwjXiEHwnBw90iK52a9/tp90LAUGVlgLRBbmCGc+SovN3dDFdX+
+         LrNefB/SZxGLTLjbxPuOTes6VUmddc9aUTn8ZNwzK/6eZ34VFDOzw+pg8brN0wem9DCg
+         nZYeKEH/3Yt3YksTZ7IjQXToCMGMocGUbcSmvaPVXjcbFu/oWoTf/tEODBTY9lGSoP1j
+         aWA5moTSxewp2K028sk1WjM4mKERxx6O3TQM1ntktfzJTgG0yfZVN1ilWLMvERuyBpea
+         5hTw==
+X-Gm-Message-State: AOAM530htKj8pZwo7+6elIYMnEa1c3Ms2YT41qwL1/UdBN6+m8NEU5hi
+        nO4aEu4tMWqvKnRwWtvM4g==
+X-Google-Smtp-Source: ABdhPJyMOfCDqyxfhCpt75LbckaogIBcRViiXDtBG51ntFGEIU2DpplLlJ8npLttM1aYAd4r9ZrbDg==
+X-Received: by 2002:a4a:a509:: with SMTP id v9mr2482404ook.73.1631102451023;
+        Wed, 08 Sep 2021 05:00:51 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id c14sm397800otd.62.2021.09.08.05.00.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Sep 2021 05:00:50 -0700 (PDT)
+Received: (nullmailer pid 1853720 invoked by uid 1000);
+        Wed, 08 Sep 2021 12:00:48 -0000
+Date:   Wed, 8 Sep 2021 07:00:48 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Sireesh Kodali <sireeshkodali1@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Abhinav Kumar <abhinavk@codeaurora.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        MSM <linux-arm-msm@vger.kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        freedreno <freedreno@lists.freedesktop.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        paul.bouchara@somainline.org, DTML <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Krishna Manikandan <mkrishn@codeaurora.org>,
+        "open list:DRM DRIVER FOR MSM ADRENO GPU" 
+        <freedreno@lists.freedesktop.org>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/3] dt-bindings: msm: dsi: Add MSM8953 dsi phy
+Message-ID: <YTil8LIWywhwxu0N@robh.at.kernel.org>
+References: <20210903170844.35694-1-sireeshkodali1@gmail.com>
+ <20210903170844.35694-2-sireeshkodali1@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210903170844.35694-2-sireeshkodali1@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
+On Fri, Sep 03, 2021 at 10:38:42PM +0530, Sireesh Kodali wrote:
+> SoCs based on the MSM8953 platform use the 14nm DSI PHY driver
+> 
+> Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/display/msm/dsi-phy-14nm.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/display/msm/dsi-phy-14nm.yaml b/Documentation/devicetree/bindings/display/msm/dsi-phy-14nm.yaml
+> index 72a00cce0147..d2cb19cf71d6 100644
+> --- a/Documentation/devicetree/bindings/display/msm/dsi-phy-14nm.yaml
+> +++ b/Documentation/devicetree/bindings/display/msm/dsi-phy-14nm.yaml
+> @@ -17,6 +17,8 @@ properties:
+>      oneOf:
+>        - const: qcom,dsi-phy-14nm
+>        - const: qcom,dsi-phy-14nm-660
+> +      - const: qcom,dsi-phy-14nm-8953
+> +
 
-On Tue, 7 Sept 2021 at 22:13, Jeffrey Hugo <jeffrey.l.hugo@gmail.com> wrote:
->
-> On Wed, Sep 1, 2021 at 12:11 PM AngeloGioacchino Del Regno
-> <angelogioacchino.delregno@somainline.org> wrote:
-> >
-> > Bringup functionality for MSM8998 in the DPU, driver which is mostly
-> > the same as SDM845 (just a few variations).
-> >
-> > Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
->
-> I don't seem to see a cover letter for this series.
->
-> Eh, there are a fair number of differences between the MDSS versions
-> for 8998 and 845.
->
-> Probably a bigger question, why extend the DPU driver for 8998, when
-> the MDP5 driver already supports it[1]?  The MDP/DPU split is pretty
-> dumb, but I don't see a valid reason for both drivers supporting the
-> same target/display revision.  IMO, if you want this support in DPU,
-> remove it from MDP5.
->
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?h=v5.14&id=d6c7b2284b14c66a268a448a7a8d54f585d38785
+This is going to conflict with v5.15-rc1, so you'll need to resend it.
 
-I don't think that we should enforce such requirements. Having support
-both in MDP5 and DPU would allow one to compare those two drivers,
-performance, features, etc.
-It might be that all MDP5-supported hardware would be also supported
-by DPU, thus allowing us to remove the former driver. But until that
-time I'd suggest leaving support in place.
-
--- 
-With best wishes
-Dmitry
+>  
+>    reg:
+>      items:
+> -- 
+> 2.33.0
+> 
+> 
