@@ -7,26 +7,29 @@ X-Spam-Status: No, score=-17.2 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 60FC0C433FE
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Sep 2021 10:57:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9ACC8C433FE
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Sep 2021 11:26:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 32C2F611B0
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Sep 2021 10:57:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 76CDC61104
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Sep 2021 11:26:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232903AbhIIK6l (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Sep 2021 06:58:41 -0400
-Received: from m-r2.th.seeweb.it ([5.144.164.171]:44359 "EHLO
-        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234195AbhIIK6l (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Sep 2021 06:58:41 -0400
+        id S235739AbhIIL1K (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Sep 2021 07:27:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60794 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235455AbhIIL1J (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Sep 2021 07:27:09 -0400
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AE87C061575
+        for <phone-devel@vger.kernel.org>; Thu,  9 Sep 2021 04:26:00 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 52C173E94E;
-        Thu,  9 Sep 2021 12:57:30 +0200 (CEST)
-Subject: Re: [PATCH 7/7] arm64: dts: qcom: msm8998-xperia: Add audio clock and
- its pin
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 1F0413EEA8;
+        Thu,  9 Sep 2021 13:25:58 +0200 (CEST)
+Subject: Re: [PATCH 2/7] arm64: dts: qcom: msm8998-xperia: Add RMI4
+ touchscreen support
 To:     Bjorn Andersson <bjorn.andersson@linaro.org>
 Cc:     agross@kernel.org, robh+dt@kernel.org,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
@@ -35,16 +38,16 @@ Cc:     agross@kernel.org, robh+dt@kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         paul.bouchara@somainline.org
 References: <20210903180924.1006044-1-angelogioacchino.delregno@somainline.org>
- <20210903180924.1006044-7-angelogioacchino.delregno@somainline.org>
- <YTdtjRonJBtJUk9N@ripper>
+ <20210903180924.1006044-2-angelogioacchino.delregno@somainline.org>
+ <YTdsBg78ErgxqFXy@ripper>
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>
-Message-ID: <30af450e-c98d-5e88-0506-75b1ec43bd42@somainline.org>
-Date:   Thu, 9 Sep 2021 12:57:30 +0200
+Message-ID: <8c817fed-ebc3-c269-ee00-bdef12f707af@somainline.org>
+Date:   Thu, 9 Sep 2021 13:25:57 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.9.0
 MIME-Version: 1.0
-In-Reply-To: <YTdtjRonJBtJUk9N@ripper>
+In-Reply-To: <YTdsBg78ErgxqFXy@ripper>
 Content-Type: text/plain; charset=iso-8859-15; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -52,57 +55,57 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 07/09/21 15:47, Bjorn Andersson ha scritto:
+Il 07/09/21 15:41, Bjorn Andersson ha scritto:
 > On Fri 03 Sep 11:09 PDT 2021, AngeloGioacchino Del Regno wrote:
 > 
->> All smartphones of this platform are equipped with a WCD9335 audio
->> codec, getting its MCLK from PM8998 gpio13: add this clock to DT.
+>> All of the devices in the Sony Yoshino platform are using a Synaptics
+>> RMI4-compatible touch IC with identical pins and supplies: enable the
+>> I2C-5 bus and add the rmi4-i2c node along with the required pin
+>> configurations.
 >>
 >> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 >> Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
 >> ---
->>   .../dts/qcom/msm8998-sony-xperia-yoshino.dtsi | 19 +++++++++++++++++++
->>   1 file changed, 19 insertions(+)
+>>   .../dts/qcom/msm8998-sony-xperia-yoshino.dtsi | 60 +++++++++++++++++++
+>>   1 file changed, 60 insertions(+)
 >>
 >> diff --git a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
->> index 5fbe5abf4133..7aeebd3b2e9e 100644
+>> index b07cbc759807..2fe53e4675d5 100644
 >> --- a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
 >> +++ b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
->> @@ -20,6 +20,19 @@ / {
->>   	qcom,msm-id = <0x124 0x20000>, <0x124 0x20001>; /* 8998v2, v2.1 */
->>   	qcom,board-id = <8 0>;
+>> @@ -30,6 +30,15 @@ board_vbat: vbat-regulator {
+>>   		regulator-boot-on;
+>>   	};
 >>   
->> +	clocks {
->> +		compatible = "simple-bus";
+>> +	touch_vddio_vreg: touch-vddio-vreg {
+>> +		compatible = "regulator-fixed";
+>> +		regulator-name = "touch_vddio_vreg";
+>> +		startup-delay-us = <10000>;
+>> +		gpio = <&tlmm 133 GPIO_ACTIVE_HIGH>;
+>> +		pinctrl-names = "default";
+>> +		pinctrl-0 = <&ts_vddio_en>;
+>> +	};
 >> +
->> +		div1_mclk: divclk1 {
->> +			compatible = "gpio-gate-clock";
->> +			pinctrl-0 = <&audio_mclk_pin>;
->> +			pinctrl-names = "default";
->> +			clocks = <&rpmcc RPM_SMD_DIV_CLK1>;
+>>   	vph_pwr: vph-pwr-regulator {
+>>   		compatible = "regulator-fixed";
+>>   		regulator-name = "vph_pwr";
+>> @@ -134,6 +143,42 @@ ramoops@ffc00000 {
+>>   	};
+>>   };
+>>   
+>> +&blsp1_i2c5 {
+>> +	status = "okay";
+>> +	clock-frequency = <355000>;
+>> +
+>> +	touchscreen: synaptics-rmi4-i2c@2c {
 > 
-> What controls the clock rate of divclk1?
+> "touchscreen" sounds like a better "generic name" for the node.
+> 
+> Haven't checked the following patches yet, do you need the label?
 > 
 
-That's going to be assigned to WCD9335 (oh btw, I have working audio locally!
-it's not great, but I can hear sounds from the internal speakers), but I
-haven't added the entire audio configuration in these submitted commits because:
-1. It needs two GDSCs in GCC: adding them without enabling the lpass iommu will
-    produce a crash, as the iommu would go off when the kernel starts turning off
-    unused stuff... and we have secure contexts there, which means that the
-    hypervisor will say hello;
-2. The lpass iommu needs a commit in the qcom smmu implementation detail driver,
-    as we need to select a different context (not the last ctx, but the one before)
-    for bypass streams emulation, as the last one seems to be untouchable... small
-    preview of the required commit:
-    qsmmu->bypass_cbndx = [value from dt], or [default == smmu->num_context_banks-1]
-3. We need the lpass iommu to get "the audio stuff" (surely, no need to list it).
-
-So that's the entire picture... I am planning to get this base merged in before
-going for a cleanup and submission of the rest of what I have here.
-
-
-Long story short: WCD9335 will be responsible for controlling this clock.
+Thank you, I forgot to remove the label after a cleanup.
+Also, node name changed.
 
 Cheers,
 - Angelo
@@ -110,27 +113,62 @@ Cheers,
 > Regards,
 > Bjorn
 > 
->> +			#clock-cells = <0>;
->> +			enable-gpios = <&pm8998_gpio 13 GPIO_ACTIVE_HIGH>;
+>> +		compatible = "syna,rmi4-i2c";
+>> +		reg = <0x2c>;
+>> +		#address-cells = <1>;
+>> +		#size-cells = <0>;
+>> +		interrupts-extended = <&tlmm 125 IRQ_TYPE_EDGE_FALLING>;
+>> +
+>> +		pinctrl-names = "default";
+>> +		pinctrl-0 = <&ts_int_n>;
+>> +
+>> +		vdd-supply = <&vreg_l28_3p0>;
+>> +		vio-supply = <&touch_vddio_vreg>;
+>> +
+>> +		syna,reset-delay-ms = <220>;
+>> +		syna,startup-delay-ms = <1000>;
+>> +
+>> +		rmi4-f01@1 {
+>> +			reg = <0x01>;
+>> +			syna,nosleep-mode = <1>;
+>> +		};
+>> +
+>> +		rmi4-f11@11 {
+>> +			reg = <0x11>;
+>> +			syna,sensor-type = <1>;
 >> +		};
 >> +	};
+>> +};
 >> +
->>   	board_vbat: vbat-regulator {
->>   		compatible = "regulator-fixed";
->>   		regulator-name = "VBAT";
->> @@ -313,6 +326,12 @@ cam_snapshot_pin_a: cam-snapshot-btn-active {
+>> +&blsp1_i2c5_sleep {
+>> +	bias-disable;
+>> +};
+>> +
+>>   &blsp2_uart1 {
+>>   	status = "okay";
+>>   };
+>> @@ -448,6 +493,21 @@ hall_sensor0_default: acc-cover-open {
+>>   		drive-strength = <2>;
 >>   		input-enable;
->>   		qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
 >>   	};
 >> +
->> +	audio_mclk_pin: audio-mclk-pin-active {
->> +		pins = "gpio13";
->> +		function = "func2";
->> +		power-source = <0>;
+>> +	ts_int_n: ts-int-n {
+>> +		pins = "gpio125";
+>> +		function = "gpio";
+>> +		drive-strength = <8>;
+>> +		bias-pull-up;
+>> +	};
+>> +
+>> +	ts_vddio_en: ts-vddio-en-default {
+>> +		pins = "gpio133";
+>> +		function = "gpio";
+>> +		bias-disable;
+>> +		drive-strength = <2>;
+>> +		output-low;
 >> +	};
 >>   };
 >>   
->>   &pmi8998_gpio {
+>>   /*
 >> -- 
 >> 2.32.0
 >>
