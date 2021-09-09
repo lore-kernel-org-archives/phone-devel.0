@@ -2,167 +2,168 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28EC9C433F5
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Sep 2021 04:40:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55CD0C433EF
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Sep 2021 10:40:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 17E8F611BF
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Sep 2021 04:40:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3FFC261186
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Sep 2021 10:40:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350450AbhIIEls (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Sep 2021 00:41:48 -0400
-Received: from mail-0201.mail-europe.com ([51.77.79.158]:50366 "EHLO
-        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350305AbhIIElp (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Sep 2021 00:41:45 -0400
-Date:   Thu, 09 Sep 2021 04:40:27 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1631162432;
-        bh=DEgAtGRzyS7Mb3drXU2SHdsqwxbA8corBcPdlYX6sy8=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=SxxM2a5HtOkvy4pfl/W5Quaa2bzGQcydgo9p/RGOaTfCsgZom2SshF2DQ0JiWT3Gn
-         qviAlp0H9o7Lc9Rbv8QTE1K+aU/yw7Q5vWQBr1LzkRJjSCDmtGpww8/eVaxJciutmK
-         6pFrcwyqB4Xa8e2zyzPIacUXW2HcvDWNGpv2s3NA=
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>
-From:   Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org
-Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
-Subject: [PATCH v2 2/2] dt-bindings: display: Add binding for LG.Philips SW43101
-Message-ID: <20210909043904.12982-3-y.oudjana@protonmail.com>
-In-Reply-To: <20210909043904.12982-1-y.oudjana@protonmail.com>
-References: <20210909043904.12982-1-y.oudjana@protonmail.com>
+        id S234375AbhIIKlU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Sep 2021 06:41:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50088 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234269AbhIIKlS (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Sep 2021 06:41:18 -0400
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57B6DC061757
+        for <phone-devel@vger.kernel.org>; Thu,  9 Sep 2021 03:40:09 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 017B33F219;
+        Thu,  9 Sep 2021 12:40:04 +0200 (CEST)
+Subject: Re: [PATCH 1/7] arm64: dts: qcom: Introduce support for MSM8998 Sony
+ Yoshino platform
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     agross@kernel.org, robh+dt@kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        paul.bouchara@somainline.org
+References: <20210903180924.1006044-1-angelogioacchino.delregno@somainline.org>
+ <YTdjX2/XGZYQQRDW@ripper>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <2e9270dd-759e-9ebf-71dd-a15fecd611ca@somainline.org>
+Date:   Thu, 9 Sep 2021 12:40:04 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <YTdjX2/XGZYQQRDW@ripper>
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add a device tree binding for LG.Philips SW43101.
+Il 07/09/21 15:04, Bjorn Andersson ha scritto:
+> On Fri 03 Sep 11:09 PDT 2021, AngeloGioacchino Del Regno wrote:
+> 
+>> This commit introduces support for the Sony Yoshino platform, using
+>> the MSM8998 SoC, including:
+>> - Sony Xperia XZ1 (codename Poplar),
+>> - Sony Xperia XZ1 Compact (codename Lilac),
+>> - Sony Xperia XZ Premium (codename Maple).
+>>
+> 
+> Nice!
+> 
+>> diff --git a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
+> [..]
+>> +	vph_pwr: vph-pwr-regulator {
+>> +		compatible = "regulator-fixed";
+>> +		regulator-name = "vph_pwr";
+>> +		regulator-always-on;
+>> +		regulator-boot-on;
+>> +	};
+>> +
+>> +	gpio_keys {
+> 
+> Please don't use '_' in node names.
+> 
 
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
----
-Changes since v1:
- - Add regulator support.
- - Add MAINTAINERS entry.
- - Dual-license DT binding.
+Sorry, all of that is fixed.
 
- .../display/panel/lgphilips,sw43101.yaml      | 75 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 2 files changed, 76 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/display/panel/lgphili=
-ps,sw43101.yaml
+>> +	reserved-memory {
+>> +		#address-cells = <2>;
+>> +		#size-cells = <2>;
+>> +		ranges;
+>> +
+>> +		hyp_mem: memory@85800000 {
+>> +			reg = <0x0 0x85800000 0x0 0x3700000>;
+>> +			no-map;
+>> +		};
+>> +
+>> +		cont_splash_mem: cont-splash-region@9d400000 {
+> 
+> Is there any reason for not just naming this "memory"?
+> 
 
-diff --git a/Documentation/devicetree/bindings/display/panel/lgphilips,sw43=
-101.yaml b/Documentation/devicetree/bindings/display/panel/lgphilips,sw4310=
-1.yaml
-new file mode 100644
-index 000000000000..6f67130bab8b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/lgphilips,sw43101.yam=
-l
-@@ -0,0 +1,75 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/lgphilips,sw43101.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: LG.Philips SW43101 1080x1920 OLED panel
-+
-+maintainers:
-+  - Yassine Oudjana <y.oudjana@protonmail.com>
-+
-+allOf:
-+  - $ref: panel-common.yaml#
-+
-+properties:
-+  compatible:
-+    const: lgphilips,sw43101
-+
-+  reg: true
-+  reset-gpios: true
-+
-+  vdd-supply:
-+    description: Digital power supply
-+
-+  avdd-supply:
-+    description: Analog power supply
-+
-+  elvdd-supply:
-+    description: Positive electroluminescence power supply
-+
-+  elvss-supply:
-+    description: Negative electroluminescence power supply
-+
-+  port: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - reset-gpios
-+  - vdd-supply
-+  - avdd-supply
-+  - elvdd-supply
-+  - elvss-supply
-+  - port
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    dsi {
-+        #address-cells =3D <1>;
-+        #size-cells =3D <0>;
-+
-+        panel@0 {
-+            compatible =3D "lgphilips,sw43101";
-+            reg =3D <0>;
-+
-+            reset-gpios =3D <&msmgpio 8 GPIO_ACTIVE_LOW>;
-+
-+            vdd-supply =3D <&vreg_l14a_1p8>;
-+            avdd-supply =3D <&vlin1_7v3>;
-+            elvdd-supply =3D <&elvdd>;
-+            elvss-supply =3D <&elvss>;
-+
-+            port {
-+                panel_in: endpoint {
-+                    remote-endpoint =3D <&dsi_out>;
-+                };
-+            };
-+        };
-+    };
-+
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 46431e8ad373..aab9f057e8d7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5902,6 +5902,7 @@ F:=09include/uapi/drm/i810_drm.h
- DRM DRIVER FOR LG.PHILIPS SW43101 PANEL
- M:=09Yassine Oudjana <y.oudjana@protonmail.com>
- S:=09Maintained
-+F:=09Documentation/devicetree/bindings/display/panel/lgphilips,sw43101.yam=
-l
- F:=09drivers/gpu/drm/panel/panel-lgphilips-sw43101.c
-=20
- DRM DRIVER FOR LVDS PANELS
---=20
-2.33.0
+No, there's no reason. Changed to 'memory'.
 
+>> +			compatible = "shared-dma-pool";
+>> +			reg = <0x0 0xf6400000 0x0 0x2000>;
+>> +			no-map;
+>> +		};
+>> +
+> [..]
+>> +&rpm_requests {
+>> +	pm8998-regulators {
+>> +		compatible = "qcom,rpm-pm8998-regulators";
+>> +
+> [..]
+>> +		vreg_lvs1a_1p8: lvs1 { };
+>> +		vreg_lvs2a_1p8: lvs2 { };
+>> +
+> 
+> Blank line.
+> 
+
+Done.
+
+Also, we had a better internal review of the 8998 dt patches, so in the
+next version there will be even more cleanups.
+
+>> +	};
+>> +
+>> +	pmi8998-regulators {
+>> +		compatible = "qcom,rpm-pmi8998-regulators";
+>> +
+>> +		vdd_bob-supply = <&vph_pwr>;
+>> +
+>> +		vreg_bob: bob {
+>> +			regulator-min-microvolt = <3312000>;
+>> +			regulator-max-microvolt = <3600000>;
+>> +		};
+>> +	};
+>> +};
+>> +
+>> +&sdhc2 {
+>> +	status = "okay";
+>> +	cd-gpios = <&tlmm 95 GPIO_ACTIVE_HIGH>;
+>> +
+>> +	vmmc-supply = <&vreg_l21a_2p95>;
+>> +	vqmmc-supply = <&vreg_l13a_2p95>;
+>> +
+>> +	pinctrl-names = "default", "sleep";
+>> +	pinctrl-0 = <&sdc2_clk_on  &sdc2_cmd_on  &sdc2_data_on  &sdc2_cd_on>;
+>> +	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off &sdc2_cd_off>;
+> 
+> How about grouping these various pins as "sdc2_default_state" and
+> "sdc2_sleep_state"?
+> 
+
+I agree with you on the fact that groping these pins would look way better,
+but I'm inheriting the sdc2 pinctrl from msm8998.dtsi and... all of the msm8998
+boards, including msm8998-mtp and msm8998-clamshell (and whatever else inherits
+these) are doing the same as what I am doing here.
+
+That said, are you proposing to change 'em all?
+
+Cheers,
+- Angelo
+
+>> +};
+>> +
+> Regards,
+> Bjorn
+> 
 
