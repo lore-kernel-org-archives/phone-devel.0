@@ -2,86 +2,107 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C84BC433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Sep 2021 05:25:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85FF3C433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Sep 2021 21:48:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DF5136113A
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Sep 2021 05:25:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 65C82610F8
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Sep 2021 21:48:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230347AbhIJF1E (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 10 Sep 2021 01:27:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49050 "EHLO
+        id S234660AbhIJVtk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 10 Sep 2021 17:49:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230037AbhIJF1E (ORCPT
+        with ESMTP id S234581AbhIJVtj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 10 Sep 2021 01:27:04 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6FDFC061574;
-        Thu,  9 Sep 2021 22:25:53 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id q3so426994plx.4;
-        Thu, 09 Sep 2021 22:25:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=eYB4xclX6nU8BjBKvkhYddYsIz6ktkELU80e97kp5Jw=;
-        b=ojOWpgQ4RATCnuf5Hz1tLXf7TD90hXaK2FTKQ3T5a2YlM5SgA4bpxKpjBLmIByz+In
-         MdtZmEcHAatuOLU2Pny5o5jI+IojDy9h7tVrlgfYwUefvJscZwTZZKdwq3/4AMAoa7Xq
-         AQvG5NqlQQ32BY4buQVc35Vh2DGcAVoSkg4aUU6hdoT1u7sirhVLswkW6/MOQ+t6vwEd
-         xnl8l0WU+0MxyA3fGekzIHUWc/k/QGuwgRl++mMy2jp3OsyrCasWHVrbS+VEvRCqdBPE
-         Y+zlTuwkrkCRLUlib8Ql9k+z2YZqDmsCtTaeCXg/6IblW0aAH5AM3n/ORM98DrIcIyUF
-         f6Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=eYB4xclX6nU8BjBKvkhYddYsIz6ktkELU80e97kp5Jw=;
-        b=D81Tcj/BTlQu+0Gik/aPkOoSJ6yagYr0dB9ve6IHfkRQX7kHj21yUcOu5LBooFKU5T
-         SZ/5u3Ycs8nIpZsr04VhsFpEX2gLIRx+Deq0cGDlFpDrL6KcoJRYLa6PIlvNJWY5qq9T
-         /uICi2Gny3NrmGpTxT4OwnaqYS1O7/vX+5c/5undO7uawH10tdDrK8JRK5831Vc5fFoF
-         ioxSivfuQm0X82Jo7Xym8SNLcY0hU6GYXfDpcVgkCpqG5HLGnsYUBNAnRB7j0I3CqkZ/
-         PKS1lqIFpvM9JWBf8cRaOXDsvHUH/aL7AzO+EUKp8HjedY5VW/MElrhCuqGlMtn3G6ft
-         IQxA==
-X-Gm-Message-State: AOAM533T9n5vAXONgShmLehcuqFaNLR0M7mvohureqiNzBQu3xix/E/T
-        e/K3lkQKjQTXZ8+yKFWy0jMX/bjmm7Q=
-X-Google-Smtp-Source: ABdhPJzaQIoBsDmBFfVHPJAlrQ3vMpSj5qYJbg6jYdYPt0QtCIOTD4PJt2NQf2i6fUdVXLWfRVz3Tg==
-X-Received: by 2002:a17:90a:2dc7:: with SMTP id q7mr7499790pjm.231.1631251553315;
-        Thu, 09 Sep 2021 22:25:53 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:acdc:1d22:e20a:2796])
-        by smtp.gmail.com with ESMTPSA id z12sm3688441pfe.79.2021.09.09.22.25.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Sep 2021 22:25:52 -0700 (PDT)
-Date:   Thu, 9 Sep 2021 22:25:49 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v4 2/2] dt-bindings: input: Add binding for cypress-sf
-Message-ID: <YTrsXU0KPQVsKcQN@google.com>
-References: <20210907174341.422013-1-y.oudjana@protonmail.com>
- <20210907174341.422013-3-y.oudjana@protonmail.com>
+        Fri, 10 Sep 2021 17:49:39 -0400
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96067C061574
+        for <phone-devel@vger.kernel.org>; Fri, 10 Sep 2021 14:48:26 -0700 (PDT)
+Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 8C9311F50C;
+        Fri, 10 Sep 2021 23:48:21 +0200 (CEST)
+Date:   Fri, 10 Sep 2021 23:48:20 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     robdclark@gmail.com, sean@poorly.run, airlied@linux.ie,
+        daniel@ffwll.ch, dmitry.baryshkov@linaro.org,
+        abhinavk@codeaurora.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org
+Subject: Re: [PATCH 2/2] drm/msm/dpu: Fix timeout issues on command mode
+ panels
+Message-ID: <20210910214820.h6in2ffl5pwu7xtv@Marijn-Arch-PC.localdomain>
+References: <20210901174347.1012129-1-angelogioacchino.delregno@somainline.org>
+ <20210901174347.1012129-2-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210907174341.422013-3-y.oudjana@protonmail.com>
+In-Reply-To: <20210901174347.1012129-2-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Sep 07, 2021 at 05:44:13PM +0000, Yassine Oudjana wrote:
-> Add a device tree binding for Cypress StreetFighter.
+Hi Angelo!
+
+On 2021-09-01 19:43:47, AngeloGioacchino Del Regno wrote:
+> In function dpu_encoder_phys_cmd_wait_for_commit_done we are always
+> checking if the relative CTL is started by waiting for an interrupt
+> to fire: it is fine to do that, but then sometimes we call this
+> function while the CTL is up and has never been put down, but that
+> interrupt gets raised only when the CTL gets a state change from
+> 0 to 1 (disabled to enabled), so we're going to wait for something
+> that will never happen on its own.
 > 
-> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-> Reviewed-by: Rob Herring <robh@kernel.org>
+> Solving this while avoiding to restart the CTL is actually possible
+> and can be done by just checking if it is already up and running
+> when the wait_for_commit_done function is called: in this case, so,
+> if the CTL was already running, we can say that the commit is done
+> if the command transmission is complete (in other terms, if the
+> interface has been flushed).
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+> index aa01698d6b25..b5b1b555ac4e 100644
+> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+> @@ -682,6 +682,9 @@ static int dpu_encoder_phys_cmd_wait_for_commit_done(
+>  	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
+>  		return 0;
+>  
+> +	if (phys_enc->hw_ctl->ops.is_started)
+> +		return dpu_encoder_phys_cmd_wait_for_tx_complete(phys_enc);
 
-Applied, thank you.
+In the previous commit you introduced is_started to the ops struct as
+function pointer, and you probably intend to call it here instead of
+just checking whether it might be NULL.
 
--- 
-Dmitry
+As far as I remember this was also the reason for previously mentioning
+that it was faulty and required a v2 in:
+https://lore.kernel.org/linux-arm-msm/bdc67afc-3736-5497-c43f-5165c55e0354@somainline.org/
+
+Thanks!
+
+- Marijn
+
+> +
+>  	return _dpu_encoder_phys_cmd_wait_for_ctl_start(phys_enc);
+>  }
+>  
+> -- 
+> 2.32.0
+> 
