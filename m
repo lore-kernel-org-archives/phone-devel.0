@@ -2,188 +2,114 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B587C433FE
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 13:27:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81D86C433EF
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 16:35:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 80FA6611F2
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 13:27:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 549B961100
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 16:35:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238116AbhIKN2Y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 11 Sep 2021 09:28:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49266 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238053AbhIKN2T (ORCPT
+        id S230281AbhIKQgg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 11 Sep 2021 12:36:36 -0400
+Received: from relay02.th.seeweb.it ([5.144.164.163]:41915 "EHLO
+        relay02.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229487AbhIKQgg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 11 Sep 2021 09:28:19 -0400
-Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C26FC0613B6
-        for <phone-devel@vger.kernel.org>; Sat, 11 Sep 2021 06:19:32 -0700 (PDT)
-Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+        Sat, 11 Sep 2021 12:36:36 -0400
+Received: from IcarusMOD.eternityproject.eu (unknown [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 069AB1F4E6;
-        Sat, 11 Sep 2021 15:19:29 +0200 (CEST)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Abhinav Kumar <abhinavk@codeaurora.org>,
-        Jonathan Marek <jonathan@marek.ca>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, Stephen Boyd <swboyd@chromium.org>
-Subject: [PATCH v3 1/2] drm/msm/dsi: Use "ref" fw clock instead of global name for VCO parent
-Date:   Sat, 11 Sep 2021 15:19:20 +0200
-Message-Id: <20210911131922.387964-2-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20210911131922.387964-1-marijn.suijten@somainline.org>
-References: <20210911131922.387964-1-marijn.suijten@somainline.org>
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id A1A1A1F500;
+        Sat, 11 Sep 2021 18:35:21 +0200 (CEST)
+Subject: Re: [PATCH 2/2] drm/msm/dpu: Fix timeout issues on command mode
+ panels
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     robdclark@gmail.com, sean@poorly.run, airlied@linux.ie,
+        daniel@ffwll.ch, dmitry.baryshkov@linaro.org,
+        abhinavk@codeaurora.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org
+References: <20210901174347.1012129-1-angelogioacchino.delregno@somainline.org>
+ <20210901174347.1012129-2-angelogioacchino.delregno@somainline.org>
+ <20210910214820.h6in2ffl5pwu7xtv@Marijn-Arch-PC.localdomain>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Message-ID: <1493d3a8-e4a6-d3f9-be4d-87bddd593997@somainline.org>
+Date:   Sat, 11 Sep 2021 18:35:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210910214820.h6in2ffl5pwu7xtv@Marijn-Arch-PC.localdomain>
+Content-Type: text/plain; charset=iso-8859-15; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-All DSI PHY/PLL drivers were referencing their VCO parent clock by a
-global name, most of which don't exist or have been renamed.  These
-clock drivers seem to function fine without that except the 14nm driver
-for sdm6xx [1].
+Il 10/09/21 23:48, Marijn Suijten ha scritto:
+> Hi Angelo!
+> 
+> On 2021-09-01 19:43:47, AngeloGioacchino Del Regno wrote:
+>> In function dpu_encoder_phys_cmd_wait_for_commit_done we are always
+>> checking if the relative CTL is started by waiting for an interrupt
+>> to fire: it is fine to do that, but then sometimes we call this
+>> function while the CTL is up and has never been put down, but that
+>> interrupt gets raised only when the CTL gets a state change from
+>> 0 to 1 (disabled to enabled), so we're going to wait for something
+>> that will never happen on its own.
+>>
+>> Solving this while avoiding to restart the CTL is actually possible
+>> and can be done by just checking if it is already up and running
+>> when the wait_for_commit_done function is called: in this case, so,
+>> if the CTL was already running, we can say that the commit is done
+>> if the command transmission is complete (in other terms, if the
+>> interface has been flushed).
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>> ---
+>>   drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+>> index aa01698d6b25..b5b1b555ac4e 100644
+>> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+>> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+>> @@ -682,6 +682,9 @@ static int dpu_encoder_phys_cmd_wait_for_commit_done(
+>>   	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
+>>   		return 0;
+>>   
+>> +	if (phys_enc->hw_ctl->ops.is_started)
+>> +		return dpu_encoder_phys_cmd_wait_for_tx_complete(phys_enc);
+> 
+> In the previous commit you introduced is_started to the ops struct as
+> function pointer, and you probably intend to call it here instead of
+> just checking whether it might be NULL.
+> 
+> As far as I remember this was also the reason for previously mentioning
+> that it was faulty and required a v2 in:
+> https://lore.kernel.org/linux-arm-msm/bdc67afc-3736-5497-c43f-5165c55e0354@somainline.org/
+> 
+> Thanks!
+> 
+> - Marijn
+> 
 
-At the same time all DTs provide a "ref" clock as per the requirements
-of dsi-phy-common.yaml, but the clock is never used.  This patchset puts
-that clock to use without relying on a global clock name, so that all
-dependencies are explicitly defined in DT (the firmware) in the end.
+Ugh. I've pulled this from the wrong tree.
+Sending a v2 asap.
 
-Note that this patch intentionally breaks older firmware (DT) that
-relies on the clock to be found globally instead.  The only affected
-platform is msm8974 [2] for whose dsi_phy_28nm a .name="xo" fallback is
-left in place to accommodate a more graceful transition period.  All
-other platforms had the "ref" clock added to their phy node since its
-inception, or in a followup patch some time after.  These patches
-wrongly assumed that the "ref" clock was actively used and have hence
-been listed as "Fixes:" below.
-Furthermore apq8064 was providing the wrong 19.2MHz cxo instead of
-27MHz pxo clock, which has been addressed in [3].
-
-It is expected that both [2] and [3] are applied to the tree well in
-advance of this patch such that any actual breakage is extremely
-unlikely, but might still occur if kernel upgrades are performed without
-the DT to match.  After some time the fallback for msm8974 can be
-removed again as well.
-
-[1]: https://lore.kernel.org/linux-arm-msm/386db1a6-a1cd-3c7d-a88e-dc83f8a1be96@somainline.org/
-[2]: https://lore.kernel.org/linux-arm-msm/20210830175739.143401-1-marijn.suijten@somainline.org/
-[3]: https://lore.kernel.org/linux-arm-msm/20210829203027.276143-2-marijn.suijten@somainline.org/
-
-Fixes: 79e51645a1dd ("arm64: dts: qcom: msm8916: Set 'xo_board' as ref clock of the DSI PHY")
-Fixes: 6969d1d9c615 ("ARM: dts: qcom-apq8064: Set 'cxo_board' as ref clock of the DSI PHY")
-Fixes: 0c0e72705a33 ("arm64: dts: sdm845: Set 'bi_tcxo' as ref clock of the DSI PHYs")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
----
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c      | 4 +++-
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c      | 4 +++-
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c      | 4 +++-
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c | 4 +++-
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c       | 4 +++-
- 5 files changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-index e46b10fc793a..3cbb1f1475e8 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-@@ -562,7 +562,9 @@ static int pll_10nm_register(struct dsi_pll_10nm *pll_10nm, struct clk_hw **prov
- 	char clk_name[32], parent[32], vco_name[32];
- 	char parent2[32], parent3[32], parent4[32];
- 	struct clk_init_data vco_init = {
--		.parent_names = (const char *[]){ "xo" },
-+		.parent_data = &(const struct clk_parent_data) {
-+			.fw_name = "ref",
-+		},
- 		.num_parents = 1,
- 		.name = vco_name,
- 		.flags = CLK_IGNORE_UNUSED,
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
-index ebedbb6c8961..789b08c24d25 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c
-@@ -802,7 +802,9 @@ static int pll_14nm_register(struct dsi_pll_14nm *pll_14nm, struct clk_hw **prov
- {
- 	char clk_name[32], parent[32], vco_name[32];
- 	struct clk_init_data vco_init = {
--		.parent_names = (const char *[]){ "xo" },
-+		.parent_data = &(const struct clk_parent_data) {
-+			.fw_name = "ref",
-+		},
- 		.num_parents = 1,
- 		.name = vco_name,
- 		.flags = CLK_IGNORE_UNUSED,
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
-index eb1b8ff61da1..531c4b65aede 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
-@@ -521,7 +521,9 @@ static int pll_28nm_register(struct dsi_pll_28nm *pll_28nm, struct clk_hw **prov
- {
- 	char clk_name[32], parent1[32], parent2[32], vco_name[32];
- 	struct clk_init_data vco_init = {
--		.parent_names = (const char *[]){ "xo" },
-+		.parent_data = &(const struct clk_parent_data) {
-+			.fw_name = "ref", .name = "xo",
-+		},
- 		.num_parents = 1,
- 		.name = vco_name,
- 		.flags = CLK_IGNORE_UNUSED,
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c
-index aaa37456f4ee..9662cb236468 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c
-@@ -385,7 +385,9 @@ static int pll_28nm_register(struct dsi_pll_28nm *pll_28nm, struct clk_hw **prov
- {
- 	char *clk_name, *parent_name, *vco_name;
- 	struct clk_init_data vco_init = {
--		.parent_names = (const char *[]){ "pxo" },
-+		.parent_data = &(const struct clk_parent_data) {
-+			.fw_name = "ref",
-+		},
- 		.num_parents = 1,
- 		.flags = CLK_IGNORE_UNUSED,
- 		.ops = &clk_ops_dsi_pll_28nm_vco,
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-index 9eade6d81a54..1a5abbd9fb76 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-@@ -588,7 +588,9 @@ static int pll_7nm_register(struct dsi_pll_7nm *pll_7nm, struct clk_hw **provide
- 	char clk_name[32], parent[32], vco_name[32];
- 	char parent2[32], parent3[32], parent4[32];
- 	struct clk_init_data vco_init = {
--		.parent_names = (const char *[]){ "bi_tcxo" },
-+		.parent_data = &(const struct clk_parent_data) {
-+			.fw_name = "ref",
-+		},
- 		.num_parents = 1,
- 		.name = vco_name,
- 		.flags = CLK_IGNORE_UNUSED,
---
-2.33.0
+>> +
+>>   	return _dpu_encoder_phys_cmd_wait_for_ctl_start(phys_enc);
+>>   }
+>>   
+>> -- 
+>> 2.32.0
+>>
 
