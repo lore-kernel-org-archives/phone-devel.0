@@ -7,42 +7,42 @@ X-Spam-Status: No, score=-19.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5C99C433EF
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 13:13:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4829AC433FE
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 13:17:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A05796135E
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 13:13:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 278B0611CC
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 13:17:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236098AbhIKNPC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 11 Sep 2021 09:15:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38756 "EHLO mail.kernel.org"
+        id S236636AbhIKNSO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 11 Sep 2021 09:18:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39158 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236461AbhIKNOC (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 11 Sep 2021 09:14:02 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7B68361212;
-        Sat, 11 Sep 2021 13:12:37 +0000 (UTC)
+        id S237018AbhIKNPi (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Sat, 11 Sep 2021 09:15:38 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DC4A46124D;
+        Sat, 11 Sep 2021 13:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631365958;
-        bh=H2S98NgF5nE//kCjsLA97ZkAoRV+Q07i8WlsSzpuacg=;
+        s=k20201202; t=1631365995;
+        bh=GzxPKoFSUPqjQDPedCrh21+0h4qkVoTJdFaYoAVuqa8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qm0azN1EdzfHeQ8Kr+14OuU+nqEUeFbYlyOWtUZ5HJTM/bCVunOMKog/fB3SnBvFj
-         5y/yjr7YsVzknpYkuo4y1g3HX1896A/tc2K18G4TbRAD6UmBeXuu1drPQroQllU5iB
-         kW2wlLKUBlZOTpbMyQERHNtRhGwJqKUvGD4ZazGg42necLdQn1XbBfK/1N3w3ywVBH
-         3AyjiL6PFFwjoJrSpgftWkH2AHqvjD7X3xY4HkLscLqst13HYP5xhaevXRQtNFINzZ
-         x8XiW9AZ4rw1i5wUBh6JG13rM6n24/Q3vW91iCnfbVPGssUhTMltympbiSIAYndV3t
-         KcZZXio2nu4uA==
+        b=DeeyE2IoNarFrHKPoXZyKSYsubZMh+KWdqxestEPc3DzhkxasjmMo40YT99/AjQ2e
+         0aiSIzkFVkpbMxfPyQC6Kgy2m2ZSTgpR5IiboYPpsAJicSc39zIYHHn9Ik9TYaQWeP
+         upHYI8iRM7ijqHMfcBHGoHlfjqvbRaLznSVhO1srGqPnlr3yMck7ixSbvClAF87iAV
+         97jwAhzEpp8/Py82oPYZYGmuHyY9c7YZvQDeaZXwxP0CKRixSsldBubTux4oTOqLOy
+         qKoErGt8oVH6l4Vx6zQQII9ZrEYjI9AlVDDhTQnojsNq32b+YQrcSy3QW1a2bdsflf
+         uXDesa+vCry7Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
         phone-devel@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
         Sasha Levin <sashal@kernel.org>,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.13 03/29] mfd: db8500-prcmu: Adjust map to reality
-Date:   Sat, 11 Sep 2021 09:12:07 -0400
-Message-Id: <20210911131233.284800-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 02/25] mfd: db8500-prcmu: Adjust map to reality
+Date:   Sat, 11 Sep 2021 09:12:49 -0400
+Message-Id: <20210911131312.285225-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210911131233.284800-1-sashal@kernel.org>
-References: <20210911131233.284800-1-sashal@kernel.org>
+In-Reply-To: <20210911131312.285225-1-sashal@kernel.org>
+References: <20210911131312.285225-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -70,7 +70,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/mfd/db8500-prcmu.c b/drivers/mfd/db8500-prcmu.c
-index 167faac9b75b..5aa7b3a36f22 100644
+index a5983d515db0..8d5f8f07d8a6 100644
 --- a/drivers/mfd/db8500-prcmu.c
 +++ b/drivers/mfd/db8500-prcmu.c
 @@ -1622,22 +1622,20 @@ static long round_clock_rate(u8 clock, unsigned long rate)
