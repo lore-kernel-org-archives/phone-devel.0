@@ -2,106 +2,103 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-19.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89B07C433F5
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 13:18:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF9F7C433F5
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 13:21:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 760A161153
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 13:18:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AA74061206
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 13:21:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236017AbhIKNUA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 11 Sep 2021 09:20:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38304 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236937AbhIKNRn (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 11 Sep 2021 09:17:43 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4D29A61357;
-        Sat, 11 Sep 2021 13:13:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631366029;
-        bh=ZWcDGK7J3ICcqK6E0ld5xmH3Dpj8mEOLl71Gkvr1t7A=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o/I5/d3Yw6CKCJBRuahWz+ReMPLF8ZphgE2OFjCPSNNNo7TKd+DoI/KAAwfg10dRW
-         ObaUj0/i1P+xZG+VmV7ti3jKVvwZFmm6wh/28QpMyF7oMHVtd1DxcA9LniGMTJ20B5
-         YoraZCqHvb3fmqoh5574zpQtR2Y59WasDbyJg5rsEkDH/IE5b1YlvI0ptoQTALYUaD
-         w0lVWpGzI4ZxguiDcCf4XFSzgaEG7p2Fc8WX0YnhDrM9MGX+eq+uuV5uYk1OBcF64s
-         +g4bdsJYcgLZeYC/nn/OMq0qYYcrFbwNQIy7Kfw9rYXPE/NHAbRhXLwW2PHJv1EWjH
-         lekgmZO7zyV8Q==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        phone-devel@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 02/14] mfd: db8500-prcmu: Adjust map to reality
-Date:   Sat, 11 Sep 2021 09:13:33 -0400
-Message-Id: <20210911131345.285564-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210911131345.285564-1-sashal@kernel.org>
-References: <20210911131345.285564-1-sashal@kernel.org>
+        id S237881AbhIKNWd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 11 Sep 2021 09:22:33 -0400
+Received: from relay03.th.seeweb.it ([5.144.164.164]:55129 "EHLO
+        relay03.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237716AbhIKNUk (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Sat, 11 Sep 2021 09:20:40 -0400
+Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 776401F50C;
+        Sat, 11 Sep 2021 15:19:23 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Abhinav Kumar <abhinavk@codeaurora.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org
+Subject: [PATCH v3 0/2] Use "ref" clocks from firmware for DSI PLL VCO parent
+Date:   Sat, 11 Sep 2021 15:19:19 +0200
+Message-Id: <20210911131922.387964-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+All DSI PHY/PLL drivers were referencing their VCO parent clock by a
+global name, most of which don't exist or have been renamed.  These
+clock drivers seem to function fine without that except the 14nm driver
+for sdm6xx [1].
 
-[ Upstream commit ec343111c056ec3847800302f6dbc57281f833fa ]
+At the same time all DTs provide a "ref" clock as per the requirements
+of dsi-phy-common.yaml, but the clock is never used.  This patchset puts
+that clock to use without relying on a global clock name, so that all
+dependencies are explicitly defined in DT (the firmware) in the end.
 
-These are the actual frequencies reported by the PLL, so let's
-report these. The roundoffs are inappropriate, we should round
-to the frequency that the clock will later report.
+[1]: https://lore.kernel.org/linux-arm-msm/386db1a6-a1cd-3c7d-a88e-dc83f8a1be96@somainline.org/
 
-Drop some whitespace at the same time.
+Changes since v2:
+  - Added Stephen's a-b and Angelo's r-bs;
+  - Added .name fallback in msm8974's dsi_phy_28nm for a more graceful
+    transition period;
+  - Documented possible breakage in 1/2 if firmware isn't updated in
+    parallel with the kernel.
 
-Cc: phone-devel@vger.kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/mfd/db8500-prcmu.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+Changes since v1:
+  - Dropped "arm: dts: qcom: apq8064: Use 27MHz PXO clock as DSI PLL
+    reference" which has made its way into 5.15-fixes in advance of this
+    patchset landing in 5.16;
+  - Added Fixes: tags for commits that added missing "ref" clocks to DT
+    while this firmware clock was never used (until this patchset);
+  - Documented missing/wrong and later-added clocks (by aforementioned
+    patches) in patch 1/2 more clearly.
 
-diff --git a/drivers/mfd/db8500-prcmu.c b/drivers/mfd/db8500-prcmu.c
-index dfac6afa82ca..f1f2ad9ff0b3 100644
---- a/drivers/mfd/db8500-prcmu.c
-+++ b/drivers/mfd/db8500-prcmu.c
-@@ -1695,22 +1695,20 @@ static long round_clock_rate(u8 clock, unsigned long rate)
- }
- 
- static const unsigned long db8500_armss_freqs[] = {
--	200000000,
--	400000000,
--	800000000,
-+	199680000,
-+	399360000,
-+	798720000,
- 	998400000
- };
- 
- /* The DB8520 has slightly higher ARMSS max frequency */
- static const unsigned long db8520_armss_freqs[] = {
--	200000000,
--	400000000,
--	800000000,
-+	199680000,
-+	399360000,
-+	798720000,
- 	1152000000
- };
- 
--
--
- static long round_armss_rate(unsigned long rate)
- {
- 	unsigned long freq = 0;
--- 
-2.30.2
+Marijn Suijten (2):
+  drm/msm/dsi: Use "ref" fw clock instead of global name for VCO parent
+  clk: qcom: gcc-sdm660: Remove transient global "xo" clock
+
+ drivers/clk/qcom/gcc-sdm660.c                   | 14 --------------
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c      |  4 +++-
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c      |  4 +++-
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c      |  4 +++-
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c |  4 +++-
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c       |  4 +++-
+ 6 files changed, 15 insertions(+), 19 deletions(-)
+
+--
+2.33.0
 
