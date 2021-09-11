@@ -7,28 +7,28 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FC1FC433FE
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 12:14:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91D58C28B5B
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 12:14:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 10438611F2
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 12:14:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7F760611AD
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 12:14:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235876AbhIKMP2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 11 Sep 2021 08:15:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33712 "EHLO
+        id S235966AbhIKMP0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 11 Sep 2021 08:15:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235833AbhIKMPP (ORCPT
+        with ESMTP id S235776AbhIKMPN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 11 Sep 2021 08:15:15 -0400
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D937C061760
-        for <phone-devel@vger.kernel.org>; Sat, 11 Sep 2021 05:14:03 -0700 (PDT)
+        Sat, 11 Sep 2021 08:15:13 -0400
+Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E43C061757;
+        Sat, 11 Sep 2021 05:14:00 -0700 (PDT)
 Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 12B523F43B;
-        Sat, 11 Sep 2021 14:14:01 +0200 (CEST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id ECB3E3F3F5;
+        Sat, 11 Sep 2021 14:13:57 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
@@ -46,9 +46,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Taniya Das <tdas@codeaurora.org>,
         linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 7/8] clk: qcom: gpucc-msm8998: Remove unnecessary fallbacks to global clocks
-Date:   Sat, 11 Sep 2021 14:13:39 +0200
-Message-Id: <20210911121340.261920-8-marijn.suijten@somainline.org>
+Subject: [PATCH 3/8] clk: qcom: gcc-msm8998: Remove transient global "xo" clock
+Date:   Sat, 11 Sep 2021 14:13:35 +0200
+Message-Id: <20210911121340.261920-4-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210911121340.261920-1-marijn.suijten@somainline.org>
 References: <20210911121340.261920-1-marijn.suijten@somainline.org>
@@ -58,40 +58,169 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-A previous patch removes the "xo" clock from the global namespace making
-it impossible to acquire by that ".name".  The device-tree for msm8998
-already provides the "xo" and "gpll0" clock since the addition of the
-gpucc node making it unnecessary to have this fallback at all.
+Now that all clock controllers and the DSI PLL clocks rely on "xo" being
+passed in DT as phandle instead of looking it up by the global "xo" name
+this transient clock can be removed, leaving only the fixed-factor
+"xo_board" clock in DT.
 
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
- drivers/clk/qcom/gpucc-msm8998.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/clk/qcom/gcc-msm8998.c | 57 ++++++++++++++++++----------------
+ 1 file changed, 30 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/clk/qcom/gpucc-msm8998.c b/drivers/clk/qcom/gpucc-msm8998.c
-index 3ac6fbfbd414..a925ac90018d 100644
---- a/drivers/clk/qcom/gpucc-msm8998.c
-+++ b/drivers/clk/qcom/gpucc-msm8998.c
-@@ -40,8 +40,7 @@ static struct clk_branch gpucc_cxo_clk = {
+diff --git a/drivers/clk/qcom/gcc-msm8998.c b/drivers/clk/qcom/gcc-msm8998.c
+index 9320e2ba659a..407e2c5caea4 100644
+--- a/drivers/clk/qcom/gcc-msm8998.c
++++ b/drivers/clk/qcom/gcc-msm8998.c
+@@ -25,17 +25,6 @@
+ #include "reset.h"
+ #include "gdsc.h"
+ 
+-static struct clk_fixed_factor xo = {
+-	.mult = 1,
+-	.div = 1,
+-	.hw.init = &(struct clk_init_data){
+-		.name = "xo",
+-		.parent_names = (const char *[]){ "xo_board" },
+-		.num_parents = 1,
+-		.ops = &clk_fixed_factor_ops,
+-	},
+-};
+-
+ static struct pll_vco fabia_vco[] = {
+ 	{ 250000000, 2000000000, 0 },
+ 	{ 125000000, 1000000000, 1 },
+@@ -51,7 +40,9 @@ static struct clk_alpha_pll gpll0 = {
+ 		.enable_mask = BIT(0),
  		.hw.init = &(struct clk_init_data){
- 			.name = "gpucc_cxo_clk",
- 			.parent_data = &(const struct clk_parent_data){
--				.fw_name = "xo",
--				.name = "xo"
-+				.fw_name = "xo"
- 			},
+ 			.name = "gpll0",
+-			.parent_names = (const char *[]){ "xo" },
++			.parent_data = (const struct clk_parent_data []) {
++				{ .fw_name = "xo" },
++			},
+ 			.num_parents = 1,
+ 			.ops = &clk_alpha_pll_fixed_fabia_ops,
+ 		}
+@@ -120,7 +111,9 @@ static struct clk_alpha_pll gpll1 = {
+ 		.enable_mask = BIT(1),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gpll1",
+-			.parent_names = (const char *[]){ "xo" },
++			.parent_data = (const struct clk_parent_data []) {
++				{ .fw_name = "xo" },
++			},
+ 			.num_parents = 1,
+ 			.ops = &clk_alpha_pll_fixed_fabia_ops,
+ 		}
+@@ -189,7 +182,9 @@ static struct clk_alpha_pll gpll2 = {
+ 		.enable_mask = BIT(2),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gpll2",
+-			.parent_names = (const char *[]){ "xo" },
++			.parent_data = (const struct clk_parent_data []) {
++				{ .fw_name = "xo" },
++			},
+ 			.num_parents = 1,
+ 			.ops = &clk_alpha_pll_fixed_fabia_ops,
+ 		}
+@@ -258,7 +253,9 @@ static struct clk_alpha_pll gpll3 = {
+ 		.enable_mask = BIT(3),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gpll3",
+-			.parent_names = (const char *[]){ "xo" },
++			.parent_data = (const struct clk_parent_data []) {
++				{ .fw_name = "xo" },
++			},
+ 			.num_parents = 1,
+ 			.ops = &clk_alpha_pll_fixed_fabia_ops,
+ 		}
+@@ -327,7 +324,9 @@ static struct clk_alpha_pll gpll4 = {
+ 		.enable_mask = BIT(4),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gpll4",
+-			.parent_names = (const char *[]){ "xo" },
++			.parent_data = (const struct clk_parent_data []) {
++				{ .fw_name = "xo" },
++			},
+ 			.num_parents = 1,
+ 			.ops = &clk_alpha_pll_fixed_fabia_ops,
+ 		}
+@@ -2761,7 +2760,9 @@ static struct clk_branch gcc_hdmi_clkref_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gcc_hdmi_clkref_clk",
+-			.parent_names = (const char *[]){ "xo" },
++			.parent_data = (const struct clk_parent_data []) {
++				{ .fw_name = "xo" },
++			},
  			.num_parents = 1,
  			.ops = &clk_branch2_ops,
-@@ -99,7 +98,7 @@ static const struct parent_map gpu_xo_gpll0_map[] = {
- 
- static const struct clk_parent_data gpu_xo_gpll0[] = {
- 	{ .hw = &gpucc_cxo_clk.clkr.hw },
--	{ .fw_name = "gpll0", .name = "gpll0" },
-+	{ .fw_name = "gpll0" },
+ 		},
+@@ -2775,7 +2776,9 @@ static struct clk_branch gcc_ufs_clkref_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gcc_ufs_clkref_clk",
+-			.parent_names = (const char *[]){ "xo" },
++			.parent_data = (const struct clk_parent_data []) {
++				{ .fw_name = "xo" },
++			},
+ 			.num_parents = 1,
+ 			.ops = &clk_branch2_ops,
+ 		},
+@@ -2789,7 +2792,9 @@ static struct clk_branch gcc_usb3_clkref_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gcc_usb3_clkref_clk",
+-			.parent_names = (const char *[]){ "xo" },
++			.parent_data = (const struct clk_parent_data []) {
++				{ .fw_name = "xo" },
++			},
+ 			.num_parents = 1,
+ 			.ops = &clk_branch2_ops,
+ 		},
+@@ -2803,7 +2808,9 @@ static struct clk_branch gcc_pcie_clkref_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gcc_pcie_clkref_clk",
+-			.parent_names = (const char *[]){ "xo" },
++			.parent_data = (const struct clk_parent_data []) {
++				{ .fw_name = "xo" },
++			},
+ 			.num_parents = 1,
+ 			.ops = &clk_branch2_ops,
+ 		},
+@@ -2817,7 +2824,9 @@ static struct clk_branch gcc_rx1_usb2_clkref_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gcc_rx1_usb2_clkref_clk",
+-			.parent_names = (const char *[]){ "xo" },
++			.parent_data = (const struct clk_parent_data []) {
++				{ .fw_name = "xo" },
++			},
+ 			.num_parents = 1,
+ 			.ops = &clk_branch2_ops,
+ 		},
+@@ -3155,10 +3164,6 @@ static const struct regmap_config gcc_msm8998_regmap_config = {
+ 	.fast_io	= true,
  };
  
- static const struct parent_map gpu_xo_gpupll0_map[] = {
+-static struct clk_hw *gcc_msm8998_hws[] = {
+-	&xo.hw,
+-};
+-
+ static const struct qcom_cc_desc gcc_msm8998_desc = {
+ 	.config = &gcc_msm8998_regmap_config,
+ 	.clks = gcc_msm8998_clocks,
+@@ -3167,8 +3172,6 @@ static const struct qcom_cc_desc gcc_msm8998_desc = {
+ 	.num_resets = ARRAY_SIZE(gcc_msm8998_resets),
+ 	.gdscs = gcc_msm8998_gdscs,
+ 	.num_gdscs = ARRAY_SIZE(gcc_msm8998_gdscs),
+-	.clk_hws = gcc_msm8998_hws,
+-	.num_clk_hws = ARRAY_SIZE(gcc_msm8998_hws),
+ };
+ 
+ static int gcc_msm8998_probe(struct platform_device *pdev)
 -- 
 2.33.0
 
