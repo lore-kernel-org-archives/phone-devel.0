@@ -7,28 +7,28 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7860EC28B5C
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 12:14:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FC1FC433FE
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 12:14:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 66FB7611AD
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 12:14:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 10438611F2
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Sep 2021 12:14:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235767AbhIKMP0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 11 Sep 2021 08:15:26 -0400
+        id S235876AbhIKMP2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 11 Sep 2021 08:15:28 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235791AbhIKMPN (ORCPT
+        with ESMTP id S235833AbhIKMPP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 11 Sep 2021 08:15:13 -0400
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8723C061760
-        for <phone-devel@vger.kernel.org>; Sat, 11 Sep 2021 05:14:00 -0700 (PDT)
+        Sat, 11 Sep 2021 08:15:15 -0400
+Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D937C061760
+        for <phone-devel@vger.kernel.org>; Sat, 11 Sep 2021 05:14:03 -0700 (PDT)
 Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id B478F3F401;
-        Sat, 11 Sep 2021 14:13:58 +0200 (CEST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 12B523F43B;
+        Sat, 11 Sep 2021 14:14:01 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
@@ -46,9 +46,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Taniya Das <tdas@codeaurora.org>,
         linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 4/8] clk: qcom: gpucc-msm8998: Use ARRAY_SIZE for num_parents
-Date:   Sat, 11 Sep 2021 14:13:36 +0200
-Message-Id: <20210911121340.261920-5-marijn.suijten@somainline.org>
+Subject: [PATCH 7/8] clk: qcom: gpucc-msm8998: Remove unnecessary fallbacks to global clocks
+Date:   Sat, 11 Sep 2021 14:13:39 +0200
+Message-Id: <20210911121340.261920-8-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210911121340.261920-1-marijn.suijten@somainline.org>
 References: <20210911121340.261920-1-marijn.suijten@somainline.org>
@@ -58,55 +58,40 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Where possible, use ARRAY_SIZE to determine the number of parents in
-clk_parent_data, instead of hardcoding it.
+A previous patch removes the "xo" clock from the global namespace making
+it impossible to acquire by that ".name".  The device-tree for msm8998
+already provides the "xo" and "gpll0" clock since the addition of the
+gpucc node making it unnecessary to have this fallback at all.
 
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
- drivers/clk/qcom/gpucc-msm8998.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/clk/qcom/gpucc-msm8998.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/clk/qcom/gpucc-msm8998.c b/drivers/clk/qcom/gpucc-msm8998.c
-index fedfffaf0a8d..3ac6fbfbd414 100644
+index 3ac6fbfbd414..a925ac90018d 100644
 --- a/drivers/clk/qcom/gpucc-msm8998.c
 +++ b/drivers/clk/qcom/gpucc-msm8998.c
-@@ -126,7 +126,7 @@ static struct clk_rcg2 rbcpr_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "rbcpr_clk_src",
- 		.parent_data = gpu_xo_gpll0,
--		.num_parents = 2,
-+		.num_parents = ARRAY_SIZE(gpu_xo_gpll0),
- 		.ops = &clk_rcg2_ops,
- 	},
+@@ -40,8 +40,7 @@ static struct clk_branch gpucc_cxo_clk = {
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gpucc_cxo_clk",
+ 			.parent_data = &(const struct clk_parent_data){
+-				.fw_name = "xo",
+-				.name = "xo"
++				.fw_name = "xo"
+ 			},
+ 			.num_parents = 1,
+ 			.ops = &clk_branch2_ops,
+@@ -99,7 +98,7 @@ static const struct parent_map gpu_xo_gpll0_map[] = {
+ 
+ static const struct clk_parent_data gpu_xo_gpll0[] = {
+ 	{ .hw = &gpucc_cxo_clk.clkr.hw },
+-	{ .fw_name = "gpll0", .name = "gpll0" },
++	{ .fw_name = "gpll0" },
  };
-@@ -144,7 +144,7 @@ static struct clk_rcg2 gfx3d_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gfx3d_clk_src",
- 		.parent_data = gpu_xo_gpupll0,
--		.num_parents = 2,
-+		.num_parents = ARRAY_SIZE(gpu_xo_gpupll0),
- 		.ops = &clk_rcg2_ops,
- 		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 	},
-@@ -163,7 +163,7 @@ static struct clk_rcg2 rbbmtimer_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "rbbmtimer_clk_src",
- 		.parent_data = gpu_xo_gpll0,
--		.num_parents = 2,
-+		.num_parents = ARRAY_SIZE(gpu_xo_gpll0),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
-@@ -184,7 +184,7 @@ static struct clk_rcg2 gfx3d_isense_clk_src = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gfx3d_isense_clk_src",
- 		.parent_data = gpu_xo_gpll0,
--		.num_parents = 2,
-+		.num_parents = ARRAY_SIZE(gpu_xo_gpll0),
- 		.ops = &clk_rcg2_ops,
- 	},
- };
+ 
+ static const struct parent_map gpu_xo_gpupll0_map[] = {
 -- 
 2.33.0
 
