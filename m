@@ -2,115 +2,98 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6788C433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Sep 2021 14:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D271C4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Sep 2021 14:50:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AB3CF60FA0
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Sep 2021 14:02:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8647760F4C
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Sep 2021 14:50:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245340AbhIMODR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Sep 2021 10:03:17 -0400
-Received: from comms.puri.sm ([159.203.221.185]:39980 "EHLO comms.puri.sm"
+        id S1346344AbhIMOvt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Sep 2021 10:51:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35582 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1343735AbhIMOBQ (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Sep 2021 10:01:16 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id E0720E129E;
-        Mon, 13 Sep 2021 06:57:39 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id looLM0Jr5CNu; Mon, 13 Sep 2021 06:57:39 -0700 (PDT)
-From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-To:     robh@kernel.org, shawnguo@kernel.org, kernel@pengutronix.de,
-        festevam@gmail.com
-Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        kernel@puri.sm, Angus Ainslie <angus@akkea.ca>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>
-Subject: [PATCH v1 5/6] arm64: dts: imx8mq-librem5: add power sequencing for M.2 cards
-Date:   Mon, 13 Sep 2021 15:57:05 +0200
-Message-Id: <20210913135706.309685-6-martin.kepplinger@puri.sm>
-In-Reply-To: <20210913135706.309685-1-martin.kepplinger@puri.sm>
-References: <20210913135706.309685-1-martin.kepplinger@puri.sm>
-Content-Transfer-Encoding: 8bit
+        id S1344829AbhIMOsJ (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 13 Sep 2021 10:48:09 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CED4F60555;
+        Mon, 13 Sep 2021 14:32:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1631543580;
+        bh=LlL+UEcL8QdwVkYcbQ0B6JqkI3z3wfY5/i2rd9muYgo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZHHgi9WWuwgZWISxqQOyF0tWPKvkbbNt3tXUeu9L5qxBR01cxzYdXFdq9rhuhHpLu
+         Iepo0R8iKhBwLcWf1+yIEA4IhR5nsnAbZqmEqEtFcFbcONpO4QeGPaG2NAV0ge9cgb
+         9HIoM7Esvmaiinz2Q7KMFtcxzw926msOrSFqy0esCq6HcCA/3t/As5gIo3somXFTkj
+         yiTZPzlHnLdQ8wqCODNdCJJv/iYy5X7RfGm/HeHHctqJAlKvh/drwsgIR7ArAlGnR0
+         PLVnM1D8/VtgVMyy48GMfD3q0WIa9Mm3ysFHsKjH/OeV/VNFvALV8eKacBfmGm1M4v
+         CISFWwlS3HTmQ==
+Date:   Mon, 13 Sep 2021 15:32:21 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [RFC PATCH 2/2] regulator: qcom_smd: Add PM6125 regulator support
+Message-ID: <20210913143221.GG4283@sirena.org.uk>
+References: <20210828115654.647548-1-iskren.chernev@gmail.com>
+ <20210828115654.647548-3-iskren.chernev@gmail.com>
+ <20210903152331.GK4932@sirena.org.uk>
+ <b02e3ba5-b3fe-8963-8457-62304a39e100@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="iAL9S67WQOXgEPD9"
+Content-Disposition: inline
+In-Reply-To: <b02e3ba5-b3fe-8963-8457-62304a39e100@gmail.com>
+X-Cookie: Above all else -- sky.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Angus Ainslie <angus@akkea.ca>
 
-Some wifi cards need reset asserted until after the power supplies
-have been enabled.
+--iAL9S67WQOXgEPD9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-So wire up the W_DISABLE signal for the SDIO port (WIFI_REG_ON net) and
-the BT_REG_ON net to use it for power sequencing.
+On Fri, Sep 03, 2021 at 10:49:52PM +0300, Iskren Chernev wrote:
+> On 9/3/21 6:23 PM, Mark Brown wrote:
+> > On Sat, Aug 28, 2021 at 02:56:54PM +0300, Iskren Chernev wrote:
 
-Signed-off-by: Angus Ainslie <angus@akkea.ca>
-Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
----
- .../boot/dts/freescale/imx8mq-librem5.dtsi    | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
+> >> NOTE: The sources haven't been determined, so currently each regulator
+> >> has it's own source.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index e5fdb50557f2..65c86fbbd6d1 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -199,6 +199,14 @@ simple-audio-card,codec {
- 		};
- 	};
- 
-+	usdhc2_pwrseq: pwrseq {
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_bt>, <&pinctrl_wifi_disable>;
-+		compatible = "mmc-pwrseq-simple";
-+		reset-gpios = <&gpio3 25 GPIO_ACTIVE_HIGH>,
-+			      <&gpio4 29 GPIO_ACTIVE_HIGH>;
-+	};
-+
- 	bm818_codec: sound-wwan-codec {
- 		compatible = "broadmobi,bm818", "option,gtm601";
- 		#sound-dai-cells = <0>;
-@@ -313,6 +321,13 @@ MX8MQ_IOMUXC_NAND_DQS_GPIO3_IO14	0x83
- 		>;
- 	};
- 
-+	pinctrl_bt: btgrp {
-+		fsl,pins = <
-+			/* BT_REG_ON */
-+			MX8MQ_IOMUXC_SAI5_MCLK_GPIO3_IO25	0x83
-+		>;
-+	};
-+
- 	pinctrl_charger_in: chargeringrp {
- 		fsl,pins = <
- 			/* CHRG_INT */
-@@ -644,6 +659,13 @@ MX8MQ_IOMUXC_SD2_RESET_B_USDHC2_RESET_B 0xc1
- 		>;
- 	};
- 
-+	pinctrl_wifi_disable: wifidisablegrp {
-+		fsl,pins = <
-+			/* WIFI_REG_ON */
-+			MX8MQ_IOMUXC_SAI3_RXC_GPIO4_IO29	0x83
-+		>;
-+	};
-+
- 	pinctrl_wifi_pwr: wifipwrgrp {
- 		fsl,pins = <
- 			/* WIFI3V3_EN */
-@@ -1213,6 +1235,7 @@ &usdhc2 {
- 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>;
- 	bus-width = <4>;
- 	vmmc-supply = <&reg_wifi_3v3>;
-+	mmc-pwrseq = <&usdhc2_pwrseq>;
- 	post-power-on-delay-ms = <1000>;
- 	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
- 	disable-wp;
--- 
-2.30.2
+> > It would probably be safer to just leave them unspecified for now and
+> > then add them as people figure out what's going on rather than putting
+> > something incorrect into the DT bindings.
 
+> I didn't expect this patch to be mergeable, so I didn't add the dt-bindings.
+
+If you skip out on basic smell tests like having DT bindings that's
+going to inhibit the amount of review you get, once things obviously
+aren't going to be merged review tends to get a lot more high level.
+
+> So should I add bindings and just ignore all the sources (add them later)?
+
+Yes.
+
+--iAL9S67WQOXgEPD9
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmE/YPQACgkQJNaLcl1U
+h9DfmQf+LEQSFvSlXylnotKOPeYGqgofaL3EbkdZDLOzCJ8i1NXog9E0ADq4it5V
+to8oYtTXoa2/d+GA5N0UvFnU+GPZNf3/Z6HMmdeyB+Qxgz7vX0pKVZ9qVetqCkYJ
+L+UR9tWU0TudQ7vSOMuSeXJ2mvL0bmuayULj+gERN3EmCKl1yVeAchGI/5vLG2aD
+wScIW3UXSktks3zx6k1frFDWTZTDifSDO1V0lWgxbTejWwt2Ya70AmRsDIeONf7b
+1xFJA3C4Fx3HqavE4R10/e7J42FUsAV90JSlFyuuF5JMRwGMjzlHv68ZiaCJ/Uh7
+I+tkyJ4mcXUjFmrQgrG4F3lW56zaGg==
+=UcBp
+-----END PGP SIGNATURE-----
+
+--iAL9S67WQOXgEPD9--
