@@ -2,98 +2,98 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D271C4332F
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Sep 2021 14:50:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D904BC433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Sep 2021 15:16:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8647760F4C
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Sep 2021 14:50:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BC60160FE6
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Sep 2021 15:16:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346344AbhIMOvt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Sep 2021 10:51:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35582 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1344829AbhIMOsJ (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Sep 2021 10:48:09 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CED4F60555;
-        Mon, 13 Sep 2021 14:32:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631543580;
-        bh=LlL+UEcL8QdwVkYcbQ0B6JqkI3z3wfY5/i2rd9muYgo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZHHgi9WWuwgZWISxqQOyF0tWPKvkbbNt3tXUeu9L5qxBR01cxzYdXFdq9rhuhHpLu
-         Iepo0R8iKhBwLcWf1+yIEA4IhR5nsnAbZqmEqEtFcFbcONpO4QeGPaG2NAV0ge9cgb
-         9HIoM7Esvmaiinz2Q7KMFtcxzw926msOrSFqy0esCq6HcCA/3t/As5gIo3somXFTkj
-         yiTZPzlHnLdQ8wqCODNdCJJv/iYy5X7RfGm/HeHHctqJAlKvh/drwsgIR7ArAlGnR0
-         PLVnM1D8/VtgVMyy48GMfD3q0WIa9Mm3ysFHsKjH/OeV/VNFvALV8eKacBfmGm1M4v
-         CISFWwlS3HTmQ==
-Date:   Mon, 13 Sep 2021 15:32:21 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Iskren Chernev <iskren.chernev@gmail.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [RFC PATCH 2/2] regulator: qcom_smd: Add PM6125 regulator support
-Message-ID: <20210913143221.GG4283@sirena.org.uk>
-References: <20210828115654.647548-1-iskren.chernev@gmail.com>
- <20210828115654.647548-3-iskren.chernev@gmail.com>
- <20210903152331.GK4932@sirena.org.uk>
- <b02e3ba5-b3fe-8963-8457-62304a39e100@gmail.com>
+        id S1347189AbhIMPSA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Sep 2021 11:18:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54748 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346880AbhIMPRi (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 13 Sep 2021 11:17:38 -0400
+Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65868C0E9CF4
+        for <phone-devel@vger.kernel.org>; Mon, 13 Sep 2021 07:14:22 -0700 (PDT)
+Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 6CC6A1F4B9;
+        Mon, 13 Sep 2021 16:14:18 +0200 (CEST)
+Date:   Mon, 13 Sep 2021 16:14:17 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     robdclark@gmail.com, sean@poorly.run, airlied@linux.ie,
+        daniel@ffwll.ch, dmitry.baryshkov@linaro.org,
+        abhinavk@codeaurora.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org
+Subject: Re: [PATCH v2 2/2] drm/msm/dpu: Fix timeout issues on command mode
+ panels
+Message-ID: <20210913141417.7brqczhagufgqch2@SoMainline.org>
+References: <20210911163919.47173-1-angelogioacchino.delregno@somainline.org>
+ <20210911163919.47173-2-angelogioacchino.delregno@somainline.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="iAL9S67WQOXgEPD9"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b02e3ba5-b3fe-8963-8457-62304a39e100@gmail.com>
-X-Cookie: Above all else -- sky.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20210911163919.47173-2-angelogioacchino.delregno@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 2021-09-11 18:39:19, AngeloGioacchino Del Regno wrote:
+> In function dpu_encoder_phys_cmd_wait_for_commit_done we are always
+> checking if the relative CTL is started by waiting for an interrupt
+> to fire: it is fine to do that, but then sometimes we call this
+> function while the CTL is up and has never been put down, but that
+> interrupt gets raised only when the CTL gets a state change from
+> 0 to 1 (disabled to enabled), so we're going to wait for something
+> that will never happen on its own.
+> 
+> Solving this while avoiding to restart the CTL is actually possible
+> and can be done by just checking if it is already up and running
+> when the wait_for_commit_done function is called: in this case, so,
+> if the CTL was already running, we can say that the commit is done
+> if the command transmission is complete (in other terms, if the
+> interface has been flushed).
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 
---iAL9S67WQOXgEPD9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This has unfortunately not solved any ctl_start timeout issues for me/us
+on other platforms yet, but for the code:
 
-On Fri, Sep 03, 2021 at 10:49:52PM +0300, Iskren Chernev wrote:
-> On 9/3/21 6:23 PM, Mark Brown wrote:
-> > On Sat, Aug 28, 2021 at 02:56:54PM +0300, Iskren Chernev wrote:
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
 
-> >> NOTE: The sources haven't been determined, so currently each regulator
-> >> has it's own source.
-
-> > It would probably be safer to just leave them unspecified for now and
-> > then add them as people figure out what's going on rather than putting
-> > something incorrect into the DT bindings.
-
-> I didn't expect this patch to be mergeable, so I didn't add the dt-bindings.
-
-If you skip out on basic smell tests like having DT bindings that's
-going to inhibit the amount of review you get, once things obviously
-aren't going to be merged review tends to get a lot more high level.
-
-> So should I add bindings and just ignore all the sources (add them later)?
-
-Yes.
-
---iAL9S67WQOXgEPD9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmE/YPQACgkQJNaLcl1U
-h9DfmQf+LEQSFvSlXylnotKOPeYGqgofaL3EbkdZDLOzCJ8i1NXog9E0ADq4it5V
-to8oYtTXoa2/d+GA5N0UvFnU+GPZNf3/Z6HMmdeyB+Qxgz7vX0pKVZ9qVetqCkYJ
-L+UR9tWU0TudQ7vSOMuSeXJ2mvL0bmuayULj+gERN3EmCKl1yVeAchGI/5vLG2aD
-wScIW3UXSktks3zx6k1frFDWTZTDifSDO1V0lWgxbTejWwt2Ya70AmRsDIeONf7b
-1xFJA3C4Fx3HqavE4R10/e7J42FUsAV90JSlFyuuF5JMRwGMjzlHv68ZiaCJ/Uh7
-I+tkyJ4mcXUjFmrQgrG4F3lW56zaGg==
-=UcBp
------END PGP SIGNATURE-----
-
---iAL9S67WQOXgEPD9--
+> ---
+>  drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+> index aa01698d6b25..aa5d3b3cef15 100644
+> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+> @@ -682,6 +682,9 @@ static int dpu_encoder_phys_cmd_wait_for_commit_done(
+>  	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
+>  		return 0;
+>  
+> +	if (phys_enc->hw_ctl->ops.is_started(phys_enc->hw_ctl))
+> +		return dpu_encoder_phys_cmd_wait_for_tx_complete(phys_enc);
+> +
+>  	return _dpu_encoder_phys_cmd_wait_for_ctl_start(phys_enc);
+>  }
+>  
+> -- 
+> 2.32.0
+> 
