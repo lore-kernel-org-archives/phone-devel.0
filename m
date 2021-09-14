@@ -4,38 +4,38 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-11.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80158C4332F
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Sep 2021 21:13:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04EFDC433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Sep 2021 21:41:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6B3C76121E
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Sep 2021 21:13:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D33D361183
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Sep 2021 21:41:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234417AbhINVOl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 14 Sep 2021 17:14:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59730 "EHLO mail.kernel.org"
+        id S235035AbhINVnM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Sep 2021 17:43:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45844 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234298AbhINVOk (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 14 Sep 2021 17:14:40 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 894A9610D1;
-        Tue, 14 Sep 2021 21:13:22 +0000 (UTC)
+        id S232891AbhINVnL (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 14 Sep 2021 17:43:11 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A4F7260F46;
+        Tue, 14 Sep 2021 21:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631654002;
-        bh=7HE77BXEi8gZJx5D5W1KRYRzBxiyfZmcZVuVI3cDdZo=;
+        s=k20201202; t=1631655713;
+        bh=yz5Bfvyarz8ioV1nD8LWZxEwKdqGjFozaYoqtDxmce4=;
         h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=rAQU2mMJ1Q7/yfgtA5H+wMnmxNfTWLwzvHsPfZPfwtHZFkTM8PtoQ0w0iNrYUZpsP
-         BWkC31E0wD/wROa1k6pJIyPH8uXNJTsNyxQRkpRhEQ3CJYK6gd8xc7a3WOMwfC2aLt
-         J0/Ge4yxeofKqMry48WHKVdzOS1bX7o74G0H4NzDnbbn9ws/OqNZ428z+tJLUOI8IG
-         AvW5wJv0Gc9SzgVcfOs5j9TZXxUzZA4ZZ9BUnBwurptEdqTNDZ94nsgA45aIgjovqz
-         EVWNOhgqafVKxnu/+83bPLzYjJnqb/93/H/5Itw3U7nHaRIju0DVqc+Z2TY/tBtG7T
-         D3rAT8SSCyprQ==
+        b=n8OwrgRGFqEh3jjsms76i6N1FzD9i3xgYm2ic95Rx4DW0JxzsGbySrBDn02Wcyiqw
+         qsmvAcZqf5zMrkKQG0LrkA/8nEnaLQCV5w0gXo7GFKgfj/qAmUbm4OvnuZlQ43tFjC
+         MlSO6Vp0I0b94rT0YpeNjOrCC0uFLEa+Rk7j6UF+YpB7hfH3Aoy+CLB4aK2xa/rvxC
+         n1uwSt4qr5nigm94X3r3suQcwC7wizb7wNLlDMe8xaQOk3TPjVoC16zhGL26EhLiAB
+         0XlV+23Cov+ish1ADEuj5KI2fpeHg9xlxke28vAMg2ph5bH6k+6v1D5Vudhzy7ai3D
+         L/qbjr9pOcuHA==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20210829204822.289829-5-marijn.suijten@somainline.org>
-References: <20210829204822.289829-1-marijn.suijten@somainline.org> <20210829204822.289829-5-marijn.suijten@somainline.org>
-Subject: Re: [PATCH 4/4] clk: qcom: gpucc-sdm660: Remove fallback to global clock names
+In-Reply-To: <20210911121340.261920-2-marijn.suijten@somainline.org>
+References: <20210911121340.261920-1-marijn.suijten@somainline.org> <20210911121340.261920-2-marijn.suijten@somainline.org>
+Subject: Re: [PATCH 1/8] clk: qcom: gcc-msm8998: Move parent names and mapping below GPLLs
 From:   Stephen Boyd <sboyd@kernel.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
@@ -43,27 +43,30 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
         Marijn Suijten <marijn.suijten@somainline.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Taniya Das <tdas@codeaurora.org>,
         linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 To:     Marijn Suijten <marijn.suijten@somainline.org>,
         phone-devel@vger.kernel.org
-Date:   Tue, 14 Sep 2021 14:13:20 -0700
-Message-ID: <163165400096.763609.16224534023728394535@swboyd.mtv.corp.google.com>
+Date:   Tue, 14 Sep 2021 14:41:52 -0700
+Message-ID: <163165571230.763609.16990888514996843036@swboyd.mtv.corp.google.com>
 User-Agent: alot/0.9.1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Quoting Marijn Suijten (2021-08-29 13:48:22)
-> The necessary clocks for this driver are already fully specified in
-> sdm630 DT under the .fw_name, and do not need an implicit fallback to
-> their global name.
+Quoting Marijn Suijten (2021-09-11 05:13:33)
+> Prepare for a future patch where we use .hw pointers to these GPLL
+> clocks in the parent mapping instead of name references.  This requires
+> the GPLL clocks to be decared before parent_data arrays.
 >=20
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somain=
+line.org>
 > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 > ---
 
