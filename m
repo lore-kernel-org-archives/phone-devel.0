@@ -2,82 +2,69 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85AF1C433F5
-	for <phone-devel@archiver.kernel.org>; Sat, 18 Sep 2021 14:40:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 530E5C43217
+	for <phone-devel@archiver.kernel.org>; Sat, 18 Sep 2021 23:06:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5C9A961350
-	for <phone-devel@archiver.kernel.org>; Sat, 18 Sep 2021 14:40:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2C0116113A
+	for <phone-devel@archiver.kernel.org>; Sat, 18 Sep 2021 23:06:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238218AbhIROmH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 18 Sep 2021 10:42:07 -0400
-Received: from relay07.th.seeweb.it ([5.144.164.168]:55209 "EHLO
-        relay07.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238049AbhIROmG (ORCPT
+        id S240631AbhIRXHh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 18 Sep 2021 19:07:37 -0400
+Received: from relay05.th.seeweb.it ([5.144.164.166]:39423 "EHLO
+        relay05.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232711AbhIRXHh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 18 Sep 2021 10:42:06 -0400
+        Sat, 18 Sep 2021 19:07:37 -0400
 Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id D2B1F3E7C9;
-        Sat, 18 Sep 2021 16:40:39 +0200 (CEST)
-Date:   Sat, 18 Sep 2021 16:40:38 +0200
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id DD5163E815;
+        Sun, 19 Sep 2021 01:06:10 +0200 (CEST)
+Date:   Sun, 19 Sep 2021 01:06:09 +0200
 From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Stephen Boyd <sboyd@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Rob Clark <robdclark@chromium.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+To:     phone-devel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
+        Stephen Boyd <sboyd@kernel.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Abhinav Kumar <abhinavk@codeaurora.org>,
-        Jonathan Marek <jonathan@marek.ca>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org
-Subject: Re: [PATCH v3 0/2] Use "ref" clocks from firmware for DSI PLL VCO
- parent
-Message-ID: <20210918144038.6q352hzqopx7vvdu@SoMainline.org>
-References: <20210911131922.387964-1-marijn.suijten@somainline.org>
- <163165584152.763609.4056232270079096475@swboyd.mtv.corp.google.com>
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RESEND PATCH] arm64: DT: qcom: msm8998: Provide missing "xo"
+ and "sleep_clk" to GCC
+Message-ID: <20210918230609.qbdcneew7ukwdxst@SoMainline.org>
+References: <20210918143503.634920-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <163165584152.763609.4056232270079096475@swboyd.mtv.corp.google.com>
+In-Reply-To: <20210918143503.634920-1-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2021-09-14 14:44:01, Stephen Boyd wrote:
-> Quoting Marijn Suijten (2021-09-11 06:19:19)
-> > All DSI PHY/PLL drivers were referencing their VCO parent clock by a
-> > global name, most of which don't exist or have been renamed.  These
-> > clock drivers seem to function fine without that except the 14nm driver
-> > for sdm6xx [1].
-> > 
-> > At the same time all DTs provide a "ref" clock as per the requirements
-> > of dsi-phy-common.yaml, but the clock is never used.  This patchset puts
-> > that clock to use without relying on a global clock name, so that all
-> > dependencies are explicitly defined in DT (the firmware) in the end.
+On 2021-09-18 16:35:02, Marijn Suijten wrote:
+> In a future patch the GCC driver will stop requesting this xo clock by
+> its global "xo" name, in favour of of having an explicit phandle here in
+> the DT.  Aside from that this clock in addition to the mandatory
+> "sleep_clk" were never passed despite being required by the relevant
+> dt-bindings.
 > 
-> I can take this through clk tree if it helps avoid conflicts. There are
-> some other patches to sdm660.c in the clk tree already.
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+> Resending to directly address Rob Herring in the To: field and add
+> Stephen Boyd to cc whom already queued the clk driver part in clk-next.
 
-Might be useful to maintain proper ordering of these dependent patches
-but it's up to Dmitry and Rob to decide, whom I'm sending this mail
-directly to so that they can chime in.
+Apologies for the re-send noise; this patch is already going in through
+the qcom tree:
+https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/commit/?h=for-next&id=2c2f64ae36d97c1ec756ed781640f7951f7bac42
