@@ -2,438 +2,206 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0DFCC433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 00:51:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F8D2C433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 03:08:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B55BC61051
-	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 00:51:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 60BBD60FC1
+	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 03:08:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231758AbhITAwc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 19 Sep 2021 20:52:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38032 "EHLO
+        id S229667AbhITDKB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 19 Sep 2021 23:10:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231738AbhITAwb (ORCPT
+        with ESMTP id S229626AbhITDKA (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 19 Sep 2021 20:52:31 -0400
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90B8FC061766
-        for <phone-devel@vger.kernel.org>; Sun, 19 Sep 2021 17:51:05 -0700 (PDT)
-Received: by mail-oi1-x233.google.com with SMTP id n78so9251545oig.6
-        for <phone-devel@vger.kernel.org>; Sun, 19 Sep 2021 17:51:05 -0700 (PDT)
+        Sun, 19 Sep 2021 23:10:00 -0400
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A6FDC061574;
+        Sun, 19 Sep 2021 20:08:34 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id c13-20020a17090a558d00b00198e6497a4fso14143959pji.4;
+        Sun, 19 Sep 2021 20:08:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Z6iIwGZqo8KFJn+K0TUvoAOeMuSy61NsAakI2Z/4K8w=;
-        b=KvM71N8Dw/gWNX5mKKyv6VZ1nY6dwecJVnMPR5dWjRm+Y7rkXJrt/JN9cAX2LpM/fv
-         k8rzVabTBJ4LJtWma1/vWUhGNkJo6CKcwEQd7UGjEaxHHwl11MboslsmZMn90Ak0V/18
-         HIqm7nx8f81940o09Ud0t0epVRtUWvg5iBhUEdzCHcpgTNspdc3GgVndJJhRl8BecDUv
-         g0KcsGMDVOEc2BLKEJoM3Qc40jZZ9CQrstBpP/7laf9Cnkua6fsPl0CRVlZkkDp4M6ZR
-         kYdPjuQ1Jv6bMH63sWX/Xi5n5FIGGo5gewH8lEAm3VqHWzBIIRiihCkuXza4XNRUKhVG
-         70hA==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rO+ZOlTwEBd/AcnBDdDoiaM1CRFNKUyFZNyT5m5yUgE=;
+        b=IBUb1XKhsWtsS6Y9qBHqFe2dBA9Uhbob5oSNQ1TAwxq41t+TqnSVy9dZHFfms18ErD
+         PmpQIIVjbySYtuPFsZyx8SLs+BnwGwJsdGqE57HeMrk8M23QcBytOBjdspJZJm65BLc9
+         TE632PJ3YGo3Gf3goXNshs0vowJPiIQDlTgfZ4ToMuqAopN161Op5RFbyJp71yhg4Yhl
+         pS5RtaFiD4UmY0QjQzD5coXO8FM1Jk9u5qEoiogm4W3HNmXOD8sE6uxEgVGsr1kavYcF
+         50poIY4ADhslFLrLpZApZP2uFgZhOEa3dRueHlJC27e4Gu+k7NddlBfqd+ZdxNwARDAA
+         OxDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Z6iIwGZqo8KFJn+K0TUvoAOeMuSy61NsAakI2Z/4K8w=;
-        b=FzRvtgbtB+sGfWCz/1a9AHd1k0RdyPreIHkEmDb0uivviAC1Yz7gQGejE0DC2MbGC1
-         HoN1icqg4xwxRDQkvg5UPTcwSzsb0qPs42d9YJFm/Gr69FNNyvPixV5AHgn7gLWiBQAi
-         XK1TlKHkRIyCiH+UoVrVdAXhQoxck33PcYucWi7k8CsL2bLwIs1zxlDmEcV4ypYKvEFF
-         9WS/cNdhJ5ef9eD0SjtcOUbxHiTfhlg9LboOZje7tQ5pRKir1tcS/FrUX2ffcRwdu+sp
-         auj+UW+Xz8oWmd/cNcjOshbFvZEOaMUPARhPqiTOxzUGzjluYCY+++QPo79M+B0Y9LFg
-         Y3Vw==
-X-Gm-Message-State: AOAM5316t7lY5Hs3EfW1MhbDomRtT1HalMKwBZX0ChS+OsmHmoNuYbj9
-        xpZOVfWufuPVqbVWTXFUNO4Hjw==
-X-Google-Smtp-Source: ABdhPJxSkAodcmoM2Y66MDLBhy46TWQ5FzcF1TGxUX/DMbwy5Gc50Wxz/JTxTF7zP5+eDbTsC1414g==
-X-Received: by 2002:aca:2218:: with SMTP id b24mr5017407oic.55.1632099064731;
-        Sun, 19 Sep 2021 17:51:04 -0700 (PDT)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id i1sm3182453ooo.15.2021.09.19.17.51.03
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=rO+ZOlTwEBd/AcnBDdDoiaM1CRFNKUyFZNyT5m5yUgE=;
+        b=Hq2SdFGRv+hA34OzTsjC0rhAXrs7myIXFMY7KqQpTKvbD6pKbiOVqh4dGgdfm9U8Tv
+         zvWwPxTD7nra+3JjAV6iq9xGMNWq6tLCIbb9u/x9r5/voTCoUYjnfiHIgJIBoLXoQKGR
+         ElvCEVGuItjtfT8YQ7Qt4MpQaeHm8DGZY5ZQy/qZiSPLBQlM3ADMYwQsPKAsHFXcDU8f
+         eFyg6b9XNFlxEr6VAE70S92bvP/m9NxrdyhcND6p3JZRUSXp/SbFMSIdmwPWgHNga3JH
+         n7RvK3L6gpgMy6qbNSbBSn5evAZp9Tp48+r3TvpvahPe7XKkzGC+2yxZJsu0YqInuyDW
+         yJ9Q==
+X-Gm-Message-State: AOAM531bP09u8A/IoZzQGLgnzsCVxUMNc46uoGTjcGzwzHEYivbcr+PM
+        BjmMGuUtaQGFqhWxZSQbqhAeZErC6DOY+7OE
+X-Google-Smtp-Source: ABdhPJyiXoJbPvsEsClfPBzFv2uhMkZZbBlp3eYS6N+Xjyv3hVOj4rPW5tNkA9Sscdob1ekxriN62w==
+X-Received: by 2002:a17:90b:150:: with SMTP id em16mr34893167pjb.63.1632107313461;
+        Sun, 19 Sep 2021 20:08:33 -0700 (PDT)
+Received: from skynet-linux.local ([106.201.127.154])
+        by smtp.googlemail.com with ESMTPSA id l11sm16295065pjg.22.2021.09.19.20.08.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Sep 2021 17:51:04 -0700 (PDT)
-Date:   Sun, 19 Sep 2021 19:51:02 -0500
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Cc:     agross@kernel.org, robh+dt@kernel.org, lgirdwood@gmail.com,
-        broonie@kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, jami.kettunen@somainline.org,
-        paul.bouchara@somainline.org, martin.botka@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, jeffrey.l.hugo@gmail.com,
-        robh@kernel.org
-Subject: Re: [PATCH v7 2/6] dt-bindings: avs: cpr: Convert binding to YAML
- schema
-Message-ID: <YUfa9jF+F3ght1lN@builder.lan>
-References: <20210901155735.629282-1-angelogioacchino.delregno@somainline.org>
- <20210901155735.629282-3-angelogioacchino.delregno@somainline.org>
+        Sun, 19 Sep 2021 20:08:33 -0700 (PDT)
+From:   Sireesh Kodali <sireeshkodali1@gmail.com>
+To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, elder@kernel.org
+Cc:     Sireesh Kodali <sireeshkodali1@gmail.com>
+Subject: [RFC PATCH 00/17] net: ipa: Add support for IPA v2.x
+Date:   Mon, 20 Sep 2021 08:37:54 +0530
+Message-Id: <20210920030811.57273-1-sireeshkodali1@gmail.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210901155735.629282-3-angelogioacchino.delregno@somainline.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed 01 Sep 10:57 CDT 2021, AngeloGioacchino Del Regno wrote:
+Hi,
 
-> Convert the qcom,cpr.txt document to YAML schema and place it in the
-> appropriate directory, since this driver was moved from power/avs
-> to soc/qcom, but forgets to move the documentation.
-> 
-> Fixes: a7305e684fcf ("PM: AVS: qcom-cpr: Move the driver to the qcom specific drivers")
+This RFC patch series adds support for IPA v2, v2.5 and v2.6L
+(collectively referred to as IPA v2.x).
 
-I don't see it to be a requirement that the DT binding structure follows
-the Linux implementation structure, so I think it's appropriate to keep
-it in power/avs and I don't think it deserves a fixes.
+Basic description:
+IPA v2.x is the older version of the IPA hardware found on Qualcomm
+SoCs. The biggest differences between v2.x and later versions are:
+- 32 bit hardware (the IPA microcontroler is 32 bit)
+- BAM (as opposed to GSI as a DMA transport)
+- Changes to the QMI init sequence (described in the commit message)
 
+The fact that IPA v2.x are 32 bit only affects us directly in the table
+init code. However, its impact is felt in other parts of the code, as it
+changes the size of fields of various structs (e.g. in the commands that
+can be sent).
 
-I would like to merge this series, could you please address Rob's
-concerns on the binding?
+BAM support is already present in the mainline kernel, however it lacks
+two things:
+- Support for DMA metadata, to pass the size of the transaction from the
+  hardware to the dma client
+- Support for immediate commands, which are needed to pass commands from
+  the driver to the microcontroller
 
+Separate patch series have been created to deal with these (linked in
+the end)
 
-PS. If you did the YAML-ification as the last step I would have merged
-the other 5 patches...
+This patch series adds support for BAM as a transport by refactoring the
+current GSI code to create an abstract uniform API on top. This API
+allows the rest of the driver to handle DMA without worrying about the
+IPA version.
 
-Thanks,
-Bjorn
+The final thing that hasn't been touched by this patch series is the IPA
+resource manager. On the downstream CAF kernel, the driver seems to
+share the resource code between IPA v2.x and IPA v3.x, which should mean
+all it would take to add support for resources on IPA v2.x would be to
+add the definitions in the ipa_data.
 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> ---
->  .../bindings/power/avs/qcom,cpr.txt           | 131 +-------------
->  .../bindings/soc/qcom/qcom,cpr.yaml           | 167 ++++++++++++++++++
->  MAINTAINERS                                   |   2 +-
->  3 files changed, 169 insertions(+), 131 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/power/avs/qcom,cpr.txt b/Documentation/devicetree/bindings/power/avs/qcom,cpr.txt
-> index ab0d5ebbad4e..2ada8cd08949 100644
-> --- a/Documentation/devicetree/bindings/power/avs/qcom,cpr.txt
-> +++ b/Documentation/devicetree/bindings/power/avs/qcom,cpr.txt
-> @@ -1,130 +1 @@
-> -QCOM CPR (Core Power Reduction)
-> -
-> -CPR (Core Power Reduction) is a technology to reduce core power on a CPU
-> -or other device. Each OPP of a device corresponds to a "corner" that has
-> -a range of valid voltages for a particular frequency. While the device is
-> -running at a particular frequency, CPR monitors dynamic factors such as
-> -temperature, etc. and suggests adjustments to the voltage to save power
-> -and meet silicon characteristic requirements.
-> -
-> -- compatible:
-> -	Usage: required
-> -	Value type: <string>
-> -	Definition: should be "qcom,qcs404-cpr", "qcom,cpr" for qcs404
-> -
-> -- reg:
-> -	Usage: required
-> -	Value type: <prop-encoded-array>
-> -	Definition: base address and size of the rbcpr register region
-> -
-> -- interrupts:
-> -	Usage: required
-> -	Value type: <prop-encoded-array>
-> -	Definition: should specify the CPR interrupt
-> -
-> -- clocks:
-> -	Usage: required
-> -	Value type: <prop-encoded-array>
-> -	Definition: phandle to the reference clock
-> -
-> -- clock-names:
-> -	Usage: required
-> -	Value type: <stringlist>
-> -	Definition: must be "ref"
-> -
-> -- vdd-apc-supply:
-> -	Usage: required
-> -	Value type: <phandle>
-> -	Definition: phandle to the vdd-apc-supply regulator
-> -
-> -- #power-domain-cells:
-> -	Usage: required
-> -	Value type: <u32>
-> -	Definition: should be 0
-> -
-> -- operating-points-v2:
-> -	Usage: required
-> -	Value type: <phandle>
-> -	Definition: A phandle to the OPP table containing the
-> -		    performance states supported by the CPR
-> -		    power domain
-> -
-> -- acc-syscon:
-> -	Usage: optional
-> -	Value type: <phandle>
-> -	Definition: phandle to syscon for writing ACC settings
-> -
-> -- nvmem-cells:
-> -	Usage: required
-> -	Value type: <phandle>
-> -	Definition: phandle to nvmem cells containing the data
-> -		    that makes up a fuse corner, for each fuse corner.
-> -		    As well as the CPR fuse revision.
-> -
-> -- nvmem-cell-names:
-> -	Usage: required
-> -	Value type: <stringlist>
-> -	Definition: should be "cpr_quotient_offset1", "cpr_quotient_offset2",
-> -		    "cpr_quotient_offset3", "cpr_init_voltage1",
-> -		    "cpr_init_voltage2", "cpr_init_voltage3", "cpr_quotient1",
-> -		    "cpr_quotient2", "cpr_quotient3", "cpr_ring_osc1",
-> -		    "cpr_ring_osc2", "cpr_ring_osc3", "cpr_fuse_revision"
-> -		    for qcs404.
-> -
-> -Example:
-> -
-> -	cpr_opp_table: cpr-opp-table {
-> -		compatible = "operating-points-v2-qcom-level";
-> -
-> -		cpr_opp1: opp1 {
-> -			opp-level = <1>;
-> -			qcom,opp-fuse-level = <1>;
-> -		};
-> -		cpr_opp2: opp2 {
-> -			opp-level = <2>;
-> -			qcom,opp-fuse-level = <2>;
-> -		};
-> -		cpr_opp3: opp3 {
-> -			opp-level = <3>;
-> -			qcom,opp-fuse-level = <3>;
-> -		};
-> -	};
-> -
-> -	power-controller@b018000 {
-> -		compatible = "qcom,qcs404-cpr", "qcom,cpr";
-> -		reg = <0x0b018000 0x1000>;
-> -		interrupts = <0 15 IRQ_TYPE_EDGE_RISING>;
-> -		clocks = <&xo_board>;
-> -		clock-names = "ref";
-> -		vdd-apc-supply = <&pms405_s3>;
-> -		#power-domain-cells = <0>;
-> -		operating-points-v2 = <&cpr_opp_table>;
-> -		acc-syscon = <&tcsr>;
-> -
-> -		nvmem-cells = <&cpr_efuse_quot_offset1>,
-> -			<&cpr_efuse_quot_offset2>,
-> -			<&cpr_efuse_quot_offset3>,
-> -			<&cpr_efuse_init_voltage1>,
-> -			<&cpr_efuse_init_voltage2>,
-> -			<&cpr_efuse_init_voltage3>,
-> -			<&cpr_efuse_quot1>,
-> -			<&cpr_efuse_quot2>,
-> -			<&cpr_efuse_quot3>,
-> -			<&cpr_efuse_ring1>,
-> -			<&cpr_efuse_ring2>,
-> -			<&cpr_efuse_ring3>,
-> -			<&cpr_efuse_revision>;
-> -		nvmem-cell-names = "cpr_quotient_offset1",
-> -			"cpr_quotient_offset2",
-> -			"cpr_quotient_offset3",
-> -			"cpr_init_voltage1",
-> -			"cpr_init_voltage2",
-> -			"cpr_init_voltage3",
-> -			"cpr_quotient1",
-> -			"cpr_quotient2",
-> -			"cpr_quotient3",
-> -			"cpr_ring_osc1",
-> -			"cpr_ring_osc2",
-> -			"cpr_ring_osc3",
-> -			"cpr_fuse_revision";
-> -	};
-> +This file has been moved to ../../soc/qcom/qcom,cpr.yaml
-> diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
-> new file mode 100644
-> index 000000000000..20f65427c762
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
-> @@ -0,0 +1,167 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: "http://devicetree.org/schemas/soc/qcom/qcom,cpr.yaml#"
-> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> +
-> +title: Qualcomm Core Power Reduction (CPR)
-> +
-> +description: |
-> +  CPR (Core Power Reduction) is a technology to reduce core power on a CPU
-> +  or other device. Each OPP of a device corresponds to a "corner" that has
-> +  a range of valid voltages for a particular frequency. While the device is
-> +  running at a particular frequency, CPR monitors dynamic factors such as
-> +  temperature, etc. and suggests adjustments to the voltage to save power
-> +  and meet silicon characteristic requirements.
-> +
-> +maintainers:
-> +  - Niklas Cassel <nks@flawful.org>
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - qcom,qcs404-cpr
-> +      - const: qcom,cpr
-> +
-> +  reg:
-> +    description: Base address and size of the RBCPR register region
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    items:
-> +      - const: ref
-> +
-> +  clocks:
-> +    items:
-> +      - description: CPR reference clock
-> +
-> +  vdd-apc-supply:
-> +    description: Autonomous Phase Control (APC) power supply
-> +
-> +  '#power-domain-cells':
-> +    const: 0
-> +
-> +  acc-syscon:
-> +    description: phandle to syscon for writing ACC settings
-> +
-> +  nvmem-cells:
-> +    minItems: 9
-> +    maxItems: 32
-> +    description: Cells containing the fuse corners and revision data
-> +
-> +  nvmem-cell-names:
-> +    minItems: 9
-> +    maxItems: 32
-> +
-> +  operating-points-v2: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clock-names
-> +  - clocks
-> +  - vdd-apc-supply
-> +  - "#power-domain-cells"
-> +  - nvmem-cells
-> +  - nvmem-cell-names
-> +  - operating-points-v2
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    cpus {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        cpu@100 {
-> +            compatible = "arm,cortex-a53";
-> +            device_type = "cpu";
-> +            reg = <0x100>;
-> +            operating-points-v2 = <&cpu_opp_table>;
-> +            power-domains = <&cpr>;
-> +            power-domain-names = "cpr";
-> +        };
-> +    };
-> +
-> +    cpu_opp_table: opp-table-cpu {
-> +        compatible = "operating-points-v2-kryo-cpu";
-> +        opp-shared;
-> +
-> +        opp-1094400000 {
-> +            opp-hz = /bits/ 64 <1094400000>;
-> +            required-opps = <&cpr_opp1>;
-> +        };
-> +        opp-1248000000 {
-> +            opp-hz = /bits/ 64 <1248000000>;
-> +            required-opps = <&cpr_opp2>;
-> +        };
-> +        opp-1401600000 {
-> +            opp-hz = /bits/ 64 <1401600000>;
-> +            required-opps = <&cpr_opp3>;
-> +        };
-> +    };
-> +
-> +    cpr_opp_table: opp-table-cpr {
-> +        compatible = "operating-points-v2-qcom-level";
-> +
-> +        cpr_opp1: opp1 {
-> +            opp-level = <1>;
-> +            qcom,opp-fuse-level = <1>;
-> +        };
-> +        cpr_opp2: opp2 {
-> +            opp-level = <2>;
-> +            qcom,opp-fuse-level = <2>;
-> +        };
-> +        cpr_opp3: opp3 {
-> +            opp-level = <3>;
-> +            qcom,opp-fuse-level = <3>;
-> +        };
-> +    };
-> +
-> +    power-controller@b018000 {
-> +        compatible = "qcom,qcs404-cpr", "qcom,cpr";
-> +        reg = <0x0b018000 0x1000>;
-> +        interrupts = <0 15 IRQ_TYPE_EDGE_RISING>;
-> +        clocks = <&xo_board>;
-> +        clock-names = "ref";
-> +        vdd-apc-supply = <&pms405_s3>;
-> +        #power-domain-cells = <0>;
-> +        operating-points-v2 = <&cpr_opp_table>;
-> +        acc-syscon = <&tcsr>;
-> +
-> +        nvmem-cells = <&cpr_efuse_quot_offset1>,
-> +                      <&cpr_efuse_quot_offset2>,
-> +                      <&cpr_efuse_quot_offset3>,
-> +                      <&cpr_efuse_init_voltage1>,
-> +                      <&cpr_efuse_init_voltage2>,
-> +                      <&cpr_efuse_init_voltage3>,
-> +                      <&cpr_efuse_quot1>,
-> +                      <&cpr_efuse_quot2>,
-> +                      <&cpr_efuse_quot3>,
-> +                      <&cpr_efuse_ring1>,
-> +                      <&cpr_efuse_ring2>,
-> +                      <&cpr_efuse_ring3>,
-> +                      <&cpr_efuse_revision>;
-> +        nvmem-cell-names = "cpr0_quotient_offset1",
-> +                           "cpr0_quotient_offset2",
-> +                           "cpr0_quotient_offset3",
-> +                           "cpr0_init_voltage1",
-> +                           "cpr0_init_voltage2",
-> +                           "cpr0_init_voltage3",
-> +                           "cpr0_quotient1",
-> +                           "cpr0_quotient2",
-> +                           "cpr0_quotient3",
-> +                           "cpr0_ring_osc1",
-> +                           "cpr0_ring_osc2",
-> +                           "cpr0_ring_osc3",
-> +                           "cpr_fuse_revision";
-> +    };
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f58dad1a1922..90f1db301fae 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -15490,7 +15490,7 @@ M:	Niklas Cassel <nks@flawful.org>
->  L:	linux-pm@vger.kernel.org
->  L:	linux-arm-msm@vger.kernel.org
->  S:	Maintained
-> -F:	Documentation/devicetree/bindings/power/avs/qcom,cpr.txt
-> +F:	Documentation/devicetree/bindings/soc/qcom/qcom,cpr.yaml
->  F:	drivers/soc/qcom/cpr.c
->  
->  QUALCOMM CPUFREQ DRIVER MSM8996/APQ8096
-> -- 
-> 2.32.0
-> 
+Testing:
+This patch series was tested on kernel version 5.13 on a phone with
+SDM625 (IPA v2.6L), and a phone with MSM8996 (IPA v2.5). The phone with
+IPA v2.5 was able to get an IP address using modem-manager, although
+sending/receiving packets was not tested. The phone with IPA v2.6L was
+able to get an IP, but was unable to send/receive packets. Its modem
+also relies on IPA v2.6l's compression/decompression support, and
+without this patch series, the modem simply crashes and restarts,
+waiting for the IPA block to come up.
+
+This patch series is based on code from the downstream CAF kernel v4.9
+
+There are some things in this patch series that would obviously not get
+accepted in their current form:
+- All IPA 2.x data is in a single file
+- Some stray printks might still be around
+- Some values have been hardcoded (e.g. the filter_map)
+Please excuse these
+
+Lastly, this patch series depends upon the following patches for BAM:
+[0]: https://lkml.org/lkml/2021/9/19/126
+[1]: https://lkml.org/lkml/2021/9/19/135
+
+Regards,
+Sireesh Kodali
+
+Sireesh Kodali (10):
+  net: ipa: Add IPA v2.x register definitions
+  net: ipa: Add support for using BAM as a DMA transport
+  net: ipa: Add support for IPA v2.x commands and table init
+  net: ipa: Add support for IPA v2.x endpoints
+  net: ipa: Add support for IPA v2.x memory map
+  net: ipa: Add support for IPA v2.x in the driver's QMI interface
+  net: ipa: Add support for IPA v2 microcontroller
+  net: ipa: Add IPA v2.6L initialization sequence support
+  net: ipa: Add hw config describing IPA v2.x hardware
+  dt-bindings: net: qcom,ipa: Add support for MSM8953 and MSM8996 IPA
+
+Vladimir Lypak (7):
+  net: ipa: Correct ipa_status_opcode enumeration
+  net: ipa: revert to IPA_TABLE_ENTRY_SIZE for 32-bit IPA support
+  net: ipa: Refactor GSI code
+  net: ipa: Establish ipa_dma interface
+  net: ipa: Check interrupts for availability
+  net: ipa: Add timeout for ipa_cmd_pipeline_clear_wait
+  net: ipa: Add support for IPA v2.x interrupts
+
+ .../devicetree/bindings/net/qcom,ipa.yaml     |   2 +
+ drivers/net/ipa/Makefile                      |  11 +-
+ drivers/net/ipa/bam.c                         | 525 ++++++++++++++++++
+ drivers/net/ipa/gsi.c                         | 322 ++++++-----
+ drivers/net/ipa/ipa.h                         |   8 +-
+ drivers/net/ipa/ipa_cmd.c                     | 244 +++++---
+ drivers/net/ipa/ipa_cmd.h                     |  20 +-
+ drivers/net/ipa/ipa_data-v2.c                 | 369 ++++++++++++
+ drivers/net/ipa/ipa_data-v3.1.c               |   2 +-
+ drivers/net/ipa/ipa_data-v3.5.1.c             |   2 +-
+ drivers/net/ipa/ipa_data-v4.11.c              |   2 +-
+ drivers/net/ipa/ipa_data-v4.2.c               |   2 +-
+ drivers/net/ipa/ipa_data-v4.5.c               |   2 +-
+ drivers/net/ipa/ipa_data-v4.9.c               |   2 +-
+ drivers/net/ipa/ipa_data.h                    |   4 +
+ drivers/net/ipa/{gsi.h => ipa_dma.h}          | 179 +++---
+ .../ipa/{gsi_private.h => ipa_dma_private.h}  |  46 +-
+ drivers/net/ipa/ipa_endpoint.c                | 188 ++++---
+ drivers/net/ipa/ipa_endpoint.h                |   6 +-
+ drivers/net/ipa/ipa_gsi.c                     |  18 +-
+ drivers/net/ipa/ipa_gsi.h                     |  12 +-
+ drivers/net/ipa/ipa_interrupt.c               |  36 +-
+ drivers/net/ipa/ipa_main.c                    |  82 ++-
+ drivers/net/ipa/ipa_mem.c                     |  55 +-
+ drivers/net/ipa/ipa_mem.h                     |   5 +-
+ drivers/net/ipa/ipa_power.c                   |   4 +-
+ drivers/net/ipa/ipa_qmi.c                     |  37 +-
+ drivers/net/ipa/ipa_qmi.h                     |  10 +
+ drivers/net/ipa/ipa_reg.h                     | 184 +++++-
+ drivers/net/ipa/ipa_resource.c                |   3 +
+ drivers/net/ipa/ipa_smp2p.c                   |  11 +-
+ drivers/net/ipa/ipa_sysfs.c                   |   6 +
+ drivers/net/ipa/ipa_table.c                   |  86 +--
+ drivers/net/ipa/ipa_table.h                   |   6 +-
+ drivers/net/ipa/{gsi_trans.c => ipa_trans.c}  | 182 +++---
+ drivers/net/ipa/{gsi_trans.h => ipa_trans.h}  |  78 +--
+ drivers/net/ipa/ipa_uc.c                      |  96 ++--
+ drivers/net/ipa/ipa_version.h                 |  12 +
+ 38 files changed, 2133 insertions(+), 726 deletions(-)
+ create mode 100644 drivers/net/ipa/bam.c
+ create mode 100644 drivers/net/ipa/ipa_data-v2.c
+ rename drivers/net/ipa/{gsi.h => ipa_dma.h} (57%)
+ rename drivers/net/ipa/{gsi_private.h => ipa_dma_private.h} (66%)
+ rename drivers/net/ipa/{gsi_trans.c => ipa_trans.c} (80%)
+ rename drivers/net/ipa/{gsi_trans.h => ipa_trans.h} (71%)
+
+-- 
+2.33.0
+
