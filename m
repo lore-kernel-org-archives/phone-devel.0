@@ -2,201 +2,106 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-20.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B67DC433FE
-	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 03:11:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D988FC4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 18:20:59 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7566F61213
-	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 03:11:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B7B1D61A87
+	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 18:20:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234673AbhITDMq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 19 Sep 2021 23:12:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39818 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234266AbhITDM2 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 19 Sep 2021 23:12:28 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFCB9C0617AD;
-        Sun, 19 Sep 2021 20:10:08 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id j14so2972956plx.4;
-        Sun, 19 Sep 2021 20:10:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=A0xq/rLxDex9b8Ex71OL3CndFUoZBhsozJlG/ecmG+U=;
-        b=bEaP/Bty1T5b11swdf7NIsbeXYscNiwie9ZRgawYGkP2bJe3cLEhBe0cyxp4GPj0GD
-         tRmkZxPdD9VnXqzlGIs44r8fdMCCUBGnX4UYZgIlSQTkfR/mcnUDSBJY4jtP0vw0Oq/C
-         Y3OTam3Atd0LZ1kHAUPyG7w0//Vee63V124ElhtQeV9G2Fr8aiW6HdxM2VQVkGEkjndD
-         M9ZCeMpWPfogtnuWSTVW+H+YDgs4JqmcJvswJgSFzY2UH4UG8SSmXek3zVXl9xmXRG0k
-         kAzp435nh0LhqGro89L8+65FxocVWWRDmJPJIXvTZv29TvoMmydRxE3teogtrx6BE4Pq
-         aktg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=A0xq/rLxDex9b8Ex71OL3CndFUoZBhsozJlG/ecmG+U=;
-        b=q+3HzMGVdkPir4unf10LDx7ltxXP7A6sRv+ikdzwgvGAtQXK2WHCseSSkp6MfnnWkf
-         KQ+AoW672wVHvgo9DdTW5vCzlqCIjfSBN+IpWma//pIdCm3DABrF90RAPSX1JaNtZ+1Y
-         7vDxDWVSLbAB7z9ax4m0BVN2WLHjQXZIZCBsdTOCUN4MicwJnOVSGJfeB2+UDB7NYL/U
-         DrbLl8MY2nplbPvg3s/DX8T0e0F7c7us+83J153dnyzEykA086LBbUb8R1XIKMr/lsnY
-         1j0Hzx8T3qexDTDBEDaLIye+QnMmqnUPxZULeUgpah3zn3Gm1YRax7e4kqJzjXMXDygU
-         sNfw==
-X-Gm-Message-State: AOAM5332vTt/gqA6n1t7QGLTU5VZto8e7pX03c9as7s1UOF72Iwiazpp
-        rsteVZ87Jd8wvk0uipzW81AZTMnksj/MJA9b
-X-Google-Smtp-Source: ABdhPJyCkqD8rMV7e2k2keBSezz9ogKpyjG+e0uThkJeZmQ8zZeIbQOJz2WfGIGxNLZiOvIbA84AeQ==
-X-Received: by 2002:a17:902:930c:b029:12c:d5c8:61c4 with SMTP id bc12-20020a170902930cb029012cd5c861c4mr20754678plb.73.1632107408204;
-        Sun, 19 Sep 2021 20:10:08 -0700 (PDT)
-Received: from skynet-linux.local ([106.201.127.154])
-        by smtp.googlemail.com with ESMTPSA id l11sm16295065pjg.22.2021.09.19.20.10.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Sep 2021 20:10:07 -0700 (PDT)
-From:   Sireesh Kodali <sireeshkodali1@gmail.com>
-To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, elder@kernel.org
-Cc:     Sireesh Kodali <sireeshkodali1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [RFC PATCH 15/17] net: ipa: Add IPA v2.6L initialization sequence support
-Date:   Mon, 20 Sep 2021 08:38:09 +0530
-Message-Id: <20210920030811.57273-16-sireeshkodali1@gmail.com>
+        id S1377995AbhITSWY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 20 Sep 2021 14:22:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40368 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1377563AbhITSUT (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 20 Sep 2021 14:20:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 145BB61A8C;
+        Mon, 20 Sep 2021 17:23:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1632158606;
+        bh=ZWcDGK7J3ICcqK6E0ld5xmH3Dpj8mEOLl71Gkvr1t7A=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=UsPDKIPZQv2yT2TIuWtkHr6Q6KTxlu4tBRG7a3QYwATu8LfytFElssE7bLXr0vGMH
+         iHOsv+y5qd4RQtB47OMDhNsj4kVM2/calZ6SBYhjIx1zspj5KT8xxDouJ3xbLl1YY+
+         OC6rnm/TzzUhSgXGsZEX0yGWUgeplPXTjZkgu3/s=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, phone-devel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 234/260] mfd: db8500-prcmu: Adjust map to reality
+Date:   Mon, 20 Sep 2021 18:44:12 +0200
+Message-Id: <20210920163939.073100257@linuxfoundation.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20210920030811.57273-1-sireeshkodali1@gmail.com>
-References: <20210920030811.57273-1-sireeshkodali1@gmail.com>
+In-Reply-To: <20210920163931.123590023@linuxfoundation.org>
+References: <20210920163931.123590023@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The biggest changes are:
+From: Linus Walleij <linus.walleij@linaro.org>
 
-- Make SMP2P functions no-operation
-- Make resource init no-operation
-- Skip firmware loading
-- Add reset sequence
+[ Upstream commit ec343111c056ec3847800302f6dbc57281f833fa ]
 
-Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
+These are the actual frequencies reported by the PLL, so let's
+report these. The roundoffs are inappropriate, we should round
+to the frequency that the clock will later report.
+
+Drop some whitespace at the same time.
+
+Cc: phone-devel@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipa/ipa_main.c     | 19 ++++++++++++++++---
- drivers/net/ipa/ipa_resource.c |  3 +++
- drivers/net/ipa/ipa_smp2p.c    | 11 +++++++++--
- 3 files changed, 28 insertions(+), 5 deletions(-)
+ drivers/mfd/db8500-prcmu.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
-index ea6c4347f2c6..b437fbf95edf 100644
---- a/drivers/net/ipa/ipa_main.c
-+++ b/drivers/net/ipa/ipa_main.c
-@@ -355,12 +355,22 @@ static void ipa_hardware_config(struct ipa *ipa, const struct ipa_data *data)
- 	u32 granularity;
- 	u32 val;
- 
-+	if (ipa->version <= IPA_VERSION_2_6L) {
-+		iowrite32(1, ipa->reg_virt + IPA_REG_COMP_SW_RESET_OFFSET);
-+		iowrite32(0, ipa->reg_virt + IPA_REG_COMP_SW_RESET_OFFSET);
-+
-+		iowrite32(1, ipa->reg_virt + ipa_reg_comp_cfg_offset(ipa->version));
-+	}
-+
- 	/* IPA v4.5+ has no backward compatibility register */
--	if (version < IPA_VERSION_4_5) {
-+	if (version >= IPA_VERSION_2_5 && version < IPA_VERSION_4_5) {
- 		val = data->backward_compat;
- 		iowrite32(val, ipa->reg_virt + ipa_reg_bcr_offset(ipa->version));
- 	}
- 
-+	if (ipa->version <= IPA_VERSION_2_6L)
-+		return;
-+
- 	/* Implement some hardware workarounds */
- 	if (version >= IPA_VERSION_4_0 && version < IPA_VERSION_4_5) {
- 		/* Disable PA mask to allow HOLB drop */
-@@ -412,7 +422,8 @@ static void ipa_hardware_config(struct ipa *ipa, const struct ipa_data *data)
- static void ipa_hardware_deconfig(struct ipa *ipa)
- {
- 	/* Mostly we just leave things as we set them. */
--	ipa_hardware_dcd_deconfig(ipa);
-+	if (ipa->version > IPA_VERSION_2_6L)
-+		ipa_hardware_dcd_deconfig(ipa);
+diff --git a/drivers/mfd/db8500-prcmu.c b/drivers/mfd/db8500-prcmu.c
+index dfac6afa82ca..f1f2ad9ff0b3 100644
+--- a/drivers/mfd/db8500-prcmu.c
++++ b/drivers/mfd/db8500-prcmu.c
+@@ -1695,22 +1695,20 @@ static long round_clock_rate(u8 clock, unsigned long rate)
  }
  
- /**
-@@ -765,8 +776,10 @@ static int ipa_probe(struct platform_device *pdev)
+ static const unsigned long db8500_armss_freqs[] = {
+-	200000000,
+-	400000000,
+-	800000000,
++	199680000,
++	399360000,
++	798720000,
+ 	998400000
+ };
  
- 	/* Otherwise we need to load the firmware and have Trust Zone validate
- 	 * and install it.  If that succeeds we can proceed with setup.
-+	 * But on IPA v2.6L we don't need to do firmware loading :D
- 	 */
--	ret = ipa_firmware_load(dev);
-+	if (ipa->version > IPA_VERSION_2_6L)
-+		ret = ipa_firmware_load(dev);
- 	if (ret)
- 		goto err_deconfig;
+ /* The DB8520 has slightly higher ARMSS max frequency */
+ static const unsigned long db8520_armss_freqs[] = {
+-	200000000,
+-	400000000,
+-	800000000,
++	199680000,
++	399360000,
++	798720000,
+ 	1152000000
+ };
  
-diff --git a/drivers/net/ipa/ipa_resource.c b/drivers/net/ipa/ipa_resource.c
-index e3da95d69409..36a72324d828 100644
---- a/drivers/net/ipa/ipa_resource.c
-+++ b/drivers/net/ipa/ipa_resource.c
-@@ -162,6 +162,9 @@ int ipa_resource_config(struct ipa *ipa, const struct ipa_resource_data *data)
+-
+-
+ static long round_armss_rate(unsigned long rate)
  {
- 	u32 i;
- 
-+	if (ipa->version <= IPA_VERSION_2_6L)
-+		return 0;
-+
- 	if (!ipa_resource_limits_valid(ipa, data))
- 		return -EINVAL;
- 
-diff --git a/drivers/net/ipa/ipa_smp2p.c b/drivers/net/ipa/ipa_smp2p.c
-index df7639c39d71..fa4a9f1c196a 100644
---- a/drivers/net/ipa/ipa_smp2p.c
-+++ b/drivers/net/ipa/ipa_smp2p.c
-@@ -233,6 +233,10 @@ int ipa_smp2p_init(struct ipa *ipa, bool modem_init)
- 	u32 valid_bit;
- 	int ret;
- 
-+	/* With IPA v2.6L and earlier SMP2P interrupts are used */
-+	if (ipa->version <= IPA_VERSION_2_6L)
-+		return 0;
-+
- 	valid_state = qcom_smem_state_get(dev, "ipa-clock-enabled-valid",
- 					  &valid_bit);
- 	if (IS_ERR(valid_state))
-@@ -302,6 +306,9 @@ void ipa_smp2p_exit(struct ipa *ipa)
- {
- 	struct ipa_smp2p *smp2p = ipa->smp2p;
- 
-+	if (!smp2p)
-+		return;
-+
- 	if (smp2p->setup_ready_irq)
- 		ipa_smp2p_irq_exit(smp2p, smp2p->setup_ready_irq);
- 	ipa_smp2p_panic_notifier_unregister(smp2p);
-@@ -317,7 +324,7 @@ void ipa_smp2p_disable(struct ipa *ipa)
- {
- 	struct ipa_smp2p *smp2p = ipa->smp2p;
- 
--	if (!smp2p->setup_ready_irq)
-+	if (!smp2p || !smp2p->setup_ready_irq)
- 		return;
- 
- 	mutex_lock(&smp2p->mutex);
-@@ -333,7 +340,7 @@ void ipa_smp2p_notify_reset(struct ipa *ipa)
- 	struct ipa_smp2p *smp2p = ipa->smp2p;
- 	u32 mask;
- 
--	if (!smp2p->notified)
-+	if (!smp2p || !smp2p->notified)
- 		return;
- 
- 	ipa_smp2p_power_release(ipa);
+ 	unsigned long freq = 0;
 -- 
-2.33.0
+2.30.2
+
+
 
