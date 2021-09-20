@@ -8,55 +8,55 @@ X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A56CC433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 03:11:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E4FAC433FE
+	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 03:11:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3FC6B61205
-	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 03:11:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7994260FC1
+	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 03:11:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234199AbhITDMp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 19 Sep 2021 23:12:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39802 "EHLO
+        id S234961AbhITDMq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 19 Sep 2021 23:12:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232462AbhITDM0 (ORCPT
+        with ESMTP id S234515AbhITDM3 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 19 Sep 2021 23:12:26 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC7FC061767;
-        Sun, 19 Sep 2021 20:10:04 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id n2so7493192plk.12;
-        Sun, 19 Sep 2021 20:10:04 -0700 (PDT)
+        Sun, 19 Sep 2021 23:12:29 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2753C0617BA;
+        Sun, 19 Sep 2021 20:10:17 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id on12-20020a17090b1d0c00b001997c60aa29so11115847pjb.1;
+        Sun, 19 Sep 2021 20:10:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=qgPrSEvlEz44qzOdjetk3jLjnDR/NPMtis3khQbjPjY=;
-        b=QSU0Fojag+ORRG3vZsdqaZc8z0f7kn3YDKVmf7GVJBICbBnJGPhlHYcpE9jfsdmS57
-         zVtoE8oG1ptqZijvzKAEVuPDgSvdmJLP6w6tCOAqpSKjnKkdnC9Fq7z6gREktKEt/6fZ
-         FhtcqtSXJLRHYzBvlNmqWIJca7tiuhy5cjESB6GCOaHlLMEX8fYPPqUwPQAruzXc94G2
-         czf0LFb43WEb3M2JnVj7ZN0BE5u9pBQ1ghf7fjbB60AN1vN5TFveKw3Eyd7DcSKCs1Fh
-         qc0RDBspqK99gopzlZh+X4sY0UK4RW4PIFyejgf/8/8Vcr+mjVitqUpE5cystKvgl60A
-         gYWA==
+        bh=TiVOZ2Q/tlFKYvHdNz90hwJpJvi2U953jPl9nmU6Kdo=;
+        b=l6CL+t2GdHNaHgYvSAziVSAt9eN6B6pUFbx0amR+MdaEmSZMhTH5qL2oRUUaHUeVj3
+         gwdL8vuN/3aVI7Ja+YOVtfUwgavAwJnlnK5PDwidylZoOR3kATJl2zUisj4BWgdBXojL
+         mrpOLlReJz3kgm7VxEx5+m7c5/td0CFOhX5dVADbgnPEU5BG3UBKaqu+QWSxVCaJbSzg
+         Z1zgGMfK9E5u/8UHlDLUVwpA7Oz7pwlCMV7V3rMnVpp8Tnev08D9fOsYF+kleMd7h03n
+         SxnNrReyAlD+8qP9GmH/cy4RwyCuzo6wfWjB/CXChcTsGk5+7R9tswPbIbD+GR94qjXd
+         ykUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=qgPrSEvlEz44qzOdjetk3jLjnDR/NPMtis3khQbjPjY=;
-        b=eP87GlgRjDWkME46UmuXfxV2+EXfHHwujM2KbNFWRfRNAoi0nax7EqQgXCMnx9s8ss
-         3XfzgXFjK0zAvELPZkNLsd4+6vH6yavoN/QI0jS5+8kbpxNd2T4Po0+SVhrpxtfO32BC
-         uKzMIUsvKGARTOhCWXTLzYEBZ1skerFc+OL9hbRZTvjgOZccq97IeaP9OX6QnAvCT5a4
-         1O6QHF9L36Ay0ibepdZCAY/G/Pf4vnDm505uY5QixXuHh82BWeIuaJ04ZfOlq3J7Q6n9
-         WJJ5fXYMnOynRIh9dt3cSv/F1VHzKOtAfXbWJqeYe4QqPxJBF/IRoYr4XE+rgB3pv9sc
-         4fyw==
-X-Gm-Message-State: AOAM533V3RYUAPNJ6jX3jaUQm5gNdYyjnP6u3c4+WQfaxbbKdA/ENwMy
-        SrOpN9lnjWuBpfepbLBgzmi7M9+hS2vpISx/
-X-Google-Smtp-Source: ABdhPJyqdxzplBi2n4+8amlnCBrq54Kkw0F2rSaSeZG6j6s5T7ppSkVMGWJmHBfZ359tvo1RekSshQ==
-X-Received: by 2002:a17:902:868c:b0:13c:8ce5:92b3 with SMTP id g12-20020a170902868c00b0013c8ce592b3mr21016732plo.13.1632107403494;
-        Sun, 19 Sep 2021 20:10:03 -0700 (PDT)
+        bh=TiVOZ2Q/tlFKYvHdNz90hwJpJvi2U953jPl9nmU6Kdo=;
+        b=yuJacLNuGnC0WS/OLnMiQmjNArWd55TLcMQyWzaYjHgY6E3kDXdgV3OU/+TII1oTgI
+         uStFE16RDddFWXMrAQybe/qoZAnHGpc3jjRTjHJCeOr83oSHqfo5Zt+g/HXsKJ/0AXaC
+         4vFeoK9fnJL5Y9PHWWI2jn5d5QkV+dcTtfbQQsXZBoOifYsN+zgp2BvkjTwQjenZ0Q/f
+         tjOWGno1k6+ze365PLtm/B1zFJNUuWZoPgDQpADbKuYO7q6whj6bopEFJTZsS+d6BcVM
+         DwjhyzUlDxtF289bQ9SCtfCRVlIxn8FHethogkKY2ARI5GxFcnYXq8Ty6k8Ykipv9edL
+         wvWA==
+X-Gm-Message-State: AOAM531FvGmgRWkXbFcwTIJMf92SNdl5zwlDInrwrg+DKEDUa9X08Lof
+        xjou/CWsFKWfclBTcKYKtFbzCfsnVldEOL1n
+X-Google-Smtp-Source: ABdhPJzEp7WSBTpujmr4zlGxDju8VcySMROlcorxyx985uw5YX2iqhYeLnA/AMCA1cDLVuTDD6+8Ng==
+X-Received: by 2002:a17:902:d2c8:b0:13a:54b2:81c9 with SMTP id n8-20020a170902d2c800b0013a54b281c9mr20477803plc.21.1632107417124;
+        Sun, 19 Sep 2021 20:10:17 -0700 (PDT)
 Received: from skynet-linux.local ([106.201.127.154])
-        by smtp.googlemail.com with ESMTPSA id l11sm16295065pjg.22.2021.09.19.20.10.00
+        by smtp.googlemail.com with ESMTPSA id l11sm16295065pjg.22.2021.09.19.20.10.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Sep 2021 20:10:03 -0700 (PDT)
+        Sun, 19 Sep 2021 20:10:16 -0700 (PDT)
 From:   Sireesh Kodali <sireeshkodali1@gmail.com>
 To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -64,9 +64,9 @@ To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
 Cc:     Sireesh Kodali <sireeshkodali1@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [RFC PATCH 14/17] net: ipa: Add support for IPA v2 microcontroller
-Date:   Mon, 20 Sep 2021 08:38:08 +0530
-Message-Id: <20210920030811.57273-15-sireeshkodali1@gmail.com>
+Subject: [RFC PATCH 16/17] net: ipa: Add hw config describing IPA v2.x hardware
+Date:   Mon, 20 Sep 2021 08:38:10 +0530
+Message-Id: <20210920030811.57273-17-sireeshkodali1@gmail.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210920030811.57273-1-sireeshkodali1@gmail.com>
 References: <20210920030811.57273-1-sireeshkodali1@gmail.com>
@@ -76,203 +76,489 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-There are some minor differences between IPA v2.x and later revisions
-with regards to the uc. The biggeset difference is the shared memory's
-layout. There are also some changes to the command numbers, but these
-are not too important, since the mainline driver doesn't use them.
+This commit adds the config for IPA v2.0, v2.5, v2.6L. IPA v2.5 is found
+on msm8996. IPA v2.6L hardware is found on following SoCs: msm8920,
+msm8940, msm8952, msm8953, msm8956, msm8976, sdm630, sdm660. No
+SoC-specific configuration in ipa driver is required.
 
 Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
 ---
- drivers/net/ipa/ipa_uc.c | 96 ++++++++++++++++++++++++++--------------
- 1 file changed, 63 insertions(+), 33 deletions(-)
+ drivers/net/ipa/Makefile        |   7 +-
+ drivers/net/ipa/ipa_data-v2.c   | 369 ++++++++++++++++++++++++++++++++
+ drivers/net/ipa/ipa_data-v3.1.c |   2 +-
+ drivers/net/ipa/ipa_data.h      |   3 +
+ drivers/net/ipa/ipa_main.c      |  15 ++
+ drivers/net/ipa/ipa_sysfs.c     |   6 +
+ 6 files changed, 398 insertions(+), 4 deletions(-)
+ create mode 100644 drivers/net/ipa/ipa_data-v2.c
 
-diff --git a/drivers/net/ipa/ipa_uc.c b/drivers/net/ipa/ipa_uc.c
-index 856e55a080a7..bf6b25098301 100644
---- a/drivers/net/ipa/ipa_uc.c
-+++ b/drivers/net/ipa/ipa_uc.c
-@@ -39,11 +39,12 @@
- #define IPA_SEND_DELAY		100	/* microseconds */
+diff --git a/drivers/net/ipa/Makefile b/drivers/net/ipa/Makefile
+index 4abebc667f77..858fbf76cff3 100644
+--- a/drivers/net/ipa/Makefile
++++ b/drivers/net/ipa/Makefile
+@@ -7,6 +7,7 @@ ipa-y			:=	ipa_main.o ipa_power.o ipa_reg.o ipa_mem.o \
+ 				ipa_resource.o ipa_qmi.o ipa_qmi_msg.o \
+ 				ipa_sysfs.o
  
- /**
-- * struct ipa_uc_mem_area - AP/microcontroller shared memory area
-+ * union ipa_uc_mem_area - AP/microcontroller shared memory area
-  * @command:		command code (AP->microcontroller)
-  * @reserved0:		reserved bytes; avoid reading or writing
-  * @command_param:	low 32 bits of command parameter (AP->microcontroller)
-  * @command_param_hi:	high 32 bits of command parameter (AP->microcontroller)
-+ *			Available since IPA v3.0
-  *
-  * @response:		response code (microcontroller->AP)
-  * @reserved1:		reserved bytes; avoid reading or writing
-@@ -59,31 +60,58 @@
-  * @reserved3:		reserved bytes; avoid reading or writing
-  * @interface_version:	hardware-reported interface version
-  * @reserved4:		reserved bytes; avoid reading or writing
-+ * @reserved5:		reserved bytes; avoid reading or writing
-  *
-  * A shared memory area at the base of IPA resident memory is used for
-  * communication with the microcontroller.  The region is 128 bytes in
-  * size, but only the first 40 bytes (structured this way) are used.
-  */
--struct ipa_uc_mem_area {
--	u8 command;		/* enum ipa_uc_command */
--	u8 reserved0[3];
--	__le32 command_param;
--	__le32 command_param_hi;
--	u8 response;		/* enum ipa_uc_response */
--	u8 reserved1[3];
--	__le32 response_param;
--	u8 event;		/* enum ipa_uc_event */
--	u8 reserved2[3];
--
--	__le32 event_param;
--	__le32 first_error_address;
--	u8 hw_state;
--	u8 warning_counter;
--	__le16 reserved3;
--	__le16 interface_version;
--	__le16 reserved4;
-+union ipa_uc_mem_area {
-+	struct {
-+		u8 command;		/* enum ipa_uc_command */
-+		u8 reserved0[3];
-+		__le32 command_param;
-+		u8 response;		/* enum ipa_uc_response */
-+		u8 reserved1[3];
-+		__le32 response_param;
-+		u8 event;		/* enum ipa_uc_event */
-+		u8 reserved2[3];
+-ipa-y			+=	ipa_data-v3.1.o ipa_data-v3.5.1.o \
+-				ipa_data-v4.2.o ipa_data-v4.5.o \
+-				ipa_data-v4.9.o ipa_data-v4.11.o
++ipa-y			+=	ipa_data-v2.o ipa_data-v3.1.o \
++				ipa_data-v3.5.1.o ipa_data-v4.2.o \
++				ipa_data-v4.5.o ipa_data-v4.9.o \
++				ipa_data-v4.11.o
+diff --git a/drivers/net/ipa/ipa_data-v2.c b/drivers/net/ipa/ipa_data-v2.c
+new file mode 100644
+index 000000000000..869b8a1a45d6
+--- /dev/null
++++ b/drivers/net/ipa/ipa_data-v2.c
+@@ -0,0 +1,369 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+		__le32 event_param;
-+		__le32 reserved3;
-+		__le32 first_error_address;
-+		u8 hw_state;
-+		u8 warning_counter;
-+		__le16 reserved4;
-+		__le16 interface_version;
-+		__le16 reserved5;
-+	} v2;
-+	struct {
-+		u8 command;		/* enum ipa_uc_command */
-+		u8 reserved0[3];
-+		__le32 command_param;
-+		__le32 command_param_hi;
-+		u8 response;		/* enum ipa_uc_response */
-+		u8 reserved1[3];
-+		__le32 response_param;
-+		u8 event;		/* enum ipa_uc_event */
-+		u8 reserved2[3];
++/* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
++ * Copyright (C) 2019-2020 Linaro Ltd.
++ */
 +
-+		__le32 event_param;
-+		__le32 first_error_address;
-+		u8 hw_state;
-+		u8 warning_counter;
-+		__le16 reserved3;
-+		__le16 interface_version;
-+		__le16 reserved4;
-+	} v3;
++#include <linux/log2.h>
++
++#include "ipa_data.h"
++#include "ipa_endpoint.h"
++#include "ipa_mem.h"
++
++/* Endpoint configuration for the IPA v2 hardware. */
++static const struct ipa_gsi_endpoint_data ipa_endpoint_data[] = {
++	[IPA_ENDPOINT_AP_COMMAND_TX] = {
++		.ee_id		= GSI_EE_AP,
++		.channel_id	= 3,
++		.endpoint_id	= 3,
++		.channel_name	= "cmd_tx",
++		.toward_ipa	= true,
++		.channel = {
++			.tre_count	= 256,
++			.event_count	= 256,
++			.tlv_count	= 20,
++		},
++		.endpoint = {
++			.config	= {
++				.dma_mode	= true,
++				.dma_endpoint	= IPA_ENDPOINT_AP_LAN_RX,
++			},
++		},
++	},
++	[IPA_ENDPOINT_AP_LAN_RX] = {
++		.ee_id		= GSI_EE_AP,
++		.channel_id	= 2,
++		.endpoint_id	= 2,
++		.channel_name	= "ap_lan_rx",
++		.channel = {
++			.tre_count	= 256,
++			.event_count	= 256,
++			.tlv_count	= 8,
++		},
++		.endpoint	= {
++			.config	= {
++				.aggregation	= true,
++				.status_enable	= true,
++				.rx = {
++					.pad_align	= ilog2(sizeof(u32)),
++				},
++			},
++		},
++	},
++	[IPA_ENDPOINT_AP_MODEM_TX] = {
++		.ee_id		= GSI_EE_AP,
++		.channel_id	= 4,
++		.endpoint_id	= 4,
++		.channel_name	= "ap_modem_tx",
++		.toward_ipa	= true,
++		.channel = {
++			.tre_count	= 256,
++			.event_count	= 256,
++			.tlv_count	= 8,
++		},
++		.endpoint	= {
++			.config	= {
++				.qmap		= true,
++				.status_enable	= true,
++				.tx = {
++					.status_endpoint =
++						IPA_ENDPOINT_AP_LAN_RX,
++				},
++			},
++		},
++	},
++	[IPA_ENDPOINT_AP_MODEM_RX] = {
++		.ee_id		= GSI_EE_AP,
++		.channel_id	= 5,
++		.endpoint_id	= 5,
++		.channel_name	= "ap_modem_rx",
++		.toward_ipa	= false,
++		.channel = {
++			.tre_count	= 256,
++			.event_count	= 256,
++			.tlv_count	= 8,
++		},
++		.endpoint	= {
++			.config = {
++				.aggregation	= true,
++				.qmap		= true,
++			},
++		},
++	},
++	[IPA_ENDPOINT_MODEM_LAN_TX] = {
++		.ee_id		= GSI_EE_MODEM,
++		.channel_id	= 6,
++		.endpoint_id	= 6,
++		.channel_name	= "modem_lan_tx",
++		.toward_ipa	= true,
++	},
++	[IPA_ENDPOINT_MODEM_COMMAND_TX] = {
++		.ee_id		= GSI_EE_MODEM,
++		.channel_id	= 7,
++		.endpoint_id	= 7,
++		.channel_name	= "modem_cmd_tx",
++		.toward_ipa	= true,
++	},
++	[IPA_ENDPOINT_MODEM_LAN_RX] = {
++		.ee_id		= GSI_EE_MODEM,
++		.channel_id	= 8,
++		.endpoint_id	= 8,
++		.channel_name	= "modem_lan_rx",
++		.toward_ipa	= false,
++	},
++	[IPA_ENDPOINT_MODEM_AP_RX] = {
++		.ee_id		= GSI_EE_MODEM,
++		.channel_id	= 9,
++		.endpoint_id	= 9,
++		.channel_name	= "modem_ap_rx",
++		.toward_ipa	= false,
++	},
++};
++
++static struct ipa_interconnect_data ipa_interconnect_data[] = {
++	{
++		.name = "memory",
++		.peak_bandwidth	= 1200000,	/* 1200 MBps */
++		.average_bandwidth = 100000,	/* 100 MBps */
++	},
++	{
++		.name = "imem",
++		.peak_bandwidth	= 350000,	/* 350 MBps */
++		.average_bandwidth  = 0,	/* unused */
++	},
++	{
++		.name = "config",
++		.peak_bandwidth	= 40000,	/* 40 MBps */
++		.average_bandwidth = 0,		/* unused */
++	},
++};
++
++static struct ipa_power_data ipa_power_data = {
++	.core_clock_rate	= 200 * 1000 * 1000,	/* Hz */
++	.interconnect_count	= ARRAY_SIZE(ipa_interconnect_data),
++	.interconnect_data	= ipa_interconnect_data,
++};
++
++/* IPA-resident memory region configuration for v2.0 */
++static const struct ipa_mem ipa_mem_local_data_v2_0[IPA_MEM_COUNT] = {
++	[IPA_MEM_UC_SHARED] = {
++		.offset         = 0,
++		.size           = 0x80,
++		.canary_count   = 0,
++	},
++	[IPA_MEM_V4_FILTER] = {
++		.offset		= 0x0080,
++		.size		= 0x0058,
++		.canary_count	= 0,
++	},
++	[IPA_MEM_V6_FILTER] = {
++		.offset		= 0x00e0,
++		.size		= 0x0058,
++		.canary_count	= 2,
++	},
++	[IPA_MEM_V4_ROUTE] = {
++		.offset		= 0x0140,
++		.size		= 0x002c,
++		.canary_count	= 2,
++	},
++	[IPA_MEM_V6_ROUTE] = {
++		.offset		= 0x0170,
++		.size		= 0x002c,
++		.canary_count	= 1,
++	},
++	[IPA_MEM_MODEM_HEADER] = {
++		.offset		= 0x01a0,
++		.size		= 0x0140,
++		.canary_count	= 1,
++	},
++	[IPA_MEM_AP_HEADER] = {
++		.offset		= 0x02e0,
++		.size		= 0x0048,
++		.canary_count	= 0,
++	},
++	[IPA_MEM_MODEM] = {
++		.offset		= 0x032c,
++		.size		= 0x0dcc,
++		.canary_count	= 1,
++	},
++	[IPA_MEM_V4_FILTER_AP] = {
++		.offset		= 0x10fc,
++		.size		= 0x0780,
++		.canary_count	= 1,
++	},
++	[IPA_MEM_V6_FILTER_AP] = {
++		.offset		= 0x187c,
++		.size		= 0x055c,
++		.canary_count	= 0,
++	},
++	[IPA_MEM_UC_INFO] = {
++		.offset		= 0x1ddc,
++		.size		= 0x0124,
++		.canary_count	= 1,
++	},
++};
++
++static struct ipa_mem_data ipa_mem_data_v2_0 = {
++	.local		= ipa_mem_local_data_v2_0,
++	.smem_id	= 497,
++	.smem_size	= 0x00001f00,
++};
++
++/* Configuration data for IPAv2.0 */
++const struct ipa_data ipa_data_v2_0  = {
++	.version	= IPA_VERSION_2_0,
++	.endpoint_count	= ARRAY_SIZE(ipa_endpoint_data),
++	.endpoint_data	= ipa_endpoint_data,
++	.mem_data	= &ipa_mem_data_v2_0,
++	.power_data	= &ipa_power_data,
++};
++
++/* IPA-resident memory region configuration for v2.5 */
++static const struct ipa_mem ipa_mem_local_data_v2_5[IPA_MEM_COUNT] = {
++	[IPA_MEM_UC_SHARED] = {
++		.offset         = 0,
++		.size           = 0x80,
++		.canary_count   = 0,
++	},
++	[IPA_MEM_UC_INFO] = {
++		.offset		= 0x0080,
++		.size		= 0x0200,
++		.canary_count	= 0,
++	},
++	[IPA_MEM_V4_FILTER] = {
++		.offset		= 0x0288,
++		.size		= 0x0058,
++		.canary_count	= 2,
++	},
++	[IPA_MEM_V6_FILTER] = {
++		.offset		= 0x02e8,
++		.size		= 0x0058,
++		.canary_count	= 2,
++	},
++	[IPA_MEM_V4_ROUTE] = {
++		.offset		= 0x0348,
++		.size		= 0x003c,
++		.canary_count	= 2,
++	},
++	[IPA_MEM_V6_ROUTE] = {
++		.offset		= 0x0388,
++		.size		= 0x003c,
++		.canary_count	= 1,
++	},
++	[IPA_MEM_MODEM_HEADER] = {
++		.offset		= 0x03c8,
++		.size		= 0x0140,
++		.canary_count	= 1,
++	},
++	[IPA_MEM_MODEM_PROC_CTX] = {
++		.offset		= 0x0510,
++		.size		= 0x0200,
++		.canary_count	= 2,
++	},
++	[IPA_MEM_AP_PROC_CTX] = {
++		.offset		= 0x0710,
++		.size		= 0x0200,
++		.canary_count	= 0,
++	},
++	[IPA_MEM_MODEM] = {
++		.offset		= 0x0914,
++		.size		= 0x16a8,
++		.canary_count	= 1,
++	},
++};
++
++static struct ipa_mem_data ipa_mem_data_v2_5 = {
++	.local		= ipa_mem_local_data_v2_5,
++	.smem_id	= 497,
++	.smem_size	= 0x00002000,
++};
++
++/* Configuration data for IPAv2.5 */
++const struct ipa_data ipa_data_v2_5  = {
++	.version	= IPA_VERSION_2_5,
++	.endpoint_count	= ARRAY_SIZE(ipa_endpoint_data),
++	.endpoint_data	= ipa_endpoint_data,
++	.mem_data	= &ipa_mem_data_v2_5,
++	.power_data	= &ipa_power_data,
++};
++
++/* IPA-resident memory region configuration for v2.6L */
++static const struct ipa_mem ipa_mem_local_data_v2_6L[IPA_MEM_COUNT] = {
++	{
++		.id		= IPA_MEM_UC_SHARED,
++		.offset         = 0,
++		.size           = 0x80,
++		.canary_count   = 0,
++	},
++	{
++		.id 		= IPA_MEM_UC_INFO,
++		.offset		= 0x0080,
++		.size		= 0x0200,
++		.canary_count	= 0,
++	},
++	{
++		.id		= IPA_MEM_V4_FILTER,
++		.offset		= 0x0288,
++		.size		= 0x0058,
++		.canary_count	= 2,
++	},
++	{
++		.id		= IPA_MEM_V6_FILTER,
++		.offset		= 0x02e8,
++		.size		= 0x0058,
++		.canary_count	= 2,
++	},
++	{
++		.id		= IPA_MEM_V4_ROUTE,
++		.offset		= 0x0348,
++		.size		= 0x003c,
++		.canary_count	= 2,
++	},
++	{
++		.id		= IPA_MEM_V6_ROUTE,
++		.offset		= 0x0388,
++		.size		= 0x003c,
++		.canary_count	= 1,
++	},
++	{
++		.id		= IPA_MEM_MODEM_HEADER,
++		.offset		= 0x03c8,
++		.size		= 0x0140,
++		.canary_count	= 1,
++	},
++	{
++		.id		= IPA_MEM_ZIP,
++		.offset		= 0x0510,
++		.size		= 0x0200,
++		.canary_count	= 2,
++	},
++	{
++		.id		= IPA_MEM_MODEM,
++		.offset		= 0x0714,
++		.size		= 0x18e8,
++		.canary_count	= 1,
++	},
++	{
++		.id		= IPA_MEM_END_MARKER,
++		.offset		= 0x2000,
++		.size		= 0,
++		.canary_count	= 1,
++	},
++};
++
++static struct ipa_mem_data ipa_mem_data_v2_6L = {
++	.local		= ipa_mem_local_data_v2_6L,
++	.smem_id	= 497,
++	.smem_size	= 0x00002000,
++};
++
++/* Configuration data for IPAv2.6L */
++const struct ipa_data ipa_data_v2_6L  = {
++	.version	= IPA_VERSION_2_6L,
++	/* Unfortunately we don't know what this BCR value corresponds to */
++	.backward_compat = 0x1fff7f,
++	.endpoint_count	= ARRAY_SIZE(ipa_endpoint_data),
++	.endpoint_data	= ipa_endpoint_data,
++	.mem_data	= &ipa_mem_data_v2_6L,
++	.power_data	= &ipa_power_data,
++};
+diff --git a/drivers/net/ipa/ipa_data-v3.1.c b/drivers/net/ipa/ipa_data-v3.1.c
+index 06ddb85f39b2..12d231232756 100644
+--- a/drivers/net/ipa/ipa_data-v3.1.c
++++ b/drivers/net/ipa/ipa_data-v3.1.c
+@@ -6,7 +6,7 @@
+ 
+ #include <linux/log2.h>
+ 
+-#include "gsi.h"
++#include "ipa_dma.h"
+ #include "ipa_data.h"
+ #include "ipa_endpoint.h"
+ #include "ipa_mem.h"
+diff --git a/drivers/net/ipa/ipa_data.h b/drivers/net/ipa/ipa_data.h
+index 7d62d49f414f..e7ce2e9388b6 100644
+--- a/drivers/net/ipa/ipa_data.h
++++ b/drivers/net/ipa/ipa_data.h
+@@ -301,6 +301,9 @@ struct ipa_data {
+ 	const struct ipa_power_data *power_data;
  };
  
-+#define UC_FIELD(_ipa, _field)			\
-+	*((_ipa->version >= IPA_VERSION_3_0) ?	\
-+	  &(ipa_uc_shared(_ipa)->v3._field) :	\
-+	  &(ipa_uc_shared(_ipa)->v2._field))
-+
- /** enum ipa_uc_command - commands from the AP to the microcontroller */
- enum ipa_uc_command {
- 	IPA_UC_COMMAND_NO_OP		= 0x0,
-@@ -95,6 +123,7 @@ enum ipa_uc_command {
- 	IPA_UC_COMMAND_CLK_UNGATE	= 0x6,
- 	IPA_UC_COMMAND_MEMCPY		= 0x7,
- 	IPA_UC_COMMAND_RESET_PIPE	= 0x8,
-+	/* Next two commands are present for IPA v3.0+ */
- 	IPA_UC_COMMAND_REG_WRITE	= 0x9,
- 	IPA_UC_COMMAND_GSI_CH_EMPTY	= 0xa,
- };
-@@ -114,7 +143,7 @@ enum ipa_uc_event {
- 	IPA_UC_EVENT_LOG_INFO		= 0x2,
- };
- 
--static struct ipa_uc_mem_area *ipa_uc_shared(struct ipa *ipa)
-+static union ipa_uc_mem_area *ipa_uc_shared(struct ipa *ipa)
- {
- 	const struct ipa_mem *mem = ipa_mem_find(ipa, IPA_MEM_UC_SHARED);
- 	u32 offset = ipa->mem_offset + mem->offset;
-@@ -125,22 +154,22 @@ static struct ipa_uc_mem_area *ipa_uc_shared(struct ipa *ipa)
- /* Microcontroller event IPA interrupt handler */
- static void ipa_uc_event_handler(struct ipa *ipa, enum ipa_irq_id irq_id)
- {
--	struct ipa_uc_mem_area *shared = ipa_uc_shared(ipa);
- 	struct device *dev = &ipa->pdev->dev;
-+	u32 event = UC_FIELD(ipa, event);
- 
--	if (shared->event == IPA_UC_EVENT_ERROR)
-+	if (event == IPA_UC_EVENT_ERROR)
- 		dev_err(dev, "microcontroller error event\n");
--	else if (shared->event != IPA_UC_EVENT_LOG_INFO)
-+	else if (event != IPA_UC_EVENT_LOG_INFO)
- 		dev_err(dev, "unsupported microcontroller event %u\n",
--			shared->event);
-+			event);
- 	/* The LOG_INFO event can be safely ignored */
++extern const struct ipa_data ipa_data_v2_0;
++extern const struct ipa_data ipa_data_v2_5;
++extern const struct ipa_data ipa_data_v2_6L;
+ extern const struct ipa_data ipa_data_v3_1;
+ extern const struct ipa_data ipa_data_v3_5_1;
+ extern const struct ipa_data ipa_data_v4_2;
+diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
+index b437fbf95edf..3ae5c5c6734b 100644
+--- a/drivers/net/ipa/ipa_main.c
++++ b/drivers/net/ipa/ipa_main.c
+@@ -560,6 +560,18 @@ static int ipa_firmware_load(struct device *dev)
  }
  
- /* Microcontroller response IPA interrupt handler */
- static void ipa_uc_response_hdlr(struct ipa *ipa, enum ipa_irq_id irq_id)
+ static const struct of_device_id ipa_match[] = {
++	{
++		.compatible	= "qcom,ipa-v2.0",
++		.data		= &ipa_data_v2_0,
++	},
++	{
++		.compatible	= "qcom,msm8996-ipa",
++		.data		= &ipa_data_v2_5,
++	},
++	{
++		.compatible	= "qcom,msm8953-ipa",
++		.data		= &ipa_data_v2_6L,
++	},
+ 	{
+ 		.compatible	= "qcom,msm8998-ipa",
+ 		.data		= &ipa_data_v3_1,
+@@ -632,6 +644,9 @@ static void ipa_validate_build(void)
+ static bool ipa_version_valid(enum ipa_version version)
  {
--	struct ipa_uc_mem_area *shared = ipa_uc_shared(ipa);
- 	struct device *dev = &ipa->pdev->dev;
-+	u32 response = UC_FIELD(ipa, response);
- 
- 	/* An INIT_COMPLETED response message is sent to the AP by the
- 	 * microcontroller when it is operational.  Other than this, the AP
-@@ -150,20 +179,21 @@ static void ipa_uc_response_hdlr(struct ipa *ipa, enum ipa_irq_id irq_id)
- 	 * We can drop the power reference taken in ipa_uc_power() once we
- 	 * know the microcontroller has finished its initialization.
- 	 */
--	switch (shared->response) {
-+	switch (response) {
- 	case IPA_UC_RESPONSE_INIT_COMPLETED:
- 		if (ipa->uc_powered) {
- 			ipa->uc_loaded = true;
- 			pm_runtime_mark_last_busy(dev);
- 			(void)pm_runtime_put_autosuspend(dev);
- 			ipa->uc_powered = false;
-+			ipa_qmi_signal_uc_loaded(ipa);
- 		} else {
- 			dev_warn(dev, "unexpected init_completed response\n");
- 		}
- 		break;
- 	default:
- 		dev_warn(dev, "unsupported microcontroller response %u\n",
--			 shared->response);
-+			 response);
- 		break;
- 	}
- }
-@@ -216,16 +246,16 @@ void ipa_uc_power(struct ipa *ipa)
- /* Send a command to the microcontroller */
- static void send_uc_command(struct ipa *ipa, u32 command, u32 command_param)
+ 	switch (version) {
++	case IPA_VERSION_2_0:
++	case IPA_VERSION_2_5:
++	case IPA_VERSION_2_6L:
+ 	case IPA_VERSION_3_0:
+ 	case IPA_VERSION_3_1:
+ 	case IPA_VERSION_3_5:
+diff --git a/drivers/net/ipa/ipa_sysfs.c b/drivers/net/ipa/ipa_sysfs.c
+index ff61dbdd70d8..f5d159f6bc06 100644
+--- a/drivers/net/ipa/ipa_sysfs.c
++++ b/drivers/net/ipa/ipa_sysfs.c
+@@ -14,6 +14,12 @@
+ static const char *ipa_version_string(struct ipa *ipa)
  {
--	struct ipa_uc_mem_area *shared = ipa_uc_shared(ipa);
- 	u32 offset;
- 	u32 val;
- 
- 	/* Fill in the command data */
--	shared->command = command;
--	shared->command_param = cpu_to_le32(command_param);
--	shared->command_param_hi = 0;
--	shared->response = 0;
--	shared->response_param = 0;
-+	UC_FIELD(ipa, command) = command;
-+	UC_FIELD(ipa, command_param) = cpu_to_le32(command_param);
-+	if (ipa->version >= IPA_VERSION_3_0)
-+		ipa_uc_shared(ipa)->v3.command_param_hi = 1;
-+	UC_FIELD(ipa, response) = 0;
-+	UC_FIELD(ipa, response_param) = 0;
- 
- 	/* Use an interrupt to tell the microcontroller the command is ready */
- 	val = u32_encode_bits(1, UC_INTR_FMASK);
+ 	switch (ipa->version) {
++	case IPA_VERSION_2_0:
++		return "2.0";
++	case IPA_VERSION_2_5:
++		return "2.5";
++	case IPA_VERSION_2_6L:
++		"return 2.6L";
+ 	case IPA_VERSION_3_0:
+ 		return "3.0";
+ 	case IPA_VERSION_3_1:
 -- 
 2.33.0
 
