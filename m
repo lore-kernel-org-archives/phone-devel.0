@@ -2,46 +2,74 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-20.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DFEBC433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 18:45:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC573C433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 21 Sep 2021 12:22:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 15BD361177
-	for <phone-devel@archiver.kernel.org>; Mon, 20 Sep 2021 18:45:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A4F01610CA
+	for <phone-devel@archiver.kernel.org>; Tue, 21 Sep 2021 12:22:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354553AbhITSrO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 20 Sep 2021 14:47:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59828 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1383114AbhITSoL (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 20 Sep 2021 14:44:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 526C16334A;
-        Mon, 20 Sep 2021 17:32:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1632159137;
-        bh=r9bKAP/Db2Ctbq5jkaSZAU9PRMN3GIB1qKROsvayfJs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hDCgseZOgElcyPqVrvwTKIrUyVV0LMd6m5/RKWuX0FUvSl+aZuP95klNh0yJz6HL7
-         i8IhHqSKEJMODpqA1CbWPTSM1OS1ZXEaMYyuEnCOS+acreTQud5L79iGtkq+4dQK3M
-         Pxcyefssne3Q/335WO7tmzlPwkfyF8w07BVwx8Dk=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, phone-devel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.14 092/168] mfd: db8500-prcmu: Adjust map to reality
-Date:   Mon, 20 Sep 2021 18:43:50 +0200
-Message-Id: <20210920163924.657418197@linuxfoundation.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20210920163921.633181900@linuxfoundation.org>
-References: <20210920163921.633181900@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S231773AbhIUMXf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 21 Sep 2021 08:23:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229984AbhIUMXe (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 21 Sep 2021 08:23:34 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68253C061574;
+        Tue, 21 Sep 2021 05:22:06 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id t8so38596786wrq.4;
+        Tue, 21 Sep 2021 05:22:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5M2bRv2kmamfcOnSq0h86eu6NBUQ+EJzp0SymobeTak=;
+        b=DFvrS0QYGhxB0DmDAsfqXwyI+pX2mHkxCYq+b45Yg8wY4PUEJnCOtxBrHoy/2jXbyB
+         FgO0R+5uEjOde54sTR4+NH06OD095RdLgTqqo0TaL/sbZbswFwbEo2MaS96vxse+lbuP
+         bgjGTlbdOAvXj7sy2hN/xYD6UhEdZzKlUJFydFO9B7VIOYMjO4RMQh6BbdQNS+h+EbJ6
+         Wlb/88coA7F8iNaT0OPMEbaiuVcT2vslSjXODVshGWrgO26idvmiGYXqyaIAlvqgB5f4
+         DOiEUssCsmgnE2FhUf55C6ecskd67exeNlR2lIM9QvRxb7HVqHbTmETxRH87WSCnwgnZ
+         EN5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5M2bRv2kmamfcOnSq0h86eu6NBUQ+EJzp0SymobeTak=;
+        b=jSL+oH7JjlVUb8t/tDpLeeGIxbAUY/Jv6nt1WwrmyRISP0J0V5ghz9tpkUbUjQYqfC
+         p6OtRdBFoNN9GVeaQd4ioOXdo+n+EwSlMGldR/UzlJJPw3uPVo+ybIk+XdIbr5LK/YCO
+         XBKyv8mwYJoBDk5pz52mciWNGgpJ//g74G0QllGWJkmGawLA8L+0YEKrLf0N9oWEUi+4
+         vA9r1BvrL84BniDqqoARMvlX5uiowYIuNUbMv5qh4NNwKdLjwN+LF/4Wo2/fGqGqn2Ps
+         ZlcVY6y6L9bsLw0beG51kDrszsHFP4gWgkPltY9aLumDEZsxk/oPoKNBh7j4nJsRjbRL
+         9hcQ==
+X-Gm-Message-State: AOAM532pSFpGOoffwzkl0lSz24BwJyD6HZGKzAYP0PuUbtg3vw9cqyup
+        QzLtXN/jYwT4EXhIajdnKhY=
+X-Google-Smtp-Source: ABdhPJxH/FHabvrYaa7eWfww74FZM0cp4SKhlS2u1GpqB0+l22TAx/x2zXu3m8WRvLuGV1egPRURkg==
+X-Received: by 2002:a1c:4c13:: with SMTP id z19mr4357450wmf.154.1632226924831;
+        Tue, 21 Sep 2021 05:22:04 -0700 (PDT)
+Received: from localhost.localdomain (i59F67ACA.versanet.de. [89.246.122.202])
+        by smtp.gmail.com with ESMTPSA id 20sm2999829wme.46.2021.09.21.05.22.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Sep 2021 05:22:04 -0700 (PDT)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Markuss Broks <markuss.broks@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH] MAINTAINERS: fix typo in DRM DRIVER FOR SAMSUNG S6D27A1 PANELS
+Date:   Tue, 21 Sep 2021 14:21:46 +0200
+Message-Id: <20210921122146.13132-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -49,59 +77,39 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+Commit ebd8cbf1fb96 ("drm/panel: s6d27a1: Add driver for Samsung S6D27A1
+display panel") introduces a new section DRM DRIVER FOR SAMSUNG S6D27A1
+PANELS with a minor typo in one of its file entries.
 
-[ Upstream commit ec343111c056ec3847800302f6dbc57281f833fa ]
+Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
 
-These are the actual frequencies reported by the PLL, so let's
-report these. The roundoffs are inappropriate, we should round
-to the frequency that the clock will later report.
+  warning: no file matches  F:  driver/gpu/drm/panel/panel-samsung-s6d27a1.c
 
-Drop some whitespace at the same time.
+So, repair the entry and make get_maintainer.pl happy.
 
-Cc: phone-devel@vger.kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- drivers/mfd/db8500-prcmu.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+applies cleanly on next-20210920
 
-diff --git a/drivers/mfd/db8500-prcmu.c b/drivers/mfd/db8500-prcmu.c
-index 3bde7fda755f..dea4e4e8bed5 100644
---- a/drivers/mfd/db8500-prcmu.c
-+++ b/drivers/mfd/db8500-prcmu.c
-@@ -1622,22 +1622,20 @@ static long round_clock_rate(u8 clock, unsigned long rate)
- }
+Linus, please pick this minor quick clean-up patch on drm-misc-next
+(on top of the commit mentioned above).
+
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2b990794ec35..1c486baf9c8d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6045,7 +6045,7 @@ DRM DRIVER FOR SAMSUNG S6D27A1 PANELS
+ M:	Markuss Broks <markuss.broks@gmail.com>
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/display/panel/samsung,s6d27a1.yaml
+-F:	driver/gpu/drm/panel/panel-samsung-s6d27a1.c
++F:	drivers/gpu/drm/panel/panel-samsung-s6d27a1.c
  
- static const unsigned long db8500_armss_freqs[] = {
--	200000000,
--	400000000,
--	800000000,
-+	199680000,
-+	399360000,
-+	798720000,
- 	998400000
- };
- 
- /* The DB8520 has slightly higher ARMSS max frequency */
- static const unsigned long db8520_armss_freqs[] = {
--	200000000,
--	400000000,
--	800000000,
-+	199680000,
-+	399360000,
-+	798720000,
- 	1152000000
- };
- 
--
--
- static long round_armss_rate(unsigned long rate)
- {
- 	unsigned long freq = 0;
+ DRM DRIVER FOR SITRONIX ST7703 PANELS
+ M:	Guido Günther <agx@sigxcpu.org>
 -- 
-2.30.2
-
-
+2.26.2
 
