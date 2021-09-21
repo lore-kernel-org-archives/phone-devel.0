@@ -2,114 +2,83 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC573C433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 21 Sep 2021 12:22:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C8F45C433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 21 Sep 2021 17:41:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A4F01610CA
-	for <phone-devel@archiver.kernel.org>; Tue, 21 Sep 2021 12:22:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AC24161166
+	for <phone-devel@archiver.kernel.org>; Tue, 21 Sep 2021 17:41:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231773AbhIUMXf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 21 Sep 2021 08:23:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229984AbhIUMXe (ORCPT
+        id S230024AbhIURnS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 21 Sep 2021 13:43:18 -0400
+Received: from mail-ot1-f52.google.com ([209.85.210.52]:34439 "EHLO
+        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229915AbhIURnS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 21 Sep 2021 08:23:34 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68253C061574;
-        Tue, 21 Sep 2021 05:22:06 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id t8so38596786wrq.4;
-        Tue, 21 Sep 2021 05:22:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=5M2bRv2kmamfcOnSq0h86eu6NBUQ+EJzp0SymobeTak=;
-        b=DFvrS0QYGhxB0DmDAsfqXwyI+pX2mHkxCYq+b45Yg8wY4PUEJnCOtxBrHoy/2jXbyB
-         FgO0R+5uEjOde54sTR4+NH06OD095RdLgTqqo0TaL/sbZbswFwbEo2MaS96vxse+lbuP
-         bgjGTlbdOAvXj7sy2hN/xYD6UhEdZzKlUJFydFO9B7VIOYMjO4RMQh6BbdQNS+h+EbJ6
-         Wlb/88coA7F8iNaT0OPMEbaiuVcT2vslSjXODVshGWrgO26idvmiGYXqyaIAlvqgB5f4
-         DOiEUssCsmgnE2FhUf55C6ecskd67exeNlR2lIM9QvRxb7HVqHbTmETxRH87WSCnwgnZ
-         EN5g==
+        Tue, 21 Sep 2021 13:43:18 -0400
+Received: by mail-ot1-f52.google.com with SMTP id n65-20020a9d2047000000b00547334367efso2472807ota.1;
+        Tue, 21 Sep 2021 10:41:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=5M2bRv2kmamfcOnSq0h86eu6NBUQ+EJzp0SymobeTak=;
-        b=jSL+oH7JjlVUb8t/tDpLeeGIxbAUY/Jv6nt1WwrmyRISP0J0V5ghz9tpkUbUjQYqfC
-         p6OtRdBFoNN9GVeaQd4ioOXdo+n+EwSlMGldR/UzlJJPw3uPVo+ybIk+XdIbr5LK/YCO
-         XBKyv8mwYJoBDk5pz52mciWNGgpJ//g74G0QllGWJkmGawLA8L+0YEKrLf0N9oWEUi+4
-         vA9r1BvrL84BniDqqoARMvlX5uiowYIuNUbMv5qh4NNwKdLjwN+LF/4Wo2/fGqGqn2Ps
-         ZlcVY6y6L9bsLw0beG51kDrszsHFP4gWgkPltY9aLumDEZsxk/oPoKNBh7j4nJsRjbRL
-         9hcQ==
-X-Gm-Message-State: AOAM532pSFpGOoffwzkl0lSz24BwJyD6HZGKzAYP0PuUbtg3vw9cqyup
-        QzLtXN/jYwT4EXhIajdnKhY=
-X-Google-Smtp-Source: ABdhPJxH/FHabvrYaa7eWfww74FZM0cp4SKhlS2u1GpqB0+l22TAx/x2zXu3m8WRvLuGV1egPRURkg==
-X-Received: by 2002:a1c:4c13:: with SMTP id z19mr4357450wmf.154.1632226924831;
-        Tue, 21 Sep 2021 05:22:04 -0700 (PDT)
-Received: from localhost.localdomain (i59F67ACA.versanet.de. [89.246.122.202])
-        by smtp.gmail.com with ESMTPSA id 20sm2999829wme.46.2021.09.21.05.22.03
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=6b4IIW0sN4JgYgdnLZbHu/GA4zvnwxshVHJp0K1k4Ac=;
+        b=nlu2lVp55DVcSoaEwzDh180x5aKc4BaQpVDuUPrFf3iTAO4c6iqfQfVJ9Yl2pFdRfU
+         f4JLqcEIj/8KqAU5yqU8VmxhcVwgMyXLatOVM1pgVCMYInubDhqd2vUBSAvTUEb/0jWK
+         a8f+/rOGbsGHiIvyXlnfVjMDsC9f886o1WbDLmg9Anz/KYC1GtDAqcOsZK7lVvAaBIGi
+         JP0B3m2VXHxsKefIM04UKSl3eCuBTR58gp4g9VpjHTgapri9sx74HTL77WZmNyiaHdeC
+         E4R/H4hy+MuISPRuEaXcNEsQzc2vnlzdiqO7Py595PHVUOj+uTPJAc+AHi+au512Ts6w
+         n7Wg==
+X-Gm-Message-State: AOAM533s8Q+jKslUNyEAB9+8oSOCoZZLtLgiZXip0qI0Lf30+7FFUQ49
+        BVDQG2+7Ry2Kj+oSCtgRTA==
+X-Google-Smtp-Source: ABdhPJwq32Lfdjus9F4ALYlFMLXBPgzEb5VmjZWvPnw9Sl3pngoSqz9+jwvyN2g9rSRQEgRyRuvScg==
+X-Received: by 2002:a05:6830:40ca:: with SMTP id h10mr8440832otu.187.1632246109250;
+        Tue, 21 Sep 2021 10:41:49 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id s26sm2011789ooc.26.2021.09.21.10.41.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Sep 2021 05:22:04 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Markuss Broks <markuss.broks@gmail.com>,
+        Tue, 21 Sep 2021 10:41:48 -0700 (PDT)
+Received: (nullmailer pid 3020375 invoked by uid 1000);
+        Tue, 21 Sep 2021 17:41:47 -0000
+Date:   Tue, 21 Sep 2021 12:41:47 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>, linux-kernel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
         Thierry Reding <thierry.reding@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH] MAINTAINERS: fix typo in DRM DRIVER FOR SAMSUNG S6D27A1 PANELS
-Date:   Tue, 21 Sep 2021 14:21:46 +0200
-Message-Id: <20210921122146.13132-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.26.2
+        devicetree@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [PATCH v2 2/2] dt-bindings: display: Add binding for LG.Philips
+ SW43101
+Message-ID: <YUoZW3zfW+9W9Ouh@robh.at.kernel.org>
+References: <20210909043904.12982-1-y.oudjana@protonmail.com>
+ <20210909043904.12982-3-y.oudjana@protonmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210909043904.12982-3-y.oudjana@protonmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Commit ebd8cbf1fb96 ("drm/panel: s6d27a1: Add driver for Samsung S6D27A1
-display panel") introduces a new section DRM DRIVER FOR SAMSUNG S6D27A1
-PANELS with a minor typo in one of its file entries.
+On Thu, 09 Sep 2021 04:40:27 +0000, Yassine Oudjana wrote:
+> Add a device tree binding for LG.Philips SW43101.
+> 
+> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+> ---
+> Changes since v1:
+>  - Add regulator support.
+>  - Add MAINTAINERS entry.
+>  - Dual-license DT binding.
+> 
+>  .../display/panel/lgphilips,sw43101.yaml      | 75 +++++++++++++++++++
+>  MAINTAINERS                                   |  1 +
+>  2 files changed, 76 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/display/panel/lgphilips,sw43101.yaml
+> 
 
-Hence, ./scripts/get_maintainer.pl --self-test=patterns complains:
-
-  warning: no file matches  F:  driver/gpu/drm/panel/panel-samsung-s6d27a1.c
-
-So, repair the entry and make get_maintainer.pl happy.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
----
-applies cleanly on next-20210920
-
-Linus, please pick this minor quick clean-up patch on drm-misc-next
-(on top of the commit mentioned above).
-
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2b990794ec35..1c486baf9c8d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6045,7 +6045,7 @@ DRM DRIVER FOR SAMSUNG S6D27A1 PANELS
- M:	Markuss Broks <markuss.broks@gmail.com>
- S:	Maintained
- F:	Documentation/devicetree/bindings/display/panel/samsung,s6d27a1.yaml
--F:	driver/gpu/drm/panel/panel-samsung-s6d27a1.c
-+F:	drivers/gpu/drm/panel/panel-samsung-s6d27a1.c
- 
- DRM DRIVER FOR SITRONIX ST7703 PANELS
- M:	Guido Günther <agx@sigxcpu.org>
--- 
-2.26.2
-
+Reviewed-by: Rob Herring <robh@kernel.org>
