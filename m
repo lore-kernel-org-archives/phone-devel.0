@@ -2,95 +2,77 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58955C433FE
-	for <phone-devel@archiver.kernel.org>; Thu, 23 Sep 2021 05:20:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DBFE1C433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 23 Sep 2021 12:42:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 36694611B0
-	for <phone-devel@archiver.kernel.org>; Thu, 23 Sep 2021 05:20:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BD9A46115A
+	for <phone-devel@archiver.kernel.org>; Thu, 23 Sep 2021 12:42:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229590AbhIWFWT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 23 Sep 2021 01:22:19 -0400
-Received: from ixit.cz ([94.230.151.217]:53778 "EHLO ixit.cz"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229504AbhIWFWT (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 23 Sep 2021 01:22:19 -0400
-Received: from [10.111.222.169] (ixit.cz [94.230.151.217])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by ixit.cz (Postfix) with ESMTPSA id B555823B26;
-        Thu, 23 Sep 2021 07:20:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-        t=1632374446;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=cFfRp9hRc2lQUu9wZPFFHqwIGiNz/3vf6zUsUc5shkg=;
-        b=CanIE2BlFjfAJzudFVKoZFhT0A3sC3uvnAWt2+SFQtYXDGTBG65+VwECxCFi7cJfQh/Ebr
-        HeAL0VtANKJpwE1c/EYiOYy10zxbwdQ7zH4HzPVq0IeHnlbRdpx8xCSb70k4a11N2sxBvg
-        0IZsOU4kE5CoEB7bn23xOBjF6wiXJzU=
-Date:   Thu, 23 Sep 2021 07:19:23 +0200
-From:   David Heidelberg <david@ixit.cz>
-Subject: Re: [PATCH] mfd: qcom-pm8xxx: switch away from using chained IRQ
- handlers
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Andy Gross <agross@kernel.org>,
+        id S241014AbhIWMoK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 23 Sep 2021 08:44:10 -0400
+Received: from mail-oo1-f50.google.com ([209.85.161.50]:46638 "EHLO
+        mail-oo1-f50.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240911AbhIWMoK (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 23 Sep 2021 08:44:10 -0400
+Received: by mail-oo1-f50.google.com with SMTP id q26-20020a4adc5a000000b002918a69c8eeso2070465oov.13;
+        Thu, 23 Sep 2021 05:42:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=EQoFaazURf0T5iPiEHtr8R2ifsqYmGtx+pVuh7cl/+k=;
+        b=CXeuSBeeCcaibIRzwOnmgSigsc1zlVlMP/a3IXyv2SAdWTToOQUf1ZYteWFcjq5xg0
+         clO1RaQRKJdYG8cn0EjTLbQbptY7xGwUyKW4p7cU5WpIQzl/tuYky4NuNC8XPBlNmuNm
+         TwyOSJ4E97nhXp+oKKAEzJuxCoC0zVm3QpH5CkcQlQF1aMm9FpghIrbU4IY08MTXMyCa
+         mTLUP3abwcnZFljk+2CXOLPbxSCtvIcu/C48LdAHL8COO3wR5RGrS0STHI0Lj8Gj+liM
+         vTrW6NyajbQsRTSU44hx02oJwLcj5t5XORLhzOdcxnvZ53n8E6lsB3WieHSBjtiAzMUz
+         uSig==
+X-Gm-Message-State: AOAM530yOlCYBNDFxCGoeGyNZ04mMsKvA6jxkfPce+1ps8TPBrLNVCUf
+        tnrLid/0M8p0mgPv4WxSRg==
+X-Google-Smtp-Source: ABdhPJwrgYbulGwbPiYtS0EElA0FGBwUloejY13vS7nH+r61vSAMDCynPfMD/VZzkVpdL13OLOkYTA==
+X-Received: by 2002:a4a:942:: with SMTP id 63mr3533940ooa.25.1632400958139;
+        Thu, 23 Sep 2021 05:42:38 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id y9sm1331567ooe.10.2021.09.23.05.42.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Sep 2021 05:42:37 -0700 (PDT)
+Received: (nullmailer pid 2819083 invoked by uid 1000);
+        Thu, 23 Sep 2021 12:42:36 -0000
+Date:   Thu, 23 Sep 2021 07:42:36 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Sireesh Kodali <sireeshkodali1@gmail.com>
+Cc:     netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        MSM <linux-arm-msm@vger.kernel.org>, phone-devel@vger.kernel.org
-Message-Id: <B4GVZQ.IG4PDOTEQGB82@ixit.cz>
-In-Reply-To: <CACRpkdb15D0m7L-vO7RFcAaVuS7hdD8J=6=15TFgRgvvsw1e9g@mail.gmail.com>
-References: <20210921162433.1858296-1-dmitry.baryshkov@linaro.org>
-        <CACRpkdb15D0m7L-vO7RFcAaVuS7hdD8J=6=15TFgRgvvsw1e9g@mail.gmail.com>
-X-Mailer: geary/40.0
+        ~postmarketos/upstreaming@lists.sr.ht, elder@kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [RFC PATCH 17/17] dt-bindings: net: qcom,ipa: Add support for
+ MSM8953 and MSM8996 IPA
+Message-ID: <YUx2PLKZOMtKfru0@robh.at.kernel.org>
+References: <20210920030811.57273-1-sireeshkodali1@gmail.com>
+ <20210920030811.57273-18-sireeshkodali1@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210920030811.57273-18-sireeshkodali1@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-with this patch, it does boot without any problems or warnings 
-regarding to IRQ.
+On Mon, 20 Sep 2021 08:38:11 +0530, Sireesh Kodali wrote:
+> MSM8996 uses IPA v2.5 and MSM8953 uses IPA v2.6l
+> 
+> Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/net/qcom,ipa.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
 
-Tested-by: David Heidelberg <david@ixit.cz>
-Best regards
-David Heidelberg
-
-On Thu, Sep 23 2021 at 02:04:10 +0200, Linus Walleij 
-<linus.walleij@linaro.org> wrote:
-> On Tue, Sep 21, 2021 at 6:24 PM Dmitry Baryshkov
-> <dmitry.baryshkov@linaro.org> wrote:
-> 
->>  PM8xxx PMIC family uses GPIO as parent IRQ. Using it together with 
->> the
->>  irq_set_chained_handler_and_data() results in warnings from the 
->> GPIOLIB
->>  as in this path the IRQ resources are not allocated (and thus the
->>  corresponding GPIO is not marked as used for the IRQ. Use 
->> request_irq so
->>  that the IRQ resources are proprely setup.
->> 
->>  Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> 
-> I sent this patch:
-> https://lore.kernel.org/lkml/20210819154400.51932-1-linus.walleij@linaro.org/
-> 
-> David Heidelberg reported that it didn't work for him.
-> 
-> David can you test Dmitry's patch instead and see if that works
-> for you, I suppose I could have some bug in my patch :/
-> It would be nice with a Tested-by from David.
-> 
-> FWIW the code looks good:
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> 
-> Yours,
-> Linus Walleij
-
-
+Acked-by: Rob Herring <robh@kernel.org>
