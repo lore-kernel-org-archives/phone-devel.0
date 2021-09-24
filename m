@@ -2,81 +2,121 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-13.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,MIME_HEADER_CTYPE_ONLY,SPF_HELO_NONE,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C2B7C433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 23 Sep 2021 21:15:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35991C433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 24 Sep 2021 10:07:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 07D0C60F94
-	for <phone-devel@archiver.kernel.org>; Thu, 23 Sep 2021 21:15:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1D99F6124B
+	for <phone-devel@archiver.kernel.org>; Fri, 24 Sep 2021 10:07:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243233AbhIWVQr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 23 Sep 2021 17:16:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57734 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243189AbhIWVQq (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 23 Sep 2021 17:16:46 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81AC7C061756
-        for <phone-devel@vger.kernel.org>; Thu, 23 Sep 2021 14:15:14 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id z24so32074161lfu.13
-        for <phone-devel@vger.kernel.org>; Thu, 23 Sep 2021 14:15:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=f9fF1es1aEeH+o2sBBMLmPK2zQTL0jPUM9WO4klM+IA=;
-        b=vSV3zeebm7WI+VqdkF7vS+UCyw08t3Sh3i5cSKiVxyJN6kImADE6c42pxwf0I+t8Oj
-         u88Ra797Y4PaN0nwlQoLxQAydPBYLC/zhRTGx3a6Sxxe+WGsTAPgisVCLH6+kIXiZMnL
-         hiuLnIwVuVOPfgg1obGzyD+5wiPg92JebqWvlUEEJi1a+7fXYHPBkDzxE53qEZyMx4r+
-         4ieoV75QtMDWdsvDSdyoZI7r4i/KCapAt3EQtz4yBYWTGQlE1AMpaeqvz1mtoCiaZFWo
-         BIm4+nxxg1DmhgnqB7MM8D8TzPBUCAZiG8feHRjP2KsUsmf+wUtHS48333q/P2rNuGDs
-         6XxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=f9fF1es1aEeH+o2sBBMLmPK2zQTL0jPUM9WO4klM+IA=;
-        b=afVHropZd7wp8yoB5IBk/th9MiRl0luqxqZCqNajtWgqnIg5E5qPg6TOpUfHeF1hsj
-         g5TDpLvjbLS7zKIqrr6L7nVZ2nIEpKmceQ5ygZcfM3ktuCZa8hpOBNmWE5+Dr8nlR/ce
-         cnO/rt5MEgld1cTYuMTeuCBMVtTXAwrEPprVLzOVjBy/bK6uAhCmhO9+BRsbS8BCmFEH
-         eUl6T9NPX4EETQUgh+wi9jLH89eT2/Db9YDookz6KPB0ECbTD9NEHpt/ex0kNdskaxnG
-         cbHsmpB9Z6HFfq/RWKeq1dCinNIqsQuXWQosmKoqllZuloKjs76kxH1GMBqulaBV9voK
-         qD5A==
-X-Gm-Message-State: AOAM532RfTJUUddnuGDOFnF7rbJ5lrpWablp4cGo6ulsUoLNHLSjXsUm
-        vRylqje1S8tgEu4otnLzePPFldGZZX7yOX+3kK+83Q==
-X-Google-Smtp-Source: ABdhPJyuSO61DwL5xrptJCfC+nHyEj2RbaWo2sXdQsh+r2DreGO7KINuSEchn0tzjfVrF/fRc/3HKOYOXXxnMkpW+Vo=
-X-Received: by 2002:ac2:4d03:: with SMTP id r3mr6436551lfi.339.1632431712880;
- Thu, 23 Sep 2021 14:15:12 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210921162433.1858296-1-dmitry.baryshkov@linaro.org>
- <CACRpkdb15D0m7L-vO7RFcAaVuS7hdD8J=6=15TFgRgvvsw1e9g@mail.gmail.com> <B4GVZQ.IG4PDOTEQGB82@ixit.cz>
-In-Reply-To: <B4GVZQ.IG4PDOTEQGB82@ixit.cz>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 23 Sep 2021 23:15:02 +0200
-Message-ID: <CACRpkdZJb-ybj8o5hSxEgYbfLfxN96O4cfC9FYa6g5HPSc8yTw@mail.gmail.com>
-Subject: Re: [PATCH] mfd: qcom-pm8xxx: switch away from using chained IRQ handlers
-To:     David Heidelberg <david@ixit.cz>
-Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        MSM <linux-arm-msm@vger.kernel.org>, phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        id S245573AbhIXKIn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 24 Sep 2021 06:08:43 -0400
+Received: from comms.puri.sm ([159.203.221.185]:34686 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S245565AbhIXKIm (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 24 Sep 2021 06:08:42 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id A7B1DDF4E2;
+        Fri, 24 Sep 2021 03:06:38 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id K32DZ-SiYatL; Fri, 24 Sep 2021 03:06:38 -0700 (PDT)
+Date:   Fri, 24 Sep 2021 12:06:31 +0200
+From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+To:     Steve Longerbeam <slongerbeam@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     kernel@puri.sm, phone-devel@vger.kernel.org
+Subject: [PATCH] media: imx: Fix rounding
+Message-ID: <20210924120631.7060da0f.dorota.czaplejewicz@puri.sm>
+Organization: Purism
+Content-Type: multipart/signed; boundary="Sig_/UUZqa0L2d=8613N2HL_AjKP";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Sep 23, 2021 at 7:20 AM David Heidelberg <david@ixit.cz> wrote:
+--Sig_/UUZqa0L2d=8613N2HL_AjKP
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> with this patch, it does boot without any problems or warnings
-> regarding to IRQ.
+Change rounding to the minimal burst size from 2^n to n.
 
-Excellent, let's apply it!
+This fixes images with sizes that are a multiple of 8 pixels.
 
-Yours,
-Linus Walleij
+See section 13.7.6.13 CSI Image Parameter Register of the
+i.MX 8M Quad Applications Processors Reference Manual.
+
+Fixes: 451a7b7815d0b ("media: imx: lift CSI and PRP ENC/VF width
+alignment restriction")
+Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+---
+Hi,
+
+I tested this patch on the Librem 5 with the main camera.
+
+--Dorota
+ drivers/staging/media/imx/imx-media-utils.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/=
+media/imx/imx-media-utils.c
+index 5128915a5d6f..a2d8fab32a39 100644
+--- a/drivers/staging/media/imx/imx-media-utils.c
++++ b/drivers/staging/media/imx/imx-media-utils.c
+@@ -545,13 +545,13 @@ int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_for=
+mat *pix,
+ 	}
+=20
+ 	/* Round up width for minimum burst size */
+-	width =3D round_up(mbus->width, 8);
++	width =3D round_up(mbus->width, 3);
+=20
+ 	/* Round up stride for IDMAC line start address alignment */
+ 	if (cc->planar)
+-		stride =3D round_up(width, 16);
++		stride =3D round_up(width, 4);
+ 	else
+-		stride =3D round_up((width * cc->bpp) >> 3, 8);
++		stride =3D round_up((width * cc->bpp) >> 3, 3);
+=20
+ 	pix->width =3D width;
+ 	pix->height =3D mbus->height;
+--=20
+2.31.1
+
+
+--Sig_/UUZqa0L2d=8613N2HL_AjKP
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmFNoycACgkQADBpX4S8
+ZnfWxQ/7Bsgm4pW+bgC74d2aR9/Qr3fJvkaOaUvTwkTzUCFpgmYKVXSCMSDHAJfY
+akNsFylqSMo5s0KfaKZnhvqSuH/7USaOdETm2K79AitzY1dyTWNZ/SD3ef8hrCe0
+LEkCdX0LIU6z0o3bTFnVo1Sq5uN0LZ2rrZ66CPaapqe8W6Fhn2FRy0CoB2m+vwII
+MiwsE/kZnaXSyhN+QpkMD+f1RuvVBtg8iYN3vNxLVdo3s1KBqKYy2M8Q0xy7hOWx
+JQ2WNVZtv8V4m193HwEUKmhQt9Pa4G4Ds4bwvX1qr4dv7kJCVjK6xYAo83Qptnjy
+otkyky3FcKN2hs6lkuw1Z5nQWM3iEVykqX43APqiiUrZEOHkLuO11PZfFoK173g7
+953xofK7fxCyWWYghzoOBFNJZApUFRd30yCye7HGLtAeLCOmw0DgVd47kp24E58E
+9DCiP/zNtEqxWzYwlt5ZoJZvvXmlZmhEHeQps4CBV/QVz9oIfEvrUzr/1pCBp+1e
+aXG6gaLwm1xRyZbWmxVJC3/+rQ8SjCETLbg6+Bykm4tfQi9xq0qwuMcqsCkX8O9N
+UkA0wkx9krr36h7cWXfEIuOZVb91yrL3K4c12IeJOw9DKeqDom+XS4vtZNCztuIa
+3AFQNbZ/BpC3GYbhbSNxMESJERl0gKB0DJ0InhWpdc4NdXrkhto=
+=FBdR
+-----END PGP SIGNATURE-----
+
+--Sig_/UUZqa0L2d=8613N2HL_AjKP--
