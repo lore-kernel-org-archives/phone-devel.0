@@ -2,33 +2,39 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.7 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MIME_HEADER_CTYPE_ONLY,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35991C433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 24 Sep 2021 10:07:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 458C4C43217
+	for <phone-devel@archiver.kernel.org>; Fri, 24 Sep 2021 11:46:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1D99F6124B
-	for <phone-devel@archiver.kernel.org>; Fri, 24 Sep 2021 10:07:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 206646124D
+	for <phone-devel@archiver.kernel.org>; Fri, 24 Sep 2021 11:46:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245573AbhIXKIn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 24 Sep 2021 06:08:43 -0400
-Received: from comms.puri.sm ([159.203.221.185]:34686 "EHLO comms.puri.sm"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S245565AbhIXKIm (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 24 Sep 2021 06:08:42 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id A7B1DDF4E2;
-        Fri, 24 Sep 2021 03:06:38 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id K32DZ-SiYatL; Fri, 24 Sep 2021 03:06:38 -0700 (PDT)
-Date:   Fri, 24 Sep 2021 12:06:31 +0200
-From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-To:     Steve Longerbeam <slongerbeam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
+        id S1343652AbhIXLsM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 24 Sep 2021 07:48:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57004 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1343636AbhIXLsI (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 24 Sep 2021 07:48:08 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4C13C061574
+        for <phone-devel@vger.kernel.org>; Fri, 24 Sep 2021 04:46:34 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <pza@pengutronix.de>)
+        id 1mTjej-0003Uj-Tv; Fri, 24 Sep 2021 13:46:17 +0200
+Received: from pza by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <pza@pengutronix.de>)
+        id 1mTjeh-00065F-Rv; Fri, 24 Sep 2021 13:46:15 +0200
+Date:   Fri, 24 Sep 2021 13:46:15 +0200
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+Cc:     Steve Longerbeam <slongerbeam@gmail.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Shawn Guo <shawnguo@kernel.org>,
@@ -37,86 +43,71 @@ To:     Steve Longerbeam <slongerbeam@gmail.com>,
         Fabio Estevam <festevam@gmail.com>,
         NXP Linux Team <linux-imx@nxp.com>,
         linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     kernel@puri.sm, phone-devel@vger.kernel.org
-Subject: [PATCH] media: imx: Fix rounding
-Message-ID: <20210924120631.7060da0f.dorota.czaplejewicz@puri.sm>
-Organization: Purism
-Content-Type: multipart/signed; boundary="Sig_/UUZqa0L2d=8613N2HL_AjKP";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@puri.sm, phone-devel@vger.kernel.org
+Subject: Re: [PATCH] media: imx: Fix rounding
+Message-ID: <20210924114615.GA21343@pengutronix.de>
+References: <20210924120631.7060da0f.dorota.czaplejewicz@puri.sm>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210924120631.7060da0f.dorota.czaplejewicz@puri.sm>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 13:34:50 up 218 days, 14:58, 111 users,  load average: 0.12, 0.18,
+ 0.17
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: pza@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: phone-devel@vger.kernel.org
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
---Sig_/UUZqa0L2d=8613N2HL_AjKP
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Dorota,
 
-Change rounding to the minimal burst size from 2^n to n.
+On Fri, Sep 24, 2021 at 12:06:31PM +0200, Dorota Czaplejewicz wrote:
+> Change rounding to the minimal burst size from 2^n to n.
+> 
+> This fixes images with sizes that are a multiple of 8 pixels.
 
-This fixes images with sizes that are a multiple of 8 pixels.
+Could you elaborate on what is currently wrong with images that are a
+multiple of 8 pixels wide? Or are you rather trying to add support
+for images that are not a multiple of 8 pixels wide?
 
-See section 13.7.6.13 CSI Image Parameter Register of the
-i.MX 8M Quad Applications Processors Reference Manual.
+> 
+> See section 13.7.6.13 CSI Image Parameter Register of the
+> i.MX 8M Quad Applications Processors Reference Manual.
+> 
+> Fixes: 451a7b7815d0b ("media: imx: lift CSI and PRP ENC/VF width
+> alignment restriction")
+> Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+> ---
+> Hi,
+> 
+> I tested this patch on the Librem 5 with the main camera.
+> 
+> --Dorota
+>  drivers/staging/media/imx/imx-media-utils.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
+> index 5128915a5d6f..a2d8fab32a39 100644
+> --- a/drivers/staging/media/imx/imx-media-utils.c
+> +++ b/drivers/staging/media/imx/imx-media-utils.c
+> @@ -545,13 +545,13 @@ int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
+>  	}
+>  
+>  	/* Round up width for minimum burst size */
+> -	width = round_up(mbus->width, 8);
+> +	width = round_up(mbus->width, 3);
 
-Fixes: 451a7b7815d0b ("media: imx: lift CSI and PRP ENC/VF width
-alignment restriction")
-Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
----
-Hi,
+That is not a valid use of the round_up() macro anymore.
+The second parameter must be a power of 2.
 
-I tested this patch on the Librem 5 with the main camera.
-
---Dorota
- drivers/staging/media/imx/imx-media-utils.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/=
-media/imx/imx-media-utils.c
-index 5128915a5d6f..a2d8fab32a39 100644
---- a/drivers/staging/media/imx/imx-media-utils.c
-+++ b/drivers/staging/media/imx/imx-media-utils.c
-@@ -545,13 +545,13 @@ int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_for=
-mat *pix,
- 	}
-=20
- 	/* Round up width for minimum burst size */
--	width =3D round_up(mbus->width, 8);
-+	width =3D round_up(mbus->width, 3);
-=20
- 	/* Round up stride for IDMAC line start address alignment */
- 	if (cc->planar)
--		stride =3D round_up(width, 16);
-+		stride =3D round_up(width, 4);
- 	else
--		stride =3D round_up((width * cc->bpp) >> 3, 8);
-+		stride =3D round_up((width * cc->bpp) >> 3, 3);
-=20
- 	pix->width =3D width;
- 	pix->height =3D mbus->height;
---=20
-2.31.1
-
-
---Sig_/UUZqa0L2d=8613N2HL_AjKP
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmFNoycACgkQADBpX4S8
-ZnfWxQ/7Bsgm4pW+bgC74d2aR9/Qr3fJvkaOaUvTwkTzUCFpgmYKVXSCMSDHAJfY
-akNsFylqSMo5s0KfaKZnhvqSuH/7USaOdETm2K79AitzY1dyTWNZ/SD3ef8hrCe0
-LEkCdX0LIU6z0o3bTFnVo1Sq5uN0LZ2rrZ66CPaapqe8W6Fhn2FRy0CoB2m+vwII
-MiwsE/kZnaXSyhN+QpkMD+f1RuvVBtg8iYN3vNxLVdo3s1KBqKYy2M8Q0xy7hOWx
-JQ2WNVZtv8V4m193HwEUKmhQt9Pa4G4Ds4bwvX1qr4dv7kJCVjK6xYAo83Qptnjy
-otkyky3FcKN2hs6lkuw1Z5nQWM3iEVykqX43APqiiUrZEOHkLuO11PZfFoK173g7
-953xofK7fxCyWWYghzoOBFNJZApUFRd30yCye7HGLtAeLCOmw0DgVd47kp24E58E
-9DCiP/zNtEqxWzYwlt5ZoJZvvXmlZmhEHeQps4CBV/QVz9oIfEvrUzr/1pCBp+1e
-aXG6gaLwm1xRyZbWmxVJC3/+rQ8SjCETLbg6+Bykm4tfQi9xq0qwuMcqsCkX8O9N
-UkA0wkx9krr36h7cWXfEIuOZVb91yrL3K4c12IeJOw9DKeqDom+XS4vtZNCztuIa
-3AFQNbZ/BpC3GYbhbSNxMESJERl0gKB0DJ0InhWpdc4NdXrkhto=
-=FBdR
------END PGP SIGNATURE-----
-
---Sig_/UUZqa0L2d=8613N2HL_AjKP--
+regards
+Philipp
