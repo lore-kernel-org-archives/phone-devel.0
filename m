@@ -2,67 +2,65 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34D2DC433F5
-	for <phone-devel@archiver.kernel.org>; Sat, 25 Sep 2021 10:32:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5BC7C433EF
+	for <phone-devel@archiver.kernel.org>; Sat, 25 Sep 2021 11:38:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 07FC761041
-	for <phone-devel@archiver.kernel.org>; Sat, 25 Sep 2021 10:32:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8731D604DB
+	for <phone-devel@archiver.kernel.org>; Sat, 25 Sep 2021 11:38:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244055AbhIYKde (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 25 Sep 2021 06:33:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50790 "EHLO
+        id S233562AbhIYLkP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 25 Sep 2021 07:40:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234922AbhIYKde (ORCPT
+        with ESMTP id S230046AbhIYLkO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 25 Sep 2021 06:33:34 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4A0DC061570;
-        Sat, 25 Sep 2021 03:31:59 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id dm26so12181684edb.12;
-        Sat, 25 Sep 2021 03:31:59 -0700 (PDT)
+        Sat, 25 Sep 2021 07:40:14 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 223A6C061570;
+        Sat, 25 Sep 2021 04:38:40 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id c21so46359709edj.0;
+        Sat, 25 Sep 2021 04:38:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=YeH5vkzIpa6TeE8Tz3mSyGZU/tR0+zS/g4jLCGFfdvY=;
-        b=USmlh/DZPVWtlxSSuUkmPMHHOwRs9Xv9zziDWV2tjKDDSy1mtSHsSwcMeY6RODpGw/
-         bEe6jw9DJEKZKnaYrQ4vLeEoJii6k7oStRkTA/BzA+d/5g5uQXxSZTL6/lAKffMTqwEA
-         QOdQVyQlrFmot5aAw3JrYFfnf3d7N9S4IG8n4qrybJKnBDJwbMaooHTa9+FdTGmtUgVh
-         ENySnXeG7vOlgTOaLlevLTYvomd5ouIWeE4uXwMU22pr2w7kIds6XU7Zcvdeor1fAbJV
-         GA0Et9j6BwOdRfWdrW0pVEpnfjWMVuSWka5gvCly19gLgxdWwZU5JL/+wtrKWaoIL8Ic
-         uxXQ==
+        bh=roWdXJBSdw9+VuRoLQLUX1eQtYSQ8tE66jDz+31Mfiw=;
+        b=JaBl1QCrry8L/oNAUtR1rnb4mbXgXtEF+LWU6mHBLmllb2DnwXDSsvSMaJuNMPqeNP
+         LeY07lVfv/8z9f73Ng3XIWE79OKKroy0qDmB5DWg/rDdfQZNxUyWAgP3OqBKYM3gb3aB
+         bIsj6imfnZ5yWyRzD8y6+C3cn9JmihxPH/i/D6m2tWEU3S/5Fc/m06+48ue9tuXw+q+r
+         97H+45NylVnBmg5Z1tmMAwdWxVgPOfXtZr7FtXP23nmwDJZjrim7lOyamyGMMDpr23tt
+         o+SL08cPrDrPXai/e5ux+y1EeGGVrfpeVTRshXZvAR3rwXKcRXnOvB1D5aqqbntx8Gun
+         hwAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=YeH5vkzIpa6TeE8Tz3mSyGZU/tR0+zS/g4jLCGFfdvY=;
-        b=M2q8MHE/K/QVzoWQ0xvLbQG3QnlYYeP1vOV6fggGy7aNODc0Yu8MhlZeUpazb68o7D
-         uewVKwhc9BEGeHmUFFgPBxWt62kb+hKaNn+RCYjlpDuGICQ717s579H3/sqSbqOCuLYM
-         McxCMS/lpId38fQY7YMLgneHdp1eRRKLB6xF4e5nmZrTYMIPaX2kCCPLEMADpn4RMxxF
-         YLKP0Y0iEf2BQ9HrH/NfZ6JPOUscMfrDnOwxvgiNEi3UWOrnazJ23I2oVsVoA4nWBUpa
-         nMO9Bti2lwfz29hrK/UENAqy6mwZzPtyDyBmRrZhXQfzuSNcZyoLYgXeoY/LhsxLFOKk
-         4dzw==
-X-Gm-Message-State: AOAM531/YGIsYsjgxNhfOXD/9y1kJvj0cPzr9yuIh0PyY+2Uwhwj7KVX
-        WQPUBwFzAw+ZzxAN9+cm09w=
-X-Google-Smtp-Source: ABdhPJzlNASQZT2iU0BZikQkFfvD82LU7XQPQMGqTq6pq/QLz3B4QtN9njOy5nJ9iqrZmXuGfG4w3w==
-X-Received: by 2002:aa7:c905:: with SMTP id b5mr10801924edt.380.1632565918123;
-        Sat, 25 Sep 2021 03:31:58 -0700 (PDT)
-Received: from localhost.localdomain (net-93-144-178-230.cust.vodafonedsl.it. [93.144.178.230])
-        by smtp.googlemail.com with ESMTPSA id m15sm6203750ejx.73.2021.09.25.03.31.56
+        bh=roWdXJBSdw9+VuRoLQLUX1eQtYSQ8tE66jDz+31Mfiw=;
+        b=FwMe1o52VzIJn67ZvloBis4BSxQ7YFMo1ggjoq+QNrDCm4Ve2xiKlFQqJKJnZoAQrO
+         yPEyLNuDk5EnPJVuaMQ/bYpwyUdhHTQY+fLWoBfreh0XOhJMwAK+hkpVG6uy2kHkw7ZS
+         P+7FCIKSTW8bExsIITmaKLYmWAk52X7agw1f2ewD/GJfgPdhyHpih9gA7osPtFXyUuFb
+         6nvSizpeiJUuQK1y+TWlx2R4MGeipnc8mLrsl0oa4ynIWWDORNQYjjONUe4C5kxn/xng
+         npRmlgBCjq+QTsCFaUYOVDqKGgny2rWcXxzntjjRET3FM1NnF+AW3qGolmkk8lcm1T0E
+         Gv0A==
+X-Gm-Message-State: AOAM531m1oTRAMqXRBEsKkkhUE2EWT2DAZZxGuPT+z++Ux628O7jS2yr
+        4dV0yuEU0rPbh7dNXR+Kr6V2JeI/mH5ctChWmEM=
+X-Google-Smtp-Source: ABdhPJxtfaImb1rZz1q8iQAhUycsglBjxCjNlFI8To/wF1yaN8UGDZEcLyBt5G26p6AfbDMtGeJ33Q==
+X-Received: by 2002:a17:906:658:: with SMTP id t24mr15884482ejb.358.1632569918702;
+        Sat, 25 Sep 2021 04:38:38 -0700 (PDT)
+Received: from localhost.localdomain (net-93-144-178-230.cust.dsl.teletu.it. [93.144.178.230])
+        by smtp.googlemail.com with ESMTPSA id c5sm7294283edx.81.2021.09.25.04.38.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Sep 2021 03:31:57 -0700 (PDT)
+        Sat, 25 Sep 2021 04:38:38 -0700 (PDT)
 From:   Raffaele Tranquillini <raffaele.tranquillini@gmail.com>
-To:     thierry.reding@gmail.com, sam@ravnborg.org, airlied@linux.ie,
-        daniel@ffwll.ch
+To:     agross@kernel.org, bjorn.andersson@linaro.org, robh+dt@kernel.org
 Cc:     y.oudjana@protonmail.com, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org,
         Raffaele Tranquillini <raffaele.tranquillini@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] dt-bindings: panel-simple-dsi: add JDI R63452 panel bindings
-Date:   Sat, 25 Sep 2021 12:31:33 +0200
-Message-Id: <20210925103135.518443-1-raffaele.tranquillini@gmail.com>
+Subject: [PATCH] arm64: dts: qcom: msm8996: xiaomi-gemini: Enable JDI LCD panel
+Date:   Sat, 25 Sep 2021 13:38:08 +0200
+Message-Id: <20210925113808.524749-1-raffaele.tranquillini@gmail.com>
 X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -70,27 +68,63 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This add the bindings for the JDI FHD_R63452 1080x1920 5.2" LCD DSI
- panel used on the Xiaomi Mi 5 smartphone.
+This enables the JDI FHD_R63452 LCD panel used on Xiaomi Mi 5
 
 Signed-off-by: Raffaele Tranquillini <raffaele.tranquillini@gmail.com>
 ---
- .../devicetree/bindings/display/panel/panel-simple-dsi.yaml     | 2 ++
- 1 file changed, 2 insertions(+)
+ .../boot/dts/qcom/msm8996-xiaomi-gemini.dts   | 33 +++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml
-index fbd71669248f..2c00813f5d20 100644
---- a/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml
-@@ -35,6 +35,8 @@ properties:
-       - boe,tv080wum-nl0
-         # Innolux P079ZCA 7.85" 768x1024 TFT LCD panel
-       - innolux,p079zca
-+        # JDI FHD_R63452 1080x1920 5.2" IPS LCD Panel
-+      - jdi,fhd-r63452
-         # Khadas TS050 5" 1080x1920 LCD panel
-       - khadas,ts050
-         # Kingdisplay KD097D04 9.7" 1536x2048 TFT LCD panel
+diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+index fe950be0a722..ab6dcd44e673 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
++++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+@@ -90,12 +90,45 @@ synaptics@20 {
+ 
+ };
+ 
++&dsi0 {
++	status = "okay";
++
++	vdd-supply = <&vreg_l2a_1p25>;
++	vdda-supply = <&vreg_l19a_3p3>;
++	vddio-supply = <&vreg_l14a_1p8>;
++
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&mdss_dsi_default &mdss_te_default>;
++	pinctrl-1 = <&mdss_dsi_sleep &mdss_te_sleep>;
++
++	panel: panel@0 {
++		compatible = "jdi,fhd-r63452";
++		reg = <0>;
++		reset-gpios = <&tlmm 8 GPIO_ACTIVE_LOW>;
++		backlight = <&pmi8994_wled>;
++
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&dsi0_out>;
++			};
++		};
++	};
++};
++
++&dsi0_out {
++	remote-endpoint = <&panel_in>;
++};
++
+ &gpu {
+ 	zap-shader {
+ 		firmware-name = "qcom/msm8996/gemini/a530_zap.mbn";
+ 	};
+ };
+ 
++&pmi8994_wled {
++	status = "okay";
++};
++
+ &q6asmdai {
+ 	dai@0 {
+ 		reg = <0>;
 -- 
 2.32.0
 
