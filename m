@@ -2,173 +2,81 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90520C433FE
-	for <phone-devel@archiver.kernel.org>; Sat, 25 Sep 2021 14:18:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A6E1C433FE
+	for <phone-devel@archiver.kernel.org>; Sun, 26 Sep 2021 19:06:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6500260EFF
-	for <phone-devel@archiver.kernel.org>; Sat, 25 Sep 2021 14:18:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0B2F160F44
+	for <phone-devel@archiver.kernel.org>; Sun, 26 Sep 2021 19:06:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245603AbhIYOUU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 25 Sep 2021 10:20:20 -0400
-Received: from relay02.th.seeweb.it ([5.144.164.163]:57735 "EHLO
-        relay02.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238275AbhIYOUU (ORCPT
+        id S229845AbhIZTIE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 26 Sep 2021 15:08:04 -0400
+Received: from mail-0201.mail-europe.com ([51.77.79.158]:38017 "EHLO
+        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229846AbhIZTIE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 25 Sep 2021 10:20:20 -0400
-Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 7BDD31F698;
-        Sat, 25 Sep 2021 16:18:42 +0200 (CEST)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        Sun, 26 Sep 2021 15:08:04 -0400
+Date:   Sun, 26 Sep 2021 19:06:09 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1632683176;
+        bh=lTmKN+WNUyYt6gy0Mw6k/pJmZMjur5+0ACFflivi3Z4=;
+        h=Date:To:From:Cc:Reply-To:Subject:From;
+        b=k7RnTLj7WfrdTiPaJ35j0ZgEodtPtNE8CsmH+Kx7CebVv8fveGv/PSCpYK/JwANCz
+         cmw9JnqlMFI6N2uHSk/lGEkMiYqyEDMqySPALiTobmz6z97Mj6ikeTN1LNVf2Gmqtf
+         47K3woLhCBa8TThLc0HO+6u19V4w0J0ZNWuKMwmI=
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+From:   Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Raffaele Tranquillini <raffaele.tranquillini@gmail.com>,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: qcom: sm6125: Improve indentation of multiline properties
-Date:   Sat, 25 Sep 2021 16:18:41 +0200
-Message-Id: <20210925141841.407257-1-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.33.0
+Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
+Subject: [PATCH v2 0/5] msm8996: Enable support for MSS and SLPI
+Message-ID: <20210926190555.278589-1-y.oudjana@protonmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Some multiline properties (spread out over multiple lines to keep length
-in check) were not indented properly, leading to misalignment with the
-items above.  The DT file is still small enough to address this early in
-the process.
+This series fixes reserved memory regions, adds a missing power domain
+for SLPI in qcom_q6v5_pas, and enables support for MSS and SLPI in DTS.
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Martin Botka <martin.botka@somainline.org>
----
- arch/arm64/boot/dts/qcom/sm6125.dtsi | 46 ++++++++++++++--------------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+Changes since v1:
+ - Rebase on latest linux-next
+ - Rewrite MSS node
+ - Enable MSS and SLPI in some devices
+Changes since v1 (2/5 remoteproc: qcom: pas: Use the same init resources fo=
+r MSM8996 and MSM8998):
+ - Rename msm8998_adsp_resource to msm8996_adsp_resource
+ - Add power domains to slpi_resource_init and use that instead of msm8998_=
+slpi_resource
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-index 2b37ce6a9f9c..e92fab5a2484 100644
---- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-@@ -326,8 +326,8 @@ tcsr_mutex: hwlock@340000 {
- 		tlmm: pinctrl@500000 {
- 			compatible = "qcom,sm6125-tlmm";
- 			reg = <0x00500000 0x400000>,
--				<0x00900000 0x400000>,
--				<0x00d00000 0x400000>;
-+			      <0x00900000 0x400000>,
-+			      <0x00d00000 0x400000>;
- 			reg-names = "west", "south", "east";
- 			interrupts = <GIC_SPI 227 IRQ_TYPE_LEVEL_HIGH>;
- 			gpio-controller;
-@@ -391,12 +391,12 @@ sdhc_1: sdhci@4744000 {
- 			reg-names = "hc", "core";
- 
- 			interrupts = <GIC_SPI 348 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 352 IRQ_TYPE_LEVEL_HIGH>;
-+				     <GIC_SPI 352 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "hc_irq", "pwr_irq";
- 
- 			clocks = <&gcc GCC_SDCC1_AHB_CLK>,
--				<&gcc GCC_SDCC1_APPS_CLK>,
--				<&xo_board>;
-+				 <&gcc GCC_SDCC1_APPS_CLK>,
-+				 <&xo_board>;
- 			clock-names = "iface", "core", "xo";
- 			bus-width = <8>;
- 			non-removable;
-@@ -409,12 +409,12 @@ sdhc_2: sdhci@4784000 {
- 			reg-names = "hc";
- 
- 			interrupts = <GIC_SPI 350 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 353 IRQ_TYPE_LEVEL_HIGH>;
-+				     <GIC_SPI 353 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "hc_irq", "pwr_irq";
- 
- 			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
--				<&gcc GCC_SDCC2_APPS_CLK>,
--				<&xo_board>;
-+				 <&gcc GCC_SDCC2_APPS_CLK>,
-+				 <&xo_board>;
- 			clock-names = "iface", "core", "xo";
- 
- 			pinctrl-0 = <&sdc2_state_on>;
-@@ -433,11 +433,11 @@ usb3: usb@4ef8800 {
- 			ranges;
- 
- 			clocks = <&gcc GCC_USB30_PRIM_MASTER_CLK>,
--				<&gcc GCC_SYS_NOC_USB3_PRIM_AXI_CLK>,
--				<&gcc GCC_CFG_NOC_USB3_PRIM_AXI_CLK>,
--				<&gcc GCC_USB3_PRIM_CLKREF_CLK>,
--				<&gcc GCC_USB30_PRIM_SLEEP_CLK>,
--				<&gcc GCC_USB30_PRIM_MOCK_UTMI_CLK>;
-+				 <&gcc GCC_SYS_NOC_USB3_PRIM_AXI_CLK>,
-+				 <&gcc GCC_CFG_NOC_USB3_PRIM_AXI_CLK>,
-+				 <&gcc GCC_USB3_PRIM_CLKREF_CLK>,
-+				 <&gcc GCC_USB30_PRIM_SLEEP_CLK>,
-+				 <&gcc GCC_USB30_PRIM_MOCK_UTMI_CLK>;
- 
- 			assigned-clocks = <&gcc GCC_USB30_PRIM_MOCK_UTMI_CLK>,
- 					  <&gcc GCC_USB30_PRIM_MASTER_CLK>;
-@@ -462,11 +462,11 @@ usb3_dwc3: usb@4e00000 {
- 
- 		spmi_bus: spmi@1c40000 {
- 			compatible = "qcom,spmi-pmic-arb";
--			reg =	<0x01c40000 0x1100>,
--				<0x01e00000 0x2000000>,
--				<0x03e00000 0x100000>,
--				<0x03f00000 0xa0000>,
--				<0x01c0a000 0x26000>;
-+			reg = <0x01c40000 0x1100>,
-+			      <0x01e00000 0x2000000>,
-+			      <0x03e00000 0x100000>,
-+			      <0x03f00000 0xa0000>,
-+			      <0x01c0a000 0x26000>;
- 			reg-names = "core", "chnls", "obsrvr", "intr", "cnfg";
- 			interrupt-names = "periph_irq";
- 			interrupts = <GIC_SPI 183 IRQ_TYPE_LEVEL_HIGH>;
-@@ -497,7 +497,7 @@ timer@f120000 {
- 			frame@0f121000 {
- 				frame-number = <0>;
- 				interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>,
--						<GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
-+					     <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
- 				reg = <0x0f121000 0x1000>,
- 				      <0x0f122000 0x1000>;
- 			};
-@@ -548,7 +548,7 @@ frame@f128000 {
- 		intc: interrupt-controller@f200000 {
- 			compatible = "arm,gic-v3";
- 			reg = <0x0f200000 0x20000>,
--				<0x0f300000 0x100000>;
-+			      <0x0f300000 0x100000>;
- 			#interrupt-cells = <3>;
- 			interrupt-controller;
- 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
-@@ -558,9 +558,9 @@ intc: interrupt-controller@f200000 {
- 	timer {
- 		compatible = "arm,armv8-timer";
- 		interrupts = <GIC_PPI 1 0xf08
--				GIC_PPI 2 0xf08
--				GIC_PPI 3 0xf08
--				GIC_PPI 0 0xf08>;
-+			      GIC_PPI 2 0xf08
-+			      GIC_PPI 3 0xf08
-+			      GIC_PPI 0 0xf08>;
- 		clock-frequency = <19200000>;
- 	};
- };
--- 
+Yassine Oudjana (5):
+  arm64: dts: qcom: msm8996: Revamp reserved memory
+  remoteproc: qcom: pas: Use the same init resources for MSM8996 and
+    MSM8998
+  arm64: dts: qcom: msm8996: Unify smp2p naming
+  arm64: dts: qcom: msm8996: Add MSS and SLPI
+  arm64: dts: qcom: msm8996-xiaomi-*: Enable MSS and SLPI
+
+ .../dts/qcom/msm8996-sony-xperia-tone.dtsi    |  18 +-
+ .../boot/dts/qcom/msm8996-xiaomi-common.dtsi  |  30 ++-
+ .../boot/dts/qcom/msm8996-xiaomi-gemini.dts   |   9 +
+ .../boot/dts/qcom/msm8996-xiaomi-scorpio.dts  |   9 +
+ arch/arm64/boot/dts/qcom/msm8996.dtsi         | 195 ++++++++++++++----
+ drivers/remoteproc/qcom_q6v5_pas.c            |  27 +--
+ 6 files changed, 209 insertions(+), 79 deletions(-)
+
+--=20
 2.33.0
+
 
