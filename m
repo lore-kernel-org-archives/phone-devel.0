@@ -2,150 +2,99 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2453DC433EF
-	for <phone-devel@archiver.kernel.org>; Sun, 26 Sep 2021 19:07:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1B11C433FE
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Sep 2021 21:58:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 122896023B
-	for <phone-devel@archiver.kernel.org>; Sun, 26 Sep 2021 19:07:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id ABC67610A2
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Sep 2021 21:58:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229922AbhIZTIk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 26 Sep 2021 15:08:40 -0400
-Received: from mail-0201.mail-europe.com ([51.77.79.158]:59877 "EHLO
-        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230029AbhIZTIj (ORCPT
+        id S237526AbhI0WAL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 27 Sep 2021 18:00:11 -0400
+Received: from m-r1.th.seeweb.it ([5.144.164.170]:38541 "EHLO
+        m-r1.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237543AbhI0WAL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 26 Sep 2021 15:08:39 -0400
-Date:   Sun, 26 Sep 2021 19:06:45 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1632683208;
-        bh=+PfaojyNFfNS+b57P5nhag3I4JQQOCndTo83SZ1C6nc=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=vk+hcC9Bl1wBTMZhtDhAYUNfHEuecydKb9W8qz2z1bFWLMLT7FGvf8MABZlgsYr+x
-         05fT83ofSoEtsV9vtyOkSjRT4sRvb3DZK5M/17k1YNRDfRrVezZ6SLE6xPtsmjWNyW
-         HvSXdTTtGebyUDWliKMZqj8x+/FM2gj3T09qJjJY=
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-From:   Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        Mon, 27 Sep 2021 18:00:11 -0400
+Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 285CF1F88D;
+        Mon, 27 Sep 2021 23:58:30 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Raffaele Tranquillini <raffaele.tranquillini@gmail.com>,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
-Subject: [PATCH v2 5/5] arm64: dts: qcom: msm8996-xiaomi-*: Enable MSS and SLPI
-Message-ID: <20210926190555.278589-6-y.oudjana@protonmail.com>
-In-Reply-To: <20210926190555.278589-1-y.oudjana@protonmail.com>
-References: <20210926190555.278589-1-y.oudjana@protonmail.com>
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Taniya Das <tdas@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/2] Global Clock Controller driver for MSM8976/56
+Date:   Mon, 27 Sep 2021 23:58:26 +0200
+Message-Id: <20210927215828.52357-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Enable mss_pil and slpi_pil and set their firmware paths.
+This is the Global Clock Controller (GCC) driver for MSM8956, MSM8976
+and APQ variants and it has been tested on two Sony phones featuring the
+Qualcomm MSM8956 SoC.
 
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
----
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi | 12 ++++++++++++
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts  |  9 +++++++++
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts |  9 +++++++++
- 3 files changed, 30 insertions(+)
+In addition to GCC this driver is also responsible for providing MDSS
+and GFX3D clocks which reside in the same register space.
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi b/arch/arm=
-64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-index a5e7bccadba2..863537f504f1 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-@@ -267,6 +267,12 @@ &mmcc {
- =09vdd-gfx-supply =3D <&vdd_gfx>;
- };
-=20
-+&mss_pil {
-+=09status =3D "okay";
-+
-+=09pll-supply =3D <&vreg_l12a_1p8>;
-+};
-+
- &pcie0 {
- =09status =3D "okay";
-=20
-@@ -291,6 +297,12 @@ &pm8994_resin {
- =09linux,code =3D <KEY_VOLUMEDOWN>;
- };
-=20
-+&slpi_pil {
-+=09status =3D "okay";
-+
-+=09px-supply =3D <&vreg_lvs2a_1p8>;
-+};
-+
- &usb3 {
- =09status =3D "okay";
- =09extcon =3D <&typec>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm6=
-4/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-index 77d508e5164a..c0d14bd0f25b 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-@@ -96,6 +96,11 @@ zap-shader {
- =09};
- };
-=20
-+&mss_pil {
-+=09firmware-name =3D "qcom/msm8996/gemini/mba.mbn",
-+=09=09=09"qcom/msm8996/gemini/modem.mbn";
-+};
-+
- &q6asmdai {
- =09dai@0 {
- =09=09reg =3D <0>;
-@@ -110,6 +115,10 @@ dai@2 {
- =09};
- };
-=20
-+&slpi_pil {
-+=09firmware-name =3D "qcom/msm8996/gemini/slpi.mbn";
-+};
-+
- &sound {
- =09compatible =3D "qcom,apq8096-sndcard";
- =09model =3D "gemini";
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts b/arch/arm=
-64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-index ea2ca271fe7d..7f1523f66d38 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-@@ -96,6 +96,11 @@ &mdss {
- =09status =3D "disabled";
- };
-=20
-+&mss_pil {
-+=09firmware-name =3D "qcom/msm8996/scorpio/mba.mbn",
-+=09=09=09"qcom/msm8996/scorpio/modem.mbn";
-+};
-+
- &q6asmdai {
- =09dai@0 {
- =09=09reg =3D <0>;
-@@ -110,6 +115,10 @@ dai@2 {
- =09};
- };
-=20
-+&slpi_pil {
-+=09firmware-name =3D "qcom/msm8996/scorpio/slpi.mbn";
-+};
-+
- &sound {
- =09compatible =3D "qcom,apq8096-sndcard";
- =09model =3D "scorpio";
---=20
+SoMainline is dedicated to getting their long-awaited msm8976 support,
+including the Xperia X, X Compact and if feasible also the Xperia Touch
+projector (APQ8056) slowly but steadily upstreamed.
+
+Changes since v3:
+- Set the enable_mask of gcc_apss_ahb_clk and gcc_apss_axi_clk to BIT 14
+  and 13 respectively instead of overlapping gcc_crypto_ahb_clk's BIT 0.
+
+Changes since v2:
+- Rebased on v5.14;
+- Various minor cleanups (lowercase hex, const where appropriate,
+  removal of unused enum constants);
+- Fixed XOR confusion in probe;
+- All remnants of global clock name dependencies are removed, all
+  inter-driver dependencies must be fully specified in DT;
+- Added proper dt-bindings yaml validation, listing the required clocks;
+- Moved dt-bindings header to the dt-bindings patch.
+
+Changes since v1:
+- Rebased onto linux-next 20191015
+- Fixed platform driver name (qcom,gcc-8976 => gcc-msm8976)
+- Splitted changes to dt-bindings to a separate commit
+
+AngeloGioacchino Del Regno (1):
+  clk: qcom: Add MSM8976/56 Global Clock Controller (GCC) driver
+
+Marijn Suijten (1):
+  dt-bindings: clk: qcom: Document MSM8976 Global Clock Controller
+
+ .../bindings/clock/qcom,gcc-msm8976.yaml      |   90 +
+ drivers/clk/qcom/Kconfig                      |    8 +
+ drivers/clk/qcom/Makefile                     |    1 +
+ drivers/clk/qcom/gcc-msm8976.c                | 4154 +++++++++++++++++
+ include/dt-bindings/clock/qcom,gcc-msm8976.h  |  240 +
+ 5 files changed, 4493 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/qcom,gcc-msm8976.yaml
+ create mode 100644 drivers/clk/qcom/gcc-msm8976.c
+ create mode 100644 include/dt-bindings/clock/qcom,gcc-msm8976.h
+
+--
 2.33.0
-
 
