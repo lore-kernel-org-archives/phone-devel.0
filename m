@@ -2,40 +2,40 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E951C4321E
-	for <phone-devel@archiver.kernel.org>; Tue, 28 Sep 2021 17:27:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6E28C433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 28 Sep 2021 17:27:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1A3D56135F
-	for <phone-devel@archiver.kernel.org>; Tue, 28 Sep 2021 17:27:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B7DF760EB6
+	for <phone-devel@archiver.kernel.org>; Tue, 28 Sep 2021 17:27:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242093AbhI1R3J (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 28 Sep 2021 13:29:09 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.171]:9000 "EHLO
+        id S242106AbhI1R3O (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 28 Sep 2021 13:29:14 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:11147 "EHLO
         mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242092AbhI1R3H (ORCPT
+        with ESMTP id S242092AbhI1R3M (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 28 Sep 2021 13:29:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1632849688;
+        Tue, 28 Sep 2021 13:29:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1632849690;
     s=strato-dkim-0002; d=gerhold.net;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=Vt28A8btSKr+qswJd0U4CAoaAGGfqbbYx3A/RZjLeJY=;
-    b=fJHWfS6iFnoy2NnnEmyGghTIRsITPwDjRPE8mM+ltjtwTAggECEWYzLlXW5KXDNMCW
-    bswomA2p2nlUwdNPAbUDlx/YYPpdPJjtp4fUrCzAEl7fl8Fk8fiGb5CvuZkf/xzC+wdc
-    ckuc9BuxpVJPMr1R5HeGZjLcjfDjz55oYYf2f0Y55hoiDAma3Y85AL5lwaJwpp0q/VVC
-    Vw7k6AHXx/JZk6T4CMRmkhROT/yo9CAIf4qvdTPAgoc7XhobFrVjYnnQ6g7yFbfS2fO8
-    FoXVL90B6/3iW/p0dTGV8vQV9qX9LzrmPrEp5nwd0YnKmEEskh1zEfn2J95bRqtNgb/1
-    moDg==
+    bh=ahq0OJq7JAJNssL5upRLs89oI17gIphySqvW7pf3FXo=;
+    b=G+oY7swVr3wmnFaSRpDlhe0CojjZK1gfCbejHpE5NLDMhY6BsqeoqwLD5BBR2gmmYP
+    8WqEPPNCFFGNOglLLNFJVK9jt/eOnE3sVTAD466dkmFLxwt7mYzI+H3hdzQUc3wkrs8y
+    9fW1x6qGv4PxjNtHJ1rA8dz4t8Dib0OzN8fRoiI4NBlH6fN2Gk4ByWOEHkVoVRmPajIC
+    lmnwpbp6R+cSEOJagwz01HwkleT71Bx32dy4AkqgWk7BraKqOGp96IgzzpOeBWZ6lyYQ
+    1vcSrnRoKC8Pkn1O9drt7cdfjPHawlM/3/RSic7R6mwnNGEzDw0g7ixfY3v6shW5Gf0c
+    QpRA==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXTbAOHjRHIhr3eFSKSxc="
 X-RZG-CLASS-ID: mo00
 Received: from droid..
     by smtp.strato.de (RZmta 47.33.8 DYNA|AUTH)
-    with ESMTPSA id 301038x8SHLRoBJ
+    with ESMTPSA id 301038x8SHLUoBN
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Tue, 28 Sep 2021 19:21:27 +0200 (CEST)
+    Tue, 28 Sep 2021 19:21:30 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
 To:     Bjorn Andersson <bjorn.andersson@linaro.org>
 Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
@@ -43,9 +43,9 @@ Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH 03/15] arm64: dts: qcom: msm8916-samsung-serranove: Add touch key
-Date:   Tue, 28 Sep 2021 19:12:19 +0200
-Message-Id: <20210928171231.12766-4-stephan@gerhold.net>
+Subject: [PATCH 07/15] ARM: qcom: Add ARCH_MSM8916 for MSM8916 on ARM32
+Date:   Tue, 28 Sep 2021 19:12:23 +0200
+Message-Id: <20210928171231.12766-8-stephan@gerhold.net>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210928171231.12766-1-stephan@gerhold.net>
 References: <20210928171231.12766-1-stephan@gerhold.net>
@@ -55,130 +55,37 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the CORERIVER TC360 touch key together with the two necessary
-fixed regulators for it.
-
-Note that for some reason Samsung decided to connect this to GPIOs
-where no hardware I2C bus is available, so we need to fall back
-to software bit-banging using i2c-gpio.
+Add a CONFIG_ARCH_MSM8916 option to enable building MSM8916 support
+on ARM32. Note that since ARM64 is the main supported architecture
+for MSM8916 this is only intended for testing and for devices where
+(signed) outdated firmware does not support booting ARM64 kernels.
 
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- .../dts/qcom/msm8916-samsung-serranove.dts    | 87 +++++++++++++++++++
- 1 file changed, 87 insertions(+)
+ arch/arm/mach-qcom/Kconfig | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-index 214a863eedbf..6689687f544f 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-@@ -91,6 +91,32 @@ reg_vdd_tsp: regulator-vdd-tsp {
- 		pinctrl-0 = <&tsp_en_default>;
- 	};
+diff --git a/arch/arm/mach-qcom/Kconfig b/arch/arm/mach-qcom/Kconfig
+index 1772eccb5caf..4ef3acd2448c 100644
+--- a/arch/arm/mach-qcom/Kconfig
++++ b/arch/arm/mach-qcom/Kconfig
+@@ -21,6 +21,16 @@ config ARCH_MSM8X60
+ 	bool "Enable support for MSM8X60"
+ 	select CLKSRC_QCOM
  
-+	reg_touch_key: regulator-touch-key {
-+		compatible = "regulator-fixed";
-+		regulator-name = "touch_key";
-+		regulator-min-microvolt = <2800000>;
-+		regulator-max-microvolt = <2800000>;
++config ARCH_MSM8916
++	bool "Enable support for MSM8916"
++	select HAVE_ARM_ARCH_TIMER
++	help
++	  Enable support for the Qualcomm Snapdragon 410 (MSM8916/APQ8016).
 +
-+		gpio = <&msmgpio 86 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
++	  Note that ARM64 is the main supported architecture for MSM8916.
++	  The ARM32 option is intended for a few devices with outdated (signed)
++	  firmware that does not allow booting ARM64 kernels.
 +
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&tkey_en_default>;
-+	};
-+
-+	reg_key_led: regulator-key-led {
-+		compatible = "regulator-fixed";
-+		regulator-name = "key_led";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+
-+		gpio = <&msmgpio 60 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&tkey_led_en_default>;
-+	};
-+
- 	i2c-muic {
- 		compatible = "i2c-gpio";
- 		sda-gpios = <&msmgpio 105 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-@@ -113,6 +139,35 @@ muic: extcon@14 {
- 			pinctrl-0 = <&muic_irq_default>;
- 		};
- 	};
-+
-+	i2c-tkey {
-+		compatible = "i2c-gpio";
-+		sda-gpios = <&msmgpio 16 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+		scl-gpios = <&msmgpio 17 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&tkey_i2c_default>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		touchkey@20 {
-+			compatible = "coreriver,tc360-touchkey";
-+			reg = <0x20>;
-+
-+			interrupt-parent = <&msmgpio>;
-+			interrupts = <98 IRQ_TYPE_EDGE_FALLING>;
-+
-+			vcc-supply = <&reg_touch_key>;
-+			vdd-supply = <&reg_key_led>;
-+			vddio-supply = <&pm8916_l6>;
-+
-+			linux,keycodes = <KEY_APPSELECT KEY_BACK>;
-+
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&tkey_default>;
-+		};
-+	};
- };
- 
- &blsp_i2c5 {
-@@ -333,6 +388,38 @@ muic_irq_default: muic-irq-default {
- 		bias-disable;
- 	};
- 
-+	tkey_default: tkey-default {
-+		pins = "gpio98";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	tkey_en_default: tkey-en-default {
-+		pins = "gpio86";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	tkey_i2c_default: tkey-i2c-default {
-+		pins = "gpio16", "gpio17";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	tkey_led_en_default: tkey-led-en-default {
-+		pins = "gpio60";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	tsp_en_default: tsp-en-default {
- 		pins = "gpio73";
- 		function = "gpio";
+ config ARCH_MSM8960
+ 	bool "Enable support for MSM8960"
+ 	select CLKSRC_QCOM
 -- 
 2.33.0
 
