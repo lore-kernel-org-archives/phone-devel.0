@@ -2,95 +2,119 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 383DDC433F5
-	for <phone-devel@archiver.kernel.org>; Tue, 28 Sep 2021 15:38:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C2FCC433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 28 Sep 2021 17:21:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1F8096127C
-	for <phone-devel@archiver.kernel.org>; Tue, 28 Sep 2021 15:38:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1BB1A61262
+	for <phone-devel@archiver.kernel.org>; Tue, 28 Sep 2021 17:21:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241643AbhI1Pka (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 28 Sep 2021 11:40:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40430 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241600AbhI1Pka (ORCPT
+        id S241993AbhI1RXQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 28 Sep 2021 13:23:16 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.52]:19552 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241944AbhI1RXP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 28 Sep 2021 11:40:30 -0400
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 034FCC061749
-        for <phone-devel@vger.kernel.org>; Tue, 28 Sep 2021 08:38:51 -0700 (PDT)
-Received: by mail-oi1-x22d.google.com with SMTP id u22so30447510oie.5
-        for <phone-devel@vger.kernel.org>; Tue, 28 Sep 2021 08:38:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=UzVpZWKlJwRxSjuK78I3eEXEjM8AokgYI911F1Dgoog=;
-        b=Lh7oxXzq7U5xVayIB8k4MdCaBlpkBo6oslCTe6LgtGxkoYhjvFQRQQo76tCzHSQqNo
-         LcDnoDaBX4FYrTGolrUuokUEfpz5hMXbfKsFoY3qlS2o8Fr2LF1O8aBfdp++VwaYYk2j
-         JocuHgDSRphkZO+zB0pdJKJ/hDSEkxqyEd0On57iHu1HcWJLu5zfSqZZLgK1nH2KldZJ
-         2JEqnXg32m9KwN94R/VzGNb5/xoO7C5zCsV2VxYHK9zK1ljlxIcPRcZc9XDENGoWJ2oS
-         OLP+EBd4igDboPbw7LKsZrLUOTF+5kbCqXmuE1IciV/c2pFPuUZDnZ0L2qRhgKBihrfJ
-         3leg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=UzVpZWKlJwRxSjuK78I3eEXEjM8AokgYI911F1Dgoog=;
-        b=BFbgeREuwedjGuZTLXqtrDPSa4X43GzIduYOstTihxqAq5KDF3O2aHHin9w9g5efGm
-         hKTSrZjSRPNx//mh80dwKjTfflCW7I++08Yb27dytFz0A0xTU/4o6KmYfgSGs6oUsj+S
-         ufEaJ4QHmLIdDbM5DHcQfTLWN1lFP3kia2XKk6tLd0rjYLNa/mePkz5j1xMi9Y3B3Zbq
-         yR8oYK1A5CnqXOBjqb3zKPB7uviXZImt9Sw48DXcO7xd6A/Nz2WXunTVC/r3bh75ezT+
-         HzRSPRqKhVfa9SpwR/uDnX2q81J5zUvrtvuhLXeS08UEKESq08JczcaMzXGam0z0ig0w
-         3cJA==
-X-Gm-Message-State: AOAM530wy7AlYQ4aLFRh6ODLEQ0av08YPvuvwgOHrPRLLuPmVwDZnvyN
-        OCdnZt6sJRe6bJ7b4653jfBMtIJmrIrChA==
-X-Google-Smtp-Source: ABdhPJzpKI/iHmrF8iGPdIrucU5CqhILBdh66wKx3f4vL1+mlc0e2eWHMpxxhJ22+nE5sf9nrUdarw==
-X-Received: by 2002:aca:606:: with SMTP id 6mr4222738oig.82.1632843530129;
-        Tue, 28 Sep 2021 08:38:50 -0700 (PDT)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id 18sm4753034otj.10.2021.09.28.08.38.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Sep 2021 08:38:49 -0700 (PDT)
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     phone-devel@vger.kernel.org,
-        Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     Pavel Dubrova <pashadubrova@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Rob Herring <robh+dt@kernel.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>
-Subject: Re: (subset) [PATCH] arm64: dts: qcom: sm6125: Improve indentation of multiline properties
-Date:   Tue, 28 Sep 2021 10:38:46 -0500
-Message-Id: <163284350355.1592203.2999251996289733980.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210925141841.407257-1-marijn.suijten@somainline.org>
-References: <20210925141841.407257-1-marijn.suijten@somainline.org>
+        Tue, 28 Sep 2021 13:23:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1632849686;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=iZkfpNBWYReD8ezAsvLsyYoZARZX4Qr9pg/R65pM3x0=;
+    b=fCXM9jhXxFeJk/cJdMHmrKpYZaMFexNp7CtXEYHrOmiyqW+6QWKanRGmFoOwGOZz69
+    qqy3dLEoeGKQ0Pn1HvcSP/d1koX1bpLqsEfkGwGuMuFIgmeNJiRFPTFfqDuBN2coWtGp
+    KiKVox9UyVVu7XdLojEf33/FnEvzawGEpfJhwvphBQ4EIQVaiLOsi58RVHLn7svxkpE9
+    htFAttFcx633uILZ10BKK+SCg+k7y+ydQzDbGjFC4BV32PaHsttp53LwKquQJh/A1Y3r
+    1GD6FMoWggUtpf/wiE/uhcH9vtXlrovLpTjuuTgMiPQaGz9M2EfFv1ZYiHa6NKPGs5+R
+    bk2w==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXTbAOHjRHIhr3eFSKSxc="
+X-RZG-CLASS-ID: mo00
+Received: from droid..
+    by smtp.strato.de (RZmta 47.33.8 DYNA|AUTH)
+    with ESMTPSA id 301038x8SHLQoBG
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Tue, 28 Sep 2021 19:21:26 +0200 (CEST)
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: [PATCH 00/15] Add support for Samsung Galaxy S4 Mini Value Edition
+Date:   Tue, 28 Sep 2021 19:12:16 +0200
+Message-Id: <20210928171231.12766-1-stephan@gerhold.net>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 25 Sep 2021 16:18:41 +0200, Marijn Suijten wrote:
-> Some multiline properties (spread out over multiple lines to keep length
-> in check) were not indented properly, leading to misalignment with the
-> items above.  The DT file is still small enough to address this early in
-> the process.
-> 
-> 
+This series adds support for booting mainline Linux on the Samsung Galaxy
+S4 Mini Value Edition. The device is based on the Qualcomm MSM8916 SoC and quite
+similar to the already supported Samsung Galaxy A3/A5. With some additional
+patches it is almost fully functional, including display, touch screen, GPU,
+audio, modem (voice calls, SMS, mobile data) and sensors.
 
-Applied, thanks!
+I made most of the patches almost 2 years ago but I was long unsure if I should
+submit them upstream. This is because the device has one big limitation:
+Samsung released it with a signed 32-bit-only TrustZone firmware which is not
+able to boot ARM64 Linux. This means the device can actually only boot ARM32.
 
-[1/1] arm64: dts: qcom: sm6125: Improve indentation of multiline properties
-      commit: 4e31e85759a0622b25a63300019d04ff031c95e0
+However, since device trees are independent of the kernel architecture and all
+the necessary drivers compile on ARM32 as well it is actually extremely
+straightforward to build an ARM32 kernel for MSM8916 (which is normally arm64).
 
-Best regards,
+The only necessary additions are for SMP/cpuidle without PSCI on ARM32. However,
+the diffstat below makes it quite obvious that the maintenance overhead for this
+is absolutely negligible. The SoC is almost identical to previous 32-bit SoCs
+like MSM8226, so it is pretty much just adding new definitions/compatibles for
+already existing code.
+
+Being able to boot ARM32 Linux on MSM8916 might be also a possible opportunity
+for CI systems. At the moment, 32-bit Qualcomm platforms are not very well
+represented there. Booting ARM32 on MSM8916/APQ8016 would allow re-using the
+DragonBoard 410c which is often already used for automated CI testing.
+
+Lina Iyer (1):
+  soc: qcom: spm: Add 8916 SPM register data
+
+Stephan Gerhold (14):
+  arm64: dts: qcom: Add device tree for Samsung Galaxy S4 Mini Value
+    Edition
+  arm64: dts: qcom: msm8916-samsung-serranove: Add touch screen
+  arm64: dts: qcom: msm8916-samsung-serranove: Add touch key
+  arm64: dts: qcom: msm8916-samsung-serranove: Add IMU
+  arm64: dts: qcom: msm8916-samsung-serranove: Add rt5033 battery
+  arm64: dts: qcom: msm8916-samsung-serranove: Add NFC
+  ARM: qcom: Add ARCH_MSM8916 for MSM8916 on ARM32
+  dt-bindings: arm: cpus: Document qcom,msm8916-smp enable-method
+  ARM: qcom: Add qcom,msm8916-smp enable-method identical to MSM8226
+  dt-bindings: soc: qcom: spm: Document qcom,msm8916-saw2-v3.0-cpu
+  firmware: qcom: scm: Add support for MC boot address API
+  arm64: dts: qcom: msm8916: Add CPU ACC and SAW/SPM
+  ARM: dts: qcom: msm8916: Add include for SMP without PSCI on ARM32
+  ARM: dts: qcom: msm8916-samsung-serranove: Include dts from arm64
+
+ .../devicetree/bindings/arm/cpus.yaml         |   4 +-
+ .../bindings/soc/qcom/qcom,spm.yaml           |   1 +
+ arch/arm/boot/dts/Makefile                    |   1 +
+ .../dts/qcom-msm8916-samsung-serranove.dts    |   3 +
+ arch/arm/boot/dts/qcom-msm8916-smp.dtsi       |  62 ++
+ arch/arm/mach-qcom/Kconfig                    |  10 +
+ arch/arm/mach-qcom/platsmp.c                  |   1 +
+ arch/arm64/boot/dts/qcom/Makefile             |   1 +
+ .../dts/qcom/msm8916-samsung-serranove.dts    | 534 ++++++++++++++++++
+ arch/arm64/boot/dts/qcom/msm8916.dtsi         |  56 ++
+ drivers/firmware/qcom_scm.c                   |  84 ++-
+ drivers/firmware/qcom_scm.h                   |   4 +
+ drivers/soc/qcom/spm.c                        |  21 +
+ 13 files changed, 764 insertions(+), 18 deletions(-)
+ create mode 100644 arch/arm/boot/dts/qcom-msm8916-samsung-serranove.dts
+ create mode 100644 arch/arm/boot/dts/qcom-msm8916-smp.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+
 -- 
-Bjorn Andersson <bjorn.andersson@linaro.org>
+2.33.0
+
