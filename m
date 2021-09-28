@@ -2,40 +2,40 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D77FDC433FE
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9975AC4332F
 	for <phone-devel@archiver.kernel.org>; Tue, 28 Sep 2021 17:27:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B7A3E61352
+	by mail.kernel.org (Postfix) with ESMTP id 8170461352
 	for <phone-devel@archiver.kernel.org>; Tue, 28 Sep 2021 17:27:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242095AbhI1R3P (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S242101AbhI1R3P (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Tue, 28 Sep 2021 13:29:15 -0400
-Received: from mo4-p03-ob.smtp.rzone.de ([85.215.255.100]:17536 "EHLO
+Received: from mo4-p03-ob.smtp.rzone.de ([81.169.146.173]:28742 "EHLO
         mo4-p03-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242098AbhI1R3O (ORCPT
+        with ESMTP id S242095AbhI1R3N (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 28 Sep 2021 13:29:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1632849695;
+        Tue, 28 Sep 2021 13:29:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1632849691;
     s=strato-dkim-0002; d=gerhold.net;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=S9w5GiKQ2oy3NSyTEw/qOS43AM2R39Tjvw3qTBO3Zj4=;
-    b=be9uUQxmVeU8gYqHprkIP23lqdRMsBKz0LStw88fX1W5jg5bI+r5xvDsxMYHtuDmwj
-    D08hnopCwRGwFzJyOGGfb8JXT7yKkjp18c1OlZo3UECID/nc3263q6H6iLxrN6u3Mzab
-    KGLmrLTirnzlQjAep27OsaLl9Pl7FxHRE2a2fOOLxr+hsCxomhlGQux32IYEi+/VuuB9
-    6IKfsmdvXf7RMgYcRZ1uOiEcFpNwaeG//FQd8JxywLLkCYQb2J+L3nhdXjsxM5CP4LyK
-    tmH6DYJZTvPSB5kbt+9kjNcKHm1vhPpUH2nwvFonxJ4xR2eH4oU5LFLWsOC8Bb21Pr0S
-    QsOA==
+    bh=+lHs//hdp8drmhyzzqs+02GJRw3C/ibC5yhs46Irwmw=;
+    b=aJTQri0Mi+41n3gBQvP34y/ARHAUpME5v+18gH/Ypvtph3LZ+ZpawRDxXy2qiC5sxt
+    2JP6Rgw538BG9lAjeXE9ZjwJuBokYJX1aDtm1eklmkLN28aHhBelEX/2xl3ZmxFyjl/q
+    JSAtvVvGgNg1efddkupvMLR+hQM99Irkct4hrFhUxpp0UiRQ7t3zWEdkQVI5aq0bz6TB
+    btCwnNvLgRF50AGjP6ju4bEQqRkIUXj2HYhAMY97d1c1rnnOExnwTgrPbsdRuayygcfI
+    3O2iNHr4yKFUK4SWTbOojEI0DVDJdc9J4F8q+sHEGrUNMck6HDX6YKA7P6ahTqXbEBAY
+    cPFg==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXTbAOHjRHIhr3eFSKSxc="
 X-RZG-CLASS-ID: mo00
 Received: from droid..
     by smtp.strato.de (RZmta 47.33.8 DYNA|AUTH)
-    with ESMTPSA id 301038x8SHLYoBV
+    with ESMTPSA id 301038x8SHLVoBP
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Tue, 28 Sep 2021 19:21:34 +0200 (CEST)
+    Tue, 28 Sep 2021 19:21:31 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
 To:     Bjorn Andersson <bjorn.andersson@linaro.org>
 Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
@@ -43,9 +43,9 @@ Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH 15/15] ARM: dts: qcom: msm8916-samsung-serranove: Include dts from arm64
-Date:   Tue, 28 Sep 2021 19:12:31 +0200
-Message-Id: <20210928171231.12766-16-stephan@gerhold.net>
+Subject: [PATCH 09/15] ARM: qcom: Add qcom,msm8916-smp enable-method identical to MSM8226
+Date:   Tue, 28 Sep 2021 19:12:25 +0200
+Message-Id: <20210928171231.12766-10-stephan@gerhold.net>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210928171231.12766-1-stephan@gerhold.net>
 References: <20210928171231.12766-1-stephan@gerhold.net>
@@ -55,46 +55,29 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-After adding all necessary support for MSM8916 SMP/cpuidle without PSCI
-on ARM32, build the Samsung Galaxy S4 Mini VE device tree from the arm64
-tree together with the ARM32 include to allow booting this device on ARM32.
-
-The approach to include device tree files from other architectures is
-inspired from e.g. the Raspberry Pi (bcm2711-rpi-4-b.dts) where this is
-used to build the device tree for both ARM32 and ARM64.
+Some MSM8916 devices have outdated (signed) firmware without PSCI
+and ARM64 support and can therefore only boot ARM32 Linux.
+The ARM Cortex-A53 cores should be actually booted exactly like
+the Cortex-A7 cores on MSM8226, so just add an alias for the
+existing code.
 
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
-I'm not sure what's the best way to apply this patch...
-It might be easiest to apply the two ARM32 dts patches to the arm64 branch.
-(It does not seem to cause any conflicts at the moment...)
----
- arch/arm/boot/dts/Makefile                           | 1 +
- arch/arm/boot/dts/qcom-msm8916-samsung-serranove.dts | 3 +++
- 2 files changed, 4 insertions(+)
- create mode 100644 arch/arm/boot/dts/qcom-msm8916-samsung-serranove.dts
+ arch/arm/mach-qcom/platsmp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index 8cb859728bd9..0a53bbd9d7b1 100644
---- a/arch/arm/boot/dts/Makefile
-+++ b/arch/arm/boot/dts/Makefile
-@@ -960,6 +960,7 @@ dtb-$(CONFIG_ARCH_QCOM) += \
- 	qcom-ipq8064-rb3011.dtb \
- 	qcom-msm8226-samsung-s3ve3g.dtb \
- 	qcom-msm8660-surf.dtb \
-+	qcom-msm8916-samsung-serranove.dtb \
- 	qcom-msm8960-cdp.dtb \
- 	qcom-msm8974-fairphone-fp2.dtb \
- 	qcom-msm8974-lge-nexus5-hammerhead.dtb \
-diff --git a/arch/arm/boot/dts/qcom-msm8916-samsung-serranove.dts b/arch/arm/boot/dts/qcom-msm8916-samsung-serranove.dts
-new file mode 100644
-index 000000000000..dee2c20af355
---- /dev/null
-+++ b/arch/arm/boot/dts/qcom-msm8916-samsung-serranove.dts
-@@ -0,0 +1,3 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include "arm64/qcom/msm8916-samsung-serranove.dts"
-+#include "qcom-msm8916-smp.dtsi"
+diff --git a/arch/arm/mach-qcom/platsmp.c b/arch/arm/mach-qcom/platsmp.c
+index 60496554c6dd..58a4228455ce 100644
+--- a/arch/arm/mach-qcom/platsmp.c
++++ b/arch/arm/mach-qcom/platsmp.c
+@@ -385,6 +385,7 @@ static const struct smp_operations qcom_smp_cortex_a7_ops __initconst = {
+ #endif
+ };
+ CPU_METHOD_OF_DECLARE(qcom_smp_msm8226, "qcom,msm8226-smp", &qcom_smp_cortex_a7_ops);
++CPU_METHOD_OF_DECLARE(qcom_smp_msm8916, "qcom,msm8916-smp", &qcom_smp_cortex_a7_ops);
+ 
+ static const struct smp_operations qcom_smp_kpssv1_ops __initconst = {
+ 	.smp_prepare_cpus	= qcom_smp_prepare_cpus,
 -- 
 2.33.0
 
