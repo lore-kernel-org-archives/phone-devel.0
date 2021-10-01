@@ -2,77 +2,75 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D3C92C4332F
-	for <phone-devel@archiver.kernel.org>; Fri,  1 Oct 2021 21:09:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BC3CC433FE
+	for <phone-devel@archiver.kernel.org>; Fri,  1 Oct 2021 22:33:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B502061ABF
-	for <phone-devel@archiver.kernel.org>; Fri,  1 Oct 2021 21:09:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D608361AA9
+	for <phone-devel@archiver.kernel.org>; Fri,  1 Oct 2021 22:33:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354855AbhJAVLE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 1 Oct 2021 17:11:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34320 "EHLO
+        id S1355861AbhJAWfR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 1 Oct 2021 18:35:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353832AbhJAVLD (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 1 Oct 2021 17:11:03 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3AFFC06177E
-        for <phone-devel@vger.kernel.org>; Fri,  1 Oct 2021 14:09:18 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id j5so38688606lfg.8
-        for <phone-devel@vger.kernel.org>; Fri, 01 Oct 2021 14:09:18 -0700 (PDT)
+        with ESMTP id S1354686AbhJAWfR (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 1 Oct 2021 18:35:17 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D91BC061775
+        for <phone-devel@vger.kernel.org>; Fri,  1 Oct 2021 15:33:32 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id y26so44376963lfa.11
+        for <phone-devel@vger.kernel.org>; Fri, 01 Oct 2021 15:33:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=IebbO+ma/A1unpbrZ8oEgbjXE5CUx4OQ3cw7YGHtnpM=;
-        b=MmcVHRWhjWn9KKZ/McV6/+Uoq6LupKzHXYCrxqBnqPPByl9LyIApmjQdSArX5IS1wv
-         BDDVCN+9yflaCTtMHYwZQ+4iARy/KJH+03vwJWdUSqHCbaR8P4hY6Fu5VcgIiWf9nJg+
-         pRCmia4gT/fFJcgBptVySNk7evnIS9V1A20AeUhyqGO1gGfzw/TPA0Lk/xoNQSvF0Jws
-         qEWVvp4fE9+kqg5rgO8UrLQZZad35dzpWxvcgyhHeiQLr6Sjwi/y5KDKrEuL7tII4ejq
-         M0V94nquYSxGjWFn4H+ppA51fLS2INdCJs5U4TA5NqAG1rv7v4OALlsTqL6J+Y63pW1B
-         2NZw==
+        bh=+GGpQB1eoOvtXRgcP9cErq9HPOsKMWs+3BfVhk5Dh2w=;
+        b=Qs5fOVMz612VsObKjPOggkEfD+Uia9/Hn4FLDX3M9oodQJMMfNivODTI9mTwo9fZ1h
+         IVWJ8D7ew8UWXbTrcuZwHyrufGjm8nT7/Q0lcn0RarqDIi7l8yCWBB34FyTrXMkoSwVe
+         wToMte27WQTnllnISTCD1WMowTtJS33E+Kk93rTRx/wsXMMax6YHNcsZrvX7W53oU3E/
+         fmE0laRhAs4borxCJgOwo2k5+pklzLHVOYl/EQL+Nyy39jeLzhpIEeQlH2fNPVqC2mDU
+         7HO+Pt17hgJU9gcjT/IchZ7NAa9O0yl5pw9Q4H6ImxTUgGR/KtDNpvROpaN6CMpF2qQv
+         kIfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=IebbO+ma/A1unpbrZ8oEgbjXE5CUx4OQ3cw7YGHtnpM=;
-        b=yH18cn+0VrARICeLDES4jmPOeYzLZ8HkF64uRWFChgd+Fm7kH4XVfCJlvavWX0Kq4O
-         pj/uHqYa9IGo0IKJWhNK6HzSPDxz453wN0qvHGGocw4CXDslwL24xrc5lKVCHuXplZOH
-         oHLam1H0Vj4eg90zANLqLO9e+ojT77NDusVV16OWTaSMokGxpEWOgm0chqExDLAl5DTm
-         gTdJOtVY2KDAS1EQ5057oqknTnBzgNMwoUTFYt2Sud+QgXskVWRVwVUNU0tnXQ/Aw8cx
-         /anVOcoL6K/o5llnFMQbpFAih4YsduyDPGhsxpnAAjh2ikdFYzU2Sn/XC4KsKVz9kish
-         Kj4w==
-X-Gm-Message-State: AOAM533h8kVCTBBg38VJxmW8ky4TSULRtZlendQZaDHFZk6+ImmuYmTN
-        e5zWZ61+ng5wnn2zlfyBFf24/Q==
-X-Google-Smtp-Source: ABdhPJw3pmsNgv9RYeS4huOp4qxuDaNliY0fsFTacMOU3A1X25G6Gt/OxqhoGbmcF5nk6N3Rx5wpkw==
-X-Received: by 2002:a05:6512:1399:: with SMTP id p25mr199919lfa.277.1633122557113;
-        Fri, 01 Oct 2021 14:09:17 -0700 (PDT)
+        bh=+GGpQB1eoOvtXRgcP9cErq9HPOsKMWs+3BfVhk5Dh2w=;
+        b=HQImIPA++lWCS5TXKkK72NGZWVtt2fDBdbC29FHc5pumF0Ap2sNZms8YZQcdQkdZGD
+         RyvvbxbUx+QAAKV4opNxLnik+HIj+jXCn2Y7rGAu+it1dA1aTx31iRBjXpOsXalGT4E2
+         9ZYfcpqOPcdmXHthDN3giJ2Z9bjMlJxQsiBY4u9w1g+Z8mewe8OPiAIvC9ciozofdrfz
+         o01R1eLSqqf5l2rvXgf3XJa0+fJ+9uZEMjuaPrMkjyii8oRPRjeZkdrX4TK9H+H+BxEX
+         gZeko1LORKgHTHL9i0e6iLr4ZiKa0nBlSjG2FMrNz4i3sShgMocDBl8sYdr9FAK86N2E
+         qxHA==
+X-Gm-Message-State: AOAM533WRp0CIE0/DkAGmBm4WLHW+fD7JIUTkQUX83ZZ8OGieW6rQjXt
+        isNPODVNLAVrT+F5RoaVDYn8oA==
+X-Google-Smtp-Source: ABdhPJyELC/Nwio1dFl3sO/VK8PLLU2EqustpT6Gxg2fQDCTHVW17MAX8bRKjL8jJcOzOOPUo8WR0A==
+X-Received: by 2002:a05:6512:1521:: with SMTP id bq33mr608727lfb.118.1633127610451;
+        Fri, 01 Oct 2021 15:33:30 -0700 (PDT)
 Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id u25sm846522lfr.279.2021.10.01.14.09.16
+        by smtp.gmail.com with ESMTPSA id j16sm312325lfk.257.2021.10.01.15.33.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Oct 2021 14:09:16 -0700 (PDT)
-Subject: Re: [PATCH v3 3/3] drm/msm/mdp5: Add configuration for MDP v1.16
-To:     Sireesh Kodali <sireeshkodali1@gmail.com>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Fri, 01 Oct 2021 15:33:29 -0700 (PDT)
+Subject: Re: [PATCH v2 2/2] drm/msm/dpu: Fix timeout issues on command mode
+ panels
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>, robdclark@gmail.com
+Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
+        abhinavk@codeaurora.org, linux-arm-msm@vger.kernel.org,
         dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Abhinav Kumar <abhinavk@codeaurora.org>,
-        James Willcox <jwillcox@squareup.com>
-References: <20210928131929.18567-1-sireeshkodali1@gmail.com>
- <20210928131929.18567-4-sireeshkodali1@gmail.com>
+        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        paul.bouchara@somainline.org
+References: <20210911163919.47173-1-angelogioacchino.delregno@somainline.org>
+ <20210911163919.47173-2-angelogioacchino.delregno@somainline.org>
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Message-ID: <06a40d0d-da39-ba0b-e932-d4435c0735d3@linaro.org>
-Date:   Sat, 2 Oct 2021 00:09:15 +0300
+Message-ID: <b325fc8d-e06b-36de-b40a-b5ffbcebb1c5@linaro.org>
+Date:   Sat, 2 Oct 2021 01:33:28 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <20210928131929.18567-4-sireeshkodali1@gmail.com>
+In-Reply-To: <20210911163919.47173-2-angelogioacchino.delregno@somainline.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
@@ -80,129 +78,46 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 28/09/2021 16:19, Sireesh Kodali wrote:
-> From: Vladimir Lypak <vladimir.lypak@gmail.com>
+On 11/09/2021 19:39, AngeloGioacchino Del Regno wrote:
+> In function dpu_encoder_phys_cmd_wait_for_commit_done we are always
+> checking if the relative CTL is started by waiting for an interrupt
+> to fire: it is fine to do that, but then sometimes we call this
+> function while the CTL is up and has never been put down, but that
+> interrupt gets raised only when the CTL gets a state change from
+> 0 to 1 (disabled to enabled), so we're going to wait for something
+> that will never happen on its own.
 > 
-> MDP version v1.16 is almost identical to v1.15 with most significant
-> difference being presence of second DSI interface. MDP v1.16 is found on
-> SoCs such as MSM8x53, SDM450, SDM632 (All with Adreno 506).
+> Solving this while avoiding to restart the CTL is actually possible
+> and can be done by just checking if it is already up and running
+> when the wait_for_commit_done function is called: in this case, so,
+> if the CTL was already running, we can say that the commit is done
+> if the command transmission is complete (in other terms, if the
+> interface has been flushed).
+
+I've compared this with the MDP5 driver, where we always wait for 
+PP_DONE interrupt. Would it be enough to always wait for it (= always 
+call dpu_encoder_phys_cmd_wait_for_tx_complete())?
+
 > 
-> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-> Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 > ---
->   drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c | 89 ++++++++++++++++++++++++
->   1 file changed, 89 insertions(+)
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 +++
+>   1 file changed, 3 insertions(+)
 > 
-> diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
-> index 9741544ffc35..0d28c8ff4009 100644
-> --- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
-> +++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
-> @@ -752,6 +752,94 @@ const struct mdp5_cfg_hw msm8x76_config = {
->   	.max_clk = 360000000,
->   };
+> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+> index aa01698d6b25..aa5d3b3cef15 100644
+> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+> @@ -682,6 +682,9 @@ static int dpu_encoder_phys_cmd_wait_for_commit_done(
+>   	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
+>   		return 0;
 >   
-> +static const struct mdp5_cfg_hw msm8x53_config = {
-> +	.name = "msm8x53",
-> +	.mdp = {
-> +		.count = 1,
-> +		.caps = MDP_CAP_CDM |
-> +			MDP_CAP_SRC_SPLIT,
-> +	},
-> +	.ctl = {
-> +		.count = 3,
-> +		.base = { 0x01000, 0x01200, 0x01400 },
-> +		.flush_hw_mask = 0xffffffff,
-> +	},
-> +	.pipe_vig = {
-> +		.count = 1,
-> +		.base = { 0x04000 },
-> +		.caps = MDP_PIPE_CAP_HFLIP	|
-> +			MDP_PIPE_CAP_VFLIP	|
-> +			MDP_PIPE_CAP_SCALE	|
-> +			MDP_PIPE_CAP_CSC	|
-> +			MDP_PIPE_CAP_DECIMATION	|
-> +			MDP_PIPE_CAP_SW_PIX_EXT	|
-> +			0,
-> +	},
-> +	.pipe_rgb = {
-> +		.count = 2,
-> +		.base = { 0x14000, 0x16000 },
-> +		.caps = MDP_PIPE_CAP_HFLIP	|
-> +			MDP_PIPE_CAP_VFLIP	|
-> +			MDP_PIPE_CAP_DECIMATION	|
-> +			MDP_PIPE_CAP_SW_PIX_EXT	|
-> +			0,
-> +	},
-> +	.pipe_dma = {
-> +		.count = 1,
-> +		.base = { 0x24000 },
-> +		.caps = MDP_PIPE_CAP_HFLIP	|
-> +			MDP_PIPE_CAP_VFLIP	|
-> +			MDP_PIPE_CAP_SW_PIX_EXT	|
-> +			0,
-> +	},
-> +	.pipe_cursor = {
-> +		.count = 1,
-> +		.base = { 0x34000 },
-> +		.caps = MDP_PIPE_CAP_HFLIP	|
-> +			MDP_PIPE_CAP_VFLIP	|
-> +			MDP_PIPE_CAP_SW_PIX_EXT	|
-> +			MDP_PIPE_CAP_CURSOR	|
-> +			0,
-> +	},
+> +	if (phys_enc->hw_ctl->ops.is_started(phys_enc->hw_ctl))
+> +		return dpu_encoder_phys_cmd_wait_for_tx_complete(phys_enc);
 > +
-> +	.lm = {
-> +		.count = 3,
-> +		.base = { 0x44000, 0x45000 },
-> +		.instances = {
-> +				{ .id = 0, .pp = 0, .dspp = 0,
-> +				  .caps = MDP_LM_CAP_DISPLAY |
-> +					  MDP_LM_CAP_PAIR },
-> +				{ .id = 1, .pp = 1, .dspp = -1,
-> +				  .caps = MDP_LM_CAP_DISPLAY },
-> +			     },
-> +		.nb_stages = 5,
-> +		.max_width = 2048,
-> +		.max_height = 0xFFFF,
-> +	},
-> +	.dspp = {
-> +		.count = 1,
-> +		.base = { 0x54000 },
-> +
-> +	},
-> +	.pp = {
-> +		.count = 2,
-> +		.base = { 0x70000, 0x70800 },
-> +	},
-> +	.cdm = {
-> +		.count = 1,
-> +		.base = { 0x79200 },
-> +	},
-> +	.intf = {
-> +		.base = { 0x6a000, 0x6a800, 0x6b000 },
-> +		.connect = {
-> +			[0] = INTF_DISABLED,
-> +			[1] = INTF_DSI,
-> +			[2] = INTF_DSI,
-> +		},
-> +	},
-> +	.max_clk = 400000000,
-> +};
-> +
->   static const struct mdp5_cfg_hw msm8917_config = {
->   	.name = "msm8917",
->   	.mdp = {
-> @@ -1151,6 +1239,7 @@ static const struct mdp5_cfg_handler cfg_handlers_v1[] = {
->   	{ .revision = 7, .config = { .hw = &msm8x96_config } },
->   	{ .revision = 11, .config = { .hw = &msm8x76_config } },
->   	{ .revision = 15, .config = { .hw = &msm8917_config } },
-> +	{ .revision = 16, .config = { .hw = &msm8x53_config } },
->   };
+>   	return _dpu_encoder_phys_cmd_wait_for_ctl_start(phys_enc);
+>   }
 >   
->   static const struct mdp5_cfg_handler cfg_handlers_v3[] = {
 > 
 
 
