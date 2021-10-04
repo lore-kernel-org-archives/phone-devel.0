@@ -2,30 +2,26 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF380C433F5
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 19:28:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C296FC433EF
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 19:53:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 995E861452
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 19:28:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9DC2C610CA
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 19:53:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239162AbhJDT37 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 4 Oct 2021 15:29:59 -0400
-Received: from relay04.th.seeweb.it ([5.144.164.165]:44085 "EHLO
-        relay04.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239040AbhJDT3o (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Oct 2021 15:29:44 -0400
+        id S235000AbhJDTyt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 4 Oct 2021 15:54:49 -0400
+Received: from relay02.th.seeweb.it ([5.144.164.163]:60307 "EHLO
+        relay02.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234915AbhJDTys (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Oct 2021 15:54:48 -0400
 Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 0BA441F6E8;
-        Mon,  4 Oct 2021 21:27:52 +0200 (CEST)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 104111F67F;
+        Mon,  4 Oct 2021 21:52:58 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>
+To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
@@ -34,105 +30,77 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Pavel Dubrova <pashadubrova@gmail.com>,
         Marijn Suijten <marijn.suijten@somainline.org>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        Courtney Cavin <courtney.cavin@sonymobile.com>,
-        Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 10/10] backlight: qcom-wled: Consider enabled_strings in autodetection
-Date:   Mon,  4 Oct 2021 21:27:41 +0200
-Message-Id: <20211004192741.621870-11-marijn.suijten@somainline.org>
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Taniya Das <tdas@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/2] Global Clock Controller driver for MSM8976/56
+Date:   Mon,  4 Oct 2021 21:52:53 +0200
+Message-Id: <20211004195255.701220-1-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211004192741.621870-1-marijn.suijten@somainline.org>
-References: <20211004192741.621870-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Following the previous commit using enabled_strings in set_brightness,
-enabled_strings is now also used in the autodetection path for
-consistent behaviour: when a list of strings is specified in DT only
-those strings will be probed for autodetection, analogous to how the
-number of strings that need to be probed is already bound by
-qcom,num-strings.
+This is the Global Clock Controller (GCC) driver for MSM8956, MSM8976
+and APQ variants and it has been tested on two Sony phones featuring the
+Qualcomm MSM8956 SoC.
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
----
- drivers/video/backlight/qcom-wled.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+In addition to GCC this driver is also responsible for providing MDSS
+and GFX3D clocks which reside in the same register space.
 
-diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-index c0b8d10c20a2..2c49f5d8dc26 100644
---- a/drivers/video/backlight/qcom-wled.c
-+++ b/drivers/video/backlight/qcom-wled.c
-@@ -569,7 +569,7 @@ static irqreturn_t wled_short_irq_handler(int irq, void *_wled)
- 
- static void wled_auto_string_detection(struct wled *wled)
- {
--	int rc = 0, i, delay_time_us;
-+	int rc = 0, i, j, delay_time_us;
- 	u32 sink_config = 0;
- 	u8 sink_test = 0, sink_valid = 0, val;
- 	bool fault_set;
-@@ -616,14 +616,15 @@ static void wled_auto_string_detection(struct wled *wled)
- 
- 	/* Iterate through the strings one by one */
- 	for (i = 0; i < wled->cfg.num_strings; i++) {
--		sink_test = BIT((WLED4_SINK_REG_CURR_SINK_SHFT + i));
-+		j = wled->cfg.enabled_strings[i];
-+		sink_test = BIT((WLED4_SINK_REG_CURR_SINK_SHFT + j));
- 
- 		/* Enable feedback control */
- 		rc = regmap_write(wled->regmap, wled->ctrl_addr +
--				  WLED3_CTRL_REG_FEEDBACK_CONTROL, i + 1);
-+				  WLED3_CTRL_REG_FEEDBACK_CONTROL, j + 1);
- 		if (rc < 0) {
- 			dev_err(wled->dev, "Failed to enable feedback for SINK %d rc = %d\n",
--				i + 1, rc);
-+				j + 1, rc);
- 			goto failed_detect;
- 		}
- 
-@@ -632,7 +633,7 @@ static void wled_auto_string_detection(struct wled *wled)
- 				  WLED4_SINK_REG_CURR_SINK, sink_test);
- 		if (rc < 0) {
- 			dev_err(wled->dev, "Failed to configure SINK %d rc=%d\n",
--				i + 1, rc);
-+				j + 1, rc);
- 			goto failed_detect;
- 		}
- 
-@@ -659,7 +660,7 @@ static void wled_auto_string_detection(struct wled *wled)
- 
- 		if (fault_set)
- 			dev_dbg(wled->dev, "WLED OVP fault detected with SINK %d\n",
--				i + 1);
-+				j + 1);
- 		else
- 			sink_valid |= sink_test;
- 
-@@ -699,15 +700,16 @@ static void wled_auto_string_detection(struct wled *wled)
- 	/* Enable valid sinks */
- 	if (wled->version == 4) {
- 		for (i = 0; i < wled->cfg.num_strings; i++) {
-+			j = wled->cfg.enabled_strings[i];
- 			if (sink_config &
--			    BIT(WLED4_SINK_REG_CURR_SINK_SHFT + i))
-+			    BIT(WLED4_SINK_REG_CURR_SINK_SHFT + j))
- 				val = WLED4_SINK_REG_STR_MOD_MASK;
- 			else
- 				/* Disable modulator_en for unused sink */
- 				val = 0;
- 
- 			rc = regmap_write(wled->regmap, wled->sink_addr +
--					  WLED4_SINK_REG_STR_MOD_EN(i), val);
-+					  WLED4_SINK_REG_STR_MOD_EN(j), val);
- 			if (rc < 0) {
- 				dev_err(wled->dev, "Failed to configure MODULATOR_EN rc=%d\n",
- 					rc);
+SoMainline is dedicated to getting their long-awaited msm8976 support,
+including the Xperia X, X Compact and if feasible also the Xperia Touch
+projector (APQ8056) slowly but steadily upstreamed.
+
+Changes since v4:
+- Insert error handling that left `int ret;` in gcc_msm8976_probe unused
+  when the original regmap read, xor, and write were replaced with
+  regmap_update_bits in v3;
+- Document vdd_gfx supply, required in oxili_gx_gdsc;
+- Dual-license the yaml Documentation and DT bindings (Rob).
+
+Changes since v3:
+- Set the enable_mask of gcc_apss_ahb_clk and gcc_apss_axi_clk to BIT 14
+  and 13 respectively instead of overlapping gcc_crypto_ahb_clk's BIT 0.
+
+Changes since v2:
+- Rebased on v5.14;
+- Various minor cleanups (lowercase hex, const where appropriate,
+  removal of unused enum constants);
+- Fixed XOR confusion in probe;
+- All remnants of global clock name dependencies are removed, all
+  inter-driver dependencies must be fully specified in DT;
+- Added proper dt-bindings yaml validation, listing the required clocks;
+- Moved dt-bindings header to the dt-bindings patch.
+
+Changes since v1:
+- Rebased onto linux-next 20191015
+- Fixed platform driver name (qcom,gcc-8976 => gcc-msm8976)
+- Splitted changes to dt-bindings to a separate commit
+
+AngeloGioacchino Del Regno (1):
+  clk: qcom: Add MSM8976/56 Global Clock Controller (GCC) driver
+
+Marijn Suijten (1):
+  dt-bindings: clk: qcom: Document MSM8976 Global Clock Controller
+
+ .../bindings/clock/qcom,gcc-msm8976.yaml      |   95 +
+ drivers/clk/qcom/Kconfig                      |    8 +
+ drivers/clk/qcom/Makefile                     |    1 +
+ drivers/clk/qcom/gcc-msm8976.c                | 4160 +++++++++++++++++
+ include/dt-bindings/clock/qcom,gcc-msm8976.h  |  240 +
+ 5 files changed, 4504 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/qcom,gcc-msm8976.yaml
+ create mode 100644 drivers/clk/qcom/gcc-msm8976.c
+ create mode 100644 include/dt-bindings/clock/qcom,gcc-msm8976.h
+
 -- 
 2.33.0
 
