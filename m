@@ -2,125 +2,102 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BC3CC433FE
-	for <phone-devel@archiver.kernel.org>; Fri,  1 Oct 2021 22:33:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DFEABC433EF
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 12:01:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D608361AA9
-	for <phone-devel@archiver.kernel.org>; Fri,  1 Oct 2021 22:33:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C0031613A2
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 12:01:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355861AbhJAWfR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 1 Oct 2021 18:35:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53126 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354686AbhJAWfR (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 1 Oct 2021 18:35:17 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D91BC061775
-        for <phone-devel@vger.kernel.org>; Fri,  1 Oct 2021 15:33:32 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id y26so44376963lfa.11
-        for <phone-devel@vger.kernel.org>; Fri, 01 Oct 2021 15:33:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=+GGpQB1eoOvtXRgcP9cErq9HPOsKMWs+3BfVhk5Dh2w=;
-        b=Qs5fOVMz612VsObKjPOggkEfD+Uia9/Hn4FLDX3M9oodQJMMfNivODTI9mTwo9fZ1h
-         IVWJ8D7ew8UWXbTrcuZwHyrufGjm8nT7/Q0lcn0RarqDIi7l8yCWBB34FyTrXMkoSwVe
-         wToMte27WQTnllnISTCD1WMowTtJS33E+Kk93rTRx/wsXMMax6YHNcsZrvX7W53oU3E/
-         fmE0laRhAs4borxCJgOwo2k5+pklzLHVOYl/EQL+Nyy39jeLzhpIEeQlH2fNPVqC2mDU
-         7HO+Pt17hgJU9gcjT/IchZ7NAa9O0yl5pw9Q4H6ImxTUgGR/KtDNpvROpaN6CMpF2qQv
-         kIfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=+GGpQB1eoOvtXRgcP9cErq9HPOsKMWs+3BfVhk5Dh2w=;
-        b=HQImIPA++lWCS5TXKkK72NGZWVtt2fDBdbC29FHc5pumF0Ap2sNZms8YZQcdQkdZGD
-         RyvvbxbUx+QAAKV4opNxLnik+HIj+jXCn2Y7rGAu+it1dA1aTx31iRBjXpOsXalGT4E2
-         9ZYfcpqOPcdmXHthDN3giJ2Z9bjMlJxQsiBY4u9w1g+Z8mewe8OPiAIvC9ciozofdrfz
-         o01R1eLSqqf5l2rvXgf3XJa0+fJ+9uZEMjuaPrMkjyii8oRPRjeZkdrX4TK9H+H+BxEX
-         gZeko1LORKgHTHL9i0e6iLr4ZiKa0nBlSjG2FMrNz4i3sShgMocDBl8sYdr9FAK86N2E
-         qxHA==
-X-Gm-Message-State: AOAM533WRp0CIE0/DkAGmBm4WLHW+fD7JIUTkQUX83ZZ8OGieW6rQjXt
-        isNPODVNLAVrT+F5RoaVDYn8oA==
-X-Google-Smtp-Source: ABdhPJyELC/Nwio1dFl3sO/VK8PLLU2EqustpT6Gxg2fQDCTHVW17MAX8bRKjL8jJcOzOOPUo8WR0A==
-X-Received: by 2002:a05:6512:1521:: with SMTP id bq33mr608727lfb.118.1633127610451;
-        Fri, 01 Oct 2021 15:33:30 -0700 (PDT)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id j16sm312325lfk.257.2021.10.01.15.33.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Oct 2021 15:33:29 -0700 (PDT)
-Subject: Re: [PATCH v2 2/2] drm/msm/dpu: Fix timeout issues on command mode
- panels
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>, robdclark@gmail.com
-Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
-        abhinavk@codeaurora.org, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        paul.bouchara@somainline.org
-References: <20210911163919.47173-1-angelogioacchino.delregno@somainline.org>
- <20210911163919.47173-2-angelogioacchino.delregno@somainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Message-ID: <b325fc8d-e06b-36de-b40a-b5ffbcebb1c5@linaro.org>
-Date:   Sat, 2 Oct 2021 01:33:28 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S233079AbhJDMCv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 4 Oct 2021 08:02:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43350 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229778AbhJDMCv (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 4 Oct 2021 08:02:51 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EF37D6136F;
+        Mon,  4 Oct 2021 12:01:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633348862;
+        bh=KedfUiHTHFdKBqDMUFp//yfqESdnS5zwFhj4rJZj11Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Kdd6xS/Cywh2ing8rz4BfiOjwLsEo+AmAJOIq/FPXIdMV6IumDmk8f7xmwmTxcBj8
+         QaAOj5pjFSt3mg26mdx/IUC6Guv0q/OqtF4blaPloqCvBGhAAqydEfzMCHQmNSWgbg
+         G/AUK33RHDsVnwdAD6ZwIf3SSHWFBfUot1qFkl2Q70tOLd3KShBLMjL2v8mR1xtpRH
+         dQsfbfieyg4mAfj0rU0NcTWogW23cGJcRmrFZ0TskO/ytefcW2FltRgXVOmn4wCRJa
+         y0hB+M1rcnbI9m61Ifka6j0w15QpWVLNfXsHunHBxof530p3d75Z8yBDGJhcUQku3P
+         ReDEcvO7waO2A==
+Date:   Mon, 4 Oct 2021 20:00:57 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     robh@kernel.org, kernel@pengutronix.de, festevam@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        kernel@puri.sm, Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
+Subject: Re: [PATCH v1 3/6] arm64: dts: imx8mq-librem5: wire up the wifi
+ regulator
+Message-ID: <20211004120054.GG15650@dragon>
+References: <20210913135706.309685-1-martin.kepplinger@puri.sm>
+ <20210913135706.309685-4-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
-In-Reply-To: <20210911163919.47173-2-angelogioacchino.delregno@somainline.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210913135706.309685-4-martin.kepplinger@puri.sm>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 11/09/2021 19:39, AngeloGioacchino Del Regno wrote:
-> In function dpu_encoder_phys_cmd_wait_for_commit_done we are always
-> checking if the relative CTL is started by waiting for an interrupt
-> to fire: it is fine to do that, but then sometimes we call this
-> function while the CTL is up and has never been put down, but that
-> interrupt gets raised only when the CTL gets a state change from
-> 0 to 1 (disabled to enabled), so we're going to wait for something
-> that will never happen on its own.
+On Mon, Sep 13, 2021 at 03:57:03PM +0200, Martin Kepplinger wrote:
+> From: Guido Günther <agx@sigxcpu.org>
 > 
-> Solving this while avoiding to restart the CTL is actually possible
-> and can be done by just checking if it is already up and running
-> when the wait_for_commit_done function is called: in this case, so,
-> if the CTL was already running, we can say that the commit is done
-> if the command transmission is complete (in other terms, if the
-> interface has been flushed).
-
-I've compared this with the MDP5 driver, where we always wait for 
-PP_DONE interrupt. Would it be enough to always wait for it (= always 
-call dpu_encoder_phys_cmd_wait_for_tx_complete())?
-
+> Connect the wifi power regulator to the corresponding GPIO.
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> Signed-off-by: Guido Günther <agx@sigxcpu.org>
+> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
 > ---
->   drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 +++
->   1 file changed, 3 insertions(+)
+>  arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 > 
-> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> index aa01698d6b25..aa5d3b3cef15 100644
-> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> @@ -682,6 +682,9 @@ static int dpu_encoder_phys_cmd_wait_for_commit_done(
->   	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
->   		return 0;
->   
-> +	if (phys_enc->hw_ctl->ops.is_started(phys_enc->hw_ctl))
-> +		return dpu_encoder_phys_cmd_wait_for_tx_complete(phys_enc);
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+> index ba26c6ee98a0..b5562c8f9a3c 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+> @@ -138,9 +138,15 @@ reg_vsys_3v4: regulator-vsys-3v4 {
+>  
+>  	reg_wifi_3v3: regulator-wifi-3v3 {
+>  		compatible = "regulator-fixed";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_wifi_pwr>;
+>  		regulator-name = "3V3_WIFI";
+>  		regulator-min-microvolt = <3300000>;
+>  		regulator-max-microvolt = <3300000>;
+> +		gpio = <&gpio3 10 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +		vin-supply = <&reg_vdd_3v3>;
+> +		regulator-always-on;
+
+Any reason you need to have this always-on?
+
+Shawn
+
+>  	};
+>  
+>  	sound {
+> @@ -638,6 +644,13 @@ MX8MQ_IOMUXC_SD2_RESET_B_USDHC2_RESET_B 0xc1
+>  		>;
+>  	};
+>  
+> +	pinctrl_wifi_pwr: wifipwrgrp {
+> +		fsl,pins = <
+> +			/* WIFI3V3_EN */
+> +			MX8MQ_IOMUXC_NAND_DATA04_GPIO3_IO10	0x83
+> +		>;
+> +	};
 > +
->   	return _dpu_encoder_phys_cmd_wait_for_ctl_start(phys_enc);
->   }
->   
+>  	pinctrl_wdog: wdoggrp {
+>  		fsl,pins = <
+>  			/* nWDOG */
+> -- 
+> 2.30.2
 > 
-
-
--- 
-With best wishes
-Dmitry
