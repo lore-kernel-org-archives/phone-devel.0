@@ -2,142 +2,124 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C92E2C4167D
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 20:22:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E181C07E98
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 20:22:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AD50461206
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 20:22:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 14B9560F9B
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 20:22:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235991AbhJDUXx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 4 Oct 2021 16:23:53 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.83]:32147 "EHLO
-        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235912AbhJDUXv (ORCPT
+        id S236049AbhJDUXy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 4 Oct 2021 16:23:54 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.53]:24257 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235957AbhJDUXv (ORCPT
         <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Oct 2021 16:23:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1633378910;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1633378909;
     s=strato-dkim-0002; d=gerhold.net;
-    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=WQV09xQCK1UOz8+9tdtIDws8tuH6z91IIAgUbsJrzcg=;
-    b=U36Tf8rq6yB/Ovp7rgI9akxRjOXsb8Qm9f96F7uFuNk7p4rrD68tYj3w4nbhViWk1d
-    ri7pb5Ol1IhydzgQRSrudKUM49T//m7qLi7BYibtbQ6ccR0VruEQE5ilkL+2ir7dRIUA
-    saonoVTq7RYCv6f9Syp5E7JF/QgcLhTt0f6L7HUY5BNI2sUCv0VO8/BVR/tCOVkcrZIO
-    4GTJ2Iw2MdhHtP1ABOVRumg8uvkkEuUxqeuquRHfJ3QyXcD64MNiSM26dgGGFLtkOA72
-    T1rDQ+BGo4+ApUzyNxI4b2UB/fR3SIdUeeBjplo+zlo3lqv+GmIisM2LLfTBj0Cv7Si0
-    MmeQ==
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=Rw43gEOu/P1J7qJPNGkaVXLbdg5QG/1YaX+fJ13gV1Q=;
+    b=J2qf0rBjbGtUWzQV8OyMhZuAHoUm1tHTiqQnO91PTsLc8+Htxv9vXLzZ6XnYcctw0b
+    aVG8Az10jfkic2hbEdqYObpPorcBhHYzdGellOcMLN/j+eYxHVYg6RVP9iOM6dhkJrT4
+    kizIfsDZPy9FpsRCEALPMUfFjXOpHwE9NDRtwLzBGsBofcjLOdkKvlU5PMrl8r7XusMl
+    mR/gLuJ7dyCklk2IgIK8FFxO02CkRbJ21PfVk5HY6fFXS7khJ/9TpaDP/ukfot5qIYW9
+    UiZVJG2nJjmC1mG0ZOTu3Lyz2v5DOhCZ7YwQDiJw2yfGF3Azh1eNQ4Y1nMYg4bJDGd2j
+    Il8g==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXTbAOHjRHIhr2eFePxBA="
 X-RZG-CLASS-ID: mo00
 Received: from droid..
     by smtp.strato.de (RZmta 47.33.8 DYNA|AUTH)
-    with ESMTPSA id 301038x94KLoKQm
+    with ESMTPSA id 301038x94KLnKQk
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Mon, 4 Oct 2021 22:21:50 +0200 (CEST)
+    Mon, 4 Oct 2021 22:21:49 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
 To:     Bjorn Andersson <bjorn.andersson@linaro.org>
 Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH v2 02/15] arm64: dts: qcom: msm8916-samsung-serranove: Add touch screen
-Date:   Mon,  4 Oct 2021 22:19:08 +0200
-Message-Id: <20211004201921.18526-3-stephan@gerhold.net>
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: [PATCH v2 00/15] Add support for Samsung Galaxy S4 Mini Value Edition
+Date:   Mon,  4 Oct 2021 22:19:06 +0200
+Message-Id: <20211004201921.18526-1-stephan@gerhold.net>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211004201921.18526-1-stephan@gerhold.net>
-References: <20211004201921.18526-1-stephan@gerhold.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Like msm8916-samsung-a3u-eur, the S4 Mini VE uses a Zinitix BT541
-touch screen. Add it together with the necessary fixed-regulator
-to the device tree.
+This series adds support for booting mainline Linux on the Samsung Galaxy
+S4 Mini Value Edition. The device is based on the Qualcomm MSM8916 SoC and quite
+similar to the already supported Samsung Galaxy A3/A5. With some additional
+patches it is almost fully functional, including display, touch screen, GPU,
+audio, modem (voice calls, SMS, mobile data) and sensors.
 
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
----
-Changes in v2: None.
----
- .../dts/qcom/msm8916-samsung-serranove.dts    | 50 +++++++++++++++++++
- 1 file changed, 50 insertions(+)
+I made most of the patches almost 2 years ago but I was long unsure if I should
+submit them upstream. This is because the device has one big limitation:
+Samsung released it with a signed 32-bit-only TrustZone firmware which is not
+able to boot ARM64 Linux. This means the device can actually only boot ARM32.
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-index 013f843aff9c..aa1326e5d4cb 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-@@ -78,6 +78,19 @@ hall-sensor {
- 		};
- 	};
- 
-+	reg_vdd_tsp: regulator-vdd-tsp {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vdd_tsp";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+
-+		gpio = <&msmgpio 73 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&tsp_en_default>;
-+	};
-+
- 	i2c-muic {
- 		compatible = "i2c-gpio";
- 		sda-gpios = <&msmgpio 105 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-@@ -102,6 +115,27 @@ muic: extcon@14 {
- 	};
- };
- 
-+&blsp_i2c5 {
-+	status = "okay";
-+
-+	touchscreen@20 {
-+		compatible = "zinitix,bt541";
-+		reg = <0x20>;
-+
-+		interrupt-parent = <&msmgpio>;
-+		interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
-+
-+		touchscreen-size-x = <540>;
-+		touchscreen-size-y = <960>;
-+
-+		vdd-supply = <&reg_vdd_tsp>;
-+		vddo-supply = <&pm8916_l6>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&tsp_irq_default>;
-+	};
-+};
-+
- &blsp1_uart2 {
- 	status = "okay";
- };
-@@ -298,4 +332,20 @@ muic_irq_default: muic-irq-default {
- 		drive-strength = <2>;
- 		bias-disable;
- 	};
-+
-+	tsp_en_default: tsp-en-default {
-+		pins = "gpio73";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	tsp_irq_default: tsp-irq-default {
-+		pins = "gpio13";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
- };
+However, since device trees are independent of the kernel architecture and all
+the necessary drivers compile on ARM32 as well it is actually extremely
+straightforward to build an ARM32 kernel for MSM8916 (which is normally arm64).
+
+The only necessary additions are for SMP/cpuidle without PSCI on ARM32. However,
+the diffstat below makes it quite obvious that the maintenance overhead for this
+is absolutely negligible. The SoC is almost identical to previous 32-bit SoCs
+like MSM8226, so it is pretty much just adding new definitions/compatibles for
+already existing code.
+
+Being able to boot ARM32 Linux on MSM8916 might be also a possible opportunity
+for CI systems. At the moment, 32-bit Qualcomm platforms are not very well
+represented there. Booting ARM32 on MSM8916/APQ8016 would allow re-using the
+DragonBoard 410c which is often already used for automated CI testing.
+
+Changes in v2:
+  - Add missing word in a comment in PATCH 1/15
+  - Clarify ARM32 situation in dt-bindings patches
+
+v1: https://lore.kernel.org/phone-devel/20210928171231.12766-1-stephan@gerhold.net/
+
+Lina Iyer (1):
+  soc: qcom: spm: Add 8916 SPM register data
+
+Stephan Gerhold (14):
+  arm64: dts: qcom: Add device tree for Samsung Galaxy S4 Mini Value
+    Edition
+  arm64: dts: qcom: msm8916-samsung-serranove: Add touch screen
+  arm64: dts: qcom: msm8916-samsung-serranove: Add touch key
+  arm64: dts: qcom: msm8916-samsung-serranove: Add IMU
+  arm64: dts: qcom: msm8916-samsung-serranove: Add rt5033 battery
+  arm64: dts: qcom: msm8916-samsung-serranove: Add NFC
+  ARM: qcom: Add ARCH_MSM8916 for MSM8916 on ARM32
+  dt-bindings: arm: cpus: Document qcom,msm8916-smp enable-method
+  ARM: qcom: Add qcom,msm8916-smp enable-method identical to MSM8226
+  dt-bindings: soc: qcom: spm: Document qcom,msm8916-saw2-v3.0-cpu
+  firmware: qcom: scm: Add support for MC boot address API
+  arm64: dts: qcom: msm8916: Add CPU ACC and SAW/SPM
+  ARM: dts: qcom: msm8916: Add include for SMP without PSCI on ARM32
+  ARM: dts: qcom: msm8916-samsung-serranove: Include dts from arm64
+
+ .../devicetree/bindings/arm/cpus.yaml         |   5 +-
+ .../bindings/soc/qcom/qcom,spm.yaml           |   1 +
+ arch/arm/boot/dts/Makefile                    |   1 +
+ .../dts/qcom-msm8916-samsung-serranove.dts    |   3 +
+ arch/arm/boot/dts/qcom-msm8916-smp.dtsi       |  62 ++
+ arch/arm/mach-qcom/Kconfig                    |  10 +
+ arch/arm/mach-qcom/platsmp.c                  |   1 +
+ arch/arm64/boot/dts/qcom/Makefile             |   1 +
+ .../dts/qcom/msm8916-samsung-serranove.dts    | 534 ++++++++++++++++++
+ arch/arm64/boot/dts/qcom/msm8916.dtsi         |  56 ++
+ drivers/firmware/qcom_scm.c                   |  84 ++-
+ drivers/firmware/qcom_scm.h                   |   4 +
+ drivers/soc/qcom/spm.c                        |  21 +
+ 13 files changed, 765 insertions(+), 18 deletions(-)
+ create mode 100644 arch/arm/boot/dts/qcom-msm8916-samsung-serranove.dts
+ create mode 100644 arch/arm/boot/dts/qcom-msm8916-smp.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+
 -- 
 2.33.0
 
