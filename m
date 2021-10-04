@@ -2,27 +2,27 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC373C43217
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 19:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C0EFC4332F
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 19:27:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 97B0C61354
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 19:27:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F104961354
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 19:27:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238970AbhJDT3j (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S238981AbhJDT3j (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Mon, 4 Oct 2021 15:29:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36584 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238943AbhJDT3i (ORCPT
+        with ESMTP id S238942AbhJDT3i (ORCPT
         <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Oct 2021 15:29:38 -0400
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1018C061745;
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7331C061749;
         Mon,  4 Oct 2021 12:27:48 -0700 (PDT)
 Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id EEBAF1F67F;
-        Mon,  4 Oct 2021 21:27:43 +0200 (CEST)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 9D6AD1F691;
+        Mon,  4 Oct 2021 21:27:46 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -42,9 +42,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 01/10] backlight: qcom-wled: Pass number of elements to read to read_u32_array
-Date:   Mon,  4 Oct 2021 21:27:32 +0200
-Message-Id: <20211004192741.621870-2-marijn.suijten@somainline.org>
+Subject: [PATCH 04/10] backlight: qcom-wled: Validate enabled string indices in DT
+Date:   Mon,  4 Oct 2021 21:27:35 +0200
+Message-Id: <20211004192741.621870-5-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211004192741.621870-1-marijn.suijten@somainline.org>
 References: <20211004192741.621870-1-marijn.suijten@somainline.org>
@@ -54,47 +54,48 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-of_property_read_u32_array takes the number of elements to read as last
-argument. This does not always need to be 4 (sizeof(u32)) but should
-instead be the size of the array in DT as read just above with
-of_property_count_elems_of_size.
-
-To not make such an error go unnoticed again the driver now bails
-accordingly when of_property_read_u32_array returns an error.
+The strings passed in DT may possibly cause out-of-bounds register
+accesses and should be validated before use.
 
 Fixes: 775d2ffb4af6 ("backlight: qcom-wled: Restructure the driver for WLED3")
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- drivers/video/backlight/qcom-wled.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/video/backlight/qcom-wled.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-index d094299c2a48..6af808af2328 100644
+index 29910e603c42..27e8949c7922 100644
 --- a/drivers/video/backlight/qcom-wled.c
 +++ b/drivers/video/backlight/qcom-wled.c
-@@ -1528,11 +1528,18 @@ static int wled_configure(struct wled *wled)
- 	string_len = of_property_count_elems_of_size(dev->of_node,
+@@ -1526,6 +1526,12 @@ static int wled_configure(struct wled *wled)
  						     "qcom,enabled-strings",
  						     sizeof(u32));
--	if (string_len > 0)
--		of_property_read_u32_array(dev->of_node,
-+	if (string_len > 0) {
-+		rc = of_property_read_u32_array(dev->of_node,
- 						"qcom,enabled-strings",
- 						wled->cfg.enabled_strings,
--						sizeof(u32));
-+						string_len);
-+		if (rc) {
-+			dev_err(dev, "Failed to read %d elements from "
-+				"qcom,enabled-strings: %d\n",
-+				string_len, rc);
+ 	if (string_len > 0) {
++		if (string_len > wled->max_string_count) {
++			dev_err(dev, "Cannot have more than %d strings\n",
++				wled->max_string_count);
 +			return -EINVAL;
 +		}
-+	}
++
+ 		rc = of_property_read_u32_array(dev->of_node,
+ 						"qcom,enabled-strings",
+ 						wled->cfg.enabled_strings,
+@@ -1537,6 +1543,14 @@ static int wled_configure(struct wled *wled)
+ 			return -EINVAL;
+ 		}
  
- 	return 0;
- }
++		for (i = 0; i < string_len; ++i) {
++			if (wled->cfg.enabled_strings[i] >= wled->max_string_count) {
++				dev_err(dev, "qcom,enabled-strings index %d at %d is out of bounds\n",
++					wled->cfg.enabled_strings[i], i);
++				return -EINVAL;
++			}
++		}
++
+ 		cfg->num_strings = string_len;
+ 	}
+ 
 -- 
 2.33.0
 
