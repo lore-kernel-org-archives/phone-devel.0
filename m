@@ -2,102 +2,70 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DFEABC433EF
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 12:01:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 969A0C433EF
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 17:53:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C0031613A2
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 12:01:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7ABC36120D
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 17:53:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233079AbhJDMCv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 4 Oct 2021 08:02:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43350 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229778AbhJDMCv (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 4 Oct 2021 08:02:51 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EF37D6136F;
-        Mon,  4 Oct 2021 12:01:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633348862;
-        bh=KedfUiHTHFdKBqDMUFp//yfqESdnS5zwFhj4rJZj11Y=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Kdd6xS/Cywh2ing8rz4BfiOjwLsEo+AmAJOIq/FPXIdMV6IumDmk8f7xmwmTxcBj8
-         QaAOj5pjFSt3mg26mdx/IUC6Guv0q/OqtF4blaPloqCvBGhAAqydEfzMCHQmNSWgbg
-         G/AUK33RHDsVnwdAD6ZwIf3SSHWFBfUot1qFkl2Q70tOLd3KShBLMjL2v8mR1xtpRH
-         dQsfbfieyg4mAfj0rU0NcTWogW23cGJcRmrFZ0TskO/ytefcW2FltRgXVOmn4wCRJa
-         y0hB+M1rcnbI9m61Ifka6j0w15QpWVLNfXsHunHBxof530p3d75Z8yBDGJhcUQku3P
-         ReDEcvO7waO2A==
-Date:   Mon, 4 Oct 2021 20:00:57 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     robh@kernel.org, kernel@pengutronix.de, festevam@gmail.com,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        kernel@puri.sm, Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
-Subject: Re: [PATCH v1 3/6] arm64: dts: imx8mq-librem5: wire up the wifi
- regulator
-Message-ID: <20211004120054.GG15650@dragon>
-References: <20210913135706.309685-1-martin.kepplinger@puri.sm>
- <20210913135706.309685-4-martin.kepplinger@puri.sm>
+        id S234812AbhJDRzN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 4 Oct 2021 13:55:13 -0400
+Received: from mail-oi1-f177.google.com ([209.85.167.177]:45712 "EHLO
+        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238589AbhJDRxO (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Oct 2021 13:53:14 -0400
+Received: by mail-oi1-f177.google.com with SMTP id v10so22640853oic.12;
+        Mon, 04 Oct 2021 10:51:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=3vWwFoLU/AV3mlTHht+MMyQ5jmWKT/p5IFY/3H+BlVc=;
+        b=QpjhOAxMiLrjpk1cpJf8PYsp2euwmGcdg6lAorI26lygV/mUy5j5k4911NvQK8XqaP
+         HW6FlBuiCrvz3kEvcX+p5P9kcFkdYm67B8hTxClShR6FocJ8G+4J9Q56QpHVaqv8OEq5
+         CVQn1gCwavK7tiYbCAmDfwMxpWXG++mVrxCKbCju4I5ur4573OXFaE7+0zgPleouwnXj
+         XzwhxRASrehywgLv7TMOlwROtDYE3hizhxDw3iH+e4L9HJ4QyhXXweqyH3TNy2mkAV33
+         sgO6sbdZG8yCwAX2xLhE/KmOGzlXzusnZoRQzn+HzStHdM6hYmJdKAnfMMtbSJwJ9+NQ
+         vBLA==
+X-Gm-Message-State: AOAM532rv7CNOYKuWGmHPkPknWFHldxWnuJusqcChJKzGweNDz4/PwlN
+        F/LD9JF+k2pxjQG4xDk28Q==
+X-Google-Smtp-Source: ABdhPJya8ioCqBxAIdwFPEEysr8oQqLtz2mjK5uD+nxi59pFeB2kP5iwanEEqI6Hgjd2nBGMq4h/5g==
+X-Received: by 2002:aca:ebd5:: with SMTP id j204mr14247424oih.14.1633369884850;
+        Mon, 04 Oct 2021 10:51:24 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id bd24sm3029117oib.52.2021.10.04.10.51.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Oct 2021 10:51:24 -0700 (PDT)
+Received: (nullmailer pid 1553251 invoked by uid 1000);
+        Mon, 04 Oct 2021 17:51:23 -0000
+Date:   Mon, 4 Oct 2021 12:51:23 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Raffaele Tranquillini <raffaele.tranquillini@gmail.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        daniel@ffwll.ch, airlied@linux.ie, sam@ravnborg.org,
+        y.oudjana@protonmail.com, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        ~postmarketos/upstreaming@lists.sr.ht, thierry.reding@gmail.com
+Subject: Re: [PATCH 2/2] dt-bindings: panel-simple-dsi: add JDI R63452 panel
+ bindings
+Message-ID: <YVs/G9T6Jw7Y1AWn@robh.at.kernel.org>
+References: <20210925103135.518443-1-raffaele.tranquillini@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210913135706.309685-4-martin.kepplinger@puri.sm>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20210925103135.518443-1-raffaele.tranquillini@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Sep 13, 2021 at 03:57:03PM +0200, Martin Kepplinger wrote:
-> From: Guido Günther <agx@sigxcpu.org>
+On Sat, 25 Sep 2021 12:31:33 +0200, Raffaele Tranquillini wrote:
+> This add the bindings for the JDI FHD_R63452 1080x1920 5.2" LCD DSI
+>  panel used on the Xiaomi Mi 5 smartphone.
 > 
-> Connect the wifi power regulator to the corresponding GPIO.
-> 
-> Signed-off-by: Guido Günther <agx@sigxcpu.org>
-> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> Signed-off-by: Raffaele Tranquillini <raffaele.tranquillini@gmail.com>
 > ---
->  arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  .../devicetree/bindings/display/panel/panel-simple-dsi.yaml     | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-> index ba26c6ee98a0..b5562c8f9a3c 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-> @@ -138,9 +138,15 @@ reg_vsys_3v4: regulator-vsys-3v4 {
->  
->  	reg_wifi_3v3: regulator-wifi-3v3 {
->  		compatible = "regulator-fixed";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_wifi_pwr>;
->  		regulator-name = "3V3_WIFI";
->  		regulator-min-microvolt = <3300000>;
->  		regulator-max-microvolt = <3300000>;
-> +		gpio = <&gpio3 10 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +		vin-supply = <&reg_vdd_3v3>;
-> +		regulator-always-on;
 
-Any reason you need to have this always-on?
-
-Shawn
-
->  	};
->  
->  	sound {
-> @@ -638,6 +644,13 @@ MX8MQ_IOMUXC_SD2_RESET_B_USDHC2_RESET_B 0xc1
->  		>;
->  	};
->  
-> +	pinctrl_wifi_pwr: wifipwrgrp {
-> +		fsl,pins = <
-> +			/* WIFI3V3_EN */
-> +			MX8MQ_IOMUXC_NAND_DATA04_GPIO3_IO10	0x83
-> +		>;
-> +	};
-> +
->  	pinctrl_wdog: wdoggrp {
->  		fsl,pins = <
->  			/* nWDOG */
-> -- 
-> 2.30.2
-> 
+Acked-by: Rob Herring <robh@kernel.org>
