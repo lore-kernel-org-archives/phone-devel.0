@@ -2,27 +2,27 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6C15C43217
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 19:28:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E58F2C4332F
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 19:28:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AD19D61354
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 19:28:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CEC3861458
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 19:28:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239092AbhJDT3s (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 4 Oct 2021 15:29:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36620 "EHLO
+        id S239040AbhJDT37 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 4 Oct 2021 15:29:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239041AbhJDT3n (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Oct 2021 15:29:43 -0400
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3963CC061755
-        for <phone-devel@vger.kernel.org>; Mon,  4 Oct 2021 12:27:53 -0700 (PDT)
+        with ESMTP id S238947AbhJDT3i (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Oct 2021 15:29:38 -0400
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF951C061753
+        for <phone-devel@vger.kernel.org>; Mon,  4 Oct 2021 12:27:48 -0700 (PDT)
 Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 24F5B1F6D5;
-        Mon,  4 Oct 2021 21:27:51 +0200 (CEST)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id D1AE81F68F;
+        Mon,  4 Oct 2021 21:27:44 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -42,9 +42,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 09/10] backlight: qcom-wled: Consistently use enabled-strings in set_brightness
-Date:   Mon,  4 Oct 2021 21:27:40 +0200
-Message-Id: <20211004192741.621870-10-marijn.suijten@somainline.org>
+Subject: [PATCH 02/10] backlight: qcom-wled: Use cpu_to_le16 macro to perform conversion
+Date:   Mon,  4 Oct 2021 21:27:33 +0200
+Message-Id: <20211004192741.621870-3-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211004192741.621870-1-marijn.suijten@somainline.org>
 References: <20211004192741.621870-1-marijn.suijten@somainline.org>
@@ -54,52 +54,88 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The hardware is capable of controlling any non-contiguous sequence of
-LEDs specified in the DT using qcom,enabled-strings as u32
-array, and this also follows from the DT-bindings documentation.  The
-numbers specified in this array represent indices of the LED strings
-that are to be enabled and disabled.
+The kernel already provides appropriate primitives to perform endianness
+conversion which should be used in favour of manual bit-wrangling.
 
-Its value is appropriately used to setup and enable string modules, but
-completely disregarded in the set_brightness paths which only iterate
-over the number of strings linearly.
-Take an example where only string 2 is enabled with
-qcom,enabled_strings=<2>: this string is appropriately enabled but
-subsequent brightness changes would have only touched the zero'th
-brightness register because num_strings is 1 here.  This is simply
-addressed by looking up the string for this index in the enabled_strings
-array just like the other codepaths that iterate over num_strings.
-
-Fixes: 775d2ffb4af6 ("backlight: qcom-wled: Restructure the driver for WLED3")
-Fixes: 03b2b5e86986 ("backlight: qcom-wled: Add support for WLED4 peripheral")
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- drivers/video/backlight/qcom-wled.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/backlight/qcom-wled.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-index dbe503007ada..c0b8d10c20a2 100644
+index 6af808af2328..9927ed98944a 100644
 --- a/drivers/video/backlight/qcom-wled.c
 +++ b/drivers/video/backlight/qcom-wled.c
-@@ -237,7 +237,7 @@ static int wled3_set_brightness(struct wled *wled, u16 brightness)
+@@ -231,14 +231,14 @@ struct wled {
+ static int wled3_set_brightness(struct wled *wled, u16 brightness)
+ {
+ 	int rc, i;
+-	u8 v[2];
++	u16 v;
  
- 	for (i = 0; i < wled->cfg.num_strings; ++i) {
+-	v[0] = brightness & 0xff;
+-	v[1] = (brightness >> 8) & 0xf;
++	v = cpu_to_le16(brightness & WLED3_SINK_REG_BRIGHT_MAX);
+ 
+ 	for (i = 0;  i < wled->cfg.num_strings; ++i) {
  		rc = regmap_bulk_write(wled->regmap, wled->ctrl_addr +
--				       WLED3_SINK_REG_BRIGHT(i),
-+				       WLED3_SINK_REG_BRIGHT(wled->cfg.enabled_strings[i]),
- 				       &v, sizeof(v));
+-				       WLED3_SINK_REG_BRIGHT(i), v, 2);
++				       WLED3_SINK_REG_BRIGHT(i),
++				       &v, sizeof(v));
  		if (rc < 0)
  			return rc;
-@@ -259,7 +259,7 @@ static int wled4_set_brightness(struct wled *wled, u16 brightness)
+ 	}
+@@ -249,19 +249,18 @@ static int wled3_set_brightness(struct wled *wled, u16 brightness)
+ static int wled4_set_brightness(struct wled *wled, u16 brightness)
+ {
+ 	int rc, i;
+-	u16 low_limit = wled->max_brightness * 4 / 1000;
+-	u8 v[2];
++	u16 v, low_limit = wled->max_brightness * 4 / 1000;
  
- 	for (i = 0; i < wled->cfg.num_strings; ++i) {
+ 	/* WLED4's lower limit of operation is 0.4% */
+ 	if (brightness > 0 && brightness < low_limit)
+ 		brightness = low_limit;
+ 
+-	v[0] = brightness & 0xff;
+-	v[1] = (brightness >> 8) & 0xf;
++	v = cpu_to_le16(brightness & WLED3_SINK_REG_BRIGHT_MAX);
+ 
+ 	for (i = 0;  i < wled->cfg.num_strings; ++i) {
  		rc = regmap_bulk_write(wled->regmap, wled->sink_addr +
--				       WLED4_SINK_REG_BRIGHT(i),
-+				       WLED4_SINK_REG_BRIGHT(wled->cfg.enabled_strings[i]),
- 				       &v, sizeof(v));
+-				       WLED4_SINK_REG_BRIGHT(i), v, 2);
++				       WLED4_SINK_REG_BRIGHT(i),
++				       &v, sizeof(v));
  		if (rc < 0)
  			return rc;
+ 	}
+@@ -272,22 +271,20 @@ static int wled4_set_brightness(struct wled *wled, u16 brightness)
+ static int wled5_set_brightness(struct wled *wled, u16 brightness)
+ {
+ 	int rc, offset;
+-	u16 low_limit = wled->max_brightness * 1 / 1000;
+-	u8 v[2];
++	u16 v, low_limit = wled->max_brightness * 1 / 1000;
+ 
+ 	/* WLED5's lower limit is 0.1% */
+ 	if (brightness < low_limit)
+ 		brightness = low_limit;
+ 
+-	v[0] = brightness & 0xff;
+-	v[1] = (brightness >> 8) & 0x7f;
++	v = cpu_to_le16(brightness & WLED5_SINK_REG_BRIGHT_MAX_15B);
+ 
+ 	offset = (wled->cfg.mod_sel == MOD_A) ?
+ 		  WLED5_SINK_REG_MOD_A_BRIGHTNESS_LSB :
+ 		  WLED5_SINK_REG_MOD_B_BRIGHTNESS_LSB;
+ 
+ 	rc = regmap_bulk_write(wled->regmap, wled->sink_addr + offset,
+-			       v, 2);
++			       &v, sizeof(v));
+ 	return rc;
+ }
+ 
 -- 
 2.33.0
 
