@@ -2,39 +2,39 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B78D5C433F5
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 20:22:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC026C43217
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 20:22:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 913616115C
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 20:22:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8CE8061244
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Oct 2021 20:22:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235970AbhJDUXw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S235979AbhJDUXw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Mon, 4 Oct 2021 16:23:52 -0400
-Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.83]:30324 "EHLO
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.82]:18843 "EHLO
         mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235425AbhJDUXv (ORCPT
+        with ESMTP id S233877AbhJDUXv (ORCPT
         <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Oct 2021 16:23:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1633378912;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1633378911;
     s=strato-dkim-0002; d=gerhold.net;
     h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
     From:Subject:Sender;
-    bh=BNocBK4U1HyTaxyN3VYb2yfK5aJOaCFqjEMeLHlV25E=;
-    b=X/95LHhnc+kTdg+7tBN1vZVklTHr1sXMlxDaVoCt3T73doSBLH42egK1bULCMjkN39
-    wdmT2wckB+r7297JlCVEdJZpMFWWysiRkNM6hcJwsOlMMtOpxRNbt/zjzTrNb5LTGJWb
-    KMoOm8jojKAnR2fNVZqb/U7Mr+M0n+h9dOOF8DHhWfbNjChsFMQVbFPai5teyW7AFe0P
-    wBclHRrDCnPZR2rte8APn/d+4JpVB/gfECkoRrxFSUtPyRbGnAIHt0toZWZoT5mEaHhc
-    PxuRwBntveNN6CgR5nB4Pe1OaTMPb17bKKrmAdyVis5EmEceLE+miNLQABJT9Gu5vml6
-    HiIA==
+    bh=A4mG38TJdtwZpXWSkGNr8WpEhX95atrjR7MADgIRuJY=;
+    b=X5Cjf7Amr4+LsiIkFuk0l5/iB8Ph5aZQTFy4kgvDL46GDOgVcG/TjRAX4yaHIzlAY4
+    tbk/yJBtdrlcP+rEgWQ2OJV7naw2dscIXgW0xIyiRVrw+IDBmrs6S3AJAE1qk1gtD3vj
+    puseBih+PiaJBmTB3rrfgW9J+DXibb0PT7Wf323OVGGU3PCZqGg6yF2iEEWGLvrmhcL5
+    9/OdNcZBLsh6p5In/3+W+smGRsI2K50xhkDdRCy074mINTvD6w2Tmv4sWC1SRwnMN+6i
+    4Kpmt1lUzzK3f6dHdyepu1zPUzf+AGhU/HIGRhF/xJh6630t3YKwSLhoaJ7z23uC2f4+
+    IgKg==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXTbAOHjRHIhr2eFePxBA="
 X-RZG-CLASS-ID: mo00
 Received: from droid..
     by smtp.strato.de (RZmta 47.33.8 DYNA|AUTH)
-    with ESMTPSA id 301038x94KLqKQq
+    with ESMTPSA id 301038x94KLpKQo
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Mon, 4 Oct 2021 22:21:52 +0200 (CEST)
+    Mon, 4 Oct 2021 22:21:51 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
 To:     Bjorn Andersson <bjorn.andersson@linaro.org>
 Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
@@ -42,9 +42,9 @@ Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH v2 06/15] arm64: dts: qcom: msm8916-samsung-serranove: Add NFC
-Date:   Mon,  4 Oct 2021 22:19:12 +0200
-Message-Id: <20211004201921.18526-7-stephan@gerhold.net>
+Subject: [PATCH v2 04/15] arm64: dts: qcom: msm8916-samsung-serranove: Add IMU
+Date:   Mon,  4 Oct 2021 22:19:10 +0200
+Message-Id: <20211004201921.18526-5-stephan@gerhold.net>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211004201921.18526-1-stephan@gerhold.net>
 References: <20211004201921.18526-1-stephan@gerhold.net>
@@ -54,90 +54,56 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The LTE version of the S4 Mini VE has a NXP PN547, which is supported
-by the nxp-nci-i2c driver in mainline. It seems to detect NFC tags
-using "nfctool" just fine, although more testing is difficult given
-there seem to be very few useful applications making use of the
-Linux NFC subsystem. :(
-
-Note that for some reason Samsung decided to connect the I2C pins
-to GPIOs where no hardware I2C bus is available, so we need to
-fall back to software bit-banging with i2c-gpio.
+Add the STMicroelectronics LSM6DS3 IMU that is used in the S4 Mini VE
+to the device tree.
 
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
 Changes in v2: None.
 ---
- .../dts/qcom/msm8916-samsung-serranove.dts    | 50 +++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ .../dts/qcom/msm8916-samsung-serranove.dts    | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-index 3ef00bdc043e..a78f87a5bf4f 100644
+index 564f4f6d4f0f..2280b2e4b09f 100644
 --- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
 +++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-@@ -168,6 +168,32 @@ touchkey@20 {
- 			pinctrl-0 = <&tkey_default>;
- 		};
+@@ -170,6 +170,21 @@ touchkey@20 {
  	};
-+
-+	i2c-nfc {
-+		compatible = "i2c-gpio";
-+		sda-gpios = <&msmgpio 0 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+		scl-gpios = <&msmgpio 1 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&nfc_i2c_default>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		nfc@2b {
-+			compatible = "nxp,pn547", "nxp,nxp-nci-i2c";
-+			reg = <0x2b>;
-+
-+			interrupt-parent = <&msmgpio>;
-+			interrupts = <21 IRQ_TYPE_EDGE_RISING>;
-+
-+			enable-gpios = <&msmgpio 20 GPIO_ACTIVE_HIGH>;
-+			firmware-gpios = <&msmgpio 49 GPIO_ACTIVE_HIGH>;
-+
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&nfc_default>;
-+		};
-+	};
  };
  
- &blsp_i2c2 {
-@@ -434,6 +460,30 @@ muic_irq_default: muic-irq-default {
++&blsp_i2c2 {
++	status = "okay";
++
++	imu@6b {
++		compatible = "st,lsm6ds3";
++		reg = <0x6b>;
++
++		interrupt-parent = <&msmgpio>;
++		interrupts = <115 IRQ_TYPE_EDGE_RISING>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&imu_irq_default>;
++	};
++};
++
+ &blsp_i2c5 {
+ 	status = "okay";
+ 
+@@ -372,6 +387,14 @@ gpio_hall_sensor_default: gpio-hall-sensor-default {
  		bias-disable;
  	};
  
-+	nfc_default: nfc-default {
-+		pins = "gpio20", "gpio49";
-+		function = "gpio";
-+
-+		drive-strength = <2>;
-+		bias-disable;
-+
-+		irq {
-+			pins = "gpio21";
-+			function = "gpio";
-+
-+			drive-strength = <2>;
-+			bias-pull-down;
-+		};
-+	};
-+
-+	nfc_i2c_default: nfc-i2c-default {
-+		pins = "gpio0", "gpio1";
++	imu_irq_default: imu-irq-default {
++		pins = "gpio115";
 +		function = "gpio";
 +
 +		drive-strength = <2>;
 +		bias-disable;
 +	};
 +
- 	tkey_default: tkey-default {
- 		pins = "gpio98";
+ 	muic_i2c_default: muic-i2c-default {
+ 		pins = "gpio105", "gpio106";
  		function = "gpio";
 -- 
 2.33.0
