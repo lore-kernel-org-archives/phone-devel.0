@@ -2,109 +2,104 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 32F7AC433F5
-	for <phone-devel@archiver.kernel.org>; Tue,  5 Oct 2021 12:18:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1982AC43217
+	for <phone-devel@archiver.kernel.org>; Tue,  5 Oct 2021 12:26:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1A06B6117A
-	for <phone-devel@archiver.kernel.org>; Tue,  5 Oct 2021 12:18:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F404661507
+	for <phone-devel@archiver.kernel.org>; Tue,  5 Oct 2021 12:26:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234388AbhJEMTy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 5 Oct 2021 08:19:54 -0400
-Received: from honk.sigxcpu.org ([24.134.29.49]:38296 "EHLO honk.sigxcpu.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233784AbhJEMTy (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 5 Oct 2021 08:19:54 -0400
-X-Greylist: delayed 336 seconds by postgrey-1.27 at vger.kernel.org; Tue, 05 Oct 2021 08:19:53 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id DC7CEFB03;
-        Tue,  5 Oct 2021 14:12:24 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
-Received: from honk.sigxcpu.org ([127.0.0.1])
-        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 9MfrIIi09mzw; Tue,  5 Oct 2021 14:12:23 +0200 (CEST)
-Date:   Tue, 5 Oct 2021 14:12:22 +0200
-From:   Guido =?iso-8859-1?Q?G=FCnther?= <guido.gunther@puri.sm>
-To:     Shawn Guo <shawnguo@kernel.org>
-Cc:     Martin Kepplinger <martin.kepplinger@puri.sm>, robh@kernel.org,
-        kernel@pengutronix.de, festevam@gmail.com,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        kernel@puri.sm
-Subject: Re: [PATCH v1 3/6] arm64: dts: imx8mq-librem5: wire up the wifi
- regulator
-Message-ID: <YVxBJoWTDgznfsJN@qwark.sigxcpu.org>
-References: <20210913135706.309685-1-martin.kepplinger@puri.sm>
- <20210913135706.309685-4-martin.kepplinger@puri.sm>
- <20211004120054.GG15650@dragon>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211004120054.GG15650@dragon>
+        id S234802AbhJEM2i (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 5 Oct 2021 08:28:38 -0400
+Received: from mail-oo1-f54.google.com ([209.85.161.54]:41699 "EHLO
+        mail-oo1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234780AbhJEM2g (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 5 Oct 2021 08:28:36 -0400
+Received: by mail-oo1-f54.google.com with SMTP id b5-20020a4ac285000000b0029038344c3dso6342924ooq.8;
+        Tue, 05 Oct 2021 05:26:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=12B425lue7e7bkxC1MmLr36fhfhw6Ghp6FxDgU81lTI=;
+        b=2ZvG6cRtRoQjw9TDwvPnA1TmO7OhqJ6eaJoK+UE/2H2KxmT0yPkim3HJ0SwNxgH+Z7
+         L4qfZL3FosZuTGVTVUwZ55JKyoLs9wObGO2QmDmq93cHAA0krvj0VAGxIGzH0B7t7GHk
+         E/ZrHImSvCpcGnvI15KWiQrBDn+ZStyY8k6E+aQbxedRW6XejOZdoR+K0IZTiBME4+eB
+         R7hGEnxcbG+u1YfMifCl0MjgwSYYXVG4WjfV2ohZCkDz3uDr+YRZd/4X2+FGMxeUtvlL
+         kTf6wrQahHRAHpC3IOoTrbrBKtdpMrZwU7JEk4BNkivYetrZ+JaSx//8GE3eGhMqYQzB
+         /J3A==
+X-Gm-Message-State: AOAM5335Z1tshfYxBdJgSgmTYQXDvLnF9Hw7PfTztOFx54noCi97LlR0
+        a4gs7jqglkDLP3ab2HPtdg==
+X-Google-Smtp-Source: ABdhPJzviUxP+uSvuH4E4JBAfoTZZ7tkOF4YnI98mcMiSAVS1rlPEbdZ3k7X70uJfL7DNdiD2Hhe0w==
+X-Received: by 2002:a4a:b994:: with SMTP id e20mr12894523oop.50.1633436805397;
+        Tue, 05 Oct 2021 05:26:45 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id g21sm3490872ooc.31.2021.10.05.05.26.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Oct 2021 05:26:44 -0700 (PDT)
+Received: (nullmailer pid 3226798 invoked by uid 1000);
+        Tue, 05 Oct 2021 12:26:38 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     Stephen Boyd <sboyd@kernel.org>, Taniya Das <tdas@codeaurora.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        linux-kernel@vger.kernel.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        linux-arm-msm@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Martin Botka <martin.botka@somainline.org>,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org
+In-Reply-To: <20211004195255.701220-2-marijn.suijten@somainline.org>
+References: <20211004195255.701220-1-marijn.suijten@somainline.org> <20211004195255.701220-2-marijn.suijten@somainline.org>
+Subject: Re: [PATCH v5 1/2] dt-bindings: clk: qcom: Document MSM8976 Global Clock Controller
+Date:   Tue, 05 Oct 2021 07:26:38 -0500
+Message-Id: <1633436798.553183.3226797.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Shawn,
-On Mon, Oct 04, 2021 at 08:00:57PM +0800, Shawn Guo wrote:
-> On Mon, Sep 13, 2021 at 03:57:03PM +0200, Martin Kepplinger wrote:
-> > From: Guido Günther <agx@sigxcpu.org>
-> > 
-> > Connect the wifi power regulator to the corresponding GPIO.
-> > 
-> > Signed-off-by: Guido Günther <agx@sigxcpu.org>
-> > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-> > index ba26c6ee98a0..b5562c8f9a3c 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-> > @@ -138,9 +138,15 @@ reg_vsys_3v4: regulator-vsys-3v4 {
-> >  
-> >  	reg_wifi_3v3: regulator-wifi-3v3 {
-> >  		compatible = "regulator-fixed";
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&pinctrl_wifi_pwr>;
-> >  		regulator-name = "3V3_WIFI";
-> >  		regulator-min-microvolt = <3300000>;
-> >  		regulator-max-microvolt = <3300000>;
-> > +		gpio = <&gpio3 10 GPIO_ACTIVE_HIGH>;
-> > +		enable-active-high;
-> > +		vin-supply = <&reg_vdd_3v3>;
-> > +		regulator-always-on;
+On Mon, 04 Oct 2021 21:52:54 +0200, Marijn Suijten wrote:
+> Document the required properties and firmware clocks for gcc-msm8976 to
+> operate nominally, and add header definitions for referencing the clocks
+> from firmware.
 > 
-> Any reason you need to have this always-on?
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> ---
+>  .../bindings/clock/qcom,gcc-msm8976.yaml      |  95 +++++++
+>  include/dt-bindings/clock/qcom,gcc-msm8976.h  | 240 ++++++++++++++++++
+>  2 files changed, 335 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/qcom,gcc-msm8976.yaml
+>  create mode 100644 include/dt-bindings/clock/qcom,gcc-msm8976.h
+> 
 
-I think we can drop the `regulator-always-on` nowadays - it's wired up
-correctly as `vmmc-supply` so turned on accordingly. Will drop for
-the next revision.
-Cheers,
- -- Guido
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-> 
-> Shawn
-> 
-> >  	};
-> >  
-> >  	sound {
-> > @@ -638,6 +644,13 @@ MX8MQ_IOMUXC_SD2_RESET_B_USDHC2_RESET_B 0xc1
-> >  		>;
-> >  	};
-> >  
-> > +	pinctrl_wifi_pwr: wifipwrgrp {
-> > +		fsl,pins = <
-> > +			/* WIFI3V3_EN */
-> > +			MX8MQ_IOMUXC_NAND_DATA04_GPIO3_IO10	0x83
-> > +		>;
-> > +	};
-> > +
-> >  	pinctrl_wdog: wdoggrp {
-> >  		fsl,pins = <
-> >  			/* nWDOG */
-> > -- 
-> > 2.30.2
-> > 
-> 
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/clock/qcom,gcc-msm8976.example.dt.yaml: clock-controller@1800000: 'vdd_gfx-supply' is a required property
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/clock/qcom,gcc-msm8976.yaml
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1536345
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+
