@@ -2,65 +2,86 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F17CC433F5
-	for <phone-devel@archiver.kernel.org>; Tue,  5 Oct 2021 13:49:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EDE59C433EF
+	for <phone-devel@archiver.kernel.org>; Tue,  5 Oct 2021 13:50:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 15A1561502
-	for <phone-devel@archiver.kernel.org>; Tue,  5 Oct 2021 13:49:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D5D6B61401
+	for <phone-devel@archiver.kernel.org>; Tue,  5 Oct 2021 13:50:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235111AbhJENvd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 5 Oct 2021 09:51:33 -0400
-Received: from comms.puri.sm ([159.203.221.185]:43896 "EHLO comms.puri.sm"
+        id S234274AbhJENvw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 5 Oct 2021 09:51:52 -0400
+Received: from comms.puri.sm ([159.203.221.185]:43984 "EHLO comms.puri.sm"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234915AbhJENvd (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 5 Oct 2021 09:51:33 -0400
+        id S235085AbhJENvw (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 5 Oct 2021 09:51:52 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id B9FB3E12B2;
-        Tue,  5 Oct 2021 06:49:42 -0700 (PDT)
+        by comms.puri.sm (Postfix) with ESMTP id A2E80E1294;
+        Tue,  5 Oct 2021 06:49:31 -0700 (PDT)
 Received: from comms.puri.sm ([127.0.0.1])
         by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id jY0L-Xk4l59g; Tue,  5 Oct 2021 06:49:42 -0700 (PDT)
+        with ESMTP id uO1RGhr-fI6N; Tue,  5 Oct 2021 06:49:31 -0700 (PDT)
 From:   Martin Kepplinger <martin.kepplinger@puri.sm>
 To:     martin.kepplinger@puri.sm
 Cc:     devicetree@vger.kernel.org, festevam@gmail.com,
         kernel@pengutronix.de, kernel@puri.sm,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org, robh@kernel.org, shawnguo@kernel.org,
-        Angus Ainslie <angus@akkea.ca>
-Subject: [PATCH v2 6/7] arm64: dts: imx8mq-librem5: Limit the max sdio frequency
-Date:   Tue,  5 Oct 2021 15:49:01 +0200
-Message-Id: <20211005134902.2138731-7-martin.kepplinger@puri.sm>
+        =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
+Subject: [PATCH v2 3/7] arm64: dts: imx8mq-librem5: wire up the wifi regulator
+Date:   Tue,  5 Oct 2021 15:48:58 +0200
+Message-Id: <20211005134902.2138731-4-martin.kepplinger@puri.sm>
 In-Reply-To: <20211005134902.2138731-1-martin.kepplinger@puri.sm>
 References: <20211005134902.2138731-1-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Angus Ainslie <angus@akkea.ca>
+From: Guido Günther <agx@sigxcpu.org>
 
-This is needed for the 1LV Cyress WiFi module to probe correctly.
-It also helps improve GNSS sensitivity.
+Connect the wifi power regulator to the corresponding GPIO.
 
-Signed-off-by: Angus Ainslie <angus@akkea.ca>
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
 Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index 396eb4434229..d86486fd659d 100644
+index 95bbaa108805..9a309b1d0a90 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -1237,6 +1237,7 @@ &usdhc2 {
- 	mmc-pwrseq = <&usdhc2_pwrseq>;
- 	post-power-on-delay-ms = <1000>;
- 	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
-+	max-frequency = <50000000>;
- 	disable-wp;
- 	cap-sdio-irq;
- 	keep-power-in-suspend;
+@@ -138,9 +138,14 @@ reg_vsys_3v4: regulator-vsys-3v4 {
+ 
+ 	reg_wifi_3v3: regulator-wifi-3v3 {
+ 		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_wifi_pwr>;
+ 		regulator-name = "3V3_WIFI";
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
++		gpio = <&gpio3 10 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++		vin-supply = <&reg_vdd_3v3>;
+ 	};
+ 
+ 	sound {
+@@ -638,6 +643,13 @@ MX8MQ_IOMUXC_SD2_RESET_B_USDHC2_RESET_B 0xc1
+ 		>;
+ 	};
+ 
++	pinctrl_wifi_pwr: wifipwrgrp {
++		fsl,pins = <
++			/* WIFI3V3_EN */
++			MX8MQ_IOMUXC_NAND_DATA04_GPIO3_IO10	0x83
++		>;
++	};
++
+ 	pinctrl_wdog: wdoggrp {
+ 		fsl,pins = <
+ 			/* nWDOG */
 -- 
 2.30.2
 
