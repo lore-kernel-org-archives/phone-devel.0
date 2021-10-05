@@ -2,158 +2,109 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FD14C433EF
-	for <phone-devel@archiver.kernel.org>; Tue,  5 Oct 2021 11:44:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32F7AC433F5
+	for <phone-devel@archiver.kernel.org>; Tue,  5 Oct 2021 12:18:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2DFC1611C5
-	for <phone-devel@archiver.kernel.org>; Tue,  5 Oct 2021 11:44:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1A06B6117A
+	for <phone-devel@archiver.kernel.org>; Tue,  5 Oct 2021 12:18:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234516AbhJELq3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 5 Oct 2021 07:46:29 -0400
-Received: from relay05.th.seeweb.it ([5.144.164.166]:59293 "EHLO
-        relay05.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234385AbhJELq3 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 5 Oct 2021 07:46:29 -0400
-Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id F3D703EE3F;
-        Tue,  5 Oct 2021 13:44:36 +0200 (CEST)
-Date:   Tue, 5 Oct 2021 13:44:35 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        Courtney Cavin <courtney.cavin@sonymobile.com>,
-        Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 05/10] backlight: qcom-wled: Fix off-by-one maximum with
- default num_strings
-Message-ID: <20211005114435.phyq2jsbdyroa6kn@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>, Jingoo Han <jingoohan1@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        Courtney Cavin <courtney.cavin@sonymobile.com>,
-        Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20211004192741.621870-1-marijn.suijten@somainline.org>
- <20211004192741.621870-6-marijn.suijten@somainline.org>
- <20211005091947.7msztp5l554c7cy4@maple.lan>
- <20211005100606.faxra73mzkvjd4f6@SoMainline.org>
- <20211005103843.heufyonycnudxnzd@maple.lan>
- <20211005105312.kqiyzoqtzzjxayhg@maple.lan>
+        id S234388AbhJEMTy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 5 Oct 2021 08:19:54 -0400
+Received: from honk.sigxcpu.org ([24.134.29.49]:38296 "EHLO honk.sigxcpu.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233784AbhJEMTy (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 5 Oct 2021 08:19:54 -0400
+X-Greylist: delayed 336 seconds by postgrey-1.27 at vger.kernel.org; Tue, 05 Oct 2021 08:19:53 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by honk.sigxcpu.org (Postfix) with ESMTP id DC7CEFB03;
+        Tue,  5 Oct 2021 14:12:24 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
+Received: from honk.sigxcpu.org ([127.0.0.1])
+        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 9MfrIIi09mzw; Tue,  5 Oct 2021 14:12:23 +0200 (CEST)
+Date:   Tue, 5 Oct 2021 14:12:22 +0200
+From:   Guido =?iso-8859-1?Q?G=FCnther?= <guido.gunther@puri.sm>
+To:     Shawn Guo <shawnguo@kernel.org>
+Cc:     Martin Kepplinger <martin.kepplinger@puri.sm>, robh@kernel.org,
+        kernel@pengutronix.de, festevam@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        kernel@puri.sm
+Subject: Re: [PATCH v1 3/6] arm64: dts: imx8mq-librem5: wire up the wifi
+ regulator
+Message-ID: <YVxBJoWTDgznfsJN@qwark.sigxcpu.org>
+References: <20210913135706.309685-1-martin.kepplinger@puri.sm>
+ <20210913135706.309685-4-martin.kepplinger@puri.sm>
+ <20211004120054.GG15650@dragon>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20211005105312.kqiyzoqtzzjxayhg@maple.lan>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211004120054.GG15650@dragon>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2021-10-05 11:53:12, Daniel Thompson wrote:
-> On Tue, Oct 05, 2021 at 11:38:43AM +0100, Daniel Thompson wrote:
-> > On Tue, Oct 05, 2021 at 12:06:06PM +0200, Marijn Suijten wrote:
-> > > On 2021-10-05 10:19:47, Daniel Thompson wrote:
-> > > > On Mon, Oct 04, 2021 at 09:27:36PM +0200, Marijn Suijten wrote:
-> > > > > When not specifying num-strings in the DT the default is used, but +1 is
-> > > > > added to it which turns wled3 into 4 and wled4/5 into 5 strings instead
-> > > > > of 3 and 4 respectively, causing out of bounds reads and register
-> > > > > read/writes.  This +1 exists for a deficiency in the DT parsing code,
-> > > > > and is simply omitted entirely - solving this oob issue - by allowing
-> > > > > one extra iteration of the wled_var_cfg function parsing this particular
-> > > > > property.
-> > > > > 
-> > > > > Fixes: 93c64f1ea1e8 ("leds: add Qualcomm PM8941 WLED driver")
-> > > > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > > > > Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> > > > > ---
-> > > > >  drivers/video/backlight/qcom-wled.c | 8 +++-----
-> > > > >  1 file changed, 3 insertions(+), 5 deletions(-)
-> > > > > 
-> > > > > diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> > > > > index 27e8949c7922..66ce77ee3099 100644
-> > > > > --- a/drivers/video/backlight/qcom-wled.c
-> > > > > +++ b/drivers/video/backlight/qcom-wled.c
-> > > > > @@ -1255,17 +1255,17 @@ static const struct wled_var_cfg wled5_ovp_cfg = {
-> > > > >  
-> > > > >  static u32 wled3_num_strings_values_fn(u32 idx)
-> > > > >  {
-> > > > > -	return idx + 1;
-> > > > > +	return idx;
-> > > > >  }
-> > > > >  
-> > > > >  static const struct wled_var_cfg wled3_num_strings_cfg = {
-> > > > >  	.fn = wled3_num_strings_values_fn,
-> > > > > -	.size = 3,
-> > > > > +	.size = 4, /* [0, 3] */
-> > > > 
-> > > > 0 is not a valid value for this property.
-> > > 
-> > > These comments represent the possible loop iterations the DT "cfg
-> > > parser" runs through, starting at j=0 and running up until and including
-> > > j=3.  Should I make that more clear or omit these comments entirely?
+Hi Shawn,
+On Mon, Oct 04, 2021 at 08:00:57PM +0800, Shawn Guo wrote:
+> On Mon, Sep 13, 2021 at 03:57:03PM +0200, Martin Kepplinger wrote:
+> > From: Guido Günther <agx@sigxcpu.org>
 > > 
-> > The role of wled3_num_strings_values_fn() is to enumerate the list of
-> > legal values for the property [ 1, 2, 3 ]. Your changes cause the
-> > enumeration to include a non-legal value so that you can have an
-> > identity mapping between the symbol and the enumerate value.
+> > Connect the wifi power regulator to the corresponding GPIO.
 > > 
-> > An alternative approach would be to leave the enumeration logic
-> > alone but set the num_string default to UINT_MAX in all cases:
+> > Signed-off-by: Guido Günther <agx@sigxcpu.org>
+> > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 13 +++++++++++++
+> >  1 file changed, 13 insertions(+)
 > > 
-> > -	cfg->num_strings = cfg->num_strings + 1;
-> > +	if (cfg->num_strings == UINT_MAX)
-> > +		cfg->num_strings = 
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+> > index ba26c6ee98a0..b5562c8f9a3c 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+> > @@ -138,9 +138,15 @@ reg_vsys_3v4: regulator-vsys-3v4 {
+> >  
+> >  	reg_wifi_3v3: regulator-wifi-3v3 {
+> >  		compatible = "regulator-fixed";
+> > +		pinctrl-names = "default";
+> > +		pinctrl-0 = <&pinctrl_wifi_pwr>;
+> >  		regulator-name = "3V3_WIFI";
+> >  		regulator-min-microvolt = <3300000>;
+> >  		regulator-max-microvolt = <3300000>;
+> > +		gpio = <&gpio3 10 GPIO_ACTIVE_HIGH>;
+> > +		enable-active-high;
+> > +		vin-supply = <&reg_vdd_3v3>;
+> > +		regulator-always-on;
 > 
-> Oops... looks like I missed the cfg->max_string_count here.
-> 
-> 
-> > +	else
-> > +               /* Convert from enumerated to numeric form */
-> > +		cfg->num_strings = wled3_num_strings_values_fn(
-> > +						cfg->num_strings);
-> 
-> 
-> PS the alternative option is not to treat num-strings as an enumerated
->    value at all and just read it directly without using wled_values()...
+> Any reason you need to have this always-on?
 
-I much prefer doing that instead of trying to wrangle enumeration
-parsing around integer values that are supposed to be used as-is.  After
-all this variable is already named to set the `+ 1` override currently,
-and `qcom,enabled_strings` has "custom" handling as well.  I'll extend
-the validation to ensure num_strings>=1 too.
+I think we can drop the `regulator-always-on` nowadays - it's wired up
+correctly as `vmmc-supply` so turned on accordingly. Will drop for
+the next revision.
+Cheers,
+ -- Guido
 
-In addition, and this needs some investigation on the dt-bindings side
-too, it might be beneficial to make both properties mutually exclusive.
-When specifying qcom,enabled_strings it makes little sense to also
-provide qcom,num_strings and we want the former to take precedence.  At
-that point one might ask why qcom,num_strings remains at all when DT can
-use qcom,enabled_strings instead.
-We will supposedly have to keep backwards compatibility with DTs in mind
-so none of this can be removed or made mutually exclusive from a driver
-standpoint, that all has to be done in dt-bindings yaml to be enforced
-on checked-in DTs.
-
-- Marijn
+> 
+> Shawn
+> 
+> >  	};
+> >  
+> >  	sound {
+> > @@ -638,6 +644,13 @@ MX8MQ_IOMUXC_SD2_RESET_B_USDHC2_RESET_B 0xc1
+> >  		>;
+> >  	};
+> >  
+> > +	pinctrl_wifi_pwr: wifipwrgrp {
+> > +		fsl,pins = <
+> > +			/* WIFI3V3_EN */
+> > +			MX8MQ_IOMUXC_NAND_DATA04_GPIO3_IO10	0x83
+> > +		>;
+> > +	};
+> > +
+> >  	pinctrl_wdog: wdoggrp {
+> >  		fsl,pins = <
+> >  			/* nWDOG */
+> > -- 
+> > 2.30.2
+> > 
+> 
