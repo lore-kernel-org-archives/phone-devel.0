@@ -2,120 +2,137 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F240C433EF
-	for <phone-devel@archiver.kernel.org>; Wed,  6 Oct 2021 11:06:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A8E3C433EF
+	for <phone-devel@archiver.kernel.org>; Wed,  6 Oct 2021 14:44:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1823A610CC
-	for <phone-devel@archiver.kernel.org>; Wed,  6 Oct 2021 11:06:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 06E23610C8
+	for <phone-devel@archiver.kernel.org>; Wed,  6 Oct 2021 14:44:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238159AbhJFLIV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 6 Oct 2021 07:08:21 -0400
-Received: from comms.puri.sm ([159.203.221.185]:50232 "EHLO comms.puri.sm"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237931AbhJFLIV (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 6 Oct 2021 07:08:21 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 6C431E1339;
-        Wed,  6 Oct 2021 04:05:59 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id TEq-cT8BT5Xw; Wed,  6 Oct 2021 04:05:58 -0700 (PDT)
-Date:   Wed, 6 Oct 2021 13:05:44 +0200
-From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-To:     Steve Longerbeam <slongerbeam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     kernel@puri.sm, phone-devel@vger.kernel.org
-Subject: [PATCH] media: imx: Round line size to 4 bytes
-Message-ID: <20211006110207.256325-1-dorota.czaplejewicz@puri.sm>
-Organization: Purism
+        id S238226AbhJFOqn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 6 Oct 2021 10:46:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41222 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231776AbhJFOql (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Oct 2021 10:46:41 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A840C061755
+        for <phone-devel@vger.kernel.org>; Wed,  6 Oct 2021 07:44:49 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id m22so9687545wrb.0
+        for <phone-devel@vger.kernel.org>; Wed, 06 Oct 2021 07:44:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=D8IjD/aX+SAqkEjm7xgEe5lxocD/PXw4l5YWyLqfbtc=;
+        b=sjymcv1htUJfHr/ek8Mjj/Jzt/jL4wvmG/taOYRNvKcZWk9BkgQtJjHgO7wbXBFrHy
+         meZmY5A0tTIXo7CrDb1wtV1kVUe0zpcretTP/oJR1dUYtCogFfD4itlw7SlETG69n6Xi
+         cRM1/7X/fYoubACDyBPEiCkkKuAUi0hY2aAzKxEFA/nDteTiuhRMStnHbhpfANKS6SOo
+         aZ2uU5GuqODutpS9OMjadts9W8OOjuOAgFSiKeYSCLDwsbW9Cov/zeNYAJFIXp8iKB4R
+         qB3jLqqhLJY0SdzrfSgr+y6OWem7CqBIbjFWChJaTT0M0IN9Rp0D7UjF4OBKnk8d1pUl
+         rGUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=D8IjD/aX+SAqkEjm7xgEe5lxocD/PXw4l5YWyLqfbtc=;
+        b=qOvwOLUV94L3iLG7JmAjyA2Urx1eQ89ZivkSawR2uSPrWw66KFAlcr1M286p33nLoI
+         Uy1P+N1NbRJo/VzhZSTVG3l64FjPticckbTJpWDSsg5a0vyN5fQbnolXR0VfIzbKO2eX
+         1E7XPQSC/pKhD+ixyIQ7TsSezQ2PvemjEA7CUypneo8PswJNEiTvpGZQA4L7nE1aV/ES
+         Xo79Hlt50mi2EEYcPRC6xGTmXUZWh69MUx713Ey4dwUQJnmtiPD6K7Ez3x7l/4ZYq8bW
+         QQMrrkb3aUEOdsalnST8a9Mp4c2AqJB6ixmNWRXfHFxtNVzXdtL4fT418CM5ZJpwrzgP
+         jhVg==
+X-Gm-Message-State: AOAM532aayHCsKy3zNRE6V2BjZ9cVAIbcp2U9G7a3afay3sZRuUpErX1
+        GjZWNH8gKxCoVCqZk9a5ep1+4w==
+X-Google-Smtp-Source: ABdhPJzOIM/pk9tWOTUWl5e+TDTH0xpNOQTnfj4KEfoU6EtOZONtFMHK6lwbDtQM4rXB6YpRldnDdg==
+X-Received: by 2002:a1c:5413:: with SMTP id i19mr10372676wmb.31.1633531487682;
+        Wed, 06 Oct 2021 07:44:47 -0700 (PDT)
+Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
+        by smtp.gmail.com with ESMTPSA id f7sm3104178wmj.20.2021.10.06.07.44.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Oct 2021 07:44:46 -0700 (PDT)
+Date:   Wed, 6 Oct 2021 15:44:44 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Kiran Gunda <kgunda@codeaurora.org>,
+        Courtney Cavin <courtney.cavin@sonymobile.com>,
+        Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 05/10] backlight: qcom-wled: Fix off-by-one maximum with
+ default num_strings
+Message-ID: <20211006144444.6q3qm3bzfrhzwa46@maple.lan>
+References: <20211004192741.621870-6-marijn.suijten@somainline.org>
+ <20211005091947.7msztp5l554c7cy4@maple.lan>
+ <20211005100606.faxra73mzkvjd4f6@SoMainline.org>
+ <20211005103843.heufyonycnudxnzd@maple.lan>
+ <20211005105312.kqiyzoqtzzjxayhg@maple.lan>
+ <20211005114435.phyq2jsbdyroa6kn@SoMainline.org>
+ <20211005140349.kefi26yev3gy3zhv@maple.lan>
+ <20211005152326.5k5cb53ajqnactrg@SoMainline.org>
+ <20211005162453.ozckxhm47jcarsza@maple.lan>
+ <20211005173400.lyu3gabbalv2l3uq@SoMainline.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/c0QfgXQ3Vn.SH0LtEafw=gY";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211005173400.lyu3gabbalv2l3uq@SoMainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
---Sig_/c0QfgXQ3Vn.SH0LtEafw=gY
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Tue, Oct 05, 2021 at 07:34:00PM +0200, Marijn Suijten wrote:
+> On 2021-10-05 17:24:53, Daniel Thompson wrote:
+> > On Tue, Oct 05, 2021 at 05:23:26PM +0200, Marijn Suijten wrote:
+> > > Since there don't seem to be any substantial platforms/PMICs using this
+> > > functionality in a working manner, can I talk you into agreeing with
+> > > fixing the DT instead?
+> > 
+> > I've no objections to seeing the DT updated. However I don't really see
+> > what benefit we get from breaking existing DTs in order to do so.
+> > 
+> > "Cleaning up annoying legacy" is seldom a good reason to break existing
+> > DTs since, if we could break DTs whenever we choose, there would never
+> > be any annoying legacy to worry about. When conflicting properties
+> > result in uninterpretable DTs then a break may be justified but that is
+> > not the case here.
+> 
+> As mentioned in my message and repeated by Konrad, the only "existing
+> DT" that could possibly be broken is a platform that's brought up by us
+> (SoMainline) and we're more than happy to improve the driver and leave
+> legacy DT behind us, unless there's more DT in circulation that hasn't
+> landed in Linux mainline but should be taken into account?
 
-Section 13.7.6.13 "CSI Image Parameter Register" of the
-i.MX 8M Quad Applications Processors Reference Manual
-states that the line size should be divisible by 8 bytes.
-However, the hardware also accepts sizes divisible by 4 bytes.
+Devicetrees are supposed to be the domain of firmware (e.g. not part of
+the kernel).
 
-This patch accepts line sizes divisible 4-bytes in non-planar mode.
-
-Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
----
-
-Hello,
-
-my previous patch identified something that was not a problem,
-so I'm sending a different one.
-
-This has been tested on the Librem 5.
-
-Cheers,
-Dorota
-
- drivers/staging/media/imx/imx-media-utils.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/=
-media/imx/imx-media-utils.c
-index 5128915a5d6f..a303003929e3 100644
---- a/drivers/staging/media/imx/imx-media-utils.c
-+++ b/drivers/staging/media/imx/imx-media-utils.c
-@@ -545,13 +545,13 @@ int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_for=
-mat *pix,
- 	}
-=20
- 	/* Round up width for minimum burst size */
--	width =3D round_up(mbus->width, 8);
-+	width =3D round_up(mbus->width, 4);
-=20
- 	/* Round up stride for IDMAC line start address alignment */
- 	if (cc->planar)
- 		stride =3D round_up(width, 16);
- 	else
--		stride =3D round_up((width * cc->bpp) >> 3, 8);
-+		stride =3D round_up((width * cc->bpp) >> 3, 4);
-=20
- 	pix->width =3D width;
- 	pix->height =3D mbus->height;
---=20
-2.31.1
+I'm therefore reluctant to adopt an "it only exists if it is upstream"
+approach for documented DT bindings. Doubly so when it is our bugs that
+causes DTs to be written in a manner which we then retrospectively
+declare to be wrong.
 
 
---Sig_/c0QfgXQ3Vn.SH0LtEafw=gY
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+> Anyway the plan is to leave qcom,num-strings in place so that the
+> default enabled_strings list in this driver actually serves a purpose.
+> Then, if num-strings and enabled-strings is provided the former has
+> precedence (assuming it doesn't exceed the size of the latter) but
+> we'll print a warning about this (now unnecessary) ambiguity, and if
+> possible at all - haven't found an example yet - make the properties
+> mutually exclusive in dt-bindings.
+> 
+> Disallowing both cases would only simplify the code in the end but we
+> can spend a few lines to support the desired legacy.
 
------BEGIN PGP SIGNATURE-----
+Yes, warning is OK for me.
 
-iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmFdgwgACgkQADBpX4S8
-ZneTgA/8CbO6LOy5XYlOp9HtcO+gJkFF9YLeRQpRapSy3H9017+x7DeCvPIm/xsl
-wn8T+ONTMCZZ7gRy5BnQUzUAANauc6Wn+lRgEaPrXYV/B+jx8IxWbMX/w15ajTDP
-D5p7J0+D1RrEmJ5aemm9KoaT4e2RHGG7EwdmRaHrpnFX/yGr2y3H5wZSceS/5EU6
-nl55XEq5GpsJ5m/7ZpdVDjesEFSOmFfCfH0NLXdFlXmKUwT/WAntFni/LPNSnNWl
-Ul1GWU/EQXJ/YOwY0wexfuNqTS+9s8zJHawQOYwdViOsPRIG6J2jdtVyab+kjl6n
-u8+RZqdKPiQAb6+NZezpMvf1KPU/gZVeRj4+Gr7puczHp3rgb86VKTpDoQ48yVY2
-Z8ayOkioHt/WGXnJvK7iyQT5dgr7ND/7VPD/j2E0k+ev0ViB+i052+HBdfErWNxv
-QSmpPGaEYB6qEFEcCiZhqExLo5W1hW81d06NuXPO3WUI6B/3mZGClJUdKFnV3D+M
-pjrSURr8ejy0wah3VH+jiYoo33rrDbX0+254m3mNeFO+ExPxvw4Sgg/6A2UrkQSX
-4auLKo2xxORsXQwkT8dZ/92eap5C1zsvgRHMqV5FDzzbvGp2Af9F3Pis/T9+9L1C
-h3ef3CaUHr5xgQvr8MtwCdPHIV/6eiFdQTLkgEUDT6vShMfSCwY=
-=XGed
------END PGP SIGNATURE-----
 
---Sig_/c0QfgXQ3Vn.SH0LtEafw=gY--
+Daniel.
