@@ -2,31 +2,26 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 616B9C433EF
-	for <phone-devel@archiver.kernel.org>; Thu,  7 Oct 2021 21:34:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C650C433F5
+	for <phone-devel@archiver.kernel.org>; Thu,  7 Oct 2021 21:34:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 42E4961139
-	for <phone-devel@archiver.kernel.org>; Thu,  7 Oct 2021 21:34:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 14722610C8
+	for <phone-devel@archiver.kernel.org>; Thu,  7 Oct 2021 21:34:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234087AbhJGVf6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 7 Oct 2021 17:35:58 -0400
-Received: from relay08.th.seeweb.it ([5.144.164.169]:50809 "EHLO
-        relay08.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230120AbhJGVf6 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 7 Oct 2021 17:35:58 -0400
+        id S241549AbhJGVgA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 7 Oct 2021 17:36:00 -0400
+Received: from m-r2.th.seeweb.it ([5.144.164.171]:52581 "EHLO
+        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230120AbhJGVf7 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 7 Oct 2021 17:35:59 -0400
 Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 71B273E7BE;
-        Thu,  7 Oct 2021 23:34:02 +0200 (CEST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 277B63E857;
+        Thu,  7 Oct 2021 23:34:04 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>
+To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
@@ -35,71 +30,66 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Pavel Dubrova <pashadubrova@gmail.com>,
         Marijn Suijten <marijn.suijten@somainline.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
         Kiran Gunda <kgunda@codeaurora.org>,
-        Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [PATCH v2 00/13] backlight: qcom-wled: fix and solidify handling of enabled-strings
-Date:   Thu,  7 Oct 2021 23:33:47 +0200
-Message-Id: <20211007213400.258371-1-marijn.suijten@somainline.org>
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 02/13] backlight: qcom-wled: Pass number of elements to read to read_u32_array
+Date:   Thu,  7 Oct 2021 23:33:49 +0200
+Message-Id: <20211007213400.258371-3-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211007213400.258371-1-marijn.suijten@somainline.org>
+References: <20211007213400.258371-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This patchset fixes WLED's handling of enabled-strings: besides some
-cleanup it is now actually possible to specify a non-contiguous array of
-enabled strings (not necessarily starting at zero) and the values from
-DT are now validated to prevent possible unexpected out-of-bounds
-register and array element accesses.
-Off-by-one mistakes in the maximum number of strings, also causing
-out-of-bounds access, have been addressed as well.
+of_property_read_u32_array takes the number of elements to read as last
+argument. This does not always need to be 4 (sizeof(u32)) but should
+instead be the size of the array in DT as read just above with
+of_property_count_elems_of_size.
 
-Changes in v2:
-- Reordered patch 4/10 (Validate enabled string indices in DT) to sit
-  before patch 1/10 (Pass number of elements to read to read_u32_array);
-- Pulled qcom,num-strings out of the DT enumeration parser, and moved it
-  after qcom,enabled-strings parser to always have final sign-off over
-  the number of strings;
-- Extra validation for this number of strings against
-  qcom,enabled-strings;
-- Recombined patch 9 (Consistently use enabled-strings in
-  set_brightness) and patch 10 (Consider enabled_strings in
-  autodetection), which both solve the same problem in two different
-  functions.  In addition the autodetection code uses set_brightness as
-  helper already;
-- Improved DT configurations for pmi8994 and pm660l, currently in 5.15
-  rc's.
+To not make such an error go unnoticed again the driver now bails
+accordingly when of_property_read_u32_array returns an error.
+Surprisingly the indentation of newlined arguments is lining up again
+after prepending `rc = `.
 
-v1: https://lore.kernel.org/dri-devel/20211004192741.621870-1-marijn.suijten@somainline.org
+Fixes: 775d2ffb4af6 ("backlight: qcom-wled: Restructure the driver for WLED3")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+---
+ drivers/video/backlight/qcom-wled.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-Marijn Suijten (13):
-  backlight: qcom-wled: Validate enabled string indices in DT
-  backlight: qcom-wled: Pass number of elements to read to
-    read_u32_array
-  backlight: qcom-wled: Use cpu_to_le16 macro to perform conversion
-  backlight: qcom-wled: Fix off-by-one maximum with default num_strings
-  backlight: qcom-wled: Override default length with
-    qcom,enabled-strings
-  backlight: qcom-wled: Remove unnecessary 4th default string in WLED3
-  backlight: qcom-wled: Provide enabled_strings default for WLED 4 and 5
-  backlight: qcom-wled: Remove unnecessary double whitespace
-  backlight: qcom-wled: Respect enabled-strings in set_brightness
-  arm64: dts: qcom: pmi8994: Fix "eternal"->"external" typo in WLED node
-  arm64: dts: qcom: pmi8994: Remove hardcoded linear WLED
-    enabled-strings
-  arm64: dts: qcom: Move WLED num-strings from pmi8994 to
-    sony-xperia-tone
-  arm64: dt: qcom: pm660l: Remove board-specific WLED configuration
-
- .../dts/qcom/msm8996-sony-xperia-tone.dtsi    |   1 +
- arch/arm64/boot/dts/qcom/pm660l.dtsi          |   7 -
- arch/arm64/boot/dts/qcom/pmi8994.dtsi         |   5 +-
- drivers/video/backlight/qcom-wled.c           | 131 ++++++++++--------
- 4 files changed, 73 insertions(+), 71 deletions(-)
-
---
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index 8a42ed89c59c..d413b913fef3 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -1535,10 +1535,15 @@ static int wled_configure(struct wled *wled)
+ 			return -EINVAL;
+ 		}
+ 
+-		of_property_read_u32_array(dev->of_node,
++		rc = of_property_read_u32_array(dev->of_node,
+ 						"qcom,enabled-strings",
+ 						wled->cfg.enabled_strings,
+-						sizeof(u32));
++						string_len);
++		if (rc) {
++			dev_err(dev, "Failed to read %d elements from qcom,enabled-strings: %d\n",
++				string_len, rc);
++			return rc;
++		}
+ 
+ 		for (i = 0; i < string_len; ++i) {
+ 			if (wled->cfg.enabled_strings[i] >= wled->max_string_count) {
+-- 
 2.33.0
 
