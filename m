@@ -2,142 +2,122 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7CDCC433F5
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Oct 2021 10:21:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AB22C433EF
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Oct 2021 12:20:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C6B9361039
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Oct 2021 10:21:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6341260FE3
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Oct 2021 12:20:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239823AbhJHKXV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 8 Oct 2021 06:23:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46610 "EHLO
+        id S241219AbhJHMVz convert rfc822-to-8bit (ORCPT
+        <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 8 Oct 2021 08:21:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239741AbhJHKXU (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Oct 2021 06:23:20 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73F99C061755;
-        Fri,  8 Oct 2021 03:21:25 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: kholk11)
-        with ESMTPSA id CC1B61F4575E
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-To:     bjorn.andersson@linaro.org
-Cc:     agross@kernel.org, stanimir.varbanov@linaro.org,
-        mchehab@kernel.org, robh+dt@kernel.org,
-        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 2/3] media: venus: core: Add sdm660 DT compatible and resource struct
-Date:   Fri,  8 Oct 2021 12:21:18 +0200
-Message-Id: <20211008102119.268869-2-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211008102119.268869-1-angelogioacchino.delregno@collabora.com>
-References: <20211008102119.268869-1-angelogioacchino.delregno@collabora.com>
+        with ESMTP id S241188AbhJHMVy (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Oct 2021 08:21:54 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16F37C061755
+        for <phone-devel@vger.kernel.org>; Fri,  8 Oct 2021 05:19:59 -0700 (PDT)
+Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1mYoql-0003zx-DP; Fri, 08 Oct 2021 14:19:43 +0200
+Received: from pza by lupine with local (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1mYoqj-0007MI-Ji; Fri, 08 Oct 2021 14:19:41 +0200
+Message-ID: <7d61fdbd161fce40874766bde5f95c3b73f1a96d.camel@pengutronix.de>
+Subject: Re: [PATCH] media: imx: Round line size to 4 bytes
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>,
+        Steve Longerbeam <slongerbeam@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     kernel@puri.sm, phone-devel@vger.kernel.org
+Date:   Fri, 08 Oct 2021 14:19:41 +0200
+In-Reply-To: <20211006110207.256325-1-dorota.czaplejewicz@puri.sm>
+References: <20211006110207.256325-1-dorota.czaplejewicz@puri.sm>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: phone-devel@vger.kernel.org
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the SDM660 DT compatible and its resource structure in order
-to support the Venus IP in SDM630, SDM636, SDM660 and SDA variants.
+Hi Dorota,
 
-This SoC features Venus 4.4 (HFI3XX) with only one subcore, used
-for both encoding and decoding, and switched on with one main and
-one subcore dedicated GDSC.
+On Wed, 2021-10-06 at 13:05 +0200, Dorota Czaplejewicz wrote:
+> Section 13.7.6.13 "CSI Image Parameter Register" of the
+> i.MX 8M Quad Applications Processors Reference Manual
+> states that the line size should be divisible by 8 bytes.
+> However, the hardware also accepts sizes divisible by 4 bytes.
+> 
+> This patch accepts line sizes divisible 4-bytes in non-planar mode.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- drivers/media/platform/qcom/venus/core.c | 64 ++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+Thank you, this makes it much clearer. I see two issues with this,
+though, one small and one a bit bigger:
 
-diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
-index 7e54c5d571dc..97574f4a1084 100644
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -565,6 +565,69 @@ static const struct venus_resources msm8996_res = {
- 	.fwname = "qcom/venus-4.2/venus.mdt",
- };
- 
-+static const struct freq_tbl sdm660_freq_table[] = {
-+	{ 979200, 518400000 },
-+	{ 489600, 441600000 },
-+	{ 432000, 404000000 },
-+	{ 244800, 320000000 },
-+	{ 216000, 269330000 },
-+	{ 108000, 133330000 },
-+};
-+
-+static const struct reg_val sdm660_reg_preset[] = {
-+	{ 0x80010, 0x001f001f },
-+	{ 0x80018, 0x00000156 },
-+	{ 0x8001c, 0x00000156 },
-+};
-+
-+static const struct bw_tbl sdm660_bw_table_enc[] = {
-+	{  979200,  1044000, 0, 2446336, 0 },	/* 4k UHD @ 30 */
-+	{  864000,   887000, 0, 2108416, 0 },	/* 720p @ 240 */
-+	{  489600,   666000, 0, 1207296, 0 },	/* 1080p @ 60 */
-+	{  432000,   578000, 0, 1058816, 0 },	/* 720p @ 120 */
-+	{  244800,   346000, 0,  616448, 0 },	/* 1080p @ 30 */
-+	{  216000,   293000, 0,  534528, 0 },	/* 720p @ 60 */
-+	{  108000,   151000, 0,  271360, 0 },	/* 720p @ 30 */
-+};
-+
-+static const struct bw_tbl sdm660_bw_table_dec[] = {
-+	{  979200,  2365000, 0, 1892000, 0 },	/* 4k UHD @ 30 */
-+	{  864000,  1978000, 0, 1554000, 0 },	/* 720p @ 240 */
-+	{  489600,  1133000, 0,  895000, 0 },	/* 1080p @ 60 */
-+	{  432000,   994000, 0,  781000, 0 },	/* 720p @ 120 */
-+	{  244800,   580000, 0,  460000, 0 },	/* 1080p @ 30 */
-+	{  216000,   501000, 0,  301000, 0 },	/* 720p @ 60 */
-+	{  108000,   255000, 0,  202000, 0 },	/* 720p @ 30 */
-+};
-+
-+static const struct venus_resources sdm660_res = {
-+	.freq_tbl = sdm660_freq_table,
-+	.freq_tbl_size = ARRAY_SIZE(sdm660_freq_table),
-+	.reg_tbl = sdm660_reg_preset,
-+	.reg_tbl_size = ARRAY_SIZE(sdm660_reg_preset),
-+	.bw_tbl_enc = sdm660_bw_table_enc,
-+	.bw_tbl_enc_size = ARRAY_SIZE(sdm660_bw_table_enc),
-+	.bw_tbl_dec = sdm660_bw_table_dec,
-+	.bw_tbl_dec_size = ARRAY_SIZE(sdm660_bw_table_dec),
-+	.clks = {"core", "iface", "bus", "bus_throttle" },
-+	.clks_num = 4,
-+	.vcodec0_clks = { "vcodec0_core" },
-+	.vcodec1_clks = { "vcodec0_core" },
-+	.vcodec_clks_num = 1,
-+	.vcodec_num = 1,
-+	.max_load = 1036800,
-+	.hfi_version = HFI_VERSION_3XX,
-+	.vmem_id = VIDC_RESOURCE_NONE,
-+	.vmem_size = 0,
-+	.vmem_addr = 0,
-+	.cp_start = 0,
-+	.cp_size = 0x79000000,
-+	.cp_nonpixel_start = 0x1000000,
-+	.cp_nonpixel_size = 0x28000000,
-+	.dma_mask = 0xd9000000 - 1,
-+	.fwname = "qcom/venus-4.4/venus.mdt",
-+};
-+
- static const struct freq_tbl sdm845_freq_table[] = {
- 	{ 3110400, 533000000 },	/* 4096x2160@90 */
- 	{ 2073600, 444000000 },	/* 4096x2160@60 */
-@@ -737,6 +800,7 @@ static const struct venus_resources sm8250_res = {
- static const struct of_device_id venus_dt_match[] = {
- 	{ .compatible = "qcom,msm8916-venus", .data = &msm8916_res, },
- 	{ .compatible = "qcom,msm8996-venus", .data = &msm8996_res, },
-+	{ .compatible = "qcom,sdm660-venus", .data = &sdm660_res, },
- 	{ .compatible = "qcom,sdm845-venus", .data = &sdm845_res, },
- 	{ .compatible = "qcom,sdm845-venus-v2", .data = &sdm845_res_v2, },
- 	{ .compatible = "qcom,sc7180-venus", .data = &sc7180_res, },
--- 
-2.33.0
+First, I'd be wary of disregarding the reference manual - unless we know
+better, and then it should be well documented in the code. It might be
+that the 8-byte alignment requirement stems from the fact that the FIFO
+operates in double-word units, which might cause the CSI to write over
+the end of the buffer if the line width is odd (in 32-bit words).
+Or maybe it's just that the FBUF_STRIDE conflicts with this, I'm unclear
+on whether that is only given in units of dwords (although the driver
+currently doesn't support this anyway).
 
+I wonder: if you use 4-byte aligned width and odd height, does the CSI
+write over the end of the buffer?
+
+> Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+> ---
+> 
+> Hello,
+> 
+> my previous patch identified something that was not a problem,
+> so I'm sending a different one.
+> 
+> This has been tested on the Librem 5.
+> 
+> Cheers,
+> Dorota
+> 
+>  drivers/staging/media/imx/imx-media-utils.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
+> index 5128915a5d6f..a303003929e3 100644
+> --- a/drivers/staging/media/imx/imx-media-utils.c
+> +++ b/drivers/staging/media/imx/imx-media-utils.c
+> @@ -545,13 +545,13 @@ int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
+>  	}
+>  
+>  	/* Round up width for minimum burst size */
+> -	width = round_up(mbus->width, 8);
+> +	width = round_up(mbus->width, 4);
+>  
+>  	/* Round up stride for IDMAC line start address alignment */
+>  	if (cc->planar)
+>  		stride = round_up(width, 16);
+>  	else
+> -		stride = round_up((width * cc->bpp) >> 3, 8);
+> +		stride = round_up((width * cc->bpp) >> 3, 4);
+
+Second, even if this works fine on the i.MX7/8M CSI, the alignment is
+still required for the i.MX5/6 IPU, for which this code and the comments
+were written. So we need a way to differentiate the two cases here.
+
+regards
+Philipp
