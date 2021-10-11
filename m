@@ -2,122 +2,116 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AB22C433EF
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Oct 2021 12:20:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E3A06C433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Oct 2021 06:04:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6341260FE3
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Oct 2021 12:20:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BB60260F21
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Oct 2021 06:04:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241219AbhJHMVz convert rfc822-to-8bit (ORCPT
-        <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 8 Oct 2021 08:21:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45376 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241188AbhJHMVy (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Oct 2021 08:21:54 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16F37C061755
-        for <phone-devel@vger.kernel.org>; Fri,  8 Oct 2021 05:19:59 -0700 (PDT)
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1mYoql-0003zx-DP; Fri, 08 Oct 2021 14:19:43 +0200
-Received: from pza by lupine with local (Exim 4.92)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1mYoqj-0007MI-Ji; Fri, 08 Oct 2021 14:19:41 +0200
-Message-ID: <7d61fdbd161fce40874766bde5f95c3b73f1a96d.camel@pengutronix.de>
-Subject: Re: [PATCH] media: imx: Round line size to 4 bytes
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>,
-        Steve Longerbeam <slongerbeam@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     kernel@puri.sm, phone-devel@vger.kernel.org
-Date:   Fri, 08 Oct 2021 14:19:41 +0200
-In-Reply-To: <20211006110207.256325-1-dorota.czaplejewicz@puri.sm>
-References: <20211006110207.256325-1-dorota.czaplejewicz@puri.sm>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.30.5-1.1 
+        id S233943AbhJKGGo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 11 Oct 2021 02:06:44 -0400
+Received: from so254-9.mailgun.net ([198.61.254.9]:35013 "EHLO
+        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233834AbhJKGGn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 11 Oct 2021 02:06:43 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1633932284; h=Date: Message-ID: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=er5IrrkOUDHmVjILIRqINntFeH/7+WS563hJtxyeM3I=;
+ b=ho6EEZGjr/FZ2z6q/sMPqg5e3Aoscf08zcCz3QFA1mnv3FBarDUnvi6fJofq+4rg8mdOAWx3
+ 7UN9YRaNGwvNt/nm3Sa6u83JOEPjAu4fmV86STTk4BgCl+QyEuiwxW/jbGJXJYh4R82w5azH
+ lhiWcQKO2o524g92qOOy8SOD/D0=
+X-Mailgun-Sending-Ip: 198.61.254.9
+X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
+ 6163d3fb446c6db0cb7b4879 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 11 Oct 2021 06:04:43
+ GMT
+Sender: kvalo=codeaurora.org@mg.codeaurora.org
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id E19C6C4361B; Mon, 11 Oct 2021 06:04:42 +0000 (UTC)
+Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B402DC4338F;
+        Mon, 11 Oct 2021 06:04:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B402DC4338F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: phone-devel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20210307113550.7720-1-konrad.dybcio@somainline.org>
+References: <20210307113550.7720-1-konrad.dybcio@somainline.org>
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Arend van Spriel <aspriel@gmail.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+        Wright Feng <wright.feng@infineon.com>,
+        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
+Message-ID: <163393227439.11913.16736072075122117569.kvalo@codeaurora.org>
+Date:   Mon, 11 Oct 2021 06:04:42 +0000 (UTC)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Dorota,
+Konrad Dybcio <konrad.dybcio@somainline.org> wrote:
 
-On Wed, 2021-10-06 at 13:05 +0200, Dorota Czaplejewicz wrote:
-> Section 13.7.6.13 "CSI Image Parameter Register" of the
-> i.MX 8M Quad Applications Processors Reference Manual
-> states that the line size should be divisible by 8 bytes.
-> However, the hardware also accepts sizes divisible by 4 bytes.
+> Add support for BCM43596 dual-band AC chip, found in
+> SONY Xperia X Performance, XZ and XZs smartphones (and
+> *possibly* other devices from other manufacturers).
+> The chip doesn't require any special handling and seems to work
+> just fine OOTB.
 > 
-> This patch accepts line sizes divisible 4-bytes in non-planar mode.
+> PCIe IDs taken from: https://github.com/sonyxperiadev/kernel/commit/9e43fefbac8e43c3d7792e73ca52a052dd86d7e3.patch
+> 
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 
-Thank you, this makes it much clearer. I see two issues with this,
-though, one small and one a bit bigger:
+Failed to apply, please rebase on top of wireless-drivers-next and
+resend as v2.
 
-First, I'd be wary of disregarding the reference manual - unless we know
-better, and then it should be well documented in the code. It might be
-that the 8-byte alignment requirement stems from the fact that the FIFO
-operates in double-word units, which might cause the CSI to write over
-the end of the buffer if the line width is odd (in 32-bit words).
-Or maybe it's just that the FBUF_STRIDE conflicts with this, I'm unclear
-on whether that is only given in units of dwords (although the driver
-currently doesn't support this anyway).
+Recorded preimage for 'drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c'
+error: Failed to merge in the changes.
+hint: Use 'git am --show-current-patch' to see the failed patch
+Applying: brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+Using index info to reconstruct a base tree...
+M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+M	drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+Falling back to patching base and 3-way merge...
+Auto-merging drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+Patch failed at 0001 brcmfmac: Add support for BCM43596 PCIe Wi-Fi
 
-I wonder: if you use 4-byte aligned width and odd height, does the CSI
-write over the end of the buffer?
+Patch set to Changes Requested.
 
-> Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-> ---
-> 
-> Hello,
-> 
-> my previous patch identified something that was not a problem,
-> so I'm sending a different one.
-> 
-> This has been tested on the Librem 5.
-> 
-> Cheers,
-> Dorota
-> 
->  drivers/staging/media/imx/imx-media-utils.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
-> index 5128915a5d6f..a303003929e3 100644
-> --- a/drivers/staging/media/imx/imx-media-utils.c
-> +++ b/drivers/staging/media/imx/imx-media-utils.c
-> @@ -545,13 +545,13 @@ int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
->  	}
->  
->  	/* Round up width for minimum burst size */
-> -	width = round_up(mbus->width, 8);
-> +	width = round_up(mbus->width, 4);
->  
->  	/* Round up stride for IDMAC line start address alignment */
->  	if (cc->planar)
->  		stride = round_up(width, 16);
->  	else
-> -		stride = round_up((width * cc->bpp) >> 3, 8);
-> +		stride = round_up((width * cc->bpp) >> 3, 4);
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20210307113550.7720-1-konrad.dybcio@somainline.org/
 
-Second, even if this works fine on the i.MX7/8M CSI, the alignment is
-still required for the i.MX5/6 IPU, for which this code and the comments
-were written. So we need a way to differentiate the two cases here.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-regards
-Philipp
