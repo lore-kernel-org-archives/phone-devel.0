@@ -2,116 +2,107 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3A06C433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Oct 2021 06:04:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E8FA6C433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Oct 2021 14:42:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BB60260F21
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Oct 2021 06:04:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CF71E60BD3
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Oct 2021 14:42:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233943AbhJKGGo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 11 Oct 2021 02:06:44 -0400
-Received: from so254-9.mailgun.net ([198.61.254.9]:35013 "EHLO
-        so254-9.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233834AbhJKGGn (ORCPT
+        id S243614AbhJKOoW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 11 Oct 2021 10:44:22 -0400
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.80]:36029 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243932AbhJKOoP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 11 Oct 2021 02:06:43 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1633932284; h=Date: Message-ID: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=er5IrrkOUDHmVjILIRqINntFeH/7+WS563hJtxyeM3I=;
- b=ho6EEZGjr/FZ2z6q/sMPqg5e3Aoscf08zcCz3QFA1mnv3FBarDUnvi6fJofq+4rg8mdOAWx3
- 7UN9YRaNGwvNt/nm3Sa6u83JOEPjAu4fmV86STTk4BgCl+QyEuiwxW/jbGJXJYh4R82w5azH
- lhiWcQKO2o524g92qOOy8SOD/D0=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI5OTczNyIsICJwaG9uZS1kZXZlbEB2Z2VyLmtlcm5lbC5vcmciLCAiYmU5ZTRhIl0=
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-east-1.postgun.com with SMTP id
- 6163d3fb446c6db0cb7b4879 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 11 Oct 2021 06:04:43
- GMT
-Sender: kvalo=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id E19C6C4361B; Mon, 11 Oct 2021 06:04:42 +0000 (UTC)
-Received: from tykki.adurom.net (tynnyri.adurom.net [51.15.11.48])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B402DC4338F;
-        Mon, 11 Oct 2021 06:04:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org B402DC4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Mon, 11 Oct 2021 10:44:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1633963327;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=QlQkBSE5R3A2Npl9vikszUeEaPYjjRAXxSR0O82+hq8=;
+    b=Av10zSFZfP7cKIlxhhHUJyCWdgAYHJ2Oi1c10HCzW3vS4OtDK75Rqwf+AuIvA7uAmk
+    uOkeOVEfc9VSHrWv3TpPbqb6Jocagdng6HrbZAY3q2BUOMJ5YF2RGxcCcPhLAsFUFbBC
+    I9kFSc125FsYhJh8O+YC3nT0RirgmtEr/xLSJk/ZXrjxeGty2e7C6z4yqIEpUIG0Yczo
+    EPtUlxXVP8lUxS2QSuyWvXBjvw3tbAIF4S1lLVbOhf5KM3lKGtYuew3W6RdadcOl6Nkl
+    Dcv0Ebgp/e3WSl/C/jOrfJ/V7fPxIRJurkfaKeoEHFums4XHT6lvvj9iNhOAfh8l/mt0
+    0wbA==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXTbAOHjRHIhr3eFeIrw=="
+X-RZG-CLASS-ID: mo00
+Received: from droid..
+    by smtp.strato.de (RZmta 47.33.8 SBL|AUTH)
+    with ESMTPSA id 301038x9BEg7tv7
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Mon, 11 Oct 2021 16:42:07 +0200 (CEST)
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Loic Poulain <loic.poulain@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Aleksander Morgado <aleksander@aleksander.es>,
+        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: [PATCH net-next v2 1/4] dt-bindings: dmaengine: bam_dma: Add "powered remotely" mode
+Date:   Mon, 11 Oct 2021 16:17:33 +0200
+Message-Id: <20211011141733.3999-2-stephan@gerhold.net>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211011141733.3999-1-stephan@gerhold.net>
+References: <20211011141733.3999-1-stephan@gerhold.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20210307113550.7720-1-konrad.dybcio@somainline.org>
-References: <20210307113550.7720-1-konrad.dybcio@somainline.org>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        martin.botka@somainline.org,
-        angelogioacchino.delregno@somainline.org,
-        marijn.suijten@somainline.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Arend van Spriel <aspriel@gmail.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-        Wright Feng <wright.feng@infineon.com>,
-        Chung-hsien Hsu <chung-hsien.hsu@infineon.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.1.0-git (https://github.com/kvalo/pwcli/) Python/3.7.3
-Message-ID: <163393227439.11913.16736072075122117569.kvalo@codeaurora.org>
-Date:   Mon, 11 Oct 2021 06:04:42 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Konrad Dybcio <konrad.dybcio@somainline.org> wrote:
+In some configurations, the BAM DMA controller is set up by a remote
+processor and the local processor can simply start making use of it
+without setting up the BAM. This is already supported using the
+"qcom,controlled-remotely" property.
 
-> Add support for BCM43596 dual-band AC chip, found in
-> SONY Xperia X Performance, XZ and XZs smartphones (and
-> *possibly* other devices from other manufacturers).
-> The chip doesn't require any special handling and seems to work
-> just fine OOTB.
-> 
-> PCIe IDs taken from: https://github.com/sonyxperiadev/kernel/commit/9e43fefbac8e43c3d7792e73ca52a052dd86d7e3.patch
-> 
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+However, for some reason another possible configuration is that the
+remote processor is responsible for powering up the BAM, but we are
+still responsible for initializing it (e.g. resetting it etc). Add
+a "qcom,powered-remotely" property to describe that configuration.
 
-Failed to apply, please rebase on top of wireless-drivers-next and
-resend as v2.
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+---
+Changes since RFC:
+  - Rename qcom,remote-power-collapse -> qcom,powered-remotely
+    for consistency with "qcom,controlled-remotely"
 
-Recorded preimage for 'drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c'
-error: Failed to merge in the changes.
-hint: Use 'git am --show-current-patch' to see the failed patch
-Applying: brcmfmac: Add support for BCM43596 PCIe Wi-Fi
-Using index info to reconstruct a base tree...
-M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-M	drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-Falling back to patching base and 3-way merge...
-Auto-merging drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-CONFLICT (content): Merge conflict in drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
-Patch failed at 0001 brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+NOTE: This is *not* a compile-time requirement for the BAM-DMUX driver
+      so this could also go through the dmaengine tree.
 
-Patch set to Changes Requested.
+Also note that there is an ongoing effort to convert these bindings
+to DT schema but sadly there were not any updates for a while. :/
+https://lore.kernel.org/linux-arm-msm/20210519143700.27392-2-bhupesh.sharma@linaro.org/
+---
+ Documentation/devicetree/bindings/dma/qcom_bam_dma.txt | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt b/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt
+index cf5b9e44432c..6e9a5497b3f2 100644
+--- a/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt
++++ b/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt
+@@ -15,6 +15,8 @@ Required properties:
+   the secure world.
+ - qcom,controlled-remotely : optional, indicates that the bam is controlled by
+   remote proccessor i.e. execution environment.
++- qcom,powered-remotely : optional, indicates that the bam is powered up by
++  a remote processor but must be initialized by the local processor.
+ - num-channels : optional, indicates supported number of DMA channels in a
+   remotely controlled bam.
+ - qcom,num-ees : optional, indicates supported number of Execution Environments
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20210307113550.7720-1-konrad.dybcio@somainline.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.33.0
 
