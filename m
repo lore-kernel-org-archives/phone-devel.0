@@ -2,54 +2,55 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23EE6C433F5
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Oct 2021 22:29:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7C83C433FE
+	for <phone-devel@archiver.kernel.org>; Wed, 13 Oct 2021 22:29:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0BA24611CA
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Oct 2021 22:29:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BA4D961177
+	for <phone-devel@archiver.kernel.org>; Wed, 13 Oct 2021 22:29:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231408AbhJMWbv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 13 Oct 2021 18:31:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48846 "EHLO
+        id S231479AbhJMWb4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 13 Oct 2021 18:31:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231409AbhJMWbq (ORCPT
+        with ESMTP id S231458AbhJMWbw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 13 Oct 2021 18:31:46 -0400
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D04F5C06174E
-        for <phone-devel@vger.kernel.org>; Wed, 13 Oct 2021 15:29:41 -0700 (PDT)
-Received: by mail-io1-xd34.google.com with SMTP id n7so1577290iod.0
-        for <phone-devel@vger.kernel.org>; Wed, 13 Oct 2021 15:29:41 -0700 (PDT)
+        Wed, 13 Oct 2021 18:31:52 -0400
+Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0318FC061570
+        for <phone-devel@vger.kernel.org>; Wed, 13 Oct 2021 15:29:48 -0700 (PDT)
+Received: by mail-il1-x12c.google.com with SMTP id s3so1451114ild.0
+        for <phone-devel@vger.kernel.org>; Wed, 13 Oct 2021 15:29:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ieee.org; s=google;
         h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=X4CJTc4Njf69DLLQxOgBO1lHglpI/hl2yPlJRwuWzH4=;
-        b=GKNXrKfuutVxuw9BjFqKaV934w9FytkIThSKVWyp/OMlCbcFvbUphnoAl+jCqxvwq4
-         NZFVtsYW+mWlrMxCf7Egoy12fy8Cywke0DDRdMgUxzi3QLRrZgL0plDrg3aFxjtZHbOw
-         y5Km8Ms3y3EHGaLEtvlWG9+//KWMdm+cVEQQA=
+        bh=w7KmVBNJcTUXE08UuPtb1sRKXsVumi6IJCbkXKIH5j0=;
+        b=BlUB2wtkvWiXSjrdP4FqNIgRevk4iOXFslcHNB6d8M1SUHLf5lse1TzhceaTA3fBUj
+         03Jwotd824LcV393fC7nI4/qtPWgEkAFGaGaebytfmLCqwGxsyvtLyBBZh4LK7CTqjoO
+         sammBH/3OOsf3/sq1C8oWzvI2DxOmb+9x2npk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=X4CJTc4Njf69DLLQxOgBO1lHglpI/hl2yPlJRwuWzH4=;
-        b=A/IOt7oljcu55dOtzrul0Iyx/AaX4mdFKgEDCYP41W4j4z9/mY3CvRK6qKZI0IYZ2F
-         3eNX8aADqJXw1kjcCFKktSPWU0zGDeELFH8Moakhs/l1lB4WcyFywlaMdjdDBpP2laL3
-         P9akbTzK9AfDtLYaqP2poIn+CCh3B2m0fhpt6T65zZYvl5mijtiDN6W5C2IDq6wfPrYG
-         uDt5EIW6vQDjUHkC8Cl6ww21X+xC/hAf09RMmLwW430wZNk65u+F7pfG8E09wMUQoeJ+
-         UVdiZOAHPlluVMjbIwhCTN6/e9GZHhJTk7ryvExsL7vWfeCEvy5nf4OPLAvqVgxzjKDd
-         nqqw==
-X-Gm-Message-State: AOAM530LznUjXmX9sByynm/+xmYQ/ICphG8Weee0kGDCS7DW+2nRDqTt
-        4N3NDfJgOwiZSPNavgUNASzuhA==
-X-Google-Smtp-Source: ABdhPJwR8LxJQnXST8wIB5lHPFSxJpXHOmPZmhnDfDyd/IfQ0vxv32KmQh2G6XQR9POr0AIWfQ+PeA==
-X-Received: by 2002:a05:6638:37a7:: with SMTP id w39mr1510508jal.19.1634164181311;
-        Wed, 13 Oct 2021 15:29:41 -0700 (PDT)
+        bh=w7KmVBNJcTUXE08UuPtb1sRKXsVumi6IJCbkXKIH5j0=;
+        b=xIkoWNU966ENCrtCKlAAivrWfIqA7FjQkNdp9ikGM1E2mSm+iBEgT6iS2D7sFwMAaU
+         QdZjIJ8r8C5uPi1FiStXcHOxrqIcIs4diwaWrpmN2HFw3fj+fMa+pcAiHpsTe15J0lBP
+         Qih0bF8p7MnAE/6BaOfET94kxJSdCpWUtC2pKtwkEZpG29At2o8IrqSEvIO+tAx+x1cp
+         pDXKafXB5fKl6hgIe8kEG8951XruEmbiPaZtf2nWTHNnL/+QT3SJOUhC+M8NNeJx1eG5
+         nV+ncjLGIhvZ+Awcx8rT9FJYsO/ulFtnx7Q29RNmBYroC6RmYnbl0Bn6fE5STrl8zRuE
+         U+1Q==
+X-Gm-Message-State: AOAM530/fAiHPdOtvvRBq/Cxd06etDrg75D4P23/wlcQZp86JrBJEMFm
+        Yg1AjSURsla381GeaY7n4GVrcQ==
+X-Google-Smtp-Source: ABdhPJwzyFV0KS9WlcNqwkNsHjGAE2p/uHA1agSsenFc6+5JrbcIsUagtwlUDehevNbVxQSvzcHdrg==
+X-Received: by 2002:a92:de41:: with SMTP id e1mr1284490ilr.289.1634164187496;
+        Wed, 13 Oct 2021 15:29:47 -0700 (PDT)
 Received: from [172.22.22.4] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
-        by smtp.googlemail.com with ESMTPSA id v63sm369660ioe.17.2021.10.13.15.29.39
+        by smtp.googlemail.com with ESMTPSA id v18sm359562ilq.77.2021.10.13.15.29.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Oct 2021 15:29:40 -0700 (PDT)
-Subject: Re: [RFC PATCH 05/17] net: ipa: Check interrupts for availability
+        Wed, 13 Oct 2021 15:29:46 -0700 (PDT)
+Subject: Re: [RFC PATCH 06/17] net: ipa: Add timeout for
+ ipa_cmd_pipeline_clear_wait
 To:     Sireesh Kodali <sireeshkodali1@gmail.com>,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -58,14 +59,14 @@ Cc:     Vladimir Lypak <vladimir.lypak@gmail.com>,
         "David S. Miller" <davem@davemloft.net>,
         Jakub Kicinski <kuba@kernel.org>
 References: <20210920030811.57273-1-sireeshkodali1@gmail.com>
- <20210920030811.57273-6-sireeshkodali1@gmail.com>
+ <20210920030811.57273-7-sireeshkodali1@gmail.com>
 From:   Alex Elder <elder@ieee.org>
-Message-ID: <445bb258-c07c-349c-e482-78b7b560e0eb@ieee.org>
-Date:   Wed, 13 Oct 2021 17:29:39 -0500
+Message-ID: <5219dde9-665d-a813-a9b8-3db51aea97b5@ieee.org>
+Date:   Wed, 13 Oct 2021 17:29:45 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <20210920030811.57273-6-sireeshkodali1@gmail.com>
+In-Reply-To: <20210920030811.57273-7-sireeshkodali1@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -73,81 +74,48 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 9/19/21 10:07 PM, Sireesh Kodali wrote:
+On 9/19/21 10:08 PM, Sireesh Kodali wrote:
 > From: Vladimir Lypak <vladimir.lypak@gmail.com>
 > 
-> Make ipa_interrupt_add/ipa_interrupt_remove no-operation if requested
-> interrupt is not supported by IPA hardware.
+> Sometimes the pipeline clear fails, and when it does, having a hang in
+> kernel is ugly. The timeout gives us a nice error message. Note that
+> this shouldn't actually hang, ever. It only hangs if there is a mistake
+> in the config, and the timeout is only useful when debugging.
 > 
 > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
 > Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
 
-I'm not sure why this is important.  Callers shouldn't add an
-interrupt type that isn't supported by the hardware.  The check
-here would be for sanity.
+This is actually an item on my to-do list.  All of the waits
+for GSI completions should have timeouts.  The only reason it
+hasn't been implemented already is that I would like to be sure
+all paths that could have a timeout actually have a reasonable
+recovery.
 
-And there's no point in checking in the interrupt remove
-function, the only interrupts removed will have already
-been added.
-
-Anyway, maybe I'll see you're adding support for these
-IPA interrupt types later on?
+I'd say an error message after a timeout is better than a hung
+task panic, but if this does time out, I'm not sure the state
+of the hardware is well-defined.
 
 					-Alex
 
 > ---
->   drivers/net/ipa/ipa_interrupt.c | 25 +++++++++++++++++++++++++
->   1 file changed, 25 insertions(+)
+>   drivers/net/ipa/ipa_cmd.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/ipa/ipa_interrupt.c b/drivers/net/ipa/ipa_interrupt.c
-> index b35170a93b0f..94708a23a597 100644
-> --- a/drivers/net/ipa/ipa_interrupt.c
-> +++ b/drivers/net/ipa/ipa_interrupt.c
-> @@ -48,6 +48,25 @@ static bool ipa_interrupt_uc(struct ipa_interrupt *interrupt, u32 irq_id)
->   	return irq_id == IPA_IRQ_UC_0 || irq_id == IPA_IRQ_UC_1;
+> diff --git a/drivers/net/ipa/ipa_cmd.c b/drivers/net/ipa/ipa_cmd.c
+> index 3db9e94e484f..0bdbc331fa78 100644
+> --- a/drivers/net/ipa/ipa_cmd.c
+> +++ b/drivers/net/ipa/ipa_cmd.c
+> @@ -658,7 +658,10 @@ u32 ipa_cmd_pipeline_clear_count(void)
+>   
+>   void ipa_cmd_pipeline_clear_wait(struct ipa *ipa)
+>   {
+> -	wait_for_completion(&ipa->completion);
+> +	unsigned long timeout_jiffies = msecs_to_jiffies(1000);
+> +
+> +	if (!wait_for_completion_timeout(&ipa->completion, timeout_jiffies))
+> +		dev_err(&ipa->pdev->dev, "%s time out\n", __func__);
 >   }
 >   
-> +static bool ipa_interrupt_check_fixup(enum ipa_irq_id *irq_id, enum ipa_version version)
-> +{
-> +	switch (*irq_id) {
-> +	case IPA_IRQ_EOT_COAL:
-> +		return version < IPA_VERSION_3_5;
-> +	case IPA_IRQ_DCMP:
-> +		return version < IPA_VERSION_4_5;
-> +	case IPA_IRQ_TLV_LEN_MIN_DSM:
-> +		return version >= IPA_VERSION_4_5;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	if (*irq_id >= IPA_IRQ_DRBIP_PKT_EXCEED_MAX_SIZE_EN)
-> +		return version >= IPA_VERSION_4_9;
-> +
-> +	return true;
-> +}
-> +
->   /* Process a particular interrupt type that has been received */
->   static void ipa_interrupt_process(struct ipa_interrupt *interrupt, u32 irq_id)
->   {
-> @@ -191,6 +210,9 @@ void ipa_interrupt_add(struct ipa_interrupt *interrupt,
->   	struct ipa *ipa = interrupt->ipa;
->   	u32 offset;
->   
-> +	if (!ipa_interrupt_check_fixup(&ipa_irq, ipa->version))
-> +		return;
-> +
->   	WARN_ON(ipa_irq >= IPA_IRQ_COUNT);
->   
->   	interrupt->handler[ipa_irq] = handler;
-> @@ -208,6 +230,9 @@ ipa_interrupt_remove(struct ipa_interrupt *interrupt, enum ipa_irq_id ipa_irq)
->   	struct ipa *ipa = interrupt->ipa;
->   	u32 offset;
->   
-> +	if (!ipa_interrupt_check_fixup(&ipa_irq, ipa->version))
-> +		return;
-> +
->   	WARN_ON(ipa_irq >= IPA_IRQ_COUNT);
->   
->   	/* Update the IPA interrupt mask to disable it */
+>   void ipa_cmd_pipeline_clear(struct ipa *ipa)
 > 
 
