@@ -2,567 +2,105 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C69C8C43219
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Oct 2021 22:31:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 767F2C433FE
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Oct 2021 08:30:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AEED3611C8
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Oct 2021 22:31:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 60B2D60F36
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Oct 2021 08:30:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231665AbhJMWdX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 13 Oct 2021 18:33:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48994 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231278AbhJMWdF (ORCPT
+        id S230198AbhJNIcz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 14 Oct 2021 04:32:55 -0400
+Received: from mail-0201.mail-europe.com ([51.77.79.158]:52468 "EHLO
+        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229970AbhJNIcz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 13 Oct 2021 18:33:05 -0400
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 759C6C061778
-        for <phone-devel@vger.kernel.org>; Wed, 13 Oct 2021 15:30:55 -0700 (PDT)
-Received: by mail-io1-xd31.google.com with SMTP id i189so1531728ioa.1
-        for <phone-devel@vger.kernel.org>; Wed, 13 Oct 2021 15:30:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=zOISpuaX9a8uoe6vFt3ToSNcYgnNNokSqd/VAjtp+yE=;
-        b=OtgVYwgMmgvsMyiT2sAqsm2CJDqnR8pAPPAo1grlnKsCodYanDfC5ZECXtVtZAZaCu
-         QLoL9PvnWvC01xevhcnNkbBC/RFwvi9L8KJWdbbkovFup2LfNTMIX0IDtiCc/6RL1Ru6
-         r7iFYipVi7H0J3tBVcdF2VL52AKOlbWP6bLBk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=zOISpuaX9a8uoe6vFt3ToSNcYgnNNokSqd/VAjtp+yE=;
-        b=RM/btZQu1jBx2VtNBwVMC9adicc8j3Te+1+Rg+vmhs4LmmU9OAex5F18ayqWhUgcNh
-         BYB6WR+vf2OQkwbWTlDlhpf98VV0ifrvtUlqXHHk5qv15OedUt2OhTfduw2WmAxdLjI+
-         y9RJ8mqbOshzsAOT2Qmbl4qF65sNA5Rzp7fSb0HAi/oksfZDkxCEFlOWoQ2nboyPKUCr
-         cGl4LD6cgKZWSgffIEk2/UPHFuXpTAwp7MOgcB2N9Kf1rNt+07pMYen4TwePK4+1OpjW
-         6ofITnJhogo8rA5ZQPokvAHFsJkxF7T/a+W8bnAr2XFisJpIdn8A8w1xlfVLuY7bSv4/
-         mO9Q==
-X-Gm-Message-State: AOAM533qNzMA+3M2iAjY70da6tqLZwI80QycCBEzugUqkOHQcSybvpIQ
-        msR4DzjArWaaztVnG/b5h9dtuw==
-X-Google-Smtp-Source: ABdhPJxE8PxCTdt9PvWYJWutPgsIHYKuIkpcum0LeF+Qu14TGWOFNlUBXOn+3vpYzsUf0cc6VmjY8g==
-X-Received: by 2002:a5d:88d7:: with SMTP id i23mr1462621iol.38.1634164254844;
-        Wed, 13 Oct 2021 15:30:54 -0700 (PDT)
-Received: from [172.22.22.4] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
-        by smtp.googlemail.com with ESMTPSA id g13sm362294ilc.54.2021.10.13.15.30.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Oct 2021 15:30:54 -0700 (PDT)
-Subject: Re: [RFC PATCH 16/17] net: ipa: Add hw config describing IPA v2.x
- hardware
-To:     Sireesh Kodali <sireeshkodali1@gmail.com>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, elder@kernel.org
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-References: <20210920030811.57273-1-sireeshkodali1@gmail.com>
- <20210920030811.57273-17-sireeshkodali1@gmail.com>
-From:   Alex Elder <elder@ieee.org>
-Message-ID: <8a873721-9b2b-4137-ff86-729a2d6fdc63@ieee.org>
-Date:   Wed, 13 Oct 2021 17:30:52 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        Thu, 14 Oct 2021 04:32:55 -0400
+Date:   Thu, 14 Oct 2021 08:30:38 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1634200246;
+        bh=dYBtx/f72FXDYETSYLf5EAjO7iUAZoohiB+Y/H5mUU0=;
+        h=Date:To:From:Cc:Reply-To:Subject:From;
+        b=I8a9Rl4QsX2UuPOvVMYlUxxXgztYNgff7Vaf223KD4KAhJcfPaqG/tZS9CBWXGBZ6
+         hUrTCrUApoOEEtsMxuvFdPhHb1nZYwRTWnQqxj4SEzeiV78Ia67O8Y3bfMXavEEmnG
+         wVFvSlB4BNVt8CDZ42a8x9etqiBLIF/+EZYCUUMI=
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Ilia Lin <ilia.lin@kernel.org>,
+        Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Loic Poulain <loic.poulain@linaro.org>
+From:   Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org
+Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
+Subject: [PATCH 0/8] Add support for MSM8996 Pro
+Message-ID: <20211014083016.137441-1-y.oudjana@protonmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20210920030811.57273-17-sireeshkodali1@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 9/19/21 10:08 PM, Sireesh Kodali wrote:
-> This commit adds the config for IPA v2.0, v2.5, v2.6L. IPA v2.5 is found
-> on msm8996. IPA v2.6L hardware is found on following SoCs: msm8920,
-> msm8940, msm8952, msm8953, msm8956, msm8976, sdm630, sdm660. No
-> SoC-specific configuration in ipa driver is required.
-> 
-> Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
+MSM8996 Pro (also known as MSM8996SG) is a newer revision of MSM8996
+with different CPU/CBF/GPU frequencies and CPR parameters. Its CBF clock al=
+so
+has a different divisor.
 
-I will not look at this in great detail right now.  It looks
-good to me, but I didn't notice where "channel_name" got
-defined.  I'm not sure what the BCR value represents either.
+This series handles the difference in the CBF clock and adds a new DTSI for
+MSM8996 Pro with CPU and GPU OPPs. It also removes reading msm-id from SMEM
+in qcom-cpufreq-nvmem as it becomes no longer necessary. Separating MSM8996
+and MSM8996 Pro will help with implementing CBF scaling and CPR; since they
+have different CPR parameters and CPU:CBF OPP mapping which is difficult to
+implement in the same cluster OPP tables.
 
-					-Alex
+Dependencies:
+- clk: qcom: msm8996-cpu: Add CBF support
+  https://lore.kernel.org/linux-arm-msm/20210528192541.1120703-1-konrad.dyb=
+cio@somainline.org/
+- arm64: dts: qcom: msm8996: Add support for the CBF clock
+  https://lore.kernel.org/linux-arm-msm/20210528192541.1120703-2-konrad.dyb=
+cio@somainline.org/
 
-> ---
->   drivers/net/ipa/Makefile        |   7 +-
->   drivers/net/ipa/ipa_data-v2.c   | 369 ++++++++++++++++++++++++++++++++
->   drivers/net/ipa/ipa_data-v3.1.c |   2 +-
->   drivers/net/ipa/ipa_data.h      |   3 +
->   drivers/net/ipa/ipa_main.c      |  15 ++
->   drivers/net/ipa/ipa_sysfs.c     |   6 +
->   6 files changed, 398 insertions(+), 4 deletions(-)
->   create mode 100644 drivers/net/ipa/ipa_data-v2.c
-> 
-> diff --git a/drivers/net/ipa/Makefile b/drivers/net/ipa/Makefile
-> index 4abebc667f77..858fbf76cff3 100644
-> --- a/drivers/net/ipa/Makefile
-> +++ b/drivers/net/ipa/Makefile
-> @@ -7,6 +7,7 @@ ipa-y			:=	ipa_main.o ipa_power.o ipa_reg.o ipa_mem.o \
->   				ipa_resource.o ipa_qmi.o ipa_qmi_msg.o \
->   				ipa_sysfs.o
->   
-> -ipa-y			+=	ipa_data-v3.1.o ipa_data-v3.5.1.o \
-> -				ipa_data-v4.2.o ipa_data-v4.5.o \
-> -				ipa_data-v4.9.o ipa_data-v4.11.o
-> +ipa-y			+=	ipa_data-v2.o ipa_data-v3.1.o \
-> +				ipa_data-v3.5.1.o ipa_data-v4.2.o \
-> +				ipa_data-v4.5.o ipa_data-v4.9.o \
-> +				ipa_data-v4.11.o
-> diff --git a/drivers/net/ipa/ipa_data-v2.c b/drivers/net/ipa/ipa_data-v2.c
-> new file mode 100644
-> index 000000000000..869b8a1a45d6
-> --- /dev/null
-> +++ b/drivers/net/ipa/ipa_data-v2.c
-> @@ -0,0 +1,369 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +/* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
-> + * Copyright (C) 2019-2020 Linaro Ltd.
-> + */
-> +
-> +#include <linux/log2.h>
-> +
-> +#include "ipa_data.h"
-> +#include "ipa_endpoint.h"
-> +#include "ipa_mem.h"
-> +
-> +/* Endpoint configuration for the IPA v2 hardware. */
-> +static const struct ipa_gsi_endpoint_data ipa_endpoint_data[] = {
-> +	[IPA_ENDPOINT_AP_COMMAND_TX] = {
-> +		.ee_id		= GSI_EE_AP,
-> +		.channel_id	= 3,
-> +		.endpoint_id	= 3,
-> +		.channel_name	= "cmd_tx",
-> +		.toward_ipa	= true,
-> +		.channel = {
-> +			.tre_count	= 256,
-> +			.event_count	= 256,
-> +			.tlv_count	= 20,
-> +		},
-> +		.endpoint = {
-> +			.config	= {
-> +				.dma_mode	= true,
-> +				.dma_endpoint	= IPA_ENDPOINT_AP_LAN_RX,
-> +			},
-> +		},
-> +	},
-> +	[IPA_ENDPOINT_AP_LAN_RX] = {
-> +		.ee_id		= GSI_EE_AP,
-> +		.channel_id	= 2,
-> +		.endpoint_id	= 2,
-> +		.channel_name	= "ap_lan_rx",
-> +		.channel = {
-> +			.tre_count	= 256,
-> +			.event_count	= 256,
-> +			.tlv_count	= 8,
-> +		},
-> +		.endpoint	= {
-> +			.config	= {
-> +				.aggregation	= true,
-> +				.status_enable	= true,
-> +				.rx = {
-> +					.pad_align	= ilog2(sizeof(u32)),
-> +				},
-> +			},
-> +		},
-> +	},
-> +	[IPA_ENDPOINT_AP_MODEM_TX] = {
-> +		.ee_id		= GSI_EE_AP,
-> +		.channel_id	= 4,
-> +		.endpoint_id	= 4,
-> +		.channel_name	= "ap_modem_tx",
-> +		.toward_ipa	= true,
-> +		.channel = {
-> +			.tre_count	= 256,
-> +			.event_count	= 256,
-> +			.tlv_count	= 8,
-> +		},
-> +		.endpoint	= {
-> +			.config	= {
-> +				.qmap		= true,
-> +				.status_enable	= true,
-> +				.tx = {
-> +					.status_endpoint =
-> +						IPA_ENDPOINT_AP_LAN_RX,
-> +				},
-> +			},
-> +		},
-> +	},
-> +	[IPA_ENDPOINT_AP_MODEM_RX] = {
-> +		.ee_id		= GSI_EE_AP,
-> +		.channel_id	= 5,
-> +		.endpoint_id	= 5,
-> +		.channel_name	= "ap_modem_rx",
-> +		.toward_ipa	= false,
-> +		.channel = {
-> +			.tre_count	= 256,
-> +			.event_count	= 256,
-> +			.tlv_count	= 8,
-> +		},
-> +		.endpoint	= {
-> +			.config = {
-> +				.aggregation	= true,
-> +				.qmap		= true,
-> +			},
-> +		},
-> +	},
-> +	[IPA_ENDPOINT_MODEM_LAN_TX] = {
-> +		.ee_id		= GSI_EE_MODEM,
-> +		.channel_id	= 6,
-> +		.endpoint_id	= 6,
-> +		.channel_name	= "modem_lan_tx",
-> +		.toward_ipa	= true,
-> +	},
-> +	[IPA_ENDPOINT_MODEM_COMMAND_TX] = {
-> +		.ee_id		= GSI_EE_MODEM,
-> +		.channel_id	= 7,
-> +		.endpoint_id	= 7,
-> +		.channel_name	= "modem_cmd_tx",
-> +		.toward_ipa	= true,
-> +	},
-> +	[IPA_ENDPOINT_MODEM_LAN_RX] = {
-> +		.ee_id		= GSI_EE_MODEM,
-> +		.channel_id	= 8,
-> +		.endpoint_id	= 8,
-> +		.channel_name	= "modem_lan_rx",
-> +		.toward_ipa	= false,
-> +	},
-> +	[IPA_ENDPOINT_MODEM_AP_RX] = {
-> +		.ee_id		= GSI_EE_MODEM,
-> +		.channel_id	= 9,
-> +		.endpoint_id	= 9,
-> +		.channel_name	= "modem_ap_rx",
-> +		.toward_ipa	= false,
-> +	},
-> +};
-> +
-> +static struct ipa_interconnect_data ipa_interconnect_data[] = {
-> +	{
-> +		.name = "memory",
-> +		.peak_bandwidth	= 1200000,	/* 1200 MBps */
-> +		.average_bandwidth = 100000,	/* 100 MBps */
-> +	},
-> +	{
-> +		.name = "imem",
-> +		.peak_bandwidth	= 350000,	/* 350 MBps */
-> +		.average_bandwidth  = 0,	/* unused */
-> +	},
-> +	{
-> +		.name = "config",
-> +		.peak_bandwidth	= 40000,	/* 40 MBps */
-> +		.average_bandwidth = 0,		/* unused */
-> +	},
-> +};
-> +
-> +static struct ipa_power_data ipa_power_data = {
-> +	.core_clock_rate	= 200 * 1000 * 1000,	/* Hz */
-> +	.interconnect_count	= ARRAY_SIZE(ipa_interconnect_data),
-> +	.interconnect_data	= ipa_interconnect_data,
-> +};
-> +
-> +/* IPA-resident memory region configuration for v2.0 */
-> +static const struct ipa_mem ipa_mem_local_data_v2_0[IPA_MEM_COUNT] = {
-> +	[IPA_MEM_UC_SHARED] = {
-> +		.offset         = 0,
-> +		.size           = 0x80,
-> +		.canary_count   = 0,
-> +	},
-> +	[IPA_MEM_V4_FILTER] = {
-> +		.offset		= 0x0080,
-> +		.size		= 0x0058,
-> +		.canary_count	= 0,
-> +	},
-> +	[IPA_MEM_V6_FILTER] = {
-> +		.offset		= 0x00e0,
-> +		.size		= 0x0058,
-> +		.canary_count	= 2,
-> +	},
-> +	[IPA_MEM_V4_ROUTE] = {
-> +		.offset		= 0x0140,
-> +		.size		= 0x002c,
-> +		.canary_count	= 2,
-> +	},
-> +	[IPA_MEM_V6_ROUTE] = {
-> +		.offset		= 0x0170,
-> +		.size		= 0x002c,
-> +		.canary_count	= 1,
-> +	},
-> +	[IPA_MEM_MODEM_HEADER] = {
-> +		.offset		= 0x01a0,
-> +		.size		= 0x0140,
-> +		.canary_count	= 1,
-> +	},
-> +	[IPA_MEM_AP_HEADER] = {
-> +		.offset		= 0x02e0,
-> +		.size		= 0x0048,
-> +		.canary_count	= 0,
-> +	},
-> +	[IPA_MEM_MODEM] = {
-> +		.offset		= 0x032c,
-> +		.size		= 0x0dcc,
-> +		.canary_count	= 1,
-> +	},
-> +	[IPA_MEM_V4_FILTER_AP] = {
-> +		.offset		= 0x10fc,
-> +		.size		= 0x0780,
-> +		.canary_count	= 1,
-> +	},
-> +	[IPA_MEM_V6_FILTER_AP] = {
-> +		.offset		= 0x187c,
-> +		.size		= 0x055c,
-> +		.canary_count	= 0,
-> +	},
-> +	[IPA_MEM_UC_INFO] = {
-> +		.offset		= 0x1ddc,
-> +		.size		= 0x0124,
-> +		.canary_count	= 1,
-> +	},
-> +};
-> +
-> +static struct ipa_mem_data ipa_mem_data_v2_0 = {
-> +	.local		= ipa_mem_local_data_v2_0,
-> +	.smem_id	= 497,
-> +	.smem_size	= 0x00001f00,
-> +};
-> +
-> +/* Configuration data for IPAv2.0 */
-> +const struct ipa_data ipa_data_v2_0  = {
-> +	.version	= IPA_VERSION_2_0,
-> +	.endpoint_count	= ARRAY_SIZE(ipa_endpoint_data),
-> +	.endpoint_data	= ipa_endpoint_data,
-> +	.mem_data	= &ipa_mem_data_v2_0,
-> +	.power_data	= &ipa_power_data,
-> +};
-> +
-> +/* IPA-resident memory region configuration for v2.5 */
-> +static const struct ipa_mem ipa_mem_local_data_v2_5[IPA_MEM_COUNT] = {
-> +	[IPA_MEM_UC_SHARED] = {
-> +		.offset         = 0,
-> +		.size           = 0x80,
-> +		.canary_count   = 0,
-> +	},
-> +	[IPA_MEM_UC_INFO] = {
-> +		.offset		= 0x0080,
-> +		.size		= 0x0200,
-> +		.canary_count	= 0,
-> +	},
-> +	[IPA_MEM_V4_FILTER] = {
-> +		.offset		= 0x0288,
-> +		.size		= 0x0058,
-> +		.canary_count	= 2,
-> +	},
-> +	[IPA_MEM_V6_FILTER] = {
-> +		.offset		= 0x02e8,
-> +		.size		= 0x0058,
-> +		.canary_count	= 2,
-> +	},
-> +	[IPA_MEM_V4_ROUTE] = {
-> +		.offset		= 0x0348,
-> +		.size		= 0x003c,
-> +		.canary_count	= 2,
-> +	},
-> +	[IPA_MEM_V6_ROUTE] = {
-> +		.offset		= 0x0388,
-> +		.size		= 0x003c,
-> +		.canary_count	= 1,
-> +	},
-> +	[IPA_MEM_MODEM_HEADER] = {
-> +		.offset		= 0x03c8,
-> +		.size		= 0x0140,
-> +		.canary_count	= 1,
-> +	},
-> +	[IPA_MEM_MODEM_PROC_CTX] = {
-> +		.offset		= 0x0510,
-> +		.size		= 0x0200,
-> +		.canary_count	= 2,
-> +	},
-> +	[IPA_MEM_AP_PROC_CTX] = {
-> +		.offset		= 0x0710,
-> +		.size		= 0x0200,
-> +		.canary_count	= 0,
-> +	},
-> +	[IPA_MEM_MODEM] = {
-> +		.offset		= 0x0914,
-> +		.size		= 0x16a8,
-> +		.canary_count	= 1,
-> +	},
-> +};
-> +
-> +static struct ipa_mem_data ipa_mem_data_v2_5 = {
-> +	.local		= ipa_mem_local_data_v2_5,
-> +	.smem_id	= 497,
-> +	.smem_size	= 0x00002000,
-> +};
-> +
-> +/* Configuration data for IPAv2.5 */
-> +const struct ipa_data ipa_data_v2_5  = {
-> +	.version	= IPA_VERSION_2_5,
-> +	.endpoint_count	= ARRAY_SIZE(ipa_endpoint_data),
-> +	.endpoint_data	= ipa_endpoint_data,
-> +	.mem_data	= &ipa_mem_data_v2_5,
-> +	.power_data	= &ipa_power_data,
-> +};
-> +
-> +/* IPA-resident memory region configuration for v2.6L */
-> +static const struct ipa_mem ipa_mem_local_data_v2_6L[IPA_MEM_COUNT] = {
-> +	{
-> +		.id		= IPA_MEM_UC_SHARED,
-> +		.offset         = 0,
-> +		.size           = 0x80,
-> +		.canary_count   = 0,
-> +	},
-> +	{
-> +		.id 		= IPA_MEM_UC_INFO,
-> +		.offset		= 0x0080,
-> +		.size		= 0x0200,
-> +		.canary_count	= 0,
-> +	},
-> +	{
-> +		.id		= IPA_MEM_V4_FILTER,
-> +		.offset		= 0x0288,
-> +		.size		= 0x0058,
-> +		.canary_count	= 2,
-> +	},
-> +	{
-> +		.id		= IPA_MEM_V6_FILTER,
-> +		.offset		= 0x02e8,
-> +		.size		= 0x0058,
-> +		.canary_count	= 2,
-> +	},
-> +	{
-> +		.id		= IPA_MEM_V4_ROUTE,
-> +		.offset		= 0x0348,
-> +		.size		= 0x003c,
-> +		.canary_count	= 2,
-> +	},
-> +	{
-> +		.id		= IPA_MEM_V6_ROUTE,
-> +		.offset		= 0x0388,
-> +		.size		= 0x003c,
-> +		.canary_count	= 1,
-> +	},
-> +	{
-> +		.id		= IPA_MEM_MODEM_HEADER,
-> +		.offset		= 0x03c8,
-> +		.size		= 0x0140,
-> +		.canary_count	= 1,
-> +	},
-> +	{
-> +		.id		= IPA_MEM_ZIP,
-> +		.offset		= 0x0510,
-> +		.size		= 0x0200,
-> +		.canary_count	= 2,
-> +	},
-> +	{
-> +		.id		= IPA_MEM_MODEM,
-> +		.offset		= 0x0714,
-> +		.size		= 0x18e8,
-> +		.canary_count	= 1,
-> +	},
-> +	{
-> +		.id		= IPA_MEM_END_MARKER,
-> +		.offset		= 0x2000,
-> +		.size		= 0,
-> +		.canary_count	= 1,
-> +	},
-> +};
-> +
-> +static struct ipa_mem_data ipa_mem_data_v2_6L = {
-> +	.local		= ipa_mem_local_data_v2_6L,
-> +	.smem_id	= 497,
-> +	.smem_size	= 0x00002000,
-> +};
-> +
-> +/* Configuration data for IPAv2.6L */
-> +const struct ipa_data ipa_data_v2_6L  = {
-> +	.version	= IPA_VERSION_2_6L,
-> +	/* Unfortunately we don't know what this BCR value corresponds to */
-> +	.backward_compat = 0x1fff7f,
-> +	.endpoint_count	= ARRAY_SIZE(ipa_endpoint_data),
-> +	.endpoint_data	= ipa_endpoint_data,
-> +	.mem_data	= &ipa_mem_data_v2_6L,
-> +	.power_data	= &ipa_power_data,
-> +};
-> diff --git a/drivers/net/ipa/ipa_data-v3.1.c b/drivers/net/ipa/ipa_data-v3.1.c
-> index 06ddb85f39b2..12d231232756 100644
-> --- a/drivers/net/ipa/ipa_data-v3.1.c
-> +++ b/drivers/net/ipa/ipa_data-v3.1.c
-> @@ -6,7 +6,7 @@
->   
->   #include <linux/log2.h>
->   
-> -#include "gsi.h"
-> +#include "ipa_dma.h"
->   #include "ipa_data.h"
->   #include "ipa_endpoint.h"
->   #include "ipa_mem.h"
-> diff --git a/drivers/net/ipa/ipa_data.h b/drivers/net/ipa/ipa_data.h
-> index 7d62d49f414f..e7ce2e9388b6 100644
-> --- a/drivers/net/ipa/ipa_data.h
-> +++ b/drivers/net/ipa/ipa_data.h
-> @@ -301,6 +301,9 @@ struct ipa_data {
->   	const struct ipa_power_data *power_data;
->   };
->   
-> +extern const struct ipa_data ipa_data_v2_0;
-> +extern const struct ipa_data ipa_data_v2_5;
-> +extern const struct ipa_data ipa_data_v2_6L;
->   extern const struct ipa_data ipa_data_v3_1;
->   extern const struct ipa_data ipa_data_v3_5_1;
->   extern const struct ipa_data ipa_data_v4_2;
-> diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
-> index b437fbf95edf..3ae5c5c6734b 100644
-> --- a/drivers/net/ipa/ipa_main.c
-> +++ b/drivers/net/ipa/ipa_main.c
-> @@ -560,6 +560,18 @@ static int ipa_firmware_load(struct device *dev)
->   }
->   
->   static const struct of_device_id ipa_match[] = {
-> +	{
-> +		.compatible	= "qcom,ipa-v2.0",
-> +		.data		= &ipa_data_v2_0,
-> +	},
-> +	{
-> +		.compatible	= "qcom,msm8996-ipa",
-> +		.data		= &ipa_data_v2_5,
-> +	},
-> +	{
-> +		.compatible	= "qcom,msm8953-ipa",
-> +		.data		= &ipa_data_v2_6L,
-> +	},
->   	{
->   		.compatible	= "qcom,msm8998-ipa",
->   		.data		= &ipa_data_v3_1,
-> @@ -632,6 +644,9 @@ static void ipa_validate_build(void)
->   static bool ipa_version_valid(enum ipa_version version)
->   {
->   	switch (version) {
-> +	case IPA_VERSION_2_0:
-> +	case IPA_VERSION_2_5:
-> +	case IPA_VERSION_2_6L:
->   	case IPA_VERSION_3_0:
->   	case IPA_VERSION_3_1:
->   	case IPA_VERSION_3_5:
-> diff --git a/drivers/net/ipa/ipa_sysfs.c b/drivers/net/ipa/ipa_sysfs.c
-> index ff61dbdd70d8..f5d159f6bc06 100644
-> --- a/drivers/net/ipa/ipa_sysfs.c
-> +++ b/drivers/net/ipa/ipa_sysfs.c
-> @@ -14,6 +14,12 @@
->   static const char *ipa_version_string(struct ipa *ipa)
->   {
->   	switch (ipa->version) {
-> +	case IPA_VERSION_2_0:
-> +		return "2.0";
-> +	case IPA_VERSION_2_5:
-> +		return "2.5";
-> +	case IPA_VERSION_2_6L:
-> +		"return 2.6L";
->   	case IPA_VERSION_3_0:
->   		return "3.0";
->   	case IPA_VERSION_3_1:
-> 
+Yassine Oudjana (8):
+  dt-bindings: clk: qcom: msm8996-apcc: Add CBF
+  dt-bindings: clk: qcom: msm8996-apcc: Add MSM8996 Pro compatible
+  clk: qcom: msm8996-cpu: Add MSM8996 Pro CBF support
+  cpufreq: qcom_cpufreq_nvmem: Simplify reading kryo speedbin
+  dt-bindings: opp: Convert qcom-nvmem-cpufreq to DT schema
+  dt-bindings: opp: qcom-cpufreq-nvmem: Remove SMEM
+  arm64: dts: qcom: msm8996: Add MSM8996 Pro support
+  arm64: dts: qcom: msm8996-xiaomi-scorpio: Include msm8996pro.dtsi
+
+ .../bindings/clock/qcom,msm8996-apcc.yaml     |  11 +-
+ .../bindings/opp/qcom-cpufreq-nvmem.yaml      | 557 ++++++++++++
+ .../bindings/opp/qcom-nvmem-cpufreq.txt       | 796 ------------------
+ MAINTAINERS                                   |   2 +-
+ .../boot/dts/qcom/msm8996-xiaomi-common.dtsi  |   3 -
+ .../boot/dts/qcom/msm8996-xiaomi-gemini.dts   |   1 +
+ .../boot/dts/qcom/msm8996-xiaomi-scorpio.dts  |   2 +-
+ arch/arm64/boot/dts/qcom/msm8996.dtsi         |  82 +-
+ arch/arm64/boot/dts/qcom/msm8996pro.dtsi      | 281 +++++++
+ drivers/clk/qcom/clk-cpu-8996.c               |  61 +-
+ drivers/cpufreq/Kconfig.arm                   |   1 -
+ drivers/cpufreq/qcom-cpufreq-nvmem.c          |  75 +-
+ 12 files changed, 935 insertions(+), 937 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/opp/qcom-cpufreq-nvme=
+m.yaml
+ delete mode 100644 Documentation/devicetree/bindings/opp/qcom-nvmem-cpufre=
+q.txt
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8996pro.dtsi
+
+--=20
+2.33.0
+
 
