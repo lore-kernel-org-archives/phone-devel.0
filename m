@@ -2,160 +2,244 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF31FC433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Oct 2021 11:26:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3FF3C433FE
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Oct 2021 12:25:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 877F36101E
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Oct 2021 11:26:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8432C6117A
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Oct 2021 12:25:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230346AbhJNL2s convert rfc822-to-8bit (ORCPT
-        <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 14 Oct 2021 07:28:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54424 "EHLO
+        id S231526AbhJNM1Q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 14 Oct 2021 08:27:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230510AbhJNL2r (ORCPT
+        with ESMTP id S231593AbhJNM1P (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 14 Oct 2021 07:28:47 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC513C06174E
-        for <phone-devel@vger.kernel.org>; Thu, 14 Oct 2021 04:26:42 -0700 (PDT)
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1maysW-0004lM-9W; Thu, 14 Oct 2021 13:26:28 +0200
-Received: from pza by lupine with local (Exim 4.92)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1maysU-0003kx-LL; Thu, 14 Oct 2021 13:26:26 +0200
-Message-ID: <1d8878e86b862ae8d551b6796e86c4fb1eb5d671.camel@pengutronix.de>
-Subject: Re: [PATCH] media: imx: Round line size to 4 bytes
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-Cc:     Steve Longerbeam <slongerbeam@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@puri.sm, phone-devel@vger.kernel.org
-Date:   Thu, 14 Oct 2021 13:26:26 +0200
-In-Reply-To: <20211013112636.6963344d.dorota.czaplejewicz@puri.sm>
-References: <20211006110207.256325-1-dorota.czaplejewicz@puri.sm>
-         <7d61fdbd161fce40874766bde5f95c3b73f1a96d.camel@pengutronix.de>
-         <20211013112636.6963344d.dorota.czaplejewicz@puri.sm>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.30.5-1.1 
+        Thu, 14 Oct 2021 08:27:15 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2BDFC061762
+        for <phone-devel@vger.kernel.org>; Thu, 14 Oct 2021 05:25:10 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id i24so25541365lfj.13
+        for <phone-devel@vger.kernel.org>; Thu, 14 Oct 2021 05:25:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=ecDOxJ4g4rGekvg6Ad7KQ5ygSfRdg/EpAd1GYPQ0UAU=;
+        b=V2yOk6j0nyPSfywCPSk+T5zC77Z8P+1d4kSMfqNEom2mJSpFKjaexaTDKIKNgd/uBw
+         JT343HMobT/VyIVVloVoFq07SqJydkUOWoBOphIycADkj++npExCYTRID1iHmBwYp2yO
+         mBSV35f+U+ACXeph2oDYz7wcdflX8zDiGizx2ycAfrYwCWQj0einJ0/7xA/2lk2kC4ni
+         ocUzCsSRiz+6/iWrPrbmSRo+ai4wKZDY6C4IvK3s/AwXKRbf3pvDTfwee1iBVNwyuNLp
+         ekTS0cm6A0CEfr/Wjq4dbOHBRHFEqeUsvrv+nK8JkMxG7pKbMzMhPU0MB/DTNA++PmID
+         G8OA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=ecDOxJ4g4rGekvg6Ad7KQ5ygSfRdg/EpAd1GYPQ0UAU=;
+        b=O03o/IbQzU1MgxijqnWlhMri1BC1e7d7WqJaPL4JqRYKWQl+dbfn8ueiqLnoBxbEtT
+         OF3krblpe3FtWnXDV3FjM78ilHUQgZ58GpO7ZhEuJVv2UvmR6wR4Voj61qyqdHpPSodZ
+         mNmd4jZX9wG1Hey9N9dxG9QUv24eULaNAX7RgZu1oFa+vSgei0AwN5N3yMLJZ3dmLBik
+         SC/VNNcv1EY65sJMrmcMzGVAe0bKlB36Tlw3Z1bq/uv+x3pS0gUOcMxuvNWQoy79VuiJ
+         3t+jdnhZLwAEt6dzK0aOeA3T11BQulCMyhABVj6e9O41wwdP9Z0zFLgRag7iNfydWZlp
+         KV1w==
+X-Gm-Message-State: AOAM531mv3r1X2dK0/zYFz68UbkwvmIBNOSye2ibWJvdw8fV9542rbVN
+        UoGWkpZPw0fQTAV6EZ0IAQt8MYKQzUPbYA==
+X-Google-Smtp-Source: ABdhPJy7zlyfngIg6lyxPZFE4lAszVXSZLyFVA06ruM/zhwbizwMiSLOMbC8PwwtkU0Q/RrfvOCASQ==
+X-Received: by 2002:a2e:bd8a:: with SMTP id o10mr5630339ljq.316.1634214308569;
+        Thu, 14 Oct 2021 05:25:08 -0700 (PDT)
+Received: from [192.168.1.211] ([37.153.55.125])
+        by smtp.gmail.com with ESMTPSA id r10sm251605ljg.10.2021.10.14.05.25.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Oct 2021 05:25:08 -0700 (PDT)
+Subject: Re: [PATCH 4/8] cpufreq: qcom_cpufreq_nvmem: Simplify reading kryo
+ speedbin
+To:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Ilia Lin <ilia.lin@kernel.org>,
+        Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Loic Poulain <loic.poulain@linaro.org>
+Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org
+References: <20211014083016.137441-1-y.oudjana@protonmail.com>
+ <20211014083016.137441-5-y.oudjana@protonmail.com>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Message-ID: <7e8b5d31-0232-7aee-ceed-ec453b447638@linaro.org>
+Date:   Thu, 14 Oct 2021 15:25:07 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: phone-devel@vger.kernel.org
+In-Reply-To: <20211014083016.137441-5-y.oudjana@protonmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Dorota,
+On 14/10/2021 11:32, Yassine Oudjana wrote:
+> In preparation for adding a separate device tree for MSM8996 Pro, skip reading
+> msm-id from smem and just read the speedbin efuse.
 
-On Wed, 2021-10-13 at 11:26 +0200, Dorota Czaplejewicz wrote:
-> On Fri, 08 Oct 2021 14:19:41 +0200 Philipp Zabel <p.zabel@pengutronix.de> wrote:
-[...]
-> > I wonder: if you use 4-byte aligned width and odd height, does the CSI
-> > write over the end of the buffer?
+It would be nice to comment, why is it possible/necessary. For example:
+
+MSM8996 Pro has completely different set of frequencies, so it makes no 
+sense to have a single table covering Pro and original SoCs. 
+msm8996pro.dtsi would override frequency table from msm8996.dtsi.
+
+
 > 
-> I tested this case, and found a glitch which suggests the last 4 bytes are ignored:
+> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+> ---
+>   drivers/cpufreq/Kconfig.arm          |  1 -
+>   drivers/cpufreq/qcom-cpufreq-nvmem.c | 75 +++-------------------------
+>   2 files changed, 6 insertions(+), 70 deletions(-)
 > 
-> https://source.puri.sm/Librem5/linux-next/uploads/cfb59e3832431aaa3a69549455502568/image.png
-
-Thank you for testing, so it appears that at least without FBUF_STRIDE
-the only requirement is that the whole image size must be a multiple of
-8 bytes.
-
-> That would be taken care of rounding up towards a number decided at runtime, like:
+> diff --git a/drivers/cpufreq/Kconfig.arm b/drivers/cpufreq/Kconfig.arm
+> index 954749afb5fe..7d9798bc5753 100644
+> --- a/drivers/cpufreq/Kconfig.arm
+> +++ b/drivers/cpufreq/Kconfig.arm
+> @@ -154,7 +154,6 @@ config ARM_QCOM_CPUFREQ_NVMEM
+>   	tristate "Qualcomm nvmem based CPUFreq"
+>   	depends on ARCH_QCOM
+>   	depends on QCOM_QFPROM
+> -	depends on QCOM_SMEM
+>   	select PM_OPP
+>   	help
+>   	  This adds the CPUFreq driver for Qualcomm Kryo SoC based boards.
+> diff --git a/drivers/cpufreq/qcom-cpufreq-nvmem.c b/drivers/cpufreq/qcom-cpufreq-nvmem.c
+> index d1744b5d9619..909f7d97b334 100644
+> --- a/drivers/cpufreq/qcom-cpufreq-nvmem.c
+> +++ b/drivers/cpufreq/qcom-cpufreq-nvmem.c
+> @@ -9,8 +9,8 @@
+>    * based on the silicon variant in use. Qualcomm Process Voltage Scaling Tables
+>    * defines the voltage and frequency value based on the msm-id in SMEM
+>    * and speedbin blown in the efuse combination.
+> - * The qcom-cpufreq-nvmem driver reads the msm-id and efuse value from the SoC
+> - * to provide the OPP framework with required information.
+> + * The qcom-cpufreq-nvmem driver reads efuse value from the SoC to provide the
+> + * OPP framework with required information.
+>    * This is used to determine the voltage and frequency value for each OPP of
+>    * operating-points-v2 table when it is parsed by the OPP framework.
+>    */
+> @@ -27,22 +27,6 @@
+>   #include <linux/pm_domain.h>
+>   #include <linux/pm_opp.h>
+>   #include <linux/slab.h>
+> -#include <linux/soc/qcom/smem.h>
+> -
+> -#define MSM_ID_SMEM	137
+> -
+> -enum _msm_id {
+> -	MSM8996V3 = 0xF6ul,
+> -	APQ8096V3 = 0x123ul,
+> -	MSM8996SG = 0x131ul,
+> -	APQ8096SG = 0x138ul,
+> -};
+> -
+> -enum _msm8996_version {
+> -	MSM8996_V3,
+> -	MSM8996_SG,
+> -	NUM_OF_MSM8996_VERSIONS,
+> -};
+>   
+>   struct qcom_cpufreq_drv;
+>   
+> @@ -142,35 +126,6 @@ static void get_krait_bin_format_b(struct device *cpu_dev,
+>   	dev_dbg(cpu_dev, "PVS version: %d\n", *pvs_ver);
+>   }
+>   
+> -static enum _msm8996_version qcom_cpufreq_get_msm_id(void)
+> -{
+> -	size_t len;
+> -	u32 *msm_id;
+> -	enum _msm8996_version version;
+> -
+> -	msm_id = qcom_smem_get(QCOM_SMEM_HOST_ANY, MSM_ID_SMEM, &len);
+> -	if (IS_ERR(msm_id))
+> -		return NUM_OF_MSM8996_VERSIONS;
+> -
+> -	/* The first 4 bytes are format, next to them is the actual msm-id */
+> -	msm_id++;
+> -
+> -	switch ((enum _msm_id)*msm_id) {
+> -	case MSM8996V3:
+> -	case APQ8096V3:
+> -		version = MSM8996_V3;
+> -		break;
+> -	case MSM8996SG:
+> -	case APQ8096SG:
+> -		version = MSM8996_SG;
+> -		break;
+> -	default:
+> -		version = NUM_OF_MSM8996_VERSIONS;
+> -	}
+> -
+> -	return version;
+> -}
+> -
+>   static int qcom_cpufreq_kryo_name_version(struct device *cpu_dev,
+>   					  struct nvmem_cell *speedbin_nvmem,
+>   					  char **pvs_name,
+> @@ -178,30 +133,13 @@ static int qcom_cpufreq_kryo_name_version(struct device *cpu_dev,
+>   {
+>   	size_t len;
+>   	u8 *speedbin;
+> -	enum _msm8996_version msm8996_version;
+>   	*pvs_name = NULL;
+>   
+> -	msm8996_version = qcom_cpufreq_get_msm_id();
+> -	if (NUM_OF_MSM8996_VERSIONS == msm8996_version) {
+> -		dev_err(cpu_dev, "Not Snapdragon 820/821!");
+> -		return -ENODEV;
+> -	}
+> -
+>   	speedbin = nvmem_cell_read(speedbin_nvmem, &len);
+>   	if (IS_ERR(speedbin))
+>   		return PTR_ERR(speedbin);
+>   
+> -	switch (msm8996_version) {
+> -	case MSM8996_V3:
+> -		drv->versions = 1 << (unsigned int)(*speedbin);
+> -		break;
+> -	case MSM8996_SG:
+> -		drv->versions = 1 << ((unsigned int)(*speedbin) + 4);
+> -		break;
+> -	default:
+> -		BUG();
+> -		break;
+> -	}
+> +	drv->versions = 1 << (unsigned int)(*speedbin);
+>   
+>   	kfree(speedbin);
+>   	return 0;
+> @@ -464,10 +402,9 @@ static const struct of_device_id qcom_cpufreq_match_list[] __initconst = {
+>   MODULE_DEVICE_TABLE(of, qcom_cpufreq_match_list);
+>   
+>   /*
+> - * Since the driver depends on smem and nvmem drivers, which may
+> - * return EPROBE_DEFER, all the real activity is done in the probe,
+> - * which may be defered as well. The init here is only registering
+> - * the driver and the platform device.
+> + * Since the driver depends on the nvmem driver, which may return EPROBE_DEFER,
+> + * all the real activity is done in the probe, which may be defered as well.
+> + * The init here is only registering the driver and the platform device.
+>    */
+>   static int __init qcom_cpufreq_init(void)
+>   {
 > 
-> divisor = 8 >> (mbus->height % 2);
 
-Which would then cause the CSI to write past the end of the buffer?
 
-I'd rather make sure that either the number of lines is even or the
-width is a multiple of 8 bytes.
-
-> > > Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-> > > ---
-> > > 
-> > > Hello,
-> > > 
-> > > my previous patch identified something that was not a problem,
-> > > so I'm sending a different one.
-> > > 
-> > > This has been tested on the Librem 5.
-> > > 
-> > > Cheers,
-> > > Dorota
-> > > 
-> > >  drivers/staging/media/imx/imx-media-utils.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
-> > > index 5128915a5d6f..a303003929e3 100644
-> > > --- a/drivers/staging/media/imx/imx-media-utils.c
-> > > +++ b/drivers/staging/media/imx/imx-media-utils.c
-> > > @@ -545,13 +545,13 @@ int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
-> > >  	}
-> > >  
-> > >  	/* Round up width for minimum burst size */
-> > > -	width = round_up(mbus->width, 8);
-> > > +	width = round_up(mbus->width, 4);
-> > >  
-> > >  	/* Round up stride for IDMAC line start address alignment */
-> > >  	if (cc->planar)
-> > >  		stride = round_up(width, 16);
-> > >  	else
-> > > -		stride = round_up((width * cc->bpp) >> 3, 8);
-> > > +		stride = round_up((width * cc->bpp) >> 3, 4);  
-> > 
-> > Second, even if this works fine on the i.MX7/8M CSI, the alignment is
-> > still required for the i.MX5/6 IPU, for which this code and the comments
-> > were written. So we need a way to differentiate the two cases here.
-> > 
-> > regards
-> > Philipp
-> 
-> How best to go about this? I can see in the file imx-media-capture.c
-> that there the video device lives in struct capture_priv.vdev.vfd.
-> Would that be the right place to query about the underlying hardware?
-> 
-> Then the following functions would gain a new "small_divisor" parameter:
-> - imx_media_mbus_fmt_to_pix_fmt (a GPL symbol)
-> - imx_media_mbus_fmt_to_ipu_image (a GPL symbol)
-> - __capture_try_fmt
-
-That sounds like it would work around the current code when it (at least
-part of imx_media_mbus_fmt_to_pix_fmt()) should be split between i.MX5/6
-and i.MX7/8 implementations. For example rounding up the stride is not
-useful on i.MX7/8, it just doesn't currently hurt because imx7-media-csi 
-is not using bytesperline to set up FBUF_STRIDE. And certainly the
-comments don't apply.
-
-imx_media_mbus_fmt_to_ipu_image() is unused and should probably be
-dropped, same as imx_media_ipu_image_to_mbus_fmt().
-
-> Those would have to extract the device type from struct capture_priv:
-> - __capture_legacy_try_fmt
-> - capture_try_fmt_vid_cap
-> - capture_s_fmt_vid_cap
-> - capture_init_format
-
-Maybe imx_media_mbus_fmt_to_pix_fmt should be moved into imx-media-
-capture.c be passed struct capture_priv to avoid duplicating the device
-type check?
-
-imx_media_capture_device_init() could gain a new parameter (or maybe
-replace legacy_api) to set the device type.
-
-regards
-Philipp
+-- 
+With best wishes
+Dmitry
