@@ -2,116 +2,160 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B967BC433FE
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Oct 2021 11:00:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF31FC433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Oct 2021 11:26:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 98C94610D0
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Oct 2021 11:00:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 877F36101E
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Oct 2021 11:26:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230303AbhJNLC7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 14 Oct 2021 07:02:59 -0400
-Received: from mail-0201.mail-europe.com ([51.77.79.158]:33608 "EHLO
-        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230297AbhJNLC6 (ORCPT
+        id S230346AbhJNL2s convert rfc822-to-8bit (ORCPT
+        <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 14 Oct 2021 07:28:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54424 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230510AbhJNL2r (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 14 Oct 2021 07:02:58 -0400
-Date:   Thu, 14 Oct 2021 11:00:43 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1634209249;
-        bh=n4mPtVUr59VWCEZFnidSyoUyIQYDVsWqg6brIjzb/V0=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=hJbkHlvxKU5St/2CCdsloP3Enf4Y57xvBMKs2JmqmHQQtYkBSH9esuI96PrJFMau2
-         ZxVMrNaSnlpEnJtC+/Kr3RoGYNWeFCrtfXx91bsJ1amiUxNbWkqBouKKILIK1so5Zr
-         ilQgYf2ectR+fS/ku9R5a5w8CixIot5wcXHUeuVo=
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Ilia Lin <ilia.lin@kernel.org>,
-        Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>
-From:   Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org
-Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
-Subject: [PATCH 8/8] arm64: dts: qcom: msm8996-xiaomi-scorpio: Include msm8996pro.dtsi
-Message-ID: <20211014110024.5869-1-y.oudjana@protonmail.com>
-In-Reply-To: <20211014083016.137441-1-y.oudjana@protonmail.com>
-References: <20211014083016.137441-1-y.oudjana@protonmail.com>
+        Thu, 14 Oct 2021 07:28:47 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC513C06174E
+        for <phone-devel@vger.kernel.org>; Thu, 14 Oct 2021 04:26:42 -0700 (PDT)
+Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1maysW-0004lM-9W; Thu, 14 Oct 2021 13:26:28 +0200
+Received: from pza by lupine with local (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1maysU-0003kx-LL; Thu, 14 Oct 2021 13:26:26 +0200
+Message-ID: <1d8878e86b862ae8d551b6796e86c4fb1eb5d671.camel@pengutronix.de>
+Subject: Re: [PATCH] media: imx: Round line size to 4 bytes
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+Cc:     Steve Longerbeam <slongerbeam@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@puri.sm, phone-devel@vger.kernel.org
+Date:   Thu, 14 Oct 2021 13:26:26 +0200
+In-Reply-To: <20211013112636.6963344d.dorota.czaplejewicz@puri.sm>
+References: <20211006110207.256325-1-dorota.czaplejewicz@puri.sm>
+         <7d61fdbd161fce40874766bde5f95c3b73f1a96d.camel@pengutronix.de>
+         <20211013112636.6963344d.dorota.czaplejewicz@puri.sm>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: phone-devel@vger.kernel.org
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Move msm8996.dtsi include to the end of the include chain.
+Hi Dorota,
 
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
----
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi | 3 ---
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts  | 1 +
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts | 2 +-
- 3 files changed, 2 insertions(+), 4 deletions(-)
+On Wed, 2021-10-13 at 11:26 +0200, Dorota Czaplejewicz wrote:
+> On Fri, 08 Oct 2021 14:19:41 +0200 Philipp Zabel <p.zabel@pengutronix.de> wrote:
+[...]
+> > I wonder: if you use 4-byte aligned width and odd height, does the CSI
+> > write over the end of the buffer?
+> 
+> I tested this case, and found a glitch which suggests the last 4 bytes are ignored:
+> 
+> https://source.puri.sm/Librem5/linux-next/uploads/cfb59e3832431aaa3a69549455502568/image.png
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi b/arch/arm=
-64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-index d239b01b8505..831cd39aff14 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-@@ -3,9 +3,6 @@
-  * Copyright (c) 2020, Yassine Oudjana <y.oudjana@protonmail.com>
-  */
-=20
--/dts-v1/;
--
--#include "msm8996.dtsi"
- #include "pm8994.dtsi"
- #include "pmi8994.dtsi"
- #include <dt-bindings/input/input.h>
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm6=
-4/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-index 77d508e5164a..8ea5390f86ab 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-@@ -5,6 +5,7 @@
-=20
- /dts-v1/;
-=20
-+#include "msm8996.dtsi"
- #include "msm8996-xiaomi-common.dtsi"
- #include <dt-bindings/sound/qcom,q6afe.h>
- #include <dt-bindings/sound/qcom,q6asm.h>
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts b/arch/arm=
-64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-index ea2ca271fe7d..4ffe7be34285 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-@@ -5,6 +5,7 @@
-=20
- /dts-v1/;
-=20
-+#include "msm8996pro.dtsi"
- #include "msm8996-xiaomi-common.dtsi"
- #include "pmi8996.dtsi"
- #include <dt-bindings/sound/qcom,q6afe.h>
-@@ -13,7 +14,6 @@
- / {
- =09model =3D "Xiaomi Mi Note 2";
- =09compatible =3D "xiaomi,scorpio", "qcom,msm8996";
--=09qcom,msm-id =3D <305 0x10000>;
- =09qcom,board-id =3D <34 0>;
-=20
- =09chosen {
---=20
-2.33.0
+Thank you for testing, so it appears that at least without FBUF_STRIDE
+the only requirement is that the whole image size must be a multiple of
+8 bytes.
 
+> That would be taken care of rounding up towards a number decided at runtime, like:
+> 
+> divisor = 8 >> (mbus->height % 2);
 
+Which would then cause the CSI to write past the end of the buffer?
+
+I'd rather make sure that either the number of lines is even or the
+width is a multiple of 8 bytes.
+
+> > > Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+> > > ---
+> > > 
+> > > Hello,
+> > > 
+> > > my previous patch identified something that was not a problem,
+> > > so I'm sending a different one.
+> > > 
+> > > This has been tested on the Librem 5.
+> > > 
+> > > Cheers,
+> > > Dorota
+> > > 
+> > >  drivers/staging/media/imx/imx-media-utils.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
+> > > index 5128915a5d6f..a303003929e3 100644
+> > > --- a/drivers/staging/media/imx/imx-media-utils.c
+> > > +++ b/drivers/staging/media/imx/imx-media-utils.c
+> > > @@ -545,13 +545,13 @@ int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
+> > >  	}
+> > >  
+> > >  	/* Round up width for minimum burst size */
+> > > -	width = round_up(mbus->width, 8);
+> > > +	width = round_up(mbus->width, 4);
+> > >  
+> > >  	/* Round up stride for IDMAC line start address alignment */
+> > >  	if (cc->planar)
+> > >  		stride = round_up(width, 16);
+> > >  	else
+> > > -		stride = round_up((width * cc->bpp) >> 3, 8);
+> > > +		stride = round_up((width * cc->bpp) >> 3, 4);  
+> > 
+> > Second, even if this works fine on the i.MX7/8M CSI, the alignment is
+> > still required for the i.MX5/6 IPU, for which this code and the comments
+> > were written. So we need a way to differentiate the two cases here.
+> > 
+> > regards
+> > Philipp
+> 
+> How best to go about this? I can see in the file imx-media-capture.c
+> that there the video device lives in struct capture_priv.vdev.vfd.
+> Would that be the right place to query about the underlying hardware?
+> 
+> Then the following functions would gain a new "small_divisor" parameter:
+> - imx_media_mbus_fmt_to_pix_fmt (a GPL symbol)
+> - imx_media_mbus_fmt_to_ipu_image (a GPL symbol)
+> - __capture_try_fmt
+
+That sounds like it would work around the current code when it (at least
+part of imx_media_mbus_fmt_to_pix_fmt()) should be split between i.MX5/6
+and i.MX7/8 implementations. For example rounding up the stride is not
+useful on i.MX7/8, it just doesn't currently hurt because imx7-media-csi 
+is not using bytesperline to set up FBUF_STRIDE. And certainly the
+comments don't apply.
+
+imx_media_mbus_fmt_to_ipu_image() is unused and should probably be
+dropped, same as imx_media_ipu_image_to_mbus_fmt().
+
+> Those would have to extract the device type from struct capture_priv:
+> - __capture_legacy_try_fmt
+> - capture_try_fmt_vid_cap
+> - capture_s_fmt_vid_cap
+> - capture_init_format
+
+Maybe imx_media_mbus_fmt_to_pix_fmt should be moved into imx-media-
+capture.c be passed struct capture_priv to avoid duplicating the device
+type check?
+
+imx_media_capture_device_init() could gain a new parameter (or maybe
+replace legacy_api) to set the device type.
+
+regards
+Philipp
