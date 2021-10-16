@@ -2,38 +2,30 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 458DDC4321E
-	for <phone-devel@archiver.kernel.org>; Fri, 15 Oct 2021 19:04:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66DBDC4332F
+	for <phone-devel@archiver.kernel.org>; Sat, 16 Oct 2021 14:51:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2C4F36108E
-	for <phone-devel@archiver.kernel.org>; Fri, 15 Oct 2021 19:04:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 48579611C3
+	for <phone-devel@archiver.kernel.org>; Sat, 16 Oct 2021 14:51:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238270AbhJOTGK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 15 Oct 2021 15:06:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35224 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238276AbhJOTGJ (ORCPT
+        id S236476AbhJPOxM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 16 Oct 2021 10:53:12 -0400
+Received: from mail-4319.protonmail.ch ([185.70.43.19]:27269 "EHLO
+        mail-4319.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236162AbhJPOxK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 15 Oct 2021 15:06:09 -0400
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BDA1C061764
-        for <phone-devel@vger.kernel.org>; Fri, 15 Oct 2021 12:04:03 -0700 (PDT)
-Received: from [192.168.1.101] (83.6.166.47.neoplus.adsl.tpnet.pl [83.6.166.47])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 7360F1F4F5;
-        Fri, 15 Oct 2021 21:04:00 +0200 (CEST)
-Message-ID: <112db3a6-9930-bb6b-589c-e0ccab0b1edf@somainline.org>
-Date:   Fri, 15 Oct 2021 21:03:59 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.1.1
-Subject: Re: [PATCH 8/8] arm64: dts: qcom: msm8996-xiaomi-scorpio: Include
- msm8996pro.dtsi
-Content-Language: en-US
-To:     Yassine Oudjana <y.oudjana@protonmail.com>,
-        Andy Gross <agross@kernel.org>,
+        Sat, 16 Oct 2021 10:53:10 -0400
+Date:   Sat, 16 Oct 2021 14:50:54 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1634395859;
+        bh=R3/CWC+oQyHLNJ8Mqz/kp0RXJtD7NTUkw0e4eKR5loA=;
+        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
+        b=S/3JdJgGa1H1gmxU2faAPy6ZJdotBfNnj5Nh1hghcVZ78AWMsv7JuiW3e9tnnXc/s
+         ZfNTQfXpOzzDdQXbLsVcgYOjIX6yan9IOdxu1L/ox9aGNAnjqnPrTWg03UusmkLj04
+         k4N8pqcUAqD9fAiCN2+ub5BskSt4mmdUN8xIydrc=
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>
+From:   Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>,
@@ -41,69 +33,76 @@ To:     Yassine Oudjana <y.oudjana@protonmail.com>,
         Ilia Lin <ilia.lin@kernel.org>,
         Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>
-Cc:     AngeloGioacchino Del Regno 
+        Loic Poulain <loic.poulain@linaro.org>,
+        AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-pm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org
-References: <20211014083016.137441-1-y.oudjana@protonmail.com>
- <20211014110024.5869-1-y.oudjana@protonmail.com>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-In-Reply-To: <20211014110024.5869-1-y.oudjana@protonmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
+Subject: Re: [PATCH 7/8] arm64: dts: qcom: msm8996: Add MSM8996 Pro support
+Message-ID: <ZVR21R.X63CT137R99A3@protonmail.com>
+In-Reply-To: <a8114098-f700-974b-e17e-54f5baebec46@somainline.org>
+References: <20211014083016.137441-1-y.oudjana@protonmail.com> <20211014083016.137441-8-y.oudjana@protonmail.com> <a8114098-f700-974b-e17e-54f5baebec46@somainline.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-On 14.10.2021 13:00, Yassine Oudjana wrote:
-> Move msm8996.dtsi include to the end of the include chain.
->
-> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-> ---
->  arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi | 3 ---
->  arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts  | 1 +
->  arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts | 2 +-
->  3 files changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-> index d239b01b8505..831cd39aff14 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-> @@ -3,9 +3,6 @@
->   * Copyright (c) 2020, Yassine Oudjana <y.oudjana@protonmail.com>
->   */
->  
-> -/dts-v1/;
-> -
-> -#include "msm8996.dtsi"
->  #include "pm8994.dtsi"
->  #include "pmi8994.dtsi"
->  #include <dt-bindings/input/input.h>
-> diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-> index 77d508e5164a..8ea5390f86ab 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-> @@ -5,6 +5,7 @@
->  
->  /dts-v1/;
->  
-> +#include "msm8996.dtsi"
->  #include "msm8996-xiaomi-common.dtsi"
->  #include <dt-bindings/sound/qcom,q6afe.h>
->  #include <dt-bindings/sound/qcom,q6asm.h>
-> diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-> index ea2ca271fe7d..4ffe7be34285 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
+On Fri, Oct 15 2021 at 23:01:54 +0400, Konrad Dybcio=20
+<konrad.dybcio@somainline.org> wrote:
+>=20
+> On 14.10.2021 10:32, Yassine Oudjana wrote:
+>>  Add a new DTSI for MSM8996 Pro (MSM8996SG) with msm-id and CPU/GPU=20
+>> OPPs.
+>>  CBF OPPs and CPR parameters will be added to it as well once=20
+>> support for
+>>  CBF scaling and CPR is introduced.
+>>=20
+>>  Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+>>  ---
+>>   arch/arm64/boot/dts/qcom/msm8996.dtsi    |  82 +++----
+>>   arch/arm64/boot/dts/qcom/msm8996pro.dtsi | 281=20
+>> +++++++++++++++++++++++
+>>   2 files changed, 322 insertions(+), 41 deletions(-)
+>>   create mode 100644 arch/arm64/boot/dts/qcom/msm8996pro.dtsi
+>>=20
+>>  diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi=20
+>> b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+>>  index 94a846c3f1ee..5b2600a4fb2a 100644
+>>  --- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
+>>  +++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+>>  @@ -142,82 +142,82 @@ cluster0_opp: opp_table0 {
+>>   =09=09/* Nominal fmax for now */
+>>   =09=09opp-307200000 {
+>>   =09=09=09opp-hz =3D /bits/ 64 <307200000>;
+>>  -=09=09=09opp-supported-hw =3D <0x77>;
+>>  +=09=09=09opp-supported-hw =3D <0x7>;
+>=20
+> You didn't describe what's the reason for changing this everywhere.
+>=20
+> If it's been always broken, perhaps make it a separate commit=20
+> describing
+>=20
+> the issue.
+>=20
+>=20
+> Konrad
+>=20
 
-If this device uses msm8996pro, perhaps the filename should reflect
+Before removing reading msm-id in qcom_cpufreq_nvmem, bits 0-2 (0x07)=20
+were MSM8996 speed bins, while bits 4-6 (0x70) were MSM8996 Pro speed=20
+bins. Now, only bits 0-2 are used for either one, so basically I moved=20
+bits 4-6 into msm8996pro.dtsi after shifting them right to become bits=20
+0-2.
 
-that? I don't know whether renaming it would be "legal" though..
+I'll put this in a separate patch and describe the change.
+
+=09Yassine
 
 
-Konrad
 
