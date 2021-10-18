@@ -2,185 +2,107 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D3086C433F5
-	for <phone-devel@archiver.kernel.org>; Sun, 17 Oct 2021 11:09:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55467C433FE
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Oct 2021 06:17:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B7DD161245
-	for <phone-devel@archiver.kernel.org>; Sun, 17 Oct 2021 11:09:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 286C560EB2
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Oct 2021 06:17:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241775AbhJQLLY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 17 Oct 2021 07:11:24 -0400
-Received: from comms.puri.sm ([159.203.221.185]:54070 "EHLO comms.puri.sm"
+        id S230114AbhJRGTY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 18 Oct 2021 02:19:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43672 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229804AbhJQLLX (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 17 Oct 2021 07:11:23 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 88E56DFAAA;
-        Sun, 17 Oct 2021 04:08:44 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id d2kKGqEIxJ38; Sun, 17 Oct 2021 04:08:43 -0700 (PDT)
-Date:   Sun, 17 Oct 2021 13:08:37 +0200
-From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-To:     Steve Longerbeam <slongerbeam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@puri.sm, phone-devel@vger.kernel.org
-Subject: [PATCHv2 4/4] media: imx: Use dedicated format handler for i.MX7/8
-Message-ID: <20211017102904.756408-4-dorota.czaplejewicz@puri.sm>
-In-Reply-To: <20211017102904.756408-1-dorota.czaplejewicz@puri.sm>
-References: <20211017102904.756408-1-dorota.czaplejewicz@puri.sm>
-Organization: Purism
+        id S229533AbhJRGTV (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 18 Oct 2021 02:19:21 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0F0B360EB2;
+        Mon, 18 Oct 2021 06:17:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634537830;
+        bh=tbeYO4SB6h2XwPY3OFzR5vFWaqhgyaKQVbzLGhlxkeY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=n8gi+n9fU46L71M9i6Ez2+q9n35ml71iVpTSOJzpjVaHTUl2ddSz3OA3vKSRAoPW0
+         TWybBKHD8YvUsS4kMoxshh6g03RnDd08Zvz40yuLvddWvke8D4x9XlB9koWAqTngH6
+         AwvxBeCEE9eRMUx0UbvLN0FuCgKc6m6/VRbtb9xZr93jYknUKwsH2x+p6WTDKy3Zto
+         US/bq5LlG7WoSW1QFnFxXgzwfP2MpxUEc8Z25WjQL5upuu5R3YNgO+kvwpr4s2zfNO
+         wE/7unG207pTadTy0mjUm//vnpfGtk2mmxw+d7n+z1XIxwa2WIiS0bKEZU6U7DYGYT
+         7HeNV2C2Zce1g==
+Date:   Mon, 18 Oct 2021 11:47:06 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Aleksander Morgado <aleksander@aleksander.es>,
+        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dmaengine@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Subject: Re: [PATCH net-next v2 1/4] dt-bindings: dmaengine: bam_dma: Add
+ "powered remotely" mode
+Message-ID: <YW0RYufCyPi5JLo3@matsya>
+References: <20211011141733.3999-1-stephan@gerhold.net>
+ <20211011141733.3999-2-stephan@gerhold.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/UChzlzgPs98xJxK1DilnSN2";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211011141733.3999-2-stephan@gerhold.net>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
---Sig_/UChzlzgPs98xJxK1DilnSN2
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 11-10-21, 16:17, Stephan Gerhold wrote:
+> In some configurations, the BAM DMA controller is set up by a remote
+> processor and the local processor can simply start making use of it
+> without setting up the BAM. This is already supported using the
+> "qcom,controlled-remotely" property.
+> 
+> However, for some reason another possible configuration is that the
+> remote processor is responsible for powering up the BAM, but we are
+> still responsible for initializing it (e.g. resetting it etc). Add
+> a "qcom,powered-remotely" property to describe that configuration.
+> 
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> ---
+> Changes since RFC:
+>   - Rename qcom,remote-power-collapse -> qcom,powered-remotely
+>     for consistency with "qcom,controlled-remotely"
+> 
+> NOTE: This is *not* a compile-time requirement for the BAM-DMUX driver
+>       so this could also go through the dmaengine tree.
 
-This splits out a format handler which takes into account
-the capabilities of the i.MX7/8 video device,
-as opposed to the default handler compatible with both i.MX5/6 and i.MX7/8.
-
-Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
----
- drivers/staging/media/imx/imx-media-utils.c | 78 +++++++++++++++++++--
- 1 file changed, 74 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/=
-media/imx/imx-media-utils.c
-index e124dd722107..938db2e2ddb1 100644
---- a/drivers/staging/media/imx/imx-media-utils.c
-+++ b/drivers/staging/media/imx/imx-media-utils.c
-@@ -516,10 +516,9 @@ void imx_media_try_colorimetry(struct v4l2_mbus_framef=
-mt *tryfmt,
- }
- EXPORT_SYMBOL_GPL(imx_media_try_colorimetry);
-=20
--int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
--				  const struct v4l2_mbus_framefmt *mbus,
--				  const struct imx_media_pixfmt *cc,
--				  enum imx_device_type type)
-+static int imx56_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
-+					   const struct v4l2_mbus_framefmt *mbus,
-+					   const struct imx_media_pixfmt *cc)
- {
- 	u32 width;
- 	u32 stride;
-@@ -568,6 +567,77 @@ int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_form=
-at *pix,
-=20
- 	return 0;
- }
-+
-+static int imx78_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
-+					   const struct v4l2_mbus_framefmt *mbus,
-+					   const struct imx_media_pixfmt *cc)
-+{
-+	u32 width;
-+	u32 stride;
-+	u8 divisor;
-+
-+	if (!cc) {
-+		cc =3D imx_media_find_ipu_format(mbus->code,
-+					       PIXFMT_SEL_YUV_RGB);
-+		if (!cc)
-+			cc =3D imx_media_find_mbus_format(mbus->code,
-+							PIXFMT_SEL_ANY);
-+		if (!cc)
-+			return -EINVAL;
-+	}
-+
-+	/*
-+	 * TODO: the IPU currently does not support the AYUV32 format,
-+	 * so until it does convert to a supported YUV format.
-+	 */
-+	if (cc->ipufmt && cc->cs =3D=3D IPUV3_COLORSPACE_YUV) {
-+		u32 code;
-+
-+		imx_media_enum_mbus_formats(&code, 0, PIXFMT_SEL_YUV);
-+		cc =3D imx_media_find_mbus_format(code, PIXFMT_SEL_YUV);
-+	}
-+
-+	/*
-+	 * The hardware can handle line lengths divisible by 4 bytes,
-+	 * as long as the number of lines is even.
-+	 * Otherwise, use the value of 8 bytes recommended in the datasheet.
-+	 */
-+	divisor =3D 4 << (mbus->height % 2);
-+
-+	width =3D round_up(mbus->width, divisor);
-+
-+	if (cc->planar)
-+		stride =3D round_up(width, 16);
-+	else
-+		stride =3D round_up((width * cc->bpp) >> 3, divisor);
-+
-+	pix->width =3D width;
-+	pix->height =3D mbus->height;
-+	pix->pixelformat =3D cc->fourcc;
-+	pix->colorspace =3D mbus->colorspace;
-+	pix->xfer_func =3D mbus->xfer_func;
-+	pix->ycbcr_enc =3D mbus->ycbcr_enc;
-+	pix->quantization =3D mbus->quantization;
-+	pix->field =3D mbus->field;
-+	pix->bytesperline =3D stride;
-+	pix->sizeimage =3D cc->planar ? ((stride * pix->height * cc->bpp) >> 3) :
-+			 stride * pix->height;
-+
-+	return 0;
-+}
-+
-+int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
-+				  const struct v4l2_mbus_framefmt *mbus,
-+				  const struct imx_media_pixfmt *cc,
-+				  enum imx_device_type type) {
-+	switch (type) {
-+	case DEVICE_TYPE_IMX56:
-+		return imx56_media_mbus_fmt_to_pix_fmt(pix, mbus, cc);
-+	case DEVICE_TYPE_IMX78:
-+		return imx78_media_mbus_fmt_to_pix_fmt(pix, mbus, cc);
-+	}
-+	return -EINVAL;
-+}
- EXPORT_SYMBOL_GPL(imx_media_mbus_fmt_to_pix_fmt);
-=20
- void imx_media_free_dma_buf(struct device *dev,
---=20
-2.31.1
+Can we split that this to dmaengine & net series if there is not
+dependency on the two... I think I skipped rev1 when I saw net-next
 
 
---Sig_/UChzlzgPs98xJxK1DilnSN2
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+> 
+> Also note that there is an ongoing effort to convert these bindings
+> to DT schema but sadly there were not any updates for a while. :/
+> https://lore.kernel.org/linux-arm-msm/20210519143700.27392-2-bhupesh.sharma@linaro.org/
+> ---
+>  Documentation/devicetree/bindings/dma/qcom_bam_dma.txt | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt b/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt
+> index cf5b9e44432c..6e9a5497b3f2 100644
+> --- a/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt
+> +++ b/Documentation/devicetree/bindings/dma/qcom_bam_dma.txt
+> @@ -15,6 +15,8 @@ Required properties:
+>    the secure world.
+>  - qcom,controlled-remotely : optional, indicates that the bam is controlled by
+>    remote proccessor i.e. execution environment.
+> +- qcom,powered-remotely : optional, indicates that the bam is powered up by
+> +  a remote processor but must be initialized by the local processor.
+>  - num-channels : optional, indicates supported number of DMA channels in a
+>    remotely controlled bam.
+>  - qcom,num-ees : optional, indicates supported number of Execution Environments
+> -- 
+> 2.33.0
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmFsBDUACgkQADBpX4S8
-Znd5lw/+IqabIiFF8Lz73MM9TgWmsrSufcFzhPHP1cFb/+I6o1hqNbn6XdPKexKR
-I0vGqlHHNV2eFOksDZThEHlKZihp8ZS3PEt+WISJGVjY636uKgQkZ/DYZT5AjV+P
-Cdf6mh4x1+Ma/QV1gtyQbAL/eLekP4LChUEq6vL3kRG1ZCRGpEWjyVf/qeKYWq45
-si/324AOrvMm8/2bLjiY/SSsB0CIDAr6SwMSP2a6/kuNWbeOE1iCtlFRHsXPqZIH
-rPxM8m3yVOjwQaakw1pt5VSNLdpmaXHPLzgEb+N6UAceFWogHgVihTA6ZmvLAo5s
-VmwiySl3OPZAY4YFtQtys6vstQXsiWOiDoDkevCF4dM13qCAUjqsvHfk0uyQ35L7
-bBF+q1I8FXzAxvwGiCixQeYwhGK6BGe9fjStd9G/GP/M4jHxMZ0rofIOIIVPqQGF
-CqQBNksvX9E2TwHcnIkWWP22PdnJImz77Scb2pH+uzgiydtJLrNWkrR8dKLFdJnB
-d39bvbxtab7QutBm4SsEvwweR+OnFwmmjcR3E34gnK9YrlaaDXY8EFD5sWkt5o4L
-Wu3xTs5J6a0jdg3YBBk1QoPhXNf/pFW29kXYhHvqjiOj8/kOnuiaheO9//twM3FR
-SNzUZ5Xk1/ut9E5zndrNyOTlCI/Y6Vks7uD6OzMlgstAqDBH64Q=
-=dYEO
------END PGP SIGNATURE-----
-
---Sig_/UChzlzgPs98xJxK1DilnSN2--
+-- 
+~Vinod
