@@ -2,198 +2,581 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3C98C433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 18 Oct 2021 18:33:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39549C433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Oct 2021 18:39:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9D0326127B
-	for <phone-devel@archiver.kernel.org>; Mon, 18 Oct 2021 18:33:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1052061263
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Oct 2021 18:39:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231787AbhJRSfQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 18 Oct 2021 14:35:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49046 "EHLO
+        id S232650AbhJRSlL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 18 Oct 2021 14:41:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229696AbhJRSfP (ORCPT
+        with ESMTP id S229924AbhJRSlL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 18 Oct 2021 14:35:15 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BACDC06161C;
-        Mon, 18 Oct 2021 11:33:04 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id g5so11895101plg.1;
-        Mon, 18 Oct 2021 11:33:04 -0700 (PDT)
+        Mon, 18 Oct 2021 14:41:11 -0400
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 006C7C06161C;
+        Mon, 18 Oct 2021 11:38:59 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id j190so10331324pgd.0;
+        Mon, 18 Oct 2021 11:38:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:content-transfer-encoding:from:to:cc:subject:date
+        h=mime-version:content-transfer-encoding:cc:subject:from:to:date
          :message-id:in-reply-to;
-        bh=QHlN/204mE0WcKuSOglcG6xZsaKzcaN6bu3nCZc3A54=;
-        b=f8mAhQDAjRALeuc1BUBw4uKKKeKxyC0PIYlnXV8DCvR9/D6aqJW0knsDvzIElj6S9j
-         zspOFAKG/Q0SEHx3R1aooXGxlMGZ5FdkqMySGrE2fhNgRQDNmUhfFzSuTmeQ23q84OGU
-         /eDAdOYIWMyPjXGiYU9E3WllxJlUh2RUMgwBTLcOxnQcjQg5GP6nNAu29DhDVXkedjE8
-         nekNRWyQXk/zmY9HtfnFFzSixWH/G5VK1CYPGLoPvFEOMZckhZ+g76VMBTx7+rglNmFD
-         lzWs0EytG1IEui4gsKxceOwr/G5QxG4rGD1SYRbc0HF5QQf0YNyMad5xoFGNmRumuPnr
-         UN4g==
+        bh=2vZED9KAnb9s7JMAzl/WHynHk3EQsjC695KsbqSi6hI=;
+        b=HzM1xJRu1RbzyMrNf7CGGefgRkApIDdWDgvYrX7qRxrM0eqTEmf/XXAo4nhT6Rl/4B
+         nWxwS4Bbv8qhRAibfGTT9hrK8ZQVdgDVYxYjKF/JXEX7EVqyxC7NIzhVhkqKV7CoYgA3
+         7vlinQWunhcAAfSfuhWCl46wS74Kc5BXUcpDxxY/x7ZxT0Hm3ERkDHm8oYmeix8lvfIR
+         PsZsl3FS+Y8CQjheWextTVASfY0zQpkFoXg/1g5pYBlq3b+Xipiq6lxBF+AzX6jB1kpd
+         gfpVVtCp3/fXHAu212A90Isc5xCu5O54ewR1O5ax50fuf+tqnRYhbM0YbzFqhR6Fjk8l
+         68aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:from:to
-         :cc:subject:date:message-id:in-reply-to;
-        bh=QHlN/204mE0WcKuSOglcG6xZsaKzcaN6bu3nCZc3A54=;
-        b=eHLL+PQfo5rkegDuVQqzDW1IPGOY/YbhNN2V3SKGZA4BCiyqeQ8B72/IfaVJLQTXQS
-         p+aNbmrd9/Ce+ADzAdNPPF9DMD9GPcGJVeYspvUx04qaJfhfkZPW/JV8nY4/R8YYve8E
-         YefynqRCKsI9ySUNEfTl4MSbnsnsIzEDJTlGe1mUlOXEZ/lqkik4OPASVFp59XR1sbdt
-         s5PyRcQTgrTbNXP9k929ekXrk9f6FLgPAKEnbO3/cY9vmMm+0NDDi5l33lspagEEV10E
-         Dc9Z3fvhgbkfMTWtFVz/xHBUErj7RhN7sW81dUxt3dRVytix/GXpZLbRalhB45UOYRkQ
-         zJUw==
-X-Gm-Message-State: AOAM531xFHu3aVD6noTMy2OuZR3sXSx5GawcfwAUYYbBNa4gvgDz1Sf2
-        YjC3e+ter4RDQm/IezClVp4=
-X-Google-Smtp-Source: ABdhPJzohKb+BBfkUsYjIM+G8WLgV2xm9AqEYmGnRbdffL+zGwv4a4+mOnFDLhM+OZxczD36QUInvg==
-X-Received: by 2002:a17:902:db01:b0:13e:d9ac:b8ff with SMTP id m1-20020a170902db0100b0013ed9acb8ffmr29181455plx.46.1634581983804;
-        Mon, 18 Oct 2021 11:33:03 -0700 (PDT)
+        h=x-gm-message-state:mime-version:content-transfer-encoding:cc
+         :subject:from:to:date:message-id:in-reply-to;
+        bh=2vZED9KAnb9s7JMAzl/WHynHk3EQsjC695KsbqSi6hI=;
+        b=PslXo4ZZrXs7zs6mGxq5ipfyvBK12NYpnT0mnW8n9hckCFbM7OY0esLwhMNcKcDN/P
+         ctzAJP4wNia3f02uJlbuuiuH5avSSdCRU/eVttI4GMKPPMayZ5A9jN+4tAmkG4Us9aUk
+         B+XZBZtJHnUNhu9V55P7hOv+vHBpg/fBdaCLYCvrHBXARRtDquLSIcrvuBTCdbT3QUIr
+         3aWyDfQ7LSgPW02vm8DZECv05T26S83Im298OICJoTSKkBtEujzhXdw26QCso4L5iz9d
+         iPbrpr6iTeIj0dlRjUHSiA445wwzE22T9a3usrQaB1GLhOI5LP3rmfMyyE0Wa58yi4p3
+         7HCA==
+X-Gm-Message-State: AOAM532Lm/jdbu/yWvb4OjUtzJq9UCz9gHFnMh5z/cUKSjFNfyRTo8z3
+        WQ3Cbdt/15eIpvJALanlL80=
+X-Google-Smtp-Source: ABdhPJzxBDBATYXKbVHN3D/LrrHokiQWCKRQxQIf1czLrYWSy9i2QQJwfPGlptkBc5dvVjWp3pJY2A==
+X-Received: by 2002:aa7:8b1a:0:b0:44d:37c7:dbb6 with SMTP id f26-20020aa78b1a000000b0044d37c7dbb6mr30569881pfd.11.1634582339376;
+        Mon, 18 Oct 2021 11:38:59 -0700 (PDT)
 Received: from localhost ([117.200.53.211])
-        by smtp.gmail.com with ESMTPSA id g7sm9701710pgp.17.2021.10.18.11.32.59
+        by smtp.gmail.com with ESMTPSA id 60sm150975pjz.11.2021.10.18.11.38.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Oct 2021 11:33:03 -0700 (PDT)
+        Mon, 18 Oct 2021 11:38:59 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        "Jakub Kicinski" <kuba@kernel.org>
+Subject: Re: [RFC PATCH 16/17] net: ipa: Add hw config describing IPA v2.x
+ hardware
 From:   "Sireesh Kodali" <sireeshkodali1@gmail.com>
 To:     "Alex Elder" <elder@ieee.org>, <phone-devel@vger.kernel.org>,
         <~postmarketos/upstreaming@lists.sr.ht>, <netdev@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
         <elder@kernel.org>
-Cc:     "Vladimir Lypak" <vladimir.lypak@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Jakub Kicinski" <kuba@kernel.org>
-Subject: Re: [RFC PATCH 13/17] net: ipa: Add support for IPA v2.x in the
- driver's QMI interface
-Date:   Mon, 18 Oct 2021 23:52:31 +0530
-Message-Id: <CF2QQACAFQQ9.3H61DJ29ALVVI@skynet-linux>
-In-Reply-To: <d50312f8-823d-01b1-47a5-7190be93408d@ieee.org>
+Date:   Tue, 19 Oct 2021 00:05:59 +0530
+Message-Id: <CF2R0LFXXG5E.FVHJJ5F1GS2R@skynet-linux>
+In-Reply-To: <8a873721-9b2b-4137-ff86-729a2d6fdc63@ieee.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On Thu Oct 14, 2021 at 4:00 AM IST, Alex Elder wrote:
 > On 9/19/21 10:08 PM, Sireesh Kodali wrote:
-> > On IPA v2.x, the modem doesn't send a DRIVER_INIT_COMPLETED, so we have
-> > to rely on the uc's IPA_UC_RESPONSE_INIT_COMPLETED to know when its
-> > ready. We add a function here that marks uc_ready =3D true. This functi=
-on
-> > is called by ipa_uc.c when IPA_UC_RESPONSE_INIT_COMPLETED is handled.
+> > This commit adds the config for IPA v2.0, v2.5, v2.6L. IPA v2.5 is foun=
+d
+> > on msm8996. IPA v2.6L hardware is found on following SoCs: msm8920,
+> > msm8940, msm8952, msm8953, msm8956, msm8976, sdm630, sdm660. No
+> > SoC-specific configuration in ipa driver is required.
+> >=20
+> > Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
 >
-> This should use the new ipa_mem_find() interface for getting the
-> memory information for the ZIP region.
->
-
-Got it, thanks
-
-> I don't know where the IPA_UC_RESPONSE_INIT_COMPLETED gets sent
-> but I presume it ends up calling ipa_qmi_signal_uc_loaded().
+> I will not look at this in great detail right now. It looks
+> good to me, but I didn't notice where "channel_name" got
+> defined. I'm not sure what the BCR value represents either.
 >
 
-IPA_UC_RESPONSE_INIT_COMPLETED is handled by the ipa_uc sub-driver. The
-handler calls ipa_qmi_signal_uc_loaded() once the response is received,
-at which point we know the uc has been inited.
-
-> I think actually the DRIVER_INIT_COMPLETE message from the modem
-> is saying "I finished initializing the microcontroller." And
-> I've wondered why there is a duplicate mechanism. Maybe there
-> was a race or something.
->
-
-This makes sense. Given that some modems rely on the IPA block for
-initialization, I wonder if Qualcomm decided it would be easier to allow
-the modem to complete the uc initialization and send the signal instead.
+I probably messed up while splitting the commits, it should be easy
+enough to fix. As for the BCR, it was simple `#define`d in
+downstream, with no comments, leaving us clueless as to what the magic
+number means :(
 
 Regards,
 Sireesh
 > -Alex
 >
-> > Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
-> > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
 > > ---
-> >   drivers/net/ipa/ipa_qmi.c | 27 ++++++++++++++++++++++++++-
-> >   drivers/net/ipa/ipa_qmi.h | 10 ++++++++++
-> >   2 files changed, 36 insertions(+), 1 deletion(-)
+> >   drivers/net/ipa/Makefile        |   7 +-
+> >   drivers/net/ipa/ipa_data-v2.c   | 369 +++++++++++++++++++++++++++++++=
++
+> >   drivers/net/ipa/ipa_data-v3.1.c |   2 +-
+> >   drivers/net/ipa/ipa_data.h      |   3 +
+> >   drivers/net/ipa/ipa_main.c      |  15 ++
+> >   drivers/net/ipa/ipa_sysfs.c     |   6 +
+> >   6 files changed, 398 insertions(+), 4 deletions(-)
+> >   create mode 100644 drivers/net/ipa/ipa_data-v2.c
 > >=20
-> > diff --git a/drivers/net/ipa/ipa_qmi.c b/drivers/net/ipa/ipa_qmi.c
-> > index 7e2fe701cc4d..876e2a004f70 100644
-> > --- a/drivers/net/ipa/ipa_qmi.c
-> > +++ b/drivers/net/ipa/ipa_qmi.c
-> > @@ -68,6 +68,11 @@
-> >    * - The INDICATION_REGISTER request and INIT_COMPLETE indication are
-> >    *   optional for non-initial modem boots, and have no bearing on the
-> >    *   determination of when things are "ready"
-> > + *
-> > + * Note that on IPA v2.x, the modem doesn't send a DRIVER_INIT_COMPLET=
-E
-> > + * request. Thus, we rely on the uc's IPA_UC_RESPONSE_INIT_COMPLETED t=
-o know
-> > + * when the uc is ready. The rest of the process is the same on IPA v2=
-.x and
-> > + * later IPA versions
-> >    */
+> > diff --git a/drivers/net/ipa/Makefile b/drivers/net/ipa/Makefile
+> > index 4abebc667f77..858fbf76cff3 100644
+> > --- a/drivers/net/ipa/Makefile
+> > +++ b/drivers/net/ipa/Makefile
+> > @@ -7,6 +7,7 @@ ipa-y			:=3D	ipa_main.o ipa_power.o ipa_reg.o ipa_mem.o=
+ \
+> >   				ipa_resource.o ipa_qmi.o ipa_qmi_msg.o \
+> >   				ipa_sysfs.o
 > >  =20
-> >   #define IPA_HOST_SERVICE_SVC_ID		0x31
-> > @@ -345,7 +350,12 @@ init_modem_driver_req(struct ipa_qmi *ipa_qmi)
-> >   			req.hdr_proc_ctx_tbl_info.start + mem->size - 1;
-> >   	}
+> > -ipa-y			+=3D	ipa_data-v3.1.o ipa_data-v3.5.1.o \
+> > -				ipa_data-v4.2.o ipa_data-v4.5.o \
+> > -				ipa_data-v4.9.o ipa_data-v4.11.o
+> > +ipa-y			+=3D	ipa_data-v2.o ipa_data-v3.1.o \
+> > +				ipa_data-v3.5.1.o ipa_data-v4.2.o \
+> > +				ipa_data-v4.5.o ipa_data-v4.9.o \
+> > +				ipa_data-v4.11.o
+> > diff --git a/drivers/net/ipa/ipa_data-v2.c b/drivers/net/ipa/ipa_data-v=
+2.c
+> > new file mode 100644
+> > index 000000000000..869b8a1a45d6
+> > --- /dev/null
+> > +++ b/drivers/net/ipa/ipa_data-v2.c
+> > @@ -0,0 +1,369 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +/* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+> > + * Copyright (C) 2019-2020 Linaro Ltd.
+> > + */
+> > +
+> > +#include <linux/log2.h>
+> > +
+> > +#include "ipa_data.h"
+> > +#include "ipa_endpoint.h"
+> > +#include "ipa_mem.h"
+> > +
+> > +/* Endpoint configuration for the IPA v2 hardware. */
+> > +static const struct ipa_gsi_endpoint_data ipa_endpoint_data[] =3D {
+> > +	[IPA_ENDPOINT_AP_COMMAND_TX] =3D {
+> > +		.ee_id		=3D GSI_EE_AP,
+> > +		.channel_id	=3D 3,
+> > +		.endpoint_id	=3D 3,
+> > +		.channel_name	=3D "cmd_tx",
+> > +		.toward_ipa	=3D true,
+> > +		.channel =3D {
+> > +			.tre_count	=3D 256,
+> > +			.event_count	=3D 256,
+> > +			.tlv_count	=3D 20,
+> > +		},
+> > +		.endpoint =3D {
+> > +			.config	=3D {
+> > +				.dma_mode	=3D true,
+> > +				.dma_endpoint	=3D IPA_ENDPOINT_AP_LAN_RX,
+> > +			},
+> > +		},
+> > +	},
+> > +	[IPA_ENDPOINT_AP_LAN_RX] =3D {
+> > +		.ee_id		=3D GSI_EE_AP,
+> > +		.channel_id	=3D 2,
+> > +		.endpoint_id	=3D 2,
+> > +		.channel_name	=3D "ap_lan_rx",
+> > +		.channel =3D {
+> > +			.tre_count	=3D 256,
+> > +			.event_count	=3D 256,
+> > +			.tlv_count	=3D 8,
+> > +		},
+> > +		.endpoint	=3D {
+> > +			.config	=3D {
+> > +				.aggregation	=3D true,
+> > +				.status_enable	=3D true,
+> > +				.rx =3D {
+> > +					.pad_align	=3D ilog2(sizeof(u32)),
+> > +				},
+> > +			},
+> > +		},
+> > +	},
+> > +	[IPA_ENDPOINT_AP_MODEM_TX] =3D {
+> > +		.ee_id		=3D GSI_EE_AP,
+> > +		.channel_id	=3D 4,
+> > +		.endpoint_id	=3D 4,
+> > +		.channel_name	=3D "ap_modem_tx",
+> > +		.toward_ipa	=3D true,
+> > +		.channel =3D {
+> > +			.tre_count	=3D 256,
+> > +			.event_count	=3D 256,
+> > +			.tlv_count	=3D 8,
+> > +		},
+> > +		.endpoint	=3D {
+> > +			.config	=3D {
+> > +				.qmap		=3D true,
+> > +				.status_enable	=3D true,
+> > +				.tx =3D {
+> > +					.status_endpoint =3D
+> > +						IPA_ENDPOINT_AP_LAN_RX,
+> > +				},
+> > +			},
+> > +		},
+> > +	},
+> > +	[IPA_ENDPOINT_AP_MODEM_RX] =3D {
+> > +		.ee_id		=3D GSI_EE_AP,
+> > +		.channel_id	=3D 5,
+> > +		.endpoint_id	=3D 5,
+> > +		.channel_name	=3D "ap_modem_rx",
+> > +		.toward_ipa	=3D false,
+> > +		.channel =3D {
+> > +			.tre_count	=3D 256,
+> > +			.event_count	=3D 256,
+> > +			.tlv_count	=3D 8,
+> > +		},
+> > +		.endpoint	=3D {
+> > +			.config =3D {
+> > +				.aggregation	=3D true,
+> > +				.qmap		=3D true,
+> > +			},
+> > +		},
+> > +	},
+> > +	[IPA_ENDPOINT_MODEM_LAN_TX] =3D {
+> > +		.ee_id		=3D GSI_EE_MODEM,
+> > +		.channel_id	=3D 6,
+> > +		.endpoint_id	=3D 6,
+> > +		.channel_name	=3D "modem_lan_tx",
+> > +		.toward_ipa	=3D true,
+> > +	},
+> > +	[IPA_ENDPOINT_MODEM_COMMAND_TX] =3D {
+> > +		.ee_id		=3D GSI_EE_MODEM,
+> > +		.channel_id	=3D 7,
+> > +		.endpoint_id	=3D 7,
+> > +		.channel_name	=3D "modem_cmd_tx",
+> > +		.toward_ipa	=3D true,
+> > +	},
+> > +	[IPA_ENDPOINT_MODEM_LAN_RX] =3D {
+> > +		.ee_id		=3D GSI_EE_MODEM,
+> > +		.channel_id	=3D 8,
+> > +		.endpoint_id	=3D 8,
+> > +		.channel_name	=3D "modem_lan_rx",
+> > +		.toward_ipa	=3D false,
+> > +	},
+> > +	[IPA_ENDPOINT_MODEM_AP_RX] =3D {
+> > +		.ee_id		=3D GSI_EE_MODEM,
+> > +		.channel_id	=3D 9,
+> > +		.endpoint_id	=3D 9,
+> > +		.channel_name	=3D "modem_ap_rx",
+> > +		.toward_ipa	=3D false,
+> > +	},
+> > +};
+> > +
+> > +static struct ipa_interconnect_data ipa_interconnect_data[] =3D {
+> > +	{
+> > +		.name =3D "memory",
+> > +		.peak_bandwidth	=3D 1200000,	/* 1200 MBps */
+> > +		.average_bandwidth =3D 100000,	/* 100 MBps */
+> > +	},
+> > +	{
+> > +		.name =3D "imem",
+> > +		.peak_bandwidth	=3D 350000,	/* 350 MBps */
+> > +		.average_bandwidth  =3D 0,	/* unused */
+> > +	},
+> > +	{
+> > +		.name =3D "config",
+> > +		.peak_bandwidth	=3D 40000,	/* 40 MBps */
+> > +		.average_bandwidth =3D 0,		/* unused */
+> > +	},
+> > +};
+> > +
+> > +static struct ipa_power_data ipa_power_data =3D {
+> > +	.core_clock_rate	=3D 200 * 1000 * 1000,	/* Hz */
+> > +	.interconnect_count	=3D ARRAY_SIZE(ipa_interconnect_data),
+> > +	.interconnect_data	=3D ipa_interconnect_data,
+> > +};
+> > +
+> > +/* IPA-resident memory region configuration for v2.0 */
+> > +static const struct ipa_mem ipa_mem_local_data_v2_0[IPA_MEM_COUNT] =3D=
+ {
+> > +	[IPA_MEM_UC_SHARED] =3D {
+> > +		.offset         =3D 0,
+> > +		.size           =3D 0x80,
+> > +		.canary_count   =3D 0,
+> > +	},
+> > +	[IPA_MEM_V4_FILTER] =3D {
+> > +		.offset		=3D 0x0080,
+> > +		.size		=3D 0x0058,
+> > +		.canary_count	=3D 0,
+> > +	},
+> > +	[IPA_MEM_V6_FILTER] =3D {
+> > +		.offset		=3D 0x00e0,
+> > +		.size		=3D 0x0058,
+> > +		.canary_count	=3D 2,
+> > +	},
+> > +	[IPA_MEM_V4_ROUTE] =3D {
+> > +		.offset		=3D 0x0140,
+> > +		.size		=3D 0x002c,
+> > +		.canary_count	=3D 2,
+> > +	},
+> > +	[IPA_MEM_V6_ROUTE] =3D {
+> > +		.offset		=3D 0x0170,
+> > +		.size		=3D 0x002c,
+> > +		.canary_count	=3D 1,
+> > +	},
+> > +	[IPA_MEM_MODEM_HEADER] =3D {
+> > +		.offset		=3D 0x01a0,
+> > +		.size		=3D 0x0140,
+> > +		.canary_count	=3D 1,
+> > +	},
+> > +	[IPA_MEM_AP_HEADER] =3D {
+> > +		.offset		=3D 0x02e0,
+> > +		.size		=3D 0x0048,
+> > +		.canary_count	=3D 0,
+> > +	},
+> > +	[IPA_MEM_MODEM] =3D {
+> > +		.offset		=3D 0x032c,
+> > +		.size		=3D 0x0dcc,
+> > +		.canary_count	=3D 1,
+> > +	},
+> > +	[IPA_MEM_V4_FILTER_AP] =3D {
+> > +		.offset		=3D 0x10fc,
+> > +		.size		=3D 0x0780,
+> > +		.canary_count	=3D 1,
+> > +	},
+> > +	[IPA_MEM_V6_FILTER_AP] =3D {
+> > +		.offset		=3D 0x187c,
+> > +		.size		=3D 0x055c,
+> > +		.canary_count	=3D 0,
+> > +	},
+> > +	[IPA_MEM_UC_INFO] =3D {
+> > +		.offset		=3D 0x1ddc,
+> > +		.size		=3D 0x0124,
+> > +		.canary_count	=3D 1,
+> > +	},
+> > +};
+> > +
+> > +static struct ipa_mem_data ipa_mem_data_v2_0 =3D {
+> > +	.local		=3D ipa_mem_local_data_v2_0,
+> > +	.smem_id	=3D 497,
+> > +	.smem_size	=3D 0x00001f00,
+> > +};
+> > +
+> > +/* Configuration data for IPAv2.0 */
+> > +const struct ipa_data ipa_data_v2_0  =3D {
+> > +	.version	=3D IPA_VERSION_2_0,
+> > +	.endpoint_count	=3D ARRAY_SIZE(ipa_endpoint_data),
+> > +	.endpoint_data	=3D ipa_endpoint_data,
+> > +	.mem_data	=3D &ipa_mem_data_v2_0,
+> > +	.power_data	=3D &ipa_power_data,
+> > +};
+> > +
+> > +/* IPA-resident memory region configuration for v2.5 */
+> > +static const struct ipa_mem ipa_mem_local_data_v2_5[IPA_MEM_COUNT] =3D=
+ {
+> > +	[IPA_MEM_UC_SHARED] =3D {
+> > +		.offset         =3D 0,
+> > +		.size           =3D 0x80,
+> > +		.canary_count   =3D 0,
+> > +	},
+> > +	[IPA_MEM_UC_INFO] =3D {
+> > +		.offset		=3D 0x0080,
+> > +		.size		=3D 0x0200,
+> > +		.canary_count	=3D 0,
+> > +	},
+> > +	[IPA_MEM_V4_FILTER] =3D {
+> > +		.offset		=3D 0x0288,
+> > +		.size		=3D 0x0058,
+> > +		.canary_count	=3D 2,
+> > +	},
+> > +	[IPA_MEM_V6_FILTER] =3D {
+> > +		.offset		=3D 0x02e8,
+> > +		.size		=3D 0x0058,
+> > +		.canary_count	=3D 2,
+> > +	},
+> > +	[IPA_MEM_V4_ROUTE] =3D {
+> > +		.offset		=3D 0x0348,
+> > +		.size		=3D 0x003c,
+> > +		.canary_count	=3D 2,
+> > +	},
+> > +	[IPA_MEM_V6_ROUTE] =3D {
+> > +		.offset		=3D 0x0388,
+> > +		.size		=3D 0x003c,
+> > +		.canary_count	=3D 1,
+> > +	},
+> > +	[IPA_MEM_MODEM_HEADER] =3D {
+> > +		.offset		=3D 0x03c8,
+> > +		.size		=3D 0x0140,
+> > +		.canary_count	=3D 1,
+> > +	},
+> > +	[IPA_MEM_MODEM_PROC_CTX] =3D {
+> > +		.offset		=3D 0x0510,
+> > +		.size		=3D 0x0200,
+> > +		.canary_count	=3D 2,
+> > +	},
+> > +	[IPA_MEM_AP_PROC_CTX] =3D {
+> > +		.offset		=3D 0x0710,
+> > +		.size		=3D 0x0200,
+> > +		.canary_count	=3D 0,
+> > +	},
+> > +	[IPA_MEM_MODEM] =3D {
+> > +		.offset		=3D 0x0914,
+> > +		.size		=3D 0x16a8,
+> > +		.canary_count	=3D 1,
+> > +	},
+> > +};
+> > +
+> > +static struct ipa_mem_data ipa_mem_data_v2_5 =3D {
+> > +	.local		=3D ipa_mem_local_data_v2_5,
+> > +	.smem_id	=3D 497,
+> > +	.smem_size	=3D 0x00002000,
+> > +};
+> > +
+> > +/* Configuration data for IPAv2.5 */
+> > +const struct ipa_data ipa_data_v2_5  =3D {
+> > +	.version	=3D IPA_VERSION_2_5,
+> > +	.endpoint_count	=3D ARRAY_SIZE(ipa_endpoint_data),
+> > +	.endpoint_data	=3D ipa_endpoint_data,
+> > +	.mem_data	=3D &ipa_mem_data_v2_5,
+> > +	.power_data	=3D &ipa_power_data,
+> > +};
+> > +
+> > +/* IPA-resident memory region configuration for v2.6L */
+> > +static const struct ipa_mem ipa_mem_local_data_v2_6L[IPA_MEM_COUNT] =
+=3D {
+> > +	{
+> > +		.id		=3D IPA_MEM_UC_SHARED,
+> > +		.offset         =3D 0,
+> > +		.size           =3D 0x80,
+> > +		.canary_count   =3D 0,
+> > +	},
+> > +	{
+> > +		.id 		=3D IPA_MEM_UC_INFO,
+> > +		.offset		=3D 0x0080,
+> > +		.size		=3D 0x0200,
+> > +		.canary_count	=3D 0,
+> > +	},
+> > +	{
+> > +		.id		=3D IPA_MEM_V4_FILTER,
+> > +		.offset		=3D 0x0288,
+> > +		.size		=3D 0x0058,
+> > +		.canary_count	=3D 2,
+> > +	},
+> > +	{
+> > +		.id		=3D IPA_MEM_V6_FILTER,
+> > +		.offset		=3D 0x02e8,
+> > +		.size		=3D 0x0058,
+> > +		.canary_count	=3D 2,
+> > +	},
+> > +	{
+> > +		.id		=3D IPA_MEM_V4_ROUTE,
+> > +		.offset		=3D 0x0348,
+> > +		.size		=3D 0x003c,
+> > +		.canary_count	=3D 2,
+> > +	},
+> > +	{
+> > +		.id		=3D IPA_MEM_V6_ROUTE,
+> > +		.offset		=3D 0x0388,
+> > +		.size		=3D 0x003c,
+> > +		.canary_count	=3D 1,
+> > +	},
+> > +	{
+> > +		.id		=3D IPA_MEM_MODEM_HEADER,
+> > +		.offset		=3D 0x03c8,
+> > +		.size		=3D 0x0140,
+> > +		.canary_count	=3D 1,
+> > +	},
+> > +	{
+> > +		.id		=3D IPA_MEM_ZIP,
+> > +		.offset		=3D 0x0510,
+> > +		.size		=3D 0x0200,
+> > +		.canary_count	=3D 2,
+> > +	},
+> > +	{
+> > +		.id		=3D IPA_MEM_MODEM,
+> > +		.offset		=3D 0x0714,
+> > +		.size		=3D 0x18e8,
+> > +		.canary_count	=3D 1,
+> > +	},
+> > +	{
+> > +		.id		=3D IPA_MEM_END_MARKER,
+> > +		.offset		=3D 0x2000,
+> > +		.size		=3D 0,
+> > +		.canary_count	=3D 1,
+> > +	},
+> > +};
+> > +
+> > +static struct ipa_mem_data ipa_mem_data_v2_6L =3D {
+> > +	.local		=3D ipa_mem_local_data_v2_6L,
+> > +	.smem_id	=3D 497,
+> > +	.smem_size	=3D 0x00002000,
+> > +};
+> > +
+> > +/* Configuration data for IPAv2.6L */
+> > +const struct ipa_data ipa_data_v2_6L  =3D {
+> > +	.version	=3D IPA_VERSION_2_6L,
+> > +	/* Unfortunately we don't know what this BCR value corresponds to */
+> > +	.backward_compat =3D 0x1fff7f,
+> > +	.endpoint_count	=3D ARRAY_SIZE(ipa_endpoint_data),
+> > +	.endpoint_data	=3D ipa_endpoint_data,
+> > +	.mem_data	=3D &ipa_mem_data_v2_6L,
+> > +	.power_data	=3D &ipa_power_data,
+> > +};
+> > diff --git a/drivers/net/ipa/ipa_data-v3.1.c b/drivers/net/ipa/ipa_data=
+-v3.1.c
+> > index 06ddb85f39b2..12d231232756 100644
+> > --- a/drivers/net/ipa/ipa_data-v3.1.c
+> > +++ b/drivers/net/ipa/ipa_data-v3.1.c
+> > @@ -6,7 +6,7 @@
 > >  =20
-> > -	/* Nothing to report for the compression table (zip_tbl_info) */
-> > +	mem =3D &ipa->mem[IPA_MEM_ZIP];
-> > +	if (mem->size) {
-> > +		req.zip_tbl_info_valid =3D 1;
-> > +		req.zip_tbl_info.start =3D ipa->mem_offset + mem->offset;
-> > +		req.zip_tbl_info.end =3D ipa->mem_offset + mem->size - 1;
-> > +	}
+> >   #include <linux/log2.h>
 > >  =20
-> >   	mem =3D ipa_mem_find(ipa, IPA_MEM_V4_ROUTE_HASHED);
-> >   	if (mem->size) {
-> > @@ -525,6 +535,21 @@ int ipa_qmi_setup(struct ipa *ipa)
-> >   	return ret;
+> > -#include "gsi.h"
+> > +#include "ipa_dma.h"
+> >   #include "ipa_data.h"
+> >   #include "ipa_endpoint.h"
+> >   #include "ipa_mem.h"
+> > diff --git a/drivers/net/ipa/ipa_data.h b/drivers/net/ipa/ipa_data.h
+> > index 7d62d49f414f..e7ce2e9388b6 100644
+> > --- a/drivers/net/ipa/ipa_data.h
+> > +++ b/drivers/net/ipa/ipa_data.h
+> > @@ -301,6 +301,9 @@ struct ipa_data {
+> >   	const struct ipa_power_data *power_data;
+> >   };
+> >  =20
+> > +extern const struct ipa_data ipa_data_v2_0;
+> > +extern const struct ipa_data ipa_data_v2_5;
+> > +extern const struct ipa_data ipa_data_v2_6L;
+> >   extern const struct ipa_data ipa_data_v3_1;
+> >   extern const struct ipa_data ipa_data_v3_5_1;
+> >   extern const struct ipa_data ipa_data_v4_2;
+> > diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
+> > index b437fbf95edf..3ae5c5c6734b 100644
+> > --- a/drivers/net/ipa/ipa_main.c
+> > +++ b/drivers/net/ipa/ipa_main.c
+> > @@ -560,6 +560,18 @@ static int ipa_firmware_load(struct device *dev)
 > >   }
 > >  =20
-> > +/* With IPA v2 modem is not required to send DRIVER_INIT_COMPLETE requ=
-est to AP.
-> > + * We start operation as soon as IPA_UC_RESPONSE_INIT_COMPLETED irq is=
- triggered.
-> > + */
-> > +void ipa_qmi_signal_uc_loaded(struct ipa *ipa)
-> > +{
-> > +	struct ipa_qmi *ipa_qmi =3D &ipa->qmi;
-> > +
-> > +	/* This is needed only on IPA 2.x */
-> > +	if (ipa->version > IPA_VERSION_2_6L)
-> > +		return;
-> > +
-> > +	ipa_qmi->uc_ready =3D true;
-> > +	ipa_qmi_ready(ipa_qmi);
-> > +}
-> > +
-> >   /* Tear down IPA QMI handles */
-> >   void ipa_qmi_teardown(struct ipa *ipa)
+> >   static const struct of_device_id ipa_match[] =3D {
+> > +	{
+> > +		.compatible	=3D "qcom,ipa-v2.0",
+> > +		.data		=3D &ipa_data_v2_0,
+> > +	},
+> > +	{
+> > +		.compatible	=3D "qcom,msm8996-ipa",
+> > +		.data		=3D &ipa_data_v2_5,
+> > +	},
+> > +	{
+> > +		.compatible	=3D "qcom,msm8953-ipa",
+> > +		.data		=3D &ipa_data_v2_6L,
+> > +	},
+> >   	{
+> >   		.compatible	=3D "qcom,msm8998-ipa",
+> >   		.data		=3D &ipa_data_v3_1,
+> > @@ -632,6 +644,9 @@ static void ipa_validate_build(void)
+> >   static bool ipa_version_valid(enum ipa_version version)
 > >   {
-> > diff --git a/drivers/net/ipa/ipa_qmi.h b/drivers/net/ipa/ipa_qmi.h
-> > index 856ef629ccc8..4962d88b0d22 100644
-> > --- a/drivers/net/ipa/ipa_qmi.h
-> > +++ b/drivers/net/ipa/ipa_qmi.h
-> > @@ -55,6 +55,16 @@ struct ipa_qmi {
-> >    */
-> >   int ipa_qmi_setup(struct ipa *ipa);
-> >  =20
-> > +/**
-> > + * ipa_qmi_signal_uc_loaded() - Signal that the UC has been loaded
-> > + * @ipa:		IPA pointer
-> > + *
-> > + * This is called when the uc indicates that it is ready. This exists,=
- because
-> > + * on IPA v2.x, the modem does not send a DRIVER_INIT_COMPLETED. Thus =
-we have
-> > + * to rely on the uc's INIT_COMPLETED response to know if it was initi=
-alized
-> > + */
-> > +void ipa_qmi_signal_uc_loaded(struct ipa *ipa);
-> > +
-> >   /**
-> >    * ipa_qmi_teardown() - Tear down IPA QMI handles
-> >    * @ipa:		IPA pointer
+> >   	switch (version) {
+> > +	case IPA_VERSION_2_0:
+> > +	case IPA_VERSION_2_5:
+> > +	case IPA_VERSION_2_6L:
+> >   	case IPA_VERSION_3_0:
+> >   	case IPA_VERSION_3_1:
+> >   	case IPA_VERSION_3_5:
+> > diff --git a/drivers/net/ipa/ipa_sysfs.c b/drivers/net/ipa/ipa_sysfs.c
+> > index ff61dbdd70d8..f5d159f6bc06 100644
+> > --- a/drivers/net/ipa/ipa_sysfs.c
+> > +++ b/drivers/net/ipa/ipa_sysfs.c
+> > @@ -14,6 +14,12 @@
+> >   static const char *ipa_version_string(struct ipa *ipa)
+> >   {
+> >   	switch (ipa->version) {
+> > +	case IPA_VERSION_2_0:
+> > +		return "2.0";
+> > +	case IPA_VERSION_2_5:
+> > +		return "2.5";
+> > +	case IPA_VERSION_2_6L:
+> > +		"return 2.6L";
+> >   	case IPA_VERSION_3_0:
+> >   		return "3.0";
+> >   	case IPA_VERSION_3_1:
 > >=20
 
