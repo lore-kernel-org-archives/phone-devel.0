@@ -2,113 +2,142 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7149C43217
-	for <phone-devel@archiver.kernel.org>; Mon, 18 Oct 2021 12:56:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 932C6C433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Oct 2021 16:16:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9E0F46103C
-	for <phone-devel@archiver.kernel.org>; Mon, 18 Oct 2021 12:56:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 76669610C7
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Oct 2021 16:16:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231718AbhJRM6b (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 18 Oct 2021 08:58:31 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:18822 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230526AbhJRM6a (ORCPT
+        id S232253AbhJRQSe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 18 Oct 2021 12:18:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45714 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231768AbhJRQSe (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 18 Oct 2021 08:58:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1634561774;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=OqccIkY4i1t4VJRk9mPtA2mqAlP8NFJGUylFRJUf6so=;
-    b=emhYqEC1M0Czer1t0/DniSH/7MJn6qmwkRVR+AIC9QU0Kgdgr/ysxF0cFISY2nntww
-    ZGo9fiSp87F4bYLp28466WnF7UQtpQ3xsSJtyNQVT+fBG/be9UYjFMqDa8D3Ydl7HwU0
-    KK5CKMC9820YJZH5jxjq2IIbS432RyqVHsO9pq0XnUbwa7leL2WWwuNvDsLznupg3VjZ
-    KoPH3Ktl7HRMmOFvxVehv9c1ZAAA8BPRRtYXE1N1P1MH16TSK7yJ8jW+SyAYso2JjxIm
-    04GKNPzezm6VMPbvZM8X+PydhmpMLcpF9pg99PBc7jEfl2srVf81yAzpvbxNCHf0u8/v
-    BW5Q==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u267FZF9PwpcNKLVrKw5+aY="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 47.33.8 AUTH)
-    with ESMTPSA id 301038x9ICuAWJs
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Mon, 18 Oct 2021 14:56:10 +0200 (CEST)
-Date:   Mon, 18 Oct 2021 14:56:05 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Bhupesh Sharma <bhupesh.sharma@linaro.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Aleksander Morgado <aleksander@aleksander.es>,
-        netdev@vger.kernel.org, MSM <linux-arm-msm@vger.kernel.org>,
-        dmaengine@vger.kernel.org, devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Subject: Re: [PATCH net-next v2 1/4] dt-bindings: dmaengine: bam_dma: Add
- "powered remotely" mode
-Message-ID: <YW1u5UlmrypFxp9C@gerhold.net>
-References: <20211011141733.3999-1-stephan@gerhold.net>
- <20211011141733.3999-2-stephan@gerhold.net>
- <CAH=2NtwH9kmZBMsOkZkwiuN2mpmOTiAVtw3zC2O4xNdCgG8P4w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAH=2NtwH9kmZBMsOkZkwiuN2mpmOTiAVtw3zC2O4xNdCgG8P4w@mail.gmail.com>
+        Mon, 18 Oct 2021 12:18:34 -0400
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 446A6C06161C;
+        Mon, 18 Oct 2021 09:16:23 -0700 (PDT)
+Received: by mail-pg1-x535.google.com with SMTP id t7so2292808pgl.9;
+        Mon, 18 Oct 2021 09:16:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:content-transfer-encoding:subject:from:to:cc:date
+         :message-id:in-reply-to;
+        bh=SwEuwCnXiV80SDJdClsOIhkNBmpbMyPtKGwWzGdE5yc=;
+        b=oB6C5Ty03ZxOBOZsbmna53g8YKpZvIPAa/MJ53ylUc8+mVWu2cMEgAQDvewuV/mQmW
+         d1aam6+5Lqlose6GRA7YO21xvzukxCTW9Dd9VYkWB1R1QjynOa2ISuYeuGy/7UD6X+Si
+         +t0XtPQZbmKE/gymbAIETgIvH+bcOweq/sd/4YieFdCvGcQ27gUiG0Jw0XmI7TB28Fqk
+         PP0tiPnwVCjIHGyn2KAXhbklR3kkek1j3fHCByYeCd9D6AFBV+pP9wRhmFb4lPZMFbGg
+         q6DdWCJXoF3hlDs9RyHn5ZKy/sy64xzSC1G6h2WpsbuNZ1H6f8XgicG1GOBhQIhk2zY7
+         /hfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:content-transfer-encoding:subject
+         :from:to:cc:date:message-id:in-reply-to;
+        bh=SwEuwCnXiV80SDJdClsOIhkNBmpbMyPtKGwWzGdE5yc=;
+        b=ufMDIzAE42i/k+rIGPkSI5OANwSUONJT6d3WXCt+JdIfDzPRvAvjzJtVi5b+NXHvbr
+         AJt7VW8e7tuyt0osPwYmFkS0JKGE1awyx5SjLbTvl5vLiaq6wk2SeSSTETYsQiHrnzcm
+         x8NeQf8g7PK6BM3FI+CCYsImsePiO3NyXHHQBP6q43cDs3H7yUrjd3TtWrEC18fWw042
+         J3rGOBFpStahcVtccvOMpfJY0ux5WeWbj/4tzjqoayl2eiD1GLtJqWmvvReSbhm4VGgR
+         Io+pTdrc6vjl4X2sPlt1i0iJX3RCUvW63wMsj5o1n7UwpA2A/PpeBx6LGnKWg4chdAfe
+         6UUw==
+X-Gm-Message-State: AOAM533TzvfLFc5Gd+gPaIkaHNOMNCoOASde6/Ag7yV9BIj4Ci9UzvVE
+        LP+tA9UAbyPQQMVMMAGyGD4=
+X-Google-Smtp-Source: ABdhPJzmiqjJ4gQv1OofM3fUMnZH1cZxOPi++IeGD51mIIqGPptPWRApZZerHodnI84/UmbpxxG6pQ==
+X-Received: by 2002:a62:7b87:0:b0:44d:3e28:a2ac with SMTP id w129-20020a627b87000000b0044d3e28a2acmr29942629pfc.67.1634573782720;
+        Mon, 18 Oct 2021 09:16:22 -0700 (PDT)
+Received: from localhost ([117.200.53.211])
+        by smtp.gmail.com with ESMTPSA id t14sm19592807pjl.10.2021.10.18.09.16.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Oct 2021 09:16:22 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Subject: Re: [RFC PATCH 01/17] net: ipa: Correct ipa_status_opcode
+ enumeration
+From:   "Sireesh Kodali" <sireeshkodali1@gmail.com>
+To:     "Alex Elder" <elder@ieee.org>, <phone-devel@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <elder@kernel.org>
+Cc:     "Vladimir Lypak" <vladimir.lypak@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Jakub Kicinski" <kuba@kernel.org>
+Date:   Mon, 18 Oct 2021 21:42:04 +0530
+Message-Id: <CF2NYEUKQORV.3GXBPSZ0DT1BM@skynet-linux>
+In-Reply-To: <132dbed4-0dc9-a198-218f-90d44deb5d03@ieee.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Oct 18, 2021 at 05:04:31PM +0530, Bhupesh Sharma wrote:
-> On Mon, 11 Oct 2021 at 20:12, Stephan Gerhold <stephan@gerhold.net> wrote:
-> >
-> > In some configurations, the BAM DMA controller is set up by a remote
-> > processor and the local processor can simply start making use of it
-> > without setting up the BAM. This is already supported using the
-> > "qcom,controlled-remotely" property.
-> >
-> > However, for some reason another possible configuration is that the
-> > remote processor is responsible for powering up the BAM, but we are
-> > still responsible for initializing it (e.g. resetting it etc). Add
-> > a "qcom,powered-remotely" property to describe that configuration.
-> >
-> > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+On Thu Oct 14, 2021 at 3:58 AM IST, Alex Elder wrote:
+> On 9/19/21 10:07 PM, Sireesh Kodali wrote:
+> > From: Vladimir Lypak <vladimir.lypak@gmail.com>
+> >=20
+> > The values in the enumaration were defined as bitmasks (base 2 exponent=
+s of
+> > actual opcodes). Meanwhile, it's used not as bitmask
+> > ipa_endpoint_status_skip and ipa_status_formet_packet functions (compar=
+ed
+> > directly with opcode from status packet). This commit converts these va=
+lues
+> > to actual hardware constansts.
+> >=20
+> > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+> > Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
 > > ---
-> > Changes since RFC:
-> >   - Rename qcom,remote-power-collapse -> qcom,powered-remotely
-> >     for consistency with "qcom,controlled-remotely"
-> >
-> > NOTE: This is *not* a compile-time requirement for the BAM-DMUX driver
-> >       so this could also go through the dmaengine tree.
-> >
-> > Also note that there is an ongoing effort to convert these bindings
-> > to DT schema but sadly there were not any updates for a while. :/
-> > https://lore.kernel.org/linux-arm-msm/20210519143700.27392-2-bhupesh.sharma@linaro.org/
-> 
-> Seems you missed the latest series posted last week - [1]. Sorry I got
-> a bit delayed posting it due to being caught up in other patches.
-> 
-> Maybe you can rebase your patch on the same and use the YAML bindings
-> for the qcom,bam_dma controller.
-> 
-> [1]. https://lore.kernel.org/linux-arm-msm/20211013105541.68045-1-bhupesh.sharma@linaro.org/T/#t
-> 
+> >   drivers/net/ipa/ipa_endpoint.c | 8 ++++----
+> >   1 file changed, 4 insertions(+), 4 deletions(-)
+> >=20
+> > diff --git a/drivers/net/ipa/ipa_endpoint.c b/drivers/net/ipa/ipa_endpo=
+int.c
+> > index 5528d97110d5..29227de6661f 100644
+> > --- a/drivers/net/ipa/ipa_endpoint.c
+> > +++ b/drivers/net/ipa/ipa_endpoint.c
+> > @@ -41,10 +41,10 @@
+> >  =20
+> >   /** enum ipa_status_opcode - status element opcode hardware values */
+> >   enum ipa_status_opcode {
+> > -	IPA_STATUS_OPCODE_PACKET		=3D 0x01,
+> > -	IPA_STATUS_OPCODE_DROPPED_PACKET	=3D 0x04,
+> > -	IPA_STATUS_OPCODE_SUSPENDED_PACKET	=3D 0x08,
+> > -	IPA_STATUS_OPCODE_PACKET_2ND_PASS	=3D 0x40,
+> > +	IPA_STATUS_OPCODE_PACKET		=3D 0,
+> > +	IPA_STATUS_OPCODE_DROPPED_PACKET	=3D 2,
+> > +	IPA_STATUS_OPCODE_SUSPENDED_PACKET	=3D 3,
+> > +	IPA_STATUS_OPCODE_PACKET_2ND_PASS	=3D 6,
+>
+> I haven't looked at how these symbols are used (whether you
+> changed it at all), but I'm pretty sure this is wrong.
+>
+> The downstream tends to define "soft" symbols that must
+> be mapped to their hardware equivalent values. So for
+> example you might find a function ipa_pkt_status_parse()
+> that translates between the hardware status structure
+> and the abstracted "soft" status structure. In that
+> function you see, for example, that hardware status
+> opcode 0x1 is translated to IPAHAL_PKT_STATUS_OPCODE_PACKET,
+> which downstream is defined to have value 0.
+>
+> In many places the upstream code eliminates that layer
+> of indirection where possible. So enumerated constants
+> are assigned specific values that match what the hardware
+> uses.
+>
 
-Ah, you're right sorry! Seems like you sent it two days after I sent the
-v2 of this patch. Thanks a lot for continuing work on this! :)
+Looking at these again, I realised this patch is indeed wrong...
+The status values are different on v2 and v3+. I guess the correct
+approach here would be to use an inline function and pick the correct
+status opcode, like how its handled for register defintions.
 
-Since I already sent v3 of this patch earlier, I think it is best if
-I wait a bit first and see if Vinod has any comments or still wants to
-take it for 5.16. Should be simple to rebase either of our patches on
-the other one.
+Regards,
+Sireesh
 
-Thanks!
-Stephan
+> -Alex
+>
+> >   };
+> >  =20
+> >   /** enum ipa_status_exception - status element exception type */
+> >=20
+
