@@ -2,163 +2,141 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4E42C433F5
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Oct 2021 12:14:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E42CC433FE
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Oct 2021 13:20:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BBBB061378
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Oct 2021 12:14:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id ED2F5613A4
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Oct 2021 13:20:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235415AbhJSMRF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Oct 2021 08:17:05 -0400
-Received: from comms.puri.sm ([159.203.221.185]:50388 "EHLO comms.puri.sm"
+        id S235858AbhJSNWW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Oct 2021 09:22:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58428 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230129AbhJSMRC (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Oct 2021 08:17:02 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id BD63BDF8A3;
-        Tue, 19 Oct 2021 05:14:19 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id woGARjsew7sL; Tue, 19 Oct 2021 05:14:19 -0700 (PDT)
-Date:   Tue, 19 Oct 2021 14:14:12 +0200
-From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-To:     Steve Longerbeam <slongerbeam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@puri.sm, phone-devel@vger.kernel.org
-Subject: [PATCHv3 4/4] media: imx: Use dedicated format handler for i.MX7/8
-Message-ID: <20211019120047.827915-4-dorota.czaplejewicz@puri.sm>
-In-Reply-To: <20211019120047.827915-1-dorota.czaplejewicz@puri.sm>
-References: <20211019120047.827915-1-dorota.czaplejewicz@puri.sm>
-Organization: Purism
+        id S231563AbhJSNWV (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 19 Oct 2021 09:22:21 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7AAF1610E7;
+        Tue, 19 Oct 2021 13:20:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634649608;
+        bh=xGEIDfi1JKH3eqvvi6gZj8PD5RM7Y9UpbqwvaVzs/Wo=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=m49h4VW6MoCd4zMCdev/m86jNWKuJXK1Pvme1TuC3s7014zUBOYNyR0oDjYStrz6h
+         HcGQ3SsdxazHbz+uU7eyGedc0n58OXoh9hWtnzJP3mFb+T4F8bC5TBftgPhjALJsAa
+         UmT5EKpoEXNh9lU4lG/uDCByq5+sY8uHY9gQXCTB0+YqyElgM9IoBOUMHVRdcYcAY2
+         aKssdW17ZWuW9g5wd+XRVoBk9ndAmAVWY0/O7y992m/ewf6T1/8JSCe2zbkzBaVuxR
+         VvLaA4qhc0hOINVPN8nU58AT/0VOW96gBOkPway5Lz7KAYBR/CnvcGU430bvMNKmQO
+         kojxFIc+kLPmA==
+Received: by mail-ed1-f45.google.com with SMTP id a25so12763134edx.8;
+        Tue, 19 Oct 2021 06:20:08 -0700 (PDT)
+X-Gm-Message-State: AOAM531yp/c+Y2E8ypiSWONOxsy3RlCTKCTn50xiIc/6aUtTVkpsthy6
+        /1aBN92EBvYuF7BgRo8GYo+IAXLMlHY1QRdynQ==
+X-Google-Smtp-Source: ABdhPJwuCT2accakT1n8HM9H8FZqhzJoiBD2H7LJdGtKC3BtNmJwjl0n52dVamz1Jg6FtFki6Znb7OXYl78LT011sgY=
+X-Received: by 2002:a17:906:c350:: with SMTP id ci16mr36562486ejb.466.1634649595458;
+ Tue, 19 Oct 2021 06:19:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/OrfD4L/d0u/BfKgT0T7LQaI";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+References: <20211011141733.3999-1-stephan@gerhold.net> <20211011141733.3999-4-stephan@gerhold.net>
+ <YW3XgaiT2jBv4D+L@robh.at.kernel.org> <YW5t01Su5ycLm67c@gerhold.net>
+In-Reply-To: <YW5t01Su5ycLm67c@gerhold.net>
+From:   Rob Herring <robh@kernel.org>
+Date:   Tue, 19 Oct 2021 08:19:42 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLWV56ehsT2HHpg_qCDxhWmTHgCQoKgZLot_Q8xCdF-OA@mail.gmail.com>
+Message-ID: <CAL_JsqLWV56ehsT2HHpg_qCDxhWmTHgCQoKgZLot_Q8xCdF-OA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 3/4] dt-bindings: net: Add schema for Qualcomm BAM-DMUX
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Aleksander Morgado <aleksander@aleksander.es>,
+        netdev <netdev@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        "open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" 
+        <dmaengine@vger.kernel.org>, devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
+        Shevchenko <andy.shevchenko@gmail.com>," 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
---Sig_/OrfD4L/d0u/BfKgT0T7LQaI
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Tue, Oct 19, 2021 at 2:03 AM Stephan Gerhold <stephan@gerhold.net> wrote:
+>
+> On Mon, Oct 18, 2021 at 03:22:25PM -0500, Rob Herring wrote:
+> > On Mon, Oct 11, 2021 at 04:17:35PM +0200, Stephan Gerhold wrote:
+> > > The BAM Data Multiplexer provides access to the network data channels of
+> > > modems integrated into many older Qualcomm SoCs, e.g. Qualcomm MSM8916 or
+> > > MSM8974. It is built using a simple protocol layer on top of a DMA engine
+> > > (Qualcomm BAM) and bidirectional interrupts to coordinate power control.
+> > >
+> > > The device tree node combines the incoming interrupt with the outgoing
+> > > interrupts (smem-states) as well as the two DMA channels, which allows
+> > > the BAM-DMUX driver to request all necessary resources.
+> > >
+> > > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> > > ---
+> > > Changes since RFC: None.
+> > > ---
+> > >  .../bindings/net/qcom,bam-dmux.yaml           | 87 +++++++++++++++++++
+> > >  1 file changed, 87 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml b/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
+> > > new file mode 100644
+> > > index 000000000000..33e125e70cb4
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml
+> > > @@ -0,0 +1,87 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/net/qcom,bam-dmux.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Qualcomm BAM Data Multiplexer
+> > > +
+> > > +maintainers:
+> > > +  - Stephan Gerhold <stephan@gerhold.net>
+> > > +
+> > > +description: |
+> > > +  The BAM Data Multiplexer provides access to the network data channels
+> > > +  of modems integrated into many older Qualcomm SoCs, e.g. Qualcomm MSM8916
+> > > +  or MSM8974. It is built using a simple protocol layer on top of a DMA engine
+> > > +  (Qualcomm BAM DMA) and bidirectional interrupts to coordinate power control.
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    const: qcom,bam-dmux
+> >
+> > Is this block the same on every SoC? It needs to be SoC specific.
+> >
+>
+> Hm, I think describing it as *SoC*-specific wouldn't be accurate:
+> This node does not describe any hardware block, it's more a "firmware
+> convention". The only hardware involved is the BAM DMA engine, which
+> already has SoC/IP-specific compatibles in its own device tree node.
+>
+> This means that if anything there should be "firmware version"-specific
+> compatibles, because one SoC might have different (typically signed)
+> firmware versions that provide slightly different functionality.
+> However, I have to admit that I'm not familiar enough with the different
+> firmware versions to come up with a reasonable naming schema for the
+> compatible. :/
+>
+> In general, I cannot think of any difference between different versions
+> that would matter to a driver. The protocol is quite simple, and minor
+> firmware differences can be better handled through the control channel
+> that sets up the connection for the modem.
+>
+> Does that make sense?
 
-This splits out a format handler which takes into account
-the capabilities of the i.MX7/8 video device,
-as opposed to the default handler compatible with both i.MX5/6 and i.MX7/8.
+Okay. Please add some of the above details to the binding.
 
-Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
----
- drivers/staging/media/imx/imx-media-utils.c | 56 +++++++++++++++++++--
- 1 file changed, 52 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/=
-media/imx/imx-media-utils.c
-index 8b5c6bcfd4fa..1ff7ec4c877a 100644
---- a/drivers/staging/media/imx/imx-media-utils.c
-+++ b/drivers/staging/media/imx/imx-media-utils.c
-@@ -516,10 +516,9 @@ void imx_media_try_colorimetry(struct v4l2_mbus_framef=
-mt *tryfmt,
- }
- EXPORT_SYMBOL_GPL(imx_media_try_colorimetry);
-=20
--int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
--				  const struct v4l2_mbus_framefmt *mbus,
--				  const struct imx_media_pixfmt *cc,
--				  enum imx_media_device_type type)
-+static int imx56_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
-+					   const struct v4l2_mbus_framefmt *mbus,
-+					   const struct imx_media_pixfmt *cc)
- {
- 	u32 width;
- 	u32 stride;
-@@ -568,6 +567,55 @@ int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_form=
-at *pix,
-=20
- 	return 0;
- }
-+
-+static int imx78_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
-+					   const struct v4l2_mbus_framefmt *mbus,
-+					   const struct imx_media_pixfmt *cc)
-+{
-+	int ret;
-+
-+	if (!cc)
-+		cc =3D imx_media_find_mbus_format(mbus->code, PIXFMT_SEL_ANY);
-+
-+	/*
-+	 * The hardware can handle line lengths divisible by 4 pixels
-+	 * as long as the whole buffer size ends up divisible by 8 bytes.
-+	 * If not, use the value of 8 pixels recommended in the datasheet.
-+	 */
-+	ret =3D v4l2_fill_pixfmt(pix, cc->fourcc,
-+			       round_up(mbus->width, 4), mbus->height);
-+	if (ret)
-+		return ret;
-+
-+	/* Only 8bits-per-pixel formats may need to get aligned to 8 pixels,
-+	 * because both 10-bit and 16-bit pixels occupy 2 bytes.
-+	 * In those, 4-pixel aligmnent is equal to 8-byte alignment.
-+	 */
-+	if (pix->sizeimage % 8 !=3D 0)
-+		ret =3D v4l2_fill_pixfmt(pix, cc->fourcc,
-+				       round_up(mbus->width, 8), mbus->height);
-+
-+	pix->colorspace =3D mbus->colorspace;
-+	pix->xfer_func =3D mbus->xfer_func;
-+	pix->ycbcr_enc =3D mbus->ycbcr_enc;
-+	pix->quantization =3D mbus->quantization;
-+	pix->field =3D mbus->field;
-+
-+	return ret;
-+}
-+
-+int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
-+				  const struct v4l2_mbus_framefmt *mbus,
-+				  const struct imx_media_pixfmt *cc,
-+				  enum imx_media_device_type type) {
-+	switch (type) {
-+	case DEVICE_TYPE_IMX56:
-+		return imx56_media_mbus_fmt_to_pix_fmt(pix, mbus, cc);
-+	case DEVICE_TYPE_IMX78:
-+		return imx78_media_mbus_fmt_to_pix_fmt(pix, mbus, cc);
-+	}
-+	return -EINVAL;
-+}
- EXPORT_SYMBOL_GPL(imx_media_mbus_fmt_to_pix_fmt);
-=20
- void imx_media_free_dma_buf(struct device *dev,
---=20
-2.31.1
-
-
---Sig_/OrfD4L/d0u/BfKgT0T7LQaI
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmFutpQACgkQADBpX4S8
-Znedzw//bzwh5zl4ZO7nmbF0ECF891A7VSwTcttePok80enVZxZqQhpYKydrNgEI
-BldE0MyfcP5oJ0RHLqiEDDDi/e+wkS2p2bddmvzGHCXjm3ITCd0+Hfu3LOY6DJsC
-qIbNYz3i9NGOkbfcxj6zW3Fq8+U/XouOTO+zwpqOKxCHQbLa3FWvkdhfFngah0gb
-oIul+P43EGoZcrxL37oMvYXIvVOcIIE29m2ThVWQAdI2iTDBvFq7iHxZ37qF712Y
-7PgDt0E/U8upIQtO/UFqpluI1yZe7byNc6cwR5CHYupw0fc/VL040RYAS3HlbVV1
-DC9p8RPSML5x/tQMsm+LblF0izwlZg5I5o/s+ZOoQySqccNWJg3lADVrZTLexmHM
-MavzC8UiXsW6iI+ByZVvxLHVOvhlcqQcYqoAsMj9z/XEqmMuaRV8MB3Z1bkd1VEk
-1/okpyeRZRzzcBT6Dd1fzfKKWVd8YVWneJgdbjZFOjpIh7ZEVVnrUAXWKjNOIJyW
-JW1Q85POxP3LfIRJk30WgOyAmpht5q3B2uSZEHVUC/VzgPXNMY+VqQSd6hl0q6uB
-uwxouUd73ucpf/CrnT/sgHhnikB0OXnjGlWOfLYkbrkcZAHnPgRbAif7q12TXC88
-xEumN1x95efo6q6gDxf50SEzX651fDSPCGsRE4lueofS44MbkGs=
-=tgUC
------END PGP SIGNATURE-----
-
---Sig_/OrfD4L/d0u/BfKgT0T7LQaI--
+Rob
