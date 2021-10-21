@@ -2,104 +2,88 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A293AC433FE
-	for <phone-devel@archiver.kernel.org>; Wed, 20 Oct 2021 17:24:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3564EC433FE
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Oct 2021 09:24:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8BA7F6139F
-	for <phone-devel@archiver.kernel.org>; Wed, 20 Oct 2021 17:24:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 17F24610EA
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Oct 2021 09:24:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230357AbhJTR1B (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 20 Oct 2021 13:27:01 -0400
-Received: from mail-0201.mail-europe.com ([51.77.79.158]:51282 "EHLO
-        mail-0201.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230031AbhJTR1B (ORCPT
+        id S231513AbhJUJ1C (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 21 Oct 2021 05:27:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52938 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231490AbhJUJ1B (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 20 Oct 2021 13:27:01 -0400
-Date:   Wed, 20 Oct 2021 17:24:32 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1634750682;
-        bh=77z2TAz6twFFcjLPzt2kV+UKOHbqTBnqrqy+N6bDW/k=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=qOeFKyQBfqHLSTz41MPxXFO6A2WHcVu9xLb1iy0dUDXfupgvOpbI1jDcH5g8TQcRR
-         trg2pWpGlpFJ0UQOkSjgdl6JCaMR8wQHaqCSJ0pHhgUGbHQs1vZBaBGCmdjkn2yITo
-         a4PGmvE6E1IyGZQGZfpWAKr1OACp++rCbmHnVUhs=
-To:     Steev Klimaszewski <steev@kali.org>
-From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: Re: [PATCH] arm64: dts: qcom: sdm845-oneplus: enable second wifi channel
-Message-ID: <037d2bee-c04d-aa22-c8df-232dda4038a1@connolly.tech>
-In-Reply-To: <19359125-16fa-f9e0-1450-b0e9181064e1@kali.org>
-References: <20211020163557.291803-1-caleb@connolly.tech> <19359125-16fa-f9e0-1450-b0e9181064e1@kali.org>
+        Thu, 21 Oct 2021 05:27:01 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F9AC061753
+        for <phone-devel@vger.kernel.org>; Thu, 21 Oct 2021 02:24:45 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id a25so2495049edx.8
+        for <phone-devel@vger.kernel.org>; Thu, 21 Oct 2021 02:24:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=V5V3mrMbGu1ppi6ARFhGUSANkmRh+1a3b9M8ZtI/3z4=;
+        b=ddBd6V4x0LmBfVs0vWUySyZVPTrIMF1gV+CCLfHKHDKc3ECi5Fmd/GaH8SzbNtk/8A
+         EoM0ln1xJOL7zBl2ZRajrUOHvohw8Swt4OA8rIc81MlinO1h5+ySqYC+40rQ+NxBJfsh
+         0W40qXW4TCeVGiqmw6FLXQb2xzRF1kCnx91dmbldr1K5iDIOQbiXILBBSJU5buxK2Cwh
+         VWqaUnwpsfR00unKVDXvsRI02792Ajy/YXTWrpOAm53ZkbAG59myMlmtriBJvvSlUxNN
+         9eDOkMTVaO29cfs+bdSZS97QtQnH5ut5qvCIgjRS1bZE3Yqdq/vwThRvauytwAAi9T50
+         a0Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=V5V3mrMbGu1ppi6ARFhGUSANkmRh+1a3b9M8ZtI/3z4=;
+        b=NddZYAaDoKnWi04pKhcEWK8a6zWJh5sPOmHhFvG8qQihgaJFgmZOQu9BdJY/tF/hf4
+         vH6iCxMH2hU5dB+kXjZ6sAU3i5N9t0sFuoXbqOosO2M/L5K+6//XwPMtxVAPZkD+Ewfu
+         75BmF+vb5BRUaK5a9n3sp0+UDBbPzuQ2A82qpfDzuUyb5HiKYz9mWxa2bcwCqrD8uWp5
+         UfFEhfGZ6Xwb1vI8Q1g0JZymzEs5DQ/LIgzliQL3oseOCLMCFZrE5VUT4pVrsaPXUWmq
+         oCDHAlxJ70oOGsL7K2DXPLTdlKIzfhVCWmc4uAwvQhwVdzhzvK0vGFXlMgkoTUkWcDaj
+         Igww==
+X-Gm-Message-State: AOAM531yfNsfRBbrMmAd7v7bfuE4QdSPDjSSxx0tMU0W5i+eHzW48Xh2
+        XJAh6Urtwcvlxa17UgDq8A9y7w==
+X-Google-Smtp-Source: ABdhPJy8oS0zIhlGWv0DvQGXh9QF2VSWhQLKdi+HZnhxRaaHACjc9YqWyLKfLgZGT7KGPkEhCd2ssw==
+X-Received: by 2002:a17:906:8893:: with SMTP id ak19mr6013410ejc.124.1634808284520;
+        Thu, 21 Oct 2021 02:24:44 -0700 (PDT)
+Received: from [192.168.1.15] (hst-221-64.medicom.bg. [84.238.221.64])
+        by smtp.googlemail.com with ESMTPSA id t6sm2558168edj.27.2021.10.21.02.24.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Oct 2021 02:24:44 -0700 (PDT)
+Subject: Re: [PATCH 1/3] dt-bindings: media: venus: Add sdm660 dt schema
+To:     Rob Herring <robh@kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Cc:     mchehab@kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, martin.botka@somainline.org,
+        robh+dt@kernel.org, phone-devel@vger.kernel.org,
+        linux-media@vger.kernel.org, agross@kernel.org,
+        stanimir.varbanov@linaro.org, bjorn.andersson@linaro.org
+References: <20211008102119.268869-1-angelogioacchino.delregno@collabora.com>
+ <YW824G+mII83pjU5@robh.at.kernel.org>
+From:   Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Message-ID: <99a0bb09-6892-f103-6eb7-b6333b56090a@linaro.org>
+Date:   Thu, 21 Oct 2021 12:24:42 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
+In-Reply-To: <YW824G+mII83pjU5@robh.at.kernel.org>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Steev,
+Thanks Rob, I will push this through media tree.
 
-On 20/10/2021 18:13, Steev Klimaszewski wrote:
-> Hi Caleb,
->
-> On 10/20/21 11:36 AM, Caleb Connolly wrote:
->> Like the c630, the OnePlus 6 is also capable of using both antenna
->> channels for 2.4 and 5ghz wifi, however unlike the c630 only the first
->> channel is used for bluetooth.
->>
->> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
->> ---
->>    arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 7 +++++++
->>    1 file changed, 7 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/=
-arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> index d4355522374a..8bf2430a3af7 100644
->> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> @@ -248,6 +248,12 @@ vreg_l20a_2p95: ldo20 {
->>    =09=09=09regulator-initial-mode =3D <RPMH_REGULATOR_MODE_HPM>;
->>    =09=09};
->>
->> +=09=09vreg_l23a_3p3: ldo23 {
->> +=09=09=09regulator-min-microvolt =3D <3300000>;
->> +=09=09=09regulator-max-microvolt =3D <3312000>;
->> +=09=09=09regulator-initial-mode =3D <RPMH_REGULATOR_MODE_HPM>;
->> +=09=09};
->> +
->>    =09=09vdda_qusb_hs0_3p1:
->>    =09=09vreg_l24a_3p075: ldo24 {
->>    =09=09=09regulator-min-microvolt =3D <3088000>;
->> @@ -647,6 +653,7 @@ &wifi {
->>    =09vdd-1.8-xo-supply =3D <&vreg_l7a_1p8>;
->>    =09vdd-1.3-rfa-supply =3D <&vreg_l17a_1p3>;
->>    =09vdd-3.3-ch0-supply =3D <&vreg_l25a_3p3>;
->> +=09vdd-3.3-ch1-supply =3D <&vreg_l23a_3p3>;
->>
->>    =09qcom,snoc-host-cap-8bit-quirk;
->>    };
->> --
->> 2.33.1
->>
->>
-> Just for the record, I added it for completeness, as far as I can tell,
-> the bluetooth driver itself won't use the second channel.
-Ah I see, I can confirm that the bluetooth hardware is only connected to th=
-e first channel on the op6, so with wifi off
-the second antenna can also be turned off to save power without affecting b=
-luetooth signal strength.
->
->
-> -- steev
->
+On 10/20/21 12:21 AM, Rob Herring wrote:
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
---
-Kind Regards,
-Caleb
-
+-- 
+regards,
+Stan
