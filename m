@@ -2,255 +2,80 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D642C433F5
-	for <phone-devel@archiver.kernel.org>; Sun, 24 Oct 2021 17:30:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F199C433F5
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Oct 2021 21:08:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E028360FC3
-	for <phone-devel@archiver.kernel.org>; Sun, 24 Oct 2021 17:30:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E60A460F6F
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Oct 2021 21:08:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231863AbhJXRci (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 24 Oct 2021 13:32:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41872 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231877AbhJXRcg (ORCPT
+        id S239432AbhJZVKz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Oct 2021 17:10:55 -0400
+Received: from mail-ot1-f47.google.com ([209.85.210.47]:44733 "EHLO
+        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239420AbhJZVKu (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 24 Oct 2021 13:32:36 -0400
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F187C061227
-        for <phone-devel@vger.kernel.org>; Sun, 24 Oct 2021 10:30:13 -0700 (PDT)
-Received: by mail-ot1-x336.google.com with SMTP id l16-20020a9d6a90000000b0054e7ab56f27so11580358otq.12
-        for <phone-devel@vger.kernel.org>; Sun, 24 Oct 2021 10:30:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=HgGS/TvUDMG3fQx9yKOzke/c5Xu6vKp0j7mW0xSrxIs=;
-        b=WPX33eA6Cus/C/DS/Fhqhv1hc2HIccKxAURkdetkilrRWi6UoMsB6jaqZRJbgt9LFY
-         Nfw8nDbrrZBq9eRLTq60RRF3UMB8VwCcmng6GFRmr+brEOcI4plthFaWgSb6dSpfeRB5
-         UPG8r6EAw7qO7mTyVah6oLD8VrhqeJ7sL6oXHKfJQ2ZB1jv24bsrtYY5Fw3Cly1Iwr4r
-         Daypsu1akqHI1GKVnh32oCy+ihigTykW/XOYd9cjCiAIKqwEkkFIdIwGn5N/Yxh3rIbS
-         Y9eW9F5uUztm8mg8H4PmbAhOHwt03vNSUd2fZQbZ+UV5SKVRNQvi87FgnYo2g7Wou5dM
-         0OiQ==
+        Tue, 26 Oct 2021 17:10:50 -0400
+Received: by mail-ot1-f47.google.com with SMTP id d21-20020a9d4f15000000b0054e677e0ac5so513835otl.11;
+        Tue, 26 Oct 2021 14:08:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=HgGS/TvUDMG3fQx9yKOzke/c5Xu6vKp0j7mW0xSrxIs=;
-        b=IB522N+Ck0rv524Cc72qPmIEd+HVvNNftht1Vh+FSzL2OU4QDK14SnLRorjhsEhfXY
-         uG8o3BB1jVoQgkYkvWGi7WF6fLvc6/bdbc65s6Wx5uzGrqSNWfVHoQSmqJoSTHW1h8l7
-         DhfXzJ1ajLkzPGTN26gSOwxKoIDNhbB0Aa1W9eCgInuKLyOzpMREKzptSXRaAiizgVGF
-         pc//2w9ZRf2t2FrZjwITBzUbCG0icSb1VRFgALBFC93QmCDYIKQ9rqPI+6pNl4OHamKD
-         mtxAOkUMtssRCjTKBwHPpft5Gifal7Xqmtx+ohznuK1jXaAjvihUn3zK5tM0NqnUAOkM
-         jNdw==
-X-Gm-Message-State: AOAM5318KkGn8b8T1wcmwj+m4t7yC9QhFtrlXr/nC8xMKt2y2eX8EZUk
-        NKLJWiw5PsQj15jybV2UZzLJSA==
-X-Google-Smtp-Source: ABdhPJwwLaa3HoRhxwvud70mZAMJuX1zsZznSPYjV9lyqXnqIhVuSAztt2n+pum51P8tI6yGE6xS+w==
-X-Received: by 2002:a9d:19e3:: with SMTP id k90mr9508712otk.99.1635096612490;
-        Sun, 24 Oct 2021 10:30:12 -0700 (PDT)
-Received: from builder.lan ([2600:1700:a0:3dc8:3697:f6ff:fe85:aac9])
-        by smtp.gmail.com with ESMTPSA id r22sm2955520otq.5.2021.10.24.10.30.11
+        bh=qf+MGZOD+EH/QKVd28ocI18hHDKyyZZiCGxPxM8SVbU=;
+        b=zlg74YHyju3b+ZLMOqTImEXDkiw1EMGtG96dbxtw6BfWwWkRNHuHg8SubPxbdUizpT
+         io0JlX2ENHDuotE9KwcGSmfMOw4ez12SQaPeVXNIsiK0Dsjl4vQKYPF8qi/PMDn4lC02
+         Xita2efsjqviNWk9yOg4OpjG6WmbT+lezgSlprP2cL1PEw1ukuPDdVEsxsDA+Q3xUwzT
+         orIn0TbR8HYSrnta0WL/iLOGwKQekO63zjxnGnUGS0h+IBxZKJ1kBegkdVTLT/tNLa00
+         emhsp46JSr/A5mvzevXlFFtsI0VG3/GriDYg83MRK164D131jGloHxhAtFF9+Cq0oLgo
+         P2GQ==
+X-Gm-Message-State: AOAM531eIHDv13Qa/20dhqm0MUqBGUYtE9YhQ0zX57/5jM0mdCuzc8AA
+        /qjoYfKzqy2smBwkihypdunc8mOsBw==
+X-Google-Smtp-Source: ABdhPJyckgJ+AIErGvmZtooqTIMJc/q8dE1Aqmg98CxlLU/4B7oGlLnt7dwY8Y59W9EZXZUPAbYqmw==
+X-Received: by 2002:a05:6830:4011:: with SMTP id h17mr21921166ots.208.1635282505533;
+        Tue, 26 Oct 2021 14:08:25 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id h17sm4078739oog.17.2021.10.26.14.08.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 Oct 2021 10:30:11 -0700 (PDT)
-Date:   Sun, 24 Oct 2021 12:30:09 -0500
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+        Tue, 26 Oct 2021 14:08:24 -0700 (PDT)
+Received: (nullmailer pid 3252327 invoked by uid 1000);
+        Tue, 26 Oct 2021 21:08:23 -0000
+Date:   Tue, 26 Oct 2021 16:08:23 -0500
+From:   Rob Herring <robh@kernel.org>
 To:     Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Ilia Lin <ilia.lin@kernel.org>,
-        Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-pm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Nishanth Menon <nm@ti.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        linux-arm-msm@vger.kernel.org, Ilia Lin <ilia.lin@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org,
         AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 3/8] clk: qcom: msm8996-cpu: Add MSM8996 Pro CBF support
-Message-ID: <YXWYIUUi3rY3N+aK@builder.lan>
+        <angelogioacchino.delregno@somainline.org>
+Subject: Re: [PATCH 1/8] dt-bindings: clk: qcom: msm8996-apcc: Add CBF
+Message-ID: <YXhuR2DXfzszSgYf@robh.at.kernel.org>
 References: <20211014083016.137441-1-y.oudjana@protonmail.com>
- <20211014083016.137441-4-y.oudjana@protonmail.com>
+ <20211014083016.137441-2-y.oudjana@protonmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211014083016.137441-4-y.oudjana@protonmail.com>
+In-Reply-To: <20211014083016.137441-2-y.oudjana@protonmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu 14 Oct 03:32 CDT 2021, Yassine Oudjana wrote:
-
-> MSM8996 Pro (MSM8996SG) has a few differences in the CBF clock.
+On Thu, 14 Oct 2021 08:31:32 +0000, Yassine Oudjana wrote:
+> Add CBF clock and reg.
 > 
-
-I think it would be nice if you described what those differences are.
-
-Regards,
-Bjorn
-
 > Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
 > ---
-> Dependencies:
-> - clk: qcom: msm8996-cpu: Add CBF support
->   https://lore.kernel.org/linux-arm-msm/20210528192541.1120703-1-konrad.dybcio@somainline.org/
+>  .../devicetree/bindings/clock/qcom,msm8996-apcc.yaml   | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
 > 
->  drivers/clk/qcom/clk-cpu-8996.c | 61 +++++++++++++++++++++------------
->  1 file changed, 40 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/clk/qcom/clk-cpu-8996.c b/drivers/clk/qcom/clk-cpu-8996.c
-> index 8afc271f92d0..ab2acbe74f0f 100644
-> --- a/drivers/clk/qcom/clk-cpu-8996.c
-> +++ b/drivers/clk/qcom/clk-cpu-8996.c
-> @@ -70,11 +70,11 @@ enum _pmux_input {
->  
->  enum {
->  	CBF_PLL_INDEX = 1,
-> -	CBF_DIV_2_INDEX,
-> +	CBF_DIV_INDEX,
->  	CBF_SAFE_INDEX
->  };
->  
-> -#define DIV_2_THRESHOLD		600000000
-> +#define DIV_THRESHOLD		600000000
->  #define PWRCL_REG_OFFSET 0x0
->  #define PERFCL_REG_OFFSET 0x80000
->  #define MUX_OFFSET	0x40
-> @@ -142,6 +142,17 @@ static const struct alpha_pll_config cbfpll_config = {
->  	.early_output_mask = BIT(3),
->  };
->  
-> +static const struct alpha_pll_config cbfpll_config_pro = {
-> +	.l = 72,
-> +	.config_ctl_val = 0x200d4aa8,
-> +	.config_ctl_hi_val = 0x006,
-> +	.pre_div_mask = BIT(12),
-> +	.post_div_mask = 0x3 << 8,
-> +	.post_div_val = 0x3 << 8,
-> +	.main_output_mask = BIT(0),
-> +	.early_output_mask = BIT(3),
-> +};
-> +
->  static struct clk_alpha_pll perfcl_pll = {
->  	.offset = PERFCL_REG_OFFSET,
->  	.regs = prim_pll_regs,
-> @@ -230,7 +241,8 @@ struct clk_cpu_8996_mux {
->  	u8	width;
->  	struct notifier_block nb;
->  	struct clk_hw	*pll;
-> -	struct clk_hw	*pll_div_2;
-> +	struct clk_hw	*pll_div;
-> +	u8 div;
->  	struct clk_regmap clkr;
->  };
->  
-> @@ -280,11 +292,11 @@ static int clk_cpu_8996_mux_determine_rate(struct clk_hw *hw,
->  	struct clk_cpu_8996_mux *cpuclk = to_clk_cpu_8996_mux_hw(hw);
->  	struct clk_hw *parent = cpuclk->pll;
->  
-> -	if (cpuclk->pll_div_2 && req->rate < DIV_2_THRESHOLD) {
-> -		if (req->rate < (DIV_2_THRESHOLD / 2))
-> +	if (cpuclk->pll_div &&req->rate < DIV_THRESHOLD) {
-> +		if (req->rate < (DIV_THRESHOLD / cpuclk->div))
->  			return -EINVAL;
->  
-> -		parent = cpuclk->pll_div_2;
-> +		parent = cpuclk->pll_div;
->  	}
->  
->  	req->best_parent_rate = clk_hw_round_rate(parent, req->rate);
-> @@ -336,7 +348,8 @@ static struct clk_cpu_8996_mux pwrcl_pmux = {
->  	.shift = 0,
->  	.width = 2,
->  	.pll = &pwrcl_pll.clkr.hw,
-> -	.pll_div_2 = &pwrcl_smux.clkr.hw,
-> +	.pll_div = &pwrcl_smux.clkr.hw,
-> +	.div = 2,
->  	.nb.notifier_call = cpu_clk_notifier_cb,
->  	.clkr.hw.init = &(struct clk_init_data) {
->  		.name = "pwrcl_pmux",
-> @@ -358,7 +371,8 @@ static struct clk_cpu_8996_mux perfcl_pmux = {
->  	.shift = 0,
->  	.width = 2,
->  	.pll = &perfcl_pll.clkr.hw,
-> -	.pll_div_2 = &perfcl_smux.clkr.hw,
-> +	.pll_div = &perfcl_smux.clkr.hw,
-> +	.div = 2,
->  	.nb.notifier_call = cpu_clk_notifier_cb,
->  	.clkr.hw.init = &(struct clk_init_data) {
->  		.name = "perfcl_pmux",
-> @@ -481,19 +495,23 @@ static int qcom_cbf_clk_msm8996_register_clks(struct device *dev,
->  					      struct regmap *regmap)
->  {
->  	int ret;
-> +	bool is_pro = of_device_is_compatible(dev->of_node, "qcom,msm8996pro-apcc");
->  
-> -	cbf_mux.pll_div_2 = clk_hw_register_fixed_factor(dev, "cbf_pll_main",
-> -						      "cbf_pll", CLK_SET_RATE_PARENT,
-> -						      1, 2);
-> -	if (IS_ERR(cbf_mux.pll_div_2)) {
-> +	cbf_mux.div = is_pro ? 4 : 2;
-> +	cbf_mux.pll_div = clk_hw_register_fixed_factor(dev, "cbf_pll_main",
-> +						       "cbf_pll", CLK_SET_RATE_PARENT,
-> +						       1, cbf_mux.div);
-> +
-> +	if (IS_ERR(cbf_mux.pll_div)) {
->  		dev_err(dev, "Failed to initialize cbf_pll_main\n");
-> -		return PTR_ERR(cbf_mux.pll_div_2);
-> +		return PTR_ERR(cbf_mux.pll_div);
->  	}
->  
->  	ret = devm_clk_register_regmap(dev, cbf_msm8996_clks[0]);
->  	ret = devm_clk_register_regmap(dev, cbf_msm8996_clks[1]);
->  
-> -	clk_alpha_pll_configure(&cbf_pll, regmap, &cbfpll_config);
-> +	clk_alpha_pll_configure(&cbf_pll, regmap, is_pro ?
-> +				&cbfpll_config_pro : &cbfpll_config);
->  	clk_set_rate(cbf_pll.clkr.hw.clk, 614400000);
->  	clk_prepare_enable(cbf_pll.clkr.hw.clk);
->  	clk_notifier_register(cbf_mux.clkr.hw.clk, &cbf_mux.nb);
-> @@ -575,7 +593,7 @@ static int cpu_clk_notifier_cb(struct notifier_block *nb, unsigned long event,
->  		qcom_cpu_clk_msm8996_acd_init(base);
->  		break;
->  	case POST_RATE_CHANGE:
-> -		if (cnd->new_rate < DIV_2_THRESHOLD)
-> +		if (cnd->new_rate < DIV_THRESHOLD)
->  			ret = clk_cpu_8996_mux_set_parent(&cpuclk->clkr.hw,
->  							  DIV_2_INDEX);
->  		else
-> @@ -600,15 +618,15 @@ static int cbf_clk_notifier_cb(struct notifier_block *nb, unsigned long event,
->  
->  	switch (event) {
->  	case PRE_RATE_CHANGE:
-> -		parent = clk_hw_get_parent_by_index(&cbfclk->clkr.hw, CBF_DIV_2_INDEX);
-> -		ret = clk_cpu_8996_mux_set_parent(&cbfclk->clkr.hw, CBF_DIV_2_INDEX);
-> +		parent = clk_hw_get_parent_by_index(&cbfclk->clkr.hw, CBF_DIV_INDEX);
-> +		ret = clk_cpu_8996_mux_set_parent(&cbfclk->clkr.hw, CBF_DIV_INDEX);
->  
-> -		if (cnd->old_rate > DIV_2_THRESHOLD && cnd->new_rate < DIV_2_THRESHOLD)
-> -			ret = clk_set_rate(parent->clk, cnd->old_rate / 2);
-> +		if (cnd->old_rate > DIV_THRESHOLD && cnd->new_rate < DIV_THRESHOLD)
-> +			ret = clk_set_rate(parent->clk, cnd->old_rate / cbfclk->div);
->  		break;
->  	case POST_RATE_CHANGE:
-> -		if (cnd->new_rate < DIV_2_THRESHOLD)
-> -			ret = clk_cpu_8996_mux_set_parent(&cbfclk->clkr.hw, CBF_DIV_2_INDEX);
-> +		if (cnd->new_rate < DIV_THRESHOLD)
-> +			ret = clk_cpu_8996_mux_set_parent(&cbfclk->clkr.hw, CBF_DIV_INDEX);
->  		else {
->  			parent = clk_hw_get_parent_by_index(&cbfclk->clkr.hw, CBF_PLL_INDEX);
->  			ret = clk_set_rate(parent->clk, cnd->new_rate);
-> @@ -676,6 +694,7 @@ static int qcom_cpu_clk_msm8996_driver_remove(struct platform_device *pdev)
->  
->  static const struct of_device_id qcom_cpu_clk_msm8996_match_table[] = {
->  	{ .compatible = "qcom,msm8996-apcc" },
-> +	{ .compatible = "qcom,msm8996pro-apcc" },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(of, qcom_cpu_clk_msm8996_match_table);
-> -- 
-> 2.33.0
-> 
-> 
+
+Acked-by: Rob Herring <robh@kernel.org>
