@@ -2,111 +2,113 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A782C433F5
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Oct 2021 18:54:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C8B5C433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Oct 2021 18:17:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3F9E860F22
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Oct 2021 18:54:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 042BB610FD
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Oct 2021 18:17:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240537AbhJ0S5L (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Oct 2021 14:57:11 -0400
-Received: from box.trvn.ru ([194.87.146.52]:56457 "EHLO box.trvn.ru"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230437AbhJ0S5K (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Oct 2021 14:57:10 -0400
-Received: from authenticated-user (box.trvn.ru [194.87.146.52])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-        (No client certificate requested)
-        by box.trvn.ru (Postfix) with ESMTPSA id CD5B540479;
-        Wed, 27 Oct 2021 23:54:40 +0500 (+05)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=trvn.ru; s=mail;
-        t=1635360881; bh=BonGhLg84CWois0icg8TpND/lf5KoZP4O0tUhZHbQ1Q=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=f2IPSOYrc3Qvp6aQhgRc039cAxfHFxb+20amdVK1WvyBS/PEoBK3kqon9kPAemIyo
-         YRuKX5WNqnTxP5X8FF8IKUUk45c3A0zzuaJ9EWi7Y5FtpOgRGfHUN3Ar8bmF6TcavC
-         GGXuIm/TXLvGTAnBKFTTpGAkcGI7tfsJKMwrmL/EigNRNnVgOInDjwa2GYy+s6eGN7
-         42LWEWidS2FsZ6ahg5pFvqugnwlExfDzioqdWEDGbNsS1skflbBlsoP0+W4DWCR130
-         W08T1yfmi/maBxRqnK0BDvLLy8uzHtUSRDBjPfQ3j0TCXFZV6D6WSDpsWaaljoonTc
-         jyJ3Xnn6iqptQ==
+        id S230484AbhJ1ST2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 28 Oct 2021 14:19:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56014 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230342AbhJ1ST1 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 28 Oct 2021 14:19:27 -0400
+Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20AE4C061348
+        for <phone-devel@vger.kernel.org>; Thu, 28 Oct 2021 11:16:59 -0700 (PDT)
+Received: by mail-oo1-xc33.google.com with SMTP id d144-20020a4a5296000000b002b6cf3f9aceso2415382oob.13
+        for <phone-devel@vger.kernel.org>; Thu, 28 Oct 2021 11:16:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Wusxu4vVS094WYADHFLACryqXCZAQomcEnv/oqtQUp8=;
+        b=cIHck4f7AU6fCfChVEV2LovuiRMjA9npqq575g7mD6uUXAWIZK7H/dd0FYbkYWvcLw
+         THcW+crPTr8lmtELnV92shgpOg7arjpaszvQRz613ZU/fICX96ZR7nz0A+Zs5ZWX2Kzu
+         3Fxyh0V1kgUIi49NKrpybu+L1b2eGf9O4QvZQI8qc2ZWwFFux0z41haIX4Vcc6wgljWR
+         MDV+4WCiRPJBUi+UaFPrdiEtNHYRNGNAC/yesi/c2odE1ZPoTN4ofOemZsJA0bfvkzro
+         RVFdWyPcFsTjJWMnxm3mzqX74df7+nxkEJqS8WqXZ6DsJcMWEMdTR/QCI0bM6LMkj2JB
+         0REg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Wusxu4vVS094WYADHFLACryqXCZAQomcEnv/oqtQUp8=;
+        b=KHsjS7VqoRpA1Ihd8QU9Ajj3o7h8HWSSiyNOo679L0VJxb+wWGHQ7VOP4krECtexcb
+         g+u7m4McSgYgWq6CRmqoTeEzf259iDQJHxJxVDIxRWWzu7jAvAY2in1ECLutyGcSGglZ
+         SCb2mOH4bxbpKi3k+17sNh5h3exrXINP1W9XmjY7tqi7zX7k3l+SdXZ3M+mQSdTJLf4c
+         P9xwuqh6iVRoaL333/vGW+27gG5El3Rh7hJdGcWtOG7Eh3gqqfbMIVNRq5uYc0IHY7lV
+         M4Xg3irjv4ZzuFWOoruJhqqjJnLvg/DqrLzpRQFe1798gGwN5WvfYTpAjaVALbZyt4zQ
+         XopQ==
+X-Gm-Message-State: AOAM5305H2fl/sISC60Q3/8pY2JtrX3OAiVcg0Csodc/NspB77vmHTzx
+        y+kamexuphYypApdIuw4DYn9ZA==
+X-Google-Smtp-Source: ABdhPJy7YMoWnmrHfImanNmbs6Unt0iAC5Q17Vv8gEqfdVoObsC06l/dfy2j5VCFf7uWMyZht8j/MQ==
+X-Received: by 2002:a4a:e218:: with SMTP id b24mr4268610oot.36.1635445018092;
+        Thu, 28 Oct 2021 11:16:58 -0700 (PDT)
+Received: from ripper (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id bq10sm1288528oib.25.2021.10.28.11.16.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Oct 2021 11:16:57 -0700 (PDT)
+Date:   Thu, 28 Oct 2021 11:18:45 -0700
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Ilia Lin <ilia.lin@kernel.org>,
+        Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH 4/8] cpufreq: qcom_cpufreq_nvmem: Simplify reading kryo
+ speedbin
+Message-ID: <YXrphSSG9+zsZbJ9@ripper>
+References: <20211014083016.137441-1-y.oudjana@protonmail.com>
+ <20211014083016.137441-5-y.oudjana@protonmail.com>
+ <f4af0e40-9e93-dba9-7401-cdfc76ba667e@somainline.org>
 MIME-Version: 1.0
-Date:   Wed, 27 Oct 2021 23:54:38 +0500
-From:   Nikita Travkin <nikita@trvn.ru>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     dmitry.torokhov@gmail.com, ~postmarketos/upstreaming@lists.sr.ht,
-        robh+dt@kernel.org, Michael.Srba@seznam.cz,
-        linus.walleij@linaro.org, broonie@kernel.org,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/6] dt-bindings: input: zinitix: Document touch-keys
- support
-In-Reply-To: <4350691.LvFx2qVVIh@g550jk>
-References: <20211027181350.91630-1-nikita@trvn.ru>
- <20211027181350.91630-6-nikita@trvn.ru> <4350691.LvFx2qVVIh@g550jk>
-Message-ID: <351bd499d1326fda5ed9d5c06dce344e@trvn.ru>
-X-Sender: nikita@trvn.ru
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f4af0e40-9e93-dba9-7401-cdfc76ba667e@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Luca,
+On Fri 15 Oct 11:58 PDT 2021, Konrad Dybcio wrote:
 
-Luca Weiss писал(а) 27.10.2021 23:33:
-> Hi Nikita,
 > 
-> On Mittwoch, 27. Oktober 2021 20:13:49 CEST Nikita Travkin wrote:
->> In some configrations the touch controller can support the touch-keys.
->> Doucument the linux,keycodes property that enables those keys and
->> specifies the keycodes that should be used to report the key events.
->> 
->> Signed-off-by: Nikita Travkin <nikita@trvn.ru>
->> ---
->>  .../bindings/input/touchscreen/zinitix,bt400.yaml         | 8 
->> ++++++++
->>  1 file changed, 8 insertions(+)
->> 
->> diff --git
->> a/Documentation/devicetree/bindings/input/touchscreen/zinitix,bt400.yaml
->> b/Documentation/devicetree/bindings/input/touchscreen/zinitix,bt400.yaml
->> index b4e5ba7c0b49..40b243c07fd4 100644
->> --- 
->> a/Documentation/devicetree/bindings/input/touchscreen/zinitix,bt400.yaml
->> +++
->> b/Documentation/devicetree/bindings/input/touchscreen/zinitix,bt400.yaml 
->> @@
->> -79,6 +79,14 @@ properties:
->>      $ref: /schemas/types.yaml#/definitions/uint32
->>      enum: [1, 2]
->> 
->> +  linux,keycodes:
->> +    description: |
->> +      This property specifies an array of keycodes assigned to the
->> +      touch-keys that can be present in some touchscreen 
->> configurations.
->> +    $ref: /schemas/input/input.yaml#/properties/linux,keycodes
->> +    minItems: 1
+> On 14.10.2021 10:32, Yassine Oudjana wrote:
+> > In preparation for adding a separate device tree for MSM8996 Pro, skip reading
+> > msm-id from smem and just read the speedbin efuse.
+> >
+> While I'd really like for this to be merged, it's gonna totally wreck backwards
 > 
-> I think this would suggest all devices using the driver must have at 
-> least
-> keycode declared which doesn't seem to be the desired behavior?
-
-As I haven't added the property to the "required" list I'd read this as
-"If the property is defined it must contain from one to eight elements"
-so I think that *technically* the schema is correct. (Otherwise the
-dt_schema_check would fail verifying the example) However this indeed
-may be true that I could give a better description than "can be present
-in some touchscreen configurations."
-
-Thanks,
-Nikita
-
-> Regards,
-> Luca
+> compatibility.. But then, since APCC was not defined properly before commit
 > 
->> +    maxItems: 8
->> +
->>    touchscreen-size-x: true
->>    touchscreen-size-y: true
->>    touchscreen-fuzz-x: true
+> 0a275a35ceab07 arm64: dts: qcom: msm8996: Make CPUCC actually probe (and work)
+> 
+> there's only 5.14/5.15 (both of which were non-LTS) which would *actually* break given
+> 
+> somebody decided that "ah yes, pulling in DTs from these specific mainline kernel releases
+> 
+> is a good idea"...
+> 
+> 
+> If I were to judge, it would probably be fine to rid the old mechanism..
+> 
+
+Given that various people have reported instabilities on db820c in its
+current form - and prior to that it was too slow - I think it's fine to
+favour getting this sorted out properly over backwards compatibility.
+
+Regards,
+Bjorn
