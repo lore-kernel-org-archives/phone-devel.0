@@ -2,608 +2,364 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48F28C433F5
-	for <phone-devel@archiver.kernel.org>; Tue,  2 Nov 2021 13:00:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 93928C433FE
+	for <phone-devel@archiver.kernel.org>; Tue,  2 Nov 2021 23:50:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2DAFD6109D
-	for <phone-devel@archiver.kernel.org>; Tue,  2 Nov 2021 13:00:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 73D2960E0C
+	for <phone-devel@archiver.kernel.org>; Tue,  2 Nov 2021 23:50:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230128AbhKBNC4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 2 Nov 2021 09:02:56 -0400
-Received: from vm1.sequanux.org ([188.165.36.56]:53460 "EHLO vm1.sequanux.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229557AbhKBNCz (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 2 Nov 2021 09:02:55 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by vm1.sequanux.org (Postfix) with ESMTP id C157C512003;
-        Tue,  2 Nov 2021 14:00:18 +0100 (CET)
-X-Virus-Scanned: Debian amavisd-new at vm1.sequanux.org
-Received: from vm1.sequanux.org ([127.0.0.1])
-        by localhost (vm1.sequanux.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id C4kyD-m699pQ; Tue,  2 Nov 2021 14:00:15 +0100 (CET)
-Received: from localhost (softwrestling.org [188.165.144.248])
-        by vm1.sequanux.org (Postfix) with ESMTPSA id 32B63512001;
-        Tue,  2 Nov 2021 14:00:15 +0100 (CET)
-Date:   Tue, 2 Nov 2021 14:00:15 +0100
-From:   Simon Guinot <simon.guinot@sequanux.org>
-To:     David Heidelberg <david@ixit.cz>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        id S230251AbhKBXxM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 2 Nov 2021 19:53:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58174 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230059AbhKBXxL (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 Nov 2021 19:53:11 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CA87C06120A
+        for <phone-devel@vger.kernel.org>; Tue,  2 Nov 2021 16:50:36 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id u21so1654508lff.8
+        for <phone-devel@vger.kernel.org>; Tue, 02 Nov 2021 16:50:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=fVBGk1MYyCWrNZI+cGnXDaPmanq61gpSQuTYWAYJ+rg=;
+        b=ct6rwWB5FRv5Mti6ZNWlPXqu8r/Q2ELC3sZ//jRtNp/MEx7eF4jfyZIdP733Qhi1LS
+         3zUM+Cdkey0NBeVZZhuNPNH/nkmYS7FtlOwQEYFYI/lFgzIj9UOxmiuKiZhImhAA8sFp
+         +FvtNKpYI8yOZM5EGEQIgMkFwHA37YNcBlF3i6ercceteicQIpR+V4nvzLEyj1/e85nD
+         6OL7Gp0bxn/3ZI02LjXDUH+G6TeVjTQrA9NVp/4A7FfeC2VOwEccVrYvKpl4b/Y1Xxgb
+         WDqOU90M4L2K0yG/V6diro/qFJxz6Hbml+w28liXPAycWrahis2aOW+7+x7i28fSid5m
+         xWlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=fVBGk1MYyCWrNZI+cGnXDaPmanq61gpSQuTYWAYJ+rg=;
+        b=3SBba15p4+lv61UQ9TXhI/7qjr3QyuHDuVzD+Amof9izjUwikqoAdSnY50vf5H9axy
+         9U8BqbE6Sb+N/PgMxanDu+Tw7F/z4rZBxJvCGlX7bvMH0W+ftNR4bpPg06ROo07x2wEc
+         0LX2SMC9ZiUCkEszddCsFsk4rmipfvTvMJJZMOFtMZ0A3dKHozVn5cliy+y2xMjlU7Ua
+         J72Dtd6tlckDiNuVXkClRGg4XnWGDU7hLQCjpROPZ76++JhOvcv1Sf5UXiWGJOYJbSEp
+         qoRwijoJtPKllYZLdV5j2UGqTawlUy/nPFMNqMqvlFYjbIJKdHeaYRxjJxKNR8et/5JQ
+         C0Ig==
+X-Gm-Message-State: AOAM532rzjtxyMYpz24gexHptWiNNgiUHRgbQoc+Ick6fKUc/8cVIb+C
+        nbfldu5KhW7WKCT6aZLgmbDt1Q==
+X-Google-Smtp-Source: ABdhPJzVjWt0dzeXhRVr9LeJ7wx4S7kb2JiWs4DZ1Y5b+WPKmsokaDHCGflD/Im5gu1IMPh0Ik3PVA==
+X-Received: by 2002:a05:6512:2022:: with SMTP id s2mr36121348lfs.661.1635897034131;
+        Tue, 02 Nov 2021 16:50:34 -0700 (PDT)
+Received: from [192.168.1.211] ([37.153.55.125])
+        by smtp.gmail.com with ESMTPSA id o17sm30262lfg.211.2021.11.02.16.50.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Nov 2021 16:50:33 -0700 (PDT)
+Subject: Re: [PATCH v2 1/5] arm64: dts: qcom: msm8996: Revamp reserved memory
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     Andy Gross <agross@kernel.org>, Ohad Ben-Cohen <ohad@wizery.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        ~okias/devicetree@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] ARM: dts: make dts use gpio-fan matrix instead of
- array
-Message-ID: <20211102130015.GM13663@kw.sim.vm.gnt>
-References: <20211029114948.41841-1-david@ixit.cz>
- <20211102093014.GL13663@kw.sim.vm.gnt>
- <FBYX1R.0YW8ZV2YAPGR2@ixit.cz>
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Raffaele Tranquillini <raffaele.tranquillini@gmail.com>,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20210926190555.278589-1-y.oudjana@protonmail.com>
+ <20210926190555.278589-2-y.oudjana@protonmail.com>
+ <YXTNL7boyiRFKQiV@builder.lan>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Message-ID: <4455e52f-7e8a-c431-9977-dcf4aefe9822@linaro.org>
+Date:   Wed, 3 Nov 2021 02:50:32 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="GeONROBiaq1zPAtT"
-Content-Disposition: inline
-In-Reply-To: <FBYX1R.0YW8ZV2YAPGR2@ixit.cz>
-User-Agent: Mutt/1.6.0 (2016-04-01)
+In-Reply-To: <YXTNL7boyiRFKQiV@builder.lan>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 24/10/2021 06:04, Bjorn Andersson wrote:
+> On Sun 26 Sep 14:06 CDT 2021, Yassine Oudjana wrote:
+> 
+>> Fix a total overlap between zap_shader_region and slpi_region, and rename
+>> all regions to match the naming convention in other Qualcomm SoC device trees.
+>>
+>> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+> 
+> FYI, I like this series, but I held off applying it because I wanted to
+> verify that the shuffling of the memory regions works on the existing
+> 8996 boards.
+> 
+> Unfortunately it didn't work, either with or without the shuffling on
+> the db820c - and I've not found the time to figure out why that is. I
+> hope to get back to this shortly (or that someone else will figure it
+> out and provide a tested-by)
 
---GeONROBiaq1zPAtT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I gave this a test too on my db820c. Usually the board MSS will crash 
+after ~0.1 - 0.15 seconds after booting up, then during recovery the 
+board will crash/reboot somewhere at the end of q6v5_mss_load() (and 
+typically after successful q6v5_rmb_mba_wait() call.
 
-On Tue, Nov 02, 2021 at 11:54:51AM +0100, David Heidelberg wrote:
->=20
->=20
->=20
-> On Tue, Nov 2 2021 at 10:30:14 +0100, Simon Guinot
-> <simon.guinot@sequanux.org> wrote:
-> > Hi David,
-> >=20
-> > For the LaCie and Seagate boards:
-> >=20
-> > Acked-by: Simon Guinot <simon.guinot@sequanux.org>
-> >=20
-> > In addition, can you ensure that the example in
-> > Documentation/devicetree/bindings/hwmon/gpio-fan.txt is updated as well
-> > ?
->=20
-> Hello Simon,
->=20
-> third patch in this series takes care of it, together with conversion to =
-the
-> YAML format.
+Occasionally (approximately 1 of 20) the MSS will not crash, presenting 
+PDS service to the userspace. Even in this state it doesn't seem to be 
+able to lock the gps location (but this might be related to the big UART 
+mezzanine sitting on top of the board).
 
-Thanks for confirming. For some reason I only received the first two
-patches.
+Unfortunately there seem to be no SLPI firmware for the db820c, so I can 
+not test slpi.
 
-Simon
+A notice regarding the patchset itself. It looks like pil_q6v5_mss.c 
+driver misses mx and cx proxy power domains for the MSS_MSM8996 case.
 
->=20
-> David
->=20
-> >=20
-> > Thanks.
-> >=20
-> > Simon
-> >=20
-> > On Fri, Oct 29, 2021 at 01:49:44PM +0200, David Heidelberg wrote:
-> > >  No functional changes.
-> > >=20
-> > >  Adjust to comply with dt-schema requirements
-> > >  and make possible to validate values.
-> > >=20
-> > >  Signed-off-by: David Heidelberg <david@ixit.cz>
-> > >  ---
-> > >   arch/arm/boot/dts/armada-370-rd.dts           |   2 +-
-> > >   .../boot/dts/armada-370-seagate-nas-2bay.dts  |   8 +-
-> > >   .../boot/dts/armada-370-seagate-nas-4bay.dts  |   8 +-
-> > >   .../boot/dts/armada-370-synology-ds213j.dts   |  16 +--
-> > >   .../boot/dts/armada-385-synology-ds116.dts    |  16 +--
-> > >   arch/arm/boot/dts/armada-388-gp.dts           |   4 +-
-> > >   arch/arm/boot/dts/kirkwood-dnskw.dtsi         |   6 +-
-> > >   .../boot/dts/kirkwood-linkstation-6282.dtsi   |   9 +-
-> > >   .../boot/dts/kirkwood-linkstation-lswxl.dts   |   9 +-
-> > >   arch/arm/boot/dts/kirkwood-lsxl.dtsi          |   9 +-
-> > >   arch/arm/boot/dts/kirkwood-ns2max.dts         |  18 ++--
-> > >   arch/arm/boot/dts/kirkwood-ns2mini.dts        |  18 ++--
-> > >   arch/arm/boot/dts/kirkwood-synology.dtsi      | 102
-> > > +++++++++---------
-> > >   arch/arm/boot/dts/mvebu-linkstation-fan.dtsi  |   8 +-
-> > >   arch/arm/boot/dts/tegra30-ouya.dts            |   4 +-
-> > >   15 files changed, 123 insertions(+), 114 deletions(-)
-> > >=20
-> > >  diff --git a/arch/arm/boot/dts/armada-370-rd.dts
-> > > b/arch/arm/boot/dts/armada-370-rd.dts
-> > >  index c910d157a686..041c99b99921 100644
-> > >  --- a/arch/arm/boot/dts/armada-370-rd.dts
-> > >  +++ b/arch/arm/boot/dts/armada-370-rd.dts
-> > >  @@ -96,7 +96,7 @@ button {
-> > >   			gpio-fan {
-> > >   				compatible =3D "gpio-fan";
-> > >   				gpios =3D <&gpio0 8 GPIO_ACTIVE_HIGH>;
-> > >  -				gpio-fan,speed-map =3D <0 0 3000 1>;
-> > >  +				gpio-fan,speed-map =3D <0 0>, <3000 1>;
-> > >   				pinctrl-0 =3D <&fan_pins>;
-> > >   				pinctrl-names =3D "default";
-> > >   			};
-> > >  diff --git a/arch/arm/boot/dts/armada-370-seagate-nas-2bay.dts
-> > > b/arch/arm/boot/dts/armada-370-seagate-nas-2bay.dts
-> > >  index 8dd242e668e6..6ec3dd3337f4 100644
-> > >  --- a/arch/arm/boot/dts/armada-370-seagate-nas-2bay.dts
-> > >  +++ b/arch/arm/boot/dts/armada-370-seagate-nas-2bay.dts
-> > >  @@ -25,9 +25,9 @@ / {
-> > >=20
-> > >   	gpio-fan {
-> > >   		gpio-fan,speed-map =3D
-> > >  -			<   0 3
-> > >  -			  950 2
-> > >  -			 1400 1
-> > >  -			 1800 0>;
-> > >  +			<   0 3>,
-> > >  +			< 950 2>,
-> > >  +			<1400 1>,
-> > >  +			<1800 0>;
-> > >   	};
-> > >   };
-> > >  diff --git a/arch/arm/boot/dts/armada-370-seagate-nas-4bay.dts
-> > > b/arch/arm/boot/dts/armada-370-seagate-nas-4bay.dts
-> > >  index 3cf70c72c5ca..d62e32e9ddb5 100644
-> > >  --- a/arch/arm/boot/dts/armada-370-seagate-nas-4bay.dts
-> > >  +++ b/arch/arm/boot/dts/armada-370-seagate-nas-4bay.dts
-> > >  @@ -109,10 +109,10 @@ NS_V2_LED_ON   1 0
-> > >=20
-> > >   	gpio-fan {
-> > >   		gpio-fan,speed-map =3D
-> > >  -			<   0 3
-> > >  -			  800 2
-> > >  -			  1050 1
-> > >  -			  1300 0>;
-> > >  +			<   0 3>,
-> > >  +			< 800 2>,
-> > >  +			<1050 1>,
-> > >  +			<1300 0>;
-> > >   	};
-> > >   };
-> > >=20
-> > >  diff --git a/arch/arm/boot/dts/armada-370-synology-ds213j.dts
-> > > b/arch/arm/boot/dts/armada-370-synology-ds213j.dts
-> > >  index 64f2ce254fb6..88aa2b7c4962 100644
-> > >  --- a/arch/arm/boot/dts/armada-370-synology-ds213j.dts
-> > >  +++ b/arch/arm/boot/dts/armada-370-synology-ds213j.dts
-> > >  @@ -113,14 +113,14 @@ gpio-fan-32-38 {
-> > >   			 &gpio2  0 GPIO_ACTIVE_HIGH
-> > >   			 &gpio2  1 GPIO_ACTIVE_HIGH>;
-> > >   		alarm-gpios =3D <&gpio1 6 GPIO_ACTIVE_HIGH>;
-> > >  -		gpio-fan,speed-map =3D <    0 0
-> > >  -				       1000 1
-> > >  -				       1150 2
-> > >  -				       1350 4
-> > >  -				       1500 3
-> > >  -				       1650 5
-> > >  -				       1750 6
-> > >  -				       1900 7 >;
-> > >  +		gpio-fan,speed-map =3D <   0 0>,
-> > >  +				     <1000 1>,
-> > >  +				     <1150 2>,
-> > >  +				     <1350 4>,
-> > >  +				     <1500 3>,
-> > >  +				     <1650 5>,
-> > >  +				     <1750 6>,
-> > >  +				     <1900 7>;
-> > >   	};
-> > >=20
-> > >   	gpio-leds {
-> > >  diff --git a/arch/arm/boot/dts/armada-385-synology-ds116.dts
-> > > b/arch/arm/boot/dts/armada-385-synology-ds116.dts
-> > >  index d8769956cbfc..26c6ef47354c 100644
-> > >  --- a/arch/arm/boot/dts/armada-385-synology-ds116.dts
-> > >  +++ b/arch/arm/boot/dts/armada-385-synology-ds116.dts
-> > >  @@ -131,14 +131,14 @@ gpio-fan {
-> > >   			gpios =3D <&gpio1 18 GPIO_ACTIVE_HIGH>,
-> > >   				<&gpio1 17 GPIO_ACTIVE_HIGH>,
-> > >   				<&gpio1 16 GPIO_ACTIVE_HIGH>;
-> > >  -			gpio-fan,speed-map =3D <   0 0
-> > >  -					      1500 1
-> > >  -					      2500 2
-> > >  -					      3000 3
-> > >  -					      3400 4
-> > >  -					      3700 5
-> > >  -					      3900 6
-> > >  -					      4000 7>;
-> > >  +			gpio-fan,speed-map =3D <   0 0>,
-> > >  +					     <1500 1>,
-> > >  +					     <2500 2>,
-> > >  +					     <3000 3>,
-> > >  +					     <3400 4>,
-> > >  +					     <3700 5>,
-> > >  +					     <3900 6>,
-> > >  +					     <4000 7>;
-> > >   			#cooling-cells =3D <2>;
-> > >   		};
-> > >=20
-> > >  diff --git a/arch/arm/boot/dts/armada-388-gp.dts
-> > > b/arch/arm/boot/dts/armada-388-gp.dts
-> > >  index 9d873257ac45..9f8d7ab2c897 100644
-> > >  --- a/arch/arm/boot/dts/armada-388-gp.dts
-> > >  +++ b/arch/arm/boot/dts/armada-388-gp.dts
-> > >  @@ -237,8 +237,8 @@ pcie@3,0 {
-> > >   		gpio-fan {
-> > >   			compatible =3D "gpio-fan";
-> > >   			gpios =3D <&expander1 3 GPIO_ACTIVE_HIGH>;
-> > >  -			gpio-fan,speed-map =3D <	 0 0
-> > >  -					      3000 1>;
-> > >  +			gpio-fan,speed-map =3D <	 0 0>,
-> > >  +					     <3000 1>;
-> > >   		};
-> > >   	};
-> > >=20
-> > >  diff --git a/arch/arm/boot/dts/kirkwood-dnskw.dtsi
-> > > b/arch/arm/boot/dts/kirkwood-dnskw.dtsi
-> > >  index eb917462b219..0738eb679fcd 100644
-> > >  --- a/arch/arm/boot/dts/kirkwood-dnskw.dtsi
-> > >  +++ b/arch/arm/boot/dts/kirkwood-dnskw.dtsi
-> > >  @@ -38,9 +38,9 @@ gpio_fan {
-> > >   		pinctrl-names =3D "default";
-> > >   		gpios =3D <&gpio1 14 GPIO_ACTIVE_HIGH
-> > >   			 &gpio1 13 GPIO_ACTIVE_HIGH>;
-> > >  -		gpio-fan,speed-map =3D <0    0
-> > >  -				      3000 1
-> > >  -				      6000 2>;
-> > >  +		gpio-fan,speed-map =3D <0    0>,
-> > >  +				     <3000 1>,
-> > >  +				     <6000 2>;
-> > >   	};
-> > >=20
-> > >   	gpio_poweroff {
-> > >  diff --git a/arch/arm/boot/dts/kirkwood-linkstation-6282.dtsi
-> > > b/arch/arm/boot/dts/kirkwood-linkstation-6282.dtsi
-> > >  index 377b6e970259..dfac2045a1eb 100644
-> > >  --- a/arch/arm/boot/dts/kirkwood-linkstation-6282.dtsi
-> > >  +++ b/arch/arm/boot/dts/kirkwood-linkstation-6282.dtsi
-> > >  @@ -118,10 +118,11 @@ gpio_fan {
-> > >   		gpios =3D <&gpio0 17 GPIO_ACTIVE_LOW
-> > >   			 &gpio0 16 GPIO_ACTIVE_LOW>;
-> > >=20
-> > >  -		gpio-fan,speed-map =3D <0 3
-> > >  -				1500 2
-> > >  -				3250 1
-> > >  -				5000 0>;
-> > >  +		gpio-fan,speed-map =3D
-> > >  +				<   0 3>,
-> > >  +				<1500 2>,
-> > >  +				<3250 1>,
-> > >  +				<5000 0>;
-> > >=20
-> > >   		alarm-gpios =3D <&gpio1 11 GPIO_ACTIVE_HIGH>;
-> > >   	};
-> > >  diff --git a/arch/arm/boot/dts/kirkwood-linkstation-lswxl.dts
-> > > b/arch/arm/boot/dts/kirkwood-linkstation-lswxl.dts
-> > >  index c6024b569423..0425df8cb91c 100644
-> > >  --- a/arch/arm/boot/dts/kirkwood-linkstation-lswxl.dts
-> > >  +++ b/arch/arm/boot/dts/kirkwood-linkstation-lswxl.dts
-> > >  @@ -69,10 +69,11 @@ gpio_fan {
-> > >   		gpios =3D <&gpio1 16 GPIO_ACTIVE_LOW
-> > >   			 &gpio1 15 GPIO_ACTIVE_LOW>;
-> > >=20
-> > >  -		gpio-fan,speed-map =3D <0 3
-> > >  -				1500 2
-> > >  -				3250 1
-> > >  -				5000 0>;
-> > >  +		gpio-fan,speed-map =3D
-> > >  +				<   0 3>,
-> > >  +				<1500 2>,
-> > >  +				<3250 1>,
-> > >  +				<5000 0>;
-> > >=20
-> > >   		alarm-gpios =3D <&gpio1 8 GPIO_ACTIVE_HIGH>;
-> > >   	};
-> > >  diff --git a/arch/arm/boot/dts/kirkwood-lsxl.dtsi
-> > > b/arch/arm/boot/dts/kirkwood-lsxl.dtsi
-> > >  index 7b151acb9984..74009ed9e423 100644
-> > >  --- a/arch/arm/boot/dts/kirkwood-lsxl.dtsi
-> > >  +++ b/arch/arm/boot/dts/kirkwood-lsxl.dtsi
-> > >  @@ -167,10 +167,11 @@ gpio_fan {
-> > >   		pinctrl-names =3D "default";
-> > >   		gpios =3D <&gpio0 19 GPIO_ACTIVE_LOW
-> > >   		         &gpio0 18 GPIO_ACTIVE_LOW>;
-> > >  -		gpio-fan,speed-map =3D <0    3
-> > >  -		                      1500 2
-> > >  -		                      3250 1
-> > >  -		                      5000 0>;
-> > >  +		gpio-fan,speed-map =3D
-> > >  +				<0    3>,
-> > >  +				<1500 2>,
-> > >  +				<3250 1>,
-> > >  +				<5000 0>;
-> > >   		alarm-gpios =3D <&gpio1 8 GPIO_ACTIVE_HIGH>;
-> > >   	};
-> > >=20
-> > >  diff --git a/arch/arm/boot/dts/kirkwood-ns2max.dts
-> > > b/arch/arm/boot/dts/kirkwood-ns2max.dts
-> > >  index c0a087e77408..044958bc55da 100644
-> > >  --- a/arch/arm/boot/dts/kirkwood-ns2max.dts
-> > >  +++ b/arch/arm/boot/dts/kirkwood-ns2max.dts
-> > >  @@ -29,15 +29,15 @@ &gpio0  7 GPIO_ACTIVE_LOW
-> > >   			 &gpio1  1 GPIO_ACTIVE_LOW
-> > >   			 &gpio0 23 GPIO_ACTIVE_LOW>;
-> > >   		gpio-fan,speed-map =3D
-> > >  -			<   0  0
-> > >  -			 1500 15
-> > >  -			 1700 14
-> > >  -			 1800 13
-> > >  -			 2100 12
-> > >  -			 3100 11
-> > >  -			 3300 10
-> > >  -			 4300  9
-> > >  -			 5500  8>;
-> > >  +			<   0  0>,
-> > >  +			<1500 15>,
-> > >  +			<1700 14>,
-> > >  +			<1800 13>,
-> > >  +			<2100 12>,
-> > >  +			<3100 11>,
-> > >  +			<3300 10>,
-> > >  +			<4300  9>,
-> > >  +			<5500  8>;
-> > >   		alarm-gpios =3D <&gpio0 25 GPIO_ACTIVE_LOW>;
-> > >   	};
-> > >=20
-> > >  diff --git a/arch/arm/boot/dts/kirkwood-ns2mini.dts
-> > > b/arch/arm/boot/dts/kirkwood-ns2mini.dts
-> > >  index 5b9fa14b6428..3fbe008f9141 100644
-> > >  --- a/arch/arm/boot/dts/kirkwood-ns2mini.dts
-> > >  +++ b/arch/arm/boot/dts/kirkwood-ns2mini.dts
-> > >  @@ -30,15 +30,15 @@ &gpio0  7 GPIO_ACTIVE_LOW
-> > >   			 &gpio1  1 GPIO_ACTIVE_LOW
-> > >   			 &gpio0 23 GPIO_ACTIVE_LOW>;
-> > >   		gpio-fan,speed-map =3D
-> > >  -			<   0  0
-> > >  -			 3000 15
-> > >  -			 3180 14
-> > >  -			 4140 13
-> > >  -			 4570 12
-> > >  -			 6760 11
-> > >  -			 7140 10
-> > >  -			 7980  9
-> > >  -			 9200  8>;
-> > >  +			<   0  0>,
-> > >  +			<3000 15>,
-> > >  +			<3180 14>,
-> > >  +			<4140 13>,
-> > >  +			<4570 12>,
-> > >  +			<6760 11>,
-> > >  +			<7140 10>,
-> > >  +			<7980  9>,
-> > >  +			<9200  8>;
-> > >   		alarm-gpios =3D <&gpio0 25 GPIO_ACTIVE_LOW>;
-> > >   	};
-> > >=20
-> > >  diff --git a/arch/arm/boot/dts/kirkwood-synology.dtsi
-> > > b/arch/arm/boot/dts/kirkwood-synology.dtsi
-> > >  index 217bd374e52b..00adca68ae95 100644
-> > >  --- a/arch/arm/boot/dts/kirkwood-synology.dtsi
-> > >  +++ b/arch/arm/boot/dts/kirkwood-synology.dtsi
-> > >  @@ -286,14 +286,15 @@ gpio-fan-150-32-35 {
-> > >   		gpios =3D <&gpio1 0 GPIO_ACTIVE_HIGH
-> > >   			 &gpio1 1 GPIO_ACTIVE_HIGH
-> > >   			 &gpio1 2 GPIO_ACTIVE_HIGH>;
-> > >  -		gpio-fan,speed-map =3D <    0 0
-> > >  -				       2200 1
-> > >  -				       2500 2
-> > >  -				       3000 4
-> > >  -				       3300 3
-> > >  -				       3700 5
-> > >  -				       3800 6
-> > >  -				       4200 7 >;
-> > >  +		gpio-fan,speed-map =3D
-> > >  +				<   0 0>,
-> > >  +				<2200 1>,
-> > >  +				<2500 2>,
-> > >  +				<3000 4>,
-> > >  +				<3300 3>,
-> > >  +				<3700 5>,
-> > >  +				<3800 6>,
-> > >  +				<4200 7>;
-> > >   	};
-> > >=20
-> > >   	gpio-fan-150-15-18 {
-> > >  @@ -306,14 +307,15 @@ gpio-fan-150-15-18 {
-> > >   			 &gpio0 16 GPIO_ACTIVE_HIGH
-> > >   			 &gpio0 17 GPIO_ACTIVE_HIGH>;
-> > >   		alarm-gpios =3D <&gpio0 18 GPIO_ACTIVE_HIGH>;
-> > >  -		gpio-fan,speed-map =3D <    0 0
-> > >  -				       2200 1
-> > >  -				       2500 2
-> > >  -				       3000 4
-> > >  -				       3300 3
-> > >  -				       3700 5
-> > >  -				       3800 6
-> > >  -				       4200 7 >;
-> > >  +		gpio-fan,speed-map =3D
-> > >  +				<   0 0>,
-> > >  +				<2200 1>,
-> > >  +				<2500 2>,
-> > >  +				<3000 4>,
-> > >  +				<3300 3>,
-> > >  +				<3700 5>,
-> > >  +				<3800 6>,
-> > >  +				<4200 7>;
-> > >   	};
-> > >=20
-> > >   	gpio-fan-100-32-35 {
-> > >  @@ -326,14 +328,15 @@ gpio-fan-100-32-35 {
-> > >   			 &gpio1 1 GPIO_ACTIVE_HIGH
-> > >   			 &gpio1 2 GPIO_ACTIVE_HIGH>;
-> > >   		alarm-gpios =3D <&gpio1 3 GPIO_ACTIVE_HIGH>;
-> > >  -		gpio-fan,speed-map =3D <    0 0
-> > >  -				       2500 1
-> > >  -				       3100 2
-> > >  -				       3800 3
-> > >  -				       4600 4
-> > >  -				       4800 5
-> > >  -				       4900 6
-> > >  -				       5000 7 >;
-> > >  +		gpio-fan,speed-map =3D
-> > >  +				<   0 0>,
-> > >  +				<2500 1>,
-> > >  +				<3100 2>,
-> > >  +				<3800 3>,
-> > >  +				<4600 4>,
-> > >  +				<4800 5>,
-> > >  +				<4900 6>,
-> > >  +				<5000 7>;
-> > >   	};
-> > >=20
-> > >   	gpio-fan-100-15-18 {
-> > >  @@ -346,14 +349,15 @@ gpio-fan-100-15-18 {
-> > >   			 &gpio0 16 GPIO_ACTIVE_HIGH
-> > >   			 &gpio0 17 GPIO_ACTIVE_HIGH>;
-> > >   		alarm-gpios =3D <&gpio0 18 GPIO_ACTIVE_HIGH>;
-> > >  -		gpio-fan,speed-map =3D <    0 0
-> > >  -				       2500 1
-> > >  -				       3100 2
-> > >  -				       3800 3
-> > >  -				       4600 4
-> > >  -				       4800 5
-> > >  -				       4900 6
-> > >  -				       5000 7 >;
-> > >  +		gpio-fan,speed-map =3D
-> > >  +				<   0 0>,
-> > >  +				<2500 1>,
-> > >  +				<3100 2>,
-> > >  +				<3800 3>,
-> > >  +				<4600 4>,
-> > >  +				<4800 5>,
-> > >  +				<4900 6>,
-> > >  +				<5000 7>;
-> > >   	};
-> > >=20
-> > >   	gpio-fan-100-15-35-1 {
-> > >  @@ -366,14 +370,15 @@ gpio-fan-100-15-35-1 {
-> > >   			 &gpio0 16 GPIO_ACTIVE_HIGH
-> > >   			 &gpio0 17 GPIO_ACTIVE_HIGH>;
-> > >   		alarm-gpios =3D <&gpio1 3 GPIO_ACTIVE_HIGH>;
-> > >  -		gpio-fan,speed-map =3D <    0 0
-> > >  -				       2500 1
-> > >  -				       3100 2
-> > >  -				       3800 3
-> > >  -				       4600 4
-> > >  -				       4800 5
-> > >  -				       4900 6
-> > >  -				       5000 7 >;
-> > >  +		gpio-fan,speed-map =3D
-> > >  +				<   0 0>,
-> > >  +				<2500 1>,
-> > >  +				<3100 2>,
-> > >  +				<3800 3>,
-> > >  +				<4600 4>,
-> > >  +				<4800 5>,
-> > >  +				<4900 6>,
-> > >  +				<5000 7>;
-> > >   	};
-> > >=20
-> > >   	gpio-fan-100-15-35-3 {
-> > >  @@ -388,14 +393,15 @@ &gpio0 16 GPIO_ACTIVE_HIGH
-> > >   		alarm-gpios =3D <&gpio1 3 GPIO_ACTIVE_HIGH
-> > >   			       &gpio1 12 GPIO_ACTIVE_HIGH
-> > >   			       &gpio1 13 GPIO_ACTIVE_HIGH>;
-> > >  -		gpio-fan,speed-map =3D <    0 0
-> > >  -				       2500 1
-> > >  -				       3100 2
-> > >  -				       3800 3
-> > >  -				       4600 4
-> > >  -				       4800 5
-> > >  -				       4900 6
-> > >  -				       5000 7 >;
-> > >  +		gpio-fan,speed-map =3D
-> > >  +				<   0 0>,
-> > >  +				<2500 1>,
-> > >  +				<3100 2>,
-> > >  +				<3800 3>,
-> > >  +				<4600 4>,
-> > >  +				<4800 5>,
-> > >  +				<4900 6>,
-> > >  +				<5000 7>;
-> > >   	};
-> > >=20
-> > >   	gpio-leds-alarm-12 {
-> > >  diff --git a/arch/arm/boot/dts/mvebu-linkstation-fan.dtsi
-> > > b/arch/arm/boot/dts/mvebu-linkstation-fan.dtsi
-> > >  index e172029a0c4d..a260c42dbda3 100644
-> > >  --- a/arch/arm/boot/dts/mvebu-linkstation-fan.dtsi
-> > >  +++ b/arch/arm/boot/dts/mvebu-linkstation-fan.dtsi
-> > >  @@ -50,10 +50,10 @@ gpio_fan {
-> > >   		pinctrl-names =3D "default";
-> > >=20
-> > >   		gpio-fan,speed-map =3D
-> > >  -			<0		3
-> > >  -			1500	2
-> > >  -			3250	1
-> > >  -			5000	0>;
-> > >  +			<   0 3>,
-> > >  +			<1500 2>,
-> > >  +			<3250 1>,
-> > >  +			<5000 0>;
-> > >   	};
-> > >   };
-> > >=20
-> > >  diff --git a/arch/arm/boot/dts/tegra30-ouya.dts
-> > > b/arch/arm/boot/dts/tegra30-ouya.dts
-> > >  index a93bc452d315..19aa9c2169fd 100644
-> > >  --- a/arch/arm/boot/dts/tegra30-ouya.dts
-> > >  +++ b/arch/arm/boot/dts/tegra30-ouya.dts
-> > >  @@ -426,8 +426,8 @@ trusted-foundations {
-> > >   	fan: gpio_fan {
-> > >   		compatible =3D "gpio-fan";
-> > >   		gpios =3D <&gpio TEGRA_GPIO(J, 2) GPIO_ACTIVE_HIGH>;
-> > >  -		gpio-fan,speed-map =3D <0    0
-> > >  -				      4500 1>;
-> > >  +		gpio-fan,speed-map =3D <0    0>,
-> > >  +				     <4500 1>;
-> > >   		#cooling-cells =3D <2>;
-> > >   	};
-> > >=20
-> > >  --
-> > >  2.33.0
-> > >=20
-> > >=20
-> > >  _______________________________________________
-> > >  linux-arm-kernel mailing list
-> > >  linux-arm-kernel@lists.infradead.org
-> > >  http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
->=20
->=20
->=20
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> 
+> Regards,
+> Bjorn
+> 
+>> ---
+>>   .../dts/qcom/msm8996-sony-xperia-tone.dtsi    | 18 ++++--
+>>   .../boot/dts/qcom/msm8996-xiaomi-common.dtsi  | 18 +++---
+>>   arch/arm64/boot/dts/qcom/msm8996.dtsi         | 63 ++++++++++---------
+>>   3 files changed, 55 insertions(+), 44 deletions(-)
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/msm8996-sony-xperia-tone.dtsi b/arch/arm64/boot/dts/qcom/msm8996-sony-xperia-tone.dtsi
+>> index 507396c4d23b..4c26e66f0610 100644
+>> --- a/arch/arm64/boot/dts/qcom/msm8996-sony-xperia-tone.dtsi
+>> +++ b/arch/arm64/boot/dts/qcom/msm8996-sony-xperia-tone.dtsi
+>> @@ -13,9 +13,10 @@
+>>   #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+>>   #include <dt-bindings/pinctrl/qcom,pmic-mpp.h>
+>>   
+>> -/delete-node/ &slpi_region;
+>> -/delete-node/ &venus_region;
+>> -/delete-node/ &zap_shader_region;
+>> +/delete-node/ &adsp_mem;
+>> +/delete-node/ &slpi_mem;
+>> +/delete-node/ &venus_mem;
+>> +/delete-node/ &gpu_mem;
+>>   
+>>   / {
+>>   	qcom,msm-id = <246 0x30001>; /* MSM8996 V3.1 (Final) */
+>> @@ -46,18 +47,23 @@ cont_splash_mem: memory@83401000 {
+>>   			no-map;
+>>   		};
+>>   
+>> -		zap_shader_region: gpu@90400000 {
+>> +		adsp_mem: adsp@8ea00000 {
+>> +			reg = <0x0 0x8ea00000 0x0 0x1a00000>;
+>> +			no-map;
+>> +		};
+>> +
+>> +		gpu_mem: gpu@90400000 {
+>>   			compatible = "shared-dma-pool";
+>>   			reg = <0x0 0x90400000 0x0 0x2000>;
+>>   			no-map;
+>>   		};
+>>   
+>> -		slpi_region: memory@90500000 {
+>> +		slpi_mem: memory@90500000 {
+>>   			reg = <0 0x90500000 0 0xa00000>;
+>>   			no-map;
+>>   		};
+>>   
+>> -		venus_region: memory@90f00000 {
+>> +		venus_mem: memory@90f00000 {
+>>   			reg = <0 0x90f00000 0 0x500000>;
+>>   			no-map;
+>>   		};
+>> diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
+>> index d239b01b8505..a5e7bccadba2 100644
+>> --- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
+>> +++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
+>> @@ -66,32 +66,32 @@ memory@88800000 {
+>>   
+>>   		/* This platform has all PIL regions offset by 0x1400000 */
+>>   		/delete-node/ mpss@88800000;
+>> -		mpss_region: mpss@89c00000 {
+>> +		mpss_mem: mpss@89c00000 {
+>>   			reg = <0x0 0x89c00000 0x0 0x6200000>;
+>>   			no-map;
+>>   		};
+>>   
+>>   		/delete-node/ adsp@8ea00000;
+>> -		adsp_region: adsp@8ea00000 {
+>> +		adsp_mem: adsp@8fe00000 {
+>>   			reg = <0x0 0x8fe00000 0x0 0x1b00000>;
+>>   			no-map;
+>>   		};
+>>   
+>> -		/delete-node/ slpi@90b00000;
+>> -		slpi_region: slpi@91900000 {
+>> +		/delete-node/ slpi@90500000;
+>> +		slpi_mem: slpi@91900000 {
+>>   			reg = <0x0 0x91900000 0x0 0xa00000>;
+>>   			no-map;
+>>   		};
+>>   
+>> -		/delete-node/ gpu@8f200000;
+>> -		zap_shader_region: gpu@92300000 {
+>> +		/delete-node/ gpu@90f00000;
+>> +		gpu_mem: gpu@92300000 {
+>>   			compatible = "shared-dma-pool";
+>>   			reg = <0x0 0x92300000 0x0 0x2000>;
+>>   			no-map;
+>>   		};
+>>   
+>>   		/delete-node/ venus@91000000;
+>> -		venus_region: venus@90400000 {
+>> +		venus_mem: venus@92400000 {
+>>   			reg = <0x0 0x92400000 0x0 0x500000>;
+>>   			no-map;
+>>   		};
+>> @@ -107,7 +107,7 @@ ramoops@92900000 {
+>>   			pmsg-size = <0x40000>;
+>>   		};
+>>   
+>> -		/delete-node/ rmtfs@86700000;
+>> +		/delete-node/ rmtfs;
+>>   		rmtfs@f6c00000 {
+>>   			compatible = "qcom,rmtfs-mem";
+>>   			reg = <0 0xf6c00000 0 0x200000>;
+>> @@ -118,7 +118,7 @@ rmtfs@f6c00000 {
+>>   		};
+>>   
+>>   		/delete-node/ mba@91500000;
+>> -		mba_region: mba@f6f00000 {
+>> +		mba_mem: mba@f6f00000 {
+>>   			reg = <0x0 0xf6f00000 0x0 0x100000>;
+>>   			no-map;
+>>   		};
+>> diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+>> index eb3ec5ff46eb..1495fff6ffc9 100644
+>> --- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
+>> +++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+>> @@ -384,60 +384,65 @@ reserved-memory {
+>>   		#size-cells = <2>;
+>>   		ranges;
+>>   
+>> -		mba_region: mba@91500000 {
+>> -			reg = <0x0 0x91500000 0x0 0x200000>;
+>> +		hyp_mem: memory@85800000 {
+>> +			reg = <0x0 0x85800000 0x0 0x600000>;
+>>   			no-map;
+>>   		};
+>>   
+>> -		slpi_region: slpi@90b00000 {
+>> -			reg = <0x0 0x90b00000 0x0 0xa00000>;
+>> +		xbl_mem: memory@85e00000 {
+>> +			reg = <0x0 0x85e00000 0x0 0x200000>;
+>>   			no-map;
+>>   		};
+>>   
+>> -		venus_region: venus@90400000 {
+>> -			reg = <0x0 0x90400000 0x0 0x700000>;
+>> +		smem_mem: smem-mem@86000000 {
+>> +			reg = <0x0 0x86000000 0x0 0x200000>;
+>>   			no-map;
+>>   		};
+>>   
+>> -		adsp_region: adsp@8ea00000 {
+>> -			reg = <0x0 0x8ea00000 0x0 0x1a00000>;
+>> +		tz_mem: memory@86200000 {
+>> +			reg = <0x0 0x86200000 0x0 0x2600000>;
+>>   			no-map;
+>>   		};
+>>   
+>> -		mpss_region: mpss@88800000 {
+>> -			reg = <0x0 0x88800000 0x0 0x6200000>;
+>> +		rmtfs_mem: rmtfs {
+>> +			compatible = "qcom,rmtfs-mem";
+>> +
+>> +			size = <0x0 0x200000>;
+>> +			alloc-ranges = <0x0 0xa0000000 0x0 0x2000000>;
+>>   			no-map;
+>> +
+>> +			qcom,client-id = <1>;
+>> +			qcom,vmid = <15>;
+>>   		};
+>>   
+>> -		smem_mem: smem-mem@86000000 {
+>> -			reg = <0x0 0x86000000 0x0 0x200000>;
+>> +		mpss_mem: mpss@88800000 {
+>> +			reg = <0x0 0x88800000 0x0 0x6200000>;
+>>   			no-map;
+>>   		};
+>>   
+>> -		memory@85800000 {
+>> -			reg = <0x0 0x85800000 0x0 0x800000>;
+>> +		adsp_mem: adsp@8ea00000 {
+>> +			reg = <0x0 0x8ea00000 0x0 0x1b00000>;
+>>   			no-map;
+>>   		};
+>>   
+>> -		memory@86200000 {
+>> -			reg = <0x0 0x86200000 0x0 0x2600000>;
+>> +		slpi_mem: slpi@90500000 {
+>> +			reg = <0x0 0x90500000 0x0 0xa00000>;
+>>   			no-map;
+>>   		};
+>>   
+>> -		rmtfs@86700000 {
+>> -			compatible = "qcom,rmtfs-mem";
+>> -
+>> -			size = <0x0 0x200000>;
+>> -			alloc-ranges = <0x0 0xa0000000 0x0 0x2000000>;
+>> +		gpu_mem: gpu@90f00000 {
+>> +			compatible = "shared-dma-pool";
+>> +			reg = <0x0 0x90f00000 0x0 0x100000>;
+>>   			no-map;
+>> +		};
+>>   
+>> -			qcom,client-id = <1>;
+>> -			qcom,vmid = <15>;
+>> +		venus_mem: venus@91000000 {
+>> +			reg = <0x0 0x91000000 0x0 0x500000>;
+>> +			no-map;
+>>   		};
+>>   
+>> -		zap_shader_region: gpu@8f200000 {
+>> -			compatible = "shared-dma-pool";
+>> -			reg = <0x0 0x90b00000 0x0 0xa00000>;
+>> +		mba_mem: mba@91500000 {
+>> +			reg = <0x0 0x91500000 0x0 0x200000>;
+>>   			no-map;
+>>   		};
+>>   	};
+>> @@ -1013,7 +1018,7 @@ opp-133000000 {
+>>   			};
+>>   
+>>   			zap-shader {
+>> -				memory-region = <&zap_shader_region>;
+>> +				memory-region = <&gpu_mem>;
+>>   			};
+>>   		};
+>>   
+>> @@ -2001,7 +2006,7 @@ venus: video-codec@c00000 {
+>>   				 <&venus_smmu 0x2c>,
+>>   				 <&venus_smmu 0x2d>,
+>>   				 <&venus_smmu 0x31>;
+>> -			memory-region = <&venus_region>;
+>> +			memory-region = <&venus_mem>;
+>>   			status = "disabled";
+>>   
+>>   			video-decoder {
+>> @@ -3008,7 +3013,7 @@ adsp_pil: remoteproc@9300000 {
+>>   			clocks = <&xo_board>;
+>>   			clock-names = "xo";
+>>   
+>> -			memory-region = <&adsp_region>;
+>> +			memory-region = <&adsp_mem>;
+>>   
+>>   			qcom,smem-states = <&smp2p_adsp_out 0>;
+>>   			qcom,smem-state-names = "stop";
+>> -- 
+>> 2.33.0
+>>
+>>
 
---GeONROBiaq1zPAtT
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEXW8DgovlR3VS5hA0zyg/RDPmszoFAmGBNl4ACgkQzyg/RDPm
-szo9eA/9Ga7giEKS7S5pah9u5XzMugnJiG0HEzoFglHAWd5d/rapYOsC+OMzSQgT
-xWxu7LSbmJlJeB6BSxFmy+Kcp5hWyhT7pi7IBzlksPV/h5BW3FH7+M0dBE7CmH7K
-8aHe5V1zqbGrzjTKZbTqqIYPvC16MxJewzbLB6tD2yMibpg1rbGvMH0x0boFVjak
-Knvy23BdgEDBOtMbJHdG2dd86UKPCFBYfNISsmIfA5/6vUaVjre/oj94bqFogTAJ
-rqWV2y7ywgyzpPIiYNbQDBemF2AoGThKXUsSALL/iJFm1bL/FdKaDKWr3kBOJQzT
-7L9ztxjm4gRFsB0dakF723DwM1YZ0NCqEHTsaS+0gDin9NTwnNg0JM5PhkArrtm3
-o5C7+VSG2WjgfA7hO7IbmYnvysKv2UqkQVaDkabZTtH4m1pgWL9Mm9eNL76ALDAq
-ZI7RpqrYxlIabRl0lPJnbFaioF8mHczzdihNb+jNr73xzqDzQn/NefymnGQY583f
-TV3v91+IvMEHCkkbydkyTlawAFnATsUmcfamp6vDx449MnplPOWXP98YPPQ3uGz+
-oULNg7IFxZFlZNLmvwhYn2ZGV/V5WI8kbaQsZwAy26kguK34mhijROTjE5BQIQEg
-TlBR4hdn80UAq4BKAtN1XXPBrH/TQ23WOlwKFo0nLEgZWjPJRK8=
-=ZToc
------END PGP SIGNATURE-----
-
---GeONROBiaq1zPAtT--
+-- 
+With best wishes
+Dmitry
