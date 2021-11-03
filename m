@@ -2,350 +2,219 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D983BC433EF
-	for <phone-devel@archiver.kernel.org>; Wed,  3 Nov 2021 02:42:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B919C433EF
+	for <phone-devel@archiver.kernel.org>; Wed,  3 Nov 2021 10:41:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BF749610E7
-	for <phone-devel@archiver.kernel.org>; Wed,  3 Nov 2021 02:42:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 199E661076
+	for <phone-devel@archiver.kernel.org>; Wed,  3 Nov 2021 10:41:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231352AbhKCCpY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 2 Nov 2021 22:45:24 -0400
-Received: from mail-0301.mail-europe.com ([188.165.51.139]:49600 "EHLO
-        mail-0301.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231340AbhKCCpX (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 Nov 2021 22:45:23 -0400
-Date:   Wed, 03 Nov 2021 02:42:34 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1635907362;
-        bh=4uE4ykr+J3w0ILwejY+w4R1tl1K1S3DQISYVJru9WIo=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=oNdMb84kxJLOuKJGGqb9XOBzzo/ol1iwEkqF6hmU/AIydbuY1Z18gZJndGmFvSGSJ
-         YhAgTdTpqO46MB/aJvUU3n6wzb4e/ckvBokfLmt6Tb5+MzsQnhnGRHEcgz/cMAo6nc
-         0r4AWDYtJBEilLehVE0Mh0T3YapjsA+CFw4KfV8o=
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-From:   Yassine Oudjana <y.oudjana@protonmail.com>
-Cc:     Andy Gross <agross@kernel.org>, Ohad Ben-Cohen <ohad@wizery.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Raffaele Tranquillini <raffaele.tranquillini@gmail.com>,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
-Subject: Re: [PATCH v2 1/5] arm64: dts: qcom: msm8996: Revamp reserved memory
-Message-ID: <91b184266e545efcc5969fe6661b50da82351119.camel@protonmail.com>
-In-Reply-To: <4455e52f-7e8a-c431-9977-dcf4aefe9822@linaro.org>
-References: <20210926190555.278589-1-y.oudjana@protonmail.com> <20210926190555.278589-2-y.oudjana@protonmail.com> <YXTNL7boyiRFKQiV@builder.lan> <4455e52f-7e8a-c431-9977-dcf4aefe9822@linaro.org>
+        id S231623AbhKCKod (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 3 Nov 2021 06:44:33 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32]:41242 "EHLO
+        mx0b-00069f02.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231338AbhKCKod (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 3 Nov 2021 06:44:33 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1A39uJ81023448;
+        Wed, 3 Nov 2021 10:41:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2021-07-09;
+ bh=OpRICYRSB8MIdWS1ied6MzWDVJStu5i45o5InoKfojc=;
+ b=xAADBKLXiCr8OAZebYIMJn4AZtuwpqt31Wsvzc5mOQUYH6wuJeDScklD2FYR1JQc7OB7
+ Pw+IwTaiIDyO95hmbkI015ksdMAAbrevEKR0oNyMFnph4fLCwC37ofzbM6Ff1vd4aQR/
+ Cz3GF2AOabB4dH6AkoaKk5voFYpFTWLpcJJe6I/iLJRlb41n86E7ELpteUajEWf10rvy
+ K9N3qaMbyy6OXe7u3znpUB1w8EiH+R4e7SJQsL2exzrpBC0faMDPPpjkMd3PuxpvB7MI
+ AGDcycfmFkg/TyOHfGmUa2nxYCdohDM+p3Do4V9UmKgk88n6m8BDVtWQnH1dYJcJsuU6 xQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by mx0b-00069f02.pphosted.com with ESMTP id 3c3mxh15b9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 03 Nov 2021 10:41:40 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 1A3Af1X9016269;
+        Wed, 3 Nov 2021 10:41:39 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2103.outbound.protection.outlook.com [104.47.58.103])
+        by userp3030.oracle.com with ESMTP id 3c27k6trqd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 03 Nov 2021 10:41:39 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Q12ffhWDXsvFtLmJqghLX8EO6AOmYrX8bpdZqbALgMorz8tsiNczudZvYAjFMl29sfPqf6q0d5WaguEVVTy096BRkK8kusnl8D9Q70bcHWuNi9W9FPCHnADwkEZLcSQzRCGR+DcRl01eZ4/YRp6+kgOaAD5ed81vIXTzXRf7smFbYuH2am+uKgjH+8z3hMdD7EF9FX5tE5yNp7dATVNcuZAoWOerNZqfPV0h1nbIe3+fL+bBvQ9OeTm1zC6ec7AK3Y2J345uicg9UXrT+3OuDUr6/z3/jgQqbgEoEsyMCLEgEIRH0GyDfndTR9CcQXXRsDvfQRTbJbXT48598FGi8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OpRICYRSB8MIdWS1ied6MzWDVJStu5i45o5InoKfojc=;
+ b=aKpHaoOw8O0r3seBWiKwsXaLBxn7KrhqC6Z0GWYCK12QuOY0IpxgiW0zrmUhOdHiGiO1JOBZyD0PxSUPx5Z1aY8rGeUI3Hdv4DNMwugTmzqpryXvNAkk4nizLkqQMn8NUfBLbyyZDyJZiEWQ/H46rdW8rDWgHULV4gchv3yXBoFkVWCLcyQf0Y/NcLFcLtaMmltCJmpMWs0RNAKw6IKg8cWuFinUVk1uX3N3+VNHuNpTwvYEayyqbePbs1nX2Z2GYbZRXPMstyy0OfCzvTdD5L3dr6+cSxQB4WgfHQdztsCKza/B+9Qx+/X9h+tv4JCdzwL4tshmGxdxKUy1s9UGlw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OpRICYRSB8MIdWS1ied6MzWDVJStu5i45o5InoKfojc=;
+ b=DAgGSxsQZWhSkvL4oixcFMIVTEv98MeoOV+NLnSaouKEjygpyy+H7KXXOST6k3jg20Le1RyrX5giYleCyYN/7bJkHDcte9+HUnZtX5ZdeQtW15EPvTmAz64iqc/OeV8EXlWrKfECkBRGPnfxhtoViY/onWre2zJM0jLqQXEFyiM=
+Authentication-Results: puri.sm; dkim=none (message not signed)
+ header.d=none;puri.sm; dmarc=none action=none header.from=oracle.com;
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ (2603:10b6:301:2d::28) by MWHPR1001MB2206.namprd10.prod.outlook.com
+ (2603:10b6:301:32::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.15; Wed, 3 Nov
+ 2021 10:41:36 +0000
+Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::d409:11b5:5eb2:6be9]) by MWHPR1001MB2365.namprd10.prod.outlook.com
+ ([fe80::d409:11b5:5eb2:6be9%5]) with mapi id 15.20.4649.020; Wed, 3 Nov 2021
+ 10:41:36 +0000
+Date:   Wed, 3 Nov 2021 13:41:00 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+Cc:     Steve Longerbeam <slongerbeam@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@puri.sm, phone-devel@vger.kernel.org
+Subject: Re: [PATCHv2 4/4] media: imx: Use dedicated format handler for
+ i.MX7/8
+Message-ID: <20211103104100.GM2794@kadam>
+References: <20211017102904.756408-1-dorota.czaplejewicz@puri.sm>
+ <20211017102904.756408-4-dorota.czaplejewicz@puri.sm>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211017102904.756408-4-dorota.czaplejewicz@puri.sm>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-ClientProxiedBy: JNAP275CA0025.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:4d::18)
+ To MWHPR1001MB2365.namprd10.prod.outlook.com (2603:10b6:301:2d::28)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Received: from kadam (62.8.83.22) by JNAP275CA0025.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:4d::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4669.10 via Frontend Transport; Wed, 3 Nov 2021 10:41:19 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8c195f73-e345-4ac8-fb12-08d99eb682d9
+X-MS-TrafficTypeDiagnostic: MWHPR1001MB2206:
+X-Microsoft-Antispam-PRVS: <MWHPR1001MB2206E458C6CD56F68A29826D8E8C9@MWHPR1001MB2206.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 5UR9eNlKQJUvAHiDJG1jbzF3efeaDhd7wISNPxvrUdiGUcwApTInA3l8SteGixqJoWnlwfgcEa3ZqP80xtPOJcfFucaYeW3OhU0iJ/dxqlqPdh92bgy6iPLNeimAwSHv/biUmyKELTSOZjxs9+BJfFcMIrQpeAbuZUPLO57BgUspnYMcjssD6W7LHh3yXmgCIlsqc1ohCCb8ZHpRJ0Usq4H96zstgKl8JPa9S1Fi1AdJwPmW28v9mBKVkTd30uXAI0K+jv7lSGVCZC7Ut0w3YAOiHn48n7pPN+kYXwUsCL84MADQ2hrpqiCOuJ+8q5GPm9CHNKZI7+GszfEF0K8onvHt2oWT9JFAUWVZ1WsKGcCA21m8rWzfDeRLT0ximLGAAft25vB8Hp8XdKP+7WGPoldafvSEnhA7pXxZYDY35Adb6wg60cEIYTIQvWcGiWP/UnK2MMjjt7TEjLe8ar9j9xQ8vwyVWC9tDsa/XYOFtaTLA0gxec9zvamO6fQ/utfdesdqLxbxH/0cl5iNnkbXEWuXveaCzs8n67yYhKqM7OyTGyD3oH3WU52ue7AChOAOh9HdPOupsrJ5maBWUltAYg6ZIjMc6XxHoromrYIDX1ae2fRuAr4eXbGwc2kWapTtuCvIns8e6hr0r2C3WhPXEga5Xncx++OSRSnKWwsos+sGlIAhIKVDppMKKioJIaW/Gn1YTlKuFanoMnkn1GACeg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(33656002)(55016002)(5660300002)(66556008)(9576002)(4326008)(8936002)(38350700002)(66946007)(66476007)(38100700002)(33716001)(6916009)(44832011)(8676002)(6666004)(956004)(186003)(6496006)(52116002)(26005)(508600001)(316002)(7416002)(2906002)(9686003)(1076003)(86362001)(54906003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?M91di6wQOrpWF9TTztYEzebxzQxpiCPIif0ybTnnSqrquElRCQTgVIPo8V6C?=
+ =?us-ascii?Q?peMD21fu3lYYJY6rAU/V2RtJaIGbz06G7AoMLy7oNIMNxxpDw2Fqvhn5rESC?=
+ =?us-ascii?Q?uGZAR7ta6DmOU1qD35uS7cdTMbmG9RTcvO+7H7w0aAd40TJwx22jWyl6hQVo?=
+ =?us-ascii?Q?1IBu0lrd4cARbqWa1lrjp2Nr5BqEWQwNByz16RvzBM9ZA3W1SC8RSXkQ88l7?=
+ =?us-ascii?Q?iKOL62mBTEXMnyXjrN+2GqdGAYEajfB9jHNnwy8wUR/33yETMSyPKt9VKKri?=
+ =?us-ascii?Q?KPQF2mUGgw1NvrT9gbd8clhhNUTAwxLJXfikM2KEPSEGcOIyyxhPgE3Z5p9j?=
+ =?us-ascii?Q?YUuqbDIZQl4tav4dflrAgEAQ+aM2tKQ+l7p+7OPpQxBN6ItHumpQe8CyJoy6?=
+ =?us-ascii?Q?FjjDuMZLCRjF11dyAx5vWQdAjWidZu+76G2f1SHEytSO320w+GihEd8H8IHh?=
+ =?us-ascii?Q?99oQPvTeLlf/MEsh8K5rOGiwc289txkBGEcylxb6sr0AG4uJOk6mI4LoATim?=
+ =?us-ascii?Q?TL+LAmFq+IzT+tO9jByZ+TuBQQ3d/pbeY1YbdW5Vo2HPhJ2w/tLYvElQw2b+?=
+ =?us-ascii?Q?C5G2pKv/nPJaLM0gwg0zAAnPHDAJrgGsoj9MUyyBlU4WiJ3930DfJDowE9Z2?=
+ =?us-ascii?Q?l5pKkkX4Tbf8xh+SM6ZEORBGdfcAwifbtBi8GcBv3LzMAlZb8hrzvVlLNC+M?=
+ =?us-ascii?Q?arLdVGZH7Kl2uOr4Y0WCXc3QRHNxePyu6lSUGDdTl6L5vyxGdJyaGpzIIjc8?=
+ =?us-ascii?Q?g97szMTY+TgHRQaaSUFQudc11nignogooZRLpY4wdzyjhXXzMJIPTAcsjSXS?=
+ =?us-ascii?Q?QxDI91TfawWzLldsB2yQNJinlOsXnwZWk4+xb4VwKa31xvhRgBglBXoueA65?=
+ =?us-ascii?Q?V9w0Fx7fVMN/y6zXwWgjNEvlawXFyMVEqcuPzPH6QXZRmR4tqEDKQeSIsIJc?=
+ =?us-ascii?Q?TGud7205i6cnW6pbn55xkagQvg2FzywQZkmr3hx93DyGYn1mYwACJghV/djH?=
+ =?us-ascii?Q?hb8kV0dNifnj1iWggJMs2jDgwzkV6Jst1uOdj79ljEpzePNjZsr23NdU/O2/?=
+ =?us-ascii?Q?3qw8MUkRPVCWWWLiX4EGc+OW2daWaG1upiQKNnM1Ddc8RxmsoWcYtf3po/nO?=
+ =?us-ascii?Q?m9sepm1Bk3ymR6fJM9adqW4sFT3kDM1JmowxlrbFv5XrFVlm7yPLp2bMPJ6w?=
+ =?us-ascii?Q?qJywi5BfltcCCCAst22QbINT1ykFV0fsccD4iBZWXM+jFZJq3Cwki7f2XMlB?=
+ =?us-ascii?Q?fk2nq4DW6WdfsJ5SQbQro1Zjx+2nkCulCi5fxY1ldbSaDtKI5fQ2qukvdAI7?=
+ =?us-ascii?Q?h13ZBOXKtbm4eIZOMnytpZDM/ZMWQ0ItkXNWrz+wdFwKONGfs4rzNIxK0NyK?=
+ =?us-ascii?Q?4uNKra4/bGgAosQwwHypR3TjxU3yYXLJGbR7mbMeYc67UMtLoDaGqe70/LvZ?=
+ =?us-ascii?Q?Bx6HctwAfFsac2vn3nEfEi/bi5KA9Vdf7T4SRzLTfAiMjqF/nVxRprmkbdKM?=
+ =?us-ascii?Q?plbFRXDZzbIaB5VgrqTji60wG7v9qskx+FnXe/SCoxoNSuYD5ZjULhx/dCFF?=
+ =?us-ascii?Q?bhYUdNQTwnymL7tGutP27Gw/IEUkAwhaSwrjXNj8vywyqFIDJVaMmi2Zs8uz?=
+ =?us-ascii?Q?n4is/7uyGewh/2uqLwNHaHNYwGcAbjvqmdb1ZlvdwvOmxmN5BKP8fWZwyCI7?=
+ =?us-ascii?Q?BQTmxg=3D=3D?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c195f73-e345-4ac8-fb12-08d99eb682d9
+X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2021 10:41:36.8344
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nIa4eb9i/ihVWCMw4pUOpwhP+ZPdIcCfDc3N62aEneXrvOo68tqmzvv+S0pGmiLHsQfLnrPpisQyvEGKB/HYfzdqY72K+Nmbhbc9yaeDRSk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR1001MB2206
+X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10156 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 spamscore=0
+ malwarescore=0 mlxlogscore=999 adultscore=0 phishscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
+ definitions=main-2111030060
+X-Proofpoint-ORIG-GUID: rWm-eneWnIr6RARq78zYPLJXkkRBKjJ1
+X-Proofpoint-GUID: rWm-eneWnIr6RARq78zYPLJXkkRBKjJ1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 2021-11-03 at 03:50 +0400, Dmitry Baryshkov wrote:
-> On 24/10/2021 06:04, Bjorn Andersson wrote:
-> > On Sun 26 Sep 14:06 CDT 2021, Yassine Oudjana wrote:
-> >=20
-> > > Fix a total overlap between zap_shader_region and slpi_region, and re=
-name
-> > > all regions to match the naming convention in other Qualcomm SoC devi=
-ce trees.
-> > >=20
-> > > Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-> >=20
-> > FYI, I like this series, but I held off applying it because I wanted to
-> > verify that the shuffling of the memory regions works on the existing
-> > 8996 boards.
-> >=20
-> > Unfortunately it didn't work, either with or without the shuffling on
-> > the db820c - and I've not found the time to figure out why that is. I
-> > hope to get back to this shortly (or that someone else will figure it
-> > out and provide a tested-by)
->=20
-> I gave this a test too on my db820c. Usually the board MSS will crash
-> after ~0.1 - 0.15 seconds after booting up, then during recovery the
-> board will crash/reboot somewhere at the end of q6v5_mss_load() (and
-> typically after successful q6v5_rmb_mba_wait() call.
+On Sun, Oct 17, 2021 at 01:08:37PM +0200, Dorota Czaplejewicz wrote:
+> +static int imx78_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
+> +					   const struct v4l2_mbus_framefmt *mbus,
+> +					   const struct imx_media_pixfmt *cc)
+> +{
+> +	u32 width;
+> +	u32 stride;
+> +	u8 divisor;
+> +
+> +	if (!cc) {
+> +		cc = imx_media_find_ipu_format(mbus->code,
+> +					       PIXFMT_SEL_YUV_RGB);
+> +		if (!cc)
+> +			cc = imx_media_find_mbus_format(mbus->code,
+> +							PIXFMT_SEL_ANY);
+> +		if (!cc)
+> +			return -EINVAL;
+> +	}
+> +
+> +	/*
+> +	 * TODO: the IPU currently does not support the AYUV32 format,
+> +	 * so until it does convert to a supported YUV format.
+> +	 */
+> +	if (cc->ipufmt && cc->cs == IPUV3_COLORSPACE_YUV) {
+> +		u32 code;
+> +
+> +		imx_media_enum_mbus_formats(&code, 0, PIXFMT_SEL_YUV);
+> +		cc = imx_media_find_mbus_format(code, PIXFMT_SEL_YUV);
 
-> Occasionally (approximately 1 of 20) the MSS will not crash, presenting
-> PDS service to the userspace. Even in this state it doesn't seem to be
-> able to lock the gps location (but this might be related to the big UART
-> mezzanine sitting on top of the board).
+Do we need a if (!cc) NULL check after this assignment?
 
-I've had MSS crash on xiaomi-scorpio too, but far less often. It seemed
-like some sort of race condition, as it only happened when ADSP and MSS
-were booted at the same time. To workaround this, I delayed loading of
-the rmtfs service to leave some time between booting ADSP and MSS.
+> +	}
+> +
+> +	/*
+> +	 * The hardware can handle line lengths divisible by 4 bytes,
+> +	 * as long as the number of lines is even.
+> +	 * Otherwise, use the value of 8 bytes recommended in the datasheet.
+> +	 */
+> +	divisor = 4 << (mbus->height % 2);
+> +
+> +	width = round_up(mbus->width, divisor);
+> +
+> +	if (cc->planar)
+> +		stride = round_up(width, 16);
+> +	else
+> +		stride = round_up((width * cc->bpp) >> 3, divisor);
+> +
+> +	pix->width = width;
+> +	pix->height = mbus->height;
+> +	pix->pixelformat = cc->fourcc;
+> +	pix->colorspace = mbus->colorspace;
+> +	pix->xfer_func = mbus->xfer_func;
+> +	pix->ycbcr_enc = mbus->ycbcr_enc;
+> +	pix->quantization = mbus->quantization;
+> +	pix->field = mbus->field;
+> +	pix->bytesperline = stride;
+> +	pix->sizeimage = cc->planar ? ((stride * pix->height * cc->bpp) >> 3) :
+> +			 stride * pix->height;
+> +
+> +	return 0;
+> +}
 
->=20
-> Unfortunately there seem to be no SLPI firmware for the db820c, so I can
-> not test slpi.
->=20
-> A notice regarding the patchset itself. It looks like pil_q6v5_mss.c
-> driver misses mx and cx proxy power domains for the MSS_MSM8996 case.
-
-I didn't notice that. I guess they stay on and MSS is able to boot
-anyway. I'll add them similar to PATCH 2/5.
-
->=20
-> >=20
-> > Regards,
-> > Bjorn
-> >=20
-> > > ---
-> > >   .../dts/qcom/msm8996-sony-xperia-tone.dtsi    | 18 ++++--
-> > >   .../boot/dts/qcom/msm8996-xiaomi-common.dtsi  | 18 +++---
-> > >   arch/arm64/boot/dts/qcom/msm8996.dtsi         | 63 ++++++++++------=
----
-> > >   3 files changed, 55 insertions(+), 44 deletions(-)
-> > >=20
-> > > diff --git a/arch/arm64/boot/dts/qcom/msm8996-sony-xperia-tone.dtsi b=
-/arch/arm64/boot/dts/qcom/msm8996-sony-xperia-tone.dtsi
-> > > index 507396c4d23b..4c26e66f0610 100644
-> > > --- a/arch/arm64/boot/dts/qcom/msm8996-sony-xperia-tone.dtsi
-> > > +++ b/arch/arm64/boot/dts/qcom/msm8996-sony-xperia-tone.dtsi
-> > > @@ -13,9 +13,10 @@
-> > >   #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
-> > >   #include <dt-bindings/pinctrl/qcom,pmic-mpp.h>
-> > >=20
-> > > -/delete-node/ &slpi_region;
-> > > -/delete-node/ &venus_region;
-> > > -/delete-node/ &zap_shader_region;
-> > > +/delete-node/ &adsp_mem;
-> > > +/delete-node/ &slpi_mem;
-> > > +/delete-node/ &venus_mem;
-> > > +/delete-node/ &gpu_mem;
-> > >=20
-> > >   / {
-> > >   =09qcom,msm-id =3D <246 0x30001>; /* MSM8996 V3.1 (Final) */
-> > > @@ -46,18 +47,23 @@ cont_splash_mem: memory@83401000 {
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09zap_shader_region: gpu@90400000 {
-> > > +=09=09adsp_mem: adsp@8ea00000 {
-> > > +=09=09=09reg =3D <0x0 0x8ea00000 0x0 0x1a00000>;
-> > > +=09=09=09no-map;
-> > > +=09=09};
-> > > +
-> > > +=09=09gpu_mem: gpu@90400000 {
-> > >   =09=09=09compatible =3D "shared-dma-pool";
-> > >   =09=09=09reg =3D <0x0 0x90400000 0x0 0x2000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09slpi_region: memory@90500000 {
-> > > +=09=09slpi_mem: memory@90500000 {
-> > >   =09=09=09reg =3D <0 0x90500000 0 0xa00000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09venus_region: memory@90f00000 {
-> > > +=09=09venus_mem: memory@90f00000 {
-> > >   =09=09=09reg =3D <0 0x90f00000 0 0x500000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > > diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi b/ar=
-ch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-> > > index d239b01b8505..a5e7bccadba2 100644
-> > > --- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-> > > +++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-> > > @@ -66,32 +66,32 @@ memory@88800000 {
-> > >=20
-> > >   =09=09/* This platform has all PIL regions offset by 0x1400000 */
-> > >   =09=09/delete-node/ mpss@88800000;
-> > > -=09=09mpss_region: mpss@89c00000 {
-> > > +=09=09mpss_mem: mpss@89c00000 {
-> > >   =09=09=09reg =3D <0x0 0x89c00000 0x0 0x6200000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > >   =09=09/delete-node/ adsp@8ea00000;
-> > > -=09=09adsp_region: adsp@8ea00000 {
-> > > +=09=09adsp_mem: adsp@8fe00000 {
-> > >   =09=09=09reg =3D <0x0 0x8fe00000 0x0 0x1b00000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09/delete-node/ slpi@90b00000;
-> > > -=09=09slpi_region: slpi@91900000 {
-> > > +=09=09/delete-node/ slpi@90500000;
-> > > +=09=09slpi_mem: slpi@91900000 {
-> > >   =09=09=09reg =3D <0x0 0x91900000 0x0 0xa00000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09/delete-node/ gpu@8f200000;
-> > > -=09=09zap_shader_region: gpu@92300000 {
-> > > +=09=09/delete-node/ gpu@90f00000;
-> > > +=09=09gpu_mem: gpu@92300000 {
-> > >   =09=09=09compatible =3D "shared-dma-pool";
-> > >   =09=09=09reg =3D <0x0 0x92300000 0x0 0x2000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > >   =09=09/delete-node/ venus@91000000;
-> > > -=09=09venus_region: venus@90400000 {
-> > > +=09=09venus_mem: venus@92400000 {
-> > >   =09=09=09reg =3D <0x0 0x92400000 0x0 0x500000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > > @@ -107,7 +107,7 @@ ramoops@92900000 {
-> > >   =09=09=09pmsg-size =3D <0x40000>;
-> > >   =09=09};
-> > >=20
-> > > -=09=09/delete-node/ rmtfs@86700000;
-> > > +=09=09/delete-node/ rmtfs;
-> > >   =09=09rmtfs@f6c00000 {
-> > >   =09=09=09compatible =3D "qcom,rmtfs-mem";
-> > >   =09=09=09reg =3D <0 0xf6c00000 0 0x200000>;
-> > > @@ -118,7 +118,7 @@ rmtfs@f6c00000 {
-> > >   =09=09};
-> > >=20
-> > >   =09=09/delete-node/ mba@91500000;
-> > > -=09=09mba_region: mba@f6f00000 {
-> > > +=09=09mba_mem: mba@f6f00000 {
-> > >   =09=09=09reg =3D <0x0 0xf6f00000 0x0 0x100000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > > diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/=
-dts/qcom/msm8996.dtsi
-> > > index eb3ec5ff46eb..1495fff6ffc9 100644
-> > > --- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-> > > +++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-> > > @@ -384,60 +384,65 @@ reserved-memory {
-> > >   =09=09#size-cells =3D <2>;
-> > >   =09=09ranges;
-> > >=20
-> > > -=09=09mba_region: mba@91500000 {
-> > > -=09=09=09reg =3D <0x0 0x91500000 0x0 0x200000>;
-> > > +=09=09hyp_mem: memory@85800000 {
-> > > +=09=09=09reg =3D <0x0 0x85800000 0x0 0x600000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09slpi_region: slpi@90b00000 {
-> > > -=09=09=09reg =3D <0x0 0x90b00000 0x0 0xa00000>;
-> > > +=09=09xbl_mem: memory@85e00000 {
-> > > +=09=09=09reg =3D <0x0 0x85e00000 0x0 0x200000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09venus_region: venus@90400000 {
-> > > -=09=09=09reg =3D <0x0 0x90400000 0x0 0x700000>;
-> > > +=09=09smem_mem: smem-mem@86000000 {
-> > > +=09=09=09reg =3D <0x0 0x86000000 0x0 0x200000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09adsp_region: adsp@8ea00000 {
-> > > -=09=09=09reg =3D <0x0 0x8ea00000 0x0 0x1a00000>;
-> > > +=09=09tz_mem: memory@86200000 {
-> > > +=09=09=09reg =3D <0x0 0x86200000 0x0 0x2600000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09mpss_region: mpss@88800000 {
-> > > -=09=09=09reg =3D <0x0 0x88800000 0x0 0x6200000>;
-> > > +=09=09rmtfs_mem: rmtfs {
-> > > +=09=09=09compatible =3D "qcom,rmtfs-mem";
-> > > +
-> > > +=09=09=09size =3D <0x0 0x200000>;
-> > > +=09=09=09alloc-ranges =3D <0x0 0xa0000000 0x0 0x2000000>;
-> > >   =09=09=09no-map;
-> > > +
-> > > +=09=09=09qcom,client-id =3D <1>;
-> > > +=09=09=09qcom,vmid =3D <15>;
-> > >   =09=09};
-> > >=20
-> > > -=09=09smem_mem: smem-mem@86000000 {
-> > > -=09=09=09reg =3D <0x0 0x86000000 0x0 0x200000>;
-> > > +=09=09mpss_mem: mpss@88800000 {
-> > > +=09=09=09reg =3D <0x0 0x88800000 0x0 0x6200000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09memory@85800000 {
-> > > -=09=09=09reg =3D <0x0 0x85800000 0x0 0x800000>;
-> > > +=09=09adsp_mem: adsp@8ea00000 {
-> > > +=09=09=09reg =3D <0x0 0x8ea00000 0x0 0x1b00000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09memory@86200000 {
-> > > -=09=09=09reg =3D <0x0 0x86200000 0x0 0x2600000>;
-> > > +=09=09slpi_mem: slpi@90500000 {
-> > > +=09=09=09reg =3D <0x0 0x90500000 0x0 0xa00000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09rmtfs@86700000 {
-> > > -=09=09=09compatible =3D "qcom,rmtfs-mem";
-> > > -
-> > > -=09=09=09size =3D <0x0 0x200000>;
-> > > -=09=09=09alloc-ranges =3D <0x0 0xa0000000 0x0 0x2000000>;
-> > > +=09=09gpu_mem: gpu@90f00000 {
-> > > +=09=09=09compatible =3D "shared-dma-pool";
-> > > +=09=09=09reg =3D <0x0 0x90f00000 0x0 0x100000>;
-> > >   =09=09=09no-map;
-> > > +=09=09};
-> > >=20
-> > > -=09=09=09qcom,client-id =3D <1>;
-> > > -=09=09=09qcom,vmid =3D <15>;
-> > > +=09=09venus_mem: venus@91000000 {
-> > > +=09=09=09reg =3D <0x0 0x91000000 0x0 0x500000>;
-> > > +=09=09=09no-map;
-> > >   =09=09};
-> > >=20
-> > > -=09=09zap_shader_region: gpu@8f200000 {
-> > > -=09=09=09compatible =3D "shared-dma-pool";
-> > > -=09=09=09reg =3D <0x0 0x90b00000 0x0 0xa00000>;
-> > > +=09=09mba_mem: mba@91500000 {
-> > > +=09=09=09reg =3D <0x0 0x91500000 0x0 0x200000>;
-> > >   =09=09=09no-map;
-> > >   =09=09};
-> > >   =09};
-> > > @@ -1013,7 +1018,7 @@ opp-133000000 {
-> > >   =09=09=09};
-> > >=20
-> > >   =09=09=09zap-shader {
-> > > -=09=09=09=09memory-region =3D <&zap_shader_region>;
-> > > +=09=09=09=09memory-region =3D <&gpu_mem>;
-> > >   =09=09=09};
-> > >   =09=09};
-> > >=20
-> > > @@ -2001,7 +2006,7 @@ venus: video-codec@c00000 {
-> > >   =09=09=09=09 <&venus_smmu 0x2c>,
-> > >   =09=09=09=09 <&venus_smmu 0x2d>,
-> > >   =09=09=09=09 <&venus_smmu 0x31>;
-> > > -=09=09=09memory-region =3D <&venus_region>;
-> > > +=09=09=09memory-region =3D <&venus_mem>;
-> > >   =09=09=09status =3D "disabled";
-> > >=20
-> > >   =09=09=09video-decoder {
-> > > @@ -3008,7 +3013,7 @@ adsp_pil: remoteproc@9300000 {
-> > >   =09=09=09clocks =3D <&xo_board>;
-> > >   =09=09=09clock-names =3D "xo";
-> > >=20
-> > > -=09=09=09memory-region =3D <&adsp_region>;
-> > > +=09=09=09memory-region =3D <&adsp_mem>;
-> > >=20
-> > >   =09=09=09qcom,smem-states =3D <&smp2p_adsp_out 0>;
-> > >   =09=09=09qcom,smem-state-names =3D "stop";
-> > > --
-> > > 2.33.0
-> > >=20
-> > >=20
->=20
->=20
-> --
-> With best wishes
-> Dmitry
-
-
-
+regards,
+dan carpenter
