@@ -2,122 +2,101 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D3BDC433F5
-	for <phone-devel@archiver.kernel.org>; Thu,  4 Nov 2021 09:54:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F41CC433F5
+	for <phone-devel@archiver.kernel.org>; Thu,  4 Nov 2021 10:50:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 15B23611CB
-	for <phone-devel@archiver.kernel.org>; Thu,  4 Nov 2021 09:54:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 219DF61073
+	for <phone-devel@archiver.kernel.org>; Thu,  4 Nov 2021 10:50:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231254AbhKDJ5P (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 4 Nov 2021 05:57:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37522 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231230AbhKDJ5J (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 4 Nov 2021 05:57:09 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68B04C061714;
-        Thu,  4 Nov 2021 02:54:31 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id r9-20020a7bc089000000b00332f4abf43fso4834578wmh.0;
-        Thu, 04 Nov 2021 02:54:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
-         :from:to:references:in-reply-to;
-        bh=oHTAWE9lVMoAwQtLaYvjTaMeXqlGucHo27+Q2DYGkxw=;
-        b=GkYHenrovoXmhVkDLCc3udGY5FhdJkmTUR8Oxr0T2AF2HiyIXaxvK8X42C8CzdsLwu
-         4YvNiPk0k2yYYYz5mfdAsC/rvYRE0RgdiOnjS40RFtgJ4pZnSl77sTsOGmAZtvv6dbG7
-         nB9i6w3OLQ/ZiX91IBAQLwDnCQHUhIXpdj5hAXKWFhgMbtEgLVq2Dv4Q6/uxLVGQEUF+
-         VZPGCJyFUujJYifjT3hfKYXQX6DlFQ/V7aQahBcbERUP63vU8h+jexp8rOY+uCOjbM3N
-         OEVgj2qA1CUjrFqdnqE6uE6OPtpJJgLzTCYGh/C+hMNiL+yigHCpGjC2FdmjhRx7/eYf
-         rM+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:cc:subject:from:to:references:in-reply-to;
-        bh=oHTAWE9lVMoAwQtLaYvjTaMeXqlGucHo27+Q2DYGkxw=;
-        b=P8toRodd62XsThgsaJ/qviKWzGC8dFPeSLvdL2apLy5KOhm7VmKTyWhl2JLmiT0sHX
-         ereVj1GTtQ60YZ2NFFg8Bk6M8rZTa9BXVA1tf70gYzXLAZE1D3MrL9nQYhuWC9bHqwr3
-         x7PUNHrbcRZG+imgNoSW9enDWKMSoMRP9p0lHXQUsH/FmuKKJ0mmhYo8680zRps1MY5Q
-         Ioap14n8ua/L1y1uKzkuwmFKf7dJA6zDiHj+1KLO5c071yhgEtlY3Txl08gueiy2SBCo
-         TPBkp1tWOkM0VGNF5g7OGCnJdpNNBR8MQNUEA7NHpG8ub1Hbx55Oo3Z2rfSjk0mLhjxT
-         gTmw==
-X-Gm-Message-State: AOAM532cJRfQbooYvLraNbdqC+U44QxoZ8HP2/TFqZivnc264lhlD1cv
-        SlErGRwdG3fm9UdSuGlQ7Go=
-X-Google-Smtp-Source: ABdhPJy6G3ehTG5PdAZw4gu4lWgg9vt5MXxC4ljW6GnU/qrDV3NST2Shl01Z6NGTgsDwvs0sNq9p8w==
-X-Received: by 2002:a05:600c:3b8f:: with SMTP id n15mr22638942wms.180.1636019669975;
-        Thu, 04 Nov 2021 02:54:29 -0700 (PDT)
-Received: from localhost (a109-49-33-111.cpe.netcabo.pt. [109.49.33.111])
-        by smtp.gmail.com with ESMTPSA id p13sm8891761wmi.0.2021.11.04.02.54.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Nov 2021 02:54:29 -0700 (PDT)
-Mime-Version: 1.0
+        id S230509AbhKDKwo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 4 Nov 2021 06:52:44 -0400
+Received: from mail-4318.protonmail.ch ([185.70.43.18]:23031 "EHLO
+        mail-4318.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230365AbhKDKwo (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 4 Nov 2021 06:52:44 -0400
+X-Greylist: delayed 115643 seconds by postgrey-1.27 at vger.kernel.org; Thu, 04 Nov 2021 06:52:43 EDT
+Date:   Thu, 04 Nov 2021 10:49:58 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail; t=1636023004;
+        bh=z448LsLqxuCD7eN18l1DbCUT+hxRdhKv6fijjUVKwBg=;
+        h=Date:To:From:Cc:Reply-To:Subject:From;
+        b=Z6TqAsqSfjHOQcKTnXcTkMOILrbbLEBISzTBphdIaSm0HUSNcrCuHP/Vd20e93+Q7
+         fXWI51o5pet/d9eljXED4sH3EOalYJkXK5KZCVLL1c6Th5qgsLHnhV8vkwzO8sLr4m
+         yf17FUclXaUh66hqjoSTPSdNqO20x6c4j7KTF+z4=
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+From:   Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Reply-To: Yassine Oudjana <y.oudjana@protonmail.com>
+Subject: [PATCH] arm64: dts: qcom: msm8996-xiaomi-scorpio: Add touchkey controller
+Message-ID: <20211104104932.104046-1-y.oudjana@protonmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Thu, 04 Nov 2021 09:54:28 +0000
-Message-Id: <CFGWKJVG6WGV.3HK06KA8BFY11@arch-thunder>
-Cc:     "Laurent Pinchart" <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCHv3 4/4] media: imx: Use dedicated format handler for
- i.MX7/8
-From:   "Rui Miguel Silva" <rmfrfs@gmail.com>
-To:     "Philipp Zabel" <p.zabel@pengutronix.de>,
-        "Dorota Czaplejewicz" <dorota.czaplejewicz@puri.sm>,
-        "Steve Longerbeam" <slongerbeam@gmail.com>,
-        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Shawn Guo" <shawnguo@kernel.org>,
-        "Sascha Hauer" <s.hauer@pengutronix.de>,
-        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
-        "Fabio Estevam" <festevam@gmail.com>,
-        "NXP Linux Team" <linux-imx@nxp.com>,
-        <linux-media@vger.kernel.org>, <linux-staging@lists.linux.dev>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel@puri.sm>,
-        <phone-devel@vger.kernel.org>
-References: <20211019120047.827915-1-dorota.czaplejewicz@puri.sm>
- <20211019120047.827915-4-dorota.czaplejewicz@puri.sm>
- <092d8c2ba808a25efab579a6d7cc32846c482206.camel@pengutronix.de>
-In-Reply-To: <092d8c2ba808a25efab579a6d7cc32846c482206.camel@pengutronix.de>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Philipp,
-On Wed Nov 3, 2021 at 12:32 PM WET, Philipp Zabel wrote:
+Add a node and pin states for Cypress StreetFighter touchkey
+controller.
 
-> On Tue, 2021-10-19 at 14:14 +0200, Dorota Czaplejewicz wrote:
-> > This splits out a format handler which takes into account
-> > the capabilities of the i.MX7/8 video device,
-> > as opposed to the default handler compatible with both i.MX5/6 and i.MX=
-7/8.
-> >=20
-> > Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
->
-> Cc: Rui & Laurent
->
-> Looks sane to me, but I'd like someone with i.MX7/8 media experience to
-> have a look at this.
+Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+---
+ .../boot/dts/qcom/msm8996-xiaomi-scorpio.dts  | 28 +++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-Thanks for the CC, this really went off of my radar. I will try to
-take a look at it, but one of the comments on the first patch:
-
-"The use of `v4l2_fill_pixfmt` comes with the downside of breaking
-10-bit Bayer formats, or at least until my other series gets accepted
-(Subject: "media: Add 16-bit Bayer formats". Sorry, I don't have the
-message id.)."
-
-made me wonder if that series was already accepted? without it this
-will break the warp7 setup.
-
-------
-Cheers,
-     Rui
->
-> Thread at
-> https://lore.kernel.org/linux-media/20211019120047.827915-1-dorota.czaple=
-jewicz@puri.sm/
->
-> regards
-> Philipp
-
+diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts b/arch/arm=
+64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
+index e5b8402b1ed6..27a45ddbb5bd 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
++++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
+@@ -60,6 +60,20 @@ &adsp_pil {
+ };
+=20
+ &blsp2_i2c6 {
++=09touchkey: touchkey@28 {
++=09=09compatible =3D "cypress,sf3155";
++=09=09reg =3D <0x28>;
++=09=09interrupt-parent =3D <&tlmm>;
++=09=09interrupts =3D <77 IRQ_TYPE_EDGE_FALLING>;
++=09=09avdd-supply =3D <&vreg_l6a_1p8>;
++=09=09vdd-supply =3D <&vdd_3v2_tp>;
++=09=09linux,keycodes =3D <KEY_BACK KEY_MENU>;
++
++=09=09pinctrl-names =3D "default", "sleep";
++=09=09pinctrl-0 =3D <&touchkey_default>;
++=09=09pinctrl-1 =3D <&touchkey_sleep>;
++=09};
++
+ =09touchscreen: atmel-mxt-ts@4a {
+ =09=09compatible =3D "atmel,maxtouch";
+ =09=09reg =3D <0x4a>;
+@@ -416,6 +430,20 @@ &tlmm {
+ =09=09"RFFE1_DATA",=09=09/* GPIO_148 */
+ =09=09"RFFE1_CLK";=09=09/* GPIO_149 */
+=20
++=09touchkey_default: touchkey_default {
++=09=09pins =3D "gpio77";
++=09=09function =3D "gpio";
++=09=09drive-strength =3D <16>;
++=09=09bias-pull-up;
++=09};
++
++=09touchkey_sleep: touchkey_sleep {
++=09=09pins =3D "gpio77";
++=09=09function =3D "gpio";
++=09=09drive-strength =3D <2>;
++=09=09bias-disable;
++=09};
++
+ =09touchscreen_default: touchscreen_default {
+ =09=09pins =3D "gpio75", "gpio125";
+ =09=09function =3D "gpio";
+--=20
+2.33.1
 
 
