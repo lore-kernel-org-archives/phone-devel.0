@@ -2,107 +2,74 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09B83C433F5
-	for <phone-devel@archiver.kernel.org>; Thu,  4 Nov 2021 12:07:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8972AC433FE
+	for <phone-devel@archiver.kernel.org>; Thu,  4 Nov 2021 13:23:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E46B2611EF
-	for <phone-devel@archiver.kernel.org>; Thu,  4 Nov 2021 12:07:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 645AD61213
+	for <phone-devel@archiver.kernel.org>; Thu,  4 Nov 2021 13:23:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229843AbhKDMKT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 4 Nov 2021 08:10:19 -0400
-Received: from comms.puri.sm ([159.203.221.185]:38310 "EHLO comms.puri.sm"
+        id S229505AbhKDN0N (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 4 Nov 2021 09:26:13 -0400
+Received: from comms.puri.sm ([159.203.221.185]:42014 "EHLO comms.puri.sm"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229809AbhKDMKS (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 4 Nov 2021 08:10:18 -0400
+        id S230390AbhKDN0N (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 4 Nov 2021 09:26:13 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id C67B4DF574;
-        Thu,  4 Nov 2021 05:07:40 -0700 (PDT)
+        by comms.puri.sm (Postfix) with ESMTP id 0886CDFE31;
+        Thu,  4 Nov 2021 06:23:35 -0700 (PDT)
 Received: from comms.puri.sm ([127.0.0.1])
         by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 0IrDUh3k8UZK; Thu,  4 Nov 2021 05:07:39 -0700 (PDT)
-Date:   Thu, 4 Nov 2021 13:07:27 +0100
-From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-To:     Steve Longerbeam <slongerbeam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@puri.sm, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 1/5] media: imx: Remove unused functions
-Message-ID: <20211104130727.36c3813f.dorota.czaplejewicz@puri.sm>
-In-Reply-To: <20211104113631.206899-1-dorota.czaplejewicz@puri.sm>
-References: <20211104113631.206899-1-dorota.czaplejewicz@puri.sm>
-Organization: Purism
+        with ESMTP id aEhtsC27IwzL; Thu,  4 Nov 2021 06:23:34 -0700 (PDT)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     festevam@gmail.com, shawnguo@kernel.org
+Cc:     martin.kepplinger@puri.sm, devicetree@vger.kernel.org,
+        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        robh@kernel.org
+Subject: [PATCH v1 0/4] support the Librem 5 front camera
+Date:   Thu,  4 Nov 2021 14:22:09 +0100
+Message-Id: <20211104132213.470498-1-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/Q5PI3rGK1fl9l5ev1Vw220r";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
---Sig_/Q5PI3rGK1fl9l5ev1Vw220r
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+hi Shawn and all whom this concerns,
 
-On Thu, 4 Nov 2021 12:41:53 +0100
-Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm> wrote:
+3 weeks ago I sent this as RFC that didn't yield feedback, see below :)
+Here's the same patches as a proper patchset ready to apply.
 
-> Neither imx_media_mbus_fmt_to_ipu_image nor imx_media_ipu_image_to_mbus_f=
-mt
-> were used anywhere.
->=20
-> Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-> ---
->=20
-> Hi,
->=20
-> Compared to v3, this patch series introduces the checks of imx_media_find=
-_mbus_format return values in patch 4 and 5.
->=20
-> Cheers,
-> Dorota
->=20
+The first patch adds a shared "r3.dtsi" and is only refactoring.
+Patch 2 that describes the power supplies on the Librem 5 board as regulators.
+Patch 3 and 4 should be straight forward camera descriptions according to
+the drivers.
 
-I should mention that this part from v3 still applies:
+thank you,
+                             martin
 
-> The use of `v4l2_fill_pixfmt` comes with the downside of breaking 10-bit =
-Bayer formats, or at least until my other series gets accepted
+revision history
+----------------
+RFC v1:
+  https://lore.kernel.org/phone-devel/20211015083506.4182875-1-martin.kepplinger@puri.sm/
+  and more specifically thoughts on patch 2:
+  https://lore.kernel.org/phone-devel/20211015083506.4182875-3-martin.kepplinger@puri.sm/
 
-The other series is:
 
-Message-id: 20211019114718.827400-1-dorota.czaplejewicz@puri.sm
+Martin Kepplinger (4):
+  arm64: dts: split out a shared imx8mq-librem5-r3.dtsi description
+  arm64: dts: imx8mq-librem5: describe power supply for cameras
+  arm64: dts: imx8mq-librem5: describe the selfie cam
+  arm64: dts: imx8mq-librem5-r3.dtsi: describe selfie cam XSHUTDOWN pin
 
-https://lore.kernel.org/linux-media/20211019114718.827400-1-dorota.czapleje=
-wicz@puri.sm/
+ .../boot/dts/freescale/imx8mq-librem5-r3.dts  | 25 +----
+ .../boot/dts/freescale/imx8mq-librem5-r3.dtsi | 45 +++++++++
+ .../boot/dts/freescale/imx8mq-librem5-r4.dts  | 16 +---
+ .../boot/dts/freescale/imx8mq-librem5.dtsi    | 96 ++++++++++++++++++-
+ 4 files changed, 144 insertions(+), 38 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
 
-Regards,
-Dorota Czaplejewicz
+-- 
+2.30.2
 
---Sig_/Q5PI3rGK1fl9l5ev1Vw220r
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmGDzP8ACgkQADBpX4S8
-ZndeGA//eby98r7C2ZuWtSUGEfYITeItVE2TPkuNSLv9JPYAv8kSLepsXi5hd0uR
-kxavcUBlnPgpUDFW4JlfU0YKiXgA9Y3uESBPrGH9DVg7WbQbFsRU6E89CLnwqlM8
-g0Q3ssCKHnj/pa0aQLB8V0v0ObD+qq3ymWCiwuEmsGqSBkFo3vigCiOYMSkLpBVJ
-W+1G4sUTOLjhaCPUpG7BuRzUusWrB8zwY9wdR+TV/hCxDKtn202WRn/XllaJ/dKq
-4Utk+UUYY1qTpe7iv/QEa8t6KX5Di80PqE5/DzMbD/tvHwqPpXJlcqLn8jJ2NF1c
-soPTN+/tVw3GLWwzke0CXNt/1vkAxPHZTxyliI8tROfS9qQqGH7hZVW5uPweQVkc
-3KzyTBbJ9BUGAtVBMmaax0Y8mjD4VasQsGVR2eTgeLyPYggQZQEd+f73QKXgbwnb
-My/Duyc6JFwxfG80sAHpwgLk2wdpgfKpbSnFvk0zq1yQKvF2IQ6mQ2ZodqLERKYc
-VWvkkv0u3pxho8GhIFN/xM7nR/btWEO070BX1PSD1Hk40IRG5/ESLgr7zkcEoQ7J
-c9gdSjeBGumi4S0C+eeC7noSDR+YalBvNF5dVrRL06mkGxkHqcCUd9MrQz57xNZh
-WffLh43mQEpJnWYu3lhQuSEkNPPkoRrV7lg/ClQEAbBneJsWMMU=
-=mfUS
------END PGP SIGNATURE-----
-
---Sig_/Q5PI3rGK1fl9l5ev1Vw220r--
