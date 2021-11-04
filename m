@@ -2,24 +2,24 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AEFDEC433F5
-	for <phone-devel@archiver.kernel.org>; Thu,  4 Nov 2021 13:23:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BB57C433FE
+	for <phone-devel@archiver.kernel.org>; Thu,  4 Nov 2021 13:23:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 943616120E
-	for <phone-devel@archiver.kernel.org>; Thu,  4 Nov 2021 13:23:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8357F61247
+	for <phone-devel@archiver.kernel.org>; Thu,  4 Nov 2021 13:23:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231572AbhKDN0S (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 4 Nov 2021 09:26:18 -0400
-Received: from comms.puri.sm ([159.203.221.185]:42050 "EHLO comms.puri.sm"
+        id S231667AbhKDN0W (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 4 Nov 2021 09:26:22 -0400
+Received: from comms.puri.sm ([159.203.221.185]:42118 "EHLO comms.puri.sm"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231423AbhKDN0P (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 4 Nov 2021 09:26:15 -0400
+        id S231612AbhKDN0V (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 4 Nov 2021 09:26:21 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id BB11EDFE3F;
-        Thu,  4 Nov 2021 06:23:37 -0700 (PDT)
+        by comms.puri.sm (Postfix) with ESMTP id 6CE91DFE40;
+        Thu,  4 Nov 2021 06:23:43 -0700 (PDT)
 Received: from comms.puri.sm ([127.0.0.1])
         by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id cukb2HYcOONW; Thu,  4 Nov 2021 06:23:37 -0700 (PDT)
+        with ESMTP id jczG3ziMWlEL; Thu,  4 Nov 2021 06:23:42 -0700 (PDT)
 From:   Martin Kepplinger <martin.kepplinger@puri.sm>
 To:     festevam@gmail.com, shawnguo@kernel.org
 Cc:     martin.kepplinger@puri.sm, devicetree@vger.kernel.org,
@@ -27,9 +27,9 @@ Cc:     martin.kepplinger@puri.sm, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         robh@kernel.org
-Subject: [PATCH v1 1/4] arm64: dts: split out a shared imx8mq-librem5-r3.dtsi description
-Date:   Thu,  4 Nov 2021 14:22:10 +0100
-Message-Id: <20211104132213.470498-2-martin.kepplinger@puri.sm>
+Subject: [PATCH v1 3/4] arm64: dts: imx8mq-librem5: describe the selfie cam
+Date:   Thu,  4 Nov 2021 14:22:12 +0100
+Message-Id: <20211104132213.470498-4-martin.kepplinger@puri.sm>
 In-Reply-To: <20211104132213.470498-1-martin.kepplinger@puri.sm>
 References: <20211104132213.470498-1-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
@@ -38,140 +38,98 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The Librem 5 r3 ("Dogwood") and r4 ("Evergreen") revisions are quite
-similar. Add a shared imx8mq-librem5-r3.dtsi description to be included
-in r3 and later dts files in order to avoid duplication.
+Enable the CSI1 MIPI RX controller and CSI1 bridge on the SoC. Describe
+the Librem 5 front-facing camera, connected to the CSI1 MIPI.
 
-This is no change in the descriptions but only refactoring.
+the following sets formats, streams 10 frames and saves one:
+
+	#!/bin/bash
+	WIDTH=1632
+	HEIGHT=1224
+	SKIP=10
+
+	media-ctl -d "platform:30a90000.csi" --set-v4l2 "'csi':0 [fmt:SGBRG10/${WIDTH}x${HEIGHT} colorspace:raw]"
+	media-ctl -d "platform:30a90000.csi" --set-v4l2 "'imx8mq-mipi-csi2 30a70000.csi':0 [fmt:SGBRG10/${WIDTH}x${HEIGHT} colorspace:raw]"
+	media-ctl -d "platform:30a90000.csi" --set-v4l2 "'hi846 2-0020':0 [fmt:SGBRG10/${WIDTH}x${HEIGHT} colorspace:raw]"
+	media-ctl -d "platform:30a90000.csi" -l "'hi846 2-0020':0 -> 'imx8mq-mipi-csi2 30a70000.csi':0 [1]"
+	v4l2-ctl -d "/dev/v4l/by-path/platform-30a90000.csi-video-index0" --set-fmt-video=width=${WIDTH},height=${HEIGHT},pixelformat=GB16 --stream-mmap --stream-to=$WIDTH.raw --stream-skip=$SKIP --stream-count=1
 
 Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
 ---
- .../boot/dts/freescale/imx8mq-librem5-r3.dts  | 25 ++-------------
- .../boot/dts/freescale/imx8mq-librem5-r3.dtsi | 32 +++++++++++++++++++
- .../boot/dts/freescale/imx8mq-librem5-r4.dts  | 16 ++--------
- 3 files changed, 36 insertions(+), 37 deletions(-)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
+ .../boot/dts/freescale/imx8mq-librem5.dtsi    | 46 +++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
-index cd3c3edd48fa..4533a84fb0b9 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dts
-@@ -1,14 +1,9 @@
- // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
--// Copyright (C) 2020 Purism SPC <kernel@puri.sm>
-+// Copyright (C) 2021 Purism SPC <kernel@puri.sm>
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+index 5541e1d2ec6f..b3f165822e56 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+@@ -271,6 +271,10 @@ &A53_3 {
+ 	cpu-supply = <&buck2_reg>;
+ };
  
- /dts-v1/;
++&csi1 {
++	status = "okay";
++};
++
+ &ddrc {
+ 	operating-points-v2 = <&ddrc_opp_table>;
  
--#include "imx8mq-librem5.dtsi"
--
--/ {
--	model = "Purism Librem 5r3";
--	compatible = "purism,librem5r3", "purism,librem5", "fsl,imx8mq";
--};
-+#include "imx8mq-librem5-r3.dtsi"
- 
- &a53_opp_table {
- 	opp-1000000000 {
-@@ -16,22 +11,6 @@ opp-1000000000 {
+@@ -1006,6 +1010,31 @@ codec: audio-codec@1a {
+ 		>;
  	};
+ 
++	camera_front: camera@20 {
++		compatible = "hynix,hi846";
++		reg = <0x20>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_csi1>;
++		clocks = <&clk IMX8MQ_CLK_CLKO2>;
++		assigned-clocks = <&clk IMX8MQ_CLK_CLKO2>;
++		assigned-clock-rates = <25000000>;
++		reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
++		vdda-supply = <&reg_vcam_2v8>;
++		vddd-supply = <&reg_vcam_1v2>;
++		vddio-supply = <&reg_csi_1v8>;
++		rotation = <90>;
++		orientation = <0>;
++
++		port {
++			camera1_ep: endpoint {
++				data-lanes = <1 2>;
++				link-frequencies = /bits/ 64
++					<80000000 200000000 300000000>;
++				remote-endpoint = <&mipi1_sensor_ep>;
++			};
++		};
++	};
++
+ 	backlight@36 {
+ 		compatible = "ti,lm36922";
+ 		reg = <0x36>;
+@@ -1079,6 +1108,23 @@ &lcdif {
+ 	status = "okay";
  };
  
--&accel_gyro {
--	mount-matrix =  "1",  "0",  "0",
--			"0",  "1",  "0",
--			"0",  "0", "-1";
--};
--
--&bq25895 {
--	ti,battery-regulation-voltage = <4200000>; /* uV */
--	ti,charge-current = <1500000>; /* uA */
--	ti,termination-current = <144000>;  /* uA */
--};
--
- &buck3_reg {
- 	regulator-always-on;
- };
--
--&proximity {
--	proximity-near-level = <25>;
--};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
-new file mode 100644
-index 000000000000..e872eb4b1cf9
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
-@@ -0,0 +1,32 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+// Copyright (C) 2021 Purism SPC <kernel@puri.sm>
++&mipi_csi1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
 +
-+/dts-v1/;
++	ports {
++		port@1 {
++			reg = <1>;
 +
-+/*
-+ * This file describes hardware that is shared among r3 ("Dogwood") and
-+ * later revisions of the Librem 5 so it has to be included in dts there.
-+ */
-+
-+#include "imx8mq-librem5.dtsi"
-+
-+/ {
-+	model = "Purism Librem 5r3";
-+	compatible = "purism,librem5r3", "purism,librem5", "fsl,imx8mq";
++			mipi1_sensor_ep: endpoint {
++				remote-endpoint = <&camera1_ep>;
++				data-lanes = <1 2>;
++			};
++		};
++	};
 +};
 +
-+&accel_gyro {
-+	mount-matrix =  "1",  "0",  "0",
-+			"0",  "1",  "0",
-+			"0",  "0", "-1";
-+};
-+
-+&bq25895 {
-+	ti,battery-regulation-voltage = <4200000>; /* uV */
-+	ti,charge-current = <1500000>; /* uA */
-+	ti,termination-current = <144000>;  /* uA */
-+};
-+
-+&proximity {
-+	proximity-near-level = <25>;
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts
-index cbfb49aa2563..30d65bef6939 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts
-@@ -1,31 +1,19 @@
- // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
--// Copyright (C) 2020 Purism SPC <kernel@puri.sm>
-+// Copyright (C) 2021 Purism SPC <kernel@puri.sm>
- 
- /dts-v1/;
- 
--#include "imx8mq-librem5.dtsi"
-+#include "imx8mq-librem5-r3.dtsi"
- 
- / {
- 	model = "Purism Librem 5r4";
- 	compatible = "purism,librem5r4", "purism,librem5", "fsl,imx8mq";
- };
- 
--&accel_gyro {
--	mount-matrix =  "1",  "0",  "0",
--			"0",  "1",  "0",
--			"0",  "0", "-1";
--};
--
- &bat {
- 	maxim,rsns-microohm = <1667>;
- };
- 
--&bq25895 {
--	ti,battery-regulation-voltage = <4200000>; /* uV */
--	ti,charge-current = <1500000>; /* uA */
--	ti,termination-current = <144000>;  /* uA */
--};
--
- &led_backlight {
- 	led-max-microamp = <25000>;
- };
+ &mipi_dsi {
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
 -- 
 2.30.2
 
