@@ -2,148 +2,83 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90610C433EF
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Nov 2021 21:04:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43040C4332F
+	for <phone-devel@archiver.kernel.org>; Tue,  9 Nov 2021 04:37:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7552961279
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Nov 2021 21:04:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 248B96124D
+	for <phone-devel@archiver.kernel.org>; Tue,  9 Nov 2021 04:37:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239689AbhKHVHd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 Nov 2021 16:07:33 -0500
-Received: from mail-oi1-f177.google.com ([209.85.167.177]:34449 "EHLO
-        mail-oi1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239682AbhKHVHd (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Nov 2021 16:07:33 -0500
-Received: by mail-oi1-f177.google.com with SMTP id bg25so29065012oib.1;
-        Mon, 08 Nov 2021 13:04:48 -0800 (PST)
+        id S242681AbhKIEkf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 Nov 2021 23:40:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35802 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242623AbhKIEka (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Nov 2021 23:40:30 -0500
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB28C0613F5
+        for <phone-devel@vger.kernel.org>; Mon,  8 Nov 2021 20:37:45 -0800 (PST)
+Received: by mail-oi1-x236.google.com with SMTP id bf8so13601161oib.6
+        for <phone-devel@vger.kernel.org>; Mon, 08 Nov 2021 20:37:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dodHiJ/i5+yBi7D79YaFpKUD7A0B39/NZgj04F7HTkw=;
+        b=bxdem1QFzTvWY5Y2FugMEGhusz7KtT+Tg2/aELkYspP8+jbBn9eqwHlvusv7pgcd7j
+         6D6ZszdZelH0gPfDb3eOZuBteKvIglrJWvz1URYC/chQn/SbHArSOzzGEUv45u38bq87
+         axSySjtpwqup5cMdp2z/PHbwGW6nfLqXAfIInnVA9xfDZyNcTM87yBLQPTNLICf6I6w8
+         436T6zDADKFoCAUS/d9Xb2gAVNaWuT2h8+isOxYbofYxlpSq5W8X4fzh64opGShFwOh+
+         +ApkXe/izP+lvWMHLDQpkKS6tlaI8ZVQcySl57rluNzK8LPb0LQJ7M7eKRoCzmUV7Rev
+         XjYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=dLj06l1wmESDNcs8MD+tMJu6hG5JZ+huSjOUnPTWIms=;
-        b=nsC4eNwasN/o/nd7V/GXfwzU3jWWA4LQz5I3oczBwkZn8S+tCgTly+WA6yAlzA8G2z
-         rxf0oRPWgAVPEKGIFb3ZW8Jw8GkfCwrs4zlZKgrWEn5Y78t9EQw8w0y+MSr/m4bNHlRV
-         ezc8r7912r+rgWvkDPc2fQCklMI3MjJwZ9vV4Ec/u/2InyohIkE5zabsQTAqC3aqzgw6
-         XMk+NhDjJdNghz3sOmNUgy+t3jSpEGzOAfnHgfohQtf4VBNmqj5M8Hvg3Qi4tDUrv3+8
-         qheD/Ue48XzyBhzVFbi7oid7guukKdwMde3g23JW+mu3n/dJZsOV0KCpuiXdesjDagU/
-         xF4A==
-X-Gm-Message-State: AOAM533wCfX90g7pARZRnQ17yjPTXKlZxCZmbNQd7m0IkmyH0HJUzXrz
-        8ZRoWqBDo9hJt3zshvMyw91rLRyOaQ==
-X-Google-Smtp-Source: ABdhPJzgvZiyH3h067LzXWI0cQ4/N1FWjU0WpFR4uRRAaF0ibj9cAeUsZYzrHJXzWGQ7Y2Wdivex9Q==
-X-Received: by 2002:aca:3e86:: with SMTP id l128mr1169280oia.120.1636405487943;
-        Mon, 08 Nov 2021 13:04:47 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id k4sm6359902oic.48.2021.11.08.13.04.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Nov 2021 13:04:46 -0800 (PST)
-Received: (nullmailer pid 16501 invoked by uid 1000);
-        Mon, 08 Nov 2021 21:04:44 -0000
-Date:   Mon, 8 Nov 2021 15:04:44 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     David Heidelberg <david@ixit.cz>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, - <kernel@puri.sm>,
-        ~okias/devicetree@lists.sr.ht, phone-devel@vger.kernel.org,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: sound: gtm601: convert to YAML
-Message-ID: <YYmQ7OCIIb2AbnjY@robh.at.kernel.org>
-References: <20211030121753.50191-1-david@ixit.cz>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dodHiJ/i5+yBi7D79YaFpKUD7A0B39/NZgj04F7HTkw=;
+        b=Ldsxmr8N7SlX3UrJIcI/lQ7fy4zNra4lyADYoGgqbv0+cTD0G+RQrznIv2KcAYH6fG
+         k3HBvaYjKkdnETQSPy1PXt+KAwGcv7BndQmFlYsYdkzZAhr+GMPbuzRR+4AKxF4bxY9l
+         Abm8VCe0vDo/6/Y+D9yQ42XnDZfhB2QPCsGtKeXiSqnPG//4zxTGy7a7kFkq5lM8IdZB
+         /qyiizFDz4WvmYNNnaiecRAKTQM9HR9t9xd56h1FtF8szmFnxa6Hu1LGWGHwM5WuK8+/
+         PlazW5KW1ebWi41pOLpkifQv/Pf2l6WtR/ucHTyFM9mbYMoCnZ1KKE9aGT62u0keROYH
+         hlHQ==
+X-Gm-Message-State: AOAM5304miD0Q6H6ap1FudysYYtLINS5OZcPcJX/Iu3nt9IsQImiIdZ9
+        B5iaruyb1zHWsthxP90QzzEu+qej4GOytb5BcmM1Iu7COMU=
+X-Google-Smtp-Source: ABdhPJxMjFn9a+4GNqOWAH4EuafH57IWoIk8A7VGoJ9dRj8lPdTloVwkWYgqhbGYsB8vzyZye8wrz2mz+XEZdAbysWE=
+X-Received: by 2002:a54:4791:: with SMTP id o17mr3362653oic.114.1636432664361;
+ Mon, 08 Nov 2021 20:37:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211030121753.50191-1-david@ixit.cz>
+References: <20211027181350.91630-1-nikita@trvn.ru> <20211027181350.91630-2-nikita@trvn.ru>
+In-Reply-To: <20211027181350.91630-2-nikita@trvn.ru>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 9 Nov 2021 05:37:33 +0100
+Message-ID: <CACRpkdbnZ+U4GgaWyM7v62Ex6SNBMs-j6-pc7k1Wkan18=O+uw@mail.gmail.com>
+Subject: Re: [PATCH 1/6] input: touchscreen: zinitix: Make sure the IRQ is
+ allocated before it gets enabled
+To:     Nikita Travkin <nikita@trvn.ru>
+Cc:     dmitry.torokhov@gmail.com, robh+dt@kernel.org,
+        Michael.Srba@seznam.cz, broonie@kernel.org,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Oct 30, 2021 at 02:17:52PM +0200, David Heidelberg wrote:
-> Convert GTM601 binding to the YAML format.
-> 
-> Signed-off-by: David Heidelberg <david@ixit.cz>
-> ---
-> v2:
->  - add #sound-dai-cells
->  - put kernel@puri.sm into maintainers
-> 
->  .../devicetree/bindings/sound/gtm601.txt      | 19 ----------
->  .../devicetree/bindings/sound/gtm601.yaml     | 36 +++++++++++++++++++
->  2 files changed, 36 insertions(+), 19 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/sound/gtm601.txt
->  create mode 100644 Documentation/devicetree/bindings/sound/gtm601.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/gtm601.txt b/Documentation/devicetree/bindings/sound/gtm601.txt
-> deleted file mode 100644
-> index efa32a486c4a..000000000000
-> --- a/Documentation/devicetree/bindings/sound/gtm601.txt
-> +++ /dev/null
-> @@ -1,19 +0,0 @@
-> -GTM601 UMTS modem audio interface CODEC
-> -
-> -This device has no configuration interface. The sample rate and channels are
-> -based on the compatible string
-> -	"option,gtm601" = 8kHz mono
-> -	"broadmobi,bm818" = 48KHz stereo
-> -
-> -Required properties:
-> -
-> -  - compatible : one of
-> -	"option,gtm601"
-> -	"broadmobi,bm818"
-> -
-> -
-> -Example:
-> -
-> -codec: gtm601_codec {
-> -	compatible = "option,gtm601";
-> -};
-> diff --git a/Documentation/devicetree/bindings/sound/gtm601.yaml b/Documentation/devicetree/bindings/sound/gtm601.yaml
-> new file mode 100644
-> index 000000000000..e81a6aa75522
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/sound/gtm601.yaml
-> @@ -0,0 +1,36 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/sound/gtm601.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: GTM601 UMTS modem audio interface CODEC
-> +
-> +maintainers:
-> +  - kernel@puri.sm
-> +
-> +description: >
-> +  This device has no configuration interface. The sample rate and channels are
-> +  based on the compatible string
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - const: broadmobi,bm818
-> +          - const: option,gtm601
+On Wed, Oct 27, 2021 at 8:15 PM Nikita Travkin <nikita@trvn.ru> wrote:
 
-This does not match what the binding originally said. And generally this 
-combined with the one below should never be valid.
+> Since irq request is the last thing in the driver probe, it happens
+> later than the input device registration. This means that there is a
+> small time window where if the open method is called the driver will
+> attempt to enable not yet available irq.
+>
+> Fix that by moving the irq request before the input device registration.
+>
+> Fixes: 26822652c85e ("Input: add zinitix touchscreen driver")
+> Signed-off-by: Nikita Travkin <nikita@trvn.ru>
 
-> +      - items:
-> +          - enum:
-> +              - broadmobi,bm818  # 48 kHz stereo
-> +              - option,gtm601  # 8 kHz mono
-> +
-> +  '#sound-dai-cells':
-> +    const: 0
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    gtm601_codec {
-> +        compatible = "option,gtm601";
-> +    };
-> -- 
-> 2.33.0
-> 
-> 
+Good catch!
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij
