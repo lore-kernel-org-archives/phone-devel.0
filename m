@@ -2,163 +2,109 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A19DBC433F5
-	for <phone-devel@archiver.kernel.org>; Tue,  9 Nov 2021 12:28:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3219C433F5
+	for <phone-devel@archiver.kernel.org>; Tue,  9 Nov 2021 15:23:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 78EF46108D
-	for <phone-devel@archiver.kernel.org>; Tue,  9 Nov 2021 12:28:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8FB3E611BD
+	for <phone-devel@archiver.kernel.org>; Tue,  9 Nov 2021 15:23:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238244AbhKIMbj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 Nov 2021 07:31:39 -0500
-Received: from ixit.cz ([94.230.151.217]:54452 "EHLO ixit.cz"
+        id S235437AbhKIPZ6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 9 Nov 2021 10:25:58 -0500
+Received: from box.trvn.ru ([194.87.146.52]:48189 "EHLO box.trvn.ru"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231250AbhKIMbj (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 9 Nov 2021 07:31:39 -0500
-Received: from [127.0.0.1] (37-48-50-181.nat.epc.tmcz.cz [37.48.50.181])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        id S231176AbhKIPZ6 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 9 Nov 2021 10:25:58 -0500
+Received: from authenticated-user (box.trvn.ru [194.87.146.52])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (No client certificate requested)
-        by ixit.cz (Postfix) with ESMTPSA id BE6E520064;
-        Tue,  9 Nov 2021 13:28:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-        t=1636460931;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=/KTxYwpPq7QKcYnuyQGk0KK0u6IPgYbFhdr9d5r8Aqc=;
-        b=QhK8ZufLm8qirdnmNWtHrkyJM9HQwJgcPOQdznKkQ6ITURh3M4mHt2v/X067xI6NKrCepB
-        8FvB4Ves1xltpqQdHOymcejNB/GwxBZNfH9jilgKMygPVM+pPoIRicTlm0B+PCOL5Bp2wj
-        i54Q7l9/cGzMpEJFRzkYWyudv+KqHng=
-Date:   Tue, 09 Nov 2021 12:24:36 +0000
-From:   David Heidelberg <david@ixit.cz>
-To:     Rob Herring <robh@kernel.org>
-CC:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, - <kernel@puri.sm>,
-        ~okias/devicetree@lists.sr.ht, phone-devel@vger.kernel.org,
-        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: sound: gtm601: convert to YAML
-In-Reply-To: <YYmQ7OCIIb2AbnjY@robh.at.kernel.org>
-References: <20211030121753.50191-1-david@ixit.cz> <YYmQ7OCIIb2AbnjY@robh.at.kernel.org>
-Message-ID: <A1DBDD90-C79D-4455-9AC7-92C9DFB0F298@ixit.cz>
+        by box.trvn.ru (Postfix) with ESMTPSA id ECB0A40067;
+        Tue,  9 Nov 2021 20:23:03 +0500 (+05)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=trvn.ru; s=mail;
+        t=1636471388; bh=lS5UJLDxpoH+oMoziJHGViXF/4huuu/aCph+647Nv4s=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=UZjFIatjcBXYl0sPS22SdCvnEGTZkIe1idspEHBqcRGIYgpq6/N39asga8MknX8yj
+         JtINUyNBPuz5u5yl9KmplRVGeW/eaEm9yaYPUfafKIm6tddHegRSuk1Rnsm6g0ad0M
+         6SqRGw/pE+VXA5uN6JskCQWLAzjuuyOXNR5k1q8egk4jsMsS+CDOvH0Hmd0rzi3Hqt
+         iZlQCdRU4use3yIZKrFDfEzKDtqii4GftiOoAkj1vrWZiWMlJecxng9gOGgSse049G
+         DeIxuYlSiUrFY+co6MDnxcQX1fE6N9LJqgNH2ycw4Bub5E92Z0jxQ0OfwOK9Z5FzuF
+         WraZG+Y1CKwOg==
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Date:   Tue, 09 Nov 2021 20:23:02 +0500
+From:   Nikita Travkin <nikita@trvn.ru>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     dmitry.torokhov@gmail.com, robh+dt@kernel.org,
+        Michael.Srba@seznam.cz, broonie@kernel.org,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH 0/6] Add touch-keys support to the Zinitix touch driver
+In-Reply-To: <CACRpkda_EM9mXuJdrZcpFaJCKF1UDgXkfdxkaniyXFHFd_7+Pw@mail.gmail.com>
+References: <20211027181350.91630-1-nikita@trvn.ru>
+ <CACRpkda_EM9mXuJdrZcpFaJCKF1UDgXkfdxkaniyXFHFd_7+Pw@mail.gmail.com>
+Message-ID: <ec9185459dbc0e95dc2f2cdf27baa0f6@trvn.ru>
+X-Sender: nikita@trvn.ru
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-I agree, I'll adapt Librem 5 dts to follow original convention and resend=
-=2E
+Hi Linus,
 
+Linus Walleij писал(а) 09.11.2021 09:45:
+> Hi Nikita,
+> 
+> On Wed, Oct 27, 2021 at 8:15 PM Nikita Travkin <nikita@trvn.ru> wrote:
+> 
+>> This series adds support for the touch-keys that can be present on 
+>> some
+>> touchscreen configurations, adds the compatible for bt532 and fixes a
+>> small race condition bug in the driver probe function.
+>> 
+>> I also pick up the series that converts the dt bindings to yaml
+>> initially submitted by Linus Walleij in [1].
+>> I made some minor changes to those patches:
+>>  - Fixed dt_schema_check error
+>>  - Adressed the review comments from Dmitry on the original series
+> 
+> Thanks for picking this up!
+> 
+> Have you notices some behaviour like surplus touch events
+> (like many press/release events fall through to the UI)
+> when using this driver? I think it might need some z fuzzing
+> but I am not sure.
+> 
 
--------- P=C5=AFvodn=C3=AD zpr=C3=A1va --------
-Odes=C3=ADlatel: Rob Herring <robh@kernel=2Eorg>
-Odesl=C3=A1no: 8=2E listopadu 2021 21:04:44 UTC
-Komu: David Heidelberg <david@ixit=2Ecz>
-Kopie: Liam Girdwood <lgirdwood@gmail=2Ecom>, Mark Brown <broonie@kernel=
-=2Eorg>, - <kernel@puri=2Esm>, ~okias/devicetree@lists=2Esr=2Eht, phone-dev=
-el@vger=2Ekernel=2Eorg, alsa-devel@alsa-project=2Eorg, devicetree@vger=2Eke=
-rnel=2Eorg, linux-kernel@vger=2Ekernel=2Eorg
-P=C5=99edm=C4=9Bt: Re: [PATCH v2] dt-bindings: sound: gtm601: convert to Y=
-AML
+On my device (8 inch tablet with BT532) I saw no problems with touch
+so far. However another person with a different tablet (10 inch with 
+ZT7554)
+indeed says that they notice "multiplied" touches that make typing hard
+so maybe that depends on controller model/firmware...
 
-On Sat, Oct 30, 2021 at 02:17:52PM +0200, David Heidelberg wrote:
-> Convert GTM601 binding to the YAML format=2E
->=20
-> Signed-off-by: David Heidelberg <david@ixit=2Ecz>
-> ---
-> v2:
->  - add #sound-dai-cells
->  - put kernel@puri=2Esm into maintainers
->=20
->  =2E=2E=2E/devicetree/bindings/sound/gtm601=2Etxt      | 19 ----------
->  =2E=2E=2E/devicetree/bindings/sound/gtm601=2Eyaml     | 36 ++++++++++++=
-+++++++
->  2 files changed, 36 insertions(+), 19 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/sound/gtm601=2Etxt
->  create mode 100644 Documentation/devicetree/bindings/sound/gtm601=2Eyam=
-l
->=20
-> diff --git a/Documentation/devicetree/bindings/sound/gtm601=2Etxt b/Docu=
-mentation/devicetree/bindings/sound/gtm601=2Etxt
-> deleted file mode 100644
-> index efa32a486c4a=2E=2E000000000000
-> --- a/Documentation/devicetree/bindings/sound/gtm601=2Etxt
-> +++ /dev/null
-> @@ -1,19 +0,0 @@
-> -GTM601 UMTS modem audio interface CODEC
-> -
-> -This device has no configuration interface=2E The sample rate and chann=
-els are
-> -based on the compatible string
-> -	"option,gtm601" =3D 8kHz mono
-> -	"broadmobi,bm818" =3D 48KHz stereo
-> -
-> -Required properties:
-> -
-> -  - compatible : one of
-> -	"option,gtm601"
-> -	"broadmobi,bm818"
-> -
-> -
-> -Example:
-> -
-> -codec: gtm601_codec {
-> -	compatible =3D "option,gtm601";
-> -};
-> diff --git a/Documentation/devicetree/bindings/sound/gtm601=2Eyaml b/Doc=
-umentation/devicetree/bindings/sound/gtm601=2Eyaml
-> new file mode 100644
-> index 000000000000=2E=2Ee81a6aa75522
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/sound/gtm601=2Eyaml
-> @@ -0,0 +1,36 @@
-> +# SPDX-License-Identifier: GPL-2=2E0-only OR BSD-2-Clause
-> +%YAML 1=2E2
-> +---
-> +$id: http://devicetree=2Eorg/schemas/sound/gtm601=2Eyaml#
-> +$schema: http://devicetree=2Eorg/meta-schemas/core=2Eyaml#
-> +
-> +title: GTM601 UMTS modem audio interface CODEC
-> +
-> +maintainers:
-> +  - kernel@puri=2Esm
-> +
-> +description: >
-> +  This device has no configuration interface=2E The sample rate and cha=
-nnels are
-> +  based on the compatible string
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - const: broadmobi,bm818
-> +          - const: option,gtm601
+And speaking of that ZT7554: Seems like it's works with the driver
+and I'd like to add the compatible for it in v2 but I'd also have to add 
+it
+to the bindings. Looking at how you add all other similar names for BT* 
+there
+does it make sense to add ZT* as well? Maybe you have some hints where 
+to look
+for a list of the models?
 
-This does not match what the binding originally said=2E And generally this=
-=20
-combined with the one below should never be valid=2E
+I was planning to send a v2 with all the review fixes near the end of 
+the week
+but I've noticed a yet another quirky issue with the touch controller:
+At least on my device, for some reason enabling touchkeys changes the 
+way the
+controller reports the finger touch events which breaks multi-touch...
+Assuming that *not* enabling the touchkeys leads to calibration being 
+wrong
+(controller assigns the touchkey sense lines to the touch area in that 
+case)
+I now have to resolve this quirk as well...
 
-> +      - items:
-> +          - enum:
-> +              - broadmobi,bm818  # 48 kHz stereo
-> +              - option,gtm601  # 8 kHz mono
-> +
-> +  '#sound-dai-cells':
-> +    const: 0
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    gtm601_codec {
-> +        compatible =3D "option,gtm601";
-> +    };
-> --=20
-> 2=2E33=2E0
->=20
->=20
+Thanks,
+Nikita
+
+> Yours,
+> Linus Walleij
