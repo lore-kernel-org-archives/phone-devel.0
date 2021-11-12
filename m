@@ -2,112 +2,108 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54388C433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 11 Nov 2021 10:40:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F81CC433FE
+	for <phone-devel@archiver.kernel.org>; Fri, 12 Nov 2021 00:27:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 304FE61269
-	for <phone-devel@archiver.kernel.org>; Thu, 11 Nov 2021 10:40:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7F4D26162E
+	for <phone-devel@archiver.kernel.org>; Fri, 12 Nov 2021 00:27:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232965AbhKKKnH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 11 Nov 2021 05:43:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60748 "EHLO
+        id S234506AbhKLAaE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 11 Nov 2021 19:30:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232960AbhKKKnH (ORCPT
+        with ESMTP id S234489AbhKLAaB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 11 Nov 2021 05:43:07 -0500
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3A69C061203
-        for <phone-devel@vger.kernel.org>; Thu, 11 Nov 2021 02:40:17 -0800 (PST)
-Received: by mail-lf1-x12d.google.com with SMTP id bi37so8182981lfb.5
-        for <phone-devel@vger.kernel.org>; Thu, 11 Nov 2021 02:40:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9tIx/igNKPYVIrwndCggjgpScM833Y4RL5Ah+VgOguU=;
-        b=DimTsruqEQMoF6afspPb/WQy4ew0Vd3WE4uUd9Bcq6kQ2kby/N9oSKkMx/WMc8aGMF
-         lwfmDXtMz9QmQrtpJWlpZS3P/k1+l+TZBhAQYqLvKU5kDenjkHerHRNJ+QBwFVchbM1k
-         k+dnVSZzel1b8uFhnDZaSpoUvsn/fhz+g+uPEiOAXXlyO+wID55gcsp1B5dR4IX5xpFD
-         +d3d2wGMf7NF2U6Sno4QqHQ0aYuF9ihzOhbwe9R2bjIxPn7ETuRf19qjThfxDYUQuBFW
-         f/wiamhlhi0xgGf2ncaD5yvplDL/3Z7wmkTVSs0ea8ByocaxleBny0xsujWZTfWtyIks
-         csEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9tIx/igNKPYVIrwndCggjgpScM833Y4RL5Ah+VgOguU=;
-        b=W+weMaFmz3rI0iIXKa6QPh3Mh3Pe9KgiNO/g1j5wf7nd+bs3QRUOZLcgwj3vglmP3/
-         rSRaDJOJetBRBE8757OOBXa8vECPbUZlA+9T/7T1IHx9ldSXPAY+RbEXKTUDlplCPEno
-         q/0bGEjNDgbpeSYidGnEtO3xdbiBJljVCIstiSut+kTrclUTduFDDxsZfyHOcQOJngNE
-         XI+zWzLc3HMMBTQRD6Y8xAlIMNt69aZV0I6pUG58ryjWVxvNz7/rykW3afZ4bakTj35x
-         PpksWHpEhuLmtPLv1+JsDR5XKSAvVTJ778pJ83TmjMhlRpfgIQHmF4qEaWj9Mq66EFHi
-         joxg==
-X-Gm-Message-State: AOAM533aZU3eebp9Xg1O68ZZQuCSiCU5sCcnprdLUsLf79J5GekoiF6b
-        eLszlDqtSyjBYXFnXzJvD+0yM7zMbBjpq/AwymLB0w==
-X-Google-Smtp-Source: ABdhPJxxMnc/++Ejn4mwaEgWk7yDts/ov3C1q1UFglFDJR1j83ZeQbo+BIoKTPuhhKDDvw47Oef3D/aDqV3Dz4XMJgU=
-X-Received: by 2002:a05:6512:2305:: with SMTP id o5mr5308056lfu.362.1636627215652;
- Thu, 11 Nov 2021 02:40:15 -0800 (PST)
+        Thu, 11 Nov 2021 19:30:01 -0500
+Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69287C061766;
+        Thu, 11 Nov 2021 16:27:11 -0800 (PST)
+Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 11311203AE;
+        Fri, 12 Nov 2021 01:27:09 +0100 (CET)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Kiran Gunda <kgunda@codeaurora.org>,
+        Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [RESEND PATCH v2 00/13] backlight: qcom-wled: fix and solidify handling of enabled-strings
+Date:   Fri, 12 Nov 2021 01:26:53 +0100
+Message-Id: <20211112002706.453289-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-References: <20211027181350.91630-1-nikita@trvn.ru> <CACRpkda_EM9mXuJdrZcpFaJCKF1UDgXkfdxkaniyXFHFd_7+Pw@mail.gmail.com>
- <ec9185459dbc0e95dc2f2cdf27baa0f6@trvn.ru>
-In-Reply-To: <ec9185459dbc0e95dc2f2cdf27baa0f6@trvn.ru>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 11 Nov 2021 11:40:04 +0100
-Message-ID: <CACRpkdbp6udtBsDHkLmCivRcxCCCbMcGu5z41HVgMpLkPCkLGA@mail.gmail.com>
-Subject: Re: [PATCH 0/6] Add touch-keys support to the Zinitix touch driver
-To:     Nikita Travkin <nikita@trvn.ru>
-Cc:     dmitry.torokhov@gmail.com, robh+dt@kernel.org,
-        Michael.Srba@seznam.cz, broonie@kernel.org,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Nov 9, 2021 at 4:23 PM Nikita Travkin <nikita@trvn.ru> wrote:
-> [Me]
-> > Have you notices some behaviour like surplus touch events
-> > (like many press/release events fall through to the UI)
-> > when using this driver? I think it might need some z fuzzing
-> > but I am not sure.
-> >
->
-> On my device (8 inch tablet with BT532) I saw no problems with touch
-> so far. However another person with a different tablet (10 inch with
-> ZT7554)
-> indeed says that they notice "multiplied" touches that make typing hard
-> so maybe that depends on controller model/firmware...
+This patchset fixes WLED's handling of enabled-strings: besides some
+cleanup it is now actually possible to specify a non-contiguous array of
+enabled strings (not necessarily starting at zero) and the values from
+DT are now validated to prevent possible unexpected out-of-bounds
+register and array element accesses.
+Off-by-one mistakes in the maximum number of strings, also causing
+out-of-bounds access, have been addressed as well.
 
-It may even be depending on specimen. I saw that the vendor driver
-does contain some debouncing code.
+Changes in v2:
+- Reordered patch 4/10 (Validate enabled string indices in DT) to sit
+  before patch 1/10 (Pass number of elements to read to read_u32_array);
+- Pulled qcom,num-strings out of the DT enumeration parser, and moved it
+  after qcom,enabled-strings parser to always have final sign-off over
+  the number of strings;
+- Extra validation for this number of strings against
+  qcom,enabled-strings;
+- Recombined patch 9 (Consistently use enabled-strings in
+  set_brightness) and patch 10 (Consider enabled_strings in
+  autodetection), which both solve the same problem in two different
+  functions.  In addition the autodetection code uses set_brightness as
+  helper already;
+- Improved DT configurations for pmi8994 and pm660l, currently in 5.15
+  rc's.
 
-> And speaking of that ZT7554: Seems like it's works with the driver
-> and I'd like to add the compatible for it in v2 but I'd also have to add
-> it to the bindings. Looking at how you add all other similar names for BT*
-> there does it make sense to add ZT* as well?
+v1: https://lore.kernel.org/dri-devel/20211004192741.621870-1-marijn.suijten@somainline.org
 
-Yeah probably, if they are electrically very similar.
+Marijn Suijten (13):
+  backlight: qcom-wled: Validate enabled string indices in DT
+  backlight: qcom-wled: Pass number of elements to read to
+    read_u32_array
+  backlight: qcom-wled: Use cpu_to_le16 macro to perform conversion
+  backlight: qcom-wled: Fix off-by-one maximum with default num_strings
+  backlight: qcom-wled: Override default length with
+    qcom,enabled-strings
+  backlight: qcom-wled: Remove unnecessary 4th default string in WLED3
+  backlight: qcom-wled: Provide enabled_strings default for WLED 4 and 5
+  backlight: qcom-wled: Remove unnecessary double whitespace
+  backlight: qcom-wled: Respect enabled-strings in set_brightness
+  arm64: dts: qcom: pmi8994: Fix "eternal"->"external" typo in WLED node
+  arm64: dts: qcom: pmi8994: Remove hardcoded linear WLED
+    enabled-strings
+  arm64: dts: qcom: Move WLED num-strings from pmi8994 to
+    sony-xperia-tone
+  arm64: dt: qcom: pm660l: Remove board-specific WLED configuration
 
-> Maybe you have some hints where
-> to look for a list of the models?
+ .../dts/qcom/msm8996-sony-xperia-tone.dtsi    |   1 +
+ arch/arm64/boot/dts/qcom/pm660l.dtsi          |   7 -
+ arch/arm64/boot/dts/qcom/pmi8994.dtsi         |   5 +-
+ drivers/video/backlight/qcom-wled.c           | 131 ++++++++++--------
+ 4 files changed, 73 insertions(+), 71 deletions(-)
 
-I usually google ... try to find things like powerpoints with roadmaps
-from the vendor and things like that. Best thing is if they answer
-to mail but I don't know if Zinitix are even around anymore.
+--
+2.33.0
 
-> I've noticed a yet another quirky issue with the touch controller:
-> At least on my device, for some reason enabling touchkeys changes the
-> way the
-> controller reports the finger touch events which breaks multi-touch...
-> Assuming that *not* enabling the touchkeys leads to calibration being
-> wrong
-> (controller assigns the touchkey sense lines to the touch area in that
-> case)
-> I now have to resolve this quirk as well...
-
-Hm yeah I guess refer to the (messy) vendor driver for hints.
-
-Yours,
-Linus Walleij
