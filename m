@@ -2,58 +2,31 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A6C2C433F5
-	for <phone-devel@archiver.kernel.org>; Fri, 12 Nov 2021 15:11:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92852C433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 12 Nov 2021 21:43:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1366261075
-	for <phone-devel@archiver.kernel.org>; Fri, 12 Nov 2021 15:11:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7CE8260F0F
+	for <phone-devel@archiver.kernel.org>; Fri, 12 Nov 2021 21:43:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229547AbhKLPNw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 12 Nov 2021 10:13:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51224 "EHLO
+        id S235806AbhKLVqd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 12 Nov 2021 16:46:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229678AbhKLPNw (ORCPT
+        with ESMTP id S235792AbhKLVqc (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 12 Nov 2021 10:13:52 -0500
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F17C0613F5
-        for <phone-devel@vger.kernel.org>; Fri, 12 Nov 2021 07:11:01 -0800 (PST)
-Received: by mail-wm1-x32a.google.com with SMTP id 67-20020a1c1946000000b0030d4c90fa87so6995892wmz.2
-        for <phone-devel@vger.kernel.org>; Fri, 12 Nov 2021 07:11:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=aq9hqCG8idgTpRhc5meZTF7+FM8GBSfO5tUh1K9J7b0=;
-        b=WO+i2o7Jziiy0BtVpnE7pqYL0Q5027w0/uMoDNHjVvdpUzTiDfAeBccQWZBmQR25Pa
-         ZNz2t3TB/E7fImoXUUvEkJLZppUTRR5+3QnuMOTlsqEpKPjrPYZN3DX0SL1tET3NRjSl
-         +C7QsjzBHzc3attCinLB1ljbbfORuLK8C5TQychZ5JkQchTo1UpfYV0+XN34FYOf0XI+
-         7G7sWuQOV2KaMnQgEO+uEZxxGgk8UBpYTTYVjE9ETukGEb6YbDPuqPmglR6Vyw3+lSOr
-         RcWU/6YLxEzFRter4kowEpfyc/Xz8bQuKkC9b1/tuLAUgdFBzU9ko7gXv31kG5nbCuLc
-         Fi6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=aq9hqCG8idgTpRhc5meZTF7+FM8GBSfO5tUh1K9J7b0=;
-        b=qdhDeW1RfxXsOY6uThWz7eeCJmWQD4c0jj7UZ2JcDlwjDGZznAppkO0AOBbd1kERXm
-         TgSghptMvjwovJuJdyCHpLeglcv+uF7CIKH+IcvAUpi5YQO5p8SNvR8IanaSVpyUiRb0
-         tiQH8D21+14sZOrvJNDHTqOdUv6mHdxAxCTCW2lwN0Tal7dcAi3pbUvvgcVC1s8sOcC1
-         akUIMMDN1mIXoapSyPzm3enhruflpFxooFy+cPDS9pqDvDJCVRcaujfSaztILwN0RoSS
-         Ek/wuZXSTfLca0+LdC96ZTx+ByQYfqvJKjxqoFU2ZN+5yn14+u2lCyDh5tqSa7gdVWKH
-         H6OQ==
-X-Gm-Message-State: AOAM530Ju8jbTPoT8k8UznO4KwC3c95EXlIrHbonDzKi+T198q0kW9U/
-        UWqf/Q0i7ZDLVdhSdSruEunR/A==
-X-Google-Smtp-Source: ABdhPJwR5hWfk95kDgYfAnrK9AqbZuzMKtLs6G7ePVwgAHK72HqZr2HBm0By7v4Ftl1w7VgCXoj3UA==
-X-Received: by 2002:a05:600c:3b1b:: with SMTP id m27mr18462847wms.125.1636729859565;
-        Fri, 12 Nov 2021 07:10:59 -0800 (PST)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id b197sm5822645wmb.24.2021.11.12.07.10.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Nov 2021 07:10:58 -0800 (PST)
-Date:   Fri, 12 Nov 2021 15:10:57 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        Fri, 12 Nov 2021 16:46:32 -0500
+Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D49EC061766;
+        Fri, 12 Nov 2021 13:43:41 -0800 (PST)
+Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 3F3CF3F248;
+        Fri, 12 Nov 2021 22:43:39 +0100 (CET)
+Date:   Fri, 12 Nov 2021 22:43:37 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Daniel Thompson <daniel.thompson@linaro.org>,
         phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -69,86 +42,94 @@ To:     Marijn Suijten <marijn.suijten@somainline.org>,
         Kiran Gunda <kgunda@codeaurora.org>,
         Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [RESEND PATCH v2 05/13] backlight: qcom-wled: Override default
- length with qcom,enabled-strings
-Message-ID: <20211112151057.h474227aln2huf6l@maple.lan>
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        Courtney Cavin <courtney.cavin@sonymobile.com>
+Subject: Re: [RESEND PATCH v2 04/13] backlight: qcom-wled: Fix off-by-one
+ maximum with default num_strings
+Message-ID: <20211112214337.r5xrpeyjgdygzc3n@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Kiran Gunda <kgunda@codeaurora.org>, Bryan Wu <cooloney@gmail.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org,
+        Courtney Cavin <courtney.cavin@sonymobile.com>
 References: <20211112002706.453289-1-marijn.suijten@somainline.org>
- <20211112002706.453289-6-marijn.suijten@somainline.org>
- <20211112121238.kb3kkt6xzv5so26j@maple.lan>
- <20211112124522.g7e3m7l2oxxxobof@SoMainline.org>
- <20211112132336.z2x4bzrfqr4u3jol@maple.lan>
- <20211112141917.akufukmeyz5enjg3@SoMainline.org>
+ <20211112002706.453289-5-marijn.suijten@somainline.org>
+ <20211112120839.i6g747vewg6bkyk7@maple.lan>
+ <20211112123501.pz5e6g7gavlinung@SoMainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211112141917.akufukmeyz5enjg3@SoMainline.org>
+In-Reply-To: <20211112123501.pz5e6g7gavlinung@SoMainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Nov 12, 2021 at 03:19:17PM +0100, Marijn Suijten wrote:
-> On 2021-11-12 13:23:36, Daniel Thompson wrote:
-> > On Fri, Nov 12, 2021 at 01:45:22PM +0100, Marijn Suijten wrote:
-> > > On 2021-11-12 12:12:38, Daniel Thompson wrote:
-> > > > On Fri, Nov 12, 2021 at 01:26:58AM +0100, Marijn Suijten wrote:
-> > > > > The length of qcom,enabled-strings as property array is enough to
-> > > > > determine the number of strings to be enabled, without needing to set
-> > > > > qcom,num-strings to override the default number of strings when less
-> > > > > than the default (which is also the maxium) is provided in DT.
-> > > > > 
-> > > > > Fixes: 775d2ffb4af6 ("backlight: qcom-wled: Restructure the driver for WLED3")
-> > > > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > > > > Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> > > > > ---
-> > > > >  drivers/video/backlight/qcom-wled.c | 2 ++
-> > > > >  1 file changed, 2 insertions(+)
-> > > > > 
-> > > > > diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> > > > > index c5232478a343..9bfbf601762a 100644
-> > > > > --- a/drivers/video/backlight/qcom-wled.c
-> > > > > +++ b/drivers/video/backlight/qcom-wled.c
-> > > > > @@ -1518,6 +1518,8 @@ static int wled_configure(struct wled *wled)
-> > > > >  				return -EINVAL;
-> > > > >  			}
-> > > > >  		}
-> > > > > +
-> > > > > +		cfg->num_strings = string_len;
-> > > > 
-> > > > I still don't really understand why this wants to be a separate patch.
+On 2021-11-12 13:35:03, Marijn Suijten wrote:
+> On 2021-11-12 12:08:39, Daniel Thompson wrote:
+> > On Fri, Nov 12, 2021 at 01:26:57AM +0100, Marijn Suijten wrote:
+> > > When not specifying num-strings in the DT the default is used, but +1 is
+> > > added to it which turns WLED3 into 4 and WLED4/5 into 5 strings instead
+> > > of 3 and 4 respectively, causing out-of-bounds reads and register
+> > > read/writes.  This +1 exists for a deficiency in the DT parsing code,
+> > > and is simply omitted entirely - solving this oob issue - by parsing the
+> > > property separately much like qcom,enabled-strings.
 > > > 
-> > > I'm viewing this as a separate issue, and this makes it easier to
-> > > document the change in a loose commit.
+> > > This also allows more stringent checks on the maximum value when
+> > > qcom,enabled-strings is provided in the DT.  Note that num-strings is
+> > > parsed after enabled-strings to give it final sign-off over the length,
+> > > which DT currently utilizes to get around an incorrect fixed read of
+> > > four elements from that array (has been addressed in a prior patch).
 > > > 
-> > > > The warning text emitted by the previous patch (whatever text we agree
-> > > > on) will be nonsense until this patch is applied.
-> > > > 
-> > > > If this patch cannot appear before the warning is introduces then there
-> > > > is no correct order for patches 4 and 5 (which implies they should be the
-> > > > same patch).
+> > > Fixes: 93c64f1ea1e8 ("leds: add Qualcomm PM8941 WLED driver")
+> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> > > Reviewed-By: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> > > ---
+> > >  drivers/video/backlight/qcom-wled.c | 51 +++++++++++------------------
+> > >  1 file changed, 19 insertions(+), 32 deletions(-)
 > > > 
-> > > Agreed, this is a weird way of doing things in v2 - the error message is
-> > > printed yet the length of qcom,enabled-strings is always ignored before
-> > > this patch.
+> > > diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+> > > index 977cd75827d7..c5232478a343 100644
+> > > --- a/drivers/video/backlight/qcom-wled.c
+> > > +++ b/drivers/video/backlight/qcom-wled.c
+> > > @@ -1552,6 +1520,25 @@ static int wled_configure(struct wled *wled)
+> > >  		}
+> > >  	}
 > > > 
-> > > If we were to reorder patch 5 before patch 4 that should also
-> > > temporarily move `cfg->num_strings = cfg->num_strings + 1;` right below
-> > > this `if` so that `qcom,num-strings` remains the definitive way to
-> > > set/override length.  That's doable, and makes it easier to read patch 4
-> > > as that bit of code will be replaced by of_property_read_u32 on that
-> > > exact line.  Let me know which method you prefer.
+> > > +	rc = of_property_read_u32(dev->of_node, "qcom,num-strings", &val);
+> > > +	if (!rc) {
+> > > +		if (val < 1 || val > wled->max_string_count) {
+> > > +			dev_err(dev, "qcom,num-strings must be between 1 and %d\n",
+> > > +				wled->max_string_count);
+> > > +			return -EINVAL;
+> > > +		}
+> > > +
+> > > +		if (string_len > 0) {
+> > > +			dev_warn(dev, "qcom,num-strings and qcom,enabled-strings are ambiguous\n");
 > > 
-> > Personally I would just squash them together. There are no redundant
-> > values in the DT that could be fixed until we can use the string_len
-> > to set num_strings.
+> > The warning should also be below the error message on the next if statement.
 > 
-> Reordering this patch before patch 4 in the way described above should
-> allow just that, except that no warnings will be given for ambiguity
-> until patch 4 is applied after that - which is weird given that that
-> patch only intends the off-by-one error.  Perhaps we should keep the
-> order as it is, but add the ambiguity warning in this patch instead.
+> Agreed.
 
-That works for me. Sounds good.
+Thinking about this again while reworking the patches, I initially put
+this above the error to make DT writers aware.  There's no point telling
+them that their values are out of sync (num-strings >
+len(enabled-strings)), when they "shouldn't even" (don't need to) set
+both in the first place.  They might needlessly fix the discrepancy, see
+the driver finally probe (working backlight) and carry on without
+noticing this warning that now appears.
 
+Sorry for bringing this back up, but I'm curious about your opinion.
 
-Daniel.
+- Marijn
