@@ -2,28 +2,25 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C7973C43219
-	for <phone-devel@archiver.kernel.org>; Fri, 12 Nov 2021 00:27:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21A6AC4321E
+	for <phone-devel@archiver.kernel.org>; Fri, 12 Nov 2021 00:27:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BB5CF61208
+	by mail.kernel.org (Postfix) with ESMTP id 056FB61073
 	for <phone-devel@archiver.kernel.org>; Fri, 12 Nov 2021 00:27:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234550AbhKLAaE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 11 Nov 2021 19:30:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50364 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234516AbhKLAaC (ORCPT
+        id S234580AbhKLAaF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 11 Nov 2021 19:30:05 -0500
+Received: from relay03.th.seeweb.it ([5.144.164.164]:41753 "EHLO
+        relay03.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234183AbhKLAaC (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Thu, 11 Nov 2021 19:30:02 -0500
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E31DCC061766
-        for <phone-devel@vger.kernel.org>; Thu, 11 Nov 2021 16:27:12 -0800 (PST)
 Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id E3F94203C9;
-        Fri, 12 Nov 2021 01:27:10 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 032B4203C6;
+        Fri, 12 Nov 2021 01:27:09 +0100 (CET)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -43,9 +40,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: [RESEND PATCH v2 02/13] backlight: qcom-wled: Pass number of elements to read to read_u32_array
-Date:   Fri, 12 Nov 2021 01:26:55 +0100
-Message-Id: <20211112002706.453289-3-marijn.suijten@somainline.org>
+Subject: [RESEND PATCH v2 01/13] backlight: qcom-wled: Validate enabled string indices in DT
+Date:   Fri, 12 Nov 2021 01:26:54 +0100
+Message-Id: <20211112002706.453289-2-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211112002706.453289-1-marijn.suijten@somainline.org>
 References: <20211112002706.453289-1-marijn.suijten@somainline.org>
@@ -55,46 +52,50 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-of_property_read_u32_array takes the number of elements to read as last
-argument. This does not always need to be 4 (sizeof(u32)) but should
-instead be the size of the array in DT as read just above with
-of_property_count_elems_of_size.
-
-To not make such an error go unnoticed again the driver now bails
-accordingly when of_property_read_u32_array returns an error.
-Surprisingly the indentation of newlined arguments is lining up again
-after prepending `rc = `.
+The strings passed in DT may possibly cause out-of-bounds register
+accesses and should be validated before use.
 
 Fixes: 775d2ffb4af6 ("backlight: qcom-wled: Restructure the driver for WLED3")
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 ---
- drivers/video/backlight/qcom-wled.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/video/backlight/qcom-wled.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-index 8a42ed89c59c..d413b913fef3 100644
+index d094299c2a48..8a42ed89c59c 100644
 --- a/drivers/video/backlight/qcom-wled.c
 +++ b/drivers/video/backlight/qcom-wled.c
-@@ -1535,10 +1535,15 @@ static int wled_configure(struct wled *wled)
- 			return -EINVAL;
- 		}
-
--		of_property_read_u32_array(dev->of_node,
-+		rc = of_property_read_u32_array(dev->of_node,
+@@ -1528,12 +1528,28 @@ static int wled_configure(struct wled *wled)
+ 	string_len = of_property_count_elems_of_size(dev->of_node,
+ 						     "qcom,enabled-strings",
+ 						     sizeof(u32));
+-	if (string_len > 0)
++	if (string_len > 0) {
++		if (string_len > wled->max_string_count) {
++			dev_err(dev, "Cannot have more than %d strings\n",
++				wled->max_string_count);
++			return -EINVAL;
++		}
++
+ 		of_property_read_u32_array(dev->of_node,
  						"qcom,enabled-strings",
  						wled->cfg.enabled_strings,
--						sizeof(u32));
-+						string_len);
-+		if (rc) {
-+			dev_err(dev, "Failed to read %d elements from qcom,enabled-strings: %d\n",
-+				string_len, rc);
-+			return rc;
-+		}
+ 						sizeof(u32));
 
- 		for (i = 0; i < string_len; ++i) {
- 			if (wled->cfg.enabled_strings[i] >= wled->max_string_count) {
++		for (i = 0; i < string_len; ++i) {
++			if (wled->cfg.enabled_strings[i] >= wled->max_string_count) {
++				dev_err(dev,
++					"qcom,enabled-strings index %d at %d is out of bounds\n",
++					wled->cfg.enabled_strings[i], i);
++				return -EINVAL;
++			}
++		}
++	}
++
+ 	return 0;
+ }
+
 --
 2.33.0
 
