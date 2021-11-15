@@ -2,150 +2,202 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A56CCC433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 15 Nov 2021 11:23:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA552C433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 15 Nov 2021 14:16:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 905FE61C32
-	for <phone-devel@archiver.kernel.org>; Mon, 15 Nov 2021 11:23:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B102761B97
+	for <phone-devel@archiver.kernel.org>; Mon, 15 Nov 2021 14:16:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231445AbhKOL0d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 15 Nov 2021 06:26:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41194 "EHLO
+        id S231734AbhKOOTF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 15 Nov 2021 09:19:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231376AbhKOL02 (ORCPT
+        with ESMTP id S231539AbhKOOTE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 15 Nov 2021 06:26:28 -0500
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0363FC061766
-        for <phone-devel@vger.kernel.org>; Mon, 15 Nov 2021 03:23:32 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id y84-20020a1c7d57000000b00330cb84834fso15497126wmc.2
-        for <phone-devel@vger.kernel.org>; Mon, 15 Nov 2021 03:23:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=f4u4+jt8ypE5xH9p7rgAcXb4lPM3Z6q0r6PSS8fTKHI=;
-        b=jP1n/U+yzHcokMi3lhdqzC3if7O6KZkCqx54OxRpYSGay0te96CO0CKrwB0URvPjOR
-         2F6t0UufliWZemKMURzFE4OJKr11+QmpYUn2dL8+sVM92o9JUs0vwdUNggg22vOZUNfm
-         32JfoJLb+kPKfvsh7QVa8RHqdsiFtUG/23lbjAVe1YRDVQI3JZr/lXePgZyxoDTB15YO
-         9tx3yE6/8LpVOZ4Ph+dfvm7gIS0uFXHjNKXJ5pf7RH5g6PgVUugoWIz76W3ot9aKDi/R
-         4RRVUg39s4VFCBkYUtN47Zup0KL1sgfMCVZZigFi6JOKlxp5cPPVHF67zzDS5tePZrRq
-         wEPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=f4u4+jt8ypE5xH9p7rgAcXb4lPM3Z6q0r6PSS8fTKHI=;
-        b=oqh8DLK84uzgHKltU+E9vgGUAH11ifxo7r3GKrYG5LHxLpkePklCyulIm/8RTn/wMc
-         z2zjfZPsrAbzOUi7/nXNH/HaX1vTP9zp6QbHUNpOQ/PUs9kQAdjjFk1rzbL021K14H2C
-         msj8zQSdMP42sIET/4QMUJFdixQ8VJRw2BhAV8at5ArZo3b4xJlflAhCtmmb04gWjCzn
-         Qlg8VlSPxoZegrYlAN6QL6E7U34tHwwpQF1le32ahCt2LD0q8czvLbi3EW8b7BFRolA+
-         i8P/3uVMSEkB33hYFcoklq9IQQIiKrtLjfJ3CoSmQT/Jr66WNaS5MrC34tS3oVOEAScw
-         vBCw==
-X-Gm-Message-State: AOAM533SZebWgkB9Ev9ZS9uS8u6SeSWqxUXC8vWhh93JnjjPhMvqS0CF
-        UQRu+ldzlxzzDXyBWNpCEVuhLA==
-X-Google-Smtp-Source: ABdhPJydAY2sk1/zCzZMibQHqVqEhwBELyjB7z2vGpTbcl9BNIGws50Duzyyhd3exyGjYR2A6vmRxw==
-X-Received: by 2002:a1c:540c:: with SMTP id i12mr7957382wmb.33.1636975410470;
-        Mon, 15 Nov 2021 03:23:30 -0800 (PST)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id h7sm13665207wrt.64.2021.11.15.03.23.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Nov 2021 03:23:29 -0800 (PST)
-Date:   Mon, 15 Nov 2021 11:23:27 +0000
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        Courtney Cavin <courtney.cavin@sonymobile.com>
-Subject: Re: [RESEND PATCH v2 04/13] backlight: qcom-wled: Fix off-by-one
- maximum with default num_strings
-Message-ID: <20211115112327.tklic3fggrv5mzjt@maple.lan>
-References: <20211112002706.453289-1-marijn.suijten@somainline.org>
- <20211112002706.453289-5-marijn.suijten@somainline.org>
- <20211112120839.i6g747vewg6bkyk7@maple.lan>
- <20211112123501.pz5e6g7gavlinung@SoMainline.org>
- <20211112214337.r5xrpeyjgdygzc3n@SoMainline.org>
+        Mon, 15 Nov 2021 09:19:04 -0500
+X-Greylist: delayed 73 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 15 Nov 2021 06:16:08 PST
+Received: from lb2-smtp-cloud9.xs4all.net (lb2-smtp-cloud9.xs4all.net [IPv6:2001:888:0:108::2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FC0C061570
+        for <phone-devel@vger.kernel.org>; Mon, 15 Nov 2021 06:16:05 -0800 (PST)
+Received: from cust-b5b5937f ([IPv6:fc0c:c16d:66b8:757f:c639:739b:9d66:799d])
+        by smtp-cloud9.xs4all.net with ESMTPA
+        id mckumFW7VfwDFmckxmOkbQ; Mon, 15 Nov 2021 15:14:48 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xs4all.nl; s=s2;
+        t=1636985688; bh=Y/R0UaCXRwHqfEMjBdd443GDO63lacWgX88qBmX9uwY=;
+        h=Subject:To:From:Message-ID:Date:MIME-Version:Content-Type:From:
+         Subject;
+        b=IOju47qyqAVLPDtFCk7aN8IV3auRnWVYpe9y87m5Po2/0LlTv3g2MCvhmgcz9IcD7
+         nJa2g9cc47bKqy9CUkHzH9m2IpZO22JOwbF/6C3w2oJFDC9dIHOwl3yU1o0jASKfGM
+         /+99GDt9/arsruQDZ7inbecnRwa4u376aeKQRq5HJnQOi9EHA2hRy4QcfkNyVHwaOy
+         v5kqVqnbWL1mrldrMh/Vz7QpJHgP6r53S7aGW0aOdIaN1/ifSYMjPwrbXldznGMyxU
+         I5fOJo1oMUmtUhEs172Z2vf/44H3uHVfEME3rz6ZT1UUPCShgBSkUem7DPqzwr0hNE
+         0wxFLGktfcWFw==
+Subject: Re: [PATCH v4 2/5] media: imx: Store the type of hardware
+ implementation
+To:     Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>,
+        Steve Longerbeam <slongerbeam@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@puri.sm, phone-devel@vger.kernel.org
+References: <20211104113631.206899-1-dorota.czaplejewicz@puri.sm>
+ <20211104113631.206899-2-dorota.czaplejewicz@puri.sm>
+From:   Hans Verkuil <hverkuil@xs4all.nl>
+Message-ID: <5a09a8d7-ada6-ce4f-9eb1-97ad0c4200af@xs4all.nl>
+Date:   Mon, 15 Nov 2021 15:14:44 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Firefox/78.0 Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211112214337.r5xrpeyjgdygzc3n@SoMainline.org>
+In-Reply-To: <20211104113631.206899-2-dorota.czaplejewicz@puri.sm>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfCoW3I4ZtMOk9I7PiMwSJDmwh6JFa9AB0tItn1RJRMelbV0motsStfMMarKEjZtXEfsoUbHRHJC4e5w0XZhVPxfVEffNjxXnWgOxnfENzm4VJ1PTeFe3
+ rcLAXUzLNrFus2KpUpQRM98kQQVRVdRxTHI0d1PMMlyq/88Zq0HhsgiabJ7vLmulmz8iGiogee/VVB1VgFE4JW1g8aGWWAXAqeR7H5hjcsOJaQ1sEocgrmS7
+ 4JXPEye4cTNZOJOaQVJWxnZgqCln4dpXr1j8Vpe1yvDWO1pQCj7KvDSSyYLeV/Qeqit1fOvKuECD19adfODJHHkRANj0dzVbsFp6qZqFqstLo0OpJUUa5Ard
+ 57N+EE+TfJpMiSkwfZVjqJwhi9SaB+z9tjztHH6j+IMBf/ScvTdr6lvI0zMOKRH8iDvfnG9eXA/g6tE98rs91HHCcCqYUWRHwDDQ0D/HfgtIpZ+KZfR0o9FH
+ TohemdUaWNh3PCFLZO2bY6t5+zMQvhfJXm1irjmebJR+Ns7BqdO7x/ipqO2MMnhZoWp4JhKyHoFScNwvliWROJJk0FFKWpDq5r74jpFBIwmKRGa27zBrobaf
+ Yziv6/wWzI0j4EhHvuAWk6x83Lehw8kImDYXiWF5N/hfySd1C7vQukl+3ZG08r7Inc+onp4Zzre86v4j4ViGpQNdnQXr74z3DDIjibsF0G3nzBMzQxG/p/yh
+ l71RSnb2dig6E5p2PDHlqVHtF9l8DhQe
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Nov 12, 2021 at 10:43:37PM +0100, Marijn Suijten wrote:
-> On 2021-11-12 13:35:03, Marijn Suijten wrote:
-> > On 2021-11-12 12:08:39, Daniel Thompson wrote:
-> > > On Fri, Nov 12, 2021 at 01:26:57AM +0100, Marijn Suijten wrote:
-> > > > When not specifying num-strings in the DT the default is used, but +1 is
-> > > > added to it which turns WLED3 into 4 and WLED4/5 into 5 strings instead
-> > > > of 3 and 4 respectively, causing out-of-bounds reads and register
-> > > > read/writes.  This +1 exists for a deficiency in the DT parsing code,
-> > > > and is simply omitted entirely - solving this oob issue - by parsing the
-> > > > property separately much like qcom,enabled-strings.
-> > > > 
-> > > > This also allows more stringent checks on the maximum value when
-> > > > qcom,enabled-strings is provided in the DT.  Note that num-strings is
-> > > > parsed after enabled-strings to give it final sign-off over the length,
-> > > > which DT currently utilizes to get around an incorrect fixed read of
-> > > > four elements from that array (has been addressed in a prior patch).
-> > > > 
-> > > > Fixes: 93c64f1ea1e8 ("leds: add Qualcomm PM8941 WLED driver")
-> > > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > > > Reviewed-By: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> > > > ---
-> > > >  drivers/video/backlight/qcom-wled.c | 51 +++++++++++------------------
-> > > >  1 file changed, 19 insertions(+), 32 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
-> > > > index 977cd75827d7..c5232478a343 100644
-> > > > --- a/drivers/video/backlight/qcom-wled.c
-> > > > +++ b/drivers/video/backlight/qcom-wled.c
-> > > > @@ -1552,6 +1520,25 @@ static int wled_configure(struct wled *wled)
-> > > >  		}
-> > > >  	}
-> > > > 
-> > > > +	rc = of_property_read_u32(dev->of_node, "qcom,num-strings", &val);
-> > > > +	if (!rc) {
-> > > > +		if (val < 1 || val > wled->max_string_count) {
-> > > > +			dev_err(dev, "qcom,num-strings must be between 1 and %d\n",
-> > > > +				wled->max_string_count);
-> > > > +			return -EINVAL;
-> > > > +		}
-> > > > +
-> > > > +		if (string_len > 0) {
-> > > > +			dev_warn(dev, "qcom,num-strings and qcom,enabled-strings are ambiguous\n");
-> > > 
-> > > The warning should also be below the error message on the next if statement.
-> > 
-> > Agreed.
+Hi Dorota,
+
+On 04/11/2021 12:43, Dorota Czaplejewicz wrote:
+> The driver covers i.MX5/6, as well as i.MX7/8 hardware.
+> Those implementations differ, e.g. in the sizes of buffers they accept.
 > 
-> Thinking about this again while reworking the patches, I initially put
-> this above the error to make DT writers aware.  There's no point telling
-> them that their values are out of sync (num-strings >
-> len(enabled-strings)), when they "shouldn't even" (don't need to) set
-> both in the first place.  They might needlessly fix the discrepancy, see
-> the driver finally probe (working backlight) and carry on without
-> noticing this warning that now appears.
+> Some functionality should be abstracted, and storing type achieves that.
 > 
-> Sorry for bringing this back up, but I'm curious about your opinion.
+> Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+> ---
+>  drivers/staging/media/imx/imx-ic-prpencvf.c   | 3 ++-
+>  drivers/staging/media/imx/imx-media-capture.c | 5 ++++-
+>  drivers/staging/media/imx/imx-media-csi.c     | 3 ++-
+>  drivers/staging/media/imx/imx-media.h         | 8 +++++++-
+>  drivers/staging/media/imx/imx7-media-csi.c    | 3 ++-
+>  5 files changed, 17 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/staging/media/imx/imx-ic-prpencvf.c b/drivers/staging/media/imx/imx-ic-prpencvf.c
+> index d990553de87b..e06f5fbe5174 100644
+> --- a/drivers/staging/media/imx/imx-ic-prpencvf.c
+> +++ b/drivers/staging/media/imx/imx-ic-prpencvf.c
+> @@ -1265,7 +1265,8 @@ static int prp_registered(struct v4l2_subdev *sd)
+>  
+>  	priv->vdev = imx_media_capture_device_init(ic_priv->ipu_dev,
+>  						   &ic_priv->sd,
+> -						   PRPENCVF_SRC_PAD, true);
+> +						   PRPENCVF_SRC_PAD, true,
+> +						   DEVICE_TYPE_IMX56);
+>  	if (IS_ERR(priv->vdev))
+>  		return PTR_ERR(priv->vdev);
+>  
+> diff --git a/drivers/staging/media/imx/imx-media-capture.c b/drivers/staging/media/imx/imx-media-capture.c
+> index 93ba09236010..65dc95a48ecc 100644
+> --- a/drivers/staging/media/imx/imx-media-capture.c
+> +++ b/drivers/staging/media/imx/imx-media-capture.c
+> @@ -34,6 +34,7 @@ struct capture_priv {
+>  
+>  	struct imx_media_video_dev vdev;	/* Video device */
+>  	struct media_pad vdev_pad;		/* Video device pad */
+> +	enum imx_media_device_type type;	/* Type of hardware implementation */
+>  
+>  	struct v4l2_subdev *src_sd;		/* Source subdev */
+>  	int src_sd_pad;				/* Source subdev pad */
+> @@ -957,7 +958,8 @@ EXPORT_SYMBOL_GPL(imx_media_capture_device_unregister);
+>  
+>  struct imx_media_video_dev *
+>  imx_media_capture_device_init(struct device *dev, struct v4l2_subdev *src_sd,
+> -			      int pad, bool legacy_api)
+> +			      int pad, bool legacy_api,
+> +			      enum imx_media_device_type type)
+>  {
+>  	struct capture_priv *priv;
+>  	struct video_device *vfd;
+> @@ -972,6 +974,7 @@ imx_media_capture_device_init(struct device *dev, struct v4l2_subdev *src_sd,
+>  	priv->src_sd_pad = pad;
+>  	priv->dev = dev;
+>  	priv->legacy_api = legacy_api;
+> +	priv->type = type;
+>  
+>  	mutex_init(&priv->mutex);
+>  	INIT_LIST_HEAD(&priv->ready_q);
+> diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
+> index 6a94fff49bf6..b6758c3787c7 100644
+> --- a/drivers/staging/media/imx/imx-media-csi.c
+> +++ b/drivers/staging/media/imx/imx-media-csi.c
+> @@ -1794,7 +1794,8 @@ static int csi_registered(struct v4l2_subdev *sd)
+>  	}
+>  
+>  	priv->vdev = imx_media_capture_device_init(priv->sd.dev, &priv->sd,
+> -						   CSI_SRC_PAD_IDMAC, true);
+> +						   CSI_SRC_PAD_IDMAC, true,
+> +						   DEVICE_TYPE_IMX56);
+>  	if (IS_ERR(priv->vdev)) {
+>  		ret = PTR_ERR(priv->vdev);
+>  		goto free_fim;
+> diff --git a/drivers/staging/media/imx/imx-media.h b/drivers/staging/media/imx/imx-media.h
+> index d2a150aac6cd..08e0c94e2de1 100644
+> --- a/drivers/staging/media/imx/imx-media.h
+> +++ b/drivers/staging/media/imx/imx-media.h
+> @@ -96,6 +96,11 @@ enum imx_pixfmt_sel {
+>  	PIXFMT_SEL_ANY = PIXFMT_SEL_YUV | PIXFMT_SEL_RGB | PIXFMT_SEL_BAYER,
+>  };
+>  
+> +enum imx_media_device_type {
+> +	DEVICE_TYPE_IMX56,
+> +	DEVICE_TYPE_IMX78,
+> +};
+> +
+>  struct imx_media_buffer {
+>  	struct vb2_v4l2_buffer vbuf; /* v4l buffer must be first */
+>  	struct list_head  list;
+> @@ -282,7 +287,8 @@ int imx_media_ic_unregister(struct v4l2_subdev *sd);
+>  /* imx-media-capture.c */
+>  struct imx_media_video_dev *
+>  imx_media_capture_device_init(struct device *dev, struct v4l2_subdev *src_sd,
+> -			      int pad, bool legacy_api);
+> +			      int pad, bool legacy_api,
+> +			      enum imx_media_device_type type);
 
-With a more helpful warning about how to fix then I think it is OK to
-have both the warning and the error.
+I'm not so sure about creating an enum for this. Perhaps just a 'bool is_imx56'
+would be sufficient. The argument name is also more understandable. And you also
+don't have the issue of having to check for out-of-range type values.
 
+Also, where is the device type set for imx8mq? I'm not all that familiar with
+the imx code, but I don't see where imx8mq-mipi-csi2.c fills that in.
 
-Daniel.
+I will merge patch 1/5, that one makes sense, but I'll skip the others.
+
+Regards,
+
+	Hans
+
+>  void imx_media_capture_device_remove(struct imx_media_video_dev *vdev);
+>  int imx_media_capture_device_register(struct imx_media_video_dev *vdev,
+>  				      u32 link_flags);
+> diff --git a/drivers/staging/media/imx/imx7-media-csi.c b/drivers/staging/media/imx/imx7-media-csi.c
+> index d7dc0d8edf50..1a11f07620e9 100644
+> --- a/drivers/staging/media/imx/imx7-media-csi.c
+> +++ b/drivers/staging/media/imx/imx7-media-csi.c
+> @@ -1012,7 +1012,8 @@ static int imx7_csi_registered(struct v4l2_subdev *sd)
+>  	}
+>  
+>  	csi->vdev = imx_media_capture_device_init(csi->sd.dev, &csi->sd,
+> -						  IMX7_CSI_PAD_SRC, false);
+> +						  IMX7_CSI_PAD_SRC, false,
+> +						  DEVICE_TYPE_IMX78);
+>  	if (IS_ERR(csi->vdev))
+>  		return PTR_ERR(csi->vdev);
+>  
+> 
+
