@@ -2,111 +2,322 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16DE1C433F5
-	for <phone-devel@archiver.kernel.org>; Tue, 16 Nov 2021 15:43:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3393BC433F5
+	for <phone-devel@archiver.kernel.org>; Tue, 16 Nov 2021 20:09:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EC8EC61407
-	for <phone-devel@archiver.kernel.org>; Tue, 16 Nov 2021 15:43:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0B48960EFE
+	for <phone-devel@archiver.kernel.org>; Tue, 16 Nov 2021 20:09:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238412AbhKPPp6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 16 Nov 2021 10:45:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56790 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238315AbhKPPpT (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 16 Nov 2021 10:45:19 -0500
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80B0AC06120D
-        for <phone-devel@vger.kernel.org>; Tue, 16 Nov 2021 07:42:19 -0800 (PST)
-Received: by mail-wr1-x42f.google.com with SMTP id d5so38453661wrc.1
-        for <phone-devel@vger.kernel.org>; Tue, 16 Nov 2021 07:42:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=MaOSO/5HtReWKBBksqBOQJDhfTRE2n/pBGJORKYgmI8=;
-        b=dpMihBVSiTIhJ8gwEIK/0RaxfyXs2DtvxfMOWHwvsfqgQpUny0lQtED0wIphEPCb6v
-         AEzTzY5KUWh+ZBUlwhm1MKOSsfEKvWzAZN6hA0iVz1ZkNSHET0GNQ7X4qOZ4ru7PoXmg
-         a/08/a6OGQp4ufg1hfyxfYLxOjuSPoP4Iv2indtDuuY25uHOzB4zY/j/Htu2gPPN48F8
-         +FDsCnukvP5bxxuyqV5df/R9Dld2m5MFGmv/6quqjj8jagtwmzBL49QLLLkaiJPMV3TB
-         utBJFccrrLjAw31i2P+rtb2jHXojpAt5V88ehKxTw8pEyulGHnLBAJQgM7JuB/O0nT8J
-         yzQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=MaOSO/5HtReWKBBksqBOQJDhfTRE2n/pBGJORKYgmI8=;
-        b=SZMoKEUbpUNqNHIXJ3GYXTIUWyW6DlPqOWYsnn5MKkTx5HVVpZNr7mYof1WWM9+fBW
-         ClWLQUn+iLf33GvXVVuM1Ud1FghBo9GTPoM63+pz2AlT46FLJjxBMrPA2yMAKXp4Xnx0
-         HIyvbA/StHJAbDzUCTtGGqG4ClQ4z35NxsnxzrJJJx7jm3cWRrmtRKoPkgOqc2YRjHoI
-         4W/zpIhBxsdG6GELcrVUkUifTjlpS0qNs3JxA+hbitbWtbGY6jInOl8kt8SEuluBQ/BS
-         TYA+Z18BjfXiU/mQBBj8okh2B7LKAlZA3sVxefuLAkHLhEg5B9GCF46q7eUoUt3/J2I7
-         q92w==
-X-Gm-Message-State: AOAM531XSSPj/zNnwBwYDY2xlE0x71ZYUcPBURE5WMCX3IVzT74VUKkq
-        wWoRKn6dqqR6uF1frqkXkstOWQ==
-X-Google-Smtp-Source: ABdhPJwGazAeHXqWI2KmcXg8HN2YudpmutPJQ1rdklClDDMa6uJ9nc+mW3BEpIrYrJ5e6pEnv6kpCA==
-X-Received: by 2002:a5d:5303:: with SMTP id e3mr10447721wrv.73.1637077337983;
-        Tue, 16 Nov 2021 07:42:17 -0800 (PST)
-Received: from google.com ([95.148.6.231])
-        by smtp.gmail.com with ESMTPSA id q4sm17892469wrs.56.2021.11.16.07.42.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Nov 2021 07:42:17 -0800 (PST)
-Date:   Tue, 16 Nov 2021 15:42:15 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
+        id S231879AbhKPUMM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 16 Nov 2021 15:12:12 -0500
+Received: from mout.gmx.net ([212.227.15.18]:54461 "EHLO mout.gmx.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240441AbhKPULu (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 16 Nov 2021 15:11:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+        s=badeba3b8450; t=1637093321;
+        bh=uAG+D63V5JJv6JbVHM8XoWktFfvPnzrPAkc82zLEVXE=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=A3hzkWi3V452yXfB3cp6bFufKqkhvcPoFPNQFAyF2uZJ+5ngKD6hcfPqwzmSzcOt1
+         6yGTEh+ZR4TdOwWP5ek9Gc8hqraN+7id7yW/yfBb/vKGxo9qS1SHzQBGn3+UU/VKrD
+         3sePH86VeTGN/oRpih8KOrPYkreb4uJtCA9oAsvw=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from x1-yoga-arch.speedport.ip ([93.243.64.255]) by mail.gmx.net
+ (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MIx3I-1n7TxC3OX4-00KMrm; Tue, 16 Nov 2021 21:08:40 +0100
+From:   Julian Ribbeck <julian.ribbeck@gmx.de>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Kiran Gunda <kgunda@codeaurora.org>,
-        Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v3 0/9] backlight: qcom-wled: fix and solidify handling
- of enabled-strings
-Message-ID: <YZPRV2jD1EBYGdHL@google.com>
-References: <20211115203459.1634079-1-marijn.suijten@somainline.org>
- <20211116120213.n7qxqfi62lrxhyl7@maple.lan>
+        Julian Ribbeck <julian.ribbeck@gmx.de>,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: [PATCH] arm64: dts: qcom: Add device tree for Samsung J5 2015 (samsung-j5)
+Date:   Tue, 16 Nov 2021 21:07:34 +0100
+Message-Id: <20211116200734.73920-1-julian.ribbeck@gmx.de>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211116120213.n7qxqfi62lrxhyl7@maple.lan>
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:WIqNp2HfBaNd1fGUfl4FLZcEnr/7sjvWQwZBDVEkZduYN+V0RQN
+ i0RNN8Cnm05nNvmhHRu7ULJnJWv8X7lXO89Yi7+gjl857CHA09dEydBwsuXEIQ/IOG3T3aG
+ oiLbsWKxff7VxUMU+EmS9QR6ypVDF2duwjoF4KSw00MBpUD8Ic0GgdwLiQ2KIQRLvsv+8+z
+ kaouarwCE5hB+RSk5d4sA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:p5Z7bTd5bq4=:pmXRCTX/pN1c3uqj4s1Tax
+ uOWeUX0Hyk1sYUmM1pLerH0trnSGfrMI8vRXQbnm1a+Wi77y7MV3YMl/UrE4kYI/IIyJ1/+w0
+ Teh0vZCpaeDN62g3Ng21l0PDYx3vQxXGFPZtbrjuDrrWl8WEBsQB53TPw3oaWxfv8ogzWBM30
+ AFVj4T6726ggN6HBaEgm+Jt8zXEYpGPzjnj2z5TXXKWm/07bZN2UtKLyWaM6Xx1wYNKMX+XlE
+ rVOAY0811y/VQdMCs8DyEq0xpoUNREq8T6rRdGElOMh+7L9SISht1MAyCDEDhiDipjncLzs0S
+ bfF6r8biuSotTTTtmjyhFYTe52F4KnqGLmti3xtUrcuXe8dISYCc/Zc5ui1y3686gc7kb/BZz
+ yich0CaWDI5NeTc6AwkcnbbGjRgCCmsajdJqJ7Lhf3AzcrnOThEOu/l0ZfkrtuVvDVkY7qnLj
+ vDwPchPSU7C+rCePdWCGg3nQhw/WLtDcsSVSfwvEI8+/rua9APdVqjjkvv5rgtiyIYKbrJa4h
+ A14Das3UEnfndbj1SOZB+S4MUsAkpESlY7/6+OdY7yZFP/a0vbhvPoQlxuBP6Shac43KGF4ui
+ FFbMIFWT8gQpbAsoBnsLE3Yhth+hYmDm+0HnLNQeAPZLwFyvXB0BTHynm5yiBCGP3tbmGsMz0
+ Ru3rtmjixXt1kHy89ron3BO01Vi8drUnxWfx8sF1xLH5JbzvddOmv0Xf3wkMADzOBogXd4k8o
+ bPMmsQHh/96JXQF17i2GO3Q4Mri6XeAxrUUyyhlEj9S6Mz7dKw9ZwxpaDHd2IT048Da9VZIFS
+ pe9x5D/4tsRY2Ka8iJMEMh9aU4ooIZP2dTYDJe1Sc/FcK3Qqyhsy4q7L8sWzq3f5Nn4CQsd4g
+ 7NC+vcrBOCud+EwXSLMlq6FxyT3zsF218j9FKIdO3FEN2Ei1bfjXgohEVWjjbZQF8Ug8UWeVB
+ GrpIG1emnOLQeRY3uMJ9TwfjSjoBFXqUwLLoa/MRmXXfGNmYWn4OyIMJUYJt9Zmu2ebSYGGsg
+ UA6ubBgAoqyQXuv5vOuPElv1zgXAdwIz6zn5sorYXhQdc9SiQW6bkst0xl8U5+mmC7CRT3nU1
+ 4DoFvsKhBrIAw4=
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 16 Nov 2021, Daniel Thompson wrote:
+Samsung J5 2015 is a MSM8916 based Smartphone. It is similar to some of th=
+e
+other MSM8916 devices, especially the Samsung ones.
 
-> Hi Lee
-> 
-> On Mon, Nov 15, 2021 at 09:34:50PM +0100, Marijn Suijten wrote:
-> > This patchset fixes WLED's handling of enabled-strings: besides some
-> > cleanup it is now actually possible to specify a non-contiguous array of
-> > enabled strings (not necessarily starting at zero) and the values from
-> > DT are now validated to prevent possible unexpected out-of-bounds
-> > register and array element accesses.
-> > Off-by-one mistakes in the maximum number of strings, also causing
-> > out-of-bounds access, have been addressed as well.
-> 
-> They have arrived piecemeal (during v1, v2 and v3) but all patches on
-> the set should now have my R-b: attached to them.
+With this patch initial support for the following is added:
+  - eMMC/SD card
+  - Buttons
+  - USB (although no suiting MUIC driver currently)
+  - UART (untested for lack of equipment)
+  - WiFi/Bluetooth (WCNSS)
 
-I can see that.  Nothing for you to worry about.
+It is worth noting that Samsung J5 with MSM8916 exists in different
+generations (e.g Samsung J5 2015 and Samsung J5 2016) which each have
+different models (e.g. samsung-j5nlte, samsung-j5xnlte, etc). This patch
+is only regarding the 2015 generation, but should work with all of it's
+models, as far as we could test.
 
-I'll apply these when I conduct my next sweep, thanks.
+Co-developed-by: Stephan Gerhold <stephan@gerhold.net>
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Signed-off-by: Julian Ribbeck <julian.ribbeck@gmx.de>
+=2D--
+ arch/arm64/boot/dts/qcom/Makefile             |   1 +
+ .../boot/dts/qcom/msm8916-samsung-j5.dts      | 209 ++++++++++++++++++
+ 2 files changed, 210 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts
 
--- 
-Lee Jones [李琼斯]
-Senior Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/=
+Makefile
+index 6b816eb33309..08bfccb0daeb 100644
+=2D-- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -15,6 +15,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+=3D msm8916-longcheer-l8910.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+=3D msm8916-mtp.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+=3D msm8916-samsung-a3u-eur.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+=3D msm8916-samsung-a5u-eur.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+=3D msm8916-samsung-j5.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+=3D msm8916-samsung-serranove.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+=3D msm8916-wingtech-wt88047.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+=3D msm8992-bullhead-rev-101.dtb
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts b/arch/arm64/=
+boot/dts/qcom/msm8916-samsung-j5.dts
+new file mode 100644
+index 000000000000..687bea438a57
+=2D-- /dev/null
++++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts
+@@ -0,0 +1,209 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/dts-v1/;
++
++#include "msm8916-pm8916.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++
++/ {
++	model =3D "Samsung Galaxy J5 (2015)";
++	compatible =3D "samsung,j5", "qcom,msm8916";
++	chassis-type =3D "handset";
++
++	aliases {
++		serial0 =3D &blsp1_uart2;
++	};
++
++	chosen {
++		stdout-path =3D "serial0";
++	};
++
++	reserved-memory {
++		/* Additional memory used by Samsung firmware modifications */
++		tz-apps@85500000 {
++			reg =3D <0x0 0x85500000 0x0 0xb00000>;
++			no-map;
++		};
++	};
++
++	gpio-keys {
++		compatible =3D "gpio-keys";
++
++		pinctrl-names =3D "default";
++		pinctrl-0 =3D <&gpio_keys_default>;
++
++		label =3D "GPIO Buttons";
++
++		volume-up {
++			label =3D "Volume Up";
++			gpios =3D <&msmgpio 107 GPIO_ACTIVE_LOW>;
++			linux,code =3D <KEY_VOLUMEUP>;
++		};
++
++		home-key {
++			lable =3D "Home Key";
++			gpios =3D <&msmgpio 109 GPIO_ACTIVE_LOW>;
++			linux,code =3D <KEY_HOMEPAGE>;
++		};
++	};
++};
++
++&blsp1_uart2 {
++	status =3D "okay";
++};
++
++&pm8916_resin {
++	status =3D "okay";
++	linux,code =3D <KEY_VOLUMEDOWN>;
++};
++
++/* FIXME: Replace with SM5703 MUIC when driver is available */
++&pm8916_usbin {
++	status =3D "okay";
++};
++
++&pronto {
++	status =3D "okay";
++};
++
++&sdhc_1 {
++	status =3D "okay";
++
++	pinctrl-names =3D "default", "sleep";
++	pinctrl-0 =3D <&sdc1_clk_on &sdc1_cmd_on &sdc1_data_on>;
++	pinctrl-1 =3D <&sdc1_clk_off &sdc1_cmd_off &sdc1_data_off>;
++};
++
++&sdhc_2 {
++	status =3D "okay";
++
++	pinctrl-names =3D "default", "sleep";
++	pinctrl-0 =3D <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on &sdc2_cd_on>;
++	pinctrl-1 =3D <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off &sdc2_cd_off>;
++
++	cd-gpios =3D <&msmgpio 38 GPIO_ACTIVE_LOW>;
++};
++
++&usb {
++	status =3D "okay";
++	dr_mode =3D "peripheral";
++	extcon =3D <&pm8916_usbin>;
++};
++
++&usb_hs_phy {
++	extcon =3D <&pm8916_usbin>;
++	qcom,init-seq =3D /bits/ 8 <0x1 0x19 0x2 0x0b>;
++};
++
++&smd_rpm_regulators {
++	vdd_l1_l2_l3-supply =3D <&pm8916_s3>;
++	vdd_l4_l5_l6-supply =3D <&pm8916_s4>;
++	vdd_l7-supply =3D <&pm8916_s4>;
++
++	s3 {
++		regulator-min-microvolt =3D <1200000>;
++		regulator-max-microvolt =3D <1300000>;
++	};
++
++	s4 {
++		regulator-min-microvolt =3D <1800000>;
++		regulator-max-microvolt =3D <2100000>;
++	};
++
++	l1 {
++		regulator-min-microvolt =3D <1225000>;
++		regulator-max-microvolt =3D <1225000>;
++	};
++
++	l2 {
++		regulator-min-microvolt =3D <1200000>;
++		regulator-max-microvolt =3D <1200000>;
++	};
++
++	l4 {
++		regulator-min-microvolt =3D <2050000>;
++		regulator-max-microvolt =3D <2050000>;
++	};
++
++	l5 {
++		regulator-min-microvolt =3D <1800000>;
++		regulator-max-microvolt =3D <1800000>;
++	};
++
++	l6 {
++		regulator-min-microvolt =3D <1800000>;
++		regulator-max-microvolt =3D <1800000>;
++	};
++
++	l7 {
++		regulator-min-microvolt =3D <1800000>;
++		regulator-max-microvolt =3D <1800000>;
++	};
++
++	l8 {
++		regulator-min-microvolt =3D <2850000>;
++		regulator-max-microvolt =3D <2900000>;
++	};
++
++	l9 {
++		regulator-min-microvolt =3D <3300000>;
++		regulator-max-microvolt =3D <3300000>;
++	};
++
++	l10 {
++		regulator-min-microvolt =3D <2700000>;
++		regulator-max-microvolt =3D <2800000>;
++	};
++
++	l11 {
++		regulator-min-microvolt =3D <1800000>;
++		regulator-max-microvolt =3D <2950000>;
++		regulator-allow-set-load;
++		regulator-system-load =3D <200000>;
++	};
++
++	l12 {
++		regulator-min-microvolt =3D <1800000>;
++		regulator-max-microvolt =3D <2950000>;
++	};
++
++	l13 {
++		regulator-min-microvolt =3D <3075000>;
++		regulator-max-microvolt =3D <3075000>;
++	};
++
++	l14 {
++		regulator-min-microvolt =3D <1800000>;
++		regulator-max-microvolt =3D <3300000>;
++	};
++
++	l15 {
++		regulator-min-microvolt =3D <1800000>;
++		regulator-max-microvolt =3D <3300000>;
++	};
++
++	l16 {
++		regulator-min-microvolt =3D <1800000>;
++		regulator-max-microvolt =3D <3300000>;
++	};
++
++	l17 {
++		regulator-min-microvolt =3D <3000000>;
++		regulator-max-microvolt =3D <3000000>;
++	};
++
++	l18 {
++		regulator-min-microvolt =3D <2700000>;
++		regulator-max-microvolt =3D <2700000>;
++	};
++};
++
++&msmgpio {
++	gpio_keys_default: gpio-keys-default {
++		pins =3D "gpio107", "gpio109";
++		function =3D "gpio";
++
++		drive-strength =3D <2>;
++		bias-pull-up;
++	};
++};
+=2D-
+2.33.1
+
