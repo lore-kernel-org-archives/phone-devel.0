@@ -2,67 +2,87 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BD9EEC433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 21:02:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D6F0C433F5
+	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 21:02:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9E49961A02
-	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 21:02:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7AF85619BB
+	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 21:02:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233041AbhKRVFx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 18 Nov 2021 16:05:53 -0500
-Received: from mail.z3ntu.xyz ([128.199.32.197]:36926 "EHLO mail.z3ntu.xyz"
+        id S233644AbhKRVF6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 18 Nov 2021 16:05:58 -0500
+Received: from mail.z3ntu.xyz ([128.199.32.197]:36946 "EHLO mail.z3ntu.xyz"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230422AbhKRVFx (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 18 Nov 2021 16:05:53 -0500
+        id S233120AbhKRVFy (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 18 Nov 2021 16:05:54 -0500
 Received: from localhost.localdomain (ip-213-127-109-54.ip.prioritytelecom.net [213.127.109.54])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id E68AECAD7C;
-        Thu, 18 Nov 2021 21:02:50 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id BD6B9CADFF;
+        Thu, 18 Nov 2021 21:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1637269371; bh=8tlSrro64Z/lABOoSyH9T70DBxFcqqceD5mOCWLL68M=;
-        h=From:To:Cc:Subject:Date;
-        b=o5tjir4D7XXdxYNTREpyc/K2jbBGwHuKmtlPDSNdqDTEFDplpeYsdiFrb97nT1RdK
-         X93Rva4ViI6MxqKg0ELys2ZYydXLOdnfAjtmIEmr2OWA0cJvCGu+73XfFuir7mrv3a
-         vwQdmV8B1GnGHC0zWVBI+uDcV8jy4zao23nC6CV4=
+        t=1637269372; bh=p1hst4gpIVKupZAuytjyoSn3oOA9pER7aVHo2xuyQS4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=a5iAkFFrpBvkoivXS8ulJ+ouiqbx+ONmvP7hvSFSyRUsMLctSepJ6/UKFGEChRAS+
+         ZwLhXQq7/g1tZxQjzd+Iv3vIYyBVRFMI8/EJfHUZcwrL6fN6oz1g8kzftrNVU0Szwi
+         lo/4Ar0Rmsp4kTxjWGoxcuPUfRDP2WTI07aZv5BI=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Sebastian Reichel <sre@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/7] dt-bindings: power: supply: pm8941-charger: add pm8226
-Date:   Thu, 18 Nov 2021 22:02:04 +0100
-Message-Id: <20211118210210.160895-1-luca@z3ntu.xyz>
+        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 3/7] ARM: dts: qcom: pm8226: add smbb charger node
+Date:   Thu, 18 Nov 2021 22:02:06 +0100
+Message-Id: <20211118210210.160895-3-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.34.0
+In-Reply-To: <20211118210210.160895-1-luca@z3ntu.xyz>
+References: <20211118210210.160895-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The charger in PM8226 (used in MSM8226) is similar to the charger in
-PM8941.
+Add a node for the battery charger included in pm8226.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- .../devicetree/bindings/power/supply/qcom,pm8941-charger.yaml | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/qcom-pm8226.dtsi | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/power/supply/qcom,pm8941-charger.yaml b/Documentation/devicetree/bindings/power/supply/qcom,pm8941-charger.yaml
-index bc8904872d1b..caeff68c66d5 100644
---- a/Documentation/devicetree/bindings/power/supply/qcom,pm8941-charger.yaml
-+++ b/Documentation/devicetree/bindings/power/supply/qcom,pm8941-charger.yaml
-@@ -11,7 +11,9 @@ maintainers:
+diff --git a/arch/arm/boot/dts/qcom-pm8226.dtsi b/arch/arm/boot/dts/qcom-pm8226.dtsi
+index dddb5150dfd7..666bc6350c50 100644
+--- a/arch/arm/boot/dts/qcom-pm8226.dtsi
++++ b/arch/arm/boot/dts/qcom-pm8226.dtsi
+@@ -16,6 +16,29 @@ pwrkey@800 {
+ 			debounce = <15625>;
+ 			bias-pull-up;
+ 		};
++
++		smbb: charger@1000 {
++			compatible = "qcom,pm8226-charger";
++			reg = <0x1000>;
++			interrupts = <0x0 0x10 7 IRQ_TYPE_EDGE_BOTH>,
++				     <0x0 0x10 5 IRQ_TYPE_EDGE_BOTH>,
++				     <0x0 0x10 4 IRQ_TYPE_EDGE_BOTH>,
++				     <0x0 0x12 1 IRQ_TYPE_EDGE_BOTH>,
++				     <0x0 0x12 0 IRQ_TYPE_EDGE_BOTH>,
++				     <0x0 0x13 2 IRQ_TYPE_EDGE_BOTH>,
++				     <0x0 0x13 1 IRQ_TYPE_EDGE_BOTH>,
++				     <0x0 0x14 1 IRQ_TYPE_EDGE_BOTH>;
++			interrupt-names = "chg-done",
++					  "chg-fast",
++					  "chg-trkl",
++					  "bat-temp-ok",
++					  "bat-present",
++					  "chg-gone",
++					  "usb-valid",
++					  "dc-valid";
++
++			chg_otg: otg-vbus { };
++		};
+ 	};
  
- properties:
-   compatible:
--    const: qcom,pm8941-charger
-+    enum:
-+      - qcom,pm8226-charger
-+      - qcom,pm8941-charger
- 
-   reg:
-     maxItems: 1
+ 	pm8226_1: pm8226@1 {
 -- 
 2.34.0
 
