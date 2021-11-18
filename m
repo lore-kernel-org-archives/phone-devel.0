@@ -2,81 +2,71 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21DFDC433EF
-	for <phone-devel@archiver.kernel.org>; Wed, 17 Nov 2021 14:09:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FB26C433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 20:59:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0774161549
-	for <phone-devel@archiver.kernel.org>; Wed, 17 Nov 2021 14:09:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F1B98619E3
+	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 20:59:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238172AbhKQOMv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 17 Nov 2021 09:12:51 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:50778 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234227AbhKQOMv (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 17 Nov 2021 09:12:51 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: kholk11)
-        with ESMTPSA id 64AD81F46217
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
-        t=1637158191; bh=8jGdqijZ7q4/yAvbc1vyzx8rEXr6SdlAgU/wrMeMGyU=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=ZYUm3dSpuLo3m4ldKc6vQ+dw9LItM0E+Zh+WN9cwPB4dQlUrVqLKkJ/8mhCY1kUhQ
-         n0ahswTWMYi9xPzKycAWKux6bysNN1fATzi79F897ZXUILZjeABg/2F2Aml+i/V1uv
-         OFJ1ldFCD70lK+fps9CNQ722WSvCuG+fRJ04lEN6NCwSRvexCG46BnHniFzOhmEIwC
-         4DxirUboKEloDChAb0lw9pUGgTc7wurQXJ5CdRtE2U6hUdmdPT6GmKnsnLouhnEVdA
-         nfGnuGAHtF65PN2FTGQUWzAX5vYJbyPwg7TxbQPFGhb3+FMdr9aEQN6XWrYzplopJy
-         cJbQhWEYUuCzQ==
-Subject: Re: [PATCH] drm/msm/devfreq: Insert missing null check in
- msm_devfreq_idle
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        id S232033AbhKRVCU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 18 Nov 2021 16:02:20 -0500
+Received: from mail.z3ntu.xyz ([128.199.32.197]:36736 "EHLO mail.z3ntu.xyz"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230422AbhKRVCT (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 18 Nov 2021 16:02:19 -0500
+Received: from localhost.localdomain (ip-213-127-109-54.ip.prioritytelecom.net [213.127.109.54])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 4BF5FCAD7C;
+        Thu, 18 Nov 2021 20:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1637269157; bh=fWzhaXZCPMrIWvJQQkqfEQIjMey2OLEi4hm1dx5umxo=;
+        h=From:To:Cc:Subject:Date;
+        b=vtItq401CwvXF2QlBHl6JqqoQ9XPmIYcfS6Rdxh3ZThOeU8407DOayhXX7lNXIF1j
+         HN0nyE+hJzO32qYz135dq6sQTrMergrqJjictu/EGc67K6QmSKFbIjGt+BWGoPV5eH
+         Bk/euax/4A4Se5GAUGWofXRp7jwHVnFXT1nI9hxg=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20211117111134.315709-1-marijn.suijten@somainline.org>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Message-ID: <969a8521-4eff-ddd2-4971-4990a7ba0fef@collabora.com>
-Date:   Wed, 17 Nov 2021 15:09:47 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+Subject: [PATCH] ARM: dts: qcom: apq8026-lg-lenok: add fuel gauge
+Date:   Thu, 18 Nov 2021 21:58:33 +0100
+Message-Id: <20211118205834.160308-1-luca@z3ntu.xyz>
+X-Mailer: git-send-email 2.34.0
 MIME-Version: 1.0
-In-Reply-To: <20211117111134.315709-1-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 17/11/21 12:11, Marijn Suijten ha scritto:
-> msm_devfreq_init only initializes the idle_work hrtimer when it succeeds
-> to create a devfreq instance (devfreq support is optional), yet
-> msm_devfreq_idle is called unconditionally from retire_submit and queues
-> work on it.  We're seeing:
-> 
->      [    2.005265] adreno 1c00000.gpu: [drm:msm_devfreq_init] *ERROR* Couldn't initialize GPU devfreq
-> 
-> Followed by a pagefault in:
-> 
->      [   16.650316] pc : hrtimer_start_range_ns+0x64/0x360
->      [   16.650336] lr : msm_hrtimer_queue_work+0x18/0x2c
-> 
-> Moments later.  Just like msm_devfreq_active, check if the devfreq
-> instance is not NULL before proceeding.
-> 
-> Fixes: 658f4c829688 ("drm/msm/devfreq: Add 1ms delay before clamping freq")
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+The device uses a BQ27421 as fuel gauge, so add a node describing it.
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts b/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
+index f350c4e8c194..b19522ad91a0 100644
+--- a/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
++++ b/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
+@@ -23,6 +23,15 @@ chosen {
+ 	};
+ };
+ 
++&blsp1_i2c1 {
++	status = "okay";
++
++	fuel-gauge@55 {
++		compatible = "ti,bq27421";
++		reg = <0x55>;
++	};
++};
++
+ &blsp1_i2c5 {
+ 	status = "okay";
+ 	clock-frequency = <384000>;
+-- 
+2.34.0
+
