@@ -2,37 +2,37 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FB26C433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 20:59:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD9EEC433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 21:02:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F1B98619E3
-	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 20:59:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9E49961A02
+	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 21:02:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232033AbhKRVCU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 18 Nov 2021 16:02:20 -0500
-Received: from mail.z3ntu.xyz ([128.199.32.197]:36736 "EHLO mail.z3ntu.xyz"
+        id S233041AbhKRVFx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 18 Nov 2021 16:05:53 -0500
+Received: from mail.z3ntu.xyz ([128.199.32.197]:36926 "EHLO mail.z3ntu.xyz"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230422AbhKRVCT (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 18 Nov 2021 16:02:19 -0500
+        id S230422AbhKRVFx (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 18 Nov 2021 16:05:53 -0500
 Received: from localhost.localdomain (ip-213-127-109-54.ip.prioritytelecom.net [213.127.109.54])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 4BF5FCAD7C;
-        Thu, 18 Nov 2021 20:59:17 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id E68AECAD7C;
+        Thu, 18 Nov 2021 21:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1637269157; bh=fWzhaXZCPMrIWvJQQkqfEQIjMey2OLEi4hm1dx5umxo=;
+        t=1637269371; bh=8tlSrro64Z/lABOoSyH9T70DBxFcqqceD5mOCWLL68M=;
         h=From:To:Cc:Subject:Date;
-        b=vtItq401CwvXF2QlBHl6JqqoQ9XPmIYcfS6Rdxh3ZThOeU8407DOayhXX7lNXIF1j
-         HN0nyE+hJzO32qYz135dq6sQTrMergrqJjictu/EGc67K6QmSKFbIjGt+BWGoPV5eH
-         Bk/euax/4A4Se5GAUGWofXRp7jwHVnFXT1nI9hxg=
+        b=o5tjir4D7XXdxYNTREpyc/K2jbBGwHuKmtlPDSNdqDTEFDplpeYsdiFrb97nT1RdK
+         X93Rva4ViI6MxqKg0ELys2ZYydXLOdnfAjtmIEmr2OWA0cJvCGu+73XfFuir7mrv3a
+         vwQdmV8B1GnGHC0zWVBI+uDcV8jy4zao23nC6CV4=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: qcom: apq8026-lg-lenok: add fuel gauge
-Date:   Thu, 18 Nov 2021 21:58:33 +0100
-Message-Id: <20211118205834.160308-1-luca@z3ntu.xyz>
+        Luca Weiss <luca@z3ntu.xyz>,
+        Sebastian Reichel <sre@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/7] dt-bindings: power: supply: pm8941-charger: add pm8226
+Date:   Thu, 18 Nov 2021 22:02:04 +0100
+Message-Id: <20211118210210.160895-1-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.34.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -40,33 +40,29 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The device uses a BQ27421 as fuel gauge, so add a node describing it.
+The charger in PM8226 (used in MSM8226) is similar to the charger in
+PM8941.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ .../devicetree/bindings/power/supply/qcom,pm8941-charger.yaml | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts b/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
-index f350c4e8c194..b19522ad91a0 100644
---- a/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
-+++ b/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
-@@ -23,6 +23,15 @@ chosen {
- 	};
- };
+diff --git a/Documentation/devicetree/bindings/power/supply/qcom,pm8941-charger.yaml b/Documentation/devicetree/bindings/power/supply/qcom,pm8941-charger.yaml
+index bc8904872d1b..caeff68c66d5 100644
+--- a/Documentation/devicetree/bindings/power/supply/qcom,pm8941-charger.yaml
++++ b/Documentation/devicetree/bindings/power/supply/qcom,pm8941-charger.yaml
+@@ -11,7 +11,9 @@ maintainers:
  
-+&blsp1_i2c1 {
-+	status = "okay";
-+
-+	fuel-gauge@55 {
-+		compatible = "ti,bq27421";
-+		reg = <0x55>;
-+	};
-+};
-+
- &blsp1_i2c5 {
- 	status = "okay";
- 	clock-frequency = <384000>;
+ properties:
+   compatible:
+-    const: qcom,pm8941-charger
++    enum:
++      - qcom,pm8226-charger
++      - qcom,pm8941-charger
+ 
+   reg:
+     maxItems: 1
 -- 
 2.34.0
 
