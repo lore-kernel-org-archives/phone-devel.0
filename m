@@ -2,73 +2,104 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EAA9C433FE
-	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 21:03:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E283C433F5
+	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 22:47:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 632596139F
-	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 21:03:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 251E8611CB
+	for <phone-devel@archiver.kernel.org>; Thu, 18 Nov 2021 22:47:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234092AbhKRVGH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 18 Nov 2021 16:06:07 -0500
-Received: from mail.z3ntu.xyz ([128.199.32.197]:36954 "EHLO mail.z3ntu.xyz"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233364AbhKRVF4 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 18 Nov 2021 16:05:56 -0500
-Received: from localhost.localdomain (ip-213-127-109-54.ip.prioritytelecom.net [213.127.109.54])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id A7DE4CADFF;
-        Thu, 18 Nov 2021 21:02:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1637269375; bh=//NLGnbvC246qJGsO6ju7lPD/sC++Pv0JTa54viAtSE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=kUswCj6csKemSJ8by6sKFzsv/JnHyPoD9KE/4AXBLlkK2ZtUi1OZxyXj7J0wiDTh1
-         +d/aZ/cTP3UFecpALOcrlrET4BX6Q9V8+G7QneMNJG/D8qBzgxY4+3swO0AkNj7bDe
-         2bAQMrOJ/dDVqkR6PcgBGDFukg3FgCBKS3vDNcnA=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 7/7] ARM: dts: qcom: apq8026-lg-lenok: enable USB
-Date:   Thu, 18 Nov 2021 22:02:10 +0100
-Message-Id: <20211118210210.160895-7-luca@z3ntu.xyz>
-X-Mailer: git-send-email 2.34.0
-In-Reply-To: <20211118210210.160895-1-luca@z3ntu.xyz>
-References: <20211118210210.160895-1-luca@z3ntu.xyz>
+        id S231391AbhKRWue (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 18 Nov 2021 17:50:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45754 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229662AbhKRWud (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 18 Nov 2021 17:50:33 -0500
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ABB5C061574
+        for <phone-devel@vger.kernel.org>; Thu, 18 Nov 2021 14:47:33 -0800 (PST)
+Received: by mail-ot1-x330.google.com with SMTP id h16-20020a9d7990000000b0055c7ae44dd2so13637678otm.10
+        for <phone-devel@vger.kernel.org>; Thu, 18 Nov 2021 14:47:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lujsZ0IKNJaA5lx9661QkFiRqemsKwUYnfhaEJr6j9Q=;
+        b=eURB1mlKTADaw1xiFWVW/aCYXRNv2ZpmcNqxZVjtSNnpKK6IVo/sZCXn9TMNYFZfD4
+         oNYQjKMK++P0cWVkTW5Sa7foIfy+3J47VnKYhHuZfFq4gcIn9fg3Q0QMgLL51gGZmaU9
+         di6RuRLKypg1GYyXe5JxkQInbNdW7la+Njru+iOW++lrOkCZ6SQ7aJR2T9FkarOcyTYx
+         Ht6jGSOpQgOLy1sZlqCE/mH5yuC99iWMzBhincPjNz8oPmwIlz1EnpgAPSxtqOx/l5gL
+         E1DRZdJkBcvo1icLFDYhcyKhAB1REZKUKC8VcEMSL2JCJzh23Lhy1Pdog2LZOdo9Pheh
+         yjmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lujsZ0IKNJaA5lx9661QkFiRqemsKwUYnfhaEJr6j9Q=;
+        b=4fYmUvab/fho1y0Q3YwnByeXmyIM7Pm7BKiuOTVW1Ol1CCobBbe2CBdjzdmSwIM4nL
+         0lPafypBVWSFtsR0gVYnsAotuuHA5L1QBsaqOY52w5CUVdNdIzDqjI/sooQ7Q+SpT/P1
+         x9KqIf5//gDMx+jWE2DA5BctFimjgyKkw8uztZWpe9FtIvhBXJnH6mfY3HPezWPhhAf4
+         llFGfeEA37n0PWT/sQitwYboHqEfBOIc8bSgiP4mAzM2iKuXtqkIigqiuAbvT1ehb8g6
+         PQhRiLx4wIxewqibKujhcTmqpGbvCvSdMJ4wvK62MXM5/2/NuTMpp2zFQJ6h0ze7OE6m
+         aKuA==
+X-Gm-Message-State: AOAM533MrzK6eSKKIn/xaGS+SBjotarJjfphzKngpVQzEgDbcOGqVi/I
+        D/YtERun6KABjZciRD7M8iOXeZ/bHDrA2xid0JkoOA==
+X-Google-Smtp-Source: ABdhPJz4kH2OVTcugqn/S3qYrYQsVGaVamB9oR3h0cT9tc6hTm+QSq25T3rUJZ+u8dr3/eljhT39jN1nCjaAECVYT94=
+X-Received: by 2002:a9d:a42:: with SMTP id 60mr659216otg.179.1637275652442;
+ Thu, 18 Nov 2021 14:47:32 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210625113435.2539282-1-linus.walleij@linaro.org>
+ <20210625113435.2539282-2-linus.walleij@linaro.org> <YPtpHg2aoGlULuQQ@google.com>
+In-Reply-To: <YPtpHg2aoGlULuQQ@google.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 18 Nov 2021 23:47:20 +0100
+Message-ID: <CACRpkdafREE31xsLHoNYciUn_+mPxoD21325LHkrObRZqFzSXA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] Input: zinitix - Handle proper supply names
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Nikita Travkin <nikita@trvn.ru>
+Cc:     linux-input@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Michael Srba <Michael.Srba@seznam.cz>,
+        phone-devel@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Enable the USB nodes so it becomes usable on the device.
+Hi Dmitry, sorry for late reply!
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+On Sat, Jul 24, 2021 at 3:13 AM Dmitry Torokhov
+<dmitry.torokhov@gmail.com> wrote:
+> On Fri, Jun 25, 2021 at 01:34:35PM +0200, Linus Walleij wrote:
 
-diff --git a/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts b/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
-index 4e7a596d6101..1519544029e7 100644
---- a/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
-+++ b/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
-@@ -253,3 +253,15 @@ reset {
- 		};
- 	};
- };
-+
-+&usb {
-+	status = "okay";
-+	extcon = <&smbb>;
-+	dr_mode = "peripheral";
-+};
-+
-+&usb_hs_phy {
-+	extcon = <&smbb>;
-+	v1p8-supply = <&pm8226_l10>;
-+	v3p3-supply = <&pm8226_l20>;
-+};
--- 
-2.34.0
+> > +     /*
+> > +      * Some older device trees have erroneous names for the regulators,
+> > +      * so check if "vddo" is present and in that case use these names
+> > +      * and warn. Else use the proper supply names on the component.
+> > +      */
+> > +     if (IS_ENABLED(CONFIG_OF) &&
+>
+> Why is this check needed? The of_property_*() are stubbed out properly I
+> believe. We might need to check that dev->of_node is not NULL, although
+> I think of_* API handles this properly.
+(...)
+> > +         of_property_read_bool(dev->of_node, "vddo-supply")) {
+>
+> If we go with this I do not like using of_property_read_bool() as this
+> is not a boolean property, but rather of_find_property().
 
+These comments are fixed up in Nikita's respin of the series:
+https://lore.kernel.org/linux-input/20211027181350.91630-4-nikita@trvn.ru/
+
+> However maybe we should use regulator_get_optional() which will not give
+> a dummy regulator? Still quite awkward, a dedicated API to see if a
+> regulator is defined would be nice.
+
+I guess the option would be to get all four regulators by name and
+optional, but then we don't detect if more than 2 out of 4 are missing.
+Not sure, it feels like we have less control over the supplies then.
+
+I guess it sadly gets ugly because making mistakes in bindings is ugly
+in the first place.
+
+Yours,
+Linus Walleij
