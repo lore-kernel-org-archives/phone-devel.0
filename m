@@ -2,198 +2,73 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 155ECC433FE
-	for <phone-devel@archiver.kernel.org>; Sun, 21 Nov 2021 09:53:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB9D5C433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 22 Nov 2021 01:10:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237946AbhKUJ43 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 21 Nov 2021 04:56:29 -0500
-Received: from ixit.cz ([94.230.151.217]:41286 "EHLO ixit.cz"
+        id S230258AbhKVBN5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 21 Nov 2021 20:13:57 -0500
+Received: from mail.kernel.org ([198.145.29.99]:53280 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234495AbhKUJ43 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 21 Nov 2021 04:56:29 -0500
-Received: from [192.168.1.138] (ip-89-176-96-70.net.upcbroadband.cz [89.176.96.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by ixit.cz (Postfix) with ESMTPSA id 702DC20064;
-        Sun, 21 Nov 2021 10:53:19 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-        t=1637488400;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=fjsRD3fZ0smLhNsEv4gWgFfjGle4NLMaLlq2XBmcfFU=;
-        b=U5Ho6lOf9cm6Vwfugh7tdN2wFeiM77H1WGWA0IC4/Uyn/hpsxkWHBeFM7LCe8eIa7UC2bG
-        ALfSG/3uW9xn6EGe8tPEP58lEUgpPcJstn33u9Fqa5MPlKSiwYp19KgF2mUjynBPdN5dTV
-        kepKT3gPAILi2Tjo/nfpr34rSqu/BLg=
-Date:   Sun, 21 Nov 2021 10:53:13 +0100
-From:   David Heidelberg <david@ixit.cz>
-Subject: Re: [PATCH] arm64: dts: imx8mq: fix the schema check errors for
- fsl,tmu-calibration
-To:     Shawn Guo <shawnguo@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        ~okias/devicetree@lists.sr.ht, phone-devel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Message-Id: <P42X2R.2KJI0X4G52WJ1@ixit.cz>
-In-Reply-To: <20211121085102.GM31998@dragon>
-References: <20211029114050.39520-1-david@ixit.cz>
-        <20211121085102.GM31998@dragon>
-X-Mailer: geary/40.0
+        id S229594AbhKVBN4 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Sun, 21 Nov 2021 20:13:56 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D4CCF60C4A;
+        Mon, 22 Nov 2021 01:10:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1637543450;
+        bh=ZohWFl40liRdlY9xJVmwlgi0WeY3kXR+eJvoZ5ycpbk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=F8Hkr4WSIe21TsTXqyVx7edJ2AjP8uy8Ltft/9ouL/ocpUo8TuikTT1zEurV6iKjB
+         gRPIcsQaVX3sgcqADEHWtqVjvOcHnSrFffjfwdvB0CsRcl0fMTSvyGzct2N8wQBgjX
+         qPPbBbh3/V5G7cM7/XIdWktusHPM9VWXZLk0lM0MePbURRuObdX3B9fzrSoCIwju9n
+         A/GMfZpg+tt2346089DJMNpHAbeLjYhbqLUNYUrLO3FaLRDusHDnKACY7RQQj+H9vh
+         2n2pgPlNDUUlGp0N0RR/ttP2RdHPDzMsypDFKymI3pNgrbU/GYme57XDEQmbM9blGV
+         GVsPvG+9yXhNg==
+Date:   Mon, 22 Nov 2021 09:10:44 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     festevam@gmail.com, devicetree@vger.kernel.org,
+        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        robh@kernel.org
+Subject: Re: [PATCH v1 0/4] support the Librem 5 front camera
+Message-ID: <20211122011044.GT31998@dragon>
+References: <20211104132213.470498-1-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211104132213.470498-1-martin.kepplinger@puri.sm>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hello Shawn,
-
-yes, when I get back to working on Linux kernel patches, I'll resend.
-
-David
-
-
-On Sun, Nov 21 2021 at 16:51:03 +0800, Shawn Guo <shawnguo@kernel.org> 
-wrote:
-> On Fri, Oct 29, 2021 at 01:40:49PM +0200, David Heidelberg wrote:
->>  fsl,tmu-calibration is in u32-matrix. Use matching property syntax.
->>  No functional changes. Fixes warnings as:
->>  $ make dtbs_check
->>  ...
->>  arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dt.yaml: 
->> tmu@30260000: fsl,tmu-calibration:0: Additional items are not 
->> allowed (1, 41, 2, 47, 3, 53, 4, 61, 5, 67, 6, 75, 7, 81, 8, 87, 9, 
->> 95, 10, 103, 11, 111, 65536, 27, 65537, 35, 65538, 43, 65539, 51, 
->> 65540, 59, 65541, 67, 65542, 75, 65543, 85, 65544, 93, 65545, 103, 
->> 65546, 112, 131072, 23, 131073, 35, 131074, 45, 131075, 55, 131076, 
->> 65, 131077, 75, 131078, 87, 131079, 99, 131080, 111, 196608, 21, 
->> 196609, 33, 196610, 45, 196611, 57, 196612, 69, 196613, 83, 196614, 
->> 95, 196615, 113 were unexpected)
->>          From schema: 
->> /home/ubuntu/projects_remote/linux/Documentation/devicetree/bindings/thermal/qoriq-thermal.yaml
->>  ...
->> 
->>  Signed-off-by: David Heidelberg <david@ixit.cz>
->>  ---
->>   arch/arm64/boot/dts/freescale/imx8mq.dtsi | 87 
->> ++++++++++++-----------
->>   1 file changed, 44 insertions(+), 43 deletions(-)
->> 
->>  diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi 
->> b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
->>  index 972766b67a15..50088b110ad4 100644
->>  --- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
->>  +++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
->>  @@ -429,49 +429,50 @@ tmu: tmu@30260000 {
->>   				clocks = <&clk IMX8MQ_CLK_TMU_ROOT>;
->>   				little-endian;
->>   				fsl,tmu-range = <0xb0000 0xa0026 0x80048 0x70061>;
->>  -				fsl,tmu-calibration = <0x00000000 0x00000023
->>  -						       0x00000001 0x00000029
->>  -						       0x00000002 0x0000002f
->>  -						       0x00000003 0x00000035
->>  -						       0x00000004 0x0000003d
->>  -						       0x00000005 0x00000043
->>  -						       0x00000006 0x0000004b
->>  -						       0x00000007 0x00000051
->>  -						       0x00000008 0x00000057
->>  -						       0x00000009 0x0000005f
->>  -						       0x0000000a 0x00000067
->>  -						       0x0000000b 0x0000006f
->>  -
->>  -						       0x00010000 0x0000001b
->>  -						       0x00010001 0x00000023
->>  -						       0x00010002 0x0000002b
->>  -						       0x00010003 0x00000033
->>  -						       0x00010004 0x0000003b
->>  -						       0x00010005 0x00000043
->>  -						       0x00010006 0x0000004b
->>  -						       0x00010007 0x00000055
->>  -						       0x00010008 0x0000005d
->>  -						       0x00010009 0x00000067
->>  -						       0x0001000a 0x00000070
->>  -
->>  -						       0x00020000 0x00000017
->>  -						       0x00020001 0x00000023
->>  -						       0x00020002 0x0000002d
->>  -						       0x00020003 0x00000037
->>  -						       0x00020004 0x00000041
->>  -						       0x00020005 0x0000004b
->>  -						       0x00020006 0x00000057
->>  -						       0x00020007 0x00000063
->>  -						       0x00020008 0x0000006f
->>  -
->>  -						       0x00030000 0x00000015
->>  -						       0x00030001 0x00000021
->>  -						       0x00030002 0x0000002d
->>  -						       0x00030003 0x00000039
->>  -						       0x00030004 0x00000045
->>  -						       0x00030005 0x00000053
->>  -						       0x00030006 0x0000005f
->>  -						       0x00030007 0x00000071>;
->>  +				fsl,tmu-calibration =
->>  +						<0x00000000 0x00000023>,
->>  +						<0x00000001 0x00000029>,
+On Thu, Nov 04, 2021 at 02:22:09PM +0100, Martin Kepplinger wrote:
+> hi Shawn and all whom this concerns,
 > 
-> Can we keep the indentation like below?
+> 3 weeks ago I sent this as RFC that didn't yield feedback, see below :)
+> Here's the same patches as a proper patchset ready to apply.
 > 
-> 	fsl,tmu-calibration = <0x00000000 0x00000023>,
-> 			      <0x00000001 0x00000029>,
-> 			      ...
+> The first patch adds a shared "r3.dtsi" and is only refactoring.
+> Patch 2 that describes the power supplies on the Librem 5 board as regulators.
+> Patch 3 and 4 should be straight forward camera descriptions according to
+> the drivers.
+> 
+> thank you,
+>                              martin
+> 
+> revision history
+> ----------------
+> RFC v1:
+>   https://lore.kernel.org/phone-devel/20211015083506.4182875-1-martin.kepplinger@puri.sm/
+>   and more specifically thoughts on patch 2:
+>   https://lore.kernel.org/phone-devel/20211015083506.4182875-3-martin.kepplinger@puri.sm/
 > 
 > 
-> Shawn
-> 
->>  +						<0x00000002 0x0000002f>,
->>  +						<0x00000003 0x00000035>,
->>  +						<0x00000004 0x0000003d>,
->>  +						<0x00000005 0x00000043>,
->>  +						<0x00000006 0x0000004b>,
->>  +						<0x00000007 0x00000051>,
->>  +						<0x00000008 0x00000057>,
->>  +						<0x00000009 0x0000005f>,
->>  +						<0x0000000a 0x00000067>,
->>  +						<0x0000000b 0x0000006f>,
->>  +
->>  +						<0x00010000 0x0000001b>,
->>  +						<0x00010001 0x00000023>,
->>  +						<0x00010002 0x0000002b>,
->>  +						<0x00010003 0x00000033>,
->>  +						<0x00010004 0x0000003b>,
->>  +						<0x00010005 0x00000043>,
->>  +						<0x00010006 0x0000004b>,
->>  +						<0x00010007 0x00000055>,
->>  +						<0x00010008 0x0000005d>,
->>  +						<0x00010009 0x00000067>,
->>  +						<0x0001000a 0x00000070>,
->>  +
->>  +						<0x00020000 0x00000017>,
->>  +						<0x00020001 0x00000023>,
->>  +						<0x00020002 0x0000002d>,
->>  +						<0x00020003 0x00000037>,
->>  +						<0x00020004 0x00000041>,
->>  +						<0x00020005 0x0000004b>,
->>  +						<0x00020006 0x00000057>,
->>  +						<0x00020007 0x00000063>,
->>  +						<0x00020008 0x0000006f>,
->>  +
->>  +						<0x00030000 0x00000015>,
->>  +						<0x00030001 0x00000021>,
->>  +						<0x00030002 0x0000002d>,
->>  +						<0x00030003 0x00000039>,
->>  +						<0x00030004 0x00000045>,
->>  +						<0x00030005 0x00000053>,
->>  +						<0x00030006 0x0000005f>,
->>  +						<0x00030007 0x00000071>;
->>   				#thermal-sensor-cells =  <1>;
->>   			};
->> 
->>  --
->>  2.33.0
->> 
+> Martin Kepplinger (4):
+>   arm64: dts: split out a shared imx8mq-librem5-r3.dtsi description
+>   arm64: dts: imx8mq-librem5: describe power supply for cameras
+>   arm64: dts: imx8mq-librem5: describe the selfie cam
+>   arm64: dts: imx8mq-librem5-r3.dtsi: describe selfie cam XSHUTDOWN pin
 
-
+Applied all, thanks!
