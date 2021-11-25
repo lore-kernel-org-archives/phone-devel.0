@@ -2,221 +2,332 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3094C433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 25 Nov 2021 11:17:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A979FC4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 25 Nov 2021 11:57:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235211AbhKYLUb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 25 Nov 2021 06:20:31 -0500
-Received: from mail-ua1-f44.google.com ([209.85.222.44]:37730 "EHLO
-        mail-ua1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235242AbhKYLSb (ORCPT
+        id S238996AbhKYMBB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 25 Nov 2021 07:01:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53060 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238692AbhKYL65 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 25 Nov 2021 06:18:31 -0500
-Received: by mail-ua1-f44.google.com with SMTP id o1so11513989uap.4;
-        Thu, 25 Nov 2021 03:15:20 -0800 (PST)
+        Thu, 25 Nov 2021 06:58:57 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D75C0613F6
+        for <phone-devel@vger.kernel.org>; Thu, 25 Nov 2021 03:53:46 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id l22so15684621lfg.7
+        for <phone-devel@vger.kernel.org>; Thu, 25 Nov 2021 03:53:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=6lxqjduOQsYJ4wgkh2NWvC8MrkYVQVCzgFR0CAGA8Ww=;
+        b=sUGZIk9K0mM1wk5DOXHNsUlYXDpofTH1LP1GKIheRdkDgaVf83g6av3Ac84p0o4ujT
+         rRrvUUt44GLZX3qs8T1eeLJuI0R1J70X5XJxf3PdEDmEtvRBhjmUkz1Ke5/Uv+hd5mBD
+         waYXhJ2+R+JIHyamskFUcUU/nHujaEtAzHo2fc3uIufdiI4vjvKlkvfxal7dTlzDdza2
+         E8jL16sJksSHNw+hE2nDNIFwZmScZgX5f+QOkrkI5Ib2k0BnXospPoLiJYazM0pnPpKw
+         ossadcE0kNb9JmWjoze4+bOH9MnOAR1wFiAmAWvNQ7j05u5/Y6u/HZly9PVz97NVgQa6
+         gLEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nXHfa52yI/jtVJeiwa2i1H6X+EqTPj1vRtdfS4MAfjA=;
-        b=byipGA37dezQgW4QnAvdgSII3zdyZUmhi0Qtb5VbYeWZLyNwRg2BdRuT/id0xgxU+1
-         cJgBCou7c6Us7g72XgxvUDIWBwQxjOe4H/HV/yjpKHqyFKvxSNYtrpcM1rC2pSJbV0yJ
-         WTyQlSsjB53mikFFeCe7DhYI8TC6HpEQ41sza9un0KGZ7h7QBsXsN5Bm49qwBnuzXmhf
-         pIkKPHLSHCvt4LV7BEezaNtrfZahv5BzwWXgvZVUozcEiZsaMqeU2FqanvVhmCkUJhh+
-         6n+v3zUNLtmTrc2cLDxuZbYYL19+PQAlsGblwZuhK4gxswsTJmd5dv5Smy4rFUi8YJgB
-         Q0gQ==
-X-Gm-Message-State: AOAM532SpwjVR92MrVZg08+VO6EOnzoaNyj4c4qSAqhf4rfN4L6iUM55
-        Orek6rVXDX6Ntu4Y9SzhgqMiS1ePbX7p8w==
-X-Google-Smtp-Source: ABdhPJwLQhpqnZSenaQBpK/ZZn6CxVPk448n8NRkUoLllpduBsFAx/EQh60u9FhI5EyxHm1KtlMtHQ==
-X-Received: by 2002:ab0:2696:: with SMTP id t22mr24001211uao.13.1637838919322;
-        Thu, 25 Nov 2021 03:15:19 -0800 (PST)
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com. [209.85.222.54])
-        by smtp.gmail.com with ESMTPSA id 66sm1641841uao.0.2021.11.25.03.15.18
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=6lxqjduOQsYJ4wgkh2NWvC8MrkYVQVCzgFR0CAGA8Ww=;
+        b=KJpY21VXRiMnZYVk7tbPYOVdjNFgkzo0xPgOAvki31VjMVAV1g7arXpxyM7KWiaGQ4
+         OV/YXOQFTyF2QzGW40s6E4GOCMzCszaUTVQXiohbng5++oZPSWsKklr/nzDba3o7i0eO
+         vrsTFP1bCbM6ShMuWfUnMfyYzM/RnvLujydN3RkpJ+h6nTgDXX6ezxqrgbq6H77b+Pd0
+         FkSFV6qVKtmKsfHCbu24s+iQ4sOVSPdAP80RArqQoPf7sS3s7mmP0WHoBcC7zcEFngzQ
+         15oP1VsvESePwtWOtTwAklFDwrna840axytOR32EsUiAHg1enZFm68ZCPgPZ3ud9wH+I
+         3SXg==
+X-Gm-Message-State: AOAM531SOBk1/XLh5d9638yIAA5N2fJnHKcMMqCe9RGGwT3RQ1rV8F6P
+        rJS6dA1Sw3aOZhO8UcaOQ8gX4w==
+X-Google-Smtp-Source: ABdhPJzymMghDkNOoD4FkGfhSdZUue3ZBbWuy26eOuzMCx56yiodyEaYBxQMs6t3+CqcVM8TjEaC0Q==
+X-Received: by 2002:a05:6512:3a8d:: with SMTP id q13mr21969447lfu.73.1637841224624;
+        Thu, 25 Nov 2021 03:53:44 -0800 (PST)
+Received: from [192.168.1.211] ([37.153.55.125])
+        by smtp.gmail.com with ESMTPSA id u23sm219901lji.56.2021.11.25.03.53.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Nov 2021 03:15:19 -0800 (PST)
-Received: by mail-ua1-f54.google.com with SMTP id w23so11506261uao.5;
-        Thu, 25 Nov 2021 03:15:18 -0800 (PST)
-X-Received: by 2002:a05:6102:c89:: with SMTP id f9mr8076065vst.68.1637838918551;
- Thu, 25 Nov 2021 03:15:18 -0800 (PST)
+        Thu, 25 Nov 2021 03:53:44 -0800 (PST)
+Subject: Re: [PATCH 3/3] dt-bindings: display: msm: Add binding for msm8998
+ dpu
+To:     Rob Herring <robh@kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Cc:     robdclark@gmail.com, sean@poorly.run, airlied@linux.ie,
+        daniel@ffwll.ch, abhinavk@codeaurora.org,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        devicetree@vger.kernel.org
+References: <20210901181138.1052653-1-angelogioacchino.delregno@somainline.org>
+ <20210901181138.1052653-3-angelogioacchino.delregno@somainline.org>
+ <YTexaJuQSNazh9sn@robh.at.kernel.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Message-ID: <d9ad36f5-1913-2cb3-d4be-125ed2d29041@linaro.org>
+Date:   Thu, 25 Nov 2021 14:53:43 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-References: <20210906102837.2190387-1-martin.kepplinger@puri.sm> <20210906102837.2190387-3-martin.kepplinger@puri.sm>
-In-Reply-To: <20210906102837.2190387-3-martin.kepplinger@puri.sm>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 25 Nov 2021 12:15:07 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVVNhLa2p-ywmpcEj-sw+NyRNp2z9jsVqsXEDrKphivCQ@mail.gmail.com>
-Message-ID: <CAMuHMdVVNhLa2p-ywmpcEj-sw+NyRNp2z9jsVqsXEDrKphivCQ@mail.gmail.com>
-Subject: Re: [PATCH v9 2/4] dt-bindings: media: document SK Hynix Hi-846 MIPI
- CSI-2 8M pixel sensor
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     Pavel Machek <pavel@ucw.cz>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sakari Ailus <sakari.ailus@iki.fi>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, kernel@puri.sm,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-        phone-devel@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        shawnx.tu@intel.com
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <YTexaJuQSNazh9sn@robh.at.kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Sep 6, 2021 at 12:30 PM Martin Kepplinger
-<martin.kepplinger@puri.sm> wrote:
-> Document the bindings used for the SK Hynix Hi-846 CMOS camera driver.
->
-> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> ---
->  .../bindings/media/i2c/hynix,hi846.yaml       | 120 ++++++++++++++++++
->  1 file changed, 120 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
->
-> diff --git a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
-> new file mode 100644
-> index 000000000000..85a8877c2f38
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
-> @@ -0,0 +1,120 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/i2c/hynix,hi846.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: SK Hynix Hi-846 1/4" 8M Pixel MIPI CSI-2 sensor
-> +
-> +maintainers:
-> +  - Martin Kepplinger <martin.kepplinger@puri.sm>
-> +
-> +description: |-
-> +  The Hi-846 is a raw image sensor with an MIPI CSI-2 image data
-> +  interface and CCI (I2C compatible) control bus. The output format
-> +  is raw Bayer.
-> +
-> +properties:
-> +  compatible:
-> +    const: hynix,hi846
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: Reference to the mclk clock.
-> +
-> +  assigned-clocks:
-> +    maxItems: 1
-> +
-> +  assigned-clock-rates:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    description: Reference to the GPIO connected to the RESETB pin. Active low.
-> +    maxItems: 1
-> +
-> +  shutdown-gpios:
-> +    description: Reference to the GPIO connected to the XSHUTDOWN pin. Active low.
-> +    maxItems: 1
-> +
-> +  vddio-supply:
-> +    description: Definition of the regulator used for the VDDIO power supply.
-> +
-> +  vdda-supply:
-> +    description: Definition of the regulator used for the VDDA power supply.
-> +
-> +  vddd-supply:
-> +    description: Definition of the regulator used for the VDDD power supply.
-> +
-> +  port:
-> +    $ref: /schemas/graph.yaml#/properties/port
-> +
-> +    properties:
-> +      endpoint:
-> +        $ref: /schemas/media/video-interfaces.yaml#
-> +        unevaluatedProperties: false
-> +
-> +        properties:
-> +          data-lanes:
-> +            oneOf:
-> +              - items:
-> +                  - const: 1
-> +                  - const: 2
-> +                  - const: 3
-> +                  - const: 4
-> +              - items:
-> +                  - const: 1
-> +                  - const: 2
-> +
-> +        required:
-> +          - data-lanes
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - assigned-clocks
-> +  - assigned-clock-rates
-> +  - vddio-supply
-> +  - vdda-supply
-> +  - vddd-supply
-> +  - port
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        hi846: camera@20 {
-> +            compatible = "hynix,hi846";
-> +            reg = <0x20>;
-> +            pinctrl-names = "default";
-> +            pinctrl-0 = <&pinctrl_csi1>;
-> +            clocks = <&clk 0>;
-> +            assigned-clocks = <&clk 0>;
-> +            assigned-clock-rates = <25000000>;
-> +            vdda-supply = <&reg_camera_vdda>;
-> +            vddd-supply = <&reg_camera_vddd>;
-> +            vddio-supply = <&reg_camera_vddio>;
-> +            reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
-> +            shutdown-gpios = <&gpio5 4 GPIO_ACTIVE_LOW>;
-> +
-> +            port {
-> +                camera_out: endpoint {
-> +                    remote-endpoint = <&csi1_ep1>;
-> +                    link-frequencies = /bits/ 64
-> +                        <80000000 200000000>;
-> +                    data-lanes = <1 2>;
+On 07/09/2021 21:37, Rob Herring wrote:
+> On Wed, Sep 01, 2021 at 08:11:38PM +0200, AngeloGioacchino Del Regno wrote:
+>> Add yaml binding for msm8998 dpu1 support.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>> ---
+>>   .../bindings/display/msm/dpu-msm8998.yaml     | 220 ++++++++++++++++++
+>>   1 file changed, 220 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/display/msm/dpu-msm8998.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/display/msm/dpu-msm8998.yaml b/Documentation/devicetree/bindings/display/msm/dpu-msm8998.yaml
+>> new file mode 100644
+>> index 000000000000..db435342ecbf
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/display/msm/dpu-msm8998.yaml
+>> @@ -0,0 +1,220 @@
+>> +# SPDX-License-Identifier: GPL-2.0-only or BSD-2-Clause
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/display/msm/dpu-msm8998.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Qualcomm Display DPU dt properties for MSM8998 target
+>> +
+>> +maintainers:
+>> +  - AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>> +
+>> +description: |
+>> +  Device tree bindings for MSM Mobile Display Subsystem(MDSS) that encapsulates
+>> +  sub-blocks like DPU display controller, DSI and DP interfaces etc. Device tree
+>> +  bindings of MDSS and DPU are mentioned for MSM8998 target.
+>> +
+>> +properties:
+>> +  compatible:
+>> +    items:
+>> +      - const: qcom,msm8998-mdss
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  reg-names:
+>> +    const: mdss
+>> +
+>> +  power-domains:
+>> +    maxItems: 1
+>> +
+>> +  clocks:
+>> +    items:
+>> +      - description: Display AHB clock
+>> +      - description: Display AXI clock
+>> +      - description: Display core clock
+>> +
+>> +  clock-names:
+>> +    items:
+>> +      - const: iface
+>> +      - const: bus
+>> +      - const: core
+>> +
+>> +  interrupts:
+>> +    maxItems: 1
+>> +
+>> +  interrupt-controller: true
+>> +
+>> +  "#address-cells": true
+>> +
+>> +  "#size-cells": true
+>> +
+>> +  "#interrupt-cells":
+>> +    const: 1
+>> +
+>> +  iommus:
+>> +    items:
+>> +      - description: Phandle to apps_smmu node with SID mask for Hard-Fail port0
+>> +
+>> +  ranges: true
+>> +
+>> +patternProperties:
+>> +  "^display-controller@[0-9a-f]+$":
+>> +    type: object
+>> +    description: Node containing the properties of DPU.
+>> +
+>> +    properties:
+>> +      compatible:
+>> +        items:
+>> +          - const: qcom,msm8998-dpu
+>> +
+>> +      reg:
+>> +        items:
+>> +          - description: Address offset and size for mdp register set
+>> +          - description: Address offset and size for regdma register set
+>> +          - description: Address offset and size for vbif register set
+>> +          - description: Address offset and size for non-realtime vbif register set
+>> +
+>> +      reg-names:
+>> +        items:
+>> +          - const: mdp
+>> +          - const: regdma
+>> +          - const: vbif
+>> +          - const: vbif_nrt
+>> +
+>> +      clocks:
+>> +        items:
+>> +          - description: Display ahb clock
+>> +          - description: Display axi clock
+>> +          - description: Display mem-noc clock
+>> +          - description: Display core clock
+>> +          - description: Display vsync clock
+>> +
+>> +      clock-names:
+>> +        items:
+>> +          - const: iface
+>> +          - const: bus
+>> +          - const: mnoc
+>> +          - const: core
+>> +          - const: vsync
+>> +
+>> +      interrupts:
+>> +        maxItems: 1
+>> +
+>> +      power-domains:
+>> +        maxItems: 1
+>> +
+>> +      operating-points-v2: true
+>> +      ports:
+>> +        $ref: /schemas/graph.yaml#/properties/ports
+>> +        description: |
+>> +          Contains the list of output ports from DPU device. These ports
+>> +          connect to interfaces that are external to the DPU hardware,
+>> +          such as DSI, DP etc. Each output port contains an endpoint that
+>> +          describes how it is connected to an external interface.
+>> +
+>> +        properties:
+>> +          port@0:
+>> +            $ref: /schemas/graph.yaml#/properties/port
+>> +            description: DPU_INTF1 (DSI1)
+>> +
+>> +          port@1:
+>> +            $ref: /schemas/graph.yaml#/properties/port
+>> +            description: DPU_INTF2 (DSI2)
+>> +
+>> +        required:
+>> +          - port@0
+>> +          - port@1
+>> +
+>> +    required:
+>> +      - compatible
+>> +      - reg
+>> +      - reg-names
+>> +      - clocks
+>> +      - interrupts
+>> +      - power-domains
+>> +      - operating-points-v2
+>> +      - ports
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - reg-names
+>> +  - power-domains
+>> +  - clocks
+>> +  - interrupts
+>> +  - interrupt-controller
+>> +  - iommus
+>> +  - ranges
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/clock/qcom,mmcc-msm8998.h>
+>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>> +    #include <dt-bindings/power/qcom-rpmpd.h>
+>> +
+>> +    display-subsystem@c900000 {
+>> +        compatible = "qcom,msm8998-mdss";
+>> +        reg = <0x0c900000 0x1000>;
+>> +        reg-names = "mdss";
+>> +
+>> +        clocks = <&mmcc MDSS_AHB_CLK>,
+>> +                 <&mmcc MDSS_AXI_CLK>,
+>> +                 <&mmcc MDSS_MDP_CLK>;
+>> +        clock-names = "iface", "bus", "core";
+>> +
+>> +        #address-cells = <1>;
+>> +        #interrupt-cells = <1>;
+>> +        #size-cells = <1>;
+>> +
+>> +        interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
+>> +        interrupt-controller;
+>> +        iommus = <&mmss_smmu 0>;
+>> +
+>> +        power-domains = <&mmcc MDSS_GDSC>;
+>> +        ranges;
+>> +        status = "disabled";
+> 
+> Drop. Why disable an example?
 
-"make dt_binding_check":
+AngeloGioacchino, could you please update and repost this patch series? 
+I'd like to get it merged.
 
-    Documentation/devicetree/bindings/media/i2c/hynix,hi846.example.dt.yaml:
-camera@20: port:endpoint: Unevaluated properties are not allowed
-('link-frequencies', 'data-lanes' were unexpected)
-    From schema: Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> 
+>> +
+>> +        display-controller@c901000 {
+>> +            compatible = "qcom,msm8998-dpu";
+>> +            reg = <0x0c901000 0x8f000>,
+>> +                  <0x0c9a8e00 0xf0>,
+>> +                  <0x0c9b0000 0x2008>,
+>> +                  <0x0c9b8000 0x1040>;
+>> +            reg-names = "mdp", "regdma", "vbif", "vbif_nrt";
+>> +
+>> +            clocks = <&mmcc MDSS_AHB_CLK>,
+>> +                     <&mmcc MDSS_AXI_CLK>,
+>> +                     <&mmcc MNOC_AHB_CLK>,
+>> +                     <&mmcc MDSS_MDP_CLK>,
+>> +                     <&mmcc MDSS_VSYNC_CLK>;
+>> +            clock-names = "iface", "bus", "mnoc", "core", "vsync";
+>> +
+>> +            interrupt-parent = <&mdss>;
+>> +            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
+>> +            operating-points-v2 = <&mdp_opp_table>;
+>> +            power-domains = <&rpmpd MSM8998_VDDMX>;
+>> +
+>> +            ports {
+>> +                #address-cells = <1>;
+>> +                #size-cells = <0>;
+>> +
+>> +                port@0 {
+>> +                    reg = <0>;
+>> +                    dpu_intf1_out: endpoint {
+>> +                        remote-endpoint = <&dsi0_in>;
+>> +                    };
+>> +                };
+>> +
+>> +                port@1 {
+>> +                    reg = <1>;
+>> +                    dpu_intf2_out: endpoint {
+>> +                        remote-endpoint = <&dsi1_in>;
+>> +                    };
+>> +                };
+>> +            };
+>> +        };
+>> +    };
+>> +...
+>> -- 
+>> 2.32.0
+>>
+>>
 
-> +                };
-> +            };
-> +        };
-> +    };
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-- 
+With best wishes
+Dmitry
