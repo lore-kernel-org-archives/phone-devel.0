@@ -2,168 +2,221 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12926C433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 23 Nov 2021 08:42:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3094C433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 25 Nov 2021 11:17:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234692AbhKWIp7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 23 Nov 2021 03:45:59 -0500
-Received: from ip-15.mailobj.net ([213.182.54.15]:41036 "EHLO msg-4.mailo.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234521AbhKWIp6 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 23 Nov 2021 03:45:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1637656964; bh=9tJuT8H6s5pFq5Bsc3kMzvOhJLx8R8WnmS8tZXkO6zU=;
-        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
-         References:MIME-Version:Content-Transfer-Encoding;
-        b=E0CuYQKjmxz8YEialj+tsYeK0J3cg19238Y53lzxqGOkjxXHjjA97QdMBwEKo7Wxw
-         I9c4DhS5mkhKVLhO+DKULQqoct7wNyXFcd27vrXIT5AJ9JMmQXGyGh+1/w48ht40CS
-         /HEvYAyvgmk1ygp1JZDgBXVafWf8lV9aU7D5aeTY=
-Received: by b-4.in.mailobj.net [192.168.90.14] with ESMTP
-        via proxy.mailoo.org [213.182.55.207]
-        Tue, 23 Nov 2021 09:42:44 +0100 (CET)
-X-EA-Auth: 1ykj/Cbkf1585m1hLxziGLgbj+5OxOzG6vWm+C3nGiqaS5LrYreSiRls5aTPtSWFDvP0KsWeL31/x3naS4MbheCNqy4A6CrDAgKn9vuJxcY=
-From:   Vincent Knecht <vincent.knecht@mailoo.org>
-To:     dmitry.torokhov@gmail.com, robh+dt@kernel.org, stephan@gerhold.net,
-        vincent.knecht@mailoo.org
-Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: [RESEND PATCH 5/5] Input: msg2638 - Add support for msg2138 key events
-Date:   Tue, 23 Nov 2021 09:42:34 +0100
-Message-Id: <20211123084234.2809198-1-vincent.knecht@mailoo.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20211123081433.2797395-1-vincent.knecht@mailoo.org>
-References: <20211123081433.2797395-1-vincent.knecht@mailoo.org>
+        id S235211AbhKYLUb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 25 Nov 2021 06:20:31 -0500
+Received: from mail-ua1-f44.google.com ([209.85.222.44]:37730 "EHLO
+        mail-ua1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235242AbhKYLSb (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 25 Nov 2021 06:18:31 -0500
+Received: by mail-ua1-f44.google.com with SMTP id o1so11513989uap.4;
+        Thu, 25 Nov 2021 03:15:20 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=nXHfa52yI/jtVJeiwa2i1H6X+EqTPj1vRtdfS4MAfjA=;
+        b=byipGA37dezQgW4QnAvdgSII3zdyZUmhi0Qtb5VbYeWZLyNwRg2BdRuT/id0xgxU+1
+         cJgBCou7c6Us7g72XgxvUDIWBwQxjOe4H/HV/yjpKHqyFKvxSNYtrpcM1rC2pSJbV0yJ
+         WTyQlSsjB53mikFFeCe7DhYI8TC6HpEQ41sza9un0KGZ7h7QBsXsN5Bm49qwBnuzXmhf
+         pIkKPHLSHCvt4LV7BEezaNtrfZahv5BzwWXgvZVUozcEiZsaMqeU2FqanvVhmCkUJhh+
+         6n+v3zUNLtmTrc2cLDxuZbYYL19+PQAlsGblwZuhK4gxswsTJmd5dv5Smy4rFUi8YJgB
+         Q0gQ==
+X-Gm-Message-State: AOAM532SpwjVR92MrVZg08+VO6EOnzoaNyj4c4qSAqhf4rfN4L6iUM55
+        Orek6rVXDX6Ntu4Y9SzhgqMiS1ePbX7p8w==
+X-Google-Smtp-Source: ABdhPJwLQhpqnZSenaQBpK/ZZn6CxVPk448n8NRkUoLllpduBsFAx/EQh60u9FhI5EyxHm1KtlMtHQ==
+X-Received: by 2002:ab0:2696:: with SMTP id t22mr24001211uao.13.1637838919322;
+        Thu, 25 Nov 2021 03:15:19 -0800 (PST)
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com. [209.85.222.54])
+        by smtp.gmail.com with ESMTPSA id 66sm1641841uao.0.2021.11.25.03.15.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Nov 2021 03:15:19 -0800 (PST)
+Received: by mail-ua1-f54.google.com with SMTP id w23so11506261uao.5;
+        Thu, 25 Nov 2021 03:15:18 -0800 (PST)
+X-Received: by 2002:a05:6102:c89:: with SMTP id f9mr8076065vst.68.1637838918551;
+ Thu, 25 Nov 2021 03:15:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210906102837.2190387-1-martin.kepplinger@puri.sm> <20210906102837.2190387-3-martin.kepplinger@puri.sm>
+In-Reply-To: <20210906102837.2190387-3-martin.kepplinger@puri.sm>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 25 Nov 2021 12:15:07 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVVNhLa2p-ywmpcEj-sw+NyRNp2z9jsVqsXEDrKphivCQ@mail.gmail.com>
+Message-ID: <CAMuHMdVVNhLa2p-ywmpcEj-sw+NyRNp2z9jsVqsXEDrKphivCQ@mail.gmail.com>
+Subject: Re: [PATCH v9 2/4] dt-bindings: media: document SK Hynix Hi-846 MIPI
+ CSI-2 8M pixel sensor
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     Pavel Machek <pavel@ucw.cz>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sakari Ailus <sakari.ailus@iki.fi>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, kernel@puri.sm,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+        phone-devel@vger.kernel.org, Rob Herring <robh@kernel.org>,
+        shawnx.tu@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Some devices with msg2138 have back/menu/home keys.
-Add support for them.
+On Mon, Sep 6, 2021 at 12:30 PM Martin Kepplinger
+<martin.kepplinger@puri.sm> wrote:
+> Document the bindings used for the SK Hynix Hi-846 CMOS camera driver.
+>
+> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> ---
+>  .../bindings/media/i2c/hynix,hi846.yaml       | 120 ++++++++++++++++++
+>  1 file changed, 120 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> new file mode 100644
+> index 000000000000..85a8877c2f38
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> @@ -0,0 +1,120 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/i2c/hynix,hi846.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: SK Hynix Hi-846 1/4" 8M Pixel MIPI CSI-2 sensor
+> +
+> +maintainers:
+> +  - Martin Kepplinger <martin.kepplinger@puri.sm>
+> +
+> +description: |-
+> +  The Hi-846 is a raw image sensor with an MIPI CSI-2 image data
+> +  interface and CCI (I2C compatible) control bus. The output format
+> +  is raw Bayer.
+> +
+> +properties:
+> +  compatible:
+> +    const: hynix,hi846
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description: Reference to the mclk clock.
+> +
+> +  assigned-clocks:
+> +    maxItems: 1
+> +
+> +  assigned-clock-rates:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    description: Reference to the GPIO connected to the RESETB pin. Active low.
+> +    maxItems: 1
+> +
+> +  shutdown-gpios:
+> +    description: Reference to the GPIO connected to the XSHUTDOWN pin. Active low.
+> +    maxItems: 1
+> +
+> +  vddio-supply:
+> +    description: Definition of the regulator used for the VDDIO power supply.
+> +
+> +  vdda-supply:
+> +    description: Definition of the regulator used for the VDDA power supply.
+> +
+> +  vddd-supply:
+> +    description: Definition of the regulator used for the VDDD power supply.
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/properties/port
+> +
+> +    properties:
+> +      endpoint:
+> +        $ref: /schemas/media/video-interfaces.yaml#
+> +        unevaluatedProperties: false
+> +
+> +        properties:
+> +          data-lanes:
+> +            oneOf:
+> +              - items:
+> +                  - const: 1
+> +                  - const: 2
+> +                  - const: 3
+> +                  - const: 4
+> +              - items:
+> +                  - const: 1
+> +                  - const: 2
+> +
+> +        required:
+> +          - data-lanes
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - assigned-clocks
+> +  - assigned-clock-rates
+> +  - vddio-supply
+> +  - vdda-supply
+> +  - vddd-supply
+> +  - port
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        hi846: camera@20 {
+> +            compatible = "hynix,hi846";
+> +            reg = <0x20>;
+> +            pinctrl-names = "default";
+> +            pinctrl-0 = <&pinctrl_csi1>;
+> +            clocks = <&clk 0>;
+> +            assigned-clocks = <&clk 0>;
+> +            assigned-clock-rates = <25000000>;
+> +            vdda-supply = <&reg_camera_vdda>;
+> +            vddd-supply = <&reg_camera_vddd>;
+> +            vddio-supply = <&reg_camera_vddio>;
+> +            reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
+> +            shutdown-gpios = <&gpio5 4 GPIO_ACTIVE_LOW>;
+> +
+> +            port {
+> +                camera_out: endpoint {
+> +                    remote-endpoint = <&csi1_ep1>;
+> +                    link-frequencies = /bits/ 64
+> +                        <80000000 200000000>;
+> +                    data-lanes = <1 2>;
 
-Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
----
- drivers/input/touchscreen/msg2638.c | 53 +++++++++++++++++++++++++----
- 1 file changed, 47 insertions(+), 6 deletions(-)
+"make dt_binding_check":
 
-diff --git a/drivers/input/touchscreen/msg2638.c b/drivers/input/touchscreen/msg2638.c
-index 73e1b4d550fb..36069b30ab9b 100644
---- a/drivers/input/touchscreen/msg2638.c
-+++ b/drivers/input/touchscreen/msg2638.c
-@@ -29,6 +29,8 @@
- #define MSG2138_MAX_FINGERS		2
- #define MSG2638_MAX_FINGERS		5
- 
-+#define MAX_BUTTONS			4
-+
- #define CHIP_ON_DELAY_MS		15
- #define FIRMWARE_ON_DELAY_MS		50
- #define RESET_DELAY_MIN_US		10000
-@@ -72,6 +74,8 @@ struct msg2638_ts_data {
- 	struct regulator_bulk_data supplies[2];
- 	struct gpio_desc *reset_gpiod;
- 	int max_fingers;
-+	u32 keycodes[MAX_BUTTONS];
-+	int num_keycodes;
- };
- 
- static u8 msg2638_checksum(u8 *data, u32 length)
-@@ -85,6 +89,19 @@ static u8 msg2638_checksum(u8 *data, u32 length)
- 	return (u8)((-sum) & 0xFF);
- }
- 
-+static void msg2138_report_keys(struct msg2638_ts_data *msg2638, u8 keys)
-+{
-+	int i;
-+
-+	/* keys can be 0x00 or 0xff when all keys have been released */
-+	if (keys == 0xff)
-+		keys = 0;
-+
-+	for (i = 0; i < msg2638->num_keycodes; ++i)
-+		input_report_key(msg2638->input_dev, msg2638->keycodes[i],
-+				 !!(keys & BIT(i)));
-+}
-+
- static irqreturn_t msg2138_ts_irq_handler(int irq, void *msg2638_handler)
- {
- 	struct msg2638_ts_data *msg2638 = msg2638_handler;
-@@ -121,9 +138,12 @@ static irqreturn_t msg2138_ts_irq_handler(int irq, void *msg2638_handler)
- 	p0 = &touch_event.pkt[0];
- 	p1 = &touch_event.pkt[1];
- 
--	/* Ignore non-pressed finger data */
--	if (p0->xy_hi == 0xFF && p0->x_low == 0xFF && p0->y_low == 0xFF)
-+	/* Ignore non-pressed finger data, but check for key code */
-+	if (p0->xy_hi == 0xFF && p0->x_low == 0xFF && p0->y_low == 0xFF) {
-+		if (p1->xy_hi == 0xFF && p1->y_low == 0xFF)
-+			msg2138_report_keys(msg2638, p1->x_low);
- 		goto report;
-+	}
- 
- 	x = (((p0->xy_hi & 0xF0) << 4) | p0->x_low);
- 	y = (((p0->xy_hi & 0x0F) << 8) | p0->y_low);
-@@ -283,6 +303,7 @@ static int msg2638_init_input_dev(struct msg2638_ts_data *msg2638)
- 	struct device *dev = &msg2638->client->dev;
- 	struct input_dev *input_dev;
- 	int error;
-+	int i;
- 
- 	input_dev = devm_input_allocate_device(dev);
- 	if (!input_dev) {
-@@ -299,6 +320,14 @@ static int msg2638_init_input_dev(struct msg2638_ts_data *msg2638)
- 	input_dev->open = msg2638_input_open;
- 	input_dev->close = msg2638_input_close;
- 
-+	if (msg2638->num_keycodes) {
-+		input_dev->keycode = msg2638->keycodes;
-+		input_dev->keycodemax = msg2638->num_keycodes;
-+		input_dev->keycodesize = sizeof(msg2638->keycodes[0]);
-+		for (i = 0; i < msg2638->num_keycodes; i++)
-+			input_set_capability(input_dev, EV_KEY, msg2638->keycodes[i]);
-+	}
-+
- 	input_set_capability(input_dev, EV_ABS, ABS_MT_POSITION_X);
- 	input_set_capability(input_dev, EV_ABS, ABS_MT_POSITION_Y);
- 
-@@ -367,10 +396,16 @@ static int msg2638_ts_probe(struct i2c_client *client)
- 		return error;
- 	}
- 
--	error = msg2638_init_input_dev(msg2638);
--	if (error) {
--		dev_err(dev, "Failed to initialize input device: %d\n", error);
--		return error;
-+	msg2638->num_keycodes =
-+		of_property_read_variable_u32_array(dev->of_node, "linux,keycodes",
-+						    msg2638->keycodes, 0,
-+						    ARRAY_SIZE(msg2638->keycodes));
-+	if (msg2638->num_keycodes == -EINVAL) {
-+		msg2638->num_keycodes = 0;
-+	} else if (msg2638->num_keycodes < 0) {
-+		dev_err(dev, "Unable to parse linux,keycodes property: %d\n",
-+			msg2638->num_keycodes);
-+		return msg2638->num_keycodes;
- 	}
- 
- 	error = devm_request_threaded_irq(dev, client->irq,
-@@ -382,6 +417,12 @@ static int msg2638_ts_probe(struct i2c_client *client)
- 		return error;
- 	}
- 
-+	error = msg2638_init_input_dev(msg2638);
-+	if (error) {
-+		dev_err(dev, "Failed to initialize input device: %d\n", error);
-+		return error;
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.31.1
+    Documentation/devicetree/bindings/media/i2c/hynix,hi846.example.dt.yaml:
+camera@20: port:endpoint: Unevaluated properties are not allowed
+('link-frequencies', 'data-lanes' were unexpected)
+    From schema: Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
 
+> +                };
+> +            };
+> +        };
+> +    };
 
+Gr{oetje,eeting}s,
 
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
