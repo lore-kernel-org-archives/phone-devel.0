@@ -2,85 +2,76 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CDEF5C433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 29 Nov 2021 12:32:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 127C7C433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 29 Nov 2021 13:34:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235047AbhK2Mfa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 29 Nov 2021 07:35:30 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:59322 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244746AbhK2Md3 (ORCPT
+        id S231196AbhK2NiH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 29 Nov 2021 08:38:07 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.54]:25698 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239789AbhK2NgH (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 29 Nov 2021 07:33:29 -0500
-Received: from mail.kernel.org (unknown [198.145.29.99])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D3B7CB8105A;
-        Mon, 29 Nov 2021 12:30:10 +0000 (UTC)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 717DA60184;
-        Mon, 29 Nov 2021 12:30:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638189009;
-        bh=YumIVWW8v4CgXiygB9D+c81bh6Mc4361zipd22kWrcs=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=bORHPDKpD09HrJC4raYE+/dvcGxogT8lIugWpsBnpDKB9pvomlIRV4hpIjGWWkstE
-         Pi+as2VOZsngMQdk4zvgoQ15yXHKlAkKwhTrvof2/LX/fZIZULuwr6vhm8b9sn76LS
-         cAwKTFh7THT/o8ISjx9MExXVf6AHsLUMq+LCFmYnezWJ0vuS5CYlRczbgHrL3ubeS1
-         owIHCXoBDN+HpZ/NP7NNMBghk/O2v9mEB3bGBGHxf4jxgIiWEngXW1YtKmQkoP9egZ
-         7wFq6gqZhMgWrr7MIdwesYjSptt06Ys2wIv4UStJUcBlMMqXLZXUNbZWypZd7k4xpB
-         93L3tVCostTqA==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 6066760A45;
-        Mon, 29 Nov 2021 12:30:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Mon, 29 Nov 2021 08:36:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1638192764;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=gi23SGT/K9YoXpcCcls21EuR/fDTjd/FuL/5ViyQjhg=;
+    b=TfQWq19/hLRBke38VDdCZVzLoy+ZDXZSI2f+0mvl/dymgwxPDxoRIsWa1/fEhPcAVa
+    uu48k2uy3tsc4tG2ATgbRM+dd3t7sUQWg70RpqOsv7/Cmzi+pbCxMFhpZ/wLUAIBV1MV
+    aUUejydmn14+OCosAQiKn/QmskGshXw9ppCnABuVUXVdAt7+ZpVKkZ267z35KF6xy2Bn
+    1Du+5F6IfAniTwrQebuglNJiP+3C20qu7OVneO73BUQMwgFil2DY7C7liLhbayNfNrQ8
+    ytHfiWiddkSTGPDC0mikFWejoNQ7mKdbM8OZAOPzVKGHt9gradMSPzXuzAXyAUcmSWX5
+    UWsw==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXQ7UOGqRde+a0fiL2YvqQ"
+X-RZG-CLASS-ID: mo00
+Received: from droid..
+    by smtp.strato.de (RZmta 47.34.10 AUTH)
+    with ESMTPSA id j03bcbxATDWhPUt
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Mon, 29 Nov 2021 14:32:43 +0100 (CET)
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        linux-remoteproc@vger.kernel.org, phone-devel@vger.kernel.org,
+        Aleksander Morgado <aleksander@aleksander.es>,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: [PATCH 0/2] Enable BAM-DMUX/WWAN on Qualcomm MSM8916
+Date:   Mon, 29 Nov 2021 14:29:28 +0100
+Message-Id: <20211129132930.6901-1-stephan@gerhold.net>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/2] net: wwan: Add Qualcomm BAM-DMUX WWAN network
- driver
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <163818900938.24631.13563359260502643872.git-patchwork-notify@kernel.org>
-Date:   Mon, 29 Nov 2021 12:30:09 +0000
-References: <20211127173108.3992-1-stephan@gerhold.net>
-In-Reply-To: <20211127173108.3992-1-stephan@gerhold.net>
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     davem@davemloft.net, kuba@kernel.org, loic.poulain@linaro.org,
-        ryazanov.s.a@gmail.com, johannes@sipsolutions.net,
-        bjorn.andersson@linaro.org, agross@kernel.org, robh+dt@kernel.org,
-        aleksander@aleksander.es, netdev@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, jeffrey.l.hugo@gmail.com
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hello:
+This series enables using mobile Internet/WWAN on devices based on Qualcomm
+MSM8916. The network driver for that was applied earlier today to net-next. [1]
 
-This series was applied to netdev/net-next.git (master)
-by David S. Miller <davem@davemloft.net>:
+The device tree node of BAM-DMUX does not have any own memory resources.
+It just bundles resources from other hardware blocks. It could be added to the
+device tree root node, but it logically belongs below the modem remote processor.
 
-On Sat, 27 Nov 2021 18:31:06 +0100 you wrote:
-> The BAM Data Multiplexer provides access to the network data channels
-> of modems integrated into many older Qualcomm SoCs, e.g. Qualcomm MSM8916
-> or MSM8974. This series adds a driver that allows using it.
-> 
-> All the changes in this patch series are based on a quite complicated
-> driver from Qualcomm [1]. The driver has been used in postmarketOS [2]
-> on various smartphones/tablets based on Qualcomm MSM8916 and MSM8974
-> for more than a year now with no reported problems. It works out of
-> the box with open-source WWAN userspace such as ModemManager.
-> 
-> [...]
+To allow adding it there, the qcom_q6v5_mss driver is modified slightly to
+populate additional devices from the device tree. Finally, the necessary
+nodes are added to the MSM8916 device tree.
 
-Here is the summary with links:
-  - [net-next,v3,1/2] dt-bindings: net: Add schema for Qualcomm BAM-DMUX
-    https://git.kernel.org/netdev/net-next/c/f3aee7c900ed
-  - [net-next,v3,2/2] net: wwan: Add Qualcomm BAM-DMUX WWAN network driver
-    https://git.kernel.org/netdev/net-next/c/21a0ffd9b38c
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/commit/?id=688e075748645b43cf4d55e8fd279f5249699b7a
 
-You are awesome, thank you!
+Stephan Gerhold (2):
+  remoteproc: qcom_q6v5_mss: Populate additional devices from DT
+  arm64: dts: qcom: msm8916: Add BAM-DMUX for WWAN network interfaces
+
+ arch/arm64/boot/dts/qcom/msm8916.dtsi | 30 +++++++++++++++++++++++++++
+ drivers/remoteproc/qcom_q6v5_mss.c    |  7 +++++++
+ 2 files changed, 37 insertions(+)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
