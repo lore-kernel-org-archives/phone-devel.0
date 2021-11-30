@@ -2,122 +2,298 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37ACAC433F5
-	for <phone-devel@archiver.kernel.org>; Tue, 30 Nov 2021 11:03:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB58EC433F5
+	for <phone-devel@archiver.kernel.org>; Tue, 30 Nov 2021 15:04:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236901AbhK3LG4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 30 Nov 2021 06:06:56 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:51900 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236890AbhK3LG4 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 30 Nov 2021 06:06:56 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: sre)
-        with ESMTPSA id 58B1A1F44BD9
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
-        t=1638270216; bh=ZCcAJm8XMTByN8/s2WCB4XZxCSS3MKuWYhisPzrM2CI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jD5LhWuHDWI7252zmLEAakU/zbisVktPIU6kqg/dz7Pp2fdaeR6MJhYG885EPIIz3
-         GE/Ffto9bBL62uX83laQmUotIQiBJ6d4MLQy+Zf74/SBsTdaE5qn5eAis9Q0gKMWwt
-         VUPzrTazexBGWkRa2qvm7MpYzd0NYXKr74IHb9eGiCIZE/te0AkG42TM8Rk31AO66J
-         OXq9Z6aKGzP4Qbg12yBbtvGqT5FVp8EQnRAJrtu021pyHQOoRNoihvu82veyx06WaP
-         w39PEcrsjUuT7B8MeFn7AWHhX7BGwApNBegpID4NO/LPtK+avSWdXonpEqJOnjzK24
-         rE4+eKoapA10g==
-Received: by earth.universe (Postfix, from userid 1000)
-        id 985443C0CA8; Tue, 30 Nov 2021 12:03:34 +0100 (CET)
-Date:   Tue, 30 Nov 2021 12:03:34 +0100
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/7] power: supply: qcom_smbb: support pm8226
-Message-ID: <20211130110334.egzcne2l7mgmqjfg@earth.universe>
-References: <20211118210210.160895-1-luca@z3ntu.xyz>
- <20211118210210.160895-2-luca@z3ntu.xyz>
+        id S245341AbhK3PHV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 30 Nov 2021 10:07:21 -0500
+Received: from comms.puri.sm ([159.203.221.185]:49510 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244319AbhK3PBW (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 30 Nov 2021 10:01:22 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id 31F2AE1239;
+        Tue, 30 Nov 2021 06:57:26 -0800 (PST)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id XcmA9cMzm6fl; Tue, 30 Nov 2021 06:57:25 -0800 (PST)
+Message-ID: <cbf47818643901943b844fb729c9ac360d7f3bd3.camel@puri.sm>
+Subject: Re: [PATCH v9 2/4] dt-bindings: media: document SK Hynix Hi-846
+ MIPI CSI-2 8M pixel sensor
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Sakari Ailus <sakari.ailus@iki.fi>
+Cc:     Pavel Machek <pavel@ucw.cz>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, kernel@puri.sm,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+        phone-devel@vger.kernel.org, Rob Herring <robh@kernel.org>,
+        shawnx.tu@intel.com
+Date:   Tue, 30 Nov 2021 15:57:18 +0100
+In-Reply-To: <CAMuHMdXaywzfzLDoWYj0vfQ=xjUc+exgwUrrfNvp0Z-eVcNNMg@mail.gmail.com>
+References: <20210906102837.2190387-1-martin.kepplinger@puri.sm>
+         <20210906102837.2190387-3-martin.kepplinger@puri.sm>
+         <CAMuHMdVVNhLa2p-ywmpcEj-sw+NyRNp2z9jsVqsXEDrKphivCQ@mail.gmail.com>
+         <d5e0fe8f8a5445c9c2d2b90fcf454829daf393e8.camel@puri.sm>
+         <YaC0cxmXB8kDcDAI@valkosipuli.retiisi.eu>
+         <CAMuHMdXaywzfzLDoWYj0vfQ=xjUc+exgwUrrfNvp0Z-eVcNNMg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4bgpwtsgwzqugjwz"
-Content-Disposition: inline
-In-Reply-To: <20211118210210.160895-2-luca@z3ntu.xyz>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Am Freitag, dem 26.11.2021 um 13:03 +0100 schrieb Geert Uytterhoeven:
+> Hi Martin,
+> 
+> On Fri, Nov 26, 2021 at 11:18 AM Sakari Ailus <sakari.ailus@iki.fi>
+> wrote:
+> > On Fri, Nov 26, 2021 at 11:02:31AM +0100, Martin Kepplinger wrote:
+> > > Am Donnerstag, dem 25.11.2021 um 12:15 +0100 schrieb Geert
+> > > Uytterhoeven:
+> > > > On Mon, Sep 6, 2021 at 12:30 PM Martin Kepplinger
+> > > > <martin.kepplinger@puri.sm> wrote:
+> > > > > Document the bindings used for the SK Hynix Hi-846 CMOS
+> > > > > camera
+> > > > > driver.
+> > > > > 
+> > > > > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> > > > > Reviewed-by: Laurent Pinchart <
+> > > > > laurent.pinchart@ideasonboard.com>
+> > > > > Reviewed-by: Rob Herring <robh@kernel.org>
+> > > > > ---
+> > > > >  .../bindings/media/i2c/hynix,hi846.yaml       | 120
+> > > > > ++++++++++++++++++
+> > > > >  1 file changed, 120 insertions(+)
+> > > > >  create mode 100644
+> > > > > Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> > > > > 
+> > > > > diff --git
+> > > > > a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yam
+> > > > > l
+> > > > > b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yam
+> > > > > l
+> > > > > new file mode 100644
+> > > > > index 000000000000..85a8877c2f38
+> > > > > --- /dev/null
+> > > > > +++
+> > > > > b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yam
+> > > > > l
+> > > > > @@ -0,0 +1,120 @@
+> > > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > > > +%YAML 1.2
+> > > > > +---
+> > > > > +$id: 
+> > > > > http://devicetree.org/schemas/media/i2c/hynix,hi846.yaml#
+> > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > > +
+> > > > > +title: SK Hynix Hi-846 1/4" 8M Pixel MIPI CSI-2 sensor
+> > > > > +
+> > > > > +maintainers:
+> > > > > +  - Martin Kepplinger <martin.kepplinger@puri.sm>
+> > > > > +
+> > > > > +description: |-
+> > > > > +  The Hi-846 is a raw image sensor with an MIPI CSI-2 image
+> > > > > data
+> > > > > +  interface and CCI (I2C compatible) control bus. The output
+> > > > > format
+> > > > > +  is raw Bayer.
+> > > > > +
+> > > > > +properties:
+> > > > > +  compatible:
+> > > > > +    const: hynix,hi846
+> > > > > +
+> > > > > +  reg:
+> > > > > +    maxItems: 1
+> > > > > +
+> > > > > +  clocks:
+> > > > > +    items:
+> > > > > +      - description: Reference to the mclk clock.
+> > > > > +
+> > > > > +  assigned-clocks:
+> > > > > +    maxItems: 1
+> > > > > +
+> > > > > +  assigned-clock-rates:
+> > > > > +    maxItems: 1
+> > > > > +
+> > > > > +  reset-gpios:
+> > > > > +    description: Reference to the GPIO connected to the
+> > > > > RESETB
+> > > > > pin. Active low.
+> > > > > +    maxItems: 1
+> > > > > +
+> > > > > +  shutdown-gpios:
+> > > > > +    description: Reference to the GPIO connected to the
+> > > > > XSHUTDOWN
+> > > > > pin. Active low.
+> > > > > +    maxItems: 1
+> > > > > +
+> > > > > +  vddio-supply:
+> > > > > +    description: Definition of the regulator used for the
+> > > > > VDDIO
+> > > > > power supply.
+> > > > > +
+> > > > > +  vdda-supply:
+> > > > > +    description: Definition of the regulator used for the
+> > > > > VDDA
+> > > > > power supply.
+> > > > > +
+> > > > > +  vddd-supply:
+> > > > > +    description: Definition of the regulator used for the
+> > > > > VDDD
+> > > > > power supply.
+> > > > > +
+> > > > > +  port:
+> > > > > +    $ref: /schemas/graph.yaml#/properties/port
+> > > > > +
+> > > > > +    properties:
+> > > > > +      endpoint:
+> > > > > +        $ref: /schemas/media/video-interfaces.yaml#
+> > > > > +        unevaluatedProperties: false
+> > > > > +
+> > > > > +        properties:
+> > > > > +          data-lanes:
+> > > > > +            oneOf:
+> > > > > +              - items:
+> > > > > +                  - const: 1
+> > > > > +                  - const: 2
+> > > > > +                  - const: 3
+> > > > > +                  - const: 4
+> > > > > +              - items:
+> > > > > +                  - const: 1
+> > > > > +                  - const: 2
+> > > > > +
+> > > > > +        required:
+> > > > > +          - data-lanes
+> > > > > +
+> > > > > +required:
+> > > > > +  - compatible
+> > > > > +  - reg
+> > > > > +  - clocks
+> > > > > +  - assigned-clocks
+> > > > > +  - assigned-clock-rates
+> > > > > +  - vddio-supply
+> > > > > +  - vdda-supply
+> > > > > +  - vddd-supply
+> > > > > +  - port
+> > > > > +
+> > > > > +additionalProperties: false
+> > > > > +
+> > > > > +examples:
+> > > > > +  - |
+> > > > > +    #include <dt-bindings/gpio/gpio.h>
+> > > > > +
+> > > > > +    i2c {
+> > > > > +        #address-cells = <1>;
+> > > > > +        #size-cells = <0>;
+> > > > > +
+> > > > > +        hi846: camera@20 {
+> > > > > +            compatible = "hynix,hi846";
+> > > > > +            reg = <0x20>;
+> > > > > +            pinctrl-names = "default";
+> > > > > +            pinctrl-0 = <&pinctrl_csi1>;
+> > > > > +            clocks = <&clk 0>;
+> > > > > +            assigned-clocks = <&clk 0>;
+> > > > > +            assigned-clock-rates = <25000000>;
+> > > > > +            vdda-supply = <&reg_camera_vdda>;
+> > > > > +            vddd-supply = <&reg_camera_vddd>;
+> > > > > +            vddio-supply = <&reg_camera_vddio>;
+> > > > > +            reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
+> > > > > +            shutdown-gpios = <&gpio5 4 GPIO_ACTIVE_LOW>;
+> > > > > +
+> > > > > +            port {
+> > > > > +                camera_out: endpoint {
+> > > > > +                    remote-endpoint = <&csi1_ep1>;
+> > > > > +                    link-frequencies = /bits/ 64
+> > > > > +                        <80000000 200000000>;
+> > > > > +                    data-lanes = <1 2>;
+> > > > 
+> > > > "make dt_binding_check":
+> > > > 
+> > > > 
+> > > > Documentation/devicetree/bindings/media/i2c/hynix,hi846.example
+> > > > .dt.ya
+> > > > ml:
+> > > > camera@20: port:endpoint: Unevaluated properties are not
+> > > > allowed
+> > > > ('link-frequencies', 'data-lanes' were unexpected)
+> > > >     From schema:
+> > > > Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> > > > 
+> > > > > +                };
+> > > > > +            };
+> > > > > +        };
+> > > > > +    };
+> > > > 
+> > > > Gr{oetje,eeting}s,
+> > > > 
+> > > >                         Geert
+> > > 
+> > > 
+> > > thanks a lot Geert, but I can't reproduce this on linux-next.
+> > > Which
+> > > tree did you run it against?
+> > > 
+> > > What I *do* see is the following during dtbs_check, so I guess I
+> > > could
+> > > remove "orientation" and "rotation" from the example, which would
+> > > be
+> > > kind of sad because these useful properties are not yet too wide
+> > > know
+> > > anyway in the media device driver world...
+> > > 
+> > > /home/martin/dev/purism-forks/linux-
+> > > next/arch/arm64/boot/dts/freescale/imx8mq-librem5-r2.dt.yaml:
+> > > camera-front@20: 'orientation', 'rotation' do not match any of
+> > > the
+> > > regexes: 'pinctrl-[0-9]+'
+> > >       From schema: /home/martin/dev/purism-forks/linux-
+> > > next/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> > > 
+> > > 
+> > > if you can be more speicific I'll definitely try to reproduce
+> > > again
+> > > though.
+> 
+> This is reproducible on next-20211126.
+> Is your dt-schema up-to-date?
 
---4bgpwtsgwzqugjwz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+it is now, I'm running
 
-Hi,
+make -j7 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- dt_binding_check
+dtbs_check
 
-On Thu, Nov 18, 2021 at 10:02:05PM +0100, Luca Weiss wrote:
-> PM8226 (used in MSM8226) has v1 smbb hardware and works fine with the
-> current driver.
->=20
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
+but I can't reproduce that error. weird.
 
-Thanks, queued.
+> 
+> > link-frequencies is present in the example (as it needs to be) but
+> > missing
+> > from required properties. I don't know why there's a complaint
+> > about
+> > data-lanes though.
+> 
+> I also don't know what's wrong with data-lanes (else I would have
+> sent a patch to fix it ;-)
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- 
+> geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a
+> hacker. But
+> when I'm talking to journalists I just say "programmer" or something
+> like that.
+>                                 -- Linus Torvalds
 
--- Sebastian
 
->  drivers/power/supply/qcom_smbb.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/power/supply/qcom_smbb.c b/drivers/power/supply/qcom=
-_smbb.c
-> index 84cc9fba029d..bd50124eef9f 100644
-> --- a/drivers/power/supply/qcom_smbb.c
-> +++ b/drivers/power/supply/qcom_smbb.c
-> @@ -863,8 +863,8 @@ static int smbb_charger_probe(struct platform_device =
-*pdev)
->  	}
-> =20
->  	chg->revision +=3D 1;
-> -	if (chg->revision !=3D 2 && chg->revision !=3D 3) {
-> -		dev_err(&pdev->dev, "v1 hardware not supported\n");
-> +	if (chg->revision !=3D 1 && chg->revision !=3D 2 && chg->revision !=3D =
-3) {
-> +		dev_err(&pdev->dev, "v%d hardware not supported\n", chg->revision);
->  		return -ENODEV;
->  	}
->  	dev_info(&pdev->dev, "Initializing SMBB rev %u", chg->revision);
-> @@ -1012,6 +1012,7 @@ static int smbb_charger_remove(struct platform_devi=
-ce *pdev)
->  }
-> =20
->  static const struct of_device_id smbb_charger_id_table[] =3D {
-> +	{ .compatible =3D "qcom,pm8226-charger" },
->  	{ .compatible =3D "qcom,pm8941-charger" },
->  	{ }
->  };
-> --=20
-> 2.34.0
->=20
-
---4bgpwtsgwzqugjwz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmGmBQYACgkQ2O7X88g7
-+ppn1A/9GOI9SeAReTku+iJlF65N2VycqAlNWdy4zCDMpjs4Vet1y6qbHfJXWbrW
-bnS/xrj2zClX8bp2vOlkhR8u5qX+YMjpHtFl+QITk9/D/cWcN42VviQqm9sq6YMa
-bQ+NoyygoRAOAbL25dJlv+hZVTke3Kmc4g2F1ULWQ4gvMbnAEzUx8bXCD8o2amLk
-86vwmcGVKsIvKujrx/luu8dr8Y8/UHnSaGVULYVCX4N7wJkDsKMp6nfkYYmoyYxU
-X0YfJ8839IZpQ7qOQUuMgVHQzDBt0707olfj5TB1dFlarx+eQq912EVACDN4ZbEA
-nQ2iVF+4jUhoG46XyyOFqLp0Vc/nSVfSSeeh3IxjLTl0D6SRUe1SToyGbV1slNvV
-YvEpGsFx9Zb23C/SiucxQi8eMUPyK2KFYi1wIuYVMo6D9QUMiJ+CKnpT2RyXXye1
-GW4d4Wx2Y/oKlo/4NNDBieCT8kJPlNB5DT1LFjz/ZVB+eneyBHTcjIRkwO8tq6wR
-pEmuxa0IbecYXNI9d8GUdwVwILyQsN9JRt3IP9nxb40dyKv9GM42GZ2pwXNHF/EG
-/YwsVd2Mjvl/LkL60eTVOJ/zIgigiDR+wpwt4QEuYT1unqMh6HJAaw0NODbCpzPg
-n5Gve9cZO9rd4mdDYC645gysMW04mSjYawIpZt9yEyWMRyKcBcE=
-=0Lrx
------END PGP SIGNATURE-----
-
---4bgpwtsgwzqugjwz--
