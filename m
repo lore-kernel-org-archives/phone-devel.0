@@ -2,70 +2,95 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D098FC43217
-	for <phone-devel@archiver.kernel.org>; Mon, 29 Nov 2021 23:11:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17541C433F5
+	for <phone-devel@archiver.kernel.org>; Tue, 30 Nov 2021 11:02:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233900AbhK2XOo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 29 Nov 2021 18:14:44 -0500
-Received: from mail-ot1-f53.google.com ([209.85.210.53]:39472 "EHLO
-        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbhK2XOh (ORCPT
+        id S236780AbhK3LGO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 30 Nov 2021 06:06:14 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:51892 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236684AbhK3LGN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 29 Nov 2021 18:14:37 -0500
-Received: by mail-ot1-f53.google.com with SMTP id r10-20020a056830080a00b0055c8fd2cebdso27659159ots.6;
-        Mon, 29 Nov 2021 15:11:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=1CI0eUCmLQSzhgrbo5fWAeYCuyAN+7MXOdPkvLupzvQ=;
-        b=5GOdlMBkK2UOK2g6fqh511Pl1eV49XtHFM36fTgW8BCev59f7q8nmHST0T/A8zPQeK
-         B8qef+KSAi1OU902eGRpyqR+eW4M5XJozG4qbQEJQ4aq71WjI2bUrIQBEJyNclNg4CeP
-         S+g2WHjXoIffyGO8TzDQyJ9gdzu1kjkUGS3ngw3EWBWWTsUYksOFBQapxnomvnrzaNmv
-         11qJVC97tVeMQ4CWFL09RQBa+bCPA9px4/87eq2y4IMkRaHE0Eq6kh3z12ET6OJawRHX
-         vZE9nAcu9nsV6r/kmi3Q7mjwVGhB9uWutVZoxTo24VJImgr5edy2+Xcz+1RMT2DPZaww
-         K6Ng==
-X-Gm-Message-State: AOAM530UN5ITOpnA2z2fvzXXCf9eFZ5S/sAA2mlOdTMHk/Pdl2+ASrOA
-        G3Ag+omDGytsCMhGmElr7Q==
-X-Google-Smtp-Source: ABdhPJyn5bH/NkhCl4fBrap5C9QP/YwnwzPvEx86qJHULHBAR1eU2SZOhwU/cmcgv3daAIYgboM+Rw==
-X-Received: by 2002:a9d:6e06:: with SMTP id e6mr46384951otr.381.1638227478517;
-        Mon, 29 Nov 2021 15:11:18 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id o2sm3502336oik.11.2021.11.29.15.11.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Nov 2021 15:11:17 -0800 (PST)
-Received: (nullmailer pid 786264 invoked by uid 1000);
-        Mon, 29 Nov 2021 23:11:16 -0000
-Date:   Mon, 29 Nov 2021 17:11:16 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-phy@lists.infradead.org,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-kernel@vger.kernel.org, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH 5/7] dt-bindings: phy: qcom,usb-hs-phy: add MSM8226
- compatible
-Message-ID: <YaVeFFOyX8mbiNNZ@robh.at.kernel.org>
+        Tue, 30 Nov 2021 06:06:13 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id 9C35E1F44BBC
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
+        t=1638270173; bh=l98QiWJLerDn9mqrR91nYQugxDENe5cVgoLVb3pluVc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=J4pV1AD9qM8OrAcSvPDBWAsPHYQQ9BQmb2E/mlkJ3L/EEeNQSV4F4BhvIJpmALoRW
+         /5MD1jojOanc6EVvFoEq62Ig390EbIqTFa0UAXdf2AtFKJDHOu4s7Uhy9B2bWNKijn
+         XCxB8vwP1ODKzAaAln0S/1XRVtw3LyhNF3D7I8osuZFNPB2yNyXEtttffAzL94rH/L
+         yEijKCm6RITgEdGa99ZPZZpqXX3wlMwKsSfg4V1j933kKOV7+LSjPii5xCBsemXBny
+         slirmlgUN1VVx0Cejw1079siC6/vANgWCxqs5yHSTzKZ5W+44lvoE9YjYi0yj9ch5+
+         NH4S3Y4t2KP9A==
+Received: by earth.universe (Postfix, from userid 1000)
+        id 3E42B3C0CA8; Tue, 30 Nov 2021 12:02:51 +0100 (CET)
+Date:   Tue, 30 Nov 2021 12:02:51 +0100
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Luca Weiss <luca@z3ntu.xyz>, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH 1/7] dt-bindings: power: supply: pm8941-charger: add
+ pm8226
+Message-ID: <20211130110251.o7fdea4spwd5qntl@earth.universe>
 References: <20211118210210.160895-1-luca@z3ntu.xyz>
- <20211118210210.160895-5-luca@z3ntu.xyz>
+ <YaVeBGAnU2CY9SLr@robh.at.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="gjnpwqyqafz37nmp"
 Content-Disposition: inline
-In-Reply-To: <20211118210210.160895-5-luca@z3ntu.xyz>
+In-Reply-To: <YaVeBGAnU2CY9SLr@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 18 Nov 2021 22:02:08 +0100, Luca Weiss wrote:
-> Add a compatible for MSM8226 which also uses the USB HS PHY.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  Documentation/devicetree/bindings/phy/qcom,usb-hs-phy.txt | 1 +
->  1 file changed, 1 insertion(+)
-> 
 
-Acked-by: Rob Herring <robh@kernel.org>
+--gjnpwqyqafz37nmp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Mon, Nov 29, 2021 at 05:11:00PM -0600, Rob Herring wrote:
+> On Thu, 18 Nov 2021 22:02:04 +0100, Luca Weiss wrote:
+> > The charger in PM8226 (used in MSM8226) is similar to the charger in
+> > PM8941.
+> >=20
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> >  .../devicetree/bindings/power/supply/qcom,pm8941-charger.yaml | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >=20
+>=20
+> Acked-by: Rob Herring <robh@kernel.org>
+
+Thanks, queued.
+
+-- Sebastian
+
+--gjnpwqyqafz37nmp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmGmBNAACgkQ2O7X88g7
++pptUA/+NOVilzivowBa8AyUf9dPhz6xP9hhQwNeR5I6Fa5Abq3uaHHzOwik2mP3
+SjcOKdazMq6fnpoaqxw5ecVXlGACSvbTJPef1nUH5nxD7NR0gwRlPjBKoepAo83l
+CGAiwNSJ3NG/qmCF52lPS48fle3KB3jSr24ak4bZVU3liIdEkutevgB2EG5ryWi0
+LHu+kpfcXzRsj8qDBsz4O0hraXPr5SxbhxJhNjzwhHeVrwWr40VLTEOV2rwPgWJp
+ttGrXZa3uzYvJkob6B9fLSh+W5dRkFB0ETUofJQbq6EK58ApDqA3l7J6h2/7Vul6
+b0jASLQGWqutcCtyMnD73W3kNuFK3LN4bbYGQ4IqXdnN/Qn/IEbc60s/+BKlSkWq
+/3H9kkY8+P/4IPthLCO3zneTFPbHU59+Qa1g9RDSRDeujzPmmx1uFKC7aLr/EvLK
++pbKUUfh+ZUT+tCE4pW+WIVS1DoSYn7HbSZ+fg5jwjpfZIMc98+nDkeBgKrdTtxs
+WRPP5HYQG7kDSyrSGKbiApBtinRreOBdoVhpm16rKOtilc0cbb/r3tXiRoWV8q6N
+pgnmUQs2nJlzhKqU864MIds6ACQ9i/cNMm2pww6LsxrmlZ+1XBuZI0W2bBybJhqt
+/4Gihh/ovqwbcoEMKaLnhE0jjzfhhMJDYRx9hNNx3/5C8xq7rvM=
+=3o7m
+-----END PGP SIGNATURE-----
+
+--gjnpwqyqafz37nmp--
