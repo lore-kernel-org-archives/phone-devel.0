@@ -2,106 +2,139 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AB2DC433F5
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Dec 2021 10:33:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06A20C433EF
+	for <phone-devel@archiver.kernel.org>; Fri,  3 Dec 2021 16:20:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348675AbhLAKgb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 1 Dec 2021 05:36:31 -0500
-Received: from mail-ua1-f47.google.com ([209.85.222.47]:35650 "EHLO
-        mail-ua1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242645AbhLAKga (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Dec 2021 05:36:30 -0500
-Received: by mail-ua1-f47.google.com with SMTP id l24so47950891uak.2;
-        Wed, 01 Dec 2021 02:33:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qx2rFl2gGh5DjvnB5x64pIevDhVgLso6t2KGmD7a7pY=;
-        b=0lsImyXKn25t3UNQpHUQwzt96IbRvCYZZgAsaDDLbKsCihkGHOITPJI3Xjoimw7toG
-         BGCMY2Fu6od5pFOwJIERyt7QqwLlZNqwPj1HNIOsB0WoYtusCuPh3HLt3PYl1xfWASrK
-         TtwoRVDb3MaolHO7p0Pm5MzF8oMyAtucEDYhQEebqXziJMY39tbzx8oSjGoZxafNk3vB
-         +i6svcaIJ/zBaOsQ9Objk7cGX2BlIQhqPbuCm+D9UBmMUKxzKzDzjpRvuBga3EjvqXp8
-         dRr71ixMfDkCExmSqme5rke2RSXZqJiAVRfyE9949Si6llnXOPhWFg0aTseOxrjGPvAr
-         a4Nw==
-X-Gm-Message-State: AOAM531zdKhTTRNfn5oe+AVDRj124C2d/gUG2Em4NgVNUZENY68ebnaM
-        cqX8p8wOdJR++dUrWnQGN9dJtj9vpGIG8Q==
-X-Google-Smtp-Source: ABdhPJzxA47Sgmg4ssYnY8KAQ5TDQn0XFiXhEAlKZOdWLYqU7Yf6SQwKxAFeNElmOvqfgXlfHh3fIw==
-X-Received: by 2002:a67:e14d:: with SMTP id o13mr5710626vsl.29.1638354789538;
-        Wed, 01 Dec 2021 02:33:09 -0800 (PST)
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com. [209.85.222.44])
-        by smtp.gmail.com with ESMTPSA id v8sm11505624vkc.52.2021.12.01.02.33.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Dec 2021 02:33:09 -0800 (PST)
-Received: by mail-ua1-f44.google.com with SMTP id r15so47884185uao.3;
-        Wed, 01 Dec 2021 02:33:08 -0800 (PST)
-X-Received: by 2002:a9f:248b:: with SMTP id 11mr6091545uar.14.1638354787791;
- Wed, 01 Dec 2021 02:33:07 -0800 (PST)
+        id S244650AbhLCQXo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 3 Dec 2021 11:23:44 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:56450 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232415AbhLCQXo (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Dec 2021 11:23:44 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B7445B82807;
+        Fri,  3 Dec 2021 16:20:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693C9C53FD1;
+        Fri,  3 Dec 2021 16:20:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1638548417;
+        bh=/5XLUW4WbNEEp9xFKdlvQfR9dGvkpG6xgBs2ApjNzNs=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=D8Gyanfh5jWsN9Lby53IGx1Ecum/vL8Y7oWla8yTT3tyvSjyj8PVdwTLLAZfvw/Ed
+         wHj6EguQDnvEGiEKlK5aGEdjSxR3kYohZFcPtXqvYCanQOxiCf8ZpN8F1Z1jNCxnI/
+         ura/lSa+qUm91FNntk+6L6YOqGnQn4X5DlKnOYn7rxOGTF4eSqabZEbbBESkZD69sO
+         /hZ5TeccibszEAoqjgGW3wLMGqBjENkOMbqVFrvLRMAotZdYUnQMQUC/6x9gM9EGtJ
+         wZ7GAs7y4pH5ZWFUpIFQLEmX7lIPX7ONxhSMj5SjSH+VfLkfW3W6tAAEZC1wA6+H0U
+         YT/9e1T48H+pQ==
+Received: by mail-ed1-f52.google.com with SMTP id r11so13484094edd.9;
+        Fri, 03 Dec 2021 08:20:17 -0800 (PST)
+X-Gm-Message-State: AOAM532mhK5+fkwijlJMmevz1A8OGEte24uu+nQtwk+2GNQl3XjFB7Cz
+        ss84SVz+F878xN68GC+VF/+94OQad5usvhJe8g==
+X-Google-Smtp-Source: ABdhPJyBrhrvYa2XVf+NJw9YrmEXLn+FRBLG4NyD/cyaNpZksxtyAxtd7poGsD9K29mwcrnpETIoaxFQ5g+b04pSHck=
+X-Received: by 2002:a05:6402:5c9:: with SMTP id n9mr27276033edx.306.1638548400930;
+ Fri, 03 Dec 2021 08:20:00 -0800 (PST)
 MIME-Version: 1.0
-References: <20210906102837.2190387-1-martin.kepplinger@puri.sm>
- <20210906102837.2190387-3-martin.kepplinger@puri.sm> <CAMuHMdVVNhLa2p-ywmpcEj-sw+NyRNp2z9jsVqsXEDrKphivCQ@mail.gmail.com>
- <d5e0fe8f8a5445c9c2d2b90fcf454829daf393e8.camel@puri.sm> <YaC0cxmXB8kDcDAI@valkosipuli.retiisi.eu>
- <CAMuHMdXaywzfzLDoWYj0vfQ=xjUc+exgwUrrfNvp0Z-eVcNNMg@mail.gmail.com> <cbf47818643901943b844fb729c9ac360d7f3bd3.camel@puri.sm>
-In-Reply-To: <cbf47818643901943b844fb729c9ac360d7f3bd3.camel@puri.sm>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 1 Dec 2021 11:32:56 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUMvFDJ44LLZbXsCs7U=0novzLAae7tUw48HC9JG2aVGg@mail.gmail.com>
-Message-ID: <CAMuHMdUMvFDJ44LLZbXsCs7U=0novzLAae7tUw48HC9JG2aVGg@mail.gmail.com>
+References: <20210906102837.2190387-1-martin.kepplinger@puri.sm> <20210906102837.2190387-3-martin.kepplinger@puri.sm>
+In-Reply-To: <20210906102837.2190387-3-martin.kepplinger@puri.sm>
+From:   Rob Herring <robh@kernel.org>
+Date:   Fri, 3 Dec 2021 10:19:49 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJQAutUp9cB2LaoOQQX7mToCc5MkGm59oOmh65yZG0xZQ@mail.gmail.com>
+Message-ID: <CAL_JsqJQAutUp9cB2LaoOQQX7mToCc5MkGm59oOmh65yZG0xZQ@mail.gmail.com>
 Subject: Re: [PATCH v9 2/4] dt-bindings: media: document SK Hynix Hi-846 MIPI
  CSI-2 8M pixel sensor
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     Sakari Ailus <sakari.ailus@iki.fi>, Pavel Machek <pavel@ucw.cz>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, kernel@puri.sm,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-        phone-devel@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        shawnx.tu@intel.com
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     pavel@ucw.cz, laurent.pinchart@ideasonboard.com,
+        mchehab@kernel.org, sakari.ailus@iki.fi,
+        devicetree@vger.kernel.org, kernel@puri.sm,
+        krzysztof.kozlowski@canonical.com, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, paul.kocialkowski@bootlin.com,
+        phone-devel@vger.kernel.org, shawnx.tu@intel.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Martin,
-
-On Tue, Nov 30, 2021 at 3:57 PM Martin Kepplinger
+On Mon, Sep 6, 2021 at 5:29 AM Martin Kepplinger
 <martin.kepplinger@puri.sm> wrote:
-> Am Freitag, dem 26.11.2021 um 13:03 +0100 schrieb Geert Uytterhoeven:
-> > This is reproducible on next-20211126.
-> > Is your dt-schema up-to-date?
 >
-> it is now, I'm running
+> Document the bindings used for the SK Hynix Hi-846 CMOS camera driver.
 >
-> make -j7 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- dt_binding_check
-> dtbs_check
+> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> ---
+>  .../bindings/media/i2c/hynix,hi846.yaml       | 120 ++++++++++++++++++
+>  1 file changed, 120 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
 >
-> but I can't reproduce that error. weird.
+> diff --git a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> new file mode 100644
+> index 000000000000..85a8877c2f38
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> @@ -0,0 +1,120 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/i2c/hynix,hi846.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: SK Hynix Hi-846 1/4" 8M Pixel MIPI CSI-2 sensor
+> +
+> +maintainers:
+> +  - Martin Kepplinger <martin.kepplinger@puri.sm>
+> +
+> +description: |-
+> +  The Hi-846 is a raw image sensor with an MIPI CSI-2 image data
+> +  interface and CCI (I2C compatible) control bus. The output format
+> +  is raw Bayer.
+> +
+> +properties:
+> +  compatible:
+> +    const: hynix,hi846
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description: Reference to the mclk clock.
+> +
+> +  assigned-clocks:
+> +    maxItems: 1
+> +
+> +  assigned-clock-rates:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    description: Reference to the GPIO connected to the RESETB pin. Active low.
+> +    maxItems: 1
+> +
+> +  shutdown-gpios:
+> +    description: Reference to the GPIO connected to the XSHUTDOWN pin. Active low.
+> +    maxItems: 1
+> +
+> +  vddio-supply:
+> +    description: Definition of the regulator used for the VDDIO power supply.
+> +
+> +  vdda-supply:
+> +    description: Definition of the regulator used for the VDDA power supply.
+> +
+> +  vddd-supply:
+> +    description: Definition of the regulator used for the VDDD power supply.
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/properties/port
 
-Interesting...
+This needs to be:
 
-$ git checkout next-20211201
-$ make -j 12 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- dt_binding_check
-  [...]
-  CHECK   Documentation/devicetree/bindings/media/i2c/rda,rda5807.example.dt.yaml
-Documentation/devicetree/bindings/media/i2c/hynix,hi846.example.dt.yaml:
-camera@20: port:endpoint: Unevaluated properties are not allowed
-('link-frequencies', 'data-lanes' were unexpected)
-        From schema:
-Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+$ref: /schemas/graph.yaml#/$defs/port-base
 
-My userland is Ubuntu 20.04.3 LTS.
+to fix the warning reported. You have to use the 'main' branch of
+dtschema which has unevaluatedProperties support. I'll be making a
+release soonish.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Rob
