@@ -2,139 +2,69 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06A20C433EF
-	for <phone-devel@archiver.kernel.org>; Fri,  3 Dec 2021 16:20:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EA84C433F5
+	for <phone-devel@archiver.kernel.org>; Wed,  8 Dec 2021 08:34:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244650AbhLCQXo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 3 Dec 2021 11:23:44 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:56450 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232415AbhLCQXo (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Dec 2021 11:23:44 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S233873AbhLHIiQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 8 Dec 2021 03:38:16 -0500
+Received: from relay05.th.seeweb.it ([5.144.164.166]:46863 "EHLO
+        relay05.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244863AbhLHIiA (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Dec 2021 03:38:00 -0500
+Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B7445B82807;
-        Fri,  3 Dec 2021 16:20:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693C9C53FD1;
-        Fri,  3 Dec 2021 16:20:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1638548417;
-        bh=/5XLUW4WbNEEp9xFKdlvQfR9dGvkpG6xgBs2ApjNzNs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=D8Gyanfh5jWsN9Lby53IGx1Ecum/vL8Y7oWla8yTT3tyvSjyj8PVdwTLLAZfvw/Ed
-         wHj6EguQDnvEGiEKlK5aGEdjSxR3kYohZFcPtXqvYCanQOxiCf8ZpN8F1Z1jNCxnI/
-         ura/lSa+qUm91FNntk+6L6YOqGnQn4X5DlKnOYn7rxOGTF4eSqabZEbbBESkZD69sO
-         /hZ5TeccibszEAoqjgGW3wLMGqBjENkOMbqVFrvLRMAotZdYUnQMQUC/6x9gM9EGtJ
-         wZ7GAs7y4pH5ZWFUpIFQLEmX7lIPX7ONxhSMj5SjSH+VfLkfW3W6tAAEZC1wA6+H0U
-         YT/9e1T48H+pQ==
-Received: by mail-ed1-f52.google.com with SMTP id r11so13484094edd.9;
-        Fri, 03 Dec 2021 08:20:17 -0800 (PST)
-X-Gm-Message-State: AOAM532mhK5+fkwijlJMmevz1A8OGEte24uu+nQtwk+2GNQl3XjFB7Cz
-        ss84SVz+F878xN68GC+VF/+94OQad5usvhJe8g==
-X-Google-Smtp-Source: ABdhPJyBrhrvYa2XVf+NJw9YrmEXLn+FRBLG4NyD/cyaNpZksxtyAxtd7poGsD9K29mwcrnpETIoaxFQ5g+b04pSHck=
-X-Received: by 2002:a05:6402:5c9:: with SMTP id n9mr27276033edx.306.1638548400930;
- Fri, 03 Dec 2021 08:20:00 -0800 (PST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 93FA73F3F6;
+        Wed,  8 Dec 2021 09:34:24 +0100 (CET)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Alex Elder <elder@linaro.org>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thara Gopinath <thara.gopinath@linaro.org>,
+        Elliot Berman <eberman@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] firmware: qcom: scm: Add IOMMU pool size and
+Date:   Wed,  8 Dec 2021 09:34:20 +0100
+Message-Id: <20211208083423.22037-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20210906102837.2190387-1-martin.kepplinger@puri.sm> <20210906102837.2190387-3-martin.kepplinger@puri.sm>
-In-Reply-To: <20210906102837.2190387-3-martin.kepplinger@puri.sm>
-From:   Rob Herring <robh@kernel.org>
-Date:   Fri, 3 Dec 2021 10:19:49 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJQAutUp9cB2LaoOQQX7mToCc5MkGm59oOmh65yZG0xZQ@mail.gmail.com>
-Message-ID: <CAL_JsqJQAutUp9cB2LaoOQQX7mToCc5MkGm59oOmh65yZG0xZQ@mail.gmail.com>
-Subject: Re: [PATCH v9 2/4] dt-bindings: media: document SK Hynix Hi-846 MIPI
- CSI-2 8M pixel sensor
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     pavel@ucw.cz, laurent.pinchart@ideasonboard.com,
-        mchehab@kernel.org, sakari.ailus@iki.fi,
-        devicetree@vger.kernel.org, kernel@puri.sm,
-        krzysztof.kozlowski@canonical.com, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, paul.kocialkowski@bootlin.com,
-        phone-devel@vger.kernel.org, shawnx.tu@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Sep 6, 2021 at 5:29 AM Martin Kepplinger
-<martin.kepplinger@puri.sm> wrote:
->
-> Document the bindings used for the SK Hynix Hi-846 CMOS camera driver.
->
-> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> ---
->  .../bindings/media/i2c/hynix,hi846.yaml       | 120 ++++++++++++++++++
->  1 file changed, 120 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
->
-> diff --git a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
-> new file mode 100644
-> index 000000000000..85a8877c2f38
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
-> @@ -0,0 +1,120 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/i2c/hynix,hi846.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: SK Hynix Hi-846 1/4" 8M Pixel MIPI CSI-2 sensor
-> +
-> +maintainers:
-> +  - Martin Kepplinger <martin.kepplinger@puri.sm>
-> +
-> +description: |-
-> +  The Hi-846 is a raw image sensor with an MIPI CSI-2 image data
-> +  interface and CCI (I2C compatible) control bus. The output format
-> +  is raw Bayer.
-> +
-> +properties:
-> +  compatible:
-> +    const: hynix,hi846
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: Reference to the mclk clock.
-> +
-> +  assigned-clocks:
-> +    maxItems: 1
-> +
-> +  assigned-clock-rates:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    description: Reference to the GPIO connected to the RESETB pin. Active low.
-> +    maxItems: 1
-> +
-> +  shutdown-gpios:
-> +    description: Reference to the GPIO connected to the XSHUTDOWN pin. Active low.
-> +    maxItems: 1
-> +
-> +  vddio-supply:
-> +    description: Definition of the regulator used for the VDDIO power supply.
-> +
-> +  vdda-supply:
-> +    description: Definition of the regulator used for the VDDA power supply.
-> +
-> +  vddd-supply:
-> +    description: Definition of the regulator used for the VDDD power supply.
-> +
-> +  port:
-> +    $ref: /schemas/graph.yaml#/properties/port
+These patches clean up a leftover duplicate assignment following the
+initializer that already set the same values; followed by introducing
+two extra SCM calls that allow setting the maximum IOMMU pool size and
+changing the pagetable addressing mode to AArch32 LPAE or AArch64
+(per-context).
 
-This needs to be:
+AngeloGioacchino Del Regno (2):
+  firmware: qcom: scm: Add function to set the maximum IOMMU pool size
+  firmware: qcom: scm: Add function to set IOMMU pagetable addressing
 
-$ref: /schemas/graph.yaml#/$defs/port-base
+Marijn Suijten (1):
+  firmware: qcom: scm: Remove reassignment to desc following initializer
 
-to fix the warning reported. You have to use the 'main' branch of
-dtschema which has unevaluatedProperties support. I'll be making a
-release soonish.
+ drivers/firmware/qcom_scm.c | 37 +++++++++++++++++++++++++++++++------
+ drivers/firmware/qcom_scm.h |  2 ++
+ include/linux/qcom_scm.h    |  2 ++
+ 3 files changed, 35 insertions(+), 6 deletions(-)
 
-Rob
+
+base-commit: fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf
+--
+2.34.1
+
