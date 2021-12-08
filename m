@@ -2,24 +2,26 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34F96C433F5
-	for <phone-devel@archiver.kernel.org>; Wed,  8 Dec 2021 08:34:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2A0AC4332F
+	for <phone-devel@archiver.kernel.org>; Wed,  8 Dec 2021 09:10:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245020AbhLHIiY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 8 Dec 2021 03:38:24 -0500
-Received: from m-r2.th.seeweb.it ([5.144.164.171]:38331 "EHLO
-        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245094AbhLHIiG (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Dec 2021 03:38:06 -0500
+        id S230249AbhLHJOV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 8 Dec 2021 04:14:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51602 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230239AbhLHJOU (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Dec 2021 04:14:20 -0500
+Received: from relay02.th.seeweb.it (relay02.th.seeweb.it [IPv6:2001:4b7a:2000:18::163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AD79C061A32
+        for <phone-devel@vger.kernel.org>; Wed,  8 Dec 2021 01:10:48 -0800 (PST)
 Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 604A43F3FA;
-        Wed,  8 Dec 2021 09:34:28 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 2251020384;
+        Wed,  8 Dec 2021 10:10:45 +0100 (CET)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
@@ -28,92 +30,86 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Pavel Dubrova <pashadubrova@gmail.com>,
         Marijn Suijten <marijn.suijten@somainline.org>,
-        Alex Elder <elder@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Elliot Berman <eberman@codeaurora.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] firmware: qcom: scm: Add function to set IOMMU pagetable addressing
-Date:   Wed,  8 Dec 2021 09:34:23 +0100
-Message-Id: <20211208083423.22037-4-marijn.suijten@somainline.org>
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Taniya Das <tdas@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v6 0/2] Global Clock Controller driver for MSM8976/56
+Date:   Wed,  8 Dec 2021 10:10:34 +0100
+Message-Id: <20211208091036.132334-1-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211208083423.22037-1-marijn.suijten@somainline.org>
-References: <20211208083423.22037-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+This is the Global Clock Controller (GCC) driver for MSM8956, MSM8976
+and APQ variants and it has been tested on two Sony phones featuring the
+Qualcomm MSM8956 SoC.
 
-Add a function to change the IOMMU pagetable addressing to
-AArch32 LPAE or AArch64. If doing that, then this must be
-done for each IOMMU context (not necessarily at the same time).
+In addition to GCC this driver is also responsible for providing MDSS
+and GFX3D clocks which reside in the same register space.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-[Marijn: ported from 5.3 to the unified architecture in 5.11]
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
----
- drivers/firmware/qcom_scm.c | 16 ++++++++++++++++
- drivers/firmware/qcom_scm.h |  1 +
- include/linux/qcom_scm.h    |  1 +
- 3 files changed, 18 insertions(+)
+SoMainline is dedicated to getting their long-awaited msm8976 support,
+including the Xperia X, X Compact and if feasible also the Xperia Touch
+projector (APQ8056) slowly but steadily upstreamed.
 
-diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
-index d5a9ba15e2ba..6f7096120023 100644
---- a/drivers/firmware/qcom_scm.c
-+++ b/drivers/firmware/qcom_scm.c
-@@ -1140,6 +1140,22 @@ int qcom_scm_hdcp_req(struct qcom_scm_hdcp_req *req, u32 req_cnt, u32 *resp)
- }
- EXPORT_SYMBOL(qcom_scm_hdcp_req);
- 
-+int qcom_scm_iommu_set_pt_format(u32 sec_id, u32 ctx_num, u32 pt_fmt)
-+{
-+	struct qcom_scm_desc desc = {
-+		.svc = QCOM_SCM_SVC_SMMU_PROGRAM,
-+		.cmd = QCOM_SCM_SMMU_PT_FORMAT,
-+		.arginfo = QCOM_SCM_ARGS(3),
-+		.args[0] = sec_id,
-+		.args[1] = ctx_num,
-+		.args[2] = pt_fmt, /* 0: LPAE AArch32 - 1: AArch64 */
-+		.owner = ARM_SMCCC_OWNER_SIP,
-+	};
-+
-+	return qcom_scm_call(__scm->dev, &desc, NULL);
-+}
-+EXPORT_SYMBOL(qcom_scm_iommu_set_pt_format);
-+
- int qcom_scm_qsmmu500_wait_safe_toggle(bool en)
- {
- 	struct qcom_scm_desc desc = {
-diff --git a/drivers/firmware/qcom_scm.h b/drivers/firmware/qcom_scm.h
-index bb627941702b..a348f2c214e5 100644
---- a/drivers/firmware/qcom_scm.h
-+++ b/drivers/firmware/qcom_scm.h
-@@ -120,6 +120,7 @@ extern int scm_legacy_call(struct device *dev, const struct qcom_scm_desc *desc,
- #define QCOM_SCM_LMH_LIMIT_DCVSH		0x10
- 
- #define QCOM_SCM_SVC_SMMU_PROGRAM		0x15
-+#define QCOM_SCM_SMMU_PT_FORMAT			0x01
- #define QCOM_SCM_SMMU_CONFIG_ERRATA1		0x03
- #define QCOM_SCM_SMMU_CONFIG_ERRATA1_CLIENT_ALL	0x02
- 
-diff --git a/include/linux/qcom_scm.h b/include/linux/qcom_scm.h
-index 8a065f8660c1..ca4a88d7cbdc 100644
---- a/include/linux/qcom_scm.h
-+++ b/include/linux/qcom_scm.h
-@@ -108,6 +108,7 @@ extern bool qcom_scm_hdcp_available(void);
- extern int qcom_scm_hdcp_req(struct qcom_scm_hdcp_req *req, u32 req_cnt,
- 			     u32 *resp);
- 
-+extern int qcom_scm_iommu_set_pt_format(u32 sec_id, u32 ctx_num, u32 pt_fmt);
- extern int qcom_scm_qsmmu500_wait_safe_toggle(bool en);
- 
- extern int qcom_scm_lmh_dcvsh(u32 payload_fn, u32 payload_reg, u32 payload_val,
--- 
+Changes since v5:
+- Set vdd_gfx-supply in yaml example, which was added as required
+  property in v5 but forgotten from the example; this is only caught by
+  running dt_binding_check in addition to dtbs_check.
+
+v5: https://lore.kernel.org/linux-clk/20211004195255.701220-1-marijn.suijten@somainline.org/T
+
+Changes since v4:
+- Insert error handling that left `int ret;` in gcc_msm8976_probe unused
+  when the original regmap read, xor, and write were replaced with
+  regmap_update_bits in v3;
+- Document vdd_gfx supply, required in oxili_gx_gdsc;
+- Dual-license the yaml Documentation and DT bindings (Rob).
+
+Changes since v3:
+- Set the enable_mask of gcc_apss_ahb_clk and gcc_apss_axi_clk to BIT 14
+  and 13 respectively instead of overlapping gcc_crypto_ahb_clk's BIT 0.
+
+Changes since v2:
+- Rebased on v5.14;
+- Various minor cleanups (lowercase hex, const where appropriate,
+  removal of unused enum constants);
+- Fixed XOR confusion in probe;
+- All remnants of global clock name dependencies are removed, all
+  inter-driver dependencies must be fully specified in DT;
+- Added proper dt-bindings yaml validation, listing the required clocks;
+- Moved dt-bindings header to the dt-bindings patch.
+
+Changes since v1:
+- Rebased onto linux-next 20191015
+- Fixed platform driver name (qcom,gcc-8976 => gcc-msm8976)
+- Splitted changes to dt-bindings to a separate commit
+
+AngeloGioacchino Del Regno (1):
+  clk: qcom: Add MSM8976/56 Global Clock Controller (GCC) driver
+
+Marijn Suijten (1):
+  dt-bindings: clk: qcom: Document MSM8976 Global Clock Controller
+
+ .../bindings/clock/qcom,gcc-msm8976.yaml      |   97 +
+ drivers/clk/qcom/Kconfig                      |    8 +
+ drivers/clk/qcom/Makefile                     |    1 +
+ drivers/clk/qcom/gcc-msm8976.c                | 4160 +++++++++++++++++
+ include/dt-bindings/clock/qcom,gcc-msm8976.h  |  240 +
+ 5 files changed, 4506 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/qcom,gcc-msm8976.yaml
+ create mode 100644 drivers/clk/qcom/gcc-msm8976.c
+ create mode 100644 include/dt-bindings/clock/qcom,gcc-msm8976.h
+
+
+base-commit: 0fcfb00b28c0b7884635dacf38e46d60bf3d4eb1
+--
 2.34.1
 
