@@ -2,71 +2,94 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41163C433F5
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Dec 2021 02:27:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D8C0C433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Dec 2021 07:20:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236016AbhLJCbF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Dec 2021 21:31:05 -0500
-Received: from mail-4317.proton.ch ([185.70.43.17]:15411 "EHLO
-        mail-4317.proton.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236009AbhLJCbE (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Dec 2021 21:31:04 -0500
-Date:   Fri, 10 Dec 2021 02:27:20 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1639103248;
-        bh=orN9o2yFBpTAIH2g0jhG95WDC4zcISQzngnP5iyclQ4=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:From:To:Cc;
-        b=lle55ijyb3iu7Cf5akyOTE9MPdQ6bSKapH2aYCWuB/hkdllVMLI09repBXSVqHbdm
-         VLrFUFtC6nbipjG8+PMMOYtLonPHtbyqWIZBEK24hpZUxOHU/LcVGpjQOwrcUpoz8b
-         PDM86DwK/+twnUQLCi0EbK9cpLvJCqqt85hiQsGw=
-To:     caleb@connolly.tech, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org
-From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     Jami Kettunen <jami.kettunen@somainline.org>,
-        Joel Selvaraj <jo@jsfamily.in>
-Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: [PATCH v4 6/6] arm64: dts: qcom: msm8998-oneplus-common: Enable PMI8998 haptics
-Message-ID: <20211210022639.2779173-7-caleb@connolly.tech>
+        id S237425AbhLJHX6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 10 Dec 2021 02:23:58 -0500
+Received: from muru.com ([72.249.23.125]:36770 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237181AbhLJHX6 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 10 Dec 2021 02:23:58 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 73CCE806C;
+        Fri, 10 Dec 2021 07:21:04 +0000 (UTC)
+Date:   Fri, 10 Dec 2021 09:20:21 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Merlijn Wajer <merlijn@wizzup.org>
+Cc:     linux-omap <linux-omap@vger.kernel.org>,
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Dev Null <devnull@uvos.xyz>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Nitin Gupta <nigupta@nvidia.com>
+Subject: Re: Nokia N900 not hitting OFF mode since 5.9 is caused by proactive
+ memory compaction
+Message-ID: <YbL/teuB7qtGhtfL@atomide.com>
+References: <99e25c92-3d2d-0964-0068-651bf44cbf8a@wizzup.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <99e25c92-3d2d-0964-0068-651bf44cbf8a@wizzup.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Jami Kettunen <jami.kettunen@somainline.org>
+Hi,
 
-The OnePlus 5 and 5T both have a haptics engine connected to PMI8998.
+* Merlijn Wajer <merlijn@wizzup.org> [211210 00:34]:
+> Hi,
+> 
+> I've spent the day bisecting what exact commit prevented the Nokia N900
+> from entering the OFF sleep state (between v5.8 and v5.9), and it this
+> commit:
+> 
+> > # first bad commit: [facdaa917c4d5a376d09d25865f5a863f906234a] mm: proactive compaction
+> 
+> The git tree prior to that commit can idle at about ~27mW in OFF mode,
+> and it will often remain in that mode for prolonged amounts of time
+> (easily 30 seconds, depending on running userspace). Which the above
+> commit applied, the Nokia N900 almost never hits OFF mode any more. This
+> would suggest at least to disable CONFIG_COMPACTION, perhaps in
+> omap2plus_defconfig? I suspect this might cause idle problems beyond the
+> Nokia N900, too.
 
-Signed-off-by: Jami Kettunen <jami.kettunen@somainline.org>
-Signed-off-by: Caleb Connolly <caleb@connolly.tech>
----
- arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+Nice find, adding Nitin to Cc as well. Nitin, can we somehow avoid the
+timers for CONFIG_COMPACTION on an idle system to prevent waking up the
+system unnecessarily?
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi b/arch/ar=
-m64/boot/dts/qcom/msm8998-oneplus-common.dtsi
-index 654188027f79..0f9ad775392a 100644
---- a/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi
-@@ -257,6 +257,12 @@ pinconf {
- =09};
- };
+Not sure if sysctl -w vm.compaction_proactiveness=0 is enough to disable
+compaction for idle, maybe also the HPAGE_FRAG_CHECK_INTERVAL_MSEC = 500
+at ms also causes extra wake-ups?
 
-+&pmi8998_haptics {
-+=09status =3D "okay";
-+
-+=09qcom,wave-play-rate-us =3D <4255>;
-+};
-+
- &qusb2phy {
- =09status =3D "okay";
+Regards,
 
---
-2.34.1
+Tony
 
-
+> Maybe nothing needs to be done here other than disable the config option
+> -- but I wanted to share this in case others are trying to figure out
+> what happened to their battery life. :-)
+> 
+> There seem be more power regressions since then (at least on 5.15 there
+> is more blocking proper idle), so I'll try to find those as well, but if
+> this commit is reverted (or CONFIG_COMPACTION=n is in .config - probably
+> easier) on top of v5.9 the system seems to idle fine.
+> 
+> > # grep ^core_pwrdm /sys/kernel/debug/pm_debug/count | cut -d',' -f2,
+> > OFF:16,RET:2
+> 
+> Hope this helps someone...
+> 
+> Regards,
+> Merlijn
+> 
+> PS: v5.10 seems to use another 19mW if panel_sony_acx565akm is loaded
+> even when display is not active (maybe it doesn't suspend or something?
+> - could be fixed later, just noticed it for v5.10). I load it initially
+> to idle the display, but until I rmmod the modules, the module uses
+> quite a bit more power. This problem is not present in v5.9, so that is
+> another thing to chase down I guess... And then v5.15 uses another 12mW
+> more, for not yet uncovered reasons)
