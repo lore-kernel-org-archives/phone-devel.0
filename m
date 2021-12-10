@@ -2,84 +2,136 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 08C6BC433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Dec 2021 20:53:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DAC07C433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Dec 2021 21:45:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344240AbhLJU5Z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 10 Dec 2021 15:57:25 -0500
-Received: from mail-oi1-f180.google.com ([209.85.167.180]:36795 "EHLO
-        mail-oi1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233105AbhLJU5Y (ORCPT
+        id S244151AbhLJVsi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 10 Dec 2021 16:48:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46798 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239383AbhLJVsh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 10 Dec 2021 15:57:24 -0500
-Received: by mail-oi1-f180.google.com with SMTP id t23so14901985oiw.3;
-        Fri, 10 Dec 2021 12:53:49 -0800 (PST)
+        Fri, 10 Dec 2021 16:48:37 -0500
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59183C0617A1
+        for <phone-devel@vger.kernel.org>; Fri, 10 Dec 2021 13:45:02 -0800 (PST)
+Received: by mail-il1-x12b.google.com with SMTP id m5so9620544ilh.11
+        for <phone-devel@vger.kernel.org>; Fri, 10 Dec 2021 13:45:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :references:from:in-reply-to:content-transfer-encoding;
+        bh=twSZcP3mfT9b/ZypuoNY+BMMl0lomCjpqlD3pIkCMVk=;
+        b=bwTgLlu5ayICV2oRruJfhchWzCMSfHhBCodMQOwyhgYl/hTdov/P/dpEioeiZgwA8L
+         XbXc2E4w2vHRlih0oxJVVva20CRtJmcCvC6Wy7kaDCYd4tB8v48PxJ++2l+Io5HaYPTX
+         fLPrC7HgLWiGamqyyf6+itveeWSmVBqTOMT8ssWNc9c3es1+ntEDK6TleEXqaWJZP6hU
+         OpginV9JT8Fll+zzaBDYh1BSmXWSzLJ5K9PrchWmDZkJoFbYJq63yHRHVfU5Gzgc6BWe
+         xXtckl37/mUgpph2S8bAjCo9opUVovfuXHzyznvPSQ7AbRhISx2ars2msdiF5tqtbdLh
+         yDaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=bPa2sUzI1TTogWtVdv+gqxLQMcc0yIn4ajlG/Yv+sKg=;
-        b=k3Iex8DpJXq/I5gjvjAEiqYNenoB/gZ6AONQo+Ha0XMLOxCY/7rp15ze4pR7vnrv54
-         B5BH4ki/62zW+YZsgTsoWh5MVb1oYFNuwY00duzklXFk4yEdghzzjX9UVfcEPypXPwJ2
-         VIEoIFte7+ks/Y055YkX72kXcpSQqIBrLHPIKPq55Vo744iGExemrZUAsqc7vluNiElG
-         UH5eiKdvbQtiIHCOva/XLwXiLUMQKBE9TrBOrIlUuOefGIaeAPaQwov5dgvSy4H44Yk8
-         zlNIjbslBYxUnP3IukC9ZygN4LMdR5hfzyp0WcY3J0fql5jqWp4cB9CDXr8X2GJEf56P
-         /20w==
-X-Gm-Message-State: AOAM532JASvIMewDquFV7zbpHEiZ0JjAsyOtM9QTF5olF9bWC7fuLbfL
-        qHFW1k9HU6+UItxJCVKDAw==
-X-Google-Smtp-Source: ABdhPJw/WAZcAWnbMK5d5NnkzoKQPi02VZoijHmfZDlRJbNYKZ9ZQMfcdBwUsO71COLL2fOqFKGMkA==
-X-Received: by 2002:a05:6808:1814:: with SMTP id bh20mr14303276oib.31.1639169628833;
-        Fri, 10 Dec 2021 12:53:48 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id r10sm782013ool.1.2021.12.10.12.53.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Dec 2021 12:53:48 -0800 (PST)
-Received: (nullmailer pid 1878574 invoked by uid 1000);
-        Fri, 10 Dec 2021 20:53:47 -0000
-Date:   Fri, 10 Dec 2021 14:53:47 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     Andy Gross <agross@kernel.org>, linux-clk@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Taniya Das <tdas@codeaurora.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-kernel@vger.kernel.org,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, Pavel Dubrova <pashadubrova@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Stephen Boyd <sboyd@kernel.org>
-Subject: Re: [PATCH v6 1/2] dt-bindings: clk: qcom: Document MSM8976 Global
- Clock Controller
-Message-ID: <YbO+WxSGYfMDY5RM@robh.at.kernel.org>
-References: <20211208091036.132334-1-marijn.suijten@somainline.org>
- <20211208091036.132334-2-marijn.suijten@somainline.org>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=twSZcP3mfT9b/ZypuoNY+BMMl0lomCjpqlD3pIkCMVk=;
+        b=NMmlJcck25nl7bdisvqbUZsAvrvNW/08w/auLvWxaXHk8RDjlR4QDPIvwz3owT/Isv
+         HlIGBana7+FAaGXkMyR9Px6eRjisYEIostwiVuOx2/hQH0vk+q2mlk0u3ZOvfonEMf1H
+         grHOrP2qfFOmBCBxIPU9rc8GT+j7UQIBqua2St+rNqxwLMJ7QQLjD6FGiI8AYLeN7Onn
+         snCzZHxMqS+1jyVwZuMNXgNPii0mrHg52NxzPcXYrStWE+egYYUqs/TVJ1dQLj6Hrmio
+         ErVxCFWJ8KOb6Ejc7lgfsJS4fRjm6tFU39176apJB7N6w3QBQbGoonggWIAOjHqfPxY1
+         bouA==
+X-Gm-Message-State: AOAM533fpdC6QL38BxYAP62h9GX7KFuu2fDiuUDKVII3PKuqbRXoHtBs
+        44bFCOrJyZQqgYfLIZLMEX1IUA==
+X-Google-Smtp-Source: ABdhPJyh4LXFMt7xtDpViOu223o6K21uy/0CVGrUz8kUYRG7TJ06//3d2q/c2WKdXgTwLXUoYRoWuQ==
+X-Received: by 2002:a92:cda4:: with SMTP id g4mr20168487ild.159.1639172701177;
+        Fri, 10 Dec 2021 13:45:01 -0800 (PST)
+Received: from [172.22.22.4] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
+        by smtp.googlemail.com with ESMTPSA id t6sm2498690ios.13.2021.12.10.13.44.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Dec 2021 13:45:00 -0800 (PST)
+Message-ID: <c206a619-a40c-8c2b-8dfe-484f2b0eba92@linaro.org>
+Date:   Fri, 10 Dec 2021 15:44:58 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211208091036.132334-2-marijn.suijten@somainline.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.1
+Subject: Re: [PATCH 2/3] firmware: qcom: scm: Add function to set the maximum
+ IOMMU pool size
+Content-Language: en-US
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thara Gopinath <thara.gopinath@linaro.org>,
+        Elliot Berman <eberman@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20211208083423.22037-1-marijn.suijten@somainline.org>
+ <20211208083423.22037-3-marijn.suijten@somainline.org>
+ <b21686fc-3662-1ed4-8ba3-8ed5ca6eda13@linaro.org>
+ <20211208234436.ktagmcfj6jl5jct5@SoMainline.org>
+ <fb1005b6-e610-407f-39bb-7cd6a198f9d6@somainline.org>
+From:   Alex Elder <elder@linaro.org>
+In-Reply-To: <fb1005b6-e610-407f-39bb-7cd6a198f9d6@somainline.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 08 Dec 2021 10:10:35 +0100, Marijn Suijten wrote:
-> Document the required properties and firmware clocks for gcc-msm8976 to
-> operate nominally, and add header definitions for referencing the clocks
-> from firmware.
+On 12/10/21 10:28 AM, AngeloGioacchino Del Regno wrote:
+> Il 09/12/21 00:44, Marijn Suijten ha scritto:
+>> On 2021-12-08 07:30:28, Alex Elder wrote:
+>>> On 12/8/21 2:34 AM, Marijn Suijten wrote:
+>>>> From: AngeloGioacchino Del Regno 
+>>>> <angelogioacchino.delregno@somainline.org>
+>>>>
+>>>> This is not necessary for basic functionality of the IOMMU, but
+>>>> it's an optimization that tells to the TZ what's the maximum
+>>>> mappable size for the secure IOMMUs, so that it can optimize
+>>>> the data structures in the TZ itself.
+>>>
+>>> Are there no users of this function?    -Alex
+>>
+>> I should have probably mentioned in the cover letter that this function
+>> and the one introduced in patch 3/3 are going to be used in upcoming
+>> patches for IOMMUs found in msm8976, msm8974 and related SoCs (with the
+>> side-note that I don't see this particular set_cp_pool_size used in the
+>> branch that this was submitted from, but it's most likely used elsewhere
+>> or planned ahead to be used in the near future - I expect Angelo to be
+>> able to comment on that more accurately).
+>>
 > 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> ---
->  .../bindings/clock/qcom,gcc-msm8976.yaml      |  97 +++++++
->  include/dt-bindings/clock/qcom,gcc-msm8976.h  | 240 ++++++++++++++++++
->  2 files changed, 337 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/clock/qcom,gcc-msm8976.yaml
->  create mode 100644 include/dt-bindings/clock/qcom,gcc-msm8976.h
+> This function is used in the secured iommu pagetable setup, but not for
+> all of the "SCM feature versions" (only for version >= 1.1.1, downstream
+> reads it with a call to scm_feat_version()).
 > 
+> It's not strictly necessary for functionality, hence why Marijn isn't
+> seeing any call to this in the branch that he was browsing: the spirit here
+> is to first introduce code that does a minimal (but, of course, working)
+> setup of the IOMMUs found in MSM8956/76 (which can be adapted with very
+> minimal changes to other SoCs), and *only then* to add these performance
+> enhancements to the mix.
+> 
+> ...and this is why this commit is here :))
+> 
+> By the way, if my memory isn't failing me, that SCM call should be usable
+> on all AArch64 SoCs (so, 8956, 8994 and the rest).
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Thanks for your responses.  I don't actually know what
+you use as downstream for this.  If I did, I might
+compare what I see there to what you do and confirm
+it does the same thing...
+
+So I'm not offering any review on this or patch 3.
+But I'm glad to know the users of these functions
+will be coming soon.
+
+					-Alex
