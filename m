@@ -2,93 +2,229 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FF7EC433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Dec 2021 01:03:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A80AFC433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Dec 2021 02:26:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235026AbhLJBH1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Dec 2021 20:07:27 -0500
-Received: from mail.wizzup.org ([95.217.97.174]:43406 "EHLO wizzup.org"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230526AbhLJBH1 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 9 Dec 2021 20:07:27 -0500
-X-Greylist: delayed 1803 seconds by postgrey-1.27 at vger.kernel.org; Thu, 09 Dec 2021 20:07:27 EST
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
-        s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:Message-ID
-        :Subject:From:Cc:To:Sender:Reply-To:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=ikI9llI2WD4Q1bc3yU8It+TtoHavj8pcle8JQapY4Ww=; b=hNOOih0GTqFjI/v5sq2Fpjmh/+
-        7YklcVuhmOldHOkSw896E+YNrzRhV7t07zRZ0oOlss9nVaB5HLia5paIkqBFK7AhihdKDrJjfgaDO
-        txFGHjLo5JZN8Q/L27OY3XwPpJuCho1aZU2F3PIH6GmxWTx5ay/TCDkBcvHp3NS+WgZ3OJ2L9DJV2
-        HGFCiHPIy4oowMMvuH4UGnxs/Mu9gqrS6kqbJSar7G7x0AtOwRVvzg4aYzQz75J113shyKvRZDS08
-        LYViMkUCJ5hcJQEgbnkI/t4D6FN8VE9C5b3FH7aIhpeYIFWG4HhE8LIjnw7HgHfBYgz+yAqstYNAc
-        GOZHoCyQ==;
-Received: from [45.83.235.159] (helo=[0.0.0.0])
-        by wizzup.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <merlijn@wizzup.org>)
-        id 1mvTqr-0000Dl-QG; Fri, 10 Dec 2021 00:33:29 +0000
-To:     linux-omap <linux-omap@vger.kernel.org>,
-        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
-        Tony Lindgren <tony@atomide.com>, Pavel Machek <pavel@ucw.cz>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Dev Null <devnull@uvos.xyz>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-From:   Merlijn Wajer <merlijn@wizzup.org>
-Subject: Nokia N900 not hitting OFF mode since 5.9 is caused by proactive
- memory compaction
-Message-ID: <99e25c92-3d2d-0964-0068-651bf44cbf8a@wizzup.org>
-Date:   Fri, 10 Dec 2021 01:39:16 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S233714AbhLJCad (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Dec 2021 21:30:33 -0500
+Received: from mail-4018.proton.ch ([185.70.40.18]:36370 "EHLO
+        mail-4018.proton.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231149AbhLJCad (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Dec 2021 21:30:33 -0500
+Date:   Fri, 10 Dec 2021 02:26:52 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1639103217;
+        bh=oKftemVxgPQunBy+T7L2ItW0dv51KOOA8rbWWaGzHoE=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:From:To:Cc;
+        b=pA2A2og8f6mPaXZHsXNWn4z6XscYDFGpKPnsXAfPCkoIRsWomtGVYWZuJcExydw97
+         mfdvZgrfT4BhWb1y8yo45KnGeRZ3YezNCrrhOIbgpzxm4u7ovKjIiTaMbs3GTC3mFG
+         cZaZoR4+D8ZI5drj4jcOfXkIuVeajZLcM9zGtgBg=
+To:     caleb@connolly.tech, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-input@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     Jami Kettunen <jami.kettunen@somainline.org>,
+        Joel Selvaraj <jo@jsfamily.in>
+Reply-To: Caleb Connolly <caleb@connolly.tech>
+Subject: [PATCH v4 1/6] dt-bindings: input: add Qualcomm SPMI haptics driver
+Message-ID: <20211210022639.2779173-2-caleb@connolly.tech>
+In-Reply-To: <20211210022639.2779173-1-caleb@connolly.tech>
+References: <20211210022639.2779173-1-caleb@connolly.tech>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
+Add bindings for qcom PMIC SPMI haptics driver.
 
-I've spent the day bisecting what exact commit prevented the Nokia N900
-from entering the OFF sleep state (between v5.8 and v5.9), and it this
-commit:
+Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+---
+ .../bindings/input/qcom,spmi-haptics.yaml     | 123 ++++++++++++++++++
+ include/dt-bindings/input/qcom,spmi-haptics.h |  32 +++++
+ 2 files changed, 155 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/qcom,spmi-hapti=
+cs.yaml
+ create mode 100644 include/dt-bindings/input/qcom,spmi-haptics.h
 
-> # first bad commit: [facdaa917c4d5a376d09d25865f5a863f906234a] mm: proactive compaction
+diff --git a/Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml=
+ b/Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml
+new file mode 100644
+index 000000000000..d02a30c7554c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml
+@@ -0,0 +1,123 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++# Copyright 2020 Unisoc Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/input/qcom,spmi-haptics.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm Technologies Inc PMI8998 spmi haptics
++
++maintainers:
++  - Caleb Connolly <caleb@connolly.tech>
++
++description: |
++  Qualcomm SPMI haptics is a peripheral on some QTI PMICs. It supports lin=
+ear resonant
++  actuators and eccentric rotating mass type haptics commonly found in mob=
+ile devices.
++  It supports multiple sources of wave data such as an internal buffer, di=
+rect play
++  (from kernel or userspace) as well as an audio output mode.
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - qcom,pmi8998-haptics
++          - qcom,pmi8996-haptics
++          - qcom,pmi8941-haptics
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    items:
++      - description: short circuit interrupt
++      - description: play interrupt
++
++  interrupt-names:
++    items:
++      - const: short
++      - const: play
++
++  qcom,actuator-type:
++    description: |
++      The type of actuator attached to the hardware.
++      Allowed values are,
++        0 - HAP_TYPE_LRA
++        1 - HAP_TYPE_ERM
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [ 0, 1 ]
++    default: 0
++
++  qcom,wave-shape:
++    description: |
++      Selects the wave shape to use.
++      Allowed values are,
++        0 - HAP_WAVE_SINE
++        1 - HAP_WAVE_SQUARE
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [ 0, 1 ]
++    default: 0
++
++  qcom,play-mode:
++    description: |
++      Selects the play mode to use.
++      Allowed values are,
++        0 - HAP_PLAY_DIRECT
++        1 - HAP_PLAY_BUFFER
++        2 - HAP_PLAY_AUDIO
++        3 - HAP_PLAY_PWM
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [ 0, 1, 2, 3 ]
++    default: 2
++
++  qcom,wave-play-rate-us:
++    description: |
++      Wave sample durection in microseconds, 1/f where f
++      is the resonant frequency of the actuator.
++    $ref: /schemas/types.yaml#/definitions/uint32
++    minimum: 0
++    maximum: 20475
++
++  qcom,brake-pattern:
++    minItems: 4
++    maxItems: 4
++    description: |
++      The brake pattern are the strengths of the pattern
++      used to brake the haptics. Allowed values are,
++        0 - 0V
++        1 - Vmax/4
++        2 - Vmax/2
++        3 - Vmax
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    default: [0x3, 0x3, 0x2, 0x1]
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - qcom,wave-play-rate-us
++
++additionalProperties: false
++
++examples:
++  - |
++      #include <dt-bindings/interrupt-controller/irq.h>
++      #include <dt-bindings/input/qcom,spmi-haptics.h>
++
++      spmi {
++        #address-cells =3D <1>;
++        #size-cells =3D <0>;
++        pmi8998_haptics: haptics@c000 {
++          compatible =3D "qcom,pmi8998-haptics";
++          reg =3D <0xc000>;
++
++          interrupts =3D <0x3 0xc0 0x0 IRQ_TYPE_EDGE_BOTH>,
++                      <0x3 0xc0 0x1 IRQ_TYPE_EDGE_BOTH>;
++          interrupt-names =3D "short", "play";
++
++          qcom,wave-shape =3D <HAP_WAVE_SINE>;
++          qcom,play-mode =3D <HAP_PLAY_BUFFER>;
++          qcom,brake-pattern =3D <0x3 0x3 0x2 0x1>;
++
++          status =3D "disabled";
++        };
++      };
+diff --git a/include/dt-bindings/input/qcom,spmi-haptics.h b/include/dt-bin=
+dings/input/qcom,spmi-haptics.h
+new file mode 100644
+index 000000000000..14a7e7d1471e
+--- /dev/null
++++ b/include/dt-bindings/input/qcom,spmi-haptics.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * This header provides constants for pmi8998 SPMI haptics options.
++ */
++
++#ifndef _DT_BINDINGS_QCOM_PMIC_SPMI_HAPTICS_
++#define _DT_BINDINGS_QCOM_PMIC_SPMI_HAPTICS_
++
++// Actuator types
++#define HAP_TYPE_LRA=09=090
++#define HAP_TYPE_ERM=09=091
++
++// LRA Wave type
++#define HAP_WAVE_SINE=09=090
++#define HAP_WAVE_SQUARE=09=091
++
++// Play modes
++#define HAP_PLAY_DIRECT=09=090
++#define HAP_PLAY_BUFFER=09=091
++#define HAP_PLAY_AUDIO=09=092
++#define HAP_PLAY_PWM=09=093
++
++#define HAP_PLAY_MAX=09=09HAP_PLAY_PWM
++
++// Auto resonance type
++#define HAP_AUTO_RES_NONE=090
++#define HAP_AUTO_RES_ZXD=091
++#define HAP_AUTO_RES_QWD=092
++#define HAP_AUTO_RES_MAX_QWD=093
++#define HAP_AUTO_RES_ZXD_EOP=094
++
++#endif /* _DT_BINDINGS_QCOM_PMIC_SPMI_HAPTICS_ */
+--
+2.34.1
 
-The git tree prior to that commit can idle at about ~27mW in OFF mode,
-and it will often remain in that mode for prolonged amounts of time
-(easily 30 seconds, depending on running userspace). Which the above
-commit applied, the Nokia N900 almost never hits OFF mode any more. This
-would suggest at least to disable CONFIG_COMPACTION, perhaps in
-omap2plus_defconfig? I suspect this might cause idle problems beyond the
-Nokia N900, too.
 
-Maybe nothing needs to be done here other than disable the config option
--- but I wanted to share this in case others are trying to figure out
-what happened to their battery life. :-)
-
-There seem be more power regressions since then (at least on 5.15 there
-is more blocking proper idle), so I'll try to find those as well, but if
-this commit is reverted (or CONFIG_COMPACTION=n is in .config - probably
-easier) on top of v5.9 the system seems to idle fine.
-
-> # grep ^core_pwrdm /sys/kernel/debug/pm_debug/count | cut -d',' -f2,
-> OFF:16,RET:2
-
-Hope this helps someone...
-
-Regards,
-Merlijn
-
-PS: v5.10 seems to use another 19mW if panel_sony_acx565akm is loaded
-even when display is not active (maybe it doesn't suspend or something?
-- could be fixed later, just noticed it for v5.10). I load it initially
-to idle the display, but until I rmmod the modules, the module uses
-quite a bit more power. This problem is not present in v5.9, so that is
-another thing to chase down I guess... And then v5.15 uses another 12mW
-more, for not yet uncovered reasons)
