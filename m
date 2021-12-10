@@ -2,111 +2,93 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78C51C433FE
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Dec 2021 23:00:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FF7EC433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Dec 2021 01:03:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232499AbhLIXEI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Dec 2021 18:04:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43210 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232827AbhLIXEI (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Dec 2021 18:04:08 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59DFDC0617A2
-        for <phone-devel@vger.kernel.org>; Thu,  9 Dec 2021 15:00:34 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id l25so24656608eda.11
-        for <phone-devel@vger.kernel.org>; Thu, 09 Dec 2021 15:00:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=a+0Ep/yb8H7MLgHj2miW6l5c50PIqRx5I19pHgtjLSE=;
-        b=Uvj5gScfTG89Z8iPzEhR/7q6XFsGOJ4trsr3RUOhWIqLtsVf+GZpaq4AxCpHHhiEaU
-         Oy0cc6bVqOHkZbTuYTPdyTo/G1m25EJPHYvUqjyUaJUvlsznlPPTp9oyptbTjm3D6eHS
-         zd+4cmRtujNe3n0orD+b3GjyonJZGFY37oTIMf8BSJeWd0tpglR+QyIX0cHtfbwzAjzh
-         lAIg51QL1k2w4H4xlUZdqjjkW7uFFKx5CvGl+d/QvJfvYD6g7ODQlOglzmh0UsOkq+L5
-         5w8sB0NwLPEpYRkxs49EM/dsponzDQiuPYOOC+rH4LQcYKt16qca2ZL090tFZhsVYb1i
-         ytWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=a+0Ep/yb8H7MLgHj2miW6l5c50PIqRx5I19pHgtjLSE=;
-        b=6x7UQJyCvSk1lt6TCe8ocT/D1RNwSoLUmIrQzt4raTCt3dMSJqyiE0zFIPqfcu6Q2i
-         qr0eQ2zx2DzBiIcq4EV5O5hvM+mIj1suHTFTBAozpPEx55WyOvpLjbr6o26ybht62T44
-         Mz7a7Tngaw/r1B2Tx9FH6GxwGPtl70jDJrihU2/8tuMsKZeklkY76DJrnN//piVTrkj/
-         UIFfbdkYBbYL6EWjn5XdMzhipunCzvApXQCKhaPjWxqYiAZkO1s+pJvMoZ3QanPoSDZc
-         3fIy0/Ob0yoS/fYL9Qlz/AFyxaSNvhcPAXVKZqygEU/+NP+JqNKd7xTibNNSDTGHlMPd
-         5OPA==
-X-Gm-Message-State: AOAM533r/avdxUJGj8Y7zY/ziE01p606wF/K9LRbnBvsH7smy/0LIZCE
-        r6Bgy5tilZ6MYmCpuYXCnDw3hg==
-X-Google-Smtp-Source: ABdhPJzpObr0Euc9Aqi+D4bMnsIpo5b7q8xE8lSN9AIusc1I3G72KfXa4pytAmq0l4lbuYXkzvYuhQ==
-X-Received: by 2002:a17:906:399a:: with SMTP id h26mr18850064eje.131.1639090832781;
-        Thu, 09 Dec 2021 15:00:32 -0800 (PST)
-Received: from lion.localdomain (cpc78119-cwma10-2-0-cust590.7-3.cable.virginm.net. [81.96.50.79])
-        by smtp.gmail.com with ESMTPSA id cw20sm523557ejc.90.2021.12.09.15.00.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Dec 2021 15:00:32 -0800 (PST)
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-To:     caleb.connolly@linaro.org, amit.pundir@linaro.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Cc:     sumit.semwal@linaro.org, john.stultz@linaro.org
-Subject: [PATCH] dts: arm64: qcom: sdm845-oneplus-*: add msm-id and board-id
-Date:   Thu,  9 Dec 2021 22:59:38 +0000
-Message-Id: <20211209225938.2427342-1-caleb.connolly@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        id S235026AbhLJBH1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Dec 2021 20:07:27 -0500
+Received: from mail.wizzup.org ([95.217.97.174]:43406 "EHLO wizzup.org"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S230526AbhLJBH1 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 9 Dec 2021 20:07:27 -0500
+X-Greylist: delayed 1803 seconds by postgrey-1.27 at vger.kernel.org; Thu, 09 Dec 2021 20:07:27 EST
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
+        s=mail; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:Message-ID
+        :Subject:From:Cc:To:Sender:Reply-To:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=ikI9llI2WD4Q1bc3yU8It+TtoHavj8pcle8JQapY4Ww=; b=hNOOih0GTqFjI/v5sq2Fpjmh/+
+        7YklcVuhmOldHOkSw896E+YNrzRhV7t07zRZ0oOlss9nVaB5HLia5paIkqBFK7AhihdKDrJjfgaDO
+        txFGHjLo5JZN8Q/L27OY3XwPpJuCho1aZU2F3PIH6GmxWTx5ay/TCDkBcvHp3NS+WgZ3OJ2L9DJV2
+        HGFCiHPIy4oowMMvuH4UGnxs/Mu9gqrS6kqbJSar7G7x0AtOwRVvzg4aYzQz75J113shyKvRZDS08
+        LYViMkUCJ5hcJQEgbnkI/t4D6FN8VE9C5b3FH7aIhpeYIFWG4HhE8LIjnw7HgHfBYgz+yAqstYNAc
+        GOZHoCyQ==;
+Received: from [45.83.235.159] (helo=[0.0.0.0])
+        by wizzup.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <merlijn@wizzup.org>)
+        id 1mvTqr-0000Dl-QG; Fri, 10 Dec 2021 00:33:29 +0000
+To:     linux-omap <linux-omap@vger.kernel.org>,
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
+        Tony Lindgren <tony@atomide.com>, Pavel Machek <pavel@ucw.cz>
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Dev Null <devnull@uvos.xyz>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+From:   Merlijn Wajer <merlijn@wizzup.org>
+Subject: Nokia N900 not hitting OFF mode since 5.9 is caused by proactive
+ memory compaction
+Message-ID: <99e25c92-3d2d-0964-0068-651bf44cbf8a@wizzup.org>
+Date:   Fri, 10 Dec 2021 01:39:16 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The msm-id and board-id can be used to select the correct dtb when
-multiple are provided to the bootloader.
+Hi,
 
-Multiple DTBs can be provided on sdm845 devices using boot image header
-v1 by appending them all to the kernel image before creating the boot
-image. The bootloader then selects them like this:
+I've spent the day bisecting what exact commit prevented the Nokia N900
+from entering the OFF sleep state (between v5.8 and v5.9), and it this
+commit:
 
-Best match DTB tags 321/00000008/0x00000000/20001/20014/20115/20018/0/(offset)0x79998E27/(size)0x000173CD
-Using pmic info 0x20014/0x20115/0x20018/0x0 for device 0x20014/0x20115/0x20018/0x0
+> # first bad commit: [facdaa917c4d5a376d09d25865f5a863f906234a] mm: proactive compaction
 
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
----
- arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts | 2 ++
- arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts    | 2 ++
- 2 files changed, 4 insertions(+)
+The git tree prior to that commit can idle at about ~27mW in OFF mode,
+and it will often remain in that mode for prolonged amounts of time
+(easily 30 seconds, depending on running userspace). Which the above
+commit applied, the Nokia N900 almost never hits OFF mode any more. This
+would suggest at least to disable CONFIG_COMPACTION, perhaps in
+omap2plus_defconfig? I suspect this might cause idle problems beyond the
+Nokia N900, too.
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts b/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
-index 73493079d13e..5936b47dee5f 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
-@@ -11,6 +11,8 @@ / {
- 	model = "OnePlus 6";
- 	compatible = "oneplus,enchilada", "qcom,sdm845";
- 	chassis-type = "handset";
-+	qcom,msm-id = <0x141 0x20001>;
-+	qcom,board-id = <8 0 17819 22>;
- };
- 
- &display_panel {
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
-index b63ebc48f62f..78a0b99144e6 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
-@@ -11,6 +11,8 @@ / {
- 	model = "OnePlus 6T";
- 	compatible = "oneplus,fajita", "qcom,sdm845";
- 	chassis-type = "handset";
-+	qcom,msm-id = <0x141 0x20001>;
-+	qcom,board-id = <8 0 18801 41>;
- };
- 
- &display_panel {
--- 
-2.34.1
+Maybe nothing needs to be done here other than disable the config option
+-- but I wanted to share this in case others are trying to figure out
+what happened to their battery life. :-)
 
+There seem be more power regressions since then (at least on 5.15 there
+is more blocking proper idle), so I'll try to find those as well, but if
+this commit is reverted (or CONFIG_COMPACTION=n is in .config - probably
+easier) on top of v5.9 the system seems to idle fine.
+
+> # grep ^core_pwrdm /sys/kernel/debug/pm_debug/count | cut -d',' -f2,
+> OFF:16,RET:2
+
+Hope this helps someone...
+
+Regards,
+Merlijn
+
+PS: v5.10 seems to use another 19mW if panel_sony_acx565akm is loaded
+even when display is not active (maybe it doesn't suspend or something?
+- could be fixed later, just noticed it for v5.10). I load it initially
+to idle the display, but until I rmmod the modules, the module uses
+quite a bit more power. This problem is not present in v5.9, so that is
+another thing to chase down I guess... And then v5.15 uses another 12mW
+more, for not yet uncovered reasons)
