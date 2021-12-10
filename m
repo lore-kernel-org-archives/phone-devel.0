@@ -2,23 +2,24 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B369C43217
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Dec 2021 02:27:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F055C433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Dec 2021 02:27:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235964AbhLJCaf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Dec 2021 21:30:35 -0500
-Received: from mail-0301.mail-europe.com ([188.165.51.139]:45068 "EHLO
+        id S235979AbhLJCan (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Dec 2021 21:30:43 -0500
+Received: from mail-0301.mail-europe.com ([188.165.51.139]:52352 "EHLO
         mail-0301.mail-europe.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235960AbhLJCaf (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Dec 2021 21:30:35 -0500
-Date:   Fri, 10 Dec 2021 02:26:47 +0000
+        with ESMTP id S235960AbhLJCan (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Dec 2021 21:30:43 -0500
+Date:   Fri, 10 Dec 2021 02:27:00 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1639103217;
-        bh=mu0sqQvUggygf7jKzEWPGl0UelkYU3w40dJw8wgxBlw=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:From:To:Cc;
-        b=GNF8V+oQyEMMQAWhqMvw0m37ieasw0tmQ/6vl1VeJG9LqdAWQNa2nj6aMZQ205H1X
-         sdyB3eNYCd9kFOy+8NZlDc/u0MQtw9zwvU2NWsqll7bmvWpm9yPgbbNul04+k5uOC+
-         djvMa/6ak9/KlsYwyImgjxiQoOMNhNlX5/pGYgrU=
+        s=protonmail; t=1639103225;
+        bh=HPRTLypqlL1v/oJddAQlru6l2IJfkdXX26COEmhucPs=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:From:To:Cc;
+        b=FquTi0+w7hGeWMhBOi0z5TdO2ARBGanGJeBTlGYTYZmsXerSlwHDLJ+W9L+erMiD1
+         ad63z18tpdWlhxo3AdGFd8LbqqXe7U5bNxMhkOeb++0aYNoS2oV/Wytd8GGzqfqWed
+         M5BWmT6B2mmIt8PocbaLZhCp+f5spQKBzb82j+tA=
 To:     caleb@connolly.tech, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
@@ -29,8 +30,10 @@ From:   Caleb Connolly <caleb@connolly.tech>
 Cc:     Jami Kettunen <jami.kettunen@somainline.org>,
         Joel Selvaraj <jo@jsfamily.in>
 Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: [PATCH v4 0/6] input: Introduce support for SPMI haptics found on Qcom PMICs
-Message-ID: <20211210022639.2779173-1-caleb@connolly.tech>
+Subject: [PATCH v4 3/6] arm64: dts: qcom: pmi8998: introduce spmi haptics
+Message-ID: <20211210022639.2779173-4-caleb@connolly.tech>
+In-Reply-To: <20211210022639.2779173-1-caleb@connolly.tech>
+References: <20211210022639.2779173-1-caleb@connolly.tech>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -38,70 +41,44 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This series introduces a driver for the SPMI haptics hardware block
-found in Qualcomm PMICs. SPMI haptics support LRA (Linear Resonant
-Actuator) style haptics, as well as ERM (Eccentric Rotating Mass).
-It also supports several modes of driving the haptics, e.g. by loading
-the pattern to play into an internal buffer, or using PWM.
+Add bindings for Qualcomm SPMI haptics on platforms using pmi8998.
 
-More information about the hardware can be found here:
-        https://gitlab.com/sdm845-mainline/linux/-/wikis/PMI8998-QPNP-Hapti=
-cs
+Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+---
+ arch/arm64/boot/dts/qcom/pmi8998.dtsi | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-This driver has been written based on downstream sources as no public
-documentation is available. It includes initial support for LRA haptics
-in buffer mode, this combination seems to be the most common and will
-enable haptics on the OnePlus 6 and 6T, PocoPhone F1, OnePlus 5 and
-several other Qualcomm devices with mainline kernel support.
+diff --git a/arch/arm64/boot/dts/qcom/pmi8998.dtsi b/arch/arm64/boot/dts/qc=
+om/pmi8998.dtsi
+index 0fef5f113f05..97d993f31ddd 100644
+--- a/arch/arm64/boot/dts/qcom/pmi8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
++#include <dt-bindings/input/qcom,spmi-haptics.h>
+ #include <dt-bindings/interrupt-controller/irq.h>
+ #include <dt-bindings/spmi/spmi.h>
 
-The driver is implemented using the ff-memless (forcefeedback) input
-framework and makes an attempt to control the strength of vibration relativ=
-e
-to the magnitude set from userspace.
+@@ -53,5 +54,19 @@ pmi8998_wled: leds@d800 {
+ =09=09=09status =3D "disabled";
+ =09=09};
 
-Changes since v3:
- - Adjust example DTS to avoid creating new warnings in dt_binding_check
- - Address warnings from kernel test robot.
-
-Changes since v2:
- - Addressed Rob's comments on dt-bindings (I'm not sure what to do
-   about the pmic compatible?)
- - Fixed some typos
-
-Changes since v1:
- - Replace old QPNP naming with SPMI
- - Address Bjorn's comments on the driver, various style and code cleanups
- - Address Bjorn's comments on the DT bindings and DTS
- - Pickup patches from Joel and Jami to enable haptics on the OnePlus 5
-   and Poco F1.
-
-Caleb Connolly (4):
-  dt-bindings: input: add Qualcomm SPMI haptics driver
-  input: add Qualcomm SPMI haptics driver
-  arm64: dts: qcom: pmi8998: introduce spmi haptics
-  arm64: dts: qcom: sdm845-oneplus-common: add haptics
-
-Jami Kettunen (1):
-  arm64: dts: qcom: msm8998-oneplus-common: Enable PMI8998 haptics
-
-Joel Selvaraj (1):
-  arm64: dts: qcom: sdm845-xiaomi-beryllium: add haptics
-
- .../bindings/input/qcom,spmi-haptics.yaml     | 123 +++
- .../boot/dts/qcom/msm8998-oneplus-common.dtsi |   6 +
- arch/arm64/boot/dts/qcom/pmi8998.dtsi         |  15 +
- .../boot/dts/qcom/sdm845-oneplus-common.dtsi  |   6 +
- .../boot/dts/qcom/sdm845-xiaomi-beryllium.dts |   5 +
- drivers/input/misc/Kconfig                    |  12 +
- drivers/input/misc/Makefile                   |   1 +
- drivers/input/misc/qcom-spmi-haptics.c        | 977 ++++++++++++++++++
- include/dt-bindings/input/qcom,spmi-haptics.h |  32 +
- 9 files changed, 1177 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/input/qcom,spmi-hapti=
-cs.yaml
- create mode 100644 drivers/input/misc/qcom-spmi-haptics.c
- create mode 100644 include/dt-bindings/input/qcom,spmi-haptics.h
-
++=09=09pmi8998_haptics: haptics@c000 {
++=09=09=09compatible =3D "qcom,pmi8998-haptics";
++=09=09=09reg =3D <0xc000>;
++
++=09=09=09interrupts =3D <0x3 0xc0 0x0 IRQ_TYPE_EDGE_BOTH>,
++=09=09=09=09     <0x3 0xc0 0x1 IRQ_TYPE_EDGE_BOTH>;
++=09=09=09interrupt-names =3D "short", "play";
++
++=09=09=09qcom,wave-shape =3D <HAP_WAVE_SINE>;
++=09=09=09qcom,play-mode =3D <HAP_PLAY_BUFFER>;
++=09=09=09qcom,brake-pattern =3D <0x3 0x3 0x2 0x1>;
++
++=09=09=09status =3D "disabled";
++=09=09};
+ =09};
+ };
 --
 2.34.1
 
