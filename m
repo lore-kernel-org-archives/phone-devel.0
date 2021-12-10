@@ -2,71 +2,95 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EB4BC433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Dec 2021 09:41:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F07CEC433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Dec 2021 14:03:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236845AbhLJJpQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 10 Dec 2021 04:45:16 -0500
-Received: from mail.wizzup.org ([95.217.97.174]:43480 "EHLO wizzup.org"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231864AbhLJJpQ (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 10 Dec 2021 04:45:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
-        s=mail; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
-        Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=doSnLVpzSvaqr4NQDA9GRIBQZJwxqvyFpOIBYgu6rFQ=; b=agOAwplekXMeKfH70GxdYHYqg6
-        6f6ocNXPadmgPd3l6OkV+gxa2Y01TfZjNyS0yuYNBC1Sat5iziif2K3lWt0ngom/wFaMKMeF+dwz1
-        wIwwRDqfz0ag/NB4uE0hmedH529sLXdKsnrnheGfO4l0Y+EKuZJuNLfkulZyl0lVRF9Tq2IyPBZGQ
-        JhjSEZoCyTaLNMYLPdLIiQTGbpAgkkqPeQzgHr3uoQHVciMU1YfCg6pVF1Htedqh0rtpsOz5uYR4H
-        zPNBbm/v4prqntYfdylyxcNXb6qrKZ5XVsVeVfBKgdY86Lrx8P/GQIR9egGKP0Fq/QRlm2ecMqYcL
-        J1vNDqIw==;
-Received: from [45.83.235.159] (helo=[0.0.0.0])
-        by wizzup.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <merlijn@wizzup.org>)
-        id 1mvcP9-0000OP-7Z; Fri, 10 Dec 2021 09:41:27 +0000
-Subject: Re: Nokia N900 not hitting OFF mode since 5.9 is caused by proactive
- memory compaction
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-omap <linux-omap@vger.kernel.org>,
-        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Dev Null <devnull@uvos.xyz>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Nitin Gupta <nigupta@nvidia.com>
-References: <99e25c92-3d2d-0964-0068-651bf44cbf8a@wizzup.org>
- <YbL/teuB7qtGhtfL@atomide.com>
-From:   Merlijn Wajer <merlijn@wizzup.org>
-Message-ID: <102ac103-83e9-6f64-b209-4d238c0a2893@wizzup.org>
-Date:   Fri, 10 Dec 2021 10:47:14 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
-MIME-Version: 1.0
-In-Reply-To: <YbL/teuB7qtGhtfL@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+        id S241952AbhLJOHD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 10 Dec 2021 09:07:03 -0500
+Received: from mail-ot1-f44.google.com ([209.85.210.44]:39783 "EHLO
+        mail-ot1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238527AbhLJOHC (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 10 Dec 2021 09:07:02 -0500
+Received: by mail-ot1-f44.google.com with SMTP id r10-20020a056830080a00b0055c8fd2cebdso9696272ots.6;
+        Fri, 10 Dec 2021 06:03:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=rVRrTBb9q/NCoqfDDtJ8WKORuC9JyQfXU3LAsb0zmuQ=;
+        b=i++gI6AaUWjZXe6AB3rI4w2ILQfbS1GtUWNKvB+amKE7lh5lsreWmCeOsKjaS44NSm
+         KQ08kRRMqra478Luq1uliqRanfAL7LrAsmOu7bwauEQErt2zWwj42DamCXGIzAj+Acvk
+         u6i3Azl6pvlXNB02XayRxzxHw0a8ttEYZWrDz32MJkVSiuSFImxF1sPiQRv0rHmaRoBn
+         19SWiqGfc8eipi7BSCYk4eaKYWesn9pDzR//as+zPoMA8//0DCid4W/W1haZZwYRi+XP
+         3ow2TnQAoB0YIWNMQ+7NBsbA3loSJniasa9JFZgsTR30oRmEYnv2FUJbtilx0OhO5pgF
+         +T3g==
+X-Gm-Message-State: AOAM53287GxJ16MrhMFqHIuWdpK1w5eDCsz8cTiLZnI+DaSRI/3w92jo
+        qUNsn8aWEs6HIyIvyKP/Fg==
+X-Google-Smtp-Source: ABdhPJzN2rZdC0uEutsphHM9PYfxPzgBhWCxfsRbj5UYe++lcRt03vRrmfIyfu/AMzS+uRmmQ2tx5g==
+X-Received: by 2002:a9d:4b09:: with SMTP id q9mr11055852otf.140.1639144978004;
+        Fri, 10 Dec 2021 06:02:58 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id j20sm517383ota.76.2021.12.10.06.02.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Dec 2021 06:02:57 -0800 (PST)
+Received: (nullmailer pid 1252238 invoked by uid 1000);
+        Fri, 10 Dec 2021 14:02:56 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     Andy Gross <agross@kernel.org>, Joel Selvaraj <jo@jsfamily.in>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        devicetree@vger.kernel.org, linux-input@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>
+In-Reply-To: <20211210022639.2779173-2-caleb@connolly.tech>
+References: <20211210022639.2779173-1-caleb@connolly.tech> <20211210022639.2779173-2-caleb@connolly.tech>
+Subject: Re: [PATCH v4 1/6] dt-bindings: input: add Qualcomm SPMI haptics driver
+Date:   Fri, 10 Dec 2021 08:02:56 -0600
+Message-Id: <1639144976.203271.1252236.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
-
-On 10/12/2021 08:20, Tony Lindgren wrote:
+On Fri, 10 Dec 2021 02:26:52 +0000, Caleb Connolly wrote:
+> Add bindings for qcom PMIC SPMI haptics driver.
 > 
-> Not sure if sysctl -w vm.compaction_proactiveness=0 is enough to disable
-> compaction for idle, maybe also the HPAGE_FRAG_CHECK_INTERVAL_MSEC = 500
-> at ms also causes extra wake-ups?
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+> ---
+>  .../bindings/input/qcom,spmi-haptics.yaml     | 123 ++++++++++++++++++
+>  include/dt-bindings/input/qcom,spmi-haptics.h |  32 +++++
+>  2 files changed, 155 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml
+>  create mode 100644 include/dt-bindings/input/qcom,spmi-haptics.h
+> 
 
-I remember trying setting vm.compaction_proactiveness to 0 and it didn't
-help with idling, and my thought was also that the check-interval was
-still active.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Cheers,
-Merlijn
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml: properties:qcom,wave-play-rate-us: '$ref' should not be valid under {'const': '$ref'}
+	hint: Standard unit suffix properties don't need a type $ref
+	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml: ignoring, error in schema: properties: qcom,wave-play-rate-us
+warning: no schema found in file: ./Documentation/devicetree/bindings/input/qcom,spmi-haptics.yaml
+Documentation/devicetree/bindings/input/qcom,spmi-haptics.example.dt.yaml:0:0: /example-0/spmi/haptics@c000: failed to match any schema with compatible: ['qcom,pmi8998-haptics']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/1566175
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+
