@@ -2,136 +2,87 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DAC07C433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Dec 2021 21:45:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 366E0C433EF
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Dec 2021 21:35:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244151AbhLJVsi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 10 Dec 2021 16:48:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46798 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239383AbhLJVsh (ORCPT
+        id S230397AbhLKVfe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 11 Dec 2021 16:35:34 -0500
+Received: from relay02.th.seeweb.it ([5.144.164.163]:41119 "EHLO
+        relay02.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230345AbhLKVfd (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 10 Dec 2021 16:48:37 -0500
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59183C0617A1
-        for <phone-devel@vger.kernel.org>; Fri, 10 Dec 2021 13:45:02 -0800 (PST)
-Received: by mail-il1-x12b.google.com with SMTP id m5so9620544ilh.11
-        for <phone-devel@vger.kernel.org>; Fri, 10 Dec 2021 13:45:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :references:from:in-reply-to:content-transfer-encoding;
-        bh=twSZcP3mfT9b/ZypuoNY+BMMl0lomCjpqlD3pIkCMVk=;
-        b=bwTgLlu5ayICV2oRruJfhchWzCMSfHhBCodMQOwyhgYl/hTdov/P/dpEioeiZgwA8L
-         XbXc2E4w2vHRlih0oxJVVva20CRtJmcCvC6Wy7kaDCYd4tB8v48PxJ++2l+Io5HaYPTX
-         fLPrC7HgLWiGamqyyf6+itveeWSmVBqTOMT8ssWNc9c3es1+ntEDK6TleEXqaWJZP6hU
-         OpginV9JT8Fll+zzaBDYh1BSmXWSzLJ5K9PrchWmDZkJoFbYJq63yHRHVfU5Gzgc6BWe
-         xXtckl37/mUgpph2S8bAjCo9opUVovfuXHzyznvPSQ7AbRhISx2ars2msdiF5tqtbdLh
-         yDaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=twSZcP3mfT9b/ZypuoNY+BMMl0lomCjpqlD3pIkCMVk=;
-        b=NMmlJcck25nl7bdisvqbUZsAvrvNW/08w/auLvWxaXHk8RDjlR4QDPIvwz3owT/Isv
-         HlIGBana7+FAaGXkMyR9Px6eRjisYEIostwiVuOx2/hQH0vk+q2mlk0u3ZOvfonEMf1H
-         grHOrP2qfFOmBCBxIPU9rc8GT+j7UQIBqua2St+rNqxwLMJ7QQLjD6FGiI8AYLeN7Onn
-         snCzZHxMqS+1jyVwZuMNXgNPii0mrHg52NxzPcXYrStWE+egYYUqs/TVJ1dQLj6Hrmio
-         ErVxCFWJ8KOb6Ejc7lgfsJS4fRjm6tFU39176apJB7N6w3QBQbGoonggWIAOjHqfPxY1
-         bouA==
-X-Gm-Message-State: AOAM533fpdC6QL38BxYAP62h9GX7KFuu2fDiuUDKVII3PKuqbRXoHtBs
-        44bFCOrJyZQqgYfLIZLMEX1IUA==
-X-Google-Smtp-Source: ABdhPJyh4LXFMt7xtDpViOu223o6K21uy/0CVGrUz8kUYRG7TJ06//3d2q/c2WKdXgTwLXUoYRoWuQ==
-X-Received: by 2002:a92:cda4:: with SMTP id g4mr20168487ild.159.1639172701177;
-        Fri, 10 Dec 2021 13:45:01 -0800 (PST)
-Received: from [172.22.22.4] (c-73-185-129-58.hsd1.mn.comcast.net. [73.185.129.58])
-        by smtp.googlemail.com with ESMTPSA id t6sm2498690ios.13.2021.12.10.13.44.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Dec 2021 13:45:00 -0800 (PST)
-Message-ID: <c206a619-a40c-8c2b-8dfe-484f2b0eba92@linaro.org>
-Date:   Fri, 10 Dec 2021 15:44:58 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
-Subject: Re: [PATCH 2/3] firmware: qcom: scm: Add function to set the maximum
- IOMMU pool size
-Content-Language: en-US
+        Sat, 11 Dec 2021 16:35:33 -0500
+Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 1BA26202F2;
+        Sat, 11 Dec 2021 22:35:30 +0100 (CET)
+Date:   Sat, 11 Dec 2021 22:35:28 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Elliot Berman <eberman@codeaurora.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20211208083423.22037-1-marijn.suijten@somainline.org>
- <20211208083423.22037-3-marijn.suijten@somainline.org>
- <b21686fc-3662-1ed4-8ba3-8ed5ca6eda13@linaro.org>
- <20211208234436.ktagmcfj6jl5jct5@SoMainline.org>
- <fb1005b6-e610-407f-39bb-7cd6a198f9d6@somainline.org>
-From:   Alex Elder <elder@linaro.org>
-In-Reply-To: <fb1005b6-e610-407f-39bb-7cd6a198f9d6@somainline.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        <angelogioacchino.delregno@somainline.org>
+Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        robdclark@gmail.com, sean@poorly.run, airlied@linux.ie,
+        daniel@ffwll.ch, abhinavk@codeaurora.org,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        konrad.dybcio@somainline.org, martin.botka@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        paul.bouchara@somainline.org
+Subject: Re: [PATCH v2 2/2] drm/msm/dpu: Fix timeout issues on command mode
+ panels
+Message-ID: <20211211213528.uroqfdksvokspbxf@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, robdclark@gmail.com,
+        sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
+        abhinavk@codeaurora.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org
+References: <20210911163919.47173-1-angelogioacchino.delregno@somainline.org>
+ <20210911163919.47173-2-angelogioacchino.delregno@somainline.org>
+ <b325fc8d-e06b-36de-b40a-b5ffbcebb1c5@linaro.org>
+ <94bedea3-0e5f-5ae8-79d1-ceb17ccdea23@somainline.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <94bedea3-0e5f-5ae8-79d1-ceb17ccdea23@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 12/10/21 10:28 AM, AngeloGioacchino Del Regno wrote:
-> Il 09/12/21 00:44, Marijn Suijten ha scritto:
->> On 2021-12-08 07:30:28, Alex Elder wrote:
->>> On 12/8/21 2:34 AM, Marijn Suijten wrote:
->>>> From: AngeloGioacchino Del Regno 
->>>> <angelogioacchino.delregno@somainline.org>
->>>>
->>>> This is not necessary for basic functionality of the IOMMU, but
->>>> it's an optimization that tells to the TZ what's the maximum
->>>> mappable size for the secure IOMMUs, so that it can optimize
->>>> the data structures in the TZ itself.
->>>
->>> Are there no users of this function?    -Alex
->>
->> I should have probably mentioned in the cover letter that this function
->> and the one introduced in patch 3/3 are going to be used in upcoming
->> patches for IOMMUs found in msm8976, msm8974 and related SoCs (with the
->> side-note that I don't see this particular set_cp_pool_size used in the
->> branch that this was submitted from, but it's most likely used elsewhere
->> or planned ahead to be used in the near future - I expect Angelo to be
->> able to comment on that more accurately).
->>
+On 2021-12-09 18:02:40, AngeloGioacchino Del Regno wrote:
+> Il 02/10/21 00:33, Dmitry Baryshkov ha scritto:
+> > On 11/09/2021 19:39, AngeloGioacchino Del Regno wrote:
+> >> [..]
+> > I've compared this with the MDP5 driver, where we always wait for PP_DONE 
+> > interrupt. Would it be enough to always wait for it (= always call 
+> > dpu_encoder_phys_cmd_wait_for_tx_complete())?
+> > 
 > 
-> This function is used in the secured iommu pagetable setup, but not for
-> all of the "SCM feature versions" (only for version >= 1.1.1, downstream
-> reads it with a call to scm_feat_version()).
-> 
-> It's not strictly necessary for functionality, hence why Marijn isn't
-> seeing any call to this in the branch that he was browsing: the spirit here
-> is to first introduce code that does a minimal (but, of course, working)
-> setup of the IOMMUs found in MSM8956/76 (which can be adapted with very
-> minimal changes to other SoCs), and *only then* to add these performance
-> enhancements to the mix.
-> 
-> ...and this is why this commit is here :))
-> 
-> By the way, if my memory isn't failing me, that SCM call should be usable
-> on all AArch64 SoCs (so, 8956, 8994 and the rest).
+> Jokes apart, yes it would make sense to do that, it's something that works
+> at least... but we should verify that such a thing doesn't break new platforms
+> (like sm8150 and newer).
 
-Thanks for your responses.  I don't actually know what
-you use as downstream for this.  If I did, I might
-compare what I see there to what you do and confirm
-it does the same thing...
+On sm6125 (keeping in mind that we're on llvmpipe, will bring up the GPU
+later) none of this hurts the display:
 
-So I'm not offering any review on this or patch 3.
-But I'm glad to know the users of these functions
-will be coming soon.
+- Without this patch, so only checking for wait_for_ctl_start;
+- With this patch, checking for idle if it was already started;
+- With this patch altered to only ever call wait_for_tx_complete (wait
+  for idle), in place of wait_for_ctl_start.
 
-					-Alex
+Working in the sense that glxgears, which actually reports a framerate
+of approx 170 despite being on llvmpipe on an SoC that is still in
+snail-mode, seems to update (commit) the panel smoothly on every
+occasion.
+
+On this note, does it perhaps make more sense to call the "internal"
+_dpu_encoder_phys_cmd_wait_for_idle function directly, instead of going
+through the "public" dpu_encoder_phys_cmd_wait_for_tx_complete which
+seems solely intended to handle the wait_for_tx_complete callback?
+
+- Marijn
