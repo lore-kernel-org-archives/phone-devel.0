@@ -2,26 +2,26 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 285D9C433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Dec 2021 16:00:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43CFDC433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Dec 2021 16:00:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240290AbhLMQAJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Dec 2021 11:00:09 -0500
-Received: from ip-15.mailobj.net ([213.182.54.15]:42254 "EHLO msg-4.mailo.com"
+        id S240307AbhLMQAL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Dec 2021 11:00:11 -0500
+Received: from ip-16.mailobj.net ([213.182.54.16]:35028 "EHLO msg-6.mailo.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240293AbhLMQAI (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Dec 2021 11:00:08 -0500
+        id S232987AbhLMQAJ (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 13 Dec 2021 11:00:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1639411171; bh=E3kyiEeT5dBdXWhbp1IxPuCcvru4Lfbtt7wr9gZYQ2k=;
-        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-         MIME-Version:Content-Transfer-Encoding;
-        b=d3GqlFbWXAkuQMYjrVoutU1EGlIJOi1ljXLqLng5C1uUnT26uwl4jfe1qYyzN2y6f
-         3vtHb5C6Nm6zBWAM7xHz/a+f+Hcek39i22YXBnhXtOM4Dj6b7E1F9OYWWoFsw3TufG
-         K0qFVvsX3niu4rJLkBxjj3r/xd4ShmkZi5KYnByA=
+        t=1639411186; bh=E3kyiEeT5dBdXWhbp1IxPuCcvru4Lfbtt7wr9gZYQ2k=;
+        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
+         References:MIME-Version:Content-Transfer-Encoding;
+        b=Y7qYa/SEPboiGN+BKjbW2AnBofCooqFhDr4LxclXA5cCeSlAxMW7I+tBfIAwqYO88
+         fXbd1pPvBRSID33bpSDZ90MYZ0K8Y0DpisqLn+c/dMuYNA414iJygAH4V94okjZ3hF
+         losxxBGFKZvjMklwtAZeWjNNQxU60JxbhLXC3gVg=
 Received: by b-6.in.mailobj.net [192.168.90.16] with ESMTP
         via proxy.mailoo.org [213.182.55.207]
-        Mon, 13 Dec 2021 16:59:31 +0100 (CET)
-X-EA-Auth: wFsVhjkcT7DL+4gBttlWG8tX9AXPDvpJqJmfnzCnwvqZa0Pgv7B5tNpI1VmhAt5iIHMq7MY78Fq2Jy45N2iiWjWzYnxc9QJsAewSTKabX6s=
+        Mon, 13 Dec 2021 16:59:46 +0100 (CET)
+X-EA-Auth: NvMRoCzQJGxu+IlpveVVDgcVM0W0nEdywnstX6OZgaOgw3DO+XYrfBfKVI8I86n94Ca/KcihO8JtETUNJ05y6jlwIhD+4x0B9aC0lhmgpMM=
 From:   Vincent Knecht <vincent.knecht@mailoo.org>
 To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
         perex@perex.cz, tiwai@suse.com
@@ -31,9 +31,11 @@ Cc:     stephan@gerhold.net, obayerd@eurocomposant.fr,
         ~postmarketos/upstreaming@lists.sr.ht,
         Vincent Knecht <vincent.knecht@mailoo.org>
 Subject: [PATCH 1/2] ASoC: dt-bindings: codecs: Add bindings for ak4375
-Date:   Mon, 13 Dec 2021 16:59:11 +0100
-Message-Id: <20211213155914.2558902-1-vincent.knecht@mailoo.org>
+Date:   Mon, 13 Dec 2021 16:59:13 +0100
+Message-Id: <20211213155914.2558902-3-vincent.knecht@mailoo.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20211213155914.2558902-1-vincent.knecht@mailoo.org>
+References: <20211213155914.2558902-1-vincent.knecht@mailoo.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
