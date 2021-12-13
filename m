@@ -2,63 +2,66 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67AB7C433FE
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Dec 2021 08:27:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5DE3C4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Dec 2021 08:28:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232965AbhLMI1s (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Dec 2021 03:27:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38208 "EHLO
+        id S233094AbhLMI2D (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Dec 2021 03:28:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232966AbhLMI1X (ORCPT
+        with ESMTP id S232935AbhLMI1W (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Dec 2021 03:27:23 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48191C061D60
-        for <phone-devel@vger.kernel.org>; Mon, 13 Dec 2021 00:27:23 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id x10so31989588edd.5
-        for <phone-devel@vger.kernel.org>; Mon, 13 Dec 2021 00:27:23 -0800 (PST)
+        Mon, 13 Dec 2021 03:27:22 -0500
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53AB3C061B38
+        for <phone-devel@vger.kernel.org>; Mon, 13 Dec 2021 00:27:22 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id o20so49771981eds.10
+        for <phone-devel@vger.kernel.org>; Mon, 13 Dec 2021 00:27:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=fairphone.com; s=fair;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=9BYKQNnBxeHaOMAkWkceoLRaeZrdXyLl7SHClr7Sqxk=;
-        b=Hq3C61iAmdQv+LNC1AUhY1ev2O8uu6aIwKNgRci27s0lc2qRBEalj9zuHDHvCQiR7a
-         dJ9N96miaRNMK91droldq7/LP7Ges/sqAQDjqgpQava9KVYirq2o+ZmTCf1x9S1zMFIy
-         hbqxMnVuS3LqPPR+Ivb4fjYHzstP7M0qW7UJAgKZyFSpgeR2XbqLIKtm9iTCpOaEj4nQ
-         veDho0E/IJO6eB68srJxhg9SEYWdqiTVBdyYJ+LgaWkSx/AX6NBxTW6ydG4y1bGz3d6O
-         PDs+QM+dXnytMw1NKqosz6VYIIFP2UE0Ml35PnfcGrDXEirvJqzERF5ZyXKgiOldyCob
-         lzDQ==
+        bh=cCXYTlbzoYt/Q28BNia8J8S+G15WMUnhTesQFEhNzfI=;
+        b=Rojam3hdYP7hQgOm6VhLrHu+G8tyuNzvRMCqH8pOcqteulHTYa/0ryuQJFdxS/ARNf
+         647IcWus/mIAleA2delSi8xvMNEIPaAoe6fyhAi1U/g7Xsz0CjMg8B4frlivzhalWBsP
+         GcK2l70kVOUocbxB/9qV73dYKKUczSx7XUon4rgv7DMLhxRWmPCzLwUFjZvjPoarqmgt
+         etTBTqpAAWP2xhwcSyNJ26QuR/tyBqFMagKxa2GsLVqpeoprUpioRcXjnVzKqVgbxbZZ
+         c2fBoKBoDT/kpTi3bxk9Gj1Qho8vg39QKe29vy+6i97JkqQT4vU2TEPmmDpiY9MDWi7k
+         P+1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=9BYKQNnBxeHaOMAkWkceoLRaeZrdXyLl7SHClr7Sqxk=;
-        b=VOf89BDWGI7jPRr2ZBSK6mxDJ1TqIlExqVPqJBelubGh3FlkYqTnlxlbwn6aVlUbcN
-         fQ7Ty51cOi6unkDTWrM6DjEALqE/a25hSHFXSipZYn+0oWyN60Pp/I684cM0tsZjxLss
-         Kzo8+SOvZNT3sTg+7Df04O1P2LjtvCKHzIsVhAa2kE3dxgoyA7DNt38F5JjED70ohhWV
-         hy4Kp1tib+CZAWMccuvtZZ0g6F98Pn+UqXvaj2uAm61YstXvAz3zWlHKeLtKTZeboUDf
-         jB6ODI95Sya9/XPCNATtyzYO1HcYXXKL1OmgMdnk8L73DTK0R95KGcDYc/vap992KH4/
-         Y1mQ==
-X-Gm-Message-State: AOAM531+++XsEfKLc6gbGVxY4Cjm4O9MFVakC+fPjlSppkOxRNGt/Ulu
-        FjM9SSF8FBF6A/FjA/zaWSJeaA==
-X-Google-Smtp-Source: ABdhPJwLX/+1Jcch7hkL40o+jVQ/y6C/s5+Hbm7xBmKf82rj6DI695dxIsJcF9Hw676mSrMHOLg0+Q==
-X-Received: by 2002:a17:906:478e:: with SMTP id cw14mr42790527ejc.46.1639384041936;
-        Mon, 13 Dec 2021 00:27:21 -0800 (PST)
+        bh=cCXYTlbzoYt/Q28BNia8J8S+G15WMUnhTesQFEhNzfI=;
+        b=iIX94siG6BL1J4Gxd2zKPRWVbKHcHgQGqJ4trRIf0abgfJ6YHctOAYaVupo6UX3qGk
+         Wmm5aB68fhlKDBAO61LjTjZ05j2z68Wusdy0544QKnCogV4U8a7kG3zgA6q+16rt7VGt
+         2TXPVHzZlc9cBk9S436ODzKpxKkI8pDdsYRXnHUcRcXtYnFpW8adP6w0TjlKdWX29HRP
+         lZwK4spAaFmGEbovDC+PGSChjrX3z0nj4bzann8QZvfdga8VW+okmGMewkI7Dpc7r2vV
+         oLtpf27AORTK9/R0VRqHzWML7SC+aZOjfJJqaKebLdfsMMI5SnBA4CVcaO4xeYFY+6ar
+         hwUg==
+X-Gm-Message-State: AOAM530TueX5TbpWzp3UC/NaXwddwojqysv0KJgj9LDKvvb443kC50Fg
+        U8EBitzsexipDN9klR3BbUOCZgStTcbXIxgsUI0=
+X-Google-Smtp-Source: ABdhPJxHCYCw81OQMQ+WDW5DK6U8tfsxHYWpHXmWp7zdWdIXmEtyqZJxdLCYFxtjui6NLq3pfFRQDQ==
+X-Received: by 2002:a05:6402:154:: with SMTP id s20mr65434822edu.148.1639384040946;
+        Mon, 13 Dec 2021 00:27:20 -0800 (PST)
 Received: from localhost.localdomain ([2a02:a210:20c5:8c80:7d0a:cd68:c339:f426])
-        by smtp.gmail.com with ESMTPSA id b11sm6062432ede.62.2021.12.13.00.27.21
+        by smtp.gmail.com with ESMTPSA id b11sm6062432ede.62.2021.12.13.00.27.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Dec 2021 00:27:21 -0800 (PST)
+        Mon, 13 Dec 2021 00:27:20 -0800 (PST)
 From:   Luca Weiss <luca.weiss@fairphone.com>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 10/10] arm64: dts: qcom: sm6350: Fix validation errors
-Date:   Mon, 13 Dec 2021 09:26:11 +0100
-Message-Id: <20211213082614.22651-11-luca.weiss@fairphone.com>
+        Hans de Goede <hdegoede@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 09/10] dt-bindings: simple-framebuffer: allow standalone compatible
+Date:   Mon, 13 Dec 2021 09:26:10 +0100
+Message-Id: <20211213082614.22651-10-luca.weiss@fairphone.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211213082614.22651-1-luca.weiss@fairphone.com>
 References: <20211213082614.22651-1-luca.weiss@fairphone.com>
@@ -68,58 +71,37 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Sort clocks and interrupts as specified in the docs and remove the stray
-property #power-domain-cells from aoss_qmp to solve dtbs_check
-validation errors.
+Qualcomm platforms use "simple-framebuffer" without a more specific
+compatible. Allow that in the binding doc.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/sm6350.dtsi | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ .../bindings/display/simple-framebuffer.yaml         | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-index a7158fe9e192..8322a981cdfc 100644
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -810,10 +810,10 @@ usb_1_qmpphy: phy@88e9000 {
- 			ranges;
+diff --git a/Documentation/devicetree/bindings/display/simple-framebuffer.yaml b/Documentation/devicetree/bindings/display/simple-framebuffer.yaml
+index c2499a7906f5..2d82d0ce4a34 100644
+--- a/Documentation/devicetree/bindings/display/simple-framebuffer.yaml
++++ b/Documentation/devicetree/bindings/display/simple-framebuffer.yaml
+@@ -52,11 +52,13 @@ description: |+
  
- 			clocks = <&gcc GCC_USB3_PRIM_PHY_AUX_CLK>,
-+				 <&xo_board>,
- 				 <&rpmhcc RPMH_QLINK_CLK>,
--				 <&gcc GCC_USB3_PRIM_PHY_COM_AUX_CLK>,
--				 <&xo_board>;
--			clock-names = "aux", "ref", "com_aux", "cfg_ahb";
-+				 <&gcc GCC_USB3_PRIM_PHY_COM_AUX_CLK>;
-+			clock-names = "aux", "cfg_ahb", "ref", "com_aux";
+ properties:
+   compatible:
+-    items:
+-      - enum:
+-          - apple,simple-framebuffer
+-          - allwinner,simple-framebuffer
+-          - amlogic,simple-framebuffer
++    oneOf:
++      - items:
++          - enum:
++              - apple,simple-framebuffer
++              - allwinner,simple-framebuffer
++              - amlogic,simple-framebuffer
++          - const: simple-framebuffer
+       - const: simple-framebuffer
  
- 			resets = <&gcc GCC_USB3_DP_PHY_PRIM_BCR>,
- 				 <&gcc GCC_USB3_PHY_PRIM_BCR>;
-@@ -871,11 +871,12 @@ usb_1: usb@a6f8800 {
- 				      "sleep";
- 
- 			interrupts-extended = <&intc GIC_SPI 130 IRQ_TYPE_LEVEL_HIGH>,
--					      <&pdc 14 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc 17 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 15 IRQ_TYPE_EDGE_BOTH>,
--					      <&pdc 17 IRQ_TYPE_LEVEL_HIGH>;
--			interrupt-names = "hs_phy_irq", "dp_hs_phy_irq",
--					  "dm_hs_phy_irq", "ss_phy_irq";
-+					      <&pdc 14 IRQ_TYPE_EDGE_BOTH>;
-+
-+			interrupt-names = "hs_phy_irq", "ss_phy_irq",
-+					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
- 			power-domains = <&gcc USB30_PRIM_GDSC>;
- 
-@@ -935,7 +936,6 @@ aoss_qmp: power-controller@c300000 {
- 			mboxes = <&ipcc IPCC_CLIENT_AOP IPCC_MPROC_SIGNAL_GLINK_QMP>;
- 
- 			#clock-cells = <0>;
--			#power-domain-cells = <1>;
- 		};
- 
- 		spmi_bus: spmi@c440000 {
+   reg:
 -- 
 2.34.1
 
