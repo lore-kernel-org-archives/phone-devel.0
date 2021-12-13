@@ -2,52 +2,52 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 790BAC43217
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Dec 2021 08:27:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63C3FC43219
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Dec 2021 08:27:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233053AbhLMI1c (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Dec 2021 03:27:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38230 "EHLO
+        id S233067AbhLMI1d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Dec 2021 03:27:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231718AbhLMI1T (ORCPT
+        with ESMTP id S231708AbhLMI1T (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Mon, 13 Dec 2021 03:27:19 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07F90C061748
-        for <phone-devel@vger.kernel.org>; Mon, 13 Dec 2021 00:27:18 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id r25so48908773edq.7
-        for <phone-devel@vger.kernel.org>; Mon, 13 Dec 2021 00:27:17 -0800 (PST)
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BB1AC061A32
+        for <phone-devel@vger.kernel.org>; Mon, 13 Dec 2021 00:27:16 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id t5so49030434edd.0
+        for <phone-devel@vger.kernel.org>; Mon, 13 Dec 2021 00:27:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=fairphone.com; s=fair;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=oedXg2lxmGvWLjE8gS+GIHwgIjgA4Ou1mgFQP0pqkc4=;
-        b=XjxPGaI3AvVgGOYiAgXRlnyAJXWzgvlbPKjDzJim5hV0mBDX+ZAS14uZZscf0UP2Uy
-         M1YBbgcg1lI8wgKZsZwbpQQvPpspIpMzJyD3s5usV47RgEkyONh8x3MWBmP2XZbHXep2
-         rgT79mjWW1IdmAgKx9c9aQy8swbcZj8rS6+LE2I+2Vj2m4GvOiRG63Z5dHJPVg47awEz
-         MbQy8WGQDinSk3CWltw6YwyQCYFJ226oterGrPPBfdlGTNK59VOOSPJj1hWmPBFfCM4J
-         8Ba4pX2gXHa0FVcMe23nG44PhgDcix93UCGeNR7DTe/Rq/tYjWMMi+teiAeKYGNz74Gy
-         RG8g==
+        bh=GMm67AIvcXY6qklTj1xMKUOirDsiafuBtic6EDXbrUI=;
+        b=DTC7WGjdvAqdjanbrAxw5grBfcgQE37OeqT/pwC0Z2eG8+QPNAM6ZmOvObjH20NFlD
+         w8RrRFpVCJ3SR8uLRF1DGeRAs2tyspzM5ovfUYKdAA7H4b87a/0jNW1UBQ3zSsoQbFK2
+         7jqEbNJEEJ8j/Sjzwe8o+uPJv9H8ZrHsAcroGWKDen7Teyv/IQtz7ugWiMDq0ILvNu1J
+         IU4v9K8t3VaiPyDjv32G/SXS6eJ87nH/ruw73oR3Y2Vv4HNfxITUpq0Cudue8S/rXFN6
+         mCrvQY7YDDBs5i8xpfMvc92dQEr8qoSt4xLCNmRnZuYW6DhEhce1c4LKfU8EY1XTdpT9
+         mFKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=oedXg2lxmGvWLjE8gS+GIHwgIjgA4Ou1mgFQP0pqkc4=;
-        b=BkMl2xvNGQtb5tDUjyw+7Sa7d8Z6lXfkn2pNTyBz9YxwoX9Nl0ACPsDuhQ++D+/lTi
-         aROZWcqTQNt5jZ37I1pHq9DS7xUlP52hbWssGlUF35r0sfP0fVgJFjneWyjEWw9ZZgT6
-         03aizUtC1XT4CYBPByX4nofWho7Ov/ucmpYK/iQXtXfVOYXFG5XVHxaUyqpjRSsj6sUt
-         oz33R1QpgHgoxCy56LIani0ibQIFzmmcbJD1uYs/ng9HfMrPJYrHk5YZd5FZVHjY6fme
-         kABajyhSI02qqSbA/9OPv7cC6j+zi5EPfgRjaqs1lL+/Sq1yZDjeF0viHhSLTab1DKB8
-         4O9Q==
-X-Gm-Message-State: AOAM530hJIp5PBoBrXHwps2YxpCxQajcXbx45tijN5EACacnyAKWJkow
-        NiBu+zH6QleLzW15pyzYislXYg==
-X-Google-Smtp-Source: ABdhPJyDFbDfxyri6g9cB3e6COym7Bqg0NSm5p0P65g+Yj35yXc+G1fpioiZga2hphDfON6gcI2hKw==
-X-Received: by 2002:a17:906:eda3:: with SMTP id sa3mr43271332ejb.51.1639384036677;
-        Mon, 13 Dec 2021 00:27:16 -0800 (PST)
+        bh=GMm67AIvcXY6qklTj1xMKUOirDsiafuBtic6EDXbrUI=;
+        b=NN9FNUyb3DuabhAIc09GK9S1LPfJf8Iw9IaEZKMT/lfDzZRd+FQdjgyOO8ogDeFwt5
+         NxsyIgFWE6lzYLDLSFf9GY1cC/guPqLo66VThKlp5LG9aX+sSzLbUfwrody6vyWARHJR
+         dT9x5KVuIGRscfh3PXVM+kxrldKa3L4GimS3XHpTlYxMyqcRayPfUmfZzZnYZKft4rtR
+         +3Beqzf0DZshT/loWo/YcaCP1ITm+bh6ePT3GXIlCSvfppvbbfHhLumX2lb6WubjZM5P
+         yk66Ngdz8HqfNblJxh1Y+tLsvkENbfIwpsY2h2gr1L3YgFKWz5smmaXnneegvA/alpk7
+         VvrA==
+X-Gm-Message-State: AOAM532WbGyTkOGGwH26ZwB0f9lPv/SFmHNov7SsJDmL55XfW+rlosAs
+        Ar3zHmnn10JC8fRkaulkpY3wvw==
+X-Google-Smtp-Source: ABdhPJxIY/9Ksv9VfDYjeCpOETIdPtwglBsGFiqhDKYDlmjLwPkjFgt7OAp+YsiBCBAG7DoZeqM9xQ==
+X-Received: by 2002:a05:6402:b23:: with SMTP id bo3mr61598431edb.366.1639384034612;
+        Mon, 13 Dec 2021 00:27:14 -0800 (PST)
 Received: from localhost.localdomain ([2a02:a210:20c5:8c80:7d0a:cd68:c339:f426])
-        by smtp.gmail.com with ESMTPSA id b11sm6062432ede.62.2021.12.13.00.27.15
+        by smtp.gmail.com with ESMTPSA id b11sm6062432ede.62.2021.12.13.00.27.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Dec 2021 00:27:16 -0800 (PST)
+        Mon, 13 Dec 2021 00:27:14 -0800 (PST)
 From:   Luca Weiss <luca.weiss@fairphone.com>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -55,14 +55,15 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Vinod Koul <vkoul@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Manu Gautam <mgautam@codeaurora.org>,
-        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 06/10] dt-bindings: usb: qcom,dwc3: Add SM6350 compatible
-Date:   Mon, 13 Dec 2021 09:26:07 +0100
-Message-Id: <20211213082614.22651-7-luca.weiss@fairphone.com>
+Subject: [PATCH 04/10] dt-bindings: phy: qcom,qusb2: Add SM6350 compatible
+Date:   Mon, 13 Dec 2021 09:26:05 +0100
+Message-Id: <20211213082614.22651-5-luca.weiss@fairphone.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211213082614.22651-1-luca.weiss@fairphone.com>
 References: <20211213082614.22651-1-luca.weiss@fairphone.com>
@@ -72,26 +73,26 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add devicetree compatible for dwc3 on SM6350 SoC.
+Add devicetree compatible for the usb phy on SM6350 SoC.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
- Documentation/devicetree/bindings/usb/qcom,dwc3.yaml | 1 +
+ Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml b/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
-index 2bdaba023c01..fb79ea518696 100644
---- a/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
-+++ b/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
-@@ -23,6 +23,7 @@ properties:
-           - qcom,sdx55-dwc3
-           - qcom,sm4250-dwc3
-           - qcom,sm6115-dwc3
-+          - qcom,sm6350-dwc3
-           - qcom,sm8150-dwc3
-           - qcom,sm8250-dwc3
-           - qcom,sm8350-dwc3
+diff --git a/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
+index aa2e409a1a09..e651a63a4be3 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
+@@ -30,6 +30,7 @@ properties:
+           - enum:
+               - qcom,sc7180-qusb2-phy
+               - qcom,sdm845-qusb2-phy
++              - qcom,sm6350-qusb2-phy
+           - const: qcom,qusb2-v2-phy
+   reg:
+     maxItems: 1
 -- 
 2.34.1
 
