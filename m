@@ -2,380 +2,226 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64FA0C433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Dec 2021 16:58:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB6CCC433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Dec 2021 19:07:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237884AbhLMQ6D (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Dec 2021 11:58:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48054 "EHLO
+        id S238291AbhLMTHW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Dec 2021 14:07:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235267AbhLMQ6C (ORCPT
+        with ESMTP id S232609AbhLMTHV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Dec 2021 11:58:02 -0500
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AA5CC061574
-        for <phone-devel@vger.kernel.org>; Mon, 13 Dec 2021 08:58:02 -0800 (PST)
-Received: by mail-oi1-x22e.google.com with SMTP id bf8so23967920oib.6
-        for <phone-devel@vger.kernel.org>; Mon, 13 Dec 2021 08:58:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=J+nedtdcLR++WJxBvny7mXCrzpGMYhJDkeejVaXULEs=;
-        b=kSefkk75L4mRSQ+0lX86dDfDuAUoaptSeRStEhIEJhWcdn/HEw9bBJrlrPDni8ADmI
-         OhTR6+Mz98vUP2Gc74kQ2JpLBSjMJiIPY1ehwnly6eYNT5ikKIq6K5Pb7Ejh+bKB6rtg
-         N9dFa6aXsBPhhGVMoJiSzDFq379Urb1mYd5tXOiUmgRZ2T8CJ5Z+3ovadeIWF4VYO7JO
-         4VcfJCPpnfUFLUenavOV90spizqDoC9h61gJjSUEPASfbMoMOtTSnETjvHvNKMTk0Cve
-         PcX0E8dBlFSOJrE16SciOBh3EvBNrixSMHWBAi7g4QDQJabMqCcFB1mA8TRf2Q0+0mny
-         iObg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=J+nedtdcLR++WJxBvny7mXCrzpGMYhJDkeejVaXULEs=;
-        b=j2ZdvVdoLDH8eiyiToSBj+tz+km0DuVaPPihFiO2TxCeJgA4XatLQD/aYUYW6y06AO
-         SyPCMHAPsUIPXpaoPTgVA/lhT8LrTrtZGfJz+SoaSPb6/KPL/sp2bjR1C+hW3Dq/uJqD
-         n9ftTBl90J0vvPQDkl7wqixBnF0VCEeXbgNXRAvwk9UONwCaUSKZp4D6BYzd/D8YhCgH
-         lDPv7rCLDiOXGtavKIfP5E+qfBj00G9bXMRP13Qw2yHEVDQIw+c9ITl4C/mbcm7G//yR
-         kRKDgQX7cfHvOZEu7yBcpliiUAMw+94fHEWbN5KqJkHA/DYBE3M1ttTjCMAVOr0lzmqF
-         Wghw==
-X-Gm-Message-State: AOAM532diqQLuzxjjC6UJoY+VP19Htmu6kR4ExVIL0DOtNaX1/wV3B8a
-        d7spU/yCs1b5Eyf4+1grGH9P7A==
-X-Google-Smtp-Source: ABdhPJxkXq2zp/Uf5aLQMyip7F8P1T/T4CvcJySJDm6dnu7SMsac71xEHAiF+bnktV3vqW7DWFZqLw==
-X-Received: by 2002:a05:6808:682:: with SMTP id k2mr29770741oig.63.1639414681547;
-        Mon, 13 Dec 2021 08:58:01 -0800 (PST)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id 186sm2678813oig.28.2021.12.13.08.58.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Dec 2021 08:58:01 -0800 (PST)
-Date:   Mon, 13 Dec 2021 10:57:56 -0600
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     Julian Ribbeck <julian.ribbeck@gmx.de>,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        Mon, 13 Dec 2021 14:07:21 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52AC7C061574;
+        Mon, 13 Dec 2021 11:07:21 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 7BA90CE1184;
+        Mon, 13 Dec 2021 19:07:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E08FC34600;
+        Mon, 13 Dec 2021 19:07:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1639422437;
+        bh=Qbp2eICTToaSxtjyYfWMYjIJzntY9rzrnEuUgDPk8Mw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ISWWnCKrf7ouAAL7UTOpFImPRE/RrSvPvD21XQQRFifVFLyqLvbiWVhkQO4Zgd4zW
+         jPIaVGnUaKm5A1rIHjGJ4Pypq4W1rD/aFSHYZ1hnG7Tx3nomn+rxeTNgwtus3ZloI1
+         QnwbYUhd0PM+G9X25vqSRlIlKirjw0MPs95c37aOX0m17VNHKttXIBpjiHaTfh2CqS
+         T4A8I7uzLRHWWkZGVTjlm4czJuT2wsGLtPjkgvH/9fr/sYz+vudGqwvhLSH4gk64Iy
+         bsmtifu9Nos99/C9LHHPPiS/lDyBF9Idmn9QkJlF05TptfEvMnRCi5PB3eqHU2Q5wv
+         1/uXvDfaA4FEg==
+Date:   Mon, 13 Dec 2021 19:07:11 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Vincent Knecht <vincent.knecht@mailoo.org>
+Cc:     lgirdwood@gmail.com, robh+dt@kernel.org, perex@perex.cz,
+        tiwai@suse.com, stephan@gerhold.net, obayerd@eurocomposant.fr,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH] arm64: dts: qcom: Add device tree for Samsung J5 2015
- (samsung-j5)
-Message-ID: <Ybd7lGatbtJMxwEw@builder.lan>
-References: <20211116200734.73920-1-julian.ribbeck@gmx.de>
- <YZcam/pnh0CBjMIx@builder.lan>
- <YZd0zzzuxgk2+x2b@gerhold.net>
+Subject: Re: [PATCH 2/2] ASoC: Add AK4375 support
+Message-ID: <YbeZ37FLnAsMfrDl@sirena.org.uk>
+References: <20211213155914.2558902-1-vincent.knecht@mailoo.org>
+ <20211213155914.2558902-2-vincent.knecht@mailoo.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Z8gbhBTXw3+IVEpf"
 Content-Disposition: inline
-In-Reply-To: <YZd0zzzuxgk2+x2b@gerhold.net>
+In-Reply-To: <20211213155914.2558902-2-vincent.knecht@mailoo.org>
+X-Cookie: No solicitors.
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri 19 Nov 03:56 CST 2021, Stephan Gerhold wrote:
 
-> Hi Bjorn,
-> 
-> Thanks a lot for your review!
-> 
-> On Thu, Nov 18, 2021 at 09:31:39PM -0600, Bjorn Andersson wrote:
-> > On Tue 16 Nov 14:07 CST 2021, Julian Ribbeck wrote:
-> > 
-> > > Samsung J5 2015 is a MSM8916 based Smartphone. It is similar to some of the
-> > > other MSM8916 devices, especially the Samsung ones.
-> > > 
-> > > With this patch initial support for the following is added:
-> > >   - eMMC/SD card
-> > >   - Buttons
-> > >   - USB (although no suiting MUIC driver currently)
-> > >   - UART (untested for lack of equipment)
-> > >   - WiFi/Bluetooth (WCNSS)
-> > > 
-> > > It is worth noting that Samsung J5 with MSM8916 exists in different
-> > > generations (e.g Samsung J5 2015 and Samsung J5 2016) which each have
-> > > different models (e.g. samsung-j5nlte, samsung-j5xnlte, etc). This patch
-> > > is only regarding the 2015 generation, but should work with all of it's
-> > > models, as far as we could test.
-> > > 
-> > > Co-developed-by: Stephan Gerhold <stephan@gerhold.net>
-> > > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> > > Signed-off-by: Julian Ribbeck <julian.ribbeck@gmx.de>
-> > > ---
-> > >  arch/arm64/boot/dts/qcom/Makefile             |   1 +
-> > >  .../boot/dts/qcom/msm8916-samsung-j5.dts      | 209 ++++++++++++++++++
-> > >  2 files changed, 210 insertions(+)
-> > >  create mode 100644 arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts
-> > > 
-> > > diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-> > > index 6b816eb33309..08bfccb0daeb 100644
-> > > --- a/arch/arm64/boot/dts/qcom/Makefile
-> > > +++ b/arch/arm64/boot/dts/qcom/Makefile
-> > > @@ -15,6 +15,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-longcheer-l8910.dtb
-> > >  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-mtp.dtb
-> > >  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-a3u-eur.dtb
-> > >  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-a5u-eur.dtb
-> > > +dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-j5.dtb
-> > >  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-serranove.dtb
-> > >  dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt88047.dtb
-> > >  dtb-$(CONFIG_ARCH_QCOM)	+= msm8992-bullhead-rev-101.dtb
-> > > diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts
-> > > new file mode 100644
-> > > index 000000000000..687bea438a57
-> > > --- /dev/null
-> > > +++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts
-> > > @@ -0,0 +1,209 @@
-> > > +// SPDX-License-Identifier: GPL-2.0-only
-> > 
-> > If you authored this, could we please get it under BSD license?
-> > 
-> 
-> I'm afraid the same problem applies to all MSM8916-related device trees:
-> https://lore.kernel.org/linux-arm-msm/YMIznk4scPv1qOzP@gerhold.net/
-> 
-> Given the similarities between the devices it's easiest to take portions
-> from existing device trees and just change some properties. But this
-> means that many people were involved and I'm not sure if it is
-> appropriate to apply a different license without asking all of them.
-> 
-> It's an unfortunate situation that will likely also apply to more
-> MSM8916 device trees submitted in the future. I hope it's still
-> acceptable even with the GPL-2.0-only license. :)
-> 
+--Z8gbhBTXw3+IVEpf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Unfortunate indeed, but now I've asked at least...
+On Mon, Dec 13, 2021 at 04:59:12PM +0100, Vincent Knecht wrote:
 
-> > > +
-> > > +/dts-v1/;
-> > > +
-> > > +#include "msm8916-pm8916.dtsi"
-> > > +#include <dt-bindings/gpio/gpio.h>
-> > > +
-> > > +/ {
-> > > +	model = "Samsung Galaxy J5 (2015)";
-> > > +	compatible = "samsung,j5", "qcom,msm8916";
-> > > +	chassis-type = "handset";
-> > > +
-> > > +	aliases {
-> > > +		serial0 = &blsp1_uart2;
-> > > +	};
-> > > +
-> > > +	chosen {
-> > > +		stdout-path = "serial0";
-> > > +	};
-> > > +
-> > > +	reserved-memory {
-> > > +		/* Additional memory used by Samsung firmware modifications */
-> > > +		tz-apps@85500000 {
-> > > +			reg = <0x0 0x85500000 0x0 0xb00000>;
-> > > +			no-map;
-> > > +		};
-> > > +	};
-> > > +
-> > > +	gpio-keys {
-> > > +		compatible = "gpio-keys";
-> > > +
-> > > +		pinctrl-names = "default";
-> > > +		pinctrl-0 = <&gpio_keys_default>;
-> > > +
-> > > +		label = "GPIO Buttons";
-> > > +
-> > > +		volume-up {
-> > > +			label = "Volume Up";
-> > > +			gpios = <&msmgpio 107 GPIO_ACTIVE_LOW>;
-> > > +			linux,code = <KEY_VOLUMEUP>;
-> > > +		};
-> > > +
-> > > +		home-key {
-> > > +			lable = "Home Key";
-> > > +			gpios = <&msmgpio 109 GPIO_ACTIVE_LOW>;
-> > > +			linux,code = <KEY_HOMEPAGE>;
-> > > +		};
-> > > +	};
-> > > +};
-> > > +
-> > > +&blsp1_uart2 {
-> > 
-> > Can you please sort these nodes alphabetically?
-> > 
-> 
-> It looks mostly alphabetically ordered to me, could you clarify which
-> nodes you are referring to exactly?
-> 
-> The exceptions are &smd_rpm_regulators and &msmgpio, which are explicitly
-> at the end of the file (consistent with all other MSM8916 device trees).
-> I think it's easier to focus on the main interesting part of the device
-> tree that way (the device definitions). If you prefer to have strict
-> alphebtical order I can prepare a bulk patch that changes the order in
-> all the existing MSM8916 device trees. The most important thing for me
-> is that they are consistent.
-> 
+> AK4375 is a 32-bit stereo DAC with headphones amplifier.
+> There's no documentation for it on akm.com, and only a brief
+> datasheet can be found floating on the internets [1].
 
-You're right, I had forgotten that we put the &smd_rpm_regulators at the
-end on these related devices. Should probably make this consistent
-across all platforms, but let's merge this for now.
+This driver looks relatively clean but it's in *serious* need of
+modernisation, there's issues here that haven't been present upstream
+for a very long time.  Fortunately they're mostly style things so it
+should be relatively easy to handle.
 
-Thanks,
-Bjorn
+> +	struct ak4375_priv *ak4375 =3D snd_soc_component_get_drvdata(component);
+> +	int value =3D gpiod_get_value_cansleep(ak4375->pdn_gpiod);
+> +
+> +	if (value < 0)
+> +		dev_err(ak4375->dev, "unable to get pdn gpiod: %d\n", value);
 
-> Thanks,
-> Stephan
-> 
-> > 
-> > > +	status = "okay";
-> > > +};
-> > > +
-> > > +&pm8916_resin {
-> > > +	status = "okay";
-> > > +	linux,code = <KEY_VOLUMEDOWN>;
-> > > +};
-> > > +
-> > > +/* FIXME: Replace with SM5703 MUIC when driver is available */
-> > > +&pm8916_usbin {
-> > > +	status = "okay";
-> > > +};
-> > > +
-> > > +&pronto {
-> > > +	status = "okay";
-> > > +};
-> > > +
-> > > +&sdhc_1 {
-> > > +	status = "okay";
-> > > +
-> > > +	pinctrl-names = "default", "sleep";
-> > > +	pinctrl-0 = <&sdc1_clk_on &sdc1_cmd_on &sdc1_data_on>;
-> > > +	pinctrl-1 = <&sdc1_clk_off &sdc1_cmd_off &sdc1_data_off>;
-> > > +};
-> > > +
-> > > +&sdhc_2 {
-> > > +	status = "okay";
-> > > +
-> > > +	pinctrl-names = "default", "sleep";
-> > > +	pinctrl-0 = <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on &sdc2_cd_on>;
-> > > +	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off &sdc2_cd_off>;
-> > > +
-> > > +	cd-gpios = <&msmgpio 38 GPIO_ACTIVE_LOW>;
-> > > +};
-> > > +
-> > > +&usb {
-> > > +	status = "okay";
-> > > +	dr_mode = "peripheral";
-> > > +	extcon = <&pm8916_usbin>;
-> > > +};
-> > > +
-> > > +&usb_hs_phy {
-> > > +	extcon = <&pm8916_usbin>;
-> > > +	qcom,init-seq = /bits/ 8 <0x1 0x19 0x2 0x0b>;
-> > > +};
-> > > +
-> > > +&smd_rpm_regulators {
-> > > +	vdd_l1_l2_l3-supply = <&pm8916_s3>;
-> > > +	vdd_l4_l5_l6-supply = <&pm8916_s4>;
-> > > +	vdd_l7-supply = <&pm8916_s4>;
-> > > +
-> > > +	s3 {
-> > > +		regulator-min-microvolt = <1200000>;
-> > > +		regulator-max-microvolt = <1300000>;
-> > > +	};
-> > > +
-> > > +	s4 {
-> > > +		regulator-min-microvolt = <1800000>;
-> > > +		regulator-max-microvolt = <2100000>;
-> > > +	};
-> > > +
-> > > +	l1 {
-> > > +		regulator-min-microvolt = <1225000>;
-> > > +		regulator-max-microvolt = <1225000>;
-> > > +	};
-> > > +
-> > > +	l2 {
-> > > +		regulator-min-microvolt = <1200000>;
-> > > +		regulator-max-microvolt = <1200000>;
-> > > +	};
-> > > +
-> > > +	l4 {
-> > > +		regulator-min-microvolt = <2050000>;
-> > > +		regulator-max-microvolt = <2050000>;
-> > > +	};
-> > > +
-> > > +	l5 {
-> > > +		regulator-min-microvolt = <1800000>;
-> > > +		regulator-max-microvolt = <1800000>;
-> > > +	};
-> > > +
-> > > +	l6 {
-> > > +		regulator-min-microvolt = <1800000>;
-> > > +		regulator-max-microvolt = <1800000>;
-> > > +	};
-> > > +
-> > > +	l7 {
-> > > +		regulator-min-microvolt = <1800000>;
-> > > +		regulator-max-microvolt = <1800000>;
-> > > +	};
-> > > +
-> > > +	l8 {
-> > > +		regulator-min-microvolt = <2850000>;
-> > > +		regulator-max-microvolt = <2900000>;
-> > > +	};
-> > > +
-> > > +	l9 {
-> > > +		regulator-min-microvolt = <3300000>;
-> > > +		regulator-max-microvolt = <3300000>;
-> > > +	};
-> > > +
-> > > +	l10 {
-> > > +		regulator-min-microvolt = <2700000>;
-> > > +		regulator-max-microvolt = <2800000>;
-> > > +	};
-> > > +
-> > > +	l11 {
-> > > +		regulator-min-microvolt = <1800000>;
-> > > +		regulator-max-microvolt = <2950000>;
-> > > +		regulator-allow-set-load;
-> > > +		regulator-system-load = <200000>;
-> > > +	};
-> > > +
-> > > +	l12 {
-> > > +		regulator-min-microvolt = <1800000>;
-> > > +		regulator-max-microvolt = <2950000>;
-> > > +	};
-> > > +
-> > > +	l13 {
-> > > +		regulator-min-microvolt = <3075000>;
-> > > +		regulator-max-microvolt = <3075000>;
-> > > +	};
-> > > +
-> > > +	l14 {
-> > > +		regulator-min-microvolt = <1800000>;
-> > > +		regulator-max-microvolt = <3300000>;
-> > > +	};
-> > > +
-> > > +	l15 {
-> > > +		regulator-min-microvolt = <1800000>;
-> > > +		regulator-max-microvolt = <3300000>;
-> > > +	};
-> > > +
-> > > +	l16 {
-> > > +		regulator-min-microvolt = <1800000>;
-> > > +		regulator-max-microvolt = <3300000>;
-> > > +	};
-> > > +
-> > > +	l17 {
-> > > +		regulator-min-microvolt = <3000000>;
-> > > +		regulator-max-microvolt = <3000000>;
-> > > +	};
-> > > +
-> > > +	l18 {
-> > > +		regulator-min-microvolt = <2700000>;
-> > > +		regulator-max-microvolt = <2700000>;
-> > > +	};
-> > > +};
-> > > +
-> > > +&msmgpio {
-> > > +	gpio_keys_default: gpio-keys-default {
-> > > +		pins = "gpio107", "gpio109";
-> > > +		function = "gpio";
-> > > +
-> > > +		drive-strength = <2>;
-> > > +		bias-pull-up;
-> > > +	};
-> > > +};
-> > > --
-> > > 2.33.1
-> > > 
+You should cache the value set on the GPIO, there's no guarantee that
+reads are supported when in output mode or that the value will
+correspond to the value present on the pin. =20
+
+> +static const struct soc_enum ak4375_dac_enum[] =3D {
+> +	SOC_ENUM_SINGLE(AK4375_0B_LCH_OUTPUT_VOLUME, 7,
+> +			ARRAY_SIZE(ak4375_ovolcn_select_texts), ak4375_ovolcn_select_texts),
+
+Magic indexes into an array of enums are error prone and unreasonably
+hard to read.  Declare individual variables for each enum like other
+CODEC drivers do.
+
+> +static const char * const pdn_on_select[] =3D { "OFF", "ON" };
+> +
+> +static const struct soc_enum ak4375_pdn_enum =3D
+> +	SOC_ENUM_SINGLE_EXT(ARRAY_SIZE(pdn_on_select), pdn_on_select);
+
+Given that the driver is actively managing this GPIO at runtime with no
+coordination with this control this just shouldn't be exposed to
+userspace at all, I can't see how userspace can use this control without
+breaking the operation of the driver and any time the driver code kicks
+in it will just overwrite the current state.
+
+> +static const struct snd_kcontrol_new ak4375_snd_controls[] =3D {
+> +	SOC_SINGLE_TLV("AK4375 Digital Output VolumeL",
+> +		       AK4375_0B_LCH_OUTPUT_VOLUME, 0, 0x1f, 0, ovl_tlv),
+> +	SOC_SINGLE_TLV("AK4375 Digital Output VolumeR",
+> +		       AK4375_0C_RCH_OUTPUT_VOLUME, 0, 0x1f, 0, ovr_tlv),
+
+These should be a standard stereo control - SOC_DOUBLE_R_TLV.
+
+> +	SOC_SINGLE_TLV("AK4375 HP-Amp Analog Volume",
+> +		       AK4375_0D_HP_VOLUME_CONTROL, 0, 0x1f, 0, hpg_tlv),
+
+As with other CODEC drivers there is no need to put the name of the
+CODEC in every control name.
+
+> +	SOC_ENUM("AK4375 HPL Power-down Resistor", ak4375_dac_enum[6]),
+> +	SOC_ENUM("AK4375 HPR Power-down Resistor", ak4375_dac_enum[7]),
+
+These don't sound like things that would vary at runtime, should this be
+controlled via DT?
+
+> +static const struct snd_kcontrol_new ak4375_hpl_mixer_controls[] =3D {
+> +	SOC_DAPM_SINGLE("LDACL", AK4375_07_DAC_MONO_MIXING, 0, 1, 0),
+> +	SOC_DAPM_SINGLE("RDACL", AK4375_07_DAC_MONO_MIXING, 1, 1, 0),
+> +};
+
+The names of on/off switches should end with Switch - see
+control-names.rst.
+
+> +static int ak4375_set_pllblock(struct snd_soc_component *component, int =
+fs)
+> +{
+> +	struct ak4375_priv *ak4375 =3D snd_soc_component_get_drvdata(component);
+> +	int mclk, pllclk, refclk, pldbit, plmbit, mdivbit, divbit;
+> +	u8 mode;
+
+This should be being exposed as a set_pll() operation, or the input to
+the PLL configured using set_sysclk().  The input clock to the PLL is
+going to be system dependent.
+
+> +static const unsigned int ak4375_rates[] =3D {
+> +	8000, 11025, 16000, 22050,
+> +	32000, 44100, 48000, 88200,
+> +	96000, 176400, 192000,
+> +};
+> +
+> +static const struct snd_pcm_hw_constraint_list ak4375_rate_constraints =
+=3D {
+> +	.count =3D ARRAY_SIZE(ak4375_rates),
+> +	.list =3D ak4375_rates,
+> +};
+> +
+> +static int ak4375_startup(struct snd_pcm_substream *substream,
+> +			  struct snd_soc_dai *dai)
+> +{
+> +	return snd_pcm_hw_constraint_list(substream->runtime, 0,
+> +					  SNDRV_PCM_HW_PARAM_RATE,
+> +					  &ak4375_rate_constraints);
+> +}
+
+These are all standard rates, just set the supported rates in the DAI
+description rather than using _KNOT.
+
+> +static void ak4375_power_off(struct ak4375_priv *ak4375)
+> +{
+> +	gpiod_set_value_cansleep(ak4375->pdn_gpiod, 0);
+> +	usleep_range(1000, 2000);
+> +
+> +	if (!IS_ERR(ak4375->avdd_supply))
+> +		regulator_disable(ak4375->avdd_supply);
+
+Unless the device is capable of operating without AVDD which doesn't
+seem entirely likely use of AVDD should be unconditional.  If that were
+the case I'd expect to see some configuration of the device for
+operation without the supply which I don't see.
+
+Probably also worth using the _bulk APIs unless the ordering is
+important here.
+
+> +	regulator_disable(ak4375->tvdd_supply);
+> +
+> +	usleep_range(3000, 4000);
+
+What is this sleep doing?
+
+> +	ak4375->pdn_gpiod =3D devm_gpiod_get_optional(ak4375->dev, "pdn", GPIOD=
+_OUT_LOW);
+> +	if (IS_ERR(ak4375->pdn_gpiod))
+> +		return PTR_ERR(ak4375->pdn_gpiod);
+> +
+> +	ret =3D ak4375_power_on(ak4375);
+> +	if (ret < 0)
+> +		return ret;
+
+We never unwind this power on - why not just remove the component level
+probe/remove?
+
+> +	ret =3D devm_snd_soc_register_component(ak4375->dev, drvdata->comp_drv,
+> +					      drvdata->dai_drv, 1);
+> +	if (ret < 0) {
+> +		dev_err(ak4375->dev, "Failed to register CODEC: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	pm_runtime_enable(&i2c->dev);
+
+Enable runtime PM before probing the component, a card may be
+instantiated during component probe and userpace could start using the
+card.
+
+--Z8gbhBTXw3+IVEpf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmG3md4ACgkQJNaLcl1U
+h9DXEwf/aj3cRhvwUT2EKDBrbjP2lbNdtl86ISKNhKD82pTyOMDHCisZhMzy1twO
+jtnvCggiVp5qQ0MJlbDgZBhcWmd7gimzdqJamR8Gk8bJxOcNv2YEPi/NM2CXo5IT
+2Dtd34ngk5ps1BlEB8eT0JNHoqgmdWyp/tGVN5ssOLDaDqKZ4A+CQINeppvbklOv
+4F1oTbyXUMOYIizDwMP/PfPwmwfGKycCYmGtKhSmxqC15mMr3OQDYkmketz3ER/a
+HFg56N2dvPhzH02xga+QjZ/chZZmpZtZ1DVqStI1AoKmZnK0N1o71C1zx9h/vnSl
+THUY9OJ3/CGktzmQvLYftRvcsYXDjA==
+=iQo2
+-----END PGP SIGNATURE-----
+
+--Z8gbhBTXw3+IVEpf--
