@@ -2,26 +2,26 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E434C4332F
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Dec 2021 16:00:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BDAB0C433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Dec 2021 16:00:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240301AbhLMQAK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Dec 2021 11:00:10 -0500
-Received: from ip-16.mailobj.net ([213.182.54.16]:35026 "EHLO msg-6.mailo.com"
+        id S240329AbhLMQAU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Dec 2021 11:00:20 -0500
+Received: from ip-15.mailobj.net ([213.182.54.15]:42258 "EHLO msg-4.mailo.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S240295AbhLMQAJ (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Dec 2021 11:00:09 -0500
+        id S240266AbhLMQAK (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 13 Dec 2021 11:00:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1639411187; bh=nqaQgdwtXeV6c2h9hyDqypPaTpaMXIWEua3oIHtWQcM=;
+        t=1639411174; bh=nqaQgdwtXeV6c2h9hyDqypPaTpaMXIWEua3oIHtWQcM=;
         h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
          References:MIME-Version:Content-Transfer-Encoding;
-        b=l23HFYXGacMMW1wX4qWbxW3N8dUJYqySMWgXE/jAX5ljwjbmA6aVUbr4eZzQrhbuS
-         ohx9Kz9bXpOWNLQlLv/ZzkmQQ/MqPX+4XF/oeV14w8s3Fo7aQqf+3AZ8sM32oO/IWz
-         sgftNOchVlY3a1nDfUst9lrXNQfcJ2BBbCqUw0p8=
+        b=XuOvRamUl0bSZrxXrIJDoNC/eQmjLA7/QJxwVvuhmgWem63JSoBxWWJs9ZiajDMOm
+         Q0VoGAHEd5hMJ7l1z+O2YoyLi+iLLyw/FwOeGa5+I9o+/VBlVCq+kIVnl4NbyA8Koh
+         z9H2CTTVNLmYAptOfycVqqbGT1bhBSJ5KYQjddpM=
 Received: by b-6.in.mailobj.net [192.168.90.16] with ESMTP
         via proxy.mailoo.org [213.182.55.207]
-        Mon, 13 Dec 2021 16:59:47 +0100 (CET)
-X-EA-Auth: Vjd0nHHwsFS+Hu+5uQ84GO/QdnKySj7zZzC9o3X+z3pP+Y/bgD/ecG1xp06VBUk74D08TLGF7SNDKQB6KVOcPFQLyH2+XDoVAKp+rPZhIfQ=
+        Mon, 13 Dec 2021 16:59:34 +0100 (CET)
+X-EA-Auth: Xx0v2exYMlE4+Ef9FfeLvbe/kM7p9uFKLgkem61xyjYCdWp9/OiKjA7gEQxdj37OhXzZJ8Muh6qEhDoNbOkFvJfvIH2OoHOdSn6cVcWGXaY=
 From:   Vincent Knecht <vincent.knecht@mailoo.org>
 To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
         perex@perex.cz, tiwai@suse.com
@@ -31,8 +31,8 @@ Cc:     stephan@gerhold.net, obayerd@eurocomposant.fr,
         ~postmarketos/upstreaming@lists.sr.ht,
         Vincent Knecht <vincent.knecht@mailoo.org>
 Subject: [PATCH 2/2] ASoC: Add AK4375 support
-Date:   Mon, 13 Dec 2021 16:59:14 +0100
-Message-Id: <20211213155914.2558902-4-vincent.knecht@mailoo.org>
+Date:   Mon, 13 Dec 2021 16:59:12 +0100
+Message-Id: <20211213155914.2558902-2-vincent.knecht@mailoo.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211213155914.2558902-1-vincent.knecht@mailoo.org>
 References: <20211213155914.2558902-1-vincent.knecht@mailoo.org>
