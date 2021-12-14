@@ -2,104 +2,63 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 766F7C433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Dec 2021 14:22:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4970DC433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Dec 2021 18:28:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234866AbhLNOWz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 14 Dec 2021 09:22:55 -0500
-Received: from mo4-p03-ob.smtp.rzone.de ([81.169.146.173]:10561 "EHLO
-        mo4-p03-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234899AbhLNOWy (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 14 Dec 2021 09:22:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1639491757;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=rqTxYtVdT2CQO9CQ1pRwiHxb/3QwziCt4kGrC57s9rI=;
-    b=m/GhDGZF8OjyKObcEpPiOrD7Plmcd3e7SzWPRO+vjYs2T5vzaMMntXf0oTYCLPl0gY
-    K+9rt2uDVTRZ7oPa4m0gASCrzKpKXJtEWF+jpzHGyUueVRBF10nSpvXwbDJJCiD87Ho8
-    YUYLMBK5nimqTSaJFh325GP+7GVGuFS1CK5ilb7oUgJ0Ve0oELADnXaElBqQA3IvlaDi
-    cIsM7IK6Z83wFT9YB+STwLjXOrh+3xTNNawIgVkW7fzLANEcTHhzovJV1ePZ5c0+39TL
-    WuJqaySB/XsWSIYNh0MyVcBG/1KKZg8W1PxIRCosMtCa5Yol52wOb/l+AMk5SmUSbUCl
-    NT2A==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXQ7UOGqRde+a0fiL1O/hR"
-X-RZG-CLASS-ID: mo00
-Received: from droid..
-    by smtp.strato.de (RZmta 47.35.3 AUTH)
-    with ESMTPSA id x08baexBEEMa8rZ
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Tue, 14 Dec 2021 15:22:36 +0100 (CET)
-From:   Stephan Gerhold <stephan@gerhold.net>
+        id S234274AbhLNS2e (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Dec 2021 13:28:34 -0500
+Received: from ip-16.mailobj.net ([213.182.54.16]:43750 "EHLO msg-6.mailo.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234322AbhLNS2d (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 14 Dec 2021 13:28:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
+        t=1639506500; bh=BR2qDXNKNKVk8yQ0KG1Y9Y1xpHQPnJBpsphvzPigeUg=;
+        h=X-EA-Auth:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+         References:Content-Type:MIME-Version:Content-Transfer-Encoding;
+        b=kfNOwJNJvSgyOpXQBzdxLUqrgIsJxPamOrfMzG0VvgoAglXw/PnX6SGekEKT7UQ9L
+         2Qn6S4tWoSllN3lArrcFLx1p3ZXbwuWW1UoIUkmWw8+ejIHnDM3Ji7IwC2Xd3t6DYA
+         q5nK4dtpl/6DOWDM9lJF54CfshXUCpeXTASCV1Jk=
+Received: by b-4.in.mailobj.net [192.168.90.14] with ESMTP
+        via proxy.mailoo.org [213.182.55.207]
+        Tue, 14 Dec 2021 19:28:20 +0100 (CET)
+X-EA-Auth: ZrbCefZvrR0MW3Fdl0zMedxelWrqSsj6Ao2YUQhL2yMarudqVTdrpgzaD7ksuVv62skx57agflarrPJkttU06rOjdpD0+L6FbsKpzqyunx4=
+Message-ID: <fa40932c2dfbfcbdefa976f9609bdfca10fdd9cf.camel@mailoo.org>
+Subject: Re: [PATCH 2/2] ASoC: Add AK4375 support
+From:   Vincent Knecht <vincent.knecht@mailoo.org>
 To:     Mark Brown <broonie@kernel.org>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Banajit Goswami <bgoswami@codeaurora.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Paul Cercueil <paul@crapouillou.net>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Vincent Knecht <vincent.knecht@mailoo.org>,
-        Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH 4/4] ASoC: msm8916-wcd-analog: Use separate outputs for HPH_L/HPH_R
-Date:   Tue, 14 Dec 2021 15:20:49 +0100
-Message-Id: <20211214142049.20422-5-stephan@gerhold.net>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20211214142049.20422-1-stephan@gerhold.net>
-References: <20211214142049.20422-1-stephan@gerhold.net>
+Cc:     devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
+        obayerd@eurocomposant.fr, phone-devel@vger.kernel.org,
+        stephan@gerhold.net, linux-kernel@vger.kernel.org, tiwai@suse.com,
+        lgirdwood@gmail.com, robh+dt@kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Date:   Tue, 14 Dec 2021 19:28:19 +0100
+In-Reply-To: <YbeZ37FLnAsMfrDl@sirena.org.uk>
+References: <20211213155914.2558902-1-vincent.knecht@mailoo.org>
+         <20211213155914.2558902-2-vincent.knecht@mailoo.org>
+         <YbeZ37FLnAsMfrDl@sirena.org.uk>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4 (3.40.4-2.fc34) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The analog codec has separate output paths for the left headphone channel
-(HPH_L) and the right headphone channel (HPH_R). While they are usually
-used together for actual headphones output, some devices also have an
-analog speaker amplifier connected to one of the headphone channels.
+Le lundi 13 d=C3=A9cembre 2021 =C3=A0 19:07 +0000, Mark Brown a =C3=A9crit=
+=C2=A0:
+> On Mon, Dec 13, 2021 at 04:59:12PM +0100, Vincent Knecht wrote:
+>=20
+> > AK4375 is a 32-bit stereo DAC with headphones amplifier.
+> > There's no documentation for it on akm.com, and only a brief
+> > datasheet can be found floating on the internets [1].
+>=20
+> This driver looks relatively clean but it's in *serious* need of
+> modernisation, there's issues here that haven't been present upstream
+> for a very long time.=C2=A0 Fortunately they're mostly style things so it
+> should be relatively easy to handle.
 
-To allow modelling that properly (and to avoid powering on the unneeded
-output path), HPH_L and HPH_R should be represented by separate outputs
-rather than a shared HEADPHONE output that always activates both paths.
+Thank you Mark for this review, hopefully I'll fix all points
+and submit a v2 within a week or so.
 
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
----
- sound/soc/codecs/msm8916-wcd-analog.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/msm8916-wcd-analog.c b/sound/soc/codecs/msm8916-wcd-analog.c
-index 3ddd822240e3..485cda46dbb9 100644
---- a/sound/soc/codecs/msm8916-wcd-analog.c
-+++ b/sound/soc/codecs/msm8916-wcd-analog.c
-@@ -822,8 +822,8 @@ static const struct snd_soc_dapm_route pm8916_wcd_analog_audio_map[] = {
- 	{"EAR PA", NULL, "EAR CP"},
- 
- 	/* Headset (RX MIX1 and RX MIX2) */
--	{"HEADPHONE", NULL, "HPHL PA"},
--	{"HEADPHONE", NULL, "HPHR PA"},
-+	{"HPH_L", NULL, "HPHL PA"},
-+	{"HPH_R", NULL, "HPHR PA"},
- 
- 	{"HPHL DAC", NULL, "EAR_HPHL_CLK"},
- 	{"HPHR DAC", NULL, "EAR_HPHR_CLK"},
-@@ -870,7 +870,8 @@ static const struct snd_soc_dapm_widget pm8916_wcd_analog_dapm_widgets[] = {
- 	SND_SOC_DAPM_INPUT("AMIC3"),
- 	SND_SOC_DAPM_INPUT("AMIC2"),
- 	SND_SOC_DAPM_OUTPUT("EAR"),
--	SND_SOC_DAPM_OUTPUT("HEADPHONE"),
-+	SND_SOC_DAPM_OUTPUT("HPH_L"),
-+	SND_SOC_DAPM_OUTPUT("HPH_R"),
- 
- 	/* RX stuff */
- 	SND_SOC_DAPM_SUPPLY("INT_LDO_H", SND_SOC_NOPM, 1, 0, NULL, 0),
--- 
-2.34.1
 
