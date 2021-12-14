@@ -2,62 +2,214 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC67BC4332F
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Dec 2021 07:38:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2631C433F5
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Dec 2021 14:22:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231421AbhLNHiq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 14 Dec 2021 02:38:46 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:53424 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231233AbhLNHiq (ORCPT
+        id S234888AbhLNOWs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Dec 2021 09:22:48 -0500
+Received: from mo4-p02-ob.smtp.rzone.de ([85.215.255.80]:34840 "EHLO
+        mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230134AbhLNOWr (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 14 Dec 2021 02:38:46 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D9242B8172C;
-        Tue, 14 Dec 2021 07:38:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D416AC34601;
-        Tue, 14 Dec 2021 07:38:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639467523;
-        bh=LYVbEp6oDnQQyqbRxWbmjublt79R3Y2q0XjQOAruDPo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GmMBhJUGo6F6Qe4ZRZt1z3TfBX33FlvvhhmwITzLoGqwtZIz/tDVjFZv2qB8CV2Ou
-         JXbCY22GdcGxDWBiAVY69uF3lwz9bbnJT/q583DFkwYzRw5TuMmCZjDvWXqOS3OBiQ
-         v4OqOKTEDUXqGR5Pr6fOax2Fu2ju4eHtojgiXlWXnCWMlnYV0o7Y+/AuSufy2cJ1hJ
-         sbaTjprawXUxoieIcBJ7+nRhJs6KGmGJfwuoa0rorIrs113da/IT4fh6EKuyNSvsZe
-         HJdFR4CeExfxWd5nNR0z9knZ4Atrq9Gr+KkW/Nth5rOWAXzgFG3+kSEssQq/HElZdh
-         5K1vaq0P+CvwQ==
-Date:   Tue, 14 Dec 2021 13:08:39 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Andy Gross <agross@kernel.org>,
+        Tue, 14 Dec 2021 09:22:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1639491754;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=6aX5FukNEbV8lAwrXLIZfZ57AcaJYjqx6+qwBSxjjvQ=;
+    b=NQFkzJoUlyV6nD41jiA17f+q4eR75amdaaW2AkCYJuWz+CXV74mEteC8gviha+CZkx
+    7Q6uDT87GlkqGtLoshRpZYT+Y/OPUKyQUoUfm/yyCTnDEqI1Eeu2isjPHz3qu2A/ht3F
+    175lEPp9ETRFBNqsOkfkZ126c/8prZbZvTK/MU4XHkHe3hjjspT8YZ1uLoTi1M7G7nMj
+    kAbbYtVHM1S6f/sT0XhchQrHphsw9tLmnbR2WQJ7BZ33lJZBxHjwlilQu6FBL1bWZQXF
+    EDOFhb7QRaRdY8yrql45Nz3b+izdDDw/UULG/TSAtPpFJvJTh4dClSz2E3ZyerbIh8Oh
+    jVjw==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXQ7UOGqRde+a0fiL1O/hR"
+X-RZG-CLASS-ID: mo00
+Received: from droid..
+    by smtp.strato.de (RZmta 47.35.3 AUTH)
+    with ESMTPSA id x08baexBEEMY8rW
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Tue, 14 Dec 2021 15:22:34 +0100 (CET)
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Banajit Goswami <bgoswami@codeaurora.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
+        Andy Gross <agross@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Manu Gautam <mgautam@codeaurora.org>,
-        linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 04/10] dt-bindings: phy: qcom,qusb2: Add SM6350 compatible
-Message-ID: <YbhJ/zNI8EgD15TN@matsya>
-References: <20211213082614.22651-1-luca.weiss@fairphone.com>
- <20211213082614.22651-5-luca.weiss@fairphone.com>
+        linux-arm-msm@vger.kernel.org, alsa-devel@alsa-project.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Paul Cercueil <paul@crapouillou.net>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Vincent Knecht <vincent.knecht@mailoo.org>,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: [PATCH 1/4] ASoC: core: Add snd_soc_of_parse_pin_switches() from simple-card-utils
+Date:   Tue, 14 Dec 2021 15:20:46 +0100
+Message-Id: <20211214142049.20422-2-stephan@gerhold.net>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20211214142049.20422-1-stephan@gerhold.net>
+References: <20211214142049.20422-1-stephan@gerhold.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211213082614.22651-5-luca.weiss@fairphone.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 13-12-21, 09:26, Luca Weiss wrote:
-> Add devicetree compatible for the usb phy on SM6350 SoC.
+The ASoC core already has several helpers to parse card properties
+from the device tree. Move the parsing code for "pin-switches" from
+simple-card-utils to a shared snd_soc_of_parse_pin_switches() function
+so other drivers can also use it to set up pin switches configured in
+the device tree.
 
-Applied to phy-next, thanks
+Cc: Paul Cercueil <paul@crapouillou.net>
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+---
+ include/sound/soc.h                   |  1 +
+ sound/soc/generic/simple-card-utils.c | 45 +-----------------------
+ sound/soc/soc-core.c                  | 50 +++++++++++++++++++++++++++
+ 3 files changed, 52 insertions(+), 44 deletions(-)
 
+diff --git a/include/sound/soc.h b/include/sound/soc.h
+index 8e6dd8a257c5..061570048484 100644
+--- a/include/sound/soc.h
++++ b/include/sound/soc.h
+@@ -1213,6 +1213,7 @@ int snd_soc_of_parse_card_name(struct snd_soc_card *card,
+ 			       const char *propname);
+ int snd_soc_of_parse_audio_simple_widgets(struct snd_soc_card *card,
+ 					  const char *propname);
++int snd_soc_of_parse_pin_switches(struct snd_soc_card *card, const char *prop);
+ int snd_soc_of_get_slot_mask(struct device_node *np,
+ 			     const char *prop_name,
+ 			     unsigned int *mask);
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index 850e968677f1..a81323d1691d 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -499,57 +499,14 @@ EXPORT_SYMBOL_GPL(asoc_simple_parse_widgets);
+ int asoc_simple_parse_pin_switches(struct snd_soc_card *card,
+ 				   char *prefix)
+ {
+-	const unsigned int nb_controls_max = 16;
+-	const char **strings, *control_name;
+-	struct snd_kcontrol_new *controls;
+-	struct device *dev = card->dev;
+-	unsigned int i, nb_controls;
+ 	char prop[128];
+-	int ret;
+ 
+ 	if (!prefix)
+ 		prefix = "";
+ 
+ 	snprintf(prop, sizeof(prop), "%s%s", prefix, "pin-switches");
+ 
+-	if (!of_property_read_bool(dev->of_node, prop))
+-		return 0;
+-
+-	strings = devm_kcalloc(dev, nb_controls_max,
+-			       sizeof(*strings), GFP_KERNEL);
+-	if (!strings)
+-		return -ENOMEM;
+-
+-	ret = of_property_read_string_array(dev->of_node, prop,
+-					    strings, nb_controls_max);
+-	if (ret < 0)
+-		return ret;
+-
+-	nb_controls = (unsigned int)ret;
+-
+-	controls = devm_kcalloc(dev, nb_controls,
+-				sizeof(*controls), GFP_KERNEL);
+-	if (!controls)
+-		return -ENOMEM;
+-
+-	for (i = 0; i < nb_controls; i++) {
+-		control_name = devm_kasprintf(dev, GFP_KERNEL,
+-					      "%s Switch", strings[i]);
+-		if (!control_name)
+-			return -ENOMEM;
+-
+-		controls[i].iface = SNDRV_CTL_ELEM_IFACE_MIXER;
+-		controls[i].name = control_name;
+-		controls[i].info = snd_soc_dapm_info_pin_switch;
+-		controls[i].get = snd_soc_dapm_get_pin_switch;
+-		controls[i].put = snd_soc_dapm_put_pin_switch;
+-		controls[i].private_value = (unsigned long)strings[i];
+-	}
+-
+-	card->controls = controls;
+-	card->num_controls = nb_controls;
+-
+-	return 0;
++	return snd_soc_of_parse_pin_switches(card, prop);
+ }
+ EXPORT_SYMBOL_GPL(asoc_simple_parse_pin_switches);
+ 
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index dcf6be4c4aaa..c714b0f63fcc 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -2824,6 +2824,56 @@ int snd_soc_of_parse_audio_simple_widgets(struct snd_soc_card *card,
+ }
+ EXPORT_SYMBOL_GPL(snd_soc_of_parse_audio_simple_widgets);
+ 
++int snd_soc_of_parse_pin_switches(struct snd_soc_card *card, const char *prop)
++{
++	const unsigned int nb_controls_max = 16;
++	const char **strings, *control_name;
++	struct snd_kcontrol_new *controls;
++	struct device *dev = card->dev;
++	unsigned int i, nb_controls;
++	int ret;
++
++	if (!of_property_read_bool(dev->of_node, prop))
++		return 0;
++
++	strings = devm_kcalloc(dev, nb_controls_max,
++			       sizeof(*strings), GFP_KERNEL);
++	if (!strings)
++		return -ENOMEM;
++
++	ret = of_property_read_string_array(dev->of_node, prop,
++					    strings, nb_controls_max);
++	if (ret < 0)
++		return ret;
++
++	nb_controls = (unsigned int)ret;
++
++	controls = devm_kcalloc(dev, nb_controls,
++				sizeof(*controls), GFP_KERNEL);
++	if (!controls)
++		return -ENOMEM;
++
++	for (i = 0; i < nb_controls; i++) {
++		control_name = devm_kasprintf(dev, GFP_KERNEL,
++					      "%s Switch", strings[i]);
++		if (!control_name)
++			return -ENOMEM;
++
++		controls[i].iface = SNDRV_CTL_ELEM_IFACE_MIXER;
++		controls[i].name = control_name;
++		controls[i].info = snd_soc_dapm_info_pin_switch;
++		controls[i].get = snd_soc_dapm_get_pin_switch;
++		controls[i].put = snd_soc_dapm_put_pin_switch;
++		controls[i].private_value = (unsigned long)strings[i];
++	}
++
++	card->controls = controls;
++	card->num_controls = nb_controls;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(snd_soc_of_parse_pin_switches);
++
+ int snd_soc_of_get_slot_mask(struct device_node *np,
+ 			     const char *prop_name,
+ 			     unsigned int *mask)
 -- 
-~Vinod
+2.34.1
+
