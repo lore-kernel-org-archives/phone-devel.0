@@ -2,36 +2,37 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D59B0C4167B
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Dec 2021 14:22:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9084C433FE
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Dec 2021 14:22:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234892AbhLNOWt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 14 Dec 2021 09:22:49 -0500
-Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.169]:30473 "EHLO
+        id S234896AbhLNOWu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Dec 2021 09:22:50 -0500
+Received: from mo4-p02-ob.smtp.rzone.de ([81.169.146.171]:32297 "EHLO
         mo4-p02-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232470AbhLNOWr (ORCPT
+        with ESMTP id S234866AbhLNOWt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 14 Dec 2021 09:22:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1639491754;
+        Tue, 14 Dec 2021 09:22:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1639491756;
     s=strato-dkim-0002; d=gerhold.net;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=av2Qq+J6PbfFPBH/diii4rDrGbpUSmagYYOyWFKE/74=;
-    b=YhzjZZ+gWbTGnypGjUd6vNQku9LSEHDjS5PPDI8T9/md/Z+xKOSdwiO3meQXQkNOsb
-    bgHJaHdM5MsJBdU9eNbV53m6bIlGfgsmCHi3gV9qX03sd8GzR43tXNS8qtdNl6Jy81ib
-    k9btp3sZ4CkPnh0fV2sTD4VCjjkxsWWyxrn31OgQd3j6/iqWsL6yf04Zc6p8Rfadvvgv
-    nxeEUsd/+lufYpbv55aLAR1V2hJa1hfEImoHZoQmoi+0/nvamY1KxBW3LuSFKCSzlStq
-    a1tofc/PJdZRrpxFvxv3/q31GuJyCjpWK16rQjtwei4sRMg1iIm96msuCfucx3UfRTke
-    IjYw==
+    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=nK1WI/n5WJTnKoFcfera4gLZkWVqZW1oe5BBzB4Dcuo=;
+    b=e2jcaIpBwW/gjK+Wrev+TvSAp2KUSBzwJMDosivaYYohMOPejnp+EI3O3GOb4bNnRr
+    bVGriNq7ub/7G9ZdGvKTvdjMsg7UOX2f11il6jzKLEYVdp+qgR3w3l/mO8vWJT+Ekdce
+    N5wC18lSqySEgNC8wsCNsniqOq3Gsvc/qX0PUaxVcLgq9nmcbZoLwygE5Kok6TF1kgNg
+    Si6U5EJIVJU+pqn2Ivcfn9m9UtECynpaJEY50RaP9aUuf8C+BXerKr7rK4vE1NtqdMae
+    Vj7i0+RYZiWGsBWb6bvyT8KTmm152DiSPeb7CpDCaOsWX136tkN9r6ngsf4UNkWBLhKA
+    83Hw==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVORvLd4SsytBXQ7UOGqRde+a0fiL1O/hR"
 X-RZG-CLASS-ID: mo00
 Received: from droid..
     by smtp.strato.de (RZmta 47.35.3 AUTH)
-    with ESMTPSA id x08baexBEEMX8rV
+    with ESMTPSA id x08baexBEEMZ8rY
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Tue, 14 Dec 2021 15:22:33 +0100 (CET)
+    Tue, 14 Dec 2021 15:22:35 +0100 (CET)
 From:   Stephan Gerhold <stephan@gerhold.net>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     Liam Girdwood <lgirdwood@gmail.com>,
@@ -47,47 +48,58 @@ Cc:     Liam Girdwood <lgirdwood@gmail.com>,
         Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
         Vincent Knecht <vincent.knecht@mailoo.org>,
         Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH 0/4] ASoC: qcom: Parse "pin-switches" and "widgets" from DT
-Date:   Tue, 14 Dec 2021 15:20:45 +0100
-Message-Id: <20211214142049.20422-1-stephan@gerhold.net>
+Subject: [PATCH 3/4] ASoC: qcom: common: Parse "pin-switches" and "widgets" from DT
+Date:   Tue, 14 Dec 2021 15:20:48 +0100
+Message-Id: <20211214142049.20422-4-stephan@gerhold.net>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20211214142049.20422-1-stephan@gerhold.net>
+References: <20211214142049.20422-1-stephan@gerhold.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Some sound card setups might require extra pin switches to allow 
-turning off certain audio components. simple-card supports this
-already using the "pin-switches" and "widgets" device tree property. 
-This series makes it possible to use the same properties for the Qcom 
-sound cards.
+Use the DT helpers in the ASoC core to parse the "pin-switches" and
+"widgets" properties from the device tree. This allows adding extra
+mixers to disable e.g. an extra speaker amplifier that would be
+normally powered on automatically because it is connected to a shared
+output pin.
 
-To implement that, the function that parses the "pin-switches" property 
-in simple-card-utils.c is first moved into the ASoC core. Then two 
-simple function calls are added to the common Qcom sound card DT parser.
-Finally there is a small patch for the msm8916-wcd-analog codec to make
-it possible to model sound card setups used in some MSM8916 smartphones.
-(See PATCH 2/4 for an explanation of some real example use cases.)
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+---
+ sound/soc/qcom/common.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Using pin switches rather than patching codec drivers with switches was
-originally suggested by Mark Brown on a patch for the tfa989x codec:
-https://lore.kernel.org/alsa-devel/YXaMVHo9drCIuD3u@sirena.org.uk/
-
-Stephan Gerhold (4):
-  ASoC: core: Add snd_soc_of_parse_pin_switches() from simple-card-utils
-  ASoC: dt-bindings: qcom: sm8250: Document "pin-switches" and "widgets"
-  ASoC: qcom: common: Parse "pin-switches" and "widgets" from DT
-  ASoC: msm8916-wcd-analog: Use separate outputs for HPH_L/HPH_R
-
- .../bindings/sound/qcom,sm8250.yaml           | 16 ++++++
- include/sound/soc.h                           |  1 +
- sound/soc/codecs/msm8916-wcd-analog.c         |  7 +--
- sound/soc/generic/simple-card-utils.c         | 45 +----------------
- sound/soc/qcom/common.c                       | 10 ++++
- sound/soc/soc-core.c                          | 50 +++++++++++++++++++
- 6 files changed, 82 insertions(+), 47 deletions(-)
-
+diff --git a/sound/soc/qcom/common.c b/sound/soc/qcom/common.c
+index 2e1c618f7529..eff134785051 100644
+--- a/sound/soc/qcom/common.c
++++ b/sound/soc/qcom/common.c
+@@ -26,6 +26,12 @@ int qcom_snd_parse_of(struct snd_soc_card *card)
+ 		return ret;
+ 	}
+ 
++	if (of_property_read_bool(dev->of_node, "widgets")) {
++		ret = snd_soc_of_parse_audio_simple_widgets(card, "widgets");
++		if (ret)
++			return ret;
++	}
++
+ 	/* DAPM routes */
+ 	if (of_property_read_bool(dev->of_node, "audio-routing")) {
+ 		ret = snd_soc_of_parse_audio_routing(card, "audio-routing");
+@@ -39,6 +45,10 @@ int qcom_snd_parse_of(struct snd_soc_card *card)
+ 			return ret;
+ 	}
+ 
++	ret = snd_soc_of_parse_pin_switches(card, "pin-switches");
++	if (ret)
++		return ret;
++
+ 	ret = snd_soc_of_parse_aux_devs(card, "aux-devs");
+ 	if (ret)
+ 		return ret;
 -- 
 2.34.1
 
