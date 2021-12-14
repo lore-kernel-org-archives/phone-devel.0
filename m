@@ -2,63 +2,110 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4970DC433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Dec 2021 18:28:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BD5EC433FE
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Dec 2021 19:47:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234274AbhLNS2e (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 14 Dec 2021 13:28:34 -0500
-Received: from ip-16.mailobj.net ([213.182.54.16]:43750 "EHLO msg-6.mailo.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234322AbhLNS2d (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 14 Dec 2021 13:28:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1639506500; bh=BR2qDXNKNKVk8yQ0KG1Y9Y1xpHQPnJBpsphvzPigeUg=;
-        h=X-EA-Auth:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-         References:Content-Type:MIME-Version:Content-Transfer-Encoding;
-        b=kfNOwJNJvSgyOpXQBzdxLUqrgIsJxPamOrfMzG0VvgoAglXw/PnX6SGekEKT7UQ9L
-         2Qn6S4tWoSllN3lArrcFLx1p3ZXbwuWW1UoIUkmWw8+ejIHnDM3Ji7IwC2Xd3t6DYA
-         q5nK4dtpl/6DOWDM9lJF54CfshXUCpeXTASCV1Jk=
-Received: by b-4.in.mailobj.net [192.168.90.14] with ESMTP
-        via proxy.mailoo.org [213.182.55.207]
-        Tue, 14 Dec 2021 19:28:20 +0100 (CET)
-X-EA-Auth: ZrbCefZvrR0MW3Fdl0zMedxelWrqSsj6Ao2YUQhL2yMarudqVTdrpgzaD7ksuVv62skx57agflarrPJkttU06rOjdpD0+L6FbsKpzqyunx4=
-Message-ID: <fa40932c2dfbfcbdefa976f9609bdfca10fdd9cf.camel@mailoo.org>
-Subject: Re: [PATCH 2/2] ASoC: Add AK4375 support
-From:   Vincent Knecht <vincent.knecht@mailoo.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
-        obayerd@eurocomposant.fr, phone-devel@vger.kernel.org,
-        stephan@gerhold.net, linux-kernel@vger.kernel.org, tiwai@suse.com,
-        lgirdwood@gmail.com, robh+dt@kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Date:   Tue, 14 Dec 2021 19:28:19 +0100
-In-Reply-To: <YbeZ37FLnAsMfrDl@sirena.org.uk>
-References: <20211213155914.2558902-1-vincent.knecht@mailoo.org>
-         <20211213155914.2558902-2-vincent.knecht@mailoo.org>
-         <YbeZ37FLnAsMfrDl@sirena.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4 (3.40.4-2.fc34) 
+        id S237527AbhLNTrA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Dec 2021 14:47:00 -0500
+Received: from relay05.th.seeweb.it ([5.144.164.166]:51993 "EHLO
+        relay05.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237522AbhLNTrA (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 14 Dec 2021 14:47:00 -0500
+Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id CD3993F3BC;
+        Tue, 14 Dec 2021 20:46:57 +0100 (CET)
+Date:   Tue, 14 Dec 2021 20:46:56 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Stephen Boyd <sboyd@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Rob Clark <robdclark@chromium.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Abhinav Kumar <abhinavk@codeaurora.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org
+Subject: Re: [PATCH v3 0/2] Use "ref" clocks from firmware for DSI PLL VCO
+ parent
+Message-ID: <20211214194656.mayiy4xhcshjluwf@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Rob Clark <robdclark@chromium.org>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Abhinav Kumar <abhinavk@codeaurora.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org
+References: <20210911131922.387964-1-marijn.suijten@somainline.org>
+ <163165584152.763609.4056232270079096475@swboyd.mtv.corp.google.com>
+ <20210918144038.6q352hzqopx7vvdu@SoMainline.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210918144038.6q352hzqopx7vvdu@SoMainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Le lundi 13 d=C3=A9cembre 2021 =C3=A0 19:07 +0000, Mark Brown a =C3=A9crit=
-=C2=A0:
-> On Mon, Dec 13, 2021 at 04:59:12PM +0100, Vincent Knecht wrote:
->=20
-> > AK4375 is a 32-bit stereo DAC with headphones amplifier.
-> > There's no documentation for it on akm.com, and only a brief
-> > datasheet can be found floating on the internets [1].
->=20
-> This driver looks relatively clean but it's in *serious* need of
-> modernisation, there's issues here that haven't been present upstream
-> for a very long time.=C2=A0 Fortunately they're mostly style things so it
-> should be relatively easy to handle.
+Hi all,
 
-Thank you Mark for this review, hopefully I'll fix all points
-and submit a v2 within a week or so.
+On 2021-09-18 16:40:38, Marijn Suijten wrote:
+> On 2021-09-14 14:44:01, Stephen Boyd wrote:
+> > Quoting Marijn Suijten (2021-09-11 06:19:19)
+> > > All DSI PHY/PLL drivers were referencing their VCO parent clock by a
+> > > global name, most of which don't exist or have been renamed.  These
+> > > clock drivers seem to function fine without that except the 14nm driver
+> > > for sdm6xx [1].
+> > > 
+> > > At the same time all DTs provide a "ref" clock as per the requirements
+> > > of dsi-phy-common.yaml, but the clock is never used.  This patchset puts
+> > > that clock to use without relying on a global clock name, so that all
+> > > dependencies are explicitly defined in DT (the firmware) in the end.
+> > 
+> > I can take this through clk tree if it helps avoid conflicts. There are
+> > some other patches to sdm660.c in the clk tree already.
+> 
+> Might be useful to maintain proper ordering of these dependent patches
+> but it's up to Dmitry and Rob to decide, whom I'm sending this mail
+> directly to so that they can chime in.
 
+Dependent patch [3] landed in 5.15 and [2] made it into 5.16 rc's - is
+it time to pick this series up and if so through what tree?
 
+Repeating the links from patch 1/2:
+[2]: https://lore.kernel.org/linux-arm-msm/20210830175739.143401-1-marijn.suijten@somainline.org/
+[3]: https://lore.kernel.org/linux-arm-msm/20210829203027.276143-2-marijn.suijten@somainline.org/
 
+Thanks!
+
+- marijn
