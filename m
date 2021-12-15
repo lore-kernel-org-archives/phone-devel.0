@@ -2,72 +2,81 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB525C433EF
-	for <phone-devel@archiver.kernel.org>; Wed, 15 Dec 2021 20:11:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41C08C433F5
+	for <phone-devel@archiver.kernel.org>; Wed, 15 Dec 2021 20:18:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234013AbhLOULn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 15 Dec 2021 15:11:43 -0500
-Received: from mail-oi1-f172.google.com ([209.85.167.172]:41495 "EHLO
-        mail-oi1-f172.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231579AbhLOULm (ORCPT
+        id S235482AbhLOUSp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 15 Dec 2021 15:18:45 -0500
+Received: from mail-ot1-f45.google.com ([209.85.210.45]:38540 "EHLO
+        mail-ot1-f45.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235425AbhLOUSp (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 15 Dec 2021 15:11:42 -0500
-Received: by mail-oi1-f172.google.com with SMTP id u74so33202683oie.8;
-        Wed, 15 Dec 2021 12:11:42 -0800 (PST)
+        Wed, 15 Dec 2021 15:18:45 -0500
+Received: by mail-ot1-f45.google.com with SMTP id n104-20020a9d2071000000b005799790cf0bso26339727ota.5;
+        Wed, 15 Dec 2021 12:18:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=Cmkh2Es9i+8G9hTWcV5pi5vTt+BeIBoGLAmd/MNJvhA=;
-        b=rHlH7992kDmAW+WsyErx+09JpmdGdhepl53qn+WtU4mA1yb4dpdSl0S4dE9ZWAUsvX
-         vP6kM7YCwKed/OM7fpo44/YtFTOcxbctopFuGAu2xx/5d9b+IbFbPpQW1T6uzHUkjKKE
-         dGLjticDX0O1Ce9ph0qLB42j3v6LAxoR6OHV/NU8AUze1C8wYPPW2ZFuNWkCBx4SEn5l
-         /OTdpCFTrosuNUfPDZ5jWh9+d9+mWc0hOYpN22ZPFNtjVvTp8aAH27WGvdkD4K0JZHZK
-         hxk/jCCpXMl3dFxgIkNxy1qwl6L8w1QEpJb/rRPOuxpAZpkB4wMkrVw2b8+LipaWxpvM
-         8A6Q==
-X-Gm-Message-State: AOAM531fJz+/aIP1V43B/Fu8PNFbDEjHY/Qy6cYcbmVF2bgcIGZr0iFP
-        WBugT9Z6TocRsfji9lpnPQ==
-X-Google-Smtp-Source: ABdhPJyM1ZMlrf4TO+CVAER9wA5DaXo2npuenGcEbYZYr9u3fHtpFP4yfaVSSVT0qgkXzTvNNTxF8g==
-X-Received: by 2002:aca:1c02:: with SMTP id c2mr1417576oic.53.1639599102086;
-        Wed, 15 Dec 2021 12:11:42 -0800 (PST)
+        bh=rmvZqLUVHLXDrmfC/rTTmEAkPCcfRh9JygOGa9kAahU=;
+        b=jf+y9jdtUvKA0GPGwbtWK1VikXlnlj134aE2E5rQ5QmHtX8JJVmPn7dspfh1zn5lEd
+         Gmz2S4B0ddHMC514lmTZiGzOH+/K457zLr31n14PXsE3C6GDM4GtGusyNQl4GChTnB1u
+         04HzudhCSvmxyloivOB6UTZeVFcKyuuaCMXyaxbGxX5GwG0izkSemiD6YZTeN956Kyi6
+         G/McwINqd87NR6SuocXC88e3nIr30Ro3m78YlERhi/UcVyAD2SEFQ6Lc83yCesBVI2/6
+         6bMoAxXUB0wDr0f1eJ7dMg82z8q97lbQ/92nqPOb8nKfLAzqBo0KiHxWA3+UA5PQ970A
+         Inug==
+X-Gm-Message-State: AOAM532roW44sXiyGsKiuSpB6XxSaZbUpSl8T5nxAinGwOXUQGkQuebJ
+        fGpLR6nTZiX7Ve8CNChvnA==
+X-Google-Smtp-Source: ABdhPJy3yjpCIWDuO7GEGb3u30ltVztV0xgt3VxMQxiuuJu+/UeL7NZt6t8VMxeqM/w/MOGP8XaF1g==
+X-Received: by 2002:a9d:4f0b:: with SMTP id d11mr10009344otl.227.1639599524790;
+        Wed, 15 Dec 2021 12:18:44 -0800 (PST)
 Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id b22sm514322oib.41.2021.12.15.12.11.40
+        by smtp.gmail.com with ESMTPSA id u13sm633719oop.28.2021.12.15.12.18.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Dec 2021 12:11:41 -0800 (PST)
-Received: (nullmailer pid 1756808 invoked by uid 1000);
-        Wed, 15 Dec 2021 20:11:40 -0000
-Date:   Wed, 15 Dec 2021 14:11:40 -0600
+        Wed, 15 Dec 2021 12:18:44 -0800 (PST)
+Received: (nullmailer pid 1767956 invoked by uid 1000);
+        Wed, 15 Dec 2021 20:18:43 -0000
+Date:   Wed, 15 Dec 2021 14:18:43 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Rob Herring <robh+dt@kernel.org>,
-        phone-devel@vger.kernel.org, David Airlie <airlied@linux.ie>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 09/10] dt-bindings: simple-framebuffer: allow standalone
- compatible
-Message-ID: <YbpL/MG0xZyVD01B@robh.at.kernel.org>
-References: <20211213082614.22651-1-luca.weiss@fairphone.com>
- <20211213082614.22651-10-luca.weiss@fairphone.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        devicetree@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        phone-devel@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH] dt-bindings: qcom,pdc: convert to YAML
+Message-ID: <YbpNozbNhSCWtbx0@robh.at.kernel.org>
+References: <20211213152208.290923-1-luca.weiss@fairphone.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211213082614.22651-10-luca.weiss@fairphone.com>
+In-Reply-To: <20211213152208.290923-1-luca.weiss@fairphone.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 13 Dec 2021 09:26:10 +0100, Luca Weiss wrote:
-> Qualcomm platforms use "simple-framebuffer" without a more specific
-> compatible. Allow that in the binding doc.
+On Mon, 13 Dec 2021 16:22:08 +0100, Luca Weiss wrote:
+> Convert the PDC interrupt controller bindings to YAML.
 > 
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->  .../bindings/display/simple-framebuffer.yaml         | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
+> This patch depends on the following patch, which fixed sm8250 & sm8350
+> compatibles and adds sm6350.
+> https://lore.kernel.org/linux-arm-msm/20211213082614.22651-4-luca.weiss@fairphone.com/
+> 
+> Also, if somebody has a better suggestion for the register names,
+> the second one is pulled from downstream commit message which calls it
+> both "SPI config registers" and "interface registers":
+> https://source.codeaurora.org/quic/la/kernel/msm-4.19/commit/?id=cdefb63745e051a5bcf69663ac9d084d7da1eeec
+> 
+>  .../interrupt-controller/qcom,pdc.txt         | 77 -----------------
+>  .../interrupt-controller/qcom,pdc.yaml        | 86 +++++++++++++++++++
+>  2 files changed, 86 insertions(+), 77 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.txt
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.yaml
 > 
 
-Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
