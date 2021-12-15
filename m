@@ -2,75 +2,78 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24C34C433FE
-	for <phone-devel@archiver.kernel.org>; Wed, 15 Dec 2021 22:28:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 761E8C4332F
+	for <phone-devel@archiver.kernel.org>; Wed, 15 Dec 2021 22:28:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231640AbhLOW2M (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 15 Dec 2021 17:28:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50262 "EHLO
+        id S231430AbhLOW26 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 15 Dec 2021 17:28:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231469AbhLOW17 (ORCPT
+        with ESMTP id S231406AbhLOW1z (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 15 Dec 2021 17:27:59 -0500
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29D51C061747
-        for <phone-devel@vger.kernel.org>; Wed, 15 Dec 2021 14:27:58 -0800 (PST)
-Received: by mail-oi1-x232.google.com with SMTP id m6so33737299oim.2
-        for <phone-devel@vger.kernel.org>; Wed, 15 Dec 2021 14:27:58 -0800 (PST)
+        Wed, 15 Dec 2021 17:27:55 -0500
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03297C061401
+        for <phone-devel@vger.kernel.org>; Wed, 15 Dec 2021 14:27:55 -0800 (PST)
+Received: by mail-oi1-x229.google.com with SMTP id t23so33731083oiw.3
+        for <phone-devel@vger.kernel.org>; Wed, 15 Dec 2021 14:27:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=dIWHsocWhNzHpMIBX1OQ+sZEosNoFwmP0CG+wQ9sIW8=;
-        b=a7tXULw/Y0Ks7AVUJX+VepzbeZG9pbW0ucTLKjAiRKJ9pOtGgwRyIZrYaOwaWBqKel
-         CIJz0I7bzFdUGrnDUNoui/KTByhB+UAhw60QmXQ9ACs4CZ3JSpuOTSo4W77I6wO34AuM
-         Id8mQ2dfn5vcWvQPKzSMANzXyUdbe8/uRyVFrGlIEfX0PjEFjr2Li5BXzdtkja77oC39
-         E8i77I65sBcU68d984IL+PH8YwepLipxaKPYBDcExjbFURuOdaGCJ2nHRHg1yiNgrWrC
-         9Gw6vN2bWNFZIj7YDS7CwNin3uXRnhd7OY7WRbixzjGVc4r7UPqdHrZciM4toBSzzhBu
-         laLg==
+        bh=0k/4WghU8oFurHJHEHSouu6Us6eVLuVOzOhdp+JcH0k=;
+        b=NeDhHnDzQKmHQdukLfPb57fcY9sRvEeshRGWjl6VbHYN/VNd2WIdiGucN3VyQHfHyi
+         ODX0tPBTzdHUhS/K/UFskuk3zbVPplOGuu1x/3hM6Od2OgzHrir6KktuGRDLF4LOX+Vz
+         smHiXw5l4g/gYIGX3S+KGZWonIZx7TDqmoQI+DekZRsEy3SrNmlSXlyCCG5uZAu0Yfzf
+         LJrhT5CgejLIjStw/okC2VQgzpIsD4mkhq6Jnn8j/tcQRpqfLEkVXuhlhZMr5QdglWyz
+         S7wASV77km5m+lI0oQ4m2DMor4fr4TyP/uoOVeJECDFrpy5pBzEl3XpiE4O2sXMtjjSt
+         YvUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=dIWHsocWhNzHpMIBX1OQ+sZEosNoFwmP0CG+wQ9sIW8=;
-        b=LqE7a5TiIHaXS8AjP+Hvle+Of+EGF0AkGlr1soi5GiK3mflyRpHdX/R7icbQ0S9AqM
-         s0dYSJjNmDAA3d34Tshc5bOPU6di8icL31ma9HNpctEFAjE9uD8iUJpPyep92kgBm4yT
-         140DZ5l7s0T/bL6BTshy86m3dvaZguKAg2pGKfAQX9VEKcqhsN5hdXbk6PZ9Rfihvins
-         p4w5SKAFTuK6HmstuQ0s8lbdMwgnwT8Hc9Z7qLtWRaVyeUSVJH0z2c83CnQD5l49ohxR
-         RN2zLDN8FTdaaIU+SmOQCIsmcVAokIibqvBFew8kcowZqP9wvtgb2R4L5Il6eMjoaLx4
-         BZ4g==
-X-Gm-Message-State: AOAM530F+iJmf/3W3GvVVOTRpSK5fL2404hPHoyTkJ72won+d+QHGkUS
-        BudKUlRBLjg0+ORiZod20+wIyrMGiGnLQA==
-X-Google-Smtp-Source: ABdhPJzaotb8BvwvYTRxvwt71utR6gzPfqmBXdd1mswAxbskGys7pe68pNKcSsoIAjm/Mjql+sJoDQ==
-X-Received: by 2002:aca:1b15:: with SMTP id b21mr1833979oib.64.1639607277330;
-        Wed, 15 Dec 2021 14:27:57 -0800 (PST)
+        bh=0k/4WghU8oFurHJHEHSouu6Us6eVLuVOzOhdp+JcH0k=;
+        b=xprrQr0Tus2EGUMS0I4rL5Gk+ffT2U9d6BoGY/rg4S6JVT3mzDlne9YQnC77T2CRYk
+         d8MfNc9fO1V26FFV298PidT/nI5lj6D96yUr9650eS8VcbPQxqtL7RozPkWYUjYCxkIn
+         71j85Ka+/ng+NDhFvIb0b5/yaJww+1WwouteaeTj+u9Esu+nB5bBHm92WK/brUTDWPIr
+         yhKYNbiEsmV+fG2tho/iSInSBvQrztwrRJuyIWdPpDTScbxwehGlCbwkbcEt50azrN/n
+         ZOVzdr0WOKqjZ2orn2NXE/ZXhbWJu1FGfPZfmA2muyzEP0my5e49aChATtUN8p0aDwJp
+         f/tg==
+X-Gm-Message-State: AOAM533U7IR10opJUKhOKzqPEnjEJsA0j3gkE6qWlChxpMj4d7ofcQft
+        DNShfKdWIim6XnAGwqPVsVJehw==
+X-Google-Smtp-Source: ABdhPJyiZGSg7nl3iPZNacNkzzIriIsA8K+pbTW1R7BSm60R5ayfzMXsdIZwV+OW92zh2rfswPUntA==
+X-Received: by 2002:aca:1202:: with SMTP id 2mr1806801ois.63.1639607274378;
+        Wed, 15 Dec 2021 14:27:54 -0800 (PST)
 Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id t14sm700500oth.81.2021.12.15.14.27.56
+        by smtp.gmail.com with ESMTPSA id t14sm700500oth.81.2021.12.15.14.27.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Dec 2021 14:27:56 -0800 (PST)
+        Wed, 15 Dec 2021 14:27:53 -0800 (PST)
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     phone-devel@vger.kernel.org,
-        Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     Pavel Dubrova <pashadubrova@gmail.com>,
+To:     linux-arm-msm@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>
+Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
+        de Goede <hdegoede@redhat.com>, linux-phy@lists.infradead.org,
+        linux-fbdev@vger.kernel.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Stephen Boyd <sboyd@kernel.org>,
-        Taniya Das <tdas@codeaurora.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Jami Kettunen <jami.kettunen@somainline.org>,
+        Rishabh Bhatnagar <rishabhb@codeaurora.org>,
+        Rob Herring <robh@kernel.org>,
+        Prakash Ranjan <saiprakash.ranjan@codeaurora.org>,
+        Amit Kucheria <amitk@kernel.org>, phone-devel@vger.kernel.org,
+        linux-usb@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
         ~postmarketos/upstreaming@lists.sr.ht,
-        Martin Botka <martin.botka@somainline.org>,
-        Andy Gross <agross@kernel.org>
-Subject: Re: [PATCH v6 0/2] Global Clock Controller driver for MSM8976/56
-Date:   Wed, 15 Dec 2021 16:27:29 -0600
-Message-Id: <163960723735.3062250.6885330646115264163.b4-ty@linaro.org>
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-watchdog@vger.kernel.org,
+        Manu Gautam <mgautam@codeaurora.org>
+Subject: Re: (subset) [PATCH 00/10] dt-binding patches for sm6350
+Date:   Wed, 15 Dec 2021 16:27:26 -0600
+Message-Id: <163960723734.3062250.16152122166909189415.b4-ty@linaro.org>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211208091036.132334-1-marijn.suijten@somainline.org>
-References: <20211208091036.132334-1-marijn.suijten@somainline.org>
+In-Reply-To: <20211213082614.22651-1-luca.weiss@fairphone.com>
+References: <20211213082614.22651-1-luca.weiss@fairphone.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -78,22 +81,22 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 8 Dec 2021 10:10:34 +0100, Marijn Suijten wrote:
-> This is the Global Clock Controller (GCC) driver for MSM8956, MSM8976
-> and APQ variants and it has been tested on two Sony phones featuring the
-> Qualcomm MSM8956 SoC.
+On Mon, 13 Dec 2021 09:26:01 +0100, Luca Weiss wrote:
+> This series adds compatibles to the dt-bindings documentation where it
+> was missed before.
 > 
-> In addition to GCC this driver is also responsible for providing MDSS
-> and GFX3D clocks which reside in the same register space.
+> Finally, the last patch solves some further dtbs_check errors by
+> modifying the sm6350.dtsi to match the binding docs more closely.
+> 
+> Please note, that the first patch from Konrad is a resend that wasn't
+> picked up when sent to the lists in August 2021.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/2] dt-bindings: clk: qcom: Document MSM8976 Global Clock Controller
-      commit: 13feb2093984625dbece6f1657867c84d45b76de
-[2/2] clk: qcom: Add MSM8976/56 Global Clock Controller (GCC) driver
-      commit: b577c7e6a63f4dd3b55ccc5c828175995beae66b
+[10/10] arm64: dts: qcom: sm6350: Fix validation errors
+        commit: f56498fc6a9364a35dd74af791bd1251467e9cc1
 
 Best regards,
 -- 
