@@ -2,128 +2,106 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43394C433F5
-	for <phone-devel@archiver.kernel.org>; Thu, 16 Dec 2021 15:18:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C8C58C433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 16 Dec 2021 18:02:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232925AbhLPPSa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 16 Dec 2021 10:18:30 -0500
-Received: from mail.wizzup.org ([95.217.97.174]:44604 "EHLO wizzup.org"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S232605AbhLPPS3 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 16 Dec 2021 10:18:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizzup.org;
-        s=mail; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
-        Date:Message-ID:Subject:From:References:Cc:To:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=sSN3Qw9S9tP2uVhh9XtTeixv9Oq//tqeMXSC7rMT70U=; b=hLNQ3aIgyq8gV38VrOgceHySnM
-        S3X5twc71SZxdLAcSqaAv5uOIEqTj8zugHIREGS4rjSeqqHJfZFPceUbffFt/6/vdtZP/J7doXzn4
-        OnUQsQQk/EDXztLT/WZun8rPMCp2NdEW1/8PCbkseb5xiQDkHH9y7xV6E/uEMSpMvrVlZL54YEZnD
-        0RLGRuXgEU4ZS+LZnGg0Xru1tDJbUmXBhXCKL0QRI1UsuVUn6HvsmocbXJJPtQ58GNBejua0KAb14
-        56o78fCGcQoED8oTUnrVcNhbdQanQhruL7sZhdtPF00ONeDCPWAEyGnpLytCm/KJopfR3tOfIPwxN
-        T8RreM5A==;
-Received: from [45.83.235.159] (helo=[0.0.0.0])
-        by wizzup.org with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <merlijn@wizzup.org>)
-        id 1mxsWK-0004WS-Qk; Thu, 16 Dec 2021 15:18:12 +0000
-To:     Tony Lindgren <tony@atomide.com>, Nitin Gupta <nigupta@nvidia.com>
-Cc:     linux-omap <linux-omap@vger.kernel.org>,
-        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Dev Null <devnull@uvos.xyz>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>, linux-mm@kvack.org
-References: <99e25c92-3d2d-0964-0068-651bf44cbf8a@wizzup.org>
- <YbL/teuB7qtGhtfL@atomide.com>
-From:   Merlijn Wajer <merlijn@wizzup.org>
-Subject: Re: Nokia N900 not hitting OFF mode since 5.9 is caused by proactive
- memory compaction
-Message-ID: <6f1d0a78-13a9-4909-2b9e-326a4dfeedc0@wizzup.org>
-Date:   Thu, 16 Dec 2021 16:23:59 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        id S240464AbhLPSC4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 16 Dec 2021 13:02:56 -0500
+Received: from mail-ot1-f47.google.com ([209.85.210.47]:34717 "EHLO
+        mail-ot1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230293AbhLPSC4 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 16 Dec 2021 13:02:56 -0500
+Received: by mail-ot1-f47.google.com with SMTP id x19-20020a9d7053000000b0055c8b39420bso29928004otj.1;
+        Thu, 16 Dec 2021 10:02:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=QQ381WmSY1ABB0mZ35OvJqIYgZKiMipXpNULkZCKiDs=;
+        b=xxHrOeBEKVTCy315SGf93kJwfGj7cK29hrMMK+QyzKL56VU8nQOf6SNPZEicVEiZrj
+         JDD8/fV9TVkmf79vNsjEXEvqbV0EgWxtAbY8RohQ5vkwMYdt0sej1sgYYE7DKGV3OQkx
+         kfd0X50g/bn1E+UyQYNqWnptrKMSaOkibAKfTDzFNbIn8fRQSHaRRrXQTVjxl4o3Ym7L
+         3MTBtbaJxR9UzMiINQ0dk0H1lWDtdIKOowQCrT38h0D3pDgaQCNUxxGQbmOtcnNhDrx6
+         eKSLOWUe2tEbE5R8rsZEvPOmTCtMuPwgz1+cI3oT+r1pRnAMJh1KX47XS5l4RVHpBIfM
+         yguQ==
+X-Gm-Message-State: AOAM531ESCmlCcFOWF3xJlSn/R4p6+PRmh9/jkwoYuDXTLHuN2h5Kr7x
+        KeTD1dLXiRrtgYsj3UeCDA==
+X-Google-Smtp-Source: ABdhPJzn4BW0cemeZqsl+FNsr2G5s9GTvWt8pmx801Wgc8bSgOFAmgz/5Jg2e2++4y9spe8ck1jRZQ==
+X-Received: by 2002:a9d:3af:: with SMTP id f44mr13345289otf.271.1639677775334;
+        Thu, 16 Dec 2021 10:02:55 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id h1sm1146543otq.45.2021.12.16.10.02.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Dec 2021 10:02:54 -0800 (PST)
+Received: (nullmailer pid 485016 invoked by uid 1000);
+        Thu, 16 Dec 2021 18:02:53 -0000
+Date:   Thu, 16 Dec 2021 12:02:53 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Banajit Goswami <bgoswami@codeaurora.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Paul Cercueil <paul@crapouillou.net>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Vincent Knecht <vincent.knecht@mailoo.org>
+Subject: Re: [PATCH 2/4] ASoC: dt-bindings: qcom: sm8250: Document
+ "pin-switches" and "widgets"
+Message-ID: <Ybt/TagtH9iDv4mu@robh.at.kernel.org>
+References: <20211214142049.20422-1-stephan@gerhold.net>
+ <20211214142049.20422-3-stephan@gerhold.net>
 MIME-Version: 1.0
-In-Reply-To: <YbL/teuB7qtGhtfL@atomide.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211214142049.20422-3-stephan@gerhold.net>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Nitin, linux-mm list,
+On Tue, Dec 14, 2021 at 03:20:47PM +0100, Stephan Gerhold wrote:
+> Some sound card setups might require extra pin switches to allow
+> turning off certain audio components. There are two real examples for
+> this in smartphones/tablets based on MSM8916:
+> 
+>   1. Analog speaker amplifiers connected to headphone outputs.
+> 
+>      The MSM8916 analog codec does not have a separate "Line Out" port
+>      so some devices have an analog speaker amplifier connected to one
+>      of the headphone outputs. A pin switch is necessary to allow
+>      playback on headphones without also activating the speaker.
+> 
+>   2. External speaker codec also used as earpiece.
+> 
+>      Some smartphones have two front-facing (stereo) speakers that can
+>      be also configured to act as an earpiece during voice calls. A pin
+>      switch is needed to allow disabling the second speaker during
+>      voice calls.
 
-Any ideas or comments on the problem I encountered and on the question
-from Tony below? Is it possible to have CONFIG_COMPACTION not wake up
-systems unnecessarily, or should it perhaps be disabled for systems
-where power consumption is an issue?
+This all makes sense, but how that translates to the DT properties I 
+don't have a clue.
 
-Thanks,
-Regards,
-Merlijn
+> There are existing bindings that allow setting up such pin switches in
+> simple-card.yaml. Document the same for Qcom sound cards.
 
-PS: I already earlier noted in this thread that setting "sysctl -w
-vm.compaction_proactiveness=0" does not solve the problem, as the system
-stills is kept awake by CONFIG_COMPACTION.
+And that description is equally as bad.
 
-On 10/12/2021 08:20, Tony Lindgren wrote:
-> Hi,
+> One variant of example 1 above is added to the examples in the DT
+> schema: There is an analog speaker amplifier connected to the HPH_R
+> (right headphone channel) output. Adding a "Speaker" pin switch and
+> widget allows turning off the speaker when audio should be only played
+> via the connected headphones.
 > 
-> * Merlijn Wajer <merlijn@wizzup.org> [211210 00:34]:
->> Hi,
->>
->> I've spent the day bisecting what exact commit prevented the Nokia N900
->> from entering the OFF sleep state (between v5.8 and v5.9), and it this
->> commit:
->>
->>> # first bad commit: [facdaa917c4d5a376d09d25865f5a863f906234a] mm: proactive compaction
->>
->> The git tree prior to that commit can idle at about ~27mW in OFF mode,
->> and it will often remain in that mode for prolonged amounts of time
->> (easily 30 seconds, depending on running userspace). Which the above
->> commit applied, the Nokia N900 almost never hits OFF mode any more. This
->> would suggest at least to disable CONFIG_COMPACTION, perhaps in
->> omap2plus_defconfig? I suspect this might cause idle problems beyond the
->> Nokia N900, too.
-> 
-> Nice find, adding Nitin to Cc as well. Nitin, can we somehow avoid the
-> timers for CONFIG_COMPACTION on an idle system to prevent waking up the
-> system unnecessarily?
-> 
-> Not sure if sysctl -w vm.compaction_proactiveness=0 is enough to disable
-> compaction for idle, maybe also the HPAGE_FRAG_CHECK_INTERVAL_MSEC = 500
-> at ms also causes extra wake-ups?
-> 
-> Regards,
-> 
-> Tony
-> 
->> Maybe nothing needs to be done here other than disable the config option
->> -- but I wanted to share this in case others are trying to figure out
->> what happened to their battery life. :-)
->>
->> There seem be more power regressions since then (at least on 5.15 there
->> is more blocking proper idle), so I'll try to find those as well, but if
->> this commit is reverted (or CONFIG_COMPACTION=n is in .config - probably
->> easier) on top of v5.9 the system seems to idle fine.
->>
->>> # grep ^core_pwrdm /sys/kernel/debug/pm_debug/count | cut -d',' -f2,
->>> OFF:16,RET:2
->>
->> Hope this helps someone...
->>
->> Regards,
->> Merlijn
->>
->> PS: v5.10 seems to use another 19mW if panel_sony_acx565akm is loaded
->> even when display is not active (maybe it doesn't suspend or something?
->> - could be fixed later, just noticed it for v5.10). I load it initially
->> to idle the display, but until I rmmod the modules, the module uses
->> quite a bit more power. This problem is not present in v5.9, so that is
->> another thing to chase down I guess... And then v5.15 uses another 12mW
->> more, for not yet uncovered reasons)
+> Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> ---
+>  .../devicetree/bindings/sound/qcom,sm8250.yaml   | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 
+But nothing new here really, so
+
+Acked-by: Rob Herring <robh@kernel.org>
