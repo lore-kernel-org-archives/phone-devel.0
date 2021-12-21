@@ -2,124 +2,125 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AEDAAC433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 20 Dec 2021 19:39:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E4290C433F5
+	for <phone-devel@archiver.kernel.org>; Tue, 21 Dec 2021 16:22:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232506AbhLTTjg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 20 Dec 2021 14:39:36 -0500
-Received: from ip-15.mailobj.net ([213.182.54.15]:60294 "EHLO msg-4.mailo.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232236AbhLTTi5 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 20 Dec 2021 14:38:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1640029070; bh=lemlXquTS0nN8VDw9hKqIsDNGAze45CcccMhX4gx0fM=;
-        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-         MIME-Version:Content-Transfer-Encoding;
-        b=jt81mpAIUX+vk9yJcW7r8Lsn6PTMWwbMPWvR+2pSGd+xGgEzFgQ1rytzMuD8s4pCy
-         3yQ6MOxyfgY1mAamKJi42QnqNroEvFXybF/N9Ix0FO7drye6X5UrCzpzy0g17B2k/6
-         3d3hsnF0gDZp4+9xvte6wzejzJH/GX6XPQ95wQTo=
-Received: by b-3.in.mailobj.net [192.168.90.13] with ESMTP
-        via proxy.mailoo.org [213.182.55.207]
-        Mon, 20 Dec 2021 20:37:50 +0100 (CET)
-X-EA-Auth: b7Mo3T0KbdTHogRefIKytdYuExPxQulrJ6XWn+/8Bze2SmOx8jmtqxmb7O7UqDw2g42SGmgRi3w+z3Mdzy5T/ZQvpTkTNaTxuhtULkZDfrk=
-From:   Vincent Knecht <vincent.knecht@mailoo.org>
-To:     lgirdwood@gmail.com, broonie@kernel.org, robh+dt@kernel.org,
-        perex@perex.cz, tiwai@suse.com
-Cc:     stephan@gerhold.net, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Vincent Knecht <vincent.knecht@mailoo.org>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v2 1/2] ASoC: dt-bindings: codecs: Add bindings for ak4375
-Date:   Mon, 20 Dec 2021 20:37:24 +0100
-Message-Id: <20211220193725.2650356-1-vincent.knecht@mailoo.org>
-X-Mailer: git-send-email 2.31.1
+        id S239698AbhLUQW0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 21 Dec 2021 11:22:26 -0500
+Received: from relay07.th.seeweb.it ([5.144.164.168]:52451 "EHLO
+        relay07.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239688AbhLUQW0 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 21 Dec 2021 11:22:26 -0500
+Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id A98263F659;
+        Tue, 21 Dec 2021 17:22:22 +0100 (CET)
+Date:   Tue, 21 Dec 2021 17:22:21 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Stephen Boyd <sboyd@kernel.org>
+Cc:     Abhinav Kumar <abhinavk@codeaurora.org>,
+        Andy Gross <agross@kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Clark <robdclark@chromium.org>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v3 0/2] Use "ref" clocks from firmware for DSI PLL VCO
+ parent
+Message-ID: <20211221162221.jkbpi3oehcrpnz2s@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Abhinav Kumar <abhinavk@codeaurora.org>,
+        Andy Gross <agross@kernel.org>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@linux.ie>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Clark <robdclark@chromium.org>, Rob Clark <robdclark@gmail.com>,
+        Sean Paul <sean@poorly.run>, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <20210911131922.387964-1-marijn.suijten@somainline.org>
+ <163165584152.763609.4056232270079096475@swboyd.mtv.corp.google.com>
+ <20210918144038.6q352hzqopx7vvdu@SoMainline.org>
+ <20211214194656.mayiy4xhcshjluwf@SoMainline.org>
+ <69e44191-201f-8714-8a83-1a65a7026b54@linaro.org>
+ <20211216004346.77383C36AE1@smtp.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211216004346.77383C36AE1@smtp.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-AK4375 is an audio DAC with headphones amplifier controlled via I2C.
-Add simple device tree bindings that describe how to set it up.
+On 2021-12-15 16:43:45, Stephen Boyd wrote:
+> Quoting Dmitry Baryshkov (2021-12-15 12:02:37)
+> > On 14/12/2021 22:46, Marijn Suijten wrote:
+> > > Hi all,
+> > > 
+> > > On 2021-09-18 16:40:38, Marijn Suijten wrote:
+> > >> On 2021-09-14 14:44:01, Stephen Boyd wrote:
+> > >>> Quoting Marijn Suijten (2021-09-11 06:19:19)
+> > >>>> All DSI PHY/PLL drivers were referencing their VCO parent clock by a
+> > >>>> global name, most of which don't exist or have been renamed.  These
+> > >>>> clock drivers seem to function fine without that except the 14nm driver
+> > >>>> for sdm6xx [1].
+> > >>>>
+> > >>>> At the same time all DTs provide a "ref" clock as per the requirements
+> > >>>> of dsi-phy-common.yaml, but the clock is never used.  This patchset puts
+> > >>>> that clock to use without relying on a global clock name, so that all
+> > >>>> dependencies are explicitly defined in DT (the firmware) in the end.
+> > >>>
+> > >>> I can take this through clk tree if it helps avoid conflicts. There are
+> > >>> some other patches to sdm660.c in the clk tree already.
+> > >>
+> > >> Might be useful to maintain proper ordering of these dependent patches
+> > >> but it's up to Dmitry and Rob to decide, whom I'm sending this mail
+> > >> directly to so that they can chime in.
+> > > 
+> > > Dependent patch [3] landed in 5.15 and [2] made it into 5.16 rc's - is
+> > > it time to pick this series up and if so through what tree?
+> > 
+> > I'd also second the idea of merging these two patches into 5.17.
+> > Most probably it'd be easier to merge both of them through the clk tree. 
+> > Or we can take the first patch into drm-msm (but then we'd have a 
+> > dependency between msm-next and clk-qcom-next).
+> > 
+> > Bjorn, Stephen?
+> > 
+> 
+> Sounds fine to take through clk tree.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
----
-Changed in v2:
-- Changed avdd-supply to be required
-- Picked up Rob's Reviewed-by
-  Sorry if it was not appropriate following the avdd change...
----
- .../devicetree/bindings/sound/ak4375.yaml     | 57 +++++++++++++++++++
- 1 file changed, 57 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/sound/ak4375.yaml
+Thanks Stephen, would be great to take this in through the clk tree for
+5.17.  I don't have anything to add that could possibly warrant a v3,
+only msm8996 remains with the "xo" clock but that needs more work in
+other drivers and is best dealt with separately.  Please take v2,
+assuming there are enough acks/reviews :)
 
-diff --git a/Documentation/devicetree/bindings/sound/ak4375.yaml b/Documentation/devicetree/bindings/sound/ak4375.yaml
-new file mode 100644
-index 000000000000..f1d5074a024d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/ak4375.yaml
-@@ -0,0 +1,57 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/ak4375.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: AK4375 DAC and headphones amplifier Device Tree Bindings
-+
-+maintainers:
-+  - Vincent Knecht <vincent.knecht@mailoo.org>
-+
-+properties:
-+  compatible:
-+    const: asahi-kasei,ak4375
-+
-+  reg:
-+    maxItems: 1
-+
-+  '#sound-dai-cells':
-+    const: 0
-+
-+  avdd-supply:
-+    description: regulator phandle for the AVDD power supply.
-+
-+  tvdd-supply:
-+    description: regulator phandle for the TVDD power supply.
-+
-+  pdn-gpios:
-+    description: optional GPIO to set the PDN pin.
-+
-+required:
-+  - compatible
-+  - reg
-+  - '#sound-dai-cells'
-+  - avdd-supply
-+  - tvdd-supply
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      headphones: audio-codec@10 {
-+        compatible = "asahi-kasei,ak4375";
-+        reg = <0x10>;
-+        avdd-supply = <&reg_headphones_avdd>;
-+        tvdd-supply = <&pm8916_l6>;
-+        pdn-gpios = <&msmgpio 114 GPIO_ACTIVE_HIGH>;
-+        pinctrl-names = "default";
-+        pinctrl-0 = <&headphones_pdn_default>;
-+        #sound-dai-cells = <0>;
-+      };
-+    };
--- 
-2.31.1
-
-
-
+- Marijn
