@@ -2,87 +2,108 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5761C433FE
-	for <phone-devel@archiver.kernel.org>; Tue, 21 Dec 2021 19:12:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3731CC433F5
+	for <phone-devel@archiver.kernel.org>; Tue, 21 Dec 2021 23:31:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241725AbhLUTMj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 21 Dec 2021 14:12:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56528 "EHLO
+        id S237217AbhLUXbh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 21 Dec 2021 18:31:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241719AbhLUTMi (ORCPT
+        with ESMTP id S237031AbhLUXbh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 21 Dec 2021 14:12:38 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39012C061574;
-        Tue, 21 Dec 2021 11:12:38 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Tue, 21 Dec 2021 18:31:37 -0500
+Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4FF1C061574;
+        Tue, 21 Dec 2021 15:31:36 -0800 (PST)
+Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8E6C6178B;
-        Tue, 21 Dec 2021 19:12:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B6EC36AE8;
-        Tue, 21 Dec 2021 19:12:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640113957;
-        bh=PAs5jiYeFo0MBioLBW42YrvXg3HDfr/75mvKAgP84o4=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=mU333hz0r1ky9N5/Cxf891yMrzILchntrHGZPscClx+sfRB1ORC2u1lgzqaabDVbg
-         MzFK5rtV5d0fpUUQMeCKfCXCVsKeUxEBxlMBEbZVGWOfIi9fOrROjFdWx5dy2Kv8xv
-         7ROsBWlNoLI1YYooIMxAoSdCPfqW8bNz7nw0elqS482K9+BvB+zdQD5NV7OMLUIjht
-         0f4iA9t8RiETnFfczdqAmNTvNLfd2nWTHgFEFBKa/t5/LDy+DMSwEhqfYrzZDW8Q5s
-         r6pVoYlqnn3PDsjS/mRgtuV0iwFXJriQoUFKKBL12hUJTuXyvWRsG24T8u3qx0hmoP
-         BDfONoq1OfehQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     lgirdwood@gmail.com, tiwai@suse.com, robh+dt@kernel.org,
-        perex@perex.cz, Vincent Knecht <vincent.knecht@mailoo.org>
-Cc:     stephan@gerhold.net, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
-        Rob Herring <robh@kernel.org>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20211220193725.2650356-1-vincent.knecht@mailoo.org>
-References: <20211220193725.2650356-1-vincent.knecht@mailoo.org>
-Subject: Re: [PATCH v2 1/2] ASoC: dt-bindings: codecs: Add bindings for ak4375
-Message-Id: <164011395475.93163.15678068758276605566.b4-ty@kernel.org>
-Date:   Tue, 21 Dec 2021 19:12:34 +0000
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 646FD3F64B;
+        Wed, 22 Dec 2021 00:31:32 +0100 (CET)
+Date:   Wed, 22 Dec 2021 00:31:31 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Kiran Gunda <kgunda@codeaurora.org>,
+        Bryan Wu <cooloney@gmail.com>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v3 0/9] backlight: qcom-wled: fix and solidify handling
+ of enabled-strings
+Message-ID: <20211221233131.rwjjojuawgffr2gf@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Kiran Gunda <kgunda@codeaurora.org>, Bryan Wu <cooloney@gmail.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
+References: <20211115203459.1634079-1-marijn.suijten@somainline.org>
+ <20211116120213.n7qxqfi62lrxhyl7@maple.lan>
+ <YZPRV2jD1EBYGdHL@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <YZPRV2jD1EBYGdHL@google.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 20 Dec 2021 20:37:24 +0100, Vincent Knecht wrote:
-> AK4375 is an audio DAC with headphones amplifier controlled via I2C.
-> Add simple device tree bindings that describe how to set it up.
+On 2021-11-16 15:42:15, Lee Jones wrote:
+> On Tue, 16 Nov 2021, Daniel Thompson wrote:
 > 
+> > Hi Lee
+> > 
+> > On Mon, Nov 15, 2021 at 09:34:50PM +0100, Marijn Suijten wrote:
+> > > This patchset fixes WLED's handling of enabled-strings: besides some
+> > > cleanup it is now actually possible to specify a non-contiguous array of
+> > > enabled strings (not necessarily starting at zero) and the values from
+> > > DT are now validated to prevent possible unexpected out-of-bounds
+> > > register and array element accesses.
+> > > Off-by-one mistakes in the maximum number of strings, also causing
+> > > out-of-bounds access, have been addressed as well.
+> > 
+> > They have arrived piecemeal (during v1, v2 and v3) but all patches on
+> > the set should now have my R-b: attached to them.
 > 
+> I can see that.  Nothing for you to worry about.
+> 
+> I'll apply these when I conduct my next sweep, thanks.
 
-Applied to
+Thanks for that Lee!  Has the next sweep already passed by?  Seems
+everyone is preparing for the 5.17 merge window but these patches
+haven't yet landed on the backlight tree [1].  I'd appreciate it if we
+can make them appear in the 5.17 window :)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/lee/backlight.git/
 
 Thanks!
+- Marijn
 
-[1/2] ASoC: dt-bindings: codecs: Add bindings for ak4375
-      commit: 70ba14cf6dfd7ebd1275562bb9637b8d0ddb8f49
-[2/2] ASoC: Add AK4375 support
-      commit: 53778b8292b5492ec3ecf1efb84163eac2a6e422
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+> -- 
+> Lee Jones [李琼斯]
+> Senior Technical Lead - Developer Services
+> Linaro.org │ Open source software for Arm SoCs
+> Follow Linaro: Facebook | Twitter | Blog
