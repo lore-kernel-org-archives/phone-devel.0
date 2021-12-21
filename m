@@ -2,82 +2,87 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B6EAC433F5
-	for <phone-devel@archiver.kernel.org>; Tue, 21 Dec 2021 17:55:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5761C433FE
+	for <phone-devel@archiver.kernel.org>; Tue, 21 Dec 2021 19:12:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240751AbhLURzj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 21 Dec 2021 12:55:39 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:60392 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240727AbhLURzi (ORCPT
+        id S241725AbhLUTMj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 21 Dec 2021 14:12:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56528 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241719AbhLUTMi (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 21 Dec 2021 12:55:38 -0500
+        Tue, 21 Dec 2021 14:12:38 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39012C061574;
+        Tue, 21 Dec 2021 11:12:38 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 63C56B8181C;
-        Tue, 21 Dec 2021 17:55:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F40C36AE9;
-        Tue, 21 Dec 2021 17:55:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8E6C6178B;
+        Tue, 21 Dec 2021 19:12:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B6EC36AE8;
+        Tue, 21 Dec 2021 19:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640109336;
-        bh=11+OOrOy+QxOSlW36IgdACCcHI4Q+D72iaqrukirtrc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BtSmvSd2/jW204QLdtidI0J4ozoAfeq9RpamCDzJ0+2s1P5+ELfIoer1uA1n04Ixe
-         dI4vhLywtR+pTSrmfCjwChuHL+kkGbh6z/6pOXgY3k0kR2H70TO5tevQfvvCKZ+ipP
-         GhdQ9QBE10Ab65RGHoeCEYpURrm/tLhpjMZY2h27YM2ukN9i6vpDMaHtwFz7DowWPm
-         e4ChEce7P+BclogSzUWTh387z9gvBfZruDAnO2dPnB0SfOMB2ssPAoJV17ln+dBWSY
-         E00er5o3+kyJ/VhKzv1w5fXU9d/6GpE3/GuPyQzhPgkSrFOjQnZq0ymx2qVZ74SZnt
-         Ae4vSlbMC03IQ==
-Date:   Tue, 21 Dec 2021 17:55:30 +0000
+        s=k20201202; t=1640113957;
+        bh=PAs5jiYeFo0MBioLBW42YrvXg3HDfr/75mvKAgP84o4=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=mU333hz0r1ky9N5/Cxf891yMrzILchntrHGZPscClx+sfRB1ORC2u1lgzqaabDVbg
+         MzFK5rtV5d0fpUUQMeCKfCXCVsKeUxEBxlMBEbZVGWOfIi9fOrROjFdWx5dy2Kv8xv
+         7ROsBWlNoLI1YYooIMxAoSdCPfqW8bNz7nw0elqS482K9+BvB+zdQD5NV7OMLUIjht
+         0f4iA9t8RiETnFfczdqAmNTvNLfd2nWTHgFEFBKa/t5/LDy+DMSwEhqfYrzZDW8Q5s
+         r6pVoYlqnn3PDsjS/mRgtuV0iwFXJriQoUFKKBL12hUJTuXyvWRsG24T8u3qx0hmoP
+         BDfONoq1OfehQ==
 From:   Mark Brown <broonie@kernel.org>
-To:     Vincent Knecht <vincent.knecht@mailoo.org>
-Cc:     lgirdwood@gmail.com, robh+dt@kernel.org, perex@perex.cz,
-        tiwai@suse.com, stephan@gerhold.net, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v2 2/2] ASoC: Add AK4375 support
-Message-ID: <YcIVEgTOuzKRoGdh@sirena.org.uk>
+To:     lgirdwood@gmail.com, tiwai@suse.com, robh+dt@kernel.org,
+        perex@perex.cz, Vincent Knecht <vincent.knecht@mailoo.org>
+Cc:     stephan@gerhold.net, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
+        Rob Herring <robh@kernel.org>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20211220193725.2650356-1-vincent.knecht@mailoo.org>
 References: <20211220193725.2650356-1-vincent.knecht@mailoo.org>
- <20211220193725.2650356-2-vincent.knecht@mailoo.org>
+Subject: Re: [PATCH v2 1/2] ASoC: dt-bindings: codecs: Add bindings for ak4375
+Message-Id: <164011395475.93163.15678068758276605566.b4-ty@kernel.org>
+Date:   Tue, 21 Dec 2021 19:12:34 +0000
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="fBIqR1sn4Hlue0Mg"
-Content-Disposition: inline
-In-Reply-To: <20211220193725.2650356-2-vincent.knecht@mailoo.org>
-X-Cookie: knowledge, n.:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Mon, 20 Dec 2021 20:37:24 +0100, Vincent Knecht wrote:
+> AK4375 is an audio DAC with headphones amplifier controlled via I2C.
+> Add simple device tree bindings that describe how to set it up.
+> 
+> 
 
---fBIqR1sn4Hlue0Mg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Mon, Dec 20, 2021 at 08:37:25PM +0100, Vincent Knecht wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-> +	SOC_ENUM("DACL Signal Invert", ak4375_invl_enum),
-> +	SOC_ENUM("DACR Signal Invert", ak4375_invr_enum),
+Thanks!
 
-These should really be a "DAC Signal Invert Switch" control rather than
-an enum - really it's an on/off control for inversion.  Other than that
-the driver looks good so I'm going to go ahead and apply, please send an
-incremental patch fixing this issue.
+[1/2] ASoC: dt-bindings: codecs: Add bindings for ak4375
+      commit: 70ba14cf6dfd7ebd1275562bb9637b8d0ddb8f49
+[2/2] ASoC: Add AK4375 support
+      commit: 53778b8292b5492ec3ecf1efb84163eac2a6e422
 
---fBIqR1sn4Hlue0Mg
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmHCFRIACgkQJNaLcl1U
-h9BR1Af+NrdhRclUC9F2gH4p4RpkuDfU0uVKoWvRectyEkS+IxVIVZn5K883FaBY
-jeRP3uBYm8C9GD68NOeq/So3Nh+oi7W1RycbtvMPMHtIvmDk4NFCWfSxhdH+hNLI
-JiQW1bupwiS5TQBNSoD9Xx2B3i4Yw2FSHUSDDYT3IyxTs83Ya5UVWSV0R5OhWYoi
-yQY6uDqjsS/4m7YHpuBHNpxrB+TSUJZsGq1OCHdEXhktGhMvYbHNA9ZWkBmg3PIi
-yg16BkTfJEjiHEcjgBPz7OBdH0yO9cm28GURU2jhRoe1jai6MMNYqjVijEbVVVuR
-mqaKDfkp4KmKgZwhc2y+2ec8qHJkZQ==
-=HTjc
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---fBIqR1sn4Hlue0Mg--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
