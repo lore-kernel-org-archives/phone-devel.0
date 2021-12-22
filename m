@@ -2,100 +2,91 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C5D0C433EF
-	for <phone-devel@archiver.kernel.org>; Wed, 22 Dec 2021 11:54:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BBFDC433FE
+	for <phone-devel@archiver.kernel.org>; Wed, 22 Dec 2021 13:54:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240106AbhLVLyp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Dec 2021 06:54:45 -0500
-Received: from m-r2.th.seeweb.it ([5.144.164.171]:41637 "EHLO
-        m-r2.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238070AbhLVLyo (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Dec 2021 06:54:44 -0500
-Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id F279D3EEEF;
-        Wed, 22 Dec 2021 12:54:42 +0100 (CET)
-Date:   Wed, 22 Dec 2021 12:54:41 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        robdclark@gmail.com, sean@poorly.run, airlied@linux.ie,
-        daniel@ffwll.ch, abhinavk@codeaurora.org,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        konrad.dybcio@somainline.org, martin.botka@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        paul.bouchara@somainline.org
-Subject: Re: [PATCH v2 2/2] drm/msm/dpu: Fix timeout issues on command mode
- panels
-Message-ID: <20211222115441.7c5e55svs6inabrl@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, robdclark@gmail.com,
-        sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
-        abhinavk@codeaurora.org, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
-        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, paul.bouchara@somainline.org
-References: <20210911163919.47173-1-angelogioacchino.delregno@somainline.org>
- <20210911163919.47173-2-angelogioacchino.delregno@somainline.org>
- <b325fc8d-e06b-36de-b40a-b5ffbcebb1c5@linaro.org>
- <94bedea3-0e5f-5ae8-79d1-ceb17ccdea23@somainline.org>
- <20211211213528.uroqfdksvokspbxf@SoMainline.org>
- <CAA8EJprT5gcWOsS5jJk8egUpxutBpUdW2Pnh-8FFXhgOd3hr=A@mail.gmail.com>
- <20211211215718.pe675o5wvculxavc@SoMainline.org>
- <33d44631-f0d7-83cc-569d-d6d6f82d6808@somainline.org>
+        id S245536AbhLVNyp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 22 Dec 2021 08:54:45 -0500
+Received: from ip-16.mailobj.net ([213.182.54.16]:32848 "EHLO msg-6.mailo.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S245526AbhLVNym (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 22 Dec 2021 08:54:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
+        t=1640181266; bh=y8jlbXfYt1AeDQhiMiTHZHLZPsddA25UVMnP2UJ9BiU=;
+        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+         MIME-Version:Content-Transfer-Encoding;
+        b=FFYy4yPP37Iov3V2+kplZ6D/SF/7+58u+X2LM7p/SAVsmZK8f934MeXz1iwQHl/OW
+         MZfKgPvcc6pYt10lOF7HGXmknDx3MYnT4e2X+S2PUsOU4x5R1jepqRTA7Ui3bgXVrz
+         0+fkf9pQ884/2fi4eNdWO368axGOewd5qey2jLw0=
+Received: by b-3.in.mailobj.net [192.168.90.13] with ESMTP
+        via proxy.mailoo.org [213.182.55.207]
+        Wed, 22 Dec 2021 14:54:26 +0100 (CET)
+X-EA-Auth: t8EL3DbqiWC969FFZkRYrCyuIZ/vmSsrsNuxeYWaPTdY9PXzEbXh18Lb+DVV5hZO0XcqdB7WVS+XV8q+znoISXe03fXVjhpQUJMouuDhgps=
+From:   Vincent Knecht <vincent.knecht@mailoo.org>
+To:     broonie@kernel.org
+Cc:     stephan@gerhold.net, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Vincent Knecht <vincent.knecht@mailoo.org>
+Subject: [PATCH] ASoC: codecs: ak4375: Change invert controls to a stereo switch
+Date:   Wed, 22 Dec 2021 14:54:03 +0100
+Message-Id: <20211222135403.2991657-1-vincent.knecht@mailoo.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <33d44631-f0d7-83cc-569d-d6d6f82d6808@somainline.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2021-12-22 12:28:52, AngeloGioacchino Del Regno wrote:
-> Il 11/12/21 22:57, Marijn Suijten ha scritto:
-> > On 2021-12-12 00:49:09, Dmitry Baryshkov wrote:
-> >> On Sun, 12 Dec 2021 at 00:35, Marijn Suijten
-> >> <marijn.suijten@somainline.org> wrote:
-> >>> [..]
-> >>> On this note, does it perhaps make more sense to call the "internal"
-> >>> _dpu_encoder_phys_cmd_wait_for_idle function directly, instead of going
-> >>> through the "public" dpu_encoder_phys_cmd_wait_for_tx_complete which
-> >>> seems solely intended to handle the wait_for_tx_complete callback?
-> >>
-> >> Either one would work. The main difference is the error message. Do
-> >> you want to see it here if the wait times out or not?
-> > 
-> > I prefer calling _dpu_encoder_phys_cmd_wait_for_idle directly and
-> > optionally adding our own error message.  IIRC DRM_ERROR prints source
-> > information such as the function this originated from, and that makes it
-> > impossible to distinguish between the wait_for_tx_complete callback or
-> > the invocation through dpu_encoder_phys_cmd_wait_for_commit_done anyway.
-> > 
-> > - Marijn
-> > 
-> 
-> I wouldn't be happy to find myself in a situation in which I get strange
-> display slowness without any print to help me; for this reason, I find
-> having the print in place useful for debugging of both perf and fault.
+Don't use enums for DACL/DACR Signal Invert controls,
+and change them into a stereo "DAC Signal Invert Switch" control.
 
-Same thought here, though dpu_encoder_phys_cmd_wait_for_tx_complete
-exists for the sole reason of printing a nice debug message, which I
-wouldn't want to be misused by dpu_encoder_phys_cmd_wait_for_commit_done
-punting its errors on wait_for_tx_complete - if that happens the first
-thing I'd do during debugging is assign individual messages to both,
-otherwise it is impossible to know which two functions is the cause: we
-might as well "duplicate" the error message right now and prevent such
-confusion from occurring in the first place?
+Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+---
+ sound/soc/codecs/ak4375.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-- Marijn
+diff --git a/sound/soc/codecs/ak4375.c b/sound/soc/codecs/ak4375.c
+index a893aff42a01..22cda0699341 100644
+--- a/sound/soc/codecs/ak4375.c
++++ b/sound/soc/codecs/ak4375.c
+@@ -127,7 +127,6 @@ static DECLARE_TLV_DB_SCALE(hpg_tlv, -4200, 20, 0);
+ 
+ static const char * const ak4375_ovolcn_select_texts[]	= { "Dependent", "Independent" };
+ static const char * const ak4375_mdac_select_texts[]	= { "x1", "x1/2" };
+-static const char * const ak4375_inv_select_texts[]	= { "Normal", "Inverting" };
+ static const char * const ak4375_cpmode_select_texts[]	= {
+ 	"Automatic Switching",
+ 	"+-VDD Operation",
+@@ -157,12 +156,6 @@ static const struct soc_enum ak4375_mdacl_enum =
+ static const struct soc_enum ak4375_mdacr_enum =
+ 	SOC_ENUM_SINGLE(AK4375_07_DAC_MONO_MIXING, 6,
+ 			ARRAY_SIZE(ak4375_mdac_select_texts), ak4375_mdac_select_texts);
+-static const struct soc_enum ak4375_invl_enum =
+-	SOC_ENUM_SINGLE(AK4375_07_DAC_MONO_MIXING, 3,
+-			ARRAY_SIZE(ak4375_inv_select_texts), ak4375_inv_select_texts);
+-static const struct soc_enum ak4375_invr_enum =
+-	SOC_ENUM_SINGLE(AK4375_07_DAC_MONO_MIXING, 7,
+-			ARRAY_SIZE(ak4375_inv_select_texts), ak4375_inv_select_texts);
+ static const struct soc_enum ak4375_cpmode_enum =
+ 	SOC_ENUM_SINGLE(AK4375_03_POWER_MANAGEMENT4, 2,
+ 			ARRAY_SIZE(ak4375_cpmode_select_texts), ak4375_cpmode_select_texts);
+@@ -176,11 +169,11 @@ static const struct snd_kcontrol_new ak4375_snd_controls[] = {
+ 	SOC_SINGLE_TLV("HP-Amp Analog Volume",
+ 		       AK4375_0D_HP_VOLUME_CONTROL, 0, 0x1f, 0, hpg_tlv),
+ 
++	SOC_DOUBLE("DAC Signal Invert Switch", AK4375_07_DAC_MONO_MIXING, 3, 7, 1, 0),
++
+ 	SOC_ENUM("Digital Volume Control", ak4375_ovolcn_enum),
+ 	SOC_ENUM("DACL Signal Level", ak4375_mdacl_enum),
+ 	SOC_ENUM("DACR Signal Level", ak4375_mdacr_enum),
+-	SOC_ENUM("DACL Signal Invert", ak4375_invl_enum),
+-	SOC_ENUM("DACR Signal Invert", ak4375_invr_enum),
+ 	SOC_ENUM("Charge Pump Mode", ak4375_cpmode_enum),
+ 	SOC_ENUM("DAC Digital Filter Mode", ak4375_digfil_enum),
+ };
+-- 
+2.31.1
 
-> 
-> Cheers,
-> - Angelo
+
+
