@@ -2,82 +2,103 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E99BFC433F5
-	for <phone-devel@archiver.kernel.org>; Wed, 29 Dec 2021 22:01:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1D66C433F5
+	for <phone-devel@archiver.kernel.org>; Sun,  2 Jan 2022 06:27:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230320AbhL2WBW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 29 Dec 2021 17:01:22 -0500
-Received: from relay01.th.seeweb.it ([5.144.164.162]:32923 "EHLO
-        relay01.th.seeweb.it" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbhL2WBV (ORCPT
+        id S232033AbiABG1Y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 2 Jan 2022 01:27:24 -0500
+Received: from alexa-out-sd-02.qualcomm.com ([199.106.114.39]:53069 "EHLO
+        alexa-out-sd-02.qualcomm.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231982AbiABG1X (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 29 Dec 2021 17:01:21 -0500
-Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 2081B1FAEC;
-        Wed, 29 Dec 2021 23:01:19 +0100 (CET)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] Revert "arm64: dts: qcom: sm6125: Avoid using missing SM6125_VDDCX"
-Date:   Wed, 29 Dec 2021 23:01:17 +0100
-Message-Id: <20211229220117.293542-1-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.34.1
+        Sun, 2 Jan 2022 01:27:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+  t=1641104843; x=1672640843;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=KNjbPSw0dS/30AtlU76DflNFpjpfBnTRJdGVbLSGOkQ=;
+  b=Wott16rALNDzrLWNAh8zd1LrcYYnrR61/L9O2cR/rYZQyZDFZejsF4tb
+   e2Z5E8p5FqUxBHgEin8cTTwIVCThNlAQ7BrkGzIYsCWb83GhP+SvOCqt/
+   oBgHR73QH2fUiNZG3QeKB68twSwI/87N7k5OYK4L1XQ9xBdcikFo58azx
+   s=;
+Received: from unknown (HELO ironmsg-SD-alpha.qualcomm.com) ([10.53.140.30])
+  by alexa-out-sd-02.qualcomm.com with ESMTP; 01 Jan 2022 22:27:23 -0800
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+  by ironmsg-SD-alpha.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2022 22:27:23 -0800
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.922.19; Sat, 1 Jan 2022 22:27:22 -0800
+Received: from [10.216.52.178] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.922.19; Sat, 1 Jan 2022
+ 22:27:18 -0800
+Message-ID: <3741398c-b3e2-4872-d08f-9de02fe3cab9@quicinc.com>
+Date:   Sun, 2 Jan 2022 11:57:12 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.1
+Subject: Re: [PATCH] dt-bindings: qcom,pdc: convert to YAML
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        <linux-arm-msm@vger.kernel.org>
+CC:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+References: <20211213152208.290923-1-luca.weiss@fairphone.com>
+ <39d259cf-5663-5073-f16b-71a21f0e62e3@quicinc.com>
+ <CGROQPIOKGRH.2UVREF2IWAOIC@otso>
+From:   Maulik Shah <quic_mkshah@quicinc.com>
+In-Reply-To: <CGROQPIOKGRH.2UVREF2IWAOIC@otso>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This reverts commit c23f1b77358c173a25ef21303d2a8cc893e9ce22.
+Hi Luca,
 
-The SM6125_VDDCX constant was replaced with 0 temporarily as the header
-patch defining this constant resided in a different branch, creating an
-unwanted dependency of the dts branch on the drivers branch.
-Now (by the time this patch will be applied) that both branches have
-been merged upstream, it is safe to revert to the constant again.
+On 12/29/2021 3:11 PM, Luca Weiss wrote:
+> Hi Maulik,
+>
+> On Mon Dec 20, 2021 at 1:24 PM CET, Maulik Shah wrote:
+>> Hi Luca,
+>>
+>> On 12/13/2021 8:52 PM, Luca Weiss wrote:
+>>> Convert the PDC interrupt controller bindings to YAML.
+>>>
+>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>> ---
+>>> This patch depends on the following patch, which fixed sm8250 & sm8350
+>>> compatibles and adds sm6350.
+>>> https://lore.kernel.org/linux-arm-msm/20211213082614.22651-4-luca.weiss@fairphone.com/
+>>>
+>>> Also, if somebody has a better suggestion for the register names,
+>>> the second one is pulled from downstream commit message which calls it
+>>> both "SPI config registers" and "interface registers":
+>>> https://source.codeaurora.org/quic/la/kernel/msm-4.19/commit/?id=cdefb63745e051a5bcf69663ac9d084d7da1eeec
+>> Thanks for the patch. Please use "apss-shared-spi-cfg" name for the
+>> second reg.
+>>
+>> It was intended in [1] to remove it since there are no user in upstream
+>> for second reg. but it should be fine to convert existing to yaml first
+>> and then look to fix that.
+>>
+> Do you have a full-text version of that? I'd use it instead of this in
+> the binding.
+>
+>    - description: PDC interface register region
+you can use below description,
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- arch/arm64/boot/dts/qcom/sm6125.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+description: Edge or Level config register for SPI interrupts
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-index 49e6bca646c2..e81b2a7794fb 100644
---- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-@@ -449,7 +449,7 @@ sdhc_1: sdhci@4744000 {
- 				 <&xo_board>;
- 			clock-names = "iface", "core", "xo";
- 
--			power-domains = <&rpmpd 0>;
-+			power-domains = <&rpmpd SM6125_VDDCX>;
- 
- 			bus-width = <8>;
- 			non-removable;
-@@ -474,7 +474,7 @@ sdhc_2: sdhci@4784000 {
- 			pinctrl-1 = <&sdc2_state_off>;
- 			pinctrl-names = "default", "sleep";
- 
--			power-domains = <&rpmpd 0>;
-+			power-domains = <&rpmpd SM6125_VDDCX>;
- 
- 			bus-width = <4>;
- 			status = "disabled";
--- 
-2.34.1
-
+Thanks,
+Maulik
