@@ -2,29 +2,29 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A137C43219
-	for <phone-devel@archiver.kernel.org>; Wed,  5 Jan 2022 06:04:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34EF1C433EF
+	for <phone-devel@archiver.kernel.org>; Wed,  5 Jan 2022 06:04:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237623AbiAEGD7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 5 Jan 2022 01:03:59 -0500
-Received: from box.trvn.ru ([194.87.146.52]:39641 "EHLO box.trvn.ru"
+        id S237643AbiAEGED (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 5 Jan 2022 01:04:03 -0500
+Received: from box.trvn.ru ([194.87.146.52]:45923 "EHLO box.trvn.ru"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236309AbiAEGD6 (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 5 Jan 2022 01:03:58 -0500
+        id S237636AbiAEGEC (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 5 Jan 2022 01:04:02 -0500
 Received: from authenticated-user (box.trvn.ru [194.87.146.52])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (No client certificate requested)
-        by box.trvn.ru (Postfix) with ESMTPSA id 9902B4200B;
-        Wed,  5 Jan 2022 11:03:55 +0500 (+05)
+        by box.trvn.ru (Postfix) with ESMTPSA id 946F84206B;
+        Wed,  5 Jan 2022 11:04:00 +0500 (+05)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=trvn.ru; s=mail;
-        t=1641362636; bh=YGq3tK4Qa1gT0lBwrqqbtBTes6WWGLWzf8xd1+IjiT0=;
+        t=1641362641; bh=7qZ33c7U2ffXr+klqsI55vzDEMsVG+TTv1mDnFLdpF0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l3O+XX4RRIU2UwRjDcAi+Pxto848paYRKWhbF2B9Inxw/+Sk+nvOuw2LyUivWbb38
-         u+yJWrNCxjZiNgr/qwqdFkH6oGAVG2VOtklgbLq3L5BnRgUaY8GLmtkP6ptmp6gmED
-         4tpVdPT8wi57aZ90vBBSr60fx0Fma1V1tbZxMpsWetzJvz3WRg2RMsmfoOELgSL5DO
-         GbGlweIXuaOEiNAE6/M+0zRvPc4/HanJVcY/J+wlZbz6bLQSZBP9ENn+rRYfDI8x6H
-         v0ULjQxMeq9r2AzNDNmn5clPGHGDneBEpAHMjk3X6jrf+6ocW4dx/ZfUnBUcUq2a/i
-         BdfXiS2+WomFw==
+        b=xjbLgN+GR0nr71wVMgAzLfLPuv0fFXKiRbZ2vynmWRPjKXm4heoU5aob/7NTjX2cB
+         Cr3cxpPTh+WI19bjPSsF0Ottz0mvMVp6TBAXfvlueNMZSnS37O+RZSBMrmqEkG0G/i
+         tBB0xKYoPvnWZ5h/WX34p8u/EcujbLNSelCfIg8VbLL+ysMx3VfddsA3GRxLMFHjal
+         ys3gocG8OJXiK5d5ti37Syf7gpqLpioUCKUbCfHwunmKDhi7Hs843PyiZyfAAJ9AhH
+         QfvnBuIXcWL1mBKM00RFJ70sLfTamVrDZfjaj2HjD1wU7ulWwgSqkgNVsRQQxzd/2u
+         66ZAk/GutYOFQ==
 From:   Nikita Travkin <nikita@trvn.ru>
 To:     dmitry.torokhov@gmail.com
 Cc:     robh+dt@kernel.org, Michael.Srba@seznam.cz,
@@ -33,9 +33,9 @@ Cc:     robh+dt@kernel.org, Michael.Srba@seznam.cz,
         phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         Nikita Travkin <nikita@trvn.ru>
-Subject: [PATCH v2 1/6] input: zinitix: Make sure the IRQ is allocated before it gets enabled
-Date:   Wed,  5 Jan 2022 11:03:18 +0500
-Message-Id: <20220105060323.7928-2-nikita@trvn.ru>
+Subject: [PATCH v2 4/6] input: zinitix: Add compatible for bt532
+Date:   Wed,  5 Jan 2022 11:03:21 +0500
+Message-Id: <20220105060323.7928-5-nikita@trvn.ru>
 In-Reply-To: <20220105060323.7928-1-nikita@trvn.ru>
 References: <20220105060323.7928-1-nikita@trvn.ru>
 MIME-Version: 1.0
@@ -44,56 +44,27 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Since irq request is the last thing in the driver probe, it happens
-later than the input device registration. This means that there is a
-small time window where if the open method is called the driver will
-attempt to enable not yet available irq.
-
-Fix that by moving the irq request before the input device registration.
+Zinitix BT532 is another touch controller that seem to implement the
+same interface as an already supported BT541. Add it to the driver.
 
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Fixes: 26822652c85e ("Input: add zinitix touchscreen driver")
 Signed-off-by: Nikita Travkin <nikita@trvn.ru>
 ---
- drivers/input/touchscreen/zinitix.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/input/touchscreen/zinitix.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/input/touchscreen/zinitix.c b/drivers/input/touchscreen/zinitix.c
-index b8d901099378..1e70b8d2a8d7 100644
+index e84e4c3b1b3a..7c82c4f5fa6b 100644
 --- a/drivers/input/touchscreen/zinitix.c
 +++ b/drivers/input/touchscreen/zinitix.c
-@@ -488,6 +488,15 @@ static int zinitix_ts_probe(struct i2c_client *client)
- 		return error;
- 	}
+@@ -571,6 +571,7 @@ static SIMPLE_DEV_PM_OPS(zinitix_pm_ops, zinitix_suspend, zinitix_resume);
  
-+	error = devm_request_threaded_irq(&client->dev, client->irq,
-+					  NULL, zinitix_ts_irq_handler,
-+					  IRQF_ONESHOT | IRQF_NO_AUTOEN,
-+					  client->name, bt541);
-+	if (error) {
-+		dev_err(&client->dev, "Failed to request IRQ: %d\n", error);
-+		return error;
-+	}
-+
- 	error = zinitix_init_input_dev(bt541);
- 	if (error) {
- 		dev_err(&client->dev,
-@@ -513,15 +522,6 @@ static int zinitix_ts_probe(struct i2c_client *client)
- 		return -EINVAL;
- 	}
- 
--	error = devm_request_threaded_irq(&client->dev, client->irq,
--					  NULL, zinitix_ts_irq_handler,
--					  IRQF_ONESHOT | IRQF_NO_AUTOEN,
--					  client->name, bt541);
--	if (error) {
--		dev_err(&client->dev, "Failed to request IRQ: %d\n", error);
--		return error;
--	}
--
- 	return 0;
- }
- 
+ #ifdef CONFIG_OF
+ static const struct of_device_id zinitix_of_match[] = {
++	{ .compatible = "zinitix,bt532" },
+ 	{ .compatible = "zinitix,bt541" },
+ 	{ }
+ };
 -- 
 2.30.2
 
