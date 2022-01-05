@@ -2,141 +2,151 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DE0DC433EF
-	for <phone-devel@archiver.kernel.org>; Wed,  5 Jan 2022 15:38:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BFE4C433F5
+	for <phone-devel@archiver.kernel.org>; Wed,  5 Jan 2022 16:24:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241573AbiAEPiw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 5 Jan 2022 10:38:52 -0500
-Received: from mga03.intel.com ([134.134.136.65]:13792 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230307AbiAEPiu (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 5 Jan 2022 10:38:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1641397130; x=1672933130;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Udd+hqo7mjhdSgvH5P3a4lWSts8UFfCNta3ovtkSO6c=;
-  b=KexXNOutqlJ4oAfe5EVWcd62QggYHX503loDTBwE9a2ISOpDNnHkmlnS
-   dlCypG0T2nJOq/HZH6ImiHGc/BYCukACfdmQI3a/2r1HoecyF4/ztcQL2
-   rbfrJxYhLcJwSi2F60GhC1IxCtYEtyjCI/Qz4mxFwLrwTc3hChyk6zZMA
-   j0aZzpza8TziLRuTiH1/TdN/ebX3ab7kO3YG8srmO7585Nx4muFZ5Asqd
-   KDc0ALE4BsXQ2fWuhhl2/TBOenL/FhhPk6ggMEyoWJQOpiT3V9Jc6ExrJ
-   SloWsb8BOpPH9H83lfgRGukceNdP7aIGaVuz5L313DCdDiY0PPGThJm4o
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10217"; a="242423546"
-X-IronPort-AV: E=Sophos;i="5.88,264,1635231600"; 
-   d="scan'208";a="242423546"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2022 07:38:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,264,1635231600"; 
-   d="scan'208";a="512991328"
-Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 05 Jan 2022 07:38:45 -0800
-Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1n58NA-000Go7-IG; Wed, 05 Jan 2022 15:38:44 +0000
-Date:   Wed, 5 Jan 2022 23:38:08 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Nikita Travkin <nikita@trvn.ru>, dmitry.torokhov@gmail.com
-Cc:     kbuild-all@lists.01.org, robh+dt@kernel.org,
-        Michael.Srba@seznam.cz, linus.walleij@linaro.org,
-        broonie@kernel.org, luca@z3ntu.xyz, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 6/6] input: zinitix: Add touchkey support
-Message-ID: <202201052355.c806rw3s-lkp@intel.com>
-References: <20220105060323.7928-7-nikita@trvn.ru>
+        id S241899AbiAEQYK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 5 Jan 2022 11:24:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40346 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231290AbiAEQYH (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 Jan 2022 11:24:07 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97270C061245;
+        Wed,  5 Jan 2022 08:24:07 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3719A61804;
+        Wed,  5 Jan 2022 16:24:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9488CC36AEF;
+        Wed,  5 Jan 2022 16:24:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641399846;
+        bh=D0rtMVXuXMmUWBMa4J5OtDKJwvzjFcYkZkPaaIZc6mM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=XXxEs+bvODAOdzI/uFkSnfQrBoH2EClb57Ao0xFI3dtfvKAEM3Z2X11qWdNn5VYr5
+         +YbYcjVDB5pQuvYEN9mgDNc30c4pvWgHAAKM2NSJkbfxAdTXlj26MKXFYNHLQlZNDb
+         7txpG9hDFQU3sB+QN8ls/pfSVeeUIrofA0V0r6yINi8ibhEUSdpqEeKC/Fqn9hhVYF
+         3zRagylZF/bd865vYLIq/NM7km+dwB0sV5cZEkQj84Lu9pNb73T6Rze7Tkx5l2cyBF
+         YKzCJi1E0iVlF8sMUsb57XuLrcQW0Xib59tetmhl32p2dJPM6BlB+Q9IFxqbg2CMTF
+         HXQEGlofjSEKQ==
+Received: by mail-ed1-f53.google.com with SMTP id k15so1149935edk.13;
+        Wed, 05 Jan 2022 08:24:06 -0800 (PST)
+X-Gm-Message-State: AOAM5324dNGYnxEWAr3okmEZgWzalOo9xE31d9eVzu1i4rxCrYmm15Uf
+        lU/M+cN6bbBqk+4m4EGoVqTPSjrnchiMdQixwQ==
+X-Google-Smtp-Source: ABdhPJz5VVwi03tRm0U13TScGgTT7GNYvhHXOBDK8IpQTLIsJYlrKfqJYWDuhEBYHgXnTXGmYNJNekP/aGrkJ6tqO6E=
+X-Received: by 2002:a17:906:229b:: with SMTP id p27mr43028591eja.264.1641399844761;
+ Wed, 05 Jan 2022 08:24:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220105060323.7928-7-nikita@trvn.ru>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20210906102837.2190387-1-martin.kepplinger@puri.sm>
+ <20210906102837.2190387-3-martin.kepplinger@puri.sm> <CAL_JsqJQAutUp9cB2LaoOQQX7mToCc5MkGm59oOmh65yZG0xZQ@mail.gmail.com>
+In-Reply-To: <CAL_JsqJQAutUp9cB2LaoOQQX7mToCc5MkGm59oOmh65yZG0xZQ@mail.gmail.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Wed, 5 Jan 2022 10:23:53 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKzaZC0A4OwnMyAuEWm2pCcHyQxHyrBVtkiPNUeMDd+oA@mail.gmail.com>
+Message-ID: <CAL_JsqKzaZC0A4OwnMyAuEWm2pCcHyQxHyrBVtkiPNUeMDd+oA@mail.gmail.com>
+Subject: Re: [PATCH v9 2/4] dt-bindings: media: document SK Hynix Hi-846 MIPI
+ CSI-2 8M pixel sensor
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Pavel Machek <pavel@ucw.cz>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sakari Ailus <sakari.ailus@iki.fi>, devicetree@vger.kernel.org,
+        Purism Kernel Team <kernel@puri.sm>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+        phone-devel@vger.kernel.org, Shawn Tu <shawnx.tu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Nikita,
+On Fri, Dec 3, 2021 at 10:19 AM Rob Herring <robh@kernel.org> wrote:
+>
+> On Mon, Sep 6, 2021 at 5:29 AM Martin Kepplinger
+> <martin.kepplinger@puri.sm> wrote:
+> >
+> > Document the bindings used for the SK Hynix Hi-846 CMOS camera driver.
+> >
+> > Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > Reviewed-by: Rob Herring <robh@kernel.org>
+> > ---
+> >  .../bindings/media/i2c/hynix,hi846.yaml       | 120 ++++++++++++++++++
+> >  1 file changed, 120 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> > new file mode 100644
+> > index 000000000000..85a8877c2f38
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/media/i2c/hynix,hi846.yaml
+> > @@ -0,0 +1,120 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/media/i2c/hynix,hi846.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: SK Hynix Hi-846 1/4" 8M Pixel MIPI CSI-2 sensor
+> > +
+> > +maintainers:
+> > +  - Martin Kepplinger <martin.kepplinger@puri.sm>
+> > +
+> > +description: |-
+> > +  The Hi-846 is a raw image sensor with an MIPI CSI-2 image data
+> > +  interface and CCI (I2C compatible) control bus. The output format
+> > +  is raw Bayer.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: hynix,hi846
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  clocks:
+> > +    items:
+> > +      - description: Reference to the mclk clock.
+> > +
+> > +  assigned-clocks:
+> > +    maxItems: 1
+> > +
+> > +  assigned-clock-rates:
+> > +    maxItems: 1
+> > +
+> > +  reset-gpios:
+> > +    description: Reference to the GPIO connected to the RESETB pin. Active low.
+> > +    maxItems: 1
+> > +
+> > +  shutdown-gpios:
+> > +    description: Reference to the GPIO connected to the XSHUTDOWN pin. Active low.
+> > +    maxItems: 1
+> > +
+> > +  vddio-supply:
+> > +    description: Definition of the regulator used for the VDDIO power supply.
+> > +
+> > +  vdda-supply:
+> > +    description: Definition of the regulator used for the VDDA power supply.
+> > +
+> > +  vddd-supply:
+> > +    description: Definition of the regulator used for the VDDD power supply.
+> > +
+> > +  port:
+> > +    $ref: /schemas/graph.yaml#/properties/port
+>
+> This needs to be:
+>
+> $ref: /schemas/graph.yaml#/$defs/port-base
+>
+> to fix the warning reported. You have to use the 'main' branch of
+> dtschema which has unevaluatedProperties support. I'll be making a
+> release soonish.
 
-Thank you for the patch! Perhaps something to improve:
+This is still failing, can you please fix it.
 
-[auto build test WARNING on dtor-input/next]
-[also build test WARNING on robh/for-next hid/for-next linus/master v5.16-rc8 next-20220105]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/0day-ci/linux/commits/Nikita-Travkin/Add-touch-keys-support-to-the-Zinitix-touch-driver/20220105-140610
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
-config: powerpc-randconfig-s031-20220105 (https://download.01.org/0day-ci/archive/20220105/202201052355.c806rw3s-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 11.2.0
-reproduce:
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # apt-get install sparse
-        # sparse version: v0.6.4-dirty
-        # https://github.com/0day-ci/linux/commit/545e0de93da58f29350c2908498a4621f5ef59e4
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Nikita-Travkin/Add-touch-keys-support-to-the-Zinitix-touch-driver/20220105-140610
-        git checkout 545e0de93da58f29350c2908498a4621f5ef59e4
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=powerpc SHELL=/bin/bash drivers/ata/ drivers/input/touchscreen/
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/input/touchscreen/zinitix.c:371:24: sparse: sparse: restricted __le16 degrades to integer
-
-vim +371 drivers/input/touchscreen/zinitix.c
-
-   352	
-   353	static irqreturn_t zinitix_ts_irq_handler(int irq, void *bt541_handler)
-   354	{
-   355		struct bt541_ts_data *bt541 = bt541_handler;
-   356		struct i2c_client *client = bt541->client;
-   357		struct touch_event touch_event;
-   358		int error;
-   359		int i;
-   360		__le16 icon_events = 0;
-   361	
-   362		memset(&touch_event, 0, sizeof(struct touch_event));
-   363	
-   364		error = zinitix_read_data(bt541->client, BT541_POINT_STATUS_REG,
-   365					  &touch_event, sizeof(struct touch_event));
-   366		if (error) {
-   367			dev_err(&client->dev, "Failed to read in touchpoint struct\n");
-   368			goto out;
-   369		}
-   370	
- > 371		if (touch_event.status & BIT_ICON_EVENT) {
-   372			error = zinitix_read_data(bt541->client, BT541_ICON_STATUS_REG,
-   373						  &icon_events, sizeof(icon_events));
-   374			if (error) {
-   375				dev_err(&client->dev, "Failed to read icon events\n");
-   376				goto out;
-   377			}
-   378	
-   379			zinitix_report_keys(bt541, le16_to_cpu(icon_events));
-   380		}
-   381	
-   382		for (i = 0; i < MAX_SUPPORTED_FINGER_NUM; i++)
-   383			if (touch_event.point_coord[i].sub_status & SUB_BIT_EXIST)
-   384				zinitix_report_finger(bt541, i,
-   385						      &touch_event.point_coord[i]);
-   386	
-   387		input_mt_sync_frame(bt541->input_dev);
-   388		input_sync(bt541->input_dev);
-   389	
-   390	out:
-   391		zinitix_write_cmd(bt541->client, BT541_CLEAR_INT_STATUS_CMD);
-   392		return IRQ_HANDLED;
-   393	}
-   394	
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Rob
