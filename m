@@ -2,76 +2,69 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99A5BC433F5
-	for <phone-devel@archiver.kernel.org>; Wed, 12 Jan 2022 01:46:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 204CCC433EF
+	for <phone-devel@archiver.kernel.org>; Wed, 12 Jan 2022 19:50:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347927AbiALBqX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 11 Jan 2022 20:46:23 -0500
-Received: from mail-oi1-f173.google.com ([209.85.167.173]:39764 "EHLO
-        mail-oi1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235152AbiALBqW (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 11 Jan 2022 20:46:22 -0500
-Received: by mail-oi1-f173.google.com with SMTP id e81so1515006oia.6;
-        Tue, 11 Jan 2022 17:46:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=gs8xWuveXn7bek9RP+w+SzHBa+2HYsVGqR/3SPTjlKg=;
-        b=XN8q0Q/eV6k5f/hnLy/RGb0LruDuKobtVH7STaZiMuSqugO5sMffbitkJl94SS71vO
-         HJvrs+d6amwEwjpC43tqLiqP1lHYn48UwSTCK8inldLSPmLvyJARP3VMbh4MmtZ8ISYC
-         rRofWJKXKEYKG0JUyHmLtrClNmIEMjy/CzI2Da3zbQiQbTwKlYpEACfJ2mjrT0ynkOD2
-         PotRT1XnhQbup4tD6RGaP4ZBcGClIq24VoeuuI8BzuyEM2H4633CRj3xRzRmyE3CaVlr
-         vz2hALjT6EISvWquRjh6ZI/hF43ifvhWv0cKzRQhLo/f2b5kpUVeLRd93Rte8KtyhaWv
-         +dHQ==
-X-Gm-Message-State: AOAM53145fgrZYZRgzuVHf0vSRYF1taQ6qzOj9npkrJOnFD/dF/gcV0r
-        RVfPPsidt28N187+8blqXw==
-X-Google-Smtp-Source: ABdhPJxSReNo5hHRY0WY5gNt86MSN8WxHEQrNXHifnykt2jl3R+v4k9VKoUf2RROgrKds8RWKR0LYg==
-X-Received: by 2002:a05:6808:215:: with SMTP id l21mr3588331oie.42.1641951982054;
-        Tue, 11 Jan 2022 17:46:22 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id f123sm375583oob.28.2022.01.11.17.46.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jan 2022 17:46:21 -0800 (PST)
-Received: (nullmailer pid 3892237 invoked by uid 1000);
-        Wed, 12 Jan 2022 01:46:20 -0000
-Date:   Tue, 11 Jan 2022 19:46:20 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Nikita Travkin <nikita@trvn.ru>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, linus.walleij@linaro.org,
-        broonie@kernel.org, robh+dt@kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, linux-input@vger.kernel.org,
-        luca@z3ntu.xyz, Michael.Srba@seznam.cz, dmitry.torokhov@gmail.com
-Subject: Re: [PATCH v3 5/6] dt-bindings: input: zinitix: Document touch-keys
- support
-Message-ID: <Yd4y7GB1QRYEVEbc@robh.at.kernel.org>
-References: <20220106072840.36851-1-nikita@trvn.ru>
- <20220106072840.36851-6-nikita@trvn.ru>
+        id S242686AbiALTuo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 12 Jan 2022 14:50:44 -0500
+Received: from mail.z3ntu.xyz ([128.199.32.197]:33168 "EHLO mail.z3ntu.xyz"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1346033AbiALTuo (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 12 Jan 2022 14:50:44 -0500
+Received: from localhost.localdomain (ip-213-127-106-2.ip.prioritytelecom.net [213.127.106.2])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id A6E6DCDFA0;
+        Wed, 12 Jan 2022 19:42:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1642016545; bh=Y+bq+Z/7Ct3c1PZacukAmpH702Bds8OI7cjpFYiHTT8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=OI2mizPLeOdxk6oFlMOXosewgen+k/a4dwhBxL6pdqJ1YIsRhxUhRBne/yvuCGN26
+         vD5CzX36hNvVWMWF1q2FgD31fV29b1/wysuHlTKXp8kbDo5LpHVD/xc9bem3nSRfBh
+         dl9Be4ZQdhfV3dNoHIQUelPra073qiHcDzHSl7AM=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Manu Gautam <mgautam@codeaurora.org>,
+        linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 01/15] dt-bindings: phy: qcom,qusb2: Document msm8953 compatible
+Date:   Wed, 12 Jan 2022 20:40:50 +0100
+Message-Id: <20220112194118.178026-2-luca@z3ntu.xyz>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220112194118.178026-1-luca@z3ntu.xyz>
+References: <20220112194118.178026-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220106072840.36851-6-nikita@trvn.ru>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 06 Jan 2022 12:28:39 +0500, Nikita Travkin wrote:
-> In some configurations the touch controller can support the touch-keys.
-> Document the linux,keycodes property that enables those keys and
-> specifies the keycodes that should be used to report the key events.
-> 
-> Signed-off-by: Nikita Travkin <nikita@trvn.ru>
-> ---
-> Changes in v2:
->  - Include input.yaml schema at the top level instead of at the
->    property. (Seems like I still can't think of the schema as device
->    and not implementation-specific thing...)
->  - Reword the description to be more informative.
-> ---
->  .../bindings/input/touchscreen/zinitix,bt400.yaml      | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
+Document the compatible string used for the qusb2 phy in msm8953.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+---
+ Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
+index aa2e409a1a09..f28eb4902038 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
+@@ -19,6 +19,7 @@ properties:
+       - items:
+           - enum:
+               - qcom,ipq8074-qusb2-phy
++              - qcom,msm8953-qusb2-phy
+               - qcom,msm8996-qusb2-phy
+               - qcom,msm8998-qusb2-phy
+               - qcom,qcm2290-qusb2-phy
+-- 
+2.34.1
+
