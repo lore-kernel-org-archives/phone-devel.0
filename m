@@ -2,38 +2,39 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6673C43217
-	for <phone-devel@archiver.kernel.org>; Wed, 12 Jan 2022 19:52:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 432A6C433EF
+	for <phone-devel@archiver.kernel.org>; Wed, 12 Jan 2022 19:52:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357429AbiALTwY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 12 Jan 2022 14:52:24 -0500
-Received: from mail.z3ntu.xyz ([128.199.32.197]:33212 "EHLO mail.z3ntu.xyz"
+        id S1345980AbiALTw0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 12 Jan 2022 14:52:26 -0500
+Received: from mail.z3ntu.xyz ([128.199.32.197]:33206 "EHLO mail.z3ntu.xyz"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1350131AbiALTvf (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 12 Jan 2022 14:51:35 -0500
+        id S1350090AbiALTvh (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 12 Jan 2022 14:51:37 -0500
 Received: from localhost.localdomain (ip-213-127-106-2.ip.prioritytelecom.net [213.127.106.2])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 9047ECDFE3;
-        Wed, 12 Jan 2022 19:42:31 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id BC877CDFE1;
+        Wed, 12 Jan 2022 19:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1642016551; bh=KHKsuBYKTLwjzwl37Vjo6Spn4g3BjgzCI/1uv5wCKtE=;
+        t=1642016550; bh=DeLCdue2jr0aGDKdHCFhzqKn14pLJxKzej3Le9UUF+0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=vqgbmIfBjzTmS9j88MhxcVUg7KrL+THBwT+K7MQNpqWWVeu9ZD3B1g1jwRxYo7as9
-         ADJlAp0E+jlRS+7L5SeJPweO2x8ZfYgvkhzu2x/WnWs5wfdvRCb4s99yKWCvFJfPKc
-         4InPeBvkwUoSdreY6cmLxudCng+G4JqGi1Q0cTcA=
+        b=nAbOBBdDzGQfTOCScoe/7NrwiSihF6jH4P/jtIbCbjEI6WEMpYhJxN9BUJYMX0pBC
+         vbVntNjKPaRGlUaYAzNybbOPWoOXkaau3EdTcD3Xg6kqSV/m1A6ziNFAs8ydqW4OfJ
+         Ne8eu+ZRTA5aYKbY9V2tRcLBNlURjUwN33+yeAhI=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
         Luca Weiss <luca@z3ntu.xyz>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 09/15] rpmsg: smd: Drop unnecessary condition for channel creation
-Date:   Wed, 12 Jan 2022 20:40:58 +0100
-Message-Id: <20220112194118.178026-10-luca@z3ntu.xyz>
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Manu Gautam <mgautam@codeaurora.org>,
+        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 07/15] dt-bindings: usb: qcom,dwc3: Add msm8953 compatible
+Date:   Wed, 12 Jan 2022 20:40:56 +0100
+Message-Id: <20220112194118.178026-8-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220112194118.178026-1-luca@z3ntu.xyz>
 References: <20220112194118.178026-1-luca@z3ntu.xyz>
@@ -43,46 +44,26 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Vladimir Lypak <vladimir.lypak@gmail.com>
+Document the compatible string for the DWC3 controller in msm8953.
 
-RPM Firmware on variety of newer SoCs such as MSM8917 (also likely
-MSM8937, MSM8940, MSM8952), MSM8953 and on some MSM8916 devices) doesn't
-initiate opening of the SMD channel if it was previously opened by
-bootloader. This doesn't allow probing of smd-rpm driver on such devices
-because there is a check that requires RPM this behaviour.
-
-Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 ---
- drivers/rpmsg/qcom_smd.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ Documentation/devicetree/bindings/usb/qcom,dwc3.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
-index 8da1b5cb31b3..6a01ef932b01 100644
---- a/drivers/rpmsg/qcom_smd.c
-+++ b/drivers/rpmsg/qcom_smd.c
-@@ -1280,19 +1280,13 @@ static void qcom_channel_state_worker(struct work_struct *work)
- 	unsigned long flags;
- 
- 	/*
--	 * Register a device for any closed channel where the remote processor
--	 * is showing interest in opening the channel.
-+	 * Register a device for any closed channel.
- 	 */
- 	spin_lock_irqsave(&edge->channels_lock, flags);
- 	list_for_each_entry(channel, &edge->channels, list) {
- 		if (channel->state != SMD_CHANNEL_CLOSED)
- 			continue;
- 
--		remote_state = GET_RX_CHANNEL_INFO(channel, state);
--		if (remote_state != SMD_CHANNEL_OPENING &&
--		    remote_state != SMD_CHANNEL_OPENED)
--			continue;
--
- 		if (channel->registered)
- 			continue;
- 
+diff --git a/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml b/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
+index 2bdaba023c01..d6a71711a182 100644
+--- a/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
++++ b/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
+@@ -14,6 +14,7 @@ properties:
+     items:
+       - enum:
+           - qcom,ipq6018-dwc3
++          - qcom,msm8953-dwc3
+           - qcom,msm8996-dwc3
+           - qcom,msm8998-dwc3
+           - qcom,sc7180-dwc3
 -- 
 2.34.1
 
