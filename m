@@ -2,115 +2,172 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35931C433EF
-	for <phone-devel@archiver.kernel.org>; Sun, 16 Jan 2022 16:31:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D233AC433F5
+	for <phone-devel@archiver.kernel.org>; Wed, 19 Jan 2022 23:12:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233773AbiAPQbH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 16 Jan 2022 11:31:07 -0500
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:33759 "EHLO
-        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231292AbiAPQbG (ORCPT
+        id S231951AbiASXMz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 19 Jan 2022 18:12:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51726 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229762AbiASXMz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 16 Jan 2022 11:31:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1642350648;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=wd5B5q6uhmXCkTltl4oPLre+b0CAXOOsrH3DYJLPWOk=;
-    b=QAyRW1JmAAA/yFoj8X3QlSMfV7J/1fZy54Yx3ak5/iNi9bBnRjTZ0qdv2HRCVFrQeH
-    4I9sz6VMbpxUQOhW874t2uU7b+e+pkg9hOpqKlo8sy+eGHj5CMVFdSQrAUEgNkj4ko1a
-    +//H9KPf6J9h/viwiQOokXiVltBL/RziMlcqLcyRLAIDnTGiOFY5mqGVGmhdK+R0DkTz
-    UbLMgs+VUrIn5piPwwXZXhDJ7ggj2l/dUCJ/ZReyuW2PRPpX2rdRpICmDN9XGTLvUGxJ
-    4lyglW81xWiXjBh7BIzt/MjXtU7CupYK6pceuw04NaqNn/qWpawq+FnenPnkDAgKJT5Q
-    T5Vw==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u267FZF9PwpcNKLVrK8+86Y="
-X-RZG-CLASS-ID: mo00
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 47.37.6 AUTH)
-    with ESMTPSA id h68d06y0GGUk8zU
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Sun, 16 Jan 2022 17:30:46 +0100 (CET)
-Date:   Sun, 16 Jan 2022 17:30:39 +0100
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: Re: [PATCH 09/15] rpmsg: smd: Drop unnecessary condition for channel
- creation
-Message-ID: <YeRILypv8ajssNae@gerhold.net>
-References: <20220112194118.178026-1-luca@z3ntu.xyz>
- <20220112194118.178026-10-luca@z3ntu.xyz>
- <Yd9KebiZUjTuHtIM@gerhold.net>
- <12385151.O9o76ZdvQC@g550jk>
+        Wed, 19 Jan 2022 18:12:55 -0500
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDA5BC061574
+        for <phone-devel@vger.kernel.org>; Wed, 19 Jan 2022 15:12:54 -0800 (PST)
+Received: by mail-lf1-x130.google.com with SMTP id d3so14356006lfv.13
+        for <phone-devel@vger.kernel.org>; Wed, 19 Jan 2022 15:12:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=U2dwbqcasQ5jAt+dZT0r0geSiO9Og0zFjtJjCnr7lCs=;
+        b=nwoSlp64QlHMhIXPAbqSlvtxn3YRmwGuo7gO9z+aJyjKE7+vGUsNePrlnd9gihi5Cv
+         +2/QZYmgoEypLlDZcKxH1xBn7ERBNTyQcDLz9/0Mr+kdiO6ZDMdAmAfB/OYxvdzGEUvQ
+         3OV5kWf4Op6Su8FEfxrPBhTn+HHIa5UT0ry6dssyU+V7b+IQJWFdqbZpKDMYqYOV70do
+         9ZK52EFTCsRvagLpb7P+t59v138vDT01JUF5KA8DeNO+yIe9OX3Z1Iknx2Vf+n4wZ4QT
+         EMXsApYX9RQleRf2uYL/GQv99KdQWAqiv4A6D5XTZMJrDRUc4RI2XNFqRQCant61Tqhw
+         TSGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=U2dwbqcasQ5jAt+dZT0r0geSiO9Og0zFjtJjCnr7lCs=;
+        b=zvJAy0k3dkixdksPi1/JPu0aHzDOenz/vxnTcufvFgzXlmsCiCxEPOaSe3QqMdSDyW
+         e/C8QfOtIcBfDSxGjrVwNJpMlNuMignSoh4+Z9wNWeD3E/TgQtLzLU9XicezAwMapMiw
+         knQF3Ipjn7/b1kpgwr6iZYsarz1VHI8meQDXnTp6T/snaSRTr+UMGRbKhOUWdH8scYjx
+         rKfRjTz2ElWKb8uyPv8xK/oW96BCl0/f3z/F+HCAv8ZHSpYQLJWs0ZQvBLv4M/mx9dQ7
+         XCe5J4SE4HBz5msfPQt6kopsmWdKbRgX9fi2cySc/1Is8C2kkhUfhziYHOk4wEKUo8gP
+         t2WA==
+X-Gm-Message-State: AOAM531c0zmHRe7cLYPMs0YYKpaaJu+m0cJ6YEXBrKPXyyJ7s1kHIKKA
+        rr7EpNUPhW5apChJWSC29dCmwQ==
+X-Google-Smtp-Source: ABdhPJzS0S2j0mE2ciBclrlhqyzVclucItRkmT/yH3LWXkOsMSX6ENnBKT8aGA/LNELrdDToVn+shw==
+X-Received: by 2002:a05:6512:3da1:: with SMTP id k33mr27853059lfv.212.1642633973353;
+        Wed, 19 Jan 2022 15:12:53 -0800 (PST)
+Received: from [192.168.1.211] ([37.153.55.125])
+        by smtp.gmail.com with ESMTPSA id q27sm103546lfd.271.2022.01.19.15.12.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Jan 2022 15:12:52 -0800 (PST)
+Message-ID: <84bd598c-b1b7-984e-9fa1-94ad28087ef0@linaro.org>
+Date:   Thu, 20 Jan 2022 02:12:51 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <12385151.O9o76ZdvQC@g550jk>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH] drm/msm/dpu: Bind pingpong block to intf on active ctls
+ in cmd encoder
+Content-Language: en-GB
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Abhinav Kumar <abhinavk@codeaurora.org>,
+        Zhen Lei <thunder.leizhen@huawei.com>,
+        Bernard <bernard@vivo.com>, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+References: <20211222105513.44860-1-marijn.suijten@somainline.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20211222105513.44860-1-marijn.suijten@somainline.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Jan 16, 2022 at 05:08:29PM +0100, Luca Weiss wrote:
-> On Mittwoch, 12. Jänner 2022 22:39:53 CET Stephan Gerhold wrote:
-> > On Wed, Jan 12, 2022 at 08:40:58PM +0100, Luca Weiss wrote:
-> > > From: Vladimir Lypak <vladimir.lypak@gmail.com>
-> > > 
-> > > RPM Firmware on variety of newer SoCs such as MSM8917 (also likely
-> > > MSM8937, MSM8940, MSM8952), MSM8953 and on some MSM8916 devices) doesn't
-> > > initiate opening of the SMD channel if it was previously opened by
-> > > bootloader. This doesn't allow probing of smd-rpm driver on such devices
-> > > because there is a check that requires RPM this behaviour.
-> > > 
-> > > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> > 
-> > This is effectively a "Revert "Revert "rpmsg: smd: Create device for all
-> > channels""":
-> > 
-> > https://lore.kernel.org/linux-arm-msm/20171212235857.10432-3-bjorn.andersson
-> > @linaro.org/
-> > https://lore.kernel.org/linux-arm-msm/20180315181244.8859-1-bjorn.andersson
-> > @linaro.org/
-> > 
-> > Won't this cause the same regression reported by Srinivas again?
-> > 
+On 22/12/2021 13:55, Marijn Suijten wrote:
+> As per the specification of DPU_CTL_ACTIVE_CFG the configuration of
+> active blocks should be proactively specified, and the pingpong block is
+> no different.
 > 
-> Do you have any suggestion on another way to solve this? Without this commit 
-> the regulators just won't probe at all, I haven't looked very deep into it 
-> though given this patch solves it.
+> The downstream display driver [1] confirms this by also calling
+> bind_pingpong_blk on CTL_ACTIVE_CFG.  Note that this else-if is always
+> entered, as setup_intf_cfg - unlike this mainline dpu driver that
+> combines both behind the same function pointer - is left NULL in favour
+> of using setup_intf_cfg_v1 when CTL_ACTIVE_CFG is set.
 > 
-> I guess worst case it'll become a devicetree property to enable this quirk?
+> This solves continuous timeouts on at least the Qualcomm sm6125 SoC:
 > 
+>      [drm:dpu_encoder_frame_done_timeout:2091] [dpu error]enc31 frame done timeout
+>      [drm:_dpu_encoder_phys_cmd_handle_ppdone_timeout.isra.0] *ERROR* id:31 pp:0 kickoff timeout 0 cnt 1 koff_cnt 1
+>      [drm:dpu_encoder_phys_cmd_prepare_for_kickoff] *ERROR* failed wait_for_idle: id:31 ret:-110 pp:0
+> 
+> In the same way this pingpong block should also be unbound followed by
+> an interface flush when the encoder is disabled, according to the
+> downstream display driver [2].
+> 
+> [1]: https://source.codeaurora.org/quic/la/platform/vendor/opensource/display-drivers/tree/msm/sde/sde_encoder_phys_cmd.c?h=LA.UM.9.16.r1-08500-MANNAR.0#n167
+> [2]: https://source.codeaurora.org/quic/la/platform/vendor/opensource/display-drivers/tree/msm/sde/sde_encoder.c?h=LA.UM.9.16.r1-08500-MANNAR.0#n2986
+> 
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 
-My spontaneous suggestion would be to skip the check only for the
-"rpm_requests" channel, e.g. something like
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-	if (remote_state != SMD_CHANNEL_OPENING &&
-	    remote_state != SMD_CHANNEL_OPENED &&
-	    strcmp(channel->name, "rpm_requests")
-		continue;
+> ---
+>   .../drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c  | 21 +++++++++++++++++++
+>   1 file changed, 21 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+> index 8e433af7aea4..e0e08a874f07 100644
+> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
+> @@ -71,6 +71,13 @@ static void _dpu_encoder_phys_cmd_update_intf_cfg(
+>   	intf_cfg.stream_sel = cmd_enc->stream_sel;
+>   	intf_cfg.mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
+>   	ctl->ops.setup_intf_cfg(ctl, &intf_cfg);
+> +
+> +	/* setup which pp blk will connect to this intf */
+> +	if (test_bit(DPU_CTL_ACTIVE_CFG, &ctl->caps->features) && phys_enc->hw_intf->ops.bind_pingpong_blk)
 
-This will avoid changing the behavior for anything but the RPM channel.
-I don't think anything else is affected by the same problem (since the
-bootloader or earlier firmware should not make use of any other channel).
-Also, we definitely *always* want to open the channel to the RPM because
-otherwise almost everything breaks.
+Nit: here we bind all interfaces, but later we unbind only master. Is 
+this correct?
 
-Many solutions are possible though so at the end it is mostly up to
-Bjorn to decide I think. :)
+> +		phys_enc->hw_intf->ops.bind_pingpong_blk(
+> +				phys_enc->hw_intf,
+> +				true,
+> +				phys_enc->hw_pp->idx);
+>   }
+>   
+>   static void dpu_encoder_phys_cmd_pp_tx_done_irq(void *arg, int irq_idx)
+> @@ -507,6 +514,7 @@ static void dpu_encoder_phys_cmd_disable(struct dpu_encoder_phys *phys_enc)
+>   {
+>   	struct dpu_encoder_phys_cmd *cmd_enc =
+>   		to_dpu_encoder_phys_cmd(phys_enc);
+> +	struct dpu_hw_ctl *ctl;
+>   
+>   	if (!phys_enc->hw_pp) {
+>   		DPU_ERROR("invalid encoder\n");
+> @@ -523,6 +531,19 @@ static void dpu_encoder_phys_cmd_disable(struct dpu_encoder_phys *phys_enc)
+>   
+>   	if (phys_enc->hw_pp->ops.enable_tearcheck)
+>   		phys_enc->hw_pp->ops.enable_tearcheck(phys_enc->hw_pp, false);
+> +
+> +	if (dpu_encoder_phys_cmd_is_master(phys_enc)) {
+> +		if (phys_enc->hw_intf->ops.bind_pingpong_blk) {
+> +			phys_enc->hw_intf->ops.bind_pingpong_blk(
+> +					phys_enc->hw_intf,
+> +					false,
+> +					phys_enc->hw_pp->idx);
+> +
+> +			ctl = phys_enc->hw_ctl;
+> +			ctl->ops.update_pending_flush_intf(ctl, phys_enc->intf_idx);
+> +		}
+> +	}
+> +
+>   	phys_enc->enable_state = DPU_ENC_DISABLED;
+>   }
+>   
 
-Thanks,
-Stephan
+
+-- 
+With best wishes
+Dmitry
