@@ -2,172 +2,92 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D233AC433F5
-	for <phone-devel@archiver.kernel.org>; Wed, 19 Jan 2022 23:12:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E3ADC433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 20 Jan 2022 10:58:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231951AbiASXMz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 19 Jan 2022 18:12:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51726 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229762AbiASXMz (ORCPT
+        id S230023AbiATK6z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 20 Jan 2022 05:58:55 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:37970 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230016AbiATK6y (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 19 Jan 2022 18:12:55 -0500
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDA5BC061574
-        for <phone-devel@vger.kernel.org>; Wed, 19 Jan 2022 15:12:54 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id d3so14356006lfv.13
-        for <phone-devel@vger.kernel.org>; Wed, 19 Jan 2022 15:12:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=U2dwbqcasQ5jAt+dZT0r0geSiO9Og0zFjtJjCnr7lCs=;
-        b=nwoSlp64QlHMhIXPAbqSlvtxn3YRmwGuo7gO9z+aJyjKE7+vGUsNePrlnd9gihi5Cv
-         +2/QZYmgoEypLlDZcKxH1xBn7ERBNTyQcDLz9/0Mr+kdiO6ZDMdAmAfB/OYxvdzGEUvQ
-         3OV5kWf4Op6Su8FEfxrPBhTn+HHIa5UT0ry6dssyU+V7b+IQJWFdqbZpKDMYqYOV70do
-         9ZK52EFTCsRvagLpb7P+t59v138vDT01JUF5KA8DeNO+yIe9OX3Z1Iknx2Vf+n4wZ4QT
-         EMXsApYX9RQleRf2uYL/GQv99KdQWAqiv4A6D5XTZMJrDRUc4RI2XNFqRQCant61Tqhw
-         TSGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=U2dwbqcasQ5jAt+dZT0r0geSiO9Og0zFjtJjCnr7lCs=;
-        b=zvJAy0k3dkixdksPi1/JPu0aHzDOenz/vxnTcufvFgzXlmsCiCxEPOaSe3QqMdSDyW
-         e/C8QfOtIcBfDSxGjrVwNJpMlNuMignSoh4+Z9wNWeD3E/TgQtLzLU9XicezAwMapMiw
-         knQF3Ipjn7/b1kpgwr6iZYsarz1VHI8meQDXnTp6T/snaSRTr+UMGRbKhOUWdH8scYjx
-         rKfRjTz2ElWKb8uyPv8xK/oW96BCl0/f3z/F+HCAv8ZHSpYQLJWs0ZQvBLv4M/mx9dQ7
-         XCe5J4SE4HBz5msfPQt6kopsmWdKbRgX9fi2cySc/1Is8C2kkhUfhziYHOk4wEKUo8gP
-         t2WA==
-X-Gm-Message-State: AOAM531c0zmHRe7cLYPMs0YYKpaaJu+m0cJ6YEXBrKPXyyJ7s1kHIKKA
-        rr7EpNUPhW5apChJWSC29dCmwQ==
-X-Google-Smtp-Source: ABdhPJzS0S2j0mE2ciBclrlhqyzVclucItRkmT/yH3LWXkOsMSX6ENnBKT8aGA/LNELrdDToVn+shw==
-X-Received: by 2002:a05:6512:3da1:: with SMTP id k33mr27853059lfv.212.1642633973353;
-        Wed, 19 Jan 2022 15:12:53 -0800 (PST)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id q27sm103546lfd.271.2022.01.19.15.12.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jan 2022 15:12:52 -0800 (PST)
-Message-ID: <84bd598c-b1b7-984e-9fa1-94ad28087ef0@linaro.org>
-Date:   Thu, 20 Jan 2022 02:12:51 +0300
+        Thu, 20 Jan 2022 05:58:54 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CCCF61515
+        for <phone-devel@vger.kernel.org>; Thu, 20 Jan 2022 10:58:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CCFC36AE7
+        for <phone-devel@vger.kernel.org>; Thu, 20 Jan 2022 10:58:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1642676333;
+        bh=+jkyxXMoEk5+hwtBJlffpwJ8aa4wwzoRMO9NurvgCWU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=g8YoZlVkh/8k178K0nLX3wCKHTyTeisRKNVJwPT8ky5ra7t+9c50Mymp49zx4hvA8
+         KHG361Br503LtIHzpMLGQLbZMXsdBX693wh56U+kx0ISfnb6z9MQMTqNP0l1UhAd/l
+         bbbMRpdJVPc0t9bvSJchRS4xLi/FEhhXqVcJNG8RunmVPOt5fy6bbjIeopq0p6gT2l
+         djl1pvdmppC8+L1diVcoUFU4czH0IuGEr197CKK0n8anbhUm5I3BeZHaj9h8l6KmH6
+         FC2NJ3rqvC+y3cInKFDY2Kudu9DgHl0Sj6pn+GwwsB0aTg+aC5bjg7tKG4mA7SDR9S
+         NTcYYDYcTdevg==
+Received: by mail-lf1-f41.google.com with SMTP id y15so11833041lfa.9
+        for <phone-devel@vger.kernel.org>; Thu, 20 Jan 2022 02:58:53 -0800 (PST)
+X-Gm-Message-State: AOAM533Ht0TxCabHFU8XSlx5vysxj4ts+HLHmYTWVM8i+LdsDmjPi2h5
+        hW0ntyf64p3/R2TJcCZo3XN6+1SVVmdFCOi21Vy2Wg==
+X-Google-Smtp-Source: ABdhPJzCBCnJZ3oIXFukCi1Pa6f/1m/OuPcJzRFUfboLxTs9Ofigs2PhdSiU3aU8RkHR44+n8gnJLTI4QW+JwXe3GT4=
+X-Received: by 2002:a05:6512:986:: with SMTP id w6mr31394398lft.201.1642676331951;
+ Thu, 20 Jan 2022 02:58:51 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH] drm/msm/dpu: Bind pingpong block to intf on active ctls
- in cmd encoder
-Content-Language: en-GB
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
+References: <20220112194118.178026-1-luca@z3ntu.xyz> <20220112194118.178026-7-luca@z3ntu.xyz>
+In-Reply-To: <20220112194118.178026-7-luca@z3ntu.xyz>
+From:   Amit Kucheria <amitk@kernel.org>
+Date:   Thu, 20 Jan 2022 16:28:40 +0530
+X-Gmail-Original-Message-ID: <CAHLCerMEvDyrxkwpd+POUSjspkEfw=-FhPCS1=nX5WOVH4=bcw@mail.gmail.com>
+Message-ID: <CAHLCerMEvDyrxkwpd+POUSjspkEfw=-FhPCS1=nX5WOVH4=bcw@mail.gmail.com>
+Subject: Re: [PATCH 06/15] dt-bindings: thermal: tsens: Add msm8953 compatible
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Abhinav Kumar <abhinavk@codeaurora.org>,
-        Zhen Lei <thunder.leizhen@huawei.com>,
-        Bernard <bernard@vivo.com>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-References: <20211222105513.44860-1-marijn.suijten@somainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20211222105513.44860-1-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Thara Gopinath <thara.gopinath@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 22/12/2021 13:55, Marijn Suijten wrote:
-> As per the specification of DPU_CTL_ACTIVE_CFG the configuration of
-> active blocks should be proactively specified, and the pingpong block is
-> no different.
-> 
-> The downstream display driver [1] confirms this by also calling
-> bind_pingpong_blk on CTL_ACTIVE_CFG.  Note that this else-if is always
-> entered, as setup_intf_cfg - unlike this mainline dpu driver that
-> combines both behind the same function pointer - is left NULL in favour
-> of using setup_intf_cfg_v1 when CTL_ACTIVE_CFG is set.
-> 
-> This solves continuous timeouts on at least the Qualcomm sm6125 SoC:
-> 
->      [drm:dpu_encoder_frame_done_timeout:2091] [dpu error]enc31 frame done timeout
->      [drm:_dpu_encoder_phys_cmd_handle_ppdone_timeout.isra.0] *ERROR* id:31 pp:0 kickoff timeout 0 cnt 1 koff_cnt 1
->      [drm:dpu_encoder_phys_cmd_prepare_for_kickoff] *ERROR* failed wait_for_idle: id:31 ret:-110 pp:0
-> 
-> In the same way this pingpong block should also be unbound followed by
-> an interface flush when the encoder is disabled, according to the
-> downstream display driver [2].
-> 
-> [1]: https://source.codeaurora.org/quic/la/platform/vendor/opensource/display-drivers/tree/msm/sde/sde_encoder_phys_cmd.c?h=LA.UM.9.16.r1-08500-MANNAR.0#n167
-> [2]: https://source.codeaurora.org/quic/la/platform/vendor/opensource/display-drivers/tree/msm/sde/sde_encoder.c?h=LA.UM.9.16.r1-08500-MANNAR.0#n2986
-> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+On Thu, Jan 13, 2022 at 1:12 AM Luca Weiss <luca@z3ntu.xyz> wrote:
+>
+> Document the compatible string for tsens found in msm8953.
+>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Acked-by: Amit Kucheria <amitk@kernel.org>
 
 > ---
->   .../drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c  | 21 +++++++++++++++++++
->   1 file changed, 21 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> index 8e433af7aea4..e0e08a874f07 100644
-> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> @@ -71,6 +71,13 @@ static void _dpu_encoder_phys_cmd_update_intf_cfg(
->   	intf_cfg.stream_sel = cmd_enc->stream_sel;
->   	intf_cfg.mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
->   	ctl->ops.setup_intf_cfg(ctl, &intf_cfg);
-> +
-> +	/* setup which pp blk will connect to this intf */
-> +	if (test_bit(DPU_CTL_ACTIVE_CFG, &ctl->caps->features) && phys_enc->hw_intf->ops.bind_pingpong_blk)
-
-Nit: here we bind all interfaces, but later we unbind only master. Is 
-this correct?
-
-> +		phys_enc->hw_intf->ops.bind_pingpong_blk(
-> +				phys_enc->hw_intf,
-> +				true,
-> +				phys_enc->hw_pp->idx);
->   }
->   
->   static void dpu_encoder_phys_cmd_pp_tx_done_irq(void *arg, int irq_idx)
-> @@ -507,6 +514,7 @@ static void dpu_encoder_phys_cmd_disable(struct dpu_encoder_phys *phys_enc)
->   {
->   	struct dpu_encoder_phys_cmd *cmd_enc =
->   		to_dpu_encoder_phys_cmd(phys_enc);
-> +	struct dpu_hw_ctl *ctl;
->   
->   	if (!phys_enc->hw_pp) {
->   		DPU_ERROR("invalid encoder\n");
-> @@ -523,6 +531,19 @@ static void dpu_encoder_phys_cmd_disable(struct dpu_encoder_phys *phys_enc)
->   
->   	if (phys_enc->hw_pp->ops.enable_tearcheck)
->   		phys_enc->hw_pp->ops.enable_tearcheck(phys_enc->hw_pp, false);
-> +
-> +	if (dpu_encoder_phys_cmd_is_master(phys_enc)) {
-> +		if (phys_enc->hw_intf->ops.bind_pingpong_blk) {
-> +			phys_enc->hw_intf->ops.bind_pingpong_blk(
-> +					phys_enc->hw_intf,
-> +					false,
-> +					phys_enc->hw_pp->idx);
-> +
-> +			ctl = phys_enc->hw_ctl;
-> +			ctl->ops.update_pending_flush_intf(ctl, phys_enc->intf_idx);
-> +		}
-> +	}
-> +
->   	phys_enc->enable_state = DPU_ENC_DISABLED;
->   }
->   
-
-
--- 
-With best wishes
-Dmitry
+>  Documentation/devicetree/bindings/thermal/qcom-tsens.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
+> index d3b9e9b600a2..b6406bcc683f 100644
+> --- a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
+> +++ b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
+> @@ -43,6 +43,7 @@ properties:
+>        - description: v2 of TSENS
+>          items:
+>            - enum:
+> +              - qcom,msm8953-tsens
+>                - qcom,msm8996-tsens
+>                - qcom,msm8998-tsens
+>                - qcom,sc7180-tsens
+> --
+> 2.34.1
+>
