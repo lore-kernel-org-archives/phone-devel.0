@@ -2,92 +2,62 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E3ADC433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 20 Jan 2022 10:58:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F975C433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 21 Jan 2022 09:34:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbiATK6z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 20 Jan 2022 05:58:55 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:37970 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230016AbiATK6y (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 20 Jan 2022 05:58:54 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CCCF61515
-        for <phone-devel@vger.kernel.org>; Thu, 20 Jan 2022 10:58:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CCFC36AE7
-        for <phone-devel@vger.kernel.org>; Thu, 20 Jan 2022 10:58:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642676333;
-        bh=+jkyxXMoEk5+hwtBJlffpwJ8aa4wwzoRMO9NurvgCWU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=g8YoZlVkh/8k178K0nLX3wCKHTyTeisRKNVJwPT8ky5ra7t+9c50Mymp49zx4hvA8
-         KHG361Br503LtIHzpMLGQLbZMXsdBX693wh56U+kx0ISfnb6z9MQMTqNP0l1UhAd/l
-         bbbMRpdJVPc0t9bvSJchRS4xLi/FEhhXqVcJNG8RunmVPOt5fy6bbjIeopq0p6gT2l
-         djl1pvdmppC8+L1diVcoUFU4czH0IuGEr197CKK0n8anbhUm5I3BeZHaj9h8l6KmH6
-         FC2NJ3rqvC+y3cInKFDY2Kudu9DgHl0Sj6pn+GwwsB0aTg+aC5bjg7tKG4mA7SDR9S
-         NTcYYDYcTdevg==
-Received: by mail-lf1-f41.google.com with SMTP id y15so11833041lfa.9
-        for <phone-devel@vger.kernel.org>; Thu, 20 Jan 2022 02:58:53 -0800 (PST)
-X-Gm-Message-State: AOAM533Ht0TxCabHFU8XSlx5vysxj4ts+HLHmYTWVM8i+LdsDmjPi2h5
-        hW0ntyf64p3/R2TJcCZo3XN6+1SVVmdFCOi21Vy2Wg==
-X-Google-Smtp-Source: ABdhPJzCBCnJZ3oIXFukCi1Pa6f/1m/OuPcJzRFUfboLxTs9Ofigs2PhdSiU3aU8RkHR44+n8gnJLTI4QW+JwXe3GT4=
-X-Received: by 2002:a05:6512:986:: with SMTP id w6mr31394398lft.201.1642676331951;
- Thu, 20 Jan 2022 02:58:51 -0800 (PST)
+        id S1379744AbiAUJeJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 21 Jan 2022 04:34:09 -0500
+Received: from comms.puri.sm ([159.203.221.185]:56104 "EHLO comms.puri.sm"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1349592AbiAUJeJ (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Fri, 21 Jan 2022 04:34:09 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id CE625DF9DC;
+        Fri, 21 Jan 2022 01:34:08 -0800 (PST)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id D8b-TvVhkATg; Fri, 21 Jan 2022 01:34:08 -0800 (PST)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+To:     robh@kernel.org, shawnguo@kernel.org
+Cc:     kernel@pengutronix.de, linux-imx@nxp.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Martin Kepplinger <martin.kepplinger@puri.sm>
+Subject: [PATCH v1 0/2] arm64: dts: imx8mq: fix mipi_csi port numbering
+Date:   Fri, 21 Jan 2022 10:33:24 +0100
+Message-Id: <20220121093326.2388251-1-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
-References: <20220112194118.178026-1-luca@z3ntu.xyz> <20220112194118.178026-7-luca@z3ntu.xyz>
-In-Reply-To: <20220112194118.178026-7-luca@z3ntu.xyz>
-From:   Amit Kucheria <amitk@kernel.org>
-Date:   Thu, 20 Jan 2022 16:28:40 +0530
-X-Gmail-Original-Message-ID: <CAHLCerMEvDyrxkwpd+POUSjspkEfw=-FhPCS1=nX5WOVH4=bcw@mail.gmail.com>
-Message-ID: <CAHLCerMEvDyrxkwpd+POUSjspkEfw=-FhPCS1=nX5WOVH4=bcw@mail.gmail.com>
-Subject: Re: [PATCH 06/15] dt-bindings: thermal: tsens: Add msm8953 compatible
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jan 13, 2022 at 1:12 AM Luca Weiss <luca@z3ntu.xyz> wrote:
->
-> Document the compatible string for tsens found in msm8953.
->
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+hi Shawn and all interested,
 
-Acked-by: Amit Kucheria <amitk@kernel.org>
+This is a fix for an embarrassing bug that slipped into commit
+bcadd5f66c2a ("arm64: dts: imx8mq: add mipi csi phy and csi bridge descriptions")
+and commit fed7603597fa ("arm64: dts: imx8mq-librem5: describe the selfie cam").
 
-> ---
->  Documentation/devicetree/bindings/thermal/qcom-tsens.yaml | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-> index d3b9e9b600a2..b6406bcc683f 100644
-> --- a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-> +++ b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
-> @@ -43,6 +43,7 @@ properties:
->        - description: v2 of TSENS
->          items:
->            - enum:
-> +              - qcom,msm8953-tsens
->                - qcom,msm8996-tsens
->                - qcom,msm8998-tsens
->                - qcom,sc7180-tsens
-> --
-> 2.34.1
->
+When preparing the imx8mq.dtsi description I only tested with port@1
+being connected to the csi bridge, but what I sent said port@0.
+
+I have this on my list for a while and want to sort this out now. I'm
+sorry for the inconvenience. Until now imx8mq-librem5 is the only user
+(maybe because of this :).
+
+thank you,
+
+                              martin
+
+
+Martin Kepplinger (2):
+  arm64: dts: imx8mq: fix mipi_csi bidirectional port numbers
+  arm64: dts: imx8mq-librem5: fix mipi_csi1 port number to sensor
+
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 4 ++--
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi         | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+-- 
+2.30.2
+
