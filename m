@@ -2,86 +2,73 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1644CC433FE
-	for <phone-devel@archiver.kernel.org>; Mon, 24 Jan 2022 17:28:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EC2BC433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 24 Jan 2022 21:48:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241674AbiAXR2C (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 24 Jan 2022 12:28:02 -0500
-Received: from fwd1.porkbun.com ([52.10.174.57]:36506 "EHLO fwd1.porkbun.com"
+        id S1574187AbiAXVsD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 24 Jan 2022 16:48:03 -0500
+Received: from ip-15.mailobj.net ([213.182.54.15]:38054 "EHLO msg-4.mailo.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244304AbiAXR0v (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 24 Jan 2022 12:26:51 -0500
-Received: by fwd1.porkbun.com (Postfix, from userid 497)
-        id E8E3341B7F; Mon, 24 Jan 2022 17:16:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ansari.sh;
-        s=default; t=1643044732;
-        bh=a9whC7JtDB4/7zPJIuUirqdml13MUQ9IgB9uwgfXCD4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=SyMBu2Xy7B6VPeLaeONMFPU5iX6G0WEDzhLMD/9qyZeHfew+TTHRp7+ZnbR/KmyB8
-         KqH713cA7/vyxWugR5YjZLi1/ynNFq+2SyaA3p3N45WYzp/cr2CknDWHiFg1gMdj2g
-         YJ4YpX4tXdCynczsT9ZLy3602Yd9x0csdIajBXWk=
-Received: from rayyan-pc.broadband (unknown [90.242.138.108])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: rayyan@ansari.sh)
-        by fwd1.porkbun.com (Postfix) with ESMTPSA id C44A8409E8;
-        Mon, 24 Jan 2022 17:16:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ansari.sh;
-        s=default; t=1643044572;
-        bh=a9whC7JtDB4/7zPJIuUirqdml13MUQ9IgB9uwgfXCD4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=amH6gn+4/lbzBWtmupToE1eeYfkq0ggTOzp8qGjaW1//5w/TslNH8dfXTH1diCkfH
-         zfPONxD+KS0z6yyJG+J4YL108aw3la9lpfTHee3EeLCTmVZKM5aom1aVmPZnCAX72E
-         YMwYIQX/MkqgTQSQZdjVWXRN9GNeUVKJsfjEclnY=
-From:   Rayyan Ansari <rayyan@ansari.sh>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rayyan Ansari <rayyan@ansari.sh>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] ARM: dts: qcom: pm8226: Add node for the MPP
-Date:   Mon, 24 Jan 2022 17:15:38 +0000
-Message-Id: <20220124171538.18088-3-rayyan@ansari.sh>
+        id S1452803AbiAXV0m (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 24 Jan 2022 16:26:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
+        t=1643059590; bh=B0piSC9qtUYLnw/vHlf3uG2RVSjyvLZbXc9kETb2dps=;
+        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
+         References:MIME-Version:Content-Transfer-Encoding;
+        b=gfe7PiSufHSaBsOk+YCqIwSZvSARFCUvijL64FrI9oGwOKaUH4EiXZq9TPatU8kKq
+         ablfX+nM1oa+XZNE2E4SaRCPuA6FCnHvZCMOq9Yur1MKrHzTD6veYO+rcmlUzYeGmE
+         x3SkY0cMPh102JxL5CZ2zH3bzZvV6kav1VKvSkX8=
+Received: by b-5.in.mailobj.net [192.168.90.15] with ESMTP
+        via proxy.mailoo.org [213.182.55.207]
+        Mon, 24 Jan 2022 22:26:30 +0100 (CET)
+X-EA-Auth: XxMD6+jMWUuyMYNiDJ1/Eaj50WF3RUbsR9ZoRQaZanMZFItAGQf1ZXqB4kpfpysTNLhgScStCAMkwqBzQTJc2DOHWCTytv9uVrm0o4434rk=
+From:   Vincent Knecht <vincent.knecht@mailoo.org>
+To:     dmitry.torokhov@gmail.com, stephan@gerhold.net
+Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Vincent Knecht <vincent.knecht@mailoo.org>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v2 2/5] dt-bindings: input: touchscreen: msg2638: Document msg2138 support
+Date:   Mon, 24 Jan 2022 22:26:08 +0100
+Message-Id: <20220124212611.752603-3-vincent.knecht@mailoo.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220124171538.18088-1-rayyan@ansari.sh>
-References: <20220124171538.18088-1-rayyan@ansari.sh>
+In-Reply-To: <20220124212611.752603-1-vincent.knecht@mailoo.org>
+References: <20220124212611.752603-1-vincent.knecht@mailoo.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The PM8226 provides 8 Multi-Purpose Pins (or MPPs for short).
-Add a node to support them.
+Document msg2138 support by adding mstar,msg2138 compatible.
 
-Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
 ---
- arch/arm/boot/dts/qcom-pm8226.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+v2:
+- picked up Rob's Ack
+---
+ .../devicetree/bindings/input/touchscreen/mstar,msg2638.yaml  | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/qcom-pm8226.dtsi b/arch/arm/boot/dts/qcom-pm8226.dtsi
-index dddb5150dfd7..9db3ea28b321 100644
---- a/arch/arm/boot/dts/qcom-pm8226.dtsi
-+++ b/arch/arm/boot/dts/qcom-pm8226.dtsi
-@@ -16,6 +16,16 @@ pwrkey@800 {
- 			debounce = <15625>;
- 			bias-pull-up;
- 		};
-+
-+		pm8226_mpps: mpps@a000 {
-+			compatible = "qcom,pm8226-mpp", "qcom,spmi-mpp";
-+			reg = <0xa000>;
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+			gpio-ranges = <&pm8226_mpps 0 0 8>;
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
- 	};
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml b/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml
+index 3a42c23faf6f..2fb7e01bb65a 100644
+--- a/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml
++++ b/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml
+@@ -14,7 +14,9 @@ allOf:
  
- 	pm8226_1: pm8226@1 {
+ properties:
+   compatible:
+-    const: mstar,msg2638
++    enum:
++      - mstar,msg2138
++      - mstar,msg2638
+ 
+   reg:
+     const: 0x26
 -- 
 2.34.1
+
+
 
