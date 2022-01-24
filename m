@@ -2,63 +2,95 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A0749C433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 21 Jan 2022 09:34:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BAEBC433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 24 Jan 2022 14:41:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379757AbiAUJep (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 21 Jan 2022 04:34:45 -0500
-Received: from comms.puri.sm ([159.203.221.185]:56234 "EHLO comms.puri.sm"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1379766AbiAUJeo (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 21 Jan 2022 04:34:44 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id C8F4BE0098;
-        Fri, 21 Jan 2022 01:34:14 -0800 (PST)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 9fyX1SIeGlv0; Fri, 21 Jan 2022 01:34:14 -0800 (PST)
-From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-To:     robh@kernel.org, shawnguo@kernel.org
-Cc:     kernel@pengutronix.de, linux-imx@nxp.com,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Martin Kepplinger <martin.kepplinger@puri.sm>
-Subject: [PATCH v1 2/2] arm64: dts: imx8mq-librem5: fix mipi_csi1 port number to sensor
-Date:   Fri, 21 Jan 2022 10:33:26 +0100
-Message-Id: <20220121093326.2388251-3-martin.kepplinger@puri.sm>
-In-Reply-To: <20220121093326.2388251-1-martin.kepplinger@puri.sm>
-References: <20220121093326.2388251-1-martin.kepplinger@puri.sm>
+        id S239814AbiAXOlo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 24 Jan 2022 09:41:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39890 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239202AbiAXOln (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 24 Jan 2022 09:41:43 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A545C061401
+        for <phone-devel@vger.kernel.org>; Mon, 24 Jan 2022 06:41:43 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id x23so2965482lfc.0
+        for <phone-devel@vger.kernel.org>; Mon, 24 Jan 2022 06:41:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=rDkr/Rong6odf/l1FFKK3Zb5bf9I7lsmuK7pJ15wG/8=;
+        b=izNxEl4a4luZq6cAnVCYJYeJCBaH/+ylbFkis8xjyq2EVPulVDm/13IQnTAmpI/mus
+         UhiOghVn5UaSRpWdmmql/c+kfngWx/b/He3B+uvxQh74afMny8DmnF6yRvkZJgEf0bRX
+         c8SXS9Gavk67xeZ9D+czOQ6t6YuCXNrgAy/cLtsRwf2xeM4KXNqkgil1JoQooqS2nMzo
+         fZBRRu8/nrdPYR6A+k/J4400eLhoydqKx9SyYJJL6zuW/g28dQrgMexNgW3KhaaM8uAj
+         ClRMlU89W+PSqkYODhn1Kl74k3gyLEjXm+RzBQpAudOrqQIiDmYFGXfLgxo4vYz3ZePt
+         JUQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rDkr/Rong6odf/l1FFKK3Zb5bf9I7lsmuK7pJ15wG/8=;
+        b=1QQBLTow7AArxpHDizgrsUuVxexWhIqMBFiiGSx9Syh/K0gTwIJOEeT3TSOG3CF3rk
+         MUkxEPuld4VZceUGNOHkwKjWJe0YZ4sXHN9+0pzXqJRHPdtpR3b1aQs4cCxqqAA0tY+n
+         RIom/6ifWhp3JN1eAbaLqAq/hp6FtDmrYQzDLbcqWT4APuA0dEkLeCBlZeIGnaUK0QV8
+         6c2tzuViJ2p13FAyN3Ukhbc78GWw3S30Q3UwQmRCQAzYCyNX6A1XZvFA7SlWwBm4yx26
+         1h8u15uqAs0VJgCNXmkghYz8tJtGNWHzjuUt/P5Lxi0pzFR5ZMsvwV4JWq1m4MUT0Y19
+         QLyQ==
+X-Gm-Message-State: AOAM5314QxBGDt9WTutEfl105rNdksFCQaU7Ju22vW7CjhJ6TRfIKZwj
+        wnwNjvDKBOCGbgCxl5VyqwtOK3rbG+rKzgRrjoZdlyHj1YQ=
+X-Google-Smtp-Source: ABdhPJzXA8eX9kSAZ+l1b4fqeGXQBWRlv4PCBNL3A0MBPY5wxd/KuKJMuGGcR+7kkjOsBL8YOX8Q+FuJkFMs3RAVtDk=
+X-Received: by 2002:a05:6512:32c9:: with SMTP id f9mr12756249lfg.184.1643035301614;
+ Mon, 24 Jan 2022 06:41:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220112194118.178026-1-luca@z3ntu.xyz> <20220112194118.178026-6-luca@z3ntu.xyz>
+In-Reply-To: <20220112194118.178026-6-luca@z3ntu.xyz>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 24 Jan 2022 15:41:05 +0100
+Message-ID: <CAPDyKFr+BjF8_rEv0RG8aH3FmnKtngkrbfNmNSo=WPmz==uDfw@mail.gmail.com>
+Subject: Re: [PATCH 05/15] dt-bindings: mmc: sdhci-msm: Add msm8953 compatible
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-mmc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Since the previous commit fixed a hardware description bug for imx8mq,
-we need to fix up all DT users like this. The mipi_csi port@0
-is connected to the sensor, not port@1.
+On Wed, 12 Jan 2022 at 20:42, Luca Weiss <luca@z3ntu.xyz> wrote:
+>
+> Add msm8953 SoC specific compatible strings for qcom-sdhci controller.
+>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 
-Fixes: fed7603597fa ("arm64: dts: imx8mq-librem5: describe the selfie cam")
-Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
----
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Applied for next, thanks!
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index f3e3418f7edc..2d4a472af6a9 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -1115,8 +1115,8 @@ &mipi_csi1 {
- 	status = "okay";
- 
- 	ports {
--		port@1 {
--			reg = <1>;
-+		port@0 {
-+			reg = <0>;
- 
- 			mipi1_sensor_ep: endpoint {
- 				remote-endpoint = <&camera1_ep>;
--- 
-2.30.2
+Kind regards
+Uffe
 
+
+> ---
+>  Documentation/devicetree/bindings/mmc/sdhci-msm.txt | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
+> index 50841e2843fc..a62eaade5d97 100644
+> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
+> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
+> @@ -14,6 +14,7 @@ Required properties:
+>         full compatible strings with SoC and version:
+>                 "qcom,apq8084-sdhci", "qcom,sdhci-msm-v4"
+>                 "qcom,msm8226-sdhci", "qcom,sdhci-msm-v4"
+> +               "qcom,msm8953-sdhci", "qcom,sdhci-msm-v4"
+>                 "qcom,msm8974-sdhci", "qcom,sdhci-msm-v4"
+>                 "qcom,msm8916-sdhci", "qcom,sdhci-msm-v4"
+>                 "qcom,msm8992-sdhci", "qcom,sdhci-msm-v4"
+> --
+> 2.34.1
+>
