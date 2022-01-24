@@ -2,95 +2,78 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BAEBC433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 24 Jan 2022 14:41:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35A91C433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 24 Jan 2022 17:26:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239814AbiAXOlo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 24 Jan 2022 09:41:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39890 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239202AbiAXOln (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 24 Jan 2022 09:41:43 -0500
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A545C061401
-        for <phone-devel@vger.kernel.org>; Mon, 24 Jan 2022 06:41:43 -0800 (PST)
-Received: by mail-lf1-x12c.google.com with SMTP id x23so2965482lfc.0
-        for <phone-devel@vger.kernel.org>; Mon, 24 Jan 2022 06:41:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rDkr/Rong6odf/l1FFKK3Zb5bf9I7lsmuK7pJ15wG/8=;
-        b=izNxEl4a4luZq6cAnVCYJYeJCBaH/+ylbFkis8xjyq2EVPulVDm/13IQnTAmpI/mus
-         UhiOghVn5UaSRpWdmmql/c+kfngWx/b/He3B+uvxQh74afMny8DmnF6yRvkZJgEf0bRX
-         c8SXS9Gavk67xeZ9D+czOQ6t6YuCXNrgAy/cLtsRwf2xeM4KXNqkgil1JoQooqS2nMzo
-         fZBRRu8/nrdPYR6A+k/J4400eLhoydqKx9SyYJJL6zuW/g28dQrgMexNgW3KhaaM8uAj
-         ClRMlU89W+PSqkYODhn1Kl74k3gyLEjXm+RzBQpAudOrqQIiDmYFGXfLgxo4vYz3ZePt
-         JUQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rDkr/Rong6odf/l1FFKK3Zb5bf9I7lsmuK7pJ15wG/8=;
-        b=1QQBLTow7AArxpHDizgrsUuVxexWhIqMBFiiGSx9Syh/K0gTwIJOEeT3TSOG3CF3rk
-         MUkxEPuld4VZceUGNOHkwKjWJe0YZ4sXHN9+0pzXqJRHPdtpR3b1aQs4cCxqqAA0tY+n
-         RIom/6ifWhp3JN1eAbaLqAq/hp6FtDmrYQzDLbcqWT4APuA0dEkLeCBlZeIGnaUK0QV8
-         6c2tzuViJ2p13FAyN3Ukhbc78GWw3S30Q3UwQmRCQAzYCyNX6A1XZvFA7SlWwBm4yx26
-         1h8u15uqAs0VJgCNXmkghYz8tJtGNWHzjuUt/P5Lxi0pzFR5ZMsvwV4JWq1m4MUT0Y19
-         QLyQ==
-X-Gm-Message-State: AOAM5314QxBGDt9WTutEfl105rNdksFCQaU7Ju22vW7CjhJ6TRfIKZwj
-        wnwNjvDKBOCGbgCxl5VyqwtOK3rbG+rKzgRrjoZdlyHj1YQ=
-X-Google-Smtp-Source: ABdhPJzXA8eX9kSAZ+l1b4fqeGXQBWRlv4PCBNL3A0MBPY5wxd/KuKJMuGGcR+7kkjOsBL8YOX8Q+FuJkFMs3RAVtDk=
-X-Received: by 2002:a05:6512:32c9:: with SMTP id f9mr12756249lfg.184.1643035301614;
- Mon, 24 Jan 2022 06:41:41 -0800 (PST)
+        id S244548AbiAXR0v (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 24 Jan 2022 12:26:51 -0500
+Received: from fwd1.porkbun.com ([52.10.174.57]:36320 "EHLO fwd1.porkbun.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244540AbiAXR0u (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 24 Jan 2022 12:26:50 -0500
+X-Greylist: delayed 519 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Jan 2022 12:26:49 EST
+Received: by fwd1.porkbun.com (Postfix, from userid 497)
+        id 2A9FE40DD2; Mon, 24 Jan 2022 17:16:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ansari.sh;
+        s=default; t=1643044714;
+        bh=7KAy/yzUxt6v9Wuvaa/H5Tq8t/cNtIks1cGsRx+fuuE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=fSviqsquNIVPf1SiK/i6JStBtTqinFlTZGRDqKXSaNuY4PumxK2TDKRhTH/7Rbfa5
+         Ljsh4znb9NyVE8IKoCL7oW5r6rFniM+tOInjvdqFEpS+TZaycCvKXe35M86U+QZmm1
+         VQhwHNcbyFxiuLtp254Pa4sQr020Zr7iJLqYiZ5M=
+Received: from rayyan-pc.broadband (unknown [90.242.138.108])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: rayyan@ansari.sh)
+        by fwd1.porkbun.com (Postfix) with ESMTPSA id 8D91741C16;
+        Mon, 24 Jan 2022 17:16:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ansari.sh;
+        s=default; t=1643044567;
+        bh=7KAy/yzUxt6v9Wuvaa/H5Tq8t/cNtIks1cGsRx+fuuE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=b3rAaxKgfPjVVwWRVXefKeHfgBAdEDOFn0XIS7+YGTQ2UVjECT+wY3VypCUL7f5eM
+         4mm4Treu/Rbsyz7xjx95NTpS14pl/q+BBmIqZHwGkVCS+51KhugFvGKvOIHXnyMVvn
+         pudzPN9Szqgd2WRKlRaOBme1zXUiYgJfdg7+0OZg=
+From:   Rayyan Ansari <rayyan@ansari.sh>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Rayyan Ansari <rayyan@ansari.sh>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 2/3] pinctrl: qcom: spmi-mpp: Add PM8226 compatible
+Date:   Mon, 24 Jan 2022 17:15:37 +0000
+Message-Id: <20220124171538.18088-2-rayyan@ansari.sh>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220124171538.18088-1-rayyan@ansari.sh>
+References: <20220124171538.18088-1-rayyan@ansari.sh>
 MIME-Version: 1.0
-References: <20220112194118.178026-1-luca@z3ntu.xyz> <20220112194118.178026-6-luca@z3ntu.xyz>
-In-Reply-To: <20220112194118.178026-6-luca@z3ntu.xyz>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 24 Jan 2022 15:41:05 +0100
-Message-ID: <CAPDyKFr+BjF8_rEv0RG8aH3FmnKtngkrbfNmNSo=WPmz==uDfw@mail.gmail.com>
-Subject: Re: [PATCH 05/15] dt-bindings: mmc: sdhci-msm: Add msm8953 compatible
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-mmc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 12 Jan 2022 at 20:42, Luca Weiss <luca@z3ntu.xyz> wrote:
->
-> Add msm8953 SoC specific compatible strings for qcom-sdhci controller.
->
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+The PM8226 provides 8 MPPs.
+Add a compatible to support them.
 
-Applied for next, thanks!
+Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
+---
+ drivers/pinctrl/qcom/pinctrl-spmi-mpp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Kind regards
-Uffe
+diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c b/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
+index b80723928b7e..6937157f50b3 100644
+--- a/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
++++ b/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
+@@ -961,6 +961,7 @@ static int pmic_mpp_remove(struct platform_device *pdev)
+ 
+ static const struct of_device_id pmic_mpp_of_match[] = {
+ 	{ .compatible = "qcom,pm8019-mpp", .data = (void *) 6 },
++	{ .compatible = "qcom,pm8226-mpp", .data = (void *) 8 },
+ 	{ .compatible = "qcom,pm8841-mpp", .data = (void *) 4 },
+ 	{ .compatible = "qcom,pm8916-mpp", .data = (void *) 4 },
+ 	{ .compatible = "qcom,pm8941-mpp", .data = (void *) 8 },
+-- 
+2.34.1
 
-
-> ---
->  Documentation/devicetree/bindings/mmc/sdhci-msm.txt | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-> index 50841e2843fc..a62eaade5d97 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.txt
-> @@ -14,6 +14,7 @@ Required properties:
->         full compatible strings with SoC and version:
->                 "qcom,apq8084-sdhci", "qcom,sdhci-msm-v4"
->                 "qcom,msm8226-sdhci", "qcom,sdhci-msm-v4"
-> +               "qcom,msm8953-sdhci", "qcom,sdhci-msm-v4"
->                 "qcom,msm8974-sdhci", "qcom,sdhci-msm-v4"
->                 "qcom,msm8916-sdhci", "qcom,sdhci-msm-v4"
->                 "qcom,msm8992-sdhci", "qcom,sdhci-msm-v4"
-> --
-> 2.34.1
->
