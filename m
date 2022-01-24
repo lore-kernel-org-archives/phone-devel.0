@@ -2,71 +2,66 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EC2BC433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 24 Jan 2022 21:48:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C0E4C4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 24 Jan 2022 21:48:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1574187AbiAXVsD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 24 Jan 2022 16:48:03 -0500
-Received: from ip-15.mailobj.net ([213.182.54.15]:38054 "EHLO msg-4.mailo.com"
+        id S1379189AbiAXVsF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 24 Jan 2022 16:48:05 -0500
+Received: from ip-16.mailobj.net ([213.182.54.16]:43018 "EHLO msg-6.mailo.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1452803AbiAXV0m (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 24 Jan 2022 16:26:42 -0500
+        id S1452804AbiAXV0n (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 24 Jan 2022 16:26:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1643059590; bh=B0piSC9qtUYLnw/vHlf3uG2RVSjyvLZbXc9kETb2dps=;
-        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
-         References:MIME-Version:Content-Transfer-Encoding;
-        b=gfe7PiSufHSaBsOk+YCqIwSZvSARFCUvijL64FrI9oGwOKaUH4EiXZq9TPatU8kKq
-         ablfX+nM1oa+XZNE2E4SaRCPuA6FCnHvZCMOq9Yur1MKrHzTD6veYO+rcmlUzYeGmE
-         x3SkY0cMPh102JxL5CZ2zH3bzZvV6kav1VKvSkX8=
+        t=1643059589; bh=d7f3LN69ZP8nzrQz/4DmTzxS4PPZq0d31Z5vWwXgLos=;
+        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+         MIME-Version:Content-Transfer-Encoding;
+        b=VwD2erY/IRv3bekeDaNnP5nBFrD1O6g9WQT/x44Twy3JBSkjyv+Vq95QNGMnQKiuF
+         09U/EIzY3UvLMfuBTWrmLpPiztLLj0JOpfBfeE66mUmpdDVS5hN1ZV0Ma5d6v73cpJ
+         6tLFmA4+mgb/Jk7x7bndG/v5Ou17vD/NVN4aVeS8=
 Received: by b-5.in.mailobj.net [192.168.90.15] with ESMTP
         via proxy.mailoo.org [213.182.55.207]
-        Mon, 24 Jan 2022 22:26:30 +0100 (CET)
-X-EA-Auth: XxMD6+jMWUuyMYNiDJ1/Eaj50WF3RUbsR9ZoRQaZanMZFItAGQf1ZXqB4kpfpysTNLhgScStCAMkwqBzQTJc2DOHWCTytv9uVrm0o4434rk=
+        Mon, 24 Jan 2022 22:26:28 +0100 (CET)
+X-EA-Auth: MVlQI9Oc+2TxvC9wELiJ5b1jxxVN/vmW/43V61HWqihpp5JcFb/IZjGPiFPLu5wqkrDo0ASfvYpjAAxK6Nu9GBZ3FQCWFcYi6nmsbxXUdV4=
 From:   Vincent Knecht <vincent.knecht@mailoo.org>
 To:     dmitry.torokhov@gmail.com, stephan@gerhold.net
 Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
-        Vincent Knecht <vincent.knecht@mailoo.org>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v2 2/5] dt-bindings: input: touchscreen: msg2638: Document msg2138 support
-Date:   Mon, 24 Jan 2022 22:26:08 +0100
-Message-Id: <20220124212611.752603-3-vincent.knecht@mailoo.org>
+        Vincent Knecht <vincent.knecht@mailoo.org>
+Subject: [PATCH v2 0/5] msg2638: Add support for msg2138 and key events
+Date:   Mon, 24 Jan 2022 22:26:06 +0100
+Message-Id: <20220124212611.752603-1-vincent.knecht@mailoo.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220124212611.752603-1-vincent.knecht@mailoo.org>
-References: <20220124212611.752603-1-vincent.knecht@mailoo.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Document msg2138 support by adding mstar,msg2138 compatible.
+This is mostly a resend of the series sent last november which got no
+answer, but with Rob's Acks picked up.
 
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
----
-v2:
-- picked up Rob's Ack
----
- .../devicetree/bindings/input/touchscreen/mstar,msg2638.yaml  | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This series:
+- moves max fingers number and irqhandler settings in a struct
+- adds support for msg2138 touchscreen
+- adds support for buttons, which were only seen with msg2138 as of yet
 
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml b/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml
-index 3a42c23faf6f..2fb7e01bb65a 100644
---- a/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml
-+++ b/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml
-@@ -14,7 +14,9 @@ allOf:
- 
- properties:
-   compatible:
--    const: mstar,msg2638
-+    enum:
-+      - mstar,msg2138
-+      - mstar,msg2638
- 
-   reg:
-     const: 0x26
+Big thanks to Stephan Gerhold <stephan@gerhold.net> for the help with
+deciphering the downstream driver [1] and writing clean and working code.
+
+[1] https://github.com/LineageOS/android_kernel_huawei_msm8916/blob/2f24fa58086a969687434b40f237cb589a1f324f/drivers/input/touchscreen/mstar/msg2138_qc.c
+
+Vincent Knecht (5):
+  Input: msg2638 - Set max finger number and irqhandler from driver data
+  dt-bindings: input: touchscreen: msg2638: Document msg2138 support
+  Input: msg2638 - Add support for msg2138
+  dt-bindings: input: touchscreen: msg2638: Document keys support
+  Input: msg2638 - Add support for msg2138 key events
+
+ .../input/touchscreen/mstar,msg2638.yaml      |   8 +-
+ drivers/input/touchscreen/msg2638.c           | 182 ++++++++++++++++--
+ 2 files changed, 175 insertions(+), 15 deletions(-)
+
 -- 
 2.34.1
 
