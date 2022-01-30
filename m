@@ -2,72 +2,69 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E9F7EC433EF
-	for <phone-devel@archiver.kernel.org>; Sat, 29 Jan 2022 06:30:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9ABEC433F5
+	for <phone-devel@archiver.kernel.org>; Sun, 30 Jan 2022 11:45:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241527AbiA2GaL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 29 Jan 2022 01:30:11 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:46346 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241065AbiA2GaH (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 29 Jan 2022 01:30:07 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64DD260B82;
-        Sat, 29 Jan 2022 06:30:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C18C340E5;
-        Sat, 29 Jan 2022 06:30:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1643437806;
-        bh=n5bRWi0m5mJ6YjL6XrHyZXTFrOPN0+5O+FbZQVdAgPw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hZI12qGVt31IQWCnO7uDi1TjfJAq2qD+zjCb3tPNHbBRymbf32zuHSnyX4JEVvEY/
-         SFR+fDlDGetyMW0CD6rTNVVXVmOG2bqyGgjXnByUMP7sQzmS723mLW12VrRkqke4IY
-         IwBNfhpf6TZz3v3QAFn1/Qn8g4eG3fRuzIYiIXo7yAzNCcFFqnf1eF4xEkkBXhEbko
-         uRtVrFvmBc3Gxs1pmZa/3y8HFxKg7RgX1cM1oQOfMYXn3YmCi2eQ0kZIBcCJRONn02
-         V8EGHr+9wXWrpFmNq4nKbaRyKeO7WB9Sjufhbrv0S88NkL44Ao6RT9pogakKhBD7K7
-         Hlct81a10Ol4A==
-Date:   Sat, 29 Jan 2022 14:30:00 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     robh@kernel.org, kernel@pengutronix.de, linux-imx@nxp.com,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/2] arm64: dts: imx8mq: fix mipi_csi port numbering
-Message-ID: <20220129062959.GU4686@dragon>
-References: <20220121093326.2388251-1-martin.kepplinger@puri.sm>
+        id S1354701AbiA3Lpw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 30 Jan 2022 06:45:52 -0500
+Received: from mail.z3ntu.xyz ([128.199.32.197]:43338 "EHLO mail.z3ntu.xyz"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1354689AbiA3Lpw (ORCPT <rfc822;phone-devel@vger.kernel.org>);
+        Sun, 30 Jan 2022 06:45:52 -0500
+Received: from localhost.localdomain (ip-213-127-106-2.ip.prioritytelecom.net [213.127.106.2])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 23EFDCE852;
+        Sun, 30 Jan 2022 11:45:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1643543147; bh=+J7dsbVz0Gr8InKACrreO1d9W/9Jj6OF5yJF+RWIf/E=;
+        h=From:To:Cc:Subject:Date;
+        b=c10RlLUlhqufnyLDvfgaFSw4/SeapNyg8sHtOOCs2asKq8bYgmIo5jMHiQrO4sVtn
+         bPDvbPVUDDhHSLnswp3shlNPnW51H3wvzOwcEZppmr/yi164niHla/lSA2M3yCz15a
+         VDxkxHqguH1CGgef7Q+WRr1vWpE+fLPIyZLxJeJ4=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Ilia Lin <ilia.lin@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Ansuel Smith <ansuelsmth@gmail.com>,
+        Sricharan R <sricharan@codeaurora.org>,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] cpufreq: qcom-cpufreq-nvmem: fix reading of PVS Valid fuse
+Date:   Sun, 30 Jan 2022 12:45:35 +0100
+Message-Id: <20220130114535.1570634-1-luca@z3ntu.xyz>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220121093326.2388251-1-martin.kepplinger@puri.sm>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Jan 21, 2022 at 10:33:24AM +0100, Martin Kepplinger wrote:
-> hi Shawn and all interested,
-> 
-> This is a fix for an embarrassing bug that slipped into commit
-> bcadd5f66c2a ("arm64: dts: imx8mq: add mipi csi phy and csi bridge descriptions")
-> and commit fed7603597fa ("arm64: dts: imx8mq-librem5: describe the selfie cam").
-> 
-> When preparing the imx8mq.dtsi description I only tested with port@1
-> being connected to the csi bridge, but what I sent said port@0.
-> 
-> I have this on my list for a while and want to sort this out now. I'm
-> sorry for the inconvenience. Until now imx8mq-librem5 is the only user
-> (maybe because of this :).
-> 
-> thank you,
-> 
->                               martin
-> 
-> 
-> Martin Kepplinger (2):
->   arm64: dts: imx8mq: fix mipi_csi bidirectional port numbers
->   arm64: dts: imx8mq-librem5: fix mipi_csi1 port number to sensor
+The fuse consists of 64 bits, with this statement we're supposed to get
+the upper 32 bits but it actually read out of bounds and got 0 instead
+of the desired value which lead to the "PVS bin not set." codepath being
+run resetting our pvs value.
 
-Applied both, thanks!
+Fixes: a8811ec764f9 ("cpufreq: qcom: Add support for krait based socs")
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ drivers/cpufreq/qcom-cpufreq-nvmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/cpufreq/qcom-cpufreq-nvmem.c b/drivers/cpufreq/qcom-cpufreq-nvmem.c
+index d1744b5d9619..6dfa86971a75 100644
+--- a/drivers/cpufreq/qcom-cpufreq-nvmem.c
++++ b/drivers/cpufreq/qcom-cpufreq-nvmem.c
+@@ -130,7 +130,7 @@ static void get_krait_bin_format_b(struct device *cpu_dev,
+ 	}
+ 
+ 	/* Check PVS_BLOW_STATUS */
+-	pte_efuse = *(((u32 *)buf) + 4);
++	pte_efuse = *(((u32 *)buf) + 1);
+ 	pte_efuse &= BIT(21);
+ 	if (pte_efuse) {
+ 		dev_dbg(cpu_dev, "PVS bin: %d\n", *pvs);
+-- 
+2.34.1
+
