@@ -2,69 +2,81 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A9ABEC433F5
-	for <phone-devel@archiver.kernel.org>; Sun, 30 Jan 2022 11:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29081C43219
+	for <phone-devel@archiver.kernel.org>; Mon, 31 Jan 2022 18:24:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354701AbiA3Lpw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 30 Jan 2022 06:45:52 -0500
-Received: from mail.z3ntu.xyz ([128.199.32.197]:43338 "EHLO mail.z3ntu.xyz"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1354689AbiA3Lpw (ORCPT <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 30 Jan 2022 06:45:52 -0500
-Received: from localhost.localdomain (ip-213-127-106-2.ip.prioritytelecom.net [213.127.106.2])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 23EFDCE852;
-        Sun, 30 Jan 2022 11:45:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1643543147; bh=+J7dsbVz0Gr8InKACrreO1d9W/9Jj6OF5yJF+RWIf/E=;
-        h=From:To:Cc:Subject:Date;
-        b=c10RlLUlhqufnyLDvfgaFSw4/SeapNyg8sHtOOCs2asKq8bYgmIo5jMHiQrO4sVtn
-         bPDvbPVUDDhHSLnswp3shlNPnW51H3wvzOwcEZppmr/yi164niHla/lSA2M3yCz15a
-         VDxkxHqguH1CGgef7Q+WRr1vWpE+fLPIyZLxJeJ4=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ilia Lin <ilia.lin@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Ansuel Smith <ansuelsmth@gmail.com>,
-        Sricharan R <sricharan@codeaurora.org>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] cpufreq: qcom-cpufreq-nvmem: fix reading of PVS Valid fuse
-Date:   Sun, 30 Jan 2022 12:45:35 +0100
-Message-Id: <20220130114535.1570634-1-luca@z3ntu.xyz>
-X-Mailer: git-send-email 2.34.1
+        id S1349150AbiAaSYh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 31 Jan 2022 13:24:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34988 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1349550AbiAaSYf (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 31 Jan 2022 13:24:35 -0500
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EA87C06174A
+        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 10:24:34 -0800 (PST)
+Received: by mail-ot1-x329.google.com with SMTP id e21-20020a9d0195000000b005a3cd7c1e09so7133786ote.6
+        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 10:24:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=Vcp57uTgTwBWgBLp1PSC2i4aG9uW9mVxuFyHOWPl90s=;
+        b=ZUFlOw6YWoRiG9v8+idf2fUPNE6CdlNm3XWQiZ0kR4yqJI8DSz1EIedaMrh7D54co3
+         nPY5lXaynwhfXQ8kH+SrVFjgsI+lMY1JRz+yz3QayA5IOxnPp+JQTGyQUX60/a0amyNE
+         ERCulOGRaYG04zWdvioK6oNKLb/7+k3brJT66LaD4VQFPb+xlOnhinqMYeoL6IG7tscS
+         5hQDMEAkkNOa41QVwxOenr9LguZAK8SE9UvDOGn/icDBU8843f+DohF/kdcfaOAYJfRD
+         xlvpqeQDSx+a7qgK16o9i/5CfTlSmk3xq0fkVG3uXo2p+zRF/krJ03hxe7VRNGqArIlL
+         3lFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=Vcp57uTgTwBWgBLp1PSC2i4aG9uW9mVxuFyHOWPl90s=;
+        b=ona6cXPb96nCkm1wB3CSNJUoCqNL4liblhYJ7/iXEKXASI49GuDPfrNzLZkqdaCjXr
+         2biU/4oAO8j2SRaT8WBT8OZTOCdzlxbgg+raEA18eM7x5vy2W1uncejsnZybBuiNFfvA
+         Mlu1XDrIMBzj99ALv18JACaxQDreLDu6IKK0N2OIvXV3pvGqf2w/f5xkV10uGFVznSGf
+         8aVBO8vDqhxN9oNwPJDsmwsNELS0TFhbRs1i0NbgVZyphWnTJMsqp9AFB44shA1ZJGXa
+         hhME3yZe54FVa5j49zW0ujpX3AmNkjSKVwQOx/t1is6lOOsTse7r+M7B8dFfk1FZgIEi
+         1+bA==
+X-Gm-Message-State: AOAM533dnQAnRDizw3QpO6BJ8/89y+rJNproJTOsvnUbDc4aKWYYHAkw
+        jw3WaQwRhknOXGJj9yJoo+pzNA==
+X-Google-Smtp-Source: ABdhPJz9ABtne16Besa5QWQfsTPhvqgFJrfvLl7X4rLIwEah+wm6uQnQ9RfwFjIdtcDXnhOy9PG/AA==
+X-Received: by 2002:a9d:6a42:: with SMTP id h2mr12043974otn.269.1643653473788;
+        Mon, 31 Jan 2022 10:24:33 -0800 (PST)
+Received: from builder.lan ([2600:1700:a0:3dc8:3697:f6ff:fe85:aac9])
+        by smtp.gmail.com with ESMTPSA id y19sm3273722oti.49.2022.01.31.10.24.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Jan 2022 10:24:33 -0800 (PST)
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     linux-arm-msm@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+Cc:     phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: qcom: apq8026-lg-lenok: add fuel gauge
+Date:   Mon, 31 Jan 2022 12:24:22 -0600
+Message-Id: <164365345128.3009281.2908909608307857119.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20211118205834.160308-1-luca@z3ntu.xyz>
+References: <20211118205834.160308-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The fuse consists of 64 bits, with this statement we're supposed to get
-the upper 32 bits but it actually read out of bounds and got 0 instead
-of the desired value which lead to the "PVS bin not set." codepath being
-run resetting our pvs value.
+On Thu, 18 Nov 2021 21:58:33 +0100, Luca Weiss wrote:
+> The device uses a BQ27421 as fuel gauge, so add a node describing it.
+> 
+> 
 
-Fixes: a8811ec764f9 ("cpufreq: qcom: Add support for krait based socs")
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- drivers/cpufreq/qcom-cpufreq-nvmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks!
 
-diff --git a/drivers/cpufreq/qcom-cpufreq-nvmem.c b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-index d1744b5d9619..6dfa86971a75 100644
---- a/drivers/cpufreq/qcom-cpufreq-nvmem.c
-+++ b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-@@ -130,7 +130,7 @@ static void get_krait_bin_format_b(struct device *cpu_dev,
- 	}
- 
- 	/* Check PVS_BLOW_STATUS */
--	pte_efuse = *(((u32 *)buf) + 4);
-+	pte_efuse = *(((u32 *)buf) + 1);
- 	pte_efuse &= BIT(21);
- 	if (pte_efuse) {
- 		dev_dbg(cpu_dev, "PVS bin: %d\n", *pvs);
+[1/1] ARM: dts: qcom: apq8026-lg-lenok: add fuel gauge
+      commit: d63642596ed1feb832f8cdfb8f166a18fdb03831
+
+Best regards,
 -- 
-2.34.1
-
+Bjorn Andersson <bjorn.andersson@linaro.org>
