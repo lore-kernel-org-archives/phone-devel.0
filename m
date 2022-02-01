@@ -2,71 +2,62 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B118C433EF
-	for <phone-devel@archiver.kernel.org>; Tue,  1 Feb 2022 05:21:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17190C433EF
+	for <phone-devel@archiver.kernel.org>; Tue,  1 Feb 2022 05:23:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231256AbiBAFVn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 1 Feb 2022 00:21:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42250 "EHLO
+        id S230428AbiBAFXA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 1 Feb 2022 00:23:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234212AbiBAFUs (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 1 Feb 2022 00:20:48 -0500
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0694AC061789
-        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 21:20:45 -0800 (PST)
-Received: by mail-oi1-x229.google.com with SMTP id s185so31225968oie.3
-        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 21:20:44 -0800 (PST)
+        with ESMTP id S234316AbiBAFU7 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 1 Feb 2022 00:20:59 -0500
+Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46758C061778
+        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 21:20:50 -0800 (PST)
+Received: by mail-ot1-x32d.google.com with SMTP id q14-20020a05683022ce00b005a6162a1620so2403195otc.0
+        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 21:20:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Hy1PRuFMC9Ce2a9cN4d8FhqZJnP42URBCgpnIQqeV8w=;
-        b=DT4fm5bhm/yWpQy4ULEutr8AAWE+qCM7uAwskI4/Ky9os3bIMLZjEB+kPdWWzpwwTM
-         LNaO9LEh5ze+ySW5/+ZaLAlWrA3NDnRLNUixmTVnh21wF+AooRQup+1FMM8FBIQ98YVm
-         kI+q+pHOpprM1CiWG6S4Jk+Bzcercp4P0YkUkQMRdm7hvjBnJTyRSFlK9cvPrwf0djIz
-         plMhzyIXQdzP1CtSSsUAgqRqd3ey8v6OAzuYYeJ2F0ZBoKRR/XAGqrzo7JtO6klBzAjD
-         i1MWJ9kxETVIkixUx8FQQHImRkIm9qY3PSK0J3T8de4FM7qNmwQCU657dJwhZ7LkTl4Y
-         3/GA==
+        bh=WzLZQ6lqZkdpbMj57Uomypo+FFPWINPWh+G9g9l2vFk=;
+        b=wH3sVAxrtlabEH9t+p8eycVZyRMffqonXWKa9TB17eplnIXin7L8SrU8q5bDfUwMc0
+         VNi9kyXXXdA+W0cxzVu1lGdOx9f4jG1P8GVlIq64raPUWQDlHZUxzksxBdLwVwchUyBt
+         NshsUmCwZQz8WPW4PGx79uJp8H2O5q7SlCqK5PWRDE2GOck1dfL+i4Y3hOSYmk6yUBdl
+         2hvg38PSQcE2YFOd5WIY9XucqnRETRvLv74z1BNQMAUu4MtN5Oz3u/i5R0ry482zraaQ
+         PJpJKfQ97sBcfOoLTjRGDVRUSQl1kL1mZ31zSUYiusicx6To1PIgHiEQrcr6pYVKsFkF
+         +qyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Hy1PRuFMC9Ce2a9cN4d8FhqZJnP42URBCgpnIQqeV8w=;
-        b=7o3cz1mnyTwZHW/HP+z58hfmPI8OWw6Mrpz2Dy9sxujUb9BapbPL7L1CT40SGLgen2
-         FxChkTM+LXtMUfiU9bQPu9vdlNklSyvTDZ9EG1BHEI1fRWp4eNS87nbCQcxrfY15uO1d
-         6RVmTelO7M1nCWkXy11aKHYJid7EqGiS5hAC4H47O2hutmgHfw08cUOGitrla5L+Gsx0
-         VuYl+rKWLHivwarcv/gf1e201xtoMkGBmu6/jeWT6sfWSvJbuTMGuwsvbhJyklO0fhCT
-         h5wbXmxu+e/hvckufLGG3w77muU8J7gSH5ZLsN6CsgwoAKjD1TbaYhV5XqbXzxrbIvv7
-         M7qg==
-X-Gm-Message-State: AOAM531Vzr9FCFoO3PVAtFn5wg1lj9j77E/xZ+XvznLX0qsjAh4jyl1r
-        DA9oYAo5WxQq7nLnk9ht+d+SmU/uperwwg==
-X-Google-Smtp-Source: ABdhPJxtu24Ia2hL9Ce0dNrzZ5Z4HZ7RBd97CQJdFBRRdq5FIYEsqDkdRyAubR7kTtLy5M1jZp6x0A==
-X-Received: by 2002:a54:4812:: with SMTP id j18mr216625oij.274.1643692844164;
-        Mon, 31 Jan 2022 21:20:44 -0800 (PST)
+        bh=WzLZQ6lqZkdpbMj57Uomypo+FFPWINPWh+G9g9l2vFk=;
+        b=RYtKzhltOIRVCxUKA9Mg8eciWNZ0n1qxpBM04sfht8XXxLlyHlgd8/DaRnsntf/jWD
+         1knh2OvIVWOzXd2MkOCYuKLCIW12/0Ojc8pjCT6GWlUO71RrZ1xrxxFtpOp7KzHJ6LLE
+         E073Axe4CtdA/npUrJjMlrSqnxCHhDwnc1+ULV2rxgKoArxA724TRlHSMQRnUZp/+9Up
+         eiwCyCyXW1XiVzgcbDRi/LsXFP/fB3+KHSdpFTxJX06COgnJeeXYCdQXc2ugz6b40lVO
+         DtJmJQ2Y/4baEz3D1hQ7hqYcxKoosPWwWW8RDqQVvntXSMzdzzFqKqnAC3PG+xOVXUNt
+         A/zw==
+X-Gm-Message-State: AOAM532gdl9lbUNeeKD9YTPwG7ES13CK+VpKavR1x4RL0JK+K5vvJ161
+        SerHIsvjqQ6AmeX9eVj8Uw1WeA==
+X-Google-Smtp-Source: ABdhPJyYpaWYOdpJeH3gASdDGJTJNMiU1xS4VylhMyKAKho/YJs1MxaV3JBb8NXCXcH8iicocUwoaw==
+X-Received: by 2002:a05:6830:1204:: with SMTP id r4mr11445595otp.32.1643692849683;
+        Mon, 31 Jan 2022 21:20:49 -0800 (PST)
 Received: from builder.lan ([2600:1700:a0:3dc8:3697:f6ff:fe85:aac9])
-        by smtp.gmail.com with ESMTPSA id u3sm8193107ooh.19.2022.01.31.21.20.43
+        by smtp.gmail.com with ESMTPSA id u3sm8193107ooh.19.2022.01.31.21.20.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jan 2022 21:20:43 -0800 (PST)
+        Mon, 31 Jan 2022 21:20:49 -0800 (PST)
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     phone-devel@vger.kernel.org,
-        Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        devicetree@vger.kernel.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH] Revert "arm64: dts: qcom: sm6125: Avoid using missing SM6125_VDDCX"
-Date:   Mon, 31 Jan 2022 23:19:53 -0600
-Message-Id: <164369277344.3095904.5938604292655738290.b4-ty@linaro.org>
+To:     linux-arm-msm@vger.kernel.org, Rayyan Ansari <rayyan@ansari.sh>
+Cc:     Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Gross <agross@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH 3/3] ARM: dts: qcom: pm8226: Add node for the MPP
+Date:   Mon, 31 Jan 2022 23:19:59 -0600
+Message-Id: <164369277345.3095904.948418340291861432.b4-ty@linaro.org>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211229220117.293542-1-marijn.suijten@somainline.org>
-References: <20211229220117.293542-1-marijn.suijten@somainline.org>
+In-Reply-To: <20220124171538.18088-3-rayyan@ansari.sh>
+References: <20220124171538.18088-1-rayyan@ansari.sh> <20220124171538.18088-3-rayyan@ansari.sh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -74,21 +65,16 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 29 Dec 2021 23:01:17 +0100, Marijn Suijten wrote:
-> This reverts commit c23f1b77358c173a25ef21303d2a8cc893e9ce22.
+On Mon, 24 Jan 2022 17:15:38 +0000, Rayyan Ansari wrote:
+> The PM8226 provides 8 Multi-Purpose Pins (or MPPs for short).
+> Add a node to support them.
 > 
-> The SM6125_VDDCX constant was replaced with 0 temporarily as the header
-> patch defining this constant resided in a different branch, creating an
-> unwanted dependency of the dts branch on the drivers branch.
-> Now (by the time this patch will be applied) that both branches have
-> been merged upstream, it is safe to revert to the constant again.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] Revert "arm64: dts: qcom: sm6125: Avoid using missing SM6125_VDDCX"
-      commit: a90b8adfa2ddfd74944fa73be97fabe230f0046d
+[3/3] ARM: dts: qcom: pm8226: Add node for the MPP
+      commit: 5fbd593756be9a0ee710b15e14d2797bfbca108f
 
 Best regards,
 -- 
