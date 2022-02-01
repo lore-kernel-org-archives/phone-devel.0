@@ -2,97 +2,88 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88C79C433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 31 Jan 2022 23:51:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63EC6C4332F
+	for <phone-devel@archiver.kernel.org>; Tue,  1 Feb 2022 05:21:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229805AbiAaXvJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 31 Jan 2022 18:51:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53676 "EHLO
+        id S234154AbiBAFVa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 1 Feb 2022 00:21:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229803AbiAaXvI (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 31 Jan 2022 18:51:08 -0500
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F088CC061401
-        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 15:51:07 -0800 (PST)
-Received: by mail-oi1-x22d.google.com with SMTP id r27so7822176oiw.4
-        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 15:51:07 -0800 (PST)
+        with ESMTP id S234186AbiBAFUn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 1 Feb 2022 00:20:43 -0500
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF09AC06176C
+        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 21:20:42 -0800 (PST)
+Received: by mail-ot1-x32b.google.com with SMTP id s6-20020a0568301e0600b0059ea5472c98so15127756otr.11
+        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 21:20:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=N66B/zUeupRdiK6j9+YxGVkqTJzroVbLV/gi+PEAAqs=;
-        b=VeQ6g7VBzwMDAzOx55SBs8lPKj2ZcqyklN0g5Q+AqJ8BXmXJ8ARuAkn6yzDkrfvDmo
-         uu2u7qNcVTkMr0pQDFfPsMzVNsEfZdi9Fvno+92OsK+ZvlBDDjwbeJlmqTZssnaHfcR8
-         6O8vJ9ZdsPgLqhbLITnMe63oJE1shxt4rKXm1h9Yj0qnV0hRf9wKPRW/jeoIj2ypqhVu
-         I0ilaSmvBI8/6e5QUL//rb5GDmlnW9/VeTy96+WL+61Iy1rb0ohYDfeE61s1H0636oux
-         9KbS7DYwUB+AJoaYAw1oVq88jWyPn7OftXqqhAitDUoGX7byO9oAn8MJLuhfUAWX/Gjg
-         x90A==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=AxUIbjg3SvCLBVXCrv9jIsGx71GsTQ6qIWnsAt6VTbY=;
+        b=BiSXSMEsNtBTkDinyXlJ67kpwdj31ar6lPoZA/5iikJbtUTbyv+x8iSa7vv7ZCPYq6
+         R7Nv0ANSJk6YgAKMwKENalGwcFVeYxJ7V2bekO9F5h1eAxArRCkEJ+lG56yEr9XWpOxd
+         j2UrqPc78k5N69ULMd+CcgKOfYHmCINMvzaZAjVplmKnLYhCFakcrm4CQledQ5fmW064
+         2J0OepZDuPZHszaOu2m/zgWix3+PDZZGPT2LMzNHLZVSXKE7Jp/jdpgT+cVMmsIampR7
+         hre70NoxFVAjnX75mUVPc1J863wP7tru5EaM0vZP9LKpUoOAE8n6/QQyI2vekIi4LFOB
+         I8cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=N66B/zUeupRdiK6j9+YxGVkqTJzroVbLV/gi+PEAAqs=;
-        b=B4SRpgNnTSUt8mexo/e9afLKTi7AHelFvn8tPh8rGhwrOdYRVJBemiz+jBlns5laic
-         +Els+iromY2Khn0hPVLHmGw5yKkrgI2b3+gfFOjDf39hwpMYeWSfGWdxq0fAPLmWUoDF
-         WeVKygoYOhcL4Cdcqe38ivYY8Fs1f2mwGZq7UMJfIv2rTbBhbSKZAu8VEjTouhjaFzdb
-         K20QNOqEAi/t6O5bFGklrmDbxBXB7M7ZTp7480LvKRLsmyjFfMjiRDE9Q2m6IJ9u8Fkl
-         RtNFxOfaVFsffWZfai4YF6juP8iVB2jaT4QPzIk75IrJH+HAqRBMcidXtOMBV5CG2lLy
-         /boQ==
-X-Gm-Message-State: AOAM530Sgkj+bjqNFqvFYgywO63/bYZNX84FfYPGaHyz2QiTjTLHNup/
-        nqXYyRHDHiPJ4oszzWmEuiWfKw==
-X-Google-Smtp-Source: ABdhPJyZpgTgyRdq3gRjlMkwnuIEQyi6iWY7bf98FclX26jW8k/kO0JDKNafceTbQdkAH9+tcMWjRQ==
-X-Received: by 2002:aca:f102:: with SMTP id p2mr18083052oih.325.1643673066964;
-        Mon, 31 Jan 2022 15:51:06 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=AxUIbjg3SvCLBVXCrv9jIsGx71GsTQ6qIWnsAt6VTbY=;
+        b=EoafHhPingNnGRW/Bh0Ga3onwoJ83708hGmQjJZHPlL9mXo2u9K4Yp95fw3TXDxY3S
+         TelOyiKPUvCDVpODMbLXgK2oHoSO4C38LXQMjP5ljyNZar4enbTq7R86jQsiclCjpfj3
+         Uc9k9XIijT5k4oqM3PP82EyrmcWrpFiOIg/JaMK78V0nGxiA+gkTKoino9vTWNA6M26B
+         dL7rG70fNf9xumynHYBeVLwKvnwk8xYk9khKGJOxXfqqenpL9oQB98DjVtsetUuQkTFa
+         20sTm6rN2qU2r3hn7r+pxn6GJ3FFUgNpApQH9RUHC5lXgwPUk4FYmw1zPwMe5yeMy+zA
+         IoXA==
+X-Gm-Message-State: AOAM531fknpVznAGxmx2ETmpVI/ql7Y8HGb4NckfPXhpzKo7rH3W2f2T
+        Gby99S2yncf4HFmPh/wSuwmEJA==
+X-Google-Smtp-Source: ABdhPJz7xSZzfdlELJEKFP+8VoUH7pamHFIqMvwPRNtJNI8E/x0hnVAHOllmRicnrMtz2Q1gMZswNw==
+X-Received: by 2002:a05:6830:1084:: with SMTP id y4mr9564994oto.42.1643692842301;
+        Mon, 31 Jan 2022 21:20:42 -0800 (PST)
 Received: from builder.lan ([2600:1700:a0:3dc8:3697:f6ff:fe85:aac9])
-        by smtp.gmail.com with ESMTPSA id f20sm9297496ooh.10.2022.01.31.15.51.06
+        by smtp.gmail.com with ESMTPSA id u3sm8193107ooh.19.2022.01.31.21.20.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jan 2022 15:51:06 -0800 (PST)
-Date:   Mon, 31 Jan 2022 17:51:04 -0600
+        Mon, 31 Jan 2022 21:20:41 -0800 (PST)
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Rayyan Ansari <rayyan@ansari.sh>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] dt-bindings: pinctrl: qcom,pmic-mpp: Document PM8226
- compatible
-Message-ID: <Yfh16GWpkjOOLpQZ@builder.lan>
-References: <20220124171538.18088-1-rayyan@ansari.sh>
+To:     linux-arm-msm@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>
+Cc:     dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        linux-kernel@vger.kernel.org, Kiran Gunda <kgunda@codeaurora.org>
+Subject: Re: (subset) [PATCH 0/4] Enable display backlight on Fairphone 4
+Date:   Mon, 31 Jan 2022 23:19:51 -0600
+Message-Id: <164369277344.3095904.11289204126111973872.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20211229170358.2457006-1-luca.weiss@fairphone.com>
+References: <20211229170358.2457006-1-luca.weiss@fairphone.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220124171538.18088-1-rayyan@ansari.sh>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon 24 Jan 11:15 CST 2022, Rayyan Ansari wrote:
-
-> Document the Device Tree binding for PM8226 MPPs.
+On Wed, 29 Dec 2021 18:03:54 +0100, Luca Weiss wrote:
+> Add and enable PM6150L wled which is used for controlling the display
+> backlight on Fairphone 4.
 > 
-> Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
-
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-
-> ---
->  Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml | 1 +
->  1 file changed, 1 insertion(+)
+> This series depends on the recent wled series by Marijn Suijten,
+> currently applied in the for-backlight-next branch of
+> kernel/git/lee/backlight.git (or linux-next).
 > 
-> diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml
-> index 35c846f59979..df79274d0ec3 100644
-> --- a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml
-> +++ b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml
-> @@ -21,6 +21,7 @@ properties:
->            - qcom,pm8019-mpp
->            - qcom,pm8038-mpp
->            - qcom,pm8058-mpp
-> +          - qcom,pm8226-mpp
->            - qcom,pm8821-mpp
->            - qcom,pm8841-mpp
->            - qcom,pm8916-mpp
-> -- 
-> 2.34.1
-> 
+> [...]
+
+Applied, thanks!
+
+[3/4] arm64: dts: qcom: pm6150l: Add wled node
+      commit: fe508ced49dd51a700c0f9ec7826d523cfe621b2
+[4/4] arm64: dts: qcom: sm7225-fairphone-fp4: Configure WLED
+      commit: 7a52967d9050f3e430373bc51c56865b49a38573
+
+Best regards,
+-- 
+Bjorn Andersson <bjorn.andersson@linaro.org>
