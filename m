@@ -2,64 +2,71 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63EC6C4332F
-	for <phone-devel@archiver.kernel.org>; Tue,  1 Feb 2022 05:21:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B118C433EF
+	for <phone-devel@archiver.kernel.org>; Tue,  1 Feb 2022 05:21:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234154AbiBAFVa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 1 Feb 2022 00:21:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42214 "EHLO
+        id S231256AbiBAFVn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 1 Feb 2022 00:21:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234186AbiBAFUn (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 1 Feb 2022 00:20:43 -0500
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF09AC06176C
-        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 21:20:42 -0800 (PST)
-Received: by mail-ot1-x32b.google.com with SMTP id s6-20020a0568301e0600b0059ea5472c98so15127756otr.11
-        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 21:20:42 -0800 (PST)
+        with ESMTP id S234212AbiBAFUs (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 1 Feb 2022 00:20:48 -0500
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0694AC061789
+        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 21:20:45 -0800 (PST)
+Received: by mail-oi1-x229.google.com with SMTP id s185so31225968oie.3
+        for <phone-devel@vger.kernel.org>; Mon, 31 Jan 2022 21:20:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=AxUIbjg3SvCLBVXCrv9jIsGx71GsTQ6qIWnsAt6VTbY=;
-        b=BiSXSMEsNtBTkDinyXlJ67kpwdj31ar6lPoZA/5iikJbtUTbyv+x8iSa7vv7ZCPYq6
-         R7Nv0ANSJk6YgAKMwKENalGwcFVeYxJ7V2bekO9F5h1eAxArRCkEJ+lG56yEr9XWpOxd
-         j2UrqPc78k5N69ULMd+CcgKOfYHmCINMvzaZAjVplmKnLYhCFakcrm4CQledQ5fmW064
-         2J0OepZDuPZHszaOu2m/zgWix3+PDZZGPT2LMzNHLZVSXKE7Jp/jdpgT+cVMmsIampR7
-         hre70NoxFVAjnX75mUVPc1J863wP7tru5EaM0vZP9LKpUoOAE8n6/QQyI2vekIi4LFOB
-         I8cw==
+        bh=Hy1PRuFMC9Ce2a9cN4d8FhqZJnP42URBCgpnIQqeV8w=;
+        b=DT4fm5bhm/yWpQy4ULEutr8AAWE+qCM7uAwskI4/Ky9os3bIMLZjEB+kPdWWzpwwTM
+         LNaO9LEh5ze+ySW5/+ZaLAlWrA3NDnRLNUixmTVnh21wF+AooRQup+1FMM8FBIQ98YVm
+         kI+q+pHOpprM1CiWG6S4Jk+Bzcercp4P0YkUkQMRdm7hvjBnJTyRSFlK9cvPrwf0djIz
+         plMhzyIXQdzP1CtSSsUAgqRqd3ey8v6OAzuYYeJ2F0ZBoKRR/XAGqrzo7JtO6klBzAjD
+         i1MWJ9kxETVIkixUx8FQQHImRkIm9qY3PSK0J3T8de4FM7qNmwQCU657dJwhZ7LkTl4Y
+         3/GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=AxUIbjg3SvCLBVXCrv9jIsGx71GsTQ6qIWnsAt6VTbY=;
-        b=EoafHhPingNnGRW/Bh0Ga3onwoJ83708hGmQjJZHPlL9mXo2u9K4Yp95fw3TXDxY3S
-         TelOyiKPUvCDVpODMbLXgK2oHoSO4C38LXQMjP5ljyNZar4enbTq7R86jQsiclCjpfj3
-         Uc9k9XIijT5k4oqM3PP82EyrmcWrpFiOIg/JaMK78V0nGxiA+gkTKoino9vTWNA6M26B
-         dL7rG70fNf9xumynHYBeVLwKvnwk8xYk9khKGJOxXfqqenpL9oQB98DjVtsetUuQkTFa
-         20sTm6rN2qU2r3hn7r+pxn6GJ3FFUgNpApQH9RUHC5lXgwPUk4FYmw1zPwMe5yeMy+zA
-         IoXA==
-X-Gm-Message-State: AOAM531fknpVznAGxmx2ETmpVI/ql7Y8HGb4NckfPXhpzKo7rH3W2f2T
-        Gby99S2yncf4HFmPh/wSuwmEJA==
-X-Google-Smtp-Source: ABdhPJz7xSZzfdlELJEKFP+8VoUH7pamHFIqMvwPRNtJNI8E/x0hnVAHOllmRicnrMtz2Q1gMZswNw==
-X-Received: by 2002:a05:6830:1084:: with SMTP id y4mr9564994oto.42.1643692842301;
-        Mon, 31 Jan 2022 21:20:42 -0800 (PST)
+        bh=Hy1PRuFMC9Ce2a9cN4d8FhqZJnP42URBCgpnIQqeV8w=;
+        b=7o3cz1mnyTwZHW/HP+z58hfmPI8OWw6Mrpz2Dy9sxujUb9BapbPL7L1CT40SGLgen2
+         FxChkTM+LXtMUfiU9bQPu9vdlNklSyvTDZ9EG1BHEI1fRWp4eNS87nbCQcxrfY15uO1d
+         6RVmTelO7M1nCWkXy11aKHYJid7EqGiS5hAC4H47O2hutmgHfw08cUOGitrla5L+Gsx0
+         VuYl+rKWLHivwarcv/gf1e201xtoMkGBmu6/jeWT6sfWSvJbuTMGuwsvbhJyklO0fhCT
+         h5wbXmxu+e/hvckufLGG3w77muU8J7gSH5ZLsN6CsgwoAKjD1TbaYhV5XqbXzxrbIvv7
+         M7qg==
+X-Gm-Message-State: AOAM531Vzr9FCFoO3PVAtFn5wg1lj9j77E/xZ+XvznLX0qsjAh4jyl1r
+        DA9oYAo5WxQq7nLnk9ht+d+SmU/uperwwg==
+X-Google-Smtp-Source: ABdhPJxtu24Ia2hL9Ce0dNrzZ5Z4HZ7RBd97CQJdFBRRdq5FIYEsqDkdRyAubR7kTtLy5M1jZp6x0A==
+X-Received: by 2002:a54:4812:: with SMTP id j18mr216625oij.274.1643692844164;
+        Mon, 31 Jan 2022 21:20:44 -0800 (PST)
 Received: from builder.lan ([2600:1700:a0:3dc8:3697:f6ff:fe85:aac9])
-        by smtp.gmail.com with ESMTPSA id u3sm8193107ooh.19.2022.01.31.21.20.41
+        by smtp.gmail.com with ESMTPSA id u3sm8193107ooh.19.2022.01.31.21.20.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jan 2022 21:20:41 -0800 (PST)
+        Mon, 31 Jan 2022 21:20:43 -0800 (PST)
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     linux-arm-msm@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>
-Cc:     dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org, Kiran Gunda <kgunda@codeaurora.org>
-Subject: Re: (subset) [PATCH 0/4] Enable display backlight on Fairphone 4
-Date:   Mon, 31 Jan 2022 23:19:51 -0600
-Message-Id: <164369277344.3095904.11289204126111973872.b4-ty@linaro.org>
+To:     phone-devel@vger.kernel.org,
+        Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Pavel Dubrova <pashadubrova@gmail.com>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        devicetree@vger.kernel.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH] Revert "arm64: dts: qcom: sm6125: Avoid using missing SM6125_VDDCX"
+Date:   Mon, 31 Jan 2022 23:19:53 -0600
+Message-Id: <164369277344.3095904.5938604292655738290.b4-ty@linaro.org>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211229170358.2457006-1-luca.weiss@fairphone.com>
-References: <20211229170358.2457006-1-luca.weiss@fairphone.com>
+In-Reply-To: <20211229220117.293542-1-marijn.suijten@somainline.org>
+References: <20211229220117.293542-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,22 +74,21 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 29 Dec 2021 18:03:54 +0100, Luca Weiss wrote:
-> Add and enable PM6150L wled which is used for controlling the display
-> backlight on Fairphone 4.
+On Wed, 29 Dec 2021 23:01:17 +0100, Marijn Suijten wrote:
+> This reverts commit c23f1b77358c173a25ef21303d2a8cc893e9ce22.
 > 
-> This series depends on the recent wled series by Marijn Suijten,
-> currently applied in the for-backlight-next branch of
-> kernel/git/lee/backlight.git (or linux-next).
+> The SM6125_VDDCX constant was replaced with 0 temporarily as the header
+> patch defining this constant resided in a different branch, creating an
+> unwanted dependency of the dts branch on the drivers branch.
+> Now (by the time this patch will be applied) that both branches have
+> been merged upstream, it is safe to revert to the constant again.
 > 
 > [...]
 
 Applied, thanks!
 
-[3/4] arm64: dts: qcom: pm6150l: Add wled node
-      commit: fe508ced49dd51a700c0f9ec7826d523cfe621b2
-[4/4] arm64: dts: qcom: sm7225-fairphone-fp4: Configure WLED
-      commit: 7a52967d9050f3e430373bc51c56865b49a38573
+[1/1] Revert "arm64: dts: qcom: sm6125: Avoid using missing SM6125_VDDCX"
+      commit: a90b8adfa2ddfd74944fa73be97fabe230f0046d
 
 Best regards,
 -- 
