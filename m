@@ -2,58 +2,82 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19615C433F5
-	for <phone-devel@archiver.kernel.org>; Wed,  2 Feb 2022 09:43:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9683C433EF
+	for <phone-devel@archiver.kernel.org>; Wed,  2 Feb 2022 09:46:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241586AbiBBJn5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 2 Feb 2022 04:43:57 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:48722 "EHLO
+        id S231162AbiBBJqJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 2 Feb 2022 04:46:09 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:49582 "EHLO
         dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233922AbiBBJn5 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 2 Feb 2022 04:43:57 -0500
+        with ESMTP id S245547AbiBBJqJ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 2 Feb 2022 04:46:09 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C57476137A;
-        Wed,  2 Feb 2022 09:43:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF10C004E1;
-        Wed,  2 Feb 2022 09:43:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BABE614A0;
+        Wed,  2 Feb 2022 09:46:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C49C340EC;
+        Wed,  2 Feb 2022 09:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1643795036;
-        bh=mbuWQWhtqlZqaoDiqbeasy1F5APGJ0XmLbphagm12RM=;
-        h=Date:From:To:Subject:References:In-Reply-To:From;
-        b=Zouko4fk6VK7rtcLqVKiGbq0YXgsO25lskod11pz4XCiiS0L2pyciUNlerDv/EYAg
-         87O9XcIbTgki8h5zZLGemrCAiG7/YI+6ki3YZWag5Zj6yfXMMSgRDJ/Cl/XcXcxTht
-         t8DymBNxyzTYKHgYGE3ZkciggpwOdHaeTzGg9kpg=
-Date:   Wed, 2 Feb 2022 10:43:46 +0100
+        s=korg; t=1643795168;
+        bh=o0Tcg3aGiYWuN/M/wsdFN2JipEBXv58ClAppDLJ9Qis=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RhpMXxjsR+z4dWXbx0Aft1oS9QTsft/um9p1WvjzxXWFczUaTWDJL6A+LLE3Haz76
+         eXbq7inrXDpJciFwXW5ueeDKHZf0GXWQPdkfCNN8IRUy0YqfuDoojeKgIQU9mFc4SH
+         WtAcP71kzV1DJhLHb01nRHACNmbLwOgw5xRevBRY=
+Date:   Wed, 2 Feb 2022 10:45:59 +0100
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        Marijn Suijten <marijns95@gmail.com>,
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, Rob Herring <robh@kernel.org>,
         linux-kernel@vger.kernel.org, Amit Pundir <amit.pundir@linaro.org>,
         John Stultz <john.stultz@linaro.org>
-Subject: Re: [PATCH 2/2] config: android-recommended: Disable
- BPF_UNPRIV_DEFAULT_OFF for netd
-Message-ID: <YfpSUnO6ut9WXjTZ@kroah.com>
-References: <20220202093355.108460-2-marijn.suijten@somainline.org>
- <20220202093858.cmkm2z5w2fum6jit@SoMainline.org>
+Subject: Re: [PATCH 1/2] config: android-recommended: Don't explicitly
+ disable CONFIG_AIO
+Message-ID: <YfpS19cSbsSTgKVk@kroah.com>
+References: <20220202093314.107927-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220202093858.cmkm2z5w2fum6jit@SoMainline.org>
+In-Reply-To: <20220202093314.107927-1-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Feb 02, 2022 at 10:38:58AM +0100, Marijn Suijten wrote:
-> On 2022-02-02 10:33:55, Marijn Suijten wrote:
-> > From: Marijn Suijten <marijns95@gmail.com>
+On Wed, Feb 02, 2022 at 10:33:13AM +0100, Marijn Suijten wrote:
+> Android nowadays (for a couple years already) requires AIO for at least
+> its `adb` "Android Debug Bridge" [1].  Without this config option
+> (`default y`) it simply refuses start, making users unable to connect to
+> their phone for debugging purposes when using these kernel fragments.
 > 
-> Feel free to disregard this `From:` override, didn't catch it when
-> preparing the patches from a different machine.
+> [1]: https://cs.android.com/android/_/android/platform/packages/modules/adb/+/a2cb8de5e68067a5e1d002886d5f3b42d91371e1
+> 
+> Cc: Amit Pundir <amit.pundir@linaro.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: John Stultz <john.stultz@linaro.org>
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+>  kernel/configs/android-recommended.config | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/kernel/configs/android-recommended.config b/kernel/configs/android-recommended.config
+> index eb0029c9a6a6..22bd76e43aca 100644
+> --- a/kernel/configs/android-recommended.config
+> +++ b/kernel/configs/android-recommended.config
+> @@ -1,5 +1,4 @@
+>  #  KEEP ALPHABETICALLY SORTED
+> -# CONFIG_AIO is not set
+>  # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
+>  # CONFIG_INPUT_MOUSE is not set
+>  # CONFIG_LEGACY_PTYS is not set
+> -- 
+> 2.35.1
+> 
 
-Please resend with the correct one, otherwise our tools will get this
-wrong when we try to commit it.
+There are lots of "required" configs now for modern Android releases, do
+you want to sync up with all of them here?  If so, look at the
+gki_defconfig files in the AOSP kernels for the full list of what is
+required.  Is it really needed to keep this file up to date or should it
+be dropped entirely given that no one has noticed how out-of-date it is?
 
 thanks,
 
