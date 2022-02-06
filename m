@@ -2,103 +2,135 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B55AC43217
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Feb 2022 18:35:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE5A7C433EF
+	for <phone-devel@archiver.kernel.org>; Sun,  6 Feb 2022 20:23:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377577AbiBDSfi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 4 Feb 2022 13:35:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47706 "EHLO
+        id S244324AbiBFUXS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 6 Feb 2022 15:23:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239193AbiBDSff (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Feb 2022 13:35:35 -0500
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8AF0C061714
-        for <phone-devel@vger.kernel.org>; Fri,  4 Feb 2022 10:35:35 -0800 (PST)
-Received: by mail-oi1-x233.google.com with SMTP id q186so9490180oih.8
-        for <phone-devel@vger.kernel.org>; Fri, 04 Feb 2022 10:35:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=9RV37teyztSu6iIHbwHBJLzJhhsOEFaCSjrsYDnwiV0=;
-        b=J2lKugsqqsOelxx23fM/UKwBhSyuYWR2M1TQizrHYD2ikrC+O3uKbZMn8oigUgzwlJ
-         Mbj7KdLrI5pqax39QYMhRpDQPQ+CYCy1il3jODGgn9oYpR+NKNGNflAEJQEmtGuopejG
-         2lsiPPfBE1Gu3d4YalRYes8TLex51pm9+/1FAgBypG44ZkbHc7dmMmAKu4lf79nbcqMs
-         c/K+lj3rbNV397QFvr22kiKg7JNVQAxycXH4ZJaP8RWpniTiXirfCAXyi0BFY708xAE3
-         lhFUxan5TeZpvr5Tywr6n0tUdDnu1lUsuuzEj+8xha+KNL5okhtcBdyZ0kjcdsrogOcs
-         9VkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=9RV37teyztSu6iIHbwHBJLzJhhsOEFaCSjrsYDnwiV0=;
-        b=5TJMUZAyCVMsJm72Dc/2e3Ej+w772CS23R10vfi83CT2EypzppB0k1oAm99zA7COO7
-         XAnPgMTEocn+gIDwH7UerZjUbg+z+BIpQ8fckS8wgswPhIRZiIUtiXwrC1TS8G9OPMpK
-         0ZDVhe2VNTy+tHbc4FNxAC+H4+fNfjRBl6domXvd7h8i0Kbo3zvPaakktWpcQv//KYaG
-         xp66zT+k3q9+mysIy26wAWlqGn9+DwkRtJR3x0iujglMVuFdnkZifpL0ROh9/x5AQURZ
-         WLcK/CXk/KWT8PoLVd/fAqAfLJfYxr4gtLuytv2msEcT50sMB++sstmqO2TK8Rl6X9gp
-         HsZQ==
-X-Gm-Message-State: AOAM532/3f3UYkdHQvIUtB+nSQQFXpYs/7tsKJn4FCCQKSaeLqzkSNY2
-        qa6FqLzbpZzwiOX9Ge/gskxp6g==
-X-Google-Smtp-Source: ABdhPJwLrqtdlHCDJLUaL8azu5O2edCBdodh/n7Kbm/AUBkzmQIRKBxs+HfB24R8haOl4qjl3/skrg==
-X-Received: by 2002:a05:6808:1391:: with SMTP id c17mr132433oiw.333.1643999735231;
-        Fri, 04 Feb 2022 10:35:35 -0800 (PST)
-Received: from builder.lan ([2600:1700:a0:3dc8:3697:f6ff:fe85:aac9])
-        by smtp.gmail.com with ESMTPSA id 100sm1044182oth.75.2022.02.04.10.35.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Feb 2022 10:35:34 -0800 (PST)
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>
-Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Elliot Berman <eberman@codeaurora.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Alex Elder <elder@linaro.org>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 0/3] firmware: qcom: scm: Add IOMMU pool size and
-Date:   Fri,  4 Feb 2022 12:35:23 -0600
-Message-Id: <164399969244.3386915.6006488564118544541.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211208083423.22037-1-marijn.suijten@somainline.org>
-References: <20211208083423.22037-1-marijn.suijten@somainline.org>
+        with ESMTP id S231982AbiBFUXR (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 6 Feb 2022 15:23:17 -0500
+X-Greylist: delayed 345 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 06 Feb 2022 12:23:16 PST
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71035C06173B;
+        Sun,  6 Feb 2022 12:23:16 -0800 (PST)
+Received: from g550jk.localnet (mobiledyn-62-240-134-151.mrsn.at [62.240.134.151])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id D8C72CDF2E;
+        Sun,  6 Feb 2022 20:17:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1644178648; bh=690FBrexPdoV7NM0ztCyeAbjMDRItqMT8QQiwsTCIIM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=MLezyn++G1Se1/xSc1aKBxr9QvWyZ9bMtflmNDUCNs8UkRiG20J3OHnzsP/qos2rd
+         L97w9d2Edpc6sj5AaAXRUss+wTHtDaWvla70a4R/JdPQe2rzH7I2IdeUSgg1Vy4sjU
+         suN8/7rQ310/I3W2t75CcYiy8SezI/tXWllHszhA=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Stephan Gerhold <stephan@gerhold.net>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: Re: [PATCH 09/15] rpmsg: smd: Drop unnecessary condition for channel creation
+Date:   Sun, 06 Feb 2022 21:17:22 +0100
+Message-ID: <2615776.mvXUDI8C0e@g550jk>
+In-Reply-To: <Yfhjil3pfZLa5g3j@builder.lan>
+References: <20220112194118.178026-1-luca@z3ntu.xyz> <YeRILypv8ajssNae@gerhold.net> <Yfhjil3pfZLa5g3j@builder.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 8 Dec 2021 09:34:20 +0100, Marijn Suijten wrote:
-> These patches clean up a leftover duplicate assignment following the
-> initializer that already set the same values; followed by introducing
-> two extra SCM calls that allow setting the maximum IOMMU pool size and
-> changing the pagetable addressing mode to AArch32 LPAE or AArch64
-> (per-context).
-> 
-> AngeloGioacchino Del Regno (2):
->   firmware: qcom: scm: Add function to set the maximum IOMMU pool size
->   firmware: qcom: scm: Add function to set IOMMU pagetable addressing
-> 
-> [...]
+Hi Bjorn,
 
-Applied, thanks!
+On Montag, 31. J=E4nner 2022 23:32:42 CET Bjorn Andersson wrote:
+> On Sun 16 Jan 10:30 CST 2022, Stephan Gerhold wrote:
+> > On Sun, Jan 16, 2022 at 05:08:29PM +0100, Luca Weiss wrote:
+> > > On Mittwoch, 12. J=E4nner 2022 22:39:53 CET Stephan Gerhold wrote:
+> > > > On Wed, Jan 12, 2022 at 08:40:58PM +0100, Luca Weiss wrote:
+> > > > > From: Vladimir Lypak <vladimir.lypak@gmail.com>
+> > > > >=20
+> > > > > RPM Firmware on variety of newer SoCs such as MSM8917 (also likely
+> > > > > MSM8937, MSM8940, MSM8952), MSM8953 and on some MSM8916 devices)
+> > > > > doesn't
+> > > > > initiate opening of the SMD channel if it was previously opened by
+> > > > > bootloader. This doesn't allow probing of smd-rpm driver on such
+> > > > > devices
+> > > > > because there is a check that requires RPM this behaviour.
+> > > > >=20
+> > > > > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+> > > > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > > > > Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> > > >=20
+> > > > This is effectively a "Revert "Revert "rpmsg: smd: Create device for
+> > > > all
+> > > > channels""":
+> > > >=20
+> > > > https://lore.kernel.org/linux-arm-msm/20171212235857.10432-3-bjorn.=
+and
+> > > > ersson @linaro.org/
+> > > > https://lore.kernel.org/linux-arm-msm/20180315181244.8859-1-bjorn.a=
+nde
+> > > > rsson
+> > > > @linaro.org/
+> > > >=20
+> > > > Won't this cause the same regression reported by Srinivas again?
+> > >=20
+> > > Do you have any suggestion on another way to solve this? Without this
+> > > commit the regulators just won't probe at all, I haven't looked very
+> > > deep into it though given this patch solves it.
+> > >=20
+> > > I guess worst case it'll become a devicetree property to enable this
+> > > quirk?
+> >=20
+> > My spontaneous suggestion would be to skip the check only for the
+> > "rpm_requests" channel, e.g. something like
+> >=20
+> > 	if (remote_state !=3D SMD_CHANNEL_OPENING &&
+> > =09
+> > 	    remote_state !=3D SMD_CHANNEL_OPENED &&
+> > 	    strcmp(channel->name, "rpm_requests")
+> > 	=09
+> > 		continue;
+> >=20
+> > This will avoid changing the behavior for anything but the RPM channel.
+> > I don't think anything else is affected by the same problem (since the
+> > bootloader or earlier firmware should not make use of any other channel=
+).
+> > Also, we definitely *always* want to open the channel to the RPM because
+> > otherwise almost everything breaks.
+>=20
+> Last time this came up I asked if someone could test if the RPM is stuck
+> in the state machine trying to close the channel and as such we could
+> kick it by making sure that we "ack" the closing of the channel and
+> hence it would come back up again.
+>=20
+> But I don't remember seeing any outcome of this.
 
-[1/3] firmware: qcom: scm: Remove reassignment to desc following initializer
-      commit: 7823e5aa5d1dd9ed5849923c165eb8f29ad23c54
-[2/3] firmware: qcom: scm: Add function to set the maximum IOMMU pool size
-      commit: 943515090ec67f81f6f93febfddb8c9118357e97
-[3/3] firmware: qcom: scm: Add function to set IOMMU pagetable addressing
-      commit: 071a13332de894cb3c38b17c82350f1e4167c023
+Do you have a link to this or should I go digging in the archives?
 
-Best regards,
--- 
-Bjorn Andersson <bjorn.andersson@linaro.org>
+Regards
+Luca
+
+>=20
+> > Many solutions are possible though so at the end it is mostly up to
+> > Bjorn to decide I think. :)
+>=20
+> I would prefer to get an answer to above question, but if that doesn't
+> work (or look like crap) I'm willing to take your suggestion of skipping
+> the continue for the rpm_requests channel. Obviously with a comment
+> above describing why we're carrying that special case.
+>=20
+> Regards,
+> Bjorn
+
+
+
+
