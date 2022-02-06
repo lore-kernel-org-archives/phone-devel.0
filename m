@@ -2,135 +2,134 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE5A7C433EF
-	for <phone-devel@archiver.kernel.org>; Sun,  6 Feb 2022 20:23:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D4D2C433EF
+	for <phone-devel@archiver.kernel.org>; Sun,  6 Feb 2022 22:18:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244324AbiBFUXS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 6 Feb 2022 15:23:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56774 "EHLO
+        id S229953AbiBFWSg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 6 Feb 2022 17:18:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231982AbiBFUXR (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 6 Feb 2022 15:23:17 -0500
-X-Greylist: delayed 345 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 06 Feb 2022 12:23:16 PST
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71035C06173B;
-        Sun,  6 Feb 2022 12:23:16 -0800 (PST)
-Received: from g550jk.localnet (mobiledyn-62-240-134-151.mrsn.at [62.240.134.151])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id D8C72CDF2E;
-        Sun,  6 Feb 2022 20:17:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1644178648; bh=690FBrexPdoV7NM0ztCyeAbjMDRItqMT8QQiwsTCIIM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=MLezyn++G1Se1/xSc1aKBxr9QvWyZ9bMtflmNDUCNs8UkRiG20J3OHnzsP/qos2rd
-         L97w9d2Edpc6sj5AaAXRUss+wTHtDaWvla70a4R/JdPQe2rzH7I2IdeUSgg1Vy4sjU
-         suN8/7rQ310/I3W2t75CcYiy8SezI/tXWllHszhA=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Stephan Gerhold <stephan@gerhold.net>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: Re: [PATCH 09/15] rpmsg: smd: Drop unnecessary condition for channel creation
-Date:   Sun, 06 Feb 2022 21:17:22 +0100
-Message-ID: <2615776.mvXUDI8C0e@g550jk>
-In-Reply-To: <Yfhjil3pfZLa5g3j@builder.lan>
-References: <20220112194118.178026-1-luca@z3ntu.xyz> <YeRILypv8ajssNae@gerhold.net> <Yfhjil3pfZLa5g3j@builder.lan>
+        with ESMTP id S229484AbiBFWSg (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 6 Feb 2022 17:18:36 -0500
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41AC4C06173B;
+        Sun,  6 Feb 2022 14:18:35 -0800 (PST)
+Received: by mail-ej1-x630.google.com with SMTP id ka4so36484104ejc.11;
+        Sun, 06 Feb 2022 14:18:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ndvVG8PppU1q6zgmhfWtx/U0/AcHLfiB5ez8eWAuiM0=;
+        b=dO2ABgghuCjrlXVuQZAbM0LfcNTau2p74DbNzabG4isw0dsDj6671p6whvKKCJ8q8n
+         CDrvktw9YHONjrJOgFO/rlbCIFfKObaZclgyUKD+7rLnYXXg23uKaRF3LpQ4Q566cXLs
+         3+0asMVHcfw/FqjKGuyhakJDn9X9B9E7MJWwnHJri7HWjoH4WFUG99eeSns/FCv4/Xs8
+         E97JwjoHRmv+LBUU2bZ04Wzhto9ya+zzvXcsx3PPfMe/v9sO//DU4HgddHbcWwgx9DVp
+         6gFbXVHQqBRXy63rl2fYTFsIi3v6IesOOLiwA8fWazCoCewTPtrek7xO5LQXBvwh+iys
+         vyOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ndvVG8PppU1q6zgmhfWtx/U0/AcHLfiB5ez8eWAuiM0=;
+        b=5zPhnMXmrVXYWyHLupkx1I6+VxxBEr+KypdsctVE0MpJ1uFZb+JmXUa2/29QDWEVjb
+         hCzYlO9HzgAKR1VlLSRg2zYb9fPjR1Br5wCYyNx1HGDz67H8DA7g6MHauKzaOgtgC9LL
+         e+0AM4rLmZVuqjJuP9SvaKMxqv5vYH0EovDTTMZMO25V9JKRQnOQFIKZZMELU52b9O9r
+         T6i8CViPtnsJluXnEvDtW6GYBMGrFY5bg7X33yWksKaD28jpmZvOZur/Hzp8iwFiNn99
+         Mx3AlawEKlqFOKi9lvhKhv30Pja4OBMnJRU2hI1hMVt7aNqAIr77Stev/m+e3QgvVcpH
+         WPsA==
+X-Gm-Message-State: AOAM5329MqDrV85SEHpEFJzrnC2t0MQMd4+ChaNZ738KZvyH3hepJpSz
+        brqUEQlCvPgMqlfbnYuXH+I=
+X-Google-Smtp-Source: ABdhPJzCy2rjqU0nVTZ/5hl+kH3DHSL6ZpDb7tuD4vOQUhlPgvNBxKhDldCMOANq//76iElEujTj2Q==
+X-Received: by 2002:a17:907:6e16:: with SMTP id sd22mr7720582ejc.172.1644185913749;
+        Sun, 06 Feb 2022 14:18:33 -0800 (PST)
+Received: from localhost.localdomain ([2a02:ab88:368f:2080:5d6e:322:57b6:5f03])
+        by smtp.googlemail.com with ESMTPSA id a17sm2347289edt.92.2022.02.06.14.18.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Feb 2022 14:18:33 -0800 (PST)
+From:   David Virag <virag.david003@gmail.com>
+Cc:     Sam Protsenko <semen.protsenko@linaro.org>,
+        phone-devel@vger.kernel.org,
+        David Virag <virag.david003@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/1] Initial Samsung Galaxy A8 (2018) support
+Date:   Mon,  7 Feb 2022 00:18:14 +0100
+Message-Id: <20220206231816.127650-1-virag.david003@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Bjorn,
+Add basic initial support for the Samsung Galaxy A8 (2018) smartphone.
+This phone is also known as "jackpotlte" and under the model name
+"SM-A530F". In its current state this should work on most if not all
+Exynos7885 phones/devices released.
 
-On Montag, 31. J=E4nner 2022 23:32:42 CET Bjorn Andersson wrote:
-> On Sun 16 Jan 10:30 CST 2022, Stephan Gerhold wrote:
-> > On Sun, Jan 16, 2022 at 05:08:29PM +0100, Luca Weiss wrote:
-> > > On Mittwoch, 12. J=E4nner 2022 22:39:53 CET Stephan Gerhold wrote:
-> > > > On Wed, Jan 12, 2022 at 08:40:58PM +0100, Luca Weiss wrote:
-> > > > > From: Vladimir Lypak <vladimir.lypak@gmail.com>
-> > > > >=20
-> > > > > RPM Firmware on variety of newer SoCs such as MSM8917 (also likely
-> > > > > MSM8937, MSM8940, MSM8952), MSM8953 and on some MSM8916 devices)
-> > > > > doesn't
-> > > > > initiate opening of the SMD channel if it was previously opened by
-> > > > > bootloader. This doesn't allow probing of smd-rpm driver on such
-> > > > > devices
-> > > > > because there is a check that requires RPM this behaviour.
-> > > > >=20
-> > > > > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-> > > > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > > > Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> > > >=20
-> > > > This is effectively a "Revert "Revert "rpmsg: smd: Create device for
-> > > > all
-> > > > channels""":
-> > > >=20
-> > > > https://lore.kernel.org/linux-arm-msm/20171212235857.10432-3-bjorn.=
-and
-> > > > ersson @linaro.org/
-> > > > https://lore.kernel.org/linux-arm-msm/20180315181244.8859-1-bjorn.a=
-nde
-> > > > rsson
-> > > > @linaro.org/
-> > > >=20
-> > > > Won't this cause the same regression reported by Srinivas again?
-> > >=20
-> > > Do you have any suggestion on another way to solve this? Without this
-> > > commit the regulators just won't probe at all, I haven't looked very
-> > > deep into it though given this patch solves it.
-> > >=20
-> > > I guess worst case it'll become a devicetree property to enable this
-> > > quirk?
-> >=20
-> > My spontaneous suggestion would be to skip the check only for the
-> > "rpm_requests" channel, e.g. something like
-> >=20
-> > 	if (remote_state !=3D SMD_CHANNEL_OPENING &&
-> > =09
-> > 	    remote_state !=3D SMD_CHANNEL_OPENED &&
-> > 	    strcmp(channel->name, "rpm_requests")
-> > 	=09
-> > 		continue;
-> >=20
-> > This will avoid changing the behavior for anything but the RPM channel.
-> > I don't think anything else is affected by the same problem (since the
-> > bootloader or earlier firmware should not make use of any other channel=
-).
-> > Also, we definitely *always* want to open the channel to the RPM because
-> > otherwise almost everything breaks.
->=20
-> Last time this came up I asked if someone could test if the RPM is stuck
-> in the state machine trying to close the channel and as such we could
-> kick it by making sure that we "ack" the closing of the channel and
-> hence it would come back up again.
->=20
-> But I don't remember seeing any outcome of this.
+As of now, it supports I2C nodes (all disabled by default) and UART
+console with basic clock support in place.
 
-Do you have a link to this or should I go digging in the archives?
+To access the UART console on the A8, there are two methods:
+  -You can open up the device and solder directly to some debug pins
+   close to the display connector.
+  -Through I2C you can set the S2MU004 MFD chip to multiplex the SoC's
+   UART lines to the d+ and d- on the USB Type-C port of the device.
 
-Regards
-Luca
+Note that UART works on 1.8 volts, so plugging in a normal USB cable
+while multiplexed to UART may fry the SoC.
 
->=20
-> > Many solutions are possible though so at the end it is mostly up to
-> > Bjorn to decide I think. :)
->=20
-> I would prefer to get an answer to above question, but if that doesn't
-> work (or look like crap) I'm willing to take your suggestion of skipping
-> the continue for the rpm_requests channel. Obviously with a comment
-> above describing why we're carrying that special case.
->=20
-> Regards,
-> Bjorn
+Everything was tested through UART by using a minimal driver that sets
+the S2MU004 to multiplex UART.
 
+The preferred way to boot this device is by using my Minimal S-Boot
+Wrapper [1] to work around some issues caused by the stock, and
+non-replacable Samsung S-Boot bootloader.
 
+Changes in v2:
+- Added R-b tags by Krzysztof Kozlowski
+- Moved dt-bindings patches to the beginning of the series
+- Fixed double : in 7885 CMU bindings
+- Fixed multiple double line breaks
+- Made Exynos850 and 7885 clock drivers share some code in a new patch
+- Lots of dts/dtsi fixes
 
+Changes in v3:
+- Fix SPDX comment style in clk-exynos-arm64.h
+- Fix typo in dts comment
+
+Changes in v4:
+- Fixed leading 0x in clock-controller nodes
+- Fixed missing headers in clock driver patches
+- "__SAMSUNG_CLK_ARM64_H" -> "__CLK_EXYNOS_ARM64_H" in
+  clk-exynos-arm64.h everywhere (only the comment at the end had the
+  latter by accident)
+- Added R-b tag by Krzysztof Kozlowski to pll1417x patch
+- Actually suffixed pin configuration node names with "-pins"
+- Seperated Cortex-A53 and Cortex-A73 PMU
+
+Changes in v5:
+- Only kept DTS patch as the rest have been merged.
+- Several fixes in DTS patch
+
+[1] https://github.com/VDavid003/minimal_sboot_wrapper
+
+David Virag (1):
+  arm64: dts: exynos: Add initial device tree support for Exynos7885 SoC
+
+ arch/arm64/boot/dts/exynos/Makefile           |   7 +-
+ .../boot/dts/exynos/exynos7885-jackpotlte.dts |  93 ++
+ .../boot/dts/exynos/exynos7885-pinctrl.dtsi   | 855 ++++++++++++++++++
+ arch/arm64/boot/dts/exynos/exynos7885.dtsi    | 440 +++++++++
+ 4 files changed, 1392 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
+ create mode 100644 arch/arm64/boot/dts/exynos/exynos7885-pinctrl.dtsi
+ create mode 100644 arch/arm64/boot/dts/exynos/exynos7885.dtsi
+
+-- 
+2.35.1
 
