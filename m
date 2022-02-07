@@ -2,111 +2,177 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE6BEC433EF
-	for <phone-devel@archiver.kernel.org>; Mon,  7 Feb 2022 18:09:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0962DC433F5
+	for <phone-devel@archiver.kernel.org>; Mon,  7 Feb 2022 21:08:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232180AbiBGSIU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 7 Feb 2022 13:08:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39304 "EHLO
+        id S236416AbiBGVIk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 7 Feb 2022 16:08:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344764AbiBGSAT (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Feb 2022 13:00:19 -0500
-X-Greylist: delayed 339 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Feb 2022 10:00:16 PST
+        with ESMTP id S231445AbiBGVIf (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Feb 2022 16:08:35 -0500
 Received: from fwd1.porkbun.com (fwd1.porkbun.com [52.10.174.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43ED9C0401D9;
-        Mon,  7 Feb 2022 10:00:16 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B91F9C0401DC;
+        Mon,  7 Feb 2022 13:08:32 -0800 (PST)
 Received: by fwd1.porkbun.com (Postfix, from userid 497)
-        id E276741D09; Mon,  7 Feb 2022 17:49:53 +0000 (UTC)
+        id 2B02241D0D; Mon,  7 Feb 2022 21:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ansari.sh;
-        s=default; t=1644256477;
-        bh=WgWSC1IOBKQNEaPKc/yuujz/f2ZwdXMi8BgaxzlEwSc=;
-        h=From:To:Cc:Subject:Date;
-        b=bZkiW7qxwSd1k0xDaVddX2Tk+1rI1P9NjCWXzvxS8z2g/f3lS5lCO3TOJ+9QtIKBN
-         kcwqYqWWTurFN2sOUNKYbldSCYZrRbTh5mxGeEVPOMLIHMqTrG5IfGibqvkkddsBKm
-         YVNto8jd+Qaqk4f6y/3A2p0rqd6qo8GU5VmXBMSc=
-Received: from rayyan-pc.broadband (unknown [90.242.138.108])
+        s=default; t=1644268112;
+        bh=AEtROBqGP+jR5/7k+vesyxPbPrG5TrVHsHV0dRCttac=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=rByPbPnPa+x8igDKssb1ZXs3Nq8PdEeFMpTk2fePlNXhOqBzm8j2dILWc5UryruxT
+         4HtekvThgUKzYRxUQctWKopmhknG8Ngrovei5fGBdWXzBXgKhIe1Q0H5BvnoDShn1/
+         A4OJgFFZcntes+z+JpPQCz1xtcXqUMd+79KbVywo=
+Received: from webmail.porkbun.com (unknown [35.86.129.66])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: rayyan@ansari.sh)
-        by fwd1.porkbun.com (Postfix) with ESMTPSA id 91D7B43726;
-        Mon,  7 Feb 2022 17:49:45 +0000 (UTC)
+        by fwd1.porkbun.com (Postfix) with ESMTPSA id 40DFA41BD1;
+        Mon,  7 Feb 2022 21:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ansari.sh;
-        s=default; t=1644256189;
-        bh=WgWSC1IOBKQNEaPKc/yuujz/f2ZwdXMi8BgaxzlEwSc=;
-        h=From:To:Cc:Subject:Date;
-        b=J14q/+x9mBBTBYPjjvrMpK/SRO55KDxwG+mHiLf7IBPB1URuD9fc3rQdFKSXGcbSx
-         7XIkIX18mC4m2VLDQ3AsgjOLxBVgBZ+Vn3v8xvuNtNfnUAfgLj7Q63+/Twn7KYd8os
-         MHmO4hCdmqvkA3+Kt1+/twuN6B4aeiqkhsxuEZ5I=
-From:   Rayyan Ansari <rayyan@ansari.sh>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rayyan Ansari <rayyan@ansari.sh>,
+        s=default; t=1644268099;
+        bh=AEtROBqGP+jR5/7k+vesyxPbPrG5TrVHsHV0dRCttac=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=ZowXWhFxvTLt67TGpC0v5YQ1O65hMBhkNW0QviykJ92mkzCyS+M0GKxfAOTbGruLT
+         Ac0fhz2G2d3xa521urTiC229ZUDPenFchxg3aaHH3tlQqWZy6sHUAJs+tAmonWHGLP
+         dwzFA1tkxh76+DUKFpDSCspRn4W0gfJSvoEnbFLQ=
+MIME-Version: 1.0
+Date:   Mon, 07 Feb 2022 21:08:19 +0000
+From:   rayyan@ansari.sh
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: qcom: pm8226: Add VADC node
-Date:   Mon,  7 Feb 2022 17:49:33 +0000
-Message-Id: <20220207174933.20909-1-rayyan@ansari.sh>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 11/15] arm64: dts: qcom: Add PM8953 PMIC
+In-Reply-To: <20220112194118.178026-12-luca@z3ntu.xyz>
+References: <20220112194118.178026-1-luca@z3ntu.xyz>
+ <20220112194118.178026-12-luca@z3ntu.xyz>
+User-Agent: Roundcube Webmail/1.4.11
+Message-ID: <5e2c2d486c1d1f4794328f7b6c9035d1@ansari.sh>
+X-Sender: rayyan@ansari.sh
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add a node for the voltage ADC (VADC) found in PM8226.
+On 2022-01-12 19:41, Luca Weiss wrote:
+> From: Vladimir Lypak <vladimir.lypak@gmail.com>
+> 
+> Add a base DT for PM8953 PMIC, commonly used with MSM8953.
+> 
+> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> ---
+>  arch/arm64/boot/dts/qcom/pm8953.dtsi | 90 ++++++++++++++++++++++++++++
+>  1 file changed, 90 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/qcom/pm8953.dtsi
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/pm8953.dtsi
+> b/arch/arm64/boot/dts/qcom/pm8953.dtsi
+> new file mode 100644
+> index 000000000000..102555b3f313
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/pm8953.dtsi
+> @@ -0,0 +1,90 @@
+> +// SPDX-License-Identifier: BSD-3-Clause
+> +/* Copyright (c) 2022, The Linux Foundation. All rights reserved. */
+> +
+> +#include <dt-bindings/iio/qcom,spmi-vadc.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +#include <dt-bindings/input/linux-event-codes.h>
+> +#include <dt-bindings/spmi/spmi.h>
+> +
+> +&spmi_bus {
+> +	pmic@0 {
+> +		compatible = "qcom,pm8953", "qcom,spmi-pmic";
+> +		reg = <0 SPMI_USID>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		rtc@6000 {
+> +			compatible = "qcom,pm8941-rtc";
+> +			reg = <0x6000>, <0x6100>;
+> +			reg-names = "rtc", "alarm";
+> +			interrupts = <0x0 0x61 0x1 IRQ_TYPE_EDGE_RISING>;
+> +		};
+> +
+> +		pm8953_pon: pon@800 {
+> +			compatible = "qcom,pm8916-pon";
+> +			reg = <0x800>;
+> +			mode-bootloader = <0x2>;
+> +			mode-recovery = <0x1>;
+> +
+> +			pwrkey {
+> +				compatible = "qcom,pm8941-pwrkey";
+> +				interrupts = <0x00 0x08 0 IRQ_TYPE_EDGE_BOTH>;
+> +				debounce = <15625>;
+> +				bias-pull-up;
+> +				linux,code = <KEY_POWER>;
+> +			};
+> +
+> +			pm8953_resin: resin {
+> +				compatible = "qcom,pm8941-resin";
+> +				interrupts = <0x00 0x08 1 IRQ_TYPE_EDGE_BOTH>;
+> +				debounce = <15625>;
+> +				bias-pull-up;
+> +				status = "disabled";
+> +			};
+> +		};
+> +
+> +		temp-alarm@2400 {
+> +			compatible = "qcom,spmi-temp-alarm";
+> +			reg = <0x2400>;
+> +			interrupts = <0x0 0x24 0x0 IRQ_TYPE_EDGE_RISING>;
+> +			io-channels = <&pm8953_vadc 0x08>;
+> +			io-channel-names = "thermal";
+> +			#thermal-sensor-cells = <0x00>;
+> +		};
+> +
+> +		pm8953_vadc: vadc@3100 {
+> +			compatible = "qcom,spmi-vadc";
+> +			reg = <0x3100>;
+> +			interrupts = <0x00 0x31 0x00 0x01>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			#io-channel-cells = <1>;
+> +
+> +			die_temp@8 {
+> +				reg = <VADC_DIE_TEMP>;
+> +			};
+> +			ref_625mv@9 {
+> +				reg = <VADC_REF_625MV>;
+> +			};
+> +			ref_1250v@a {
+> +				reg = <VADC_REF_1250MV>;
+> +			};
+> +			ref_buf_625mv@c {
+> +				reg = <VADC_SPARE1>;
+> +			};
+> +			ref_gnd@e {
+> +				reg = <VADC_GND_REF>;
+> +			};
+> +			ref_vdd@f {
+> +				reg = <VADC_VDD_VADC>;
+> +			};
 
-Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
----
- arch/arm/boot/dts/qcom-pm8226.dtsi | 33 ++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+Could you use the generic names for each VADC channel as recommended in 
+qcom,spmi-vadc.yaml?
 
-diff --git a/arch/arm/boot/dts/qcom-pm8226.dtsi b/arch/arm/boot/dts/qcom-pm8226.dtsi
-index b3d0f7b5874d..a651b4c941b8 100644
---- a/arch/arm/boot/dts/qcom-pm8226.dtsi
-+++ b/arch/arm/boot/dts/qcom-pm8226.dtsi
-@@ -40,6 +40,39 @@ smbb: charger@1000 {
- 			chg_otg: otg-vbus { };
- 		};
- 
-+		pm8226_vadc: adc@3100 {
-+			compatible = "qcom,spmi-vadc";
-+			reg = <0x3100>;
-+			interrupts = <0x0 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			#io-channel-cells = <1>;
-+
-+			adc-chan@7 {
-+				reg = <VADC_VSYS>;
-+				qcom,pre-scaling = <1 3>;
-+				label = "vph_pwr";
-+			};
-+			adc-chan@8 {
-+				reg = <VADC_DIE_TEMP>;
-+				label = "die_temp";
-+			};
-+			adc-chan@9 {
-+				reg = <VADC_REF_625MV>;
-+				label = "ref_625mv";
-+			};
-+			adc-chan@a {
-+				reg = <VADC_REF_1250MV>;
-+				label = "ref_1250mv";
-+			};
-+			adc-chan@e {
-+				reg = <VADC_GND_REF>;
-+			};
-+			adc-chan@f {
-+				reg = <VADC_VDD_VADC>;
-+			};
-+		};
-+
- 		pm8226_mpps: mpps@a000 {
- 			compatible = "qcom,pm8226-mpp", "qcom,spmi-mpp";
- 			reg = <0xa000>;
--- 
-2.34.1
-
+> +		};
+> +	};
+> +
+> +	pmic@1 {
+> +		compatible = "qcom,pm8953", "qcom,spmi-pmic";
+> +		reg = <1 SPMI_USID>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +	};
+> +};
