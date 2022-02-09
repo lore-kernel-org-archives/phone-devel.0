@@ -2,103 +2,193 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 419E9C433FE
-	for <phone-devel@archiver.kernel.org>; Wed,  9 Feb 2022 06:34:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1E62C433FE
+	for <phone-devel@archiver.kernel.org>; Wed,  9 Feb 2022 16:30:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230095AbiBIGed (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 9 Feb 2022 01:34:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47884 "EHLO
+        id S236973AbiBIQaP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 9 Feb 2022 11:30:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229561AbiBIGec (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 9 Feb 2022 01:34:32 -0500
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A4B4E066E19
-        for <phone-devel@vger.kernel.org>; Tue,  8 Feb 2022 22:34:29 -0800 (PST)
-Received: by mail-pf1-x432.google.com with SMTP id i30so2590932pfk.8
-        for <phone-devel@vger.kernel.org>; Tue, 08 Feb 2022 22:34:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=OwHnp+CBrpknipruebBheU1nuu6L2xS3iNwKkt5hzSc=;
-        b=fHiYoWvoB+Gab19/vejvHtO0ZlTBEXUK3diJ0NhY8IXdVk/N0v+UGR+BlOtuSa9LMH
-         fV8Q4OxIzP0WK57293UqNQiTScEFW4NU7YCmlHlVonAFBpC1IMUIq8FKpG+r/5uIKwP8
-         iH+KcXAO1PZ9fOAgd6HRYvN+KAbfzC7vMFtfY/HGQtiNGDo/QlDrdsbnRufYiS4EA+r1
-         D8t2lXa0zwhm5wi0J82hk0F5cWF2gsouXwoXDSo+HJTSTLfm9fM2t1BQYhtkvM1Oibs1
-         Y+8F3ZcX3v/exjMqf5iK0xa7M4tY+kvbGNUiAAMP5pOzFFfo5CxVKcjZ72+T1k7lOuze
-         jDEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=OwHnp+CBrpknipruebBheU1nuu6L2xS3iNwKkt5hzSc=;
-        b=t8cYkkajbmNtP5GMZ9FBS85ZssymXoUdOggr5c2p3qzv3CS/ZI6YXOrY4vNOc3M/l5
-         SjFQFuB76ZW2BVztzx2f/JnRIUaXjdgpTyK9H6Q/BrmDCoVy3NpNY25Ud39fAiDrgDrJ
-         uX4PGvHRAeayehSPdDtu9Vt/hMQ7DVdFoVKbsw3fzvCqQ1BGzcx23dvBE/1Q7BR7ub+f
-         A9fVH2iZ5ZRmNNJgVGlZ5ZXdsjFtIvGJoQjB2mWVm4o4bOJBRxo9bqprFl2gRW5bwank
-         783CMp7BFu9AhJdJ6viywbM6DUFLuZdRMOr7iH+GqonWMrVSv21B0ceiVGlmq6aBQOyc
-         iAww==
-X-Gm-Message-State: AOAM532pxDSxyzlSBVUGhYR3jnaDpfMHCKzKC4qNA39Man7D0q45EIwV
-        vnZblBZsGLEZ2LGGZV7MyMiyqg==
-X-Google-Smtp-Source: ABdhPJx52+9Dw5Vu5Ayd4PAzN+hfjEFuihoosOnlAsFNrrdNMnMsovfyUzU9vYmhNYbMXE+jGAZnmQ==
-X-Received: by 2002:a63:3d4f:: with SMTP id k76mr749057pga.389.1644388468680;
-        Tue, 08 Feb 2022 22:34:28 -0800 (PST)
-Received: from localhost ([136.185.132.167])
-        by smtp.gmail.com with ESMTPSA id il18sm4889019pjb.27.2022.02.08.22.34.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Feb 2022 22:34:28 -0800 (PST)
-Date:   Wed, 9 Feb 2022 12:04:26 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
+        with ESMTP id S234737AbiBIQaO (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 9 Feb 2022 11:30:14 -0500
+X-Greylist: delayed 528 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 09 Feb 2022 08:30:16 PST
+Received: from fwd1.porkbun.com (fwd1.porkbun.com [52.10.174.57])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E40E4C0613C9;
+        Wed,  9 Feb 2022 08:30:16 -0800 (PST)
+Received: by fwd1.porkbun.com (Postfix, from userid 497)
+        id B1FED40F95; Wed,  9 Feb 2022 16:19:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ansari.sh;
+        s=default; t=1644423687;
+        bh=na7xW0UcmevfG+Vzc+SF/qFmYtwaEfbasz0l3EQ9fgY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=C1pHPIxNQi/h1f2RvhJfT1tI6ceLC6NYOASTQ5CzxTiLyy0NWyP1tdvY5E3Fha/OH
+         tQ7WOm2UTgdUL10RKgn/9HclH4GOBrXMh9HBZsueij3FBoUe8HnT9izKqpj4LuRAIB
+         48kbkUwzgTkKfaDCDWikCSxwl1E2WfPK9TXbixOY=
+Received: from webmail.porkbun.com (unknown [35.86.129.66])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: rayyan@ansari.sh)
+        by fwd1.porkbun.com (Postfix) with ESMTPSA id A00D943588;
+        Wed,  9 Feb 2022 16:19:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ansari.sh;
+        s=default; t=1644423560;
+        bh=na7xW0UcmevfG+Vzc+SF/qFmYtwaEfbasz0l3EQ9fgY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References;
+        b=iqbAOYJD8e6WhMLQHy4VtjP6PH+6cUPl8kFvrViFRxgnV6HkTgbvFa+4aFsNfWNnG
+         qmK+HrLFApA4Vlsc/FJS/BfFwVtxis3LZkfzf8KRM6rc7PpkWLJf9lTnUtOsK3SycB
+         9n3TVfbzJRg+OcSdxr2/yvDDLqr1C9zCqGBnSWWs=
+MIME-Version: 1.0
+Date:   Wed, 09 Feb 2022 16:19:19 +0000
+From:   Rayyan Ansari <rayyan@ansari.sh>
 To:     Luca Weiss <luca@z3ntu.xyz>
 Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Ilia Lin <ilia.lin@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ansuel Smith <ansuelsmth@gmail.com>,
-        Sricharan R <sricharan@codeaurora.org>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: qcom-cpufreq-nvmem: fix reading of PVS Valid
- fuse
-Message-ID: <20220209063426.ckefdtpfroj5zsad@vireshk-i7>
-References: <20220130114535.1570634-1-luca@z3ntu.xyz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220130114535.1570634-1-luca@z3ntu.xyz>
-User-Agent: NeoMutt/20180716-391-311a52
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 11/15] arm64: dts: qcom: Add PM8953 PMIC
+In-Reply-To: <20220112194118.178026-12-luca@z3ntu.xyz>
+References: <20220112194118.178026-1-luca@z3ntu.xyz>
+ <20220112194118.178026-12-luca@z3ntu.xyz>
+User-Agent: Roundcube Webmail/1.4.11
+Message-ID: <cf675eac374a196dac3bd5017d2d8cae@ansari.sh>
+X-Sender: rayyan@ansari.sh
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 30-01-22, 12:45, Luca Weiss wrote:
-> The fuse consists of 64 bits, with this statement we're supposed to get
-> the upper 32 bits but it actually read out of bounds and got 0 instead
-> of the desired value which lead to the "PVS bin not set." codepath being
-> run resetting our pvs value.
+On 2022-01-12 19:41, Luca Weiss wrote:
+> From: Vladimir Lypak <vladimir.lypak@gmail.com>
 > 
-> Fixes: a8811ec764f9 ("cpufreq: qcom: Add support for krait based socs")
+> Add a base DT for PM8953 PMIC, commonly used with MSM8953.
+> 
+> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 > ---
->  drivers/cpufreq/qcom-cpufreq-nvmem.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/arm64/boot/dts/qcom/pm8953.dtsi | 90 ++++++++++++++++++++++++++++
+>  1 file changed, 90 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/qcom/pm8953.dtsi
 > 
-> diff --git a/drivers/cpufreq/qcom-cpufreq-nvmem.c b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-> index d1744b5d9619..6dfa86971a75 100644
-> --- a/drivers/cpufreq/qcom-cpufreq-nvmem.c
-> +++ b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-> @@ -130,7 +130,7 @@ static void get_krait_bin_format_b(struct device *cpu_dev,
->  	}
->  
->  	/* Check PVS_BLOW_STATUS */
-> -	pte_efuse = *(((u32 *)buf) + 4);
-> +	pte_efuse = *(((u32 *)buf) + 1);
->  	pte_efuse &= BIT(21);
->  	if (pte_efuse) {
->  		dev_dbg(cpu_dev, "PVS bin: %d\n", *pvs);
+> diff --git a/arch/arm64/boot/dts/qcom/pm8953.dtsi
+> b/arch/arm64/boot/dts/qcom/pm8953.dtsi
+> new file mode 100644
+> index 000000000000..102555b3f313
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/pm8953.dtsi
+> @@ -0,0 +1,90 @@
+> +// SPDX-License-Identifier: BSD-3-Clause
+> +/* Copyright (c) 2022, The Linux Foundation. All rights reserved. */
+> +
+> +#include <dt-bindings/iio/qcom,spmi-vadc.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +#include <dt-bindings/input/linux-event-codes.h>
+> +#include <dt-bindings/spmi/spmi.h>
+> +
+> +&spmi_bus {
+> +	pmic@0 {
+> +		compatible = "qcom,pm8953", "qcom,spmi-pmic";
+> +		reg = <0 SPMI_USID>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		rtc@6000 {
+> +			compatible = "qcom,pm8941-rtc";
+> +			reg = <0x6000>, <0x6100>;
+> +			reg-names = "rtc", "alarm";
+> +			interrupts = <0x0 0x61 0x1 IRQ_TYPE_EDGE_RISING>;
+> +		};
 
-Applied. Thanks.
+Could you sort the nodes by order? The rtc@6000 node should be after 
+vadc@3100.
 
--- 
-viresh
+> +
+> +		pm8953_pon: pon@800 {
+> +			compatible = "qcom,pm8916-pon";
+> +			reg = <0x800>;
+> +			mode-bootloader = <0x2>;
+> +			mode-recovery = <0x1>;
+> +
+> +			pwrkey {
+> +				compatible = "qcom,pm8941-pwrkey";
+> +				interrupts = <0x00 0x08 0 IRQ_TYPE_EDGE_BOTH>;
+> +				debounce = <15625>;
+> +				bias-pull-up;
+> +				linux,code = <KEY_POWER>;
+> +			};
+> +
+> +			pm8953_resin: resin {
+> +				compatible = "qcom,pm8941-resin";
+> +				interrupts = <0x00 0x08 1 IRQ_TYPE_EDGE_BOTH>;
+> +				debounce = <15625>;
+> +				bias-pull-up;
+> +				status = "disabled";
+> +			};
+> +		};
+> +
+> +		temp-alarm@2400 {
+> +			compatible = "qcom,spmi-temp-alarm";
+> +			reg = <0x2400>;
+> +			interrupts = <0x0 0x24 0x0 IRQ_TYPE_EDGE_RISING>;
+> +			io-channels = <&pm8953_vadc 0x08>;
+
+Could you use VADC_DIE_TEMP here instead of 0x08 like in 
+qcom-spmi-temp-alarm.txt?
+
+> +			io-channel-names = "thermal";
+> +			#thermal-sensor-cells = <0x00>;
+
+This should be "#thermal-sensor-cells = <0>;" as recommended by docs.
+
+> +		};
+> +
+> +		pm8953_vadc: vadc@3100 {
+> +			compatible = "qcom,spmi-vadc";
+> +			reg = <0x3100>;
+> +			interrupts = <0x00 0x31 0x00 0x01>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			#io-channel-cells = <1>;
+> +
+> +			die_temp@8 {
+> +				reg = <VADC_DIE_TEMP>;
+> +			};
+> +			ref_625mv@9 {
+> +				reg = <VADC_REF_625MV>;
+> +			};
+> +			ref_1250v@a {
+> +				reg = <VADC_REF_1250MV>;
+> +			};
+> +			ref_buf_625mv@c {
+> +				reg = <VADC_SPARE1>;
+> +			};
+> +			ref_gnd@e {
+> +				reg = <VADC_GND_REF>;
+> +			};
+> +			ref_vdd@f {
+> +				reg = <VADC_VDD_VADC>;
+> +			};
+
+Could you use the generic names for each VADC channel as recommended in 
+qcom,spmi-vadc.yaml?
+
+> +		};
+> +	};
+> +
+> +	pmic@1 {
+> +		compatible = "qcom,pm8953", "qcom,spmi-pmic";
+> +		reg = <1 SPMI_USID>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +	};
+> +};
+
+With this sorted, add my Reviewed-by.
+
+Reviewed-by: Rayyan Ansari <rayyan@ansari.sh>
