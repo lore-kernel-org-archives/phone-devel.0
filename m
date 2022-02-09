@@ -2,74 +2,72 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78EC2C4167E
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE5EEC41535
 	for <phone-devel@archiver.kernel.org>; Wed,  9 Feb 2022 02:41:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230141AbiBICld (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 8 Feb 2022 21:41:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36626 "EHLO
+        id S243832AbiBIClf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 8 Feb 2022 21:41:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242935AbiBICNn (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 8 Feb 2022 21:13:43 -0500
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 905C8C06157B;
-        Tue,  8 Feb 2022 18:13:42 -0800 (PST)
-Received: by mail-oo1-f42.google.com with SMTP id t75-20020a4a3e4e000000b002e9c0821d78so886701oot.4;
-        Tue, 08 Feb 2022 18:13:42 -0800 (PST)
+        with ESMTP id S244587AbiBICMX (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 8 Feb 2022 21:12:23 -0500
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73025C06157B;
+        Tue,  8 Feb 2022 18:12:22 -0800 (PST)
+Received: by mail-oi1-f174.google.com with SMTP id i5so1108798oih.1;
+        Tue, 08 Feb 2022 18:12:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=nIaW4qu/5KIfaweGLotozwrFMLHgcllMEMmVd3jpnnQ=;
-        b=TQjkt7HKL8fq40KmZjtKzLipSYoAyh0fyMdH0cgMzTnAteR+gdVgErA6dtKxSjc12V
-         FtmtcisltPAQ7ziNY6q8tzEcDQszoGvXBugflyENoDtwalIMf2CX0pEoiOumc/145oT+
-         nPCM8MBCTTR9l31BfB/OW6apVtdq2FGzbH5g/t6CfKjVMmp6Z3I0cjjbxiW7PpbfXQg7
-         XxsJpXkKTFL60C4hCTanqjdWd5XcYGcYuxDwxXs5XnhUogpaE9UQXWT0d7jNUiu+CE87
-         y6YIYnLZhWP9GSPnk5g8JyhVEyrkXHHsT027+hUk529D8ItSYW/X6hV05fbIrPY7FJT3
-         uJgw==
-X-Gm-Message-State: AOAM531TAdqZPWuJZjI4dn3CsqmPZCDXtVtfUVXUmlrazznvgX37iXfG
-        KyeNrVW2SgGDi9VgYPSiSQ==
-X-Google-Smtp-Source: ABdhPJwM0FgcPhcdDiEuQVbj6A1+LlYF41lbFX5B1ioSc3CFF3NvbJJOKEqqS/3M6sH9PpfZe1bgZg==
-X-Received: by 2002:a05:6871:506:: with SMTP id s6mr69126oal.62.1644372821873;
-        Tue, 08 Feb 2022 18:13:41 -0800 (PST)
+        bh=nlmUCfg/TsNV+SiNylr1xm+pWvvvGFxxsoKbQjaTYNU=;
+        b=m0e5PRnh58J5Af0AR6L0lkYpKeuQD0+H22SXBCd71QqJ0JoNAxCZWFf/Tm7aI580iy
+         nFn024ZwEJ7VI9yPTuQOxtXclsco2Hae5LeKLuCyjRFF0AnW3GCIoW+D+mEWxI4hqh5/
+         g0FvH+Qb5RrPg+jaHd6tTEzKaDk3s8Yo4H3aSfU0heOm7kHqSFRqVlvi6YZao9WlLP0F
+         dyE3hp0fQjwu5LtDBhfZ7zKr3pkNxnUCS/Z7F0Mmqp04mW2HqS+I0VaA4KREFms6z2Fa
+         ar1aa2BOxUW8vydkLVmN1PdWJ4DJqRoFSCqWqESCsSlAveiWKoa3iDgYoTthQ7TlmAnj
+         N4ng==
+X-Gm-Message-State: AOAM532jNQk+2DPeMzqT7RFS2D+U66yZGwCmYdt4fqLk1yNdrf01qoON
+        mBFoEoPyvd3rMHd9+csiSg==
+X-Google-Smtp-Source: ABdhPJyQadfsR8b5L9kSrJzsSfTAFNbfrREPCRLJXA8FAibeYAOpDQGIopnrrdoELusgTvFyYC2Ang==
+X-Received: by 2002:a05:6808:1897:: with SMTP id bi23mr395136oib.66.1644372741785;
+        Tue, 08 Feb 2022 18:12:21 -0800 (PST)
 Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id bx41sm3324683oib.7.2022.02.08.18.13.40
+        by smtp.gmail.com with ESMTPSA id a32sm6081715oaf.17.2022.02.08.18.12.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Feb 2022 18:13:41 -0800 (PST)
-Received: (nullmailer pid 3466961 invoked by uid 1000);
-        Wed, 09 Feb 2022 02:13:40 -0000
-Date:   Tue, 8 Feb 2022 20:13:40 -0600
+        Tue, 08 Feb 2022 18:12:21 -0800 (PST)
+Received: (nullmailer pid 3464864 invoked by uid 1000);
+        Wed, 09 Feb 2022 02:12:20 -0000
+Date:   Tue, 8 Feb 2022 20:12:20 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Manu Gautam <mgautam@codeaurora.org>,
-        phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devicetree@vger.kernel.org,
+Cc:     devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>
-Subject: Re: [PATCH 07/15] dt-bindings: usb: qcom,dwc3: Add msm8953 compatible
-Message-ID: <YgMjVCGpFjJ2hkOO@robh.at.kernel.org>
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH 03/15] dt-bindings: mfd: qcom,tcsr: Document msm8953
+ compatible
+Message-ID: <YgMjBJ1fm63/x6p7@robh.at.kernel.org>
 References: <20220112194118.178026-1-luca@z3ntu.xyz>
- <20220112194118.178026-8-luca@z3ntu.xyz>
+ <20220112194118.178026-4-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220112194118.178026-8-luca@z3ntu.xyz>
+In-Reply-To: <20220112194118.178026-4-luca@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 12 Jan 2022 20:40:56 +0100, Luca Weiss wrote:
-> Document the compatible string for the DWC3 controller in msm8953.
+On Wed, 12 Jan 2022 20:40:52 +0100, Luca Weiss wrote:
+> Document the compatible for tcsr found in msm8953.
 > 
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 > ---
->  Documentation/devicetree/bindings/usb/qcom,dwc3.yaml | 1 +
+>  Documentation/devicetree/bindings/mfd/qcom,tcsr.txt | 1 +
 >  1 file changed, 1 insertion(+)
 > 
 
