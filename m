@@ -2,71 +2,103 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98802C433EF
-	for <phone-devel@archiver.kernel.org>; Wed,  9 Feb 2022 03:12:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 419E9C433FE
+	for <phone-devel@archiver.kernel.org>; Wed,  9 Feb 2022 06:34:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244254AbiBIDLf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 8 Feb 2022 22:11:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36170 "EHLO
+        id S230095AbiBIGed (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 9 Feb 2022 01:34:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347357AbiBIDLR (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 8 Feb 2022 22:11:17 -0500
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37F01C043187;
-        Tue,  8 Feb 2022 19:11:01 -0800 (PST)
-Received: by mail-oo1-f41.google.com with SMTP id 189-20020a4a03c6000000b003179d7b30d8so1025716ooi.2;
-        Tue, 08 Feb 2022 19:11:01 -0800 (PST)
+        with ESMTP id S229561AbiBIGec (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 9 Feb 2022 01:34:32 -0500
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A4B4E066E19
+        for <phone-devel@vger.kernel.org>; Tue,  8 Feb 2022 22:34:29 -0800 (PST)
+Received: by mail-pf1-x432.google.com with SMTP id i30so2590932pfk.8
+        for <phone-devel@vger.kernel.org>; Tue, 08 Feb 2022 22:34:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=OwHnp+CBrpknipruebBheU1nuu6L2xS3iNwKkt5hzSc=;
+        b=fHiYoWvoB+Gab19/vejvHtO0ZlTBEXUK3diJ0NhY8IXdVk/N0v+UGR+BlOtuSa9LMH
+         fV8Q4OxIzP0WK57293UqNQiTScEFW4NU7YCmlHlVonAFBpC1IMUIq8FKpG+r/5uIKwP8
+         iH+KcXAO1PZ9fOAgd6HRYvN+KAbfzC7vMFtfY/HGQtiNGDo/QlDrdsbnRufYiS4EA+r1
+         D8t2lXa0zwhm5wi0J82hk0F5cWF2gsouXwoXDSo+HJTSTLfm9fM2t1BQYhtkvM1Oibs1
+         Y+8F3ZcX3v/exjMqf5iK0xa7M4tY+kvbGNUiAAMP5pOzFFfo5CxVKcjZ72+T1k7lOuze
+         jDEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=4QLpY+NZl5728WnLEOfRJfXQ78UDzx/bgVTEF/QD8Cg=;
-        b=38n+esg7eG9z/UoI4ZCirTYHlpBR4jQg+BKRlEI8LPXMk782OsI7dHWhHvkojIY556
-         vl6r01heNWn4pzpFxMI27dDD95md2BdZ6PC0P/f1IMGPDuZUDforlO4QLbYvDcF8cDqW
-         +pjIFoc81zrGJya+fG/Xw4uwtigXGf4MxKJDbgTRletIeRQ4VQRLA7M2/rRWmD4FJbVT
-         5vlF9znvIGSHTncYoQkuTL7KkWm6aX0YOAoudqELN61DRCXYYQzIT2sg+yQtG2V0L78y
-         AyBftndbirJ707pdqFp7ep1XxAGPrI3RlYpCy/A78VoOqhtoiBHcSvHxDfdNBy1legoM
-         EUyQ==
-X-Gm-Message-State: AOAM5315A5TOjQv3pxDuPHdF5MKvr70JLacy+7oI5DmtWHanjdJ1bRbz
-        dz5lwcTdPFZK+WjeNVDQ9h9HVoRIdA==
-X-Google-Smtp-Source: ABdhPJw0JUU+jlnR9uiII9DzsJeXzBAVPMro9RR5JRMu/AqaBuPNJDbHCsFROHSxYk+l663r1YDeeQ==
-X-Received: by 2002:a05:6870:72c6:: with SMTP id o6mr115698oak.184.1644376260463;
-        Tue, 08 Feb 2022 19:11:00 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id b7sm6138986ooq.30.2022.02.08.19.10.59
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=OwHnp+CBrpknipruebBheU1nuu6L2xS3iNwKkt5hzSc=;
+        b=t8cYkkajbmNtP5GMZ9FBS85ZssymXoUdOggr5c2p3qzv3CS/ZI6YXOrY4vNOc3M/l5
+         SjFQFuB76ZW2BVztzx2f/JnRIUaXjdgpTyK9H6Q/BrmDCoVy3NpNY25Ud39fAiDrgDrJ
+         uX4PGvHRAeayehSPdDtu9Vt/hMQ7DVdFoVKbsw3fzvCqQ1BGzcx23dvBE/1Q7BR7ub+f
+         A9fVH2iZ5ZRmNNJgVGlZ5ZXdsjFtIvGJoQjB2mWVm4o4bOJBRxo9bqprFl2gRW5bwank
+         783CMp7BFu9AhJdJ6viywbM6DUFLuZdRMOr7iH+GqonWMrVSv21B0ceiVGlmq6aBQOyc
+         iAww==
+X-Gm-Message-State: AOAM532pxDSxyzlSBVUGhYR3jnaDpfMHCKzKC4qNA39Man7D0q45EIwV
+        vnZblBZsGLEZ2LGGZV7MyMiyqg==
+X-Google-Smtp-Source: ABdhPJx52+9Dw5Vu5Ayd4PAzN+hfjEFuihoosOnlAsFNrrdNMnMsovfyUzU9vYmhNYbMXE+jGAZnmQ==
+X-Received: by 2002:a63:3d4f:: with SMTP id k76mr749057pga.389.1644388468680;
+        Tue, 08 Feb 2022 22:34:28 -0800 (PST)
+Received: from localhost ([136.185.132.167])
+        by smtp.gmail.com with ESMTPSA id il18sm4889019pjb.27.2022.02.08.22.34.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Feb 2022 19:10:59 -0800 (PST)
-Received: (nullmailer pid 3553184 invoked by uid 1000);
-        Wed, 09 Feb 2022 03:10:58 -0000
-Date:   Tue, 8 Feb 2022 21:10:58 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Rayyan Ansari <rayyan@ansari.sh>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        Tue, 08 Feb 2022 22:34:28 -0800 (PST)
+Date:   Wed, 9 Feb 2022 12:04:26 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, phone-devel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/3] dt-bindings: pinctrl: qcom,pmic-mpp: Document PM8226
- compatible
-Message-ID: <YgMwwi3M+C0OYwwi@robh.at.kernel.org>
-References: <20220124171538.18088-1-rayyan@ansari.sh>
+        Ilia Lin <ilia.lin@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Ansuel Smith <ansuelsmth@gmail.com>,
+        Sricharan R <sricharan@codeaurora.org>,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: qcom-cpufreq-nvmem: fix reading of PVS Valid
+ fuse
+Message-ID: <20220209063426.ckefdtpfroj5zsad@vireshk-i7>
+References: <20220130114535.1570634-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220124171538.18088-1-rayyan@ansari.sh>
+In-Reply-To: <20220130114535.1570634-1-luca@z3ntu.xyz>
+User-Agent: NeoMutt/20180716-391-311a52
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 24 Jan 2022 17:15:36 +0000, Rayyan Ansari wrote:
-> Document the Device Tree binding for PM8226 MPPs.
+On 30-01-22, 12:45, Luca Weiss wrote:
+> The fuse consists of 64 bits, with this statement we're supposed to get
+> the upper 32 bits but it actually read out of bounds and got 0 instead
+> of the desired value which lead to the "PVS bin not set." codepath being
+> run resetting our pvs value.
 > 
-> Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
+> Fixes: a8811ec764f9 ("cpufreq: qcom: Add support for krait based socs")
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
->  Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/cpufreq/qcom-cpufreq-nvmem.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/drivers/cpufreq/qcom-cpufreq-nvmem.c b/drivers/cpufreq/qcom-cpufreq-nvmem.c
+> index d1744b5d9619..6dfa86971a75 100644
+> --- a/drivers/cpufreq/qcom-cpufreq-nvmem.c
+> +++ b/drivers/cpufreq/qcom-cpufreq-nvmem.c
+> @@ -130,7 +130,7 @@ static void get_krait_bin_format_b(struct device *cpu_dev,
+>  	}
+>  
+>  	/* Check PVS_BLOW_STATUS */
+> -	pte_efuse = *(((u32 *)buf) + 4);
+> +	pte_efuse = *(((u32 *)buf) + 1);
+>  	pte_efuse &= BIT(21);
+>  	if (pte_efuse) {
+>  		dev_dbg(cpu_dev, "PVS bin: %d\n", *pvs);
 
-Acked-by: Rob Herring <robh@kernel.org>
+Applied. Thanks.
+
+-- 
+viresh
