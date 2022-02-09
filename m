@@ -2,72 +2,70 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B882C4167D
-	for <phone-devel@archiver.kernel.org>; Wed,  9 Feb 2022 02:41:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98802C433EF
+	for <phone-devel@archiver.kernel.org>; Wed,  9 Feb 2022 03:12:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344706AbiBIClm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 8 Feb 2022 21:41:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36452 "EHLO
+        id S244254AbiBIDLf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 8 Feb 2022 22:11:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244610AbiBICNA (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 8 Feb 2022 21:13:00 -0500
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B41FBC06157B;
-        Tue,  8 Feb 2022 18:12:59 -0800 (PST)
-Received: by mail-oi1-f180.google.com with SMTP id s185so1094891oie.3;
-        Tue, 08 Feb 2022 18:12:59 -0800 (PST)
+        with ESMTP id S1347357AbiBIDLR (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 8 Feb 2022 22:11:17 -0500
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37F01C043187;
+        Tue,  8 Feb 2022 19:11:01 -0800 (PST)
+Received: by mail-oo1-f41.google.com with SMTP id 189-20020a4a03c6000000b003179d7b30d8so1025716ooi.2;
+        Tue, 08 Feb 2022 19:11:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=r5gCY8AxP7VeaG+k6jS1gI6uSgHlAryZ8BxlEn4k9Rc=;
-        b=UkJDCfwIHyquATNakP/z4pc3wpMctudxOoWr99WRIkYJ86bpMO4rZLW6O9pD+4BzD7
-         bW1ctiFAM/A0eocviRtEf7TYccxzKjpWo4Vel2hXmq9xbsl2MrDFXeExXbP8+aptAqhV
-         WLh0fnXDgq01NchIzgtwLTXHoPnxUwwROm1AKPBRkpAE6/mJzqoNUoNVcJ2Mx7qWoXHs
-         1WllZL7bEMhl9Hq+kPKkN9tn1ZbHQIj/XB0sV8gs806OO4GEIY+9ughTgIrJidCTs9YZ
-         Y/gW0PY3P/oByQ1yNgyjw1U+7O+byHIFXP6fPlSj2AiuPcRwvIXa92XQueXoF4HOARfl
-         Bg3w==
-X-Gm-Message-State: AOAM532z9k6zqLugve1jjlOMjX8dAzlsISBzDU2SYjs38xXY4BKlGTRD
-        Ms9fIqXqwkFhL2rVdHpbtQ==
-X-Google-Smtp-Source: ABdhPJyybaBExBPo3whsZHrm5eZwynXqvVsKrJ51MSnzvXPpLlZfZ5bu+CINFJwXbnhU5wvMT7zyTg==
-X-Received: by 2002:a05:6808:148b:: with SMTP id e11mr390463oiw.163.1644372779024;
-        Tue, 08 Feb 2022 18:12:59 -0800 (PST)
+        bh=4QLpY+NZl5728WnLEOfRJfXQ78UDzx/bgVTEF/QD8Cg=;
+        b=38n+esg7eG9z/UoI4ZCirTYHlpBR4jQg+BKRlEI8LPXMk782OsI7dHWhHvkojIY556
+         vl6r01heNWn4pzpFxMI27dDD95md2BdZ6PC0P/f1IMGPDuZUDforlO4QLbYvDcF8cDqW
+         +pjIFoc81zrGJya+fG/Xw4uwtigXGf4MxKJDbgTRletIeRQ4VQRLA7M2/rRWmD4FJbVT
+         5vlF9znvIGSHTncYoQkuTL7KkWm6aX0YOAoudqELN61DRCXYYQzIT2sg+yQtG2V0L78y
+         AyBftndbirJ707pdqFp7ep1XxAGPrI3RlYpCy/A78VoOqhtoiBHcSvHxDfdNBy1legoM
+         EUyQ==
+X-Gm-Message-State: AOAM5315A5TOjQv3pxDuPHdF5MKvr70JLacy+7oI5DmtWHanjdJ1bRbz
+        dz5lwcTdPFZK+WjeNVDQ9h9HVoRIdA==
+X-Google-Smtp-Source: ABdhPJw0JUU+jlnR9uiII9DzsJeXzBAVPMro9RR5JRMu/AqaBuPNJDbHCsFROHSxYk+l663r1YDeeQ==
+X-Received: by 2002:a05:6870:72c6:: with SMTP id o6mr115698oak.184.1644376260463;
+        Tue, 08 Feb 2022 19:11:00 -0800 (PST)
 Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id v26sm5989448ooq.20.2022.02.08.18.12.57
+        by smtp.gmail.com with ESMTPSA id b7sm6138986ooq.30.2022.02.08.19.10.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Feb 2022 18:12:58 -0800 (PST)
-Received: (nullmailer pid 3465770 invoked by uid 1000);
-        Wed, 09 Feb 2022 02:12:57 -0000
-Date:   Tue, 8 Feb 2022 20:12:57 -0600
+        Tue, 08 Feb 2022 19:10:59 -0800 (PST)
+Received: (nullmailer pid 3553184 invoked by uid 1000);
+        Wed, 09 Feb 2022 03:10:58 -0000
+Date:   Tue, 8 Feb 2022 21:10:58 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
+To:     Rayyan Ansari <rayyan@ansari.sh>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH 04/15] mfd: qcom-spmi-pmic: Add pm8953 compatible
-Message-ID: <YgMjKSNEpTLe8tsE@robh.at.kernel.org>
-References: <20220112194118.178026-1-luca@z3ntu.xyz>
- <20220112194118.178026-5-luca@z3ntu.xyz>
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/3] dt-bindings: pinctrl: qcom,pmic-mpp: Document PM8226
+ compatible
+Message-ID: <YgMwwi3M+C0OYwwi@robh.at.kernel.org>
+References: <20220124171538.18088-1-rayyan@ansari.sh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220112194118.178026-5-luca@z3ntu.xyz>
+In-Reply-To: <20220124171538.18088-1-rayyan@ansari.sh>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 12 Jan 2022 20:40:53 +0100, Luca Weiss wrote:
-> Document the compatible for pm8953 as found in msm8953.
+On Mon, 24 Jan 2022 17:15:36 +0000, Rayyan Ansari wrote:
+> Document the Device Tree binding for PM8226 MPPs.
 > 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
 > ---
->  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.txt | 1 +
+>  Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml | 1 +
 >  1 file changed, 1 insertion(+)
 > 
 
