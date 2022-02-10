@@ -2,118 +2,101 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 946D8C433F5
-	for <phone-devel@archiver.kernel.org>; Wed,  9 Feb 2022 16:39:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43CEEC433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 10 Feb 2022 15:59:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235095AbiBIQjy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 9 Feb 2022 11:39:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47782 "EHLO
+        id S243899AbiBJP7X (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 10 Feb 2022 10:59:23 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234543AbiBIQjx (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 9 Feb 2022 11:39:53 -0500
-Received: from fwd1.porkbun.com (fwd1.porkbun.com [52.10.174.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8457C0612BE;
-        Wed,  9 Feb 2022 08:39:56 -0800 (PST)
-Received: by fwd1.porkbun.com (Postfix, from userid 497)
-        id 78B7C429CD; Wed,  9 Feb 2022 16:39:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ansari.sh;
-        s=default; t=1644424796;
-        bh=ooNj/8suxQGCS+iG0qUYChLq9ehXfq6KW/VZ9iEQVtM=;
-        h=From:To:Cc:Subject:Date;
-        b=m2Mzvb3yBRtES/mr4zsa1QF5lj5mhZS1V0C6oe92XDpcv5MPqBz/vU8gOtlrbORKR
-         Tt0RqZoBdYPdmZsDUpBxIPYrE5UnfhCnMpsu6k89T+MgqUrwY6FVkrIoJVnMoPveiy
-         8vYKvLi8nSFutE0FplWcPfZ3ZRuUbp7VUV9dmiNM=
-Received: from rayyan-pc.. (unknown [90.242.138.108])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: rayyan@ansari.sh)
-        by fwd1.porkbun.com (Postfix) with ESMTPSA id B8E4D41C54;
-        Wed,  9 Feb 2022 16:39:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ansari.sh;
-        s=default; t=1644424781;
-        bh=ooNj/8suxQGCS+iG0qUYChLq9ehXfq6KW/VZ9iEQVtM=;
-        h=From:To:Cc:Subject:Date;
-        b=ZM0LJZsYefdS00PyYlDAREOJZ+oo2lgbvjHxMsfx6vGyauOZP0s8MW22WeUp9KIBg
-         WPohoiTLEsz9SvHvTuB24ydfECHae4XNrRHeJsHRTEYFIdZRWdQ1M+5X0num9UF2ap
-         7u+fgkXSA0MqW4/hGjzKg4plnyZ1S8+ZMuGshFsg=
-From:   Rayyan Ansari <rayyan@ansari.sh>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rayyan Ansari <rayyan@ansari.sh>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        with ESMTP id S243877AbiBJP7W (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Thu, 10 Feb 2022 10:59:22 -0500
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E773E5D;
+        Thu, 10 Feb 2022 07:59:23 -0800 (PST)
+Received: by mail-wm1-x329.google.com with SMTP id d14-20020a05600c34ce00b0037bf4d14dc7so3619626wmq.3;
+        Thu, 10 Feb 2022 07:59:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hBkaEtppjIdvRqQzatDwBLZj9pqZ7aXbGEZtGIQhqCQ=;
+        b=OUjF/bTwjTt65gFZqbXNvr8rNT5GYCuoWFVD1ah0VjqENAvZN0izKGeItjNxfB51vW
+         yijAhi3Kutns9V1iWa1LKkzdMmM+P9BhXR7v+15kk01/QeLevmYWWxk8BLalzApvr8Fi
+         um0THjhZja42eWnXTY65YOpYrKvN0ZyTvDLq6gT4bKrT9tCNAkPaYiZH3FFOIfbjIpVW
+         oDFUqOG54ONWe7x1f4GztJder26J3HiHy06fpRoMZ2DnBGqNrYUMaXEtFluHB092vGZY
+         RqIqK1Kb8gvHJGQHC4N3fiJDRAfMaqnGO1tTGwPe8GBrTCGRhy3R5wlzK97xh9XxSb+G
+         JEQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=hBkaEtppjIdvRqQzatDwBLZj9pqZ7aXbGEZtGIQhqCQ=;
+        b=Si6bj8MVJToJW0aafJwvLVwrGBzN8XAOZL3JPYakrhrUeGL5Mc4Q8hmdOjQ6f78Ybj
+         MIyoRD3Rvwgm/XsgJW0TddL08fV+0690QuH06bX5Uw6DRh5HgsWQ/VTlBKnI120gd9NW
+         0cIlOIBj4p4bsImIV7ZkThImzBLXBBRb5rDASMg7uphelEjBPaKSB9ySWcBk7GyGfQQ8
+         +e041jFpWn9Tiy5P8PMMqJRMKkHPqYok5KkgEa/TJNqiDLbQiDG6QxXbsjHyqPbGXIkC
+         ykNLLFQDkzqYiPVdQYoqbxDa3UKBSL0hNfGkzjSov4XU1e9vIqO7G0JI20wh0F7fy1Gp
+         XJLA==
+X-Gm-Message-State: AOAM532UCVRT0OqGSeGyv/aVSk1nKyI3YLhBqMqNzttY+5QJKzn+hOdI
+        LO8tBrS5e5SrRCiIgG8ipvpbHRkz7eXjWw==
+X-Google-Smtp-Source: ABdhPJzxo2NQNX2s5Pr0xANuiGS1KH2RSfz5xcLf24jM0AeCV5RoE3NWtczH4jRpFqShHXRmUDVpUg==
+X-Received: by 2002:a05:600c:4e16:: with SMTP id b22mr2720187wmq.8.1644508762016;
+        Thu, 10 Feb 2022 07:59:22 -0800 (PST)
+Received: from nergzd-desktop.localdomain ([62.122.67.26])
+        by smtp.gmail.com with ESMTPSA id p2sm12990551wrt.101.2022.02.10.07.59.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Feb 2022 07:59:21 -0800 (PST)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ARM: dts: qcom: pm8226: Add VADC node
-Date:   Wed,  9 Feb 2022 16:38:40 +0000
-Message-Id: <20220209163841.7360-1-rayyan@ansari.sh>
-X-Mailer: git-send-email 2.34.1
+        Shawn Guo <shawnguo@kernel.org>,
+        =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Alistair Francis <alistair@alistair23.me>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hao Fang <fanghao11@huawei.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Vincent Knecht <vincent.knecht@mailoo.org>,
+        Jeff LaBundy <jeff@labundy.com>,
+        Joe Hung <joe_hung@ilitek.com>,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        Giulio Benetti <giulio.benetti@benettiengineering.com>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH 0/2] Add support for Imagis touchscreens
+Date:   Thu, 10 Feb 2022 17:58:29 +0200
+Message-Id: <20220210155835.154421-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.35.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add a node for the voltage ADC (VADC) found in PM8226.
+Add support for Imagis touchscreens, used on various mobile
+devices such as Samsung Galaxy J5 (2015), J3 (2015), J5 (2016).
 
-Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
----
- arch/arm/boot/dts/qcom-pm8226.dtsi | 34 ++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+Markuss Broks (2):
+  dt-bindings: input/touchscreen: bindings for Imagis
+  Input: add Imagis touchscreen driver
 
-diff --git a/arch/arm/boot/dts/qcom-pm8226.dtsi b/arch/arm/boot/dts/qcom-pm8226.dtsi
-index b3d0f7b5874d..5e07f34e4ec4 100644
---- a/arch/arm/boot/dts/qcom-pm8226.dtsi
-+++ b/arch/arm/boot/dts/qcom-pm8226.dtsi
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause
- #include <dt-bindings/interrupt-controller/irq.h>
- #include <dt-bindings/spmi/spmi.h>
-+#include <dt-bindings/iio/qcom,spmi-vadc.h>
- 
- &spmi_bus {
- 	pm8226_0: pm8226@0 {
-@@ -40,6 +41,39 @@ smbb: charger@1000 {
- 			chg_otg: otg-vbus { };
- 		};
- 
-+		pm8226_vadc: adc@3100 {
-+			compatible = "qcom,spmi-vadc";
-+			reg = <0x3100>;
-+			interrupts = <0x0 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			#io-channel-cells = <1>;
-+
-+			adc-chan@7 {
-+				reg = <VADC_VSYS>;
-+				qcom,pre-scaling = <1 3>;
-+				label = "vph_pwr";
-+			};
-+			adc-chan@8 {
-+				reg = <VADC_DIE_TEMP>;
-+				label = "die_temp";
-+			};
-+			adc-chan@9 {
-+				reg = <VADC_REF_625MV>;
-+				label = "ref_625mv";
-+			};
-+			adc-chan@a {
-+				reg = <VADC_REF_1250MV>;
-+				label = "ref_1250mv";
-+			};
-+			adc-chan@e {
-+				reg = <VADC_GND_REF>;
-+			};
-+			adc-chan@f {
-+				reg = <VADC_VDD_VADC>;
-+			};
-+		};
-+
- 		pm8226_mpps: mpps@a000 {
- 			compatible = "qcom,pm8226-mpp", "qcom,spmi-mpp";
- 			reg = <0xa000>;
+ .../input/touchscreen/imagis,ist3038c.yaml    |  78 +++++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |   6 +
+ drivers/input/touchscreen/Kconfig             |  10 +
+ drivers/input/touchscreen/Makefile            |   1 +
+ drivers/input/touchscreen/imagis.c            | 329 ++++++++++++++++++
+ 6 files changed, 426 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+ create mode 100644 drivers/input/touchscreen/imagis.c
+
 -- 
-2.34.1
+2.35.0
 
