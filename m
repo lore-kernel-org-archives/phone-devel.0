@@ -2,94 +2,88 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D23FC433FE
-	for <phone-devel@archiver.kernel.org>; Thu, 10 Feb 2022 22:25:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BFD5C433F5
+	for <phone-devel@archiver.kernel.org>; Thu, 10 Feb 2022 23:50:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344931AbiBJWZs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 10 Feb 2022 17:25:48 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50914 "EHLO
+        id S1345874AbiBJXul (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 10 Feb 2022 18:50:41 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344821AbiBJWZr (ORCPT
+        with ESMTP id S1345863AbiBJXul (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 10 Feb 2022 17:25:47 -0500
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06ACB25C2;
-        Thu, 10 Feb 2022 14:25:48 -0800 (PST)
-Received: by mail-oi1-f174.google.com with SMTP id s185so7614370oie.3;
-        Thu, 10 Feb 2022 14:25:47 -0800 (PST)
+        Thu, 10 Feb 2022 18:50:41 -0500
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CBA62675
+        for <phone-devel@vger.kernel.org>; Thu, 10 Feb 2022 15:50:41 -0800 (PST)
+Received: by mail-yb1-xb35.google.com with SMTP id x136so18373384ybe.11
+        for <phone-devel@vger.kernel.org>; Thu, 10 Feb 2022 15:50:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Hjqjyiq+YanJM9r+MSYUsXMNcE5U+j3JeGuDxm9l+cg=;
+        b=w6ygwCST3sWTGzR/MzLI+iT1H1xADJpjilEAOb5rqJsuAHmA55nuGfnJtgodvMRgwA
+         YEiQpRvq3ILJlaYM4eMM5+hmKjCPh9hKt9hpxt40nnjSVRx9vOFRL3F+/w7Pg237flYr
+         ffAHqxzfXPXO6kMy+ZE2JR4C3Gb3+c0Jfahrk0qukARaQkGBL/HdUOU23Q73s3RQPpPz
+         AcxdSlWV1qhbyD21BpiVaFdn2m8fvviGUuaeeE0Kl4lVjztribFwuRWG+nfylAkEyxQl
+         ZvmieBVTv6ovduFStnIHmtdB62zGmeH6af9lXrIsBu51iNAmiyO+APtUpJJhroWBXUyR
+         7VLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=IuYr67090/unQtnWlIbbp7LhlrD6io0xMAwVl2CDLrI=;
-        b=LoeaPqu1m+OW/sbdCE912+298Ra6amAEBG/49pNTLqvUYwkj5VmW7H2RpZj+hwwRax
-         N1c9PG5wUApL5fkUwnGMb7c5VHpOja8SSG7qGfsVN6wMvwQGiMaKNKAXUqwpVsjFiHSG
-         0yYS+h6tDeo3hjQJewBYnY3arROEiEWhQhvvWO6+KaR/Q8L/CzJRsAJ0CAYeuYbVfJUB
-         yiX8nRnXWm/mP+EUeuj4XtX7fAaoa9vzQEMK9hcfUSLSQGxH1T+DwkJRTxQRsHQm8PWW
-         wfydjR9iVIxM4A40ywzyZTSurkXMbQ/bWCbBXyOvS1/QYSe2nH0HsBI+WesStQ8HNKg2
-         vh7w==
-X-Gm-Message-State: AOAM531i761g5Rhbwg4VAqq2qBRvAcKiMvu9tTvMn6p7494qE5k8ZT3l
-        TTLSNiZOzuCi/vm7tYTEnCxzzYVheQ==
-X-Google-Smtp-Source: ABdhPJxTTAiZghF/RJpwGFWgFAR76ncOfNRN9a4vEHny1yhxWEbzgB1VFssOG8rl+VNVqhvjd7VFIw==
-X-Received: by 2002:a05:6808:bd6:: with SMTP id o22mr1895131oik.309.1644531947317;
-        Thu, 10 Feb 2022 14:25:47 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id j2sm2808135oon.18.2022.02.10.14.25.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Feb 2022 14:25:46 -0800 (PST)
-Received: (nullmailer pid 3262541 invoked by uid 1000);
-        Thu, 10 Feb 2022 22:25:43 -0000
-From:   Rob Herring <robh@kernel.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Hjqjyiq+YanJM9r+MSYUsXMNcE5U+j3JeGuDxm9l+cg=;
+        b=LNu9k22hwKfARNCB9GAT/EAwqrktggaR6nJ+w5mzfMei1ncEDBXE3/Ov5RWetBfBJh
+         jpJSbPjywvMZTGW/964hHO9M0YBxREolEl6RrxfeuL+2/4QC3IfO5XDQsOTtdVEXwL2N
+         04nsarnLq1M982BjNZ0MoxmCegkQWc8p60iGrVPYONmafQhweocdnqADV3nAzAy7At/P
+         F9a4V9Iy9oESeGrdjnFKx3nRtykJtlYnxe5GiQp6WGwUX+YvUlKCxGsU5U2mgr2cE8C1
+         5sFse5Ek3ivyLS8aZSehlT1LLh5M0pevYhWpYmqw6NH27TgrmDU26+pixAPRqhC2rpID
+         h+oA==
+X-Gm-Message-State: AOAM5333R2FAeaKOR1IwoeYP7OOZQuvpoofczC5FK6IfJsmbRPHaHdrt
+        oKdNBSGXPgOD13zWkBe8BqSm54eFT7jpxIGyZFp93w==
+X-Google-Smtp-Source: ABdhPJx908m+swlqxGjab8+arRYZp1wBGa+IaZNrNQ0lnHOGZTX417Fqb41hwAaTjIXE6AhkR+Fsi76lUGckqp4+0zw=
+X-Received: by 2002:a25:5143:: with SMTP id f64mr9885978ybb.520.1644537040823;
+ Thu, 10 Feb 2022 15:50:40 -0800 (PST)
+MIME-Version: 1.0
+References: <20220210155835.154421-1-markuss.broks@gmail.com> <20220210155835.154421-2-markuss.broks@gmail.com>
+In-Reply-To: <20220210155835.154421-2-markuss.broks@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 11 Feb 2022 00:50:29 +0100
+Message-ID: <CACRpkdZsQyDN+k5r-TmVH5JrJ5EbANTtQ2WGX-WTO+t9usJegw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: input/touchscreen: bindings for Imagis
 To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, linux-input@vger.kernel.org,
-        Henrik Rydberg <rydberg@bitmath.org>,
+Cc:     linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
+        Rob Herring <robh+dt@kernel.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-kernel@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-In-Reply-To: <20220210163708.162866-2-markuss.broks@gmail.com>
-References: <20220210163708.162866-1-markuss.broks@gmail.com> <20220210163708.162866-2-markuss.broks@gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: input/touchscreen: bindings for Imagis
-Date:   Thu, 10 Feb 2022 16:25:43 -0600
-Message-Id: <1644531943.391463.3262540.nullmailer@robh.at.kernel.org>
+        Shawn Guo <shawnguo@kernel.org>,
+        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Alistair Francis <alistair@alistair23.me>,
+        Hao Fang <fanghao11@huawei.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Vincent Knecht <vincent.knecht@mailoo.org>,
+        Jeff LaBundy <jeff@labundy.com>,
+        Joe Hung <joe_hung@ilitek.com>,
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>,
+        Giulio Benetti <giulio.benetti@benettiengineering.com>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 10 Feb 2022 18:37:06 +0200, Markuss Broks wrote:
+On Thu, Feb 10, 2022 at 4:59 PM Markuss Broks <markuss.broks@gmail.com> wrote:
+
 > This patch adds device-tree bindings for the Imagis
 > IST3038C touch screen IC.
-> 
+>
 > Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-> ---
->  .../input/touchscreen/imagis,ist3038c.yaml    | 78 +++++++++++++++++++
->  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
->  2 files changed, 80 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
-> 
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Looks good to me.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.example.dts:23.26-37.13: Warning (i2c_bus_reg): /example-0/i2c/touchscreen@48: I2C bus unit address format error, expected "50"
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/1591241
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Yours,
+Linus Walleij
