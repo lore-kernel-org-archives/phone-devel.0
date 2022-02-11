@@ -2,59 +2,58 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F5BEC433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 11 Feb 2022 00:06:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7152BC433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 11 Feb 2022 00:09:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346039AbiBKAGX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 10 Feb 2022 19:06:23 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35952 "EHLO
+        id S1346147AbiBKAJH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 10 Feb 2022 19:09:07 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:45094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346019AbiBKAGW (ORCPT
+        with ESMTP id S1346109AbiBKAJH (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 10 Feb 2022 19:06:22 -0500
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6462B26DA
-        for <phone-devel@vger.kernel.org>; Thu, 10 Feb 2022 16:06:22 -0800 (PST)
-Received: by mail-yb1-xb33.google.com with SMTP id v47so20221060ybi.4
-        for <phone-devel@vger.kernel.org>; Thu, 10 Feb 2022 16:06:22 -0800 (PST)
+        Thu, 10 Feb 2022 19:09:07 -0500
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E600E58
+        for <phone-devel@vger.kernel.org>; Thu, 10 Feb 2022 16:09:07 -0800 (PST)
+Received: by mail-yb1-xb2a.google.com with SMTP id 192so20151724ybd.10
+        for <phone-devel@vger.kernel.org>; Thu, 10 Feb 2022 16:09:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=6V1dY7qH4XL0CAYuK2Vnpgq4jGgOMChN5apsqSbEVz4=;
-        b=I4KkwcTzPrUS5XBCJI5mclWxp/zgGo5+AgOEvrnHlHoZoB9A1klt91o4yKWAgYkr92
-         NScV0bFUW+pJxPlfWIgg+G6HQnWRbd1MMGot90IFSMfkJzq2qZZyJGk4Zl876Cu60n4F
-         D/n/731FNUlaCnhgn6fjzIILLjhiyldwlz9Sl3/P9rcNYmABUjdR6mz2OIcoEryA4Hop
-         3IxObDYSSEez3eHVT0QhkMY0vjTrGGPnlkoRIk/rJoQw7A8hkIr0oxoK5PmtkdgRZ+8S
-         p/7ThnZyIEVN3rzhj6HoORXIWDc7k7Oc5RnCUHvqGrxujkXTP3leAkGk/GY+ABX4VFth
-         OD1w==
+        bh=WATbzyWdcGRXO+H4n4TlwQvCVpXdxX99IfXSiHQaJb8=;
+        b=b93jgUrYF0dCu5NDWSgMtP+vbQVBJLCf2aDT0Y+lRcokF2jyM/+FsfjtgOWYM7sVOQ
+         L9y/4hQbn4XsDH7gPrMUlQX/y1OXsEVkupawI9IdgVDDMt7uxy8eMA/1x+Np64t6LGUk
+         idOsCmm0IUWK6WwyHBejLs6AD0KrBg4N267nadMePCzx04nbSlQWVrCKG++oslg4sWFr
+         8wgXwCikb9leFKQOhADIqtXmSdyYwAgLVJm8h0IuQ+XuraZLObxgzoasCt8k/SIgRjhI
+         xtWdlnbvsPHSX3XQw4cfSgtsltsN7IFduqFmrGAzndg5R/FE/iqN2Pxgg5LvYdrdzwx/
+         UfLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=6V1dY7qH4XL0CAYuK2Vnpgq4jGgOMChN5apsqSbEVz4=;
-        b=NyGSlZ+vZrTtrH1+af7z6IURzSCV8+r6K6B1oJlQYtz3UgFZtm7tXIiSL1Qmc2GLE6
-         Tw9Q87ZIGVflqewt6+N6mPf7uL1vfoETB6ywwhWrtO7WDXNHA96Kzataj9H3r1zpTgb2
-         IP/qHxptPAxEfaWyiwvbo3Jst0ya4aSbLUm/incj/ZMt2CH2S+JRp0dV4l20o4ZK63kL
-         qwIsknIyaSModRFNSXoAM9IwavNhFf3k+ADIeafKSRx6ylQBvIgh9/z8WjTM1na0ONK3
-         trNlNTIsDSSmz3JytwKmjcpb9fsqKNrdab1I0SvLwwcYsfUwXGrLjSSHo1QztYRC3BWx
-         JIxQ==
-X-Gm-Message-State: AOAM531SV6AWwgUbvlYBZ4cIOaULIa0S6AqzzQKS6CNpnv3CPrJlZKYl
-        a4lzfI92aPRXIwYUAohb8RuvWkHIAO+ArbhM1fXS9Q==
-X-Google-Smtp-Source: ABdhPJz+jjvVDAMnJAeqVCkF3QOXGnhLDGmaiuRR3lJzsVoxuZ87a7x5HWn4GRjaO1r1yECcDxpqMOwKzaMCxaaBxLU=
-X-Received: by 2002:a0d:f903:: with SMTP id j3mr9686393ywf.118.1644537981686;
- Thu, 10 Feb 2022 16:06:21 -0800 (PST)
+        bh=WATbzyWdcGRXO+H4n4TlwQvCVpXdxX99IfXSiHQaJb8=;
+        b=fjlsbbKqyjO7JFm2vUzuCBHzC6Gh5p+Thbrw/YkDinQV6TrNDAVeL4s0/laCkver4+
+         xLNGsS8gpMQZf/wNjUgJA7l4wub2Ms+ymGdh3YrTLT/jVNmGKtf0JSqeoKNexhL/waCp
+         0m9Pk80ra759AFmtSiBPd37swVda65UlTil/orknzK7Hj/bRd/tv+JUOgmm+66G3sAUg
+         SvPxqcGdQzKCSzT4ONn5LbDUox0dce//fRns4b0EQZ5NOoXaVbZBU9ygkKCoW433pLxN
+         L6Kg5vMHBMsCG4NyduZDm/rLMRywCr2efei6JaWB6zrByt1k266sg5Sn14rzsY1oYsUG
+         QEjw==
+X-Gm-Message-State: AOAM533zV1A29u8AyZx2DlFzih3wIysdguDBadDOaEcyyJ8XnlD6hl5M
+        nB3IRG9ynpRaLLwAUcpb4cQ6MTi8N/G3ThX5r6/vxw==
+X-Google-Smtp-Source: ABdhPJzA9Zv+yu6ytLAOkKNwkbWM153MDa+UA7mEboGjwCS3aoQIkbG/Y7olNbzcU4lHkbC3e0tUmgUpsn7HEFRbjfE=
+X-Received: by 2002:a81:4402:: with SMTP id r2mr10071843ywa.126.1644538146951;
+ Thu, 10 Feb 2022 16:09:06 -0800 (PST)
 MIME-Version: 1.0
-References: <20220112194118.178026-1-luca@z3ntu.xyz> <20220112194118.178026-9-luca@z3ntu.xyz>
-In-Reply-To: <20220112194118.178026-9-luca@z3ntu.xyz>
+References: <20220124171538.18088-1-rayyan@ansari.sh>
+In-Reply-To: <20220124171538.18088-1-rayyan@ansari.sh>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 11 Feb 2022 01:06:10 +0100
-Message-ID: <CACRpkdZCdEGdAPXfNsFxN+mH=J8-23Hdq+EXp=uuihwiqjbufw@mail.gmail.com>
-Subject: Re: [PATCH 08/15] dt-bindings: pinctrl: qcom: msm8953: allow gpio-reserved-ranges
-To:     Luca Weiss <luca@z3ntu.xyz>
+Date:   Fri, 11 Feb 2022 01:08:56 +0100
+Message-ID: <CACRpkdZ+R6vcQTf2t+WRhd1+0owbOTyuyNWurzhukn_aABL1JQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3] dt-bindings: pinctrl: qcom,pmic-mpp: Document PM8226 compatible
+To:     Rayyan Ansari <rayyan@ansari.sh>
 Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>, linux-gpio@vger.kernel.org,
@@ -64,14 +63,15 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Jan 12, 2022 at 8:42 PM Luca Weiss <luca@z3ntu.xyz> wrote:
+On Mon, Jan 24, 2022 at 6:17 PM Rayyan Ansari <rayyan@ansari.sh> wrote:
 
-> Allow the gpio-reserved-ranges property to be used in dts.
+> Document the Device Tree binding for PM8226 MPPs.
 >
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
 
-This patch applied to the pinctrl tree.
+This patch and patch 2 applied to the pinctrl tree!
+
+I suppose Bjorn will handle patch 3.
 
 Yours,
 Linus Walleij
