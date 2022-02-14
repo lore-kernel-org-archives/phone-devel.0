@@ -2,80 +2,205 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FFDFC433EF
-	for <phone-devel@archiver.kernel.org>; Sun, 13 Feb 2022 23:56:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80640C433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 14 Feb 2022 04:57:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238820AbiBMX4m (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 13 Feb 2022 18:56:42 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59478 "EHLO
+        id S233318AbiBNE5I (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 13 Feb 2022 23:57:08 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230195AbiBMX4k (ORCPT
+        with ESMTP id S232359AbiBNE5I (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 13 Feb 2022 18:56:40 -0500
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1444151E54
-        for <phone-devel@vger.kernel.org>; Sun, 13 Feb 2022 15:56:34 -0800 (PST)
-Received: by mail-yb1-xb29.google.com with SMTP id p19so41290951ybc.6
-        for <phone-devel@vger.kernel.org>; Sun, 13 Feb 2022 15:56:34 -0800 (PST)
+        Sun, 13 Feb 2022 23:57:08 -0500
+Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4E4651311
+        for <phone-devel@vger.kernel.org>; Sun, 13 Feb 2022 20:57:00 -0800 (PST)
+Received: by mail-oo1-xc30.google.com with SMTP id o192-20020a4a2cc9000000b00300af40d795so18065032ooo.13
+        for <phone-devel@vger.kernel.org>; Sun, 13 Feb 2022 20:57:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dZ2kK0goc3/vjQqJIQMCKc+OYazRpzayZNMisgl9DFY=;
-        b=UP5OSsTqlReuUnbYMjUGsL07qwGo7iGqMbPaC3XQc1yjarLVGAyAoXdgCfAZvy9Wrh
-         ZAFE5Qkgn4zkOwCNh3AWmw5f5G54p3pJlh7Z1qX6vphAcDEdzpJs2LTM7CsuMaycDpSU
-         s/wSCrEGOjne/99Kmr34ZzlBLB7FSyWrFCQq7T8cq9rMqsM4QrovBMa3h6AMDN0t7nHt
-         jf4vLcYwxJrkI/+yftzPmnvTXkGl8tzgPNcoYU3CDkdtUSmX+M88j6cxOz/PUyzZ+D//
-         77lm8yz2tr+RH/gZVkTQJF8f8ZbL3IDr57f3MG8QRfQF6Q8eyRW/BA55Hvj8UEogih4H
-         Dcxg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=W3k5zzusyfmXH+0ijprZwALJFhBrMH89zfqIbl/b+Cs=;
+        b=OtwaZPcpMwZiYR3zL85kTdlA5BG7zQ5KIY4cq5oxg6/knim6wi27MmzsSVUzdkYlT+
+         9fElyZwlE8rDiKaVzIW4ajiWECZP3A4XZTv/pI7qu3yNfoiaQvqbYtqu7CRp5lBGoRyv
+         VPmAmn76ndOyiH/XoLf0g0JE0xiitOxPP2+PZDPWXbzyFLJcNh1rhmtWNLivt4XMaX/o
+         4R4RM+NopwdCuyUTph4ujM580SfWun1ZbpwHvAy60CqmvUotU58qp7sXw7wFNRoT2QvI
+         xVv4KO5SSPpsTnes4JUYdVdvh/10gR6zAM0/qMXhNGxAOTa0wXDToGZRjxbNfF4tSXqr
+         dFlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dZ2kK0goc3/vjQqJIQMCKc+OYazRpzayZNMisgl9DFY=;
-        b=goM6cEo4xWOj85zN0wsNxCmrleI/SSZgJ0+4S/IG859hp2PnTJtAK1rvpOtQqp56qZ
-         2iZSWS7OA4/TkCH3n2m6/CwDfONJvE67M0aLXj/hFX1vkfvXDn8fynDP/2/DADcfC7z4
-         zvtVRIiJY7xn+dulNprKg6VnIGUhxGL+9ulgyQTd2Qp15Fur/fCdIJK+JbpXN7xjkt8r
-         4emBEE5SxQioeUmSfi+Ev1HwweSWHa1/d5dNFqfPYnELQuBuooKTJgVkE+KPBIvB6qUb
-         vd8+LnyVg5kDbdCm6mwbs+Xu2WQH9D34EKcPZROvL5k3ugiv5ED7XSLJZzfvX4NgppjR
-         LNIQ==
-X-Gm-Message-State: AOAM530Znje0w6NpHtU9mV7p3pCt4gu26VmCrQE2Tbgaq/GBIcMMLI2H
-        QAG4IR2vfhRcswWXmruf81IoQwsMH7yNeIW1GAyhZQ==
-X-Google-Smtp-Source: ABdhPJyg3vLyU0FBozuNK3IsfFSagbJAV6M3fTahC/Il4vNxR7f8zu0weiIO18uCVj4p/4tDjSzhjpyqTVsW4G9TlRE=
-X-Received: by 2002:a25:ce03:: with SMTP id x3mr10298940ybe.587.1644796593303;
- Sun, 13 Feb 2022 15:56:33 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=W3k5zzusyfmXH+0ijprZwALJFhBrMH89zfqIbl/b+Cs=;
+        b=CdToQ8b4ENP1O1B2QtTQ6vKLCdw8v68o5FLUjtiAE+5enZqXLcc2ByZhVhc55tOltp
+         96q1adn1tZsB0Etr2PRgg70kFiUSCofq7II52uaawxUMky6N8t5jl3qIyJo9XELwm37V
+         AucRIlnpC31T6mvCnhvQx/jp25T/eWHBCLUbzGcslpg9+BndUJxEROws16dR+AeTeW6q
+         X1Bf8FTAlHiJC0pldA42WidHtN/M+Amuk95pJum86kh5tgD3P748u07uzrFUS0h4upiu
+         qmMr5sWAX4duFpKbZGQhb/RqyzMktilwy8avA6V1kQYjAWY3QIZ2GRRcaH7FnX6znzbP
+         lIUA==
+X-Gm-Message-State: AOAM531qr1hmrcqdSwfcxPXnKFxZTxbA3L6fvM+fvArr2YyG9VzbLlPr
+        0u4vv2B+Ek0S2u5qEJpcrcFaeQ==
+X-Google-Smtp-Source: ABdhPJxZNoMRt/d77axd4FwIogpjRw7JYlXj4Dqw+q0pO8sRnkMlp/qaxCxi4j8RIZDli6u+YvRRSA==
+X-Received: by 2002:a05:6870:1194:: with SMTP id 20mr1240567oau.148.1644814619991;
+        Sun, 13 Feb 2022 20:56:59 -0800 (PST)
+Received: from ripper ([2600:1700:a0:3dc8:205:1bff:fec0:b9b3])
+        by smtp.gmail.com with ESMTPSA id s3sm12778139ois.19.2022.02.13.20.56.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Feb 2022 20:56:59 -0800 (PST)
+Date:   Sun, 13 Feb 2022 20:59:11 -0800
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 13/15] arm64: dts: qcom: Add MSM8953+PM8953 device tree
+Message-ID: <Ygnhn54Tl6qYzKv/@ripper>
+References: <20220112194118.178026-1-luca@z3ntu.xyz>
+ <20220112194118.178026-14-luca@z3ntu.xyz>
+ <YfhlCkb3XUvU8ae1@builder.lan>
+ <2497719.tdWV9SEqCh@g550jk>
 MIME-Version: 1.0
-References: <20210720144115.1525257-1-linus.walleij@linaro.org>
-In-Reply-To: <20210720144115.1525257-1-linus.walleij@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 14 Feb 2022 00:56:22 +0100
-Message-ID: <CACRpkdZHhGu_E+WZQ2rCXHdnWKe6oEO_heaOnf2dYuaOoXOe5Q@mail.gmail.com>
-Subject: Re: [PATCH v3] mmc: core: Add a card quirk for non-hw busy detection
-To:     linux-mmc@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     stable@vger.kernel.org, phone-devel@vger.kernel.org,
-        Ludovic Barre <ludovic.Barre@st.com>,
-        Stephan Gerhold <stephan@gerhold.net>, newbyte@disroot.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2497719.tdWV9SEqCh@g550jk>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Some updates on this issue:
+On Sun 13 Feb 12:25 PST 2022, Luca Weiss wrote:
 
-We no longer get lockups as of kernel v5.17-rc1.
+> Hi Bjorn,
+> 
+> On Montag, 31. Jänner 2022 23:39:06 CET Bjorn Andersson wrote:
+> > On Wed 12 Jan 13:41 CST 2022, Luca Weiss wrote:
+> > > From: Vladimir Lypak <vladimir.lypak@gmail.com>
+> > > 
+> > > The combination MSM8953 + PM8953 is commonly used, so add a
+> > > device tree where common power supplies etc. can be configured.
+> > > 
+> > > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > > Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> > 
+> > I would prefer if we stick with the current scheme and just push this
+> > into the device dts (or possibly some vendor-common dtsi if that's
+> > applicable).
+> > 
+> > Simply just to follow what we do on other platforms.
+> 
+> Sure, will do in v2.
+> 
+> > 
+> > 
+> > PS. I see some patches has been applied, but as you resubmit this
+> > series please split it per maintainer to make it obvious to each
+> > maintainer that they should pick their part(s).
+> 
+> What do you mean by this? Send one series per maintainer? Or something else? 
+> 
 
-The console however says things like this:
+Yes, that's what I'm suggesting.
 
-[    1.979485] mmci-pl18x 80005000.mmc: mmc2: PL180 manf 80 rev4 at
-0x80005000 irq 93,0 (pio)
-[    1.987943] mmci-pl18x 80005000.mmc: DMA channels RX dma0chan6, TX dma0chan7
-[    3.204496] mmc2: Card stuck being busy! __mmc_poll_for_busy
-[    4.284431] mmc2: Card stuck being busy! __mmc_poll_for_busy
+> Currently when making the patches I don't really "care" about who maintains 
+> what, my git send-email setup picks the relevant people for CC.
+> 
 
-And after this it never finds the partitions on the card.
+You technically don't have to care, but as it's not always obvious to a
+maintainer if he/she can take the patches destined for their subsystem
+it's easy that things ends up sitting on the list for longer than
+necessary.
 
-So the issue isn't gone, eMMC is still unusable on Skomer and Codina,
-but the issue no longer hangs the whole MMC/SD stack which is nicer.
+So you're making yourself a favour of splitting things that aren't
+dependent as you send it out.
 
-Yours,
-Linus Walleij
+> Sometimes there's also multiple maintainers/trees listed for one file, not sure 
+> what to do there... 
+> 
+
+Your current approach works, above is just a suggestion of how to make
+it easier for the maintainers, which will help you to get your patches
+land faster.
+
+Regards,
+Bjorn
+
+> Regards
+> Luca
+> 
+> > 
+> > Thanks,
+> > Bjorn
+> > 
+> > > ---
+> > > 
+> > >  arch/arm64/boot/dts/qcom/msm8953-pm8953.dtsi | 50 ++++++++++++++++++++
+> > >  1 file changed, 50 insertions(+)
+> > >  create mode 100644 arch/arm64/boot/dts/qcom/msm8953-pm8953.dtsi
+> > > 
+> > > diff --git a/arch/arm64/boot/dts/qcom/msm8953-pm8953.dtsi
+> > > b/arch/arm64/boot/dts/qcom/msm8953-pm8953.dtsi new file mode 100644
+> > > index 000000000000..b5f20fc9488e
+> > > --- /dev/null
+> > > +++ b/arch/arm64/boot/dts/qcom/msm8953-pm8953.dtsi
+> > > @@ -0,0 +1,50 @@
+> > > +// SPDX-License-Identifier: BSD-3-Clause
+> > > +/* Copyright (c) 2022, The Linux Foundation. All rights reserved. */
+> > > +
+> > > +#include "msm8953.dtsi"
+> > > +#include "pm8953.dtsi"
+> > > +
+> > > +&hsusb_phy {
+> > > +	vdd-supply = <&pm8953_l3>;
+> > > +	vdda-pll-supply = <&pm8953_l7>;
+> > > +	vdda-phy-dpdm-supply = <&pm8953_l13>;
+> > > +};
+> > > +
+> > > +&sdhc_1 {
+> > > +	vmmc-supply = <&pm8953_l8>;
+> > > +	vqmmc-supply = <&pm8953_l5>;
+> > > +};
+> > > +
+> > > +&sdhc_2 {
+> > > +	vmmc-supply = <&pm8953_l11>;
+> > > +	vqmmc-supply = <&pm8953_l12>;
+> > > +};
+> > > +
+> > > +&rpm_requests {
+> > > +	smd_rpm_regulators: pm8953-regulators {
+> > > +		compatible = "qcom,rpm-pm8953-regulators";
+> > > +
+> > > +		pm8953_s1: s1 {};
+> > > +		pm8953_s3: s3 {};
+> > > +		pm8953_s4: s4 {};
+> > > +
+> > > +		pm8953_l1: l1 {};
+> > > +		pm8953_l2: l2 {};
+> > > +		pm8953_l3: l3 {};
+> > > +		pm8953_l5: l5 {};
+> > > +		pm8953_l6: l6 {};
+> > > +		pm8953_l7: l7 {};
+> > > +		pm8953_l8: l8 {};
+> > > +		pm8953_l9: l9 {};
+> > > +		pm8953_l10: l10 {};
+> > > +		pm8953_l11: l11 {};
+> > > +		pm8953_l12: l12 {};
+> > > +		pm8953_l13: l13 {};
+> > > +		pm8953_l15: l15 {};
+> > > +		pm8953_l16: l16 {};
+> > > +		pm8953_l17: l17 {};
+> > > +		pm8953_l19: l19 {};
+> > > +		pm8953_l22: l22 {};
+> > > +		pm8953_l23: l23 {};
+> > > +	};
+> > > +};
+> 
+> 
+> 
+> 
