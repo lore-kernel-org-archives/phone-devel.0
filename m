@@ -2,151 +2,125 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5088CC433F5
-	for <phone-devel@archiver.kernel.org>; Tue, 15 Feb 2022 16:40:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DF2F1C433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 15 Feb 2022 20:52:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241722AbiBOQkf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 15 Feb 2022 11:40:35 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:49852 "EHLO
+        id S243087AbiBOUwt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 15 Feb 2022 15:52:49 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241690AbiBOQke (ORCPT
+        with ESMTP id S234234AbiBOUwt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 15 Feb 2022 11:40:34 -0500
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 328EBF2111
-        for <phone-devel@vger.kernel.org>; Tue, 15 Feb 2022 08:40:24 -0800 (PST)
-Received: by mail-oi1-x229.google.com with SMTP id r27so21339553oiw.4
-        for <phone-devel@vger.kernel.org>; Tue, 15 Feb 2022 08:40:24 -0800 (PST)
+        Tue, 15 Feb 2022 15:52:49 -0500
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C1611C129;
+        Tue, 15 Feb 2022 12:52:37 -0800 (PST)
+Received: by mail-lj1-x22d.google.com with SMTP id bx31so369746ljb.0;
+        Tue, 15 Feb 2022 12:52:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=I1kj9pE4xw6JAJzinakuQqOKg6JJ0KzkGT4gYU3pHWA=;
-        b=UCeI7kpxKycxeDv1CKWVXZiSqQZl7pCD/Zi0Nn3FNq3/b6tW5KckWNvCu73yVCLynj
-         tCJq1ODydHRD39fH5qHnxqOJqJLVz3jkbcavRpeXAJnRcNuHIOo+HTRZHB0Mc4d3Bi3p
-         Od1LuZhoT50Uce+glyEI0gfVmvUrW/OVI2bql8B1YEiCpeiZvZWdeRjn5da4UlWV79pH
-         CRT5vtEZAD9Sx8lZHCTtt85jWIigmAFLchrwoWa1JwKM3vC/n55xqG6/8vrLMauyGD6f
-         wvs17n2TNHLYXbPIdfFxRxabOftLSvL7hWs9hIQS7BzWVIKRCFImVfyqpNH2RFUZf2I5
-         MXww==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jMGS+E9enTU1RcYho7dj5zKVAmkRHoSxC5p3q4YCOAA=;
+        b=TXjKJBkXqHUJCRipKn5GIAwWraS1vUkN1i0EQt9VdLuvIyWVfKvZRokvzg152ndI4k
+         8NX/TaP84SGMpYzCPOQZCLEYtHtdSOHW+NqzX7VCPYgh1PL6/uuZj0W+pVqfIjVHbD7w
+         ppaVgXSohp6ycHYxOviqigiTtE8NHePAkjXjoQgzzYS+uGO56eUAHThOFwxuaQLV++YT
+         fswQAEMZcdGJ6tcPRhaXSMX/ez7pOgsU5E41hdB/lnSHl9MUtv0N3AkxHDjpTHkMcYMF
+         p/WP3vPFRFme3B++oKJJvL6oD4LKbryqCWhuvpRy1LmlJeErAzYuguLaDAMpHdGrDShn
+         tSHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=I1kj9pE4xw6JAJzinakuQqOKg6JJ0KzkGT4gYU3pHWA=;
-        b=ksDf8fiCIiA5bWqUto6Ka5KDQz3oWQzQ1i23q3ji3ar/aQ6kSmjy9jC4FvLrv0I8yu
-         r9U6jq+0IgbekYHctRgOxZMWvdDQdqGVbLyVPDoKYt0WDNAQirEl7pljbmSzTUy1Z/Om
-         vqhu6WGnl06uTMW4cVkKVZIwGzpWu/jcvVJnjGJU/EhCQkWsu+8+uYhFc/s3+YhhgG82
-         aRHY8/HUn3C5v3+9Jj5B/Z3h945SBAQHT7H3dguugY2qfdu/gLPRsd7irseQY1xGxy+4
-         DVdA6osrZhfgXR1cEqQwCGT6omMUnLqYI1pZFpkXesMW+tZwqRJV9skBk6KbTQy/6Fpp
-         5dWA==
-X-Gm-Message-State: AOAM532gD6RSF0IUnM0uQJg/QvYgwpdehmMhQ8rResjpYiEXhzMhLxr7
-        TXc/KgG8YPGJFLB1vqemkm6Xeg==
-X-Google-Smtp-Source: ABdhPJwywAFvvPp04iK1gyctbPPD1igrq3/W2+Vd3W1gPOO1Z7BW13OeaSkecxF5Lrcky9rnyejdRw==
-X-Received: by 2002:aca:3886:0:b0:2cf:6189:ee47 with SMTP id f128-20020aca3886000000b002cf6189ee47mr1954823oia.58.1644943223401;
-        Tue, 15 Feb 2022 08:40:23 -0800 (PST)
-Received: from yoga ([2600:1700:a0:3dc8:5c39:baff:fe03:898d])
-        by smtp.gmail.com with ESMTPSA id x3sm1703671oiv.29.2022.02.15.08.40.22
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jMGS+E9enTU1RcYho7dj5zKVAmkRHoSxC5p3q4YCOAA=;
+        b=77s0gb4P185C8WXFhNdEl2v/9ENfQOPFC3YCn4z46f1yya/Hvb71t+AuF9ePB4Zwsc
+         xroL95bGL1pOIEiUVIjrv1nN7wNp9/AP5bWYmYNHi09y4bjYe1kMxVq54m93Yw/wHHMA
+         7NzUkGOztEx6xBdqWSwk0+AmSe6OpRqdatNTcuH+8+y6h2tOLk8HIOm74ZYBQkMMnA8U
+         N/pWHfaJY1rnGcZtnstqNekvVS8XMSYAGDl/2BH86ud7pfeo9imMKe37xET8t9YRlZFA
+         lsOr4f/Uccv1QYf9KCsyivqE32la8wTSUn7A5AfJOfOQb+S73/PFdZhNMAtMRyw8ojg4
+         YDkA==
+X-Gm-Message-State: AOAM532K+g1zlG+S4K9AKwh/Z1giiXyC9KLnx6ouzJZeKHkwVLA4Fg5t
+        V6eO1XBeD24xG3d/ny6Q/OwxuWleOsI8oPPo
+X-Google-Smtp-Source: ABdhPJwiCTNEg3YI/aYqALAieZsJp9VDJ6J4PFaM9mcfBU04Kstzv2YEB7Tvm59YAYTzsqXUsyo7tg==
+X-Received: by 2002:a05:651c:1403:: with SMTP id u3mr569012lje.265.1644958355155;
+        Tue, 15 Feb 2022 12:52:35 -0800 (PST)
+Received: from nergzd-desktop.localdomain ([62.122.67.26])
+        by smtp.gmail.com with ESMTPSA id 18sm1129337ljw.71.2022.02.15.12.52.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Feb 2022 08:40:22 -0800 (PST)
-Date:   Tue, 15 Feb 2022 10:40:20 -0600
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 10/15] arm64: dts: qcom: Add MSM8953 device tree
-Message-ID: <YgvXdFZfWEzHF2Oy@yoga>
-References: <20220112194118.178026-1-luca@z3ntu.xyz>
- <20220112194118.178026-11-luca@z3ntu.xyz>
+        Tue, 15 Feb 2022 12:52:34 -0800 (PST)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH v4 0/2] Add support for Imagis touchscreens
+Date:   Tue, 15 Feb 2022 22:51:50 +0200
+Message-Id: <20220215205153.57966-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.35.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220112194118.178026-11-luca@z3ntu.xyz>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed 12 Jan 13:40 CST 2022, Luca Weiss wrote:
+Add support for Imagis touchscreens, used on various mobile
+devices such as Samsung Galaxy J5 (2015), J3 (2015), J5 (2016).
 
-> From: Vladimir Lypak <vladimir.lypak@gmail.com>
-> 
-> Add a base DT for MSM8953 SoC.
-> 
-> Co-developed-by: Luca Weiss <luca@z3ntu.xyz>
-> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  arch/arm64/boot/dts/qcom/msm8953.dtsi | 1337 +++++++++++++++++++++++++
->  1 file changed, 1337 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/qcom/msm8953.dtsi
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> new file mode 100644
-> index 000000000000..59918b527750
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> @@ -0,0 +1,1337 @@
-> +// SPDX-License-Identifier: BSD-3-Clause
-> +/* Copyright (c) 2022, The Linux Foundation. All rights reserved. */
-> +
-> +#include <dt-bindings/clock/qcom,gcc-msm8953.h>
-> +#include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/interrupt-controller/arm-gic.h>
-> +#include <dt-bindings/power/qcom-rpmpd.h>
-> +#include <dt-bindings/thermal/thermal.h>
-> +
-> +/ {
-> +	interrupt-parent = <&intc>;
-> +
-> +	#address-cells = <2>;
-> +	#size-cells = <2>;
+v2: rebase on top of the correct tree
+v3:
+- prefix all defines as IST3038C
+- use two tabs for all defines
+- add missing <linux/regulator/consumer.h> header
+- drop ADDR_LEN and DATA_LEN defines; use sizeof(reg_be) instead
+- use __be32 type for reg_be
+- add a comment about i2c read not being successful on first try
+- use "ret" instead of "res" in read_reg function
+- don't use the internal __cpu_to_be32 function, use cpu_to_be32 instead
+- use "error" instead of "ret" in interrupt handler
+- pass the slot state directly, without ternary operator
+- drop the dev_err in init_input_dev function
+- reorder the functions in _probe so that the chipid command is read as fast 
+as possible
+- don't use imagis_start in probe
+- initialize the irq after the chip is powered
+- save the return value in imagis_resume
+- drop WIDTH_MAJOR since only TOUCH_MAJOR is reported
+- the "chip detected" message is now dev_dbg
+- reorder headers so they are in alphabetic order
+- use GENMASK to generate masks for getting the X and Y coordinates and touch area
+- drop *_pressure from device tree bindings since the driver doesn't
+support reporting pressure
+- fix the typo with i2c address in device treee bindings (48 instead of 50)
+- add IRQF_NO_AUTOEN flag to avoid unbalanced irq enable
+v4:
+- alphabetically order MAINTAINERS entry
+- alphabetically order Kconfig and Makefile
+- drop the error message in init_regulators
+- disable regulators on probe error
+- drop IRQF_TRIGGER_FALLING
+- @ is not optional (device tree bindings)
+- don't use items for compatible
+- add maxItems property to reg, drop the comment
 
-Why do you have address/size-cells of 2, and then limit them to 1 in
-/soc?
+Markuss Broks (2):
+  dt-bindings: input/touchscreen: bindings for Imagis
+  Input: add Imagis touchscreen driver
 
-> +
-> +	aliases {
-> +		i2c1 = &i2c_1;
-> +		i2c2 = &i2c_2;
-> +		i2c3 = &i2c_3;
-> +		i2c4 = &i2c_4;
-> +		i2c5 = &i2c_5;
-> +		i2c6 = &i2c_6;
-> +		i2c7 = &i2c_7;
-> +		i2c8 = &i2c_8;
+ .../input/touchscreen/imagis,ist3038c.yaml    |  78 +++++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |   6 +
+ drivers/input/touchscreen/Kconfig             |  10 +
+ drivers/input/touchscreen/Makefile            |   1 +
+ drivers/input/touchscreen/imagis.c            | 329 ++++++++++++++++++
+ 6 files changed, 426 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+ create mode 100644 drivers/input/touchscreen/imagis.c
 
-It was expressed a while back that you should specify alias only for the
-things that you have enabled in your .dts.
+-- 
+2.35.0
 
-> +	};
-[..]
-> +		tcsr_mutex: hwlock@1905000 {
-> +			compatible = "qcom,tcsr-mutex";
-> +			reg = <0x1905000 0x20000>;
-> +			#hwlock-cells = <1>;
-> +		};
-> +
-> +		tcsr: syscon@1937000 {
-> +			compatible = "qcom,tcsr-msm8953", "syscon";
-> +			reg = <0x1937000 0x30000>;
-> +		};
-> +
-> +		tcsr_phy_clk_scheme_sel: syscon@193f044 {
-
-I don't fancy exposing a single word from the middle of &tcsr using a
-syscon. The tcsr node should express the TCSR region and if we need to
-reference bits of information within that we should do that in some
-structured way.
-
-Wouldn't nvmem be a good candidate for this?
-
-> +			compatible = "syscon";
-> +			reg = <0x193f044 0x4>;
-> +		};
-> +
-
-Regards,
-Bjorn
