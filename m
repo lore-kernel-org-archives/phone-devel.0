@@ -2,205 +2,106 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80640C433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 14 Feb 2022 04:57:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AA84C433F5
+	for <phone-devel@archiver.kernel.org>; Tue, 15 Feb 2022 12:59:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233318AbiBNE5I (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 13 Feb 2022 23:57:08 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41774 "EHLO
+        id S236602AbiBOM7N (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 15 Feb 2022 07:59:13 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232359AbiBNE5I (ORCPT
+        with ESMTP id S235952AbiBOM7N (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 13 Feb 2022 23:57:08 -0500
-Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4E4651311
-        for <phone-devel@vger.kernel.org>; Sun, 13 Feb 2022 20:57:00 -0800 (PST)
-Received: by mail-oo1-xc30.google.com with SMTP id o192-20020a4a2cc9000000b00300af40d795so18065032ooo.13
-        for <phone-devel@vger.kernel.org>; Sun, 13 Feb 2022 20:57:00 -0800 (PST)
+        Tue, 15 Feb 2022 07:59:13 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5264D7F6ED
+        for <phone-devel@vger.kernel.org>; Tue, 15 Feb 2022 04:59:03 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id i14so31923598wrc.10
+        for <phone-devel@vger.kernel.org>; Tue, 15 Feb 2022 04:59:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=W3k5zzusyfmXH+0ijprZwALJFhBrMH89zfqIbl/b+Cs=;
-        b=OtwaZPcpMwZiYR3zL85kTdlA5BG7zQ5KIY4cq5oxg6/knim6wi27MmzsSVUzdkYlT+
-         9fElyZwlE8rDiKaVzIW4ajiWECZP3A4XZTv/pI7qu3yNfoiaQvqbYtqu7CRp5lBGoRyv
-         VPmAmn76ndOyiH/XoLf0g0JE0xiitOxPP2+PZDPWXbzyFLJcNh1rhmtWNLivt4XMaX/o
-         4R4RM+NopwdCuyUTph4ujM580SfWun1ZbpwHvAy60CqmvUotU58qp7sXw7wFNRoT2QvI
-         xVv4KO5SSPpsTnes4JUYdVdvh/10gR6zAM0/qMXhNGxAOTa0wXDToGZRjxbNfF4tSXqr
-         dFlA==
+        bh=zCpn2JXq0VskflvQH2SSx8I9uTFbNRNFydiZKPnDvhI=;
+        b=lDOFr/XxJeC0Y/42M08O7MvgoGf2FhswQUQpb+D1iRzw+/MCqXjZyDN32KSXivqcP6
+         3FBgZILaDnjuOZgwIzIzZcObKk6UmZhc/Fa0tBVi7aLeWjLmh99S8enRwY8dE4VeOyBW
+         elAzCU/6enOMQFl15N1Tgg1v7JDAPXYbP1W1iS1YkcanoBEbu0hzkPdqblqU3FEkaPgt
+         AmbgkacxfeuhcI9Vg9u8r924SDfc0q7H8zX6+mBCu9aebjIKFPaCxnugvp1a63s04FEW
+         yC/Pe5igxodlc4AKf6Tas1Q8fPsPMxVUpYcjPziF7yDdtWqU7NREx5gUtBdizd1nRYxy
+         9XsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:content-transfer-encoding
          :in-reply-to;
-        bh=W3k5zzusyfmXH+0ijprZwALJFhBrMH89zfqIbl/b+Cs=;
-        b=CdToQ8b4ENP1O1B2QtTQ6vKLCdw8v68o5FLUjtiAE+5enZqXLcc2ByZhVhc55tOltp
-         96q1adn1tZsB0Etr2PRgg70kFiUSCofq7II52uaawxUMky6N8t5jl3qIyJo9XELwm37V
-         AucRIlnpC31T6mvCnhvQx/jp25T/eWHBCLUbzGcslpg9+BndUJxEROws16dR+AeTeW6q
-         X1Bf8FTAlHiJC0pldA42WidHtN/M+Amuk95pJum86kh5tgD3P748u07uzrFUS0h4upiu
-         qmMr5sWAX4duFpKbZGQhb/RqyzMktilwy8avA6V1kQYjAWY3QIZ2GRRcaH7FnX6znzbP
-         lIUA==
-X-Gm-Message-State: AOAM531qr1hmrcqdSwfcxPXnKFxZTxbA3L6fvM+fvArr2YyG9VzbLlPr
-        0u4vv2B+Ek0S2u5qEJpcrcFaeQ==
-X-Google-Smtp-Source: ABdhPJxZNoMRt/d77axd4FwIogpjRw7JYlXj4Dqw+q0pO8sRnkMlp/qaxCxi4j8RIZDli6u+YvRRSA==
-X-Received: by 2002:a05:6870:1194:: with SMTP id 20mr1240567oau.148.1644814619991;
-        Sun, 13 Feb 2022 20:56:59 -0800 (PST)
-Received: from ripper ([2600:1700:a0:3dc8:205:1bff:fec0:b9b3])
-        by smtp.gmail.com with ESMTPSA id s3sm12778139ois.19.2022.02.13.20.56.59
+        bh=zCpn2JXq0VskflvQH2SSx8I9uTFbNRNFydiZKPnDvhI=;
+        b=jMvCeE8IUpF5SxU2hdztWVS+QxDQbiffm6wOfjx1XmxgDqRjxv8JiNx/tYoWfBZi7L
+         NxHiFBsOAwafuJCogzvcdIV+Bz3bk6AvFBy5Wi97w8z4ZbwoRBGah5eCISl0oDFZC2C4
+         p/rdJ8frAPQhUO+e1k0r3dhAv8LhphuZCLpixkNg0SuYo7QEDyDH8ipjYMTqdclreeGc
+         BJdlbkbCP/MBkVWZ22gOxhvn18dax740Yi3avbiwQZjSG5QP4CIGJnYakeIuNOkqqyMf
+         h0F8M907ueSSXwPZTgJDjKtchCjVusHw7DZHECS5XvilQ9QAE5ebvM1L0eqUAoOiCShY
+         urUQ==
+X-Gm-Message-State: AOAM530tywHUyd6RiHBUki/SHd3K+HrJcmYIfLOm/sGGKIAbT7HEh5/3
+        CF/dZljxyCIZ+w7VA9XT6mcKKEZ9J/zz1Q==
+X-Google-Smtp-Source: ABdhPJzR05gOWEzqqC2fldn5T2nllYrHfwlb4CSV4AZs7n55qc988hVFpstMdBCmyRZ47NemCaA44w==
+X-Received: by 2002:adf:f803:: with SMTP id s3mr3237755wrp.660.1644929941843;
+        Tue, 15 Feb 2022 04:59:01 -0800 (PST)
+Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
+        by smtp.gmail.com with ESMTPSA id bg23sm20081554wmb.5.2022.02.15.04.59.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Feb 2022 20:56:59 -0800 (PST)
-Date:   Sun, 13 Feb 2022 20:59:11 -0800
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+        Tue, 15 Feb 2022 04:59:01 -0800 (PST)
+Date:   Tue, 15 Feb 2022 12:58:59 +0000
+From:   Lee Jones <lee.jones@linaro.org>
 To:     Luca Weiss <luca@z3ntu.xyz>
 Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 13/15] arm64: dts: qcom: Add MSM8953+PM8953 device tree
-Message-ID: <Ygnhn54Tl6qYzKv/@ripper>
+Subject: Re: [PATCH 03/15] dt-bindings: mfd: qcom,tcsr: Document msm8953
+ compatible
+Message-ID: <YgujkzAezfFBNRDP@google.com>
 References: <20220112194118.178026-1-luca@z3ntu.xyz>
- <20220112194118.178026-14-luca@z3ntu.xyz>
- <YfhlCkb3XUvU8ae1@builder.lan>
- <2497719.tdWV9SEqCh@g550jk>
+ <20220112194118.178026-4-luca@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2497719.tdWV9SEqCh@g550jk>
+In-Reply-To: <20220112194118.178026-4-luca@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun 13 Feb 12:25 PST 2022, Luca Weiss wrote:
+On Wed, 12 Jan 2022, Luca Weiss wrote:
 
-> Hi Bjorn,
+> Document the compatible for tcsr found in msm8953.
 > 
-> On Montag, 31. J�nner 2022 23:39:06 CET Bjorn Andersson wrote:
-> > On Wed 12 Jan 13:41 CST 2022, Luca Weiss wrote:
-> > > From: Vladimir Lypak <vladimir.lypak@gmail.com>
-> > > 
-> > > The combination MSM8953 + PM8953 is commonly used, so add a
-> > > device tree where common power supplies etc. can be configured.
-> > > 
-> > > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> > 
-> > I would prefer if we stick with the current scheme and just push this
-> > into the device dts (or possibly some vendor-common dtsi if that's
-> > applicable).
-> > 
-> > Simply just to follow what we do on other platforms.
-> 
-> Sure, will do in v2.
-> 
-> > 
-> > 
-> > PS. I see some patches has been applied, but as you resubmit this
-> > series please split it per maintainer to make it obvious to each
-> > maintainer that they should pick their part(s).
-> 
-> What do you mean by this? Send one series per maintainer? Or something else? 
-> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> ---
+>  Documentation/devicetree/bindings/mfd/qcom,tcsr.txt | 1 +
+>  1 file changed, 1 insertion(+)
 
-Yes, that's what I'm suggesting.
+Doesn't seem to apply.
 
-> Currently when making the patches I don't really "care" about who maintains 
-> what, my git send-email setup picks the relevant people for CC.
-> 
+Could you please rebase.
 
-You technically don't have to care, but as it's not always obvious to a
-maintainer if he/she can take the patches destined for their subsystem
-it's easy that things ends up sitting on the list for longer than
-necessary.
+> diff --git a/Documentation/devicetree/bindings/mfd/qcom,tcsr.txt b/Documentation/devicetree/bindings/mfd/qcom,tcsr.txt
+> index c5f4f0ddfcc3..add61bcc3c74 100644
+> --- a/Documentation/devicetree/bindings/mfd/qcom,tcsr.txt
+> +++ b/Documentation/devicetree/bindings/mfd/qcom,tcsr.txt
+> @@ -10,6 +10,7 @@ Required properties:
+>  		"qcom,tcsr-ipq8064", "syscon" for IPQ8064
+>  		"qcom,tcsr-apq8064", "syscon" for APQ8064
+>  		"qcom,tcsr-msm8660", "syscon" for MSM8660
+> +		"qcom,tcsr-msm8953", "syscon" for MSM8953
+>  		"qcom,tcsr-msm8960", "syscon" for MSM8960
+>  		"qcom,tcsr-msm8974", "syscon" for MSM8974
+>  		"qcom,tcsr-apq8084", "syscon" for APQ8084
 
-So you're making yourself a favour of splitting things that aren't
-dependent as you send it out.
-
-> Sometimes there's also multiple maintainers/trees listed for one file, not sure 
-> what to do there... 
-> 
-
-Your current approach works, above is just a suggestion of how to make
-it easier for the maintainers, which will help you to get your patches
-land faster.
-
-Regards,
-Bjorn
-
-> Regards
-> Luca
-> 
-> > 
-> > Thanks,
-> > Bjorn
-> > 
-> > > ---
-> > > 
-> > >  arch/arm64/boot/dts/qcom/msm8953-pm8953.dtsi | 50 ++++++++++++++++++++
-> > >  1 file changed, 50 insertions(+)
-> > >  create mode 100644 arch/arm64/boot/dts/qcom/msm8953-pm8953.dtsi
-> > > 
-> > > diff --git a/arch/arm64/boot/dts/qcom/msm8953-pm8953.dtsi
-> > > b/arch/arm64/boot/dts/qcom/msm8953-pm8953.dtsi new file mode 100644
-> > > index 000000000000..b5f20fc9488e
-> > > --- /dev/null
-> > > +++ b/arch/arm64/boot/dts/qcom/msm8953-pm8953.dtsi
-> > > @@ -0,0 +1,50 @@
-> > > +// SPDX-License-Identifier: BSD-3-Clause
-> > > +/* Copyright (c) 2022, The Linux Foundation. All rights reserved. */
-> > > +
-> > > +#include "msm8953.dtsi"
-> > > +#include "pm8953.dtsi"
-> > > +
-> > > +&hsusb_phy {
-> > > +	vdd-supply = <&pm8953_l3>;
-> > > +	vdda-pll-supply = <&pm8953_l7>;
-> > > +	vdda-phy-dpdm-supply = <&pm8953_l13>;
-> > > +};
-> > > +
-> > > +&sdhc_1 {
-> > > +	vmmc-supply = <&pm8953_l8>;
-> > > +	vqmmc-supply = <&pm8953_l5>;
-> > > +};
-> > > +
-> > > +&sdhc_2 {
-> > > +	vmmc-supply = <&pm8953_l11>;
-> > > +	vqmmc-supply = <&pm8953_l12>;
-> > > +};
-> > > +
-> > > +&rpm_requests {
-> > > +	smd_rpm_regulators: pm8953-regulators {
-> > > +		compatible = "qcom,rpm-pm8953-regulators";
-> > > +
-> > > +		pm8953_s1: s1 {};
-> > > +		pm8953_s3: s3 {};
-> > > +		pm8953_s4: s4 {};
-> > > +
-> > > +		pm8953_l1: l1 {};
-> > > +		pm8953_l2: l2 {};
-> > > +		pm8953_l3: l3 {};
-> > > +		pm8953_l5: l5 {};
-> > > +		pm8953_l6: l6 {};
-> > > +		pm8953_l7: l7 {};
-> > > +		pm8953_l8: l8 {};
-> > > +		pm8953_l9: l9 {};
-> > > +		pm8953_l10: l10 {};
-> > > +		pm8953_l11: l11 {};
-> > > +		pm8953_l12: l12 {};
-> > > +		pm8953_l13: l13 {};
-> > > +		pm8953_l15: l15 {};
-> > > +		pm8953_l16: l16 {};
-> > > +		pm8953_l17: l17 {};
-> > > +		pm8953_l19: l19 {};
-> > > +		pm8953_l22: l22 {};
-> > > +		pm8953_l23: l23 {};
-> > > +	};
-> > > +};
-> 
-> 
-> 
-> 
+-- 
+Lee Jones [李琼斯]
+Principal Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
