@@ -2,90 +2,118 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E423DC433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 15 Feb 2022 12:59:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D6FAC433F5
+	for <phone-devel@archiver.kernel.org>; Tue, 15 Feb 2022 15:15:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238029AbiBOM7w (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 15 Feb 2022 07:59:52 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52276 "EHLO
+        id S239292AbiBOPPt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 15 Feb 2022 10:15:49 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236600AbiBOM7t (ORCPT
+        with ESMTP id S234626AbiBOPPt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 15 Feb 2022 07:59:49 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 718EE7F6F9
-        for <phone-devel@vger.kernel.org>; Tue, 15 Feb 2022 04:59:39 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id u1so18224726wrg.11
-        for <phone-devel@vger.kernel.org>; Tue, 15 Feb 2022 04:59:39 -0800 (PST)
+        Tue, 15 Feb 2022 10:15:49 -0500
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 048253F308;
+        Tue, 15 Feb 2022 07:15:39 -0800 (PST)
+Received: by mail-lf1-x12b.google.com with SMTP id o2so37529669lfd.1;
+        Tue, 15 Feb 2022 07:15:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=vgVdr55qs8iiMY1rMIglKTHpx/WkJBbTswO6JXL5f0E=;
-        b=AL2Ijt1akTuY2Axq7/U0a8JApwjaCQMOc14gM49BL5Ohi1z1nupgWzMpSHAnyAsDaP
-         VZ+rAVFRsPblaoCFTJzs92dXsMVR49gG2kbXC84FSAEOo5q/vWQVyIg70/0T8y65GRTx
-         iN3/WQY9sc8LQNDxrJf3FzVEODqYumTSo1ff2xKSJ42Cq7WR9ueZnLoCthZgAmpND4iG
-         rrlLPe9IA4VFgDXXQQ7UdauR2tdReHaWNY4MDhrqsRSoscm3sEwbqC3cjw9p0M0YYKO9
-         QdD8+3eFrJA32eNmf07UoihsqpEUr/oXFLKwyug0ys8h3gP1fqvO7i9JMkxtOiDbJmnL
-         fhUQ==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=9HjfjdaOOin/bN5gqnNUktr7hRS40a6cu6WZxUerm6Y=;
+        b=HBgtjPThZvYXcJsedr1E+R8cFCEa4Ct3G2GricOHSJ9xUa3YJgvh49DpcSNcGVI8sp
+         7BMqnwrjt1cSF9h7lrwZpETViuFDigKHItENjybR4Z0+f90r33dnD2T0fAWbI/KhX0Xu
+         gHRKhYTHKBvphfWCcxCm2Z4MaozAE76wNiRYrEyb8ngDyHKZx/gakHAD5NFlq25PbRsy
+         aYIOUqmuuB9vSRa8os4jzCBHi1ntmW+1zU2kH9fquK5Tn/9BuIUyPkVpGPiJ1YU3KOGv
+         zU8kAvAWhNrUQbTlTnC6n6rSFGxznAaFxhFrnsjC6kBDjeNyWtdm3Vycx3SICt0CwJdb
+         IVDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=vgVdr55qs8iiMY1rMIglKTHpx/WkJBbTswO6JXL5f0E=;
-        b=xnuRkBXmqWyCDUxNnf+4lJhlkl+v2o03Q28RZuttfTRaomBV+CJkRtEKaCVczZS68M
-         zK2c7781crPg19eR7BfuT8+zkksyymI7mZAQgDvyT2dZvmSMauYfH1i0tgsYl3MpfueH
-         X84605LI6/Eqp9gG5TxC9x2IoSSAajYtlaJ8xsMXlRN34ix4qtN8JXOQKtJtmH9XT+F+
-         lIwAVNIdstvB0n3QqB1cCWWEp68BRMlg0x/typcaxL2IftqnmNRZGLYfoG/NTUMWj+L9
-         UjVOu8QpjWwRHZYcop7qpBB43MTFDvxfFi5k1U0cLbAeQhskvxSBZWeBvDeNr+7dvpf1
-         dRsA==
-X-Gm-Message-State: AOAM530cYLKRfW1TuPH8Bu8RlVo8bHLUYmCB7eoY+Oqw7fGJFSaUoLgs
-        d3A/cgLj/62Uv35jwwdMACI3DA==
-X-Google-Smtp-Source: ABdhPJz2N14OPH+RuT8qy2PgXqqyA9+52lT1MuLV3QbvF/pUZLCpW+TA6k6z+rkdC2Lx8SeboTlj9A==
-X-Received: by 2002:adf:f241:: with SMTP id b1mr3109444wrp.444.1644929978059;
-        Tue, 15 Feb 2022 04:59:38 -0800 (PST)
-Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
-        by smtp.gmail.com with ESMTPSA id s7sm3538160wro.104.2022.02.15.04.59.37
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=9HjfjdaOOin/bN5gqnNUktr7hRS40a6cu6WZxUerm6Y=;
+        b=obvbQD4s8zLScMghhfZZsS+sNeOi/yI+VnoeI1Y9qKzzL4UmkGKOvhRL9Fbp4YTmCW
+         DgsvhafXaQ/ON6g7WueeCCRcdFJIvtX+DkkDoRYOWzlrdEAxcxk0kRgtZdlwAlJSMXEk
+         KQttf9+KYA32/aFPGMp5nC0g1YZiBD8nscTEcb3cBJQdpVT1SdG/2i6QkZuKRwMAY2kQ
+         TEAMejw9wlYE41wPOnStrWcg9IIZHPOlhdVtaPERuapwW9FUwabQtkhiL++rvf8RPpXC
+         PnAgpCMrg8LtUTDlivUYRSqwY/Rzd/pP4Bp/BT2yp2Gp3lVcLOyQqvNqrdelyPO0dhKw
+         vrlw==
+X-Gm-Message-State: AOAM531BIym+b4KEwgwxlTXIIoBOPUNtb8DOBPSUMrBj3FzcF16snFtO
+        nCn2EwKWTgOHqBYCzgIXRfH7bN9HlF/2xsglXmM=
+X-Google-Smtp-Source: ABdhPJzfmAs6GpMj4I35HRBE1sJHAgNLTgNO/8mLQXCtN22V56CmKVSUQSI6ZStRrZLbrhzY8U7fsA==
+X-Received: by 2002:a05:6512:32c1:: with SMTP id f1mr3459503lfg.674.1644938137123;
+        Tue, 15 Feb 2022 07:15:37 -0800 (PST)
+Received: from nergzd-desktop.localdomain ([62.122.67.26])
+        by smtp.gmail.com with ESMTPSA id t12sm4479598ljc.97.2022.02.15.07.15.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Feb 2022 04:59:37 -0800 (PST)
-Date:   Tue, 15 Feb 2022 12:59:35 +0000
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 04/15] mfd: qcom-spmi-pmic: Add pm8953 compatible
-Message-ID: <Ygujt64b4PBBeBm1@google.com>
-References: <20220112194118.178026-1-luca@z3ntu.xyz>
- <20220112194118.178026-5-luca@z3ntu.xyz>
+        Tue, 15 Feb 2022 07:15:36 -0800 (PST)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH v3 0/2] Add support for Imagis touchscreens
+Date:   Tue, 15 Feb 2022 17:15:24 +0200
+Message-Id: <20220215151527.84634-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.35.0
+In-Reply-To: <1644531943.391463.3262540.nullmailer@robh.at.kernel.org>
+References: <1644531943.391463.3262540.nullmailer@robh.at.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220112194118.178026-5-luca@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 12 Jan 2022, Luca Weiss wrote:
+Add support for Imagis touchscreens, used on various mobile
+devices such as Samsung Galaxy J5 (2015), J3 (2015), J5 (2016).
 
-> Document the compatible for pm8953 as found in msm8953.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> ---
->  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.txt | 1 +
->  1 file changed, 1 insertion(+)
+v2: rebase on top of the correct tree
+v3:
+- prefix all defines as IST3038C
+- use two tabs for all defines
+- add missing <linux/regulator/consumer.h> header
+- drop ADDR_LEN and DATA_LEN defines; use sizeof(reg_be) instead
+- use __be32 type for reg_be
+- add a comment about i2c read not being successful on first try
+- use "ret" instead of "res" in read_reg function
+- don't use the internal __cpu_to_be32 function, use cpu_to_be32 instead
+- use "error" instead of "ret" in interrupt handler
+- pass the slot state directly, without ternary operator
+- drop the dev_err in init_input_dev function
+- reorder the functions in _probe so that the chipid command is read as fast 
+as possible
+- don't use imagis_start in probe
+- initialize the irq after the chip is powered
+- save the return value in imagis_resume
+- drop WIDTH_MAJOR since only TOUCH_MAJOR is reported
+- the "chip detected" message is now dev_dbg
+- reorder headers so they are in alphabetic order
+- use GENMASK to generate masks for getting the X and Y coordinates and touch area
+- drop *_pressure from device tree bindings since the driver doesn't
+support reporting pressure
+- fix the typo with i2c address in device treee bindings (48 instead of 50)
+- add IRQF_NO_AUTOEN flag to avoid unbalanced irq enable
 
-Applied, thanks.
+Markuss Broks (2):
+  dt-bindings: input/touchscreen: bindings for Imagis
+  Input: add Imagis touchscreen driver
+
+ .../input/touchscreen/imagis,ist3038c.yaml    |  78 +++++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |   6 +
+ drivers/input/touchscreen/Kconfig             |  10 +
+ drivers/input/touchscreen/Makefile            |   1 +
+ drivers/input/touchscreen/imagis.c            | 329 ++++++++++++++++++
+ 6 files changed, 426 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+ create mode 100644 drivers/input/touchscreen/imagis.c
 
 -- 
-Lee Jones [李琼斯]
-Principal Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+2.35.0
+
