@@ -2,197 +2,143 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19024C43219
-	for <phone-devel@archiver.kernel.org>; Tue, 15 Feb 2022 15:42:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF1B3C433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 15 Feb 2022 15:54:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239926AbiBOPmk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 15 Feb 2022 10:42:40 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:43700 "EHLO
+        id S240219AbiBOPyy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 15 Feb 2022 10:54:54 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241267AbiBOPlI (ORCPT
+        with ESMTP id S229616AbiBOPyy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 15 Feb 2022 10:41:08 -0500
-Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com [IPv6:2607:f8b0:4864:20::c36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D595813FAEB
-        for <phone-devel@vger.kernel.org>; Tue, 15 Feb 2022 07:34:44 -0800 (PST)
-Received: by mail-oo1-xc36.google.com with SMTP id o192-20020a4a2cc9000000b00300af40d795so23609312ooo.13
-        for <phone-devel@vger.kernel.org>; Tue, 15 Feb 2022 07:34:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=lICLxHXDz47Zrz6aevlppIMXuruBJmDOc0eDfWsdodY=;
-        b=aOv1eEN1wu7TUzfxLlt1pmrdqkCiCXVvy082d8mxVz2pU32xBefNtT/wpBtTs0PUsU
-         WwFnGpSIkEloJ/856De8fJh4guiKI0xAxyFNlzg4vVoQVc/WnoFJ/NrTRFzi2ESDqdqS
-         IId/m6wv/SOKu9M6zd5nap7i4WyFfVMLuaIL0gyYX6toG5+s7nLWd+i+tirCg8zHzsMg
-         SDTg2Cpv+nQTB3Nnka8YtN0Uh4zlr3FkijikOZoQ5KLcIGJr7Z+UqG6JPYyP/wxZaOAP
-         3ttr8rjFy8T8qhCw4YXvCBSfZSHlCEBXR4Qtn7kxh0iUgk7GOTH7GMz/rHQvW+sJrFCU
-         EvzA==
+        Tue, 15 Feb 2022 10:54:54 -0500
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7E8B9E540
+        for <phone-devel@vger.kernel.org>; Tue, 15 Feb 2022 07:54:43 -0800 (PST)
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 350D740333
+        for <phone-devel@vger.kernel.org>; Tue, 15 Feb 2022 15:54:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1644940482;
+        bh=+QObaeMvuhGq3vTB+Qm78jkj+7kPIGMxNc28eGSrc+w=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=FKtPHJvZkkKwj8a7wqDIjqcZN0bIokFQlpsxGFZzA9YpE17tECUT5vjgIUihVd8UG
+         TOp2+oXvK9OjTDIEVCLLaOhCXZgBcrbqoqMga22ARDdIKpIBwNdEofwl8k9JUOYdJd
+         5bLVN36ZsG4Fu0tLHCJfVZ+ByTsU4+qxeAGJHpPMyTwfrJ7L9z4KxFW+ih0V+DhubG
+         vaC431GIMCw0T/bAQA8GpihnItFyWWJyMWmEB5qluONhHaOVwctBIzw/C+elyvzYzV
+         INZPcGcdsykQxkpGlriaXxItf40G/ePJdcFYvAOGXBIW4g0/7uu7//FtnavuImHU/D
+         mDVu60oiRXTig==
+Received: by mail-wr1-f69.google.com with SMTP id j8-20020adfa548000000b001e33074ac51so8580799wrb.11
+        for <phone-devel@vger.kernel.org>; Tue, 15 Feb 2022 07:54:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=lICLxHXDz47Zrz6aevlppIMXuruBJmDOc0eDfWsdodY=;
-        b=bMkHbMDhXGpSvx2s51kKnhMl8k5rgjCDD8UKW7/gyuwTeq06Cy7ll5XmWTOIB9K7p2
-         Y7fSzQj844uMh5SaZsUW3lnnIVqc6T7AD3tadUl11kywcEP3Puqt96AeoMgk3ZujcO1L
-         pNAoMflccJmdA9R1WMYl+llJDR+l5gnPWV9FJQUpGNRA0u2/IgQfrhDmk5bjWtSkmCuR
-         q+3+ZDyU6vYMXZ+M0V6rcdxXf5WxNVKbrPVHJvAhHcHrlbQl8IvgCsYi/v06u6K13HI3
-         k8Dtl2gtI//YMOcSzDLMzlmYdx3AvytsnuBqoZPD8cUVKpDfkj2PdEH8+Z6WfyGEWLoW
-         EqSw==
-X-Gm-Message-State: AOAM533kIwyzUKPYC0eRs1sVihN/7zrl6Au7YHkzsIbPcn4mSgJQbGkr
-        kcHIXM7psswq+yivR6kIVLEVfQ==
-X-Google-Smtp-Source: ABdhPJzbWwU42jNoOxbpoCebn0T7UnHfSr29OBuXpn3I/sQBF5m3RpPW5CFBWyczhtgGB+fVXx6EUA==
-X-Received: by 2002:a05:6870:1059:b0:ce:c0c9:5b2 with SMTP id 25-20020a056870105900b000cec0c905b2mr1573971oaj.4.1644939283973;
-        Tue, 15 Feb 2022 07:34:43 -0800 (PST)
-Received: from yoga ([2600:1700:a0:3dc8:5c39:baff:fe03:898d])
-        by smtp.gmail.com with ESMTPSA id b8sm5414114oae.30.2022.02.15.07.34.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Feb 2022 07:34:43 -0800 (PST)
-Date:   Tue, 15 Feb 2022 09:34:41 -0600
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     Stephan Gerhold <stephan@gerhold.net>,
-        linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: Re: [PATCH 09/15] rpmsg: smd: Drop unnecessary condition for channel
- creation
-Message-ID: <YgvIEYOAZTFHN6fb@yoga>
-References: <20220112194118.178026-1-luca@z3ntu.xyz>
- <Yfhjil3pfZLa5g3j@builder.lan>
- <2615776.mvXUDI8C0e@g550jk>
- <3503848.e9J7NaK4W3@g550jk>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=+QObaeMvuhGq3vTB+Qm78jkj+7kPIGMxNc28eGSrc+w=;
+        b=MjqNdjpWDQGETCW4nB7Pkl2KdBwDGoXJiJ1lVyfmC98qb1tV2Qx0TVpWqxk5Q/XGxN
+         ecKzp84KKjeDnkt5HKgjIg6HeU60YzBZbgrO4N9lYAQdJu3zXsOSyFv/lnZ8eDzLLOIJ
+         7xnBp4Oy3kDtxe8LOwd2MVTQbjWi35Qltl5D/Bqy8F84wEdF3eyV7c2Z3YfCDLV5nmyB
+         MQrC0DbCp/9gwHSj7Z733EoRddzFONYB6Jc8MRWrpIuQ1nHHOG2sxWU7KhtrtbeFptBm
+         RPskzRSc1lbfxBkSrb7rR1dkAnL/xN4clUDLTIyRP0xScoHaHwS1jh6ktg9DYWI5EVMU
+         EoSQ==
+X-Gm-Message-State: AOAM5304s84qg5zTIFcHzKEPxRgu+hDM4AoTmyvymJI/+OPmPqCTtCiX
+        ALL0J4pLBm4GPENgNHlH2fYsZc1W3ogq6GtpfhFwOPrfN6jfaHC8tOcDLvOj//ocbpxWZNIGfrB
+        jvWm188uH0adQSTHxQMBxzrI9gUAX1jObLAnKQKlZ
+X-Received: by 2002:a5d:5983:: with SMTP id n3mr3851931wri.382.1644940481889;
+        Tue, 15 Feb 2022 07:54:41 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxoVBW/CLXsO/TypyE7MepwQ5iRogRbIei6GF1U49AerV7YaFDlihHa86IrATrYYtw77ahJ0A==
+X-Received: by 2002:a5d:5983:: with SMTP id n3mr3851917wri.382.1644940481649;
+        Tue, 15 Feb 2022 07:54:41 -0800 (PST)
+Received: from [192.168.0.109] (xdsl-188-155-168-84.adslplus.ch. [188.155.168.84])
+        by smtp.gmail.com with ESMTPSA id bk5sm20865734wrb.10.2022.02.15.07.54.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Feb 2022 07:54:41 -0800 (PST)
+Message-ID: <0bb07d0a-838d-b772-91ca-aa31b57b2f3c@canonical.com>
+Date:   Tue, 15 Feb 2022 16:54:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3503848.e9J7NaK4W3@g550jk>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v3 1/2] dt-bindings: input/touchscreen: bindings for
+ Imagis
+Content-Language: en-US
+To:     Markuss Broks <markuss.broks@gmail.com>,
+        linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org
+References: <1644531943.391463.3262540.nullmailer@robh.at.kernel.org>
+ <20220215151527.84634-1-markuss.broks@gmail.com>
+ <20220215151527.84634-2-markuss.broks@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+In-Reply-To: <20220215151527.84634-2-markuss.broks@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun 13 Feb 14:51 CST 2022, Luca Weiss wrote:
+On 15/02/2022 16:15, Markuss Broks wrote:
+> This patch adds device-tree bindings for the Imagis
+> IST3038C touch screen IC.
+> 
+> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> ---
+>  .../input/touchscreen/imagis,ist3038c.yaml    | 75 +++++++++++++++++++
+>  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
+>  2 files changed, 77 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+> new file mode 100644
+> index 000000000000..7b127817e1f6
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+> @@ -0,0 +1,75 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/input/touchscreen/imagis,ist3038c.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Imagis IST30XXC family touchscreen controller bindings
+> +
+> +maintainers:
+> +  - Markuss Broks <markuss.broks@gmail.com>
+> +
+> +allOf:
+> +  - $ref: touchscreen.yaml#
+> +
+> +properties:
+> +  $nodename:
+> +    pattern: "^touchscreen(@.*)?$"
 
-> Hi Bjorn,
-> 
-> On Sonntag, 6. Februar 2022 21:17:22 CET Luca Weiss wrote:
-> > Hi Bjorn,
-> > 
-> > On Montag, 31. Jänner 2022 23:32:42 CET Bjorn Andersson wrote:
-> > > On Sun 16 Jan 10:30 CST 2022, Stephan Gerhold wrote:
-> > > > On Sun, Jan 16, 2022 at 05:08:29PM +0100, Luca Weiss wrote:
-> > > > > On Mittwoch, 12. Jänner 2022 22:39:53 CET Stephan Gerhold wrote:
-> > > > > > On Wed, Jan 12, 2022 at 08:40:58PM +0100, Luca Weiss wrote:
-> > > > > > > From: Vladimir Lypak <vladimir.lypak@gmail.com>
-> > > > > > > 
-> > > > > > > RPM Firmware on variety of newer SoCs such as MSM8917 (also likely
-> > > > > > > MSM8937, MSM8940, MSM8952), MSM8953 and on some MSM8916 devices)
-> > > > > > > doesn't
-> > > > > > > initiate opening of the SMD channel if it was previously opened by
-> > > > > > > bootloader. This doesn't allow probing of smd-rpm driver on such
-> > > > > > > devices
-> > > > > > > because there is a check that requires RPM this behaviour.
-> > > > > > > 
-> > > > > > > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-> > > > > > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > > > > > Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> > > > > > 
-> > > > > > This is effectively a "Revert "Revert "rpmsg: smd: Create device for
-> > > > > > all
-> > > > > > channels""":
-> > > > > > 
-> > > > > > https://lore.kernel.org/linux-arm-msm/20171212235857.10432-3-bjorn.a
-> > > > > > nd
-> > > > > > ersson @linaro.org/
-> > > > > > https://lore.kernel.org/linux-arm-msm/20180315181244.8859-1-bjorn.an
-> > > > > > de
-> > > > > > rsson
-> > > > > > @linaro.org/
-> > > > > > 
-> > > > > > Won't this cause the same regression reported by Srinivas again?
-> > > > > 
-> > > > > Do you have any suggestion on another way to solve this? Without this
-> > > > > commit the regulators just won't probe at all, I haven't looked very
-> > > > > deep into it though given this patch solves it.
-> > > > > 
-> > > > > I guess worst case it'll become a devicetree property to enable this
-> > > > > quirk?
-> > > > 
-> > > > My spontaneous suggestion would be to skip the check only for the
-> > > > "rpm_requests" channel, e.g. something like
-> > > > 
-> > > > 	if (remote_state != SMD_CHANNEL_OPENING &&
-> > > > 	
-> > > > 	    remote_state != SMD_CHANNEL_OPENED &&
-> > > > 	    strcmp(channel->name, "rpm_requests")
-> > > > 		
-> > > > 		continue;
-> > > > 
-> > > > This will avoid changing the behavior for anything but the RPM channel.
-> > > > I don't think anything else is affected by the same problem (since the
-> > > > bootloader or earlier firmware should not make use of any other
-> > > > channel).
-> > > > Also, we definitely *always* want to open the channel to the RPM because
-> > > > otherwise almost everything breaks.
-> > > 
-> > > Last time this came up I asked if someone could test if the RPM is stuck
-> > > in the state machine trying to close the channel and as such we could
-> > > kick it by making sure that we "ack" the closing of the channel and
-> > > hence it would come back up again.
-> > > 
-> > > But I don't remember seeing any outcome of this.
-> > 
-> > Do you have a link to this or should I go digging in the archives?
-> 
-> Replying to myself, I went searching but couldn't find anything. If you have 
-> some PoC code I'd be happy to try but as I'm not familiar with rpm/smd at all 
-> I'd have to read myself into it first.
-> 
+reg is required, so @ is not optional:
+^touchscreen@[0-9a-f]+$
 
-A quick search didn't turn anything up on my side either.
+> +
+> +  compatible:
+> +    items:
 
-And while I had suggestions of what could be tried, I don't have any
-devices myself that manifest this problem, so I haven't been able to
-debug it.
+Do you expect here multiple compatibles? If not, the items are not needed.
 
-> If Stephans suggestion with the strcmp(channel->name, "rpm_requests") is ok 
-> then I'd test this and use that in v2. I'd personally rather not spend too 
-> much time on this issue right now as it's blocking msm8953 completely (no 
-> regulators = no nothing),
-> 
+> +      - enum:
+> +          - imagis,ist3038c
+> +
+> +  reg:
+> +    description: I2C address
 
-It's been a long time since this problem was initially reported, so I
-rather see us land the strcmp() hack to unblock you and others. Then
-someone who knows SMD can take a proper look at this.
+You can skip description because it is fairly obvious, but instead you
+need maxItems. Alternatively, a list (items) with description defines
+max items.
 
-Regards,
-Bjorn
 
-> Regards
-> Luca
-> 
-> > 
-> > Regards
-> > Luca
-> > 
-> > > > Many solutions are possible though so at the end it is mostly up to
-> > > > Bjorn to decide I think. :)
-> > > 
-> > > I would prefer to get an answer to above question, but if that doesn't
-> > > work (or look like crap) I'm willing to take your suggestion of skipping
-> > > the continue for the rpm_requests channel. Obviously with a comment
-> > > above describing why we're carrying that special case.
-> > > 
-> > > Regards,
-> > > Bjorn
-> 
-> 
-> 
-> 
+Best regards,
+Krzysztof
