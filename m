@@ -2,132 +2,127 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 288C1C433F5
-	for <phone-devel@archiver.kernel.org>; Wed, 16 Feb 2022 10:12:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 075DBC433EF
+	for <phone-devel@archiver.kernel.org>; Wed, 16 Feb 2022 13:43:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231866AbiBPKNF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 16 Feb 2022 05:13:05 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:41798 "EHLO
+        id S233973AbiBPNn3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 16 Feb 2022 08:43:29 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232688AbiBPKNE (ORCPT
+        with ESMTP id S233592AbiBPNn2 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 16 Feb 2022 05:13:04 -0500
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65F742A5994
-        for <phone-devel@vger.kernel.org>; Wed, 16 Feb 2022 02:12:52 -0800 (PST)
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id D0B8540333
-        for <phone-devel@vger.kernel.org>; Wed, 16 Feb 2022 10:12:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1645006365;
-        bh=wCaJzKBNjd94VDAGdI4W+Ww4APWOyvEWc/qTbStSTaU=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=T/g7ng7kp59MieYZoYwJUvs/cyp2snSH0Fl39LQj5x9qG1SfZAxWp224/kAUfSUIa
-         zyMuE9E0kQzDUJ/X61N/gqjblyRHY3+NIQsheHYt9eMSyfZHXm9w5Oz6s1PtnQVWKI
-         ET2wNRwA8QbWMfBIa05l1jUNb3KOTh/JwxXZxGNvQ7FHCSDLRJYdCYERhon4AngVDe
-         FPVdEXjyWnE7CnqdqPDR/ig4txC5Z7bjVyNqJGdHKIMtQftZ+d/IDvxcfIbfb+WdFC
-         KlZ285HjeprSdwooheE1gNxjKnTm0QG9kgFoaWsWdCp7hqA5gJ1whigGvQMydgSfqz
-         otkA1M78pbQUg==
-Received: by mail-ed1-f70.google.com with SMTP id y13-20020aa7c24d000000b00411925b7829so1093067edo.22
-        for <phone-devel@vger.kernel.org>; Wed, 16 Feb 2022 02:12:45 -0800 (PST)
+        Wed, 16 Feb 2022 08:43:28 -0500
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29A301F6BB1;
+        Wed, 16 Feb 2022 05:43:16 -0800 (PST)
+Received: by mail-lj1-x22e.google.com with SMTP id c10so3350936ljr.9;
+        Wed, 16 Feb 2022 05:43:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+hfWp9G5GbMg8ACSeTsZut9QPHNISVR0UVC+PAcblD0=;
+        b=IdjsvazJH6PxjTpBJ4x6aMNatZU5CtYbz0Q7Xvatenkn2tIumk7C/izrvH9nju7qe7
+         lXEP4UGql1zNYUjaefd8Z4VmjBHLWVJO1AVhhKd2eNai+WNeyYQdJM3u9rsAPnIuw8zX
+         W19zN+GC25NsUZa13UIDpsS2p09Z62/IjqSpRrXpn22bx2f3eLLq4JTJLv8eTayCValW
+         1cuiuwTi5Ouad4JIK8Bs/xTgh3JKG3cuapR8mtWUZdOdphDs8q/cEvcMKhw7PouhEJ2m
+         wL3MkOzdb0c7BKJ9hSuO12y7JR9QtoIILT6Ue1PPEQ6FSxHhKjA8ZB6ymZJV80fmeiDn
+         EffQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=wCaJzKBNjd94VDAGdI4W+Ww4APWOyvEWc/qTbStSTaU=;
-        b=7IS6EylrwMxPzNrZmBX0fE6nW3c9+kwfk64+i8QztHEALmlJDJP5AAA3PyQ9m7La9E
-         q05AwZMEdbXIFHCMrIjd8nC5d+EYMBnFYHzGmxPqFSBN6Sjpp7N8lOl1kDl2Nh0zk/pI
-         Ix3H59YE9CegXk/qGBvV3hwkJcBo5xcxa3jamuFlBjCnd9loNIMkn0dKUO/jrY2lKbnq
-         wOYo6Miy1s130MmyLy7/9i7fYcOvPOMm/RFYC3TiqrB/dsHIdFQ28kwsaHsasRKJU3HX
-         hadf8Kc6l/WKD0TytR/iyoKlVGQy1y112eLxnUTvWkSX0DC6m4Yh4n8PqN3dDWHByLsG
-         D3sg==
-X-Gm-Message-State: AOAM530ozFtLwDiPZEtdpIJE7asBr9EmOPr+9Zok59NhbsjJnEw0bnWq
-        EZfuDbNwqzzDroTd5XDo2yyuhztVCISag0SaqBt4XP5xoH87tUKg/yxYudob3KhwqKPyf0xND0u
-        ldelshwbCjpJ2uxfbnwpQqVEncDvcJ0FdmdABOm/r
-X-Received: by 2002:a17:906:1188:b0:6ce:f315:21df with SMTP id n8-20020a170906118800b006cef31521dfmr1649674eja.591.1645006365514;
-        Wed, 16 Feb 2022 02:12:45 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzFu3ZIcGVwlCyzC/7X5mFw001hnaSynx6a8cfVN417f5jmgKVCWYEUWtyjMNimqQbfS56JIw==
-X-Received: by 2002:a17:906:1188:b0:6ce:f315:21df with SMTP id n8-20020a170906118800b006cef31521dfmr1649657eja.591.1645006365327;
-        Wed, 16 Feb 2022 02:12:45 -0800 (PST)
-Received: from [192.168.0.110] (xdsl-188-155-168-84.adslplus.ch. [188.155.168.84])
-        by smtp.gmail.com with ESMTPSA id y9sm1354703edj.108.2022.02.16.02.12.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Feb 2022 02:12:44 -0800 (PST)
-Message-ID: <8cbbc565-738c-1e73-07b5-dc67ca55e920@canonical.com>
-Date:   Wed, 16 Feb 2022 11:12:44 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v4 1/2] dt-bindings: input/touchscreen: bindings for
- Imagis
-Content-Language: en-US
-To:     Markuss Broks <markuss.broks@gmail.com>,
-        linux-kernel@vger.kernel.org
+        bh=+hfWp9G5GbMg8ACSeTsZut9QPHNISVR0UVC+PAcblD0=;
+        b=rrb4Sp541oBoyK9N7Sr9OGSBlZm7eBhmyADcfFW/kdT/2/FvZWNulG+MZC7WIfc6/o
+         hqzxpSXChox2leX7KJhfA6ObhdA/uy9A/brGPsb25/9bbHy213TMcZgfCMyp3LrpyaAM
+         V38PirwFOpGQ2S4LAQ0VwKuZRXcZb4oDSGV5JzR6rFwgrnbMa518RPA4Nmh2Pk7id2vh
+         OCCm0wJ3DrCDutruJeaLJ7bvcWlZ0XFoEDTjhzsB+W9jHYwXFSHvkUGc0n2Q+S8TxYel
+         AEP8DssrIqI0BtVD8LTrQAJcOrUvggdDPM3T1iEnMQK1bQYxS4KC7s3eIy7fMUrmCpu1
+         Psqg==
+X-Gm-Message-State: AOAM531d69MQSqFNikYZNok9Omad7nYrJ7CK8qmLo7P59qM5smI2bo8K
+        bFMCtRSo2MH8+Fo16o6nLi5WhT8QyLxqpaYa
+X-Google-Smtp-Source: ABdhPJxJRhwVMZXBLyRrV7DhdWEsYckDOWb+m4qBPlR0c88mJMPFYs9gEX7Ji0Kjb4vChum9fhpbxA==
+X-Received: by 2002:a2e:a498:0:b0:239:1259:bc9f with SMTP id h24-20020a2ea498000000b002391259bc9fmr2018666lji.232.1645018994308;
+        Wed, 16 Feb 2022 05:43:14 -0800 (PST)
+Received: from nergzd-desktop.localdomain ([62.122.67.26])
+        by smtp.gmail.com with ESMTPSA id a22sm1049934lfr.24.2022.02.16.05.43.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Feb 2022 05:43:13 -0800 (PST)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Markuss Broks <markuss.broks@gmail.com>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Henrik Rydberg <rydberg@bitmath.org>,
         Stephen Rothwell <sfr@canb.auug.org.au>,
         linux-input@vger.kernel.org, devicetree@vger.kernel.org
-References: <20220215205153.57966-1-markuss.broks@gmail.com>
- <20220215205153.57966-2-markuss.broks@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-In-Reply-To: <20220215205153.57966-2-markuss.broks@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: [PATCH v5 0/2] Add support for Imagis touchscreens
+Date:   Wed, 16 Feb 2022 15:42:59 +0200
+Message-Id: <20220216134302.5153-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.35.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 15/02/2022 21:51, Markuss Broks wrote:
-> This patch adds device-tree bindings for the Imagis
-> IST3038C touch screen IC.
-> 
-> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-> ---
->  .../input/touchscreen/imagis,ist3038c.yaml    | 74 +++++++++++++++++++
->  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
->  2 files changed, 76 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
-> new file mode 100644
-> index 000000000000..f98e5dfa2bc4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
-> @@ -0,0 +1,74 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/input/touchscreen/imagis,ist3038c.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Imagis IST30XXC family touchscreen controller bindings
-> +
-> +maintainers:
-> +  - Markuss Broks <markuss.broks@gmail.com>
-> +
-> +allOf:
-> +  - $ref: touchscreen.yaml#
-> +
-> +properties:
-> +  $nodename:
-> +    pattern: "^touchscreen@[0-9a-f]+$"
-> +
-> +  compatible:
-> +    - enum:
+Add support for Imagis touchscreens, used on various mobile
+devices such as Samsung Galaxy J5 (2015), J3 (2015), J5 (2016).
 
-This does not work. Please test your changes. "compatible:" does not
-list, so "enum" should not be an item. Drop the "-".
+v2: rebase on top of the correct tree
+v3:
+- prefix all defines as IST3038C
+- use two tabs for all defines
+- add missing <linux/regulator/consumer.h> header
+- drop ADDR_LEN and DATA_LEN defines; use sizeof(reg_be) instead
+- use __be32 type for reg_be
+- add a comment about i2c read not being successful on first try
+- use "ret" instead of "res" in read_reg function
+- don't use the internal __cpu_to_be32 function, use cpu_to_be32 instead
+- use "error" instead of "ret" in interrupt handler
+- pass the slot state directly, without ternary operator
+- drop the dev_err in init_input_dev function
+- reorder the functions in _probe so that the chipid command is read as fast 
+as possible
+- don't use imagis_start in probe
+- initialize the irq after the chip is powered
+- save the return value in imagis_resume
+- drop WIDTH_MAJOR since only TOUCH_MAJOR is reported
+- the "chip detected" message is now dev_dbg
+- reorder headers so they are in alphabetic order
+- use GENMASK to generate masks for getting the X and Y coordinates and touch area
+- drop *_pressure from device tree bindings since the driver doesn't
+support reporting pressure
+- fix the typo with i2c address in device treee bindings (48 instead of 50)
+- add IRQF_NO_AUTOEN flag to avoid unbalanced irq enable
+v4:
+- alphabetically order MAINTAINERS entry
+- alphabetically order Kconfig and Makefile
+- drop the error message in init_regulators
+- disable regulators on probe error
+- drop IRQF_TRIGGER_FALLING
+- @ is not optional (device tree bindings)
+- don't use items for compatible
+- add maxItems property to reg, drop the comment
+v5:
+- compatible enum is not an item of the list, drop "-"
 
-> +        - imagis,ist3038c
-> +
+Markuss Broks (2):
+  dt-bindings: input/touchscreen: bindings for Imagis
+  Input: add Imagis touchscreen driver
 
+ .../input/touchscreen/imagis,ist3038c.yaml    |  78 +++++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |   6 +
+ drivers/input/touchscreen/Kconfig             |  10 +
+ drivers/input/touchscreen/Makefile            |   1 +
+ drivers/input/touchscreen/imagis.c            | 329 ++++++++++++++++++
+ 6 files changed, 426 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+ create mode 100644 drivers/input/touchscreen/imagis.c
 
-Best regards,
-Krzysztof
+-- 
+2.35.0
+
