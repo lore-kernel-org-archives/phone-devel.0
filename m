@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FEA7C433FE
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Feb 2022 17:26:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AAFDAC433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Feb 2022 19:27:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237438AbiBRR1B (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Feb 2022 12:27:01 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:51710 "EHLO
+        id S237124AbiBRT2I (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Feb 2022 14:28:08 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237672AbiBRR1A (ORCPT
+        with ESMTP id S234038AbiBRT2H (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Feb 2022 12:27:00 -0500
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B8FF64F2
-        for <phone-devel@vger.kernel.org>; Fri, 18 Feb 2022 09:26:42 -0800 (PST)
-Received: by mail-lj1-x22c.google.com with SMTP id r20so5346639ljj.1
-        for <phone-devel@vger.kernel.org>; Fri, 18 Feb 2022 09:26:42 -0800 (PST)
+        Fri, 18 Feb 2022 14:28:07 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8478C35879
+        for <phone-devel@vger.kernel.org>; Fri, 18 Feb 2022 11:27:49 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id p22so7310291lfu.5
+        for <phone-devel@vger.kernel.org>; Fri, 18 Feb 2022 11:27:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=ZYe2t/FMZ93x2Kic1ao1JKybApih1A56RL1y9i2FhLE=;
-        b=gOzR/3gjf7/yY5lV5TZ57e/x1QHxbFE+SzLfqHEUg96Sgohxk75AEOBey92ZQc0yen
-         4aThrlFgnRNf9Z68Q3QFatelLW9CVGwuBcW36NUiY4xO1gMmIPMkP+kho7g8aOG8ifL/
-         yJkCIbLgpPXbQ3o35h4BggnBXVBhURaMExrK8uukcO82l+LdThbMAp/h+DKVZ+grqSh9
-         s8l9HHb/JNFM5ttGIW9a1vz10ButIC84JkWcSsHyr2BEA40yNmf/Ig37ndCdp5XWrs2N
-         JzB4n7vom3dKNRvlqiuYWluuxWMgOykrBmx9eq8BE49uM0RSwVgS8NQdOUpMzkpuCBi1
-         PNzQ==
+        bh=dSkwxdtJ7mPWSSSM389YG6BGKFFrs7uF7NULsF3otKQ=;
+        b=rX2f5T3QqmsMYZfX/LAdi8UDeY7DIzLQyz0GkVZRF5WdMfHmrS3F3EZvx2qXh+ldT0
+         +xIaMI+FmPPDSqzPOdP4uijPQoMwMpbHqLSw9YFRUyqpghlr07ZcHjnlzLNlUFjV7DIC
+         X+sY/SLWuYwcXw35FWTNRYk4dKoryU6ArrWUi6YpieoANnHtbPxYH7OOQr6j/k1G023m
+         Ghcvttr8vhg8iccO6dhZXRoFdBt2Z1s+gbIrdRtoXYuf9M4UoqtSfYMqJlkVjIegq1qw
+         IRnr8vPrNMJ4ZMgPrfT/JWO76TpHHl8phi5uDlRQF86z4Tya6gUfZGzGnPd0h6pn5iX3
+         1YVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=ZYe2t/FMZ93x2Kic1ao1JKybApih1A56RL1y9i2FhLE=;
-        b=od5UDOzHaXa/dF1phW89OzvYV5K2DF07925UXJHeno5168J6OS3EaD2Myv6e9LxjWo
-         1I9OmC1JtoTvaryqxympvcDF0vcK/ZB779WukgV9l+P+I+GNN2MDLeSomiXo8XgUqret
-         S3kvgevvc1X+rXiUCoi7NvnMS5vI+08KNykPi0VqX8y2eFoeY26OwBIgSUYS7WGpqApx
-         afU0mq2Gy9xlhARqWy+gZCyXyimE6lkA6yRonV+8339oRp/hUt6ZCIMsS0c843T0e/sJ
-         bjLXFEWaJNGSvujrdyxhCW6Ra7Roz9A9VMcoUilmyjh3W6NqsFIGjhdgUh2/hcKYwnyG
-         C5fA==
-X-Gm-Message-State: AOAM533uTQBFGrohYCI5zJ8MlysoiSmDXA2j/v/vQpNxaLUXBusJ9ByA
-        4zJ817AP457VnU/6eIRpSjia0g==
-X-Google-Smtp-Source: ABdhPJzF6KsEJtgTA6aUDgNsa2gJAo/6KzTixWf4JHc5zKVLW0gmtaXhNhMuSUe6ZlrOXZsTogAVWQ==
-X-Received: by 2002:a2e:99d1:0:b0:244:bad9:4ab7 with SMTP id l17-20020a2e99d1000000b00244bad94ab7mr6398922ljj.269.1645205200824;
-        Fri, 18 Feb 2022 09:26:40 -0800 (PST)
+        bh=dSkwxdtJ7mPWSSSM389YG6BGKFFrs7uF7NULsF3otKQ=;
+        b=H5+vp7FcirdA3KD/01JoNkx4j/8sL1XCGwI8FRRat3myZiZwQBIO2B2JQ7gBxy4s0f
+         ekv7k0nW46KR3wdk74KDfsjkO3LTNsQCW98ykxJj8kwySaeQ+6Oknbjhmo12yQtDKf0T
+         UzqiWiXSd0n0dBmB6xHImyU2d1CeN6jMeFICqrFBUrAK8bmSyBbpw4iTFFHMzgUrLilc
+         I1mY6ttEc9JDCfNWjJQ/rLig+GGwQTkjOfZ60zwoGOf96+xMAn6HUuRrUV0xzUtyGZdv
+         ro6tD4zrbsWtFjohQPurg3nzM9Kket0spIWFQ8JlC5fn40Dda92m3r3ntq6buFLIYOGa
+         oYKQ==
+X-Gm-Message-State: AOAM530dsZS9VOMJlvrlsG7gxJ9NBm08sY5lbN24QhFpa7xScLxJ9asI
+        IL8jVaPJMOmqmMbX1I/LF8lrxw==
+X-Google-Smtp-Source: ABdhPJwe2iQk4YzsedccWeQbQQtrgZLiKdtan5bdBm+/i0gHBWiHPdzFRwWX6ZegZ9BKKTwgYatdcA==
+X-Received: by 2002:a05:6512:338c:b0:443:b61e:60d0 with SMTP id h12-20020a056512338c00b00443b61e60d0mr3128828lfg.124.1645212467720;
+        Fri, 18 Feb 2022 11:27:47 -0800 (PST)
 Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id r3sm272173lfi.260.2022.02.18.09.26.39
+        by smtp.gmail.com with ESMTPSA id u17sm411376ljd.137.2022.02.18.11.27.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Feb 2022 09:26:40 -0800 (PST)
-Message-ID: <fab2ccb6-9c00-90cb-5986-8e1544c14596@linaro.org>
-Date:   Fri, 18 Feb 2022 20:26:39 +0300
+        Fri, 18 Feb 2022 11:27:46 -0800 (PST)
+Message-ID: <9e2c9151-d460-14d6-46f7-bc32b60ec4ca@linaro.org>
+Date:   Fri, 18 Feb 2022 22:27:45 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.6.0
-Subject: Re: [PATCH v2 2/2] drm/msm/dpu: Fix timeout issues on command mode
- panels
+Subject: Re: [PATCH v2 1/2] drm/msm/dpu: Add a function to retrieve the
+ current CTL status
 Content-Language: en-GB
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>, robdclark@gmail.com
@@ -67,9 +67,8 @@ Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         paul.bouchara@somainline.org
 References: <20210911163919.47173-1-angelogioacchino.delregno@somainline.org>
- <20210911163919.47173-2-angelogioacchino.delregno@somainline.org>
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20210911163919.47173-2-angelogioacchino.delregno@somainline.org>
+In-Reply-To: <20210911163919.47173-1-angelogioacchino.delregno@somainline.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -77,43 +76,60 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 11/09/2021 19:39, AngeloGioacchino Del Regno wrote:
-> In function dpu_encoder_phys_cmd_wait_for_commit_done we are always
-> checking if the relative CTL is started by waiting for an interrupt
-> to fire: it is fine to do that, but then sometimes we call this
-> function while the CTL is up and has never been put down, but that
-> interrupt gets raised only when the CTL gets a state change from
-> 0 to 1 (disabled to enabled), so we're going to wait for something
-> that will never happen on its own.
-> 
-> Solving this while avoiding to restart the CTL is actually possible
-> and can be done by just checking if it is already up and running
-> when the wait_for_commit_done function is called: in this case, so,
-> if the CTL was already running, we can say that the commit is done
-> if the command transmission is complete (in other terms, if the
-> interface has been flushed).
+> Add a function that returns whether the requested CTL is active or not:
+> this will be used in a later commit to fix command mode panel issues.
 > 
 > Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
 > ---
->   drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 3 +++
->   1 file changed, 3 insertions(+)
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c | 6 ++++++
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h | 7 +++++++
+>   2 files changed, 13 insertions(+)
 > 
-> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> index aa01698d6b25..aa5d3b3cef15 100644
-> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> @@ -682,6 +682,9 @@ static int dpu_encoder_phys_cmd_wait_for_commit_done(
->   	if (!dpu_encoder_phys_cmd_is_master(phys_enc))
->   		return 0;
->   
-> +	if (phys_enc->hw_ctl->ops.is_started(phys_enc->hw_ctl))
-> +		return dpu_encoder_phys_cmd_wait_for_tx_complete(phys_enc);
-> +
->   	return _dpu_encoder_phys_cmd_wait_for_ctl_start(phys_enc);
+> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c
+> index 64740ddb983e..3b6fd73eb3a8 100644
+> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c
+> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c
+> @@ -91,6 +91,11 @@ static inline void dpu_hw_ctl_trigger_start(struct dpu_hw_ctl *ctx)
+>   	DPU_REG_WRITE(&ctx->hw, CTL_START, 0x1);
 >   }
 >   
+> +static inline bool dpu_hw_ctl_is_started(struct dpu_hw_ctl *ctx)
+> +{
+> +	return !!(DPU_REG_READ(&ctx->hw, CTL_START) & BIT(0));
+> +}
+> +
+>   static inline void dpu_hw_ctl_trigger_pending(struct dpu_hw_ctl *ctx)
+>   {
+>   	trace_dpu_hw_ctl_trigger_prepare(ctx->pending_flush_mask,
+> @@ -579,6 +584,7 @@ static void _setup_ctl_ops(struct dpu_hw_ctl_ops *ops,
+>   	ops->get_pending_flush = dpu_hw_ctl_get_pending_flush;
+>   	ops->get_flush_register = dpu_hw_ctl_get_flush_register;
+>   	ops->trigger_start = dpu_hw_ctl_trigger_start;
+> +	ops->is_started = dpu_hw_ctl_is_started;
+>   	ops->trigger_pending = dpu_hw_ctl_trigger_pending;
+>   	ops->reset = dpu_hw_ctl_reset_control;
+>   	ops->wait_reset_status = dpu_hw_ctl_wait_reset_status;
+> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h
+> index 806c171e5df2..ac1544474022 100644
+> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h
+> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h
+> @@ -61,6 +61,13 @@ struct dpu_hw_ctl_ops {
+>   	 */
+>   	void (*trigger_start)(struct dpu_hw_ctl *ctx);
+>   
+> +	/**
+> +	 * check if the ctl is started
+> +	 * @ctx       : ctl path ctx pointer
+> +	 * @Return: true if started, false if stopped
+> +	 */
+> +	bool (*is_started)(struct dpu_hw_ctl *ctx);
+> +
+>   	/**
+>   	 * kickoff prepare is in progress hw operation for sw
+>   	 * controlled interfaces: DSI cmd mode and WB interface
 
 
 -- 
