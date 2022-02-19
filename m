@@ -2,136 +2,154 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AAFDAC433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Feb 2022 19:27:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B0BDFC433EF
+	for <phone-devel@archiver.kernel.org>; Sat, 19 Feb 2022 11:50:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237124AbiBRT2I (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Feb 2022 14:28:08 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:56698 "EHLO
+        id S237105AbiBSLvP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 19 Feb 2022 06:51:15 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234038AbiBRT2H (ORCPT
+        with ESMTP id S232111AbiBSLvO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Feb 2022 14:28:07 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8478C35879
-        for <phone-devel@vger.kernel.org>; Fri, 18 Feb 2022 11:27:49 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id p22so7310291lfu.5
-        for <phone-devel@vger.kernel.org>; Fri, 18 Feb 2022 11:27:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=dSkwxdtJ7mPWSSSM389YG6BGKFFrs7uF7NULsF3otKQ=;
-        b=rX2f5T3QqmsMYZfX/LAdi8UDeY7DIzLQyz0GkVZRF5WdMfHmrS3F3EZvx2qXh+ldT0
-         +xIaMI+FmPPDSqzPOdP4uijPQoMwMpbHqLSw9YFRUyqpghlr07ZcHjnlzLNlUFjV7DIC
-         X+sY/SLWuYwcXw35FWTNRYk4dKoryU6ArrWUi6YpieoANnHtbPxYH7OOQr6j/k1G023m
-         Ghcvttr8vhg8iccO6dhZXRoFdBt2Z1s+gbIrdRtoXYuf9M4UoqtSfYMqJlkVjIegq1qw
-         IRnr8vPrNMJ4ZMgPrfT/JWO76TpHHl8phi5uDlRQF86z4Tya6gUfZGzGnPd0h6pn5iX3
-         1YVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=dSkwxdtJ7mPWSSSM389YG6BGKFFrs7uF7NULsF3otKQ=;
-        b=H5+vp7FcirdA3KD/01JoNkx4j/8sL1XCGwI8FRRat3myZiZwQBIO2B2JQ7gBxy4s0f
-         ekv7k0nW46KR3wdk74KDfsjkO3LTNsQCW98ykxJj8kwySaeQ+6Oknbjhmo12yQtDKf0T
-         UzqiWiXSd0n0dBmB6xHImyU2d1CeN6jMeFICqrFBUrAK8bmSyBbpw4iTFFHMzgUrLilc
-         I1mY6ttEc9JDCfNWjJQ/rLig+GGwQTkjOfZ60zwoGOf96+xMAn6HUuRrUV0xzUtyGZdv
-         ro6tD4zrbsWtFjohQPurg3nzM9Kket0spIWFQ8JlC5fn40Dda92m3r3ntq6buFLIYOGa
-         oYKQ==
-X-Gm-Message-State: AOAM530dsZS9VOMJlvrlsG7gxJ9NBm08sY5lbN24QhFpa7xScLxJ9asI
-        IL8jVaPJMOmqmMbX1I/LF8lrxw==
-X-Google-Smtp-Source: ABdhPJwe2iQk4YzsedccWeQbQQtrgZLiKdtan5bdBm+/i0gHBWiHPdzFRwWX6ZegZ9BKKTwgYatdcA==
-X-Received: by 2002:a05:6512:338c:b0:443:b61e:60d0 with SMTP id h12-20020a056512338c00b00443b61e60d0mr3128828lfg.124.1645212467720;
-        Fri, 18 Feb 2022 11:27:47 -0800 (PST)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id u17sm411376ljd.137.2022.02.18.11.27.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Feb 2022 11:27:46 -0800 (PST)
-Message-ID: <9e2c9151-d460-14d6-46f7-bc32b60ec4ca@linaro.org>
-Date:   Fri, 18 Feb 2022 22:27:45 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH v2 1/2] drm/msm/dpu: Add a function to retrieve the
- current CTL status
-Content-Language: en-GB
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>, robdclark@gmail.com
-Cc:     sean@poorly.run, airlied@linux.ie, daniel@ffwll.ch,
-        abhinavk@codeaurora.org, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        Sat, 19 Feb 2022 06:51:14 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 210AE20B390;
+        Sat, 19 Feb 2022 03:50:55 -0800 (PST)
+Received: from g550jk.localnet (ip-213-127-118-180.ip.prioritytelecom.net [213.127.118.180])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 77DD3C7237;
+        Sat, 19 Feb 2022 11:50:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1645271453; bh=nC99qo7DWCTFKJZfG2BsUuk/w+zIZq2q7Fu2YsHaMEU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=LIknI+e8nDnvXuaxUFMR2hDoxj3FbWPl8v1dNgkoE1GN7n88yWcSMWUrFLppE7cC4
+         7jOMGB7CaF4OMSEzYEdm3MB33EbEIByi/qeJiD3NJzk8FdDCMZ4JyQXXjOSyDt6btx
+         dWCpmS0OMxHFpj0vqmQzbJNsUWbvc/htZ7stmZ2o=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        paul.bouchara@somainline.org
-References: <20210911163919.47173-1-angelogioacchino.delregno@somainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20210911163919.47173-1-angelogioacchino.delregno@somainline.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 10/15] arm64: dts: qcom: Add MSM8953 device tree
+Date:   Sat, 19 Feb 2022 12:50:52 +0100
+Message-ID: <4689218.GXAFRqVoOG@g550jk>
+In-Reply-To: <YgvXdFZfWEzHF2Oy@yoga>
+References: <20220112194118.178026-1-luca@z3ntu.xyz> <20220112194118.178026-11-luca@z3ntu.xyz> <YgvXdFZfWEzHF2Oy@yoga>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 11/09/2021 19:39, AngeloGioacchino Del Regno wrote:
-> Add a function that returns whether the requested CTL is active or not:
-> this will be used in a later commit to fix command mode panel issues.
+Hi Bjorn,
+
+On Dienstag, 15. Februar 2022 17:40:20 CET Bjorn Andersson wrote:
+> On Wed 12 Jan 13:40 CST 2022, Luca Weiss wrote:
+> > From: Vladimir Lypak <vladimir.lypak@gmail.com>
+> > 
+> > Add a base DT for MSM8953 SoC.
+> > 
+> > Co-developed-by: Luca Weiss <luca@z3ntu.xyz>
+> > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> > 
+> >  arch/arm64/boot/dts/qcom/msm8953.dtsi | 1337 +++++++++++++++++++++++++
+> >  1 file changed, 1337 insertions(+)
+> >  create mode 100644 arch/arm64/boot/dts/qcom/msm8953.dtsi
+> > 
+> > diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> > b/arch/arm64/boot/dts/qcom/msm8953.dtsi new file mode 100644
+> > index 000000000000..59918b527750
+> > --- /dev/null
+> > +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> > @@ -0,0 +1,1337 @@
+> > +// SPDX-License-Identifier: BSD-3-Clause
+> > +/* Copyright (c) 2022, The Linux Foundation. All rights reserved. */
+> > +
+> > +#include <dt-bindings/clock/qcom,gcc-msm8953.h>
+> > +#include <dt-bindings/gpio/gpio.h>
+> > +#include <dt-bindings/interrupt-controller/arm-gic.h>
+> > +#include <dt-bindings/power/qcom-rpmpd.h>
+> > +#include <dt-bindings/thermal/thermal.h>
+> > +
+> > +/ {
+> > +	interrupt-parent = <&intc>;
+> > +
+> > +	#address-cells = <2>;
+> > +	#size-cells = <2>;
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> Why do you have address/size-cells of 2, and then limit them to 1 in
+> /soc?
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Quite a few arm64 qcom dtsi files use #address-cells & #size-cells = <1> which 
+also makes reg properties quite more readable - and we don't need the 64 bits 
+on 8953.
 
-> ---
->   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c | 6 ++++++
->   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h | 7 +++++++
->   2 files changed, 13 insertions(+)
 > 
-> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c
-> index 64740ddb983e..3b6fd73eb3a8 100644
-> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c
-> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.c
-> @@ -91,6 +91,11 @@ static inline void dpu_hw_ctl_trigger_start(struct dpu_hw_ctl *ctx)
->   	DPU_REG_WRITE(&ctx->hw, CTL_START, 0x1);
->   }
->   
-> +static inline bool dpu_hw_ctl_is_started(struct dpu_hw_ctl *ctx)
-> +{
-> +	return !!(DPU_REG_READ(&ctx->hw, CTL_START) & BIT(0));
-> +}
-> +
->   static inline void dpu_hw_ctl_trigger_pending(struct dpu_hw_ctl *ctx)
->   {
->   	trace_dpu_hw_ctl_trigger_prepare(ctx->pending_flush_mask,
-> @@ -579,6 +584,7 @@ static void _setup_ctl_ops(struct dpu_hw_ctl_ops *ops,
->   	ops->get_pending_flush = dpu_hw_ctl_get_pending_flush;
->   	ops->get_flush_register = dpu_hw_ctl_get_flush_register;
->   	ops->trigger_start = dpu_hw_ctl_trigger_start;
-> +	ops->is_started = dpu_hw_ctl_is_started;
->   	ops->trigger_pending = dpu_hw_ctl_trigger_pending;
->   	ops->reset = dpu_hw_ctl_reset_control;
->   	ops->wait_reset_status = dpu_hw_ctl_wait_reset_status;
-> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h
-> index 806c171e5df2..ac1544474022 100644
-> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h
-> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h
-> @@ -61,6 +61,13 @@ struct dpu_hw_ctl_ops {
->   	 */
->   	void (*trigger_start)(struct dpu_hw_ctl *ctx);
->   
-> +	/**
-> +	 * check if the ctl is started
-> +	 * @ctx       : ctl path ctx pointer
-> +	 * @Return: true if started, false if stopped
-> +	 */
-> +	bool (*is_started)(struct dpu_hw_ctl *ctx);
-> +
->   	/**
->   	 * kickoff prepare is in progress hw operation for sw
->   	 * controlled interfaces: DSI cmd mode and WB interface
+> > +
+> > +	aliases {
+> > +		i2c1 = &i2c_1;
+> > +		i2c2 = &i2c_2;
+> > +		i2c3 = &i2c_3;
+> > +		i2c4 = &i2c_4;
+> > +		i2c5 = &i2c_5;
+> > +		i2c6 = &i2c_6;
+> > +		i2c7 = &i2c_7;
+> > +		i2c8 = &i2c_8;
+> 
+> It was expressed a while back that you should specify alias only for the
+> things that you have enabled in your .dts.
+
+Sure, I'll remove it.
+
+> 
+> > +	};
+> 
+> [..]
+> 
+> > +		tcsr_mutex: hwlock@1905000 {
+> > +			compatible = "qcom,tcsr-mutex";
+> > +			reg = <0x1905000 0x20000>;
+> > +			#hwlock-cells = <1>;
+> > +		};
+> > +
+> > +		tcsr: syscon@1937000 {
+> > +			compatible = "qcom,tcsr-msm8953", "syscon";
+> > +			reg = <0x1937000 0x30000>;
+> > +		};
+> > +
+> > +		tcsr_phy_clk_scheme_sel: syscon@193f044 {
+> 
+> I don't fancy exposing a single word from the middle of &tcsr using a
+> syscon. The tcsr node should express the TCSR region and if we need to
+> reference bits of information within that we should do that in some
+> structured way.
+> 
+> Wouldn't nvmem be a good candidate for this?
+
+The qusb2 bindings expect the reference like this as far as I can tell, 
+
+qphy->tcsr = syscon_regmap_lookup_by_phandle(dev->of_node,
+                                           "qcom,tcsr-syscon");
+
+So I don't think we can change this without changing the driver as well?
+
+Regards
+Luca
+
+> 
+> > +			compatible = "syscon";
+> > +			reg = <0x193f044 0x4>;
+> > +		};
+> > +
+> 
+> Regards,
+> Bjorn
 
 
--- 
-With best wishes
-Dmitry
+
+
