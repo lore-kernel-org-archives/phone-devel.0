@@ -2,43 +2,39 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B87BC433FE
-	for <phone-devel@archiver.kernel.org>; Sun, 20 Feb 2022 20:20:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66BF6C4167D
+	for <phone-devel@archiver.kernel.org>; Sun, 20 Feb 2022 20:20:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244869AbiBTUUV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 20 Feb 2022 15:20:21 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48116 "EHLO
+        id S244886AbiBTUUW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 20 Feb 2022 15:20:22 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244829AbiBTUUJ (ORCPT
+        with ESMTP id S244841AbiBTUUN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 20 Feb 2022 15:20:09 -0500
+        Sun, 20 Feb 2022 15:20:13 -0500
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52DB44C43C;
-        Sun, 20 Feb 2022 12:19:48 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03A14C781;
+        Sun, 20 Feb 2022 12:19:51 -0800 (PST)
 Received: from localhost.localdomain (ip-213-127-118-180.ip.prioritytelecom.net [213.127.118.180])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id CECAFC83EA;
-        Sun, 20 Feb 2022 20:19:46 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id C9ADBC83DA;
+        Sun, 20 Feb 2022 20:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1645388387; bh=PtzVpB/SENjrA1s6vvLVuenbJrvNZu+k8R5meRp1gB0=;
+        t=1645388390; bh=CbA6DVdWqZm5Wo8SIEQaLKpVWa7Jf08sFkfHRu2Cgz0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=b8aEsdLm6EBGJJ0AbtNA9d9ISEkvEMwx0E3F/hDZdFBwESfHybvfvNM8znImQxb28
-         nM4Si0P12j+vK8NwHKNnhpNPGw946tUg7acYMGMHKHk9HK55gsjcP9x4VyZ5Se/BZS
-         t38J6s1HZ2Q/58byGVC0AfoeNeN4MZo9PdFEY5ok=
+        b=wtlYfW9r4VABCJ2DHAb2Ae4bIh5S1RZZgewxXkt3PLtYFK1TDxf+LzcUqly4oDNt7
+         ixAxtSiNEWXxb4i3nZDXm2j6JBkW9ZnqxMbyjBZ3JMxkMwNGF2qWbmPvF//iTyxmdZ
+         1nspnfoj6Lyst/ui77411Q0bJ1GspDgiON8lZJhE=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rayyan Ansari <rayyan@ansari.sh>,
-        Andy Gross <agross@kernel.org>,
+        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 07/10] arm64: dts: qcom: Add PM8953 PMIC
-Date:   Sun, 20 Feb 2022 21:19:00 +0100
-Message-Id: <20220220201909.445468-8-luca@z3ntu.xyz>
+Subject: [PATCH v2 10/10] arm64: dts: qcom: sdm632: Add device tree for Fairphone 3
+Date:   Sun, 20 Feb 2022 21:19:03 +0100
+Message-Id: <20220220201909.445468-11-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220220201909.445468-1-luca@z3ntu.xyz>
 References: <20220220201909.445468-1-luca@z3ntu.xyz>
@@ -48,119 +44,219 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Vladimir Lypak <vladimir.lypak@gmail.com>
+Add device tree for the Fairphone 3 smartphone which is based on
+Snapdragon 632 (sdm632).
 
-Add a base DT for PM8953 PMIC, commonly used with MSM8953.
-
-Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-Reviewed-by: Rayyan Ansari <rayyan@ansari.sh>
 ---
 Changes in v2:
-- use generic node names for vadc
-- move rtc@6000 to correct location (sorted)
-- minor stylistic changes in temp-alarm@2400
+- drop msm8953-pm8953.dtsi -> move config from that into this patch
 
- arch/arm64/boot/dts/qcom/pm8953.dtsi | 90 ++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/pm8953.dtsi
+ arch/arm64/boot/dts/qcom/Makefile             |   1 +
+ .../boot/dts/qcom/sdm632-fairphone-fp3.dts    | 183 ++++++++++++++++++
+ 2 files changed, 184 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
 
-diff --git a/arch/arm64/boot/dts/qcom/pm8953.dtsi b/arch/arm64/boot/dts/qcom/pm8953.dtsi
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+index bcdc9abf0c42..0d9388a3686b 100644
+--- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -92,6 +92,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm630-sony-xperia-ganges-kirin.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm630-sony-xperia-nile-discovery.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm630-sony-xperia-nile-pioneer.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm630-sony-xperia-nile-voyager.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sdm632-fairphone-fp3.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm636-sony-xperia-ganges-mermaid.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm660-xiaomi-lavender.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-cheza-r1.dtb
+diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
 new file mode 100644
-index 000000000000..741c538a9cee
+index 000000000000..8b815b2a60a7
 --- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/pm8953.dtsi
-@@ -0,0 +1,90 @@
++++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
+@@ -0,0 +1,183 @@
 +// SPDX-License-Identifier: BSD-3-Clause
-+/* Copyright (c) 2022, The Linux Foundation. All rights reserved. */
++/*
++ * Copyright (c) 2022, Luca Weiss <luca@z3ntu.xyz>
++ */
++/dts-v1/;
 +
-+#include <dt-bindings/iio/qcom,spmi-vadc.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/input/linux-event-codes.h>
-+#include <dt-bindings/spmi/spmi.h>
++#include "sdm632.dtsi"
++#include "pm8953.dtsi"
 +
-+&spmi_bus {
-+	pmic@0 {
-+		compatible = "qcom,pm8953", "qcom,spmi-pmic";
-+		reg = <0 SPMI_USID>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++/ {
++	model = "Fairphone 3";
++	compatible = "fairphone,fp3", "qcom,sdm632";
++	chassis-type = "handset";
++	qcom,msm-id = <349 0>;
++	qcom,board-id = <8 0x10000>;
 +
-+		pm8953_pon: pon@800 {
-+			compatible = "qcom,pm8916-pon";
-+			reg = <0x800>;
-+			mode-bootloader = <0x2>;
-+			mode-recovery = <0x1>;
++	aliases {
++		mmc0 = &sdhc_1;
++		mmc1 = &sdhc_2;
++		serial0 = &uart_0;
++	};
 +
-+			pwrkey {
-+				compatible = "qcom,pm8941-pwrkey";
-+				interrupts = <0x00 0x08 0 IRQ_TYPE_EDGE_BOTH>;
-+				debounce = <15625>;
-+				bias-pull-up;
-+				linux,code = <KEY_POWER>;
-+			};
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
 +
-+			pm8953_resin: resin {
-+				compatible = "qcom,pm8941-resin";
-+				interrupts = <0x00 0x08 1 IRQ_TYPE_EDGE_BOTH>;
-+				debounce = <15625>;
-+				bias-pull-up;
-+				status = "disabled";
-+			};
-+		};
++	gpio-keys {
++		compatible = "gpio-keys";
 +
-+		temp-alarm@2400 {
-+			compatible = "qcom,spmi-temp-alarm";
-+			reg = <0x2400>;
-+			interrupts = <0x0 0x24 0x0 IRQ_TYPE_EDGE_RISING>;
-+			io-channels = <&pm8953_vadc VADC_DIE_TEMP>;
-+			io-channel-names = "thermal";
-+			#thermal-sensor-cells = <0>;
-+		};
-+
-+		pm8953_vadc: vadc@3100 {
-+			compatible = "qcom,spmi-vadc";
-+			reg = <0x3100>;
-+			interrupts = <0x00 0x31 0x00 0x01>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			#io-channel-cells = <1>;
-+
-+			adc-chan@8 {
-+				reg = <VADC_DIE_TEMP>;
-+			};
-+			adc-chan@9 {
-+				reg = <VADC_REF_625MV>;
-+			};
-+			adc-chan@a {
-+				reg = <VADC_REF_1250MV>;
-+			};
-+			adc-chan@c {
-+				reg = <VADC_SPARE1>;
-+			};
-+			adc-chan@e {
-+				reg = <VADC_GND_REF>;
-+			};
-+			adc-chan@f {
-+				reg = <VADC_VDD_VADC>;
-+			};
-+		};
-+
-+		rtc@6000 {
-+			compatible = "qcom,pm8941-rtc";
-+			reg = <0x6000>, <0x6100>;
-+			reg-names = "rtc", "alarm";
-+			interrupts = <0x0 0x61 0x1 IRQ_TYPE_EDGE_RISING>;
++		volume-up {
++			label = "volume_up";
++			linux,code = <KEY_VOLUMEUP>;
++			gpios = <&tlmm 85 GPIO_ACTIVE_LOW>;
 +		};
 +	};
 +
-+	pmic@1 {
-+		compatible = "qcom,pm8953", "qcom,spmi-pmic";
-+		reg = <1 SPMI_USID>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++	vph_pwr: vph-pwr-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "vph_pwr";
++		regulator-always-on;
++		regulator-boot-on;
 +	};
++};
++
++&hsusb_phy {
++	status = "okay";
++	vdd-supply = <&pm8953_l3>;
++	vdda-pll-supply = <&pm8953_l7>;
++	vdda-phy-dpdm-supply = <&pm8953_l13>;
++};
++
++&pm8953_resin {
++	status = "okay";
++	linux,code = <KEY_VOLUMEDOWN>;
++};
++
++&sdhc_1 {
++	status = "okay";
++	vmmc-supply = <&pm8953_l8>;
++	vqmmc-supply = <&pm8953_l5>;
++};
++
++&sdhc_2 {
++	status = "okay";
++	vmmc-supply = <&pm8953_l11>;
++	vqmmc-supply = <&pm8953_l12>;
++
++	cd-gpios = <&tlmm 133 GPIO_ACTIVE_LOW>;
++};
++
++&rpm_requests {
++	pm8953-regulators {
++		compatible = "qcom,rpm-pm8953-regulators";
++
++		vdd_l1-supply = <&pm8953_s3>;
++		vdd_l2_l3-supply = <&pm8953_s3>;
++		vdd_l4_l5_l6_l7_l16_l19-supply = <&pm8953_s4>;
++		vdd_l8_l11_l12_l13_l14_l15-supply = <&vph_pwr>;
++		vdd_l9_l10_l17_l18_l22-supply = <&vph_pwr>;
++
++		pm8953_s3: s3 {
++			regulator-min-microvolt = <984000>;
++			regulator-max-microvolt = <1240000>;
++		};
++		pm8953_s4: s4 {
++			regulator-min-microvolt = <1036000>;
++			regulator-max-microvolt = <2040000>;
++		};
++		pm8953_s5: s5 {
++			regulator-min-microvolt = <1036000>;
++			regulator-max-microvolt = <2040000>;
++		};
++
++		pm8953_l1: l1 {
++			regulator-min-microvolt = <975000>;
++			regulator-max-microvolt = <1050000>;
++		};
++		pm8953_l2: l2 {
++			regulator-min-microvolt = <975000>;
++			regulator-max-microvolt = <1175000>;
++		};
++		pm8953_l3: l3 {
++			regulator-min-microvolt = <925000>;
++			regulator-max-microvolt = <925000>;
++		};
++		pm8953_l5: l5 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++		};
++		pm8953_l6: l6 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++		};
++		pm8953_l7: l7 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1900000>;
++		};
++		pm8953_l8: l8 {
++			regulator-min-microvolt = <2900000>;
++			regulator-max-microvolt = <2900000>;
++		};
++		pm8953_l9: l9 {
++			regulator-min-microvolt = <3000000>;
++			regulator-max-microvolt = <3300000>;
++		};
++		pm8953_l10: l10 {
++			regulator-min-microvolt = <2800000>;
++			regulator-max-microvolt = <3000000>;
++		};
++		pm8953_l11: l11 {
++			regulator-min-microvolt = <2950000>;
++			regulator-max-microvolt = <2950000>;
++		};
++		pm8953_l12: l12 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <2950000>;
++		};
++		pm8953_l13: l13 {
++			regulator-min-microvolt = <3125000>;
++			regulator-max-microvolt = <3125000>;
++		};
++		pm8953_l16: l16 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++		};
++		pm8953_l17: l17 {
++			regulator-min-microvolt = <2850000>;
++			regulator-max-microvolt = <2850000>;
++		};
++		pm8953_l19: l19 {
++			regulator-min-microvolt = <1200000>;
++			regulator-max-microvolt = <1350000>;
++		};
++		pm8953_l22: l22 {
++			regulator-min-microvolt = <2800000>;
++			regulator-max-microvolt = <2800000>;
++		};
++		pm8953_l23: l23 {
++			regulator-min-microvolt = <975000>;
++			regulator-max-microvolt = <1225000>;
++		};
++	};
++};
++
++&tlmm {
++	/*
++	 * 0-3: unused but protected by TZ
++	 * 135-138: fingerprint reader (SPI)
++	 */
++	gpio-reserved-ranges = <0 4>, <135 4>;
++};
++
++&uart_0 {
++	status = "okay";
++};
++
++&usb3 {
++	status = "okay";
++};
++
++&usb3_dwc3 {
++	dr_mode = "peripheral";
 +};
 -- 
 2.35.1
