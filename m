@@ -2,173 +2,98 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDF22C433F5
-	for <phone-devel@archiver.kernel.org>; Wed, 23 Feb 2022 11:57:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 02714C433FE
+	for <phone-devel@archiver.kernel.org>; Wed, 23 Feb 2022 13:11:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240218AbiBWL5m (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 23 Feb 2022 06:57:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59120 "EHLO
+        id S240687AbiBWNMM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 23 Feb 2022 08:12:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240213AbiBWL5m (ORCPT
+        with ESMTP id S240724AbiBWNMG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 23 Feb 2022 06:57:42 -0500
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BC9A4925C
-        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 03:57:14 -0800 (PST)
-Received: by mail-qv1-xf32.google.com with SMTP id ba20so7928421qvb.1
-        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 03:57:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Sz/TsBK4wrm9NAX8eMKN5KJLVIsMXNpGW7xZZ6AIY/U=;
-        b=kgDfSg1eFSmoCKyv5tAO9ymORcbkmV8Dw9/lGclBVFg0VRGDQJStPALWtmnxhrP3aP
-         ddbDSEbakDsUlrEqAGUpGDur67d3XK9izYYjAQnRoHBgZ9hO83iLbeESWJaxf2GlW7u/
-         RPlURiOP8PuLZveENHVY4cF1U+XawaEh1CCpSakj9AA76dVYVdibVirHNDDp1Zqzt+oF
-         Udnup+p3E/icOfEBQW1pN72XeqyiKW4WD4FjX0XfgJ1OC+Ouj3CH8JCUPy1P7lLLT/ag
-         kBuE0JWFdSOmir86132ruSClPY3McqFKVWIpWGee0yBqrozQnEUtIIXSRRbgF01nzj3r
-         Mj8g==
+        Wed, 23 Feb 2022 08:12:06 -0500
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D729C5FF17
+        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 05:11:38 -0800 (PST)
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 6B5893FCA7
+        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 13:11:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1645621897;
+        bh=6ItdzAIC73ba61SL64woNZZ4z8ugfh6dQKurjioqyaA=;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+         MIME-Version:Content-Type;
+        b=qzX3zyq6FDUpmt9Z+UyAlUTqAONdi3E+Cro7BbQq2noecR+uw7ZiCc4zk1IqcWLyp
+         J5GadaKX4lABewfAvfybqsdGCdrVCswvxokrgPHHZcLYsElteZl298Zeg2aGKi9cbH
+         JuIDsc+CfEkLpx+X1H6kklRlIAufHrxKZraHL8CkHItI+qrFFsjTvsSpvo9djA2Ay0
+         6nrQ00t07wnoG7cMvsU2euDbC2/ubyFHCw/18FctoEC/U54EM/qnBhOs/5pJh7ug/X
+         djAM698n3OWg6nlmwyd7tbfsExSqNJhQcMZR2T5UqBGuJpxKMCc4VJpywtVpySjXTR
+         HStD3YAk+Br/A==
+Received: by mail-ed1-f70.google.com with SMTP id d11-20020a50c88b000000b00410ba7a14acso13557116edh.6
+        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 05:11:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Sz/TsBK4wrm9NAX8eMKN5KJLVIsMXNpGW7xZZ6AIY/U=;
-        b=VK6TsWYgJISOfWjud7mLmv8mSMp0rzoydqQhCLe1CjW+q2Nux7i1QdVSBobK/YO8c+
-         vBA3GfUEEDaEB3nVVb1/A53Tkx+m9NZLJHAl/MCIjj9uWPXUXf6AsKGpuquO4QUPasEc
-         dpUI1+8a2c0gOsC4hrYqEa7jGI08LTASVTLWdLlZ1q96i12B/hZWHP8MNaZ/h2WADul9
-         3+vr8A6uZql1ofB0edSZ7ZMSMOObnydHFxI78Ci4KF3Q+yE8SodSI50Ch4VefQuP77G1
-         szTOA5fDblowWkJbz2pkkYJ5Km62iKdf/iPooE+mliJrqHvCHC/h/EKg1KnSbxBMZn7M
-         9Cmg==
-X-Gm-Message-State: AOAM532rVhqRgyK4ReSpesEbbi8VSPvn+H8jT5mqovrsNUnTtkEkUVBj
-        EyrTkMpW4UPUEtimKaeCuPYF/HRDJsecUPLvLdLH8Q==
-X-Google-Smtp-Source: ABdhPJyd9W7Dm6dao+jkvi5TzRKXnAJlelbOAkvifRbROGVcT9HGdc2jR0RXv3zxEVyUcC712KQkjzTdElakKICXvJg=
-X-Received: by 2002:a05:622a:1206:b0:2de:6fa4:41fb with SMTP id
- y6-20020a05622a120600b002de6fa441fbmr4366794qtx.295.1645617433629; Wed, 23
- Feb 2022 03:57:13 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=6ItdzAIC73ba61SL64woNZZ4z8ugfh6dQKurjioqyaA=;
+        b=aftJU/NTu/nyNOsOA7KNn77PU6LGXXLYt5hVHR/+KTCXPLV1rJzV7Lb6mwK3l3XDBt
+         Hqpgz/YFTMEpdsvKA0V3jl8i+sgDU+tmdFlJT0GBS2dn+67MKw0WS+R0YNNAq50yHm/U
+         UEEccv/ZSk/BfUUfvMOwim0ibnZKAIgOqXr1xh+rgdNb9DDHj52tXv9m0Zxy+58O42nm
+         LRwME9lLvrrRiNvMPkAtqp4/+e/rJCjFIzgdBZKwjiprYkOp1yPCYOiv3SE6pIedZn05
+         QHHV/1WzXmfHTfcQ0LEevP7SksC05LS7BD/GJHkI4TDzU2hXzcc9y0GaM4k+Kk1aXdRN
+         Zlrw==
+X-Gm-Message-State: AOAM531iy/GRNekLoKVeHppALZz4MtS0tK9LnNBJnGZ7v43ZjFLHN9Cf
+        7v1q9V09TsXHq3Dvy+mEUIqpeGbxqA15+xATEGNkJtOMMo5yEd2jpYqvbNebQd/+RbTilKmomhy
+        CUhJmb/cx8ScXg6/zlkrd3Wni4bcxmFi4e77rfNw0
+X-Received: by 2002:a17:906:e13:b0:6ce:21ca:1b91 with SMTP id l19-20020a1709060e1300b006ce21ca1b91mr23486663eji.193.1645621893967;
+        Wed, 23 Feb 2022 05:11:33 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzqN7LLprVP7W7VK/4Uq3spoFQPaiet9FLARrRJrnw6k3jKocmQL3RLligIlXMbw8qEbieF2Q==
+X-Received: by 2002:a17:906:e13:b0:6ce:21ca:1b91 with SMTP id l19-20020a1709060e1300b006ce21ca1b91mr23486648eji.193.1645621893757;
+        Wed, 23 Feb 2022 05:11:33 -0800 (PST)
+Received: from localhost.localdomain (xdsl-188-155-181-108.adslplus.ch. [188.155.181.108])
+        by smtp.gmail.com with ESMTPSA id h7sm11800293ede.66.2022.02.23.05.11.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Feb 2022 05:11:33 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+To:     David Virag <virag.david003@gmail.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Sam Protsenko <semen.protsenko@linaro.org>,
+        phone-devel@vger.kernel.org, Alim Akhtar <alim.akhtar@samsung.com>,
+        linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 0/1] Initial Samsung Galaxy A8 (2018) support
+Date:   Wed, 23 Feb 2022 14:10:58 +0100
+Message-Id: <164562185401.52450.9639221721231378939.b4-ty@canonical.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220221194958.117361-1-virag.david003@gmail.com>
+References: <20220221194958.117361-1-virag.david003@gmail.com>
 MIME-Version: 1.0
-References: <20220223114011.219044-1-marijn.suijten@somainline.org>
-In-Reply-To: <20220223114011.219044-1-marijn.suijten@somainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Wed, 23 Feb 2022 14:57:02 +0300
-Message-ID: <CAA8EJppddv_TV_9t2iw4+cBv_L5_c78rx-QLJqpRRuoD+3S=+A@mail.gmail.com>
-Subject: Re: [PATCH v2] drm/msm/dpu: Bind pingpong block to intf on active
- ctls in cmd encoder
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Bernard <bernard@vivo.com>,
-        Zhen Lei <thunder.leizhen@huawei.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 23 Feb 2022 at 14:40, Marijn Suijten
-<marijn.suijten@somainline.org> wrote:
->
-> As per the specification of DPU_CTL_ACTIVE_CFG the configuration of
-> active blocks should be proactively specified, and the pingpong block is
-> no different.
->
-> The downstream display driver [1] confirms this by also calling
-> bind_pingpong_blk on CTL_ACTIVE_CFG.  Note that this else-if is always
-> entered, as setup_intf_cfg - unlike this mainline dpu driver that
-> combines both behind the same function pointer - is left NULL in favour
-> of using setup_intf_cfg_v1 when CTL_ACTIVE_CFG is set.
->
-> This solves continuous timeouts on at least the Qualcomm sm6125 SoC:
->
->     [drm:dpu_encoder_frame_done_timeout:2091] [dpu error]enc31 frame done timeout
->     [drm:_dpu_encoder_phys_cmd_handle_ppdone_timeout.isra.0] *ERROR* id:31 pp:0 kickoff timeout 0 cnt 1 koff_cnt 1
->     [drm:dpu_encoder_phys_cmd_prepare_for_kickoff] *ERROR* failed wait_for_idle: id:31 ret:-110 pp:0
->
-> In the same way this pingpong block should also be unbound followed by
-> an interface flush when the encoder is disabled, according to the
-> downstream display driver [2].
->
-> [1]: https://source.codeaurora.org/quic/la/platform/vendor/opensource/display-drivers/tree/msm/sde/sde_encoder_phys_cmd.c?h=LA.UM.9.16.r1-08500-MANNAR.0#n167
-> [2]: https://source.codeaurora.org/quic/la/platform/vendor/opensource/display-drivers/tree/msm/sde/sde_encoder.c?h=LA.UM.9.16.r1-08500-MANNAR.0#n2986
->
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+On Mon, 21 Feb 2022 20:49:55 +0100, David Virag wrote:
+> Add basic initial support for the Samsung Galaxy A8 (2018) smartphone.
+> This phone is also known as "jackpotlte" and under the model name
+> "SM-A530F". In its current state this should work on most if not all
+> Exynos7885 phones/devices released.
+> 
+> As of now, it supports I2C nodes (all disabled by default) and UART
+> console with basic clock support in place.
+> 
+> [...]
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Applied, thanks!
 
-As we are quite late in the development cycle, I'd delay this into the
-next release, if you don't mind.
+[1/1] arm64: dts: exynos: Add initial device tree support for Exynos7885 SoC
+      commit: 06874015327ba7bf6aae49ca825a492a2679237f
 
-> ---
->
-> Changes since v1:
-> - Always unbind the pingpong block in dpu_encoder_phys_cmd_disable,
->   instead of only if this encoder is the master.
->
-> v1: https://lore.kernel.org/lkml/20211222105513.44860-1-marijn.suijten@somainline.org/
->
->  .../drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c  | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
->
-> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> index 8e433af7aea4..1be01cbd960e 100644
-> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> @@ -71,6 +71,13 @@ static void _dpu_encoder_phys_cmd_update_intf_cfg(
->         intf_cfg.stream_sel = cmd_enc->stream_sel;
->         intf_cfg.mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
->         ctl->ops.setup_intf_cfg(ctl, &intf_cfg);
-> +
-> +       /* setup which pp blk will connect to this intf */
-> +       if (test_bit(DPU_CTL_ACTIVE_CFG, &ctl->caps->features) && phys_enc->hw_intf->ops.bind_pingpong_blk)
-> +               phys_enc->hw_intf->ops.bind_pingpong_blk(
-> +                               phys_enc->hw_intf,
-> +                               true,
-> +                               phys_enc->hw_pp->idx);
->  }
->
->  static void dpu_encoder_phys_cmd_pp_tx_done_irq(void *arg, int irq_idx)
-> @@ -507,6 +514,7 @@ static void dpu_encoder_phys_cmd_disable(struct dpu_encoder_phys *phys_enc)
->  {
->         struct dpu_encoder_phys_cmd *cmd_enc =
->                 to_dpu_encoder_phys_cmd(phys_enc);
-> +       struct dpu_hw_ctl *ctl;
->
->         if (!phys_enc->hw_pp) {
->                 DPU_ERROR("invalid encoder\n");
-> @@ -523,6 +531,17 @@ static void dpu_encoder_phys_cmd_disable(struct dpu_encoder_phys *phys_enc)
->
->         if (phys_enc->hw_pp->ops.enable_tearcheck)
->                 phys_enc->hw_pp->ops.enable_tearcheck(phys_enc->hw_pp, false);
-> +
-> +       if (phys_enc->hw_intf->ops.bind_pingpong_blk) {
-> +               phys_enc->hw_intf->ops.bind_pingpong_blk(
-> +                               phys_enc->hw_intf,
-> +                               false,
-> +                               phys_enc->hw_pp->idx);
-> +
-> +               ctl = phys_enc->hw_ctl;
-> +               ctl->ops.update_pending_flush_intf(ctl, phys_enc->intf_idx);
-> +       }
-> +
->         phys_enc->enable_state = DPU_ENC_DISABLED;
->  }
->
->
-> base-commit: 3c30cf91b5ecc7272b3d2942ae0505dd8320b81c
-> --
-> 2.35.1
->
-
-
+Best regards,
 -- 
-With best wishes
-Dmitry
+Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
