@@ -2,98 +2,144 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02714C433FE
-	for <phone-devel@archiver.kernel.org>; Wed, 23 Feb 2022 13:11:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53650C433EF
+	for <phone-devel@archiver.kernel.org>; Wed, 23 Feb 2022 15:42:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240687AbiBWNMM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 23 Feb 2022 08:12:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34828 "EHLO
+        id S242277AbiBWPnJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 23 Feb 2022 10:43:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240724AbiBWNMG (ORCPT
+        with ESMTP id S242262AbiBWPnI (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 23 Feb 2022 08:12:06 -0500
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D729C5FF17
-        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 05:11:38 -0800 (PST)
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 6B5893FCA7
-        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 13:11:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1645621897;
-        bh=6ItdzAIC73ba61SL64woNZZ4z8ugfh6dQKurjioqyaA=;
-        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-         MIME-Version:Content-Type;
-        b=qzX3zyq6FDUpmt9Z+UyAlUTqAONdi3E+Cro7BbQq2noecR+uw7ZiCc4zk1IqcWLyp
-         J5GadaKX4lABewfAvfybqsdGCdrVCswvxokrgPHHZcLYsElteZl298Zeg2aGKi9cbH
-         JuIDsc+CfEkLpx+X1H6kklRlIAufHrxKZraHL8CkHItI+qrFFsjTvsSpvo9djA2Ay0
-         6nrQ00t07wnoG7cMvsU2euDbC2/ubyFHCw/18FctoEC/U54EM/qnBhOs/5pJh7ug/X
-         djAM698n3OWg6nlmwyd7tbfsExSqNJhQcMZR2T5UqBGuJpxKMCc4VJpywtVpySjXTR
-         HStD3YAk+Br/A==
-Received: by mail-ed1-f70.google.com with SMTP id d11-20020a50c88b000000b00410ba7a14acso13557116edh.6
-        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 05:11:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=6ItdzAIC73ba61SL64woNZZ4z8ugfh6dQKurjioqyaA=;
-        b=aftJU/NTu/nyNOsOA7KNn77PU6LGXXLYt5hVHR/+KTCXPLV1rJzV7Lb6mwK3l3XDBt
-         Hqpgz/YFTMEpdsvKA0V3jl8i+sgDU+tmdFlJT0GBS2dn+67MKw0WS+R0YNNAq50yHm/U
-         UEEccv/ZSk/BfUUfvMOwim0ibnZKAIgOqXr1xh+rgdNb9DDHj52tXv9m0Zxy+58O42nm
-         LRwME9lLvrrRiNvMPkAtqp4/+e/rJCjFIzgdBZKwjiprYkOp1yPCYOiv3SE6pIedZn05
-         QHHV/1WzXmfHTfcQ0LEevP7SksC05LS7BD/GJHkI4TDzU2hXzcc9y0GaM4k+Kk1aXdRN
-         Zlrw==
-X-Gm-Message-State: AOAM531iy/GRNekLoKVeHppALZz4MtS0tK9LnNBJnGZ7v43ZjFLHN9Cf
-        7v1q9V09TsXHq3Dvy+mEUIqpeGbxqA15+xATEGNkJtOMMo5yEd2jpYqvbNebQd/+RbTilKmomhy
-        CUhJmb/cx8ScXg6/zlkrd3Wni4bcxmFi4e77rfNw0
-X-Received: by 2002:a17:906:e13:b0:6ce:21ca:1b91 with SMTP id l19-20020a1709060e1300b006ce21ca1b91mr23486663eji.193.1645621893967;
-        Wed, 23 Feb 2022 05:11:33 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzqN7LLprVP7W7VK/4Uq3spoFQPaiet9FLARrRJrnw6k3jKocmQL3RLligIlXMbw8qEbieF2Q==
-X-Received: by 2002:a17:906:e13:b0:6ce:21ca:1b91 with SMTP id l19-20020a1709060e1300b006ce21ca1b91mr23486648eji.193.1645621893757;
-        Wed, 23 Feb 2022 05:11:33 -0800 (PST)
-Received: from localhost.localdomain (xdsl-188-155-181-108.adslplus.ch. [188.155.181.108])
-        by smtp.gmail.com with ESMTPSA id h7sm11800293ede.66.2022.02.23.05.11.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Feb 2022 05:11:33 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-To:     David Virag <virag.david003@gmail.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Sam Protsenko <semen.protsenko@linaro.org>,
-        phone-devel@vger.kernel.org, Alim Akhtar <alim.akhtar@samsung.com>,
-        linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/1] Initial Samsung Galaxy A8 (2018) support
-Date:   Wed, 23 Feb 2022 14:10:58 +0100
-Message-Id: <164562185401.52450.9639221721231378939.b4-ty@canonical.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220221194958.117361-1-virag.david003@gmail.com>
-References: <20220221194958.117361-1-virag.david003@gmail.com>
+        Wed, 23 Feb 2022 10:43:08 -0500
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 210D42D1E5;
+        Wed, 23 Feb 2022 07:42:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1645630960; x=1677166960;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=e4iUHA2a+l+KhADALNLZscJEFxyySLAdMRx9NxqUlUY=;
+  b=GNHIh5uRR7RcnJ11FeOqgVCXkLbsF+4dd992sq4ECeK+3VqBWb3PS83T
+   eSuZ5Is/xdBVdm/JNA1Cc5AiCPurRdkWlIy9SREcP78D6FHSa/J/hPsbx
+   Gmz0XvvgEy1Wig14Ei9c/nPNDEzdGbjS9B+XYm01GxUmAzKb+o+YdQwxV
+   ZxlgiVMW9JJJKGW5uvtKbeM/g09SZ05sUpNBHCSSSD/XpL6UzuFJLyTBY
+   bbHZL/OCuqPjNt1p7fENqaNCagBGFPfmLP0BtK6mnBNzSB56Z8+idasSS
+   jBPY+8O9ceNE9zpOSDukQGCHvOsxflf2sugfaDHaB1EcWY26Fff38tAvp
+   g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10266"; a="235500200"
+X-IronPort-AV: E=Sophos;i="5.88,391,1635231600"; 
+   d="scan'208";a="235500200"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2022 07:42:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,391,1635231600"; 
+   d="scan'208";a="591739627"
+Received: from lkp-server01.sh.intel.com (HELO 788b1cd46f0d) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 23 Feb 2022 07:42:36 -0800
+Received: from kbuild by 788b1cd46f0d with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nMtml-0001ZQ-W6; Wed, 23 Feb 2022 15:42:35 +0000
+Date:   Wed, 23 Feb 2022 23:41:41 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Markuss Broks <markuss.broks@gmail.com>,
+        linux-kernel@vger.kernel.org
+Cc:     kbuild-all@lists.01.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 2/2] Input: add Imagis touchscreen driver
+Message-ID: <202202232342.Ew209GPR-lkp@intel.com>
+References: <20220222203414.8656-3-markuss.broks@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220222203414.8656-3-markuss.broks@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 21 Feb 2022 20:49:55 +0100, David Virag wrote:
-> Add basic initial support for the Samsung Galaxy A8 (2018) smartphone.
-> This phone is also known as "jackpotlte" and under the model name
-> "SM-A530F". In its current state this should work on most if not all
-> Exynos7885 phones/devices released.
-> 
-> As of now, it supports I2C nodes (all disabled by default) and UART
-> console with basic clock support in place.
-> 
-> [...]
+Hi Markuss,
 
-Applied, thanks!
+I love your patch! Perhaps something to improve:
 
-[1/1] arm64: dts: exynos: Add initial device tree support for Exynos7885 SoC
-      commit: 06874015327ba7bf6aae49ca825a492a2679237f
+[auto build test WARNING on dtor-input/next]
+[also build test WARNING on linux/master robh/for-next linus/master v5.17-rc5 next-20220222]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+url:    https://github.com/0day-ci/linux/commits/Markuss-Broks/Add-support-for-Imagis-touchscreens/20220223-043645
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
+config: arm-randconfig-s031-20220223 (https://download.01.org/0day-ci/archive/20220223/202202232342.Ew209GPR-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 11.2.0
+reproduce:
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # apt-get install sparse
+        # sparse version: v0.6.4-dirty
+        # https://github.com/0day-ci/linux/commit/bc77ee5e0d7309edca7d65925c6afa05334b0b01
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Markuss-Broks/Add-support-for-Imagis-touchscreens/20220223-043645
+        git checkout bc77ee5e0d7309edca7d65925c6afa05334b0b01
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=arm SHELL=/bin/bash drivers/input/touchscreen/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/input/touchscreen/imagis.c:65:35: sparse: sparse: cast to restricted __be32
+
+vim +65 drivers/input/touchscreen/imagis.c
+
+    40	
+    41	static int imagis_i2c_read_reg(struct imagis_ts *ts,
+    42				       unsigned int reg, unsigned int *buffer)
+    43	{
+    44		__be32 reg_be = cpu_to_be32(reg);
+    45		struct i2c_msg msg[] = {
+    46			{
+    47				.addr = ts->client->addr,
+    48				.flags = 0,
+    49				.buf = (unsigned char *)&reg_be,
+    50				.len = sizeof(reg_be),
+    51			}, {
+    52				.addr = ts->client->addr,
+    53				.flags = I2C_M_RD,
+    54				.buf = (unsigned char *)buffer,
+    55				.len = sizeof(reg_be),
+    56			},
+    57		};
+    58		int ret, error;
+    59		int retry = IST3038C_I2C_RETRY_COUNT;
+    60	
+    61		/* Retry in case the controller fails to respond */
+    62		do {
+    63			ret = i2c_transfer(ts->client->adapter, msg, ARRAY_SIZE(msg));
+    64			if (ret == ARRAY_SIZE(msg)) {
+  > 65				*buffer = be32_to_cpu(*buffer);
+    66				return 0;
+    67			}
+    68	
+    69			error = ret < 0 ? ret : -EIO;
+    70			dev_err(&ts->client->dev,
+    71				"%s - i2c_transfer failed: %d (%d)\n",
+    72				__func__, error, ret);
+    73		} while (--retry);
+    74	
+    75		return error;
+    76	}
+    77	
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
