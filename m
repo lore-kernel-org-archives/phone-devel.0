@@ -2,905 +2,148 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02FC7C433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 22 Feb 2022 23:35:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8ED90C433FE
+	for <phone-devel@archiver.kernel.org>; Wed, 23 Feb 2022 05:00:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236198AbiBVXfv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 22 Feb 2022 18:35:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45088 "EHLO
+        id S230215AbiBWFA5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 23 Feb 2022 00:00:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236178AbiBVXfu (ORCPT
+        with ESMTP id S232067AbiBWFAz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 22 Feb 2022 18:35:50 -0500
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D987A2D1C5
-        for <phone-devel@vger.kernel.org>; Tue, 22 Feb 2022 15:35:22 -0800 (PST)
-Received: by mail-lj1-x235.google.com with SMTP id p20so13702632ljo.0
-        for <phone-devel@vger.kernel.org>; Tue, 22 Feb 2022 15:35:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=04itXaiecdVET750naqFlwljZbrCw/g3vn7RUiSL9T8=;
-        b=WY5tDSI2TBwVmTXorpE4Uu/Y/GOWl95aIMZ7De6teajmNUJZTebqTGh4GyBZiGKMe5
-         eIfjniu6ogiJ5lPBVaC+hgEtmBECUEIAEkelNNggGmQbKARnU+un2Bf8ZWm2oAv/+/2s
-         5JRWAFQ4SCe242n/xC0KbPZOAqoV/io+PMflALeBQarl2G4hxjIfD9cdSXTU6MNseO/H
-         3BMiWfZHPLL2KnoCqDR4DEbTQmHXYfyOFdfMoqcV2/FP5m2kNV4EjMiqU368UPkYrj3g
-         fdDin4xWTnH/F2MhDYl9/lqT3G/K/RA0ZSGElgXW9IQ6SBfctszgcO8vwhUPWXiGHr7e
-         eCSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=04itXaiecdVET750naqFlwljZbrCw/g3vn7RUiSL9T8=;
-        b=jEqD+vq3XxNRP0Qs437TfxybwZDpVslpc1mwoY4ylWtlVVaef/IROmQZ5YFoFHupzY
-         5bQtn5IutMrEBe2n95PMVmmTFdUumedFwLCUzcLxQ4QGhVWiAcw/iDBkvpqytF9vngcr
-         M3D96E0HRd2rDXgjE/DJrdtdgmAURDPSytU94NdwR9xefuRAsbBHq8dBAd2VQ0SX4J8O
-         pavxhBEsY0QcGSvV7cpx+9+INAHEYxemEQyvWrQawK9SXh7pILK9FcVOqGj/2aij4VE7
-         mRz+UR0z/nrPyfxeC0aHVZ5ZY8MaPP9MgoWoxuNBPLMKsA67scwt8+zjM1hSOAGTEaE7
-         bliA==
-X-Gm-Message-State: AOAM531eHxtV/pdxzReyd2M3UJajEHY20X17NskwUGcYFVe9NSQsQJNu
-        BZ5wzyky5EIFBq/YQe0OYFWtUQ==
-X-Google-Smtp-Source: ABdhPJxyPG3ov3/0LMicLLqDwC7MlNzfaeaVMziuA/kmkdqw3utd1FKYZFnoeuAPnlLByA59cTBi/w==
-X-Received: by 2002:a2e:919a:0:b0:246:2893:3926 with SMTP id f26-20020a2e919a000000b0024628933926mr16837416ljg.262.1645572921090;
-        Tue, 22 Feb 2022 15:35:21 -0800 (PST)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id r3sm1459092lfi.260.2022.02.22.15.35.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Feb 2022 15:35:20 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-arm-kernel@lists.infradead.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        phone-devel@vger.kernel.org,
-        Markuss Broks <markuss.broks@gmail.com>
-Subject: [PATCH 2/2] ARM: dts: ux500: Add Codina TMO device tree
-Date:   Wed, 23 Feb 2022 00:33:13 +0100
-Message-Id: <20220222233313.1774416-2-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220222233313.1774416-1-linus.walleij@linaro.org>
-References: <20220222233313.1774416-1-linus.walleij@linaro.org>
+        Wed, 23 Feb 2022 00:00:55 -0500
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC7C060CCD;
+        Tue, 22 Feb 2022 21:00:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1645592428; x=1677128428;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6FLKm6fp0tyd6+4vW4Mst9f8YW1kXerksPWJZQnchhs=;
+  b=mkTRIgGfVowajtjZcwokhZm+kAsW6+MX/JpI+IPNvyifD3UxqLqLipgZ
+   79wlQ55GRGMnPdC7/eTEz3QOPTqrkSU70iwOhnLRshpNPnGoC9by/1l+a
+   8k5ChUQz7myoLs0rNZQb4wszb25j4NdMQeGJrroK+MeFGg/xg2mHjtsKd
+   9DyYPe4rM5eNheFBitL/YgkVeC86ySHgzhQk1NTbRA/LhwczW56KDfsnz
+   6utJDtw7dFOoz0txYWNobIgkvEmw861Pc2Ysu4h+dF+VpVMvzULF8FV3Z
+   pvHVbn2eD2hrdcE8gHMWDClEgXwebdRqmKVAgqCvCUdZzNaKKGqMW2aEz
+   Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10266"; a="338320951"
+X-IronPort-AV: E=Sophos;i="5.88,390,1635231600"; 
+   d="scan'208";a="338320951"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2022 21:00:19 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,390,1635231600"; 
+   d="scan'208";a="639175040"
+Received: from lkp-server01.sh.intel.com (HELO 788b1cd46f0d) ([10.239.97.150])
+  by orsmga004.jf.intel.com with ESMTP; 22 Feb 2022 21:00:16 -0800
+Received: from kbuild by 788b1cd46f0d with local (Exim 4.92)
+        (envelope-from <lkp@intel.com>)
+        id 1nMjl9-0000zj-DA; Wed, 23 Feb 2022 05:00:15 +0000
+Date:   Wed, 23 Feb 2022 12:59:48 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Markuss Broks <markuss.broks@gmail.com>,
+        linux-kernel@vger.kernel.org
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 2/2] Input: add Imagis touchscreen driver
+Message-ID: <202202231213.Vj9yo4tW-lkp@intel.com>
+References: <20220222203414.8656-3-markuss.broks@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220222203414.8656-3-markuss.broks@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This adds a device tree for "Codina TMO" also known as
-Samsung Galaxy Exhibit or Samsung SGH-T599. It is quite different
-from the vanilla Codina despite sharing the same board file in
-the vendor tree.
+Hi Markuss,
 
-Fix up some comments in the Codina DTS while we're at it.
+I love your patch! Perhaps something to improve:
 
-Cc: phone-devel@vger.kernel.org
-Cc: Markuss Broks <markuss.broks@gmail.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+[auto build test WARNING on dtor-input/next]
+[also build test WARNING on linux/master robh/for-next linus/master v5.17-rc5 next-20220222]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/0day-ci/linux/commits/Markuss-Broks/Add-support-for-Imagis-touchscreens/20220223-043645
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
+config: hexagon-allyesconfig (https://download.01.org/0day-ci/archive/20220223/202202231213.Vj9yo4tW-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project d271fc04d5b97b12e6b797c6067d3c96a8d7470e)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/bc77ee5e0d7309edca7d65925c6afa05334b0b01
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Markuss-Broks/Add-support-for-Imagis-touchscreens/20220223-043645
+        git checkout bc77ee5e0d7309edca7d65925c6afa05334b0b01
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash drivers/input/touchscreen/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/input/touchscreen/imagis.c:300:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+           if (input_device_enabled(ts->input_dev))
+               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/input/touchscreen/imagis.c:305:9: note: uninitialized use occurs here
+           return ret;
+                  ^~~
+   drivers/input/touchscreen/imagis.c:300:2: note: remove the 'if' if its condition is always true
+           if (input_device_enabled(ts->input_dev))
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/input/touchscreen/imagis.c:296:9: note: initialize the variable 'ret' to silence this warning
+           int ret;
+                  ^
+                   = 0
+   drivers/input/touchscreen/imagis.c:316:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+           if (input_device_enabled(ts->input_dev))
+               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/input/touchscreen/imagis.c:321:9: note: uninitialized use occurs here
+           return ret;
+                  ^~~
+   drivers/input/touchscreen/imagis.c:316:2: note: remove the 'if' if its condition is always true
+           if (input_device_enabled(ts->input_dev))
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/input/touchscreen/imagis.c:312:9: note: initialize the variable 'ret' to silence this warning
+           int ret;
+                  ^
+                   = 0
+   2 warnings generated.
+
+
+vim +300 drivers/input/touchscreen/imagis.c
+
+   291	
+   292	static int __maybe_unused imagis_suspend(struct device *dev)
+   293	{
+   294		struct i2c_client *client = to_i2c_client(dev);
+   295		struct imagis_ts *ts = i2c_get_clientdata(client);
+   296		int ret;
+   297	
+   298		mutex_lock(&ts->input_dev->mutex);
+   299	
+ > 300		if (input_device_enabled(ts->input_dev))
+   301			ret = imagis_stop(ts);
+   302	
+   303		mutex_unlock(&ts->input_dev->mutex);
+   304	
+   305		return ret;
+   306	}
+   307	
+
 ---
- arch/arm/boot/dts/Makefile                    |   1 +
- .../boot/dts/ste-ux500-samsung-codina-tmo.dts | 781 ++++++++++++++++++
- .../arm/boot/dts/ste-ux500-samsung-codina.dts |   8 +-
- 3 files changed, 788 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/boot/dts/ste-ux500-samsung-codina-tmo.dts
-
-diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index 235ad559acb2..d15ef490ec7a 100644
---- a/arch/arm/boot/dts/Makefile
-+++ b/arch/arm/boot/dts/Makefile
-@@ -1370,6 +1370,7 @@ dtb-$(CONFIG_ARCH_U8500) += \
- 	ste-ux500-samsung-janice.dtb \
- 	ste-ux500-samsung-gavini.dtb \
- 	ste-ux500-samsung-codina.dtb \
-+	ste-ux500-samsung-codina-tmo.dtb \
- 	ste-ux500-samsung-skomer.dtb \
- 	ste-ux500-samsung-kyle.dtb
- dtb-$(CONFIG_ARCH_UNIPHIER) += \
-diff --git a/arch/arm/boot/dts/ste-ux500-samsung-codina-tmo.dts b/arch/arm/boot/dts/ste-ux500-samsung-codina-tmo.dts
-new file mode 100644
-index 000000000000..80ae6ad05985
---- /dev/null
-+++ b/arch/arm/boot/dts/ste-ux500-samsung-codina-tmo.dts
-@@ -0,0 +1,781 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Devicetree for the Samsung Galaxy Exhibit SGH-T599 also known as Codina-TMO,
-+ * the "TMO" shall be read "T-Mobile" as this phone was produced exlusively
-+ * for T-Mobile in the United States.
-+ *
-+ * This phone is closely related to the Codina, but has:
-+ * - No CPU speed cap, full ~1GHz rate
-+ * - Different power management IC, AB8505
-+ * - As AB8505 has a micro USB phy, no TI TSU6111
-+ * - Different power routing such as the removal of the external LDO for the
-+ *   touchscreen in favor of using the AB8505
-+ * - Using a regulator for the key backlight LED
-+ * - Using the Samsung S6D27A1 panel by default
-+ * - The panel is using one of the ordinary AB8505 regulators for 1.8V
-+ * - WiFi/Bluetooth combi chip upgraded to BCM4334
-+ * - GPIO for backlight control moved from 68 to 69
-+ */
-+
-+/dts-v1/;
-+#include "ste-db8500.dtsi"
-+#include "ste-ab8505.dtsi"
-+#include "ste-dbx5x0-pinctrl.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/leds/common.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+
-+/ {
-+	model = "Samsung Galaxy Exhibit (SGH-T599)";
-+	compatible = "samsung,codina-tmo", "st-ericsson,u8500";
-+
-+	chosen {
-+		stdout-path = &serial2;
-+	};
-+
-+	battery: battery {
-+		compatible = "samsung,eb425161lu";
-+	};
-+
-+	thermal-zones {
-+		battery-thermal {
-+			/* This zone will be polled by the battery temperature code */
-+			polling-delay = <0>;
-+			polling-delay-passive = <0>;
-+			thermal-sensors = <&bat_therm>;
-+		};
-+	};
-+
-+	bat_therm: thermistor {
-+		compatible = "samsung,1404-001221";
-+		io-channels = <&gpadc 0x02>; /* BatTemp */
-+		pullup-uv = <1800000>;
-+		pullup-ohm = <230000>;
-+		pulldown-ohm = <0>;
-+		#thermal-sensor-cells = <0>;
-+	};
-+
-+	/* TI TXS0206 level translator for 2.9 V */
-+	sd_level_translator: regulator-gpio {
-+		compatible = "regulator-fixed";
-+
-+		/* GPIO87 EN */
-+		gpios = <&gpio2 23 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+
-+		regulator-name = "sd-level-translator";
-+		regulator-min-microvolt = <2900000>;
-+		regulator-max-microvolt = <2900000>;
-+		regulator-type = "voltage";
-+
-+		startup-delay-us = <200>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&sd_level_translator_default>;
-+	};
-+
-+	/* External LDO MIC5366-3.3YMT for eMMC */
-+	ldo_3v3_reg: regulator-gpio-ldo-3v3 {
-+		compatible = "regulator-fixed";
-+		/* Supplied in turn by VBAT */
-+		regulator-name = "VMEM_3V3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpios = <&gpio6 31 GPIO_ACTIVE_HIGH>;
-+		startup-delay-us = <5000>;
-+		enable-active-high;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&emmc_ldo_en_default_mode>;
-+	};
-+
-+	/*
-+	 * External Ricoh RP152L010B-TR LCD LDO regulator for the display.
-+	 * LCD_PWR_EN controls both the 3.0V output.
-+	 */
-+	lcd_3v0_reg: regulator-gpio-lcd-3v0 {
-+		compatible = "regulator-fixed";
-+		/* Supplied in turn by VBAT */
-+		regulator-name = "VREG_LCD_3.0V";
-+		regulator-min-microvolt = <3000000>;
-+		regulator-max-microvolt = <3000000>;
-+		/* GPIO219 controls this regulator */
-+		gpio = <&gpio6 27 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&lcd_pwr_en_default_mode>;
-+	};
-+
-+	/*
-+	 * This regulator is a GPIO line that drives the Broadcom WLAN
-+	 * line WL_REG_ON high and enables the internal regulators
-+	 * inside the chip. Unfortunatley it is erroneously named
-+	 * WLAN_RST_N on the schematic but it is not a reset line.
-+	 *
-+	 * The voltage specified here is only used to determine the OCR mask,
-+	 * the for the SDIO connector, the chip is actually connected
-+	 * directly to VBAT.
-+	 */
-+	wl_reg: regulator-gpio-wlan {
-+		compatible = "regulator-fixed";
-+		regulator-name = "WL_REG_ON";
-+		regulator-min-microvolt = <3000000>;
-+		regulator-max-microvolt = <3000000>;
-+		startup-delay-us = <100000>;
-+		/* GPIO215 (WLAN_RST_N to WL_REG_ON) */
-+		gpio = <&gpio6 23 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&wlan_ldo_en_default>;
-+	};
-+
-+	vibrator {
-+		compatible = "gpio-vibrator";
-+		/* GPIO195 "MOT_EN" */
-+		enable-gpios = <&gpio6 3 GPIO_ACTIVE_HIGH>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&vibrator_default>;
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&gpio_keys_default_mode>;
-+
-+		button-home {
-+			linux,code = <KEY_HOME>;
-+			label = "HOME";
-+			/* GPIO91 */
-+			gpios = <&gpio2 27 GPIO_ACTIVE_LOW>;
-+		};
-+		button-volup {
-+			linux,code = <KEY_VOLUMEUP>;
-+			label = "VOL+";
-+			/* GPIO67 */
-+			gpios = <&gpio2 3 GPIO_ACTIVE_LOW>;
-+		};
-+		button-voldown {
-+			linux,code = <KEY_VOLUMEDOWN>;
-+			label = "VOL-";
-+			/* GPIO92 */
-+			gpios = <&gpio2 28 GPIO_ACTIVE_LOW>;
-+		};
-+	};
-+
-+	led-touchkeys {
-+		compatible = "regulator-led";
-+		vled-supply = <&ab8500_ldo_aux4_reg>; // 3.3V
-+		default-state = "on";
-+		function = LED_FUNCTION_KBD_BACKLIGHT;
-+		color = <LED_COLOR_ID_WHITE>;
-+	};
-+
-+	ktd253: backlight {
-+		compatible = "kinetic,ktd253";
-+		/* GPIO69 is used on Codina R0.4 and Codina TMO */
-+		enable-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
-+		/* Default to 13/32 brightness */
-+		default-brightness = <13>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&ktd253_backlight_default_mode>;
-+	};
-+
-+	/* Richtek RT8515GQW Flash LED Driver IC */
-+	flash {
-+		compatible = "richtek,rt8515";
-+		/* GPIO 140 */
-+		enf-gpios = <&gpio4 12 GPIO_ACTIVE_HIGH>;
-+		/* GPIO 141 */
-+		ent-gpios = <&gpio4 13 GPIO_ACTIVE_HIGH>;
-+		/*
-+		 * RFS is 16 kOhm and RTS is 100 kOhm giving
-+		 * the flash max current 343mA and torch max
-+		 * current 55 mA.
-+		 */
-+		richtek,rfs-ohms = <16000>;
-+		richtek,rts-ohms = <100000>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&gpio_flash_default_mode>;
-+
-+		led {
-+			function = LED_FUNCTION_FLASH;
-+			color = <LED_COLOR_ID_WHITE>;
-+			flash-max-timeout-us = <250000>;
-+			flash-max-microamp = <343750>;
-+			led-max-microamp = <55000>;
-+		};
-+	};
-+
-+	/* Bit-banged I2C on GPIO143 and GPIO144 also called "SUBPMU I2C" */
-+	i2c-gpio-0 {
-+		compatible = "i2c-gpio";
-+		sda-gpios = <&gpio4 16 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+		scl-gpios = <&gpio4 15 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&i2c_gpio_0_default>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		/* TODO: this should also be used by the SM5103 Camera power management unit */
-+	};
-+
-+	/* Bit-banged I2C on GPIO151 and GPIO152 also called "COMP I2C" */
-+	i2c-gpio-1 {
-+		compatible = "i2c-gpio";
-+		sda-gpios = <&gpio4 24 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+		scl-gpios = <&gpio4 23 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&i2c_gpio_1_default>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		magnetometer@c {
-+			compatible = "alps,hscdtd008a";
-+			reg = <0x0c>;
-+			clock-frequency = <400000>;
-+
-+			avdd-supply = <&ab8500_ldo_aux1_reg>; // 3V
-+			dvdd-supply = <&ab8500_ldo_aux8_reg>; // 1.8V
-+		};
-+	};
-+
-+	spi-gpio-0 {
-+		compatible = "spi-gpio";
-+		/* Clock on GPIO220, pin SCL */
-+		sck-gpios = <&gpio6 28 GPIO_ACTIVE_HIGH>;
-+		/* MOSI on GPIO224, pin SDI "slave data in" */
-+		mosi-gpios = <&gpio7 0 GPIO_ACTIVE_HIGH>;
-+		/* MISO on GPIO225, pin SDO "slave data out" */
-+		miso-gpios = <&gpio7 1 GPIO_ACTIVE_HIGH>;
-+		/* Chip select on GPIO201 */
-+		cs-gpios = <&gpio6 9 GPIO_ACTIVE_LOW>;
-+		num-chipselects = <1>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&spi_gpio_0_default>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		panel@0 {
-+			compatible = "samsung,s6d27a1";
-+			spi-max-frequency = <1200000>;
-+			/* TYPE 3: inverse clock polarity and phase */
-+			spi-cpha;
-+			spi-cpol;
-+
-+			reg = <0>;
-+			vci-supply = <&lcd_3v0_reg>;
-+			vccio-supply = <&ab8500_ldo_aux6_reg>;
-+
-+			/* Reset on GPIO139 */
-+			reset-gpios = <&gpio4 11 GPIO_ACTIVE_LOW>;
-+			/* LCD_VGH/LCD_DETECT, ESD IRQ on GPIO93 */
-+			interrupt-parent = <&gpio2>;
-+			interrupts = <29 IRQ_TYPE_EDGE_RISING>;
-+
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&panel_default_mode>;
-+			backlight = <&ktd253>;
-+
-+			port {
-+				panel_in: endpoint {
-+					remote-endpoint = <&display_out>;
-+				};
-+			};
-+		};
-+	};
-+
-+	soc {
-+		/* External Micro SD slot */
-+		mmc@80126000 {
-+			arm,primecell-periphid = <0x10480180>;
-+			max-frequency = <100000000>;
-+			bus-width = <4>;
-+			cap-sd-highspeed;
-+			cap-mmc-highspeed;
-+			st,sig-pin-fbclk;
-+			full-pwr-cycle;
-+			/* MMC is powered by AUX3 1.2V .. 2.91V */
-+			vmmc-supply = <&ab8500_ldo_aux3_reg>;
-+			/* 2.9 V level translator is using AUX3 at 2.9 V as well */
-+			vqmmc-supply = <&sd_level_translator>;
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&mc0_a_2_default>;
-+			pinctrl-1 = <&mc0_a_2_sleep>;
-+			cd-gpios  = <&gpio6 25 GPIO_ACTIVE_LOW>; // GPIO217
-+			status = "okay";
-+		};
-+
-+		/* WLAN SDIO channel */
-+		mmc@80118000 {
-+			arm,primecell-periphid = <0x10480180>;
-+			max-frequency = <50000000>;
-+			bus-width = <4>;
-+			non-removable;
-+			cap-sd-highspeed;
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&mc1_a_2_default>;
-+			pinctrl-1 = <&mc1_a_2_sleep>;
-+			/*
-+			 * GPIO-controlled voltage enablement: this drives
-+			 * the WL_REG_ON line high when we use this device.
-+			 * Represented as regulator to fill OCR mask.
-+			 */
-+			vmmc-supply = <&wl_reg>;
-+
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "okay";
-+
-+			wifi@1 {
-+				compatible = "brcm,bcm4334-fmac", "brcm,bcm4329-fmac";
-+				reg = <1>;
-+				/* GPIO216 WL_HOST_WAKE */
-+				interrupt-parent = <&gpio6>;
-+				interrupts = <24 IRQ_TYPE_EDGE_FALLING>;
-+				interrupt-names = "host-wake";
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&wlan_default_mode>;
-+			};
-+		};
-+
-+		/* eMMC */
-+		mmc@80005000 {
-+			arm,primecell-periphid = <0x10480180>;
-+			max-frequency = <100000000>;
-+			bus-width = <8>;
-+			non-removable;
-+			cap-mmc-highspeed;
-+			mmc-ddr-1_8v;
-+			no-sdio;
-+			no-sd;
-+			vmmc-supply = <&ldo_3v3_reg>;
-+			pinctrl-names = "default", "sleep";
-+			/*
-+			 * GPIO130 will be set to input no pull-up resulting in a resistor
-+			 * pulling the reset high and taking the memory out of reset.
-+			 */
-+			pinctrl-0 = <&mc2_a_1_default>;
-+			pinctrl-1 = <&mc2_a_1_sleep>;
-+			status = "okay";
-+		};
-+
-+		/* GBF (Bluetooth) UART */
-+		uart@80120000 {
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&u0_a_1_default>;
-+			pinctrl-1 = <&u0_a_1_sleep>;
-+			status = "okay";
-+
-+			bluetooth {
-+				/* BCM4334B0 actually */
-+				compatible = "brcm,bcm4330-bt";
-+				/* GPIO222 rail BT_VREG_EN to BT_REG_ON */
-+				shutdown-gpios = <&gpio6 30 GPIO_ACTIVE_HIGH>;
-+				/* BT_WAKE on GPIO199 */
-+				device-wakeup-gpios = <&gpio6 7 GPIO_ACTIVE_HIGH>;
-+				/* BT_HOST_WAKE on GPIO97 */
-+				/* FIXME: convert to interrupt */
-+				host-wakeup-gpios = <&gpio3 1 GPIO_ACTIVE_HIGH>;
-+				/* BT_RST_N on GPIO209 */
-+				reset-gpios = <&gpio6 17 GPIO_ACTIVE_LOW>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&bluetooth_default_mode>;
-+			};
-+		};
-+
-+		/* GPS UART */
-+		uart@80121000 {
-+			status = "okay";
-+			pinctrl-names = "default", "sleep";
-+			/* CTS/RTS is not used, CTS is repurposed as GPIO */
-+			pinctrl-0 = <&u1rxtx_a_1_default>;
-+			pinctrl-1 = <&u1rxtx_a_1_sleep>;
-+			/* FIXME: add a device for the GPS here */
-+		};
-+
-+		/* Debugging console UART connected to AB8505 */
-+		uart@80007000 {
-+			status = "okay";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&u2rxtx_c_1_default>;
-+			pinctrl-1 = <&u2rxtx_c_1_sleep>;
-+		};
-+
-+		prcmu@80157000 {
-+			ab8505 {
-+				phy {
-+					pinctrl-names = "default", "sleep";
-+					pinctrl-0 = <&usb_a_1_default>;
-+					pinctrl-1 = <&usb_a_1_sleep>;
-+				};
-+
-+				/* This is mostly identical to the Codina v0.4 regulators */
-+				regulator {
-+					ab8500_ldo_aux1 {
-+						regulator-name = "v-sensors-vdd";
-+						regulator-min-microvolt = <3000000>;
-+						regulator-max-microvolt = <3300000>;
-+					};
-+
-+					ab8500_ldo_aux2 {
-+						regulator-name = "v-aux2";
-+						regulator-min-microvolt = <3300000>;
-+						regulator-max-microvolt = <3300000>;
-+					};
-+
-+					ab8500_ldo_aux3 {
-+						regulator-name = "v-mmc-sd";
-+					};
-+
-+					ab8500_ldo_aux4 {
-+						regulator-name = "v-aux4";
-+						/*
-+						 * Providing some span here makes the touchkey
-+						 * LEDs actually dimmable.
-+						 */
-+						regulator-min-microvolt = <1100000>;
-+						regulator-max-microvolt = <3300000>;
-+					};
-+
-+					ab8500_ldo_aux5 {
-+						regulator-name = "v-aux5";
-+						regulator-min-microvolt = <1800000>;
-+						regulator-max-microvolt = <1800000>;
-+					};
-+
-+					ab8500_ldo_aux6 {
-+						/* 1.8 V to the display */
-+						regulator-name = "v-aux6";
-+						regulator-min-microvolt = <1800000>;
-+						regulator-max-microvolt = <1800000>;
-+					};
-+
-+					ab8500_ldo_aux8 {
-+						regulator-name = "v-sensors-vio";
-+					};
-+				};
-+			};
-+		};
-+
-+		/* I2C0 also known as "AGC I2C" */
-+		i2c@80004000 {
-+			status = "okay";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&i2c0_a_1_default>;
-+			pinctrl-1 = <&i2c0_a_1_sleep>;
-+
-+			proximity@39 {
-+				/* Codina has the Amstaos TMD2672 */
-+				compatible = "amstaos,tmd2672";
-+				clock-frequency = <400000>;
-+				reg = <0x39>;
-+
-+				/* IRQ on GPIO146 "PS_INT" */
-+				interrupt-parent = <&gpio4>;
-+				interrupts = <18 IRQ_TYPE_EDGE_FALLING>;
-+				vdd-supply = <&ab8500_ldo_aux1_reg>;
-+				vddio-supply = <&ab8500_ldo_aux8_reg>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&tmd2672_codina_default>;
-+			};
-+		};
-+
-+		/* I2C2 on GPIO10 and GPIO11 also called "SENSORS I2C" */
-+		i2c@80128000 {
-+			status = "okay";
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&i2c2_b_2_default>;
-+			pinctrl-1 = <&i2c2_b_2_sleep>;
-+
-+			/* Bosch BMA254 accelerometer */
-+			accelerometer@18 {
-+				compatible = "bosch,bma254";
-+				reg = <0x18>;
-+				mount-matrix = "0", "1", "0",
-+					       "-1", "0", "0",
-+					       "0", "0", "1";
-+				vddio-supply = <&ab8500_ldo_aux8_reg>; // 1.8V
-+				vdd-supply = <&ab8500_ldo_aux1_reg>; // 3V
-+			};
-+		};
-+
-+		/* I2C3 */
-+		i2c@80110000 {
-+			status = "okay";
-+
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&i2c3_c_2_default>;
-+			pinctrl-1 = <&i2c3_c_2_sleep>;
-+
-+			/* TODO: write bindings and driver for this touchscreen */
-+
-+			/* Zinitix BT404 ISP part */
-+			isp@50 {
-+				compatible = "zinitix,bt404-isp";
-+				reg = <0x50>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&tsp_default>;
-+			};
-+
-+			/* Zinitix BT404 touchscreen, also has the touchkeys for menu and back */
-+			touchscreen@20 {
-+				compatible = "zinitix,bt404";
-+				reg = <0x20>;
-+				/* GPIO218 (TSP_INT_1V8) */
-+				interrupt-parent = <&gpio6>;
-+				interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
-+				vcca-supply = <&ab8500_ldo_aux2_reg>; // 3.3V
-+				vdd-supply = <&ab8500_ldo_aux5_reg>; // 1.8V
-+				zinitix,mode = <2>;
-+				touchscreen-size-x = <480>;
-+				touchscreen-size-y = <800>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&tsp_default>;
-+			};
-+		};
-+
-+		mcde@a0350000 {
-+			status = "okay";
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&dpi_default_mode>;
-+
-+			port {
-+				display_out: endpoint {
-+					remote-endpoint = <&panel_in>;
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&pinctrl {
-+	/*
-+	 * This extends the MC0_A_2 default config to include
-+	 * the card detect GPIO217 line.
-+	 */
-+	sdi0 {
-+		mc0_a_2_default {
-+			default_cfg4 {
-+				pins = "GPIO217_AH12"; /* card detect */
-+				ste,config = <&gpio_in_pd>;
-+			};
-+		};
-+	};
-+	sdi2 {
-+		/*
-+		 * GPIO130 should be set in GPIO mode and
-+		 * pulled down. (Not connected.)
-+		 */
-+		mc2_a_1_default {
-+			default_cfg2 {
-+				pins = "GPIO130_C8"; /* FBCLK */
-+				ste,config = <&gpio_in_pd>;
-+			};
-+		};
-+	};
-+	/* GPIO that enables the 2.9V SD card level translator */
-+	sd-level-translator {
-+		sd_level_translator_default: sd_level_translator_default {
-+			/* level shifter on GPIO87 */
-+			codina_cfg1 {
-+				pins = "GPIO87_B3";
-+				ste,config = <&gpio_out_hi>;
-+			};
-+		};
-+	};
-+	/* GPIO that enables the LDO regulator for the eMMC */
-+	emmc-ldo {
-+		emmc_ldo_en_default_mode: emmc_ldo_default {
-+			/* LDO enable on GPIO223 */
-+			codina_cfg1 {
-+				pins = "GPIO223_AH9";
-+				ste,config = <&gpio_out_hi>;
-+			};
-+		};
-+	};
-+	/* GPIOs for panel control */
-+	panel {
-+		panel_default_mode: panel_default {
-+			codina_cfg1 {
-+				/* Reset line */
-+				pins = "GPIO139_C9";
-+				ste,config = <&gpio_out_lo>;
-+			};
-+			codina_cfg2 {
-+				/* ESD IRQ line "LCD detect" */
-+				pins = "GPIO93_B7";
-+				ste,config = <&gpio_in_nopull>;
-+			};
-+		};
-+	};
-+	/* GPIO that enables the LDO regulator for the LCD display */
-+	lcd-ldo {
-+		lcd_pwr_en_default_mode: lcd_pwr_en_default {
-+			/* LCD_PWR_EN on GPIO219 */
-+			codina_cfg1 {
-+				pins = "GPIO219_AG10";
-+				ste,config = <&gpio_out_hi>;
-+			};
-+		};
-+	};
-+	/* GPIO that enables the WLAN internal LDO regulators */
-+	wlan-ldo {
-+		wlan_ldo_en_default: wlan_ldo_default {
-+			/* GPIO215 named WLAN_RST_N */
-+			codina_cfg1 {
-+				pins = "GPIO215_AH13";
-+				ste,config = <&gpio_out_lo>;
-+			};
-+		};
-+	};
-+	/* Backlight GPIO */
-+	backlight {
-+		ktd253_backlight_default_mode: backlight_default {
-+			skomer_cfg1 {
-+				pins = "GPIO69_E2"; /* LCD_BL_CTRL */
-+				ste,config = <&gpio_out_lo>;
-+			};
-+		};
-+	};
-+	/* Flash and torch */
-+	flash {
-+		gpio_flash_default_mode: flash_default {
-+			codina_cfg1 {
-+				pins = "GPIO140_B11", "GPIO141_C12";
-+				ste,config = <&gpio_out_lo>;
-+			};
-+		};
-+	};
-+	/* GPIO keys */
-+	gpio-keys {
-+		gpio_keys_default_mode: gpio_keys_default {
-+			skomer_cfg1 {
-+				pins = "GPIO67_G2", /* VOL UP */
-+				       "GPIO91_B6", /* HOME */
-+				       "GPIO92_D6"; /* VOL DOWN */
-+				ste,config = <&gpio_in_pu>;
-+			};
-+		};
-+	};
-+	/* Interrupt line for the Zinitix BT404 touchscreen */
-+	tsp {
-+		tsp_default: tsp_default {
-+			codina_cfg1 {
-+				pins = "GPIO218_AH11";	/* TSP_INT_1V8 */
-+				ste,config = <&gpio_in_nopull>;
-+			};
-+		};
-+	};
-+	/* Interrupt line for light/proximity sensor TMD2672 */
-+	tmd2672 {
-+		tmd2672_codina_default: tmd2672_codina {
-+			codina_cfg1 {
-+				pins = "GPIO146_D13";
-+				ste,config = <&gpio_in_nopull>;
-+			};
-+		};
-+	};
-+	/* GPIO-based I2C bus for subpmu */
-+	i2c-gpio-0 {
-+		i2c_gpio_0_default: i2c_gpio_0 {
-+			codina_cfg1 {
-+				pins = "GPIO143_D12", "GPIO144_B13";
-+				ste,config = <&gpio_in_nopull>;
-+			};
-+		};
-+	};
-+	/* GPIO-based I2C bus for the NFC */
-+	i2c-gpio-1 {
-+		i2c_gpio_1_default: i2c_gpio_1 {
-+			codina_cfg1 {
-+				pins = "GPIO151_D17", "GPIO152_D16";
-+				ste,config = <&gpio_in_nopull>;
-+			};
-+		};
-+	};
-+	/* GPIO-based SPI bus for the display */
-+	spi-gpio-0 {
-+		spi_gpio_0_default: spi_gpio_0_d {
-+			codina_cfg1 {
-+				pins = "GPIO220_AH10", "GPIO201_AF24", "GPIO224_AG9";
-+				ste,config = <&gpio_out_hi>;
-+			};
-+			codina_cfg2 {
-+				pins = "GPIO225_AG8";
-+				/* Needs pull down, no pull down resistor on board */
-+				ste,config = <&gpio_in_pd>;
-+			};
-+		};
-+		spi_gpio_0_sleep: spi_gpio_0_s {
-+			codina_cfg1 {
-+				pins = "GPIO220_AH10", "GPIO201_AF24",
-+				       "GPIO224_AG9", "GPIO225_AG8";
-+				ste,config = <&gpio_out_hi>;
-+			};
-+		};
-+	};
-+	wlan {
-+		wlan_default_mode: wlan_default {
-+			/* GPIO216 for WL_HOST_WAKE */
-+			codina_cfg2 {
-+				pins = "GPIO216_AG12";
-+				ste,config = <&gpio_in_pd>;
-+			};
-+		};
-+	};
-+	bluetooth {
-+		bluetooth_default_mode: bluetooth_default {
-+			/* GPIO199 BT_WAKE and GPIO222 BT_VREG_ON */
-+			codina_cfg1 {
-+				pins = "GPIO199_AH23", "GPIO222_AJ9";
-+				ste,config = <&gpio_out_lo>;
-+			};
-+			/* GPIO97 BT_HOST_WAKE */
-+			codina_cfg2 {
-+				pins = "GPIO97_D9";
-+				ste,config = <&gpio_in_nopull>;
-+			};
-+			/* GPIO209 BT_RST_N */
-+			codina_cfg3 {
-+				pins = "GPIO209_AG15";
-+				ste,config = <&gpio_out_hi>;
-+			};
-+		};
-+	};
-+	vibrator {
-+		vibrator_default: vibrator_default {
-+			codina_cfg1 {
-+				pins = "GPIO195_AG28";	/* MOT_EN */
-+				ste,config = <&gpio_out_lo>;
-+			};
-+		};
-+	};
-+	mcde {
-+		dpi_default_mode: dpi_default {
-+			default_mux1 {
-+				/* Mux in all the data lines */
-+				function = "lcd";
-+				groups =
-+					/* Data lines D0-D7 GPIO70..GPIO77 */
-+					"lcd_d0_d7_a_1",
-+					/* Data lines D8-D11 GPIO78..GPIO81 */
-+					"lcd_d8_d11_a_1",
-+					/* Data lines D12-D15 GPIO82..GPIO85 */
-+					"lcd_d12_d15_a_1",
-+					/* Data lines D16-D23 GPIO161..GPIO168 */
-+					"lcd_d16_d23_b_1";
-+			};
-+			default_mux2 {
-+				function = "lcda";
-+				/* Clock line on GPIO150, DE, VSO, HSO on GPIO169..GPIO171 */
-+				groups = "lcdaclk_b_1", "lcda_b_1";
-+			};
-+			/* Input, no pull-up is the default state for pins used for an alt function */
-+			default_cfg1 {
-+				pins = "GPIO150_C14", "GPIO169_D22", "GPIO170_C23", "GPIO171_D23";
-+				ste,config = <&in_nopull>;
-+			};
-+		};
-+	};
-+};
-diff --git a/arch/arm/boot/dts/ste-ux500-samsung-codina.dts b/arch/arm/boot/dts/ste-ux500-samsung-codina.dts
-index 5ce8e224505c..e6ea63d23d26 100644
---- a/arch/arm/boot/dts/ste-ux500-samsung-codina.dts
-+++ b/arch/arm/boot/dts/ste-ux500-samsung-codina.dts
-@@ -9,9 +9,13 @@
-  * the boot loader.
-  *
-  * The Samsung tree further talks about GT-I8160P and GT-I8160chn (China).
-- * The GT-I8160 plain is knonw as the "europe" variant.
-- * The GT-I8160P appears to not use the ST Microelectronics accelerometer.
-+ * The GT-I8160 plain is known as the "europe" variant.
-+ * The GT-I8160P is the CDMA version and it appears to not use the ST
-+ * Microelectronics accelerometer and reportedly has NFC mounted.
-  * The GT-I8160chn appears to be the same as the europe variant.
-+ *
-+ * There is also the Codina-TMO, Samsung SGH-T599, which has its own device
-+ * tree.
-  */
- 
- /dts-v1/;
--- 
-2.34.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
