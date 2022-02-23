@@ -2,148 +2,99 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8ED90C433FE
-	for <phone-devel@archiver.kernel.org>; Wed, 23 Feb 2022 05:00:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F4074C433F5
+	for <phone-devel@archiver.kernel.org>; Wed, 23 Feb 2022 08:07:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230215AbiBWFA5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 23 Feb 2022 00:00:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36092 "EHLO
+        id S238939AbiBWIIS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 23 Feb 2022 03:08:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232067AbiBWFAz (ORCPT
+        with ESMTP id S237178AbiBWIIR (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 23 Feb 2022 00:00:55 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC7C060CCD;
-        Tue, 22 Feb 2022 21:00:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1645592428; x=1677128428;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6FLKm6fp0tyd6+4vW4Mst9f8YW1kXerksPWJZQnchhs=;
-  b=mkTRIgGfVowajtjZcwokhZm+kAsW6+MX/JpI+IPNvyifD3UxqLqLipgZ
-   79wlQ55GRGMnPdC7/eTEz3QOPTqrkSU70iwOhnLRshpNPnGoC9by/1l+a
-   8k5ChUQz7myoLs0rNZQb4wszb25j4NdMQeGJrroK+MeFGg/xg2mHjtsKd
-   9DyYPe4rM5eNheFBitL/YgkVeC86ySHgzhQk1NTbRA/LhwczW56KDfsnz
-   6utJDtw7dFOoz0txYWNobIgkvEmw861Pc2Ysu4h+dF+VpVMvzULF8FV3Z
-   pvHVbn2eD2hrdcE8gHMWDClEgXwebdRqmKVAgqCvCUdZzNaKKGqMW2aEz
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10266"; a="338320951"
-X-IronPort-AV: E=Sophos;i="5.88,390,1635231600"; 
-   d="scan'208";a="338320951"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2022 21:00:19 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,390,1635231600"; 
-   d="scan'208";a="639175040"
-Received: from lkp-server01.sh.intel.com (HELO 788b1cd46f0d) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 22 Feb 2022 21:00:16 -0800
-Received: from kbuild by 788b1cd46f0d with local (Exim 4.92)
-        (envelope-from <lkp@intel.com>)
-        id 1nMjl9-0000zj-DA; Wed, 23 Feb 2022 05:00:15 +0000
-Date:   Wed, 23 Feb 2022 12:59:48 +0800
-From:   kernel test robot <lkp@intel.com>
+        Wed, 23 Feb 2022 03:08:17 -0500
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00475443D2
+        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 00:07:50 -0800 (PST)
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id C16883FCA9
+        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 08:07:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1645603669;
+        bh=cJAoPDc8aKVGCYTCguUnHYj9Um4T6R7Mz/nddrCfS+U=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=BEnIEv+WsJC6I7DqWHoeNGmj5Ar9fPOuOxjJ5W83I8soAzpOZpRchMPfFMRB43/h/
+         Y4tIcXCefv8Le/kZdMPu+KV2NHew2kJAy5oi7n4uKWDZQxnAq9EmQT2Ys+0Qw+8SRb
+         oB2PxPAgNLQNa7lWsLs844GO5MzNI3JztTfNYUrbUs7tPzPgCD4DwepA86iOxhG+YE
+         PASfdL2vTqmo8kTLmTnvECBB24hFKO8Pn20bKeSocr9L4ZoNuoSfbCY805vv3uncze
+         PbbMLdipJe+afTFtCO03ZQCEd2zpfqZ6IlqAlSFZhZkqmhoh2ypA+6GKcM7dIbXv7F
+         xJD4ocEeyp3/g==
+Received: by mail-ed1-f71.google.com with SMTP id h17-20020a05640250d100b004133863d836so527078edb.0
+        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 00:07:49 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=cJAoPDc8aKVGCYTCguUnHYj9Um4T6R7Mz/nddrCfS+U=;
+        b=HILnlcrw37sx4Oljoz3WTcZCEaTCpoB+JjqRo1QAJU18Y2gjmGQFwchwpjUFXrJR8G
+         q1MTjHwzWHZSJzWyt/AzLwJHACAcsr1I+4kskJhwQneIYodie2Gz/nFFcbGeq24hBhBF
+         4YkI1QvUIqWjye3G8wty0Yw5FCbQxNjBRXmGO17MX5WgFqqBXeBgj9ggqTYLaLgsY7+0
+         nFLnK4Pt855P+gyKzS28sb7rr6cmUl5UVKvVdBsDxJTrWycYSdPa/P4EwAfqZ5qeA82x
+         zAMkr2KjJeLR/h90j2nhw0CWCJpzNX/wNs+r0UsHZTHxXFKFY771maKQMdYINsi+3/qA
+         Aj1Q==
+X-Gm-Message-State: AOAM530e2PoLhg6F4cB7awKzI4aJObi9dPZJ0hp7MVnor2l9xbTnB6tt
+        affC53i8OVLQ11/zy6p0FJaGP9A/if6GrmLGuXn/GPOLrbABlyQNPjnlPRaEC7qyvLeQ9NbgII3
+        omUTFOHGiPpYHq1A3HZRrUxchGtCYV2Oku2ngm1kd
+X-Received: by 2002:a17:906:3b4b:b0:6d3:4b9f:1764 with SMTP id h11-20020a1709063b4b00b006d34b9f1764mr3782773ejf.345.1645603669461;
+        Wed, 23 Feb 2022 00:07:49 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJw+sAsvC2YVaWkNxMY27IgSZbd57gDhRWf6CFP5QRb8O1Ze/Oy2J3V8J8SGl8x0BiwMVeVhGA==
+X-Received: by 2002:a17:906:3b4b:b0:6d3:4b9f:1764 with SMTP id h11-20020a1709063b4b00b006d34b9f1764mr3782763ejf.345.1645603669271;
+        Wed, 23 Feb 2022 00:07:49 -0800 (PST)
+Received: from [192.168.0.124] (xdsl-188-155-181-108.adslplus.ch. [188.155.181.108])
+        by smtp.gmail.com with ESMTPSA id h8sm11129654edk.14.2022.02.23.00.07.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Feb 2022 00:07:48 -0800 (PST)
+Message-ID: <566af033-352c-ad04-53dd-219cda3f78a0@canonical.com>
+Date:   Wed, 23 Feb 2022 09:07:48 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v6 1/2] dt-bindings: input/touchscreen: bindings for
+ Imagis
+Content-Language: en-US
 To:     Markuss Broks <markuss.broks@gmail.com>,
         linux-kernel@vger.kernel.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Markuss Broks <markuss.broks@gmail.com>,
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
         Henrik Rydberg <rydberg@bitmath.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
         linux-input@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 2/2] Input: add Imagis touchscreen driver
-Message-ID: <202202231213.Vj9yo4tW-lkp@intel.com>
-References: <20220222203414.8656-3-markuss.broks@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220222203414.8656-3-markuss.broks@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20220222203414.8656-1-markuss.broks@gmail.com>
+ <20220222203414.8656-2-markuss.broks@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+In-Reply-To: <20220222203414.8656-2-markuss.broks@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Markuss,
+On 22/02/2022 21:34, Markuss Broks wrote:
+> This patch adds device-tree bindings for the Imagis
+> IST3038C touch screen IC.
+> 
+> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> 
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 
-I love your patch! Perhaps something to improve:
-
-[auto build test WARNING on dtor-input/next]
-[also build test WARNING on linux/master robh/for-next linus/master v5.17-rc5 next-20220222]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/0day-ci/linux/commits/Markuss-Broks/Add-support-for-Imagis-touchscreens/20220223-043645
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
-config: hexagon-allyesconfig (https://download.01.org/0day-ci/archive/20220223/202202231213.Vj9yo4tW-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project d271fc04d5b97b12e6b797c6067d3c96a8d7470e)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/bc77ee5e0d7309edca7d65925c6afa05334b0b01
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Markuss-Broks/Add-support-for-Imagis-touchscreens/20220223-043645
-        git checkout bc77ee5e0d7309edca7d65925c6afa05334b0b01
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash drivers/input/touchscreen/
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
->> drivers/input/touchscreen/imagis.c:300:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-           if (input_device_enabled(ts->input_dev))
-               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/input/touchscreen/imagis.c:305:9: note: uninitialized use occurs here
-           return ret;
-                  ^~~
-   drivers/input/touchscreen/imagis.c:300:2: note: remove the 'if' if its condition is always true
-           if (input_device_enabled(ts->input_dev))
-           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/input/touchscreen/imagis.c:296:9: note: initialize the variable 'ret' to silence this warning
-           int ret;
-                  ^
-                   = 0
-   drivers/input/touchscreen/imagis.c:316:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-           if (input_device_enabled(ts->input_dev))
-               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/input/touchscreen/imagis.c:321:9: note: uninitialized use occurs here
-           return ret;
-                  ^~~
-   drivers/input/touchscreen/imagis.c:316:2: note: remove the 'if' if its condition is always true
-           if (input_device_enabled(ts->input_dev))
-           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/input/touchscreen/imagis.c:312:9: note: initialize the variable 'ret' to silence this warning
-           int ret;
-                  ^
-                   = 0
-   2 warnings generated.
+No need for blank line between tags. I guess this can be fixed when
+applied, but if there is a resend - please correct it.
 
 
-vim +300 drivers/input/touchscreen/imagis.c
-
-   291	
-   292	static int __maybe_unused imagis_suspend(struct device *dev)
-   293	{
-   294		struct i2c_client *client = to_i2c_client(dev);
-   295		struct imagis_ts *ts = i2c_get_clientdata(client);
-   296		int ret;
-   297	
-   298		mutex_lock(&ts->input_dev->mutex);
-   299	
- > 300		if (input_device_enabled(ts->input_dev))
-   301			ret = imagis_stop(ts);
-   302	
-   303		mutex_unlock(&ts->input_dev->mutex);
-   304	
-   305		return ret;
-   306	}
-   307	
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Best regards,
+Krzysztof
