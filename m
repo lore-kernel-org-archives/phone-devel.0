@@ -2,110 +2,96 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 415A0C433F5
-	for <phone-devel@archiver.kernel.org>; Thu, 24 Feb 2022 20:11:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB23BC433F5
+	for <phone-devel@archiver.kernel.org>; Thu, 24 Feb 2022 20:54:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234267AbiBXUMX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 24 Feb 2022 15:12:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57668 "EHLO
+        id S234481AbiBXUy4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 24 Feb 2022 15:54:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234165AbiBXUMW (ORCPT
+        with ESMTP id S233752AbiBXUyq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 24 Feb 2022 15:12:22 -0500
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C0961A3F
-        for <phone-devel@vger.kernel.org>; Thu, 24 Feb 2022 12:11:50 -0800 (PST)
-Received: by mail-oi1-x22c.google.com with SMTP id j2so4678631oie.7
-        for <phone-devel@vger.kernel.org>; Thu, 24 Feb 2022 12:11:50 -0800 (PST)
+        Thu, 24 Feb 2022 15:54:46 -0500
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D59A1C6EE9
+        for <phone-devel@vger.kernel.org>; Thu, 24 Feb 2022 12:54:15 -0800 (PST)
+Received: by mail-oi1-x232.google.com with SMTP id k2so4954063oia.2
+        for <phone-devel@vger.kernel.org>; Thu, 24 Feb 2022 12:54:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ekJG5G8qOYobu4hy5MdAQ+syegNXxA4HGg+ZP3ZwyeQ=;
-        b=iN+ib84jcK+deSXePxRnEvpZGPxfXggqQq/303xDtJuX1Ju46TszoyPnm0Xsppey3w
-         WFz7ih93fSMwHn5aXXMfJa411lHGkQYmMil7aEWRgMd4HDSuXL/4VcipdU64RyKTiOZ0
-         g1jl2cr06zHBOqxKLL3lEdLpSPPzBGSQGhSPEM/rWUXdbecD+MhUWvERG4pQiQhD97z+
-         EbDi9nfF3DHgq5VhkgOaSPEbnKBWXteUCKblQ+7UZ+iGZkXrym0FH2+pwKvPZnyIlBBb
-         9bliCQcvHSTkochiwiFgvQHGpfii2MXpNtv2lB2S+tofG7unEBBy8I4DEhXnZ0+1TeVB
-         AbnA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=SfMYjK+50fw94rDD8AQ09+CpZqxJl1X7Nhy87XvsxjQ=;
+        b=c0xUO/Sd9SGT/EDOKNVonLQdJ9oakdj7NbdGUhdM20OJqpfFHFXa/jn0zcVvdlMJNn
+         dJpZxbLFh5iocMQcR9wuPn8zGvYLQitkGIPz4kQMRDGGwrYI9xMA0glPYdEbjfnkQCQH
+         6+jfGV82jux9aNzTwyDNJTWhQBKUUaJBM8dfM2wEPvNS/XGz+gtFSGEbZFSnCZh7xOp1
+         NLSXCO4KL/RdnXLgbscjfyttT+10VWP4UGrpqBSIdOkb5DrEhVXms7RKPuAmSiJLHusC
+         PXRvOr1xdKgOp6HZoGtvIBAHRkGWlhjJ0BPjODV0a2zmzX8rWfSBYKvjQQX+1Vva0z0z
+         QlDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ekJG5G8qOYobu4hy5MdAQ+syegNXxA4HGg+ZP3ZwyeQ=;
-        b=hm0xer4eMCO3eiqQKEXMpesfjcZMMjAASkmAdR/a4k7zOh62ZE0OphlIDfbzx7PtmR
-         PGCcDX/yFXO+/PpO0LuLaKUH10BMlUqp6+5LJ0HKG2gEDnGbHTIaib8IJY7+uY6k3lcY
-         iQJWIt5ksh588JD96XTiAzxgSgVm6S5GIf+B/XlEm8Fijp/5b/8tE5mlqcs5YoezRhD7
-         1OhaXrFGR3utxNOeHy7ZAAO0oIgZoDyDG2ZWrcip0kqNmB2w4C0NXieLB7ahRxIcPRmU
-         K/krFp7Irw8zTE6CSeyTpRj4HvwkfQdOTps0o/HYS0T1AfyGG3VEb4WdwssaErmmWAcv
-         y5XQ==
-X-Gm-Message-State: AOAM533u5JPNeGtOJ0osez4dUAFLIerjRg2YWBEIVWh8JkLUdZWx8SpY
-        oDXuGvBbgtD6SJ3BwLKClOWpzw==
-X-Google-Smtp-Source: ABdhPJxxfBYAXQE4a4MShIJEhHE9ZwowoSa5/DZAC6IXOvyO1dx/+N2+rRF67FGwId7kao1AxTBGfA==
-X-Received: by 2002:aca:b688:0:b0:2d3:5411:9bc0 with SMTP id g130-20020acab688000000b002d354119bc0mr8152354oif.192.1645733509883;
-        Thu, 24 Feb 2022 12:11:49 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=SfMYjK+50fw94rDD8AQ09+CpZqxJl1X7Nhy87XvsxjQ=;
+        b=ql8JklyPjrsLCejYqBD/52L4+TacJhAG388iyUWdXclf7CZW/WlNYf78y+M1L4EwAs
+         gNnV999tNx0uMMXngU2opX3sAwoQFkaUPYKNL6OfdeCXMJtxljBsK27tSn0M28L5iX0i
+         6gqvfUvkywIOdqGzmQiO8frFd2IdWEaJ8YtX07d61ptOmCusi5qydrhH2S3nUFxRNeXL
+         e4L6GzHyVlj9wvKFzOqxOQdxRCbyiEbnwVRV/gNi7MdYcbh7+QdE+gZHGaWzpxp9DCqx
+         vaPls6vV/OS17apSMJH1KrFAbH1zlc+bOxWK9y+cyjrN++ba26vtjTuPPFS89MfWX1a4
+         iOxg==
+X-Gm-Message-State: AOAM532DwD6T5BG4VJDB0YyTANWjtib4XunEFIbq99dcNQhBGdYeT1sY
+        wEWkLhsYnNXoyT4qTOTTSHTjnbRmwK/iKQ==
+X-Google-Smtp-Source: ABdhPJzzAVIp3uEnEAWpsNCodGfe1KfuXcOoOdPofq8pk28A2tLDnfnHxn0n7TJXb0wFfzg9s+ol8A==
+X-Received: by 2002:a05:6808:23d0:b0:2d5:408c:9caf with SMTP id bq16-20020a05680823d000b002d5408c9cafmr2305248oib.301.1645736054909;
+        Thu, 24 Feb 2022 12:54:14 -0800 (PST)
 Received: from builder.lan ([2600:1700:a0:3dc8:3697:f6ff:fe85:aac9])
-        by smtp.gmail.com with ESMTPSA id q4-20020a056808200400b002d51db97398sm229191oiw.24.2022.02.24.12.11.48
+        by smtp.gmail.com with ESMTPSA id c8-20020a4ad788000000b0031ce69b1640sm191259oou.10.2022.02.24.12.54.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Feb 2022 12:11:49 -0800 (PST)
-Date:   Thu, 24 Feb 2022 14:11:46 -0600
+        Thu, 24 Feb 2022 12:54:14 -0800 (PST)
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Luca Weiss <luca@z3ntu.xyz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh@kernel.org>, Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Manu Gautam <mgautam@codeaurora.org>,
-        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 03/10] dt-bindings: usb: qcom,dwc3: Add msm8953
- compatible
-Message-ID: <Yhfmgm2i5h7zEuvA@builder.lan>
-References: <20220220201909.445468-1-luca@z3ntu.xyz>
- <20220220201909.445468-4-luca@z3ntu.xyz>
+To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, netdev@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-bluetooth@vger.kernel.org
+Subject: Re: (subset) [PATCH 0/5] Wifi & Bluetooth on LG G Watch R
+Date:   Thu, 24 Feb 2022 14:54:01 -0600
+Message-Id: <164573604161.1471031.17588136959240779844.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220216212433.1373903-1-luca@z3ntu.xyz>
+References: <20220216212433.1373903-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220220201909.445468-4-luca@z3ntu.xyz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun 20 Feb 14:18 CST 2022, Luca Weiss wrote:
-
-> Document the compatible string for the DWC3 controller in msm8953.
+On Wed, 16 Feb 2022 22:24:27 +0100, Luca Weiss wrote:
+> This series adds the BCM43430A0 chip providing Bluetooth & Wifi on the
+> LG G Watch R.
 > 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Acked-by: Rob Herring <robh@kernel.org>
-
-Greg, can you please pick this patch through the USB tree.
-
-Thanks,
-Bjorn
-
-> ---
-> Changes in v2:
-> - no changes
+> Luca Weiss (5):
+>   dt-bindings: bluetooth: broadcom: add BCM43430A0
+>   Bluetooth: hci_bcm: add BCM43430A0
+>   ARM: dts: qcom: msm8226: Add pinctrl for sdhci nodes
+>   ARM: dts: qcom: apq8026-lg-lenok: Add Wifi
+>   ARM: dts: qcom: apq8026-lg-lenok: Add Bluetooth
 > 
->  Documentation/devicetree/bindings/usb/qcom,dwc3.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml b/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
-> index 2d23a4ff702f..ce252db2aab3 100644
-> --- a/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
-> +++ b/Documentation/devicetree/bindings/usb/qcom,dwc3.yaml
-> @@ -16,6 +16,7 @@ properties:
->            - qcom,ipq4019-dwc3
->            - qcom,ipq6018-dwc3
->            - qcom,ipq8064-dwc3
-> +          - qcom,msm8953-dwc3
->            - qcom,msm8996-dwc3
->            - qcom,msm8998-dwc3
->            - qcom,sc7180-dwc3
-> -- 
-> 2.35.1
-> 
+> [...]
+
+Applied, thanks!
+
+[2/5] Bluetooth: hci_bcm: add BCM43430A0
+      (no commit info)
+[3/5] ARM: dts: qcom: msm8226: Add pinctrl for sdhci nodes
+      commit: a5683471b68d81898db14e1dee347bfe7469540d
+[4/5] ARM: dts: qcom: apq8026-lg-lenok: Add Wifi
+      commit: 81ecc39d0dd3fbbcc3c8505d0eefe511eb422d03
+[5/5] ARM: dts: qcom: apq8026-lg-lenok: Add Bluetooth
+      commit: e8880a10f970d86d1b3fdd8bc36400e0e01ba4a9
+
+Best regards,
+-- 
+Bjorn Andersson <bjorn.andersson@linaro.org>
