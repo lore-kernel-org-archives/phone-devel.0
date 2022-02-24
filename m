@@ -2,97 +2,115 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39CEEC4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 24 Feb 2022 04:15:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB8A8C4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 24 Feb 2022 20:10:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229812AbiBXEPj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 23 Feb 2022 23:15:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60408 "EHLO
+        id S234245AbiBXULP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 24 Feb 2022 15:11:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229927AbiBXEPi (ORCPT
+        with ESMTP id S234237AbiBXULP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 23 Feb 2022 23:15:38 -0500
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74DD923BF27
-        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 20:15:09 -0800 (PST)
-Received: by mail-oi1-x233.google.com with SMTP id z7so1280012oid.4
-        for <phone-devel@vger.kernel.org>; Wed, 23 Feb 2022 20:15:09 -0800 (PST)
+        Thu, 24 Feb 2022 15:11:15 -0500
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68E4F2782B2
+        for <phone-devel@vger.kernel.org>; Thu, 24 Feb 2022 12:10:44 -0800 (PST)
+Received: by mail-oi1-x235.google.com with SMTP id ay7so4671036oib.8
+        for <phone-devel@vger.kernel.org>; Thu, 24 Feb 2022 12:10:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=oelzMdYs7Pg9Rl+pgaKSACJUiLmrAGYDWU5DTT17hyE=;
-        b=eBvrEF4bIaUxbwXOylYwWAyMfqd5WxpFN888rypI0aHzRyzqHJJpClWMHbDqYiq+3S
-         gvIjnqk2XlHwUhdp4xhab0tlYq+RKMbAbat28UhMlPT1vCs7K2KOXLHTvoqAJ/UMO7Wk
-         awIvDgdCepgfaE4G06K7DhXLmO+ye5h7KO5ex2/UwcbUgcjUpGNKwiAvhzioZfce/nUk
-         8kA5pwGfbcdnRBTdngd7bn8NQHRPvphn/siWBFLhwVepQ+V4kfjIpXYgWH2194OUowMl
-         KYMsciEzFFgyvKgE8jJTP4n/3b0mqGMWuKgQXDIBq6cjPTkORRwh2SFY+U5pZWapi+rB
-         Rhxw==
+        bh=tp/pxUAsN1dsuv2WMgFOFlatJS81kJvAhFMGsLib+Ik=;
+        b=QD5DoxG2HFUYczwhvfPpKRZtnIME+v8s7w+BMnIyEY0/+LA6uzKnzx48TQFLyCi7F0
+         ZXnFA/+CXBjbSFYOtS/HtPQdxpoqKQCikgKMJ5nqywsutlOh215hj+5w2XnG7hcGhqfP
+         ettNPp5G8VpeUXSppkEJD7y/PNFkQQpjRzdLxM5Tk2YLpzBQRCJaMqG6jpW6LUISA0MG
+         v0BXQJ9gVeL2EVPR1q60Ac2A9Or1s6tbjQPqawwfA3VHvUv9z2gYfs1VgaS4+kIcdWyl
+         KckZ6LmxFupOpCf7p0rOAYnEGLcZDBB1clh3kSO+0qp2AO0mGbovLAP+k1RJ+ejdlYn7
+         YEKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=oelzMdYs7Pg9Rl+pgaKSACJUiLmrAGYDWU5DTT17hyE=;
-        b=0ORL/mPOm72tzANSHitC5t16E/b5VgywszB1M2MPx/HUKCq41wVX5bI05UXUB02gQt
-         1SeMWzpqZutsGposk7FOJW9IYWEpYI7F2kbPuhBsnjb39ecom0D5hWP/pA9kediY1bu+
-         e1rNk1rlc/lwSUjmtVKAx+7BFgm5R+hHmjzpMVGgNMa8+eQFMxurxxJdQXMU0i3C46U6
-         rduM0oReZYj7P3Cm7woYk6g9zahXl/j+2b6iJaNu1VuiOF0gBeCrWTyAxz+mnkFxQYUz
-         +NtAAcyHGYi4oeDMVwXm1suXe5MP3SwD4slo2D6XxjqIlWklzatHDBGX1G611Uu+8onF
-         6dpg==
-X-Gm-Message-State: AOAM532Zy/cico88R8tZCFQEjuB0TMoLAlBYhWBhxSwbsW9inod3sy8W
-        2l2P41BnrXfyTcxjcQ2z87uhcA==
-X-Google-Smtp-Source: ABdhPJxITOuU97vSupZI0i1M4HQ1oAx5B0u8OVQz++lLuC7TEEiYLcj5DHfSpKu+S4RVKBWSymiHcA==
-X-Received: by 2002:a05:6808:30a7:b0:2d4:fb78:8ab2 with SMTP id bl39-20020a05680830a700b002d4fb788ab2mr408172oib.325.1645676108821;
-        Wed, 23 Feb 2022 20:15:08 -0800 (PST)
+        bh=tp/pxUAsN1dsuv2WMgFOFlatJS81kJvAhFMGsLib+Ik=;
+        b=CZpO4dhB0jrvidK6WghkMebCt6nKDogE3xcun18wAeNDWyfnxJU6ug9CbjVg3P65MO
+         I6J/HaUWpJkshNN0qVjhlKds2UIqKb32XmgbPomc9pJ7UUe88XUOJn9gOgz7gNlwgc5r
+         kl4KZznT43zaXZ1R6/1CQH3PvPMBnnJqZUS1u7YdAKoFg+YYuSIHPTHp+1S8BpR4ItHL
+         B/w+zfhbIFYQTkodbg4QVu9CA4KS7FdjV/zryhxpxBDT0Dk6xFRlCcKg//WxYF9n5o55
+         9wVw63183ef31L7u8yoPQF0t0JTC3wpmg6F5ya6Q5XePnOLEP4UnFJ0xHoh+zuqfg8ej
+         go0Q==
+X-Gm-Message-State: AOAM532heBTtPEdQo+9SNiPE7JXPuBuAl+EykHESExsYhKwemg4n0AQ0
+        uglTYN6XQyPVPCVnU13fBU5Cag==
+X-Google-Smtp-Source: ABdhPJyN1tJXc2OmNxcbayjctonbYe7XOluBMlLa7fjoRQREv6clqrbNE7J3VS7gOJPpy7RKF/DD4A==
+X-Received: by 2002:a05:6870:6014:b0:d6:ca51:2108 with SMTP id t20-20020a056870601400b000d6ca512108mr2044865oaa.47.1645733443809;
+        Thu, 24 Feb 2022 12:10:43 -0800 (PST)
 Received: from builder.lan ([2600:1700:a0:3dc8:3697:f6ff:fe85:aac9])
-        by smtp.gmail.com with ESMTPSA id el40sm992150oab.22.2022.02.23.20.15.08
+        by smtp.gmail.com with ESMTPSA id p16-20020a05680811d000b002d72ec3a921sm249592oiv.21.2022.02.24.12.10.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Feb 2022 20:15:08 -0800 (PST)
-Date:   Wed, 23 Feb 2022 22:15:06 -0600
+        Thu, 24 Feb 2022 12:10:43 -0800 (PST)
+Date:   Thu, 24 Feb 2022 14:10:40 -0600
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
+To:     Luca Weiss <luca@z3ntu.xyz>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
 Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        devicetree@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 0/5] Wifi & Bluetooth on LG G Watch R
-Message-ID: <YhcGSmd5M3W+fI6c@builder.lan>
-References: <20220216212433.1373903-1-luca@z3ntu.xyz>
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Thara Gopinath <thara.gopinath@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 02/10] dt-bindings: thermal: tsens: Add msm8953
+ compatible
+Message-ID: <YhfmQFFCmb74dOvV@builder.lan>
+References: <20220220201909.445468-1-luca@z3ntu.xyz>
+ <20220220201909.445468-3-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220216212433.1373903-1-luca@z3ntu.xyz>
+In-Reply-To: <20220220201909.445468-3-luca@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed 16 Feb 15:24 CST 2022, Luca Weiss wrote:
+On Sun 20 Feb 14:18 CST 2022, Luca Weiss wrote:
 
-> This series adds the BCM43430A0 chip providing Bluetooth & Wifi on the
-> LG G Watch R.
+> Document the compatible string for tsens found in msm8953.
 > 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Acked-by: Amit Kucheria <amitk@kernel.org>
+> Acked-by: Rob Herring <robh@kernel.org>
 
-I picked the dts changes, but would prefer that the other two changes
-goes through the BT tree. I see that you haven't copied Marcel on the
-dt-binding change though, so please resubmit those two patches together.
+Daniel, can you please pick this patch through your tree?
 
 Thanks,
 Bjorn
 
-> Luca Weiss (5):
->   dt-bindings: bluetooth: broadcom: add BCM43430A0
->   Bluetooth: hci_bcm: add BCM43430A0
->   ARM: dts: qcom: msm8226: Add pinctrl for sdhci nodes
->   ARM: dts: qcom: apq8026-lg-lenok: Add Wifi
->   ARM: dts: qcom: apq8026-lg-lenok: Add Bluetooth
+> ---
+> Changes in v2:
+> - no changes
 > 
->  .../bindings/net/broadcom-bluetooth.yaml      |  1 +
->  arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts   | 98 ++++++++++++++++---
->  arch/arm/boot/dts/qcom-msm8226.dtsi           | 57 +++++++++++
->  drivers/bluetooth/hci_bcm.c                   |  1 +
->  4 files changed, 144 insertions(+), 13 deletions(-)
+>  Documentation/devicetree/bindings/thermal/qcom-tsens.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 > 
+> diff --git a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
+> index d3b9e9b600a2..b6406bcc683f 100644
+> --- a/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
+> +++ b/Documentation/devicetree/bindings/thermal/qcom-tsens.yaml
+> @@ -43,6 +43,7 @@ properties:
+>        - description: v2 of TSENS
+>          items:
+>            - enum:
+> +              - qcom,msm8953-tsens
+>                - qcom,msm8996-tsens
+>                - qcom,msm8998-tsens
+>                - qcom,sc7180-tsens
 > -- 
 > 2.35.1
 > 
