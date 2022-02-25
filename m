@@ -2,85 +2,142 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B827DC433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 25 Feb 2022 20:49:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C766C4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 25 Feb 2022 21:55:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237620AbiBYUty (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 25 Feb 2022 15:49:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35070 "EHLO
+        id S234780AbiBYVzl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 25 Feb 2022 16:55:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237924AbiBYUru (ORCPT
+        with ESMTP id S234003AbiBYVzl (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 25 Feb 2022 15:47:50 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C7D22502E;
-        Fri, 25 Feb 2022 12:47:17 -0800 (PST)
-Received: from g550jk.localnet (ip-213-127-118-180.ip.prioritytelecom.net [213.127.118.180])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 21F40C85A1;
-        Fri, 25 Feb 2022 20:47:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1645822036; bh=DPMNliML3ukNNsPck65ZNcLxh30N28NKU6yWkFqvS2Y=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=Prss4QVVwnNIJUOR/RLiPzTLs5wIOGNLszoBL6kxYRbqzxUYMQdukkVbcpOEds7Yj
-         ZpwsAnV2LwHqwbn61bFDe1Ka5xQLotocuoSheyROECiUJqy2VoKZYqIIONrZV0Ym59
-         XuvbR6YdMgsatLAzZXJrLKHG1vuXIMmaGWdwd6/A=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        marcel@holtmann.org, "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        Fri, 25 Feb 2022 16:55:41 -0500
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6F7A218CCF
+        for <phone-devel@vger.kernel.org>; Fri, 25 Feb 2022 13:55:07 -0800 (PST)
+Received: by mail-ot1-x336.google.com with SMTP id l25-20020a9d7a99000000b005af173a2875so4573588otn.2
+        for <phone-devel@vger.kernel.org>; Fri, 25 Feb 2022 13:55:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=m/vqkWoLM2koeZAVeet1hIz9u/sHUyuW7PwgatN//uU=;
+        b=gVA38gVk5Bz6qX9+3TKvQmTJbn8Non5K/l9Quge1etshRDJ5NyKr5KNQ8U+1h8IfzH
+         te0ujsc4GV441ZVDNugdbECMhzVpS8mx3jIU9tT5Z0aYywFV0DWfAWzku/w59vX9vsWI
+         YjoyBr2QqUPaYD50kNXo8xDwCG/IBTvYlvcPoYgZEmwleVuPFUiZv+snbsZKIa92KTMh
+         eNMSlbjVwC+VRBj1w+mMmt3btdgNlXsGdQG3Rq3daIsOqbOFif3eS2JLlZ0n8foRDwki
+         pdNAIjCVCf6NVrPnucizvMJt+/z9HybfdN3hlZxA4Vw/VGVdTxiOFRrd0mV3AZCWrRWi
+         garw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=m/vqkWoLM2koeZAVeet1hIz9u/sHUyuW7PwgatN//uU=;
+        b=fw9wjnl5IBL9l0kXXTxlMlecZZVP/55KkuQJqpzYwM22oA6Oss3tgyAkNPXkRok2OL
+         XmALfWDj5KS/6i3SUKkUByY88f0XdxRfgL60cmZQjfwMqiRCC2sbOH/zilynxaQ653xu
+         dFwvzfRGJMtVbC45PZMQ/9bjsrcj60T17pt24TKvrqnomNaOuxmqPiuNk22ubCib5ms7
+         WGwoq5oaU53+v/46HTVl6k4D/2G7gQg1RTIRUvZHeUnKUAwyWMQ1jaC9x13Tly/I4sHd
+         maHkPeYC3UDXgfcQoSiJ86FWNKNuvuGNqCNHUnS6lLykw5m5Em2K9GaVfqoQroHXMZy9
+         +Eew==
+X-Gm-Message-State: AOAM531F9w+LwaVgI+gRoiLl+V6dWCcBvg+b5n7p7CFxRnTA7QVas9tO
+        wNhQ3o9ap+ETgbSm4iYlCAkLiw==
+X-Google-Smtp-Source: ABdhPJyWXfpVOjBQzPDsuZlQkeTho7DcqtU5U87DNz4IiNmLbE7u74pfulpklA/AtpE9EXIZhDTquw==
+X-Received: by 2002:a9d:176:0:b0:5ae:ed94:f1c0 with SMTP id 109-20020a9d0176000000b005aeed94f1c0mr3838228otu.74.1645826107045;
+        Fri, 25 Feb 2022 13:55:07 -0800 (PST)
+Received: from ripper ([2600:1700:a0:3dc8:205:1bff:fec0:b9b3])
+        by smtp.gmail.com with ESMTPSA id cz42-20020a05687064aa00b000d6c97027b7sm1705425oab.30.2022.02.25.13.55.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Feb 2022 13:55:06 -0800 (PST)
+Date:   Fri, 25 Feb 2022 13:57:03 -0800
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Linus Walleij <linus.walleij@linaro.org>,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: bluetooth: broadcom: add BCM43430A0 & BCM43430A1
-Date:   Fri, 25 Feb 2022 21:47:15 +0100
-Message-ID: <4690803.GXAFRqVoOG@g550jk>
-In-Reply-To: <20220225204138.935022-1-luca@z3ntu.xyz>
-References: <20220225204138.935022-1-luca@z3ntu.xyz>
+        devicetree@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Marcel Holtmann <marcel@holtmann.org>
+Subject: Re: [PATCH 0/5] Wifi & Bluetooth on LG G Watch R
+Message-ID: <YhlQr17fGi+Q7KT8@ripper>
+References: <20220216212433.1373903-1-luca@z3ntu.xyz>
+ <YhcGSmd5M3W+fI6c@builder.lan>
+ <4379033.LvFx2qVVIh@g550jk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4379033.LvFx2qVVIh@g550jk>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Freitag, 25. Februar 2022 21:41:37 CET Luca Weiss wrote:
-> Document the compatible string for BCM43430A0 bluetooth used in lg-lenok
-> and BCM43430A1 used in asus-sparrow.
+On Fri 25 Feb 12:19 PST 2022, Luca Weiss wrote:
+
+> Hi Bjorn
 > 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-
-The previous version with just BCM43430A0 the patch collected the following 
-tags:
-
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Acked-by: Rob Herring <robh@kernel.org>
-
-Not sure if with the changes I can keep them.
-
-> ---
-> Changes in v2:
-> - add bcm43430a1 too, adjust commit message to reflect that
+> On Donnerstag, 24. Februar 2022 05:15:06 CET Bjorn Andersson wrote:
+> > On Wed 16 Feb 15:24 CST 2022, Luca Weiss wrote:
+> > > This series adds the BCM43430A0 chip providing Bluetooth & Wifi on the
+> > > LG G Watch R.
+> > 
+> > I picked the dts changes, but would prefer that the other two changes
+> > goes through the BT tree. I see that you haven't copied Marcel on the
+> > dt-binding change though, so please resubmit those two patches together.
 > 
->  Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+> Thank you, will resubmit the first two!
 > 
-> diff --git a/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml
-> b/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml index
-> 5aac094fd217..dd035ca639d4 100644
-> --- a/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml
-> +++ b/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml
-> @@ -19,6 +19,8 @@ properties:
->        - brcm,bcm4329-bt
->        - brcm,bcm4330-bt
->        - brcm,bcm4334-bt
-> +      - brcm,bcm43430a0-bt
-> +      - brcm,bcm43430a1-bt
->        - brcm,bcm43438-bt
->        - brcm,bcm4345c5
->        - brcm,bcm43540-bt
+> Just to be clear, as far as I understand each patch gets sent based on its own 
+> get_maintainer.pl, and the cover letter gets sent to the superset of all 
+> individual patch recipients?
 
+It's rather annoying to be maintainer and only get 1-2 patches out of a
+larger series and having to browse lore.kernel.org to find the rest. So
+based on that I tend to make sure that everyone is Cc'ed on all patches
+in my series.
 
+And then there's the general advice that if there isn't a strong
+dependency between the patches, it might be better to just submit them
+separately in the first place. Simply to make it easier for each
+maintainer to merge your patches.
 
+> I'm using this script that's largely based on something I found online a while 
+> ago
+> https://github.com/z3ntu/dotfiles/blob/master/scripts/usr/local/bin/cocci_cc
+> 
+> Also just checked and Marcel isn't listed as maintainer of the relevant dt 
+> bindings in MAINTAINERS, maybe they should get added there?
+> 
 
+In general I think the DT bindings goes through the relevant subsystem
+maintainer, so I would suggest that you post a patch. If for some reason
+Marcel shouldn't merge BT related DT patches, then the discussion that
+follows will make that clear and you could make sure that MAINTAINERS
+reflects the outcome.
+
+Regards,
+Bjorn
+
+> (also CCed Marcel on this email)
+> 
+> Regards
+> Luca
+> 
+> > 
+> > Thanks,
+> > Bjorn
+> > 
+> > > Luca Weiss (5):
+> > >   dt-bindings: bluetooth: broadcom: add BCM43430A0
+> > >   Bluetooth: hci_bcm: add BCM43430A0
+> > >   ARM: dts: qcom: msm8226: Add pinctrl for sdhci nodes
+> > >   ARM: dts: qcom: apq8026-lg-lenok: Add Wifi
+> > >   ARM: dts: qcom: apq8026-lg-lenok: Add Bluetooth
+> > >  
+> > >  .../bindings/net/broadcom-bluetooth.yaml      |  1 +
+> > >  arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts   | 98 ++++++++++++++++---
+> > >  arch/arm/boot/dts/qcom-msm8226.dtsi           | 57 +++++++++++
+> > >  drivers/bluetooth/hci_bcm.c                   |  1 +
+> > >  4 files changed, 144 insertions(+), 13 deletions(-)
+> 
+> 
+> 
+> 
