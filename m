@@ -2,104 +2,72 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4D84C433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 25 Feb 2022 11:39:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 849C4C433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 25 Feb 2022 16:29:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240174AbiBYLjq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 25 Feb 2022 06:39:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32950 "EHLO
+        id S241025AbiBYQaW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 25 Feb 2022 11:30:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239111AbiBYLjp (ORCPT
+        with ESMTP id S235397AbiBYQaV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 25 Feb 2022 06:39:45 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E51411B2AD8
-        for <phone-devel@vger.kernel.org>; Fri, 25 Feb 2022 03:39:12 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id r10so4062125wrp.3
-        for <phone-devel@vger.kernel.org>; Fri, 25 Feb 2022 03:39:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=cJpjB2Imjue5MPptrTSlFySfZuGIV+MLwnJNG0x4xvk=;
-        b=Z/g5gebrnBL0zB3qUQxBoIDeTt3F4vtwqF9rDI2nw3EtZkKT76If1gWmUgufJ+TLxY
-         6nTbIZ5+Z6EJ23+v+OaZF/xpJaY55g20UDoawIZrJoPGFbyoHjLEvYeapMmNZJBpveek
-         PPY5VkkfZ2ubNqIbgxyIR9y8VRwVRM/VsejJ3NUYqeOzQLickh1WLs5mrJVE///Nqq1M
-         xMJ1anI3wy9iQVFvee9ByunDawc/akfjPqmxYNnZoUTEW4HNsfNX0Okf8qIkcAWEe+sL
-         oLhO+JbwaxV1HZ6qWgSOJH98lIp2moHlLGvi2bFis2JD+L6Shj+BPgsGSXB/6W0glas4
-         xEtg==
+        Fri, 25 Feb 2022 11:30:21 -0500
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB00918F231;
+        Fri, 25 Feb 2022 08:29:49 -0800 (PST)
+Received: by mail-oi1-f171.google.com with SMTP id l25so7932790oic.13;
+        Fri, 25 Feb 2022 08:29:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=cJpjB2Imjue5MPptrTSlFySfZuGIV+MLwnJNG0x4xvk=;
-        b=SIFsOwRUkXkTpD2y9uAyMEfonE9UEBVaFn62wi26vbcXTWbU8thyUW3v2Rt+I7j38Q
-         jBIHVt0Vfia2HOW3tkCBYYcK0IqsCUvYBVW5Q3JyPDTc8TNgR7ekcsSPprvr0LukMtgM
-         t6HsplJ45+k8NzTw/0/QX0btPYApl/BWkE+fOqtDiQ+7vEUwyGFLM3uw8+Mgo4hQfUdY
-         G9npzLZ41uJKwpIt12o8ruYFGPNv9669C1xJEH6FaWuJcNAKztfdV8djc6hBrRxr1t1u
-         8JM5Q6wHPWnyUA29kC+1waH5ap0GeD8prTmM6j5M8MICU9M01uS0bBW05ZERozQUIQnf
-         qgmw==
-X-Gm-Message-State: AOAM532BQ/tfq4owcPPtcmAXOVE5EEY287xOqgWuh+mgO00fUWqwlnCd
-        HUE30xxEFdcrJYTor8mvaFQR/g==
-X-Google-Smtp-Source: ABdhPJwCoD9+ESaqpN1tOSsKHyjc28t7oN0/oVgThSxndsT7mPr0tLHxqG+bnGT+WRRmi7xjDZtBtw==
-X-Received: by 2002:a5d:40cd:0:b0:1ee:a044:361f with SMTP id b13-20020a5d40cd000000b001eea044361fmr4479895wrq.235.1645789151291;
-        Fri, 25 Feb 2022 03:39:11 -0800 (PST)
-Received: from ?IPV6:2a01:e34:ed2f:f020:25a:d4d2:9383:c638? ([2a01:e34:ed2f:f020:25a:d4d2:9383:c638])
-        by smtp.googlemail.com with ESMTPSA id c4-20020adfed84000000b001e5b8d5b8dasm3046083wro.36.2022.02.25.03.39.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Feb 2022 03:39:10 -0800 (PST)
-Message-ID: <1aaf4f8f-d777-633a-a469-ebeee4f9704e@linaro.org>
-Date:   Fri, 25 Feb 2022 12:39:07 +0100
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=naSsM7I8wSLsPxrWNpkiTZvYgpihXOeO606QXithJEc=;
+        b=07QBKh01lEO2WQzfku6WlqnkdOt+jbdqzcg5DYlkn0K0YlDq6Qpx2bmobwSPapl7b8
+         ga+h/ySAgJHLR6Fss+TkwaijgxU4RJcoJDE4fssq6j8OoEHsj+g7luM4z5+/yhC/X3C9
+         tPLFCJHtBD6quNEBC2YR1kz/ohe1Kq/Aa8ghMfNydo3pBr4pnwcLO2IvimQI6z/E5Vjy
+         GRMXSWG6+ZmBjPxsgfWzcjK56jLotYydaXDikCqa4m3oMDvnIBMp/HHs/6MaAAdl6hRG
+         vath9MNc8pvaoPFQ6nqqwn5V4CU7CBk7PB9eni7YzuIR9/P7FtZYcvo9PGMkBCjgd9W9
+         WQKw==
+X-Gm-Message-State: AOAM532WOL2MQ/+luZjgnskVqiOZSTk0SQmArUkaDMivNcpEs+ibidVB
+        BUM8QaBl8BkFG01kTfbWUw==
+X-Google-Smtp-Source: ABdhPJxTu/Q0i6gFyvjtJDQNTthYKNwRqUf2Njh5VAeQ24wbgPlw+DY2KFsoDBspdGF+PzetmwCd1Q==
+X-Received: by 2002:a05:6808:30a7:b0:2d7:6418:8d5d with SMTP id bl39-20020a05680830a700b002d764188d5dmr76758oib.155.1645806589137;
+        Fri, 25 Feb 2022 08:29:49 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id z9-20020a9d71c9000000b005ad12cbc899sm1316008otj.36.2022.02.25.08.29.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Feb 2022 08:29:48 -0800 (PST)
+Received: (nullmailer pid 1044481 invoked by uid 1000);
+        Fri, 25 Feb 2022 16:29:46 -0000
+Date:   Fri, 25 Feb 2022 10:29:46 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        netdev@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/5] dt-bindings: bluetooth: broadcom: add BCM43430A0
+Message-ID: <YhkD+qoEfHuo8nqD@robh.at.kernel.org>
+References: <20220216212433.1373903-1-luca@z3ntu.xyz>
+ <20220216212433.1373903-2-luca@z3ntu.xyz>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2 02/10] dt-bindings: thermal: tsens: Add msm8953
- compatible
-Content-Language: en-US
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220220201909.445468-1-luca@z3ntu.xyz>
- <20220220201909.445468-3-luca@z3ntu.xyz> <YhfmQFFCmb74dOvV@builder.lan>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <YhfmQFFCmb74dOvV@builder.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220216212433.1373903-2-luca@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 24/02/2022 21:10, Bjorn Andersson wrote:
-> On Sun 20 Feb 14:18 CST 2022, Luca Weiss wrote:
+On Wed, 16 Feb 2022 22:24:28 +0100, Luca Weiss wrote:
+> Document the compatible string for BCM43430A0 bluetooth.
 > 
->> Document the compatible string for tsens found in msm8953.
->>
->> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
->> Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
->> Acked-by: Amit Kucheria <amitk@kernel.org>
->> Acked-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> Daniel, can you please pick this patch through your tree?
 
-Applied, thanks
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Acked-by: Rob Herring <robh@kernel.org>
