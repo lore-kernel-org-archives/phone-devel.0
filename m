@@ -2,41 +2,39 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BBF80C433F5
-	for <phone-devel@archiver.kernel.org>; Fri, 25 Feb 2022 22:05:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5168CC433F5
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Feb 2022 10:20:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232929AbiBYWG3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 25 Feb 2022 17:06:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59268 "EHLO
+        id S230484AbiBZKVB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 26 Feb 2022 05:21:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230052AbiBYWG2 (ORCPT
+        with ESMTP id S229819AbiBZKVB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 25 Feb 2022 17:06:28 -0500
-X-Greylist: delayed 462 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 25 Feb 2022 14:05:55 PST
-Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [5.144.164.166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 725161F6360
-        for <phone-devel@vger.kernel.org>; Fri, 25 Feb 2022 14:05:55 -0800 (PST)
-Received: from localhost.localdomain (89-166-24-184.bb.dnainternet.fi [89.166.24.184])
-        by m-r2.th.seeweb.it (Postfix) with ESMTPA id 809A83F67D;
-        Fri, 25 Feb 2022 22:58:09 +0100 (CET)
-From:   Jami Kettunen <jami.kettunen@somainline.org>
-To:     Andy Gross <agross@kernel.org>,
+        Sat, 26 Feb 2022 05:21:01 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 676521EDA03;
+        Sat, 26 Feb 2022 02:20:27 -0800 (PST)
+Received: from localhost.localdomain (ip-213-127-118-180.ip.prioritytelecom.net [213.127.118.180])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id ACC27C8605;
+        Sat, 26 Feb 2022 10:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1645870826; bh=KIk5oGariUTzkh8XrPFbgAzQD7uT1PNQvVli+5PczsM=;
+        h=From:To:Cc:Subject:Date;
+        b=oGmgq7LWnz+EQAoM+naVaKTBeVJ0qCwKp2TdiR3kdX0Ofu17h5FMx8/1zuON3FLgi
+         uqTmDEAJWXdu83bvbjOQayIoNOXrmgL9AlyaoF7s4y/+/FXHQ47XhDD25GTGNO/N6d
+         b3Aea+jtjkGeMVPmZVxqBCgL7WErvTmgykQM49z0=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Pavel Dubrova <pashadubrova@gmail.com>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Caleb Connolly <caleb@connolly.tech>
-Subject: [PATCH] arm64: dts: qcom: msm8998-oneplus-common: Add NFC
-Date:   Fri, 25 Feb 2022 23:56:42 +0200
-Message-Id: <20220225215642.3916-1-jami.kettunen@somainline.org>
+        Stephen Boyd <sboyd@codeaurora.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: arm: qcom: Document asus,sparrow device
+Date:   Sat, 26 Feb 2022 11:19:38 +0100
+Message-Id: <20220226101939.1011551-1-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -44,66 +42,26 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The OnePlus 5/5T both have an NXP PN553 which is supported by the
-nxp-nci-i2c driver in mainline. It detects/reads NFC tags using
-"nfctool" and with the NearD test scripts data can also be written
-to be received by another device.
+Document the ASUS ZenWatch 2 ("sparrow") which is a smartwatch based on
+Snapdragon 400 SoC.
 
-Signed-off-by: Jami Kettunen <jami.kettunen@somainline.org>
-Reviewed-by: Caleb Connolly <caleb@connolly.tech>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- .../boot/dts/qcom/msm8998-oneplus-common.dtsi | 31 +++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi
-index 9823d48a91b1..dbaea360bffc 100644
---- a/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi
-@@ -188,6 +188,23 @@ rmi4_f12: rmi4-f12@12 {
- 	};
- };
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index 370aab274cd1..788d0ff0b686 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -99,6 +99,7 @@ properties:
  
-+&blsp1_i2c6 {
-+	status = "okay";
-+
-+	nfc@28 {
-+		compatible = "nxp,nxp-nci-i2c";
-+		reg = <0x28>;
-+
-+		interrupt-parent = <&tlmm>;
-+		interrupts = <92 IRQ_TYPE_LEVEL_HIGH>;
-+
-+		enable-gpios = <&tlmm 116 GPIO_ACTIVE_HIGH>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&nfc_int_active &nfc_enable_active>;
-+	};
-+};
-+
- &blsp1_uart3 {
- 	status = "okay";
+       - items:
+           - enum:
++              - asus,sparrow
+               - lg,lenok
+           - const: qcom,apq8026
  
-@@ -462,6 +479,20 @@ ts_reset_active: ts-reset-active {
- 		drive-strength = <8>;
- 		bias-pull-up;
- 	};
-+
-+	nfc_int_active: nfc-int-active {
-+		pins = "gpio92";
-+		function = "gpio";
-+		drive-strength = <6>;
-+		bias-pull-up;
-+	};
-+
-+	nfc_enable_active: nfc-enable-active {
-+		pins = "gpio12", "gpio116";
-+		function = "gpio";
-+		drive-strength = <6>;
-+		bias-pull-up;
-+	};
- };
- 
- &ufshc {
 -- 
 2.35.1
 
