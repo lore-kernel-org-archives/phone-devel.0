@@ -2,25 +2,26 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81B84C433FE
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Feb 2022 19:46:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99BFBC433EF
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Feb 2022 20:09:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbiBZTr3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 26 Feb 2022 14:47:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59790 "EHLO
+        id S229450AbiBZUJx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 26 Feb 2022 15:09:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbiBZTr3 (ORCPT
+        with ESMTP id S229445AbiBZUJx (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Feb 2022 14:47:29 -0500
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF0051D2B5C
-        for <phone-devel@vger.kernel.org>; Sat, 26 Feb 2022 11:46:53 -0800 (PST)
+        Sat, 26 Feb 2022 15:09:53 -0500
+X-Greylist: delayed 1345 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 26 Feb 2022 12:09:15 PST
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [5.144.164.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C89D244A03
+        for <phone-devel@vger.kernel.org>; Sat, 26 Feb 2022 12:09:15 -0800 (PST)
 Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 648BE3F40D;
-        Sat, 26 Feb 2022 20:46:46 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 68BC13F447;
+        Sat, 26 Feb 2022 21:09:13 +0100 (CET)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
@@ -30,20 +31,10 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Pavel Dubrova <pashadubrova@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Krishna Manikandan <quic_mkrishn@quicinc.com>,
-        Vinod Koul <vkoul@kernel.org>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/msm/dpu: Use indexed array initializer to prevent mismatches
-Date:   Sat, 26 Feb 2022 20:46:32 +0100
-Message-Id: <20220226194633.204501-1-marijn.suijten@somainline.org>
+        Marijn Suijten <marijn.suijten@somainline.org>
+Subject: [PATCH v2 0/3] clk: qcom: Add display clock controller driver for SM6125
+Date:   Sat, 26 Feb 2022 21:09:08 +0100
+Message-Id: <20220226200911.230030-1-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -51,129 +42,37 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-While there's a comment pointing from dpu_intr_set to dpu_hw_intr_reg
-and vice-versa, an array initializer using indices makes it so that the
-indices between the enum and array cannot possibly get out of sync even
-if they're accidentially ordered wrongly.  It is still useful to keep
-the comment to be made aware where the register offset mapping resides
-while looking at dpu_hw_intr_reg.
+Changes since v1:
+- Documentation is dual-licensed;
+- Documentation example now uses zero-clock for dsi1_phy pixel clock;
+- SDX_GCC_65 is sorted in Kconfig/Makefile to easen adding this driver
+  in the correct alphabetic spot;
+- clk.h is replaced with clk-provider.h;
+- ahb, mdp and rot source clocks use rcg2_shared_ops instead of standard
+  ops;
+- Unnecessary line breaks are removed when remaining under 80 chars.
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- .../gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c | 34 +++++++++----------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+v1: https://lore.kernel.org/linux-arm-msm/20211130212137.25303-1-martin.botka@somainline.org/T/#u
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-index c515b7cf922c..c61b5b283f08 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-@@ -54,87 +54,87 @@ struct dpu_intr_reg {
-  * When making changes be sure to sync with dpu_hw_intr_reg
-  */
- static const struct dpu_intr_reg dpu_intr_set[] = {
--	{
-+	[MDP_SSPP_TOP0_INTR] = {
- 		MDP_SSPP_TOP0_OFF+INTR_CLEAR,
- 		MDP_SSPP_TOP0_OFF+INTR_EN,
- 		MDP_SSPP_TOP0_OFF+INTR_STATUS
- 	},
--	{
-+	[MDP_SSPP_TOP0_INTR2] = {
- 		MDP_SSPP_TOP0_OFF+INTR2_CLEAR,
- 		MDP_SSPP_TOP0_OFF+INTR2_EN,
- 		MDP_SSPP_TOP0_OFF+INTR2_STATUS
- 	},
--	{
-+	[MDP_SSPP_TOP0_HIST_INTR] = {
- 		MDP_SSPP_TOP0_OFF+HIST_INTR_CLEAR,
- 		MDP_SSPP_TOP0_OFF+HIST_INTR_EN,
- 		MDP_SSPP_TOP0_OFF+HIST_INTR_STATUS
- 	},
--	{
-+	[MDP_INTF0_INTR] = {
- 		MDP_INTF_0_OFF+INTF_INTR_CLEAR,
- 		MDP_INTF_0_OFF+INTF_INTR_EN,
- 		MDP_INTF_0_OFF+INTF_INTR_STATUS
- 	},
--	{
-+	[MDP_INTF1_INTR] = {
- 		MDP_INTF_1_OFF+INTF_INTR_CLEAR,
- 		MDP_INTF_1_OFF+INTF_INTR_EN,
- 		MDP_INTF_1_OFF+INTF_INTR_STATUS
- 	},
--	{
-+	[MDP_INTF2_INTR] = {
- 		MDP_INTF_2_OFF+INTF_INTR_CLEAR,
- 		MDP_INTF_2_OFF+INTF_INTR_EN,
- 		MDP_INTF_2_OFF+INTF_INTR_STATUS
- 	},
--	{
-+	[MDP_INTF3_INTR] = {
- 		MDP_INTF_3_OFF+INTF_INTR_CLEAR,
- 		MDP_INTF_3_OFF+INTF_INTR_EN,
- 		MDP_INTF_3_OFF+INTF_INTR_STATUS
- 	},
--	{
-+	[MDP_INTF4_INTR] = {
- 		MDP_INTF_4_OFF+INTF_INTR_CLEAR,
- 		MDP_INTF_4_OFF+INTF_INTR_EN,
- 		MDP_INTF_4_OFF+INTF_INTR_STATUS
- 	},
--	{
-+	[MDP_INTF5_INTR] = {
- 		MDP_INTF_5_OFF+INTF_INTR_CLEAR,
- 		MDP_INTF_5_OFF+INTF_INTR_EN,
- 		MDP_INTF_5_OFF+INTF_INTR_STATUS
- 	},
--	{
-+	[MDP_AD4_0_INTR] = {
- 		MDP_AD4_0_OFF + MDP_AD4_INTR_CLEAR_OFF,
- 		MDP_AD4_0_OFF + MDP_AD4_INTR_EN_OFF,
- 		MDP_AD4_0_OFF + MDP_AD4_INTR_STATUS_OFF,
- 	},
--	{
-+	[MDP_AD4_1_INTR] = {
- 		MDP_AD4_1_OFF + MDP_AD4_INTR_CLEAR_OFF,
- 		MDP_AD4_1_OFF + MDP_AD4_INTR_EN_OFF,
- 		MDP_AD4_1_OFF + MDP_AD4_INTR_STATUS_OFF,
- 	},
--	{
-+	[MDP_INTF0_7xxx_INTR] = {
- 		MDP_INTF_0_OFF_REV_7xxx+INTF_INTR_CLEAR,
- 		MDP_INTF_0_OFF_REV_7xxx+INTF_INTR_EN,
- 		MDP_INTF_0_OFF_REV_7xxx+INTF_INTR_STATUS
- 	},
--	{
-+	[MDP_INTF1_7xxx_INTR] = {
- 		MDP_INTF_1_OFF_REV_7xxx+INTF_INTR_CLEAR,
- 		MDP_INTF_1_OFF_REV_7xxx+INTF_INTR_EN,
- 		MDP_INTF_1_OFF_REV_7xxx+INTF_INTR_STATUS
- 	},
--	{
-+	[MDP_INTF2_7xxx_INTR] = {
- 		MDP_INTF_2_OFF_REV_7xxx+INTF_INTR_CLEAR,
- 		MDP_INTF_2_OFF_REV_7xxx+INTF_INTR_EN,
- 		MDP_INTF_2_OFF_REV_7xxx+INTF_INTR_STATUS
- 	},
--	{
-+	[MDP_INTF3_7xxx_INTR] = {
- 		MDP_INTF_3_OFF_REV_7xxx+INTF_INTR_CLEAR,
- 		MDP_INTF_3_OFF_REV_7xxx+INTF_INTR_EN,
- 		MDP_INTF_3_OFF_REV_7xxx+INTF_INTR_STATUS
- 	},
--	{
-+	[MDP_INTF4_7xxx_INTR] = {
- 		MDP_INTF_4_OFF_REV_7xxx+INTF_INTR_CLEAR,
- 		MDP_INTF_4_OFF_REV_7xxx+INTF_INTR_EN,
- 		MDP_INTF_4_OFF_REV_7xxx+INTF_INTR_STATUS
- 	},
--	{
-+	[MDP_INTF5_7xxx_INTR] = {
- 		MDP_INTF_5_OFF_REV_7xxx+INTF_INTR_CLEAR,
- 		MDP_INTF_5_OFF_REV_7xxx+INTF_INTR_EN,
- 		MDP_INTF_5_OFF_REV_7xxx+INTF_INTR_STATUS
+Marijn Suijten (1):
+  clk: qcom: Fix sorting of SDX_GCC_65 in Makefile and Kconfig
+
+Martin Botka (2):
+  dt-bindings: clock: add QCOM SM6125 display clock bindings
+  clk: qcom: Add display clock controller driver for SM6125
+
+ .../bindings/clock/qcom,dispcc-sm6125.yaml    |  87 +++
+ drivers/clk/qcom/Kconfig                      |  21 +-
+ drivers/clk/qcom/Makefile                     |   3 +-
+ drivers/clk/qcom/dispcc-sm6125.c              | 709 ++++++++++++++++++
+ .../dt-bindings/clock/qcom,dispcc-sm6125.h    |  41 +
+ 5 files changed, 854 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/qcom,dispcc-sm6125.yaml
+ create mode 100644 drivers/clk/qcom/dispcc-sm6125.c
+ create mode 100644 include/dt-bindings/clock/qcom,dispcc-sm6125.h
+
 
 base-commit: 06aeb1495c39c86ccfaf1adadc1d2200179f16eb
--- 
+--
 2.35.1
 
