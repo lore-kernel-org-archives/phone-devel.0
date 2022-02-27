@@ -2,215 +2,144 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BEC9C433F5
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Feb 2022 23:32:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7619CC433F5
+	for <phone-devel@archiver.kernel.org>; Sun, 27 Feb 2022 03:29:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229532AbiBZXcm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 26 Feb 2022 18:32:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42308 "EHLO
+        id S229846AbiB0D3k (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 26 Feb 2022 22:29:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbiBZXcl (ORCPT
+        with ESMTP id S229798AbiB0D3k (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Feb 2022 18:32:41 -0500
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06B6D1FC2E4
-        for <phone-devel@vger.kernel.org>; Sat, 26 Feb 2022 15:32:02 -0800 (PST)
-Received: by mail-lf1-x12f.google.com with SMTP id i11so15440625lfu.3
-        for <phone-devel@vger.kernel.org>; Sat, 26 Feb 2022 15:32:02 -0800 (PST)
+        Sat, 26 Feb 2022 22:29:40 -0500
+Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1616D21F5CC
+        for <phone-devel@vger.kernel.org>; Sat, 26 Feb 2022 19:29:04 -0800 (PST)
+Received: by mail-qv1-xf33.google.com with SMTP id c14so5035379qvk.10
+        for <phone-devel@vger.kernel.org>; Sat, 26 Feb 2022 19:29:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=uAAifAuUillXLfQ7S+jdv/GEcpCcdBCKNAMWe6JBNCQ=;
-        b=kl11QDr19mfELOll6E4duE12IWzb1KZJnezNEUMeKbnT52BQWSU2on3w5bbUe3b3EW
-         rW3t8Br5tZpLcivUEk/wgLUs9+lOCoXY7uTd4WNNnXoGGA306Jvu0z30aTwIYWAfpOwz
-         S79pIYJEmp+GFERuOgiC4x7JSTRcQ/8v05gtvfBYOdpvRHb4l+XWw9hddfR5NZsIZ88j
-         4WLwfONr7lUMjEwRSNIQhLHHF1KNW7axMExyPQ89luM9cykWc+2wpJLp/WqDQ+kJjOvm
-         t0ddBSdC/QeY+k5sC7iHqI4e9CRE9i2eRETY734XLUgur6PTpPk9rjYmKl4sTiDjCWoS
-         fkpw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7uVsTdS9A3VvM3V9jvyobaIfl/vvSxzX/obLWEqItyo=;
+        b=Gus3oS9RSn7V1sr7kHl81y1aya0zl1pkxCw11w+XDvu9TPjWigg3K7tlfZovWKB4ae
+         LoFSKEOnw1/CPf1ue5bg4+ZnXYbF9Y+zkicAyImn/QMeG0xf8RkYkMwE7td7V+XucgUg
+         0gDiET8OWcLiR/uTHn2wUh3WcY8POKYYZw/O/qikdZt/B8Oxa+/h0kWL0zlh0jNugHBG
+         Rv5B++uhoDoF5bNd2dF70oz4vn2VMV+FnUr/zAIOwkrn52j00Kfgxx5zPdTqm8q/d8vi
+         I5UERrNvI3oCAHu2jLszQfE2Ir4z01/zstiDc3a//KS3VlYN7Eft03BJzMvOQq3z/VZH
+         WOlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=uAAifAuUillXLfQ7S+jdv/GEcpCcdBCKNAMWe6JBNCQ=;
-        b=RJqGGmvc6XCVfr9+5Wbe0QaFN2QKRMQQ+Imn5Hz6+o2ocir7ZWInOqI1eJmdPR7LK4
-         +oTkhTYF3nOB8BbzLCb1I70k7hooDhNIPoxzV6BcqIq+b5iIS70I3uGrnuCtVKh6mOf0
-         9EsNwOuhDi4ySKyRFtfc15KFsINXg3wQlaGG7eylY4VIoQFMB+rhyiM/w0CREffPULeX
-         7O4IMvbTpAfi+iKoUD2srb3G2/JzlGHZlAQ2irjlGN+gtmn9iBNKqIw2NKtt310LavEP
-         mJuU135pIXn8LhMapEPA8TsO9cB8icrJfbUfp+6vzs9lD0HqfNilATdsFUHMtwciPq3Y
-         DUmg==
-X-Gm-Message-State: AOAM5337BSNvHyltQswaBzxeM3Jxt7PyZK2zuwmZ06qEuYwxyOIsHvI8
-        6j/wutyDw70+7ZwITOocGKI30A==
-X-Google-Smtp-Source: ABdhPJyfWldaoFQncybaXzOhjS2bFagYJ2D6zN/7PsPqDmUkKFn53ZIxnFc/UfVapBieoSk7IZEt8Q==
-X-Received: by 2002:ac2:5c09:0:b0:443:7ae5:c341 with SMTP id r9-20020ac25c09000000b004437ae5c341mr8956054lfp.623.1645918321159;
-        Sat, 26 Feb 2022 15:32:01 -0800 (PST)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id a11-20020ac2520b000000b0044363e18b34sm548911lfl.148.2022.02.26.15.32.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 26 Feb 2022 15:32:00 -0800 (PST)
-Message-ID: <33aac1d8-acea-215c-0a76-05f992831f87@linaro.org>
-Date:   Sun, 27 Feb 2022 02:31:59 +0300
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7uVsTdS9A3VvM3V9jvyobaIfl/vvSxzX/obLWEqItyo=;
+        b=gRP5QML7REO3nVCe0U67xmwhDr4p+8XxzW/AR6UKIcfTzj/0JGm0gqgSFAoo3GaoU4
+         r/mSqV1VU2iEr9+FiJ6eJsAll2YAurNUrRE+ImJT8wXbkfcEcgd7xPbCSKwXOm7O6Nsc
+         ciHXKNo6oNgvlttnxIcROtu3meUpIlNhiFRmeP4sXPvBcBOK8N1m4nwdkiMrQO616ZPw
+         4meMUJ4QMEy95ct4zNDhii0SXIlCaMJ38wo1R+SBs9lxlbr+VwtNNurd3Pr422HFrDpn
+         yF806uSxEKOu8iOnOhA1mxDSumxjPbW1pc8SC5H1ezHWcAVIFVbcKNLFlt+TLFA9q9GU
+         UgAQ==
+X-Gm-Message-State: AOAM533qS3eB1p9kTu3RFj2jSvlHPmihQe6gn79ozIqxp0+iOF25LaqP
+        vQs5KWifKCGz2MYHMnqBub1J5gccvJGhNImVBM58nw==
+X-Google-Smtp-Source: ABdhPJy7XFThPExoHd3VFYJIkPak1UpwZE6oPWxM0M9mvJOEkCCe6XwmadvukE4ueQzyWqWGH926oT69VQqrOB0s4xU=
+X-Received: by 2002:a0c:d807:0:b0:42c:1ff7:7242 with SMTP id
+ h7-20020a0cd807000000b0042c1ff77242mr10578010qvj.119.1645932543232; Sat, 26
+ Feb 2022 19:29:03 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH] drm/msm/dpu: Use indexed array initializer to prevent
- mismatches
-Content-Language: en-GB
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+References: <20220226200911.230030-1-marijn.suijten@somainline.org> <20220226200911.230030-2-marijn.suijten@somainline.org>
+In-Reply-To: <20220226200911.230030-2-marijn.suijten@somainline.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Sun, 27 Feb 2022 06:28:52 +0300
+Message-ID: <CAA8EJppH2AKe7DK7mPhtz2CCW19WdJ0-NJihmFPDswRwTtKcfw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] clk: qcom: Fix sorting of SDX_GCC_65 in Makefile
+ and Kconfig
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Pavel Dubrova <pashadubrova@gmail.com>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Krishna Manikandan <quic_mkrishn@quicinc.com>,
-        Vinod Koul <vkoul@kernel.org>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        Andy Gross <agross@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Vamsi Krishna Lanka <quic_vamslank@quicinc.com>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20220226194633.204501-1-marijn.suijten@somainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20220226194633.204501-1-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 26/02/2022 22:46, Marijn Suijten wrote:
-> While there's a comment pointing from dpu_intr_set to dpu_hw_intr_reg
-> and vice-versa, an array initializer using indices makes it so that the
-> indices between the enum and array cannot possibly get out of sync even
-> if they're accidentially ordered wrongly.  It is still useful to keep
-> the comment to be made aware where the register offset mapping resides
-> while looking at dpu_hw_intr_reg.
+On Sun, 27 Feb 2022 at 02:38, Marijn Suijten
+<marijn.suijten@somainline.org> wrote:
+>
+> In order to keep at least the list of `CONFIG_SM_` drivers sorted
+> alphabetically, SDX_GCC_65 should have been moved one line up.  This in
+> turn makes it easier and cleaner to add the followup SM_DISPCC_6125
+> driver in the right place, right before SM_DISPCC_8250.
+>
+> Fixes: d79afa201328 ("clk: qcom: Add SDX65 GCC support")
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 > ---
->   .../gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c | 34 +++++++++----------
->   1 file changed, 17 insertions(+), 17 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-> index c515b7cf922c..c61b5b283f08 100644
-> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-> @@ -54,87 +54,87 @@ struct dpu_intr_reg {
->    * When making changes be sure to sync with dpu_hw_intr_reg
->    */
->   static const struct dpu_intr_reg dpu_intr_set[] = {
-> -	{
-> +	[MDP_SSPP_TOP0_INTR] = {
->   		MDP_SSPP_TOP0_OFF+INTR_CLEAR,
->   		MDP_SSPP_TOP0_OFF+INTR_EN,
->   		MDP_SSPP_TOP0_OFF+INTR_STATUS
->   	},
-> -	{
-> +	[MDP_SSPP_TOP0_INTR2] = {
->   		MDP_SSPP_TOP0_OFF+INTR2_CLEAR,
->   		MDP_SSPP_TOP0_OFF+INTR2_EN,
->   		MDP_SSPP_TOP0_OFF+INTR2_STATUS
->   	},
-> -	{
-> +	[MDP_SSPP_TOP0_HIST_INTR] = {
->   		MDP_SSPP_TOP0_OFF+HIST_INTR_CLEAR,
->   		MDP_SSPP_TOP0_OFF+HIST_INTR_EN,
->   		MDP_SSPP_TOP0_OFF+HIST_INTR_STATUS
->   	},
-> -	{
-> +	[MDP_INTF0_INTR] = {
->   		MDP_INTF_0_OFF+INTF_INTR_CLEAR,
->   		MDP_INTF_0_OFF+INTF_INTR_EN,
->   		MDP_INTF_0_OFF+INTF_INTR_STATUS
->   	},
-> -	{
-> +	[MDP_INTF1_INTR] = {
->   		MDP_INTF_1_OFF+INTF_INTR_CLEAR,
->   		MDP_INTF_1_OFF+INTF_INTR_EN,
->   		MDP_INTF_1_OFF+INTF_INTR_STATUS
->   	},
-> -	{
-> +	[MDP_INTF2_INTR] = {
->   		MDP_INTF_2_OFF+INTF_INTR_CLEAR,
->   		MDP_INTF_2_OFF+INTF_INTR_EN,
->   		MDP_INTF_2_OFF+INTF_INTR_STATUS
->   	},
-> -	{
-> +	[MDP_INTF3_INTR] = {
->   		MDP_INTF_3_OFF+INTF_INTR_CLEAR,
->   		MDP_INTF_3_OFF+INTF_INTR_EN,
->   		MDP_INTF_3_OFF+INTF_INTR_STATUS
->   	},
-> -	{
-> +	[MDP_INTF4_INTR] = {
->   		MDP_INTF_4_OFF+INTF_INTR_CLEAR,
->   		MDP_INTF_4_OFF+INTF_INTR_EN,
->   		MDP_INTF_4_OFF+INTF_INTR_STATUS
->   	},
-> -	{
-> +	[MDP_INTF5_INTR] = {
->   		MDP_INTF_5_OFF+INTF_INTR_CLEAR,
->   		MDP_INTF_5_OFF+INTF_INTR_EN,
->   		MDP_INTF_5_OFF+INTF_INTR_STATUS
->   	},
-> -	{
-> +	[MDP_AD4_0_INTR] = {
->   		MDP_AD4_0_OFF + MDP_AD4_INTR_CLEAR_OFF,
->   		MDP_AD4_0_OFF + MDP_AD4_INTR_EN_OFF,
->   		MDP_AD4_0_OFF + MDP_AD4_INTR_STATUS_OFF,
->   	},
-> -	{
-> +	[MDP_AD4_1_INTR] = {
->   		MDP_AD4_1_OFF + MDP_AD4_INTR_CLEAR_OFF,
->   		MDP_AD4_1_OFF + MDP_AD4_INTR_EN_OFF,
->   		MDP_AD4_1_OFF + MDP_AD4_INTR_STATUS_OFF,
->   	},
-> -	{
-> +	[MDP_INTF0_7xxx_INTR] = {
->   		MDP_INTF_0_OFF_REV_7xxx+INTF_INTR_CLEAR,
->   		MDP_INTF_0_OFF_REV_7xxx+INTF_INTR_EN,
->   		MDP_INTF_0_OFF_REV_7xxx+INTF_INTR_STATUS
->   	},
-> -	{
-> +	[MDP_INTF1_7xxx_INTR] = {
->   		MDP_INTF_1_OFF_REV_7xxx+INTF_INTR_CLEAR,
->   		MDP_INTF_1_OFF_REV_7xxx+INTF_INTR_EN,
->   		MDP_INTF_1_OFF_REV_7xxx+INTF_INTR_STATUS
->   	},
-> -	{
-> +	[MDP_INTF2_7xxx_INTR] = {
->   		MDP_INTF_2_OFF_REV_7xxx+INTF_INTR_CLEAR,
->   		MDP_INTF_2_OFF_REV_7xxx+INTF_INTR_EN,
->   		MDP_INTF_2_OFF_REV_7xxx+INTF_INTR_STATUS
->   	},
-> -	{
-> +	[MDP_INTF3_7xxx_INTR] = {
->   		MDP_INTF_3_OFF_REV_7xxx+INTF_INTR_CLEAR,
->   		MDP_INTF_3_OFF_REV_7xxx+INTF_INTR_EN,
->   		MDP_INTF_3_OFF_REV_7xxx+INTF_INTR_STATUS
->   	},
-> -	{
-> +	[MDP_INTF4_7xxx_INTR] = {
->   		MDP_INTF_4_OFF_REV_7xxx+INTF_INTR_CLEAR,
->   		MDP_INTF_4_OFF_REV_7xxx+INTF_INTR_EN,
->   		MDP_INTF_4_OFF_REV_7xxx+INTF_INTR_STATUS
->   	},
-> -	{
-> +	[MDP_INTF5_7xxx_INTR] = {
->   		MDP_INTF_5_OFF_REV_7xxx+INTF_INTR_CLEAR,
->   		MDP_INTF_5_OFF_REV_7xxx+INTF_INTR_EN,
->   		MDP_INTF_5_OFF_REV_7xxx+INTF_INTR_STATUS
-> 
-> base-commit: 06aeb1495c39c86ccfaf1adadc1d2200179f16eb
+>  drivers/clk/qcom/Kconfig  | 14 +++++++-------
+>  drivers/clk/qcom/Makefile |  2 +-
+>  2 files changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
+> index f5b54bfc992f..161b257da9ca 100644
+> --- a/drivers/clk/qcom/Kconfig
+> +++ b/drivers/clk/qcom/Kconfig
+> @@ -574,13 +574,6 @@ config SDX_GCC_55
+>           Say Y if you want to use peripheral devices such as UART,
+>           SPI, I2C, USB, SD/UFS, PCIe etc.
+>
+> -config SM_CAMCC_8250
+> -       tristate "SM8250 Camera Clock Controller"
+> -       select SM_GCC_8250
+> -       help
+> -         Support for the camera clock controller on SM8250 devices.
+> -         Say Y if you want to support camera devices and camera functionality.
+> -
+>  config SDX_GCC_65
+>         tristate "SDX65 Global Clock Controller"
+>         select QCOM_GDSC
+> @@ -589,6 +582,13 @@ config SDX_GCC_65
+>           Say Y if you want to use peripheral devices such as UART,
+>           SPI, I2C, USB, SD/UFS, PCIe etc.
+>
+> +config SM_CAMCC_8250
+> +       tristate "SM8250 Camera Clock Controller"
+> +       select SM_GCC_8250
+> +       help
+> +         Support for the camera clock controller on SM8250 devices.
+> +         Say Y if you want to support camera devices and camera functionality.
+> +
+>  config SM_DISPCC_8250
+>         tristate "SM8150 and SM8250 Display Clock Controller"
+>         depends on SM_GCC_8150 || SM_GCC_8250
+> diff --git a/drivers/clk/qcom/Makefile b/drivers/clk/qcom/Makefile
+> index d96d6793fc7d..3e4eb843b8d2 100644
+> --- a/drivers/clk/qcom/Makefile
+> +++ b/drivers/clk/qcom/Makefile
+> @@ -84,8 +84,8 @@ obj-$(CONFIG_SDM_GPUCC_845) += gpucc-sdm845.o
+>  obj-$(CONFIG_SDM_LPASSCC_845) += lpasscc-sdm845.o
+>  obj-$(CONFIG_SDM_VIDEOCC_845) += videocc-sdm845.o
+>  obj-$(CONFIG_SDX_GCC_55) += gcc-sdx55.o
+> -obj-$(CONFIG_SM_CAMCC_8250) += camcc-sm8250.o
+>  obj-$(CONFIG_SDX_GCC_65) += gcc-sdx65.o
+> +obj-$(CONFIG_SM_CAMCC_8250) += camcc-sm8250.o
+>  obj-$(CONFIG_SM_DISPCC_8250) += dispcc-sm8250.o
+>  obj-$(CONFIG_SM_GCC_6115) += gcc-sm6115.o
+>  obj-$(CONFIG_SM_GCC_6125) += gcc-sm6125.o
+> --
+> 2.35.1
+>
 
 
 -- 
