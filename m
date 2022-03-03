@@ -2,232 +2,90 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4481C433EF
-	for <phone-devel@archiver.kernel.org>; Wed,  2 Mar 2022 17:15:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E654C433F5
+	for <phone-devel@archiver.kernel.org>; Thu,  3 Mar 2022 13:18:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237817AbiCBRQl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 2 Mar 2022 12:16:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39788 "EHLO
+        id S232828AbiCCNTQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 3 Mar 2022 08:19:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235581AbiCBRQl (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 2 Mar 2022 12:16:41 -0500
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F5735F4ED
-        for <phone-devel@vger.kernel.org>; Wed,  2 Mar 2022 09:15:57 -0800 (PST)
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+        with ESMTP id S230373AbiCCNTP (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 3 Mar 2022 08:19:15 -0500
+Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50727149B8B;
+        Thu,  3 Mar 2022 05:18:30 -0800 (PST)
+Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 129F03F60F
-        for <phone-devel@vger.kernel.org>; Wed,  2 Mar 2022 17:15:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1646241356;
-        bh=EKSGShIhKvoK9zwcFMq838fSSTiayEwZ3ipXrxgEB/Q=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=B1BfvRgBAFxonDfthQM8O775/UTm+8yRy6d+33F0WSAQ6LDBk+DXtAp24D/n8cXci
-         jbM6x1S9XEuN4rkoTChRSMCd8Z6Rmgy90w1BxDOqJv7/GS71widPU2nZNFkeSbbNoi
-         dB5jBslPun2WwGm2NjNlHK5yKziHRKCGttmpuMnb2xpm6UYI90o8ecsaUfI91gD7Fd
-         An4E00SCGZPZVeaQ7yt4xxEC+9hFoA7DkiIPFzOPWN2/juDx0wo04uFFAaONemMerO
-         2Df84+HBzaA4/RvDn0EGhUX4l6x6ijPOjF9iRMBo6CRmXyUzQgwGcRYCsbHKzrMatl
-         D83EP1YvkcToQ==
-Received: by mail-ej1-f70.google.com with SMTP id k16-20020a17090632d000b006ae1cdb0f07so1308947ejk.16
-        for <phone-devel@vger.kernel.org>; Wed, 02 Mar 2022 09:15:56 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=EKSGShIhKvoK9zwcFMq838fSSTiayEwZ3ipXrxgEB/Q=;
-        b=lLe+tNVXoVFDGCmvGCYy2+0eAj5tWXcdtzginvz/UGQZ7qDqpyhBoJn/sDxh/1rXlo
-         tCtNZ/bDEIGBStr/IqsvQ0iqwI9eoBv4VsaXVhTQAaKtuRGJTBBxN83+JshrOBO7VcuR
-         6KKo55BitDoaKjQEpZT8KSQkEM2wfTEtpPcNysK4BLTkBP2i/TxWG1gSVmtO/jSSUKC8
-         md7h6NZuOhWfoA5DCkFAMsau7hC4zepfEOlAq9MzRHCQ1fRJQiN9EWhChttjl8nhgl8P
-         jUCL0/jyW67qJwIV9KQHRBRLNTILs16QRMPmIivjOM++G9hiYyiyTIF6NEClBnpeKbJq
-         TfPA==
-X-Gm-Message-State: AOAM531N7lrYKcda014VFY6bflEJLL8WDI1o1iIRvghkLiP7OrfAZ5sm
-        M6BWrH34Iwb5k0iiqMCdxcTSOfRiULp8h76BRLMNYsSkjQK5JvqpVxHXEN+RsbmPhi94hv7u/s5
-        2VgpGpxJlrYijGoMLaUu89u0sweH6rN1TzLkWKn4W
-X-Received: by 2002:a05:6402:4409:b0:412:aac5:4e48 with SMTP id y9-20020a056402440900b00412aac54e48mr30144303eda.75.1646241354543;
-        Wed, 02 Mar 2022 09:15:54 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyshWOBq1tAX3kqXMid9eJHgfLGLM4EqtCg2H9ww9e3j6/bhPCgqw6Uo5bi9vMfnFz7flevSQ==
-X-Received: by 2002:a05:6402:4409:b0:412:aac5:4e48 with SMTP id y9-20020a056402440900b00412aac54e48mr30144280eda.75.1646241354329;
-        Wed, 02 Mar 2022 09:15:54 -0800 (PST)
-Received: from [192.168.0.137] (xdsl-188-155-181-108.adslplus.ch. [188.155.181.108])
-        by smtp.gmail.com with ESMTPSA id d23-20020a1709067a1700b006d0ebe4af89sm6523442ejo.20.2022.03.02.09.15.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Mar 2022 09:15:53 -0800 (PST)
-Message-ID: <762e2778-99e9-f458-167d-909550db2f3c@canonical.com>
-Date:   Wed, 2 Mar 2022 18:15:52 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2 2/3] dt-bindings: clock: add QCOM SM6125 display clock
- bindings
-Content-Language: en-US
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 4F3AD3F635;
+        Thu,  3 Mar 2022 14:18:28 +0100 (CET)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Pavel Dubrova <pashadubrova@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
         Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Vamsi Krishna Lanka <quic_vamslank@quicinc.com>,
         linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220226200911.230030-1-marijn.suijten@somainline.org>
- <20220226200911.230030-3-marijn.suijten@somainline.org>
- <ea5d34c6-fe75-c096-d5b2-6a327c9d0ae5@canonical.com>
- <62ebb074-b8de-0dc3-2bbc-e43dca9d2ced@linaro.org>
- <05310308-b0ff-56a0-83ac-855b1b795936@canonical.com>
- <20220302125417.iu52rvdxrmo25wwt@SoMainline.org>
- <2b1f7c07-3cc9-9637-4621-3c5e0e09a65e@canonical.com>
- <Yh+D1cHuRNQqnHf+@ripper>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-In-Reply-To: <Yh+D1cHuRNQqnHf+@ripper>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: [PATCH v3 0/3] clk: qcom: Add display clock controller driver for SM6125
+Date:   Thu,  3 Mar 2022 14:18:09 +0100
+Message-Id: <20220303131812.302302-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 02/03/2022 15:48, Bjorn Andersson wrote:
-> On Wed 02 Mar 05:51 PST 2022, Krzysztof Kozlowski wrote:
-> 
->> On 02/03/2022 13:54, Marijn Suijten wrote:
->>> On 2022-02-28 10:23:19, Krzysztof Kozlowski wrote:
->>>> On 27/02/2022 22:43, Dmitry Baryshkov wrote:
->>>>> On 27/02/2022 13:03, Krzysztof Kozlowski wrote:
->>>>>> On 26/02/2022 21:09, Marijn Suijten wrote:
->>>>>>> From: Martin Botka <martin.botka@somainline.org>
->>>>>>>
->>>>>>> Add device tree bindings for display clock controller for
->>>>>>> Qualcomm Technology Inc's SM6125 SoC.
->>>>>>>
->>>>>>> Signed-off-by: Martin Botka <martin.botka@somainline.org>
->>>>>>> ---
->>>>>>>   .../bindings/clock/qcom,dispcc-sm6125.yaml    | 87 +++++++++++++++++++
->>>>>>>   .../dt-bindings/clock/qcom,dispcc-sm6125.h    | 41 +++++++++
->>>>>>>   2 files changed, 128 insertions(+)
->>>>>>>   create mode 100644 Documentation/devicetree/bindings/clock/qcom,dispcc-sm6125.yaml
->>>>>>>   create mode 100644 include/dt-bindings/clock/qcom,dispcc-sm6125.h
->>>>>>>
->>>>>>> diff --git a/Documentation/devicetree/bindings/clock/qcom,dispcc-sm6125.yaml b/Documentation/devicetree/bindings/clock/qcom,dispcc-sm6125.yaml
->>>>>>> new file mode 100644
->>>>>>> index 000000000000..3465042d0d9f
->>>>>>> --- /dev/null
->>>>>>> +++ b/Documentation/devicetree/bindings/clock/qcom,dispcc-sm6125.yaml
->>>>>>> @@ -0,0 +1,87 @@
->>>>>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->>>>>>> +%YAML 1.2
->>>>>>> +---
->>>>>>> +$id: http://devicetree.org/schemas/clock/qcom,dispcc-sm6125.yaml#
->>>>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>>>>>> +
->>>>>>> +title: Qualcomm Display Clock Controller Binding for SM6125
->>>>>>> +
->>>>>>> +maintainers:
->>>>>>> +  - Martin Botka <martin.botka@somainline.org>
->>>>>>> +
->>>>>>> +description: |
->>>>>>> +  Qualcomm display clock control module which supports the clocks and
->>>>>>> +  power domains on SM6125.
->>>>>>> +
->>>>>>> +  See also:
->>>>>>> +    dt-bindings/clock/qcom,dispcc-sm6125.h
->>>>>>> +
->>>>>>> +properties:
->>>>>>> +  compatible:
->>>>>>> +    enum:
->>>>>>> +      - qcom,sm6125-dispcc
->>>>>>> +
->>>>>>> +  clocks:
->>>>>>> +    items:
->>>>>>> +      - description: Board XO source
->>>>>>> +      - description: Byte clock from DSI PHY0
->>>>>>> +      - description: Pixel clock from DSI PHY0
->>>>>>> +      - description: Pixel clock from DSI PHY1
->>>>>>> +      - description: Link clock from DP PHY
->>>>>>> +      - description: VCO DIV clock from DP PHY
->>>>>>> +      - description: AHB config clock from GCC
->>>>>>> +
->>>>>>> +  clock-names:
->>>>>>> +    items:
->>>>>>> +      - const: bi_tcxo
->>>>>>> +      - const: dsi0_phy_pll_out_byteclk
->>>>>>> +      - const: dsi0_phy_pll_out_dsiclk
->>>>>>> +      - const: dsi1_phy_pll_out_dsiclk
->>>>>>> +      - const: dp_phy_pll_link_clk
->>>>>>> +      - const: dp_phy_pll_vco_div_clk
->>>>>>> +      - const: cfg_ahb_clk
->>>>>>> +
->>>>>>> +  '#clock-cells':
->>>>>>> +    const: 1
->>>>>>> +
->>>>>>> +  '#power-domain-cells':
->>>>>>> +    const: 1
->>>>>>> +
->>>>>>> +  reg:
->>>>>>> +    maxItems: 1
->>>>>>> +
->>>>>>> +required:
->>>>>>> +  - compatible
->>>>>>> +  - reg
->>>>>>> +  - clocks
->>>>>>> +  - clock-names
->>>>>>> +  - '#clock-cells'
->>>>>>> +  - '#power-domain-cells'
->>>>>>> +
->>>>>>> +additionalProperties: false
->>>>>>> +
->>>>>>> +examples:
->>>>>>> +  - |
->>>>>>> +    #include <dt-bindings/clock/qcom,rpmcc.h>
->>>>>>> +    #include <dt-bindings/clock/qcom,gcc-sm6125.h>
->>>>>>> +    clock-controller@5f00000 {
->>>>>>> +      compatible = "qcom,sm6125-dispcc";
->>>>>>> +      reg = <0x5f00000 0x20000>;
->>>>>>> +      clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>,
->>>>>>> +               <&dsi0_phy 0>,
->>>>>>> +               <&dsi0_phy 1>,
->>>>>>> +               <0>,
->>>>>>
->>>>>> This does not look like a valid phandle. This clock is required, isn't it?
->>>
->>> I remember it being used like this before, though upon closer inspection
->>> only qcom,gcc-msm8998.yaml uses it as example.
->>>
->>> The clock should be optional, in that case it is perhaps desired to omit
->>> it from clock-names instead, or pretend there's a `dsi1_phy 1`?
->>
->> I propose to omit it.
->>
-> 
-> The wire is there, it's only optional because we don't have the other
-> side represented in DT yet.
-> 
-> I believe we started filling out 0s like this because omitting elements
-> that are not yet possible to fill out means that the order will change
-> as we add more functions, something Rob has objected to. Further more as
-> we add more functions the existing dts will fail validation, even though
-> the hardware hasn't changed.
-> 
-> 
-> That said, even though we don't have the other piece on this particular
-> platform we do know where this signal comes from. So we should be able
-> to have a valid (or at least strongly plausible) example in the binding
-> - and then fill out the dts with 0s to keep validation happy until the
-> other pieces are filled out.
+Changes since v2:
+- dt-bindings: Use a sensible `&dsi1_phy 1` example clock for the
+  mandatory "dsi1_phy_pll_out_dsiclk", instead of a null phandle.
 
-So based on this, this clock is not actually optional and the bindings
-should stay like this. The example should be more-or-less complete, so
-there is not much sense to have there clock "0". DTS is of course different.
+v2: https://lore.kernel.org/phone-devel/20220226200911.230030-1-marijn.suijten@somainline.org/
 
-BR,
-Krzysztof
+Changes since v1:
+- Documentation is dual-licensed;
+- Documentation example now uses zero-clock for dsi1_phy pixel clock;
+- SDX_GCC_65 is sorted in Kconfig/Makefile to easen adding this driver
+  in the correct alphabetic spot;
+- clk.h is replaced with clk-provider.h;
+- ahb, mdp and rot source clocks use rcg2_shared_ops instead of standard
+  ops;
+- Unnecessary line breaks are removed when remaining under 80 chars.
+
+v1: https://lore.kernel.org/linux-arm-msm/20211130212137.25303-1-martin.botka@somainline.org/T/#u
+
+Marijn Suijten (1):
+  clk: qcom: Fix sorting of SDX_GCC_65 in Makefile and Kconfig
+
+Martin Botka (2):
+  dt-bindings: clock: add QCOM SM6125 display clock bindings
+  clk: qcom: Add display clock controller driver for SM6125
+
+ .../bindings/clock/qcom,dispcc-sm6125.yaml    |  87 +++
+ drivers/clk/qcom/Kconfig                      |  21 +-
+ drivers/clk/qcom/Makefile                     |   3 +-
+ drivers/clk/qcom/dispcc-sm6125.c              | 709 ++++++++++++++++++
+ .../dt-bindings/clock/qcom,dispcc-sm6125.h    |  41 +
+ 5 files changed, 854 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/qcom,dispcc-sm6125.yaml
+ create mode 100644 drivers/clk/qcom/dispcc-sm6125.c
+ create mode 100644 include/dt-bindings/clock/qcom,dispcc-sm6125.h
+
+
+base-commit: e6ada6df471f847da3b09b357e246c62335bc0bb
+--
+2.35.1
+
