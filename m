@@ -2,60 +2,70 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AACBC433F5
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Mar 2022 17:31:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1254C433FE
+	for <phone-devel@archiver.kernel.org>; Fri,  4 Mar 2022 23:12:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241129AbiCDRck (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 4 Mar 2022 12:32:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42600 "EHLO
+        id S230132AbiCDXMv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 4 Mar 2022 18:12:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241159AbiCDRc2 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Mar 2022 12:32:28 -0500
-X-Greylist: delayed 595 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 04 Mar 2022 09:31:39 PST
-Received: from mail.holtmann.org (coyote.holtmann.net [212.227.132.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BDE181CD9CD
-        for <phone-devel@vger.kernel.org>; Fri,  4 Mar 2022 09:31:39 -0800 (PST)
-Received: from smtpclient.apple (p5b3d2910.dip0.t-ipconnect.de [91.61.41.16])
-        by mail.holtmann.org (Postfix) with ESMTPSA id 6AA68CECCE;
-        Fri,  4 Mar 2022 18:21:43 +0100 (CET)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.60.0.1.1\))
-Subject: Re: [PATCH v2 2/2] Bluetooth: hci_bcm: add BCM43430A0 & BCM43430A1
-From:   Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <20220225204138.935022-2-luca@z3ntu.xyz>
-Date:   Fri, 4 Mar 2022 18:21:43 +0100
-Cc:     MSM <linux-arm-msm@vger.kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <7574788C-E8CC-4386-A714-48E5712E6A92@holtmann.org>
-References: <20220225204138.935022-1-luca@z3ntu.xyz>
- <20220225204138.935022-2-luca@z3ntu.xyz>
+        with ESMTP id S230107AbiCDXMl (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Mar 2022 18:12:41 -0500
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B54C27C53E;
+        Fri,  4 Mar 2022 15:11:45 -0800 (PST)
+Received: by mail-oo1-f48.google.com with SMTP id 189-20020a4a03c6000000b003179d7b30d8so11167464ooi.2;
+        Fri, 04 Mar 2022 15:11:45 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=VcvmzI8lPWcfjXO4cdTkfNwbnHj0syLj1nxodzWufVQ=;
+        b=gGa2GwcL/biPXPaGpA6pp2RsXYWspBGUc/Lj4UUWYuSQUj9J/FZpBsdHiw8LZ2oS2R
+         pOVi7IQwUEWVAYnpr6QaFnLB/+VjPHK0j8eJyxFBGtAtyySVkZ7tq/U+s9NNWkSYjVqQ
+         dFDRpj0IO70T5nguiP9FmZ4ovKbKXd0gN+EQWmCIBvXgAPliP1et1f/9z+PkzhG7ADO1
+         XEnb4rVXkx4bxIXjuV78GvXQZdtjjXAxJyZZT7vceSi8PU2iMWpbBXPvNioFy7xRHZTD
+         XgpGzvDttaJzmnttNd6ev5awoDk19edkXzeeCkTrYRaNK7Hp9ZCSWWcOUGzE53tAc82t
+         FXpA==
+X-Gm-Message-State: AOAM532irfAX2GEb3bQwtiPX9SoJxXEq53OCsfkVH8d1m2CfDUxAq6yy
+        Z64OiYWWr3clcGU7edvaNR11j9gkPw==
+X-Google-Smtp-Source: ABdhPJxLKrurxY8nEivu7pB1E6b8CGAWAAjBgVkRTK4WXlxKtPNkUcmhr8ot2uYN10lImi/+22N42g==
+X-Received: by 2002:a4a:4112:0:b0:319:3eb2:11b with SMTP id x18-20020a4a4112000000b003193eb2011bmr306154ooa.40.1646435504347;
+        Fri, 04 Mar 2022 15:11:44 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
+        by smtp.gmail.com with ESMTPSA id k14-20020a4aa5ce000000b003203602ca63sm2818539oom.47.2022.03.04.15.11.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Mar 2022 15:11:43 -0800 (PST)
+Received: (nullmailer pid 636835 invoked by uid 1000);
+        Fri, 04 Mar 2022 23:11:42 -0000
+Date:   Fri, 4 Mar 2022 17:11:42 -0600
+From:   Rob Herring <robh@kernel.org>
 To:     Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: Apple Mail (2.3693.60.0.1.1)
+Cc:     Rob Herring <robh+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        phone-devel@vger.kernel.org, Stephen Boyd <sboyd@codeaurora.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: Document asus,sparrow device
+Message-ID: <YiKcrra910ZmdaGP@robh.at.kernel.org>
+References: <20220226101939.1011551-1-luca@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220226101939.1011551-1-luca@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Luca,
-
-> Add the compatible for BCM43430A0 bluetooth used in lg-lenok and
-> BCM43430A1 used in asus-sparrow.
+On Sat, 26 Feb 2022 11:19:38 +0100, Luca Weiss wrote:
+> Document the ASUS ZenWatch 2 ("sparrow") which is a smartwatch based on
+> Snapdragon 400 SoC.
 > 
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
-> Changes in v2:
-> - add bcm43430a1 too, adjust commit message to reflect that
+>  Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> drivers/bluetooth/hci_bcm.c | 2 ++
-> 1 file changed, 2 insertions(+)
 
-patch has been applied to bluetooth-next tree.
-
-Regards
-
-Marcel
-
+Acked-by: Rob Herring <robh@kernel.org>
