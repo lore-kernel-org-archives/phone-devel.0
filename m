@@ -2,70 +2,89 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1254C433FE
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Mar 2022 23:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72C8CC433F5
+	for <phone-devel@archiver.kernel.org>; Sat,  5 Mar 2022 16:52:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230132AbiCDXMv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 4 Mar 2022 18:12:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35276 "EHLO
+        id S231176AbiCEQxA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 5 Mar 2022 11:53:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230107AbiCDXMl (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Mar 2022 18:12:41 -0500
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B54C27C53E;
-        Fri,  4 Mar 2022 15:11:45 -0800 (PST)
-Received: by mail-oo1-f48.google.com with SMTP id 189-20020a4a03c6000000b003179d7b30d8so11167464ooi.2;
-        Fri, 04 Mar 2022 15:11:45 -0800 (PST)
+        with ESMTP id S230094AbiCEQw7 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 5 Mar 2022 11:52:59 -0500
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29CD13B03D;
+        Sat,  5 Mar 2022 08:52:08 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id b11so19288962lfb.12;
+        Sat, 05 Mar 2022 08:52:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zxGEx/UmR4KZJ60ASWh+xU+S5NM4aOeVXtrO2lALPmM=;
+        b=iADxoUa26ngqfpURoXcgE0AmdMZfM9zKb90jIZZaqFOV8BkVXx0G9lw0QOOJ1lSHrT
+         vzb3PtOiRPmTUtwlyrEfa7BvMWtmd1uElOW+16ojotr9zWK/ZELMjt00p4zVCyv5Xg4S
+         ydNsILj0zOHrs/rDtkpnyKK7HQB0zWO+Sm2qqSGYk9s6X9VH7fXY1KuXNmPIA8Ur39gl
+         uaHFHF1G9C0Vn88OWz3W8BahFrtpfCmI7xmUTZEXKGxHZ9vEP39Jp8jxdUGM0w7M+1lM
+         l8IdiHD97HBb3cooFM2jJbumOoq+30DtO/WbtBrI6frk9lL6SzwrMAoObcAeTErpou9i
+         Or1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=VcvmzI8lPWcfjXO4cdTkfNwbnHj0syLj1nxodzWufVQ=;
-        b=gGa2GwcL/biPXPaGpA6pp2RsXYWspBGUc/Lj4UUWYuSQUj9J/FZpBsdHiw8LZ2oS2R
-         pOVi7IQwUEWVAYnpr6QaFnLB/+VjPHK0j8eJyxFBGtAtyySVkZ7tq/U+s9NNWkSYjVqQ
-         dFDRpj0IO70T5nguiP9FmZ4ovKbKXd0gN+EQWmCIBvXgAPliP1et1f/9z+PkzhG7ADO1
-         XEnb4rVXkx4bxIXjuV78GvXQZdtjjXAxJyZZT7vceSi8PU2iMWpbBXPvNioFy7xRHZTD
-         XgpGzvDttaJzmnttNd6ev5awoDk19edkXzeeCkTrYRaNK7Hp9ZCSWWcOUGzE53tAc82t
-         FXpA==
-X-Gm-Message-State: AOAM532irfAX2GEb3bQwtiPX9SoJxXEq53OCsfkVH8d1m2CfDUxAq6yy
-        Z64OiYWWr3clcGU7edvaNR11j9gkPw==
-X-Google-Smtp-Source: ABdhPJxLKrurxY8nEivu7pB1E6b8CGAWAAjBgVkRTK4WXlxKtPNkUcmhr8ot2uYN10lImi/+22N42g==
-X-Received: by 2002:a4a:4112:0:b0:319:3eb2:11b with SMTP id x18-20020a4a4112000000b003193eb2011bmr306154ooa.40.1646435504347;
-        Fri, 04 Mar 2022 15:11:44 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id k14-20020a4aa5ce000000b003203602ca63sm2818539oom.47.2022.03.04.15.11.43
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zxGEx/UmR4KZJ60ASWh+xU+S5NM4aOeVXtrO2lALPmM=;
+        b=y5eJQtgEnHsi13ljKAKEraTyLe5kyulw0+9sR3pTPrktCV7Rkgdwl95XljetxD/KFs
+         +BgJh+f3/aktv7hjVcZavs7IClrrQ2bJNUxv/3Oz524W3B9zYRIr3hIP/6hcqOjgejbO
+         CTX648ShMu9HNQIelI3zO1DVlaYPSuXRwGa+GXevBlZU6KWbq7raiaytgcOLbnzst6mN
+         /MmYaIHzdq+zx1JDkY8/J90Y1oZ4O2KStJPWFAWjFr0UGuOKUnxD48g0u8EBTQ2R+7dP
+         lRWSOgSx6dDQZ2DeY95GHFP67Y3AITfuTfkcuyHUnSHej5Lse8nCOTPlR4LGMDWKE25O
+         P70Q==
+X-Gm-Message-State: AOAM533aWoZ+B/Ljciv3Lu97kuqlpU66Ml9SiijLWnJUDcr9cZIdGsw4
+        2dJCSK6yjPz2afhnqDov+EXZk6h0/lel87MU
+X-Google-Smtp-Source: ABdhPJwRhGssIjRq4Dp5iXc86HaDTuXU3UrmI/ewMKgJSrHGGg+whFXyi7HLOv3RqQB6irVUFpvs8w==
+X-Received: by 2002:a05:6512:3194:b0:445:bde8:9fca with SMTP id i20-20020a056512319400b00445bde89fcamr2745174lfe.534.1646499122666;
+        Sat, 05 Mar 2022 08:52:02 -0800 (PST)
+Received: from localhost.localdomain (adsa4.neoplus.adsl.tpnet.pl. [79.185.186.4])
+        by smtp.gmail.com with ESMTPSA id n16-20020a0565120ad000b00443c3f383c5sm1751287lfu.231.2022.03.05.08.52.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Mar 2022 15:11:43 -0800 (PST)
-Received: (nullmailer pid 636835 invoked by uid 1000);
-        Fri, 04 Mar 2022 23:11:42 -0000
-Date:   Fri, 4 Mar 2022 17:11:42 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     Rob Herring <robh+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+        Sat, 05 Mar 2022 08:52:02 -0800 (PST)
+From:   Adam Skladowski <a39.skl@gmail.com>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        Adam Skladowski <a39.skl@gmail.com>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        phone-devel@vger.kernel.org, Stephen Boyd <sboyd@codeaurora.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: Document asus,sparrow device
-Message-ID: <YiKcrra910ZmdaGP@robh.at.kernel.org>
-References: <20220226101939.1011551-1-luca@z3ntu.xyz>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] *** Add SCM and mailbox support on MSM8976  ***
+Date:   Sat,  5 Mar 2022 17:49:01 +0100
+Message-Id: <20220305164906.16853-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220226101939.1011551-1-luca@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 26 Feb 2022 11:19:38 +0100, Luca Weiss wrote:
-> Document the ASUS ZenWatch 2 ("sparrow") which is a smartwatch based on
-> Snapdragon 400 SoC.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
+This patch series adds support for SCM and mailbox as found on the QCOM
+MSM8976 platform.
 
-Acked-by: Rob Herring <robh@kernel.org>
+
+Adam Skladowski (4):
+  dt-bindings: mailbox: Add compatible for the MSM8976
+  mailbox: qcom-apcs-ipc: Add compatible for MSM8976 SoC
+  dt-bindings: firmware: qcom-scm: Document msm8976 bindings
+  firmware: qcom_scm: Add compatible for MSM8976 SoC
+
+ Documentation/devicetree/bindings/firmware/qcom,scm.txt       | 3 ++-
+ .../devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml    | 1 +
+ drivers/firmware/qcom_scm.c                                   | 4 ++++
+ drivers/mailbox/qcom-apcs-ipc-mailbox.c                       | 1 +
+ 4 files changed, 8 insertions(+), 1 deletion(-)
+
+-- 
+2.25.1
+
