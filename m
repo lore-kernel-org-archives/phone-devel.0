@@ -2,78 +2,202 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EF21C433F5
-	for <phone-devel@archiver.kernel.org>; Sun, 13 Mar 2022 09:29:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0466AC4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 14 Mar 2022 15:18:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233702AbiCMJaI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 13 Mar 2022 05:30:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50626 "EHLO
+        id S242506AbiCNPTi convert rfc822-to-8bit (ORCPT
+        <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 14 Mar 2022 11:19:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231618AbiCMJaH (ORCPT
+        with ESMTP id S236465AbiCNPTh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 13 Mar 2022 05:30:07 -0400
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2660824BE6;
-        Sun, 13 Mar 2022 01:29:00 -0800 (PST)
-Received: by mail-ej1-f45.google.com with SMTP id gb39so27820565ejc.1;
-        Sun, 13 Mar 2022 01:29:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=NgQyfpQ5reEt2GXu9ddANeGGQrL1MxR6becPBkQwz1c=;
-        b=2kI5xGiB9ijkpgnPkIxNXb2wbqUHOwFO/VR9km70GcqWCwWLg/k88dYqI5A10CHSEk
-         rTAXU+0RMOPGA1cXXcehIUwgkJsf2ZHt7qE7aOQElcFfzl1s21TvbQ8dXpWnbjM1wVtq
-         zxfrogmgMiR7jrG6x5EtMB5EcBlFMwHvTO1mdN6Sy6O9FXRpr0fhidsBOG7/9lo6ATrl
-         FymS1CSZCyksxnmtnCqpR70aAl3k0M5E9S7rIxaO6ZRX9N8s80UtzKcyNKybO//mWrtT
-         tKmtQIYRHDCXOVzzYlje6+ofD6kdhytKe7hkAz5pY1ltsoc28GBZ1xybaJlZ9LBJ2u3w
-         5IZA==
-X-Gm-Message-State: AOAM531/mqxEHcg5PHlXLuvAC8UYH8za2o49GtxGRJ+s9spCyzZPSaOF
-        qiMWx2k3W/jc7AU9vHHiIUvVWsf2fbs=
-X-Google-Smtp-Source: ABdhPJzstF34aanf7kupJgg+MdwPHQyeYPdgPIv3qy+90mIiDQwpnr0MnWfi2lkSfGRZc0OG3yb8kw==
-X-Received: by 2002:a17:906:c10f:b0:6da:88aa:9d06 with SMTP id do15-20020a170906c10f00b006da88aa9d06mr15073786ejc.196.1647163738188;
-        Sun, 13 Mar 2022 01:28:58 -0800 (PST)
-Received: from [192.168.0.150] (xdsl-188-155-174-239.adslplus.ch. [188.155.174.239])
-        by smtp.googlemail.com with ESMTPSA id k23-20020a1709062a5700b006ccd8fdc300sm5305148eje.180.2022.03.13.01.28.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 13 Mar 2022 01:28:57 -0800 (PST)
-Message-ID: <78fc6b4d-ac26-43a5-8f45-6e9ea2c6eec8@kernel.org>
-Date:   Sun, 13 Mar 2022 10:28:56 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v1 1/2] dt-bindings: extcon: bindings for SM5703
-Content-Language: en-US
-To:     Markuss Broks <markuss.broks@gmail.com>,
-        linux-kernel@vger.kernel.org
-Cc:     phone-devel@vger.kernel.org, ~postmarketos-upstreaming@lists.sr.ht,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        devicetree@vger.kernel.org
-References: <20220312184156.24912-1-markuss.broks@gmail.com>
- <20220312184156.24912-2-markuss.broks@gmail.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20220312184156.24912-2-markuss.broks@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Mon, 14 Mar 2022 11:19:37 -0400
+Received: from mail.holtmann.org (coyote.holtmann.net [212.227.132.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D9C1513EBA;
+        Mon, 14 Mar 2022 08:18:24 -0700 (PDT)
+Received: from smtpclient.apple (p5b3d2183.dip0.t-ipconnect.de [91.61.33.131])
+        by mail.holtmann.org (Postfix) with ESMTPSA id 893CCCECC5;
+        Mon, 14 Mar 2022 16:18:23 +0100 (CET)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.60.0.1.1\))
+Subject: Re: [PATCH] Bluetooth: btbcm: Support per-board firmware variants
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <20220311001746.480163-1-linus.walleij@linaro.org>
+Date:   Mon, 14 Mar 2022 16:18:23 +0100
+Cc:     Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        BlueZ <linux-bluetooth@vger.kernel.org>,
+        phone-devel@vger.kernel.org,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Stephan Gerhold <stephan@gerhold.net>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <D9F12453-41D5-4F31-8A15-293D708D5875@holtmann.org>
+References: <20220311001746.480163-1-linus.walleij@linaro.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: Apple Mail (2.3693.60.0.1.1)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 12/03/2022 19:41, Markuss Broks wrote:
-> This patch adds device-tree bindings for Silicon Mitus SM5703 MUIC.
+Hi Linus,
+
+> There are provedly different firmware variants for the different
+> phones using some of these chips. These were extracted from a few
+> Samsung phones:
 > 
-> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> 37446 BCM4334B0.samsung,codina-tmo.hcd
+> 37366 BCM4334B0.samsung,golden.hcd
+> 37403 BCM4334B0.samsung,kyle.hcd
+> 37366 BCM4334B0.samsung,skomer.hcd
+> 
+> This patch supports the above naming schedule with inserting
+> [.board_name] between the firmware name and ".hcd". This scheme
+> is the same as used by the companion BRCM wireless chips
+> as can be seen in
+> drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
+> or just by looking at the firmwares in linux-firmware/brcm.
+> 
+> Currently we only support board variants using the device
+> tree compatible string as board type, but other schemes are
+> possible.
+> 
+> This makes it possible to successfully load a few unique
+> firmware variants for some Samsung phones.
+> 
+> Cc: phone-devel@vger.kernel.org
+> Cc: Markuss Broks <markuss.broks@gmail.com>
+> Cc: Stephan Gerhold <stephan@gerhold.net>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 > ---
->  .../devicetree/bindings/extcon/siliconmitus,sm5502-muic.yaml | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> drivers/bluetooth/btbcm.c | 55 ++++++++++++++++++++++++++++++++++++++-
+> 1 file changed, 54 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
+> index d9ceca7a7935..9d1a8d80a8cd 100644
+> --- a/drivers/bluetooth/btbcm.c
+> +++ b/drivers/bluetooth/btbcm.c
+> @@ -9,6 +9,7 @@
+> #include <linux/module.h>
+> #include <linux/firmware.h>
+> #include <linux/dmi.h>
+> +#include <linux/of.h>
+> #include <asm/unaligned.h>
+> 
+> #include <net/bluetooth/bluetooth.h>
+> @@ -29,7 +30,7 @@
+> #define BDADDR_BCM43341B (&(bdaddr_t) {{0xac, 0x1f, 0x00, 0x1b, 0x34, 0x43}})
+> 
+> #define BCM_FW_NAME_LEN			64
+> -#define BCM_FW_NAME_COUNT_MAX		2
+> +#define BCM_FW_NAME_COUNT_MAX		4
+> /* For kmalloc-ing the fw-name array instead of putting it on the stack */
+> typedef char bcm_fw_name[BCM_FW_NAME_LEN];
+> 
+> @@ -476,6 +477,45 @@ static const struct bcm_subver_table bcm_usb_subver_table[] = {
+> 	{ }
+> };
+> 
+> +/*
+> + * This currently only looks up the device tree board appendix,
+> + * but can be expanded to other mechanisms.
+> + */
+> +#ifdef CONFIG_OF
+> +static const char *btbcm_get_board_name(struct device *dev)
+> +{
+> +	struct device_node *root;
+> +	char *board_type;
+> +	const char *tmp;
+> +	int len;
+> +	int i;
+> +
+> +	root = of_find_node_by_path("/");
+> +	if (!root)
+> +		return NULL;
+> +
+> +	if (of_property_read_string_index(root, "compatible", 0, &tmp))
+> +		return NULL;
+> +
+> +	/* get rid of any '/' in the compatible string */
+> +	len = strlen(tmp) + 1;
+> +	board_type = devm_kzalloc(dev, len, GFP_KERNEL);
+> +	strscpy(board_type, tmp, len);
+> +	for (i = 0; i < board_type[i]; i++) {
+> +		if (board_type[i] == '/')
+> +			board_type[i] = '-';
+> +	}
+> +	of_node_put(root);
+> +
+> +	return board_type;
+> +}
+> +#else
+> +static const char *btbcm_get_board_name(struct device *dev)
+> +{
+> +	return NULL;
+> +}
+> +#endif
+> +
+
+can we please do the #ifdef magic inside the function.
+
+static const char *btbcm_get_board_name(struct device *dev)
+{
+#ifdef
+	..
+	return board_type;
+#else
+	return NULL;
+#endif
+}
 
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+> int btbcm_initialize(struct hci_dev *hdev, bool *fw_load_done)
+> {
+> 	u16 subver, rev, pid, vid;
+> @@ -483,12 +523,15 @@ int btbcm_initialize(struct hci_dev *hdev, bool *fw_load_done)
+> 	struct hci_rp_read_local_version *ver;
+> 	const struct bcm_subver_table *bcm_subver_table;
+> 	const char *hw_name = NULL;
+> +	const char *board_name = NULL;
+> 	char postfix[16] = "";
+> 	int fw_name_count = 0;
+> 	bcm_fw_name *fw_name;
+> 	const struct firmware *fw;
+> 	int i, err;
+> 
+> +	board_name = btbcm_get_board_name(&hdev->dev);
+> +
 
+There is no point in assigning board_name to NULL at variable declaration.
 
-Best regards,
-Krzysztof
+> 	/* Reset */
+> 	err = btbcm_reset(hdev);
+> 	if (err)
+> @@ -549,11 +592,21 @@ int btbcm_initialize(struct hci_dev *hdev, bool *fw_load_done)
+> 		return -ENOMEM;
+> 
+> 	if (hw_name) {
+> +		if (board_name) {
+> +			snprintf(fw_name[fw_name_count], BCM_FW_NAME_LEN,
+> +				 "brcm/%s%s.%s.hcd", hw_name, postfix, board_name);
+> +			fw_name_count++;
+> +		}
+> 		snprintf(fw_name[fw_name_count], BCM_FW_NAME_LEN,
+> 			 "brcm/%s%s.hcd", hw_name, postfix);
+> 		fw_name_count++;
+> 	}
+> 
+> +	if (board_name) {
+> +		snprintf(fw_name[fw_name_count], BCM_FW_NAME_LEN,
+> +			 "brcm/BCM%s.%s.hcd", postfix, board_name);
+> +		fw_name_count++;
+> +	}
+> 	snprintf(fw_name[fw_name_count], BCM_FW_NAME_LEN,
+> 		 "brcm/BCM%s.hcd", postfix);
+> 	fw_name_count++;
+
+Regards
+
+Marcel
+
