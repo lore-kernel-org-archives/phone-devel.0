@@ -2,66 +2,67 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AEF6C433FE
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Mar 2022 18:39:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA158C433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Mar 2022 18:39:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240206AbiCRSkZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Mar 2022 14:40:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41202 "EHLO
+        id S235469AbiCRSlQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Mar 2022 14:41:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240209AbiCRSkY (ORCPT
+        with ESMTP id S240226AbiCRSlQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Mar 2022 14:40:24 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31CA81C946C
-        for <phone-devel@vger.kernel.org>; Fri, 18 Mar 2022 11:39:02 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id ja24so13264493ejc.11
-        for <phone-devel@vger.kernel.org>; Fri, 18 Mar 2022 11:39:01 -0700 (PDT)
+        Fri, 18 Mar 2022 14:41:16 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6225D1C9B54
+        for <phone-devel@vger.kernel.org>; Fri, 18 Mar 2022 11:39:56 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id a17so10215145edm.9
+        for <phone-devel@vger.kernel.org>; Fri, 18 Mar 2022 11:39:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=fairphone.com; s=fair;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=ZwBNxv31ujNSLTrPdhNM0458fsf06VpnyNFy23XaEkM=;
-        b=3HyLPt3AUi5oYad0n4/hc+3xmHTgicSDQtnED6a8HMjpRI7fS7w3PoqInaxxMs3fTt
-         6ymRR8UbBGNsXBe0UwK7sFigl+vWjptdZqYJBYGCI1ACOCyzjfa8Z9Pg9NFOw3mUvXff
-         pNvBk+DkP7v/MTX0pU9MQ2EeQHA+fdHfU9YH6p0uu25D23uUda0GBESVwJh3aEp0KJCs
-         xmnxDt/tpQU33XuOCIDDZ7g6gGzBhPaKokrXxLVyV+RBGnv7pnSIzKRe/dJFb1G/tFuU
-         uoVcSaSEnP+3zyLmpjKx3m65qWoDGPupfzgkAYvxHqoYd+wfCS6JUa6DVr0LhJY40rO4
-         AHxA==
+        bh=rbg2RlFA/4puyAOuKWmpEc0rQD4bbwwHtg4uOvJP+0I=;
+        b=CLaL56CILexB1XmewhSYD+RMOauS6TXFrSrM09e8FX6dz3NqqKNQuLoBTJMloetORm
+         bdsFhPuyeJBgQwXMcWioPB3uOCRhCKZb15XtU05+uB3I/TOXoWs0CISSxKayf95mroVa
+         zaN5A7mGN1VgxSGahkm6Hmy6lrxAOme+8PJ/Bg44Gec/QYLJhyXIkqJWp/aoVAjJBRDd
+         iaJvbVkvpG1j0vgmX6D8dbAeG9ARk291ldzH5/YvTUVsXIBVvVMPQIy0XqBLGXbG8oyA
+         rlLhDlE7/MTvg8kEayMeztg9JDPF7plFAz3CxDj+7gO6QzrJx2fjQ+NM9TO8eirumasp
+         aoYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ZwBNxv31ujNSLTrPdhNM0458fsf06VpnyNFy23XaEkM=;
-        b=iYMDTu/jC5uBknJLcGq9pmhQurgoNcWsMjP+VOxJlhsU8R5wuWHdPXU+FPoWIgheq6
-         RtfmzAc9mlwllEZ/I/DftxgGZZ5oXFPhkGLobP4FeB8YcfyIRz0rc93sibWUSOAua2LC
-         Nu5HNzVsy2qOW6YA9DMLVLgM7rbDUUC3ohnCi6LSGSIPt2D6UV2aI4DC9Svz6j/B9b7q
-         Ok15fQV9f19FLOHCgtQBpXiF+ChSOGoYH5BGRQt6uT+IIGXn4lhZJBik6XqCG0s1OnhC
-         xHPucDUyG7dRXBwF/F/VgxUpJkIZt+Ld4GzS+YXVI9a0FkSkb66o7izAXNQQPWaMNKfa
-         44VQ==
-X-Gm-Message-State: AOAM530N3uL4RJe4Jaw7Y8CHNwKu9GQQmkrJcdGiUShLhWJYMJEilu3h
-        QNuF8mEuAIdkOTZxtsLksj8rvpA6hFZONA==
-X-Google-Smtp-Source: ABdhPJynojliZCvGddFQNS0+a/KXK069NxTK7UrYbclBZMfvrCnqTqb4KctsfibHRAdKybm/4lpS1Q==
-X-Received: by 2002:a05:6402:278f:b0:416:a887:9853 with SMTP id b15-20020a056402278f00b00416a8879853mr10909101ede.44.1647628229756;
-        Fri, 18 Mar 2022 11:30:29 -0700 (PDT)
+        bh=rbg2RlFA/4puyAOuKWmpEc0rQD4bbwwHtg4uOvJP+0I=;
+        b=WPej7a+qETQP2HSCDIMOqkTb9wbEdfaqy4+SVXXgHgLFltRKSWNJ2ILWIrjVg3inw6
+         zzg1RkIkYQXqfLwF9fuR0FYO1MEJqVyf95F+fTyy0JtmTNe90ENDIr4kmBb0550wCP+u
+         9Nk24nkUOtjHkir6MFo0dyem0RljTn2/CP1ppV72F8BiYvV6BJgR8XIFMIifLrmn6/+r
+         xrLmaakm41Np1mOXY60Gz+IcJioXwRf58G0l1r6Pa3iwMlhpSJKBA5hJH3hxl2mocz9m
+         HEyviwZ7eP8w0qtu9YKbd7YQwrMgDh72IcCIskFN/PUWW0Rx0el3cQedM2aC5p0P92Na
+         4YBQ==
+X-Gm-Message-State: AOAM532/9KNwWoLolbiOyspRsToUE0VSAi/IyXGBRxOxGiIIyEr0AaxW
+        /PEmN3wIyH5w1rnro+7HgtsJvCVwsIaRTw==
+X-Google-Smtp-Source: ABdhPJy9l9NnPcxCTwrHttfVSh2VeMF/NE86kvBCodu5fsRVccCePBYOvZuaZPfCKvJyw5yFTLlEtQ==
+X-Received: by 2002:a17:906:6a02:b0:6d7:cda:2cf7 with SMTP id qw2-20020a1709066a0200b006d70cda2cf7mr9874936ejc.53.1647628227733;
+        Fri, 18 Mar 2022 11:30:27 -0700 (PDT)
 Received: from otso.arnhem.chello.nl (a246182.upc-a.chello.nl. [62.163.246.182])
-        by smtp.gmail.com with ESMTPSA id y8-20020a50eb08000000b00418b114469csm4567551edp.52.2022.03.18.11.30.29
+        by smtp.gmail.com with ESMTPSA id y8-20020a50eb08000000b00418b114469csm4567551edp.52.2022.03.18.11.30.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Mar 2022 11:30:29 -0700 (PDT)
+        Fri, 18 Mar 2022 11:30:27 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Luca Weiss <luca.weiss@fairphone.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 4/6] pinctrl: qcom: sm6350: fix order of UFS & SDC pins
-Date:   Fri, 18 Mar 2022 19:30:02 +0100
-Message-Id: <20220318183004.858707-5-luca.weiss@fairphone.com>
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 2/6] dt-bindings: phy: qcom,qmp: Add SM6350 UFS PHY bindings
+Date:   Fri, 18 Mar 2022 19:30:00 +0100
+Message-Id: <20220318183004.858707-3-luca.weiss@fairphone.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220318183004.858707-1-luca.weiss@fairphone.com>
 References: <20220318183004.858707-1-luca.weiss@fairphone.com>
@@ -71,42 +72,25 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-In other places the SDC and UFS pins have been swapped but this was
-missed in the PINCTRL_PIN definitions. Fix that.
+Document the compatible string for the UFS PHY found in SM6350.
 
-Fixes: 7d74b55afd27 ("pinctrl: qcom: Add SM6350 pinctrl driver")
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- drivers/pinctrl/qcom/pinctrl-sm6350.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ Documentation/devicetree/bindings/phy/qcom,qmp-phy.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-sm6350.c b/drivers/pinctrl/qcom/pinctrl-sm6350.c
-index 4d37b817b232..a91a86628f2f 100644
---- a/drivers/pinctrl/qcom/pinctrl-sm6350.c
-+++ b/drivers/pinctrl/qcom/pinctrl-sm6350.c
-@@ -264,14 +264,14 @@ static const struct pinctrl_pin_desc sm6350_pins[] = {
- 	PINCTRL_PIN(153, "GPIO_153"),
- 	PINCTRL_PIN(154, "GPIO_154"),
- 	PINCTRL_PIN(155, "GPIO_155"),
--	PINCTRL_PIN(156, "SDC1_RCLK"),
--	PINCTRL_PIN(157, "SDC1_CLK"),
--	PINCTRL_PIN(158, "SDC1_CMD"),
--	PINCTRL_PIN(159, "SDC1_DATA"),
--	PINCTRL_PIN(160, "SDC2_CLK"),
--	PINCTRL_PIN(161, "SDC2_CMD"),
--	PINCTRL_PIN(162, "SDC2_DATA"),
--	PINCTRL_PIN(163, "UFS_RESET"),
-+	PINCTRL_PIN(156, "UFS_RESET"),
-+	PINCTRL_PIN(157, "SDC1_RCLK"),
-+	PINCTRL_PIN(158, "SDC1_CLK"),
-+	PINCTRL_PIN(159, "SDC1_CMD"),
-+	PINCTRL_PIN(160, "SDC1_DATA"),
-+	PINCTRL_PIN(161, "SDC2_CLK"),
-+	PINCTRL_PIN(162, "SDC2_CMD"),
-+	PINCTRL_PIN(163, "SDC2_DATA"),
- };
- 
- #define DECLARE_MSM_GPIO_PINS(pin) \
+diff --git a/Documentation/devicetree/bindings/phy/qcom,qmp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,qmp-phy.yaml
+index e20d9b087bb8..934aa9101ddd 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,qmp-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,qmp-phy.yaml
+@@ -39,6 +39,7 @@ properties:
+       - qcom,sdm845-qmp-usb3-phy
+       - qcom,sdm845-qmp-usb3-uni-phy
+       - qcom,sm6115-qmp-ufs-phy
++      - qcom,sm6350-qmp-ufs-phy
+       - qcom,sm8150-qmp-ufs-phy
+       - qcom,sm8150-qmp-usb3-phy
+       - qcom,sm8150-qmp-usb3-uni-phy
 -- 
 2.35.1
 
