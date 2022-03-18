@@ -2,64 +2,64 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 83EF9C433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Mar 2022 18:38:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CB93C433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Mar 2022 18:38:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238197AbiCRSj2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Mar 2022 14:39:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38324 "EHLO
+        id S236304AbiCRSkB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Mar 2022 14:40:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239341AbiCRSj1 (ORCPT
+        with ESMTP id S240184AbiCRSkA (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Mar 2022 14:39:27 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B61AFD1F
-        for <phone-devel@vger.kernel.org>; Fri, 18 Mar 2022 11:38:08 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id h23so12221295wrb.8
-        for <phone-devel@vger.kernel.org>; Fri, 18 Mar 2022 11:38:08 -0700 (PDT)
+        Fri, 18 Mar 2022 14:40:00 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0887A1C1EF7
+        for <phone-devel@vger.kernel.org>; Fri, 18 Mar 2022 11:38:41 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id u10so12822632wra.9
+        for <phone-devel@vger.kernel.org>; Fri, 18 Mar 2022 11:38:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=fairphone.com; s=fair;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=pxcaI5PPLcGqvRUtBX2rA37vADL045EnXxAdViDUp7s=;
-        b=g7+BklOg6UNgkaO/bdUqX0jYsNzP27+FAasuZEgPJW3QJDk40vorEenEEKDhjKtfny
-         UjJVD5LEkSyhU3ZxaPYz5UVYFIE5seVV4wkii0XOOtauOBv4F3FVG61Vj/XM4hyB7ol5
-         htp4dEhDw+a5pLzI9CSWsuzrounXfpMiA5vuXCZgXafIUY1xw5GY/aaTPKoM/UHrxfB6
-         lZE8GXqP6mTkBovnPexaEe8XAoUVmq+Qdz+LL9jzigJWpx7pz/q9LW8Bxuvaz8cTYXkR
-         CHVJO4QIla3DhOKX3P+7+atzyF4N2yv7+JNsuhELKE99Q88vRCIAquqlq1tqFohOctpN
-         NGMA==
+        bh=P4Kb7KaG4SHKOCFmSwuaetu2AmaYDmmzIQaLbfYBkIY=;
+        b=khW7ecMgr9h4H/gr4OgaENPoHbpSHHEj1C/BNSaVNLNGuXrbcCfKvPaEOnFIhi3BiN
+         KgjUGHKS3nLlRPy1UNdsjZem+ivw2/bPvwr49oPntThlPHwZ9Dv0C/LQv9Qk2pggyuDw
+         Ej5XK1I5fwSl0GQvCZgGzihqUaq/4ffXqe0ryRKQR8B1dBzg5Fqr0eBlJquH/NWkNLv8
+         ul1DMoGZP80bxYuQlze27VobUDWdLdIXQY7mkFw604w36Td8oAxgN8vdVIRv0DUsWKgM
+         Q+JpcVY9ASB/PA03atBRa4gF3GvZX6poK5dtO9nlZbHqHZMuF7YxZjt48MSVC8pjYw2H
+         RkLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=pxcaI5PPLcGqvRUtBX2rA37vADL045EnXxAdViDUp7s=;
-        b=NkME2NFHaOh+rsJ+WkDl2qpaWEeUbGneeftlfujPmL0D9HBTNHt0Jl5FloGiF0SX6Y
-         OdyYpkm5aMKdNLSPxmf9MbeD669WEV+b46z/P36hbGjH4lR+MmXnOURqlGCA510eC45Z
-         Tt2Kn9lh7ihT3mNtAFnHRx5Mg6VKNgfp7iOqKmWz2vlL6/0JUpwKNPm0F6/1p6+aTG+a
-         c5Gw8Xf80nrnrNURuPjQv9zyfyu9HYWZ+YXCSy+7woLuIj4oi0RxBknF5SL5jjAWzP1Z
-         mp6JUZ3WGYLFgx1gtdZ60fmCfYWG3dc102CK2vSVhIIWumR9GOTLSF56Ac5C1EgvaO0K
-         kb2A==
-X-Gm-Message-State: AOAM5323ogcyV/CmPzd3YelTr0eiS7Gw2NZbnR8jWKbaKaHuoVGhfnha
-        wO/yKvt11upblurnF+5Msha6wi/8ay0OVw==
-X-Google-Smtp-Source: ABdhPJyt/aqgd/G4xClL3pIIdid5DVsjFmvlts76WqZtBshuebteGpuiNLrrMsW0WKMaCy4sAj1cfg==
-X-Received: by 2002:a05:6402:4311:b0:416:6a08:a9 with SMTP id m17-20020a056402431100b004166a0800a9mr10954842edc.346.1647628228837;
-        Fri, 18 Mar 2022 11:30:28 -0700 (PDT)
+        bh=P4Kb7KaG4SHKOCFmSwuaetu2AmaYDmmzIQaLbfYBkIY=;
+        b=QGgNFJpxXl977pmM4avgh34YuETuk0KEq3+sakl6R5oFgBtw+W05Acw8LjQzt49OgI
+         3LSWLwMoU5QuhWpRJeS5zsYsitPS0v4Ab+uZcIbsrW+Arm1JY8rEyaxd72n9aTmqkNGb
+         8jSWfYYhj9TcBNOzOgiBXv9b3uI6KE47Cz6j9p00uamUGcCJ8r3Akd+tnSENxQvviuqU
+         7TWjwg7LtNKsgCy2gFCpsyPuOL8r9WqTPUOIatVDjd2u/At8VKAX0nU+FqG7B4kWHYOL
+         jh07qX1rYdgNwzNHlQ506uqyau8lvnwdq2Fgz0uGK95J0HMueec5Aer/w/qtGBws/krK
+         f4pQ==
+X-Gm-Message-State: AOAM530xtjRMgN9aIj2fxYKx9BEsMMqigmLf7ynWwS4CmrWI1tJ00k1Q
+        oybnMXD9E0ekIrRfWCt4Uao3ECCd8A2FsA==
+X-Google-Smtp-Source: ABdhPJxpB6DPIeEcuQfFinBQN+TQE1Hym0owqp3TwkL7NdBZRGAoJycH2zYgj3jo17Ndq189KG+jIQ==
+X-Received: by 2002:a05:6402:1912:b0:418:cd23:3742 with SMTP id e18-20020a056402191200b00418cd233742mr10821976edz.412.1647628230716;
+        Fri, 18 Mar 2022 11:30:30 -0700 (PDT)
 Received: from otso.arnhem.chello.nl (a246182.upc-a.chello.nl. [62.163.246.182])
-        by smtp.gmail.com with ESMTPSA id y8-20020a50eb08000000b00418b114469csm4567551edp.52.2022.03.18.11.30.28
+        by smtp.gmail.com with ESMTPSA id y8-20020a50eb08000000b00418b114469csm4567551edp.52.2022.03.18.11.30.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Mar 2022 11:30:28 -0700 (PDT)
+        Fri, 18 Mar 2022 11:30:30 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Luca Weiss <luca.weiss@fairphone.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Vinod Koul <vkoul@kernel.org>, linux-phy@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 3/6] phy: qcom-qmp: Add SM6350 UFS PHY support
-Date:   Fri, 18 Mar 2022 19:30:01 +0100
-Message-Id: <20220318183004.858707-4-luca.weiss@fairphone.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 5/6] arm64: dts: qcom: sm6350: Add UFS nodes
+Date:   Fri, 18 Mar 2022 19:30:03 +0100
+Message-Id: <20220318183004.858707-6-luca.weiss@fairphone.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220318183004.858707-1-luca.weiss@fairphone.com>
 References: <20220318183004.858707-1-luca.weiss@fairphone.com>
@@ -69,28 +69,103 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The SM6350 UFS PHY is compatible with the one from SDM845. Add a
-compatible for that.
+Add the necessary nodes for UFS and its PHY.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 79 ++++++++++++++++++++++++++++
+ 1 file changed, 79 insertions(+)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp.c b/drivers/phy/qualcomm/phy-qcom-qmp.c
-index b144ae1f729a..1628275265b5 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp.c
-@@ -6007,6 +6007,9 @@ static const struct of_device_id qcom_qmp_phy_of_match_table[] = {
- 	}, {
- 		.compatible = "qcom,sm6115-qmp-ufs-phy",
- 		.data = &sm6115_ufsphy_cfg,
-+	}, {
-+		.compatible = "qcom,sm6350-qmp-ufs-phy",
-+		.data = &sdm845_ufsphy_cfg,
- 	}, {
- 		.compatible = "qcom,sm8150-qmp-ufs-phy",
- 		.data = &sm8150_ufsphy_cfg,
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index d7c9edff19f7..c5c93b6bcd2a 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -541,6 +541,85 @@ uart2: serial@98c000 {
+ 			};
+ 		};
+ 
++		ufs_mem_hc: ufshc@1d84000 {
++			compatible = "qcom,sm6350-ufshc", "qcom,ufshc",
++				     "jedec,ufs-2.0";
++			reg = <0 0x01d84000 0 0x3000>,
++			      <0 0x01d90000 0 0x8000>;
++			reg-names = "std", "ice";
++			interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
++			phys = <&ufs_mem_phy_lanes>;
++			phy-names = "ufsphy";
++			lanes-per-direction = <2>;
++			#reset-cells = <1>;
++			resets = <&gcc GCC_UFS_PHY_BCR>;
++			reset-names = "rst";
++
++			power-domains = <&gcc UFS_PHY_GDSC>;
++
++			iommus = <&apps_smmu 0x80 0x0>;
++
++			clock-names =
++				"core_clk",
++				"bus_aggr_clk",
++				"iface_clk",
++				"core_clk_unipro",
++				"core_clk_ice",
++				"ref_clk",
++				"tx_lane0_sync_clk",
++				"rx_lane0_sync_clk",
++				"rx_lane1_sync_clk";
++			clocks =
++				<&gcc GCC_UFS_PHY_AXI_CLK>,
++				<&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
++				<&gcc GCC_UFS_PHY_AHB_CLK>,
++				<&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
++				<&gcc GCC_UFS_PHY_ICE_CORE_CLK>,
++				<&rpmhcc RPMH_QLINK_CLK>,
++				<&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
++				<&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
++				<&gcc GCC_UFS_PHY_RX_SYMBOL_1_CLK>;
++			freq-table-hz =
++				<50000000 200000000>,
++				<0 0>,
++				<0 0>,
++				<37500000 150000000>,
++				<75000000 300000000>,
++				<0 0>,
++				<0 0>,
++				<0 0>,
++				<0 0>;
++
++			status = "disabled";
++		};
++
++		ufs_mem_phy: phy@1d87000 {
++			compatible = "qcom,sm6350-qmp-ufs-phy";
++			reg = <0 0x01d87000 0 0x18c>;
++			#address-cells = <2>;
++			#size-cells = <2>;
++			ranges;
++
++			clock-names = "ref",
++				      "ref_aux";
++			clocks = <&gcc GCC_UFS_MEM_CLKREF_CLK>,
++				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>;
++
++			resets = <&ufs_mem_hc 0>;
++			reset-names = "ufsphy";
++
++			status = "disabled";
++
++			ufs_mem_phy_lanes: phy@1d87400 {
++				reg = <0 0x01d87400 0 0x128>,
++				      <0 0x01d87600 0 0x1fc>,
++				      <0 0x01d87c00 0 0x1dc>,
++				      <0 0x01d87800 0 0x128>,
++				      <0 0x01d87a00 0 0x1fc>;
++				#phy-cells = <0>;
++			};
++		};
++
+ 		tcsr_mutex: hwlock@1f40000 {
+ 			compatible = "qcom,tcsr-mutex";
+ 			reg = <0x0 0x01f40000 0x0 0x40000>;
 -- 
 2.35.1
 
