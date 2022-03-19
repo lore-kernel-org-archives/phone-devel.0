@@ -2,110 +2,82 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C76FC433F5
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Mar 2022 18:40:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C42E1C4332F
+	for <phone-devel@archiver.kernel.org>; Sat, 19 Mar 2022 14:38:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240110AbiCRSmB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Mar 2022 14:42:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48790 "EHLO
+        id S243208AbiCSOkI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 19 Mar 2022 10:40:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240241AbiCRSmA (ORCPT
+        with ESMTP id S243230AbiCSOkH (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Mar 2022 14:42:00 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99CC41CAF0F
-        for <phone-devel@vger.kernel.org>; Fri, 18 Mar 2022 11:40:41 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id g17so15478049lfh.2
-        for <phone-devel@vger.kernel.org>; Fri, 18 Mar 2022 11:40:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=IsPzUzvYgLroRu4csiaCo2UKzNPvjuzZI8dPfwBHJgI=;
-        b=Bb7G9eAidXa4LtVJHXlV2hdxDrOmusC1eMK5cZl9Dw1C0hBIEEgp9CgMVxa2ho8EH9
-         Iy7Wvie5D5ex39h2yW9Q2Qm+2rfhzPmHV+hzlZ2dg3kkqTUki5LdJIvsugrmihAoep49
-         dnU8et/omSgk0dpcxJyQ0aUlBsqs6GVSlPxvGYiuoA//woteMVcI+GpeALlKT4mZRY9Y
-         R+Agz8iqrxzPEbsdZ9bGSz+n6IsfkXJx0nw0D4rKVzuQLus3hk2vlALuyF+HIszpwtve
-         k9ci5JTZsfn8NvOzj2PidOYW9KILHgvJ10PAHxLnCYmnaNxCGUoiu+RJGlKibcpe+eHN
-         TchA==
+        Sat, 19 Mar 2022 10:40:07 -0400
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C12E78D6B5;
+        Sat, 19 Mar 2022 07:38:43 -0700 (PDT)
+Received: by mail-ej1-f52.google.com with SMTP id r22so1947917ejs.11;
+        Sat, 19 Mar 2022 07:38:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=IsPzUzvYgLroRu4csiaCo2UKzNPvjuzZI8dPfwBHJgI=;
-        b=HRYypPm/iJDlxB/TxR2T7pnn89zjQ1BE3ldYxXe6bXpaeQNCnnue04JB0efuBQlE/F
-         6lnt4DsiyRwuSRGH7h6VIp5uADN4NJ7rGfLD9TugYq30hCjop/yN8960UYUV58DNjLJx
-         h2gLQt1YT8jeD8I4+gtG798Aheifg/+4H2aVoOsOYs8mGBIvBLX9Qd2aj7Asa3BU2tPe
-         GEyHbJP2nH9hSdt/IfUsyPzGsUwfZNB372a7fkOZQORARNSCoKylOMJShxrHln50SyYC
-         EtEDeK49jUJykxar2xkNON82NcQpYKyYrzCIJ2jJixFXdZOZFOSUrwOH/8NDK5NmDj1j
-         eZSA==
-X-Gm-Message-State: AOAM533YcI3Nz4esC3SvBxJs4bcWYcYDqtuKop7+13aGsrR6IO/JmxAt
-        aN72mnDz3eXxth7raArWwZW5u1P+4KxOEQ==
-X-Google-Smtp-Source: ABdhPJwCFaAeaJnJiep/ONIqfYgxBm2KzuK6ldKFXPAH+O97PzsAaUVBZLeOF/oW5FVvabze6YOf2Q==
-X-Received: by 2002:a17:906:5597:b0:6ce:f3cc:14e8 with SMTP id y23-20020a170906559700b006cef3cc14e8mr10038931ejp.426.1647628231596;
-        Fri, 18 Mar 2022 11:30:31 -0700 (PDT)
-Received: from otso.arnhem.chello.nl (a246182.upc-a.chello.nl. [62.163.246.182])
-        by smtp.gmail.com with ESMTPSA id y8-20020a50eb08000000b00418b114469csm4567551edp.52.2022.03.18.11.30.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Mar 2022 11:30:31 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=YiSvu3h2MURJ52kikYps/FHyIHlianDqoRFaAApITKM=;
+        b=j6xeKKl8VK0NBU5pvkFbOE7v5RrA05hCjkOUdLVD87KMcr6HPAxN+JJ4v4FU52D9rg
+         rufVDymxJImYqUw+GW372OSqhzNJEmEEtfBdJaxgxRRN2e+TaefzOG5zcgV6NvZi5wr1
+         KEyAg/EtudGaRVBQ2mXKa6Jfot5DPzDjzo7ecHjxn1wpNdSvmQ2zMVYe8RiO1q1cvMUh
+         BeQW4sLjmRGOWCgrtNwnWhOuoW+Aqb4Fcpo++OHPeXkDlUc2RkSxJ8xFM5D53FWqCqhN
+         6B8gT/nshUnB+K/Tx+bMC88WQQSMoFgh+mdCFAM66ORidi0KNYNFR05Eb9dNSmElO/mu
+         VzMw==
+X-Gm-Message-State: AOAM533a0zQkKXuV+liRn2bttNbkjjhqLuF8kZUzh4O3Hfj95w4aQxYB
+        Er9KMM/I5ZllU9hMUEoMEcg=
+X-Google-Smtp-Source: ABdhPJxy7389KsjdEcoBs8HFFkzqqnLzY5jKJNB7r2IHGvyjvSoasFsmc5rxbFJwLesRSh+gR9lAnA==
+X-Received: by 2002:a17:907:7d93:b0:6da:8f57:68fa with SMTP id oz19-20020a1709077d9300b006da8f5768famr13695553ejc.42.1647700722186;
+        Sat, 19 Mar 2022 07:38:42 -0700 (PDT)
+Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.googlemail.com with ESMTPSA id l12-20020a056402028c00b00418f7fc4bd8sm4198032edv.91.2022.03.19.07.38.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 19 Mar 2022 07:38:41 -0700 (PDT)
+Message-ID: <cc6a0a89-a096-e954-b245-1857e9f94c4e@kernel.org>
+Date:   Sat, 19 Mar 2022 15:38:40 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH 1/6] scsi: ufs: dt-bindings: Add SM6350 compatible string
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 6/6] arm64: dts: qcom: sm7225-fairphone-fp4: Enable UFS
-Date:   Fri, 18 Mar 2022 19:30:04 +0100
-Message-Id: <20220318183004.858707-7-luca.weiss@fairphone.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220318183004.858707-1-luca.weiss@fairphone.com>
+        linux-scsi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 References: <20220318183004.858707-1-luca.weiss@fairphone.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ <20220318183004.858707-2-luca.weiss@fairphone.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20220318183004.858707-2-luca.weiss@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Configure and enable the nodes for UFS that are used for internal
-storage on FP4.
+On 18/03/2022 19:29, Luca Weiss wrote:
+> Document the compatible for the UFS found on SM6350.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- .../boot/dts/qcom/sm7225-fairphone-fp4.dts     | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-index adb6ca2be2a5..533a1c88040f 100644
---- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-+++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-@@ -336,6 +336,24 @@ &uart2 {
- 	status = "okay";
- };
- 
-+&ufs_mem_hc {
-+	status = "okay";
-+
-+	reset-gpios = <&tlmm 156 GPIO_ACTIVE_LOW>;
-+
-+	vcc-supply = <&vreg_l7e>;
-+	vcc-max-microamp = <800000>;
-+	vccq2-supply = <&vreg_l12a>;
-+	vccq2-max-microamp = <800000>;
-+};
-+
-+&ufs_mem_phy {
-+	status = "okay";
-+
-+	vdda-phy-supply = <&vreg_l18a>;
-+	vdda-pll-supply = <&vreg_l22a>;
-+};
-+
- &usb_1 {
- 	status = "okay";
- };
--- 
-2.35.1
+Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
 
+
+Best regards,
+Krzysztof
