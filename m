@@ -2,122 +2,163 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DECFDC433F5
-	for <phone-devel@archiver.kernel.org>; Sat, 19 Mar 2022 14:43:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 785A4C433EF
+	for <phone-devel@archiver.kernel.org>; Sat, 19 Mar 2022 18:29:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243337AbiCSOoe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 19 Mar 2022 10:44:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53190 "EHLO
+        id S243902AbiCSSbP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 19 Mar 2022 14:31:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243320AbiCSOod (ORCPT
+        with ESMTP id S243900AbiCSSbO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 19 Mar 2022 10:44:33 -0400
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BFD56404;
-        Sat, 19 Mar 2022 07:43:06 -0700 (PDT)
-Received: by mail-ej1-f53.google.com with SMTP id j15so7935753eje.9;
-        Sat, 19 Mar 2022 07:43:06 -0700 (PDT)
+        Sat, 19 Mar 2022 14:31:14 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BE753701B
+        for <phone-devel@vger.kernel.org>; Sat, 19 Mar 2022 11:29:53 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id x34so12531601ede.8
+        for <phone-devel@vger.kernel.org>; Sat, 19 Mar 2022 11:29:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair;
+        h=mime-version:content-transfer-encoding:date:message-id:from:to:cc
+         :subject:references:in-reply-to;
+        bh=buKp/c8UvzHPIAhRI7uXCYLONDKNZjnQ6ELqJjK7HuA=;
+        b=k4nyBk88e6efJTjIm7EZ0GLZbtg/Onpo4+WFLft/j94NiAxeTzmwE1iruDGx6+mmCu
+         JtsjzOM8sWpaaJwTpwuYUA/xsDqSTBMmdF7C8CS3/eKWOoAUUCZd1dKlQuyNXjg2vUfd
+         GNjZXrz6e7ZxGQ9zOG75KLBqN3VfW0iOcHkUGnUot++W+3cG1nbub/zBeoC+bSuIT2is
+         qhifnXLc+GXdQfGaF5B0iG4YoNynLZGIwRVXiYtZHRHH8pY/T01JyBbyS2+pIwHZEWVs
+         E1tJWHzopRgkTTwym4ZYzNGyW8Q7eSf4wp4fDzHZM/cQLbXlAwDIpXp1gJxuH2TDbXMQ
+         GnhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=2K9xNCSfVRll95LKjtA+ZFFUY//W/i74AdYYFDO0Wk0=;
-        b=AiIrSOcsrfAHBCkCkOSD7wAhliFozhtU663cz02TIItyq0InpaQPiQOGrrl2XfE23V
-         6n+CkBOz0Vk3rav1mAB4kHJ8Mc/YuXLuNJnChrH9LNSQsRvZWXwbSv78biwX7+ddxGP0
-         ws4dQONs5UMCdF3ycByGSPkPLpxCNmQm2FqRlGWgRCknMwT+Ipu1HKrB/rEVUMi1i5qU
-         +mNs1zKqnRvr6bejpONCf33lBePNa0e3jd0/6Xk6nvi6y+ZwFLkWn5iBk71wTNAOoJMW
-         HKRV4Ta4gjnMXaXwL03mk2QdMeIcmlPubV+SNwYawmex2aYIZm8L4hFTsqb9e9MHxcsj
-         a1qg==
-X-Gm-Message-State: AOAM533tZxnJyyJH3AQZwISKTtczhRtlDtoGwGzqTsEoZ/jFi/hd4/mS
-        8X5ngO34d+xQTJLITBdWf9g=
-X-Google-Smtp-Source: ABdhPJwf2WsjjkOa2ZXEEMQnBghWTfKPAvRrU3+MpBTnX3RYXyomUtJRvdRhLl0FpNQmH3AjtSaa7Q==
-X-Received: by 2002:a17:907:7254:b0:6db:ad8f:27b4 with SMTP id ds20-20020a170907725400b006dbad8f27b4mr13488747ejc.599.1647700984696;
-        Sat, 19 Mar 2022 07:43:04 -0700 (PDT)
-Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.googlemail.com with ESMTPSA id m12-20020a17090677cc00b006df85d9a924sm4329478ejn.217.2022.03.19.07.43.03
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:from:to:cc:subject:references:in-reply-to;
+        bh=buKp/c8UvzHPIAhRI7uXCYLONDKNZjnQ6ELqJjK7HuA=;
+        b=oJZw0KqGwKcekXUgsXTLjf+rRY9GxEtI0irp4cuzoQiumqyedTfeId5+2v319csTw4
+         qYy+Hyc8dV79UUacNchUN39GN9aN8JzWbk08yY10+NbPrjpgYpzg05/SSwkbVBQvL7pf
+         hcr0HA4850zDUixlTDXFFOMC9Tcj91rUiGNYVtH6ZQEJuaCu+jtecTAFHyF6Eztyubxd
+         AuLOf0E8HnNEIDQ7+5JRthGxAsBLIuEW3hMuTq/lk914nzRp5KeA5meIuGBYNMag6eXg
+         rknrvTRDf2HZTLAjkkNLdjYtxECs65AhKFKKG2/IgZN++vSP47itzKG3umIM28s7eyuD
+         XS7w==
+X-Gm-Message-State: AOAM531ezX1cMMeSM4ThUtKi+Rja21+HPUiewBvoWUx2BRGIB3XQQsmL
+        fydD4BE1dJC0t4FOIDcWLF1rYp5qYP+v2A==
+X-Google-Smtp-Source: ABdhPJwjUdqRL9meDgsEI/c6J8JDxqnmewgyL9kvXOXz29w8UM8JNz+OMI2GClNroTMk12KuO2svAQ==
+X-Received: by 2002:a05:6402:289d:b0:419:437:ef4f with SMTP id eg29-20020a056402289d00b004190437ef4fmr11131838edb.110.1647714591776;
+        Sat, 19 Mar 2022 11:29:51 -0700 (PDT)
+Received: from localhost (a246182.upc-a.chello.nl. [62.163.246.182])
+        by smtp.gmail.com with ESMTPSA id hg8-20020a1709072cc800b006d6e469fbf0sm5008422ejc.134.2022.03.19.11.29.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 19 Mar 2022 07:43:04 -0700 (PDT)
-Message-ID: <c88ed4b5-2e44-c3fd-ff2b-b4bee1354765@kernel.org>
-Date:   Sat, 19 Mar 2022 15:43:02 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
+        Sat, 19 Mar 2022 11:29:51 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Sat, 19 Mar 2022 19:29:50 +0100
+Message-Id: <CIO22P1JZY5F.1BYJF4HT2OOUW@otso>
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Krzysztof Kozlowski" <krzk@kernel.org>,
+        <linux-arm-msm@vger.kernel.org>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH 5/6] arm64: dts: qcom: sm6350: Add UFS nodes
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20220318183004.858707-1-luca.weiss@fairphone.com>
  <20220318183004.858707-6-luca.weiss@fairphone.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20220318183004.858707-6-luca.weiss@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <c88ed4b5-2e44-c3fd-ff2b-b4bee1354765@kernel.org>
+In-Reply-To: <c88ed4b5-2e44-c3fd-ff2b-b4bee1354765@kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 18/03/2022 19:30, Luca Weiss wrote:
-> Add the necessary nodes for UFS and its PHY.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  arch/arm64/boot/dts/qcom/sm6350.dtsi | 79 ++++++++++++++++++++++++++++
->  1 file changed, 79 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-> index d7c9edff19f7..c5c93b6bcd2a 100644
-> --- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-> @@ -541,6 +541,85 @@ uart2: serial@98c000 {
->  			};
->  		};
->  
-> +		ufs_mem_hc: ufshc@1d84000 {
+Hi Krzysztof,
 
-Generic node name, so ufs.
+On Sat Mar 19, 2022 at 3:43 PM CET, Krzysztof Kozlowski wrote:
+> On 18/03/2022 19:30, Luca Weiss wrote:
+> > Add the necessary nodes for UFS and its PHY.
+> >=20
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> >  arch/arm64/boot/dts/qcom/sm6350.dtsi | 79 ++++++++++++++++++++++++++++
+> >  1 file changed, 79 insertions(+)
+> >=20
+> > diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts=
+/qcom/sm6350.dtsi
+> > index d7c9edff19f7..c5c93b6bcd2a 100644
+> > --- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
+> > +++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+> > @@ -541,6 +541,85 @@ uart2: serial@98c000 {
+> >  			};
+> >  		};
+> > =20
+> > +		ufs_mem_hc: ufshc@1d84000 {
+>
+> Generic node name, so ufs.
 
-> +			compatible = "qcom,sm6350-ufshc", "qcom,ufshc",
-> +				     "jedec,ufs-2.0";
-> +			reg = <0 0x01d84000 0 0x3000>,
-> +			      <0 0x01d90000 0 0x8000>;
-> +			reg-names = "std", "ice";
-> +			interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
-> +			phys = <&ufs_mem_phy_lanes>;
-> +			phy-names = "ufsphy";
-> +			lanes-per-direction = <2>;
-> +			#reset-cells = <1>;
-> +			resets = <&gcc GCC_UFS_PHY_BCR>;
-> +			reset-names = "rst";
-> +
-> +			power-domains = <&gcc UFS_PHY_GDSC>;
-> +
-> +			iommus = <&apps_smmu 0x80 0x0>;
-> +
-> +			clock-names =
+With the node name changes UFS doesn't probe anymore.
 
-Drop unneeded blank line, start just after '=' and align next elements
-with it.
+[    1.893762] ufshcd-qcom 1d84000.ufs: ufshcd_variant_hba_init: variant qc=
+om init failed err -19
+[    1.902674] ufshcd-qcom 1d84000.ufs: Initialization failed
+[    1.908391] ufshcd-qcom 1d84000.ufs: ufshcd_pltfrm_init() failed -19
 
-> +				"core_clk",
-> +				"bus_aggr_clk",
-> +				"iface_clk",
-> +				"core_clk_unipro",
-> +				"core_clk_ice",
-> +				"ref_clk",
-> +				"tx_lane0_sync_clk",
-> +				"rx_lane0_sync_clk",
-> +				"rx_lane1_sync_clk";
-> +			clocks =
+I didn't debug this in detail but it's likely from the
+androidboot.bootdevice=3D1d84000.ufshc parameter in cmdline that
+ufs-qcom.c uses to fail probe with -ENODEV for all UFS other than the
+selected one. Not sure why this behavior exists in mainline (didn't look
+into this either).
 
-The same.
+This cmdline parameter (among many others) is added by the stock
+bootloader and as far as I know there's no way to turn that off.
 
 
-Best regards,
-Krzysztof
+>
+> > +			compatible =3D "qcom,sm6350-ufshc", "qcom,ufshc",
+> > +				     "jedec,ufs-2.0";
+> > +			reg =3D <0 0x01d84000 0 0x3000>,
+> > +			      <0 0x01d90000 0 0x8000>;
+> > +			reg-names =3D "std", "ice";
+> > +			interrupts =3D <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
+> > +			phys =3D <&ufs_mem_phy_lanes>;
+> > +			phy-names =3D "ufsphy";
+> > +			lanes-per-direction =3D <2>;
+> > +			#reset-cells =3D <1>;
+> > +			resets =3D <&gcc GCC_UFS_PHY_BCR>;
+> > +			reset-names =3D "rst";
+> > +
+> > +			power-domains =3D <&gcc UFS_PHY_GDSC>;
+> > +
+> > +			iommus =3D <&apps_smmu 0x80 0x0>;
+> > +
+> > +			clock-names =3D
+>
+> Drop unneeded blank line, start just after '=3D' and align next elements
+> with it.
+
+Sure.
+
+>
+> > +				"core_clk",
+> > +				"bus_aggr_clk",
+> > +				"iface_clk",
+> > +				"core_clk_unipro",
+> > +				"core_clk_ice",
+> > +				"ref_clk",
+> > +				"tx_lane0_sync_clk",
+> > +				"rx_lane0_sync_clk",
+> > +				"rx_lane1_sync_clk";
+> > +			clocks =3D
+>
+> The same.
+
+Sure. I also adjusted the clock name/order to match the bindings (thanks
+for spotting the problems there!)
+
+Regards
+Luca
+
+>
+>
+> Best regards,
+> Krzysztof
+
