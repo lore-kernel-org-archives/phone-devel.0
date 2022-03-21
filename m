@@ -2,80 +2,100 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D168C433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Mar 2022 13:00:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7131BC433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Mar 2022 13:33:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347525AbiCUNBj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 21 Mar 2022 09:01:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44430 "EHLO
+        id S1347896AbiCUNfS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Mar 2022 09:35:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347670AbiCUNBg (ORCPT
+        with ESMTP id S1347889AbiCUNfQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 21 Mar 2022 09:01:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 166A913EFB4;
-        Mon, 21 Mar 2022 06:00:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A70136116F;
-        Mon, 21 Mar 2022 13:00:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 12B2DC340ED;
-        Mon, 21 Mar 2022 13:00:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1647867610;
-        bh=HIBVKRAe8eGail74XQZacg5ce6sZZOwblPluMB3tdrY=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=ZBg5ba8VYve8migAhbbVacSMYcCfiErl+yMqVSR8aLcDawY2I+UkC+zZh7xQl+Lvt
-         WBdZsSJ88TQHVJwFwMkFmnWH9vdTOCWblHrGvLYQzC3mvVBOt5dX+pgFiuBS7BLka4
-         E38rD0fIkMRnadRbtmVFQucl6P7oZyzy1HEqhwotiCX9GUUrmdfoXbfBSb9Opmq193
-         O1AqsAWgO6vmmFF/tnfQ75E9uwOKAuBBGsb/9iBNvlOwX3Q943lbDvp1v6PNz658x8
-         qqQ5lJyWnZurn3iZU0oLSAukb3dwSu/tXm2ArgzmcWwVFZ4vCbCi1CQiiKRp+A9V/l
-         fDkFKA1kNY5WQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id EB19AE7BB0B;
-        Mon, 21 Mar 2022 13:00:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Mon, 21 Mar 2022 09:35:16 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F15BF3C49F
+        for <phone-devel@vger.kernel.org>; Mon, 21 Mar 2022 06:33:50 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id r22so9799481ejs.11
+        for <phone-devel@vger.kernel.org>; Mon, 21 Mar 2022 06:33:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5GXEdYy1flkYD5H4ZjwtkKaTgHfQbeK4Fic81sbDM2g=;
+        b=U93LM0PPjvVS1NMUtHanmhanW3zHZ770C883frfTHWmu1t88XsHFJ/SEtXT6n/lMMt
+         re6IfjnHppIOC4ngM2HuHaGjJrVDx1YujqZCFxpIUF2EIr6QHsr5IefXFV395iZgIMOT
+         YuYCc2UNxihTIk8dpTKJtRls/VJrqYoN1jm955IKVdCwcvVQ+uiKrlwX48B4hZGHMmid
+         5Oef/sbbEqSkxUG0zUMPUlutcFL1zpajN67vtPokaziudtmOagUAm3oL2tXePRIA0CeQ
+         UA3IVj6jtKwNiGl1XBj0ttF0J0RkHEkR0FKdlhmOkz/f0ksZyjranNksDpQ10DtlkOgK
+         b0dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5GXEdYy1flkYD5H4ZjwtkKaTgHfQbeK4Fic81sbDM2g=;
+        b=BTjOkJZFrU0a9ga/1QfGd4WT1+cNVzE+aR9/uaGKoh5sqSCtLj1CQsP7sVVErsK3+N
+         39Ku9kGr7GJyypP+TAvCyO5zdLr3qpJFdOSrT8W+joW2ME2VVwSpLdI0riI2c5Mx1zww
+         hdGy/ars4usJSAlpfgMjWMohLtSd6LEQkE8MOcmvJOZVaVWeY9yaDCRuKXesanhagj4d
+         u0cPJWgp6ftX3ZntedpnhksmbGmHBcXP53w29D+4JXIuX0eQ/B/dsqVmQ2khAsLouPy3
+         +2Qx8vmgjOjgjATxZGZH/pJZ2zvD88fn6bC7zuTbpgDRRAOfBDWLce/kgaJ5noOWHrtH
+         gNHA==
+X-Gm-Message-State: AOAM531ai8ZkWFdVMmfk9UTnBtC8GL1CUdNabZPif3UKgEsD6Bp9VPoj
+        /OtWqnfEY57Hed7HDhz8NDZ3Jw==
+X-Google-Smtp-Source: ABdhPJxin6D4QUUEy9OSv7n0xOixCN3MCojKkmBkEpsKwnbOXMZ/kz4iQiW1Uk2i6FUu2r7N4MPGjQ==
+X-Received: by 2002:a17:907:3f92:b0:6e0:2fed:968a with SMTP id hr18-20020a1709073f9200b006e02fed968amr1743024ejc.658.1647869629410;
+        Mon, 21 Mar 2022 06:33:49 -0700 (PDT)
+Received: from otso.arnhem.chello.nl (a246182.upc-a.chello.nl. [62.163.246.182])
+        by smtp.gmail.com with ESMTPSA id r22-20020a17090638d600b006d584aaa9c9sm6862154ejd.133.2022.03.21.06.33.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Mar 2022 06:33:48 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Andy Gross <agross@kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        devicetree@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-phy@lists.infradead.org, linux-scsi@vger.kernel.org,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH v2 0/6] UFS support on SM6350 & FP4
+Date:   Mon, 21 Mar 2022 14:33:12 +0100
+Message-Id: <20220321133318.99406-1-luca.weiss@fairphone.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] Bluetooth: btbcm: Support per-board firmware variants
-From:   patchwork-bot+bluetooth@kernel.org
-Message-Id: <164786760995.8008.1538008387792724276.git-patchwork-notify@kernel.org>
-Date:   Mon, 21 Mar 2022 13:00:09 +0000
-References: <20220320222749.1502856-1-linus.walleij@linaro.org>
-In-Reply-To: <20220320222749.1502856-1-linus.walleij@linaro.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
-        linux-bluetooth@vger.kernel.org, phone-devel@vger.kernel.org,
-        markuss.broks@gmail.com, stephan@gerhold.net
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hello:
+This series adds support for UFS on SM6350 which is used for internal
+storage.
 
-This patch was applied to bluetooth/bluetooth-next.git (master)
-by Marcel Holtmann <marcel@holtmann.org>:
+Changes in v2:
+- see individual patches
 
-On Sun, 20 Mar 2022 23:27:49 +0100 you wrote:
-> There are provedly different firmware variants for the different
-> phones using some of these chips. These were extracted from a few
-> Samsung phones:
-> 
-> 37446 BCM4334B0.samsung,codina-tmo.hcd
-> 37366 BCM4334B0.samsung,golden.hcd
-> 37403 BCM4334B0.samsung,kyle.hcd
-> 37366 BCM4334B0.samsung,skomer.hcd
-> 
-> [...]
+Luca Weiss (6):
+  scsi: ufs: dt-bindings: Add SM6350 compatible string
+  dt-bindings: phy: qcom,qmp: Add SM6350 UFS PHY bindings
+  phy: qcom-qmp: Add SM6350 UFS PHY support
+  pinctrl: qcom: sm6350: fix order of UFS & SDC pins
+  arm64: dts: qcom: sm6350: Add UFS nodes
+  arm64: dts: qcom: sm7225-fairphone-fp4: Enable UFS
 
-Here is the summary with links:
-  - [v2] Bluetooth: btbcm: Support per-board firmware variants
-    https://git.kernel.org/bluetooth/bluetooth-next/c/033465911fe5
+ .../devicetree/bindings/phy/qcom,qmp-phy.yaml |  2 +
+ .../devicetree/bindings/ufs/qcom,ufs.yaml     |  2 +
+ arch/arm64/boot/dts/qcom/sm6350.dtsi          | 77 +++++++++++++++++++
+ .../boot/dts/qcom/sm7225-fairphone-fp4.dts    | 18 +++++
+ drivers/phy/qualcomm/phy-qcom-qmp.c           |  3 +
+ drivers/pinctrl/qcom/pinctrl-sm6350.c         | 16 ++--
+ 6 files changed, 110 insertions(+), 8 deletions(-)
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.35.1
 
