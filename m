@@ -2,83 +2,126 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E0FBC433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Mar 2022 13:42:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F87DC433FE
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Mar 2022 14:23:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346325AbiCUNna (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 21 Mar 2022 09:43:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57646 "EHLO
+        id S245705AbiCUOZD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Mar 2022 10:25:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348021AbiCUNna (ORCPT
+        with ESMTP id S1351962AbiCUOWG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 21 Mar 2022 09:43:30 -0400
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5150762B3;
-        Mon, 21 Mar 2022 06:42:04 -0700 (PDT)
-Received: by mail-wm1-f45.google.com with SMTP id h16so8011600wmd.0;
-        Mon, 21 Mar 2022 06:42:04 -0700 (PDT)
+        Mon, 21 Mar 2022 10:22:06 -0400
+Received: from mail-oo1-xc2f.google.com (mail-oo1-xc2f.google.com [IPv6:2607:f8b0:4864:20::c2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A222E183827
+        for <phone-devel@vger.kernel.org>; Mon, 21 Mar 2022 07:15:19 -0700 (PDT)
+Received: by mail-oo1-xc2f.google.com with SMTP id w3-20020a4ac183000000b0031d806bbd7eso19183693oop.13
+        for <phone-devel@vger.kernel.org>; Mon, 21 Mar 2022 07:15:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=46puAl5qyMfNEvffHuQs4+W1rB2fRN97vtq4kHR41Uk=;
+        b=SmwG+razLK9p905oAy6zpQYaPAD2BucmHC65BaOcMrcAsd0ewBaGYDh4iQm7qY1V4m
+         xS9xA3VF18bq2VjWSisAkttaqMMMUC0oXM23iBGEJ3dihdpZlqYVzuY+KUvbyVAhRbRC
+         KXDwIq48221J/PnyKG52urGNjuKgTkLmFEVkl5lHO1U/9GHzeUB9Kmfrfkq/s77tiLfy
+         0TjbDt66d/PANvj98iOa4063lS1ey5Ln6TCeTFzLqizm0fxUECw/rsxR9v3janY0qrjv
+         iNw+5H/0G+JHs5mG6MCMTAB4YyTmfvNO1wwnLrMo5xTfXofEspY7TYoOrvWAOq0lcsGV
+         qZiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=1D8fCbd6M2RW3TQjcSstNbvj49/pj/ERzJ4WGueTQMM=;
-        b=zy7gnPp6kRgYvdHKJ7GiG1CzpeLw814XN62JxLljQXEHgeCrceVtHy0LQRgSc7EkpX
-         5Tq2lrRb3/WXb9gq3YGurBgBLocgB+WXyzPz8SyGTuVnCh7cBCLpm38zWN/ppYlVheGc
-         Q1U1I3LEok1U5NEBzCHk5Qu1CUdEaGW0ueSawH1LUqObMkqrz50PVW6THd8rm2Q1IInD
-         67p9nFcG5Ub2G9MEok5/R1tH9mGnodz6w9Ke4amiJbg2FtT4FJMD7zEaVvV2ylGui+Tq
-         avp3/vtnUjcQ5lIWVySMcPFW3N6eLon7pOrCfG287zMDZIhnKWcwxu0BHrOi41zbAV1r
-         JB0A==
-X-Gm-Message-State: AOAM531248Zk5KAm0dZBgHbGfqju2GT08A3ImDP+qOSA9qT6uIGwZSnk
-        lJV/GSK+Y4XCDJtX3uAmrz4=
-X-Google-Smtp-Source: ABdhPJwKkkvUtLSdDDQnT1UyZu0lkFZ/o7qOqJ0X0Ghcmb7fM5+dc9Qw88Yf1Id0H4ErQQHl9dhFsw==
-X-Received: by 2002:a05:600c:1f14:b0:38b:6ef5:1247 with SMTP id bd20-20020a05600c1f1400b0038b6ef51247mr19448817wmb.194.1647870123435;
-        Mon, 21 Mar 2022 06:42:03 -0700 (PDT)
-Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.googlemail.com with ESMTPSA id p2-20020a5d4582000000b00203f51aa12asm8887120wrq.55.2022.03.21.06.42.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Mar 2022 06:42:02 -0700 (PDT)
-Message-ID: <04c0d6a7-190a-cdde-d953-3eae73282343@kernel.org>
-Date:   Mon, 21 Mar 2022 14:42:01 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2 5/6] arm64: dts: qcom: sm6350: Add UFS nodes
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=46puAl5qyMfNEvffHuQs4+W1rB2fRN97vtq4kHR41Uk=;
+        b=Atav/dabwIPKr3s6W9RIi6kS0KlBDoHiVXWwJ1vF/trYZqwWxoXPPZOawu9+TAL7ij
+         r/u4nKXWRfL6tz74jfm7LLRNiTRbZDo48Zwmd0SH+YidcwpLaq58VHzLfCQ/tX8WA1Hm
+         MtPf9ECqBmYZSYUcj0NJdah503qgonhvRWPBAVd/mNdkSmsje103pkH/mzjnVvLy1KnS
+         PDCN+Rf4yle1OSWoy8Py5GafO5chSdTQxdfZaJo3DIfamsQ3zG5mNrvWAmIPKD8UWmw+
+         GCmNCOg/GK60w4mH8Us0MwYKQZtIw0mQ1FP5fvWEM65sGsgAv+j/04q2HzVn+f0bR/fY
+         HlaQ==
+X-Gm-Message-State: AOAM5319V2hSOh2ZoNLwLIlo+uP0pm69Cz8tRkQm+7PEvU/6IyUMGeoQ
+        r2Ngfvher2CVQJ4aP/WOpZ/h6wEmEMtYQA==
+X-Google-Smtp-Source: ABdhPJxaYZdj/xG+CL5lGzuWNzLxLTa+TXMS2nsMW4MzKuFZrrCTWcMMJEAJ0qSOgkfjCzpbGiqsyw==
+X-Received: by 2002:a05:6870:e2c9:b0:dd:b78a:82cd with SMTP id w9-20020a056870e2c900b000ddb78a82cdmr7964695oad.50.1647872105167;
+        Mon, 21 Mar 2022 07:15:05 -0700 (PDT)
+Received: from builder.lan ([2600:1700:a0:3dc8:3697:f6ff:fe85:aac9])
+        by smtp.gmail.com with ESMTPSA id c12-20020a9d75cc000000b005b24b061940sm7349297otl.33.2022.03.21.07.15.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Mar 2022 07:15:03 -0700 (PDT)
+Date:   Mon, 21 Mar 2022 09:15:00 -0500
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Luca Weiss <luca.weiss@fairphone.com>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+        Linus Walleij <linus.walleij@linaro.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/6] pinctrl: qcom: sm6350: fix order of UFS & SDC pins
+Message-ID: <YjiIZBbPN7pAUl1q@builder.lan>
 References: <20220321133318.99406-1-luca.weiss@fairphone.com>
- <20220321133318.99406-6-luca.weiss@fairphone.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20220321133318.99406-6-luca.weiss@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20220321133318.99406-5-luca.weiss@fairphone.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220321133318.99406-5-luca.weiss@fairphone.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 21/03/2022 14:33, Luca Weiss wrote:
-> Add the necessary nodes for UFS and its PHY.
+On Mon 21 Mar 08:33 CDT 2022, Luca Weiss wrote:
+
+> In other places the SDC and UFS pins have been swapped but this was
+> missed in the PINCTRL_PIN definitions. Fix that.
 > 
+> Fixes: 7d74b55afd27 ("pinctrl: qcom: Add SM6350 pinctrl driver")
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+
+Your proposed change looks good, but when I look at 7d74b55afd27 it
+already has these entries in the correct order.
+
+Can you please confirm that this is still applicable. Or help me see
+what I am missing.
+
+Regards,
+Bjorn
+
 > ---
 > Changes in v2:
-> - rename node to ufs@ -> this makes this patch now (soft-)depend on
->   https://lore.kernel.org/linux-arm-msm/20220320110616.18355-1-krzk@kernel.org/
+> - nothing
 > 
->  arch/arm64/boot/dts/qcom/sm6350.dtsi | 77 ++++++++++++++++++++++++++++
->  1 file changed, 77 insertions(+)
+>  drivers/pinctrl/qcom/pinctrl-sm6350.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
 > 
-
-
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
-
-
-Best regards,
-Krzysztof
+> diff --git a/drivers/pinctrl/qcom/pinctrl-sm6350.c b/drivers/pinctrl/qcom/pinctrl-sm6350.c
+> index 4d37b817b232..a91a86628f2f 100644
+> --- a/drivers/pinctrl/qcom/pinctrl-sm6350.c
+> +++ b/drivers/pinctrl/qcom/pinctrl-sm6350.c
+> @@ -264,14 +264,14 @@ static const struct pinctrl_pin_desc sm6350_pins[] = {
+>  	PINCTRL_PIN(153, "GPIO_153"),
+>  	PINCTRL_PIN(154, "GPIO_154"),
+>  	PINCTRL_PIN(155, "GPIO_155"),
+> -	PINCTRL_PIN(156, "SDC1_RCLK"),
+> -	PINCTRL_PIN(157, "SDC1_CLK"),
+> -	PINCTRL_PIN(158, "SDC1_CMD"),
+> -	PINCTRL_PIN(159, "SDC1_DATA"),
+> -	PINCTRL_PIN(160, "SDC2_CLK"),
+> -	PINCTRL_PIN(161, "SDC2_CMD"),
+> -	PINCTRL_PIN(162, "SDC2_DATA"),
+> -	PINCTRL_PIN(163, "UFS_RESET"),
+> +	PINCTRL_PIN(156, "UFS_RESET"),
+> +	PINCTRL_PIN(157, "SDC1_RCLK"),
+> +	PINCTRL_PIN(158, "SDC1_CLK"),
+> +	PINCTRL_PIN(159, "SDC1_CMD"),
+> +	PINCTRL_PIN(160, "SDC1_DATA"),
+> +	PINCTRL_PIN(161, "SDC2_CLK"),
+> +	PINCTRL_PIN(162, "SDC2_CMD"),
+> +	PINCTRL_PIN(163, "SDC2_DATA"),
+>  };
+>  
+>  #define DECLARE_MSM_GPIO_PINS(pin) \
+> -- 
+> 2.35.1
+> 
