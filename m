@@ -2,98 +2,86 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BA85C433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Mar 2022 13:34:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D599C4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Mar 2022 13:41:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237963AbiCUNfk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 21 Mar 2022 09:35:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53686 "EHLO
+        id S1348030AbiCUNmb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Mar 2022 09:42:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347915AbiCUNfT (ORCPT
+        with ESMTP id S1348004AbiCUNm1 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 21 Mar 2022 09:35:19 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F01663C4B7
-        for <phone-devel@vger.kernel.org>; Mon, 21 Mar 2022 06:33:53 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id r23so17911742edb.0
-        for <phone-devel@vger.kernel.org>; Mon, 21 Mar 2022 06:33:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=DsNby0a3KqzAfOnj6mSyZetKsm2cbFk7h9HIg7MUGdQ=;
-        b=mVyqs6hGGEUzEFy32H/xYVc8XbIFlcX8m1ZC85sLopiDTeC1gHZcaYWZ1t9zaF9xhJ
-         EYsabs6hRni0eEKMdAghJhsH5U/tcQt0EiS5EP4KZ3mRazXyLtVGD12H72iJ7mYDRQbN
-         ORKFueJmChRJ5gjIlmvlPOvD4pVJq+PanCARu1rT8lQ00x+5dK3bfhHgP/vkmiURe5HT
-         DOA0f9njkv3mDnFZUcDzZFW7Wl0UMIduQZmfJkKsip8jeIdDg5sq2WRbbvITTvKO+bIq
-         AFN60dplhhuEVHC7vWPgmddrusV9fLlJEVQJETly7aK5vwYDy8tuXeSV18QY1Fc6qrrT
-         VTlA==
+        Mon, 21 Mar 2022 09:42:27 -0400
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A10A74630;
+        Mon, 21 Mar 2022 06:41:02 -0700 (PDT)
+Received: by mail-wr1-f48.google.com with SMTP id q8so9386164wrc.0;
+        Mon, 21 Mar 2022 06:41:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=DsNby0a3KqzAfOnj6mSyZetKsm2cbFk7h9HIg7MUGdQ=;
-        b=Ys5QNEJEKfDLPX4ZyeaH2muC3bCuT53sIa82KumpzNCOba0ixFlEFybYC1OeLrtIUK
-         QqiXXhzByiNp14doxBV/0d50KNx94MdT8uAUjjVYTsM48ZDyY/6jK5HC75WGKKcCHC0T
-         G5i/2sfU3+pgZK1lxwAU+FMyAJ1IJG981Efd9KxRT0DyBAc7HDBjQhD6A8sTyIF7RXJR
-         EtdN7PvZGcCg6gZ22giSBxzDvluqP1SHrNxL9yTHdlhXI5i1caydskQYtl6ANIEVWhaq
-         kIylCXPnj30Bbzg1pSqtQUhgOFDaozZ+wBDHDg/Buku0e9kGTmZsrSxFVgVB//UdKIa7
-         CfXw==
-X-Gm-Message-State: AOAM531oEt2q4gvYXfX64dEaOY3qpoJC8n8Ee/eDkjJC23gOhbvPOiBj
-        f0vKAn9MiioYWTV0/5dzLAbXmA==
-X-Google-Smtp-Source: ABdhPJwbmbOxiUJERj4MHNXeag+kdgbSCHJBfY82vjDCL38uvezqoHUBcVMRYz+Bz08iOVCcqVzlsg==
-X-Received: by 2002:a05:6402:51c7:b0:419:2bd7:efa4 with SMTP id r7-20020a05640251c700b004192bd7efa4mr8919920edd.135.1647869632531;
-        Mon, 21 Mar 2022 06:33:52 -0700 (PDT)
-Received: from otso.arnhem.chello.nl (a246182.upc-a.chello.nl. [62.163.246.182])
-        by smtp.gmail.com with ESMTPSA id r22-20020a17090638d600b006d584aaa9c9sm6862154ejd.133.2022.03.21.06.33.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Mar 2022 06:33:52 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=9vMt+hX5zS+6WtuXH1LjsjcqPrroHsDgeG/H9EBbOj0=;
+        b=VW/c6Hh40d3QPB+ixM5WfemxoZK7q1oyz2WLdIy/3LCR88cFmN+9WFjgtEk5OH9A6b
+         H7IQGh2LFBYdzlC0qP5MDg/0fJqEeX3RK3ap3jZB8sorcHXUeSpe0Qtp4iGgoVm+bB3Z
+         CgPzFb2vQQq4W3sZCgmddgGNgQZosVtQss2uzQCvvIpo+FOH+UcMlXDxi6a3TJQkjzob
+         EAlYsBJFzOnOsV4aBg0tUHLLRCOPa9JnBFzJIqFmCx3NDnLJP3nwRFr49GMR2MADHFfG
+         g40bs0Nfb+SugonRR3aDOi4B19wlSWKQPJt3ylHDpw+Rlmu1BVMqL/a58AtRrY3k/CYE
+         QdpA==
+X-Gm-Message-State: AOAM532w5As2mIq2fFvKMt3AcfBU48/crtnEfV1UB+dGir8WsNRmZcDy
+        kwdIkfnNAmAC45SQDy+sXlM=
+X-Google-Smtp-Source: ABdhPJxTBRXSwZa5Hgbdytx3UhsHjpCQShJv0x20dGfBhjxWjqfKvLc85bU5Nw7kbDtVsAU0SKnPPw==
+X-Received: by 2002:a5d:52ca:0:b0:203:db2f:2a47 with SMTP id r10-20020a5d52ca000000b00203db2f2a47mr18658989wrv.580.1647870060324;
+        Mon, 21 Mar 2022 06:41:00 -0700 (PDT)
+Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.googlemail.com with ESMTPSA id n23-20020a05600c3b9700b0038b7c4c0803sm17157114wms.30.2022.03.21.06.40.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Mar 2022 06:40:59 -0700 (PDT)
+Message-ID: <221c38f0-4eb2-18d4-ef18-ec35437d1163@kernel.org>
+Date:   Mon, 21 Mar 2022 14:40:58 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v2 1/6] scsi: ufs: dt-bindings: Add SM6350 compatible
+ string
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Vinod Koul <vkoul@kernel.org>, linux-phy@lists.infradead.org,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        linux-scsi@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/6] phy: qcom-qmp: Add SM6350 UFS PHY support
-Date:   Mon, 21 Mar 2022 14:33:15 +0100
-Message-Id: <20220321133318.99406-4-luca.weiss@fairphone.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220321133318.99406-1-luca.weiss@fairphone.com>
 References: <20220321133318.99406-1-luca.weiss@fairphone.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ <20220321133318.99406-2-luca.weiss@fairphone.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20220321133318.99406-2-luca.weiss@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The SM6350 UFS PHY is compatible with the one from SDM845. Add a
-compatible for that.
+On 21/03/2022 14:33, Luca Weiss wrote:
+> Document the compatible for the UFS found on SM6350.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+> Changes in v2:
+> - add second hunk for clock validation
+> 
+>  Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
-Changes in v2:
-- nothing
 
- drivers/phy/qualcomm/phy-qcom-qmp.c | 3 +++
- 1 file changed, 3 insertions(+)
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp.c b/drivers/phy/qualcomm/phy-qcom-qmp.c
-index b144ae1f729a..1628275265b5 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp.c
-@@ -6007,6 +6007,9 @@ static const struct of_device_id qcom_qmp_phy_of_match_table[] = {
- 	}, {
- 		.compatible = "qcom,sm6115-qmp-ufs-phy",
- 		.data = &sm6115_ufsphy_cfg,
-+	}, {
-+		.compatible = "qcom,sm6350-qmp-ufs-phy",
-+		.data = &sdm845_ufsphy_cfg,
- 	}, {
- 		.compatible = "qcom,sm8150-qmp-ufs-phy",
- 		.data = &sm8150_ufsphy_cfg,
--- 
-2.35.1
 
+Best regards,
+Krzysztof
