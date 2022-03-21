@@ -2,211 +2,165 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D173C433F5
-	for <phone-devel@archiver.kernel.org>; Sun, 20 Mar 2022 22:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1C7FC433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Mar 2022 11:48:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234246AbiCTWbV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 20 Mar 2022 18:31:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53158 "EHLO
+        id S1346852AbiCULuV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Mar 2022 07:50:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233949AbiCTWbU (ORCPT
+        with ESMTP id S233780AbiCULuU (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 20 Mar 2022 18:31:20 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DD9A13CF4
-        for <phone-devel@vger.kernel.org>; Sun, 20 Mar 2022 15:29:56 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id r22so17750661ljd.4
-        for <phone-devel@vger.kernel.org>; Sun, 20 Mar 2022 15:29:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=W4k9/eGxp1ngP7ZHfwyFoqk+ptJEwhUWytl73UTJLaA=;
-        b=NMeCFoI+ZBV05Jqj4iIt1RNA8jy0nAxBY7tq/F1Cd3YiYCvyuKP+cCJs3QTHpNvGJU
-         cCM8Tfyxgu+SR/pncd1RAIFd933mdtOyjTTf5cPZVL4QqaDfLj2FXFafpZ7kTgNp9aQ7
-         9o9gEiOIdNhHMCRcPWhOyCvWt/V4Mfxy7hxedZdh4co3kfpqWfMLOVWi2CcPSp+rL+mr
-         u4OyYNAkCao4G40/eY5GEMxICW2ufTt2BPLErDNTa+HX+EoPm3u971vgdJlIc3aYflVN
-         DZ/9GXKKZWycd3jZpV7Y1+gS9dX/Usmm7dyZHdjVXm8sBfbDLWHfwC3Wh2kALgIYfq5P
-         uJow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=W4k9/eGxp1ngP7ZHfwyFoqk+ptJEwhUWytl73UTJLaA=;
-        b=rrtGJ3lyiZJzSC7pXEUnb5Vl4dn76UgSLj17mkmVVyv1B3zRl9j+kHcj5m0xd+xuPU
-         RF4ShLBwsgZ1Y6kcsVN/DIu8grxz6aMJM9uBJpNKleyNvXyIDLF4hKdgqmAcOUSROfcB
-         VSX9eVX0KSdmLJAO6jBoXn4+zI9TjLNRMRnpeV6MqpK1ioe9hKJ6c2Kxh7sGk2e86/+Z
-         yarFfm+X3LJ3eKttHcHcue0rfLL7Y6DrbADlCvKH7fc6LUjbb4INT/n88LwjIAw6eg+9
-         Mf8fOacZ65ILMIg/QR2LS1aSdtih0H/dmyBKbbhNCs3qkCt5PyfvcdJTVPhW1PABmwfN
-         MedQ==
-X-Gm-Message-State: AOAM532dSVqk2ootyMaNDEINh5Ib7F5amsLzfaagIdLRFySrlZw9BqRP
-        DKqHpegTcO8jltSlMGsnzgkBRg==
-X-Google-Smtp-Source: ABdhPJz+SheIZfRowJFaEw24BF6RWxAKhEnEwNwXjKQgVkKv4k5OFZ6mvX/gcBPoUJpsqhw3aAQUqQ==
-X-Received: by 2002:a2e:a7ce:0:b0:249:862b:503 with SMTP id x14-20020a2ea7ce000000b00249862b0503mr1013537ljp.369.1647815394625;
-        Sun, 20 Mar 2022 15:29:54 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id y34-20020a0565123f2200b0044899dd2048sm1646053lfa.48.2022.03.20.15.29.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Mar 2022 15:29:54 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc:     linux-bluetooth@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        phone-devel@vger.kernel.org,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Stephan Gerhold <stephan@gerhold.net>
-Subject: [PATCH v2] Bluetooth: btbcm: Support per-board firmware variants
-Date:   Sun, 20 Mar 2022 23:27:49 +0100
-Message-Id: <20220320222749.1502856-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.35.1
+        Mon, 21 Mar 2022 07:50:20 -0400
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 064F75130F
+        for <phone-devel@vger.kernel.org>; Mon, 21 Mar 2022 04:48:52 -0700 (PDT)
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20220321114851epoutp02dd9dc1b4211adfbcbd7c5b252d2361d9~eYvgErilk0092300923epoutp02m
+        for <phone-devel@vger.kernel.org>; Mon, 21 Mar 2022 11:48:51 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20220321114851epoutp02dd9dc1b4211adfbcbd7c5b252d2361d9~eYvgErilk0092300923epoutp02m
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1647863331;
+        bh=cVmbILAOErI1/Ntsxmq2/4Qe7dFI/4RFsr+Bznbjtw8=;
+        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+        b=pcFxUeREUOsvZdn8AEOy0RCSKTnVLZg9SLyQUXVuKrk/GBN2MTXNSLimAeJeA0y86
+         2MUS/5k3opwH1t79bltOLravq2dQHYdxVk9teDhEXPYQi7tPWCIlV2AgRuJdMVUrqV
+         NhwJ7Tckc+mZ0S1x3U3hMxA1JAuLvbO34WqQjWWk=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+        epcas5p3.samsung.com (KnoxPortal) with ESMTP id
+        20220321114850epcas5p3cc7ef564bef30093d8c9e293a2309268~eYvfHHhAE1354413544epcas5p3G;
+        Mon, 21 Mar 2022 11:48:50 +0000 (GMT)
+Received: from epsmges5p2new.samsung.com (unknown [182.195.38.181]) by
+        epsnrtp4.localdomain (Postfix) with ESMTP id 4KMXvJ0FVVz4x9Q7; Mon, 21 Mar
+        2022 11:48:44 +0000 (GMT)
+Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
+        epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        CA.B0.12523.B1668326; Mon, 21 Mar 2022 20:48:43 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+        20220321114843epcas5p2d8ed09bcc95965e899ec9bf9f2e538a3~eYvY5nEdP0791907919epcas5p2x;
+        Mon, 21 Mar 2022 11:48:43 +0000 (GMT)
+Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20220321114843epsmtrp1446a9dd71c1fe67c0a621fc60828fa9c~eYvY4xl033127731277epsmtrp1Q;
+        Mon, 21 Mar 2022 11:48:43 +0000 (GMT)
+X-AuditID: b6c32a4a-5b7ff700000030eb-16-6238661be9e5
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+        29.A8.03370.B1668326; Mon, 21 Mar 2022 20:48:43 +0900 (KST)
+Received: from alimakhtar03 (unknown [107.122.12.5]) by epsmtip2.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20220321114839epsmtip2303f733938f43f5bc9ee880d74948e4f~eYvVei-_J1710117101epsmtip2U;
+        Mon, 21 Mar 2022 11:48:38 +0000 (GMT)
+From:   "Alim Akhtar" <alim.akhtar@samsung.com>
+To:     "'Luca Weiss'" <luca.weiss@fairphone.com>,
+        <linux-arm-msm@vger.kernel.org>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, "'Andy Gross'" <agross@kernel.org>,
+        "'Bjorn Andersson'" <bjorn.andersson@linaro.org>,
+        "'Avri Altman'" <avri.altman@wdc.com>,
+        "'Rob Herring'" <robh+dt@kernel.org>,
+        "'Krzysztof Kozlowski'" <krzk+dt@kernel.org>,
+        <linux-scsi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+In-Reply-To: <20220318183004.858707-2-luca.weiss@fairphone.com>
+Subject: RE: [PATCH 1/6] scsi: ufs: dt-bindings: Add SM6350 compatible
+ string
+Date:   Mon, 21 Mar 2022 17:18:37 +0530
+Message-ID: <002001d83d19$9d596d70$d80c4850$@samsung.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQDZaQauO888J59Marq/WZ4JfNFAKQH2rYCJAgAjn6Sup6oXsA==
+Content-Language: en-us
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrMJsWRmVeSWpSXmKPExsWy7bCmuq50mkWSwfMmK4tzj3+zWLz8eZXN
+        4vT+dywW84+cY7V4Oesem8XE/WfZLS7vmsNm0X19B5vFwxVGFgv+2Fm07j3CbrH5+19GBx6P
+        tqaXrB6bVnWyedy5tofN4/+dtewenzfJebQf6GYKYIvKtslITUxJLVJIzUvOT8nMS7dV8g6O
+        d443NTMw1DW0tDBXUshLzE21VXLxCdB1y8wBOlFJoSwxpxQoFJBYXKykb2dTlF9akqqQkV9c
+        YquUWpCSU2BSoFecmFtcmpeul5daYmVoYGBkClSYkJ0xZ9EBpoLZPBXn3jeyNTDO5+pi5OSQ
+        EDCR6Pq8mh3EFhLYzSjx5b8ehP0JyO5JgLA/M0pMOWcNU/9nyWtmiPguRolJDeZdjFxA9ktG
+        iQs3PzOBJNgEdCV2LG5jA7FFBAIkTm07wgJSxCzQyCyx7f0NFpAEp4C9xNz+TrBJwgL+Ekum
+        LQGLswioSvya9RnsIl4BS4mrf2dC2YISJ2c+AathFpCX2P52DjPERQoSP58uY4VY5iTxbvMi
+        qBpxiZdHj7CDLJYQOMAh8erTW0aIBheJIyvuskDYwhKvjm9hh7ClJF72twHZHEB2tkTPLmOI
+        cI3E0nnHoMrtJQ5cmcMCUsIsoCmxfpc+xCo+id7fT5ggOnklOtqEIKpVJZrfXYXqlJaY2N3N
+        CmF7SDTtP8g8gVFxFpLHZiF5bBaSB2YhLFvAyLKKUTK1oDg3PbXYtMAoL7UcHtnJ+bmbGMGp
+        V8trB+PDBx/0DjEycTAeYpTgYFYS4V38wTxJiDclsbIqtSg/vqg0J7X4EKMpMLQnMkuJJucD
+        k39eSbyhiaWBiZmZmYmlsZmhkjjv6fQNiUIC6YklqdmpqQWpRTB9TBycUg1MRva3q9u4fybf
+        lCp72bN1tZ2z7Kd5Zp895y5N4ni681/N0ZxtURPkL8td8Et+HHZ/UlyDYcS3XZKqV6b5zM/j
+        f7Qtu0Ku4HSrtEtf058TgkKR7xTX7xCYy2m56OnTwowrCWZF158sSRFU2Cvg6PjsDe/S5Zvc
+        tq/81VEw8fNhkd+HJ92taY9qU4jwl9rRvDHIYuVSHce9jZ69EvkFezu6OPbGbjZ8//95qOTt
+        5bPepLT75N4+u/9/7h4dy27TwnrhY1eP6mSt2vvnG4d0aI+C4cuzd/6lb3l9SOPny8C1FXIL
+        tVvvT/BRfXKfqT+wuCvfNHVd6bQZaw/3qDsfuvLM+vvk3xt6VL7zMq68fjC7VImlOCPRUIu5
+        qDgRAKWQDDNGBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprLIsWRmVeSWpSXmKPExsWy7bCSvK50mkWSwdNH3BbnHv9msXj58yqb
+        xen971gs5h85x2rxctY9NouJ+8+yW1zeNYfNovv6DjaLhyuMLBb8sbNo3XuE3WLz97+MDjwe
+        bU0vWT02repk87hzbQ+bx/87a9k9Pm+S82g/0M0UwBbFZZOSmpNZllqkb5fAlTFn0QGmgtk8
+        FefeN7I1MM7n6mLk5JAQMJH4s+Q1M4gtJLCDUeLkXHmIuLTE9Y0T2CFsYYmV/54D2VxANc8Z
+        JVbv2scCkmAT0JXYsbiNDcQWEQiQOLXtCAtIEbNAJ7PEtI3rWSGmHmaUWLVAC8TmFLCXmNvf
+        CbZNWMBXYvIFiEEsAqoSv2Z9BtvGK2ApcfXvTChbUOLkzCdANRxAQ/Uk2jYygoSZBeQltr+d
+        wwxxnILEz6fLWCFucJJ4t3kRC0SNuMTLo0fYJzAKz0IyaRbCpFlIJs1C0rGAkWUVo2RqQXFu
+        em6xYYFRXmq5XnFibnFpXrpecn7uJkZwDGpp7WDcs+qD3iFGJg7GQ4wSHMxKIryLP5gnCfGm
+        JFZWpRblxxeV5qQWH2KU5mBREue90HUyXkggPbEkNTs1tSC1CCbLxMEp1cA0v1LzmITT6rle
+        LEf0/CPvZXBHcbfali9/Xr3rg/ebM1e2GPFx7U5knxSSzfuswzNx6q5gyUNHLqWc58j948y0
+        zX5fgc7z+gW/+R/clk17bTZhtVzTV2Uutb3dSTdWnf5Sy36/tOpb9Pa4a/p63xJkeM2kc47e
+        LpyXO3PGrp4/u6V3v9zp+fTTOsttDUu1D8dd1WLMZ7l8Ycph013OK0I/52zX8Nry4vcO/Yda
+        cfL2rgaVWTFSVr1vHyrxPGJY25+yIblcZ/7xh18fbGtL5BRgO/9e7+y6WPtLvFZOk/UVfryf
+        5VJR/VTpidvjTIX234vSF8Uc3RNeqHNp+tTlEl68s6IDNvZqfv8/O8j587E/SizFGYmGWsxF
+        xYkAwgxR7TADAAA=
+X-CMS-MailID: 20220321114843epcas5p2d8ed09bcc95965e899ec9bf9f2e538a3
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20220318183030epcas5p46eab9485e0e7d19a249759ef44e29928
+References: <20220318183004.858707-1-luca.weiss@fairphone.com>
+        <CGME20220318183030epcas5p46eab9485e0e7d19a249759ef44e29928@epcas5p4.samsung.com>
+        <20220318183004.858707-2-luca.weiss@fairphone.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-There are provedly different firmware variants for the different
-phones using some of these chips. These were extracted from a few
-Samsung phones:
 
-37446 BCM4334B0.samsung,codina-tmo.hcd
-37366 BCM4334B0.samsung,golden.hcd
-37403 BCM4334B0.samsung,kyle.hcd
-37366 BCM4334B0.samsung,skomer.hcd
 
-This patch supports the above naming schedule with inserting
-[.board_name] between the firmware name and ".hcd". This scheme
-is the same as used by the companion BRCM wireless chips
-as can be seen in
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.c
-or just by looking at the firmwares in linux-firmware/brcm.
+>-----Original Message-----
+>From: Luca Weiss [mailto:luca.weiss@fairphone.com]
+>Sent: Saturday, March 19, 2022 12:00 AM
+>To: linux-arm-msm@vger.kernel.org
+>Cc: ~postmarketos/upstreaming@lists.sr.ht; phone-devel@vger.kernel.org;
+>Luca Weiss <luca.weiss@fairphone.com>; Andy Gross <agross@kernel.org>;
+>Bjorn Andersson <bjorn.andersson@linaro.org>; Alim Akhtar
+><alim.akhtar@samsung.com>; Avri Altman <avri.altman@wdc.com>; Rob
+>Herring <robh+dt@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>;
+>linux-scsi@vger.kernel.org; devicetree@vger.kernel.org; linux-
+>kernel@vger.kernel.org
+>Subject: [PATCH 1/6] scsi: ufs: dt-bindings: Add SM6350 compatible string
+>
+>Document the compatible for the UFS found on SM6350.
+>
+>Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>---
+> Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 1 +
+> 1 file changed, 1 insertion(+)
+>
+>diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+>b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+>index 5b3a2157f7e5..d17db2cdf3c2 100644
+>--- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+>+++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+>@@ -27,6 +27,7 @@ properties:
+>           - qcom,msm8996-ufshc
+>           - qcom,msm8998-ufshc
+>           - qcom,sdm845-ufshc
+>+          - qcom,sm6350-ufshc
 
-Currently we only support board variants using the device
-tree compatible string as board type, but other schemes are
-possible.
+You need to update "if:then" below as well, as this SoC is different than
+other in the series
 
-This makes it possible to successfully load a few unique
-firmware variants for some Samsung phones.
+>           - qcom,sm8150-ufshc
+>           - qcom,sm8250-ufshc
+>           - qcom,sm8350-ufshc
+>--
+>2.35.1
 
-Cc: phone-devel@vger.kernel.org
-Cc: Markuss Broks <markuss.broks@gmail.com>
-Cc: Stephan Gerhold <stephan@gerhold.net>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-ChangeLog v1->v2:
-- Put the ifdeffery inside the btbcm_get_board_name()
-  function instead of having a separate function for the
-  else clause.
-- Drop pointless NULL assignment to board_name
-  variable.
----
- drivers/bluetooth/btbcm.c | 52 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 51 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
-index d9ceca7a7935..92a2b7e81757 100644
---- a/drivers/bluetooth/btbcm.c
-+++ b/drivers/bluetooth/btbcm.c
-@@ -9,6 +9,7 @@
- #include <linux/module.h>
- #include <linux/firmware.h>
- #include <linux/dmi.h>
-+#include <linux/of.h>
- #include <asm/unaligned.h>
- 
- #include <net/bluetooth/bluetooth.h>
-@@ -29,7 +30,7 @@
- #define BDADDR_BCM43341B (&(bdaddr_t) {{0xac, 0x1f, 0x00, 0x1b, 0x34, 0x43}})
- 
- #define BCM_FW_NAME_LEN			64
--#define BCM_FW_NAME_COUNT_MAX		2
-+#define BCM_FW_NAME_COUNT_MAX		4
- /* For kmalloc-ing the fw-name array instead of putting it on the stack */
- typedef char bcm_fw_name[BCM_FW_NAME_LEN];
- 
-@@ -476,6 +477,42 @@ static const struct bcm_subver_table bcm_usb_subver_table[] = {
- 	{ }
- };
- 
-+/*
-+ * This currently only looks up the device tree board appendix,
-+ * but can be expanded to other mechanisms.
-+ */
-+static const char *btbcm_get_board_name(struct device *dev)
-+{
-+#ifdef CONFIG_OF
-+	struct device_node *root;
-+	char *board_type;
-+	const char *tmp;
-+	int len;
-+	int i;
-+
-+	root = of_find_node_by_path("/");
-+	if (!root)
-+		return NULL;
-+
-+	if (of_property_read_string_index(root, "compatible", 0, &tmp))
-+		return NULL;
-+
-+	/* get rid of any '/' in the compatible string */
-+	len = strlen(tmp) + 1;
-+	board_type = devm_kzalloc(dev, len, GFP_KERNEL);
-+	strscpy(board_type, tmp, len);
-+	for (i = 0; i < board_type[i]; i++) {
-+		if (board_type[i] == '/')
-+			board_type[i] = '-';
-+	}
-+	of_node_put(root);
-+
-+	return board_type;
-+#else
-+	return NULL;
-+#endif
-+}
-+
- int btbcm_initialize(struct hci_dev *hdev, bool *fw_load_done)
- {
- 	u16 subver, rev, pid, vid;
-@@ -483,12 +520,15 @@ int btbcm_initialize(struct hci_dev *hdev, bool *fw_load_done)
- 	struct hci_rp_read_local_version *ver;
- 	const struct bcm_subver_table *bcm_subver_table;
- 	const char *hw_name = NULL;
-+	const char *board_name;
- 	char postfix[16] = "";
- 	int fw_name_count = 0;
- 	bcm_fw_name *fw_name;
- 	const struct firmware *fw;
- 	int i, err;
- 
-+	board_name = btbcm_get_board_name(&hdev->dev);
-+
- 	/* Reset */
- 	err = btbcm_reset(hdev);
- 	if (err)
-@@ -549,11 +589,21 @@ int btbcm_initialize(struct hci_dev *hdev, bool *fw_load_done)
- 		return -ENOMEM;
- 
- 	if (hw_name) {
-+		if (board_name) {
-+			snprintf(fw_name[fw_name_count], BCM_FW_NAME_LEN,
-+				 "brcm/%s%s.%s.hcd", hw_name, postfix, board_name);
-+			fw_name_count++;
-+		}
- 		snprintf(fw_name[fw_name_count], BCM_FW_NAME_LEN,
- 			 "brcm/%s%s.hcd", hw_name, postfix);
- 		fw_name_count++;
- 	}
- 
-+	if (board_name) {
-+		snprintf(fw_name[fw_name_count], BCM_FW_NAME_LEN,
-+			 "brcm/BCM%s.%s.hcd", postfix, board_name);
-+		fw_name_count++;
-+	}
- 	snprintf(fw_name[fw_name_count], BCM_FW_NAME_LEN,
- 		 "brcm/BCM%s.hcd", postfix);
- 	fw_name_count++;
--- 
-2.35.1
 
