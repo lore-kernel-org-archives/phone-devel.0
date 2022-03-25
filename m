@@ -2,138 +2,111 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A40DC433F5
-	for <phone-devel@archiver.kernel.org>; Wed, 23 Mar 2022 22:07:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 18E5DC433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 25 Mar 2022 10:19:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240678AbiCWWJN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 23 Mar 2022 18:09:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46498 "EHLO
+        id S1358783AbiCYKUj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 25 Mar 2022 06:20:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238850AbiCWWJN (ORCPT
+        with ESMTP id S240723AbiCYKUi (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 23 Mar 2022 18:09:13 -0400
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA4375C657;
-        Wed, 23 Mar 2022 15:07:42 -0700 (PDT)
-Received: by mail-ot1-f49.google.com with SMTP id d15-20020a9d72cf000000b005cda54187c3so2053389otk.2;
-        Wed, 23 Mar 2022 15:07:42 -0700 (PDT)
+        Fri, 25 Mar 2022 06:20:38 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E64099156F
+        for <phone-devel@vger.kernel.org>; Fri, 25 Mar 2022 03:19:04 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id bq8so421617ejb.10
+        for <phone-devel@vger.kernel.org>; Fri, 25 Mar 2022 03:19:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=txfMDWQceDbgmOrEc+CTlnZSlzPPay3e29bbmFGpskI=;
+        b=aY/UlNLKFcwQI01npAcjm/L7wOLzS2xJ9Zw+MT1p3HNACImlKg70WPLKtmacFC5gTb
+         Xoc4FrJdHP7PQLoY0UEuhuaX5Vwyqrktj7Wa2sBTQwFhDG6gUhJ3ul8LMrL4sCHZ68sd
+         l+aY4QkwQfvVu5ngmZ70I9/AhkbFbwIkCrLZqSNqZh8notZEpsidKFpSagPFlPM33Qrh
+         MCCSJuO/jpN81ZAdQdvKAvnW8yjUimN2YyiH5G933lvB5D89+1LvRivokfNBdrebDj1/
+         oG1UgkYqp4+32YQtoBGYC7OQstec+bwYQfqoXyQj5uTSkDt7jZ/3mDQzNEahw80oQ6vn
+         pKrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=+k118EBZ9Ly3Szi3Mxb7IXwKz7kOcKPTbNJ/BWP0n8U=;
-        b=0Alo3+eLDj2hTS9MTS0UsXrepkak5txB6tGYagtLVTrXBcEv73WmDZDeTEdgBsICIr
-         bL+NmCQB8kxSTx70QJ9aVRN9C51fDEnRNs5mQTWyeWlp2XAcqffpexiCBfIqVWUmnrPu
-         Tz/TqdYjJ3Ua3wxjwITdcO7oTdnu1majv7Nox6QReZdGeAi5HzqsaixwgmF1xjL2pV7z
-         e7ZaL807LH+c/+KE2pUBiUTj0UbwRYyBZDlS/d/KcKk6HYw91uw84+vOtAithncAs7R/
-         FmfNIRQWIIa+pNw9l/D9zVxdSUWblW9nkjgeqkSZUA4cmIU7W2Lghoq1H805Cl8OGx2N
-         WX0g==
-X-Gm-Message-State: AOAM531barf292WBq4KHxob4pZVa9fruAHh8rJlauYc9PJP/OQLYZrdL
-        ACYQS6N4DsAoVR67KtNm8OMuqpBjmQ==
-X-Google-Smtp-Source: ABdhPJw7gnH0on5+VuPG99lAMzszLuHJzDpkKnDuE2x3uL6p6JER3OsZ5NYU+MEvSoY741aHmr4ZMQ==
-X-Received: by 2002:a9d:6c94:0:b0:5b2:2c47:7228 with SMTP id c20-20020a9d6c94000000b005b22c477228mr926239otr.14.1648073262156;
-        Wed, 23 Mar 2022 15:07:42 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id q6-20020acaf206000000b002ef960f65b3sm522714oih.25.2022.03.23.15.07.40
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=txfMDWQceDbgmOrEc+CTlnZSlzPPay3e29bbmFGpskI=;
+        b=GpsRgo00FShX03gr9kVwtQaywVZSZnQ/8pRazFWxpdc3ACP1luORDpOgIvR4fdhMxR
+         FcJ8y5OtiPk1nx3D4hy/vtquRTq8tE9kDIMz/CGkq2wu0kaSJBS6Ww3PrYGLHpOCbxeB
+         YcszALB+2xL7zG6SG8cgMgh+LetfqI/zYh4OyHRw2KItdc5OBioikPZLs0TvoGN0DL7E
+         0TXFI0RTT75IVgr2pjfC3J0v6UVTOtavW6jney+yGK6ns9WGYys+cC00zTC3IgJEt8J9
+         bQDpWTd/99MWlbcs4D6BOhxti4KTrKHHnag6oxaWJG2hVUhwu7xH77jALM1NxNqpvlil
+         T7CA==
+X-Gm-Message-State: AOAM530895KxeSdSfR6l5oibTY5OzU9L6kppHcOk0wpNoHyyfaFiC0HP
+        584h5SRKj1gvpXJBiYnNp35pYtHlWayWvQ==
+X-Google-Smtp-Source: ABdhPJyIbsV/hWkQgXdZIzsB8nheQMLmBqixJtiigslgQjtIJpHte/2eaEQGBql+3YZPSHhcRqh45g==
+X-Received: by 2002:a17:906:5245:b0:6b8:78e0:5649 with SMTP id y5-20020a170906524500b006b878e05649mr11152534ejm.520.1648203543499;
+        Fri, 25 Mar 2022 03:19:03 -0700 (PDT)
+Received: from localhost.localdomain (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id hr13-20020a1709073f8d00b006dff3a69572sm2122695ejc.5.2022.03.25.03.19.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Mar 2022 15:07:40 -0700 (PDT)
-Received: (nullmailer pid 543440 invoked by uid 1000);
-        Wed, 23 Mar 2022 22:07:39 -0000
-Date:   Wed, 23 Mar 2022 17:07:39 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org, phone-devel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/3] dt-bindings: input: Add bindings for Immersion
- ISA1200
-Message-ID: <YjuaK09nOztYOmyn@robh.at.kernel.org>
-References: <20220315233528.1204930-1-linus.walleij@linaro.org>
- <20220315233528.1204930-2-linus.walleij@linaro.org>
- <YjjNkyChcJcaJi11@robh.at.kernel.org>
- <CACRpkdbz6Ua+0bTJMf-Qc7tju33CmEEgUsxH5KCS_zW3A_-SYA@mail.gmail.com>
+        Fri, 25 Mar 2022 03:19:03 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] arm64: dts: qcom: sm6350: Add wifi node
+Date:   Fri, 25 Mar 2022 11:18:40 +0100
+Message-Id: <20220325101841.172304-1-luca.weiss@fairphone.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACRpkdbz6Ua+0bTJMf-Qc7tju33CmEEgUsxH5KCS_zW3A_-SYA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Mar 23, 2022 at 03:57:44PM +0100, Linus Walleij wrote:
-> On Mon, Mar 21, 2022 at 8:10 PM Rob Herring <robh@kernel.org> wrote:
-> 
-> > > +properties:
-> > > +  compatible:
-> > > +    description: One compatible per product using this chip. Each product
-> > > +      need deliberate custom values for things such as LRA resonance
-> > > +      frequency and these are not stored in the device tree, rather we
-> > > +      let the operating system look up the appropriate parameters from a
-> > > +      table.
-> > > +    enum:
-> > > +      - immersion,isa1200-janice
-> > > +      - immersion,isa1200-gavini
-> >
-> > Same device, different boards. I think I would put necessary properties
-> > in the DT.
-> 
-> That will be all of these (from the driver):
-> 
-> +struct isa1200_config {
-> +       u8 ldo_voltage;
-> +       bool pwm_in;
-> +       bool erm;
-> +       u8 clkdiv;
-> +       u8 plldiv;
-> +       u8 freq;
-> +       u8 duty;
-> +       u8 period;
-> +};
+Add a node describing the wifi hardware found on sm6350.
 
-Could be all, but in your 2 cases some of these values are the same.
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-> 
-> Example:
-> 
-> +/* Configuration for Janice, Samsung Galaxy S Advance GT-I9070 */
-> +static const struct isa1200_config isa1200_janice = {
-> +       .ldo_voltage = ISA1200_LDO_VOLTAGE_30V,
-> +       .pwm_in = false,
-> +       .clkdiv = ISA1200_HCTRL0_DIV_256,
-> +       .plldiv = 2,
-> +       .freq = 0,
-> +       .duty = 0x3b,
-> +       .period = 0x77,
-> +};
-> 
-> This is derived from the compatible rather than individual properties
-> or extra regulator and/or clock abstractions in line with:
-> Documentation/devicetree/bindings/display/panel/ilitek,ili9322.yaml
-> 
-> Which was originally looking like so:
-> https://lore.kernel.org/dri-devel/20170813114448.20179-2-linus.walleij@linaro.org/
-> 
-> To which you replied:
-> https://lore.kernel.org/dri-devel/20170817204424.e2wdkmyp4vyx2qj3@rob-hp-laptop/
-> 
-> "Normally, we the physical panel is described which would imply all these
-> settings. Are there lots of panels with this controller that would
-> justify all these settings?"
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index 9ad30086cfcd..1e2810021b30 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -1267,6 +1267,28 @@ frame@17c2d000 {
+ 			};
+ 		};
+ 
++		wifi: wifi@18800000 {
++			compatible = "qcom,wcn3990-wifi";
++			reg = <0 0x18800000 0 0x800000>;
++			reg-names = "membase";
++			memory-region = <&wlan_fw_mem>;
++			interrupts = <GIC_SPI 414 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 415 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 416 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 417 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 418 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 419 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 420 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 421 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 422 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 423 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 424 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 425 IRQ_TYPE_LEVEL_HIGH>;
++			iommus = <&apps_smmu 0x20 0x1>;
++			qcom,msa-fixed-perm;
++			status = "disabled";
++		};
++
+ 		apps_rsc: rsc@18200000 {
+ 			compatible = "qcom,rpmh-rsc";
+ 			label = "apps_rsc";
+-- 
+2.35.1
 
-I reserve the right to contradict myself. :)
-
-Seriously, it's always a judgement call.
-
-> 
-> In that case there was one (1)
-> 
-> In this case there are two (2) products that I know of. It does not have the
-> relationship between panel and panel controller products though, but...
-> it's not very different.
-> 
-> I don't think this chip was used a lot, I really tried to find other instances.
-> But they could exist of course.
-
-Okay, if you want to leave it like this, I'm fine with that.
-
-Rob
