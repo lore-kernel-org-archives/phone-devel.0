@@ -2,140 +2,120 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98975C4332F
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Mar 2022 06:46:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0562C433F5
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Mar 2022 06:57:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243333AbiC3Grl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Mar 2022 02:47:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51254 "EHLO
+        id S243505AbiC3G7Z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Mar 2022 02:59:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243192AbiC3Grf (ORCPT
+        with ESMTP id S243486AbiC3G7T (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Mar 2022 02:47:35 -0400
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10olkn2089.outbound.protection.outlook.com [40.92.40.89])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CC5189CD5;
-        Tue, 29 Mar 2022 23:45:49 -0700 (PDT)
+        Wed, 30 Mar 2022 02:59:19 -0400
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam08olkn2098.outbound.protection.outlook.com [40.92.47.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6D75DE0A9;
+        Tue, 29 Mar 2022 23:57:34 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RD59DRN007MWQh9wkdFfMfPHXkMzk84b60GkgqXnaUH2cwdbI9JKYspU+s/jo7HRnwh85W1eBKc8gwmuowfZYhY6x6jV5PFBYXzfbtuNlyxPltFYdB/oQLIDwzCpSinuZ4cwhvyK1DdgsAF93TTkhZUxc7TWjnQTBlK7zBH3XZuPlV4d8n6QoOE8QNtcFe3CGekHsKCtaO0mz/CKW/YZudOOwJhS3WFdsVRUKkcSknFgdOgQn3+qZysqZKv0WUfWRWoemZ5RjXQspxeWRbev3jnC5aPlIZxhUilaC6cxdzDe+8jkJTGCIUtRianxRzUnYVVdyLwK8fk2idZrctzcnQ==
+ b=B53SkFLzb/jcNBDF94D8FheSNsct1pCUJhIvLy62yU++wuIzCcYiu8r11YBEcU4s4uOrkWQAS8V0SWgLewr76u47hVkU76BkiS+HYEew+5GnVn1g231rv8D1lWfkm2CahRMFv35VHLT701hNN5CiWrdgGduMDqeEVJi0EHdvmboCslWUx3W4Iiu0pPpmP/BJpqL4fM9M/65USmC/IYUGQUWGWFiZLoTK4oqLcj4bWbB45W7G3WmD8x/vKW0CAE4kGwgevqWf02gB34+ZinqPqF8UaO78RVNQAmOJE0pz/39+I+SZfANXQ+PKWY7HMyNBuu25ZjJgvNaaK98KQ+bKBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gnqaHFspNzaDFXPCxywoCKrChn1FvnhBn5gXssIRgY8=;
- b=kX5GBH2Sh0axhsZQ8Pema7SLLIllutHgvpqQ5x7tbx2HTBX/ggqSJGIjvKaf0cLqUQCx+hc2MhKQbzJVwwvhALGtRqwB7RuJgozyCdYgdDOrESuK2+iZ7LbP5SnlscWCFuAFc/Gw84IlIKryC/vuyMFyaAl3wX+Em+GCf9OCpQ111liPBU1AryVICDw5Un84lUQjEiE+La50a20mPKeX0O1XRdRmil2Coy/A0tlhyh+NhQucVzMsEEm7Y8dNwtJxIoFXqzhkWnw5NxTf7cP1N155ff3hF4yvDMoR8PXQZxA3I4fbecAkm0bSRNVnFmHH4LAYbjj1hHGJUucPh2rTKg==
+ bh=yIVKmciJUkjqgVyrdEV8jlIbThjkteUdnAOhH4f88to=;
+ b=ep/ZatarnI8qPFrk9PqrcjYKJcJrv9iGxEymr0qovJ53/1/zsmSYqWslAgXHmsVcdeADRC6s8wqAktmOYEarxo325OL8Mvjp/seXrjZglyWslherz7d4u/UKBBafGifVfkLicxaZlR0jEZEQixC5UM3xKTIRu5JoRYJaZm4K/GMexUyphask2r50e+42SU3SeJmSuWTCjbj29a59oL9CaKG4g8SIeyseJYEt5iP3O6nYIV/c+BEPOJKiwbQ1Oq0954ERNH2VE49oqzxvdpvG62J99ppgyxfJ2DN1KG2qzJdY5DYhyGtWX90fiE0p+YdKkMN9tgrCqR/u+7AXOiNfcQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 Received: from BY5PR02MB7009.namprd02.prod.outlook.com (2603:10b6:a03:236::13)
- by SJ0PR02MB8686.namprd02.prod.outlook.com (2603:10b6:a03:3f2::17) with
+ by CH0PR02MB7899.namprd02.prod.outlook.com (2603:10b6:610:100::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5123.16; Wed, 30 Mar
- 2022 06:45:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5102.19; Wed, 30 Mar
+ 2022 06:57:33 +0000
 Received: from BY5PR02MB7009.namprd02.prod.outlook.com
  ([fe80::413f:bae6:4e5e:5ae6]) by BY5PR02MB7009.namprd02.prod.outlook.com
  ([fe80::413f:bae6:4e5e:5ae6%6]) with mapi id 15.20.5123.018; Wed, 30 Mar 2022
- 06:45:47 +0000
+ 06:57:33 +0000
 From:   Joel Selvaraj <jo@jsfamily.in>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+To:     Sumit Semwal <sumit.semwal@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Amit Pundir <amit.pundir@linaro.org>,
         Joel Selvaraj <jo@jsfamily.in>
-Subject: [PATCH 4/4] arm64: dts: qcom: sdm845-xiaomi-beryllium: enable second wifi channel
-Date:   Wed, 30 Mar 2022 12:15:05 +0530
-Message-ID: <BY5PR02MB7009E2566F9000F338432761D91F9@BY5PR02MB7009.namprd02.prod.outlook.com>
+Subject: [PATCH 0/3] drm/panel: nt36672a: add backlight support
+Date:   Wed, 30 Mar 2022 12:26:36 +0530
+Message-ID: <BY5PR02MB700990C63237A5B293E777F7D91F9@BY5PR02MB7009.namprd02.prod.outlook.com>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220330064505.243799-1-jo@jsfamily.in>
-References: <20220330064505.243799-1-jo@jsfamily.in>
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
-X-TMN:  [uWXReaxZUe5vhAMLYgC53dgU9yWicVp0iXkyKYhFIbOsUJmQLcOJ3OkwAiRAwiIl]
-X-ClientProxiedBy: BMXPR01CA0088.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:b00:54::28) To BY5PR02MB7009.namprd02.prod.outlook.com
+X-TMN:  [Ms4kn9EDLdfU/Ugr1bDTqjmO3aHtO2PWfM+dYwYfvA5nr0ZG48hY8QNQxy8eeJra]
+X-ClientProxiedBy: BM1PR0101CA0039.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:b00:1a::25) To BY5PR02MB7009.namprd02.prod.outlook.com
  (2603:10b6:a03:236::13)
-X-Microsoft-Original-Message-ID: <20220330064505.243799-5-jo@jsfamily.in>
+X-Microsoft-Original-Message-ID: <20220330065639.245531-1-jo@jsfamily.in>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 561398b8-1f69-496e-8e30-08da1218ebf3
-X-MS-TrafficTypeDiagnostic: SJ0PR02MB8686:EE_
+X-MS-Office365-Filtering-Correlation-Id: 45fa6dfb-7af0-4be1-59d2-08da121a9042
+X-MS-TrafficTypeDiagnostic: CH0PR02MB7899:EE_
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: JV9U4tEfrgL8wjoKqEBxjyqr9xNxpCMJp2igM8LORfwCRc52JdCRmPwtdXxCYPQIo1aEETkIPp3Fubs7CDcgPkaMI7GCXOPKoVgRC4Q9znihO+D8yIdGD1MgEhL7Vg34SIZ7obb5bqUxFqhXanj9sa9n+oI+NYA3F74QuJ6+VE6d7IJMwIu3sWxEanvu9SULZQBJ9z4AWTe2xniKKfj4UxTPD7qCSakYo/2tgseFXWIkyziHuEeK7dOk56NyJthy5RPGMN51BUoRB293iI7vDDvVSEPlBdNOX6z4Omb+CiH0dWTvkMBUAa58mVcp/5x38fFtOduWiJYPORf+cj3D+mCg0aBvF7Mk7UHcekIWWri4qIXM7iVgsqys4hEAU7wQnRNlAG6ay6ZQFEoThyQf1D9DqEz4mwKa3h6ayIG9MRYPPLBxh5Dajw9UUvHzdBpciFEb+lhfFIA7QkN+GhYf84luNL62z+rOgCLtQqLwjKcuV0HhEKIg3Dq042bO74ANqHSHt9+RYNP9QJkWuh5xaVKOsDqfW/hkovOoKb98V3UZJkJ257RAtzcp+VlcM/9swV01UGp+3cH03NGayEeq6g==
+X-Microsoft-Antispam-Message-Info: jZfYC0j7iqiKsjw8NICJj4UgnSafkv+4kdVnMTwjsBbQRxjE2PtxLHgfAVswXTOoNMEltAfjxKLzRsPv3l6i1HzonK0W8atwuWgr3zm2IXNJy4gxhJlLpf1YGF9bpwfZ+i/6g8/UK9A0OLNd0HivSD3uMvf9H5g/5/AX7B4Y4wG3x1svmvZ6Q0F4DZ8rt1p2WRbd43eO98ZD/h+X8SYfJb9vFIfPQvKbDCMItUIqbYwCKV6+EmIv1YrMO+j+ALtyo9JPp7AHVINoLPHPM+m5ZTT8/YuUqTJ08C6F8CEgyRyD7EPm/EhN/4BVG3pwXNp5KOtycN16hL4H+Q1E2C496tXy6zx4dO1F5ltHOEbvAlcruCtkMg8Jw89BP/qQp4AUQuqsGCQ36svwc655tkIyYqQSvzLcG4TQJr83eONBo7LysjONvED6IOjh9WaQlZsyOBVXVWkQ1o/JMXsd3U7Ptz7L9Ty8bO32IC8NOWFRDcZDY4J4dT7HM89FhzdbTu3J1geZlrYkQtQ1MgmpesRhCYyBfxc2fWoLa3KZf0yjOvhMfLVmxogGRaMCmgkM/9TaZP45c5gvfqABJ1a07IvVQw==
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tcut6qiLSgqcTarjsw1TP9C7iWoUPdQ5jQpVLl0WTlhNpVxN6zCUdLE5P6uC?=
- =?us-ascii?Q?zoOCeNEf7MXfMIBXp4gxENFFiWExhoraTnw2dLcu1SlfVuMjb1iPoBU7CSfA?=
- =?us-ascii?Q?hbhv4WIoRutrdKav5ICD477AFEPcWJA3EbNprnBeFYWW9lR4LvKzioE1YcUI?=
- =?us-ascii?Q?Mg2A40aCm8tA5GaDMLOvXyKXKP9ih5OmM/hK4DwQeGA7B8n10YvTIB3e2bpb?=
- =?us-ascii?Q?wc7kELMIiyU2X2P9UA06ILaDKCZi1Y6oTZm2rB64Z/zQl2uSKkOTU0P2pqmz?=
- =?us-ascii?Q?H50F5UBiZY+VdU/yCPHd3VvPAK/sSBZfsMO6obovw2B2bhZoFZ4V7LKUGVko?=
- =?us-ascii?Q?N5BZ2NxDfv6w0dbT9hlcwZX3aDJNJIqGhF8/X40PFZxg1T44DbIIQfCoFmId?=
- =?us-ascii?Q?FTB87BvXGGxotiL94KyRF4pN3tYrIAav42xHmcIashY7Hi54ezQepshs22e6?=
- =?us-ascii?Q?U4N4ly9v0ebXyx1Re8UBHLCq8ugW1B8bAzWlrCTd6pPC67OkctJ+jvdT1i1+?=
- =?us-ascii?Q?K6nmDB7Hd6r7brHGno5+7CFol3reeZyj2jLQ9HjhnTQnmWKMyLx/Ufhxedkt?=
- =?us-ascii?Q?Ev94UwfbenuVU/hV16++JXC5EtgHfMGSYAM9zbuerPlFZPMPAeKuj6SOxv98?=
- =?us-ascii?Q?2khYZdgF8umr9/vvnwLY26lH8q2dmo91jWPS+rdC2qc7mQv6ZpZ5EImo+dt8?=
- =?us-ascii?Q?i577zrBB1fY5cD80XPA7529nrv/Hip5CociMOs1Z+m48/bCRYQ55Vv3f1ook?=
- =?us-ascii?Q?GGoOy1bHQYx8uqICdi4onpQk9ZJ0we81ce7mqVehb4TN44lR0+823neGfnp6?=
- =?us-ascii?Q?9IdDb9LcvijlgifgqRUOX+hohfiWK5VM5iJ82PI9SbxsTm18IdyJmVRoW61Q?=
- =?us-ascii?Q?img/KSkEtuoJVllRgja04BFswMZhPuVXKyysAjn9dsFUSlzlAoFtxYAad21X?=
- =?us-ascii?Q?oGbDqHPLjQeRDOBQSyqKYw40HGmp76FDzEFtikMr4mNH6A+zlHxouEsh5M6k?=
- =?us-ascii?Q?CR/b2RZ8Mg53JKZIS8i4RObciY18CyCtZxh6AiFqln9wds2R7ZUT778oR6nQ?=
- =?us-ascii?Q?qKiN3ivedlsFVn4YSwn9FM/G3vU15j/+dFOav/qV3dUfzMe2e4MuA1eDhpYd?=
- =?us-ascii?Q?uQilXWUieUiL6yoWCHw937zHfCnF38WwzYGVY/0+8KWaLCOA6gn5CqG1ppR5?=
- =?us-ascii?Q?Dozm1gq0St2WdQdk/EzspK5f0MxWl5i9fyNVkKyLjEPe6JjOMEuumxxX+8qI?=
- =?us-ascii?Q?VivtkTkbQIDCyUBvikn0TD4K8kZqjwyRpzHD5rAkHWW8pupkqPXaasdGzQqL?=
- =?us-ascii?Q?nAIkMXVaO7ocB1TjyZqUky4SUtSDhlD/r/kQCCQddiQfrN0u4AYIzqadtbb5?=
- =?us-ascii?Q?ejoZ54neE30DX84NCTWUd70Se7nZPijQ4uQD1Ytg/MSM8iFy18dERAwbUVU1?=
- =?us-ascii?Q?RI7f55mnIxGO9+/obr+Cw6T8UwptO3XxoU6SBmR641ArXkeZrzTUZg=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?pLFmHzq02Yw6hIfH1fL66q3suqyXItnm2fV2wUvGgrqd7WqoA/pviRTN2KM9?=
+ =?us-ascii?Q?ZKLDc0ac1vrGcv9hPK/80qO59VFTDYg7E+fXQ0ZeoI/WQV9ibyyVEUSCA2Bb?=
+ =?us-ascii?Q?lBfNiQR/QPxd0kNc43b5rQv4iIjhwr4qnweX70QH4Etkz2Q7OSue/gygSCgL?=
+ =?us-ascii?Q?3OqHQugLsJhflRyMJ7EOL0WlOzlAJt0Z2ZITtSEQ/quW8RXPRz7ZB1FGSUAr?=
+ =?us-ascii?Q?8h8rIfN84rE0HD2hPFdvL+y4/cuBVp3qbmqOqQbtbc8fbwy1kz7hUOwasiE5?=
+ =?us-ascii?Q?swdHh8Oga51Mmnw//xyx1s7uoBoUYQIpCgSemoc1c7zFl6xuPUsiPANfHIOk?=
+ =?us-ascii?Q?hztigjupa0YUVopBaTHqPzc9BQDCC3pFWcfb2DCJ2+mNW0f0+ZboliUxcMjR?=
+ =?us-ascii?Q?AqLET7lrjVRDckI7q7WHRGcUW1zOw0C3fz6KPW5SUY6Ve+JDmXUzBHOmSXwX?=
+ =?us-ascii?Q?qKA1T5Ds7PdqS1oDqIAC96EekzE8yMwkMIjdFDK7zWUHEV0ernnCAvbEZPj5?=
+ =?us-ascii?Q?U/Uf0BqNIJ746i8IJTRFnvVjrN8drApG2q88ikDBWx9lSCJn4qbfBtbmXJpS?=
+ =?us-ascii?Q?DoLP+TRDqwaxhGtz93l0+ohE1DcyPottSOVv1eI4MMBp6zHpHtMcwNtYm744?=
+ =?us-ascii?Q?FA9k39ALuW+JXFUwhaSiiP3gZtF90ZsWT0JEZjM87i8Oq0V70u+JTEP8POMt?=
+ =?us-ascii?Q?wnRa8De3E4x1MgDG+X4UaSC+62DSsghwj7lL4dcazBbzzhani48bNDT1mEO3?=
+ =?us-ascii?Q?qTWLwRw+maem5hQXbMLlyNJjxl6hhRqTfg+IGixcwUAYY43sHwVYJ2VlFSwB?=
+ =?us-ascii?Q?yFPyAQp2rSoNGDjn2sDAsMoMQt7KJrt4/m8koChAeLkFCVbqVWiR6fZ3/XgU?=
+ =?us-ascii?Q?4llQ1v6rsL5DUp9wI1wSGcsd/hJX56C9dqdBk0ErnpM06i2IAt4vRoSjen/3?=
+ =?us-ascii?Q?oEDu1LC7gXI0FVATzbdLoEV54UAEHyWKKKJ5aVw7BhhSHjnegAiYhUbTrqZo?=
+ =?us-ascii?Q?nmXxuFiOwZCifv/hUZp84xiX+5omU7EoZqX6Bkxx5whrp6v2dcMMEX1jpr3O?=
+ =?us-ascii?Q?RhBcklQ5ZMaO6+159loqrIEpuYhaY64LWsYufPSQ5m8IRizK9D5gNLQfK11p?=
+ =?us-ascii?Q?dspS+i9wG4Hrj3l816Iak5LlW3tlUkCQHDgxLPqRoseNbMCA9SM4l8Cimqzw?=
+ =?us-ascii?Q?1xskEo7ELQTivQfnVyLX+cx8ks2qnGxUbYASykcED+Kv+tB2Ay6cJPFgW12l?=
+ =?us-ascii?Q?pNfG6WJTNek0xIE5DxbZTd0A0Nm0XHDezch94ScGoZGI1Ti/iHYOxYPg8R3q?=
+ =?us-ascii?Q?k9xUPutW2pX0WhbTJSJswaBUz/FArWzfqsHezN97HJ6FobGahEM7yKw7G6pn?=
+ =?us-ascii?Q?/Ow6FP/xfvtShVq2mETTF8kysIEeXBkLeyqLeVuyO/+DGRSbeRPvkCZUXnZx?=
+ =?us-ascii?Q?DoZzX7BCocJypq0wx17WfQFGMJ88OEKnHeeOZTD86dfckGHcnruSxg=3D=3D?=
 X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-99c3d.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 561398b8-1f69-496e-8e30-08da1218ebf3
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45fa6dfb-7af0-4be1-59d2-08da121a9042
 X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB7009.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2022 06:45:47.7686
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2022 06:57:32.9695
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB8686
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR02MB7899
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Like the c630, the Poco F1 is also capable of using both antenna
-channels for 2.4 and 5ghz wifi, however unlike the c630 only the first
-channel is used for bluetooth. Similar to Oneplus 6.
+Joel Selvaraj (3):
+  drm/panel: nt36672a: add backlight support
+  dt-bindings: display: novatek,nt36672a: add backlight property
+  arm64: dts: qcom: sdm845-xiaomi-beryllium: enable qcom wled backlight
+    and link to panel
 
-Signed-off-by: Joel Selvaraj <jo@jsfamily.in>
----
- arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../bindings/display/panel/novatek,nt36672a.yaml    |  2 ++
+ .../arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts | 13 +++++++++++++
+ drivers/gpu/drm/panel/panel-novatek-nt36672a.c      |  4 ++++
+ 3 files changed, 19 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-index f97900e7797b..798fc72578a7 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-@@ -185,6 +185,12 @@ vreg_l21a_2p95: ldo21 {
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
- 
-+		vreg_l23a_3p3: ldo23 {
-+			regulator-min-microvolt = <3300000>;
-+			regulator-max-microvolt = <3312000>;
-+			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+		};
-+
- 		vreg_l24a_3p075: ldo24 {
- 			regulator-min-microvolt = <3088000>;
- 			regulator-max-microvolt = <3088000>;
-@@ -547,6 +553,7 @@ &wifi {
- 	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
- 	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
- 	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
-+	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
- };
- 
- /* PINCTRL - additions to nodes defined in sdm845.dtsi */
 -- 
 2.35.1
 
