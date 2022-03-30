@@ -2,98 +2,115 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7C54C433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 25 Mar 2022 10:19:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25527C433F5
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Mar 2022 06:45:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358793AbiCYKUn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 25 Mar 2022 06:20:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58600 "EHLO
+        id S242963AbiC3GrX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Mar 2022 02:47:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358787AbiCYKUl (ORCPT
+        with ESMTP id S238754AbiC3GrS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 25 Mar 2022 06:20:41 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05CE46A06C
-        for <phone-devel@vger.kernel.org>; Fri, 25 Mar 2022 03:19:06 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id bq8so421707ejb.10
-        for <phone-devel@vger.kernel.org>; Fri, 25 Mar 2022 03:19:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=N3M5+W9DcdgmrBKDbJ8aNEq3s5AYa8mqWvuLTG/ixbM=;
-        b=mlOaQtqOgRmjRRGO6ru4cXrlGZhVBnvRi9eLSJaKk/kwzbDYqI3CVcPQQaJaUaL0gW
-         sJdtJFluugcdLK68KP1tu/L3OyqigjCvpCv+1/tT4lM5xyYHcwpP6qBWr9PTBvNnfyk8
-         ObS3P7CBWsERMCKSlh6qziPCqTAhiy6wr1ZAWYZStMjm6LTu7jnMbFhuyr44/awFRvhW
-         RIWeGTRiLbr4jj1PS3f4TdpkD6PQgBfyrOZBUhUbzlty2vYewIkkHirar+mAGhbhUFMM
-         aunLqMpcTU6fojBYLjEitSUIkevAlDgLBQTNJPL1C1mw44wwveqyGvpqqlbnhxpQ3WEA
-         dj6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=N3M5+W9DcdgmrBKDbJ8aNEq3s5AYa8mqWvuLTG/ixbM=;
-        b=uSjJiDzgl2FnlhHZ3nAzbz466LuJ/XI6blkIuafVo0OYBFgw8w+NxyIJRnsb+9PuDp
-         kJvRjXFMHszqWYE9ayPkNGZSyRJjAweIkLX3Ysed45AXoI5xy8prR8SIZDVgBTAhM/qa
-         y9rbtKt7HBlPCPV1AL5gmBAFNOaCkOAcMoyiu5NY5B/v9DOwMegK7cQThYqCZeKN4qdF
-         GIre+UPwnd7vdRNo8xMBla/dDQg9J7dzGMhjYTfk5trYroZkNAi19kCGyiGVYbgkwEYG
-         Wol6AkuVnqIveHWPt0b4Qi0rxIXO1iPzpSfh1YCAn0htlXfK39+jzaj6sA1SujTPqWPz
-         0UIg==
-X-Gm-Message-State: AOAM5319jFgnY9jfHSdZ5RCQw7EvOma9uJo4xhZDmQG2SUukWyU2DxbR
-        9XVzPfKyd90Tr+L2McsWnkJngQ==
-X-Google-Smtp-Source: ABdhPJzgWy3eAWlPSntRajmZX9Q2zPVQlb7AWXXrMuh1LqWYrdIyn9OR31F+kMW/7kfxfGQ5HtqRRA==
-X-Received: by 2002:a17:907:869f:b0:6da:888b:4258 with SMTP id qa31-20020a170907869f00b006da888b4258mr10872450ejc.720.1648203544495;
-        Fri, 25 Mar 2022 03:19:04 -0700 (PDT)
-Received: from localhost.localdomain (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id hr13-20020a1709073f8d00b006dff3a69572sm2122695ejc.5.2022.03.25.03.19.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Mar 2022 03:19:03 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
+        Wed, 30 Mar 2022 02:47:18 -0400
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam08olkn2108.outbound.protection.outlook.com [40.92.45.108])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9CCA8566F;
+        Tue, 29 Mar 2022 23:45:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=i70Ds2YoG+cGeDAFCQSCAxPlagb+o9x/bwKlN1oyItis9U3Bo5Njn42zfe3OMN0V6+VDwUOJp7AWkyxw2Lw4Ib1guTrgq2xZjA9yHvqlxiZ726+z7JIbOqLFx+21sGTC8PVYdCe6HC7mibMmmg4XK+qJzLnllQG8OMbjrqA3VKZrxuUZIT8j6Mh1ZS0QtTExtt9R3eNMZmx13xqQKCjz5Vk4G1wPvt4ZCUO3GYSgpFQvi4UR053YYHax2mdHMNSDgrQzE6UpJZ+dT0GG1oFuo9KT1BWqoTD3ZYY/72KM+gnAR+PA7h3+GWmUU5Oi7mK8WuhE08NqEsZE0uoSJ5Po+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=n0H2ilRfTlNUvrXbh2rK8yvw0SNyekZpsm3rQnPqOeY=;
+ b=lGvqxe4shwWetKNxpZtv4i3JQL+j0NENEpqhOepDTwnu1SmDUQbI94i5XkqxQ85/5bz4fYhsPSxf/X4m55qZF/qCvWiG6tl70Ab6d0+J5S9/fQc2Y7ciQs89HrZWVPpXdsIi0Q65Vco2MuGByr/8zEPcoaaUWquehS4i08KTDLWqzhzUA/wTTJ2BHT+L7xyKN0nb/oygYw8F3x2RI9fVBsJ7wTil93OB/Jue8r8stHjH7sxjZAhQTu68R9EfLoOU65yvtqR6kxtBT5yhBcQN+LKORhyuq9fIvC8ui3Ee45gtAnD4kPDUt3g4HDnPn2Yr9mboC6ieR6/glBdxQaIOsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from BY5PR02MB7009.namprd02.prod.outlook.com (2603:10b6:a03:236::13)
+ by SJ0PR02MB8686.namprd02.prod.outlook.com (2603:10b6:a03:3f2::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5123.16; Wed, 30 Mar
+ 2022 06:45:32 +0000
+Received: from BY5PR02MB7009.namprd02.prod.outlook.com
+ ([fe80::413f:bae6:4e5e:5ae6]) by BY5PR02MB7009.namprd02.prod.outlook.com
+ ([fe80::413f:bae6:4e5e:5ae6%6]) with mapi id 15.20.5123.018; Wed, 30 Mar 2022
+ 06:45:32 +0000
+From:   Joel Selvaraj <jo@jsfamily.in>
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] arm64: dts: qcom: sm7225-fairphone-fp4: Enable wifi
-Date:   Fri, 25 Mar 2022 11:18:41 +0100
-Message-Id: <20220325101841.172304-2-luca.weiss@fairphone.com>
+        Rob Herring <robh+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Amit Pundir <amit.pundir@linaro.org>,
+        Joel Selvaraj <jo@jsfamily.in>
+Subject: [PATCH 0/4] arm64: dts: qcom: updates for Xiaomi Poco F1
+Date:   Wed, 30 Mar 2022 12:15:01 +0530
+Message-ID: <BY5PR02MB70097230D0278CD6BDB23ABFD91F9@BY5PR02MB7009.namprd02.prod.outlook.com>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220325101841.172304-1-luca.weiss@fairphone.com>
-References: <20220325101841.172304-1-luca.weiss@fairphone.com>
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-TMN:  [nW/fv0TjqHjsbN25hDTdl+VPOP7Dzx3SobF/TGSZMioOGK4yIf2/MqbqgGzxwKYM]
+X-ClientProxiedBy: BMXPR01CA0088.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:b00:54::28) To BY5PR02MB7009.namprd02.prod.outlook.com
+ (2603:10b6:a03:236::13)
+X-Microsoft-Original-Message-ID: <20220330064505.243799-1-jo@jsfamily.in>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 9a1b70a7-d319-42cd-3431-08da1218e2d0
+X-MS-TrafficTypeDiagnostic: SJ0PR02MB8686:EE_
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ftFrSVPZzf6ielaGcyV2HX++Fb1D7nBA68U8wNuvDFDXwfyIDf3/bDzRLeCT8PjkzJDV7RIsKLcqJ5YKtTMDYQhFESK0HB/xptClVJS35QK06d8EfEiTnryLwz3zRg1iJbSuTKrN4YseV4rVrD1SbJcmCklNDvigIqL2J7tKBpKuLWFuq8BbdGggZ/ZE6mcdoiaCE0ZfROivv9h/NP7SCJW/goaK+b0WstFTRbmEX5ZtsOy9aQf1miuqx5TMkGEPc7trHyj29qET1u5R5p5DBXS9kQFfU+PsEpFJ/ui3me1G6DFdjgigOd1rnU2iTzLPJeKDPr9qtqcH006s310JR8l9fzoxJcK5RAPE3vekE0eI9nqSDPyfmEARIJuAT1xg6DIAkB3NvO++FS1S2ZLWwr/DHPa6tnZkCP0vAHAKgDRykh63kpfoKh7jYXUK/ZJgSP/+FIE+ATCvzgyZrKLjrGHwiQfeWDw2UBAo3zG3IkcLxof18MY/ps1XJdzZVWgeo4Pe1V/cyRmT+WFpiSxyJN1B8ydfvZoA7XeTr0Ryw7YTStEODHR9IDXXfCV6tzurf8wKj/xfrPMwXdpLrAq6Fw==
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?zHXt07teslQDmM7dVF563w31tfgPqCBUK1uR50TSM8RGIUFhFDD75tcS6xyQ?=
+ =?us-ascii?Q?Re+BxbmM+Nxt52rS5tpuPDW7C6lRIPXo9tOvg23YqoQyMmV30jXOz5a9pH78?=
+ =?us-ascii?Q?LbfQhBNCgclHITU5A+hYgXfPG/PzqU1ziQweHBcSlDiU28g/aOlH0J9unY9C?=
+ =?us-ascii?Q?HA5YYWzeK7hC8D1p8TKjg9ur3luKEgeJBwOISHizZ2sSGmccTDfbqsQ7LY8q?=
+ =?us-ascii?Q?+CMnA04wf4NdmFlpAVkWm5ciQKfEK/JpOHOuabRlq25LANAj1ySYMP093a6q?=
+ =?us-ascii?Q?YcxGFqWERL54YZcWJBpVs11Qjurx2FQPimETT9EMmktRW4/P/oDwjSS6mQce?=
+ =?us-ascii?Q?JYbMldSyWddApuvg6DsE0b/rGIKnMh+QuEtMRb4cpzb3ONeL5I77LsGWeOPG?=
+ =?us-ascii?Q?AZBgGHG++S7qCGJgkOJLot5bYbDUe8nXHYrcw4Tgf8u66oYEdojohnjwjKj/?=
+ =?us-ascii?Q?ySwkyyfxyaByDU2GCcC2Z/jR02T3r7244SbRM+G6F27BmJK9uUI04oQM295V?=
+ =?us-ascii?Q?HzC+aX46XcdwzNNb0HA5Wqoz/r3Rwd7FaiVgNUE324uUSjZqSXHudNZwf0NT?=
+ =?us-ascii?Q?sn+yTnnbAbaCoFwnwQvjTULEqAN3g/6kpXd3ohwEBw48uUKaQALxp+I05noo?=
+ =?us-ascii?Q?lcNFi834DVrG3BDsFFC6VmXZHgrSN0RzK0y10zOXKu1pY8PlE1QUWLg3/wGj?=
+ =?us-ascii?Q?eU3+WL89d9q5o6DjDthGcCLwFmdyjPePeg6Mq+lNtBMKydPXyGn3ouU+JfoA?=
+ =?us-ascii?Q?0FrZ5pU2kDRtDGPGnuqKHw4dm52PRtSzu/EClTYppP/13+q//xqFbXj5XN4/?=
+ =?us-ascii?Q?YDhLkHR/NUWGPjf3kQyqNT2df4fYzTzMxy4B8wInLJcG+dau5AIZvv2A7CnQ?=
+ =?us-ascii?Q?iS1M2tpWEqG7hHXCppKhy0+qRzLKU9ipgN4MT9PchTPoJF+mvoMdr9MW+6XQ?=
+ =?us-ascii?Q?sWocHh5TqjNFO9MxcaAtSTSvrW/bCUF6cFT8iHAPk/IxlOorYc1kJEQCB133?=
+ =?us-ascii?Q?epNZxmnbvmMsKXfln5SZp1gkbjSyCYbqvMjtXP1y0BKHHbHOO9NC6jJTLYtR?=
+ =?us-ascii?Q?jVg14PkCAxVn/iHmXxnlvPWnZWn7hWYx0TNwM/jTf9WN0EA4GjGJx6Asmnsy?=
+ =?us-ascii?Q?mh2QGhOmUxdRr0HjtQrn0NvaG10zUG75LKKXmZPPAr6lRDcqHzIu9C//S+WK?=
+ =?us-ascii?Q?wgguF/cRFd22/tax3fSJhjZMI0rtijaTzZSBUjjY87+5J9rtLKbav277rxUB?=
+ =?us-ascii?Q?kUbJyqH8e5lyft9n5QK5ItWyktQwohVeYFwdRUsLUafLpFI374MuX9fSLEtg?=
+ =?us-ascii?Q?pHa3vAemSfmMp4kk/kT7adwjDN5ECnURCx7ZhrIDY9RYojH1jmOWha57fYXA?=
+ =?us-ascii?Q?SIv0gaG1DpXYGNV5pDu7U4ubAyV4OW0acJNvfiFfk/MKsTk/9MPwsTABObj+?=
+ =?us-ascii?Q?eW6sWnUIYKa1C3zbisTdLaaRb3bBpN5AbSk/czyOOIl6juWYkdggbQ=3D=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-99c3d.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a1b70a7-d319-42cd-3431-08da1218e2d0
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB7009.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2022 06:45:32.4869
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB8686
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Configure regulators used by the wifi hardware and enable it.
+Joel Selvaraj (4):
+  arm64: dts: qcom: sdm845-xiaomi-beryllium: change firmware path and
+    use mbn format
+  arm64: dts: qcom: sdm845-xiaomi-beryllium: enable qcom ipa driver
+  arm64: dts: qcom: sdm845-xiaomi-beryllium: fix typo in panel's
+    vddio-supply property
+  arm64: dts: qcom: sdm845-xiaomi-beryllium: enable second wifi channel
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../boot/dts/qcom/sdm845-xiaomi-beryllium.dts | 23 +++++++++++++++----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-index 1bb719ef6a02..ea7f2a31399b 100644
---- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-+++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-@@ -404,3 +404,13 @@ &usb_1_qmpphy {
- 	vdda-phy-supply = <&vreg_l22a>;
- 	vdda-pll-supply = <&vreg_l16a>;
- };
-+
-+&wifi {
-+	status = "okay";
-+
-+	vdd-0.8-cx-mx-supply = <&vreg_l4a>;
-+	vdd-1.8-xo-supply = <&vreg_l7a>;
-+	vdd-1.3-rfa-supply = <&vreg_l2e>;
-+	vdd-3.3-ch0-supply = <&vreg_l10e>;
-+	vdd-3.3-ch1-supply = <&vreg_l11e>;
-+};
 -- 
 2.35.1
 
