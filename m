@@ -2,78 +2,90 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 255E1C433F5
-	for <phone-devel@archiver.kernel.org>; Wed,  6 Apr 2022 17:54:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B58ADC433EF
+	for <phone-devel@archiver.kernel.org>; Wed,  6 Apr 2022 17:57:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239594AbiDFRzz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 6 Apr 2022 13:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40340 "EHLO
+        id S239805AbiDFR7A (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 6 Apr 2022 13:59:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239693AbiDFRzh (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Apr 2022 13:55:37 -0400
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22F214405D3;
-        Wed,  6 Apr 2022 09:05:12 -0700 (PDT)
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-e2442907a1so3029327fac.8;
-        Wed, 06 Apr 2022 09:05:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=MpA4CfNVqRRzfNI0NZazohhpjC3Wdx9B0oPB6HfE+1c=;
-        b=ZCruhWHRnvWp3O8B/q7fFIEsktNyHuDsn3qz7ofQHoZ3z+pHNPqKU5ybwV4BxLSEGb
-         RAmGu0P1kYxH80xSL9gMkGgNkDsCoNxSCsCbRVjyd3oaBqIHyYk7N8tIW5Zoeh5wtJhf
-         1PtPC/w5aHo+/CP4OlFE9h6kLVRwFolXRORDuBjynt9mHDIkoKCZJpVIVFmgcpfIMymk
-         AnBfWbGeC1ETs2zJ2E5BuVx+4nkyG49PLe5kmAYC/c7L0K9BoCbV3QEWxVglKHHfdYjY
-         ZNJsFw5cEE1f8X/jfPpUK8XDqBZVBSEACQGOvy7P8RL1vtZ2OOYKmGgBwEiDXuuF4fVA
-         31SA==
-X-Gm-Message-State: AOAM533QeTLZ3TuCCmzONbYhaxP2Qm2a62nbXKJ89Eq0kAnZ0qQmu3Eo
-        tbcCD2Bn6OQ+VWaKjQcODA==
-X-Google-Smtp-Source: ABdhPJxWnogmTkLiwRUqI1DLFzJoxqP9hindg9vBS92SZbO9tvjdBwxEVyklhAyB6REgphp91XXYvw==
-X-Received: by 2002:a05:6870:5b9e:b0:cf:f6de:3e89 with SMTP id em30-20020a0568705b9e00b000cff6de3e89mr4372076oab.94.1649261111777;
-        Wed, 06 Apr 2022 09:05:11 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id w39-20020a056830412700b005cda87bbdcesm7033390ott.6.2022.04.06.09.05.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Apr 2022 09:05:11 -0700 (PDT)
-Received: (nullmailer pid 2331636 invoked by uid 1000);
-        Wed, 06 Apr 2022 16:05:10 -0000
-Date:   Wed, 6 Apr 2022 11:05:10 -0500
-From:   Rob Herring <robh@kernel.org>
+        with ESMTP id S239997AbiDFR6i (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Apr 2022 13:58:38 -0400
+Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [5.144.164.166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98E013BD273
+        for <phone-devel@vger.kernel.org>; Wed,  6 Apr 2022 09:18:44 -0700 (PDT)
+Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id A8F573F40B;
+        Wed,  6 Apr 2022 18:18:40 +0200 (CEST)
+Date:   Wed, 6 Apr 2022 18:18:39 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     Joel Selvaraj <jo@jsfamily.in>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+Cc:     Sumit Semwal <sumit.semwal@linaro.org>,
         Thierry Reding <thierry.reding@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        David Airlie <airlied@linux.ie>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Amit Pundir <amit.pundir@linaro.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Sam Ravnborg <sam@ravnborg.org>,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Amit Pundir <amit.pundir@linaro.org>
+Subject: Re: [PATCH v2 1/3] drm/panel: nt36672a: add backlight support
+Message-ID: <20220406161839.srtt7c5eywp56i43@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Joel Selvaraj <jo@jsfamily.in>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Rob Herring <robh+dt@kernel.org>,
         Andy Gross <agross@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v2 2/3] dt-bindings: display: novatek,nt36672a: add
- backlight property
-Message-ID: <Yk26Nli4RXgV5KgK@robh.at.kernel.org>
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Amit Pundir <amit.pundir@linaro.org>
 References: <20220401001810.81507-1-jo@jsfamily.in>
- <BY5PR02MB70090BB5D8C7D655BEE0642FD9E09@BY5PR02MB7009.namprd02.prod.outlook.com>
+ <BY5PR02MB700935F5817128CB7C3991CDD9E09@BY5PR02MB7009.namprd02.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BY5PR02MB70090BB5D8C7D655BEE0642FD9E09@BY5PR02MB7009.namprd02.prod.outlook.com>
+In-Reply-To: <BY5PR02MB700935F5817128CB7C3991CDD9E09@BY5PR02MB7009.namprd02.prod.outlook.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 01 Apr 2022 05:48:09 +0530, Joel Selvaraj wrote:
-> Add backlight property and update example to include it.
+On 2022-04-01 05:48:08, Joel Selvaraj wrote:
+> Add support for backlight. This panel supports backlight control
+> through the QCOM WLED driver in Xiaomi Poco F1 device.
 > 
 > Signed-off-by: Joel Selvaraj <jo@jsfamily.in>
-> ---
->  .../devicetree/bindings/display/panel/novatek,nt36672a.yaml     | 2 ++
->  1 file changed, 2 insertions(+)
-> 
 
-Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+
+> ---
+>  drivers/gpu/drm/panel/panel-novatek-nt36672a.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
+> index 231f371901e8..6d6ce42787e2 100644
+> --- a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
+> +++ b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
+> @@ -628,6 +628,10 @@ static int nt36672a_panel_add(struct nt36672a_panel *pinfo)
+>  
+>  	drm_panel_init(&pinfo->base, dev, &panel_funcs, DRM_MODE_CONNECTOR_DSI);
+>  
+> +	ret = drm_panel_of_backlight(&pinfo->base);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to get backlight\n");
+> +
+>  	drm_panel_add(&pinfo->base);
+>  
+>  	return 0;
+> -- 
+> 2.35.1
+> 
