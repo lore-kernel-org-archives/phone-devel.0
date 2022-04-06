@@ -2,25 +2,25 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0998CC433EF
-	for <phone-devel@archiver.kernel.org>; Wed,  6 Apr 2022 17:46:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A32FC43219
+	for <phone-devel@archiver.kernel.org>; Wed,  6 Apr 2022 17:51:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239365AbiDFRsh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 6 Apr 2022 13:48:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39264 "EHLO
+        id S239520AbiDFRxD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 6 Apr 2022 13:53:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239956AbiDFRr5 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Apr 2022 13:47:57 -0400
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [5.144.164.167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3CA0181D93;
-        Wed,  6 Apr 2022 09:23:29 -0700 (PDT)
+        with ESMTP id S240074AbiDFRwu (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Apr 2022 13:52:50 -0400
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [5.144.164.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A0401A396A
+        for <phone-devel@vger.kernel.org>; Wed,  6 Apr 2022 09:21:39 -0700 (PDT)
 Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 890A43F756;
-        Wed,  6 Apr 2022 18:23:27 +0200 (CEST)
-Date:   Wed, 6 Apr 2022 18:23:26 +0200
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id BAE3E3F6AE;
+        Wed,  6 Apr 2022 18:21:37 +0200 (CEST)
+Date:   Wed, 6 Apr 2022 18:21:36 +0200
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     Joel Selvaraj <jo@jsfamily.in>
 Cc:     Sumit Semwal <sumit.semwal@linaro.org>,
@@ -35,9 +35,9 @@ Cc:     Sumit Semwal <sumit.semwal@linaro.org>,
         linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Amit Pundir <amit.pundir@linaro.org>
-Subject: Re: [PATCH v2 2/3] dt-bindings: display: novatek,nt36672a: add
- backlight property
-Message-ID: <20220406162326.eptnln622w65juts@SoMainline.org>
+Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: sdm845-xiaomi-beryllium: enable
+ qcom wled backlight and link to panel
+Message-ID: <20220406162136.g4lwvhnm3xnyupuu@SoMainline.org>
 Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
         Joel Selvaraj <jo@jsfamily.in>,
         Sumit Semwal <sumit.semwal@linaro.org>,
@@ -51,46 +51,71 @@ Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Amit Pundir <amit.pundir@linaro.org>
 References: <20220401001810.81507-1-jo@jsfamily.in>
- <BY5PR02MB70090BB5D8C7D655BEE0642FD9E09@BY5PR02MB7009.namprd02.prod.outlook.com>
+ <BY5PR02MB70092607CD7CDD8CF8BCD464D9E09@BY5PR02MB7009.namprd02.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BY5PR02MB70090BB5D8C7D655BEE0642FD9E09@BY5PR02MB7009.namprd02.prod.outlook.com>
+In-Reply-To: <BY5PR02MB70092607CD7CDD8CF8BCD464D9E09@BY5PR02MB7009.namprd02.prod.outlook.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-04-01 05:48:09, Joel Selvaraj wrote:
-> Add backlight property and update example to include it.
+On 2022-04-01 05:48:10, Joel Selvaraj wrote:
+> Xiaomi Poco F1 uses the QCOM WLED driver for backlight control.
+> Enable and link it to the panel to use it.
 > 
 > Signed-off-by: Joel Selvaraj <jo@jsfamily.in>
 
 Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
 
 > ---
->  .../devicetree/bindings/display/panel/novatek,nt36672a.yaml     | 2 ++
->  1 file changed, 2 insertions(+)
+> Changes in v2:
+>  - Remove qcom,enabled-strings property as either it or qcom,num-strings
+>    should be present. qcom,num-strings is specified and sufficient.
+>    (Marijn Suijten's Suggestion)
+
+Thanks :)
+
+>  arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
-> index 563766d283f6..41ee3157a1cd 100644
-> --- a/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
-> +++ b/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
-> @@ -46,6 +46,7 @@ properties:
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+> index 798fc72578a7..d88dc07205f7 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+> @@ -231,6 +231,7 @@ panel@0 {
+>  		#address-cells = <1>;
+>  		#size-cells = <0>;
 >  
->    reg: true
->    port: true
-> +  backlight: true
+> +		backlight = <&pmi8998_wled>;
+>  		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
 >  
->  required:
->    - compatible
-> @@ -73,6 +74,7 @@ examples:
->              vddpos-supply = <&lab>;
->              vddneg-supply = <&ibb>;
+>  		port {
+> @@ -314,6 +315,17 @@ vol_up_pin_a: vol-up-active {
+>  	};
+>  };
 >  
-> +            backlight = <&pmi8998_wled>;
->              reset-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
->  
->              port {
+> +&pmi8998_wled {
+> +	status = "okay";
+> +	qcom,current-boost-limit = <970>;
+> +	qcom,ovp-millivolt = <29600>;
+> +	qcom,current-limit-microamp = <20000>;
+> +	qcom,num-strings = <2>;
+> +	qcom,switching-freq = <600>;
+> +	qcom,external-pfet;
+> +	qcom,cabc;
+
+Unlike the number of connected strings and configured ovp/current
+limits, aren't external-pfet (and probably switching-freq, perhaps CABC)
+hardware features that are common across all users of `pmi8998`?
+
+- Marijn
+
+> +};
+> +
+>  &pm8998_pon {
+>  	resin {
+>  		compatible = "qcom,pm8941-resin";
 > -- 
 > 2.35.1
 > 
