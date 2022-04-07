@@ -2,90 +2,90 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B58ADC433EF
-	for <phone-devel@archiver.kernel.org>; Wed,  6 Apr 2022 17:57:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0A2BC433F5
+	for <phone-devel@archiver.kernel.org>; Thu,  7 Apr 2022 10:18:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239805AbiDFR7A (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 6 Apr 2022 13:59:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53180 "EHLO
+        id S232526AbiDGKUB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 7 Apr 2022 06:20:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239997AbiDFR6i (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Apr 2022 13:58:38 -0400
-Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [5.144.164.166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98E013BD273
-        for <phone-devel@vger.kernel.org>; Wed,  6 Apr 2022 09:18:44 -0700 (PDT)
-Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id A8F573F40B;
-        Wed,  6 Apr 2022 18:18:40 +0200 (CEST)
-Date:   Wed, 6 Apr 2022 18:18:39 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Joel Selvaraj <jo@jsfamily.in>
-Cc:     Sumit Semwal <sumit.semwal@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Amit Pundir <amit.pundir@linaro.org>
-Subject: Re: [PATCH v2 1/3] drm/panel: nt36672a: add backlight support
-Message-ID: <20220406161839.srtt7c5eywp56i43@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Joel Selvaraj <jo@jsfamily.in>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Rob Herring <robh+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Amit Pundir <amit.pundir@linaro.org>
-References: <20220401001810.81507-1-jo@jsfamily.in>
- <BY5PR02MB700935F5817128CB7C3991CDD9E09@BY5PR02MB7009.namprd02.prod.outlook.com>
+        with ESMTP id S242823AbiDGKUA (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 7 Apr 2022 06:20:00 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 045191275BD;
+        Thu,  7 Apr 2022 03:17:59 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id p15so8775187lfk.8;
+        Thu, 07 Apr 2022 03:17:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=R23eSOYeKnVIkjdK9W7sc64FQ0WoMp1PYcNJNNlM9q8=;
+        b=LCCY2AGWZ59w4m8u4Zq3C46NPZiwUhM/BQyPVysOwHWpHwQWzUooRR7sEFOE0MXoRh
+         H96HxipCICxV3kBucZhdutpHg2sj6grvReAAkY448TOB+yx9qRqqTr/7p/GeaTeFkFbE
+         OOYznV/0UmyISeUOfskgi8RS62Qjmn5UDC/nFgCAbwc9uMM4j3kNTWLHway8iY/Nf5oN
+         HGxLQGlEh/o9VBp58LdMbkJ0TS7YuOaTdVrnr5J+Oxgu7o/NNnYf1YJZIq0xxSIrwu34
+         jH4pbMNnK0E+cr0o/X5sL2/lY0cnZ2a3VQg3/Aar4uWcogQRcmRAVCG99bK+KKp+ZglG
+         b4Iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=R23eSOYeKnVIkjdK9W7sc64FQ0WoMp1PYcNJNNlM9q8=;
+        b=LdnBNx6S70iNeneAhLcH731X57vqzxs2sr4m8CaMca6+r6lSvN7mLJbutwa/KgyclG
+         Sq6TqR1xgKiEKOTCcr19op9U3tJeRGBYRDxBJXCPwFVWbZ0mzwheTuVBOIpKN4xfYYOh
+         RDt5vUca8WID1E6w2TrDVAYXLiOEpXHexcJndofLbZ4jK8jimLXshEazEMPCSgc+wl5H
+         T4HHY0kEqZtrjf0C6rarDw/Fd4JI1VP+wpISDr+hl4ngHnJFbRRLgBCppR0cjYjK8RHG
+         5Yc3AOzlFYuxu6AtmlgjBIwMJPj0SThcazKHZBtEPF71Hdr719KzbdfRZXnDy02G+QC6
+         OTKg==
+X-Gm-Message-State: AOAM532L9cX2mxtYCi76ByeyZ3sShD/2JD3nxckmHU2ZDu61kuOEJaRE
+        NToREEmbePF+SmvUOBGkb3XB7km8AgE=
+X-Google-Smtp-Source: ABdhPJxg3ZbrgiCbN+q3qlkjV//3PevfiKjzGQeO4D4J2bBOvaV9lASYgS5QozSakWrKYPqRoX6/dQ==
+X-Received: by 2002:a05:6512:10c9:b0:44a:fea7:50ac with SMTP id k9-20020a05651210c900b0044afea750acmr8775459lfg.680.1649326676971;
+        Thu, 07 Apr 2022 03:17:56 -0700 (PDT)
+Received: from nergzd-desktop.localdomain ([194.39.226.133])
+        by smtp.gmail.com with ESMTPSA id d2-20020a194f02000000b0044a2b77cd8dsm2121656lfb.105.2022.04.07.03.17.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Apr 2022 03:17:56 -0700 (PDT)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH 0/2] Make AUX gpio pin optional for ktd2692
+Date:   Thu,  7 Apr 2022 13:10:04 +0300
+Message-Id: <20220407101034.13122-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BY5PR02MB700935F5817128CB7C3991CDD9E09@BY5PR02MB7009.namprd02.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-04-01 05:48:08, Joel Selvaraj wrote:
-> Add support for backlight. This panel supports backlight control
-> through the QCOM WLED driver in Xiaomi Poco F1 device.
-> 
-> Signed-off-by: Joel Selvaraj <jo@jsfamily.in>
+Some appliances of ktd2692 don't have the AUX pin connected to
+a GPIO. Specifically, Samsung Galaxy J5 (2015), which uses ktd2692
+for driving the front flash LED, has the pin not connected anywhere on
+schematics. Make specifying the AUX pin optional, since it is additional
+functionality and only affects amount of current going through the LED.
 
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+Also convert the txt device-tree bindings to yaml and pick up maintainership
+over the yaml binding and the driver itself.
 
-> ---
->  drivers/gpu/drm/panel/panel-novatek-nt36672a.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
-> index 231f371901e8..6d6ce42787e2 100644
-> --- a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
-> +++ b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
-> @@ -628,6 +628,10 @@ static int nt36672a_panel_add(struct nt36672a_panel *pinfo)
->  
->  	drm_panel_init(&pinfo->base, dev, &panel_funcs, DRM_MODE_CONNECTOR_DSI);
->  
-> +	ret = drm_panel_of_backlight(&pinfo->base);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to get backlight\n");
-> +
->  	drm_panel_add(&pinfo->base);
->  
->  	return 0;
-> -- 
-> 2.35.1
-> 
+Markuss Broks (2):
+  dt-bindings: leds: convert ktd2692 bindings to yaml
+  leds: ktd2692: Make aux-gpios optional
+
+ .../bindings/leds/kinetic,ktd2692.yaml        | 87 +++++++++++++++++++
+ .../devicetree/bindings/leds/leds-ktd2692.txt | 50 -----------
+ MAINTAINERS                                   |  6 ++
+ drivers/leds/flash/leds-ktd2692.c             | 18 ++--
+ 4 files changed, 103 insertions(+), 58 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/leds/kinetic,ktd2692.yaml
+ delete mode 100644 Documentation/devicetree/bindings/leds/leds-ktd2692.txt
+
+-- 
+2.35.1
+
