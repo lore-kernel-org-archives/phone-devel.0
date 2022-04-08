@@ -2,146 +2,99 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99651C433FE
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 15:05:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 984F7C433EF
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 16:34:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237383AbiDHPHi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 8 Apr 2022 11:07:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38208 "EHLO
+        id S232001AbiDHQgJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 8 Apr 2022 12:36:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237420AbiDHPHe (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 11:07:34 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC4A92405AF
-        for <phone-devel@vger.kernel.org>; Fri,  8 Apr 2022 08:05:30 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id n35so5679418wms.5
-        for <phone-devel@vger.kernel.org>; Fri, 08 Apr 2022 08:05:30 -0700 (PDT)
+        with ESMTP id S231303AbiDHQgJ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 12:36:09 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C849724959;
+        Fri,  8 Apr 2022 09:34:04 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id bu29so16107601lfb.0;
+        Fri, 08 Apr 2022 09:34:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=z2vqFQdPAyfvut6ovQoXQ5XOm4NDygCMv5XEJBGIwVs=;
-        b=kZbVnHdSrExx7M2nYO683DIu9cLpkisfrS1P7V37RaHZVOCRV6srvL65ZqTkgVgpps
-         5es1L1ZX8PiQ6lYbBqafkUOufe0j48/IAtOG7kYWyFGkMUmjVJ8ypzm/SI2w1sdQR5P1
-         2lZroaCY2AVXV4lNW9kMFwge7FxP+Dm2U7tamg63N0QSKHVeVE7TOhT0wwD65RqnVfWu
-         6LgitVy/dU9rQr/Ddx2Q8d1ay/ddTBYfj7X63J9gyHcS0dhn3xZd+JFNG8WqXEqzdkKA
-         sZ8MKmIUPDQRPFgnyPigaKFfyBrT3C6gKcZNb8jiYsr8TRg/uUGPvlXy6QoWviwnHxss
-         smhg==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Pz40nRgvhtcOeXUbzgyo9Hq14GrnezoaHqBr+KLvPIo=;
+        b=NOIUQsr6XphXreR0Ws3aESzt6zh125cSmmUwY+ZOQLs8O6OUb4qHsG8YTp+btiQw3S
+         v6ceYcQ66PpxMlfOA9B1O3YEAvx8LqrXvjN6NrTmrWZwhU/1a2ZrvKyW7SUbW0yDURXY
+         HnF7XNSUNEoPdwlHmVcIvjfGHoiTLwUppVoAIF8JJ/m1m5OTGpCjJ2+vbmLVB4Oo7j0T
+         CmqtGgqhDvLlsNNyJ2k1kc1CDRGTIG3z+BoLPnXJlrcyUGEQ8sy09gkm+XObgLA6h5Bm
+         5gU11d3p60aUF4HiOnVZ/Nc7BXIppHqC8hp5HLQZ9cavka/bgFdYIjMsmLV/5lhvSmKN
+         e11w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=z2vqFQdPAyfvut6ovQoXQ5XOm4NDygCMv5XEJBGIwVs=;
-        b=j9T153kjOX6ewjw0XTibLBVmDHbKFJnRTBuCM12TadZOUEpOycqtUQrK6a2N5FS6iW
-         tp+ZOjYy7dbyt0Ju7O8im3s0D4EgwK8EtERdwFUN+hnyyvN624G3ObP1gRcc5BmIo4ZZ
-         mY7K3N5jRRimGZGtSn3syIKLX4aBXCnr7wogPR5ewXAmAc14umKXL+j8KL+3snj2Hfjz
-         d3G06Q3GhKomhOTofdf8NVKJDDqtThJuppHmV+fcSpHDNYC4JIBRfocCjwRt1VpUAOt+
-         7zqU1/Oxh+J+rMMujmoCRe8ZX4qkMB0WqzJ77kE6qY0L5rRjtY+FiREufgH1DeVy3JO9
-         zBhg==
-X-Gm-Message-State: AOAM531jYplY4FHAmfo3nOmWkCrkd7OR7M30R14thrZyzgubaeih9S14
-        6/Fp509mUHx7LvGpTUItI2iEDM3symTfuOoG
-X-Google-Smtp-Source: ABdhPJzaJKjlfwBc4j57iWbiUBbG/JGU1kd5M0DvZJTA45YHU8Zkq5kzdGmXh1xKiEp/TQEZIXxUVQ==
-X-Received: by 2002:a05:600c:4f42:b0:38c:21:fffe with SMTP id m2-20020a05600c4f4200b0038c0021fffemr17300289wmq.63.1649430329411;
-        Fri, 08 Apr 2022 08:05:29 -0700 (PDT)
-Received: from [192.168.0.188] (xdsl-188-155-201-27.adslplus.ch. [188.155.201.27])
-        by smtp.gmail.com with ESMTPSA id l2-20020a05600c4f0200b0038e8fb63293sm4576689wmq.22.2022.04.08.08.05.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Apr 2022 08:05:28 -0700 (PDT)
-Message-ID: <1a45984a-752b-6bad-0320-f0946d83f2b9@linaro.org>
-Date:   Fri, 8 Apr 2022 17:05:27 +0200
+        bh=Pz40nRgvhtcOeXUbzgyo9Hq14GrnezoaHqBr+KLvPIo=;
+        b=n9WpLAR2eWd5ryIVGxKrH35c3/SDmCQoaB2ndBl/OOYJxOB1IvDtTTqhaMzUqHzRNW
+         0woyDHxcVw7MQ8+AW5Zpa74vTNmV+gONdu79pxTAvkjIA6m1AVOQHxBZyrzwLQ2B5f69
+         CkkdbXMCkBaDwsury9VJbQa38EVbMmyr7aR9nZngfUsnZMxsXhAS22n1iWuzdXwHLKUO
+         020Vb2Wtri4x35iOnViirzURmmwb1+5h7nxTd1KXHVgM5XPegHX9orpfdMdsp2DBk2wz
+         ldalk0CEfpuVlwygPfJJSnjuG3WkHo2vCGfw+brI0VmftYUwbrpgFKCy0D2pSeuS2uDO
+         F0sQ==
+X-Gm-Message-State: AOAM533+GINLp6m4eAHjrnFfoYlRN0gTsGH9Y/WuRMn8hNNAOoTaA9/2
+        eMpPse70oZWrEfmC2HLqzdC+4yu1wFs=
+X-Google-Smtp-Source: ABdhPJxq6jWHs4Q8uMOLnsxSSSKI55rbTZr/y0gclVa6MyldkPT7fEd3IQU521XN1VdJl8L7ZCJOIg==
+X-Received: by 2002:a05:6512:4002:b0:46b:8490:2ba3 with SMTP id br2-20020a056512400200b0046b84902ba3mr2565733lfb.632.1649435642808;
+        Fri, 08 Apr 2022 09:34:02 -0700 (PDT)
+Received: from nergzd-desktop.localdomain ([194.39.226.133])
+        by smtp.gmail.com with ESMTPSA id q4-20020a0565123a8400b0044a27a8c63asm2495403lfu.80.2022.04.08.09.34.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Apr 2022 09:34:02 -0700 (PDT)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH v4 0/2] Make AUX gpio pin optional for ktd2692
+Date:   Fri,  8 Apr 2022 19:33:26 +0300
+Message-Id: <20220408163330.200898-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH 1/3] dt-bindings: input: Add bindings for Awinic AW8695
- haptics
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>, linux-input@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220408115311.237039-1-luca.weiss@fairphone.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220408115311.237039-1-luca.weiss@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 08/04/2022 13:53, Luca Weiss wrote:
-> Add a document describing the bindings for the AW8695 LRA Haptic Driver.
+Some appliances of ktd2692 don't have the AUX pin connected to
+a GPIO. Specifically, Samsung Galaxy J5 (2015), which uses ktd2692
+for driving the front flash LED, has the pin not connected anywhere on
+schematics. Make specifying the AUX pin optional, since it is additional
+functionality and only affects amount of current going through the LED.
 
-(...)
+Also convert the txt device-tree bindings to yaml and pick up maintenance
+over the yaml binding and the driver itself.
 
-> +  reset-gpios:
-> +    maxItems: 1
-> +    description: GPIO connected to RSTN pin (active high)
-> +
-> +  awinic,f0-preset:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Default value for the f0 of LRA
-> +
-> +  awinic,f0-coefficient:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Coefficient between actual f0 and the value in the registers
-> +
-> +  awinic,f0-calibration-percent:
-> +    maxItems: 1
-> +    description: Limit of f0 deviation from awinic,f0-preset
-> +
-> +  awinic,drive-level:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Level of drive waveform in normal driving
-> +
-> +  awinic,f0-detection-play-time:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Drive waveform play times in the first period in the f0 detection
+v2:
+- fix the dt_binding_check
+v3:
+- set the aux_gpio to NULL to avoid passing ERR_PTR as a gpio
+v4:
+- maintainership -> maintenance (description)
+- remove the if (led->aux_gpio)
+- use devm_gpiod_get_optional for aux gpio
 
-Use standard unit suffixes for known units (e.g. time).
+Markuss Broks (2):
+  dt-bindings: leds: convert ktd2692 bindings to yaml
+  leds: ktd2692: Make aux-gpios optional
 
-> +
-> +  awinic,f0-detection-wait-time:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Waveform wait times in the f0 detection
+ .../bindings/leds/kinetic,ktd2692.yaml        | 87 +++++++++++++++++++
+ .../devicetree/bindings/leds/leds-ktd2692.txt | 50 -----------
+ MAINTAINERS                                   |  6 ++
+ drivers/leds/flash/leds-ktd2692.c             | 18 ++--
+ 4 files changed, 103 insertions(+), 58 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/leds/kinetic,ktd2692.yaml
+ delete mode 100644 Documentation/devicetree/bindings/leds/leds-ktd2692.txt
 
-Ditto.
+-- 
+2.35.1
 
-> +
-> +  awinic,f0-detection-repeat:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Repeat times in the f0 detection
-> +
-> +  awinic,f0-detection-trace:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Drive waveform play times in the second period and later in the f0 detection
-> +
-> +  awinic,boost-debug:
-> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> +    minItems: 3
-> +    maxItems: 3
-> +    description: Values for BSTDBG1-3 registers
-
-Do not encode device programming model (registers) into the binding. You
-need to define it as a property related to hardware itself, not its
-registers (e.g. boost value in mV).
-
-> +
-> +  awinic,tset:
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-> +    description: Value for TSET register
-
-Ditto.
-
-> +
-> +  awinic,r-spare:
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-> +    description: Value for R_SPARE register
-
-Ditto.
-
-
-Best regards,
-Krzysztof
