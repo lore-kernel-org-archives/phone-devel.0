@@ -2,254 +2,101 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A57DC433EF
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 17:26:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C4100C433F5
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 17:59:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238147AbiDHR2H (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 8 Apr 2022 13:28:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53492 "EHLO
+        id S229523AbiDHSBo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 8 Apr 2022 14:01:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230268AbiDHR2H (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 13:28:07 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 011D5ECB20;
-        Fri,  8 Apr 2022 10:26:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649438762; x=1680974762;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7TpvQCspyDtMRrhPPjoBqo4eTzVYuAJZTGqg9RPtf94=;
-  b=Lp4uaZIoreS3Q7GmWTUpa7/paUKezfZ3nF7QT0AXR2NekrK/V3mpBoro
-   aont9Q9aTym8M6amAzeM2Eq772iTrG0ulVQxs5jEMLLXoV6Fhe5Bns7Vx
-   x3bgIWd7zxtw42tiHdO6dLbCPfx0rNuVL1xLDIW8i2tE8uATDCP2JL3DT
-   IxVxJMyoRTmheckbYClUXqWRoPqjGy/gS8f2VHaRfEeFdRg7vNI6+/cAn
-   2oniVyNLAds1ymItv238DwHpVmWiDA5PeFN4IR1J7JLrzMp+HgmQ7Cdng
-   gEaVRz6TpwYZHgMCRk3lOXBTstoGzPEJ9sBGfTVhHoGHnVTaChd2PVoMh
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10310"; a="261334974"
-X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
-   d="scan'208";a="261334974"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 10:26:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
-   d="scan'208";a="642978789"
-Received: from lkp-server02.sh.intel.com (HELO 7e80bc2a00a0) ([10.239.97.151])
-  by FMSMGA003.fm.intel.com with ESMTP; 08 Apr 2022 10:25:58 -0700
-Received: from kbuild by 7e80bc2a00a0 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1ncsMv-0000Ur-Oo;
-        Fri, 08 Apr 2022 17:25:57 +0000
-Date:   Sat, 9 Apr 2022 01:25:22 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Luca Weiss <luca.weiss@fairphone.com>, linux-input@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        with ESMTP id S229654AbiDHSBn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 14:01:43 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E986A188575;
+        Fri,  8 Apr 2022 10:59:38 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id k21so16376622lfe.4;
+        Fri, 08 Apr 2022 10:59:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=l8ldH75DpUXw+cHOPkEL+Os84zbLfTTSbUgqmJGQe1Q=;
+        b=AeHcwHeYzcVI0VlIAFuPe4/2CgMzqgX8RQSxvaf93TM/s6oymRkMmus1agso0Ey3S6
+         Xfs8MMc6wSWOsGRYj6Npf/ybntjKWqN7UniO4O83VMAL/OtXij4hp1K2s020KwUUMNKh
+         bNCjid8cSKYuk992sGLkoGDesjCDvcUSsCe4t9S1ysga3Ckl1MXTELZ+P3YjtxDTu53Q
+         1mhXmvVenMn8WA+Oe9NbaSlCg/53/coCB3Pwdjq75u8QIfZlsc3QZMzvcGtM+UeV3K+q
+         +zct323QhgH5BTxetif7VYNcEr/8Bl4UVjIMgfe8l8TY1IVY5aL+E7H77umexPirwbor
+         h+PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=l8ldH75DpUXw+cHOPkEL+Os84zbLfTTSbUgqmJGQe1Q=;
+        b=g/71uxphlYOU7F8ldrdyitUegAS09KKDhD3l3BB3nwaxL7tVgClCONQP6eSopXPVup
+         o34Dxd8j1th/7fvbmor9MlmBzil/09Py3pRzznx0Rn1maZW/4QL6g990bgtVQrHZGUdH
+         vAeNWLKI1fpUgkrRlWcsuuhSSG+yoYPZOTBU5dah9A9bzQTEDb3piZwN/5wh39Lij0C/
+         KTciCQ+Qg2xPLpVV5CprrLph0OxqzwBp8g7Km6z1kma0Rs2EnHJxUPKUxWtHs6rsxe5x
+         wmULEsGXdP7+6SGEznlhPNwWjvdiu8sPsH6bmVOkg6yk+//TlKqu3tKfv1lZhoYOQf7v
+         8lbg==
+X-Gm-Message-State: AOAM530ua6CZgswxJX3XZMx7I0eePwNnobQO2LZ7s14H0T1gGMienkM5
+        Q4cC/PWSiQ1ayXHFyxVwf5EZTbyXpoA=
+X-Google-Smtp-Source: ABdhPJzlbv3TypspOgqHa0j5UXcJ3yBiFClekaUzswai6xLSLWg7iqcQk2yhL2HM0+t+BdUgY3sxWw==
+X-Received: by 2002:a05:6512:68d:b0:44a:cc2:78b5 with SMTP id t13-20020a056512068d00b0044a0cc278b5mr12990324lfe.43.1649440776788;
+        Fri, 08 Apr 2022 10:59:36 -0700 (PDT)
+Received: from nergzd-desktop.localdomain ([194.39.226.133])
+        by smtp.gmail.com with ESMTPSA id p3-20020a056512312300b0046b83c2f92fsm272456lfd.58.2022.04.08.10.59.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Apr 2022 10:59:36 -0700 (PDT)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] Input - aw8695: Add driver for AW8695 haptics
-Message-ID: <202204090150.l1wQZ8IR-lkp@intel.com>
-References: <20220408115311.237039-2-luca.weiss@fairphone.com>
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH v5 0/2] Make AUX gpio pin optional for ktd2692
+Date:   Fri,  8 Apr 2022 20:59:25 +0300
+Message-Id: <20220408175929.281453-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220408115311.237039-2-luca.weiss@fairphone.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Luca,
+Some appliances of ktd2692 don't have the AUX pin connected to
+a GPIO. Specifically, Samsung Galaxy J5 (2015), which uses ktd2692
+for driving the front flash LED, has the pin not connected anywhere on
+schematics. Make specifying the AUX pin optional, since it is additional
+functionality and only affects amount of current going through the LED.
 
-Thank you for the patch! Yet something to improve:
+Also convert the txt device-tree bindings to yaml and pick up maintenance
+over the yaml binding and the driver itself.
 
-[auto build test ERROR on dtor-input/next]
-[also build test ERROR on hid/for-next robh/for-next v5.18-rc1 next-20220408]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+v2:
+- fix the dt_binding_check
+v3:
+- set the aux_gpio to NULL to avoid passing ERR_PTR as a gpio
+v4:
+- maintainership -> maintenance (description)
+- remove the if (led->aux_gpio)
+- use devm_gpiod_get_optional for aux gpio
+v5:
+- use ret to pass a correct error return code (Christophe)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Luca-Weiss/dt-bindings-input-Add-bindings-for-Awinic-AW8695-haptics/20220408-195432
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
-config: arc-allyesconfig (https://download.01.org/0day-ci/archive/20220409/202204090150.l1wQZ8IR-lkp@intel.com/config)
-compiler: arceb-elf-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/df1f510ce633a7d4a6cd3722620980961b39961b
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Luca-Weiss/dt-bindings-input-Add-bindings-for-Awinic-AW8695-haptics/20220408-195432
-        git checkout df1f510ce633a7d4a6cd3722620980961b39961b
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=arc SHELL=/bin/bash
+Markuss Broks (2):
+  dt-bindings: leds: convert ktd2692 bindings to yaml
+  leds: ktd2692: Make aux-gpios optional
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   drivers/input/misc/aw8695-haptics.c: In function 'aw8695_haptic_read_f0':
->> drivers/input/misc/aw8695-haptics.c:795:18: error: implicit declaration of function 'FIELD_PREP' [-Werror=implicit-function-declaration]
-     795 |         f0_reg = FIELD_PREP(AW8695_HIGH_MASK, read_buf);
-         |                  ^~~~~~~~~~
-   drivers/input/misc/aw8695-haptics.c: In function 'aw8695_haptic_get_f0':
->> drivers/input/misc/aw8695-haptics.c:862:25: error: implicit declaration of function 'FIELD_GET'; did you mean 'FOLL_GET'? [-Werror=implicit-function-declaration]
-     862 |                         FIELD_GET(AW8695_HIGH_MASK, f0_reg));
-         |                         ^~~~~~~~~
-         |                         FOLL_GET
-   cc1: some warnings being treated as errors
-
-
-vim +/FIELD_PREP +795 drivers/input/misc/aw8695-haptics.c
-
-   783	
-   784	static int aw8695_haptic_read_f0(struct aw8695_data *haptics)
-   785	{
-   786		struct device *dev = &haptics->client->dev;
-   787		unsigned long f0;
-   788		unsigned int f0_reg;
-   789		unsigned int read_buf;
-   790		int err;
-   791	
-   792		err = regmap_read(haptics->regmap, AW8695_F_LRA_F0_H, &read_buf);
-   793		if (err)
-   794			return err;
- > 795		f0_reg = FIELD_PREP(AW8695_HIGH_MASK, read_buf);
-   796	
-   797		err = regmap_read(haptics->regmap, AW8695_F_LRA_F0_L, &read_buf);
-   798		if (err)
-   799			return err;
-   800		f0_reg |= FIELD_PREP(AW8695_LOW_MASK, read_buf);
-   801	
-   802		if (!f0_reg) {
-   803			dev_err(dev, "Failed to read f0 value!\n");
-   804			return -EINVAL;
-   805		}
-   806	
-   807		f0 = 1000000000 / (f0_reg * haptics->f0_coefficient);
-   808		dev_dbg(dev, "Read new f0: %d\n", (int)f0);
-   809	
-   810		return (int)f0;
-   811	}
-   812	
-   813	static int aw8695_haptic_get_f0(struct aw8695_data *haptics)
-   814	{
-   815		struct device *dev = &haptics->client->dev;
-   816		unsigned int read_buf;
-   817		unsigned int f0_trace_ms;
-   818		unsigned int f0_reg;
-   819		int f0;
-   820		int err;
-   821	
-   822		err = aw8695_haptics_stop(haptics);
-   823		if (err)
-   824			return err;
-   825	
-   826		err = regmap_write(haptics->regmap, AW8695_TRIM_LRA, 0x00);
-   827		if (err)
-   828			return err;
-   829	
-   830		err = aw8695_set_work_mode(haptics, AW8695_CONT_MODE);
-   831		if (err)
-   832			return err;
-   833	
-   834		err = regmap_update_bits(haptics->regmap, AW8695_CONT_CTRL,
-   835			AW8695_CONT_CTRL_EN_CLOSE_MASK, AW8695_CONT_CTRL_OPEN_PLAYBACK);
-   836		if (err)
-   837			return err;
-   838		err = regmap_update_bits(haptics->regmap, AW8695_CONT_CTRL,
-   839			AW8695_CONT_CTRL_F0_DETECT_ENABLE, AW8695_CONT_CTRL_F0_DETECT_ENABLE);
-   840		if (err)
-   841			return err;
-   842	
-   843		/* LPF */
-   844		err = regmap_update_bits(haptics->regmap, AW8695_DATCTRL,
-   845			AW8695_DATCTRL_FC_MASK, AW8695_DATCTRL_FC_1000HZ);
-   846		if (err)
-   847			return err;
-   848		err = regmap_update_bits(haptics->regmap, AW8695_DATCTRL,
-   849			AW8695_DATCTRL_LPF_ENABLE_MASK, AW8695_DATCTRL_LPF_ENABLE);
-   850		if (err)
-   851			return err;
-   852	
-   853		/* LRA OSC Source */
-   854		err = regmap_update_bits(haptics->regmap, AW8695_ANACTRL,
-   855			AW8695_ANACTRL_LRA_SRC_MASK, AW8695_ANACTRL_LRA_SRC_REG);
-   856		if (err)
-   857			return err;
-   858	
-   859		/* preset f0 */
-   860		f0_reg = 1000000000 / (haptics->f0_preset * haptics->f0_coefficient);
-   861		err = regmap_write(haptics->regmap, AW8695_F_PRE_H,
- > 862				FIELD_GET(AW8695_HIGH_MASK, f0_reg));
-   863		if (err)
-   864			return err;
-   865		err = regmap_write(haptics->regmap, AW8695_F_PRE_L,
-   866				FIELD_GET(AW8695_LOW_MASK, f0_reg));
-   867		if (err)
-   868			return err;
-   869	
-   870		/* f0 driver level */
-   871		err = regmap_write(haptics->regmap, AW8695_DRV_LVL, haptics->drive_level);
-   872		if (err)
-   873			return err;
-   874	
-   875		/* f0 trace parameter */
-   876		err = regmap_write(haptics->regmap, AW8695_NUM_F0_1,
-   877				FIELD_PREP(AW8695_NUM_F0_1_PRE_MASK, haptics->f0_det_play) |
-   878				FIELD_PREP(AW8695_NUM_F0_1_WAIT_MASK, haptics->f0_det_wait));
-   879		if (err)
-   880			return err;
-   881		err = regmap_write(haptics->regmap, AW8695_NUM_F0_2, haptics->f0_det_repeat);
-   882		if (err)
-   883			return err;
-   884		err = regmap_write(haptics->regmap, AW8695_NUM_F0_3, haptics->f0_det_trace);
-   885		if (err)
-   886			return err;
-   887	
-   888		err = aw8695_interrupt_clear(haptics);
-   889		if (err)
-   890			return err;
-   891	
-   892		/* play go and start f0 calibration */
-   893		err = regmap_update_bits(haptics->regmap, AW8695_GO,
-   894			AW8695_GO_ENABLE, AW8695_GO_ENABLE);
-   895		if (err)
-   896			return err;
-   897	
-   898		/* f0 trace time */
-   899		f0_trace_ms =
-   900			(1000 * 10 / haptics->f0_preset) * (haptics->f0_det_play + haptics->f0_det_wait +
-   901			(haptics->f0_det_trace + haptics->f0_det_wait) * (haptics->f0_det_repeat - 1));
-   902		usleep_range(f0_trace_ms * 1000, f0_trace_ms * 1000 + 500);
-   903	
-   904		err = regmap_read_poll_timeout(haptics->regmap, AW8695_GLB_STATE, read_buf,
-   905				(read_buf & 0x0f) == 0, 10000, 10000 * 50);
-   906		if (err) {
-   907			dev_err(dev, "Did not enter standby: %d\n", err);
-   908			return err;
-   909		}
-   910	
-   911		f0 = aw8695_haptic_read_f0(haptics);
-   912	
-   913		/* restore default config */
-   914		err = regmap_update_bits(haptics->regmap, AW8695_CONT_CTRL,
-   915			AW8695_CONT_CTRL_EN_CLOSE_MASK, AW8695_CONT_CTRL_CLOSE_PLAYBACK);
-   916		if (err)
-   917			return err;
-   918		err = regmap_update_bits(haptics->regmap, AW8695_CONT_CTRL,
-   919			AW8695_CONT_CTRL_F0_DETECT_ENABLE, 0);
-   920		if (err)
-   921			return err;
-   922	
-   923		return f0;
-   924	}
-   925	
+ .../bindings/leds/kinetic,ktd2692.yaml        | 87 +++++++++++++++++++
+ .../devicetree/bindings/leds/leds-ktd2692.txt | 50 -----------
+ MAINTAINERS                                   |  6 ++
+ drivers/leds/flash/leds-ktd2692.c             | 18 ++--
+ 4 files changed, 103 insertions(+), 58 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/leds/kinetic,ktd2692.yaml
+ delete mode 100644 Documentation/devicetree/bindings/leds/leds-ktd2692.txt
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.35.1
+
