@@ -2,97 +2,129 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A9C8C433EF
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 11:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77E85C433EF
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 11:43:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233709AbiDHL1q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 8 Apr 2022 07:27:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33210 "EHLO
+        id S234999AbiDHLpM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 8 Apr 2022 07:45:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234870AbiDHL1e (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 07:27:34 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FBBBA27ED
-        for <phone-devel@vger.kernel.org>; Fri,  8 Apr 2022 04:25:29 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id dr20so16604808ejc.6
-        for <phone-devel@vger.kernel.org>; Fri, 08 Apr 2022 04:25:29 -0700 (PDT)
+        with ESMTP id S234993AbiDHLpL (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 07:45:11 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0701019751D
+        for <phone-devel@vger.kernel.org>; Fri,  8 Apr 2022 04:43:08 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id p15so16755339ejc.7
+        for <phone-devel@vger.kernel.org>; Fri, 08 Apr 2022 04:43:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=fairphone.com; s=fair;
-        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
-         :from:to:references:in-reply-to;
-        bh=fq/K4JNV15oSFxy2NseTqwYWn1DV3eYrSDISuIsrfjY=;
-        b=gS3p0Nm6TFQkDgli679VWBZD/2P9mr04tsUkL37/VstyIDdKRmc8C5aKwlpIyQGm6B
-         bnv88XZrC4g5oK9cjGlkBdZIdAbfi7yrwv8buadDnFeEfPk/dGG+rS7PAr1AcAHx07nX
-         WR0g/K6SpetZYe2wQsetONgUrSorQ3OmC3eCJesipeoRBW6OjrMRb3873ycB3VolfVRg
-         9U9FL2DACMpecMb2ULtRNEz4yYMOD71Utato5rdq+NJzF50u+xJ5k0MAlFZCFLGdLVGK
-         gJwr91VI6b0CsrDQM8ldeEraQz1amXaU9bd7a9PyesSZAw1bprEA8TemdIUGWXS5RHX8
-         XfWw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=raH5DpDex1bgPcZoFCyedKcGROVs5pFi27VlM6LNPYA=;
+        b=GFlx7yk12v5YU3SUNDx5RLKC0GrE89DeOEB2Kbob2oUm9EYytz6dR9ZHusIUShCIUo
+         wdj3WIm0I9EtjEZ977kp/ZV2HIWZ9UcX1apttjph/YUCYdSbAxN5Q03QrhM5dM3ABjd+
+         9ttsYk5guKCWFbf1Qw3T+gnQ7roux5fD6MMJng9TNS0FESwgBaf3sqSQPJVA+bOy/l5W
+         PzWw903aPIriZpT0v7xqILHtbDmzLKkJfq3C7e28uX4irphPeuXK2EjTG0a4M+CuWloe
+         xWBwsgJoxVhjsQCQJI7xgebb6htuW3PxSSDcVbiCPK/p/akMVyS4VXbzVq7pct6zzg+6
+         VUmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:cc:subject:from:to:references:in-reply-to;
-        bh=fq/K4JNV15oSFxy2NseTqwYWn1DV3eYrSDISuIsrfjY=;
-        b=Omxh55JMaJ6TEYI9xpAhcIhUXjxirlNqscHItNHWXkQakeDVdiJTiFOHXPfNwmz6iE
-         QGEvZsT9dawnnV7vpf6BtgClRgPr0fRLY7XnoPXNQwa/IpOEGMXaS9x8bwm1XkB7/Kt1
-         lPecASlWVhfCYZyBVqZ3xCzqrjYSeWvRAYYePMzEVCfqUEC8q7m/wZFrG8fdkRPd5m/w
-         rABPwGZbtD01HblbmaReJ9GRyzNFc9bjtXmy0f50uimgYg6Rrjj521TKXpLKDxhAuFHq
-         MTNj/PhHd+R4ssJ6Cci3RKdqlkObe22MUkFh1LQbU4DoETnL8yLUanOsMX+Mv7Pzeren
-         O0Ng==
-X-Gm-Message-State: AOAM530EnZNFvbLhAaaT7tWaeujMaw6b/jY1Ujp2c2BRhxXMYwiR5ntx
-        EaaaZiZlK3xKjCjT/9CB0lTx7Q==
-X-Google-Smtp-Source: ABdhPJyeiuA6W53n6q0nTKiH0iz4FzlTJpMeID7G1rR7HGiuE6Z5+rJk9xaGb2yFLvehiheSF8RWjA==
-X-Received: by 2002:a17:906:32cf:b0:6d5:83bc:e962 with SMTP id k15-20020a17090632cf00b006d583bce962mr18531651ejk.108.1649417128191;
-        Fri, 08 Apr 2022 04:25:28 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id j12-20020a50e0cc000000b0041cd813ac01sm6365666edl.28.2022.04.08.04.25.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Apr 2022 04:25:27 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Fri, 08 Apr 2022 13:25:26 +0200
-Message-Id: <CJ4TKNHK955X.2YYNAV248UMK8@otso>
-Cc:     "Konrad Dybcio" <konrad.dybcio@somainline.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <linux-arm-msm@vger.kernel.org>,
-        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
-        "Amit Kucheria" <amitk@kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Zhang Rui" <rui.zhang@intel.com>, <devicetree@vger.kernel.org>,
-        "Thara Gopinath" <thara.gopinath@linaro.org>,
-        "Daniel Lezcano" <daniel.lezcano@linaro.org>,
-        <linux-pm@vger.kernel.org>, <phone-devel@vger.kernel.org>,
-        "Andy Gross" <agross@kernel.org>
-Subject: Re: [PATCH 05/10] dt-bindings: thermal: tsens: Add SM6350
- compatible
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Rob Herring" <robh@kernel.org>
-References: <20211213082614.22651-1-luca.weiss@fairphone.com>
- <20211213082614.22651-6-luca.weiss@fairphone.com>
- <YbpLqwFJI/nfvxd9@robh.at.kernel.org>
-In-Reply-To: <YbpLqwFJI/nfvxd9@robh.at.kernel.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=raH5DpDex1bgPcZoFCyedKcGROVs5pFi27VlM6LNPYA=;
+        b=aY5g3wed1rrfSLGQ9y8ztvVpGHRbMS0ZlG1/YK8pBsBOrHFGQLp3dLCXFNDvWCLGt0
+         BC7oYBZRWZZkjNnwk92UDeIwAYKqkHfQ56P9vVtjZ+KCF3pugBALowuxt+wogmG0E/4l
+         V5vstVfy95vjv84AMKpAUvdRg0gr7mYei6zFD6cu7N8WaYdpzpfNkjXlJng8h7bEzzWz
+         3MURxoe/XJVG54y8MFL9k6r9T1vR570p+r+RfjVgJUTckNANjGQFy/sKl03jTAqwJjyC
+         oSRiyTMBM05H2tlFw5UQ0dn1eP2f56PP/2BcjdFHGiHxpi8LxHlX4dKRJvdGbAg3yevO
+         bj6g==
+X-Gm-Message-State: AOAM533842F2bcXwdtMg0u/oWb2lUj53IgeLb0FU0RnmPuzOInDGZpIE
+        09U26HhglX56HtWCz8B23PL0ug==
+X-Google-Smtp-Source: ABdhPJwFpUDAxTBeuBmWCsucM8NLu6nqldKEGgHgskA+HiUp3XHmYsm9mv2Uf60OflPYtg2FD+0DcA==
+X-Received: by 2002:a17:906:58ce:b0:6da:b548:1bbb with SMTP id e14-20020a17090658ce00b006dab5481bbbmr17815445ejs.14.1649418186511;
+        Fri, 08 Apr 2022 04:43:06 -0700 (PDT)
+Received: from otso.. (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id h5-20020a170906718500b006e7edcda732sm5909557ejk.125.2022.04.08.04.43.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Apr 2022 04:43:04 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] arm64: dts: qcom: sm6350: Fix naming of uart9
+Date:   Fri,  8 Apr 2022 13:42:04 +0200
+Message-Id: <20220408114205.234635-1-luca.weiss@fairphone.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi all,
+The uart9 was previously mistakenly called uart2. Fix this.
 
-On Wed Dec 15, 2021 at 9:10 PM CET, Rob Herring wrote:
-> On Mon, 13 Dec 2021 09:26:06 +0100, Luca Weiss wrote:
-> > Add devicetree compatible for tsens on SM6350 SoC.
-> >=20
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > Acked-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> > ---
-> >  Documentation/devicetree/bindings/thermal/qcom-tsens.yaml | 1 +
-> >  1 file changed, 1 insertion(+)
-> >=20
->
-> Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ arch/arm64/boot/dts/qcom/sm6350.dtsi              | 6 +++---
+ arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-It looks like this patch hasn't been applied yet. Could the responsible
-maintainer please pick it up?
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index d7c9edff19f7..ef43af39569c 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -529,13 +529,13 @@ qupv3_id_1: geniqup@9c0000 {
+ 			ranges;
+ 			status = "disabled";
+ 
+-			uart2: serial@98c000 {
++			uart9: serial@98c000 {
+ 				compatible = "qcom,geni-debug-uart";
+ 				reg = <0 0x98c000 0 0x4000>;
+ 				clock-names = "se";
+ 				clocks = <&gcc GCC_QUPV3_WRAP1_S3_CLK>;
+ 				pinctrl-names = "default";
+-				pinctrl-0 = <&qup_uart2_default>;
++				pinctrl-0 = <&qup_uart9_default>;
+ 				interrupts = <GIC_SPI 356 IRQ_TYPE_LEVEL_HIGH>;
+ 				status = "disabled";
+ 			};
+@@ -974,7 +974,7 @@ tlmm: pinctrl@f100000 {
+ 			#interrupt-cells = <2>;
+ 			gpio-ranges = <&tlmm 0 0 157>;
+ 
+-			qup_uart2_default: qup-uart2-default {
++			qup_uart9_default: qup-uart9-default {
+ 				pins = "gpio25", "gpio26";
+ 				function = "qup13_f2";
+ 				drive-strength = <2>;
+diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+index adb6ca2be2a5..67d14bda3797 100644
+--- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
++++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+@@ -23,7 +23,7 @@ / {
+ 	qcom,board-id = <8 32>;
+ 
+ 	aliases {
+-		serial0 = &uart2;
++		serial0 = &uart9;
+ 	};
+ 
+ 	chosen {
+@@ -332,7 +332,7 @@ &tlmm {
+ 	gpio-reserved-ranges = <13 4>, <56 2>;
+ };
+ 
+-&uart2 {
++&uart9 {
+ 	status = "okay";
+ };
+ 
+-- 
+2.35.1
 
-Regards
-Luca
