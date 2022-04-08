@@ -2,121 +2,73 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DECE0C433EF
-	for <phone-devel@archiver.kernel.org>; Thu,  7 Apr 2022 17:02:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D411C433F5
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 10:41:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345926AbiDGREW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 7 Apr 2022 13:04:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35740 "EHLO
+        id S234654AbiDHKnY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 8 Apr 2022 06:43:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243254AbiDGRES (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 7 Apr 2022 13:04:18 -0400
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA981C9B44;
-        Thu,  7 Apr 2022 10:02:17 -0700 (PDT)
-Received: by mail-oi1-f177.google.com with SMTP id e189so6246851oia.8;
-        Thu, 07 Apr 2022 10:02:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=Wp8RSwIrgzG7uQ3b1/ypwJs7daFfqxiiYUEMrzxbqT0=;
-        b=1tYAl2yFyP6/X2KSem7RfxY6ckyAUuZDEu4EjliaL2r+TVs9KQJXEzDjxU89Tx1EVL
-         88F4iQqBYLRaUSaWAFn8Qx+snactdPUnhIx6a+A/xAN8VjtrmmMWnBs8UD8pCBAQf37R
-         xkhXQTQ3Woqilebpz5pVPYQPHbTBKYPcdtzSRDLM6WrZ8f8iK+ZD3na+wdf7hXLyM0vh
-         KmIUta8eaJ4eLFT0tveJgj9fhEXriPUWAhpRTKYY6vUTuw3VVZBdYEyIX54rmOfLmoSo
-         MI8Xt6AVTwGm78kFweTr3keWlTQDVJ4dHdxOTWyhUTzxX/ok5GBN8NIExAUEUr7tTW3R
-         qV4Q==
-X-Gm-Message-State: AOAM531pwWDXbhtxKmp0F+6PqtIEuFaj7yGM/Vo1cblbKyB1wvxcxtlA
-        69k47FjgVHfdo9GLoZBbZQ==
-X-Google-Smtp-Source: ABdhPJwfZgiNM9aE7g93ngGxHZ9S+c/XahJIWijit/HHJyW68508gY+Yc3Pn8uYTbOC5M8Fw+qgcdQ==
-X-Received: by 2002:a05:6808:30a7:b0:2ec:cf1c:9a06 with SMTP id bl39-20020a05680830a700b002eccf1c9a06mr6455461oib.272.1649350935482;
-        Thu, 07 Apr 2022 10:02:15 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id mj27-20020a0568700d9b00b000de29e1d6adsm6053342oab.16.2022.04.07.10.02.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Apr 2022 10:02:15 -0700 (PDT)
-Received: (nullmailer pid 1406984 invoked by uid 1000);
-        Thu, 07 Apr 2022 17:02:14 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        phone-devel@vger.kernel.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Pavel Machek <pavel@ucw.cz>, linux-kernel@vger.kernel.org
-In-Reply-To: <20220407101034.13122-2-markuss.broks@gmail.com>
-References: <20220407101034.13122-1-markuss.broks@gmail.com> <20220407101034.13122-2-markuss.broks@gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: leds: convert ktd2692 bindings to yaml
-Date:   Thu, 07 Apr 2022 12:02:14 -0500
-Message-Id: <1649350934.490785.1406983.nullmailer@robh.at.kernel.org>
+        with ESMTP id S232918AbiDHKnX (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 06:43:23 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7643352E5F;
+        Fri,  8 Apr 2022 03:41:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 12060B82A1E;
+        Fri,  8 Apr 2022 10:41:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D2AC385A3;
+        Fri,  8 Apr 2022 10:41:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1649414477;
+        bh=4dMlwUlRjJhzVHViUt8A5Htr+QJYe+5brMn53LIeqfM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gG5BcauBKb/rGoGdIbnLuxSGqpZBCPP5UVrW3Ya1Ljf37NDig3e+U/+l7G3d+IubK
+         DoRsseBoJ6krGCFKywzp0ZeFYfhzBAIRgLglxKT37vCv9xSfs5J7Bn4lcE6Hrn8KpY
+         Yyhsoux9Td6LKXouPPMjtIFDmxzmFHxHNwm5YwcwKE+chm3m8G+FPACGs6RwXedc0J
+         ranA4MXPT2l280XhIbr3IREoolwhIEc7jQCwOHAhbELji6ztn+LA+bzs+OYW/Bf3sT
+         W1NuWsFnmKRDKGx3125yj2byk0v9B19zNG2SmdHaMQTeBGkeTQSQ34SMQDOzyM1QMV
+         nXaoBYzrzZzwA==
+Date:   Fri, 8 Apr 2022 18:41:11 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>
+Cc:     robh@kernel.org, krzysztof.kozlowski@canonical.com,
+        festevam@gmail.com, kernel@pengutronix.de, kernel@puri.sm,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 0/5] arm64: dts: imx8mq-librem5: phone description
+ updates
+Message-ID: <20220408104111.GU129381@dragon>
+References: <20220228131222.917137-1-martin.kepplinger@puri.sm>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220228131222.917137-1-martin.kepplinger@puri.sm>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 07 Apr 2022 13:10:05 +0300, Markuss Broks wrote:
-> This patch converts the leds-ktd2692.txt bindings to modern yaml
-> style device-tree bindings.
+On Mon, Feb 28, 2022 at 02:12:17PM +0100, Martin Kepplinger wrote:
+> Hi Shawn and all interested,
 > 
-> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-> ---
->  .../bindings/leds/kinetic,ktd2692.yaml        | 87 +++++++++++++++++++
->  .../devicetree/bindings/leds/leds-ktd2692.txt | 50 -----------
->  2 files changed, 87 insertions(+), 50 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/leds/kinetic,ktd2692.yaml
->  delete mode 100644 Documentation/devicetree/bindings/leds/leds-ktd2692.txt
+> This is small updates to the Librem 5 phone hardware descriptions we've
+> been using for quite some time as part of PureOS.
 > 
+> thanks,
+>                            martin
+> 
+> Angus Ainslie (1):
+>   arm64: dts: imx8mq-librem5: add a RO firmware partition
+> 
+> Guido Günther (2):
+>   arm64: dts: imx8mq-librem5: higher boost regulation current
+>   arm64: dts: imx8mq-librem5-r4: add the correct panel
+> 
+> Martin Kepplinger (2):
+>   arm64: dts: imx8mq-librem5: make the volume buttons a wakeup source
+>   arm64: dts: imx8mq-librem5: remove description of CHG_STATUS_B
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
-
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/leds/kinetic,ktd2692.yaml:37:24: [error] syntax error: expected <block end>, but found '<scalar>' (syntax)
-
-dtschema/dtc warnings/errors:
-make[1]: *** Deleting file 'Documentation/devicetree/bindings/leds/kinetic,ktd2692.example.dts'
-Traceback (most recent call last):
-  File "/usr/local/bin/dt-extract-example", line 52, in <module>
-    binding = yaml.load(open(args.yamlfile, encoding='utf-8').read())
-  File "/usr/local/lib/python3.8/dist-packages/ruamel/yaml/main.py", line 434, in load
-    return constructor.get_single_data()
-  File "/usr/local/lib/python3.8/dist-packages/ruamel/yaml/constructor.py", line 119, in get_single_data
-    node = self.composer.get_single_node()
-  File "_ruamel_yaml.pyx", line 706, in _ruamel_yaml.CParser.get_single_node
-  File "_ruamel_yaml.pyx", line 724, in _ruamel_yaml.CParser._compose_document
-  File "_ruamel_yaml.pyx", line 775, in _ruamel_yaml.CParser._compose_node
-  File "_ruamel_yaml.pyx", line 889, in _ruamel_yaml.CParser._compose_mapping_node
-  File "_ruamel_yaml.pyx", line 775, in _ruamel_yaml.CParser._compose_node
-  File "_ruamel_yaml.pyx", line 889, in _ruamel_yaml.CParser._compose_mapping_node
-  File "_ruamel_yaml.pyx", line 775, in _ruamel_yaml.CParser._compose_node
-  File "_ruamel_yaml.pyx", line 891, in _ruamel_yaml.CParser._compose_mapping_node
-  File "_ruamel_yaml.pyx", line 904, in _ruamel_yaml.CParser._parse_next_event
-ruamel.yaml.parser.ParserError: while parsing a block mapping
-  in "<unicode string>", line 36, column 5
-did not find expected key
-  in "<unicode string>", line 37, column 24
-make[1]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/leds/kinetic,ktd2692.example.dts] Error 1
-make[1]: *** Waiting for unfinished jobs....
-./Documentation/devicetree/bindings/leds/kinetic,ktd2692.yaml:  while parsing a block mapping
-  in "<unicode string>", line 36, column 5
-did not find expected key
-  in "<unicode string>", line 37, column 24
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/leds/kinetic,ktd2692.yaml: ignoring, error parsing file
-make: *** [Makefile:1401: dt_binding_check] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Applied all, thanks!
