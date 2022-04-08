@@ -2,73 +2,134 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D411C433F5
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 10:41:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DFB9C433F5
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 11:08:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234654AbiDHKnY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 8 Apr 2022 06:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40652 "EHLO
+        id S229992AbiDHLKr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 8 Apr 2022 07:10:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232918AbiDHKnX (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 06:43:23 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7643352E5F;
-        Fri,  8 Apr 2022 03:41:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 12060B82A1E;
-        Fri,  8 Apr 2022 10:41:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D2AC385A3;
-        Fri,  8 Apr 2022 10:41:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649414477;
-        bh=4dMlwUlRjJhzVHViUt8A5Htr+QJYe+5brMn53LIeqfM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gG5BcauBKb/rGoGdIbnLuxSGqpZBCPP5UVrW3Ya1Ljf37NDig3e+U/+l7G3d+IubK
-         DoRsseBoJ6krGCFKywzp0ZeFYfhzBAIRgLglxKT37vCv9xSfs5J7Bn4lcE6Hrn8KpY
-         Yyhsoux9Td6LKXouPPMjtIFDmxzmFHxHNwm5YwcwKE+chm3m8G+FPACGs6RwXedc0J
-         ranA4MXPT2l280XhIbr3IREoolwhIEc7jQCwOHAhbELji6ztn+LA+bzs+OYW/Bf3sT
-         W1NuWsFnmKRDKGx3125yj2byk0v9B19zNG2SmdHaMQTeBGkeTQSQ34SMQDOzyM1QMV
-         nXaoBYzrzZzwA==
-Date:   Fri, 8 Apr 2022 18:41:11 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     robh@kernel.org, krzysztof.kozlowski@canonical.com,
-        festevam@gmail.com, kernel@pengutronix.de, kernel@puri.sm,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/5] arm64: dts: imx8mq-librem5: phone description
- updates
-Message-ID: <20220408104111.GU129381@dragon>
-References: <20220228131222.917137-1-martin.kepplinger@puri.sm>
+        with ESMTP id S229487AbiDHLKq (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 07:10:46 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E045D2409F;
+        Fri,  8 Apr 2022 04:08:39 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id qh7so16522018ejb.11;
+        Fri, 08 Apr 2022 04:08:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yFWqNjmVQi0EHxqS7hsStGRxXNcYNF67yXJTTekIJwA=;
+        b=BWXVsDJA8sM1HrB/8IUJBEVQy0Pd669Y0k24RRlwmwuRaJvm4ggxzr9QmUuU2tEkRP
+         MzLV5uSujwRJ7wurZ5MOfO86ikXC23tCew0gikrMnTXXDPLx0j5p5e0hA5+HvfqPxmN1
+         Ld9Z9XeqKDEA48uSDdvA1e9fwG+erOUNYOXaEweVl3+PJEU/t714P3oi5MAPauOiJeLi
+         BTVKC7J5Bm28ETJR5OdWs+rrbDQNlUEt7Ti7KLMupGtB84EwdWKk/kRtkDidMhEngS+5
+         pf0d0g++vqGKfz9xRFv7DrdT36TAWbxVHA6XbIz5hKNfQQD121A75K4DPnpRx65C9IU7
+         HI3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yFWqNjmVQi0EHxqS7hsStGRxXNcYNF67yXJTTekIJwA=;
+        b=t5n4IBz6kspfuMpBwjYceqPinJbFhvt8YDIVIa8q3NzFQg0RdmpwAMj9pz3evLPgRZ
+         aGvV2FqM5qcRnJe826pMfX6GkjA7JBdOjRFWVVOmrx1Rx4a3pum1E3wfbjo8EN1f099Y
+         RpKS2oCdU8ZUkKQ9kr177gBtZF5Uc614uC8PqQZNUZ4D9DAmoDBNl8f+PutplQRhP50o
+         hAc1rWF7BAMkDP7zPLvCHidfpGiRUS9qrSBOyzDKrZWBrAHSgPWOPy0E0dFqcTzB00Cf
+         jNvSCwgvc75QOcgaKvLPiAjFJ7Rh3DqwXGZ47H5/7Nov3/SCRKKV7SV7saafsA+UBS6D
+         yT7g==
+X-Gm-Message-State: AOAM530c6y6Olvb99pfEW6ytkfAAVOhD0/BUpQR1eDZY3TBT1ikEPVSe
+        5ZuTkm8fvdAbSO/O0ENm9DSqRcs2sT59TzhfHP8=
+X-Google-Smtp-Source: ABdhPJxIt65hCMMjnDby0MKivBZfXYPjvdvfkdTrmTuS0oA+7NgrR4wxLrPS6SZy/qgI6AOFDDmAbf0aZlmntY4aMmQ=
+X-Received: by 2002:a17:907:a411:b0:6e1:2084:99d2 with SMTP id
+ sg17-20020a170907a41100b006e1208499d2mr926429ejc.639.1649416118227; Fri, 08
+ Apr 2022 04:08:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220228131222.917137-1-martin.kepplinger@puri.sm>
+References: <20220407101034.13122-1-markuss.broks@gmail.com> <20220407101034.13122-3-markuss.broks@gmail.com>
+In-Reply-To: <20220407101034.13122-3-markuss.broks@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 8 Apr 2022 14:04:23 +0300
+Message-ID: <CAHp75VeMWLXCz_xf=Px-jRw2Fez1Kma2V80cqmu-Ta-67TWaRA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] leds: ktd2692: Make aux-gpios optional
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
+        Shevchenko <andy.shevchenko@gmail.com>," 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Feb 28, 2022 at 02:12:17PM +0100, Martin Kepplinger wrote:
-> Hi Shawn and all interested,
-> 
-> This is small updates to the Librem 5 phone hardware descriptions we've
-> been using for quite some time as part of PureOS.
-> 
-> thanks,
->                            martin
-> 
-> Angus Ainslie (1):
->   arm64: dts: imx8mq-librem5: add a RO firmware partition
-> 
-> Guido Günther (2):
->   arm64: dts: imx8mq-librem5: higher boost regulation current
->   arm64: dts: imx8mq-librem5-r4: add the correct panel
-> 
-> Martin Kepplinger (2):
->   arm64: dts: imx8mq-librem5: make the volume buttons a wakeup source
->   arm64: dts: imx8mq-librem5: remove description of CHG_STATUS_B
+On Thu, Apr 7, 2022 at 1:33 PM Markuss Broks <markuss.broks@gmail.com> wrote:
+>
+> Make the AUX pin optional, since it isn't a core part of functionality,
+> and the device is designed to be operational with only one CTRL pin.
+>
+> Also pick up maintainership for the LED driver and the yaml bindings.
 
-Applied all, thanks!
+maintenance?
+
+...
+
+> -               gpiod_direction_output(led->aux_gpio, KTD2692_LOW);
+> +               if (led->aux_gpio)
+> +                       gpiod_direction_output(led->aux_gpio, KTD2692_LOW);
+
+Redundant change.
+
+...
+
+> -               gpiod_direction_output(led->aux_gpio, KTD2692_HIGH);
+> +               if (led->aux_gpio)
+> +                       gpiod_direction_output(led->aux_gpio, KTD2692_HIGH);
+
+Ditto.
+
+...
+
+> -               gpiod_direction_output(led->aux_gpio, KTD2692_LOW);
+> +               if (led->aux_gpio)
+> +                       gpiod_direction_output(led->aux_gpio, KTD2692_LOW);
+
+Ditto.
+
+...
+
+> -       gpiod_direction_output(led->aux_gpio, KTD2692_LOW);
+> +       if (led->aux_gpio)
+> +               gpiod_direction_output(led->aux_gpio, KTD2692_LOW);
+
+Ditto.
+
+...
+
+>         ret = PTR_ERR_OR_ZERO(led->aux_gpio);
+> -       if (ret) {
+> -               dev_err(dev, "cannot get aux-gpios %d\n", ret);
+> -               return ret;
+> -       }
+> +       if (ret)
+> +               dev_info(dev, "aux-gpios not available, flash mode current might be reduced\n");
+
+dev_warn()?
+
+After this change the use of PTR_ERR_OR_ZERO() becomes unjustified, what about
+        if (IS_ERR(led->aux_gpio))
+?
+
+But the problem here is the ignorance of important error codes, such a
+deferred probe.
+
+What you need is to switch to devm_gpiod_get_optional().
+
+-- 
+With Best Regards,
+Andy Shevchenko
