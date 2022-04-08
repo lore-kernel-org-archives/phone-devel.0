@@ -2,245 +2,216 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D487AC433FE
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 11:43:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 457E6C433F5
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 11:53:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234998AbiDHLpO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 8 Apr 2022 07:45:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41790 "EHLO
+        id S235202AbiDHLzm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 8 Apr 2022 07:55:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235021AbiDHLpM (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 07:45:12 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0FEB1CA390
-        for <phone-devel@vger.kernel.org>; Fri,  8 Apr 2022 04:43:08 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id bg10so16804239ejb.4
-        for <phone-devel@vger.kernel.org>; Fri, 08 Apr 2022 04:43:08 -0700 (PDT)
+        with ESMTP id S235207AbiDHLzl (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 07:55:41 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E3346FA09
+        for <phone-devel@vger.kernel.org>; Fri,  8 Apr 2022 04:53:36 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id c42so9768971edf.3
+        for <phone-devel@vger.kernel.org>; Fri, 08 Apr 2022 04:53:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=fairphone.com; s=fair;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=4tXWRt0uQ+KwfgraCk0yFBPONTSxaKlttzw/exd66MY=;
-        b=IYc/fuyF3oOJ1Cih6uDRi1Q5jMTNw+Et2/Rand6G+NCp2/ja0r5FE0T5/6xNpG7Mcs
-         ALpuZu4lpekuaTNyIRZHNADsCvbg4HRVz3oHhO8pUbpAsV0K4pP2ZxeXx6KDUXaBRGiS
-         u58HmpdSNt/0wYmGVTWe3rbACs4A/10yHZYwXaElnMZI1MiQo4KlJEtgvehmI0FuXhe0
-         7Edw+oEHElhP5SNRZnak99EKkbflgC8hqovI4JVI7+8GNEHcxJXBzftk5mMgH5qMD0OM
-         ckKA/52FSrvrnHnM7SpKMAlNNwLEvrRpphW6lm2h71y95gT/jbiPaeSBtzPxuwClPkcw
-         07Sw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OA9i/F0Q7gGy6vw+8jnVyUvqFaSzdMTuMr4fiGshsOc=;
+        b=cdT1slNFAvXFtO/Y5oAMec1XE5W9VQ16Hq2VcxUwjVvQcH+F83dVgf+JenniHFRpjt
+         y50HrMWV33q+EUZrhjVZfbL4BxfK7nQqCeguIIalPfBBAwl2AgfgfpK7CNSY9/nOJdMx
+         vfO2o3rv31YA76DIKZHADIckPsToQORS6+HqWnSuwKA/fnUjQgi/cfvmiYhH/hgesNel
+         CIbIWNP+7JsqcI0l2UkWO/aIbADVFl8jz04a0KQy45RLJjlOOWloD7787fuRi3HXvbw3
+         NTQpl9LKzDiz69gjGDOSvIA7LpVopSXEGz4tTBLiDkxmkG06Mq4lNw4nCWMkzy/XuVJ/
+         B6PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=4tXWRt0uQ+KwfgraCk0yFBPONTSxaKlttzw/exd66MY=;
-        b=eR8WhlLDSb9bHcxLt2T+qBtJi/aMil9ip2YlQW4bBrAjhvCnsyNC/2KW9ceu9vcKlG
-         u4k37g3kNLHY3LVX95FZbQJmuMLkmkqluRSmCOPSrKea//nWOQ9tM17nEYvLtHJlTY1F
-         WFesuu0dd3UlRUNqUCbYJK/yT+MlHGdc+weOT7KeD3Dsdh3tZiUVCsbQAkByRuc4MS8O
-         gS0nIiV31XxnTDw+Hi6uyqtFgH2XcrAAemuuLuaguezH5uvQmwEpIdCvNMsjYtJl5VMN
-         ft/yiJkfKJiwEXV0Im8HHCRCwz2HsDOL25TRL8SUTAq56AFes5l2zB3n8QfrxBz81I9F
-         CFDQ==
-X-Gm-Message-State: AOAM532yH+uHG62jWdpUEXebbqp41fnvcYQWFadXou/+IxMK4DVPJ/jB
-        wFZtQIsGSgjiLNjPP06vJnoz9A==
-X-Google-Smtp-Source: ABdhPJyho+o3aTEmD2Ke8WkDUWYXh6grtVSYns9Ulv1jbUfDFG6AwwAqD5rNNVAa9ZC8wpejO5Mhhw==
-X-Received: by 2002:a17:907:d09:b0:6e8:3eef:3192 with SMTP id gn9-20020a1709070d0900b006e83eef3192mr6327933ejc.122.1649418187586;
-        Fri, 08 Apr 2022 04:43:07 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OA9i/F0Q7gGy6vw+8jnVyUvqFaSzdMTuMr4fiGshsOc=;
+        b=YL49f4pkn7Ky+Dilc68Iy1T29QwVc1sjDen+o1m36SDi/LqOduWFVVJTA72d1tLe5z
+         ACnHgRmX7FQchF5g32xlMSyvmDz3GPfh1fgzHqsRAEua/9eVxcq41G6UDEAgTIDohbgU
+         FpxqYWNGzrQJ5yrQbCgbTQcNcJfpKyEjSsTYfP3o6o6g/+1o8Vt+4IfzUCdrFsEzSJuG
+         kpe63aggNSb6LJXBKud0n2tJSUSqW5Sa+Gf6V9IbghmvrsExhcJsnn80mxlNVXaunYla
+         MB7UMMKNb1sZx5OMr4yocJ0b22PUyEDwTz+iMDU/4tyia5GaZXHvMQyjvq6in2u2VlCJ
+         xKTA==
+X-Gm-Message-State: AOAM531ZUNDk4IZh+V3RRFJDPdeMMq1iZ3kQbkwp944NJO/V0MBOeoRR
+        yjQfL7oYn9ySf3T5InLRKIie/w==
+X-Google-Smtp-Source: ABdhPJxadi9ASalxmUdAyobBgUBlVo0Duu8xhPyv+ELTnJjcIfzBRWcwHvQuE6G+lfW3km7c5/E0Cw==
+X-Received: by 2002:a05:6402:2809:b0:41d:124e:4292 with SMTP id h9-20020a056402280900b0041d124e4292mr6103371ede.263.1649418815208;
+        Fri, 08 Apr 2022 04:53:35 -0700 (PDT)
 Received: from otso.. (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id h5-20020a170906718500b006e7edcda732sm5909557ejk.125.2022.04.08.04.43.06
+        by smtp.gmail.com with ESMTPSA id r29-20020a50c01d000000b00415fb0dc793sm10470899edb.47.2022.04.08.04.53.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Apr 2022 04:43:07 -0700 (PDT)
+        Fri, 08 Apr 2022 04:53:34 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org
+To:     linux-input@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzk+dt@kernel.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] arm64: dts: qcom: sm6350: Add I2C busses
-Date:   Fri,  8 Apr 2022 13:42:05 +0200
-Message-Id: <20220408114205.234635-2-luca.weiss@fairphone.com>
+Subject: [PATCH 1/3] dt-bindings: input: Add bindings for Awinic AW8695 haptics
+Date:   Fri,  8 Apr 2022 13:53:08 +0200
+Message-Id: <20220408115311.237039-1-luca.weiss@fairphone.com>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220408114205.234635-1-luca.weiss@fairphone.com>
-References: <20220408114205.234635-1-luca.weiss@fairphone.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add nodes for the I2C busses on sm6350.
+Add a document describing the bindings for the AW8695 LRA Haptic Driver.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/sm6350.dtsi | 134 +++++++++++++++++++++++++++
- 1 file changed, 134 insertions(+)
+ .../bindings/input/awinic,aw8695-haptics.yaml | 133 ++++++++++++++++++
+ 1 file changed, 133 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/awinic,aw8695-haptics.yaml
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-index ef43af39569c..81db25952cf1 100644
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -517,6 +517,45 @@ opp-384000000 {
- 			};
- 		};
- 
-+		qupv3_id_0: geniqup@8c0000 {
-+			compatible = "qcom,geni-se-qup";
-+			reg = <0x0 0x8c0000 0x0 0x2000>;
-+			clock-names = "m-ahb", "s-ahb";
-+			clocks = <&gcc GCC_QUPV3_WRAP_0_M_AHB_CLK>,
-+				 <&gcc GCC_QUPV3_WRAP_0_S_AHB_CLK>;
-+			#address-cells = <2>;
-+			#size-cells = <2>;
-+			iommus = <&apps_smmu 0x43 0x0>;
-+			ranges;
-+			status = "disabled";
+diff --git a/Documentation/devicetree/bindings/input/awinic,aw8695-haptics.yaml b/Documentation/devicetree/bindings/input/awinic,aw8695-haptics.yaml
+new file mode 100644
+index 000000000000..9f573daaba0e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/input/awinic,aw8695-haptics.yaml
+@@ -0,0 +1,133 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/input/awinic,aw8695-haptics.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+			i2c0: i2c@880000 {
-+				compatible = "qcom,geni-i2c";
-+				reg = <0 0x00880000 0 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S0_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_i2c0_default>;
-+				interrupts = <GIC_SPI 601 IRQ_TYPE_LEVEL_HIGH>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
++title: Awinic AW8695 LRA Haptic Driver
 +
-+			i2c2: i2c@888000 {
-+				compatible = "qcom,geni-i2c";
-+				reg = <0 0x00888000 0 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S2_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_i2c2_default>;
-+				interrupts = <GIC_SPI 603 IRQ_TYPE_LEVEL_HIGH>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+		};
++maintainers:
++  - Luca Weiss <luca.weiss@fairphone.com>
 +
- 		qupv3_id_1: geniqup@9c0000 {
- 			compatible = "qcom,geni-se-qup";
- 			reg = <0x0 0x9c0000 0x0 0x2000>;
-@@ -529,6 +568,45 @@ qupv3_id_1: geniqup@9c0000 {
- 			ranges;
- 			status = "disabled";
- 
-+			i2c6: i2c@980000 {
-+				compatible = "qcom,geni-i2c";
-+				reg = <0 0x00980000 0 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP1_S0_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_i2c6_default>;
-+				interrupts = <GIC_SPI 353 IRQ_TYPE_LEVEL_HIGH>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
++properties:
++  compatible:
++    const: awinic,aw8695
 +
-+			i2c7: i2c@984000 {
-+				compatible = "qcom,geni-i2c";
-+				reg = <0 0x00984000 0 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP1_S1_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_i2c7_default>;
-+				interrupts = <GIC_SPI 354 IRQ_TYPE_LEVEL_HIGH>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
++  reg:
++    maxItems: 1
 +
-+			i2c8: i2c@988000 {
-+				compatible = "qcom,geni-i2c";
-+				reg = <0 0x00988000 0 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP1_S2_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_i2c8_default>;
-+				interrupts = <GIC_SPI 355 IRQ_TYPE_LEVEL_HIGH>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
++  interrupts:
++    maxItems: 1
++    description: GPIO connected to INTN pin (edge falling)
 +
- 			uart9: serial@98c000 {
- 				compatible = "qcom,geni-debug-uart";
- 				reg = <0 0x98c000 0 0x4000>;
-@@ -539,6 +617,20 @@ uart9: serial@98c000 {
- 				interrupts = <GIC_SPI 356 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
- 			};
++  reset-gpios:
++    maxItems: 1
++    description: GPIO connected to RSTN pin (active high)
 +
-+			i2c10: i2c@990000 {
-+				compatible = "qcom,geni-i2c";
-+				reg = <0 0x00990000 0 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP1_S4_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_i2c10_default>;
-+				interrupts = <GIC_SPI 357 IRQ_TYPE_LEVEL_HIGH>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
++  awinic,f0-preset:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Default value for the f0 of LRA
 +
- 		};
- 
- 		tcsr_mutex: hwlock@1f40000 {
-@@ -980,6 +1072,48 @@ qup_uart9_default: qup-uart9-default {
- 				drive-strength = <2>;
- 				bias-disable;
- 			};
++  awinic,f0-coefficient:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Coefficient between actual f0 and the value in the registers
 +
-+			qup_i2c0_default: qup-i2c0-default {
-+				pins = "gpio0", "gpio1";
-+				function = "qup00";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
++  awinic,f0-calibration-percent:
++    maxItems: 1
++    description: Limit of f0 deviation from awinic,f0-preset
 +
-+			qup_i2c2_default: qup-i2c2-default {
-+				pins = "gpio45", "gpio46";
-+				function = "qup02";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
++  awinic,drive-level:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Level of drive waveform in normal driving
 +
-+			qup_i2c6_default: qup-i2c6-default {
-+				pins = "gpio13", "gpio14";
-+				function = "qup10";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
++  awinic,f0-detection-play-time:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Drive waveform play times in the first period in the f0 detection
 +
-+			qup_i2c7_default: qup-i2c7-default {
-+				pins = "gpio27", "gpio28";
-+				function = "qup11";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
++  awinic,f0-detection-wait-time:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Waveform wait times in the f0 detection
 +
-+			qup_i2c8_default: qup-i2c8-default {
-+				pins = "gpio19", "gpio20";
-+				function = "qup12";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
++  awinic,f0-detection-repeat:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Repeat times in the f0 detection
 +
-+			qup_i2c10_default: qup-i2c10-default {
-+				pins = "gpio4", "gpio5";
-+				function = "qup14";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
- 		};
- 
- 		apps_smmu: iommu@15000000 {
++  awinic,f0-detection-trace:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Drive waveform play times in the second period and later in the f0 detection
++
++  awinic,boost-debug:
++    $ref: /schemas/types.yaml#/definitions/uint8-array
++    minItems: 3
++    maxItems: 3
++    description: Values for BSTDBG1-3 registers
++
++  awinic,tset:
++    $ref: /schemas/types.yaml#/definitions/uint8
++    description: Value for TSET register
++
++  awinic,r-spare:
++    $ref: /schemas/types.yaml#/definitions/uint8
++    description: Value for R_SPARE register
++
++  awinic,bemf-upper-threshold:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Back EMF (electromotive force) upper threshold
++
++  awinic,bemf-lower-threshold:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Back EMF (electromotive force) lower threshold
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - reset-gpios
++  - awinic,f0-preset
++  - awinic,f0-coefficient
++  - awinic,f0-calibration-percent
++  - awinic,drive-level
++  - awinic,f0-detection-play-time
++  - awinic,f0-detection-wait-time
++  - awinic,f0-detection-repeat
++  - awinic,f0-detection-trace
++  - awinic,boost-debug
++  - awinic,tset
++  - awinic,r-spare
++  - awinic,bemf-upper-threshold
++  - awinic,bemf-lower-threshold
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        haptics@5a {
++            compatible = "awinic,aw8695";
++            reg = <0x5a>;
++            interrupts-extended = <&tlmm 85 IRQ_TYPE_EDGE_FALLING>;
++            reset-gpios = <&tlmm 90 GPIO_ACTIVE_HIGH>;
++
++            awinic,f0-preset = <2350>;
++            awinic,f0-coefficient = <260>;
++            awinic,f0-calibration-percent = <7>;
++            awinic,drive-level = <125>;
++
++            awinic,f0-detection-play-time = <5>;
++            awinic,f0-detection-wait-time = <3>;
++            awinic,f0-detection-repeat = <2>;
++            awinic,f0-detection-trace = <15>;
++
++            awinic,boost-debug = /bits/ 8 <0x30 0xeb 0xd4>;
++            awinic,tset = /bits/ 8 <0x12>;
++            awinic,r-spare = /bits/ 8 <0x68>;
++
++            awinic,bemf-upper-threshold = <4104>;
++            awinic,bemf-lower-threshold = <1016>;
++        };
++    };
 -- 
 2.35.1
 
