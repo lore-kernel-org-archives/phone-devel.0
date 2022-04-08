@@ -2,102 +2,76 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B835C433F5
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 19:50:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E85DEC433FE
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Apr 2022 20:59:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238764AbiDHTwO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 8 Apr 2022 15:52:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35962 "EHLO
+        id S234332AbiDHVBr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 8 Apr 2022 17:01:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233000AbiDHTwN (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 15:52:13 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AB82CE7;
-        Fri,  8 Apr 2022 12:50:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649447409; x=1680983409;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NFsxnCy8jPc0T8qrhjEMXjZ/Yl35VCVnze/5CyH4DhI=;
-  b=eAp+xma37z+Q90McpeCvtk05+uxrQhk/YUfTYBZuqwPRLWInwmLkRRVE
-   tGaMMUTqg7gpCCAe/FUMc8U1ZOP7ZwlhR1QUJoXRoqu1iaYqJJJp0/Fs+
-   0PU9crgLQ68sOiIK8QNf7ucLMwxSC2ji99S/le3iSqYO79kktypmQTcLy
-   +/19acWkD/godtNk9aAtcXCCARz3+q0AN15eDSI00wQnMondHb0N25fLy
-   5M3Aku2Pzbw7RHGZrhArSQBpubcXnGEE7y+jWiJHwTDNQuBizq/4LmchN
-   zFM1NOfpGBB00/fX763o+G9cnGsy5JWLJrjsgjJBuNzD4r1+2T6oDr45M
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10311"; a="260515949"
-X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
-   d="scan'208";a="260515949"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2022 12:50:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,245,1643702400"; 
-   d="scan'208";a="524897967"
-Received: from lkp-server02.sh.intel.com (HELO 7e80bc2a00a0) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 08 Apr 2022 12:50:05 -0700
-Received: from kbuild by 7e80bc2a00a0 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1ncucO-0000aT-JY;
-        Fri, 08 Apr 2022 19:50:04 +0000
-Date:   Sat, 9 Apr 2022 03:49:09 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Luca Weiss <luca.weiss@fairphone.com>, linux-input@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: sm7225-fairphone-fp4: Add AW8695
- haptics
-Message-ID: <202204090333.QZXMI2tu-lkp@intel.com>
-References: <20220408115311.237039-3-luca.weiss@fairphone.com>
+        with ESMTP id S229586AbiDHVBq (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Apr 2022 17:01:46 -0400
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74152C38;
+        Fri,  8 Apr 2022 13:59:41 -0700 (PDT)
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-d6ca46da48so10958249fac.12;
+        Fri, 08 Apr 2022 13:59:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=mgIV08Nzu1AulSexKN4gF1Bv7Djf0q021L8PdHI29+k=;
+        b=0KDYXMJLORdgfiJ2GSIMXR3iq+8/3pEDfPegG5VGgNXMEQtLBpwkQ4gyrW9hRDxZtf
+         BSzMK+ZFzex3faRoyjxnXO2/EgdtwSa0ujcZZDYz34ZpZ2IiNYrbTjQxk1xDUouoemMO
+         FoxmISOqpid4ktfaR2xKOI1Yalm+2Ye4xaRyIwY3y/i6rhKO5Ok9cbQcU1IbsAgZ/K34
+         E446v+D343LArxGbfV5KnHbubwsiLGJexAUo/+ZCIqZ2r2ImOImLOmh+VMsCGzT5zARK
+         KWNtXjdp5/2ZAx8/6aPiaT4d/GSF9M9p5anOCiOsHI51lqY4cE81kGWLgEYzJI7cEv2t
+         9G/Q==
+X-Gm-Message-State: AOAM530+YgFTXTl33d8CAwKCaBOO/XyB7I1PjuEXM4NJvzWuFVXLXl/W
+        E8waMYiKjoFKx7JZ5JKdHELruaPYMw==
+X-Google-Smtp-Source: ABdhPJxHqBYnOljjlPwoSREFiVsVGDcfYviUYhyu+neONh6XlOy5IYfgmJpr6obbximEBUAHpbNLjw==
+X-Received: by 2002:a05:6870:a1a8:b0:e2:182d:6375 with SMTP id a40-20020a056870a1a800b000e2182d6375mr9625671oaf.247.1649451580743;
+        Fri, 08 Apr 2022 13:59:40 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id x18-20020a056830245200b005ce01c28c77sm9417283otr.1.2022.04.08.13.59.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Apr 2022 13:59:40 -0700 (PDT)
+Received: (nullmailer pid 4052959 invoked by uid 1000);
+        Fri, 08 Apr 2022 20:59:39 -0000
+Date:   Fri, 8 Apr 2022 15:59:39 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
+        phone-devel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Pavel Machek <pavel@ucw.cz>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 1/2] dt-bindings: leds: convert ktd2692 bindings to
+ yaml
+Message-ID: <YlCiO3hfTtzJwq5H@robh.at.kernel.org>
+References: <20220408184104.13665-1-markuss.broks@gmail.com>
+ <20220408184104.13665-2-markuss.broks@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220408115311.237039-3-luca.weiss@fairphone.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20220408184104.13665-2-markuss.broks@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Luca,
+On Fri, 08 Apr 2022 21:40:54 +0300, Markuss Broks wrote:
+> This patch converts the leds-ktd2692.txt bindings to modern yaml
+> style device-tree bindings.
+> 
+> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> ---
+>  .../bindings/leds/kinetic,ktd2692.yaml        | 87 +++++++++++++++++++
+>  .../devicetree/bindings/leds/leds-ktd2692.txt | 50 -----------
+>  2 files changed, 87 insertions(+), 50 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/leds/kinetic,ktd2692.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/leds/leds-ktd2692.txt
+> 
 
-Thank you for the patch! Yet something to improve:
-
-[auto build test ERROR on dtor-input/next]
-[also build test ERROR on hid/for-next robh/for-next v5.18-rc1 next-20220408]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Luca-Weiss/dt-bindings-input-Add-bindings-for-Awinic-AW8695-haptics/20220408-195432
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
-config: arm64-randconfig-r015-20220408 (https://download.01.org/0day-ci/archive/20220409/202204090333.QZXMI2tu-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/3f233916afe417b8d4b9100f560892dff2c93f0c
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Luca-Weiss/dt-bindings-input-Add-bindings-for-Awinic-AW8695-haptics/20220408-195432
-        git checkout 3f233916afe417b8d4b9100f560892dff2c93f0c
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=arm64 SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
->> Error: arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts:298.1-7 Label or path i2c10 not found
-   FATAL ERROR: Syntax error parsing input tree
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Reviewed-by: Rob Herring <robh@kernel.org>
