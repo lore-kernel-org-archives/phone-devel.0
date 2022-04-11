@@ -2,158 +2,134 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D474C433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Apr 2022 15:11:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E4FEC433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Apr 2022 17:16:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347660AbiDKPNZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 11 Apr 2022 11:13:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43684 "EHLO
+        id S1348801AbiDKRSS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 11 Apr 2022 13:18:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347658AbiDKPNW (ORCPT
+        with ESMTP id S1348798AbiDKRSQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 11 Apr 2022 11:13:22 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FB8531526
-        for <phone-devel@vger.kernel.org>; Mon, 11 Apr 2022 08:11:07 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id s18so9081227ejr.0
-        for <phone-devel@vger.kernel.org>; Mon, 11 Apr 2022 08:11:07 -0700 (PDT)
+        Mon, 11 Apr 2022 13:18:16 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A483B14020;
+        Mon, 11 Apr 2022 10:16:01 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id p15so32261748ejc.7;
+        Mon, 11 Apr 2022 10:16:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=mime-version:content-transfer-encoding:date:message-id:from:to:cc
-         :subject:references:in-reply-to;
-        bh=pCJjCOYD1pHvTfEkVbYg6ajc5I2hvGHciFb/sFyrlHY=;
-        b=gpXKT43tqtGTzEZYyVUu+KoI+Ti3B/PxcwEDJCLsPuyjVj05Rp2kVeLH4lDKz/v0IQ
-         FGC2lHgJcmFoDsWBaFhXQ6E805MJtsOtjLVLztpZo6cHtyHOb9Vb31mGUxRZJP0V4NM7
-         5dja41jjOCCg9xz49t+W/PIxhhuhBPAFHAzqgM3iRRXbN0dj5gH2/aofGsZgH0fOyjak
-         E0aOHfu7ip8UebMzNLGB9+XC8Gw7BZNP+VyQlD98g5X+dd4zFpG3dF4iNv4OGnM302vf
-         5VncVzRR6K2zlVASr9C7gH840TYvI6RvoB/T5AumJobdDYS7fdD7FzFGQGXcfQZMi83A
-         lUMQ==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MgmtuCS+l8Bi3E1PJDVdWqIzu5rnK5V3tfK8fyveRSg=;
+        b=ebuctbaF3T2FTs1D6kyfR64/XsbMoCuPbtD1GOBE7cnaF+jScRtJcMmITRb4YI43X9
+         zVA+d677MwnwqhyOHok8i/C+lB9wy3lcns2ft69SAH3YlOhqEmOnwDq4f0yRM3LjkhJB
+         /Oyd6xezp1RHv979WiW07c2wjRky60Jdgb9yKaXWYckR4ELZVujJ4wWzPQp3EpvS5Trc
+         wcH7VCNphOa01sAwWt87YU4AsJt6T0OJjWP8S6//N6qjmJmSFM8w+bgPO1pthWIlwzm/
+         YZbbeHVsX4k4fwl3/mpcHKncYGoouXWU/9PuV7A0iXr4GNO5hmdGttJgAckgSK/80Lpo
+         zY2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:from:to:cc:subject:references:in-reply-to;
-        bh=pCJjCOYD1pHvTfEkVbYg6ajc5I2hvGHciFb/sFyrlHY=;
-        b=RxvL2Z5r7y2BPMxt62Dk5AXBAxXGNpCxzHXYD63oDjb9tXdRICriNcu6F4T7+MoqJF
-         2wsTs5jwyggZR8RZwGge4VfHHHyqmOj33qCh5mqV5IhoBkIUzoqchbYd3Gi6ThC8cj/6
-         wjW6hcoUAHUBaCJVN87Db45anxMiTykRsy9WtbiawRBXHMxg5l0lSoJ2guEsVrhifvC3
-         JkxNVMHQplYfLUdGdllbKXikgdJU3i1rJ9uxMDzJyXToJ69O94ogRk+D6gZPh0UJENYz
-         ZIKkIVITNy86fPR9tcpGGWGCNLgyVhEzjnFQVXeYWi0HNlqFWxD5zbdI7K4GrEi96aGH
-         tdlw==
-X-Gm-Message-State: AOAM531WT84y6Nbav0uG4Ff6MCBx0M/0x5CLYrlvUZAdbfSOzjYLAh9n
-        Vu3IjnsLqFSgm2R7k0SVCL3wNQ==
-X-Google-Smtp-Source: ABdhPJwLC6bUCnaIFc6oW/Xq/0xCuw+godnXoSeE5FChrONf7ocIGLASLvPmRetx5nLXf3Im5q8Plw==
-X-Received: by 2002:a17:907:9803:b0:6db:ab21:738e with SMTP id ji3-20020a170907980300b006dbab21738emr29228455ejc.112.1649689865639;
-        Mon, 11 Apr 2022 08:11:05 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id x17-20020a170906297100b006e49a9535f3sm12047743ejd.114.2022.04.11.08.11.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Apr 2022 08:11:04 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 11 Apr 2022 17:11:04 +0200
-Message-Id: <CJ7I91AXGGCE.24GR11X2CBJ2J@otso>
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        <linux-input@vger.kernel.org>
-Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>,
-        "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/3] dt-bindings: input: Add bindings for Awinic AW8695
- haptics
-X-Mailer: aerc 0.9.0
-References: <20220408115311.237039-1-luca.weiss@fairphone.com>
- <1a45984a-752b-6bad-0320-f0946d83f2b9@linaro.org>
- <CJ79EIW9Z89J.YZTZ6AU91TGE@otso>
- <60402ff3-db73-5fc0-bc2a-942d664085ec@linaro.org>
-In-Reply-To: <60402ff3-db73-5fc0-bc2a-942d664085ec@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MgmtuCS+l8Bi3E1PJDVdWqIzu5rnK5V3tfK8fyveRSg=;
+        b=JPUlw9UYfXK8OuVmSMB7AK1R/NjatO0RL6IYB8AVPjAkhdn2fDDgFkV+9BGKyWJOVq
+         +6/unRPW83tMILnXfAtezWPQVayacNcantzqk/M5Pai9gfl4qCDJbSUFmofL/xIE0dcb
+         rHDus1/3c0oUFzuTOQGhvEMYMfPJQ3WZ/2xqpxvSz5PEuQr33z6ENpP9KDXYjTwTx2Gb
+         RoPmvKr/iz1fHFTKur2XBATFjuTJQrkr4yuTBnG2iOpVuWh6flwEPH0j5Z2zGnDzhflD
+         IXv2jqRp8ZLP420wfjEPPFfT0W9v7GoKGi7St0kRdDe6H/yepinj6HQQiWVRDeX+0Y2/
+         rtbg==
+X-Gm-Message-State: AOAM532HQMOljppCxHuOfIU2bk36xWHKqLegFTyARdKG2U+lMDXDGJjr
+        xjRD19igs720G4PVXxfRF6Yryh2twKRjo0Uxc70Bee3RBNZ6yg==
+X-Google-Smtp-Source: ABdhPJzyrjtZIk8+uXRkc4UER+ZPViI5yBFCuez7IxKote8FkKICp1HUnFGTpzCJtpp8o8cnSOitoQgi7jnGXY+LDr0=
+X-Received: by 2002:a17:907:8a05:b0:6e8:441c:358d with SMTP id
+ sc5-20020a1709078a0500b006e8441c358dmr17841941ejc.77.1649697360160; Mon, 11
+ Apr 2022 10:16:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220408184104.13665-1-markuss.broks@gmail.com> <20220408184104.13665-3-markuss.broks@gmail.com>
+In-Reply-To: <20220408184104.13665-3-markuss.broks@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 11 Apr 2022 20:11:46 +0300
+Message-ID: <CAHp75VfgSphDN9TVgeiPGdcDVqutcGnTURqu6r143sjJDsPXUA@mail.gmail.com>
+Subject: Re: [PATCH v6 2/2] leds: ktd2692: Make aux-gpios optional
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
+        Shevchenko <andy.shevchenko@gmail.com>," 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Krzysztof,
-
-On Mon Apr 11, 2022 at 2:52 PM CEST, Krzysztof Kozlowski wrote:
-> On 11/04/2022 10:15, Luca Weiss wrote:
+On Sat, Apr 9, 2022 at 8:14 AM Markuss Broks <markuss.broks@gmail.com> wrote:
 >
-> (...)
+> Make the AUX pin optional, since it isn't a core part of functionality,
+> and the device is designed to be operational with only one CTRL pin.
 >
-> >>> +  awinic,f0-detection-play-time:
-> >>> +    $ref: /schemas/types.yaml#/definitions/uint32
-> >>> +    description: Drive waveform play times in the first period in th=
-e f0 detection
-> >>
-> >> Use standard unit suffixes for known units (e.g. time).
-> >=20
-> > While the datasheet doesn't mention any time unit, the value is used to
-> > calculate the f0_trace_ms variable (which is milliseconds) but the
-> > result also depends on the awinic,f0-preset value, so it's not a raw
-> > time value.
+> Also pick up maintenance for the LED driver and the yaml bindings.
+
+It's polite to Cc reviewers of your previous versions of the series.
+
+While this patch is fine to me,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+one comment below.
+
+> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> ---
+>  MAINTAINERS                       | 6 ++++++
+>  drivers/leds/flash/leds-ktd2692.c | 6 +++---
+>  2 files changed, 9 insertions(+), 3 deletions(-)
 >
-> I see, ok.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 2db49ea7ae55..8ef5667a1d98 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -10479,6 +10479,12 @@ S:     Maintained
+>  F:     Documentation/devicetree/bindings/leds/backlight/kinetic,ktd253.yaml
+>  F:     drivers/video/backlight/ktd253-backlight.c
 >
-> >=20
-> >>
-> >>> +
-> >>> +  awinic,f0-detection-wait-time:
-> >>> +    $ref: /schemas/types.yaml#/definitions/uint32
-> >>> +    description: Waveform wait times in the f0 detection
-> >>
-> >> Ditto.
-> >>
-> >>> +
-> >>> +  awinic,f0-detection-repeat:
-> >>> +    $ref: /schemas/types.yaml#/definitions/uint32
-> >>> +    description: Repeat times in the f0 detection
-> >>> +
-> >>> +  awinic,f0-detection-trace:
-> >>> +    $ref: /schemas/types.yaml#/definitions/uint32
-> >>> +    description: Drive waveform play times in the second period and =
-later in the f0 detection
-> >>> +
-> >>> +  awinic,boost-debug:
-> >>> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> >>> +    minItems: 3
-> >>> +    maxItems: 3
-> >>> +    description: Values for BSTDBG1-3 registers
-> >>
-> >> Do not encode device programming model (registers) into the binding. Y=
-ou
-> >> need to define it as a property related to hardware itself, not its
-> >> registers (e.g. boost value in mV).
-> >=20
-> > Unfortunately I couldn't figure the meaning for this and the two values
-> > below.
-> >=20
-> > The datasheet doesn't mention these registers at all and the downstream
-> > driver doesn't do anything meaningful with them (other than setting the=
-m)
-> > nor has any comment to indicate what they do.
-> > In the datasheet there's only BSTDBG4 mentioned where bits [5:1] mean
-> > PVDD output voltage setting so for these registers it could really be
-> > anthing :(
-> >=20
-> > Maybe someone with more knowledge about LRAs might be able to decipher
-> > what tset and r_spare is at least? I unfortunately didn't manage.
+> +KTD2692 FLASH LED DRIVER
+> +M:     Markuss Broks <markuss.broks@gmail.com>
+> +S:     Maintained
+> +F:     Documentation/devicetree/bindings/leds/backlight/kinetic,ktd2692.yaml
+> +F:     drivers/leds/flash/leds-ktd2692.yaml
+> +
+>  KTEST
+>  M:     Steven Rostedt <rostedt@goodmis.org>
+>  M:     John Hawley <warthog9@eaglescrag.net>
+> diff --git a/drivers/leds/flash/leds-ktd2692.c b/drivers/leds/flash/leds-ktd2692.c
+> index f341da1503a4..01ceea83af67 100644
+> --- a/drivers/leds/flash/leds-ktd2692.c
+> +++ b/drivers/leds/flash/leds-ktd2692.c
+> @@ -284,9 +284,9 @@ static int ktd2692_parse_dt(struct ktd2692_context *led, struct device *dev,
+>                 return ret;
+>         }
 >
-> Do you have to define them in such case in DT? Maybe it should be part
-> of driver?
+> -       led->aux_gpio = devm_gpiod_get(dev, "aux", GPIOD_ASIS);
+> -       ret = PTR_ERR_OR_ZERO(led->aux_gpio);
+> -       if (ret) {
+> +       led->aux_gpio = devm_gpiod_get_optional(dev, "aux", GPIOD_ASIS);
+> +       if (IS_ERR(led->aux_gpio)) {
+> +               ret = PTR_ERR(led->aux_gpio);
+>                 dev_err(dev, "cannot get aux-gpios %d\n", ret);
+>                 return ret;
 
-As these parameters are part of the dts downstream, I assume they differ
-per board or actual LRA used.
+Now you may consider switching to dev_err_probe() in a separate patch:
 
-But I also found other downstream dts examples on github (e.g.
-awinic,aw8697_haptic) and they also seemed to use the same values for
-these couple of registers (r_spare, tset and bstdbg). Maybe I can gather
-more info but it's unlikely I'll be able to get a concrete answer..
+       if (IS_ERR(led->aux_gpio))
+               return dev_err_probe(dev, PTR_ERR(led->aux_gpio),
+"cannot get aux-gpios\n");
 
-Regards
-Luca
+>         }
 
->
-> Best regards,
-> Krzysztof
-
+-- 
+With Best Regards,
+Andy Shevchenko
