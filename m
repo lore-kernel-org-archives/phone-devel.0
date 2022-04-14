@@ -2,52 +2,52 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C8EECC433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Apr 2022 17:12:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68AEAC43219
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Apr 2022 17:12:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245329AbiDNROg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S245385AbiDNROg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Thu, 14 Apr 2022 13:14:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49596 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245302AbiDNRO2 (ORCPT
+        with ESMTP id S245368AbiDNRO2 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Thu, 14 Apr 2022 13:14:28 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7207A29B;
-        Thu, 14 Apr 2022 10:06:46 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id x33so10252082lfu.1;
-        Thu, 14 Apr 2022 10:06:46 -0700 (PDT)
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC3E02B4;
+        Thu, 14 Apr 2022 10:06:52 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id u7so10198816lfs.8;
+        Thu, 14 Apr 2022 10:06:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=jUc60b57AhT9SFx2Mlbuf+JCyo5Rl/gcGLN6jImms98=;
-        b=nSu1q/CarM0qXCE4RMge9hUnG9JxgqwpOb2Ey9tTNpbiXQpS+KVzCoNVEHdMI/5tq/
-         fjwzrFTAIFe0/CHlBAMn8EIrSSxMgSU43l307eVFi8SnRLYQJfE8THK6ZaAIvrE1KH+P
-         YvOGo+asej4w6LP1/xXv5gW6I7pyq4VrqYjtHzKw+dnsuvJ/nxVA6XwfC9ykFOZwa2Wu
-         IwJR8b3/8fLbvXKnXZm1QGJ8lyUg/5Uvn67j9t6D1togFzRbqpTJZLP+OhTA5BzRBuls
-         NZXR4urtvpJL/ntcZQQCe12RDun+Opki1OUmu61dVHrR+CiuKWZBYXsYhXEGuq5UrnrW
-         1jJA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=UqP4xfrPo10vTgY/j5s+P5EZr0sl8LLw6TahcYWWquQ=;
+        b=aIuOZaL18kpoDTDXW+XpXtRxHjrNQ1EWRCmtzl8P+yeCXCuf7y0GuQY03My+fuzKYp
+         D/Yp7zegMF6Ij46yMl+EcSMrKoprf09qOhSXxb3KPVerAxjlCJJasHn49LJ4+A8D3BFv
+         CVNIwkta3rzORr6ZIN26KKGcy/qykZ5+AEu12YIjDc2OwFZCi0wchqOaFoL2XjGc/c0R
+         QCvxSeD9OSYAuwvw5R2hmYfUJsespFo3vBr+UGwAOQ/kCpfmNfRKKMzPxcK8Wj1Z0Ywx
+         qJ9QnGoEa43yOKtY9FZUktMM9HZuF4OzxVQYbAln+Ns0XHEi60YSHd0uZ1qnHPug5tbz
+         A2DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=jUc60b57AhT9SFx2Mlbuf+JCyo5Rl/gcGLN6jImms98=;
-        b=l+W9etJNLtlxNeHRcMmND1Vc6xv8u4X4t9vWvAv6qCn+bArQYSrq67dpctqmMc+zYk
-         FISidLeHy/gOcnpwGrVZN4T6BOzmEilnE+ID8KvSwyoVnweM+D2NqiFvzAhyKt51UeRW
-         IDR3Fx5Ss3OFWJ0BoC8e3hbDy8Ws0Pevf2o6BhfH14kc6vylcseDlKdW4ub3oqCH90G1
-         hsg+JALko4tZ/5yayStC1PvbPeW454hJXoT0APeHAtOk4qNxb0d35lKDbP4vzq7cbDLu
-         zwZPeO/q0qS2umy52fO//tbfu2m2R+AWI1fAU8hllxi3c48nPvQDnYkEVpQvU7dezwTw
-         qB/Q==
-X-Gm-Message-State: AOAM5302fwXZiFTVWTe0ka0l0aJhxOHI0cX0dYMOpUvn3Zo9xrhM7ZIh
-        Gz50EYHDlexxvSe08yEYwSjqjjXMZh0=
-X-Google-Smtp-Source: ABdhPJzkOLtOPkWhQv+Xq1y4RfJNPKUfU1dFsJipqFgD57cdC4IUplG1D0E+ayca9RIMF8pPC4F07w==
-X-Received: by 2002:a05:6512:4005:b0:46c:cafb:a0f9 with SMTP id br5-20020a056512400500b0046ccafba0f9mr2422412lfb.639.1649956004431;
-        Thu, 14 Apr 2022 10:06:44 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=UqP4xfrPo10vTgY/j5s+P5EZr0sl8LLw6TahcYWWquQ=;
+        b=3fSJvr8aHioLWVeZuoJ0Kj6gZQR+lOIOWd7Pcakwzbl1C4LmE8DFAHC9Qgbh9tdRId
+         xavTmUDBpVfy2Ctg5wYnSoxDGtRgkot18vzJYj3YNQLnAwdBBP8mpK/MHW5jOpqwl54X
+         2kRia+eejrXOFzi79SZPI6E2+fjoLk+vfn+ipV6g0y8NtJzIArbJijujVOLvL87K5JjW
+         i8UOmUzZXq5e81neOoqAyR/lF6IUbEFF+5f8f37qZFsd7eBiW8l2iSugjNcqoZSGf8OB
+         R9NTzlu0eGab33MwRsX9NL4YCipD/D78MjX1Ysdxo9EhKuFSkY0B0qeo574KLpS6WYvq
+         9gng==
+X-Gm-Message-State: AOAM532/bpMj4wZsapYciubluaLQkdzn5q5r1OIulErGeAlYT2ODGGA1
+        rfrmGGhq+98Hs+B00StWpn7/BZnNEvU=
+X-Google-Smtp-Source: ABdhPJznpm7lMO1/Kusi9VhokL4ZNsSDNoOGSIbhniAmsoR8zp63cwGawE7wTq1PhNpPwwG5oXsCig==
+X-Received: by 2002:a05:6512:128b:b0:46b:a392:1186 with SMTP id u11-20020a056512128b00b0046ba3921186mr2497713lfs.495.1649956010976;
+        Thu, 14 Apr 2022 10:06:50 -0700 (PDT)
 Received: from nergzd-desktop.localdomain ([194.39.226.133])
-        by smtp.gmail.com with ESMTPSA id x11-20020a056512046b00b0046bbe5d2eabsm52216lfd.75.2022.04.14.10.06.42
+        by smtp.gmail.com with ESMTPSA id x11-20020a056512046b00b0046bbe5d2eabsm52216lfd.75.2022.04.14.10.06.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Apr 2022 10:06:43 -0700 (PDT)
+        Thu, 14 Apr 2022 10:06:50 -0700 (PDT)
 From:   Markuss Broks <markuss.broks@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
@@ -57,47 +57,129 @@ Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org
-Subject: [PATCH 0/4] Add support for Silicon Mitus SM5703 MFD
-Date:   Thu, 14 Apr 2022 20:06:11 +0300
-Message-Id: <20220414170616.23319-1-markuss.broks@gmail.com>
+Subject: [PATCH 2/4] dt-bindings: mfd: Add bindings for Silicon Mitus SM5703 MFD
+Date:   Thu, 14 Apr 2022 20:06:13 +0300
+Message-Id: <20220414170616.23319-3-markuss.broks@gmail.com>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220414170616.23319-1-markuss.broks@gmail.com>
+References: <20220414170616.23319-1-markuss.broks@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This series adds support for Silicon Mitus SM5703 MFD and the
-appropriate device-tree bindings. This only adds support for the
-regulator module, leaving room for other modules implemented in
-future (code for other modules is really not ready for submission
-right now). Silicon Mitus SM5703 is used on various mobile phones,
-mostly Samsung Galaxy (J5 (2015, 2016), On7, J7 (2015, 2016) ...).
+This patch adds device-tree bindings for the Silicon Mitus
+SM5703 MFD.
 
-Markuss Broks (4):
-  dt-bindings: regulator: Add bindings for Silicon Mitus SM5703
-    regulators
-  dt-bindings: mfd: Add bindings for Silicon Mitus SM5703 MFD
-  mfd: sm5703: Add support for SM5703 MFD
-  regulator: sm5703-regulator: Add regulators support for SM5703 MFD
-
- .../bindings/mfd/siliconmitus,sm5703.yaml     |  91 ++++++++++
- .../siliconmitus,sm5703-regulator.yaml        |  48 ++++++
- MAINTAINERS                                   |   8 +
- drivers/mfd/Kconfig                           |  12 ++
- drivers/mfd/Makefile                          |   1 +
- drivers/mfd/sm5703.c                          |  81 +++++++++
- drivers/regulator/Kconfig                     |   7 +
- drivers/regulator/Makefile                    |   1 +
- drivers/regulator/sm5703-regulator.c          | 162 ++++++++++++++++++
- include/linux/mfd/sm5703.h                    | 105 ++++++++++++
- 10 files changed, 516 insertions(+)
+Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+---
+ .../bindings/mfd/siliconmitus,sm5703.yaml     | 96 +++++++++++++++++++
+ 1 file changed, 96 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
- create mode 100644 Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
- create mode 100644 drivers/mfd/sm5703.c
- create mode 100644 drivers/regulator/sm5703-regulator.c
- create mode 100644 include/linux/mfd/sm5703.h
 
+diff --git a/Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml b/Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+new file mode 100644
+index 000000000000..cf72bee7a679
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+@@ -0,0 +1,96 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/mfd/siliconmitus,sm5703.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Silicon Mitus multi-function device bindings
++
++maintainers:
++  - Markuss Broks <markuss.broks@gmail.com>
++
++description: |
++  Silicon Mitus SM5703 is a multi-function device, that consists of several
++  modules, designed for a mobile phone use. It consists of
++  LDO, Buck, USBLDO and VBUS regulators, a flash LED driver, a MUIC unit,
++  a fuel gauge and a battery charger circuit. The MUIC and Fuel-Gauge units
++  are separate from the main MFD, having their own i2c lines, while the
++  LED driver, regulators and charger are sharing the main i2c bus of the MFD.
++
++properties:
++  compatible:
++    const:
++      - siliconmitus,sm5703-mfd
++
++  reg:
++    description:
++      I2C slave address.
++    maxItems: 1
++
++  regulators:
++    $ref: ../regulator/siliconmitus,sm5703-regulator.yaml
++    description:
++      List of child nodes that specify the regulators.
++
++  reset-gpio:
++    description:
++      GPIO which is connected to the MRSTB pin.
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - regulators
++
++additionalProperties: false
++
++examples:
++  - |
++  i2c {
++    #address-cells = <1>;
++    #size-cells = <0>;
++
++    mfd@49 {
++      compatible = "siliconmitus,sm5703-mfd";
++      reg = <0x49>;
++
++      reset-gpio = <&msmgpio 24 GPIO_ACTIVE_HIGH>;
++      pinctrl-0 = <&mrstb_default>;
++
++      regulator {
++        compatible = "siliconmitus,sm5703-regulator";
++
++        regulators {
++          sm5703_ldo1: ldo1 {
++            regulator-min-microvolt = <2800000>;
++            regulator-max-microvolt = <2800000>;
++          };
++
++          sm5703_ldo2: ldo2 {
++            regulator-min-microvolt = <1500000>;
++            regulator-max-microvolt = <3300000>;
++          };
++
++          sm5703_ldo3: ldo3 {
++            regulator-min-microvolt = <3300000>;
++            regulator-max-microvolt = <3300000>;
++          };
++
++          sm5703_usbldo1: usbldo1 {
++            regulator-min-microvolt = <4800000>;
++            regulator-max-microvolt = <4800000>;
++          };
++
++          sm5703_usbldo2: usbldo2 {
++            regulator-min-microvolt = <4800000>;
++            regulator-max-microvolt = <4800000>;
++          };
++
++          sm5703_vbus: vbus {
++            regulator-min-microvolt = <5000000>;
++            regulator-max-microvolt = <5000000>;
++          };
++        };
++      };
++    };
++  };
 -- 
 2.35.1
 
