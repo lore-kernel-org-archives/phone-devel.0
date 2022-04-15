@@ -2,96 +2,110 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BF7FC433F5
-	for <phone-devel@archiver.kernel.org>; Fri, 15 Apr 2022 14:32:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA726C433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 15 Apr 2022 16:44:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352269AbiDOOfM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 15 Apr 2022 10:35:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55322 "EHLO
+        id S1355914AbiDOQqg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 15 Apr 2022 12:46:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344879AbiDOOfL (ORCPT
+        with ESMTP id S1355918AbiDOQqf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 15 Apr 2022 10:35:11 -0400
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E6F32E6BC;
-        Fri, 15 Apr 2022 07:32:43 -0700 (PDT)
-Received: by mail-oi1-f180.google.com with SMTP id r85so3353028oie.7;
-        Fri, 15 Apr 2022 07:32:43 -0700 (PDT)
+        Fri, 15 Apr 2022 12:46:35 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6786DCE23;
+        Fri, 15 Apr 2022 09:44:05 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id k5so14785420lfg.9;
+        Fri, 15 Apr 2022 09:44:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iBWwF27MwSuL5C7aP5ZZTL4T7IqFoYwfQe6tUlw2pWI=;
+        b=TkVr8aTJFS9IbJCuBrXCpGEPamxYbyEAMjEiJu0qXzB9gw4xbchJ8On8xUp6zkdSHX
+         WOA/TmTPa3pnldsg+uUpMzSQ4UMHROtPuaxMDZZftMNRw5B+GUNr9UGGgFlXmuRxpiqm
+         kFOB5il2AXyWD19g/EQrck/K0nQTTyytvYBNKvNXQrpJg6qClcEAmmkGdC/hzFpDKlni
+         /iv9VUDudkTEgw4vtPlsES43r2Ji7ln9dEz7i+Ad94DKFjiuM3S2Sdovq/F752kul4Sz
+         WolbRwGQwtcTdGVtBDMG7UOVU1XCgu7NXDbJIDhZdfz9I0s8v79w1PG5Smq61ivAHwMr
+         Kr/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=PWkFmsh5Xu4+fKnCCwdt0tVV4sCcc9ioI4xTfndA/mQ=;
-        b=uRbEX1smBihFX6vWqUoftP9cvyM7tZs1s86jC4+u2D6RKOgRY7Sg4ehNBG3yHaEr+N
-         zp+7KjP5E5NLLOSv3x4c9e9iYtHX+qRIEf8jPwK1pOup685X/kMRTnIZdOcnaM8riyN/
-         V9htAquK3GFg9Ue9Yw5A/9Xtib2IxBs9iaAHZ0u1DFOkOlp/hI9KWgqDtv0cMooDr7pD
-         7f5S1Bp6aDCdZEUsfjWvBiD2BQkFEvZ60Uk1T+lZXfvBqX/3N6OB3lTpEZlPg0wy4c4A
-         yPudZJG4vR/ZudGZguB3Ztk1x1hSez23IdkwADBagIVZyBaqUMpA2GJ7upQcV96o2YfU
-         OiUw==
-X-Gm-Message-State: AOAM533aEMldptddOKRh5+k6WfBTkcTbHjYel7D8MjXaHULSZlBdtCep
-        SgUcxIbi8kEVGbeg4S5/bw==
-X-Google-Smtp-Source: ABdhPJyIHQEfmVJhe8R8epLhEwBEi+YFfcMZyMoMZDbG+RnujEOdN/75D+3Psr7DA3LmCirjREEBtw==
-X-Received: by 2002:a05:6808:199d:b0:2fa:2f20:7212 with SMTP id bj29-20020a056808199d00b002fa2f207212mr1742895oib.251.1650033162752;
-        Fri, 15 Apr 2022 07:32:42 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id z3-20020a056830290300b005b2316db9c9sm1105553otu.30.2022.04.15.07.32.42
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iBWwF27MwSuL5C7aP5ZZTL4T7IqFoYwfQe6tUlw2pWI=;
+        b=mWXuli9AIaFqg7M/osNuDvH9qoxKlmU/OTiGbIvRKVXv4AtvGYDCSMaidvcfTfi1bw
+         0xLHO++2NIAKiP0PpZ+b05jPwReywFHXtKLYKw5UN8Wrgj/WENP/GSK0PKVto4PV1uxB
+         lFdSNHdPZ0qW7ooSio7i05l5wav/Odg4UEobfk6aFoq1xhJqQHG1aXLVhFo1T/E0ZoPo
+         uyBo2FGOZ0PUI8o9OhIl/nVmfGlq4eVduaoTxkEjjQ6Hl8nycrdp2nctJHiyQCm4CsAR
+         C1d05Dvamtb2144BOLa8wUTopKN0qTGCwM8x5C98yYoiBN7H/aOk+70hs9SWT7Uvn6DR
+         pHoA==
+X-Gm-Message-State: AOAM530Mx0oMU/9ykBZP7TW3NtnmR/Bv5agZ32L6cQGwngWzMWlZDFk2
+        qKPe28Uezf57cxYST1jDpNdizltLlew=
+X-Google-Smtp-Source: ABdhPJzGuwNvorSCO5VVz/QXWE6SE1/vY+Z2IZvVpYBCS+XgK0zpRShss1brS9/434H4FFsuCPrOIA==
+X-Received: by 2002:a05:6512:686:b0:46e:c9cf:7112 with SMTP id t6-20020a056512068600b0046ec9cf7112mr3065146lfe.662.1650041043829;
+        Fri, 15 Apr 2022 09:44:03 -0700 (PDT)
+Received: from nergzd-desktop.localdomain ([194.39.226.133])
+        by smtp.gmail.com with ESMTPSA id h22-20020a056512339600b0046bc4ceaeb6sm383787lfg.27.2022.04.15.09.44.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Apr 2022 07:32:42 -0700 (PDT)
-Received: (nullmailer pid 251786 invoked by uid 1000);
-        Fri, 15 Apr 2022 14:32:41 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, phone-devel@vger.kernel.org,
+        Fri, 15 Apr 2022 09:44:03 -0700 (PDT)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Liam Girdwood <lgirdwood@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Lee Jones <lee.jones@linaro.org>, devicetree@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-In-Reply-To: <20220415110014.7384-3-markuss.broks@gmail.com>
-References: <20220415110014.7384-1-markuss.broks@gmail.com> <20220415110014.7384-3-markuss.broks@gmail.com>
-Subject: Re: [PATCH v2 2/4] dt-bindings: mfd: Add bindings for Silicon Mitus SM5703 MFD
-Date:   Fri, 15 Apr 2022 09:32:41 -0500
-Message-Id: <1650033161.773468.251785.nullmailer@robh.at.kernel.org>
+        Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org
+Subject: [PATCH v3 0/4] Add support for Silicon Mitus SM5703 MFD
+Date:   Fri, 15 Apr 2022 19:43:51 +0300
+Message-Id: <20220415164356.25165-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 15 Apr 2022 14:00:11 +0300, Markuss Broks wrote:
-> This patch adds device-tree bindings for the Silicon Mitus
-> SM5703 MFD.
-> 
-> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-> ---
->  .../bindings/mfd/siliconmitus,sm5703.yaml     | 96 +++++++++++++++++++
->  1 file changed, 96 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
-> 
+This series adds support for Silicon Mitus SM5703 MFD and the
+appropriate device-tree bindings. This only adds support for the
+regulator module, leaving room for other modules implemented in
+future (code for other modules is really not ready for submission
+right now). Silicon Mitus SM5703 is used on various mobile phones,
+mostly Samsung Galaxy (J5 (2015, 2016), On7, J7 (2015, 2016) ...).
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+v2:
+- mfd bindings: add "SM5703" to the title
+- mfd bindings: indent the example
+- regulators/Makefile: sort alphabetically
+v3:
+- mfd bindings: fix an error in example: there should be no 
+newline between #size-cells and #address-cells and the node
 
-yamllint warnings/errors:
+Markuss Broks (4):
+  dt-bindings: regulator: Add bindings for Silicon Mitus SM5703
+    regulators
+  dt-bindings: mfd: Add bindings for Silicon Mitus SM5703 MFD
+  mfd: sm5703: Add support for SM5703 MFD
+  regulator: sm5703-regulator: Add regulators support for SM5703 MFD
 
-dtschema/dtc warnings/errors:
-schemas/regulator/siliconmitus,sm5703-regulator.yaml: ignoring, error parsing file
-Error: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.example.dts:28.39-40 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:364: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.example.dtb] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1401: dt_binding_check] Error 2
+ .../bindings/mfd/siliconmitus,sm5703.yaml     |  91 ++++++++++
+ .../siliconmitus,sm5703-regulator.yaml        |  48 ++++++
+ MAINTAINERS                                   |   8 +
+ drivers/mfd/Kconfig                           |  12 ++
+ drivers/mfd/Makefile                          |   1 +
+ drivers/mfd/sm5703.c                          |  81 +++++++++
+ drivers/regulator/Kconfig                     |   7 +
+ drivers/regulator/Makefile                    |   1 +
+ drivers/regulator/sm5703-regulator.c          | 162 ++++++++++++++++++
+ include/linux/mfd/sm5703.h                    | 105 ++++++++++++
+ 10 files changed, 516 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+ create mode 100644 Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
+ create mode 100644 drivers/mfd/sm5703.c
+ create mode 100644 drivers/regulator/sm5703-regulator.c
+ create mode 100644 include/linux/mfd/sm5703.h
 
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+-- 
+2.35.1
 
