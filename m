@@ -2,98 +2,79 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3259CC433F5
-	for <phone-devel@archiver.kernel.org>; Fri, 15 Apr 2022 19:58:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A4C8C433F5
+	for <phone-devel@archiver.kernel.org>; Sun, 17 Apr 2022 23:39:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245071AbiDOUA4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 15 Apr 2022 16:00:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37560 "EHLO
+        id S235391AbiDQXll (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 17 Apr 2022 19:41:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229603AbiDOUAz (ORCPT
+        with ESMTP id S230087AbiDQXll (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 15 Apr 2022 16:00:55 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F55F65D39;
-        Fri, 15 Apr 2022 12:58:25 -0700 (PDT)
-Received: from g550jk.arnhem.chello.nl (a246182.upc-a.chello.nl [62.163.246.182])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 4ACDECE283;
-        Fri, 15 Apr 2022 19:57:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1650052674; bh=XR3x02W34XEAuW/nfCwO3TJ6os9cCNDFJLW+eipqfJk=;
-        h=From:To:Cc:Subject:Date;
-        b=KzV0G2K173sA7rYKVQ8gxJIUYdmGv8xJUNnqaoVp/20TP/5Pdf5YKJnt30IuYVb9K
-         EY3z4L9U++QcBuFK62/1erknrM8I+708ltcZIkM3mbhvOoN/A0fv7MzzqAy/gCY+O6
-         BYLsmobq7l017qdsYIbf4cOetSKsMLXdJ7F+7Ltw=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] soc: qcom: socinfo: Sort out 8974PRO names
-Date:   Fri, 15 Apr 2022 21:54:49 +0200
-Message-Id: <20220415195449.617040-1-luca@z3ntu.xyz>
-X-Mailer: git-send-email 2.35.1
+        Sun, 17 Apr 2022 19:41:41 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E70912AC5
+        for <phone-devel@vger.kernel.org>; Sun, 17 Apr 2022 16:39:04 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-2ec05db3dfbso126321807b3.7
+        for <phone-devel@vger.kernel.org>; Sun, 17 Apr 2022 16:39:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=isOzx1R652BQKfPh1GBlAV/+AdRMp3oAEWnCwdaM+Xk=;
+        b=PXZztnDb00ziKsLwWf14n+fHjb4dFSSNvSMTBJZPC0WIRNELLhjhvjOwzprf9w0Sv7
+         Pogl0pMtNqeH7Llbuh9649waAVX54WV7T1xjW4y6mRo92o6xhYWRYLA21yfF6qxzuOrb
+         RHJs1L1Gromo2CU6PRpuFSa0KVfY7Ks1d8m7zjdyEuOu0afjpn0TZ8BoExd0HzCZZsY1
+         lg9iHb3v+iswCYjML0Ly86C9+orQkiEKCAyjPlHvKH5iP6fdki207krmb+rZWi3HO687
+         mWvL6QoXPxyiInYJWN16fJIrxBpmLyLgFzu1bnHAQ464kP00Tq4AtQPetWax0gClnSUY
+         4LfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=isOzx1R652BQKfPh1GBlAV/+AdRMp3oAEWnCwdaM+Xk=;
+        b=KjNGFXZSv4GFltv5WOENpITFTAe80ogn8oTswcSV35+OR+4wjrfhL8MzxAXP7E1M4o
+         YBCiCHYBdUMZeRqjaDqx0UOqzPx++z5ZN/rHwqRCTfXUIMMK3OQMYPMeVTkp+y5POkZb
+         vwJk8pOkQeEKp0KCrdZ66FRMXBCDc93uF0JxPAp3A8dEszYRPHZex9aHKqkN/MKENy6F
+         R5mTQkVS0S3LhpFvoeNp3IoijxadPfy+U5T5vKuHjEJ9kQEJNYRWw1Wu8PRvvZNXQ+kw
+         I4egdZJmYazBtxaxQX5cD6HdPO0qGP04O4lI4jGHgnUOYUBEloSi86b5ex2o+bWrUX0b
+         PM9Q==
+X-Gm-Message-State: AOAM53156ktIFrLddVnQJOTYVWTihyRx9tzwTHW3JlfSY0LMmEYXAxO6
+        QCG+Hazh5BN0/+rpmVtvp2SEbyiPjwfG5ED8BVozyQ==
+X-Google-Smtp-Source: ABdhPJxVj6FpioinHECp0I834flQrRt0BquG2Ag/8/rIvLz+cbcCGDEtVItw69+sfnj9525EJeZXGIG9JTP5VRIzvq0=
+X-Received: by 2002:a81:b50d:0:b0:2e5:b653:7e97 with SMTP id
+ t13-20020a81b50d000000b002e5b6537e97mr8642749ywh.140.1650238743295; Sun, 17
+ Apr 2022 16:39:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220318183004.858707-1-luca.weiss@fairphone.com> <20220318183004.858707-5-luca.weiss@fairphone.com>
+In-Reply-To: <20220318183004.858707-5-luca.weiss@fairphone.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 18 Apr 2022 01:38:52 +0200
+Message-ID: <CACRpkdZN7chCaG7aNsrKbAnmOBo05fCpKpacWb2tt3Z7VrL9Sg@mail.gmail.com>
+Subject: Re: [PATCH 4/6] pinctrl: qcom: sm6350: fix order of UFS & SDC pins
+To:     Luca Weiss <luca.weiss@fairphone.com>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-MSM8974PRO is commonly used for referring to Snapdragon 801, compared to
-MSM8974 which is Snapdragon 800.
+On Fri, Mar 18, 2022 at 7:30 PM Luca Weiss <luca.weiss@fairphone.com> wrote:
 
-The Snapdragon 801 has three variants with different clock speeds, with
-the -AA, -AB and -AC suffix.
+> In other places the SDC and UFS pins have been swapped but this was
+> missed in the PINCTRL_PIN definitions. Fix that.
+>
+> Fixes: 7d74b55afd27 ("pinctrl: qcom: Add SM6350 pinctrl driver")
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-Adjust the names in socinfo to reflect this.
+Patch applied for fixes.
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- drivers/soc/qcom/socinfo.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
-index 146ff934fdc8..cee579a267a6 100644
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -236,24 +236,24 @@ static const struct soc_id soc_id[] = {
- 	{ 184, "APQ8074" },
- 	{ 185, "MSM8274" },
- 	{ 186, "MSM8674" },
--	{ 194, "MSM8974PRO" },
-+	{ 194, "MSM8974PRO-AC" },
- 	{ 198, "MSM8126" },
- 	{ 199, "APQ8026" },
- 	{ 200, "MSM8926" },
- 	{ 205, "MSM8326" },
- 	{ 206, "MSM8916" },
- 	{ 207, "MSM8994" },
--	{ 208, "APQ8074-AA" },
--	{ 209, "APQ8074-AB" },
--	{ 210, "APQ8074PRO" },
--	{ 211, "MSM8274-AA" },
--	{ 212, "MSM8274-AB" },
--	{ 213, "MSM8274PRO" },
--	{ 214, "MSM8674-AA" },
--	{ 215, "MSM8674-AB" },
--	{ 216, "MSM8674PRO" },
--	{ 217, "MSM8974-AA" },
--	{ 218, "MSM8974-AB" },
-+	{ 208, "APQ8074PRO-AA" },
-+	{ 209, "APQ8074PRO-AB" },
-+	{ 210, "APQ8074PRO-AC" },
-+	{ 211, "MSM8274PRO-AA" },
-+	{ 212, "MSM8274PRO-AB" },
-+	{ 213, "MSM8274PRO-AC" },
-+	{ 214, "MSM8674PRO-AA" },
-+	{ 215, "MSM8674PRO-AB" },
-+	{ 216, "MSM8674PRO-AC" },
-+	{ 217, "MSM8974PRO-AA" },
-+	{ 218, "MSM8974PRO-AB" },
- 	{ 219, "APQ8028" },
- 	{ 220, "MSM8128" },
- 	{ 221, "MSM8228" },
--- 
-2.35.1
-
+Yours,
+Linus Walleij
