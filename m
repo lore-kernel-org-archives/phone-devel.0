@@ -2,56 +2,56 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A4C8C433F5
-	for <phone-devel@archiver.kernel.org>; Sun, 17 Apr 2022 23:39:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 822B8C433FE
+	for <phone-devel@archiver.kernel.org>; Sun, 17 Apr 2022 23:43:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235391AbiDQXll (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 17 Apr 2022 19:41:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57290 "EHLO
+        id S235405AbiDQXpf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 17 Apr 2022 19:45:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230087AbiDQXll (ORCPT
+        with ESMTP id S234336AbiDQXpe (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 17 Apr 2022 19:41:41 -0400
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E70912AC5
-        for <phone-devel@vger.kernel.org>; Sun, 17 Apr 2022 16:39:04 -0700 (PDT)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-2ec05db3dfbso126321807b3.7
-        for <phone-devel@vger.kernel.org>; Sun, 17 Apr 2022 16:39:03 -0700 (PDT)
+        Sun, 17 Apr 2022 19:45:34 -0400
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8021013F0A
+        for <phone-devel@vger.kernel.org>; Sun, 17 Apr 2022 16:42:57 -0700 (PDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id v77so23091408ybi.12
+        for <phone-devel@vger.kernel.org>; Sun, 17 Apr 2022 16:42:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=isOzx1R652BQKfPh1GBlAV/+AdRMp3oAEWnCwdaM+Xk=;
-        b=PXZztnDb00ziKsLwWf14n+fHjb4dFSSNvSMTBJZPC0WIRNELLhjhvjOwzprf9w0Sv7
-         Pogl0pMtNqeH7Llbuh9649waAVX54WV7T1xjW4y6mRo92o6xhYWRYLA21yfF6qxzuOrb
-         RHJs1L1Gromo2CU6PRpuFSa0KVfY7Ks1d8m7zjdyEuOu0afjpn0TZ8BoExd0HzCZZsY1
-         lg9iHb3v+iswCYjML0Ly86C9+orQkiEKCAyjPlHvKH5iP6fdki207krmb+rZWi3HO687
-         mWvL6QoXPxyiInYJWN16fJIrxBpmLyLgFzu1bnHAQ464kP00Tq4AtQPetWax0gClnSUY
-         4LfA==
+        bh=Le1W4emwmC8SAm7xHcpciZnFzcfo5oYtjJ98cu6Km6I=;
+        b=DfXFYpXmszgBq535LnqMbUGOAhbJ1lybwvoIEPYj42FDvwilY5mQXELmsLtBEnX0l3
+         3rOTpuwSg8i4vX0KIicaioTF8Vq0/tey7SKCBPu+sNEhYaLfreG1Br6+0vL+7izS4YMf
+         1SoJdDHhk3VGIyBXajk2RRMM+f7OL+vBA8hEE0zOu3xU/z3xtWTKnPoeVbDvqer7xd7A
+         98V4VV0JK17y+S/Z6VLtvbGD3RpnW7a+UvMuFUXHBPbPMcDTS0NeoLUWHF+YzTbopZLC
+         FA/a/SEvcs1myAs+prKPSbvMVVFDu9EG6MbJgeyiaR2oo7r50fXe3MNnSrNuR+Q/wSDl
+         c8Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=isOzx1R652BQKfPh1GBlAV/+AdRMp3oAEWnCwdaM+Xk=;
-        b=KjNGFXZSv4GFltv5WOENpITFTAe80ogn8oTswcSV35+OR+4wjrfhL8MzxAXP7E1M4o
-         YBCiCHYBdUMZeRqjaDqx0UOqzPx++z5ZN/rHwqRCTfXUIMMK3OQMYPMeVTkp+y5POkZb
-         vwJk8pOkQeEKp0KCrdZ66FRMXBCDc93uF0JxPAp3A8dEszYRPHZex9aHKqkN/MKENy6F
-         R5mTQkVS0S3LhpFvoeNp3IoijxadPfy+U5T5vKuHjEJ9kQEJNYRWw1Wu8PRvvZNXQ+kw
-         I4egdZJmYazBtxaxQX5cD6HdPO0qGP04O4lI4jGHgnUOYUBEloSi86b5ex2o+bWrUX0b
-         PM9Q==
-X-Gm-Message-State: AOAM53156ktIFrLddVnQJOTYVWTihyRx9tzwTHW3JlfSY0LMmEYXAxO6
-        QCG+Hazh5BN0/+rpmVtvp2SEbyiPjwfG5ED8BVozyQ==
-X-Google-Smtp-Source: ABdhPJxVj6FpioinHECp0I834flQrRt0BquG2Ag/8/rIvLz+cbcCGDEtVItw69+sfnj9525EJeZXGIG9JTP5VRIzvq0=
-X-Received: by 2002:a81:b50d:0:b0:2e5:b653:7e97 with SMTP id
- t13-20020a81b50d000000b002e5b6537e97mr8642749ywh.140.1650238743295; Sun, 17
- Apr 2022 16:39:03 -0700 (PDT)
+        bh=Le1W4emwmC8SAm7xHcpciZnFzcfo5oYtjJ98cu6Km6I=;
+        b=ogjYSSbNCGVMlKUFIn8bWkoGyx3j8bswTa/lZ92c9O/H6MLp+q4ZK9YN3ttPAaM03X
+         Jb79DpOa/bOnUwsRr8gA4KbFDtQQK54vk0l1CZCvxLlgYKpjR/KRaubCk500cMBZs+RS
+         l7As3aZFTWWRIUR0auLsSEL8TPI+3IAlAxrzycHIZ7pI+JnKqfNVRNhgC737aKjAaJTq
+         01v5+j5AsYOXp5utr8WyKzZ5Bh79UW7sAj7kDzosbwtCtXtN13wBMQr29PBUdCGdDWLd
+         lJUwGdiYNhxCQ/75NcUl2HuuF6lrry7qTZWm4PTAnspt2HrPp0yH4zUYfcDBO1U1fK1R
+         LrZQ==
+X-Gm-Message-State: AOAM5325JuXjQqhWyU2hemh+ESmzGvHJqPChFGeOs9IwLfCtyo2YBzeM
+        VfkxLtFKAO37ftSoJxylNXGglcZSv2xW/7OxJ4Av9A==
+X-Google-Smtp-Source: ABdhPJwtcjuDUl0/1lhkF30uD62jYzzr8ofEalJ5SS2ebSGJfVM87d/e3g3rnjrSOYRrOwPONcc3UtP80VEZPfT/QL4=
+X-Received: by 2002:a25:4e82:0:b0:633:68d7:b864 with SMTP id
+ c124-20020a254e82000000b0063368d7b864mr8143618ybb.514.1650238976760; Sun, 17
+ Apr 2022 16:42:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220318183004.858707-1-luca.weiss@fairphone.com> <20220318183004.858707-5-luca.weiss@fairphone.com>
-In-Reply-To: <20220318183004.858707-5-luca.weiss@fairphone.com>
+References: <20220321133318.99406-1-luca.weiss@fairphone.com> <20220321133318.99406-5-luca.weiss@fairphone.com>
+In-Reply-To: <20220321133318.99406-5-luca.weiss@fairphone.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 18 Apr 2022 01:38:52 +0200
-Message-ID: <CACRpkdZN7chCaG7aNsrKbAnmOBo05fCpKpacWb2tt3Z7VrL9Sg@mail.gmail.com>
-Subject: Re: [PATCH 4/6] pinctrl: qcom: sm6350: fix order of UFS & SDC pins
+Date:   Mon, 18 Apr 2022 01:42:45 +0200
+Message-ID: <CACRpkdbuLVS=+1GM77nGD7Aq0haOOEbFi-0gO-u63EaJwpxg2A@mail.gmail.com>
+Subject: Re: [PATCH v2 4/6] pinctrl: qcom: sm6350: fix order of UFS & SDC pins
 To:     Luca Weiss <luca.weiss@fairphone.com>
 Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -66,15 +66,18 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Mar 18, 2022 at 7:30 PM Luca Weiss <luca.weiss@fairphone.com> wrote:
+On Mon, Mar 21, 2022 at 2:33 PM Luca Weiss <luca.weiss@fairphone.com> wrote:
 
 > In other places the SDC and UFS pins have been swapped but this was
 > missed in the PINCTRL_PIN definitions. Fix that.
 >
 > Fixes: 7d74b55afd27 ("pinctrl: qcom: Add SM6350 pinctrl driver")
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+> Changes in v2:
+> - nothing
 
-Patch applied for fixes.
+Since no changes I assume it was OK I applied v1.
 
 Yours,
 Linus Walleij
