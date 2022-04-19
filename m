@@ -2,286 +2,208 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5ABA3C433F5
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Apr 2022 16:01:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 357EDC433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Apr 2022 16:04:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354237AbiDSQEK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Apr 2022 12:04:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35728 "EHLO
+        id S1354269AbiDSQHF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Apr 2022 12:07:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354239AbiDSQEH (ORCPT
+        with ESMTP id S1354242AbiDSQHE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Apr 2022 12:04:07 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3061C2ED59;
-        Tue, 19 Apr 2022 09:01:23 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id w1so6821724lfa.4;
-        Tue, 19 Apr 2022 09:01:23 -0700 (PDT)
+        Tue, 19 Apr 2022 12:07:04 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 037B82E9F5;
+        Tue, 19 Apr 2022 09:04:21 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id h11so21118901ljb.2;
+        Tue, 19 Apr 2022 09:04:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=L/y6S893+XO+0gZ9aLfl1F/TXOKs2SRk/NNOfS2VZWA=;
-        b=L6Xrcws7mv5iWGzTcwQt1oy4YLbU8Nz20TyX/ZAUlrbWOVriHNvSMp0U3uCsEWCgGI
-         oljWmVv5a7O2HWKzQO7sUAHre0yA4xsoZNPJqAn5kd3BwgRwF54EjQiW2DOR+hDxYrXu
-         S+rysK5UYrig2DcGdhxIvnAGmj6Kx2i1jsmInJgtgPWSZ1E6fv9oOICvcchUAnycwA5v
-         PS0zoFlzIgQdENDMcIxIzyxPLKovYRc9+UR6sdbV+8+uOAjoNoJdDAUPyVSgUBfbP50O
-         bvGpJPovzHSzqrcgS7XyX10rtmLD4TMO2HDBdT4RaOai6ICWsMgCzcdr0+3vLYutu7lW
-         n7Fw==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=lcB3xg3aCe3l1gTiXN3XpYTB4RffO49bkw83Esq1A5w=;
+        b=gYEfwwJ8DOY74cYxXoJFWXNFcA/hGjBl1+wc9vyPlHUYbtMioc+2NkhS7vmZFUdfOO
+         U4j5WuPJK0pfRRyQfv7fQ1adAx9HlQXnbxrc9MQ8SorTKCLE5+5gZBhcNxNsxE9dId67
+         bLGkBZ2EgpLS5pFyRliGSE4RGcmdZIDAGdG6TCsMXQ9+dp0c/zM5pSPQbZg7C7H/icGO
+         HxFG2kzt1HYgaMvYQJmccEV0R5k2Q98E5nRu/2q9UsEfnlu3N7/qcNgw/Clf82DojdZJ
+         +fuaUrx9y0tNRUSQmgENvc527sDOKqPT1MgxtW86U7cH/0Sm2Q+FrrRXyY+CkmIuwpog
+         NI3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=L/y6S893+XO+0gZ9aLfl1F/TXOKs2SRk/NNOfS2VZWA=;
-        b=S7TVTHXN4rDAQfY2G8DkmOBOPZYzJcKev0bfLn5nuSw70HGh47hxx8/Xghk75yDrk9
-         z3ZtIe8HtwvyD/BDONeyDYR5wAYHwa7fl2reQeqBrQk72VOMwnbUKtQKhzbqnPThAU7G
-         XNtczKnHHK3B7Q5/oQZpDxHpPkcGn0UNEgCw5M6fFFoRYaDgT9U3aXcCV7nNkGytVojn
-         w1iCM9AlX3xJsOMcGGdXn7SS0VgHrYOtKdJxF0T0rnSCMVBs/EinSVcl66xnD44x3A0o
-         y6RmZp2M0ileTZSqW/otDJbJNwfakGTrZi2zEm8uvURDjANB11F15eCVsfrIx57QdsEz
-         HYmA==
-X-Gm-Message-State: AOAM530Nu4Zdy9sd2TDBgrAJbcZDipHe+i7zWc7ATpgE4rzsfzxmSEBV
-        OXe6u4aGf2j4lCOg11Zero1MWrN2+wQ=
-X-Google-Smtp-Source: ABdhPJzvpqny8HulxrTSWCGLhi86vsmekYQaRbaz9XUtUO4ADQsdDbofYZBGxVy6mZHzrqsH7+9TgQ==
-X-Received: by 2002:a05:6512:1290:b0:471:90ee:b265 with SMTP id u16-20020a056512129000b0047190eeb265mr7391662lfs.668.1650384081544;
-        Tue, 19 Apr 2022 09:01:21 -0700 (PDT)
-Received: from nergzd-desktop.localdomain ([194.39.226.133])
-        by smtp.gmail.com with ESMTPSA id m5-20020a194345000000b0046e951e34b3sm1506663lfj.24.2022.04.19.09.01.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Apr 2022 09:01:21 -0700 (PDT)
-From:   Markuss Broks <markuss.broks@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Markuss Broks <markuss.broks@gmail.com>,
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=lcB3xg3aCe3l1gTiXN3XpYTB4RffO49bkw83Esq1A5w=;
+        b=Hn7wwbltQe6WxDLaDQEvBxdKoNKKhrYZ4k8+YIR0ZNORWxT+iz4MYA2WcUUDKqsF10
+         8zfq07kJMVrnQFuAWC3f6M9QBnRSkuGgGvTQ/4LXYi4hM7RnabWZSxUVVRfF1zYF2L7P
+         8Vr0QJhePZRmCXttAxWDm0Ddk0Xw2H4MWLHY66K/APYTPGkNx0Cqj2rvRIu19wo3G247
+         FyK1rU1RhAaX6ogT7PxN79oHN6CxEqa7uH/E2iFmWSJWwIngntj/2uaqqOH0DCMPnhKl
+         r229J26lJAVKq4719CdVzs+JCWCOSQCFqAB/+USKi0DoGsghM4Ji824Tjf2mHPezMKoD
+         HMJQ==
+X-Gm-Message-State: AOAM531qdfEGwFbYZ8Zmrb4SsPeDLMOHa3PLzCq2DU1tuDQ3IAT3I1Zz
+        +iAEj2/T8ROqcKCYDNMj9NI=
+X-Google-Smtp-Source: ABdhPJylD3rj6khsSbNbJh855VFdHgI5doGMocjwhZdoPzXz7QMzACyo+imdgp5TBWrkrtbhKWsHvw==
+X-Received: by 2002:a2e:9d06:0:b0:24c:7dee:4d58 with SMTP id t6-20020a2e9d06000000b0024c7dee4d58mr10555814lji.177.1650384259290;
+        Tue, 19 Apr 2022 09:04:19 -0700 (PDT)
+Received: from [192.168.86.247] ([194.39.226.133])
+        by smtp.gmail.com with ESMTPSA id x21-20020a056512047500b0046f960e1988sm1300491lfd.153.2022.04.19.09.04.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Apr 2022 09:04:18 -0700 (PDT)
+Message-ID: <5508c508-5009-361c-bd95-d31d139c6f13@gmail.com>
+Date:   Tue, 19 Apr 2022 19:04:16 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v3 2/4] dt-bindings: mfd: Add bindings for Silicon Mitus
+ SM5703 MFD
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
         Lee Jones <lee.jones@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org
-Subject: [PATCH v4 4/4] regulator: sm5703-regulator: Add regulators support for SM5703 MFD
-Date:   Tue, 19 Apr 2022 19:00:57 +0300
-Message-Id: <20220419160058.9998-5-markuss.broks@gmail.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220419160058.9998-1-markuss.broks@gmail.com>
-References: <20220419160058.9998-1-markuss.broks@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220415164356.25165-1-markuss.broks@gmail.com>
+ <20220415164356.25165-3-markuss.broks@gmail.com>
+ <Yl7AyYAwkyO3oDrW@robh.at.kernel.org>
+From:   Markuss Broks <markuss.broks@gmail.com>
+In-Reply-To: <Yl7AyYAwkyO3oDrW@robh.at.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Regulators block of SM5703 controls several voltage regulators which
-are used to power various components. There are 3 LDO outputs ranging
-from 1.5 to 3.3V, a buck regulator ranging from 1V to 3V, two fixed
-voltage LDO regulators for powering the USB devices and one high-power
-fixed voltage LDO line (actually two lines) meant to power high-power
-USB devices.
+Hi Rob,
 
-Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
----
- drivers/regulator/Kconfig            |   7 ++
- drivers/regulator/Makefile           |   1 +
- drivers/regulator/sm5703-regulator.c | 162 +++++++++++++++++++++++++++
- 3 files changed, 170 insertions(+)
- create mode 100644 drivers/regulator/sm5703-regulator.c
-
-diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
-index 5d0a360d7244..318bbdc27ae4 100644
---- a/drivers/regulator/Kconfig
-+++ b/drivers/regulator/Kconfig
-@@ -1147,6 +1147,13 @@ config REGULATOR_SLG51000
- 	  The SLG51000 is seven compact and customizable low dropout
- 	  regulators.
- 
-+config REGULATOR_SM5703
-+	tristate "Silicon Mitus SM5703 regulators"
-+	depends on SM5703_MFD
-+	help
-+	  This driver provides support for voltage regulators of SM5703
-+	  multi-function device.
-+
- config REGULATOR_STM32_BOOSTER
- 	tristate "STMicroelectronics STM32 BOOSTER"
- 	depends on ARCH_STM32 || COMPILE_TEST
-diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
-index 4b8794a73e17..c491fe528ba4 100644
---- a/drivers/regulator/Makefile
-+++ b/drivers/regulator/Makefile
-@@ -137,6 +137,7 @@ obj-$(CONFIG_REGULATOR_S5M8767) += s5m8767.o
- obj-$(CONFIG_REGULATOR_SC2731) += sc2731-regulator.o
- obj-$(CONFIG_REGULATOR_SKY81452) += sky81452-regulator.o
- obj-$(CONFIG_REGULATOR_SLG51000) += slg51000-regulator.o
-+obj-$(CONFIG_REGULATOR_SM5703) += sm5703-regulator.o
- obj-$(CONFIG_REGULATOR_STM32_BOOSTER) += stm32-booster.o
- obj-$(CONFIG_REGULATOR_STM32_VREFBUF) += stm32-vrefbuf.o
- obj-$(CONFIG_REGULATOR_STM32_PWR) += stm32-pwr.o
-diff --git a/drivers/regulator/sm5703-regulator.c b/drivers/regulator/sm5703-regulator.c
-new file mode 100644
-index 000000000000..41004de69887
---- /dev/null
-+++ b/drivers/regulator/sm5703-regulator.c
-@@ -0,0 +1,162 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <linux/mfd/sm5703.h>
-+#include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/driver.h>
-+#include <linux/regulator/of_regulator.h>
-+
-+enum sm5703_regulators {
-+	SM5703_BUCK,
-+	SM5703_LDO1,
-+	SM5703_LDO2,
-+	SM5703_LDO3,
-+	SM5703_USBLDO1,
-+	SM5703_USBLDO2,
-+	SM5703_VBUS,
-+	SM5703_MAX_REGULATORS,
-+};
-+
-+static const int sm5703_ldo_voltagemap[] = {
-+	1500000, 1800000, 2600000, 2800000, 3000000, 3300000,
-+};
-+
-+static const int sm5703_buck_voltagemap[] = {
-+	1000000, 1000000, 1000000, 1000000,
-+	1000000, 1000000, 1000000, 1000000,
-+	1000000, 1000000, 1000000, 1100000,
-+	1200000, 1300000, 1400000, 1500000,
-+	1600000, 1700000, 1800000, 1900000,
-+	2000000, 2100000, 2200000, 2300000,
-+	2400000, 2500000, 2600000, 2700000,
-+	2800000, 2900000, 3000000, 3000000,
-+};
-+
-+#define SM5703USBLDO(_name, _id)					\
-+	[SM5703_USBLDO ## _id] = {					\
-+		.name = _name,						\
-+		.of_match = _name,					\
-+		.regulators_node = "regulators",			\
-+		.type = REGULATOR_VOLTAGE,				\
-+		.id = SM5703_USBLDO ## _id,				\
-+		.ops = &sm5703_regulator_ops,				\
-+		.fixed_uV = SM5703_USBLDO_MICROVOLT,			\
-+		.enable_reg = SM5703_REG_USBLDO12,			\
-+		.enable_mask = SM5703_REG_EN_USBLDO ##_id,		\
-+		.owner			= THIS_MODULE,			\
-+	}
-+
-+#define SM5703VBUS(_name)						\
-+	[SM5703_VBUS] = {						\
-+		.name = _name,						\
-+		.of_match = _name,					\
-+		.regulators_node = "regulators",			\
-+		.type = REGULATOR_VOLTAGE,				\
-+		.id = SM5703_VBUS,					\
-+		.ops = &sm5703_regulator_ops,				\
-+		.fixed_uV = SM5703_VBUS_MICROVOLT,			\
-+		.enable_reg = SM5703_REG_CNTL,				\
-+		.enable_mask = SM5703_OPERATION_MODE_MASK,		\
-+		.enable_val = SM5703_OPERATION_MODE_USB_OTG_MODE,	\
-+		.disable_val = SM5703_OPERATION_MODE_CHARGING_ON,	\
-+		.owner			= THIS_MODULE,			\
-+	}
-+
-+#define SM5703BUCK(_name)						\
-+	[SM5703_BUCK] = {						\
-+		.name = _name,						\
-+		.of_match = _name,					\
-+		.regulators_node = "regulators",			\
-+		.type = REGULATOR_VOLTAGE,				\
-+		.id = SM5703_BUCK,					\
-+		.ops = &sm5703_regulator_ops,				\
-+		.n_voltages = ARRAY_SIZE(sm5703_buck_voltagemap),	\
-+		.volt_table = sm5703_buck_voltagemap,			\
-+		.vsel_reg = SM5703_REG_BUCK,				\
-+		.vsel_mask = SM5703_BUCK_VOLT_MASK,			\
-+		.enable_reg = SM5703_REG_BUCK,				\
-+		.enable_mask = SM5703_REG_EN_BUCK,			\
-+		.owner			= THIS_MODULE,			\
-+	}
-+
-+#define SM5703LDO(_name, _id)						\
-+	[SM5703_LDO ## _id] = {						\
-+		.name = _name,						\
-+		.of_match = _name,					\
-+		.regulators_node = "regulators",			\
-+		.type = REGULATOR_VOLTAGE,				\
-+		.id = SM5703_LDO ## _id,				\
-+		.ops = &sm5703_regulator_ops,				\
-+		.n_voltages = ARRAY_SIZE(sm5703_ldo_voltagemap),	\
-+		.volt_table = sm5703_ldo_voltagemap,			\
-+		.vsel_reg = SM5703_REG_LDO ##_id,			\
-+		.vsel_mask = SM5703_LDO_VOLT_MASK,			\
-+		.enable_reg = SM5703_REG_LDO ##_id,			\
-+		.enable_mask = SM5703_LDO_EN,				\
-+		.owner			= THIS_MODULE,			\
-+	}
-+
-+static const struct regulator_ops sm5703_regulator_ops = {
-+	.enable			= regulator_enable_regmap,
-+	.disable		= regulator_disable_regmap,
-+	.is_enabled		= regulator_is_enabled_regmap,
-+	.list_voltage		= regulator_list_voltage_table,
-+	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-+	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-+};
-+
-+static struct regulator_desc sm5703_regulators_desc[SM5703_MAX_REGULATORS] = {
-+	SM5703BUCK("buck"),
-+	SM5703LDO("ldo1", 1),
-+	SM5703LDO("ldo2", 2),
-+	SM5703LDO("ldo3", 3),
-+	SM5703USBLDO("usbldo1", 1),
-+	SM5703USBLDO("usbldo2", 2),
-+	SM5703VBUS("vbus"),
-+};
-+
-+static int sm5703_regulator_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct regulator_config config = { NULL, };
-+	struct regulator_dev *rdev;
-+	struct sm5703_dev *sm5703 = dev_get_drvdata(pdev->dev.parent);
-+	int i;
-+
-+	config.dev = dev;
-+	config.of_node = dev->of_node;
-+	config.regmap = sm5703->regmap;
-+
-+	for (i = 0; i < SM5703_MAX_REGULATORS; i++) {
-+		rdev = devm_regulator_register(dev,
-+					       &sm5703_regulators_desc[i],
-+					       &config);
-+		if (IS_ERR(rdev))
-+			return dev_err_probe(dev, PTR_ERR(rdev),
-+					     "Failed to register a regulator\n");
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct platform_device_id sm5703_regulator_id[] = {
-+	{ "sm5703-regulator", 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(platform, sm5703_regulator_id);
-+
-+static struct platform_driver sm5703_regulator_driver = {
-+	.driver = {
-+		.name = "sm5703-regulator",
-+	},
-+	.probe	= sm5703_regulator_probe,
-+	.id_table	= sm5703_regulator_id,
-+};
-+
-+module_platform_driver(sm5703_regulator_driver);
-+
-+MODULE_DESCRIPTION("Silicon Mitus SM5703 LDO/Buck/USB regulator driver");
-+MODULE_AUTHOR("Markuss Broks <markuss.broks@gmail.com>");
-+MODULE_LICENSE("GPL");
--- 
-2.35.1
-
+On 4/19/22 17:01, Rob Herring wrote:
+> On Fri, Apr 15, 2022 at 07:43:53PM +0300, Markuss Broks wrote:
+>> This patch adds device-tree bindings for the Silicon Mitus
+>> SM5703 MFD.
+>>
+>> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+>> ---
+>>   .../bindings/mfd/siliconmitus,sm5703.yaml     | 95 +++++++++++++++++++
+>>   1 file changed, 95 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml b/Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+>> new file mode 100644
+>> index 000000000000..aa676967593d
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+>> @@ -0,0 +1,95 @@
+>> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/mfd/siliconmitus,sm5703.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Silicon Mitus SM5703 multi-function device bindings
+>> +
+>> +maintainers:
+>> +  - Markuss Broks <markuss.broks@gmail.com>
+>> +
+>> +description: |
+>> +  Silicon Mitus SM5703 is a multi-function device, that consists of several
+>> +  modules, designed for a mobile phone use. It consists of
+>> +  LDO, Buck, USBLDO and VBUS regulators, a flash LED driver, a MUIC unit,
+>> +  a fuel gauge and a battery charger circuit. The MUIC and Fuel-Gauge units
+>> +  are separate from the main MFD, having their own i2c lines, while the
+>> +  LED driver, regulators and charger are sharing the main i2c bus of the MFD.
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: siliconmitus,sm5703-mfd
+> '-mfd' is redundant. Drop.
+>
+>> +
+>> +  reg:
+>> +    description:
+>> +      I2C slave address.
+>> +    maxItems: 1
+>> +
+>> +  regulators:
+>> +    $ref: ../regulator/siliconmitus,sm5703-regulator.yaml
+> /schemas/regulator/...
+>
+>> +    description:
+>> +      List of child nodes that specify the regulators.
+>> +
+>> +  reset-gpio:
+> '-gpios' is the preferred form even with 1.
+>
+> Are the MUIC and Fuel-Gauge units independent from this reset?
+ From my understanding, they're completely separate from the main unit. 
+The tests also confirm that they both work normally no matter the reset 
+GPIO state.
+>
+>> +    description:
+>> +      GPIO which is connected to the MRSTB pin.
+>> +    maxItems: 1
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - regulators
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    i2c {
+>> +      #address-cells = <1>;
+>> +      #size-cells = <0>;
+>> +      mfd@49 {
+> 'pmic' is the standard name.
+>
+>> +        compatible = "siliconmitus,sm5703-mfd";
+>> +        reg = <0x49>;
+>> +
+>> +        reset-gpio = <&msmgpio 24 GPIO_ACTIVE_HIGH>;
+>> +        pinctrl-0 = <&mrstb_default>;
+>> +
+>> +        regulator {
+>> +          compatible = "siliconmitus,sm5703-regulator";
+>> +
+>> +          regulators {
+>> +            sm5703_ldo1: ldo1 {
+>> +              regulator-min-microvolt = <2800000>;
+>> +              regulator-max-microvolt = <2800000>;
+>> +            };
+>> +
+>> +            sm5703_ldo2: ldo2 {
+>> +              regulator-min-microvolt = <1500000>;
+>> +              regulator-max-microvolt = <3300000>;
+>> +            };
+>> +
+>> +            sm5703_ldo3: ldo3 {
+>> +              regulator-min-microvolt = <3300000>;
+>> +              regulator-max-microvolt = <3300000>;
+>> +            };
+>> +
+>> +            sm5703_usbldo1: usbldo1 {
+>> +              regulator-min-microvolt = <4800000>;
+>> +              regulator-max-microvolt = <4800000>;
+>> +            };
+>> +
+>> +            sm5703_usbldo2: usbldo2 {
+>> +              regulator-min-microvolt = <4800000>;
+>> +              regulator-max-microvolt = <4800000>;
+>> +            };
+>> +
+>> +            sm5703_vbus: vbus {
+>> +              regulator-min-microvolt = <5000000>;
+>> +              regulator-max-microvolt = <5000000>;
+>> +            };
+>> +          };
+>> +        };
+>> +      };
+>> +    };
+>> +...
+>> -- 
+>> 2.35.1
+>>
+>>
+- Markuss
