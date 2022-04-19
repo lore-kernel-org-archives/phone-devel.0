@@ -2,95 +2,91 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0DFFC433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Apr 2022 17:45:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1324CC433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Apr 2022 19:12:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356034AbiDSRsA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Apr 2022 13:48:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55458 "EHLO
+        id S244785AbiDSTPT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Apr 2022 15:15:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352507AbiDSRr7 (ORCPT
+        with ESMTP id S1357541AbiDSTPR (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Apr 2022 13:47:59 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CBC462E9;
-        Tue, 19 Apr 2022 10:45:13 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id y11so3912361ljh.5;
-        Tue, 19 Apr 2022 10:45:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=SjD5CFslJQQYURAmfXvw+WxJZ7JPzN1dOfI/dFsBNzg=;
-        b=dUdFe12pHTI33mJnYfkh/TazjFWSWVb+om+MTj/GzhLgegWL9KGtC6MyUS1i4zTKxA
-         0CNH077RDCRwL15pPGcRpmIE8js/9QFKpPz0L4mG5KM3zbvFb7oONTpxAJO2+kKdGMsd
-         owWHsM+kj0A8W8DfI+x5A5+Bp6LL7HF36f/iZSNbFmoCskj3Dv07UrEDlUoBVcpthWFW
-         T6ybwCUHutfaZh3+oFxP1JweHzQ1wpF6CjFwHA8jH6GgadsPc3YtzUyuEARBfhTht95U
-         zWjc8MdnxpncRGG6FK1yGnbLaJDe5hihomQ3b78OVdDKLGx25xRAsLZa2COCAaiQTzaf
-         SH7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=SjD5CFslJQQYURAmfXvw+WxJZ7JPzN1dOfI/dFsBNzg=;
-        b=AqxklEtcNNCeyTSph+PfM3A1uSbkiqvY6PgS8dtt8Jz+I0cQ9umaRYerRGI+Mfp6AU
-         Th7QqZ4eJ1WmqzGjYx2yFO1u6MpWVZuz0GC7Mt6hfWTyjKpP5hu/fTZTfYXgUnF+bqQ8
-         v+qWgsE4GgNHLD0lRsJWiHgIfUBepRJ15qHnvPFCC79c1jHd/zCt1U5uleN4uUKr9DxL
-         JScxk7cbnPQ76pPsxRK6BJuKCjYxq8B0FxM6JXfaJYL9T32PIw7vVNlaCPP5f4xiccRq
-         oJWNyvMT6h3lPyz/F57x9p1ZVJfJMkiTxAHZTZ3rRjYZgU6L7xBaNGspkOQG8RpkXEA/
-         I1Ug==
-X-Gm-Message-State: AOAM533bt5XT0hdEFYjleJVpbY/eJoiNjAz+YNwVtDIUvfGQPlKlRMWr
-        pxt5sZS2hlLr8ttZtK7kjmg=
-X-Google-Smtp-Source: ABdhPJx2o4TRNqJTcBSZ5qW8z5gPbd0SOEt8FZJeRrvnYgmsTK5aLgP3VQ+f02YC6tAp/Ax9YpzTyQ==
-X-Received: by 2002:a2e:7012:0:b0:24a:f9bf:ce70 with SMTP id l18-20020a2e7012000000b0024af9bfce70mr10512154ljc.329.1650390311309;
-        Tue, 19 Apr 2022 10:45:11 -0700 (PDT)
-Received: from [192.168.86.247] ([194.39.226.133])
-        by smtp.gmail.com with ESMTPSA id r4-20020a2e5744000000b0024d9e106768sm1490874ljd.89.2022.04.19.10.45.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Apr 2022 10:45:10 -0700 (PDT)
-Message-ID: <0599e7ac-bd06-8d56-b510-0f27f4cc6790@gmail.com>
-Date:   Tue, 19 Apr 2022 20:45:07 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v4 1/4] dt-bindings: regulator: Add bindings for Silicon
- Mitus SM5703 regulators
-Content-Language: en-US
-To:     Mark Brown <broonie@kernel.org>
+        Tue, 19 Apr 2022 15:15:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C3303DA6B;
+        Tue, 19 Apr 2022 12:12:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC84E61607;
+        Tue, 19 Apr 2022 19:12:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421C4C385A7;
+        Tue, 19 Apr 2022 19:12:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650395553;
+        bh=RyOybfu5X9K8DF20Kj1+gX0qpPmThYKU0IY2XowwxmA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=NIfHW4dEkv9NFu9z0tTiCKIMtwPuzQWfbb5dyj3l7n9MmeZlf9DMCP3dadOVLdlCa
+         gHxarQPZv/Pcoa2K6QGwsCqLvkNuwVlBZ1viOwFV8XB5ayyayBAeOzYTzMF8g15Eys
+         hXUH91FMFfPZUrNPXcfczJIVo9DG9F54lh8h+0FOx0tXOihRvJVuGg99sUmv/S+iiF
+         z62Pj/K+G4HcvN8I1IiJjABLcGFVPoMxKXj4npdX6nwFtXhQ9IJA3tNgdhbz+Vovnx
+         4FTc4DnMxtJR66Tb5+p+pwGJD3eoHAkgts7BfSXxThd4S9NwpYLcmozXEV0mP8E6ML
+         wozwOX7bF7s8A==
+Date:   Tue, 19 Apr 2022 20:12:27 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Markuss Broks <markuss.broks@gmail.com>
 Cc:     linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         Lee Jones <lee.jones@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
         Liam Girdwood <lgirdwood@gmail.com>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 1/4] dt-bindings: regulator: Add bindings for Silicon
+ Mitus SM5703 regulators
+Message-ID: <Yl8Jm9XqR3YTrW9Y@sirena.org.uk>
 References: <20220419160058.9998-1-markuss.broks@gmail.com>
  <20220419160058.9998-2-markuss.broks@gmail.com>
  <Yl7pqgjza/ZfajyM@sirena.org.uk>
-From:   Markuss Broks <markuss.broks@gmail.com>
-In-Reply-To: <Yl7pqgjza/ZfajyM@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <0599e7ac-bd06-8d56-b510-0f27f4cc6790@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="kBKUCAm8/+PdtSlQ"
+Content-Disposition: inline
+In-Reply-To: <0599e7ac-bd06-8d56-b510-0f27f4cc6790@gmail.com>
+X-Cookie: That's what she said.
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Mark,
 
-On 4/19/22 19:56, Mark Brown wrote:
-> On Tue, Apr 19, 2022 at 07:00:54PM +0300, Markuss Broks wrote:
->
->> +description: |
->> +  SM5703 regulators node should be a sub node of the SM5703 MFD node. See SM5703 MFD
->> +  bindings at Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
-> Why is this a separate binding with a compatible rather than just being
-> part of the main MFD binding?  Alternatively, why aren't the regulators
-> described individually in the DT (ie, one node/compatible per regulator)?
+--kBKUCAm8/+PdtSlQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I took an example from the rohm,bd71847-pmic.yaml MFD binding, they have 
-regulators at a separate regulators { } node, with a separate dt-binding 
-for it. I'm not sure what should I do, I'd be more than happy to follow 
-a better example if you can show me it.
+On Tue, Apr 19, 2022 at 08:45:07PM +0300, Markuss Broks wrote:
 
-- Markuss
+> I took an example from the rohm,bd71847-pmic.yaml MFD binding, they have
+> regulators at a separate regulators { } node, with a separate dt-binding for
+> it. I'm not sure what should I do, I'd be more than happy to follow a better
+> example if you can show me it.
 
+Basically either just remove the compatible and have the MFD directly
+instantiate the device like sky81452 or put a separate node for each
+regualtor like wm831x does (but without any DT support).
+
+--kBKUCAm8/+PdtSlQ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmJfCZsACgkQJNaLcl1U
+h9D+Iwf/fOnvSE5bXAsc7/ve+dvtqCmygIBO3LUlGExMkKkaoeDotUxWWD+zcbHy
+kCAkMK+NEEZe3fvWIiJ8pldgPM7I1ynR2HNsDkP67JtbF+5KXL9KOJO4tufA6+Eg
+SbGFLngPeTytekRhVsgvUou8lzoxrim9lTtXjcF2LXPvILgHiH1g/AT9AOMDykVb
+GRGswwPo3yFCrG+NGzuTN2MFti5cUxrcpsDDxBYyepx3kaazbEK+v/wlBnAi2vvX
+dEXjjRAxscGjb/5LX7lJi77F/l8eY2XQIbZ0dBHOedAz0jaXvdi++IWzk6wrghRw
+id79/7rUqeAfUw4PDWeEKQZ5okRHiw==
+=iucX
+-----END PGP SIGNATURE-----
+
+--kBKUCAm8/+PdtSlQ--
