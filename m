@@ -2,91 +2,96 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1324CC433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Apr 2022 19:12:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54F80C433F5
+	for <phone-devel@archiver.kernel.org>; Wed, 20 Apr 2022 01:19:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244785AbiDSTPT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Apr 2022 15:15:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34268 "EHLO
+        id S1357045AbiDTBWJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Apr 2022 21:22:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357541AbiDSTPR (ORCPT
+        with ESMTP id S1349056AbiDTBWI (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Apr 2022 15:15:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C3303DA6B;
-        Tue, 19 Apr 2022 12:12:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC84E61607;
-        Tue, 19 Apr 2022 19:12:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421C4C385A7;
-        Tue, 19 Apr 2022 19:12:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650395553;
-        bh=RyOybfu5X9K8DF20Kj1+gX0qpPmThYKU0IY2XowwxmA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NIfHW4dEkv9NFu9z0tTiCKIMtwPuzQWfbb5dyj3l7n9MmeZlf9DMCP3dadOVLdlCa
-         gHxarQPZv/Pcoa2K6QGwsCqLvkNuwVlBZ1viOwFV8XB5ayyayBAeOzYTzMF8g15Eys
-         hXUH91FMFfPZUrNPXcfczJIVo9DG9F54lh8h+0FOx0tXOihRvJVuGg99sUmv/S+iiF
-         z62Pj/K+G4HcvN8I1IiJjABLcGFVPoMxKXj4npdX6nwFtXhQ9IJA3tNgdhbz+Vovnx
-         4FTc4DnMxtJR66Tb5+p+pwGJD3eoHAkgts7BfSXxThd4S9NwpYLcmozXEV0mP8E6ML
-         wozwOX7bF7s8A==
-Date:   Tue, 19 Apr 2022 20:12:27 +0100
-From:   Mark Brown <broonie@kernel.org>
+        Tue, 19 Apr 2022 21:22:08 -0400
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9162A275EB;
+        Tue, 19 Apr 2022 18:19:23 -0700 (PDT)
+Received: by mail-oi1-f175.google.com with SMTP id w127so454911oig.10;
+        Tue, 19 Apr 2022 18:19:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=gg8aOhcRHmKNfpVRfFVEqzdF2AvqLx/P/Hzu9odNm08=;
+        b=OX0ejIYKf4a0Z+uY3z1wDY/GiL8Mx0JTElgTP1/ObeMFodR7mFYJSeKWSIKtIGi1Zz
+         bGyzOYGFA+YMZkg1SCy+Aq1q15X1SfFQjl4CBiZIp+CNZA/+pypGPPf7VdYzm+xlYSVG
+         DC1QMf+h9atDCFwWqSBnty8nc1MwIkCaUW2H5vdRwnrFAAglL3SOev6TZhloEwT25OH2
+         Y7IWaK5dvHwBbcCSw2fA/5Dw02YZSsyLeD1O2Po3nP9w7eP0BO0HKbiY1BOVrSEFp736
+         pWYP8GUoFnlcA8ISP8fetTY3sP6gJXGfgNFq0Ge3YoKNmN9sn3XTH5mwAOe+pplMcfBL
+         Xw7A==
+X-Gm-Message-State: AOAM531prs1pOsry/awOb/l4YkhIfiPs0MSCtuE0mHYllHGye6SGeBu0
+        y64cJZueB6YIaP3kgM/2Pg==
+X-Google-Smtp-Source: ABdhPJzt1A9FdkqwKlRg9/TRbXvdC/wNpDIB/ak+W0g5e+h98AT9xYwKpVYl+HIRCU0LejAUrrWMpQ==
+X-Received: by 2002:a05:6808:169f:b0:2d7:9bbd:ae82 with SMTP id bb31-20020a056808169f00b002d79bbdae82mr630062oib.136.1650417562765;
+        Tue, 19 Apr 2022 18:19:22 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id d10-20020a9d51ca000000b00605522f0739sm1765499oth.41.2022.04.19.18.19.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Apr 2022 18:19:22 -0700 (PDT)
+Received: (nullmailer pid 4040587 invoked by uid 1000);
+        Wed, 20 Apr 2022 01:19:21 -0000
+From:   Rob Herring <robh@kernel.org>
 To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+Cc:     Lee Jones <lee.jones@linaro.org>, Mark Brown <broonie@kernel.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
-        Lee Jones <lee.jones@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 1/4] dt-bindings: regulator: Add bindings for Silicon
- Mitus SM5703 regulators
-Message-ID: <Yl8Jm9XqR3YTrW9Y@sirena.org.uk>
-References: <20220419160058.9998-1-markuss.broks@gmail.com>
- <20220419160058.9998-2-markuss.broks@gmail.com>
- <Yl7pqgjza/ZfajyM@sirena.org.uk>
- <0599e7ac-bd06-8d56-b510-0f27f4cc6790@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="kBKUCAm8/+PdtSlQ"
-Content-Disposition: inline
-In-Reply-To: <0599e7ac-bd06-8d56-b510-0f27f4cc6790@gmail.com>
-X-Cookie: That's what she said.
+        phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>
+In-Reply-To: <20220419160058.9998-3-markuss.broks@gmail.com>
+References: <20220419160058.9998-1-markuss.broks@gmail.com> <20220419160058.9998-3-markuss.broks@gmail.com>
+Subject: Re: [PATCH v4 2/4] dt-bindings: mfd: Add bindings for Silicon Mitus SM5703 MFD
+Date:   Tue, 19 Apr 2022 20:19:21 -0500
+Message-Id: <1650417561.519934.4040586.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Tue, 19 Apr 2022 19:00:55 +0300, Markuss Broks wrote:
+> This patch adds device-tree bindings for the Silicon Mitus
+> SM5703 MFD.
+> 
+> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> ---
+>  .../bindings/mfd/siliconmitus,sm5703.yaml     | 96 +++++++++++++++++++
+>  1 file changed, 96 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+> 
 
---kBKUCAm8/+PdtSlQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-On Tue, Apr 19, 2022 at 08:45:07PM +0300, Markuss Broks wrote:
+yamllint warnings/errors:
 
-> I took an example from the rohm,bd71847-pmic.yaml MFD binding, they have
-> regulators at a separate regulators { } node, with a separate dt-binding for
-> it. I'm not sure what should I do, I'd be more than happy to follow a better
-> example if you can show me it.
+dtschema/dtc warnings/errors:
+schemas/regulator/siliconmitus,sm5703-regulator.yaml: ignoring, error parsing file
+Error: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.example.dts:27.40-41 syntax error
+FATAL ERROR: Unable to parse input tree
+make[1]: *** [scripts/Makefile.lib:364: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.example.dtb] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1401: dt_binding_check] Error 2
 
-Basically either just remove the compatible and have the MFD directly
-instantiate the device like sky81452 or put a separate node for each
-regualtor like wm831x does (but without any DT support).
+doc reference errors (make refcheckdocs):
 
---kBKUCAm8/+PdtSlQ
-Content-Type: application/pgp-signature; name="signature.asc"
+See https://patchwork.ozlabs.org/patch/
 
------BEGIN PGP SIGNATURE-----
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmJfCZsACgkQJNaLcl1U
-h9D+Iwf/fOnvSE5bXAsc7/ve+dvtqCmygIBO3LUlGExMkKkaoeDotUxWWD+zcbHy
-kCAkMK+NEEZe3fvWIiJ8pldgPM7I1ynR2HNsDkP67JtbF+5KXL9KOJO4tufA6+Eg
-SbGFLngPeTytekRhVsgvUou8lzoxrim9lTtXjcF2LXPvILgHiH1g/AT9AOMDykVb
-GRGswwPo3yFCrG+NGzuTN2MFti5cUxrcpsDDxBYyepx3kaazbEK+v/wlBnAi2vvX
-dEXjjRAxscGjb/5LX7lJi77F/l8eY2XQIbZ0dBHOedAz0jaXvdi++IWzk6wrghRw
-id79/7rUqeAfUw4PDWeEKQZ5okRHiw==
-=iucX
------END PGP SIGNATURE-----
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
---kBKUCAm8/+PdtSlQ--
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+
