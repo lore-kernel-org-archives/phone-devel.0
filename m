@@ -2,64 +2,63 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BFEEC4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 21 Apr 2022 14:27:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B385C4167B
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Apr 2022 14:27:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1389257AbiDUOaL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 21 Apr 2022 10:30:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35644 "EHLO
+        id S1389306AbiDUOa2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 21 Apr 2022 10:30:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1389224AbiDUOaK (ORCPT
+        with ESMTP id S1389308AbiDUOaU (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 21 Apr 2022 10:30:10 -0400
-Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EFA63E0F4
-        for <phone-devel@vger.kernel.org>; Thu, 21 Apr 2022 07:27:15 -0700 (PDT)
-Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-e5e433d66dso5543556fac.5
-        for <phone-devel@vger.kernel.org>; Thu, 21 Apr 2022 07:27:15 -0700 (PDT)
+        Thu, 21 Apr 2022 10:30:20 -0400
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50E103EB90
+        for <phone-devel@vger.kernel.org>; Thu, 21 Apr 2022 07:27:27 -0700 (PDT)
+Received: by mail-oi1-x231.google.com with SMTP id e189so5757399oia.8
+        for <phone-devel@vger.kernel.org>; Thu, 21 Apr 2022 07:27:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=9VwmgAIE3C/SlM3FCg1mKc45JuOL6JcnrTvihhf7z+8=;
-        b=gT3MpU79adYbNmR619A7KZwgwzy1/l+VS3jcW/0aVqreIbPUeSR1kvM5Jb7X6iaMLF
-         hepxgbkIFjyA0lyb2iKgUwyiDlRYoiWHEJrXRCvMKilJQPOGCZjQO93YBqW9A8zXqKz2
-         ddqB/FLDaRO3w5C3ai/PqyTaro2lIa3UlF+YO6ipQG6wrUV3SRwNIdPY/NgMEWEeCdhF
-         etGVz6KBFTfhWl223r61PYEJfc/dgFRYslxc5evi9EDmvyjx4McoH3H/DoV2DdHOhc1y
-         3DeCaQkI0oWrYrwImQwK9jmEitPo6bYdMWDwKG2j1xWSDt4LcvUEZHNLYBOskJSW66kT
-         PB5Q==
+        bh=7Y+rGBJub4hUelqG6Wh/GRTU8FsHwDE9p9sZ9nEoVKQ=;
+        b=i8Jw5blRNpNTEopLw35Y+TQC2A2+Nrm9Hwa8Jp4lGm9FN73TIJiwgUuEtHVw7BwA/k
+         pdHr6K4ZAqp+eck+SqZkrX7w9Xkvmn//IUxnGY4NMunZRWKf9VmHwiDS9IrndGfJYGTV
+         sEQUUT+ycI/iBAez7xuA1bR6uECYMdeKAty07R7HiTkUk4K7iBrWu2PCPVHt9thRYj14
+         FxdmcqVlO0mWT0Fsey71UPB0083xxV+I8GI6dLygQmGXieIfXC7U5SPwA8wwFeqcnO1i
+         MR9yBMVKD4xiCD+/mELhhSfilMNfQejDwP193E9Or1ZoNxWmSNhPFpHpCkfOuDYFx0pt
+         1tHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=9VwmgAIE3C/SlM3FCg1mKc45JuOL6JcnrTvihhf7z+8=;
-        b=jtUs8bZsBB1r2L1k2cvr2oLHT73CNvsXlyODqJwv15j4lXNIZrWqLm6bRU4Jauk8xt
-         NtQxuQpIN2rNfwHR4Q3k9+QTljK3nq6/1tL0ntUxvJrLFypHSVTwQhHi8B9PLCz7GeJI
-         9tsqTLfx+TCEOKuS/GdQ/M+aoLY0d35lz1KzHOTFusoZno/tK44D9OeA6+XjlE64cSRW
-         93ZWgJL5U/RTBDPSlRpDs0sJvuz+g2zVz6ga+rg/f7JW9TB+hFydCSHxlVqi/OS//aQ8
-         DeMOaB0aMVLQgD/1kcrV90NZlgP04U01m9eQUpK3HEBZG6PfludBpDJZbS/aQYml8q14
-         vcjw==
-X-Gm-Message-State: AOAM533WDx78ZoLgyod6mMjohI7mToOYXy+dnmByiWJyrwGNjbrPEMML
-        Xk3ALH5qtNXXngoaneEVHz+hyQ==
-X-Google-Smtp-Source: ABdhPJzWNi+qzNkI0Z6gcAFg1/3ClDqHJiyimleT4ouAEJm0pBZSjF3lzP64rQX+WtyZnNbDDrP/xw==
-X-Received: by 2002:a05:6870:538c:b0:da:f5e5:5b56 with SMTP id h12-20020a056870538c00b000daf5e55b56mr3993013oan.241.1650551235008;
-        Thu, 21 Apr 2022 07:27:15 -0700 (PDT)
+        bh=7Y+rGBJub4hUelqG6Wh/GRTU8FsHwDE9p9sZ9nEoVKQ=;
+        b=lvfSS/ze9KmBLxKySYfcn5+UCCa/pgLgwneMSI0No0z4jA7i0te1eD3MPCrN4PWj/8
+         F/3fevZoHwuPAfhitUK2y2LP1SnjU/UXhiBFTB85z5e863EL+yzHi4/Rs2udZ9kTQrdV
+         HXzW+nK0OmhPLuSRbV7gbIng3iWr+8erzXIVXFObP3hJZIxtiDrbA7bzEaSR6voCmecZ
+         7JhAVCvlajm+m5YAEx0+djcUjx+adRdzjvLdG1kqwYHE4mhBxnKWM1C4YYkoDT4R+npO
+         roBaS94Bi6DrGOfWAsySZCRlH7H1L2FyXcyPOvM/SAhaTPwOUEfgjLxGv5PZEzZaCdGg
+         op3w==
+X-Gm-Message-State: AOAM532+84CypqLTyVR/ZzjY6cVjVUTlm5G2IBck49iqnmi3bXjQuuT9
+        ib+NHnIHPe/Hbgf4I+vtxjh5Xg==
+X-Google-Smtp-Source: ABdhPJz+s/MnXFjAWX/wh2CCqvIrZgal3PVDIV6DOYifyt8dsIAkB6QhDTzoqVpGUZrI+GfQdsiTLA==
+X-Received: by 2002:a05:6808:2189:b0:322:e874:e8f2 with SMTP id be9-20020a056808218900b00322e874e8f2mr3632255oib.289.1650551246360;
+        Thu, 21 Apr 2022 07:27:26 -0700 (PDT)
 Received: from builder.lan ([2600:1700:a0:3dc8:3697:f6ff:fe85:aac9])
-        by smtp.gmail.com with ESMTPSA id s14-20020a0568302a8e00b006054e841915sm4296295otu.73.2022.04.21.07.27.13
+        by smtp.gmail.com with ESMTPSA id s14-20020a0568302a8e00b006054e841915sm4296295otu.73.2022.04.21.07.27.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Apr 2022 07:27:14 -0700 (PDT)
+        Thu, 21 Apr 2022 07:27:25 -0700 (PDT)
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Andy Gross <agross@kernel.org>, Joel Selvaraj <jo@jsfamily.in>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        phone-devel@vger.kernel.org, Amit Pundir <amit.pundir@linaro.org>
-Subject: Re: [PATCH 1/4] arm64: dts: qcom: sdm845-xiaomi-beryllium: change firmware path and use mbn format
-Date:   Thu, 21 Apr 2022 09:26:52 -0500
-Message-Id: <165055095990.2574292.4581684573517329144.b4-ty@linaro.org>
+To:     linux-arm-msm@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>
+Subject: Re: (subset) [PATCH] soc: qcom: socinfo: Sort out 8974PRO names
+Date:   Thu, 21 Apr 2022 09:27:02 -0500
+Message-Id: <165055095990.2574292.14922414539179554766.b4-ty@linaro.org>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <BY5PR02MB700966DEE6F6044EBEB5B892D91F9@BY5PR02MB7009.namprd02.prod.outlook.com>
-References: <20220330064505.243799-1-jo@jsfamily.in> <BY5PR02MB700966DEE6F6044EBEB5B892D91F9@BY5PR02MB7009.namprd02.prod.outlook.com>
+In-Reply-To: <20220415195449.617040-1-luca@z3ntu.xyz>
+References: <20220415195449.617040-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,28 +66,21 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 30 Mar 2022 12:15:02 +0530, Joel Selvaraj wrote:
-> The "qcom/sdm845/" path conflicts with db845c's firmware that are
-> present in the linux-firmware package. Xiaomi uses their own signed
-> firmware for Poco F1 and can't use the db845c's firmware. So let's
-> use "qcom/sdm845/beryllium/" to distinguish Poco F1's firmware files.
+On Fri, 15 Apr 2022 21:54:49 +0200, Luca Weiss wrote:
+> MSM8974PRO is commonly used for referring to Snapdragon 801, compared to
+> MSM8974 which is Snapdragon 800.
 > 
-> For easier handling and packaging, the mdt+bXX files are squashed
-> using Bjorn Andersson's pil-squasher tool from this link:
-> https://github.com/andersson/pil-squasher
+> The Snapdragon 801 has three variants with different clock speeds, with
+> the -AA, -AB and -AC suffix.
+> 
+> Adjust the names in socinfo to reflect this.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/4] arm64: dts: qcom: sdm845-xiaomi-beryllium: change firmware path and use mbn format
-      commit: efbd3599154cb3d947564a9dce419a6754d233ef
-[2/4] arm64: dts: qcom: sdm845-xiaomi-beryllium: enable qcom ipa driver
-      commit: 84b6c2420415767079baa24ffd70d048cd35bdd8
-[3/4] arm64: dts: qcom: sdm845-xiaomi-beryllium: fix typo in panel's vddio-supply property
-      commit: 1f1c494082a1f10d03ce4ee1485ee96d212e22ff
-[4/4] arm64: dts: qcom: sdm845-xiaomi-beryllium: enable second wifi channel
-      commit: 3213b3741a147db59ed6f1ebc5f569854725b91f
+[1/1] soc: qcom: socinfo: Sort out 8974PRO names
+      commit: a555b382e7640b80b20816cf9179d091dd7716eb
 
 Best regards,
 -- 
