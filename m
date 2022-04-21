@@ -2,96 +2,94 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54F80C433F5
-	for <phone-devel@archiver.kernel.org>; Wed, 20 Apr 2022 01:19:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BFEEC4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Apr 2022 14:27:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357045AbiDTBWJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Apr 2022 21:22:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55582 "EHLO
+        id S1389257AbiDUOaL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 21 Apr 2022 10:30:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349056AbiDTBWI (ORCPT
+        with ESMTP id S1389224AbiDUOaK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Apr 2022 21:22:08 -0400
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9162A275EB;
-        Tue, 19 Apr 2022 18:19:23 -0700 (PDT)
-Received: by mail-oi1-f175.google.com with SMTP id w127so454911oig.10;
-        Tue, 19 Apr 2022 18:19:23 -0700 (PDT)
+        Thu, 21 Apr 2022 10:30:10 -0400
+Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EFA63E0F4
+        for <phone-devel@vger.kernel.org>; Thu, 21 Apr 2022 07:27:15 -0700 (PDT)
+Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-e5e433d66dso5543556fac.5
+        for <phone-devel@vger.kernel.org>; Thu, 21 Apr 2022 07:27:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=9VwmgAIE3C/SlM3FCg1mKc45JuOL6JcnrTvihhf7z+8=;
+        b=gT3MpU79adYbNmR619A7KZwgwzy1/l+VS3jcW/0aVqreIbPUeSR1kvM5Jb7X6iaMLF
+         hepxgbkIFjyA0lyb2iKgUwyiDlRYoiWHEJrXRCvMKilJQPOGCZjQO93YBqW9A8zXqKz2
+         ddqB/FLDaRO3w5C3ai/PqyTaro2lIa3UlF+YO6ipQG6wrUV3SRwNIdPY/NgMEWEeCdhF
+         etGVz6KBFTfhWl223r61PYEJfc/dgFRYslxc5evi9EDmvyjx4McoH3H/DoV2DdHOhc1y
+         3DeCaQkI0oWrYrwImQwK9jmEitPo6bYdMWDwKG2j1xWSDt4LcvUEZHNLYBOskJSW66kT
+         PB5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=gg8aOhcRHmKNfpVRfFVEqzdF2AvqLx/P/Hzu9odNm08=;
-        b=OX0ejIYKf4a0Z+uY3z1wDY/GiL8Mx0JTElgTP1/ObeMFodR7mFYJSeKWSIKtIGi1Zz
-         bGyzOYGFA+YMZkg1SCy+Aq1q15X1SfFQjl4CBiZIp+CNZA/+pypGPPf7VdYzm+xlYSVG
-         DC1QMf+h9atDCFwWqSBnty8nc1MwIkCaUW2H5vdRwnrFAAglL3SOev6TZhloEwT25OH2
-         Y7IWaK5dvHwBbcCSw2fA/5Dw02YZSsyLeD1O2Po3nP9w7eP0BO0HKbiY1BOVrSEFp736
-         pWYP8GUoFnlcA8ISP8fetTY3sP6gJXGfgNFq0Ge3YoKNmN9sn3XTH5mwAOe+pplMcfBL
-         Xw7A==
-X-Gm-Message-State: AOAM531prs1pOsry/awOb/l4YkhIfiPs0MSCtuE0mHYllHGye6SGeBu0
-        y64cJZueB6YIaP3kgM/2Pg==
-X-Google-Smtp-Source: ABdhPJzt1A9FdkqwKlRg9/TRbXvdC/wNpDIB/ak+W0g5e+h98AT9xYwKpVYl+HIRCU0LejAUrrWMpQ==
-X-Received: by 2002:a05:6808:169f:b0:2d7:9bbd:ae82 with SMTP id bb31-20020a056808169f00b002d79bbdae82mr630062oib.136.1650417562765;
-        Tue, 19 Apr 2022 18:19:22 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id d10-20020a9d51ca000000b00605522f0739sm1765499oth.41.2022.04.19.18.19.21
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=9VwmgAIE3C/SlM3FCg1mKc45JuOL6JcnrTvihhf7z+8=;
+        b=jtUs8bZsBB1r2L1k2cvr2oLHT73CNvsXlyODqJwv15j4lXNIZrWqLm6bRU4Jauk8xt
+         NtQxuQpIN2rNfwHR4Q3k9+QTljK3nq6/1tL0ntUxvJrLFypHSVTwQhHi8B9PLCz7GeJI
+         9tsqTLfx+TCEOKuS/GdQ/M+aoLY0d35lz1KzHOTFusoZno/tK44D9OeA6+XjlE64cSRW
+         93ZWgJL5U/RTBDPSlRpDs0sJvuz+g2zVz6ga+rg/f7JW9TB+hFydCSHxlVqi/OS//aQ8
+         DeMOaB0aMVLQgD/1kcrV90NZlgP04U01m9eQUpK3HEBZG6PfludBpDJZbS/aQYml8q14
+         vcjw==
+X-Gm-Message-State: AOAM533WDx78ZoLgyod6mMjohI7mToOYXy+dnmByiWJyrwGNjbrPEMML
+        Xk3ALH5qtNXXngoaneEVHz+hyQ==
+X-Google-Smtp-Source: ABdhPJzWNi+qzNkI0Z6gcAFg1/3ClDqHJiyimleT4ouAEJm0pBZSjF3lzP64rQX+WtyZnNbDDrP/xw==
+X-Received: by 2002:a05:6870:538c:b0:da:f5e5:5b56 with SMTP id h12-20020a056870538c00b000daf5e55b56mr3993013oan.241.1650551235008;
+        Thu, 21 Apr 2022 07:27:15 -0700 (PDT)
+Received: from builder.lan ([2600:1700:a0:3dc8:3697:f6ff:fe85:aac9])
+        by smtp.gmail.com with ESMTPSA id s14-20020a0568302a8e00b006054e841915sm4296295otu.73.2022.04.21.07.27.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Apr 2022 18:19:22 -0700 (PDT)
-Received: (nullmailer pid 4040587 invoked by uid 1000);
-        Wed, 20 Apr 2022 01:19:21 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, Mark Brown <broonie@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>
-In-Reply-To: <20220419160058.9998-3-markuss.broks@gmail.com>
-References: <20220419160058.9998-1-markuss.broks@gmail.com> <20220419160058.9998-3-markuss.broks@gmail.com>
-Subject: Re: [PATCH v4 2/4] dt-bindings: mfd: Add bindings for Silicon Mitus SM5703 MFD
-Date:   Tue, 19 Apr 2022 20:19:21 -0500
-Message-Id: <1650417561.519934.4040586.nullmailer@robh.at.kernel.org>
+        Thu, 21 Apr 2022 07:27:14 -0700 (PDT)
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Andy Gross <agross@kernel.org>, Joel Selvaraj <jo@jsfamily.in>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org, Amit Pundir <amit.pundir@linaro.org>
+Subject: Re: [PATCH 1/4] arm64: dts: qcom: sdm845-xiaomi-beryllium: change firmware path and use mbn format
+Date:   Thu, 21 Apr 2022 09:26:52 -0500
+Message-Id: <165055095990.2574292.4581684573517329144.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <BY5PR02MB700966DEE6F6044EBEB5B892D91F9@BY5PR02MB7009.namprd02.prod.outlook.com>
+References: <20220330064505.243799-1-jo@jsfamily.in> <BY5PR02MB700966DEE6F6044EBEB5B892D91F9@BY5PR02MB7009.namprd02.prod.outlook.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 19 Apr 2022 19:00:55 +0300, Markuss Broks wrote:
-> This patch adds device-tree bindings for the Silicon Mitus
-> SM5703 MFD.
+On Wed, 30 Mar 2022 12:15:02 +0530, Joel Selvaraj wrote:
+> The "qcom/sdm845/" path conflicts with db845c's firmware that are
+> present in the linux-firmware package. Xiaomi uses their own signed
+> firmware for Poco F1 and can't use the db845c's firmware. So let's
+> use "qcom/sdm845/beryllium/" to distinguish Poco F1's firmware files.
 > 
-> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-> ---
->  .../bindings/mfd/siliconmitus,sm5703.yaml     | 96 +++++++++++++++++++
->  1 file changed, 96 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+> For easier handling and packaging, the mdt+bXX files are squashed
+> using Bjorn Andersson's pil-squasher tool from this link:
+> https://github.com/andersson/pil-squasher
 > 
+> [...]
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Applied, thanks!
 
-yamllint warnings/errors:
+[1/4] arm64: dts: qcom: sdm845-xiaomi-beryllium: change firmware path and use mbn format
+      commit: efbd3599154cb3d947564a9dce419a6754d233ef
+[2/4] arm64: dts: qcom: sdm845-xiaomi-beryllium: enable qcom ipa driver
+      commit: 84b6c2420415767079baa24ffd70d048cd35bdd8
+[3/4] arm64: dts: qcom: sdm845-xiaomi-beryllium: fix typo in panel's vddio-supply property
+      commit: 1f1c494082a1f10d03ce4ee1485ee96d212e22ff
+[4/4] arm64: dts: qcom: sdm845-xiaomi-beryllium: enable second wifi channel
+      commit: 3213b3741a147db59ed6f1ebc5f569854725b91f
 
-dtschema/dtc warnings/errors:
-schemas/regulator/siliconmitus,sm5703-regulator.yaml: ignoring, error parsing file
-Error: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.example.dts:27.40-41 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:364: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.example.dtb] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1401: dt_binding_check] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Best regards,
+-- 
+Bjorn Andersson <bjorn.andersson@linaro.org>
