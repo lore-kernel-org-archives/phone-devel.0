@@ -2,885 +2,107 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F3BEC4332F
-	for <phone-devel@archiver.kernel.org>; Fri, 22 Apr 2022 14:42:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D1B2C433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 22 Apr 2022 18:41:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1448820AbiDVOpG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 22 Apr 2022 10:45:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58720 "EHLO
+        id S229436AbiDVSn7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 22 Apr 2022 14:43:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1448811AbiDVOpF (ORCPT
+        with ESMTP id S229500AbiDVSn6 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 22 Apr 2022 10:45:05 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5DCE5BE5F
-        for <phone-devel@vger.kernel.org>; Fri, 22 Apr 2022 07:42:08 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id y10so16780182ejw.8
-        for <phone-devel@vger.kernel.org>; Fri, 22 Apr 2022 07:42:08 -0700 (PDT)
+        Fri, 22 Apr 2022 14:43:58 -0400
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 845A528E3D;
+        Fri, 22 Apr 2022 11:39:56 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id e30so7907012eda.0;
+        Fri, 22 Apr 2022 11:39:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=jF0Q9PcPhkw9CPgabN9w3WwUtNF4041pOYSClk+j1qE=;
-        b=fvBT7BDms67pcEalKnP6i5cYggzBXPYG6p6UsqswjXjnCRO38VKqb7fW0hmw2wA5XW
-         R6v/Iz3bKxokUnzrXNKt2Xd8B+lr+rO96i+8hX1IRPZy5OLAJsxqYMacyXO3Ml//8vo4
-         irxkxmTF92w6VA+Zp61JFuieCY9W5yLP8GJE2C+PJGYgllzn0CrptoF6M+GNOJr0iBoQ
-         bPHGIoTrgZSWpzDS+rjp2U6O39JIMLn/AxQ9AEQcvws5VdcXAPoPoIJUchx8GMXlaynA
-         9Mgla18e/65WEzbDajQEfNqsPQoJ+cfh03Z5C2Rxh6O54geEypc9680cTIEoAwx0ZLV/
-         /s1A==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bPNNWfLorKQdlTFIcjMKIT2TFnHa6NCO/tOM3FpNRzI=;
+        b=pP6MZqf6ePvtfF8C835aDJIPBvIV4lDmCDZhjumIvJCQVxJtJREqUoC0VxvW6c78CI
+         W1Db4zEr+1RPlTjOQCGM2twHKDnpTZHL4FYuvzjhHG0ZblJmKqye31fbrgxc3NKypZ1I
+         Ug3HvhkTfBISMUd/Jrb4wumZvYE1Z6LFM5tuRsWGOKsfJRunnWB1fLbjGce/CsMUYyo3
+         JMdpCSzshEeL2Q+5usL2vPWhlKRzLHKvxcK1dGqVPO0b7or2wMsySbttMus3R4kVqv1l
+         BRRLX+sMN8v3A4fxeTVpW8gtLjWSnxUPPqgkpZtNjsvsa7VSqCun6TQhFpUATMUeg8Q8
+         mlig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=jF0Q9PcPhkw9CPgabN9w3WwUtNF4041pOYSClk+j1qE=;
-        b=LgSrNKAr2yYAbqKL9L6bCPsgBuFXDSxJuBqeRmi0ypjHQTmfOjY58YnJnX3xFdohLB
-         iTUAbrKfSkS+LaF/jp5StTUrz4SG537MmW7NT+/kh92jOaIe7UQs/dVDEbhv5e96+wj8
-         PFPHUp4zDeSHSh8R6r01G4Fx0Q50dogTy1H8IFXZHzYCMr/YPH2+rpIoQB01+alUFpg+
-         sF/Htz7Tv0iZAtBJVmz9h+QSftvhpVSv8eL3y6mQiKWRLP7FclLu+7IYYIcMA5/jHnJA
-         mzpD+R2eMSRWZzE0rD+PS5oXomeDRwwGd3TVolrITnRWhvjnU50KNyum/YEnITeS3n+v
-         ZCNw==
-X-Gm-Message-State: AOAM5301zkRUfDWeeNpZkLsMWywtrtFUKV7k4GKddJktr4x7za4SBnP3
-        hxe62RTsTh/2akkMuavaok1gtw==
-X-Google-Smtp-Source: ABdhPJwocVIFa/uu6WVQbbEB6vv3QfqbeEJS3o6r5Y1OXpfrh0TFfzwaaxQWU5rC+KrOAIgpXx4r7w==
-X-Received: by 2002:a17:906:2bd4:b0:6e8:7e5:39b6 with SMTP id n20-20020a1709062bd400b006e807e539b6mr4444839ejg.25.1650638527017;
-        Fri, 22 Apr 2022 07:42:07 -0700 (PDT)
-Received: from otso.. (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id u6-20020a17090626c600b006e74ef7f092sm818202ejc.176.2022.04.22.07.42.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Apr 2022 07:42:06 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Georgi Djakov <djakov@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [PATCH 3/4] interconnect: qcom: Add SM6350 driver support
-Date:   Fri, 22 Apr 2022 16:40:19 +0200
-Message-Id: <20220422144021.232993-4-luca.weiss@fairphone.com>
-X-Mailer: git-send-email 2.36.0
-In-Reply-To: <20220422144021.232993-1-luca.weiss@fairphone.com>
-References: <20220422144021.232993-1-luca.weiss@fairphone.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bPNNWfLorKQdlTFIcjMKIT2TFnHa6NCO/tOM3FpNRzI=;
+        b=cPrpl+IQ1PS1qREDOo0BcziXavDqAPCtiBNTW+h/xpfoS/4doseyAtinKFa11Liztx
+         lrlIsvAF/ykT2PEh+tv4q0Dj1m0sAijNW+Fd0yrNYTETw62LE73f1KvHpdIwB8JaG5pX
+         EvmdNWs2UmuWXNWbxSvhis29ts6mur5lzUFvD1jeyt2LtNlxgG84Zd5n3wFGJlE0lH8j
+         bCwOxoD6fImHacX9HA9ofhErqTiwEbgcPpSG941oh45/Tlge4kc2p/d2K09am0a82r2h
+         X6Hvy4vyiJupG1oTsUE25wyXoDa9jm55GoB4w0Z9kaUH/GgfsN8EUFtVQBsfUYVxBOzz
+         i98A==
+X-Gm-Message-State: AOAM531L+Q3ZS3k+IgP4ZZRd4+AmX7RXvVDGxBiJvF/ts2M1pwcvGG/N
+        f1blcohI5synUsRJoUW/N4FivV/291agsupulIo=
+X-Google-Smtp-Source: ABdhPJwE2DVZWKHijzJDzimQ+LsCESxc4MQeRHdyFiQT+g0Dn0dBzdTwYzWmusdEEtXivLVlXKGE0ciNAZff560gHD8=
+X-Received: by 2002:a50:bae3:0:b0:425:b2b5:6248 with SMTP id
+ x90-20020a50bae3000000b00425b2b56248mr6239060ede.281.1650652404409; Fri, 22
+ Apr 2022 11:33:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+References: <20220419160058.9998-1-markuss.broks@gmail.com> <20220419160058.9998-2-markuss.broks@gmail.com>
+In-Reply-To: <20220419160058.9998-2-markuss.broks@gmail.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Date:   Fri, 22 Apr 2022 21:33:13 +0300
+Message-ID: <CANhJrGMe0Vxt_KxzMX_9oGyaFeMi5hmNCYje99a8DB-tHZKuYg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] dt-bindings: regulator: Add bindings for Silicon
+ Mitus SM5703 regulators
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Lee Jones <lee.jones@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add a driver that handles the different NoCs found on SM6350, generated
-from the downstream dtb.
+On Fri, Apr 22, 2022 at 8:36 PM Markuss Broks <markuss.broks@gmail.com> wrote:
+>
+> This patch adds device-tree bindings for regulators on Silicon Mitus
+> SM5703 MFD.
+>
+> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> ---
+>  .../siliconmitus,sm5703-regulator.yaml        | 52 +++++++++++++++++++
+>  1 file changed, 52 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml b/Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
+> new file mode 100644
+> index 000000000000..a8ffd3ecf3a5
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
+> @@ -0,0 +1,52 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/regulator/siliconmitus,sm5703-regulator.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Silicon Mitus SM5703 multi function device regulators
+> +
+> +maintainers:
+> +  - Markuss Broks <markuss.broks@gmail.com>
+> +
+> +description: |
+> +  SM5703 regulators node should be a sub node of the SM5703 MFD node. See SM5703 MFD
+> +  bindings at Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+> +  Regulator nodes should be named as USBLDO_<number>, BUCK, VBUS, LDO_<number>.
+> +  The definition for each of these nodes is defined using the standard
+> +  binding for regulators at Documentation/devicetree/bindings/regulator/regulator.txt.
 
-We're exluding ALC, IP0 and all _display nodes. ALC will not be voted
-from the kernel[1] and IP0 is handled by the clk-rpmh driver[2].
+Maybe It'd be better to nowadays refer to the regulators.yaml
 
-[1] https://lore.kernel.org/linux-arm-msm/1e79c73f22c8891dc9f868babd940fca@=
-codeaurora.org/
-[2] https://lore.kernel.org/linux-arm-msm/20220412220033.1273607-1-swboyd@c=
-hromium.org/
-
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/interconnect/qcom/Kconfig  |   9 +
- drivers/interconnect/qcom/Makefile |   2 +
- drivers/interconnect/qcom/sm6350.c | 493 +++++++++++++++++++++++++++++
- drivers/interconnect/qcom/sm6350.h | 139 ++++++++
- 4 files changed, 643 insertions(+)
- create mode 100644 drivers/interconnect/qcom/sm6350.c
- create mode 100644 drivers/interconnect/qcom/sm6350.h
-
-diff --git a/drivers/interconnect/qcom/Kconfig b/drivers/interconnect/qcom/=
-Kconfig
-index 91353e651a52..4e6a75cb6621 100644
---- a/drivers/interconnect/qcom/Kconfig
-+++ b/drivers/interconnect/qcom/Kconfig
-@@ -137,6 +137,15 @@ config INTERCONNECT_QCOM_SDX55
- 	  This is a driver for the Qualcomm Network-on-Chip on sdx55-based
- 	  platforms.
-=20
-+config INTERCONNECT_QCOM_SM6350
-+	tristate "Qualcomm SM6350 interconnect driver"
-+	depends on INTERCONNECT_QCOM_RPMH_POSSIBLE
-+	select INTERCONNECT_QCOM_RPMH
-+	select INTERCONNECT_QCOM_BCM_VOTER
-+	help
-+	  This is a driver for the Qualcomm Network-on-Chip on sm6350-based
-+	  platforms.
-+
- config INTERCONNECT_QCOM_SM8150
- 	tristate "Qualcomm SM8150 interconnect driver"
- 	depends on INTERCONNECT_QCOM_RPMH_POSSIBLE
-diff --git a/drivers/interconnect/qcom/Makefile b/drivers/interconnect/qcom=
-/Makefile
-index ceae9bb566c6..f54361b6dd25 100644
---- a/drivers/interconnect/qcom/Makefile
-+++ b/drivers/interconnect/qcom/Makefile
-@@ -15,6 +15,7 @@ qnoc-sc8180x-objs			:=3D sc8180x.o
- qnoc-sdm660-objs			:=3D sdm660.o
- qnoc-sdm845-objs			:=3D sdm845.o
- qnoc-sdx55-objs				:=3D sdx55.o
-+qnoc-sm6350-objs			:=3D sm6350.o
- qnoc-sm8150-objs			:=3D sm8150.o
- qnoc-sm8250-objs			:=3D sm8250.o
- qnoc-sm8350-objs			:=3D sm8350.o
-@@ -36,6 +37,7 @@ obj-$(CONFIG_INTERCONNECT_QCOM_SC8180X) +=3D qnoc-sc8180x=
-.o
- obj-$(CONFIG_INTERCONNECT_QCOM_SDM660) +=3D qnoc-sdm660.o
- obj-$(CONFIG_INTERCONNECT_QCOM_SDM845) +=3D qnoc-sdm845.o
- obj-$(CONFIG_INTERCONNECT_QCOM_SDX55) +=3D qnoc-sdx55.o
-+obj-$(CONFIG_INTERCONNECT_QCOM_SM6350) +=3D qnoc-sm6350.o
- obj-$(CONFIG_INTERCONNECT_QCOM_SM8150) +=3D qnoc-sm8150.o
- obj-$(CONFIG_INTERCONNECT_QCOM_SM8250) +=3D qnoc-sm8250.o
- obj-$(CONFIG_INTERCONNECT_QCOM_SM8350) +=3D qnoc-sm8350.o
-diff --git a/drivers/interconnect/qcom/sm6350.c b/drivers/interconnect/qcom=
-/sm6350.c
-new file mode 100644
-index 000000000000..6d0c999bcc0f
---- /dev/null
-+++ b/drivers/interconnect/qcom/sm6350.c
-@@ -0,0 +1,493 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2022 Luca Weiss <luca.weiss@fairphone.com>
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/interconnect.h>
-+#include <linux/interconnect-provider.h>
-+#include <linux/module.h>
-+#include <linux/of_platform.h>
-+#include <dt-bindings/interconnect/qcom,sm6350.h>
-+
-+#include "bcm-voter.h"
-+#include "icc-rpmh.h"
-+#include "sm6350.h"
-+
-+DEFINE_QNODE(qhm_a1noc_cfg, SM6350_MASTER_A1NOC_CFG, 1, 4, SM6350_SLAVE_SE=
-RVICE_A1NOC);
-+DEFINE_QNODE(qhm_qup_0, SM6350_MASTER_QUP_0, 1, 4, SM6350_A1NOC_SNOC_SLV);
-+DEFINE_QNODE(xm_emmc, SM6350_MASTER_EMMC, 1, 8, SM6350_A1NOC_SNOC_SLV);
-+DEFINE_QNODE(xm_ufs_mem, SM6350_MASTER_UFS_MEM, 1, 8, SM6350_A1NOC_SNOC_SL=
-V);
-+DEFINE_QNODE(qhm_a2noc_cfg, SM6350_MASTER_A2NOC_CFG, 1, 4, SM6350_SLAVE_SE=
-RVICE_A2NOC);
-+DEFINE_QNODE(qhm_qdss_bam, SM6350_MASTER_QDSS_BAM, 1, 4, SM6350_A2NOC_SNOC=
-_SLV);
-+DEFINE_QNODE(qhm_qup_1, SM6350_MASTER_QUP_1, 1, 4, SM6350_A2NOC_SNOC_SLV);
-+DEFINE_QNODE(qxm_crypto, SM6350_MASTER_CRYPTO_CORE_0, 1, 8, SM6350_A2NOC_S=
-NOC_SLV);
-+DEFINE_QNODE(qxm_ipa, SM6350_MASTER_IPA, 1, 8, SM6350_A2NOC_SNOC_SLV);
-+DEFINE_QNODE(xm_qdss_etr, SM6350_MASTER_QDSS_ETR, 1, 8, SM6350_A2NOC_SNOC_=
-SLV);
-+DEFINE_QNODE(xm_sdc2, SM6350_MASTER_SDCC_2, 1, 8, SM6350_A2NOC_SNOC_SLV);
-+DEFINE_QNODE(xm_usb3_0, SM6350_MASTER_USB3, 1, 8, SM6350_A2NOC_SNOC_SLV);
-+DEFINE_QNODE(qxm_camnoc_hf0_uncomp, SM6350_MASTER_CAMNOC_HF0_UNCOMP, 2, 32=
-, SM6350_SLAVE_CAMNOC_UNCOMP);
-+DEFINE_QNODE(qxm_camnoc_icp_uncomp, SM6350_MASTER_CAMNOC_ICP_UNCOMP, 1, 32=
-, SM6350_SLAVE_CAMNOC_UNCOMP);
-+DEFINE_QNODE(qxm_camnoc_sf_uncomp, SM6350_MASTER_CAMNOC_SF_UNCOMP, 1, 32, =
-SM6350_SLAVE_CAMNOC_UNCOMP);
-+DEFINE_QNODE(qup0_core_master, SM6350_MASTER_QUP_CORE_0, 1, 4, SM6350_SLAV=
-E_QUP_CORE_0);
-+DEFINE_QNODE(qup1_core_master, SM6350_MASTER_QUP_CORE_1, 1, 4, SM6350_SLAV=
-E_QUP_CORE_1);
-+DEFINE_QNODE(qnm_npu, SM6350_MASTER_NPU, 2, 32, SM6350_SLAVE_CDSP_GEM_NOC);
-+DEFINE_QNODE(qxm_npu_dsp, SM6350_MASTER_NPU_PROC, 1, 8, SM6350_SLAVE_CDSP_=
-GEM_NOC);
-+DEFINE_QNODE(qnm_snoc, SM6350_SNOC_CNOC_MAS, 1, 8, SM6350_SLAVE_CAMERA_CFG=
-, SM6350_SLAVE_SDCC_2, SM6350_SLAVE_CNOC_MNOC_CFG, SM6350_SLAVE_UFS_MEM_CFG=
-, SM6350_SLAVE_QM_CFG, SM6350_SLAVE_SNOC_CFG, SM6350_SLAVE_QM_MPU_CFG, SM63=
-50_SLAVE_GLM, SM6350_SLAVE_PDM, SM6350_SLAVE_CAMERA_NRT_THROTTLE_CFG, SM635=
-0_SLAVE_A2NOC_CFG, SM6350_SLAVE_QDSS_CFG, SM6350_SLAVE_VSENSE_CTRL_CFG, SM6=
-350_SLAVE_CAMERA_RT_THROTTLE_CFG, SM6350_SLAVE_DISPLAY_CFG, SM6350_SLAVE_TC=
-SR, SM6350_SLAVE_DCC_CFG, SM6350_SLAVE_CNOC_DDRSS, SM6350_SLAVE_DISPLAY_THR=
-OTTLE_CFG, SM6350_SLAVE_NPU_CFG, SM6350_SLAVE_AHB2PHY, SM6350_SLAVE_GRAPHIC=
-S_3D_CFG, SM6350_SLAVE_BOOT_ROM, SM6350_SLAVE_VENUS_CFG, SM6350_SLAVE_IPA_C=
-FG, SM6350_SLAVE_SECURITY, SM6350_SLAVE_IMEM_CFG, SM6350_SLAVE_CNOC_MSS, SM=
-6350_SLAVE_SERVICE_CNOC, SM6350_SLAVE_USB3, SM6350_SLAVE_VENUS_THROTTLE_CFG=
-, SM6350_SLAVE_RBCPR_CX_CFG, SM6350_SLAVE_A1NOC_CFG, SM6350_SLAVE_AOSS, SM6=
-350_SLAVE_PRNG, SM6350_SLAVE_EMMC_CFG, SM6350_SLAVE_CRYPTO_0_CFG, SM6350_SL=
-AVE_PIMEM_CFG, SM6350_SLAVE_RBCPR_MX_CFG, SM6350_SLAVE_QUP_0, SM6350_SLAVE_=
-QUP_1, SM6350_SLAVE_CLK_CTL);
-+DEFINE_QNODE(xm_qdss_dap, SM6350_MASTER_QDSS_DAP, 1, 8, SM6350_SLAVE_CAMER=
-A_CFG, SM6350_SLAVE_SDCC_2, SM6350_SLAVE_CNOC_MNOC_CFG, SM6350_SLAVE_UFS_ME=
-M_CFG, SM6350_SLAVE_QM_CFG, SM6350_SLAVE_SNOC_CFG, SM6350_SLAVE_QM_MPU_CFG,=
- SM6350_SLAVE_GLM, SM6350_SLAVE_PDM, SM6350_SLAVE_CAMERA_NRT_THROTTLE_CFG, =
-SM6350_SLAVE_A2NOC_CFG, SM6350_SLAVE_QDSS_CFG, SM6350_SLAVE_VSENSE_CTRL_CFG=
-, SM6350_SLAVE_CAMERA_RT_THROTTLE_CFG, SM6350_SLAVE_DISPLAY_CFG, SM6350_SLA=
-VE_TCSR, SM6350_SLAVE_DCC_CFG, SM6350_SLAVE_CNOC_DDRSS, SM6350_SLAVE_DISPLA=
-Y_THROTTLE_CFG, SM6350_SLAVE_NPU_CFG, SM6350_SLAVE_AHB2PHY, SM6350_SLAVE_GR=
-APHICS_3D_CFG, SM6350_SLAVE_BOOT_ROM, SM6350_SLAVE_VENUS_CFG, SM6350_SLAVE_=
-IPA_CFG, SM6350_SLAVE_SECURITY, SM6350_SLAVE_IMEM_CFG, SM6350_SLAVE_CNOC_MS=
-S, SM6350_SLAVE_SERVICE_CNOC, SM6350_SLAVE_USB3, SM6350_SLAVE_VENUS_THROTTL=
-E_CFG, SM6350_SLAVE_RBCPR_CX_CFG, SM6350_SLAVE_A1NOC_CFG, SM6350_SLAVE_AOSS=
-, SM6350_SLAVE_PRNG, SM6350_SLAVE_EMMC_CFG, SM6350_SLAVE_CRYPTO_0_CFG, SM63=
-50_SLAVE_PIMEM_CFG, SM6350_SLAVE_RBCPR_MX_CFG, SM6350_SLAVE_QUP_0, SM6350_S=
-LAVE_QUP_1, SM6350_SLAVE_CLK_CTL);
-+DEFINE_QNODE(qhm_cnoc_dc_noc, SM6350_MASTER_CNOC_DC_NOC, 1, 4, SM6350_SLAV=
-E_LLCC_CFG, SM6350_SLAVE_GEM_NOC_CFG);
-+DEFINE_QNODE(acm_apps, SM6350_MASTER_AMPSS_M0, 1, 16, SM6350_SLAVE_LLCC, S=
-M6350_SLAVE_GEM_NOC_SNOC);
-+DEFINE_QNODE(acm_sys_tcu, SM6350_MASTER_SYS_TCU, 1, 8, SM6350_SLAVE_LLCC, =
-SM6350_SLAVE_GEM_NOC_SNOC);
-+DEFINE_QNODE(qhm_gemnoc_cfg, SM6350_MASTER_GEM_NOC_CFG, 1, 4, SM6350_SLAVE=
-_MCDMA_MS_MPU_CFG, SM6350_SLAVE_SERVICE_GEM_NOC, SM6350_SLAVE_MSS_PROC_MS_M=
-PU_CFG);
-+DEFINE_QNODE(qnm_cmpnoc, SM6350_MASTER_COMPUTE_NOC, 1, 32, SM6350_SLAVE_LL=
-CC, SM6350_SLAVE_GEM_NOC_SNOC);
-+DEFINE_QNODE(qnm_mnoc_hf, SM6350_MASTER_MNOC_HF_MEM_NOC, 1, 32, SM6350_SLA=
-VE_LLCC, SM6350_SLAVE_GEM_NOC_SNOC);
-+DEFINE_QNODE(qnm_mnoc_sf, SM6350_MASTER_MNOC_SF_MEM_NOC, 1, 32, SM6350_SLA=
-VE_LLCC, SM6350_SLAVE_GEM_NOC_SNOC);
-+DEFINE_QNODE(qnm_snoc_gc, SM6350_MASTER_SNOC_GC_MEM_NOC, 1, 8, SM6350_SLAV=
-E_LLCC);
-+DEFINE_QNODE(qnm_snoc_sf, SM6350_MASTER_SNOC_SF_MEM_NOC, 1, 16, SM6350_SLA=
-VE_LLCC);
-+DEFINE_QNODE(qxm_gpu, SM6350_MASTER_GRAPHICS_3D, 2, 32, SM6350_SLAVE_LLCC,=
- SM6350_SLAVE_GEM_NOC_SNOC);
-+DEFINE_QNODE(llcc_mc, SM6350_MASTER_LLCC, 2, 4, SM6350_SLAVE_EBI_CH0);
-+DEFINE_QNODE(qhm_mnoc_cfg, SM6350_MASTER_CNOC_MNOC_CFG, 1, 4, SM6350_SLAVE=
-_SERVICE_MNOC);
-+DEFINE_QNODE(qnm_video0, SM6350_MASTER_VIDEO_P0, 1, 32, SM6350_SLAVE_MNOC_=
-SF_MEM_NOC);
-+DEFINE_QNODE(qnm_video_cvp, SM6350_MASTER_VIDEO_PROC, 1, 8, SM6350_SLAVE_M=
-NOC_SF_MEM_NOC);
-+DEFINE_QNODE(qxm_camnoc_hf, SM6350_MASTER_CAMNOC_HF, 2, 32, SM6350_SLAVE_M=
-NOC_HF_MEM_NOC);
-+DEFINE_QNODE(qxm_camnoc_icp, SM6350_MASTER_CAMNOC_ICP, 1, 8, SM6350_SLAVE_=
-MNOC_SF_MEM_NOC);
-+DEFINE_QNODE(qxm_camnoc_sf, SM6350_MASTER_CAMNOC_SF, 1, 32, SM6350_SLAVE_M=
-NOC_SF_MEM_NOC);
-+DEFINE_QNODE(qxm_mdp0, SM6350_MASTER_MDP_PORT0, 1, 32, SM6350_SLAVE_MNOC_H=
-F_MEM_NOC);
-+DEFINE_QNODE(amm_npu_sys, SM6350_MASTER_NPU_SYS, 2, 32, SM6350_SLAVE_NPU_C=
-OMPUTE_NOC);
-+DEFINE_QNODE(qhm_npu_cfg, SM6350_MASTER_NPU_NOC_CFG, 1, 4, SM6350_SLAVE_SE=
-RVICE_NPU_NOC, SM6350_SLAVE_ISENSE_CFG, SM6350_SLAVE_NPU_LLM_CFG, SM6350_SL=
-AVE_NPU_INT_DMA_BWMON_CFG, SM6350_SLAVE_NPU_CP, SM6350_SLAVE_NPU_TCM, SM635=
-0_SLAVE_NPU_CAL_DP0, SM6350_SLAVE_NPU_DPM);
-+DEFINE_QNODE(qhm_snoc_cfg, SM6350_MASTER_SNOC_CFG, 1, 4, SM6350_SLAVE_SERV=
-ICE_SNOC);
-+DEFINE_QNODE(qnm_aggre1_noc, SM6350_A1NOC_SNOC_MAS, 1, 16, SM6350_SLAVE_SN=
-OC_GEM_NOC_SF, SM6350_SLAVE_PIMEM, SM6350_SLAVE_OCIMEM, SM6350_SLAVE_APPSS,=
- SM6350_SNOC_CNOC_SLV, SM6350_SLAVE_QDSS_STM);
-+DEFINE_QNODE(qnm_aggre2_noc, SM6350_A2NOC_SNOC_MAS, 1, 16, SM6350_SLAVE_SN=
-OC_GEM_NOC_SF, SM6350_SLAVE_PIMEM, SM6350_SLAVE_OCIMEM, SM6350_SLAVE_APPSS,=
- SM6350_SNOC_CNOC_SLV, SM6350_SLAVE_TCU, SM6350_SLAVE_QDSS_STM);
-+DEFINE_QNODE(qnm_gemnoc, SM6350_MASTER_GEM_NOC_SNOC, 1, 8, SM6350_SLAVE_PI=
-MEM, SM6350_SLAVE_OCIMEM, SM6350_SLAVE_APPSS, SM6350_SNOC_CNOC_SLV, SM6350_=
-SLAVE_TCU, SM6350_SLAVE_QDSS_STM);
-+DEFINE_QNODE(qxm_pimem, SM6350_MASTER_PIMEM, 1, 8, SM6350_SLAVE_SNOC_GEM_N=
-OC_GC, SM6350_SLAVE_OCIMEM);
-+DEFINE_QNODE(xm_gic, SM6350_MASTER_GIC, 1, 8, SM6350_SLAVE_SNOC_GEM_NOC_GC=
-);
-+DEFINE_QNODE(qns_a1noc_snoc, SM6350_A1NOC_SNOC_SLV, 1, 16, SM6350_A1NOC_SN=
-OC_MAS);
-+DEFINE_QNODE(srvc_aggre1_noc, SM6350_SLAVE_SERVICE_A1NOC, 1, 4);
-+DEFINE_QNODE(qns_a2noc_snoc, SM6350_A2NOC_SNOC_SLV, 1, 16, SM6350_A2NOC_SN=
-OC_MAS);
-+DEFINE_QNODE(srvc_aggre2_noc, SM6350_SLAVE_SERVICE_A2NOC, 1, 4);
-+DEFINE_QNODE(qns_camnoc_uncomp, SM6350_SLAVE_CAMNOC_UNCOMP, 1, 32);
-+DEFINE_QNODE(qup0_core_slave, SM6350_SLAVE_QUP_CORE_0, 1, 4);
-+DEFINE_QNODE(qup1_core_slave, SM6350_SLAVE_QUP_CORE_1, 1, 4);
-+DEFINE_QNODE(qns_cdsp_gemnoc, SM6350_SLAVE_CDSP_GEM_NOC, 1, 32, SM6350_MAS=
-TER_COMPUTE_NOC);
-+DEFINE_QNODE(qhs_a1_noc_cfg, SM6350_SLAVE_A1NOC_CFG, 1, 4, SM6350_MASTER_A=
-1NOC_CFG);
-+DEFINE_QNODE(qhs_a2_noc_cfg, SM6350_SLAVE_A2NOC_CFG, 1, 4, SM6350_MASTER_A=
-2NOC_CFG);
-+DEFINE_QNODE(qhs_ahb2phy0, SM6350_SLAVE_AHB2PHY, 1, 4);
-+DEFINE_QNODE(qhs_ahb2phy2, SM6350_SLAVE_AHB2PHY_2, 1, 4);
-+DEFINE_QNODE(qhs_aoss, SM6350_SLAVE_AOSS, 1, 4);
-+DEFINE_QNODE(qhs_boot_rom, SM6350_SLAVE_BOOT_ROM, 1, 4);
-+DEFINE_QNODE(qhs_camera_cfg, SM6350_SLAVE_CAMERA_CFG, 1, 4);
-+DEFINE_QNODE(qhs_camera_nrt_thrott_cfg, SM6350_SLAVE_CAMERA_NRT_THROTTLE_C=
-FG, 1, 4);
-+DEFINE_QNODE(qhs_camera_rt_throttle_cfg, SM6350_SLAVE_CAMERA_RT_THROTTLE_C=
-FG, 1, 4);
-+DEFINE_QNODE(qhs_clk_ctl, SM6350_SLAVE_CLK_CTL, 1, 4);
-+DEFINE_QNODE(qhs_cpr_cx, SM6350_SLAVE_RBCPR_CX_CFG, 1, 4);
-+DEFINE_QNODE(qhs_cpr_mx, SM6350_SLAVE_RBCPR_MX_CFG, 1, 4);
-+DEFINE_QNODE(qhs_crypto0_cfg, SM6350_SLAVE_CRYPTO_0_CFG, 1, 4);
-+DEFINE_QNODE(qhs_dcc_cfg, SM6350_SLAVE_DCC_CFG, 1, 4);
-+DEFINE_QNODE(qhs_ddrss_cfg, SM6350_SLAVE_CNOC_DDRSS, 1, 4, SM6350_MASTER_C=
-NOC_DC_NOC);
-+DEFINE_QNODE(qhs_display_cfg, SM6350_SLAVE_DISPLAY_CFG, 1, 4);
-+DEFINE_QNODE(qhs_display_throttle_cfg, SM6350_SLAVE_DISPLAY_THROTTLE_CFG, =
-1, 4);
-+DEFINE_QNODE(qhs_emmc_cfg, SM6350_SLAVE_EMMC_CFG, 1, 4);
-+DEFINE_QNODE(qhs_glm, SM6350_SLAVE_GLM, 1, 4);
-+DEFINE_QNODE(qhs_gpuss_cfg, SM6350_SLAVE_GRAPHICS_3D_CFG, 1, 8);
-+DEFINE_QNODE(qhs_imem_cfg, SM6350_SLAVE_IMEM_CFG, 1, 4);
-+DEFINE_QNODE(qhs_ipa, SM6350_SLAVE_IPA_CFG, 1, 4);
-+DEFINE_QNODE(qhs_mnoc_cfg, SM6350_SLAVE_CNOC_MNOC_CFG, 1, 4, SM6350_MASTER=
-_CNOC_MNOC_CFG);
-+DEFINE_QNODE(qhs_mss_cfg, SM6350_SLAVE_CNOC_MSS, 1, 4);
-+DEFINE_QNODE(qhs_npu_cfg, SM6350_SLAVE_NPU_CFG, 1, 4, SM6350_MASTER_NPU_NO=
-C_CFG);
-+DEFINE_QNODE(qhs_pdm, SM6350_SLAVE_PDM, 1, 4);
-+DEFINE_QNODE(qhs_pimem_cfg, SM6350_SLAVE_PIMEM_CFG, 1, 4);
-+DEFINE_QNODE(qhs_prng, SM6350_SLAVE_PRNG, 1, 4);
-+DEFINE_QNODE(qhs_qdss_cfg, SM6350_SLAVE_QDSS_CFG, 1, 4);
-+DEFINE_QNODE(qhs_qm_cfg, SM6350_SLAVE_QM_CFG, 1, 4);
-+DEFINE_QNODE(qhs_qm_mpu_cfg, SM6350_SLAVE_QM_MPU_CFG, 1, 4);
-+DEFINE_QNODE(qhs_qup0, SM6350_SLAVE_QUP_0, 1, 4);
-+DEFINE_QNODE(qhs_qup1, SM6350_SLAVE_QUP_1, 1, 4);
-+DEFINE_QNODE(qhs_sdc2, SM6350_SLAVE_SDCC_2, 1, 4);
-+DEFINE_QNODE(qhs_security, SM6350_SLAVE_SECURITY, 1, 4);
-+DEFINE_QNODE(qhs_snoc_cfg, SM6350_SLAVE_SNOC_CFG, 1, 4, SM6350_MASTER_SNOC=
-_CFG);
-+DEFINE_QNODE(qhs_tcsr, SM6350_SLAVE_TCSR, 1, 4);
-+DEFINE_QNODE(qhs_ufs_mem_cfg, SM6350_SLAVE_UFS_MEM_CFG, 1, 4);
-+DEFINE_QNODE(qhs_usb3_0, SM6350_SLAVE_USB3, 1, 4);
-+DEFINE_QNODE(qhs_venus_cfg, SM6350_SLAVE_VENUS_CFG, 1, 4);
-+DEFINE_QNODE(qhs_venus_throttle_cfg, SM6350_SLAVE_VENUS_THROTTLE_CFG, 1, 4=
-);
-+DEFINE_QNODE(qhs_vsense_ctrl_cfg, SM6350_SLAVE_VSENSE_CTRL_CFG, 1, 4);
-+DEFINE_QNODE(srvc_cnoc, SM6350_SLAVE_SERVICE_CNOC, 1, 4);
-+DEFINE_QNODE(qhs_gemnoc, SM6350_SLAVE_GEM_NOC_CFG, 1, 4, SM6350_MASTER_GEM=
-_NOC_CFG);
-+DEFINE_QNODE(qhs_llcc, SM6350_SLAVE_LLCC_CFG, 1, 4);
-+DEFINE_QNODE(qhs_mcdma_ms_mpu_cfg, SM6350_SLAVE_MCDMA_MS_MPU_CFG, 1, 4);
-+DEFINE_QNODE(qhs_mdsp_ms_mpu_cfg, SM6350_SLAVE_MSS_PROC_MS_MPU_CFG, 1, 4);
-+DEFINE_QNODE(qns_gem_noc_snoc, SM6350_SLAVE_GEM_NOC_SNOC, 1, 8, SM6350_MAS=
-TER_GEM_NOC_SNOC);
-+DEFINE_QNODE(qns_llcc, SM6350_SLAVE_LLCC, 1, 16, SM6350_MASTER_LLCC);
-+DEFINE_QNODE(srvc_gemnoc, SM6350_SLAVE_SERVICE_GEM_NOC, 1, 4);
-+DEFINE_QNODE(ebi, SM6350_SLAVE_EBI_CH0, 2, 4);
-+DEFINE_QNODE(qns_mem_noc_hf, SM6350_SLAVE_MNOC_HF_MEM_NOC, 1, 32, SM6350_M=
-ASTER_MNOC_HF_MEM_NOC);
-+DEFINE_QNODE(qns_mem_noc_sf, SM6350_SLAVE_MNOC_SF_MEM_NOC, 1, 32, SM6350_M=
-ASTER_MNOC_SF_MEM_NOC);
-+DEFINE_QNODE(srvc_mnoc, SM6350_SLAVE_SERVICE_MNOC, 1, 4);
-+DEFINE_QNODE(qhs_cal_dp0, SM6350_SLAVE_NPU_CAL_DP0, 1, 4);
-+DEFINE_QNODE(qhs_cp, SM6350_SLAVE_NPU_CP, 1, 4);
-+DEFINE_QNODE(qhs_dma_bwmon, SM6350_SLAVE_NPU_INT_DMA_BWMON_CFG, 1, 4);
-+DEFINE_QNODE(qhs_dpm, SM6350_SLAVE_NPU_DPM, 1, 4);
-+DEFINE_QNODE(qhs_isense, SM6350_SLAVE_ISENSE_CFG, 1, 4);
-+DEFINE_QNODE(qhs_llm, SM6350_SLAVE_NPU_LLM_CFG, 1, 4);
-+DEFINE_QNODE(qhs_tcm, SM6350_SLAVE_NPU_TCM, 1, 4);
-+DEFINE_QNODE(qns_npu_sys, SM6350_SLAVE_NPU_COMPUTE_NOC, 2, 32);
-+DEFINE_QNODE(srvc_noc, SM6350_SLAVE_SERVICE_NPU_NOC, 1, 4);
-+DEFINE_QNODE(qhs_apss, SM6350_SLAVE_APPSS, 1, 8);
-+DEFINE_QNODE(qns_cnoc, SM6350_SNOC_CNOC_SLV, 1, 8, SM6350_SNOC_CNOC_MAS);
-+DEFINE_QNODE(qns_gemnoc_gc, SM6350_SLAVE_SNOC_GEM_NOC_GC, 1, 8, SM6350_MAS=
-TER_SNOC_GC_MEM_NOC);
-+DEFINE_QNODE(qns_gemnoc_sf, SM6350_SLAVE_SNOC_GEM_NOC_SF, 1, 16, SM6350_MA=
-STER_SNOC_SF_MEM_NOC);
-+DEFINE_QNODE(qxs_imem, SM6350_SLAVE_OCIMEM, 1, 8);
-+DEFINE_QNODE(qxs_pimem, SM6350_SLAVE_PIMEM, 1, 8);
-+DEFINE_QNODE(srvc_snoc, SM6350_SLAVE_SERVICE_SNOC, 1, 4);
-+DEFINE_QNODE(xs_qdss_stm, SM6350_SLAVE_QDSS_STM, 1, 4);
-+DEFINE_QNODE(xs_sys_tcu_cfg, SM6350_SLAVE_TCU, 1, 8);
-+
-+DEFINE_QBCM(bcm_acv, "ACV", false, &ebi);
-+DEFINE_QBCM(bcm_ce0, "CE0", false, &qxm_crypto);
-+DEFINE_QBCM(bcm_cn0, "CN0", true, &qnm_snoc, &xm_qdss_dap, &qhs_a1_noc_cfg=
-, &qhs_a2_noc_cfg, &qhs_ahb2phy0, &qhs_aoss, &qhs_boot_rom, &qhs_camera_cfg=
-, &qhs_camera_nrt_thrott_cfg, &qhs_camera_rt_throttle_cfg, &qhs_clk_ctl, &q=
-hs_cpr_cx, &qhs_cpr_mx, &qhs_crypto0_cfg, &qhs_dcc_cfg, &qhs_ddrss_cfg, &qh=
-s_display_cfg, &qhs_display_throttle_cfg, &qhs_glm, &qhs_gpuss_cfg, &qhs_im=
-em_cfg, &qhs_ipa, &qhs_mnoc_cfg, &qhs_mss_cfg, &qhs_npu_cfg, &qhs_pimem_cfg=
-, &qhs_prng, &qhs_qdss_cfg, &qhs_qm_cfg, &qhs_qm_mpu_cfg, &qhs_qup0, &qhs_q=
-up1, &qhs_security, &qhs_snoc_cfg, &qhs_tcsr, &qhs_ufs_mem_cfg, &qhs_usb3_0=
-, &qhs_venus_cfg, &qhs_venus_throttle_cfg, &qhs_vsense_ctrl_cfg, &srvc_cnoc=
-);
-+DEFINE_QBCM(bcm_cn1, "CN1", false, &xm_emmc, &xm_sdc2, &qhs_ahb2phy2, &qhs=
-_emmc_cfg, &qhs_pdm, &qhs_sdc2);
-+DEFINE_QBCM(bcm_co0, "CO0", false, &qns_cdsp_gemnoc);
-+DEFINE_QBCM(bcm_co2, "CO2", false, &qnm_npu);
-+DEFINE_QBCM(bcm_co3, "CO3", false, &qxm_npu_dsp);
-+DEFINE_QBCM(bcm_mc0, "MC0", true, &ebi);
-+DEFINE_QBCM(bcm_mm0, "MM0", true, &qns_mem_noc_hf);
-+DEFINE_QBCM(bcm_mm1, "MM1", true, &qxm_camnoc_hf0_uncomp, &qxm_camnoc_icp_=
-uncomp, &qxm_camnoc_sf_uncomp, &qxm_camnoc_hf, &qxm_mdp0);
-+DEFINE_QBCM(bcm_mm2, "MM2", false, &qns_mem_noc_sf);
-+DEFINE_QBCM(bcm_mm3, "MM3", false, &qhm_mnoc_cfg, &qnm_video0, &qnm_video_=
-cvp, &qxm_camnoc_sf);
-+DEFINE_QBCM(bcm_qup0, "QUP0", false, &qup0_core_master, &qup1_core_master,=
- &qup0_core_slave, &qup1_core_slave);
-+DEFINE_QBCM(bcm_sh0, "SH0", true, &qns_llcc);
-+DEFINE_QBCM(bcm_sh2, "SH2", false, &acm_sys_tcu);
-+DEFINE_QBCM(bcm_sh3, "SH3", false, &qnm_cmpnoc);
-+DEFINE_QBCM(bcm_sh4, "SH4", false, &acm_apps);
-+DEFINE_QBCM(bcm_sn0, "SN0", true, &qns_gemnoc_sf);
-+DEFINE_QBCM(bcm_sn1, "SN1", false, &qxs_imem);
-+DEFINE_QBCM(bcm_sn2, "SN2", false, &qns_gemnoc_gc);
-+DEFINE_QBCM(bcm_sn3, "SN3", false, &qxs_pimem);
-+DEFINE_QBCM(bcm_sn4, "SN4", false, &xs_qdss_stm);
-+DEFINE_QBCM(bcm_sn5, "SN5", false, &qnm_aggre1_noc);
-+DEFINE_QBCM(bcm_sn6, "SN6", false, &qnm_aggre2_noc);
-+DEFINE_QBCM(bcm_sn10, "SN10", false, &qnm_gemnoc);
-+
-+static struct qcom_icc_bcm *aggre1_noc_bcms[] =3D {
-+	&bcm_cn1,
-+};
-+
-+static struct qcom_icc_node *aggre1_noc_nodes[] =3D {
-+	[MASTER_A1NOC_CFG] =3D &qhm_a1noc_cfg,
-+	[MASTER_QUP_0] =3D &qhm_qup_0,
-+	[MASTER_EMMC] =3D &xm_emmc,
-+	[MASTER_UFS_MEM] =3D &xm_ufs_mem,
-+	[A1NOC_SNOC_SLV] =3D &qns_a1noc_snoc,
-+	[SLAVE_SERVICE_A1NOC] =3D &srvc_aggre1_noc,
-+};
-+
-+static struct qcom_icc_desc sm6350_aggre1_noc =3D {
-+	.nodes =3D aggre1_noc_nodes,
-+	.num_nodes =3D ARRAY_SIZE(aggre1_noc_nodes),
-+	.bcms =3D aggre1_noc_bcms,
-+	.num_bcms =3D ARRAY_SIZE(aggre1_noc_bcms),
-+};
-+
-+static struct qcom_icc_bcm *aggre2_noc_bcms[] =3D {
-+	&bcm_ce0,
-+	&bcm_cn1,
-+};
-+
-+static struct qcom_icc_node *aggre2_noc_nodes[] =3D {
-+	[MASTER_A2NOC_CFG] =3D &qhm_a2noc_cfg,
-+	[MASTER_QDSS_BAM] =3D &qhm_qdss_bam,
-+	[MASTER_QUP_1] =3D &qhm_qup_1,
-+	[MASTER_CRYPTO_CORE_0] =3D &qxm_crypto,
-+	[MASTER_IPA] =3D &qxm_ipa,
-+	[MASTER_QDSS_ETR] =3D &xm_qdss_etr,
-+	[MASTER_SDCC_2] =3D &xm_sdc2,
-+	[MASTER_USB3] =3D &xm_usb3_0,
-+	[A2NOC_SNOC_SLV] =3D &qns_a2noc_snoc,
-+	[SLAVE_SERVICE_A2NOC] =3D &srvc_aggre2_noc,
-+};
-+
-+static struct qcom_icc_desc sm6350_aggre2_noc =3D {
-+	.nodes =3D aggre2_noc_nodes,
-+	.num_nodes =3D ARRAY_SIZE(aggre2_noc_nodes),
-+	.bcms =3D aggre2_noc_bcms,
-+	.num_bcms =3D ARRAY_SIZE(aggre2_noc_bcms),
-+};
-+
-+static struct qcom_icc_bcm *clk_virt_bcms[] =3D {
-+	&bcm_acv,
-+	&bcm_mc0,
-+	&bcm_mm1,
-+	&bcm_qup0,
-+};
-+
-+static struct qcom_icc_node *clk_virt_nodes[] =3D {
-+	[MASTER_CAMNOC_HF0_UNCOMP] =3D &qxm_camnoc_hf0_uncomp,
-+	[MASTER_CAMNOC_ICP_UNCOMP] =3D &qxm_camnoc_icp_uncomp,
-+	[MASTER_CAMNOC_SF_UNCOMP] =3D &qxm_camnoc_sf_uncomp,
-+	[MASTER_QUP_CORE_0] =3D &qup0_core_master,
-+	[MASTER_QUP_CORE_1] =3D &qup1_core_master,
-+	[MASTER_LLCC] =3D &llcc_mc,
-+	[SLAVE_CAMNOC_UNCOMP] =3D &qns_camnoc_uncomp,
-+	[SLAVE_QUP_CORE_0] =3D &qup0_core_slave,
-+	[SLAVE_QUP_CORE_1] =3D &qup1_core_slave,
-+	[SLAVE_EBI_CH0] =3D &ebi,
-+};
-+
-+static struct qcom_icc_desc sm6350_clk_virt =3D {
-+	.nodes =3D clk_virt_nodes,
-+	.num_nodes =3D ARRAY_SIZE(clk_virt_nodes),
-+	.bcms =3D clk_virt_bcms,
-+	.num_bcms =3D ARRAY_SIZE(clk_virt_bcms),
-+};
-+
-+static struct qcom_icc_bcm *compute_noc_bcms[] =3D {
-+	&bcm_co0,
-+	&bcm_co2,
-+	&bcm_co3,
-+};
-+
-+static struct qcom_icc_node *compute_noc_nodes[] =3D {
-+	[MASTER_NPU] =3D &qnm_npu,
-+	[MASTER_NPU_PROC] =3D &qxm_npu_dsp,
-+	[SLAVE_CDSP_GEM_NOC] =3D &qns_cdsp_gemnoc,
-+};
-+
-+static struct qcom_icc_desc sm6350_compute_noc =3D {
-+	.nodes =3D compute_noc_nodes,
-+	.num_nodes =3D ARRAY_SIZE(compute_noc_nodes),
-+	.bcms =3D compute_noc_bcms,
-+	.num_bcms =3D ARRAY_SIZE(compute_noc_bcms),
-+};
-+
-+static struct qcom_icc_bcm *config_noc_bcms[] =3D {
-+	&bcm_cn0,
-+	&bcm_cn1,
-+};
-+
-+static struct qcom_icc_node *config_noc_nodes[] =3D {
-+	[SNOC_CNOC_MAS] =3D &qnm_snoc,
-+	[MASTER_QDSS_DAP] =3D &xm_qdss_dap,
-+	[SLAVE_A1NOC_CFG] =3D &qhs_a1_noc_cfg,
-+	[SLAVE_A2NOC_CFG] =3D &qhs_a2_noc_cfg,
-+	[SLAVE_AHB2PHY] =3D &qhs_ahb2phy0,
-+	[SLAVE_AHB2PHY_2] =3D &qhs_ahb2phy2,
-+	[SLAVE_AOSS] =3D &qhs_aoss,
-+	[SLAVE_BOOT_ROM] =3D &qhs_boot_rom,
-+	[SLAVE_CAMERA_CFG] =3D &qhs_camera_cfg,
-+	[SLAVE_CAMERA_NRT_THROTTLE_CFG] =3D &qhs_camera_nrt_thrott_cfg,
-+	[SLAVE_CAMERA_RT_THROTTLE_CFG] =3D &qhs_camera_rt_throttle_cfg,
-+	[SLAVE_CLK_CTL] =3D &qhs_clk_ctl,
-+	[SLAVE_RBCPR_CX_CFG] =3D &qhs_cpr_cx,
-+	[SLAVE_RBCPR_MX_CFG] =3D &qhs_cpr_mx,
-+	[SLAVE_CRYPTO_0_CFG] =3D &qhs_crypto0_cfg,
-+	[SLAVE_DCC_CFG] =3D &qhs_dcc_cfg,
-+	[SLAVE_CNOC_DDRSS] =3D &qhs_ddrss_cfg,
-+	[SLAVE_DISPLAY_CFG] =3D &qhs_display_cfg,
-+	[SLAVE_DISPLAY_THROTTLE_CFG] =3D &qhs_display_throttle_cfg,
-+	[SLAVE_EMMC_CFG] =3D &qhs_emmc_cfg,
-+	[SLAVE_GLM] =3D &qhs_glm,
-+	[SLAVE_GRAPHICS_3D_CFG] =3D &qhs_gpuss_cfg,
-+	[SLAVE_IMEM_CFG] =3D &qhs_imem_cfg,
-+	[SLAVE_IPA_CFG] =3D &qhs_ipa,
-+	[SLAVE_CNOC_MNOC_CFG] =3D &qhs_mnoc_cfg,
-+	[SLAVE_CNOC_MSS] =3D &qhs_mss_cfg,
-+	[SLAVE_NPU_CFG] =3D &qhs_npu_cfg,
-+	[SLAVE_PDM] =3D &qhs_pdm,
-+	[SLAVE_PIMEM_CFG] =3D &qhs_pimem_cfg,
-+	[SLAVE_PRNG] =3D &qhs_prng,
-+	[SLAVE_QDSS_CFG] =3D &qhs_qdss_cfg,
-+	[SLAVE_QM_CFG] =3D &qhs_qm_cfg,
-+	[SLAVE_QM_MPU_CFG] =3D &qhs_qm_mpu_cfg,
-+	[SLAVE_QUP_0] =3D &qhs_qup0,
-+	[SLAVE_QUP_1] =3D &qhs_qup1,
-+	[SLAVE_SDCC_2] =3D &qhs_sdc2,
-+	[SLAVE_SECURITY] =3D &qhs_security,
-+	[SLAVE_SNOC_CFG] =3D &qhs_snoc_cfg,
-+	[SLAVE_TCSR] =3D &qhs_tcsr,
-+	[SLAVE_UFS_MEM_CFG] =3D &qhs_ufs_mem_cfg,
-+	[SLAVE_USB3] =3D &qhs_usb3_0,
-+	[SLAVE_VENUS_CFG] =3D &qhs_venus_cfg,
-+	[SLAVE_VENUS_THROTTLE_CFG] =3D &qhs_venus_throttle_cfg,
-+	[SLAVE_VSENSE_CTRL_CFG] =3D &qhs_vsense_ctrl_cfg,
-+	[SLAVE_SERVICE_CNOC] =3D &srvc_cnoc,
-+};
-+
-+static struct qcom_icc_desc sm6350_config_noc =3D {
-+	.nodes =3D config_noc_nodes,
-+	.num_nodes =3D ARRAY_SIZE(config_noc_nodes),
-+	.bcms =3D config_noc_bcms,
-+	.num_bcms =3D ARRAY_SIZE(config_noc_bcms),
-+};
-+
-+static struct qcom_icc_bcm *dc_noc_bcms[] =3D {
-+};
-+
-+static struct qcom_icc_node *dc_noc_nodes[] =3D {
-+	[MASTER_CNOC_DC_NOC] =3D &qhm_cnoc_dc_noc,
-+	[SLAVE_GEM_NOC_CFG] =3D &qhs_gemnoc,
-+	[SLAVE_LLCC_CFG] =3D &qhs_llcc,
-+};
-+
-+static struct qcom_icc_desc sm6350_dc_noc =3D {
-+	.nodes =3D dc_noc_nodes,
-+	.num_nodes =3D ARRAY_SIZE(dc_noc_nodes),
-+	.bcms =3D dc_noc_bcms,
-+	.num_bcms =3D ARRAY_SIZE(dc_noc_bcms),
-+};
-+
-+static struct qcom_icc_bcm *gem_noc_bcms[] =3D {
-+	&bcm_sh0,
-+	&bcm_sh2,
-+	&bcm_sh3,
-+	&bcm_sh4,
-+};
-+
-+static struct qcom_icc_node *gem_noc_nodes[] =3D {
-+	[MASTER_AMPSS_M0] =3D &acm_apps,
-+	[MASTER_SYS_TCU] =3D &acm_sys_tcu,
-+	[MASTER_GEM_NOC_CFG] =3D &qhm_gemnoc_cfg,
-+	[MASTER_COMPUTE_NOC] =3D &qnm_cmpnoc,
-+	[MASTER_MNOC_HF_MEM_NOC] =3D &qnm_mnoc_hf,
-+	[MASTER_MNOC_SF_MEM_NOC] =3D &qnm_mnoc_sf,
-+	[MASTER_SNOC_GC_MEM_NOC] =3D &qnm_snoc_gc,
-+	[MASTER_SNOC_SF_MEM_NOC] =3D &qnm_snoc_sf,
-+	[MASTER_GRAPHICS_3D] =3D &qxm_gpu,
-+	[SLAVE_MCDMA_MS_MPU_CFG] =3D &qhs_mcdma_ms_mpu_cfg,
-+	[SLAVE_MSS_PROC_MS_MPU_CFG] =3D &qhs_mdsp_ms_mpu_cfg,
-+	[SLAVE_GEM_NOC_SNOC] =3D &qns_gem_noc_snoc,
-+	[SLAVE_LLCC] =3D &qns_llcc,
-+	[SLAVE_SERVICE_GEM_NOC] =3D &srvc_gemnoc,
-+};
-+
-+static struct qcom_icc_desc sm6350_gem_noc =3D {
-+	.nodes =3D gem_noc_nodes,
-+	.num_nodes =3D ARRAY_SIZE(gem_noc_nodes),
-+	.bcms =3D gem_noc_bcms,
-+	.num_bcms =3D ARRAY_SIZE(gem_noc_bcms),
-+};
-+
-+static struct qcom_icc_bcm *mmss_noc_bcms[] =3D {
-+	&bcm_mm0,
-+	&bcm_mm1,
-+	&bcm_mm2,
-+	&bcm_mm3,
-+};
-+
-+static struct qcom_icc_node *mmss_noc_nodes[] =3D {
-+	[MASTER_CNOC_MNOC_CFG] =3D &qhm_mnoc_cfg,
-+	[MASTER_VIDEO_P0] =3D &qnm_video0,
-+	[MASTER_VIDEO_PROC] =3D &qnm_video_cvp,
-+	[MASTER_CAMNOC_HF] =3D &qxm_camnoc_hf,
-+	[MASTER_CAMNOC_ICP] =3D &qxm_camnoc_icp,
-+	[MASTER_CAMNOC_SF] =3D &qxm_camnoc_sf,
-+	[MASTER_MDP_PORT0] =3D &qxm_mdp0,
-+	[SLAVE_MNOC_HF_MEM_NOC] =3D &qns_mem_noc_hf,
-+	[SLAVE_MNOC_SF_MEM_NOC] =3D &qns_mem_noc_sf,
-+	[SLAVE_SERVICE_MNOC] =3D &srvc_mnoc,
-+};
-+
-+static struct qcom_icc_desc sm6350_mmss_noc =3D {
-+	.nodes =3D mmss_noc_nodes,
-+	.num_nodes =3D ARRAY_SIZE(mmss_noc_nodes),
-+	.bcms =3D mmss_noc_bcms,
-+	.num_bcms =3D ARRAY_SIZE(mmss_noc_bcms),
-+};
-+
-+static struct qcom_icc_bcm *npu_noc_bcms[] =3D {
-+};
-+
-+static struct qcom_icc_node *npu_noc_nodes[] =3D {
-+	[MASTER_NPU_SYS] =3D &amm_npu_sys,
-+	[MASTER_NPU_NOC_CFG] =3D &qhm_npu_cfg,
-+	[SLAVE_NPU_CAL_DP0] =3D &qhs_cal_dp0,
-+	[SLAVE_NPU_CP] =3D &qhs_cp,
-+	[SLAVE_NPU_INT_DMA_BWMON_CFG] =3D &qhs_dma_bwmon,
-+	[SLAVE_NPU_DPM] =3D &qhs_dpm,
-+	[SLAVE_ISENSE_CFG] =3D &qhs_isense,
-+	[SLAVE_NPU_LLM_CFG] =3D &qhs_llm,
-+	[SLAVE_NPU_TCM] =3D &qhs_tcm,
-+	[SLAVE_NPU_COMPUTE_NOC] =3D &qns_npu_sys,
-+	[SLAVE_SERVICE_NPU_NOC] =3D &srvc_noc,
-+};
-+
-+static struct qcom_icc_desc sm6350_npu_noc =3D {
-+	.nodes =3D npu_noc_nodes,
-+	.num_nodes =3D ARRAY_SIZE(npu_noc_nodes),
-+	.bcms =3D npu_noc_bcms,
-+	.num_bcms =3D ARRAY_SIZE(npu_noc_bcms),
-+};
-+
-+static struct qcom_icc_bcm *system_noc_bcms[] =3D {
-+	&bcm_sn0,
-+	&bcm_sn1,
-+	&bcm_sn10,
-+	&bcm_sn2,
-+	&bcm_sn3,
-+	&bcm_sn4,
-+	&bcm_sn5,
-+	&bcm_sn6,
-+};
-+
-+static struct qcom_icc_node *system_noc_nodes[] =3D {
-+	[MASTER_SNOC_CFG] =3D &qhm_snoc_cfg,
-+	[A1NOC_SNOC_MAS] =3D &qnm_aggre1_noc,
-+	[A2NOC_SNOC_MAS] =3D &qnm_aggre2_noc,
-+	[MASTER_GEM_NOC_SNOC] =3D &qnm_gemnoc,
-+	[MASTER_PIMEM] =3D &qxm_pimem,
-+	[MASTER_GIC] =3D &xm_gic,
-+	[SLAVE_APPSS] =3D &qhs_apss,
-+	[SNOC_CNOC_SLV] =3D &qns_cnoc,
-+	[SLAVE_SNOC_GEM_NOC_GC] =3D &qns_gemnoc_gc,
-+	[SLAVE_SNOC_GEM_NOC_SF] =3D &qns_gemnoc_sf,
-+	[SLAVE_OCIMEM] =3D &qxs_imem,
-+	[SLAVE_PIMEM] =3D &qxs_pimem,
-+	[SLAVE_SERVICE_SNOC] =3D &srvc_snoc,
-+	[SLAVE_QDSS_STM] =3D &xs_qdss_stm,
-+	[SLAVE_TCU] =3D &xs_sys_tcu_cfg,
-+};
-+
-+static struct qcom_icc_desc sm6350_system_noc =3D {
-+	.nodes =3D system_noc_nodes,
-+	.num_nodes =3D ARRAY_SIZE(system_noc_nodes),
-+	.bcms =3D system_noc_bcms,
-+	.num_bcms =3D ARRAY_SIZE(system_noc_bcms),
-+};
-+
-+static const struct of_device_id qnoc_of_match[] =3D {
-+	{ .compatible =3D "qcom,sm6350-aggre1-noc",
-+	  .data =3D &sm6350_aggre1_noc},
-+	{ .compatible =3D "qcom,sm6350-aggre2-noc",
-+	  .data =3D &sm6350_aggre2_noc},
-+	{ .compatible =3D "qcom,sm6350-clk-virt",
-+	  .data =3D &sm6350_clk_virt},
-+	{ .compatible =3D "qcom,sm6350-compute-noc",
-+	  .data =3D &sm6350_compute_noc},
-+	{ .compatible =3D "qcom,sm6350-config-noc",
-+	  .data =3D &sm6350_config_noc},
-+	{ .compatible =3D "qcom,sm6350-dc-noc",
-+	  .data =3D &sm6350_dc_noc},
-+	{ .compatible =3D "qcom,sm6350-gem-noc",
-+	  .data =3D &sm6350_gem_noc},
-+	{ .compatible =3D "qcom,sm6350-mmss-noc",
-+	  .data =3D &sm6350_mmss_noc},
-+	{ .compatible =3D "qcom,sm6350-npu-noc",
-+	  .data =3D &sm6350_npu_noc},
-+	{ .compatible =3D "qcom,sm6350-system-noc",
-+	  .data =3D &sm6350_system_noc},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, qnoc_of_match);
-+
-+static struct platform_driver qnoc_driver =3D {
-+	.probe =3D qcom_icc_rpmh_probe,
-+	.remove =3D qcom_icc_rpmh_remove,
-+	.driver =3D {
-+		.name =3D "qnoc-sm6350",
-+		.of_match_table =3D qnoc_of_match,
-+		.sync_state =3D icc_sync_state,
-+	},
-+};
-+module_platform_driver(qnoc_driver);
-+
-+MODULE_DESCRIPTION("Qualcomm SM6350 NoC driver");
-+MODULE_LICENSE("GPL v2");
-diff --git a/drivers/interconnect/qcom/sm6350.h b/drivers/interconnect/qcom=
-/sm6350.h
-new file mode 100644
-index 000000000000..43cf2930c88a
---- /dev/null
-+++ b/drivers/interconnect/qcom/sm6350.h
-@@ -0,0 +1,139 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Qualcomm #define SM6350 interconnect IDs
-+ *
-+ * Copyright (C) 2022 Luca Weiss <luca.weiss@fairphone.com>
-+ */
-+
-+#ifndef __DRIVERS_INTERCONNECT_QCOM_SM6350_H
-+#define __DRIVERS_INTERCONNECT_QCOM_SM6350_H
-+
-+#define SM6350_A1NOC_SNOC_MAS			0
-+#define SM6350_A1NOC_SNOC_SLV			1
-+#define SM6350_A2NOC_SNOC_MAS			2
-+#define SM6350_A2NOC_SNOC_SLV			3
-+#define SM6350_MASTER_A1NOC_CFG			4
-+#define SM6350_MASTER_A2NOC_CFG			5
-+#define SM6350_MASTER_AMPSS_M0			6
-+#define SM6350_MASTER_CAMNOC_HF			7
-+#define SM6350_MASTER_CAMNOC_HF0_UNCOMP		8
-+#define SM6350_MASTER_CAMNOC_ICP		9
-+#define SM6350_MASTER_CAMNOC_ICP_UNCOMP		10
-+#define SM6350_MASTER_CAMNOC_SF			11
-+#define SM6350_MASTER_CAMNOC_SF_UNCOMP		12
-+#define SM6350_MASTER_CNOC_DC_NOC		13
-+#define SM6350_MASTER_CNOC_MNOC_CFG		14
-+#define SM6350_MASTER_COMPUTE_NOC		15
-+#define SM6350_MASTER_CRYPTO_CORE_0		16
-+#define SM6350_MASTER_EMMC			17
-+#define SM6350_MASTER_GEM_NOC_CFG		18
-+#define SM6350_MASTER_GEM_NOC_SNOC		19
-+#define SM6350_MASTER_GIC			20
-+#define SM6350_MASTER_GRAPHICS_3D		21
-+#define SM6350_MASTER_IPA			22
-+#define SM6350_MASTER_LLCC			23
-+#define SM6350_MASTER_MDP_PORT0			24
-+#define SM6350_MASTER_MNOC_HF_MEM_NOC		25
-+#define SM6350_MASTER_MNOC_SF_MEM_NOC		26
-+#define SM6350_MASTER_NPU			27
-+#define SM6350_MASTER_NPU_NOC_CFG		28
-+#define SM6350_MASTER_NPU_PROC			29
-+#define SM6350_MASTER_NPU_SYS			30
-+#define SM6350_MASTER_PIMEM			31
-+#define SM6350_MASTER_QDSS_BAM			32
-+#define SM6350_MASTER_QDSS_DAP			33
-+#define SM6350_MASTER_QDSS_ETR			34
-+#define SM6350_MASTER_QUP_0			35
-+#define SM6350_MASTER_QUP_1			36
-+#define SM6350_MASTER_QUP_CORE_0		37
-+#define SM6350_MASTER_QUP_CORE_1		38
-+#define SM6350_MASTER_SDCC_2			39
-+#define SM6350_MASTER_SNOC_CFG			40
-+#define SM6350_MASTER_SNOC_GC_MEM_NOC		41
-+#define SM6350_MASTER_SNOC_SF_MEM_NOC		42
-+#define SM6350_MASTER_SYS_TCU			43
-+#define SM6350_MASTER_UFS_MEM			44
-+#define SM6350_MASTER_USB3			45
-+#define SM6350_MASTER_VIDEO_P0			46
-+#define SM6350_MASTER_VIDEO_PROC		47
-+#define SM6350_SLAVE_A1NOC_CFG			48
-+#define SM6350_SLAVE_A2NOC_CFG			49
-+#define SM6350_SLAVE_AHB2PHY			50
-+#define SM6350_SLAVE_AHB2PHY_2			51
-+#define SM6350_SLAVE_AOSS			52
-+#define SM6350_SLAVE_APPSS			53
-+#define SM6350_SLAVE_BOOT_ROM			54
-+#define SM6350_SLAVE_CAMERA_CFG			55
-+#define SM6350_SLAVE_CAMERA_NRT_THROTTLE_CFG	56
-+#define SM6350_SLAVE_CAMERA_RT_THROTTLE_CFG	57
-+#define SM6350_SLAVE_CAMNOC_UNCOMP		58
-+#define SM6350_SLAVE_CDSP_GEM_NOC		59
-+#define SM6350_SLAVE_CLK_CTL			60
-+#define SM6350_SLAVE_CNOC_DDRSS			61
-+#define SM6350_SLAVE_CNOC_MNOC_CFG		62
-+#define SM6350_SLAVE_CNOC_MSS			63
-+#define SM6350_SLAVE_CRYPTO_0_CFG		64
-+#define SM6350_SLAVE_DCC_CFG			65
-+#define SM6350_SLAVE_DISPLAY_CFG		66
-+#define SM6350_SLAVE_DISPLAY_THROTTLE_CFG	67
-+#define SM6350_SLAVE_EBI_CH0			68
-+#define SM6350_SLAVE_EMMC_CFG			69
-+#define SM6350_SLAVE_GEM_NOC_CFG		70
-+#define SM6350_SLAVE_GEM_NOC_SNOC		71
-+#define SM6350_SLAVE_GLM			72
-+#define SM6350_SLAVE_GRAPHICS_3D_CFG		73
-+#define SM6350_SLAVE_IMEM_CFG			74
-+#define SM6350_SLAVE_IPA_CFG			75
-+#define SM6350_SLAVE_ISENSE_CFG			76
-+#define SM6350_SLAVE_LLCC			77
-+#define SM6350_SLAVE_LLCC_CFG			78
-+#define SM6350_SLAVE_MCDMA_MS_MPU_CFG		79
-+#define SM6350_SLAVE_MNOC_HF_MEM_NOC		80
-+#define SM6350_SLAVE_MNOC_SF_MEM_NOC		81
-+#define SM6350_SLAVE_MSS_PROC_MS_MPU_CFG	82
-+#define SM6350_SLAVE_NPU_CAL_DP0		83
-+#define SM6350_SLAVE_NPU_CFG			84
-+#define SM6350_SLAVE_NPU_COMPUTE_NOC		85
-+#define SM6350_SLAVE_NPU_CP			86
-+#define SM6350_SLAVE_NPU_DPM			87
-+#define SM6350_SLAVE_NPU_INT_DMA_BWMON_CFG	88
-+#define SM6350_SLAVE_NPU_LLM_CFG		89
-+#define SM6350_SLAVE_NPU_TCM			90
-+#define SM6350_SLAVE_OCIMEM			91
-+#define SM6350_SLAVE_PDM			92
-+#define SM6350_SLAVE_PIMEM			93
-+#define SM6350_SLAVE_PIMEM_CFG			94
-+#define SM6350_SLAVE_PRNG			95
-+#define SM6350_SLAVE_QDSS_CFG			96
-+#define SM6350_SLAVE_QDSS_STM			97
-+#define SM6350_SLAVE_QM_CFG			98
-+#define SM6350_SLAVE_QM_MPU_CFG			99
-+#define SM6350_SLAVE_QUP_0			100
-+#define SM6350_SLAVE_QUP_1			101
-+#define SM6350_SLAVE_QUP_CORE_0			102
-+#define SM6350_SLAVE_QUP_CORE_1			103
-+#define SM6350_SLAVE_RBCPR_CX_CFG		104
-+#define SM6350_SLAVE_RBCPR_MX_CFG		105
-+#define SM6350_SLAVE_SDCC_2			106
-+#define SM6350_SLAVE_SECURITY			107
-+#define SM6350_SLAVE_SERVICE_A1NOC		108
-+#define SM6350_SLAVE_SERVICE_A2NOC		109
-+#define SM6350_SLAVE_SERVICE_CNOC		110
-+#define SM6350_SLAVE_SERVICE_GEM_NOC		111
-+#define SM6350_SLAVE_SERVICE_MNOC		112
-+#define SM6350_SLAVE_SERVICE_NPU_NOC		113
-+#define SM6350_SLAVE_SERVICE_SNOC		114
-+#define SM6350_SLAVE_SNOC_CFG			115
-+#define SM6350_SLAVE_SNOC_GEM_NOC_GC		116
-+#define SM6350_SLAVE_SNOC_GEM_NOC_SF		117
-+#define SM6350_SLAVE_TCSR			118
-+#define SM6350_SLAVE_TCU			119
-+#define SM6350_SLAVE_UFS_MEM_CFG		120
-+#define SM6350_SLAVE_USB3			121
-+#define SM6350_SLAVE_VENUS_CFG			122
-+#define SM6350_SLAVE_VENUS_THROTTLE_CFG		123
-+#define SM6350_SLAVE_VSENSE_CTRL_CFG		124
-+#define SM6350_SNOC_CNOC_MAS			125
-+#define SM6350_SNOC_CNOC_SLV			126
-+
-+#endif
---=20
-2.36.0
-
+Best Regards
+-- Matti Vaittinen
