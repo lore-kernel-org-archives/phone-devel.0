@@ -2,91 +2,157 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96097C433EF
-	for <phone-devel@archiver.kernel.org>; Sat, 23 Apr 2022 19:57:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87475C433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 25 Apr 2022 13:24:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236975AbiDWT75 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 23 Apr 2022 15:59:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50332 "EHLO
+        id S241560AbiDYN1t (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 25 Apr 2022 09:27:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236914AbiDWT7r (ORCPT
+        with ESMTP id S241997AbiDYN12 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 23 Apr 2022 15:59:47 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B9C719A48C
-        for <phone-devel@vger.kernel.org>; Sat, 23 Apr 2022 12:56:46 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id g23so7178481edy.13
-        for <phone-devel@vger.kernel.org>; Sat, 23 Apr 2022 12:56:46 -0700 (PDT)
+        Mon, 25 Apr 2022 09:27:28 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB3FB37020
+        for <phone-devel@vger.kernel.org>; Mon, 25 Apr 2022 06:24:22 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id v1so14414218ljv.3
+        for <phone-devel@vger.kernel.org>; Mon, 25 Apr 2022 06:24:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=yNSMjzR/UC7gAKQriiodIhNkqmmIvXbfjZZmbtmDsBI=;
-        b=yzdnRPgskGVSMi8zv4oBko9lVeYwVJkxDSR6MCkGUoXeTAK/4NDODNNgZ26KgG/mOU
-         CoB2QmI5FRJiOq51uIk68eCareFVrvmvpKA6fadl6vN+B9T5RdthGC51nk1UKkl+rI8V
-         bjJ2huIzejbSjE72D4g4LFxCCdRX9/IA+qfbvCDwAyYtGJd+1W1YKHpSRD6XJtD/NGTi
-         CpaqFGoxA5vUA+GgVLLCa5jP0gs2G4OvNlibifucQX9N1C8ExbobxZ9RxTWEg1kPm5Q4
-         cw1AHrC+4rdOM3XxOEVWQzz9UEH9NMK1rgPaPN7MQiMNTT4/+pOMEGnmTuWdtFC0C1b1
-         hT4w==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=caM+vLuNWYVORv3rxDBPjphWOSPmMGej9yvUojmZGAw=;
+        b=AXeei8U3Y7CuBFSNXZhaxy5IfluR0msbktvlq5Qq3T76ZMWl+akgZKYeuToOL96XZ5
+         7EYahLSVcAjRoEoeOAtFBvoWDYMbzFD+QffmVFxa5fiI1QEJq66zG8d3zFul6eYGW/yX
+         0TuajuLTlhCtJjS85bdtg1m3g1z6QrhkNirYH9q7GpbD++Nalm52fYFP5wmebmbU00kq
+         8LVpPWtF4E/4yNB0x0DQsVCEomNOnMtBxtN6ciFxJS4WwU++agjn6Zt43IWUnpKrxGaX
+         7kM/TLiU/qCRtlRTl08ciR+Xr44/Yuejg6T0X42vvXzaToq8a7T8kF/ytn5wB5zN4f0E
+         VPkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=yNSMjzR/UC7gAKQriiodIhNkqmmIvXbfjZZmbtmDsBI=;
-        b=DrkK+202R9UbJ/c1rbOjmMBAdPaFQcK1Jd/vWfoBYfx02fFM3IJlofwWcRfgUXD7Pp
-         2K2TMPNnXkVtjwxikePqBEqbsK6ot5fk2fSDVdOf2wcnOknJHumH71fyva43NPgEw7V9
-         3DIAWKPcQox1ra99yUTjRSEdNWTDYeRqoYmX3dmCjs57GkuH4Z0ipS31/7cxOOTOAkd9
-         VmaXGzZEjQNrxIaLIGK0z3v3FL62vHuWAj9l0qQLwSbZxTTRkeLIqMkwZTf9/8Nw94E0
-         kMZhfV+S36xo0O6IBHaEMraUJoRlA1XaGQF+XYRRjf3f9rM5vLhxGJjUZ7SfuDN0oJ55
-         Jofw==
-X-Gm-Message-State: AOAM532bXeYZXSt+giPv0O+xeocmfzLeEA17JPh9Dcc7c8Y3R222sADa
-        raaCEY4S4BLYIIGbZ+muzaLKzQ==
-X-Google-Smtp-Source: ABdhPJzP7TI1ViD5VGn0KNvewzYBqWM6Mjpp1qDDQ0uaLL/LxQa1J8/5UFBb/Hc1PCg1kUb/MRd8iw==
-X-Received: by 2002:a05:6402:331c:b0:41d:9354:97c2 with SMTP id e28-20020a056402331c00b0041d935497c2mr11442391eda.300.1650743805113;
-        Sat, 23 Apr 2022 12:56:45 -0700 (PDT)
-Received: from [192.168.0.234] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id p24-20020a056402045800b0041614c8f79asm2518327edw.88.2022.04.23.12.56.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 23 Apr 2022 12:56:44 -0700 (PDT)
-Message-ID: <af3d5b2f-b245-6c10-1e2c-0f8f5a979fc0@linaro.org>
-Date:   Sat, 23 Apr 2022 21:56:43 +0200
+        bh=caM+vLuNWYVORv3rxDBPjphWOSPmMGej9yvUojmZGAw=;
+        b=q1BwhU5r3YjHgD+KJx2mqHLlu2m73r4zcf8WcIloHRT9y71UKaTQ+AUbaF5pQHqq5Q
+         uIEjoqUeJ5UxFbrjZi3soirtyUjaLE4ueWk+Azpy7FHhSrqK5eH+og39AU4QVL8fmNFm
+         vPz34eYryOsE+JGPN2k+iahoxpD8SD3Uj9+33WTs9lIRMeRwJeNJ8IP5aevEis1yjj7T
+         u3BTdC+ggFz/kamOczZNiw1JmDi/KqqRS3HGLp4+OtPeF/mmIQYaYNs0+WZTtQGhOAa2
+         LtmdM2qOxN03PzUOJ2jx/nSBXEg8nlKyrpM2bEdADoReukN2g0IhVA4y1fc4yshDzkcc
+         YJwA==
+X-Gm-Message-State: AOAM5314oVxpAq77pZu3ggM49UycHYW71dUaxZxQ9owzcgMvqqXO++0o
+        MtiEZFpFpqJ+zAi82CoRkaMN8A==
+X-Google-Smtp-Source: ABdhPJyCPaMaWm10rhF+he0H6qsfcgxcaz11xEHicik6Tbl7NLrZGIjTVyUX0+GuKR9YLuHmk/4GpA==
+X-Received: by 2002:a2e:5c41:0:b0:24b:156c:7100 with SMTP id q62-20020a2e5c41000000b0024b156c7100mr11466984ljb.80.1650893059670;
+        Mon, 25 Apr 2022 06:24:19 -0700 (PDT)
+Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
+        by smtp.gmail.com with ESMTPSA id q21-20020a05651232b500b0046bacf73c9fsm1411752lfe.151.2022.04.25.06.24.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Apr 2022 06:24:19 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Johan Hovold <johan@kernel.org>, Rob Herring <robh+dt@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: [PATCH v2] dt-bindings: gnss: Add Broacom BCM4751 family bindings
+Date:   Mon, 25 Apr 2022 15:22:15 +0200
+Message-Id: <20220425132215.1309216-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH 1/5] dt-bindings: remoteproc: qcom: pas: Add MSM8226 adsp
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220423155059.660387-1-luca@z3ntu.xyz>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220423155059.660387-1-luca@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 23/04/2022 17:50, Luca Weiss wrote:
-> Add the compatible for the adsp found in MSM8226.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
+The Broadcom BCM4751 family of (A-)GPS chips have been around for
+some years. The latest iteration BCM4753 is for example mounted
+on the Huawei HiKey970.
 
+Cc: devicetree@vger.kernel.org
+Cc: phone-devel@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ChangeLog v1->v2:
+- Switch do dual GPL/BSD license.
+---
+ .../bindings/gnss/brcm,bcm4751.yaml           | 69 +++++++++++++++++++
+ 1 file changed, 69 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/gnss/brcm,bcm4751.yaml
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+diff --git a/Documentation/devicetree/bindings/gnss/brcm,bcm4751.yaml b/Documentation/devicetree/bindings/gnss/brcm,bcm4751.yaml
+new file mode 100644
+index 000000000000..e62b30386ac2
+--- /dev/null
++++ b/Documentation/devicetree/bindings/gnss/brcm,bcm4751.yaml
+@@ -0,0 +1,69 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/gnss/brcm,bcm4751.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Broadcom BCM4751 family GNSS Receiver Device Tree Bindings
++
++maintainers:
++  - Johan Hovold <johan@kernel.org>
++  - Linus Walleij <linus.walleij@linaro.org>
++
++description:
++  Broadcom GPS chips can be used over the UART or I2C bus. The UART
++  bus requires CTS/RTS support. The number of the capsule is more
++  elaborate than the compatibles BCM4751 may be printed
++  BCM4751IFBG for example.
++
++allOf:
++  - $ref: gnss-common.yaml#
++
++properties:
++  compatible:
++    enum:
++      - brcm,bcm4751
++      - brcm,bcm4752
++      - brcm,bcm4753
++
++  reg:
++    description:
++      The I2C Address, not required on UART buses.
++
++  vdd-auxin-supply:
++    description:
++      Main voltage supply, pin name VDD_AUXIN, typically connected
++      directly to a battery such as LiIon 3.8V battery or a 2.6V supply.
++
++  vddio-supply:
++    description:
++      IO voltage supply, pin name VDDIO, typically 1.8V
++
++  reset-gpios:
++    maxItems: 1
++    description: An optional active low reset line, should be flagged with
++      GPIO_ACTIVE_LOW.
++
++  enable-gpios:
++    description: Enable GPIO line, connected to pins named REGPU or NSTANDBY.
++      If the line is active low such as NSTANDBY, it should be tagged
++      GPIO_ACTIVE_LOW.
++
++required:
++  - compatible
++  - enable-gpios
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    serial {
++        gnss {
++            compatible = "brcm,bcm4751";
++            vdd-auxin-supply = <&vbat>;
++            reset-gpios = <&gpio0 15 GPIO_ACTIVE_LOW>;
++            enable-gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>;
++            current-speed = <38400>;
++        };
++    };
+-- 
+2.35.1
 
-
-Best regards,
-Krzysztof
