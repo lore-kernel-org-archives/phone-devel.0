@@ -2,145 +2,115 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FB7EC433FE
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Apr 2022 07:56:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9834EC433FE
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Apr 2022 09:44:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241468AbiDZH7N (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Apr 2022 03:59:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43752 "EHLO
+        id S234421AbiDZJru (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Apr 2022 05:47:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344357AbiDZH66 (ORCPT
+        with ESMTP id S1346374AbiDZJrd (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Apr 2022 03:58:58 -0400
-Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 467291A055;
-        Tue, 26 Apr 2022 00:55:49 -0700 (PDT)
-Received: from fews2.riseup.net (fews2-pn.riseup.net [10.0.1.84])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
-         client-signature RSA-PSS (2048 bits) client-digest SHA256)
-        (Client CN "mail.riseup.net", Issuer "R3" (not verified))
-        by mx1.riseup.net (Postfix) with ESMTPS id 4KnZ1w3RCzzDqPk;
-        Tue, 26 Apr 2022 00:55:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
-        t=1650959748; bh=3aL3yiuRGJLKNdufRrOQc8sWMnykHDqjpt4U7wvTSQo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=laK8x/GpCC/J+8D6qM3woE40/WsrYwHV/7SESR+cQDbDAMCP6akt8VOQFQH8r4GmZ
-         o187u2sGKqD16ja3C60i7UwC9aBf9A0aVzYPRpSEjFZE09wIHNZACeMqLpKs1BwiUI
-         uIxh+maPc2U0QQZx/WHDAgfqfDNXWEccR2eI5ZLU=
-X-Riseup-User-ID: B739F329B21ADAD34223616135E79A0AD14E909BB87821BDF443FC0F821EC23A
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-         by fews2.riseup.net (Postfix) with ESMTPSA id 4KnZ1q1mhzz202J;
-        Tue, 26 Apr 2022 00:55:42 -0700 (PDT)
-Date:   Tue, 26 Apr 2022 14:55:38 +0700
-From:   Danct12 <danct12@riseup.net>
-To:     kholk11@gmail.com
-Cc:     dmitry.torokhov@gmail.com, robh+dt@kernel.org, rydberg@bitmath.org,
-        priv.luk@gmail.com, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org, marijns95@gmail.com,
-        konradybcio@gmail.com, martin.botka1@gmail.com,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
-        krzk@kernel.org, andy.shevchenko@gmail.com
-Subject: Re: [PATCH v9 0/3] Add Novatek NT36xxx touchscreen driver
-Message-Id: <20220426145538.e2af01d6d648b011a910f3a0@riseup.net>
-In-Reply-To: <20201028221302.66583-1-kholk11@gmail.com>
-References: <20201028221302.66583-1-kholk11@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        Tue, 26 Apr 2022 05:47:33 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECCD4184;
+        Tue, 26 Apr 2022 02:03:17 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id c15so21051351ljr.9;
+        Tue, 26 Apr 2022 02:03:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Si96HTniFqAHPeuy1DolLYYuwT3M1Hn5V7Wkw5gU8dw=;
+        b=I+zMLdnK0IsKBTQHU/XV/hEh4vvw0myMCRtn4sbatiHozSMkOGb0FOsgBwA/vfVjhD
+         uU3Wiv1PLIRpzYcRSCNwViH2i0lwYGHFTaY2x93DkdzTQeM9+yTozlQdsu1MwoDTeEfA
+         LQwypL7I8OR19vYMCUMA9bgIFROc42Fk+7758yQa+ZGI6I3Je+iRLrEGRvJFPQEDP1YH
+         eg5btLnW9fI1aWbIFt5yGI1wx0SJGRfUyi3NkT7Obcs8U1PTFPkhV8SxVCMe8YEIDRbJ
+         95YjluZXoumd/xFuH+z8ChJ5PBx7lJtuoHAqfgeNSPK6o5e9hHuIP3vPMS8mzs7OfhmG
+         IKzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Si96HTniFqAHPeuy1DolLYYuwT3M1Hn5V7Wkw5gU8dw=;
+        b=F3ad8Ygr3euGH+2PkLYDcUz/aaAV5iEzxt81R1E+iJ7x1ODJ5Co3SfDKgJ11DXMQaE
+         /kgS/Qncg+tUNMnG6ElySDrwhsvoMqUUDAFRbJUTeq3mxUo02O+jZkF9k6bo1BvIFs6W
+         RqQdfdXjarGTBzc+sDef9qoL0YMizmTNojH+yX5+v7rYUxyW16tnPsdhAHYyL+dS4NUf
+         CrTmcSahgX1whqIfLyZwaV5YjbQHyU1wIuvzJk8agSETivkqOs4nlg9yE4zWWIe8pia1
+         6rFmAw/N602N3dPUP2SV71+KpCyJ8ONHBDuZvB8wXzfeSEbrK78mQNHPrq8g6qLKTVRU
+         tEiQ==
+X-Gm-Message-State: AOAM5328jPU/RLz/yhUjbqM3bI1/Uq7zJRJg/Bh1AY7K4TGoJCZwN8fY
+        teipAvg8NKDd3o6CStZkbwH4svJxX0o=
+X-Google-Smtp-Source: ABdhPJyp8ibW5mSQfSOznK4zZ6YB3MyymZuzLrP+5/DL3Ssiv5SEM3UZA1quuwjQGYWglB+c6A0XgQ==
+X-Received: by 2002:a2e:b901:0:b0:24f:f84:9793 with SMTP id b1-20020a2eb901000000b0024f0f849793mr6657359ljb.256.1650963796118;
+        Tue, 26 Apr 2022 02:03:16 -0700 (PDT)
+Received: from localhost.localdomain (adla4.neoplus.adsl.tpnet.pl. [79.185.4.4])
+        by smtp.gmail.com with ESMTPSA id i6-20020a198c46000000b0044424910c94sm1676907lfj.113.2022.04.26.02.03.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Apr 2022 02:03:15 -0700 (PDT)
+From:   Adam Skladowski <a39.skl@gmail.com>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        Adam Skladowski <a39.skl@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] clk: qcom: smd: Update MSM8976 RPM clocks.
+Date:   Tue, 26 Apr 2022 11:02:17 +0200
+Message-Id: <20220426090226.27293-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Patch series tested, works fine on the Xiaomi Redmi Note 7 (SDM660, NT36672A IC)
+MSM8976 does not have rpm clock named mmssnoc,
+instead it's called sysmmnoc, drop define and reuse.
+While we are at it add XO clock to list.
 
-To the whole patch series:
-Tested-by: Dang Huynh <danct12@riseup.net>
+Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+---
+ drivers/clk/qcom/clk-smd-rpm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-On Wed, 28 Oct 2020 23:12:59 +0100
-kholk11@gmail.com wrote:
+diff --git a/drivers/clk/qcom/clk-smd-rpm.c b/drivers/clk/qcom/clk-smd-rpm.c
+index afc6dc930011..10b4e6d8d10f 100644
+--- a/drivers/clk/qcom/clk-smd-rpm.c
++++ b/drivers/clk/qcom/clk-smd-rpm.c
+@@ -563,17 +563,19 @@ static const struct rpm_smd_clk_desc rpm_clk_msm8974 = {
+ 	.num_clks = ARRAY_SIZE(msm8974_clks),
+ };
+ 
+-DEFINE_CLK_SMD_RPM(msm8976, mmssnoc_ahb_clk, mmssnoc_ahb_a_clk,
+-		   QCOM_SMD_RPM_BUS_CLK, 2);
+ DEFINE_CLK_SMD_RPM(msm8976, ipa_clk, ipa_a_clk, QCOM_SMD_RPM_IPA_CLK, 0);
+ 
+ static struct clk_smd_rpm *msm8976_clks[] = {
++	[RPM_SMD_XO_CLK_SRC] = &sdm660_bi_tcxo,
++	[RPM_SMD_XO_A_CLK_SRC] = &sdm660_bi_tcxo_a,
+ 	[RPM_SMD_PCNOC_CLK] = &msm8916_pcnoc_clk,
+ 	[RPM_SMD_PCNOC_A_CLK] = &msm8916_pcnoc_a_clk,
+ 	[RPM_SMD_SNOC_CLK] = &msm8916_snoc_clk,
+ 	[RPM_SMD_SNOC_A_CLK] = &msm8916_snoc_a_clk,
+ 	[RPM_SMD_BIMC_CLK] = &msm8916_bimc_clk,
+ 	[RPM_SMD_BIMC_A_CLK] = &msm8916_bimc_a_clk,
++	[RPM_SMD_SYSMMNOC_CLK]	= &msm8936_sysmmnoc_clk,
++	[RPM_SMD_SYSMMNOC_A_CLK] = &msm8936_sysmmnoc_a_clk,
+ 	[RPM_SMD_QDSS_CLK] = &msm8916_qdss_clk,
+ 	[RPM_SMD_QDSS_A_CLK] = &msm8916_qdss_a_clk,
+ 	[RPM_SMD_BB_CLK1] = &msm8916_bb_clk1,
+@@ -586,8 +588,6 @@ static struct clk_smd_rpm *msm8976_clks[] = {
+ 	[RPM_SMD_BB_CLK1_A_PIN] = &msm8916_bb_clk1_a_pin,
+ 	[RPM_SMD_BB_CLK2_PIN] = &msm8916_bb_clk2_pin,
+ 	[RPM_SMD_BB_CLK2_A_PIN] = &msm8916_bb_clk2_a_pin,
+-	[RPM_SMD_MMSSNOC_AHB_CLK] = &msm8976_mmssnoc_ahb_clk,
+-	[RPM_SMD_MMSSNOC_AHB_A_CLK] = &msm8976_mmssnoc_ahb_a_clk,
+ 	[RPM_SMD_DIV_CLK2] = &msm8974_div_clk2,
+ 	[RPM_SMD_DIV_A_CLK2] = &msm8974_div_a_clk2,
+ 	[RPM_SMD_IPA_CLK] = &msm8976_ipa_clk,
+-- 
+2.25.1
 
-> From: AngeloGioacchino Del Regno <kholk11@gmail.com>
-> 
-> This patch series adds support for the Novatek NT36xxx Series' In-Cell
-> touchscreen (integrated into the DriverIC).
-> 
-> This patch series has been tested against the following devices:
->  - Sony Xperia 10        (SDM630 Ganges Kirin)
->  - Sony Xperia 10 Plus   (SDM636 Ganges Mermaid)
-> 
-> Changes in v2:
-> - Fixed sparse warnings from lkp kernel test robot
-> 
-> Changes in v3 (as requested by Dmitry Torokhov):
-> - Using shorthand u16/u32 (sorry for the overlook!)
-> - Now using more input and touchscreen APIs
-> - Fixed useless workqueue involvements
-> - Removed useless locking
-> - Switched reads and writes to use regmap
-> - Moved header contents to nt36xxx.c
-> - Fixed reset gpio handling
-> - Other cleanups
-> - P.S.: Thanks, Dmitry!
-> 
-> Changes in v4:
-> - Fixed regmap read length for CRC_ERR_FLAG final check
-> - Fixed YAML binding, as requested by Krzysztof Kozlowski
-> 
-> Changes in v5:
-> - Replaced subsystem maintainer's name with .. mine,
->   usage of additionalProperties to unevaluatedProperties
->   and a typo fix for reset-gpios as per Rob Herring's review
-> - Changed compatible string as per Krzysztof K. request
-> - Renamed the novatek,nt36xxx.yaml file to just nt36xxx.yaml
->   in order to now reflect the driver name instead of the DT
->   compatible
-> - Fixed blank line at EOF
-> 
-> Changes in v6:
-> - Removed include of_gpio.h, added mod_devicetable.h and
->   gpio/consumer.h
-> - Added kerneldoc to relevant functions/enum
-> - Used traditional patterns for error checking where possible
-> - Documented calls to usleep/msleep
-> - Using be16_to_cpu / get_unaligned_be16 where possible
-> - Added helper for CRC error check on retrieved buffer
-> - Decreased indentation in the CRC reboot recovery function
-> - Removed instances of error code sum
-> - Dropped all likely/unlikely optimization as per request
-> - Removed redundant reset_gpio checks
-> - Dropped of_match_ptr and ifdefs for CONFIG_OF
-> 
-> Changes in v7:
-> - Fixed typo in nt36xxx.c
-> 
-> Changes in v8:
-> - Fixed typo reset-gpio -> reset-gpios in dt-bindings
-> 
-> Changes in v9:
-> - Includes are now sorted
-> - Used proposed sizeof variable instead of sizeof type
-> - Fixed a return value check for common pattern
-> - Added NULL check to devm_kasprintf call
-> - Returning ret on probe function to be consistent
-> 
-> AngeloGioacchino Del Regno (3):
->   dt-bindings: Add vendor prefix for Novatek Microelectronics Corp.
->   Input: Add Novatek NT36xxx touchscreen driver
->   dt-bindings: touchscreen: Add binding for Novatek NT36xxx series
->     driver
-> 
->  .../bindings/input/touchscreen/nt36xxx.yaml   |  59 ++
->  .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
->  drivers/input/touchscreen/Kconfig             |  12 +
->  drivers/input/touchscreen/Makefile            |   1 +
->  drivers/input/touchscreen/nt36xxx.c           | 894 ++++++++++++++++++
->  drivers/input/touchscreen/nt36xxx.h           | 122 +++
->  6 files changed, 1090 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/nt36xxx.yaml
->  create mode 100644 drivers/input/touchscreen/nt36xxx.c
->  create mode 100644 drivers/input/touchscreen/nt36xxx.h
-> 
-> -- 
-> 2.28.0
-> 
