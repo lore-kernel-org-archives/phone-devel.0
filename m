@@ -2,52 +2,52 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DDBC2C433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Apr 2022 07:32:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6E52C43217
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Apr 2022 07:32:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343982AbiDZHfS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Apr 2022 03:35:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59716 "EHLO
+        id S1344016AbiDZHfX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Apr 2022 03:35:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234454AbiDZHfS (ORCPT
+        with ESMTP id S1344003AbiDZHfV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Apr 2022 03:35:18 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEB82F69A7;
-        Tue, 26 Apr 2022 00:32:11 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id g19so30395279lfv.2;
-        Tue, 26 Apr 2022 00:32:11 -0700 (PDT)
+        Tue, 26 Apr 2022 03:35:21 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B7BBF69A7;
+        Tue, 26 Apr 2022 00:32:14 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id w19so30346435lfu.11;
+        Tue, 26 Apr 2022 00:32:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=KGVWNZVJs3H4ln7FqWp8hNIQLAnf5hs9n+dr8i9g9tg=;
-        b=VzU/kOlnRRt72ndXE20uRMJGW7pW5wxcTn8B0SnCn0x548hG00MUtin/JiPmRl6Pl9
-         05tBaEBidCN9b0v1jXXX1E1uKr85X2WLyJtnH8JZWradn9WlyRyxrU7pHJXbeWozESUo
-         v2HRWZnnSHpA3V8YgrKitZRByAgdhLgF+nX5OxrL/zX21ugYuDItWLEZTj3OStmHxqFR
-         hdTziQkjgMwwu17DfFP0yJfbQRF9ScMKwEjnHGJqyDmuRcrIUY07Um6jX2haGmCp0eu1
-         qhx+XCkYGPYsxLQe1qkk3xYHzcq8PvzMCNn/wLzmuaKQWUaoXZGml9maux3gYcIJGY/p
-         R0NQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=ECSt8WJ9R352FecYhqnYcCZ/BQb6Kwbuk7sd9ia4Ebk=;
+        b=kk7Kf1Je8VkUrvZdZzqrsYPbpXJVFXCvyi4SiINGP0qIo9wGN9hytMEpx/p/oVpuCR
+         P9cLb1g/OYhlr0DaDQlP1fT5sZ2FeYxmbE5IW4q/dM8S2lm45gJhTJbJG83Is8C9bKZC
+         UjONIEt+Ij2x2bd5U/K9DTx5f/CgWseTvKGxVuSONDShsZN1kBQWYBUuWK4NttnSD/Mt
+         ZAxIG5FppY/7gb/wrzxzdbBxL59iKyn0ZrkT3VsfoBvymEmyRfKoUu/K4b1kbkMCBxYh
+         Q955w44hE4ZT3Rt+Am4Xynmn79gpPBVKX0r7uEpcY3t+fKnxpCZpAlqnwh9aw6mpbc9c
+         vNOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=KGVWNZVJs3H4ln7FqWp8hNIQLAnf5hs9n+dr8i9g9tg=;
-        b=pQgyrhp/53WICIwBqW0cB9ExdeKw4C5w5iCT+NW4zKJQlF51qE5gS82yMvGHhPOEnU
-         pWeLBPZEb2PEyXE4ypkTqwywVV+01PEiipHnlJHOUsy2Ds9id6YzVAjzmJvr9BkKphCr
-         KDcBbro+ySp109uGa2S4HaQ23hutHrIZa9d3RSIoEuu2jH52Z3Jgc6XG/JpNzyaw/bzQ
-         fivV27TeTpFWWjw+/9GNSi5J9XVRBMnHEfSh1myXTOY8bUu18Z51JWjtx5ldo59sWkYb
-         H1cAZXLW81hqgiml8HWOjRkr3EFZaean3f47eUz4nZ5FrsyoJgdx5RKCE/nO0Q+SNFY3
-         6Hug==
-X-Gm-Message-State: AOAM530Qn7TRF155ovaOBs5cMPbAquzR+clvK4a4LZAOHEismR3p415z
-        TJOa+X1qZtd96B3mEbRFGVbv3SLKLec=
-X-Google-Smtp-Source: ABdhPJzV0w9Ag/2E0pd5HIehjAlfu13I+V9s9zGFXbrSLGznof90bE58xbsYOgL/b6SH5rZ7TbjiOQ==
-X-Received: by 2002:a19:ee05:0:b0:46e:2f8d:db76 with SMTP id g5-20020a19ee05000000b0046e2f8ddb76mr15945835lfb.321.1650958329909;
-        Tue, 26 Apr 2022 00:32:09 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=ECSt8WJ9R352FecYhqnYcCZ/BQb6Kwbuk7sd9ia4Ebk=;
+        b=o60B2EbRnghHVphgQkxaRqgq104l9LP7MASMCGvUjv74ZUFB3T6Z63KjFP+1mK69hC
+         J8Et4XDWtAb+IMjjGKQN11R/NRjXsfCMYzylHbERRfQgLgfs+4YIrcjDGbPsHrkwlHUx
+         4h90sfOnr2xI41VtZRO+xLkwdNEVffufyfN8TSWSPA6w6dErEj2oJS8sevtHZW7KDwqA
+         8tX8qq5goZdjW4Xzu50YHx/eM2JiBkySChD5uwVnwm27kn0ntDll1Zlq10xayl10DhWX
+         6uMM0Uvtpy1VXzzCvY+rnhH+T+kU9DxIFZ5Q9QVAN7DWNunPGU/MmuhTv1b37slmhyIs
+         2oFA==
+X-Gm-Message-State: AOAM532RKlbA1PlHw5DWIXhjw3tvQ2cMmsd8mz3kMACFSu6FRHBSkVKa
+        TFbDXVdy8oY++MSPHtTCppLmsP6LJwo=
+X-Google-Smtp-Source: ABdhPJxTfADyf2Jwdwc7mfBgLYaQor0quobDcB2O3Jr5F4Z9aUOe05l235b6tI0VuBugDHUG3b4tCw==
+X-Received: by 2002:a05:6512:ac4:b0:472:10a8:a1db with SMTP id n4-20020a0565120ac400b0047210a8a1dbmr3464852lfu.610.1650958332742;
+        Tue, 26 Apr 2022 00:32:12 -0700 (PDT)
 Received: from localhost.localdomain (adla4.neoplus.adsl.tpnet.pl. [79.185.4.4])
-        by smtp.gmail.com with ESMTPSA id d2-20020a056512320200b004721999f1cesm103509lfe.66.2022.04.26.00.32.08
+        by smtp.gmail.com with ESMTPSA id d2-20020a056512320200b004721999f1cesm103509lfe.66.2022.04.26.00.32.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Apr 2022 00:32:09 -0700 (PDT)
+        Tue, 26 Apr 2022 00:32:12 -0700 (PDT)
 From:   Adam Skladowski <a39.skl@gmail.com>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
@@ -59,34 +59,40 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH v2 0/3] MSM8976 GCC updates
-Date:   Tue, 26 Apr 2022 09:30:45 +0200
-Message-Id: <20220426073048.11509-1-a39.skl@gmail.com>
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v2 2/3] dt-bindings: clk: qcom: gcc-msm8976: Add modem reset
+Date:   Tue, 26 Apr 2022 09:30:47 +0200
+Message-Id: <20220426073048.11509-3-a39.skl@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220426073048.11509-1-a39.skl@gmail.com>
+References: <20220426073048.11509-1-a39.skl@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This patch series brings small fixes for SDCC clocks
-and adds reset for modem.
+Add modem reset for MSM8976.
 
-Changes since v1
-================
-1. Adjusted comment line length for SDCC patch.
-2. Added Acked-by to dt-bindings patch.
-
-Adam Skladowski (3):
-  clk: qcom: gcc-msm8976: Set floor ops for SDCC
-  dt-bindings: clk: qcom: gcc-msm8976: Add modem reset
-  clk: qcom: gcc-msm8976: Add modem reset
-
- drivers/clk/qcom/gcc-msm8976.c               | 7 ++++---
+Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
  include/dt-bindings/clock/qcom,gcc-msm8976.h | 1 +
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ 1 file changed, 1 insertion(+)
 
+diff --git a/include/dt-bindings/clock/qcom,gcc-msm8976.h b/include/dt-bindings/clock/qcom,gcc-msm8976.h
+index 51955fd49426..5351f48b2068 100644
+--- a/include/dt-bindings/clock/qcom,gcc-msm8976.h
++++ b/include/dt-bindings/clock/qcom,gcc-msm8976.h
+@@ -224,6 +224,7 @@
+ #define RST_CAMSS_CSI_VFE1_BCR			7
+ #define RST_CAMSS_VFE1_BCR			8
+ #define RST_CAMSS_CPP_BCR			9
++#define RST_MSS_BCR				10
+ 
+ /* GDSCs */
+ #define VENUS_GDSC				0
 -- 
 2.25.1
 
