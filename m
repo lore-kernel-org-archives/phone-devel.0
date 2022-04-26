@@ -2,111 +2,92 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45E27C433FE
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Apr 2022 15:44:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B8DAC433F5
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Apr 2022 15:51:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348629AbiDZPrd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Apr 2022 11:47:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58028 "EHLO
+        id S1352563AbiDZPyT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Apr 2022 11:54:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352476AbiDZPrb (ORCPT
+        with ESMTP id S1352538AbiDZPyS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Apr 2022 11:47:31 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4020A814A1;
-        Tue, 26 Apr 2022 08:44:24 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id m14-20020a17090a34ce00b001d5fe250e23so2883523pjf.3;
-        Tue, 26 Apr 2022 08:44:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=YCQ0EI43F2hooz0CpudSoz0g9UCJgP24YhOIE5SHRkM=;
-        b=jVULYkxOui/vCWGuPPEhiOmCg9pW9g84igZJoySXdB9igaZdmAkP3X33S5W/feowBk
-         axq5dNhkvhUVENMjrz9eltQ0h/RSbr2Ftn5JEyn4Xot8C17x6nuJ4xjZaFKFSjNojgw5
-         H5agjGU8SOD8eBBHbnzmNEB+Z3dkHbDdBJEiUECehNshcn7wiOK6BD7uzJL/dzXt5CoK
-         5zmItYV3M26zPzi6ZhcEmC4GX1mgzcsyVSkD02ZNSCpovFLsWtxb2SYfxzL+vu8eJJ39
-         B1/ia2ngX4wwrh7Zy5ZpeUL5LLV9WWaVD//5LOcWrKMmmkLpzql0Ce6rMTrOFhiedIdd
-         K4RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=YCQ0EI43F2hooz0CpudSoz0g9UCJgP24YhOIE5SHRkM=;
-        b=ZNGFJmsETvcl8jPjrnJtzb9r5rj0n906QmFW0x/sAbfJ9KxBGWUObCH9fZNmt0pXiV
-         WWLOXwqwp8zRRz14ESFsYbAVbuy/zMF1ku9nRduYRX4SV1GNZn7Bt9E6D68hvhE1+f94
-         k6TSYJ4Dq23yBYGjpYMMFIf5IdW7oE6n/sldI3HezDHShf3nK3TBVWHp+1iWSIdEGNrj
-         6xpyq3b6gmT1C69VfDUUi0lwDxV5Wywd7ktwoe953o8m8y3g16b/E6aUsXuSaF3hP9gD
-         7DSqXRFZXqdxGZaWyRUbDBb60oDkwvyG6v/DmYGtaCvQZCdMBY7+XDtv1LZWfQLYEVfI
-         oGqg==
-X-Gm-Message-State: AOAM530aUiABKvSI8fEWFjyT2rNq982tHjPVSvVMXQKZUaAyLncnrr7a
-        YVR7CHtz1Y27HKr3U0WMVxE=
-X-Google-Smtp-Source: ABdhPJw/7hG08X1DVzF30Zy8eb9AYuT+pvCZKvy9ulWfDngDnNDHeIwoOELHF+2RqWKhS6LsaE7Shw==
-X-Received: by 2002:a17:902:bb8d:b0:156:51a1:3f5a with SMTP id m13-20020a170902bb8d00b0015651a13f5amr23911199pls.65.1650987863656;
-        Tue, 26 Apr 2022 08:44:23 -0700 (PDT)
-Received: from [172.30.1.9] ([14.32.163.5])
-        by smtp.gmail.com with ESMTPSA id l14-20020a17090aec0e00b001d8ace370cbsm3420673pjy.54.2022.04.26.08.44.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Apr 2022 08:44:23 -0700 (PDT)
-Message-ID: <2b13d915-263f-4d3f-ea35-4cb0e937bb33@gmail.com>
-Date:   Wed, 27 Apr 2022 00:44:16 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v5 1/5] extcon: sm5502: Clarify SM5703's i2c device ID
-Content-Language: en-US
-To:     Markuss Broks <markuss.broks@gmail.com>,
-        linux-kernel@vger.kernel.org
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        devicetree@vger.kernel.org
+        Tue, 26 Apr 2022 11:54:18 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A604E2BB15;
+        Tue, 26 Apr 2022 08:51:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 61F52B820EA;
+        Tue, 26 Apr 2022 15:51:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6149C385A0;
+        Tue, 26 Apr 2022 15:51:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1650988268;
+        bh=0op5gOSPyhcXlJpeXQJk2qphC7Q7xqa4KX+fJeEk5kQ=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=UUHpDsnMAyTkg2jZaUn2OzPGndeDCaRuDVChJFsFxjtwG/7O9W1qkQpL3IMM3OcZS
+         D903zhCbNxZIj5DX7G7TksVlZbc5T9fzRdwR2R736IbtCIvN6odwqKpupFM+jJB2NY
+         xYcygYP2pdUlLvQDg6aWL/q5dzqTfj4AxcIPNbQfzrf3XGIiOgaXIuAeVGvgOnXuo/
+         +YUwgjooJJIWJHe7gGPXGGHbMiXC11iTksNKi/nORoOjRaA71vR2QDDo+KbpN+eO2g
+         /XeTgXOe9yUDRb+4euIIqIJFbASwzaykIh/544Yn5z0oGq7XACs8cItStmGXzob/4G
+         KOJSJj05tb03Q==
+From:   Mark Brown <broonie@kernel.org>
+To:     markuss.broks@gmail.com, linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        krzysztof.kozlowski+dt@linaro.org, lgirdwood@gmail.com,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        robh+dt@kernel.org, myungjoo.ham@samsung.com,
+        cw00.choi@samsung.com, lee.jones@linaro.org,
+        mazziesaccount@gmail.com
+In-Reply-To: <20220423085319.483524-1-markuss.broks@gmail.com>
 References: <20220423085319.483524-1-markuss.broks@gmail.com>
- <20220423085319.483524-2-markuss.broks@gmail.com>
-From:   Chanwoo Choi <cwchoi00@gmail.com>
-In-Reply-To: <20220423085319.483524-2-markuss.broks@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: (subset) [PATCH v5 0/5] Add support for Silicon Mitus SM5703 MFD
+Message-Id: <165098826550.1750312.1746077609633234428.b4-ty@kernel.org>
+Date:   Tue, 26 Apr 2022 16:51:05 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 22. 4. 23. 17:53, Markuss Broks wrote:
-> While SM5502 and SM5504 are purely micro USB switching
-> circuits, SM5703 is a multi-function device which has multiple
-> modules in it. Change the i2c_device_id of it to avoid conflict
-> with MFD driver.
+On Sat, 23 Apr 2022 11:53:13 +0300, Markuss Broks wrote:
+> This series adds support for Silicon Mitus SM5703 MFD and the
+> appropriate device-tree bindings. This only adds support for the
+> regulator module, leaving room for other modules implemented in
+> future (code for other modules is really not ready for submission
+> right now). Silicon Mitus SM5703 is used on various mobile phones,
+> mostly Samsung Galaxy (J5 (2015, 2016), On7, J7 (2015, 2016) ...).
 > 
-> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-> ---
->   drivers/extcon/extcon-sm5502.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/extcon/extcon-sm5502.c b/drivers/extcon/extcon-sm5502.c
-> index 17a40c3782ee..f706f5288257 100644
-> --- a/drivers/extcon/extcon-sm5502.c
-> +++ b/drivers/extcon/extcon-sm5502.c
-> @@ -831,7 +831,7 @@ static SIMPLE_DEV_PM_OPS(sm5502_muic_pm_ops,
->   static const struct i2c_device_id sm5502_i2c_id[] = {
->   	{ "sm5502", (kernel_ulong_t)&sm5502_data },
->   	{ "sm5504", (kernel_ulong_t)&sm5504_data },
-> -	{ "sm5703", (kernel_ulong_t)&sm5502_data },
-> +	{ "sm5703-muic", (kernel_ulong_t)&sm5502_data },
->   	{ }
->   };
->   MODULE_DEVICE_TABLE(i2c, sm5502_i2c_id);
+> [...]
 
-Applied it because this patch depends on already merged patch
-on extcon-next branch.
+Applied to
 
--- 
-Best Regards,
-Samsung Electronics
-Chanwoo Choi
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+
+Thanks!
+
+[2/5] dt-bindings: regulator: Add bindings for Silicon Mitus SM5703 regulators
+      commit: d496d68d6ba6debcc135794edb5fdc5a5b4531f1
+[5/5] regulator: sm5703-regulator: Add regulators support for SM5703 MFD
+      commit: e8858ba89ca377064da130d09648c99683f8bd90
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
