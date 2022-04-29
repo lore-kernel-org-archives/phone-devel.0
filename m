@@ -2,130 +2,136 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E891C433F5
-	for <phone-devel@archiver.kernel.org>; Thu, 28 Apr 2022 18:46:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6841BC433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Apr 2022 11:39:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348158AbiD1StT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 28 Apr 2022 14:49:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43546 "EHLO
+        id S1344267AbiD2LnM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Apr 2022 07:43:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233258AbiD1StS (ORCPT
+        with ESMTP id S233241AbiD2LnM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 28 Apr 2022 14:49:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DDBF7893A;
-        Thu, 28 Apr 2022 11:46:02 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 27C2E61C9C;
-        Thu, 28 Apr 2022 18:46:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A280C385B2;
-        Thu, 28 Apr 2022 18:46:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651171561;
-        bh=W8f7fDe36f4f+Eym6CMYV+jfkS0Qx3jHXxH9asFg4vc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=jdAyFQOJDF9rwjgLlTOYxJfRcvhjskJT4OsMiwRI9nKf3eDbCeiT2XPq5XDO0y+5e
-         TdycQjji4IK2tU9MCqIV+b7ri4IN0lz+6WC9rLv60g365aJL6stisYuRi6CRDmO14i
-         xoMkRAJmdBNNWlf4VxIkWQWlL2Ba33e5YZWhT1lSyrtOKphWd2FvU1v6HLovbW2DkI
-         T24+ctCML/jVBTEPFJ+g8rITrT6dA64oqBY2v70nMfP+4ypnhWxCgi7WaqJ8fXVghI
-         WAGgZHspGFvhfjyoJTQsJ42ifDQU5WiXJHTLUyAO8+n6oKXaSYGUlXcaSSKnONUxiM
-         hhpOVE21BpILg==
-Received: by mail-pj1-f49.google.com with SMTP id m14-20020a17090a34ce00b001d5fe250e23so5201328pjf.3;
-        Thu, 28 Apr 2022 11:46:01 -0700 (PDT)
-X-Gm-Message-State: AOAM530cFLSl3FUfDDchAlFBWIv0MEzsFD7xqaDNe0M3Qr6b8ZEMropD
-        mXot6qKstkGQKx+h0mTUB6Kml/txN5D56XOb0g==
-X-Google-Smtp-Source: ABdhPJxmdsC0BMphKfk6yRxPeHZONR7yfWAe7UKYtouukIIEoW+HJaG2vJEzGYNWAi5NxIAy4BbGAWutgditCSWB0hY=
-X-Received: by 2002:a17:902:b694:b0:153:1d9a:11a5 with SMTP id
- c20-20020a170902b69400b001531d9a11a5mr34601834pls.151.1651171560862; Thu, 28
- Apr 2022 11:46:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220423085319.483524-1-markuss.broks@gmail.com>
- <20220423085319.483524-3-markuss.broks@gmail.com> <CAL_Jsq+hBtuet-WShvvLA7vfdFdpGRSmv45bcqQhoediq7a7xQ@mail.gmail.com>
- <5b2c429b-11ad-0d14-a106-d4b1d29d69e1@gmail.com>
-In-Reply-To: <5b2c429b-11ad-0d14-a106-d4b1d29d69e1@gmail.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Thu, 28 Apr 2022 13:45:49 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+Cb335=sb1aOM0TDT+7LMKFYbc-diW0V1PRkA-ASJHuw@mail.gmail.com>
-Message-ID: <CAL_Jsq+Cb335=sb1aOM0TDT+7LMKFYbc-diW0V1PRkA-ASJHuw@mail.gmail.com>
-Subject: Re: [PATCH v5 2/5] dt-bindings: regulator: Add bindings for Silicon
- Mitus SM5703 regulators
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, Mark Brown <broonie@kernel.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
-        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
-        Shevchenko <andy.shevchenko@gmail.com>," 
-        <~postmarketos/upstreaming@lists.sr.ht>,
+        Fri, 29 Apr 2022 07:43:12 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27221C6671;
+        Fri, 29 Apr 2022 04:39:54 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id y19so10180697ljd.4;
+        Fri, 29 Apr 2022 04:39:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Qf3Gnh0r/kH14MrLVG6iizA1sf1487qOGLkcc43P0Os=;
+        b=eR7O1MdIebnFj/Ml1zaxjL6DtmxxNFs71Suhqc/MESprUhT4GvoW/kWqjAoSoQJ45F
+         y8i++NF841lIoNyIROqh/4dmZS7WJT8UL8Xs30lUixnsXqvcmeWjaRsgmetNVXSrji/X
+         gSZnWf9mbdrTBFt0y5hBR5DyZT6TL5aD0vZXUt4geDCGTf9qfYbh8DCybGMW0vRCiVoh
+         zDjxEsMK8rocGKJxs1Mud1dFZc784/f8QPPiABKHTXZr8K5Jzukir2q4p1FHuOQIRPpi
+         RUFNI+ccskbIehnBa5lbqUmx1GICY3elF6ltEXMKS5E6kU8Vax2P3VIsItLf3xugp7/U
+         gx7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Qf3Gnh0r/kH14MrLVG6iizA1sf1487qOGLkcc43P0Os=;
+        b=eZBDutbVUq718a8rPaStGzjPQ1pf4K3oroVNe5+UF3VtGsnbTGcIIZs7eAzdJTrbOs
+         mDvxp1SP0M+V8RdzbAmMDAwqGGBOflH7pVK+wJEpY5MpzyACxpOtQ3lnu1cCYdJrCgm5
+         5tNl//sr0YLXgAD3Bnj3KJP5wXxjeQxSGFytNGK8XL1uKvwUAXnc1GLyt8/okz12dJx/
+         XQ4wJXldkDoiU1M54bZhksioe9LoxN879Aqxl8dB6eChf6cgdTLXVAd7+f9rA17HwxeU
+         5yc8HW8V0E07emBhTMOiCcNwfWMLelLfISOYXVURb/aYrxoi5aFDoFEp4tBbqmONLpkw
+         hQ4A==
+X-Gm-Message-State: AOAM533aALrR/NLqj2PqdA0+YjmhVjeAXbGwowgeLHUnrKgpFiCWBo7B
+        Nc/tEmVna/HNXxiVXpMUwDNsIlhkyrI=
+X-Google-Smtp-Source: ABdhPJyThILU8UMBSTIwKqMzBbYfwpw3i6vwhnHKLBh8cvkaHw2tWxAsInu8dLWhofJz1A8TvMkjBA==
+X-Received: by 2002:a2e:a604:0:b0:24f:d33:6d7a with SMTP id v4-20020a2ea604000000b0024f0d336d7amr19272898ljp.117.1651232392220;
+        Fri, 29 Apr 2022 04:39:52 -0700 (PDT)
+Received: from nergzd-desktop.localdomain ([194.39.226.133])
+        by smtp.gmail.com with ESMTPSA id v3-20020a196103000000b00472030b7f61sm217972lfb.270.2022.04.29.04.39.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Apr 2022 04:39:51 -0700 (PDT)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org, robh+dt@kernel.org,
+        lee.jones@linaro.org, broonie@kernel.org
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Markuss Broks <markuss.broks@gmail.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        devicetree@vger.kernel.org
+Subject: [PATCH v6 2/5] dt-bindings: regulator: Add bindings for Silicon Mitus SM5703 regulators
+Date:   Fri, 29 Apr 2022 14:39:25 +0300
+Message-Id: <20220429113927.5145-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Apr 28, 2022 at 12:04 PM Markuss Broks <markuss.broks@gmail.com> wrote:
->
-> Hi Rob,
->
-> On 4/28/22 19:36, Rob Herring wrote:
-> > On Sat, Apr 23, 2022 at 3:54 AM Markuss Broks <markuss.broks@gmail.com> wrote:
-> >> This patch adds device-tree bindings for regulators on Silicon Mitus
-> >> SM5703 MFD.
-> >>
-> >> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-> >> ---
-> >>   .../siliconmitus,sm5703-regulator.yaml        | 49 +++++++++++++++++++
-> >>   1 file changed, 49 insertions(+)
-> >>   create mode 100644 Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml b/Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
-> >> new file mode 100644
-> >> index 000000000000..75ff16b58000
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
-> >> @@ -0,0 +1,49 @@
-> >> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> >> +%YAML 1.2
-> >> +---
-> >> +$id: http://devicetree.org/schemas/regulator/siliconmitus,sm5703-regulator.yaml#
-> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> >> +
-> >> +title: Silicon Mitus SM5703 multi function device regulators
-> >> +
-> >> +maintainers:
-> >> +  - Markuss Broks <markuss.broks@gmail.com>
-> >> +
-> >> +description: |
-> >> +  SM5703 regulators node should be a sub node of the SM5703 MFD node. See SM5703 MFD
-> >> +  bindings at Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
-> >> +  Regulator nodes should be named as USBLDO_<number>, BUCK, VBUS, LDO_<number>.
-> >> +  The definition for each of these nodes is defined using the standard
-> >> +  binding for regulators at Documentation/devicetree/bindings/regulator/regulator.txt.
-> >> +
-> >> +properties:
-> >> +  buck:
-> >> +    type: object
-> >> +    $ref: regulators.yaml#
-> > The correct file is regulator.yaml.
-> I was applying all the suggestions, and I thought I had somehow made a
-> typo referring to a wrong file.
->
-> Do I re-send the whole series with just the s/regulators/regulator/g? A
-> part of series has already been merged, do I not re-send the already
-> merged patches then?
+This patch adds device-tree bindings for regulators on Silicon Mitus
+SM5703 MFD.
 
-Just send an incremental patch fixing the file name. If there are then
-errors in the example, then you need to resend the MFD binding with
-the errors fixed. Unless Lee applies v5 before you do that, then you
-need an incremental fix for example.
+Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+---
+ .../siliconmitus,sm5703-regulator.yaml        | 49 +++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
 
-Rob
+diff --git a/Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml b/Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
+new file mode 100644
+index 000000000000..9d84117530ca
+--- /dev/null
++++ b/Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
+@@ -0,0 +1,49 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/regulator/siliconmitus,sm5703-regulator.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Silicon Mitus SM5703 multi function device regulators
++
++maintainers:
++  - Markuss Broks <markuss.broks@gmail.com>
++
++description: |
++  SM5703 regulators node should be a sub node of the SM5703 MFD node. See SM5703 MFD
++  bindings at Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
++  Regulator nodes should be named as USBLDO_<number>, BUCK, VBUS, LDO_<number>.
++  The definition for each of these nodes is defined using the standard
++  binding for regulators at Documentation/devicetree/bindings/regulator/regulator.txt.
++
++properties:
++  buck:
++    type: object
++    $ref: regulator.yaml#
++    unevaluatedProperties: false
++    description:
++      Properties for the BUCK regulator.
++
++  vbus:
++    type: object
++    $ref: regulator.yaml#
++    unevaluatedProperties: false
++    description:
++      Properties for the VBUS regulator.
++
++patternProperties:
++  "^ldo[1-3]$":
++    type: object
++    $ref: regulator.yaml#
++    unevaluatedProperties: false
++    description:
++      Properties for single LDO regulator.
++
++  "^usbldo[1-2]$":
++    type: object
++    $ref: regulator.yaml#
++    unevaluatedProperties: false
++    description:
++      Properties for a single USBLDO regulator.
++
++additionalProperties: false
+-- 
+2.35.1
+
