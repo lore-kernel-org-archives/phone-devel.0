@@ -2,94 +2,121 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69009C433F5
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Apr 2022 12:03:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22C24C433F5
+	for <phone-devel@archiver.kernel.org>; Sat, 30 Apr 2022 22:53:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357947AbiD2MGf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Apr 2022 08:06:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49148 "EHLO
+        id S232817AbiD3W4W (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 30 Apr 2022 18:56:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237453AbiD2MGf (ORCPT
+        with ESMTP id S235225AbiD3W4S (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Apr 2022 08:06:35 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D2CBC6EFF;
-        Fri, 29 Apr 2022 05:03:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 51F75B83466;
-        Fri, 29 Apr 2022 12:03:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B3AC385A7;
-        Fri, 29 Apr 2022 12:03:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651233795;
-        bh=ytyjAxLH3gz2/+/Nvl7NSG5DpaklWaIPupUTXXz4Z6o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=M3Kft7g64LMqPsBtPppqKDSqU2/JwxE6tj9ZgKi7eNrTAgJY9NH+trStdssuA61RR
-         GDtaGqaf/2jfPvXkpL9hLc2toOdMdtgPlLUvu8GG34/rrreGSDFLIO1RXnEjS9gYdw
-         h/MY72M6UYx0zaVrev6GwWCW4n3c7Ns2AYlYLGYBaNIdDWCyFWp7eNWDINaIZynqhv
-         /RI11TfnHO4oomloq8xvKG1fcTV3oD8YpHpC0bTx9LBYmTV1JTmUvFGNmbFAPsWuXf
-         rz0CSFaRKA4hWRbXasbSYjh8imH7N7eknZJaf9EVzfBadftLWVKZYI0Vl9XyDvTnK8
-         fIePNVgw/hYsw==
-Date:   Fri, 29 Apr 2022 13:03:08 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, robh+dt@kernel.org,
-        lee.jones@linaro.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 2/5] dt-bindings: regulator: Add bindings for Silicon
- Mitus SM5703 regulators
-Message-ID: <YmvT/LL+1jB8xK77@sirena.org.uk>
-References: <20220429113927.5145-1-markuss.broks@gmail.com>
- <YmvQhpO8dg6VLHNP@sirena.org.uk>
- <2a18073b-974f-00d4-5811-8df577e943a8@gmail.com>
+        Sat, 30 Apr 2022 18:56:18 -0400
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BBA055AC
+        for <phone-devel@vger.kernel.org>; Sat, 30 Apr 2022 15:52:55 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id y76so20472685ybe.1
+        for <phone-devel@vger.kernel.org>; Sat, 30 Apr 2022 15:52:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=gCU66tvXeSU6dA6Pn4/+rETPiTto61Xnn69qL7e5XcQ=;
+        b=UN5a13VFi1suVKpZGOhA/aKKwG1UlV6MWRuZkY98Q7DMdiZtZIzQbAThsdVIPnYDB1
+         0gErMPUJ0ifdf9m8Mamjq1aBIb2IP46TrCFMiznarYW6xEMLlF5eCcUjR3uVO2rQuvdm
+         zVkEZebJxtKkGi1uc3eyCVVki2UORcrVpcpR4bE3dxVhW6Pkyqf9C/HYBSSEa8/FzFsK
+         jj9YyPu00xt/gNPVPm7sBbFScXwGBzqNU1xpv5lIazweSJpe/fFCB0AgoxSuMK/ZqtJY
+         hSCvICcexLqD1D73iNQPiWEApFIsiqmJQS9byOpeQY8VfO1deWBeEihaqoj/GsCFlW1h
+         vYRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=gCU66tvXeSU6dA6Pn4/+rETPiTto61Xnn69qL7e5XcQ=;
+        b=dP4QieOMLf8i7I3ZrjZMcZgBETuQ1MPm07NWoXQVWWpll6Al57nL/dee/h1l8agCqx
+         ShtVhzQtY9jiae5RVBthwSL+uO9ZPvViOY+GwqkvBoxjr6RFnFSZ56i44chio7OOVsyp
+         7eQOOxtSiJIWtqdjYFpwPPvg4aj37eGy8HFD72TeZVdII2fGi8ykM/r2gYl4/0Mmcppu
+         RMBk9cayOKE1LmCUm31xPvgqlv4PwqdL2Ew77Iq7NJCSuVo3XdnPghyWrJp0s1f2eF0K
+         cwUI3WKmhBOHReOEXD4HyxcCj2hCtCb7t60CAUdMxYzEucd5cdHVEB8ph16taVbbE405
+         RkLQ==
+X-Gm-Message-State: AOAM5331AU4l7PCyW5//OBpH8U/5607NmCGZEoQV2u5dhaUfqefapuhY
+        E0SBqwoN+SW3Dq1+9LcAFUNtmBqhXXAsxt25BWaLSqQ1bIXR4A==
+X-Google-Smtp-Source: ABdhPJwiwuSMk9Cwr2CZQvIbXsWH8MXU+HRvYQBSx8n0ZXceIKsGwwrs07vko/srmjtrAa5pSZZN6emLDUDDiU/JiaM=
+X-Received: by 2002:a25:bcc7:0:b0:648:d728:d39 with SMTP id
+ l7-20020a25bcc7000000b00648d7280d39mr5320326ybm.514.1651359174758; Sat, 30
+ Apr 2022 15:52:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="sXfYcVX2i2N4NMSP"
-Content-Disposition: inline
-In-Reply-To: <2a18073b-974f-00d4-5811-8df577e943a8@gmail.com>
-X-Cookie: Are you still an ALCOHOLIC?
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 1 May 2022 00:52:43 +0200
+Message-ID: <CACRpkdYngWscqak5phKm58O2GF0RmVETgwW4NCKTBiASdaEcyg@mail.gmail.com>
+Subject: [GIT PULL] DTS updates for the v5.19 kernel
+To:     SoC Team <soc@kernel.org>, arm-soc <arm@kernel.org>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi SoC folks,
 
---sXfYcVX2i2N4NMSP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+please pull in these Arm Ux500 DTS changes for the v5.19 kernel.
 
-On Fri, Apr 29, 2022 at 02:51:03PM +0300, Markuss Broks wrote:
-> On 4/29/22 14:48, Mark Brown wrote:
+The details are in the signed tag!
 
-> > As Rob said please send an incremental patch with any fixes needed.
+Yours,
+Linus Walleij
 
-> I'm sorry, I didn't understand it correctly. Does "incremental patch" mean I
-> should send a separate follow-up patch with those fixes?
+The following changes since commit 3123109284176b1532874591f7c81f3837bbdc17:
 
-Yes.  It means on top of what's already applied.
+  Linux 5.18-rc1 (2022-04-03 14:08:21 -0700)
 
-Please also don't label patches that aren't part of a patch series as
-though they were in a series, it just creates confusion.
+are available in the Git repository at:
 
---sXfYcVX2i2N4NMSP
-Content-Type: application/pgp-signature; name="signature.asc"
+  git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-nomadik.git
+tags/ux500-dts-v5.19
 
------BEGIN PGP SIGNATURE-----
+for you to fetch changes up to 49148f4c39f04cb7bcfc1f42c3051d9ef8655fba:
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmJr0/wACgkQJNaLcl1U
-h9AxeQf/fsN26iHbjaWq030/gMA7pkIRcKce/G0iIcxx5adMpYB85hZF85tzX9WF
-YqJ9haQgJNOJd73UpiJZ7YSaehjMFNY6DW7bB3z1euU5YqHPV1lBdWaQhCXmKt0S
-ghGZZvoYqL20iizrBMP6GQR5NJKj1LrohhhhhMOODnxNIbJKazkhjhnGS0LwyNXo
-7QsNmOXjiW83nPYA7+x1YeyhHXP6rCJTchISj3rn3tabrYYMD9z4v55OWtHLVN/J
-bmqlixvWYrAoJho9Urnj/tvaQBo1XlBuggJ2vXzg9ItRLJMpOJam4Jlw5yOYyn7H
-zkrbR8aE6f7AkG/fkQMrPAhj/Y3s6g==
-=Lsum
------END PGP SIGNATURE-----
+  ARM: dts: ux500: Add GPS to the Codina (2022-04-26 23:17:48 +0200)
 
---sXfYcVX2i2N4NMSP--
+----------------------------------------------------------------
+Ux500 DTS updates for the v5.19 kernel cycle:
+
+- New devicetree for Codina TMO (SGH-T599).
+
+- Add the Amastaos proximity sensor to the Codina.
+
+- Add line impedance per machine to the Fuel Gauge
+  nodes.
+
+- Add GPS to Janice, Skomer and Codina.
+
+- Add NFC to the Codina for GT-I8160P.
+
+- Some janitorial like clock names.
+
+----------------------------------------------------------------
+Kuldeep Singh (1):
+      ARM: dts: ste-dbx: Update spi clock-names property
+
+Linus Walleij (8):
+      dt-bindings: arm: ux500: Document Codina-TMO
+      ARM: dts: ux500: Add Codina TMO device tree
+      ARM: dts: ux500: Register Amstaos proximity sensor
+      ARM: dts: ux500: Add line impedance to fuel gauge
+      ARM: dts: ux500: Add GPS to Janice device tree
+      ARM: dts: ux500: Add GPS to Skomer device tree
+      ARM: dts: ux500: Add NFC to the Codina
+      ARM: dts: ux500: Add GPS to the Codina
+
+ Documentation/devicetree/bindings/arm/ux500.yaml   |   5 +
+ arch/arm/boot/dts/Makefile                         |   1 +
+ arch/arm/boot/dts/ste-dbx5x0.dtsi                  |  12 +-
+ arch/arm/boot/dts/ste-ux500-samsung-codina-tmo.dts | 785 +++++++++++++++++++++
+ arch/arm/boot/dts/ste-ux500-samsung-codina.dts     |  80 ++-
+ arch/arm/boot/dts/ste-ux500-samsung-gavini.dts     |   4 +
+ arch/arm/boot/dts/ste-ux500-samsung-golden.dts     |   4 +
+ arch/arm/boot/dts/ste-ux500-samsung-janice.dts     |  44 +-
+ arch/arm/boot/dts/ste-ux500-samsung-kyle.dts       |   4 +
+ arch/arm/boot/dts/ste-ux500-samsung-skomer.dts     |  35 +-
+ 10 files changed, 956 insertions(+), 18 deletions(-)
+ create mode 100644 arch/arm/boot/dts/ste-ux500-samsung-codina-tmo.dts
