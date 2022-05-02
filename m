@@ -2,123 +2,74 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 32797C433F5
-	for <phone-devel@archiver.kernel.org>; Sun,  1 May 2022 19:43:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2248AC433EF
+	for <phone-devel@archiver.kernel.org>; Mon,  2 May 2022 23:02:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353907AbiEATqp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 1 May 2022 15:46:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47818 "EHLO
+        id S230157AbiEBXGZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 2 May 2022 19:06:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352249AbiEATqn (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 1 May 2022 15:46:43 -0400
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [5.144.164.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A1B410FD9
-        for <phone-devel@vger.kernel.org>; Sun,  1 May 2022 12:43:17 -0700 (PDT)
-Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 000593F62D;
-        Sun,  1 May 2022 21:43:14 +0200 (CEST)
-Date:   Sun, 1 May 2022 21:43:13 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Adam Skladowski <a39.skl@gmail.com>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Subject: Re: [PATCH] clk: qcom: smd: Update MSM8976 RPM clocks.
-Message-ID: <20220501194313.zu4dmmlggiksi6ce@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Adam Skladowski <a39.skl@gmail.com>, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-References: <20220426090226.27293-1-a39.skl@gmail.com>
+        with ESMTP id S235890AbiEBXGY (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 May 2022 19:06:24 -0400
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E5642E09E;
+        Mon,  2 May 2022 16:02:51 -0700 (PDT)
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-e2442907a1so15710228fac.8;
+        Mon, 02 May 2022 16:02:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=8IspzxFERsjs7LWJZpaODsneW32XlcgqODx6/89mEyA=;
+        b=z6R2+WAZpCKsxl63U813D5VptQWh+yZf/sYLzQUHRy81qSZ712//XrFpg8ANcO4uUg
+         f8mrz3gJSyon4v4yfGgp8Pe9VMtXjyinSlWzy+rH43q5H13QT2OwNLzDlb7BwE50SuBz
+         LkItSfEXN0foUWhecGlfsVBAJiBnd5ykXwzQi5+kugRTqv2oETXbIGxx7cFNddlRig+/
+         ryQ+fvN8IxF1yxr+Jvuc/rSAW0TcdHb3dmDJh+EAtNev2qnUKmlAVmly4otRlFEaX+bm
+         guNcznlISlELczrxfEhb10hquZJx7n9qGteUmaUbFbpbsUconQjHphmbvzTFb9zR4Pl6
+         jrjg==
+X-Gm-Message-State: AOAM533JlUZfpVjXSvuHIesiaT/b8EIBnvBe2AcDUOcBvOan6fdl/ZDA
+        RLF8TqIxhcVaIOq7NkHC8mi6L+6rxw==
+X-Google-Smtp-Source: ABdhPJwQfGK5FsZDVaTzCNCXyNiXx5vtTSbwkLOnrcW53NjjUhXEtmJRE3zq4UZYvrUnP/Bgut2bmQ==
+X-Received: by 2002:a05:6870:f601:b0:e8:c1bb:3843 with SMTP id ek1-20020a056870f60100b000e8c1bb3843mr664299oab.4.1651532570352;
+        Mon, 02 May 2022 16:02:50 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id m13-20020a9d73cd000000b0060613c844adsm2137012otk.10.2022.05.02.16.02.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 May 2022 16:02:49 -0700 (PDT)
+Received: (nullmailer pid 1964955 invoked by uid 1000);
+        Mon, 02 May 2022 23:02:49 -0000
+Date:   Mon, 2 May 2022 18:02:49 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        Johan Hovold <johan@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] dt-bindings: gnss: Add Broacom BCM4751 family bindings
+Message-ID: <YnBjGW2ODC3nMbse@robh.at.kernel.org>
+References: <20220425132215.1309216-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220426090226.27293-1-a39.skl@gmail.com>
+In-Reply-To: <20220425132215.1309216-1-linus.walleij@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-04-26 11:02:17, Adam Skladowski wrote:
-> MSM8976 does not have rpm clock named mmssnoc,
-> instead it's called sysmmnoc, drop define and reuse.
-> While we are at it add XO clock to list.
+On Mon, 25 Apr 2022 15:22:15 +0200, Linus Walleij wrote:
+> The Broadcom BCM4751 family of (A-)GPS chips have been around for
+> some years. The latest iteration BCM4753 is for example mounted
+> on the Huawei HiKey970.
 > 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-
-This patch should have had a Fixes: tag, not in the least to allow
-backporting but also to have get_maintainer.pl add the original author
-in CC for additional review and sign-off.
-
-In any case the omission of the XO clock here is intentional: the clock
-might be stopped whereas none of the platform is configured to support
-XO shutdown yet, which is why a "fixed-clock" is used in DT for now.
-
-With that in mind both changes should have been split into separate
-patches, so that the clock rename can be safely annoted with a Fixes:
-tag.  Presuming the application of this patch to `for-next` isn't final,
-Bjorn is this something we can get worked through?  I've validated the
-rename with my downstream sources, and for that:
-
-    Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-
-But for the XO addition I'm wary of platform lockups.
-
-- Marijn
-
+> Cc: devicetree@vger.kernel.org
+> Cc: phone-devel@vger.kernel.org
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 > ---
->  drivers/clk/qcom/clk-smd-rpm.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> ChangeLog v1->v2:
+> - Switch do dual GPL/BSD license.
+> ---
+>  .../bindings/gnss/brcm,bcm4751.yaml           | 69 +++++++++++++++++++
+>  1 file changed, 69 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/gnss/brcm,bcm4751.yaml
 > 
-> diff --git a/drivers/clk/qcom/clk-smd-rpm.c b/drivers/clk/qcom/clk-smd-rpm.c
-> index afc6dc930011..10b4e6d8d10f 100644
-> --- a/drivers/clk/qcom/clk-smd-rpm.c
-> +++ b/drivers/clk/qcom/clk-smd-rpm.c
-> @@ -563,17 +563,19 @@ static const struct rpm_smd_clk_desc rpm_clk_msm8974 = {
->  	.num_clks = ARRAY_SIZE(msm8974_clks),
->  };
->  
-> -DEFINE_CLK_SMD_RPM(msm8976, mmssnoc_ahb_clk, mmssnoc_ahb_a_clk,
-> -		   QCOM_SMD_RPM_BUS_CLK, 2);
->  DEFINE_CLK_SMD_RPM(msm8976, ipa_clk, ipa_a_clk, QCOM_SMD_RPM_IPA_CLK, 0);
->  
->  static struct clk_smd_rpm *msm8976_clks[] = {
-> +	[RPM_SMD_XO_CLK_SRC] = &sdm660_bi_tcxo,
-> +	[RPM_SMD_XO_A_CLK_SRC] = &sdm660_bi_tcxo_a,
->  	[RPM_SMD_PCNOC_CLK] = &msm8916_pcnoc_clk,
->  	[RPM_SMD_PCNOC_A_CLK] = &msm8916_pcnoc_a_clk,
->  	[RPM_SMD_SNOC_CLK] = &msm8916_snoc_clk,
->  	[RPM_SMD_SNOC_A_CLK] = &msm8916_snoc_a_clk,
->  	[RPM_SMD_BIMC_CLK] = &msm8916_bimc_clk,
->  	[RPM_SMD_BIMC_A_CLK] = &msm8916_bimc_a_clk,
-> +	[RPM_SMD_SYSMMNOC_CLK]	= &msm8936_sysmmnoc_clk,
-> +	[RPM_SMD_SYSMMNOC_A_CLK] = &msm8936_sysmmnoc_a_clk,
->  	[RPM_SMD_QDSS_CLK] = &msm8916_qdss_clk,
->  	[RPM_SMD_QDSS_A_CLK] = &msm8916_qdss_a_clk,
->  	[RPM_SMD_BB_CLK1] = &msm8916_bb_clk1,
-> @@ -586,8 +588,6 @@ static struct clk_smd_rpm *msm8976_clks[] = {
->  	[RPM_SMD_BB_CLK1_A_PIN] = &msm8916_bb_clk1_a_pin,
->  	[RPM_SMD_BB_CLK2_PIN] = &msm8916_bb_clk2_pin,
->  	[RPM_SMD_BB_CLK2_A_PIN] = &msm8916_bb_clk2_a_pin,
-> -	[RPM_SMD_MMSSNOC_AHB_CLK] = &msm8976_mmssnoc_ahb_clk,
-> -	[RPM_SMD_MMSSNOC_AHB_A_CLK] = &msm8976_mmssnoc_ahb_a_clk,
->  	[RPM_SMD_DIV_CLK2] = &msm8974_div_clk2,
->  	[RPM_SMD_DIV_A_CLK2] = &msm8974_div_a_clk2,
->  	[RPM_SMD_IPA_CLK] = &msm8976_ipa_clk,
-> -- 
-> 2.25.1
-> 
+
+Applied, thanks!
