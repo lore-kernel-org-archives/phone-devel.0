@@ -2,74 +2,93 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2248AC433EF
-	for <phone-devel@archiver.kernel.org>; Mon,  2 May 2022 23:02:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C687C433F5
+	for <phone-devel@archiver.kernel.org>; Wed,  4 May 2022 15:24:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230157AbiEBXGZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 2 May 2022 19:06:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59900 "EHLO
+        id S1352283AbiEDP2Z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 4 May 2022 11:28:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235890AbiEBXGY (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 May 2022 19:06:24 -0400
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E5642E09E;
-        Mon,  2 May 2022 16:02:51 -0700 (PDT)
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-e2442907a1so15710228fac.8;
-        Mon, 02 May 2022 16:02:51 -0700 (PDT)
+        with ESMTP id S229902AbiEDP2W (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 4 May 2022 11:28:22 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8A9C4474B;
+        Wed,  4 May 2022 08:24:44 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id c190-20020a1c35c7000000b0038e37907b5bso3452146wma.0;
+        Wed, 04 May 2022 08:24:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Z1nMz8AV1XcW5h20PdvGECZTKrNaeXZIC73UZ/jHwIc=;
+        b=U1q/DgV8WmHyHZrPnWTw4Mo6VNO40cDt5sFdZXGGwGSxj2C10Jt3V1kH94HvOhuBhe
+         Jl58Qqn39NgwpUAmANvXeQtsJy0Nax0dkVCNShi05Hy301IjRC2k1QU9QzOJ93J7EiZO
+         HsFSSKIKUdY+JpyEOEWWTH+IcEJQ/GXRQhijjqvrQIm6AMRuIBYVEPz6JUQ/lYoqNYk5
+         BQxzaBS+WRw0c+FGsnwAPoq0O8YrRs6DAN7DWLiZ9bP6dBetN5sSWVbKHnDuDUulaCb1
+         rlMbBYlmUfyechE2jVkwe7h2dXXzNoVzOk+37N2qKKwk8S0mTzz1qGS2GyV7m6khsm1d
+         W5GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=8IspzxFERsjs7LWJZpaODsneW32XlcgqODx6/89mEyA=;
-        b=z6R2+WAZpCKsxl63U813D5VptQWh+yZf/sYLzQUHRy81qSZ712//XrFpg8ANcO4uUg
-         f8mrz3gJSyon4v4yfGgp8Pe9VMtXjyinSlWzy+rH43q5H13QT2OwNLzDlb7BwE50SuBz
-         LkItSfEXN0foUWhecGlfsVBAJiBnd5ykXwzQi5+kugRTqv2oETXbIGxx7cFNddlRig+/
-         ryQ+fvN8IxF1yxr+Jvuc/rSAW0TcdHb3dmDJh+EAtNev2qnUKmlAVmly4otRlFEaX+bm
-         guNcznlISlELczrxfEhb10hquZJx7n9qGteUmaUbFbpbsUconQjHphmbvzTFb9zR4Pl6
-         jrjg==
-X-Gm-Message-State: AOAM533JlUZfpVjXSvuHIesiaT/b8EIBnvBe2AcDUOcBvOan6fdl/ZDA
-        RLF8TqIxhcVaIOq7NkHC8mi6L+6rxw==
-X-Google-Smtp-Source: ABdhPJwQfGK5FsZDVaTzCNCXyNiXx5vtTSbwkLOnrcW53NjjUhXEtmJRE3zq4UZYvrUnP/Bgut2bmQ==
-X-Received: by 2002:a05:6870:f601:b0:e8:c1bb:3843 with SMTP id ek1-20020a056870f60100b000e8c1bb3843mr664299oab.4.1651532570352;
-        Mon, 02 May 2022 16:02:50 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id m13-20020a9d73cd000000b0060613c844adsm2137012otk.10.2022.05.02.16.02.49
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Z1nMz8AV1XcW5h20PdvGECZTKrNaeXZIC73UZ/jHwIc=;
+        b=tqPJWKQ8HuOpHQPSngtIkXGAmKUpgnI2uG1Jt08xOl4s2q2IMS6z1ACg78r8Wf1C90
+         qfF17GYufrGjroYaKarnQ4toO8TP4HnSWuVMdSQSv+vCxietz+BLnObDMKLpsEsy6gWd
+         cA66NJ6Q/Pq5QnoZnp4bK2aaI3IPE21GphrEFuWCzH3nccqzzAJJoHzzRWuIWEQh0BML
+         WLO1DFY3JLptmrqxU3fbZS/qNXptGqlXrmOQ7EGsHXSZ9h7FJIX+C3NVkY7lmuC/GFZT
+         eOZwXco6P1CpZKUNHVGo18OmbTYEPc1yUjfguVm2gdyZzvGGxO5UplkZWF7UKJgEh4Um
+         tEVA==
+X-Gm-Message-State: AOAM530+yj+1GGUC0ROX0MRzPJNmC/hDHYyB6wb4kXwpLUlwuUktzQ2K
+        W9DhP0iKFZM3RHSdhgwECbwe9FSdsi4=
+X-Google-Smtp-Source: ABdhPJy1kzYMGNLYhbuRv3y4d/PByfjuQojOI9mbcBzhZ5nvU8Rajr0jtKJHSHEkhIbjyJdnVi+45Q==
+X-Received: by 2002:a05:600c:12c9:b0:394:54ab:52c5 with SMTP id v9-20020a05600c12c900b0039454ab52c5mr5415489wmd.141.1651677883397;
+        Wed, 04 May 2022 08:24:43 -0700 (PDT)
+Received: from nergzd-desktop.localdomain ([194.39.226.133])
+        by smtp.gmail.com with ESMTPSA id s14-20020adfa28e000000b0020c5253d91csm11541041wra.104.2022.05.04.08.24.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 May 2022 16:02:49 -0700 (PDT)
-Received: (nullmailer pid 1964955 invoked by uid 1000);
-        Mon, 02 May 2022 23:02:49 -0000
-Date:   Mon, 2 May 2022 18:02:49 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        Wed, 04 May 2022 08:24:43 -0700 (PDT)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Lin Meng-Bo <linmengbo0689@protonmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
-        Johan Hovold <johan@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: gnss: Add Broacom BCM4751 family bindings
-Message-ID: <YnBjGW2ODC3nMbse@robh.at.kernel.org>
-References: <20220425132215.1309216-1-linus.walleij@linaro.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH 0/3] Add support for Imagis IST3038B
+Date:   Wed,  4 May 2022 18:24:02 +0300
+Message-Id: <20220504152406.8730-1-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220425132215.1309216-1-linus.walleij@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 25 Apr 2022 15:22:15 +0200, Linus Walleij wrote:
-> The Broadcom BCM4751 family of (A-)GPS chips have been around for
-> some years. The latest iteration BCM4753 is for example mounted
-> on the Huawei HiKey970.
-> 
-> Cc: devicetree@vger.kernel.org
-> Cc: phone-devel@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> ChangeLog v1->v2:
-> - Switch do dual GPL/BSD license.
-> ---
->  .../bindings/gnss/brcm,bcm4751.yaml           | 69 +++++++++++++++++++
->  1 file changed, 69 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/gnss/brcm,bcm4751.yaml
-> 
+This series adds support for Imagis IST3038B IC support, which
+is a variant of Imagis IST3038 IC. It has a different register map
+(labeled protocol b), but otherwise it seems to be the same IC.
+It is also possible to support various other Imagis ICs using
+protocol b, such as (but not limited to) IST3044B, IST3026, IST3032,
+IST3026B, IST3032B. However, most of them (all except IST3044B)
+use a different coordinate format, so extra effort would be needed
+to support those.
 
-Applied, thanks!
+Tested by Lin Meng-Bo on Samsung Galaxy Core Prime.
+
+Cc: Lin Meng-Bo <linmengbo0689@protonmail.com>
+
+Markuss Broks (3):
+  input/touchscreen: imagis: Correct the maximum touch area value
+  dt-bindings: input/touchscreen: Add compatible for IST3038B
+  input/touchscreen: imagis: Add support for Imagis IST3038B
+
+ .../input/touchscreen/imagis,ist3038c.yaml    |  1 +
+ drivers/input/touchscreen/imagis.c            | 60 +++++++++++++++----
+ 2 files changed, 49 insertions(+), 12 deletions(-)
+
+-- 
+2.35.1
+
