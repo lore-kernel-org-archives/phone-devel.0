@@ -2,205 +2,90 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E12AAC433FE
-	for <phone-devel@archiver.kernel.org>; Wed,  4 May 2022 15:24:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0D1BC433FE
+	for <phone-devel@archiver.kernel.org>; Wed,  4 May 2022 18:02:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352053AbiEDP22 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 4 May 2022 11:28:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53204 "EHLO
+        id S1376407AbiEDSGQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 4 May 2022 14:06:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352299AbiEDP20 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 4 May 2022 11:28:26 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75E4E4474B;
-        Wed,  4 May 2022 08:24:49 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id a14-20020a7bc1ce000000b00393fb52a386so3446159wmj.1;
-        Wed, 04 May 2022 08:24:49 -0700 (PDT)
+        with ESMTP id S237278AbiEDSGK (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 4 May 2022 14:06:10 -0400
+Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F17935005E
+        for <phone-devel@vger.kernel.org>; Wed,  4 May 2022 10:21:25 -0700 (PDT)
+Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-edf3b6b0f2so1463447fac.9
+        for <phone-devel@vger.kernel.org>; Wed, 04 May 2022 10:21:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=S0+dOonjyXB+u/RPDdGeIJKQE4fMwvUsn4WlnEiMshU=;
-        b=YY9vBebDEgCZNjAmaLhjdYzaTqnAHEGlxSJawmMGqbg4pKN4YjtYcHCjw9OGiyf/ye
-         vzqWImpXfFCqll276rqhRwlIiIwLSGTUBHEAhdvuq5ZkiQjBPZBXwxVJndESB6fcuBKY
-         vohnEeNggv73lCZjTOpgdXdyn++4g8Sw1mbv8rhS8oeOPOaTHlaDOsDKPL3JQUg0CNj1
-         ktyCdYJJdzbw+nipTopjOCLDR3cShnhLL+ZpU+/SyJUUEyqrYsG4W+Cztfaso9JytgS1
-         q/O0Eilz3fkUYNUYYslcm08o9f7gZA1vzw95zwYIZZeUhVa1rQtPXGOHAt64SXzIL8sf
-         pj1w==
+        bh=9n/gYaMXgcCZlV28IfDsqzUgEbw6Cm4b4IvQduwf58c=;
+        b=URCvwKrzTw+0bKXGIC30/P9Qmnuoja20WathMGlfr5Bij3lHqaaOpZCQGIqiWkgsht
+         qMqCvuoTcvYpBlP268kDKZt4RhVE2TRi32z1VUtKdQRIbghA0qC+OkxEv5SO/ohKc4bT
+         jS0fZd4eXcsLMEnKn+NHt0gL5yHonwip7rU30iq1iD3KWJb/Vdq8K+Mc7d2Ndla7fy+Y
+         gvqJzwWnbHTY2vTRPp6S6/Vsmrf1SiqK8f1S00+5DguiDzRIw2zaHefDHXRAboEml+o4
+         fzgAM9pOd2LnaxLhkiNvWkiRUgUj8l3QXod4CPazXu+KBGSVC9AyfjD/yALWrVKm7hTl
+         J0pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=S0+dOonjyXB+u/RPDdGeIJKQE4fMwvUsn4WlnEiMshU=;
-        b=WQgEPhrfRUqKrxg1u0pnuOH3QraeWR7YJHQzRn7osB8CY814y+rQvro+y4jsdVefGk
-         +huisbL4JDtWG/74p59Uj4UjAUez1EcAfR0wgNKaZwlf3FQ5RzKMCQlVUnvWS7wjbK8R
-         92oktnSdnNzj9i+19qSpSj7dJX5Jpy/hGQ9MPwi5gBHZHTt10zDbyA5gTDMC6vxRijBk
-         GRaEQO0/rV72uecxT08ikpVeAjOtQS8x84yIM7DcKXjcjXll1X/UkzDQRoDqk3M0Ti2D
-         0pT5tj3596sNUK7hfdWPAOg2H9QzoCOREHd2NqpOlLipMsmK8z30b705h0CsJ9xxvxq+
-         XEVw==
-X-Gm-Message-State: AOAM53059HknQzupbFZT/EEKV3XsdnxUe2KNNzBvg8OoPMQ41TL+0k3D
-        ESJbjdvbSKhyJxt1wnugEDmKjc9ck00=
-X-Google-Smtp-Source: ABdhPJxuCA0jS5OuPVXnnGgLs8Hy3fEvmxK8UOE0o/zR+PYdbBt5zeS6/NiNrBZ7/rymeQnCRK/sZA==
-X-Received: by 2002:a05:600c:1f0d:b0:394:23f0:4530 with SMTP id bd13-20020a05600c1f0d00b0039423f04530mr18326wmb.30.1651677887892;
-        Wed, 04 May 2022 08:24:47 -0700 (PDT)
-Received: from nergzd-desktop.localdomain ([194.39.226.133])
-        by smtp.gmail.com with ESMTPSA id s14-20020adfa28e000000b0020c5253d91csm11541041wra.104.2022.05.04.08.24.46
+        bh=9n/gYaMXgcCZlV28IfDsqzUgEbw6Cm4b4IvQduwf58c=;
+        b=vzYjPlh5wwO1n7fsX0Dc2g+GixVA3YcrkJNjq2SC95d7r1fVB/1lzMu9Yia/6Dflg4
+         xcHz2jMlf8bRbAkJg+sHfCcoZQu9MUX2FOre+RNMBPZJL7CCJ2tjXYpHrP5ZIjBAig36
+         VgB8DAXuCozTAkkD4ETcTYVYa/8KOkkTNgTTzEgDDWvn55NuBF/ohEY/l6mIIm6nFud6
+         C29w0HB7f+6RVosit4B7csNIa4ROh+/BMcDWbBVpywOSd6T28jfBSsGjO4H8eg0pQG5h
+         /ii6hvjnf6J0TgQ8+sgQd0NrvH9oiYTo9OzH5h+zYhK0OctzwpSfvRI7OhsNlZ3vMNOU
+         Uglg==
+X-Gm-Message-State: AOAM5310lstCyBKf2v/W0IJij6eR45SrubUFN77e8aQYOuUtrTv8FCsX
+        mptcf59GCd2Ba7ca63/BLF0HbA==
+X-Google-Smtp-Source: ABdhPJxEQcWx97eQw7JXT1MlcsjE1ykXP2/W+UaCBS1ZibafH/U99WwFONjRsa3ICRAjO4ioX3uXuw==
+X-Received: by 2002:a05:6870:b025:b0:e6:283a:9553 with SMTP id y37-20020a056870b02500b000e6283a9553mr265748oae.62.1651684885322;
+        Wed, 04 May 2022 10:21:25 -0700 (PDT)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id a7-20020a056870b14700b000ead8b89484sm5785452oal.5.2022.05.04.10.21.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 May 2022 08:24:47 -0700 (PDT)
-From:   Markuss Broks <markuss.broks@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Lin Meng-Bo <linmengbo0689@protonmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        Wed, 04 May 2022 10:21:24 -0700 (PDT)
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
+Cc:     devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>, linux-kernel@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Henrik Rydberg <rydberg@bitmath.org>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH 3/3] input/touchscreen: imagis: Add support for Imagis IST3038B
-Date:   Wed,  4 May 2022 18:24:05 +0300
-Message-Id: <20220504152406.8730-4-markuss.broks@gmail.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220504152406.8730-1-markuss.broks@gmail.com>
-References: <20220504152406.8730-1-markuss.broks@gmail.com>
+        Rob Herring <robh+dt@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH 1/3] ARM: dts: msm8974-FP2: Add support for touchscreen
+Date:   Wed,  4 May 2022 12:21:10 -0500
+Message-Id: <165168485227.3730817.16953717180733466594.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220421214243.352469-1-luca@z3ntu.xyz>
+References: <20220421214243.352469-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Imagis IST3038B is another variant of Imagis IST3038 IC, which has
-a different register interface from IST3038C (possibly firmware defined).
-This should also work for IST3044B (though untested), however other
-variants using this interface/protocol(IST3026, IST3032, IST3026B,
-IST3032B) have a different format for coordinates, and they'd need
-additional effort to be supported by this driver.
+On Thu, 21 Apr 2022 23:42:41 +0200, Luca Weiss wrote:
+> Configure the touchscreen found on the new display module of the FP2.
+> To add some detail, FP2 has two different screen/touchscreen variants
+> ("display module"), the old module has Synaptics touchscreen, the new
+> one this Ilitek touchscreen.
+> 
+> We're only supporting the new display module for now.
+> 
+> [...]
 
-Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
----
- drivers/input/touchscreen/imagis.c | 58 ++++++++++++++++++++++++------
- 1 file changed, 47 insertions(+), 11 deletions(-)
+Applied, thanks!
 
-diff --git a/drivers/input/touchscreen/imagis.c b/drivers/input/touchscreen/imagis.c
-index b667914a44f1..57bb8f31ac1f 100644
---- a/drivers/input/touchscreen/imagis.c
-+++ b/drivers/input/touchscreen/imagis.c
-@@ -13,7 +13,7 @@
- 
- #define IST3038C_HIB_ACCESS		(0x800B << 16)
- #define IST3038C_DIRECT_ACCESS		BIT(31)
--#define IST3038C_REG_CHIPID		0x40001000
-+#define IST3038C_REG_CHIPID		(0x40001000 | IST3038C_DIRECT_ACCESS)
- #define IST3038C_REG_HIB_BASE		0x30000100
- #define IST3038C_REG_TOUCH_STATUS	(IST3038C_REG_HIB_BASE | IST3038C_HIB_ACCESS)
- #define IST3038C_REG_TOUCH_COORD	(IST3038C_REG_HIB_BASE | IST3038C_HIB_ACCESS | 0x8)
-@@ -31,8 +31,21 @@
- #define IST3038C_FINGER_COUNT_SHIFT	12
- #define IST3038C_FINGER_STATUS_MASK	GENMASK(9, 0)
- 
-+#define IST3038B_REG_STATUS		0x20
-+#define IST3038B_REG_CHIPID		0x30
-+#define IST3038B_WHOAMI			0x30380b
-+
-+struct imagis_properties {
-+	unsigned int interrupt_msg_cmd;
-+	unsigned int touch_coord_cmd;
-+	unsigned int whoami_cmd;
-+	unsigned int whoami_val;
-+	bool protocol_b;
-+};
-+
- struct imagis_ts {
- 	struct i2c_client *client;
-+	const struct imagis_properties *tdata;
- 	struct input_dev *input_dev;
- 	struct touchscreen_properties prop;
- 	struct regulator_bulk_data supplies[2];
-@@ -84,8 +97,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
- 	int i;
- 	int error;
- 
--	error = imagis_i2c_read_reg(ts, IST3038C_REG_INTR_MESSAGE,
--				    &intr_message);
-+	error = imagis_i2c_read_reg(ts, ts->tdata->interrupt_msg_cmd, &intr_message);
- 	if (error) {
- 		dev_err(&ts->client->dev,
- 			"failed to read the interrupt message: %d\n", error);
-@@ -104,9 +116,13 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
- 	finger_pressed = intr_message & IST3038C_FINGER_STATUS_MASK;
- 
- 	for (i = 0; i < finger_count; i++) {
--		error = imagis_i2c_read_reg(ts,
--					    IST3038C_REG_TOUCH_COORD + (i * 4),
--					    &finger_status);
-+		if (ts->tdata->protocol_b)
-+			error = imagis_i2c_read_reg(ts,
-+						    ts->tdata->touch_coord_cmd, &finger_status);
-+		else
-+			error = imagis_i2c_read_reg(ts,
-+						    ts->tdata->touch_coord_cmd + (i * 4),
-+						    &finger_status);
- 		if (error) {
- 			dev_err(&ts->client->dev,
- 				"failed to read coordinates for finger %d: %d\n",
-@@ -261,6 +277,12 @@ static int imagis_probe(struct i2c_client *i2c)
- 
- 	ts->client = i2c;
- 
-+	ts->tdata = device_get_match_data(dev);
-+	if (!ts->tdata) {
-+		dev_err(dev, "missing chip data\n");
-+		return -EINVAL;
-+	}
-+
- 	error = imagis_init_regulators(ts);
- 	if (error) {
- 		dev_err(dev, "regulator init error: %d\n", error);
-@@ -279,15 +301,13 @@ static int imagis_probe(struct i2c_client *i2c)
- 		return error;
- 	}
- 
--	error = imagis_i2c_read_reg(ts,
--			IST3038C_REG_CHIPID | IST3038C_DIRECT_ACCESS,
--			&chip_id);
-+	error = imagis_i2c_read_reg(ts, ts->tdata->whoami_cmd, &chip_id);
- 	if (error) {
- 		dev_err(dev, "chip ID read failure: %d\n", error);
- 		return error;
- 	}
- 
--	if (chip_id != IST3038C_WHOAMI) {
-+	if (chip_id != ts->tdata->whoami_val) {
- 		dev_err(dev, "unknown chip ID: 0x%x\n", chip_id);
- 		return -EINVAL;
- 	}
-@@ -343,9 +363,25 @@ static int __maybe_unused imagis_resume(struct device *dev)
- 
- static SIMPLE_DEV_PM_OPS(imagis_pm_ops, imagis_suspend, imagis_resume);
- 
-+static const struct imagis_properties imagis_3038b_data = {
-+	.interrupt_msg_cmd = IST3038B_REG_STATUS,
-+	.touch_coord_cmd = IST3038B_REG_STATUS,
-+	.whoami_cmd = IST3038B_REG_CHIPID,
-+	.whoami_val = IST3038B_WHOAMI,
-+	.protocol_b = true,
-+};
-+
-+static const struct imagis_properties imagis_3038c_data = {
-+	.interrupt_msg_cmd = IST3038C_REG_INTR_MESSAGE,
-+	.touch_coord_cmd = IST3038C_REG_TOUCH_COORD,
-+	.whoami_cmd = IST3038C_REG_CHIPID,
-+	.whoami_val = IST3038C_WHOAMI,
-+};
-+
- #ifdef CONFIG_OF
- static const struct of_device_id imagis_of_match[] = {
--	{ .compatible = "imagis,ist3038c", },
-+	{ .compatible = "imagis,ist3038b", .data = &imagis_3038b_data },
-+	{ .compatible = "imagis,ist3038c", .data = &imagis_3038c_data },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, imagis_of_match);
+[1/3] ARM: dts: msm8974-FP2: Add support for touchscreen
+      commit: 88044abcde58ebf810f4be49ee2555ecc333bad4
+[2/3] ARM: dts: msm8974-FP2: Configure charger
+      commit: da281bf9345a8bcde224976b83d6ad7899830e97
+[3/3] ARM: dts: msm8974-FP2: Add supplies for remoteprocs
+      commit: fb5e339fb1bc9eb7f34b341d995e4ab39c03588e
+
+Best regards,
 -- 
-2.35.1
-
+Bjorn Andersson <bjorn.andersson@linaro.org>
