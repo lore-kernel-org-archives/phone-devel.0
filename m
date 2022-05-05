@@ -2,109 +2,77 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74032C433EF
-	for <phone-devel@archiver.kernel.org>; Thu,  5 May 2022 16:45:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD7D9C433EF
+	for <phone-devel@archiver.kernel.org>; Thu,  5 May 2022 19:58:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234363AbiEEQsl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 5 May 2022 12:48:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39086 "EHLO
+        id S1385495AbiEEUCQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 5 May 2022 16:02:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231702AbiEEQsk (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 5 May 2022 12:48:40 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8CE3140D2;
-        Thu,  5 May 2022 09:45:00 -0700 (PDT)
-Received: from localhost.localdomain (unknown [10.0.11.2])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id E078FCEB6A;
-        Thu,  5 May 2022 16:44:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1651769069; bh=0xFfXxhaakUSdwQJ4McjhfUEVogdCXDlcNEi2e5reQ0=;
-        h=From:To:Cc:Subject:Date;
-        b=KSO19uWkd1/Mmzje9o5Bv+NvyzaFuzO8IH5MpkNLFXZSJfY6+1xOfaRfb+jDnLtk6
-         Xk7+Mlq8HDz3P/KDE+wQ49soY0mnLZF4/LlL8LU0KP0HkahGat/z4YnIQuN1FIcXM2
-         tQmwXhKWw+qRgy1tibq5IUA/NS7/bVN991P+mTec=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@collabora.com>,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        with ESMTP id S1383706AbiEEUCQ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 5 May 2022 16:02:16 -0400
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 602CA5EBC9;
+        Thu,  5 May 2022 12:58:34 -0700 (PDT)
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-edeb6c3642so5287860fac.3;
+        Thu, 05 May 2022 12:58:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=oBgLJC6txoRH8efJ9A0HaDL743e4v3tUFLl4QcZh6fg=;
+        b=tAz7gDIjj+liRx5as2qPfeS0ehNPLBlxvWbmO4xTma9zHvyZCJtPqO88HTkMwKgFKo
+         i+tq7c/kk7hMrkjLqNoxO3PkMXKxIjiEAxF0MwA+AoXj/SYn/DbYarEoBP7EZB2qHsFL
+         HCN0rV5GkvoDCD4KqJHiQ7upl8ufyHyNB+sFXLu/gncUaI/Sit7PmzqRRKl7eaLNgxby
+         DFhvN0YLI+Lmp6uCfwpRh0nHH7d1HCYO13+KlIh35cUp6AQznPY7S7C3BBeivSwyLfTt
+         LyM3naimg4GjnXb4nm0IR7I3IFQprvwro4eoa0nQjNhSThAlAewGqbgIxNfKXRxLvUfa
+         nndg==
+X-Gm-Message-State: AOAM531AejdrBDn7OcuIJqZKOAt9XC886Xym+0pJgL7R7GDxBUilCkq0
+        8E+pJrTsIVKjsh5myQ2bjQ==
+X-Google-Smtp-Source: ABdhPJwZrM0/FzDKiZrLq5mUOfVxF6AlSDCH+r6ocP91vWdO8W/w2KPkEt1c9NBOuD2DZTojloU5sw==
+X-Received: by 2002:a05:6870:b62a:b0:dd:f3b0:96da with SMTP id cm42-20020a056870b62a00b000ddf3b096damr3027837oab.258.1651780713715;
+        Thu, 05 May 2022 12:58:33 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id q130-20020acad988000000b00324f24e623fsm993653oig.3.2022.05.05.12.58.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 May 2022 12:58:33 -0700 (PDT)
+Received: (nullmailer pid 94673 invoked by uid 1000);
+        Thu, 05 May 2022 19:58:32 -0000
+Date:   Thu, 5 May 2022 14:58:32 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     Martin Botka <martin.botka@somainline.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: qcom: msm8974-hammerhead: Add notification LED
-Date:   Thu,  5 May 2022 18:43:37 +0200
-Message-Id: <20220505164336.13210-1-luca@z3ntu.xyz>
-X-Mailer: git-send-email 2.36.0
+        Pavel Machek <pavel@ucw.cz>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-leds@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        linux-kernel@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>
+Subject: Re: [PATCH 1/4] dt-bindings: leds: qcom-lpg: Add compatible for
+ PM660L LPG block
+Message-ID: <YnQsaMOM1ei6SB31@robh.at.kernel.org>
+References: <20220504205704.699500-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220504205704.699500-1-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: André Almeida <andrealmeid@collabora.com>
+On Wed, 04 May 2022 22:57:01 +0200, Marijn Suijten wrote:
+> Document the availability of an LPG configuration for the PM660L PMIC in
+> the Qualcomm Light Pulse Generator driver.
+> 
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+>  Documentation/devicetree/bindings/leds/leds-qcom-lpg.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-Nexus 5 has a RGB LED connected to the TRILED and hence channels 7, 6 and
-5 of the LPG. Add a node describing this.
-
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Signed-off-by: André Almeida <andrealmeid@collabora.com>
----
-This patch depends on the PM8941 LPG patch:
-https://lore.kernel.org/linux-arm-msm/20220504205411.1510667-1-bjorn.andersson@linaro.org/
-
- .../qcom-msm8974-lge-nexus5-hammerhead.dts    | 30 +++++++++++++++++++
- 1 file changed, 30 insertions(+)
-
-diff --git a/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts b/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-index 9493886a5c0d..94f3149d9f87 100644
---- a/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-+++ b/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-@@ -3,6 +3,7 @@
- #include "qcom-pm8841.dtsi"
- #include "qcom-pm8941.dtsi"
- #include <dt-bindings/input/input.h>
-+#include <dt-bindings/leds/common.h>
- #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
- 
- / {
-@@ -313,6 +314,35 @@ otg {
- 	};
- };
- 
-+&pm8941_lpg {
-+	status = "okay";
-+
-+	qcom,power-source = <1>;
-+
-+	multi-led {
-+		color = <LED_COLOR_ID_RGB>;
-+		function = LED_FUNCTION_STATUS;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@7 {
-+			reg = <7>;
-+			color = <LED_COLOR_ID_RED>;
-+		};
-+
-+		led@6 {
-+			reg = <6>;
-+			color = <LED_COLOR_ID_GREEN>;
-+		};
-+
-+		led@5 {
-+			reg = <5>;
-+			color = <LED_COLOR_ID_BLUE>;
-+		};
-+	};
-+};
-+
- &rpm_requests {
- 	pm8841-regulators {
- 		compatible = "qcom,rpm-pm8841-regulators";
--- 
-2.36.0
-
+Acked-by: Rob Herring <robh@kernel.org>
