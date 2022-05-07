@@ -2,89 +2,102 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C827C433FE
-	for <phone-devel@archiver.kernel.org>; Sat,  7 May 2022 15:36:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D30CC433EF
+	for <phone-devel@archiver.kernel.org>; Sat,  7 May 2022 17:46:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1384178AbiEGPkZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 7 May 2022 11:40:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55652 "EHLO
+        id S1446724AbiEGRtq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 7 May 2022 13:49:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378013AbiEGPkW (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 7 May 2022 11:40:22 -0400
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772F443AF3
-        for <phone-devel@vger.kernel.org>; Sat,  7 May 2022 08:36:34 -0700 (PDT)
-Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+        with ESMTP id S1446729AbiEGRtn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 7 May 2022 13:49:43 -0400
+X-Greylist: delayed 599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 07 May 2022 10:45:56 PDT
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [5.144.164.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CCBEA1B4
+        for <phone-devel@vger.kernel.org>; Sat,  7 May 2022 10:45:56 -0700 (PDT)
+Received: from [192.168.1.101] (abxi172.neoplus.adsl.tpnet.pl [83.9.2.172])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id EC6F33F565;
-        Sat,  7 May 2022 17:36:29 +0200 (CEST)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id A23423ED82;
+        Sat,  7 May 2022 19:35:54 +0200 (CEST)
+Message-ID: <c13621d1-8c33-2979-b455-2e1f4e4bc5c8@somainline.org>
+Date:   Sat, 7 May 2022 19:35:53 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH] arm64: dts: qcom: msm8998: Make regulator voltages
+ multiple of step-size
+Content-Language: en-US
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: qcom: msm8998: Make regulator voltages multiple of step-size
-Date:   Sat,  7 May 2022 17:36:27 +0200
-Message-Id: <20220507153627.1478268-1-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.36.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        linux-kernel@vger.kernel.org,
+        Markuss Broks <markuss.broks@gmail.com>
+References: <20220507153627.1478268-1-marijn.suijten@somainline.org>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+In-Reply-To: <20220507153627.1478268-1-marijn.suijten@somainline.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-These voltages are not a multiple of the given step-size 8000 (with base
-voltage 1664000) in pm8998_pldo, resulting in PLDO regulators l18 and
-l22 failing to validate and in turn not probing the rpm-pm8998-regulator
-driver:
 
-    l18: unsupportable voltage constraints 2856000-2848000uV
-    qcom_rpm_smd_regulator rpm-glink:rpm-requests:pm8998-regulators: l18: devm_regulator_register() failed, ret=-22
 
-Round the voltages down for the sake of erring on the safe side, leaving
-a comment in place to document this discrepancy wrt downstream sources.
+On 7.05.2022 17:36, Marijn Suijten wrote:
+> These voltages are not a multiple of the given step-size 8000 (with base
+> voltage 1664000) in pm8998_pldo, resulting in PLDO regulators l18 and
+> l22 failing to validate and in turn not probing the rpm-pm8998-regulator
+> driver:
+> 
+>     l18: unsupportable voltage constraints 2856000-2848000uV
+>     qcom_rpm_smd_regulator rpm-glink:rpm-requests:pm8998-regulators: l18: devm_regulator_register() failed, ret=-22
+> 
+> Round the voltages down for the sake of erring on the safe side, leaving
+> a comment in place to document this discrepancy wrt downstream sources.
+> 
+> Fixes: 390883af89d2 ("arm64: dts: qcom: msm8998: Introduce support for Sony Yoshino platform")
+> Reported-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> ---
+Also:
+Reported-by: Markuss Broks <markuss.broks@gmail.com>
 
-Fixes: 390883af89d2 ("arm64: dts: qcom: msm8998: Introduce support for Sony Yoshino platform")
-Reported-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
----
- .../dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts    | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+Konrad
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts
-index 4a1f98a21031..c21333aa73c2 100644
---- a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts
-@@ -26,11 +26,13 @@ &lab {
- };
- 
- &vreg_l18a_2p85 {
--	regulator-min-microvolt = <2850000>;
--	regulator-max-microvolt = <2850000>;
-+	/* Note: Round-down from 2850000 to be a multiple of PLDO step-size 8000 */
-+	regulator-min-microvolt = <2848000>;
-+	regulator-max-microvolt = <2848000>;
- };
- 
- &vreg_l22a_2p85 {
--	regulator-min-microvolt = <2700000>;
--	regulator-max-microvolt = <2700000>;
-+	/* Note: Round-down from 2700000 to be a multiple of PLDO step-size 8000 */
-+	regulator-min-microvolt = <2696000>;
-+	regulator-max-microvolt = <2696000>;
- };
--- 
-2.36.0
 
+>  .../dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts    | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts
+> index 4a1f98a21031..c21333aa73c2 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts
+> @@ -26,11 +26,13 @@ &lab {
+>  };
+>  
+>  &vreg_l18a_2p85 {
+> -	regulator-min-microvolt = <2850000>;
+> -	regulator-max-microvolt = <2850000>;
+> +	/* Note: Round-down from 2850000 to be a multiple of PLDO step-size 8000 */
+> +	regulator-min-microvolt = <2848000>;
+> +	regulator-max-microvolt = <2848000>;
+>  };
+>  
+>  &vreg_l22a_2p85 {
+> -	regulator-min-microvolt = <2700000>;
+> -	regulator-max-microvolt = <2700000>;
+> +	/* Note: Round-down from 2700000 to be a multiple of PLDO step-size 8000 */
+> +	regulator-min-microvolt = <2696000>;
+> +	regulator-max-microvolt = <2696000>;
+>  };
