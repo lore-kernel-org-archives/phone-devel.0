@@ -2,102 +2,76 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D30CC433EF
-	for <phone-devel@archiver.kernel.org>; Sat,  7 May 2022 17:46:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B0D4C433EF
+	for <phone-devel@archiver.kernel.org>; Sat,  7 May 2022 21:19:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1446724AbiEGRtq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 7 May 2022 13:49:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35710 "EHLO
+        id S1387462AbiEGVW5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 7 May 2022 17:22:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1446729AbiEGRtn (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 7 May 2022 13:49:43 -0400
-X-Greylist: delayed 599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 07 May 2022 10:45:56 PDT
-Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [5.144.164.168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CCBEA1B4
-        for <phone-devel@vger.kernel.org>; Sat,  7 May 2022 10:45:56 -0700 (PDT)
-Received: from [192.168.1.101] (abxi172.neoplus.adsl.tpnet.pl [83.9.2.172])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id A23423ED82;
-        Sat,  7 May 2022 19:35:54 +0200 (CEST)
-Message-ID: <c13621d1-8c33-2979-b455-2e1f4e4bc5c8@somainline.org>
-Date:   Sat, 7 May 2022 19:35:53 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH] arm64: dts: qcom: msm8998: Make regulator voltages
- multiple of step-size
-Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        with ESMTP id S245719AbiEGVW4 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 7 May 2022 17:22:56 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E0152725;
+        Sat,  7 May 2022 14:19:09 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id C6ED81C0BA6; Sat,  7 May 2022 23:19:07 +0200 (CEST)
+Date:   Sat, 7 May 2022 23:19:07 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Markuss Broks <markuss.broks@gmail.com>
-References: <20220507153627.1478268-1-marijn.suijten@somainline.org>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-In-Reply-To: <20220507153627.1478268-1-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] dt-bindings: leds: qcom-lpg: Add compatible for
+ PM660L LPG block
+Message-ID: <20220507211907.GF11004@duo.ucw.cz>
+References: <20220504205704.699500-1-marijn.suijten@somainline.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="GLp9dJVi+aaipsRk"
+Content-Disposition: inline
+In-Reply-To: <20220504205704.699500-1-marijn.suijten@somainline.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
+--GLp9dJVi+aaipsRk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 7.05.2022 17:36, Marijn Suijten wrote:
-> These voltages are not a multiple of the given step-size 8000 (with base
-> voltage 1664000) in pm8998_pldo, resulting in PLDO regulators l18 and
-> l22 failing to validate and in turn not probing the rpm-pm8998-regulator
-> driver:
-> 
->     l18: unsupportable voltage constraints 2856000-2848000uV
->     qcom_rpm_smd_regulator rpm-glink:rpm-requests:pm8998-regulators: l18: devm_regulator_register() failed, ret=-22
-> 
-> Round the voltages down for the sake of erring on the safe side, leaving
-> a comment in place to document this discrepancy wrt downstream sources.
-> 
-> Fixes: 390883af89d2 ("arm64: dts: qcom: msm8998: Introduce support for Sony Yoshino platform")
-> Reported-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-> ---
-Also:
-Reported-by: Markuss Broks <markuss.broks@gmail.com>
+Hi!
 
-Konrad
+> Document the availability of an LPG configuration for the PM660L PMIC in
+> the Qualcomm Light Pulse Generator driver.
 
+Thank you, but I could not apply it. Can you collect reviews and
+resend? I'll only be able to apply first two.
 
->  .../dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts    | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts
-> index 4a1f98a21031..c21333aa73c2 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino-poplar.dts
-> @@ -26,11 +26,13 @@ &lab {
->  };
->  
->  &vreg_l18a_2p85 {
-> -	regulator-min-microvolt = <2850000>;
-> -	regulator-max-microvolt = <2850000>;
-> +	/* Note: Round-down from 2850000 to be a multiple of PLDO step-size 8000 */
-> +	regulator-min-microvolt = <2848000>;
-> +	regulator-max-microvolt = <2848000>;
->  };
->  
->  &vreg_l22a_2p85 {
-> -	regulator-min-microvolt = <2700000>;
-> -	regulator-max-microvolt = <2700000>;
-> +	/* Note: Round-down from 2700000 to be a multiple of PLDO step-size 8000 */
-> +	regulator-min-microvolt = <2696000>;
-> +	regulator-max-microvolt = <2696000>;
->  };
+Best regards,
+							Pavel
+
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--GLp9dJVi+aaipsRk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYnbiSwAKCRAw5/Bqldv6
+8sYaAJ9d519U7+1jCcA/aH+chSf6UjiowwCfYe85zKLIVLOw3A9Akq25Jzg9Ue8=
+=pQAJ
+-----END PGP SIGNATURE-----
+
+--GLp9dJVi+aaipsRk--
