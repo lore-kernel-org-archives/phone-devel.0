@@ -2,99 +2,93 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 421A0C433F5
-	for <phone-devel@archiver.kernel.org>; Fri,  6 May 2022 17:32:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59FCCC433FE
+	for <phone-devel@archiver.kernel.org>; Sat,  7 May 2022 15:26:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1444214AbiEFRgM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 6 May 2022 13:36:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34516 "EHLO
+        id S240194AbiEGPal (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 7 May 2022 11:30:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1444142AbiEFRgK (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 6 May 2022 13:36:10 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33FE05047B;
-        Fri,  6 May 2022 10:32:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1651858347; x=1683394347;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RJIpyH4aTtIDi9aTnRTxdWTTpZ/zrmSOQtRCRTJZbRw=;
-  b=iTnFYc4gmZeuC0UJYgs0IHP/gXEyWLz5sU5Aae/3yIdSAGaEhjYehT2P
-   jtR7dnX5e3opm0UFej3f3BerB90zB1Ty0Xfg+TUpOIl1q+1qfD31Ou/jx
-   8ZEc0HOp1TUQLfSrgytNjrMNCJU1p+WReTiehU+7RY8hueiTb86hMv1rE
-   rIL3TDSCj6caMQXFsq3rW9ownSDu7LYDeMzPROrcZ1ZvbK+PCyjLN5XfC
-   wGyPDspl9U6bQ6KjeyKPdzCEV8MWe++tG0+cePTP7J58uq53hm3pmmObN
-   qcmBguNYF/C4yQC22M7u1kTZcWlZYGH/kKII92lVG/Bku3bOYaLLxg1vs
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10339"; a="268425255"
-X-IronPort-AV: E=Sophos;i="5.91,205,1647327600"; 
-   d="scan'208";a="268425255"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2022 10:32:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,205,1647327600"; 
-   d="scan'208";a="812475599"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 06 May 2022 10:32:23 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nn1oV-000DiS-2G;
-        Fri, 06 May 2022 17:32:23 +0000
-Date:   Sat, 7 May 2022 01:31:56 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: qcom: msm8974-FP2: Add notification LED
-Message-ID: <202205070100.8DCDwfSb-lkp@intel.com>
-References: <20220505163029.6541-1-luca@z3ntu.xyz>
+        with ESMTP id S241242AbiEGPaj (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 7 May 2022 11:30:39 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A32CE3EB8A
+        for <phone-devel@vger.kernel.org>; Sat,  7 May 2022 08:26:51 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id j6so19343200ejc.13
+        for <phone-devel@vger.kernel.org>; Sat, 07 May 2022 08:26:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=+cyldYyGeSN8orZdKQgiNqxz5MRewwWDiC7Zpl6m0ZE=;
+        b=EtQEM/nj6x2u8iik/awsZGdMW9VySLzyDHn2hNOsBTfn27fYbkVvNCb/+rddUBX2ye
+         lOk1+3VB9PwuftOi7MlJjWHMOvWY1+q390RvKA4pTjZm2d5rtz8FOZ8VIhp6a6Etw74V
+         Kg2yUbo5WXkeHWgTQ8atIDGs7kIU9L+ehaXjXNXnImkJsVlvWJtP9gRzOSUFroYbH1KC
+         VCnFQV6fglJm1Tj43wlbxyPlXCbG+pxS5fTFh5del3XIHh7Aw1naE+J/OXPl7cScEdAE
+         n+tBw/R7TJqcpaNBMJCZIHUYkr+OUyIkkCO6Xru4EyUjA48CQruoDX28sOqVRuitVuTI
+         LYYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=+cyldYyGeSN8orZdKQgiNqxz5MRewwWDiC7Zpl6m0ZE=;
+        b=rENmgiaLLy9VS212h4KxT+/5q87DrwtwSLLxN2voujAtCHwXaU2Hyi/dQrGzia9uP0
+         aNrxWrzbXNwnA0HBSif9XjeEhexRydfoDWNbhKt94EJ/ZzCRyfrrpKKlz/rZbxkBHfuM
+         mxMs1z3aWnfXGDpKPcO4hjIUS9gkudHPJ1KCVWpEzzfH5UNihbqSJ3q4KWq51m6ic9W4
+         VCWnfrNQVuMhXKmFrGCmGlz1a0oNfwGVl4UwLT45Z4zmitM0jwEQ4zAitcMcS9vYl22f
+         AiMJtVXFTIqGdXY+xG7y0m9b+YI/BK2F8b6FiI6htMIlIwLKemJ1kx70d7lsG+VxHTfZ
+         45gw==
+X-Gm-Message-State: AOAM532A47CPEwsX4dDKE21bKSklt5NrjGnv9beUCRF/MhamVbiAuvub
+        Ev9zfddhp9x5dzp/7SDSmafyYA==
+X-Google-Smtp-Source: ABdhPJxhNeIRjFu28/yvbAt+uDadqUI1rvXdoSBxdbri0fQfVOftoRHil6NROgFCt+tIjBJ17hgmNw==
+X-Received: by 2002:a17:906:f2c8:b0:6f5:18a1:c410 with SMTP id gz8-20020a170906f2c800b006f518a1c410mr7442640ejb.281.1651937210283;
+        Sat, 07 May 2022 08:26:50 -0700 (PDT)
+Received: from [192.168.0.232] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id l10-20020a170906938a00b006f3ef214e68sm3129018ejx.206.2022.05.07.08.26.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 07 May 2022 08:26:49 -0700 (PDT)
+Message-ID: <40c22f22-8314-adb6-918e-8288090d1aea@linaro.org>
+Date:   Sat, 7 May 2022 17:26:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220505163029.6541-1-luca@z3ntu.xyz>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 1/3] dt-bindings: vendor-prefixes: Add prefix for EBBG
+Content-Language: en-US
+To:     Joel Selvaraj <jo@jsfamily.in>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Stanislav Jakubek <stano.jakubek@gmail.com>,
+        Corentin Labbe <clabbe@baylibre.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hao Fang <fanghao11@huawei.com>
+Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <cover.1651835715.git.jo@jsfamily.in>
+ <BY5PR02MB7009E985CDB281DC9BE9CF37D9C59@BY5PR02MB7009.namprd02.prod.outlook.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <BY5PR02MB7009E985CDB281DC9BE9CF37D9C59@BY5PR02MB7009.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Luca,
+On 06/05/2022 14:17, Joel Selvaraj wrote:
+> Add a prefix for EBBG. They manufacture displays which are used in some
+> Xiaomi phones, but I could not find much details about the company.
+> 
+> Signed-off-by: Joel Selvaraj <jo@jsfamily.in>
 
-Thank you for the patch! Yet something to improve:
 
-[auto build test ERROR on next-20220505]
-[cannot apply to robh/for-next v5.18-rc5 v5.18-rc4 v5.18-rc3 v5.18-rc5]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Luca-Weiss/ARM-dts-qcom-msm8974-FP2-Add-notification-LED/20220506-003524
-base:    632a8c88e339fe86ae6e420a24dfc641d4dd0ab5
-config: arm-allmodconfig (https://download.01.org/0day-ci/archive/20220507/202205070100.8DCDwfSb-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/45445147f88f2416d7bc32c8a72c714818fe466c
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Luca-Weiss/ARM-dts-qcom-msm8974-FP2-Add-notification-LED/20220506-003524
-        git checkout 45445147f88f2416d7bc32c8a72c714818fe466c
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
->> Error: arch/arm/boot/dts/qcom-msm8974pro-fairphone-fp2.dts:123.1-12 Label or path pm8941_lpg not found
-   FATAL ERROR: Syntax error parsing input tree
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Best regards,
+Krzysztof
