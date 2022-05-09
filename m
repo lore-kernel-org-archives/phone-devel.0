@@ -2,123 +2,81 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C332FC433F5
-	for <phone-devel@archiver.kernel.org>; Mon,  9 May 2022 19:54:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2116CC433F5
+	for <phone-devel@archiver.kernel.org>; Mon,  9 May 2022 21:07:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233226AbiEIT54 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 9 May 2022 15:57:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41900 "EHLO
+        id S230037AbiEIVLq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 9 May 2022 17:11:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229785AbiEIT5z (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 May 2022 15:57:55 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88F8126A702;
-        Mon,  9 May 2022 12:54:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652126040; x=1683662040;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TQPJMVgr8Y0+pWZ1dG23nKFgTtXv/p/Uqh4dA7ld2SY=;
-  b=e0EheOJiI74jhMylzHiUmbJnuTYjsKvNNBWAI/j4Bv1GsbCA0X20PXgv
-   bVxAB11ykd/UkPBRGbWYWgHfknsi74oM7Zza5Ns6g5DSiKAcniewruYUX
-   /AoJxdLXvbKU6tJuo/2HZkSFgrLTpdn3HCnzzd153qHZvBygSjHYGFAgb
-   IKL0Qqx/+nFHRSBVLZdkkURKoOvgEaZsgtLQvsWY5wo5M6WNoXH+8yC4p
-   hUtD9gmubJ/i/JIFT5Gp0PBzoA5oJ+qjKoE6nL6rHzwtMGVFzvcYfvrzt
-   +pIn/RrATc5gSczOg+BBYrTK85sY0EBWrg+gz1CSzxcpG9zaFd7ribwgJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10342"; a="269086723"
-X-IronPort-AV: E=Sophos;i="5.91,212,1647327600"; 
-   d="scan'208";a="269086723"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2022 12:53:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,212,1647327600"; 
-   d="scan'208";a="669507546"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 09 May 2022 12:53:55 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1no9S7-000GqY-6u;
-        Mon, 09 May 2022 19:53:55 +0000
-Date:   Tue, 10 May 2022 03:53:03 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        daniel.lezcano@linaro.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org, tglx@linutronix.de,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        matthias.bgg@gmail.com, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        with ESMTP id S229945AbiEIVLn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 May 2022 17:11:43 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDCF6E7328;
+        Mon,  9 May 2022 14:07:48 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: kholk11)
+        with ESMTPSA id DE5E41F430CB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1652130467;
+        bh=74FyHDOOizk+TMT3i3Kx8M2B5GpKxJp/DqS60eMcOH8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=hrucb9ZEUOvcrLczb4CqvrxAcAGDIWXe2oBJDiJDfkI30WAO2cPhDUWIM9tHp3Qqi
+         1RAuGwyA4d1JrjsAiVAv8kxuyHm7COrblIg0GIfE7v5rqkOWIV/no3ohYRgkSgIhiJ
+         9/e7vcUnzlL0NiazyVf1JrzpSmSRRr0Hrhff4xbRtsCjCHgzNIZD6aAbvbFiwGqmm4
+         3yXyuxBxjHkpdHwEJZWltTFVMQDf5xEF19BunbEv1aQMolhdUuuUDGpGW+kFywNqy2
+         Q+UJJyqOLju4wg74xYC7JBjtsYmdZK98sEE0tzKv9HHkGGD6qp60N9Tvnn3XUKi9tx
+         0vVlqmd7aaVFw==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     daniel.lezcano@linaro.org
+Cc:     tglx@linutronix.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, konrad.dybcio@somainline.org,
         marijn.suijten@somainline.org, martin.botka@somainline.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         paul.bouchara@somainline.org,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Subject: Re: [PATCH 2/2] clocksource/drivers/timer-mediatek: Implement
- CPUXGPT timers
-Message-ID: <202205100325.mvo9fxmN-lkp@intel.com>
-References: <20220509102058.3064215-3-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v2 0/2] MediaTek SoC ARM/ARM64 System Timer
+Date:   Mon,  9 May 2022 23:07:38 +0200
+Message-Id: <20220509210741.12020-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220509102058.3064215-3-angelogioacchino.delregno@collabora.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi AngeloGioacchino,
+In an effort to give some love to the apparently forgotten MT6795 SoC,
+I am upstreaming more components that are necessary to support platforms
+powered by this one apart from a simple boot to serial console.
 
-Thank you for the patch! Perhaps something to improve:
+This series introduces support to start the System Timer for the CPU
+cores found in various MediaTek SoCs including, but not limited to the
+MT6795 Helio X10 - and will most probably unblock many developers for
+the upstreaming of various platforms.
 
-[auto build test WARNING on tip/timers/core]
-[also build test WARNING on robh/for-next v5.18-rc6 next-20220509]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+For a broad overview of why/what/when, please look at the description
+of patch [2/2] in this series.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/AngeloGioacchino-Del-Regno/MediaTek-SoC-ARM-ARM64-System-Timer/20220509-182806
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git f4b62e1e1137507268c2c63dc4e6da279dc58e9f
-config: mips-randconfig-r015-20220509 (https://download.01.org/0day-ci/archive/20220510/202205100325.mvo9fxmN-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project a385645b470e2d3a1534aae618ea56b31177639f)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install mips cross compiling tool for clang build
-        # apt-get install binutils-mips-linux-gnu
-        # https://github.com/intel-lab-lkp/linux/commit/cd08992dd0c0e2c02229be62ecb2a51da4c1d315
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review AngeloGioacchino-Del-Regno/MediaTek-SoC-ARM-ARM64-System-Timer/20220509-182806
-        git checkout cd08992dd0c0e2c02229be62ecb2a51da4c1d315
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=mips SHELL=/bin/bash drivers/clocksource/ drivers/gpu/drm/mgag200/
+Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+Changes in v2:
+ - Added back a lost line in commit 2/2 (sorry, commit didn't get amended...!)
+ - Tested again for safety
 
-All warnings (new ones prefixed by >>):
+AngeloGioacchino Del Regno (2):
+  dt-bindings: timer: mediatek: Add CPUX System Timer and MT6795
+    compatible
+  clocksource/drivers/timer-mediatek: Implement CPUXGPT timers
 
->> drivers/clocksource/timer-mediatek.c:103:6: warning: variable 'val' set but not used [-Wunused-but-set-variable]
-           u32 val;
-               ^
-   1 warning generated.
-
-
-vim +/val +103 drivers/clocksource/timer-mediatek.c
-
-    99	
-   100	static void mtk_cpux_disable_irq(struct timer_of *to)
-   101	{
-   102		const unsigned long *irq_mask = cpumask_bits(cpu_possible_mask);
- > 103		u32 val;
-   104	
-   105		val = mtk_cpux_readl(CPUX_IDX_GLOBAL_IRQ, to);
-   106		val &= ~(*irq_mask);
-   107	}
-   108	
+ .../bindings/timer/mediatek,mtk-timer.txt     |   4 +
+ drivers/clocksource/timer-mediatek.c          | 119 ++++++++++++++++++
+ 2 files changed, 123 insertions(+)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.35.1
+
