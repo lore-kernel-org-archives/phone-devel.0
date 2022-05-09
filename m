@@ -2,109 +2,97 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 033E0C433EF
-	for <phone-devel@archiver.kernel.org>; Mon,  9 May 2022 06:46:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AB10C433F5
+	for <phone-devel@archiver.kernel.org>; Mon,  9 May 2022 09:13:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229825AbiEIGtq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 9 May 2022 02:49:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52354 "EHLO
+        id S229509AbiEIJQe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 9 May 2022 05:16:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231270AbiEIGnG (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 May 2022 02:43:06 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518A118FF1D
-        for <phone-devel@vger.kernel.org>; Sun,  8 May 2022 23:39:11 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id l18so24795660ejc.7
-        for <phone-devel@vger.kernel.org>; Sun, 08 May 2022 23:39:11 -0700 (PDT)
+        with ESMTP id S236367AbiEIImg (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 May 2022 04:42:36 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E425E1611D0
+        for <phone-devel@vger.kernel.org>; Mon,  9 May 2022 01:38:40 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id n10so25369898ejk.5
+        for <phone-devel@vger.kernel.org>; Mon, 09 May 2022 01:38:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=UV9zjmHYlW+6A7MQ6c6pItDR5gnRmcinDnUlAmO8o4s=;
-        b=hzjmM6oUphOTv/1VPY1VsofK8BtDOdAvdqw4l2wRm3nyyk3knoYA+470tzaBgBWByW
-         oEx9yq4xf8wLj8MarLGMhbvPhJitxVqIkJndkI0RUgIahTHHllfHLmQ2Cr3DEPh8mprK
-         T3jeoqxaCup6Y39F7tDd3zWaxPGAX0dtt4CaEzuZogh/QsUqL5yB1rdpHej9KjW1zq2I
-         4dL4ePYA2i/GnSoUFPfAHtketeRvOuxR+KBqGYwlAIN1Nv1AuSBG+gczDO8xiEQDEwCZ
-         hjMEsjHmmft2ZOAncTFIIHmOZE9IOLHUXfBC+/3qUVuevlU0m7kZ1HcWMDpVEMfE5Hfs
-         GzZw==
+        bh=rntni4SQyiBF3kclcH/uwuYNMjc+0Gav6ahcVT8jLWA=;
+        b=bk1/jNFbKZ6drKaeIveJ1CWelZ1cpTEL75vlQwdj0IW7KioIx5N2FF24J+6CabFZBY
+         9NdXBECWmNbxBwTqEsM1kj8T3e9YtCVZgXvnEZb3hZQFdTBLszNu62WRo52m1w71bXR1
+         vk3KLowS2Qo7EgsaCjkpnFpzkSQvQzSW1BdBhcBvCJICOKhOAPs5UFK7EX01pcQat99Z
+         dyJgo7BYeFTdiqRdcfwC0/H4SpgNIg9gONcl/WW4TxzYaxqVuzHT+/ZrNkCiabCxqRJ8
+         ncmwUOB7q4OexlrPbVI9z5H5BFXuzT02OwX8ptniWXjnyiwxT1ZcfTO/bB/feE8FIc/1
+         pO3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=UV9zjmHYlW+6A7MQ6c6pItDR5gnRmcinDnUlAmO8o4s=;
-        b=Tt7pJGgETjl+b4bj1JO1gOAQRa0LAwU9611lcOwZdCbsatJIX4iixxY4AHw0Amtha1
-         v6wI6snYtDLurdQkecjSuHz74PQN7gGI9XF/Jn56GjXh69QgZ8eIVrijOFDuUhMYUnt3
-         p0PLij4CMLBU6XGMPMJuRKyTOviEg6qau20G/qQHk9kHVRlWg7zdhCtmtOTyXI9o9Us/
-         lSkP+CwRf+sh43regNqjEIvE0DfOX706J+lhTRjlJORbkl/J205UzCwEQI7vzIIu6zWO
-         EuT+fTGylvM20OSLFVul+gUCuw2iMjP5vEHTaRDjjl1nKQDQmzZtP24RfkO0Dc3N1Wca
-         EaSQ==
-X-Gm-Message-State: AOAM531fGNpYcPtt6U9ljqLtO+uUsQ82Fw27OkRUMXJ5X5mg2VwEAWpJ
-        7e56aIebWUMQHajBjmoNELI3uw==
-X-Google-Smtp-Source: ABdhPJwods/7Sd25/CejtLdRC3yOQ4HyzjC7vaMwqSaAKsR5nOmQu3wz5BjBUvUcVGvObNORipndng==
-X-Received: by 2002:a17:907:8693:b0:6f8:635a:1d32 with SMTP id qa19-20020a170907869300b006f8635a1d32mr7747735ejc.663.1652078333319;
-        Sun, 08 May 2022 23:38:53 -0700 (PDT)
-Received: from [192.168.0.242] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id mj9-20020a170906af8900b006f4c82c2b12sm4693247ejb.19.2022.05.08.23.38.52
+        bh=rntni4SQyiBF3kclcH/uwuYNMjc+0Gav6ahcVT8jLWA=;
+        b=h1JHmyCyJ6+TfaIhmVShYpwpymdr0jf9hqaM26joBiMTPl6kZ6x6mdUPBNOBXrpmU6
+         30QSdmoR7VxuYQEXqsChd5/u7vWVkycpf7Gh5fCntGpiGxNjjQmNTxdufhwBMsjdJylc
+         SeDFglZF+A5dCSXTk/vvUUmir6QdwTOkzrpJP30lKKBX57OfAjpvLHwIJiu94iyOiS3G
+         8YDSwJuJKim/BOl57bbcd9Si3opfhiBo5eMQtOmaGegmCYw5FrDH+j9uHakOXnKxQZ3o
+         bNTc4uzQYABmSrIQTN+Mvki8vqykrxxlLQVNlxTgxnUpwBrfw0ikmVpE164Kt4uodjfm
+         X0fQ==
+X-Gm-Message-State: AOAM533sVDayurMWHK05JJJbuUipzjGkPVntHZzbYocG5MtB/VRWVh8h
+        FA4LwYRYdanmLgsXjACEljPgug==
+X-Google-Smtp-Source: ABdhPJwv83eNKe0k4LJHVdnwRwqZaK6uzaa5/2ImTxiD3IfkbrSYsnyFetysu+O+gxXXo2FrjJVEtQ==
+X-Received: by 2002:a17:906:a05a:b0:6ef:a44d:2f46 with SMTP id bg26-20020a170906a05a00b006efa44d2f46mr13457193ejb.192.1652085519443;
+        Mon, 09 May 2022 01:38:39 -0700 (PDT)
+Received: from [192.168.0.243] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id p9-20020a170906140900b006f3ef214dcdsm4840869ejc.51.2022.05.09.01.38.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 May 2022 23:38:52 -0700 (PDT)
-Message-ID: <0fdfcc16-7b80-47e9-709c-648d3a0cd6fc@linaro.org>
-Date:   Mon, 9 May 2022 08:38:51 +0200
+        Mon, 09 May 2022 01:38:38 -0700 (PDT)
+Message-ID: <bef4922d-4a32-f184-44a1-8f5430190938@linaro.org>
+Date:   Mon, 9 May 2022 10:38:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.1
-Subject: Re: [PATCH 2/3] dt-bindings: display: Add bindings for EBBG FT8719
+Subject: Re: [PATCH v2] dt-bindings: qcom,pdc: convert to YAML
 Content-Language: en-US
-To:     Joel Selvaraj <jo@jsfamily.in>
-Cc:     airlied@linux.ie, clabbe@baylibre.com, daniel@ffwll.ch,
-        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        fanghao11@huawei.com, linus.walleij@linaro.org,
-        linux-kernel@vger.kernel.org, linux@rempel-privat.de,
-        phone-devel@vger.kernel.org, robh+dt@kernel.org, sam@ravnborg.org,
-        shawnguo@kernel.org, stano.jakubek@gmail.com,
-        thierry.reding@gmail.com, ~postmarketos/upstreaming@lists.sr.ht
-References: <2ab35af2-b067-4243-35ed-a592a7046374@linaro.org>
- <BY5PR02MB7009A604AC912DC78FAF42A5D9C69@BY5PR02MB7009.namprd02.prod.outlook.com>
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        linux-arm-msm@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Rob Herring <robh@kernel.org>, Andy Gross <agross@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+References: <20220103074348.6039-1-luca.weiss@fairphone.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <BY5PR02MB7009A604AC912DC78FAF42A5D9C69@BY5PR02MB7009.namprd02.prod.outlook.com>
+In-Reply-To: <20220103074348.6039-1-luca.weiss@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 09/05/2022 07:08, Joel Selvaraj wrote:
-> Hi Krzysztof Kozlowski,
+On 03/01/2022 08:43, Luca Weiss wrote:
+> Convert the PDC interrupt controller bindings to YAML.
 > 
-> A quick question.
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> ---
+> Changes since v1:
+> * Adjust description of second reg-name as suggested by Maulik Shah
 > 
-> On 07/05/22 21:02, Krzysztof Kozlowski wrote:
->  >> +  backlight: true
->  >> +  port: true
->  >
->  > Both should not be needed - they come from panel-common.yaml. They might
->  > stay in list
+> @Rob Herring: Hope it's ok to keep your R-b given the above changes
 > 
-> I see that almost 54 panels mention "port: true" and 46 panels mention
-> "backlight: true". Almost all panels refer the panel-common.yaml too.
+> This patch depends on the following patch, which fixed sm8250 & sm8350
+> compatibles and adds sm6350.
+> https://lore.kernel.org/linux-arm-msm/20211213082614.22651-4-luca.weiss@fairphone.com/
 
-They need them only if they use "additionalProperties:false".
-> 
-> So I think specifying them as true is just for extra clarity that
-> these properties are usually used by this panel? But I am not very sure.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-If they don't use additionalProperties:false, then the explanation could be:
-1. Just for clarity as you say, because they might want to require
-property/node which is listed in the properties, otherwise it is a bit
-confusing.
-2. They were copying first example without actually checking...
-
-> Should I leave them be? or it's still recommended to remove them?
-
-It's not a big deal and I do not have strong opinion, but I would
-propose to remove them from list of properties and still keep port in
-"required"
-
+Luca,
+I think this needs resending as dependency was merged. Alternatively,
+maybe Bjorn could pick it up through QCom SoC?
 
 Best regards,
 Krzysztof
