@@ -2,25 +2,25 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EE0EC433FE
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EA9AC4332F
 	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 22:06:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348557AbiEKWGZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S1348542AbiEKWGZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Wed, 11 May 2022 18:06:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59594 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348544AbiEKWGU (ORCPT
+        with ESMTP id S1348548AbiEKWGY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 11 May 2022 18:06:20 -0400
-Received: from relay02.th.seeweb.it (relay02.th.seeweb.it [5.144.164.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 199D722B26
-        for <phone-devel@vger.kernel.org>; Wed, 11 May 2022 15:06:18 -0700 (PDT)
+        Wed, 11 May 2022 18:06:24 -0400
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 224B522BE4;
+        Wed, 11 May 2022 15:06:18 -0700 (PDT)
 Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 0716220865;
-        Thu, 12 May 2022 00:06:15 +0200 (CEST)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id BB17120864;
+        Thu, 12 May 2022 00:06:16 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org,
         Bjorn Andersson <bjorn.andersson@linaro.org>
@@ -33,13 +33,11 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Marijn Suijten <marijn.suijten@somainline.org>,
         Andy Gross <agross@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/7] dt-bindings: pinctrl: qcom-pmic-gpio: Add pm6125 compatible
-Date:   Thu, 12 May 2022 00:06:08 +0200
-Message-Id: <20220511220613.1015472-3-marijn.suijten@somainline.org>
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 3/7] pinctrl: qcom: spmi-gpio: Add pm6125 compatible
+Date:   Thu, 12 May 2022 00:06:09 +0200
+Message-Id: <20220511220613.1015472-4-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220511220613.1015472-1-marijn.suijten@somainline.org>
 References: <20220511220613.1015472-1-marijn.suijten@somainline.org>
@@ -49,34 +47,26 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The pm6125 comes with 9 GPIOs, without holes.
+The pm6125 has 9 GPIOs with no holes inbetween.
 
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/qcom/pinctrl-spmi-gpio.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
-index 22dbcba752d0..ef7a4a9450a4 100644
---- a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
-+++ b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
-@@ -20,6 +20,7 @@ properties:
-           - qcom,pm2250-gpio
-           - qcom,pm660-gpio
-           - qcom,pm660l-gpio
-+          - qcom,pm6125-gpio
-           - qcom,pm6150-gpio
-           - qcom,pm6150l-gpio
-           - qcom,pm6350-gpio
-@@ -107,6 +108,7 @@ $defs:
-         description:
-           List of gpio pins affected by the properties specified in
-           this subnode.  Valid pins are
-+                 - gpio1-gpio9 for pm6125
-                  - gpio1-gpio10 for pm6150
-                  - gpio1-gpio12 for pm6150l
-                  - gpio1-gpio9 for pm6350
+diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
+index a0c45b305981..fd5fff9adff0 100644
+--- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
++++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
+@@ -1146,6 +1146,7 @@ static const struct of_device_id pmic_gpio_of_match[] = {
+ 	{ .compatible = "qcom,pm660-gpio", .data = (void *) 13 },
+ 	/* pm660l has 12 GPIOs with holes on 1, 2, 10, 11 and 12 */
+ 	{ .compatible = "qcom,pm660l-gpio", .data = (void *) 12 },
++	{ .compatible = "qcom,pm6125-gpio", .data = (void *) 9 },
+ 	{ .compatible = "qcom,pm6150-gpio", .data = (void *) 10 },
+ 	{ .compatible = "qcom,pm6150l-gpio", .data = (void *) 12 },
+ 	{ .compatible = "qcom,pm6350-gpio", .data = (void *) 9 },
 -- 
 2.36.1
 
