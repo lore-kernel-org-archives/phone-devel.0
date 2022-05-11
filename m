@@ -2,130 +2,143 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42CD3C4332F
-	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 16:18:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DC719C433EF
+	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 16:50:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344592AbiEKQSB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 11 May 2022 12:18:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37302 "EHLO
+        id S240307AbiEKQuM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 11 May 2022 12:50:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344526AbiEKQRI (ORCPT
+        with ESMTP id S1345118AbiEKQuB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 11 May 2022 12:17:08 -0400
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A0CD2C65F;
-        Wed, 11 May 2022 09:16:58 -0700 (PDT)
-Received: by mail-pg1-x533.google.com with SMTP id a191so2219705pge.2;
-        Wed, 11 May 2022 09:16:58 -0700 (PDT)
+        Wed, 11 May 2022 12:50:01 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9731FD1FD
+        for <phone-devel@vger.kernel.org>; Wed, 11 May 2022 09:49:54 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id i10so4555121lfg.13
+        for <phone-devel@vger.kernel.org>; Wed, 11 May 2022 09:49:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=rIh+E3nj4ZucvsTWikm/zNRtjIM6XJcYz1RFNPDBCWk=;
-        b=pKe5IPl9JxJ0F28WDZ8Rs7q9M09T1glWF2keFY/yF0wEnuz8uqbnx9145UbAcNZunj
-         tRdCXrWDQk1tR0taCF+FvfX3gYJW0jtVtx5t0Iwv9E0u9aflrek1oOkncXLFPhqWWf/3
-         8xnwQqxSpSHiteWnjfsTCPhshTxfoUbmlWDHtAXht9D8MjATHdAu5bg9Iknm2cSpLrrz
-         hVCciKoiHWb4gDFZFDcCiTd5D67L2dFQ0695jbp1kePc6GBYITLnuZNb2O1pvfRY2ayj
-         NpcUGQgcOVSBROYgMefaswyb8GPo3BumkWxKJq86VKaFIjUQvEpIVlhtYgFpY+A+xPen
-         8n/Q==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=IIyLanREwoFCx9oDtJP6l/B2GLW4c3uyyeB7WHPqlcY=;
+        b=hQAzUQgpbX2JYdHBjVsDzoxLXtlUQwzlLE3xUX4lIk/B4hD8khNTplc3IrbJgpxjNK
+         QMob6SR1yxKEOuV7y5z8PgOVpPfRH8z7+LBnlMJx5EgIIE/orkkqAGNF9AGJd32nS0ca
+         y2a2REBFsZudkVlDBZkJHyvfxl5fVtzMywgJ61Clbq3BnRVIK8KUf49I04U5uR46HiZE
+         O1ai6iDAYhJzAb/C1XF1UCAZb+e3Z9iFGpuhyKPKan4B6GgQa3g27oowOmJ+jzTzayhm
+         ApbPbRxQHSQpJrRRKLw8e88d8FFJn7rr9az2pTiBwbJlW94voFQ3ojN/MbJz1ypdaSeJ
+         zYTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=rIh+E3nj4ZucvsTWikm/zNRtjIM6XJcYz1RFNPDBCWk=;
-        b=3Qw8ymLi3erKp8V6sOxNa5tlYI5fW1AVDPTMisJ0LPLEk94x503c2E5JQbBVhBmv9M
-         JJiSMC/mk57IflEMsDc+O2i9lBG6o9UNNRH+fSGThAXxTyGh18YIs8vyc9IXHJWJNJje
-         QiS6fv+cmt2UVcALkgvyS5ECDyy8s8XUTOJ0FWjKjmhA1ZelVvP8xecnsMbxvwXkl9qQ
-         MECJx5rJ6Xujl9x0ouvaCzAF2sVbCViqsiscjZ7AifbMKgVbvDMVL5zy8Dv6PEfjfn8i
-         jmknsAJgOgKiVDWzG9HKX4rjs4ePwICyfp8vIBoFzz7ozAQVRYRGkpvx9iFHUhFdMznZ
-         hvkw==
-X-Gm-Message-State: AOAM531Kde+8T9FQBfnvaenEpWgF+AuYtkopD9uQ9FhbgS/UzR9v4Qz/
-        DCAnICey2VBTnuZNaQM1d9EjLYnZKJ5mO6fg
-X-Google-Smtp-Source: ABdhPJxc44jVyPJPWlqlXL6RS8YDigdvrW2+6zf8UtC0DIAUADXr1EBGHtKbWqWOfQGXKosPHfhf0g==
-X-Received: by 2002:a63:9752:0:b0:3c6:5a7a:5bd6 with SMTP id d18-20020a639752000000b003c65a7a5bd6mr19901744pgo.390.1652285817617;
-        Wed, 11 May 2022 09:16:57 -0700 (PDT)
-Received: from skynet-linux.local ([49.204.239.218])
-        by smtp.googlemail.com with ESMTPSA id x7-20020a17090a1f8700b001ded49491basm220322pja.2.2022.05.11.09.16.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 May 2022 09:16:57 -0700 (PDT)
-From:   Sireesh Kodali <sireeshkodali1@gmail.com>
-To:     linux-remoteproc@vger.kernel.org
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=IIyLanREwoFCx9oDtJP6l/B2GLW4c3uyyeB7WHPqlcY=;
+        b=t97eLxUX2cdTtpQmo3oYVrhYjYu3LQ2kOxQFdgEhOIQMY4EmliEKvNmy8WFZj5ehxC
+         0VsjprT51RHIjV8j5Hbh7AlWm495Ou3c0hl+xv4YG1ol+SS7h5IkU4TK1WNxVag9/cx3
+         Kawo+GcuUnlezLnMIpGN7dhvb8K8rGZ/8Ul9ZIjmjXjenYpwKHt5BJeTeGBZBMoqqSyD
+         tK242wXyN8GzMjLdUoR+53sujB82bPa0eJeq6MJa4dfaQuQuezhpCfqC8o8ASMhGQtb8
+         Ml9CEQ2Kf0oy1t57SR+hfrUKEk0+Epya5+emT+BbDbG7ZskpdZyZz4e2K6jJAMyOVn2K
+         uK2w==
+X-Gm-Message-State: AOAM5312ctBMNF5GK1SBnLO5ID2TFtJ/Dlard5LaqtW4I1Bh4f68xKA+
+        mcFzdUcaXttDtfrINkZ+KF0gPQ==
+X-Google-Smtp-Source: ABdhPJxRxRD4JQYBVlHS8IbpgAaqLULxwcV4dQ97/QQyLbn3k+ah3uFu5iuDXB1dZuBPSADzZVyDAw==
+X-Received: by 2002:a05:6512:1694:b0:448:3fd4:c7a9 with SMTP id bu20-20020a056512169400b004483fd4c7a9mr21053901lfb.29.1652287792448;
+        Wed, 11 May 2022 09:49:52 -0700 (PDT)
+Received: from [192.168.1.211] ([37.153.55.125])
+        by smtp.gmail.com with ESMTPSA id b28-20020a19645c000000b0047255d211c3sm351349lfj.242.2022.05.11.09.49.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 May 2022 09:49:52 -0700 (PDT)
+Message-ID: <8480eee1-42df-46b2-9ff5-2b09fdcc7dc6@linaro.org>
+Date:   Wed, 11 May 2022 19:49:51 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 1/9] remoteproc: qcom: pas: Add MSM8953 ADSP PIL support
+Content-Language: en-GB
+To:     Sireesh Kodali <sireeshkodali1@gmail.com>,
+        linux-remoteproc@vger.kernel.org
 Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, bjorn.andersson@linaro.org,
         devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Sireesh Kodali <sireeshkodali1@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 8/9] dt-bindings: remoteproc: qcom: adsp: Add ADSP on MSM8953
-Date:   Wed, 11 May 2022 21:46:01 +0530
-Message-Id: <20220511161602.117772-9-sireeshkodali1@gmail.com>
-X-Mailer: git-send-email 2.36.0
-In-Reply-To: <20220511161602.117772-1-sireeshkodali1@gmail.com>
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>
 References: <20220511161602.117772-1-sireeshkodali1@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ <20220511161602.117772-2-sireeshkodali1@gmail.com>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20220511161602.117772-2-sireeshkodali1@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add support for booting the Audio DSP on the MSM8953 platform. This is
-used by SoCs like SDM450, SDM625, SDM626, APQ8053, etc. Since the
-configuration is the same on all SoCs, a single compatible string is
-used.
+On 11/05/2022 19:15, Sireesh Kodali wrote:
+> Add support for the Audio DSP PIL found on the Qualcomm MSM8953
+> platform. The same configuration is used on all SoCs based on the
+> MSM8953 platform (SDM450, SDA450, SDM625, SDM632, APQ8053).
+> 
+> Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
+> ---
+>   drivers/remoteproc/qcom_q6v5_pas.c | 31 ++++++++++++++++++++++++++++++
+>   1 file changed, 31 insertions(+)
+> 
+> diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+> index 1ae47cc153e5..4dcb714a1468 100644
+> --- a/drivers/remoteproc/qcom_q6v5_pas.c
+> +++ b/drivers/remoteproc/qcom_q6v5_pas.c
+> @@ -617,7 +617,37 @@ static const struct adsp_data sm8350_adsp_resource = {
+>   	.ssctl_id = 0x14,
+>   };
+>   
+> +static const struct adsp_data msm8953_adsp_resource = {
+> +	.crash_reason_smem = 423,
+> +	.firmware_name = "adsp.mdt",
+> +	.pas_id = 1,
+> +	.has_aggre2_clk = false,
+> +	.auto_boot = true,
+> +	.proxy_pd_names = (char*[]){
+> +		"cx",
+> +		NULL,
+> +	},
+> +	.ssr_name = "lpass",
+> +	.sysmon_name = "adsp",
+> +	.ssctl_id = 0x14,
+> +};
+> +
+>   static const struct adsp_data msm8996_adsp_resource = {
+> +	.crash_reason_smem = 423,
+> +	.firmware_name = "adsp.mdt",
+> +	.pas_id = 1,
+> +	.has_aggre2_clk = false,
+> +	.auto_boot = true,
+> +	.proxy_pd_names = (char*[]){
+> +		"cx",
+> +		NULL,
+> +	},
+> +	.ssr_name = "lpass",
+> +	.sysmon_name = "adsp",
+> +	.ssctl_id = 0x14,
+> +};
+> +
+> +static const struct adsp_data msm8998_adsp_resource = {
 
-Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
----
- Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml | 5 +++++
- 1 file changed, 5 insertions(+)
+This was dropped in 9ae45035ba2be4117edb8fd3952c3c5b84a0b820. Please 
+take care when rebasing your patches.
 
-diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
-index a4409c398193..0e70e49b4e53 100644
---- a/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
-+++ b/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
-@@ -17,6 +17,7 @@ properties:
-   compatible:
-     enum:
-       - qcom,msm8974-adsp-pil
-+      - qcom,msm8953-adsp-pil
-       - qcom,msm8996-adsp-pil
-       - qcom,msm8996-slpi-pil
-       - qcom,msm8998-adsp-pas
-@@ -160,6 +161,7 @@ allOf:
-           contains:
-             enum:
-               - qcom,msm8974-adsp-pil
-+              - qcom,msm8953-adsp-pil
-               - qcom,msm8996-adsp-pil
-               - qcom,msm8996-slpi-pil
-               - qcom,msm8998-adsp-pas
-@@ -275,6 +277,7 @@ allOf:
-           contains:
-             enum:
-               - qcom,msm8974-adsp-pil
-+              - qcom,msm8953-adsp-pil
-               - qcom,msm8996-adsp-pil
-               - qcom,msm8996-slpi-pil
-               - qcom,msm8998-adsp-pas
-@@ -364,6 +367,7 @@ allOf:
-         compatible:
-           contains:
-             enum:
-+              - qcom,msm8953-adsp-pil
-               - qcom,msm8996-adsp-pil
-               - qcom,msm8998-adsp-pas
-     then:
-@@ -547,6 +551,7 @@ allOf:
-           contains:
-             enum:
-               - qcom,msm8974-adsp-pil
-+              - qcom,msm8953-adsp-pil
-               - qcom,msm8996-adsp-pil
-               - qcom,msm8996-slpi-pil
-               - qcom,msm8998-adsp-pas
+>   		.crash_reason_smem = 423,
+>   		.firmware_name = "adsp.mdt",
+>   		.pas_id = 1,
+> @@ -850,6 +880,7 @@ static const struct adsp_data sdx55_mpss_resource = {
+>   static const struct of_device_id adsp_of_match[] = {
+>   	{ .compatible = "qcom,msm8974-adsp-pil", .data = &adsp_resource_init},
+>   	{ .compatible = "qcom,msm8996-adsp-pil", .data = &msm8996_adsp_resource},
+> +	{ .compatible = "qcom,msm8953-adsp-pil", .data = &msm8953_adsp_resource},
+>   	{ .compatible = "qcom,msm8996-slpi-pil", .data = &slpi_resource_init},
+>   	{ .compatible = "qcom,msm8998-adsp-pas", .data = &msm8996_adsp_resource},
+>   	{ .compatible = "qcom,msm8998-slpi-pas", .data = &slpi_resource_init},
+
+
 -- 
-2.36.0
-
+With best wishes
+Dmitry
