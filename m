@@ -2,95 +2,160 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1795FC433EF
-	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 08:22:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94C33C4332F
+	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 08:39:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243571AbiEKIWg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 11 May 2022 04:22:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51804 "EHLO
+        id S243885AbiEKIjg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 11 May 2022 04:39:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243578AbiEKIW3 (ORCPT
+        with ESMTP id S243793AbiEKIj0 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 11 May 2022 04:22:29 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 469EE3A199
-        for <phone-devel@vger.kernel.org>; Wed, 11 May 2022 01:22:27 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id n10so2490728ejk.5
-        for <phone-devel@vger.kernel.org>; Wed, 11 May 2022 01:22:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=IIOcJgbS1/hMQQvn2DCFX+BHhbtb4xhB0glTejG9nd0=;
-        b=nN+tvnytLjTaJLXUpNkGlrL31C7UW1pB6NFTtmXaTXEc/E6YrG1OIKgpwVMC8S+kVK
-         D0zGHuOSWn6VMDT5RVsCrOPzqDPn+ynX+2xgsLJ+esu5HFhKI1L1FfojyWFbLtSNbXuS
-         1qXyVZ1jTq1c48DPsEHHWi1ElZ8UTZzr57W1iPjRSdUmmWlSe8Hm8Pc0jYi+i4kpwRAW
-         hH+yxI/z9Cc1NoWL0nAk+IMz8mhUv1TWwTqWJaA1lqsWAnJvZ/pbzRI35MVvlcqiK0bh
-         yq9FIOhP2dWozNqsyasJ2s6B/nnu1uuSBahdmKMJDmas8sdvCmBeg2zvG6YZlvRLOBiP
-         0WMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=IIOcJgbS1/hMQQvn2DCFX+BHhbtb4xhB0glTejG9nd0=;
-        b=KLElvcgmHoA5W6oehRhoijBMH6/1oAsy8l+JWnzIFu7R49ELLyawBQovuDQwk2lun2
-         hJAU1J1NBkXoy5iiVFz7172IWqfu9ckXnpytFqcKcjAR0dXmWn+Hrcgdrl4xHPtRGQNP
-         Jmw010Yjei9UClCAPx92bCnfdOfXPMECXSueMppcH0NgFvc03teBSMXNkyiAjp6DLOeZ
-         muMQ8hof8WYnVZovslTRq3OjcIb2IZNy2kYIU4UpciIu4uxKe8BbRQTFmCp+7NLtja5o
-         pH0lNAsgQ0bIFimBtJx9ZW4McFzS+iU8Qt4U24UJuv1cCK6Y0lNaPa1osvQlgregsy7O
-         VN4g==
-X-Gm-Message-State: AOAM531m+YmEPngHQ2zAck679Ixe3ymMyP8HMnqw6VtRS9n9/YRplnCb
-        pkWQ0IGVFHb1uKsunRdxc9JKHQ==
-X-Google-Smtp-Source: ABdhPJyQl+2i2St5QQZxqWfls/5xIarQ0xgPypRKf/p7aX8oprL7xHpOkr9jt2CVt3KlxWwPkWf+7Q==
-X-Received: by 2002:a17:907:16a2:b0:6f4:eeb1:f7de with SMTP id hc34-20020a17090716a200b006f4eeb1f7demr23680710ejc.446.1652257345815;
-        Wed, 11 May 2022 01:22:25 -0700 (PDT)
-Received: from [192.168.0.254] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id q20-20020a17090676d400b006f3ef214dddsm686150ejn.67.2022.05.11.01.22.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 May 2022 01:22:25 -0700 (PDT)
-Message-ID: <7783d64c-e48c-5e3d-9560-51197234051a@linaro.org>
-Date:   Wed, 11 May 2022 10:22:23 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v2 2/3] dt-bindings: display: Add bindings for EBBG FT8719
-Content-Language: en-US
-To:     Joel Selvaraj <jo@jsfamily.in>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        Wed, 11 May 2022 04:39:26 -0400
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [5.144.164.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B0A911C363;
+        Wed, 11 May 2022 01:39:22 -0700 (PDT)
+Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id BD5F9205ED;
+        Wed, 11 May 2022 10:39:19 +0200 (CEST)
+Date:   Wed, 11 May 2022 10:39:17 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     phone-devel@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Stanislav Jakubek <stano.jakubek@gmail.com>,
-        Corentin Labbe <clabbe@baylibre.com>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hao Fang <fanghao11@huawei.com>
-Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <cover.1652245767.git.jo@jsfamily.in>
- <BY5PR02MB7009F6D4CC6CA1C433912C56D9C89@BY5PR02MB7009.namprd02.prod.outlook.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <BY5PR02MB7009F6D4CC6CA1C433912C56D9C89@BY5PR02MB7009.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Satya Priya <quic_c_skakit@quicinc.com>
+Subject: Re: [PATCH 2/4] leds: qcom-lpg: Add PM660L configuration and
+ compatible
+Message-ID: <20220511083917.5xhseah7tuzmrn6f@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        phone-devel@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org,
+        Rob Herring <robh@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Satya Priya <quic_c_skakit@quicinc.com>
+References: <20220507221123.2201668-1-marijn.suijten@somainline.org>
+ <20220507221123.2201668-2-marijn.suijten@somainline.org>
+ <YnszX1wdQhUSkgyH@builder.lan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YnszX1wdQhUSkgyH@builder.lan>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 11/05/2022 07:28, Joel Selvaraj wrote:
-> Add bindings for the EBBG FT8719 6.18" 2246x1080 DSI video mode panel,
-> which can be found on some Xiaomi Poco F1 phones. The backlight is
-> managed through the QCOM WLED driver.
+On 2022-05-10 22:54:07, Bjorn Andersson wrote:
+> On Sat 07 May 17:11 CDT 2022, Marijn Suijten wrote:
 > 
-> Signed-off-by: Joel Selvaraj <jo@jsfamily.in>
+> > Inherit PM660L PMIC LPG/triled block configuration from downstream
+> > drivers and DT sources, consisting of a triled block with automatic
+> > trickle charge control and source selection, three colored led channels
+> > belonging to the synchronized triled block and one loose PWM channel.
+> > 
+> > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> > ---
+> >  drivers/leds/rgb/leds-qcom-lpg.c | 18 ++++++++++++++++++
+> >  1 file changed, 18 insertions(+)
+> > 
+> > diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
+> > index cfa3362b2457..30c12ac8eed4 100644
+> > --- a/drivers/leds/rgb/leds-qcom-lpg.c
+> > +++ b/drivers/leds/rgb/leds-qcom-lpg.c
+> > @@ -1271,6 +1271,23 @@ static int lpg_remove(struct platform_device *pdev)
+> >  	return 0;
+> >  }
+> >  
+> > +static const struct lpg_data pm660l_lpg_data = {
+> > +	.lut_base = 0xb000,
+> > +	.lut_size = 0x100,
+> 
+> The documentation tells me that you have 49 entries of LUT on the
+> PM660L.
 
+Downstream DT sources report the full 0x100 range starting at 0xb000 is
+used, before the first channel starts at 0xb100:
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+    https://git.codelinaro.org/clo/la/kernel/msm-4.14/-/blob/LA.UM.8.2.1.r1-06200-sdm660.0/arch/arm64/boot/dts/qcom/pm660l.dtsi#L84-85
 
+However, every LUT entry appears to be two bytes in size so this should
+at least be halved.
 
-Best regards,
-Krzysztof
+The driver does seem to add another 0x42 on top of this base address:
+
+    https://git.codelinaro.org/clo/la/kernel/msm-4.14/-/blob/LA.UM.8.2.1.r1-06200-sdm660.0/drivers/pwm/pwm-qti-lpg.c#L104
+
+(Your LPG driver adds 0x40 - I've seen both used in our downstream
+driver) yet that leaves (0x100-0x42) / 2 = 95 spots.
+
+This is still significantly higher than 49.  Is part of this register
+range used for something else, inaccesible for LUT-value readings or is
+the counter hardware in the LPG limiting this?
+
+The driver codes in a max length of 47:
+
+    https://git.codelinaro.org/clo/la/kernel/msm-4.14/-/blob/LA.UM.8.2.1.r1-06200-sdm660.0/drivers/pwm/pwm-qti-lpg.c#L108
+
+If you're confident about this I'll bump it down to 49 or try validating
+what happens if higher registers are used.
+
+> > +
+> > +	.triled_base = 0xd000,
+> > +	.triled_has_atc_ctl = true,
+> > +	.triled_has_src_sel = true,
+> > +
+> > +	.num_channels = 4,
+> > +	.channels = (struct lpg_channel_data[]) {
+> 
+> This can be const
+
+Thanks for spotting!
+
+- Marijn
+
+> 
+> Regards,
+> Bjorn
+> 
+> > +		{ .base = 0xb100, .triled_mask = BIT(5) },
+> > +		{ .base = 0xb200, .triled_mask = BIT(6) },
+> > +		{ .base = 0xb300, .triled_mask = BIT(7) },
+> > +		{ .base = 0xb400 },
+> > +	},
+> > +};
+> > +
+> >  static const struct lpg_data pm8916_pwm_data = {
+> >  	.num_channels = 1,
+> >  	.channels = (const struct lpg_channel_data[]) {
+> > @@ -1391,6 +1408,7 @@ static const struct lpg_data pm8350c_pwm_data = {
+> >  };
+> >  
+> >  static const struct of_device_id lpg_of_table[] = {
+> > +	{ .compatible = "qcom,pm660l-lpg", .data = &pm660l_lpg_data },
+> >  	{ .compatible = "qcom,pm8150b-lpg", .data = &pm8150b_lpg_data },
+> >  	{ .compatible = "qcom,pm8150l-lpg", .data = &pm8150l_lpg_data },
+> >  	{ .compatible = "qcom,pm8350c-pwm", .data = &pm8350c_pwm_data },
+> > -- 
+> > 2.36.0
+> > 
