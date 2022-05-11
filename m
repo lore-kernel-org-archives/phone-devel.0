@@ -2,25 +2,25 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F1D4C433EF
-	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 22:06:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41569C433FE
+	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 22:06:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347226AbiEKWGT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S1348540AbiEKWGT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Wed, 11 May 2022 18:06:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59370 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348534AbiEKWGS (ORCPT
+        with ESMTP id S1347467AbiEKWGS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Wed, 11 May 2022 18:06:18 -0400
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 366331E3CE
+Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [5.144.164.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1A1B21266
         for <phone-devel@vger.kernel.org>; Wed, 11 May 2022 15:06:17 -0700 (PDT)
 Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id B9B97207D3;
-        Thu, 12 May 2022 00:06:14 +0200 (CEST)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 42BD920862;
+        Thu, 12 May 2022 00:06:15 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org,
         Bjorn Andersson <bjorn.andersson@linaro.org>
@@ -30,50 +30,48 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>
-Subject: [PATCH 0/7] Add Qcom PM6125 PMIC, and use in Sony Xperia Seine PDX201
-Date:   Thu, 12 May 2022 00:06:06 +0200
-Message-Id: <20220511220613.1015472-1-marijn.suijten@somainline.org>
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 1/7] arm64: dts: qcom: pm660: Use unique ADC5_VCOIN address in node name
+Date:   Thu, 12 May 2022 00:06:07 +0200
+Message-Id: <20220511220613.1015472-2-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220511220613.1015472-1-marijn.suijten@somainline.org>
+References: <20220511220613.1015472-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This series adds initial support for the PM6125 PMIC, and its power key
-handling and thermal monitoring capabilities are configured for Sony's
-PDX201 (Xperia 10II).
+The register address in the node name is shadowing vph_pwr@83, whereas
+the ADC5_VCOIN register resolves to 0x85.  Fix this copy-paste
+discrepancy.
 
-One patch for pm660 is included to fix a node address mismatch with its
-reg field.
+Fixes: 4bf097540506 ("arm64: dts: qcom: pm660: Add VADC and temp alarm nodes")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+---
+ arch/arm64/boot/dts/qcom/pm660.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Note that this series has been based on top of:
+diff --git a/arch/arm64/boot/dts/qcom/pm660.dtsi b/arch/arm64/boot/dts/qcom/pm660.dtsi
+index c482663aad56..42f9c51b9c1e 100644
+--- a/arch/arm64/boot/dts/qcom/pm660.dtsi
++++ b/arch/arm64/boot/dts/qcom/pm660.dtsi
+@@ -163,7 +163,7 @@ vadc_vph_pwr: vph_pwr@83 {
+ 				qcom,pre-scaling = <1 3>;
+ 			};
 
-  https://lore.kernel.org/linux-arm-msm/20220508100336.127176-1-marijn.suijten@somainline.org/T/#u
-
-To prevent conflicts with the moving around of sdc2 nodes, presuming
-that series is applied first.
-
-Marijn Suijten (7):
-  arm64: dts: qcom: pm660: Use unique ADC5_VCOIN address in node name
-  dt-bindings: pinctrl: qcom-pmic-gpio: Add pm6125 compatible
-  pinctrl: qcom: spmi-gpio: Add pm6125 compatible
-  iio: adc: qcom-spmi-adc5: Add missing VCOIN/AMUX_THM3/GPIO# channels
-  arm64: dts: qcom: Add PM6125 PMIC
-  arm64: dts: qcom: sm6125-seine: Include PM6125 and configure PON
-  arm64: dts: qcom: sm6125-seine: Configure additional trinket
-    thermistors
-
- .../bindings/pinctrl/qcom,pmic-gpio.yaml      |   2 +
- arch/arm64/boot/dts/qcom/pm6125.dtsi          | 156 +++++++++++++++++
- arch/arm64/boot/dts/qcom/pm660.dtsi           |   2 +-
- .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 161 +++++++++++++++++-
- drivers/iio/adc/qcom-spmi-adc5.c              |  12 ++
- drivers/pinctrl/qcom/pinctrl-spmi-gpio.c      |   1 +
- 6 files changed, 332 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm64/boot/dts/qcom/pm6125.dtsi
-
+-			vcoin: vcoin@83 {
++			vcoin: vcoin@85 {
+ 				reg = <ADC5_VCOIN>;
+ 				qcom,decimation = <1024>;
+ 				qcom,pre-scaling = <1 3>;
 --
 2.36.1
 
