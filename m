@@ -2,140 +2,142 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00076C433F5
-	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 03:54:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96CA5C433EF
+	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 05:28:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229917AbiEKDyO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 10 May 2022 23:54:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59428 "EHLO
+        id S237577AbiEKF2o (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 11 May 2022 01:28:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231158AbiEKDyL (ORCPT
+        with ESMTP id S230153AbiEKF2n (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 10 May 2022 23:54:11 -0400
-Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D494C79A
-        for <phone-devel@vger.kernel.org>; Tue, 10 May 2022 20:54:10 -0700 (PDT)
-Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-e93bbb54f9so1359371fac.12
-        for <phone-devel@vger.kernel.org>; Tue, 10 May 2022 20:54:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=0WrSL/b+MR9+m4rRbjGXRX60B+r7zy7wkt64zUH48oY=;
-        b=rDNhyYBHwTL4zR2u6Rh91X182mgiFM7lrZSGXKOmY04hNhVAPm4Dgx0gU5cVJ2vGDC
-         VVK0s4uScAZKYRBD/jNDbgkWWuBV5j+CeByod0LNmbTJY6H1BdD52pzirbR50niNQOWs
-         4UcMfF4B2g4Ic9rYOGzl0LOSN1aaLtLb/R9U55fs4o/J0pMUPrqbzTdJSVKL4Fh78wGH
-         oqA+4Tao/oGIRZvarBpyi6x4Gmuur5E3YRVUVPWpq48UoXcyFBPUo67hsWk85HdW1Iyu
-         UKVBVAQsXQiIpeynG/0M9jNsljMLvTSFcolAfzNWxtFedgaFi3D/S+XxgXcjaVIGS2sh
-         xkqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=0WrSL/b+MR9+m4rRbjGXRX60B+r7zy7wkt64zUH48oY=;
-        b=32OLwazz5hsSAl9LZWaB+YDOnKmuIVwmqjflqAorFF7FGppREhLm4WyPL9WT3XyDO6
-         oYS6dYyVZgmFwEtmPdWxJANzLFsBResgZkz/1P7/UwwoSJKBdTA/lS6lm8E33iPC+daV
-         k6znkGOpXqy9L1LjskHKVUJfxVhTJOEzr7WJrdz30OcdIfsbHBcD3RbKPL1BTcQwrp1Y
-         l1Iov0PaJ4I4B9p80bnwfHlmiM54SsP3mznaC3nC3VpKNWV+r0nM0mwlQpskhwrawvtJ
-         z+mgK2rxJ7uuZJUNz/7X5qtY5Hh7QjnKDg0KEpzmmxO+j3ddeAZdI76kHJ12mZ1b6Of0
-         DTTw==
-X-Gm-Message-State: AOAM531gc8DmcZ09hp5h3ymbg4zobECVOIKKjVEVyrbjO/bgCaaEk/r4
-        NprQcGLcW8/EuXnFdz+9QRF6Hw==
-X-Google-Smtp-Source: ABdhPJyoFDZ6uvhFkWPUEbCyNMWvl/HBFzH2dTTIdFcRPaK+Uq/uWTzwMP5AeRGfoz4hWcMS4Eo26w==
-X-Received: by 2002:a05:6870:818a:b0:f1:1223:3afd with SMTP id k10-20020a056870818a00b000f112233afdmr497822oae.271.1652241250132;
-        Tue, 10 May 2022 20:54:10 -0700 (PDT)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id l6-20020a056830154600b0060603221269sm397354otp.57.2022.05.10.20.54.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 May 2022 20:54:09 -0700 (PDT)
-Date:   Tue, 10 May 2022 22:54:07 -0500
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org,
-        Rob Herring <robh@kernel.org>,
+        Wed, 11 May 2022 01:28:43 -0400
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1anam02olkn2084.outbound.protection.outlook.com [40.92.44.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 225DF2438E9;
+        Tue, 10 May 2022 22:28:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FyjvYBS9LiUkBAIebg7Th1g3bsU7d10umVMSWB4bv+cpHl2h1BvDOQ2h46LEF++w7P6Oms/Eh4J5gxV4X3rxws1BTKue6BKzqhcNr/d9wa8rASbDo/Z3/QecHE7XEZPBOJC2RlZdztDexCYd6JOcWaSJqK0+hNwVIvsCAqNZPkHHwOyU609LtL0dBqR6BRya9+dT9s2FOBcbh16s9BYbGdhSy19khXUadZ8MzWyBrwOD7G2q0P95JqXGd3GUhbY4fB4K7pJsJDtW3XSb5eOjXffL44SKG5TtScpQe5BV/uJk0NHw7RdfbIVQntZinjF9SBzJaNZWXLBpq1iEBYNehQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bB1pL3u/luXjA3VfglqgqHt+krdJRQy+38r7T7uIm8g=;
+ b=LncRzqvEFGEF6PlyisRWbAGhI2W3sAWW4fbMWGzjFfcUx0DEWmEJf6vTyhBavhww6LFKpYn17NMTi1sQID9EIgEuX+fd3CDXdz8nss9K/Mtavs6KGU08Xi1OaYEdlpsldl8Rd0yNx+YXDFS42D4gIba8Q8mz+sTGjoMJTb91ztIX8h8oz4NSA0220wvXFoQaJ8qf/4JigbKzIVO6eMY9nd01/CPXE3//VCeTkIBfwGNwoQNT3phlkPNoh40xcyCKeT6xjIiazrxFy9PN6BI2oQjxXAZ/mRstU6KFExxLnru5lOZjRGjcx8SOl9tjTWhqk1yJ1c93YrJdcOy70HpF3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from BY5PR02MB7009.namprd02.prod.outlook.com (2603:10b6:a03:236::13)
+ by PH0PR02MB8407.namprd02.prod.outlook.com (2603:10b6:510:10a::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5250.13; Wed, 11 May
+ 2022 05:28:35 +0000
+Received: from BY5PR02MB7009.namprd02.prod.outlook.com
+ ([fe80::303a:ab1:17c1:2d16]) by BY5PR02MB7009.namprd02.prod.outlook.com
+ ([fe80::303a:ab1:17c1:2d16%9]) with mapi id 15.20.5227.023; Wed, 11 May 2022
+ 05:28:35 +0000
+From:   Joel Selvaraj <jo@jsfamily.in>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Satya Priya <quic_c_skakit@quicinc.com>
-Subject: Re: [PATCH 2/4] leds: qcom-lpg: Add PM660L configuration and
- compatible
-Message-ID: <YnszX1wdQhUSkgyH@builder.lan>
-References: <20220507221123.2201668-1-marijn.suijten@somainline.org>
- <20220507221123.2201668-2-marijn.suijten@somainline.org>
+        Shawn Guo <shawnguo@kernel.org>,
+        Stanislav Jakubek <stano.jakubek@gmail.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Corentin Labbe <clabbe@baylibre.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hao Fang <fanghao11@huawei.com>
+Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Joel Selvaraj <jo@jsfamily.in>
+Subject: [PATCH v2 0/3] Introduce EBBG FT8719 DRM panel driver
+Date:   Wed, 11 May 2022 10:58:08 +0530
+Message-ID: <BY5PR02MB70098599813F51B07057AE4CD9C89@BY5PR02MB7009.namprd02.prod.outlook.com>
+X-Mailer: git-send-email 2.36.1
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-TMN:  [MrTlRE9vkdSuGVkXiWQOOSB4Zmkth5oqtc6jbcgsGx4AFGHjERcDIPj3Xhxxx0LL]
+X-ClientProxiedBy: PN2PR01CA0092.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:27::7) To BY5PR02MB7009.namprd02.prod.outlook.com
+ (2603:10b6:a03:236::13)
+X-Microsoft-Original-Message-ID: <cover.1652245767.git.jo@jsfamily.in>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220507221123.2201668-2-marijn.suijten@somainline.org>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 634cbcdd-4c07-47dc-9462-08da330f176d
+X-MS-TrafficTypeDiagnostic: PH0PR02MB8407:EE_
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: iqzG9YocUUFovDavDbIHnazG5N+pshkefI1VMOMjc9Fc29xVAxnGXf+ksgQ5KC4JpYnQGwVZbGWQMgZ/a1xZKeGiEquxYKpJG+KzmsR5mxxaBDQix819I+d2gz/DrjP8oFvFe/GJB0nha5zGhhGc5NMOAZgWer9s7hDNt8OVFDsNWbCaRHON0CeYdxEMtsj/n5YbWLAZzNlyZrdewPt0XKxcim/Oa+ZUY4OL3npUlCOHoOaFb4fK0JtRmuK1jGpd68lQcz9hy/hClJEM1mwIpzasce72QSgU5crP7tF7Ry2NLgIgJSu3KWlenD5vgsna1kGPjnA6Txq//feT1HuVkBCzjN+b6rajFPG/P0mqtUln9yZuT4HugeGrIPRei6v3lKfGnjCjv50k9h7BE+1EqOLsUOQV6JpIaRSHHuXKXITruiVmQQht6miTL89Ls3pgItLcikzYkzVC0OBi8tVUbtbf2kiMfPnF2CXtw9bg9GJu6ESerm3gLVEjHsf9o21Gu0qqbKiV+8SlnUhxD/eOsanne5/9XVGSZJ3YxOjFQbxQhRq8b3qbUtpaiWPwdF5Te7lsfKrCD26b1/MugGSkfLkQS9cbk6daqUCquNeP83hXuooRSNvSlTFT3cu2R8k/VsBRORb41IUgY9ZMkbxMgA3RNWK9rLSSZsUqLUHbGQ4=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?URhDQXlFS6TGjSEuBlv20LKwDbPpCurfFioXe71cPU5qLtQ5OJY+gvHalarJ?=
+ =?us-ascii?Q?1WNJkrh8NNlc70LpKMjWml8wMAe9YNTj3BIp0RVcgC3fjVZfRH0AmWHYvBVQ?=
+ =?us-ascii?Q?qk1KTDxFD/qCBWIbW7opOGlJ4CgoZdLEdSfZMxhTwaYc8pCu/WvW4OScROI4?=
+ =?us-ascii?Q?pw2qczphA1LQfOTB4ABwYFSnzqeIOXR/M0F7B1Twk/9faMYaY+9SGqgGhCtX?=
+ =?us-ascii?Q?S5aC/tc45/Z9Dj/MmYdtF6iLMr5e6i4Tdt3LR/Kjo35Jf4IMibXszhBFxSfe?=
+ =?us-ascii?Q?JlnfZRnk/UuJFa0esC5rMrSvc4ObGuZJ9OjqrH0SzcsECXNJ/+T4Kii4kUvQ?=
+ =?us-ascii?Q?7efdS4k8PRrP1LJMVCDzXLUgx3wkJrjhFuRZVGibun3lQbVri9dc2Ty0/PGh?=
+ =?us-ascii?Q?mZW56J9TuDYu1yVa6YjsQLu9lh8sYK8AybFyIaB9oAJ0sGc53sraQY83NeFE?=
+ =?us-ascii?Q?Fu9/yfqtposfIrORI97eXxhiO4GVI5bVGfZTwKBNnY7kSd953XOtzKTN02ej?=
+ =?us-ascii?Q?JahePFUxxfLla9AYdffNDrWvXpNRQCAcT580PIDPqmMdtBIhhBcUALLpZQia?=
+ =?us-ascii?Q?evhtlCH+u1DvlwhcBm71Dz7zd7hTzXM8nV8fXtJttIZCdPBvIU+gwSJnmlYj?=
+ =?us-ascii?Q?R7R6W47Noe2cfJxPWsqCD7e7NiBweK8VgogotmWtKyzB84z4alUpIMfOlM2U?=
+ =?us-ascii?Q?tbkvOkzIo8h/ZBAAZ+efteoa30qse4+L+kdGkYH/q1byoEMbVXeg4J54StiJ?=
+ =?us-ascii?Q?n/0GNIbbchE0eUUG0qi7LvoiOYoeWvStReDULHr1SFTpBgqYQsAuEWK7TGdU?=
+ =?us-ascii?Q?3SBLpBcZRjYK3bLhT03WdiV7z6WxpHE4J394vzPj53bO0zB8JceaOAfKVRYv?=
+ =?us-ascii?Q?IPGS1JPgCVw2Rx85motrm7XAMYtFFU5H5ihnUULia04xXfpFRYox1dgO12sq?=
+ =?us-ascii?Q?DXw9APSj3cpxDgwPOMHp67u8/jqmGIleVTSCsUMT42G1Xdu8AQMkJzCLZpE4?=
+ =?us-ascii?Q?APlLQeYnC9ZMFLonVnKIRTv2fkdjZrRGxg8IEDQdl+QZHsWvN39SoKRxOrd6?=
+ =?us-ascii?Q?RFc36wcwRLX0GtCsR7Tv2hij0nzb0Tf2c97TmqDFgg5wejhJmFtnrjBl2j4H?=
+ =?us-ascii?Q?R2k6EE6KH/OjcZo4UdeF44Qt0RVptM17+Tl5of3zY0+2Oc+X+yrPSvkU8Vag?=
+ =?us-ascii?Q?ZEJfnXyB9qAr5orEXu4vpc11DbMOVXBV2TkPQOASZIZWT2TwQ/YszlXfj8p6?=
+ =?us-ascii?Q?raq24gzr+1qsD6Z2jkOJgEywPbpuE4jFinxOJiHWEqtFUTgh6b0inCw1gRTi?=
+ =?us-ascii?Q?UlyuVv/n+wJF+VzjszU1vThMav5N08JAt9ZmdZZoDsMYKs81l9ZT4p3dREad?=
+ =?us-ascii?Q?xg69vPy8AbrjxU4o1WIjwCpNTmnWf2uxNr7VM90feE0vhyL2ua9L1RJZ1vXk?=
+ =?us-ascii?Q?2qFL694mr7ICi69ETBrR7YU6JA9iAHLrUvGuBpvMJ3tHw+iPgEFmHA=3D=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-99c3d.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 634cbcdd-4c07-47dc-9462-08da330f176d
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB7009.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2022 05:28:35.1001
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB8407
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat 07 May 17:11 CDT 2022, Marijn Suijten wrote:
+Add bindings and DRM panel driver for EBBG FT8719 6.18" 2246x1080 DSI
+video mode panel, which can be found on some Xiaomi Poco F1 phones.
+The panel's backlight is managed through QCOM WLED driver.
 
-> Inherit PM660L PMIC LPG/triled block configuration from downstream
-> drivers and DT sources, consisting of a triled block with automatic
-> trickle charge control and source selection, three colored led channels
-> belonging to the synchronized triled block and one loose PWM channel.
-> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
->  drivers/leds/rgb/leds-qcom-lpg.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
-> index cfa3362b2457..30c12ac8eed4 100644
-> --- a/drivers/leds/rgb/leds-qcom-lpg.c
-> +++ b/drivers/leds/rgb/leds-qcom-lpg.c
-> @@ -1271,6 +1271,23 @@ static int lpg_remove(struct platform_device *pdev)
->  	return 0;
->  }
->  
-> +static const struct lpg_data pm660l_lpg_data = {
-> +	.lut_base = 0xb000,
-> +	.lut_size = 0x100,
+The driver is built using linux-mdss-dsi-panel-driver-generator[1], and
+additionally support for handling regulators and linking external
+backlight is added.
 
-The documentation tells me that you have 49 entries of LUT on the
-PM660L.
+[1] https://github.com/msm8916-mainline/linux-mdss-dsi-panel-driver-generator
 
-> +
-> +	.triled_base = 0xd000,
-> +	.triled_has_atc_ctl = true,
-> +	.triled_has_src_sel = true,
-> +
-> +	.num_channels = 4,
-> +	.channels = (struct lpg_channel_data[]) {
+Changes in v2: (Krzysztof Kozlowski's Suggestions)
+ - dt-bindings: specify maxItems for reg
+ - dt-bindings: cleanup and simplify the panel properties
+ - dt-bindings: in example change "|+" to "|' and "dsi0" to "dsi"
 
-This can be const
+Joel Selvaraj (3):
+  dt-bindings: vendor-prefixes: Add prefix for EBBG
+  dt-bindings: display: Add bindings for EBBG FT8719
+  drm/panel: introduce ebbg,ft8719 panel
 
-Regards,
-Bjorn
+ .../bindings/display/panel/ebbg,ft8719.yaml   |  74 ++++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |   7 +
+ drivers/gpu/drm/panel/Kconfig                 |  11 +
+ drivers/gpu/drm/panel/Makefile                |   1 +
+ drivers/gpu/drm/panel/panel-ebbg-ft8719.c     | 362 ++++++++++++++++++
+ 6 files changed, 457 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/display/panel/ebbg,ft8719.yaml
+ create mode 100644 drivers/gpu/drm/panel/panel-ebbg-ft8719.c
 
-> +		{ .base = 0xb100, .triled_mask = BIT(5) },
-> +		{ .base = 0xb200, .triled_mask = BIT(6) },
-> +		{ .base = 0xb300, .triled_mask = BIT(7) },
-> +		{ .base = 0xb400 },
-> +	},
-> +};
-> +
->  static const struct lpg_data pm8916_pwm_data = {
->  	.num_channels = 1,
->  	.channels = (const struct lpg_channel_data[]) {
-> @@ -1391,6 +1408,7 @@ static const struct lpg_data pm8350c_pwm_data = {
->  };
->  
->  static const struct of_device_id lpg_of_table[] = {
-> +	{ .compatible = "qcom,pm660l-lpg", .data = &pm660l_lpg_data },
->  	{ .compatible = "qcom,pm8150b-lpg", .data = &pm8150b_lpg_data },
->  	{ .compatible = "qcom,pm8150l-lpg", .data = &pm8150l_lpg_data },
->  	{ .compatible = "qcom,pm8350c-pwm", .data = &pm8350c_pwm_data },
-> -- 
-> 2.36.0
-> 
+-- 
+2.36.1
+
