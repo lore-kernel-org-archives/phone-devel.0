@@ -2,130 +2,105 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8ADEC433EF
-	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 15:54:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCDCEC433EF
+	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 16:16:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235778AbiEKPy4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 11 May 2022 11:54:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39884 "EHLO
+        id S1344461AbiEKQQV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 11 May 2022 12:16:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233310AbiEKPy4 (ORCPT
+        with ESMTP id S243534AbiEKQQS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 11 May 2022 11:54:56 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12olkn2090.outbound.protection.outlook.com [40.92.22.90])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 960CF13F93D;
-        Wed, 11 May 2022 08:54:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=P0QtNjAh0EmKM/X6Jz2jzBwEsUkYokdVFewKzND5OL69WhgWuPfjOGTXgf4woj6Ib4cnzP7a3XnNU8Wkag3cOBUXgirgrApxUkTJQ1tiIvTpHoXnkMeoJHQCxqtnqV8RrUi7q1Nku6nbrwlSU6g6LG981w5ITU0krxPN6Se0qqOMg0XdA+0D+RIXb7wPrCS9TsNvvuMB2Di4S9ilnrtvbG7lOn1AUPmF0clvwVNkguzsEDq2NC/PWqqJiwmrQos3Qh+0A7Zwuc0Go+c2XQ7KvSUuTRALi6Q1TnOnW3xEfrXq/Q2g8wO7GwKRjBhwZ2V5X4Hmc3Wnuy0gnafL3Skycw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VXWVjTMZZbeorYFpjiUkGBXXfobV5fvWOZ3nP5Fy3NM=;
- b=O/ZEZtUghvjB40tuhAAUX40CkW+LYmYu0G53zk3+d+O6oFAGiPdOqy+DI3wHX/0zeTr4uHAj4RH72egoCn/7vF20OEeIW9OHUmoeXONztIB/UqLSacita2/gx5I2DDvC3DEC4KvNTVjt777emO8/K2w843stqbTH8NeT0pQoH66sAhST03BWEFni1xknmLe3qvjrmeHm8nJiGRkOMf3poZwna+swMyqYT6d7pbPtSGd7r3pmrOjkaxAx725lEaKnh9ucmmOu7XHEQGbF1TUBUhOKfKPxLUfu/q54hZ/8cNKdjOhFLTVJo7dHAdcZtQirVrcU86bRXvTxvPpKDWLXHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-Received: from BY5PR02MB7009.namprd02.prod.outlook.com (2603:10b6:a03:236::13)
- by BL0PR02MB3889.namprd02.prod.outlook.com (2603:10b6:207:4b::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5227.18; Wed, 11 May
- 2022 15:54:52 +0000
-Received: from BY5PR02MB7009.namprd02.prod.outlook.com
- ([fe80::303a:ab1:17c1:2d16]) by BY5PR02MB7009.namprd02.prod.outlook.com
- ([fe80::303a:ab1:17c1:2d16%9]) with mapi id 15.20.5227.023; Wed, 11 May 2022
- 15:54:52 +0000
-Message-ID: <BY5PR02MB7009605B175F12F0639EFD29D9C89@BY5PR02MB7009.namprd02.prod.outlook.com>
-Date:   Wed, 11 May 2022 21:24:39 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-To:     krzysztof.kozlowski@linaro.org
-Cc:     airlied@linux.ie, clabbe@baylibre.com, daniel@ffwll.ch,
-        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        fanghao11@huawei.com, jo@jsfamily.in, linus.walleij@linaro.org,
-        linux-kernel@vger.kernel.org, linux@rempel-privat.de,
-        phone-devel@vger.kernel.org, robh+dt@kernel.org, sam@ravnborg.org,
-        shawnguo@kernel.org, stano.jakubek@gmail.com,
-        thierry.reding@gmail.com, ~postmarketos/upstreaming@lists.sr.ht
-References: <b3a618a6-f236-549c-0bac-4c874cd49a00@linaro.org>
-Subject: Re: [PATCH v2 1/3] dt-bindings: vendor-prefixes: Add prefix for EBBG
-Content-Language: en-US
-From:   Joel Selvaraj <jo@jsfamily.in>
-In-Reply-To: <b3a618a6-f236-549c-0bac-4c874cd49a00@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TMN:  [6TkkBXL4hQzHdTcFHPyTccFlPj2uXd3FgcFX+VuZ7r+e70Gk2KYzz3lT4mVpyIOf]
-X-ClientProxiedBy: PN2PR01CA0092.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:27::7) To BY5PR02MB7009.namprd02.prod.outlook.com
- (2603:10b6:a03:236::13)
-X-Microsoft-Original-Message-ID: <cb6feda7-ae04-a09b-0d0f-08a542deceae@jsfamily.in>
+        Wed, 11 May 2022 12:16:18 -0400
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A75F2317D;
+        Wed, 11 May 2022 09:16:18 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id g8so2409189pfh.5;
+        Wed, 11 May 2022 09:16:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5/F+UplkDIwqCQhOSjnvO6kFNp+CMNMp/7h16RlfZuc=;
+        b=M9+x/J4LgddCI29gHcE13YurFaETXEOT6sVdzKPRVZaJPBrqp4ZsdDBOWNcJ76311y
+         U3gpILNCWwFREbHgftBraQ4HgDb7qfkbfslboYuvzxnbzD10EcGcpiCArA9cw+xL+wp/
+         HtTra6bcLKBP2VwZF3EpUsyTnJdJToQpIAIdDHpGHGw65salxriXUB57IHitxKpbWRnJ
+         j4pZYkEwkiwvX8QLjmOSNwxXTniybWYlBLKmW5ApkxUU1P/zwBBLWmu0zT82kGAi8zdV
+         lfy8xRRjMjl2ld83wW5wQwS0VhRdL5OSCwb4WBt22eKRbhxatW1V0OJ+/OPSmEXXVzU2
+         TUsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=5/F+UplkDIwqCQhOSjnvO6kFNp+CMNMp/7h16RlfZuc=;
+        b=AT9LntQOlGtAUdYvFWPu8GiumbNHbbwJ19qkcbZzxHPNczfjC1iO0mzNOieUjGd5xJ
+         /LWaPg5/nksgD9uWDE6Sbz5ewyBFTf+zAoha36vajDuAtHxCAK2KqoJhcbpcGD/GpeW+
+         NIJKJikln18C36lhyLKQtLrdI2rudhEnrv9LQqof1QnscTnHRzd5pHOu4wrQ/+0ARw39
+         usZhmBAX0vOVcvIfJoFG6jbd09NIKG7puu6F8dR8hdtrze0rVAnU5ys84F5jp5mzB+U1
+         XHa/2Q9W9C3awqhluIgCM+BEd94JRd202OzN/2zWmBQNr+dN4UoI6XIfqjbnjGEFBSj8
+         0ToQ==
+X-Gm-Message-State: AOAM533sSc9p+P4NvuiyejiibkaeRhuNwQwugdKiv2X0TOyVGCBFvpWm
+        NjJJVA5kvc9raJeOcToFEPn3cVg8dB4356k7
+X-Google-Smtp-Source: ABdhPJzO1qvU1JiGX6Brj/VPaJ5dul5SDjo8MFHaHCLX0a1jwpw0M2DCKL4vV6DasdU5wPPTg6yi2Q==
+X-Received: by 2002:a63:6981:0:b0:3db:1a89:8849 with SMTP id e123-20020a636981000000b003db1a898849mr4093377pgc.505.1652285777491;
+        Wed, 11 May 2022 09:16:17 -0700 (PDT)
+Received: from skynet-linux.local ([49.204.239.218])
+        by smtp.googlemail.com with ESMTPSA id x7-20020a17090a1f8700b001ded49491basm220322pja.2.2022.05.11.09.16.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 May 2022 09:16:16 -0700 (PDT)
+From:   Sireesh Kodali <sireeshkodali1@gmail.com>
+To:     linux-remoteproc@vger.kernel.org
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, bjorn.andersson@linaro.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Sireesh Kodali <sireeshkodali1@gmail.com>
+Subject: [PATCH 0/9] Add support for remoteprocs on the MSM8953 platform
+Date:   Wed, 11 May 2022 21:45:53 +0530
+Message-Id: <20220511161602.117772-1-sireeshkodali1@gmail.com>
+X-Mailer: git-send-email 2.36.0
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fe71bd6a-422a-4145-618b-08da33669583
-X-MS-TrafficTypeDiagnostic: BL0PR02MB3889:EE_
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TwdNLhWzQsr8vD51mc72eEQ3FCEcrq6uo6PCi0yt6s0s86x/u1zREaxz+FLCQFscmMDItMS3x9IAQdK1cQda87Wwd1ggOz0juHuFK1/MZgxzI+xXadRM8MhqzoH0xZ5NNDbNAmgpgRMNbyshJEVTq2K3sP84Uc1BiLQLdpCZHSFUvX51gkuizd5hkxeqq/9x3Krc6yV03C13SW0G7IAQedmJwJjugo6iiRXp6M4n+sTMux++y9Z8QkCnJaBEGrmEyqs5weuMRMcLJ7mhdkZO0xPHT2QvOvuVh+L91g/SG+IwlVyj3VjwXvP/SoXy7E5Jm26wZPdLrYC54UVcskDNtpXFzAO0ZfmmCyBrJhiH+AgJFwWyyoVcQQIGB82bhmKogO9KYQh9iZc/pnnQR09QvHSR25jetqKIhqERc7Qw9znjWvRIv8GV7O0J0qmQGblg4Wq3qLoOEPefoDXJ5MXVrPl6fGmjQYnCtx384q6OQA3VVnOKQczcm9fkNujheAodRfPntp3RGXUmNuuJvVzy+OpQsZirK3z3zAYX97Z2EKSqIMxnZ8pEid6rMdCmv3WCLOXfm+E7/UPlEsY8x6NEf4fL8DHV3o5eaLsYvyEXDzIjTQoCONhHnzKdILohTxNhwq98dr6q0EIuLRft160iUIE/H46YPc5ruqTdLQbl7/g=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SXBEM3Q0ZW1US1ZXVlI5Z1Z0TXFUbkZXSzVCa0tFTHJsMUtJODJwVHRpdmVP?=
- =?utf-8?B?VW01a0dWZ0o5LzNVOFg2Z1lTbzNPcS81YmRJM01LTEtqWUdyNTN5dmZSSk9u?=
- =?utf-8?B?cEhQTk9WTmZCTkZybktEL05ZdGtjdG1zM1FsdVJRUnpBMkluV2U1UXFuU0R3?=
- =?utf-8?B?MGMzdTZMeHVCaCt4dkIxYXc2SlZhWVBDdktJaVZrOTdhVDNqNjIvVDJNVXZj?=
- =?utf-8?B?TXJTVnFpaUZuYTVURE9BbW1YNzBGd0VubHl5Z3grTjdQcTc1ZWtQRHRZcllX?=
- =?utf-8?B?VjV0RHZLOElqajlBaXhjRi8zRlZCeDRrcURSb0RKWDEwTkNFSDY5c3NueFlj?=
- =?utf-8?B?MURnc2YyaXBnVHo0WkdpMG1maGZNakpoNU5VY0Zoazl4eVJlbUxtaVNRZ1RS?=
- =?utf-8?B?QVhESkxIN2RRcXpTeTNVUHBXL3NzUzgySVB1VmRzc1FRVHdmRjhKOVlvQTlt?=
- =?utf-8?B?MTBFanBFYmNLY1U0N2QwRXYydVh5dXNwZmFDY3duZXR6djUxNWFMb0RhV0oy?=
- =?utf-8?B?YnI5eGZZMGI1SWgzNXN1RmlNZVVPaFEyVGltNUVRRy9uNXNFR3A4dk5vTGJF?=
- =?utf-8?B?R3F0OXdVVHlVV2dWNlNNMHdNb1U1L2dYMXRyOThFT2UxVXZHb2JERFZWc0dq?=
- =?utf-8?B?WVJvNkJoMHZscDJDallyaFpyRWFnOGJLMGN5bmJsNHZ1YWNHSlNEQ2NiYnhS?=
- =?utf-8?B?WmN6OEtSNXRIeEk3bnFZSlFKTUdGR0hxNGEvZHBTWTlRMmg4VGIwLzYweDdN?=
- =?utf-8?B?OWFoWW93S28vbTVpVW44bzVzUHdXZHRaYm8zSFA5YkM4KzJhak5QN2dXSXRU?=
- =?utf-8?B?OVpONUFLbkZmeERxcUpmcjlOYkd0c2hNb2ROQVc1c2Z3bWNod1p5MG5yZkly?=
- =?utf-8?B?WjRaN2ExWkU5OFZGbFFzTWJXYWdKc2laL3dNN2cxYXJ4aVd4cFpHYUFyVi9Y?=
- =?utf-8?B?N2d0YmRoUnFOZ0MzQnhGWk9adlhmOUhsY0lsRXpNZHF4RVo2M2V1cUNXUnp2?=
- =?utf-8?B?czcvNW9lYVNvb2NUTTV0eWsrSEVsUHZFaXducXU0Q2hlL1l0UjVDVk9hL1pn?=
- =?utf-8?B?OGFzMHlpWlFhRnQvbE9HTCtKUWN1cC9mYkV0Ti9XTlROWjR1SUZVUzF3Tlc3?=
- =?utf-8?B?T1lNd0xQVllwWmYvcjd0RHREQWNXTm5jUzEwdGZXaUlNSWhOckYySXpwZ3Bi?=
- =?utf-8?B?TU9Jc0ZoV3hxbFAvL0oydVQxTTNKbDR1TmlGczkya1V3ZkE2aHk4d3J4azEw?=
- =?utf-8?B?NktEZk9KNWY5OUdkbXo3c3FWOFpDVU9VRk1kR0FrNWR1VmI4VzdRa2NjOFZQ?=
- =?utf-8?B?eWwzLzJuaVJ4ZnM2R01rVzljWUFyWTJ3Z3ludzZyWHcxRVhaenNHN1pqemhv?=
- =?utf-8?B?V3RVb1NaZ1hTTUE0NW81RVNrSkRIcmlacDlJOWRCc01TbEFpNkxobzhqOUpD?=
- =?utf-8?B?Z25CZWlMS1JBcFZlbEVNTk43VEFzMmsrWnBDVzQyN1pYOFFQNmtrMzBXOHB5?=
- =?utf-8?B?L3VpZzZFbnN1ak9DUEdCZnYvUkdubDA1MjZVeldkbVJpZnRFaWE3VTRhS1Mv?=
- =?utf-8?B?NnVWMlFJVVJ6dDFIb3pYOGZoR244T3pxdlZGNGxiQUVneWx3UmhiRDBQZzBv?=
- =?utf-8?B?MVo5K1J3elBIdkRaSDYwZFBZWnRzNFdDVm1IY0g1VytJNVpmczlzeHkrMEFM?=
- =?utf-8?B?Wkd2SzN2NkZwby9USGV3N21kbCtzYmNsdjhDVzhTWDJIL0xhanEwK2JCdXdx?=
- =?utf-8?B?UllLcXllWTFUZGR3TkNmVmZoY1BuSWRxTUNUZnRTZzBJMFRXV3FpL3ZCSWhB?=
- =?utf-8?B?TGowRFhtdk56elU3WXhjd25HTmloeXVJczI0QXlCVWhINXo4Mk5kRGMvZ25z?=
- =?utf-8?B?Q1Z2cHpTbWY4ZVN3cEoweWwvZTNVUlMwd0xjN3h3QUNrbG42ZDNyc3JaM09Q?=
- =?utf-8?B?amQxM2krZ1RoRzJtTUZNdWplM2p4U0laSjlYNzlrTVEzM3hxMHJkZTlJeGtP?=
- =?utf-8?B?cnBMekRMK3hRPT0=?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-99c3d.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe71bd6a-422a-4145-618b-08da33669583
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB7009.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2022 15:54:52.0379
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR02MB3889
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi,
 
-On 11/05/22 13:50, Krzysztof Kozlowski wrote:
- > Please add Acked-by/Reviewed-by tags when posting new versions. However,
- > there's no need to repost patches *only* to add the tags. The upstream
- > maintainer will do that for acks received on the version they apply.
- >
- > 
-https://elixir.bootlin.com/linux/v5.13/source/Documentation/process/submitting-patches.rst#L543
- >
- > If a tag was not added on purpose, please state why and what changed.
+This patch series adds support for the audio DSP (q6v5_pas), modem
+(q6v5_mss), and WiFi (wcnss-pil) subsystems found on the MSM8953
+platform. Device tree bindings for MSS and WCNSS have been converted to
+YAML. The relevant nodes have also been added to the MSM8953
+device tree.
 
-My bad. Completely forgot to pick the Acked-by. I will make sure to pick
-them up in future patches.
+Sireesh Kodali (8):
+  remoteproc: qcom: pas: Add MSM8953 ADSP PIL support
+  remoteproc: qcom: q6v5-mss: Add modem support on MSM8953
+  dt-bindings: remoteproc: qcom: wcnss: Convert to YAML
+  dt-bindings: remoteproc: qcom: wcnss: Add compatible for pronto v3
+  dt-bindings: remoteproc: qcom: mss: Convert bindings to YAML
+  dt-bindings: remoteproc: qcom: mss: Add MSS on MSM8953
+  dt-bindings: remoteproc: qcom: adsp: Add ADSP on MSM8953
+  arm64: dts: qcom: msm8953: Add remote processor nodes
 
-Best Regards,
-Joel Selvaraj
+Vladimir Lypak (1):
+  remoteproc: qcom: qcom_wcnss: Add support for pronto-v3
+
+ .../bindings/remoteproc/qcom,adsp.yaml        |   5 +
+ .../bindings/remoteproc/qcom,q6v5.txt         | 302 --------
+ .../bindings/remoteproc/qcom,q6v5.yaml        | 727 ++++++++++++++++++
+ .../bindings/remoteproc/qcom,wcnss-pil.txt    | 177 -----
+ .../bindings/remoteproc/qcom,wcnss-pil.yaml   | 230 ++++++
+ arch/arm64/boot/dts/qcom/msm8953.dtsi         | 378 +++++++++
+ drivers/remoteproc/qcom_q6v5_mss.c            |  64 +-
+ drivers/remoteproc/qcom_q6v5_pas.c            |  31 +
+ drivers/remoteproc/qcom_wcnss.c               |  13 +
+ 9 files changed, 1442 insertions(+), 485 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/remoteproc/qcom,q6v5.txt
+ create mode 100644 Documentation/devicetree/bindings/remoteproc/qcom,q6v5.yaml
+ delete mode 100644 Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.txt
+ create mode 100644 Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+
+-- 
+2.36.0
+
