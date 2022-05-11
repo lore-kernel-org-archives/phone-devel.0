@@ -2,135 +2,140 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7AFCAC433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 10 May 2022 20:43:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00076C433F5
+	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 03:54:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234857AbiEJUnt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 10 May 2022 16:43:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50818 "EHLO
+        id S229917AbiEKDyO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 10 May 2022 23:54:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234304AbiEJUnk (ORCPT
+        with ESMTP id S231158AbiEKDyL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 10 May 2022 16:43:40 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80D152A0A63;
-        Tue, 10 May 2022 13:43:38 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id i10so66143lfg.13;
-        Tue, 10 May 2022 13:43:38 -0700 (PDT)
+        Tue, 10 May 2022 23:54:11 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D494C79A
+        for <phone-devel@vger.kernel.org>; Tue, 10 May 2022 20:54:10 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-e93bbb54f9so1359371fac.12
+        for <phone-devel@vger.kernel.org>; Tue, 10 May 2022 20:54:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=vjdss2nDLwTNuuaVgZiKsX3zSboMMew4d/2NFU3vAvY=;
-        b=dNSTjHEou78efjVQDZSF5xKhdufKPu0FPhaijaVB6PNcvXextvCJazQhEaa+Sr7dvK
-         stcTpMC0bqq7DCIIMPQJR6LUZjI4f8FVT9fajtdbdtmFC8dyVCAhKl1DnDfhJoL+6vAP
-         X8obXslZQTwoP4Fj+rKcHBa3AAMOoFL99htU7HD8cCO2/Ytx+CaZxGeBq2XH/++5jQPi
-         u964htH01eIC8ayJE8r3Abr6KHZT8zr6tjaEcdZs07yragttLOswLRPBVZcrJXk7VwE1
-         1FvvhyXt+NbmPmc+XyRraSBZHrzKuH93ZnybcxUlq0bgDO0Fb/fdgVKkbVMgcTJXv/Bk
-         AxYw==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=0WrSL/b+MR9+m4rRbjGXRX60B+r7zy7wkt64zUH48oY=;
+        b=rDNhyYBHwTL4zR2u6Rh91X182mgiFM7lrZSGXKOmY04hNhVAPm4Dgx0gU5cVJ2vGDC
+         VVK0s4uScAZKYRBD/jNDbgkWWuBV5j+CeByod0LNmbTJY6H1BdD52pzirbR50niNQOWs
+         4UcMfF4B2g4Ic9rYOGzl0LOSN1aaLtLb/R9U55fs4o/J0pMUPrqbzTdJSVKL4Fh78wGH
+         oqA+4Tao/oGIRZvarBpyi6x4Gmuur5E3YRVUVPWpq48UoXcyFBPUo67hsWk85HdW1Iyu
+         UKVBVAQsXQiIpeynG/0M9jNsljMLvTSFcolAfzNWxtFedgaFi3D/S+XxgXcjaVIGS2sh
+         xkqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=vjdss2nDLwTNuuaVgZiKsX3zSboMMew4d/2NFU3vAvY=;
-        b=AxjXXAhb2Bvb/QNWhRIVLmPsK80eaNs8g2pOCS7oB/Jyq2V/r9YW2KYB2FqobuK/HQ
-         IdQV/J8FflywsB2vcr8bYXqVCMjG7cuSjk8X7Nupke5fz3+U5366MUyCsdCQ6vkhAZbB
-         XV3SMNIdirrr7tNoXdE68gkzN6e3UANK+GxdUu2Uwl2+/PCQC339lIV62T9JKvNCso3m
-         nt4P9xQKRbsV5KOq5anJdkVRc7j3IJSJk1tACtloB7eQS3GKrFuaey2dvhymO8QIcMD8
-         plgOS2GhhPEcWFkSsLAUnmNx6foniUAxShbmRXR3vZVxXvARkSS9r1qQ5OKgdlXliuUT
-         u6mw==
-X-Gm-Message-State: AOAM53338BWP81anVu+qb0NCUGZRsT5LP07No81SSBBK6N8UMGJ5sMG8
-        BNbeQht8a8zqioWTxiI5VDM4Q1osdhY=
-X-Google-Smtp-Source: ABdhPJwLOJTxRIuT+ffLy8rAJ16AGYPcZ4VaS2+jMJIGEtDE+09rH7E3kdOnw1mneeYjtGnTGbjfXw==
-X-Received: by 2002:a05:6512:3390:b0:472:1a4d:ad14 with SMTP id h16-20020a056512339000b004721a4dad14mr17763054lfg.521.1652215416724;
-        Tue, 10 May 2022 13:43:36 -0700 (PDT)
-Received: from nergzd-desktop.localdomain ([194.39.226.133])
-        by smtp.gmail.com with ESMTPSA id 10-20020ac25f4a000000b0047255d210f0sm12318lfz.31.2022.05.10.13.43.35
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=0WrSL/b+MR9+m4rRbjGXRX60B+r7zy7wkt64zUH48oY=;
+        b=32OLwazz5hsSAl9LZWaB+YDOnKmuIVwmqjflqAorFF7FGppREhLm4WyPL9WT3XyDO6
+         oYS6dYyVZgmFwEtmPdWxJANzLFsBResgZkz/1P7/UwwoSJKBdTA/lS6lm8E33iPC+daV
+         k6znkGOpXqy9L1LjskHKVUJfxVhTJOEzr7WJrdz30OcdIfsbHBcD3RbKPL1BTcQwrp1Y
+         l1Iov0PaJ4I4B9p80bnwfHlmiM54SsP3mznaC3nC3VpKNWV+r0nM0mwlQpskhwrawvtJ
+         z+mgK2rxJ7uuZJUNz/7X5qtY5Hh7QjnKDg0KEpzmmxO+j3ddeAZdI76kHJ12mZ1b6Of0
+         DTTw==
+X-Gm-Message-State: AOAM531gc8DmcZ09hp5h3ymbg4zobECVOIKKjVEVyrbjO/bgCaaEk/r4
+        NprQcGLcW8/EuXnFdz+9QRF6Hw==
+X-Google-Smtp-Source: ABdhPJyoFDZ6uvhFkWPUEbCyNMWvl/HBFzH2dTTIdFcRPaK+Uq/uWTzwMP5AeRGfoz4hWcMS4Eo26w==
+X-Received: by 2002:a05:6870:818a:b0:f1:1223:3afd with SMTP id k10-20020a056870818a00b000f112233afdmr497822oae.271.1652241250132;
+        Tue, 10 May 2022 20:54:10 -0700 (PDT)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id l6-20020a056830154600b0060603221269sm397354otp.57.2022.05.10.20.54.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 May 2022 13:43:36 -0700 (PDT)
-From:   Markuss Broks <markuss.broks@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Song Qiang <songqiang1304521@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        Tue, 10 May 2022 20:54:09 -0700 (PDT)
+Date:   Tue, 10 May 2022 22:54:07 -0500
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: [PATCH 4/5] proximity: vl53l0x: Handle the reset GPIO
-Date:   Tue, 10 May 2022 23:42:55 +0300
-Message-Id: <20220510204256.8874-5-markuss.broks@gmail.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220510204256.8874-1-markuss.broks@gmail.com>
-References: <20220510204256.8874-1-markuss.broks@gmail.com>
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Satya Priya <quic_c_skakit@quicinc.com>
+Subject: Re: [PATCH 2/4] leds: qcom-lpg: Add PM660L configuration and
+ compatible
+Message-ID: <YnszX1wdQhUSkgyH@builder.lan>
+References: <20220507221123.2201668-1-marijn.suijten@somainline.org>
+ <20220507221123.2201668-2-marijn.suijten@somainline.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220507221123.2201668-2-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Handle the GPIO connected to the XSHUT/RST_N pin of VL53L0X.
+On Sat 07 May 17:11 CDT 2022, Marijn Suijten wrote:
 
-Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
----
- drivers/iio/proximity/vl53l0x-i2c.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+> Inherit PM660L PMIC LPG/triled block configuration from downstream
+> drivers and DT sources, consisting of a triled block with automatic
+> trickle charge control and source selection, three colored led channels
+> belonging to the synchronized triled block and one loose PWM channel.
+> 
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+>  drivers/leds/rgb/leds-qcom-lpg.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+> 
+> diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
+> index cfa3362b2457..30c12ac8eed4 100644
+> --- a/drivers/leds/rgb/leds-qcom-lpg.c
+> +++ b/drivers/leds/rgb/leds-qcom-lpg.c
+> @@ -1271,6 +1271,23 @@ static int lpg_remove(struct platform_device *pdev)
+>  	return 0;
+>  }
+>  
+> +static const struct lpg_data pm660l_lpg_data = {
+> +	.lut_base = 0xb000,
+> +	.lut_size = 0x100,
 
-diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-index 74aeb2548ef6..47022bc1504e 100644
---- a/drivers/iio/proximity/vl53l0x-i2c.c
-+++ b/drivers/iio/proximity/vl53l0x-i2c.c
-@@ -15,6 +15,7 @@
-  */
- 
- #include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-@@ -43,6 +44,7 @@ struct vl53l0x_data {
- 	struct i2c_client *client;
- 	struct completion completion;
- 	struct regulator *vdd_supply;
-+	struct gpio_desc *reset_gpio;
- };
- 
- static irqreturn_t vl53l0x_handle_irq(int irq, void *priv)
-@@ -192,6 +194,8 @@ static void vl53l0x_power_off(void *_data)
- {
- 	struct vl53l0x_data *data = _data;
- 
-+	gpiod_set_value_cansleep(data->reset_gpio, 1);
-+
- 	regulator_disable(data->vdd_supply);
- }
- 
-@@ -203,6 +207,8 @@ static int vl53l0x_power_on(struct vl53l0x_data *data)
- 	if (ret)
- 		return ret;
- 
-+	gpiod_set_value_cansleep(data->reset_gpio, 0);
-+
- 	usleep_range(3200, 5000);
- 
- 	return 0;
-@@ -232,6 +238,11 @@ static int vl53l0x_probe(struct i2c_client *client)
- 		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
- 				     "Unable to get VDD regulator\n");
- 
-+	data->reset_gpio = devm_gpiod_get_optional(&client->dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(data->reset_gpio))
-+		return dev_err_probe(&client->dev, PTR_ERR(data->reset_gpio),
-+				     "Cannot get reset GPIO\n");
-+
- 	error = devm_add_action_or_reset(&client->dev, vl53l0x_power_off, data);
- 	if (error)
- 		return dev_err_probe(&client->dev, error,
--- 
-2.35.1
+The documentation tells me that you have 49 entries of LUT on the
+PM660L.
 
+> +
+> +	.triled_base = 0xd000,
+> +	.triled_has_atc_ctl = true,
+> +	.triled_has_src_sel = true,
+> +
+> +	.num_channels = 4,
+> +	.channels = (struct lpg_channel_data[]) {
+
+This can be const
+
+Regards,
+Bjorn
+
+> +		{ .base = 0xb100, .triled_mask = BIT(5) },
+> +		{ .base = 0xb200, .triled_mask = BIT(6) },
+> +		{ .base = 0xb300, .triled_mask = BIT(7) },
+> +		{ .base = 0xb400 },
+> +	},
+> +};
+> +
+>  static const struct lpg_data pm8916_pwm_data = {
+>  	.num_channels = 1,
+>  	.channels = (const struct lpg_channel_data[]) {
+> @@ -1391,6 +1408,7 @@ static const struct lpg_data pm8350c_pwm_data = {
+>  };
+>  
+>  static const struct of_device_id lpg_of_table[] = {
+> +	{ .compatible = "qcom,pm660l-lpg", .data = &pm660l_lpg_data },
+>  	{ .compatible = "qcom,pm8150b-lpg", .data = &pm8150b_lpg_data },
+>  	{ .compatible = "qcom,pm8150l-lpg", .data = &pm8150l_lpg_data },
+>  	{ .compatible = "qcom,pm8350c-pwm", .data = &pm8350c_pwm_data },
+> -- 
+> 2.36.0
+> 
