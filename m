@@ -2,83 +2,815 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80654C433F5
-	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 17:40:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5D58C4332F
+	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 17:51:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345719AbiEKRkc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 11 May 2022 13:40:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48720 "EHLO
+        id S1345818AbiEKRvI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 11 May 2022 13:51:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345714AbiEKRkb (ORCPT
+        with ESMTP id S236292AbiEKRuz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 11 May 2022 13:40:31 -0400
-X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 11 May 2022 10:40:30 PDT
-Received: from mailrelay2-1.pub.mailoutpod1-cph3.one.com (mailrelay2-1.pub.mailoutpod1-cph3.one.com [46.30.210.183])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C469E235154
-        for <phone-devel@vger.kernel.org>; Wed, 11 May 2022 10:40:30 -0700 (PDT)
+        Wed, 11 May 2022 13:50:55 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 030CCDF43
+        for <phone-devel@vger.kernel.org>; Wed, 11 May 2022 10:50:51 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id g6so5613476ejw.1
+        for <phone-devel@vger.kernel.org>; Wed, 11 May 2022 10:50:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=rsa1;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=iALarvYr6q24+R4Th1G4RXSh7gnuFWx7r3JvoYpd3xk=;
-        b=W9xFVeO8LlGUfyYNl9YjYZ9ZctbU8etMQKk6mgK5eNNMwHdKmpY1Rnlvs/tcMhZuFNDgDDj5D5xXp
-         rKFTaUrT9umvFG6ucNypFltBnfVrVGggs0wfStO2aYLtgvujAgsIla6xNkv1J4JbPo7Nha+k4HgVA3
-         F5yO8ZUKqcdNeVVLUDs/WW1trNoqLrkN+qpGV7A3u5imlgspD7rOfqkhXJePu5ye7AE1s8tzCvPZAB
-         doXWdIYAX+qAJv1VW7krOJtgjK5BfTOEWbaGvw0iSuO6eye4XNUjcp/w+FnCMSfiK5ULbPTmD+h+ES
-         nGeCfompngqVHV83tGs3mGxM8k8xXpA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=ed1;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=iALarvYr6q24+R4Th1G4RXSh7gnuFWx7r3JvoYpd3xk=;
-        b=hImXde1zDvSVJkx15NBS5pKNiZbhkQkuYrmlHkQ98BvXln9AlcTSZH6xC64Y7s7D/j8PJ2tjjUnDu
-         FOqhaicBQ==
-X-HalOne-Cookie: e2cdac57c96ca2243c1cd42b5ad62a44227cc89d
-X-HalOne-ID: 4cacf8ba-d151-11ec-a908-d0431ea8a290
-Received: from mailproxy3.cst.dirpod4-cph3.one.com (80-162-45-141-cable.dk.customer.tdc.net [80.162.45.141])
-        by mailrelay2.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
-        id 4cacf8ba-d151-11ec-a908-d0431ea8a290;
-        Wed, 11 May 2022 17:39:25 +0000 (UTC)
-Date:   Wed, 11 May 2022 19:39:23 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Joel Selvaraj <jo@jsfamily.in>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Stanislav Jakubek <stano.jakubek@gmail.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Corentin Labbe <clabbe@baylibre.com>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hao Fang <fanghao11@huawei.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] drm/panel: introduce ebbg,ft8719 panel
-Message-ID: <Ynv0y6xmtnE+33/y@ravnborg.org>
-References: <cover.1652245767.git.jo@jsfamily.in>
- <BY5PR02MB70098FF9BDEDE264B78CFCE0D9C89@BY5PR02MB7009.namprd02.prod.outlook.com>
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=f21nQo2EfXJr+qfsORqvN3j1OiLfyIFncqC+B2UHzFk=;
+        b=soGX7OX8douaI5TIhUsZ7Pynh5JqxGkiYG0eW1DNu/GC18Ya6ewtXsXhXUm6wRycOs
+         VWwPr2MjV81lD28eeYN1hGlSceXKKKuv5tUIfYdmx8RWL01o/5Ho5zLd40ij7V/yqiw4
+         NUwG5EPQrf216755g1/SbtoEQl2dgKu5yQ1tmfVb4Hs3Pcg2A+0Z7YqiAg97hUh7wDbk
+         IQHBPVG1nR06NQFVII4QeyFVJSnjA/fAyiq9/YvVlD1P6BZWCRPF1MNUrbbILPOxhrLI
+         mJ3D2TvF8XhzEATu478uSMYkD14wQFt4Blk6JX5BybP5pY2ykDUHyyqSy+LkFmJfFFSO
+         qcRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=f21nQo2EfXJr+qfsORqvN3j1OiLfyIFncqC+B2UHzFk=;
+        b=fs5ti0TPKj4qg8jqx3OGOhRpqq/3HnEDSor8D6wtvjVA1aZeLXC5Gpk4hHdFV5yPMX
+         1bHcu8Wpm2cF8BrIFGi0vBOr/XZ/yKDZmqjpP6CS0Xm9LBsmlUPj3VqARrudVXqn61xZ
+         SIfsoN7MFZnOkeR3wFs4qIUYFKUDCEYR0hWHpjsp7zGa4X1rktryzEUvE/cNRLx6xpdv
+         AyVZUnAW5dyP6Uu/plsxNm1C6bzynOzkKX9cGXthRhLQsBrO1wwSXJLEAe8dW1eDCden
+         kqD7z5Q5ZLhUgFZcXf1h+SqjxC31+XbjZXiL62EOTOqJZgj6VAFFPdFUMA74+n80aud1
+         Narw==
+X-Gm-Message-State: AOAM531MnFtti2sJ4CT1d88QE1W6xSEtCHqRSCs6w7XUQA1+9WCIFtSB
+        Mhwx3kQrf6MkfZcr47rH4koLCf0NZ5VmgQn/
+X-Google-Smtp-Source: ABdhPJy+NAb2j/B7JTCOdya68vUCdUE+UL9pOOKCU7CVAvYNBSZVhjzCNB/1MWTT/O/+yEn9vAdQ9g==
+X-Received: by 2002:a17:906:9b96:b0:6f5:cdd:9bf2 with SMTP id dd22-20020a1709069b9600b006f50cdd9bf2mr25936445ejc.364.1652291449449;
+        Wed, 11 May 2022 10:50:49 -0700 (PDT)
+Received: from [192.168.0.155] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id z10-20020a1709067e4a00b006f3ef214dfdsm1241176ejr.99.2022.05.11.10.50.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 May 2022 10:50:49 -0700 (PDT)
+Message-ID: <29a8871f-59ab-05f2-d258-eea52b7ac6ee@linaro.org>
+Date:   Wed, 11 May 2022 19:50:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BY5PR02MB70098FF9BDEDE264B78CFCE0D9C89@BY5PR02MB7009.namprd02.prod.outlook.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 6/9] dt-bindings: remoteproc: qcom: mss: Convert bindings
+ to YAML
+Content-Language: en-US
+To:     Sireesh Kodali <sireeshkodali1@gmail.com>,
+        linux-remoteproc@vger.kernel.org
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, bjorn.andersson@linaro.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+References: <20220511161602.117772-1-sireeshkodali1@gmail.com>
+ <20220511161602.117772-7-sireeshkodali1@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220511161602.117772-7-sireeshkodali1@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Joel,
-On Wed, May 11, 2022 at 10:58:11AM +0530, Joel Selvaraj wrote:
-> Add DRM panel driver for EBBG FT8719 6.18" 2246x1080 DSI video mode
-> panel, which can be found on some Xiaomi Poco F1 phones. The panel's
-> backlight is managed through QCOM WLED driver.
+On 11/05/2022 18:15, Sireesh Kodali wrote:
+> Convert the bindings to YAML from txt. The bindings follow a similar
+> schema to `qcom,adsp.yaml`.
 > 
-> Signed-off-by: Joel Selvaraj <jo@jsfamily.in>
+> Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
+> ---
+>  .../bindings/remoteproc/qcom,q6v5.txt         | 302 --------
+>  .../bindings/remoteproc/qcom,q6v5.yaml        | 702 ++++++++++++++++++
+>  2 files changed, 702 insertions(+), 302 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/remoteproc/qcom,q6v5.txt
+>  create mode 100644 Documentation/devicetree/bindings/remoteproc/qcom,q6v5.yaml
 
-Driver looks good:
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Same comments as for patch 4 apply here. Some of them seems fixed so it
+makes me wonder - why you wrote two bindings in entirely different way?
 
-I expect someone else to pick it up and apply.
+> +  This document defines the binding for a component that loads and boots firmware
+> +  on the Qualcomm Hexagon core.
+> +
+> +properties:
+> +  compatible:
+> +    # Special case, because older platforms like MSM8916 use both compatibles together
+> +    minItems: 1
+> +    maxItems: 2
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - qcom,msm8916-mss-pil
+> +          - enum:
+> +              - qcom,q6v5-pil
 
-	Sam
+Everywhere - same comments as in patch 4.
+
+> +      - items:
+> +          - enum:
+> +              - qcom,q6v5-pil
+> +              - qcom,ipq8074-wcss-pil
+> +              - qcom,qcs404-wcss-pil
+> +              - qcom,msm8916-mss-pil
+> +              - qcom,msm8974-mss-pil
+> +              - qcom,msm8996-mss-pil
+> +              - qcom,msm8998-mss-pil
+> +              - qcom,sc7180-mss-pil
+> +              - qcom,sc7280-mss-pil
+> +              - qcom,sdm845-mss-pil
+> +
+> +  reg:
+> +    description: must specify the base address and size of the qdsp6 and rmb
+> +      register blocks
+> +    maxItems: 2
+> +
+> +  reg-names:
+> +    items:
+> +      - const: qdsp6
+> +      - const: rmb
+> +
+> +  interrupts-extended:
+> +    minItems: 5
+> +    maxItems: 6
+> +
+> +  interrupt-names:
+> +    minItems: 5
+> +    maxItems: 6
+> +
+> +  firmware-name:
+> +    $ref: /schemas/types.yaml#/definitions/string-array
+> +    description: List the relative firmware image paths for the mba and
+> +      modem. They are used for booting and authenticating the Hexagon core.
+> +    maxItems: 2
+> +
+> +  clocks:
+> +    minItems: 4
+> +    maxItems: 10
+> +
+> +  clock-names:
+> +    minItems: 4
+> +    maxItems: 10
+> +
+> +  resets:
+> +    description: Reference to the reset-controllwer for the modem subsystem
+> +    minItems: 1
+> +    maxItems: 3
+> +
+> +  reset-names:
+> +    minItems: 1
+> +    maxItems: 3
+> +
+> +  memory-region:
+> +    maxItems: 1
+> +    description: Reference to the reserved-memory for the mba region followed
+> +      by the mpss region. Required if the mba and mpss sub-nodes are not
+> +      specified.
+> +
+> +  cx-supply:
+> +    description: Phandle to the CX regulator
+> +
+> +  mx-supply:
+> +    description: Phandle to the MX regulator
+> +
+> +  pll-supply:
+> +    description: Phandle to the PLL regulator, to be held on behalf of the
+> +      booting Hexagon core
+> +
+> +  mss-supply:
+> +    description: Phandle to the mss regulator, to be held on behalf of the
+> +      booting Hexagon core
+
+s/Phandle to//, everywhere.
+
+> +
+> +  power-domains:
+> +    minItems: 1
+> +    maxItems: 4
+> +
+> +  power-domain-names:
+> +    minItems: 1
+> +    maxItems: 4
+> +
+> +  qcom,qmp:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description: Reference to the AOSS side-channel message RAM.
+> +
+> +  qcom,smem-states:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description: States used by the AP to signal the Hexagon core
+> +    items:
+> +      - description: Stop the modem
+> +
+> +  qcom,smem-state-names:
+> +    $ref: /schemas/types.yaml#/definitions/string-array
+> +    description: The names of the state bits used for SMP2P output
+> +    items:
+> +      - const: stop
+> +
+> +  qcom,halt-regs:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description:
+> +      Phandle reference to a syscon representing TCSR followed by the
+> +      three offsets within syscon for q6, modem and nc halt registers.
+> +
+> +  qcom,spare-regs:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description:
+> +      A phandle reference to a syscon representing TCSR followed by the
+> +      offset within syscon for conn_box_spare0 register used by the modem
+> +      sub-system running on SC7180 SoC.
+> +
+> +  qcom,ext-regs:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description:
+> +      Two phandle references to syscons representing TCSR_REG and TCSR
+> +      register space followed by the two offsets within the syscon to
+> +      force_clk_en/rscc_disable and axim1_clk_off/crypto_clk_off registers
+> +      respectively.
+> +
+> +  qcom,qaccept-regs:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description:
+> +      A phandle reference to a syscon representing TCSR followed by the three
+> +      offsets within syscon for mdm, cx and axi qaccept registers used by the
+> +      modem sub-system running on SC7280 SoC.
+> +
+> +  iommus:
+> +    description:
+> +      Only required on platforms that do not have TrustZone.
+> +
+> +  smd-edge:
+> +    type: object
+> +    description:
+> +      Qualcomm Shared Memory subnode which represents communication edge,
+> +      channels and devices related to the ADSP.
+> +
+> +  glink-edge:
+> +    type: object
+> +    description:
+> +      Qualcomm G-Link subnode which represents communication edge, channels
+> +      and devices related to the ADSP.
+> +
+> +  mba:
+> +    type: object
+
+description needed.
+
+> +    properties:
+> +      memory-region:
+> +        maxItems: 1
+> +
+> +    required:
+> +      - memory-region
+> +
+> +  mpss:
+
+description needed.
+
+> +    type: object
+> +    properties:
+> +      memory-region:
+> +        maxItems: 1
+> +
+> +    required:
+> +      - memory-region
+> +
+> +required:
+> +  - compatible
+> +  - clocks
+> +  - clock-names
+> +  - interrupts-extended
+> +  - interrupt-names
+> +  - qcom,smem-states
+> +  - qcom,smem-state-names
+> +
+> +additionalProperties: false
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,ipq8074-wcss-pil
+> +    then:
+> +      properties:
+> +        clocks: false
+> +        clock-names: false
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,qcs404-wcss-pil
+> +    then:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: GCC_AHBS_CBCR clock
+> +            - description: GCC_AXIM_CBCR clock
+> +            - description: LCC_AHBFABRIC_CBC clock
+> +            - description: TCSR_LCC_CBC clock
+> +            - description: LCC_AHBS_CBC clock
+> +            - description: LCC_TCM_SLAVE_CBC clock
+> +            - description: LCC_ABHM_CBC clock
+> +            - description: LCC_AXIM_CBC clock
+> +            - description: LCC_BCR_SLEEP clock
+> +            - description: XO clock
+> +        clock-names:
+> +          items:
+> +            - const: gcc_ahbs_cbcr
+> +            - const: gcc_axim_cbcr
+> +            - const: lcc_ahbfabric_cbc
+> +            - const: tcsr_lcc_cbc
+> +            - const: lcc_abhs_cbc
+> +            - const: lcc_tcm_slave_cbc
+> +            - const: lcc_abhm_cbc
+> +            - const: lcc_axim_cbc
+> +            - const: lcc_bcr_sleep
+> +            - const: xo
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,q6v5-pil
+> +              - qcom,msm8916-mss-pil
+> +              - qcom,msm8974-mss-pil
+> +    then:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: Interface clock
+> +            - description: Bus clock
+> +            - description: Memory clock
+> +            - description: XO clock
+> +        clock-names:
+> +          items:
+> +            - const: iface
+> +            - const: bus
+> +            - const: mem
+> +            - const: xo
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,msm8996-mss-pil
+> +    then:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: Interface clock
+> +            - description: Bus clock
+> +            - description: Memory clock
+> +            - description: GPLL0_MSS clock
+> +            - description: SNOC_AXI clock
+> +            - description: MNOC_AXI clock
+> +            - description: PNOC clock
+> +            - description: QDSS clock
+> +            - description: XO clock
+> +        clock-names:
+> +          items:
+> +            - const: iface
+> +            - const: bus
+> +            - const: mem
+> +            - const: gpll0_mss
+> +            - const: snoc_axi
+> +            - const: mnoc_axi
+> +            - const: pnoc
+> +            - const: qdss
+> +            - const: xo
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,msm8998-mss-pil
+> +    then:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: Interface clock
+> +            - description: Bus clock
+> +            - description: Memory clock
+> +            - description: GPLL0_MSS clock
+> +            - description: SNOC_AXI clock
+> +            - description: MNOC_AXI clock
+> +            - description: QDSS clock
+> +            - description: XO clock
+> +        clock-names:
+> +          items:
+> +            - const: iface
+> +            - const: bus
+> +            - const: mem
+> +            - const: gpll0_mss
+> +            - const: snoc_axi
+> +            - const: mnoc_axi
+> +            - const: qdss
+> +            - const: xo
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,sc7180-mss-pil
+> +    then:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: Interface clock
+> +            - description: Bus clock
+> +            - description: NAV clock
+> +            - description: SNOC_AXI clock
+> +            - description: MNOC_AXI clock
+> +            - description: XO clock
+> +        clock-names:
+> +          items:
+> +            - const: iface
+> +            - const: bus
+> +            - const: nav
+> +            - const: snoc_axi
+> +            - const: mnoc_axi
+> +            - const: xo
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,sc7280-mss-pil
+> +    then:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: Interface clock
+> +            - description: Offline clock
+> +            - description: SNOC_AXI clock
+> +            - description: PKA clock
+> +            - description: XO clock
+> +        clock-names:
+> +          items:
+> +            - const: iface
+> +            - const: offline
+> +            - const: snoc_axi
+> +            - const: pka
+> +            - const: xo
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,sdm845-mss-pil
+> +    then:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: Interface clock
+> +            - description: Bus clock
+> +            - description: Memory clock
+> +            - description: GPLL0_MSS clock
+> +            - description: SNOC_AXI clock
+> +            - description: MNOC_AXI clock
+> +            - description: PRNG clock
+> +            - description: XO clock
+> +        clock-names:
+> +          items:
+> +            - const: iface
+> +            - const: bus
+> +            - const: mem
+> +            - const: gpll0_mss
+> +            - const: snoc_axi
+> +            - const: mnoc_axi
+> +            - const: prng
+> +            - const: xo
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,q6v5-pil
+> +              - qcom,ipq8074-wcss-pil
+> +              - qcom,qcs404-wcss-pil
+> +              - qcom,msm8916-mss-pil
+> +              - qcom,msm8974-mss-pil
+> +    then:
+> +      properties:
+> +        interrupts-extended:
+
+No extended.
+
+> +          items:
+> +            - description: Watchdog interrupt
+> +            - description: Fatal interrupt
+> +            - description: Ready interrupt
+> +            - description: Handover interrupt
+> +            - description: Stop acknowledge interrupt
+> +        interrupt-names:
+> +          items:
+> +            - const: wdog
+> +            - const: fatal
+> +            - const: ready
+> +            - const: handover
+> +            - const: stop-ack
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,msm8996-mss-pil
+> +              - qcom,msm8998-mss-pil
+> +              - qcom,sc7180-mss-pil
+> +              - qcom,sc7280-mss-pil
+> +              - qcom,sdm845-mss-pil
+> +    then:
+> +      properties:
+> +        interrupts-extended:
+> +          items:
+> +            - description: Watchdog interrupt
+> +            - description: Fatal interrupt
+> +            - description: Ready interrupt
+> +            - description: Handover interrupt
+> +            - description: Stop acknowledge interrupt
+> +            - description: Shutdown acknowledge interrupt
+> +        interrupt-names:
+> +          items:
+> +            - const: wdog
+> +            - const: fatal
+> +            - const: ready
+> +            - const: handover
+> +            - const: stop-ack
+> +            - const: shutdown-ack
+
+Both ifs should be written differently. Move the bigger list to
+properties with minItems: 5. For qcom,q6v5-pil you set maxItems:5. For
+qcom,msm8996-mss-pil you set minItems:6.
+
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - const: qcom,q6v5-pil
+> +            - const: qcom,msm8916-mss-pil
+> +            - const: qcom,msm8974-mss-pil
+> +    then:
+> +      properties:
+> +        cx-supply:
+> +          deprecated: true
+> +        mx-supply:
+> +          deprecated: true
+> +
+> +      required:
+> +        - pll-supply
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - qcom,msm8916-mss-pil
+> +            - qcom,msm8974-mss-pil
+> +            - qcom,msm8996-mss-pil
+> +            - qcom,msm8998-mss-pil
+> +    then:
+> +      properties:
+> +        power-domains:
+> +          items:
+> +            - description: CX power domain
+> +            - description: MX power domain
+> +        power-domain-names:
+> +          items:
+> +            - const: cx
+> +            - const: mx
+> +
+> +      required:
+> +        - power-domains
+> +        - power-domain-names
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - const: qcom,msm8996-mss-pil
+> +    then:
+> +      properties:
+> +        cx-supply: false
+> +        mx-supply: false
+> +
+> +      required:
+> +        - pll-supply
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - const: qcom,qcs404-wcss-pil
+> +    then:
+> +      required:
+> +        - cx-supply
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,sdm845-mss-pil
+> +              - qcom,sc7180-mss-pil
+> +    then:
+> +      properties:
+> +        power-domains:
+> +          items:
+> +            - description: CX power domain
+> +            - description: MX power domain
+> +            - description: MSS power domain
+> +        power-domain-names:
+> +          items:
+> +            - const: cx
+> +            - const: mx
+> +            - const: mss
+> +
+> +      required:
+> +        - power-domains
+> +        - power-domain-names
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,sc7280-mss-pil
+> +    then:
+> +      properties:
+> +        power-domains:
+> +          items:
+> +            - description: CX power domain
+> +            - description: MSS power domain
+> +        power-domain-names:
+> +          items:
+> +            - const: cx
+> +            - const: mss
+> +
+> +      required:
+> +        - power-domains
+> +        - power-domain-names
+> +        - qcom,ext-regs
+> +        - qcom,qaccept-regs
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,q6v5-pil
+> +              - qcom,msm8916-mss-pil
+> +              - qcom,msm8974-mss-pil
+> +              - qcom,msm8996-mss-pil
+> +              - qcom,msm8998-mss-pil
+> +    then:
+> +      properties:
+> +        resets:
+> +          items:
+> +            - description: MSS reset
+> +        reset-names:
+> +          items:
+> +            - const: mss_restart
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,ipq8074-wcss-pil
+> +              - qcom,qcs404-wcss-pil
+> +    then:
+> +      properties:
+> +        resets:
+> +          items:
+> +            - description: WCSS Always On restart
+> +            - description: WCSS reset
+> +            - description: WCSS Q6 reset
+> +        reset-names:
+> +          items:
+> +            - const: wcss_aon_restart
+> +            - const: wcss_reset
+> +            - const: wcss_q6_reset
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,sc7180-mss-pil
+> +              - qcom,sc7280-mss-pil
+> +              - qcom,sdm845-mss-pil
+> +    then:
+> +      properties:
+> +        resets:
+> +          items:
+> +            - description: MSS restart
+> +            - description: PDC reset
+> +        reset-names:
+> +          items:
+> +            - const: mss_restart
+> +            - const: pdc_reset
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,q6v5-pil
+> +              - qcom,ipq8074-wcss-pil
+> +              - qcom,qcs404-wcss-pil
+> +              - qcom,msm8916-mss-pil
+> +              - qcom,msm8974-mss-pil
+> +              - qcom,msm8996-mss-pil
+> +              - qcom,msm8998-mss-pil
+> +    then:
+> +      properties:
+> +        qcom,qmp: false
+> +        iommus: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/qcom,rpmcc.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/clock/qcom,gcc-msm8974.h>
+> +    #include <dt-bindings/reset/qcom,gcc-msm8974.h>
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    modem-rproc@fc880000 {
+
+Generic node name, so "remoteproc"
+
+> +        compatible = "qcom,q6v5-pil";
+> +        reg = <0xfc880000 0x100>,
+> +              <0xfc820000 0x020>;
+> +        reg-names = "qdsp6", "rmb";
+> +
+> +        interrupts-extended = <&intc GIC_SPI 24 IRQ_TYPE_EDGE_RISING>,
+> +                              <&modem_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
+> +                              <&modem_smp2p_in 1 IRQ_TYPE_EDGE_RISING>,
+> +                              <&modem_smp2p_in 2 IRQ_TYPE_EDGE_RISING>,
+> +                              <&modem_smp2p_in 3 IRQ_TYPE_EDGE_RISING>;
+> +        interrupt-names = "wdog",
+> +                          "fatal",
+> +                          "ready",
+> +                          "handover",
+> +                          "stop-ack";
+> +
+> +        clocks = <&gcc GCC_MSS_Q6_BIMC_AXI_CLK>,
+> +                 <&gcc GCC_MSS_CFG_AHB_CLK>,
+> +                 <&gcc GCC_BOOT_ROM_AHB_CLK>,
+> +                 <&xo_board>;
+> +        clock-names = "iface", "bus", "mem", "xo";
+> +
+> +        qcom,halt-regs = <&tcsr_mutex_block 0x1180 0x1200 0x1280>;
+
+Does this pass the tests? Did you test the bindings?
+
+> +
+> +        resets = <&gcc GCC_MSS_RESTART>;
+> +        reset-names = "mss_restart";
+> +
+> +        cx-supply = <&pm8841_s2>;
+> +        mss-supply = <&pm8841_s3>;
+> +        mx-supply = <&pm8841_s1>;
+> +        pll-supply = <&pm8941_l12>;
+> +
+> +        qcom,smem-states = <&modem_smp2p_out 0>;
+> +        qcom,smem-state-names = "stop";
+> +
+> +        mba {
+> +                memory-region = <&mba_region>;
+
+Wrong indentation.
+
+> +        };
+> +
+> +        mpss {
+> +                memory-region = <&mpss_region>;
+> +        };
+> +
+> +        smd-edge {
+> +                interrupts = <GIC_SPI 25 IRQ_TYPE_EDGE_RISING>;
+> +
+> +                qcom,ipc = <&apcs 8 12>;
+> +                qcom,smd-edge = <0>;
+> +
+> +                label = "modem";
+> +        };
+> +    };
+
+
+Best regards,
+Krzysztof
