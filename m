@@ -2,104 +2,100 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DCCFC433FE
-	for <phone-devel@archiver.kernel.org>; Thu, 12 May 2022 13:49:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A57FC433F5
+	for <phone-devel@archiver.kernel.org>; Thu, 12 May 2022 14:37:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354674AbiELNti (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 12 May 2022 09:49:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53542 "EHLO
+        id S236997AbiELOhG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 12 May 2022 10:37:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354651AbiELNte (ORCPT
+        with ESMTP id S1355414AbiELOhF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 12 May 2022 09:49:34 -0400
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB059169E04;
-        Thu, 12 May 2022 06:49:28 -0700 (PDT)
-Received: by mail-ot1-f41.google.com with SMTP id l9-20020a056830268900b006054381dd35so2719376otu.4;
-        Thu, 12 May 2022 06:49:28 -0700 (PDT)
+        Thu, 12 May 2022 10:37:05 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED1354F9F3
+        for <phone-devel@vger.kernel.org>; Thu, 12 May 2022 07:37:03 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id q20so3164861wmq.1
+        for <phone-devel@vger.kernel.org>; Thu, 12 May 2022 07:37:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=398I+siT7kQxb7ToNmEqTjbhjJR5QW8v3WeVYoiUi18=;
+        b=LjM9msCI8O9qV0jOlCLZIr4ytuS+FR/3n43jLMsVo6PsQfVwpZsbw3B2V8ZpJ47Nic
+         Eacg4BKu6Wa1rXQD1r3Mc97pOu3Ti1D0yEO/6Px7fTkJgvkB9gAi0/KpU+GA712t3QQJ
+         ZBBb38aG1PSrTDrNxFJz+O9ms82rglnLBRI+GIiTawGOvMdqbhI9dORb+nopzg6YFzFi
+         MLNtWkx3pefZSGxM0KOTvwUZfUNIIDuh5WCCCOCFmzS9eAj5ay2IjoVUY1prDQh+kJFl
+         Y6oGRfYJ4L9c1+S8SIEySVeE80AEDd/YIV7UNAtSg8Xw0mqk41LKzbfvtKH+xKavsaO0
+         t1ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=PsCGzG6OjpoTr8MImm2vvJ+gTn0sgSx2eppfKofCUaY=;
-        b=zKafIk9s4ot87ctdlNXzXmmPe+udPbNKCqeMa9MOzFAFeyWArMUICydk+KorQOjQOl
-         CIH9C+djWcqS5WKi94YZWhH6ufserN/UXmtSazQaBm5ZlUwK2qQgV75RzJ2gZUynyBuX
-         Qd+97EHo2kVLJs5LHmvxiSh69uAy97mMa4WnqcL76Gq6LtoyyfpPmtS7eRIaROaecol6
-         EM4NFluJUctbeaSc0IyFjLqfF4mo5dDsHtjLX/CeRFWhxvcxSWIXjRg6YzIQZhb1eYmS
-         JFCudiXibtQvwpxaq3wAsHdY4EpuZma9lJEUBMB34kFpOGWGtmD0ySosDVXDndLVwVg3
-         LVUg==
-X-Gm-Message-State: AOAM5332CXcC8MFehbpy1lRyeA94URBncAQlNEa+0Dh+BJR+dBrZ/q8F
-        coNhmNbRNFx/DVBWyAP0UQ==
-X-Google-Smtp-Source: ABdhPJzcboMr7Lypqv9322MOEFtzV/4F5STDwvSQiYG1BRFrFhTD7H7K9oUOY1m7VKvCK4EEpssOGA==
-X-Received: by 2002:a9d:3b5:0:b0:603:f8ac:a780 with SMTP id f50-20020a9d03b5000000b00603f8aca780mr17467otf.26.1652363367956;
-        Thu, 12 May 2022 06:49:27 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id u4-20020a4a9704000000b0035eb4e5a6b5sm2188364ooi.11.2022.05.12.06.49.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 May 2022 06:49:27 -0700 (PDT)
-Received: (nullmailer pid 2231013 invoked by uid 1000);
-        Thu, 12 May 2022 13:49:24 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Sireesh Kodali <sireeshkodali1@gmail.com>
-Cc:     devicetree@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        bjorn.andersson@linaro.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        linux-remoteproc@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-In-Reply-To: <20220511161602.117772-5-sireeshkodali1@gmail.com>
-References: <20220511161602.117772-1-sireeshkodali1@gmail.com> <20220511161602.117772-5-sireeshkodali1@gmail.com>
-Subject: Re: [PATCH 4/9] dt-bindings: remoteproc: qcom: wcnss: Convert to YAML
-Date:   Thu, 12 May 2022 08:49:24 -0500
-Message-Id: <1652363364.585757.2231012.nullmailer@robh.at.kernel.org>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=398I+siT7kQxb7ToNmEqTjbhjJR5QW8v3WeVYoiUi18=;
+        b=RY+T/ExGJXmpysoodcGJZKje8K0qS80OL+7358BBJ+XJp4BzPHjVWkcVqtublm37D6
+         t0wdL2lXAWi53l9fS2ktjgMf67Peeey/4EZu+bYoPLYkkIgyym89w5S9l0u4Ild/JCWg
+         heOweIbKQWR+oL/xRX/5n0s8vAsuAYRFfl294mC+5ctgmmlHoZYSs5OgS8V4X2Hyboe4
+         E3KkFJFsLFhjQRblOx9nedxzNh4uSB9tQxFPM3T4+P/tfUJ3+u3S81KWv1CXvAA2VTEP
+         JAZLnW12M6QSlu8xDcb3oxyhbYX/FT8zv9fVHGF01rqm8KYtM+8L4DDFuesjqBba47Wk
+         bl+g==
+X-Gm-Message-State: AOAM530vhXBf5l3Sht+tOKvpCvJfcbU7H44NzXBUHnyzRKovYbggex7D
+        9+kBEjlDxTKo7GW7ooLwI07Ing==
+X-Google-Smtp-Source: ABdhPJyUyJvCmAGVIMf+AcMLEvqljsZojjnbmhouIwgq3Hc8CFxYnzi0slqW3aVLUOyCHPslUzwg6w==
+X-Received: by 2002:a05:600c:a4b:b0:37b:ea2b:5583 with SMTP id c11-20020a05600c0a4b00b0037bea2b5583mr10654441wmq.139.1652366222624;
+        Thu, 12 May 2022 07:37:02 -0700 (PDT)
+Received: from [192.168.0.161] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id b11-20020adff24b000000b0020adc114136sm5525903wrp.0.2022.05.12.07.37.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 May 2022 07:37:02 -0700 (PDT)
+Message-ID: <4c35f605-4fa0-13d0-db09-229f718c5c7c@linaro.org>
+Date:   Thu, 12 May 2022 16:37:00 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 9/9] arm64: dts: qcom: msm8953: Add remote processor nodes
+Content-Language: en-US
+To:     Sireesh Kodali <sireeshkodali1@gmail.com>,
+        linux-remoteproc@vger.kernel.org
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, bjorn.andersson@linaro.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+References: <20220511161602.117772-1-sireeshkodali1@gmail.com>
+ <20220511161602.117772-10-sireeshkodali1@gmail.com>
+ <2d68e610-e8ae-9e08-257a-3c94c3697334@linaro.org>
+ <CJXO6ZMZ454X.M3N9HDKNA5HB@skynet-linux>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <CJXO6ZMZ454X.M3N9HDKNA5HB@skynet-linux>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 11 May 2022 21:45:57 +0530, Sireesh Kodali wrote:
-> Convert the dt-bindings from txt to YAML. This is in preparation for
-> including the relevant bindings for the MSM8953 platform's wcnss pil.
+On 12/05/2022 11:19, Sireesh Kodali wrote:
+> On Wed May 11, 2022 at 11:25 PM IST, Krzysztof Kozlowski wrote:
+>> On 11/05/2022 18:16, Sireesh Kodali wrote:
+>>> This commit adds the modem (q6v5_mss), WiFi (wcnss-pil) and audio DSP
+>>> (q6v5_pas) remote processor nodes for the MSM8953 platform. It also adds
+>>> the coresponding SMP2P, SMSM and pinctrl nodes that are needed by these
+>>> remote processors.
+>>>
+>>> Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
+>>> +			};
+>>> +
+>>> +			wcnss_sleep: wcnss-sleep-pins {
+>>> +				wcss_wlan2 {
+>>
+>> No underscores in node names, unless something needs it?
+>>
 > 
-> Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
-> ---
->  .../bindings/remoteproc/qcom,wcnss-pil.txt    | 177 --------------
->  .../bindings/remoteproc/qcom,wcnss-pil.yaml   | 228 ++++++++++++++++++
->  2 files changed, 228 insertions(+), 177 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.txt
->  create mode 100644 Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> 
+> wcnss_sleep is used by the pronto node defined below
 
-Running 'make dtbs_check' with the schema in this patch gives the
-following warnings. Consider if they are expected or the schema is
-incorrect. These may not be new warnings.
+wcnss_sleep is not a node name and it is not in the line where I commented.
 
-Note that it is not yet a requirement to have 0 warnings for dtbs_check.
-This will change in the future.
-
-Full log is available here: https://patchwork.ozlabs.org/patch/
-
-
-remoteproc@a21b000: 'qcom,state', 'qcom,state-names' do not match any of the regexes: 'pinctrl-[0-9]+'
-	arch/arm64/boot/dts/qcom/apq8016-sbc.dtb
-	arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dtb
-	arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dtb
-	arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dtb
-	arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dtb
-	arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dtb
-	arch/arm64/boot/dts/qcom/msm8916-mtp.dtb
-	arch/arm64/boot/dts/qcom/msm8916-samsung-a3u-eur.dtb
-	arch/arm64/boot/dts/qcom/msm8916-samsung-a5u-eur.dtb
-	arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dtb
-	arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dtb
-	arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dtb
-	arch/arm/boot/dts/qcom-apq8016-sbc.dtb
-	arch/arm/boot/dts/qcom-msm8916-samsung-serranove.dtb
-
-remoteproc@fb21b000: 'power-domain-names' is a required property
-	arch/arm/boot/dts/qcom-msm8974-fairphone-fp2.dtb
-
-remoteproc@fb21b000: 'power-domains' is a required property
-	arch/arm/boot/dts/qcom-msm8974-fairphone-fp2.dtb
-
+Best regards,
+Krzysztof
