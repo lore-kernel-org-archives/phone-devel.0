@@ -2,109 +2,147 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D2F8C433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 12 May 2022 10:01:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1F6CC433FE
+	for <phone-devel@archiver.kernel.org>; Thu, 12 May 2022 10:33:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352474AbiELKB6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 12 May 2022 06:01:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60980 "EHLO
+        id S1352696AbiELKd0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 12 May 2022 06:33:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352646AbiELKBo (ORCPT
+        with ESMTP id S1352688AbiELKdV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 12 May 2022 06:01:44 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AA542631;
-        Thu, 12 May 2022 03:01:43 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id i24so4337716pfa.7;
-        Thu, 12 May 2022 03:01:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
-         :from:to:references:in-reply-to;
-        bh=EpBY+DzaKr9D9IVnNO2+lmGSlE52SY1thjpa7lm9o98=;
-        b=H/vDwD9CLydNeeCx0wINFwNCrrUAP3HjvBKceekUmrNS2Cm1/dqVyoSPjQfWVLDoYY
-         hNwhC4cPb4rAtzFwuXR9KbED2q9bIevRtRi8A19F/zYGPSv3LpHFTI89j0/GVsI6vbF6
-         z1Y6KvKppkgn0KxmM7uP5k6RH6XbpoK6oqnLi1r0EOGwuSLagI/LXmTklB96zhbGrRdR
-         jZq++K/R4Nc732LumYw2B9iaYS6s6+8Tyb0U3xypaHWBY1ZyVfSNkTTFaVb4L/kLKkvG
-         nm1V01D/xeNmrkc7tRGXoFryvx/vhdCjcmi01xDQFF8dbqEbY/IpM4YQHJGhZzcwJcxr
-         RzdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:cc:subject:from:to:references:in-reply-to;
-        bh=EpBY+DzaKr9D9IVnNO2+lmGSlE52SY1thjpa7lm9o98=;
-        b=AFGt3/JvSWzgM0Jhznq0qW4FUROWDWXB2kB1K1yRClHIkeG0u9eb8qcEysv52MtMAZ
-         mVmEsbzoQ1GX/mqb4yPrWS9IDoe99s/0rNWbh9PjGxnX4raVzGbJvp+tLtz2d+mREdCf
-         Fverjp3qDBVvdRwM8i4Lo3xknjBoAdU/8hCR1xL2Yq/Fv3v4xwUHMZyHaIk+4DQVDmu1
-         J9lmK5JxpElJeRDYmGZUQH16zsRCLEeHVXaKwp0m/zD+a8GOaS2TZZRMlLz0LzMwAnd4
-         UtBj0tFgDRSmKM+8Fz+/zpc7I34IGeMkXST1QxngpNB3o4gRyeNJatmLC3Gi1d+xR7jg
-         MVbQ==
-X-Gm-Message-State: AOAM531dVvfqsMgJyWJQhlJGmb1RTCTmKSB6roPiJ0TmVkc1CzR9Uj7K
-        vK5V27KMi4JyeT6itgH+/LM=
-X-Google-Smtp-Source: ABdhPJwDkS1ORRJ1l54DeEOUcmdKRbft9icrpYGIK8G2oR5hAts4EVC68n5cxAfMu55mW6Prgo7TZg==
-X-Received: by 2002:a63:2a04:0:b0:3c4:a041:d71 with SMTP id q4-20020a632a04000000b003c4a0410d71mr24377491pgq.492.1652349702720;
-        Thu, 12 May 2022 03:01:42 -0700 (PDT)
-Received: from localhost ([49.204.239.218])
-        by smtp.gmail.com with ESMTPSA id j8-20020a170902758800b0015ea95948ebsm3454916pll.134.2022.05.12.03.01.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 May 2022 03:01:42 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Thu, 12 May 2022 15:31:36 +0530
-Message-Id: <CJXP2Z9J7QS1.24A3N1EFCTACN@skynet-linux>
-Cc:     <linux-arm-msm@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <bjorn.andersson@linaro.org>, <devicetree@vger.kernel.org>,
-        <phone-devel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Andy Gross" <agross@kernel.org>,
-        "Mathieu Poirier" <mathieu.poirier@linaro.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH 4/9] dt-bindings: remoteproc: qcom: wcnss: Convert to
- YAML
-From:   "Sireesh Kodali" <sireeshkodali1@gmail.com>
-To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        <linux-remoteproc@vger.kernel.org>
-X-Mailer: aerc 0.9.0
-References: <20220511161602.117772-1-sireeshkodali1@gmail.com>
- <20220511161602.117772-5-sireeshkodali1@gmail.com>
- <00234f36-9bae-31d5-5b83-ea238e7e3c11@linaro.org>
- <CJXL0SG2GHN1.1IO2JOR5ARNV8@skynet-linux>
- <30c18480-bf0d-82b9-5b11-daa3b70c40df@linaro.org>
-In-Reply-To: <30c18480-bf0d-82b9-5b11-daa3b70c40df@linaro.org>
+        Thu, 12 May 2022 06:33:21 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 315F722384E;
+        Thu, 12 May 2022 03:33:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1652351597; x=1683887597;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=j2jLl94ZVv6+GyAHgqDQMoLNb5is4/daKLdqORUvrdg=;
+  b=c8gsRy5vrkVgf5ltd4jkh27OZFBQbAjROQCHP1hb46tNjRnfIA1ouAFz
+   sIBlWfB43/C/oc5kT6TRCMomhblfCkLJzMTCtbTcSsQ4FWwzpy6YX1rVo
+   YphJ6sDG8AkBECaC6mJiu7oK6isTxjWjMb1+9hFeaXUbkUWhjO6u9kakB
+   1Vj0AT1bi876t577ACjpv4boZtolbHugcKX5IbPmMi1r5ztoY5dmcitxL
+   I9JJLhwgiPgomiG4SwQHLiFcQ278Bbfe9XkNfX4fjfpag1EIZa6O717N8
+   ZPuf3dR+DTErGSUn/Ailsd91AXdBtAeDswP53y7NRwCLnJKA+btXZRUMO
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10344"; a="269637629"
+X-IronPort-AV: E=Sophos;i="5.91,219,1647327600"; 
+   d="scan'208";a="269637629"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2022 03:33:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,219,1647327600"; 
+   d="scan'208";a="711867159"
+Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 12 May 2022 03:33:11 -0700
+Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1np686-000KIM-T5;
+        Thu, 12 May 2022 10:33:10 +0000
+Date:   Thu, 12 May 2022 18:32:25 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Markuss Broks <markuss.broks@gmail.com>,
+        linux-kernel@vger.kernel.org
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Song Qiang <songqiang1304521@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] proximity: vl53l0x: Prefer already initialized
+ interrupt flags
+Message-ID: <202205121820.qRBa5PNP-lkp@intel.com>
+References: <20220511214718.50879-3-markuss.broks@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220511214718.50879-3-markuss.broks@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu May 12, 2022 at 2:06 PM IST, Krzysztof Kozlowski wrote:
-> On 12/05/2022 08:50, Sireesh Kodali wrote:
-> >>> +    description: The names of the state bits used for SMP2P output
-> >>> +    items:
-> >>> +      - const: stop
-> >>> +
-> >>> +  memory-region:
-> >>> +    maxItems: 1
-> >>> +    description: Reference to the reserved-memory for the WCNSS core
-> >>> +
-> >>> +  smd-edge:
-> >>> +    type: object
-> >>> +    description:
-> >>> +      Qualcomm Shared Memory subnode which represents communication =
-edge,
-> >>> +      channels and devices related to the ADSP.
-> >>
-> >> You should reference /schemas/soc/qcom/qcom,smd.yaml
->
-> It seems it is not a SMD driver so above reference is not correct. This
-> should be probably described in its own schema, I just need to
-> understand what's this...
->
-The smd-edge node describes the smd channels used to communicate with
-the remote processor. For wcnss that would be the remote proc id, and
-the channels for bt and wifi (both separate). There's a similar node for
-adsp and q6v5.
->
-> Best regards,
-> Krzysztof
+Hi Markuss,
 
+I love your patch! Yet something to improve:
+
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on robh/for-next linux/master linus/master v5.18-rc6 next-20220511]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Markuss-Broks/Add-support-for-ToF-sensor-on-Yoshino-platform/20220512-054917
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+config: s390-randconfig-r032-20220509 (https://download.01.org/0day-ci/archive/20220512/202205121820.qRBa5PNP-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 18dd123c56754edf62c7042dcf23185c3727610f)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install s390 cross compiling tool for clang build
+        # apt-get install binutils-s390x-linux-gnu
+        # https://github.com/intel-lab-lkp/linux/commit/b4103f031e2c0265ae4f15f107341bcfc83008f0
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Markuss-Broks/Add-support-for-ToF-sensor-on-Yoshino-platform/20220512-054917
+        git checkout b4103f031e2c0265ae4f15f107341bcfc83008f0
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=s390 SHELL=/bin/bash drivers/iio/proximity/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/proximity/vl53l0x-i2c.c:60:18: error: call to undeclared function 'irq_get_trigger_type'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+           int irq_flags = irq_get_trigger_type(client->irq);
+                           ^
+   1 error generated.
+
+
+vim +/irq_get_trigger_type +60 drivers/iio/proximity/vl53l0x-i2c.c
+
+    56	
+    57	static int vl53l0x_configure_irq(struct i2c_client *client,
+    58					 struct iio_dev *indio_dev)
+    59	{
+  > 60		int irq_flags = irq_get_trigger_type(client->irq);
+    61		struct vl53l0x_data *data = iio_priv(indio_dev);
+    62		int ret;
+    63	
+    64		if (!irq_flags)
+    65			irq_flags = IRQF_TRIGGER_FALLING;
+    66	
+    67		ret = devm_request_irq(&client->dev, client->irq, vl53l0x_handle_irq,
+    68				irq_flags, indio_dev->name, indio_dev);
+    69		if (ret) {
+    70			dev_err(&client->dev, "devm_request_irq error: %d\n", ret);
+    71			return ret;
+    72		}
+    73	
+    74		ret = i2c_smbus_write_byte_data(data->client,
+    75				VL_REG_SYSTEM_INTERRUPT_CONFIG_GPIO,
+    76				VL_REG_SYSTEM_INTERRUPT_GPIO_NEW_SAMPLE_READY);
+    77		if (ret < 0)
+    78			dev_err(&client->dev, "failed to configure IRQ: %d\n", ret);
+    79	
+    80		return ret;
+    81	}
+    82	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
