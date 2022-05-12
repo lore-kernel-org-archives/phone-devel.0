@@ -2,108 +2,153 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71595C433FE
-	for <phone-devel@archiver.kernel.org>; Thu, 12 May 2022 15:15:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4ECB8C433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 12 May 2022 16:55:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355515AbiELPPS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 12 May 2022 11:15:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53078 "EHLO
+        id S1356737AbiELQza (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 12 May 2022 12:55:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344515AbiELPPR (ORCPT
+        with ESMTP id S1356716AbiELQz3 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 12 May 2022 11:15:17 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7539D262709;
-        Thu, 12 May 2022 08:15:16 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id qe3-20020a17090b4f8300b001dc24e4da73so6003043pjb.1;
-        Thu, 12 May 2022 08:15:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:content-transfer-encoding:date:message-id:to:cc
-         :subject:from:references:in-reply-to;
-        bh=GgS0ovsnzIl+XbPdqcV3z69dQ1L8vgRNNmtPd1a560g=;
-        b=iVGlYlXZyiZJ4+m4ZBMGPCqhvt8he9j9el2DQHfKlwgf+mjUwvqRQgB1E2lDLqePKr
-         yFn9Tf4NAnfef8uuIUg+C8wZm1DyDa5J7plCFoL+dtAPrWBKooCDTEbECC/ChjYQIdbE
-         4BAzt3raxDol3U7vxXFOILgyiWFanRoIDMA1ygO6pYBpabGVTbtc+HiDHPX0wKV3wuHO
-         k4KOZEmXdXALOkTvyusvBv+PH5JxEUKIY33W7nggQk+AewiDA5TATQYjvHvVrvfN9ICZ
-         /1Jw8U/nGZEdiR2bzKg/tcpiqZSuv8Sn9bwDM4970lBQ7lpUrW10IOSW8qjt1kNGoUMS
-         63sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:to:cc:subject:from:references:in-reply-to;
-        bh=GgS0ovsnzIl+XbPdqcV3z69dQ1L8vgRNNmtPd1a560g=;
-        b=f7yAK5KBgmj620y0mwZOBIj64byLCy7jLYcyx/1sZJKRt7ORMoa7mUsoH6h4m5xv+W
-         +puBDRVLwYmlLXdtby+4sZwyI4R2efLthC/cMatf/RPynlNdKYxljithopUPiB/Inw6k
-         Vjbkg7DxyQD4bMxR/EMQShtyKzXFwlMMjU9nGlAxc97qETwkONlHDW/1ZaBefHgsJ6k/
-         sDWBcXk3qUH3DgO1oLcvkoof37rUwxAZ/ddNTuUwygdFGzxwDpFK6hC/jQDaubaPzxBz
-         Tp0BzBa3Y0AlD+p3yiCcRZzJ1Q6a2YDCAt19OUKzZjuRkBaIbE0lfV8bXpX5r+pkZ2V9
-         W3Eg==
-X-Gm-Message-State: AOAM53315f4s2YkA8MWy36nRKC/ghBMEwfk1+xNdn9iq0jjl2nUfl5Y3
-        NeMv2/Wpd43XeJMmgIRzU6U=
-X-Google-Smtp-Source: ABdhPJxC2So97x6pv0JyW4D6Tlkd964QX6zgOdt5/5Flx+sqhYg9Rx/Z6eRy6qX69MCFQqgQ7/TDlw==
-X-Received: by 2002:a17:902:ef43:b0:156:9c5d:b0fe with SMTP id e3-20020a170902ef4300b001569c5db0femr73540plx.158.1652368515863;
-        Thu, 12 May 2022 08:15:15 -0700 (PDT)
-Received: from localhost ([49.204.239.218])
-        by smtp.gmail.com with ESMTPSA id gd9-20020a17090b0fc900b001d90c8b6141sm1955741pjb.53.2022.05.12.08.15.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 May 2022 08:15:15 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Thu, 12 May 2022 20:45:09 +0530
-Message-Id: <CJXVR1WTNWBR.2YTXMB8GZU84K@skynet-linux>
-To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        <linux-remoteproc@vger.kernel.org>
-Cc:     <linux-arm-msm@vger.kernel.org>,
+        Thu, 12 May 2022 12:55:29 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F22156E8D9;
+        Thu, 12 May 2022 09:55:27 -0700 (PDT)
+Received: from fraeml743-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Kzd985FVsz67lbv;
+        Fri, 13 May 2022 00:51:56 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml743-chm.china.huawei.com (10.206.15.224) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 12 May 2022 18:55:25 +0200
+Received: from localhost (10.81.210.133) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Thu, 12 May
+ 2022 17:55:24 +0100
+Date:   Thu, 12 May 2022 17:55:22 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Markuss Broks <markuss.broks@gmail.com>
+CC:     <linux-kernel@vger.kernel.org>,
         <~postmarketos/upstreaming@lists.sr.ht>,
-        <bjorn.andersson@linaro.org>, <devicetree@vger.kernel.org>,
-        <phone-devel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Andy Gross" <agross@kernel.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH 9/9] arm64: dts: qcom: msm8953: Add remote processor
- nodes
-From:   "Sireesh Kodali" <sireeshkodali1@gmail.com>
-X-Mailer: aerc 0.9.0
-References: <20220511161602.117772-1-sireeshkodali1@gmail.com>
- <20220511161602.117772-10-sireeshkodali1@gmail.com>
- <2d68e610-e8ae-9e08-257a-3c94c3697334@linaro.org>
- <CJXO6ZMZ454X.M3N9HDKNA5HB@skynet-linux>
- <4c35f605-4fa0-13d0-db09-229f718c5c7c@linaro.org>
-In-Reply-To: <4c35f605-4fa0-13d0-db09-229f718c5c7c@linaro.org>
+        <phone-devel@vger.kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Song Qiang <songqiang1304521@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "Liam Girdwood" <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH v3 3/5] proximity: vl53l0x: Handle the VDD regulator
+Message-ID: <20220512175522.000013cb@Huawei.com>
+In-Reply-To: <20220512110757.5297-4-markuss.broks@gmail.com>
+References: <20220512110757.5297-1-markuss.broks@gmail.com>
+        <20220512110757.5297-4-markuss.broks@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.81.210.133]
+X-ClientProxiedBy: lhreml720-chm.china.huawei.com (10.201.108.71) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu May 12, 2022 at 8:07 PM IST, Krzysztof Kozlowski wrote:
-> On 12/05/2022 11:19, Sireesh Kodali wrote:
-> > On Wed May 11, 2022 at 11:25 PM IST, Krzysztof Kozlowski wrote:
-> >> On 11/05/2022 18:16, Sireesh Kodali wrote:
-> >>> This commit adds the modem (q6v5_mss), WiFi (wcnss-pil) and audio DSP
-> >>> (q6v5_pas) remote processor nodes for the MSM8953 platform. It also a=
-dds
-> >>> the coresponding SMP2P, SMSM and pinctrl nodes that are needed by the=
-se
-> >>> remote processors.
-> >>>
-> >>> Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
-> >>> +			};
-> >>> +
-> >>> +			wcnss_sleep: wcnss-sleep-pins {
-> >>> +				wcss_wlan2 {
-> >>
-> >> No underscores in node names, unless something needs it?
-> >>
-> >=20
-> > wcnss_sleep is used by the pronto node defined below
->
-> wcnss_sleep is not a node name and it is not in the line where I commente=
-d.
->
-Sorry, I'll fix it in v2
-> Best regards,
-> Krzysztof
+On Thu, 12 May 2022 14:07:55 +0300
+Markuss Broks <markuss.broks@gmail.com> wrote:
 
-Thanks,
-Sireesh
+> Handle the regulator supplying the VDD pin of VL53L0X.
+> 
+> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+Hi Markuss,
+
+One ordering question inline.
+
+> ---
+>  drivers/iio/proximity/vl53l0x-i2c.c | 37 +++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
+> 
+> diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
+> index 12a3e2eff464..d8523e3981e8 100644
+> --- a/drivers/iio/proximity/vl53l0x-i2c.c
+> +++ b/drivers/iio/proximity/vl53l0x-i2c.c
+> @@ -43,6 +43,7 @@
+>  struct vl53l0x_data {
+>  	struct i2c_client *client;
+>  	struct completion completion;
+> +	struct regulator *vdd_supply;
+>  };
+>  
+>  static irqreturn_t vl53l0x_handle_irq(int irq, void *priv)
+> @@ -192,10 +193,31 @@ static const struct iio_info vl53l0x_info = {
+>  	.read_raw = vl53l0x_read_raw,
+>  };
+>  
+> +static void vl53l0x_power_off(void *_data)
+> +{
+> +	struct vl53l0x_data *data = _data;
+> +
+> +	regulator_disable(data->vdd_supply);
+> +}
+> +
+> +static int vl53l0x_power_on(struct vl53l0x_data *data)
+> +{
+> +	int ret;
+> +
+> +	ret = regulator_enable(data->vdd_supply);
+> +	if (ret)
+> +		return ret;
+> +
+> +	usleep_range(3200, 5000);
+> +
+> +	return 0;
+> +}
+> +
+>  static int vl53l0x_probe(struct i2c_client *client)
+>  {
+>  	struct vl53l0x_data *data;
+>  	struct iio_dev *indio_dev;
+> +	int error;
+>  
+>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+>  	if (!indio_dev)
+> @@ -210,6 +232,21 @@ static int vl53l0x_probe(struct i2c_client *client)
+>  				     I2C_FUNC_SMBUS_BYTE_DATA))
+>  		return -EOPNOTSUPP;
+>  
+> +	data->vdd_supply = devm_regulator_get_optional(&client->dev, "vdd");
+> +	if (IS_ERR(data->vdd_supply))
+> +		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
+> +				     "Unable to get VDD regulator\n");
+> +
+> +	error = devm_add_action_or_reset(&client->dev, vl53l0x_power_off, data);
+
+I don't follow why you have this before the power_on.  We haven't enabled the
+regulator yet so shouldn't be turning it off if we get an error whilst trying
+to enable it.  The or_reset part is to ensure that even if this call
+fails to register a devm action it will still call the callback thus allowing
+you safely do this after turning the power on.
+
+> +	if (error)
+> +		return dev_err_probe(&client->dev, error,
+> +				     "Failed to install poweroff action\n");
+> +
+> +	error = vl53l0x_power_on(data);
+> +	if (error)
+> +		return dev_err_probe(&client->dev, error,
+> +				     "Failed to power on the chip\n");
+> +
+>  	indio_dev->name = "vl53l0x";
+>  	indio_dev->info = &vl53l0x_info;
+>  	indio_dev->channels = vl53l0x_channels;
+
