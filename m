@@ -2,235 +2,246 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BD75C352AA
-	for <phone-devel@archiver.kernel.org>; Wed, 11 May 2022 22:06:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99C8BC433FE
+	for <phone-devel@archiver.kernel.org>; Thu, 12 May 2022 05:16:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348591AbiEKWG2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 11 May 2022 18:06:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59940 "EHLO
+        id S1349453AbiELFQ0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 12 May 2022 01:16:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348581AbiEKWGZ (ORCPT
+        with ESMTP id S1349915AbiELFQY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 11 May 2022 18:06:25 -0400
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [5.144.164.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD058289B0;
-        Wed, 11 May 2022 15:06:21 -0700 (PDT)
-Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id D463E207D3;
-        Thu, 12 May 2022 00:06:19 +0200 (CEST)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 7/7] arm64: dts: qcom: sm6125-seine: Configure additional trinket thermistors
-Date:   Thu, 12 May 2022 00:06:13 +0200
-Message-Id: <20220511220613.1015472-8-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220511220613.1015472-1-marijn.suijten@somainline.org>
-References: <20220511220613.1015472-1-marijn.suijten@somainline.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Thu, 12 May 2022 01:16:24 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E8F21F62F;
+        Wed, 11 May 2022 22:16:22 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id i17so3834230pla.10;
+        Wed, 11 May 2022 22:16:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
+         :from:to:references:in-reply-to;
+        bh=o5r8j5DfRtmLS+iVKuwr6JvqFgR9CxOqwnqwvrWJx9w=;
+        b=m/daO8WF7cexoTd4geHDhaMezghvuSRaTFPrdGvTuluSIepdWjVnfvL/TZbJUr3GDz
+         /q8/JGjqwkqG/wowpueFJ2DRpwX8YcRFuiHrGc7ngDMHyK687V4hFwdWRbjCWrzNwJ/q
+         +WrGgNv27agaVgQDMct1extVZfjV8Nxus4ZsaVOd8S042zqulV4dkwgSaRkStbjO4BkV
+         hQZzensKfcpL78/LzZwFu2BItNJEmcgCqFqkcveJLrEKxR92CPxDhY5sILeM/ExvhNhk
+         4lMRN9tQ3/JsBxw7U5COI+806D8fSFzLhphMpZPGatrrWYbzdaPsoVBwKQ9EhC9NUiHk
+         qVIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:cc:subject:from:to:references:in-reply-to;
+        bh=o5r8j5DfRtmLS+iVKuwr6JvqFgR9CxOqwnqwvrWJx9w=;
+        b=snuWjQVaG13p8tE/eCUT+dmABVJ3T8kZQ6zvCGzwV55o/jc3vlUAHyatYz8rApR70o
+         842SorkJFZX7llfJkrOxQ0/vf6L5oALNrRJlSgCcCh+oUYdVmvLZCWt301CbLgIwncum
+         yG2DufstTkQnaH6okFXR75pRZl7lpX9aZkiudBW6AcMGte2c/rQHOUGBoBoP+4DorcyS
+         bZMGnvortrNmH2k7v0Uw50Ls2xCyLhzF8x3wMM6Fdo4g+ckuxqAUsSVrkff3250xVbF9
+         ByEgi2PjTqsLLiTstayrW35BKibT7MfggS4J0HbCBTLQPb4ncSIL9KXCI/CHAaFR3yIe
+         /70Q==
+X-Gm-Message-State: AOAM531R8bQwlLDsYeJf+J8t9gZTFTjA95egSfkPOQ6zQkYXbBGFN6ZG
+        8vYSy5URo0KsUzRInCf7hG0=
+X-Google-Smtp-Source: ABdhPJxsuLKd57Hz6gAd6v6A/NHHFlJvHr99DoDw5/Hx2C3VmQhaVRkb6NQsrtVOgQZ3fe5U5dGiOg==
+X-Received: by 2002:a17:902:d2c9:b0:15e:a266:6472 with SMTP id n9-20020a170902d2c900b0015ea2666472mr28171958plc.45.1652332581734;
+        Wed, 11 May 2022 22:16:21 -0700 (PDT)
+Received: from localhost ([49.204.239.218])
+        by smtp.gmail.com with ESMTPSA id t16-20020a170902e85000b0015e8d4eb2e1sm2857810plg.299.2022.05.11.22.16.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 May 2022 22:16:21 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Thu, 12 May 2022 10:46:16 +0530
+Message-Id: <CJXJ0IIGOKN4.7V6UQ9ZFIX8I@skynet-linux>
+Cc:     <linux-arm-msm@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <bjorn.andersson@linaro.org>, <devicetree@vger.kernel.org>,
+        <phone-devel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Andy Gross" <agross@kernel.org>,
+        "Mathieu Poirier" <mathieu.poirier@linaro.org>
+Subject: Re: [PATCH 2/9] remoteproc: qcom: q6v5-mss: Add modem support on
+ MSM8953
+From:   "Sireesh Kodali" <sireeshkodali1@gmail.com>
+To:     "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>,
+        <linux-remoteproc@vger.kernel.org>
+X-Mailer: aerc 0.9.0
+References: <20220511161602.117772-1-sireeshkodali1@gmail.com>
+ <20220511161602.117772-3-sireeshkodali1@gmail.com>
+ <1d43e1fa-30b2-dbf0-bfaf-f9cfaf987efb@linaro.org>
+In-Reply-To: <1d43e1fa-30b2-dbf0-bfaf-f9cfaf987efb@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-In addition to PMIC-specific (pm6125) thermistors downstream extends
-this set with the rf-pa0/rf-pa1, quiet, camera-flash and UFS/eMMC
-thermistors in sm6125 (trinket) board and seine-specific DT files.  All
-thermistors report sensible temperature readings in userspace.
+On Wed May 11, 2022 at 10:24 PM IST, Dmitry Baryshkov wrote:
+> On 11/05/2022 19:15, Sireesh Kodali wrote:
+> > The modem on the MSM8953 platform is similar to the modem on the MSM899=
+6
+> > platform in terms of set up. It differs primarily in the way it needs S=
+CM
+> > to bless the MPSS firmware region.
+> >=20
+> > Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
+> > ---
+> >   drivers/remoteproc/qcom_q6v5_mss.c | 64 +++++++++++++++++++++++++++--=
+-
+> >   1 file changed, 58 insertions(+), 6 deletions(-)
+> >=20
+> > diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qc=
+om_q6v5_mss.c
+> > index af217de75e4d..a73fdcddeda4 100644
+> > --- a/drivers/remoteproc/qcom_q6v5_mss.c
+> > +++ b/drivers/remoteproc/qcom_q6v5_mss.c
+> > @@ -234,6 +234,7 @@ struct q6v5 {
+> >  =20
+> >   enum {
+> >   	MSS_MSM8916,
+> > +	MSS_MSM8953,
+> >   	MSS_MSM8974,
+> >   	MSS_MSM8996,
+> >   	MSS_MSM8998,
+> > @@ -687,12 +688,14 @@ static int q6v5proc_reset(struct q6v5 *qproc)
+> >   		}
+> >   		goto pbl_wait;
+> >   	} else if (qproc->version =3D=3D MSS_MSM8996 ||
+> > -		   qproc->version =3D=3D MSS_MSM8998) {
+> > +		   qproc->version =3D=3D MSS_MSM8998 ||
+> > +		   qproc->version =3D=3D MSS_MSM8953) {
+> >   		int mem_pwr_ctl;
+> >  =20
+> >   		/* Override the ACC value if required */
+> > -		writel(QDSP6SS_ACC_OVERRIDE_VAL,
+> > -		       qproc->reg_base + QDSP6SS_STRAP_ACC);
+> > +		if (qproc->version !=3D MSS_MSM8953)
+> > +			writel(QDSP6SS_ACC_OVERRIDE_VAL,
+> > +					qproc->reg_base + QDSP6SS_STRAP_ACC);
+> >  =20
+> >   		/* Assert resets, stop core */
+> >   		val =3D readl(qproc->reg_base + QDSP6SS_RESET_REG);
+> > @@ -734,7 +737,8 @@ static int q6v5proc_reset(struct q6v5 *qproc)
+> >   		writel(val, qproc->reg_base + QDSP6SS_PWR_CTL_REG);
+> >  =20
+> >   		/* Turn on L1, L2, ETB and JU memories 1 at a time */
+> > -		if (qproc->version =3D=3D MSS_MSM8996) {
+> > +		if (qproc->version =3D=3D MSS_MSM8996 ||
+> > +			qproc->version =3D=3D MSS_MSM8953) {
+> >   			mem_pwr_ctl =3D QDSP6SS_MEM_PWR_CTL;
+> >   			i =3D 19;
+> >   		} else {
+> > @@ -1314,7 +1318,16 @@ static int q6v5_mpss_load(struct q6v5 *qproc)
+> >   			max_addr =3D ALIGN(phdr->p_paddr + phdr->p_memsz, SZ_4K);
+> >   	}
+> >  =20
+> > -	/*
+> > +	if (qproc->version =3D=3D MSS_MSM8953) {
+> > +		ret =3D qcom_scm_pas_mem_setup(5, qproc->mpss_phys, qproc->mpss_size=
+);
+> > +		if (ret) {
+> > +			dev_err(qproc->dev,
+> > +					"setting up mpss memory failed: %d\n", ret);
+> > +			goto release_firmware;
+> > +		}
+> > +	}
+> > +
+> > +	/**
+>
+> Single star please
+>
+> >   	 * In case of a modem subsystem restart on secure devices, the modem
+> >   	 * memory can be reclaimed only after MBA is loaded.
+> >   	 */
+> > @@ -1413,7 +1426,6 @@ static int q6v5_mpss_load(struct q6v5 *qproc)
+> >   			writel(RMB_CMD_LOAD_READY, qproc->rmb_base + RMB_MBA_COMMAND_REG);
+> >   		}
+> >   		writel(size, qproc->rmb_base + RMB_PMI_CODE_LENGTH_REG);
+> > -
+> >   		ret =3D readl(qproc->rmb_base + RMB_MBA_STATUS_REG);
+> >   		if (ret < 0) {
+> >   			dev_err(qproc->dev, "MPSS authentication failed: %d\n",
+> > @@ -1422,6 +1434,7 @@ static int q6v5_mpss_load(struct q6v5 *qproc)
+> >   		}
+> >   	}
+> >  =20
+> > +
+>
+> Unnecessary
+>
 
-The sensors are also added to their respective Thermal Monitor node,
-with thermal zones to match where applicable: emmc-ufs and camera-flash
-are not available on the TM5 block, hence cannot be configured with a
-tripping point and will not have a thermal zone.
+oops
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
----
- .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 150 ++++++++++++++++++
- 1 file changed, 150 insertions(+)
+> >   	/* Transfer ownership of modem ddr region to q6 */
+> >   	ret =3D q6v5_xfer_mem_ownership(qproc, &qproc->mpss_perm, false, tru=
+e,
+> >   				      qproc->mpss_phys, qproc->mpss_size);
+> > @@ -2198,6 +2211,44 @@ static const struct rproc_hexagon_res msm8996_ms=
+s =3D {
+> >   	.version =3D MSS_MSM8996,
+> >   };
+> >  =20
+> > +static const struct rproc_hexagon_res msm8953_mss =3D {
+> > +	.hexagon_mba_image =3D "mba.mbn",
+> > +	.proxy_supply =3D (struct qcom_mss_reg_res[]) {
+> > +		{
+> > +			.supply =3D "pll",
+> > +			.uA =3D 100000,
+> > +		},
+> > +		{}
+> > +	},
+> > +	.proxy_pd_names =3D (char*[]) {
+> > +			"cx",
+> > +			"mx",
+> > +			NULL
+> > +	},
+> > +	.active_supply =3D (struct qcom_mss_reg_res[]) {
+> > +		{
+> > +			.supply =3D "mss",
+> > +			.uV =3D 1050000,
+> > +			.uA =3D 100000,
+> > +		},
+> > +		{}
+> > +	},
+> > +	.proxy_clk_names =3D (char*[]){
+> > +			"xo",
+> > +			NULL
+> > +	},
+> > +	.active_clk_names =3D (char*[]){
+> > +			"iface",
+> > +			"bus",
+> > +			"mem",
+> > +			NULL
+> > +	},
+> > +	.need_mem_protection =3D false,
+> > +	.has_alt_reset =3D false,
+> > +	.has_spare_reg =3D false,
+>
+>
+> Please follow the custom  and define the rest of fields here.
+>
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-index c5967140d028..ca7f074a62a9 100644
---- a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-+++ b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-@@ -82,12 +82,162 @@ cmdline_mem: memory@ffd00000 {
- 			no-map;
- 		};
- 	};
-+
-+	thermal-zones {
-+		rf-pa0-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm6125_adc_tm 0>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+
-+		quiet-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <5000>;
-+			thermal-sensors = <&pm6125_adc_tm 1>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+
-+		xo-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm6125_adc_tm 2>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+
-+		rf-pa1-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm6125_adc_tm 3>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+	};
- };
- 
- &hsusb_phy1 {
- 	status = "okay";
- };
- 
-+&pm6125_adc {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&camera_flash_therm &emmc_ufs_therm &rf_pa1_therm>;
-+
-+	rf-pa0-therm@4d {
-+		reg = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+
-+	quiet-therm@4e {
-+		reg = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+
-+	camera-flash-therm@52 {
-+		reg = <ADC5_GPIO1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+
-+	emmc-ufs-therm@54 {
-+		reg = <ADC5_GPIO3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+
-+	rf-pa1-therm@55 {
-+		reg = <ADC5_GPIO4_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+};
-+
-+&pm6125_adc_tm {
-+	status = "okay";
-+
-+	rf-pa0-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm6125_adc ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	quiet-therm@1 {
-+		reg = <1>;
-+		io-channels = <&pm6125_adc ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	xo-therm@2 {
-+		reg = <2>;
-+		io-channels = <&pm6125_adc ADC5_XO_THERM_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+
-+	rf-pa1-therm@3 {
-+		reg = <3>;
-+		io-channels = <&pm6125_adc ADC5_GPIO4_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+	};
-+};
-+
-+&pm6125_gpio {
-+	camera_flash_therm: camera-flash-therm {
-+		pins = "gpio3";
-+		function = "normal";
-+		bias-high-impedance;
-+	};
-+
-+	emmc_ufs_therm: emmc-ufs-therm {
-+		pins = "gpio6";
-+		function = "normal";
-+		bias-high-impedance;
-+	};
-+
-+	rf_pa1_therm: rf-pa1-therm {
-+		pins = "gpio7";
-+		function = "normal";
-+		bias-high-impedance;
-+	};
-+};
-+
- &pon_pwrkey {
- 	status = "okay";
- };
--- 
-2.36.1
+I missed these in the rebase, I'll add them in v2
 
+> > +	.version =3D MSS_MSM8953,
+> > +};
+> > +
+> >   static const struct rproc_hexagon_res msm8916_mss =3D {
+> >   	.hexagon_mba_image =3D "mba.mbn",
+> >   	.proxy_supply =3D (struct qcom_mss_reg_res[]) {
+> > @@ -2301,6 +2352,7 @@ static const struct of_device_id q6v5_of_match[] =
+=3D {
+> >   	{ .compatible =3D "qcom,msm8916-mss-pil", .data =3D &msm8916_mss},
+> >   	{ .compatible =3D "qcom,msm8974-mss-pil", .data =3D &msm8974_mss},
+> >   	{ .compatible =3D "qcom,msm8996-mss-pil", .data =3D &msm8996_mss},
+> > +	{ .compatible =3D "qcom,msm8953-mss-pil", .data =3D &msm8953_mss},
+> >   	{ .compatible =3D "qcom,msm8998-mss-pil", .data =3D &msm8998_mss},
+> >   	{ .compatible =3D "qcom,sc7180-mss-pil", .data =3D &sc7180_mss},
+> >   	{ .compatible =3D "qcom,sc7280-mss-pil", .data =3D &sc7280_mss},
+>
+>
+> --=20
+> With best wishes
+> Dmitry
+
+Thank you for the review, I'll make the changes in v2 of this patch.
+
+Thanks,
+Sireesh
