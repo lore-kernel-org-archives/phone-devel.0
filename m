@@ -2,40 +2,44 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 08191C4321E
-	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 16:51:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E6DBC433FE
+	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 16:55:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380293AbiEMQvo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 May 2022 12:51:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49894 "EHLO
+        id S1382159AbiEMQzC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 May 2022 12:55:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382711AbiEMQvD (ORCPT
+        with ESMTP id S1382641AbiEMQyz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 May 2022 12:51:03 -0400
+        Fri, 13 May 2022 12:54:55 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7F3532EA;
-        Fri, 13 May 2022 09:51:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 344F95418F;
+        Fri, 13 May 2022 09:54:54 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: kholk11)
-        with ESMTPSA id 839611F4228A
+        with ESMTPSA id 908D91F4637D
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652460661;
-        bh=GKsA2sowh5zETh3IdEBedNaUz2n5kLBfuDV0nmxxWQE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aeL7OVfEvhWLmjMbONAiIToLFDFt5Hmg74Ht394BSCOvh94VGeiR/he3JIajK3MaO
-         MgGgiNUv1JAskna2SmGva8vs/8ZsoG5gK++jw3YsufdKN9R82newg/COZ3yzWf3049
-         Vjnyh+SZipv39QuvMOmGhoOrQZ+g0OWBQnZ1X1s5I8BmcnqOhvzSHSVGgFAL9dn5pA
-         NHq9nnU4uSwSCzzKVrckMlgSHLfaLRsCus0Fqqyd19VADs7uvwxCq+yHtcJX2K2T3O
-         5vd+H1tNdIU9sCsyRmAiMahGze5kaJbVJ4mEPfMTYl6xMSA7WMGzbmUt5zhKXbtZ7J
-         iC45qE1/t+bSw==
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
+        s=mail; t=1652460892;
+        bh=BPDSRJ3l6xkyIcsf0pTvPMccH18vwhA/gg5edH7HCTM=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=dc+BOYbBSlAvKsAfLKJin9vTOc+nc+UCgcZKn4Bn+P/1wzurDas09aaHUJ4GMIZ1+
+         h92jFExBpnYC6OHttD5RcKqFDvCm5kXCTziM8uBZp36qtvX4sgdk5fssavim9M4T/y
+         jEUCQ/XQKc/f4nf8EOjzgVwJL2nw8sM5ouLdHrSw/jLvqjaFJDMymMIUyCIhelIQ2H
+         8ljXMWvJYA2eok9Ac1XzDpHkXlNW9/JxZsM5Rq0LHEK4TjtrpSg/5VxqyiCWs7EPff
+         XU5LUZQDBTmlvTai16KDp0EUdI6/vI8v54+8Cj1WH43xXQjdL0w5zZd2vbA77mngS7
+         xeUATyvJy78yQ==
+Message-ID: <7ed1b785-389f-9730-4686-bc6b85cc8f6d@collabora.com>
+Date:   Fri, 13 May 2022 18:54:49 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH 0/5] MediaTek Helio X10 MT6795 - Clock drivers
+Content-Language: en-US
 To:     robh+dt@kernel.org
 Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
         mturquette@baylibre.com, sboyd@kernel.org, p.zabel@pengutronix.de,
-        y.oudjana@protonmail.com, angelogioacchino.delregno@collabora.com,
-        jason-jh.lin@mediatek.com, ck.hu@mediatek.com,
-        fparent@baylibre.com, rex-bc.chen@mediatek.com,
+        y.oudjana@protonmail.com, jason-jh.lin@mediatek.com,
+        ck.hu@mediatek.com, fparent@baylibre.com, rex-bc.chen@mediatek.com,
         tinghan.shen@mediatek.com, chun-jie.chen@mediatek.com,
         weiyi.lu@mediatek.com, ikjn@chromium.org, miles.chen@mediatek.com,
         sam.shih@mediatek.com, wenst@chromium.org,
@@ -46,82 +50,35 @@ Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
         martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
         kernel@collabora.com
-Subject: [PATCH 3/5] dt-bindings: reset: Add bindings for MT6795 Helio X10 reset controllers
-Date:   Fri, 13 May 2022 18:50:48 +0200
-Message-Id: <20220513165050.500831-4-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220513165050.500831-1-angelogioacchino.delregno@collabora.com>
 References: <20220513165050.500831-1-angelogioacchino.delregno@collabora.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20220513165050.500831-1-angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the reset controller bindings for MT6795.
+Il 13/05/22 18:50, AngeloGioacchino Del Regno ha scritto:
+> In an effort to give some love to the apparently forgotten MT6795 SoC,
+> I am upstreaming more components that are necessary to support platforms
+> powered by this one apart from a simple boot to serial console.
+> 
+> This (very big) series introduces system clock, multimedia clock drivers
+> (including resets) for this SoC.
+> 
+> Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
+> 
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- include/dt-bindings/reset/mt6795-resets.h | 50 +++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
- create mode 100644 include/dt-bindings/reset/mt6795-resets.h
+I forgot to add context to the cover letter for this series, so I'm adding that
+in reply to myself.
 
-diff --git a/include/dt-bindings/reset/mt6795-resets.h b/include/dt-bindings/reset/mt6795-resets.h
-new file mode 100644
-index 000000000000..0a6514884eae
---- /dev/null
-+++ b/include/dt-bindings/reset/mt6795-resets.h
-@@ -0,0 +1,50 @@
-+/* SPDX-License-Identifier: (GPL-2.0+ OR BSD-2-Clause) */
-+/*
-+ * Copyright (c) 2022 Collabora Ltd.
-+ * Author: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-+ */
-+
-+#ifndef _DT_BINDINGS_RESET_CONTROLLER_MT6795
-+#define _DT_BINDINGS_RESET_CONTROLLER_MT6795
-+
-+/* INFRACFG resets */
-+#define MT6795_INFRA_SCPSYS_RST			0
-+#define MT6795_INFRA_PMIC_WRAP_RST		1
-+
-+/* MMSYS resets */
-+#define MT6795_MMSYS_SW0_RST_B_SMI_COMMON	0
-+#define MT6795_MMSYS_SW0_RST_B_SMI_LARB		1
-+#define MT6795_MMSYS_SW0_RST_B_CAM_MDP		2
-+#define MT6795_MMSYS_SW0_RST_B_MDP_RDMA0	3
-+#define MT6795_MMSYS_SW0_RST_B_MDP_RDMA1	4
-+#define MT6795_MMSYS_SW0_RST_B_MDP_RSZ0		5
-+#define MT6795_MMSYS_SW0_RST_B_MDP_RSZ1		6
-+#define MT6795_MMSYS_SW0_RST_B_MDP_RSZ2		7
-+#define MT6795_MMSYS_SW0_RST_B_MDP_TDSHP0	8
-+#define MT6795_MMSYS_SW0_RST_B_MDP_TDSHP1	9
-+#define MT6795_MMSYS_SW0_RST_B_MDP_WDMA		10
-+#define MT6795_MMSYS_SW0_RST_B_MDP_WROT0	11
-+#define MT6795_MMSYS_SW0_RST_B_MDP_WROT1	12
-+#define MT6795_MMSYS_SW0_RST_B_MDP_CROP		13
-+
-+/*  PERICFG resets */
-+#define MT6795_PERI_NFI_SW_RST			0
-+#define MT6795_PERI_THERM_SW_RST		1
-+#define MT6795_PERI_MSDC1_SW_RST		2
-+
-+/* TOPRGU resets */
-+#define MT6795_TOPRGU_INFRA_SW_RST		0
-+#define MT6795_TOPRGU_MM_SW_RST			1
-+#define MT6795_TOPRGU_MFG_SW_RST		2
-+#define MT6795_TOPRGU_VENC_SW_RST		3
-+#define MT6795_TOPRGU_VDEC_SW_RST		4
-+#define MT6795_TOPRGU_IMG_SW_RST		5
-+#define MT6795_TOPRGU_DDRPHY_SW_RST		6
-+#define MT6795_TOPRGU_MD_SW_RST			7
-+#define MT6795_TOPRGU_INFRA_AO_SW_RST		8
-+#define MT6795_TOPRGU_MD_LITE_SW_RST		9
-+#define MT6795_TOPRGU_APMIXED_SW_RST		10
-+#define MT6795_TOPRGU_PWRAP_SPI_CTL_RST		11
-+#define MT6795_TOPRGU_SW_RST_NUM		12
-+
-+#endif  /* _DT_BINDINGS_RESET_CONTROLLER_MT6795 */
--- 
-2.35.1
+This series depends on Chen-Yu's clocks cleanup series (clk_hw) [1] *and* on
+Rex-BC's MTK reset binding-cleanup series [2].
 
+[1] https://patchwork.kernel.org/project/linux-mediatek/list/?series=640122
+[2] https://patchwork.kernel.org/project/linux-mediatek/list/?series=637849
+
+Cheers,
+Angelo
