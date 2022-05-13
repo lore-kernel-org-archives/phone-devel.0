@@ -2,108 +2,106 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86FD6C433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 20:48:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BDA53C4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 21:09:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1384528AbiEMUsj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 May 2022 16:48:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46906 "EHLO
+        id S1384613AbiEMVJm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 May 2022 17:09:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1384521AbiEMUsi (ORCPT
+        with ESMTP id S1384607AbiEMVJk (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 May 2022 16:48:38 -0400
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8BB15FE5;
-        Fri, 13 May 2022 13:48:36 -0700 (PDT)
-Received: by mail-oi1-f179.google.com with SMTP id y63so11526616oia.7;
-        Fri, 13 May 2022 13:48:36 -0700 (PDT)
+        Fri, 13 May 2022 17:09:40 -0400
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B880218F
+        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 14:09:38 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-2f7ca2ce255so102381777b3.7
+        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 14:09:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ikL0/gwIaUWXfMtkCpW673auiv9e8rY9L7j8kbUCodE=;
+        b=vnm5P9psR0k0g/RGFnw+D3DgIlgSFzdTxdgBIGsyCdmrlWc3ziSI1keco4oQEKCXby
+         oswqgtNO/SfqRjShMbKhvJ1Kd6BVsK5PH0LnU//aAlk+aGxF0J3aLSRL5OrC0hyx9Qb5
+         0z3jvLqFW4xz7nYE6J3u91Ku0t24ytF0jIlNEDxDI8sPRurCTQKet9UwSndD2qN4T0KO
+         BFZXSct77T9J5LCsCDeYWjyBrc3TdNvg5kQj+iHGT+h550kmr86zJaYQBeuPgq8Ah+3z
+         28pMm0GRY4lZf6P2UX0coGvPbP+PtkT6Grr2Vt7r0MhPky3t0Od0Z34C/gLNtoBiM83N
+         EQVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=X3TQnSjdMn1h88B2hKWq4Vtc4t9dgcXCcu4yQAA388I=;
-        b=Nf6uWUMSC1Assz+k+DNJzTOWooI3GAVf03/KuJ4oYxD4kdNk9rz643Rkl+5XMzAq97
-         Yi6kC4oPvuMbCN4UQ27AClPoDrIoO+T4miEgputgi4tBx2dQJQ5y5DV0WOLIkQQX0Ms5
-         dYVE1Ckxw6j/w9KwC9OvqoeMG/QjwoiYbEUThtj7j/hmmoYWMtG5HSqOVJi3y3bx1WZJ
-         kLmsnmXhiM5x+VMsNXVSR/hYOHea5GBhHdFoYEyK24a/RzPou5cRt/W7bNYJbzt6KVaK
-         DRjGboe9oqy4hq+4UXkY2K1kAMDUGLj0Cvm0vWqmGntm0ZeUXW51kyDtzb2Gz71xUth7
-         4Q2g==
-X-Gm-Message-State: AOAM530z+jAB+bY1ykwY7uQN4Od8u/zic27WqHSUwNydjLXSu4fYBZMn
-        4oYl3Vkjzam+feGgYNe1od37+LrOtw==
-X-Google-Smtp-Source: ABdhPJwP+9t58/HsOC+vMOmnRUgE5YnXus5JIhh/6Mv2y+iU8XBnzrtKM2mxN6osLdIL8Ofj/qN0yw==
-X-Received: by 2002:aca:aa42:0:b0:325:61e3:1726 with SMTP id t63-20020acaaa42000000b0032561e31726mr8474090oie.57.1652474915995;
-        Fri, 13 May 2022 13:48:35 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id e2-20020a056870a60200b000e99b1909d4sm1426285oam.25.2022.05.13.13.48.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 May 2022 13:48:35 -0700 (PDT)
-Received: (nullmailer pid 894559 invoked by uid 1000);
-        Fri, 13 May 2022 20:48:33 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     linux-clk@vger.kernel.org, kernel@collabora.com, ikjn@chromium.org,
-        krzysztof.kozlowski+dt@linaro.org, miles.chen@mediatek.com,
-        sam.shih@mediatek.com, fparent@baylibre.com, wenst@chromium.org,
-        robh+dt@kernel.org, ck.hu@mediatek.com, mturquette@baylibre.com,
-        linux-kernel@vger.kernel.org, p.zabel@pengutronix.de,
-        martin.botka@somainline.org, linux-mediatek@lists.infradead.org,
-        marijn.suijten@somainline.org, weiyi.lu@mediatek.com,
-        rex-bc.chen@mediatek.com, jason-jh.lin@mediatek.com,
-        y.oudjana@protonmail.com, phone-devel@vger.kernel.org,
-        bgolaszewski@baylibre.com, sboyd@kernel.org,
-        konrad.dybcio@somainline.org, tinghan.shen@mediatek.com,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ikL0/gwIaUWXfMtkCpW673auiv9e8rY9L7j8kbUCodE=;
+        b=yzHWL/4+LwFXSRozcV6n0G9hI/qwusl81hONQLYadoPUcDJ22qvOjcOlBKhqzVucXU
+         6jUOofHDaZAYg/r5Qf6e9W10WeTCJwiIHUj7/R7ngCLpSTB1HsvG+mD6bsnW/7RkPctK
+         G2/oyTTof+gg29vvp6fL/ENCLiFvM41iG1BpEE0lw55KR/9IIiOiURn4XWYwc2vpgVoN
+         9FXsr4sJuXRRQ4YPvlmQYK4scQRHjXTMUVLiMPV/MaD/bER69VKYDwkCWSjemHVHFx7F
+         C7nTyhkhisB+IlPCtEEfuDdt0UEAHMISxoWNQD9w3oYLHD9UDhONzX4OeyNmkWTgVQAk
+         76qA==
+X-Gm-Message-State: AOAM5330AsfsjpYAVsvjH95SEwzsYgIkkn7pRUBWPJtLPHIBLg69eeE0
+        otIz0U14Fuzs8RHGka2cGAatv/+98VW/wgr6Hlf9z0cBDBiP0A==
+X-Google-Smtp-Source: ABdhPJyZhSGsZyH7SCsSN/Tf1gdlPJvallUvmRrCHX9UTyZ+zCvIzg6tvp2h34sx39n1RCDeM63EkvOGZpI/ej/L83s=
+X-Received: by 2002:a81:6d4f:0:b0:2fe:b911:fb6d with SMTP id
+ i76-20020a816d4f000000b002feb911fb6dmr4488107ywc.140.1652476177376; Fri, 13
+ May 2022 14:09:37 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220511220613.1015472-1-marijn.suijten@somainline.org>
+ <20220511220613.1015472-3-marijn.suijten@somainline.org> <d2507298-00a6-a1cc-0302-f96597fb4127@linaro.org>
+ <20220513091734.hivkkbpc6inyb4la@SoMainline.org> <5cce491d-c673-d2a6-3aae-79b2e5902a01@linaro.org>
+In-Reply-To: <5cce491d-c673-d2a6-3aae-79b2e5902a01@linaro.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 13 May 2022 23:09:26 +0200
+Message-ID: <CACRpkdbyVScvnn-99XQ526B=64fQp34PKjot1CJ2Wfm0PKmZgg@mail.gmail.com>
+Subject: Re: [PATCH 2/7] dt-bindings: pinctrl: qcom-pmic-gpio: Add pm6125 compatible
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
-        paul.bouchara@somainline.org, matthias.bgg@gmail.com,
-        linux-arm-kernel@lists.infradead.org, chun-jie.chen@mediatek.com,
-        devicetree@vger.kernel.org
-In-Reply-To: <20220513165050.500831-5-angelogioacchino.delregno@collabora.com>
-References: <20220513165050.500831-1-angelogioacchino.delregno@collabora.com> <20220513165050.500831-5-angelogioacchino.delregno@collabora.com>
-Subject: Re: [PATCH 4/5] dt-bindings: arm: mediatek: Add clock driver bindings for MT6795
-Date:   Fri, 13 May 2022 15:48:33 -0500
-Message-Id: <1652474913.760163.894558.nullmailer@robh.at.kernel.org>
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 13 May 2022 18:50:49 +0200, AngeloGioacchino Del Regno wrote:
-> Add the bindings for the clock drivers of the MediaTek Helio X10
-> MT6795 SoC.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->  .../arm/mediatek/mediatek,mt6795-clock.yaml   | 67 +++++++++++++++++
->  .../mediatek/mediatek,mt6795-sys-clock.yaml   | 73 +++++++++++++++++++
->  2 files changed, 140 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/arm/mediatek/mediatek,mt6795-clock.yaml
->  create mode 100644 Documentation/devicetree/bindings/arm/mediatek/mediatek,mt6795-sys-clock.yaml
-> 
+On Fri, May 13, 2022 at 11:37 AM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> >> This will need fixups or rebasing on my sets of PMIC gpio schema cleanup:
+> >
+> > Ack.
+> >
+> >> https://lore.kernel.org/all/20220507194913.261121-1-krzysztof.kozlowski@linaro.org/
+> >> https://lore.kernel.org/all/20220508135932.132378-2-krzysztof.kozlowski@linaro.org/
+> >>
+> >> Bjorn,
+> >> let us know preferred order (who should rebase on who).
+> >
+> > I prefer yours to be applied first, so that I can retest this
+> > patchseries with stricter / more correct dt-bindings introduced by it.
+> > My series can also be resent with the notice that it has already been
+> > rebased on top of your series, after collecting more reviews.  Where
+> > necessary, I can review your series too if that helps getting it in
+> > sooner.
+>
+> Sounds good. It's in Bjorn's hands now. :)
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/arm/mediatek/mediatek,mt6795-clock.yaml:67:1: [warning] too many blank lines (2 > 1) (empty-lines)
+Ugh can I get that with a pull request? Maybe Krzysztof can provide?
 
-dtschema/dtc warnings/errors:
-Error: Documentation/devicetree/bindings/arm/mediatek/mediatek,mt6795-sys-clock.example.dts:35.13-21 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:364: Documentation/devicetree/bindings/arm/mediatek/mediatek,mt6795-sys-clock.example.dtb] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1401: dt_binding_check] Error 2
+BTW I have high confidence in you Krzysztof after all your work on the
+Samsung pin controllers, can you and Bjorn
+discuss maybe adding you as comaintainer for Qualcomm pin controllers,
+it's not like Bjorn has too little to do.
 
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Yours,
+Linus Walleij
