@@ -2,32 +2,32 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B95B6C4332F
-	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 15:01:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4A32C433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 15:06:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381720AbiEMPBi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 May 2022 11:01:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60756 "EHLO
+        id S1380167AbiEMPGl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 May 2022 11:06:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381674AbiEMPBe (ORCPT
+        with ESMTP id S1381695AbiEMPGk (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 May 2022 11:01:34 -0400
+        Fri, 13 May 2022 11:06:40 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C25243E0C7;
-        Fri, 13 May 2022 08:01:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FDA12D1C9;
+        Fri, 13 May 2022 08:06:40 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: kholk11)
-        with ESMTPSA id B06F21F461F5
+        with ESMTPSA id 5B1CF1F461FA
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652454086;
-        bh=C7g/YIivTlj7b7ruogy140NNk2zb7ocp/cZGcwMvQPM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ToKv7QqmuybEpU4Q/8BcWQJ1htrcZ1cf5GC+WcaVCDFMps+VCS2c/pQi4RJBKoI4i
-         DaB4qcTtOU7Zg9zxWBOvKyitV8Dqlb//9QOMOoIYinF8YZ2eVckhKii6PF8ZGiX+25
-         YEdgTBaXI0qYohi4ed2+eKkuI4DEx0XLJDrx2ljDoYELybv1GtiPNzyheDQQtVFF+V
-         I7O0Ym2Q6yXAeXS5LnkDt5tB5yz6NxJhslj8PztsAwF9N8nI2Yo0xyEj5iDP8+BiKN
-         sboUctM9Ku7c1tfcDvfYCbpPOT7/JPySr2DrbvzeRBRHWbMH2jeFFTZlN/TvsqcDnr
-         ffXbiozBGc8Qg==
+        s=mail; t=1652454399;
+        bh=YD87vGLOcYs5Cnj6glBqy1KYk+EcyTbz4Vdd5DCZtF0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ABXvbdc1EPfvdc3uC2FTKBH5UgOctQqdvJD28zkm8dXyJg2hYVCj89bv5pW8d1ev7
+         F4hEAZQ856ZOeDvEoqkq5MIA47GQ5UwnXn6KISmHiiDczgo9BbeYhfMrqWlx3ohCv9
+         OL0IkCIe4XgjI0zBIXOAtOgUEwh8PdlArdEP1VtKlHhFY4yIr+LrBhaWnTGh+C/q9q
+         OMscRXH3EYYsgqe+xymBJIijnCqBcSYoflW6JVDvk/Jplepj8otSLGk0VXXA38fueG
+         b8+7TA6h8b+8GVFeHrxdxRA0lMRaOBzRtoSGInTXrDFyrSpUt0r/XpfFnVpRMuajOA
+         GiUB+Cg7kYgag==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
 To:     yong.wu@mediatek.com
@@ -40,79 +40,37 @@ Cc:     krzysztof.kozlowski@linaro.org, robh+dt@kernel.org,
         paul.bouchara@somainline.org, kernel@collabora.com,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 2/2] memory: mtk-smi: Add support for MT6795 Helio X10
-Date:   Fri, 13 May 2022 17:01:16 +0200
-Message-Id: <20220513150116.349744-3-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v2 0/2] MediaTek Helio X10 MT6795 - SMI Support
+Date:   Fri, 13 May 2022 17:06:31 +0200
+Message-Id: <20220513150633.387200-1-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220513150116.349744-1-angelogioacchino.delregno@collabora.com>
-References: <20220513150116.349744-1-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The MediaTek Helio X10 (MT6795) SoC has 5 LARBs and one common SMI
-instance without any sub-common and without GALS.
+In an effort to give some love to the apparently forgotten MT6795 SoC,
+I am upstreaming more components that are necessary to support platforms
+powered by this one apart from a simple boot to serial console.
 
-While the smi-common configuration is specific to this SoC, on the
-LARB side, this is similar to MT8173, in the sense that it doesn't
-need the port in LARB, and the register layout is also compatible
-with that one, which makes us able to fully reuse the smi-larb
-platform data struct that was introduced for MT8173.
+This series introduces support for the SMI common and LARBs, found in
+this SoC.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- drivers/memory/mtk-smi.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
 
-diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
-index 86a3d34f418e..5c6d6ef36572 100644
---- a/drivers/memory/mtk-smi.c
-+++ b/drivers/memory/mtk-smi.c
-@@ -360,6 +360,7 @@ static const struct of_device_id mtk_smi_larb_of_ids[] = {
- 	{.compatible = "mediatek,mt2701-smi-larb", .data = &mtk_smi_larb_mt2701},
- 	{.compatible = "mediatek,mt2712-smi-larb", .data = &mtk_smi_larb_mt2712},
- 	{.compatible = "mediatek,mt6779-smi-larb", .data = &mtk_smi_larb_mt6779},
-+	{.compatible = "mediatek,mt6795-smi-larb", .data = &mtk_smi_larb_mt8173},
- 	{.compatible = "mediatek,mt8167-smi-larb", .data = &mtk_smi_larb_mt8167},
- 	{.compatible = "mediatek,mt8173-smi-larb", .data = &mtk_smi_larb_mt8173},
- 	{.compatible = "mediatek,mt8183-smi-larb", .data = &mtk_smi_larb_mt8183},
-@@ -541,6 +542,13 @@ static struct platform_driver mtk_smi_larb_driver = {
- 	}
- };
- 
-+static const struct mtk_smi_reg_pair mtk_smi_common_mt6795_init[SMI_COMMON_INIT_REGS_NR] = {
-+	{SMI_L1_ARB, 0x1b},
-+	{SMI_M4U_TH, 0xce810c85},
-+	{SMI_FIFO_TH1, 0x43214c8},
-+	{SMI_FIFO_TH0, 0x191f},
-+};
-+
- static const struct mtk_smi_reg_pair mtk_smi_common_mt8195_init[SMI_COMMON_INIT_REGS_NR] = {
- 	{SMI_L1LEN, 0xb},
- 	{SMI_M4U_TH, 0xe100e10},
-@@ -565,6 +573,12 @@ static const struct mtk_smi_common_plat mtk_smi_common_mt6779 = {
- 		    F_MMU1_LARB(5) | F_MMU1_LARB(6) | F_MMU1_LARB(7),
- };
- 
-+static const struct mtk_smi_common_plat mtk_smi_common_mt6795 = {
-+	.type	  = MTK_SMI_GEN2,
-+	.bus_sel  = BIT(0),
-+	.init     = mtk_smi_common_mt6795_init,
-+};
-+
- static const struct mtk_smi_common_plat mtk_smi_common_mt8183 = {
- 	.type     = MTK_SMI_GEN2,
- 	.has_gals = true,
-@@ -609,6 +623,7 @@ static const struct of_device_id mtk_smi_common_of_ids[] = {
- 	{.compatible = "mediatek,mt2701-smi-common", .data = &mtk_smi_common_gen1},
- 	{.compatible = "mediatek,mt2712-smi-common", .data = &mtk_smi_common_gen2},
- 	{.compatible = "mediatek,mt6779-smi-common", .data = &mtk_smi_common_mt6779},
-+	{.compatible = "mediatek,mt6795-smi-common", .data = &mtk_smi_common_mt6795},
- 	{.compatible = "mediatek,mt8167-smi-common", .data = &mtk_smi_common_gen2},
- 	{.compatible = "mediatek,mt8173-smi-common", .data = &mtk_smi_common_gen2},
- 	{.compatible = "mediatek,mt8183-smi-common", .data = &mtk_smi_common_mt8183},
+Changes in v2:
+ - Added forgotten new definitions
+
+AngeloGioacchino Del Regno (2):
+  dt-bindings: memory: mtk-smi: Add MT6795 Helio X10 bindings
+  memory: mtk-smi: Add support for MT6795 Helio X10
+
+ .../memory-controllers/mediatek,smi-common.yaml |  1 +
+ .../memory-controllers/mediatek,smi-larb.yaml   |  1 +
+ drivers/memory/mtk-smi.c                        | 17 +++++++++++++++++
+ 3 files changed, 19 insertions(+)
+
 -- 
 2.35.1
 
