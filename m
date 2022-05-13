@@ -2,123 +2,111 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF345C433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 15:14:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9CD6C43217
+	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 16:51:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381768AbiEMPO0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 May 2022 11:14:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55202 "EHLO
+        id S1382562AbiEMQvO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 May 2022 12:51:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381742AbiEMPOV (ORCPT
+        with ESMTP id S1382697AbiEMQvA (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 May 2022 11:14:21 -0400
+        Fri, 13 May 2022 12:51:00 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F7A53A60;
-        Fri, 13 May 2022 08:14:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4A06527F6;
+        Fri, 13 May 2022 09:50:58 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: kholk11)
-        with ESMTPSA id 39B7F1F46205
+        with ESMTPSA id C50451F42289
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652454859;
-        bh=nxAZ4GtxbFEjud7NDfM7hOcPUdu3jrX/KbIZLte12Eo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dk0L64n/oDAmmmABBjDm8zIEEYOloNdsSIZFRWxtiYDo5kTspUDL7SXJQojMuR9v5
-         IWPusrv7UF4XxYQGOlPjzhIqx+VdW03e07CbZSWskpAmVmE75ngW3S3VDlHqmeRIws
-         8i69m6/Ivuk97mWPnssxZHIPBd0Aj94ZieoOPjOOShkNI+C/3FwGOWy8IKH7veZhWb
-         FjFF6HgPoaUtwu2SvUBKRFU+92G16W5PXzF51DckgtnLtGBSqJ1c0Ip9GABA8EQlcR
-         5YkaK3U+yQSq1TlbjcU93xqeEBGGA3AWByefvYkXZtC6jXvSQ4WKI2d89+vQXbWdwU
-         0uIDV4ptSVQhw==
+        s=mail; t=1652460656;
+        bh=+xBBNGyIiNxlh6qLU8iRTsoeX33SDyUBO7XLJdSH9/M=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Zx2VB73ycSD3mUzLcQJqWOApz3Bvr1a+l5B8r0QHnAL5qfwVcFaavfrux37fkmnyl
+         7OumPCp6ZmD5caW0EBMEDKSMHkI7KijmqLHYAQfESCfDU5wsR461rBhNMljydmbhi8
+         yx4ltQQ+2pB7x5KG+Rqa9fFi7GJVQnAib5mSQTqwBcCM3wwGUeP5Ts6TIsXSU2L/bt
+         0N3y0UCx75DgvLF3pnJe8g+2TvHRHBP6j1yLuB6447fvkEyr2mm/pro9Gt7e7+iLGi
+         WXG3tP3v92bxwGtRsCPOS8iGFtvMT8a/OUoOZAzHLA8hdglfx3RDCgaSsRJtHKZsbz
+         OptOodXSQvmBA==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-To:     yong.wu@mediatek.com
-Cc:     joro@8bytes.org, will@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        iommu@lists.linux-foundation.org,
-        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
+To:     robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        mturquette@baylibre.com, sboyd@kernel.org, p.zabel@pengutronix.de,
+        y.oudjana@protonmail.com, angelogioacchino.delregno@collabora.com,
+        jason-jh.lin@mediatek.com, ck.hu@mediatek.com,
+        fparent@baylibre.com, rex-bc.chen@mediatek.com,
+        tinghan.shen@mediatek.com, chun-jie.chen@mediatek.com,
+        weiyi.lu@mediatek.com, ikjn@chromium.org, miles.chen@mediatek.com,
+        sam.shih@mediatek.com, wenst@chromium.org,
+        bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
         konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 2/2] iommu: mtk_iommu: Add support for MT6795 Helio X10 M4Us
-Date:   Fri, 13 May 2022 17:14:11 +0200
-Message-Id: <20220513151411.395744-3-angelogioacchino.delregno@collabora.com>
+        kernel@collabora.com
+Subject: [PATCH 0/5] MediaTek Helio X10 MT6795 - Clock drivers
+Date:   Fri, 13 May 2022 18:50:45 +0200
+Message-Id: <20220513165050.500831-1-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220513151411.395744-1-angelogioacchino.delregno@collabora.com>
-References: <20220513151411.395744-1-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add support for the M4Us found in the MT6795 Helio X10 SoC.
+In an effort to give some love to the apparently forgotten MT6795 SoC,
+I am upstreaming more components that are necessary to support platforms
+powered by this one apart from a simple boot to serial console.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- drivers/iommu/mtk_iommu.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+This (very big) series introduces system clock, multimedia clock drivers
+(including resets) for this SoC.
 
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index 71b2ace74cd6..3d802dd3f377 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -157,6 +157,7 @@
- enum mtk_iommu_plat {
- 	M4U_MT2712,
- 	M4U_MT6779,
-+	M4U_MT6795,
- 	M4U_MT8167,
- 	M4U_MT8173,
- 	M4U_MT8183,
-@@ -953,7 +954,8 @@ static int mtk_iommu_hw_init(const struct mtk_iommu_data *data, unsigned int ban
- 	 * Global control settings are in bank0. May re-init these global registers
- 	 * since no sure if there is bank0 consumers.
- 	 */
--	if (data->plat_data->m4u_plat == M4U_MT8173) {
-+	if (data->plat_data->m4u_plat == M4U_MT6795 ||
-+	    data->plat_data->m4u_plat == M4U_MT8173) {
- 		regval = F_MMU_PREFETCH_RT_REPLACE_MOD |
- 			 F_MMU_TF_PROT_TO_PROGRAM_ADDR_MT8173;
- 	} else {
-@@ -1138,6 +1140,9 @@ static int mtk_iommu_probe(struct platform_device *pdev)
- 		case M4U_MT2712:
- 			p = "mediatek,mt2712-infracfg";
- 			break;
-+		case M4U_MT6795:
-+			p = "mediatek,mt6795-infracfg";
-+			break;
- 		case M4U_MT8173:
- 			p = "mediatek,mt8173-infracfg";
- 			break;
-@@ -1404,6 +1409,18 @@ static const struct mtk_iommu_plat_data mt6779_data = {
- 	.larbid_remap  = {{0}, {1}, {2}, {3}, {5}, {7, 8}, {10}, {9}},
- };
- 
-+static const struct mtk_iommu_plat_data mt6795_data = {
-+	.m4u_plat     = M4U_MT6795,
-+	.flags	      = HAS_4GB_MODE | HAS_BCLK | RESET_AXI |
-+			HAS_LEGACY_IVRP_PADDR | MTK_IOMMU_TYPE_MM,
-+	.inv_sel_reg  = REG_MMU_INV_SEL_GEN1,
-+	.banks_num    = 1,
-+	.banks_enable = {true},
-+	.iova_region  = single_domain,
-+	.iova_region_nr = ARRAY_SIZE(single_domain),
-+	.larbid_remap = {{0}, {1}, {2}, {3}, {4}}, /* Linear mapping. */
-+};
-+
- static const struct mtk_iommu_plat_data mt8167_data = {
- 	.m4u_plat     = M4U_MT8167,
- 	.flags        = RESET_AXI | HAS_LEGACY_IVRP_PADDR | MTK_IOMMU_TYPE_MM,
-@@ -1515,6 +1532,7 @@ static const struct mtk_iommu_plat_data mt8195_data_vpp = {
- static const struct of_device_id mtk_iommu_of_ids[] = {
- 	{ .compatible = "mediatek,mt2712-m4u", .data = &mt2712_data},
- 	{ .compatible = "mediatek,mt6779-m4u", .data = &mt6779_data},
-+	{ .compatible = "mediatek,mt6795-m4u", .data = &mt6795_data},
- 	{ .compatible = "mediatek,mt8167-m4u", .data = &mt8167_data},
- 	{ .compatible = "mediatek,mt8173-m4u", .data = &mt8173_data},
- 	{ .compatible = "mediatek,mt8183-m4u", .data = &mt8183_data},
+Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
+
+
+AngeloGioacchino Del Regno (5):
+  dt-bindings: mediatek: Document MT6795 system controllers bindings
+  dt-bindings: clock: Add MediaTek Helio X10 MT6795 clock bindings
+  dt-bindings: reset: Add bindings for MT6795 Helio X10 reset
+    controllers
+  dt-bindings: arm: mediatek: Add clock driver bindings for MT6795
+  clk: mediatek: Add MediaTek Helio X10 MT6795 clock drivers
+
+ .../arm/mediatek/mediatek,infracfg.yaml       |   2 +
+ .../bindings/arm/mediatek/mediatek,mmsys.yaml |   1 +
+ .../arm/mediatek/mediatek,mt6795-clock.yaml   |  67 ++
+ .../mediatek/mediatek,mt6795-sys-clock.yaml   |  73 +++
+ .../arm/mediatek/mediatek,pericfg.yaml        |   1 +
+ .../bindings/clock/mediatek,apmixedsys.yaml   |   1 +
+ .../bindings/clock/mediatek,topckgen.yaml     |   1 +
+ drivers/clk/mediatek/Kconfig                  |  37 ++
+ drivers/clk/mediatek/Makefile                 |   6 +
+ drivers/clk/mediatek/clk-mt6795-apmixedsys.c  | 154 +++++
+ drivers/clk/mediatek/clk-mt6795-infracfg.c    | 145 +++++
+ drivers/clk/mediatek/clk-mt6795-mfg.c         |  47 ++
+ drivers/clk/mediatek/clk-mt6795-mm.c          | 103 +++
+ drivers/clk/mediatek/clk-mt6795-pericfg.c     | 157 +++++
+ drivers/clk/mediatek/clk-mt6795-topckgen.c    | 607 ++++++++++++++++++
+ drivers/clk/mediatek/clk-mt6795-vdecsys.c     |  52 ++
+ drivers/clk/mediatek/clk-mt6795-vencsys.c     |  46 ++
+ include/dt-bindings/clock/mt6795-clk.h        | 275 ++++++++
+ include/dt-bindings/reset/mt6795-resets.h     |  50 ++
+ 19 files changed, 1825 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/arm/mediatek/mediatek,mt6795-clock.yaml
+ create mode 100644 Documentation/devicetree/bindings/arm/mediatek/mediatek,mt6795-sys-clock.yaml
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-apmixedsys.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-infracfg.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-mfg.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-mm.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-pericfg.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-topckgen.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-vdecsys.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-vencsys.c
+ create mode 100644 include/dt-bindings/clock/mt6795-clk.h
+ create mode 100644 include/dt-bindings/reset/mt6795-resets.h
+
 -- 
 2.35.1
 
