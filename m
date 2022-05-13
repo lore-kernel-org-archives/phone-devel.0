@@ -2,59 +2,60 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B80FC433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 09:33:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 799D6C433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 09:37:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378997AbiEMJd1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 May 2022 05:33:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32984 "EHLO
+        id S1379128AbiEMJhT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 May 2022 05:37:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237178AbiEMJdZ (ORCPT
+        with ESMTP id S1379081AbiEMJhQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 May 2022 05:33:25 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AC331FE1C6
-        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 02:33:24 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id m1so10617890wrb.8
-        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 02:33:24 -0700 (PDT)
+        Fri, 13 May 2022 05:37:16 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6917628C9C2
+        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 02:37:14 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id h16so9952932wrb.2
+        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 02:37:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :references:from:in-reply-to:content-transfer-encoding;
-        bh=iI3J6M1c5C8y5M42ZpMfl0r//lsinVxxLKzK6eOUa+g=;
-        b=IGYqWfrSe/zPdzA+FAV8IXXHkrsYYwh17HRvpEGw9XCStqqe3r97vxTIFNNCz75GST
-         zeTJHwhcBSeB4Spp+OCiaH6Ee8HzIj1zSxthAHwwch3k96WO+pz5fYUFAcrdRb5I0G+H
-         r+sZaqga//r0OrCu+VvFbyB0AYE3NcdP3f2rsFj5IHbzkJA++ETAkaj4yqglyw0GmgUb
-         M2HXBYz/Mq76XSUfbplsMpdvwv5/wdfhDBe5nC1MaJ/ZmLg7C02JfrCbQjY2tKyHERrS
-         EhVNEdrbL4DxKGN+8/oIA5+eLnNMaSidXFAE2n2Y7Swo4y1LBdt413SomXermFA7BHnR
-         oP3A==
+        bh=LPeFc4kVcTNm4urAkRDIpRauCxNaO73GMMKzZ0JovMs=;
+        b=im5D1li6iayjNq5cJbXexWNAdwbevtRT0YNi61YD5Dlb7O+v4d+zj1Uq9SpmE0WpsF
+         zDtgfhR5K4BTl47cxta7rzqmnvmp6bDDI49DV/fmr/PQlV00wYyGEwyt78RGRfLFIKEf
+         tpPiDTrQnqoo6WEuezuxWi6XWtBCDypmq/23Cbso3DdfxfXbijZ8KpRaAVt0n+NXPxvx
+         PAACqWfJA0Djcoze1ircxojt62AINFqj6kyxIWhI5u+ndn33F/1mL2eKAP8GatwVdl9P
+         /GvTgbRwH85LINuDvCYS+4V15Vu2Bfh+l0FrrIFukTKyi+Mab9I5tXcmVkTCdQEAOI0/
+         66Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=iI3J6M1c5C8y5M42ZpMfl0r//lsinVxxLKzK6eOUa+g=;
-        b=Qg9O34Ki+ivQJiEo1YdLuM7TKRpOLK2pyA1Qp/p03MepZh+jHAtgRIY2Y7ft62Mbge
-         OS//BkyFC1O6CuGJzw7uh/w+X91i5k79TeJsR9aFEGP0R0aQHRvnqN8HkuZimyJu0Dlc
-         3G723RDnZ0s1Q5bfo8/J1S5xOROZ5WDiKiX/d6dV4Wzj9hrJQQxmzxIxHtiS0hz78nXE
-         84o/my2qmkoEOO+mEgIwizi0u5/DZtxWDJx5ZBFWjhJvuMLIF+pNE+L1nl1fULl8uw+v
-         zbnNeBW5TIyDdZe39W0zIH3zbMDt/vyz0vuyuN9TVf26mIlrv8MO3s5W9bRo4iBtumoT
-         XRNw==
-X-Gm-Message-State: AOAM532VMuPQEWwNxbtZsQbImKl4FBWqDKI9+7mSDHN3vPggbyY+J2+w
-        GjyEtaqVcEg3/MBzxPI6PY0NR6WMebjO5oXG
-X-Google-Smtp-Source: ABdhPJzvZbiscTccrd3tJU+uxCEixUkPIVIKLgalKrvbjaWWl4ngAWd5lJ6uj4iWaC8Tjm50jASYAg==
-X-Received: by 2002:a5d:640f:0:b0:20c:9be6:30c1 with SMTP id z15-20020a5d640f000000b0020c9be630c1mr3066931wru.273.1652434402658;
-        Fri, 13 May 2022 02:33:22 -0700 (PDT)
+        bh=LPeFc4kVcTNm4urAkRDIpRauCxNaO73GMMKzZ0JovMs=;
+        b=A1mx5rqir6qgTeertR9tKWMxquIFMDlKY+36DT1t9LM5kChASfJyVIl0UFDn7VEPYp
+         j8p+DpYULyeUYKrkp+iriOW3SmmhnGKkZHWKZNTXajnX2+dPBIanKcWZIUDcOMpTUvby
+         8dMc4jeKzx+Lu7gIZHXeVPhnSIVQB3mFIH0wkZ1sxEgCvcy2ICX1d7/haH0ZSOBXtbC4
+         1dd/+up7nbC0kG8H5jQP63SWtNXy1XV9m5YNhWeMU5e0ydlEcUUwCtGaA/+GGGxd7d1r
+         UUZNqFQfnfcIyuKjDQMRem12hCspPab4BhQu0g8JkgvqMPsUS8/EN8tuS/RJruumST9d
+         u3bA==
+X-Gm-Message-State: AOAM530PmC/89a6mQTkfij9pZ/z7bDxUO+D5el5Pku3C0+wylS2J35/Y
+        PYKt6nwbO9yFOLEiaYMc2kSHuwgpVwryij+5
+X-Google-Smtp-Source: ABdhPJwW3cU+uyE+Io9UlgPZ79ftGJYHlU0vLFfIIytqKHzkojl5dsNGL+ZhUq/QdL1OwweAvqQPzw==
+X-Received: by 2002:a5d:6088:0:b0:20a:e81e:c76a with SMTP id w8-20020a5d6088000000b0020ae81ec76amr3138108wrt.182.1652434632703;
+        Fri, 13 May 2022 02:37:12 -0700 (PDT)
 Received: from [192.168.0.171] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id c13-20020adfa70d000000b0020c5253d8f7sm1729851wrd.67.2022.05.13.02.33.21
+        by smtp.gmail.com with ESMTPSA id g2-20020adfa482000000b0020c5253d8dfsm1728148wrb.43.2022.05.13.02.37.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 May 2022 02:33:22 -0700 (PDT)
-Message-ID: <51a9cc50-72ab-2417-1a22-0d85a944d00b@linaro.org>
-Date:   Fri, 13 May 2022 11:33:21 +0200
+        Fri, 13 May 2022 02:37:12 -0700 (PDT)
+Message-ID: <5cce491d-c673-d2a6-3aae-79b2e5902a01@linaro.org>
+Date:   Fri, 13 May 2022 11:37:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.1
-Subject: Re: [PATCH 5/7] arm64: dts: qcom: Add PM6125 PMIC
+Subject: Re: [PATCH 2/7] dt-bindings: pinctrl: qcom-pmic-gpio: Add pm6125
+ compatible
 Content-Language: en-US
 To:     Marijn Suijten <marijn.suijten@somainline.org>,
         phone-devel@vger.kernel.org,
@@ -66,36 +67,73 @@ To:     Marijn Suijten <marijn.suijten@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Andy Gross <agross@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20220511220613.1015472-1-marijn.suijten@somainline.org>
- <20220511220613.1015472-6-marijn.suijten@somainline.org>
- <7c7f7036-e3ad-c9db-2c31-749e2d01e83d@linaro.org>
- <20220513092551.hvz5jvej57cgvavj@SoMainline.org>
+ <20220511220613.1015472-3-marijn.suijten@somainline.org>
+ <d2507298-00a6-a1cc-0302-f96597fb4127@linaro.org>
+ <20220513091734.hivkkbpc6inyb4la@SoMainline.org>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220513092551.hvz5jvej57cgvavj@SoMainline.org>
+In-Reply-To: <20220513091734.hivkkbpc6inyb4la@SoMainline.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 13/05/2022 11:25, Marijn Suijten wrote:
->>> +		#address-cells = <1>;
->>> +		#size-cells = <0>;
+On 13/05/2022 11:17, Marijn Suijten wrote:
+> On 2022-05-13 10:19:56, Krzysztof Kozlowski wrote:
+>> On 12/05/2022 00:06, Marijn Suijten wrote:
+>>> The pm6125 comes with 9 GPIOs, without holes.
+>>>
+>>> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+>>> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 >>
->> No children, so this should not be needed, I think.
+>> It's the first version, how did the tag appear here?
 > 
-> The size-cells or the entire node?  There's a PWM/LPG block here
-> according to downstream DT, but my device doesn't use it so I can't test
-> that it is valid.  I can add it anyway, presuming reviewers here have
-> the ability to validate it for me with a reference manual.
+> We are friends and review each-others patches offline before spamming
+> the mailing list with them, to save readers and maintainers here from
+> pointing out glaring mistakes.  I hope this is standard practice in
+> companies too, or do you recommend aganst us doing this?
 
+I personally recommend against it because I prefer public discussions.
+Especially that such practice in some companies mean that tag is added
+automatically, without actual review. There are some folks, from other
+subsystems and architectures, which never publicly replied to anything
+(so we don't know if they actually exist, what's their credibility,
+knowledge, experience etc) but they appear on hundreds of reviews.
 
-I mean only the address/size cells. They are needed for the children,
-unless some binding expects it?
+Other people don't mind this practice.
+
+Anyway, it's not a stopper from anything, I was wondering.
+
+> 
+>>> ---
+>>>  Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml | 2 ++
+>>>  1 file changed, 2 insertions(+)
+>>
+>>
+>> This will need fixups or rebasing on my sets of PMIC gpio schema cleanup:
+> 
+> Ack.
+> 
+>> https://lore.kernel.org/all/20220507194913.261121-1-krzysztof.kozlowski@linaro.org/
+>> https://lore.kernel.org/all/20220508135932.132378-2-krzysztof.kozlowski@linaro.org/
+>>
+>> Bjorn,
+>> let us know preferred order (who should rebase on who).
+> 
+> I prefer yours to be applied first, so that I can retest this
+> patchseries with stricter / more correct dt-bindings introduced by it.
+> My series can also be resent with the notice that it has already been
+> rebased on top of your series, after collecting more reviews.  Where
+> necessary, I can review your series too if that helps getting it in
+> sooner.
+
+Sounds good. It's in Bjorn's hands now. :)
 
 
 Best regards,
