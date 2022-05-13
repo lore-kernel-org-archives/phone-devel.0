@@ -2,36 +2,37 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 95104C433F5
-	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 17:04:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C99BC433FE
+	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 17:16:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380959AbiEMREA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 May 2022 13:04:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51308 "EHLO
+        id S1382798AbiEMRQ1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 May 2022 13:16:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354115AbiEMRD7 (ORCPT
+        with ESMTP id S1382358AbiEMRQY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 May 2022 13:03:59 -0400
+        Fri, 13 May 2022 13:16:24 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BEFA4969F;
-        Fri, 13 May 2022 10:03:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F20FAE62;
+        Fri, 13 May 2022 10:16:23 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: kholk11)
-        with ESMTPSA id 940361F41739
+        with ESMTPSA id 64F731F463B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652461437;
-        bh=Wh5LQZ8ySmvO8IXpMu/GG9iqNwxWpEjWpdkHdKriJ+Q=;
+        s=mail; t=1652462182;
+        bh=ep3jRpBIJW1bdO4ml6xT8OEnFPxxL9DD9DvNn1dh3JM=;
         h=From:To:Cc:Subject:Date:From;
-        b=R+V3I2Jh5vL98BYzEHGYtDZrsY0+WfwU5DEvBB6aM6vpV3PqRCu4oWmkkDdVf1Je1
-         0i+HP0hGqGAW/tRKgjCP/Fw37ogEjErmonDLuPT3oA8u2xQJAhWjNNKxiQFHHxeNNe
-         XXxMOUp46bTVcN7ZAthwmwzEqeTAC3xi1BsenusTQhnjYzQTO3HOS6/ZjXyv8Vy0Ok
-         m5gB3atNx5oZ100UtNxr/MF8hWVDzsj9C9CST5TBFvrp8jOIpfyjTtlK/QaJHD8lqp
-         m0XKj5aKTMN7e83r6itASd2qoHl/aaRdzIJRJKCEE/jZgIkT1EI9bNVreAr1DXoiUM
-         Zjp7PGebW2gCQ==
+        b=k/stz5y6+b9rlyVbMpTBmuA/COetVN3T6fGAR2yQCBTSuOcBHemKQxnjdzSVRITRW
+         fflBmWJNAyAY+rURBGixkvcB7WAyXJkbw3tuIcjuxjmltYf5N+9COgENmEWP0eMh2F
+         nu4o0U4KiKX0ri2E2xQAXqQkXA0mFsnbtRdcCm2UqIVFiQKM1mILcD2Wul33WwetQT
+         s5TI2ZgkpHzqyK0YpnM5d5rsOod0Y0mzmwzhmyuTP6F8QFpGU2EQ2TGw3sYcDy0zs0
+         smliAl3ulpOECgpZO0xPsfUI16Qk/9TkS82Vl5/46c+Siq75Sc8hxbAP+Iq10xixEk
+         QLlA6Mu6XOkow==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-To:     matthias.bgg@gmail.com
-Cc:     linux-arm-kernel@lists.infradead.org,
+To:     robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
         konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
@@ -39,9 +40,9 @@ Cc:     linux-arm-kernel@lists.infradead.org,
         kernel@collabora.com,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH] soc: mediatek: mtk-mmsys: Add support for MT6795 Helio X10
-Date:   Fri, 13 May 2022 19:03:50 +0200
-Message-Id: <20220513170350.502501-1-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 0/7] MediaTek Helio X10 MT6795 - Devicetree, part 1
+Date:   Fri, 13 May 2022 19:16:10 +0200
+Message-Id: <20220513171617.504430-1-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -49,50 +50,38 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add MM support for the MT6795 SoC, using the mmsys default routing
-table.
+In an effort to give some love to the apparently forgotten MT6795 SoC,
+I am upstreaming more components that are necessary to support platforms
+powered by this one apart from a simple boot to serial console.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
+This series modernizes the devicetree of the MT6795 SoC and adds a
+couple of nodes that are supported by this SoC.
 
-In order for this patch to have any meaning and functionality, it is
-required to also have in-tree the [1] MT6795 clocks series, even
-though that's not required to actually compile this code.
+In my local tree I have much more than that (including the dts for
+that Xperia M5 smartphone that I always mention...), but I decided
+to push the devicetree commits in multiple parts, as to get these
+in sooner than later because that reduces my delta, and this makes
+upstreaming a bit easier, especially when having to rebase things
+around, which happens a lot.
 
-[1] https://patchwork.kernel.org/project/linux-mediatek/list/?series=641493
+So, this series *does NOT* depends on any of the other series that
+I've pushed and is mergeable in parallel.
 
- drivers/soc/mediatek/mtk-mmsys.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
 
-diff --git a/drivers/soc/mediatek/mtk-mmsys.c b/drivers/soc/mediatek/mtk-mmsys.c
-index 06d8e83a2cb5..38b36b881a3b 100644
---- a/drivers/soc/mediatek/mtk-mmsys.c
-+++ b/drivers/soc/mediatek/mtk-mmsys.c
-@@ -57,6 +57,13 @@ static const struct mtk_mmsys_match_data mt6779_mmsys_match_data = {
- 	},
- };
- 
-+static const struct mtk_mmsys_driver_data mt6795_mmsys_driver_data = {
-+	.clk_driver = "clk-mt6795-mm",
-+	.routes = mmsys_default_routing_table,
-+	.num_routes = ARRAY_SIZE(mmsys_default_routing_table),
-+	.sw0_rst_offset = MT8183_MMSYS_SW0_RST_B,
-+};
-+
- static const struct mtk_mmsys_driver_data mt6797_mmsys_driver_data = {
- 	.clk_driver = "clk-mt6797-mm",
- };
-@@ -363,6 +370,10 @@ static const struct of_device_id of_match_mtk_mmsys[] = {
- 		.compatible = "mediatek,mt6779-mmsys",
- 		.data = &mt6779_mmsys_match_data,
- 	},
-+	{
-+		.compatible = "mediatek,mt6795-mmsys",
-+		.data = &mt6795_mmsys_driver_data,
-+	},
- 	{
- 		.compatible = "mediatek,mt6797-mmsys",
- 		.data = &mt6797_mmsys_match_data,
+AngeloGioacchino Del Regno (7):
+  arm64: dts: mediatek: mt6795: Create soc bus node and move mmio
+    devices
+  arm64: dts: mediatek: mt6795: Add cpu-map and L2 cache
+  arm64: dts: mediatek: mt6795: Add Cortex A53 PMU nodes
+  arm64: dts: mediatek: mt6795: Add watchdog node to avoid timeouts
+  arm64: dts: mediatek: mt6795: Add fixed clocks for 32kHz and 26MHz XOs
+  arm64: dts: mediatek: mt6795: Add general purpose timer node
+  arm64: dts: mediatek: mt6795: Add ARM CCI-400 node and assign to CPUs
+
+ arch/arm64/boot/dts/mediatek/mt6795.dtsi | 244 ++++++++++++++++++-----
+ 1 file changed, 189 insertions(+), 55 deletions(-)
+
 -- 
 2.35.1
 
