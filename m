@@ -2,56 +2,56 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49F99C4332F
-	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 20:29:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D11FC433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 20:40:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1384288AbiEMU3A (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 May 2022 16:29:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59682 "EHLO
+        id S1384495AbiEMUkE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 May 2022 16:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1384242AbiEMU26 (ORCPT
+        with ESMTP id S1384491AbiEMUj7 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 May 2022 16:28:58 -0400
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91B2C6973A
-        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 13:28:48 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id i11so17158206ybq.9
-        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 13:28:48 -0700 (PDT)
+        Fri, 13 May 2022 16:39:59 -0400
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5C7C1BB991
+        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 13:39:57 -0700 (PDT)
+Received: by mail-yb1-xb36.google.com with SMTP id i11so17199491ybq.9
+        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 13:39:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=J2l+7pycfnV5tL/FeqC4BRRTmDMvEO1d4ShvU8Pi4JY=;
-        b=Z8HRsEVnERpdmjZslZsddk0NgJt8PEAh8MLOqTqCEajMguIFpTBGJVNEC721C/Z7PM
-         +/Sit+OyXmXiBrLslU5E+sr2R6BWDwkSRBIGVRonJqwM4SASdDDcdcSAbDxwglEOOfOk
-         xDXSkH+WKLARytcpIm6K8R7RbOwnLmQNuJ49g97xOc+HKI2SqLQT/OA3xTH5YzZga8AF
-         tkdZqb2wMTsdoXNwz3OKQDe6n1SbT8104I2jd7mY1gh4p0AnmhmoK/nyrETO2rDTRZne
-         G3p6f3NXN3BNYnx8ckYsKss5J5EYCea2C7tt6x/DUfZehN/XxeU8ljG/iEmJ4dxc46St
-         Itqg==
+        bh=xjgsJyomaG9QQtE3jbFFKe/5rvj6syuow/ZH8n5yvJ4=;
+        b=SQoFqGZkR8OJQ0Qk63dN6u8KZ6fGMmX6HLbVWIW46XqaVncbFbTDVP9cdiNDF8Rx/D
+         WHT7hM6yG5Ja3/APJFYAliXvVtbW5HdfL+mBQgLhAYE2KGom/m9srR1otUd/jjymzi7N
+         enIhThFTnZLdAgcq2IbD5PxYIagJ5EtxK0/v0a5Y/Zw05uI9+cSDpSCoRPue6ht09eni
+         yptXjDz3CYCwtP34zBKm5VInN3wkF0uonNI+DuaMzjSTHJSvuJaBWZh/aG+fWtNMlJh9
+         doNK7QZ2aOhX3wYSA4XJdgITh3XvxexMRA+Q3rrmOLo10t0QbM42+rpxw87Y/V7qY6Ht
+         BdQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=J2l+7pycfnV5tL/FeqC4BRRTmDMvEO1d4ShvU8Pi4JY=;
-        b=jYpoZAYsVd58QqAYqtYhFUNelWkW43txRHnZZTAptWb+L7qCSqwVI7YmEdM+Y2+syL
-         5hqFA6X2tTg9B1V2rYC0u/K1meJBWeiUSpuhjEUfE8C2U3w+Wbxk/ehxAfJq/kSFa841
-         iVlkBLuJrVhOcC+qqed13TDz2GVLIivJL6XkC2xXSRtbLEFtswsTimfSw6s2l8+uvuGQ
-         eE4NaTjP1I8qVUvWNrfrI2zOg76nVjDrH0q1QfRCI7t+K/AKooUleqO4tV/4mBXhKFIE
-         OqLGWRNC60D3iof4n8XEx3VywoVW05zDFGxN5nd6el79kE5GGj5aN48D5+fq9eC14T7n
-         WyXw==
-X-Gm-Message-State: AOAM533LVNjyss9h0ouF0GRzDTj3VP191reTPvh0zJ1k0SrAkytk3sbW
-        piOzGb3cvVnyG2505OTjafTTcVatjROY+kpaoeXfVg==
-X-Google-Smtp-Source: ABdhPJzpsIprE1mVevIiKrqLa1rexOsJwYJXY46LUj9YMdYjW6XP8MscpQDLdK6N5tP7dIpU5bfhNO1Vc+OXpXCWczg=
-X-Received: by 2002:a25:e684:0:b0:645:d429:78e9 with SMTP id
- d126-20020a25e684000000b00645d42978e9mr6876546ybh.369.1652473727879; Fri, 13
- May 2022 13:28:47 -0700 (PDT)
+        bh=xjgsJyomaG9QQtE3jbFFKe/5rvj6syuow/ZH8n5yvJ4=;
+        b=rO5OqS2U1GCNaRY3eDaoZxxZ066MxwJEVUtgB2JSKHXFoyeqsmubm9+eQw5YHhp5C9
+         TdwaHwIGPV290qS5qbF5ryFRq4RNgeSLJYVGKP00syIT9+2kjbSBM2rFC8rnT2KNvfiJ
+         yHtzcqGM7TBTLnLTRe+CB+QDv1c2BwoVbSmPhR3pLws2Lr+iQ30o3HXFiXoExhRfM3jq
+         UsqDUEztvfVdXqYAOuLeMqy0Dj2wsbrTkGyN4Nw8WXjCWpkmwclP3dn5OQb/WgCld8f8
+         RqYemxZ4FCtjyR3dLPA0nO03u7VFe7xeO4cVA3hf+EU73m5z0fVuxXdQY36Jp/n993Ew
+         pYaQ==
+X-Gm-Message-State: AOAM531yaEBExKknarARKHLB2n5rvhppY2p3rcYpY/+FZ7dsNKXPoW3o
+        uMLcW24t2bgzmOA8cyM9CS4Fg7kbIBS6Rq+D1Th5JP/iBysOTg==
+X-Google-Smtp-Source: ABdhPJxqWNc/BcbrWALPfb9mCeCOCpLqwW04ceOHeKLE9KROovikbSFRNij1NE2lfz4+r3R3/cUkmXIQUrDYhhomyZ8=
+X-Received: by 2002:a25:1f85:0:b0:64b:a5fc:e881 with SMTP id
+ f127-20020a251f85000000b0064ba5fce881mr3813638ybf.514.1652474396907; Fri, 13
+ May 2022 13:39:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1652245767.git.jo@jsfamily.in> <BY5PR02MB7009F6D4CC6CA1C433912C56D9C89@BY5PR02MB7009.namprd02.prod.outlook.com>
-In-Reply-To: <BY5PR02MB7009F6D4CC6CA1C433912C56D9C89@BY5PR02MB7009.namprd02.prod.outlook.com>
+References: <cover.1652245767.git.jo@jsfamily.in> <BY5PR02MB70098FF9BDEDE264B78CFCE0D9C89@BY5PR02MB7009.namprd02.prod.outlook.com>
+In-Reply-To: <BY5PR02MB70098FF9BDEDE264B78CFCE0D9C89@BY5PR02MB7009.namprd02.prod.outlook.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 13 May 2022 22:28:36 +0200
-Message-ID: <CACRpkdb=Ub7sEQQAhjvhOq7xYdd0yZBnT8W6xi7QrD+j7T8j1A@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] dt-bindings: display: Add bindings for EBBG FT8719
+Date:   Fri, 13 May 2022 22:39:45 +0200
+Message-ID: <CACRpkdbvv6FcdatAPdTq4fmzgXyr-SjYEwuc_sT+152DtqhiUw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] drm/panel: introduce ebbg,ft8719 panel
 To:     Joel Selvaraj <jo@jsfamily.in>
 Cc:     Thierry Reding <thierry.reding@gmail.com>,
         Sam Ravnborg <sam@ravnborg.org>,
@@ -74,18 +74,26 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 On Wed, May 11, 2022 at 7:28 AM Joel Selvaraj <jo@jsfamily.in> wrote:
 
-> Add bindings for the EBBG FT8719 6.18" 2246x1080 DSI video mode panel,
-> which can be found on some Xiaomi Poco F1 phones. The backlight is
-> managed through the QCOM WLED driver.
+> Add DRM panel driver for EBBG FT8719 6.18" 2246x1080 DSI video mode
+> panel, which can be found on some Xiaomi Poco F1 phones. The panel's
+> backlight is managed through QCOM WLED driver.
 >
 > Signed-off-by: Joel Selvaraj <jo@jsfamily.in>
-> ---
-> Changes in v2: (Krzysztof Kozlowski's Suggestions)
->  - Specify maxItems for reg
->  - Cleanup and simplify the panel properties
->  - In example change "|+" to "|' and "dsi0" to "dsi"
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+I see my review comments on v1 arrived after v2.
+
+Nevertheless, please address my review comments on v1.
+
+> +struct ebbg_ft8719 {
+> +       struct drm_panel panel;
+> +       struct mipi_dsi_device *dsi;
+> +
+> +       struct regulator_bulk_data supplies[ARRAY_SIZE(regulator_names)];
+> +
+> +       struct gpio_desc *reset_gpio;
+> +       bool prepared;
+
+For example that means to drop this prepared member.
 
 Yours,
 Linus Walleij
