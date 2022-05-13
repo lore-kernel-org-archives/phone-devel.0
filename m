@@ -2,59 +2,59 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CD08C433FE
-	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 08:53:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 589E4C433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 13 May 2022 08:57:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378630AbiEMIxc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 May 2022 04:53:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60970 "EHLO
+        id S1378752AbiEMI47 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 May 2022 04:56:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378622AbiEMIxb (ORCPT
+        with ESMTP id S1378757AbiEMI44 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 May 2022 04:53:31 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB2082380EA
-        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 01:53:29 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id d5so10497291wrb.6
-        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 01:53:29 -0700 (PDT)
+        Fri, 13 May 2022 04:56:56 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85AD7606C3
+        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 01:56:53 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id t6so10517096wra.4
+        for <phone-devel@vger.kernel.org>; Fri, 13 May 2022 01:56:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=sLRt+qYzHdsZEXGXF5o0ydCpMpaHUYlN6LUVgHScaYs=;
-        b=yS0I9yI7YUPgrFs/6zIC6c6rcKsESr00TRsP8etkUzBalJxzJgf9GASCWbR+qCTpoy
-         nZAXNCqcKUD28hU+h/gj4F20UuF8il4ijIjn03X9cKud4qKH1iEd2B38njtZ8iQdspQF
-         9p0ax7ROua0BLz8+aAKi6mQNCTEUbCKOLb9YJ7EKwCtFhgakEXlbRM4j2lPlQPmxpGtH
-         dagNc1zgdNabGnJ0iYekny+InjeJZYpg53SHdlu1EYB9LLIcQJZT8l9qE594jtyf4qw1
-         YDAMBZp3XuYCTSHQHKMQu8bXEAdDWsugGqrnWAjTdyzQfqVZU1/v96Wd3T61Hkebircc
-         e+WQ==
+        bh=9LZPjNhuvRomocP2/C/cikB/ZwgE3e5tXIGq6A9Dd3U=;
+        b=qHMJFfDHWXgRe9cj8rwpJ9r0DdwUvJDrktJiIrvLfjKRutQVzpGaNRC1lIzLXlNUkS
+         IQqFJaVM8oVcsmyvdf75GewbHOgM9ZrrQMCC0wg9lt5ak7htqw6/3J8eibSD+KB/yk64
+         k1OJWvR1yYc2xYDMUvPAmuRjbeZn+aH2H94NPlCDh8Ghm0mnHbJzoXWiaiowbDxZH1J2
+         nqwKSEEwwzrT1ZSbxaZC1pt1IhxrzJwrCqolbfhc2mMee4g9FHZme78zR21Np7JIAG++
+         4M1AI+65hU/SvWfS7OjJgBTM0fpaMd7s+yLJmOdwEEGnVkoxX3+RpLeaVYcGFmsP+VBF
+         tY7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=sLRt+qYzHdsZEXGXF5o0ydCpMpaHUYlN6LUVgHScaYs=;
-        b=U0jXRTJFzmEfxqKqC0VOf74e7b5Jq/SX7wlCk4zUSvgNs98E6cLB9+p6Lb5cuANTIS
-         wajeicK2lCLR/lwY5mNnTSlxZLsU+pKYLbuetVwrEEUodCI9aUSvqXv/1e6b5hPj2laW
-         rsO35VC1pQTiAbkbYYuDHzbcEEI7K3F68heNUjv1xvNRGXkF5/8ugFqbLE7ojQ6TtAXj
-         biYOC9sTRc9eJwQ0GFDl6tiQa3hFIgjrAkwXpZR/97OlvpAJtD2n5HZ6tZBPYt8RPgbD
-         Iykcy/3SnvyMXDo5WThfbsll8n81NgZCrzO5rxjIYf7UcLGJdwEkei+Fdf434ixg1HZr
-         U5uQ==
-X-Gm-Message-State: AOAM531q1b1sJPhwxuAGFbtQnEFsmfb+2gswnZ2MSkOoSk7FuqumVpT4
-        WB8VgPuJ9j+HBZqbnnvhcUgfaw==
-X-Google-Smtp-Source: ABdhPJzb3pF6cTXO0n5cdqoo8ASlekhcGdL1JETa3T0pLC3gvLgPsk2+qpARPIps7b51o02m3JpnHA==
-X-Received: by 2002:a05:6000:1d98:b0:20c:c29d:76db with SMTP id bk24-20020a0560001d9800b0020cc29d76dbmr3037181wrb.710.1652432008542;
-        Fri, 13 May 2022 01:53:28 -0700 (PDT)
+        bh=9LZPjNhuvRomocP2/C/cikB/ZwgE3e5tXIGq6A9Dd3U=;
+        b=CbDj3cq2Mgxv8iznZcjdjUj61WW5JliQE9UStH2/hc+syw80bEW79+Q2kl2oaVbbnF
+         cOBMB+9hhilZpE3KwCw8n9kRz9PygvYjvQAH3QfZF+IbynIiPylVwf6G7FRHvMlWPSab
+         AFMvYPiqomP91FaymiGm8dReA3jXmQpnVF85ppq/KPLfvkpQmOkxsJzIFohXpsy/P+bG
+         OU1aPJS3OsK6KtmF2/ceIpGtWQp1/l0S7893fKz8pDKSrSmWvEJY9Nnz930+WgzrXeGi
+         ian8v4WaXR8nSN6eEh1X/fWqWDASOASZ7edH2ul0BS0Mr8FueWL7ZlSYE8MhJY31a8CV
+         NVXQ==
+X-Gm-Message-State: AOAM531MlsFSi2nHRCYcqhYT3Dkwk2hy+WkOZ8Vo2w/q0/qdgVUsJOCK
+        NPOMvUBiXmEZXrelz3FVQsIQgA==
+X-Google-Smtp-Source: ABdhPJzMCmIw70cxsQMEoBTBP7pBJdUhXTnr3+T1ukoLP9UrfKIWuPKOQ/eCTJs6c499Mm4I0cCJ+g==
+X-Received: by 2002:adf:ecc7:0:b0:20a:dba3:a516 with SMTP id s7-20020adfecc7000000b0020adba3a516mr2989066wro.143.1652432212121;
+        Fri, 13 May 2022 01:56:52 -0700 (PDT)
 Received: from [192.168.0.169] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id z23-20020a1c4c17000000b0039456fb80b3sm4674767wmf.43.2022.05.13.01.53.27
+        by smtp.gmail.com with ESMTPSA id l12-20020adfbd8c000000b0020c547f75easm1527915wrh.101.2022.05.13.01.56.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 May 2022 01:53:28 -0700 (PDT)
-Message-ID: <ca6bdf24-b955-6433-1e3b-a4ad4ae687ff@linaro.org>
-Date:   Fri, 13 May 2022 10:53:26 +0200
+        Fri, 13 May 2022 01:56:51 -0700 (PDT)
+Message-ID: <f5ec4fd9-b9d7-10fa-1c27-2f268466274f@linaro.org>
+Date:   Fri, 13 May 2022 10:56:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.1
-Subject: Re: [PATCH v3 1/5] dt-bindings: proximity: vl53l0x: Document optional
+Subject: Re: [PATCH v4 1/5] dt-bindings: proximity: vl53l0x: Document optional
  supply and GPIO properties
 Content-Language: en-US
 To:     Markuss Broks <markuss.broks@gmail.com>,
@@ -74,23 +74,26 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20220512110757.5297-1-markuss.broks@gmail.com>
- <20220512110757.5297-2-markuss.broks@gmail.com>
+References: <20220512191334.61804-1-markuss.broks@gmail.com>
+ <20220512191334.61804-2-markuss.broks@gmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220512110757.5297-2-markuss.broks@gmail.com>
+In-Reply-To: <20220512191334.61804-2-markuss.broks@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 12/05/2022 13:07, Markuss Broks wrote:
+On 12/05/2022 21:13, Markuss Broks wrote:
 > This patch adds the optional properties for the VL53L0X ToF sensor to the
 > device-tree binding.
 > 
 > Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
 
-Same comments as your v2.
+Wait, two days and three versions? Please give some time before
+resending entire patchset.
+
+Same comments apply as for v2 and v3...
 
 
 Best regards,
