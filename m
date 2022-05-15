@@ -2,64 +2,29 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35028C4332F
-	for <phone-devel@archiver.kernel.org>; Sat, 14 May 2022 19:47:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D183C433F5
+	for <phone-devel@archiver.kernel.org>; Sun, 15 May 2022 15:30:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235013AbiENTrr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 14 May 2022 15:47:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40280 "EHLO
+        id S233933AbiEOPaK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 15 May 2022 11:30:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235001AbiENTrp (ORCPT
+        with ESMTP id S237196AbiEOPaJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 14 May 2022 15:47:45 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C93021FCF5
-        for <phone-devel@vger.kernel.org>; Sat, 14 May 2022 12:47:43 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id i10so19710229lfg.13
-        for <phone-devel@vger.kernel.org>; Sat, 14 May 2022 12:47:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=7S+G4FYAdKpveK/bCmr9kuwFdE+5AmrPUFrgJUvGcmw=;
-        b=ANk5B1sxQqM2aO3vtNFxJVAs4kc/zEx+dSujyBRANHAKOqAetHSGGKLwaswqWVrpRj
-         igL/HkOkChIycS9asjwvFxCxD3oFlxH4On0b0OHYrc7GDdpY6pGahyfLWTXGLH34vAgl
-         Vd5d0qRWKbdvyZAo1T6EZ1PY0y2002GVi+XPwMEoIHi1jhSt+cdjbUmwWyd5qgm509R3
-         1AgiCCYfAuShNG61T48xc/Ot3QT0Hta++sKGssyeEwWYOu2/oK4Mc/LMK5vfrrZhWqmf
-         82mVQu1IL8pdgqYw6rKXd1DQU1C3/MFLPMT8kVrMG2rZL+3JqAzAhoJL3BvCeyQpKQ0j
-         08vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=7S+G4FYAdKpveK/bCmr9kuwFdE+5AmrPUFrgJUvGcmw=;
-        b=fb7eCV2OTBpQ/3jsfmv5o+sKmNwLBC/AvVXAZMPPWQkMjp0FhC/nNpJHOhv7kfUzDn
-         SH7Y4QXY6YdzTL0owrB4ivARXhsQnwqCUi8YkDExDeQyxSbA+F/Tp2kW9qh5aSQEQVt/
-         lXiXMxTtpDI5dIs6Dt7i6NgEtRDtBYmX6gyY/f5cbTM63Oe5g+RuRxQNHTyYVZb0DoEg
-         RlZFWOxjxObygRIoyJp32SpugryFBdTqtXSpfs9tgA/OOt9HOuHXKZy4LddUCptAKxNu
-         GR3qLCQ7eV1u8qEC8HIgjAMdYGzFJvwiu7xE+snrq/BazONgCe3bk1TKNCYV6Zgevjo7
-         14Bw==
-X-Gm-Message-State: AOAM531pgF4nGQJ9J3SGLeojNYt3gsDPZM0E4L3I+hQxmadNnbefKxe0
-        eDTMBk82+t1NTRtH9VK7JWtzZQ==
-X-Google-Smtp-Source: ABdhPJyJfap7agj1HyLvqRJynfyFTCCOZ8RyKcoEWWXmxoDJsZYKV+tgR7ZwB+iOfyM/B3IieL5PTw==
-X-Received: by 2002:a05:6512:e84:b0:474:12f3:cb53 with SMTP id bi4-20020a0565120e8400b0047412f3cb53mr7492604lfb.254.1652557662126;
-        Sat, 14 May 2022 12:47:42 -0700 (PDT)
-Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id q30-20020ac2515e000000b0047255d2117fsm795121lfd.174.2022.05.14.12.47.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 14 May 2022 12:47:41 -0700 (PDT)
-Message-ID: <e7cfff16-ee2e-f204-a427-a25aa337d392@linaro.org>
-Date:   Sat, 14 May 2022 21:47:40 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH 2/7] dt-bindings: pinctrl: qcom-pmic-gpio: Add pm6125
- compatible
-Content-Language: en-US
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org,
+        Sun, 15 May 2022 11:30:09 -0400
+Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [5.144.164.167])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 746D012626
+        for <phone-devel@vger.kernel.org>; Sun, 15 May 2022 08:30:08 -0700 (PDT)
+Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 27B293F653;
+        Sun, 15 May 2022 17:30:06 +0200 (CEST)
+Date:   Sun, 15 May 2022 17:30:04 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     phone-devel@vger.kernel.org,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
@@ -68,47 +33,104 @@ Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/7] iio: adc: qcom-spmi-adc5: Add missing
+ VCOIN/AMUX_THM3/GPIO# channels
+Message-ID: <20220515153004.iniplpuf6g5ibvjw@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Jonathan Cameron <jic23@kernel.org>, phone-devel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, linux-arm-msm@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20220511220613.1015472-1-marijn.suijten@somainline.org>
- <20220511220613.1015472-3-marijn.suijten@somainline.org>
- <d2507298-00a6-a1cc-0302-f96597fb4127@linaro.org>
- <20220513091734.hivkkbpc6inyb4la@SoMainline.org>
- <5cce491d-c673-d2a6-3aae-79b2e5902a01@linaro.org>
- <CACRpkdbyVScvnn-99XQ526B=64fQp34PKjot1CJ2Wfm0PKmZgg@mail.gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <CACRpkdbyVScvnn-99XQ526B=64fQp34PKjot1CJ2Wfm0PKmZgg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20220511220613.1015472-5-marijn.suijten@somainline.org>
+ <20220514171312.227a1f07@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220514171312.227a1f07@jic23-huawei>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 13/05/2022 23:09, Linus Walleij wrote:
->>> I prefer yours to be applied first, so that I can retest this
->>> patchseries with stricter / more correct dt-bindings introduced by it.
->>> My series can also be resent with the notice that it has already been
->>> rebased on top of your series, after collecting more reviews.  Where
->>> necessary, I can review your series too if that helps getting it in
->>> sooner.
->>
->> Sounds good. It's in Bjorn's hands now. :)
+On 2022-05-14 17:13:12, Jonathan Cameron wrote:
+> On Thu, 12 May 2022 00:06:10 +0200
+> Marijn Suijten <marijn.suijten@somainline.org> wrote:
 > 
-> Ugh can I get that with a pull request? Maybe Krzysztof can provide?
-
-Ah, I completely forgot that this is actually pinctrl, so it's not Bjorn
-but you. :) Of course then it can go via Pinctrl tree, in any order you
-prefer and anyway it's not my call. :)
-
+> > These channels are specified in downstream kernels [1] and actively used
+> > by ie. the Sony Seine platform on the SM6125 SoC.
 > 
-> BTW I have high confidence in you Krzysztof after all your work on the
-> Samsung pin controllers, can you and Bjorn
-> discuss maybe adding you as comaintainer for Qualcomm pin controllers,
-> it's not like Bjorn has too little to do.
+> Looking at the links, some of them are on that platform but not all.
+> Better to make that explicit in this description.
 
-Sure, I am happy to help here. I'll talk with Bjorn.
+This has already been queued up for v2.  Adding these seemed easy at the
+time but they are in fact not used, and I ended up sending the wrong
+patch.
 
-Best regards,
-Krzysztof
+Just so that we're on the same page: only ADC5_AMUX_THM3 and
+ADC5_GPIO2_100K_PU are unused by my platform.  It seems the first should
+be dropped, but the latter can probably stay in the patch with an
+explicit mention.  If you think both should stay, there are a bunch more
+channels defined in the downstream kernel as per [1] and I'm not sure if
+all should be added for completeness.
+
+> > 
+> > [1]: https://source.codeaurora.org/quic/la/kernel/msm-4.14/tree/drivers/iio/adc/qcom-spmi-adc5.c?h=LA.UM.7.11.r1-05200-NICOBAR.0#n688
+> > 
+> > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> > Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> 
+> I'm not keen on patches with no context being
+> sent to mailing lists. Please cc all lists (and preferably individuals)
+> on at least the cover letter so we can see overall discussion.
+
+That can be attributed to the terrible workflow for sending
+patch-series.  Somehow only `git send-email` supports --cc-cmd yet I'd
+expect it on `git format-patch` for auditing and possibly copying to the
+cover letter, if `git format-patch --cover-letter` couldn't do this from
+the beginning.
+At the same time `git send-email` has --[to/cc]-cover options to
+propagate email addresses from the cover letter to all the individual
+patch-replies, but not the inverse :(
+
+In the end this leaves me manually running get_maintainer.pl over the
+entire formatted patch-series, and manually copy-pasting + editing the
+addresses into the cover letter... Which is easy to forget and is no
+different here.
+
+My apologies for (yet again) accidentally not sending at least the cover
+letter to everyone.  That's a gross oversight, and I'm probably - no, I
+must - be doing something wrong.  Suggestions and/or documentation
+references are welcome.
+
+> If nothing else, I've no idea if intent is that the patches go through different
+> trees or all need to merge via one route.
+
+I have no idea either, and have not yet had an answer to a similar
+question on a different list.  Usually it seems the maintainers work out
+amongst themselves who picks what patch, putting them on hold where
+necessary to preseve ordering.  If not, should the sender split patches
+across multiple series, either holding off sending part of it or linking
+to a dependent series?
+
+In this particular case DT has to wait for these driver patches to land,
+otherwise they may define channels that do not exist and unnecessarily
+fail probe.
+
+> Patch itself looks fine,
+
+Thanks.
+
+Looking forward to your suggestions and answers,
+
+- Marijn
+
+> [..]
