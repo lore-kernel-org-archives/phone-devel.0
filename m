@@ -2,123 +2,215 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 628D5C433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 16 May 2022 07:45:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FBB5C433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 16 May 2022 08:31:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241236AbiEPHp0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 May 2022 03:45:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50080 "EHLO
+        id S233704AbiEPIbW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 May 2022 04:31:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237736AbiEPHpY (ORCPT
+        with ESMTP id S234405AbiEPIbU (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 May 2022 03:45:24 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3A5624F0F
-        for <phone-devel@vger.kernel.org>; Mon, 16 May 2022 00:45:22 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id dk23so26916684ejb.8
-        for <phone-devel@vger.kernel.org>; Mon, 16 May 2022 00:45:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
-         :from:to:references:in-reply-to;
-        bh=21e+O6a/0NQnBECsUblxR6mTia9rEVhmdm2lp/29jkY=;
-        b=fcr1QxfEr0HCRvXrgOstMlmzEa5x/qaQxKyfu87La+0aiPxd3NTmjHb8XZCfaIhBBR
-         yZlIeLPDeeQc0LNHSTOu8R9/lW/f+PZTUdMn+6icXtB2qKIdRQyE6TVS6z1npqbEYNDG
-         YjMQLUq92ZtZ+Nz6GPH2rLo3PRuYQ8ptHRS/aOcO2S/Da07Wn5JmLOuNfr9GxhB/PbcL
-         Y6ycu+J9BeM+v3oWsRCzyg1COi9tdHK9SnvGQMD6j9ezQm9ih0KrDJxuhb7adI7YumE5
-         DgQD/OANI8nFfI7hjE03ejAV64e3EYwgJGnJNmQ74fPZzHqLY1y245jobjRYSq1tiGiq
-         Os4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:cc:subject:from:to:references:in-reply-to;
-        bh=21e+O6a/0NQnBECsUblxR6mTia9rEVhmdm2lp/29jkY=;
-        b=PPaKXTy5hIusgM7CS03Ebk0hgkG4CkQBnCR/CNLTPCaovvEPaIaqlEv1Uh/FC4m/s+
-         YDe3khHbBdFS3LE+dl/IAJ78+ooD79EUMM/1hPykzdFVVctJoJzS09nKMqZGG3jZ0XD+
-         9YcxJs1hzGHR351VgFkksqdu84ICTjanupR7qOaoGQvNLFKuudapmHU81tcnwDTiZe8K
-         vtTHhdMSr+ker4adUNWs25mpG3QUikJgUmS08+kUEWPx69H9w0Uq0FRIZ0NHlQV/+ewr
-         Jb51rKVqP3udQADuuba/xV9tUjE8qy0DuWa6hGnYPVQV0LhF1wxTOGPHtcSgxy1BEjno
-         UA8A==
-X-Gm-Message-State: AOAM532oqtvMDvLR5XFDqDjQIV21gPVFVz3safouakFgUBIQPOmrUw/Z
-        fOEICszcr6eO+l9aSWmduxyoFw==
-X-Google-Smtp-Source: ABdhPJz7BbCTvyGtaVJ3tAW9MxQnhNQH6NUdZwryDCDX+Ji2qugloOBjcp9IZjWHCPc380+95m3wxg==
-X-Received: by 2002:a17:906:3087:b0:6f4:2901:608a with SMTP id 7-20020a170906308700b006f42901608amr14292893ejv.646.1652687121379;
-        Mon, 16 May 2022 00:45:21 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id eo10-20020a1709069b0a00b006f3ef214dbesm3409794ejc.36.2022.05.16.00.45.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 May 2022 00:45:20 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 16 May 2022 09:45:20 +0200
-Message-Id: <CK10OTVFAP75.WCSVY40A7PXO@otso>
-Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, "Rob Herring" <robh@kernel.org>,
-        "Andy Gross" <agross@kernel.org>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "Marc Zyngier" <maz@kernel.org>,
-        "Rob Herring" <robh+dt@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2] dt-bindings: qcom,pdc: convert to YAML
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>,
-        "Bjorn Andersson" <bjorn.andersson@linaro.org>
-X-Mailer: aerc 0.9.0
-References: <20220103074348.6039-1-luca.weiss@fairphone.com>
- <bef4922d-4a32-f184-44a1-8f5430190938@linaro.org>
- <fef5f229-f247-d032-fc76-46ed7083dbf4@linaro.org>
-In-Reply-To: <fef5f229-f247-d032-fc76-46ed7083dbf4@linaro.org>
+        Mon, 16 May 2022 04:31:20 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FDDDE84;
+        Mon, 16 May 2022 01:31:18 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: kholk11)
+        with ESMTPSA id 6E5C21F427EB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1652689876;
+        bh=ytW6OzemA443Fouu0UIECYThL8+4RWJXRFWc1m4MtCA=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=DrwGfIZryGFSE47jUYrBD9ViP0HynbmltEeFaTfaRjPvDy127ALe3/gLlx4a/wIBm
+         cpYw0qGPUh+ofhh0mBWJ5H4ZzXZlc6BC5fYLTbjuGUDrbCCqRRmyf5DpkU2H7FTAt0
+         3yTXp9b7+x2kaw0UwSpa4FazbLDEeAB4UGuRl0ZhTGJQqJZJ34D+mlB8Gcb54Dq2bO
+         OD26aijV8SV43MYCA/nARuauX2z8LwzxNUkZA+iotU9mdoqhSHbVAtmatPJMuUBuV9
+         e6tAROSSVU6Iesivz5qfYmqVSEWIWedgd9icIfmLbDDdirUd2TbOyZwkeotkq+RVUP
+         MDIFscgK1UCHg==
+Message-ID: <7d4caab4-bb70-8e32-dc06-5edd51dbeea5@collabora.com>
+Date:   Mon, 16 May 2022 10:31:12 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH v2 2/2] clocksource/drivers/timer-mediatek: Implement
+ CPUXGPT timers
+Content-Language: en-US
+To:     Yassine Oudjana <yassine.oudjana@gmail.com>
+Cc:     daniel.lezcano@linaro.org, tglx@linutronix.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        paul.bouchara@somainline.org
+References: <20220513201442.13569-1-y.oudjana@protonmail.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20220513201442.13569-1-y.oudjana@protonmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Krzysztof,
+Il 13/05/22 22:14, Yassine Oudjana ha scritto:
+> From: Yassine Oudjana <yassine.oudjana@gmail.com>
+> 
+> On Mon,  9 May 2022 23:07:40 +0200, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> wrote:
+>> Some MediaTek platforms with a buggy TrustZone ATF firmware will not
+>> initialize the AArch64 System Timer correctly: in these cases, the
+>> System Timer address is correctly programmed, as well as the CNTFRQ_EL0
+>> register (reading 13MHz, as it should be), but the assigned hardware
+>> timers are never started before (or after) booting Linux.
+>>
+>> In this condition, any call to function get_cycles() will be returning
+>> zero, as CNTVCT_EL0 will always read zero.
+> 
+> I spent a lot of time trying to figure out why the arch timer didn't
+> work on MT6737T and never got any results. Turns out this is why...
+> 
+> I ended up using the GPT (@ 0x10004000) as a system timer and it
+> worked fine.
+> 
+> With this patch the arch timer started to work finally. Thanks for
+> the fix! See below for one comment on this patch.
+> 
 
-On Mon May 9, 2022 at 10:40 AM CEST, Krzysztof Kozlowski wrote:
-> On 09/05/2022 10:38, Krzysztof Kozlowski wrote:
-> > On 03/01/2022 08:43, Luca Weiss wrote:
-> >> Convert the PDC interrupt controller bindings to YAML.
-> >>
-> >> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> >> Reviewed-by: Rob Herring <robh@kernel.org>
-> >> ---
-> >> Changes since v1:
-> >> * Adjust description of second reg-name as suggested by Maulik Shah
-> >>
-> >> @Rob Herring: Hope it's ok to keep your R-b given the above changes
-> >>
-> >> This patch depends on the following patch, which fixed sm8250 & sm8350
-> >> compatibles and adds sm6350.
-> >> https://lore.kernel.org/linux-arm-msm/20211213082614.22651-4-luca.weis=
-s@fairphone.com/
-> >=20
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> >=20
-> > Luca,
-> > I think this needs resending as dependency was merged. Alternatively,
-> > maybe Bjorn could pick it up through QCom SoC?
->
-> Correction - it seems that Rob took the dependency in April, so this
-> should go via Rob's tree as well.
->
-> Luca, can you resend without Rob's Review tag and ask him to pick it up?
->
+Hello Yassine,
 
-So... since torvalds/master my sm6350 patch is merged through Rob's
-tree, but there was also a sm8150 patch applied through Linus Walleij's
-tree. This means (as far as I understand) that neither can really
-properly apply this (rebased) patch as one tree will have missed the
-other commit.
+yes this is a common quirk that's present on all (or almost all?) older
+MediaTek platforms - as I explained, due to TZ doing only partial init
+for these timers.
 
-Does it make sense to send a v3 rebased on linux-next now, or wait until
-this has settled down in torvalds's tree?
+I'm happy to read that this is working out as expected: I saw you pushing
+some patches for older MTK SoCs, so I started researching about what the
+community was blocked on with the upstreaming of these, and learnt about
+such major blocker.
 
-Regards
-Luca
+There's more, though: you also need to initialize the CPU MTCMOS at early
+boot in order for SMP to work on (some?) old platforms, or at least this
+is true for MT6795.
 
->
-> Best regards,
-> Krzysztof
+Since it looks like you're interested in giving love to old SoCs, I will
+anticipate to you that I *do* have a local implementation for a correct
+initialization of the MTCMOS for the non-boot cores... that needs to be
+cleaned up a bit before I push that upstream though.
+
+>> One common critical symptom of that is trying to use the udelay()
+>> function (calling __delay()), which executes the following loop:
+>>
+>>              start = get_cycles();
+>>              while ((get_cycles() - start) < cycles)
+>>                      cpu_relax();
+>>
+>> which, when CNTVCT_EL0 always reads zero, translates to:
+>>
+>>              while((0 - 0) < 0)  ==> while(0 < 0)
+>>
+>> ... generating an infinite loop, even though zero is never less
+>> than zero, but always equal to it (this has to be researched,
+>> but it's out of the scope of this commit).
+>>
+>> To fix this issue on the affected MediaTek platforms, the solution
+>> is to simply start the timers that are designed to be System Timer(s).
+>> These timers, downstream, are called "CPUXGPT" and there is one
+>> timer per CPU core; luckily, it is not necessary to set a start bit
+>> on each CPUX General Purpose Timer, but it's conveniently enough to:
+>>   - Set the clock divider (input = 26MHz, divider = 2, output = 13MHz);
+>>   - Set the ENABLE bit on a global register (starts all CPUX timers).
+>>
+>> The only small hurdle with this setup is that it's all done through
+>> the MCUSYS wrapper, where it is needed, for each read or write, to
+>> select a register address (by writing it to an index register) and
+>> then to perform any R/W on a "CON" register.
+>>
+>> For example, writing "0x1" to the CPUXGPT register offset 0x4:
+>> - Write 0x4 to mcusys INDEX register
+>> - Write 0x1 to mcusys CON register
+>>
+>> Reading from CPUXGPT register offset 0x4:
+>> - Write 0x4 to mcusys INDEX register
+>> - Read mcusys CON register.
+>>
+>> Finally, starting this timer makes platforms affected by this issue
+>> to work correctly.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>> ---
+>>   drivers/clocksource/timer-mediatek.c | 119 +++++++++++++++++++++++++++
+>>   1 file changed, 119 insertions(+)
+>>
+>> diff --git a/drivers/clocksource/timer-mediatek.c b/drivers/clocksource/timer-mediatek.c
+>> index 7bcb4a3f26fb..a3e90047f9ac 100644
+>> --- a/drivers/clocksource/timer-mediatek.c
+>> +++ b/drivers/clocksource/timer-mediatek.c
+
+..snip..
+
+>> +
+>> +	/*
+>> +	 * Check if we're given a clock with the right frequency for this
+>> +	 * timer, otherwise warn but keep going with the setup anyway, as
+>> +	 * that makes it possible to still boot the kernel, even though
+>> +	 * it may not work correctly (random lockups, etc).
+>> +	 * The reason behind this is that having an early UART may not be
+>> +	 * possible for everyone and this gives a chance to retrieve kmsg
+>> +	 * for eventual debugging even on consumer devices.
+>> +	 */
+>> +	freq = timer_of_rate(&to_cpux);
+>> +	if (freq > 13000000)
+> 
+> Input clock is 26MHz and is then divided by 2 in CPUXGPT, so shouldn't
+> this be 26000000 instead? I get a warning here with 26MHz system clock
+> supplied:
+> 
+
+This may seem to be counter intuitive... I had two ways to implement this:
+1. Design this driver to take "clk26m" as a clock input and make it so
+    that it reads the expected frequency from CNTFRQ_EL0, then setup the
+    dividers based on that reading; or
+2. Take "clk13m" as input and refuse to take anything else.
+
+Keeping in mind that:
+1. There's no way (that I know, at least) to set a different clock source for
+    the CPUXGPT timers, and
+2. There's no platform (I've been researching on that) that uses a different
+    frequency for these timers...
+
+...there will never be any platform that outputs a clock that's not 13MHz,
+hence I chose to follow path 2 and take the 13MHz "System Clock", which is
+something that is present downstream as well.
+
+In any case, now that you make me think about that, it may indeed be more
+logical to assign the 26MHz clock to this node... my intention was to force
+knowledge on this outputting 13MHz instead but, I realize, this may be the
+wrong way of doing that.
+
+> clocks {
+> 	...
+> 	clk26m: clk26m {
+> 		compatible = "fixed-clock";
+> 		clock-frequency = <26000000>;
+> 		#clock-cells = <0>;
+> 	};
+> 	...
+> };
+> ...
+> soc {
+> 	...
+> 	cpuxgpt: timer@10200670 {
+> 		compatible = "mediatek,mt6795-systimer";
+> 		reg = <0 0x10200670 0 0x8>;
+
+My congratulations on this timer node: you're a smart person!
+I was expecting people complaining about "this doesn't work" and having
+to explain that 0x10200000 is not the right iostart for this node, but
+I didn't have to.
+
+Hats off.
+
+Cheers,
+Angelo
 
