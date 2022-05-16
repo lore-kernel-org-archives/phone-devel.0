@@ -2,102 +2,77 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FA10C433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 16 May 2022 14:58:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 172DCC433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 16 May 2022 16:03:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244822AbiEPO6m (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 May 2022 10:58:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35088 "EHLO
+        id S245546AbiEPQDL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 May 2022 12:03:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244881AbiEPO6c (ORCPT
+        with ESMTP id S245534AbiEPQDK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 May 2022 10:58:32 -0400
-Received: from mail-oo1-xc2b.google.com (mail-oo1-xc2b.google.com [IPv6:2607:f8b0:4864:20::c2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 995E03B552
-        for <phone-devel@vger.kernel.org>; Mon, 16 May 2022 07:58:29 -0700 (PDT)
-Received: by mail-oo1-xc2b.google.com with SMTP id i6-20020a4ab246000000b00362214ddc1cso2141775ooo.2
-        for <phone-devel@vger.kernel.org>; Mon, 16 May 2022 07:58:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=BmMxxJNBMXkETqnAggznerwbpuGU049yThiwMTgkfdU=;
-        b=Gk6kkS4R99vsEV9fdkVuEJk4mXZvNweHQLY8VjEkAOhxw3xlVzaG3y3Kj9Rnbf/0JZ
-         fPlSa8gMFoasLj/twP5U3ZVVtxaUdabqEe8NRcHI9VAuwdU33zPuaVc0EuiurOzF4if/
-         QKnLhZrWpPgOBeQxjKN5wjewdBH4LmVtcn+s121jRRdFprZtt+ZQOL3MbE7iCN0AqSBT
-         2Xx/YDulSF0zpaaNiitE9hE2WCHI+IQdGMuZA33rXyjNzzNV3XwXZ26WeJ59/CuqWk7Y
-         KgM6BDq8u1hvfQr4qCH0xbmGN4+3B+91yt/lkq0SNlZmgm4DqXPlG9waIrfyZ+Wy+pcJ
-         kvIw==
+        Mon, 16 May 2022 12:03:10 -0400
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC9C131911;
+        Mon, 16 May 2022 09:03:09 -0700 (PDT)
+Received: by mail-ot1-f45.google.com with SMTP id 31-20020a9d0822000000b00605f1807664so10347513oty.3;
+        Mon, 16 May 2022 09:03:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=BmMxxJNBMXkETqnAggznerwbpuGU049yThiwMTgkfdU=;
-        b=AL0KY558Fderf0q7TONE1udIzft39Fn+0hM/3CI+I7/iF+4VQ/pCDQH/1QZ4rBnfhR
-         LmnQprfyqZuxQLbx0zQQJjzbB9I7ZWnaZaNgnxx2cV5RR6Odms4/lm+YiLT4zYmQTg5U
-         6yxtv01i2EKPQASCc76Bj+BmVhRF7a/YVXe/8D+FpUg7seo0Q2CUQenr3wLUzWAsPy2y
-         q1fE8dKV/cihqSDrb2YinGpCxp4Vwjbisf+j51zULv7fZg3aBwZ45yvcTGmGCREX9hzm
-         7HxUf8srgjV+PINrr4Pkzta3aZPVLAZCtsmUlAjrc8hC7VuEeuZkJJCaPqu09k3Qg84K
-         Fa9w==
-X-Gm-Message-State: AOAM533OA8PMEa3rkiUcEIthgUgKO+PdX14C8FAzUf1l7qfyIKUhaNsW
-        ZtrBgyEktdHq7YMpKUKeENup5w==
-X-Google-Smtp-Source: ABdhPJxfeAAzbs/cxASCwiCKMhDGVI4YkhQPfGFqG9BnVH/WAKUrkzyFcFAhS/NY/v/Dc/6r9XRSwQ==
-X-Received: by 2002:a4a:d450:0:b0:324:c398:7305 with SMTP id p16-20020a4ad450000000b00324c3987305mr6094736oos.45.1652713108955;
-        Mon, 16 May 2022 07:58:28 -0700 (PDT)
-Received: from ripper (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id u7-20020a056871058700b000e686d13876sm5535918oan.16.2022.05.16.07.58.28
+        bh=yo1mI8/R7Wy9riO53UED6LxgLrSXbz5A0ENaW2C9bpU=;
+        b=MKTtVoGogHMQon9jukIl76qU759lgz29F+LbwS6qCMJlfTFFkXt2mEkIZhEYEQ7fqr
+         2dDAnbCHM7gO3aU/Gk/VxrMU6hvQwShmlTvwTiIoFNsZAv2VUMRhA4EM3wsQraE1ZrB4
+         UmCL8OJaThKk0+ntnhlnPQ0fBXvqMJMx8CuMlJWhsRkyhXduk2AgP7RNw8L2eUqkPa77
+         yOMExsKyToq+GSIAjad3QwxuoAxYtvGxcDbG1BpZMVTxleH4w96rk+M32HQ5qcisSVHB
+         3Kpap3HNYYQd8BHhOfGCQ3s89n8xDw5GExLeSsNNCbuXkVSFKRbwiuwF95bxh8wbgR2Z
+         SKtA==
+X-Gm-Message-State: AOAM530GOd3HvMR83Z5vKrgZlh95FQDDsrN2qSGp/0Gi/RreYKBnzd8a
+        XvtDV+5cTu8dA9TCQwboRw==
+X-Google-Smtp-Source: ABdhPJyZnvv3MvtJ0BpFTLVD4WxJ+CJ0091/m0FsrkT5PDbPjdHQaNeoSy79FCWg/C3J1d8uUv1Vyg==
+X-Received: by 2002:a05:6830:12c9:b0:606:4482:74a0 with SMTP id a9-20020a05683012c900b00606448274a0mr6234159otq.17.1652716989012;
+        Mon, 16 May 2022 09:03:09 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id q5-20020a4aa885000000b0035eb4e5a6b6sm4288330oom.12.2022.05.16.09.03.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 May 2022 07:58:28 -0700 (PDT)
-Date:   Mon, 16 May 2022 08:00:52 -0700
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/7] pinctrl: qcom: spmi-gpio: Add pm6125 compatible
-Message-ID: <YoJnJAZ/RzpSYC90@ripper>
-References: <20220511220613.1015472-1-marijn.suijten@somainline.org>
- <20220511220613.1015472-4-marijn.suijten@somainline.org>
+        Mon, 16 May 2022 09:03:08 -0700 (PDT)
+Received: (nullmailer pid 2732699 invoked by uid 1000);
+        Mon, 16 May 2022 16:03:07 -0000
+Date:   Mon, 16 May 2022 11:03:07 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Cc:     martin.botka@somainline.org, linux-mediatek@lists.infradead.org,
+        robh+dt@kernel.org, konrad.dybcio@somainline.org,
+        paul.bouchara@somainline.org, krzysztof.kozlowski+dt@linaro.org,
+        will@kernel.org, linux-kernel@vger.kernel.org,
+        yong.wu@mediatek.com, ~postmarketos/upstreaming@lists.sr.ht,
+        joro@8bytes.org, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org, marijn.suijten@somainline.org,
+        linux-arm-kernel@lists.infradead.org, matthias.bgg@gmail.com,
+        iommu@lists.linux-foundation.org
+Subject: Re: [PATCH 1/2] dt-bindings: mediatek: Add bindings for MT6795 M4U
+Message-ID: <20220516160307.GA2732645-robh@kernel.org>
+References: <20220513151411.395744-1-angelogioacchino.delregno@collabora.com>
+ <20220513151411.395744-2-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220511220613.1015472-4-marijn.suijten@somainline.org>
+In-Reply-To: <20220513151411.395744-2-angelogioacchino.delregno@collabora.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed 11 May 15:06 PDT 2022, Marijn Suijten wrote:
-
-> The pm6125 has 9 GPIOs with no holes inbetween.
+On Fri, 13 May 2022 17:14:10 +0200, AngeloGioacchino Del Regno wrote:
+> Add bindings for the MediaTek Helio X10 (MT6795) IOMMU/M4U.
 > 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 > ---
->  drivers/pinctrl/qcom/pinctrl-spmi-gpio.c | 1 +
->  1 file changed, 1 insertion(+)
+>  .../bindings/iommu/mediatek,iommu.yaml        |  3 +
+>  include/dt-bindings/memory/mt6795-larb-port.h | 96 +++++++++++++++++++
+>  2 files changed, 99 insertions(+)
+>  create mode 100644 include/dt-bindings/memory/mt6795-larb-port.h
 > 
-> diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-> index a0c45b305981..fd5fff9adff0 100644
-> --- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-> +++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-> @@ -1146,6 +1146,7 @@ static const struct of_device_id pmic_gpio_of_match[] = {
->  	{ .compatible = "qcom,pm660-gpio", .data = (void *) 13 },
->  	/* pm660l has 12 GPIOs with holes on 1, 2, 10, 11 and 12 */
->  	{ .compatible = "qcom,pm660l-gpio", .data = (void *) 12 },
-> +	{ .compatible = "qcom,pm6125-gpio", .data = (void *) 9 },
->  	{ .compatible = "qcom,pm6150-gpio", .data = (void *) 10 },
->  	{ .compatible = "qcom,pm6150l-gpio", .data = (void *) 12 },
->  	{ .compatible = "qcom,pm6350-gpio", .data = (void *) 9 },
-> -- 
-> 2.36.1
-> 
+
+Acked-by: Rob Herring <robh@kernel.org>
