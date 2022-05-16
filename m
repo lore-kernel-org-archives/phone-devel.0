@@ -2,116 +2,87 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3192AC433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 16 May 2022 08:44:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E022C433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 16 May 2022 08:51:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230180AbiEPIoz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 May 2022 04:44:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48284 "EHLO
+        id S229711AbiEPIvv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 May 2022 04:51:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241966AbiEPIoZ (ORCPT
+        with ESMTP id S229651AbiEPIvt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 May 2022 04:44:25 -0400
+        Mon, 16 May 2022 04:51:49 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30AEF580;
-        Mon, 16 May 2022 01:44:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94D9D388B;
+        Mon, 16 May 2022 01:51:48 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: kholk11)
-        with ESMTPSA id AA2351F427F3
+        with ESMTPSA id 8F8C11F407CE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652690660;
-        bh=/A+cNqtSPHG/D4qhatlAKYS/dqSWn1bu3i/Z2T9OGN8=;
+        s=mail; t=1652691107;
+        bh=gV9kB7ivZNyAdhSFNP1wk4K4CwcgA76yv2I+a7JWfyg=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=XDOVMGDR+NJ6s8VoO9u2vElluOF9m3hpIu+RFa3HjxJBsrZRUvXxnHq4iSzXqxW3O
-         dfQpBXHhFN/+Rc62GprPJ0M9G/kPT5GiZRc/xxU3bonQwqoyGID8I90+SLMwQmr7l7
-         9bP1jxx1FV8GBCxK/drzz+SBpEKbhlOwfc4aDVteuYCrcn3tk3UXC2wovIC/IBiOPH
-         V0wXYHwPixsUeKzr4W5Sf5/254a7Y2o+GNp+ap3oXvEAN7AO0LnlVmlRdTC2JULXvM
-         paQk33Y9eAgNHfa842LRJ6yDI6IOhpxDZljnp1VvwrUr3k2dROpNWIQlh3VZvF5hgs
-         eqJLVkEIB4iIQ==
-Message-ID: <a7afc559-4e0a-6552-190c-19e58851ce68@collabora.com>
-Date:   Mon, 16 May 2022 10:44:16 +0200
+        b=YoFKzksDbBZNLg5EvKENN0GqsHSebAGPsYmisWzx/3PKbAn+FxzB1wSvHECYq75z0
+         2CrtSBGa4usFd2gFvY35Ld/+ec2frrs6NJtvafPe8B4Z9/HQpDr1sLWIUFFRGNUazb
+         c8z2LV3fPBryI42a//xFvhkD/8sIJIZldQGpGqzrX1uPidLBW6pKIzVBTliXJ3MQSY
+         V0K470gXhu3Ydl9xoSWZKHUxGk1PrXWv0TwGBPu6hWb/GYj+6dRLSyvUtcgn1JHHqS
+         Vh+QtQqE+jSuQgV8I2QLruXX35ODzyrRWauKwQSk3syvwBVq9FVD5bbi9dOp+JTzX6
+         uXM5G0La9lXMA==
+Message-ID: <0f303425-3b12-7573-b201-030d4d044db8@collabora.com>
+Date:   Mon, 16 May 2022 10:51:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
-Subject: Re: [PATCH] soc: mediatek: mtk-mmsys: Add support for MT6795 Helio
- X10
+Subject: Re: [PATCH 5/7] arm64: dts: mediatek: mt6795: Add fixed clocks for
+ 32kHz and 26MHz XOs
 Content-Language: en-US
-To:     CK Hu <ck.hu@mediatek.com>, matthias.bgg@gmail.com
-Cc:     linux-arm-kernel@lists.infradead.org,
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
         konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
         kernel@collabora.com
-References: <20220513170350.502501-1-angelogioacchino.delregno@collabora.com>
- <7c996c665a57fdd9ba8d6df4dc085f70afc1b933.camel@mediatek.com>
+References: <20220513171617.504430-1-angelogioacchino.delregno@collabora.com>
+ <20220513171617.504430-6-angelogioacchino.delregno@collabora.com>
+ <03e99a02-1233-3882-e1e5-24ab1bbaf257@linaro.org>
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <7c996c665a57fdd9ba8d6df4dc085f70afc1b933.camel@mediatek.com>
+In-Reply-To: <03e99a02-1233-3882-e1e5-24ab1bbaf257@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 16/05/22 07:43, CK Hu ha scritto:
-> Hi, Angelo:
+Il 16/05/22 09:10, Krzysztof Kozlowski ha scritto:
+> On 13/05/2022 19:16, AngeloGioacchino Del Regno wrote:
+>> Add the 32kHz and 26MHz oscillators as fixed clocks in devicetree to
+>> provide a good initial clock spec, since this SoC features two always
 > 
-> On Fri, 2022-05-13 at 19:03 +0200, AngeloGioacchino Del Regno wrote:
->> Add MM support for the MT6795 SoC, using the mmsys default routing
->> table.
->>
->> Signed-off-by: AngeloGioacchino Del Regno <
->> angelogioacchino.delregno@collabora.com>
->> ---
->>
->> In order for this patch to have any meaning and functionality, it is
->> required to also have in-tree the [1] MT6795 clocks series, even
->> though that's not required to actually compile this code.
->>
->> [1]
->> https://urldefense.com/v3/__https://patchwork.kernel.org/project/linux-mediatek/list/?series=641493__;!!CTRNKA9wMg0ARbw!ywDb_Gj4oV0iYHK_PbtJSNejzsJGlFVjX-1O0G1mR0vZX_5VeMtlZJ_AS6K_Mg$
->>   
->>
->>   drivers/soc/mediatek/mtk-mmsys.c | 11 +++++++++++
->>   1 file changed, 11 insertions(+)
->>
->> diff --git a/drivers/soc/mediatek/mtk-mmsys.c
->> b/drivers/soc/mediatek/mtk-mmsys.c
->> index 06d8e83a2cb5..38b36b881a3b 100644
->> --- a/drivers/soc/mediatek/mtk-mmsys.c
->> +++ b/drivers/soc/mediatek/mtk-mmsys.c
->> @@ -57,6 +57,13 @@ static const struct mtk_mmsys_match_data
->> mt6779_mmsys_match_data = {
->>   	},
->>   };
->>   
->> +static const struct mtk_mmsys_driver_data mt6795_mmsys_driver_data =
->> {
->> +	.clk_driver = "clk-mt6795-mm",
->> +	.routes = mmsys_default_routing_table,
+> I don't understand that part with actual patch. You claim here you add
+> clocks, but in DTS they were already before.
 > 
-> mt6795 should have its own routing table instead of default one. The
-> default one is used for mt8173, mt2701, mt2712 which no one knows how
-> to separate them. If you don't know the routing table of mt6795, just
-> left this as NULL.
+> Additionally, these clocks do not belong to DTSI because, AFAIU, these
+> are properties of boards. At least their frequencies should be moved to
+> the board DTS.
+> 
 > 
 
-Hello CK,
+I should reword the commit description to be clearer, sorry about that: I
+went with "exactly what I've done", but looking at the actual diff, it is
+just a rename. What my brain was ticking on here was about removing clocks
+that didn't really exist (uart_clk is not a fixed clock, etc), and adding
+the ones that do exist.... but then again, the result, casually, is a rename.
 
-I agree with you, in fact the first test that I've done was with leaving
-routes to NULL, but that did not work (I couldn't get the display to work),
-while assigning the default routing table resulted in having a working
-internal (DSI) display et al, which is why I have done that.
-
-I am sure that this may be a quirk that is required due to my platform's
-bootloader, but still, it won't work otherwise.
-
-If anyone from MediaTek wants to help with providing a better solution for
-that, you're welcome to - but otherwise, my proposal is to configure MT6795
-with that default routing table and eventually come back to this later if
-any issue with this gets discovered... I couldn't find any, though.
+In any case... no, these clocks are not board-specific for two reasons:
+1. AFAIK, these fixed clock outputs are from the SoC itself, not from
+    external components placed on the board, and
+2. Even if these were from external components, the SoC *needs* these
+    ones to work and any board that doesn't have these fixed XOs simply
+    wouldn't be able to work.
 
 Cheers,
 Angelo
-
