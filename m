@@ -2,92 +2,123 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A902C433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 16 May 2022 07:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 628D5C433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 16 May 2022 07:45:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238225AbiEPHKT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 May 2022 03:10:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35116 "EHLO
+        id S241236AbiEPHp0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 May 2022 03:45:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231247AbiEPHKP (ORCPT
+        with ESMTP id S237736AbiEPHpY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 May 2022 03:10:15 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5B4AE035
-        for <phone-devel@vger.kernel.org>; Mon, 16 May 2022 00:10:04 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id v4so16960204ljd.10
-        for <phone-devel@vger.kernel.org>; Mon, 16 May 2022 00:10:04 -0700 (PDT)
+        Mon, 16 May 2022 03:45:24 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3A5624F0F
+        for <phone-devel@vger.kernel.org>; Mon, 16 May 2022 00:45:22 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id dk23so26916684ejb.8
+        for <phone-devel@vger.kernel.org>; Mon, 16 May 2022 00:45:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=sxWW7nN1MX4qR5x7vYWxWhZdhe/dlQM1wOVqJQxUPUw=;
-        b=xfgSJvvTfpB3bhvG57n8DdOASbQWiiD0aJbEx2q9VQiFwTMWieLv+76CkJZ+U2n5nd
-         SeLg+QQPZ6V0nSyPBqobwtFuUOpjjzJSoROqSiq2V7Lj9xLXR9XI2j8rJYfID1yZzMj8
-         XYC4vFiYINn/Pu0Kw38I6/ttfnhseJChXYkyHSKswuerj7YUKcUcoGx6WrX3zTuWbAFj
-         BTqaz6IRcnWwUweLAZORhNAjK8LbQDIP25u3i0mgFmyuV3xVI+3yddr0b/HTBSLyGUff
-         JthW+Y2HVfZJFRs03mpTS0HA5Y3waFMYbEb0YtBrM8ENx2y/t+3UVmH84hiaV9lxEk+f
-         7xOg==
+        d=fairphone.com; s=fair;
+        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
+         :from:to:references:in-reply-to;
+        bh=21e+O6a/0NQnBECsUblxR6mTia9rEVhmdm2lp/29jkY=;
+        b=fcr1QxfEr0HCRvXrgOstMlmzEa5x/qaQxKyfu87La+0aiPxd3NTmjHb8XZCfaIhBBR
+         yZlIeLPDeeQc0LNHSTOu8R9/lW/f+PZTUdMn+6icXtB2qKIdRQyE6TVS6z1npqbEYNDG
+         YjMQLUq92ZtZ+Nz6GPH2rLo3PRuYQ8ptHRS/aOcO2S/Da07Wn5JmLOuNfr9GxhB/PbcL
+         Y6ycu+J9BeM+v3oWsRCzyg1COi9tdHK9SnvGQMD6j9ezQm9ih0KrDJxuhb7adI7YumE5
+         DgQD/OANI8nFfI7hjE03ejAV64e3EYwgJGnJNmQ74fPZzHqLY1y245jobjRYSq1tiGiq
+         Os4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=sxWW7nN1MX4qR5x7vYWxWhZdhe/dlQM1wOVqJQxUPUw=;
-        b=VB17xMWNHzcmTvFgJsvwcD1ySFyd6KZHk8rUihCvTcJPs0d1eXjV+Dbp/4vWU4QJMc
-         J4sw2EBZzz7DlSoR28z5stpZ08YS4rJIodLPxZ+kj8TH5mfvVrLB8WWJMzXEkfvF4MYq
-         kmENaSeezt2BQtRIDD3DPitZhmeISb24PfGx8fNOz9B+1ZNImbOixWWV1FI4uIc80lUi
-         Q9vCEV63/hgCLfTbN+L84lBg2AsfPPjgfStZ2CSFNLZy2PP7OlWyWk9Q8GFyXuZyh/mS
-         m82rQXMLJdMd3+9G7lXZ/203Tc3Dn61ehb9pGyqEVS5fWkGILdzZpQMRw1JVEfq41IRQ
-         aF7Q==
-X-Gm-Message-State: AOAM531HR6gDaGG0PYnaAFdNivGzqvCafLyPulKn71Weoy6AaDumZu6k
-        1I+JDsa6zzvrkzy2/4BHmEIgcw==
-X-Google-Smtp-Source: ABdhPJzxRNYsZvOCN6MRG+JxA+WtxP3xo+m55ow/RQL6xD2LzouYeDYYoKb2Omp9nqb+r+aHW9F1iA==
-X-Received: by 2002:a2e:bc14:0:b0:24f:5060:1dc3 with SMTP id b20-20020a2ebc14000000b0024f50601dc3mr10335364ljf.432.1652685003164;
-        Mon, 16 May 2022 00:10:03 -0700 (PDT)
-Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id o5-20020a05651205c500b004758e4e6a96sm1222932lfo.245.2022.05.16.00.10.02
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:cc:subject:from:to:references:in-reply-to;
+        bh=21e+O6a/0NQnBECsUblxR6mTia9rEVhmdm2lp/29jkY=;
+        b=PPaKXTy5hIusgM7CS03Ebk0hgkG4CkQBnCR/CNLTPCaovvEPaIaqlEv1Uh/FC4m/s+
+         YDe3khHbBdFS3LE+dl/IAJ78+ooD79EUMM/1hPykzdFVVctJoJzS09nKMqZGG3jZ0XD+
+         9YcxJs1hzGHR351VgFkksqdu84ICTjanupR7qOaoGQvNLFKuudapmHU81tcnwDTiZe8K
+         vtTHhdMSr+ker4adUNWs25mpG3QUikJgUmS08+kUEWPx69H9w0Uq0FRIZ0NHlQV/+ewr
+         Jb51rKVqP3udQADuuba/xV9tUjE8qy0DuWa6hGnYPVQV0LhF1wxTOGPHtcSgxy1BEjno
+         UA8A==
+X-Gm-Message-State: AOAM532oqtvMDvLR5XFDqDjQIV21gPVFVz3safouakFgUBIQPOmrUw/Z
+        fOEICszcr6eO+l9aSWmduxyoFw==
+X-Google-Smtp-Source: ABdhPJz7BbCTvyGtaVJ3tAW9MxQnhNQH6NUdZwryDCDX+Ji2qugloOBjcp9IZjWHCPc380+95m3wxg==
+X-Received: by 2002:a17:906:3087:b0:6f4:2901:608a with SMTP id 7-20020a170906308700b006f42901608amr14292893ejv.646.1652687121379;
+        Mon, 16 May 2022 00:45:21 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id eo10-20020a1709069b0a00b006f3ef214dbesm3409794ejc.36.2022.05.16.00.45.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 May 2022 00:10:02 -0700 (PDT)
-Message-ID: <03e99a02-1233-3882-e1e5-24ab1bbaf257@linaro.org>
-Date:   Mon, 16 May 2022 09:10:01 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH 5/7] arm64: dts: mediatek: mt6795: Add fixed clocks for
- 32kHz and 26MHz XOs
-Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, robh+dt@kernel.org
-Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
-        kernel@collabora.com
-References: <20220513171617.504430-1-angelogioacchino.delregno@collabora.com>
- <20220513171617.504430-6-angelogioacchino.delregno@collabora.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220513171617.504430-6-angelogioacchino.delregno@collabora.com>
+        Mon, 16 May 2022 00:45:20 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date:   Mon, 16 May 2022 09:45:20 +0200
+Message-Id: <CK10OTVFAP75.WCSVY40A7PXO@otso>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, "Rob Herring" <robh@kernel.org>,
+        "Andy Gross" <agross@kernel.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Marc Zyngier" <maz@kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2] dt-bindings: qcom,pdc: convert to YAML
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>,
+        "Bjorn Andersson" <bjorn.andersson@linaro.org>
+X-Mailer: aerc 0.9.0
+References: <20220103074348.6039-1-luca.weiss@fairphone.com>
+ <bef4922d-4a32-f184-44a1-8f5430190938@linaro.org>
+ <fef5f229-f247-d032-fc76-46ed7083dbf4@linaro.org>
+In-Reply-To: <fef5f229-f247-d032-fc76-46ed7083dbf4@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 13/05/2022 19:16, AngeloGioacchino Del Regno wrote:
-> Add the 32kHz and 26MHz oscillators as fixed clocks in devicetree to
-> provide a good initial clock spec, since this SoC features two always
+Hi Krzysztof,
 
-I don't understand that part with actual patch. You claim here you add
-clocks, but in DTS they were already before.
+On Mon May 9, 2022 at 10:40 AM CEST, Krzysztof Kozlowski wrote:
+> On 09/05/2022 10:38, Krzysztof Kozlowski wrote:
+> > On 03/01/2022 08:43, Luca Weiss wrote:
+> >> Convert the PDC interrupt controller bindings to YAML.
+> >>
+> >> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> >> Reviewed-by: Rob Herring <robh@kernel.org>
+> >> ---
+> >> Changes since v1:
+> >> * Adjust description of second reg-name as suggested by Maulik Shah
+> >>
+> >> @Rob Herring: Hope it's ok to keep your R-b given the above changes
+> >>
+> >> This patch depends on the following patch, which fixed sm8250 & sm8350
+> >> compatibles and adds sm6350.
+> >> https://lore.kernel.org/linux-arm-msm/20211213082614.22651-4-luca.weis=
+s@fairphone.com/
+> >=20
+> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> >=20
+> > Luca,
+> > I think this needs resending as dependency was merged. Alternatively,
+> > maybe Bjorn could pick it up through QCom SoC?
+>
+> Correction - it seems that Rob took the dependency in April, so this
+> should go via Rob's tree as well.
+>
+> Luca, can you resend without Rob's Review tag and ask him to pick it up?
+>
 
-Additionally, these clocks do not belong to DTSI because, AFAIU, these
-are properties of boards. At least their frequencies should be moved to
-the board DTS.
+So... since torvalds/master my sm6350 patch is merged through Rob's
+tree, but there was also a sm8150 patch applied through Linus Walleij's
+tree. This means (as far as I understand) that neither can really
+properly apply this (rebased) patch as one tree will have missed the
+other commit.
 
+Does it make sense to send a v3 rebased on linux-next now, or wait until
+this has settled down in torvalds's tree?
 
+Regards
+Luca
 
-Best regards,
-Krzysztof
+>
+> Best regards,
+> Krzysztof
+
