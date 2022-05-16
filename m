@@ -2,214 +2,115 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FBB5C433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 16 May 2022 08:31:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3192AC433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 16 May 2022 08:44:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233704AbiEPIbW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 May 2022 04:31:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52154 "EHLO
+        id S230180AbiEPIoz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 May 2022 04:44:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234405AbiEPIbU (ORCPT
+        with ESMTP id S241966AbiEPIoZ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 May 2022 04:31:20 -0400
+        Mon, 16 May 2022 04:44:25 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FDDDE84;
-        Mon, 16 May 2022 01:31:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30AEF580;
+        Mon, 16 May 2022 01:44:21 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: kholk11)
-        with ESMTPSA id 6E5C21F427EB
+        with ESMTPSA id AA2351F427F3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652689876;
-        bh=ytW6OzemA443Fouu0UIECYThL8+4RWJXRFWc1m4MtCA=;
+        s=mail; t=1652690660;
+        bh=/A+cNqtSPHG/D4qhatlAKYS/dqSWn1bu3i/Z2T9OGN8=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=DrwGfIZryGFSE47jUYrBD9ViP0HynbmltEeFaTfaRjPvDy127ALe3/gLlx4a/wIBm
-         cpYw0qGPUh+ofhh0mBWJ5H4ZzXZlc6BC5fYLTbjuGUDrbCCqRRmyf5DpkU2H7FTAt0
-         3yTXp9b7+x2kaw0UwSpa4FazbLDEeAB4UGuRl0ZhTGJQqJZJ34D+mlB8Gcb54Dq2bO
-         OD26aijV8SV43MYCA/nARuauX2z8LwzxNUkZA+iotU9mdoqhSHbVAtmatPJMuUBuV9
-         e6tAROSSVU6Iesivz5qfYmqVSEWIWedgd9icIfmLbDDdirUd2TbOyZwkeotkq+RVUP
-         MDIFscgK1UCHg==
-Message-ID: <7d4caab4-bb70-8e32-dc06-5edd51dbeea5@collabora.com>
-Date:   Mon, 16 May 2022 10:31:12 +0200
+        b=XDOVMGDR+NJ6s8VoO9u2vElluOF9m3hpIu+RFa3HjxJBsrZRUvXxnHq4iSzXqxW3O
+         dfQpBXHhFN/+Rc62GprPJ0M9G/kPT5GiZRc/xxU3bonQwqoyGID8I90+SLMwQmr7l7
+         9bP1jxx1FV8GBCxK/drzz+SBpEKbhlOwfc4aDVteuYCrcn3tk3UXC2wovIC/IBiOPH
+         V0wXYHwPixsUeKzr4W5Sf5/254a7Y2o+GNp+ap3oXvEAN7AO0LnlVmlRdTC2JULXvM
+         paQk33Y9eAgNHfa842LRJ6yDI6IOhpxDZljnp1VvwrUr3k2dROpNWIQlh3VZvF5hgs
+         eqJLVkEIB4iIQ==
+Message-ID: <a7afc559-4e0a-6552-190c-19e58851ce68@collabora.com>
+Date:   Mon, 16 May 2022 10:44:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
-Subject: Re: [PATCH v2 2/2] clocksource/drivers/timer-mediatek: Implement
- CPUXGPT timers
+Subject: Re: [PATCH] soc: mediatek: mtk-mmsys: Add support for MT6795 Helio
+ X10
 Content-Language: en-US
-To:     Yassine Oudjana <yassine.oudjana@gmail.com>
-Cc:     daniel.lezcano@linaro.org, tglx@linutronix.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        paul.bouchara@somainline.org
-References: <20220513201442.13569-1-y.oudjana@protonmail.com>
+To:     CK Hu <ck.hu@mediatek.com>, matthias.bgg@gmail.com
+Cc:     linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        kernel@collabora.com
+References: <20220513170350.502501-1-angelogioacchino.delregno@collabora.com>
+ <7c996c665a57fdd9ba8d6df4dc085f70afc1b933.camel@mediatek.com>
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20220513201442.13569-1-y.oudjana@protonmail.com>
+In-Reply-To: <7c996c665a57fdd9ba8d6df4dc085f70afc1b933.camel@mediatek.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 13/05/22 22:14, Yassine Oudjana ha scritto:
-> From: Yassine Oudjana <yassine.oudjana@gmail.com>
+Il 16/05/22 07:43, CK Hu ha scritto:
+> Hi, Angelo:
 > 
-> On Mon,  9 May 2022 23:07:40 +0200, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> wrote:
->> Some MediaTek platforms with a buggy TrustZone ATF firmware will not
->> initialize the AArch64 System Timer correctly: in these cases, the
->> System Timer address is correctly programmed, as well as the CNTFRQ_EL0
->> register (reading 13MHz, as it should be), but the assigned hardware
->> timers are never started before (or after) booting Linux.
+> On Fri, 2022-05-13 at 19:03 +0200, AngeloGioacchino Del Regno wrote:
+>> Add MM support for the MT6795 SoC, using the mmsys default routing
+>> table.
 >>
->> In this condition, any call to function get_cycles() will be returning
->> zero, as CNTVCT_EL0 will always read zero.
-> 
-> I spent a lot of time trying to figure out why the arch timer didn't
-> work on MT6737T and never got any results. Turns out this is why...
-> 
-> I ended up using the GPT (@ 0x10004000) as a system timer and it
-> worked fine.
-> 
-> With this patch the arch timer started to work finally. Thanks for
-> the fix! See below for one comment on this patch.
-> 
-
-Hello Yassine,
-
-yes this is a common quirk that's present on all (or almost all?) older
-MediaTek platforms - as I explained, due to TZ doing only partial init
-for these timers.
-
-I'm happy to read that this is working out as expected: I saw you pushing
-some patches for older MTK SoCs, so I started researching about what the
-community was blocked on with the upstreaming of these, and learnt about
-such major blocker.
-
-There's more, though: you also need to initialize the CPU MTCMOS at early
-boot in order for SMP to work on (some?) old platforms, or at least this
-is true for MT6795.
-
-Since it looks like you're interested in giving love to old SoCs, I will
-anticipate to you that I *do* have a local implementation for a correct
-initialization of the MTCMOS for the non-boot cores... that needs to be
-cleaned up a bit before I push that upstream though.
-
->> One common critical symptom of that is trying to use the udelay()
->> function (calling __delay()), which executes the following loop:
->>
->>              start = get_cycles();
->>              while ((get_cycles() - start) < cycles)
->>                      cpu_relax();
->>
->> which, when CNTVCT_EL0 always reads zero, translates to:
->>
->>              while((0 - 0) < 0)  ==> while(0 < 0)
->>
->> ... generating an infinite loop, even though zero is never less
->> than zero, but always equal to it (this has to be researched,
->> but it's out of the scope of this commit).
->>
->> To fix this issue on the affected MediaTek platforms, the solution
->> is to simply start the timers that are designed to be System Timer(s).
->> These timers, downstream, are called "CPUXGPT" and there is one
->> timer per CPU core; luckily, it is not necessary to set a start bit
->> on each CPUX General Purpose Timer, but it's conveniently enough to:
->>   - Set the clock divider (input = 26MHz, divider = 2, output = 13MHz);
->>   - Set the ENABLE bit on a global register (starts all CPUX timers).
->>
->> The only small hurdle with this setup is that it's all done through
->> the MCUSYS wrapper, where it is needed, for each read or write, to
->> select a register address (by writing it to an index register) and
->> then to perform any R/W on a "CON" register.
->>
->> For example, writing "0x1" to the CPUXGPT register offset 0x4:
->> - Write 0x4 to mcusys INDEX register
->> - Write 0x1 to mcusys CON register
->>
->> Reading from CPUXGPT register offset 0x4:
->> - Write 0x4 to mcusys INDEX register
->> - Read mcusys CON register.
->>
->> Finally, starting this timer makes platforms affected by this issue
->> to work correctly.
->>
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>> Signed-off-by: AngeloGioacchino Del Regno <
+>> angelogioacchino.delregno@collabora.com>
 >> ---
->>   drivers/clocksource/timer-mediatek.c | 119 +++++++++++++++++++++++++++
->>   1 file changed, 119 insertions(+)
 >>
->> diff --git a/drivers/clocksource/timer-mediatek.c b/drivers/clocksource/timer-mediatek.c
->> index 7bcb4a3f26fb..a3e90047f9ac 100644
->> --- a/drivers/clocksource/timer-mediatek.c
->> +++ b/drivers/clocksource/timer-mediatek.c
-
-..snip..
-
->> +
->> +	/*
->> +	 * Check if we're given a clock with the right frequency for this
->> +	 * timer, otherwise warn but keep going with the setup anyway, as
->> +	 * that makes it possible to still boot the kernel, even though
->> +	 * it may not work correctly (random lockups, etc).
->> +	 * The reason behind this is that having an early UART may not be
->> +	 * possible for everyone and this gives a chance to retrieve kmsg
->> +	 * for eventual debugging even on consumer devices.
->> +	 */
->> +	freq = timer_of_rate(&to_cpux);
->> +	if (freq > 13000000)
+>> In order for this patch to have any meaning and functionality, it is
+>> required to also have in-tree the [1] MT6795 clocks series, even
+>> though that's not required to actually compile this code.
+>>
+>> [1]
+>> https://urldefense.com/v3/__https://patchwork.kernel.org/project/linux-mediatek/list/?series=641493__;!!CTRNKA9wMg0ARbw!ywDb_Gj4oV0iYHK_PbtJSNejzsJGlFVjX-1O0G1mR0vZX_5VeMtlZJ_AS6K_Mg$
+>>   
+>>
+>>   drivers/soc/mediatek/mtk-mmsys.c | 11 +++++++++++
+>>   1 file changed, 11 insertions(+)
+>>
+>> diff --git a/drivers/soc/mediatek/mtk-mmsys.c
+>> b/drivers/soc/mediatek/mtk-mmsys.c
+>> index 06d8e83a2cb5..38b36b881a3b 100644
+>> --- a/drivers/soc/mediatek/mtk-mmsys.c
+>> +++ b/drivers/soc/mediatek/mtk-mmsys.c
+>> @@ -57,6 +57,13 @@ static const struct mtk_mmsys_match_data
+>> mt6779_mmsys_match_data = {
+>>   	},
+>>   };
+>>   
+>> +static const struct mtk_mmsys_driver_data mt6795_mmsys_driver_data =
+>> {
+>> +	.clk_driver = "clk-mt6795-mm",
+>> +	.routes = mmsys_default_routing_table,
 > 
-> Input clock is 26MHz and is then divided by 2 in CPUXGPT, so shouldn't
-> this be 26000000 instead? I get a warning here with 26MHz system clock
-> supplied:
+> mt6795 should have its own routing table instead of default one. The
+> default one is used for mt8173, mt2701, mt2712 which no one knows how
+> to separate them. If you don't know the routing table of mt6795, just
+> left this as NULL.
 > 
 
-This may seem to be counter intuitive... I had two ways to implement this:
-1. Design this driver to take "clk26m" as a clock input and make it so
-    that it reads the expected frequency from CNTFRQ_EL0, then setup the
-    dividers based on that reading; or
-2. Take "clk13m" as input and refuse to take anything else.
+Hello CK,
 
-Keeping in mind that:
-1. There's no way (that I know, at least) to set a different clock source for
-    the CPUXGPT timers, and
-2. There's no platform (I've been researching on that) that uses a different
-    frequency for these timers...
+I agree with you, in fact the first test that I've done was with leaving
+routes to NULL, but that did not work (I couldn't get the display to work),
+while assigning the default routing table resulted in having a working
+internal (DSI) display et al, which is why I have done that.
 
-...there will never be any platform that outputs a clock that's not 13MHz,
-hence I chose to follow path 2 and take the 13MHz "System Clock", which is
-something that is present downstream as well.
+I am sure that this may be a quirk that is required due to my platform's
+bootloader, but still, it won't work otherwise.
 
-In any case, now that you make me think about that, it may indeed be more
-logical to assign the 26MHz clock to this node... my intention was to force
-knowledge on this outputting 13MHz instead but, I realize, this may be the
-wrong way of doing that.
-
-> clocks {
-> 	...
-> 	clk26m: clk26m {
-> 		compatible = "fixed-clock";
-> 		clock-frequency = <26000000>;
-> 		#clock-cells = <0>;
-> 	};
-> 	...
-> };
-> ...
-> soc {
-> 	...
-> 	cpuxgpt: timer@10200670 {
-> 		compatible = "mediatek,mt6795-systimer";
-> 		reg = <0 0x10200670 0 0x8>;
-
-My congratulations on this timer node: you're a smart person!
-I was expecting people complaining about "this doesn't work" and having
-to explain that 0x10200000 is not the right iostart for this node, but
-I didn't have to.
-
-Hats off.
+If anyone from MediaTek wants to help with providing a better solution for
+that, you're welcome to - but otherwise, my proposal is to configure MT6795
+with that default routing table and eventually come back to this later if
+any issue with this gets discovered... I couldn't find any, though.
 
 Cheers,
 Angelo
