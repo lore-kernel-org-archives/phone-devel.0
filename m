@@ -2,74 +2,178 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 08F36C433FE
-	for <phone-devel@archiver.kernel.org>; Mon, 16 May 2022 23:59:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00608C433F5
+	for <phone-devel@archiver.kernel.org>; Tue, 17 May 2022 06:37:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349450AbiEPX7G (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 May 2022 19:59:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52122 "EHLO
+        id S236458AbiEQGhu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 17 May 2022 02:37:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344851AbiEPX7C (ORCPT
+        with ESMTP id S231146AbiEQGht (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 May 2022 19:59:02 -0400
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1CB440936;
-        Mon, 16 May 2022 16:59:01 -0700 (PDT)
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-e656032735so22378854fac.0;
-        Mon, 16 May 2022 16:59:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=FaxCfcz4ZedEdhGKxThXh5xPLoC1+SoU0EDepYrDXJ8=;
-        b=dGwje39WObfrrrbcJ6yMV5l9Ar7p8j4vRQvBH7x16MRKgIxbd32VWWTkvANh3rFC9I
-         THdoPPRwfoo+ck6og93o0zBmHFyAfLEztnlZFkzHzx9utVeaHy0bSJMgTIEvbFbW5DkM
-         hbgJxi5YliSNAX+sf2u9EwOBgmCbhRck34H6jVRUfUgJZg+605UjNRMOR0n5hrAwYltB
-         OUVWH6OzkQqiX6ZOuSj14qXnx8HnYXThnTKV+AkrAK5cE8fYb9XTTdnvuzIEsFj1FTcY
-         SxlkRo5mxsRRX5yw0B+voxMHnUluYlDZ3FlbHhSlWxjKX68n0ogGa0QgUh84+SxSCLVS
-         P3yg==
-X-Gm-Message-State: AOAM533BiQHEvSftps1JiXsvk+jGD0bivVgGHj2PePV60QQcp9kYmCew
-        1eoHaMtekaI0g54r0itA3w==
-X-Google-Smtp-Source: ABdhPJz1ZWl21sZayYNAlf/AV250Dn0ztlX9VgBjpJXO7XS4jKaeqO8eYco4Fgsv3n8/U7F/z3KMOQ==
-X-Received: by 2002:a05:6870:d113:b0:f1:8a78:bfba with SMTP id e19-20020a056870d11300b000f18a78bfbamr6202023oac.95.1652745541097;
-        Mon, 16 May 2022 16:59:01 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id w133-20020acadf8b000000b00326414c1bb7sm4299873oig.35.2022.05.16.16.58.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 May 2022 16:59:00 -0700 (PDT)
-Received: (nullmailer pid 3589630 invoked by uid 1000);
-        Mon, 16 May 2022 23:58:59 -0000
-Date:   Mon, 16 May 2022 18:58:59 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     Henrik Rydberg <rydberg@bitmath.org>, phone-devel@vger.kernel.org,
-        linux-input@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        Lin Meng-Bo <linmengbo0689@protonmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH 2/3] dt-bindings: input/touchscreen: Add compatible for
- IST3038B
-Message-ID: <20220516235859.GA3589595-robh@kernel.org>
-References: <20220504152406.8730-1-markuss.broks@gmail.com>
- <20220504152406.8730-3-markuss.broks@gmail.com>
+        Tue, 17 May 2022 02:37:49 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D77B92BB16;
+        Mon, 16 May 2022 23:37:43 -0700 (PDT)
+X-UUID: 1be3c25555d747e0b02388ea4d6ebf8b-20220517
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.5,REQID:c863057f-9fd9-4192-988f-bb7b614463c7,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
+        ON:release,TS:0
+X-CID-META: VersionHash:2a19b09,CLOUDID:4b5473e2-edbf-4bd4-8a34-dfc5f7bb086d,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil
+        ,QS:0,BEC:nil
+X-UUID: 1be3c25555d747e0b02388ea4d6ebf8b-20220517
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
+        (envelope-from <yong.wu@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 838221604; Tue, 17 May 2022 14:37:38 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.792.3;
+ Tue, 17 May 2022 14:37:37 +0800
+Received: from mhfsdcap04 (10.17.3.154) by mtkmbs11n1.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.2.792.3 via Frontend
+ Transport; Tue, 17 May 2022 14:37:36 +0800
+Message-ID: <cf2442b9c7124ebf1ce62ae5df597f003fa447d7.camel@mediatek.com>
+Subject: Re: [PATCH v2 2/2] memory: mtk-smi: Add support for MT6795 Helio X10
+From:   Yong Wu <yong.wu@mediatek.com>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+CC:     <krzysztof.kozlowski@linaro.org>, <robh+dt@kernel.org>,
+        <matthias.bgg@gmail.com>, <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <konrad.dybcio@somainline.org>, <marijn.suijten@somainline.org>,
+        <martin.botka@somainline.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <paul.bouchara@somainline.org>,
+        <kernel@collabora.com>, <yi.kuo@mediatek.com>,
+        <anthony.huang@mediatek.com>, <wendy-st.lin@mediatek.com>
+Date:   Tue, 17 May 2022 14:37:36 +0800
+In-Reply-To: <20220513150633.387200-3-angelogioacchino.delregno@collabora.com>
+References: <20220513150633.387200-1-angelogioacchino.delregno@collabora.com>
+         <20220513150633.387200-3-angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220504152406.8730-3-markuss.broks@gmail.com>
+Content-Transfer-Encoding: 7bit
+X-MTK:  N
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 04 May 2022 18:24:04 +0300, Markuss Broks wrote:
-> Imagis IST3038B is a variant (firmware?) of Imagis IST3038 IC,
-> add the compatible for it to the IST3038C bindings.
+On Fri, 2022-05-13 at 17:06 +0200, AngeloGioacchino Del Regno wrote:
+> The MediaTek Helio X10 (MT6795) SoC has 5 LARBs and one common SMI
+> instance without any sub-common and without GALS.
 > 
-> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> While the smi-common configuration is specific to this SoC, on the
+> LARB side, this is similar to MT8173, in the sense that it doesn't
+> need the port in LARB, and the register layout is also compatible
+> with that one, which makes us able to fully reuse the smi-larb
+> platform data struct that was introduced for MT8173.
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <
+> angelogioacchino.delregno@collabora.com>
 > ---
->  .../devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml   | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/memory/mtk-smi.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 > 
+> diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
+> index 86a3d34f418e..7e7c3ede19e4 100644
+> --- a/drivers/memory/mtk-smi.c
+> +++ b/drivers/memory/mtk-smi.c
+> @@ -21,11 +21,13 @@
+>  /* SMI COMMON */
+>  #define SMI_L1LEN			0x100
+>  
+> +#define SMI_L1_ARB			0x200
+>  #define SMI_BUS_SEL			0x220
+>  #define SMI_BUS_LARB_SHIFT(larbid)	((larbid) << 1)
+>  /* All are MMU0 defaultly. Only specialize mmu1 here. */
+>  #define F_MMU1_LARB(larbid)		(0x1 <<
+> SMI_BUS_LARB_SHIFT(larbid))
+>  
+> +#define SMI_FIFO_TH0			0x230
 
-Acked-by: Rob Herring <robh@kernel.org>
+Does the name come from the coda you got?
+It is called SMI_READ_FIFO_TH in my coda.
+
+>  #define SMI_M4U_TH			0x234
+>  #define SMI_FIFO_TH1			0x238
+>  #define SMI_FIFO_TH2			0x23c
+> @@ -360,6 +362,7 @@ static const struct of_device_id
+> mtk_smi_larb_of_ids[] = {
+>  	{.compatible = "mediatek,mt2701-smi-larb", .data =
+> &mtk_smi_larb_mt2701},
+>  	{.compatible = "mediatek,mt2712-smi-larb", .data =
+> &mtk_smi_larb_mt2712},
+>  	{.compatible = "mediatek,mt6779-smi-larb", .data =
+> &mtk_smi_larb_mt6779},
+> +	{.compatible = "mediatek,mt6795-smi-larb", .data =
+> &mtk_smi_larb_mt8173},
+>  	{.compatible = "mediatek,mt8167-smi-larb", .data =
+> &mtk_smi_larb_mt8167},
+>  	{.compatible = "mediatek,mt8173-smi-larb", .data =
+> &mtk_smi_larb_mt8173},
+>  	{.compatible = "mediatek,mt8183-smi-larb", .data =
+> &mtk_smi_larb_mt8183},
+> @@ -541,6 +544,13 @@ static struct platform_driver
+> mtk_smi_larb_driver = {
+>  	}
+>  };
+>  
+> +static const struct mtk_smi_reg_pair
+> mtk_smi_common_mt6795_init[SMI_COMMON_INIT_REGS_NR] = {
+> +	{SMI_L1_ARB, 0x1b},
+> +	{SMI_M4U_TH, 0xce810c85},
+> +	{SMI_FIFO_TH1, 0x43214c8},
+> +	{SMI_FIFO_TH0, 0x191f},
+> +};
+> +
+>  static const struct mtk_smi_reg_pair
+> mtk_smi_common_mt8195_init[SMI_COMMON_INIT_REGS_NR] = {
+>  	{SMI_L1LEN, 0xb},
+>  	{SMI_M4U_TH, 0xe100e10},
+> @@ -565,6 +575,12 @@ static const struct mtk_smi_common_plat
+> mtk_smi_common_mt6779 = {
+>  		    F_MMU1_LARB(5) | F_MMU1_LARB(6) | F_MMU1_LARB(7),
+>  };
+>  
+> +static const struct mtk_smi_common_plat mtk_smi_common_mt6795 = {
+> +	.type	  = MTK_SMI_GEN2,
+> +	.bus_sel  = BIT(0),
+
+Like the other larbs, use F_MMU1_LARB(0) here?
+
+
+After the two changes,
+
+Reviewed-by: Yong Wu <yong.wu@mediatek.com>
+
+Thanks.
+
+> +	.init     = mtk_smi_common_mt6795_init,
+> +};
+> +
+>  static const struct mtk_smi_common_plat mtk_smi_common_mt8183 = {
+>  	.type     = MTK_SMI_GEN2,
+>  	.has_gals = true,
+> @@ -609,6 +625,7 @@ static const struct of_device_id
+> mtk_smi_common_of_ids[] = {
+>  	{.compatible = "mediatek,mt2701-smi-common", .data =
+> &mtk_smi_common_gen1},
+>  	{.compatible = "mediatek,mt2712-smi-common", .data =
+> &mtk_smi_common_gen2},
+>  	{.compatible = "mediatek,mt6779-smi-common", .data =
+> &mtk_smi_common_mt6779},
+> +	{.compatible = "mediatek,mt6795-smi-common", .data =
+> &mtk_smi_common_mt6795},
+>  	{.compatible = "mediatek,mt8167-smi-common", .data =
+> &mtk_smi_common_gen2},
+>  	{.compatible = "mediatek,mt8173-smi-common", .data =
+> &mtk_smi_common_gen2},
+>  	{.compatible = "mediatek,mt8183-smi-common", .data =
+> &mtk_smi_common_mt8183},
+
