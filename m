@@ -2,113 +2,106 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DBF8C4332F
-	for <phone-devel@archiver.kernel.org>; Tue, 17 May 2022 08:08:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FCA7C433F5
+	for <phone-devel@archiver.kernel.org>; Tue, 17 May 2022 08:16:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242349AbiEQIIA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 May 2022 04:08:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57774 "EHLO
+        id S242726AbiEQIQz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 17 May 2022 04:16:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237359AbiEQIH6 (ORCPT
+        with ESMTP id S243356AbiEQIQs (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 May 2022 04:07:58 -0400
+        Tue, 17 May 2022 04:16:48 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A07073BA65;
-        Tue, 17 May 2022 01:07:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C03C4B43B;
+        Tue, 17 May 2022 01:14:35 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: kholk11)
-        with ESMTPSA id C074B1F441D1
+        with ESMTPSA id 219F71F4423C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652774876;
-        bh=tuq3VbAxgnS0xWzmyEnSJuvgMj+dNp4blLu8nvOqYac=;
+        s=mail; t=1652775273;
+        bh=e71S4wIuVuA79Q95c0v+L8CnYV43+ZQVjRchLsfKsx4=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=igs8DLrZN4Gos9vjSRnjpGxorfB1377dTfD9fD5n8b+Nk4yBkVMVyscC91Mk+NWjV
-         H2HBKftBFAu5UwKhI1XQrKvWbZTQzeh2C19Thy5oOcfAaJKN8MidSEae+ZYk0+NPGO
-         M5m1URHuDjYnnlDSsI9L1kiOqY3Qf5T5Y3hJ1EaryIO0LBNwJd/Y4M4+2So4qdgBuS
-         Bk9EjMdZDurNMq/ARdDMZpKTuIlPv+7p2eYjKfgdZj0gpitwkAUWwAo6XXq5bzKg3S
-         VrORLF/gAOVcVZzTQDM6Sj1wctjKoGDlnrf/m5nmTOs05hKqn1mn7td8nQ20L/C6E5
-         afVZ7ckSwKmeA==
-Message-ID: <b65546e1-2d3a-d525-b664-1730dc06994f@collabora.com>
-Date:   Tue, 17 May 2022 10:07:52 +0200
+        b=AgCoAKkvvp4nrjNV6aZz6RXQXb+Cbzt9PK5dhhR/erkMhq0ItVYzF1/P1PhHRKphY
+         fLHouYqsatBCKHd13F/oHLAs1qXZm3VB6Lce50gDDVQdjP6+Kvowpjpk/XfQvr9PA5
+         oZB4W1Lwo7z3O5LqI6W9ob1uw2YQ3D7BkKMSegMcFRr+rdooEx1H5u+zWnNCsgnDt2
+         xMA5crRT44j96Is+3ExKju/RWR5c5lUzWqZKbP7aZ+LQ6xAa9M0CEq6GT9VMZ8CYAS
+         Eb92pow2UakeOR+Y6Bdh6Xc8/hdxs3Tue8G2sTBpPN5mzcv5fVfG+xB2xxRrUIXhNZ
+         LycdNcCNjLVYg==
+Message-ID: <32c97e47-47a8-d033-4948-3c73a4313703@collabora.com>
+Date:   Tue, 17 May 2022 10:14:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
-Subject: Re: [PATCH 5/5] clk: mediatek: Add MediaTek Helio X10 MT6795 clock
- drivers
+Subject: Re: [PATCH 5/7] arm64: dts: mediatek: mt6795: Add fixed clocks for
+ 32kHz and 26MHz XOs
 Content-Language: en-US
-To:     Matthias Brugger <matthias.bgg@gmail.com>, robh+dt@kernel.org
-Cc:     krzysztof.kozlowski+dt@linaro.org, mturquette@baylibre.com,
-        sboyd@kernel.org, p.zabel@pengutronix.de, y.oudjana@protonmail.com,
-        jason-jh.lin@mediatek.com, ck.hu@mediatek.com,
-        fparent@baylibre.com, rex-bc.chen@mediatek.com,
-        tinghan.shen@mediatek.com, chun-jie.chen@mediatek.com,
-        weiyi.lu@mediatek.com, ikjn@chromium.org, miles.chen@mediatek.com,
-        sam.shih@mediatek.com, wenst@chromium.org,
-        bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
         konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
         kernel@collabora.com
-References: <20220513165050.500831-1-angelogioacchino.delregno@collabora.com>
- <20220513165050.500831-6-angelogioacchino.delregno@collabora.com>
- <8177c547-2a38-691b-0a32-bc7e6ba1e2ed@gmail.com>
+References: <20220513171617.504430-1-angelogioacchino.delregno@collabora.com>
+ <20220513171617.504430-6-angelogioacchino.delregno@collabora.com>
+ <03e99a02-1233-3882-e1e5-24ab1bbaf257@linaro.org>
+ <0f303425-3b12-7573-b201-030d4d044db8@collabora.com>
+ <d78e1936-a0ab-663d-1381-b537bfd7f07d@linaro.org>
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <8177c547-2a38-691b-0a32-bc7e6ba1e2ed@gmail.com>
+In-Reply-To: <d78e1936-a0ab-663d-1381-b537bfd7f07d@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 16/05/22 13:30, Matthias Brugger ha scritto:
+Il 16/05/22 16:51, Krzysztof Kozlowski ha scritto:
+> On 16/05/2022 10:51, AngeloGioacchino Del Regno wrote:
 > 
-> 
-> On 13/05/2022 18:50, AngeloGioacchino Del Regno wrote:
->> Add the clock drivers for the entire clock tree of MediaTek Helio X10
->> MT6795, including system clocks (apmixedsys, infracfg, pericfg, topckgen)
->> and multimedia clocks (mmsys, mfg, vdecsys, vencsys).
+>>>
+>>>
 >>
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>> I should reword the commit description to be clearer, sorry about that: I
+>> went with "exactly what I've done", but looking at the actual diff, it is
+>> just a rename. What my brain was ticking on here was about removing clocks
+>> that didn't really exist (uart_clk is not a fixed clock, etc), and adding
+>> the ones that do exist.... but then again, the result, casually, is a rename.
 > 
-> Thanks a lot for taking care of this!
-> I just wonder if we couldn't build most of the clock drivers as modules like done 
-> for the mt6779. It would help us to keep the kernel image smaller.
+> Yes, some better explanation would help.
 > 
 
-Hello Matthias!
+Will do for v2 then!
 
-You're welcome!
-...but I simply couldn't stand at seeing partially working (..or actually, not
-really working) SoCs upstream. If something is upstream, it must work, or it
-shouldn't be here for real :-)
+>>
+>> In any case... no, these clocks are not board-specific for two reasons:
+>> 1. AFAIK, these fixed clock outputs are from the SoC itself, not from
+>>      external components placed on the board, and
+> 
+> This would be fine.
+> 
+>> 2. Even if these were from external components, the SoC *needs* these
+>>      ones to work and any board that doesn't have these fixed XOs simply
+>>      wouldn't be able to work.
+> 
+> This is common pattern and Mediatek is not different here. In all cases
+> these are needed by SoC and in (almost?) all cases these should be
+> provided by board DTS. The DTS describes here the hardware, the board
+> has the clock thus the board DTS should define it.
+> 
 
-Regarding your question about the clock drivers as module... I believe we can,
-but that'd be only for {vdec,venc}sys and *maybe* MFG (gpu clocks): I don't know
-if it'd be worth to do, as these are about... 8 clocks out of... I haven't counted
-them, but more than 250, I think?
+Right. If external components are strictly necessary, physically, they're
+still external components and not inside of the SoC, and anything external
+*may* change depending on the (hardware) implementation.
 
-It *should* be straightforward though, just about giving them a tristate in Kconfig
-instead of a bool, but that would still be limited to just those three...
+Anyway - I was wondering if splitting this change in two commits would be
+better to let people understand what's going on... probably it would, as
+that would clearly show both the addition of the 32K/26M clocks and the
+subsequent removal of the other two: I would at this point do that, what
+do you think?
 
-The reason for me excluding clk-mt6795-mm from this choice is that - at least for
-me - my development platform is a commercial smartphone, where the only thing that
-"saves you" is having some display output... I mean - I *do* have a UART port, but
-that's only because I've been able to solder thin wires on 0.2mm pads... you surely
-agree on the fact that this isn't a common practice, even across developers.
-
-Besides, if you think that clk-mt6795-mm should indeed be a module by default,
-well, that.. is.. possible - I don't see why it shouldn't be... obviously keeping
-in mind that this will largely slow down the boot process, which isn't a big issue.
-
-In any case, it is *not* possible to compile as module *any* of the clock drivers
-that I have included in the CONFIG_COMMON_CLK_MT6795 (apmixed, infra, peri, topck)
-as.. you know.. these are "a bit critical" on older platforms :-)
-
-
-How would you proceed?
-
-Cheers,
+Regards,
 Angelo
