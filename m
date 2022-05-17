@@ -2,168 +2,164 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BAB7CC433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 17 May 2022 08:28:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80F15C433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 17 May 2022 08:48:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240177AbiEQI2o (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 May 2022 04:28:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54676 "EHLO
+        id S243787AbiEQIsQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 17 May 2022 04:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243314AbiEQI1r (ORCPT
+        with ESMTP id S240764AbiEQIsJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 May 2022 04:27:47 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF0136339;
-        Tue, 17 May 2022 01:27:21 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: kholk11)
-        with ESMTPSA id 422D71F44233
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652776040;
-        bh=tE2Neszj+y3O1cmeD6vmFcKg7q+eIA8I1b4UnVOkoE8=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=BJL5v0bhuVFvcCQ25D+0pK3NIga8y2Un6h5uMhfxH1hCPQs3rOACMYkyuhdftODMA
-         smu6iAvegiNflzFCbuhqFT/2s31v5ZA9YoWy0ljjT7HESoXXPDOzz/j74fbRRlC0wF
-         gvjgdD2Ix8DZ9LK+lSBwINqwPj0l7qzi47HqevxeFw0jg2gHOvqokYwxH3xxjc5SBb
-         iE0py6i4qoCiLcxX8ZMESLn5YDM4s+PlUQIiH26CJucIwb7ph6qrj1dcIzie6lp3Yn
-         nJU/CaP4iR5oHkZ/SNghJwxsrkTGw296rc5WWsPV+U713IMpxtoohYuiH7PixO4KBV
-         ah5V4clhlBlRw==
-Message-ID: <f222e1c5-4ce1-a42d-ceef-a292136d8b61@collabora.com>
-Date:   Tue, 17 May 2022 10:27:16 +0200
+        Tue, 17 May 2022 04:48:09 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3A3F43ADB;
+        Tue, 17 May 2022 01:48:07 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id r23so7711587wrr.2;
+        Tue, 17 May 2022 01:48:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:content-language:to:cc
+         :references:from:subject:in-reply-to:content-transfer-encoding;
+        bh=dYNmO9yR7Q7576xbxhOmOadNAWD8PBDUv92pl5HZCXs=;
+        b=F7g+xOm9FjaBFZkKHw9RG5giyrBniDa8HRlmwqzWRkPCGsgNMH0x3OgIgl6IHGcOu2
+         m5iLNUOMlW+ZmanHnMaDUteT2t44SS4tMBmYlCBKLAMjyLPu3bCp3b1MMGoMSFNRYwUw
+         GpdSvsmuxvpq7qXdxaWfZ+IEJVECVYTSRTHzHUDuZYmI3UFLsatDN9lYH0gWsy97yh4j
+         UUYx7Ef9njEUVlgDrCQiPzJ9losGprQp0PSr2hKETLIs1i8oB73P300tJaQBpKx57Fj6
+         xDoLCZfm/lttrhl62hal3RZB/yGZMeQTqnDv3jrBg+45yWqhjyVRzgcnZz9+yEwgs1Wz
+         JdtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent
+         :content-language:to:cc:references:from:subject:in-reply-to
+         :content-transfer-encoding;
+        bh=dYNmO9yR7Q7576xbxhOmOadNAWD8PBDUv92pl5HZCXs=;
+        b=4VuYjc8LT5Tn9P2jq+8rxfwMUNePyCfJZv+WUhESlBk0JFQerXmisoXgZOG2d4iZfb
+         LkF6557EJLVbO7gLo7r5iY3zi49YdO6vac83yShCUO1cKPShkGDYtO1jEtedxWe3Q07s
+         1mvsfGBqKhX60mohCrRsgZ7vKZZe8U3mFPLgKOHRd91RPSKEYz6QuTFKqDVHStpLe+ZD
+         yk9TPNhgVvL3NTK+MzAhD4+nqQur5of04lPx4MKS8dDo7/1Ad6+B8hknXFQdCB08F6gv
+         4ltyWMX2Zp+wV9yFyKckiG1YaFkjLFw+gEbM+/ThYZS3QLGMpu93NjnreK8dZUeKV38Z
+         6rNA==
+X-Gm-Message-State: AOAM532lxQHPZt9mdY53AJ/PwQNgiKWrPwQ8lqcN9WUf/Bd/+AZ4frVQ
+        xdCxMYXETNdk+qT/+ufZErs=
+X-Google-Smtp-Source: ABdhPJyaSqlxkH+LHr5o/GxH2V7qOXxrecaZtXgSeCb5eYOvJdleQWKpRLslqOZqBFpTRdyVakQ1/A==
+X-Received: by 2002:a5d:6351:0:b0:20d:1028:3c32 with SMTP id b17-20020a5d6351000000b0020d10283c32mr4847625wrw.331.1652777286426;
+        Tue, 17 May 2022 01:48:06 -0700 (PDT)
+Received: from [192.168.2.177] ([207.188.167.132])
+        by smtp.gmail.com with ESMTPSA id a25-20020adfb519000000b0020c5253d90asm11324560wrd.86.2022.05.17.01.48.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 May 2022 01:48:05 -0700 (PDT)
+Message-ID: <739b3ccc-e8ac-2748-9d40-0666a4038876@gmail.com>
+Date:   Tue, 17 May 2022 10:48:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v2 2/2] memory: mtk-smi: Add support for MT6795 Helio X10
+ Thunderbird/91.8.1
 Content-Language: en-US
-To:     Yong Wu <yong.wu@mediatek.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     krzysztof.kozlowski@linaro.org, robh+dt@kernel.org,
-        matthias.bgg@gmail.com, linux-mediatek@lists.infradead.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        paul.bouchara@somainline.org, kernel@collabora.com,
-        yi.kuo@mediatek.com, anthony.huang@mediatek.com,
-        wendy-st.lin@mediatek.com
-References: <20220513150633.387200-1-angelogioacchino.delregno@collabora.com>
- <20220513150633.387200-3-angelogioacchino.delregno@collabora.com>
- <cf2442b9c7124ebf1ce62ae5df597f003fa447d7.camel@mediatek.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <cf2442b9c7124ebf1ce62ae5df597f003fa447d7.camel@mediatek.com>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, mturquette@baylibre.com,
+        sboyd@kernel.org, p.zabel@pengutronix.de, y.oudjana@protonmail.com,
+        jason-jh.lin@mediatek.com, ck.hu@mediatek.com,
+        fparent@baylibre.com, rex-bc.chen@mediatek.com,
+        tinghan.shen@mediatek.com, chun-jie.chen@mediatek.com,
+        weiyi.lu@mediatek.com, ikjn@chromium.org, miles.chen@mediatek.com,
+        sam.shih@mediatek.com, wenst@chromium.org,
+        bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        kernel@collabora.com
+References: <20220513165050.500831-1-angelogioacchino.delregno@collabora.com>
+ <20220513165050.500831-6-angelogioacchino.delregno@collabora.com>
+ <8177c547-2a38-691b-0a32-bc7e6ba1e2ed@gmail.com>
+ <b65546e1-2d3a-d525-b664-1730dc06994f@collabora.com>
+From:   Matthias Brugger <matthias.bgg@gmail.com>
+Subject: Re: [PATCH 5/5] clk: mediatek: Add MediaTek Helio X10 MT6795 clock
+ drivers
+In-Reply-To: <b65546e1-2d3a-d525-b664-1730dc06994f@collabora.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 17/05/22 08:37, Yong Wu ha scritto:
-> On Fri, 2022-05-13 at 17:06 +0200, AngeloGioacchino Del Regno wrote:
->> The MediaTek Helio X10 (MT6795) SoC has 5 LARBs and one common SMI
->> instance without any sub-common and without GALS.
+Hi Angelo,
+
+On 17/05/2022 10:07, AngeloGioacchino Del Regno wrote:
+> Il 16/05/22 13:30, Matthias Brugger ha scritto:
 >>
->> While the smi-common configuration is specific to this SoC, on the
->> LARB side, this is similar to MT8173, in the sense that it doesn't
->> need the port in LARB, and the register layout is also compatible
->> with that one, which makes us able to fully reuse the smi-larb
->> platform data struct that was introduced for MT8173.
 >>
->> Signed-off-by: AngeloGioacchino Del Regno <
->> angelogioacchino.delregno@collabora.com>
->> ---
->>   drivers/memory/mtk-smi.c | 17 +++++++++++++++++
->>   1 file changed, 17 insertions(+)
+>> On 13/05/2022 18:50, AngeloGioacchino Del Regno wrote:
+>>> Add the clock drivers for the entire clock tree of MediaTek Helio X10
+>>> MT6795, including system clocks (apmixedsys, infracfg, pericfg, topckgen)
+>>> and multimedia clocks (mmsys, mfg, vdecsys, vencsys).
+>>>
+>>> Signed-off-by: AngeloGioacchino Del Regno 
+>>> <angelogioacchino.delregno@collabora.com>
 >>
->> diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
->> index 86a3d34f418e..7e7c3ede19e4 100644
->> --- a/drivers/memory/mtk-smi.c
->> +++ b/drivers/memory/mtk-smi.c
->> @@ -21,11 +21,13 @@
->>   /* SMI COMMON */
->>   #define SMI_L1LEN			0x100
->>   
->> +#define SMI_L1_ARB			0x200
->>   #define SMI_BUS_SEL			0x220
->>   #define SMI_BUS_LARB_SHIFT(larbid)	((larbid) << 1)
->>   /* All are MMU0 defaultly. Only specialize mmu1 here. */
->>   #define F_MMU1_LARB(larbid)		(0x1 <<
->> SMI_BUS_LARB_SHIFT(larbid))
->>   
->> +#define SMI_FIFO_TH0			0x230
+>> Thanks a lot for taking care of this!
+>> I just wonder if we couldn't build most of the clock drivers as modules like 
+>> done for the mt6779. It would help us to keep the kernel image smaller.
+>>
 > 
-> Does the name come from the coda you got?
-> It is called SMI_READ_FIFO_TH in my coda.
+> Hello Matthias!
 > 
-
-Documentation for this SoC is not public and I have no access to it, so
-everything that you see here comes from reading downstream kernel code :-(
-
-I'll change the name to SMI_READ_FIFO_TH as suggested, thanks!
-
->>   #define SMI_M4U_TH			0x234
->>   #define SMI_FIFO_TH1			0x238
->>   #define SMI_FIFO_TH2			0x23c
->> @@ -360,6 +362,7 @@ static const struct of_device_id
->> mtk_smi_larb_of_ids[] = {
->>   	{.compatible = "mediatek,mt2701-smi-larb", .data =
->> &mtk_smi_larb_mt2701},
->>   	{.compatible = "mediatek,mt2712-smi-larb", .data =
->> &mtk_smi_larb_mt2712},
->>   	{.compatible = "mediatek,mt6779-smi-larb", .data =
->> &mtk_smi_larb_mt6779},
->> +	{.compatible = "mediatek,mt6795-smi-larb", .data =
->> &mtk_smi_larb_mt8173},
->>   	{.compatible = "mediatek,mt8167-smi-larb", .data =
->> &mtk_smi_larb_mt8167},
->>   	{.compatible = "mediatek,mt8173-smi-larb", .data =
->> &mtk_smi_larb_mt8173},
->>   	{.compatible = "mediatek,mt8183-smi-larb", .data =
->> &mtk_smi_larb_mt8183},
->> @@ -541,6 +544,13 @@ static struct platform_driver
->> mtk_smi_larb_driver = {
->>   	}
->>   };
->>   
->> +static const struct mtk_smi_reg_pair
->> mtk_smi_common_mt6795_init[SMI_COMMON_INIT_REGS_NR] = {
->> +	{SMI_L1_ARB, 0x1b},
->> +	{SMI_M4U_TH, 0xce810c85},
->> +	{SMI_FIFO_TH1, 0x43214c8},
->> +	{SMI_FIFO_TH0, 0x191f},
->> +};
->> +
->>   static const struct mtk_smi_reg_pair
->> mtk_smi_common_mt8195_init[SMI_COMMON_INIT_REGS_NR] = {
->>   	{SMI_L1LEN, 0xb},
->>   	{SMI_M4U_TH, 0xe100e10},
->> @@ -565,6 +575,12 @@ static const struct mtk_smi_common_plat
->> mtk_smi_common_mt6779 = {
->>   		    F_MMU1_LARB(5) | F_MMU1_LARB(6) | F_MMU1_LARB(7),
->>   };
->>   
->> +static const struct mtk_smi_common_plat mtk_smi_common_mt6795 = {
->> +	.type	  = MTK_SMI_GEN2,
->> +	.bus_sel  = BIT(0),
+> You're welcome!
+> ...but I simply couldn't stand at seeing partially working (..or actually, not
+> really working) SoCs upstream. If something is upstream, it must work, or it
+> shouldn't be here for real :-)
 > 
-> Like the other larbs, use F_MMU1_LARB(0) here?
+> Regarding your question about the clock drivers as module... I believe we can,
+> but that'd be only for {vdec,venc}sys and *maybe* MFG (gpu clocks): I don't know
+> if it'd be worth to do, as these are about... 8 clocks out of... I haven't counted
+> them, but more than 250, I think?
+> 
+> It *should* be straightforward though, just about giving them a tristate in Kconfig
+> instead of a bool, but that would still be limited to just those three...
 > 
 
-I agree that F_MMU1_LARB(0) == (1 << (0 << 1)) == BIT(0), but that would
-not be correct and induce other people to mistake, I think?
-Downstream doesn't do MMU1 bits, but MMU0 in this case... but if you can
-check on internal documentation and confirm that the downstream kernel's
-logic is wrong on that - and that you've verified that this should indeed
-be F_MMU1_LARB(x), you'll get a big(bigger) thank you from me :-)
+I think you could guide yourself by looking at
+f09b9460a5e4 ("clk: mediatek: support COMMON_CLK_MT6779 module build")
 
-Meanwhile...
 
-Thanks!
-Angelo
+I think having clocks as modules is a criteria to be part of Android's Generic 
+Kernel Image. Not that we target this here, just for your information (in case 
+you didn't know).
 
+> The reason for me excluding clk-mt6795-mm from this choice is that - at least for
+> me - my development platform is a commercial smartphone, where the only thing that
+> "saves you" is having some display output... I mean - I *do* have a UART port, but
+> that's only because I've been able to solder thin wires on 0.2mm pads... you surely
+> agree on the fact that this isn't a common practice, even across developers.
 > 
-> After the two changes,
+
+Yes I was wondering if you got some development smartphone or you did the 
+soldering. I have some solder knowledge but I think not enough to solder 
+something like this :D
+
+> Besides, if you think that clk-mt6795-mm should indeed be a module by default,
+> well, that.. is.. possible - I don't see why it shouldn't be... obviously keeping
+> in mind that this will largely slow down the boot process, which isn't a big issue.
 > 
-> Reviewed-by: Yong Wu <yong.wu@mediatek.com>
+
+Well I don't want to bother you with minor details, most important thing is that 
+we get support upstream... but ;) you can always mark the modules as compiled 
+in, even if it's tristate, which in your case you want to do.
+
+> In any case, it is *not* possible to compile as module *any* of the clock drivers
+> that I have included in the CONFIG_COMMON_CLK_MT6795 (apmixed, infra, peri, topck)
+> as.. you know.. these are "a bit critical" on older platforms :-)
 > 
-> Thanks.
+> 
+> How would you proceed?
+> 
+
+I'd make all the drivers that theoretically can be build as modules tristate, 
+you can then define for your development environment to make them build-in.
+
+Sounds good?
+
+Regards,
+Matthias
