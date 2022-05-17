@@ -2,98 +2,168 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C93E1C433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 17 May 2022 08:18:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BAB7CC433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 17 May 2022 08:28:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236040AbiEQIS5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 May 2022 04:18:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58956 "EHLO
+        id S240177AbiEQI2o (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 17 May 2022 04:28:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242863AbiEQISt (ORCPT
+        with ESMTP id S243314AbiEQI1r (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 May 2022 04:18:49 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5CF748E56
-        for <phone-devel@vger.kernel.org>; Tue, 17 May 2022 01:18:41 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id dk23so33149762ejb.8
-        for <phone-devel@vger.kernel.org>; Tue, 17 May 2022 01:18:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=PMmKxe3WgBWgmW72+NDFsBAaWr7pVUMq7IT2EOFj9rg=;
-        b=DXyvSIi7jXgAcG84j0dtTQNSoDlJIe40zgLupS5EpCO8insL1A3QKtDr3G4YtYNT0b
-         DpWn3l9GGUDYHesxAFO73sqFKLaDNKK7YLJVzLAY2gm9j/Pn1W1/yJiSdDE+V6VfEawE
-         7BvCwhDOBjFde5UyiZ36odZNjDdhjBsz3aadbnvIo0gAPHwVU7yPNYeTJTJahN5Cedpy
-         jn9ZlDycZAV49AIAkpAbSKCBFgYK0W14EVxWZAW0RFl76wBEJBgH4xXOT/qDJt4yioHs
-         hg5YQn9MV4XKqILR5+vGASilGUivZSB/j/My7a7ImeJAoINREVLPuN/Gsn8IxnhALlPp
-         IsaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=PMmKxe3WgBWgmW72+NDFsBAaWr7pVUMq7IT2EOFj9rg=;
-        b=46YdWcrxtmndBHYJ/vAN5Qov/KcTsUHI198tNtE1vOv9pAN6L7zsNkTp42kah6pW8K
-         58M6eiIDERlwMo+0bEHFK+AsJepyz7gY9AjzdyMh6HQBuW4lXjTTK821A3U678TllAA+
-         yTUVR0N57UZstK48C6xVMN33Dc3U/NFCrdL7cNlL3cDPDh7vckBBHBIxl6ZL1Cx3d4RD
-         NDdXFc83j3mBu/DkQ0jgyxijilcxi3/cizExHN0iHeMZBFLISAovmWqIn6kNTVlI/W5G
-         XMzkHeTYk8KskhplRBPKMIyfpVZ5TzbzTG6jK2R6dXiqHlISPsfx8hU/ZtHPJuwz703m
-         OArw==
-X-Gm-Message-State: AOAM530ocMxUngUGRoV79buYZhIKaqZaAW9Mjp+PxBpRm07xtopxiPtJ
-        JJqTsT+y1zjk9gS2UPW1iqmTSw==
-X-Google-Smtp-Source: ABdhPJzrBCibM9RMlaxwEZZmMm1yEb5wWtfOTQfHuB6kYMrz6tNnDZq7nVne/1DF18nq6iRbJULiXQ==
-X-Received: by 2002:a17:907:1b14:b0:6ef:a5c8:afbd with SMTP id mp20-20020a1709071b1400b006efa5c8afbdmr19134421ejc.151.1652775520403;
-        Tue, 17 May 2022 01:18:40 -0700 (PDT)
-Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id e9-20020a056402104900b0042ac0e79bb6sm1345467edu.45.2022.05.17.01.18.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 May 2022 01:18:40 -0700 (PDT)
-Message-ID: <626d3f67-ae15-938d-ae87-e111b83435d0@linaro.org>
-Date:   Tue, 17 May 2022 10:18:38 +0200
+        Tue, 17 May 2022 04:27:47 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF0136339;
+        Tue, 17 May 2022 01:27:21 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: kholk11)
+        with ESMTPSA id 422D71F44233
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1652776040;
+        bh=tE2Neszj+y3O1cmeD6vmFcKg7q+eIA8I1b4UnVOkoE8=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=BJL5v0bhuVFvcCQ25D+0pK3NIga8y2Un6h5uMhfxH1hCPQs3rOACMYkyuhdftODMA
+         smu6iAvegiNflzFCbuhqFT/2s31v5ZA9YoWy0ljjT7HESoXXPDOzz/j74fbRRlC0wF
+         gvjgdD2Ix8DZ9LK+lSBwINqwPj0l7qzi47HqevxeFw0jg2gHOvqokYwxH3xxjc5SBb
+         iE0py6i4qoCiLcxX8ZMESLn5YDM4s+PlUQIiH26CJucIwb7ph6qrj1dcIzie6lp3Yn
+         nJU/CaP4iR5oHkZ/SNghJwxsrkTGw296rc5WWsPV+U713IMpxtoohYuiH7PixO4KBV
+         ah5V4clhlBlRw==
+Message-ID: <f222e1c5-4ce1-a42d-ceef-a292136d8b61@collabora.com>
+Date:   Tue, 17 May 2022 10:27:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH 5/7] arm64: dts: mediatek: mt6795: Add fixed clocks for
- 32kHz and 26MHz XOs
+ Thunderbird/91.9.0
+Subject: Re: [PATCH v2 2/2] memory: mtk-smi: Add support for MT6795 Helio X10
 Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, robh+dt@kernel.org
-Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
-        kernel@collabora.com
-References: <20220513171617.504430-1-angelogioacchino.delregno@collabora.com>
- <20220513171617.504430-6-angelogioacchino.delregno@collabora.com>
- <03e99a02-1233-3882-e1e5-24ab1bbaf257@linaro.org>
- <0f303425-3b12-7573-b201-030d4d044db8@collabora.com>
- <d78e1936-a0ab-663d-1381-b537bfd7f07d@linaro.org>
- <32c97e47-47a8-d033-4948-3c73a4313703@collabora.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <32c97e47-47a8-d033-4948-3c73a4313703@collabora.com>
-Content-Type: text/plain; charset=UTF-8
+To:     Yong Wu <yong.wu@mediatek.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     krzysztof.kozlowski@linaro.org, robh+dt@kernel.org,
+        matthias.bgg@gmail.com, linux-mediatek@lists.infradead.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        paul.bouchara@somainline.org, kernel@collabora.com,
+        yi.kuo@mediatek.com, anthony.huang@mediatek.com,
+        wendy-st.lin@mediatek.com
+References: <20220513150633.387200-1-angelogioacchino.delregno@collabora.com>
+ <20220513150633.387200-3-angelogioacchino.delregno@collabora.com>
+ <cf2442b9c7124ebf1ce62ae5df597f003fa447d7.camel@mediatek.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <cf2442b9c7124ebf1ce62ae5df597f003fa447d7.camel@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 17/05/2022 10:14, AngeloGioacchino Del Regno wrote:
-
-> Right. If external components are strictly necessary, physically, they're
-> still external components and not inside of the SoC, and anything external
-> *may* change depending on the (hardware) implementation.
+Il 17/05/22 08:37, Yong Wu ha scritto:
+> On Fri, 2022-05-13 at 17:06 +0200, AngeloGioacchino Del Regno wrote:
+>> The MediaTek Helio X10 (MT6795) SoC has 5 LARBs and one common SMI
+>> instance without any sub-common and without GALS.
+>>
+>> While the smi-common configuration is specific to this SoC, on the
+>> LARB side, this is similar to MT8173, in the sense that it doesn't
+>> need the port in LARB, and the register layout is also compatible
+>> with that one, which makes us able to fully reuse the smi-larb
+>> platform data struct that was introduced for MT8173.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <
+>> angelogioacchino.delregno@collabora.com>
+>> ---
+>>   drivers/memory/mtk-smi.c | 17 +++++++++++++++++
+>>   1 file changed, 17 insertions(+)
+>>
+>> diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
+>> index 86a3d34f418e..7e7c3ede19e4 100644
+>> --- a/drivers/memory/mtk-smi.c
+>> +++ b/drivers/memory/mtk-smi.c
+>> @@ -21,11 +21,13 @@
+>>   /* SMI COMMON */
+>>   #define SMI_L1LEN			0x100
+>>   
+>> +#define SMI_L1_ARB			0x200
+>>   #define SMI_BUS_SEL			0x220
+>>   #define SMI_BUS_LARB_SHIFT(larbid)	((larbid) << 1)
+>>   /* All are MMU0 defaultly. Only specialize mmu1 here. */
+>>   #define F_MMU1_LARB(larbid)		(0x1 <<
+>> SMI_BUS_LARB_SHIFT(larbid))
+>>   
+>> +#define SMI_FIFO_TH0			0x230
 > 
-> Anyway - I was wondering if splitting this change in two commits would be
-> better to let people understand what's going on... probably it would, as
-> that would clearly show both the addition of the 32K/26M clocks and the
-> subsequent removal of the other two: I would at this point do that, what
-> do you think?
+> Does the name come from the coda you got?
+> It is called SMI_READ_FIFO_TH in my coda.
+> 
 
-Could help.
+Documentation for this SoC is not public and I have no access to it, so
+everything that you see here comes from reading downstream kernel code :-(
 
+I'll change the name to SMI_READ_FIFO_TH as suggested, thanks!
 
-Best regards,
-Krzysztof
+>>   #define SMI_M4U_TH			0x234
+>>   #define SMI_FIFO_TH1			0x238
+>>   #define SMI_FIFO_TH2			0x23c
+>> @@ -360,6 +362,7 @@ static const struct of_device_id
+>> mtk_smi_larb_of_ids[] = {
+>>   	{.compatible = "mediatek,mt2701-smi-larb", .data =
+>> &mtk_smi_larb_mt2701},
+>>   	{.compatible = "mediatek,mt2712-smi-larb", .data =
+>> &mtk_smi_larb_mt2712},
+>>   	{.compatible = "mediatek,mt6779-smi-larb", .data =
+>> &mtk_smi_larb_mt6779},
+>> +	{.compatible = "mediatek,mt6795-smi-larb", .data =
+>> &mtk_smi_larb_mt8173},
+>>   	{.compatible = "mediatek,mt8167-smi-larb", .data =
+>> &mtk_smi_larb_mt8167},
+>>   	{.compatible = "mediatek,mt8173-smi-larb", .data =
+>> &mtk_smi_larb_mt8173},
+>>   	{.compatible = "mediatek,mt8183-smi-larb", .data =
+>> &mtk_smi_larb_mt8183},
+>> @@ -541,6 +544,13 @@ static struct platform_driver
+>> mtk_smi_larb_driver = {
+>>   	}
+>>   };
+>>   
+>> +static const struct mtk_smi_reg_pair
+>> mtk_smi_common_mt6795_init[SMI_COMMON_INIT_REGS_NR] = {
+>> +	{SMI_L1_ARB, 0x1b},
+>> +	{SMI_M4U_TH, 0xce810c85},
+>> +	{SMI_FIFO_TH1, 0x43214c8},
+>> +	{SMI_FIFO_TH0, 0x191f},
+>> +};
+>> +
+>>   static const struct mtk_smi_reg_pair
+>> mtk_smi_common_mt8195_init[SMI_COMMON_INIT_REGS_NR] = {
+>>   	{SMI_L1LEN, 0xb},
+>>   	{SMI_M4U_TH, 0xe100e10},
+>> @@ -565,6 +575,12 @@ static const struct mtk_smi_common_plat
+>> mtk_smi_common_mt6779 = {
+>>   		    F_MMU1_LARB(5) | F_MMU1_LARB(6) | F_MMU1_LARB(7),
+>>   };
+>>   
+>> +static const struct mtk_smi_common_plat mtk_smi_common_mt6795 = {
+>> +	.type	  = MTK_SMI_GEN2,
+>> +	.bus_sel  = BIT(0),
+> 
+> Like the other larbs, use F_MMU1_LARB(0) here?
+> 
+
+I agree that F_MMU1_LARB(0) == (1 << (0 << 1)) == BIT(0), but that would
+not be correct and induce other people to mistake, I think?
+Downstream doesn't do MMU1 bits, but MMU0 in this case... but if you can
+check on internal documentation and confirm that the downstream kernel's
+logic is wrong on that - and that you've verified that this should indeed
+be F_MMU1_LARB(x), you'll get a big(bigger) thank you from me :-)
+
+Meanwhile...
+
+Thanks!
+Angelo
+
+> 
+> After the two changes,
+> 
+> Reviewed-by: Yong Wu <yong.wu@mediatek.com>
+> 
+> Thanks.
