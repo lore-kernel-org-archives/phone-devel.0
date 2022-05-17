@@ -2,45 +2,45 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CCFCC433F5
-	for <phone-devel@archiver.kernel.org>; Tue, 17 May 2022 07:48:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DBF8C4332F
+	for <phone-devel@archiver.kernel.org>; Tue, 17 May 2022 08:08:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241885AbiEQHsk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 May 2022 03:48:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42038 "EHLO
+        id S242349AbiEQIIA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 17 May 2022 04:08:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241486AbiEQHsg (ORCPT
+        with ESMTP id S237359AbiEQIH6 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 May 2022 03:48:36 -0400
+        Tue, 17 May 2022 04:07:58 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59D6A47393;
-        Tue, 17 May 2022 00:48:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A07073BA65;
+        Tue, 17 May 2022 01:07:57 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: kholk11)
-        with ESMTPSA id 8ADA31F441AA
+        with ESMTPSA id C074B1F441D1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652773709;
-        bh=ExwtYhF6lW41/VV+VosOgNIh/aIBIehqgDlrAU2wlqI=;
+        s=mail; t=1652774876;
+        bh=tuq3VbAxgnS0xWzmyEnSJuvgMj+dNp4blLu8nvOqYac=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=llZKudObnwhLoG7831KnTVNHUlFkO6VQxYU9MnYi/2Tjfen3kZxHbcg1jUNBXi4pj
-         ZvSVeei11j1tJRXPCE+7+OiaXsX6oJltMp9hOe7+IdhXSq5wEMNyqXZ9n27mUGVdt/
-         bc9qtEwgeUDzl25M0osEVwNOPGNMWKqCHgLq8bWLrXHAArODExKHdDGEfqSrj2ww49
-         8+6KF54m8/pVVdmMj6qrGSQ4vr9r3bMqUYe9AKeM+knvnoVz2hKlmDY4/Fd3TRIZR4
-         t3wfLguv3KsdglOl37QL0PxAZLh5OTajsNe9q61Zr4mxkF4SceWzvo6ZZNjt6bywSm
-         c2GwOyoe+yIWg==
-Message-ID: <b3e34db8-4e79-f6e3-35b8-e32891f2c85b@collabora.com>
-Date:   Tue, 17 May 2022 09:48:25 +0200
+        b=igs8DLrZN4Gos9vjSRnjpGxorfB1377dTfD9fD5n8b+Nk4yBkVMVyscC91Mk+NWjV
+         H2HBKftBFAu5UwKhI1XQrKvWbZTQzeh2C19Thy5oOcfAaJKN8MidSEae+ZYk0+NPGO
+         M5m1URHuDjYnnlDSsI9L1kiOqY3Qf5T5Y3hJ1EaryIO0LBNwJd/Y4M4+2So4qdgBuS
+         Bk9EjMdZDurNMq/ARdDMZpKTuIlPv+7p2eYjKfgdZj0gpitwkAUWwAo6XXq5bzKg3S
+         VrORLF/gAOVcVZzTQDM6Sj1wctjKoGDlnrf/m5nmTOs05hKqn1mn7td8nQ20L/C6E5
+         afVZ7ckSwKmeA==
+Message-ID: <b65546e1-2d3a-d525-b664-1730dc06994f@collabora.com>
+Date:   Tue, 17 May 2022 10:07:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
-Subject: Re: [PATCH 4/5] dt-bindings: arm: mediatek: Add clock driver bindings
- for MT6795
+Subject: Re: [PATCH 5/5] clk: mediatek: Add MediaTek Helio X10 MT6795 clock
+ drivers
 Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>
-Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        mturquette@baylibre.com, sboyd@kernel.org, p.zabel@pengutronix.de,
-        y.oudjana@protonmail.com, jason-jh.lin@mediatek.com,
-        ck.hu@mediatek.com, fparent@baylibre.com, rex-bc.chen@mediatek.com,
+To:     Matthias Brugger <matthias.bgg@gmail.com>, robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, mturquette@baylibre.com,
+        sboyd@kernel.org, p.zabel@pengutronix.de, y.oudjana@protonmail.com,
+        jason-jh.lin@mediatek.com, ck.hu@mediatek.com,
+        fparent@baylibre.com, rex-bc.chen@mediatek.com,
         tinghan.shen@mediatek.com, chun-jie.chen@mediatek.com,
         weiyi.lu@mediatek.com, ikjn@chromium.org, miles.chen@mediatek.com,
         sam.shih@mediatek.com, wenst@chromium.org,
@@ -52,93 +52,63 @@ Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
         phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
         kernel@collabora.com
 References: <20220513165050.500831-1-angelogioacchino.delregno@collabora.com>
- <20220513165050.500831-5-angelogioacchino.delregno@collabora.com>
- <20220516172819.GA2938099-robh@kernel.org>
+ <20220513165050.500831-6-angelogioacchino.delregno@collabora.com>
+ <8177c547-2a38-691b-0a32-bc7e6ba1e2ed@gmail.com>
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20220516172819.GA2938099-robh@kernel.org>
+In-Reply-To: <8177c547-2a38-691b-0a32-bc7e6ba1e2ed@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 16/05/22 19:28, Rob Herring ha scritto:
-> On Fri, May 13, 2022 at 06:50:49PM +0200, AngeloGioacchino Del Regno wrote:
->> Add the bindings for the clock drivers of the MediaTek Helio X10
->> MT6795 SoC.
+Il 16/05/22 13:30, Matthias Brugger ha scritto:
+> 
+> 
+> On 13/05/2022 18:50, AngeloGioacchino Del Regno wrote:
+>> Add the clock drivers for the entire clock tree of MediaTek Helio X10
+>> MT6795, including system clocks (apmixedsys, infracfg, pericfg, topckgen)
+>> and multimedia clocks (mmsys, mfg, vdecsys, vencsys).
 >>
 >> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->> ---
->>   .../arm/mediatek/mediatek,mt6795-clock.yaml   | 67 +++++++++++++++++
->>   .../mediatek/mediatek,mt6795-sys-clock.yaml   | 73 +++++++++++++++++++
->>   2 files changed, 140 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/arm/mediatek/mediatek,mt6795-clock.yaml
->>   create mode 100644 Documentation/devicetree/bindings/arm/mediatek/mediatek,mt6795-sys-clock.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/arm/mediatek/mediatek,mt6795-clock.yaml b/Documentation/devicetree/bindings/arm/mediatek/mediatek,mt6795-clock.yaml
->> new file mode 100644
->> index 000000000000..b7d96d0ed867
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/arm/mediatek/mediatek,mt6795-clock.yaml
->> @@ -0,0 +1,67 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: "http://devicetree.org/schemas/arm/mediatek/mediatek,mt6795-clock.yaml#"
->> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
->> +
->> +title: MediaTek Functional Clock Controller for MT6795
->> +
->> +maintainers:
->> +  - AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->> +  - Chun-Jie Chen <chun-jie.chen@mediatek.com>
->> +
->> +description: |
->> +  The clock architecture in MediaTek like below
->> +  PLLs -->
->> +          dividers -->
->> +                      muxes
->> +                           -->
->> +                              clock gate
->> +
->> +  The devices provide clock gate control in different IP blocks.
->> +
->> +properties:
->> +  compatible:
->> +    items:
 > 
-> Don't need 'items' if only 1 item.
-> 
->> +      - enum:
->> +          - mediatek,mt6795-mfgcfg
->> +          - mediatek,mt6795-vdecsys
->> +          - mediatek,mt6795-vencsys
-> 
-> blank line.
-> 
->> +  reg:
->> +    maxItems: 1
->> +
->> +  '#clock-cells':
->> +    const: 1
->> +
->> +required:
->> +  - compatible
->> +  - reg
-> 
-> Why is #clock-cells optional?
+> Thanks a lot for taking care of this!
+> I just wonder if we couldn't build most of the clock drivers as modules like done 
+> for the mt6779. It would help us to keep the kernel image smaller.
 > 
 
-I've used one of the other mediatek,mt(something)-(sys-)clock.yaml as a base
-for these ones, giving for granted that they were correct, but now that you're
-pointing that out... effectively, I should've checked if the ones that are
-already merged in were correct *before* using these as a base for mine.
+Hello Matthias!
 
-Thanks for your review: I'll send a v2 soon... and I will also separately
-send some fixes for the existing ones, as your review comments also apply
-to these ones.
+You're welcome!
+...but I simply couldn't stand at seeing partially working (..or actually, not
+really working) SoCs upstream. If something is upstream, it must work, or it
+shouldn't be here for real :-)
 
-Regards,
+Regarding your question about the clock drivers as module... I believe we can,
+but that'd be only for {vdec,venc}sys and *maybe* MFG (gpu clocks): I don't know
+if it'd be worth to do, as these are about... 8 clocks out of... I haven't counted
+them, but more than 250, I think?
+
+It *should* be straightforward though, just about giving them a tristate in Kconfig
+instead of a bool, but that would still be limited to just those three...
+
+The reason for me excluding clk-mt6795-mm from this choice is that - at least for
+me - my development platform is a commercial smartphone, where the only thing that
+"saves you" is having some display output... I mean - I *do* have a UART port, but
+that's only because I've been able to solder thin wires on 0.2mm pads... you surely
+agree on the fact that this isn't a common practice, even across developers.
+
+Besides, if you think that clk-mt6795-mm should indeed be a module by default,
+well, that.. is.. possible - I don't see why it shouldn't be... obviously keeping
+in mind that this will largely slow down the boot process, which isn't a big issue.
+
+In any case, it is *not* possible to compile as module *any* of the clock drivers
+that I have included in the CONFIG_COMMON_CLK_MT6795 (apmixed, infra, peri, topck)
+as.. you know.. these are "a bit critical" on older platforms :-)
+
+
+How would you proceed?
+
+Cheers,
 Angelo
-
