@@ -2,76 +2,99 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E38CAC433F5
-	for <phone-devel@archiver.kernel.org>; Wed, 18 May 2022 00:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F08C7C433F5
+	for <phone-devel@archiver.kernel.org>; Wed, 18 May 2022 00:47:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232624AbiERAgf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 May 2022 20:36:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40746 "EHLO
+        id S230454AbiERArL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 17 May 2022 20:47:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231217AbiERAge (ORCPT
+        with ESMTP id S230250AbiERArK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 May 2022 20:36:34 -0400
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9837D220CC;
-        Tue, 17 May 2022 17:36:33 -0700 (PDT)
-Received: by mail-oi1-f176.google.com with SMTP id r1so902295oie.4;
-        Tue, 17 May 2022 17:36:33 -0700 (PDT)
+        Tue, 17 May 2022 20:47:10 -0400
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F57439BB0;
+        Tue, 17 May 2022 17:47:09 -0700 (PDT)
+Received: by mail-oi1-f175.google.com with SMTP id j12so942668oie.1;
+        Tue, 17 May 2022 17:47:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=g3fk2r+VdltCJs0tLhP3Og3NkDOH8LnSswk63V92fI0=;
-        b=jGnqSwHGjwgh7uBH78vGPskzlXCNr7BYzD3gyYl7wUb/bx1oT0W93HToq3RAfaY5Yx
-         2PIOV+75qVGOQqxW7QCUkh/GJESdlUILN2eB+/k+TEk7BWERnHHOuja8M63eYRicXXwT
-         POemr26MCJxYrad3Bje5LfHf/2azNZsEYD9nU/QOe0t7HXMS8rrW3Fe7UNdZEb5IMEiG
-         6mqOIyhFd0Exig/QrFtDAw6IfDqzzr95iXF/t3qf1cK1UYWi/oBKX1ou2zRPCLMdBfb0
-         ZeAr8qf7Nxs3o9keSxLIPc68FbU6pmfNvgWytz67XQjhfLfrH1YJdWw+PTbgHTtkHu9K
-         lpSw==
-X-Gm-Message-State: AOAM530jct4LXYvPUFcsZD5vQVzLAvinATVCFGeWQcudwN/KR1Vwq8iw
-        ptH1aYM2jLZMUG85ZdLTj0WqS0HQRQ==
-X-Google-Smtp-Source: ABdhPJzn9MyNf0yAEImhtz5Vy7C/Luds182CEZZVvFMqqdR4rHl5Uc2AY+2a3qIN5fLX5xwtyFrOOA==
-X-Received: by 2002:a05:6808:1244:b0:322:6925:3f4f with SMTP id o4-20020a056808124400b0032269253f4fmr17196680oiv.39.1652834192947;
-        Tue, 17 May 2022 17:36:32 -0700 (PDT)
+        bh=0ivlprhS2h/cMofiRva12AAeDajNBcseyKIWCyP6GFM=;
+        b=2TOC8YnmtUvBEg6BhN+HHW2IohzYYc2px0w3JHYL8P/gvRgy5H1WP/xJBbI7xyzJKG
+         nYytWXoIMXQHqKtnyBSGMPz4bd6A+z0rcud1+K0KJrAGZHdTpsc9ILOJNEPJb/Wt4u4v
+         zQP9wmo/R+EpCWM3cjySTnomNfGaAUfCA7lilo4XV1+D5cXrp55lbA7I0gY6dfcnvSQx
+         XsGTcAydGfpPE3LgTtV0BQ3VJNS78ctad/ufVXgr3UfaLHELqKlD46jVu1BKDn/hkjGD
+         npt/Xn2ofnXp2R05qkkkKXmm3ShvimeUbsWnwkfdy7LxSjSW0HlD62MkQ5Fjtot+cxAM
+         9QJQ==
+X-Gm-Message-State: AOAM530AKgXBXC1+UzqGtkE3IFnlNd1jZMsKPGW8hKMfqpBZhj7kTCoa
+        sRPmqrs12JxUbYavnSY5yA==
+X-Google-Smtp-Source: ABdhPJxK2fsakt9+qAEinnu8Nr0SM6/F4v16Hx09go8CdR87lPDVyRjaWRPTxV3yCRv0iS+00W8Uvw==
+X-Received: by 2002:a05:6808:1525:b0:326:c179:1b1 with SMTP id u37-20020a056808152500b00326c17901b1mr11887569oiw.69.1652834828532;
+        Tue, 17 May 2022 17:47:08 -0700 (PDT)
 Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id z3-20020a056870d68300b000e686d13897sm439885oap.49.2022.05.17.17.36.31
+        by smtp.gmail.com with ESMTPSA id w10-20020aca620a000000b00325cda1ffb9sm290734oib.56.2022.05.17.17.47.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 May 2022 17:36:32 -0700 (PDT)
-Received: (nullmailer pid 1950589 invoked by uid 1000);
-        Wed, 18 May 2022 00:36:31 -0000
-Date:   Tue, 17 May 2022 19:36:31 -0500
+        Tue, 17 May 2022 17:47:07 -0700 (PDT)
+Received: (nullmailer pid 1965783 invoked by uid 1000);
+        Wed, 18 May 2022 00:47:06 -0000
+Date:   Tue, 17 May 2022 19:47:06 -0500
 From:   Rob Herring <robh@kernel.org>
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Cc:     devicetree@vger.kernel.org, robh+dt@kernel.org,
-        linux-arm-kernel@lists.infradead.org, phone-devel@vger.kernel.org,
-        kernel@collabora.com, matthias.bgg@gmail.com,
-        konrad.dybcio@somainline.org, martin.botka@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-mediatek@lists.infradead.org, marijn.suijten@somainline.org,
-        yong.wu@mediatek.com, paul.bouchara@somainline.org,
-        linux-kernel@vger.kernel.org, krzysztof.kozlowski@linaro.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: memory: mtk-smi: Add MT6795 Helio
- X10 bindings
-Message-ID: <20220518003631.GA1950529-robh@kernel.org>
-References: <20220513150633.387200-1-angelogioacchino.delregno@collabora.com>
- <20220513150633.387200-2-angelogioacchino.delregno@collabora.com>
+Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        mturquette@baylibre.com, sboyd@kernel.org, p.zabel@pengutronix.de,
+        y.oudjana@protonmail.com, jason-jh.lin@mediatek.com,
+        ck.hu@mediatek.com, fparent@baylibre.com, rex-bc.chen@mediatek.com,
+        tinghan.shen@mediatek.com, chun-jie.chen@mediatek.com,
+        weiyi.lu@mediatek.com, ikjn@chromium.org, miles.chen@mediatek.com,
+        sam.shih@mediatek.com, wenst@chromium.org,
+        bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        kernel@collabora.com
+Subject: Re: [PATCH 0/5] MediaTek Helio X10 MT6795 - Clock drivers
+Message-ID: <20220518004706.GA1950724-robh@kernel.org>
+References: <20220513165050.500831-1-angelogioacchino.delregno@collabora.com>
+ <7ed1b785-389f-9730-4686-bc6b85cc8f6d@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220513150633.387200-2-angelogioacchino.delregno@collabora.com>
+In-Reply-To: <7ed1b785-389f-9730-4686-bc6b85cc8f6d@collabora.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 13 May 2022 17:06:32 +0200, AngeloGioacchino Del Regno wrote:
-> Add SMI bindings for the MediaTek Helio X10 (MT6795) SoC
+On Fri, May 13, 2022 at 06:54:49PM +0200, AngeloGioacchino Del Regno wrote:
+> Il 13/05/22 18:50, AngeloGioacchino Del Regno ha scritto:
+> > In an effort to give some love to the apparently forgotten MT6795 SoC,
+> > I am upstreaming more components that are necessary to support platforms
+> > powered by this one apart from a simple boot to serial console.
+> > 
+> > This (very big) series introduces system clock, multimedia clock drivers
+> > (including resets) for this SoC.
+> > 
+> > Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
+> > 
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->  .../bindings/memory-controllers/mediatek,smi-common.yaml         | 1 +
->  .../bindings/memory-controllers/mediatek,smi-larb.yaml           | 1 +
->  2 files changed, 2 insertions(+)
+> I forgot to add context to the cover letter for this series, so I'm adding that
+> in reply to myself.
 > 
+> This series depends on Chen-Yu's clocks cleanup series (clk_hw) [1] *and* on
+> Rex-BC's MTK reset binding-cleanup series [2].
+> 
+> [1] https://patchwork.kernel.org/project/linux-mediatek/list/?series=640122
+> [2] https://patchwork.kernel.org/project/linux-mediatek/list/?series=637849
 
-Acked-by: Rob Herring <robh@kernel.org>
+As well as the schema conversions in my tree. So I need to apply some of 
+this? Provide maintainers with details on how exactly a series should 
+be applied if there's a mixture of subsystems, dependencies already 
+applied, and dependencies not yet applied. I'm just going to wait for 
+explicit requests of what I need to apply as there's already too much 
+Mediatek stuff floating around. Last merge window was a mess too.
+
+Rob
