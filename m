@@ -2,197 +2,160 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02A6BC433F5
-	for <phone-devel@archiver.kernel.org>; Thu, 19 May 2022 08:53:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 88D8AC433FE
+	for <phone-devel@archiver.kernel.org>; Thu, 19 May 2022 09:09:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235626AbiESIxh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 19 May 2022 04:53:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33770 "EHLO
+        id S235136AbiESJJz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 19 May 2022 05:09:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230124AbiESIxg (ORCPT
+        with ESMTP id S231249AbiESJJy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 19 May 2022 04:53:36 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0183C9CF51;
-        Thu, 19 May 2022 01:53:34 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: kholk11)
-        with ESMTPSA id DA2951F4581E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652950413;
-        bh=pXYO/JUu84qXpcGnHGzcLC9avotZHwX2ZHKuRJqCO4k=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=cGDtHUQ3m9zfrkF2XgejG2YVt17eVFnRcUfcbnnohf0M5QxVuIApZ4msi6pYSNmJn
-         3ko2Rf/5qw8SBMyJEVfLQ3h7khZGb8lxlmyHeILsD3Cn8wfHW+gSY03EmYnY4kPg++
-         gkBvecEzGu/FurE23QHMctNi1Vk8j5yTWNrgHL98dgAZNwhaC5zDtVR2GtXj4rLt0a
-         sa9uBsEXO/6dkGTKwRxvlHMvMiQXT9zDl46nJUfLcO0d9HQZaSQuFnPJlnTnIcEGOc
-         3eNVytoFR/IUdgNPdo2AtH/WKOj0QoVbXQE+vcqJu9zYzUJVjqNDoY+BkCMj52/Y8T
-         XpzpqXUw8PgKg==
-Message-ID: <4fccf1ef-5dd2-5159-7f89-7c60fd281197@collabora.com>
-Date:   Thu, 19 May 2022 10:53:29 +0200
+        Thu, 19 May 2022 05:09:54 -0400
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82BF04D277
+        for <phone-devel@vger.kernel.org>; Thu, 19 May 2022 02:09:53 -0700 (PDT)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-2ff53d86abbso31108117b3.8
+        for <phone-devel@vger.kernel.org>; Thu, 19 May 2022 02:09:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fTYN8SQA1Kibj+1iEMNK2WJ4kiFH1jZy+Z6ZLSVIzN0=;
+        b=hvulyA/9nIvcQL349rFarbnddLvY9KxNXVzOwnuziFMGzgoXJafIeq4MkYBy6jLk6W
+         s3M1vHrQCdqvZAScHSvOaiC24sEZLHS49j0W88ksuOnZWzOJcz/qal8MrrGbJgy3AxE/
+         jC8pn9TpW1Fsn7CRdkMKMPRWnyntyy4uNhTFYqyIsPsY3xLU+1Tj8BSmdpt+ZPQQREut
+         hKV7/XAof2E30dQbV/qIr57X2zMxMUYLPtvgd3NWcR1W//0MOFeYlipiFSPiPdoYTRkl
+         EVNnGm474dJJ1JPi1bY7lymcKpQU0jo24pOGJbZyS5KotlMFZoWGsrDcpf3mxJcprTz2
+         2QvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fTYN8SQA1Kibj+1iEMNK2WJ4kiFH1jZy+Z6ZLSVIzN0=;
+        b=wBrIYzBqaUWfD2xlPgDPL2kY8lSSw+grHLZwjZOH+B3GGkkA6bARp7D8l208jSttoU
+         kKYpVf1oa4xeLQ3mnpTseAwqX847gfkOIQXo31g7iDG2pTx403/20S3397xzJooi+nJI
+         NCyz5E61cdOt9YbYtM1GedievzCBd0AC9By1zB8qNJ+bXyg3JRzbHMEurNSH/WyTDB6Z
+         meqdAj5K9OizSNDjkZWOR/5d4KODpCScvalx1vfrYWHmxCMcy33PskQ4/ABwjfXj0sWt
+         qo+wjCzc8fDrhxHfnZnZEBklooenBynPa95fHt5fNKbV1gXOud9BA+u77n4cHYNCVGEe
+         Xrwg==
+X-Gm-Message-State: AOAM533zDhI2StiGnW86BINKlnyUMqIrySrQjRHdsqNm6xCfnA3O1mDA
+        NBDN+LJqbg7rajfaEWQBgXenAwSP9KeYDtO1oF1tQQ==
+X-Google-Smtp-Source: ABdhPJwWgBnbFPBng8jyysNwYozhHy5L14kmJuY8TO30we9HAg0aLzdUurH9h7SgBVzWDxYOJ2zAzts+I/soNqiTxJU=
+X-Received: by 2002:a0d:c4c2:0:b0:2f1:6c00:9eb4 with SMTP id
+ g185-20020a0dc4c2000000b002f16c009eb4mr3757471ywd.448.1652951392715; Thu, 19
+ May 2022 02:09:52 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v2 6/7] clk: mediatek: Export required symbols to compile
- clk drivers as module
-Content-Language: en-US
-To:     Chen-Yu Tsai <wenst@chromium.org>
-Cc:     Miles Chen <miles.chen@mediatek.com>, bgolaszewski@baylibre.com,
-        chun-jie.chen@mediatek.com, ck.hu@mediatek.com,
-        devicetree@vger.kernel.org, fparent@baylibre.com,
-        ikjn@chromium.org, jason-jh.lin@mediatek.com, kernel@collabora.com,
-        konrad.dybcio@somainline.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        matthias.bgg@gmail.com, mturquette@baylibre.com,
-        p.zabel@pengutronix.de, paul.bouchara@somainline.org,
-        phone-devel@vger.kernel.org, rex-bc.chen@mediatek.com,
-        robh+dt@kernel.org, sam.shih@mediatek.com, sboyd@kernel.org,
-        tinghan.shen@mediatek.com, weiyi.lu@mediatek.com,
-        y.oudjana@protonmail.com, ~postmarketos/upstreaming@lists.sr.ht
-References: <20220518111652.223727-7-angelogioacchino.delregno@collabora.com>
- <20220519044153.11078-1-miles.chen@mediatek.com>
- <7e60b63c-2bf7-a77e-fe0f-a891efa77a47@collabora.com>
- <CAGXv+5FiteAu7in-CnmVUkDKy=ub1X6etyK1--PHPYKO3FPa=w@mail.gmail.com>
- <3981552b-2153-1b87-f345-2b1f9be6c56f@collabora.com>
- <CAGXv+5GwqLKvM3yReZMW92ZC3nDwdbD+_x8ROBOjppgnsgGkyw@mail.gmail.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <CAGXv+5GwqLKvM3yReZMW92ZC3nDwdbD+_x8ROBOjppgnsgGkyw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <cover.1651835715.git.jo@jsfamily.in> <BY5PR02MB7009B91FB7306503B58C264BD9C59@BY5PR02MB7009.namprd02.prod.outlook.com>
+ <CACRpkdYhkP9RYj98Lu=zkt+6aefx172R=8JtvOFpvh2uJ4byKA@mail.gmail.com> <BY5PR02MB7009831D8BC4DB2B34739CB6D9CF9@BY5PR02MB7009.namprd02.prod.outlook.com>
+In-Reply-To: <BY5PR02MB7009831D8BC4DB2B34739CB6D9CF9@BY5PR02MB7009.namprd02.prod.outlook.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 19 May 2022 11:09:41 +0200
+Message-ID: <CACRpkdZw+MwU42s8BWHkN2T3A-a-TGML8jJ0kQteMOE06m0UXg@mail.gmail.com>
+Subject: Re: [PATCH 3/3] drm/panel: introduce ebbg,ft8719 panel
+To:     Joel Selvaraj <jo@jsfamily.in>
+Cc:     devicetree@vger.kernel.org, Hao Fang <fanghao11@huawei.com>,
+        David Airlie <airlied@linux.ie>,
+        Shawn Guo <shawnguo@kernel.org>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Corentin Labbe <clabbe@baylibre.com>,
+        phone-devel@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>,
+        Stanislav Jakubek <stano.jakubek@gmail.com>,
+        ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 19/05/22 10:45, Chen-Yu Tsai ha scritto:
-> On Thu, May 19, 2022 at 4:26 PM AngeloGioacchino Del Regno
-> <angelogioacchino.delregno@collabora.com> wrote:
->> Il 19/05/22 10:15, Chen-Yu Tsai ha scritto:
->>> On Thu, May 19, 2022 at 4:05 PM AngeloGioacchino Del Regno
->>> <angelogioacchino.delregno@collabora.com> wrote:
->>>>
->>>> Il 19/05/22 06:41, Miles Chen ha scritto:
->>>>>
->>>>> Hi Angelo,
->>>>>
->>>>>> In order to compile the clock drivers for various MediaTek SoCs as
->>>>>> modules, it is necessary to export a few functions from the MediaTek
->>>>>> specific clocks (and reset) libraries.
->>>>>>
->>>>>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->>>>>> ---
->>>>>> drivers/clk/mediatek/clk-apmixed.c | 1 +
->>>>>> drivers/clk/mediatek/clk-cpumux.c  | 2 ++
->>>>>> drivers/clk/mediatek/clk-mtk.c     | 2 ++
->>>>>> drivers/clk/mediatek/reset.c       | 1 +
->>>>>> 4 files changed, 6 insertions(+)
->>>>>>
->>>>>> diff --git a/drivers/clk/mediatek/clk-apmixed.c b/drivers/clk/mediatek/clk-apmixed.c
->>>>>> index 6b0ab0a346e8..f126da693a7f 100644
->>>>>> --- a/drivers/clk/mediatek/clk-apmixed.c
->>>>>> +++ b/drivers/clk/mediatek/clk-apmixed.c
->>>>>> @@ -98,5 +98,6 @@ struct clk_hw *mtk_clk_register_ref2usb_tx(const char *name,
->>>>>>
->>>>>>        return &tx->hw;
->>>>>> }
->>>>>> +EXPORT_SYMBOL_GPL(mtk_clk_register_ref2usb_tx);
->>>>>>
->>>>>> MODULE_LICENSE("GPL");
->>>>>> diff --git a/drivers/clk/mediatek/clk-cpumux.c b/drivers/clk/mediatek/clk-cpumux.c
->>>>>> index 2b5d48591738..25618eff6f2a 100644
->>>>>> --- a/drivers/clk/mediatek/clk-cpumux.c
->>>>>> +++ b/drivers/clk/mediatek/clk-cpumux.c
->>>>>> @@ -150,6 +150,7 @@ int mtk_clk_register_cpumuxes(struct device_node *node,
->>>>>>
->>>>>>        return PTR_ERR(hw);
->>>>>> }
->>>>>> +EXPORT_SYMBOL_GPL(mtk_clk_register_cpumuxes);
->>>>>>
->>>>>> void mtk_clk_unregister_cpumuxes(const struct mtk_composite *clks, int num,
->>>>>>                                 struct clk_hw_onecell_data *clk_data)
->>>>>> @@ -166,5 +167,6 @@ void mtk_clk_unregister_cpumuxes(const struct mtk_composite *clks, int num,
->>>>>>                clk_data->hws[mux->id] = ERR_PTR(-ENOENT);
->>>>>>        }
->>>>>> }
->>>>>> +EXPORT_SYMBOL_GPL(mtk_clk_unregister_cpumuxes);
->>>>>>
->>>>>> MODULE_LICENSE("GPL");
->>>>>> diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
->>>>>> index 05a188c62119..41e60a7e8ff9 100644
->>>>>> --- a/drivers/clk/mediatek/clk-mtk.c
->>>>>> +++ b/drivers/clk/mediatek/clk-mtk.c
->>>>>> @@ -459,6 +459,7 @@ int mtk_clk_simple_probe(struct platform_device *pdev)
->>>>>>        mtk_free_clk_data(clk_data);
->>>>>>        return r;
->>>>>> }
->>>>>> +EXPORT_SYMBOL_GPL(mtk_clk_simple_probe);
->>>>>>
->>>>>> int mtk_clk_simple_remove(struct platform_device *pdev)
->>>>>> {
->>>>>> @@ -472,5 +473,6 @@ int mtk_clk_simple_remove(struct platform_device *pdev)
->>>>>>
->>>>>>        return 0;
->>>>>> }
->>>>>> +EXPORT_SYMBOL_GPL(mtk_clk_simple_remove);
->>>>>
->>>>> Thanks, I need this too. I am preparing a patch to use mtk_clk_simple_remove/mtk_clk_simple_probe
->>>>> for MT6779 clks first and maybe I can apply this to all MediaTek clk drivers.
->>>>>
->>>>> Reviewed-by: Miles Chen <miles.chen@mediatek.com>
->>>>
->>>> Hello Miles,
->>>>
->>>> thanks for telling me, because my next step would have been exactly what
->>>> you're doing, for all MediaTek clk drivers... otherwise we'd be doing
->>>> redundant work going afterwards.
->>>
->>> Should we consider using symbol namespaces (EXPORT_SYMBOL_NS)?
->>>
->>
->> I don't think we should... I don't know if any module in the common clock
->> framework is doing that, but if we want some symbol namespace separation,
->> we would want that "at least" on the entire MediaTek framework, right? :-)
-> 
-> The sunxi-ng clk driver recently started doing this. See:
-> 
->      http://git.kernel.org/torvalds/c/551b62b1e4cb64d3b42da0fbfdcd26a5fcd684be
+On Mon, May 16, 2022 at 2:56 PM Joel Selvaraj <jo@jsfamily.in> wrote:
+> On 13/05/22 03:21, Linus Walleij wrote:
+> > On Fri, May 6, 2022 at 2:18 PM Joel Selvaraj <jo@jsfamily.in> wrote:
+> >> +#define dsi_dcs_write_seq(dsi, seq...) do {                            \
+> >> +               static const u8 d[] = { seq };                          \
+> >> +               int ret;                                                \
+> >> +               ret = mipi_dsi_dcs_write_buffer(dsi, d, ARRAY_SIZE(d)); \
+> >> +               if (ret < 0)                                            \
+> >> +                       return ret;                                     \
+> >> +       } while (0)
+> >
+> > First I don't see what the do {} while (0) buys you, just use
+> > a basic block {}.
+>
+> The do {} while (0) in macro ensures there is a semicolon when it's
+> used. With normal blocking, it would have issues with if conditions?
+> I read about them here: https://stackoverflow.com/a/2381339
 
-That's good. And...that's one of the examples for which using "a trick" is
-shorter and enhances maintainability!
+Hm that seems true, it enforces the semicolon ; at the end of the
+statement which is nice. I suppose we should fix the other macro
+as well.
 
-> 
-> And it's being done for all kinds of common driver libraries.
-> 
-> I agree that it would be done for the entire MediaTek framework.
-> 
->> In that case, we can simply keep using EXPORT_SYMBOL_GPL() and change the
->> Makefile in this directory to add:
->>
->>          ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=COMMON_CLK_MEDIATEK
-> 
-> Oh, I didn't know of this trick. Nice. :D
-> 
-> I think we still need to add MODULE_IMPORT_NS() statements, right?
-> 
+Noralf added this ({}) form in 02dd95fe31693, so maybe he wants
+to chip in.
 
-I haven't experimented with the IMPORT, but I believe if that's relative to
-files in the same Makefile, we won't need to add that... let's make some
-experiments :-)
+> > Second look at mipi_dbi_command() in include/drm/drm_mipi_dbi.h
+> > this is very similar.
+>
+> Does the ({..}) style blocking used in mipi_dbi_command help workaround
+> the semicolon issue I mentioned above?
 
->> ...but that's surely out of scope for this specific patch series.
->>
->> What do you think?
-> 
-> It's definitely out of scope, but nice to have, to reduce the size of the
-> default symbol table, and limit the usage of the symbols the driver exports.
-> 
+Nope. But add the rate limited error print please!
 
-Agreed.
+> > It's dubious that you always have dsi_dcs_write_seq()
+> > followed by dsi_generic_write_seq().
+> >
+> > That means mipi_dsi_generic_write() followed by
+> > mipi_dsi_dcs_write_buffer(). But if you look at these
+> > commands in drivers/gpu/drm/drm_mipi_dsi.c
+> > you see that they do the same thing!
+>
+> They almost do the same thing except for the msg.type values? Mostly the
+> msg.type value is used to just check whether it's a long or short write
+> in the msm dsi_host code. However, in mipi_dsi_create_packet function,
+> the msg->type value is used to calculate packet->header[0] as follows:
+>
+> packet->header[0] = ((msg->channel & 0x3) << 6) | (msg->type & 0x3f);
+>
+> Wouldn't the difference between the mipi_dsi_dcs_write_buffer's and
+> mipi_dsi_generic_write's msg.type values cause issue here?
+>
+> I tried using mipi_dsi_dcs_write_buffer for all commands and the panel
+> worked fine, but I am not sure if it's correct to do so?
 
-> Regards
-> ChenYu
+I think it's fine? The only issue would be if there is a DSI host controller
+that only supports short writes, and in that case it should emulate
+long writes by breaking long messages apart. (My amateur view at least.)
 
+> > Lots of magic numbers. You don't have a datasheet do you?
+> > So you could #define some of the magic?
+>
+> Unfortunately, I don't have a datasheet and the power on sequence is
+> taken from downstream android dts. It works pretty well though. So I
+> don't think I can #define any of these magic.
 
+If you know which display controller the display is using (usually
+Novatek nnnnn, Ilitek nnnn etc someting like that) there is often
+a datasheet for the display controller available but the display per
+se often obscures the display controller.
 
+>  > Doesn't it work to combine them into one call for each
+>  > pair?
+>  >> +       dsi_dcs_write_seq(dsi, );
+>  >> +       dsi_generic_write_seq(dsi, 0xff, 0x87, 0x19);
+>
+> By using a macro? We can... but I am not sure what (0x00, 0x80), (0x00,
+> 0xa0),etc type of commands signify without the datasheet, so I am not
+> sure what to name them in the macro and make any sensible meaning out of it.
+
+I meant just sending dsi_generic_write_seq() with everything in
+it:
+
+dsi_generic_write_seq(dsi, 0x00, 0x80, 0xff, 0x87, 0x19);
+
+Instead of two writes. Doesn't this work?
+
+Yours,
+Linus Walleij
