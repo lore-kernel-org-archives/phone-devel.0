@@ -2,128 +2,77 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCA98C4332F
-	for <phone-devel@archiver.kernel.org>; Fri, 20 May 2022 19:58:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74F52C433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 20 May 2022 22:20:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353372AbiETT6O (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 May 2022 15:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33220 "EHLO
+        id S1351053AbiETWUP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 May 2022 18:20:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353373AbiETT6M (ORCPT
+        with ESMTP id S1350459AbiETWUO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 20 May 2022 15:58:12 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18E4619CB6C;
-        Fri, 20 May 2022 12:58:11 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id c19so2995931lfv.5;
-        Fri, 20 May 2022 12:58:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=WOJusE8NHNqjKMNStmuZRo9RH3cwXzoVFMfF94/t6Ck=;
-        b=bQ+WBLuzBq3aGizqD1+Kwm5uAKpENycXAljdLzTGsAaeq+eESfeAhCSUpZDT5IDNb+
-         P9zTFv7zoTRkmT/uwyhlZyXGFyiERjKOPBEBQWG4V9rlz1NhEyOqJTV5P3IKQAqYnxva
-         zVb6UFNRlCa1blmb2JCzrbWtoKSq9JCYY/sYf8dT32VU3RaA+dRV/Nq6TJYgh6kmh5LD
-         kSmEw+or1PbtqHPMBqBSOAbmKlV0V+u4GmL78rngDoFH2mA1oDxVQT4Iih9170vjUhFw
-         ebTXGxF75uA7HdFslnlPt6emZADNR7A8pIHxil/1PZB17Xr8krOhd2E1J1pblpk+5/Ar
-         NAcA==
+        Fri, 20 May 2022 18:20:14 -0400
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3144D1A074A;
+        Fri, 20 May 2022 15:20:14 -0700 (PDT)
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-f1d2ea701dso11814110fac.10;
+        Fri, 20 May 2022 15:20:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=WOJusE8NHNqjKMNStmuZRo9RH3cwXzoVFMfF94/t6Ck=;
-        b=mgGVOZjulemk2VqRjHC5Yom16+rHbpFqOLBsa+ueRQSQVVEdrPw5h4i8iFjaCGoiLT
-         B1GPQp6Nkd6RiziP4cLoOGebRbAIT/P2MryYVe2ZQM4Y2CErOdOPT6xrXIFbFLMu4D+4
-         U6YaZfIEEm85ap9ICIhGfUH78MqcsYIKpYYbP8lLX8PtovChonP5KGhaxr7F1lyM0X3s
-         YUtQO6uScGygIU8tkIiLtFfWEyDhACAfPFwNNk+XoGxb5ojqenWCktlojkn3sM39vtzE
-         EmkeTzMJqciRNHx4abfc7h1XysYhexmcHKx06dOI56jAY5lO6qxlDuW/j7y7WTFcfZt1
-         itKw==
-X-Gm-Message-State: AOAM532UqEkOHP3sDhMgUz+X9BrbleTr/UI+qdqAgOzU2CNpjVq83A62
-        7StHZ8BHv3JvouE3I3uQczU=
-X-Google-Smtp-Source: ABdhPJzUt2asX4E8YYHlbCTQJA7I8CTGGnYx5OzSOW/hCyHXdcIZDrwis8BM2kQq338jS7Wsy2a/7A==
-X-Received: by 2002:a05:6512:5cb:b0:472:f7e:a5f5 with SMTP id o11-20020a05651205cb00b004720f7ea5f5mr7867956lfo.358.1653076689178;
-        Fri, 20 May 2022 12:58:09 -0700 (PDT)
-Received: from pc ([104.28.198.246])
-        by smtp.gmail.com with ESMTPSA id u5-20020a2e8545000000b0024f3d1dae7csm422051ljj.4.2022.05.20.12.58.07
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=M8rmRCmN4GlSEfCUYx10TspLN6s4IxFkT9OjnFWex24=;
+        b=5boocA2mCB1cSq1Fpmx9VxwwIe0xnvR80yV98UyDcw8D6bVl+pP5yAmk6txNKEBTBW
+         SYRE2gUnRmgpiAC5l/EnKY3wHrbx+5VM0vzLCFta21rde2i1XcPbHRqxUfbGVZDT+qQy
+         AEk3dEhqTp2Psvrloq0J7i9G3CTcPIhmL2yAMa7Sp3drCa9zN6+aG6TCjTa7yfmaIyxY
+         JU+9V73mbM9DryGDpdbcMENxAZR8tEMQq4Wg9yCDzlVquRKxz9b7+KRjqgVqW8mEwhrF
+         DkN/StQ8gozPRhcXekhAcf1zDDIdxsPlgXK5VTkz5gGDMyKCSRPtKRzQ4sii5zIoRrKQ
+         9BGQ==
+X-Gm-Message-State: AOAM531AQC23YhyhA1WU+0Y4W0svQVDNM/PMrXof9r/yXlPuMoRk1UMt
+        gHXuCDdVmPwjTrODbMZkcQ==
+X-Google-Smtp-Source: ABdhPJwJjQIXPU0/UMu0hOETcS+SXwtTymvjCnqffWHXLumHewxkv7m+SwigscCX2nOUGYR5V10jnQ==
+X-Received: by 2002:a05:6870:d109:b0:f1:ab23:9e with SMTP id e9-20020a056870d10900b000f1ab23009emr7621547oac.187.1653085213482;
+        Fri, 20 May 2022 15:20:13 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id 184-20020aca05c1000000b0032698578409sm1572229oif.38.2022.05.20.15.20.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 May 2022 12:58:08 -0700 (PDT)
-Date:   Fri, 20 May 2022 22:58:03 +0300
-From:   Boris Lysov <arz65xx@gmail.com>
+        Fri, 20 May 2022 15:20:12 -0700 (PDT)
+Received: (nullmailer pid 354579 invoked by uid 1000);
+        Fri, 20 May 2022 22:20:11 -0000
+Date:   Fri, 20 May 2022 17:20:11 -0500
+From:   Rob Herring <robh@kernel.org>
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Cc:     Chen-Yu Tsai <wenst@chromium.org>,
-        Miles Chen <miles.chen@mediatek.com>,
-        bgolaszewski@baylibre.com, chun-jie.chen@mediatek.com,
-        ck.hu@mediatek.com, devicetree@vger.kernel.org,
-        fparent@baylibre.com, ikjn@chromium.org, jason-jh.lin@mediatek.com,
-        kernel@collabora.com, konrad.dybcio@somainline.org,
-        krzysztof.kozlowski+dt@linaro.org,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+Cc:     konrad.dybcio@somainline.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, robh+dt@kernel.org,
+        linux-arm-kernel@lists.infradead.org, will@kernel.org,
+        joro@8bytes.org, linux-mediatek@lists.infradead.org,
         marijn.suijten@somainline.org, martin.botka@somainline.org,
-        matthias.bgg@gmail.com, mturquette@baylibre.com,
-        p.zabel@pengutronix.de, paul.bouchara@somainline.org,
-        phone-devel@vger.kernel.org, rex-bc.chen@mediatek.com,
-        robh+dt@kernel.org, sam.shih@mediatek.com, sboyd@kernel.org,
-        tinghan.shen@mediatek.com, weiyi.lu@mediatek.com,
-        y.oudjana@protonmail.com, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v2 7/7] clk: mediatek: Add MediaTek Helio X10 MT6795
- clock drivers
-Message-ID: <20220520225803.193bcda9@pc>
-In-Reply-To: <a253f338-c162-17b8-f412-95cd63195151@collabora.com>
-References: <20220518111652.223727-8-angelogioacchino.delregno@collabora.com>
-        <20220519045340.11198-1-miles.chen@mediatek.com>
-        <11bf21cd-85c4-f64c-2af7-7695e71aee07@collabora.com>
-        <CAGXv+5H4gF5GXzfk8mjkG4Kry8uCs1CQbKoViBuc9LC+XdHH=A@mail.gmail.com>
-        <a253f338-c162-17b8-f412-95cd63195151@collabora.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, yong.wu@mediatek.com,
+        krzysztof.kozlowski+dt@linaro.org, paul.bouchara@somainline.org,
+        matthias.bgg@gmail.com, iommu@lists.linux-foundation.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: mediatek: Add bindings for MT6795 M4U
+Message-ID: <20220520222011.GA354543-robh@kernel.org>
+References: <20220518101849.46804-1-angelogioacchino.delregno@collabora.com>
+ <20220518101849.46804-2-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220518101849.46804-2-angelogioacchino.delregno@collabora.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hello, I'd like to chime in with some feedback.
-
-> >> Hence, the usecases for this kind of splitting are:
-> >> 1. Somewhat rare (corner) cases: someone may not want to compile in any of
-> >> the mm/venc/vdec/mfg clock drivers because they don't need the
-> >> functionality at all (probably, including the other related drivers), or;
-> >> 2. It would be possible to compile as built-in only the "main" drivers
-> >> (apmixed, infra, peri, topck) to achieve a boot (ex.: you need eMMC to
-> >> boot, at least) and then compile the mm/venc/vdec/mfg as modules to be
-> >> loaded after mounting a rootfs (where you probably also have mediatek-drm,
-> >> vcodec, etc as modules).
-> > 
-> > I assume you mean split them into two groups:
-> > 
-> >    - essential for booting to a state capable of loading modules from
-> > storage So apmixedsys + topckgen + infra_ao + peri_ao + imp_iic_wrap
-> > (maybe?)
-> >    - everything else
-> { snip }
-> > IMO having two Kconfig symbols for one chip is still much better than
-> > having ten though.
-This sounds good.
-
-I think it would've been even better if selecting a Kconfig option like
-MACH_MT6795 would automatically select the base clock driver for booting to a
-state capable of loading modules from storage. But a quick check showed me that
-arm64 doesn't use such an approach unlike arm.
-
-> For MT8195... and 92, 83, 73... and others from the same era, being them for
-> chromebooks, iot, smartphones and whatever else... yeah you're totally right.
+On Wed, 18 May 2022 12:18:48 +0200, AngeloGioacchino Del Regno wrote:
+> Add bindings for the MediaTek Helio X10 (MT6795) IOMMU/M4U.
 > 
-> The issue starts raising when looking at older SoCs featuring an older
-> bootloader that does have a kernel size limitation; for example, to make the
-> loader happy on MT6795, I had to strip the defconfig a lot and keep the
-> Android-style boot.img smaller than 10MB (that's Image.gz-dtb + ramdisk).
-This issue gets even more relevant if/when we consider older ARM32 SoCs such as
-mt65xx series. As far as I know, most of them (with a notable exception of
-mt6580) have bootloaders that restrict max boot.img size to 6144 kB.
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> ---
+>  .../bindings/iommu/mediatek,iommu.yaml        |  4 +
+>  include/dt-bindings/memory/mt6795-larb-port.h | 96 +++++++++++++++++++
+>  2 files changed, 100 insertions(+)
+>  create mode 100644 include/dt-bindings/memory/mt6795-larb-port.h
+> 
 
-However, I think too much granularity in Kconfig might cause unnecessary
-confusion. The "essential clock infra" + "everything else" split sounds better
-to me.
+Acked-by: Rob Herring <robh@kernel.org>
