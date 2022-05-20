@@ -2,81 +2,90 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0123C433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 19 May 2022 12:52:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50C3BC433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 20 May 2022 04:54:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232042AbiESMwy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 19 May 2022 08:52:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60976 "EHLO
+        id S1345461AbiETEy6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 May 2022 00:54:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233336AbiESMwu (ORCPT
+        with ESMTP id S235022AbiETEy5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 19 May 2022 08:52:50 -0400
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23BCAA76E4
-        for <phone-devel@vger.kernel.org>; Thu, 19 May 2022 05:52:49 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-2f16645872fso55574577b3.4
-        for <phone-devel@vger.kernel.org>; Thu, 19 May 2022 05:52:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=23wYU4DFAa+ccpD7+FSwhamoprzmEj3uDp7y0mActEo=;
-        b=hfVL1dn/CgRCgf3U75wy4kei3hEDHCT7kTa5uANX2GJ8BG1qjcXzySeFkxn0EBZQPH
-         MB1pi9I4Kdo9ax6W3xIeUXcNT3pA87zN6lRvFyo1ouv22GGJRpBQOz55ACqbhtLPDf4i
-         aLt2uqaHwUBUfqmIJ52m5+2pAitKtND8vjnKUIfbzoPVzzO1EwzkEvaKKgYnPsHli7A5
-         Dorni3TXvSxoFs8RchOX2AWsTxjBh7FSyzDmh5xa/d2oC1yjL6xBeIJHvqsFV5cp3HcE
-         PIgcA83sAOE1VCGFRH3WSQLgcgWfSqN4Mplllj7w4qM7DrH4bLPwuGX4diQTj1hMw7YM
-         X6Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=23wYU4DFAa+ccpD7+FSwhamoprzmEj3uDp7y0mActEo=;
-        b=WtzpEZUZazh5hx7pKrm8/gvwDELy4uHc1BmOSQYPpxOflTdKvwpEH/um29QDS9zo7h
-         TxicR3xsKNGMTjl6CgSWp3M2WzMdt6hEq2bALC1yV9nbdTZZbq6mFFEBoS2UWijKixG6
-         bpG3wZsjR6+VCRfsisQghWZImkPeWBt5y7kIurlccmxFco5txeu7iNCbMCvs51oF6vxj
-         p2YRXbummowZpnRWAwsI+T+p3TjZ7TDgyyab2Jatc13kBpITDMWpaL+D2qTX0dKiJYJz
-         uAxEKQDvhGyoB+bHJgP/vLqK/yF2MT+Q6vrCJjyCBuadkD5+n9d1hbTXcxH5rY2ihLXA
-         2F8g==
-X-Gm-Message-State: AOAM533NdzSqF8y95SDV0dStKG1iZYPcnT0xNPPcGTdUCl14rtMJKslh
-        lbu3HsYL6NfBnELq6I//vbExaj2F886x11/Y0LnnNw==
-X-Google-Smtp-Source: ABdhPJxz6cNg9i52zldSUDmMCQa+r0nA+q1e1LrZhZWANGaqec5fjxKPgL7jrlpfvhenfuyisrtAWwQXgmtp6oGrwNA=
-X-Received: by 2002:a81:1154:0:b0:2fe:d5a4:f26b with SMTP id
- 81-20020a811154000000b002fed5a4f26bmr4719985ywr.140.1652964768333; Thu, 19
- May 2022 05:52:48 -0700 (PDT)
+        Fri, 20 May 2022 00:54:57 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39009674EE;
+        Thu, 19 May 2022 21:54:50 -0700 (PDT)
+X-UUID: e072c075cd874dff8f6dfe1aa6c4e30c-20220520
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.5,REQID:a057667c-2344-48a6-a407-c9831addb816,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
+        ON:release,TS:0
+X-CID-META: VersionHash:2a19b09,CLOUDID:be52e5e2-edbf-4bd4-8a34-dfc5f7bb086d,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil
+        ,QS:0,BEC:nil
+X-UUID: e072c075cd874dff8f6dfe1aa6c4e30c-20220520
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+        (envelope-from <miles.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 729493440; Fri, 20 May 2022 12:54:45 +0800
+Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Fri, 20 May 2022 12:54:44 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Fri, 20 May 2022 12:54:43 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Fri, 20 May 2022 12:54:43 +0800
+From:   Miles Chen <miles.chen@mediatek.com>
+To:     <angelogioacchino.delregno@collabora.com>
+CC:     <bgolaszewski@baylibre.com>, <chun-jie.chen@mediatek.com>,
+        <ck.hu@mediatek.com>, <devicetree@vger.kernel.org>,
+        <fparent@baylibre.com>, <ikjn@chromium.org>,
+        <jason-jh.lin@mediatek.com>, <kernel@collabora.com>,
+        <konrad.dybcio@somainline.org>,
+        <krzysztof.kozlowski+dt@linaro.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <marijn.suijten@somainline.org>, <martin.botka@somainline.org>,
+        <matthias.bgg@gmail.com>, <miles.chen@mediatek.com>,
+        <mturquette@baylibre.com>, <p.zabel@pengutronix.de>,
+        <paul.bouchara@somainline.org>, <phone-devel@vger.kernel.org>,
+        <rex-bc.chen@mediatek.com>, <robh+dt@kernel.org>,
+        <sam.shih@mediatek.com>, <sboyd@kernel.org>,
+        <tinghan.shen@mediatek.com>, <weiyi.lu@mediatek.com>,
+        <wenst@chromium.org>, <y.oudjana@protonmail.com>,
+        <~postmarketos/upstreaming@lists.sr.ht>
+Subject: Re: [PATCH v2 7/7] clk: mediatek: Add MediaTek Helio X10 MT6795 clock drivers
+Date:   Fri, 20 May 2022 12:54:38 +0800
+Message-ID: <20220520045438.25661-1-miles.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <a253f338-c162-17b8-f412-95cd63195151@collabora.com>
+References: <a253f338-c162-17b8-f412-95cd63195151@collabora.com>
 MIME-Version: 1.0
-References: <20220511220613.1015472-1-marijn.suijten@somainline.org> <20220511220613.1015472-4-marijn.suijten@somainline.org>
-In-Reply-To: <20220511220613.1015472-4-marijn.suijten@somainline.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 19 May 2022 14:52:37 +0200
-Message-ID: <CACRpkdaH-+VvTpy4NkiEwce1wEpsPYknOoF6ebxHxfdvVZaNxg@mail.gmail.com>
-Subject: Re: [PATCH 3/7] pinctrl: qcom: spmi-gpio: Add pm6125 compatible
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, May 12, 2022 at 12:06 AM Marijn Suijten
-<marijn.suijten@somainline.org> wrote:
+Hi Angelo,
 
-> The pm6125 has 9 GPIOs with no holes inbetween.
+>For MT8195... and 92, 83, 73... and others from the same era, being them for
+>chromebooks, iot, smartphones and whatever else... yeah you're totally right.
 >
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>The issue starts raising when looking at older SoCs featuring an older bootloader
+>that does have a kernel size limitation; for example, to make the loader happy on
+>MT6795, I had to strip the defconfig a lot and keep the Android-style boot.img
+>smaller than 10MB (that's Image.gz-dtb + ramdisk).
 
-This patch 3/7 applied to the pinctrl tree.
+I think you have the point :-)
+I did not consider the older SoCs case you mentioned and there is a real 10MB limit.
+I'm fine with this.
 
-Yours,
-Linus Walleij
+ChenYu, What do you think?
+
+thanks,
+Miles
