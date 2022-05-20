@@ -2,333 +2,239 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50023C433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 20 May 2022 12:04:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A38DC433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 20 May 2022 14:24:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348911AbiETMEg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 May 2022 08:04:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58480 "EHLO
+        id S1350232AbiETOYi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 May 2022 10:24:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348969AbiETMEe (ORCPT
+        with ESMTP id S1345583AbiETOYi (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 20 May 2022 08:04:34 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7FF314D7BC
-        for <phone-devel@vger.kernel.org>; Fri, 20 May 2022 05:04:31 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id f9so15299171ejc.0
-        for <phone-devel@vger.kernel.org>; Fri, 20 May 2022 05:04:31 -0700 (PDT)
+        Fri, 20 May 2022 10:24:38 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 651EE166D6E
+        for <phone-devel@vger.kernel.org>; Fri, 20 May 2022 07:24:35 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id bu29so14686670lfb.0
+        for <phone-devel@vger.kernel.org>; Fri, 20 May 2022 07:24:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=mime-version:content-transfer-encoding:date:message-id:subject:from
-         :to:cc:references:in-reply-to;
-        bh=bnp8Ujwr8MQyroDL1ax6TC+7SRvJNg55sxpIGZD26uk=;
-        b=quqvSHxC6rGCpfvIoQTQlfgyzOfCAOVSoJ0/SHj0YgmVnY3uE4NeOILG9RUerUh9x1
-         up9AjQNAGGP5YuiCGLuloWLqv4JcA7lPCfTPKXP5mMIHS4ABzOx8NRQDoOgXJ9N3C4KS
-         ExoJBIhCY2/ucanpGN3W7T+/vOxR/hYa9ZMa4PKqmD5s0Q9cROgfePxkCfOlMwpyIRbf
-         Rx2YzJRITibYjjHh1EF81SRQ05GN1R4/6h+g8DFqKwAOQXIUbbrqvLHRd1tG6CGuBkmT
-         BAi6z4wC2J3yIGto12mcGu4uQsK9SuXwiObX5TIaQ98GBBCFk1mfnoyKcUbaVxku51Kl
-         4SSw==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=8qK1C/fXcj1Bx31GwrbgIHQcHFBncp+gQ5Gc0QhkCVs=;
+        b=XX0K4MWrxSFsvmT0HwgfuHMG+PL/FDHT2earFmJZKpu92EmvkETnV90r/whOD+/lL/
+         nGVWqi/eYsZYX2P8CBT16ewGnaf+AMkQk/1oQm2tdWIH3Fe4KXAWxkkSUCiTSqomOoCK
+         WmDEeN67QmThoa9r3L66RSklPVtI/Ja/zILbnI/URnPDcTYIEPEVpyxBW48RUS+xTHnr
+         C1ZCvj2Mr3gvzekOMt6lDvaxKe3SgWMSMxhcqKjm3V7jipK6Ktbo5JKqe60kmm3Vhs6E
+         SMCGwv7oQ92A5Q2QjLfxfBwIeIvz6D0LWbSY26f2rZmldPZ31ChLWmA+T2EJGcDpyekH
+         z5Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:subject:from:to:cc:references:in-reply-to;
-        bh=bnp8Ujwr8MQyroDL1ax6TC+7SRvJNg55sxpIGZD26uk=;
-        b=dxvsb3xi8eTtsFq6NI5kBBKxG8rtrWencDcIbCqxf+ir1c+dRplCQhKaF06z5Bqb4q
-         Ec2BYsYzPjBdvMyBLaDamNgH5HxlhPatu7qmgcVJbdb3zbQk4guEr3HoZi9mhj8HjQAv
-         e5su127DOUHDVOi9QS9Dr1pXzB/SqRjtcmhqSV+SBucEvKyXuJe3MVIHtn7wDlqwQyEd
-         bgMnA7cW6hbAEXWi4GI7KEZjbj/BG/NRWn6rbMZroIaCMZlv2DT3Nur8TCe/kYthbOZF
-         8Y/6REK5DKJpJKDXM4U61mM/RLNox5kjQv+pG0mtt5iR7M72FDh8HJY7WFoX+oum3R3G
-         SjAg==
-X-Gm-Message-State: AOAM533R6c7+y2Y/OWyY0axpvlLoq+EtknKnoyke1GSltlhHi9LS084F
-        7g4FYXjzdIHk5glIB09yuAshcA==
-X-Google-Smtp-Source: ABdhPJxz6xN6SrDKQFNsARBd2ZX6IwHX3udFQjhKbdEnaeG29Octc2v/NTMAWOIO2IC97iIEFmAA7g==
-X-Received: by 2002:a17:907:1c20:b0:6f4:639e:9400 with SMTP id nc32-20020a1709071c2000b006f4639e9400mr8479969ejc.485.1653048269844;
-        Fri, 20 May 2022 05:04:29 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id d13-20020a05640208cd00b0042617ba639esm4214058edz.40.2022.05.20.05.04.28
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=8qK1C/fXcj1Bx31GwrbgIHQcHFBncp+gQ5Gc0QhkCVs=;
+        b=P65uBHSYgfzZQo/M7k++rLdo0P7A916tYtAHok7Pun9kjrbZrPTgX12qYkQ00dI4E4
+         m8paTuFFNs+z/uCYXs5SHiJ71sBQb+vfBTDBO5GnbgVxi2s6fF6rN6zL6XkiLjp1Z2C+
+         S7wV6jevC+rwNLevhz6OP8vKfwUegLfYVZGtVGq3ZyjZP3AN06rO4Mq0ghNkwfLD7RnQ
+         EW3EbqfIq4nDKRIUwJCxs2niMssiC9Zbxfdsy2Uc/Grr4daURV84K3B9WFpHuOGyQwp8
+         Ikus+BRwEOz3UxYULUIRUHlbe08AC9hlU+YuIn9UAdtzNAyEkuh8QqgPK4V81Hxjzdco
+         wKng==
+X-Gm-Message-State: AOAM532GzG7YgBLPQgfXz7km/0X/C+HvOqqh4NgT4z45zkN39MTX286W
+        uZ3yM12cI+HlPVw1NYeFbrZRMA==
+X-Google-Smtp-Source: ABdhPJwwrJPm4H3reVCsciJsAq6hR9ACJ31onH+YD27Kg88MIvoXnWyGyYu+ftDUc43IRAua/VsZiA==
+X-Received: by 2002:a05:6512:110d:b0:473:d519:5764 with SMTP id l13-20020a056512110d00b00473d5195764mr7385296lfg.128.1653056673730;
+        Fri, 20 May 2022 07:24:33 -0700 (PDT)
+Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id o25-20020a056512051900b0047255d2117asm678537lfb.169.2022.05.20.07.24.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 May 2022 05:04:29 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Fri, 20 May 2022 14:04:28 +0200
-Message-Id: <CK4KPEWM9165.2LR9ZUG2GGK6Q@otso>
-Subject: Re: [PATCH v2 2/5] dt-bindings: interconnect: Add Qualcomm SM6350
- NoC support
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>
-Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
-        "Georgi Djakov" <djakov@kernel.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Odelu Kukatla" <okukatla@codeaurora.org>,
-        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.9.0
+        Fri, 20 May 2022 07:24:33 -0700 (PDT)
+Message-ID: <b9487ffe-7ed5-077c-3c2c-886746457365@linaro.org>
+Date:   Fri, 20 May 2022 16:24:31 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v2 2/5] dt-bindings: interconnect: Add Qualcomm SM6350 NoC
+ support
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Georgi Djakov <djakov@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Odelu Kukatla <okukatla@codeaurora.org>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 References: <20220520070318.48521-1-luca.weiss@fairphone.com>
  <20220520070318.48521-3-luca.weiss@fairphone.com>
  <7b451dfb-8353-4a4e-1834-a01feaa267d2@linaro.org>
-In-Reply-To: <7b451dfb-8353-4a4e-1834-a01feaa267d2@linaro.org>
+ <CK4KPEWM9165.2LR9ZUG2GGK6Q@otso>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <CK4KPEWM9165.2LR9ZUG2GGK6Q@otso>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Krzysztof,
+On 20/05/2022 14:04, Luca Weiss wrote:
+> Hi Krzysztof,
+> 
+> Thanks for the review!
+> 
+> On Fri May 20, 2022 at 12:31 PM CEST, Krzysztof Kozlowski wrote:
+>> On 20/05/2022 09:03, Luca Weiss wrote:
+>>> Add bindings for Qualcomm SM6350 Network-On-Chip interconnect devices.
+>>>
+>>> As SM6350 has two pairs of NoCs sharing the same reg, allow this in the
+>>> binding documentation, as was done for qcm2290.
+>>>
+>>> Because the main qcom,rpmh.yaml file is getting too complicated for our
+>>> use cases, create a new qcom,rpmh-common.yaml and a separate
+>>> qcom,sm6350-rpmh.yaml that defines our new bindings.
+>>>
+>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>> ---
+>>> Changes since v1:
+>>> * Split sm6350 into separate yaml with new rpmh-common.yaml
+>>>
+>>>  .../interconnect/qcom,rpmh-common.yaml        |  41 +++++
+>>>  .../interconnect/qcom,sm6350-rpmh.yaml        |  82 ++++++++++
+>>>  .../dt-bindings/interconnect/qcom,sm6350.h    | 148 ++++++++++++++++++
+>>>  3 files changed, 271 insertions(+)
+>>>  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,rpmh-common.yaml
+>>>  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,sm6350-rpmh.yaml
+>>>  create mode 100644 include/dt-bindings/interconnect/qcom,sm6350.h
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/interconnect/qcom,rpmh-common.yaml b/Documentation/devicetree/bindings/interconnect/qcom,rpmh-common.yaml
+>>> new file mode 100644
+>>> index 000000000000..6121eea3e87d
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/interconnect/qcom,rpmh-common.yaml
+>>> @@ -0,0 +1,41 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>>> +%YAML 1.2
+>>> +---
+>>> +$id: http://devicetree.org/schemas/interconnect/qcom,rpmh-common.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: Qualcomm RPMh Network-On-Chip Interconnect
+>>> +
+>>> +maintainers:
+>>> +  - Georgi Djakov <georgi.djakov@linaro.org>
+>>> +  - Odelu Kukatla <okukatla@codeaurora.org>
+>>
+>> Is this valid email address?
+> 
+> Will put Georgi and Bjorn as maintainers, as per your other email.
+> 
+>>
+>>> +
+>>> +description: |
+>>> +   RPMh interconnect providers support system bandwidth requirements through
+>>> +   RPMh hardware accelerators known as Bus Clock Manager (BCM). The provider is
+>>> +   able to communicate with the BCM through the Resource State Coordinator (RSC)
+>>> +   associated with each execution environment. Provider nodes must point to at
+>>> +   least one RPMh device child node pertaining to their RSC and each provider
+>>> +   can map to multiple RPMh resources.
+>>> +
+>>> +properties:
+>>> +  '#interconnect-cells':
+>>> +    enum: [ 1, 2 ]
+>>
+>> Why this is an enum?
+> 
+> As a start, just adding that the definitions are copied from
+> qcom,rpmh.yaml so it's not my invention :) Of course that doesn't mean
+> that it should be improved where possible!
+> 
+> Either value is supported by the driver (and used upstream). But perhaps
+> it can use a description to define what the 'parameters' mean.
+> 
+> The second (optional) parameters "is to support different bandwidth
+> configurations that are toggled by RPMh, depending on the power state of
+> the CPU."[0]
+> 
+> A commit message for sc7180 calls it the "tag information" and "The
+> consumers can specify the path tag as an additional argument to the
+> endpoints."[1]
+> 
+> Not sure how to properly describe the first property, I guess the
+> interconnect endpoint? Maybe Georgi can help here.
+> 
+> 
+> [0] https://lore.kernel.org/linux-arm-msm/b079a211-d387-7958-bbe2-c41cac00d269@kernel.org/
+> [1] https://git.kernel.org/torvalds/c/e23b122
 
-Thanks for the review!
+Hm, indeed driver supports variable values. It's fine then.
 
-On Fri May 20, 2022 at 12:31 PM CEST, Krzysztof Kozlowski wrote:
-> On 20/05/2022 09:03, Luca Weiss wrote:
-> > Add bindings for Qualcomm SM6350 Network-On-Chip interconnect devices.
-> >=20
-> > As SM6350 has two pairs of NoCs sharing the same reg, allow this in the
-> > binding documentation, as was done for qcm2290.
-> >=20
-> > Because the main qcom,rpmh.yaml file is getting too complicated for our
-> > use cases, create a new qcom,rpmh-common.yaml and a separate
-> > qcom,sm6350-rpmh.yaml that defines our new bindings.
-> >=20
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> > Changes since v1:
-> > * Split sm6350 into separate yaml with new rpmh-common.yaml
-> >=20
-> >  .../interconnect/qcom,rpmh-common.yaml        |  41 +++++
-> >  .../interconnect/qcom,sm6350-rpmh.yaml        |  82 ++++++++++
-> >  .../dt-bindings/interconnect/qcom,sm6350.h    | 148 ++++++++++++++++++
-> >  3 files changed, 271 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom=
-,rpmh-common.yaml
-> >  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom=
-,sm6350-rpmh.yaml
-> >  create mode 100644 include/dt-bindings/interconnect/qcom,sm6350.h
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/interconnect/qcom,rpmh-c=
-ommon.yaml b/Documentation/devicetree/bindings/interconnect/qcom,rpmh-commo=
-n.yaml
-> > new file mode 100644
-> > index 000000000000..6121eea3e87d
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/interconnect/qcom,rpmh-common.y=
-aml
-> > @@ -0,0 +1,41 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/interconnect/qcom,rpmh-common.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Qualcomm RPMh Network-On-Chip Interconnect
-> > +
-> > +maintainers:
-> > +  - Georgi Djakov <georgi.djakov@linaro.org>
-> > +  - Odelu Kukatla <okukatla@codeaurora.org>
->
-> Is this valid email address?
+> 
+>>
+>>> +
+>>> +  qcom,bcm-voters:
+>>> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+>>> +    items:
+>>
+>> Please implement my previous comments.
+> 
+> Sorry, I looked over the comment in v1.
+> 
+> As far as I can tell in current code only 1 item is used.
+> 
+> If the second parameter of_bcm_voter_get would be used as non-NULL then
+> qcom,bcm-voter-names gets looked up and the N-th value in qcom,bcm-voters
+> used. But currently qcom,bcm-voter-names is not actively used so only
+> one gets used.
+> 
+> Do you have a recommendation what to put here? A synthetic limit like
+> 32 just to have a number there?
 
-Will put Georgi and Bjorn as maintainers, as per your other email.
+Let's go with maxItems:1, for both fields.
 
->
-> > +
-> > +description: |
-> > +   RPMh interconnect providers support system bandwidth requirements t=
-hrough
-> > +   RPMh hardware accelerators known as Bus Clock Manager (BCM). The pr=
-ovider is
-> > +   able to communicate with the BCM through the Resource State Coordin=
-ator (RSC)
-> > +   associated with each execution environment. Provider nodes must poi=
-nt to at
-> > +   least one RPMh device child node pertaining to their RSC and each p=
-rovider
-> > +   can map to multiple RPMh resources.
-> > +
-> > +properties:
-> > +  '#interconnect-cells':
-> > +    enum: [ 1, 2 ]
->
-> Why this is an enum?
+> 
+>>
+>>> +      maxItems: 1
+>>> +    description: |
+>>
+>> No need for |
+> 
+> ack
+> 
+>>
+>>> +      List of phandles to qcom,bcm-voter nodes that are required by
+>>> +      this interconnect to send RPMh commands.
+>>> +
+>>> +  qcom,bcm-voter-names:
+>>
+>> What names do you expect here?
+> 
+> Currently unused in mainline but newer downstream kernels[2] use "hlos"
+> as first parameter, and e.g. "disp" as second one that goes to a
+> qcom,bcm-voter that's a child of disp_rsc. Not sure exactly what that
+> does.
+> 
+> [2] https://github.com/atomsand/android_kernel_qcom_devicetree/blob/a6d50810116e8314d64eb63b8862c207b974e0c7/qcom/waipio.dtsi#L1701-L1793
 
-As a start, just adding that the definitions are copied from
-qcom,rpmh.yaml so it's not my invention :) Of course that doesn't mean
-that it should be improved where possible!
+The bindings example uses apps and disp, so here would be only "apps".
 
-Either value is supported by the driver (and used upstream). But perhaps
-it can use a description to define what the 'parameters' mean.
+>>> +
+>>> +  '#interconnect-cells': true
+>>
+>> Since you defined it as enum in rpmh-common, you really expect here
+>> different values?
+> 
+> Doesn't ": true" here just mean we want the value from the allOf: -
+> $ref?
+> But we could in theory make interconnect-cells only accept <2> for
+> sm6350.
 
-The second (optional) parameters "is to support different bandwidth
-configurations that are toggled by RPMh, depending on the power state of
-the CPU."[0]
-
-A commit message for sc7180 calls it the "tag information" and "The
-consumers can specify the path tag as an additional argument to the
-endpoints."[1]
-
-Not sure how to properly describe the first property, I guess the
-interconnect endpoint? Maybe Georgi can help here.
+Yes, and the $ref defines it as [1, 2], so initially I thought this
+should be narrowed. However it seems 1 or 2 are still valid for all of
+Qcom interconnects, so your "true" is correct.
 
 
-[0] https://lore.kernel.org/linux-arm-msm/b079a211-d387-7958-bbe2-c41cac00d=
-269@kernel.org/
-[1] https://git.kernel.org/torvalds/c/e23b122
-
->
-> > +
-> > +  qcom,bcm-voters:
-> > +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> > +    items:
->
-> Please implement my previous comments.
-
-Sorry, I looked over the comment in v1.
-
-As far as I can tell in current code only 1 item is used.
-
-If the second parameter of_bcm_voter_get would be used as non-NULL then
-qcom,bcm-voter-names gets looked up and the N-th value in qcom,bcm-voters
-used. But currently qcom,bcm-voter-names is not actively used so only
-one gets used.
-
-Do you have a recommendation what to put here? A synthetic limit like
-32 just to have a number there?
-
->
-> > +      maxItems: 1
-> > +    description: |
->
-> No need for |
-
-ack
-
->
-> > +      List of phandles to qcom,bcm-voter nodes that are required by
-> > +      this interconnect to send RPMh commands.
-> > +
-> > +  qcom,bcm-voter-names:
->
-> What names do you expect here?
-
-Currently unused in mainline but newer downstream kernels[2] use "hlos"
-as first parameter, and e.g. "disp" as second one that goes to a
-qcom,bcm-voter that's a child of disp_rsc. Not sure exactly what that
-does.
-
-[2] https://github.com/atomsand/android_kernel_qcom_devicetree/blob/a6d5081=
-0116e8314d64eb63b8862c207b974e0c7/qcom/waipio.dtsi#L1701-L1793
-
->
-> > +    description: |
->
-> Ditto.
-
-ack
-
->
-> > +      Names for each of the qcom,bcm-voters specified.
-> > +
-> > +required:
-> > +  - '#interconnect-cells'
-> > +  - qcom,bcm-voters
-> > +
-> > +additionalProperties: true
-> > diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sm6350=
--rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sm6350-rpm=
-h.yaml
-> > new file mode 100644
-> > index 000000000000..89fe17c31b8f
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/interconnect/qcom,sm6350-rpmh.y=
-aml
-> > @@ -0,0 +1,82 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/interconnect/qcom,sm6350-rpmh.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Qualcomm SM6350 RPMh Network-On-Chip Interconnect
-> > +
-> > +maintainers:
-> > +  - Luca Weiss <luca.weiss@fairphone.com>
-> > +
-> > +description: |
-> > +  Qualcomm RPMh-based interconnect provider on SM6350.
-> > +
-> > +allOf:
-> > +  - $ref: qcom,rpmh-common.yaml#
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - qcom,sm6350-aggre1-noc
-> > +      - qcom,sm6350-aggre2-noc
-> > +      - qcom,sm6350-config-noc
-> > +      - qcom,sm6350-dc-noc
-> > +      - qcom,sm6350-gem-noc
-> > +      - qcom,sm6350-mmss-noc
-> > +      - qcom,sm6350-npu-noc
-> > +      - qcom,sm6350-system-noc
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  '#interconnect-cells': true
->
-> Since you defined it as enum in rpmh-common, you really expect here
-> different values?
-
-Doesn't ": true" here just mean we want the value from the allOf: -
-$ref?
-But we could in theory make interconnect-cells only accept <2> for
-sm6350.
-
->
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +patternProperties:
->
-> This goes after "properties".
-
-So above required & unevaluatedProperties? Will update.
-
-Regards
-Luca
-
->
-> > +  '^interconnect-[a-z0-9\-]+$':
-> > +    type: object
-> > +    description:
-> > +      The interconnect providers do not have a separate QoS register s=
-pace,
-> > +      but share parent's space.
-> > +    $ref: qcom,rpmh-common.yaml#
-> > +
-> > +    properties:
-> > +      compatible:
-> > +        enum:
-> > +          - qcom,sm6350-clk-virt
-> > +          - qcom,sm6350-compute-noc
-> > +
-> > +      '#interconnect-cells': true
->
-> Same problem.
->
-> > +
-> > +    required:
-> > +      - compatible
-> > +
-> > +    unevaluatedProperties: false
-> > +
->
->
-> Best regards,
-> Krzysztof
-
+Best regards,
+Krzysztof
