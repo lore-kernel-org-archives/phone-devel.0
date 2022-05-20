@@ -2,133 +2,144 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0935C433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 20 May 2022 10:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75670C433F5
+	for <phone-devel@archiver.kernel.org>; Fri, 20 May 2022 11:42:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348156AbiETKd4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 May 2022 06:33:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37514 "EHLO
+        id S241967AbiETLmO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 May 2022 07:42:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348165AbiETKdz (ORCPT
+        with ESMTP id S236504AbiETLmN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 20 May 2022 06:33:55 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB17B90CFD
-        for <phone-devel@vger.kernel.org>; Fri, 20 May 2022 03:33:51 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id bq30so13614174lfb.3
-        for <phone-devel@vger.kernel.org>; Fri, 20 May 2022 03:33:51 -0700 (PDT)
+        Fri, 20 May 2022 07:42:13 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB00CBA557
+        for <phone-devel@vger.kernel.org>; Fri, 20 May 2022 04:42:10 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id kq17so15123863ejb.4
+        for <phone-devel@vger.kernel.org>; Fri, 20 May 2022 04:42:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=LVuXV2CFkZpxeowkVLO5pGMYN265kJ7DW3lBIgIDU24=;
-        b=InUnde+pllALKVumjbiMlajeXmkUXICnixbwvCZrM07LAT6bLxW2RoJIoKVpAIqEBP
-         SQ454Q8b4hJzKlVazi/dNpk4cl2AuL2k8V5V+nOHwbnU50c+GaysxSlep6oIuwFtqQWv
-         DvmNc7Qcg85PjEvJlfbMNfT1/FFRsRdi+Lwk7R8Bgi0azdLVrnumkgnJQyIQB9DeDXje
-         j1y6gASuRwcFkP4PtezD0X9dqQgplOIID9/Yy73lmjbEUTQB1EgCnIRXtEL3VRW80Jwk
-         5QFy0Vy9jgDdT8kK+4uCTMpiUAfw4i5iAVCVuSXtU1wXtkHIQQqfKl+oYGH0xfaiNsRv
-         G2rg==
+        d=fairphone.com; s=fair;
+        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
+         :from:to:references:in-reply-to;
+        bh=wS/ZZ/XGdYJivGUIc7glIv8A/QnED+cfdPx1Mf0OR3o=;
+        b=GB72r8xYURZ6bzQkm22Tu7tonI4ZKXJGQRhTtyxiRTudpMondZELrlYY1Xhwk/RTh7
+         5Zeda7d68kYmu4UCNIN7fS1lTpbwBNmqbf4icxZKokgVZAw3IURsvL0hYvjRsQQt94SW
+         8g3F5Vr/0cKVHhCmBXZcWzC0wiq7c3V0JSaC3VnVhKiPnqLTbIVVrxOldU6Csho//iAb
+         i+1fml2hr9pQ0FUoqm5dGGC4coiMNgTvLt6e50kn9jusRG5SCBeCbTcL00riYCnnhFaf
+         YFkN3NQQ4g90z5x59jFrDWx4eRldBx1pjejiDJWfm3XVu8iRY29x1FFUUaukXe6wZQ0h
+         /hHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=LVuXV2CFkZpxeowkVLO5pGMYN265kJ7DW3lBIgIDU24=;
-        b=yN8vJyfVlrSJATxJNCCHZYFVmwDppKAvIMSKVpUYt31OX6/bgl9BuHN6m3mKp/dzw4
-         S6bTPYCMZsSXaSgQsC7y3gTZ9NH2Zq/zZoJfppLoNYrO3rdAyoEsFodR5MXDQPc1ikbc
-         tqkTTydBeOvvq9qpT+JwU1L8Zafe60CYeqGZ8mcDF33HNISvqW0KseXWA5kN6QRmEXM6
-         jwXLmaN8AzSg21k64rrv4TUSXCcBNrWxx0U1iC3x5Oenz++PtSI36woLn6Ivz8eFE3PM
-         3SCj/8Vt5Zt9cyd/po/HafzwM4cGhGA50U37ZEuNHtYgyngtSR2iENGpmw/skLd+ISzj
-         SeAQ==
-X-Gm-Message-State: AOAM533oUrkZuYZp0n0B5o0nrkY5dCP4m9DmQC2umDIjo52IS117+CKT
-        m5Bs2XM2+G7K3SLaC0TTbHGbfw==
-X-Google-Smtp-Source: ABdhPJxV/WhaALYTuCSJnI35g5RQjc0IJIDrx2kW3apuDK+PAwurIeIvcZtE3yzf68WdR3a92Q9bmQ==
-X-Received: by 2002:a05:6512:1108:b0:477:93a5:328e with SMTP id l8-20020a056512110800b0047793a5328emr6571383lfg.546.1653042830064;
-        Fri, 20 May 2022 03:33:50 -0700 (PDT)
-Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id u2-20020a2ea162000000b0024f3d1daef5sm262248ljl.125.2022.05.20.03.33.48
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:cc:subject:from:to:references:in-reply-to;
+        bh=wS/ZZ/XGdYJivGUIc7glIv8A/QnED+cfdPx1Mf0OR3o=;
+        b=bbANwl08H3VECP/9sY3NCXICGA4qZ3s85rhdUzPi1uDY4sTM50GNRZrUAQr601DuA+
+         XHOUVfwmFY+h/3xg6Hpu4eEqAB1zTG2QLD/J8GqylSfnX+JgwIrFd/kRAo15aPHTvlS6
+         F5aQNwLJWva1p+It2W8/33psMcUKqZ9uX75TSGTaHXGCFFVQVoarTn5UoZnxLL4/qgtp
+         iUricCHatl2J/S2J72slbGJZ21TVWgLjlB697DkXKxWTABTybkfamN2xAcW3/DzK2Sd5
+         ot/oCBKiRlK17Wk+pldBy/zYqL6GQNspkH7bKdRvWLpFzLJnbSZpUzSyGKTI/4nXF1gA
+         poVw==
+X-Gm-Message-State: AOAM530cXnacrp/fr5XSJx19p3RfoRYC+wQRUbcO0ezQeEfihWfwYssM
+        u/o8xs71N5ySzjW+ESK2AKu0wQ==
+X-Google-Smtp-Source: ABdhPJy7fnm73XK7inxXakUomDMt4LomtggIToBNbNojpFIo5Eg5Y2uqDhzYDPx7fPeRzTTy50Yt/g==
+X-Received: by 2002:a17:906:7b82:b0:6f3:ee8d:b959 with SMTP id s2-20020a1709067b8200b006f3ee8db959mr8591524ejo.458.1653046929316;
+        Fri, 20 May 2022 04:42:09 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id w6-20020a170907270600b006f3ef214dedsm3036390ejk.83.2022.05.20.04.42.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 May 2022 03:33:49 -0700 (PDT)
-Message-ID: <d1072c55-9e1c-83df-0184-7405448bbade@linaro.org>
-Date:   Fri, 20 May 2022 12:33:48 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
+        Fri, 20 May 2022 04:42:08 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 20 May 2022 13:42:08 +0200
+Message-Id: <CK4K8B8KQICX.LX0G6HW66RNU@otso>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
+        "Georgi Djakov" <djakov@kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Odelu Kukatla" <okukatla@codeaurora.org>,
+        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH v2 3/5] dt-bindings: interconnect: qcom: Reuse new
  rpmh-common bindings
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Georgi Djakov <djakov@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Odelu Kukatla <okukatla@codeaurora.org>,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>
+X-Mailer: aerc 0.9.0
 References: <20220520070318.48521-1-luca.weiss@fairphone.com>
  <20220520070318.48521-4-luca.weiss@fairphone.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220520070318.48521-4-luca.weiss@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <d1072c55-9e1c-83df-0184-7405448bbade@linaro.org>
+In-Reply-To: <d1072c55-9e1c-83df-0184-7405448bbade@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 20/05/2022 09:03, Luca Weiss wrote:
-> Stop defining the properties twice and use the ones provided in the new
-> qcom,rpmh-common.yaml.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> Changes since v1:
-> * New patch
-> 
->  .../bindings/interconnect/qcom,rpmh.yaml      | 22 +++++--------------
->  1 file changed, 5 insertions(+), 17 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/interconnect/qcom,rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,rpmh.yaml
-> index fae3363fed02..e822dc099339 100644
-> --- a/Documentation/devicetree/bindings/interconnect/qcom,rpmh.yaml
-> +++ b/Documentation/devicetree/bindings/interconnect/qcom,rpmh.yaml
-> @@ -18,6 +18,9 @@ description: |
->     least one RPMh device child node pertaining to their RSC and each provider
->     can map to multiple RPMh resources.
->  
-> +allOf:
-> +  - $ref: qcom,rpmh-common.yaml#
-> +
->  properties:
->    reg:
->      maxItems: 1
-> @@ -131,28 +134,13 @@ properties:
->        - qcom,sm8450-pcie-anoc
->        - qcom,sm8450-system-noc
->  
-> -  '#interconnect-cells':
-> -    enum: [ 1, 2 ]
-> -
-> -  qcom,bcm-voters:
-> -    $ref: /schemas/types.yaml#/definitions/phandle-array
-> -    items:
-> -      maxItems: 1
-> -    description: |
-> -      List of phandles to qcom,bcm-voter nodes that are required by
-> -      this interconnect to send RPMh commands.
-> -
-> -  qcom,bcm-voter-names:
-> -    description: |
-> -      Names for each of the qcom,bcm-voters specified.
-> +  '#interconnect-cells': true
->  
+Hi Krzysztof,
 
-So this explains why your previous patch had such values... The order is
-messed up - first you move common parts to common file, then you add
-SM6350 support.
+On Fri May 20, 2022 at 12:33 PM CEST, Krzysztof Kozlowski wrote:
+> On 20/05/2022 09:03, Luca Weiss wrote:
+> > Stop defining the properties twice and use the ones provided in the new
+> > qcom,rpmh-common.yaml.
+> >=20
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> > Changes since v1:
+> > * New patch
+> >=20
+> >  .../bindings/interconnect/qcom,rpmh.yaml      | 22 +++++--------------
+> >  1 file changed, 5 insertions(+), 17 deletions(-)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/interconnect/qcom,rpmh.y=
+aml b/Documentation/devicetree/bindings/interconnect/qcom,rpmh.yaml
+> > index fae3363fed02..e822dc099339 100644
+> > --- a/Documentation/devicetree/bindings/interconnect/qcom,rpmh.yaml
+> > +++ b/Documentation/devicetree/bindings/interconnect/qcom,rpmh.yaml
+> > @@ -18,6 +18,9 @@ description: |
+> >     least one RPMh device child node pertaining to their RSC and each p=
+rovider
+> >     can map to multiple RPMh resources.
+> > =20
+> > +allOf:
+> > +  - $ref: qcom,rpmh-common.yaml#
+> > +
+> >  properties:
+> >    reg:
+> >      maxItems: 1
+> > @@ -131,28 +134,13 @@ properties:
+> >        - qcom,sm8450-pcie-anoc
+> >        - qcom,sm8450-system-noc
+> > =20
+> > -  '#interconnect-cells':
+> > -    enum: [ 1, 2 ]
+> > -
+> > -  qcom,bcm-voters:
+> > -    $ref: /schemas/types.yaml#/definitions/phandle-array
+> > -    items:
+> > -      maxItems: 1
+> > -    description: |
+> > -      List of phandles to qcom,bcm-voter nodes that are required by
+> > -      this interconnect to send RPMh commands.
+> > -
+> > -  qcom,bcm-voter-names:
+> > -    description: |
+> > -      Names for each of the qcom,bcm-voters specified.
+> > +  '#interconnect-cells': true
+> > =20
+>
+> So this explains why your previous patch had such values... The order is
+> messed up - first you move common parts to common file, then you add
+> SM6350 support.
 
+Right, that makes much more sense. Will split out qcom,rpmh-common first
+and use in rpmh.yaml and then afterwards introduce sm6350.
 
-Best regards,
-Krzysztof
+Regards
+Luca
+
+>
+>
+> Best regards,
+> Krzysztof
+
