@@ -2,90 +2,105 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50C3BC433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 20 May 2022 04:54:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E52E2C4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 20 May 2022 07:05:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345461AbiETEy6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 May 2022 00:54:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48412 "EHLO
+        id S244147AbiETHE5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 May 2022 03:04:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235022AbiETEy5 (ORCPT
+        with ESMTP id S1346490AbiETHEp (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 20 May 2022 00:54:57 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39009674EE;
-        Thu, 19 May 2022 21:54:50 -0700 (PDT)
-X-UUID: e072c075cd874dff8f6dfe1aa6c4e30c-20220520
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.5,REQID:a057667c-2344-48a6-a407-c9831addb816,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
-        ON:release,TS:0
-X-CID-META: VersionHash:2a19b09,CLOUDID:be52e5e2-edbf-4bd4-8a34-dfc5f7bb086d,C
-        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil
-        ,QS:0,BEC:nil
-X-UUID: e072c075cd874dff8f6dfe1aa6c4e30c-20220520
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-        (envelope-from <miles.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 729493440; Fri, 20 May 2022 12:54:45 +0800
-Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Fri, 20 May 2022 12:54:44 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 20 May 2022 12:54:43 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Fri, 20 May 2022 12:54:43 +0800
-From:   Miles Chen <miles.chen@mediatek.com>
-To:     <angelogioacchino.delregno@collabora.com>
-CC:     <bgolaszewski@baylibre.com>, <chun-jie.chen@mediatek.com>,
-        <ck.hu@mediatek.com>, <devicetree@vger.kernel.org>,
-        <fparent@baylibre.com>, <ikjn@chromium.org>,
-        <jason-jh.lin@mediatek.com>, <kernel@collabora.com>,
-        <konrad.dybcio@somainline.org>,
-        <krzysztof.kozlowski+dt@linaro.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <marijn.suijten@somainline.org>, <martin.botka@somainline.org>,
-        <matthias.bgg@gmail.com>, <miles.chen@mediatek.com>,
-        <mturquette@baylibre.com>, <p.zabel@pengutronix.de>,
-        <paul.bouchara@somainline.org>, <phone-devel@vger.kernel.org>,
-        <rex-bc.chen@mediatek.com>, <robh+dt@kernel.org>,
-        <sam.shih@mediatek.com>, <sboyd@kernel.org>,
-        <tinghan.shen@mediatek.com>, <weiyi.lu@mediatek.com>,
-        <wenst@chromium.org>, <y.oudjana@protonmail.com>,
-        <~postmarketos/upstreaming@lists.sr.ht>
-Subject: Re: [PATCH v2 7/7] clk: mediatek: Add MediaTek Helio X10 MT6795 clock drivers
-Date:   Fri, 20 May 2022 12:54:38 +0800
-Message-ID: <20220520045438.25661-1-miles.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <a253f338-c162-17b8-f412-95cd63195151@collabora.com>
-References: <a253f338-c162-17b8-f412-95cd63195151@collabora.com>
+        Fri, 20 May 2022 03:04:45 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9781016329E
+        for <phone-devel@vger.kernel.org>; Fri, 20 May 2022 00:04:19 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id f21so238214ejh.11
+        for <phone-devel@vger.kernel.org>; Fri, 20 May 2022 00:04:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=LvKzpoZaHH4k3rMn3ckQg2LuMnl5MssN3o1bB1rWqok=;
+        b=OViChFl12HJmyRk/c/o9JsiSWCltZinEzP/s7MBGK2BtTa1F8jzZ0X+w7aF/rSfpFn
+         HBreouKn8DKQi78xbpDI76HKBZOGQaPEvZUhOe4ICYs5QcpWstSDCVL0in5bR8kF0yo1
+         sf1joUhz9JOIbGgJwewt6fXIWjxfCOZw0/2+vLpqRiyyXSXK8Q5ngrsIpC9vOiDb1BAZ
+         vIQ9Eu0pGJaGvBTmRSLu/2TWgKpK2+BTNiqm8gNV8gN9/lXy34pbwu2EKr8S1E3E/Ngs
+         bpHX7U7pXzV9/6B5+minAQ4GIzkPig7T12zRpKQ+AuuJRKQ/sOjDKuLa3hrpzKr1LpQ0
+         wPCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=LvKzpoZaHH4k3rMn3ckQg2LuMnl5MssN3o1bB1rWqok=;
+        b=F5FuWJtk2u8+gLdAscQsXwimdDCQLO9AeCmgTxnRKivo6MPhoV1zEP+AnO6JvrUWsd
+         wxFzxR0foqmEoHNhZv7JwHI8jzuQgYVHsaAjtk4ppiDkTv4VSOhsXSrK57iGXkFHR/WM
+         CDOERrfaijkx8wMH6zqZdIVvTRvyFVCoK5ArqT9TPwAb8sUjDbj160AyGuDhSD13RQYZ
+         YGHL8RbQva8mcSmVrUnXOknWxMYpG/ZeMhjehep+ZW2JNvRgCHjSxVjvtWPF2lpmEPN/
+         ZbDd5nN8r6gR2TZgBIGEmYJXyFAJDUhfTxNHiiPP4Wp+Gqd4NFyA0yYka8BAB1575bOb
+         VkCg==
+X-Gm-Message-State: AOAM53341nb3DWgLE7RXew4XHmzRqx2iSd8Yx7D1wVj8Ta0ICo4kuWaj
+        sNAEf4BeWSt/Cl6HwaxTib3AQg==
+X-Google-Smtp-Source: ABdhPJzPhZ0o+MelOlAh9e2Ibbc1Agkg5iZCBeM+vmobJqj3vr58v4krX6d7A0s8PV5OSznurM733Q==
+X-Received: by 2002:a17:907:9613:b0:6f4:3b48:b004 with SMTP id gb19-20020a170907961300b006f43b48b004mr7194106ejc.171.1653030258195;
+        Fri, 20 May 2022 00:04:18 -0700 (PDT)
+Received: from otso.. (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id md17-20020a170906ae9100b006feaf472637sm336092ejb.53.2022.05.20.00.04.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 May 2022 00:04:17 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Georgi Djakov <djakov@kernel.org>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/5] interconnect: qcom: icc-rpmh: Support child NoC device probe
+Date:   Fri, 20 May 2022 09:03:13 +0200
+Message-Id: <20220520070318.48521-2-luca.weiss@fairphone.com>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220520070318.48521-1-luca.weiss@fairphone.com>
+References: <20220520070318.48521-1-luca.weiss@fairphone.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Angelo,
+As per e39bf2972c6e ("interconnect: icc-rpm: Support child NoC device
+probe") also update the rpmh interconnect driver to support probing NoCs
+that are modelled as child devices of a different NoC.
 
->For MT8195... and 92, 83, 73... and others from the same era, being them for
->chromebooks, iot, smartphones and whatever else... yeah you're totally right.
->
->The issue starts raising when looking at older SoCs featuring an older bootloader
->that does have a kernel size limitation; for example, to make the loader happy on
->MT6795, I had to strip the defconfig a lot and keep the Android-style boot.img
->smaller than 10MB (that's Image.gz-dtb + ramdisk).
+As the driver doesn't yet use the 'reg' property, no change is done for
+that.
 
-I think you have the point :-)
-I did not consider the older SoCs case you mentioned and there is a real 10MB limit.
-I'm fine with this.
+Downstream DT reference:
+https://android.googlesource.com/kernel/msm-extra/devicetree/+/refs/tags/android-11.0.0_r0.56/qcom/lagoon-bus.dtsi
 
-ChenYu, What do you think?
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Changes since v1:
+* none
 
-thanks,
-Miles
+ drivers/interconnect/qcom/icc-rpmh.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/interconnect/qcom/icc-rpmh.c b/drivers/interconnect/qcom/icc-rpmh.c
+index 3c40076eb5fb..8acc8e67a332 100644
+--- a/drivers/interconnect/qcom/icc-rpmh.c
++++ b/drivers/interconnect/qcom/icc-rpmh.c
+@@ -258,6 +258,10 @@ int qcom_icc_rpmh_probe(struct platform_device *pdev)
+ 	data->num_nodes = num_nodes;
+ 	platform_set_drvdata(pdev, qp);
+ 
++	/* Populate child NoC devices if any */
++	if (of_get_child_count(dev->of_node) > 0)
++		return of_platform_populate(dev->of_node, NULL, NULL, dev);
++
+ 	return 0;
+ err:
+ 	icc_nodes_remove(provider);
+-- 
+2.36.1
+
