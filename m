@@ -2,77 +2,66 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74F52C433EF
-	for <phone-devel@archiver.kernel.org>; Fri, 20 May 2022 22:20:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2AE3C433F5
+	for <phone-devel@archiver.kernel.org>; Sun, 22 May 2022 08:37:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351053AbiETWUP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 May 2022 18:20:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42330 "EHLO
+        id S242207AbiEVIhJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 May 2022 04:37:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350459AbiETWUO (ORCPT
+        with ESMTP id S235978AbiEVIhF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 20 May 2022 18:20:14 -0400
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3144D1A074A;
-        Fri, 20 May 2022 15:20:14 -0700 (PDT)
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-f1d2ea701dso11814110fac.10;
-        Fri, 20 May 2022 15:20:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=M8rmRCmN4GlSEfCUYx10TspLN6s4IxFkT9OjnFWex24=;
-        b=5boocA2mCB1cSq1Fpmx9VxwwIe0xnvR80yV98UyDcw8D6bVl+pP5yAmk6txNKEBTBW
-         SYRE2gUnRmgpiAC5l/EnKY3wHrbx+5VM0vzLCFta21rde2i1XcPbHRqxUfbGVZDT+qQy
-         AEk3dEhqTp2Psvrloq0J7i9G3CTcPIhmL2yAMa7Sp3drCa9zN6+aG6TCjTa7yfmaIyxY
-         JU+9V73mbM9DryGDpdbcMENxAZR8tEMQq4Wg9yCDzlVquRKxz9b7+KRjqgVqW8mEwhrF
-         DkN/StQ8gozPRhcXekhAcf1zDDIdxsPlgXK5VTkz5gGDMyKCSRPtKRzQ4sii5zIoRrKQ
-         9BGQ==
-X-Gm-Message-State: AOAM531AQC23YhyhA1WU+0Y4W0svQVDNM/PMrXof9r/yXlPuMoRk1UMt
-        gHXuCDdVmPwjTrODbMZkcQ==
-X-Google-Smtp-Source: ABdhPJwJjQIXPU0/UMu0hOETcS+SXwtTymvjCnqffWHXLumHewxkv7m+SwigscCX2nOUGYR5V10jnQ==
-X-Received: by 2002:a05:6870:d109:b0:f1:ab23:9e with SMTP id e9-20020a056870d10900b000f1ab23009emr7621547oac.187.1653085213482;
-        Fri, 20 May 2022 15:20:13 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id 184-20020aca05c1000000b0032698578409sm1572229oif.38.2022.05.20.15.20.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 May 2022 15:20:12 -0700 (PDT)
-Received: (nullmailer pid 354579 invoked by uid 1000);
-        Fri, 20 May 2022 22:20:11 -0000
-Date:   Fri, 20 May 2022 17:20:11 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     konrad.dybcio@somainline.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, robh+dt@kernel.org,
-        linux-arm-kernel@lists.infradead.org, will@kernel.org,
-        joro@8bytes.org, linux-mediatek@lists.infradead.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, yong.wu@mediatek.com,
-        krzysztof.kozlowski+dt@linaro.org, paul.bouchara@somainline.org,
-        matthias.bgg@gmail.com, iommu@lists.linux-foundation.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: mediatek: Add bindings for MT6795 M4U
-Message-ID: <20220520222011.GA354543-robh@kernel.org>
-References: <20220518101849.46804-1-angelogioacchino.delregno@collabora.com>
- <20220518101849.46804-2-angelogioacchino.delregno@collabora.com>
+        Sun, 22 May 2022 04:37:05 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54E393615B;
+        Sun, 22 May 2022 01:37:04 -0700 (PDT)
+Received: from g550jk.arnhem.chello.nl (a246182.upc-a.chello.nl [62.163.246.182])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 9805ECCA57;
+        Sun, 22 May 2022 08:36:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1653208592; bh=Dlm1QtEYVmjlsRCPEgwFq+/Acf/7v96KsR+3VSoYFIw=;
+        h=From:To:Cc:Subject:Date;
+        b=roP50mqStHf9xr8yZzNpeuLIxWOxjpfYH0m5EvD+NkWuTBA8tBV1QEenLrqavAQnu
+         oMr5GgljyKwHIPpSaCuod22kJWOyeaVj2Va5gf5DHhEF2CGNMHvLGJxWeg0zIN1thZ
+         4Dn+4z8PS4oZxQmEOcCFqROxesK4q4CtM9rKGVYU=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: dts: qcom-msm8974: fix irq type on blsp2_uart1
+Date:   Sun, 22 May 2022 10:36:18 +0200
+Message-Id: <20220522083618.17894-1-luca@z3ntu.xyz>
+X-Mailer: git-send-email 2.36.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220518101849.46804-2-angelogioacchino.delregno@collabora.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 18 May 2022 12:18:48 +0200, AngeloGioacchino Del Regno wrote:
-> Add bindings for the MediaTek Helio X10 (MT6795) IOMMU/M4U.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->  .../bindings/iommu/mediatek,iommu.yaml        |  4 +
->  include/dt-bindings/memory/mt6795-larb-port.h | 96 +++++++++++++++++++
->  2 files changed, 100 insertions(+)
->  create mode 100644 include/dt-bindings/memory/mt6795-larb-port.h
-> 
+IRQ_TYPE_NONE is invalid, so use the correct interrupt type.
 
-Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ arch/arm/boot/dts/qcom-msm8974.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
+index 814ad0b46232..f84cdfc4fdcb 100644
+--- a/arch/arm/boot/dts/qcom-msm8974.dtsi
++++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
+@@ -578,7 +578,7 @@ blsp2_dma: dma-controller@f9944000 {
+ 		blsp2_uart1: serial@f995d000 {
+ 			compatible = "qcom,msm-uartdm-v1.4", "qcom,msm-uartdm";
+ 			reg = <0xf995d000 0x1000>;
+-			interrupts = <GIC_SPI 113 IRQ_TYPE_NONE>;
++			interrupts = <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&gcc GCC_BLSP2_UART1_APPS_CLK>, <&gcc GCC_BLSP2_AHB_CLK>;
+ 			clock-names = "core", "iface";
+ 			status = "disabled";
+-- 
+2.36.0
+
