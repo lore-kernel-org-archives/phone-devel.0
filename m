@@ -2,28 +2,28 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B213C433EF
-	for <phone-devel@archiver.kernel.org>; Sun, 22 May 2022 16:29:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1EA3C43219
+	for <phone-devel@archiver.kernel.org>; Sun, 22 May 2022 16:30:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350163AbiEVQ32 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 May 2022 12:29:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39004 "EHLO
+        id S1349573AbiEVQaC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 May 2022 12:30:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349890AbiEVQ3I (ORCPT
+        with ESMTP id S1349919AbiEVQ3N (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 22 May 2022 12:29:08 -0400
+        Sun, 22 May 2022 12:29:13 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B11E73BA50;
-        Sun, 22 May 2022 09:28:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1BE43BBC2;
+        Sun, 22 May 2022 09:29:01 -0700 (PDT)
 Received: from g550jk.arnhem.chello.nl (a246182.upc-a.chello.nl [62.163.246.182])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 7BC2DCCD43;
-        Sun, 22 May 2022 16:28:17 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id C260BCCD4C;
+        Sun, 22 May 2022 16:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1653236897; bh=2At8G2q3LHuRykZ6Y668fVjVpNTLR5aUfkn/gQ8Jpec=;
+        t=1653236900; bh=IgPmeXh7eVwr5HxZ2OomHFKNX8KpazVLkhoxxY0pExM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=BEBA6g/LXIN+5tIcPMB5cMQt77OxEOqeMiQzg5+O0rOb9J4ykcmSvIw+CT84syKf9
-         hlX/Vs+I+GXwrQdsC/jru8SykuClGTV5In1DBqDilc/7AnkflkKZjwWHJ2O0iZnlB2
-         KJHogfMDDQjJl3gFHzLnjk8oSGZGy3Ojr29BwD0g=
+        b=c4i9i5n8jBgfDVKePplF1mJyCQ/ynI+kLQKvgP50y5sbU9Z1GPJ4G7mLcnnM7GTgB
+         PpLG8h4PsyQxOiB4gL3hf4OMzvaZO3xtwgQEKbWVbnuvdRH3wE9xgAOtWoQUdEoIdk
+         oDSbNoV9vWuSFXT1oSqjBubD2zua86FWq4HVTLlw=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -38,61 +38,122 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
         matti.lehtimaki@gmail.com, Luca Weiss <luca@z3ntu.xyz>
-Subject: [RFC PATCH 06/14] media: camss: ispif: Add support for 8x74
-Date:   Sun, 22 May 2022 18:27:54 +0200
-Message-Id: <20220522162802.208275-7-luca@z3ntu.xyz>
+Subject: [RFC PATCH 13/14] ARM: dts: qcom: msm8974-FP2: Add OV8865 rear camera
+Date:   Sun, 22 May 2022 18:28:01 +0200
+Message-Id: <20220522162802.208275-14-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220522162802.208275-1-luca@z3ntu.xyz>
 References: <20220522162802.208275-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+Configure the rear camera found in the 8MP camera module for
+Fairphone 2. There's also a AD5823 autofocus coil and an EEPROM present
+on the module but currently not included.
 
-ISPIF hardware modules on 8x74, 8x16 and 8x96 are similar. However on
-8x74 the ISPIF routes data to two VFE hardware modules like 8x96 but
-formats are similar to 8x16.
-
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- drivers/media/platform/qcom/camss/camss-ispif.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../dts/qcom-msm8974pro-fairphone-fp2.dts     | 70 +++++++++++++++++++
+ 1 file changed, 70 insertions(+)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-ispif.c b/drivers/media/platform/qcom/camss/camss-ispif.c
-index 4ee11bb979cd..693807bf3c6b 100644
---- a/drivers/media/platform/qcom/camss/camss-ispif.c
-+++ b/drivers/media/platform/qcom/camss/camss-ispif.c
-@@ -1112,6 +1112,7 @@ int msm_ispif_subdev_init(struct camss *camss,
- 	if (camss->version == CAMSS_8x16)
- 		ispif->line_num = 2;
- 	else if (camss->version == CAMSS_8x96 ||
-+		 camss->version == CAMSS_8x74 ||
- 		 camss->version == CAMSS_660)
- 		ispif->line_num = 4;
- 	else
-@@ -1126,7 +1127,8 @@ int msm_ispif_subdev_init(struct camss *camss,
- 		ispif->line[i].ispif = ispif;
- 		ispif->line[i].id = i;
+diff --git a/arch/arm/boot/dts/qcom-msm8974pro-fairphone-fp2.dts b/arch/arm/boot/dts/qcom-msm8974pro-fairphone-fp2.dts
+index 0fad82fc9e03..9a2c3a9177de 100644
+--- a/arch/arm/boot/dts/qcom-msm8974pro-fairphone-fp2.dts
++++ b/arch/arm/boot/dts/qcom-msm8974pro-fairphone-fp2.dts
+@@ -77,6 +77,60 @@ &blsp1_uart2 {
+ 	status = "okay";
+ };
  
--		if (camss->version == CAMSS_8x16) {
-+		if (camss->version == CAMSS_8x16 ||
-+			   camss->version == CAMSS_8x74) {
- 			ispif->line[i].formats = ispif_formats_8x16;
- 			ispif->line[i].nformats =
- 					ARRAY_SIZE(ispif_formats_8x16);
-@@ -1163,6 +1165,7 @@ int msm_ispif_subdev_init(struct camss *camss,
- 		ret = devm_request_irq(dev, ispif->irq, ispif_isr_8x16,
- 			       IRQF_TRIGGER_RISING, ispif->irq_name, ispif);
- 	else if (camss->version == CAMSS_8x96 ||
-+		 camss->version == CAMSS_8x74 ||
- 		 camss->version == CAMSS_660)
- 		ret = devm_request_irq(dev, ispif->irq, ispif_isr_8x96,
- 			       IRQF_TRIGGER_RISING, ispif->irq_name, ispif);
++&camss {
++	status = "okay";
++
++	vdda-supply = <&pm8941_l12>;
++
++	ports {
++		port@0 {
++			reg = <0>;
++			csiphy0_ep: endpoint {
++				clock-lanes = <1>;
++				data-lanes = <0 2 3 4>;
++				link-frequencies = /bits/ 64 <360000000>;
++				remote-endpoint = <&ov8865_ep>;
++			};
++		};
++	};
++};
++
++&cci {
++	status = "okay";
++};
++
++&cci_i2c0 {
++	ov8865: camera-sensor@10 {
++		compatible = "ovti,ov8865";
++		reg = <0x10>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&mclk0_pin_a>;
++
++		clocks = <&mmcc CAMSS_MCLK0_CLK>;
++
++		avdd-supply = <&pm8941_l17>;
++		dovdd-supply = <&pm8941_lvs3>;
++		dvdd-supply = <&pm8941_l3>;
++
++		powerdown-gpios = <&tlmm 89 GPIO_ACTIVE_LOW>;
++		reset-gpios = <&tlmm 90 GPIO_ACTIVE_LOW>;
++
++		/* Rear camera */
++		orientation = <1>;
++		rotation = <90>;
++
++		port {
++			ov8865_ep: endpoint {
++				clock-lanes = <1>;
++				data-lanes = <0 2 3 4>;
++				link-frequencies = /bits/ 64 <360000000>;
++				remote-endpoint = <&csiphy0_ep>;
++			};
++		};
++	};
++};
++
+ &dsi0 {
+ 	status = "okay";
+ 
+@@ -413,6 +467,15 @@ pm8941_l24: l24 {
+ 			regulator-max-microvolt = <3075000>;
+ 			regulator-boot-on;
+ 		};
++
++		pm8941_lvs3: lvs3 {
++			/*
++			 * TODO: Used as CCI0 and CCI1 pull-up.
++			 * Replace with vbus-supply or similar once this lands
++			 * upstream!
++			 */
++			regulator-always-on;
++		};
+ 	};
+ };
+ 
+@@ -449,6 +512,13 @@ &smbb {
+ };
+ 
+ &tlmm {
++	mclk0_pin_a: mclk0-pin-active {
++		pins = "gpio15";
++		function = "cam_mclk0";
++		drive-strength = <2>;
++		bias-disable;
++	};
++
+ 	panel_pin: panel {
+ 		te {
+ 			pins = "gpio12";
 -- 
 2.36.0
 
