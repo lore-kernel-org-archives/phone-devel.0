@@ -2,28 +2,28 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E23CC38A05
-	for <phone-devel@archiver.kernel.org>; Sun, 22 May 2022 16:28:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42FC3C43217
+	for <phone-devel@archiver.kernel.org>; Sun, 22 May 2022 16:29:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349279AbiEVQ2f (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 May 2022 12:28:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37614 "EHLO
+        id S1344271AbiEVQ3X (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 May 2022 12:29:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343882AbiEVQ20 (ORCPT
+        with ESMTP id S1349885AbiEVQ3I (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 22 May 2022 12:28:26 -0400
+        Sun, 22 May 2022 12:29:08 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63E4F14087;
-        Sun, 22 May 2022 09:28:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B13F83BA53;
+        Sun, 22 May 2022 09:28:54 -0700 (PDT)
 Received: from g550jk.arnhem.chello.nl (a246182.upc-a.chello.nl [62.163.246.182])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id C34B1CCD45;
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 3925ACCD42;
         Sun, 22 May 2022 16:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1653236898; bh=Ja6UJLLoY69ioz4GOQEi4TAltPn6idOtLA6g2qiKj2s=;
+        t=1653236897; bh=Z+OJGa1Upy60KMZOvZpycQ7yyyNT0Zo+p/WeDLbPSN8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=nQoPo+kWMh0sTGmyO7oSZmqILT/AjkkuNi3n2lxcFAXIu3edlnOSlZT5pubOWZd7p
-         7lL8ud7CFI9ZEmbZE36V8dYniEY7beFcqkw7tU4VKzdd/Cz6v5khZmgI8yeOT1CImk
-         AeWU1y4ZbKSvjOPtlOh3oCg9uCLyqM1c2SzdEfpk=
+        b=B6TZQEWkDFp+qwDk/WMeNG1Pq3VsYA8P2YgW7HoQUfFa+4yBek68T1mSJSD54IrqI
+         Vrw0m1eJEVp70b3iWsWROGKkuAECPwruxRDTJMnS4ixTBqvWDR/MMFZZIhk4T/sAUe
+         PeyYgAjkN00lTxvaLhggf+sPob5Epjy5IAaH46+c=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -38,9 +38,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
         matti.lehtimaki@gmail.com, Luca Weiss <luca@z3ntu.xyz>
-Subject: [RFC PATCH 07/14] media: camss: csiphy: Add support for 8x74
-Date:   Sun, 22 May 2022 18:27:55 +0200
-Message-Id: <20220522162802.208275-8-luca@z3ntu.xyz>
+Subject: [RFC PATCH 05/14] media: camss: csid: Add support for 8x74
+Date:   Sun, 22 May 2022 18:27:53 +0200
+Message-Id: <20220522162802.208275-6-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220522162802.208275-1-luca@z3ntu.xyz>
 References: <20220522162802.208275-1-luca@z3ntu.xyz>
@@ -53,36 +53,28 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 
-CSIPHY hardware modules in 8x74 and 8x16 are similar.
+CSID hardware module on 8x74 is similar to 8x16.
 
 Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- drivers/media/platform/qcom/camss/camss-csiphy.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/camss/camss-csid.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-csiphy.c b/drivers/media/platform/qcom/camss/camss-csiphy.c
-index 75fcfc627400..a0122705a874 100644
---- a/drivers/media/platform/qcom/camss/camss-csiphy.c
-+++ b/drivers/media/platform/qcom/camss/camss-csiphy.c
-@@ -557,7 +557,8 @@ int msm_csiphy_subdev_init(struct camss *camss,
- 	csiphy->id = id;
- 	csiphy->cfg.combo_mode = 0;
+diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/media/platform/qcom/camss/camss-csid.c
+index f993f349b66b..6b5cd9a66ff6 100644
+--- a/drivers/media/platform/qcom/camss/camss-csid.c
++++ b/drivers/media/platform/qcom/camss/camss-csid.c
+@@ -570,7 +570,8 @@ int msm_csid_subdev_init(struct camss *camss, struct csid_device *csid,
+ 	csid->camss = camss;
+ 	csid->id = id;
  
 -	if (camss->version == CAMSS_8x16) {
 +	if (camss->version == CAMSS_8x16 ||
-+		   camss->version == CAMSS_8x74) {
- 		csiphy->ops = &csiphy_ops_2ph_1_0;
- 		csiphy->formats = csiphy_formats_8x16;
- 		csiphy->nformats = ARRAY_SIZE(csiphy_formats_8x16);
-@@ -582,6 +583,7 @@ int msm_csiphy_subdev_init(struct camss *camss,
- 		return PTR_ERR(csiphy->base);
- 
- 	if (camss->version == CAMSS_8x16 ||
-+	    camss->version == CAMSS_8x74 ||
- 	    camss->version == CAMSS_8x96) {
- 		csiphy->base_clk_mux =
- 			devm_platform_ioremap_resource_byname(pdev, res->reg[1]);
++		camss->version == CAMSS_8x74) {
+ 		csid->ops = &csid_ops_4_1;
+ 	} else if (camss->version == CAMSS_8x96 ||
+ 		   camss->version == CAMSS_660) {
 -- 
 2.36.0
 
