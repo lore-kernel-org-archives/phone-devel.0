@@ -2,28 +2,28 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F3A0C4167B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09C59C4707A
 	for <phone-devel@archiver.kernel.org>; Sun, 22 May 2022 16:28:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349012AbiEVQ2c (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 May 2022 12:28:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37638 "EHLO
+        id S1348852AbiEVQ2b (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 May 2022 12:28:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348017AbiEVQ22 (ORCPT
+        with ESMTP id S242277AbiEVQ2X (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 22 May 2022 12:28:28 -0400
+        Sun, 22 May 2022 12:28:23 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D4BB14087;
-        Sun, 22 May 2022 09:28:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80A31140A5;
+        Sun, 22 May 2022 09:28:19 -0700 (PDT)
 Received: from g550jk.arnhem.chello.nl (a246182.upc-a.chello.nl [62.163.246.182])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 188C6CCD4E;
-        Sun, 22 May 2022 16:28:20 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 9BD06CCD3F;
+        Sun, 22 May 2022 16:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1653236900; bh=ZlU+QqaeeUpgg6ydwdW9tHYSbBg1JjP1qdMb8cM8JSE=;
+        t=1653236896; bh=IFedgtBwp9D2KJuEP5HWLqXXyvyVv6MDZe6OMaClztA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=hP3NdJf6PTBiI/nZloaHgFq06IVg0B4nvzxBOzwW1puRDXe7bq3v9VvUKjhtE3ZAn
-         tWEeap2QOohVKt/BdbTAWCpfv23yPfccYqkUeOapjMPbABlc8d9MSEMG/Ru5uF5Zad
-         P7JbsE9Np1pU1STE6hVEcHDsT0xZKNJGpJRN/uZ8=
+        b=u1E75YC2lj5dxIsJOBIvz17uyyEXx8OSQOcZtalAIP3a0i/04ScLtRAdSmXysAJpt
+         JUlBndwXYjqmCNHyBEOBmeVT7SK8QaIaaNhB44K/jE0VaP4zsJaHAHQSLyNqDyNPld
+         hEI56rG80N+d92PeTjcocdlOScqjey6EuhARYS8A=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -38,88 +38,61 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
         matti.lehtimaki@gmail.com, Luca Weiss <luca@z3ntu.xyz>
-Subject: [RFC PATCH 14/14] [DNM] media: camss: hacks for MSM8974
-Date:   Sun, 22 May 2022 18:28:02 +0200
-Message-Id: <20220522162802.208275-15-luca@z3ntu.xyz>
+Subject: [RFC PATCH 03/14] media: camss: vfe: Add support for 8x74
+Date:   Sun, 22 May 2022 18:27:51 +0200
+Message-Id: <20220522162802.208275-4-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220522162802.208275-1-luca@z3ntu.xyz>
 References: <20220522162802.208275-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Remove IOMMU_DMA dependency from VIDEO_QCOM_CAMSS: We don't have IOMMU
-on msm8974 yet.
+From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 
-DMA_SG -> DMA_CONTIG: Taking a photo without this works but is offset
-and doing weird stuff.
+VFE hardware modules on 8x74 and 8x16 are similar.
 
+Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- drivers/media/platform/qcom/camss/Kconfig       |  4 ++--
- drivers/media/platform/qcom/camss/camss-video.c | 14 +++++++-------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/media/platform/qcom/camss/camss-vfe.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/camss/Kconfig b/drivers/media/platform/qcom/camss/Kconfig
-index 4eda48cb1adf..e382fd77ecc3 100644
---- a/drivers/media/platform/qcom/camss/Kconfig
-+++ b/drivers/media/platform/qcom/camss/Kconfig
-@@ -2,8 +2,8 @@ config VIDEO_QCOM_CAMSS
- 	tristate "Qualcomm V4L2 Camera Subsystem driver"
- 	depends on V4L_PLATFORM_DRIVERS
- 	depends on VIDEO_DEV
--	depends on (ARCH_QCOM && IOMMU_DMA) || COMPILE_TEST
-+	depends on ARCH_QCOM || COMPILE_TEST
- 	select MEDIA_CONTROLLER
- 	select VIDEO_V4L2_SUBDEV_API
--	select VIDEOBUF2_DMA_SG
-+	select VIDEOBUF2_DMA_CONTIG
- 	select V4L2_FWNODE
-diff --git a/drivers/media/platform/qcom/camss/camss-video.c b/drivers/media/platform/qcom/camss/camss-video.c
-index ca955808fd6d..885a809cc941 100644
---- a/drivers/media/platform/qcom/camss/camss-video.c
-+++ b/drivers/media/platform/qcom/camss/camss-video.c
-@@ -13,7 +13,7 @@
- #include <media/v4l2-device.h>
- #include <media/v4l2-ioctl.h>
- #include <media/v4l2-mc.h>
--#include <media/videobuf2-dma-sg.h>
-+#include <media/videobuf2-dma-contig.h>
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe.c b/drivers/media/platform/qcom/camss/camss-vfe.c
+index 5b148e9f8134..ace53ed24884 100644
+--- a/drivers/media/platform/qcom/camss/camss-vfe.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe.c
+@@ -170,7 +170,8 @@ static u32 vfe_src_pad_code(struct vfe_line *line, u32 sink_code,
+ {
+ 	struct vfe_device *vfe = to_vfe(line);
  
- #include "camss-video.h"
- #include "camss.h"
-@@ -410,15 +410,15 @@ static int video_buf_init(struct vb2_buffer *vb)
- 						   vb);
- 	const struct v4l2_pix_format_mplane *format =
- 						&video->active_fmt.fmt.pix_mp;
--	struct sg_table *sgt;
-+	//struct sg_table *sgt;
- 	unsigned int i;
+-	if (vfe->camss->version == CAMSS_8x16)
++	if (vfe->camss->version == CAMSS_8x16 ||
++		vfe->camss->version == CAMSS_8x74)
+ 		switch (sink_code) {
+ 		case MEDIA_BUS_FMT_YUYV8_2X8:
+ 		{
+@@ -1286,6 +1287,7 @@ int msm_vfe_subdev_init(struct camss *camss, struct vfe_device *vfe,
  
- 	for (i = 0; i < format->num_planes; i++) {
--		sgt = vb2_dma_sg_plane_desc(vb, i);
--		if (!sgt)
--			return -EFAULT;
-+		//sgt = vb2_dma_sg_plane_desc(vb, i);
-+		//if (!sgt)
-+		//	return -EFAULT;
+ 	switch (camss->version) {
+ 	case CAMSS_8x16:
++	case CAMSS_8x74:
+ 		vfe->ops = &vfe_ops_4_1;
+ 		break;
+ 	case CAMSS_8x96:
+@@ -1390,7 +1392,8 @@ int msm_vfe_subdev_init(struct camss *camss, struct vfe_device *vfe,
+ 		init_completion(&l->output.sof);
+ 		init_completion(&l->output.reg_update);
  
--		buffer->addr[i] = sg_dma_address(sgt->sgl);
-+		buffer->addr[i] = vb2_dma_contig_plane_dma_addr(vb, i); //sg_dma_address(sgt->sgl);
- 	}
- 
- 	if (format->pixelformat == V4L2_PIX_FMT_NV12 ||
-@@ -966,7 +966,7 @@ int msm_video_register(struct camss_video *video, struct v4l2_device *v4l2_dev,
- 
- 	q = &video->vb2_q;
- 	q->drv_priv = video;
--	q->mem_ops = &vb2_dma_sg_memops;
-+	q->mem_ops = &vb2_dma_contig_memops;
- 	q->ops = &msm_video_vb2_q_ops;
- 	q->type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
- 	q->io_modes = VB2_DMABUF | VB2_MMAP | VB2_READ;
+-		if (camss->version == CAMSS_8x16) {
++		if (camss->version == CAMSS_8x16 ||
++			camss->version == CAMSS_8x74) {
+ 			if (i == VFE_LINE_PIX) {
+ 				l->formats = formats_pix_8x16;
+ 				l->nformats = ARRAY_SIZE(formats_pix_8x16);
 -- 
 2.36.0
 
