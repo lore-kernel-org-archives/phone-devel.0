@@ -2,276 +2,147 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 423DCC433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 23 May 2022 14:32:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF131C433FE
+	for <phone-devel@archiver.kernel.org>; Mon, 23 May 2022 18:19:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237133AbiEWOcl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 23 May 2022 10:32:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55444 "EHLO
+        id S244164AbiEWSS6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 23 May 2022 14:18:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237177AbiEWOcj (ORCPT
+        with ESMTP id S245688AbiEWSSW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 23 May 2022 10:32:39 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4774F2E9E4
-        for <phone-devel@vger.kernel.org>; Mon, 23 May 2022 07:32:37 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id ck4so24950874ejb.8
-        for <phone-devel@vger.kernel.org>; Mon, 23 May 2022 07:32:37 -0700 (PDT)
+        Mon, 23 May 2022 14:18:22 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AA277C17B;
+        Mon, 23 May 2022 10:57:06 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id bq30so26931368lfb.3;
+        Mon, 23 May 2022 10:57:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
-         :from:to:references:in-reply-to;
-        bh=mlEN37RGVVHIHvr+/hBakjwM1KtuFOZ5STJWC6VPCe4=;
-        b=Rcj4RHh43jilygk/Vks3FrXhRojthZEyi5e2TNhpmMYxd9vZI96vQ9WaZOyTTw7Am8
-         FpK6yZOa40KBLEsOTHiassJOaUUZVs2jXPuV2dIKLl46bdK6lwUOmR+f/8pBfm0FRS2+
-         cS3bssbbTMu/a/92yFs9/Ou3qcRZoCM4wwu5uJxOZGQr7TM40i9HEB/tPD4WMx/DPYTA
-         +NPXoSYnVdLSPjy4fM8ZRZfsCXoIvuDJ/GflHI7aDqnd2mC8nh6SHaY9XuhX3CmLGil3
-         W59GLADwbzpdcsyiqZ/MGGQX0R7/nzkCtn7NwXaRe97p54CU2epvXC50b9mzLvUEH/CJ
-         HS/A==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=eqvqGq9Z82oEF1qEGh1yx9lmGGvEQADLPFEeVY8PIpY=;
+        b=OfpL62r+lR4reKq+3IWV6ZpreWQvE98HQM6jhsupy231GXYHnq01aEL4+94dpHJsFb
+         +RgspUBmrdlL2XMV1KFsF2DM4GtNn9XkJ0bcW/nIoeIFlcQJFFjKSaVxYEzuXPJoZapi
+         xjsWVOyZvHfEBSM4QOyLAho4/5voWpoS9PiLa/wdeGshTFfvh0KZ5CgUf+ZnlFGhiAxg
+         mwuERP9hHevNnDYJuD3dOrk3T7q96jQreWCEeB4c7+R9/8p/ZjtDYi3Hhh2A/H68Eylg
+         eZhd0bJSgnmF9DRHGrwWq0YxFoSudwBk7cK0lHJ+2brGgrRmvC5uKeiludU8SHJ157jF
+         ylUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:content-transfer-encoding:date
-         :message-id:cc:subject:from:to:references:in-reply-to;
-        bh=mlEN37RGVVHIHvr+/hBakjwM1KtuFOZ5STJWC6VPCe4=;
-        b=ZGO4uNYkR5pBvbsJMWBBe9vMfRhiEC3sF1faJUm+5bed4NNUPD9FUOoOiXI39zEJYG
-         G6x/hMyM7BY6MC+NTtHZScGQA0I5A6sHoZkti8qYTc7AHx5aQcqzC95KKb7fSbH92ytk
-         Ecv6pS9uWK4L9f8M9D6k9REF7mYVFFAFsZweRO0LZ3IHSVKmLvZj5tPZI3y66bqCPk4y
-         IvWgc9a/ysD1P5IbHc/QGi5Drx/HskEdODlMHnXyn3+XLqS39RU98ZX784wlmjEgl5Co
-         Fa3/z+2FlduJ/Pye3CQYFh9G/e9xHtVeorZ4uAi3xSB1cFHIPsqNgVpOsbt0PlotlhnJ
-         EnWA==
-X-Gm-Message-State: AOAM531t0Fnblv/K/Vd0qdOS8OvLSB4kvcBwbopr2YIXFCZAjomq3/iG
-        gOfFASl+b32mL7g1ATGQuXfvxA==
-X-Google-Smtp-Source: ABdhPJyusWKZbqf11Faic6AnpiRE4C9fByFH9k2mbyP2EBgTg9fTPLO26mlUksfmbTdWrZopA5QUqg==
-X-Received: by 2002:a17:907:1612:b0:6fe:d943:312f with SMTP id hb18-20020a170907161200b006fed943312fmr5489472ejc.263.1653316355711;
-        Mon, 23 May 2022 07:32:35 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id y7-20020a1709060a8700b006fec3b2e4f3sm2334343ejf.205.2022.05.23.07.32.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 May 2022 07:32:35 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 23 May 2022 16:32:34 +0200
-Message-Id: <CK77QG2WNJ7B.EIXG4S6SVQ2D@otso>
-Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
-        "Georgi Djakov" <djakov@kernel.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Odelu Kukatla" <okukatla@codeaurora.org>,
-        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/5] dt-bindings: interconnect: Add Qualcomm SM6350
- NoC support
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>
-X-Mailer: aerc 0.9.0
-References: <20220520070318.48521-1-luca.weiss@fairphone.com>
- <20220520070318.48521-3-luca.weiss@fairphone.com>
- <7b451dfb-8353-4a4e-1834-a01feaa267d2@linaro.org>
- <CK4KPEWM9165.2LR9ZUG2GGK6Q@otso>
- <b9487ffe-7ed5-077c-3c2c-886746457365@linaro.org>
-In-Reply-To: <b9487ffe-7ed5-077c-3c2c-886746457365@linaro.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=eqvqGq9Z82oEF1qEGh1yx9lmGGvEQADLPFEeVY8PIpY=;
+        b=3mFfL2B7OvRY8x6V6DR//RaWY3UO0DrFRROny6ng2suJ46wLDlbz9CrZ3ndP5CIcGU
+         2YnPt32dQfNYhD420kxjTveI1wf/9wIaah0c0G8qM7c4h8M0YULcK1srztRSCv3hERyf
+         stLp4qP0+oBcJEA2FwaGJFJMGgYXrFvgGP1Fe+53mZZ7HnR1ubgWeaThgHyHyMkuXprm
+         gvp7BcC1nYN1SbbBa1RHlpvKuhSy7+rL9imFFRQEf/37AzDCtLTJ8B192LgAL5Z86/eH
+         kjn1p+JsdE3fPUS2F1sYMedvk/drDMHuNvHpZt3etDnCs+FqTkmBob5EKs40aoZH7A3o
+         T+nw==
+X-Gm-Message-State: AOAM533QRodl0tY/YvtW/UNk4uZGX46rBlwUFVp2TJ7HxLUqYZrhYT/L
+        NCxJ9jF2y9lyhGX38fCHLl9fhwuDWCC/sA==
+X-Google-Smtp-Source: ABdhPJykIEV0IXS2xb9A19pkdl57PGsHRwTslqs6wtZoJzmKqGNsvsDGXfUCEgD+SPxaDgpLHBBpAg==
+X-Received: by 2002:ac2:58d6:0:b0:477:de87:819e with SMTP id u22-20020ac258d6000000b00477de87819emr13413351lfo.356.1653328479993;
+        Mon, 23 May 2022 10:54:39 -0700 (PDT)
+Received: from nergzd-desktop.localdomain ([194.39.226.133])
+        by smtp.gmail.com with ESMTPSA id x9-20020a056512078900b0047255d211f9sm2087743lfr.296.2022.05.23.10.54.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 May 2022 10:54:39 -0700 (PDT)
+From:   Markuss Broks <markuss.broks@gmail.com>
+To:     linux-kernel@vger.kernel.org, jic23@kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Song Qiang <songqiang1304521@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: [PATCH 5/5] arm64: dts: qcom: msm8998-xperia: Introduce ToF sensor support
+Date:   Mon, 23 May 2022 20:53:44 +0300
+Message-Id: <20220523175344.5845-6-markuss.broks@gmail.com>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220523175344.5845-1-markuss.broks@gmail.com>
+References: <20220523175344.5845-1-markuss.broks@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Krzysztof,
+This patch adds device tree support for the VL53L0X ToF sensor
+found on all Yoshino devices.
 
-On Fri May 20, 2022 at 4:24 PM CEST, Krzysztof Kozlowski wrote:
-> On 20/05/2022 14:04, Luca Weiss wrote:
-> > Hi Krzysztof,
-> >=20
-> > Thanks for the review!
-> >=20
-> > On Fri May 20, 2022 at 12:31 PM CEST, Krzysztof Kozlowski wrote:
-> >> On 20/05/2022 09:03, Luca Weiss wrote:
-> >>> Add bindings for Qualcomm SM6350 Network-On-Chip interconnect devices=
-.
-> >>>
-> >>> As SM6350 has two pairs of NoCs sharing the same reg, allow this in t=
-he
-> >>> binding documentation, as was done for qcm2290.
-> >>>
-> >>> Because the main qcom,rpmh.yaml file is getting too complicated for o=
-ur
-> >>> use cases, create a new qcom,rpmh-common.yaml and a separate
-> >>> qcom,sm6350-rpmh.yaml that defines our new bindings.
-> >>>
-> >>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> >>> ---
-> >>> Changes since v1:
-> >>> * Split sm6350 into separate yaml with new rpmh-common.yaml
-> >>>
-> >>>  .../interconnect/qcom,rpmh-common.yaml        |  41 +++++
-> >>>  .../interconnect/qcom,sm6350-rpmh.yaml        |  82 ++++++++++
-> >>>  .../dt-bindings/interconnect/qcom,sm6350.h    | 148 ++++++++++++++++=
-++
-> >>>  3 files changed, 271 insertions(+)
-> >>>  create mode 100644 Documentation/devicetree/bindings/interconnect/qc=
-om,rpmh-common.yaml
-> >>>  create mode 100644 Documentation/devicetree/bindings/interconnect/qc=
-om,sm6350-rpmh.yaml
-> >>>  create mode 100644 include/dt-bindings/interconnect/qcom,sm6350.h
-> >>>
-> >>> diff --git a/Documentation/devicetree/bindings/interconnect/qcom,rpmh=
--common.yaml b/Documentation/devicetree/bindings/interconnect/qcom,rpmh-com=
-mon.yaml
-> >>> new file mode 100644
-> >>> index 000000000000..6121eea3e87d
-> >>> --- /dev/null
-> >>> +++ b/Documentation/devicetree/bindings/interconnect/qcom,rpmh-common=
-.yaml
-> >>> @@ -0,0 +1,41 @@
-> >>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> >>> +%YAML 1.2
-> >>> +---
-> >>> +$id: http://devicetree.org/schemas/interconnect/qcom,rpmh-common.yam=
-l#
-> >>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> >>> +
-> >>> +title: Qualcomm RPMh Network-On-Chip Interconnect
-> >>> +
-> >>> +maintainers:
-> >>> +  - Georgi Djakov <georgi.djakov@linaro.org>
-> >>> +  - Odelu Kukatla <okukatla@codeaurora.org>
-> >>
-> >> Is this valid email address?
-> >=20
-> > Will put Georgi and Bjorn as maintainers, as per your other email.
-> >=20
-> >>
-> >>> +
-> >>> +description: |
-> >>> +   RPMh interconnect providers support system bandwidth requirements=
- through
-> >>> +   RPMh hardware accelerators known as Bus Clock Manager (BCM). The =
-provider is
-> >>> +   able to communicate with the BCM through the Resource State Coord=
-inator (RSC)
-> >>> +   associated with each execution environment. Provider nodes must p=
-oint to at
-> >>> +   least one RPMh device child node pertaining to their RSC and each=
- provider
-> >>> +   can map to multiple RPMh resources.
-> >>> +
-> >>> +properties:
-> >>> +  '#interconnect-cells':
-> >>> +    enum: [ 1, 2 ]
-> >>
-> >> Why this is an enum?
-> >=20
-> > As a start, just adding that the definitions are copied from
-> > qcom,rpmh.yaml so it's not my invention :) Of course that doesn't mean
-> > that it should be improved where possible!
-> >=20
-> > Either value is supported by the driver (and used upstream). But perhap=
-s
-> > it can use a description to define what the 'parameters' mean.
-> >=20
-> > The second (optional) parameters "is to support different bandwidth
-> > configurations that are toggled by RPMh, depending on the power state o=
-f
-> > the CPU."[0]
-> >=20
-> > A commit message for sc7180 calls it the "tag information" and "The
-> > consumers can specify the path tag as an additional argument to the
-> > endpoints."[1]
-> >=20
-> > Not sure how to properly describe the first property, I guess the
-> > interconnect endpoint? Maybe Georgi can help here.
-> >=20
-> >=20
-> > [0] https://lore.kernel.org/linux-arm-msm/b079a211-d387-7958-bbe2-c41ca=
-c00d269@kernel.org/
-> > [1] https://git.kernel.org/torvalds/c/e23b122
->
-> Hm, indeed driver supports variable values. It's fine then.
->
-> >=20
-> >>
-> >>> +
-> >>> +  qcom,bcm-voters:
-> >>> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> >>> +    items:
-> >>
-> >> Please implement my previous comments.
-> >=20
-> > Sorry, I looked over the comment in v1.
-> >=20
-> > As far as I can tell in current code only 1 item is used.
-> >=20
-> > If the second parameter of_bcm_voter_get would be used as non-NULL then
-> > qcom,bcm-voter-names gets looked up and the N-th value in qcom,bcm-vote=
-rs
-> > used. But currently qcom,bcm-voter-names is not actively used so only
-> > one gets used.
-> >=20
-> > Do you have a recommendation what to put here? A synthetic limit like
-> > 32 just to have a number there?
->
-> Let's go with maxItems:1, for both fields.
+Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+---
+ .../dts/qcom/msm8998-sony-xperia-yoshino.dtsi | 33 +++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-Do you mean adjusting the example using:
-
-  qcom,bcm-voter-names =3D "apps", "disp";
-  qcom,bcm-voters =3D <&apps_bcm_voter>, <&disp_bcm_voter>;
-
-in qcom,rpmh.yaml then? Otherwise validation fails with maxItems: 1
-
->
-> >=20
-> >>
-> >>> +      maxItems: 1
-> >>> +    description: |
-> >>
-> >> No need for |
-> >=20
-> > ack
-> >=20
-> >>
-> >>> +      List of phandles to qcom,bcm-voter nodes that are required by
-> >>> +      this interconnect to send RPMh commands.
-> >>> +
-> >>> +  qcom,bcm-voter-names:
-> >>
-> >> What names do you expect here?
-> >=20
-> > Currently unused in mainline but newer downstream kernels[2] use "hlos"
-> > as first parameter, and e.g. "disp" as second one that goes to a
-> > qcom,bcm-voter that's a child of disp_rsc. Not sure exactly what that
-> > does.
-> >=20
-> > [2] https://github.com/atomsand/android_kernel_qcom_devicetree/blob/a6d=
-50810116e8314d64eb63b8862c207b974e0c7/qcom/waipio.dtsi#L1701-L1793
->
-> The bindings example uses apps and disp, so here would be only "apps".
-
-Here also the above, allow only "apps" for now in the binding and remove
-"disp" from example?
-
-Regards
-Luca
-
->
-> >>> +
-> >>> +  '#interconnect-cells': true
-> >>
-> >> Since you defined it as enum in rpmh-common, you really expect here
-> >> different values?
-> >=20
-> > Doesn't ": true" here just mean we want the value from the allOf: -
-> > $ref?
-> > But we could in theory make interconnect-cells only accept <2> for
-> > sm6350.
->
-> Yes, and the $ref defines it as [1, 2], so initially I thought this
-> should be narrowed. However it seems 1 or 2 are still valid for all of
-> Qcom interconnects, so your "true" is correct.
->
->
-> Best regards,
-> Krzysztof
+diff --git a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
+index 47488a1aecae..4bd1039d983d 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998-sony-xperia-yoshino.dtsi
+@@ -245,6 +245,24 @@ &blsp2_uart1 {
+ 	status = "okay";
+ };
+ 
++&blsp2_i2c2 {
++	status = "okay";
++
++	proximity@29 {
++		compatible = "st,vl53l0x";
++		reg = <0x29>;
++
++		interrupt-parent = <&tlmm>;
++		interrupts = <22 IRQ_TYPE_EDGE_FALLING>;
++
++		reset-gpios = <&tlmm 27 GPIO_ACTIVE_LOW>;
++		vdd-supply = <&cam_vio_vreg>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&tof_int &tof_reset>;
++	};
++};
++
+ &ibb {
+ 	regulator-min-microamp = <800000>;
+ 	regulator-max-microamp = <800000>;
+@@ -606,6 +624,14 @@ cam0_vdig_default: cam0-vdig-default {
+ 		drive-strength = <2>;
+ 	};
+ 
++	tof_int: tof-int {
++		pins = "gpio22";
++		function = "gpio";
++		bias-pull-up;
++		drive-strength = <2>;
++		input-enable;
++	};
++
+ 	cam1_vdig_default: cam1-vdig-default {
+ 		pins = "gpio25";
+ 		function = "gpio";
+@@ -613,6 +639,13 @@ cam1_vdig_default: cam1-vdig-default {
+ 		drive-strength = <2>;
+ 	};
+ 
++	tof_reset: tof-reset {
++		pins = "gpio27";
++		function = "gpio";
++		bias-disable;
++		drive-strength = <2>;
++	};
++
+ 	hall_sensor0_default: acc-cover-open {
+ 		pins = "gpio124";
+ 		function = "gpio";
+-- 
+2.36.1
 
