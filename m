@@ -2,30 +2,62 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E19EC433EF
-	for <phone-devel@archiver.kernel.org>; Sun, 22 May 2022 16:30:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 221C4C433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 23 May 2022 10:07:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349612AbiEVQaZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 May 2022 12:30:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38452 "EHLO
+        id S233841AbiEWKHR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 23 May 2022 06:07:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349480AbiEVQ3F (ORCPT
+        with ESMTP id S233793AbiEWKHQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 22 May 2022 12:29:05 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A0783B551;
-        Sun, 22 May 2022 09:28:48 -0700 (PDT)
-Received: from g550jk.arnhem.chello.nl (a246182.upc-a.chello.nl [62.163.246.182])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id DF3D8CCD41;
-        Sun, 22 May 2022 16:28:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1653236897; bh=qao02Sq/9rfFn0GElYrCHwPimBxw5VShTKS3u0yw8zE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=xlUs/1s3Z6pC+MeAA549gOsltzukgS/iZuCYgYnl4/1omqGPOaVa7z6VqUZ3JMyYQ
-         oebR6NjZmBHTdydmmIZRPL3v2RO6IlKfegopA7Z+YwIhAkWhHC42OQjMJJa63Cq3Gu
-         wlBh9BWlbUbxa4ESbL+dT8zTdz67Ta1fPtZaRU8U=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org
+        Mon, 23 May 2022 06:07:16 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B412845519
+        for <phone-devel@vger.kernel.org>; Mon, 23 May 2022 03:07:13 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id m6so16606838ljb.2
+        for <phone-devel@vger.kernel.org>; Mon, 23 May 2022 03:07:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=F4taQ5+IrXRMwOAhNcJUo/s1Ca6XrXb6YnUM76RxKpE=;
+        b=hX7ISdFon39d4aZ4z+AZ7AYEURkSDfboUIf7TkGGh7Z5DkqaT9KiJRDsY0VAxjH1Bc
+         z4DBfFwGuF5ibhJKm8kqPiyPNksBcGHKRcW9iwmNYcbKvVg3p8zoQPRoNEgd/aXVpQMr
+         itMwpv/WO6/dE4lRl7sKPKzDcNNsIa/amVUWyKxQSPtpwICmd9BuEPvMq64h12fuCy1p
+         I6tFyK/+ks1PQLol1jf5ng59rpGrN4CqlGMmd0+uL1wj0MmgrHUPkGTBOJ9fyGK5UMrM
+         oSqQdnCizMO8lXw4hsWxV9vF4QsteELBxkri21RDgsQn1xdgJlT6pwplVS+rFwNs9Hd5
+         DDkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=F4taQ5+IrXRMwOAhNcJUo/s1Ca6XrXb6YnUM76RxKpE=;
+        b=CcycGClRvoT9pHu/eIkU9Q9Q9GWZ5InqGTsrwP6EJmpmia1OJbYQHgmMLlKPTlTQAV
+         DSWpEQXIt1dz6b3Md+kKwcSjEmD1prhzzo1BzMAdCqEf5SrX295ZZBjDqSm/dZGSi1Y2
+         h5SA8oyOhoqC3Uf2u+GoUPGIzIQfNerNdL+jPxAm3lqrlQPqFLIFjEf5kd9B7RxBlLYl
+         kq8Oxa0EbM42HNqaghVZOxNa6yByo+VRklvDhNHE7n2mCPsZ8aAhz+hM/OwuY684ekol
+         +YQEP/n/FYMjURNyzkMvHwo2o6Sfn2gl9qyO3HJnpAlJQUFNkyF1s447H9bEr6nwAXRX
+         oUjA==
+X-Gm-Message-State: AOAM532yUOfs44rwUTX5b2CnncFSriqd/Ev0SHwZjTTMTbYC4WHuTWGY
+        2aI6BNT/qdqloLR9jEmrSC9MiQ==
+X-Google-Smtp-Source: ABdhPJxMjrqPZFZvMoxN4x/AxW+GX9hdhs+gP+izmBR2K0BBNuq8/KL6QCSUi/r+3onn1sJRZlR8NA==
+X-Received: by 2002:a2e:a794:0:b0:250:5de1:1ec5 with SMTP id c20-20020a2ea794000000b002505de11ec5mr12601741ljf.270.1653300431926;
+        Mon, 23 May 2022 03:07:11 -0700 (PDT)
+Received: from [192.168.0.17] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id z6-20020a196506000000b0047861c163d0sm1063397lfb.37.2022.05.23.03.07.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 May 2022 03:07:11 -0700 (PDT)
+Message-ID: <170dd20b-ab0b-0f61-bfe9-cb9167a2e133@linaro.org>
+Date:   Mon, 23 May 2022 12:07:10 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [RFC PATCH 01/14] media: dt-bindings: media: camss: Add
+ qcom,msm8974-camss binding
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Loic Poulain <loic.poulain@linaro.org>,
         Robert Foss <robert.foss@linaro.org>,
@@ -37,44 +69,377 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        matti.lehtimaki@gmail.com, Luca Weiss <luca@z3ntu.xyz>
-Subject: [RFC PATCH 04/14] media: camss: video: Add support for 8x74
-Date:   Sun, 22 May 2022 18:27:52 +0200
-Message-Id: <20220522162802.208275-5-luca@z3ntu.xyz>
-X-Mailer: git-send-email 2.36.0
-In-Reply-To: <20220522162802.208275-1-luca@z3ntu.xyz>
+        matti.lehtimaki@gmail.com
 References: <20220522162802.208275-1-luca@z3ntu.xyz>
-MIME-Version: 1.0
+ <20220522162802.208275-2-luca@z3ntu.xyz>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220522162802.208275-2-luca@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+On 22/05/2022 18:27, Luca Weiss wrote:
+> From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 
-Video formats in 8x16 and 8x74 are similar.
+Thank you for your patch. There is something to discuss/improve.
 
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- drivers/media/platform/qcom/camss/camss-video.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> Add bindings for qcom,msm8974-camss in order to support the camera
+> subsystem on MSM8974.
+> 
+> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  .../bindings/media/qcom,msm8974-camss.yaml    | 321 ++++++++++++++++++
+>  1 file changed, 321 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/media/qcom,msm8974-camss.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/media/qcom,msm8974-camss.yaml b/Documentation/devicetree/bindings/media/qcom,msm8974-camss.yaml
+> new file mode 100644
+> index 000000000000..f8f71e477535
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/qcom,msm8974-camss.yaml
+> @@ -0,0 +1,321 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +
+> +%YAML 1.2
+> +---
+> +$id: "http://devicetree.org/schemas/media/qcom,msm8974-camss.yaml#"
+> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> +
+> +title: Qualcomm CAMSS ISP
+> +
+> +maintainers:
+> +  - Robert Foss <robert.foss@linaro.org>
+> +
+> +description: |
+> +  The CAMSS IP is a CSI decoder and ISP present on Qualcomm platforms
+> +
+> +properties:
+> +  compatible:
+> +    const: qcom,msm8974-camss
+> +
+> +  clocks:
+> +    minItems: 31
 
-diff --git a/drivers/media/platform/qcom/camss/camss-video.c b/drivers/media/platform/qcom/camss/camss-video.c
-index 307bb1dc4589..ca955808fd6d 100644
---- a/drivers/media/platform/qcom/camss/camss-video.c
-+++ b/drivers/media/platform/qcom/camss/camss-video.c
-@@ -990,7 +990,8 @@ int msm_video_register(struct camss_video *video, struct v4l2_device *v4l2_dev,
- 
- 	mutex_init(&video->lock);
- 
--	if (video->camss->version == CAMSS_8x16) {
-+	if (video->camss->version == CAMSS_8x16 ||
-+		video->camss->version == CAMSS_8x74) {
- 		if (is_pix) {
- 			video->formats = formats_pix_8x16;
- 			video->nformats = ARRAY_SIZE(formats_pix_8x16);
--- 
-2.36.0
+No need for minItems, they are equal to max by default.
 
+> +    maxItems: 31
+> +
+> +  clock-names:
+> +    items:
+> +      - const: top_ahb
+> +      - const: ispif_ahb
+> +      - const: csiphy0_timer
+> +      - const: csiphy1_timer
+> +      - const: csiphy2_timer
+> +      - const: csi0_ahb
+> +      - const: csi0
+> +      - const: csi0_phy
+> +      - const: csi0_pix
+> +      - const: csi0_rdi
+> +      - const: csi1_ahb
+> +      - const: csi1
+> +      - const: csi1_phy
+> +      - const: csi1_pix
+> +      - const: csi1_rdi
+> +      - const: csi2_ahb
+> +      - const: csi2
+> +      - const: csi2_phy
+> +      - const: csi2_pix
+> +      - const: csi2_rdi
+> +      - const: csi3_ahb
+> +      - const: csi3
+> +      - const: csi3_phy
+> +      - const: csi3_pix
+> +      - const: csi3_rdi
+> +      - const: vfe0
+> +      - const: vfe1
+> +      - const: csi_vfe0
+> +      - const: csi_vfe1
+> +      - const: iface
+> +      - const: bus
+> +
+> +  interrupts:
+> +    minItems: 10
+
+Same.
+
+> +    maxItems: 10
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: csiphy0
+> +      - const: csiphy1
+> +      - const: csiphy2
+> +      - const: csid0
+> +      - const: csid1
+> +      - const: csid2
+> +      - const: csid3
+> +      - const: ispif
+> +      - const: vfe0
+> +      - const: vfe1
+> +
+> +  power-domains:
+> +    items:
+> +      - description: VFE GDSC - Video Front End, Global Distributed Switch Controller.
+> +
+> +  ports:
+> +    $ref: /schemas/graph.yaml#/properties/ports
+> +
+> +    description:
+> +      CSI input ports.
+> +
+> +    properties:
+> +      port@0:
+> +        $ref: /schemas/graph.yaml#/$defs/port-base
+> +        unevaluatedProperties: false
+> +        description:
+> +          Input port for receiving CSI data.
+> +
+> +        properties:
+> +          endpoint:
+> +            $ref: video-interfaces.yaml#
+> +            unevaluatedProperties: false
+> +
+> +            properties:
+> +              clock-lanes:
+> +                items:
+> +                  - const: 1
+> +
+> +              data-lanes:
+> +                minItems: 1
+> +                maxItems: 4
+> +
+> +            required:
+> +              - clock-lanes
+> +              - data-lanes
+> +
+> +      port@1:
+
+These look all the same, so just use patternPropreties (in "ports") with
+proper pattern.
+
+> +        $ref: /schemas/graph.yaml#/$defs/port-base
+> +        unevaluatedProperties: false
+> +        description:
+> +          Input port for receiving CSI data.
+> +
+> +        properties:
+> +          endpoint:
+> +            $ref: video-interfaces.yaml#
+> +            unevaluatedProperties: false
+> +
+> +            properties:
+> +              clock-lanes:
+> +                items:
+> +                  - const: 1
+> +
+> +              data-lanes:
+> +                minItems: 1
+> +                maxItems: 4
+> +
+> +            required:
+> +              - clock-lanes
+> +              - data-lanes
+> +
+> +      port@2:
+> +        $ref: /schemas/graph.yaml#/$defs/port-base
+> +        unevaluatedProperties: false
+> +        description:
+> +          Input port for receiving CSI data.
+> +
+> +        properties:
+> +          endpoint:
+> +            $ref: video-interfaces.yaml#
+> +            unevaluatedProperties: false
+> +
+> +            properties:
+> +              clock-lanes:
+> +                items:
+> +                  - const: 1
+> +
+> +              data-lanes:
+> +                minItems: 1
+> +                maxItems: 4
+> +
+> +            required:
+> +              - clock-lanes
+> +              - data-lanes
+> +
+> +  reg:
+> +    minItems: 14
+> +    maxItems: 14
+> +
+> +  reg-names:
+> +    items:
+> +      - const: csiphy0
+> +      - const: csiphy0_clk_mux
+> +      - const: csiphy1
+> +      - const: csiphy1_clk_mux
+> +      - const: csiphy2
+> +      - const: csiphy2_clk_mux
+> +      - const: csid0
+> +      - const: csid1
+> +      - const: csid2
+> +      - const: csid3
+> +      - const: ispif
+> +      - const: csi_clk_mux
+> +      - const: vfe0
+> +      - const: vfe1
+> +
+> +  vdda-supply:
+> +    description:
+> +      Definition of the regulator used as analog power supply.
+> +
+> +required:
+> +  - clock-names
+> +  - clocks
+> +  - compatible
+> +  - interrupt-names
+> +  - interrupts
+> +  - power-domains
+> +  - reg
+> +  - reg-names
+> +  - vdda-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/clock/qcom,gcc-msm8974.h>
+> +    #include <dt-bindings/clock/qcom,mmcc-msm8974.h>
+> +    camss@fda00000 {
+
+Generic node name, so "isp" I guess?
+
+> +        compatible = "qcom,msm8974-camss";
+> +        reg = <0xfda0ac00 0x200>,
+> +              <0xfda00030 0x4>,
+> +              <0xfda0b000 0x200>,
+> +              <0xfda00038 0x4>,
+> +              <0xfda0b400 0x200>,
+> +              <0xfda00040 0x4>,
+> +              <0xfda08000 0x100>,
+> +              <0xfda08400 0x100>,
+> +              <0xfda08800 0x100>,
+> +              <0xfda08c00 0x100>,
+> +              <0xfda0a000 0x800>,
+> +              <0xfda00020 0x10>,
+> +              <0xfda10000 0x1000>,
+> +              <0xfda14000 0x1000>;
+> +        reg-names = "csiphy0",
+> +                    "csiphy0_clk_mux",
+> +                    "csiphy1",
+> +                    "csiphy1_clk_mux",
+> +                    "csiphy2",
+> +                    "csiphy2_clk_mux",
+> +                    "csid0",
+> +                    "csid1",
+> +                    "csid2",
+> +                    "csid3",
+> +                    "ispif",
+> +                    "csi_clk_mux",
+> +                    "vfe0",
+> +                    "vfe1";
+> +        interrupts = <GIC_SPI 78 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 79 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 80 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 51 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 52 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 53 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 54 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 55 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 57 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 58 IRQ_TYPE_EDGE_RISING>;
+> +        interrupt-names = "csiphy0",
+> +                          "csiphy1",
+> +                          "csiphy2",
+> +                          "csid0",
+> +                          "csid1",
+> +                          "csid2",
+> +                          "csid3",
+> +                          "ispif",
+> +                          "vfe0",
+> +                          "vfe1";
+> +        power-domains = <&mmcc CAMSS_VFE_GDSC>;
+> +        clocks = <&mmcc CAMSS_TOP_AHB_CLK>,
+> +                 <&mmcc CAMSS_ISPIF_AHB_CLK>,
+> +                 <&mmcc CAMSS_PHY0_CSI0PHYTIMER_CLK>,
+> +                 <&mmcc CAMSS_PHY1_CSI1PHYTIMER_CLK>,
+> +                 <&mmcc CAMSS_PHY2_CSI2PHYTIMER_CLK>,
+> +                 <&mmcc CAMSS_CSI0_AHB_CLK>,
+> +                 <&mmcc CAMSS_CSI0_CLK>,
+> +                 <&mmcc CAMSS_CSI0PHY_CLK>,
+> +                 <&mmcc CAMSS_CSI0PIX_CLK>,
+> +                 <&mmcc CAMSS_CSI0RDI_CLK>,
+> +                 <&mmcc CAMSS_CSI1_AHB_CLK>,
+> +                 <&mmcc CAMSS_CSI1_CLK>,
+> +                 <&mmcc CAMSS_CSI1PHY_CLK>,
+> +                 <&mmcc CAMSS_CSI1PIX_CLK>,
+> +                 <&mmcc CAMSS_CSI1RDI_CLK>,
+> +                 <&mmcc CAMSS_CSI2_AHB_CLK>,
+> +                 <&mmcc CAMSS_CSI2_CLK>,
+> +                 <&mmcc CAMSS_CSI2PHY_CLK>,
+> +                 <&mmcc CAMSS_CSI2PIX_CLK>,
+> +                 <&mmcc CAMSS_CSI2RDI_CLK>,
+> +                 <&mmcc CAMSS_CSI3_AHB_CLK>,
+> +                 <&mmcc CAMSS_CSI3_CLK>,
+> +                 <&mmcc CAMSS_CSI3PHY_CLK>,
+> +                 <&mmcc CAMSS_CSI3PIX_CLK>,
+> +                 <&mmcc CAMSS_CSI3RDI_CLK>,
+> +                 <&mmcc CAMSS_VFE_VFE0_CLK>,
+> +                 <&mmcc CAMSS_VFE_VFE1_CLK>,
+> +                 <&mmcc CAMSS_CSI_VFE0_CLK>,
+> +                 <&mmcc CAMSS_CSI_VFE1_CLK>,
+> +                 <&mmcc CAMSS_VFE_VFE_AHB_CLK>,
+> +                 <&mmcc CAMSS_VFE_VFE_AXI_CLK>;
+> +        clock-names = "top_ahb",
+> +                      "ispif_ahb",
+> +                      "csiphy0_timer",
+> +                      "csiphy1_timer",
+> +                      "csiphy2_timer",
+> +                      "csi0_ahb",
+> +                      "csi0",
+> +                      "csi0_phy",
+> +                      "csi0_pix",
+> +                      "csi0_rdi",
+> +                      "csi1_ahb",
+> +                      "csi1",
+> +                      "csi1_phy",
+> +                      "csi1_pix",
+> +                      "csi1_rdi",
+> +                      "csi2_ahb",
+> +                      "csi2",
+> +                      "csi2_phy",
+> +                      "csi2_pix",
+> +                      "csi2_rdi",
+> +                      "csi3_ahb",
+> +                      "csi3",
+> +                      "csi3_phy",
+> +                      "csi3_pix",
+> +                      "csi3_rdi",
+> +                      "vfe0",
+> +                      "vfe1",
+> +                      "csi_vfe0",
+> +                      "csi_vfe1",
+> +                      "iface",
+> +                      "bus";
+> +
+> +        vdda-supply = <&pm8941_l12>;
+> +
+> +        ports {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+
+This is not a complete example... empty ports node is useless, isn't it?
+
+> +        };
+> +    };
+
+
+Best regards,
+Krzysztof
