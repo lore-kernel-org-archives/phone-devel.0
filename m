@@ -2,152 +2,276 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E843C433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 23 May 2022 12:40:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 423DCC433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 23 May 2022 14:32:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235577AbiEWMj7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 23 May 2022 08:39:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56112 "EHLO
+        id S237133AbiEWOcl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 23 May 2022 10:32:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235564AbiEWMj6 (ORCPT
+        with ESMTP id S237177AbiEWOcj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 23 May 2022 08:39:58 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB2A550458
-        for <phone-devel@vger.kernel.org>; Mon, 23 May 2022 05:39:56 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id br17so13044649lfb.2
-        for <phone-devel@vger.kernel.org>; Mon, 23 May 2022 05:39:56 -0700 (PDT)
+        Mon, 23 May 2022 10:32:39 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4774F2E9E4
+        for <phone-devel@vger.kernel.org>; Mon, 23 May 2022 07:32:37 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id ck4so24950874ejb.8
+        for <phone-devel@vger.kernel.org>; Mon, 23 May 2022 07:32:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=EOL04jP+eE7dVuOg6hEIwWWUW4POczWVTnduH9YcGb0=;
-        b=dscp7lxuXzvAvazXh3XQfmCEddLWn7+ErSWIbZNaa9GV1Dqom5OGQotT1L1vQ40DAr
-         tV+QngMbMinXVaEpFNFUwkuuQcHqPmOWlLg935FyQ/pv365F2DT7ldFDo1cIQOxQIB5k
-         jckxpnwO24VrNYVA7QT9OXE57kv4eu9UXkgvrGE6GMG/k5lxqdMm8sI8hSZO41JxGR4y
-         RDJ4BjpOB5ZZjxx4tISidy3rFFT8CWdujpKaOe/4HyFBGpSNOAxpJSlHIEy4wMrU/Ete
-         /af8YceSz7WRPilhyxLJ5wX0AMt/U++FV4rz6xF4S/2CWIxSJFJ87TE4pDyhah0hbz6l
-         J+pA==
+        d=fairphone.com; s=fair;
+        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
+         :from:to:references:in-reply-to;
+        bh=mlEN37RGVVHIHvr+/hBakjwM1KtuFOZ5STJWC6VPCe4=;
+        b=Rcj4RHh43jilygk/Vks3FrXhRojthZEyi5e2TNhpmMYxd9vZI96vQ9WaZOyTTw7Am8
+         FpK6yZOa40KBLEsOTHiassJOaUUZVs2jXPuV2dIKLl46bdK6lwUOmR+f/8pBfm0FRS2+
+         cS3bssbbTMu/a/92yFs9/Ou3qcRZoCM4wwu5uJxOZGQr7TM40i9HEB/tPD4WMx/DPYTA
+         +NPXoSYnVdLSPjy4fM8ZRZfsCXoIvuDJ/GflHI7aDqnd2mC8nh6SHaY9XuhX3CmLGil3
+         W59GLADwbzpdcsyiqZ/MGGQX0R7/nzkCtn7NwXaRe97p54CU2epvXC50b9mzLvUEH/CJ
+         HS/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=EOL04jP+eE7dVuOg6hEIwWWUW4POczWVTnduH9YcGb0=;
-        b=zrQ2qeWCWoInC4AfwvKcHAoo3+V9XVOEG4V/JCr0PT8IXm/ke83/anm14RiTqlVvae
-         Ljy2IJBpe/5LANxLFvLa2K+DJElJps5u9de0K3oJuM4MHvP+V6+XuBuqhg7zIdCBxsdW
-         rq8me1L5c1CbsKZM1plyc76S9IZ3RqIRZYhpCNYIm59yn9mlcpjnZ5TIEdhaaI9BMN2v
-         6gk3ty5GdRA5laQNxWHWJj1fQoIQQSp1KYBU4ucJc6NPYveJA5uqlowUeBQhWzSGrMKb
-         Ew9HESh5zDB44C+rBbUQFKvjc0P2UmankACruf7EkxZfVhK6i+H0jE2Fb6eY+NQXYGvh
-         uWdA==
-X-Gm-Message-State: AOAM531INvAfUyKTwHBiTtv7YdkeJT5YPLUaQspf4dNUAC84JbkYx5nn
-        BEDiBODE2miT+z86vavvEsUnKA==
-X-Google-Smtp-Source: ABdhPJwo0PC3SioId0jNkNXBGwmBVrE8rg9qaxlN6Ax4/CUHq/r3fHvRNB3t0H78ZX4YRjchIypaWA==
-X-Received: by 2002:a05:6512:3b93:b0:474:188b:1c99 with SMTP id g19-20020a0565123b9300b00474188b1c99mr16289628lfv.549.1653309594979;
-        Mon, 23 May 2022 05:39:54 -0700 (PDT)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id b23-20020ac25637000000b00477b11144e9sm1959703lff.66.2022.05.23.05.39.54
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:cc:subject:from:to:references:in-reply-to;
+        bh=mlEN37RGVVHIHvr+/hBakjwM1KtuFOZ5STJWC6VPCe4=;
+        b=ZGO4uNYkR5pBvbsJMWBBe9vMfRhiEC3sF1faJUm+5bed4NNUPD9FUOoOiXI39zEJYG
+         G6x/hMyM7BY6MC+NTtHZScGQA0I5A6sHoZkti8qYTc7AHx5aQcqzC95KKb7fSbH92ytk
+         Ecv6pS9uWK4L9f8M9D6k9REF7mYVFFAFsZweRO0LZ3IHSVKmLvZj5tPZI3y66bqCPk4y
+         IvWgc9a/ysD1P5IbHc/QGi5Drx/HskEdODlMHnXyn3+XLqS39RU98ZX784wlmjEgl5Co
+         Fa3/z+2FlduJ/Pye3CQYFh9G/e9xHtVeorZ4uAi3xSB1cFHIPsqNgVpOsbt0PlotlhnJ
+         EnWA==
+X-Gm-Message-State: AOAM531t0Fnblv/K/Vd0qdOS8OvLSB4kvcBwbopr2YIXFCZAjomq3/iG
+        gOfFASl+b32mL7g1ATGQuXfvxA==
+X-Google-Smtp-Source: ABdhPJyusWKZbqf11Faic6AnpiRE4C9fByFH9k2mbyP2EBgTg9fTPLO26mlUksfmbTdWrZopA5QUqg==
+X-Received: by 2002:a17:907:1612:b0:6fe:d943:312f with SMTP id hb18-20020a170907161200b006fed943312fmr5489472ejc.263.1653316355711;
+        Mon, 23 May 2022 07:32:35 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id y7-20020a1709060a8700b006fec3b2e4f3sm2334343ejf.205.2022.05.23.07.32.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 May 2022 05:39:54 -0700 (PDT)
-Message-ID: <638d6986-616f-4a1c-f1d0-82835b000b2a@linaro.org>
-Date:   Mon, 23 May 2022 15:39:53 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [RFC PATCH 00/14] CAMSS support for MSM8974
-Content-Language: en-GB
-To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Todor Tomov <todor.too@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        matti.lehtimaki@gmail.com
-References: <20220522162802.208275-1-luca@z3ntu.xyz>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20220522162802.208275-1-luca@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        Mon, 23 May 2022 07:32:35 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 23 May 2022 16:32:34 +0200
+Message-Id: <CK77QG2WNJ7B.EIXG4S6SVQ2D@otso>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
+        "Georgi Djakov" <djakov@kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Odelu Kukatla" <okukatla@codeaurora.org>,
+        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/5] dt-bindings: interconnect: Add Qualcomm SM6350
+ NoC support
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>
+X-Mailer: aerc 0.9.0
+References: <20220520070318.48521-1-luca.weiss@fairphone.com>
+ <20220520070318.48521-3-luca.weiss@fairphone.com>
+ <7b451dfb-8353-4a4e-1834-a01feaa267d2@linaro.org>
+ <CK4KPEWM9165.2LR9ZUG2GGK6Q@otso>
+ <b9487ffe-7ed5-077c-3c2c-886746457365@linaro.org>
+In-Reply-To: <b9487ffe-7ed5-077c-3c2c-886746457365@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 22/05/2022 19:27, Luca Weiss wrote:
-> This RFC series adds support for CAMSS and CCI that are found on
-> msm8974, including the OV8865 found on the FP2.
-> 
-> The only reason it's marked RFC is that CAMSS doesn't behave properly on
-> this SoC without the last commit which is obviously not upstreamable.
-> Not sure if this should be a blocker for including most of the other
-> patches because other than that it seems to work fine and I can get a
-> picture from the camera sensor. When/if msm8974 gets IOMMU support I
-> hope this should be resolved and it works without this hack.
-> 
-> I think at least the CCI patches could get applied as they're not
-> dependent on the CAMSS hack?
+Hi Krzysztof,
 
-I'd also vote for the camcc patches to be applied.
+On Fri May 20, 2022 at 4:24 PM CEST, Krzysztof Kozlowski wrote:
+> On 20/05/2022 14:04, Luca Weiss wrote:
+> > Hi Krzysztof,
+> >=20
+> > Thanks for the review!
+> >=20
+> > On Fri May 20, 2022 at 12:31 PM CEST, Krzysztof Kozlowski wrote:
+> >> On 20/05/2022 09:03, Luca Weiss wrote:
+> >>> Add bindings for Qualcomm SM6350 Network-On-Chip interconnect devices=
+.
+> >>>
+> >>> As SM6350 has two pairs of NoCs sharing the same reg, allow this in t=
+he
+> >>> binding documentation, as was done for qcm2290.
+> >>>
+> >>> Because the main qcom,rpmh.yaml file is getting too complicated for o=
+ur
+> >>> use cases, create a new qcom,rpmh-common.yaml and a separate
+> >>> qcom,sm6350-rpmh.yaml that defines our new bindings.
+> >>>
+> >>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> >>> ---
+> >>> Changes since v1:
+> >>> * Split sm6350 into separate yaml with new rpmh-common.yaml
+> >>>
+> >>>  .../interconnect/qcom,rpmh-common.yaml        |  41 +++++
+> >>>  .../interconnect/qcom,sm6350-rpmh.yaml        |  82 ++++++++++
+> >>>  .../dt-bindings/interconnect/qcom,sm6350.h    | 148 ++++++++++++++++=
+++
+> >>>  3 files changed, 271 insertions(+)
+> >>>  create mode 100644 Documentation/devicetree/bindings/interconnect/qc=
+om,rpmh-common.yaml
+> >>>  create mode 100644 Documentation/devicetree/bindings/interconnect/qc=
+om,sm6350-rpmh.yaml
+> >>>  create mode 100644 include/dt-bindings/interconnect/qcom,sm6350.h
+> >>>
+> >>> diff --git a/Documentation/devicetree/bindings/interconnect/qcom,rpmh=
+-common.yaml b/Documentation/devicetree/bindings/interconnect/qcom,rpmh-com=
+mon.yaml
+> >>> new file mode 100644
+> >>> index 000000000000..6121eea3e87d
+> >>> --- /dev/null
+> >>> +++ b/Documentation/devicetree/bindings/interconnect/qcom,rpmh-common=
+.yaml
+> >>> @@ -0,0 +1,41 @@
+> >>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> >>> +%YAML 1.2
+> >>> +---
+> >>> +$id: http://devicetree.org/schemas/interconnect/qcom,rpmh-common.yam=
+l#
+> >>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >>> +
+> >>> +title: Qualcomm RPMh Network-On-Chip Interconnect
+> >>> +
+> >>> +maintainers:
+> >>> +  - Georgi Djakov <georgi.djakov@linaro.org>
+> >>> +  - Odelu Kukatla <okukatla@codeaurora.org>
+> >>
+> >> Is this valid email address?
+> >=20
+> > Will put Georgi and Bjorn as maintainers, as per your other email.
+> >=20
+> >>
+> >>> +
+> >>> +description: |
+> >>> +   RPMh interconnect providers support system bandwidth requirements=
+ through
+> >>> +   RPMh hardware accelerators known as Bus Clock Manager (BCM). The =
+provider is
+> >>> +   able to communicate with the BCM through the Resource State Coord=
+inator (RSC)
+> >>> +   associated with each execution environment. Provider nodes must p=
+oint to at
+> >>> +   least one RPMh device child node pertaining to their RSC and each=
+ provider
+> >>> +   can map to multiple RPMh resources.
+> >>> +
+> >>> +properties:
+> >>> +  '#interconnect-cells':
+> >>> +    enum: [ 1, 2 ]
+> >>
+> >> Why this is an enum?
+> >=20
+> > As a start, just adding that the definitions are copied from
+> > qcom,rpmh.yaml so it's not my invention :) Of course that doesn't mean
+> > that it should be improved where possible!
+> >=20
+> > Either value is supported by the driver (and used upstream). But perhap=
+s
+> > it can use a description to define what the 'parameters' mean.
+> >=20
+> > The second (optional) parameters "is to support different bandwidth
+> > configurations that are toggled by RPMh, depending on the power state o=
+f
+> > the CPU."[0]
+> >=20
+> > A commit message for sc7180 calls it the "tag information" and "The
+> > consumers can specify the path tag as an additional argument to the
+> > endpoints."[1]
+> >=20
+> > Not sure how to properly describe the first property, I guess the
+> > interconnect endpoint? Maybe Georgi can help here.
+> >=20
+> >=20
+> > [0] https://lore.kernel.org/linux-arm-msm/b079a211-d387-7958-bbe2-c41ca=
+c00d269@kernel.org/
+> > [1] https://git.kernel.org/torvalds/c/e23b122
+>
+> Hm, indeed driver supports variable values. It's fine then.
+>
+> >=20
+> >>
+> >>> +
+> >>> +  qcom,bcm-voters:
+> >>> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> >>> +    items:
+> >>
+> >> Please implement my previous comments.
+> >=20
+> > Sorry, I looked over the comment in v1.
+> >=20
+> > As far as I can tell in current code only 1 item is used.
+> >=20
+> > If the second parameter of_bcm_voter_get would be used as non-NULL then
+> > qcom,bcm-voter-names gets looked up and the N-th value in qcom,bcm-vote=
+rs
+> > used. But currently qcom,bcm-voter-names is not actively used so only
+> > one gets used.
+> >=20
+> > Do you have a recommendation what to put here? A synthetic limit like
+> > 32 just to have a number there?
+>
+> Let's go with maxItems:1, for both fields.
 
-As for the camss, I'd suggest to get them verified to work properly with 
-a hacked/non-upstreamable/etc. IOMMU driver if one exists. Otherwise we 
-can easily get into a situation where we merge up code that contains 
-bugs itself.
+Do you mean adjusting the example using:
 
-Another option might be to actually check whether the device has an 
-IOMMU attached (see device_iommu_mapped()) and to select whether the 
-driver should use SG or CONTIG depending on that.
+  qcom,bcm-voter-names =3D "apps", "disp";
+  qcom,bcm-voters =3D <&apps_bcm_voter>, <&disp_bcm_voter>;
 
-As an additional note regarding the offset issue you've mentioned. It 
-looks like there is an issue with the swiotlb. On the IFC6410 (apq8064, 
-no IOMMU) I got an issue with the PCI-attached networking card. Received 
-packets are offset by 4 (IIRC) bytes. The same type of adapter works on 
-db820c (apq8096, working IOMMU). What kind of issues did you observe 
-with the camss? If it looks like the issue I had, it might be a symptom 
-of a more generic issue.
+in qcom,rpmh.yaml then? Otherwise validation fails with maxItems: 1
 
-> 
-> Luca Weiss (5):
->    dt-bindings: i2c: qcom-cci: add QCOM MSM8974 compatible
->    ARM: dts: qcom: msm8974: add CCI bus
->    ARM: dts: qcom: msm8974: add CAMSS node
->    ARM: dts: qcom: msm8974-FP2: Add OV8865 rear camera
->    [DNM] media: camss: hacks for MSM8974
-> 
-> Matti Lehtimäki (9):
->    media: dt-bindings: media: camss: Add qcom,msm8974-camss binding
->    media: camss: Add CAMSS_8x74 camss version
->    media: camss: vfe: Add support for 8x74
->    media: camss: video: Add support for 8x74
->    media: camss: csid: Add support for 8x74
->    media: camss: ispif: Add support for 8x74
->    media: camss: csiphy: Add support for 8x74
->    media: camss: Add 8x74 resources
->    i2c: qcom-cci: add msm8974 compatible
-> 
->   .../devicetree/bindings/i2c/i2c-qcom-cci.txt  |   7 +-
->   .../bindings/media/qcom,msm8974-camss.yaml    | 321 ++++++++++++++++++
->   arch/arm/boot/dts/qcom-msm8974.dtsi           | 184 ++++++++++
->   .../dts/qcom-msm8974pro-fairphone-fp2.dts     |  70 ++++
->   drivers/i2c/busses/i2c-qcom-cci.c             |  35 ++
->   drivers/media/platform/qcom/camss/Kconfig     |   4 +-
->   .../media/platform/qcom/camss/camss-csid.c    |   3 +-
->   .../media/platform/qcom/camss/camss-csiphy.c  |   4 +-
->   .../media/platform/qcom/camss/camss-ispif.c   |   5 +-
->   drivers/media/platform/qcom/camss/camss-vfe.c |   7 +-
->   .../media/platform/qcom/camss/camss-video.c   |  17 +-
->   drivers/media/platform/qcom/camss/camss.c     | 161 +++++++++
->   drivers/media/platform/qcom/camss/camss.h     |   1 +
->   13 files changed, 801 insertions(+), 18 deletions(-)
->   create mode 100644 Documentation/devicetree/bindings/media/qcom,msm8974-camss.yaml
-> 
+>
+> >=20
+> >>
+> >>> +      maxItems: 1
+> >>> +    description: |
+> >>
+> >> No need for |
+> >=20
+> > ack
+> >=20
+> >>
+> >>> +      List of phandles to qcom,bcm-voter nodes that are required by
+> >>> +      this interconnect to send RPMh commands.
+> >>> +
+> >>> +  qcom,bcm-voter-names:
+> >>
+> >> What names do you expect here?
+> >=20
+> > Currently unused in mainline but newer downstream kernels[2] use "hlos"
+> > as first parameter, and e.g. "disp" as second one that goes to a
+> > qcom,bcm-voter that's a child of disp_rsc. Not sure exactly what that
+> > does.
+> >=20
+> > [2] https://github.com/atomsand/android_kernel_qcom_devicetree/blob/a6d=
+50810116e8314d64eb63b8862c207b974e0c7/qcom/waipio.dtsi#L1701-L1793
+>
+> The bindings example uses apps and disp, so here would be only "apps".
 
+Here also the above, allow only "apps" for now in the binding and remove
+"disp" from example?
 
--- 
-With best wishes
-Dmitry
+Regards
+Luca
+
+>
+> >>> +
+> >>> +  '#interconnect-cells': true
+> >>
+> >> Since you defined it as enum in rpmh-common, you really expect here
+> >> different values?
+> >=20
+> > Doesn't ": true" here just mean we want the value from the allOf: -
+> > $ref?
+> > But we could in theory make interconnect-cells only accept <2> for
+> > sm6350.
+>
+> Yes, and the $ref defines it as [1, 2], so initially I thought this
+> should be narrowed. However it seems 1 or 2 are still valid for all of
+> Qcom interconnects, so your "true" is correct.
+>
+>
+> Best regards,
+> Krzysztof
+
