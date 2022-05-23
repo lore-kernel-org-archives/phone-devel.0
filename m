@@ -2,56 +2,56 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1DBDC433F5
-	for <phone-devel@archiver.kernel.org>; Mon, 23 May 2022 22:52:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63E13C433F5
+	for <phone-devel@archiver.kernel.org>; Mon, 23 May 2022 23:43:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231723AbiEWWwq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 23 May 2022 18:52:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35056 "EHLO
+        id S230228AbiEWXnP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 23 May 2022 19:43:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230226AbiEWWwp (ORCPT
+        with ESMTP id S230158AbiEWXnO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 23 May 2022 18:52:45 -0400
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63D4A9BAC9
-        for <phone-devel@vger.kernel.org>; Mon, 23 May 2022 15:52:44 -0700 (PDT)
-Received: by mail-qv1-xf2e.google.com with SMTP id dm17so13155005qvb.2
-        for <phone-devel@vger.kernel.org>; Mon, 23 May 2022 15:52:44 -0700 (PDT)
+        Mon, 23 May 2022 19:43:14 -0400
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA2D703C2
+        for <phone-devel@vger.kernel.org>; Mon, 23 May 2022 16:43:13 -0700 (PDT)
+Received: by mail-qt1-x833.google.com with SMTP id g21so5238590qtg.5
+        for <phone-devel@vger.kernel.org>; Mon, 23 May 2022 16:43:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=CUVpHrGsWFdpmHijjTHWgW3zbODgXYO9/RKM5yTRDuI=;
-        b=dbwT19t5cpVruIALgVmfGy44+S5C32idyjwxhDCuTYIvCRilH0ylGpz6YxpJPRg+xn
-         MEg4hduZqdTC46dHgHZNetXKPRkJT+V0xntPmDgNck+9MGz049AyhRjDVo+T9DdR0nyH
-         rkxTcTti1/4X39o14uHqaGdH/w3KW/zqoIfUlMWVbR6VcJhXsytkmfjtPNI2IGVze1IE
-         0Q+oyv1yhdkLWhjIKaI7oLbk1edD+liaDjWF4+Lv35Rxgt8/r9VircuNHbltNvVsadcx
-         0izyRQYCDe7bUrJvl/zQrTR2TSPnv5/fVQpNV4ONkyk3sqAJxl6mz8GyruRIIOjwECNb
-         mo+A==
+        bh=vo71c+n/wCWfUYChsCch/TOZTAc6RqS7hic8WUvcoIw=;
+        b=b1HZCTlc0FaASasHRCD5Y4kmWzTiLs2LaQl7/CXAt9GX3aDYUTR+mEWyBmw6QyDjt0
+         kqoqMhMB7Pb3sbK/HKSgcZG0lKxupwMeKXRmTekoG+0tSkivdjQZ4FQVz23bKT9fKurd
+         gFH178OzpkErKGL+s0tqPjvX6Q/YMAxaQ0BoEB5n8E3Z34ZOQsdTCMGjsAQxXESXvteq
+         vNVOIS9eoKRtkaVRQ4oz4jZMWxwJHYLdIuxnM3g2JKYoP8Yr+Gx2yzwrrrYIOiQe99ET
+         7UXJKrS42Tnbe12+4yhg0jflTmXsJbahMHsA1CgFxMKNVA/2xzXV1sWrEPEVqWdPse5m
+         iRVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=CUVpHrGsWFdpmHijjTHWgW3zbODgXYO9/RKM5yTRDuI=;
-        b=mV023RiHJpSZ6pCbXbdUcaceyo3LKemYoOAzZcHHvMvPjOQlDTx4ibOaBVXGngM4h7
-         1IPfJQck/IyNhTJ8Pt6C9xCdQ/BdynoKr6ANOyqjmRQHhdOp1bburpfzmqSuviXV0LNP
-         Z9nIJGMBjThc4n1QcjKjKiDBpqK5aonOcdELqVCyHyvMRL1Yz9GOmbxDkUWXZrH0O01i
-         CboOpK9ujvfRwiM3vpFmDqZT4o+5NDdFDK+Adi89fN8DEr1l14rGpzTyZstmrG8t//6H
-         /A6LZfyHLQdvJDqyeg7FlmlMiMDNFQXJeK9xlXqRKPrkZa3Ifkhd7cQk/MmjS4+6TuCP
-         Qlag==
-X-Gm-Message-State: AOAM533G+UZuQZiqwkijSC+p/aTq1naPXJfpKPlAwP+mBC1xpfTY6NEJ
-        3WgksKY+mDMDKeWcRB+JoxGaohZLXTyobK2ff9pkJw==
-X-Google-Smtp-Source: ABdhPJz0L862d4LbPRYNVicS2bt3U+l7geWkMJ97OKfiAKAymqSQWmgMZll4IQHbb+ItHL14MvPGMGWpODDcIwbZ36g=
-X-Received: by 2002:a05:6214:931:b0:461:d289:b7f6 with SMTP id
- dk17-20020a056214093100b00461d289b7f6mr19245958qvb.55.1653346363592; Mon, 23
- May 2022 15:52:43 -0700 (PDT)
+        bh=vo71c+n/wCWfUYChsCch/TOZTAc6RqS7hic8WUvcoIw=;
+        b=Ytsj62BmruSF2bJ1ngkwak5MOIf6bu7XG865f1FTUiGG2UNImuefkD7s2HFc2r/vY0
+         ZvaGuDPBBFBkOFYw/OarGyMi6jjgD+5wFEooszMgcbRN3Xtcy9GUr8jY3G1OStySQiwO
+         v6UCRqm3Cia8F4jC4unT5cNDh25cYZXTZiKbz9W0B7vU5rVepn13y3zq8VimuDauUDkd
+         37EAoncdnkQRbHCgsXf6nVQXJMy5drjVWqBpa/lMIDYG4CPqtVwHlT5a0cAUip2lST9U
+         Zyz9gUYFP6E+b1JAforo7gPy9FvKBFqOKmRCqDbGE4ugYERKE4fPxthC2ViqUYyzJ1Tm
+         OVmw==
+X-Gm-Message-State: AOAM530gjptkTidMYFYAloQX0kvmDo1xD/jYYgVUfPf2jA14XpiwZK36
+        KzfkGnWFbQpMpTMhAbyLribNkRJiNzRh2Kv8TPcJmA==
+X-Google-Smtp-Source: ABdhPJzUW9RhiGAZVdELoGYpBS6ZpU1N20WruTBeXfIZLJ+KEXjedEvFNxLgd/OJk3jzcNbkBvu6dH9ebgySiUvx914=
+X-Received: by 2002:ac8:5e54:0:b0:2f3:f4ee:efbd with SMTP id
+ i20-20020ac85e54000000b002f3f4eeefbdmr17894617qtx.295.1653349392378; Mon, 23
+ May 2022 16:43:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220523213837.1016542-1-marijn.suijten@somainline.org> <20220523213837.1016542-10-marijn.suijten@somainline.org>
-In-Reply-To: <20220523213837.1016542-10-marijn.suijten@somainline.org>
+References: <20220523213837.1016542-1-marijn.suijten@somainline.org>
+In-Reply-To: <20220523213837.1016542-1-marijn.suijten@somainline.org>
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Tue, 24 May 2022 01:52:32 +0300
-Message-ID: <CAA8EJpqfS6xi40Zewm+v7La=jER5CR6s1=htn1C7jLka5SuKGQ@mail.gmail.com>
-Subject: Re: [PATCH 9/9] drm/msm/dsi_phy_7nm: Replace parent names with clk_hw pointers
+Date:   Tue, 24 May 2022 02:43:01 +0300
+Message-ID: <CAA8EJprEjOWRh98V3sprjXZJZMeR25Bz1U3a_uX_KhRbU48srQ@mail.gmail.com>
+Subject: Re: [PATCH 0/9] drm/msm/dsi_phy: Replace parent names with clk_hw pointers
 To:     Marijn Suijten <marijn.suijten@somainline.org>
 Cc:     phone-devel@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
@@ -70,28 +70,112 @@ Cc:     phone-devel@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Jonathan Marek <jonathan@marek.ca>, linux-clk@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        Stephen Boyd <swboyd@chromium.org>
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 24 May 2022 at 00:39, Marijn Suijten
+Hi,
+
+On Tue, 24 May 2022 at 00:38, Marijn Suijten
 <marijn.suijten@somainline.org> wrote:
+>
+> As stated in [1] I promised to tackle and send this series.
 >
 > parent_hw pointers are easier to manage and cheaper to use than
 > repeatedly formatting the parent name and subsequently leaving the clk
 > framework to perform lookups based on that name.
 >
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
-> ---
->  drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 92 +++++++++++------------
->  1 file changed, 42 insertions(+), 50 deletions(-)
+> This series starts out by adding extra constructors for divider, mux and
+> fixed-factor clocks that have parent_hw(s) pointer argument(s) instead
+> of some DT index or name.  Followed by individual patches performing the
+> conversion, one DSI PHY at a time.
 >
+> dsi_phy_28nm_8960 includes an extra fixup to replace "eternal"
+> devm_kzalloc allocations (for the lifetime of the device) with
+> stack-local char arrays, like all the other DSI PHY drivers.
+>
+> I couldn't help but notice that clock names are wildly varying:
+>
+> - Some use underscores in the _clk suffix where others have nothing;
+> - Some have an _ after the %d, others have not;
+> - Some use a _pll suffix after dsi%d or even _phy_pll suffix.
+>
+> Are there any thoughts or feelings towards unifying these?
+> Theoretically no clock names are used anywhere in the kernel, and
+> everything is based on a phandle + index in DT (I have yet to validate
+> this).  Obviously no .name/.fw_name will be updated to not break DT.
+
+I'd say, leave them as is. Even if they are historical, we don't have
+a strong pressure to change them.
+
+Significant number of older platforms still use names to identify the
+clock. And moreover apq8096/msm8960 uses dsi1/dsi2 instead of
+dsi0/dsi1.
+
+Probably we should call the next cycle "The Cycle of clocks cleaning".
+I can volunteer to take care of 8960/8064/8016/8996, as at least I can
+test them. But if you wish, you (or anybody else of course) can take
+any of these platforms too, just ping me, so that I won't spend time
+duplicating somebody's efforts.
+
+> Which, by the way, is there a particular reason for:
+>
+>   #define DSI_BYTE_PLL_CLK              0
+>   #define DSI_PIXEL_PLL_CLK             1
+>
+> To not be in the dt-bindings and used in the DT?
+
+Before my restructure of the DSI PHY subsys, each driver defined them
+separately. And the idea of moving them to a dt-bindings header didn't
+come to my mind. Feel free to do so, it looks like a good idea.
+Just as a note, DP PHY also uses 0 for the link clock and 1 for the
+pixel clock. What do you think about having a single header for these
+names?
+
+>
+> And with enough future improvements out of the way, let's round out this
+> patch-series by stating that it has been successfully tested on:
+>
+> - Sony Nile Discovery (Xperia XA2 Ultra): 14nm;
+> - Sony Seine PDX201 (Xperia 10II): 14nm;
+> - Sony Loire Suzu (Xperia X): 28nm.
+>
+> And no diff is observed in debugfs's clk_summary.
+>
+> Unfortunately all other devices in my collection with a 7/10nm DSI PHY
+> have a DSC panel which we have yet to get working.
+
+I will test it on RB3 (10nm) and RB5 (7nm) during one of the next few days.
+
+>
+> [1]: https://lore.kernel.org/linux-arm-msm/20220502214235.s5plebunh4ttjhge@SoMainline.org/
+>
+> Marijn Suijten (9):
+>   clk: divider: Introduce devm_clk_hw_register_divider_parent_hw()
+>   clk: mux: Introduce devm_clk_hw_register_mux_parent_hws()
+>   clk: fixed-factor: Introduce *clk_hw_register_fixed_factor_parent_hw()
+>   drm/msm/dsi_phy_28nm: Replace parent names with clk_hw pointers
+>   drm/msm/dsi_phy_28nm_8960: Replace parent names with clk_hw pointers
+>   drm/msm/dsi_phy_28nm_8960: Use stack memory for temporary clock names
+>   drm/msm/dsi_phy_14nm: Replace parent names with clk_hw pointers
+>   drm/msm/dsi_phy_10nm: Replace parent names with clk_hw pointers
+>   drm/msm/dsi_phy_7nm: Replace parent names with clk_hw pointers
+>
+>  drivers/clk/clk-fixed-factor.c                | 57 ++++++++++--
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c    | 92 ++++++++-----------
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c    | 36 ++++----
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c    | 52 +++++------
+>  .../gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c   | 26 ++----
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c     | 92 +++++++++----------
+>  include/linux/clk-provider.h                  | 34 +++++++
+>  7 files changed, 209 insertions(+), 180 deletions(-)
+>
+> --
+> 2.36.1
+
+
 
 -- 
 With best wishes
