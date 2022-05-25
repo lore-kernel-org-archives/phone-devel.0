@@ -2,173 +2,105 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51C8EC433EF
-	for <phone-devel@archiver.kernel.org>; Wed, 25 May 2022 13:04:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C10F2C433EF
+	for <phone-devel@archiver.kernel.org>; Wed, 25 May 2022 14:44:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241185AbiEYNEL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 25 May 2022 09:04:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43246 "EHLO
+        id S244858AbiEYOoi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 25 May 2022 10:44:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233151AbiEYNEL (ORCPT
+        with ESMTP id S235986AbiEYOog (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 25 May 2022 09:04:11 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12olkn2095.outbound.protection.outlook.com [40.92.23.95])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7031E75;
-        Wed, 25 May 2022 06:04:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lJmpA0zXd0dr2yzhoZ5x210LPQXJnwzOsiFxPqU8nxFWNCvyjJvacb8HcM+5wCjEre90hcx/l1t2sPR1wNhzZBAQU7rZYJVcvmAqjl0CP7ahigYjRYOxEBVcbY2BGDS3oULr3MY1k26l52ybzme3Wyu8Bk3B//nGquhPs6iefohnmS/7jZFHuWjgbN8erLgvHVMcG2j2ayWU2gKuXUxMKHAzH1sG8BblyO9+ZNcot1QZCrNsVV4sjNdlpXLd5QtRK6IUV2KDe6OTQTLjjkqtTzzDeszm+erOsGr8dIiuZEpL+0hZH5MD+wIpunKCkvlZBXk8ZGepU6eV5Q57RUyuwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t8wr6wl/CCBGhOuJDN2GHKtgz9DrY8qxIHlWYDCAPjc=;
- b=KcaQS+Lr93RxMx94/ymnBCpKFT+jaq1luaP5HfEx4xyeo6H2tuR5GllDbTzWbUibkWTkzCSwPSAzVXgdWJZeGBlhwsj8BM8NGoL570ZreoyY+9wCwxYzO5WjSELPrHch4J5tVh2SOIHTKRSoNS0uCD2h5xej5lIXJaTHCZ31jlh1gljjmZZA+m2B54+GDjDrRqefICrp9TFoxz6wmNORndmXW0eTenkqKQIL8dPkr4fQBTtkc083S7lXFXpexy2cHO0w3ofnI3vBRdEcCtWbpgqsVFt5U5zLXTnGlrP7hYLVPAtb8roowSV3NJqbUUKbl5OU7XlDpaUrmeMAyd7JRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-Received: from BY5PR02MB7009.namprd02.prod.outlook.com (2603:10b6:a03:236::13)
- by BYAPR02MB4743.namprd02.prod.outlook.com (2603:10b6:a03:43::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.15; Wed, 25 May
- 2022 13:04:06 +0000
-Received: from BY5PR02MB7009.namprd02.prod.outlook.com
- ([fe80::303a:ab1:17c1:2d16]) by BY5PR02MB7009.namprd02.prod.outlook.com
- ([fe80::303a:ab1:17c1:2d16%9]) with mapi id 15.20.5273.023; Wed, 25 May 2022
- 13:04:06 +0000
-Message-ID: <BY5PR02MB70094BBCBE78A146A8C4CA0AD9D69@BY5PR02MB7009.namprd02.prod.outlook.com>
-Date:   Wed, 25 May 2022 18:33:52 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-From:   Joel Selvaraj <jo@jsfamily.in>
-Subject: Re: [PATCH 3/3] drm/panel: introduce ebbg,ft8719 panel
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     devicetree@vger.kernel.org, Hao Fang <fanghao11@huawei.com>,
-        David Airlie <airlied@linux.ie>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        phone-devel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
-        Stanislav Jakubek <stano.jakubek@gmail.com>,
-        Corentin Labbe <clabbe@baylibre.com>
-References: <cover.1651835715.git.jo@jsfamily.in>
- <BY5PR02MB7009B91FB7306503B58C264BD9C59@BY5PR02MB7009.namprd02.prod.outlook.com>
- <CACRpkdYhkP9RYj98Lu=zkt+6aefx172R=8JtvOFpvh2uJ4byKA@mail.gmail.com>
- <BY5PR02MB7009831D8BC4DB2B34739CB6D9CF9@BY5PR02MB7009.namprd02.prod.outlook.com>
- <CACRpkdZw+MwU42s8BWHkN2T3A-a-TGML8jJ0kQteMOE06m0UXg@mail.gmail.com>
-Content-Language: en-US
-In-Reply-To: <CACRpkdZw+MwU42s8BWHkN2T3A-a-TGML8jJ0kQteMOE06m0UXg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TMN:  [MH0SfL2yaLWPYC8YG5PuYySeDO4bUJ2z4f+gTErKT6p763BPRR4OamapwxW16J09]
-X-ClientProxiedBy: PN3PR01CA0055.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:99::10) To BY5PR02MB7009.namprd02.prod.outlook.com
- (2603:10b6:a03:236::13)
-X-Microsoft-Original-Message-ID: <b9faa80c-6e9e-e857-a57d-f84b648529f7@jsfamily.in>
+        Wed, 25 May 2022 10:44:36 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BDEAA88A1
+        for <phone-devel@vger.kernel.org>; Wed, 25 May 2022 07:44:33 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id i27so42122053ejd.9
+        for <phone-devel@vger.kernel.org>; Wed, 25 May 2022 07:44:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=GC8ExN7zgyMEJWd9pL4zC+r85cZkPtnN1cqYEwb1TYQ=;
+        b=iWzN+qaN44xR2/Ui8/XVBZAWL1dNaHgp8yovlEXubsFnybVGy66n2ADXP6AH90/Gl+
+         Ed6MV5jipQDiHQylU2s/8hWxdE9rxrx8FIv/TYRZnJx4b6LCPlY3MhgFG2HGwZvnZ1M6
+         oSgvSVLTAB8MsdiOgqIrn4NAWc5rBTeHuOm99rx58g/IhFhyxjOZRVHQIbn9dIBRRCUj
+         2iu+zfDmyzLpQd4P+73ktua1wl67KzOj9FXV0eZWNh+jY1JBwL2udNTzMatX5zOAKLRw
+         JJuiNVqWp60WD2uUMjxMxWdjwsK0w4jAriC1aJ2nkMhpbwOOrylSxkRVom0GoN25adzA
+         H3qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=GC8ExN7zgyMEJWd9pL4zC+r85cZkPtnN1cqYEwb1TYQ=;
+        b=X2XgsNTa2Iu9o9u/7MxORuUQhhlsQpq+bHY9MIIHWrN8p4ciHSsroBGqfkyAPz6ppC
+         ujN8VkPcsM1vBRZRON6uOq+GQFYl5fNPgtb9sRszm0W33FWq/zQk+8MYELu7nqPJ1UI9
+         Vs4vH9OfZ7CG6lT/eM9Tio7SQi82toB7T5zApKYrXv8EMwlnPQeIjOSld8NzXAO+9WNM
+         hEqFPLOZCgOTWJivCUCT0Bsxzb2byFqX/Kasy7p4MO3G+srYbZmauJMztnPkgBdgPHHf
+         o6z5bepRx9eGWUQnuYPOS5JIEXAnloOZ5o86rMCO2kaIlz16CNZg6HV3od0QxG0dqzgi
+         ciPQ==
+X-Gm-Message-State: AOAM532Cy535rFb+S/oLD7lFvyhHRSHcLomm84nKHSqXe+kPb8rrxE1s
+        bzL7dWhPvWslzHvy0rjgeA+WEQ==
+X-Google-Smtp-Source: ABdhPJxmnf+tkmH++ly72dkYx+WDxOisAzmzCy24zFOca1/p18mEgeDDhSek1pEVsT43mA8YMvb/zA==
+X-Received: by 2002:a17:906:d550:b0:6ff:1eb1:69e9 with SMTP id cr16-20020a170906d55000b006ff1eb169e9mr255ejc.663.1653489871936;
+        Wed, 25 May 2022 07:44:31 -0700 (PDT)
+Received: from otso.. (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id r2-20020a170906550200b006f3ef214de1sm8159596ejp.71.2022.05.25.07.44.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 May 2022 07:44:31 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        devicetree@vger.kernel.org,
+        Georgi Djakov <georgi.djakov@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        Odelu Kukatla <okukatla@codeaurora.org>
+Subject: [PATCH v3 0/5] Add interconnect support for SM6350
+Date:   Wed, 25 May 2022 16:43:56 +0200
+Message-Id: <20220525144404.200390-1-luca.weiss@fairphone.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ef49c964-2ea9-462d-482c-08da3e4f0ba1
-X-MS-TrafficTypeDiagnostic: BYAPR02MB4743:EE_
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: UAERbL+/T4rBvrW3n9EIw1g7p7MdMVUdyb1jMjqlU3CL+DnSLxd/qWycYbzVPe0Sa/kuav73jJ7VfpRAuSZ11XFhriGE5i4ClDtwUwxO0hrwbRna/P7liJ25xllCL0Mdodh+r1PnampRIrHIOzlZ/ClP6y7D5EKIbuyRwk5v0g5gbeguHUx1C06zCJcCTB7dG9yP7RVC/g09HRgTSpDr+UB0fJ9PWKdu7cX6pcoy/Pr2l4zto3EQ1oRjx7ugA4VXQ+W7PMX6Q7T3Psz+epWCejJproWi39xlgvgFiUS4F+QccSmloi+2lu59gqGPIeNpf5Rcuz+GDtXuWAukFjABsU5lbI8eEoJQjon000h6Ot4Zzl8WFkZXzBmbasvKA4LUwaUvmfdXC/Y3JNkxTHNqAlyzKMONIVR3suqPPN1XSNuUDI0H7ALUxQAOLX/3N/HoWKUO/t99cJvPddRoVMIak9QTN0wD3JPdJaNrLVillj3ySyo48oaGXiSAOjHFbRl4ZklFg5fcvdwVyvzEi6xrNP4xfMzhNAtexUDzFltt6ClS7nhXRbVAPDmBIbusmYpwktVUuhYWc6Axrywa6zCk9g==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q05SUjdYcFJMQURta2RqK0Zqb3lVcS9kUDQvaDFiR0JUZEg3UDMxQ1ZuV0JU?=
- =?utf-8?B?YW9WU1IrUXRzYWJhaStSc2dkQzd2WDJTbldxY3dubEF2RGpiSG1VVUk0YmlS?=
- =?utf-8?B?WjkxNmU2eEp5N0VqeWlFMjUrSWExd25NVElsb1g2cFVjZG4vbktkbWlqcHZ4?=
- =?utf-8?B?enV1OElDdm5RdjBvYnkrblFaWEZ2Rjh6R0RxZlVZZVpOaTZoblpnYk5LNE01?=
- =?utf-8?B?eEVxd3JvRkVWR05SUlZUZCsyZWJkREFsWWFBVUJEMnVTL0U0ZnhQU2pVc011?=
- =?utf-8?B?ajBMMktoclViYmo5WlNRMFc4TFJtOXl6YXJHQUE3KzdUbE1wVjNQcGlhUjJZ?=
- =?utf-8?B?bGs5U0FQWllZc090VjdYMy9GaFg1WnFXb0M0NE9EWUVUMlpqYmNUL2ZQeEZ6?=
- =?utf-8?B?WGhsL0l3YS84d0ZLWGl5dGloWWhmWi9RUHFVSTdwRHlGS0gzTmdLWTVNVlZr?=
- =?utf-8?B?ekFZUFFnbGRRQWVLSktoZkRLNkxBOUFUYWdCZDNmTk0rQnpLMm1BQnc0anhU?=
- =?utf-8?B?TUhRNjlSbUlRVFM4cXVKUmRBYzNYZ0JvNFZEdHQrSWVJeWpHcGF0Z1V6NTRH?=
- =?utf-8?B?bDM2WG1JOEt3c0VtTERBZEs3eUlTVWt6b1JDRW9yalFJeUJMUjBIRTRiaUxq?=
- =?utf-8?B?TE94RUFlWXpmNDIwdFB4ajdBSDFwN25qdHZKb050dDV3NzZLekVlK0M4UEJx?=
- =?utf-8?B?TGxQWCttYnhhaGlSYzRtcDVpazJncmwxK2UxRWdaNE1OcTFTRXVtOFV6ckts?=
- =?utf-8?B?cGIrOUFEK3FCNThkREo5ZjBJenU4U0ZLZS9HRnNTRWt6SFd6NVFJVUFHRVBs?=
- =?utf-8?B?VkdDRnV6L1lESXB6Zm5XS0dtdko3Q3RLZVJKaFh0RnZaMUk0MnZyak1CWTVM?=
- =?utf-8?B?dTZ5L2FyQVJkSHpBWEQ4Q29JZE9aL0gzdFkxRU5kMEMwNVdUaVAxc1ZoYVBJ?=
- =?utf-8?B?Y1dwQXlaZ0dnVkdvd1QzMzQyRlMxQXUwUy9kMWdnbGI2VGswd1htaWxqdFRj?=
- =?utf-8?B?V2ZTaDdyUWVEcjQ5TktZN3l5TExWclo1dms3aG1Rc01oWFVYUzlHOWc3TUNl?=
- =?utf-8?B?aUEzVHozRVlNanJGQ2JrZmRWNm01L09VNWJmdTFCVXE3R1BuR09zanNvRGEy?=
- =?utf-8?B?MnBSSnZQeHZyenNSbXhkSElhclFtSUNGUUttS0lXWW93bk43SGRMYkNLOGJ0?=
- =?utf-8?B?bWpSZVQxKzZHSk0xU2hTN1hvQnFUUVp5ak41TC8xZW8yZzNEVldsUU5ycGpO?=
- =?utf-8?B?Q0FBTlljSnZOTmZNZTlCeU9zbVc3ZmJVTzdIbVJKK0dhR0ZrbHdUZ0h0U2py?=
- =?utf-8?B?c1pnOUlGWllTUGFXTUt3V3B6eGNHKzdXNVp3aFJzWXBnVUZhcmxFSmgvTWto?=
- =?utf-8?B?L3FoT0FnQ1FudmxMMFEvMXNBaDZkSHZIcTN4ZFF1dEpOOUFoczgySUtFbjRX?=
- =?utf-8?B?QnJQcWNSblZqcVpOb3VlTEx2OWFjRHZxWmlEOTFiYjhBM1R3WEV4eStKaVVa?=
- =?utf-8?B?MldURTlHVnJFeUo4VDZMNHNZMm9oa3E0MWdCckwyVDdyUmg1NVBEdVFJWTJ2?=
- =?utf-8?B?dzlWQnBzKzg1T2FzdmYzRWptWnk0a0pCcjFxa2NkNkd4WU1ZOFl2NXFaOTZ0?=
- =?utf-8?B?aGdvTzNoem1EK3ZGQ1NJcTFNVm05UUpoQWlaWWhxVzNHeW5zdXY5bVVoVncv?=
- =?utf-8?B?WnQxTUtXRUtRcUdDVnpFczhDWnAxZzNyTER3MEVUbTV5WUZ1ckJRVTFkZXda?=
- =?utf-8?B?aHdMZkkybmJJZ2hlZ3NSeHhnOER1S2pmT2E0WXdBUW85QWR3MmlJVzJlbnhZ?=
- =?utf-8?B?Q2d0eHNlVTZPemliWWh6QzRjNDZZL2VWZlpaMjdDRVVRUWRWZWdQWC83aWN2?=
- =?utf-8?B?S0s2VTBoS2xLSDRmVXJ1dTQyeEtVbWN5Wk1jNElJY0EyYzJ2VTVZTVU1RHND?=
- =?utf-8?B?Qm1Nbi9sdmwra0tMSDNRVnZyL0M3eXhvSzI0ZFYvcXNCRHF4aDVMbDFKN3F6?=
- =?utf-8?B?dkEwMWo3c253PT0=?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-99c3d.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef49c964-2ea9-462d-482c-08da3e4f0ba1
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB7009.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2022 13:04:06.8563
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB4743
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Linus Walleij
+This series adds interconnect support for the various NoCs found on
+sm6350.
 
-On 19/05/22 14:39, Linus Walleij wrote:
-> Nope. But add the rate limited error print please!
+A more special modification is allowing child NoC devices, like done for
+rpm-based qcm2290 which was already merged, but now for rpmh-based
+interconnect.
 
-Will do.
+See also downstream dts:
+https://android.googlesource.com/kernel/msm-extra/devicetree/+/refs/tags/android-11.0.0_r0.81/qcom/lagoon-bus.dtsi
 
->>> Lots of magic numbers. You don't have a datasheet do you?
->>> So you could #define some of the magic?
->>
->> Unfortunately, I don't have a datasheet and the power on sequence is
->> taken from downstream android dts. It works pretty well though. So I
->> don't think I can #define any of these magic.
-> 
-> If you know which display controller the display is using (usually
-> Novatek nnnnn, Ilitek nnnn etc someting like that) there is often
-> a datasheet for the display controller available but the display per
-> se often obscures the display controller.
+Luca Weiss (5):
+  interconnect: qcom: icc-rpmh: Support child NoC device probe
+  dt-bindings: interconnect: qcom: Split out rpmh-common bindings
+  dt-bindings: interconnect: Add Qualcomm SM6350 NoC support
+  interconnect: qcom: Add SM6350 driver support
+  arm64: dts: qcom: sm6350: Add interconnect support
 
-Well, I recently figured that the panel works perfectly without all the 
-magic commands. So, no need for #defines of those magics/documentation 
-for now.
+ .../interconnect/qcom,rpmh-common.yaml        |  43 ++
+ .../bindings/interconnect/qcom,rpmh.yaml      |  22 +-
+ .../interconnect/qcom,sm6350-rpmh.yaml        |  82 +++
+ arch/arm64/boot/dts/qcom/sm6350.dtsi          | 109 ++++
+ drivers/interconnect/qcom/Kconfig             |   9 +
+ drivers/interconnect/qcom/Makefile            |   2 +
+ drivers/interconnect/qcom/icc-rpmh.c          |   4 +
+ drivers/interconnect/qcom/sm6350.c            | 493 ++++++++++++++++++
+ drivers/interconnect/qcom/sm6350.h            | 139 +++++
+ .../dt-bindings/interconnect/qcom,sm6350.h    | 148 ++++++
+ 10 files changed, 1034 insertions(+), 17 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,rpmh-common.yaml
+ create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,sm6350-rpmh.yaml
+ create mode 100644 drivers/interconnect/qcom/sm6350.c
+ create mode 100644 drivers/interconnect/qcom/sm6350.h
+ create mode 100644 include/dt-bindings/interconnect/qcom,sm6350.h
 
->>   > Doesn't it work to combine them into one call for each
->>   > pair?
->>   >> +       dsi_dcs_write_seq(dsi, );
->>   >> +       dsi_generic_write_seq(dsi, 0xff, 0x87, 0x19);
->>
->> By using a macro? We can... but I am not sure what (0x00, 0x80), (0x00,
->> 0xa0),etc type of commands signify without the datasheet, so I am not
->> sure what to name them in the macro and make any sensible meaning out of it.
-> 
-> I meant just sending dsi_generic_write_seq() with everything in
-> it:
-> 
-> dsi_generic_write_seq(dsi, 0x00, 0x80, 0xff, 0x87, 0x19);
-> 
-> Instead of two writes. Doesn't this work?
+-- 
+2.36.1
 
-I am not sure about whether it will work. Can multiple DCS commands can 
-be combined into single write? Don't know much about this.
-
-Anyways since the panel works without all these magic commands, these 
-will be removed in the next version.
-
-> Yours,
-> Linus Walleij
-
-Thanks and Regards
-Joel Selvaraj
