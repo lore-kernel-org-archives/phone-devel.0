@@ -2,56 +2,56 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2F72C43219
-	for <phone-devel@archiver.kernel.org>; Thu, 26 May 2022 12:37:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EEBD7C4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 26 May 2022 12:38:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231996AbiEZMh1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 26 May 2022 08:37:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46850 "EHLO
+        id S1343671AbiEZMiR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 26 May 2022 08:38:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239553AbiEZMh0 (ORCPT
+        with ESMTP id S243855AbiEZMiQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 26 May 2022 08:37:26 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007C9CE17
-        for <phone-devel@vger.kernel.org>; Thu, 26 May 2022 05:37:23 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id d22so1316002plr.9
-        for <phone-devel@vger.kernel.org>; Thu, 26 May 2022 05:37:23 -0700 (PDT)
+        Thu, 26 May 2022 08:38:16 -0400
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD52186DB
+        for <phone-devel@vger.kernel.org>; Thu, 26 May 2022 05:38:14 -0700 (PDT)
+Received: by mail-pg1-x52b.google.com with SMTP id r71so1299572pgr.0
+        for <phone-devel@vger.kernel.org>; Thu, 26 May 2022 05:38:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=JAxAACxBj2q0ltIXtWhvJ9IfIUtpHHM/k3TqNqpi9jI=;
-        b=bErNgXmLKViICLrEnIeno5fYz2WooLua67X61GN+2o2APHOtjZDSXIXAJv/CEQJ73J
-         dQTbrulXYfbF+Xex6TH20mOoCYQLl2QEEc3S1CgTeYyeuqMpO+8Y252ATbOOLgFg1Otd
-         2rv1K9uvBvXvn4cbNO9FuK1lMLkbIgSyCmf2CrDQ9aMIIunTB/GfDrF0ui7+UyKm/A26
-         yOknmC6wJKcOmFMbDGhJgug4S2w8TsO8Nh2MP9i982Ddidy6JPr1CdvwLoX0sD6CAoZ0
-         vZyens1PIEoFH/hshr6sseFHphZ9EIaoNEpShlz21dfAI/OyMgcGakHo2hoXhmJD5+R/
-         BfEQ==
+        bh=0UO89BqEGFXH2LQ2Zw4hmWgdpH9c0MCNadr6R4vq1C4=;
+        b=o6kLJCNqk1yw/y4JqgTCBWcbvbsHNgq0OZROaAplsSfzoioiueWmRQW7jpHM8ZbRM+
+         FZIMJA3u8QwtyxQtg1QaSw+1BJBWFIvOW1X13oqk3Ju2z30ulx57CEFx0Gfn/SVr/n7V
+         iUOb8dLDc8XTgmlgxlXlvm3P5gXmp1mXtpb6BgQ13L/q250Bi382CUXI1NeMn4cvDnd5
+         zoWww+LHrVUBw/wrDuYTvWd2uQkP/oddPHcUMyMbz/4f0HhqwlrKBx+tawW5m7I1o0pN
+         bZN9G1kdc1b5kOBZIXz7aw5G30091vUbgkaKrD4gLc6EAC2JEQkIXGWM57chIIwA2M1I
+         L5Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=JAxAACxBj2q0ltIXtWhvJ9IfIUtpHHM/k3TqNqpi9jI=;
-        b=nRulzhRTOG/c1CzTAuedrFettuOKEhZjooosxdxDE1nYqchKe2k6SkXr0YJD+HGUWo
-         FqPOfdsDo+9DDQQxbUg3euHgsQFsDw6qs9+xxgMkV0Vm3zC1V/s+DEt6JRm+ORedlRXC
-         OoJTffnHol9+9ryICewkWkn8/2ntMIUiONx7U+kcRQVixoZfH7khm9iRIRhQi0sfYjee
-         0tCBW90elGmR2+pd4iWKCsuYdawiawe0bICTWz0eRKjSIpqvnEmbOtX5WHfowHS78zb+
-         7kVjg4c4Dj6VHzpOODYQOo6SzPxqxSnGjmxae33KcfI8XJXdYJ9kQfHtcHzTVIwix7BN
-         4FsQ==
-X-Gm-Message-State: AOAM532SUCADVS9VMzPQ+TTLR/gSUdw2PQuyLmYfrDIwy10L8yFkvsFz
-        5pSFTXkYGqbdxfmVFYNSG3Z5tR2Kxi9KeEReRXLRxg==
-X-Google-Smtp-Source: ABdhPJwKF+1aH/9eGrn4tZxuy+lgadweE9lupgree9wFgTOe2AKXT+u75FlJ9iqSVzbPiyU/JpDcxoxA47JCbo7rz5k=
-X-Received: by 2002:a17:90b:4d91:b0:1df:f18f:7836 with SMTP id
- oj17-20020a17090b4d9100b001dff18f7836mr2481285pjb.152.1653568643465; Thu, 26
- May 2022 05:37:23 -0700 (PDT)
+        bh=0UO89BqEGFXH2LQ2Zw4hmWgdpH9c0MCNadr6R4vq1C4=;
+        b=lnc4e2lJnPMu7oweMDqwB4ohbtT4YrOM1k1jo3PUJxgHGcd/4S8RNUi6r5gPR8ECw/
+         +ryXz3VzWs3nszwCNo7khskuSshXYWrsMsODSi545lXHGuCcUlfAn/RzmrVsji10qqF6
+         iPCBcZaRNZ310GZDXZ8YEvTY+9saN/zkvL7MbLkKM4RAfKIcW5PayTf2CkxIZoUmcUcc
+         uEpkFSN0U24ottuEx1VAewczid9QKPNkYfyMjh628tMSpOEworRFszWf+Y/NTqf0Jlt6
+         nniSbBWdw2N8b0j69dCDvKOGgDhoKMg0zOUWROIdKoUYLMRePoIBcTCJylZgRzhlvcia
+         uKzg==
+X-Gm-Message-State: AOAM531pe7XzJSnsZi0cp5s02MLyJugASrVJdOzpFkCFynOod1I+DDs1
+        XPWpz569UOvuj0zUb5ox4VnlQweliQJDaR0P6ZuLMg==
+X-Google-Smtp-Source: ABdhPJyRZyntzJYEiUQuZ+m4clggGTWcaM9U84syVl1f1eLiLlu/p2ojlpqtwl/1zCgj0l7RLw5zbvuPR5r+l0bzOzQ=
+X-Received: by 2002:a63:6901:0:b0:3f9:caa5:cffc with SMTP id
+ e1-20020a636901000000b003f9caa5cffcmr25375640pgc.324.1653568693544; Thu, 26
+ May 2022 05:38:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220522162802.208275-1-luca@z3ntu.xyz> <20220522162802.208275-5-luca@z3ntu.xyz>
-In-Reply-To: <20220522162802.208275-5-luca@z3ntu.xyz>
+References: <20220522162802.208275-1-luca@z3ntu.xyz> <20220522162802.208275-6-luca@z3ntu.xyz>
+In-Reply-To: <20220522162802.208275-6-luca@z3ntu.xyz>
 From:   Robert Foss <robert.foss@linaro.org>
-Date:   Thu, 26 May 2022 14:37:12 +0200
-Message-ID: <CAG3jFyv5OL6hJZeCSrLVUKJPiGXEs_gmP6COMQv98HhmxZrDQg@mail.gmail.com>
-Subject: Re: [RFC PATCH 04/14] media: camss: video: Add support for 8x74
+Date:   Thu, 26 May 2022 14:38:02 +0200
+Message-ID: <CAG3jFyvp593q641LTEd3sASQAQJSQZOfVmen1aHzKPXY9+4w0A@mail.gmail.com>
+Subject: Re: [RFC PATCH 05/14] media: camss: csid: Add support for 8x74
 To:     Luca Weiss <luca@z3ntu.xyz>
 Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -75,36 +75,37 @@ On Sun, 22 May 2022 at 18:28, Luca Weiss <luca@z3ntu.xyz> wrote:
 >
 > From: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
 >
-> Video formats in 8x16 and 8x74 are similar.
+> CSID hardware module on 8x74 is similar to 8x16.
 >
 > Signed-off-by: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
->  drivers/media/platform/qcom/camss/camss-video.c | 3 ++-
+>  drivers/media/platform/qcom/camss/camss-csid.c | 3 ++-
 >  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/media/platform/qcom/camss/camss-video.c b/drivers/me=
-dia/platform/qcom/camss/camss-video.c
-> index 307bb1dc4589..ca955808fd6d 100644
-> --- a/drivers/media/platform/qcom/camss/camss-video.c
-> +++ b/drivers/media/platform/qcom/camss/camss-video.c
-> @@ -990,7 +990,8 @@ int msm_video_register(struct camss_video *video, str=
-uct v4l2_device *v4l2_dev,
+> diff --git a/drivers/media/platform/qcom/camss/camss-csid.c b/drivers/med=
+ia/platform/qcom/camss/camss-csid.c
+> index f993f349b66b..6b5cd9a66ff6 100644
+> --- a/drivers/media/platform/qcom/camss/camss-csid.c
+> +++ b/drivers/media/platform/qcom/camss/camss-csid.c
+> @@ -570,7 +570,8 @@ int msm_csid_subdev_init(struct camss *camss, struct =
+csid_device *csid,
+>         csid->camss =3D camss;
+>         csid->id =3D id;
 >
->         mutex_init(&video->lock);
->
-> -       if (video->camss->version =3D=3D CAMSS_8x16) {
-> +       if (video->camss->version =3D=3D CAMSS_8x16 ||
-> +               video->camss->version =3D=3D CAMSS_8x74) {
+> -       if (camss->version =3D=3D CAMSS_8x16) {
+> +       if (camss->version =3D=3D CAMSS_8x16 ||
+> +               camss->version =3D=3D CAMSS_8x74) {
 
-#27: FILE: drivers/media/platform/qcom/camss/camss-video.c:994:
-+    if (video->camss->version =3D=3D CAMSS_8x16 ||
-+        video->camss->version =3D=3D CAMSS_8x74) {
+CHECK: Alignment should match open parenthesis
+#27: FILE: drivers/media/platform/qcom/camss/camss-csid.c:574:
++    if (camss->version =3D=3D CAMSS_8x16 ||
++        camss->version =3D=3D CAMSS_8x74) {
 
 
->                 if (is_pix) {
->                         video->formats =3D formats_pix_8x16;
->                         video->nformats =3D ARRAY_SIZE(formats_pix_8x16);
+>                 csid->ops =3D &csid_ops_4_1;
+>         } else if (camss->version =3D=3D CAMSS_8x96 ||
+>                    camss->version =3D=3D CAMSS_660) {
 > --
 > 2.36.0
 >
