@@ -2,138 +2,128 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB233C4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 26 May 2022 12:36:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6295C433FE
+	for <phone-devel@archiver.kernel.org>; Thu, 26 May 2022 12:36:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238436AbiEZMgh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 26 May 2022 08:36:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42452 "EHLO
+        id S239770AbiEZMgi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 26 May 2022 08:36:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239220AbiEZMgf (ORCPT
+        with ESMTP id S244899AbiEZMgh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 26 May 2022 08:36:35 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A77A9CE06
-        for <phone-devel@vger.kernel.org>; Thu, 26 May 2022 05:36:33 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id z11so1632511pjc.3
-        for <phone-devel@vger.kernel.org>; Thu, 26 May 2022 05:36:33 -0700 (PDT)
+        Thu, 26 May 2022 08:36:37 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21DB8CE1A
+        for <phone-devel@vger.kernel.org>; Thu, 26 May 2022 05:36:36 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id f9so2846393ejc.0
+        for <phone-devel@vger.kernel.org>; Thu, 26 May 2022 05:36:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=pY4qCEMlcn8sdqN9o7uAGxAaJ9tUnjQmk4ekV4UO6HQ=;
-        b=Mp58j2c3jmkkxJNgqE3o4QdMeh3n+3IYER8c353fYHVyncmUeM5QT3iUsu2EOUiM1G
-         H5HzysDPjuHmtv2FQ2GSUNp269c0czabAAPu3qmLLkNiefIcRs9WbWk+13XaNKa9p1IA
-         0+oFXBusMsGOtLMKEjeS1cg1t9SxqL3hi1uVdere7PO27GuJo36aJ3juXg96Zlmy3MAw
-         4oRVrFd4NI54P/ogZcnUALv8uBRzMfAmVPdIKisf4XTr9avfcIcCxfQcn/XRj4QJOf//
-         4bW4T0zWbeMD9Ani7/kBTIrXYFaEtr+yTqUsOSCCQ5VdYy5b2eNF/BLNQqkYAV2TTC/N
-         tlHg==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=Wl4uFPiTLXhXf4v+vyfxdpd3/HqIgIQQpbstfSoefxg=;
+        b=pA4RAyWqdryjNuZQYiOcRsfy1kaLLlydsrhVJxwzL6AzsC/RVJORQyWIRFU/vdFV+t
+         AMfd/xFG8qpiRoNQl3hVSjI+6O+gXZNRfkmSTsDt8/A56ff1Gwam6XfCMnwEzkY1fVQY
+         nPNksRCVpcN37uQiErPjL6rXTW6ea1zmmzVcPR+jSxfLEKFlp9D+PEFcV52b43ycsqeh
+         RBCPUrag1hpeH3SXEDIKIkjKbZOa1UrFdFXho6eRAj7Zx4Xjt/EdUkR8Hvf7jlv1nHoV
+         0UFwMXA3NTbp1UZK1o/cXr8tJsKL0DWJxefWhNTYAfB2gnl6oqeBt+FLwQdU6/SssgRs
+         3GAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=pY4qCEMlcn8sdqN9o7uAGxAaJ9tUnjQmk4ekV4UO6HQ=;
-        b=c0VmV06jkmjoD36JkSgwvXudn2Gd5CFZBRG3qhwp+ZIvaLwRoOJFTVSm+x/PlMMNfx
-         Rklab8KrXYEpnhse5v3VKzm5CFpAS+yPy4GghaPS1sLYnUYbrVKCeQE5XqOu/iSH910R
-         TIC1l7KZ9KMoQF/70eo3DwDHQs4upcZ7u+U070TW3lFjtMHmDMALMUDVhy9Ux1p29Jap
-         H+3zZClVM0bzzZHHa2rJJEVBE55mxS/LM/0432h96crbS7c46JQNQO/hLVIOcGnhjbnp
-         Zx2OY24hGDLms0+tUNmIQNUP5Bqaw8KD2RLEJEQBX/qWOCBl/YDMTM2ZpsKgEZ0dkiTo
-         Mklw==
-X-Gm-Message-State: AOAM533BRJs2KbbjEQdZIpLVj8mRJjfk0TBs+WMnx/irkp6G3s3qVE6Z
-        /54toQCOhVLOjIkKfrMfsGrcmCAc6X4BYZvlVuJLxw==
-X-Google-Smtp-Source: ABdhPJymrGdw71TCK2V0oz538Ig3kuxGWcKjmEvRjXWfvWUPmHiJY5Qg+JAM+o5WEKaPJP8+2ZyQ777+dyl1Dqzn6ks=
-X-Received: by 2002:a17:902:8f81:b0:161:f4a7:f2fc with SMTP id
- z1-20020a1709028f8100b00161f4a7f2fcmr30779133plo.117.1653568593119; Thu, 26
- May 2022 05:36:33 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=Wl4uFPiTLXhXf4v+vyfxdpd3/HqIgIQQpbstfSoefxg=;
+        b=tD90QyL5iA9bVxSuoflorYt3bkTAE4B/lG/jr4TcZwv7DBXP4YvqRAyyfc8l5VEC46
+         5FZjbJeryDJodogDn3ivvk7j7t5Mp1TS8gLDz5z6rmhmFQVPHAXjX8YqMLDyzeHGgS0h
+         USTsOU8lXG/AnFnT1tkQ1wFW6rl+c/cWQaP+FNNQMy+ZrbH5KStsVO4ZkYKDxQZZZcnU
+         SGiIIU7xpdPbPedEn5ip9Nq36WxZAnPd6kWeRuFVWloDdHAD65H21ocabkPCrljHvTll
+         UUHB7TTV3d0UpseS+rxtT3XAFtmd+y565YITFmHBCD1I7P6qJmsd7WSgUUwMG5dGKIvj
+         faXA==
+X-Gm-Message-State: AOAM5328k71sLRhc3rfX7+mQskYne4Mi5AbLqdOS2N6gMKCPL1TWt6+n
+        0sKpBM5U6DjN658eQG8JD7ekfQ==
+X-Google-Smtp-Source: ABdhPJxSrsIaPyiY3MVFSltc/EMSJtv7+z9qdSSHzK+jCc+pJmp0QJ82aeWqObHLhjuMrioWUvFvHA==
+X-Received: by 2002:a17:907:7d91:b0:6fe:efb8:8f97 with SMTP id oz17-20020a1709077d9100b006feefb88f97mr17115923ejc.717.1653568594660;
+        Thu, 26 May 2022 05:36:34 -0700 (PDT)
+Received: from [192.168.0.177] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id p16-20020a170907911000b006febc1ef61csm471643ejq.106.2022.05.26.05.36.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 May 2022 05:36:34 -0700 (PDT)
+Message-ID: <2bef3fda-58ba-98c7-e9bf-d2d3a9dec6e3@linaro.org>
+Date:   Thu, 26 May 2022 14:36:33 +0200
 MIME-Version: 1.0
-References: <20220522162802.208275-1-luca@z3ntu.xyz> <20220522162802.208275-4-luca@z3ntu.xyz>
-In-Reply-To: <20220522162802.208275-4-luca@z3ntu.xyz>
-From:   Robert Foss <robert.foss@linaro.org>
-Date:   Thu, 26 May 2022 14:36:21 +0200
-Message-ID: <CAG3jFysz_BisbjDgyVBmfAbKUukvG4H8GpxJF1fOw2ZqQ5HQ=w@mail.gmail.com>
-Subject: Re: [RFC PATCH 03/14] media: camss: vfe: Add support for 8x74
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Todor Tomov <todor.too@gmail.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v3 3/5] dt-bindings: interconnect: Add Qualcomm SM6350 NoC
+ support
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        matti.lehtimaki@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Georgi Djakov <djakov@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220525144404.200390-1-luca.weiss@fairphone.com>
+ <20220525144404.200390-4-luca.weiss@fairphone.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220525144404.200390-4-luca.weiss@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 22 May 2022 at 18:28, Luca Weiss <luca@z3ntu.xyz> wrote:
->
-> From: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
->
-> VFE hardware modules on 8x74 and 8x16 are similar.
->
-> Signed-off-by: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+On 25/05/2022 16:43, Luca Weiss wrote:
+> Add bindings for Qualcomm SM6350 Network-On-Chip interconnect devices.
+> 
+> As SM6350 has two pairs of NoCs sharing the same reg, allow this in the
+> binding documentation, as was done for qcm2290.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->  drivers/media/platform/qcom/camss/camss-vfe.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/media/platform/qcom/camss/camss-vfe.c b/drivers/medi=
-a/platform/qcom/camss/camss-vfe.c
-> index 5b148e9f8134..ace53ed24884 100644
-> --- a/drivers/media/platform/qcom/camss/camss-vfe.c
-> +++ b/drivers/media/platform/qcom/camss/camss-vfe.c
-> @@ -170,7 +170,8 @@ static u32 vfe_src_pad_code(struct vfe_line *line, u3=
-2 sink_code,
->  {
->         struct vfe_device *vfe =3D to_vfe(line);
->
-> -       if (vfe->camss->version =3D=3D CAMSS_8x16)
-> +       if (vfe->camss->version =3D=3D CAMSS_8x16 ||
-> +               vfe->camss->version =3D=3D CAMSS_8x74)
+> Changes since v2:
+> * Put requires and unevaluatedProperties further down
+> 
+>  .../interconnect/qcom,sm6350-rpmh.yaml        |  82 ++++++++++
+>  .../dt-bindings/interconnect/qcom,sm6350.h    | 148 ++++++++++++++++++
+>  2 files changed, 230 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,sm6350-rpmh.yaml
+>  create mode 100644 include/dt-bindings/interconnect/qcom,sm6350.h
+> 
+> diff --git a/Documentation/devicetree/bindings/interconnect/qcom,sm6350-rpmh.yaml b/Documentation/devicetree/bindings/interconnect/qcom,sm6350-rpmh.yaml
+> new file mode 100644
+> index 000000000000..3e3ea85b4792
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interconnect/qcom,sm6350-rpmh.yaml
+> @@ -0,0 +1,82 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/interconnect/qcom,sm6350-rpmh.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm SM6350 RPMh Network-On-Chip Interconnect
+> +
+> +maintainers:
+> +  - Luca Weiss <luca.weiss@fairphone.com>
+> +
+> +description: |
 
-Match indentation of previous line.
+No need for |.
 
-CHECK: Alignment should match open parenthesis
-#27: FILE: drivers/media/platform/qcom/camss/camss-vfe.c:174:
-+    if (vfe->camss->version =3D=3D CAMSS_8x16 ||
-+        vfe->camss->version =3D=3D CAMSS_8x74)
+> +  Qualcomm RPMh-based interconnect provider on SM6350.
+> +
+> +allOf:
+> +  - $ref: qcom,rpmh-common.yaml#
+> +
 
->                 switch (sink_code) {
->                 case MEDIA_BUS_FMT_YUYV8_2X8:
->                 {
-> @@ -1286,6 +1287,7 @@ int msm_vfe_subdev_init(struct camss *camss, struct=
- vfe_device *vfe,
->
->         switch (camss->version) {
->         case CAMSS_8x16:
-> +       case CAMSS_8x74:
->                 vfe->ops =3D &vfe_ops_4_1;
->                 break;
->         case CAMSS_8x96:
-> @@ -1390,7 +1392,8 @@ int msm_vfe_subdev_init(struct camss *camss, struct=
- vfe_device *vfe,
->                 init_completion(&l->output.sof);
->                 init_completion(&l->output.reg_update);
->
-> -               if (camss->version =3D=3D CAMSS_8x16) {
-> +               if (camss->version =3D=3D CAMSS_8x16 ||
-> +                       camss->version =3D=3D CAMSS_8x74) {
 
-Same
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
->                         if (i =3D=3D VFE_LINE_PIX) {
->                                 l->formats =3D formats_pix_8x16;
->                                 l->nformats =3D ARRAY_SIZE(formats_pix_8x=
-16);
-> --
-> 2.36.0
->
 
-With that fixed:
-Reviewed-by: Robert Foss <robert.foss@linaro.org>
+Best regards,
+Krzysztof
