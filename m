@@ -2,51 +2,167 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E7FDC433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 26 May 2022 11:09:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BC34C43219
+	for <phone-devel@archiver.kernel.org>; Thu, 26 May 2022 12:16:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344177AbiEZLJA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 26 May 2022 07:09:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39798 "EHLO
+        id S1345117AbiEZMQR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 26 May 2022 08:16:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344568AbiEZLI7 (ORCPT
+        with ESMTP id S1345574AbiEZMQP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 26 May 2022 07:08:59 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74BE9C966F;
-        Thu, 26 May 2022 04:08:58 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 339611C0B8F; Thu, 26 May 2022 13:08:57 +0200 (CEST)
-Date:   Thu, 26 May 2022 13:08:56 +0200
-From:   Pavel Machek <pavel@ucw.cz>
+        Thu, 26 May 2022 08:16:15 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEFCA26AEB
+        for <phone-devel@vger.kernel.org>; Thu, 26 May 2022 05:16:12 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id s14so1279360plk.8
+        for <phone-devel@vger.kernel.org>; Thu, 26 May 2022 05:16:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pSsFxHfEMcrHOSBoFMEeUFcZhoPO+KxNjOCmccE7VEc=;
+        b=j1LakW1276mdhdZUQsSFgcp6av448PqaRz7jViMY+GiGwh5iEij2Cm5mimSgVPEdiL
+         Ozj3HVl3aUCQNnL22XjmDerl2WGv3ej+oU5YMVtYH9VIgXAWsX2inzVAfnyQqa2b5xnX
+         W2Y4WrZkxJ+HRox9oe5wjmagh65jqeEWGjW8fstEyuAjiqnZGpAs/+pspSCQIhlehDyP
+         xDU30Ahlo1lxgsqq/URVcKV4vlRa+Ug1dhRi/5993PYb81ygDBtRkwhfgFcpx+IwipjA
+         ioZ7k1tvfTIqVetbCWXoO8xV/OhK2fIufIzWIIGxVrM90tgy7w3bSaH4Mpz4weYTocdg
+         ER1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pSsFxHfEMcrHOSBoFMEeUFcZhoPO+KxNjOCmccE7VEc=;
+        b=yksNKl/3XVBLeyQVeoebexds9cnJzBgjtGBlsRQptIOmUYqT1ZSP2SqE3LAExLJnAY
+         EA6hkU5CgtDGMo2yoQtyKZ6BL+shi9X065V2TTH5Jm6V566MaHbZbHJjbwqKZW6uQbQ/
+         biofSfhbc2dvczt6Tc26XgGrol6S7R1JqBhk0KJ1hQLGW/fhcu8jeYRpAP5ALxzkGHK2
+         5VNdMvzUonZu3pabElhkuCjHfnsVLqb5HvRFzPZ2w9pKvRRm0zATSoN5VhVaxJtVbAFp
+         4Nuz+dxK2+sn5GNmWKkha8W29AGhW6Tn74Pm26PLBtG3YWt4wV5fC0SLeMmQSndYSIXU
+         Ddfg==
+X-Gm-Message-State: AOAM533mtcZn6LJst2/Q7FztiJCGUW6lIGvVXojUAIbjX2nFZkA+h8zY
+        J81i4XOO44rbdwdD2ln6e2RMgmrxTvd4I/3SZ77dMg==
+X-Google-Smtp-Source: ABdhPJyPE1Wcb5k1NYZNag1s+hH2MlPohRmJCsdM2BsWrYm5w9w9F6ArFLEhJ5Lmyc8aI7BQaEykL1CgVfGR0Wh+Ecc=
+X-Received: by 2002:a17:902:8f81:b0:161:f4a7:f2fc with SMTP id
+ z1-20020a1709028f8100b00161f4a7f2fcmr30701452plo.117.1653567371993; Thu, 26
+ May 2022 05:16:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220522162802.208275-1-luca@z3ntu.xyz> <20220522162802.208275-12-luca@z3ntu.xyz>
+In-Reply-To: <20220522162802.208275-12-luca@z3ntu.xyz>
+From:   Robert Foss <robert.foss@linaro.org>
+Date:   Thu, 26 May 2022 14:16:01 +0200
+Message-ID: <CAG3jFys4o6vsqhDJXMkL2fFdjDGstdzaB59j=Md6KDinMDNVRg@mail.gmail.com>
+Subject: Re: [RFC PATCH 11/14] ARM: dts: qcom: msm8974: add CCI bus
 To:     Luca Weiss <luca@z3ntu.xyz>
 Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] ARM: dts: qcom: msm8974: Add missing license headers
-Message-ID: <20220526110856.GF5138@localhost>
-References: <20220421211936.345168-1-luca@z3ntu.xyz>
- <20220421211936.345168-3-luca@z3ntu.xyz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220421211936.345168-3-luca@z3ntu.xyz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Todor Tomov <todor.too@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        matti.lehtimaki@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi!
+This patch does not apply on upstream-media/master or
+upstream-next/master. Is there another branch this series should be
+applied to?
 
-> All other msm8974 dts files are licensed as GPL-2.0 so add the same
-> header to the files where it's missing.
-> 
+On Sun, 22 May 2022 at 18:28, Luca Weiss <luca@z3ntu.xyz> wrote:
+>
+> Add a node for the camera-specific i2c bus found on msm8974.
+>
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-
-Normally, dts files are dual-licensed. Can that be arranged here?
-
-	      	    		       	   	   	    Pavel
+> ---
+>  arch/arm/boot/dts/qcom-msm8974.dtsi | 62 +++++++++++++++++++++++++++++
+>  1 file changed, 62 insertions(+)
+>
+> diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
+> index ffa6f874917a..a80b4ae71745 100644
+> --- a/arch/arm/boot/dts/qcom-msm8974.dtsi
+> +++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
+> @@ -1434,6 +1434,34 @@ blsp2_i2c5_sleep: blsp2-i2c5-sleep {
+>
+>                         /* BLSP2_I2C6 info is missing - nobody uses it though? */
+>
+> +                       cci0_default: cci0-default {
+> +                               pins = "gpio19", "gpio20";
+> +                               function = "cci_i2c0";
+> +                               drive-strength = <2>;
+> +                               bias-disable;
+> +                       };
+> +
+> +                       cci0_sleep: cci0-sleep {
+> +                               pins = "gpio19", "gpio20";
+> +                               function = "gpio";
+> +                               drive-strength = <2>;
+> +                               bias-disable;
+> +                       };
+> +
+> +                       cci1_default: cci1-default {
+> +                               pins = "gpio21", "gpio22";
+> +                               function = "cci_i2c1";
+> +                               drive-strength = <2>;
+> +                               bias-disable;
+> +                       };
+> +
+> +                       cci1_sleep: cci1-sleep {
+> +                               pins = "gpio21", "gpio22";
+> +                               function = "gpio";
+> +                               drive-strength = <2>;
+> +                               bias-disable;
+> +                       };
+> +
+>                         spi8_default: spi8_default {
+>                                 mosi {
+>                                         pins = "gpio45";
+> @@ -1587,6 +1615,40 @@ dsi0_phy: dsi-phy@fd922a00 {
+>                         };
+>                 };
+>
+> +               cci: cci@fda0c000 {
+> +                       compatible = "qcom,msm8974-cci";
+> +                       #address-cells = <1>;
+> +                       #size-cells = <0>;
+> +                       reg = <0xfda0c000 0x1000>;
+> +                       interrupts = <GIC_SPI 50 IRQ_TYPE_EDGE_RISING>;
+> +                       clocks = <&mmcc CAMSS_TOP_AHB_CLK>,
+> +                                <&mmcc CAMSS_CCI_CCI_AHB_CLK>,
+> +                                <&mmcc CAMSS_CCI_CCI_CLK>;
+> +                       clock-names = "camss_top_ahb",
+> +                                     "cci_ahb",
+> +                                     "cci";
+> +
+> +                       pinctrl-names = "default", "sleep";
+> +                       pinctrl-0 = <&cci0_default &cci1_default>;
+> +                       pinctrl-1 = <&cci0_sleep &cci1_sleep>;
+> +
+> +                       status = "disabled";
+> +
+> +                       cci_i2c0: i2c-bus@0 {
+> +                               reg = <0>;
+> +                               clock-frequency = <400000>;
+> +                               #address-cells = <1>;
+> +                               #size-cells = <0>;
+> +                       };
+> +
+> +                       cci_i2c1: i2c-bus@1 {
+> +                               reg = <1>;
+> +                               clock-frequency = <400000>;
+> +                               #address-cells = <1>;
+> +                               #size-cells = <0>;
+> +                       };
+> +               };
+> +
+>                 gpu: adreno@fdb00000 {
+>                         compatible = "qcom,adreno-330.1", "qcom,adreno";
+>                         reg = <0xfdb00000 0x10000>;
+> --
+> 2.36.0
+>
