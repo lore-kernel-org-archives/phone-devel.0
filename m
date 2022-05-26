@@ -2,301 +2,156 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B170C433F5
-	for <phone-devel@archiver.kernel.org>; Thu, 26 May 2022 12:42:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DC65C433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 26 May 2022 20:12:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241481AbiEZMmw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 26 May 2022 08:42:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34322 "EHLO
+        id S238535AbiEZUMj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 26 May 2022 16:12:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234837AbiEZMmu (ORCPT
+        with ESMTP id S1344013AbiEZUMi (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 26 May 2022 08:42:50 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20D5A6D87B
-        for <phone-devel@vger.kernel.org>; Thu, 26 May 2022 05:42:47 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id w2-20020a17090ac98200b001e0519fe5a8so1613643pjt.4
-        for <phone-devel@vger.kernel.org>; Thu, 26 May 2022 05:42:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=jdjGxx7PRekSNzvSccskiFkZs4U5abVvScuD8Z3XzKg=;
-        b=Iz1P49Jvu7F3411ROfQcozZqUkFOaQgRNHvjm19nwifaFwsMmfKP2J8QgLd+3E5r9I
-         BTXK+F6GrjZgT+tSWho24f7d4O1cM1o3ssHia+5i9qgBOe9Q7jFWbXYPEQkPSYtyDIr+
-         Skd1qV8Uj8D/9rHuZRyV1ZoseJIBLHItfpe5eykGXtxOzIaaJ/hKietgS2t3EQzR9Gl/
-         DXwBWeqLOEtBS02ycWWJIUJqMGsneyRfT0x5rXJdN1NPKhUPQbtWZJyWN8vRACRZqMC0
-         NZjXm769TCcyszRpSa0YRoET88SHeYC3SCdt9H25Ewj6QGZ8TVMqMa0ooXBU1vqckPKz
-         YCLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=jdjGxx7PRekSNzvSccskiFkZs4U5abVvScuD8Z3XzKg=;
-        b=v1vxCzjOJfIqRLkYP3x8Gfl3+qYecTy2j8P1nFySk8l1MbdkiTkRCninIq2YlUfr7l
-         FTpLGHobxoa+T9Hi7b9hpOhjr5rPx7i7vD5ueuq9awtctarNsueEOWyyvSOeYPv6JID8
-         zIgn2quZRkDQmzsZ90GUUYXEqUW8nT7A5pGy1phOwO582oozkCJCWF0K+uhrnIg0Pr9p
-         SeYQ6C8yfK5R7HWdIX6uwaRtSsykzXmDARw3YoiC2gk15vXyCNsl3OriFQObUXdGKy/F
-         GCw1xOJ/N1MwjCGwvDZxbWWHDgxc7v6UEuEFqVMm4Rzk/6nuvXJ/vNDNfBtPlyLQsVxH
-         mWLA==
-X-Gm-Message-State: AOAM532jUceZXBqSul+xkaKxkrYkEZ0Y/O9Ocyd3MA/TmKVgDfw5pNvF
-        v4k9fZ+3O9ps9wmIoud8jwqaxZx0ifwJBQRaGNongg==
-X-Google-Smtp-Source: ABdhPJwSlTKFfEDVZSH4bg6IXzpCeeQ8TDu75ALcCSHTgNKCO3gjRaw+18HZchkUJ4JSXlp3cX5qFz11VXRag++xkQM=
-X-Received: by 2002:a17:903:1cd:b0:163:6697:e6e with SMTP id
- e13-20020a17090301cd00b0016366970e6emr6141774plh.21.1653568966611; Thu, 26
- May 2022 05:42:46 -0700 (PDT)
+        Thu, 26 May 2022 16:12:38 -0400
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B47E6C1EC4;
+        Thu, 26 May 2022 13:12:37 -0700 (PDT)
+Received: from mx0.riseup.net (mx0-pn.riseup.net [10.0.1.42])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
+         client-signature RSA-PSS (2048 bits) client-digest SHA256)
+        (Client CN "mx0.riseup.net", Issuer "R3" (not verified))
+        by mx1.riseup.net (Postfix) with ESMTPS id 4L8Jy21VwNzDs0j;
+        Thu, 26 May 2022 13:12:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+        t=1653595957; bh=/h9OlJmTUr9r9fpUj2hVVrMBtpeveoTBrzqKr4leYbU=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=JsNttbH2GcO0qsOBMAjtUGqKkzXaeFVJwjANk7NtoCmB+yxT4m7zzpwGYcrVpq07W
+         JBEn8nLsjWHC32Y5FPLFWUGY7MsU0IthOqkW5RB7eGjT6rMoggDqhNQPTvmvlEdPHM
+         Y3JzKuYAVPmrMVS67ix/fq/LYHAOjCAaV4CAJk5k=
+Received: from fews2.riseup.net (fews2-pn.riseup.net [10.0.1.84])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
+         client-signature RSA-PSS (2048 bits) client-digest SHA256)
+        (Client CN "mail.riseup.net", Issuer "R3" (not verified))
+        by mx0.riseup.net (Postfix) with ESMTPS id 4L8Jy1278Qz9tBX;
+        Thu, 26 May 2022 13:12:25 -0700 (PDT)
+X-Riseup-User-ID: FB853247F7ABA718FEEF3371A4958415B94990E7FE0E0CCDCB376597555A7E17
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+         by fews2.riseup.net (Postfix) with ESMTPSA id 4L8Jxx4PFfz1yPT;
+        Thu, 26 May 2022 13:12:21 -0700 (PDT)
+Message-ID: <8d25171a-5d86-9acc-0f94-1a3c6efdb360@riseup.net>
+Date:   Thu, 26 May 2022 23:12:19 +0300
 MIME-Version: 1.0
-References: <20220522162802.208275-1-luca@z3ntu.xyz> <20220522162802.208275-9-luca@z3ntu.xyz>
-In-Reply-To: <20220522162802.208275-9-luca@z3ntu.xyz>
-From:   Robert Foss <robert.foss@linaro.org>
-Date:   Thu, 26 May 2022 14:42:35 +0200
-Message-ID: <CAG3jFyuVG9H3P2yUEJRUo9c4xLzax1tTeJYLUpoPOwHdYZ-xNw@mail.gmail.com>
-Subject: Re: [RFC PATCH 08/14] media: camss: Add 8x74 resources
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Todor Tomov <todor.too@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        matti.lehtimaki@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [RESEND PATCH] scsi: ufs: sysfs: support writing boot_lun attr
+Content-Language: en-US
+To:     Avri Altman <Avri.Altman@wdc.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc:     "~postmarketos/upstreaming@lists.sr.ht" 
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
+References: <20220525164013.93748-1-a5b6@riseup.net>
+ <DM6PR04MB65750969ACD36EEEB48374DFFCD69@DM6PR04MB6575.namprd04.prod.outlook.com>
+From:   - <a5b6@riseup.net>
+Autocrypt: addr=a5b6@riseup.net; keydata=
+ xjMEYZTAJxYJKwYBBAHaRw8BAQdAeWfL/oPvU6yvaH7cClu6KaN2CflyoTcg5qPUoNLFnAzN
+ Ey0gPGE1YjZAcmlzZXVwLm5ldD7CkQQTFggAORYhBLyRr+O3uqpzVxFlHDLzs9uoV47bBQJh
+ lMAnBQkB4TOAAhsDBQsJCAcCBhUICQoLAgUWAgMBAAAKCRAy87PbqFeO2+KCAQDK9VqUAzN0
+ N7nm9n2G8SI1gbAgbZFprSAaYvQaRIlyIQD/eSi/7185I93xAjF/AX78akjD/+tyBYl5JD+r
+ iVv+8ADOOARhlMAnEgorBgEEAZdVAQUBAQdAs6KmMDge7X9mnh9UqTKC0sDdBceE2W+K+7Z8
+ GPjb5SkDAQgHwn4EGBYIACYWIQS8ka/jt7qqc1cRZRwy87PbqFeO2wUCYZTAJwUJAeEzgAIb
+ DAAKCRAy87PbqFeO2y/wAP92MinlCPDaPtB1JlmCNmg4638kf5qEh/kVeVPYJyGIvgD6A37W
+ tjfuHjLL5Vi0iIdXGbOruHfOx3uQSocZ5UnbGwc=
+In-Reply-To: <DM6PR04MB65750969ACD36EEEB48374DFFCD69@DM6PR04MB6575.namprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 22 May 2022 at 18:28, Luca Weiss <luca@z3ntu.xyz> wrote:
->
-> From: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
->
-> Add structs with 8x74 resources. The number of CSIPHY, CSID
-> and VFE hardware modules is the same as 8x96 but the support
-> is otherwise different.
->
-> Signed-off-by: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  drivers/media/platform/qcom/camss/camss.c | 161 ++++++++++++++++++++++
->  1 file changed, 161 insertions(+)
->
-> diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/pl=
-atform/qcom/camss/camss.c
-> index 79ad82e233cb..5a69ce48c792 100644
-> --- a/drivers/media/platform/qcom/camss/camss.c
-> +++ b/drivers/media/platform/qcom/camss/camss.c
-> @@ -126,6 +126,154 @@ static const struct resources vfe_res_8x16[] =3D {
->         }
->  };
->
-> +static const struct resources csiphy_res_8974[] =3D {
-> +       /* CSIPHY0 */
-> +       {
-> +               .regulators =3D { NULL },
-> +               .clock =3D { "top_ahb", "ispif_ahb", "csiphy0_timer" },
-> +               .clock_rate =3D { { 0 },
-> +                               { 0 },
-> +                               { 100000000, 200000000 } },
-> +               .reg =3D { "csiphy0", "csiphy0_clk_mux" },
-> +               .interrupt =3D { "csiphy0" }
-> +       },
-> +
-> +       /* CSIPHY1 */
-> +       {
-> +               .regulators =3D { NULL },
-> +               .clock =3D { "top_ahb", "ispif_ahb", "csiphy1_timer" },
-> +               .clock_rate =3D { { 0 },
-> +                               { 0 },
-> +                               { 100000000, 200000000 } },
-> +               .reg =3D { "csiphy1", "csiphy1_clk_mux" },
-> +               .interrupt =3D { "csiphy1" }
-> +       },
-> +
-> +       /* CSIPHY2 */
-> +       {
-> +               .regulators =3D { NULL },
-> +               .clock =3D { "top_ahb", "ispif_ahb", "csiphy2_timer" },
-> +               .clock_rate =3D { { 0 },
-> +                               { 0 },
-> +                               { 100000000, 200000000 } },
-> +               .reg =3D { "csiphy2", "csiphy2_clk_mux" },
-> +               .interrupt =3D { "csiphy2" }
-> +       }
-> +};
-> +
-> +static const struct resources csid_res_8974[] =3D {
-> +       /* CSID0 */
-> +       {
-> +               .regulators =3D { "vdda" },
-> +               .clock =3D { "top_ahb", "ispif_ahb", "csi0_ahb",
-> +                          "csi0", "csi0_phy", "csi0_pix", "csi0_rdi" },
-> +               .clock_rate =3D { { 0 },
-> +                               { 0 },
-> +                               { 0 },
-> +                               { 100000000, 200000000 },
-> +                               { 0 },
-> +                               { 0 },
-> +                               { 0 } },
-> +               .reg =3D { "csid0" },
-> +               .interrupt =3D { "csid0" }
-> +       },
-> +
-> +       /* CSID1 */
-> +       {
-> +               .regulators =3D { "vdda" },
-> +               .clock =3D { "top_ahb", "ispif_ahb", "csi1_ahb",
-> +                          "csi1", "csi1_phy", "csi1_pix", "csi1_rdi" },
-> +               .clock_rate =3D { { 0 },
-> +                               { 0 },
-> +                               { 0 },
-> +                               { 100000000, 200000000 },
-> +                               { 0 },
-> +                               { 0 },
-> +                               { 0 } },
-> +               .reg =3D { "csid1" },
-> +               .interrupt =3D { "csid1" }
-> +       },
-> +
-> +       /* CSID2 */
-> +       {
-> +               .regulators =3D { "vdda" },
-> +               .clock =3D { "top_ahb", "ispif_ahb", "csi2_ahb",
-> +                          "csi2", "csi2_phy", "csi2_pix", "csi2_rdi" },
-> +               .clock_rate =3D { { 0 },
-> +                               { 0 },
-> +                               { 0 },
-> +                               { 100000000, 200000000 },
-> +                               { 0 },
-> +                               { 0 },
-> +                               { 0 } },
-> +               .reg =3D { "csid2" },
-> +               .interrupt =3D { "csid2" }
-> +       },
-> +
-> +       /* CSID3 */
-> +       {
-> +               .regulators =3D { "vdda" },
-> +               .clock =3D { "top_ahb", "ispif_ahb", "csi3_ahb",
-> +                          "csi3", "csi3_phy", "csi3_pix", "csi3_rdi" },
-> +               .clock_rate =3D { { 0 },
-> +                               { 0 },
-> +                               { 0 },
-> +                               { 100000000, 200000000 },
-> +                               { 0 },
-> +                               { 0 },
-> +                               { 0 } },
-> +               .reg =3D { "csid3" },
-> +               .interrupt =3D { "csid3" }
-> +       }
-> +};
-> +
-> +static const struct resources_ispif ispif_res_8974 =3D {
-> +       /* ISPIF */
-> +       .clock =3D { "top_ahb", "ispif_ahb",
-> +                  "csi0", "csi0_pix", "csi0_rdi",
-> +                  "csi1", "csi1_pix", "csi1_rdi",
-> +                  "csi2", "csi2_pix", "csi2_rdi",
-> +                  "csi3", "csi3_pix", "csi3_rdi" },
-> +       .clock_for_reset =3D { "vfe0", "csi_vfe0",
-> +                  "vfe1", "csi_vfe1" },
-> +       .reg =3D { "ispif", "csi_clk_mux" },
-> +       .interrupt =3D "ispif"
-> +
-> +};
-> +
-> +static const struct resources vfe_res_8974[] =3D {
-> +       /* VFE0 */
-> +       {
-> +               .regulators =3D { NULL },
-> +               .clock =3D { "top_ahb", "vfe0", "csi_vfe0",
-> +                          "iface", "bus" },
-> +               .clock_rate =3D { { 0 },
-> +                               { 50000000, 80000000, 100000000, 16000000=
-0,
-> +                                 177780000, 200000000, 266670000, 320000=
-000,
-> +                                 400000000, 400000000 },
-> +                               { 0 },
-> +                               { 0 },
-> +                               { 0 } },
-> +               .reg =3D { "vfe0" },
-> +               .interrupt =3D { "vfe0" }
-> +       },
-> +       /* VFE1 */
-> +       {
-> +               .regulators =3D { NULL },
-> +               .clock =3D { "top_ahb", "vfe1", "csi_vfe1",
-> +                          "iface", "bus" },
-> +               .clock_rate =3D { { 0 },
-> +                               { 50000000, 80000000, 100000000, 16000000=
-0,
-> +                                 177780000, 200000000, 266670000, 320000=
-000,
-> +                                 400000000, 400000000 },
-> +                               { 0 },
-> +                               { 0 },
-> +                               { 0 } },
-> +               .reg =3D { "vfe1" },
-> +               .interrupt =3D { "vfe1" }
-> +       }
-> +};
-> +
->  static const struct resources csiphy_res_8x96[] =3D {
->         /* CSIPHY0 */
->         {
-> @@ -1132,6 +1280,11 @@ static int camss_init_subdevices(struct camss *cam=
-ss)
->                 csid_res =3D csid_res_8x16;
->                 ispif_res =3D &ispif_res_8x16;
->                 vfe_res =3D vfe_res_8x16;
-> +       } else if (camss->version =3D=3D CAMSS_8x74) {
-> +               csiphy_res =3D csiphy_res_8974;
-> +               csid_res =3D csid_res_8974;
-> +               ispif_res =3D &ispif_res_8974;
-> +               vfe_res =3D vfe_res_8974;
->         } else if (camss->version =3D=3D CAMSS_8x96) {
->                 csiphy_res =3D csiphy_res_8x96;
->                 csid_res =3D csid_res_8x96;
-> @@ -1542,6 +1695,12 @@ static int camss_probe(struct platform_device *pde=
-v)
->                 camss->csiphy_num =3D 2;
->                 camss->csid_num =3D 2;
->                 camss->vfe_num =3D 1;
-> +       } else if (of_device_is_compatible(dev->of_node,
-> +                                          "qcom,msm8974-camss")) {
-> +               camss->version =3D CAMSS_8x74;
-> +               camss->csiphy_num =3D 3;
-> +               camss->csid_num =3D 4;
-> +               camss->vfe_num =3D 2;
->         } else if (of_device_is_compatible(dev->of_node,
->                                            "qcom,msm8996-camss")) {
->                 camss->version =3D CAMSS_8x96;
-> @@ -1586,6 +1745,7 @@ static int camss_probe(struct platform_device *pdev=
-)
->         }
->
->         if (camss->version =3D=3D CAMSS_8x16 ||
-> +           camss->version =3D=3D CAMSS_8x74 ||
->             camss->version =3D=3D CAMSS_8x96) {
->                 camss->ispif =3D devm_kcalloc(dev, 1, sizeof(*camss->ispi=
-f), GFP_KERNEL);
->                 if (!camss->ispif) {
-> @@ -1735,6 +1895,7 @@ static int camss_remove(struct platform_device *pde=
-v)
->
->  static const struct of_device_id camss_dt_match[] =3D {
->         { .compatible =3D "qcom,msm8916-camss" },
-> +       { .compatible =3D "qcom,msm8974-camss" },
->         { .compatible =3D "qcom,msm8996-camss" },
->         { .compatible =3D "qcom,sdm660-camss" },
->         { .compatible =3D "qcom,sdm845-camss" },
-> --
-> 2.36.0
->
-
-Reviewed-by: Robert Foss <robert.foss@linaro.org>
+SGksDQoNCk15IHVzZWNhc2UgaXMgZW5hYmxpbmcgYm9vdCBzbG90IHN3aXRjaGluZyBvbiBB
+bmRyb2lkIEEvQiBkZXZpY2VzLCB3aGVyZQ0KdGhlIGFjdGl2ZSBMVU4gaGFzIHRvIGJlIGNo
+YW5nZWQgaW4gb3JkZXIgdG8gZmFjaWxpdGF0ZSBlLmcuIGR1YWwtYm9vdGluZw0KQW5kcm9p
+ZCBhbmQgbWFpbmxpbmUgTGludXguIEEgc2ltaWxhciBpbnRlcmZhY2UgaXMgZXhwb3NlZCBi
+eSBBbmRyb2lkLCANCmFsYmVpdA0KdmlhIGlvY3RsLiBJJ3ZlIHRlc3RlZCB0aGlzIHBhdGNo
+IGFuZCBjb25maXJtZWQgaXQgZW5hYmxlZCB0aGUgbmVjZXNzYXJ5DQpmdW5jdGlvbmFsaXR5
+Lg0KDQpPbiAyNS8wNS8yMDIyIDIxOjM0LCBBdnJpIEFsdG1hbiB3cm90ZToNCj4gSGksDQo+
+PiBFeHBhbmRzIHN5c2ZzIGJvb3RfbHVuIGF0dHJpYnV0ZSB0byBiZSB3cml0YWJsZS4gTmVj
+ZXNzYXJ5IHRvIGVuYWJsZQ0KPj4gcHJvcGVyIHN1cHBvcnQgZm9yIExVTiBzd2l0Y2hpbmcg
+b24gc29tZSBVRlMgZGV2aWNlcy4NCj4gQ2FuIHlvdSBwbGVhc2UgZWxhYm9yYXRlIHdoeSBp
+cyBpdCBuZWNlc3Nhcnk/DQo+IFdoYXQgdXNlIGNhc2UgYXJlIHlvdSBydW5uaW5nPw0KPg0K
+Pj4gU2lnbmVkLW9mZi1ieTogTmlhIEVzcGVyYSA8YTViNkByaXNldXAubmV0Pg0KPj4gLS0t
+DQo+PiAgIGRyaXZlcnMvc2NzaS91ZnMvdWZzLXN5c2ZzLmMgfCA2NyArKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKy0NCj4+ICAgMSBmaWxlIGNoYW5nZWQsIDY2IGluc2Vy
+dGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9z
+Y3NpL3Vmcy91ZnMtc3lzZnMuYyBiL2RyaXZlcnMvc2NzaS91ZnMvdWZzLXN5c2ZzLmMNCj4+
+IGluZGV4IDVjNDA1ZmY3YjZlYS4uN2JmNWQ2YzNkMGVjIDEwMDY0NA0KPj4gLS0tIGEvZHJp
+dmVycy9zY3NpL3Vmcy91ZnMtc3lzZnMuYw0KPj4gKysrIGIvZHJpdmVycy9zY3NpL3Vmcy91
+ZnMtc3lzZnMuYw0KPj4gQEAgLTEwNDcsNiArMTA0Nyw3MSBAQCBzdGF0aWMgaW5saW5lIGJv
+b2wgdWZzaGNkX2lzX3diX2F0dHJzKGVudW0gYXR0cl9pZG4NCj4+IGlkbikNCj4+ICAgICAg
+ICAgICAgICAgICAgaWRuIDw9IFFVRVJZX0FUVFJfSUROX0NVUlJfV0JfQlVGRl9TSVpFOw0K
+Pj4gICB9DQo+Pg0KPj4gK3N0YXRpYyBzc2l6ZV90IGJvb3RfbHVuX2VuYWJsZWRfc2hvdyhz
+dHJ1Y3QgZGV2aWNlICpkZXYsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgc3RydWN0IGRldmljZV9hdHRyaWJ1dGUgKmF0dHIsIGNoYXIgKmJ1ZikNCj4+ICt7
+DQo+PiArICAgICAgIHN0cnVjdCB1ZnNfaGJhICpoYmEgPSBkZXZfZ2V0X2RydmRhdGEoZGV2
+KTsNCj4+ICsgICAgICAgdTMyIHNsb3Q7DQo+PiArICAgICAgIGludCByZXQ7DQo+PiArICAg
+ICAgIHU4IGluZGV4ID0gMDsNCj4+ICsNCj4+ICsgICAgICAgZG93bigmaGJhLT5ob3N0X3Nl
+bSk7DQo+PiArICAgICAgIGlmICghdWZzaGNkX2lzX3VzZXJfYWNjZXNzX2FsbG93ZWQoaGJh
+KSkgew0KPj4gKyAgICAgICAgICAgICAgIHVwKCZoYmEtPmhvc3Rfc2VtKTsNCj4+ICsgICAg
+ICAgICAgICAgICByZXR1cm4gLUVCVVNZOw0KPj4gKyAgICAgICB9DQo+PiArICAgICAgIGlm
+ICh1ZnNoY2RfaXNfd2JfYXR0cnMoUVVFUllfQVRUUl9JRE5fQk9PVF9MVV9FTikpDQo+IENs
+ZWFybHkgYkJvb3RMdW5FbiBpcyBub3QgYSBXQiBhdHRyaWJ1dGUuDQo+DQo+PiArICAgICAg
+ICAgICAgICAgaW5kZXggPSB1ZnNoY2Rfd2JfZ2V0X3F1ZXJ5X2luZGV4KGhiYSk7DQo+PiAr
+ICAgICAgIHVmc2hjZF9ycG1fZ2V0X3N5bmMoaGJhKTsNCj4+ICsNCj4+ICsgICAgICAgcmV0
+ID0gdWZzaGNkX3F1ZXJ5X2F0dHIoaGJhLCBVUElVX1FVRVJZX09QQ09ERV9SRUFEX0FUVFIs
+DQo+PiArICAgICAgICAgICAgICAgUVVFUllfQVRUUl9JRE5fQk9PVF9MVV9FTiwgaW5kZXgs
+IDAsICZzbG90KTsNCj4+ICsNCj4+ICsgICAgICAgdWZzaGNkX3JwbV9wdXRfc3luYyhoYmEp
+Ow0KPj4gKyAgICAgICBpZiAocmV0KSB7DQo+PiArICAgICAgICAgICAgICAgcmV0ID0gLUVJ
+TlZBTDsNCj4+ICsgICAgICAgICAgICAgICBnb3RvIG91dDsNCj4+ICsgICAgICAgfQ0KPj4g
+Kw0KPj4gKyAgICAgICByZXQgPSBzeXNmc19lbWl0KGJ1ZiwgIjB4JTA4WFxuIiwgc2xvdCk7
+DQo+PiArb3V0Og0KPj4gKyAgICAgICB1cCgmaGJhLT5ob3N0X3NlbSk7DQo+PiArICAgICAg
+IHJldHVybiByZXQ7DQo+PiArfQ0KPj4gKw0KPj4gK3N0YXRpYyBzc2l6ZV90IGJvb3RfbHVu
+X2VuYWJsZWRfc3RvcmUoc3RydWN0IGRldmljZSAqZGV2LA0KPj4gKyAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgZGV2aWNlX2F0dHJpYnV0ZSAqYXR0ciwN
+Cj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgY29uc3QgY2hhciAq
+YnVmLCBzaXplX3QgY291bnQpDQo+PiArew0KPj4gKyAgICAgICBzdHJ1Y3QgdWZzX2hiYSAq
+aGJhID0gZGV2X2dldF9kcnZkYXRhKGRldik7DQo+PiArICAgICAgIHUzMiBzbG90Ow0KPj4g
+KyAgICAgICBpbnQgcmV0Ow0KPj4gKyAgICAgICB1OCBpbmRleCA9IDA7DQo+PiArDQo+PiAr
+ICAgICAgIGlmIChrc3RydG91aW50KGJ1ZiwgMCwgJnNsb3QpIDwgMCkNCj4+ICsgICAgICAg
+ICAgICAgICByZXR1cm4gLUVJTlZBTDsNCj4gWW91IG5lZWQgdG8gdmVyaWZ5IHRoYXQgbm8g
+b25lIHNldCBiQm9vdEx1bkVuID0gMHgwIGJlY2F1c2UgdGhlIGRldmljZSB3b24ndCBib290
+Lg0KPiBCZXR0ZXIgY2hlY2sgZXhwbGljaXRseSB0aGF0IHNsb3QgIT0gYkJvb3RMdW5FbiBh
+bmQgaXRzIGVpdGhlciAxIG9yIDIuDQo+DQo+IFRoYW5rcywNCj4gQXZyaQ0KPg0KPj4gKw0K
+Pj4gKyAgICAgICBkb3duKCZoYmEtPmhvc3Rfc2VtKTsNCj4+ICsgICAgICAgaWYgKCF1ZnNo
+Y2RfaXNfdXNlcl9hY2Nlc3NfYWxsb3dlZChoYmEpKSB7DQo+PiArICAgICAgICAgICAgICAg
+dXAoJmhiYS0+aG9zdF9zZW0pOw0KPj4gKyAgICAgICAgICAgICAgIHJldHVybiAtRUJVU1k7
+DQo+PiArICAgICAgIH0NCj4+ICsgICAgICAgaWYgKHVmc2hjZF9pc193Yl9hdHRycyhRVUVS
+WV9BVFRSX0lETl9CT09UX0xVX0VOKSkNCj4+ICsgICAgICAgICAgICAgICBpbmRleCA9IHVm
+c2hjZF93Yl9nZXRfcXVlcnlfaW5kZXgoaGJhKTsNCj4+ICsgICAgICAgdWZzaGNkX3JwbV9n
+ZXRfc3luYyhoYmEpOw0KPj4gKw0KPj4gKyAgICAgICByZXQgPSB1ZnNoY2RfcXVlcnlfYXR0
+cl9yZXRyeShoYmEsIFVQSVVfUVVFUllfT1BDT0RFX1dSSVRFX0FUVFIsDQo+PiArICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFFVRVJZX0FUVFJfSUROX0JPT1RfTFVf
+RU4sIGluZGV4LCAwLCAmc2xvdCk7DQo+PiArICAgICAgIHVmc2hjZF9ycG1fcHV0X3N5bmMo
+aGJhKTsNCj4+ICsgICAgICAgaWYgKHJldCkgew0KPj4gKyAgICAgICAgICAgICAgIHJldCA9
+IC1FSU5WQUw7DQo+PiArICAgICAgICAgICAgICAgZ290byBvdXQ7DQo+PiArICAgICAgIH0N
+Cj4+ICtvdXQ6DQo+PiArICAgICAgIHVwKCZoYmEtPmhvc3Rfc2VtKTsNCj4+ICsgICAgICAg
+cmV0dXJuIHJldCA/IHJldCA6IGNvdW50Ow0KPj4gK30NCj4+ICsNCj4+ICAgI2RlZmluZSBV
+RlNfQVRUUklCVVRFKF9uYW1lLCBfdW5hbWUpICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBcDQo+PiAgIHN0YXRpYyBzc2l6ZV90IF9uYW1lIyNfc2hvdyhzdHJ1Y3QgZGV2
+aWNlICpkZXYsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcDQo+PiAgICAgICAg
+ICBzdHJ1Y3QgZGV2aWNlX2F0dHJpYnV0ZSAqYXR0ciwgY2hhciAqYnVmKSAgICAgICAgICAg
+ICAgICAgICAgICAgXA0KPj4gQEAgLTEwNzcsOCArMTE0Miw4IEBAIG91dDogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgXA0KPj4gICAgICAgICAgcmV0dXJuIHJldDsgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwNCj4+ICAgfSAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICBcDQo+PiAgIHN0YXRpYyBERVZJQ0VfQVRUUl9STyhfbmFtZSkNCj4+ICtzdGF0aWMgREVW
+SUNFX0FUVFJfUlcoYm9vdF9sdW5fZW5hYmxlZCk7DQo+Pg0KPj4gLVVGU19BVFRSSUJVVEUo
+Ym9vdF9sdW5fZW5hYmxlZCwgX0JPT1RfTFVfRU4pOw0KPj4gICBVRlNfQVRUUklCVVRFKG1h
+eF9kYXRhX3NpemVfaHBiX3NpbmdsZV9jbWQsIF9NQVhfSFBCX1NJTkdMRV9DTUQpOw0KPj4g
+ICBVRlNfQVRUUklCVVRFKGN1cnJlbnRfcG93ZXJfbW9kZSwgX1BPV0VSX01PREUpOw0KPj4g
+ICBVRlNfQVRUUklCVVRFKGFjdGl2ZV9pY2NfbGV2ZWwsIF9BQ1RJVkVfSUNDX0xWTCk7DQo+
+PiAtLQ0KPj4gMi4zNi4xDQo=
