@@ -2,97 +2,155 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE09FC433EF
-	for <phone-devel@archiver.kernel.org>; Tue, 31 May 2022 09:39:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C80EFC433EF
+	for <phone-devel@archiver.kernel.org>; Wed,  1 Jun 2022 08:24:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245340AbiEaJj6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 31 May 2022 05:39:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45636 "EHLO
+        id S1346876AbiFAIYf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 1 Jun 2022 04:24:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245346AbiEaJjy (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 31 May 2022 05:39:54 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A92695DFC
-        for <phone-devel@vger.kernel.org>; Tue, 31 May 2022 02:39:50 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id v106so15949413ybi.0
-        for <phone-devel@vger.kernel.org>; Tue, 31 May 2022 02:39:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=owik/ERIKQ/Xn0y08fcg1q8jOY8cbMmZRyuaUyU18sA=;
-        b=lQQ96cMxOA4G9iVLjQ4z6e2m7ZJQpJFgBxCrdGn/ioTtmBrwPLWuH5n8fDoP8/GAlq
-         WrFsT2wBmih+5WcNUVwYVfUuC3xdE/uwnVd7D9zQybSFIJu8Yn+KkYCM9mOfy5e2WHit
-         7YyYNk6XvJpPs7ZcV/IJHCWxPpXQ+vP7mBOAe8jIu6TneEQW0ha6Z4LKRQ0dSXpWZPno
-         Sx42g/lk+HqSaAAeF9geGAOlGAA/i8HoBxIUZH9O37RvveMM9nozLDC4p8bMfbS1+8Is
-         ILFHFv1n18ekK70DyNN4VL8spINVIQ/A4NZWL+0C49tdaEDoVVkpOznurGQzq4Wzgr93
-         11bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=owik/ERIKQ/Xn0y08fcg1q8jOY8cbMmZRyuaUyU18sA=;
-        b=rhLo4GZwfa9cYRa5rDAqMAMKsy1DZ/ehYmjPQhc70QPUOFupk26P538/gTYOn112Vq
-         6fFubRgsfdXxS3BweLBqcTF2m9fGxn1mzTLIKWsvCQKFcLF2/57YkwcXAlqE/URKobwn
-         sWfmGdREiMPxY8FSG+6vyHQjy5BTr43F/xJfLGlUlL8P1jjwwTzQsU2XO3QZp0rvEgXr
-         z+3lhPAEnvhY/fD5JOAfYVIAL4QUeXFv55bwqH20OoAnqvtbZTXLIV9+RXha2fk9memM
-         hiFIH4TW83+4wQ2Tjm/WO4qDiXGrz/54n6TKWm1HLsodtzOK5eSzr2z8dciRz39zFZU2
-         QBaQ==
-X-Gm-Message-State: AOAM530Yradz4cL35ZeU+F0R+WfmophdRq7WLb0D45cxG1OP52a9wMME
-        wYd5euHb8FXKnGQ/FCVS/bhg8J5T+SgaIMTHOokQoA==
-X-Google-Smtp-Source: ABdhPJzJ5ytNhC9HvdgLcAnnUu0XWT4XYNnYlfIbRfnZZFTub5PI7q+eBt5ywXskTbAQnXYM+BDjueQa7AkpkbKiHvQ=
-X-Received: by 2002:a25:df50:0:b0:65c:e053:3449 with SMTP id
- w77-20020a25df50000000b0065ce0533449mr9534101ybg.291.1653989989529; Tue, 31
- May 2022 02:39:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220530160753.100892-1-jo@jsfamily.in> <BY5PR02MB7009301398881E89033F1DF0D9DD9@BY5PR02MB7009.namprd02.prod.outlook.com>
-In-Reply-To: <BY5PR02MB7009301398881E89033F1DF0D9DD9@BY5PR02MB7009.namprd02.prod.outlook.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 31 May 2022 11:39:38 +0200
-Message-ID: <CACRpkdZO6yB4SZzMgORv=1LCxbiaabfv=UyOQksn6F_WxgGa=w@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] drm/panel: introduce ebbg,ft8719 panel
-To:     Joel Selvaraj <jo@jsfamily.in>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        with ESMTP id S245162AbiFAIYe (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Jun 2022 04:24:34 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12olkn2095.outbound.protection.outlook.com [40.92.21.95])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0D272FD;
+        Wed,  1 Jun 2022 01:24:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HavRjAlaaCHQZqc4hHIxYG6sfUILxBQztpy3gx3dYITi6QABK0g8zqmfDpn47Pc+Q4I3Wd+/1XjdtdY9tbjiW0acw7X99066Vzcbo/VKwD5OOO9QCZtgA14jUWo6Qwf/k7uKdLiAYXgDledbtjVvdswu9CsfzM+JC2ziLsDZlllvnGfttia30P7KMNouM5Cq7EB51ZUPCwVg8RtCAj08vRo6DwEBKU5JFBNSeNxyE47RmaUnHER76lyVTiQ51PS6usGmHx4mw4N3Uap0QpjUSCD4GcNQPTfMruaQxuafYnJv6+y6jyw8820OqKxW5a8E8srklHO+JjxwbXCS5MPnkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xqGdLFAzvjePfMfHM9s5YoGjwV4QexPwTUYQiypvDWA=;
+ b=cZWd6187KTqxpF0askSeLmZStAR5B4lbG7VA/yHprg3TmC2So7bgtb3+pCplzVR+tvukHsBvAyulKw4U9fsf6wRXx4N74WOtVf0oBoM1PGc2zNVgg/WR9gguOtI2oB9VGMC7J9cw2Y5YSg2Wai476/qGxyC95uChLOWAAhud6YVLQfcPyT7ocu7nJ7Fx+25E0D/QUw3B4fOQhkzcxBLXwk8tIwZsvFCwc+4L6T18dfQYweYvLe0nDpBptbMJX//7xAduxdbTwSGmkOfndGI1Z74V1reNyR+WImznA/4xqBarvlx7QDpEp3x6tC+IYjFwYEQ1xNbP7WvtVwkzNIoQnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from BY5PR02MB7009.namprd02.prod.outlook.com (2603:10b6:a03:236::13)
+ by DM6PR02MB5708.namprd02.prod.outlook.com (2603:10b6:5:7c::31) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5293.15; Wed, 1 Jun
+ 2022 08:24:31 +0000
+Received: from BY5PR02MB7009.namprd02.prod.outlook.com
+ ([fe80::e179:40c4:4269:70e]) by BY5PR02MB7009.namprd02.prod.outlook.com
+ ([fe80::e179:40c4:4269:70e%5]) with mapi id 15.20.5314.013; Wed, 1 Jun 2022
+ 08:24:31 +0000
+From:   Joel Selvaraj <jo@jsfamily.in>
+To:     Thierry Reding <thierry.reding@gmail.com>,
         Sam Ravnborg <sam@ravnborg.org>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
         Stanislav Jakubek <stano.jakubek@gmail.com>,
         Shawn Guo <shawnguo@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Corentin Labbe <clabbe@baylibre.com>,
-        Hao Fang <fanghao11@huawei.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hao Fang <fanghao11@huawei.com>
+Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Joel Selvaraj <jo@jsfamily.in>
+Subject: [PATCH v4 0/4] Introduce EBBG FT8719 DRM panel driver
+Date:   Wed,  1 Jun 2022 13:54:06 +0530
+Message-ID: <BY5PR02MB700961069804230B5AFC5E04D9DF9@BY5PR02MB7009.namprd02.prod.outlook.com>
+X-Mailer: git-send-email 2.36.1
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-TMN:  [UxYhGyN4r2QWaddhC8FxyygjajlImiEVO+i+u0XigaqnjVN5Chkd4gVvbVicufW6]
+X-ClientProxiedBy: BM1P287CA0002.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:b00:40::13) To BY5PR02MB7009.namprd02.prod.outlook.com
+ (2603:10b6:a03:236::13)
+X-Microsoft-Original-Message-ID: <20220601082410.55266-1-jo@jsfamily.in>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8f090ce7-ab57-4780-e915-08da43a8266c
+X-MS-TrafficTypeDiagnostic: DM6PR02MB5708:EE_
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3aEl3NY7XSQWZt1LrQmOxvLmTypU7Yp6WrOC1dsJUtfd+kc7UceCrz2WV51c/8edmoaucZefacRqFjeKbdv7Mse0N0OhkTZM3t57nXFqi8HrEKn8JoM5fY4yBuH51cAcz67nwHD4XV9cXCLx/PF9bp3tO0u+JrYWEseFu/uzmPy9US+Dqs/fNIkP1V3PRIkzy7CdTmhV491xVQyhEJdxmcVX4Pbkj4JxD9HlaJ7xCLhxAfUbX56xSyYNpWdDyDPvVgghf5V+kPcVRR62w5kvYr4G+LmfOBLWlINUAdoOadBbJBO57fmk384gKqWrMMh7coRzgpASyb6LBrITms1rcyRU87PMWOPbP25yFBotG60zMqG6OTEKhL1P6pBMNmsopz9ibkJsJ19yXRrfBhbYkPiIO9YRDbiNcavoIgSAkRFQgFtlrovt36xXiEtXuDdKHGS0v2rthDvNuC1fjUq76fuctOWCjSlaAYkLvSn4iucSGK8Pj2hBfrH7qkJG/C8lE9+2AdJogLgkASvW0AeBKFyWmPlFYV9PAQkMw3vGkM9ZjE4F3fvGJab8DUOCXyGnQv5iVMs0YzmMYGRvsZWThkDVmnn0ok9SK0Y23YpkZlJl85TTUqVGugOx7VKpDcqz
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?q2Hbk5tUdynfMzjWxtOZGXxk8bwlM88MFVF5uh+ZH9DXKIimF/uMn8THul/K?=
+ =?us-ascii?Q?8aJft80nqi8HIoGs6NkJBr0sZJEqVK3Tu1MSfrA/Q1UbD1tP/zMCFnWZ1F4q?=
+ =?us-ascii?Q?me3+wpyupCqY36368EBCI0vjIZY+eOuLntd/TvHNU449cvoZxWJeublJR4o4?=
+ =?us-ascii?Q?zyPuG7eHu7z36G4rTi2ELNTWlBey+60fUN7QSQPPL1Y6JmBMXyYnNUjXM92S?=
+ =?us-ascii?Q?5NuyJtQXppe2hsr00SA9rgOqTi1/K2ogq3C25MQ5ni2aM+tlqglbi4YXx6Pk?=
+ =?us-ascii?Q?6an33ZBH847SmrD404GGHnlgAvIrrt+BgHutt7pO/25nL1pU3RVDehwEHuM0?=
+ =?us-ascii?Q?qwjsTvCkBSOkXIv7A7aBrKFBZekaEFxirpYA3zjndfXOzl+DXJe3K1WofrPN?=
+ =?us-ascii?Q?4qCy18lAqwxV7lVsffrK08DQ6nWY62JmJG88SEcZKh1s5Ktu6rK+HVQLvzC+?=
+ =?us-ascii?Q?VH/9NREuSLokUiWettkLtnQusGE0wY2EB6ctssmwLom7L3q/dT+26xZi9E65?=
+ =?us-ascii?Q?o9fKZkS2BuIZhU9kgMgoZomaOFAij4tsdsyYkuYzbrP975ZYzHTBkIJP7vZt?=
+ =?us-ascii?Q?+rsvNgrHMnx8mUCgRIRl9JxNgs1tM8BmXI044otcySOoYNgVJlMc6TJgPfL8?=
+ =?us-ascii?Q?TJnaG31CSWU8WrR+8x6ZZ9Nehe45ZK4JkSkrAx8biauMgDn5X8RC+D9nn8eN?=
+ =?us-ascii?Q?ZDlTl6WRpl529OLfrg08AdMxIbItvOwTUWW9QPmNXo7Zy7xtWhryLPosjOqL?=
+ =?us-ascii?Q?+73ysU+g3WdDhJfdi9eXx6uIUvpKd/QWTksrmESv8Q09A2LQl6hLfffmitS1?=
+ =?us-ascii?Q?QVoGp5JRMmiRNoq8Kv+Mg/7vQtBp5efC9V7OgaddkIPEoCRNlCJ563qz/aQB?=
+ =?us-ascii?Q?aJUzv9FygnFfvLmMULOCrcZ4ZIlUIDU6CETq5+eP/hmVGGTgH0noa8Mw2F6J?=
+ =?us-ascii?Q?TJqOlGns+1fPEDpNZQKV62d3NlYjkPTM76RbUi4hsOxcCxuuuiO+etGQYroQ?=
+ =?us-ascii?Q?UP/0m5WtAT3UlJNS/MhblrcLRhiwYCn1usX5nrPcwsFphHu8cx93bOTZZott?=
+ =?us-ascii?Q?oZzu7pisMBvvf0Q2E6RSIneUe4VY6jwRcipl72jfrCqlwk6lUoz0IyMBRqZB?=
+ =?us-ascii?Q?bHkV6AHuVFTokow3cfA2eqdSbK7ZUOIypqHWMEEJkMea8/Ls3eIyjMN2j+ul?=
+ =?us-ascii?Q?9gd5+iDt5Nf79lRUdnsOGSAREXjy6W2Wo3icUyDssB8PWZdQrlL2wev5kFw0?=
+ =?us-ascii?Q?wzHsUqDib2SE3RmouNq3C1+HmzwKcATSrv4capPIQ31ZQrHAhCiUCjWP9U6s?=
+ =?us-ascii?Q?F59/MJtP6Quc83IB+zq2M8UxtJnVRWMnu+JYUGs9b8R7Kb3rMz7CI244Jq2y?=
+ =?us-ascii?Q?OJfb1js+NPatwMoB647mJKrhTArHfELl2270KgtZNMRCAm0SA6OHVne2AfWb?=
+ =?us-ascii?Q?cyabvYbMDA1kmVl7wWl4nvCOuSUD7YvA9X6lmtSJAfp14Ae5HWWXVQ=3D=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-99c3d.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f090ce7-ab57-4780-e915-08da43a8266c
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB7009.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2022 08:24:31.0376
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB5708
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Joel,
+Add bindings and DRM panel driver for EBBG FT8719 6.18" 2246x1080 DSI
+video mode panel, which can be found on some Xiaomi Poco F1 phones.
+The panel's backlight is managed through QCOM WLED driver.
 
-On Mon, May 30, 2022 at 6:08 PM Joel Selvaraj <jo@jsfamily.in> wrote:
+The driver is built using linux-mdss-dsi-panel-driver-generator[1], and
+additionally support for handling regulators and linking external
+backlight is added.
 
-> +#define dsi_dcs_write_seq(dsi, cmd, seq...) do {                               \
+[1] https://github.com/msm8916-mainline/linux-mdss-dsi-panel-driver-generator
 
-Please name it mipi_dsi_dcs_write_seq() and...
+Changes in v4: (Linus Walleij's Suggestion)
+ - Introduce mipi_dsi_dcs_write_seq macro in include/drm/drm_mipi_dsi.h
+ - Remove the driver specific dsi_dcs_write_seq macro
+ - Use the newly introduced mipi_dsi_dcs_write_seq macro instead
 
-> +               static const u8 d[] = { cmd, seq };                             \
-> +               struct device *dev = &dsi->dev; \
-> +               int ret;                                                \
-> +               ret = mipi_dsi_dcs_write_buffer(dsi, d, ARRAY_SIZE(d)); \
-> +               if (ret < 0) {                                          \
-> +                       dev_err_ratelimited(dev, "sending command %#02x failed: %d\n", cmd, ret); \
-> +                       return ret;                                             \
-> +               }                                               \
-> +       } while (0)
+Changes in v3: (Mostly Linus Walleij's Suggestions)
+ - Removed ctx->prepared state variable as it's handled by the core
+ - Print error in dsi_dcs_write_seq macro if it fails to write
+ - Removed magic power on sequences as panel works fine without them
 
-My suggestion was to add this macro to include/drm/drm_mipi_dsi.h, just patch it
-in there under the other mipi_dsi_dcs_* functions.
+Changes in v2: (Krzysztof Kozlowski's Suggestions)
+ - dt-bindings: specify maxItems for reg
+ - dt-bindings: cleanup and simplify the panel properties
+ - dt-bindings: in example change "|+" to "|' and "dsi0" to "dsi"
 
-I think a few other drivers could make good use of this macro.
+Joel Selvaraj (4):
+  dt-bindings: vendor-prefixes: Add prefix for EBBG
+  dt-bindings: display: Add bindings for EBBG FT8719
+  drm/mipi-dsi: Introduce mipi_dsi_dcs_write_seq macro
+  drm/panel: introduce ebbg,ft8719 panel
 
-Yours,
-Linus Walleij
+ .../bindings/display/panel/ebbg,ft8719.yaml   |  74 +++++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |   7 +
+ drivers/gpu/drm/panel/Kconfig                 |  11 +
+ drivers/gpu/drm/panel/Makefile                |   1 +
+ drivers/gpu/drm/panel/panel-ebbg-ft8719.c     | 285 ++++++++++++++++++
+ include/drm/drm_mipi_dsi.h                    |  17 ++
+ 7 files changed, 397 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/display/panel/ebbg,ft8719.yaml
+ create mode 100644 drivers/gpu/drm/panel/panel-ebbg-ft8719.c
+
+-- 
+2.36.1
+
