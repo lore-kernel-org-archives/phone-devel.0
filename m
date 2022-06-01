@@ -2,83 +2,75 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E51CCCA479
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Jun 2022 20:46:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0ACCC43334
+	for <phone-devel@archiver.kernel.org>; Wed,  1 Jun 2022 20:47:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229986AbiFAUqN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 1 Jun 2022 16:46:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43122 "EHLO
+        id S230182AbiFAUrg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 1 Jun 2022 16:47:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230121AbiFAUpz (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Jun 2022 16:45:55 -0400
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 806EF1E717E;
-        Wed,  1 Jun 2022 13:35:59 -0700 (PDT)
-Received: by mail-ua1-f43.google.com with SMTP id z15so950945uad.7;
-        Wed, 01 Jun 2022 13:35:59 -0700 (PDT)
+        with ESMTP id S230272AbiFAUqt (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Jun 2022 16:46:49 -0400
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 366FF13569A;
+        Wed,  1 Jun 2022 13:41:22 -0700 (PDT)
+Received: by mail-ot1-f43.google.com with SMTP id t22-20020a0568301e3600b0060b333f7a1eso2097769otr.0;
+        Wed, 01 Jun 2022 13:41:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=FARR/+JDA3TOjsR9cI1PcwObDHIe0n2fcG4uD8FuHbA=;
-        b=XK3ZYYPEH/XCBOdzMdMknMBSe/Tt8WB2hv+EyfiMvki+1h+U/QinIb0UqqN5+PFKLC
-         LcIYk1dNBzZP5kCJ8SArJk0282rJfM3L34LHUgkb1yAOL2ReYdO8VO81we5fQ6oHLpa/
-         iH/49vt4krcASGWTJo1mbc0i9GNWCL6fVpiTsyMCMA8OC1nYt9zUimyU+PyrpnYgQLFF
-         b11iBgmJNLOFwTnnI7k7VIZM72haMpgC+FWmxtjLG/+EBcLDUwR8Xea3B0gbjPL3rkci
-         Q/gLqofPqZIRX0oq6qSrJb0+damKlhiE/Lz5WAS14YPuY0ZncboThXjLn7mr0K+9bNgm
-         PK+w==
-X-Gm-Message-State: AOAM532x4gHd7kJC5PlDeA55Z16SVl+g3tGfF7AwtpNEzvWA2r3gLBJP
-        hFpL4n4z4GixTbjIJP8VNQtsZL/VNA==
-X-Google-Smtp-Source: ABdhPJwnPjn5idt9cnZlhcCc/FKbJJnAr8Saufr1/SL3DempIkGREfg8uqcEeSJtWvqQDbhLvv5ujQ==
-X-Received: by 2002:a9d:6154:0:b0:60a:f566:a450 with SMTP id c20-20020a9d6154000000b0060af566a450mr673945otk.70.1654113744200;
-        Wed, 01 Jun 2022 13:02:24 -0700 (PDT)
+        bh=yJYEOamuUI8+hGxefhFmvlXiUIoxuSnHZm1hsc1vWFY=;
+        b=GWRhY0RZ/zVZpju167zKzKkMoyOXH37HTPWBmo5RYFWNbOMiSYxNj0BcoJvEkS1XCD
+         lZiVT68hMi6RA28YHbxMWR+WxDtxH6kuCPCJanW0LuxwwZHJFkVX9wswkU/aQ/swu4rq
+         Llliepwxg0776+NBzO44nodD62ORoz8W2Ey4PuVyamD7j8i+CIQzF/j8cW1iIPabf6th
+         EyRLf2VIoOW0SB51ntxeWND6Xl5Z+a1+o+CO2OpvmKnNEycZWGL4DBR3JhLEnftFLpdK
+         D3r8c07aRWjzyLtkfnRNY6qE+IxIV//2EZGtlXo4Lwgnr0yiPzJNuSrVIZQRxHH6q/cL
+         ZAMQ==
+X-Gm-Message-State: AOAM533W3B6cpd3Xs5kLZpBZN1K0ouwlFqf+7i9yAEb341T7ErnMJsub
+        uCXBdhZ4f6ziIapZ6pWiohyizf56JA==
+X-Google-Smtp-Source: ABdhPJxaah9NBd3MkGoro16iedv6h3Eq2gaNVukZrkbQHdoOU5IuH/kCtMA2VHhv966s8GbqSpJkug==
+X-Received: by 2002:a9d:12f6:0:b0:60a:e98d:cc7c with SMTP id g109-20020a9d12f6000000b0060ae98dcc7cmr653579otg.18.1654113831593;
+        Wed, 01 Jun 2022 13:03:51 -0700 (PDT)
 Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id w16-20020a4aded0000000b0035eb4e5a6c0sm1333894oou.22.2022.06.01.13.02.22
+        by smtp.gmail.com with ESMTPSA id 12-20020aca120c000000b00325cda1ffa5sm1290278ois.36.2022.06.01.13.03.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jun 2022 13:02:23 -0700 (PDT)
-Received: (nullmailer pid 339590 invoked by uid 1000);
-        Wed, 01 Jun 2022 20:02:22 -0000
-Date:   Wed, 1 Jun 2022 15:02:22 -0500
+        Wed, 01 Jun 2022 13:03:51 -0700 (PDT)
+Received: (nullmailer pid 342702 invoked by uid 1000);
+        Wed, 01 Jun 2022 20:03:50 -0000
+Date:   Wed, 1 Jun 2022 15:03:50 -0500
 From:   Rob Herring <robh@kernel.org>
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Cc:     linux-kernel@vger.kernel.org, sboyd@kernel.org,
-        linux-mediatek@lists.infradead.org, marijn.suijten@somainline.org,
-        wenst@chromium.org, miles.chen@mediatek.com,
-        tinghan.shen@mediatek.com, jason-jh.lin@mediatek.com,
-        rex-bc.chen@mediatek.com, robh+dt@kernel.org,
-        mturquette@baylibre.com, fparent@baylibre.com,
-        ~postmarketos/upstreaming@lists.sr.ht, linux-clk@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        krzysztof.kozlowski+dt@linaro.org, chun-jie.chen@mediatek.com,
-        phone-devel@vger.kernel.org, sam.shih@mediatek.com,
-        ck.hu@mediatek.com, martin.botka@somainline.org, ikjn@chromium.org,
-        devicetree@vger.kernel.org, weiyi.lu@mediatek.com,
-        paul.bouchara@somainline.org, p.zabel@pengutronix.de,
-        y.oudjana@protonmail.com, bgolaszewski@baylibre.com,
-        matthias.bgg@gmail.com, kernel@collabora.com,
-        konrad.dybcio@somainline.org
-Subject: Re: [PATCH v2 2/7] dt-bindings: clock: Add MediaTek Helio X10 MT6795
- clock bindings
-Message-ID: <20220601200222.GA339557-robh@kernel.org>
-References: <20220518111652.223727-1-angelogioacchino.delregno@collabora.com>
- <20220518111652.223727-3-angelogioacchino.delregno@collabora.com>
+Cc:     matthias.bgg@gmail.com, linux-kernel@vger.kernel.org,
+        konrad.dybcio@somainline.org, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org, martin.botka@somainline.org,
+        tglx@linutronix.de, paul.bouchara@somainline.org,
+        robh+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
+        krzysztof.kozlowski+dt@linaro.org,
+        ~postmarketos/upstreaming@lists.sr.ht, daniel.lezcano@linaro.org,
+        linux-mediatek@lists.infradead.org, marijn.suijten@somainline.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: timer: mediatek: Add CPUX System
+ Timer and MT6795 compatible
+Message-ID: <20220601200350.GA342663-robh@kernel.org>
+References: <20220518112435.241116-1-angelogioacchino.delregno@collabora.com>
+ <20220518112435.241116-2-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220518111652.223727-3-angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20220518112435.241116-2-angelogioacchino.delregno@collabora.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 18 May 2022 13:16:47 +0200, AngeloGioacchino Del Regno wrote:
-> Add the bindings for MT6795's clock controller.
+On Wed, 18 May 2022 13:24:34 +0200, AngeloGioacchino Del Regno wrote:
+> Document the "CPUXGPT" CPU General Purpose Timer, used as ARM/ARM64
+> System Timer on MediaTek platforms and add the MT6795 compatible for it.
 > 
 > Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 > ---
->  include/dt-bindings/clock/mt6795-clk.h | 275 +++++++++++++++++++++++++
->  1 file changed, 275 insertions(+)
->  create mode 100644 include/dt-bindings/clock/mt6795-clk.h
+>  .../devicetree/bindings/timer/mediatek,mtk-timer.txt          | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
 
 Acked-by: Rob Herring <robh@kernel.org>
