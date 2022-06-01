@@ -2,170 +2,189 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DCFFBCCA47F
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Jun 2022 21:39:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 484BBCCA47A
+	for <phone-devel@archiver.kernel.org>; Wed,  1 Jun 2022 22:08:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231772AbiFAVjp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 1 Jun 2022 17:39:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60828 "EHLO
+        id S232069AbiFAWIB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 1 Jun 2022 18:08:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231733AbiFAVjf (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Jun 2022 17:39:35 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0DD680211;
-        Wed,  1 Jun 2022 14:39:34 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id h19so3953304edj.0;
-        Wed, 01 Jun 2022 14:39:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=HXG8iLTreEU+J/lVUamzhi0tH1NJB4Nk+ekloWw8ey0=;
-        b=q4sLaUb6C9WHlwr+BGtYiNab+Z/9DFTw/uTcExKbl2Bd5TMyKEB6byulmZruXYeFpm
-         NO9nA8ViBmJToeHcrKcupIiudItTFnvrD0V/o8eqdLkD6zec5d4wOZnERcm5HwbRurkx
-         B+6Ys3bd/cKLqEm4Nl02GPOixnGr5Qhow8FsrxPirFfdjV1YJIKAPO4Jdhiu9W+YJgrH
-         n31bu4o639UaItJX6wM+Omwp+7Yzri2z2b/Oksbzr0x2a+1a3JFHvaj0k35gKa4ChHBU
-         hFtBaS6IHbRybJ6mC/2y65pSUaHsY2a3gZ837gc8yVQFeQeDOCHyDFWD7BxWChTdOqRX
-         xSVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=HXG8iLTreEU+J/lVUamzhi0tH1NJB4Nk+ekloWw8ey0=;
-        b=O41fltqj1n0KfCmvqqbsVuac6M82ulvrY8MpDVbQnXfX9M3NkhCxFtA+AL4GpXIK7C
-         E7+QWkYTRUpK+sRbOTr6G8MdkEahnpngjskHeuNvSGwqlhXCabS4k+QZ6tbtD3jzM9dU
-         ZKSYzjsUU/IKRMEltkPYF1PWAb8x0IVUJ2UTd6yKwKIKrdRNASk/c24O8ajvbCM06hk4
-         wScaGjPDsvRg1oal1O5sN7StduIai0ZlLjUEA9AlfRti7LBBCROerrJTchFDDV4PxCBC
-         7RryNvgEAa4+Pc6XdFkb4fxtrIL7miQitM+IktfMHl/NJ5n1KXECR+aswn2SnjIcfvqi
-         23tg==
-X-Gm-Message-State: AOAM533P19BbeM1RSTApTbCZBRhHJpEUNQJIv4SPvcJS03HuZUVCREXu
-        CrqaWrEkurL4ggTR1cwP4OC19fFOB/6SBiOu
-X-Google-Smtp-Source: ABdhPJx7ZQtrU+VcWljrrDnZU8bM4jUcwzK304gsvVGDEH11myXnse8gaqCiSBfikc3zZNHZ/lfpLA==
-X-Received: by 2002:aa7:c306:0:b0:42d:d4cc:c606 with SMTP id l6-20020aa7c306000000b0042dd4ccc606mr1947344edq.341.1654119573200;
-        Wed, 01 Jun 2022 14:39:33 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:ab88:368f:2080:5d6e:322:57b6:5f03])
-        by smtp.googlemail.com with ESMTPSA id a14-20020a170906368e00b006fec5cef701sm1099080ejc.197.2022.06.01.14.39.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jun 2022 14:39:32 -0700 (PDT)
-From:   David Virag <virag.david003@gmail.com>
-Cc:     phone-devel@vger.kernel.org,
-        David Virag <virag.david003@gmail.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
+        with ESMTP id S232019AbiFAWIA (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Jun 2022 18:08:00 -0400
+Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [IPv6:2001:4b7a:2000:18::164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3642127B1B
+        for <phone-devel@vger.kernel.org>; Wed,  1 Jun 2022 15:07:55 -0700 (PDT)
+Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 4EEEC206AE;
+        Thu,  2 Jun 2022 00:07:52 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
         Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] arm64: dts: exynos: Add internal eMMC support to jackpotlte
-Date:   Thu,  2 Jun 2022 01:37:43 +0200
-Message-Id: <20220601233743.56317-6-virag.david003@gmail.com>
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rajeev Nandan <quic_rajeevny@quicinc.com>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Marek <jonathan@marek.ca>, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
+Subject: [PATCH v2 03/11] clk: fixed-factor: Introduce *clk_hw_register_fixed_factor_parent_hw()
+Date:   Thu,  2 Jun 2022 00:07:39 +0200
+Message-Id: <20220601220747.1145095-4-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220601233743.56317-1-virag.david003@gmail.com>
-References: <20220601233743.56317-1-virag.david003@gmail.com>
+In-Reply-To: <20220601220747.1145095-1-marijn.suijten@somainline.org>
+References: <20220601220747.1145095-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the nodes relevant to provide clocks for Exynos7885 eMMC and to
-support eMMC. eMMC is the internal storage used in the Samsung Galaxy A8
-(2018) (jackpotlte), and all other known devices using the Exynos7885
-SoC.
+Add the devres and non-devres variant of
+clk_hw_register_fixed_factor_parent_hw() for registering a fixed factor
+clock with clk_hw parent pointer instead of parent name.
 
-Signed-off-by: David Virag <virag.david003@gmail.com>
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
- .../boot/dts/exynos/exynos7885-jackpotlte.dts | 20 ++++++++++++
- arch/arm64/boot/dts/exynos/exynos7885.dtsi    | 32 +++++++++++++++++++
- 2 files changed, 52 insertions(+)
+ drivers/clk/clk-fixed-factor.c | 57 ++++++++++++++++++++++++++++------
+ include/linux/clk-provider.h   |  8 +++++
+ 2 files changed, 55 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts b/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
-index 4cf9aa25f618..5db9a81ac7bb 100644
---- a/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
-+++ b/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
-@@ -60,6 +60,26 @@ power-key {
- 	};
- };
+diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-factor.c
+index 54942d758ee6..fabb98d0cdb2 100644
+--- a/drivers/clk/clk-fixed-factor.c
++++ b/drivers/clk/clk-fixed-factor.c
+@@ -78,7 +78,8 @@ static void devm_clk_hw_register_fixed_factor_release(struct device *dev, void *
  
-+&mmc_0 {
-+	status = "okay";
-+	mmc-hs200-1_8v;
-+	mmc-hs400-1_8v;
-+	cap-mmc-highspeed;
-+	non-removable;
-+	mmc-hs400-enhanced-strobe;
-+	card-detect-delay = <200>;
-+	clock-frequency = <800000000>;
-+	bus-width = <8>;
-+	samsung,dw-mshc-ciu-div = <3>;
-+	samsung,dw-mshc-sdr-timing = <0 4>;
-+	samsung,dw-mshc-ddr-timing = <2 4>;
-+	samsung,dw-mshc-hs400-timing = <0 2>;
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&sd0_clk_fast_slew_rate_3x &sd0_cmd &sd0_rdqs
-+		     &sd0_bus1 &sd0_bus4 &sd0_bus8>;
-+};
-+
- &oscclk {
- 	clock-frequency = <26000000>;
- };
-diff --git a/arch/arm64/boot/dts/exynos/exynos7885.dtsi b/arch/arm64/boot/dts/exynos/exynos7885.dtsi
-index 9c233c56558c..23c2e0bb0a2c 100644
---- a/arch/arm64/boot/dts/exynos/exynos7885.dtsi
-+++ b/arch/arm64/boot/dts/exynos/exynos7885.dtsi
-@@ -240,6 +240,25 @@ cmu_top: clock-controller@12060000 {
- 			clock-names = "oscclk";
- 		};
+ static struct clk_hw *
+ __clk_hw_register_fixed_factor(struct device *dev, struct device_node *np,
+-		const char *name, const char *parent_name, int index,
++		const char *name, const char *parent_name,
++		const struct clk_hw *parent_hw, int index,
+ 		unsigned long flags, unsigned int mult, unsigned int div,
+ 		bool devm)
+ {
+@@ -108,7 +109,9 @@ __clk_hw_register_fixed_factor(struct device *dev, struct device_node *np,
+ 	init.name = name;
+ 	init.ops = &clk_fixed_factor_ops;
+ 	init.flags = flags;
+-	if (parent_name)
++	if (parent_hw)
++		init.parent_hws = &parent_hw;
++	else if (parent_name)
+ 		init.parent_names = &parent_name;
+ 	else
+ 		init.parent_data = &pdata;
+@@ -148,17 +151,50 @@ struct clk_hw *devm_clk_hw_register_fixed_factor_index(struct device *dev,
+ 		const char *name, unsigned int index, unsigned long flags,
+ 		unsigned int mult, unsigned int div)
+ {
+-	return __clk_hw_register_fixed_factor(dev, NULL, name, NULL, index,
+-					      flags, mult, div, true);
++	return __clk_hw_register_fixed_factor(dev, NULL, name, NULL, NULL,
++					      index, flags, mult, div, true);
+ }
+ EXPORT_SYMBOL_GPL(devm_clk_hw_register_fixed_factor_index);
  
-+		cmu_fsys: clock-controller@13400000 {
-+			compatible = "samsung,exynos7885-cmu-fsys";
-+			reg = <0x13400000 0x8000>;
-+			#clock-cells = <1>;
++/**
++ * devm_clk_hw_register_fixed_factor_parent_hw - Register a fixed factor clock with
++ * pointer to parent clock
++ * @dev: device that is registering this clock
++ * @name: name of this clock
++ * @parent_hw: pointer to parent clk
++ * @flags: fixed factor flags
++ * @mult: multiplier
++ * @div: divider
++ *
++ * Return: Pointer to fixed factor clk_hw structure that was registered or
++ * an error pointer.
++ */
++struct clk_hw *devm_clk_hw_register_fixed_factor_parent_hw(struct device *dev,
++		const char *name, const struct clk_hw *parent_hw,
++		unsigned long flags, unsigned int mult, unsigned int div)
++{
++	return __clk_hw_register_fixed_factor(dev, NULL, name, NULL, parent_hw,
++					      -1, flags, mult, div, true);
++}
++EXPORT_SYMBOL_GPL(devm_clk_hw_register_fixed_factor_parent_hw);
 +
-+			clocks = <&oscclk>,
-+				 <&cmu_top CLK_DOUT_FSYS_BUS>,
-+				 <&cmu_top CLK_DOUT_FSYS_MMC_CARD>,
-+				 <&cmu_top CLK_DOUT_FSYS_MMC_EMBD>,
-+				 <&cmu_top CLK_DOUT_FSYS_MMC_SDIO>,
-+				 <&cmu_top CLK_DOUT_FSYS_USB30DRD>;
-+			clock-names = "oscclk",
-+				      "dout_fsys_bus",
-+				      "dout_fsys_mmc_card",
-+				      "dout_fsys_mmc_embd",
-+				      "dout_fsys_mmc_sdio",
-+				      "dout_fsys_usb30drd";
-+		};
++struct clk_hw *clk_hw_register_fixed_factor_parent_hw(struct device *dev,
++		const char *name, const struct clk_hw *parent_hw,
++		unsigned long flags, unsigned int mult, unsigned int div)
++{
++	return __clk_hw_register_fixed_factor(dev, NULL, name, NULL,
++					      parent_hw, -1, flags, mult, div,
++					      false);
++}
++EXPORT_SYMBOL_GPL(clk_hw_register_fixed_factor_parent_hw);
 +
- 		pinctrl_alive: pinctrl@11cb0000 {
- 			compatible = "samsung,exynos7885-pinctrl";
- 			reg = <0x11cb0000 0x1000>;
-@@ -274,6 +293,19 @@ pmu_system_controller: system-controller@11c80000 {
- 			reg = <0x11c80000 0x10000>;
- 		};
+ struct clk_hw *clk_hw_register_fixed_factor(struct device *dev,
+ 		const char *name, const char *parent_name, unsigned long flags,
+ 		unsigned int mult, unsigned int div)
+ {
+-	return __clk_hw_register_fixed_factor(dev, NULL, name, parent_name, -1,
+-					      flags, mult, div, false);
++	return __clk_hw_register_fixed_factor(dev, NULL, name, parent_name,
++					      NULL, -1, flags, mult, div,
++					      false);
+ }
+ EXPORT_SYMBOL_GPL(clk_hw_register_fixed_factor);
  
-+		mmc_0: mmc@13500000 {
-+			compatible = "samsung,exynos7-dw-mshc-smu";
-+			reg = <0x13500000 0x2000>;
-+			interrupts = <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			clocks = <&cmu_fsys CLK_GOUT_MMC_EMBD_ACLK>,
-+				 <&cmu_fsys CLK_GOUT_MMC_EMBD_SDCLKIN>;
-+			clock-names = "biu", "ciu";
-+			fifo-depth = <0x40>;
-+			status = "disabled";
-+		};
+@@ -204,8 +240,9 @@ struct clk_hw *devm_clk_hw_register_fixed_factor(struct device *dev,
+ 		const char *name, const char *parent_name, unsigned long flags,
+ 		unsigned int mult, unsigned int div)
+ {
+-	return __clk_hw_register_fixed_factor(dev, NULL, name, parent_name, -1,
+-			flags, mult, div, true);
++	return __clk_hw_register_fixed_factor(dev, NULL, name, parent_name,
++					      NULL, -1, flags, mult, div,
++					      true);
+ }
+ EXPORT_SYMBOL_GPL(devm_clk_hw_register_fixed_factor);
+ 
+@@ -240,8 +277,8 @@ static struct clk_hw *_of_fixed_factor_clk_setup(struct device_node *node)
+ 	if (of_match_node(set_rate_parent_matches, node))
+ 		flags |= CLK_SET_RATE_PARENT;
+ 
+-	hw = __clk_hw_register_fixed_factor(NULL, node, clk_name, NULL, 0,
+-					    flags, mult, div, false);
++	hw = __clk_hw_register_fixed_factor(NULL, node, clk_name, NULL, NULL,
++					    0, flags, mult, div, false);
+ 	if (IS_ERR(hw)) {
+ 		/*
+ 		 * Clear OF_POPULATED flag so that clock registration can be
+diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
+index 316c7e082934..94458cb669f0 100644
+--- a/include/linux/clk-provider.h
++++ b/include/linux/clk-provider.h
+@@ -1032,6 +1032,14 @@ struct clk_hw *devm_clk_hw_register_fixed_factor(struct device *dev,
+ struct clk_hw *devm_clk_hw_register_fixed_factor_index(struct device *dev,
+ 		const char *name, unsigned int index, unsigned long flags,
+ 		unsigned int mult, unsigned int div);
 +
- 		serial_0: serial@13800000 {
- 			compatible = "samsung,exynos5433-uart";
- 			reg = <0x13800000 0x100>;
++struct clk_hw *devm_clk_hw_register_fixed_factor_parent_hw(struct device *dev,
++		const char *name, const struct clk_hw *parent_hw,
++		unsigned long flags, unsigned int mult, unsigned int div);
++
++struct clk_hw *clk_hw_register_fixed_factor_parent_hw(struct device *dev,
++		const char *name, const struct clk_hw *parent_hw,
++		unsigned long flags, unsigned int mult, unsigned int div);
+ /**
+  * struct clk_fractional_divider - adjustable fractional divider clock
+  *
 -- 
 2.36.1
 
