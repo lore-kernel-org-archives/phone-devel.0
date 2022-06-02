@@ -2,128 +2,134 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D201CCA481
-	for <phone-devel@archiver.kernel.org>; Thu,  2 Jun 2022 16:53:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42D0FC43334
+	for <phone-devel@archiver.kernel.org>; Thu,  2 Jun 2022 22:19:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237260AbiFBQxE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 2 Jun 2022 12:53:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52600 "EHLO
+        id S239628AbiFBWTV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 2 Jun 2022 18:19:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235643AbiFBQxD (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Jun 2022 12:53:03 -0400
-X-Greylist: delayed 445 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 02 Jun 2022 09:52:59 PDT
-Received: from mail.shift-gmbh.com (mail.shift-gmbh.com [85.10.195.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DCB027B9B0;
-        Thu,  2 Jun 2022 09:52:59 -0700 (PDT)
-From:   Alexander Martinz <amartinz@shiftphones.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shiftphones.com;
-        s=2018; t=1654188331;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=EtLUtGgtzmMn/jbekYRhgMbH2I3kcpmuGEIvnJpeso0=;
-        b=b4JM09k7nFCSVq0T51RJbyb2fTAuM5XtI3WD+QMJwNzcS5nVhCZ5NiWjxFyxT2x068LG85
-        jWwCTMycoDmu1v3tSHXq3UE4X5AOLKIGRxPxiZBHZygfD5HoN4xGdreaOSSC0ljoeYw6mA
-        qyorhrGR+M6x4g5qoOHJzNCQLM/pyvQF9i5ABm7gl7Ig/KizYeTMKSs4O/sZRbXNLZd0AW
-        KNAQgjIbPJdVKdCwe9GrI3AQy+8YOcrlbQdjQIaiNQlM5Ygc2ovzjdeInwfA4qqpUWThGl
-        G628nuK0mmtsW2H5+nGQZLDxBjPqRmWPJWZ53sGXiu9CvVxahMo1KbewQ2zZww==
-To:     ~postmarketos/upstreaming@lists.sr.ht
-Cc:     phone-devel@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        with ESMTP id S234670AbiFBWTV (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Jun 2022 18:19:21 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F2D734679;
+        Thu,  2 Jun 2022 15:19:20 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id c2so7978570edf.5;
+        Thu, 02 Jun 2022 15:19:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :content-transfer-encoding:user-agent:mime-version;
+        bh=tbowqamXYYuuGAdFBr0ycte2n7isELmCXUpS72DXPYA=;
+        b=Cfn9ZrjJiuyTgQEDoNcqfvdJSLpGNZk3ZIvxheCNDuJKdAZ7/R0LfKUCb6JqSD3l9V
+         5r25+e3QoN3avlvliguJWFaximEHBbqMDW1vNP+yD4lCQPNmTqNiIxrvS0QZcMjXPXlX
+         7XZlixPHgxssR2wJVbkZSSEYV5nwEsamgxA2dnD9UfYWMS4aAlDpm7rxRStHQoHUKE3c
+         3XFgBIVrydZcp9sMwUro+iFBQqvdn8exH66hJiL0Is3zfcqToU58YLVPDLSYpiGr2YDw
+         SxJDGBsf67UaIc46xeZo0fuUSHobZ8y0Ti46WMplznIqvpUkVHnHFAAaCQjodhoAq7Di
+         hX0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:content-transfer-encoding:user-agent:mime-version;
+        bh=tbowqamXYYuuGAdFBr0ycte2n7isELmCXUpS72DXPYA=;
+        b=uexjQL9NqnPtZWq4DzAtOL6S15ZnCNapSfHDMjEDH0DDh3O7VeVXyBjo83wBmx99Ni
+         CD07pqLGkLk8UIIlKSHLT9QXzlYrWvcysxcPl4p1K1WAt3xZoGGkbH63ACATsIBCd26i
+         m0Q0lVndwMcFOD9TdvahpfWu+lHA63PxCDqGW9gsSwfjvG1cCqr4SzJ0ze4w4SL7TYAI
+         GU1vPqg+aDsQibt+z5PQxq0qxFJ8EyGuA2p0KsEsNEgRCCQbaryVtTPeXU3fnL/Vp2nd
+         n9HDC5dnqU1k9BmehJnu7BCKncS7b4/Z7uy6uxssuJcA/OhtalyF/+HUhshW4D5zYGlD
+         D70A==
+X-Gm-Message-State: AOAM532LXJBT342r88mydN+V3lg/1vPak2PgN9zMPfHa9k6CAGjy4CG1
+        vtzWh7zTZMssbhHfLYlVFDrcgavZ64dcMCl8q+g=
+X-Google-Smtp-Source: ABdhPJz1a65SOU6C73Ybt3zJBBGpUK5rx1jMp6pFTiIUucWL/ne9gp0OsWFNXQFD/Zwp0ttUaDtOpA==
+X-Received: by 2002:a05:6402:1f0e:b0:42d:e38a:51f7 with SMTP id b14-20020a0564021f0e00b0042de38a51f7mr7825293edb.68.1654208358484;
+        Thu, 02 Jun 2022 15:19:18 -0700 (PDT)
+Received: from ?IPv6:2a02:ab88:368f:2080:eab:126a:947d:3008? ([2a02:ab88:368f:2080:eab:126a:947d:3008])
+        by smtp.gmail.com with ESMTPSA id fg16-20020a1709069c5000b006fe8d8c54a7sm2150850ejc.87.2022.06.02.15.19.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jun 2022 15:19:17 -0700 (PDT)
+Message-ID: <f40aca00a4418c889395d2dab65f85d24e8662c6.camel@gmail.com>
+Subject: Re: [PATCH 5/5] arm64: dts: exynos: Add internal eMMC support to
+ jackpotlte
+From:   David Virag <virag.david003@gmail.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     phone-devel@vger.kernel.org,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Caleb Connolly <caleb@connolly.tech>,
-        Dylan Van Assche <me@dylanvanassche.be>,
-        Alexander Martinz <amartinz@shiftphones.com>
-Subject: [PATCH 1/2] ASoC: codecs: tfa989x: Add support for tfa9890
-Date:   Thu,  2 Jun 2022 18:45:03 +0200
-Message-Id: <20220602164504.261361-1-amartinz@shiftphones.com>
+        linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Date:   Fri, 03 Jun 2022 00:18:51 +0200
+In-Reply-To: <b3681990-e358-8e1d-93fe-b72c099902e3@linaro.org>
+References: <20220601233743.56317-1-virag.david003@gmail.com>
+         <20220601233743.56317-6-virag.david003@gmail.com>
+         <b3681990-e358-8e1d-93fe-b72c099902e3@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-        auth=pass smtp.auth=amartinz@shiftphones.com smtp.mailfrom=amartinz@shiftphones.com
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The initialization sequence is taken from the version provided
-by the supplier [1].
+On Thu, 2022-06-02 at 14:01 +0200, Krzysztof Kozlowski wrote:
+> On 02/06/2022 01:37, David Virag wrote:
+> > Add the nodes relevant to provide clocks for Exynos7885 eMMC and to
+> > support eMMC. eMMC is the internal storage used in the Samsung
+> > Galaxy A8
+> > (2018) (jackpotlte), and all other known devices using the
+> > Exynos7885
+> > SoC.
+> >=20
+> > Signed-off-by: David Virag <virag.david003@gmail.com>
+> > ---
+> > =C2=A0.../boot/dts/exynos/exynos7885-jackpotlte.dts | 20 ++++++++++++
+> > =C2=A0arch/arm64/boot/dts/exynos/exynos7885.dtsi=C2=A0=C2=A0=C2=A0 | 32
+> > +++++++++++++++++++
+> > =C2=A02 files changed, 52 insertions(+)
+> >=20
+> > diff --git a/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
+> > b/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
+> > index 4cf9aa25f618..5db9a81ac7bb 100644
+> > --- a/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
+> > +++ b/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
+> > @@ -60,6 +60,26 @@ power-key {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0};
+> > =C2=A0};
+> > =C2=A0
+> > +&mmc_0 {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0status =3D "okay";
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mmc-hs200-1_8v;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mmc-hs400-1_8v;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0cap-mmc-highspeed;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0non-removable;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mmc-hs400-enhanced-strobe;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0card-detect-delay =3D <200>;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0clock-frequency =3D <8000000=
+00>;
+>=20
+> Is this real property for MMC? Neither mmc nor DW MSHC bindings
+> mention it.
 
-This allows speakers using the TFA9890 amplifier to work, which are
-used by various mobile phones such as the SHIFT6mq.
+It is, but I don't remember trying without it. Seems like it is not
+documented then. It is used in dw_mmc.c in the following places:
 
-[1]: https://source.codeaurora.org/external/mas/tfa98xx/tree/src/tfa_init.c?id=d2cd12931fbc48df988b62931fb9960d4e9dc05d#n1827
+https://github.com/torvalds/linux/blob/master/drivers/mmc/host/dw_mmc.c#L32=
+42-L3243
 
-Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
----
- sound/soc/codecs/tfa989x.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+https://github.com/torvalds/linux/blob/master/drivers/mmc/host/dw_mmc.c#L33=
+06-L3325
 
-diff --git a/sound/soc/codecs/tfa989x.c b/sound/soc/codecs/tfa989x.c
-index dc86852752c5..8ab2656de750 100644
---- a/sound/soc/codecs/tfa989x.c
-+++ b/sound/soc/codecs/tfa989x.c
-@@ -40,12 +40,14 @@
- #define TFA989X_I2S_SEL_REG		0x0a
- #define TFA989X_I2S_SEL_REG_SPKR_MSK	GENMASK(10, 9)	/* speaker impedance */
- #define TFA989X_I2S_SEL_REG_DCFG_MSK	GENMASK(14, 11)	/* DCDC compensation */
-+#define TFA989X_HIDE_UNHIDE_KEY	0x40
- #define TFA989X_PWM_CONTROL		0x41
- #define TFA989X_CURRENTSENSE1		0x46
- #define TFA989X_CURRENTSENSE2		0x47
- #define TFA989X_CURRENTSENSE3		0x48
- #define TFA989X_CURRENTSENSE4		0x49
- 
-+#define TFA9890_REVISION		0x80
- #define TFA9895_REVISION		0x12
- #define TFA9897_REVISION		0x97
- 
-@@ -188,6 +190,33 @@ static struct snd_soc_dai_driver tfa989x_dai = {
- 	.ops = &tfa989x_dai_ops,
- };
- 
-+static int tfa9890_init(struct regmap *regmap)
-+{
-+	int ret;
-+
-+	/* unhide keys to allow updating them */
-+	ret = regmap_write(regmap, TFA989X_HIDE_UNHIDE_KEY, 0x5a6b);
-+	if (ret)
-+		return ret;
-+
-+	/* update PLL registers */
-+	ret = regmap_set_bits(regmap, 0x59, 0x3);
-+	if (ret)
-+		return ret;
-+
-+	/* hide keys again */
-+	ret = regmap_write(regmap, TFA989X_HIDE_UNHIDE_KEY, 0x0000);
-+	if (ret)
-+		return ret;
-+
-+	return regmap_write(regmap, TFA989X_CURRENTSENSE2, 0x7BE1);
-+}
-+
-+static const struct tfa989x_rev tfa9890_rev = {
-+	.rev	= TFA9890_REVISION,
-+	.init	= tfa9890_init,
-+};
-+
- static const struct reg_sequence tfa9895_reg_init[] = {
- 	/* some other registers must be set for optimal amplifier behaviour */
- 	{ TFA989X_BAT_PROT, 0x13ab },
-@@ -376,6 +405,7 @@ static int tfa989x_i2c_probe(struct i2c_client *i2c)
- }
- 
- static const struct of_device_id tfa989x_of_match[] = {
-+	{ .compatible = "nxp,tfa9890", .data = &tfa9890_rev },
- 	{ .compatible = "nxp,tfa9895", .data = &tfa9895_rev },
- 	{ .compatible = "nxp,tfa9897", .data = &tfa9897_rev },
- 	{ }
--- 
-2.36.1
+The Exynos850 device tree has the same property in it's mmc node.=20
 
+>=20
+> Best regards,
+> Krzysztof
+
+Best regards,
+David
