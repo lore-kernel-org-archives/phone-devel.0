@@ -2,220 +2,76 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 66F39CCA47D
-	for <phone-devel@archiver.kernel.org>; Thu,  2 Jun 2022 13:01:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A96CCCA47D
+	for <phone-devel@archiver.kernel.org>; Thu,  2 Jun 2022 16:53:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230333AbiFBNB5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 2 Jun 2022 09:01:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53234 "EHLO
+        id S237216AbiFBQxE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 2 Jun 2022 12:53:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230169AbiFBNBz (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Jun 2022 09:01:55 -0400
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 081059FDD;
-        Thu,  2 Jun 2022 06:01:53 -0700 (PDT)
-Received: by mail-oi1-f175.google.com with SMTP id i66so6392643oia.11;
-        Thu, 02 Jun 2022 06:01:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=zH0vAIDZXcoFpFqiWQ5v3Gj8I+dG4f2c74XYlrF44os=;
-        b=BVsqTs5DhCAGULvB7/KJYST1VsWJ3Hq/xSvVQ6cMGtcB07mqdETgqieieSQExud7Il
-         XshOtBWK4DYHrUgaUf/vIhWrwxTnaibiGAqhLylodxP47j6+4ZoHvSwVTQsi3tH7bDMV
-         JBZAa0E8vylDOABJlSPUNJh0YE//azj0JXe9S9At+gp4l22rjTW5hOzi0CtLGv1bLC33
-         5eZuHrRT/he++FnBb3c/OVFObJ08OYUgPFLeyLMmWNXgPIQcFsbRkAt+139UBN6tbLKk
-         y2XNVALfBRSAjDv1P6uEFKN54vTOwuCy5x2bvUxxDfzU1ixJF2LG7B8AdMpqk56izs6s
-         O75w==
-X-Gm-Message-State: AOAM530jwyCtUUlCgYH3GfiG+kN5CH3I+A+Yh1ScE6wbhj+yiguZcdnl
-        UQbA6harl5XfyvmdwHeTiA==
-X-Google-Smtp-Source: ABdhPJz1YCMnZKdEqJ9Nc4Y7GX22TlUyGIgRVd47MrHyXORgKllboWODdHg/Pjcr4JPyEHqstG5PWQ==
-X-Received: by 2002:a05:6808:170a:b0:2fa:7168:392b with SMTP id bc10-20020a056808170a00b002fa7168392bmr18341645oib.84.1654174912162;
-        Thu, 02 Jun 2022 06:01:52 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id i7-20020a056870890700b000f32e094abbsm2156532oao.23.2022.06.02.06.01.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jun 2022 06:01:51 -0700 (PDT)
-Received: (nullmailer pid 2100950 invoked by uid 1000);
-        Thu, 02 Jun 2022 13:01:50 -0000
-Date:   Thu, 2 Jun 2022 08:01:50 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
+        with ESMTP id S234955AbiFBQxD (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Jun 2022 12:53:03 -0400
+X-Greylist: delayed 443 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 02 Jun 2022 09:52:59 PDT
+Received: from mail.shift-gmbh.com (mail.shift-gmbh.com [IPv6:2a01:4f8:a0:5496::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2FDB27B9BD;
+        Thu,  2 Jun 2022 09:52:59 -0700 (PDT)
+From:   Alexander Martinz <amartinz@shiftphones.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shiftphones.com;
+        s=2018; t=1654188336;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=imGM7saNPOQ6vbKogvcqXOICfijWBW6J11L5perWAFg=;
+        b=SPkvOhTj83B6oiJW3ZAr24eQ87yTw5YKMp8thSdc+8WpuYXGlWvxUk4x3VYgij5bb4pOhs
+        dQbS4mOPX1RWY/Pu1wgAh41UG3hwC2EZcw7HcMoEg1c33blT+f7q5V4f9tTARR3kOdlYZP
+        CaQTjPSJF7G4uIaPouDVMMwa6fYRIa1l9h+NRSaZF55+ua8vne/ugrWaUnXXmUk09tKKKm
+        dnW8FXetCsw1XtkBuauUiw366+SuKbEOwAmKxtDq9Lostm16iyTS7ZfyVurzQf4wiS30LI
+        ftKT364RV/wmI64x5etHJMHvwIOyC0MmW06r1LmlAzXMSc6SM1CKtYNnKPxrAg==
+To:     ~postmarketos/upstreaming@lists.sr.ht
+Cc:     phone-devel@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Todor Tomov <todor.too@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        matti.lehtimaki@gmail.com
-Subject: Re: [RFC PATCH 01/14] media: dt-bindings: media: camss: Add
- qcom,msm8974-camss binding
-Message-ID: <20220602130150.GA2095683-robh@kernel.org>
-References: <20220522162802.208275-1-luca@z3ntu.xyz>
- <20220522162802.208275-2-luca@z3ntu.xyz>
- <170dd20b-ab0b-0f61-bfe9-cb9167a2e133@linaro.org>
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Caleb Connolly <caleb@connolly.tech>,
+        Dylan Van Assche <me@dylanvanassche.be>,
+        Alexander Martinz <amartinz@shiftphones.com>
+Subject: [PATCH 2/2] ASoC: dt-bindings: nxp,tfa989x: Add tfa9890 support
+Date:   Thu,  2 Jun 2022 18:45:04 +0200
+Message-Id: <20220602164504.261361-2-amartinz@shiftphones.com>
+In-Reply-To: <20220602164504.261361-1-amartinz@shiftphones.com>
+References: <20220602164504.261361-1-amartinz@shiftphones.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <170dd20b-ab0b-0f61-bfe9-cb9167a2e133@linaro.org>
+Authentication-Results: ORIGINATING;
+        auth=pass smtp.auth=amartinz@shiftphones.com smtp.mailfrom=amartinz@shiftphones.com
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, May 23, 2022 at 12:07:10PM +0200, Krzysztof Kozlowski wrote:
-> On 22/05/2022 18:27, Luca Weiss wrote:
-> > From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-> 
-> Thank you for your patch. There is something to discuss/improve.
-> 
-> > 
-> > Add bindings for qcom,msm8974-camss in order to support the camera
-> > subsystem on MSM8974.
-> > 
-> > Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> >  .../bindings/media/qcom,msm8974-camss.yaml    | 321 ++++++++++++++++++
-> >  1 file changed, 321 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/media/qcom,msm8974-camss.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/media/qcom,msm8974-camss.yaml b/Documentation/devicetree/bindings/media/qcom,msm8974-camss.yaml
-> > new file mode 100644
-> > index 000000000000..f8f71e477535
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/media/qcom,msm8974-camss.yaml
-> > @@ -0,0 +1,321 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +
-> > +%YAML 1.2
-> > +---
-> > +$id: "http://devicetree.org/schemas/media/qcom,msm8974-camss.yaml#"
-> > +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> > +
-> > +title: Qualcomm CAMSS ISP
-> > +
-> > +maintainers:
-> > +  - Robert Foss <robert.foss@linaro.org>
-> > +
-> > +description: |
-> > +  The CAMSS IP is a CSI decoder and ISP present on Qualcomm platforms
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: qcom,msm8974-camss
-> > +
-> > +  clocks:
-> > +    minItems: 31
-> 
-> No need for minItems, they are equal to max by default.
-> 
-> > +    maxItems: 31
-> > +
-> > +  clock-names:
-> > +    items:
-> > +      - const: top_ahb
-> > +      - const: ispif_ahb
-> > +      - const: csiphy0_timer
-> > +      - const: csiphy1_timer
-> > +      - const: csiphy2_timer
-> > +      - const: csi0_ahb
-> > +      - const: csi0
-> > +      - const: csi0_phy
-> > +      - const: csi0_pix
-> > +      - const: csi0_rdi
-> > +      - const: csi1_ahb
-> > +      - const: csi1
-> > +      - const: csi1_phy
-> > +      - const: csi1_pix
-> > +      - const: csi1_rdi
-> > +      - const: csi2_ahb
-> > +      - const: csi2
-> > +      - const: csi2_phy
-> > +      - const: csi2_pix
-> > +      - const: csi2_rdi
-> > +      - const: csi3_ahb
-> > +      - const: csi3
-> > +      - const: csi3_phy
-> > +      - const: csi3_pix
-> > +      - const: csi3_rdi
-> > +      - const: vfe0
-> > +      - const: vfe1
-> > +      - const: csi_vfe0
-> > +      - const: csi_vfe1
-> > +      - const: iface
-> > +      - const: bus
-> > +
-> > +  interrupts:
-> > +    minItems: 10
-> 
-> Same.
-> 
-> > +    maxItems: 10
-> > +
-> > +  interrupt-names:
-> > +    items:
-> > +      - const: csiphy0
-> > +      - const: csiphy1
-> > +      - const: csiphy2
-> > +      - const: csid0
-> > +      - const: csid1
-> > +      - const: csid2
-> > +      - const: csid3
-> > +      - const: ispif
-> > +      - const: vfe0
-> > +      - const: vfe1
-> > +
-> > +  power-domains:
-> > +    items:
-> > +      - description: VFE GDSC - Video Front End, Global Distributed Switch Controller.
-> > +
-> > +  ports:
-> > +    $ref: /schemas/graph.yaml#/properties/ports
-> > +
-> > +    description:
-> > +      CSI input ports.
-> > +
-> > +    properties:
-> > +      port@0:
-> > +        $ref: /schemas/graph.yaml#/$defs/port-base
-> > +        unevaluatedProperties: false
-> > +        description:
-> > +          Input port for receiving CSI data.
-> > +
-> > +        properties:
-> > +          endpoint:
-> > +            $ref: video-interfaces.yaml#
-> > +            unevaluatedProperties: false
-> > +
-> > +            properties:
-> > +              clock-lanes:
-> > +                items:
-> > +                  - const: 1
-> > +
-> > +              data-lanes:
-> > +                minItems: 1
-> > +                maxItems: 4
-> > +
-> > +            required:
-> > +              - clock-lanes
-> > +              - data-lanes
-> > +
-> > +      port@1:
-> 
-> These look all the same, so just use patternPropreties (in "ports") with
-> proper pattern.
+Document TFA9890 binding for tfa989x.
 
-That's fine, but whatever difference there is in ports 0, 1, and 2 needs 
-to be described.
+Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
+---
+ Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-> > +        $ref: /schemas/graph.yaml#/$defs/port-base
-> > +        unevaluatedProperties: false
-> > +        description:
-> > +          Input port for receiving CSI data.
+diff --git a/Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml b/Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml
+index b9b1dba40856..7f2e68ff6d34 100644
+--- a/Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml
++++ b/Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml
+@@ -15,6 +15,7 @@ allOf:
+ properties:
+   compatible:
+     enum:
++      - nxp,tfa9890
+       - nxp,tfa9895
+       - nxp,tfa9897
+ 
+-- 
+2.36.1
+
