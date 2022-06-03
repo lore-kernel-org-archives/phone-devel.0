@@ -2,104 +2,117 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86691C43334
-	for <phone-devel@archiver.kernel.org>; Fri,  3 Jun 2022 09:56:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5DFACCA47E
+	for <phone-devel@archiver.kernel.org>; Fri,  3 Jun 2022 15:15:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241320AbiFCJ4I (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 3 Jun 2022 05:56:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38152 "EHLO
+        id S245405AbiFCPPA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 3 Jun 2022 11:15:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236071AbiFCJ4H (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Jun 2022 05:56:07 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A652D3AA50
-        for <phone-devel@vger.kernel.org>; Fri,  3 Jun 2022 02:56:03 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id s12so7705270ejx.3
-        for <phone-devel@vger.kernel.org>; Fri, 03 Jun 2022 02:56:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=zs/Snm7wBkBvkKLKDEJnB4SYZuuEuwpMYd9uLaVIwAE=;
-        b=DdIngkecu9AmD2BzAJfyBpoShkPBVC4nsP1yeLLlFehRqlWKi6JVSb1+elF2xPskEf
-         vvEcXeBkkwygEIXvXZGY3hePMwnnpjO2MX+j9sMHvqik1O/pDV+UoFKabvYpubHyphLo
-         bMxjmCxJHhKhbbxt2s3KMyDBnMp73jgsYJmTz1sU6mQSnDkJo86g1qcwSpyfpzz5IDzb
-         zzOc0o2/VgHg4Ivm/SG9gCVH4M0uuSW192XTP2pA8qL3gtlp6HOm6z0XMDxx6noVDfLO
-         oM2qN+XVjNQONM5KIoANhvk7OTFgReUPj5K38EiorCx4wAioCrlZ+bMSx7ljGVt505nm
-         n6/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=zs/Snm7wBkBvkKLKDEJnB4SYZuuEuwpMYd9uLaVIwAE=;
-        b=heG03ZM0SqfH8qUikfsCyxxenfCtIJq75kNMIwCKcyc/LM1ny8lTkQT017Zdt9HUUu
-         IXYTKeMrlE7D8QXsnDkJ/PwKg/3g5RFICGOU3NJb/xC8UqTXY1GFFSf/Ui1sdcZ3XXba
-         P/lpHCsWCw4oHlObmCQF8cW569qS/rwaerFyTrtHOwE+Nw783iaGfS0v+/gaSIulfDvk
-         iwjer+HNvBmLimpx7CJh2pGHxQYLvxh6Hv5paL76VIBUmdEn78mRzGmnz3cseXH0Xppv
-         vgF0bbGyNbQWq8gGHuZngHOgWSeGgeBSjRsF2oRTvERQKUpyCJaIX+nojXBQHp37Q83+
-         tTng==
-X-Gm-Message-State: AOAM533Cd86D3sK/oiBFJ2x0KoFv1IcLnZyCU3v/tBrllVsTGHP4Rtk2
-        tax6SHLuKLrrKpex5fm86LjVbg==
-X-Google-Smtp-Source: ABdhPJyLZEXgasjK1iNOh+v508745d/SULGzUUJKtECcrWud9tCUDwBjEhia6wGu5d/38gtONk+/Ww==
-X-Received: by 2002:a17:907:1686:b0:70e:895b:7ba0 with SMTP id hc6-20020a170907168600b0070e895b7ba0mr1731808ejc.484.1654250162255;
-        Fri, 03 Jun 2022 02:56:02 -0700 (PDT)
-Received: from [192.168.0.181] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id l15-20020aa7c3cf000000b0042bdb6a3602sm3520334edr.69.2022.06.03.02.56.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jun 2022 02:56:01 -0700 (PDT)
-Message-ID: <173ad8d6-44b3-444b-c72d-f35e83d7ed1a@linaro.org>
-Date:   Fri, 3 Jun 2022 11:56:00 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH] arm64: dts: qcom: add device tree for LG G7 and LG V35
-Content-Language: en-US
-To:     Stefan Hansson <newbie13xd@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        with ESMTP id S245403AbiFCPO4 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Jun 2022 11:14:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB16506C1;
+        Fri,  3 Jun 2022 08:14:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E0FE66186D;
+        Fri,  3 Jun 2022 15:14:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD19C385B8;
+        Fri,  3 Jun 2022 15:14:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654269294;
+        bh=kCDqKxgSBW1zW4hSfO+3ZljVtjIYIRBqdB6IPefPA2g=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=GOfyERozHdsiH3+V20TajRS8VF+rK3pLspYPXYlV/wXnoOuBYCgvA5j6gRtfucZz5
+         5KNnZLXdh/CkU9CySG++EblXbebLNNLKOV8exqcXG1s6dMYhCEG9A3Ym6FJZKcBsMd
+         ElTzgdH7DMmopE0HAyhuGmyl3tHBlggJ0sZtmemeDT4vt0E/wfTSr1uX3Uq5P6a1Pi
+         qaygK9qyntxv2KPdHyxmTThxj+h/0sQQHfWoE1/Oqev1rDSgI3l2X3JBatFKiA9ZqZ
+         L5C6thelnCEVAdfrDUf6RbqMeByJEU5C6Ot9yLL2JekOf/GWf+7X++aM+YoXh1t07g
+         Hm2Dq9kp3Fnqg==
+Date:   Fri, 3 Jun 2022 16:23:51 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Song Qiang <songqiang1304521@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Cc:     Anton Bambura <jenneron@protonmail.com>,
-        Gregari Ivanov <llamashere@posteo.de>
-References: <20220602120727.197491-1-newbie13xd@gmail.com>
- <b99033fd-ca3c-49bb-d46b-c9ca1cb0c386@linaro.org>
- <6927df15-54d1-bf1e-0e34-9524e79e3f0a@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <6927df15-54d1-bf1e-0e34-9524e79e3f0a@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v5 0/5] Add support for ToF sensor on Yoshino platform
+Message-ID: <20220603162351.69056bdf@jic23-huawei>
+In-Reply-To: <20220523175344.5845-1-markuss.broks@gmail.com>
+References: <20220523175344.5845-1-markuss.broks@gmail.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 03/06/2022 11:47, Stefan Hansson wrote:
+On Mon, 23 May 2022 20:53:39 +0300
+Markuss Broks <markuss.broks@gmail.com> wrote:
 
->>> +	gpio-keys {
->>> +		compatible = "gpio-keys";
->>> +
->>> +		pinctrl-names = "default";
->>> +		pinctrl-0 = <&vol_up_pin_a>;
->>> +
->>> +		label = "GPIO Buttons";
->>
->> Is "label" really a property of gpio-keys node?
->>
+> This series adds support for the ToF proximity sensor installed on
+> Yoshino devices. As part of this series, support handling the reset
+> GPIO and VDD supply by the VL53L0X driver. Also stop hardcoding the
+> interrupt type, since on Yoshino devices it seems that edge triggering
+> doesn't work properly.
 > 
-> I tested these dts:es with dtbs_check and I do not see any errors 
-> regarding labels. If you prefer me to delete this I can do that. I 
-> understand it is rather weird to have this here if it's not in the 
-> schema. I am rather new to writing device trees, so I think you are 
-> better off making the call here.
+> Tested on Sony Xperia XZ1 (poplar).
+> 
+> Cc: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Cc: Marijn Suijten <marijn.suijten@somainline.org>
+> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Patches 1-4 applied to the togreg branch of iio.git.
 
-Thanks for reporting. Indeed current DT schema won't detect this. Anyway
-it seems gpio-keys driver already uses it and since it appeared in DTS,
-maybe better to document it. I'll work on this, so feel free to keep the
-property.
+Note I plan to rebase that tree after the char-misc (and hence IIO tree)
+has been merged with mainline, so for now it is only pushed out as testing
+so that 0-day can see if it can find anything we missed.
 
+Thanks,
 
-Best regards,
-Krzysztof
+Jonathan
+
+> 
+> v2:
+> - Fix a nasty issue: turns out grouping the pinctrl makes it not apply,
+> which was the main cause of edge interrupts not working correctly and
+> having to use level interrupts, which caused a large amount of false
+> detections.
+> - handle the irq type more gracefully: if it's not provided, default
+> to falling edge, but if it's provided, then use the provided one.
+> v3:
+> - add irq.h header (forgot to commit)
+> - reword commit message (already initialized -> pre-initialized)
+> v4:
+> - reorder powering on and power off action (Jonathan)
+> - sort pinctrls by GPIO number (Konrad)
+> v5:
+> - "This patch adds..." -> "Add ..." (Krzysztof)
+> 
+> Markuss Broks (5):
+>   dt-bindings: proximity: vl53l0x: Document optional supply and GPIO
+>     properties
+>   proximity: vl53l0x: Get interrupt type from DT
+>   proximity: vl53l0x: Handle the VDD regulator
+>   proximity: vl53l0x: Handle the reset GPIO
+>   arm64: dts: qcom: msm8998-xperia: Introduce ToF sensor support
+> 
+>  .../bindings/iio/proximity/st,vl53l0x.yaml    |  5 ++
+>  .../dts/qcom/msm8998-sony-xperia-yoshino.dtsi | 34 +++++++++++++
+>  drivers/iio/proximity/vl53l0x-i2c.c           | 50 ++++++++++++++++++-
+>  3 files changed, 88 insertions(+), 1 deletion(-)
+> 
+
