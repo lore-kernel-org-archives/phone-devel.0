@@ -2,40 +2,41 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE26DCCA473
-	for <phone-devel@archiver.kernel.org>; Fri,  3 Jun 2022 18:28:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1A86C43334
+	for <phone-devel@archiver.kernel.org>; Fri,  3 Jun 2022 18:35:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347028AbiFCS14 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 3 Jun 2022 14:27:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57408 "EHLO
+        id S245554AbiFCSfl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 3 Jun 2022 14:35:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347083AbiFCS1q (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Jun 2022 14:27:46 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC51D5AA41;
-        Fri,  3 Jun 2022 11:10:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1654279610;
+        with ESMTP id S1345278AbiFCSff (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Jun 2022 14:35:35 -0400
+X-Greylist: delayed 121 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 03 Jun 2022 11:23:39 PDT
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.80])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8723A9CC86;
+        Fri,  3 Jun 2022 11:23:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1654280429;
     s=strato-dkim-0002; d=gerhold.net;
     h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
     From:Subject:Sender;
-    bh=W0zLWbkTHHDH0iI0Y3QB9pk4VW+9pPQV3k8LcemuFF4=;
-    b=pYJS6YCHpweybvsrVNZNXAsxkI5rzK4/zWclFd7weZ1Qnc/lPxo41Ty8ah4CMiEnOI
-    ZaPHFjKRNZ4oVB8CiYRc9XjC57ylnB2bYRrb6iKZsqu76UlB8bmEMFHEVs3+z34YHYl5
-    wvBtLcVMooMejLMjIGV1fW1TsinV6qGUatpYgYOaoYgvRD0rJTFI/btn0dV1AcpsCINp
-    nqhaBNya5zv3lbRF+0fAcEv5tqLowMkkC+y42Dze0EMuwnqZVT5staAMha6d8V3FxEdT
-    2AR6tBpKY5dZW5FbMgAj5aobTvtfhFCAQa48UcXu8NSx8U/HzhfAdky1u7F9FBrwwliO
-    3LiA==
+    bh=jRzE700Iwk6JPnFC1XF3JnNELKmhJQ9Ut8G4hkkDJF0=;
+    b=p7RNxjyiSayvHYPh3pHVP+T7P4Hcsn75gGJxiD5ywUMsVEPqBfsrMCiR1C47cvRHPG
+    nCbifbauhHQMWv0vrZkk64YAzDa03TPeK2zI1an99Cd6KVmM/Cwh3yx+l5wlGoFPB+lz
+    JbiBdHH/mpVYGdbK2X+pXmeZ7ppmt1PpMOwCSuLRj4L2foo2vDkQeuR4nBDvczVknpiH
+    AYkEkOrGQ5yGk/JBTbx1GPRF89BaoAAqffAxeBBjPB1r3TGn9B/gVXvtqqy4P8X6gMPH
+    4/lRQ2MNTugVRSf8sTtvJtdeAkOVKpSVSbKKHkQk+2s8mclCSZ+3hjx0ZdP0EAMuvw8b
+    zUFw==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u267FZF9PwpcNKLVrKw7/aY="
 X-RZG-CLASS-ID: mo00
 Received: from gerhold.net
     by smtp.strato.de (RZmta 47.45.0 AUTH)
-    with ESMTPSA id 9056edy53I6nwkU
+    with ESMTPSA id 9056edy53IKTwlV
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Fri, 3 Jun 2022 20:06:49 +0200 (CEST)
-Date:   Fri, 3 Jun 2022 20:06:39 +0200
+    Fri, 3 Jun 2022 20:20:29 +0200 (CEST)
+Date:   Fri, 3 Jun 2022 20:20:28 +0200
 From:   Stephan Gerhold <stephan@gerhold.net>
 To:     Alexander Martinz <amartinz@shiftphones.com>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -48,44 +49,82 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         Caleb Connolly <caleb@connolly.tech>,
         Dylan Van Assche <me@dylanvanassche.be>
-Subject: Re: [PATCH 2/2] ASoC: dt-bindings: nxp,tfa989x: Add tfa9890 support
-Message-ID: <YppNaL5r5EN3SUsU@gerhold.net>
+Subject: Re: [PATCH 1/2] ASoC: codecs: tfa989x: Add support for tfa9890
+Message-ID: <YppQ7BiqlBDMNsuc@gerhold.net>
 References: <20220602164504.261361-1-amartinz@shiftphones.com>
- <20220602164504.261361-2-amartinz@shiftphones.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220602164504.261361-2-amartinz@shiftphones.com>
+In-Reply-To: <20220602164504.261361-1-amartinz@shiftphones.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jun 02, 2022 at 06:45:04PM +0200, Alexander Martinz wrote:
-> Document TFA9890 binding for tfa989x.
+On Thu, Jun 02, 2022 at 06:45:03PM +0200, Alexander Martinz wrote:
+> The initialization sequence is taken from the version provided
+> by the supplier [1].
+> 
+> This allows speakers using the TFA9890 amplifier to work, which are
+> used by various mobile phones such as the SHIFT6mq.
+> 
+> [1]: https://source.codeaurora.org/external/mas/tfa98xx/tree/src/tfa_init.c?id=d2cd12931fbc48df988b62931fb9960d4e9dc05d#n1827
 > 
 > Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
+> ---
+>  sound/soc/codecs/tfa989x.c | 30 ++++++++++++++++++++++++++++++
+>  1 file changed, 30 insertions(+)
+> 
+> diff --git a/sound/soc/codecs/tfa989x.c b/sound/soc/codecs/tfa989x.c
+> index dc86852752c5..8ab2656de750 100644
+> --- a/sound/soc/codecs/tfa989x.c
+> +++ b/sound/soc/codecs/tfa989x.c
+...
+> @@ -188,6 +190,33 @@ static struct snd_soc_dai_driver tfa989x_dai = {
+>  	.ops = &tfa989x_dai_ops,
+>  };
+>  
+> +static int tfa9890_init(struct regmap *regmap)
+> +{
+> +	int ret;
+> +
+> +	/* unhide keys to allow updating them */
 
-The dt-bindings patch should usually come first in the patch series.
-Anyway, no need to resend just for that IMO:
+Nitpick: I think the magic number is the "key" to hide/unhide certain
+*registers*. This comment implies that you are hiding *keys*.
+
+Maybe just write something like
+
+	/* temporarily allow access to hidden registers */
+	...
+	/* hide registers again */
+
+With that fixed, feel free to add my
 
 Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
 
-> ---
->  Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml b/Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml
-> index b9b1dba40856..7f2e68ff6d34 100644
-> --- a/Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml
-> +++ b/Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml
-> @@ -15,6 +15,7 @@ allOf:
->  properties:
->    compatible:
->      enum:
-> +      - nxp,tfa9890
->        - nxp,tfa9895
->        - nxp,tfa9897
->  
-> -- 
-> 2.36.1
-> 
+Thanks!
+Stephan
+
+> +	ret = regmap_write(regmap, TFA989X_HIDE_UNHIDE_KEY, 0x5a6b);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* update PLL registers */
+> +	ret = regmap_set_bits(regmap, 0x59, 0x3);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* hide keys again */
+> +	ret = regmap_write(regmap, TFA989X_HIDE_UNHIDE_KEY, 0x0000);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return regmap_write(regmap, TFA989X_CURRENTSENSE2, 0x7BE1);
+> +}
+> +
+> +static const struct tfa989x_rev tfa9890_rev = {
+> +	.rev	= TFA9890_REVISION,
+> +	.init	= tfa9890_init,
+> +};
+> +
+k
