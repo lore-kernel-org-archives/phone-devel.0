@@ -2,136 +2,128 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 984A4CCA47C
-	for <phone-devel@archiver.kernel.org>; Fri,  3 Jun 2022 07:38:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBC77C43334
+	for <phone-devel@archiver.kernel.org>; Fri,  3 Jun 2022 09:47:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242600AbiFCHiK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 3 Jun 2022 03:38:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38626 "EHLO
+        id S238232AbiFCJrY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 3 Jun 2022 05:47:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239509AbiFCHiJ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Jun 2022 03:38:09 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB5842250A
-        for <phone-devel@vger.kernel.org>; Fri,  3 Jun 2022 00:38:07 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id q21so14361019ejm.1
-        for <phone-devel@vger.kernel.org>; Fri, 03 Jun 2022 00:38:07 -0700 (PDT)
+        with ESMTP id S243165AbiFCJrW (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Jun 2022 05:47:22 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9B2E1146D
+        for <phone-devel@vger.kernel.org>; Fri,  3 Jun 2022 02:47:15 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id fu3so13393812ejc.7
+        for <phone-devel@vger.kernel.org>; Fri, 03 Jun 2022 02:47:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=NozlW8gxt+DxbkdUBPQ7v+hGLg98dYyflLdq2vKGNNQ=;
-        b=MBwq8iQT08gOCa9rJ8qFqI4BdOqhD9gxgoHyItuiBDjc80GOV0n/0Hvh5h9ccoL8XF
-         xXfwjrnjyWzaZ+2Cij/QNwGFjC976k0n2j6+2Qi+WpzIcdXcxw5dO6QrYsKv0N04qOwf
-         FiNjb652e0Sz+XA1NbcH2bbuvdW+oNrJttxI4dj/jo5uK2smwDutaZFG1n+EZIjxCIei
-         Q9A0TfF42ZXLGFbThtMyAXR5mK7+7FriG/+bgpXU65UpD4vdqxNAk96DMonmFn9TjnVv
-         sOeKcfFcFl/gFahHFD+Q5SBYtq3cz0QoCDEoL8mXm1EoazbRvGnVPMnaCq930hlfTLAx
-         pyqw==
+        d=fairphone.com; s=fair;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XmlvkluiSNMj24D7hJPq2KWkb3UetBzXUSitChCIpTg=;
+        b=RaqsjKpGbIoD8x44wAMevrMZhgC+gxnWT0bU2purC+/B0SEvyuWziiWNzzZQiDANlb
+         NL/SOkwOyYwSdhKUQLFosatZsxO0Z1mm701fBAXkXqQ+YLRGmXqMRg7cr7Fqgfn/FQ4G
+         Cx/d5mnDae60/QIGBwN13vBST2fv/231WUzkzD5zbuP3mquwvpPA6iCx0hvw/otlgrZB
+         pTsPP37CZ1LWuh1Y9nqvmaDG7xT4zezrllKvI+HYxgsQO8kA2ZLDWdxL5ULORQrUT7dd
+         ZoAm/LU6hGQ/UegRhUhh/erylJ1s9DTCfaHGq8v9oI+QNUGtC+W6/qnL2542z8065uCJ
+         9DBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=NozlW8gxt+DxbkdUBPQ7v+hGLg98dYyflLdq2vKGNNQ=;
-        b=XMqUKP5gyUDG6v3nd7q79ENakI9fH6apdmvKwmpJtOJ8h9BVqMFxDz0lkeF/jk7N6y
-         oYd0SiqQvTwBPjSvkkUmjVD2F1qKb0g8EqWuOJu2ZfsiYQn8KrHOVWXbvSjWi/YuSUyd
-         OOeR7xpOdiiWvrVV5v3rEnuDTRDw7Upecpm13VurAZtsrJBsE7SYz383piyNEkFbWu1j
-         VI3IE+IT/VzVTbAh7bECl2GVINIt+HCvDtzU7GiGceDeG6PxYcWRkPvwyiZDMpBFT3Pi
-         /3F1MPG83+gaQObOBMWFKe90TTn0q9MYJGudufhT+GuqWgUn2LSvc12LvFn1fwmN5fjR
-         4mIQ==
-X-Gm-Message-State: AOAM533GAgIuhMYSVCuV3riynO4oHejYSfza59nmeAYe2Nt7ryHIlIgj
-        D35dFiYem7d9wOBb+pD8H3V8lA==
-X-Google-Smtp-Source: ABdhPJwmUVILxx3fkvi4+hqA/dlgtcQ1M8rziX6YVtWAy/aURal3rjhnY6VgUCnsqW4bsZbXS+ErRw==
-X-Received: by 2002:a17:907:7b95:b0:6f4:ff03:981a with SMTP id ne21-20020a1709077b9500b006f4ff03981amr7455667ejc.653.1654241886274;
-        Fri, 03 Jun 2022 00:38:06 -0700 (PDT)
-Received: from [192.168.0.181] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id bs13-20020a056402304d00b0042bd6f745fasm3562059edb.92.2022.06.03.00.38.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jun 2022 00:38:05 -0700 (PDT)
-Message-ID: <78714614-bb6a-761d-3a36-cbd758dcec4c@linaro.org>
-Date:   Fri, 3 Jun 2022 09:38:03 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 5/5] arm64: dts: exynos: Add internal eMMC support to
- jackpotlte
-Content-Language: en-US
-To:     David Virag <virag.david003@gmail.com>
-Cc:     phone-devel@vger.kernel.org,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        bh=XmlvkluiSNMj24D7hJPq2KWkb3UetBzXUSitChCIpTg=;
+        b=OBuwKzQ0vbr+YPK/alawUrxvP/I1aDik3FT5pz1Y8Dxn0QEVE9dGbzmf9mMpLhe7/l
+         lqZ8PrkthwrNOUMP0Dqpp3ixB5D9nYk4BndRZ9D+lXe8v8aVfzOdVY2RgqdxnYEV9THU
+         lSWpRWSCTlIQ/xsz9Eu72yLetMBOeFcN6ZOmT1Eqc+m94Q9lJBgIZVS3waOFEF0Xbwzb
+         1pcDMZK/EGNAV2oxPr765rmxQKQqx5qCRzCtnjYBf+Ru4VOVtE5pgBxma0p9boNCOnEV
+         srx3R6BO13KUdx6curfeJ0GQ+npIOkH+dV9dLK4vwkC3tSVLXOo5fZzLVpCgJjyAY7sR
+         Yj9g==
+X-Gm-Message-State: AOAM533qr0kPOF3tbJwsG+BAudTRaON9nmuPKm+zXYcYMpDtPwMccELC
+        h6tVQ083jIU++BweaAk7ic5AVw==
+X-Google-Smtp-Source: ABdhPJxu2JHMNp3Ryhwmps+2Sr90KjZ1hzGL9fUOJkh0TNMfX3qkXqH1irY9IA+R8Yq04ByvZ1ZEFA==
+X-Received: by 2002:a17:906:6a27:b0:708:1282:cbe9 with SMTP id qw39-20020a1709066a2700b007081282cbe9mr8052825ejc.186.1654249634363;
+        Fri, 03 Jun 2022 02:47:14 -0700 (PDT)
+Received: from otso.. (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a15-20020a170906274f00b006f3ef214e42sm2661009ejd.168.2022.06.03.02.47.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jun 2022 02:47:13 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20220601233743.56317-1-virag.david003@gmail.com>
- <20220601233743.56317-6-virag.david003@gmail.com>
- <b3681990-e358-8e1d-93fe-b72c099902e3@linaro.org>
- <f40aca00a4418c889395d2dab65f85d24e8662c6.camel@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <f40aca00a4418c889395d2dab65f85d24e8662c6.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] arm64: dts: qcom: sdm845*: replace i2s reg with constant
+Date:   Fri,  3 Jun 2022 11:47:09 +0200
+Message-Id: <20220603094710.64591-1-luca.weiss@fairphone.com>
+X-Mailer: git-send-email 2.36.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 03/06/2022 00:18, David Virag wrote:
-> On Thu, 2022-06-02 at 14:01 +0200, Krzysztof Kozlowski wrote:
->> On 02/06/2022 01:37, David Virag wrote:
->>> Add the nodes relevant to provide clocks for Exynos7885 eMMC and to
->>> support eMMC. eMMC is the internal storage used in the Samsung
->>> Galaxy A8
->>> (2018) (jackpotlte), and all other known devices using the
->>> Exynos7885
->>> SoC.
->>>
->>> Signed-off-by: David Virag <virag.david003@gmail.com>
->>> ---
->>>  .../boot/dts/exynos/exynos7885-jackpotlte.dts | 20 ++++++++++++
->>>  arch/arm64/boot/dts/exynos/exynos7885.dtsi    | 32
->>> +++++++++++++++++++
->>>  2 files changed, 52 insertions(+)
->>>
->>> diff --git a/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
->>> b/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
->>> index 4cf9aa25f618..5db9a81ac7bb 100644
->>> --- a/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
->>> +++ b/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
->>> @@ -60,6 +60,26 @@ power-key {
->>>         };
->>>  };
->>>  
->>> +&mmc_0 {
->>> +       status = "okay";
->>> +       mmc-hs200-1_8v;
->>> +       mmc-hs400-1_8v;
->>> +       cap-mmc-highspeed;
->>> +       non-removable;
->>> +       mmc-hs400-enhanced-strobe;
->>> +       card-detect-delay = <200>;
->>> +       clock-frequency = <800000000>;
->>
->> Is this real property for MMC? Neither mmc nor DW MSHC bindings
->> mention it.
-> 
-> It is, but I don't remember trying without it. Seems like it is not
-> documented then. It is used in dw_mmc.c in the following places:
-> 
-> https://github.com/torvalds/linux/blob/master/drivers/mmc/host/dw_mmc.c#L3242-L3243
-> 
-> https://github.com/torvalds/linux/blob/master/drivers/mmc/host/dw_mmc.c#L3306-L3325
-> 
-> The Exynos850 device tree has the same property in it's mmc node. 
+Make it easier to understand what the reg in those nodes is by using the
+constants provided by qcom,q6dsp-lpass-ports.h.
 
-Indeed, it's fine then. I'll check the bindings and convert them to DT
-schema.
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ arch/arm64/boot/dts/qcom/qrb5165-rb5.dts             | 4 ++--
+ arch/arm64/boot/dts/qcom/sdm845-db845c.dts           | 2 +-
+ arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
+index 0e63f707b911..f627d6b7311b 100644
+--- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
++++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
+@@ -830,7 +830,7 @@ &qupv3_id_2 {
+ 
+ &q6afedai {
+ 	qi2s@16 {
+-		reg = <16>;
++		reg = <PRIMARY_MI2S_RX>;
+ 		qcom,sd-lines = <0 1 2 3>;
+ 	};
+ };
+@@ -838,7 +838,7 @@ qi2s@16 {
+ /* TERT I2S Uses 1 I2S SD Lines for audio on LT9611 HDMI Bridge */
+ &q6afedai {
+ 	qi2s@20 {
+-		reg = <20>;
++		reg = <TERTIARY_MI2S_RX>;
+ 		qcom,sd-lines = <0>;
+ 	};
+ };
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+index 194ebeb3259c..2fbb8b024646 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+@@ -609,7 +609,7 @@ resin {
+ /* QUAT I2S Uses 4 I2S SD Lines for audio on LT9611 HDMI Bridge */
+ &q6afedai {
+ 	qi2s@22 {
+-		reg = <22>;
++		reg = <QUATERNARY_MI2S_RX>;
+ 		qcom,sd-lines = <0 1 2 3>;
+ 	};
+ };
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+index d88dc07205f7..7dd103d1ef6f 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+@@ -339,7 +339,7 @@ resin {
+ /* QUAT I2S Uses 1 I2S SD Line for audio on TAS2559/60 amplifiers */
+ &q6afedai {
+ 	qi2s@22 {
+-		reg = <22>;
++		reg = <QUATERNARY_MI2S_RX>;
+ 		qcom,sd-lines = <0>;
+ 	};
+ };
+-- 
+2.36.1
 
-Best regards,
-Krzysztof
