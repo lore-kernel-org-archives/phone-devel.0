@@ -2,117 +2,90 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5DFACCA47E
-	for <phone-devel@archiver.kernel.org>; Fri,  3 Jun 2022 15:15:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CE26DCCA473
+	for <phone-devel@archiver.kernel.org>; Fri,  3 Jun 2022 18:28:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245405AbiFCPPA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 3 Jun 2022 11:15:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41172 "EHLO
+        id S1347028AbiFCS14 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 3 Jun 2022 14:27:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245403AbiFCPO4 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Jun 2022 11:14:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB16506C1;
-        Fri,  3 Jun 2022 08:14:55 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E0FE66186D;
-        Fri,  3 Jun 2022 15:14:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD19C385B8;
-        Fri,  3 Jun 2022 15:14:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654269294;
-        bh=kCDqKxgSBW1zW4hSfO+3ZljVtjIYIRBqdB6IPefPA2g=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GOfyERozHdsiH3+V20TajRS8VF+rK3pLspYPXYlV/wXnoOuBYCgvA5j6gRtfucZz5
-         5KNnZLXdh/CkU9CySG++EblXbebLNNLKOV8exqcXG1s6dMYhCEG9A3Ym6FJZKcBsMd
-         ElTzgdH7DMmopE0HAyhuGmyl3tHBlggJ0sZtmemeDT4vt0E/wfTSr1uX3Uq5P6a1Pi
-         qaygK9qyntxv2KPdHyxmTThxj+h/0sQQHfWoE1/Oqev1rDSgI3l2X3JBatFKiA9ZqZ
-         L5C6thelnCEVAdfrDUf6RbqMeByJEU5C6Ot9yLL2JekOf/GWf+7X++aM+YoXh1t07g
-         Hm2Dq9kp3Fnqg==
-Date:   Fri, 3 Jun 2022 16:23:51 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Song Qiang <songqiang1304521@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        with ESMTP id S1347083AbiFCS1q (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Jun 2022 14:27:46 -0400
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC51D5AA41;
+        Fri,  3 Jun 2022 11:10:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1654279610;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=W0zLWbkTHHDH0iI0Y3QB9pk4VW+9pPQV3k8LcemuFF4=;
+    b=pYJS6YCHpweybvsrVNZNXAsxkI5rzK4/zWclFd7weZ1Qnc/lPxo41Ty8ah4CMiEnOI
+    ZaPHFjKRNZ4oVB8CiYRc9XjC57ylnB2bYRrb6iKZsqu76UlB8bmEMFHEVs3+z34YHYl5
+    wvBtLcVMooMejLMjIGV1fW1TsinV6qGUatpYgYOaoYgvRD0rJTFI/btn0dV1AcpsCINp
+    nqhaBNya5zv3lbRF+0fAcEv5tqLowMkkC+y42Dze0EMuwnqZVT5staAMha6d8V3FxEdT
+    2AR6tBpKY5dZW5FbMgAj5aobTvtfhFCAQa48UcXu8NSx8U/HzhfAdky1u7F9FBrwwliO
+    3LiA==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u267FZF9PwpcNKLVrKw7/aY="
+X-RZG-CLASS-ID: mo00
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 47.45.0 AUTH)
+    with ESMTPSA id 9056edy53I6nwkU
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Fri, 3 Jun 2022 20:06:49 +0200 (CEST)
+Date:   Fri, 3 Jun 2022 20:06:39 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Alexander Martinz <amartinz@shiftphones.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v5 0/5] Add support for ToF sensor on Yoshino platform
-Message-ID: <20220603162351.69056bdf@jic23-huawei>
-In-Reply-To: <20220523175344.5845-1-markuss.broks@gmail.com>
-References: <20220523175344.5845-1-markuss.broks@gmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Caleb Connolly <caleb@connolly.tech>,
+        Dylan Van Assche <me@dylanvanassche.be>
+Subject: Re: [PATCH 2/2] ASoC: dt-bindings: nxp,tfa989x: Add tfa9890 support
+Message-ID: <YppNaL5r5EN3SUsU@gerhold.net>
+References: <20220602164504.261361-1-amartinz@shiftphones.com>
+ <20220602164504.261361-2-amartinz@shiftphones.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220602164504.261361-2-amartinz@shiftphones.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 23 May 2022 20:53:39 +0300
-Markuss Broks <markuss.broks@gmail.com> wrote:
-
-> This series adds support for the ToF proximity sensor installed on
-> Yoshino devices. As part of this series, support handling the reset
-> GPIO and VDD supply by the VL53L0X driver. Also stop hardcoding the
-> interrupt type, since on Yoshino devices it seems that edge triggering
-> doesn't work properly.
+On Thu, Jun 02, 2022 at 06:45:04PM +0200, Alexander Martinz wrote:
+> Document TFA9890 binding for tfa989x.
 > 
-> Tested on Sony Xperia XZ1 (poplar).
-> 
-> Cc: Konrad Dybcio <konrad.dybcio@somainline.org>
-> Cc: Marijn Suijten <marijn.suijten@somainline.org>
-> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-Patches 1-4 applied to the togreg branch of iio.git.
+> Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
 
-Note I plan to rebase that tree after the char-misc (and hence IIO tree)
-has been merged with mainline, so for now it is only pushed out as testing
-so that 0-day can see if it can find anything we missed.
+The dt-bindings patch should usually come first in the patch series.
+Anyway, no need to resend just for that IMO:
 
-Thanks,
+Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
 
-Jonathan
-
+> ---
+>  Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> v2:
-> - Fix a nasty issue: turns out grouping the pinctrl makes it not apply,
-> which was the main cause of edge interrupts not working correctly and
-> having to use level interrupts, which caused a large amount of false
-> detections.
-> - handle the irq type more gracefully: if it's not provided, default
-> to falling edge, but if it's provided, then use the provided one.
-> v3:
-> - add irq.h header (forgot to commit)
-> - reword commit message (already initialized -> pre-initialized)
-> v4:
-> - reorder powering on and power off action (Jonathan)
-> - sort pinctrls by GPIO number (Konrad)
-> v5:
-> - "This patch adds..." -> "Add ..." (Krzysztof)
+> diff --git a/Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml b/Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml
+> index b9b1dba40856..7f2e68ff6d34 100644
+> --- a/Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml
+> +++ b/Documentation/devicetree/bindings/sound/nxp,tfa989x.yaml
+> @@ -15,6 +15,7 @@ allOf:
+>  properties:
+>    compatible:
+>      enum:
+> +      - nxp,tfa9890
+>        - nxp,tfa9895
+>        - nxp,tfa9897
+>  
+> -- 
+> 2.36.1
 > 
-> Markuss Broks (5):
->   dt-bindings: proximity: vl53l0x: Document optional supply and GPIO
->     properties
->   proximity: vl53l0x: Get interrupt type from DT
->   proximity: vl53l0x: Handle the VDD regulator
->   proximity: vl53l0x: Handle the reset GPIO
->   arm64: dts: qcom: msm8998-xperia: Introduce ToF sensor support
-> 
->  .../bindings/iio/proximity/st,vl53l0x.yaml    |  5 ++
->  .../dts/qcom/msm8998-sony-xperia-yoshino.dtsi | 34 +++++++++++++
->  drivers/iio/proximity/vl53l0x-i2c.c           | 50 ++++++++++++++++++-
->  3 files changed, 88 insertions(+), 1 deletion(-)
-> 
-
