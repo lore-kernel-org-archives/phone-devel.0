@@ -2,132 +2,92 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10DBFC433EF
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Jun 2022 07:44:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D9C6C433EF
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Jun 2022 10:46:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237841AbiFGHon (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 7 Jun 2022 03:44:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42940 "EHLO
+        id S241536AbiFGKqO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 7 Jun 2022 06:46:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235160AbiFGHon (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Jun 2022 03:44:43 -0400
-Received: from mail.shift-gmbh.com (mail.shift-gmbh.com [IPv6:2a01:4f8:a0:5496::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D816A2ED49;
-        Tue,  7 Jun 2022 00:44:39 -0700 (PDT)
-From:   Alexander Martinz <amartinz@shiftphones.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shiftphones.com;
-        s=2018; t=1654587877;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Asv1fLCYiPiifmvDhcl0BxRwcR2Y3nmkKTyFuAD1iew=;
-        b=YHMAwMYTWczcAj2vcskeAzuUVY+UHKweEBxCPj+RcGMEkxbufH/8VKVpi/dknM/AJEC1iL
-        ogmsA73Oya9Fbyp8XaZ4gZJSWHKAlt+gbp7fcW0sMo8yYdKJJ4mBtK5emUjkbk7epOPz2W
-        HHVRLErLaCVOjHZhaEJYCiIBqJVR3I0nLrXlyDhyAEEuGw9dcBh82zBun/wLPN2wqzyoEl
-        vFcFZTom22STW2i+LoBy5aRQWburriZDzq+JF/KlxtGlPQjhFg28GtvRp3i5BasoLwj7L/
-        52kN157aFcMiqQpb0G78DqKaRomxQ4gFjZXwSk6QKzjbZJwk59iXr5foaKs6ng==
-To:     ~postmarketos/upstreaming@lists.sr.ht
-Cc:     phone-devel@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Caleb Connolly <caleb@connolly.tech>,
-        Dylan Van Assche <me@dylanvanassche.be>,
-        Alexander Martinz <amartinz@shiftphones.com>
-Subject: [PATCH v2 2/2] ASoC: codecs: tfa989x: Add support for tfa9890
-Date:   Tue,  7 Jun 2022 09:43:31 +0200
-Message-Id: <20220607074329.13129-2-amartinz@shiftphones.com>
-In-Reply-To: <20220607074329.13129-1-amartinz@shiftphones.com>
-References: <20220607074329.13129-1-amartinz@shiftphones.com>
+        with ESMTP id S241543AbiFGKqF (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Jun 2022 06:46:05 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37367ED3F2;
+        Tue,  7 Jun 2022 03:45:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 93A76B81EF8;
+        Tue,  7 Jun 2022 10:45:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A813C385A5;
+        Tue,  7 Jun 2022 10:45:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654598750;
+        bh=L5UprDm+eFlKd0eGBmXLIaDF8ATDo8XW9lH/TYTLBUc=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=U7ZorcJLYtG28or0KrIhV9ZevaqjS5ymiucoZSkHfYPcE3YjOmj0B/QVxKNkj3da8
+         f+kCqKjDbZSmZtpqK8bYzAcqF+3cPgA67OdHbz08NByI37/CipYjTroKGhS37O26Mz
+         hr5E7cTIpc7LLBrmkE+6fm6SD255/oI2Avclic0U7T/a+B8BEr0qWrDMkX32lisIme
+         1ZMc1qfOgErzEpLbmr90uMNlcVHXuVJqkNqSdW2usEdvoLF00xRJRkbCz58RngY0i+
+         nB4JLb0O1eTfMhmF5sHNDXfyANzPSJcsnd+aLDSFx4RMOrcnC/YIIGw4tUxzPeVLmJ
+         aPG5K1EM/a9Yg==
+From:   Mark Brown <broonie@kernel.org>
+To:     ~postmarketos/upstreaming@lists.sr.ht, amartinz@shiftphones.com
+Cc:     krzysztof.kozlowski+dt@linaro.org, stephan@gerhold.net,
+        Liam Girdwood <lgirdwood@gmail.com>, caleb@connolly.tech,
+        me@dylanvanassche.be, Takashi Iwai <tiwai@suse.com>,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org
+In-Reply-To: <20220602164504.261361-1-amartinz@shiftphones.com>
+References: <20220602164504.261361-1-amartinz@shiftphones.com>
+Subject: Re: [PATCH 1/2] ASoC: codecs: tfa989x: Add support for tfa9890
+Message-Id: <165459874728.301808.2918260334640693383.b4-ty@kernel.org>
+Date:   Tue, 07 Jun 2022 11:45:47 +0100
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-        auth=pass smtp.auth=amartinz@shiftphones.com smtp.mailfrom=amartinz@shiftphones.com
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The initialization sequence is taken from the version provided
-by the supplier [1].
+On Thu, 2 Jun 2022 18:45:03 +0200, Alexander Martinz wrote:
+> The initialization sequence is taken from the version provided
+> by the supplier [1].
+> 
+> This allows speakers using the TFA9890 amplifier to work, which are
+> used by various mobile phones such as the SHIFT6mq.
+> 
+> [1]: https://source.codeaurora.org/external/mas/tfa98xx/tree/src/tfa_init.c?id=d2cd12931fbc48df988b62931fb9960d4e9dc05d#n1827
+> 
+> [...]
 
-This allows speakers using the TFA9890 amplifier to work, which are
-used by various mobile phones such as the SHIFT6mq.
+Applied to
 
-[1]: https://source.codeaurora.org/external/mas/tfa98xx/tree/src/tfa_init.c?id=d2cd12931fbc48df988b62931fb9960d4e9dc05d#n1827
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-v2: Fix comments regarding register access based on review feedback.
+Thanks!
 
-Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
-Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
----
- sound/soc/codecs/tfa989x.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+[1/2] ASoC: codecs: tfa989x: Add support for tfa9890
+      commit: ef6c320942a2f057204702d769d507186fd7f0b7
+[2/2] ASoC: dt-bindings: nxp,tfa989x: Add tfa9890 support
+      commit: d0da7c8668dc19df157d927a67721ca00e29ff2b
 
-diff --git a/sound/soc/codecs/tfa989x.c b/sound/soc/codecs/tfa989x.c
-index dc86852752c5..e6cb62165524 100644
---- a/sound/soc/codecs/tfa989x.c
-+++ b/sound/soc/codecs/tfa989x.c
-@@ -40,12 +40,14 @@
- #define TFA989X_I2S_SEL_REG		0x0a
- #define TFA989X_I2S_SEL_REG_SPKR_MSK	GENMASK(10, 9)	/* speaker impedance */
- #define TFA989X_I2S_SEL_REG_DCFG_MSK	GENMASK(14, 11)	/* DCDC compensation */
-+#define TFA989X_HIDE_UNHIDE_KEY	0x40
- #define TFA989X_PWM_CONTROL		0x41
- #define TFA989X_CURRENTSENSE1		0x46
- #define TFA989X_CURRENTSENSE2		0x47
- #define TFA989X_CURRENTSENSE3		0x48
- #define TFA989X_CURRENTSENSE4		0x49
- 
-+#define TFA9890_REVISION		0x80
- #define TFA9895_REVISION		0x12
- #define TFA9897_REVISION		0x97
- 
-@@ -188,6 +190,33 @@ static struct snd_soc_dai_driver tfa989x_dai = {
- 	.ops = &tfa989x_dai_ops,
- };
- 
-+static int tfa9890_init(struct regmap *regmap)
-+{
-+	int ret;
-+
-+	/* temporarily allow access to hidden registers */
-+	ret = regmap_write(regmap, TFA989X_HIDE_UNHIDE_KEY, 0x5a6b);
-+	if (ret)
-+		return ret;
-+
-+	/* update PLL registers */
-+	ret = regmap_set_bits(regmap, 0x59, 0x3);
-+	if (ret)
-+		return ret;
-+
-+	/* hide registers again */
-+	ret = regmap_write(regmap, TFA989X_HIDE_UNHIDE_KEY, 0x0000);
-+	if (ret)
-+		return ret;
-+
-+	return regmap_write(regmap, TFA989X_CURRENTSENSE2, 0x7BE1);
-+}
-+
-+static const struct tfa989x_rev tfa9890_rev = {
-+	.rev	= TFA9890_REVISION,
-+	.init	= tfa9890_init,
-+};
-+
- static const struct reg_sequence tfa9895_reg_init[] = {
- 	/* some other registers must be set for optimal amplifier behaviour */
- 	{ TFA989X_BAT_PROT, 0x13ab },
-@@ -376,6 +405,7 @@ static int tfa989x_i2c_probe(struct i2c_client *i2c)
- }
- 
- static const struct of_device_id tfa989x_of_match[] = {
-+	{ .compatible = "nxp,tfa9890", .data = &tfa9890_rev },
- 	{ .compatible = "nxp,tfa9895", .data = &tfa9895_rev },
- 	{ .compatible = "nxp,tfa9897", .data = &tfa9897_rev },
- 	{ }
--- 
-2.36.1
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
