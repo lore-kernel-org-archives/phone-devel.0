@@ -2,59 +2,59 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EF81C433EF
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Jun 2022 16:11:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ACAF1C43334
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Jun 2022 16:11:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344859AbiFGQLI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 7 Jun 2022 12:11:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50374 "EHLO
+        id S238441AbiFGQLr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 7 Jun 2022 12:11:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344862AbiFGQLH (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Jun 2022 12:11:07 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68C7E100500;
-        Tue,  7 Jun 2022 09:11:05 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id z9so2804146wmf.3;
-        Tue, 07 Jun 2022 09:11:05 -0700 (PDT)
+        with ESMTP id S236140AbiFGQLp (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Jun 2022 12:11:45 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59638100505;
+        Tue,  7 Jun 2022 09:11:44 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id k16so24849031wrg.7;
+        Tue, 07 Jun 2022 09:11:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=HudpD98f6GFJ5B/ZS9VSp+I100XFU0qZ9neTB4R0OMA=;
-        b=qyER1BKCu5XFFcoaFm1MFRkKxiu9zEa3kZsdfZv1/6mmYCTzyMybulbXhrwXGq7kzt
-         PCUoM5v2soN6LfMJ75DkcY+kh3Kz4W8/Ji46gkh5PQWbjsr4Dz7/c9ORGmlu8IvltBAO
-         5yddMZ8lDQZa/5jKz2toQFdST6PTnojwKW5HocjKg7Ys9X2r9PKlBUhukc39BAvAkRe/
-         84xISuv7mlDp1fuuxrqnVq64ZvDEvmWYEWhEbpbSJd7+KOgnT0OnkqIomRRo+2vK7dvr
-         XuMFGfcZAR6uHZDPLCMOIuxCg4IFJEvPpY/TAiIiCUEd+uY4vnyN2qq6HwAomz0s4FdE
-         6xTA==
+        bh=72LHbf/LgEqbSPNdKUjxI3vrBZUpmwxyEAENCEDZXug=;
+        b=fz6MJQSCJxnshfaCbypFrzEBaRNGPmz2wIe77bWaIsxhhkqcpWd6qJ8Fnzj25qRzUJ
+         diywtOm+DQzGOSRDYmXvupACqyt4tLc7+7Cdg43deVam+bG3Bc4AAKUJwsvKJB+oHen+
+         9rIGCdN6Xd/pBxL/7/eR+FOxQWzSWatvmI7wrFSvdvm7pb3sMKK4T1+lbSSMR3wVF8w7
+         793uyLcgopFsZDUr3KqxhxjHT4aJ3/HGf/VDg2bjzmDJJRwZhisp1njghOSteP+8fAXb
+         CFLmodILbivXdUa+0s4TSEkOBczfYgvw8M9Hx/7B5PPZfq+l0NXI5vm+/kxQPMnl1r1r
+         BDtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=HudpD98f6GFJ5B/ZS9VSp+I100XFU0qZ9neTB4R0OMA=;
-        b=ewFPrb82Si0hnD1OQ8/xCeIoQtuPCXEYDbYQ35QPseziQSmKHItR8FRUxspOHcZhcS
-         ZiBQ94bl4fGRhsuMyOUu01nBZ/RI5/dYhmNtl6nOWvnmx75Ulb2NqMyc/blETGdrqQqf
-         C8vSXpbj47/5lWt4NctLEweM7dR3x8aktXvM2Qa1oMrhDtpgI0VOHcEge5LY0qE2phdi
-         /NEZzNGcSBblyGemfdVO1moeIRPOu6Z7k3WTn90l8e21Yrt24EJWZcR1IDGxWP/EhzOR
-         YsNfLslXxDK1eDkfiyezzLs+HXuM1jxaDpWixEla5ggi154GiShKiGr24V4TfZ8zWJj4
-         j+qw==
-X-Gm-Message-State: AOAM532U183NZ+D3EX7uEjdW311i6irL8/oiP5qB9Bchtpttrh65sSPy
-        IT+ulz7py3iYcy9S8jNP/fY=
-X-Google-Smtp-Source: ABdhPJwyDmBTK3dce68p6NIVVz0SZn6aoAX+f6bCgJzS860gTJqa6XBrNDKM7ZVk+1RuQ6nEhVOqIw==
-X-Received: by 2002:a05:600c:198e:b0:39c:2b73:60ab with SMTP id t14-20020a05600c198e00b0039c2b7360abmr28420635wmq.14.1654618263856;
-        Tue, 07 Jun 2022 09:11:03 -0700 (PDT)
+        bh=72LHbf/LgEqbSPNdKUjxI3vrBZUpmwxyEAENCEDZXug=;
+        b=U3CpY7cUA4wbVlC5pUpEAa6TVHzc4WwllPmoHnGJwrchd1SSQLtUDaU4wh3jqNWKyW
+         sBRR5ZYQ3WDkG6632RQnKRWoDPAFksMaUdY95wt9tXIOPpklOC4A5FYgmxPf1dfg8eCV
+         3X4hqcUgNxNs8gYoD6RRrBd/P/0mEL/g1jTzpo+Z7hsML3qRjFgdZlY/E/ta8mBAtfrA
+         yAoWa1BYh/ZFJeYLN3uduOHVcV+mfuqOlrF9Mn9PJdqOZNldfJC87LoGpIutiAcc17jG
+         4Q4A94/ty9PZ6oB5DJkedt22uJEogYrVPQthA6qBl6bHqGRkt23nKZbKPKsfS134USQW
+         Zy+Q==
+X-Gm-Message-State: AOAM533nMjVSiGgehkvrnZLc3G0fHh9/aU1r9IzkWNnpvnZAmgluzP9j
+        SlsmpNTo9gikacscLOhWKFY=
+X-Google-Smtp-Source: ABdhPJzW0wqbYwHmqiKjYwIQnSm55O3Goax6MfpWVzo+DocJK0FyLtcBH8gwQCG7YjfMD9Uccm1zpw==
+X-Received: by 2002:adf:b644:0:b0:210:1fde:a513 with SMTP id i4-20020adfb644000000b002101fdea513mr30180410wre.604.1654618302659;
+        Tue, 07 Jun 2022 09:11:42 -0700 (PDT)
 Received: from [192.168.0.36] ([37.223.143.134])
-        by smtp.gmail.com with ESMTPSA id t22-20020a05600c41d600b00397550b387bsm24690689wmh.23.2022.06.07.09.11.01
+        by smtp.gmail.com with ESMTPSA id p5-20020adfce05000000b002102739add8sm22572844wrn.54.2022.06.07.09.11.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jun 2022 09:11:02 -0700 (PDT)
-Message-ID: <afd9ab8e-5bad-54ee-3f44-5e0cfdb22e75@gmail.com>
-Date:   Tue, 7 Jun 2022 18:11:01 +0200
+        Tue, 07 Jun 2022 09:11:41 -0700 (PDT)
+Message-ID: <679e0527-49ce-bdb7-ac0b-7f13bed0cb9d@gmail.com>
+Date:   Tue, 7 Jun 2022 18:11:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.1
-Subject: Re: [PATCH v3 1/2] dt-bindings: timer: mediatek: Add CPUX System
- Timer and MT6795 compatible
+Subject: Re: [PATCH v3 2/2] clocksource/drivers/timer-mediatek: Implement
+ CPUXGPT timers
 Content-Language: en-US
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
@@ -67,9 +67,9 @@ Cc:     tglx@linutronix.de, robh+dt@kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         paul.bouchara@somainline.org
 References: <20220518112435.241116-1-angelogioacchino.delregno@collabora.com>
- <20220518112435.241116-2-angelogioacchino.delregno@collabora.com>
+ <20220518112435.241116-3-angelogioacchino.delregno@collabora.com>
 From:   Matthias Brugger <matthias.bgg@gmail.com>
-In-Reply-To: <20220518112435.241116-2-angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20220518112435.241116-3-angelogioacchino.delregno@collabora.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -79,39 +79,202 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 
 On 18/05/2022 13:24, AngeloGioacchino Del Regno wrote:
-> Document the "CPUXGPT" CPU General Purpose Timer, used as ARM/ARM64
-> System Timer on MediaTek platforms and add the MT6795 compatible for it.
+> Some MediaTek platforms with a buggy TrustZone ATF firmware will not
+> initialize the AArch64 System Timer correctly: in these cases, the
+> System Timer address is correctly programmed, as well as the CNTFRQ_EL0
+> register (reading 13MHz, as it should be), but the assigned hardware
+> timers are never started before (or after) booting Linux.
+> 
+> In this condition, any call to function get_cycles() will be returning
+> zero, as CNTVCT_EL0 will always read zero.
+> 
+> One common critical symptom of that is trying to use the udelay()
+> function (calling __delay()), which executes the following loop:
+> 
+>              start = get_cycles();
+>              while ((get_cycles() - start) < cycles)
+>                      cpu_relax();
+> 
+> which, when CNTVCT_EL0 always reads zero, translates to:
+> 
+>              while((0 - 0) < 0)  ==> while(0 < 0)
+> 
+> ... generating an infinite loop, even though zero is never less
+> than zero, but always equal to it (this has to be researched,
+> but it's out of the scope of this commit).
+> 
+> To fix this issue on the affected MediaTek platforms, the solution
+> is to simply start the timers that are designed to be System Timer(s).
+> These timers, downstream, are called "CPUXGPT" and there is one
+> timer per CPU core; luckily, it is not necessary to set a start bit
+> on each CPUX General Purpose Timer, but it's conveniently enough to:
+>   - Set the clock divider (input = 26MHz, divider = 2, output = 13MHz);
+>   - Set the ENABLE bit on a global register (starts all CPUX timers).
+> 
+> The only small hurdle with this setup is that it's all done through
+> the MCUSYS wrapper, where it is needed, for each read or write, to
+> select a register address (by writing it to an index register) and
+> then to perform any R/W on a "CON" register.
+> 
+> For example, writing "0x1" to the CPUXGPT register offset 0x4:
+> - Write 0x4 to mcusys INDEX register
+> - Write 0x1 to mcusys CON register
+> 
+> Reading from CPUXGPT register offset 0x4:
+> - Write 0x4 to mcusys INDEX register
+> - Read mcusys CON register.
+> 
+> Finally, starting this timer makes platforms affected by this issue
+> to work correctly.
 > 
 > Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->   .../devicetree/bindings/timer/mediatek,mtk-timer.txt          | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt b/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
-> index 6f1f9dba6e88..49706cbef45d 100644
-> --- a/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
-> +++ b/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
-> @@ -2,6 +2,7 @@ MediaTek Timers
->   ---------------
->   
->   MediaTek SoCs have two different timers on different platforms,
-
-Nit: There are now three different timers so maybe:
-"MediaTek SoCs have different timers on different platforms,"
 
 Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
 
-> +- CPUX (ARM/ARM64 System Timer)
->   - GPT (General Purpose Timer)
->   - SYST (System Timer)
+> ---
+>   drivers/clocksource/timer-mediatek.c | 114 +++++++++++++++++++++++++++
+>   1 file changed, 114 insertions(+)
+> 
+> diff --git a/drivers/clocksource/timer-mediatek.c b/drivers/clocksource/timer-mediatek.c
+> index 7bcb4a3f26fb..d5b29fd03ca2 100644
+> --- a/drivers/clocksource/timer-mediatek.c
+> +++ b/drivers/clocksource/timer-mediatek.c
+> @@ -22,6 +22,19 @@
 >   
-> @@ -29,6 +30,9 @@ Required properties:
->   	* "mediatek,mt7629-timer" for MT7629 compatible timers (SYST)
->   	* "mediatek,mt6765-timer" for MT6765 and all above compatible timers (SYST)
+>   #define TIMER_SYNC_TICKS        (3)
 >   
-> +	For those SoCs that use CPUX
-> +	* "mediatek,mt6795-systimer" for MT6795 compatible timers (CPUX)
+> +/* cpux mcusys wrapper */
+> +#define CPUX_CON_REG		0x0
+> +#define CPUX_IDX_REG		0x4
 > +
->   - reg: Should contain location and length for timer register.
->   - clocks: Should contain system clock.
+> +/* cpux */
+> +#define CPUX_IDX_GLOBAL_CTRL	0x0
+> + #define CPUX_ENABLE		BIT(0)
+> + #define CPUX_CLK_DIV_MASK	GENMASK(10, 8)
+> + #define CPUX_CLK_DIV1		BIT(8)
+> + #define CPUX_CLK_DIV2		BIT(9)
+> + #define CPUX_CLK_DIV4		BIT(10)
+> +#define CPUX_IDX_GLOBAL_IRQ	0x30
+> +
+>   /* gpt */
+>   #define GPT_IRQ_EN_REG          0x00
+>   #define GPT_IRQ_ENABLE(val)     BIT((val) - 1)
+> @@ -72,6 +85,52 @@
 >   
+>   static void __iomem *gpt_sched_reg __read_mostly;
+>   
+> +static u32 mtk_cpux_readl(u32 reg_idx, struct timer_of *to)
+> +{
+> +	writel(reg_idx, timer_of_base(to) + CPUX_IDX_REG);
+> +	return readl(timer_of_base(to) + CPUX_CON_REG);
+> +}
+> +
+> +static void mtk_cpux_writel(u32 val, u32 reg_idx, struct timer_of *to)
+> +{
+> +	writel(reg_idx, timer_of_base(to) + CPUX_IDX_REG);
+> +	writel(val, timer_of_base(to) + CPUX_CON_REG);
+> +}
+> +
+> +static void mtk_cpux_set_irq(struct timer_of *to, bool enable)
+> +{
+> +	const unsigned long *irq_mask = cpumask_bits(cpu_possible_mask);
+> +	u32 val;
+> +
+> +	val = mtk_cpux_readl(CPUX_IDX_GLOBAL_IRQ, to);
+> +
+> +	if (enable)
+> +		val |= *irq_mask;
+> +	else
+> +		val &= ~(*irq_mask);
+> +
+> +	mtk_cpux_writel(val, CPUX_IDX_GLOBAL_IRQ, to);
+> +}
+> +
+> +static int mtk_cpux_clkevt_shutdown(struct clock_event_device *clkevt)
+> +{
+> +	/* Clear any irq */
+> +	mtk_cpux_set_irq(to_timer_of(clkevt), false);
+> +
+> +	/*
+> +	 * Disabling CPUXGPT timer will crash the platform, especially
+> +	 * if Trusted Firmware is using it (usually, for sleep states),
+> +	 * so we only mask the IRQ and call it a day.
+> +	 */
+> +	return 0;
+> +}
+> +
+> +static int mtk_cpux_clkevt_resume(struct clock_event_device *clkevt)
+> +{
+> +	mtk_cpux_set_irq(to_timer_of(clkevt), true);
+> +	return 0;
+> +}
+> +
+>   static void mtk_syst_ack_irq(struct timer_of *to)
+>   {
+>   	/* Clear and disable interrupt */
+> @@ -281,6 +340,60 @@ static struct timer_of to = {
+>   	},
+>   };
+>   
+> +static int __init mtk_cpux_init(struct device_node *node)
+> +{
+> +	static struct timer_of to_cpux;
+> +	u32 freq, val;
+> +	int ret;
+> +
+> +	/*
+> +	 * There are per-cpu interrupts for the CPUX General Purpose Timer
+> +	 * but since this timer feeds the AArch64 System Timer we can rely
+> +	 * on the CPU timer PPIs as well, so we don't declare TIMER_OF_IRQ.
+> +	 */
+> +	to_cpux.flags = TIMER_OF_BASE | TIMER_OF_CLOCK;
+> +	to_cpux.clkevt.name = "mtk-cpuxgpt";
+> +	to_cpux.clkevt.rating = 10;
+> +	to_cpux.clkevt.cpumask = cpu_possible_mask;
+> +	to_cpux.clkevt.set_state_shutdown = mtk_cpux_clkevt_shutdown;
+> +	to_cpux.clkevt.tick_resume = mtk_cpux_clkevt_resume;
+> +
+> +	/* If this fails, bad things are about to happen... */
+> +	ret = timer_of_init(node, &to_cpux);
+> +	if (ret) {
+> +		WARN(1, "Cannot start CPUX timers.\n");
+> +		return ret;
+> +	}
+> +
+> +	/*
+> +	 * Check if we're given a clock with the right frequency for this
+> +	 * timer, otherwise warn but keep going with the setup anyway, as
+> +	 * that makes it possible to still boot the kernel, even though
+> +	 * it may not work correctly (random lockups, etc).
+> +	 * The reason behind this is that having an early UART may not be
+> +	 * possible for everyone and this gives a chance to retrieve kmsg
+> +	 * for eventual debugging even on consumer devices.
+> +	 */
+> +	freq = timer_of_rate(&to_cpux);
+> +	if (freq > 13000000)
+> +		WARN(1, "Requested unsupported timer frequency %u\n", freq);
+> +
+> +	/* Clock input is 26MHz, set DIV2 to achieve 13MHz clock */
+> +	val = mtk_cpux_readl(CPUX_IDX_GLOBAL_CTRL, &to_cpux);
+> +	val &= ~CPUX_CLK_DIV_MASK;
+> +	val |= CPUX_CLK_DIV2;
+> +	mtk_cpux_writel(val, CPUX_IDX_GLOBAL_CTRL, &to_cpux);
+> +
+> +	/* Enable all CPUXGPT timers */
+> +	val = mtk_cpux_readl(CPUX_IDX_GLOBAL_CTRL, &to_cpux);
+> +	mtk_cpux_writel(val | CPUX_ENABLE, CPUX_IDX_GLOBAL_CTRL, &to_cpux);
+> +
+> +	clockevents_config_and_register(&to_cpux.clkevt, timer_of_rate(&to_cpux),
+> +					TIMER_SYNC_TICKS, 0xffffffff);
+> +
+> +	return 0;
+> +}
+> +
+>   static int __init mtk_syst_init(struct device_node *node)
+>   {
+>   	int ret;
+> @@ -339,3 +452,4 @@ static int __init mtk_gpt_init(struct device_node *node)
+>   }
+>   TIMER_OF_DECLARE(mtk_mt6577, "mediatek,mt6577-timer", mtk_gpt_init);
+>   TIMER_OF_DECLARE(mtk_mt6765, "mediatek,mt6765-timer", mtk_syst_init);
+> +TIMER_OF_DECLARE(mtk_mt6795, "mediatek,mt6795-systimer", mtk_cpux_init);
