@@ -2,126 +2,95 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50045C43334
-	for <phone-devel@archiver.kernel.org>; Wed,  8 Jun 2022 17:06:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27FE1C43334
+	for <phone-devel@archiver.kernel.org>; Wed,  8 Jun 2022 17:53:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230356AbiFHRGs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 8 Jun 2022 13:06:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60066 "EHLO
+        id S232964AbiFHRxE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 8 Jun 2022 13:53:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237546AbiFHRFI (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Jun 2022 13:05:08 -0400
-Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B40E3C618C;
-        Wed,  8 Jun 2022 09:53:54 -0700 (PDT)
-Date:   Wed, 08 Jun 2022 16:53:49 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1654707232; x=1654966432;
-        bh=NTQKID+P6bfYd2k0VkyU/2Td+qJJ4uMnG1+NHLimZJM=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
-         Feedback-ID:Message-ID;
-        b=XWVVjhVogiP0j+qooPSRX7WA631cydiXaNvkxI8inrldH5Ot5LgK+E45NQinzaZBA
-         Wu4ULipxn/7hvQ75wVFJOKhzu/mxoAvNhJC1a+yRNdgq+OSs7hYCHVLOpLV2ndlS7x
-         Z5NfugD+J69aaBg0ZluGb7u82YH3UKLI9dSq5QU4=
-To:     Dylan Van Assche <me@dylanvanassche.be>,
+        with ESMTP id S232738AbiFHRxD (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Jun 2022 13:53:03 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3311D65CB
+        for <phone-devel@vger.kernel.org>; Wed,  8 Jun 2022 10:53:02 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-31336535373so66406977b3.2
+        for <phone-devel@vger.kernel.org>; Wed, 08 Jun 2022 10:53:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=auWYjGrmO12LzarWgU8/f/He/qw8x0OfWAJAXSy8JA4=;
+        b=ScaOGpRUTXvnCQlaUrqa38bGJWp6nx5WeYWo3sJhv9wR70OzuWBoJqnVw8uPBX+mQE
+         IOn50VGwJcfsKLLTvE4jmR2ASgUPbmm7sL40828LtRfaHsF/DdThZcGrwzH3hr9j9vb3
+         TD3SKF9DHaiJFIZDMdwB0heHW4RWLZfFFfBO71SJGQA0ZA2F0e7U39Cm3KGk5sTafI+0
+         vncXdN7eelTAPPl1PPZR6otF9GZO7/sW84Q8yo05NgvFIX4JUK2l1VldaNhND6Kvw3ck
+         8QihL/x7Xscyb2F+V8QKI/fhPijESsm8BQat2LTeNlF/2sOptnQrwJyszbte9VPetVGh
+         lZew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=auWYjGrmO12LzarWgU8/f/He/qw8x0OfWAJAXSy8JA4=;
+        b=tpUl1eybcMTzRQrx22gBYxK2dwya5p6tkAY0iNk4VQN5MabpTQ+kDcRPh7rbjkU8pA
+         G4TIWAM29vL9LqPTfycA57FQr5/EjmOh7TXOU7/BCs+KSN4WgQWlaPOaP4Usir9c+Zkq
+         h7BOu9BWDARabiaxPlaYiN/aNjgydbb3qvO/JCUmCmBXJi64VGe5XNlMxWBBqq6zeX1L
+         8lBk/UFdHRwVgtn6UanJrLdJCH5Q4N6RCw2Z0QcHmuc86pMSLxo2o4Pl4eQ+EWffpyxa
+         k/vFKYKU1cvdLCYoAuYKkrtCVZ38k5Xe0tEp3O/UshDg75/IH5qO8C5RbPztwKe4f0nE
+         n4/A==
+X-Gm-Message-State: AOAM5326YW7tyRrNiiXPoDEnDXLglwfGIv/d9WlM7p2nGrMwnp8m2PJy
+        YHTaV42pZ/2G3JQbVTROYg71PJ+YacLSTB+ljn+jgw==
+X-Google-Smtp-Source: ABdhPJxMIOaoKBRXUno4tnLibt0f7B15Qao1xtz+Mhz7w4xpjucvfVG0wz6VQHFD4YznuOECgMzAPjK+B35JLGEpuAE=
+X-Received: by 2002:a81:b45:0:b0:30c:1c31:604b with SMTP id
+ 66-20020a810b45000000b0030c1c31604bmr40100617ywl.114.1654710781368; Wed, 08
+ Jun 2022 10:53:01 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220401001810.81507-1-jo@jsfamily.in> <BY5PR02MB700935F5817128CB7C3991CDD9E09@BY5PR02MB7009.namprd02.prod.outlook.com>
+ <BY5PR02MB70099A0E4C060E52284DCE46D9A59@BY5PR02MB7009.namprd02.prod.outlook.com>
+ <CAO_48GH5V2-Z0cqGJoF68hzZjqhY6_aGxReSk+ByC_zrLWusYQ@mail.gmail.com> <BY5PR02MB7009AA50A0F7D570877DA646D9A49@BY5PR02MB7009.namprd02.prod.outlook.com>
+In-Reply-To: <BY5PR02MB7009AA50A0F7D570877DA646D9A49@BY5PR02MB7009.namprd02.prod.outlook.com>
+From:   Sumit Semwal <sumit.semwal@linaro.org>
+Date:   Wed, 8 Jun 2022 23:22:49 +0530
+Message-ID: <CAO_48GEvQhMOst0KhM9CU9y1cv3q+4hbXM9MentRn7QPTs_mQA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] drm/panel: nt36672a: add backlight support
+To:     Joel Selvaraj <jo@jsfamily.in>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: Re: [PATCH] arm64: dts: qcom/sdm845-shift-axolotl: Enable pmi9889 LPG LED
-Message-ID: <19c35ce5-d98c-b5b2-893b-d89425693add@connolly.tech>
-In-Reply-To: <20220512054439.13971-1-me@dylanvanassche.be>
-References: <20220512054439.13971-1-me@dylanvanassche.be>
-Feedback-ID: 10753939:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Amit Pundir <amit.pundir@linaro.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Joel,
 
+On Wed, 8 Jun 2022 at 22:10, Joel Selvaraj <jo@jsfamily.in> wrote:
+>
+> Hi Sumit,
+>
+> On 08/06/22 22:00, Sumit Semwal wrote:
+> > This is entirely my fault - It somehow missed my radar, and I didn't
+> > queue it up. I will push it via drm-misc tree tonight. Apologies
+> > again!
+>
+> No problem. Thanks for the update! So it will land on upcoming 5.19-rcs
+> or 5.20-rc?
+Not for 5.19-rcs for sure, but I think it should make it for 5.20-rcs?
+>
+> > Best,
+> > Sumit.
+>
+> Best Regards,
+> Joel Selvaraj
 
-On 12/05/2022 06:44, Dylan Van Assche wrote:
-> Enables the RGB notification LED on the SHIFT 6mq (sdm845-shift-axolotl)
-> with the Qualcomm Light Pulse Generator bindings by Bjorn Andersson [1].
-> Patches are merged in for-next branch of linux-leds.
-> Tested these changes on the SHIFT 6mq.
->
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/pavel/linux-leds.git/=
-commit/?h=3Dfor-next&id=3Da8e53db46f19f67be6a26488aafb7d10c78e33bd
->
-> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
-Tested-by: Caleb Connolly <caleb@connolly.tech>
-Reviewed-by: Caleb Connolly <caleb@connolly.tech>
-> ---
->   .../boot/dts/qcom/sdm845-shift-axolotl.dts    | 29 +++++++++++++++++++
->   1 file changed, 29 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm=
-64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> index 847f6217a77b..af412ac2c9d0 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> @@ -2,11 +2,13 @@
->   /*
->    * Copyright (c) 2022, Alexander Martinz <amartinz@shiftphones.com>
->    * Copyright (c) 2022, Caleb Connolly <caleb@connolly.tech>
-> + * Copyright (c) 2022, Dylan Van Assche <me@dylanvanassche.be>
->    */
->
->   /dts-v1/;
->
->   #include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/leds/common.h>
->   #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
->   #include "sdm845.dtsi"
->   #include "pm8998.dtsi"
-> @@ -554,6 +556,33 @@ &pmi8998_smb2 {
->   =09monitored-battery =3D <&battery>;
->   };
->
-> +&pmi8998_lpg {
-> +=09status =3D "okay";
-> +
-> +=09multi-led {
-> +=09=09color =3D <LED_COLOR_ID_RGB>;
-> +=09=09function =3D LED_FUNCTION_STATUS;
-> +
-> +=09=09#address-cells =3D <1>;
-> +=09=09#size-cells =3D <0>;
-> +
-> +=09=09led@3 {
-> +=09=09=09reg =3D <3>;
-> +=09=09=09color =3D <LED_COLOR_ID_BLUE>;
-> +=09=09};
-> +
-> +=09=09led@4 {
-> +=09=09=09reg =3D <4>;
-> +=09=09=09color =3D <LED_COLOR_ID_GREEN>;
-> +=09=09};
-> +
-> +=09=09led@5 {
-> +=09=09=09reg =3D <5>;
-> +=09=09=09color =3D <LED_COLOR_ID_RED>;
-> +=09=09};
-> +=09};
-> +};
-> +
->   &qup_uart9_default {
->   =09pinconf-rx {
->   =09=09pins =3D "gpio5";
-> --
-> 2.36.1
->
-
---
-Kind Regards,
-Caleb
-
+Best,
+Sumit.
