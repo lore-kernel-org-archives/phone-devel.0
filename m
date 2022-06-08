@@ -2,119 +2,179 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 200AACCA485
-	for <phone-devel@archiver.kernel.org>; Wed,  8 Jun 2022 03:17:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2CCF2C43334
+	for <phone-devel@archiver.kernel.org>; Wed,  8 Jun 2022 10:30:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242449AbiFHDRc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 7 Jun 2022 23:17:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47624 "EHLO
+        id S236646AbiFHKaV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 8 Jun 2022 06:30:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357096AbiFHDQ5 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Jun 2022 23:16:57 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 129492109CB
-        for <phone-devel@vger.kernel.org>; Tue,  7 Jun 2022 14:07:03 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id j10so30175390lfe.12
-        for <phone-devel@vger.kernel.org>; Tue, 07 Jun 2022 14:07:02 -0700 (PDT)
+        with ESMTP id S237809AbiFHK30 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Jun 2022 06:29:26 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED7D1150B73
+        for <phone-devel@vger.kernel.org>; Wed,  8 Jun 2022 03:18:54 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id c2so26389818edf.5
+        for <phone-devel@vger.kernel.org>; Wed, 08 Jun 2022 03:18:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=BcNEd7iJ+TT2q5S0UI8UJj4frhOqYBHutZKYbj61hks=;
-        b=rWCazzT3fqAurfn3Qv3EJgxyuTmQCEMt+a3xQAoXFo7NfpRSkjSEYt9qFESubL0fVw
-         s1y2wZPYBZs+N2x/L3smMiBIVpUaCZISBK+R2nEaAyKoQH+rGGPuPMxet8PIgwWtSMLB
-         FIbC3lCMPifBu+gPnRLvSl3LFxeKp9rZRd/KJoT47CyRJVFeZUGZhMgGXJWnG7gtCgdp
-         VlQutidipJXZK/HvZhITccE5Xbi7PlXcHXFHijy5qgYazvb37648b6S2L1tb2WD6c98+
-         /7jhPxcZgnuJskl2yu4g0s7168TULxxebxHd9yx0ZI/o6uWEKvpq6YqRllM1FfkvP2kb
-         ENHQ==
+        d=fairphone.com; s=fair;
+        h=mime-version:content-transfer-encoding:date:message-id:cc:subject
+         :from:to:references:in-reply-to;
+        bh=1iFwdNwk1v1dXl+OlTTXTF6c13xKzPVa4F0ip2ie7ak=;
+        b=R6Uj/kR8aNyvL0If9eAlU2L/SUtOV5vbaXXSJFGtExUlkvqNZfxVvmdTgFsQ2NrLSZ
+         21SvpF0O2oQsiB3ERybUBhuX+g5mUi59un0dmQmQcIXLHAjENToLjRBcMdT5c8KnwF/l
+         OAcw77biYKlFRWFNGJNZ7g49tOP/menfHXBrYYEOkT9bUxg2ULaWA71hlUqLo6DR5N/C
+         gVw6MbDS3N9hd+cmM0kkcGo0j41mjf+SgBTzXJEV9kD9Ym8pCwBJE6j7dN88aep9b1hG
+         VG1OUsbuJw+ajdmB9uv7irEt3xbvfXdi4+8xdunJe2Wyz1HJe65nXgiRky1iBon5EOFc
+         aJtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=BcNEd7iJ+TT2q5S0UI8UJj4frhOqYBHutZKYbj61hks=;
-        b=ZQWyGWiPI57np1S6IKcBqwO+vB6HEKMw7LiKrUOTSmLu/jMiyDNwIh+o5pM1YqpmSW
-         uBxwA8TCLx/6Ta1JZ4k2VoKgaut7f3GyC7WT0J5WH1wu/NxyExeca7QbTPUw7E6wTFui
-         jJ8Cgp7ee+qBUfb8rcWf3iASHIpbENEwIcCggmFluWnPOqOKPlpeT0UO7DiKTlLbUYJL
-         hhhBA+9KBeIqqUonlVxf0cbm/0LUdBQ2jAp85ruuu4waKrMCK7/AKh8FwpCjaZM6bBOj
-         +yoaJWt8A10yRsyhsz479vLnM+sPDZDOiX3tgu/4oO6NhdAEkTxwBJV4DNf63D7R8h9Y
-         qO2Q==
-X-Gm-Message-State: AOAM532ZPZ8T3xUNIoWQ+3Vkpg6l9q7/fqPlv2yaIVdwx82z3LbB+6+G
-        CepWf3aWYGisX+f4s2bNgXFnKHBizIgvGElc
-X-Google-Smtp-Source: ABdhPJwNx0jylg83iqSrKRdyK53xJIDjYR8xpEmSfEqDjAw1+SQN7l8APZexMIl3Sa2+tK5bKuQanw==
-X-Received: by 2002:a05:6512:150d:b0:477:b1f6:9ebf with SMTP id bq13-20020a056512150d00b00477b1f69ebfmr19625256lfb.422.1654636021399;
-        Tue, 07 Jun 2022 14:07:01 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id x15-20020ac25dcf000000b0047255d210dbsm3432818lfq.10.2022.06.07.14.07.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jun 2022 14:07:00 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-arm-kernel@lists.infradead.org, phone-devel@vger.kernel.org
-Cc:     Stephan Gerhold <stephan@gerhold.net>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH] ARM: dts: ux500: Add GPS to the Kyle
-Date:   Tue,  7 Jun 2022 23:04:55 +0200
-Message-Id: <20220607210455.141257-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.36.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:cc:subject:from:to:references:in-reply-to;
+        bh=1iFwdNwk1v1dXl+OlTTXTF6c13xKzPVa4F0ip2ie7ak=;
+        b=OYbXPo2ScxcWASrZb0AnwCiiOfCMSE6RbpCJ7bwmoDp+4HSenA4NSS5Qn1JsVdE/uu
+         1P7tMTcVA30XYXd1GBzE52RnLsAu6T81TZPkRAjXaN18xABTmJ7WTL15bL6I1pn36cMb
+         UkmeNUkuXhv5YOPVPwRr131I/weAU0iVJh+8v3AmabB87BBAzMuSm997OUfD8RnEI5VX
+         OPZTdIEZNVZ7rl6wElu+YVuXXE6De4kqtWAzj0mdMJJiLQXSfjlx7f7Xokv+57pRu2qU
+         IDIwM4Du5BtH53uKqB2hgAxhWFVOAE2twC31M+0xrVNReztJZpQ9JPCk8OGHq+xxe9h3
+         u8hA==
+X-Gm-Message-State: AOAM532GJQwGCCGvJmFTEacYyZseQhazxXbD0CUXV/+6Ull5LXLt+NoL
+        qoAwZaaFfrfYbxEPplOd/mljsw==
+X-Google-Smtp-Source: ABdhPJwhTP+Sm/YUUUagKijKOaUv4aAkFfndIn3NiT0GJBAk3tk/3OR0q9VUBiGxUlwsgKfu44pDNw==
+X-Received: by 2002:a05:6402:11c7:b0:42e:c47a:ffdf with SMTP id j7-20020a05640211c700b0042ec47affdfmr29844951edw.113.1654683533557;
+        Wed, 08 Jun 2022 03:18:53 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id h9-20020a1709063b4900b007043b29dfd9sm8894340ejf.89.2022.06.08.03.18.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jun 2022 03:18:53 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Wed, 08 Jun 2022 12:18:52 +0200
+Message-Id: <CKKOCWP2NYO5.GH08U776B1KU@otso>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@somainline.org>,
+        "Marijn Suijten" <marijn.suijten@somainline.org>,
+        "AngeloGioacchino Del Regno" 
+        <angelogioacchino.delregno@somainline.org>,
+        "Song Qiang" <songqiang1304521@gmail.com>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
+        "Liam Girdwood" <lgirdwood@gmail.com>,
+        "Mark Brown" <broonie@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH 3/5] proximity: vl53l0x: Handle the VDD regulator
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Markuss Broks" <markuss.broks@gmail.com>,
+        <linux-kernel@vger.kernel.org>, <jic23@kernel.org>
+X-Mailer: aerc 0.9.0
+References: <20220523175344.5845-1-markuss.broks@gmail.com>
+ <20220523175344.5845-4-markuss.broks@gmail.com>
+In-Reply-To: <20220523175344.5845-4-markuss.broks@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This adds the GPS chip to the Kyle device tree.
+Hi Markuss,
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- arch/arm/boot/dts/ste-ux500-samsung-kyle.dts | 29 ++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+On Mon May 23, 2022 at 7:53 PM CEST, Markuss Broks wrote:
+> Handle the regulator supplying the VDD pin of VL53L0X.
+>
+> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> ---
+>  drivers/iio/proximity/vl53l0x-i2c.c | 37 +++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
+>
+> diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/=
+vl53l0x-i2c.c
+> index 12a3e2eff464..8581a873919f 100644
+> --- a/drivers/iio/proximity/vl53l0x-i2c.c
+> +++ b/drivers/iio/proximity/vl53l0x-i2c.c
+> @@ -43,6 +43,7 @@
+>  struct vl53l0x_data {
+>  	struct i2c_client *client;
+>  	struct completion completion;
+> +	struct regulator *vdd_supply;
+>  };
+> =20
+>  static irqreturn_t vl53l0x_handle_irq(int irq, void *priv)
+> @@ -192,10 +193,31 @@ static const struct iio_info vl53l0x_info =3D {
+>  	.read_raw =3D vl53l0x_read_raw,
+>  };
+> =20
+> +static void vl53l0x_power_off(void *_data)
+> +{
+> +	struct vl53l0x_data *data =3D _data;
+> +
+> +	regulator_disable(data->vdd_supply);
+> +}
+> +
+> +static int vl53l0x_power_on(struct vl53l0x_data *data)
+> +{
+> +	int ret;
+> +
+> +	ret =3D regulator_enable(data->vdd_supply);
+> +	if (ret)
+> +		return ret;
+> +
+> +	usleep_range(3200, 5000);
+> +
+> +	return 0;
+> +}
+> +
+>  static int vl53l0x_probe(struct i2c_client *client)
+>  {
+>  	struct vl53l0x_data *data;
+>  	struct iio_dev *indio_dev;
+> +	int error;
+> =20
+>  	indio_dev =3D devm_iio_device_alloc(&client->dev, sizeof(*data));
+>  	if (!indio_dev)
+> @@ -210,6 +232,21 @@ static int vl53l0x_probe(struct i2c_client *client)
+>  				     I2C_FUNC_SMBUS_BYTE_DATA))
+>  		return -EOPNOTSUPP;
+> =20
+> +	data->vdd_supply =3D devm_regulator_get_optional(&client->dev, "vdd");
+> +	if (IS_ERR(data->vdd_supply))
+> +		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
+> +				     "Unable to get VDD regulator\n");
 
-diff --git a/arch/arm/boot/dts/ste-ux500-samsung-kyle.dts b/arch/arm/boot/dts/ste-ux500-samsung-kyle.dts
-index c57676faf181..e6a7d608e326 100644
---- a/arch/arm/boot/dts/ste-ux500-samsung-kyle.dts
-+++ b/arch/arm/boot/dts/ste-ux500-samsung-kyle.dts
-@@ -307,6 +307,21 @@ uart@80121000 {
- 			pinctrl-names = "default", "sleep";
- 			pinctrl-0 = <&u1rxtx_a_1_default &u1ctsrts_a_1_default>;
- 			pinctrl-1 = <&u1rxtx_a_1_sleep &u1ctsrts_a_1_sleep>;
-+
-+			gnss {
-+				/* The CSRG05TA03-ICJE-R is a SirfStarV 5t chip */
-+				compatible = "csr,csrg05ta03-icje-r";
-+				/* GPS_RSTN on GPIO21 */
-+				reset-gpios = <&gpio0 21 GPIO_ACTIVE_LOW>;
-+				/* GPS_ON_OFF on GPIO86 */
-+				sirf,onoff-gpios = <&gpio2 22 GPIO_ACTIVE_HIGH>;
-+				/* GPS_1V8 (VSMPS2) */
-+				vcc-supply = <&db8500_vsmps2_reg>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&g05ta03_kyle_default>;
-+				/* According to /etc/sirfgps.conf */
-+				current-speed = <460800>;
-+			};
- 		};
- 
- 		/* Debugging console UART connected to AB8505 USB */
-@@ -666,6 +681,20 @@ kyle_cfg1 {
- 			};
- 		};
- 	};
-+	g05ta03 {
-+		g05ta03_kyle_default: g05ta03 {
-+			/* Reset line, start out de-asserted */
-+			kyle_cfg1 {
-+				pins = "GPIO21_AB3";
-+				ste,config = <&gpio_out_hi>;
-+			};
-+			/* GPS_ON_OFF, start out deasserted (off) */
-+			kyle_cfg2 {
-+				pins = "GPIO86_C6";
-+				ste,config = <&gpio_out_lo>;
-+			};
-+		};
-+	};
- };
- 
- &ab8505_gpio {
--- 
-2.36.1
+It looks like this optional regulator is not actually optional.
+
+[    1.919995] vl53l0x-i2c 1-0029: error -ENODEV: Unable to get VDD regulat=
+or
+
+When using devm_regulator_get instead, a dummy regulator gets returned
+which I think is what we want here:
+
+[    1.905518] vl53l0x-i2c 1-0029: supply vdd not found, using dummy regula=
+tor
+
+Can you fix this up or should I send a patch?
+
+Regards
+Luca
+
+
+> +
+> +	error =3D vl53l0x_power_on(data);
+> +	if (error)
+> +		return dev_err_probe(&client->dev, error,
+> +				     "Failed to power on the chip\n");
+> +
+> +	error =3D devm_add_action_or_reset(&client->dev, vl53l0x_power_off, dat=
+a);
+> +	if (error)
+> +		return dev_err_probe(&client->dev, error,
+> +				     "Failed to install poweroff action\n");
+> +
+>  	indio_dev->name =3D "vl53l0x";
+>  	indio_dev->info =3D &vl53l0x_info;
+>  	indio_dev->channels =3D vl53l0x_channels;
+> --=20
+> 2.36.1
 
