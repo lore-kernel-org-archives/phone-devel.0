@@ -2,109 +2,121 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E528CCA47D
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 09:35:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DEF0ACCA473
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 09:54:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233025AbiFIJf6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Jun 2022 05:35:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47480 "EHLO
+        id S241801AbiFIJyg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Jun 2022 05:54:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234695AbiFIJf5 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 05:35:57 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222FB7654
-        for <phone-devel@vger.kernel.org>; Thu,  9 Jun 2022 02:35:57 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 3D1EC66016FD;
-        Thu,  9 Jun 2022 10:35:49 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1654767350;
-        bh=BH72tA3Gv2tLURwDnY5UsSEkwsx+vUzwp5wTPxVczvk=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=aFgguC5hMuyVbHwuGvCHFJ/j16RiTIEJQ4LRbUFOphEqEyKiRcnjJxU8B66h/GYQ3
-         GT4U+S2FDQS4S3AGCcCaRin3wtBLGC3hxCBCSeMrx2JX+jozSujwzsrd4N3kasKMZq
-         xb2PmVvm4z1F+7aYRKRxe32oRugDq2sax4108q+hp0dCiiAltoVHxLT5nLh84KlWZN
-         xykOEDKdoJSUMDP3HUAW7qeyPZCEq4cGi6nCaQ2Vq8TijxtaONgDPNjXKCDNkdTaCW
-         5XFKn7XzzqiLqvKcovYV+NFovRiH2SrZtWqaHEKxtODGlePSDyhrTS/200pYBUAocV
-         WLARRgsksZ3cw==
-Message-ID: <1974b83e-967a-41ed-e790-52ceaf349ad3@collabora.com>
-Date:   Thu, 9 Jun 2022 11:35:46 +0200
+        with ESMTP id S242416AbiFIJye (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 05:54:34 -0400
+Received: from mail.shift-gmbh.com (mail.shift-gmbh.com [IPv6:2a01:4f8:a0:5496::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8399A195974;
+        Thu,  9 Jun 2022 02:54:29 -0700 (PDT)
+From:   Alexander Martinz <amartinz@shiftphones.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shiftphones.com;
+        s=2018; t=1654768466;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=EHEuZTnae7JIoJINVmYOdraD9EvP6HM8Di56khNR+uQ=;
+        b=r94IREh6bcly39S5nnsnaC5t+otHkGUEXkMrZ9yFu0zBDWm6TtlStPI0XD1Bc0Thiz4VhD
+        XPbChYw5Y5VVPHQ0PF5ysE6ugU3fiCwUC8jD+sp6wHGear7yTJxH9USFXF6AoqKM9/oY8L
+        clMD62V4sKmSRhQcPZNBvbMud5+MhvuYLPQWwDflx2Rjw0uyzNczWKSgS9vmpHDfYs8PYQ
+        ZcatI4/USt/HRHZl6fGhTMhqtigmjgmGD7jey4HknDfruQwI0hx4P44QGEpidKmWr8D7iL
+        lKJrXA7xhFEGBxbAfuE9ZH+AqnR976qYgMio72jXzlLg89tmRp7Wdb3PxFC4Rg==
+To:     ~postmarketos/upstreaming@lists.sr.ht
+Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Dylan Van Assche <me@dylanvanassche.be>,
+        Alexander Martinz <amartinz@shiftphones.com>
+Subject: [PATCH 1/2] arch: arm64: qcom: sdm845-shift-axolotl: fix Bluetooth firmware loading
+Date:   Thu,  9 Jun 2022 11:54:11 +0200
+Message-Id: <20220609095412.211060-1-amartinz@shiftphones.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v3 1/2] dt-bindings: timer: mediatek: Add CPUX System
- Timer and MT6795 compatible
-Content-Language: en-US
-To:     Matthias Brugger <matthias.bgg@gmail.com>,
-        daniel.lezcano@linaro.org
-Cc:     tglx@linutronix.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        paul.bouchara@somainline.org
-References: <20220518112435.241116-1-angelogioacchino.delregno@collabora.com>
- <20220518112435.241116-2-angelogioacchino.delregno@collabora.com>
- <afd9ab8e-5bad-54ee-3f44-5e0cfdb22e75@gmail.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <afd9ab8e-5bad-54ee-3f44-5e0cfdb22e75@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Authentication-Results: ORIGINATING;
+        auth=pass smtp.auth=amartinz@shiftphones.com smtp.mailfrom=amartinz@shiftphones.com
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 07/06/22 18:11, Matthias Brugger ha scritto:
-> 
-> 
-> On 18/05/2022 13:24, AngeloGioacchino Del Regno wrote:
->> Document the "CPUXGPT" CPU General Purpose Timer, used as ARM/ARM64
->> System Timer on MediaTek platforms and add the MT6795 compatible for it.
->>
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->> ---
->>   .../devicetree/bindings/timer/mediatek,mtk-timer.txt          | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt 
->> b/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
->> index 6f1f9dba6e88..49706cbef45d 100644
->> --- a/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
->> +++ b/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
->> @@ -2,6 +2,7 @@ MediaTek Timers
->>   ---------------
->>   MediaTek SoCs have two different timers on different platforms,
-> 
-> Nit: There are now three different timers so maybe:
-> "MediaTek SoCs have different timers on different platforms,"
-> 
-> Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-> 
+From: Dylan Van Assche <me@dylanvanassche.be>
 
-Hi Matthias,
-can we please ignore that description nit for this patch?
+Add hsuart0 alias, firmware name and prevent garbage data on Bluetooth UART lines
+on the SHIFT 6mq based on the Qualcomm SDM845 chip.
+I discovered that these were missing by comparing the DTS with similar
+devices such as the Oneplus 6/6T and Dragonboard 845c.
 
-I was anyway planning to do a YAML conversion after getting this merged in, perhaps
-we can just fix that on the new one instead?
+Signed-of-by: Dylan Van Assche <me@dylanvanassche.be>
+Tested-by: Alexander Martinz <amartinz@shiftphones.com>
+---
+ .../boot/dts/qcom/sdm845-shift-axolotl.dts    | 33 +++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-Cheers,
-Angelo
-
->> +- CPUX (ARM/ARM64 System Timer)
->>   - GPT (General Purpose Timer)
->>   - SYST (System Timer)
->> @@ -29,6 +30,9 @@ Required properties:
->>       * "mediatek,mt7629-timer" for MT7629 compatible timers (SYST)
->>       * "mediatek,mt6765-timer" for MT6765 and all above compatible timers (SYST)
->> +    For those SoCs that use CPUX
->> +    * "mediatek,mt6795-systimer" for MT6795 compatible timers (CPUX)
->> +
->>   - reg: Should contain location and length for timer register.
->>   - clocks: Should contain system clock.
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+index 103cc40816fd..fa72f23ef0c2 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+@@ -20,6 +20,7 @@ / {
+ 
+ 	aliases {
+ 		display0 = &framebuffer0;
++		hsuart0 = &uart6;
+ 		serial0 = &uart9;
+ 	};
+ 
+@@ -529,6 +530,32 @@ volume_down_resin: resin {
+ 	};
+ };
+ 
++/*
++ * Prevent garbage data on bluetooth UART lines
++ */
++&qup_uart6_default {
++        pinmux {
++                pins = "gpio45", "gpio46", "gpio47", "gpio48";
++                function = "qup6";
++        };
++
++        cts {
++                pins = "gpio45";
++                bias-pull-down;
++        };
++
++        rts-tx {
++                pins = "gpio46", "gpio47";
++                drive-strength = <2>;
++                bias-disable;
++        };
++
++        rx {
++                pins = "gpio48";
++                bias-pull-up;
++        };
++};
++
+ &qup_uart9_default {
+ 	pinconf-rx {
+ 		pins = "gpio5";
+@@ -667,6 +694,12 @@ &uart6 {
+ 	bluetooth {
+ 		compatible = "qcom,wcn3990-bt";
+ 
++		/*
++		 * This path is relative to the qca/
++		 * subdir under lib/firmware.
++		 */
++		firmware-name = "axolotl/crnv21.bin";
++
+ 		vddio-supply = <&vreg_s4a_1p8>;
+ 		vddxo-supply = <&vreg_l7a_1p8>;
+ 		vddrf-supply = <&vreg_l17a_1p3>;
+-- 
+2.36.1
 
