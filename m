@@ -2,56 +2,41 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24CB9C433EF
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 12:47:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33C13C433EF
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 17:08:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241372AbiFIMrr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Jun 2022 08:47:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59916 "EHLO
+        id S237573AbiFIRIG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Jun 2022 13:08:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238361AbiFIMrq (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 08:47:46 -0400
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F08CA359FC9
-        for <phone-devel@vger.kernel.org>; Thu,  9 Jun 2022 05:47:43 -0700 (PDT)
-Received: by mail-qt1-x829.google.com with SMTP id t21so9993293qtw.11
-        for <phone-devel@vger.kernel.org>; Thu, 09 Jun 2022 05:47:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=h8cWqvPg9zbI1Q43jZ22k5KFlen0dxXXQmLtqMTzZJM=;
-        b=W3iSqn+U6DYPLx0Gt6muJSyYUB8gxNK8sU1bPvLeuDq+RHwCPr02xyazKxVG5njrL+
-         TEHtdxgOlEiy8lGZeAdkKfkVGnIbRVz3/NJIM0RiZgRRVFD0hipcqJPQyE4MOCSiKkTG
-         CwMrD5Bumyr+5pxKhAK/uAMPADY1s1UyiD4wiXxn/kGf4/XdAmdLG4dVpQQIUJd6cMB8
-         f3N0AcjzAaO1vMMs0BoTpvhaqFN9zHX9LLYboRY18/BkgPNskeisffwebtUATlmNBFgT
-         WW/qXdf0o8SAXjb6NPZNoRB/X7aK+YNgvI7QYmq3GhO+k1RMvr1YJRBs6DKtv0yvq4ud
-         9hSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=h8cWqvPg9zbI1Q43jZ22k5KFlen0dxXXQmLtqMTzZJM=;
-        b=3ABzvAPgpiZhfKEb3TPe9zkwNkRISXF8mrH8Un9j1n3NG9B1EswbFq/odDKj8FKlEE
-         FuxZeZCcbRlt6JCln1Uuj1vt6hjp7fJbLWOBGTBe9TIaEsyljb76q69iALBLBSSZD+rK
-         SMOAK8XyM2MO3rJNd4hq604dN2AfCxqY6arpsJDx0zsevh0z22JY4D1XRe/Mgmyhv47t
-         V7rXargmKnwxDpFMfMwQDaFm7KXGcm4ni5jqmmVyyFUse6ViKkzkGXVVjbODkOzJINtp
-         utnkRZ6ENk+PKlM1vXpwf78vwm/APHxHfYkki3i4LVmwUpf8CdIcElqD30ncaYAkq428
-         QhyA==
-X-Gm-Message-State: AOAM530GeHmJS1Eu4wDgB2atkm0WKl4FTgQK798MRlZ0NY7ctnk/2J43
-        jkJ5bijPDMdXGB9cnQkJ1FxhbnipmERQMbepjUJ7NA==
-X-Google-Smtp-Source: ABdhPJwIC+f21r6zvATp/buJdHq/JKIw15pStNVdzdxyxyK2vJJ81iSA3iUJwPYvzI/sWZ2iYPbRMyCFUYI7hs9I2yQ=
-X-Received: by 2002:ac8:598f:0:b0:305:8f8:2069 with SMTP id
- e15-20020ac8598f000000b0030508f82069mr4867390qte.370.1654778863045; Thu, 09
- Jun 2022 05:47:43 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220609095412.211060-1-amartinz@shiftphones.com>
-In-Reply-To: <20220609095412.211060-1-amartinz@shiftphones.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Thu, 9 Jun 2022 15:47:31 +0300
-Message-ID: <CAA8EJpqz32_LxmBVbcLt0sV=e1JzGtWEmMsKsQNoZzuGgLWbBQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] arch: arm64: qcom: sdm845-shift-axolotl: fix
- Bluetooth firmware loading
+        with ESMTP id S1343765AbiFIRIE (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 13:08:04 -0400
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0059112DBD9;
+        Thu,  9 Jun 2022 10:08:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1654794457;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=kGZmmOADn0EKx1aFs3YZdMQLcwtTt5OJKjbF5f+Rez0=;
+    b=JjDiEl1F3iWYsjzzx1Y3CxkcU62MDCi+eUrW55ZHZT3AuzZifhN8sJ2bh8RaYw93gV
+    X7IJyWbuXU3V15njIAffIS2bkkwihgt8qk+RLm7Ip8ryFJSRfqosYksOHrJvqfOocKY6
+    wEzsKnRfAlmeCAQ9GKf7JcWaJ22Wcpcwq1YhBfFAKWRp+F3xlg1aXVGL7J6V7VsW1Dtp
+    EVuTY3ByedGLBt/90gOizrQwVXyg6ED5NVx7DOlLgBeqKkH2y/PjIpOlG79JDj45ZmX0
+    lCNS8KBC97PCS3E7s/tXSUOKDlWJRCH5lNCW9XmdJDU1yz3ScFI+Ekt/wJs8h1/WAJ4X
+    K/NA==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u267FZF9PwpcNKLVrKw5+aY="
+X-RZG-CLASS-ID: mo00
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 47.45.0 SBL|AUTH)
+    with ESMTPSA id 9056edy59H7aBv1
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Thu, 9 Jun 2022 19:07:36 +0200 (CEST)
+Date:   Thu, 9 Jun 2022 19:07:29 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
 To:     Alexander Martinz <amartinz@shiftphones.com>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
@@ -61,100 +46,93 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Dylan Van Assche <me@dylanvanassche.be>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 2/2] arm64: dts: qcom/sdm845-shift-axolotl: Add audio
+ support
+Message-ID: <YqIo0TJHqCx33NLj@gerhold.net>
+References: <20220609095412.211060-1-amartinz@shiftphones.com>
+ <20220609095412.211060-2-amartinz@shiftphones.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220609095412.211060-2-amartinz@shiftphones.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 9 Jun 2022 at 12:54, Alexander Martinz <amartinz@shiftphones.com> wrote:
->
-> From: Dylan Van Assche <me@dylanvanassche.be>
->
-> Add hsuart0 alias, firmware name and prevent garbage data on Bluetooth UART lines
-
-hsuart aliases are not standard. Please use serialN alias instead.
-
-> on the SHIFT 6mq based on the Qualcomm SDM845 chip.
-> I discovered that these were missing by comparing the DTS with similar
-> devices such as the Oneplus 6/6T and Dragonboard 845c.
->
-> Signed-of-by: Dylan Van Assche <me@dylanvanassche.be>
-> Tested-by: Alexander Martinz <amartinz@shiftphones.com>
+On Thu, Jun 09, 2022 at 11:54:12AM +0200, Alexander Martinz wrote:
+> This patch adds audio support for the SHIFT6mq phone.
+> 
+> The primary microphone and headphone jack are handled by the
+> SDM845 sound card and WCD9340 codec.
+> 
+> The primary speaker needs to go through the TFA9890 speaker
+> amplifier.
+> 
+> Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
+> Tested-by: Dylan Van Assche <me@dylanvanassche.be>
 > ---
->  .../boot/dts/qcom/sdm845-shift-axolotl.dts    | 33 +++++++++++++++++++
->  1 file changed, 33 insertions(+)
->
+>  .../boot/dts/qcom/sdm845-shift-axolotl.dts    | 141 ++++++++++++++++++
+>  1 file changed, 141 insertions(+)
+> 
 > diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> index 103cc40816fd..fa72f23ef0c2 100644
+> index fa72f23ef0c2..8c4967d6d0e3 100644
 > --- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
 > +++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> @@ -20,6 +20,7 @@ / {
->
->         aliases {
->                 display0 = &framebuffer0;
-> +               hsuart0 = &uart6;
->                 serial0 = &uart9;
->         };
->
-> @@ -529,6 +530,32 @@ volume_down_resin: resin {
->         };
+[...]
+> @@ -492,6 +494,19 @@ touchscreen@38 {
+>  	};
 >  };
->
-> +/*
-> + * Prevent garbage data on bluetooth UART lines
-> + */
-> +&qup_uart6_default {
-> +        pinmux {
-> +                pins = "gpio45", "gpio46", "gpio47", "gpio48";
-> +                function = "qup6";
-> +        };
-
-This chunk should probably go into sdm845.dtsi. I'd suggest either
-adding a separate qup_uart6_4pin or just making qup_uart6_default the
-4-pin UART.
-
+>  
+> +&i2c11 {
+> +	status = "okay";
+> +	clock-frequency = <400000>;
 > +
-> +        cts {
-> +                pins = "gpio45";
+> +	tfa9890_codec: tfa9890@34 {
 
-Then the label and 'pins' can go into the dtsi, while keeping just the
-bias and drive-strength in the platform dtsi.
+Please use "audio-codec@" as suggested in the bindings. Also, I think a
+label such as "speaker_codec: " would make it more obvious that this is
+the speaker. But that's personal preference. :)
 
-> +                bias-pull-down;
-> +        };
-> +
-> +        rts-tx {
-> +                pins = "gpio46", "gpio47";
-> +                drive-strength = <2>;
-> +                bias-disable;
-> +        };
-> +
-> +        rx {
-> +                pins = "gpio48";
-> +                bias-pull-up;
-> +        };
+> +		compatible = "nxp,tfa9890";
+> +		reg = <0x34>;
+> +		vddd-supply = <&vreg_s4a_1p8>;
+> +		reset-gpio = <&tlmm 7 0>;
+
+The mainline driver does not support the reset-gpio (it resets via the
+I2C registers instead). Can just drop this.
+
+Alternatively we could document it to the DT schema and describe it here
+for completeness. That way it's already there if someone ever considers
+it necessary for the driver.
+
+> +		#sound-dai-cells = <1>;
+
+Should be <0>. You might want to check your addition with
+"make dtbs_check" to make sure it matches the DT schema. :)
+
+Also, I would recommend adding a "sound-name-prefix". The prefix is used
+for the ALSA mixers which makes it more obvious that they belong to the
+speaker. (See example in DT schema.)
+
+> +	};
 > +};
 > +
->  &qup_uart9_default {
->         pinconf-rx {
->                 pins = "gpio5";
-> @@ -667,6 +694,12 @@ &uart6 {
->         bluetooth {
->                 compatible = "qcom,wcn3990-bt";
->
-> +               /*
-> +                * This path is relative to the qca/
-> +                * subdir under lib/firmware.
-> +                */
-> +               firmware-name = "axolotl/crnv21.bin";
+>  &ipa {
+>  	status = "okay";
+>  
+[...]
+> @@ -756,6 +879,24 @@ &venus {
+>  	firmware-name = "qcom/sdm845/axolotl/venus.mbn";
+>  };
+>  
+> +&wcd9340 {
+> +	pinctrl-0 = <&wcd_intr_default>;
+> +	pinctrl-names = "default";
+> +	clock-names = "extclk";
+> +	clocks = <&rpmhcc RPMH_LN_BB_CLK2>;
+> +	reset-gpios = <&tlmm 64 0>;
 
-Do you know what is the difference between axolotl's bin and the regular one?
+0 => GPIO_ACTIVE_HIGH
 
-> +
->                 vddio-supply = <&vreg_s4a_1p8>;
->                 vddxo-supply = <&vreg_l7a_1p8>;
->                 vddrf-supply = <&vreg_l17a_1p3>;
-
--- 
-With best wishes
-Dmitry
+Thanks,
+Stephan
