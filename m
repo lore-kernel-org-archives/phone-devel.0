@@ -2,107 +2,96 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F9A8CCA47F
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 10:41:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9F72C433EF
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 11:23:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241938AbiFIKlE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Jun 2022 06:41:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34062 "EHLO
+        id S243502AbiFILXL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Jun 2022 07:23:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243395AbiFIKkp (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 06:40:45 -0400
+        with ESMTP id S231712AbiFILXL (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 07:23:11 -0400
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4859435E366;
-        Thu,  9 Jun 2022 03:40:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E558E9D076;
+        Thu,  9 Jun 2022 04:23:09 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 3453666017C8;
-        Thu,  9 Jun 2022 11:40:11 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id CA19966017C8;
+        Thu,  9 Jun 2022 12:23:07 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1654771212;
-        bh=E20Et6g8b02x7QxpsDbNVAddOo4xzLy9bfmWWuk7HMY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZcFyQMwCI9c79wLqIw1SRdX+qlMwWHQKqEEqNjw750BS5bdEsBQKkNTMzw+GiLUdJ
-         9K/XRosMfc49DN/FJTX0QGDeAd3u6D4YbXaZSg1pLwDcjdrRrluX7vpW6fA9mkR5Oz
-         W955AXX5s5A26e6j4OdyDl8Ko2zvjdjQyBsetqFEi+i73ztXB9mdTk+8/bc5cGa6xW
-         3Fx9y3elMWs2LdP7Urf290Y6/u/IVXEZGvmnr4iEu6Yle0lD3PhPQPtpPJXB3NDF8d
-         AOWK8Y+X5KQ85fYN/EtMBdaYq7yaBEMcsYYrSJdYV8ndQtdFhECDn+Tz/0rcAIliLP
-         hFHW+i7TB1Y9Q==
+        s=mail; t=1654773788;
+        bh=9Ae5YF6irZpp0Rms9XFrNm87VVx0wDKBfDaYKBip0iY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=kTGqfVH1pAml5TEdtn4V1L6IjyCLLn/p7oz53tNZ4NCG02/TgKQhGwGI0PXypNIJx
+         WiQEwpXpg/S1JAjeE9zINrD5W4GHDMwCiATKETd+fkmP0VwM62qvWOdOP2S0rCREME
+         +rTnlqhyyBllcPh7Gm4PdX9S9hkjZi69kUB/UMjq5atKW6BFbQ2b8UhPb9snZNMhwb
+         UKLhwCCrqmTmFMNu/tDTCsCF6Ks6p9ZNpwRtbkBYuMeRpt6YmeI/g7xWVPq4jl8MW5
+         VmA7vF1Noib1pX5tRcSL+X+wPVQvKPNQ+ZzugIQs3yATRD9FBl0fB1DspY9JEP5MkH
+         suJIzFwYPi/Hw==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-To:     yong.wu@mediatek.com
-Cc:     joro@8bytes.org, will@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        iommu@lists.linux-foundation.org,
-        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+To:     robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
         konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
         martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        kernel@collabora.com,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v3 3/3] iommu: mtk_iommu: Add support for MT6795 Helio X10 M4Us
-Date:   Thu,  9 Jun 2022 12:40:01 +0200
-Message-Id: <20220609104001.97753-4-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v2 00/10] MediaTek Helio X10 MT6795 - Devicetree, part 1
+Date:   Thu,  9 Jun 2022 13:22:53 +0200
+Message-Id: <20220609112303.117928-1-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220609104001.97753-1-angelogioacchino.delregno@collabora.com>
-References: <20220609104001.97753-1-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add support for the M4Us found in the MT6795 Helio X10 SoC.
+In an effort to give some love to the apparently forgotten MT6795 SoC,
+I am upstreaming more components that are necessary to support platforms
+powered by this one apart from a simple boot to serial console.
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- drivers/iommu/mtk_iommu.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+This series modernizes the devicetree of the MT6795 SoC and adds a
+couple of nodes that are supported by this SoC.
 
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index 8611cf8e4bd5..beca1c5a6c10 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -160,6 +160,7 @@
- enum mtk_iommu_plat {
- 	M4U_MT2712,
- 	M4U_MT6779,
-+	M4U_MT6795,
- 	M4U_MT8167,
- 	M4U_MT8173,
- 	M4U_MT8183,
-@@ -1424,6 +1425,19 @@ static const struct mtk_iommu_plat_data mt6779_data = {
- 	.larbid_remap  = {{0}, {1}, {2}, {3}, {5}, {7, 8}, {10}, {9}},
- };
- 
-+static const struct mtk_iommu_plat_data mt6795_data = {
-+	.m4u_plat     = M4U_MT6795,
-+	.flags	      = HAS_4GB_MODE | HAS_BCLK | RESET_AXI |
-+			HAS_LEGACY_IVRP_PADDR | MTK_IOMMU_TYPE_MM |
-+			TF_PORT_TO_ADDR_MT8173,
-+	.inv_sel_reg  = REG_MMU_INV_SEL_GEN1,
-+	.banks_num    = 1,
-+	.banks_enable = {true},
-+	.iova_region  = single_domain,
-+	.iova_region_nr = ARRAY_SIZE(single_domain),
-+	.larbid_remap = {{0}, {1}, {2}, {3}, {4}}, /* Linear mapping. */
-+};
-+
- static const struct mtk_iommu_plat_data mt8167_data = {
- 	.m4u_plat     = M4U_MT8167,
- 	.flags        = RESET_AXI | HAS_LEGACY_IVRP_PADDR | MTK_IOMMU_TYPE_MM,
-@@ -1536,6 +1550,7 @@ static const struct mtk_iommu_plat_data mt8195_data_vpp = {
- static const struct of_device_id mtk_iommu_of_ids[] = {
- 	{ .compatible = "mediatek,mt2712-m4u", .data = &mt2712_data},
- 	{ .compatible = "mediatek,mt6779-m4u", .data = &mt6779_data},
-+	{ .compatible = "mediatek,mt6795-m4u", .data = &mt6795_data},
- 	{ .compatible = "mediatek,mt8167-m4u", .data = &mt8167_data},
- 	{ .compatible = "mediatek,mt8173-m4u", .data = &mt8173_data},
- 	{ .compatible = "mediatek,mt8183-m4u", .data = &mt8183_data},
+In my local tree I have much more than that (including the dts for
+that Xperia M5 smartphone that I always mention...), but I decided
+to push the devicetree commits in multiple parts, as to get these
+in sooner than later because that reduces my delta, and this makes
+upstreaming a bit easier, especially when having to rebase things
+around, which happens a lot.
+
+So, this series *does NOT* depends on any of the other series that
+I've pushed and is mergeable in parallel.
+
+Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
+
+Changes in v2:
+ - Split fixed-clocks addition/removal patch for readability
+ - Added patches for pinctrl controller node and vGIC interrupt
+
+AngeloGioacchino Del Regno (10):
+  arm64: dts: mediatek: mt6795: Create soc bus node and move mmio
+    devices
+  arm64: dts: mediatek: mt6795: Add cpu-map and L2 cache
+  arm64: dts: mediatek: mt6795: Add Cortex A53 PMU nodes
+  arm64: dts: mediatek: mt6795: Add watchdog node to avoid timeouts
+  arm64: dts: mediatek: mt6795: Add fixed clocks for 32kHz and 26MHz XOs
+  arm64: dts: mediatek: mt6795: Remove incorrect fixed-clocks
+  arm64: dts: mediatek: mt6795: Add general purpose timer node
+  arm64: dts: mediatek: mt6795: Add ARM CCI-400 node and assign to CPUs
+  arm64: dts: mediatek: mt6795: Add pinctrl controller node
+  arm64: dts: mediatek: mt6795: Specify interrupts for vGIC
+
+ arch/arm64/boot/dts/mediatek/mt6795.dtsi | 260 ++++++++++++++++++-----
+ 1 file changed, 205 insertions(+), 55 deletions(-)
+
 -- 
 2.35.1
 
