@@ -2,35 +2,35 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72F1ACCA473
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 11:23:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ABC16CCA473
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 11:23:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243601AbiFILXU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Jun 2022 07:23:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45830 "EHLO
+        id S243612AbiFILXW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Jun 2022 07:23:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243564AbiFILXQ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 07:23:16 -0400
+        with ESMTP id S243597AbiFILXU (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 07:23:20 -0400
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FD7C9D076;
-        Thu,  9 Jun 2022 04:23:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB40A191420;
+        Thu,  9 Jun 2022 04:23:18 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 4970E66017DE;
-        Thu,  9 Jun 2022 12:23:13 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id EAB4366017DA;
+        Thu,  9 Jun 2022 12:23:16 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1654773794;
-        bh=WuVp9m47oyjyo3D3tPO/1kylTmjfohSx0q+3cGh+06U=;
+        s=mail; t=1654773797;
+        bh=anrmzD+t/qVGkb+sXMtzx5Tb0qXyjpZIloaFJGDHMDQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CK7dkublgX9MuOdlRyzGs39pkn6s+SI1Nh8TzabermlqKyJysJlCxeYNtsoOIG4JF
-         /eEbhkgnevY5rOUaW8bV82Jzz/5m0MCrKRekJsO3oalSjw7FuueuTyuLRunoB4QxIz
-         hbfMIPJzK5Ff21fOBYSN0yBum462gZVpQpiit3w3woIQQJFR0k+Lr+aX4N2ICJ8RLz
-         r7Dhh/Op6ClLT4VBF55pyqHeTaqE0U3Y3zd7JKSMTEGT5SJeCU0ThWSeTsD0XZ51aS
-         x9sqv82SycC9TVFn3cEHlJFtJLY7hkXeyBavbaIjMVNQ6jDpOZHinA+bVkpxQcISol
-         SCdJJ0zF4R1sg==
+        b=KRjmrjOo76qrWUeoSIFEZ/k+0evvk/sWJUZXzutKJLAnMF/R35VRRPVNpmgHM2Kek
+         HSxDO6ki1/D57i6R5mInVVuOtAI/GSJpnHXPq+ciP8fzp9MyPmBPPj0GieoO5DGOPb
+         CCzFLdklOu9NcatZSPYpFg5hgSZAruVDRPTbj21X6yBsiBHYR88tu4wQ4axVAcdJOM
+         M9WYcRrzxbczJDixAiOsuUjrrkQtsukC38YfcWnJvIDuZnFtP0ViO/hSddIRNfikgR
+         yQA9NYcmTF/hDvpeJFDNUcr1cVxcm8bJrDClWkQRWfiey+V1ZHqlGad3/YGLlJk8bT
+         V2yupPBZjq+Rw==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
 To:     robh+dt@kernel.org
@@ -43,9 +43,9 @@ Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
         kernel@collabora.com,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v2 06/10] arm64: dts: mediatek: mt6795: Remove incorrect fixed-clocks
-Date:   Thu,  9 Jun 2022 13:22:59 +0200
-Message-Id: <20220609112303.117928-7-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v2 10/10] arm64: dts: mediatek: mt6795: Specify interrupts for vGIC
+Date:   Thu,  9 Jun 2022 13:23:03 +0200
+Message-Id: <20220609112303.117928-11-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220609112303.117928-1-angelogioacchino.delregno@collabora.com>
 References: <20220609112303.117928-1-angelogioacchino.delregno@collabora.com>
@@ -55,79 +55,26 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Remove the RTC and UART fixed clocks, as these were introduced to
-temporarily provide a dummy clock to devices: since the two 26M/32K
-fixed oscillators clocks (which do really exist in the SoC) have
-been added, there's no reason to keep the aforementioned (and now
-redundant) dummies in this devicetree.
-
-In order to remove the uart dummy clock, it was necessary to also
-reassign the clock of all UART nodes to clk26m.
+Add the maintenance interrupt for GIC-400.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- arch/arm64/boot/dts/mediatek/mt6795.dtsi | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt6795.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/mediatek/mt6795.dtsi b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-index 7123c1bf8d9e..b6f7681cc151 100644
+index f52800e287ab..d3bce9429e9b 100644
 --- a/arch/arm64/boot/dts/mediatek/mt6795.dtsi
 +++ b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-@@ -162,18 +162,6 @@ system_clk: dummy13m {
- 		#clock-cells = <0>;
- 	};
- 
--	rtc_clk: dummy32k {
--		compatible = "fixed-clock";
--		clock-frequency = <32000>;
--		#clock-cells = <0>;
--	};
--
--	uart_clk: dummy26m {
--		compatible = "fixed-clock";
--		clock-frequency = <26000000>;
--		#clock-cells = <0>;
--	};
--
- 	pmu {
- 		compatible = "arm,cortex-a53-pmu";
- 		interrupts = <GIC_SPI  8 IRQ_TYPE_LEVEL_LOW>,
-@@ -235,7 +223,7 @@ uart0: serial@11002000 {
- 				     "mediatek,mt6577-uart";
- 			reg = <0 0x11002000 0 0x400>;
- 			interrupts = <GIC_SPI 91 IRQ_TYPE_LEVEL_LOW>;
--			clocks = <&uart_clk>;
-+			clocks = <&clk26m>;
- 			status = "disabled";
+@@ -246,6 +246,8 @@ gic: interrupt-controller@10221000 {
+ 			      <0 0x10222000 0 0x2000>,
+ 			      <0 0x10224000 0 0x2000>,
+ 			      <0 0x10226000 0 0x2000>;
++			interrupts = <GIC_PPI 9
++				(GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>;
  		};
  
-@@ -244,7 +232,7 @@ uart1: serial@11003000 {
- 				     "mediatek,mt6577-uart";
- 			reg = <0 0x11003000 0 0x400>;
- 			interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_LOW>;
--			clocks = <&uart_clk>;
-+			clocks = <&clk26m>;
- 			status = "disabled";
- 		};
- 
-@@ -253,7 +241,7 @@ uart2: serial@11004000 {
- 				     "mediatek,mt6577-uart";
- 			reg = <0 0x11004000 0 0x400>;
- 			interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_LOW>;
--			clocks = <&uart_clk>;
-+			clocks = <&clk26m>;
- 			status = "disabled";
- 		};
- 
-@@ -262,7 +250,7 @@ uart3: serial@11005000 {
- 				     "mediatek,mt6577-uart";
- 			reg = <0 0x11005000 0 0x400>;
- 			interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_LOW>;
--			clocks = <&uart_clk>;
-+			clocks = <&clk26m>;
- 			status = "disabled";
- 		};
- 	};
+ 		cci: cci@10390000 {
 -- 
 2.35.1
 
