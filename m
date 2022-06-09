@@ -2,122 +2,126 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B080C433EF
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 17:19:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DE8CC43334
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 22:12:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238962AbiFIRTX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Jun 2022 13:19:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35918 "EHLO
+        id S233832AbiFIWMN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Jun 2022 18:12:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239242AbiFIRTV (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 13:19:21 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FCAEA88BA;
-        Thu,  9 Jun 2022 10:19:19 -0700 (PDT)
-Received: from g550jk.localnet (31-151-115-246.dynamic.upc.nl [31.151.115.246])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id B3332CCDF9;
-        Thu,  9 Jun 2022 17:19:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1654795156; bh=2MPN+doYZMUaXvC0iC9GlfoIDwZjXtdp86X30pYRS8s=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=LkphQxXrMOnXuVuC1qZaoqrtpghwAWoxfgVdQoaVnDCtJTtTbZR5CvIYYMCA5O9QB
-         BSPM6RIWIVfdnFljl/Pc4h16y8vvs+3Zsw9v20J5YSr0flQtYf/I+euWkmsUNgHLcy
-         V27ER+iCOi5z9LCcyq68onwPMA6HCGbo++HlZIqc=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht
-Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alexander Martinz <amartinz@shiftphones.com>,
-        Dylan Van Assche <me@dylanvanassche.be>,
-        Alexander Martinz <amartinz@shiftphones.com>
-Subject: Re: [PATCH 2/2] arm64: dts: qcom/sdm845-shift-axolotl: Add audio support
-Date:   Thu, 09 Jun 2022 19:19:15 +0200
-Message-ID: <11993096.O9o76ZdvQC@g550jk>
-In-Reply-To: <20220609095412.211060-2-amartinz@shiftphones.com>
-References: <20220609095412.211060-1-amartinz@shiftphones.com> <20220609095412.211060-2-amartinz@shiftphones.com>
+        with ESMTP id S231266AbiFIWMN (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 18:12:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 809DD1C28CD;
+        Thu,  9 Jun 2022 15:12:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19D3861F03;
+        Thu,  9 Jun 2022 22:12:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684C1C34114;
+        Thu,  9 Jun 2022 22:12:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654812731;
+        bh=zJvO4Ob62G1vZNY0ZLTIVvosVMthN1HJt9gvNcztX2c=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=cTKMxbEYwLB84MUA4Do8QRyHyOLUgtD5RLQ/1RlSMk2SgHDKcBvtPUs169GiTbQdc
+         G/ycUcmw7zJp/7TtERG5HYIXnsfeJaX7ZUQeA9rlGlqFKYS/7NjzLpmPkn4Q8Axkni
+         zVvxj9rXGxhbO6iVr8Ckyx3opAK61KNoe40cGD+DxKlFTpajFe38Dek/7iDYjviiQ4
+         r6YKe5LGP3mD+msS3+kh1X4o1HzFzY6Rf6On0xmPT/GdQ20hxxtVPCdYdEcNGQxr7Q
+         ypzvPbP7fCec+RW5k558duToIGoiRzFjyWM9IT+ypjpA4eS5KUYeONFoGDwqj/o5UD
+         yTar86bAUyBmw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAA8EJpomtbN0+ocD2pRbkYriUY4D9OnjgoFzL9qNHhPm3Uz5cQ@mail.gmail.com>
+References: <20220601220747.1145095-1-marijn.suijten@somainline.org> <20220601220747.1145095-4-marijn.suijten@somainline.org> <CAA8EJpomtbN0+ocD2pRbkYriUY4D9OnjgoFzL9qNHhPm3Uz5cQ@mail.gmail.com>
+Subject: Re: [PATCH v2 03/11] clk: fixed-factor: Introduce *clk_hw_register_fixed_factor_parent_hw()
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rajeev Nandan <quic_rajeevny@quicinc.com>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Marek <jonathan@marek.ca>, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>
+Date:   Thu, 09 Jun 2022 15:12:09 -0700
+User-Agent: alot/0.10
+Message-Id: <20220609221211.684C1C34114@smtp.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Alexander,
+Quoting Dmitry Baryshkov (2022-06-02 03:20:19)
+> On Thu, 2 Jun 2022 at 01:07, Marijn Suijten
+> <marijn.suijten@somainline.org> wrote:
+> > diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-fac=
+tor.c
+> > index 54942d758ee6..fabb98d0cdb2 100644
+> > --- a/drivers/clk/clk-fixed-factor.c
+> > +++ b/drivers/clk/clk-fixed-factor.c
+> > @@ -78,7 +78,8 @@ static void devm_clk_hw_register_fixed_factor_release=
+(struct device *dev, void *
+> >
+> >  static struct clk_hw *
+> >  __clk_hw_register_fixed_factor(struct device *dev, struct device_node =
+*np,
+> > -               const char *name, const char *parent_name, int index,
+> > +               const char *name, const char *parent_name,
+> > +               const struct clk_hw *parent_hw, int index,
+> >                 unsigned long flags, unsigned int mult, unsigned int di=
+v,
+> >                 bool devm)
+> >  {
+> > @@ -108,7 +109,9 @@ __clk_hw_register_fixed_factor(struct device *dev, =
+struct device_node *np,
+> >         init.name =3D name;
+> >         init.ops =3D &clk_fixed_factor_ops;
+> >         init.flags =3D flags;
+> > -       if (parent_name)
+> > +       if (parent_hw)
+> > +               init.parent_hws =3D &parent_hw;
+> > +       else if (parent_name)
+> >                 init.parent_names =3D &parent_name;
+>=20
+> If you change the order of if clauses, you won't have to introduce
+> unnecessary changes.
 
-On Donnerstag, 9. Juni 2022 11:54:12 CEST Alexander Martinz wrote:
-> This patch adds audio support for the SHIFT6mq phone.
-> 
-> The primary microphone and headphone jack are handled by the
-> SDM845 sound card and WCD9340 codec.
-> 
-> The primary speaker needs to go through the TFA9890 speaker
-> amplifier.
-> 
-> Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
-> Tested-by: Dylan Van Assche <me@dylanvanassche.be>
-> ---
->  .../boot/dts/qcom/sdm845-shift-axolotl.dts    | 141 ++++++++++++++++++
->  1 file changed, 141 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts index
-> fa72f23ef0c2..8c4967d6d0e3 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> @@ -8,6 +8,8 @@
-> 
->  #include <dt-bindings/gpio/gpio.h>
->  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-> +#include <dt-bindings/sound/qcom,q6afe.h>
-> +#include <dt-bindings/sound/qcom,q6asm.h>
->  #include "sdm845.dtsi"
->  #include "pm8998.dtsi"
->  #include "pmi8998.dtsi"
-> @@ -492,6 +494,19 @@ touchscreen@38 {
->  	};
->  };
-> 
-> +&i2c11 {
-> +	status = "okay";
-> +	clock-frequency = <400000>;
-> +
-> +	tfa9890_codec: tfa9890@34 {
-> +		compatible = "nxp,tfa9890";
-> +		reg = <0x34>;
-> +		vddd-supply = <&vreg_s4a_1p8>;
-> +		reset-gpio = <&tlmm 7 0>;
-> +		#sound-dai-cells = <1>;
-> +	};
-> +};
-> +
->  &ipa {
->  	status = "okay";
-> 
-> @@ -530,6 +545,27 @@ volume_down_resin: resin {
->  	};
->  };
-> 
-> +&q6afedai {
-> +	qi2s@22 {
-> +		reg = <22>;
-> +		qcom,sd-lines = <0>;
-> +	};
-> +};
+Indeed, please do that.
 
-While my patch hasn't been reviewed yet, I have proposed to change the magic 
-number <22> to the constant QUATERNARY_MI2S_RX here in existing dts files which 
-better describes what the reg here is.
+>=20
+> >         else
+> >                 init.parent_data =3D &pdata;
+> > @@ -148,17 +151,50 @@ struct clk_hw *devm_clk_hw_register_fixed_factor_=
+index(struct device *dev,
+> >                 const char *name, unsigned int index, unsigned long fla=
+gs,
+> >                 unsigned int mult, unsigned int div)
+> >  {
+> > -       return __clk_hw_register_fixed_factor(dev, NULL, name, NULL, in=
+dex,
+> > -                                             flags, mult, div, true);
+> > +       return __clk_hw_register_fixed_factor(dev, NULL, name, NULL, NU=
+LL,
+> > +                                             index, flags, mult, div, =
+true);
+>=20
+> Here (and several times later) you are inserting an argument and then
+> moving arguments to the next line. My slight preference would be to
+> just insert the arg (and maybe break the line if it gets too long) w/o
+> touching the next lines.
 
-https://lore.kernel.org/linux-arm-msm/20220603094710.64591-1-luca.weiss@fairphone.com/
-
-Maybe worth doing the same here for v2?
-
-Regards
-Luca
-
-
-
+I'd just add the argument at the end because when it is added in the
+middle it makes the diff more difficult to read.
