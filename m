@@ -2,255 +2,85 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06286C43334
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 09:54:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55945C433EF
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 10:41:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238875AbiFIJyk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Jun 2022 05:54:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50568 "EHLO
+        id S234519AbiFIKk6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Jun 2022 06:40:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239398AbiFIJyh (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 05:54:37 -0400
-X-Greylist: delayed 2337 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 09 Jun 2022 02:54:35 PDT
-Received: from mail.shift-gmbh.com (mail.shift-gmbh.com [85.10.195.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33A7B19578A;
-        Thu,  9 Jun 2022 02:54:33 -0700 (PDT)
-From:   Alexander Martinz <amartinz@shiftphones.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shiftphones.com;
-        s=2018; t=1654768471;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3ai7MXDHhQ0YkmN4XjLxpe4VHIXkfJfMzV2EfEfNPqA=;
-        b=q3qFRsOM0276IDWHlcDx5ar0aVWlGYi/hivWeZCNX4vetaAs94nL3WD5W8jjKIOhuUX10N
-        9yklJLJ3nk7v2sGTmgwLFqQeVGhqc7pc7D4Q7f6XO8uyQQs/rbO0US5qfm1lIVFId7/7Pw
-        bO90EOk4ZKWREEwZeszqcT25Swz+KVC5EQ5/vwrwBolzzaZbsDbhfVE4JhzEH3KRmETdK+
-        wpI5ZLpRQecrGgxz9fOojk+YXK3NgdHV20zpn+o1tW/0OPi7qQy4Gpi2WFX8cWWSToOm0w
-        FaurpkpwnXFGyId4LP9VlVA6Z7BiAPgpfvQxSJdO+bU4q8iJFqSV6IRepJB7Ng==
-To:     ~postmarketos/upstreaming@lists.sr.ht
-Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alexander Martinz <amartinz@shiftphones.com>,
-        Dylan Van Assche <me@dylanvanassche.be>
-Subject: [PATCH 2/2] arm64: dts: qcom/sdm845-shift-axolotl: Add audio support
-Date:   Thu,  9 Jun 2022 11:54:12 +0200
-Message-Id: <20220609095412.211060-2-amartinz@shiftphones.com>
-In-Reply-To: <20220609095412.211060-1-amartinz@shiftphones.com>
-References: <20220609095412.211060-1-amartinz@shiftphones.com>
+        with ESMTP id S243387AbiFIKkp (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 06:40:45 -0400
+X-Greylist: delayed 3858 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 09 Jun 2022 03:40:11 PDT
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B4D72FAC07;
+        Thu,  9 Jun 2022 03:40:10 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id DEE3F66017C5;
+        Thu,  9 Jun 2022 11:40:07 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1654771208;
+        bh=e0AQfxv8jGpQQTIJ9KKzNfQsGY/6PxPWTtlkTzfZaxQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=QFp+iinGUw+/GZa9POrbVNX8EqjKqwp/vDjG+HoAKtab89eWAf8/SwDrG7wJSSHzY
+         dnoosbFI8+GYD3a08e9TOw9PWSjBZ0Hj7zL0iXt6dQXVBjCrqg/lCvZs8MV7fNsZiv
+         TfY6Vjck2tHn3FQmO6C4qTZIEo8TfpGi06NGe1XM9K30kbRkipqzFdlUZxWBAenzW4
+         olooBGTyxd9Bn5kx0w5hxsKmFIZnuz68MHXhcGGFX1hOkVrFXNkvgNzsRIzYkid//W
+         xUKG36GZfioFha92O78ghvotmX+1BvKmQRUp96KtQvH8XGTgL0J30iZ9KTZLKajZ9U
+         DQjswuX2s1dYQ==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     yong.wu@mediatek.com
+Cc:     joro@8bytes.org, will@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        iommu@lists.linux-foundation.org,
+        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v3 0/3] MediaTek Helio X10 MT6795 - M4U/IOMMU Support
+Date:   Thu,  9 Jun 2022 12:39:58 +0200
+Message-Id: <20220609104001.97753-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-        auth=pass smtp.auth=amartinz@shiftphones.com smtp.mailfrom=amartinz@shiftphones.com
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This patch adds audio support for the SHIFT6mq phone.
+In an effort to give some love to the apparently forgotten MT6795 SoC,
+I am upstreaming more components that are necessary to support platforms
+powered by this one apart from a simple boot to serial console.
 
-The primary microphone and headphone jack are handled by the
-SDM845 sound card and WCD9340 codec.
+This series introduces support for the IOMMUs found on this SoC.
 
-The primary speaker needs to go through the TFA9890 speaker
-amplifier.
+Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
 
-Signed-off-by: Alexander Martinz <amartinz@shiftphones.com>
-Tested-by: Dylan Van Assche <me@dylanvanassche.be>
----
- .../boot/dts/qcom/sdm845-shift-axolotl.dts    | 141 ++++++++++++++++++
- 1 file changed, 141 insertions(+)
+Changes in v3:
+ - Added new flag as suggested by Yong Wu
+ - Rebased on top of https://patchwork.kernel.org/project/linux-mediatek/list/?series=648784
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-index fa72f23ef0c2..8c4967d6d0e3 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-@@ -8,6 +8,8 @@
- 
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-+#include <dt-bindings/sound/qcom,q6afe.h>
-+#include <dt-bindings/sound/qcom,q6asm.h>
- #include "sdm845.dtsi"
- #include "pm8998.dtsi"
- #include "pmi8998.dtsi"
-@@ -492,6 +494,19 @@ touchscreen@38 {
- 	};
- };
- 
-+&i2c11 {
-+	status = "okay";
-+	clock-frequency = <400000>;
-+
-+	tfa9890_codec: tfa9890@34 {
-+		compatible = "nxp,tfa9890";
-+		reg = <0x34>;
-+		vddd-supply = <&vreg_s4a_1p8>;
-+		reset-gpio = <&tlmm 7 0>;
-+		#sound-dai-cells = <1>;
-+	};
-+};
-+
- &ipa {
- 	status = "okay";
- 
-@@ -530,6 +545,27 @@ volume_down_resin: resin {
- 	};
- };
- 
-+&q6afedai {
-+	qi2s@22 {
-+		reg = <22>;
-+		qcom,sd-lines = <0>;
-+	};
-+};
-+
-+&q6asmdai {
-+	dai@0 {
-+		reg = <0>;
-+	};
-+
-+	dai@1 {
-+		reg = <1>;
-+	};
-+
-+	dai@2 {
-+		reg = <2>;
-+	};
-+};
-+
- /*
-  * Prevent garbage data on bluetooth UART lines
-  */
-@@ -578,6 +614,84 @@ &qupv3_id_1 {
- 	status = "okay";
- };
- 
-+&sound {
-+	model = "SHIFT6mq";
-+	compatible = "qcom,sdm845-sndcard";
-+	pinctrl-0 = <&quat_mi2s_active &quat_mi2s_sd0_active>;
-+	pinctrl-names = "default";
-+
-+	audio-routing = "RX_BIAS", "MCLK",
-+			"AMIC1", "MIC BIAS1",
-+			"AMIC2", "MIC BIAS2",
-+			"AMIC3", "MIC BIAS3";
-+
-+	mm1-dai-link {
-+		link-name = "MultiMedia1";
-+		cpu {
-+			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA1>;
-+		};
-+	};
-+
-+	mm2-dai-link {
-+		link-name = "MultiMedia2";
-+		cpu {
-+			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA2>;
-+		};
-+	};
-+
-+	mm3-dai-link {
-+		link-name = "MultiMedia3";
-+		cpu {
-+			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA3>;
-+		};
-+	};
-+
-+	speaker-dai-link {
-+		link-name = "Speaker Playback";
-+		codec {
-+			sound-dai = <&tfa9890_codec 0>;
-+		};
-+
-+		cpu {
-+			sound-dai = <&q6afedai QUATERNARY_MI2S_RX>;
-+		};
-+
-+		platform {
-+			sound-dai = <&q6routing>;
-+		};
-+	};
-+
-+	slim-dai-link {
-+		link-name = "SLIM Playback";
-+		codec {
-+			sound-dai = <&wcd9340 0>;
-+		};
-+
-+		cpu {
-+			sound-dai = <&q6afedai SLIMBUS_0_RX>;
-+		};
-+
-+		platform {
-+			sound-dai = <&q6routing>;
-+		};
-+	};
-+
-+	slimcap-dai-link {
-+		link-name = "SLIM Capture";
-+		codec {
-+			sound-dai = <&wcd9340 1>;
-+		};
-+
-+		cpu {
-+			sound-dai = <&q6afedai SLIMBUS_0_TX>;
-+		};
-+
-+		platform {
-+			sound-dai = <&q6routing>;
-+		};
-+	};
-+};
-+
- &tlmm {
- 	gpio-reserved-ranges = <0 4>, <81 4>;
- 
-@@ -686,6 +800,15 @@ config {
- 			bias-pull-down;
- 		};
- 	};
-+
-+	wcd_intr_default: wcd_intr_default {
-+		pins = <54>;
-+		function = "gpio";
-+
-+		input-enable;
-+		bias-pull-down;
-+		drive-strength = <2>;
-+	};
- };
- 
- &uart6 {
-@@ -756,6 +879,24 @@ &venus {
- 	firmware-name = "qcom/sdm845/axolotl/venus.mbn";
- };
- 
-+&wcd9340 {
-+	pinctrl-0 = <&wcd_intr_default>;
-+	pinctrl-names = "default";
-+	clock-names = "extclk";
-+	clocks = <&rpmhcc RPMH_LN_BB_CLK2>;
-+	reset-gpios = <&tlmm 64 0>;
-+	vdd-buck-supply = <&vreg_s4a_1p8>;
-+	vdd-buck-sido-supply = <&vreg_s4a_1p8>;
-+	vdd-tx-supply = <&vreg_s4a_1p8>;
-+	vdd-rx-supply = <&vreg_s4a_1p8>;
-+	vdd-io-supply = <&vreg_s4a_1p8>;
-+
-+	qcom,micbias1-microvolt = <2700000>;
-+	qcom,micbias2-microvolt = <2700000>;
-+	qcom,micbias3-microvolt = <2700000>;
-+	qcom,micbias4-microvolt = <2700000>;
-+};
-+
- &wifi {
- 	status = "okay";
- 
+Changes in v2:
+ - Rebased on top of https://patchwork.kernel.org/project/linux-mediatek/list/?series=642681
+
+AngeloGioacchino Del Regno (3):
+  dt-bindings: mediatek: Add bindings for MT6795 M4U
+  iommu: mtk_iommu: Introduce new flag TF_PORT_TO_ADDR_MT8173
+  iommu: mtk_iommu: Add support for MT6795 Helio X10 M4Us
+
+ .../bindings/iommu/mediatek,iommu.yaml        |  4 +
+ drivers/iommu/mtk_iommu.c                     | 21 +++-
+ include/dt-bindings/memory/mt6795-larb-port.h | 96 +++++++++++++++++++
+ 3 files changed, 119 insertions(+), 2 deletions(-)
+ create mode 100644 include/dt-bindings/memory/mt6795-larb-port.h
+
 -- 
-2.36.1
+2.35.1
 
