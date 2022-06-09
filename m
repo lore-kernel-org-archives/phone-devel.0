@@ -2,102 +2,109 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B2CBC433EF
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 09:33:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E528CCA47D
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 09:35:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232782AbiFIJde (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Jun 2022 05:33:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37308 "EHLO
+        id S233025AbiFIJf6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Jun 2022 05:35:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234852AbiFIJde (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 05:33:34 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71CFD374275;
-        Thu,  9 Jun 2022 02:33:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654767212; x=1686303212;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LXu/9U0BdgUxliXYEM/+Ql+iYlIl9zqzpjen+/HOcWM=;
-  b=FLXSO2sUmZrN9EsF1eRG74lv5NL+9pH6ovW9ex+mgFZ+Xt5+/p8I0oep
-   xsqlaPTkwOxdmyrMcmLhf4/m0DP/RwMxX7DYmnzqWIJcACzAlO+79sOjV
-   83ugIA3kjbTmXh8kvwTNA8mN5bnrKn1VZDopD6zSrbP54dFWgw60cFh+l
-   6/bs6/OxYiJADD2bZsK4ChWFHHrJCDQZ8ea/0MM5Pya0jgy4ntKxpdar5
-   m/pmgYM/8syVHhb8qBM/5pN19OHCfNRRyXWD5bmuYymKAFH0TNrlTypXr
-   1BRBL0b94ZPuIv2i/Ww9+UnDqCc4/Sdn3uk8rizhBnOBvMJ8WD/fv3BtO
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10372"; a="266001830"
-X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
-   d="scan'208";a="266001830"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 02:33:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,287,1647327600"; 
-   d="scan'208";a="724333416"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 09 Jun 2022 02:33:28 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nzEXg-000FqZ-4Y;
-        Thu, 09 Jun 2022 09:33:28 +0000
-Date:   Thu, 9 Jun 2022 17:32:51 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] ARM: dts: qcom: msm8974-*: re-add remoteproc supplies
-Message-ID: <202206091706.4QP4H2JW-lkp@intel.com>
-References: <20220606160421.1641778-2-luca@z3ntu.xyz>
+        with ESMTP id S234695AbiFIJf5 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 05:35:57 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222FB7654
+        for <phone-devel@vger.kernel.org>; Thu,  9 Jun 2022 02:35:57 -0700 (PDT)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 3D1EC66016FD;
+        Thu,  9 Jun 2022 10:35:49 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1654767350;
+        bh=BH72tA3Gv2tLURwDnY5UsSEkwsx+vUzwp5wTPxVczvk=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=aFgguC5hMuyVbHwuGvCHFJ/j16RiTIEJQ4LRbUFOphEqEyKiRcnjJxU8B66h/GYQ3
+         GT4U+S2FDQS4S3AGCcCaRin3wtBLGC3hxCBCSeMrx2JX+jozSujwzsrd4N3kasKMZq
+         xb2PmVvm4z1F+7aYRKRxe32oRugDq2sax4108q+hp0dCiiAltoVHxLT5nLh84KlWZN
+         xykOEDKdoJSUMDP3HUAW7qeyPZCEq4cGi6nCaQ2Vq8TijxtaONgDPNjXKCDNkdTaCW
+         5XFKn7XzzqiLqvKcovYV+NFovRiH2SrZtWqaHEKxtODGlePSDyhrTS/200pYBUAocV
+         WLARRgsksZ3cw==
+Message-ID: <1974b83e-967a-41ed-e790-52ceaf349ad3@collabora.com>
+Date:   Thu, 9 Jun 2022 11:35:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220606160421.1641778-2-luca@z3ntu.xyz>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH v3 1/2] dt-bindings: timer: mediatek: Add CPUX System
+ Timer and MT6795 compatible
+Content-Language: en-US
+To:     Matthias Brugger <matthias.bgg@gmail.com>,
+        daniel.lezcano@linaro.org
+Cc:     tglx@linutronix.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        paul.bouchara@somainline.org
+References: <20220518112435.241116-1-angelogioacchino.delregno@collabora.com>
+ <20220518112435.241116-2-angelogioacchino.delregno@collabora.com>
+ <afd9ab8e-5bad-54ee-3f44-5e0cfdb22e75@gmail.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <afd9ab8e-5bad-54ee-3f44-5e0cfdb22e75@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Luca,
+Il 07/06/22 18:11, Matthias Brugger ha scritto:
+> 
+> 
+> On 18/05/2022 13:24, AngeloGioacchino Del Regno wrote:
+>> Document the "CPUXGPT" CPU General Purpose Timer, used as ARM/ARM64
+>> System Timer on MediaTek platforms and add the MT6795 compatible for it.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>> ---
+>>   .../devicetree/bindings/timer/mediatek,mtk-timer.txt          | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt 
+>> b/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
+>> index 6f1f9dba6e88..49706cbef45d 100644
+>> --- a/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
+>> +++ b/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
+>> @@ -2,6 +2,7 @@ MediaTek Timers
+>>   ---------------
+>>   MediaTek SoCs have two different timers on different platforms,
+> 
+> Nit: There are now three different timers so maybe:
+> "MediaTek SoCs have different timers on different platforms,"
+> 
+> Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+> 
 
-Thank you for the patch! Yet something to improve:
+Hi Matthias,
+can we please ignore that description nit for this patch?
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on robh/for-next v5.19-rc1 next-20220609]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+I was anyway planning to do a YAML conversion after getting this merged in, perhaps
+we can just fix that on the new one instead?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Luca-Weiss/ARM-dts-qcom-msm8974-re-add-missing-pinctrl/20220607-002318
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git f2906aa863381afb0015a9eb7fefad885d4e5a56
-config: arm-randconfig-c002-20220608 (https://download.01.org/0day-ci/archive/20220609/202206091706.4QP4H2JW-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project b92436efcb7813fc481b30f2593a4907568d917a)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install arm cross compiling tool for clang build
-        # apt-get install binutils-arm-linux-gnueabi
-        # https://github.com/intel-lab-lkp/linux/commit/68b0d8fbd2f10572118c481ea108f3dfb7f46a4f
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Luca-Weiss/ARM-dts-qcom-msm8974-re-add-missing-pinctrl/20220607-002318
-        git checkout 68b0d8fbd2f10572118c481ea108f3dfb7f46a4f
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash
+Cheers,
+Angelo
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+>> +- CPUX (ARM/ARM64 System Timer)
+>>   - GPT (General Purpose Timer)
+>>   - SYST (System Timer)
+>> @@ -29,6 +30,9 @@ Required properties:
+>>       * "mediatek,mt7629-timer" for MT7629 compatible timers (SYST)
+>>       * "mediatek,mt6765-timer" for MT6765 and all above compatible timers (SYST)
+>> +    For those SoCs that use CPUX
+>> +    * "mediatek,mt6795-systimer" for MT6795 compatible timers (CPUX)
+>> +
+>>   - reg: Should contain location and length for timer register.
+>>   - clocks: Should contain system clock.
 
-All errors (new ones prefixed by >>):
-
-   also defined at arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts:291.18-293.3
->> ERROR: Input tree has errors, aborting (use -f to force output)
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
