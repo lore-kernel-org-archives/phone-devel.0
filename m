@@ -2,35 +2,35 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9927CCA473
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 11:23:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EFEF1C43334
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 11:23:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243533AbiFILXO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Jun 2022 07:23:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45634 "EHLO
+        id S243543AbiFILXP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Jun 2022 07:23:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243520AbiFILXN (ORCPT
+        with ESMTP id S243517AbiFILXN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 07:23:13 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72B329D076;
-        Thu,  9 Jun 2022 04:23:12 -0700 (PDT)
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD301C1EDD;
+        Thu,  9 Jun 2022 04:23:11 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 8A23166017CF;
-        Thu,  9 Jun 2022 12:23:10 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id A188B66017CB;
+        Thu,  9 Jun 2022 12:23:09 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1654773791;
-        bh=+SNQosugZ3rRLzeC91179/d1xD7fpoErRAwb547pmRM=;
+        s=mail; t=1654773790;
+        bh=6b5Fn00QFN3S8pk3LiXp3oowU6+YetKGNFXGTWU1NeQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S7KJDmw4QBP9Uj7VYNzil/QC22SlwfQosv38ZlTcKF1fTNbCdGJMtdM/XXAuS42cx
-         tkber570qlmPd1KgxxeLT57PuZ8dSLaYH/b3G8r8eR3sEXxnnnqiHZasnsC4wosbKB
-         qoPhN1SF9UYkrT/XjkdACqiXVpAOEhWQhS9W7BJUrHT1dH2u0qn93Rq8LOjBAuZtNk
-         iD0qXVvBuFebozm+R/4ydMZygTpqkCRAGLtcFOQYRhe7Kt1VEvwpv4D7MAfb+c2fmT
-         ZfDgTHfbhQZBDJGYky2Tgl4OTWys0UseWYN8K32Ktx0q3hSRZ+RSQT8T7UcsXJyjeU
-         gMZ73MX2uQ+tw==
+        b=gbQJ9zbuPxPKTT7q3eU227g6oIEkx67WfDTehPGu0ahrJiFRpwnXwna+F/oZ3Trxp
+         29wyf5ywNX0PTB5eosLv/tW5/oUu2axA5eowmKllKV+01cvAohdKHvxHe1jcdwJyXc
+         IjSQNspArFVk4HhDH38hoisHRw6CdaU+5q9jmW7GpWRlD3C83N/6QReLfnE8mjD/zN
+         f9xRU23cPvduQO8CNpCtXLaVc+MXEtk/o9LK8IG+TCidx9TwIvluLsM8yi3ffllVdk
+         b5FfiR69AQqePQWP+5ESsm9f7j7LhVp/aWn9AYbkcTe3D+I9aq6I+L5KMKe9QEX4gJ
+         mK+ltmDoiIUag==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
 To:     robh+dt@kernel.org
@@ -43,9 +43,9 @@ Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
         kernel@collabora.com,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v2 03/10] arm64: dts: mediatek: mt6795: Add Cortex A53 PMU nodes
-Date:   Thu,  9 Jun 2022 13:22:56 +0200
-Message-Id: <20220609112303.117928-4-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v2 02/10] arm64: dts: mediatek: mt6795: Add cpu-map and L2 cache
+Date:   Thu,  9 Jun 2022 13:22:55 +0200
+Message-Id: <20220609112303.117928-3-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220609112303.117928-1-angelogioacchino.delregno@collabora.com>
 References: <20220609112303.117928-1-angelogioacchino.delregno@collabora.com>
@@ -55,33 +55,131 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the required nodes to enable the PMU on this SoC.
+This SoC is HMP and has two clusters with four Cortex-A53 cores each:
+declare a cpu map and, while at it, also add the next-level-cache
+properties.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- arch/arm64/boot/dts/mediatek/mt6795.dtsi | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt6795.dtsi | 56 ++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/mediatek/mt6795.dtsi b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-index 1456b9035336..639104b3f693 100644
+index 167f90bd991a..1456b9035336 100644
 --- a/arch/arm64/boot/dts/mediatek/mt6795.dtsi
 +++ b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-@@ -160,6 +160,15 @@ uart_clk: dummy26m {
- 		#clock-cells = <0>;
+@@ -34,6 +34,7 @@ cpu0: cpu@0 {
+ 			compatible = "arm,cortex-a53";
+ 			enable-method = "psci";
+ 			reg = <0x000>;
++			next-level-cache = <&l2_0>;
+ 		};
+ 
+ 		cpu1: cpu@1 {
+@@ -41,6 +42,7 @@ cpu1: cpu@1 {
+ 			compatible = "arm,cortex-a53";
+ 			enable-method = "psci";
+ 			reg = <0x001>;
++			next-level-cache = <&l2_0>;
+ 		};
+ 
+ 		cpu2: cpu@2 {
+@@ -48,6 +50,7 @@ cpu2: cpu@2 {
+ 			compatible = "arm,cortex-a53";
+ 			enable-method = "psci";
+ 			reg = <0x002>;
++			next-level-cache = <&l2_0>;
+ 		};
+ 
+ 		cpu3: cpu@3 {
+@@ -55,6 +58,7 @@ cpu3: cpu@3 {
+ 			compatible = "arm,cortex-a53";
+ 			enable-method = "psci";
+ 			reg = <0x003>;
++			next-level-cache = <&l2_0>;
+ 		};
+ 
+ 		cpu4: cpu@100 {
+@@ -62,6 +66,7 @@ cpu4: cpu@100 {
+ 			compatible = "arm,cortex-a53";
+ 			enable-method = "psci";
+ 			reg = <0x100>;
++			next-level-cache = <&l2_1>;
+ 		};
+ 
+ 		cpu5: cpu@101 {
+@@ -69,6 +74,7 @@ cpu5: cpu@101 {
+ 			compatible = "arm,cortex-a53";
+ 			enable-method = "psci";
+ 			reg = <0x101>;
++			next-level-cache = <&l2_1>;
+ 		};
+ 
+ 		cpu6: cpu@102 {
+@@ -76,6 +82,7 @@ cpu6: cpu@102 {
+ 			compatible = "arm,cortex-a53";
+ 			enable-method = "psci";
+ 			reg = <0x102>;
++			next-level-cache = <&l2_1>;
+ 		};
+ 
+ 		cpu7: cpu@103 {
+@@ -83,6 +90,55 @@ cpu7: cpu@103 {
+ 			compatible = "arm,cortex-a53";
+ 			enable-method = "psci";
+ 			reg = <0x103>;
++			next-level-cache = <&l2_1>;
++		};
++
++		cpu-map {
++			cluster0 {
++				core0 {
++					cpu = <&cpu0>;
++				};
++
++				core1 {
++					cpu = <&cpu1>;
++				};
++
++				core2 {
++					cpu = <&cpu2>;
++				};
++
++				core3 {
++					cpu = <&cpu3>;
++				};
++			};
++
++			cluster1 {
++				core0 {
++					cpu = <&cpu4>;
++				};
++
++				core1 {
++					cpu = <&cpu5>;
++				};
++
++				core2 {
++					cpu = <&cpu6>;
++				};
++
++				core3 {
++					cpu = <&cpu7>;
++				};
++			};
++		};
++
++		l2_0: l2-cache0 {
++			compatible = "cache";
++			cache-level = <2>;
++		};
++
++		l2_1: l2-cache1 {
++			compatible = "cache";
++			cache-level = <2>;
+ 		};
  	};
  
-+	pmu {
-+		compatible = "arm,cortex-a53-pmu";
-+		interrupts = <GIC_SPI  8 IRQ_TYPE_LEVEL_LOW>,
-+			     <GIC_SPI  9 IRQ_TYPE_LEVEL_LOW>,
-+			     <GIC_SPI 10 IRQ_TYPE_LEVEL_LOW>,
-+			     <GIC_SPI 11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-affinity = <&cpu0>, <&cpu1>, <&cpu2>, <&cpu3>;
-+	};
-+
- 	timer {
- 		compatible = "arm,armv8-timer";
- 		interrupt-parent = <&gic>;
 -- 
 2.35.1
 
