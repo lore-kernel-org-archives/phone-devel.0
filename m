@@ -2,88 +2,77 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C4B0C433EF
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 08:37:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3166BC433EF
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Jun 2022 08:51:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230119AbiFIIhW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Jun 2022 04:37:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57874 "EHLO
+        id S242084AbiFIIvp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Jun 2022 04:51:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231558AbiFIIhW (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 04:37:22 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDD8B3F5768
-        for <phone-devel@vger.kernel.org>; Thu,  9 Jun 2022 01:37:20 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id b7so12811566ljr.6
-        for <phone-devel@vger.kernel.org>; Thu, 09 Jun 2022 01:37:20 -0700 (PDT)
+        with ESMTP id S242102AbiFIIvQ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Jun 2022 04:51:16 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E59714BFEF
+        for <phone-devel@vger.kernel.org>; Thu,  9 Jun 2022 01:50:57 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id l204so40625595ybf.10
+        for <phone-devel@vger.kernel.org>; Thu, 09 Jun 2022 01:50:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/q3p3QUD+g7wxbiE1VAqcdBwPqr1tiKnvsqCuaov6dk=;
-        b=WiH5zCIKxxTKnnMSwsih6nVLnnOQdVN0OoKi8Vq3GSkcmXU9xvbsM3IEtCND6E25u7
-         /I3gpHBr7llneo44AgfwVvv10V2Hmt0EILgpLCGTYJkGxwchanF+KEAbBlm3gu904/zH
-         fkdBZav4WacCrjQKKv96kck60mYX6iE817tdSVwb6niriQ37CtKFSXQOTFDZPPDYzauv
-         FIGFEHzNS5mGBuHYprpPrjID3BHxxDT3t6yQcLSymfoXRBqZuJNpsH2hXZaHUQreYV55
-         +1nW14k4Y707ZB+0UDfHbYaZqqfndAvwYJniLNU5CfXgCXlb6pvlSQ/SrITRc0OJ9Q/7
-         M//w==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CDMGnU/5QuisJhku5mR9LWhJd7uvk2ybw9nJB94v05A=;
+        b=dpOPL9sHNWa8TVOJPyi/p5NNyuKJtsDmFGUp84aW3j1XKEGP6YMUeInce5E0ocSV0V
+         ybhO0qyomunjRd3UjjDsCqamQifMI7mhi77aa22tCYUeP34cnUn+hsWpAQQY6d7IzaU6
+         CGD2f+i9YgUo9WX3lng98332cqygBA6+BVXCIliCifHejM+Zesfy8ebGBuOrcTHRzDGo
+         8q8CVJVmqUZi1KfJpFaSywTmct968RPomQlj8LrsN9wywPeDS+AZdZW47IqHRc2vUDYy
+         bPnTLTRg130b7BD0uaUF4k9RN01z193Jnt6edLtHYAfHJwlCeLQ+mPXsR5a581ghprn6
+         PsjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=/q3p3QUD+g7wxbiE1VAqcdBwPqr1tiKnvsqCuaov6dk=;
-        b=nz3hi3vt8IG4OivY6JUIp7FmQBxcloFaqKQrZyeFoTRR2emFSMwiIk1ZGGxNQtsGSg
-         wa/2Vc47fyShGdF9IwZo+iv9FSFUXnM/T8ZBaVABPquGy0NGhyXCQBvsnUOnNbCf5Tol
-         YEAsVf7WVdbWUfirDrgvwrrDGcqQps3Tzu4/0KV2ClaWnWDTKgc61/yk4SoRfx9s5Yla
-         2o87zNHkXiXCc1ZCB2d9qqR8D5YbKK5vud5RuCmfi94+NWkPhYVqIoyxTCJ0my1dR12o
-         x+K872iWnZ0/LReOjbrKUFaqI5zIBIU0c4MlL3IdWoVosj/EWBuyxmzer7FqvYwLBmtr
-         fRkw==
-X-Gm-Message-State: AOAM531LhSef1/Wlwo+G9ASPfK/htQcCbd1Psu3cTpBvT6boDQsO/2jb
-        F24FEIomX5nu0/0osEDeQyV4PA==
-X-Google-Smtp-Source: ABdhPJzGHcQie2bpH1jem/M8BRK7qlty0jbsIaMUngQrowNpMmaMAg6R+wH1+02MNArexT1O4RUiFA==
-X-Received: by 2002:a2e:9d96:0:b0:257:b72d:9ed4 with SMTP id c22-20020a2e9d96000000b00257b72d9ed4mr1823731ljj.509.1654763839243;
-        Thu, 09 Jun 2022 01:37:19 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id v28-20020a2e505c000000b00253deeaeb3dsm3585285ljd.131.2022.06.09.01.37.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jun 2022 01:37:18 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-arm-kernel@lists.infradead.org, phone-devel@vger.kernel.org
-Cc:     Stephan Gerhold <stephan@gerhold.net>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH] ARM: dts: ux500: Fix Janice accelerometer mounting matrix
-Date:   Thu,  9 Jun 2022 10:35:16 +0200
-Message-Id: <20220609083516.329281-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.36.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CDMGnU/5QuisJhku5mR9LWhJd7uvk2ybw9nJB94v05A=;
+        b=mcPhdwGKyAFPKABOsX2lG2ZIFuxGS1E4sZPC4KMk7wBA4ZXFH+phDni0nwfaxr4P+C
+         MA1JXXXGOn8WaFkl8vcwkcR8YAlXJ8STfgGhl748IMPEN0keKrg/pfcKKicQvaXBtvE/
+         1LUC/w+q3zF1eQCn09IIefx8Ril+Bs1PtyfKxXBTO83gEY7eanerA/xPbahRYgYDw6NN
+         cR0wex9bqsf1rZwSEwEZWLMiXtppGYJkWK0KhSU46ewAGQIHDNSSGgWNid+vz3Y3hzg+
+         EgzsH4eMV7pzUfaRkdRPfDXdJZ9cIUQ0pShpTz5DPmRq1VYPcAsRHJoQ7VdUdLLYkiaa
+         okjA==
+X-Gm-Message-State: AOAM533aORDrqmTN91JGgEHGZuQ5WHXIOVzKh/omsyMaQiiw5R+dEvEl
+        u7yE0abJFQfGgJhyZ5rYGyXQOa+OfiScpimkz5r3mg==
+X-Google-Smtp-Source: ABdhPJzRcUEcD1jJVh9AkIq3EqlZt60G5uOjCVMy1Mw4sELrG5G4EEQ2xCVv9140uiuZu2W9oTPaewYvWloZ2MQIAZ4=
+X-Received: by 2002:a25:b686:0:b0:664:2b6:8e13 with SMTP id
+ s6-20020a25b686000000b0066402b68e13mr6732352ybj.533.1654764657132; Thu, 09
+ Jun 2022 01:50:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1654727058.git.jahau@rocketmail.com> <719fc290550c40ccb75b1444917b91f69619806b.1654727058.git.jahau@rocketmail.com>
+In-Reply-To: <719fc290550c40ccb75b1444917b91f69619806b.1654727058.git.jahau@rocketmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 9 Jun 2022 10:50:45 +0200
+Message-ID: <CACRpkdYmkk2pQT8rFeW77V-JMwknE8ejD+uU+mx8Bxo6zu4G0w@mail.gmail.com>
+Subject: Re: [PATCH 1/7] iio: magnetometer: yas530: Change range of data in
+ volatile register
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This was fixed wrong so fix it again. Now verified by using
-iio-sensor-proxy monitor-sensor test program.
+On Thu, Jun 9, 2022 at 1:38 AM Jakob Hauser <jahau@rocketmail.com> wrote:
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- arch/arm/boot/dts/ste-ux500-samsung-janice.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> In function yas5xx_volatile_reg(), the range for measure data should end at
+> "YAS5XX_MEASURE_DATA + 7" instead of "+ 8" as we count from 0 to 7 here.
+>
+> This change is of low importance as the "+ 8" register isn't called.
+>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 
-diff --git a/arch/arm/boot/dts/ste-ux500-samsung-janice.dts b/arch/arm/boot/dts/ste-ux500-samsung-janice.dts
-index d097d5701894..f80111b89b8b 100644
---- a/arch/arm/boot/dts/ste-ux500-samsung-janice.dts
-+++ b/arch/arm/boot/dts/ste-ux500-samsung-janice.dts
-@@ -650,8 +650,8 @@ i2c-gate {
- 					accelerometer@8 {
- 						compatible = "bosch,bma222";
- 						reg = <0x08>;
--						mount-matrix = "0", "1", "0",
--							       "-1", "0", "0",
-+						mount-matrix = "0", "-1", "0",
-+							       "1", "0", "0",
- 							       "0", "0", "1";
- 						vddio-supply = <&ab8500_ldo_aux2_reg>; // 1.8V
- 						vdd-supply = <&ab8500_ldo_aux1_reg>; // 3V
--- 
-2.36.1
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
+Yours,
+Linus Walleij
