@@ -2,111 +2,113 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 582A1C43334
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Jun 2022 14:32:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08035C43334
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Jun 2022 19:01:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349414AbiFJOcw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 10 Jun 2022 10:32:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60898 "EHLO
+        id S242953AbiFJTBP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 10 Jun 2022 15:01:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349577AbiFJOca (ORCPT
+        with ESMTP id S243528AbiFJTBO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 10 Jun 2022 10:32:30 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D87B515437C;
-        Fri, 10 Jun 2022 07:31:49 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id g25so7354405ejh.9;
-        Fri, 10 Jun 2022 07:31:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3+fVfsr56ZNJ1kBWhEwk9U5dk2NYN/r0Jkvc4FKoC3s=;
-        b=MpnTpaZQ2mrRSxgivSG8oKX2lVNdrvs60JxH0aP5yhsBKEcONFGe56Yx/PxwQPNJMP
-         gQqQsYQgHcK85aZJzVkzSQAzBW+01NSuOAPYyqmR7F/MpE6aRMYaGtk6/yx4P4pB8rMd
-         gdd0a3fVJzguqbsgLNDxZZnooviKFIfNx6g1aCt1LA1JyvnK36ax4G4KBwAPsZq71tAp
-         ugfPrviuOyQNHJmmruLMEwf6Dv5krmeogv9r/x1DoZ5ZMIcT22uXWnUF6bcBj9cIhvwT
-         TOkeYklKqAyIcyorMrp0nJW8ojpl7PWMmEkRglIn6+VAGbTrldAy3k2CU2yBGacWhbTO
-         aq4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3+fVfsr56ZNJ1kBWhEwk9U5dk2NYN/r0Jkvc4FKoC3s=;
-        b=KGQ5Lpr4rw9nRoEnNFSIXlW9e+eInMoKW1NixWlEXCXSC7pLXkPDpeXIthXnn3lDpR
-         e/3OviLfJtgt6jukXPJneWXDgBMUk/I8cl3qPP6Ss26JBZ5MenSqQtNsScRyGlvqoN1p
-         cfKxneR4rXXErvkFqn5JnSQkC7P9KaE1aBChsSo718a/6Sh9F9hCKvrzhewPP0DoiNNe
-         yUqA6NBNfXcwOkMDlS0Q0NhZoYZKreZN55KcJVe4XZJcWxxhwZGjrmLN4/BNs/Kkl06/
-         jfXKzxgqMeIZTtjhHug8a1WMwH5nYBlfcJ/8usWYCIstAwfZhkikOxfHJKZreCp3ulwq
-         QdBg==
-X-Gm-Message-State: AOAM532t/TAD0hDj/Ki1U3JlUmcMi/G6cXRbqYUPL5vN5Mf7UIvB0Qic
-        e8z3E3peKUcUx0JgxS3WHH+ngCgaAlOCYTmNm8U=
-X-Google-Smtp-Source: ABdhPJydggPrmBwsUxSYNblLfPfIBMZLyji/UAM4KEjCxFK5F2wy2msFrxmOaHx0xW/0II3DoX1y3LoNwlCuCKHHrDg=
-X-Received: by 2002:a17:906:c7c1:b0:711:d2e9:99d0 with SMTP id
- dc1-20020a170906c7c100b00711d2e999d0mr22961166ejb.639.1654871507604; Fri, 10
- Jun 2022 07:31:47 -0700 (PDT)
+        Fri, 10 Jun 2022 15:01:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DB312C36B9;
+        Fri, 10 Jun 2022 12:01:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B2D556222E;
+        Fri, 10 Jun 2022 19:01:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1352DC34114;
+        Fri, 10 Jun 2022 19:01:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1654887672;
+        bh=Hnvop1nQB2a1YvXC9KrSU6WdMwLevAsVoA6EE55HKf0=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=j2V8JdBRB9od3csLhFaWyYbQv4LOFTb655urrswTus3Zufk/CEtBBoyna10Gf0yzw
+         g2Q25Psjl8EgSp54TApA8f2BEC4zmE/5LyPX/9sWAd+T/8SbBiqlZnpRS8NJmLdfLJ
+         YXccNmbOugAmc0N1Y4Y3Zqb3FiKyYm8NFPBK6NqoIj0m2eVqVFUeBXoiZHdMKm2T3t
+         UlUApgeWIfxWnmUOGL1W8187VMKi/0/uYDgZMax5vUo8xdYFSmcp0F5suozphejrz8
+         WDs2WSLXWc27b2R5mOv8MNt7/VTjNxoQHJIWnHepHV54LX80fhopqJX0VAsjrJGjXj
+         z8wubT/wkWYcA==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <cover.1654727058.git.jahau@rocketmail.com> <a914ca0ea6f0149cd2941d60ae6fa2f49927f66a.1654727058.git.jahau@rocketmail.com>
-In-Reply-To: <a914ca0ea6f0149cd2941d60ae6fa2f49927f66a.1654727058.git.jahau@rocketmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 10 Jun 2022 16:31:10 +0200
-Message-ID: <CAHp75Vdg2i8NjrFn5gtKBKNbYrWd49nq31Exy=4K2RsxHeQ1hw@mail.gmail.com>
-Subject: Re: [PATCH 7/7] iio: magnetometer: yas530: Add YAS537 variant
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        phone-devel@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
-        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
-        Shevchenko <andy.shevchenko@gmail.com>," 
-        <~postmarketos/upstreaming@lists.sr.ht>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20220610074632.abtec5kulbclund4@SoMainline.org>
+References: <20220601220747.1145095-1-marijn.suijten@somainline.org> <20220601220747.1145095-4-marijn.suijten@somainline.org> <CAA8EJpomtbN0+ocD2pRbkYriUY4D9OnjgoFzL9qNHhPm3Uz5cQ@mail.gmail.com> <20220609221211.684C1C34114@smtp.kernel.org> <20220610074632.abtec5kulbclund4@SoMainline.org>
+Subject: Re: [PATCH v2 03/11] clk: fixed-factor: Introduce *clk_hw_register_fixed_factor_parent_hw()
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rajeev Nandan <quic_rajeevny@quicinc.com>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Marek <jonathan@marek.ca>, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Date:   Fri, 10 Jun 2022 12:01:10 -0700
+User-Agent: alot/0.10
+Message-Id: <20220610190112.1352DC34114@smtp.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jun 9, 2022 at 1:44 AM Jakob Hauser <jahau@rocketmail.com> wrote:
->
-> This adds support for the magnetometer Yamaha YAS537. The additions are based
-> on comparison of Yamaha Android kernel drivers for YAS532 [1] and YAS537 [2].
->
-> Functions used by YAS530 & YAS532 only were renamed from yas5xx to yas530_532.
-> Registers were renamed accordingly.
->
-> In the Yamaha YAS537 Android driver, there is an overflow/underflow control
-> implemented. For regular usage, this seems not necessary. A similar overflow/
-> underflow control of Yamaha YAS530/532 Android driver isn't integrated in the
-> mainline driver. It is therefore skipped for YAS537 in mainline too.
->
-> Also in the Yamaha YAS537 Android driver, at the end of the reset_yas537()
-> function, a measurement is saved in "last_after_rcoil". Later on, this is
-> compared to current measurements. If the difference gets too big, a new
-> reset is intialized. The difference in measurements needs to be quite big,
+Quoting Marijn Suijten (2022-06-10 00:46:32)
+> On 2022-06-09 15:12:09, Stephen Boyd wrote:
+> > Quoting Dmitry Baryshkov (2022-06-02 03:20:19)
+> > > On Thu, 2 Jun 2022 at 01:07, Marijn Suijten
+> > > <marijn.suijten@somainline.org> wrote:
+> > > > diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed=
+-factor.c
+> > > > index 54942d758ee6..fabb98d0cdb2 100644
+> > > > --- a/drivers/clk/clk-fixed-factor.c
+> > > > +++ b/drivers/clk/clk-fixed-factor.c
+> > > > @@ -148,17 +151,50 @@ struct clk_hw *devm_clk_hw_register_fixed_fac=
+tor_index(struct device *dev,
+> > > >                 const char *name, unsigned int index, unsigned long=
+ flags,
+> > > >                 unsigned int mult, unsigned int div)
+> > > >  {
+> > > > -       return __clk_hw_register_fixed_factor(dev, NULL, name, NULL=
+, index,
+> > > > -                                             flags, mult, div, tru=
+e);
+> > > > +       return __clk_hw_register_fixed_factor(dev, NULL, name, NULL=
+, NULL,
+> > > > +                                             index, flags, mult, d=
+iv, true);
+> > >=20
+> > > Here (and several times later) you are inserting an argument and then
+> > > moving arguments to the next line. My slight preference would be to
+> > > just insert the arg (and maybe break the line if it gets too long) w/o
+> > > touching the next lines.
+>=20
+> That'll definitely look odd, as we'll end up with index floating on a
+> single line, all on its own.
 
-initialized
+Pretty sure Dmitry is suggesting to make the line longer, not put the
+index on a line by itself. Ignore the 80-column limit.
 
-> it's hard to say if this is necessary for regular operation. Therefore this
-> isn't integrated in the mainline driver either.
+>=20
+> > I'd just add the argument at the end because when it is added in the
+> > middle it makes the diff more difficult to read.
+>=20
+> How strong is this feeling, against keeping argument ordering consistent
+> with other implementations of similar __clk_hw_register_* functions?
+>=20
 
-I understand that Linus knows well this code and may review this, but
-can you please split register renaming (at least, maybe something else
-can be split as well as preparatory change) to the separate patch?
-
-...
-
-> +                               regmap_read(yas5xx->map, i, &val);
-> +                               dev_dbg(yas5xx->dev, "register 0x%02x: %u\n",
-> +                                       i, val);
-
-Please, drop all these value reads/writes debug messages, they are
-quite expensive (by resource consuming), noisy (may spam logs), and
-most important duplicative. regmap API has tracepoints, use them!
-
-Perhaps it would require an additional patch to clean this up, if
-anything like this is present in the current code base..
-
--- 
-With Best Regards,
-Andy Shevchenko
+Not super strong. Just try to minimize the diff to make the reviewer's
+job easier. In this case it would be inserting NULL before 'index' and
+not modifying the next line so the diff is one line instead of two.
