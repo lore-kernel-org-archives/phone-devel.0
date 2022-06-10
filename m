@@ -2,113 +2,148 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 08035C43334
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Jun 2022 19:01:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EBCEC43334
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Jun 2022 22:03:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242953AbiFJTBP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 10 Jun 2022 15:01:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51390 "EHLO
+        id S1347622AbiFJWDi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 10 Jun 2022 18:03:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243528AbiFJTBO (ORCPT
+        with ESMTP id S1348213AbiFJWD0 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 10 Jun 2022 15:01:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DB312C36B9;
-        Fri, 10 Jun 2022 12:01:13 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B2D556222E;
-        Fri, 10 Jun 2022 19:01:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1352DC34114;
-        Fri, 10 Jun 2022 19:01:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654887672;
-        bh=Hnvop1nQB2a1YvXC9KrSU6WdMwLevAsVoA6EE55HKf0=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=j2V8JdBRB9od3csLhFaWyYbQv4LOFTb655urrswTus3Zufk/CEtBBoyna10Gf0yzw
-         g2Q25Psjl8EgSp54TApA8f2BEC4zmE/5LyPX/9sWAd+T/8SbBiqlZnpRS8NJmLdfLJ
-         YXccNmbOugAmc0N1Y4Y3Zqb3FiKyYm8NFPBK6NqoIj0m2eVqVFUeBXoiZHdMKm2T3t
-         UlUApgeWIfxWnmUOGL1W8187VMKi/0/uYDgZMax5vUo8xdYFSmcp0F5suozphejrz8
-         WDs2WSLXWc27b2R5mOv8MNt7/VTjNxoQHJIWnHepHV54LX80fhopqJX0VAsjrJGjXj
-         z8wubT/wkWYcA==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20220610074632.abtec5kulbclund4@SoMainline.org>
-References: <20220601220747.1145095-1-marijn.suijten@somainline.org> <20220601220747.1145095-4-marijn.suijten@somainline.org> <CAA8EJpomtbN0+ocD2pRbkYriUY4D9OnjgoFzL9qNHhPm3Uz5cQ@mail.gmail.com> <20220609221211.684C1C34114@smtp.kernel.org> <20220610074632.abtec5kulbclund4@SoMainline.org>
-Subject: Re: [PATCH v2 03/11] clk: fixed-factor: Introduce *clk_hw_register_fixed_factor_parent_hw()
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rajeev Nandan <quic_rajeevny@quicinc.com>,
+        Fri, 10 Jun 2022 18:03:26 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85219275583;
+        Fri, 10 Jun 2022 15:03:25 -0700 (PDT)
+Received: from g550jk.arnhem.chello.nl (31-151-115-246.dynamic.upc.nl [31.151.115.246])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id D570BCD36F;
+        Fri, 10 Jun 2022 22:03:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1654898602; bh=oeZz0OZexmMdYCMRKOgZDLEiOr1iNRAvEG7wdfdbtkA=;
+        h=From:To:Cc:Subject:Date;
+        b=NX/NiUfTnfYpFcspTrCqQqLYTDiBAp68cj/OwnswFvHiRrhRP4cfBBAXg9t4OhIIz
+         BKUm2xllrZ+U40OITYYIUKP08W3QwAlAEw5X4IGrdB82TeWjPDy7lDiB8Oli5jA6Sv
+         9Krvp4OZLjN0bo+hPBCcnZrAhJPFNUuTeKFe81B8=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     dri-devel@lists.freedesktop.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Marek <jonathan@marek.ca>, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Date:   Fri, 10 Jun 2022 12:01:10 -0700
-User-Agent: alot/0.10
-Message-Id: <20220610190112.1352DC34114@smtp.kernel.org>
+        Luca Weiss <luca@z3ntu.xyz>, Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Vinod Koul <vkoul@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/msm/dsi: Use single function for reset
+Date:   Sat, 11 Jun 2022 00:02:57 +0200
+Message-Id: <20220610220259.220622-1-luca@z3ntu.xyz>
+X-Mailer: git-send-email 2.36.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Quoting Marijn Suijten (2022-06-10 00:46:32)
-> On 2022-06-09 15:12:09, Stephen Boyd wrote:
-> > Quoting Dmitry Baryshkov (2022-06-02 03:20:19)
-> > > On Thu, 2 Jun 2022 at 01:07, Marijn Suijten
-> > > <marijn.suijten@somainline.org> wrote:
-> > > > diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed=
--factor.c
-> > > > index 54942d758ee6..fabb98d0cdb2 100644
-> > > > --- a/drivers/clk/clk-fixed-factor.c
-> > > > +++ b/drivers/clk/clk-fixed-factor.c
-> > > > @@ -148,17 +151,50 @@ struct clk_hw *devm_clk_hw_register_fixed_fac=
-tor_index(struct device *dev,
-> > > >                 const char *name, unsigned int index, unsigned long=
- flags,
-> > > >                 unsigned int mult, unsigned int div)
-> > > >  {
-> > > > -       return __clk_hw_register_fixed_factor(dev, NULL, name, NULL=
-, index,
-> > > > -                                             flags, mult, div, tru=
-e);
-> > > > +       return __clk_hw_register_fixed_factor(dev, NULL, name, NULL=
-, NULL,
-> > > > +                                             index, flags, mult, d=
-iv, true);
-> > >=20
-> > > Here (and several times later) you are inserting an argument and then
-> > > moving arguments to the next line. My slight preference would be to
-> > > just insert the arg (and maybe break the line if it gets too long) w/o
-> > > touching the next lines.
->=20
-> That'll definitely look odd, as we'll end up with index floating on a
-> single line, all on its own.
+From: Vladimir Lypak <vladimir.lypak@gmail.com>
 
-Pretty sure Dmitry is suggesting to make the line longer, not put the
-index on a line by itself. Ignore the 80-column limit.
+There is currently two function for performing reset: dsi_sw_reset and
+dsi_sw_reset_restore. Only difference betwean those is that latter one
+assumes that DSI controller is enabled. In contrary former one assumes
+that controller is disabled and executed during power-on. However this
+assumtion is not true mobile devices which have boot splash set up by
+boot-loader.
 
->=20
-> > I'd just add the argument at the end because when it is added in the
-> > middle it makes the diff more difficult to read.
->=20
-> How strong is this feeling, against keeping argument ordering consistent
-> with other implementations of similar __clk_hw_register_* functions?
->=20
+This patch removes dsi_sw_reset_restore and makes dsi_sw_reset disable
+DSI controller during reset sequence if it's enabled.
 
-Not super strong. Just try to minimize the diff to make the reviewer's
-job easier. In this case it would be inserting NULL before 'index' and
-not modifying the next line so the diff is one line instead of two.
+Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 48 +++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index a95d5df52653..bab2634ebd11 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -1080,12 +1080,32 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+ 
+ static void dsi_sw_reset(struct msm_dsi_host *msm_host)
+ {
++	u32 ctrl;
++
++	ctrl = dsi_read(msm_host, REG_DSI_CTRL);
++
++	if (ctrl & DSI_CTRL_ENABLE) {
++		dsi_write(msm_host, REG_DSI_CTRL, ctrl & ~DSI_CTRL_ENABLE);
++		/*
++		 * dsi controller need to be disabled before
++		 * clocks turned on
++		 */
++		wmb();
++	}
++
+ 	dsi_write(msm_host, REG_DSI_CLK_CTRL, DSI_CLK_CTRL_ENABLE_CLKS);
+ 	wmb(); /* clocks need to be enabled before reset */
+ 
++	/* dsi controller can only be reset while clocks are running */
+ 	dsi_write(msm_host, REG_DSI_RESET, 1);
+ 	msleep(DSI_RESET_TOGGLE_DELAY_MS); /* make sure reset happen */
+ 	dsi_write(msm_host, REG_DSI_RESET, 0);
++	wmb(); /* controller out of reset */
++
++	if (ctrl & DSI_CTRL_ENABLE) {
++		dsi_write(msm_host, REG_DSI_CTRL, ctrl);
++		wmb();	/* make sure dsi controller enabled again */
++	}
+ }
+ 
+ static void dsi_op_mode_config(struct msm_dsi_host *msm_host,
+@@ -1478,32 +1498,6 @@ static int dsi_cmds2buf_tx(struct msm_dsi_host *msm_host,
+ 	return len;
+ }
+ 
+-static void dsi_sw_reset_restore(struct msm_dsi_host *msm_host)
+-{
+-	u32 data0, data1;
+-
+-	data0 = dsi_read(msm_host, REG_DSI_CTRL);
+-	data1 = data0;
+-	data1 &= ~DSI_CTRL_ENABLE;
+-	dsi_write(msm_host, REG_DSI_CTRL, data1);
+-	/*
+-	 * dsi controller need to be disabled before
+-	 * clocks turned on
+-	 */
+-	wmb();
+-
+-	dsi_write(msm_host, REG_DSI_CLK_CTRL, DSI_CLK_CTRL_ENABLE_CLKS);
+-	wmb();	/* make sure clocks enabled */
+-
+-	/* dsi controller can only be reset while clocks are running */
+-	dsi_write(msm_host, REG_DSI_RESET, 1);
+-	msleep(DSI_RESET_TOGGLE_DELAY_MS); /* make sure reset happen */
+-	dsi_write(msm_host, REG_DSI_RESET, 0);
+-	wmb();	/* controller out of reset */
+-	dsi_write(msm_host, REG_DSI_CTRL, data0);
+-	wmb();	/* make sure dsi controller enabled again */
+-}
+-
+ static void dsi_hpd_worker(struct work_struct *work)
+ {
+ 	struct msm_dsi_host *msm_host =
+@@ -1520,7 +1514,7 @@ static void dsi_err_worker(struct work_struct *work)
+ 
+ 	pr_err_ratelimited("%s: status=%x\n", __func__, status);
+ 	if (status & DSI_ERR_STATE_MDP_FIFO_UNDERFLOW)
+-		dsi_sw_reset_restore(msm_host);
++		dsi_sw_reset(msm_host);
+ 
+ 	/* It is safe to clear here because error irq is disabled. */
+ 	msm_host->err_work_state = 0;
+-- 
+2.36.1
+
