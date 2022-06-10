@@ -2,146 +2,118 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A43DFC43334
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Jun 2022 07:46:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 840E4C433EF
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Jun 2022 14:23:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346953AbiFJHqk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 10 Jun 2022 03:46:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52920 "EHLO
+        id S241510AbiFJOXi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 10 Jun 2022 10:23:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346671AbiFJHqj (ORCPT
+        with ESMTP id S1349372AbiFJOXb (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 10 Jun 2022 03:46:39 -0400
-Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [5.144.164.164])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49E3F13C08B;
-        Fri, 10 Jun 2022 00:46:35 -0700 (PDT)
-Received: from SoMainline.org (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id F06A62055F;
-        Fri, 10 Jun 2022 09:46:33 +0200 (CEST)
-Date:   Fri, 10 Jun 2022 09:46:32 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Stephen Boyd <sboyd@kernel.org>
-Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rajeev Nandan <quic_rajeevny@quicinc.com>,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Marek <jonathan@marek.ca>, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
-Subject: Re: [PATCH v2 03/11] clk: fixed-factor: Introduce
- *clk_hw_register_fixed_factor_parent_hw()
-Message-ID: <20220610074632.abtec5kulbclund4@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rajeev Nandan <quic_rajeevny@quicinc.com>,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Jonathan Marek <jonathan@marek.ca>,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org
-References: <20220601220747.1145095-1-marijn.suijten@somainline.org>
- <20220601220747.1145095-4-marijn.suijten@somainline.org>
- <CAA8EJpomtbN0+ocD2pRbkYriUY4D9OnjgoFzL9qNHhPm3Uz5cQ@mail.gmail.com>
- <20220609221211.684C1C34114@smtp.kernel.org>
+        Fri, 10 Jun 2022 10:23:31 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBE10171242;
+        Fri, 10 Jun 2022 07:23:22 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id g7so1215884eda.3;
+        Fri, 10 Jun 2022 07:23:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bKRgCb2xcFyiy411BNa/ope94PUEMwt2spZr8HE4v0U=;
+        b=bdOaYfUyy5jzTnTuwnR2OXlKv22nxyK+6Nt0hFIZp/RlIdQGUCPGINZO8vP0ki2Bkk
+         BBOsxUvSHQqBmFpgMxb3E7dDeZ+1UFzlFRrSX41zzMRtulo2raDUWhz/1JXRfm2PzxU9
+         K1L0VUZKvUOE0SBBSIDkwI0ah6IIU20xSuYWUDPUSmObLelNSWxDcc8q5SDQcz9Qrqem
+         y0QCfU7IqAuAnKuxj3Y7xWefU2Bq5AaC++0NKeQarGicOLp+xYyH1vRoeSgxETz+0qNi
+         cu5O7m2jY+HZTe4bdAb2J3e/fjHaSKuQlhKrfts3AAs+QQ8KNjvaslyrSQ8M4a/pwTVU
+         8tVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bKRgCb2xcFyiy411BNa/ope94PUEMwt2spZr8HE4v0U=;
+        b=UHsRifAJy6NlxXnzf1U81lCcRAGqcSsMGvhu2WfFvkipRDMK9dF3LH4xJ9UsV7EZcA
+         uS7VO6rox49rvZCjUmSf6hnwCcI+eMDhIueACndY9Z/S6AdgB2wDKtdqsLwigx9UwxEa
+         Li5ggd1Pr5D3kFxDR7ssgqpifzw5SMoYShjc0Sp4olFJzTsamEmvE6d0DdtHfVdYNBCB
+         GevGltCXRJbdFwEOdSHXx5nCEa2SlAaJ0JBv2/st4tN7PhGEMoJUUghW3IBHcNa4xsZO
+         dRK0qGQRLKN+zoAIdvPL3OONA0ilh46P6lFiRO3T8LW4LJ4jQu3R5Hu4P4qe9laOvNJ4
+         gwMw==
+X-Gm-Message-State: AOAM5322U9OAL2YMvfEQY2rNklxxFEMA0QyyD7K5pftDFshNGCA+BmED
+        PaG+PRhtEFARY0IRtBpisf9vwL7SNAVALTIAolw=
+X-Google-Smtp-Source: ABdhPJwhQWkPmhct0TtCTIvWUZdcahmYfpMSS7N4CR8HQ6v1y8GxJiJUc+XYvn8t1HfM0FODQ1DtS+/lLWh+ERrd+1E=
+X-Received: by 2002:aa7:c396:0:b0:42d:8b86:a8dc with SMTP id
+ k22-20020aa7c396000000b0042d8b86a8dcmr50346702edq.54.1654871000622; Fri, 10
+ Jun 2022 07:23:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220609221211.684C1C34114@smtp.kernel.org>
+References: <cover.1654727058.git.jahau@rocketmail.com> <1b6e152e1dda138c68ea8c207e46f91337989d35.1654727058.git.jahau@rocketmail.com>
+In-Reply-To: <1b6e152e1dda138c68ea8c207e46f91337989d35.1654727058.git.jahau@rocketmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 10 Jun 2022 16:22:42 +0200
+Message-ID: <CAHp75VdBgPT_iMopU0bQ2Va1UtyDsiMnxfUfzb_knkXMEaLO+Q@mail.gmail.com>
+Subject: Re: [PATCH 4/7] iio: magnetometer: yas530: Change data type of
+ hard_offsets to signed
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        phone-devel@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
+        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
+        Shevchenko <andy.shevchenko@gmail.com>," 
+        <~postmarketos/upstreaming@lists.sr.ht>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-06-09 15:12:09, Stephen Boyd wrote:
-> Quoting Dmitry Baryshkov (2022-06-02 03:20:19)
-> > On Thu, 2 Jun 2022 at 01:07, Marijn Suijten
-> > <marijn.suijten@somainline.org> wrote:
-> > > diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-factor.c
-> > > index 54942d758ee6..fabb98d0cdb2 100644
-> > > --- a/drivers/clk/clk-fixed-factor.c
-> > > +++ b/drivers/clk/clk-fixed-factor.c
-> > > @@ -78,7 +78,8 @@ static void devm_clk_hw_register_fixed_factor_release(struct device *dev, void *
-> > >
-> > >  static struct clk_hw *
-> > >  __clk_hw_register_fixed_factor(struct device *dev, struct device_node *np,
-> > > -               const char *name, const char *parent_name, int index,
-> > > +               const char *name, const char *parent_name,
-> > > +               const struct clk_hw *parent_hw, int index,
-> > >                 unsigned long flags, unsigned int mult, unsigned int div,
-> > >                 bool devm)
-> > >  {
-> > > @@ -108,7 +109,9 @@ __clk_hw_register_fixed_factor(struct device *dev, struct device_node *np,
-> > >         init.name = name;
-> > >         init.ops = &clk_fixed_factor_ops;
-> > >         init.flags = flags;
-> > > -       if (parent_name)
-> > > +       if (parent_hw)
-> > > +               init.parent_hws = &parent_hw;
-> > > +       else if (parent_name)
-> > >                 init.parent_names = &parent_name;
-> > 
-> > If you change the order of if clauses, you won't have to introduce
-> > unnecessary changes.
-> 
-> Indeed, please do that.
+On Thu, Jun 9, 2022 at 1:44 AM Jakob Hauser <jahau@rocketmail.com> wrote:
+>
+> The "hard_offsets" are currently unsigned u8 but they should be signed as they
+> can get negative. They are signed in function yas5xx_meaure_offsets() and in the
+> Yamaha drivers [1][2].
+>
+> [1] https://github.com/NovaFusion/android_kernel_samsung_golden/blob/cm-12.1/drivers/sensor/compass/yas.h#L156
+> [2] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/drivers/iio/magnetometer/yas_mag_drv-yas532.c#L91
+>
+> Fixes: de8860b1ed47 ("iio: magnetometer: Add driver for Yamaha YAS530")
 
-The intent here was to prefer parent_hw over parent_name, but I later
-reordered the function arguments again to have parent_name before
-parent_hw; in-line with __clk_hw_register_divider.  Hence makes more
-sense to swap these around indeed.
+The series should be organized like this:
+1) definite fixes;
+2) cleanups / refactoring;
+3) new features / documentation.
 
-Besides, we don't expect more than one of these to be set anyway per
-design of this private function, that is only called by well-defined
-implementations below.
+It will give a maintainer easier times to handle it.
 
-> > 
-> > >         else
-> > >                 init.parent_data = &pdata;
-> > > @@ -148,17 +151,50 @@ struct clk_hw *devm_clk_hw_register_fixed_factor_index(struct device *dev,
-> > >                 const char *name, unsigned int index, unsigned long flags,
-> > >                 unsigned int mult, unsigned int div)
-> > >  {
-> > > -       return __clk_hw_register_fixed_factor(dev, NULL, name, NULL, index,
-> > > -                                             flags, mult, div, true);
-> > > +       return __clk_hw_register_fixed_factor(dev, NULL, name, NULL, NULL,
-> > > +                                             index, flags, mult, div, true);
-> > 
-> > Here (and several times later) you are inserting an argument and then
-> > moving arguments to the next line. My slight preference would be to
-> > just insert the arg (and maybe break the line if it gets too long) w/o
-> > touching the next lines.
+Code looks good to me.
 
-That'll definitely look odd, as we'll end up with index floating on a
-single line, all on its own.
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-> I'd just add the argument at the end because when it is added in the
-> middle it makes the diff more difficult to read.
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+> ---
+>  drivers/iio/magnetometer/yamaha-yas530.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
+> index 2e8d20b05217..9bfb3b573907 100644
+> --- a/drivers/iio/magnetometer/yamaha-yas530.c
+> +++ b/drivers/iio/magnetometer/yamaha-yas530.c
+> @@ -133,7 +133,7 @@ struct yas5xx {
+>         unsigned int version;
+>         char name[16];
+>         struct yas5xx_calibration calibration;
+> -       u8 hard_offsets[3];
+> +       s8 hard_offsets[3];
+>         struct iio_mount_matrix orientation;
+>         struct regmap *map;
+>         struct regulator_bulk_data regs[2];
+> --
+> 2.35.1
+>
 
-How strong is this feeling, against keeping argument ordering consistent
-with other implementations of similar __clk_hw_register_* functions?
 
-- Marijn
+-- 
+With Best Regards,
+Andy Shevchenko
