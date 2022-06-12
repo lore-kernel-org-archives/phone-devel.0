@@ -2,114 +2,173 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5891CCA47D
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Jun 2022 21:19:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24C48C43334
+	for <phone-devel@archiver.kernel.org>; Sun, 12 Jun 2022 08:44:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230060AbiFKVTm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 11 Jun 2022 17:19:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48958 "EHLO
+        id S232260AbiFLIoi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 12 Jun 2022 04:44:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230182AbiFKVTl (ORCPT
+        with ESMTP id S230200AbiFLIoh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 11 Jun 2022 17:19:41 -0400
-Received: from sonic310-11.consmr.mail.ir2.yahoo.com (sonic310-11.consmr.mail.ir2.yahoo.com [77.238.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0748C5638F
-        for <phone-devel@vger.kernel.org>; Sat, 11 Jun 2022 14:19:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1654982378; bh=88/mIeI7cjZXJiQxnupSL+lAMglf4mE/oS/Wtk2GnyM=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=k+lyvOzZ+wIUOBQZbaFRdIaWvtTB6QFppo0TkiaKfglNMfu2ggVR01A9jOXHQZIA2to8xRWLbKIfhoL7HWMjqU1UKHJuQXdSqOF8GSSNdCCMKxIALkcTz5Kgb5T94AB9S0JWJ3J8R2oXbTvCs2iJ1K/pGk1smKPTXUkxHSt1purMMPkf29eqzg3DPip1A50OBGd6UmEI72pp6Bi8ZYAS2yDzoQHC+mOsJW4u9AdYYSzQL2mDcYlQ7m642swQfGwow9YeZE8iV62q10NJxrA3eh5KvM8n/zTpAlziuedlFsjcZLcuB0cwmb3+G2k7PPkv735B2AwsCBo3s4MWk+Gjzw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1654982378; bh=3eoRNJ6XEq7IcFeJLzFzwHNkIYjKMUWMjfT8IcAjNN7=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=BKdsGGugw4LAQ5xkT3N3viHD2Nav/tJ/TpMD2LQMUo1CI36Ym57Qnr9acwvMnYE1w+E5zIbe4YeT7BOEuLxqYOHVZKyHrNJ1W9Uiz04k6qNBDGfqugGGepH1vB0RUP2+f2cdGziv53CU9qt/NsbVdeYjKqeC21zcp+E5LLGvvzXCdI50+V3DYjJPC0rxmwlEtw/C733PEd27eT3gkG1/1D+mgHDfwwsF/7960r216x7ZMnuBA3wFo3RoA9zUHvmcoU8QeAi3B2VAOxyFJV4gYzjvNA5222QhOzG1oAvh134MeQ0EiD+Bp+mc7/FjpirWrgQZsG3ZNwz17CT8EVMbsA==
-X-YMail-OSG: WEBwJ3MVM1lAhonfPYXxZDmzLwPQVWNxBsAa_Xe_EfLcljmpILR0z6NZuIC1XWD
- hFCqpArry3zppZCjFUmxypzPsi8xzt2pmRX7XPG8qI2n2qjBr_qLxyRwhPC7A.dvZicqHvyiCe4r
- QNk7L80IxxVwbFQFq.6_rrd3nXDilKmOeiTxvD3cE0Ms6PTw3Crk6Ihb5OUTthP1BisFXnurTWtR
- ModCWU1yK4wyRPQXuP3wTxwesSO1nYr3UTHkcpRuUdagC.g8ERB0DgNToiy7c6CfYu5.IircEAIP
- NW_oPH5asn1Ns_8Dk4pIannjjFLCs3SXhD5zqWaix41W0zWuYW.sop488zmEk3R.NsyPncfYAQfe
- IxYtlNmBcJQeh4764OSj8DHkPnpTQJvnUOt0WKOEaTkeor_uccbnqq_e0W.O2QtmTh3SeEMsQWAe
- UGkTMssjVdx9Csf3iBY4rvmjv87JyIp_Miw_8EGu4bA6V.uca_bWriAc9KhKaWMKN7F_C_EvQfKS
- 0DcSzzbgBLI3q1fU0YMbM_2Z.VUmH2TtdFoldSPY8dI4CpElwkA0Bg.lZGKQZwRE.f4DZ71S71N0
- vLXzSP4y29d56GawzjmKjwMyIDlhZ7oK51Za3Z.kFs.064_cBRT1J_s0q8rKHKomDc4TM.1AyICt
- TMB5xeQIK_iWsAJH4F7Ct5Dp6A95PKMH1nDIjLdxGPaGaDxBACvXy91Y8cxx8yreW9YzS88Vcoc7
- 0PzXGrnT.w_DGpzgegVfT3GCc02ShsPso091JsI.9bh7.ZbigEJzenleQyd6zNtg_TmZ1ge7yT8A
- MhPbi4pmqHTJuFiI9bWE1xbmje_KqiOZYfY_gX5nvZrsmJepJK7u1Y2eq4WmYE1vGiCwEgjt_2pr
- yhst0NcRNhmw7fkQS0ua2VorzoaeSvZGsIxWtxmav8209pQLzdkadNL2oU.m1PpmCRNShn4Jh.z0
- xaM._AGUV6kAfpabrgsanhPVY7pFa9sqymfAPm4KpkLUxfFbd.KroIJpgNKtvROTTWdTueVKwqMi
- 5MmMCdplawQYdhNYfQ16H0s.d2KXGxWIqjWEJFK7GCxJbgjEUpwQOyq8Yqu_PcNX.5dtHpX.z.xq
- A8a_W8CNJEHXfkWK5g7dgTmmmzUirXi1iW0CraJLFSW2BXe7RFniUiJ3VzX9CNpTSSbTc3Cf0giE
- u8Lt96jFCEW8n4fY8Y7h3AvQ1.wlt_ehWuUow8qp6FkMnM.4800PB8kN1DEjetQB2lpcvzU_emtA
- iQy8xXgtAehRzAZil03VEl5T8Pmn5KhV0uF3W1E0.rqb4KlPVpSH_JHJNqrpgaw_yb_e8S2NJ1.Q
- .PFUQZ_7Qy5U7xXZ34WKbcK776tflCHYZzcH7n3_VcRsa8V2.dw.SKrA22WkCjwamUV5oPOOWCTf
- 3y2dTqPfbh2MPmzE84OUz7w4CMIWzvp7z98W5c54oSrCLQWwwNouplkBu4hEnT89mHlWVIrEv1Cs
- 1LFDvngGi4tEyT30hJYK65be2he80C232u6xX.5RJHsLD2c2ZCJWlCegJfiWuwK5WPad7m7yKq9p
- VhB.8.ThNXr6qtjCiVjRCeFM9MzQZUQCHIW.iz_5ELmHVUb16AGHDS.gKWHuVtSTgceWoGIp8FDX
- 2dfA0atgBM3npl8RZ6.Th3ekLsEfH4wVNQRjkrn_wk1hpx0UWh2Vk8TKCGM4djCHfppNmmrPXK69
- PmaH_eu_1Y_KES9QoxGpEbmFDPq5Bihi2RU5tqk3xc9Z3kXcWGMxtNefS0p4IGRdxfiI0Ozr5adI
- ajnEooz9KBXrwO3SKB.6raCUnZzzEH8lL87MhNyTWQvVY_8pWQSj9dmxgb7bjye95pIeGyMk12Fk
- gA4gbVPJt9dYZkV8s4HYS.th7FW4ys9eyKeVEh7ptTym4Iu1DWv3px0QUcYgPTsgcWYAiiCJHvZF
- 4qMyu2i.w6_jZzxsPjc25eoRBEqdtLs6Zf4uSM4.lmqTafewnLjeFEPqVnbW50ezcE2kWEaQVInX
- BkNJnqwy3x2zFfhjWDUF_.2hg0sVa9mf8k3utxlIUwT91.0x7TwFxGOOB.BW0Oi_Wq5L4VJADAsB
- kLYRXK47GeP7tDpEeUwrcxaTkHA.evZAUgGQEbG7_fjLq8yjKO5oOQRgqTfSuGlLYUa5KTPjdw8Z
- TWGMKlqMgA91lkpYiSPQeFc411nuRmmNUXfWJCdzAaYnF7lcC7uUnWAf84xgIdcK1czebplFB4n1
- B0jyD37hyJ9EGjNmUuuAcbiQBn3ghYoy.3FZ7JZa53Y4j1OB25Xs3fv5XtogMCwowh_0PuhsAE9q
- siy00n3A0wifdMqz7lNpGvfeUfkyr5MQMO1PC.44ZBTkPOCulkv9o5Ys0PJz3VEC6JqQhtqA5rDA
- 5PmmVtnYwmoWufTXKbP4e0BRgbsz.Jffa8ZHCzq0JCKt_4F479MUh
-X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ir2.yahoo.com with HTTP; Sat, 11 Jun 2022 21:19:38 +0000
-Received: by hermes--canary-production-ir2-6c7595c778-pmqqk (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 380c144581fc6a504b05c1fb6a9bfbc3;
-          Sat, 11 Jun 2022 21:19:34 +0000 (UTC)
-Message-ID: <9215e460-9655-dd70-8fdd-8572efddb40b@rocketmail.com>
-Date:   Sat, 11 Jun 2022 23:19:33 +0200
+        Sun, 12 Jun 2022 04:44:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D747039179;
+        Sun, 12 Jun 2022 01:44:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 353AA60BA8;
+        Sun, 12 Jun 2022 08:44:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43799C34115;
+        Sun, 12 Jun 2022 08:44:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655023474;
+        bh=Iuf05oYjNVfmVviJ3nzqABfbmmEH9K1yfExt9eMTwpw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=rS3+hLCYfRFUyaB1xTljZaF2xc0BscWD3kt9vZzqOWo6MNCUf6x8aQAd3aGfwpPvz
+         7d4eexx64qXwik87NVBpnme4dqZcwA843f7r+Py7Z3ilmablhaN6Ec6JRZKUEu0MBf
+         M4FOF3j3QEFydrjOKwDp5lLTbDnRdCiBug+YTq+KKuUJPhYEWckcuvHRzMn3G9yyiy
+         EC9i4m4YpDBEhLRa/kgDjvkjXEIf1KHl8fSnzW2O2gTJi11JyIJF3Wu7ttcf0KKIwh
+         3nNqunAcNiKZQxrRtZJu83Pva096Rf+4/CIpPDi5q3OiUHePMb0v9EpqFQ1+xKDfTw
+         HHKpTVyeSv0hw==
+Date:   Sun, 12 Jun 2022 09:53:33 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     "Luca Weiss" <luca.weiss@fairphone.com>
+Cc:     "Markuss Broks" <markuss.broks@gmail.com>,
+        <linux-kernel@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@somainline.org>,
+        "Marijn Suijten" <marijn.suijten@somainline.org>,
+        "AngeloGioacchino Del Regno" 
+        <angelogioacchino.delregno@somainline.org>,
+        "Song Qiang" <songqiang1304521@gmail.com>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
+        "Liam Girdwood" <lgirdwood@gmail.com>,
+        "Mark Brown" <broonie@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH 3/5] proximity: vl53l0x: Handle the VDD regulator
+Message-ID: <20220612095333.1479464c@jic23-huawei>
+In-Reply-To: <CKKOCWP2NYO5.GH08U776B1KU@otso>
+References: <20220523175344.5845-1-markuss.broks@gmail.com>
+        <20220523175344.5845-4-markuss.broks@gmail.com>
+        <CKKOCWP2NYO5.GH08U776B1KU@otso>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 7/7] iio: magnetometer: yas530: Add YAS537 variant
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        phone-devel@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>,
-        ~postmarketos/upstreaming@lists.sr.ht
-References: <cover.1654727058.git.jahau@rocketmail.com>
- <a914ca0ea6f0149cd2941d60ae6fa2f49927f66a.1654727058.git.jahau@rocketmail.com>
- <CAHp75Vdg2i8NjrFn5gtKBKNbYrWd49nq31Exy=4K2RsxHeQ1hw@mail.gmail.com>
- <6ac31983-698c-5333-da4b-4f562c47afc7@rocketmail.com>
- <CAHp75VeprMCdP_HqcVUhQow_OStKDMF4c2k5s1gs7RwOTzO=FQ@mail.gmail.com>
- <7265c507-b32d-c2e3-d9ca-876d9382a8e8@rocketmail.com>
- <CAHp75VfV1E1WaLVDG3V9460AsVxahb9Epod-63T35eDV+h8Ubg@mail.gmail.com>
-From:   Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <CAHp75VfV1E1WaLVDG3V9460AsVxahb9Epod-63T35eDV+h8Ubg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.20280 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Andy,
+On Wed, 08 Jun 2022 12:18:52 +0200
+"Luca Weiss" <luca.weiss@fairphone.com> wrote:
 
-On 11.06.22 22:22, Andy Shevchenko wrote:
->
-> On Sat, Jun 11, 2022 at 4:00 PM Jakob Hauser <jahau@rocketmail.com> wrote:
->>
->> (Side note: There is something wrong with the Cc list in your e-mail,
->> the list of addresses isn't handled correctly.)
+> Hi Markuss,
 > 
-> The list is the same as in your mail. Dunno what exactly is the
-> problem you are referring to?
+> On Mon May 23, 2022 at 7:53 PM CEST, Markuss Broks wrote:
+> > Handle the regulator supplying the VDD pin of VL53L0X.
+> >
+> > Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> > ---
+> >  drivers/iio/proximity/vl53l0x-i2c.c | 37 +++++++++++++++++++++++++++++
+> >  1 file changed, 37 insertions(+)
+> >
+> > diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
+> > index 12a3e2eff464..8581a873919f 100644
+> > --- a/drivers/iio/proximity/vl53l0x-i2c.c
+> > +++ b/drivers/iio/proximity/vl53l0x-i2c.c
+> > @@ -43,6 +43,7 @@
+> >  struct vl53l0x_data {
+> >  	struct i2c_client *client;
+> >  	struct completion completion;
+> > +	struct regulator *vdd_supply;
+> >  };
+> >  
+> >  static irqreturn_t vl53l0x_handle_irq(int irq, void *priv)
+> > @@ -192,10 +193,31 @@ static const struct iio_info vl53l0x_info = {
+> >  	.read_raw = vl53l0x_read_raw,
+> >  };
+> >  
+> > +static void vl53l0x_power_off(void *_data)
+> > +{
+> > +	struct vl53l0x_data *data = _data;
+> > +
+> > +	regulator_disable(data->vdd_supply);
+> > +}
+> > +
+> > +static int vl53l0x_power_on(struct vl53l0x_data *data)
+> > +{
+> > +	int ret;
+> > +
+> > +	ret = regulator_enable(data->vdd_supply);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	usleep_range(3200, 5000);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  static int vl53l0x_probe(struct i2c_client *client)
+> >  {
+> >  	struct vl53l0x_data *data;
+> >  	struct iio_dev *indio_dev;
+> > +	int error;
+> >  
+> >  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> >  	if (!indio_dev)
+> > @@ -210,6 +232,21 @@ static int vl53l0x_probe(struct i2c_client *client)
+> >  				     I2C_FUNC_SMBUS_BYTE_DATA))
+> >  		return -EOPNOTSUPP;
+> >  
+> > +	data->vdd_supply = devm_regulator_get_optional(&client->dev, "vdd");
+> > +	if (IS_ERR(data->vdd_supply))
+> > +		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
+> > +				     "Unable to get VDD regulator\n");  
+> 
+> It looks like this optional regulator is not actually optional.
+> 
+> [    1.919995] vl53l0x-i2c 1-0029: error -ENODEV: Unable to get VDD regulator
+> 
+> When using devm_regulator_get instead, a dummy regulator gets returned
+> which I think is what we want here:
+> 
+> [    1.905518] vl53l0x-i2c 1-0029: supply vdd not found, using dummy regulator
+> 
+> Can you fix this up or should I send a patch?
 
-It somehow got confused by the colon after "open list" and the tilde
-before "postmarketos". Everything in between got interpreted as the
-name/description of the postmarketos mailing list. Your first reply at
-2022-06-10 14:31 didn't make it to the devicetree list and likely not to
-Hans. Since then, these addresses show up twice in the thread, once for
-real and once still interpreted as name/description of the postmarketos
-mailing list.
+Hi Luca,
 
-The thread in the devicetree list:
-https://lore.kernel.org/linux-devicetree/CAHp75VfV1E1WaLVDG3V9460AsVxahb9Epod-63T35eDV+h8Ubg@mail.gmail.com/T/#t
+Please send a patch.
 
-On the patchset, I'll send v2 probably at Sunday or Monday.
+Jonathan
 
-Kind regards,
-Jakob
+> 
+> Regards
+> Luca
+> 
+> 
+> > +
+> > +	error = vl53l0x_power_on(data);
+> > +	if (error)
+> > +		return dev_err_probe(&client->dev, error,
+> > +				     "Failed to power on the chip\n");
+> > +
+> > +	error = devm_add_action_or_reset(&client->dev, vl53l0x_power_off, data);
+> > +	if (error)
+> > +		return dev_err_probe(&client->dev, error,
+> > +				     "Failed to install poweroff action\n");
+> > +
+> >  	indio_dev->name = "vl53l0x";
+> >  	indio_dev->info = &vl53l0x_info;
+> >  	indio_dev->channels = vl53l0x_channels;
+> > -- 
+> > 2.36.1  
+> 
+
