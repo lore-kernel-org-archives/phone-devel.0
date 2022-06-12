@@ -2,138 +2,144 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B55E9C43334
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Jun 2022 18:35:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9D26C43334
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Jun 2022 14:20:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232024AbiFNSfx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 14 Jun 2022 14:35:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53610 "EHLO
+        id S233255AbiFNOUY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Jun 2022 10:20:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232762AbiFNSfw (ORCPT
+        with ESMTP id S236158AbiFNOUW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 14 Jun 2022 14:35:52 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F3EF49687
-        for <phone-devel@vger.kernel.org>; Tue, 14 Jun 2022 11:35:50 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id 187so9302258pfu.9
-        for <phone-devel@vger.kernel.org>; Tue, 14 Jun 2022 11:35:50 -0700 (PDT)
+        Tue, 14 Jun 2022 10:20:22 -0400
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B3D638A4
+        for <phone-devel@vger.kernel.org>; Tue, 14 Jun 2022 07:20:21 -0700 (PDT)
+Received: by mail-pg1-x531.google.com with SMTP id 129so8655154pgc.2
+        for <phone-devel@vger.kernel.org>; Tue, 14 Jun 2022 07:20:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=/BHxuvsblLJskDtY/Ztfk5dtjeHyzSHSV/rpTnqFptw=;
-        b=lcoBGgDAY+q45GquTu+sVCB0NXJEi5szmJMRopFLtIAqeBX+DDMcbjxDxiFwpC6zuq
-         SaP7ZnWqwKmm1ss9NYvk9GsPgjTWagLliMbiufb3MUDO2jPbOJcUZ5EaZ55OIlsxwLEF
-         NkHIEPzarwZ0qK4KUQZJvUYA7rom3TlhIw+uiT5pGZDKFXtbOxbcntaM0B90E1sEpwNn
-         vmAN8Vpw7zfFPSf81U2uSU2RKS3fkJdH+3VuIyFkmkuBoOoLImfiXvobBy8ahzbbR68Z
-         xAGNn3t4qswNweXxmmwC5EB4Bhyi5ust0I8h6rtp+ELtY3a5nfz0XBBFbiLVxTplFWXT
-         kehA==
+        h=resent-from:resent-to:resent-date:resent-message-id:message-id:date
+         :mime-version:user-agent:subject:content-language:to:references:from
+         :in-reply-to:content-transfer-encoding;
+        bh=e1j5oNyWe6LjPGibCsOkD4pe/7KGmuvi3WqbEeyX52A=;
+        b=lNlQ+V8h7eS6Gm+XS7iRfwkhqaNJyVnCo94zkxzUAFGm9yXGR3HNwK9JFVCq48DndB
+         sPrhtxTXVaXrJNTh86fudw+0MDIAnpLcgKUYmeGxn/1CHhW0Xc956qIkpXzaI09LkRx8
+         1YBSgbkn61qECxoVkXGArmsBSakeeSd4/VAotA6Ni8VsnBiJ/Wft3F1ufLkVt5CjvGQR
+         /KoCDKweBC+QQjg5/H+hQEhNVT76Shac2eLr+vqSu+bllySiIeRLsp/shKwGdvx2zNjx
+         NivbFtOXSmCiJUyfnPYa+hEmeERlD1T87LB0YsML/gbwi2DDD8enUl8NjK1v23+9Ze48
+         b3SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:resent-from:resent-to:resent-date
+         :resent-message-id:message-id:date:mime-version:user-agent:subject
+         :content-language:to:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=/BHxuvsblLJskDtY/Ztfk5dtjeHyzSHSV/rpTnqFptw=;
-        b=0vTAMMx6AkaSTgdIG7hxly7awETTBHGUg4zmXEjpkP53cfLCAJY8i/B9nFikawPDBf
-         dlUqpMNVBKitdtXhgJQqo4GOurmzIr9TIc6b32rs7hOyhABVThxxLcN1mnWCNDspqOkb
-         X0n5QnqIEaj5gupa0zQLsThxbTGbJYZG+Z4gIr7QEfs0EjaxsHuzixlIzMzZDQ9vTJrA
-         mgJx/G1Z91rOrkJpxmNqMgUlzpHezZspsJkjcguCepoPh9xZelf5QEMC84Pe5aAi3CzR
-         7bk2hVT3DCn2rZmkB5I/7j82dmXKk79wDkFduurqfIgBxwzOt+80pVLBh8DQc8C6/gXA
-         tv7g==
-X-Gm-Message-State: AOAM531cIai5K9x1kjVsYkz8sZLfFlbLXOzcu1U8x/z3ijYIusKlhBot
-        MGmaYWllm0CVpREO3Kjx6c4N8w==
-X-Google-Smtp-Source: ABdhPJzDFH6QBQEGfpJxh/mQFjNzcSLTTlMIgYVW/e/UgH6wiLL/c2cBLAcoqjqL2X2p7IuRr9EweQ==
-X-Received: by 2002:a63:d50f:0:b0:408:994a:96d5 with SMTP id c15-20020a63d50f000000b00408994a96d5mr5600253pgg.299.1655231749808;
-        Tue, 14 Jun 2022 11:35:49 -0700 (PDT)
-Received: from [192.168.2.1] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id r21-20020a170902e3d500b0016393148c9esm7522489ple.110.2022.06.14.11.35.37
+        bh=e1j5oNyWe6LjPGibCsOkD4pe/7KGmuvi3WqbEeyX52A=;
+        b=Wb7MCI00IRqeul9ILKp1x9W/RniPEpO3qKbg6X/Wef9gJvQx/HPDBD3N1CdM/rva7R
+         kHN6ZSpXppbxdhKRgGyHYB8Qe7I3gE9Xn5nFUYYZhfy73BfNKr8W9KTmqnsKcYC5Qkg4
+         l0AWsFPMoVYq8xd9HCUMo4tv5kCMb8xbc0GBxi2rzELe6GqnEU38u3wfcsDKwVwtPbOy
+         2SuxoG7dTFAMtV5KG/MYRYR/Ky6ZV3+FtmiIVhmZxAjlmnPGJ42mN3op7qjN2czOp+aW
+         vF4Vz2VFPmqiLGpbvQruINJcMa5UaaxfWnFmHeCOaOAMfwTg1vrSsVCUdW5Axq1nHkPO
+         24EQ==
+X-Gm-Message-State: AOAM532DCmRNsJoDwCVgh7fNVzmjeOzBhX48rN/N/hGa4KeHoTMdo8Xg
+        F/2I+yacZwfnCGdGG8SsFu6thUQ3KKZExg==
+X-Google-Smtp-Source: ABdhPJyQiUDbnbeFi+KkdWYXorKpn8PZ4AY2kNMQBDXLLY7he0O7xLBF5QZW7/CsBiX+uCXoZZ9nLQ==
+X-Received: by 2002:a63:4643:0:b0:3fe:e16a:a01f with SMTP id v3-20020a634643000000b003fee16aa01fmr4594404pgk.91.1655216420516;
+        Tue, 14 Jun 2022 07:20:20 -0700 (PDT)
+Received: from [172.20.0.255] ([192.77.111.2])
+        by smtp.gmail.com with ESMTPSA id k17-20020a628e11000000b0050dc762819esm7600838pfe.120.2022.06.14.07.20.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jun 2022 11:35:45 -0700 (PDT)
-Message-ID: <277ec646-b709-4a4a-8216-49d528d0e43e@linaro.org>
-Date:   Tue, 14 Jun 2022 20:35:35 +0200
+        Tue, 14 Jun 2022 07:20:20 -0700 (PDT)
+Received: from [192.168.0.203] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id pv17-20020a170907209100b00704757b1debsm2675740ejb.9.2022.06.12.10.06.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 12 Jun 2022 10:06:10 -0700 (PDT)
+Message-ID: <f1cc0f5a-12fb-28bc-7345-13ac2bf5b74d@linaro.org>
+Date:   Sun, 12 Jun 2022 19:06:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v4 2/2] clocksource/drivers/timer-mediatek: Implement
- CPUXGPT timers
+ Thunderbird/91.10.0
+Subject: Re: [PATCH 3/3] ARM: dts: exynos: add function and color to aat1290
+ flash LED node in Galaxy S3
 Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     tglx@linutronix.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        paul.bouchara@somainline.org
-References: <20220613133819.35318-1-angelogioacchino.delregno@collabora.com>
- <20220613133819.35318-3-angelogioacchino.delregno@collabora.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20220613133819.35318-3-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org,
+        Simon Shields <simon@lineageos.org>,
+        =?UTF-8?Q?Martin_J=c3=bccker?= <martin.juecker@gmail.com>
+References: <20220607085343.72414-1-krzysztof.kozlowski@linaro.org>
+ <20220607085343.72414-3-krzysztof.kozlowski@linaro.org>
+ <4a7f8ab6-c061-3861-5790-b6c0fbd7cad1@gmail.com>
+ <ef62a7bb-2217-2947-17dd-fc4a51acdea5@linaro.org>
+ <f1402a1d-a74d-f7b9-b9e2-fc3991781e64@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <f1402a1d-a74d-f7b9-b9e2-fc3991781e64@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 13/06/2022 15:38, AngeloGioacchino Del Regno wrote:
-> Some MediaTek platforms with a buggy TrustZone ATF firmware will not
-> initialize the AArch64 System Timer correctly: in these cases, the
-> System Timer address is correctly programmed, as well as the CNTFRQ_EL0
-> register (reading 13MHz, as it should be), but the assigned hardware
-> timers are never started before (or after) booting Linux.
+On 12/06/2022 17:09, Jacek Anaszewski wrote:
+> On 6/10/22 12:14, Krzysztof Kozlowski wrote:
+>> On 09/06/2022 22:31, Jacek Anaszewski wrote:
+>>> Hi Krzysztof,
+>>>
+>>> On 6/7/22 10:53, Krzysztof Kozlowski wrote:
+>>>> Add common LED properties - the function and color - to aat1290 flash
+>>>> LED node in Galaxy S3.
+>>>>
+>>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>>> ---
+>>>>    arch/arm/boot/dts/exynos4412-galaxy-s3.dtsi | 3 +++
+>>>>    1 file changed, 3 insertions(+)
+>>>>
+>>>> diff --git a/arch/arm/boot/dts/exynos4412-galaxy-s3.dtsi b/arch/arm/boot/dts/exynos4412-galaxy-s3.dtsi
+>>>> index 72901772fcad..d76f3678dcab 100644
+>>>> --- a/arch/arm/boot/dts/exynos4412-galaxy-s3.dtsi
+>>>> +++ b/arch/arm/boot/dts/exynos4412-galaxy-s3.dtsi
+>>>> @@ -7,6 +7,7 @@
+>>>>     */
+>>>>    
+>>>>    /dts-v1/;
+>>>> +#include <dt-bindings/leds/common.h>
+>>>>    #include "exynos4412-midas.dtsi"
+>>>>    
+>>>>    / {
+>>>> @@ -27,6 +28,8 @@ led-controller {
+>>>>    
+>>>>    		led {
+>>>>    			label = "flash";
+>>>> +			function = LED_FUNCTION_FLASH;
+>>>> +			color = <LED_COLOR_ID_WHITE>;
+>>>
+>>> Addition of these two properties will not change anything because
+>>> the label has precedence. It is deprecated, but if you introduce
+>>> function and color to the binding instead of the label, the resulting
+>>> LED class device name will change.
+>>
+>> Which is not necessarily what we want, right? Adding these properties is
+>> a proper description of hardware, regardless whether current Linux
+>> implementation uses them or not.
 > 
-> In this condition, any call to function get_cycles() will be returning
-> zero, as CNTVCT_EL0 will always read zero.
+> Actually I'd just drop label in addition to your change.
+> I don't think it would break anybody seriously - not expecting it has
+> any larger group of users and having uniformly constructed DTS files
+> in the mainline has greater value.
 > 
-> One common critical symptom of that is trying to use the udelay()
-> function (calling __delay()), which executes the following loop:
-> 
->              start = get_cycles();
->              while ((get_cycles() - start) < cycles)
->                      cpu_relax();
-> 
-> which, when CNTVCT_EL0 always reads zero, translates to:
-> 
->              while((0 - 0) < 0)  ==> while(0 < 0)
-> 
-> ... generating an infinite loop, even though zero is never less
-> than zero, but always equal to it (this has to be researched,
-> but it's out of the scope of this commit).
-> 
-> To fix this issue on the affected MediaTek platforms, the solution
-> is to simply start the timers that are designed to be System Timer(s).
-> These timers, downstream, are called "CPUXGPT" and there is one
-> timer per CPU core; luckily, it is not necessary to set a start bit
-> on each CPUX General Purpose Timer, but it's conveniently enough to:
->   - Set the clock divider (input = 26MHz, divider = 2, output = 13MHz);
->   - Set the ENABLE bit on a global register (starts all CPUX timers).
-> 
-> The only small hurdle with this setup is that it's all done through
-> the MCUSYS wrapper, where it is needed, for each read or write, to
-> select a register address (by writing it to an index register) and
-> then to perform any R/W on a "CON" register.
-> 
-> For example, writing "0x1" to the CPUXGPT register offset 0x4:
-> - Write 0x4 to mcusys INDEX register
-> - Write 0x1 to mcusys CON register
-> 
-> Reading from CPUXGPT register offset 0x4:
-> - Write 0x4 to mcusys INDEX register
-> - Read mcusys CON register.
-> 
-> Finally, starting this timer makes platforms affected by this issue
-> to work correctly.
 
-Why not fix the ATF ?
+What about some PostmarketOSos, LineageOS and other OSes?
 
+Let me Cc here some folks - Simon, Martin, is the label in flash LED
+node anyhow important for you? Can it be dropped and replaced with
+function+color?
 
+https://lore.kernel.org/all/20220607085343.72414-3-krzysztof.kozlowski@linaro.org/
 
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Best regards,
+Krzysztof
