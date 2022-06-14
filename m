@@ -2,95 +2,225 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1B68C433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Jun 2022 18:45:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 281DAC43334
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Jun 2022 10:39:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234400AbiFMSp1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Jun 2022 14:45:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45312 "EHLO
+        id S240261AbiFNKjt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Jun 2022 06:39:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344062AbiFMSnB (ORCPT
+        with ESMTP id S230157AbiFNKjs (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Jun 2022 14:43:01 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E675B10D;
-        Mon, 13 Jun 2022 08:01:57 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id u12so11701688eja.8;
-        Mon, 13 Jun 2022 08:01:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=aC1QbH3cTFng1BzfntnEn+PULL88pquYCHmXaXqLlCA=;
-        b=Yv7gccA6UP1oUNzigw0pjhJTHhxYmKiOj+fdTBOZYsp82HJoOCTV5/FkMdVw6xlW8d
-         pbe4A0OJbIVlkd4VLD+TlXfyy1ETZEcbf1kNg9oF6BAO9+aXctOsxcXNzAL3+KMrXghE
-         wCSND3Ima44JoRmGxm9FTgZGX/JJjY2SsEY9KWfmLXKhXxvArMubUSeeGlBiKYSxViuB
-         nrRXQ6LJz2M5vF5NDzy5xxx2GszwLIRUxPOv/FbaXEK2PYcVAHPL+2S33X5b44lTY6Ry
-         YGf2x9skXv/YNSsj880I+uLiGArx+zT93PhdhOK+gEJDQGrxX2KppXI4Ji51fuPbT7uk
-         sdDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=aC1QbH3cTFng1BzfntnEn+PULL88pquYCHmXaXqLlCA=;
-        b=uC0y/7vIrRbgHBbHnfrn+uQo4ds3UcrlM7FC5VGkM4SNE0e/JVvX20OLkgbK5KaZAc
-         tkgFXv4DXweA5qJNZc9bJDD+eyzDDZYBvq3Kn2m5ORrTSTCWFSTGBqliGmg3duBBv5cI
-         sLExe1W4cgFWW6yAwYS/Yf9UB/VWXjple0yhWSrGoY3b+4NoWboiTwqNXYxPeGwLlVsh
-         RiZZ+7VDKrgAw+XVlTRaFegcbQ5yAiB4tSvQnG9+LS7HZXAMd9n0VcdEUFH9UX8R5fYb
-         KqGueKV+utyQL+5C1DtWijtTwgQGjmqzQtx8NOIzPDBXV49FJ7NPBGesZiJzm9fGanWc
-         +Pwg==
-X-Gm-Message-State: AOAM532+VEQ1ztY+lA8M2FCCr5FI6EbTVqAQTxMOswJ1Dcam6zdfqbXH
-        dI4DaX2CeM765SqxRWq3PVOz6DQtTCQTrbapJ5w=
-X-Google-Smtp-Source: ABdhPJxz0ZuL628j9gnwJEGtcjxDFvahegf3oC4oXMZBZ8/QKQ0YyWTjN5khTBbhoholOWHw348fexjya0Xe9EzFYg4=
-X-Received: by 2002:a17:906:c7c1:b0:711:d2e9:99d0 with SMTP id
- dc1-20020a170906c7c100b00711d2e999d0mr223768ejb.639.1655132516327; Mon, 13
- Jun 2022 08:01:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1655081082.git.jahau@rocketmail.com> <2e4622b2c98eda75c262d460533162f74cfb8605.1655081082.git.jahau@rocketmail.com>
-In-Reply-To: <2e4622b2c98eda75c262d460533162f74cfb8605.1655081082.git.jahau@rocketmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 13 Jun 2022 17:01:20 +0200
-Message-ID: <CAHp75VeHJnuSe+2r8LvN4watFt1q5FZefUvsZokz0SA1NZ6nmw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/7] iio: magnetometer: yas530: Correct temperature handling
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Tue, 14 Jun 2022 06:39:48 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE66235252;
+        Tue, 14 Jun 2022 03:39:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AF974B81856;
+        Tue, 14 Jun 2022 10:39:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7603C3411B;
+        Tue, 14 Jun 2022 10:39:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655203185;
+        bh=1WpNbruZfpiREjP5nt5HMy2K24XhwdQUFBtL7VlCzIM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=EPBud0OBnT4YGtLFkEMrFQLy/bCsgRcqOPkc0XW79lwTBSYcD5svdm+wvid3QGguz
+         tdAElO6q1DIS4kHo4IC9FnIlK1wV8nvfg3fe67VkfgJSzYXz9DN7bFi9/h53Hnsr1+
+         wuAFP1mWFUPZ3cmM5r3GaLZEFvMJdtH9Vmyw9VogNN7Zkl1eCOnPp3wlIqGVbVO0Pq
+         QvfB3fs1pelbAWDxvIH6WHtJaPEVQN5QgtVO3gn2PS+aCMaRtc8ezKYfy00EJbhm2+
+         urC7cq9vu5lQCseSz4DsZ47sCiZeCdl6QRCpQX6jvjamqyZTjsdjn5HnwbG44g4+KL
+         wD5lfT8UKEBAg==
+Date:   Tue, 14 Jun 2022 11:48:53 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     Luca Weiss <luca.weiss@fairphone.com>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Markuss Broks <markuss.broks@gmail.com>,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Song Qiang <songqiang1304521@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        phone-devel@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
-        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
-        Shevchenko <andy.shevchenko@gmail.com>," 
-        <~postmarketos/upstreaming@lists.sr.ht>
-Content-Type: text/plain; charset="UTF-8"
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 3/5] proximity: vl53l0x: Handle the VDD regulator
+Message-ID: <20220614114853.340e9c36@jic23-huawei>
+In-Reply-To: <13033502.uLZWGnKmhe@g550jk>
+References: <20220523175344.5845-1-markuss.broks@gmail.com>
+        <CKKOCWP2NYO5.GH08U776B1KU@otso>
+        <20220612095333.1479464c@jic23-huawei>
+        <13033502.uLZWGnKmhe@g550jk>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Jun 13, 2022 at 3:17 AM Jakob Hauser <jahau@rocketmail.com> wrote:
->
-> The raw temperature value is a number of counts from a certain starting
-> point. The resolution of the temperature counts is different for the YAS
-> variants.
->
-> Temperature compensation for YAS532 version AC seems to be handled differently.
-> It uses the deviation from 20 degree Celsius [1] whereas YAS530 and older
-> versions of YAS532 apply solely the t value as a multiplier [2][3].
->
-> In funtion yas5xx_read_raw(), add case IIO_CHAN_INFO_PROCESSED. Remove scale
-> of temperature as this isn't applied.
->
-> Additionally correct sign of temperature channel in iio_chan_spec. It's already
-> defined that way in yas5xx_get_measure() function.
+On Sun, 12 Jun 2022 11:28:22 +0200
+Luca Weiss <luca@z3ntu.xyz> wrote:
 
-in the
+> Hi Jonathan,
+> 
+> On Sonntag, 12. Juni 2022 10:53:33 CEST Jonathan Cameron wrote:
+> > On Wed, 08 Jun 2022 12:18:52 +0200
+> > 
+> > "Luca Weiss" <luca.weiss@fairphone.com> wrote:  
+> > > Hi Markuss,
+> > > 
+> > > On Mon May 23, 2022 at 7:53 PM CEST, Markuss Broks wrote:  
+> > > > Handle the regulator supplying the VDD pin of VL53L0X.
+> > > > 
+> > > > Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> > > > ---
+> > > > 
+> > > >  drivers/iio/proximity/vl53l0x-i2c.c | 37 +++++++++++++++++++++++++++++
+> > > >  1 file changed, 37 insertions(+)
+> > > > 
+> > > > diff --git a/drivers/iio/proximity/vl53l0x-i2c.c
+> > > > b/drivers/iio/proximity/vl53l0x-i2c.c index 12a3e2eff464..8581a873919f
+> > > > 100644
+> > > > --- a/drivers/iio/proximity/vl53l0x-i2c.c
+> > > > +++ b/drivers/iio/proximity/vl53l0x-i2c.c
+> > > > @@ -43,6 +43,7 @@
+> > > > 
+> > > >  struct vl53l0x_data {
+> > > >  
+> > > >  	struct i2c_client *client;
+> > > >  	struct completion completion;
+> > > > 
+> > > > +	struct regulator *vdd_supply;
+> > > > 
+> > > >  };
+> > > >  
+> > > >  static irqreturn_t vl53l0x_handle_irq(int irq, void *priv)
+> > > > 
+> > > > @@ -192,10 +193,31 @@ static const struct iio_info vl53l0x_info = {
+> > > > 
+> > > >  	.read_raw = vl53l0x_read_raw,
+> > > >  
+> > > >  };
+> > > > 
+> > > > +static void vl53l0x_power_off(void *_data)
+> > > > +{
+> > > > +	struct vl53l0x_data *data = _data;
+> > > > +
+> > > > +	regulator_disable(data->vdd_supply);
+> > > > +}
+> > > > +
+> > > > +static int vl53l0x_power_on(struct vl53l0x_data *data)
+> > > > +{
+> > > > +	int ret;
+> > > > +
+> > > > +	ret = regulator_enable(data->vdd_supply);
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > > +
+> > > > +	usleep_range(3200, 5000);
+> > > > +
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > > > 
+> > > >  static int vl53l0x_probe(struct i2c_client *client)
+> > > >  {
+> > > >  
+> > > >  	struct vl53l0x_data *data;
+> > > >  	struct iio_dev *indio_dev;
+> > > > 
+> > > > +	int error;
+> > > > 
+> > > >  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> > > >  	if (!indio_dev)
+> > > > 
+> > > > @@ -210,6 +232,21 @@ static int vl53l0x_probe(struct i2c_client *client)
+> > > > 
+> > > >  				     I2C_FUNC_SMBUS_BYTE_DATA))
+> > > >  		
+> > > >  		return -EOPNOTSUPP;
+> > > > 
+> > > > +	data->vdd_supply = devm_regulator_get_optional(&client->dev,   
+> "vdd");
+> > > > +	if (IS_ERR(data->vdd_supply))
+> > > > +		return dev_err_probe(&client->dev, PTR_ERR(data-  
+> >vdd_supply),  
+> > > > +				     "Unable to get VDD   
+> regulator\n");
+> > > 
+> > > It looks like this optional regulator is not actually optional.
+> > > 
+> > > [    1.919995] vl53l0x-i2c 1-0029: error -ENODEV: Unable to get VDD
+> > > regulator
+> > > 
+> > > When using devm_regulator_get instead, a dummy regulator gets returned
+> > > which I think is what we want here:
+> > > 
+> > > [    1.905518] vl53l0x-i2c 1-0029: supply vdd not found, using dummy
+> > > regulator
+> > > 
+> > > Can you fix this up or should I send a patch?  
+> > 
+> > Hi Luca,
+> > 
+> > Please send a patch.  
+> 
+> Which commit sha can I use for Fixes: here?
+> Based your togreg[0] branch currently shows "Age: 20 hours" I guess it was 
+> rebased recently?
 
-...
+It was rebased onto rc1 as you noticed.
 
-Please add default cases into switches.
+In theory it is now stable, assuming nothing nasty shows up.
+Fixes tag doesn't matter strongly given both will go into mainline via
+the same pull request, so maybe just skip adding one to make my life
+easier :)
 
--- 
-With Best Regards,
-Andy Shevchenko
+Thanks,
+
+Jonathan
+
+> 
+> Regards
+> Luca
+> 
+> [0]https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/log/?h=togreg
+> 
+> > 
+> > Jonathan
+> >   
+> > > Regards
+> > > Luca
+> > >   
+> > > > +
+> > > > +	error = vl53l0x_power_on(data);
+> > > > +	if (error)
+> > > > +		return dev_err_probe(&client->dev, error,
+> > > > +				     "Failed to power on the   
+> chip\n");
+> > > > +
+> > > > +	error = devm_add_action_or_reset(&client->dev, vl53l0x_power_off,
+> > > > data);
+> > > > +	if (error)
+> > > > +		return dev_err_probe(&client->dev, error,
+> > > > +				     "Failed to install poweroff   
+> action\n");
+> > > > +
+> > > > 
+> > > >  	indio_dev->name = "vl53l0x";
+> > > >  	indio_dev->info = &vl53l0x_info;
+> > > >  	indio_dev->channels = vl53l0x_channels;  
+> 
+> 
+> 
+> 
+
