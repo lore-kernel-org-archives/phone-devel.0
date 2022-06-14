@@ -2,118 +2,353 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31C5ACCA481
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Jun 2022 20:20:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64060C43334
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Jun 2022 20:41:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349829AbiFNUUk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 14 Jun 2022 16:20:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39258 "EHLO
+        id S1352988AbiFNUln (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Jun 2022 16:41:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358064AbiFNUUe (ORCPT
+        with ESMTP id S1352509AbiFNUll (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 14 Jun 2022 16:20:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D7BB485;
-        Tue, 14 Jun 2022 13:20:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46B3761560;
-        Tue, 14 Jun 2022 20:20:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9B1C3411E;
-        Tue, 14 Jun 2022 20:20:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655238031;
-        bh=/YZ/vfdY+LpkLwFedw1kInlGS37UJrgkhllxkJRhf6Y=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=c72bZ+oCNYTvdU0AwQSmlyiTkpM10TAEYMAsZ3JElFrOEGXaMiEWfqn/XXVHWRX9B
-         YiEkV1PUhV8d1tOvMOXuBtfqR78WZH5HWVIP38H13X52lc8LJzFI8nyYd0bv4ZKyw8
-         E0ReS0tedlRIKuTWEHcbnQpXhMhOms9jwRWHDNUXkYrBMez5+akYdBkmrdj0zTbeVm
-         5IeMUNZKH19mqoaRSPVCDm46iUlL7+/SiZMl9Gc5DaOhxs+QKvFgj5HX9FczzshjKg
-         D0HKkHk6FZIA29okuu+DtStfoWifXSKs56G26KXH4aqU4PHWJvBKFS3l6muGeWHt58
-         T+Xe7OO7Rxa7A==
-Date:   Tue, 14 Jun 2022 22:20:27 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Todor Tomov <todor.too@gmail.com>,
+        Tue, 14 Jun 2022 16:41:41 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CA6D4EF41
+        for <phone-devel@vger.kernel.org>; Tue, 14 Jun 2022 13:41:39 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id t25so15740707lfg.7
+        for <phone-devel@vger.kernel.org>; Tue, 14 Jun 2022 13:41:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=aEy25dfcno5OHkNyMXDj3NHT7dE90MQx1wXlFfUsowc=;
+        b=AgcnDEud9wRhzk3IHXnP9mDzwOXzYI8NxI8HNw/deRChpeEo4ZUkobrA183P1fiAoV
+         352K5y15P4vgNsXrA9N4sE9mQUIfT+Oxl6FJnDh89W2N3bXlBVxvDTYto7eVcJQuo1hu
+         zA2eZxzATLuyKKzfm9CQlI4nLT1h4yrkHcAUa+KKFXbGjGTorock9fIDYl5m41jMZ4Zc
+         0TVkPnGC+r2W6BzzxXS3+SQuBi3K9TnT6LYJgLCR9JZ2EO9hSxWgKg0DyCrqR1P99Iqi
+         GbzTkmZXMJvbqupAIR4CACGGTOTk3wvrOhrcntTQ32GT89DPBVSPO+Y/77/9OaGBHFOB
+         0Wbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=aEy25dfcno5OHkNyMXDj3NHT7dE90MQx1wXlFfUsowc=;
+        b=WF7H1DoRS0x3wt9MZ9gLhiWVXfCwp8a7+MJaRa987JU/lj81M/mkWzAQDMQRZft1EF
+         v47DiuyJ6ebKG3ZAiAseYb1JK6M2g+egnpE6zCj3gbKMNFzqdZeJKfAqiN1ahyfi3vUy
+         24TQEtLXmc2gTfPC/qHIpFJkJpn8HUsagRkoTSdivwAIWDLKq/warBmbvEPDeJsnVYQ9
+         cYuiUyXnxd7jInuY3oT4PDP5mTSmX+n7T4ObJEbSYZpHO5bzaN3h5008NPZX3tSbq3tA
+         l/Wmxr0aMlSOfnMM4C19QH+JNc1SFLJZ3widXZMIiysS3hYHwCQUGouL/efvRo0gcXsJ
+         zjig==
+X-Gm-Message-State: AJIora8hFVp+xK23qwM0ZDuJfYUUPu5BT7oQO99UeeHA2dQF/NpNad5S
+        H9WaKbf35QkM1pCuzn/AbqGD6g==
+X-Google-Smtp-Source: AGRyM1tv+yzNKffTqx7uAUQF7RYyhzqXKvjCumdHONCgKEXTUnZs7ZI9wK3keSDeEbmqy7VT1NUHsQ==
+X-Received: by 2002:a19:7503:0:b0:479:50c:93d6 with SMTP id y3-20020a197503000000b00479050c93d6mr4078321lfe.356.1655239297787;
+        Tue, 14 Jun 2022 13:41:37 -0700 (PDT)
+Received: from [192.168.1.211] ([37.153.55.125])
+        by smtp.gmail.com with ESMTPSA id a25-20020a056512201900b0047d479884b8sm1522266lfb.27.2022.06.14.13.41.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jun 2022 13:41:37 -0700 (PDT)
+Message-ID: <09123dd1-3cb2-d33c-f89e-d43a3d361af2@linaro.org>
+Date:   Tue, 14 Jun 2022 23:41:31 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: msm8953: add MDSS
+Content-Language: en-GB
+To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        matti.lehtimaki@gmail.com
-Subject: Re: [RFC PATCH 10/14] i2c: qcom-cci: add msm8974 compatible
-Message-ID: <Yqjti8s06LIfTE52@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Todor Tomov <todor.too@gmail.com>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        matti.lehtimaki@gmail.com
-References: <20220522162802.208275-1-luca@z3ntu.xyz>
- <20220522162802.208275-11-luca@z3ntu.xyz>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="QLG4RjiqBen7yn3N"
-Content-Disposition: inline
-In-Reply-To: <20220522162802.208275-11-luca@z3ntu.xyz>
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220610225304.267508-1-luca@z3ntu.xyz>
+ <20220610225304.267508-2-luca@z3ntu.xyz>
+ <c7ac47e0-20a2-3972-e760-61276964445c@linaro.org> <4716730.GXAFRqVoOG@g550jk>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <4716730.GXAFRqVoOG@g550jk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 11/06/2022 12:36, Luca Weiss wrote:
+> Hi Dmitry,
+> 
+> thanks for the feedback!
+> 
+> On Samstag, 11. Juni 2022 01:20:31 CEST Dmitry Baryshkov wrote:
+>> On 11/06/2022 01:53, Luca Weiss wrote:
+>>> From: Vladimir Lypak <vladimir.lypak@gmail.com>
+>>>
+>>> Add the MDSS, MDP and DSI nodes that are found on msm8953 SoC.
+>>>
+>>> IOMMU is not added because support for it isn't yet upstream and MDSS
+>>> works fine without IOMMU on 8953.
+>>>
+>>> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+>>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+>>
+>> Looks good, few minor nits below.
+>>
+>>> ---
+>>>
+>>>    arch/arm64/boot/dts/qcom/msm8953.dtsi | 202 ++++++++++++++++++++++++++
+>>>    1 file changed, 202 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi
+>>> b/arch/arm64/boot/dts/qcom/msm8953.dtsi index ffc3ec2cd3bc..a2aca3d05899
+>>> 100644
+>>> --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
+>>> +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+>>> @@ -726,6 +726,208 @@ tcsr_phy_clk_scheme_sel: syscon@193f044 {
+>>>
+>>>    			reg = <0x193f044 0x4>;
+>>>    		
+>>>    		};
+>>>
+>>> +		mdss: mdss@1a00000 {
+>>> +			compatible = "qcom,mdss";
+>>> +
+>>> +			reg = <0x1a00000 0x1000>,
+>>> +			      <0x1ab0000 0x1040>;
+>>> +			reg-names = "mdss_phys",
+>>> +				    "vbif_phys";
+>>> +
+>>> +			power-domains = <&gcc MDSS_GDSC>;
+>>> +			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+>>> +
+>>> +			interrupt-controller;
+>>> +			#interrupt-cells = <1>;
+>>> +
+>>> +			clocks = <&gcc GCC_MDSS_AHB_CLK>,
+>>> +				 <&gcc GCC_MDSS_AXI_CLK>,
+>>> +				 <&gcc GCC_MDSS_VSYNC_CLK>;
+>>
+>> Please also add GCC_MDSS_MDP_CLK at the end of this array. It might be
+>> required to read HW_REV register.
+> 
+> I don't think if I add that clock with the name "core" (or similar) that it
+> would be used by the driver:
 
---QLG4RjiqBen7yn3N
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It is not (now), but I have plans to use it. Please consider adding it 
+now, so that we won't have to change it later.
 
-On Sun, May 22, 2022 at 06:27:58PM +0200, Luca Weiss wrote:
-> From: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
->=20
-> MSM8974 CCI is the same as MSM8916 except it has two masters.
->=20
-> Signed-off-by: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-> To note, the cci_v1_5_data variable name is just a bit arbitrary and
-> isn't meant to reflect IP version "1.5". I'd be happy to change the
-> variable name to something else.
+> 
+> https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/msm/msm_mdss.c#L274-L302
+> 
+> Regards
+> Luca
+> 
+>>
+>>> +			clock-names = "iface",
+>>> +				      "bus",
+>>> +				      "vsync";
+>>> +
+>>> +			#address-cells = <1>;
+>>> +			#size-cells = <1>;
+>>> +			ranges;
+>>
+>> status = "disabled";
+>>
+>>> +
+>>> +			mdp: mdp@1a01000 {
+>>> +				compatible = "qcom,mdp5";
+>>> +				reg = <0x1a01000 0x89000>;
+>>> +				reg-names = "mdp_phys";
+>>> +
+>>> +				interrupt-parent = <&mdss>;
+>>> +				interrupts = <0>;
+>>> +
+>>> +				power-domains = <&gcc MDSS_GDSC>;
+>>> +
+>>> +				clocks = <&gcc GCC_MDSS_AHB_CLK>,
+>>> +					 <&gcc GCC_MDSS_AXI_CLK>,
+>>> +					 <&gcc GCC_MDSS_MDP_CLK>,
+>>> +					 <&gcc GCC_MDSS_VSYNC_CLK>;
+>>> +				clock-names = "iface",
+>>> +					      "bus",
+>>> +					      "core",
+>>> +					      "vsync";
+>>> +
+>>> +				// iommus = <&apps_iommu 0xc00 0>;
+>>> +
+>>> +				ports {
+>>> +					#address-cells = <1>;
+>>> +					#size-cells = <0>;
+>>> +
+>>> +					port@0 {
+>>> +						reg = <0>;
+>>> +						mdp5_intf1_out: endpoint {
+>>> +							remote-endpoint = <&dsi0_in>;
+>>> +						};
+>>> +					};
+>>> +
+>>> +					port@1 {
+>>> +						reg = <1>;
+>>> +						mdp5_intf2_out: endpoint {
+>>> +							remote-endpoint = <&dsi1_in>;
+>>> +						};
+>>> +					};
+>>> +				};
+>>> +			};
+>>> +
+>>> +			dsi0: dsi@1a94000 {
+>>> +				compatible = "qcom,mdss-dsi-ctrl";
+>>> +				reg = <0x1a94000 0x400>;
+>>> +				reg-names = "dsi_ctrl";
+>>> +
+>>> +				interrupt-parent = <&mdss>;
+>>> +				interrupts = <4>;
+>>> +
+>>> +				assigned-clocks = <&gcc BYTE0_CLK_SRC>,
+>>> +						  <&gcc PCLK0_CLK_SRC>;
+>>> +				assigned-clock-parents = <&dsi0_phy 0>,
+>>> +							 <&dsi0_phy 1>;
+>>> +
+>>> +				clocks = <&gcc GCC_MDSS_MDP_CLK>,
+>>> +					 <&gcc GCC_MDSS_AHB_CLK>,
+>>> +					 <&gcc GCC_MDSS_AXI_CLK>,
+>>> +					 <&gcc GCC_MDSS_BYTE0_CLK>,
+>>> +					 <&gcc GCC_MDSS_PCLK0_CLK>,
+>>> +					 <&gcc GCC_MDSS_ESC0_CLK>;
+>>> +				clock-names = "mdp_core",
+>>> +					      "iface",
+>>> +					      "bus",
+>>> +					      "byte",
+>>> +					      "pixel",
+>>> +					      "core";
+>>> +
+>>> +				phys = <&dsi0_phy>;
+>>> +				phy-names = "dsi";
+>>> +
+>>> +				#address-cells = <1>;
+>>> +				#size-cells = <0>;
+>>
+>> status = "disabled";
+>>
+>>> +
+>>> +				ports {
+>>> +					#address-cells = <1>;
+>>> +					#size-cells = <0>;
+>>> +
+>>> +					port@0 {
+>>> +						reg = <0>;
+>>> +						dsi0_in: endpoint {
+>>> +							remote-endpoint = <&mdp5_intf1_out>;
+>>> +						};
+>>> +					};
+>>> +
+>>> +					port@1 {
+>>> +						reg = <1>;
+>>> +						dsi0_out: endpoint {
+>>> +						};
+>>> +					};
+>>> +				};
+>>> +			};
+>>> +
+>>> +			dsi0_phy: dsi-phy@1a94400 {
+>>> +				compatible = "qcom,dsi-phy-14nm-8953";
+>>> +				reg = <0x1a94400 0x100>,
+>>> +				      <0x1a94500 0x300>,
+>>> +				      <0x1a94800 0x188>;
+>>> +				reg-names = "dsi_phy",
+>>> +					    "dsi_phy_lane",
+>>> +					    "dsi_pll";
+>>> +
+>>> +				#clock-cells = <1>;
+>>> +				#phy-cells = <0>;
+>>
+>> status = "disabled";
+>>
+>>> +
+>>> +				clocks = <&gcc GCC_MDSS_AHB_CLK>, <&xo_board>;
+>>> +				clock-names = "iface", "ref";
+>>> +			};
+>>> +
+>>> +			dsi1: dsi@1a96000 {
+>>> +				compatible = "qcom,mdss-dsi-ctrl";
+>>> +				reg = <0x1a96000 0x400>;
+>>> +				reg-names = "dsi_ctrl";
+>>> +
+>>> +				interrupt-parent = <&mdss>;
+>>> +				interrupts = <5>;
+>>> +
+>>> +				assigned-clocks = <&gcc BYTE1_CLK_SRC>,
+>>> +						  <&gcc PCLK1_CLK_SRC>;
+>>> +				assigned-clock-parents = <&dsi1_phy 0>,
+>>> +							 <&dsi1_phy 1>;
+>>> +
+>>> +				clocks = <&gcc GCC_MDSS_MDP_CLK>,
+>>> +					 <&gcc GCC_MDSS_AHB_CLK>,
+>>> +					 <&gcc GCC_MDSS_AXI_CLK>,
+>>> +					 <&gcc GCC_MDSS_BYTE1_CLK>,
+>>> +					 <&gcc GCC_MDSS_PCLK1_CLK>,
+>>> +					 <&gcc GCC_MDSS_ESC1_CLK>;
+>>> +				clock-names = "mdp_core",
+>>> +					      "iface",
+>>> +					      "bus",
+>>> +					      "byte",
+>>> +					      "pixel",
+>>> +					      "core";
+>>> +
+>>> +				phys = <&dsi1_phy>;
+>>> +				phy-names = "dsi";
+>>> +
+>>> +				status = "disabled";
+>>> +
+>>> +				ports {
+>>> +					#address-cells = <1>;
+>>> +					#size-cells = <0>;
+>>> +
+>>> +					port@0 {
+>>> +						reg = <0>;
+>>> +						dsi1_in: endpoint {
+>>> +							remote-endpoint = <&mdp5_intf2_out>;
+>>> +						};
+>>> +					};
+>>> +
+>>> +					port@1 {
+>>> +						reg = <1>;
+>>> +						dsi1_out: endpoint {
+>>> +						};
+>>> +					};
+>>> +				};
+>>> +			};
+>>> +
+>>> +			dsi1_phy: dsi-phy@1a96400 {
+>>> +				compatible = "qcom,dsi-phy-14nm-8953";
+>>> +				reg = <0x1a96400 0x100>,
+>>> +				      <0x1a96500 0x300>,
+>>> +				      <0x1a96800 0x188>;
+>>> +				reg-names = "dsi_phy",
+>>> +					    "dsi_phy_lane",
+>>> +					    "dsi_pll";
+>>> +
+>>> +				#clock-cells = <1>;
+>>> +				#phy-cells = <0>;
+>>> +
+>>> +				clocks = <&gcc GCC_MDSS_AHB_CLK>, <&xo_board>;
+>>> +				clock-names = "iface", "ref";
+>>> +
+>>> +				status = "disabled";
+>>> +			};
+>>> +		};
+>>> +
+>>>
+>>>    		spmi_bus: spmi@200f000 {
+>>>    		
+>>>    			compatible = "qcom,spmi-pmic-arb";
+>>>    			reg = <0x200f000 0x1000>,
+> 
+> 
+> 
+> 
 
-Loic, Robert: I know this series is marked RFC, but the I2C patches
-adding a new SoC to the driver are maybe interesting already?
 
-
---QLG4RjiqBen7yn3N
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmKo7YsACgkQFA3kzBSg
-KbbqbRAAoyyAxbFsgQBm8I5Vx+0UoHw0pUnptb52g5CjmSpFUz3rhcc7nFtAGTRq
-4c++op/pMcUHuN53keum60Y0530+cM25HAhvvVY9ggDXuK8Mn2bSHEmC23dHCAX/
-whRjzsH9W2BlOukKhiJyg/EGZgGfeDC2HTcddnzr5WSlZksOcxItocYO4d6rl3xf
-uQLT6cAzCaNtLP1C5KBd2dQb39kdXrrRcNNeWETL8krJHBQjkCWg2guXJDvPnLjE
-b9MvaiZUZ6EMIR+KezE4PFYw6BtlLhH/AeCEgLruK6KlV4muzOIvstnAGGfRgm3u
-+EcGebvT3FgFHlqrNF7exFG3ACWJolAaM8ZyehkOKoyA+J+7AINmoKDrpwa33qIE
-YygWfUbH1tUBxMfxJ4tU/ranCmr5ZnJCCoVY2Pt64M/yOCldnkN55BUKiL1Gg/Uq
-po7+6rbLpWJIlSWeyQWRi9RYDGhA1tc0NI+ptSvrA9e7ewyj9ggVIY7KnnYjXrhE
-7YMDeWyowe925c8BW5+E8vsMfgRA6NyHavPiGr0B+aa5eGYjPvBpCxs95F5Tppom
-MONwVTNhmCxEqVWQTQt3Zil8AikUFUa5dYVSFt2pUuXMfmYU6kkvZ8kSH7tL7ASQ
-uWjlcz4x/fjQZ2Oova/E8UOLv/3eOCu6Zxj/grCDPITArk5ftJA=
-=9e2S
------END PGP SIGNATURE-----
-
---QLG4RjiqBen7yn3N--
+-- 
+With best wishes
+Dmitry
