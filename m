@@ -2,353 +2,408 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64060C43334
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Jun 2022 20:41:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8054C43334
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Jun 2022 21:32:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352988AbiFNUln (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 14 Jun 2022 16:41:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59490 "EHLO
+        id S1357051AbiFNVcf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Jun 2022 17:32:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352509AbiFNUll (ORCPT
+        with ESMTP id S1357456AbiFNVcd (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 14 Jun 2022 16:41:41 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CA6D4EF41
-        for <phone-devel@vger.kernel.org>; Tue, 14 Jun 2022 13:41:39 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id t25so15740707lfg.7
-        for <phone-devel@vger.kernel.org>; Tue, 14 Jun 2022 13:41:39 -0700 (PDT)
+        Tue, 14 Jun 2022 17:32:33 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43CE064DB
+        for <phone-devel@vger.kernel.org>; Tue, 14 Jun 2022 14:32:29 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id g16-20020a17090a7d1000b001ea9f820449so221115pjl.5
+        for <phone-devel@vger.kernel.org>; Tue, 14 Jun 2022 14:32:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=aEy25dfcno5OHkNyMXDj3NHT7dE90MQx1wXlFfUsowc=;
-        b=AgcnDEud9wRhzk3IHXnP9mDzwOXzYI8NxI8HNw/deRChpeEo4ZUkobrA183P1fiAoV
-         352K5y15P4vgNsXrA9N4sE9mQUIfT+Oxl6FJnDh89W2N3bXlBVxvDTYto7eVcJQuo1hu
-         zA2eZxzATLuyKKzfm9CQlI4nLT1h4yrkHcAUa+KKFXbGjGTorock9fIDYl5m41jMZ4Zc
-         0TVkPnGC+r2W6BzzxXS3+SQuBi3K9TnT6LYJgLCR9JZ2EO9hSxWgKg0DyCrqR1P99Iqi
-         GbzTkmZXMJvbqupAIR4CACGGTOTk3wvrOhrcntTQ32GT89DPBVSPO+Y/77/9OaGBHFOB
-         0Wbw==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=YQwlvrRLpaMgyIIZBdcAoIRZl+hOsdW2okVyMBrchCo=;
+        b=Fi7ZN9brnB+dgYQjVX1XmP3R50egKTJ/tEm4PJdmz+at5S5AODBljnNJlAGf72CwcD
+         4uw8jO6eRSn2h1WB7IPNRPKE57rFsSu6rmC/v75Yd1A+hDj0ZFEyFkgSmhVno2BEMuJt
+         lnOMyu5iXnihBsYrt7+zCmuxfvwz+9ad7O7tqUNLGH97C+dlMuwaoSZvsfR6F+4yCvOY
+         AZNfe79RcXBwUGex2SWmYNYZdxzyYASgYVZ97UIi+XzDNXwafdGDn+5XSxL5kMVcz7Gr
+         78j26Ty3zbZIFxFfrQK8T8WgQzN0jk2+4ycgtWmqjFYBHEmXnb8nW0kJjD3IASuowiPc
+         OQtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=aEy25dfcno5OHkNyMXDj3NHT7dE90MQx1wXlFfUsowc=;
-        b=WF7H1DoRS0x3wt9MZ9gLhiWVXfCwp8a7+MJaRa987JU/lj81M/mkWzAQDMQRZft1EF
-         v47DiuyJ6ebKG3ZAiAseYb1JK6M2g+egnpE6zCj3gbKMNFzqdZeJKfAqiN1ahyfi3vUy
-         24TQEtLXmc2gTfPC/qHIpFJkJpn8HUsagRkoTSdivwAIWDLKq/warBmbvEPDeJsnVYQ9
-         cYuiUyXnxd7jInuY3oT4PDP5mTSmX+n7T4ObJEbSYZpHO5bzaN3h5008NPZX3tSbq3tA
-         l/Wmxr0aMlSOfnMM4C19QH+JNc1SFLJZ3widXZMIiysS3hYHwCQUGouL/efvRo0gcXsJ
-         zjig==
-X-Gm-Message-State: AJIora8hFVp+xK23qwM0ZDuJfYUUPu5BT7oQO99UeeHA2dQF/NpNad5S
-        H9WaKbf35QkM1pCuzn/AbqGD6g==
-X-Google-Smtp-Source: AGRyM1tv+yzNKffTqx7uAUQF7RYyhzqXKvjCumdHONCgKEXTUnZs7ZI9wK3keSDeEbmqy7VT1NUHsQ==
-X-Received: by 2002:a19:7503:0:b0:479:50c:93d6 with SMTP id y3-20020a197503000000b00479050c93d6mr4078321lfe.356.1655239297787;
-        Tue, 14 Jun 2022 13:41:37 -0700 (PDT)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id a25-20020a056512201900b0047d479884b8sm1522266lfb.27.2022.06.14.13.41.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jun 2022 13:41:37 -0700 (PDT)
-Message-ID: <09123dd1-3cb2-d33c-f89e-d43a3d361af2@linaro.org>
-Date:   Tue, 14 Jun 2022 23:41:31 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: msm8953: add MDSS
-Content-Language: en-GB
-To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=YQwlvrRLpaMgyIIZBdcAoIRZl+hOsdW2okVyMBrchCo=;
+        b=Cv4/huDRhzJ8p7kD1ihn3C8uLH1GI3lVB0TUjQaThu1io9epe2ai5Yqxo//BAJOuA9
+         KUOJkisPEHY/HE3yOE5ao6UItbjnEaH3UksIpDCND8jRP8K/0CVZfpUbjjHclxvWS2fx
+         pemmLg5TEqxH0PxNjBirM1Oa8IRmNtb4nGXCa8+sAnTNhzO1xi8ZK6paaZrdyHFKhrkB
+         f+5iIg2Djg6oVK6r6zmnEcoNjtPerNeqO9vZn+ao2Up6xSKOV3SD/SC+DygJ0TRI5TIr
+         M5LX8D0dXCFH7vUyu9gtN59e5LEIgLTRpEWi7lfyMlkqHZ79/bPT4WMKCaOI8IoLvsX3
+         4RWw==
+X-Gm-Message-State: AJIora/8AM6NFrugFNBi0OpmQrN4HR9IoYa8PoJ52G/RIVua2aZJY/DT
+        NbiQ9F55e5kqDvTKDWWXQRc8xw==
+X-Google-Smtp-Source: AGRyM1vZFeBCV+2MEaUtB5g1aODUGbQyPVdP/UqNqTDXBO0UYkBQC5RBgAHDlNaQpX1kRVywAAOajg==
+X-Received: by 2002:a17:90b:2248:b0:1ea:8403:d81c with SMTP id hk8-20020a17090b224800b001ea8403d81cmr6560837pjb.97.1655242348488;
+        Tue, 14 Jun 2022 14:32:28 -0700 (PDT)
+Received: from google.com ([192.77.111.2])
+        by smtp.gmail.com with ESMTPSA id s17-20020a17090a5d1100b001e0d4169365sm63262pji.17.2022.06.14.14.32.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jun 2022 14:32:28 -0700 (PDT)
+Date:   Tue, 14 Jun 2022 22:32:25 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220610225304.267508-1-luca@z3ntu.xyz>
- <20220610225304.267508-2-luca@z3ntu.xyz>
- <c7ac47e0-20a2-3972-e760-61276964445c@linaro.org> <4716730.GXAFRqVoOG@g550jk>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <4716730.GXAFRqVoOG@g550jk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v5 4/5] mfd: sm5703: Add support for SM5703 MFD
+Message-ID: <Yqj+aUNLC00Tcu49@google.com>
+References: <20220423085319.483524-1-markuss.broks@gmail.com>
+ <20220423085319.483524-5-markuss.broks@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220423085319.483524-5-markuss.broks@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 11/06/2022 12:36, Luca Weiss wrote:
-> Hi Dmitry,
-> 
-> thanks for the feedback!
-> 
-> On Samstag, 11. Juni 2022 01:20:31 CEST Dmitry Baryshkov wrote:
->> On 11/06/2022 01:53, Luca Weiss wrote:
->>> From: Vladimir Lypak <vladimir.lypak@gmail.com>
->>>
->>> Add the MDSS, MDP and DSI nodes that are found on msm8953 SoC.
->>>
->>> IOMMU is not added because support for it isn't yet upstream and MDSS
->>> works fine without IOMMU on 8953.
->>>
->>> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
->>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
->>
->> Looks good, few minor nits below.
->>
->>> ---
->>>
->>>    arch/arm64/boot/dts/qcom/msm8953.dtsi | 202 ++++++++++++++++++++++++++
->>>    1 file changed, 202 insertions(+)
->>>
->>> diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi
->>> b/arch/arm64/boot/dts/qcom/msm8953.dtsi index ffc3ec2cd3bc..a2aca3d05899
->>> 100644
->>> --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
->>> +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
->>> @@ -726,6 +726,208 @@ tcsr_phy_clk_scheme_sel: syscon@193f044 {
->>>
->>>    			reg = <0x193f044 0x4>;
->>>    		
->>>    		};
->>>
->>> +		mdss: mdss@1a00000 {
->>> +			compatible = "qcom,mdss";
->>> +
->>> +			reg = <0x1a00000 0x1000>,
->>> +			      <0x1ab0000 0x1040>;
->>> +			reg-names = "mdss_phys",
->>> +				    "vbif_phys";
->>> +
->>> +			power-domains = <&gcc MDSS_GDSC>;
->>> +			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
->>> +
->>> +			interrupt-controller;
->>> +			#interrupt-cells = <1>;
->>> +
->>> +			clocks = <&gcc GCC_MDSS_AHB_CLK>,
->>> +				 <&gcc GCC_MDSS_AXI_CLK>,
->>> +				 <&gcc GCC_MDSS_VSYNC_CLK>;
->>
->> Please also add GCC_MDSS_MDP_CLK at the end of this array. It might be
->> required to read HW_REV register.
-> 
-> I don't think if I add that clock with the name "core" (or similar) that it
-> would be used by the driver:
+On Sat, 23 Apr 2022, Markuss Broks wrote:
 
-It is not (now), but I have plans to use it. Please consider adding it 
-now, so that we won't have to change it later.
+> Silicon Mitus SM5703 is a multi-function device, meant to be
 
-> 
-> https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/msm/msm_mdss.c#L274-L302
-> 
-> Regards
-> Luca
-> 
->>
->>> +			clock-names = "iface",
->>> +				      "bus",
->>> +				      "vsync";
->>> +
->>> +			#address-cells = <1>;
->>> +			#size-cells = <1>;
->>> +			ranges;
->>
->> status = "disabled";
->>
->>> +
->>> +			mdp: mdp@1a01000 {
->>> +				compatible = "qcom,mdp5";
->>> +				reg = <0x1a01000 0x89000>;
->>> +				reg-names = "mdp_phys";
->>> +
->>> +				interrupt-parent = <&mdss>;
->>> +				interrupts = <0>;
->>> +
->>> +				power-domains = <&gcc MDSS_GDSC>;
->>> +
->>> +				clocks = <&gcc GCC_MDSS_AHB_CLK>,
->>> +					 <&gcc GCC_MDSS_AXI_CLK>,
->>> +					 <&gcc GCC_MDSS_MDP_CLK>,
->>> +					 <&gcc GCC_MDSS_VSYNC_CLK>;
->>> +				clock-names = "iface",
->>> +					      "bus",
->>> +					      "core",
->>> +					      "vsync";
->>> +
->>> +				// iommus = <&apps_iommu 0xc00 0>;
->>> +
->>> +				ports {
->>> +					#address-cells = <1>;
->>> +					#size-cells = <0>;
->>> +
->>> +					port@0 {
->>> +						reg = <0>;
->>> +						mdp5_intf1_out: endpoint {
->>> +							remote-endpoint = <&dsi0_in>;
->>> +						};
->>> +					};
->>> +
->>> +					port@1 {
->>> +						reg = <1>;
->>> +						mdp5_intf2_out: endpoint {
->>> +							remote-endpoint = <&dsi1_in>;
->>> +						};
->>> +					};
->>> +				};
->>> +			};
->>> +
->>> +			dsi0: dsi@1a94000 {
->>> +				compatible = "qcom,mdss-dsi-ctrl";
->>> +				reg = <0x1a94000 0x400>;
->>> +				reg-names = "dsi_ctrl";
->>> +
->>> +				interrupt-parent = <&mdss>;
->>> +				interrupts = <4>;
->>> +
->>> +				assigned-clocks = <&gcc BYTE0_CLK_SRC>,
->>> +						  <&gcc PCLK0_CLK_SRC>;
->>> +				assigned-clock-parents = <&dsi0_phy 0>,
->>> +							 <&dsi0_phy 1>;
->>> +
->>> +				clocks = <&gcc GCC_MDSS_MDP_CLK>,
->>> +					 <&gcc GCC_MDSS_AHB_CLK>,
->>> +					 <&gcc GCC_MDSS_AXI_CLK>,
->>> +					 <&gcc GCC_MDSS_BYTE0_CLK>,
->>> +					 <&gcc GCC_MDSS_PCLK0_CLK>,
->>> +					 <&gcc GCC_MDSS_ESC0_CLK>;
->>> +				clock-names = "mdp_core",
->>> +					      "iface",
->>> +					      "bus",
->>> +					      "byte",
->>> +					      "pixel",
->>> +					      "core";
->>> +
->>> +				phys = <&dsi0_phy>;
->>> +				phy-names = "dsi";
->>> +
->>> +				#address-cells = <1>;
->>> +				#size-cells = <0>;
->>
->> status = "disabled";
->>
->>> +
->>> +				ports {
->>> +					#address-cells = <1>;
->>> +					#size-cells = <0>;
->>> +
->>> +					port@0 {
->>> +						reg = <0>;
->>> +						dsi0_in: endpoint {
->>> +							remote-endpoint = <&mdp5_intf1_out>;
->>> +						};
->>> +					};
->>> +
->>> +					port@1 {
->>> +						reg = <1>;
->>> +						dsi0_out: endpoint {
->>> +						};
->>> +					};
->>> +				};
->>> +			};
->>> +
->>> +			dsi0_phy: dsi-phy@1a94400 {
->>> +				compatible = "qcom,dsi-phy-14nm-8953";
->>> +				reg = <0x1a94400 0x100>,
->>> +				      <0x1a94500 0x300>,
->>> +				      <0x1a94800 0x188>;
->>> +				reg-names = "dsi_phy",
->>> +					    "dsi_phy_lane",
->>> +					    "dsi_pll";
->>> +
->>> +				#clock-cells = <1>;
->>> +				#phy-cells = <0>;
->>
->> status = "disabled";
->>
->>> +
->>> +				clocks = <&gcc GCC_MDSS_AHB_CLK>, <&xo_board>;
->>> +				clock-names = "iface", "ref";
->>> +			};
->>> +
->>> +			dsi1: dsi@1a96000 {
->>> +				compatible = "qcom,mdss-dsi-ctrl";
->>> +				reg = <0x1a96000 0x400>;
->>> +				reg-names = "dsi_ctrl";
->>> +
->>> +				interrupt-parent = <&mdss>;
->>> +				interrupts = <5>;
->>> +
->>> +				assigned-clocks = <&gcc BYTE1_CLK_SRC>,
->>> +						  <&gcc PCLK1_CLK_SRC>;
->>> +				assigned-clock-parents = <&dsi1_phy 0>,
->>> +							 <&dsi1_phy 1>;
->>> +
->>> +				clocks = <&gcc GCC_MDSS_MDP_CLK>,
->>> +					 <&gcc GCC_MDSS_AHB_CLK>,
->>> +					 <&gcc GCC_MDSS_AXI_CLK>,
->>> +					 <&gcc GCC_MDSS_BYTE1_CLK>,
->>> +					 <&gcc GCC_MDSS_PCLK1_CLK>,
->>> +					 <&gcc GCC_MDSS_ESC1_CLK>;
->>> +				clock-names = "mdp_core",
->>> +					      "iface",
->>> +					      "bus",
->>> +					      "byte",
->>> +					      "pixel",
->>> +					      "core";
->>> +
->>> +				phys = <&dsi1_phy>;
->>> +				phy-names = "dsi";
->>> +
->>> +				status = "disabled";
->>> +
->>> +				ports {
->>> +					#address-cells = <1>;
->>> +					#size-cells = <0>;
->>> +
->>> +					port@0 {
->>> +						reg = <0>;
->>> +						dsi1_in: endpoint {
->>> +							remote-endpoint = <&mdp5_intf2_out>;
->>> +						};
->>> +					};
->>> +
->>> +					port@1 {
->>> +						reg = <1>;
->>> +						dsi1_out: endpoint {
->>> +						};
->>> +					};
->>> +				};
->>> +			};
->>> +
->>> +			dsi1_phy: dsi-phy@1a96400 {
->>> +				compatible = "qcom,dsi-phy-14nm-8953";
->>> +				reg = <0x1a96400 0x100>,
->>> +				      <0x1a96500 0x300>,
->>> +				      <0x1a96800 0x188>;
->>> +				reg-names = "dsi_phy",
->>> +					    "dsi_phy_lane",
->>> +					    "dsi_pll";
->>> +
->>> +				#clock-cells = <1>;
->>> +				#phy-cells = <0>;
->>> +
->>> +				clocks = <&gcc GCC_MDSS_AHB_CLK>, <&xo_board>;
->>> +				clock-names = "iface", "ref";
->>> +
->>> +				status = "disabled";
->>> +			};
->>> +		};
->>> +
->>>
->>>    		spmi_bus: spmi@200f000 {
->>>    		
->>>    			compatible = "qcom,spmi-pmic-arb";
->>>    			reg = <0x200f000 0x1000>,
-> 
-> 
-> 
-> 
+Please avoid using the term MFD.
 
+How is the device described in the data-sheet?
+
+What do you mean by "meant to be"?
+
+> used in mobile devices. It has several modules: LDO, BUCK regulators,
+
+Modules or functions?
+
+> charger circuit, flash LED driver, a fuel gauge for monitoring the battery
+> and a MUIC USB switcher. The MUIC and fuel gauge parts are separate in that
+> they use separate i2c lines to communicate with the device, while charger
+
+"I2C"
+
+> circuit, LED driver and regulators are on the main i2c line the device is
+> controlled with.
+> 
+> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> ---
+>  MAINTAINERS                |   8 +++
+>  drivers/mfd/Kconfig        |  13 +++++
+>  drivers/mfd/Makefile       |   1 +
+>  drivers/mfd/sm5703.c       |  78 +++++++++++++++++++++++++++
+>  include/linux/mfd/sm5703.h | 105 +++++++++++++++++++++++++++++++++++++
+>  5 files changed, 205 insertions(+)
+>  create mode 100644 drivers/mfd/sm5703.c
+>  create mode 100644 include/linux/mfd/sm5703.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6157e706ed02..6125ed1a3be4 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18172,6 +18172,14 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git dev
+>  F:	include/linux/srcu*.h
+>  F:	kernel/rcu/srcu*.c
+>  
+> +SM5703 MFD DRIVER
+> +M:	Markuss Broks <markuss.broks@gmail.com>
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+> +F:	Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
+> +F:	drivers/mfd/sm5703.c
+> +F:	drivers/regulator/sm5703-regulator.c
+> +
+>  SMACK SECURITY MODULE
+>  M:	Casey Schaufler <casey@schaufler-ca.com>
+>  L:	linux-security-module@vger.kernel.org
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index 3b59456f5545..c13a99ceae99 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -1237,6 +1237,19 @@ config MFD_SM501
+>  	  interface. The device may be connected by PCI or local bus with
+>  	  varying functions enabled.
+>  
+> +config MFD_SM5703
+> +	tristate "Silicon Mitus SM5703 MFD"
+> +	depends on I2C
+> +	depends on OF
+> +	select MFD_CORE
+> +	select REGMAP_I2C
+> +	help
+> +	  This is the core driver for the Silicon Mitus SM5703 multi-function
+
+Please drop the MFD term, as above.
+
+> +	  device. This device is meant to be used in phones and it has numerous
+
+"meant to be"?
+
+> +	  modules, including LED controller, regulators, fuel gauge, MUIC and
+
+Either "an LED controller" or "LED controllers"
+
+Same with "charger circuit" below.
+
+> +	  charger circuit. It also support muxing a serial interface over USB
+
+"supports"
+
+What kind of serial?
+
+> +	  data lines.
+> +
+>  config MFD_SM501_GPIO
+>  	bool "Export GPIO via GPIO layer"
+>  	depends on MFD_SM501 && GPIOLIB
+> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+> index 858cacf659d6..ca8b86736a36 100644
+> --- a/drivers/mfd/Makefile
+> +++ b/drivers/mfd/Makefile
+> @@ -275,3 +275,4 @@ rsmu-i2c-objs			:= rsmu_core.o rsmu_i2c.o
+>  rsmu-spi-objs			:= rsmu_core.o rsmu_spi.o
+>  obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu-i2c.o
+>  obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu-spi.o
+> +obj-$(CONFIG_MFD_SM5703)	+= sm5703.o
+> diff --git a/drivers/mfd/sm5703.c b/drivers/mfd/sm5703.c
+> new file mode 100644
+> index 000000000000..7f9838149051
+> --- /dev/null
+> +++ b/drivers/mfd/sm5703.c
+> @@ -0,0 +1,78 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +#include <linux/err.h>
+> +#include <linux/delay.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/i2c.h>
+> +#include <linux/mfd/core.h>
+> +#include <linux/mfd/sm5703.h>
+> +#include <linux/module.h>
+> +#include <linux/of_device.h>
+> +#include <linux/regmap.h>
+> +
+> +static const struct mfd_cell sm5703_devs[] = {
+> +	{ .name = "sm5703-regulator", },
+> +};
+
+Where are the rest of the child drivers?
+
+> +static const struct regmap_config sm5703_regmap_config = {
+> +	.reg_bits	= 8,
+> +	.val_bits	= 8,
+
+Tabbing looks odd.  Just use a space.
+
+> +};
+> +
+> +static int sm5703_i2c_probe(struct i2c_client *i2c,
+> +			    const struct i2c_device_id *id)
+> +{
+> +	struct sm5703_dev *sm5703;
+> +	struct device *dev = &i2c->dev;
+> +	unsigned int dev_id;
+> +	int ret;
+> +
+> +	sm5703 = devm_kzalloc(dev, sizeof(*sm5703), GFP_KERNEL);
+> +	if (!sm5703)
+> +		return -ENOMEM;
+> +
+> +	i2c_set_clientdata(i2c, sm5703);
+> +	sm5703->dev = dev;
+> +
+> +	sm5703->regmap = devm_regmap_init_i2c(i2c, &sm5703_regmap_config);
+> +	if (IS_ERR(sm5703->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(sm5703->regmap),
+> +				     "Failed to allocate the register map\n");
+> +
+> +	sm5703->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+> +	if (IS_ERR(sm5703->reset_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(sm5703->reset_gpio), "Cannot get reset GPIO\n");
+> +
+> +	gpiod_set_value_cansleep(sm5703->reset_gpio, 1);
+> +	msleep(20);
+> +
+> +	ret = regmap_read(sm5703->regmap, SM5703_DEVICE_ID, &dev_id);
+> +	if (ret)
+> +		return dev_err_probe(dev, -ENODEV, "Device not found\n");
+> +
+> +	ret = devm_mfd_add_devices(sm5703->dev, -1, sm5703_devs,
+
+Not -1.  Please use the defines provided.
+
+> +				   ARRAY_SIZE(sm5703_devs), NULL, 0, NULL);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to add child devices\n");
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct of_device_id sm5703_of_match[] = {
+> +	{ .compatible = "siliconmitus,sm5703", },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, sm5703_of_match);
+> +
+> +static struct i2c_driver sm5703_driver = {
+> +	.driver = {
+> +		.name = "sm5703",
+> +		.of_match_table = sm5703_of_match,
+> +	},
+> +	.probe = sm5703_i2c_probe,
+> +};
+> +module_i2c_driver(sm5703_driver);
+> +
+> +MODULE_DESCRIPTION("Silicon Mitus SM5703 multi-function device driver");
+
+There is no such thing as an MFD.
+
+> +MODULE_AUTHOR("Markuss Broks <markuss.broks@gmail.com>");
+> +MODULE_LICENSE("GPL");
+> diff --git a/include/linux/mfd/sm5703.h b/include/linux/mfd/sm5703.h
+> new file mode 100644
+> index 000000000000..c62affa0d3f1
+> --- /dev/null
+> +++ b/include/linux/mfd/sm5703.h
+> @@ -0,0 +1,105 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +
+> +#ifndef _SM5703_H
+> +#define _SM5703_H
+> +
+> +struct sm5703_dev {
+> +	struct device *dev;
+> +	struct regmap *regmap;
+> +	struct gpio_desc *reset_gpio;
+> +};
+> +
+> +// Regulator-related defines
+
+No C++ style comments.
+
+> +#define SM5703_REG_LDO1				0x1A
+
+I'd drop the REG parts from these.
+
+What are these registers called in the data-sheet?
+
+> +#define SM5703_REG_LDO2				0x1B
+> +#define SM5703_REG_LDO3				0x1C
+> +#define SM5703_LDO_EN				BIT(3)
+
+Some people like to space out the bits to differentiate them from the
+register addresses.
+
+> +#define SM5703_LDO_VOLT_MASK			0x7
+
+Please keep the bit length consistent, so 0x07 here if these are Byte
+length registers.
+
+> +#define SM5703_BUCK_VOLT_MASK			0x1F
+> +#define SM5703_REG_USBLDO12			0x1C
+> +#define SM5703_REG_EN_USBLDO1			BIT(6)
+> +#define SM5703_REG_EN_USBLDO2			BIT(7)
+> +#define SM5703_REG_BUCK				0x1D
+
+Please place these in order.
+
+> +#define SM5703_REG_EN_BUCK			BIT(6)
+> +#define SM5703_USBLDO_MICROVOLT			4800000
+> +#define SM5703_VBUS_MICROVOLT			5000000
+> +
+> +// Fuel-Gauge-related defines
+> +
+> +#define SM5703_FG_REG_DEVICE_ID			0x00
+> +#define SM5703_FG_REG_CNTL			0x01
+> +#define SM5703_FG_REG_INTFG			0x02
+> +#define SM5703_FG_REG_INTFG_MASK		0x03
+> +#define SM5703_FG_REG_STATUS			0x04
+> +#define SM5703_FG_REG_SOC			0x05
+> +#define SM5703_FG_REG_OCV			0x06
+> +#define SM5703_FG_REG_VOLTAGE			0x07
+> +#define SM5703_FG_REG_CURRENT			0x08
+> +#define SM5703_FG_REG_TEMPERATURE		0x09
+> +#define SM5703_FG_REG_CURRENT_EST		0x85
+> +#define SM5703_FG_REG_FG_OP_STATUS		0x10
+> +
+> +// Flash LED driver-related defines
+> +
+> +#define SM5703_FLEDCNTL1			0x14
+> +#define SM5703_FLEDCNTL2			0x15
+> +#define SM5703_FLEDCNTL3			0x16
+> +#define SM5703_FLEDCNTL4			0x17
+> +#define SM5703_FLEDCNTL5			0x18
+> +#define SM5703_FLEDCNTL6			0x19
+> +
+> +#define SM5703_FLEDEN_MASK			0x03
+> +#define SM5703_FLEDEN_DISABLE			0x00
+> +#define SM5703_FLEDEN_MOVIE_MODE		0x01
+> +#define SM5703_FLEDEN_FLASH_MODE		0x02
+> +#define SM5703_FLEDEN_EXTERNAL			0x03
+> +
+> +#define SM5703_IFLED_MASK			0x1F
+> +#define SM5703_IMLED_MASK			0x1F
+> +
+> +// Charger-related, IRQ and device ID defines
+> +
+> +#define SM5703_REG_CNTL				0x0C
+> +#define SM5703_VBUSCNTL				0x0D
+> +#define SM5703_CHGCNTL1				0x0E
+> +#define SM5703_CHGCNTL2				0x0F
+> +#define SM5703_CHGCNTL3				0x10
+> +#define SM5703_CHGCNTL4				0x11
+> +#define SM5703_CHGCNTL5				0x12
+> +#define SM5703_CHGCNTL6				0x13
+> +#define SM5703_OTGCURRENTCNTL			0x60
+> +#define SM5703_Q3LIMITCNTL			0x66
+> +#define SM5703_DEVICE_ID			0x1E
+> +#define SM5703_OPERATION_MODE			0x07
+> +#define SM5703_OPERATION_MODE_MASK		0x07
+> +
+> +#define SM5703_OPERATION_MODE_SUSPEND		0x00
+> +#define SM5703_OPERATION_MODE_CHARGING_OFF	0x04
+> +#define SM5703_OPERATION_MODE_CHARGING_ON	0x05
+> +#define SM5703_OPERATION_MODE_FLASH_BOOST_MODE	0x06
+> +#define SM5703_OPERATION_MODE_USB_OTG_MODE	0x07
+> +
+> +#define SM5703_BSTOUT				0x0F
+> +#define SM5703_BSTOUT_MASK			0x0F
+> +#define SM5703_BSTOUT_SHIFT			0
+> +
+> +#define SM5703_BSTOUT_4P5			0x05
+> +#define SM5703_BSTOUT_5P0			0x0A
+> +#define SM5703_BSTOUT_5P1			0x0B
+> +
+> +#define SM5703_IRQ_STATUS1			0x08
+> +#define SM5703_IRQ_STATUS2			0x09
+> +#define SM5703_IRQ_STATUS3			0x0A
+> +#define SM5703_IRQ_STATUS4			0x0B
+> +#define SM5703_IRQ_STATUS5			0x6B
+> +
+> +#define SM5703_STATUS1_OTGFAIL			0x80
+> +#define SM5703_STATUS3_DONE			0x08
+> +#define SM5703_STATUS3_TOPOFF			0x04
+> +#define SM5703_STATUS3_CHGON			0x01
+> +#define SM5703_STATUS5_VBUSOVP			0x80
+> +#define SM5703_STATUS5_VBUSUVLO			0x40
+> +#define SM5703_STATUS5_VBUSOK			0x20
+> +
+> +#endif
 
 -- 
-With best wishes
-Dmitry
+Lee Jones [李琼斯]
+Principal Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
