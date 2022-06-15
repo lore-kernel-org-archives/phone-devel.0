@@ -2,183 +2,148 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BD7D4C43334
-	for <phone-devel@archiver.kernel.org>; Wed, 15 Jun 2022 12:30:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 562F6CCA473
+	for <phone-devel@archiver.kernel.org>; Wed, 15 Jun 2022 17:14:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346744AbiFOMaT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 15 Jun 2022 08:30:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34348 "EHLO
+        id S1357996AbiFOROD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 15 Jun 2022 13:14:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242768AbiFOMaP (ORCPT
+        with ESMTP id S1355923AbiFORMD (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 15 Jun 2022 08:30:15 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5879C3F32D
-        for <phone-devel@vger.kernel.org>; Wed, 15 Jun 2022 05:30:14 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id b7so13072396ljr.6
-        for <phone-devel@vger.kernel.org>; Wed, 15 Jun 2022 05:30:14 -0700 (PDT)
+        Wed, 15 Jun 2022 13:12:03 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB16033A33
+        for <phone-devel@vger.kernel.org>; Wed, 15 Jun 2022 10:12:01 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id l4so10874125pgh.13
+        for <phone-devel@vger.kernel.org>; Wed, 15 Jun 2022 10:12:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=5vGAXTFss+xRVWCjnDcb7Q0fDyWMmYQS1IlIisRz3kA=;
-        b=EOkJnIDxrEFF+7/lL50921cC8xj04yIhzL/gjXZ2b99hFK2rWxyrK9CAGQMtFmvcvf
-         ktSx+aJ1aXXVzZYdHssvQ+iY9tweS2bkxIJDvynoAHbIP+KiqZ+o+VFZnQHlHMaeWh1H
-         FopnjxWrPoqGWx0EgSR1oqfam4d36/hYw+7+qwSw8dojx8NTc4+Plcq0bv7m90zRwFb8
-         sL7i915LBomiiZ1YP7udhS3T1xO330Iy9eXS26A9J5Sms7GMlxoRiQ6d0aHFwZO1VAMr
-         zakJ7NDnHlnsXmcm4DGdaX+lY6lgKOFJ2SZQ33FeaUKD6OTMZIFTsnw4ohSUPk+hQii+
-         F4Bw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=3AyomL7Oc+DdUYdK158JFYS4POGAertrwHcZhI495qU=;
+        b=RaryPI0ZtjtKjxfcUL/BY2bKh6PbgJEUZfevFWvhuw0gKFSweI6+ekz1KnHX++ofzz
+         5lS36xmH1bEd3gfPv1owuiy3SfJqg8r9ePZ/AEmWwzUJ3gDPdM/oI4moUoe7n98TlSOM
+         FcPpuG17WcgLz5I1tQgFCLyMQr+2xpL93VFf7H6ynbM8R7uNMikDh4PyzBkvfbeJIXxD
+         GNjSpPppaEGtvDyI1to4njrRQmdHLZXmWbFanQ+9r6KHFW/SDCPVLpVMGsAMEg2zy298
+         beiA1ZrY5n2Njt7OABc/Eyo22CBSFtpDXcJ2a+dxKzEuWtwcsNc1p7htSXhJukYpcLYu
+         VWKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=5vGAXTFss+xRVWCjnDcb7Q0fDyWMmYQS1IlIisRz3kA=;
-        b=P+/bGrSNDCykU86oCHnKu1ouJqYBr+v4FXTZ42oA2TyFZtVsdzp39APBS+Nnydsc2S
-         7e0z6z5QdFcZMDQXSZiQHAguOAbCvCNtU0SR2/jAqUhsV7aS3qCfAURhLqTQDgyCBdwu
-         M3SuKSpBA2W0C0Y1SYuGJHomYd93X6l0KKq/zvgF+d6Vgg7q706x25Zr3uI3LGNVXmkb
-         +bpH50qKt3DJqydFTSjRbqr7ogFg5kdHogIcqZK3sISr1VsAA0HFDY62aV4vEGWR+G1l
-         cUGiND2xv1RmyWNMQF1iX/xlocan1qWGvULmikJm9/tMQgz8hMxgptSCvEnwz8lsAWOW
-         ja9Q==
-X-Gm-Message-State: AJIora801EhHy3wdgAdQw7aCVVqkDyObaSaqzdgyLxpEE1HGAPq20fzL
-        nLKOFbV9cS98puzIbDL5ELufJA==
-X-Google-Smtp-Source: AGRyM1stEKOa97MHGOwvfFGeoSt3FuS+Eu5m4yHonr0NYFdvsXzMyJYZLHDcfQQpysoq8eIb4KKNAg==
-X-Received: by 2002:a05:651c:50b:b0:259:957:f2c6 with SMTP id o11-20020a05651c050b00b002590957f2c6mr4985704ljp.26.1655296212733;
-        Wed, 15 Jun 2022 05:30:12 -0700 (PDT)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id f27-20020a19381b000000b00479050b8260sm1782521lfa.104.2022.06.15.05.30.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Jun 2022 05:30:12 -0700 (PDT)
-Message-ID: <3f595dba-36e7-59ed-04d6-af1f1259b3ba@linaro.org>
-Date:   Wed, 15 Jun 2022 15:30:11 +0300
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=3AyomL7Oc+DdUYdK158JFYS4POGAertrwHcZhI495qU=;
+        b=WH205XpvAl66NFnWyBiDhKCRjoIxpXCXQ8Uw6paSRiPhGK2ZCbspjFodKWc8ZB55Qi
+         URRQbqizb/gOEh5ObYwFWsSU35T7u5Mbs3ldDweqc/GvfY5wPriMhYOaGBsppT4qX3V9
+         0oEBBUK05pehyk6d0hwt4MJkKDnQLQus18gusGh45izNM3NPh54YUe1Pg5+unY/1Wogv
+         PQjKyBE4Pnj9LgXNaFfScipLOh9GDSJWzAMzoKWgFXUto32Kl4y6yYLgrAAuNxd5TjBU
+         rUs8sCmisSECfxfpAXMMTl3tIORGjr7YwTNFmFumYzyUGmgb8tSi5WpzHYlzRaBrH9EG
+         NtYA==
+X-Gm-Message-State: AJIora/ebSAHnZcQVFxorjk022PRSdsac+29SyyTZ26f3FwEyj2WNocL
+        brluWst1fBNFDUYM/B45ymLNrukBo6bsdbDQCrBk3A==
+X-Google-Smtp-Source: AGRyM1uA1LIViXu2DRXGg9esMg5JyGVlSdhSVJDitquFoXIzMZ+OJ2WuNj0EVeUj2Boh9KSivtt8Vaspthfz2HrD6vM=
+X-Received: by 2002:a62:7c14:0:b0:51b:9d03:a4c7 with SMTP id
+ x20-20020a627c14000000b0051b9d03a4c7mr387767pfc.74.1655313121181; Wed, 15 Jun
+ 2022 10:12:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH] drm/msm/dsi: Use single function for reset
-Content-Language: en-GB
-To:     Luca Weiss <luca@z3ntu.xyz>, dri-devel@lists.freedesktop.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Vinod Koul <vkoul@kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Jonathan Marek <jonathan@marek.ca>,
-        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-References: <20220610220259.220622-1-luca@z3ntu.xyz>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20220610220259.220622-1-luca@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20220522162802.208275-1-luca@z3ntu.xyz> <20220522162802.208275-11-luca@z3ntu.xyz>
+In-Reply-To: <20220522162802.208275-11-luca@z3ntu.xyz>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Wed, 15 Jun 2022 19:11:25 +0200
+Message-ID: <CAMZdPi82+xW2yoKQrg61Mj_-kLCBbp=VDQNDDccQpv5=i_V6Vw@mail.gmail.com>
+Subject: Re: [RFC PATCH 10/14] i2c: qcom-cci: add msm8974 compatible
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Robert Foss <robert.foss@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Todor Tomov <todor.too@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        matti.lehtimaki@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 11/06/2022 01:02, Luca Weiss wrote:
-> From: Vladimir Lypak <vladimir.lypak@gmail.com>
-> 
-> There is currently two function for performing reset: dsi_sw_reset and
-> dsi_sw_reset_restore. Only difference betwean those is that latter one
-> assumes that DSI controller is enabled. In contrary former one assumes
-> that controller is disabled and executed during power-on. However this
-> assumtion is not true mobile devices which have boot splash set up by
-> boot-loader.
-> 
-> This patch removes dsi_sw_reset_restore and makes dsi_sw_reset disable
-> DSI controller during reset sequence if it's enabled.
-> 
-> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+On Sun, 22 May 2022 at 18:28, Luca Weiss <luca@z3ntu.xyz> wrote:
+>
+> From: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
+>
+> MSM8974 CCI is the same as MSM8916 except it has two masters.
+>
+> Signed-off-by: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
 
 > ---
->   drivers/gpu/drm/msm/dsi/dsi_host.c | 48 +++++++++++++-----------------
->   1 file changed, 21 insertions(+), 27 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-> index a95d5df52653..bab2634ebd11 100644
-> --- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-> +++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-> @@ -1080,12 +1080,32 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
->   
->   static void dsi_sw_reset(struct msm_dsi_host *msm_host)
->   {
-> +	u32 ctrl;
+> To note, the cci_v1_5_data variable name is just a bit arbitrary and
+> isn't meant to reflect IP version "1.5". I'd be happy to change the
+> variable name to something else.
+>
+>  drivers/i2c/busses/i2c-qcom-cci.c | 35 +++++++++++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
+>
+> diff --git a/drivers/i2c/busses/i2c-qcom-cci.c b/drivers/i2c/busses/i2c-q=
+com-cci.c
+> index 5c7cc862f08f..a68f17eb9dd0 100644
+> --- a/drivers/i2c/busses/i2c-qcom-cci.c
+> +++ b/drivers/i2c/busses/i2c-qcom-cci.c
+> @@ -725,6 +725,40 @@ static const struct cci_data cci_v1_data =3D {
+>         },
+>  };
+>
+> +static const struct cci_data cci_v1_5_data =3D {
+> +       .num_masters =3D 2,
+> +       .queue_size =3D { 64, 16 },
+> +       .quirks =3D {
+> +               .max_write_len =3D 10,
+> +               .max_read_len =3D 12,
+> +       },
+> +       .cci_clk_rate =3D  19200000,
+> +       .params[I2C_MODE_STANDARD] =3D {
+> +               .thigh =3D 78,
+> +               .tlow =3D 114,
+> +               .tsu_sto =3D 28,
+> +               .tsu_sta =3D 28,
+> +               .thd_dat =3D 10,
+> +               .thd_sta =3D 77,
+> +               .tbuf =3D 118,
+> +               .scl_stretch_en =3D 0,
+> +               .trdhld =3D 6,
+> +               .tsp =3D 1
+> +       },
+> +       .params[I2C_MODE_FAST] =3D {
+> +               .thigh =3D 20,
+> +               .tlow =3D 28,
+> +               .tsu_sto =3D 21,
+> +               .tsu_sta =3D 21,
+> +               .thd_dat =3D 13,
+> +               .thd_sta =3D 18,
+> +               .tbuf =3D 32,
+> +               .scl_stretch_en =3D 0,
+> +               .trdhld =3D 6,
+> +               .tsp =3D 3
+> +       },
+> +};
 > +
-> +	ctrl = dsi_read(msm_host, REG_DSI_CTRL);
-> +
-> +	if (ctrl & DSI_CTRL_ENABLE) {
-> +		dsi_write(msm_host, REG_DSI_CTRL, ctrl & ~DSI_CTRL_ENABLE);
-> +		/*
-> +		 * dsi controller need to be disabled before
-> +		 * clocks turned on
-> +		 */
-> +		wmb();
-> +	}
-> +
->   	dsi_write(msm_host, REG_DSI_CLK_CTRL, DSI_CLK_CTRL_ENABLE_CLKS);
->   	wmb(); /* clocks need to be enabled before reset */
->   
-> +	/* dsi controller can only be reset while clocks are running */
->   	dsi_write(msm_host, REG_DSI_RESET, 1);
->   	msleep(DSI_RESET_TOGGLE_DELAY_MS); /* make sure reset happen */
->   	dsi_write(msm_host, REG_DSI_RESET, 0);
-> +	wmb(); /* controller out of reset */
-> +
-> +	if (ctrl & DSI_CTRL_ENABLE) {
-> +		dsi_write(msm_host, REG_DSI_CTRL, ctrl);
-> +		wmb();	/* make sure dsi controller enabled again */
-> +	}
->   }
->   
->   static void dsi_op_mode_config(struct msm_dsi_host *msm_host,
-> @@ -1478,32 +1498,6 @@ static int dsi_cmds2buf_tx(struct msm_dsi_host *msm_host,
->   	return len;
->   }
->   
-> -static void dsi_sw_reset_restore(struct msm_dsi_host *msm_host)
-> -{
-> -	u32 data0, data1;
-> -
-> -	data0 = dsi_read(msm_host, REG_DSI_CTRL);
-> -	data1 = data0;
-> -	data1 &= ~DSI_CTRL_ENABLE;
-> -	dsi_write(msm_host, REG_DSI_CTRL, data1);
-> -	/*
-> -	 * dsi controller need to be disabled before
-> -	 * clocks turned on
-> -	 */
-> -	wmb();
-> -
-> -	dsi_write(msm_host, REG_DSI_CLK_CTRL, DSI_CLK_CTRL_ENABLE_CLKS);
-> -	wmb();	/* make sure clocks enabled */
-> -
-> -	/* dsi controller can only be reset while clocks are running */
-> -	dsi_write(msm_host, REG_DSI_RESET, 1);
-> -	msleep(DSI_RESET_TOGGLE_DELAY_MS); /* make sure reset happen */
-> -	dsi_write(msm_host, REG_DSI_RESET, 0);
-> -	wmb();	/* controller out of reset */
-> -	dsi_write(msm_host, REG_DSI_CTRL, data0);
-> -	wmb();	/* make sure dsi controller enabled again */
-> -}
-> -
->   static void dsi_hpd_worker(struct work_struct *work)
->   {
->   	struct msm_dsi_host *msm_host =
-> @@ -1520,7 +1514,7 @@ static void dsi_err_worker(struct work_struct *work)
->   
->   	pr_err_ratelimited("%s: status=%x\n", __func__, status);
->   	if (status & DSI_ERR_STATE_MDP_FIFO_UNDERFLOW)
-> -		dsi_sw_reset_restore(msm_host);
-> +		dsi_sw_reset(msm_host);
->   
->   	/* It is safe to clear here because error irq is disabled. */
->   	msm_host->err_work_state = 0;
-
-
--- 
-With best wishes
-Dmitry
+>  static const struct cci_data cci_v2_data =3D {
+>         .num_masters =3D 2,
+>         .queue_size =3D { 64, 16 },
+> @@ -773,6 +807,7 @@ static const struct cci_data cci_v2_data =3D {
+>
+>  static const struct of_device_id cci_dt_match[] =3D {
+>         { .compatible =3D "qcom,msm8916-cci", .data =3D &cci_v1_data},
+> +       { .compatible =3D "qcom,msm8974-cci", .data =3D &cci_v1_5_data},
+>         { .compatible =3D "qcom,msm8996-cci", .data =3D &cci_v2_data},
+>         { .compatible =3D "qcom,sdm845-cci", .data =3D &cci_v2_data},
+>         { .compatible =3D "qcom,sm8250-cci", .data =3D &cci_v2_data},
+> --
+> 2.36.0
+>
