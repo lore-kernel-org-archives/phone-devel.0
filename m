@@ -2,95 +2,87 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E6FCCCA47B
-	for <phone-devel@archiver.kernel.org>; Wed, 15 Jun 2022 17:14:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DCD92C433EF
+	for <phone-devel@archiver.kernel.org>; Wed, 15 Jun 2022 21:18:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232819AbiFOROG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 15 Jun 2022 13:14:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51286 "EHLO
+        id S231149AbiFOVSo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 15 Jun 2022 17:18:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357677AbiFORNr (ORCPT
+        with ESMTP id S1350141AbiFOVS2 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 15 Jun 2022 13:13:47 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31D6123146
-        for <phone-devel@vger.kernel.org>; Wed, 15 Jun 2022 10:13:46 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id y6so6364803pfr.13
-        for <phone-devel@vger.kernel.org>; Wed, 15 Jun 2022 10:13:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=2hy2Qkd4xSuW4p+5Dl7PR+SUIjoj02p8RkTpyxOOHqo=;
-        b=MIBH7WuXuo8XsYajlXRYGYomRcjkj6nPW/WNdlCyCciKwmkvzYPIwiUtu3Qe629RgZ
-         cuZ+zyqFYzWMeEFMfJdGt0BHvJjKgqniKy+bjOBj6jDlMyWtrs3W0Kv7ICDIf+bPGVQu
-         YKSqWlun8uCo52RezaVUDBTIzQJ0dRW3jXZr/cRhhFeI3XTfNXAi5Fm4tPE/WNES69zR
-         z81w78Yli3gGEzD34bUQx0paNeHz/lAx8+6t53Y0vstuIrX5MZl1i1yT+KyK+JNu2m9q
-         JCaaGDzWFoBHOjvizAqml7ahRmwIaspthWws+j4MfxDyF8u7+zgD9rKYNV1mLWk2GK6i
-         xkmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=2hy2Qkd4xSuW4p+5Dl7PR+SUIjoj02p8RkTpyxOOHqo=;
-        b=MlVWTbgcM2cqQG5hfe1lrL2GUIOmzreiH0f2nxzUKXNL1+btPa/6YuLKxE87g1xp91
-         wXSn6svjSWPxNM0j+yplgFbSCKYWI0VKZdIbvtiXpX0zye8/nHW0Db9FoKihiN/O7zde
-         y2+ofPw9bqKPylal6V72EmN70834kX8lmTiHZlntu3cJXrRZtQg3thokh99sjSg7yupw
-         Sw9ajqa4iVO8cAEIVMc25z3As9W8qX6DUemxd4XguWq/LQTb2oFeE+70IoimNbYCTrH6
-         Q5p6MGcBOX26f6lBsFVBllB4qYuZpbJ8lsQMqMRWod8HSBob3y5zpiwcpIdyCGDaR+sx
-         ai8A==
-X-Gm-Message-State: AJIora+Cp/AyYJG8Q4u5eFTTQaE2ylIVDpt0AQcl1q+D57OwHXj012KH
-        Lr9WE2syq0mftdKSxT+dYyEr0B2p7r6jkYJScn9/fQ==
-X-Google-Smtp-Source: AGRyM1uDSl1WVzfzUp2fssJ9HirywV+QKxtYdrezojo5TjTmtib/dvB0jLtBLE0xMnYmMStriT3vSKgQ4Fy4j6rlNt0=
-X-Received: by 2002:a62:7c14:0:b0:51b:9d03:a4c7 with SMTP id
- x20-20020a627c14000000b0051b9d03a4c7mr395031pfc.74.1655313225618; Wed, 15 Jun
- 2022 10:13:45 -0700 (PDT)
+        Wed, 15 Jun 2022 17:18:28 -0400
+Received: from sonic304-23.consmr.mail.ir2.yahoo.com (sonic304-23.consmr.mail.ir2.yahoo.com [77.238.179.148])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6679C5548A
+        for <phone-devel@vger.kernel.org>; Wed, 15 Jun 2022 14:18:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1655327903; bh=Vz6XXiUXdcp/jIjxKajxp5nujVdhf8a8XJiBDxiAcuU=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=YMm9s0Hj7/QpRu/dEu1vs8TTm67uaMaDpjT8RtmQqQknhtouI4HEYrK3sreFxXeuYeOQD8FLRisp+Q0r5TLcfE0SCoKH0pGajfvWKGJiCBMCjvt65dvTYItX5EL1Xxd1g5rXugIuEYQ18HvntOitJkDQn02ZYeLWI/9gN9yNlX44WKMGodLmq2YsvPtlUCXH18sLmpLJ65eF7K2Bsm1WTxBxPpjiN8/Um3KCfccJ5Z6bYwJfk1VYPnpoLylFzmNgrvraQB9fbk0YWS0ALKbvQbnWDnf49AKgGr5om32Q/jaiEoGK8dPt+kqKIfbBqFWe6wTIS9AQ7z9tcFRRHuu9qQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1655327903; bh=XXhutocdrgeNxLqeYJ05AL3AvQ/CPsNO5MbED+q4IBP=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=awBxepbidVi+MQJf5wH4F0saZkSRnUTXYXM2GO7Ar1lH3CbyTCLBF/L/Q+/Z+WlWBamzYLv4QMfvWBs4Xr2JgibqsODXRVwSt8e8tRv3cAa8oK3aiLyuuLh8TKwacaYwFarLLMDRn2ldCACGsh6omE7NlJp8IrotKzVHRHa6jy447AUyG1RHexC9hxoglVWxsKQ6+dovIjP15UxixERGSNL4hlPSmIEgy9q0J/grXctoadEcjxUEEK3cc9HHJYLOK5S+FldeGCKbvH2t1ZgWavGviHxcZdGeECDEwz4KNHBKXVYRWy67yvBk5sgzorlZXFbkIiqoP/J1rvxBFU8MlA==
+X-YMail-OSG: PONnOuoVM1mPIcBPjJC7gvQpamSicOQ9CBIHckMBDU7qqtpaSLeRzEQoIAhiRUo
+ ..dgDBPeOWKR8LBQuuEdBpu5mGFvwaou5T21EB4AWvQ5NCSl7BQYnGk6n3TOZ59qFPD.0CIDie_9
+ M.FOmmUuQfjzAVPVtMqPkndNuNlBnjEyXGZp8RglQcheLDFXsfBIomARO2RKuJdF5BpR3RB._aTj
+ g94tcL9nMMUZcyiPr3RE8idvuP9ZhjUpGYnxOWax44FhAGNXim._Zm3thSeFFBBMVbQrRYH2g1OY
+ 1.y20Sci.UfAbrIwCBjugJhB4y0q3fLn5AlxQfAxdDwHLxPHq1LFiypdIkOZeAhn1UXICwwo1T7L
+ OpuAsYk2rV4FQmgab6r6zFrNp7ef0FMqxj7q5_6zWYkSsuuc91NtlSoG_3O5G4B2qPk5Z5e_Yauj
+ 6z_Q0K3QDiz_zj8wM90LonhIrNBiXiDV0mG2O9y9ouid1Cw3crqXUTc9iwEXhkPBfHP6mKTVIRK9
+ mrfCbzVvwtgXlM.CVGO8Y4tAGmkeQE7UvuGJS3YJyYamFSKKpWvadz3.qmU93rF.1uacKeq04tIL
+ DMzBaGZMj5FHfHvVswFLUpVappKD4sToMBZkGjJsJaVzwHH6TSEOUz50Lp7vPZQ2e1gxIiePb_2c
+ vPs.zsOrqYd_BMIUhTb8GXMUHaxza6Mn5RZkAKF_5lyQu_5ku.nOI1K2iT5Zbm_QJs4bAwpNlQvH
+ i8JQd9gxXbkF8v2p03YBS47EvvEzxjoy7lsgfEFmKxILyf.ukSCIueIcMNciDNyXLu852L1AQ7T1
+ nv85FA2lgKGIhUv5oUS4A7jjxfKJpm0s6nqZ1epqof0Ln7RpBXREawaSzSYqIyW5ydTj3mZHDj5_
+ 0Qq9ydBX5jn6lqAECPWh_yHNOE8.IXMIc6u.hcB9RrAz3096pS1zuJ2ti8imV3v2pSmi7hrLiSkK
+ s1acuaDD6AtJsQHHNihXlKxCvE.6ybotzagqfQKNNfo551u2dVtFxDGzggkUUgAAAnYms_U0zVho
+ lV_4Cj7e007X9PEoxBAb429apb7QmMtSWoiSu1fcn1.GbiyqptoIwNhlcZpg8orhMrMRnDIovD9k
+ CwH57qcnYdE1ZLJ4HmnwG10itflPptlxsuFpTziJ5vVdQUam0S00bbgQVrchnaLZiSC1sQ1I.e.A
+ CnG8PdH_CXOd0JKBhcFEoo1seoaojyM4zfUEXmbXEYBJr1BAXGSwV154PIlYI2FS49LKdF81ReDm
+ XslhIaOGzqmoGuF_NGad.9l3dx8eRJjZdB90XjRsxsudEzNkhT3pvRDMem_.t46vTIx68Oj06rQE
+ AnRkiKD8KTKc6hRObSYf0_qV.PtTYfSOv.m6hR.ho.aBfpMsN5Z9LV89JNag8fbPgRz5KCVPurPh
+ DgOKI8SCfHThJdtpatX.eJcmPw.a3z6ZHlkcrwQOCCMR1wLxNiPRZ2t7ud2MQEeli6FTNobNmWFY
+ c5QAE3pn8W5sfciAoWxG.RmHjUVNW5_MmG7EHsgnL3fMAhAW3SidL6coZYiLOHDJHW3Cu5SmFikE
+ cWfI9i10Ea0.alH5SKHb_PCAlsJJ5fh9LDBrcu463b0uyyRyoUfWXx2s3eoF0n2wdjEqJ4fTLiwH
+ RQoXsUhRp7TafU6P7J32.VjX.um2ltKn9XluZ.KY9w73T365jBdhrC1oYtSu2MCG8WxplwYJX.v0
+ vDYKLbod__2yAH_mThsR16.0tGPs_ywVckc1_vsyhT5Q1TmuQq3A5OUKFHRqHwAJsaeU4TweU8He
+ esSa7DN2INjLOyv1ViSyp_JsC0I_wpBN33SF08CACrdmi9KUyw4kVVOFgmJNXn8OXTJHDy7wIJM2
+ T2IvjDEst7BhQ9P838xC9_3pmRt9c7ZXoVGXYYQrw.jThhFV6qMLn1kFcKRCV79B4W2Ex9OqEBta
+ KyyCOHetnzMGjZ1goFKOpngqC7WJR0maw_4LQMfXxMFwdHY6d.b_kFA--
+X-Sonic-MF: <jahau@rocketmail.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ir2.yahoo.com with HTTP; Wed, 15 Jun 2022 21:18:23 +0000
+Received: by hermes--canary-production-ir2-c9bf9d9bc-fw6gn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 3b38cc106c8e08bed1278d107e18ba58;
+          Wed, 15 Jun 2022 21:18:19 +0000 (UTC)
+Message-ID: <3026b257-ff81-bd87-4308-f30781eb8da0@rocketmail.com>
+Date:   Wed, 15 Jun 2022 23:18:18 +0200
 MIME-Version: 1.0
-References: <20220522162802.208275-1-luca@z3ntu.xyz> <20220522162802.208275-11-luca@z3ntu.xyz>
- <Yqjti8s06LIfTE52@shikoro>
-In-Reply-To: <Yqjti8s06LIfTE52@shikoro>
-From:   Loic Poulain <loic.poulain@linaro.org>
-Date:   Wed, 15 Jun 2022 19:13:09 +0200
-Message-ID: <CAMZdPi_c931ejPA2Nkim1cwBS9sdcTNnfUEvUOvFSsfrdN18AQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 10/14] i2c: qcom-cci: add msm8974 compatible
-To:     Wolfram Sang <wsa@kernel.org>, Luca Weiss <luca@z3ntu.xyz>,
-        linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Todor Tomov <todor.too@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        matti.lehtimaki@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v2 4/7] iio: magnetometer: yas530: Correct temperature
+ handling
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1655081082.git.jahau@rocketmail.com>
+ <2e4622b2c98eda75c262d460533162f74cfb8605.1655081082.git.jahau@rocketmail.com>
+ <CAHp75VeHJnuSe+2r8LvN4watFt1q5FZefUvsZokz0SA1NZ6nmw@mail.gmail.com>
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <CAHp75VeHJnuSe+2r8LvN4watFt1q5FZefUvsZokz0SA1NZ6nmw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.20280 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 14 Jun 2022 at 22:20, Wolfram Sang <wsa@kernel.org> wrote:
->
-> On Sun, May 22, 2022 at 06:27:58PM +0200, Luca Weiss wrote:
-> > From: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
-> >
-> > MSM8974 CCI is the same as MSM8916 except it has two masters.
-> >
-> > Signed-off-by: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> > To note, the cci_v1_5_data variable name is just a bit arbitrary and
-> > isn't meant to reflect IP version "1.5". I'd be happy to change the
-> > variable name to something else.
->
-> Loic, Robert: I know this series is marked RFC, but the I2C patches
-> adding a new SoC to the driver are maybe interesting already?
+Hi Andy,
 
-Yes I agree, no objection to get them.
+On 13.06.22 17:01, Andy Shevchenko wrote:
+>
+> Please add default cases into switches.
 
-Regards,
-Loic
+Oh, I forgot these. I'll add them.
+
+Kind regards,
+Jakob
