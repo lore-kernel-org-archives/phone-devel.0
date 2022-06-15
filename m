@@ -2,130 +2,183 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D127C433EF
-	for <phone-devel@archiver.kernel.org>; Wed, 15 Jun 2022 09:04:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD7D4C43334
+	for <phone-devel@archiver.kernel.org>; Wed, 15 Jun 2022 12:30:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345591AbiFOJE4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 15 Jun 2022 05:04:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44066 "EHLO
+        id S1346744AbiFOMaT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 15 Jun 2022 08:30:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345535AbiFOJE4 (ORCPT
+        with ESMTP id S242768AbiFOMaP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 15 Jun 2022 05:04:56 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B53939B9F;
-        Wed, 15 Jun 2022 02:04:53 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 5CE3E66016CC;
-        Wed, 15 Jun 2022 10:04:51 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1655283892;
-        bh=k6NEoZsjEYGP1QQyFCr7lIgY0FTshdoki5vnhmBsqGI=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=X0Td8BpR6RVk71SDXY9PoAXRf/ZBNcH1Q3hSZtgI5enUId9VyYxt0lARaZWnl3F/8
-         KxIoDrrg14aNl0vmKrfPQn6J6kBypZ3w9eBKoXZuQ3LFZfQnuzow6202twCiBNdpca
-         AnVFtBrJI52x2O3ke8KdW+1kTVEXXtBj6ECTvRLs4tLX1pLF0aOIeL1WR8rQiP0pLa
-         UKCaFzCjmP8amAZj/B9MooWbr6QLbeKetNZesO0da5DWehXjNt3lR/iyUejhZhZhwa
-         BXkPC98coyDIYxxxLc7rcu1kVjMDJ2A+rstkYH7zVksrW/a9xTnEzLryRU+y/yNo76
-         YBc58jHBInDyQ==
-Message-ID: <c025dd3d-00ce-d0a4-b7cb-540901c71f4e@collabora.com>
-Date:   Wed, 15 Jun 2022 11:04:48 +0200
+        Wed, 15 Jun 2022 08:30:15 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5879C3F32D
+        for <phone-devel@vger.kernel.org>; Wed, 15 Jun 2022 05:30:14 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id b7so13072396ljr.6
+        for <phone-devel@vger.kernel.org>; Wed, 15 Jun 2022 05:30:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=5vGAXTFss+xRVWCjnDcb7Q0fDyWMmYQS1IlIisRz3kA=;
+        b=EOkJnIDxrEFF+7/lL50921cC8xj04yIhzL/gjXZ2b99hFK2rWxyrK9CAGQMtFmvcvf
+         ktSx+aJ1aXXVzZYdHssvQ+iY9tweS2bkxIJDvynoAHbIP+KiqZ+o+VFZnQHlHMaeWh1H
+         FopnjxWrPoqGWx0EgSR1oqfam4d36/hYw+7+qwSw8dojx8NTc4+Plcq0bv7m90zRwFb8
+         sL7i915LBomiiZ1YP7udhS3T1xO330Iy9eXS26A9J5Sms7GMlxoRiQ6d0aHFwZO1VAMr
+         zakJ7NDnHlnsXmcm4DGdaX+lY6lgKOFJ2SZQ33FeaUKD6OTMZIFTsnw4ohSUPk+hQii+
+         F4Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=5vGAXTFss+xRVWCjnDcb7Q0fDyWMmYQS1IlIisRz3kA=;
+        b=P+/bGrSNDCykU86oCHnKu1ouJqYBr+v4FXTZ42oA2TyFZtVsdzp39APBS+Nnydsc2S
+         7e0z6z5QdFcZMDQXSZiQHAguOAbCvCNtU0SR2/jAqUhsV7aS3qCfAURhLqTQDgyCBdwu
+         M3SuKSpBA2W0C0Y1SYuGJHomYd93X6l0KKq/zvgF+d6Vgg7q706x25Zr3uI3LGNVXmkb
+         +bpH50qKt3DJqydFTSjRbqr7ogFg5kdHogIcqZK3sISr1VsAA0HFDY62aV4vEGWR+G1l
+         cUGiND2xv1RmyWNMQF1iX/xlocan1qWGvULmikJm9/tMQgz8hMxgptSCvEnwz8lsAWOW
+         ja9Q==
+X-Gm-Message-State: AJIora801EhHy3wdgAdQw7aCVVqkDyObaSaqzdgyLxpEE1HGAPq20fzL
+        nLKOFbV9cS98puzIbDL5ELufJA==
+X-Google-Smtp-Source: AGRyM1stEKOa97MHGOwvfFGeoSt3FuS+Eu5m4yHonr0NYFdvsXzMyJYZLHDcfQQpysoq8eIb4KKNAg==
+X-Received: by 2002:a05:651c:50b:b0:259:957:f2c6 with SMTP id o11-20020a05651c050b00b002590957f2c6mr4985704ljp.26.1655296212733;
+        Wed, 15 Jun 2022 05:30:12 -0700 (PDT)
+Received: from [192.168.1.211] ([37.153.55.125])
+        by smtp.gmail.com with ESMTPSA id f27-20020a19381b000000b00479050b8260sm1782521lfa.104.2022.06.15.05.30.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Jun 2022 05:30:12 -0700 (PDT)
+Message-ID: <3f595dba-36e7-59ed-04d6-af1f1259b3ba@linaro.org>
+Date:   Wed, 15 Jun 2022 15:30:11 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v4 2/2] clocksource/drivers/timer-mediatek: Implement
- CPUXGPT timers
-Content-Language: en-US
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     tglx@linutronix.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, konrad.dybcio@somainline.org,
-        marijn.suijten@somainline.org, martin.botka@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        paul.bouchara@somainline.org
-References: <20220613133819.35318-1-angelogioacchino.delregno@collabora.com>
- <20220613133819.35318-3-angelogioacchino.delregno@collabora.com>
- <277ec646-b709-4a4a-8216-49d528d0e43e@linaro.org>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <277ec646-b709-4a4a-8216-49d528d0e43e@linaro.org>
+ Thunderbird/91.9.0
+Subject: Re: [PATCH] drm/msm/dsi: Use single function for reset
+Content-Language: en-GB
+To:     Luca Weiss <luca@z3ntu.xyz>, dri-devel@lists.freedesktop.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Vinod Koul <vkoul@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Jonathan Marek <jonathan@marek.ca>,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+References: <20220610220259.220622-1-luca@z3ntu.xyz>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20220610220259.220622-1-luca@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 14/06/22 20:35, Daniel Lezcano ha scritto:
-> On 13/06/2022 15:38, AngeloGioacchino Del Regno wrote:
->> Some MediaTek platforms with a buggy TrustZone ATF firmware will not
->> initialize the AArch64 System Timer correctly: in these cases, the
->> System Timer address is correctly programmed, as well as the CNTFRQ_EL0
->> register (reading 13MHz, as it should be), but the assigned hardware
->> timers are never started before (or after) booting Linux.
->>
->> In this condition, any call to function get_cycles() will be returning
->> zero, as CNTVCT_EL0 will always read zero.
->>
->> One common critical symptom of that is trying to use the udelay()
->> function (calling __delay()), which executes the following loop:
->>
->>              start = get_cycles();
->>              while ((get_cycles() - start) < cycles)
->>                      cpu_relax();
->>
->> which, when CNTVCT_EL0 always reads zero, translates to:
->>
->>              while((0 - 0) < 0)  ==> while(0 < 0)
->>
->> ... generating an infinite loop, even though zero is never less
->> than zero, but always equal to it (this has to be researched,
->> but it's out of the scope of this commit).
->>
->> To fix this issue on the affected MediaTek platforms, the solution
->> is to simply start the timers that are designed to be System Timer(s).
->> These timers, downstream, are called "CPUXGPT" and there is one
->> timer per CPU core; luckily, it is not necessary to set a start bit
->> on each CPUX General Purpose Timer, but it's conveniently enough to:
->>   - Set the clock divider (input = 26MHz, divider = 2, output = 13MHz);
->>   - Set the ENABLE bit on a global register (starts all CPUX timers).
->>
->> The only small hurdle with this setup is that it's all done through
->> the MCUSYS wrapper, where it is needed, for each read or write, to
->> select a register address (by writing it to an index register) and
->> then to perform any R/W on a "CON" register.
->>
->> For example, writing "0x1" to the CPUXGPT register offset 0x4:
->> - Write 0x4 to mcusys INDEX register
->> - Write 0x1 to mcusys CON register
->>
->> Reading from CPUXGPT register offset 0x4:
->> - Write 0x4 to mcusys INDEX register
->> - Read mcusys CON register.
->>
->> Finally, starting this timer makes platforms affected by this issue
->> to work correctly.
+On 11/06/2022 01:02, Luca Weiss wrote:
+> From: Vladimir Lypak <vladimir.lypak@gmail.com>
 > 
-> Why not fix the ATF ?
+> There is currently two function for performing reset: dsi_sw_reset and
+> dsi_sw_reset_restore. Only difference betwean those is that latter one
+> assumes that DSI controller is enabled. In contrary former one assumes
+> that controller is disabled and executed during power-on. However this
+> assumtion is not true mobile devices which have boot splash set up by
+> boot-loader.
 > 
+> This patch removes dsi_sw_reset_restore and makes dsi_sw_reset disable
+> DSI controller during reset sequence if it's enabled.
 > 
+> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
-Hello Daniel,
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-that's not the first time this question gets asked, and I've already
-provided an explanation for that, please look at [1] for the long answer.
+> ---
+>   drivers/gpu/drm/msm/dsi/dsi_host.c | 48 +++++++++++++-----------------
+>   1 file changed, 21 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+> index a95d5df52653..bab2634ebd11 100644
+> --- a/drivers/gpu/drm/msm/dsi/dsi_host.c
+> +++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+> @@ -1080,12 +1080,32 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+>   
+>   static void dsi_sw_reset(struct msm_dsi_host *msm_host)
+>   {
+> +	u32 ctrl;
+> +
+> +	ctrl = dsi_read(msm_host, REG_DSI_CTRL);
+> +
+> +	if (ctrl & DSI_CTRL_ENABLE) {
+> +		dsi_write(msm_host, REG_DSI_CTRL, ctrl & ~DSI_CTRL_ENABLE);
+> +		/*
+> +		 * dsi controller need to be disabled before
+> +		 * clocks turned on
+> +		 */
+> +		wmb();
+> +	}
+> +
+>   	dsi_write(msm_host, REG_DSI_CLK_CTRL, DSI_CLK_CTRL_ENABLE_CLKS);
+>   	wmb(); /* clocks need to be enabled before reset */
+>   
+> +	/* dsi controller can only be reset while clocks are running */
+>   	dsi_write(msm_host, REG_DSI_RESET, 1);
+>   	msleep(DSI_RESET_TOGGLE_DELAY_MS); /* make sure reset happen */
+>   	dsi_write(msm_host, REG_DSI_RESET, 0);
+> +	wmb(); /* controller out of reset */
+> +
+> +	if (ctrl & DSI_CTRL_ENABLE) {
+> +		dsi_write(msm_host, REG_DSI_CTRL, ctrl);
+> +		wmb();	/* make sure dsi controller enabled again */
+> +	}
+>   }
+>   
+>   static void dsi_op_mode_config(struct msm_dsi_host *msm_host,
+> @@ -1478,32 +1498,6 @@ static int dsi_cmds2buf_tx(struct msm_dsi_host *msm_host,
+>   	return len;
+>   }
+>   
+> -static void dsi_sw_reset_restore(struct msm_dsi_host *msm_host)
+> -{
+> -	u32 data0, data1;
+> -
+> -	data0 = dsi_read(msm_host, REG_DSI_CTRL);
+> -	data1 = data0;
+> -	data1 &= ~DSI_CTRL_ENABLE;
+> -	dsi_write(msm_host, REG_DSI_CTRL, data1);
+> -	/*
+> -	 * dsi controller need to be disabled before
+> -	 * clocks turned on
+> -	 */
+> -	wmb();
+> -
+> -	dsi_write(msm_host, REG_DSI_CLK_CTRL, DSI_CLK_CTRL_ENABLE_CLKS);
+> -	wmb();	/* make sure clocks enabled */
+> -
+> -	/* dsi controller can only be reset while clocks are running */
+> -	dsi_write(msm_host, REG_DSI_RESET, 1);
+> -	msleep(DSI_RESET_TOGGLE_DELAY_MS); /* make sure reset happen */
+> -	dsi_write(msm_host, REG_DSI_RESET, 0);
+> -	wmb();	/* controller out of reset */
+> -	dsi_write(msm_host, REG_DSI_CTRL, data0);
+> -	wmb();	/* make sure dsi controller enabled again */
+> -}
+> -
+>   static void dsi_hpd_worker(struct work_struct *work)
+>   {
+>   	struct msm_dsi_host *msm_host =
+> @@ -1520,7 +1514,7 @@ static void dsi_err_worker(struct work_struct *work)
+>   
+>   	pr_err_ratelimited("%s: status=%x\n", __func__, status);
+>   	if (status & DSI_ERR_STATE_MDP_FIFO_UNDERFLOW)
+> -		dsi_sw_reset_restore(msm_host);
+> +		dsi_sw_reset(msm_host);
+>   
+>   	/* It is safe to clear here because error irq is disabled. */
+>   	msm_host->err_work_state = 0;
 
-As for the shorter answer: OEM/ODM signatures, you can't just compile and
-flash a new ATF on your own (and some ODMs don't even exist anymore).
-There's no way other than this.
 
-[1]: 
-https://patchwork.kernel.org/project/linux-mediatek/patch/20220509210741.12020-3-angelogioacchino.delregno@collabora.com/#24863077
-
-Regards,
-Angelo
+-- 
+With best wishes
+Dmitry
