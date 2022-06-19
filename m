@@ -2,92 +2,120 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4868CC433EF
-	for <phone-devel@archiver.kernel.org>; Sat, 18 Jun 2022 16:46:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26737C43334
+	for <phone-devel@archiver.kernel.org>; Sun, 19 Jun 2022 10:33:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235733AbiFRQqS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 18 Jun 2022 12:46:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54332 "EHLO
+        id S234540AbiFSKdm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 19 Jun 2022 06:33:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234351AbiFRQqR (ORCPT
+        with ESMTP id S234518AbiFSKde (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 18 Jun 2022 12:46:17 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F4529582;
-        Sat, 18 Jun 2022 09:46:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E2F63B80A72;
-        Sat, 18 Jun 2022 16:46:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC689C3411A;
-        Sat, 18 Jun 2022 16:46:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655570774;
-        bh=O2RJ2eqglnM+kXxDGHgy56LBtlq6DELn/lrQeHUDxv0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HSHjkS30t9lRlmWfuNd2+3ndOnL233B8tJTKTstwSQEXz/p0ev/9xBUXnDLI3JnAt
-         tgiQg1Ed+OwoUAfebcbycWuP5kw8/8aaLK69+goSvkTnrVIwV8VJrDEXPg1N5xpqQZ
-         jcsfsq5dZ2Ufsfp9u5/rymT5eW8lbLRCPo7pgfvgZhF1H6+KgrKhk3F6iXoEeslOXm
-         YguscccVN2SiiHoj1yTTwGWdUHEborey8nWc14i0FpCT/hrTjgIQWPZsK6T1f32klW
-         vcG3VZIH99wDv4K8jrKYoLlhNoUjs7rOaU2vdATNIbqR0xfJayFbRdqQCyk+sOfJvg
-         B9BMo7SbSFszg==
-Date:   Sat, 18 Jun 2022 17:55:30 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     linux-iio@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org,
-        Song Qiang <songqiang1304521@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] proximity: vl53l0x: Make VDD regulator actually
- optional
-Message-ID: <20220618175530.2106129e@jic23-huawei>
-In-Reply-To: <20220614112049.302278-1-luca.weiss@fairphone.com>
-References: <20220614112049.302278-1-luca.weiss@fairphone.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        Sun, 19 Jun 2022 06:33:34 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 626D4D13E;
+        Sun, 19 Jun 2022 03:33:33 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id o10so11459691edi.1;
+        Sun, 19 Jun 2022 03:33:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+X1hXjyvwp+2w3vayb4RCn/spxH4ZaqgCltaU1rHplA=;
+        b=BTJQO9voJW1vKsgT0btEodY1tvnnhpJRDcYGMAxTb2Ib5d5g3Euen13gbEH+aGVa95
+         d91YXagZiZ71giTOlXTlVMgtSx0i+qeJUAiC5bN62iStl7tR8gA6k24GuCKMRe3Oh+vP
+         7GWqANCPAsqiIVEzDUMhwXh4jBwFuD6IbW2ECqpYbMNEjylWcyixH9rQry/UB8xJt+7x
+         ygQeq2qXl7RwIvw70rdfCiRZcCKVxRQiBFTuusmb0mSbBkvpn3H4TUjc0yFm8Rkzy7l0
+         RvZ1MjVkbzTiE1TXz/CKuZsY6BqBevqjH/tVCnZzc36MvXDQ7ebQo8J2cb1S4VfQCJNj
+         dBDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+X1hXjyvwp+2w3vayb4RCn/spxH4ZaqgCltaU1rHplA=;
+        b=HTyuU3swut1Ok8N8V4kp5VmhxsufXBVvUqp2DjpFj4ekVNVN/r/yNlIwxv+LrdLNiZ
+         5+L12udZoMUpIBZmCb5KJi7/yrFMW8zwVF+UzwANp9313kW+u6GUjmSXKn1KZI7s2e0R
+         WXEJNXmiTOVWsXyTZRPmjvcf+S7kiwWbDXxGsMWXrwiFtJZROsCplF3YE0lnpIq5/edf
+         Sx47d88gGJn2cIwJiGdalOOvwSa6W+rksT/Y4VAq9omvsBPQlXAKCIjIxdKVviHKIXwC
+         EmQMCfdBaQoPu6BS60U/OEy3mSdOKygx5Rwf8AgQBFX0kqWs+6N9ax8rnhPk0vDFBMPW
+         kgxg==
+X-Gm-Message-State: AJIora8ugjnMWqm+9dXBuKZuBhRGbm6ntbDfcIlJ8qAYOds8GhXhbWWH
+        oCo7sFciD5D5MhVuzX+bmcr4QiIJYAysfW2Dc9A=
+X-Google-Smtp-Source: AGRyM1vChaySuuq26yuk1hR8OBgh/cK+d6arLHy+Vl2o2vFb/x7G+7oVeQ9TKZZtcE1MIbq/LfilJh1p4+i7LNg5cKs=
+X-Received: by 2002:a05:6402:5002:b0:435:1ff1:99ee with SMTP id
+ p2-20020a056402500200b004351ff199eemr22679113eda.230.1655634812846; Sun, 19
+ Jun 2022 03:33:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <cover.1655509425.git.jahau@rocketmail.com> <3bdb392bb75073bdfe10aab1739fee2d6c64f10c.1655509425.git.jahau@rocketmail.com>
+ <20220618162833.218dbe67@jic23-huawei>
+In-Reply-To: <20220618162833.218dbe67@jic23-huawei>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 19 Jun 2022 12:32:56 +0200
+Message-ID: <CAHp75VemByhNAYGuP2h-5HazPZL7k5tyGc1WV2gKEdjX_5Sing@mail.gmail.com>
+Subject: Re: [PATCH v3 8/8] iio: magnetometer: yas530: Add YAS537 variant
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Jakob Hauser <jahau@rocketmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 14 Jun 2022 13:20:50 +0200
-Luca Weiss <luca.weiss@fairphone.com> wrote:
+On Sat, Jun 18, 2022 at 5:19 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Sat, 18 Jun 2022 02:13:16 +0200
+> Jakob Hauser <jahau@rocketmail.com> wrote:
 
-> Contrary to what the naming might suggest, devm_regulator_get_optional
-> returns -ENODEV in case the regulator is not found which will trigger
-> probe error in this driver.
-> 
-> Use devm_regulator_get instead which will return a dummy regulator that
-> we can just use as if it was a proper regulator.
-> 
-> Fixes: d3d6dba56dab ("proximity: vl53l0x: Handle the VDD regulator")
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> @Jonathan: As discussed in the other email, maybe you want to
-> adjust/remove the "Fixes:" tag. Your call.
-Applied to the togreg branch of iio.git.
+...
 
-> 
->  drivers/iio/proximity/vl53l0x-i2c.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-> index 3b7a33ff601d..c7c4d33d340f 100644
-> --- a/drivers/iio/proximity/vl53l0x-i2c.c
-> +++ b/drivers/iio/proximity/vl53l0x-i2c.c
-> @@ -237,7 +237,7 @@ static int vl53l0x_probe(struct i2c_client *client)
->  				     I2C_FUNC_SMBUS_BYTE_DATA))
->  		return -EOPNOTSUPP;
->  
-> -	data->vdd_supply = devm_regulator_get_optional(&client->dev, "vdd");
-> +	data->vdd_supply = devm_regulator_get(&client->dev, "vdd");
->  	if (IS_ERR(data->vdd_supply))
->  		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
->  				     "Unable to get VDD regulator\n");
+> > +             for (i = 0; i < 17; i++) {
+>
+> Reduce indent by doing this as multiple loops.
+> Though even better if you can use bulk writes.
+>
+>                 int j = 0;
+>                 for (i = 0; i < 12; i++) {
+>                         ret = regmap_write(yas5xx->map, YAS537_MTC + i,
+>                                            data[j++])
+>                         if (ret)
+>                                 return ret;
+>                 }
+>
+>                 for (i = 0; i < 4; i++) {
+>                         ret = regmap_write(yas5xx->map, YAS573_OFFSET_X + i,
+>                                            data[j++]);
+>                         if (ret)
+>                                 return ret;
+>                 }
 
+I guess you are referring to _noinc variants of regmap bulk operations.
+
+> > +                     if (i < 12) {
+> > +                             ret = regmap_write(yas5xx->map,
+> > +                                                YAS537_MTC + i,
+> > +                                                data[i]);
+> > +                             if (ret)
+> > +                                     return ret;
+> > +                     } else if (i < 15) {
+> > +                             ret = regmap_write(yas5xx->map,
+> > +                                                YAS537_OFFSET_X + i - 12,
+> > +                                                data[i]);
+> > +                             if (ret)
+> > +                                     return ret;
+> > +                             yas5xx->hard_offsets[i - 12] = data[i];
+> > +                     } else {
+> > +                             ret = regmap_write(yas5xx->map,
+> > +                                                YAS537_HCK + i - 15,
+> > +                                                data[i]);
+> > +                             if (ret)
+> > +                                     return ret;
+> > +                     }
+> > +             }
+
+-- 
+With Best Regards,
+Andy Shevchenko
