@@ -2,92 +2,104 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 093A0CCA479
-	for <phone-devel@archiver.kernel.org>; Mon, 20 Jun 2022 12:27:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63EFAC433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 20 Jun 2022 17:55:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241829AbiFTM1X (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 20 Jun 2022 08:27:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43676 "EHLO
+        id S244553AbiFTRzs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 20 Jun 2022 13:55:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242633AbiFTM1R (ORCPT
+        with ESMTP id S244557AbiFTRzr (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 20 Jun 2022 08:27:17 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B84E17A9F
-        for <phone-devel@vger.kernel.org>; Mon, 20 Jun 2022 05:27:16 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id e40so2345561eda.2
-        for <phone-devel@vger.kernel.org>; Mon, 20 Jun 2022 05:27:16 -0700 (PDT)
+        Mon, 20 Jun 2022 13:55:47 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E041AF12
+        for <phone-devel@vger.kernel.org>; Mon, 20 Jun 2022 10:55:46 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id lw20so264044ejb.4
+        for <phone-devel@vger.kernel.org>; Mon, 20 Jun 2022 10:55:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=4vB4Q89ficeECRN8+UPrIdmEHUS7f2caO3K21kMQabs=;
-        b=ydtsStDn284MzKmsq0MtNzu0S+TJnJsI3r17pEGtXoiUzkcbpPXsCNluThCnu7PSUl
-         AokfhGThZRANaroZaKbYjDh4B8Jrq3cJ9XBZNwM8aaeQa39YFuehjHzmtxGm1SMSc67n
-         dSX7az3laG0qrWn4H2agszHD8W6QilpaALdEqV00uOl4c2ZL/I2kVjdfUlvoTAsKYeZp
-         33yl2Tqw0tss5MG5f71gWHaH18jZk+SST1JWNF1JtqiFZ8HI4Rn8rA1RHX94cSPjcRwr
-         JoCX2BpOfQ1m1dzcrV8U3E0D4XMA4W+VhHQ25fiY6PPY2pTHfJHODpOBctJy9mbetK20
-         ytRw==
+        h=resent-from:resent-to:resent-date:resent-message-id:from:to:cc
+         :subject:date:message-id:mime-version:content-transfer-encoding;
+        bh=vGTTZHlQr24mk7rw2kpSOCNl9rG0rfShjLY5RzkauRM=;
+        b=o0ZaSwrLE07b4UO2i8CO+c33wXgmXzY/TQ8StWoSOpfiLZaxVGSIhw2BnvyZZfir74
+         hQjVLEKp3tdWm5jeWg4OjPEoS5At8oJgvoMgKmmFF7O+LiJ94eqjtZ0ZHIBS3GHMrCCz
+         S/9kTE3WLHH78Jcm93uHyKZ92iNywrmIUB2G4W+rgnx3fkPuudX5lK0sFA5PDj8GJavd
+         fbin2N4xjUKamVqXFFNED2SX/PEPgOSQD9MWRBStEPUdgLwUXxGyrGnExZH83zPFopho
+         bh/B568XsxfvYzlP3iKmJj4vcr34T/MQz7T3yHME2kz3aZa4tSLVgy3hgzI4q4zS67EQ
+         tvMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=4vB4Q89ficeECRN8+UPrIdmEHUS7f2caO3K21kMQabs=;
-        b=yQwX+ygzAPS15Fotx2m9IK03Dq5l+5FPCYFa2OoHTRYx8F3T7uFLyMhn1+GJY8uGMi
-         ij2T7HoGsEmEgcFwb81xXb0X73/1PhAKkSvjnfFPw96T1spgaRFgM9D5fvnnHFnavoJa
-         PkMt8JkZwrKr2BIjj/9GgiRT1QJUlZ51pmzMaMJEC74yloiHm82QcELGXdGUPEWI8Qfk
-         Aob/9vlRLMtlHid1QLNR8WipsJYUGTuWVgC8c6wIxk/AgJQOMNh+Qpo7cVqiNOU3GYrJ
-         pffNuLu3T378nokdSRtFGoZiWjobqrZQ2Dz/RWoQ6RDZRcmWpwjq04sjOw/T6x5H1t+U
-         H4xg==
-X-Gm-Message-State: AJIora+BQe/iV4jY7YRUeS6wRXJFFe0n9wyuMikGwwRkXMjHQNDlMO0U
-        ko9AEf/4RSy5mOUHx6r3Gpu3YQ==
-X-Google-Smtp-Source: AGRyM1uMp3iw93ubXPa99A12M8kv6df8xBOlVMniOSKM29Q1ujY0faKLtebfWYFbuG+EwepyqbUXkQ==
-X-Received: by 2002:a05:6402:2804:b0:431:7dde:6fb5 with SMTP id h4-20020a056402280400b004317dde6fb5mr29550142ede.379.1655728034292;
-        Mon, 20 Jun 2022 05:27:14 -0700 (PDT)
+        h=x-gm-message-state:resent-from:resent-to:resent-date
+         :resent-message-id:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=vGTTZHlQr24mk7rw2kpSOCNl9rG0rfShjLY5RzkauRM=;
+        b=jLssGIWPGzwVFI7QLPONbPVrQ0jumAdluKLbHuV0E3kGxAiZNbnnxhgWPel+t31fUv
+         UB0wf8S4+7vJItCvn6TtypAhy+WK+2F5GoUB4fSXMGj2fVgj4+U9LxifrwPWOoLBZqXF
+         opTU3Hb20rikfusY+Z93qg04RgctAUDeCY6qIhVYrR/Vrd3qt3wBu9t1xM/OB1TxrXVm
+         ozTLZeSa1hQ6esfqtvE/vzBklqVJw/0tV6B0mczOtyGnok7oSHY0vZD52gz35jrj8y8p
+         fH4JDHEzhX2h6vNL0a6dWaZzHJLyPwvS88TalBnjMQOTZ2Yzf1Ogo5li3lH+MIYJaur+
+         Jaog==
+X-Gm-Message-State: AJIora9s+wu/E13UfxZF3xLOJh97aaIUIXSCUABomp6KeZJaI0xbWNxg
+        DKJEmLCe+sT5SNWgbU9PXR8skWnmWydO2g==
+X-Google-Smtp-Source: AGRyM1sK3B2ZHYfrzZYOwORhdf7qDpoYc5+64Ko+jp216LJ9jphLilUu8NbMVWMojyq2vWtWYNwZ6Q==
+X-Received: by 2002:a17:907:1c18:b0:711:c83b:8a14 with SMTP id nc24-20020a1709071c1800b00711c83b8a14mr21231661ejc.379.1655747744709;
+        Mon, 20 Jun 2022 10:55:44 -0700 (PDT)
+Received: from [192.168.0.211] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id w13-20020a056402268d00b004359202969esm368782edd.4.2022.06.20.10.55.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Jun 2022 10:55:44 -0700 (PDT)
 Received: from localhost.localdomain (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id 4-20020a170906300400b00722dcb4629bsm15987ejz.14.2022.06.20.05.27.13
+        by smtp.gmail.com with ESMTPSA id d13-20020a170906304d00b00704757b1debsm6346056ejd.9.2022.06.20.10.50.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jun 2022 05:27:13 -0700 (PDT)
+        Mon, 20 Jun 2022 10:50:37 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     David Virag <virag.david003@gmail.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
+To:     Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, Tomasz Figa <tomasz.figa@gmail.com>,
-        phone-devel@vger.kernel.org,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
         Alim Akhtar <alim.akhtar@samsung.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH 5/5] arm64: dts: exynos: Add internal eMMC support to jackpotlte
-Date:   Mon, 20 Jun 2022 14:27:09 +0200
-Message-Id: <165572802724.43913.16422699466513017279.b4-ty@linaro.org>
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v2 0/3] leds/arm: dts: leds on Samsung Galaxy S3
+Date:   Mon, 20 Jun 2022 19:50:30 +0200
+Message-Id: <20220620175033.130468-1-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220601233743.56317-6-virag.david003@gmail.com>
-References: <20220601233743.56317-1-virag.david003@gmail.com> <20220601233743.56317-6-virag.david003@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 2 Jun 2022 01:37:43 +0200, David Virag wrote:
-> Add the nodes relevant to provide clocks for Exynos7885 eMMC and to
-> support eMMC. eMMC is the internal storage used in the Samsung Galaxy A8
-> (2018) (jackpotlte), and all other known devices using the Exynos7885
-> SoC.
-> 
-> 
+Hi,
 
-Applied, thanks!
+Merging
+=======
+1. Bindings patch: via leds tree.
+2. DTS patches: I will take them via Samsung SoC tree.
 
-[5/5] arm64: dts: exynos: Add internal eMMC support to jackpotlte
-      https://git.kernel.org/krzk/linux/c/ced37411d7f597129fecc0c3ca2324f44e33f4c8
+Changes since v1
+================
+1. Drop the label from example and DTS, per discussions with Jacek.
 
 Best regards,
+Krzysztof
+
+Krzysztof Kozlowski (3):
+  dt-bindings: leds: skyworks,aat1290: convert to dtschema
+  ARM: dts: exynos: align aat1290 flash LED node with bindings in Galaxy
+    S3
+  ARM: dts: exynos: add function and color to aat1290 flash LED node in
+    Galaxy S3
+
+ .../devicetree/bindings/leds/leds-aat1290.txt | 77 ---------------
+ .../bindings/leds/skyworks,aat1290.yaml       | 95 +++++++++++++++++++
+ arch/arm/boot/dts/exynos4412-galaxy-s3.dtsi   |  6 +-
+ 3 files changed, 99 insertions(+), 79 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/leds/leds-aat1290.txt
+ create mode 100644 Documentation/devicetree/bindings/leds/skyworks,aat1290.yaml
+
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+2.34.1
+
