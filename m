@@ -2,109 +2,80 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D11AC433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 20 Jun 2022 17:56:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CBCF6C433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 20 Jun 2022 21:12:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244885AbiFTR4u (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 20 Jun 2022 13:56:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44706 "EHLO
+        id S234230AbiFTVMS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 20 Jun 2022 17:12:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244907AbiFTR4g (ORCPT
+        with ESMTP id S229608AbiFTVMS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 20 Jun 2022 13:56:36 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BDBE1FA48
-        for <phone-devel@vger.kernel.org>; Mon, 20 Jun 2022 10:56:10 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id v1so22551822ejg.13
-        for <phone-devel@vger.kernel.org>; Mon, 20 Jun 2022 10:56:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=resent-from:resent-to:resent-date:resent-message-id:from:to:cc
-         :subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=rKzakFWTWfXnseWFxBBYL7rUhvEO3Gskk+MqcotQ/qY=;
-        b=UGtE04iVfMSwy4nEkdelFUoHfJV0WioWVfjd92Tu9uT1nmT+DgrTu2q2G4XXgzxUS5
-         4dsymV0rpzI8myqN9dOYgO4hQ6A0q2vGKW9hCnJ7X7tqlDMn3EaXJzDTSVKq35Y9Ta64
-         DAqjNIopv+KMxbwa9GK3hdIpBfazg93HDiwgDXVM7u4CI3T96JSVeTe9aks1Z2j9X02M
-         Yi318WbMtP5him8vsqVhI65MkSUDzDbTrY+My5xrUhgdyxeRyg/YsN6L8GT6MXnDvt8S
-         OgT8THW5YnaLI7+YcDnpoeBuD5wDpFUfa5T5iHfMWEuOclWLMItRUL6NIsym0CgQFijK
-         yNjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:resent-from:resent-to:resent-date
-         :resent-message-id:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=rKzakFWTWfXnseWFxBBYL7rUhvEO3Gskk+MqcotQ/qY=;
-        b=dcteScLlgIK6qsi80MpwzqRIQVtR6Kr/MZmjyWJPaT/IP+evSUEdp2FKTXvtjwd9bt
-         VlCHIFk6PIWD2QOYg2cj3afH26TG/3yk3L0g2qi4rxFPGhQzt0fb5/VO52cDfl/1twaB
-         zQckmKk62MHkkkrDVvKTyswhrBic9d6N0kEcTRX0BeTAYjpdKELQE4hwF+t4BJqdW+St
-         1XXgrbSt86ljwGwMIu5c0QPlro3QX0vmkuyQxc2OfNKYpNjSmIqnRH4nO2UZ7i2r8eSt
-         o9c8EMcHGFocbF66w43k7oiTDX8bvZ5MO/MLz9N8WePxq2rUV4IQSvZTAdxFyBncEj6D
-         rI2w==
-X-Gm-Message-State: AJIora8Tcw4z7ppZ3/UfDkwkBMD+V+8CyCZuzGoEjolCi/2DOAuPPUHo
-        16/hM/Wb3T/+W1HLeV/dAmjccQ==
-X-Google-Smtp-Source: AGRyM1vT49YNVusbwAN2Vr2w0WvOJ7vt0SFVBsM2fCaRap8boUF67JjAgUQ+9g8smyMAjDXNrDCYXw==
-X-Received: by 2002:a17:906:a219:b0:6e4:86a3:44ea with SMTP id r25-20020a170906a21900b006e486a344eamr22588700ejy.385.1655747769794;
-        Mon, 20 Jun 2022 10:56:09 -0700 (PDT)
-Received: from [192.168.0.211] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id l1-20020a1709063d2100b006fe8bf56f53sm6354436ejf.43.2022.06.20.10.56.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Jun 2022 10:56:09 -0700 (PDT)
-Received: from localhost.localdomain (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id d13-20020a170906304d00b00704757b1debsm6346056ejd.9.2022.06.20.10.50.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jun 2022 10:50:41 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+        Mon, 20 Jun 2022 17:12:18 -0400
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [5.144.164.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5A801A3AD;
+        Mon, 20 Jun 2022 14:12:15 -0700 (PDT)
+Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id B3F632013A;
+        Mon, 20 Jun 2022 23:12:13 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v2 3/3] ARM: dts: exynos: add function and color to aat1290 flash LED node in Galaxy S3
-Date:   Mon, 20 Jun 2022 19:50:33 +0200
-Message-Id: <20220620175033.130468-4-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220620175033.130468-1-krzysztof.kozlowski@linaro.org>
-References: <20220620175033.130468-1-krzysztof.kozlowski@linaro.org>
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] arm64: dts: qcom: sdm845-akatsuki: Round down l22a regulator voltage
+Date:   Mon, 20 Jun 2022 23:12:12 +0200
+Message-Id: <20220620211212.269956-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add common LED properties - the function and color - to aat1290 flash
-LED node in Galaxy S3, so we can drop deprecated label property.
+2700000 is not a multiple of pmic4_pldo's step size of 8000 (with base
+voltage 1664000), resulting in pm8998-rpmh-regulators not probing.  Just
+as we did with MSM8998's Sony Yoshino Poplar [1], round the voltages
+down to err on the cautious side and leave a comment in place to
+document this discrepancy wrt downstream sources.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+[1]: https://lore.kernel.org/linux-arm-msm/20220507153627.1478268-1-marijn.suijten@somainline.org/
+
+Fixes: 30a7f99befc6 ("arm64: dts: qcom: Add support for SONY Xperia XZ2 / XZ2C / XZ3 (Tama platform)")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
- arch/arm/boot/dts/exynos4412-galaxy-s3.dtsi | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../arm64/boot/dts/qcom/sdm845-sony-xperia-tama-akatsuki.dts | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/exynos4412-galaxy-s3.dtsi b/arch/arm/boot/dts/exynos4412-galaxy-s3.dtsi
-index 46640b490a8c..94122e9c6625 100644
---- a/arch/arm/boot/dts/exynos4412-galaxy-s3.dtsi
-+++ b/arch/arm/boot/dts/exynos4412-galaxy-s3.dtsi
-@@ -7,6 +7,7 @@
-  */
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama-akatsuki.dts b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama-akatsuki.dts
+index 36ff1178b705..3839850cf7dd 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama-akatsuki.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama-akatsuki.dts
+@@ -22,8 +22,9 @@ &vreg_l14a_1p8 {
+ };
  
- /dts-v1/;
-+#include <dt-bindings/leds/common.h>
- #include "exynos4412-midas.dtsi"
+ &vreg_l22a_2p8 {
+-	regulator-min-microvolt = <2700000>;
+-	regulator-max-microvolt = <2700000>;
++	/* Note: Round-down from 2700000 to be a multiple of PLDO step-size 8000 */
++	regulator-min-microvolt = <2696000>;
++	regulator-max-microvolt = <2696000>;
+ };
  
- / {
-@@ -26,7 +27,8 @@ led-controller {
- 		pinctrl-2 = <&camera_flash_isp>;
- 
- 		led {
--			label = "flash";
-+			function = LED_FUNCTION_FLASH;
-+			color = <LED_COLOR_ID_WHITE>;
- 			led-max-microamp = <520833>;
- 			flash-max-microamp = <1012500>;
- 			flash-max-timeout-us = <1940000>;
+ &vreg_l28a_2p8 {
 -- 
-2.34.1
+2.36.1
 
