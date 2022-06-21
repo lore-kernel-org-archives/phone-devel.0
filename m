@@ -2,88 +2,111 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50A29C43334
-	for <phone-devel@archiver.kernel.org>; Mon, 20 Jun 2022 21:15:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA7D6C433EF
+	for <phone-devel@archiver.kernel.org>; Tue, 21 Jun 2022 00:36:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242586AbiFTVPY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 20 Jun 2022 17:15:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59096 "EHLO
+        id S243190AbiFUAgr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 20 Jun 2022 20:36:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344120AbiFTVNb (ORCPT
+        with ESMTP id S241907AbiFUAgq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 20 Jun 2022 17:13:31 -0400
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [5.144.164.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88CE210BD;
-        Mon, 20 Jun 2022 14:13:29 -0700 (PDT)
-Received: from [192.168.1.101] (abxh227.neoplus.adsl.tpnet.pl [83.9.1.227])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 9102C3EE24;
-        Mon, 20 Jun 2022 23:35:32 +0200 (CEST)
-Message-ID: <3840f74b-91dc-25ab-e5db-a63cc198b111@somainline.org>
-Date:   Mon, 20 Jun 2022 23:13:18 +0200
+        Mon, 20 Jun 2022 20:36:46 -0400
+Received: from sonic304-23.consmr.mail.ir2.yahoo.com (sonic304-23.consmr.mail.ir2.yahoo.com [77.238.179.148])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C193192B3
+        for <phone-devel@vger.kernel.org>; Mon, 20 Jun 2022 17:36:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1655771803; bh=ObwGVCptuhG5JaeLLM0dzWY7CyvD4kHX1uD7M54t4Yc=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=krkVfFpGYIq1CArZ3p9LlUgqMgANzNoguMuciVs6R3OrqO/qAqChTzH71NYRiNKNVHdr6Dbiy/QEc2biyOIvJa2ymCfqzOYx6mDKDY3t3ilNlQ7hcRAHARDJV1x3/WKUbc4eODUYhbLIsyAbBLwmJ20pNMr6xIiMfqKIJoGma1MsLbFy2cpfdHkHC1JESaE63jYeHw34rFFiJBg2zHPz6C1kM+kMnIjH5iH0u6dY/S2PUY3RGJjM9ibg4P3Il9LjfZ5LdzhGV38E0V33tbFqx0n+GimOODgCPVGq3tUvXRoxtD6r2kZyZFVknJQblGVMD9P1lv0yIcNzWP1B8Wib7w==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1655771803; bh=s5wrvN52P3XFOAq3iv4txZJb4SAOctILItmrj2zSzz5=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=hhns34TI1QY8W02PvGnAg4mmpUxT1DA0VvfuM9Uq4J5fseIlo2RCsxjmueDt77KyvzxBDWGgPo1yI79oVUz3+50c20/px0JDZsHRkrdRF0x0c9EWXZNeNRpRxMOk8eqS5yutr1p5+dQRESnZAlX0mebVVUcQqwY0mH2ojvwxJYmHZwhsQRMvX4vrI1Cg8OHvqJokHjYO21awWXDJgJ/qCiud3QRQ6smNUSqmssIrijdtMxGtiGTLUtnG3jV99HUbhsrt8Zuf/onqPGa2wWDrO+boHSLYXh9kWZIrfI8zeJMK2LUJKyHtQo/fG4kHe2URVo8LCAYz4pN+ew99CKyQvg==
+X-YMail-OSG: Ps7BfVcVM1mEOE5WD1.N_82dQ2KpFXaNcx4yLmyqtbu0iIj05snznDV3ALRdjtO
+ JY2u4C0nEVF.GI0MbArSG3Htzgn2mBRm6RaXaVxrS6g20oAGB9OSOqW9HS6I_Lr3S2gKdNYTZGnw
+ AJICfAwxUG6vwdRoZAvevNnr9zo_NwRlIFv3_r0mpLetr0dFTDKjzftgcbk4wJpN1Z8wl3HatBzm
+ iXKmyrYJw5sxbfErH9HKIktMjwRphg10KKTrA.oqJQyucWtTVtEs38LBGI9sIRbcX2ySqp.mvrFV
+ 9MYdj1DzXHzlAzE2dKTSx59.8VRNspQp4uaJhzJYDPpBDBzrAw5P7rWY7MjwOMj5G6yUFQsc7dDe
+ eEjzCs7N7hQvxansLpNj8YH_cCK2U9EozaxjnWQNSt9R0GD4KbUdtMdobrZtbth50bxC.6UtBHpu
+ rGLg7sYvJ3YLRPR.FGwwSxn1tvgBuzkeL7XSoffB44ZNXclis3U91oYBkXUrGiwgz7ZDRk.gpLko
+ 4HRGjnkKTwS.btzXj_0N2OE2infertecxaiebNIQrgvPmCWoH_Uc11_ykoCX2nf0NpPkwEk3aZnJ
+ 2nJTa5XuNZrYnosuIANgFO1qwuSUyOMq3PFFrtc.nHnZfIsC7OQX03N7Nk2vLsa04hFEJ6mUjWQ7
+ OfXJo6fNDFaDd8mbd8iJzyToFqk0H9i0CsxZJQJKoTL9p4Mj6e3LU3cO1TtWo_oC_23Zz499WFaK
+ a8jCkUILSjAQFAMuBYA5ZlAH4NnU101gFsbU3VZ8SJzESN.QitEh2HZNSPT_lCS38_cyvoTedezZ
+ 4CiDNpcAoJxc4zSx9JCG2o5KPv7ZqOUpR9.juoB9ZmuzHKUpUOkVjraYkRRtVS6ymDbfEeush90i
+ s90xhGH5ymvJHBLO8DKzLrBQdizyuz0lbtUpjv3nsLluP2b878IyGW.l7v1RNqZw5A0Ffb_YX7CL
+ Wk60GIPEoQ.eriuBrvAhT_4zBcu8L7w41boTXTaeLELU.6ge2YgE1IdBJK62kf6t0iI_RYzz_QIR
+ sKACh2sIC8culXsOvIfsfHKOp3r7mAR96WDUKx81gEE0WiDfF2kAZgTnIE.b75Q2xuC_olw0tMtN
+ jHOXUkQV.2NNcGiC3mV8JhY6nZkgg.8azneglE6bO4_iBnCxLK.5dR.LXhTd0OVVdvks6AxvndVo
+ 8PiLH3R9yH.c8dn8uOb6MPE4B0khRvn3gN4eaMp43nWtPt8AvU2_BHPVnvi2dlS611V_dQdfjHlk
+ QN76ny.MPZNM2.BzmMQGvS6TKTHsvaEApFhrxPwE7l11vbnQRbmMCbldgRknUyxq34wDlpyyW8w9
+ yUmUU35x8cIDFhgE5bN4.ocNIQUDbsGzJjGbpFkXTXNn9psSiGZYhneikYucsV.eMEt6c5yICPY.
+ N4usKasFeJtDj4walXtPX9ZyrqBtSqbFNpiMassoFehdZE3SRSdyQnpK5PYcXSg_UsjDsGSg4qZG
+ 8GUVICyQdF6at9Rs4MKKv1R5JDjCAcubHo4Wmujl9J.QErtLr7EppBUUpLZWOOuKrb4cybSodImG
+ nUFEPPAZN7y4xXsbqPEp2VyUlCkPFiJrlhUww.k5RiUHN9BPyp5AwuA1whwPsBeBfgQPmC98pokh
+ gZkj4VHlKJAnIe2TCYzJ4izV6nqBflHOUtzLlPnWm6twbxgXGB6coDZnYxpe_vciPTVaokSM2X2e
+ 156hXPNzWhdhPSQsR61.VW498TlV_zgvGk1y0oySmkDWoyX0TpDCJwyurO85eFYjwPbeQxbp5WKM
+ 3E7hPxEm7W_ukXUC_F22xIpfBDWkBro2iAOpPfe8yQ6bbGzltYX7BYf2APNcn3_zRqkhx06c.dB0
+ 6_PHjSGys8iveduDZ3sl0WPQqzTA0HDrj1egbpvOTBJxrZWqrSyiWkB_X_mgrzTZZd3C.R6Dvpsp
+ TSx2dKUiVvAbU_P6B2uG5idqT2xqNwcpeIxyMQJm7HrePlktwNA4Ghu.X.dtVdXad3F0mv1g4g_a
+ .kDp8HDXr.Y9r4I_0Sd9Iv8.a4smteO2pX6EKpyYpqIabQGOiC6Qb_cKFN5var3qd2s12RIFrFqX
+ IcZ.hEMk3UIcCtFBnQcuB6Oley_BkYh6dE3H1qukyzVAZVsfTJxslp4zd9gjn.DQlrveSowMh_DU
+ 85hWJIaTvCb0gqyjpKQHkw8RB6y5F1I65rrHINJFK23RSMNgsS_b9dW1eOh10Mptc7oR2F55jmZu
+ ppdFO5T_nYudDdfvJAG_NkPSFdEU9CXic1uzYrfc6zlnpx4UeB_CJnWQB4RgIONa8m3kEGkXHp7M
+ V7Q--
+X-Sonic-MF: <jahau@rocketmail.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ir2.yahoo.com with HTTP; Tue, 21 Jun 2022 00:36:43 +0000
+Received: by hermes--canary-production-ir2-c9bf9d9bc-bp5rh (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID be704d10c683b207e37803df7d34a3fd;
+          Tue, 21 Jun 2022 00:36:39 +0000 (UTC)
+Message-ID: <47098d5d-c70f-a844-376c-03eadd1f691c@rocketmail.com>
+Date:   Tue, 21 Jun 2022 02:36:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.10.0
-Subject: Re: [PATCH] arm64: dts: qcom: sdm845-akatsuki: Round down l22a
- regulator voltage
+Subject: Re: [PATCH v3 1/8] iio: magnetometer: yas530: Change data type of
+ hard_offsets to signed
 Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220620211212.269956-1-marijn.suijten@somainline.org>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-In-Reply-To: <20220620211212.269956-1-marijn.suijten@somainline.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1655509425.git.jahau@rocketmail.com>
+ <dd6fe7f67e2f8c917aabd6eb0e0deccc660b48c2.1655509425.git.jahau@rocketmail.com>
+ <20220618151800.0616c21f@jic23-huawei>
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <20220618151800.0616c21f@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.20280 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Jonathan,
 
+On 18.06.22 16:18, Jonathan Cameron wrote:
+>
+> On Sat, 18 Jun 2022 02:13:09 +0200
+> Jakob Hauser <jahau@rocketmail.com> wrote:
+> 
+>> The "hard_offsets" are currently unsigned u8 but they should be signed as they
+>> can get negative. They are signed in function yas5xx_meaure_offsets() and in the
+>> Yamaha drivers [1][2].
+>>
+>> [1] https://github.com/NovaFusion/android_kernel_samsung_golden/blob/cm-12.1/drivers/sensor/compass/yas.h#L156
+>> [2] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/drivers/iio/magnetometer/yas_mag_drv-yas532.c#L91
+>>
+>> Fixes: de8860b1ed47 ("iio: magnetometer: Add driver for Yamaha YAS530")
+>> Cc: Linus Walleij <linus.walleij@linaro.org>
+> 
+> Trivial but it's nice to clean out CC if you also have a tag from the person.
+> All the automation will generally send emails to anyone who has given a tag
+> so the CC doesn't add anything at this point
+> 
+> I try to drop cases of this when applying patches, but if it's done by
+> the submitter it makes my life a little easier!
 
-On 20.06.2022 23:12, Marijn Suijten wrote:
-> 2700000 is not a multiple of pmic4_pldo's step size of 8000 (with base
-> voltage 1664000), resulting in pm8998-rpmh-regulators not probing.  Just
-> as we did with MSM8998's Sony Yoshino Poplar [1], round the voltages
-> down to err on the cautious side and leave a comment in place to
-> document this discrepancy wrt downstream sources.
-> 
-> [1]: https://lore.kernel.org/linux-arm-msm/20220507153627.1478268-1-marijn.suijten@somainline.org/
-> 
-> Fixes: 30a7f99befc6 ("arm64: dts: qcom: Add support for SONY Xperia XZ2 / XZ2C / XZ3 (Tama platform)")
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+I didn't know, thanks for explaining. I'll remove the redundant Cc's.
 
-Konrad
->  .../arm64/boot/dts/qcom/sdm845-sony-xperia-tama-akatsuki.dts | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama-akatsuki.dts b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama-akatsuki.dts
-> index 36ff1178b705..3839850cf7dd 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama-akatsuki.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama-akatsuki.dts
-> @@ -22,8 +22,9 @@ &vreg_l14a_1p8 {
->  };
->  
->  &vreg_l22a_2p8 {
-> -	regulator-min-microvolt = <2700000>;
-> -	regulator-max-microvolt = <2700000>;
-> +	/* Note: Round-down from 2700000 to be a multiple of PLDO step-size 8000 */
-> +	regulator-min-microvolt = <2696000>;
-> +	regulator-max-microvolt = <2696000>;
->  };
->  
->  &vreg_l28a_2p8 {
+Kind regards,
+Jakob
+
+...
