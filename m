@@ -2,192 +2,120 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AFFFC433EF
-	for <phone-devel@archiver.kernel.org>; Wed, 22 Jun 2022 14:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CD1FC43334
+	for <phone-devel@archiver.kernel.org>; Wed, 22 Jun 2022 15:26:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358680AbiFVOg1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Jun 2022 10:36:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35196 "EHLO
+        id S1358936AbiFVP0L (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 22 Jun 2022 11:26:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354869AbiFVOg0 (ORCPT
+        with ESMTP id S236696AbiFVP0K (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Jun 2022 10:36:26 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DD0A3BA52
-        for <phone-devel@vger.kernel.org>; Wed, 22 Jun 2022 07:36:25 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id t5so2190581eje.1
-        for <phone-devel@vger.kernel.org>; Wed, 22 Jun 2022 07:36:25 -0700 (PDT)
+        Wed, 22 Jun 2022 11:26:10 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C41F439162;
+        Wed, 22 Jun 2022 08:26:07 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id cf14so14646728edb.8;
+        Wed, 22 Jun 2022 08:26:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=sVFftXXsJ84XlZCYREHvxrVknOai2VbLYQhFhTdEQV8=;
-        b=kCCLYtTs6BdRbsM5Q0vOu3Q+GqBQSSoCoxrkNY67vt5/v8Y+FLPyAPWL+60+TTrauL
-         zh5iWxu+fyZUHdhWURnBLMd7LkBWf2KzQAcjeg0q1qq5bsV9ILBN2yrHkmml9aT9YybS
-         0eZbAGbasOOHwg4W6SglS3Zc4JF7FjvtuJoZ/DjKzytVWkUKPfalnmuL2QrF6xdJaJw1
-         laFmIKzsamSlwgXdme0Sjl9bURcXDVshCrAO7XuWFFCFrZbaumW4qassy2Up6uQrQejT
-         p6FtvyA5Ql304V19AtHWsaJbdVL2KWqwKwkDtWPXdzDCGWQa9lXCDyz3zFm+l9RcE5dK
-         8Utw==
+        bh=iUzY4nbnMghL5U5lbC9orjTiyOqHbnNJpaguJ2BvQ0I=;
+        b=AEoeVrOdTGpW8f5/WdP1QJAyvtpZm3Rcmw/2pg+2BxRLGzEojWTu72Nhl8OIUZA6ru
+         flVFlEbrYE/DcKVLppgHHckPgzgR9oQ2UPcRWuOg31W3w/7nD3LHRB44VyloGTUigePI
+         Qkjdl3z98ZLPlb8kHaXW97f90vPmQvnREWKb7ae8TQGQGnYP1T3aDPLA7zSkV6kCJ5m0
+         aWV2UuYVWT0nh5GX9cWFwNCcEJIWrUjLiMWSD9Km8S26cSBVh0Z6mhE+FlO9q4bAp15h
+         0AJzCPpCiw8UxLo+OkoR1DvNr1on0LycHZ3wquvsxBXWxKcxggF4UmnPK65I1nbZqgRu
+         qu5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=sVFftXXsJ84XlZCYREHvxrVknOai2VbLYQhFhTdEQV8=;
-        b=Ungj3AvETqUTsZIjPXcvrCx8dMmIhlur011khSgOGC72b1s+2IZuRMUp6zYimzdTaZ
-         Olica+iIbCdRCimpTonl39XGjyLa9eyEqrDwMJHDM5rVt+2I3ILf1lBZeR3WEs7zLd9o
-         ToQVrijO1nLGKp4Epc/5ZyPvJ3Aa4yIlO0JKQ31CnxnNHrtCPGp8WZteRNPU/Q0HzwUj
-         tHRRqsO6SxtFWFjUQqnK3s42IobltlUFcF6wIcteWWh2f/skXnHq4gzLGkkC73cBFuZj
-         9YWzDnC5kSJye1GzLPJxRFJREVrFMRw/awTnikx06Otg6IU+vDnd80Ld4DzzOl8/b53H
-         TRPQ==
-X-Gm-Message-State: AJIora8UZOtsAoJ/A04ciEk+O8Bmmjl8RQmJtsh2WEYkyfp6VxC0OL4u
-        I7V7Ege+ney+b7c7Fs1mYGk7ew==
-X-Google-Smtp-Source: AGRyM1uwFC++Lw8p9dKz+mshKztzdMs8eIfV+UxHrUOLIytswwE0ZWXzW6oujtExt49x6Sg3trORlQ==
-X-Received: by 2002:a17:906:1109:b0:711:da3b:bdcb with SMTP id h9-20020a170906110900b00711da3bbdcbmr3257318eja.210.1655908583962;
-        Wed, 22 Jun 2022 07:36:23 -0700 (PDT)
-Received: from [192.168.0.226] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id c5-20020a056402158500b004356b8ad003sm11041051edv.60.2022.06.22.07.36.22
+        bh=iUzY4nbnMghL5U5lbC9orjTiyOqHbnNJpaguJ2BvQ0I=;
+        b=HPJ3LwqmvFFtwTTGdLd8ruOYJsJLU8vOo4EEm+cGJSHui/WIRJf5uMQyDjZgqXrd3K
+         iSOFLaeDUKceabYZvuW7GVEmPY/9NkZLPorrLkhwHkAsBDRV+2T/NPNMLW5olhJXcJfK
+         nwAT/FjG4DkwvSyess2IQ4ka4Y3ApbvgiTdwAn20ktEO0UaqSV4tQfznjXmIAHsBhcnh
+         LIbQyi3UKzxOvfKFwBmoE8z5LyEQOHvNN8TqrN87HSjjuw5jlrgv8HESiqZJPQugH/FZ
+         AyfPBtGRDk8IuXr3jSOx6cHGStPPl9+/Okay4j7rfwniLK/ajkzC5GfHqAtR6t3Ahr+c
+         iBjw==
+X-Gm-Message-State: AJIora+XYEG7gLqEXSY2NDqudxw3JG0jJTQHEwjHas+7n25ihQVK3NWx
+        FcD4pTLAcr9iBJmwxe6FJAg=
+X-Google-Smtp-Source: AGRyM1vgpTRl9gQqy9pZt2ocx7au56m3oMlaDtHNIMEQagwDUpJU7dK3BCZgg8DRywhG7QCBvmtPPQ==
+X-Received: by 2002:a05:6402:414c:b0:435:1e2a:2c7f with SMTP id x12-20020a056402414c00b004351e2a2c7fmr4719527eda.132.1655911566341;
+        Wed, 22 Jun 2022 08:26:06 -0700 (PDT)
+Received: from [192.168.0.16] ([37.223.148.38])
+        by smtp.gmail.com with ESMTPSA id e7-20020a50ec87000000b0043561e0c9adsm12665751edr.52.2022.06.22.08.26.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jun 2022 07:36:23 -0700 (PDT)
-Message-ID: <60b0074f-f29b-da1f-d6d0-0085e17e5dcb@linaro.org>
-Date:   Wed, 22 Jun 2022 16:36:22 +0200
+        Wed, 22 Jun 2022 08:26:05 -0700 (PDT)
+Message-ID: <d1dcedbb-413e-48ee-fdbc-e4d77465b62c@gmail.com>
+Date:   Wed, 22 Jun 2022 17:26:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: Use WCD9335 DT bindings
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v2 00/10] MediaTek Helio X10 MT6795 - Devicetree, part 1
 Content-Language: en-US
-To:     Yassine Oudjana <yassine.oudjana@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Banajit Goswami <bgoswami@quicinc.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
-        devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220622064758.40543-1-y.oudjana@protonmail.com>
- <20220622064758.40543-4-y.oudjana@protonmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220622064758.40543-4-y.oudjana@protonmail.com>
-Content-Type: text/plain; charset=UTF-8
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        kernel@collabora.com
+References: <20220609112303.117928-1-angelogioacchino.delregno@collabora.com>
+From:   Matthias Brugger <matthias.bgg@gmail.com>
+In-Reply-To: <20220609112303.117928-1-angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 22/06/2022 08:47, Yassine Oudjana wrote:
-> From: Yassine Oudjana <y.oudjana@protonmail.com>
+
+
+On 09/06/2022 13:22, AngeloGioacchino Del Regno wrote:
+> In an effort to give some love to the apparently forgotten MT6795 SoC,
+> I am upstreaming more components that are necessary to support platforms
+> powered by this one apart from a simple boot to serial console.
 > 
-> Replace DAI indices in codec nodes with definitions from the WCD9335
-> DT bindings for devices that use WCD9335.
+> This series modernizes the devicetree of the MT6795 SoC and adds a
+> couple of nodes that are supported by this SoC.
 > 
-> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-> ---
->  arch/arm64/boot/dts/qcom/apq8096-db820c.dts         | 5 +++--
->  arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts  | 5 +++--
->  arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts | 5 +++--
->  3 files changed, 9 insertions(+), 6 deletions(-)
+> In my local tree I have much more than that (including the dts for
+> that Xperia M5 smartphone that I always mention...), but I decided
+> to push the devicetree commits in multiple parts, as to get these
+> in sooner than later because that reduces my delta, and this makes
+> upstreaming a bit easier, especially when having to rebase things
+> around, which happens a lot.
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
-> index 49afbb1a066a..ff915cd8e5a6 100644
-> --- a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
-> +++ b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
-> @@ -13,6 +13,7 @@
->  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
->  #include <dt-bindings/sound/qcom,q6afe.h>
->  #include <dt-bindings/sound/qcom,q6asm.h>
-> +#include <dt-bindings/sound/qcom,wcd9335.h>
->  
->  /*
->   * GPIO name legend: proper name = the GPIO line is used as GPIO
-> @@ -1009,7 +1010,7 @@ platform {
->  	};
->  
->  		codec {
-> -			sound-dai = <&wcd9335 6>;
-> +			sound-dai = <&wcd9335 AIF4_PB>;
->  		};
->  	};
->  
-> @@ -1024,7 +1025,7 @@ platform {
->  		};
->  
->  		codec {
-> -			sound-dai = <&wcd9335 1>;
-> +			sound-dai = <&wcd9335 AIF1_CAP>;
->  		};
->  	};
->  };
-> diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-> index 22978d06f85b..261f2ea7def0 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-> @@ -9,6 +9,7 @@
->  #include <dt-bindings/sound/qcom,q6afe.h>
->  #include <dt-bindings/sound/qcom,q6asm.h>
->  #include <dt-bindings/input/ti-drv260x.h>
-> +#include <dt-bindings/sound/qcom,wcd9335.h>
+> So, this series *does NOT* depends on any of the other series that
+> I've pushed and is mergeable in parallel.
 
-Keep the order, so this goes before input (even though it is not really
-alphabetical, but that's life...).
+Applied, thanks!
 
->  
->  / {
->  	model = "Xiaomi Mi 5";
-> @@ -193,7 +194,7 @@ platform {
->  		};
->  
->  		codec {
-> -			sound-dai = <&wcd9335 6>;
-> +			sound-dai = <&wcd9335 AIF4_PB>;
->  		};
->  	};
->  
-> @@ -208,7 +209,7 @@ platform {
->  		};
->  
->  		codec {
-> -			sound-dai = <&wcd9335 1>;
-> +			sound-dai = <&wcd9335 AIF1_CAP>;
->  		};
->  	};
->  };
-> diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-> index 1e2dd6763ad1..c9f935cfb587 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-> @@ -9,6 +9,7 @@
->  #include "pmi8996.dtsi"
->  #include <dt-bindings/sound/qcom,q6afe.h>
->  #include <dt-bindings/sound/qcom,q6asm.h>
-> +#include <dt-bindings/sound/qcom,wcd9335.h>
->  
->  / {
->  	model = "Xiaomi Mi Note 2";
-> @@ -171,7 +172,7 @@ platform {
->  		};
->  
->  		codec {
-> -			sound-dai = <&wcd9335 6>;
-> +			sound-dai = <&wcd9335 AIF4_PB>;
->  		};
->  	};
->  
-> @@ -186,7 +187,7 @@ platform {
->  		};
->  
->  		codec {
-> -			sound-dai = <&wcd9335 1>;
-> +			sound-dai = <&wcd9335 AIF1_CAP>;
->  		};
->  	};
->  };
-
-
-Best regards,
-Krzysztof
+> 
+> Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
+> 
+> Changes in v2:
+>   - Split fixed-clocks addition/removal patch for readability
+>   - Added patches for pinctrl controller node and vGIC interrupt
+> 
+> AngeloGioacchino Del Regno (10):
+>    arm64: dts: mediatek: mt6795: Create soc bus node and move mmio
+>      devices
+>    arm64: dts: mediatek: mt6795: Add cpu-map and L2 cache
+>    arm64: dts: mediatek: mt6795: Add Cortex A53 PMU nodes
+>    arm64: dts: mediatek: mt6795: Add watchdog node to avoid timeouts
+>    arm64: dts: mediatek: mt6795: Add fixed clocks for 32kHz and 26MHz XOs
+>    arm64: dts: mediatek: mt6795: Remove incorrect fixed-clocks
+>    arm64: dts: mediatek: mt6795: Add general purpose timer node
+>    arm64: dts: mediatek: mt6795: Add ARM CCI-400 node and assign to CPUs
+>    arm64: dts: mediatek: mt6795: Add pinctrl controller node
+>    arm64: dts: mediatek: mt6795: Specify interrupts for vGIC
+> 
+>   arch/arm64/boot/dts/mediatek/mt6795.dtsi | 260 ++++++++++++++++++-----
+>   1 file changed, 205 insertions(+), 55 deletions(-)
+> 
