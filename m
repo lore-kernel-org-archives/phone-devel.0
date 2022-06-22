@@ -2,89 +2,125 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE98BC43334
-	for <phone-devel@archiver.kernel.org>; Wed, 22 Jun 2022 08:49:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B2CDCCA482
+	for <phone-devel@archiver.kernel.org>; Wed, 22 Jun 2022 14:35:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354016AbiFVItR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Jun 2022 04:49:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46772 "EHLO
+        id S1358650AbiFVOfK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 22 Jun 2022 10:35:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235117AbiFVItP (ORCPT
+        with ESMTP id S1358653AbiFVOfJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Jun 2022 04:49:15 -0400
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283496578
-        for <phone-devel@vger.kernel.org>; Wed, 22 Jun 2022 01:49:14 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id w6so29009119ybl.4
-        for <phone-devel@vger.kernel.org>; Wed, 22 Jun 2022 01:49:14 -0700 (PDT)
+        Wed, 22 Jun 2022 10:35:09 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 596223A5F0
+        for <phone-devel@vger.kernel.org>; Wed, 22 Jun 2022 07:35:07 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id t5so2182259eje.1
+        for <phone-devel@vger.kernel.org>; Wed, 22 Jun 2022 07:35:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=h3DXofTTLpzI/TjWwuQqQFpuNkc2XNdmD7En35ZxJTI=;
-        b=DSxnLgcLtwEK+8xC/wAI4hy0XWVJyozvRHgM/P1PRri9OR0vAE41oLzJWNs6tSh+d6
-         R1VlnSLbwHfh5J8W1RRNqIs/7slA/2yXXM7j9oyVPxPeB9YkRSjjdvZSe9O7H9MHz7tU
-         LFsAPiUMBOCqLhz9bITJneV+ol9NUab5mk7MZyr5IqPD7OnAcidcQVMdmk6kNbZqw92l
-         7YD8/GxiZzmXIm1urIK9V76rlwBLAdYL23WHbvF7tQm9UIk0WC2jrIsfupvY0YvKHzPh
-         x5UYXcMGKpsoo23BlEWzYM7Fh/Ly4MWWJXklMWM8AZcI7Z7wPgrj4zri+B++Z1eH7+68
-         RSlA==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=H/cSfccrkMobuaWdmE/tdPoYRx0z9bpXg+/yToTVvnE=;
+        b=EzNqat5NrSDe5C45j1gKPwkoY+xrhidH+Z3Io7mhsMwqTNnLBUaUqxRvEbatmHXAh8
+         9R3VSv/sxc9Cka2XRU3PM+c1zHm/1nOsEmLooSA985j/kn3qrN4Nf6Y+KCn7AVfqwa8U
+         oSUoxFP+uHkVZUNXblWZtsOPHxfd38C05M1J/W3+8xDSZanH8hUTP0xNCuvjt4qajvsK
+         WPTsGa3qrNsJbMB7JVilnqYU99IMZ6Zz7HQH1j3Wi0gpZ3ZlD60gHK7iPQlvJOjq6Ljy
+         yu1XE4KI2cVXyfy3y3xwGNHO7gy8kNWuEH3fveAZ6avUzs+XnGMyg2aRzXbypXDfewmG
+         uc0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=h3DXofTTLpzI/TjWwuQqQFpuNkc2XNdmD7En35ZxJTI=;
-        b=rrkBydd90smJ+DfSSN/HXpzTUxlPSKCVPxo9xCLM7KAAMusbwyMAmqDyqNHJBdSNfS
-         F/G8WlWDPflv8sxsYPpDJvlMoTcpLRU/PxZFWDqEz7xWgR067pRMGHsXEfoLI+M2vQpF
-         ZZJweYc/9Oges+jaw2cLOsMTMz/38Sa5/mKTANYoc/D/+mDhtr8c1t0tCuYwG9YZFhVn
-         qNmz35BW7zOAQO8dZPr75HsqsClTlLSyxIGmG659toDF/bHUhBgSqCIuSNcdlBJHfVYa
-         RFRRkAvRUXl/lvWDhOq8V0GMJoeqaLinSTuKH/PNGCC425IA/rcxlhxrrBx46QnBDP7Q
-         qaOQ==
-X-Gm-Message-State: AJIora9f5Kpmy4C8dJ1Wlgqi3hmQOgqywrDvWE4KwEOd2IYP90TLqWrK
-        He7jd82GnICseJfREaZUeWJwtsFDKgSVdXdGsvnX0Q==
-X-Google-Smtp-Source: AGRyM1viKiISxQ8Egb+XkUDnqCFWJBQSB+E1CgmBQX6W95Tae4PDllQKTdZPoQBkh2q+f9xPXlJG8LG/mgZw6ik0cv0=
-X-Received: by 2002:a25:7255:0:b0:668:a372:b433 with SMTP id
- n82-20020a257255000000b00668a372b433mr2451551ybc.626.1655887753451; Wed, 22
- Jun 2022 01:49:13 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=H/cSfccrkMobuaWdmE/tdPoYRx0z9bpXg+/yToTVvnE=;
+        b=TyF1FbQg+2TkFmVZNn78mW00APrSPe2DfHFemYeN+cwrXd/y7c3SN3au76SStGNXzN
+         UTF4jZ2KLzXySt0lmMJmgsgtrjleDloJmtLy0ZdBpaOXk54+pZ+R8OYf+9n/Fd3oysGT
+         bFi9ALIBLwRk9MwMDZEFMP9Fc2ifWaLQdzD4v1kZuItyUZWfRfTgQhShQ07GW14LwDD4
+         sF2T+cYXLx+owAU+UkxVpm8CzTlBqXmjmbVhlwcc97YtmMnvPwmE3qMOr8jD0bqxtFdB
+         qNv04//z2FrLjje87oqqGpSGNa9+kSauAxmMB3G9hcZPoE4QHiXmCevkLHUHUQsuem6t
+         +h6A==
+X-Gm-Message-State: AJIora/lg+3SE8A9K9EjXpYJMzfIUgtMZcfycUePo4w8i4goeM6LUa+l
+        Ss/6Vb0goaSASVa4soYEle5lcA==
+X-Google-Smtp-Source: AGRyM1vJVzIPqFGBsUHqfmMJi7WDemTnx1NnVJOZoZ49hmcATWo1tUFMa4ra8zQAsOYs2fyIGY6jyA==
+X-Received: by 2002:a17:907:7b8d:b0:722:dcae:6417 with SMTP id ne13-20020a1709077b8d00b00722dcae6417mr3366157ejc.225.1655908505951;
+        Wed, 22 Jun 2022 07:35:05 -0700 (PDT)
+Received: from [192.168.0.226] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id g36-20020a056402322400b004357f88fcdcsm8144577eda.11.2022.06.22.07.35.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jun 2022 07:35:05 -0700 (PDT)
+Message-ID: <5421df1e-6e86-27a4-3da7-c15661aee190@linaro.org>
+Date:   Wed, 22 Jun 2022 16:35:04 +0200
 MIME-Version: 1.0
-References: <cover.1655509425.git.jahau@rocketmail.com> <18f223776f6942d52af2e41dd10160e220a23311.1655509425.git.jahau@rocketmail.com>
- <20220618155618.18996d0c@jic23-huawei> <10c06f21-23d3-d3a8-5a6d-8290cf2971cb@rocketmail.com>
-In-Reply-To: <10c06f21-23d3-d3a8-5a6d-8290cf2971cb@rocketmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 22 Jun 2022 10:49:02 +0200
-Message-ID: <CACRpkdbpz0LPXgW5as3g-pVyHe42R_EtdY4=zaroGxkE6kq5SQ@mail.gmail.com>
-Subject: Re: [PATCH v3 5/8] iio: magnetometer: yas530: Change data type of
- calibration coefficients
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH 1/3] ASoC: dt-bindings: Add bindings for WCD9335 DAIs
+Content-Language: en-US
+To:     Yassine Oudjana <yassine.oudjana@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Banajit Goswami <bgoswami@quicinc.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220622064758.40543-1-y.oudjana@protonmail.com>
+ <20220622064758.40543-2-y.oudjana@protonmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220622064758.40543-2-y.oudjana@protonmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Jun 21, 2022 at 2:51 AM Jakob Hauser <jahau@rocketmail.com> wrote:
-> On 18.06.22 16:56, Jonathan Cameron wrote:
-> > On Sat, 18 Jun 2022 02:13:13 +0200
-> > Jakob Hauser <jahau@rocketmail.com> wrote:
+On 22/06/2022 08:47, Yassine Oudjana wrote:
+> From: Yassine Oudjana <y.oudjana@protonmail.com>
+> 
+> Add bindings for the DAIs available in WCD9335 to avoid
+> having to use unclear number indices in device trees.
+> 
+> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+> ---
+>  MAINTAINERS                              |  1 +
+>  include/dt-bindings/sound/qcom,wcd9335.h | 15 +++++++++++++++
+>  2 files changed, 16 insertions(+)
+>  create mode 100644 include/dt-bindings/sound/qcom,wcd9335.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b774f21828f7..2bcc3cc129c5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16366,6 +16366,7 @@ M:	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+>  M:	Banajit Goswami <bgoswami@quicinc.com>
+>  L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
+>  S:	Supported
+> +F:	include/dt-bindings/sound/qcom,wcd9335.h
+>  F:	sound/soc/codecs/lpass-va-macro.c
+>  F:	sound/soc/codecs/lpass-wsa-macro.*
+>  F:	sound/soc/codecs/msm8916-wcd-analog.c
+> diff --git a/include/dt-bindings/sound/qcom,wcd9335.h b/include/dt-bindings/sound/qcom,wcd9335.h
+> new file mode 100644
+> index 000000000000..709d33ca748d
+> --- /dev/null
+> +++ b/include/dt-bindings/sound/qcom,wcd9335.h
+> @@ -0,0 +1,15 @@
+> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
+> +
+> +#ifndef __DT_QCOM_WCD9335_H
+> +#define __DT_QCOM_WCD9335_H
 
-> > Ok. If this is harmless to existing drivers fair enough, though my personal
-> > inclination would have been to take the easier approach of making the
-> > new variant sign extend on variable load (sign_extend_32() and similar)
-> > just so we didn't need to check the older parts weren't affected.
->
-> I didn't know that operation :) Let's take this.
->
-> Not sure how to handle the "Reviewed-by:" tags. Even though it's a small
-> patch, it gets modified a lot. Therefore I'd remove the tags of Linus
-> and Andy.
+Header guard should match better path, so:
 
-Keep mine.
-I very seldom disagree with Jonathan (or Andy) so the default to any comment
-from them is to keep my ACKs/Reviews.
+__DT_SOUND_QCOM_WCD9335_H
 
-Yours,
-Linus Walleij
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
