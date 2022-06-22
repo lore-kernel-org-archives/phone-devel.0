@@ -2,182 +2,89 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78494C433EF
-	for <phone-devel@archiver.kernel.org>; Wed, 22 Jun 2022 06:48:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE98BC43334
+	for <phone-devel@archiver.kernel.org>; Wed, 22 Jun 2022 08:49:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351337AbiFVGsw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Jun 2022 02:48:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58370 "EHLO
+        id S1354016AbiFVItR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 22 Jun 2022 04:49:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351301AbiFVGsv (ORCPT
+        with ESMTP id S235117AbiFVItP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Jun 2022 02:48:51 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F59935A83;
-        Tue, 21 Jun 2022 23:48:50 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id h23so32048155ejj.12;
-        Tue, 21 Jun 2022 23:48:50 -0700 (PDT)
+        Wed, 22 Jun 2022 04:49:15 -0400
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283496578
+        for <phone-devel@vger.kernel.org>; Wed, 22 Jun 2022 01:49:14 -0700 (PDT)
+Received: by mail-yb1-xb33.google.com with SMTP id w6so29009119ybl.4
+        for <phone-devel@vger.kernel.org>; Wed, 22 Jun 2022 01:49:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=GBoEfewX7uE5qiTFF5ceaeSxviE76/D0VbXLBnCtMOk=;
-        b=EUth92aS+ARXNsUtB82Fn+0F0yahSJwW0aRp3pWoXXG95IKw1RArK9Ig7q3Rce1Ehw
-         IB9YD315FvrufeFHauaTVDmyU561dpJJXVoxeP+YEOqYEB0GnwGjYYtO1LZlK0o6QfsS
-         BWFYFQiQlRYg0TliVlsC5C5feb19tNjrrKtR8kj8DM6+fCRVWi11MZKCMVbP+keN1pSk
-         Y1EH0SW0kUa5wZx/+ZvoXeYEPP577kv00tMCUDJ/q/mSmcBZtgAtalgDCO97V29+FF0L
-         wIqsPe04Qtlfs5uOqGtzgmol7qNeUSdazWS2kf76TziOEgPdeiTWHQ3efBkkbD6pe2Jo
-         fq3g==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=h3DXofTTLpzI/TjWwuQqQFpuNkc2XNdmD7En35ZxJTI=;
+        b=DSxnLgcLtwEK+8xC/wAI4hy0XWVJyozvRHgM/P1PRri9OR0vAE41oLzJWNs6tSh+d6
+         R1VlnSLbwHfh5J8W1RRNqIs/7slA/2yXXM7j9oyVPxPeB9YkRSjjdvZSe9O7H9MHz7tU
+         LFsAPiUMBOCqLhz9bITJneV+ol9NUab5mk7MZyr5IqPD7OnAcidcQVMdmk6kNbZqw92l
+         7YD8/GxiZzmXIm1urIK9V76rlwBLAdYL23WHbvF7tQm9UIk0WC2jrIsfupvY0YvKHzPh
+         x5UYXcMGKpsoo23BlEWzYM7Fh/Ly4MWWJXklMWM8AZcI7Z7wPgrj4zri+B++Z1eH7+68
+         RSlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=GBoEfewX7uE5qiTFF5ceaeSxviE76/D0VbXLBnCtMOk=;
-        b=wMpAhawFPNW0Vdq5mzXoLO3H6+bcWlRzhsQHAM/MSerW/lfrdAh327/f4b5EJr9o1U
-         rss20o2TKsJovRRyhkNJh1GwfaZO3tIgdRJ5ttArdvxfkPPozKOKk7mnK1CjkR6h4xp6
-         9eUpqMmp0Jho38Sk1H4UzNToJJ58nw07+gFJ45PxoEyebsSWI7ixJdqSul44AkHLva3b
-         OCkaougOXLz4hlP4aSs9TFhwwCnG1ZCIbUFY+t6OCrR72zXlBkA6r/z35tg//x0DWaQz
-         10cWARIzPsp3RTccztRMUo2tkA0jEDVeDNB7dkzu2voZwlQ4sffSDnX8koGnmwES4unx
-         Jetg==
-X-Gm-Message-State: AJIora+SJVDS8Gs5YITqaYkFttRKiDHrPzgm3MCi5IOpyCg+H76n2Ltp
-        9P/wphD2OWvOF9y/6+P+KIo=
-X-Google-Smtp-Source: AGRyM1vWBsfxuaNlo0tjKP0/6jEDWmmlRypkx4HG/8dsYU+wsKOh1CtyzxerPhaniyY/3W5GIrXT8A==
-X-Received: by 2002:a17:906:6a27:b0:708:1282:cbe9 with SMTP id qw39-20020a1709066a2700b007081282cbe9mr1767404ejc.186.1655880528800;
-        Tue, 21 Jun 2022 23:48:48 -0700 (PDT)
-Received: from localhost.localdomain ([185.107.95.225])
-        by smtp.gmail.com with ESMTPSA id sd12-20020a1709076e0c00b00722e8c47cc9sm1197148ejc.181.2022.06.21.23.48.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jun 2022 23:48:47 -0700 (PDT)
-From:   Yassine Oudjana <yassine.oudjana@gmail.com>
-X-Google-Original-From: Yassine Oudjana <y.oudjana@protonmail.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Banajit Goswami <bgoswami@quicinc.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
-        Yassine Oudjana <yassine.oudjana@gmail.com>,
-        devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] arm64: dts: qcom: Use WCD9335 DT bindings
-Date:   Wed, 22 Jun 2022 10:47:58 +0400
-Message-Id: <20220622064758.40543-4-y.oudjana@protonmail.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220622064758.40543-1-y.oudjana@protonmail.com>
-References: <20220622064758.40543-1-y.oudjana@protonmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=h3DXofTTLpzI/TjWwuQqQFpuNkc2XNdmD7En35ZxJTI=;
+        b=rrkBydd90smJ+DfSSN/HXpzTUxlPSKCVPxo9xCLM7KAAMusbwyMAmqDyqNHJBdSNfS
+         F/G8WlWDPflv8sxsYPpDJvlMoTcpLRU/PxZFWDqEz7xWgR067pRMGHsXEfoLI+M2vQpF
+         ZZJweYc/9Oges+jaw2cLOsMTMz/38Sa5/mKTANYoc/D/+mDhtr8c1t0tCuYwG9YZFhVn
+         qNmz35BW7zOAQO8dZPr75HsqsClTlLSyxIGmG659toDF/bHUhBgSqCIuSNcdlBJHfVYa
+         RFRRkAvRUXl/lvWDhOq8V0GMJoeqaLinSTuKH/PNGCC425IA/rcxlhxrrBx46QnBDP7Q
+         qaOQ==
+X-Gm-Message-State: AJIora9f5Kpmy4C8dJ1Wlgqi3hmQOgqywrDvWE4KwEOd2IYP90TLqWrK
+        He7jd82GnICseJfREaZUeWJwtsFDKgSVdXdGsvnX0Q==
+X-Google-Smtp-Source: AGRyM1viKiISxQ8Egb+XkUDnqCFWJBQSB+E1CgmBQX6W95Tae4PDllQKTdZPoQBkh2q+f9xPXlJG8LG/mgZw6ik0cv0=
+X-Received: by 2002:a25:7255:0:b0:668:a372:b433 with SMTP id
+ n82-20020a257255000000b00668a372b433mr2451551ybc.626.1655887753451; Wed, 22
+ Jun 2022 01:49:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1655509425.git.jahau@rocketmail.com> <18f223776f6942d52af2e41dd10160e220a23311.1655509425.git.jahau@rocketmail.com>
+ <20220618155618.18996d0c@jic23-huawei> <10c06f21-23d3-d3a8-5a6d-8290cf2971cb@rocketmail.com>
+In-Reply-To: <10c06f21-23d3-d3a8-5a6d-8290cf2971cb@rocketmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 22 Jun 2022 10:49:02 +0200
+Message-ID: <CACRpkdbpz0LPXgW5as3g-pVyHe42R_EtdY4=zaroGxkE6kq5SQ@mail.gmail.com>
+Subject: Re: [PATCH v3 5/8] iio: magnetometer: yas530: Change data type of
+ calibration coefficients
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Yassine Oudjana <y.oudjana@protonmail.com>
+On Tue, Jun 21, 2022 at 2:51 AM Jakob Hauser <jahau@rocketmail.com> wrote:
+> On 18.06.22 16:56, Jonathan Cameron wrote:
+> > On Sat, 18 Jun 2022 02:13:13 +0200
+> > Jakob Hauser <jahau@rocketmail.com> wrote:
 
-Replace DAI indices in codec nodes with definitions from the WCD9335
-DT bindings for devices that use WCD9335.
+> > Ok. If this is harmless to existing drivers fair enough, though my personal
+> > inclination would have been to take the easier approach of making the
+> > new variant sign extend on variable load (sign_extend_32() and similar)
+> > just so we didn't need to check the older parts weren't affected.
+>
+> I didn't know that operation :) Let's take this.
+>
+> Not sure how to handle the "Reviewed-by:" tags. Even though it's a small
+> patch, it gets modified a lot. Therefore I'd remove the tags of Linus
+> and Andy.
 
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
----
- arch/arm64/boot/dts/qcom/apq8096-db820c.dts         | 5 +++--
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts  | 5 +++--
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts | 5 +++--
- 3 files changed, 9 insertions(+), 6 deletions(-)
+Keep mine.
+I very seldom disagree with Jonathan (or Andy) so the default to any comment
+from them is to keep my ACKs/Reviews.
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
-index 49afbb1a066a..ff915cd8e5a6 100644
---- a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
-@@ -13,6 +13,7 @@
- #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
- #include <dt-bindings/sound/qcom,q6afe.h>
- #include <dt-bindings/sound/qcom,q6asm.h>
-+#include <dt-bindings/sound/qcom,wcd9335.h>
- 
- /*
-  * GPIO name legend: proper name = the GPIO line is used as GPIO
-@@ -1009,7 +1010,7 @@ platform {
- 	};
- 
- 		codec {
--			sound-dai = <&wcd9335 6>;
-+			sound-dai = <&wcd9335 AIF4_PB>;
- 		};
- 	};
- 
-@@ -1024,7 +1025,7 @@ platform {
- 		};
- 
- 		codec {
--			sound-dai = <&wcd9335 1>;
-+			sound-dai = <&wcd9335 AIF1_CAP>;
- 		};
- 	};
- };
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-index 22978d06f85b..261f2ea7def0 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-@@ -9,6 +9,7 @@
- #include <dt-bindings/sound/qcom,q6afe.h>
- #include <dt-bindings/sound/qcom,q6asm.h>
- #include <dt-bindings/input/ti-drv260x.h>
-+#include <dt-bindings/sound/qcom,wcd9335.h>
- 
- / {
- 	model = "Xiaomi Mi 5";
-@@ -193,7 +194,7 @@ platform {
- 		};
- 
- 		codec {
--			sound-dai = <&wcd9335 6>;
-+			sound-dai = <&wcd9335 AIF4_PB>;
- 		};
- 	};
- 
-@@ -208,7 +209,7 @@ platform {
- 		};
- 
- 		codec {
--			sound-dai = <&wcd9335 1>;
-+			sound-dai = <&wcd9335 AIF1_CAP>;
- 		};
- 	};
- };
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-index 1e2dd6763ad1..c9f935cfb587 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-@@ -9,6 +9,7 @@
- #include "pmi8996.dtsi"
- #include <dt-bindings/sound/qcom,q6afe.h>
- #include <dt-bindings/sound/qcom,q6asm.h>
-+#include <dt-bindings/sound/qcom,wcd9335.h>
- 
- / {
- 	model = "Xiaomi Mi Note 2";
-@@ -171,7 +172,7 @@ platform {
- 		};
- 
- 		codec {
--			sound-dai = <&wcd9335 6>;
-+			sound-dai = <&wcd9335 AIF4_PB>;
- 		};
- 	};
- 
-@@ -186,7 +187,7 @@ platform {
- 		};
- 
- 		codec {
--			sound-dai = <&wcd9335 1>;
-+			sound-dai = <&wcd9335 AIF1_CAP>;
- 		};
- 	};
- };
--- 
-2.36.1
-
+Yours,
+Linus Walleij
