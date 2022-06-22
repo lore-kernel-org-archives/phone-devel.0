@@ -2,60 +2,59 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F05A3CCA481
-	for <phone-devel@archiver.kernel.org>; Wed, 22 Jun 2022 14:35:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AFFFC433EF
+	for <phone-devel@archiver.kernel.org>; Wed, 22 Jun 2022 14:36:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358672AbiFVOfU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Jun 2022 10:35:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33606 "EHLO
+        id S1358680AbiFVOg1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 22 Jun 2022 10:36:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358437AbiFVOfT (ORCPT
+        with ESMTP id S1354869AbiFVOg0 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Jun 2022 10:35:19 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC6E03B55B
-        for <phone-devel@vger.kernel.org>; Wed, 22 Jun 2022 07:35:17 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id v1so34625469ejg.13
-        for <phone-devel@vger.kernel.org>; Wed, 22 Jun 2022 07:35:17 -0700 (PDT)
+        Wed, 22 Jun 2022 10:36:26 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DD0A3BA52
+        for <phone-devel@vger.kernel.org>; Wed, 22 Jun 2022 07:36:25 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id t5so2190581eje.1
+        for <phone-devel@vger.kernel.org>; Wed, 22 Jun 2022 07:36:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=HivjPqY5IPVew4KDh5JXs42EJqg0Zja8oJPdWGPubQI=;
-        b=s2FyGDQ8Tc33kJ135PIVk1gNLuVNCjiiGrAW5yin91Xw+BcqIDVA8NdwUuktAlsgws
-         RwFI5qSlSO48nC9DshTuVS8YP1nJAzgkSAa3duuL+uXlh/xk24ZTQzRYk+et8wxeaGxx
-         18IvazPkkrknb/34Ar6UazzVKdNqU98Qsce7lZNLcqeUlH1PGdxov1I59KOpdt/UpOLv
-         rsWNJoKwVwwRcNwAvD/gQqDlKFEeZ6D6SUT71N0lYcpst9onimaHJruIlDCUdGoRj2xs
-         G5GG1OiDBYBEqb1YvNgGiQLifzRPfuK5TY1nGNZ14CagV0fv3NBWzTsKOHo04b7gaw3+
-         Rfgg==
+        bh=sVFftXXsJ84XlZCYREHvxrVknOai2VbLYQhFhTdEQV8=;
+        b=kCCLYtTs6BdRbsM5Q0vOu3Q+GqBQSSoCoxrkNY67vt5/v8Y+FLPyAPWL+60+TTrauL
+         zh5iWxu+fyZUHdhWURnBLMd7LkBWf2KzQAcjeg0q1qq5bsV9ILBN2yrHkmml9aT9YybS
+         0eZbAGbasOOHwg4W6SglS3Zc4JF7FjvtuJoZ/DjKzytVWkUKPfalnmuL2QrF6xdJaJw1
+         laFmIKzsamSlwgXdme0Sjl9bURcXDVshCrAO7XuWFFCFrZbaumW4qassy2Up6uQrQejT
+         p6FtvyA5Ql304V19AtHWsaJbdVL2KWqwKwkDtWPXdzDCGWQa9lXCDyz3zFm+l9RcE5dK
+         8Utw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=HivjPqY5IPVew4KDh5JXs42EJqg0Zja8oJPdWGPubQI=;
-        b=sHhJUFra16KYK6Zh6a/BRE1JQP2cLkx9DTr44K4lLW4J0M4WkXuAtwr3Le7Ju41fYj
-         XPIYSUDc6hACp8BUkYuqUiL4H05Q82Y69qqyzjg0D6TXoAyExAmajx+86nvktOlLrAQK
-         HapBGIhFueYSl0aNWeAY6u1DhDgoy09L+2M9bo1DjnzpiNr2PHTj2qlmimjoqHrwuWpH
-         eYJRNN0cxKW35LgdQS8sxwMqoY0E/gjJUIn6DwWU7vqBZwi/Ogw5f1T59g8iKdPL1vpK
-         J9Kyk9QeOHy6fQykmiKZBbbOGmpeY4N18xWZxdiUe+b+1qd4aartfaLnIO5KEA+Hvfmd
-         2q4w==
-X-Gm-Message-State: AJIora9nHIb4Z2xwT9B7NtWFmk4GeWNL0cWQBQnujYsNTVqce5vG0OQK
-        JxpmU1PtJvbp2NU2Rqv3YHOE2w==
-X-Google-Smtp-Source: AGRyM1vpuXS252Vt2TCPoOf5IgGFENHWXoAL4VWnINzySUbFZ5zHejYqKkDpqUdKrVHzY0mavu5dcA==
-X-Received: by 2002:a17:906:5d07:b0:722:e1e3:ab6b with SMTP id g7-20020a1709065d0700b00722e1e3ab6bmr3322620ejt.674.1655908517379;
-        Wed, 22 Jun 2022 07:35:17 -0700 (PDT)
+        bh=sVFftXXsJ84XlZCYREHvxrVknOai2VbLYQhFhTdEQV8=;
+        b=Ungj3AvETqUTsZIjPXcvrCx8dMmIhlur011khSgOGC72b1s+2IZuRMUp6zYimzdTaZ
+         Olica+iIbCdRCimpTonl39XGjyLa9eyEqrDwMJHDM5rVt+2I3ILf1lBZeR3WEs7zLd9o
+         ToQVrijO1nLGKp4Epc/5ZyPvJ3Aa4yIlO0JKQ31CnxnNHrtCPGp8WZteRNPU/Q0HzwUj
+         tHRRqsO6SxtFWFjUQqnK3s42IobltlUFcF6wIcteWWh2f/skXnHq4gzLGkkC73cBFuZj
+         9YWzDnC5kSJye1GzLPJxRFJREVrFMRw/awTnikx06Otg6IU+vDnd80Ld4DzzOl8/b53H
+         TRPQ==
+X-Gm-Message-State: AJIora8UZOtsAoJ/A04ciEk+O8Bmmjl8RQmJtsh2WEYkyfp6VxC0OL4u
+        I7V7Ege+ney+b7c7Fs1mYGk7ew==
+X-Google-Smtp-Source: AGRyM1uwFC++Lw8p9dKz+mshKztzdMs8eIfV+UxHrUOLIytswwE0ZWXzW6oujtExt49x6Sg3trORlQ==
+X-Received: by 2002:a17:906:1109:b0:711:da3b:bdcb with SMTP id h9-20020a170906110900b00711da3bbdcbmr3257318eja.210.1655908583962;
+        Wed, 22 Jun 2022 07:36:23 -0700 (PDT)
 Received: from [192.168.0.226] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id u23-20020a056402111700b0042dd792b3e8sm15275377edv.50.2022.06.22.07.35.15
+        by smtp.gmail.com with ESMTPSA id c5-20020a056402158500b004356b8ad003sm11041051edv.60.2022.06.22.07.36.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jun 2022 07:35:16 -0700 (PDT)
-Message-ID: <486c2e98-db05-de1e-122e-bda3f844e4ee@linaro.org>
-Date:   Wed, 22 Jun 2022 16:35:15 +0200
+        Wed, 22 Jun 2022 07:36:23 -0700 (PDT)
+Message-ID: <60b0074f-f29b-da1f-d6d0-0085e17e5dcb@linaro.org>
+Date:   Wed, 22 Jun 2022 16:36:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.10.0
-Subject: Re: [PATCH 2/3] ASoC: wcd9335: Use DT bindings instead of local DAI
- definitions
+Subject: Re: [PATCH 3/3] arm64: dts: qcom: Use WCD9335 DT bindings
 Content-Language: en-US
 To:     Yassine Oudjana <yassine.oudjana@gmail.com>,
         Andy Gross <agross@kernel.org>,
@@ -72,9 +71,9 @@ Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
         linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <20220622064758.40543-1-y.oudjana@protonmail.com>
- <20220622064758.40543-3-y.oudjana@protonmail.com>
+ <20220622064758.40543-4-y.oudjana@protonmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220622064758.40543-3-y.oudjana@protonmail.com>
+In-Reply-To: <20220622064758.40543-4-y.oudjana@protonmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -84,14 +83,110 @@ X-Mailing-List: phone-devel@vger.kernel.org
 On 22/06/2022 08:47, Yassine Oudjana wrote:
 > From: Yassine Oudjana <y.oudjana@protonmail.com>
 > 
-> Get DAI indices from DT bindings and remove the currently used
-> local definitions.
+> Replace DAI indices in codec nodes with definitions from the WCD9335
+> DT bindings for devices that use WCD9335.
 > 
 > Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
 > ---
+>  arch/arm64/boot/dts/qcom/apq8096-db820c.dts         | 5 +++--
+>  arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts  | 5 +++--
+>  arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts | 5 +++--
+>  3 files changed, 9 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
+> index 49afbb1a066a..ff915cd8e5a6 100644
+> --- a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
+> +++ b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
+> @@ -13,6 +13,7 @@
+>  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+>  #include <dt-bindings/sound/qcom,q6afe.h>
+>  #include <dt-bindings/sound/qcom,q6asm.h>
+> +#include <dt-bindings/sound/qcom,wcd9335.h>
+>  
+>  /*
+>   * GPIO name legend: proper name = the GPIO line is used as GPIO
+> @@ -1009,7 +1010,7 @@ platform {
+>  	};
+>  
+>  		codec {
+> -			sound-dai = <&wcd9335 6>;
+> +			sound-dai = <&wcd9335 AIF4_PB>;
+>  		};
+>  	};
+>  
+> @@ -1024,7 +1025,7 @@ platform {
+>  		};
+>  
+>  		codec {
+> -			sound-dai = <&wcd9335 1>;
+> +			sound-dai = <&wcd9335 AIF1_CAP>;
+>  		};
+>  	};
+>  };
+> diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+> index 22978d06f85b..261f2ea7def0 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+> @@ -9,6 +9,7 @@
+>  #include <dt-bindings/sound/qcom,q6afe.h>
+>  #include <dt-bindings/sound/qcom,q6asm.h>
+>  #include <dt-bindings/input/ti-drv260x.h>
+> +#include <dt-bindings/sound/qcom,wcd9335.h>
 
+Keep the order, so this goes before input (even though it is not really
+alphabetical, but that's life...).
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>  
+>  / {
+>  	model = "Xiaomi Mi 5";
+> @@ -193,7 +194,7 @@ platform {
+>  		};
+>  
+>  		codec {
+> -			sound-dai = <&wcd9335 6>;
+> +			sound-dai = <&wcd9335 AIF4_PB>;
+>  		};
+>  	};
+>  
+> @@ -208,7 +209,7 @@ platform {
+>  		};
+>  
+>  		codec {
+> -			sound-dai = <&wcd9335 1>;
+> +			sound-dai = <&wcd9335 AIF1_CAP>;
+>  		};
+>  	};
+>  };
+> diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
+> index 1e2dd6763ad1..c9f935cfb587 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
+> @@ -9,6 +9,7 @@
+>  #include "pmi8996.dtsi"
+>  #include <dt-bindings/sound/qcom,q6afe.h>
+>  #include <dt-bindings/sound/qcom,q6asm.h>
+> +#include <dt-bindings/sound/qcom,wcd9335.h>
+>  
+>  / {
+>  	model = "Xiaomi Mi Note 2";
+> @@ -171,7 +172,7 @@ platform {
+>  		};
+>  
+>  		codec {
+> -			sound-dai = <&wcd9335 6>;
+> +			sound-dai = <&wcd9335 AIF4_PB>;
+>  		};
+>  	};
+>  
+> @@ -186,7 +187,7 @@ platform {
+>  		};
+>  
+>  		codec {
+> -			sound-dai = <&wcd9335 1>;
+> +			sound-dai = <&wcd9335 AIF1_CAP>;
+>  		};
+>  	};
+>  };
 
 
 Best regards,
