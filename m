@@ -2,120 +2,99 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CD1FC43334
-	for <phone-devel@archiver.kernel.org>; Wed, 22 Jun 2022 15:26:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FC91CCA47D
+	for <phone-devel@archiver.kernel.org>; Wed, 22 Jun 2022 16:13:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358936AbiFVP0L (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Jun 2022 11:26:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58802 "EHLO
+        id S1359787AbiFVQN5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 22 Jun 2022 12:13:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236696AbiFVP0K (ORCPT
+        with ESMTP id S1376571AbiFVQNw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Jun 2022 11:26:10 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C41F439162;
-        Wed, 22 Jun 2022 08:26:07 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id cf14so14646728edb.8;
-        Wed, 22 Jun 2022 08:26:07 -0700 (PDT)
+        Wed, 22 Jun 2022 12:13:52 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A71E25E9F;
+        Wed, 22 Jun 2022 09:13:51 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id c13so20139110eds.10;
+        Wed, 22 Jun 2022 09:13:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=iUzY4nbnMghL5U5lbC9orjTiyOqHbnNJpaguJ2BvQ0I=;
-        b=AEoeVrOdTGpW8f5/WdP1QJAyvtpZm3Rcmw/2pg+2BxRLGzEojWTu72Nhl8OIUZA6ru
-         flVFlEbrYE/DcKVLppgHHckPgzgR9oQ2UPcRWuOg31W3w/7nD3LHRB44VyloGTUigePI
-         Qkjdl3z98ZLPlb8kHaXW97f90vPmQvnREWKb7ae8TQGQGnYP1T3aDPLA7zSkV6kCJ5m0
-         aWV2UuYVWT0nh5GX9cWFwNCcEJIWrUjLiMWSD9Km8S26cSBVh0Z6mhE+FlO9q4bAp15h
-         0AJzCPpCiw8UxLo+OkoR1DvNr1on0LycHZ3wquvsxBXWxKcxggF4UmnPK65I1nbZqgRu
-         qu5Q==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cE/2OYYz5mN+xKGqyzZkM7i8jyDkRjpQ6WY0c9nnpkI=;
+        b=nUQ08BYK5oFMjhuwIdhfb68k27dg61OmpVwaXYMS2hbVZ9fdyf4oALt66tdaAUL1B3
+         rWBbo4MtyGKruasxn6e7dLhgHxT7LvmG0Pv//40q50rgMdT2GxH75jMdCs2hmJWfoBAA
+         b0rday1T6F/TkSeyE2Q/HBQBDt5gmvhgDjldLPtLkUD1T2+gjpW9bvme1SJnwqbMN4Pg
+         m2ToIWwJfj8bYsPP2DD4hddV+T6+336irst/x0Qkk+OmjsdYvg5Cn72N7wSYlVDKsKAv
+         t/xheAfXiJoPoZL/hy7MrwiCT23C/OylmEHjICTSiQq0MSMLxXIvM87lGKoLoy7Ag+0e
+         aYdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=iUzY4nbnMghL5U5lbC9orjTiyOqHbnNJpaguJ2BvQ0I=;
-        b=HPJ3LwqmvFFtwTTGdLd8ruOYJsJLU8vOo4EEm+cGJSHui/WIRJf5uMQyDjZgqXrd3K
-         iSOFLaeDUKceabYZvuW7GVEmPY/9NkZLPorrLkhwHkAsBDRV+2T/NPNMLW5olhJXcJfK
-         nwAT/FjG4DkwvSyess2IQ4ka4Y3ApbvgiTdwAn20ktEO0UaqSV4tQfznjXmIAHsBhcnh
-         LIbQyi3UKzxOvfKFwBmoE8z5LyEQOHvNN8TqrN87HSjjuw5jlrgv8HESiqZJPQugH/FZ
-         AyfPBtGRDk8IuXr3jSOx6cHGStPPl9+/Okay4j7rfwniLK/ajkzC5GfHqAtR6t3Ahr+c
-         iBjw==
-X-Gm-Message-State: AJIora+XYEG7gLqEXSY2NDqudxw3JG0jJTQHEwjHas+7n25ihQVK3NWx
-        FcD4pTLAcr9iBJmwxe6FJAg=
-X-Google-Smtp-Source: AGRyM1vgpTRl9gQqy9pZt2ocx7au56m3oMlaDtHNIMEQagwDUpJU7dK3BCZgg8DRywhG7QCBvmtPPQ==
-X-Received: by 2002:a05:6402:414c:b0:435:1e2a:2c7f with SMTP id x12-20020a056402414c00b004351e2a2c7fmr4719527eda.132.1655911566341;
-        Wed, 22 Jun 2022 08:26:06 -0700 (PDT)
-Received: from [192.168.0.16] ([37.223.148.38])
-        by smtp.gmail.com with ESMTPSA id e7-20020a50ec87000000b0043561e0c9adsm12665751edr.52.2022.06.22.08.26.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jun 2022 08:26:05 -0700 (PDT)
-Message-ID: <d1dcedbb-413e-48ee-fdbc-e4d77465b62c@gmail.com>
-Date:   Wed, 22 Jun 2022 17:26:02 +0200
+        bh=cE/2OYYz5mN+xKGqyzZkM7i8jyDkRjpQ6WY0c9nnpkI=;
+        b=rG46YWwaT1ZlnUHJNnYLBqCAUBAFOrl0Bo4tqoiIA6nfJEBFaAH0oO+IX24llsGIZ5
+         7PxtQKcjjiUUxsfj1CIeVKnXb/XjceUonDllX9UDFBRi4qjLiWrdp26BW4hHhZxZGDOD
+         Byc17Iy9d25cPo08+uTExJUPLJC5i0R79N+vPjAAqMuRI6oGX0reEkQs+fqfGOQxe/un
+         2X7YMOhFupeFHiM2vjFVSxS+xNKLD0F5e3vpLQQFlxJxf6ENJSZ4zsXsqdZCieRjj0/r
+         YaKQdNbeqtWsdH75fe1oEX8LpFqU8/a29XkoOFJg73HxsEg+g7Fr9Sybe8kzaVqNjqU0
+         al+w==
+X-Gm-Message-State: AJIora88chQXhsgato30gS/5kiZ2wq3b150Bgf6g9wBkUZdij4pbv2U9
+        zm//uvMfSB3Q319w9PyFZCs=
+X-Google-Smtp-Source: AGRyM1tWD6g6LO0qhLnaY9KN6b/00f7QxioRtjLEKur7v1cPD63I0UcdtnaoF4NQCs9CgxoC6rjd9w==
+X-Received: by 2002:a05:6402:348e:b0:435:a912:355f with SMTP id v14-20020a056402348e00b00435a912355fmr4947487edc.326.1655914429451;
+        Wed, 22 Jun 2022 09:13:49 -0700 (PDT)
+Received: from localhost.localdomain ([185.107.95.225])
+        by smtp.gmail.com with ESMTPSA id sd14-20020a1709076e0e00b007072dc80e06sm9576036ejc.190.2022.06.22.09.13.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jun 2022 09:13:48 -0700 (PDT)
+From:   Yassine Oudjana <yassine.oudjana@gmail.com>
+X-Google-Original-From: Yassine Oudjana <y.oudjana@protonmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Banajit Goswami <bgoswami@quicinc.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        Yassine Oudjana <yassine.oudjana@gmail.com>,
+        devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] ASoC: dt-bindings: Add bindings for WCD9335 DAIs
+Date:   Wed, 22 Jun 2022 20:13:19 +0400
+Message-Id: <20220622161322.168017-1-y.oudjana@protonmail.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v2 00/10] MediaTek Helio X10 MT6795 - Devicetree, part 1
-Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, robh+dt@kernel.org
-Cc:     krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
-        kernel@collabora.com
-References: <20220609112303.117928-1-angelogioacchino.delregno@collabora.com>
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-In-Reply-To: <20220609112303.117928-1-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Add DT bindings for WCD9335 DAIs and use them in the driver as well
+as all device trees currently using WCD9335.
 
+Changes since v1:
+ - Make header guard match path
+ - Maintain the alphabetical order in msm8996-xiaomi-gemini includes
 
-On 09/06/2022 13:22, AngeloGioacchino Del Regno wrote:
-> In an effort to give some love to the apparently forgotten MT6795 SoC,
-> I am upstreaming more components that are necessary to support platforms
-> powered by this one apart from a simple boot to serial console.
-> 
-> This series modernizes the devicetree of the MT6795 SoC and adds a
-> couple of nodes that are supported by this SoC.
-> 
-> In my local tree I have much more than that (including the dts for
-> that Xperia M5 smartphone that I always mention...), but I decided
-> to push the devicetree commits in multiple parts, as to get these
-> in sooner than later because that reduces my delta, and this makes
-> upstreaming a bit easier, especially when having to rebase things
-> around, which happens a lot.
-> 
-> So, this series *does NOT* depends on any of the other series that
-> I've pushed and is mergeable in parallel.
+Yassine Oudjana (3):
+  ASoC: dt-bindings: Add bindings for WCD9335 DAIs
+  ASoC: wcd9335: Use DT bindings instead of local DAI definitions
+  arm64: dts: qcom: Use WCD9335 DT bindings
 
-Applied, thanks!
+ MAINTAINERS                                       |  1 +
+ arch/arm64/boot/dts/qcom/apq8096-db820c.dts       |  5 +++--
+ .../arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts |  5 +++--
+ .../boot/dts/qcom/msm8996-xiaomi-scorpio.dts      |  5 +++--
+ include/dt-bindings/sound/qcom,wcd9335.h          | 15 +++++++++++++++
+ sound/soc/codecs/wcd9335.c                        | 13 ++-----------
+ 6 files changed, 27 insertions(+), 17 deletions(-)
+ create mode 100644 include/dt-bindings/sound/qcom,wcd9335.h
 
-> 
-> Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
-> 
-> Changes in v2:
->   - Split fixed-clocks addition/removal patch for readability
->   - Added patches for pinctrl controller node and vGIC interrupt
-> 
-> AngeloGioacchino Del Regno (10):
->    arm64: dts: mediatek: mt6795: Create soc bus node and move mmio
->      devices
->    arm64: dts: mediatek: mt6795: Add cpu-map and L2 cache
->    arm64: dts: mediatek: mt6795: Add Cortex A53 PMU nodes
->    arm64: dts: mediatek: mt6795: Add watchdog node to avoid timeouts
->    arm64: dts: mediatek: mt6795: Add fixed clocks for 32kHz and 26MHz XOs
->    arm64: dts: mediatek: mt6795: Remove incorrect fixed-clocks
->    arm64: dts: mediatek: mt6795: Add general purpose timer node
->    arm64: dts: mediatek: mt6795: Add ARM CCI-400 node and assign to CPUs
->    arm64: dts: mediatek: mt6795: Add pinctrl controller node
->    arm64: dts: mediatek: mt6795: Specify interrupts for vGIC
-> 
->   arch/arm64/boot/dts/mediatek/mt6795.dtsi | 260 ++++++++++++++++++-----
->   1 file changed, 205 insertions(+), 55 deletions(-)
-> 
+-- 
+2.36.1
+
