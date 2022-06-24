@@ -2,109 +2,106 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 933B1C43334
-	for <phone-devel@archiver.kernel.org>; Fri, 24 Jun 2022 10:00:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E6E7CCA482
+	for <phone-devel@archiver.kernel.org>; Fri, 24 Jun 2022 17:27:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230431AbiFXKAi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 24 Jun 2022 06:00:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45820 "EHLO
+        id S229970AbiFXR1R (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 24 Jun 2022 13:27:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230425AbiFXKAd (ORCPT
+        with ESMTP id S229595AbiFXR0k (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 24 Jun 2022 06:00:33 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0325169FA2;
-        Fri, 24 Jun 2022 03:00:32 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id C668C66017FF;
-        Fri, 24 Jun 2022 11:00:29 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1656064830;
-        bh=J0LbHH8P+ASApYmsYhsNx95/wSGxhHDFIBcm2kP0y+o=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZYner7Ocf1klmF+QAW3PT0bFy8OFw8nogLlK/7RDiguhlqtOm6nM6gvJZZOhdmk6L
-         9y2sODvA3BwCpoahueUJiexAzIhljBUipbriNf2HESs9ZhAv4RAzx3Hsd5Q2w0kald
-         A43BbKALW+Gq/qsjDwsX6g6gnXfEauPNcWk0pqMzzwWHeECJ0GRXFYYNaM2kgygFwP
-         f2WSBQCS7u+nXOPQ+eAL5P7oppWxAeTD0xgGUISi8dqIxIvBATFIAaI+/UkBg31U1s
-         nHirbnM2YGa/DTn1up3HJa0KTfokhkb7TA7apZbSLp/UKAUJ7+i+VktlkMfc6kNeOx
-         LT512uLGkRpbQ==
-From:   AngeloGioacchino Del Regno 
+        Fri, 24 Jun 2022 13:26:40 -0400
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D26892BE6;
+        Fri, 24 Jun 2022 10:26:39 -0700 (PDT)
+Received: by mail-io1-f54.google.com with SMTP id s17so3378785iob.7;
+        Fri, 24 Jun 2022 10:26:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=92QKbH/mPXhxHIYJf1fLlrKB6WxLUvpdcDo1o4OtEnM=;
+        b=nkLqdtay6VGjJqffHvqtqksKSKVkBilY1c1m5KAlQMy8AJo7DT/wTGSiN7+Hvhm6OZ
+         5NK5dApuZdhWE7sD7gmiuW8mnZNgcBVUWr08Y2QT5VUkWgLZWrdwwqNJFe3KLCMcVDiy
+         OQkBVynzJVclFSBAvtlpFjkdTFkU7nBi+RExRN7qf2SF4KNAnAp6m35rcdlw3XWHjg0O
+         jyaGn8aX9MWabkgmH4krflJGpABcTYGkLvT9Ff1Cn7vmFykm0oh3DpTKayQDOu7LFBY1
+         KBdZbUaiR+/9Mg6TXWzJbqbh+o2F5a/G524sZ1RjL+AJcIYtJGIsyIPiLUmvaUnoWf/K
+         cWTA==
+X-Gm-Message-State: AJIora/T87xyD3LzBX1ATxDZL4VjYTWfmf/6ffZkthaxIq5ZiERfn/8E
+        aw/Pd2wwO9Z6XxwV5t2hItwyaxa/og==
+X-Google-Smtp-Source: AGRyM1s8SzrwSpGacP/r2ARwl+tUdS8WymnOz9QJv44qHprtsvHiQ9e/7OSdNfiAyfKqtnqiAMvqmw==
+X-Received: by 2002:a02:90ce:0:b0:32e:e2ce:b17c with SMTP id c14-20020a0290ce000000b0032ee2ceb17cmr153954jag.268.1656091599142;
+        Fri, 24 Jun 2022 10:26:39 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.253])
+        by smtp.gmail.com with ESMTPSA id u10-20020a92da8a000000b002d925059ba6sm1354817iln.87.2022.06.24.10.26.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jun 2022 10:26:38 -0700 (PDT)
+Received: (nullmailer pid 146342 invoked by uid 1000);
+        Fri, 24 Jun 2022 17:26:34 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-To:     yong.wu@mediatek.com
-Cc:     joro@8bytes.org, will@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        iommu@lists.linux-foundation.org,
-        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v4 3/3] iommu/mediatek: Add support for MT6795 Helio X10 M4Us
-Date:   Fri, 24 Jun 2022 12:00:16 +0200
-Message-Id: <20220624100016.246442-4-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220624100016.246442-1-angelogioacchino.delregno@collabora.com>
-References: <20220624100016.246442-1-angelogioacchino.delregno@collabora.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Cc:     tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
+        wenst@chromium.org, p.zabel@pengutronix.de,
+        chun-jie.chen@mediatek.com, matthias.bgg@gmail.com,
+        sboyd@kernel.org, konrad.dybcio@somainline.org,
+        linux-clk@vger.kernel.org, fparent@baylibre.com,
+        phone-devel@vger.kernel.org, robh+dt@kernel.org,
+        y.oudjana@protonmail.com, rex-bc.chen@mediatek.com,
+        martin.botka@somainline.org, marijn.suijten@somainline.org,
+        sam.shih@mediatek.com, kernel@collabora.com,
+        mturquette@baylibre.com, linux-arm-kernel@lists.infradead.org,
+        ikjn@chromium.org, krzysztof.kozlowski+dt@linaro.org,
+        weiyi.lu@mediatek.com, miles.chen@mediatek.com, ck.hu@mediatek.com,
+        linux-mediatek@lists.infradead.org, jason-jh.lin@mediatek.com,
+        ~postmarketos/upstreaming@lists.sr.ht, bgolaszewski@baylibre.com,
+        paul.bouchara@somainline.org, devicetree@vger.kernel.org
+In-Reply-To: <20220624093525.243077-5-angelogioacchino.delregno@collabora.com>
+References: <20220624093525.243077-1-angelogioacchino.delregno@collabora.com> <20220624093525.243077-5-angelogioacchino.delregno@collabora.com>
+Subject: Re: [PATCH v3 4/7] dt-bindings: clock: mediatek: Add clock driver bindings for MT6795
+Date:   Fri, 24 Jun 2022 11:26:34 -0600
+Message-Id: <1656091594.386709.146341.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add support for the M4Us found in the MT6795 Helio X10 SoC.
+On Fri, 24 Jun 2022 11:35:22 +0200, AngeloGioacchino Del Regno wrote:
+> Add the bindings for the clock drivers of the MediaTek Helio X10
+> MT6795 SoC.
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> ---
+>  .../bindings/clock/mediatek,mt6795-clock.yaml | 66 +++++++++++++++++
+>  .../clock/mediatek,mt6795-sys-clock.yaml      | 74 +++++++++++++++++++
+>  2 files changed, 140 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
+>  create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
+> 
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Yong Wu <yong.wu@mediatek.com>
----
- drivers/iommu/mtk_iommu.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index 63df612cf2e0..82eba647c183 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -158,6 +158,7 @@
- enum mtk_iommu_plat {
- 	M4U_MT2712,
- 	M4U_MT6779,
-+	M4U_MT6795,
- 	M4U_MT8167,
- 	M4U_MT8173,
- 	M4U_MT8183,
-@@ -1419,6 +1420,19 @@ static const struct mtk_iommu_plat_data mt6779_data = {
- 	.larbid_remap  = {{0}, {1}, {2}, {3}, {5}, {7, 8}, {10}, {9}},
- };
- 
-+static const struct mtk_iommu_plat_data mt6795_data = {
-+	.m4u_plat     = M4U_MT6795,
-+	.flags	      = HAS_4GB_MODE | HAS_BCLK | RESET_AXI |
-+			HAS_LEGACY_IVRP_PADDR | MTK_IOMMU_TYPE_MM |
-+			TF_PORT_TO_ADDR_MT8173,
-+	.inv_sel_reg  = REG_MMU_INV_SEL_GEN1,
-+	.banks_num    = 1,
-+	.banks_enable = {true},
-+	.iova_region  = single_domain,
-+	.iova_region_nr = ARRAY_SIZE(single_domain),
-+	.larbid_remap = {{0}, {1}, {2}, {3}, {4}}, /* Linear mapping. */
-+};
-+
- static const struct mtk_iommu_plat_data mt8167_data = {
- 	.m4u_plat     = M4U_MT8167,
- 	.flags        = RESET_AXI | HAS_LEGACY_IVRP_PADDR | MTK_IOMMU_TYPE_MM,
-@@ -1531,6 +1545,7 @@ static const struct mtk_iommu_plat_data mt8195_data_vpp = {
- static const struct of_device_id mtk_iommu_of_ids[] = {
- 	{ .compatible = "mediatek,mt2712-m4u", .data = &mt2712_data},
- 	{ .compatible = "mediatek,mt6779-m4u", .data = &mt6779_data},
-+	{ .compatible = "mediatek,mt6795-m4u", .data = &mt6795_data},
- 	{ .compatible = "mediatek,mt8167-m4u", .data = &mt8167_data},
- 	{ .compatible = "mediatek,mt8173-m4u", .data = &mt8173_data},
- 	{ .compatible = "mediatek,mt8183-m4u", .data = &mt8183_data},
--- 
-2.35.1
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.example.dtb: power-controller@10001000: '#power-domain-cells' is a required property
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/power/power-domain.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.example.dtb: power-controller@10003000: '#power-domain-cells' is a required property
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/power/power-domain.yaml
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
 
