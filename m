@@ -2,106 +2,106 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E6E7CCA482
-	for <phone-devel@archiver.kernel.org>; Fri, 24 Jun 2022 17:27:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF452C43334
+	for <phone-devel@archiver.kernel.org>; Fri, 24 Jun 2022 20:38:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229970AbiFXR1R (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 24 Jun 2022 13:27:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51396 "EHLO
+        id S230392AbiFXUiX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 24 Jun 2022 16:38:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbiFXR0k (ORCPT
+        with ESMTP id S229757AbiFXUiV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 24 Jun 2022 13:26:40 -0400
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D26892BE6;
-        Fri, 24 Jun 2022 10:26:39 -0700 (PDT)
-Received: by mail-io1-f54.google.com with SMTP id s17so3378785iob.7;
-        Fri, 24 Jun 2022 10:26:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=92QKbH/mPXhxHIYJf1fLlrKB6WxLUvpdcDo1o4OtEnM=;
-        b=nkLqdtay6VGjJqffHvqtqksKSKVkBilY1c1m5KAlQMy8AJo7DT/wTGSiN7+Hvhm6OZ
-         5NK5dApuZdhWE7sD7gmiuW8mnZNgcBVUWr08Y2QT5VUkWgLZWrdwwqNJFe3KLCMcVDiy
-         OQkBVynzJVclFSBAvtlpFjkdTFkU7nBi+RExRN7qf2SF4KNAnAp6m35rcdlw3XWHjg0O
-         jyaGn8aX9MWabkgmH4krflJGpABcTYGkLvT9Ff1Cn7vmFykm0oh3DpTKayQDOu7LFBY1
-         KBdZbUaiR+/9Mg6TXWzJbqbh+o2F5a/G524sZ1RjL+AJcIYtJGIsyIPiLUmvaUnoWf/K
-         cWTA==
-X-Gm-Message-State: AJIora/T87xyD3LzBX1ATxDZL4VjYTWfmf/6ffZkthaxIq5ZiERfn/8E
-        aw/Pd2wwO9Z6XxwV5t2hItwyaxa/og==
-X-Google-Smtp-Source: AGRyM1s8SzrwSpGacP/r2ARwl+tUdS8WymnOz9QJv44qHprtsvHiQ9e/7OSdNfiAyfKqtnqiAMvqmw==
-X-Received: by 2002:a02:90ce:0:b0:32e:e2ce:b17c with SMTP id c14-20020a0290ce000000b0032ee2ceb17cmr153954jag.268.1656091599142;
-        Fri, 24 Jun 2022 10:26:39 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id u10-20020a92da8a000000b002d925059ba6sm1354817iln.87.2022.06.24.10.26.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jun 2022 10:26:38 -0700 (PDT)
-Received: (nullmailer pid 146342 invoked by uid 1000);
-        Fri, 24 Jun 2022 17:26:34 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     tinghan.shen@mediatek.com, linux-kernel@vger.kernel.org,
-        wenst@chromium.org, p.zabel@pengutronix.de,
-        chun-jie.chen@mediatek.com, matthias.bgg@gmail.com,
-        sboyd@kernel.org, konrad.dybcio@somainline.org,
-        linux-clk@vger.kernel.org, fparent@baylibre.com,
-        phone-devel@vger.kernel.org, robh+dt@kernel.org,
-        y.oudjana@protonmail.com, rex-bc.chen@mediatek.com,
-        martin.botka@somainline.org, marijn.suijten@somainline.org,
-        sam.shih@mediatek.com, kernel@collabora.com,
-        mturquette@baylibre.com, linux-arm-kernel@lists.infradead.org,
-        ikjn@chromium.org, krzysztof.kozlowski+dt@linaro.org,
-        weiyi.lu@mediatek.com, miles.chen@mediatek.com, ck.hu@mediatek.com,
-        linux-mediatek@lists.infradead.org, jason-jh.lin@mediatek.com,
-        ~postmarketos/upstreaming@lists.sr.ht, bgolaszewski@baylibre.com,
-        paul.bouchara@somainline.org, devicetree@vger.kernel.org
-In-Reply-To: <20220624093525.243077-5-angelogioacchino.delregno@collabora.com>
-References: <20220624093525.243077-1-angelogioacchino.delregno@collabora.com> <20220624093525.243077-5-angelogioacchino.delregno@collabora.com>
-Subject: Re: [PATCH v3 4/7] dt-bindings: clock: mediatek: Add clock driver bindings for MT6795
-Date:   Fri, 24 Jun 2022 11:26:34 -0600
-Message-Id: <1656091594.386709.146341.nullmailer@robh.at.kernel.org>
+        Fri, 24 Jun 2022 16:38:21 -0400
+X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 24 Jun 2022 13:38:20 PDT
+Received: from mailrelay4-1.pub.mailoutpod1-cph3.one.com (mailrelay4-1.pub.mailoutpod1-cph3.one.com [46.30.210.185])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A22314ECDF
+        for <phone-devel@vger.kernel.org>; Fri, 24 Jun 2022 13:38:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=rsa1;
+        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+         from:date:from;
+        bh=TPfs2QT7MjSlfibpr7aNRy/3mX4Ppd6HsikuuFFfOgI=;
+        b=mCmloxF5kRH23rbwRYtYSvI1Qe5ieH0ONv+zMRuknslxW0bEmwZkWsuxNUV+t8z+8fHAU0ydceyGI
+         tbaxH/rhESgEYCp/Qyh+UEBPi+TnrIc0Dk9yF0tLWR4GhzFF4Z8DpPkdHgRSwzUByWArNHvzbWYO69
+         RLMohu9CxvIraT3ZGAbYlBux5Blh7BFTjagAkufbaeL8PVEN1I9AJ8YSbbCpFdvrzV4Lep7skJIUKZ
+         sSe5xOu4pHgRtoDWEZU6JuzsBpSCpfPACwKVlkIVhYMq3IFsahUtGjCOqrKWOfTXLtzGOgP9Q+yu+6
+         6xz0ukIZfiSkmQq4jIQcuWA9PgDEBzA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+        d=ravnborg.org; s=ed1;
+        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+         from:date:from;
+        bh=TPfs2QT7MjSlfibpr7aNRy/3mX4Ppd6HsikuuFFfOgI=;
+        b=uQqRZTYsBlWT5c/y5rNbmV/ZA4UFvzI9fVUADgwkkLVa/hw/lHbxRbe7ka969fcFsyxKbjCZq1aKq
+         rmfWta2Ag==
+X-HalOne-Cookie: c9bafe8a4ad68d7eda8a0eaf402083f9e04b9925
+X-HalOne-ID: 6f0a39d1-f3fd-11ec-8233-d0431ea8bb10
+Received: from mailproxy1.cst.dirpod4-cph3.one.com (80-162-45-141-cable.dk.customer.tdc.net [80.162.45.141])
+        by mailrelay4.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
+        id 6f0a39d1-f3fd-11ec-8233-d0431ea8bb10;
+        Fri, 24 Jun 2022 20:37:16 +0000 (UTC)
+Date:   Fri, 24 Jun 2022 22:37:14 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Joel Selvaraj <jo@jsfamily.in>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Stanislav Jakubek <stano.jakubek@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Corentin Labbe <clabbe@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hao Fang <fanghao11@huawei.com>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v4 0/4] Introduce EBBG FT8719 DRM panel driver
+Message-ID: <YrYgehpgkIQY0Fqt@ravnborg.org>
+References: <BY5PR02MB700961069804230B5AFC5E04D9DF9@BY5PR02MB7009.namprd02.prod.outlook.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BY5PR02MB700961069804230B5AFC5E04D9DF9@BY5PR02MB7009.namprd02.prod.outlook.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 24 Jun 2022 11:35:22 +0200, AngeloGioacchino Del Regno wrote:
-> Add the bindings for the clock drivers of the MediaTek Helio X10
-> MT6795 SoC.
+Hi Joel,
+
+On Wed, Jun 01, 2022 at 01:54:06PM +0530, Joel Selvaraj wrote:
+> Add bindings and DRM panel driver for EBBG FT8719 6.18" 2246x1080 DSI
+> video mode panel, which can be found on some Xiaomi Poco F1 phones.
+> The panel's backlight is managed through QCOM WLED driver.
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->  .../bindings/clock/mediatek,mt6795-clock.yaml | 66 +++++++++++++++++
->  .../clock/mediatek,mt6795-sys-clock.yaml      | 74 +++++++++++++++++++
->  2 files changed, 140 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
->  create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
+> The driver is built using linux-mdss-dsi-panel-driver-generator[1], and
+> additionally support for handling regulators and linking external
+> backlight is added.
 > 
+> [1] https://github.com/msm8916-mainline/linux-mdss-dsi-panel-driver-generator
+> 
+> Changes in v4: (Linus Walleij's Suggestion)
+>  - Introduce mipi_dsi_dcs_write_seq macro in include/drm/drm_mipi_dsi.h
+>  - Remove the driver specific dsi_dcs_write_seq macro
+>  - Use the newly introduced mipi_dsi_dcs_write_seq macro instead
+> 
+> Changes in v3: (Mostly Linus Walleij's Suggestions)
+>  - Removed ctx->prepared state variable as it's handled by the core
+>  - Print error in dsi_dcs_write_seq macro if it fails to write
+>  - Removed magic power on sequences as panel works fine without them
+> 
+> Changes in v2: (Krzysztof Kozlowski's Suggestions)
+>  - dt-bindings: specify maxItems for reg
+>  - dt-bindings: cleanup and simplify the panel properties
+>  - dt-bindings: in example change "|+" to "|' and "dsi0" to "dsi"
+> 
+> Joel Selvaraj (4):
+>   dt-bindings: vendor-prefixes: Add prefix for EBBG
+>   dt-bindings: display: Add bindings for EBBG FT8719
+>   drm/mipi-dsi: Introduce mipi_dsi_dcs_write_seq macro
+>   drm/panel: introduce ebbg,ft8719 panel
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+All applied to drm-misc (drm-misc-next), thanks!
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.example.dtb: power-controller@10001000: '#power-domain-cells' is a required property
-	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/power/power-domain.yaml
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.example.dtb: power-controller@10003000: '#power-domain-cells' is a required property
-	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/power/power-domain.yaml
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+	Sam
