@@ -2,185 +2,133 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CAFABCCA483
-	for <phone-devel@archiver.kernel.org>; Wed, 22 Jun 2022 16:14:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30B9BC43334
+	for <phone-devel@archiver.kernel.org>; Fri, 24 Jun 2022 09:35:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376588AbiFVQON (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Jun 2022 12:14:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50536 "EHLO
+        id S229759AbiFXJff (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 24 Jun 2022 05:35:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239261AbiFVQOM (ORCPT
+        with ESMTP id S229669AbiFXJfe (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Jun 2022 12:14:12 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1713231DE4;
-        Wed, 22 Jun 2022 09:14:07 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id mf9so14997017ejb.0;
-        Wed, 22 Jun 2022 09:14:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=rzYR8E/Z4d+yIxT6wxjVdh3AUuQSp32xTOoEtVA33Ic=;
-        b=mHdOM2WoMZGuHTH9ibMduMO9iTX7wWF3RnKUIlwlF/f5maP3tJLzgD0LFBy0kaAFuu
-         LBf3pKzeW0j2ZXwFr9pBeNzHMx2XqTpPlzeVscunilw/mRu2jq7G2zOjNyV355hFIvF0
-         U7gQNfF4d93YXFZmss4Zw83fi4vc3s1D5OVDgj3RfV5YsI2DtORJ1F5/7Z9xed0lzd/3
-         QhOkLryhMlAtYOEAn2JmlUlJBeFcwFklSr+/2om0JKO/s5rPbeJWWDW0k59WSR8U+Bdc
-         kcFwZYPRsHhjRtQCJCihHT+tH3Ar+Z8cGRdw9z3H+Ko1XNahTyd3E3gq+JKRP3v5FvjE
-         u4pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=rzYR8E/Z4d+yIxT6wxjVdh3AUuQSp32xTOoEtVA33Ic=;
-        b=VWs15fhJDLMOejRkaA3ipXZCUg6VweV0b5Yi0qdvxCE4ZsXSVjbUwF6FulZkHkoKq4
-         po+TfNCHjg8mjYfzPJmrABgGc37sWbGHCB4sQzkMAnJaUGZeerE3kryueWYMHLCEldHK
-         tN/AJp7Uyz44JEQq3v8iy6jkw/BwzZ7keAmYL6px07v7bPoUlbdZCBi6+zFAj1d5Hx9Q
-         FW/agoSgU3sT9jf2uT1rI0GGp+ONZJHDUTZx6APQFWxjv4da7N4IpnRe8dStFBxgAN7E
-         0xd1Zdjn3r+ZqgcS3oMZY0BUYratrJSNLflKYRsv539IKLXFrEA0XNcU8iQ9AXuBJ2MH
-         9IyA==
-X-Gm-Message-State: AJIora/wdTWD1oSphfa06OmyCjcuysU1He9uH9utWI3J/bqU2tLbCSaM
-        pLg4t+gp9kO3kJJ1p8+da4o=
-X-Google-Smtp-Source: AGRyM1tFNI8nzCzf1c3HbSPbmMDqjs4QMeRDCukz3KOrq4G1bBxyF6h6Icic02RBVljA/Fz0VS5r5A==
-X-Received: by 2002:a17:906:147:b0:712:1288:348f with SMTP id 7-20020a170906014700b007121288348fmr3774357ejh.324.1655914445528;
-        Wed, 22 Jun 2022 09:14:05 -0700 (PDT)
-Received: from localhost.localdomain ([185.107.95.225])
-        by smtp.gmail.com with ESMTPSA id sd14-20020a1709076e0e00b007072dc80e06sm9576036ejc.190.2022.06.22.09.13.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jun 2022 09:14:05 -0700 (PDT)
-From:   Yassine Oudjana <yassine.oudjana@gmail.com>
-X-Google-Original-From: Yassine Oudjana <y.oudjana@protonmail.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Banajit Goswami <bgoswami@quicinc.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
-        Yassine Oudjana <yassine.oudjana@gmail.com>,
-        devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] arm64: dts: qcom: Use WCD9335 DT bindings
-Date:   Wed, 22 Jun 2022 20:13:22 +0400
-Message-Id: <20220622161322.168017-4-y.oudjana@protonmail.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220622161322.168017-1-y.oudjana@protonmail.com>
-References: <20220622161322.168017-1-y.oudjana@protonmail.com>
+        Fri, 24 Jun 2022 05:35:34 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 197C9766A5;
+        Fri, 24 Jun 2022 02:35:33 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 4089066017FA;
+        Fri, 24 Jun 2022 10:35:30 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1656063331;
+        bh=A9xe/sGqzmkRfQhZtK9jRoIxN0wnfqZ56lwtoZGUlJc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Gd7ZBDvG6QevmoMb3wGI2/By8ED74CVS3Q354nLN+R9byrCt6Yfga7mRRq4SKcGQd
+         0sr4odCctpOAx4W03U9o+xW2f4oduV4xtE6QnxdR+DDNm97mK/PhI8GTc5Y23Vxwmb
+         Q+HyD6HJoKbRzHITHaDU5r90/Z0r5K4rIaliMGEQ/GaPstYBET0ZnDskvtPYQcQl2b
+         geDQRigu2B9TTIU4JEaDTIqoFAwNM948WqIeMOsf9j8hLUvMmuERMSPI7St8Lez3r1
+         4JNPw+QYKRB04VKLSh8FNF4+dYVK9JruWMDRrWdVwhf+gVrNoYGc2sXHmjGaBxj6+4
+         Zywmgd/prNigA==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        mturquette@baylibre.com, sboyd@kernel.org, p.zabel@pengutronix.de,
+        y.oudjana@protonmail.com, angelogioacchino.delregno@collabora.com,
+        jason-jh.lin@mediatek.com, ck.hu@mediatek.com,
+        fparent@baylibre.com, rex-bc.chen@mediatek.com,
+        tinghan.shen@mediatek.com, chun-jie.chen@mediatek.com,
+        weiyi.lu@mediatek.com, ikjn@chromium.org, miles.chen@mediatek.com,
+        sam.shih@mediatek.com, wenst@chromium.org,
+        bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        kernel@collabora.com
+Subject: [PATCH v3 0/7] MediaTek Helio X10 MT6795 - Clock drivers
+Date:   Fri, 24 Jun 2022 11:35:18 +0200
+Message-Id: <20220624093525.243077-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Yassine Oudjana <y.oudjana@protonmail.com>
+In an effort to give some love to the apparently forgotten MT6795 SoC,
+I am upstreaming more components that are necessary to support platforms
+powered by this one apart from a simple boot to serial console.
 
-Replace DAI indices in codec nodes with definitions from the WCD9335
-DT bindings for devices that use WCD9335.
+This (very big) series introduces system clock, multimedia clock drivers
+(including resets) for this SoC.
 
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
----
-Changes since v1:
- - Maintain the alphabetical order in msm8996-xiaomi-gemini includes
+Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
 
- arch/arm64/boot/dts/qcom/apq8096-db820c.dts         | 5 +++--
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts  | 5 +++--
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts | 5 +++--
- 3 files changed, 9 insertions(+), 6 deletions(-)
+This series depends on, and can be merged on top of:
+[1]: https://patchwork.kernel.org/project/linux-mediatek/list/?series=640122
+[2]: https://patchwork.kernel.org/project/linux-mediatek/list/?series=637849
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
-index 49afbb1a066a..ff915cd8e5a6 100644
---- a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
-@@ -13,6 +13,7 @@
- #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
- #include <dt-bindings/sound/qcom,q6afe.h>
- #include <dt-bindings/sound/qcom,q6asm.h>
-+#include <dt-bindings/sound/qcom,wcd9335.h>
- 
- /*
-  * GPIO name legend: proper name = the GPIO line is used as GPIO
-@@ -1009,7 +1010,7 @@ platform {
- 	};
- 
- 		codec {
--			sound-dai = <&wcd9335 6>;
-+			sound-dai = <&wcd9335 AIF4_PB>;
- 		};
- 	};
- 
-@@ -1024,7 +1025,7 @@ platform {
- 		};
- 
- 		codec {
--			sound-dai = <&wcd9335 1>;
-+			sound-dai = <&wcd9335 AIF1_CAP>;
- 		};
- 	};
- };
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-index 22978d06f85b..8cdae01aaa85 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-@@ -8,6 +8,7 @@
- #include "msm8996-xiaomi-common.dtsi"
- #include <dt-bindings/sound/qcom,q6afe.h>
- #include <dt-bindings/sound/qcom,q6asm.h>
-+#include <dt-bindings/sound/qcom,wcd9335.h>
- #include <dt-bindings/input/ti-drv260x.h>
- 
- / {
-@@ -193,7 +194,7 @@ platform {
- 		};
- 
- 		codec {
--			sound-dai = <&wcd9335 6>;
-+			sound-dai = <&wcd9335 AIF4_PB>;
- 		};
- 	};
- 
-@@ -208,7 +209,7 @@ platform {
- 		};
- 
- 		codec {
--			sound-dai = <&wcd9335 1>;
-+			sound-dai = <&wcd9335 AIF1_CAP>;
- 		};
- 	};
- };
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-index 1e2dd6763ad1..c9f935cfb587 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-@@ -9,6 +9,7 @@
- #include "pmi8996.dtsi"
- #include <dt-bindings/sound/qcom,q6afe.h>
- #include <dt-bindings/sound/qcom,q6asm.h>
-+#include <dt-bindings/sound/qcom,wcd9335.h>
- 
- / {
- 	model = "Xiaomi Mi Note 2";
-@@ -171,7 +172,7 @@ platform {
- 		};
- 
- 		codec {
--			sound-dai = <&wcd9335 6>;
-+			sound-dai = <&wcd9335 AIF4_PB>;
- 		};
- 	};
- 
-@@ -186,7 +187,7 @@ platform {
- 		};
- 
- 		codec {
--			sound-dai = <&wcd9335 1>;
-+			sound-dai = <&wcd9335 AIF1_CAP>;
- 		};
- 	};
- };
+Changes in v3:
+ - Fixed typo in commit [4/7]
+
+Changes in v2:
+ - Fixed yaml clock bindings as per Rob's review
+ - Added ability to compile all MT6795 clock drivers as modules
+ - Added commits to export some symbols, required to compile as module
+
+AngeloGioacchino Del Regno (7):
+  dt-bindings: mediatek: Document MT6795 system controllers bindings
+  dt-bindings: clock: Add MediaTek Helio X10 MT6795 clock bindings
+  dt-bindings: reset: Add bindings for MT6795 Helio X10 reset
+    controllers
+  dt-bindings: clock: mediatek: Add clock driver bindings for MT6795
+  clk: mediatek: clk-apmixed: Remove unneeded __init annotation
+  clk: mediatek: Export required symbols to compile clk drivers as
+    module
+  clk: mediatek: Add MediaTek Helio X10 MT6795 clock drivers
+
+ .../arm/mediatek/mediatek,infracfg.yaml       |   2 +
+ .../bindings/arm/mediatek/mediatek,mmsys.yaml |   1 +
+ .../arm/mediatek/mediatek,pericfg.yaml        |   1 +
+ .../bindings/clock/mediatek,apmixedsys.yaml   |   1 +
+ .../bindings/clock/mediatek,mt6795-clock.yaml |  66 ++
+ .../clock/mediatek,mt6795-sys-clock.yaml      |  74 +++
+ .../bindings/clock/mediatek,topckgen.yaml     |   1 +
+ drivers/clk/mediatek/Kconfig                  |  37 ++
+ drivers/clk/mediatek/Makefile                 |   6 +
+ drivers/clk/mediatek/clk-apmixed.c            |   3 +-
+ drivers/clk/mediatek/clk-cpumux.c             |   2 +
+ drivers/clk/mediatek/clk-mt6795-apmixedsys.c  | 157 +++++
+ drivers/clk/mediatek/clk-mt6795-infracfg.c    | 148 +++++
+ drivers/clk/mediatek/clk-mt6795-mfg.c         |  50 ++
+ drivers/clk/mediatek/clk-mt6795-mm.c          | 106 +++
+ drivers/clk/mediatek/clk-mt6795-pericfg.c     | 160 +++++
+ drivers/clk/mediatek/clk-mt6795-topckgen.c    | 610 ++++++++++++++++++
+ drivers/clk/mediatek/clk-mt6795-vdecsys.c     |  55 ++
+ drivers/clk/mediatek/clk-mt6795-vencsys.c     |  50 ++
+ drivers/clk/mediatek/clk-mtk.c                |   2 +
+ drivers/clk/mediatek/reset.c                  |   1 +
+ include/dt-bindings/clock/mt6795-clk.h        | 275 ++++++++
+ include/dt-bindings/reset/mt6795-resets.h     |  50 ++
+ 23 files changed, 1857 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-apmixedsys.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-infracfg.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-mfg.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-mm.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-pericfg.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-topckgen.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-vdecsys.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-vencsys.c
+ create mode 100644 include/dt-bindings/clock/mt6795-clk.h
+ create mode 100644 include/dt-bindings/reset/mt6795-resets.h
+
 -- 
-2.36.1
+2.35.1
 
