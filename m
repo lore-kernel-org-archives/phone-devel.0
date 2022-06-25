@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C85EC43334
-	for <phone-devel@archiver.kernel.org>; Sat, 25 Jun 2022 20:30:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C909C433EF
+	for <phone-devel@archiver.kernel.org>; Sat, 25 Jun 2022 20:30:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233357AbiFYUaU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 25 Jun 2022 16:30:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55320 "EHLO
+        id S233472AbiFYUaz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 25 Jun 2022 16:30:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231815AbiFYUaT (ORCPT
+        with ESMTP id S233348AbiFYUaz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 25 Jun 2022 16:30:19 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4793613EBA
-        for <phone-devel@vger.kernel.org>; Sat, 25 Jun 2022 13:30:18 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id z7so7835945edm.13
-        for <phone-devel@vger.kernel.org>; Sat, 25 Jun 2022 13:30:18 -0700 (PDT)
+        Sat, 25 Jun 2022 16:30:55 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A28C13F30
+        for <phone-devel@vger.kernel.org>; Sat, 25 Jun 2022 13:30:54 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id c13so7840119eds.10
+        for <phone-devel@vger.kernel.org>; Sat, 25 Jun 2022 13:30:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=PHG9vYe2+hEIeP66IB+CeZnBwWHvaVXCoSe7QCvQNhU=;
-        b=xSpJ6XbSd0A7dLt1FY+JUOG/cm/CKtjXEIFSby2R4jI0UjMkpOlGppnN29cACTsGaw
-         sz19dgQdZqYcm6kexLNZDhBNGKeuw4IHI/mdiCemWqY8omrh/akAvMFtoPlmlzMrNmKT
-         97cxcHtvQ4E6UKwbkCZ1K47JD+i3agmvrw125GPneZ74GXXGpbPMP7EYqX5Oxunrdm8U
-         tluliXhTH7TD0ISez1OaWMau5YiJPZkqmV/4p1aTDn6VuxtNhIi9rmdTAqRxEhI72+sC
-         EK4fB9yl74Cv04yEn+jkwAv7k77qr4IxDosmiV4Jv13kSaoK58EafOZNH2XqKcleWkks
-         09hg==
+        bh=VLrefeAKt/Dq3outV5iV9u0MgIc7/N/yAidOvpVDbJc=;
+        b=KZc5XUfSTB6d18qR5A6cE7D0tWCGwMhGBMo1UKJN3/LXHkcy4U4HMmrIYkoGCUKSvn
+         ezA6v3kzloZnpdhm942xQb9LfpJKG+Oa2CMf9t7VNHTPZdzCAMPaAvs4N6+u0r0aZyjZ
+         10VdRnOie5ay0w9fyvYizWAVz7CCeGEFVhlLNHFXhY/NdduAL8M6Rqw7pEztmPaxn//m
+         RIB86JHvKpjEVPXOCmL9gxXJYptwhU0KNouN6/1aNTAZf2Y83lkLUTIFAiRgQjkI83Jf
+         J3kOGpraHqgfI16zYOgB50cc1t0HBLZ2iFU0FzlDDtPIftaYfsBzzoT7a0jeey7wm07E
+         kiMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=PHG9vYe2+hEIeP66IB+CeZnBwWHvaVXCoSe7QCvQNhU=;
-        b=AJ/yk+N/IXfp2RDPtGxcP/fgD1L0TnDDJMCLLwVcuvFoXGxsjqMyjkyqkdrPIBiks0
-         33F+DCTXpxtCillixWTOA3EwLN2LcU7IamRV5B4KXtlq8OORLev4g/91TC1kIGmA9K6g
-         xYNHdHfw2m8ym4jhspZm6xT3q/rV0RdkyLMHhBl0jOxbQlrAwkpu6p83hWfIWZ2dyL11
-         7Y6X2WMfyvlPT7wk1klyUZrGYEYdYeN/Qg1eoCkJb3MABabsEEfF93/5R2f8xrsiyjh+
-         nYuSI5NW3gHyb6rSJARFbayqyVciu+w9N1c/kn429sBmGuRV7p2H3YzqOf0yR+2NDSSZ
-         9Zjw==
-X-Gm-Message-State: AJIora+vBRd36zRgjO7OnTkyvcomyBAZitCLzS1KyM5bt9siHEwIQICV
-        OPSlfhJZymFSVPxCZyQUHb/Qgg==
-X-Google-Smtp-Source: AGRyM1u2IoPVRmbzjGQPCytqxD5DC+9n1JnhWsNu7nFxeSHqqkgpsfArHMNCP7TFUZFu4aG1BuusKA==
-X-Received: by 2002:a50:fc15:0:b0:435:7897:e8ab with SMTP id i21-20020a50fc15000000b004357897e8abmr6969427edr.17.1656189016908;
-        Sat, 25 Jun 2022 13:30:16 -0700 (PDT)
+        bh=VLrefeAKt/Dq3outV5iV9u0MgIc7/N/yAidOvpVDbJc=;
+        b=qMOr1VBXSRDg0lMF8/4UGlIkRIZ4AQrnByn3Mq2Y2vJwN/sWQtBCeAAW7zDTfCepKX
+         xd7AkcNSSpWt2hMtlgRWL+TUyLsspj1+REk1zgkNQa4gJZUQ/mmtuKjtu8ltV0dgJlyw
+         gRX3dJ+sLB6DQ+Ri/4tv/JJZtbBRfGBhVzRyOPuLgtnl5WyjZoSwye3jhMp9WdzudZZY
+         swPgY3K0fY0y+9feiPLOz+xrkQEMJNtCPLOUo+eOGO51NTvjiSLxNHCPuKEiQiRI5WJp
+         +bymtfdToYHP34tZsuCyaj+2/JlXXKTeDLD76k7TsHQ7jUzaRoyafast3742XwJGH4MV
+         Ae3w==
+X-Gm-Message-State: AJIora98G2QILmr7GhL0nKq2Syl1BTtbAVUuym4MUwcSuKcMMycL8fiL
+        UFsq4rqsDeMX6Uz+wBwzOVa4IA==
+X-Google-Smtp-Source: AGRyM1uVxpf9B5TTl1Z7wyKfg1MYoKCGhLn+4rU1ejsUCnvE/XzJ6gdXqNQmFz45WmrjdZukZZqU9Q==
+X-Received: by 2002:aa7:d353:0:b0:435:6a15:139f with SMTP id m19-20020aa7d353000000b004356a15139fmr7110700edr.19.1656189052795;
+        Sat, 25 Jun 2022 13:30:52 -0700 (PDT)
 Received: from [192.168.0.239] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id oz20-20020a170906cd1400b006f3ef214dc7sm2960987ejb.45.2022.06.25.13.30.15
+        by smtp.gmail.com with ESMTPSA id f9-20020a17090660c900b007262a5e2204sm2971200ejk.153.2022.06.25.13.30.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 25 Jun 2022 13:30:16 -0700 (PDT)
-Message-ID: <1c3d3e0a-5598-be8d-fc48-04529e7fecb0@linaro.org>
-Date:   Sat, 25 Jun 2022 22:30:15 +0200
+        Sat, 25 Jun 2022 13:30:52 -0700 (PDT)
+Message-ID: <de5a0e6f-411f-0c7b-ae1e-1117a4126d2d@linaro.org>
+Date:   Sat, 25 Jun 2022 22:30:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.10.0
-Subject: Re: [PATCH v3 3/7] dt-bindings: reset: Add bindings for MT6795 Helio
- X10 reset controllers
+Subject: Re: [PATCH v3 2/7] dt-bindings: clock: Add MediaTek Helio X10 MT6795
+ clock bindings
 Content-Language: en-US
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>, robh+dt@kernel.org
@@ -74,9 +74,9 @@ Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
         phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
         kernel@collabora.com, Rob Herring <robh@kernel.org>
 References: <20220624093525.243077-1-angelogioacchino.delregno@collabora.com>
- <20220624093525.243077-4-angelogioacchino.delregno@collabora.com>
+ <20220624093525.243077-3-angelogioacchino.delregno@collabora.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220624093525.243077-4-angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20220624093525.243077-3-angelogioacchino.delregno@collabora.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -84,22 +84,22 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 24/06/2022 11:35, AngeloGioacchino Del Regno wrote:
-> Add the reset controller bindings for MT6795.
+> Add the bindings for MT6795's clock controller.
 > 
 > Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 > Acked-by: Rob Herring <robh@kernel.org>
 > ---
->  include/dt-bindings/reset/mt6795-resets.h | 50 +++++++++++++++++++++++
->  1 file changed, 50 insertions(+)
->  create mode 100644 include/dt-bindings/reset/mt6795-resets.h
+>  include/dt-bindings/clock/mt6795-clk.h | 275 +++++++++++++++++++++++++
+>  1 file changed, 275 insertions(+)
+>  create mode 100644 include/dt-bindings/clock/mt6795-clk.h
 > 
-> diff --git a/include/dt-bindings/reset/mt6795-resets.h b/include/dt-bindings/reset/mt6795-resets.h
+> diff --git a/include/dt-bindings/clock/mt6795-clk.h b/include/dt-bindings/clock/mt6795-clk.h
 > new file mode 100644
-> index 000000000000..0a6514884eae
+> index 000000000000..9902906ac902
 > --- /dev/null
-> +++ b/include/dt-bindings/reset/mt6795-resets.h
+> +++ b/include/dt-bindings/clock/mt6795-clk.h
 
-Like bindings, so vendor prefix is needed.
+Vendor prefix.
 
 Best regards,
 Krzysztof
