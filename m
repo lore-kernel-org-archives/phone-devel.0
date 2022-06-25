@@ -2,208 +2,246 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B657CC433EF
-	for <phone-devel@archiver.kernel.org>; Sat, 25 Jun 2022 14:13:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4880C43334
+	for <phone-devel@archiver.kernel.org>; Sat, 25 Jun 2022 20:29:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232879AbiFYONa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 25 Jun 2022 10:13:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41384 "EHLO
+        id S233285AbiFYU3O (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 25 Jun 2022 16:29:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbiFYON3 (ORCPT
+        with ESMTP id S233376AbiFYU3N (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 25 Jun 2022 10:13:29 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9493B14D1F;
-        Sat, 25 Jun 2022 07:13:28 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4E84DB80B4F;
-        Sat, 25 Jun 2022 14:13:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F568C3411C;
-        Sat, 25 Jun 2022 14:13:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656166406;
-        bh=dEPsH1gC0cjPyNyfQIWjd/eKaeFawSF+Zw3Mv3HySgU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=FoEhPohviHb6Z6MxNRWG+noIK+/NJBjWTdJUoZ3RjyfrTFK8DGJ3HCt1Os17HZkLr
-         oY8XMG8hBsIEsNq/9gEWvTH/yRNm2yCVwqyoJZT5xbCPziQhXpQM+1hofYsOHo4lTX
-         eEV2GeOnfAi1nQoNjacLWGXlWx0nl76CprIKhDHVOZ2PQPEAgWDwoczubCgiXfGqfL
-         J+QjTAMYPjmOxpmiBgdwgLD8rh1NhZ4IEzXBWnakayDv5FcQ1v1lwlA5rXHkN5FETO
-         faAgHz5F96jZ0kZbZY2E3bM1Ql6PWBC4tq3qjBs87w/EirTuAbus7f1fU13s1Dg8gn
-         gH3EKq1Mp9pnQ==
-Date:   Sat, 25 Jun 2022 15:22:53 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v3 8/8] iio: magnetometer: yas530: Add YAS537 variant
-Message-ID: <20220625152253.15fedf17@jic23-huawei>
-In-Reply-To: <d51884a5-e3a9-39b9-14dc-5f002982ed6d@rocketmail.com>
-References: <cover.1655509425.git.jahau@rocketmail.com>
-        <3bdb392bb75073bdfe10aab1739fee2d6c64f10c.1655509425.git.jahau@rocketmail.com>
-        <20220618162833.218dbe67@jic23-huawei>
-        <d51884a5-e3a9-39b9-14dc-5f002982ed6d@rocketmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        Sat, 25 Jun 2022 16:29:13 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19203101C5
+        for <phone-devel@vger.kernel.org>; Sat, 25 Jun 2022 13:29:11 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id cf14so7863253edb.8
+        for <phone-devel@vger.kernel.org>; Sat, 25 Jun 2022 13:29:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=CyZdIB+a3zmI9o7okjV52QU2Tq6j8r50F7h1g1/ZmqM=;
+        b=jh1P9SHTYiAY6bJeR6u5NXLil88CtmmVqCbzHotLRzOL2Uckkj8zWG4OGOELTd5s60
+         yyymcNJwXxFkpHnuqFpuqtjPJL7L8GVR6j1Yv+mxzhTqDuUWsXXe4Xq73f9dU6gJsT2M
+         9RC5dc6PF4Tfjrg64GyzSY2T3uIe9dS97Ybx6dQbikZ2qEUz2mgkL6UYSL1lZcVn1bVU
+         NXpkl29vfd+iHN4xvmv0MnSxr/ln8wSE1K46AKqhsv2Lhu+XDwHNJ6WRqssjIlzBUaAf
+         b6wVTAGq38CTBfNUF6dGDhRdnjWD4ebbw0MOTLuHr/bfGtYMKiCegkxvdAipfPMbeESd
+         Lm9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=CyZdIB+a3zmI9o7okjV52QU2Tq6j8r50F7h1g1/ZmqM=;
+        b=HcR5JW56rmfYr9JI7mEU4y297XJCJ8NMpRnxkESy1wMUyFnebBf156njDSQlDbcgHD
+         TY/iSxTSRlWY3iDsnPitsfrUryaTW0dFxitu1o4Yh6FF31B2O6ZQSNr9giuPmPfS1v3q
+         jvp0d0JguDy8klBcYLSzCu+Uy9c7UuxC+jWbw2La+gjUotfaI/Me5mWCJFlYGzrXPbR3
+         0XVrAGa5ItjG55z56EXP2VAqoZEofPaX8mDlxA7SI1S/u0YO/Je6NrKzPWmU1oDYDnfp
+         3V4C4CCFd2tWmtyGYi2/YBys+IdiXHO4fnK7S7+Qu0tzhdmIOCcN47jMfrNeX4hObycA
+         PZKg==
+X-Gm-Message-State: AJIora+iDXfXm41Wp/mzx7ms4GhvsAMjRyXn7qtTodEfwts0Nox5B9w4
+        Nsu6/G+TqAYJco0A4sgqDMig5w==
+X-Google-Smtp-Source: AGRyM1v6ZQH0/qOeo1s9JIO2lBEu0I3AR8lap3IT4Akxx776t9v/QxwM3w6b6PhwZmfK4m5bsV8r/A==
+X-Received: by 2002:a05:6402:e0c:b0:435:25cd:6088 with SMTP id h12-20020a0564020e0c00b0043525cd6088mr6989495edh.60.1656188949672;
+        Sat, 25 Jun 2022 13:29:09 -0700 (PDT)
+Received: from [192.168.0.239] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id jw14-20020a170906e94e00b007263481a43fsm2644762ejb.81.2022.06.25.13.29.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 25 Jun 2022 13:29:09 -0700 (PDT)
+Message-ID: <cea65d6a-7d9b-7b14-9984-bcd7f115da47@linaro.org>
+Date:   Sat, 25 Jun 2022 22:29:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v3 4/7] dt-bindings: clock: mediatek: Add clock driver
+ bindings for MT6795
+Content-Language: en-US
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        mturquette@baylibre.com, sboyd@kernel.org, p.zabel@pengutronix.de,
+        y.oudjana@protonmail.com, jason-jh.lin@mediatek.com,
+        ck.hu@mediatek.com, fparent@baylibre.com, rex-bc.chen@mediatek.com,
+        tinghan.shen@mediatek.com, chun-jie.chen@mediatek.com,
+        weiyi.lu@mediatek.com, ikjn@chromium.org, miles.chen@mediatek.com,
+        sam.shih@mediatek.com, wenst@chromium.org,
+        bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        kernel@collabora.com
+References: <20220624093525.243077-1-angelogioacchino.delregno@collabora.com>
+ <20220624093525.243077-5-angelogioacchino.delregno@collabora.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220624093525.243077-5-angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 24/06/2022 11:35, AngeloGioacchino Del Regno wrote:
+> Add the bindings for the clock drivers of the MediaTek Helio X10
+> MT6795 SoC.
 > 
-> >> +static int yas537_get_calibration_data(struct yas5xx *yas5xx)
-> >> +{
-> >> +	struct yas5xx_calibration *c = &yas5xx->calibration;
-> >> +	u8 data[17];
-> >> +	u32 val1, val2, val3, val4;
-> >> +	int i, ret;
-> >> +
-> >> +	/* Writing SRST register, the exact meaning is unknown */
-> >> +	ret = regmap_write(yas5xx->map, YAS537_SRST, BIT(1));
-> >> +	if (ret)
-> >> +		return ret;
-> >> +
-> >> +	/* Calibration readout, YAS537 needs one readout only */
-> >> +	ret = regmap_bulk_read(yas5xx->map, YAS537_CAL, data, sizeof(data));
-> >> +	if (ret)
-> >> +		return ret;
-> >> +	dev_dbg(yas5xx->dev, "calibration data: %17ph\n", data);
-> >> +
-> >> +	/* Sanity check, is this all zeroes? */
-> >> +	if (!memchr_inv(data, 0x00, 16)) {
-> >> +		if (FIELD_GET(GENMASK(5, 0), data[16]) == 0)
-> >> +			dev_warn(yas5xx->dev, "calibration is blank!\n");
-> >> +	}
-> >> +
-> >> +	/* Contribute calibration data to the input pool for kernel entropy */
-> >> +	add_device_randomness(data, sizeof(data));
-> >> +
-> >> +	/* Extract version information */
-> >> +	yas5xx->version = FIELD_GET(GENMASK(7, 6), data[16]);
-> >> +
-> >> +	/* There are two versions of YAS537 behaving differently */
-> >> +	switch (yas5xx->version) {
-> >> +
-> >> +	case YAS537_VERSION_0:  
-> > Seems like we might need more chip_info variants, though perhaps in this case
-> > it is worth handling it as a switch statement as hopefully the number of
-> > way s this is done for a given part number won't grow any further.  
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> ---
+>  .../bindings/clock/mediatek,mt6795-clock.yaml | 66 +++++++++++++++++
+>  .../clock/mediatek,mt6795-sys-clock.yaml      | 74 +++++++++++++++++++
+>  2 files changed, 140 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
+>  create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
 > 
-> Yes, I think I'll introduce chip_info for the variants like YAS530,
-> YAS532, etc. but keep handling the versions (like 0 and 1 in this case)
-> within the functions. I'll have a look again when preparing patchset v4.
-> 
+> diff --git a/Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml b/Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
+> new file mode 100644
+> index 000000000000..795fb18721c3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
+> @@ -0,0 +1,66 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: "http://devicetree.org/schemas/clock/mediatek,mt6795-clock.yaml#"
+> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> +
+> +title: MediaTek Functional Clock Controller for MT6795
+> +
+> +maintainers:
+> +  - AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> +  - Chun-Jie Chen <chun-jie.chen@mediatek.com>
+> +
+> +description: |
+> +  The clock architecture in MediaTek like below
+> +  PLLs -->
+> +          dividers -->
+> +                      muxes
+> +                           -->
+> +                              clock gate
+> +
+> +  The devices provide clock gate control in different IP blocks.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - mediatek,mt6795-mfgcfg
+> +      - mediatek,mt6795-vdecsys
+> +      - mediatek,mt6795-vencsys
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  '#clock-cells':
+> +    const: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - '#clock-cells'
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    soc {
+> +        #address-cells = <2>;
+> +        #size-cells = <2>;
+> +
+> +        mfgcfg: clock-controller@13000000 {
+> +            compatible = "mediatek,mt6795-mfgcfg";
+> +            reg = <0 0x13000000 0 0x1000>;
+> +            #clock-cells = <1>;
+> +        };
+> +
+> +        vdecsys: clock-controller@16000000 {
+> +            compatible = "mediatek,mt6795-vdecsys";
+> +            reg = <0 0x16000000 0 0x1000>;
+> +            #clock-cells = <1>;
+> +        };
+> +
+> +        vencsys: clock-controller@18000000 {
+> +            compatible = "mediatek,mt6795-vencsys";
+> +            reg = <0 0x18000000 0 0x1000>;
+> +            #clock-cells = <1>;
+> +        };
+> +    };
+> diff --git a/Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml b/Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
+> new file mode 100644
+> index 000000000000..44b96af9ceaf
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
+> @@ -0,0 +1,74 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: "http://devicetree.org/schemas/clock/mediatek,mt6795-sys-clock.yaml#"
+> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> +
+> +title: MediaTek System Clock Controller for MT6795
+> +
+> +maintainers:
+> +  - AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> +  - Chun-Jie Chen <chun-jie.chen@mediatek.com>
+> +
+> +description:
+> +  The Mediatek system clock controller provides various clocks and system configuration
 
-Up to you, though I'm guessing it'll end up better with just having a bit
-more duplicate data to handle the versions as separate device types.
+Wrap according to Linux coding convention, so at 80.
+
+> +  like reset and bus protection on MT6795.
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - enum:
+> +          - mediatek,mt6795-apmixedsys
+> +          - mediatek,mt6795-infracfg
+> +          - mediatek,mt6795-pericfg
+> +          - mediatek,mt6795-topckgen
+> +      - const: syscon
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  '#clock-cells':
+> +    const: 1
+> +
+> +  '#reset-cells':
+> +    const: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - '#clock-cells'
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    soc {
+> +        #address-cells = <2>;
+> +        #size-cells = <2>;
+> +
+> +        topckgen: clock-controller@10000000 {
+> +            compatible = "mediatek,mt6795-topckgen", "syscon";
+> +            reg = <0 0x10000000 0 0x1000>;
+> +            #clock-cells = <1>;
+> +        };
+> +
+> +        infracfg: power-controller@10001000 {
+> +            compatible = "mediatek,mt6795-infracfg", "syscon";
+> +            reg = <0 0x10001000 0 0x1000>;
+> +            #clock-cells = <1>;
+> +            #reset-cells = <1>;
+
+No need for four examples of the same. They differ only by compatible,
+so this is just unnecessary code... which as you can see does not pass
+the checks. This also has to be fixed.
+
+Maybe keep it as clock-controller?
 
 
-> >> +
-> >> +		/*
-> >> +		 * Visualization of partially taken data:
-> >> +		 *
-> >> +		 * data[3]       n 7 6 5 4 3 2 1 0
-> >> +		 * YAS537_MTC+3    x x x 1 0 0 0 0
-> >> +		 *
-> >> +		 * data[15]      n 7 6 5 4 3 2 1 0
-> >> +		 * YAS537_HCK      x x x x 0
-> >> +		 *
-> >> +		 * data[15]      n 7 6 5 4 3 2 1 0
-> >> +		 * YAS537_LCK              x x x x 0
-> >> +		 *
-> >> +		 * data[16]      n 7 6 5 4 3 2 1 0
-> >> +		 * YAS537_OC           x x x x x x
-> >> +		 */
-> >> +
-> >> +		ret = regmap_write(yas5xx->map, YAS537_MTC + 3,
-> >> +				   (data[3] & GENMASK(7, 5)) | BIT(4));  
-> > 
-> > If we can give the masks meaningful names that would be great then
-> > use FIELD_GET and FIELD_PREP with those defines (even if it puts it back
-> > in the same place like here).  Let the compiler optimise out anything
-> > unnecessary in the way of masks and shifts.  
-> 
-> I don't know what these abbreviations stand for. We could do:
-> 
-> #define YAS537_MTC3_MASK_PREP ...
-> #define YAS537_MTC3_MASK_GET ...
-> #define YAS537_HCK_MASK_PREP ...
-> #define YAS537_HCK_MASK_GET ...
-> etc.
-> 
-> We need both FIELD_GET and FIELD_PREP, right? The first to retrieve the
-> data and the second to place it at the right position.
-> 
-> Doesn't that get strange-looking like:
-> 
-
-yup. you get this sort of oddity sometimes, but it still keeps
-it clear which field you are working with.
-
->         ret = regmap_write(yas5xx->map, YAS537_HCK,
->                            FIELD_PREP(YAS537_HCK_MASK_PREP,
->                                       FIELD_GET(YAS537_HCK_MASK_GET,
->                                                 data[15])));
-> 
-> Or maybe different indentation, would that be acceptable?
-> 
->         ret = regmap_write(yas5xx->map, YAS537_HCK,
->                            FIELD_PREP(YAS537_HCK_MASK_PREP,
->                            FIELD_GET(YAS537_HCK_MASK_GET, data[15])));
-Definitely nicer this way.
-
-> 
-> On the one above your comment, the "YAS537_MTC + 3", we would still need
-> the "| BIT(4)" to place that "1" there. Or is there some other trick to
-> do this?
-
-Give it a define and FIELD_PREP() that one as well so we have some
-info on what it is via the code.  Obviously it's longer code, but
-generally easier to maintain as puts the register definitions in one place
-to check against any docs.
-
-
-> 
-> >> +		if (ret)
-> >> +			return ret;
-> >> +		ret = regmap_write(yas5xx->map, YAS537_HCK,
-> >> +				   FIELD_GET(GENMASK(7, 4), data[15]) << 1);  
-> > 
-> > FIELD_PREP() with suitable mask defined to make it clear what field is being written.
-> >   
-> >> +		if (ret)
-> >> +			return ret;
-> >> +		ret = regmap_write(yas5xx->map, YAS537_LCK,
-> >> +				   FIELD_GET(GENMASK(3, 0), data[15]) << 1);
-> >> +		if (ret)
-> >> +			return ret;
-> >> +		ret = regmap_write(yas5xx->map, YAS537_OC,
-> >> +				   FIELD_GET(GENMASK(5, 0), data[16]));
-> >> +		if (ret)
-> >> +			return ret;
-> >> +  
-> 
->
-...
-
-> 
-> If YAS537 doesn't have a .measure_offsets function pointer in chip_info,
-> it skips that if statement cleanly?
-
-Two options - either add a stub that doesn't do anything or
-(I prefer this one as makes it obvious the function might not do anything) check 
-if (chip_info->measure_offsets)
-	chip_info->measure_offsets()...
-
-> 
-> ...
-> 
-> Kind regards,
-> Jakob
-
+Best regards,
+Krzysztof
