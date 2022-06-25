@@ -2,106 +2,102 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF452C43334
-	for <phone-devel@archiver.kernel.org>; Fri, 24 Jun 2022 20:38:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A64CC43334
+	for <phone-devel@archiver.kernel.org>; Sat, 25 Jun 2022 00:07:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230392AbiFXUiX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 24 Jun 2022 16:38:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47644 "EHLO
+        id S231758AbiFYAHc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 24 Jun 2022 20:07:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229757AbiFXUiV (ORCPT
+        with ESMTP id S231572AbiFYAHb (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 24 Jun 2022 16:38:21 -0400
-X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 24 Jun 2022 13:38:20 PDT
-Received: from mailrelay4-1.pub.mailoutpod1-cph3.one.com (mailrelay4-1.pub.mailoutpod1-cph3.one.com [46.30.210.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A22314ECDF
-        for <phone-devel@vger.kernel.org>; Fri, 24 Jun 2022 13:38:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=rsa1;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=TPfs2QT7MjSlfibpr7aNRy/3mX4Ppd6HsikuuFFfOgI=;
-        b=mCmloxF5kRH23rbwRYtYSvI1Qe5ieH0ONv+zMRuknslxW0bEmwZkWsuxNUV+t8z+8fHAU0ydceyGI
-         tbaxH/rhESgEYCp/Qyh+UEBPi+TnrIc0Dk9yF0tLWR4GhzFF4Z8DpPkdHgRSwzUByWArNHvzbWYO69
-         RLMohu9CxvIraT3ZGAbYlBux5Blh7BFTjagAkufbaeL8PVEN1I9AJ8YSbbCpFdvrzV4Lep7skJIUKZ
-         sSe5xOu4pHgRtoDWEZU6JuzsBpSCpfPACwKVlkIVhYMq3IFsahUtGjCOqrKWOfTXLtzGOgP9Q+yu+6
-         6xz0ukIZfiSkmQq4jIQcuWA9PgDEBzA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=ed1;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=TPfs2QT7MjSlfibpr7aNRy/3mX4Ppd6HsikuuFFfOgI=;
-        b=uQqRZTYsBlWT5c/y5rNbmV/ZA4UFvzI9fVUADgwkkLVa/hw/lHbxRbe7ka969fcFsyxKbjCZq1aKq
-         rmfWta2Ag==
-X-HalOne-Cookie: c9bafe8a4ad68d7eda8a0eaf402083f9e04b9925
-X-HalOne-ID: 6f0a39d1-f3fd-11ec-8233-d0431ea8bb10
-Received: from mailproxy1.cst.dirpod4-cph3.one.com (80-162-45-141-cable.dk.customer.tdc.net [80.162.45.141])
-        by mailrelay4.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
-        id 6f0a39d1-f3fd-11ec-8233-d0431ea8bb10;
-        Fri, 24 Jun 2022 20:37:16 +0000 (UTC)
-Date:   Fri, 24 Jun 2022 22:37:14 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Joel Selvaraj <jo@jsfamily.in>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Stanislav Jakubek <stano.jakubek@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Corentin Labbe <clabbe@baylibre.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hao Fang <fanghao11@huawei.com>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 0/4] Introduce EBBG FT8719 DRM panel driver
-Message-ID: <YrYgehpgkIQY0Fqt@ravnborg.org>
-References: <BY5PR02MB700961069804230B5AFC5E04D9DF9@BY5PR02MB7009.namprd02.prod.outlook.com>
+        Fri, 24 Jun 2022 20:07:31 -0400
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEDC78AC36;
+        Fri, 24 Jun 2022 17:07:24 -0700 (PDT)
+X-UUID: b9183ccfe3574f87899e93a81761789e-20220625
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.6,REQID:042ac45f-7b1d-49cd-b928-455eb01938c5,OB:0,LO
+        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,RULE:Release_Ham,ACTI
+        ON:release,TS:0
+X-CID-META: VersionHash:b14ad71,CLOUDID:ed3776ea-f7af-4e69-92ee-0fd74a0c286c,C
+        OID:IGNORED,Recheck:0,SF:nil,TC:nil,Content:-5,EDM:-3,IP:nil,URL:0,File:ni
+        l,QS:nil,BEC:nil,COL:0
+X-UUID: b9183ccfe3574f87899e93a81761789e-20220625
+Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
+        (envelope-from <miles.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 596147150; Sat, 25 Jun 2022 08:07:17 +0800
+Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
+ Sat, 25 Jun 2022 08:07:16 +0800
+Received: from mtkcas10.mediatek.inc (172.21.101.39) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 25 Jun 2022 08:07:16 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Sat, 25 Jun 2022 08:07:16 +0800
+From:   Miles Chen <miles.chen@mediatek.com>
+To:     <angelogioacchino.delregno@collabora.com>
+CC:     <bgolaszewski@baylibre.com>, <chun-jie.chen@mediatek.com>,
+        <ck.hu@mediatek.com>, <devicetree@vger.kernel.org>,
+        <fparent@baylibre.com>, <ikjn@chromium.org>,
+        <jason-jh.lin@mediatek.com>, <kernel@collabora.com>,
+        <konrad.dybcio@somainline.org>,
+        <krzysztof.kozlowski+dt@linaro.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <marijn.suijten@somainline.org>, <martin.botka@somainline.org>,
+        <matthias.bgg@gmail.com>, <miles.chen@mediatek.com>,
+        <mturquette@baylibre.com>, <p.zabel@pengutronix.de>,
+        <paul.bouchara@somainline.org>, <phone-devel@vger.kernel.org>,
+        <rex-bc.chen@mediatek.com>, <robh+dt@kernel.org>,
+        <sam.shih@mediatek.com>, <sboyd@kernel.org>,
+        <tinghan.shen@mediatek.com>, <weiyi.lu@mediatek.com>,
+        <wenst@chromium.org>, <y.oudjana@protonmail.com>,
+        <~postmarketos/upstreaming@lists.sr.ht>
+Subject: Re: [PATCH v3 5/7] clk: mediatek: clk-apmixed: Remove unneeded __init annotation
+Date:   Sat, 25 Jun 2022 08:07:16 +0800
+Message-ID: <20220625000716.12272-1-miles.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20220624093525.243077-6-angelogioacchino.delregno@collabora.com>
+References: <20220624093525.243077-6-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <BY5PR02MB700961069804230B5AFC5E04D9DF9@BY5PR02MB7009.namprd02.prod.outlook.com>
+Content-Type: text/plain
+X-MTK:  N
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Joel,
+> Remove an unneeded __init annotation from the declaration of function
+> mtk_clk_register_ref2usb_tx(): this avoids section mismatch warnings
+> during modpost phase when called from functions that have no such
+> annotation (useful when clocks are platform drivers).
+> 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-On Wed, Jun 01, 2022 at 01:54:06PM +0530, Joel Selvaraj wrote:
-> Add bindings and DRM panel driver for EBBG FT8719 6.18" 2246x1080 DSI
-> video mode panel, which can be found on some Xiaomi Poco F1 phones.
-> The panel's backlight is managed through QCOM WLED driver.
-> 
-> The driver is built using linux-mdss-dsi-panel-driver-generator[1], and
-> additionally support for handling regulators and linking external
-> backlight is added.
-> 
-> [1] https://github.com/msm8916-mainline/linux-mdss-dsi-panel-driver-generator
-> 
-> Changes in v4: (Linus Walleij's Suggestion)
->  - Introduce mipi_dsi_dcs_write_seq macro in include/drm/drm_mipi_dsi.h
->  - Remove the driver specific dsi_dcs_write_seq macro
->  - Use the newly introduced mipi_dsi_dcs_write_seq macro instead
-> 
-> Changes in v3: (Mostly Linus Walleij's Suggestions)
->  - Removed ctx->prepared state variable as it's handled by the core
->  - Print error in dsi_dcs_write_seq macro if it fails to write
->  - Removed magic power on sequences as panel works fine without them
-> 
-> Changes in v2: (Krzysztof Kozlowski's Suggestions)
->  - dt-bindings: specify maxItems for reg
->  - dt-bindings: cleanup and simplify the panel properties
->  - dt-bindings: in example change "|+" to "|' and "dsi0" to "dsi"
-> 
-> Joel Selvaraj (4):
->   dt-bindings: vendor-prefixes: Add prefix for EBBG
->   dt-bindings: display: Add bindings for EBBG FT8719
->   drm/mipi-dsi: Introduce mipi_dsi_dcs_write_seq macro
->   drm/panel: introduce ebbg,ft8719 panel
+Reviewed-by: Miles Chen <miles.chen@mediatek.com> 
 
-All applied to drm-misc (drm-misc-next), thanks!
+> ---
+>  drivers/clk/mediatek/clk-apmixed.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/clk/mediatek/clk-apmixed.c b/drivers/clk/mediatek/clk-apmixed.c
+> index fc3d4146f482..6b0ab0a346e8 100644
+> --- a/drivers/clk/mediatek/clk-apmixed.c
+> +++ b/drivers/clk/mediatek/clk-apmixed.c
+> @@ -70,7 +70,7 @@ static const struct clk_ops mtk_ref2usb_tx_ops = {
+>  	.unprepare	= mtk_ref2usb_tx_unprepare,
+>  };
+>  
+> -struct clk_hw * __init mtk_clk_register_ref2usb_tx(const char *name,
+> +struct clk_hw *mtk_clk_register_ref2usb_tx(const char *name,
+>  			const char *parent_name, void __iomem *reg)
+>  {
+>  	struct mtk_ref2usb_tx *tx;
+> -- 
+> 2.35.1
 
-	Sam
+
