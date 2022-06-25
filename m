@@ -2,190 +2,158 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0250BCCA473
-	for <phone-devel@archiver.kernel.org>; Sat, 25 Jun 2022 00:07:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 247BEC433EF
+	for <phone-devel@archiver.kernel.org>; Sat, 25 Jun 2022 14:05:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231542AbiFYAH5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 24 Jun 2022 20:07:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56054 "EHLO
+        id S232649AbiFYOFb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 25 Jun 2022 10:05:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230177AbiFYAH4 (ORCPT
+        with ESMTP id S232429AbiFYOFa (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 24 Jun 2022 20:07:56 -0400
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1355EAE;
-        Fri, 24 Jun 2022 17:07:54 -0700 (PDT)
-X-UUID: cef0bde0206e4c2e9490ca53b9f60f0c-20220625
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.6,REQID:f41f7e5b-b7fa-4302-a08d-21553d5a2f9b,OB:0,LO
-        B:0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:22,FILE:0,RULE:Release_Ham,ACT
-        ION:release,TS:22
-X-CID-INFO: VERSION:1.1.6,REQID:f41f7e5b-b7fa-4302-a08d-21553d5a2f9b,OB:0,LOB:
-        0,IP:0,URL:0,TC:0,Content:0,EDM:0,RT:0,SF:22,FILE:0,RULE:Release_Ham,ACTIO
-        N:release,TS:22
-X-CID-META: VersionHash:b14ad71,CLOUDID:a28784d8-850a-491d-a127-60d9309b2b3e,C
-        OID:IGNORED,Recheck:0,SF:28|100|17|19|48|101,TC:nil,Content:0,EDM:-3,IP:ni
-        l,URL:0,File:nil,QS:nil,BEC:nil,COL:0
-X-UUID: cef0bde0206e4c2e9490ca53b9f60f0c-20220625
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-        (envelope-from <miles.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 2042925076; Sat, 25 Jun 2022 08:07:49 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.792.3;
- Sat, 25 Jun 2022 08:07:47 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Sat, 25 Jun 2022 08:07:47 +0800
-From:   Miles Chen <miles.chen@mediatek.com>
-To:     <angelogioacchino.delregno@collabora.com>
-CC:     <bgolaszewski@baylibre.com>, <chun-jie.chen@mediatek.com>,
-        <ck.hu@mediatek.com>, <devicetree@vger.kernel.org>,
-        <fparent@baylibre.com>, <ikjn@chromium.org>,
-        <jason-jh.lin@mediatek.com>, <kernel@collabora.com>,
-        <konrad.dybcio@somainline.org>,
-        <krzysztof.kozlowski+dt@linaro.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <marijn.suijten@somainline.org>, <martin.botka@somainline.org>,
-        <matthias.bgg@gmail.com>, <miles.chen@mediatek.com>,
-        <mturquette@baylibre.com>, <p.zabel@pengutronix.de>,
-        <paul.bouchara@somainline.org>, <phone-devel@vger.kernel.org>,
-        <rex-bc.chen@mediatek.com>, <robh+dt@kernel.org>,
-        <sam.shih@mediatek.com>, <sboyd@kernel.org>,
-        <tinghan.shen@mediatek.com>, <weiyi.lu@mediatek.com>,
-        <wenst@chromium.org>, <y.oudjana@protonmail.com>,
-        <~postmarketos/upstreaming@lists.sr.ht>
-Subject: Re: [PATCH v3 7/7] clk: mediatek: Add MediaTek Helio X10 MT6795 clock drivers
-Date:   Sat, 25 Jun 2022 08:07:47 +0800
-Message-ID: <20220625000747.12582-1-miles.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20220624093525.243077-8-angelogioacchino.delregno@collabora.com>
-References: <20220624093525.243077-8-angelogioacchino.delregno@collabora.com>
+        Sat, 25 Jun 2022 10:05:30 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90AC615809;
+        Sat, 25 Jun 2022 07:05:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 46252B80B6A;
+        Sat, 25 Jun 2022 14:05:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E05C3411C;
+        Sat, 25 Jun 2022 14:05:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656165926;
+        bh=M4LKJfPNpT+x8nTjj1pC9k2cXwJjs5nM0SQKtE/4Ibw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=u4NWM2RdL9R7YQDwQs7Ps8BawmdfsjWTh6HAL3c+BZSfLBFI/1E37JdfE1EaDaRlI
+         M/lrhRh3VmDSUcZctkkeysmtCrrVym8tNfXTgnz2elvhCRCCYWYi3la7BibATmmPYT
+         zlxnPm8P+41I9GEPKGoYxHlfjISTLzEebsMUqwGx3BjPxjeEfU9a5U5WCYijwL8LAy
+         bFQggbovVLzrjk7QzzTYYxgVx9feKLQ/VQTR1clzy/E5DJwjq5ef2kHaN45u2+O/ti
+         e2o/GXBl6zmRHVKqU8eE52/Ymw5rNO8jdyi+bqr+73pa9/QfP37vsWfYpjUq2cX0Hs
+         dbLF20HuYio7A==
+Date:   Sat, 25 Jun 2022 15:14:53 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v3 4/8] iio: magnetometer: yas530: Correct temperature
+ handling
+Message-ID: <20220625151453.036a4b22@jic23-huawei>
+In-Reply-To: <a348dbb6-8d4a-bcdb-e992-9b11e1c9f23f@rocketmail.com>
+References: <cover.1655509425.git.jahau@rocketmail.com>
+        <076e87f66378be8c729723cb9be5bc9151c081ab.1655509425.git.jahau@rocketmail.com>
+        <20220618155331.5da93b88@jic23-huawei>
+        <a348dbb6-8d4a-bcdb-e992-9b11e1c9f23f@rocketmail.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Angelo,
+On Tue, 21 Jun 2022 02:48:46 +0200
+Jakob Hauser <jahau@rocketmail.com> wrote:
 
-> Add the clock drivers for the entire clock tree of MediaTek Helio X10
-> MT6795, including system clocks (apmixedsys, infracfg, pericfg, topckgen)
-> and multimedia clocks (mmsys, mfg, vdecsys, vencsys).
+> Hi Jonathan,
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-> ---
->  drivers/clk/mediatek/Kconfig                 |  37 ++
->  drivers/clk/mediatek/Makefile                |   6 +
->  drivers/clk/mediatek/clk-mt6795-apmixedsys.c | 157 +++++
->  drivers/clk/mediatek/clk-mt6795-infracfg.c   | 148 +++++
->  drivers/clk/mediatek/clk-mt6795-mfg.c        |  50 ++
->  drivers/clk/mediatek/clk-mt6795-mm.c         | 106 ++++
->  drivers/clk/mediatek/clk-mt6795-pericfg.c    | 160 +++++
->  drivers/clk/mediatek/clk-mt6795-topckgen.c   | 610 +++++++++++++++++++
->  drivers/clk/mediatek/clk-mt6795-vdecsys.c    |  55 ++
->  drivers/clk/mediatek/clk-mt6795-vencsys.c    |  50 ++
->  10 files changed, 1379 insertions(+)
->  create mode 100644 drivers/clk/mediatek/clk-mt6795-apmixedsys.c
->  create mode 100644 drivers/clk/mediatek/clk-mt6795-infracfg.c
->  create mode 100644 drivers/clk/mediatek/clk-mt6795-mfg.c
->  create mode 100644 drivers/clk/mediatek/clk-mt6795-mm.c
->  create mode 100644 drivers/clk/mediatek/clk-mt6795-pericfg.c
->  create mode 100644 drivers/clk/mediatek/clk-mt6795-topckgen.c
->  create mode 100644 drivers/clk/mediatek/clk-mt6795-vdecsys.c
->  create mode 100644 drivers/clk/mediatek/clk-mt6795-vencsys.c
+> On 18.06.22 16:53, Jonathan Cameron wrote:
+> >
+> > On Sat, 18 Jun 2022 02:13:12 +0200
+> > Jakob Hauser <jahau@rocketmail.com> wrote:  
+> ...
+> >>  /* These variant IDs are known from code dumps */
+> >>  #define YAS537_DEVICE_ID		0x07 /* YAS537 (MS-3T) */
+> >> @@ -314,7 +315,7 @@ static s32 yas5xx_linearize(struct yas5xx *yas5xx, u16 val, int axis)  
+> > 
+> > Hmm. I'm not a great fun of big hydra functions to handle differences
+> > between devices.  This could easily all be one code flow with some
+> > lookups into chip specific constant data (as btw could a lot of
+> > the other switch statements in the existing driver).  
 > 
-> diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
-> index d5936cfb3bee..da8142dff3c3 100644
-> --- a/drivers/clk/mediatek/Kconfig
-> +++ b/drivers/clk/mediatek/Kconfig
-> @@ -259,6 +259,43 @@ config COMMON_CLK_MT6779_AUDSYS
->  	help
->  	  This driver supports Mediatek MT6779 audsys clocks.
->  
-> +config COMMON_CLK_MT6795
-> +	tristate "Clock driver for MediaTek MT6795"
-> +	depends on ARCH_MEDIATEK || COMPILE_TEST
-> +	select COMMON_CLK_MEDIATEK
-> +	default ARCH_MEDIATEK
-> +	help
-> +	  This driver supports MediaTek MT6795 basic clocks and clocks
-> +	  required for various peripherals found on MediaTek.
-> +
-> +config COMMON_CLK_MT6795_MFGCFG
-> +	tristate "Clock driver for MediaTek MT6795 mfgcfg"
-> +	depends on COMMON_CLK_MT6795
-> +	default COMMON_CLK_MT6795
-> +	help
-> +	  This driver supports MediaTek MT6795 mfgcfg clocks.
-> +
-> +config COMMON_CLK_MT6795_MMSYS
-> +       tristate "Clock driver for MediaTek MT6795 mmsys"
+> I'll try to implement the chip_info approach. This should become a
+> separate patch.
+> 
+> Concerning the patchset, I would prefer to introduce the chip_info
+> approach rather late. That would mean to leave this patch unchanged and
+> introduce your suggestions later within the patchset. I think it's
+> easier to follow the changes along the patchset.
+> 
+> However, you probably would prefer to place the chip_info patch rather
+> early in the patchset?
 
-snip...
+Whilst I'd prefer it earlier, if it's a real pain, just put a note on
+that in the cover letter and I'll cope :)
 
-> +	{ /* sentinel */ }
-> +};
-> +
-> +static int clk_mt6795_infracfg_probe(struct platform_device *pdev)
-> +{
-> +	struct clk_hw_onecell_data *clk_data;
-> +	struct device_node *node = pdev->dev.of_node;
-> +	void __iomem *base;
-> +	int ret;
-> +
-> +	base = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(base))
-> +		return PTR_ERR(base);
-> +
-> +	clk_data = mtk_alloc_clk_data(CLK_INFRA_NR_CLK);
-> +	if (!clk_data)
-> +		return -ENOMEM;
-> +
-> +	ret = mtk_register_reset_controller_with_dev(&pdev->dev, &clk_rst_desc);
-> +	if (ret)
-> +		goto free_clk_data;
-> +
-> +	ret = mtk_clk_register_gates(node, infra_gates, ARRAY_SIZE(infra_gates), clk_data);
-> +	if (ret)
-> +		goto free_clk_data;
+> 
+> >>  static int yas5xx_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo, s32 *zo)
+> >>  {
+> >>  	struct yas5xx_calibration *c = &yas5xx->calibration;
+> >> -	u16 t, x, y1, y2;
+> >> +	u16 t_ref, t, x, y1, y2;
+> >>  	/* These are "signed x, signed y1 etc */
+> >>  	s32 sx, sy1, sy2, sy, sz;
+> >>  	int ret;
+> >> @@ -329,16 +330,46 @@ static int yas5xx_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo,
+> >>  	sy1 = yas5xx_linearize(yas5xx, y1, 1);
+> >>  	sy2 = yas5xx_linearize(yas5xx, y2, 2);
+> >>  
+> >> -	/*
+> >> -	 * Temperature compensation for x, y1, y2 respectively:
+> >> -	 *
+> >> -	 *          Cx * t
+> >> -	 * x' = x - ------
+> >> -	 *           100
+> >> -	 */
+> >> -	sx = sx - (c->Cx * t) / 100;
+> >> -	sy1 = sy1 - (c->Cy1 * t) / 100;
+> >> -	sy2 = sy2 - (c->Cy2 * t) / 100;
+> >> +	/* Set the temperature reference value (unit: counts) */
+> >> +	switch (yas5xx->devid) {
+> >> +	case YAS530_DEVICE_ID:
+> >> +		t_ref = YAS530_20DEGREES;  
+> > 
+> > One thought to simplify the divergent flow below.
+> > 
+> > 		t_ref2 = 0;  
+> >> +		break;
+> >> +	case YAS532_DEVICE_ID:
+> >> +		t_ref = YAS532_20DEGREES;  
+> > 		if (yas5xx->version == YAS532_VERSION_AC)
+> > 			t_ref2 = YAS432_20DEGREES;
+> > 		else
+> > 			t_ref2 = 0;  
+> 
+> The t_ref2 approach looks confusing to me. Because for the most version
+> it's "t_ref2 = 0", only one version out of four needs this.
+> 
+> Another approach: I would rather introduce t_comp (for compensation). In
+> the chip_info, for the most version it would be...
+> 
+>         .t_comp = t,
+> 
+> ... and for the one variant it would be:
+> 
+>         .t_comp = t - t_ref,
 
-While checking the error path, I learned that
-mtk_register_reset_controller_with_dev uses devm_reset_controller_register and it will
-be unregister the reset automatically if probe failed.
+That looks sensible to me.
+> 
+> A problem: I would include the YAS variants like YAS530, YAS532 etc. in
+> the chip_info. The versions like "AB" and "AC", on the other hand, I
+> wouldn't include into the chip_info, instead I would handle these in the
+> functions. In that case the, "t_comp" thing would need to be done in the
+> function using an if statement, similar to what you suggested up here.
 
-Thanks for this patch!
+I'd assume there won't be too many different versions that need separate
+support and have a chipinfo for each of those versions.  So you
+select the chipinfo based on both the device part number and version.
 
-Reviewed-by: Miles Chen <miles.chen@mediatek.com> 
+>
+Thanks,
 
-
-thanks,
-Miles
-
-> +
-> +	ret = mtk_clk_register_cpumuxes(node, cpu_muxes, ARRAY_SIZE(cpu_muxes), clk_data);
-> +	if (ret)
-> +		goto unregister_gates;
-> +
-> +	ret = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
-> +	if (ret)
-> +		goto unregister_cpumuxes;
-> +
-> +	return 0;
-> +
-> +unregister_cpumuxes:
-> +	mtk_clk_unregister_cpumuxes(cpu_muxes, ARRAY_SIZE(cpu_muxes), clk_data);
-> +unregister_gates:
-> +	mtk_clk_unregister_gates(infra_gates, ARRAY_SIZE(infra_gates), clk_data);
-> +free_clk_data:
-> +	mtk_free_clk_data(clk_data);
-> +	return ret;
-> +}
-> +
-> +static int clk_mt6795_infracfg_remove(struct platform_device *pdev)
-> +{
+J
