@@ -2,215 +2,98 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4063ECCA47C
-	for <phone-devel@archiver.kernel.org>; Sun, 26 Jun 2022 10:31:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77934C433EF
+	for <phone-devel@archiver.kernel.org>; Sun, 26 Jun 2022 15:12:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229532AbiFZKbm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 26 Jun 2022 06:31:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57952 "EHLO
+        id S229854AbiFZPMW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 26 Jun 2022 11:12:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233669AbiFZKbl (ORCPT
+        with ESMTP id S229516AbiFZPMV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 26 Jun 2022 06:31:41 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 437761275B
-        for <phone-devel@vger.kernel.org>; Sun, 26 Jun 2022 03:31:39 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id h23so13263158ejj.12
-        for <phone-devel@vger.kernel.org>; Sun, 26 Jun 2022 03:31:39 -0700 (PDT)
+        Sun, 26 Jun 2022 11:12:21 -0400
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A50B2DEF5;
+        Sun, 26 Jun 2022 08:12:18 -0700 (PDT)
+Received: by mail-qv1-xf29.google.com with SMTP id t16so11639322qvh.1;
+        Sun, 26 Jun 2022 08:12:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=uid1nPU8KOeE8niwF3D46qRU8qJY11HwGt4P2APkK6s=;
-        b=XAAC8AAlqRMmEzIHciueTzD3m22dmzWily6b8BHr6rpAvs0uXwzFyjFU045Lj7kkAe
-         E79BdJ7MTKVbCL4wI6W9DsNgbpv6aW6GnwH7FZ4j3Es873/RwWQZOYfEASsZ8PPpzVP5
-         dP5C+APcEInT67HZF1QBAf2do2AqTi8t07BAr4Gnx6UU+kyFOgz3SrYCkQ0LvoCC2dY5
-         wAIMpoeO6Tp2eb8BRQqGfvmaMIF2KLt6qtodk3zqF8PF3YIfXCn9TvG9r4GjheCfMRFh
-         8ec2U8O7uXcId5goQakMrd/qdV1II34NJfmrTyvrbe0MNI60NvlpB6Mwy0F/+l4Rqp0l
-         6+eg==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LIHQ1XpTztOaVeUfTC02wJu16rSVdYLWoc8bvY9/wXI=;
+        b=MYZ3tPwl+Bhl9t8FrL5VGynKKGhVinL0sxa1inw/eEv1w/Wi0o6YYImnTRptlOAcFE
+         MOmD9p5Rm4n3VNvhjTIgi+hCwguNUXL4JCVZWbpsWEZFgY2qVnAIBqaFz5UGyPph5W++
+         QapjX2aw8okw+IgYCvT0O0QyKWnpe3UTGVMg348KRaWfFwl3f/wCAjiFBCSVkDAJPvJj
+         EGOPrEhNIR/tRawleE851pBPTU/K/iCRE3DqAybEsN9B9jj0dO4FeIqwDyBdIekFdMyT
+         gMOrnBydBSAItnv/vUuRHpR/AuV+eA1uCpL0E2tBuz4N4Lsl6FaKlX1dwZI7u+5lhYhY
+         tm8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=uid1nPU8KOeE8niwF3D46qRU8qJY11HwGt4P2APkK6s=;
-        b=bfkHWswXnn7/e72TxRnTGU5fIyvtasemxd5pLQCRhv+D+dG8gMd7EX9soux7Wi11Z/
-         U5XnpVbH7Y4rkLBz3QWVPzMNjGwPbq6QqovdTFhEG/KZu76WB3eFz4q8nIY05ip9or8e
-         5qxRTjfMndiWVR/K8F/qGo+y4OLQ+Xp5qlG4HRwisSmaZfICIrdTXNcXPCuzfMVVMZw4
-         5V9v0W1wK7p9eYN7TOC6A4YEp36GmTHmLPtdUYMvfPX/0daj9WU2kdF0gvsUJqS3R3pj
-         2J66dMfeXmt3fikmR8PkLvJpSCGnoirnM6RDllnDnVVo1Vboe1t5xxfwvvoGWH6siLeb
-         KeJA==
-X-Gm-Message-State: AJIora+ATcMPseiGYfYVnAoXQtiheYLMrBMihuBuRn1A1fCGKXIpW+w4
-        uJMo3q7kQa0IduN0lUE2a14rOw==
-X-Google-Smtp-Source: AGRyM1v5PkYm9NSDHkT60vS80gGlYU4SSApNwB4dG6nO+r0o1Sb57gZPEpYSfK3zIyIeGsRQtSZH7A==
-X-Received: by 2002:a17:907:980a:b0:722:f4a7:e00 with SMTP id ji10-20020a170907980a00b00722f4a70e00mr7752467ejc.114.1656239497724;
-        Sun, 26 Jun 2022 03:31:37 -0700 (PDT)
-Received: from [192.168.0.239] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id g10-20020aa7dc4a000000b0043567edac3csm5724723edu.61.2022.06.26.03.31.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Jun 2022 03:31:37 -0700 (PDT)
-Message-ID: <ee945844-5d78-7c2b-215e-25fe5617b481@linaro.org>
-Date:   Sun, 26 Jun 2022 12:31:35 +0200
+        bh=LIHQ1XpTztOaVeUfTC02wJu16rSVdYLWoc8bvY9/wXI=;
+        b=3lTuAYn1DYpMhnjsb9WlL1q6mP3DxaAF3vU+fyfaBcB55mKZsnLNf8vcmhl7V/OT0G
+         WO788IySRxkJLAqhhWM1dYsk7QXZ38yEHKpiurZm4YdUAcQ5lvMtFpD+XmHZTpjV7Sz8
+         xMd2SJIUV0EkoeGB7FifrR4t9X9+5e/R78PabG35a86YT2qclcKczk+JfL6AiX4P1fwO
+         FqS+rucV25+Il+a37xK4LaG3SREgh0erWLDCgdNc37jOIEExPqZtAdyAE9mqXwTI4UbY
+         +cdth481jXROCM6bgLBeMJX5iVYVCfFeDQat0LIhQLDhof3Gq99H4rSeY2LTuZHUusvM
+         C8AQ==
+X-Gm-Message-State: AJIora+Hja1KW8MyHaU7IvGziBzb4scVMEysuyErldkp6XlfizpcFcKd
+        omyJwPmv1JP7XWNCbajcLKL4cBHUJ4H7gQ==
+X-Google-Smtp-Source: AGRyM1uvNBK+/+XA38zP+7jnhH6UC3DwXJNIEZefo8rpfz2Ir1E0S3geebawTosGE3Z26CGtNqbX3g==
+X-Received: by 2002:ac8:7d85:0:b0:316:80e9:d792 with SMTP id c5-20020ac87d85000000b0031680e9d792mr6469396qtd.590.1656256337790;
+        Sun, 26 Jun 2022 08:12:17 -0700 (PDT)
+Received: from numbers.. ([198.179.6.194])
+        by smtp.gmail.com with ESMTPSA id x4-20020ac87a84000000b00307cac53129sm5193462qtr.42.2022.06.26.08.12.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jun 2022 08:12:17 -0700 (PDT)
+From:   Stefan Hansson <newbie13xd@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Stefan Hansson <newbie13xd@gmail.com>
+Subject: [PATCH v3 1/2] dt-bindings: arm: qcom: Document lg,judyln and lg,judyp devices
+Date:   Sun, 26 Jun 2022 11:12:12 -0400
+Message-Id: <20220626151213.10159-1-newbie13xd@gmail.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v3 4/7] dt-bindings: clock: mediatek: Add clock driver
- bindings for MT6795
-Content-Language: en-US
-To:     David Heidelberg <david.heidelberg@collabora.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        mturquette@baylibre.com, sboyd@kernel.org, p.zabel@pengutronix.de,
-        y.oudjana@protonmail.com, jason-jh.lin@mediatek.com,
-        ck.hu@mediatek.com, fparent@baylibre.com, rex-bc.chen@mediatek.com,
-        tinghan.shen@mediatek.com, chun-jie.chen@mediatek.com,
-        weiyi.lu@mediatek.com, ikjn@chromium.org, miles.chen@mediatek.com,
-        sam.shih@mediatek.com, wenst@chromium.org,
-        bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
-        kernel@collabora.com
-References: <20220624093525.243077-1-angelogioacchino.delregno@collabora.com>
- <20220624093525.243077-5-angelogioacchino.delregno@collabora.com>
- <cea65d6a-7d9b-7b14-9984-bcd7f115da47@linaro.org>
- <728b2c54-0dc0-533f-bab8-fca228f6c1b1@collabora.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <728b2c54-0dc0-533f-bab8-fca228f6c1b1@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 26/06/2022 11:47, David Heidelberg wrote:
-> On 25/06/2022 22:29, Krzysztof Kozlowski wrote:
->> On 24/06/2022 11:35, AngeloGioacchino Del Regno wrote:
->>> Add the bindings for the clock drivers of the MediaTek Helio X10
->>> MT6795 SoC.
->>>
->>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->>> ---
->>>   .../bindings/clock/mediatek,mt6795-clock.yaml | 66 +++++++++++++++++
->>>   .../clock/mediatek,mt6795-sys-clock.yaml      | 74 +++++++++++++++++++
->>>   2 files changed, 140 insertions(+)
->>>   create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
->>>   create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
->>>
->>> diff --git a/Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml b/Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
->>> new file mode 100644
->>> index 000000000000..795fb18721c3
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
->>> @@ -0,0 +1,66 @@
->>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id: "http://devicetree.org/schemas/clock/mediatek,mt6795-clock.yaml#"
->>> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
->>> +
->>> +title: MediaTek Functional Clock Controller for MT6795
->>> +
->>> +maintainers:
->>> +  - AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->>> +  - Chun-Jie Chen <chun-jie.chen@mediatek.com>
->>> +
->>> +description: |
->>> +  The clock architecture in MediaTek like below
->>> +  PLLs -->
->>> +          dividers -->
->>> +                      muxes
->>> +                           -->
->>> +                              clock gate
->>> +
->>> +  The devices provide clock gate control in different IP blocks.
->>> +
->>> +properties:
->>> +  compatible:
->>> +    enum:
->>> +      - mediatek,mt6795-mfgcfg
->>> +      - mediatek,mt6795-vdecsys
->>> +      - mediatek,mt6795-vencsys
->>> +
->>> +  reg:
->>> +    maxItems: 1
->>> +
->>> +  '#clock-cells':
->>> +    const: 1
->>> +
->>> +required:
->>> +  - compatible
->>> +  - reg
->>> +  - '#clock-cells'
->>> +
->>> +additionalProperties: false
->>> +
->>> +examples:
->>> +  - |
->>> +    soc {
->>> +        #address-cells = <2>;
->>> +        #size-cells = <2>;
->>> +
->>> +        mfgcfg: clock-controller@13000000 {
->>> +            compatible = "mediatek,mt6795-mfgcfg";
->>> +            reg = <0 0x13000000 0 0x1000>;
->>> +            #clock-cells = <1>;
->>> +        };
->>> +
->>> +        vdecsys: clock-controller@16000000 {
->>> +            compatible = "mediatek,mt6795-vdecsys";
->>> +            reg = <0 0x16000000 0 0x1000>;
->>> +            #clock-cells = <1>;
->>> +        };
->>> +
->>> +        vencsys: clock-controller@18000000 {
->>> +            compatible = "mediatek,mt6795-vencsys";
->>> +            reg = <0 0x18000000 0 0x1000>;
->>> +            #clock-cells = <1>;
->>> +        };
->>> +    };
->>> diff --git a/Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml b/Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
->>> new file mode 100644
->>> index 000000000000..44b96af9ceaf
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
->>> @@ -0,0 +1,74 @@
->>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id: "http://devicetree.org/schemas/clock/mediatek,mt6795-sys-clock.yaml#"
->>> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
->>> +
->>> +title: MediaTek System Clock Controller for MT6795
->>> +
->>> +maintainers:
->>> +  - AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->>> +  - Chun-Jie Chen <chun-jie.chen@mediatek.com>
->>> +
->>> +description:
->>> +  The Mediatek system clock controller provides various clocks and system configuration
->> Wrap according to Linux coding convention, so at 80.
-> 
-> What I understood that 100 length was agreed [1] as a limit. I haven't 
-> noticed any recent change regarding to line length.
-> 
-> [1] 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=bdc48fa11e46f867ea4d75fa59ee87a7f48be144
+Add binding documentation for the LG G7 and LG V35 smartphones
+which are based on Snapdragon 845 (sdm845).
 
-The coding style (also in change above) clearly states:
-"The preferred limit on the length of a single line is 80 columns."
-Just read the first line of new diff/hunk...
+Changes since v2:
 
-checkpatch was indeed long time converted not to complain on 80 but on
-100, but that does not change coding style. The point of that was only
-to accept 100 wrapping when it is beneficial,  iow, it increases the
-code readability.
+ - Rebased on top of
+https://lore.kernel.org/all/20220521164550.91115-7-krzysztof.kozlowski@linaro.org/
 
-It's not the case here and coding style clearly asks for 80. Wrap at 80.
+Signed-off-by: Stefan Hansson <newbie13xd@gmail.com>
+---
+ Documentation/devicetree/bindings/arm/qcom.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index cf025c64d494..bc16f58082be 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -282,6 +282,8 @@ properties:
+       - items:
+           - enum:
+               - lenovo,yoga-c630
++              - lg,judyln
++              - lg,judyp
+               - oneplus,enchilada
+               - oneplus,fajita
+               - qcom,sdm845-mtp
+-- 
+2.36.1
 
-Best regards,
-Krzysztof
