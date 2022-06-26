@@ -2,65 +2,64 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1ED7EC433EF
-	for <phone-devel@archiver.kernel.org>; Sun, 26 Jun 2022 07:51:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B630BC433EF
+	for <phone-devel@archiver.kernel.org>; Sun, 26 Jun 2022 08:39:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234045AbiFZHvV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 26 Jun 2022 03:51:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40684 "EHLO
+        id S234008AbiFZIjs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 26 Jun 2022 04:39:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233923AbiFZHvU (ORCPT
+        with ESMTP id S229562AbiFZIjq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 26 Jun 2022 03:51:20 -0400
-Received: from sonic301-20.consmr.mail.ir2.yahoo.com (sonic301-20.consmr.mail.ir2.yahoo.com [77.238.176.97])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D4BD120AB
-        for <phone-devel@vger.kernel.org>; Sun, 26 Jun 2022 00:51:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1656229877; bh=39cnnm2LcZpob9DUMBAQbw/FL7wmWN3SUwndjA+V+IM=; h=Date:Subject:From:To:Cc:References:In-Reply-To:From:Subject:Reply-To; b=aCOHGye8jea7IQosA6kJLtGHeXJ0nYmVYabloYgoyge4OeNF3i3yppRY2HYmdh/R9Kq5Ufl6zGGQQp7uhvHwlncFACKVU8MnHIbTuqd8cQvRWfBIDrwiUkYPGSXklJp8IUPT3nnIvoPV8J/eoelpoWyuGFfMBQ/+B/j1NdA9uZZJmP0V+Zb96/Q0FAwBdM3U9ldrGuPcU/NMgm9lcEAyiw8xjGzq/XfdMe5Sc7jLuFUfpOUYyc5ME7qvLGR197wj56BTGa6H5K8WdDRbD+yISNlNDNKX9zGzp1rnbLbI4pJhVfSbFb0sXt+W6QkN2xNawYmgtTaxi3WgZhwFIYh0jQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1656229877; bh=Qezq+kiFonbVJBLljqyjQV8R26/WQGnH7Xqlfj1tTGH=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=hLF6gVA+MS+LfFYqRumOtsfX4SQOlaPmUiZX01JvrDziAg99lPte4QOkWZF2ZNj4bxV0XQfi42UOqlkNgxceiyTFh2Wq1hPLCtJ45GfWR+KdtHahvVRproP4auXcOm2XJvesG0fZblHYho30AWwa7vy8Dna6H1c6bg1U4IOn+msQ2AqbJv8yjsHVrCh08TVL70o9JXcvmkmBuKW3TpSdFh3kbKkSh35d/vpQdpUGB+y7fojopBYZENyVN3GFK13WOvJGaYz1dObrmnASOKezvVC8zaRlMmv3hnt59Ks2yau/Qzixbjy8n93iv1JzrwBHa67LLJPET5xVO03gshYmGQ==
-X-YMail-OSG: qQ0smoAVM1mnPWGV7bUD98WUopSwrzNXadP2D1iGIuSf1TEGJhpE5LrbFTThXRZ
- i1hFhK0z.GmGB3JqK393rKDt2q5QZbqyoj9bH.sMJpZJsfw2ONXVwmaMULEDyzlXZSDgTsGXTYGE
- aeuPIIOCaPClOhV147udSUXdln05JFNBw1lpS3bHa0JxpGu58_WWuRFf07knohna74zaPAErmtpj
- L1mDMI0a.r5aG_06YnA.SdsKkEFVmRKGVToyT_6pbkcHV3vgporI.RaDIgb_YbF21qh7ruKgHVGJ
- E6.b1KWp1v8ouGZUibXHi6HXaImFLBqZzocebFQEvLEaRpLbqNHrr4T6Ps6Zg3H19XUYC9LvckkE
- MX9sRcuZmfgqlfsnXJ.39F7n1KT.iwsUjAeubyeh0HDLKeymXS.9Pf4LHikFEYm_TwgKPXvbY2ul
- egpu9OHEL5ZIY9JqeEBdarNkUBNuY55wG2V.u81dW60hagJh2JTRpMJqirhm8mMKbYDrl3vLHCj4
- E10PpelW5OYhyBDMjZSRQM_XztfnWxkFKJAcn7Q0hM3aR.Yfc5v02gx.y1gJDpXiuXzR9MjFgr9q
- O3uj6BYKIiv6itFcFKiJjwM_93xcPFkH4MtPxyV5fHKqQ97evGT6IRCUx.SXsYbA7yk3hKEi4PN_
- LayAn3syYrkrWGqcjQpcnyEotRwZGv9ep7FD6Hovt6QTBL6sYxXx30Ba6WptzkQrjErbnsTIrF1Y
- KzT3imbGUs901bP7f8_xiyzaqihfMH7PLhkncmtt78rlLhul9crCbpmZE6WpZnU023ok7YVeWUQt
- 237O8Fwzh8y_WPeqADPbMLQrS6EShg9tJbKxyc7toV28GEpAsWH4zpxvZbLJkVckGpe2IbqD36U1
- uR8Med9mYKAtnkENeywd.11xrh6uHPG9Uh2X9lRQsf3CDS5B9utCv0rGL0oVSbKQpqR84KxduHqA
- Tkk20gCmQKhqiHSSv0FndhtM1NL5RyTdjNc3Mjvn6Y71gwBkj2BhaapZXdOvg2.f8eQbg0Yhihaa
- lDhc5D9kMZVTBC.wECIaN0o5q5jHtxW9QZOWJmEUG8pvlhpZadFLVEsMomgoDEIshuAaKkufUzYj
- 29JzUGkb0ivx7Sc37ZWcHXjzM15YLi2MWs9hE7HtWPad21K8kx8D7ejLTJON0drhfAmhCXtRwRIC
- DCP374HsH6jzS6cpgj8kz2ygKnh483I9sJD4I.27oMSKF0h5gmDRjFJUsFaYUH6IYNwOf0B09hQB
- mLUji6ysFptXxzHx8zhrbRbzlkLfKY3vOfhr0rEEKedjFEVntPGmLnYcGssmJdomDnfaYbtrgvlk
- 3WUkDZXVwNVdAmlNtDiSfh1KSh.rB_th3JDfbeuVnIR4RWPBxxE01_zS0MPJ8KO8hKZTzu1iotsD
- CM2CULG3ehLnlJuaWs7W0RLCtvAVSD0jYPs_sDpG4msv1x8oFBy0ZDflXJBotC65Z2nG5j2FmJcT
- 8IXswusGqLMwwlfNn1CiwqT4.ns22Aiapg4hVxlBQSd9uzkg6t60zKoQ0CcgGsTRWt9d3sNoUdOH
- bVlqIgFnMQFUf4nY43f.PAb6L5Adztz1TNIiD_.6cuaOZWv7nqQ2ul1g5UZASUADtC0Fj_AiKCtz
- Uub.rj13k8xPf2A07UEIENUGCQBIFkeLrkJLOQlNr.UZpCnudr4ZC1j6jZt89f5LRpUicd8DsJP2
- Kn6CpcF5yv1CeKBlDe7vFJIkGFG.gUv202Apt0garmIYJfaS_gd8mKI79tiq.WrZw_PaWqf8whWK
- Ns4nsYmUqSYr0lur44fuw5ieFcnS9ZkiEYUnuGrugi_sDX9U7VDkU.eyKU13IgYIE5PmGZmt5lGU
- f2SiSFCHVpumXvIxlyny0jnLecMZJ.j4jxqhhtuWSn_ZpwcK1B7e6kV_Z7cp6hYzSp35yuWOnjdd
- ugvG.cEU1FMrcRMF1nR8xi8a.AQRmPva5VbinjoOEGIwVAGUk.FYY9zqvpu7cDIOFT.eGXry3vup
- oW9maZOkDmsxm9WKN181d2A_0D.uDFUA5THgfR6MFkh4OLyS6FSedDQ13DAdmrHKwMrVAm0ikNEI
- 1uH2iMiiz8yxlGrKVyDmAXJ9ALJyeGJULvVZBpB4b4ezHErRk._YdXOGqCHQwraYSDsRdFyQ.EO2
- b0yScIUqm8c5kZdyOc8EwrUF1URiNGHtzrGCjGWDCqXnkm0eM8R2p9i4UgPRALfSoLJST46ZUT9o
- ygGxrk_DXDikGLGE6ztEr2VxA2SpSquv3ApO8Qp476GeoCFCph_6MBAPO.h8d8jIT8lpG
+        Sun, 26 Jun 2022 04:39:46 -0400
+Received: from sonic310-57.consmr.mail.ir2.yahoo.com (sonic310-57.consmr.mail.ir2.yahoo.com [77.238.177.30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 095F912A8B
+        for <phone-devel@vger.kernel.org>; Sun, 26 Jun 2022 01:39:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1656232783; bh=PERmfplRdvSLSyKVEv1CEvkeTqyeWKpirz+NeED+LV4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=PIxc168/IVhUl/8t2TqzSw1j6cLXjpvKPV1Fp46n9Htm/9UQoje6CTX4EIpFMa7Nm0KCiL3gCUB7CaOaFW1rX2IH/7g/2zzzfuQ7K3CiEEawrbqbZYEEV/zGx49D65kpiU2IHEmLjhx8kQ8f1ow5zfpmQLCVXh9pH9ppbR3sugyzuFDh4UwkOvof83i9OYYt/lIazx4Qz1tItZL18ttHSPhVQgUDUkuocSKGnGdcxuj0e5Ev0YmHz6CJG1Y6g6aFP0aAZh0uaI8/IsIck4VFRZ58ZryR2WkB6eFLt99mTOVe0NnKo2mHNWVGtCdijF1qk6sUM72aJAjLYY5Jlg0DZw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1656232783; bh=fkEfSZbvjwc+J4CusW6LxTPHb8B2sd6BRbMnLrnpEd5=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=mNkiJwZB8abEgwCG4btrNv0hrQUYQolmsLdHfZ1Q8eJGg3mFICRXF5SD5qcbrF8vcWX2Y6hRi/4eq+TN78o0N3gR4axrrZtz4Eko2KjKGuERc0xZzIuwpZDQu63ZWvfae2rMVQ/hYsu8e1FUMsWHVLDAAHsYWbGJkmrz2nL15mXS5VU9m2c6APFs6Z/VzRXVMgTlkdPAxcB982EJpW1qxC+EuR2FZTTp95EN1lLw+qkQgo5lXnRRGGodl7DzBhkm9kUfbLvJs5UBSr8BNiJ1DNjS7ywLGMwVBE+VqRV2Q5nXMcv0JkhRKp+JuPUQ29mquz7/fs3dEMPdGxKgci5YGA==
+X-YMail-OSG: WuKzFysVM1nbnXJb4xF00IEES6YkqZzdRqlcKXP4d2lR6pr2D4F32iGkcqb6aii
+ l.UZWMRpkNvia2E997wgdqwEbZXkbhDKuRNBQguFbayqt7nJmsidhzICxNaVsngz0m8L3Csm7uF7
+ PkjT.vK3CN17A10WTHWZ31JvTdisN1JaXdfK0hrfICUNDwylXZyEsiq41pH6taorvqrePKVAp_FJ
+ IiD9OAUivM57LGvVZjPdl7jLthZIbFraPPff9mu2UWTwZXTBEV4AjinKpKVa.RnQHoS2zAtWbwXT
+ rPBXIX7p7CLDr5VrBEz4ZYWoQOA0fQ_XXU.MYN0DE3R.zwP0QDBg5CR2SJQBTVYpsJpsfGJ8_aV0
+ JzdH3494Emq2SoMXs54Rk4g_wnz7fZJq4563fxTl7jDIhDAWAfcg_sw8u9SBL1Z5w4.Oe_dX6y5W
+ gyTbeIiObHvNoWZGj6N.hQ7CO1C97wVoOHjqawrPcKuv5oG3Mp1eVql5tl8FO39q7cr0EMix8h1L
+ 7hBIdK1DauSr2jNZzkGUmgJs89qGo.96dj7YJwJF6manUbaRrmRsnXKMSlQL4FKzHNjOY8_NZgNW
+ LoQaDcbTtSl98SIFZhR0ee1V5K7_Bb7lZEjkZqlMEbIBc9r_sMKjPO1QIoAnnYNdoG6tBy4d3W11
+ J6kNmy83ECb5inb8KCRQhIzuyFSO49SGSkrv9kad671VzL9rmU7ZIKZ9GeknTVARrmiPzDK6TgW0
+ pWTeDdtSO8VpvoSqfQ4r8HwYln2_zkVn.ZGxpTh0mn0zqlspayL8M_s8mwCjj17XYQ9pBsM3lW3V
+ Ayzx6Hntq6mN.queGN.FdtlAzrROaDZSmdmrr8Sc0Py8Js24t4bWRxI5EQC48YJLFk3VsbW.uTWw
+ skRKDgKHt4mEiNzR_G3Hr58oZjgSYivSUAGVYGwOL_qbyMHga.OSJDHAGsW85T1PH6GnePPNObg5
+ fgRb9oCNkrI3josj7vS.3zeYH7Y_0C_Wb4KkrxTid.47A.C0Mb2sjeh3aMCw8JqWoJVnxz8e5pVZ
+ OFTY2w1tGmpcpiLEBFVRS8r2IkqxAiG_HByw3yKXUUeDKKqndNrKf4CObpvUIqYDpNb95gplW4id
+ l3PExLBtYL4byY9ugwk3ffR3doY71PUH_qKqG38py.hB4QHFkAyyX8frrGqImd_UDiV_fOjxZGQq
+ oQ3Hd0BRcmP5JomxNRCp_qWjRXYaK.b.qL65wntfkWNvIPbt3FLCiobk9hegr3nGKO6gFQ4xV00E
+ LAHGSNA0a5WVFR.Fk9uCPd4uXj8DdSEtjYWBEFETMWmsYQlAmoL69T4VDWaiyDoAEk8mnhSnGX9l
+ UnahN6S7HDqFIxKXMMQvoCkQLBpW.Ly1RGAMw_SMtGwf8fuHTd5SDjjAnGzVdzToT4G3v8zrGYEL
+ gLkzoRh6dRXG_inOmHp2ww5pgd9SnPTCTqtxqkWHOd03UsJVR58Lsxi3rfm.JyBRA0yEAIS3VPtD
+ K4iFzDCKWWA33B_51Nez7fFcrsPnSrw8cDqcxBgXs9eSs7uK.q8MQwz0Uy9_KV9KUi.qez_EWIXp
+ YLpegL84xb_jyltZ1QwPq8s21biLbFuTftY1hOyfK0swMEzLB6ex.hLzS1mSXExBRnmoDJ6D.WR7
+ xlbbFqJ4urNcHnk0cdttmpI9SmguGBPsVIDRdih.ty.9u83rF7QNizz36UqOmzGR_9mEzijKFYCy
+ IjaQTBkp4efsDMtISyQLOwTPXe62GZZgdBSNpD8LHRAgETdNQz13Rz3a.3qd3P.2_mXPKRjJw_OQ
+ 99LdJIYUKry77EEkINe29D.K5dVNxzOC00LX5e89Z9F1EudT1HJNPq69OZvtCT_nEqHssQNsI8gh
+ tjjJA5mVfy.robKLKcuR2uWwGmhyxhaMGNzxXucHKoYANwcEkd72Y2HaaxSQA8VIYWTeKc75aKDs
+ X_FEQVCfYDSrNJI.x2rrT3947800FqHp2rsPlCfs1GaUevi6iMJBsn0MGnONsMqzzWM8f7qdvtZN
+ xTLAZsDJyZSk0ODl85XSa8JbcRdFVp4RpE80jX8dSvcftqMLURf90ZBCRkCjoMOPcZYUTPKUL_wZ
+ 4i25.ySSJvj5cON.CQ6XP47WnLoTCGtPjTQ4uRE58HDTnLb5giG5OV_IkGBXIO6SGpf.aniSCXll
+ ioXgM5BoOKD1YaPM3Fy_E6D2.Nov6Ty74HHS8IwbYNsvruJXFk1heklvxeercYny5p4sXa_ofnxh
+ t4iC24hAoI1IbIKbAuG7V4G0R1A7CSMxjj9_ZT3bO4qTRfzRva.Ohqr769smMqqLFVup_hzEa
 X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ir2.yahoo.com with HTTP; Sun, 26 Jun 2022 07:51:17 +0000
-Received: by hermes--canary-production-ir2-c9bf9d9bc-fw6gn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 3a9d8ca4ca272df8e505774fd3b7d3a5;
-          Sun, 26 Jun 2022 07:51:12 +0000 (UTC)
-Message-ID: <c7de2a05-af72-5b73-b70c-82d84e84887c@rocketmail.com>
-Date:   Sun, 26 Jun 2022 09:51:11 +0200
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ir2.yahoo.com with HTTP; Sun, 26 Jun 2022 08:39:43 +0000
+Received: by hermes--canary-production-ir2-c9bf9d9bc-brwkd (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 4f396652dc92420c3e14bdad7cbc95a1;
+          Sun, 26 Jun 2022 08:39:40 +0000 (UTC)
+Message-ID: <daf3206f-0cd5-e8a4-bab9-6f8f379e4ba2@rocketmail.com>
+Date:   Sun, 26 Jun 2022 10:39:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.10.0
-Subject: Re: [PATCH v3 5/8] iio: magnetometer: yas530: Change data type of
- calibration coefficients
+Subject: Re: [PATCH v3 6/8] iio: magnetometer: yas530: Rename functions and
+ registers
 Content-Language: en-US
-From:   Jakob Hauser <jahau@rocketmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -69,10 +68,12 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 References: <cover.1655509425.git.jahau@rocketmail.com>
- <18f223776f6942d52af2e41dd10160e220a23311.1655509425.git.jahau@rocketmail.com>
- <20220618155618.18996d0c@jic23-huawei>
- <10c06f21-23d3-d3a8-5a6d-8290cf2971cb@rocketmail.com>
-In-Reply-To: <10c06f21-23d3-d3a8-5a6d-8290cf2971cb@rocketmail.com>
+ <f1a49262b124cbcdf4a258f65fd54ee389de3a29.1655509425.git.jahau@rocketmail.com>
+ <20220618160041.15798dcd@jic23-huawei>
+ <d3e074b8-9679-87fe-dc5a-9493f0586aca@rocketmail.com>
+ <20220625151637.600d20a0@jic23-huawei>
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <20220625151637.600d20a0@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Mailer: WebService/1.1.20280 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
@@ -82,43 +83,34 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 Hi Jonathan,
 
-On 21.06.22 02:51, Jakob Hauser wrote:
+On 25.06.22 16:16, Jonathan Cameron wrote:
 >
+> On Tue, 21 Jun 2022 02:53:58 +0200
+> Jakob Hauser <jahau@rocketmail.com> wrote:
 > 
-> On 18.06.22 16:56, Jonathan Cameron wrote:
->
->> On Sat, 18 Jun 2022 02:13:13 +0200
->> Jakob Hauser <jahau@rocketmail.com> wrote:
+>> On 18.06.22 17:00, Jonathan Cameron wrote:
+>>>
+>>> We've been bitten in the past by naming choices like this, so please
+>>> use yas530 only and rely on comments or code that makes it obvious that
+>>> it applies to the yas532 as well.  
 >>
->>> This is a preparation for adding YAS537 variant.
->>>
->>> YAS537 uses other data types on the calibration coefficients [1] than YAS530 [2]
->>> and YAS532 [3].
->>>
->>> On YAS537, at least for a4 and a7 this could matter because 8-bit unsigned data
->>> from the register gets stored into a signed data type, therefore this should be
->>> 8-bit as well.
->>>
->>> For YAS530/532, on the other hand, it doesn't seem to matter. The size of a2-a9
->>> and k is smaller than 8-bit at extraction, also the applied math is low. And
->>> Cx/Cy1/Cy2, now being defined as signed 16-bit, are extracted as unsigned 8-bit
->>> and undergo only minor math.
+>> Hm, ok. It's harder to keep the overview. But I can imagine adding up
+>> names can get out of control. I'll change it.
 >>
->> Ok. If this is harmless to existing drivers fair enough, though my personal
->> inclination would have been to take the easier approach of making the
->> new variant sign extend on variable load (sign_extend_32() and similar)
->> just so we didn't need to check the older parts weren't affected.
+>> For functions and registers used by all variants, I'd keep yas5xx or
+>> YAS5XX respectively. I hope that's ok.
 > 
-> I didn't know that operation :) Let's take this.
+> I reserve the right to laugh at you if the next variant to come along
+> fits the wild card but not the registers that have been shared until then :)
+> 
+> Otherwise, I'm fine with keeping the naming for those cases.
 
-While working on patchset v4, I just realized that sign_extend32() can't
-be used at the variable declaration but instead needs to be applied at
-"variable load", as you wrote.
+Thanks for your reply. Reserving that right is fine :) It could turn out
+that way.
 
-I wasn't aware of this until now. In that case, I'd  prefer to leave the
-patch unchanged. Overall the resulting code looks simpler that way.
-Applying sign_extend32() at all locations where we extract calibration
-coefficients makes it more dizzy.
+For the time being and as long as possible, keeping the generic ya5xx
+naming for those cases makes it more distinguishable what's generally
+applicable and what's variant-specific.
 
 Kind regards,
 Jakob
