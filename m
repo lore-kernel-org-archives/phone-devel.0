@@ -2,115 +2,261 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B630BC433EF
-	for <phone-devel@archiver.kernel.org>; Sun, 26 Jun 2022 08:39:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E064DC43334
+	for <phone-devel@archiver.kernel.org>; Sun, 26 Jun 2022 09:48:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234008AbiFZIjs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 26 Jun 2022 04:39:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33068 "EHLO
+        id S233537AbiFZJsD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 26 Jun 2022 05:48:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbiFZIjq (ORCPT
+        with ESMTP id S233502AbiFZJsC (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 26 Jun 2022 04:39:46 -0400
-Received: from sonic310-57.consmr.mail.ir2.yahoo.com (sonic310-57.consmr.mail.ir2.yahoo.com [77.238.177.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 095F912A8B
-        for <phone-devel@vger.kernel.org>; Sun, 26 Jun 2022 01:39:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1656232783; bh=PERmfplRdvSLSyKVEv1CEvkeTqyeWKpirz+NeED+LV4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=PIxc168/IVhUl/8t2TqzSw1j6cLXjpvKPV1Fp46n9Htm/9UQoje6CTX4EIpFMa7Nm0KCiL3gCUB7CaOaFW1rX2IH/7g/2zzzfuQ7K3CiEEawrbqbZYEEV/zGx49D65kpiU2IHEmLjhx8kQ8f1ow5zfpmQLCVXh9pH9ppbR3sugyzuFDh4UwkOvof83i9OYYt/lIazx4Qz1tItZL18ttHSPhVQgUDUkuocSKGnGdcxuj0e5Ev0YmHz6CJG1Y6g6aFP0aAZh0uaI8/IsIck4VFRZ58ZryR2WkB6eFLt99mTOVe0NnKo2mHNWVGtCdijF1qk6sUM72aJAjLYY5Jlg0DZw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1656232783; bh=fkEfSZbvjwc+J4CusW6LxTPHb8B2sd6BRbMnLrnpEd5=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=mNkiJwZB8abEgwCG4btrNv0hrQUYQolmsLdHfZ1Q8eJGg3mFICRXF5SD5qcbrF8vcWX2Y6hRi/4eq+TN78o0N3gR4axrrZtz4Eko2KjKGuERc0xZzIuwpZDQu63ZWvfae2rMVQ/hYsu8e1FUMsWHVLDAAHsYWbGJkmrz2nL15mXS5VU9m2c6APFs6Z/VzRXVMgTlkdPAxcB982EJpW1qxC+EuR2FZTTp95EN1lLw+qkQgo5lXnRRGGodl7DzBhkm9kUfbLvJs5UBSr8BNiJ1DNjS7ywLGMwVBE+VqRV2Q5nXMcv0JkhRKp+JuPUQ29mquz7/fs3dEMPdGxKgci5YGA==
-X-YMail-OSG: WuKzFysVM1nbnXJb4xF00IEES6YkqZzdRqlcKXP4d2lR6pr2D4F32iGkcqb6aii
- l.UZWMRpkNvia2E997wgdqwEbZXkbhDKuRNBQguFbayqt7nJmsidhzICxNaVsngz0m8L3Csm7uF7
- PkjT.vK3CN17A10WTHWZ31JvTdisN1JaXdfK0hrfICUNDwylXZyEsiq41pH6taorvqrePKVAp_FJ
- IiD9OAUivM57LGvVZjPdl7jLthZIbFraPPff9mu2UWTwZXTBEV4AjinKpKVa.RnQHoS2zAtWbwXT
- rPBXIX7p7CLDr5VrBEz4ZYWoQOA0fQ_XXU.MYN0DE3R.zwP0QDBg5CR2SJQBTVYpsJpsfGJ8_aV0
- JzdH3494Emq2SoMXs54Rk4g_wnz7fZJq4563fxTl7jDIhDAWAfcg_sw8u9SBL1Z5w4.Oe_dX6y5W
- gyTbeIiObHvNoWZGj6N.hQ7CO1C97wVoOHjqawrPcKuv5oG3Mp1eVql5tl8FO39q7cr0EMix8h1L
- 7hBIdK1DauSr2jNZzkGUmgJs89qGo.96dj7YJwJF6manUbaRrmRsnXKMSlQL4FKzHNjOY8_NZgNW
- LoQaDcbTtSl98SIFZhR0ee1V5K7_Bb7lZEjkZqlMEbIBc9r_sMKjPO1QIoAnnYNdoG6tBy4d3W11
- J6kNmy83ECb5inb8KCRQhIzuyFSO49SGSkrv9kad671VzL9rmU7ZIKZ9GeknTVARrmiPzDK6TgW0
- pWTeDdtSO8VpvoSqfQ4r8HwYln2_zkVn.ZGxpTh0mn0zqlspayL8M_s8mwCjj17XYQ9pBsM3lW3V
- Ayzx6Hntq6mN.queGN.FdtlAzrROaDZSmdmrr8Sc0Py8Js24t4bWRxI5EQC48YJLFk3VsbW.uTWw
- skRKDgKHt4mEiNzR_G3Hr58oZjgSYivSUAGVYGwOL_qbyMHga.OSJDHAGsW85T1PH6GnePPNObg5
- fgRb9oCNkrI3josj7vS.3zeYH7Y_0C_Wb4KkrxTid.47A.C0Mb2sjeh3aMCw8JqWoJVnxz8e5pVZ
- OFTY2w1tGmpcpiLEBFVRS8r2IkqxAiG_HByw3yKXUUeDKKqndNrKf4CObpvUIqYDpNb95gplW4id
- l3PExLBtYL4byY9ugwk3ffR3doY71PUH_qKqG38py.hB4QHFkAyyX8frrGqImd_UDiV_fOjxZGQq
- oQ3Hd0BRcmP5JomxNRCp_qWjRXYaK.b.qL65wntfkWNvIPbt3FLCiobk9hegr3nGKO6gFQ4xV00E
- LAHGSNA0a5WVFR.Fk9uCPd4uXj8DdSEtjYWBEFETMWmsYQlAmoL69T4VDWaiyDoAEk8mnhSnGX9l
- UnahN6S7HDqFIxKXMMQvoCkQLBpW.Ly1RGAMw_SMtGwf8fuHTd5SDjjAnGzVdzToT4G3v8zrGYEL
- gLkzoRh6dRXG_inOmHp2ww5pgd9SnPTCTqtxqkWHOd03UsJVR58Lsxi3rfm.JyBRA0yEAIS3VPtD
- K4iFzDCKWWA33B_51Nez7fFcrsPnSrw8cDqcxBgXs9eSs7uK.q8MQwz0Uy9_KV9KUi.qez_EWIXp
- YLpegL84xb_jyltZ1QwPq8s21biLbFuTftY1hOyfK0swMEzLB6ex.hLzS1mSXExBRnmoDJ6D.WR7
- xlbbFqJ4urNcHnk0cdttmpI9SmguGBPsVIDRdih.ty.9u83rF7QNizz36UqOmzGR_9mEzijKFYCy
- IjaQTBkp4efsDMtISyQLOwTPXe62GZZgdBSNpD8LHRAgETdNQz13Rz3a.3qd3P.2_mXPKRjJw_OQ
- 99LdJIYUKry77EEkINe29D.K5dVNxzOC00LX5e89Z9F1EudT1HJNPq69OZvtCT_nEqHssQNsI8gh
- tjjJA5mVfy.robKLKcuR2uWwGmhyxhaMGNzxXucHKoYANwcEkd72Y2HaaxSQA8VIYWTeKc75aKDs
- X_FEQVCfYDSrNJI.x2rrT3947800FqHp2rsPlCfs1GaUevi6iMJBsn0MGnONsMqzzWM8f7qdvtZN
- xTLAZsDJyZSk0ODl85XSa8JbcRdFVp4RpE80jX8dSvcftqMLURf90ZBCRkCjoMOPcZYUTPKUL_wZ
- 4i25.ySSJvj5cON.CQ6XP47WnLoTCGtPjTQ4uRE58HDTnLb5giG5OV_IkGBXIO6SGpf.aniSCXll
- ioXgM5BoOKD1YaPM3Fy_E6D2.Nov6Ty74HHS8IwbYNsvruJXFk1heklvxeercYny5p4sXa_ofnxh
- t4iC24hAoI1IbIKbAuG7V4G0R1A7CSMxjj9_ZT3bO4qTRfzRva.Ohqr769smMqqLFVup_hzEa
-X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ir2.yahoo.com with HTTP; Sun, 26 Jun 2022 08:39:43 +0000
-Received: by hermes--canary-production-ir2-c9bf9d9bc-brwkd (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 4f396652dc92420c3e14bdad7cbc95a1;
-          Sun, 26 Jun 2022 08:39:40 +0000 (UTC)
-Message-ID: <daf3206f-0cd5-e8a4-bab9-6f8f379e4ba2@rocketmail.com>
-Date:   Sun, 26 Jun 2022 10:39:39 +0200
+        Sun, 26 Jun 2022 05:48:02 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA132100E;
+        Sun, 26 Jun 2022 02:48:00 -0700 (PDT)
+Received: from [10.0.0.163] (ip-94-112-206-30.net.upcbroadband.cz [94.112.206.30])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: david.heidelberg)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 72C3366016D9;
+        Sun, 26 Jun 2022 10:47:57 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1656236878;
+        bh=ZBhVm6IGWseUER7MkXUlFCT29ycUychI6NdxaG+9H94=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=QQSQB7DpPodscJDotm27LdPwtvKQBhPJink12zTUxiTf78vdtog82vhEEXSPVG5xS
+         TAIXfK6BsNQyVFktTkAscotdLCOZ5HaqtE3BwSfJ7WotKB0jHMYC/eeeGLqY9tYYXu
+         gMZpdTdhxY8KTl+sEE18b3EVcIKv/tIASVu+I89zUF53k3NV0eWN1q2VLD4n5nKy5J
+         9Ew89pAXHluttSW+sk3h4VmSObHVTlLErOWFcJDf0rM0aHxGhEQ7Ha5wWZJK7rk76x
+         3yZVkhu6Fr1ySgtrmZPuuLHVWF9TWaQyhGDTtLVa0C98brBtkl+apxnTDq0bMKUzrU
+         Q71bzJBYLHZ0w==
+Message-ID: <728b2c54-0dc0-533f-bab8-fca228f6c1b1@collabora.com>
+Date:   Sun, 26 Jun 2022 11:47:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.10.0
-Subject: Re: [PATCH v3 6/8] iio: magnetometer: yas530: Rename functions and
- registers
+Subject: Re: [PATCH v3 4/7] dt-bindings: clock: mediatek: Add clock driver
+ bindings for MT6795
 Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <cover.1655509425.git.jahau@rocketmail.com>
- <f1a49262b124cbcdf4a258f65fd54ee389de3a29.1655509425.git.jahau@rocketmail.com>
- <20220618160041.15798dcd@jic23-huawei>
- <d3e074b8-9679-87fe-dc5a-9493f0586aca@rocketmail.com>
- <20220625151637.600d20a0@jic23-huawei>
-From:   Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <20220625151637.600d20a0@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.20280 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        mturquette@baylibre.com, sboyd@kernel.org, p.zabel@pengutronix.de,
+        y.oudjana@protonmail.com, jason-jh.lin@mediatek.com,
+        ck.hu@mediatek.com, fparent@baylibre.com, rex-bc.chen@mediatek.com,
+        tinghan.shen@mediatek.com, chun-jie.chen@mediatek.com,
+        weiyi.lu@mediatek.com, ikjn@chromium.org, miles.chen@mediatek.com,
+        sam.shih@mediatek.com, wenst@chromium.org,
+        bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        kernel@collabora.com
+References: <20220624093525.243077-1-angelogioacchino.delregno@collabora.com>
+ <20220624093525.243077-5-angelogioacchino.delregno@collabora.com>
+ <cea65d6a-7d9b-7b14-9984-bcd7f115da47@linaro.org>
+From:   David Heidelberg <david.heidelberg@collabora.com>
+Autocrypt: addr=david.heidelberg@collabora.com; keydata=
+ xjMEYlvLOxYJKwYBBAHaRw8BAQdA5CoWEzz4igpwK4h6lK6ZformRk84+ymcfkGNPwqEeILN
+ MURhdmlkIEhlaWRlbGJlcmcgPGRhdmlkLmhlaWRlbGJlcmdAY29sbGFib3JhLmNvbT7ClgQT
+ FggAPhYhBEo7kSl22BK0F1Np/mn1Z4YcHsAUBQJiW8s7AhsDBQkFo5qABQsJCAcCBhUKCQgL
+ AgQWAgMBAh4BAheAAAoJEGn1Z4YcHsAU84kBAK5YqSWAOuIumAqgWvke6BEsaIGWGQzXSuKj
+ er/TXuFuAQCwc9ITSVXWWTSpdFt2+4z7Wch8tIGlbIFcS9dCFddwCc44BGJbyzsSCisGAQQB
+ l1UBBQEBB0AEk7jXEwDApGOwMH/X0UAPBH8Y3isjxhNMjpyRcnl2CwMBCAfCfgQYFggAJhYh
+ BEo7kSl22BK0F1Np/mn1Z4YcHsAUBQJiW8s7AhsMBQkFo5qAAAoJEGn1Z4YcHsAU0PEA/j0Y
+ uAOKJCnnwrkf3ozPP0sutA5bojoARwcIaZKO/zvIAP9PwTC9DGLg+8LJm7m2Lyf0LxLA8FXD
+ wueLHBdwHg6zAQ==
+In-Reply-To: <cea65d6a-7d9b-7b14-9984-bcd7f115da47@linaro.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------01SB8j7fsrDg1UCCZJHvnO6w"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Jonathan,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------01SB8j7fsrDg1UCCZJHvnO6w
+Content-Type: multipart/mixed; boundary="------------igpTnjsExajZs0wD231Hp3a8";
+ protected-headers="v1"
+From: David Heidelberg <david.heidelberg@collabora.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+ mturquette@baylibre.com, sboyd@kernel.org, p.zabel@pengutronix.de,
+ y.oudjana@protonmail.com, jason-jh.lin@mediatek.com, ck.hu@mediatek.com,
+ fparent@baylibre.com, rex-bc.chen@mediatek.com, tinghan.shen@mediatek.com,
+ chun-jie.chen@mediatek.com, weiyi.lu@mediatek.com, ikjn@chromium.org,
+ miles.chen@mediatek.com, sam.shih@mediatek.com, wenst@chromium.org,
+ bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
+ konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+ martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+ kernel@collabora.com
+Message-ID: <728b2c54-0dc0-533f-bab8-fca228f6c1b1@collabora.com>
+Subject: Re: [PATCH v3 4/7] dt-bindings: clock: mediatek: Add clock driver
+ bindings for MT6795
+References: <20220624093525.243077-1-angelogioacchino.delregno@collabora.com>
+ <20220624093525.243077-5-angelogioacchino.delregno@collabora.com>
+ <cea65d6a-7d9b-7b14-9984-bcd7f115da47@linaro.org>
+In-Reply-To: <cea65d6a-7d9b-7b14-9984-bcd7f115da47@linaro.org>
 
-On 25.06.22 16:16, Jonathan Cameron wrote:
->
-> On Tue, 21 Jun 2022 02:53:58 +0200
-> Jakob Hauser <jahau@rocketmail.com> wrote:
-> 
->> On 18.06.22 17:00, Jonathan Cameron wrote:
->>>
->>> We've been bitten in the past by naming choices like this, so please
->>> use yas530 only and rely on comments or code that makes it obvious that
->>> it applies to the yas532 as well.  
->>
->> Hm, ok. It's harder to keep the overview. But I can imagine adding up
->> names can get out of control. I'll change it.
->>
->> For functions and registers used by all variants, I'd keep yas5xx or
->> YAS5XX respectively. I hope that's ok.
-> 
-> I reserve the right to laugh at you if the next variant to come along
-> fits the wild card but not the registers that have been shared until then :)
-> 
-> Otherwise, I'm fine with keeping the naming for those cases.
+--------------igpTnjsExajZs0wD231Hp3a8
+Content-Type: multipart/mixed; boundary="------------4TT4k8GW9tO0EQaIeP92D69x"
 
-Thanks for your reply. Reserving that right is fine :) It could turn out
-that way.
+--------------4TT4k8GW9tO0EQaIeP92D69x
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-For the time being and as long as possible, keeping the generic ya5xx
-naming for those cases makes it more distinguishable what's generally
-applicable and what's variant-specific.
+T24gMjUvMDYvMjAyMiAyMjoyOSwgS3J6eXN6dG9mIEtvemxvd3NraSB3cm90ZToNCj4gT24g
+MjQvMDYvMjAyMiAxMTozNSwgQW5nZWxvR2lvYWNjaGlubyBEZWwgUmVnbm8gd3JvdGU6DQo+
+PiBBZGQgdGhlIGJpbmRpbmdzIGZvciB0aGUgY2xvY2sgZHJpdmVycyBvZiB0aGUgTWVkaWFU
+ZWsgSGVsaW8gWDEwDQo+PiBNVDY3OTUgU29DLg0KPj4NCj4+IFNpZ25lZC1vZmYtYnk6IEFu
+Z2Vsb0dpb2FjY2hpbm8gRGVsIFJlZ25vIDxhbmdlbG9naW9hY2NoaW5vLmRlbHJlZ25vQGNv
+bGxhYm9yYS5jb20+DQo+PiAtLS0NCj4+ICAgLi4uL2JpbmRpbmdzL2Nsb2NrL21lZGlhdGVr
+LG10Njc5NS1jbG9jay55YW1sIHwgNjYgKysrKysrKysrKysrKysrKysNCj4+ICAgLi4uL2Ns
+b2NrL21lZGlhdGVrLG10Njc5NS1zeXMtY2xvY2sueWFtbCAgICAgIHwgNzQgKysrKysrKysr
+KysrKysrKysrKw0KPj4gICAyIGZpbGVzIGNoYW5nZWQsIDE0MCBpbnNlcnRpb25zKCspDQo+
+PiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGlu
+Z3MvY2xvY2svbWVkaWF0ZWssbXQ2Nzk1LWNsb2NrLnlhbWwNCj4+ICAgY3JlYXRlIG1vZGUg
+MTAwNjQ0IERvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9jbG9jay9tZWRpYXRl
+ayxtdDY3OTUtc3lzLWNsb2NrLnlhbWwNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvRG9jdW1lbnRh
+dGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2Nsb2NrL21lZGlhdGVrLG10Njc5NS1jbG9jay55
+YW1sIGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2Nsb2NrL21lZGlhdGVr
+LG10Njc5NS1jbG9jay55YW1sDQo+PiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPj4gaW5kZXgg
+MDAwMDAwMDAwMDAwLi43OTVmYjE4NzIxYzMNCj4+IC0tLSAvZGV2L251bGwNCj4+ICsrKyBi
+L0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9jbG9jay9tZWRpYXRlayxtdDY3
+OTUtY2xvY2sueWFtbA0KPj4gQEAgLTAsMCArMSw2NiBAQA0KPj4gKyMgU1BEWC1MaWNlbnNl
+LUlkZW50aWZpZXI6IChHUEwtMi4wIE9SIEJTRC0yLUNsYXVzZSkNCj4+ICslWUFNTCAxLjIN
+Cj4+ICstLS0NCj4+ICskaWQ6ICJodHRwOi8vZGV2aWNldHJlZS5vcmcvc2NoZW1hcy9jbG9j
+ay9tZWRpYXRlayxtdDY3OTUtY2xvY2sueWFtbCMiDQo+PiArJHNjaGVtYTogImh0dHA6Ly9k
+ZXZpY2V0cmVlLm9yZy9tZXRhLXNjaGVtYXMvY29yZS55YW1sIyINCj4+ICsNCj4+ICt0aXRs
+ZTogTWVkaWFUZWsgRnVuY3Rpb25hbCBDbG9jayBDb250cm9sbGVyIGZvciBNVDY3OTUNCj4+
+ICsNCj4+ICttYWludGFpbmVyczoNCj4+ICsgIC0gQW5nZWxvR2lvYWNjaGlubyBEZWwgUmVn
+bm8gPGFuZ2Vsb2dpb2FjY2hpbm8uZGVscmVnbm9AY29sbGFib3JhLmNvbT4NCj4+ICsgIC0g
+Q2h1bi1KaWUgQ2hlbiA8Y2h1bi1qaWUuY2hlbkBtZWRpYXRlay5jb20+DQo+PiArDQo+PiAr
+ZGVzY3JpcHRpb246IHwNCj4+ICsgIFRoZSBjbG9jayBhcmNoaXRlY3R1cmUgaW4gTWVkaWFU
+ZWsgbGlrZSBiZWxvdw0KPj4gKyAgUExMcyAtLT4NCj4+ICsgICAgICAgICAgZGl2aWRlcnMg
+LS0+DQo+PiArICAgICAgICAgICAgICAgICAgICAgIG11eGVzDQo+PiArICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgLS0+DQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+Y2xvY2sgZ2F0ZQ0KPj4gKw0KPj4gKyAgVGhlIGRldmljZXMgcHJvdmlkZSBjbG9jayBnYXRl
+IGNvbnRyb2wgaW4gZGlmZmVyZW50IElQIGJsb2Nrcy4NCj4+ICsNCj4+ICtwcm9wZXJ0aWVz
+Og0KPj4gKyAgY29tcGF0aWJsZToNCj4+ICsgICAgZW51bToNCj4+ICsgICAgICAtIG1lZGlh
+dGVrLG10Njc5NS1tZmdjZmcNCj4+ICsgICAgICAtIG1lZGlhdGVrLG10Njc5NS12ZGVjc3lz
+DQo+PiArICAgICAgLSBtZWRpYXRlayxtdDY3OTUtdmVuY3N5cw0KPj4gKw0KPj4gKyAgcmVn
+Og0KPj4gKyAgICBtYXhJdGVtczogMQ0KPj4gKw0KPj4gKyAgJyNjbG9jay1jZWxscyc6DQo+
+PiArICAgIGNvbnN0OiAxDQo+PiArDQo+PiArcmVxdWlyZWQ6DQo+PiArICAtIGNvbXBhdGli
+bGUNCj4+ICsgIC0gcmVnDQo+PiArICAtICcjY2xvY2stY2VsbHMnDQo+PiArDQo+PiArYWRk
+aXRpb25hbFByb3BlcnRpZXM6IGZhbHNlDQo+PiArDQo+PiArZXhhbXBsZXM6DQo+PiArICAt
+IHwNCj4+ICsgICAgc29jIHsNCj4+ICsgICAgICAgICNhZGRyZXNzLWNlbGxzID0gPDI+Ow0K
+Pj4gKyAgICAgICAgI3NpemUtY2VsbHMgPSA8Mj47DQo+PiArDQo+PiArICAgICAgICBtZmdj
+Zmc6IGNsb2NrLWNvbnRyb2xsZXJAMTMwMDAwMDAgew0KPj4gKyAgICAgICAgICAgIGNvbXBh
+dGlibGUgPSAibWVkaWF0ZWssbXQ2Nzk1LW1mZ2NmZyI7DQo+PiArICAgICAgICAgICAgcmVn
+ID0gPDAgMHgxMzAwMDAwMCAwIDB4MTAwMD47DQo+PiArICAgICAgICAgICAgI2Nsb2NrLWNl
+bGxzID0gPDE+Ow0KPj4gKyAgICAgICAgfTsNCj4+ICsNCj4+ICsgICAgICAgIHZkZWNzeXM6
+IGNsb2NrLWNvbnRyb2xsZXJAMTYwMDAwMDAgew0KPj4gKyAgICAgICAgICAgIGNvbXBhdGli
+bGUgPSAibWVkaWF0ZWssbXQ2Nzk1LXZkZWNzeXMiOw0KPj4gKyAgICAgICAgICAgIHJlZyA9
+IDwwIDB4MTYwMDAwMDAgMCAweDEwMDA+Ow0KPj4gKyAgICAgICAgICAgICNjbG9jay1jZWxs
+cyA9IDwxPjsNCj4+ICsgICAgICAgIH07DQo+PiArDQo+PiArICAgICAgICB2ZW5jc3lzOiBj
+bG9jay1jb250cm9sbGVyQDE4MDAwMDAwIHsNCj4+ICsgICAgICAgICAgICBjb21wYXRpYmxl
+ID0gIm1lZGlhdGVrLG10Njc5NS12ZW5jc3lzIjsNCj4+ICsgICAgICAgICAgICByZWcgPSA8
+MCAweDE4MDAwMDAwIDAgMHgxMDAwPjsNCj4+ICsgICAgICAgICAgICAjY2xvY2stY2VsbHMg
+PSA8MT47DQo+PiArICAgICAgICB9Ow0KPj4gKyAgICB9Ow0KPj4gZGlmZiAtLWdpdCBhL0Rv
+Y3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9jbG9jay9tZWRpYXRlayxtdDY3OTUt
+c3lzLWNsb2NrLnlhbWwgYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvY2xv
+Y2svbWVkaWF0ZWssbXQ2Nzk1LXN5cy1jbG9jay55YW1sDQo+PiBuZXcgZmlsZSBtb2RlIDEw
+MDY0NA0KPj4gaW5kZXggMDAwMDAwMDAwMDAwLi40NGI5NmFmOWNlYWYNCj4+IC0tLSAvZGV2
+L251bGwNCj4+ICsrKyBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9jbG9j
+ay9tZWRpYXRlayxtdDY3OTUtc3lzLWNsb2NrLnlhbWwNCj4+IEBAIC0wLDAgKzEsNzQgQEAN
+Cj4+ICsjIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiAoR1BMLTIuMCBPUiBCU0QtMi1DbGF1
+c2UpDQo+PiArJVlBTUwgMS4yDQo+PiArLS0tDQo+PiArJGlkOiAiaHR0cDovL2RldmljZXRy
+ZWUub3JnL3NjaGVtYXMvY2xvY2svbWVkaWF0ZWssbXQ2Nzk1LXN5cy1jbG9jay55YW1sIyIN
+Cj4+ICskc2NoZW1hOiAiaHR0cDovL2RldmljZXRyZWUub3JnL21ldGEtc2NoZW1hcy9jb3Jl
+LnlhbWwjIg0KPj4gKw0KPj4gK3RpdGxlOiBNZWRpYVRlayBTeXN0ZW0gQ2xvY2sgQ29udHJv
+bGxlciBmb3IgTVQ2Nzk1DQo+PiArDQo+PiArbWFpbnRhaW5lcnM6DQo+PiArICAtIEFuZ2Vs
+b0dpb2FjY2hpbm8gRGVsIFJlZ25vIDxhbmdlbG9naW9hY2NoaW5vLmRlbHJlZ25vQGNvbGxh
+Ym9yYS5jb20+DQo+PiArICAtIENodW4tSmllIENoZW4gPGNodW4tamllLmNoZW5AbWVkaWF0
+ZWsuY29tPg0KPj4gKw0KPj4gK2Rlc2NyaXB0aW9uOg0KPj4gKyAgVGhlIE1lZGlhdGVrIHN5
+c3RlbSBjbG9jayBjb250cm9sbGVyIHByb3ZpZGVzIHZhcmlvdXMgY2xvY2tzIGFuZCBzeXN0
+ZW0gY29uZmlndXJhdGlvbg0KPiBXcmFwIGFjY29yZGluZyB0byBMaW51eCBjb2RpbmcgY29u
+dmVudGlvbiwgc28gYXQgODAuDQoNCldoYXQgSSB1bmRlcnN0b29kIHRoYXQgMTAwIGxlbmd0
+aCB3YXMgYWdyZWVkIFsxXSBhcyBhIGxpbWl0LiBJIGhhdmVuJ3QgDQpub3RpY2VkIGFueSBy
+ZWNlbnQgY2hhbmdlIHJlZ2FyZGluZyB0byBsaW5lIGxlbmd0aC4NCg0KWzFdIA0KaHR0cHM6
+Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvdG9ydmFsZHMvbGlu
+dXguZ2l0L2NvbW1pdC8/aWQ9YmRjNDhmYTExZTQ2Zjg2N2VhNGQ3NWZhNTllZTg3YTdmNDhi
+ZTE0NA0KDQo+DQo+PiArICBsaWtlIHJlc2V0IGFuZCBidXMgcHJvdGVjdGlvbiBvbiBNVDY3
+OTUuDQo+PiArDQo+PiArcHJvcGVydGllczoNCj4+ICsgIGNvbXBhdGlibGU6DQo+PiArICAg
+IGl0ZW1zOg0KPj4gKyAgICAgIC0gZW51bToNCj4+ICsgICAgICAgICAgLSBtZWRpYXRlayxt
+dDY3OTUtYXBtaXhlZHN5cw0KPj4gKyAgICAgICAgICAtIG1lZGlhdGVrLG10Njc5NS1pbmZy
+YWNmZw0KPj4gKyAgICAgICAgICAtIG1lZGlhdGVrLG10Njc5NS1wZXJpY2ZnDQo+PiArICAg
+ICAgICAgIC0gbWVkaWF0ZWssbXQ2Nzk1LXRvcGNrZ2VuDQo+PiArICAgICAgLSBjb25zdDog
+c3lzY29uDQo+PiArDQo+PiArICByZWc6DQo+PiArICAgIG1heEl0ZW1zOiAxDQo+PiArDQo+
+PiArICAnI2Nsb2NrLWNlbGxzJzoNCj4+ICsgICAgY29uc3Q6IDENCj4+ICsNCj4+ICsgICcj
+cmVzZXQtY2VsbHMnOg0KPj4gKyAgICBjb25zdDogMQ0KPj4gKw0KPj4gK3JlcXVpcmVkOg0K
+Pj4gKyAgLSBjb21wYXRpYmxlDQo+PiArICAtIHJlZw0KPj4gKyAgLSAnI2Nsb2NrLWNlbGxz
+Jw0KPj4gKw0KPj4gK2FkZGl0aW9uYWxQcm9wZXJ0aWVzOiBmYWxzZQ0KPj4gKw0KPj4gK2V4
+YW1wbGVzOg0KPj4gKyAgLSB8DQo+PiArICAgIHNvYyB7DQo+PiArICAgICAgICAjYWRkcmVz
+cy1jZWxscyA9IDwyPjsNCj4+ICsgICAgICAgICNzaXplLWNlbGxzID0gPDI+Ow0KPj4gKw0K
+Pj4gKyAgICAgICAgdG9wY2tnZW46IGNsb2NrLWNvbnRyb2xsZXJAMTAwMDAwMDAgew0KPj4g
+KyAgICAgICAgICAgIGNvbXBhdGlibGUgPSAibWVkaWF0ZWssbXQ2Nzk1LXRvcGNrZ2VuIiwg
+InN5c2NvbiI7DQo+PiArICAgICAgICAgICAgcmVnID0gPDAgMHgxMDAwMDAwMCAwIDB4MTAw
+MD47DQo+PiArICAgICAgICAgICAgI2Nsb2NrLWNlbGxzID0gPDE+Ow0KPj4gKyAgICAgICAg
+fTsNCj4+ICsNCj4+ICsgICAgICAgIGluZnJhY2ZnOiBwb3dlci1jb250cm9sbGVyQDEwMDAx
+MDAwIHsNCj4+ICsgICAgICAgICAgICBjb21wYXRpYmxlID0gIm1lZGlhdGVrLG10Njc5NS1p
+bmZyYWNmZyIsICJzeXNjb24iOw0KPj4gKyAgICAgICAgICAgIHJlZyA9IDwwIDB4MTAwMDEw
+MDAgMCAweDEwMDA+Ow0KPj4gKyAgICAgICAgICAgICNjbG9jay1jZWxscyA9IDwxPjsNCj4+
+ICsgICAgICAgICAgICAjcmVzZXQtY2VsbHMgPSA8MT47DQo+IE5vIG5lZWQgZm9yIGZvdXIg
+ZXhhbXBsZXMgb2YgdGhlIHNhbWUuIFRoZXkgZGlmZmVyIG9ubHkgYnkgY29tcGF0aWJsZSwN
+Cj4gc28gdGhpcyBpcyBqdXN0IHVubmVjZXNzYXJ5IGNvZGUuLi4gd2hpY2ggYXMgeW91IGNh
+biBzZWUgZG9lcyBub3QgcGFzcw0KPiB0aGUgY2hlY2tzLiBUaGlzIGFsc28gaGFzIHRvIGJl
+IGZpeGVkLg0KPg0KPiBNYXliZSBrZWVwIGl0IGFzIGNsb2NrLWNvbnRyb2xsZXI/DQo+DQo+
+DQo+IEJlc3QgcmVnYXJkcywNCj4gS3J6eXN6dG9mDQo+DQotLSANCkRhdmlkIEhlaWRlbGJl
+cmcNCkNvbnN1bHRhbnQgU29mdHdhcmUgRW5naW5lZXINCg0KQ29sbGFib3JhIEx0ZC4NClBs
+YXRpbnVtIEJ1aWxkaW5nLCBTdCBKb2huJ3MgSW5ub3ZhdGlvbiBQYXJrLCBDYW1icmlkZ2Ug
+Q0I0IDBEUywgVUsNClJlZ2lzdGVyZWQgaW4gRW5nbGFuZCAmIFdhbGVzLCBuby4gNTUxMzcx
+OA0KDQo=
+--------------4TT4k8GW9tO0EQaIeP92D69x
+Content-Type: application/pgp-keys; name="OpenPGP_0x69F567861C1EC014.asc"
+Content-Disposition: attachment; filename="OpenPGP_0x69F567861C1EC014.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
-Kind regards,
-Jakob
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+xjMEYlvLOxYJKwYBBAHaRw8BAQdA5CoWEzz4igpwK4h6lK6ZformRk84+ymcfkGN
+PwqEeILNMURhdmlkIEhlaWRlbGJlcmcgPGRhdmlkLmhlaWRlbGJlcmdAY29sbGFi
+b3JhLmNvbT7ClgQTFggAPhYhBEo7kSl22BK0F1Np/mn1Z4YcHsAUBQJiW8s7AhsD
+BQkFo5qABQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEGn1Z4YcHsAU84kBAK5Y
+qSWAOuIumAqgWvke6BEsaIGWGQzXSuKjer/TXuFuAQCwc9ITSVXWWTSpdFt2+4z7
+Wch8tIGlbIFcS9dCFddwCc44BGJbyzsSCisGAQQBl1UBBQEBB0AEk7jXEwDApGOw
+MH/X0UAPBH8Y3isjxhNMjpyRcnl2CwMBCAfCfgQYFggAJhYhBEo7kSl22BK0F1Np
+/mn1Z4YcHsAUBQJiW8s7AhsMBQkFo5qAAAoJEGn1Z4YcHsAU0PEA/j0YuAOKJCnn
+wrkf3ozPP0sutA5bojoARwcIaZKO/zvIAP9PwTC9DGLg+8LJm7m2Lyf0LxLA8FXD
+wueLHBdwHg6zAQ=3D=3D
+=3DOQS+
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------4TT4k8GW9tO0EQaIeP92D69x--
+
+--------------igpTnjsExajZs0wD231Hp3a8--
+
+--------------01SB8j7fsrDg1UCCZJHvnO6w
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQRKO5EpdtgStBdTaf5p9WeGHB7AFAUCYrgrSwAKCRBp9WeGHB7A
+FI9aAPwKZ9qdy8fkfWuR5+0DNALpnxhA22wMeS/Rr+FJzCIO6wD/Q/q4xqSAb6h2
+Q4m/b/mqOFD4AYAJ416vkMM4dwJj0wg=
+=NSS0
+-----END PGP SIGNATURE-----
+
+--------------01SB8j7fsrDg1UCCZJHvnO6w--
