@@ -2,104 +2,123 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA697C433EF
-	for <phone-devel@archiver.kernel.org>; Sat, 25 Jun 2022 20:45:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1ED7EC433EF
+	for <phone-devel@archiver.kernel.org>; Sun, 26 Jun 2022 07:51:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233454AbiFYUpA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 25 Jun 2022 16:45:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34422 "EHLO
+        id S234045AbiFZHvV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 26 Jun 2022 03:51:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230116AbiFYUo7 (ORCPT
+        with ESMTP id S233923AbiFZHvU (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 25 Jun 2022 16:44:59 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EA7E13E88
-        for <phone-devel@vger.kernel.org>; Sat, 25 Jun 2022 13:44:58 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id u15so11303951ejc.10
-        for <phone-devel@vger.kernel.org>; Sat, 25 Jun 2022 13:44:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=H+F5Z0mfBJYQ1TfQcrng6IvkUvurloIcIvH/FYvqkLM=;
-        b=y6cxvDR/U1IEONYBz/iay5T3a4fJrrXTP/TaSHwaYef9QHD8Y+cj16a+TOP7lUK0eg
-         LuvAZN1z5OUmo0KrNfyYL6pr9fY+4/BN8pTFnvAx3UZOZBSkGWG9YmyUDfotF9YaP+FB
-         7VrdPy8RNCtM43r9nIEUYAChz51XVTe/yY18ml+Zn77Xj+7p2oIoBuYfVOiAvOruwWvu
-         WuJwX6ZN1Q9/3xZicIGOnzRbUqT5WIcDXHC8ftMixV6IaGMzT5nPzV/jPpxHRBYhswo6
-         CGRc45xqPauD9dfYgY8KXK7m5S3QntAixxtjRky8fNcIUSMFE8g24tAHH3bMw8q+oJOF
-         aJ/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=H+F5Z0mfBJYQ1TfQcrng6IvkUvurloIcIvH/FYvqkLM=;
-        b=hc4HhzO23ycq06uEV8pihvmCnC/6PEyuSdUO5F2PwV8HUNjS2gqGLe53zBNyMuSphH
-         Dpq7tBPGAplsjbTWyCjxfyJcVmvMiPN9emuqQvDSIYenURM0D+5yx/9ZSuLV8IXAULTi
-         8lEYOI87xu3EEkV71CLOMoBeeXywWchV/mNl1EWVPkGTUqxQOt+976MKM79dGew+Qty/
-         yk6NanYRyUgmHKNg6e5mO8rCqY5IUGvEb+7XSFdjqu8gWrvVTc5txf//q6n/NtlNnk/K
-         B70UUSzksKOwV6w2SYPWOWsaj0xgzrQByxmzcQB1K8ilPhYaAR6bZdsn/15WhF3t7KMs
-         zRIg==
-X-Gm-Message-State: AJIora9NKa6hX2XI7iIGYk0BhVqshRVy0pscC0IrIYVf2fHUadxumQy/
-        dDNgN0eD0Zisyn+ONQ/HRUaEoA==
-X-Google-Smtp-Source: AGRyM1stq1qihX1SSO618jlh5gyWIEwJPPZfqyE6Adl0Y9IsEGshwKvra48Heq8U+1Z+XsacUUCfUg==
-X-Received: by 2002:a17:907:72cf:b0:726:77fa:ec58 with SMTP id du15-20020a17090772cf00b0072677faec58mr3242767ejc.551.1656189896729;
-        Sat, 25 Jun 2022 13:44:56 -0700 (PDT)
-Received: from [192.168.0.239] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id d10-20020a17090648ca00b0070b8a467c82sm3010694ejt.22.2022.06.25.13.44.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 25 Jun 2022 13:44:56 -0700 (PDT)
-Message-ID: <3008fa44-e3b2-f394-5880-e348ace20829@linaro.org>
-Date:   Sat, 25 Jun 2022 22:44:54 +0200
+        Sun, 26 Jun 2022 03:51:20 -0400
+Received: from sonic301-20.consmr.mail.ir2.yahoo.com (sonic301-20.consmr.mail.ir2.yahoo.com [77.238.176.97])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D4BD120AB
+        for <phone-devel@vger.kernel.org>; Sun, 26 Jun 2022 00:51:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1656229877; bh=39cnnm2LcZpob9DUMBAQbw/FL7wmWN3SUwndjA+V+IM=; h=Date:Subject:From:To:Cc:References:In-Reply-To:From:Subject:Reply-To; b=aCOHGye8jea7IQosA6kJLtGHeXJ0nYmVYabloYgoyge4OeNF3i3yppRY2HYmdh/R9Kq5Ufl6zGGQQp7uhvHwlncFACKVU8MnHIbTuqd8cQvRWfBIDrwiUkYPGSXklJp8IUPT3nnIvoPV8J/eoelpoWyuGFfMBQ/+B/j1NdA9uZZJmP0V+Zb96/Q0FAwBdM3U9ldrGuPcU/NMgm9lcEAyiw8xjGzq/XfdMe5Sc7jLuFUfpOUYyc5ME7qvLGR197wj56BTGa6H5K8WdDRbD+yISNlNDNKX9zGzp1rnbLbI4pJhVfSbFb0sXt+W6QkN2xNawYmgtTaxi3WgZhwFIYh0jQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1656229877; bh=Qezq+kiFonbVJBLljqyjQV8R26/WQGnH7Xqlfj1tTGH=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=hLF6gVA+MS+LfFYqRumOtsfX4SQOlaPmUiZX01JvrDziAg99lPte4QOkWZF2ZNj4bxV0XQfi42UOqlkNgxceiyTFh2Wq1hPLCtJ45GfWR+KdtHahvVRproP4auXcOm2XJvesG0fZblHYho30AWwa7vy8Dna6H1c6bg1U4IOn+msQ2AqbJv8yjsHVrCh08TVL70o9JXcvmkmBuKW3TpSdFh3kbKkSh35d/vpQdpUGB+y7fojopBYZENyVN3GFK13WOvJGaYz1dObrmnASOKezvVC8zaRlMmv3hnt59Ks2yau/Qzixbjy8n93iv1JzrwBHa67LLJPET5xVO03gshYmGQ==
+X-YMail-OSG: qQ0smoAVM1mnPWGV7bUD98WUopSwrzNXadP2D1iGIuSf1TEGJhpE5LrbFTThXRZ
+ i1hFhK0z.GmGB3JqK393rKDt2q5QZbqyoj9bH.sMJpZJsfw2ONXVwmaMULEDyzlXZSDgTsGXTYGE
+ aeuPIIOCaPClOhV147udSUXdln05JFNBw1lpS3bHa0JxpGu58_WWuRFf07knohna74zaPAErmtpj
+ L1mDMI0a.r5aG_06YnA.SdsKkEFVmRKGVToyT_6pbkcHV3vgporI.RaDIgb_YbF21qh7ruKgHVGJ
+ E6.b1KWp1v8ouGZUibXHi6HXaImFLBqZzocebFQEvLEaRpLbqNHrr4T6Ps6Zg3H19XUYC9LvckkE
+ MX9sRcuZmfgqlfsnXJ.39F7n1KT.iwsUjAeubyeh0HDLKeymXS.9Pf4LHikFEYm_TwgKPXvbY2ul
+ egpu9OHEL5ZIY9JqeEBdarNkUBNuY55wG2V.u81dW60hagJh2JTRpMJqirhm8mMKbYDrl3vLHCj4
+ E10PpelW5OYhyBDMjZSRQM_XztfnWxkFKJAcn7Q0hM3aR.Yfc5v02gx.y1gJDpXiuXzR9MjFgr9q
+ O3uj6BYKIiv6itFcFKiJjwM_93xcPFkH4MtPxyV5fHKqQ97evGT6IRCUx.SXsYbA7yk3hKEi4PN_
+ LayAn3syYrkrWGqcjQpcnyEotRwZGv9ep7FD6Hovt6QTBL6sYxXx30Ba6WptzkQrjErbnsTIrF1Y
+ KzT3imbGUs901bP7f8_xiyzaqihfMH7PLhkncmtt78rlLhul9crCbpmZE6WpZnU023ok7YVeWUQt
+ 237O8Fwzh8y_WPeqADPbMLQrS6EShg9tJbKxyc7toV28GEpAsWH4zpxvZbLJkVckGpe2IbqD36U1
+ uR8Med9mYKAtnkENeywd.11xrh6uHPG9Uh2X9lRQsf3CDS5B9utCv0rGL0oVSbKQpqR84KxduHqA
+ Tkk20gCmQKhqiHSSv0FndhtM1NL5RyTdjNc3Mjvn6Y71gwBkj2BhaapZXdOvg2.f8eQbg0Yhihaa
+ lDhc5D9kMZVTBC.wECIaN0o5q5jHtxW9QZOWJmEUG8pvlhpZadFLVEsMomgoDEIshuAaKkufUzYj
+ 29JzUGkb0ivx7Sc37ZWcHXjzM15YLi2MWs9hE7HtWPad21K8kx8D7ejLTJON0drhfAmhCXtRwRIC
+ DCP374HsH6jzS6cpgj8kz2ygKnh483I9sJD4I.27oMSKF0h5gmDRjFJUsFaYUH6IYNwOf0B09hQB
+ mLUji6ysFptXxzHx8zhrbRbzlkLfKY3vOfhr0rEEKedjFEVntPGmLnYcGssmJdomDnfaYbtrgvlk
+ 3WUkDZXVwNVdAmlNtDiSfh1KSh.rB_th3JDfbeuVnIR4RWPBxxE01_zS0MPJ8KO8hKZTzu1iotsD
+ CM2CULG3ehLnlJuaWs7W0RLCtvAVSD0jYPs_sDpG4msv1x8oFBy0ZDflXJBotC65Z2nG5j2FmJcT
+ 8IXswusGqLMwwlfNn1CiwqT4.ns22Aiapg4hVxlBQSd9uzkg6t60zKoQ0CcgGsTRWt9d3sNoUdOH
+ bVlqIgFnMQFUf4nY43f.PAb6L5Adztz1TNIiD_.6cuaOZWv7nqQ2ul1g5UZASUADtC0Fj_AiKCtz
+ Uub.rj13k8xPf2A07UEIENUGCQBIFkeLrkJLOQlNr.UZpCnudr4ZC1j6jZt89f5LRpUicd8DsJP2
+ Kn6CpcF5yv1CeKBlDe7vFJIkGFG.gUv202Apt0garmIYJfaS_gd8mKI79tiq.WrZw_PaWqf8whWK
+ Ns4nsYmUqSYr0lur44fuw5ieFcnS9ZkiEYUnuGrugi_sDX9U7VDkU.eyKU13IgYIE5PmGZmt5lGU
+ f2SiSFCHVpumXvIxlyny0jnLecMZJ.j4jxqhhtuWSn_ZpwcK1B7e6kV_Z7cp6hYzSp35yuWOnjdd
+ ugvG.cEU1FMrcRMF1nR8xi8a.AQRmPva5VbinjoOEGIwVAGUk.FYY9zqvpu7cDIOFT.eGXry3vup
+ oW9maZOkDmsxm9WKN181d2A_0D.uDFUA5THgfR6MFkh4OLyS6FSedDQ13DAdmrHKwMrVAm0ikNEI
+ 1uH2iMiiz8yxlGrKVyDmAXJ9ALJyeGJULvVZBpB4b4ezHErRk._YdXOGqCHQwraYSDsRdFyQ.EO2
+ b0yScIUqm8c5kZdyOc8EwrUF1URiNGHtzrGCjGWDCqXnkm0eM8R2p9i4UgPRALfSoLJST46ZUT9o
+ ygGxrk_DXDikGLGE6ztEr2VxA2SpSquv3ApO8Qp476GeoCFCph_6MBAPO.h8d8jIT8lpG
+X-Sonic-MF: <jahau@rocketmail.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ir2.yahoo.com with HTTP; Sun, 26 Jun 2022 07:51:17 +0000
+Received: by hermes--canary-production-ir2-c9bf9d9bc-fw6gn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 3a9d8ca4ca272df8e505774fd3b7d3a5;
+          Sun, 26 Jun 2022 07:51:12 +0000 (UTC)
+Message-ID: <c7de2a05-af72-5b73-b70c-82d84e84887c@rocketmail.com>
+Date:   Sun, 26 Jun 2022 09:51:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.10.0
-Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: Use WCD9335 DT bindings
+Subject: Re: [PATCH v3 5/8] iio: magnetometer: yas530: Change data type of
+ calibration coefficients
 Content-Language: en-US
-To:     Yassine Oudjana <yassine.oudjana@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Banajit Goswami <bgoswami@quicinc.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
-        devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220622161322.168017-1-y.oudjana@protonmail.com>
- <20220622161322.168017-4-y.oudjana@protonmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220622161322.168017-4-y.oudjana@protonmail.com>
+From:   Jakob Hauser <jahau@rocketmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1655509425.git.jahau@rocketmail.com>
+ <18f223776f6942d52af2e41dd10160e220a23311.1655509425.git.jahau@rocketmail.com>
+ <20220618155618.18996d0c@jic23-huawei>
+ <10c06f21-23d3-d3a8-5a6d-8290cf2971cb@rocketmail.com>
+In-Reply-To: <10c06f21-23d3-d3a8-5a6d-8290cf2971cb@rocketmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.20280 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 22/06/2022 18:13, Yassine Oudjana wrote:
-> From: Yassine Oudjana <y.oudjana@protonmail.com>
-> 
-> Replace DAI indices in codec nodes with definitions from the WCD9335
-> DT bindings for devices that use WCD9335.
-> 
-> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-> ---
-> Changes since v1:
->  - Maintain the alphabetical order in msm8996-xiaomi-gemini includes
-> 
->  arch/arm64/boot/dts/qcom/apq8096-db820c.dts         | 5 +++--
->  arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts  | 5 +++--
->  arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts | 5 +++--
->  3 files changed, 9 insertions(+), 6 deletions(-)
-> 
+Hi Jonathan,
 
+On 21.06.22 02:51, Jakob Hauser wrote:
+>
+> 
+> On 18.06.22 16:56, Jonathan Cameron wrote:
+>
+>> On Sat, 18 Jun 2022 02:13:13 +0200
+>> Jakob Hauser <jahau@rocketmail.com> wrote:
+>>
+>>> This is a preparation for adding YAS537 variant.
+>>>
+>>> YAS537 uses other data types on the calibration coefficients [1] than YAS530 [2]
+>>> and YAS532 [3].
+>>>
+>>> On YAS537, at least for a4 and a7 this could matter because 8-bit unsigned data
+>>> from the register gets stored into a signed data type, therefore this should be
+>>> 8-bit as well.
+>>>
+>>> For YAS530/532, on the other hand, it doesn't seem to matter. The size of a2-a9
+>>> and k is smaller than 8-bit at extraction, also the applied math is low. And
+>>> Cx/Cy1/Cy2, now being defined as signed 16-bit, are extracted as unsigned 8-bit
+>>> and undergo only minor math.
+>>
+>> Ok. If this is harmless to existing drivers fair enough, though my personal
+>> inclination would have been to take the easier approach of making the
+>> new variant sign extend on variable load (sign_extend_32() and similar)
+>> just so we didn't need to check the older parts weren't affected.
+> 
+> I didn't know that operation :) Let's take this.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+While working on patchset v4, I just realized that sign_extend32() can't
+be used at the variable declaration but instead needs to be applied at
+"variable load", as you wrote.
 
+I wasn't aware of this until now. In that case, I'd  prefer to leave the
+patch unchanged. Overall the resulting code looks simpler that way.
+Applying sign_extend32() at all locations where we extract calibration
+coefficients makes it more dizzy.
 
-Best regards,
-Krzysztof
+Kind regards,
+Jakob
