@@ -2,148 +2,133 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB76DC433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 30 Jun 2022 21:56:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9065BCCA473
+	for <phone-devel@archiver.kernel.org>; Thu, 30 Jun 2022 23:11:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237054AbiF3V4t (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 30 Jun 2022 17:56:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46018 "EHLO
+        id S232034AbiF3XLS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 30 Jun 2022 19:11:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237274AbiF3V4s (ORCPT
+        with ESMTP id S232023AbiF3XLP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 30 Jun 2022 17:56:48 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F369A57206
-        for <phone-devel@vger.kernel.org>; Thu, 30 Jun 2022 14:56:45 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id 7-20020a9d0107000000b00616935dd045so429509otu.6
-        for <phone-devel@vger.kernel.org>; Thu, 30 Jun 2022 14:56:45 -0700 (PDT)
+        Thu, 30 Jun 2022 19:11:15 -0400
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B11625926C
+        for <phone-devel@vger.kernel.org>; Thu, 30 Jun 2022 16:11:09 -0700 (PDT)
+Received: by mail-ot1-x332.google.com with SMTP id m24-20020a0568301e7800b00616b5c114d4so532857otr.11
+        for <phone-devel@vger.kernel.org>; Thu, 30 Jun 2022 16:11:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=8CS533fsVHbJlembFtrJaJOunJ/hjtVlmQosQykPOVU=;
-        b=S/NpE6Kmx1CbuLYF7W63lIhTpwApNv2nYfn5k5hCaG3+u2eXBUGmP4fIq1dUGisMTw
-         Z6TQkg5prg5MB0VGbx9nu39MvWpSFbdJ1IrFg5Q2urI0X65FMnfcAfjTMGnjMurkDFXL
-         mdRJfacHhU6owX7jQL2PfmlJ+MMb0y/YegKjxg+VP8ppTBvgEUKR4LSdhAEgHeByL+dO
-         /OFZCk5YDGbsigwdkuje2nI7PEPlHeX/BsG5isNHPTyxPT4GeRfjOypgmegh4jSEstao
-         5cDNQrLoivLUoQgFZ1Wr3/wwZpEzvT59MTfLSNRjIsQkZiK+5KhOAZEM6E5JhwQMyvHZ
-         gENw==
+        bh=/9jdD7+1+i1Lm60svXWsJgxbEFp2/Oeat9F5av8m7uY=;
+        b=ynbe5POgPeLGuOGH8qwfK+MAkOMQKMg/sOvFUIv2Lp8h7jwzaq3Iz9Q7XwCDuppnN2
+         tpYB14FFIzI4i6s90p8TCDyoGEdNHcKmwroQZQYEyC/AlK/+f8SClpsJe6Bxm28Jytn1
+         UgcHN5pqFnUtP44Pwk3l7LfPteUOYjgIjre4UZPNOKUBPhNEy4nKXNCcKvJP+oX9cUjR
+         DJYRWGwlKU8BIc0GGrWF9ztt+54fHSbBcIzeOkMwZBi2iCuWQB3jjMRflT2o/C4KIjDc
+         /1HwInPB+slMTrIH2zr9z9OwUwcr4uAhK7KcbuvvhgyysIkv7OGiPjgk6bKbpkR0ajEQ
+         TscA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=8CS533fsVHbJlembFtrJaJOunJ/hjtVlmQosQykPOVU=;
-        b=l/Ti4GMNpJNb3Zc77hOUyQqQNO1O5ppwT5ZhjNlW1hCrh0Xbk6Q3EtCWQg7Mq8IjU1
-         i6QIWnUmZYo5dwrBDIzh0C1DPUZn5N5BC/3p5r2LVyS28roh1T4Av6ilc01aKn13u21C
-         XIGUuKfhORtlAj3q9VBIXze3BSMnh565EMzXYzj9PwSHF32AsnzrZY616V3xKKrRkJgz
-         klzLDYWSoC0HhGbX0a+DgDnTYfjo24kaz0CAWNWL0LvwuDHONSKYVpJwSsYlvQRwaUlq
-         i4NwN7bZmZJhmVDY1x12V5vyFvs+0+oMBzkQAKWk9srbaD3Cvvt3nbW1IeuT4jFhXNQg
-         EP+g==
-X-Gm-Message-State: AJIora+vFoAonaq7g0Lb7Tw+xFi8NRP0Ne5pPEZgrhzxhVhq/RX2NoNZ
-        SkSaCXAQA3S2ZR2OiJUnr+yWFg==
-X-Google-Smtp-Source: AGRyM1tTcC8XQCvCGbbV3733NDMYY/C1kLs9792XFAckdaiHz/q/E2fq1m/b7ST5yNLUq66kTwVARA==
-X-Received: by 2002:a9d:2f25:0:b0:616:9255:2ff with SMTP id h34-20020a9d2f25000000b00616925502ffmr5006588otb.87.1656626205292;
-        Thu, 30 Jun 2022 14:56:45 -0700 (PDT)
+        bh=/9jdD7+1+i1Lm60svXWsJgxbEFp2/Oeat9F5av8m7uY=;
+        b=yKW/+nPbN6TlzdvcFBmWWLos1Mp8g1CyBPqe9mhcl5vF2CvuSVbo0UrXhV8mrXwdX2
+         R+UtWFKVzyFBEJRNEljYN3zTw1Pc0bmrbAfCoxO8VlY7mp+iePX4PUJbrnsHVY26p5Hj
+         +d3zLLxzoglVXKslcOaIEilEou6L8ipZ2gprILX1FqTc5Pcn82q/RHjElZ42Xb8MSaPK
+         ofMXLDPGeVM15uBZTJCInrko2aRygbdfUUZdq92Qpc5zO+HT7KdV42+yhK02NE/+yi5u
+         O92v1Hzq2MkaUtoUMe+JK98ZJSgRuA/TvNJ+uIIOf2LphzE2PPKg3mk3qzN2hy7hu4yh
+         IuGQ==
+X-Gm-Message-State: AJIora/6argF522g0AheTfwU7EYFv2Vb+BKRCQvpI17s5UiREX5/V8Fy
+        /55zNc8FwjDUSg+Mw4SjfKm40A==
+X-Google-Smtp-Source: AGRyM1vBfSGHeJKr39L7bBI0Wp641fmclQNLEE0MJMll9iNLLlO+JE+GUgn5SMqOlb0/rNJ9hdKpRw==
+X-Received: by 2002:a9d:754a:0:b0:616:bd96:a37e with SMTP id b10-20020a9d754a000000b00616bd96a37emr5265514otl.325.1656630668992;
+        Thu, 30 Jun 2022 16:11:08 -0700 (PDT)
 Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id r6-20020a056870580600b001089aef1815sm8952855oap.20.2022.06.30.14.56.44
+        by smtp.gmail.com with ESMTPSA id n2-20020a4aa7c2000000b00420c4e021e8sm11439551oom.38.2022.06.30.16.11.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jun 2022 14:56:44 -0700 (PDT)
-Date:   Thu, 30 Jun 2022 16:56:42 -0500
+        Thu, 30 Jun 2022 16:11:08 -0700 (PDT)
+Date:   Thu, 30 Jun 2022 18:11:06 -0500
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Dylan Van Assche <me@dylanvanassche.be>
-Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Caleb Connolly <caleb@connolly.tech>,
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom/sdm845-shift-axolotl: Enable pmi9889
- LPG LED
-Message-ID: <Yr4cGj7MujkXZ161@builder.lan>
-References: <20220512054439.13971-1-me@dylanvanassche.be>
+        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/3] input: add event codes for user programmable switch
+ events
+Message-ID: <Yr4timTL6mBlik0m@builder.lan>
+References: <20220516142158.1612109-1-caleb@connolly.tech>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220512054439.13971-1-me@dylanvanassche.be>
+In-Reply-To: <20220516142158.1612109-1-caleb@connolly.tech>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu 12 May 00:44 CDT 2022, Dylan Van Assche wrote:
+On Mon 16 May 09:22 CDT 2022, Caleb Connolly wrote:
 
-> Enables the RGB notification LED on the SHIFT 6mq (sdm845-shift-axolotl)
-> with the Qualcomm Light Pulse Generator bindings by Bjorn Andersson [1].
-> Patches are merged in for-next branch of linux-leds.
-> Tested these changes on the SHIFT 6mq.
+> Add SW_PROG{1,2,3,4} for device switches which are handled by userspace.
 > 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/pavel/linux-leds.git/commit/?h=for-next&id=a8e53db46f19f67be6a26488aafb7d10c78e33bd
+> This can be used for devices with "generic" switches which are intended
+> to be user-programmable, for example OnePlus phones contain a tri-state
+> key which can be used for switching between mute/vibrate/ring, or
+> programmed by the user to perform any arbitrary actions.
 > 
-> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
-> ---
->  .../boot/dts/qcom/sdm845-shift-axolotl.dts    | 29 +++++++++++++++++++
->  1 file changed, 29 insertions(+)
+> These are analogous to the keys KEY_PROG{1,2,3,4} found on some
+> keyboards.
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> index 847f6217a77b..af412ac2c9d0 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> @@ -2,11 +2,13 @@
->  /*
->   * Copyright (c) 2022, Alexander Martinz <amartinz@shiftphones.com>
->   * Copyright (c) 2022, Caleb Connolly <caleb@connolly.tech>
-> + * Copyright (c) 2022, Dylan Van Assche <me@dylanvanassche.be>
->   */
->  
->  /dts-v1/;
->  
->  #include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/leds/common.h>
->  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
->  #include "sdm845.dtsi"
->  #include "pm8998.dtsi"
-> @@ -554,6 +556,33 @@ &pmi8998_smb2 {
->  	monitored-battery = <&battery>;
->  };
->  
-> +&pmi8998_lpg {
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 
-We don't have this node, because no one has reviewed
-https://lore.kernel.org/all/20220505022706.1692554-1-bjorn.andersson@linaro.org/#t
-yet.
+This looks reasonable to me.
 
-If anyone could take a look I'd be happy to merge this as well.
+Dmitry, what do you think?
 
-Thanks,
+Regards,
 Bjorn
 
-> +	status = "okay";
-> +
-> +	multi-led {
-> +		color = <LED_COLOR_ID_RGB>;
-> +		function = LED_FUNCTION_STATUS;
-> +
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		led@3 {
-> +			reg = <3>;
-> +			color = <LED_COLOR_ID_BLUE>;
-> +		};
-> +
-> +		led@4 {
-> +			reg = <4>;
-> +			color = <LED_COLOR_ID_GREEN>;
-> +		};
-> +
-> +		led@5 {
-> +			reg = <5>;
-> +			color = <LED_COLOR_ID_RED>;
-> +		};
-> +	};
-> +};
-> +
->  &qup_uart9_default {
->  	pinconf-rx {
->  		pins = "gpio5";
-> -- 
+> ---
+> See the next patch in this series for an example usecase.
+> ---
+>  include/linux/mod_devicetable.h        | 2 +-
+>  include/uapi/linux/input-event-codes.h | 6 +++++-
+>  2 files changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
+> index 5da5d990ff58..45364fbeaaf7 100644
+> --- a/include/linux/mod_devicetable.h
+> +++ b/include/linux/mod_devicetable.h
+> @@ -326,7 +326,7 @@ struct pcmcia_device_id {
+>  #define INPUT_DEVICE_ID_LED_MAX		0x0f
+>  #define INPUT_DEVICE_ID_SND_MAX		0x07
+>  #define INPUT_DEVICE_ID_FF_MAX		0x7f
+> -#define INPUT_DEVICE_ID_SW_MAX		0x10
+> +#define INPUT_DEVICE_ID_SW_MAX		0x14
+>  #define INPUT_DEVICE_ID_PROP_MAX	0x1f
+> 
+>  #define INPUT_DEVICE_ID_MATCH_BUS	1
+> diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
+> index dff8e7f17074..339153886a13 100644
+> --- a/include/uapi/linux/input-event-codes.h
+> +++ b/include/uapi/linux/input-event-codes.h
+> @@ -917,7 +917,11 @@
+>  #define SW_MUTE_DEVICE		0x0e  /* set = device disabled */
+>  #define SW_PEN_INSERTED		0x0f  /* set = pen inserted */
+>  #define SW_MACHINE_COVER	0x10  /* set = cover closed */
+> -#define SW_MAX			0x10
+> +#define SW_PROG1		0x11  /* set = program 1 (user defined) */
+> +#define SW_PROG2		0x12  /* set = program 2 (user defined) */
+> +#define SW_PROG3		0x13  /* set = program 3 (user defined) */
+> +#define SW_PROG4		0x14  /* set = program 4 (user defined) */
+> +#define SW_MAX			0x14
+>  #define SW_CNT			(SW_MAX+1)
+> 
+>  /*
+> --
 > 2.36.1
+> 
 > 
