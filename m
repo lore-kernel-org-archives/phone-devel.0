@@ -2,219 +2,93 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FDD8C43334
-	for <phone-devel@archiver.kernel.org>; Wed, 29 Jun 2022 22:54:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6DAAC43334
+	for <phone-devel@archiver.kernel.org>; Thu, 30 Jun 2022 11:46:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230012AbiF2Wyp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 29 Jun 2022 18:54:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36682 "EHLO
+        id S235124AbiF3LqX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 30 Jun 2022 07:46:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231293AbiF2WyM (ORCPT
+        with ESMTP id S235159AbiF3LqQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 29 Jun 2022 18:54:12 -0400
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA9D9396AA;
-        Wed, 29 Jun 2022 15:53:55 -0700 (PDT)
-Received: from Marijn-Arch-PC.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Thu, 30 Jun 2022 07:46:16 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BA115A45D;
+        Thu, 30 Jun 2022 04:46:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 4DD373F7DC;
-        Thu, 30 Jun 2022 00:53:53 +0200 (CEST)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rajeev Nandan <quic_rajeevny@quicinc.com>,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Jonathan Marek <jonathan@marek.ca>, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
-Subject: [PATCH v3 10/11] drm/msm/dsi_phy_10nm: Replace parent names with clk_hw pointers
-Date:   Thu, 30 Jun 2022 00:53:30 +0200
-Message-Id: <20220629225331.357308-11-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.37.0
-In-Reply-To: <20220629225331.357308-1-marijn.suijten@somainline.org>
-References: <20220629225331.357308-1-marijn.suijten@somainline.org>
+        by ams.source.kernel.org (Postfix) with ESMTPS id E03DAB82A3F;
+        Thu, 30 Jun 2022 11:46:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB23C3411E;
+        Thu, 30 Jun 2022 11:46:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656589569;
+        bh=KZbwbKY8OlqEXl4fG8750X4KhP+vZADjW8qGjUTlxNQ=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=sXP+op3TTdzeum6xf7A0Mw75HgNt1ocO0cyfnr8m79CLzc6pr/5l0cThAnbkE1xNO
+         iM8llkQrRpeAJpwTUGojkhXXskFCVKZoFhXUCPLi1aKlGgsDyh2iuRdqfOeye+ekXM
+         BjODwm459vvnpwP1UgtUfiG6RL4CgLn7Tck+Rx1e8pIMXUvUI0vB/u00XyiyE5NgKO
+         QgTNw9EDDL/2brLXDR3Pyb2qj5Iig2HHLnsBFLcStez0fDJl6g6vEhsmrtk1IR+4TU
+         TcczZfxwrHkIuz+xHOxjYYpyfWAUy/UheOO48KN0pMNhNReUdN1JjgU7b1UbFNvjFw
+         9HzBrIHiBjr+Q==
+From:   Mark Brown <broonie@kernel.org>
+To:     yassine.oudjana@gmail.com, bjorn.andersson@linaro.org,
+        srinivas.kandagatla@linaro.org, lgirdwood@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
+        perex@perex.cz, bgoswami@quicinc.com, tiwai@suse.com,
+        agross@kernel.org
+Cc:     linux-arm-msm@vger.kernel.org, y.oudjana@protonmail.com,
+        phone-devel@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20220622161322.168017-1-y.oudjana@protonmail.com>
+References: <20220622161322.168017-1-y.oudjana@protonmail.com>
+Subject: Re: (subset) [PATCH v2 0/3] ASoC: dt-bindings: Add bindings for WCD9335 DAIs
+Message-Id: <165658956629.346792.3984245362995741043.b4-ty@kernel.org>
+Date:   Thu, 30 Jun 2022 12:46:06 +0100
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-parent_hw pointers are easier to manage and cheaper to use than
-repeatedly formatting the parent name and subsequently leaving the clk
-framework to perform lookups based on that name.
+On Wed, 22 Jun 2022 20:13:19 +0400, Yassine Oudjana wrote:
+> Add DT bindings for WCD9335 DAIs and use them in the driver as well
+> as all device trees currently using WCD9335.
+> 
+> Changes since v1:
+>  - Make header guard match path
+>  - Maintain the alphabetical order in msm8996-xiaomi-gemini includes
+> 
+> [...]
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c | 79 ++++++++++------------
- 1 file changed, 36 insertions(+), 43 deletions(-)
+Applied to
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-index 8bd7b97b1b9b..ae57f95edf63 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-@@ -574,24 +574,24 @@ static int dsi_10nm_set_usecase(struct msm_dsi_phy *phy)
-  */
- static int pll_10nm_register(struct dsi_pll_10nm *pll_10nm, struct clk_hw **provided_clocks)
- {
--	char clk_name[32], parent[32], vco_name[32];
--	char parent2[32], parent3[32], parent4[32];
-+	char clk_name[32];
- 	struct clk_init_data vco_init = {
- 		.parent_data = &(const struct clk_parent_data) {
- 			.fw_name = "ref",
- 		},
- 		.num_parents = 1,
--		.name = vco_name,
-+		.name = clk_name,
- 		.flags = CLK_IGNORE_UNUSED,
- 		.ops = &clk_ops_dsi_pll_10nm_vco,
- 	};
- 	struct device *dev = &pll_10nm->phy->pdev->dev;
--	struct clk_hw *hw;
-+	struct clk_hw *hw, *pll_out_div, *pll_bit, *pll_by_2_bit;
-+	struct clk_hw *pll_post_out_div, *pclk_mux;
- 	int ret;
- 
- 	DBG("DSI%d", pll_10nm->phy->id);
- 
--	snprintf(vco_name, sizeof(vco_name), "dsi%dvco_clk", pll_10nm->phy->id);
-+	snprintf(clk_name, sizeof(clk_name), "dsi%dvco_clk", pll_10nm->phy->id);
- 	pll_10nm->clk_hw.init = &vco_init;
- 
- 	ret = devm_clk_hw_register(dev, &pll_10nm->clk_hw);
-@@ -599,36 +599,34 @@ static int pll_10nm_register(struct dsi_pll_10nm *pll_10nm, struct clk_hw **prov
- 		return ret;
- 
- 	snprintf(clk_name, sizeof(clk_name), "dsi%d_pll_out_div_clk", pll_10nm->phy->id);
--	snprintf(parent, sizeof(parent), "dsi%dvco_clk", pll_10nm->phy->id);
- 
--	hw = devm_clk_hw_register_divider(dev, clk_name, parent,
--			CLK_SET_RATE_PARENT, pll_10nm->phy->pll_base +
-+	pll_out_div = devm_clk_hw_register_divider_parent_hw(dev, clk_name,
-+			&pll_10nm->clk_hw, CLK_SET_RATE_PARENT,
-+			pll_10nm->phy->pll_base +
- 				REG_DSI_10nm_PHY_PLL_PLL_OUTDIV_RATE,
- 			0, 2, CLK_DIVIDER_POWER_OF_TWO, NULL);
--	if (IS_ERR(hw)) {
--		ret = PTR_ERR(hw);
-+	if (IS_ERR(pll_out_div)) {
-+		ret = PTR_ERR(pll_out_div);
- 		goto fail;
- 	}
- 
- 	snprintf(clk_name, sizeof(clk_name), "dsi%d_pll_bit_clk", pll_10nm->phy->id);
--	snprintf(parent, sizeof(parent), "dsi%d_pll_out_div_clk", pll_10nm->phy->id);
- 
- 	/* BIT CLK: DIV_CTRL_3_0 */
--	hw = devm_clk_hw_register_divider(dev, clk_name, parent,
--			CLK_SET_RATE_PARENT,
-+	pll_bit = devm_clk_hw_register_divider_parent_hw(dev, clk_name,
-+			pll_out_div, CLK_SET_RATE_PARENT,
- 			pll_10nm->phy->base + REG_DSI_10nm_PHY_CMN_CLK_CFG0,
- 			0, 4, CLK_DIVIDER_ONE_BASED, &pll_10nm->postdiv_lock);
--	if (IS_ERR(hw)) {
--		ret = PTR_ERR(hw);
-+	if (IS_ERR(pll_bit)) {
-+		ret = PTR_ERR(pll_bit);
- 		goto fail;
- 	}
- 
- 	snprintf(clk_name, sizeof(clk_name), "dsi%d_phy_pll_out_byteclk", pll_10nm->phy->id);
--	snprintf(parent, sizeof(parent), "dsi%d_pll_bit_clk", pll_10nm->phy->id);
- 
- 	/* DSI Byte clock = VCO_CLK / OUT_DIV / BIT_DIV / 8 */
--	hw = devm_clk_hw_register_fixed_factor(dev, clk_name, parent,
--					       CLK_SET_RATE_PARENT, 1, 8);
-+	hw = devm_clk_hw_register_fixed_factor_parent_hw(dev, clk_name,
-+			pll_bit, CLK_SET_RATE_PARENT, 1, 8);
- 	if (IS_ERR(hw)) {
- 		ret = PTR_ERR(hw);
- 		goto fail;
-@@ -637,48 +635,43 @@ static int pll_10nm_register(struct dsi_pll_10nm *pll_10nm, struct clk_hw **prov
- 	provided_clocks[DSI_BYTE_PLL_CLK] = hw;
- 
- 	snprintf(clk_name, sizeof(clk_name), "dsi%d_pll_by_2_bit_clk", pll_10nm->phy->id);
--	snprintf(parent, sizeof(parent), "dsi%d_pll_bit_clk", pll_10nm->phy->id);
- 
--	hw = devm_clk_hw_register_fixed_factor(dev, clk_name, parent,
--					       0, 1, 2);
--	if (IS_ERR(hw)) {
--		ret = PTR_ERR(hw);
-+	pll_by_2_bit = devm_clk_hw_register_fixed_factor_parent_hw(dev,
-+			clk_name, pll_bit, 0, 1, 2);
-+	if (IS_ERR(pll_by_2_bit)) {
-+		ret = PTR_ERR(pll_by_2_bit);
- 		goto fail;
- 	}
- 
- 	snprintf(clk_name, sizeof(clk_name), "dsi%d_pll_post_out_div_clk", pll_10nm->phy->id);
--	snprintf(parent, sizeof(parent), "dsi%d_pll_out_div_clk", pll_10nm->phy->id);
- 
--	hw = devm_clk_hw_register_fixed_factor(dev, clk_name, parent,
--					       0, 1, 4);
--	if (IS_ERR(hw)) {
--		ret = PTR_ERR(hw);
-+	pll_post_out_div = devm_clk_hw_register_fixed_factor_parent_hw(dev,
-+			clk_name, pll_out_div, 0, 1, 4);
-+	if (IS_ERR(pll_post_out_div)) {
-+		ret = PTR_ERR(pll_post_out_div);
- 		goto fail;
- 	}
- 
- 	snprintf(clk_name, sizeof(clk_name), "dsi%d_pclk_mux", pll_10nm->phy->id);
--	snprintf(parent, sizeof(parent), "dsi%d_pll_bit_clk", pll_10nm->phy->id);
--	snprintf(parent2, sizeof(parent2), "dsi%d_pll_by_2_bit_clk", pll_10nm->phy->id);
--	snprintf(parent3, sizeof(parent3), "dsi%d_pll_out_div_clk", pll_10nm->phy->id);
--	snprintf(parent4, sizeof(parent4), "dsi%d_pll_post_out_div_clk", pll_10nm->phy->id);
--
--	hw = devm_clk_hw_register_mux(dev, clk_name,
--			((const char *[]){
--				parent, parent2, parent3, parent4,
-+
-+	pclk_mux = devm_clk_hw_register_mux_parent_hws(dev, clk_name,
-+			((const struct clk_hw *[]){
-+				pll_bit,
-+				pll_by_2_bit,
-+				pll_out_div,
-+				pll_post_out_div,
- 			}), 4, 0, pll_10nm->phy->base +
--				REG_DSI_10nm_PHY_CMN_CLK_CFG1,
--			0, 2, 0, NULL);
--	if (IS_ERR(hw)) {
--		ret = PTR_ERR(hw);
-+				REG_DSI_10nm_PHY_CMN_CLK_CFG1, 0, 2, 0, NULL);
-+	if (IS_ERR(pclk_mux)) {
-+		ret = PTR_ERR(pclk_mux);
- 		goto fail;
- 	}
- 
- 	snprintf(clk_name, sizeof(clk_name), "dsi%d_phy_pll_out_dsiclk", pll_10nm->phy->id);
--	snprintf(parent, sizeof(parent), "dsi%d_pclk_mux", pll_10nm->phy->id);
- 
- 	/* PIX CLK DIV : DIV_CTRL_7_4*/
--	hw = devm_clk_hw_register_divider(dev, clk_name, parent, 0,
--			pll_10nm->phy->base + REG_DSI_10nm_PHY_CMN_CLK_CFG0,
-+	hw = devm_clk_hw_register_divider_parent_hw(dev, clk_name, pclk_mux,
-+			0, pll_10nm->phy->base + REG_DSI_10nm_PHY_CMN_CLK_CFG0,
- 			4, 4, CLK_DIVIDER_ONE_BASED, &pll_10nm->postdiv_lock);
- 	if (IS_ERR(hw)) {
- 		ret = PTR_ERR(hw);
--- 
-2.37.0
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
+Thanks!
+
+[1/3] ASoC: dt-bindings: Add bindings for WCD9335 DAIs
+      commit: 53447365ccb442bbd3dfffc2d7fd96203770dfb6
+[2/3] ASoC: wcd9335: Use DT bindings instead of local DAI definitions
+      commit: 66348f178d5a842c8afe52c3b743fb4af24cdb2a
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
