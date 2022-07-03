@@ -2,108 +2,89 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E621C43334
-	for <phone-devel@archiver.kernel.org>; Sat,  2 Jul 2022 13:47:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6056BC433EF
+	for <phone-devel@archiver.kernel.org>; Sun,  3 Jul 2022 03:57:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230096AbiGBNr4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 2 Jul 2022 09:47:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40940 "EHLO
+        id S230258AbiGCD5B (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 2 Jul 2022 23:57:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbiGBNrz (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 2 Jul 2022 09:47:55 -0400
-Received: from msg-4.mailo.com (ip-15.mailobj.net [213.182.54.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4522DF2E;
-        Sat,  2 Jul 2022 06:47:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1656769649; bh=KRvAEsUC0sls+O9Nc7UMnd+DxX26VFDrwl51aR8S2gA=;
-        h=X-EA-Auth:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-         References:Content-Type:MIME-Version:Content-Transfer-Encoding;
-        b=Np/XkjLGYDSK2m+ojMf9zS4ddJ5r02mOPImaeG/SpQ39LcS6qmijaK8jrWoD/8S5Z
-         O4mEVpWt5KRCrV3PgrLVSKbylc1orn1ZHRsXgig4eOEvbxf1Wu+rMVkDXsVw++jSm0
-         n0SDVpITUJbq9IWrQS2QtU6Z2/kN4zGhl1ZXYP1A=
-Received: by b-6.in.mailobj.net [192.168.90.16] with ESMTP
-        via [213.182.55.207]
-        Sat,  2 Jul 2022 15:47:29 +0200 (CEST)
-X-EA-Auth: NvJ8YmF84cTTSq1nzCuSijqA9StTvrfAFrhbyf6EeamH+Zgv60bAkmVLtOhIEfVGVThA33NXyVo9Jj6btur4iZPjM6f2lfuuSkRCSy8A3eQ=
-Message-ID: <a66ee18b02fa7a1654fedab0aa49bde09cedeee1.camel@mailoo.org>
-Subject: Re: [PATCH v2 1/6] dt-bindings: leds: Convert is31fl319x to dtschema
-From:   Vincent Knecht <vincent.knecht@mailoo.org>
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Pavel Machek <pavel@ucw.cz>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-leds@vger.kernel.org,
-        OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS 
-        <devicetree@vger.kernel.org>,
-        linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Date:   Sat, 02 Jul 2022 15:47:28 +0200
-In-Reply-To: <99DCB131-5A1F-4F8B-8E3F-1AE283AA591A@goldelico.com>
-References: <20220701134415.4017794-1-vincent.knecht@mailoo.org>
-         <20220701134415.4017794-2-vincent.knecht@mailoo.org>
-         <99DCB131-5A1F-4F8B-8E3F-1AE283AA591A@goldelico.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+        with ESMTP id S229642AbiGCD5A (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 2 Jul 2022 23:57:00 -0400
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A2B1B1E1
+        for <phone-devel@vger.kernel.org>; Sat,  2 Jul 2022 20:56:58 -0700 (PDT)
+Received: by mail-ot1-x32e.google.com with SMTP id s13-20020a0568301e0d00b00616ad12fee7so5072210otr.10
+        for <phone-devel@vger.kernel.org>; Sat, 02 Jul 2022 20:56:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=dc9vz6N7DKkZ82VTpYZZOu4EwmmX1IVNuq7aVvtCYLg=;
+        b=zeYDcxMXG3Bfc271hs/yW15xnm8oYQfvzRsUdXI5TYj4vcCfgVJ1Vd1MJ1KKEcv9/8
+         DfWE8j1e94BUq7mhLocGdLOjq+XO6qVMBgYN7NqzY9EPCJ2spjyhRsj4YCrJ85PxLv0G
+         hte7WfuK8DEsWkmw386OrAYRS8P9HDS08aOCJO26GoNBU1BDqxK9VIX8ALHUcDwSJtiS
+         YKkq+gLip8YUg3M4Tbv8lpoV5wSwXBGULIAfwdiv/1391ikt9LUOi2LnOGlCAAh8/SwX
+         7TGRqvPIP9Ny3ExzilHv6/zY94xH9QcJ4UXTkM7/T3pfo4HzrbPjUG5ARZoXSH3TZvMZ
+         +EJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=dc9vz6N7DKkZ82VTpYZZOu4EwmmX1IVNuq7aVvtCYLg=;
+        b=et+xFckCRQosgEdDD6475A5ad3zKWc1vJrEWB4UCQ25ZQr+WS71COUYDTxElcMhvn3
+         6aKSS8DsNGLs7jtVuPj0jbl995ou8/+0SomlE+zWOIfcUMlHPSLSfAmlkmS+9cONo1Db
+         xQjRnXrFYE01kL5Lji8TXzozF29VVtQxr+ADewvrKf0Pj4+W1Y4NIoSpBjmF/CYRpBg8
+         Fu+9GoWVuaOTkE5QEEcMiGw0xxdJM0Ht/hsg2CuIb1o77/jeUvL2MUQVS2cplKZA1oha
+         Qx595l+kq+L2qsb1AIpn4ZjTIj5pSpySQutK8UFilqa9D4k2ieMm6Kj9fIYhQAgOE3R2
+         lavA==
+X-Gm-Message-State: AJIora9NTdjqVUR4nXmIdI3L9yK8zvh0WQvykscI16/XQCtmwDpRoLG4
+        Q0Qahrzh5ZEqaGOceyaZGpCqoA==
+X-Google-Smtp-Source: AGRyM1sjOW8+NcP1/yVgLxMiRkSjc3NeZ5dMm0JT1zZBUJC7qJ3DQ4yXTHeopv4w72le8rSgf0vFYA==
+X-Received: by 2002:a05:6830:3142:b0:617:131c:d671 with SMTP id c2-20020a056830314200b00617131cd671mr8612962ots.368.1656820617958;
+        Sat, 02 Jul 2022 20:56:57 -0700 (PDT)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id 25-20020aca0f19000000b0032e5d0b5d5fsm12965910oip.58.2022.07.02.20.56.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Jul 2022 20:56:57 -0700 (PDT)
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     krzysztof.kozlowski+dt@linaro.org, agross@kernel.org,
+        robh+dt@kernel.org, Alec Su <ae40515@yahoo.com.tw>,
+        sboyd@codeaurora.org
+Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        y.oudjana@protonmail.com, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v4 0/2] Add support for Xiaomi Mi 5s Plus
+Date:   Sat,  2 Jul 2022 22:55:54 -0500
+Message-Id: <165682055970.445910.14607173848356967245.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220606024706.22861-1-ae40515@yahoo.com.tw>
+References: <20220606024706.22861-1-ae40515.ref@yahoo.com.tw> <20220606024706.22861-1-ae40515@yahoo.com.tw>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Le samedi 02 juillet 2022 =C3=A0 15:26 +0200, H. Nikolaus Schaller a =C3=A9=
-crit=C2=A0:
-> Hi Vincent,
->=20
-> > Am 01.07.2022 um 15:44 schrieb Vincent Knecht <vincent.knecht@mailoo.or=
-g>:
-> >=20
-> > Convert leds-is31fl319x.txt to dtschema.
-> >=20
-> > Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
-> > ---
-> > .../bindings/leds/issi,is31fl319x.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 | 113 ++++++++++++++++++
-> > .../bindings/leds/leds-is31fl319x.txt=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 |=C2=A0 61 ----------
-> > 2 files changed, 113 insertions(+), 61 deletions(-)
-> > create mode 100644 Documentation/devicetree/bindings/leds/issi,is31fl31=
-9x.yaml
-> > delete mode 100644 Documentation/devicetree/bindings/leds/leds-is31fl31=
-9x.txt
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/leds/issi,is31fl319x.yam=
-l
-> > b/Documentation/devicetree/bindings/leds/issi,is31fl319x.yaml
-> > new file mode 100644
-> > index 000000000000..17635a7cf8af
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/leds/issi,is31fl319x.yaml
-> > @@ -0,0 +1,113 @@
-> > +# SPDX-License-Identifier: GPL-2.0-only
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/leds/issi,is31fl319x.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: ISSI LED controllers bindings for IS31FL319{0,1,3,6,9}
-> > +
-> > +maintainers:
-> > +=C2=A0 - H. Nikolaus Schaller <hns@goldelico.com>
-> > +
->=20
-> as noted for v1 you can change this as it is a new file (just same idea i=
-n different language) and I won't have time
-> to maintain it.
->=20
-> BR and thanks,
-> Nikolaus
+On Mon, 6 Jun 2022 02:47:04 +0000, Alec Su wrote:
+> This series adds the device tree for Xiaomi Mi 5s Plus (xiaomi-natrium)
+> smartphone which is based on Snapdragon 821 SoC.
+> 
+> Changes since v3:
+> - Remove the unnecessary properties in the device tree.
+> - Correct the supplies in "dsi0" node
+> - Add delay properties in "touchscreen" node
+> 
+> [...]
 
-Hi Nikolaus,
+Applied, thanks!
 
-ok I'll send a new series.
-Just to be sure, is it ok to change license to (GPL-2.0-only OR BSD-2-Claus=
-e) too ?
+[1/2] dt-bindings: arm: qcom: Document xiaomi,natrium board
+      commit: bb856fdf07f666686439b2c186fbb80a41e93277
+[2/2] arm64: dts: qcom: msm8996-xiaomi-natrium: Add support for Xiaomi Mi 5s Plus
+      commit: 13e75fe786a16c35bccc5e9d8890224fd38ad733
 
-Thank you
-
-
+Best regards,
+-- 
+Bjorn Andersson <bjorn.andersson@linaro.org>
