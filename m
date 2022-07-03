@@ -2,64 +2,63 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6056BC433EF
-	for <phone-devel@archiver.kernel.org>; Sun,  3 Jul 2022 03:57:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BBAF9C433EF
+	for <phone-devel@archiver.kernel.org>; Sun,  3 Jul 2022 03:59:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230258AbiGCD5B (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 2 Jul 2022 23:57:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56046 "EHLO
+        id S232768AbiGCD7d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 2 Jul 2022 23:59:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229642AbiGCD5A (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 2 Jul 2022 23:57:00 -0400
-Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A2B1B1E1
-        for <phone-devel@vger.kernel.org>; Sat,  2 Jul 2022 20:56:58 -0700 (PDT)
-Received: by mail-ot1-x32e.google.com with SMTP id s13-20020a0568301e0d00b00616ad12fee7so5072210otr.10
-        for <phone-devel@vger.kernel.org>; Sat, 02 Jul 2022 20:56:58 -0700 (PDT)
+        with ESMTP id S232244AbiGCD6h (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 2 Jul 2022 23:58:37 -0400
+Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7FACE1D
+        for <phone-devel@vger.kernel.org>; Sat,  2 Jul 2022 20:57:44 -0700 (PDT)
+Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-10be1122de0so1888173fac.7
+        for <phone-devel@vger.kernel.org>; Sat, 02 Jul 2022 20:57:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=dc9vz6N7DKkZ82VTpYZZOu4EwmmX1IVNuq7aVvtCYLg=;
-        b=zeYDcxMXG3Bfc271hs/yW15xnm8oYQfvzRsUdXI5TYj4vcCfgVJ1Vd1MJ1KKEcv9/8
-         DfWE8j1e94BUq7mhLocGdLOjq+XO6qVMBgYN7NqzY9EPCJ2spjyhRsj4YCrJ85PxLv0G
-         hte7WfuK8DEsWkmw386OrAYRS8P9HDS08aOCJO26GoNBU1BDqxK9VIX8ALHUcDwSJtiS
-         YKkq+gLip8YUg3M4Tbv8lpoV5wSwXBGULIAfwdiv/1391ikt9LUOi2LnOGlCAAh8/SwX
-         7TGRqvPIP9Ny3ExzilHv6/zY94xH9QcJ4UXTkM7/T3pfo4HzrbPjUG5ARZoXSH3TZvMZ
-         +EJg==
+        bh=m4vPhry9GlWxolpiEGQx+cJhb0YN4mLCSCVeDPanOBE=;
+        b=aChs4oCazzlglDNgvnsWgwsv6vGLrKBrykbXODjJuJzur9VyfzmYgcuEAbsfmdkoGc
+         aEbCECmYFMbU6rdM3TzFIlgCSKOZiLYS1203xF5qtAf/OtoATlcCJWvQb/o+GVHweOeL
+         P9G8xkgpExouKbxpDwzCo8xZ1GzZV7ml86fWUVoIIXnVgoyqeF81jHW11gCHIByF85Zu
+         Plf0bT0XUmIw7NvxQ0dsQFTkz1DrK8uZLv7tmr4Ats4r09m1gNTWa3dMNC9aXDuFAoUs
+         f0g/VFiB523V+RbjqUBfK00RolpyuLmSI26grq4ibfQAMn/lvNcGwFen0O0kLMhjlj1j
+         YZgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=dc9vz6N7DKkZ82VTpYZZOu4EwmmX1IVNuq7aVvtCYLg=;
-        b=et+xFckCRQosgEdDD6475A5ad3zKWc1vJrEWB4UCQ25ZQr+WS71COUYDTxElcMhvn3
-         6aKSS8DsNGLs7jtVuPj0jbl995ou8/+0SomlE+zWOIfcUMlHPSLSfAmlkmS+9cONo1Db
-         xQjRnXrFYE01kL5Lji8TXzozF29VVtQxr+ADewvrKf0Pj4+W1Y4NIoSpBjmF/CYRpBg8
-         Fu+9GoWVuaOTkE5QEEcMiGw0xxdJM0Ht/hsg2CuIb1o77/jeUvL2MUQVS2cplKZA1oha
-         Qx595l+kq+L2qsb1AIpn4ZjTIj5pSpySQutK8UFilqa9D4k2ieMm6Kj9fIYhQAgOE3R2
-         lavA==
-X-Gm-Message-State: AJIora9NTdjqVUR4nXmIdI3L9yK8zvh0WQvykscI16/XQCtmwDpRoLG4
-        Q0Qahrzh5ZEqaGOceyaZGpCqoA==
-X-Google-Smtp-Source: AGRyM1sjOW8+NcP1/yVgLxMiRkSjc3NeZ5dMm0JT1zZBUJC7qJ3DQ4yXTHeopv4w72le8rSgf0vFYA==
-X-Received: by 2002:a05:6830:3142:b0:617:131c:d671 with SMTP id c2-20020a056830314200b00617131cd671mr8612962ots.368.1656820617958;
-        Sat, 02 Jul 2022 20:56:57 -0700 (PDT)
+        bh=m4vPhry9GlWxolpiEGQx+cJhb0YN4mLCSCVeDPanOBE=;
+        b=Vy1t+9hnSJH6pHFhzcaLwNWwK9bj54DxLvtmqYo2BTHnhlh8fnRTrmrIDvES0j90hU
+         xqodTh+p0P416ZH6j4Vawbioq8dXAeELrnIiGLRocUs7womN7DD2+BsJxGSi6j6owN4a
+         OdYObbNv5lNRqFMGYMc334q+eDJXJqM+J+OQNsypZJnZeHG193ZtllvaMdpx+4ymNcpn
+         eypM5WFJcqh3LI+1OoQElJxR+1wKYsFG/QfWONCc35nBxtXPeXYofFll7KQ+jWMPdSYD
+         6gj1Xqli2Ob5tPEUdeiBfYbfdyAFbN+c//PbS3moquZZ3ArkqRmPkki02NoQ82d9N/Gl
+         4PDQ==
+X-Gm-Message-State: AJIora/CByswKfp1pdk6ZIRI3EFecVYIKsg4HeSjc/9ylnmsc83/EbiV
+        BhGe6tfIPvAaW81wkwnfORRxDg==
+X-Google-Smtp-Source: AGRyM1sRbwkRIvtXZTXXjH3FDK5zD5Ssm8jQbjrtCoV4W/QaqC2i9IoaIiH/0U4r9AM+08T92hONQQ==
+X-Received: by 2002:a05:6870:c58b:b0:10b:d21d:ad5e with SMTP id ba11-20020a056870c58b00b0010bd21dad5emr2797394oab.287.1656820663899;
+        Sat, 02 Jul 2022 20:57:43 -0700 (PDT)
 Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id 25-20020aca0f19000000b0032e5d0b5d5fsm12965910oip.58.2022.07.02.20.56.56
+        by smtp.gmail.com with ESMTPSA id 25-20020aca0f19000000b0032e5d0b5d5fsm12965910oip.58.2022.07.02.20.57.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Jul 2022 20:56:57 -0700 (PDT)
+        Sat, 02 Jul 2022 20:57:43 -0700 (PDT)
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     krzysztof.kozlowski+dt@linaro.org, agross@kernel.org,
-        robh+dt@kernel.org, Alec Su <ae40515@yahoo.com.tw>,
-        sboyd@codeaurora.org
-Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        y.oudjana@protonmail.com, phone-devel@vger.kernel.org,
-        devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v4 0/2] Add support for Xiaomi Mi 5s Plus
-Date:   Sat,  2 Jul 2022 22:55:54 -0500
-Message-Id: <165682055970.445910.14607173848356967245.b4-ty@linaro.org>
+To:     linux-arm-msm@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+Cc:     Rob Herring <robh+dt@kernel.org>, Andy Gross <agross@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: (subset) [PATCH] ARM: dts: qcom: msm8974: Add BAM DMUX Ethernet/IP device
+Date:   Sat,  2 Jul 2022 22:56:37 -0500
+Message-Id: <165682055969.445910.15295732443241491891.b4-ty@linaro.org>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220606024706.22861-1-ae40515@yahoo.com.tw>
-References: <20220606024706.22861-1-ae40515.ref@yahoo.com.tw> <20220606024706.22861-1-ae40515@yahoo.com.tw>
+In-Reply-To: <20220517203450.1155696-1-luca@z3ntu.xyz>
+References: <20220517203450.1155696-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -67,23 +66,15 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 6 Jun 2022 02:47:04 +0000, Alec Su wrote:
-> This series adds the device tree for Xiaomi Mi 5s Plus (xiaomi-natrium)
-> smartphone which is based on Snapdragon 821 SoC.
+On Tue, 17 May 2022 22:34:51 +0200, Luca Weiss wrote:
+> BAM DMUX is used as the network interface to the modem.
 > 
-> Changes since v3:
-> - Remove the unnecessary properties in the device tree.
-> - Correct the supplies in "dsi0" node
-> - Add delay properties in "touchscreen" node
 > 
-> [...]
 
 Applied, thanks!
 
-[1/2] dt-bindings: arm: qcom: Document xiaomi,natrium board
-      commit: bb856fdf07f666686439b2c186fbb80a41e93277
-[2/2] arm64: dts: qcom: msm8996-xiaomi-natrium: Add support for Xiaomi Mi 5s Plus
-      commit: 13e75fe786a16c35bccc5e9d8890224fd38ad733
+[1/1] ARM: dts: qcom: msm8974: Add BAM DMUX Ethernet/IP device
+      commit: 4eb1560259de4fd5f89ec5e7faf5d4c6a83bae9c
 
 Best regards,
 -- 
