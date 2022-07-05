@@ -2,112 +2,81 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A4F6CCA47B
-	for <phone-devel@archiver.kernel.org>; Tue,  5 Jul 2022 18:58:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06D8AC43334
+	for <phone-devel@archiver.kernel.org>; Tue,  5 Jul 2022 22:06:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233085AbiGES6R (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 5 Jul 2022 14:58:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59096 "EHLO
+        id S229505AbiGEWGk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 5 Jul 2022 18:06:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233061AbiGES6O (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 5 Jul 2022 14:58:14 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEB6C1FCCD;
-        Tue,  5 Jul 2022 11:58:13 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id l11so23434204ybu.13;
-        Tue, 05 Jul 2022 11:58:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2GgOTK8JPl4Gc9sCsTpBhVS+r5KJG/3rc61mViR4SCY=;
-        b=MMBQyxSHX4Hxb968KOOM79u1NGS/FygOZnk3IwDlmFzwVxIbwPZglyX64WjKL/JEhj
-         daWjYGrpyqd7lLZy5p4NtDi1Gi88uZgnV6+Sf2LlKZrg2KWjdkCmTdbiKbRwbwDzaYH5
-         X8u9ObSIdrEHi6S6xzofO5tieOVASSn2W4NKHDEeAMvtB/ZFi9V0YDJpfh4lhhKF/l9O
-         TXTEao1eoIk2f2ooQ2K2pTuFUkv7gIXq3itkJXZQljedzEtm3NAEa19ORi30FaV519PE
-         KHBlKBQIdqJIgiiTz5HsQ3jf7PQeNaXMBZoYoCpwMwIgm2b5AKA/OYpgCHlu9UdZLz1D
-         t+aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2GgOTK8JPl4Gc9sCsTpBhVS+r5KJG/3rc61mViR4SCY=;
-        b=PjAS9oiRit9Gg5x2ot9hZxolln+eE6j0RYohhu3n2K63RVhdRAZQzK0mbb/V9vNXZ3
-         rHh0mJ5ZPO1Tab2xUGM9Ix/xiEkby+XMQlWYWMTzzWB1ag2I9VnJ0t1cJ2z9F67NRn4E
-         /u8rMtECRBuEVwVyCiqzuJ7VBOrJi5dBzobP0EOi6NItUXq0YO+oyadXNmUp7SUqytfq
-         3DpHQdbmbBL6hfGjtrGR7ips0SwX2t2h9YlGKo/OQF/FNMY6bNmZnaNZ+lXW2zIW5mnt
-         8FKwgdwV0UecZU1ambILLNde/m1leRSzQpO89A2d31YY7SGTm2VOaYsOz1x50lndKYya
-         alEQ==
-X-Gm-Message-State: AJIora9izqVCr3M3e3y0zweBS3ZxEC055IiMdtLiA/kVImW1bWETrd0x
-        gnXeBpXr5QqoTpRQ1o3VZpW07XY+Rp2fAYk8sygPoAcFh8NOEA==
-X-Google-Smtp-Source: AGRyM1saNf1h+jbNK1m6kDRF42l21TvpQhbjqH60l6MJL30jqp7pIkkOASH10savVSTakyud7xQIoGjX9zGoh9NFE40=
-X-Received: by 2002:a05:6902:c4:b0:64b:4677:331b with SMTP id
- i4-20020a05690200c400b0064b4677331bmr39379530ybs.93.1657047492856; Tue, 05
- Jul 2022 11:58:12 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220705163136.2278662-1-vincent.knecht@mailoo.org>
-In-Reply-To: <20220705163136.2278662-1-vincent.knecht@mailoo.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 5 Jul 2022 20:57:36 +0200
-Message-ID: <CAHp75VfwoSqLZVbsN3DduP=SEKvr=tSfmxF1MTnYma0zh-JsXQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] leds: Fix/Add is31fl319{0,1,3} support
-To:     Vincent Knecht <vincent.knecht@mailoo.org>
-Cc:     Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        with ESMTP id S231782AbiGEWGj (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 5 Jul 2022 18:06:39 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6065C19C01;
+        Tue,  5 Jul 2022 15:06:38 -0700 (PDT)
+Received: from g550jk.localnet (31-151-115-246.dynamic.upc.nl [31.151.115.246])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id EDDA3D0A87;
+        Tue,  5 Jul 2022 22:06:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1657058766; bh=eXM/PactU0SWohQdnU6JM3exuAXvUMJXVlduTn27Kac=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=xzzqXu1cMZG1tQK66TdZI9aRVAxYUEgTNsvM+GA79k0eZ4XXF5ofXN+lpPdBQtf0h
+         HpQtJE+JXT5994OTOrxAimIzpDtuOpz/dM/k+mmUYL0d0bBAlitfWjbY/AQ7QF8qkC
+         PVegjoJGKUrSDulCe5zGGio9HSe8JElT+EzPx21s=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Content-Type: text/plain; charset="UTF-8"
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] ARM: dts: qcom: msm8974-*: re-add remoteproc supplies
+Date:   Wed, 06 Jul 2022 00:06:05 +0200
+Message-ID: <12009239.O9o76ZdvQC@g550jk>
+In-Reply-To: <Yr5mua6i6WxoAlzB@builder.lan>
+References: <20220606160421.1641778-1-luca@z3ntu.xyz> <20220606160421.1641778-2-luca@z3ntu.xyz> <Yr5mua6i6WxoAlzB@builder.lan>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Jul 5, 2022 at 6:32 PM Vincent Knecht <vincent.knecht@mailoo.org> wrote:
->
-> v3:
-> - pick up Rob's R-b for patches 1 and 2
-> - reinstate bindings docs license and maintainer
->   changes with Nikolaus agreement
-> - took Andy's comments on patch 4 into account
+Hi Bjorn,
 
-Thanks for the update. Nothing serious, but a few comments.
+On Freitag, 1. Juli 2022 05:15:05 CEST Bjorn Andersson wrote:
+> On Mon 06 Jun 11:04 CDT 2022, Luca Weiss wrote:
+> > As part of a recent cleanup commit, the remoteproc supplies for adsp and
+> > modem were removed from msm8974.dtsi and now need to be set in the
+> > device dts. Do so.
+> > 
+> > Fixes: f300826d27be ("ARM: dts: qcom-msm8974: Sort and clean up nodes")
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> > Bjorn, could you please pick this up for -fixes so it lands in an
+> > upcoming 5.19-rc?
+> 
+> As reported by lkp, this doesn't build. Am I missing something?
 
-Also a question here. Do you have plans to convert it to use device properties?
+I briefly mentioned in IRC, maybe you missed it.
+Castor is actually still missing pm8841 regulators upstream.
+I'll send this old (rebased) commit from you to add them, is that ok with you?
 
-> The is31fl3190, is31fl3191 and is31fl3193 chips (1 or 3 PWM channels)
-> cannot be handled the same as is31fl3196 and is31fl3199,
-> if only because the register map is different.
-> Also:
-> - the software shutdown bit is reversed
-> - and additional field needs to be set to enable all channels
-> - the led-max-microamp current values and setting are not the same
->
-> Datasheets:
-> https://lumissil.com/assets/pdf/core/IS31FL3190_DS.pdf
-> https://lumissil.com/assets/pdf/core/IS31FL3191_DS.pdf
-> https://lumissil.com/assets/pdf/core/IS31FL3193_DS.pdf
-> https://lumissil.com/assets/pdf/core/IS31FL3196_DS.pdf
-> https://lumissil.com/assets/pdf/core/IS31FL3199_DS.pdf
->
-> This series:
->
-> - converts dt-bindings to dtschema, adding all si-en compatibles
->   for convenience and consistency, and adding constraints on
->   supported values for eg. reg address and led-max-microamp
->
-> - changes vars, structs and defines to not use 319X suffix
->   but 3190 for 319{0,1,3} and 3196 for 319{6,9}
->
-> - adds fields in chipdef struct for chip-specific values
->
-> - only in the last patch, adds is31fl319{0,1,3} specific values
->   so those chips can work.
->
-> Tested on msm8916-alcatel-idol347, which probably has an
-> si-en,sn3190 or si-en,sn3191 (only one white led indicator).
+https://github.com/msm8974-mainline/linux/commit/
+d01e20807a00e78570abf3dd91bea555dff06fa9
 
--- 
-With Best Regards,
-Andy Shevchenko
+Otherwise we can just keep castor out of this patch for now and add it later, 
+I don't really mind either way.
+
+Regards
+Luca
+
+> 
+> Regards,
+> Bjorn
+
+
+
+
