@@ -2,173 +2,119 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 646AACCA485
-	for <phone-devel@archiver.kernel.org>; Tue,  5 Jul 2022 16:32:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76362C433EF
+	for <phone-devel@archiver.kernel.org>; Tue,  5 Jul 2022 18:48:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232256AbiGEQcc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 5 Jul 2022 12:32:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57896 "EHLO
+        id S231570AbiGESsB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 5 Jul 2022 14:48:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231423AbiGEQcZ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 5 Jul 2022 12:32:25 -0400
-Received: from msg-1.mailo.com (msg-1.mailo.com [213.182.54.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2F3318382;
-        Tue,  5 Jul 2022 09:32:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1657038719; bh=Obre5IIa+wQZbNnEgE6NenQzK6E616sCX+q9jkhLXDk=;
-        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
-         References:MIME-Version:Content-Transfer-Encoding;
-        b=UsyX2LqfslhudDZbUkOJzTExVwJOxyQS4IPVqSSYPC/p69bK0mCtsbIswSuuwGx85
-         j2Z3XLNBrcckPeidJb7RCsKF9cvfMZdCpK29pDDT619G7lrntTQa2LhLP4JAO55xEp
-         mP4HI7k2mQiR1Z+TiIjOk1rdq4Ood1sf8eng+v00=
-Received: by b-5.in.mailobj.net [192.168.90.15] with ESMTP
-        via [213.182.55.207]
-        Tue,  5 Jul 2022 18:31:59 +0200 (CEST)
-X-EA-Auth: uy+XIWsVz7YnrvCMGI2igZ4GD6wt6zDY8wIs7sajjsm2njh0kMZYz054c3LV5CBIq+wy0C4UbXizPP/bqETCeSu7CeClHJC7Sms51yaLemA=
-From:   Vincent Knecht <vincent.knecht@mailoo.org>
-To:     Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Vincent Knecht <vincent.knecht@mailoo.org>,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        hns@goldelico.com, Rob Herring <robh@kernel.org>
-Subject: [PATCH v3 2/6] dt-bindings: leds: is31fl319x: Document variants specificities
-Date:   Tue,  5 Jul 2022 18:31:30 +0200
-Message-Id: <20220705163136.2278662-3-vincent.knecht@mailoo.org>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20220705163136.2278662-1-vincent.knecht@mailoo.org>
-References: <20220705163136.2278662-1-vincent.knecht@mailoo.org>
+        with ESMTP id S232494AbiGESrq (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 5 Jul 2022 14:47:46 -0400
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22DB31B788;
+        Tue,  5 Jul 2022 11:47:42 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-31bf3656517so117869937b3.12;
+        Tue, 05 Jul 2022 11:47:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=OUn0Dl36fUybJsR7SVUxdhvipccFobY5Xd3Ct0RmvM0=;
+        b=LLsUFpXOv4vADqi/Z+1WbsuyTzVjRaEjfscsAli3kLOpdNNF/fg1rSfF2x19nVWf1g
+         wBBZGjk6janX3qenOpHKKrAyuolm9qLk6VYgRlX+X5STjfp1Q6Ljp7l/XcwiqEIj+g4s
+         ADTspCsqtE6/53G2ibgsjcKGj3RLC6ZWil3g1UTA2xiEyWYzeBsUu2DzCDC96jhF85mM
+         vXI2TZqF2eiCuhNyo2NTHM3Nqx+VPcGF95eGlPB9scw47wikb04gtdJA/WBpXWmMsyHq
+         WsWCmpVj3HQEQ9hxPbnK7EGAoSVq43PIbeWe8AjAmstetcCc+Sr2YEyWE0wuqSzHqlu7
+         xfeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=OUn0Dl36fUybJsR7SVUxdhvipccFobY5Xd3Ct0RmvM0=;
+        b=KU2tzmn7zCGpY32IFrDdTe2Q/81nzgjXvoEkAq6jb5kw6YZdngswgdNQa3LBjmfllG
+         PqDeudG4uiZAZ+eVwgOaW9M1l8mbHLO+ndVIF98aO8jeiSsXzuovCwSpKeXDCO+YGMes
+         VJhK0SHuk7ZmXplaTUepTUb0tsuO57sPg5c3h+trxLWFdouAdpdmMiSzVybwcH7AYDt7
+         tGMVjKoh5m70RWasyrztiVIvzUx8WzrOnEW/BuVndo43/Bk4AToxwaQO8vC1TL9YNwKV
+         owwkfhVU3oJafGk9IfQ3FzczbtR2lN9yyy3+FBG+yH19boQkcEnjzy2xBGEiBsIoyB7g
+         zgFQ==
+X-Gm-Message-State: AJIora+kWtDHboVnorVOmEQMEJw+bpx6iOen2PvjlTgmCGJ0A/wZFKXy
+        3fNyFFTbbYcOLXcOJSAhqK2m0mZ+WJ8CgPslmFA=
+X-Google-Smtp-Source: AGRyM1s+scTvZUsz+EFhE5GHHFUPVEKSvgjXH4mEu2fWSfrxbb0l4gyvoFkcbtEYwWVD17SjWWeUkoZd6n8XmmBTeso=
+X-Received: by 2002:a81:8397:0:b0:31c:8a02:3f6d with SMTP id
+ t145-20020a818397000000b0031c8a023f6dmr16817651ywf.486.1657046861338; Tue, 05
+ Jul 2022 11:47:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220705163136.2278662-1-vincent.knecht@mailoo.org> <20220705163136.2278662-5-vincent.knecht@mailoo.org>
+In-Reply-To: <20220705163136.2278662-5-vincent.knecht@mailoo.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 5 Jul 2022 20:47:05 +0200
+Message-ID: <CAHp75VdHdSkALpgGHGxthq8h1q9Dg3N5jJS6NxTuexvfWJEDjQ@mail.gmail.com>
+Subject: Re: [PATCH v3 4/6] leds: is31fl319x: Use non-wildcard names for vars,
+ structs and defines
+To:     Vincent Knecht <vincent.knecht@mailoo.org>
+Cc:     Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add si-en compatibles for all chip variants and add conditionals
-depending on compatibles to document variants specs:
-- possible reg addresses
-- whether audio-gain-db is supported or not
-- maximum number of leds
-- led-max-microamp values
+On Tue, Jul 5, 2022 at 6:32 PM Vincent Knecht <vincent.knecht@mailoo.org> wrote:
+>
+> In order to add real support for is31fl3190, is31fl3191 and is31fl3193,
+> rename variant-dependent elements to not use 319X where needed.
+>
+> 3190 suffix is used for is31fl3190, is31fl3191 and is31fl3193 circuits.
+> 3196 suffix is used for is31fl3196 and is31fl3199.
+>
+> Those two groups have different register maps, current settings and even
+> a different interpretation of the software shutdown bit:
+> https://lumissil.com/assets/pdf/core/IS31FL3190_DS.pdf
+> https://lumissil.com/assets/pdf/core/IS31FL3191_DS.pdf
+> https://lumissil.com/assets/pdf/core/IS31FL3193_DS.pdf
+> https://lumissil.com/assets/pdf/core/IS31FL3196_DS.pdf
+> https://lumissil.com/assets/pdf/core/IS31FL3199_DS.pdf
+>
+> Rename variables, structures and defines in preparation of the splitting.
+> No functional nor behaviour change.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
----
- .../bindings/leds/issi,is31fl319x.yaml        | 84 ++++++++++++++++++-
- 1 file changed, 82 insertions(+), 2 deletions(-)
+...
 
-diff --git a/Documentation/devicetree/bindings/leds/issi,is31fl319x.yaml b/Documentation/devicetree/bindings/leds/issi,is31fl319x.yaml
-index 0d684aeeb8cd..940333f2d69c 100644
---- a/Documentation/devicetree/bindings/leds/issi,is31fl319x.yaml
-+++ b/Documentation/devicetree/bindings/leds/issi,is31fl319x.yaml
-@@ -28,6 +28,10 @@ properties:
-       - issi,is31fl3193
-       - issi,is31fl3196
-       - issi,is31fl3199
-+      - si-en,sn3190
-+      - si-en,sn3191
-+      - si-en,sn3193
-+      - si-en,sn3196
-       - si-en,sn3199
- 
-   reg:
-@@ -61,8 +65,6 @@ patternProperties:
-         maximum: 9
- 
-       led-max-microamp:
--        default: 20000
--        enum: [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000]
-         description:
-           Note that a driver will take the lowest of all LED limits
-           since the chip has a single global setting. The lowest value
-@@ -71,6 +73,84 @@ patternProperties:
-           and not the current, which will always have its peak value
-           equal to led-max-microamp.
- 
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - issi,is31fl3190
-+              - issi,is31fl3191
-+              - issi,is31fl3193
-+              - si-en,sn3190
-+              - si-en,sn3191
-+              - si-en,sn3193
-+    then:
-+      properties:
-+        reg:
-+          enum: [0x68, 0x69, 0x6a, 0x6b]
-+
-+        audio-gain-db: false
-+
-+      patternProperties:
-+        "^led@[1-9]$":
-+          properties:
-+            led-max-microamp:
-+              default: 42000
-+              enum: [5000, 10000, 17500, 30000, 42000]
-+    else:
-+      properties:
-+        reg:
-+          enum: [0x64, 0x65, 0x66, 0x67]
-+
-+      patternProperties:
-+        "^led@[1-9]$":
-+          properties:
-+            led-max-microamp:
-+              default: 20000
-+              enum: [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000]
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - issi,is31fl3190
-+              - issi,is31fl3191
-+              - si-en,sn3190
-+              - si-en,sn3191
-+    then:
-+      patternProperties:
-+        "^led@[1-9]$":
-+          properties:
-+            reg:
-+              maximum: 1
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - issi,is31fl3193
-+              - si-en,sn3193
-+    then:
-+      patternProperties:
-+        "^led@[1-9]$":
-+          properties:
-+            reg:
-+              maximum: 3
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - issi,is31fl3196
-+              - si-en,sn3196
-+    then:
-+      patternProperties:
-+        "^led@[1-9]$":
-+          properties:
-+            reg:
-+              maximum: 6
-+
- required:
-   - compatible
-   - reg
+> +static bool is31fl3196_volatile_reg(struct device *dev, unsigned int reg)
+
+>  { /* volatile registers are not cached */
+
+This is a rather non-standard place for comments. Are you going to
+address this in the future?
+
+>  }
+
+...
+
+> +static const struct reg_default is31fl3196_reg_defaults[] = {
+> +       { IS31FL3196_CONFIG1, 0x00},
+> +       { IS31FL3196_CONFIG2, 0x00},
+> +       { IS31FL3196_PWM(0), 0x00},
+> +       { IS31FL3196_PWM(1), 0x00},
+> +       { IS31FL3196_PWM(2), 0x00},
+> +       { IS31FL3196_PWM(3), 0x00},
+> +       { IS31FL3196_PWM(4), 0x00},
+> +       { IS31FL3196_PWM(5), 0x00},
+> +       { IS31FL3196_PWM(6), 0x00},
+> +       { IS31FL3196_PWM(7), 0x00},
+> +       { IS31FL3196_PWM(8), 0x00},
+
+While at it, add a space before }. This seems in many places like
+this. Perhaps address the rest in a separate patch?
+
+>  };
+
 -- 
-2.35.3
-
-
-
+With Best Regards,
+Andy Shevchenko
