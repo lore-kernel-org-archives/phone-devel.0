@@ -2,82 +2,162 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7322C433EF
-	for <phone-devel@archiver.kernel.org>; Wed,  6 Jul 2022 11:46:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4CBDC433EF
+	for <phone-devel@archiver.kernel.org>; Wed,  6 Jul 2022 18:49:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233355AbiGFLqX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 6 Jul 2022 07:46:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44404 "EHLO
+        id S234444AbiGFSt4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 6 Jul 2022 14:49:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233342AbiGFLqM (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Jul 2022 07:46:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E2328E1B;
-        Wed,  6 Jul 2022 04:45:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 499B261EEF;
-        Wed,  6 Jul 2022 11:45:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51827C3411C;
-        Wed,  6 Jul 2022 11:45:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657107943;
-        bh=aBdtVMhRidxJCeoJx5DEXlpzuQlURSLwQpWLFBNxTts=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KMVJJ+JukHbibk6ztwsiqZjPY7NNGnu5ye/kkkr65U8rnR50ws1YnUZgNFk5+4LZc
-         qrbPtRrZznfI6mp0+7/SBCTIuK0aG3D3ThJ7VLx2nNaiiNl9OpsfDK46GwzWVI7h2s
-         5Ddwh1l7nAR/g30vK7bn6t3ky+UZJFIeAD7s8RkA/GT1UGOlPd+fv2yaHwJZYA+LeP
-         oGdC0e0RO7pFN3Q/dmlVtqZVcVLeIuY7H1u1dOPKEtzBve5qL1g19QKv7seksr02zn
-         lbmy3N4magjeo+Y2st5Z7HoMGPOHMilLgnLHgoDR52kgWGTLrcjbXaeFhwRj7HJn5l
-         E+rKgbU5XqcVA==
-Date:   Wed, 6 Jul 2022 12:45:37 +0100
-From:   Will Deacon <will@kernel.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        with ESMTP id S234525AbiGFStz (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Jul 2022 14:49:55 -0400
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419DF275E9;
+        Wed,  6 Jul 2022 11:49:54 -0700 (PDT)
+Date:   Wed, 06 Jul 2022 18:49:44 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1657133389; x=1657392589;
+        bh=FQD+MMDt/Q8SRTTAfcqxo1U1VL4S1CdzwRULBkrzEs8=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
+         Feedback-ID:Message-ID;
+        b=SSodwAqUa6IEewyZfhwUlzSIwB7mAi7o0Tc/QGeKhXjB2Akhlw2pRuB12+A7pixy6
+         xAsI5FDQK8WDXRaYkjfeSR3yyijiP9MY2yLgnEhiWWhoj9weJp+KZo9YZyShXlQPnC
+         B5DsoTiTV825+tQlgOXwfaaM+pjvSniQUo6uyQZo=
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Alexander Martinz <amartinz@shiftphones.com>
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Joerg Roedel <joro@8bytes.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: qcom-iommu: Add Qualcomm MSM8953
- compatible
-Message-ID: <20220706114536.GA2403@willie-the-truck>
-References: <20220612092218.424809-1-luca@z3ntu.xyz>
- <20220612092218.424809-2-luca@z3ntu.xyz>
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Dylan Van Assche <me@dylanvanassche.be>
+Reply-To: Caleb Connolly <caleb@connolly.tech>
+Subject: Re: [PATCH 1/2] arch: arm64: qcom: sdm845-shift-axolotl: fix Bluetooth firmware loading
+Message-ID: <0488a37f-083c-6e8c-eff2-e204b242cbfb@connolly.tech>
+In-Reply-To: <CAA8EJpqz32_LxmBVbcLt0sV=e1JzGtWEmMsKsQNoZzuGgLWbBQ@mail.gmail.com>
+References: <20220609095412.211060-1-amartinz@shiftphones.com> <CAA8EJpqz32_LxmBVbcLt0sV=e1JzGtWEmMsKsQNoZzuGgLWbBQ@mail.gmail.com>
+Feedback-ID: 10753939:user:proton
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220612092218.424809-2-luca@z3ntu.xyz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Jun 12, 2022 at 11:22:13AM +0200, Luca Weiss wrote:
-> Document the compatible used for IOMMU on the msm8953 SoC.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-> Changes from v1:
-> - new patch
-> 
->  Documentation/devicetree/bindings/iommu/qcom,iommu.txt | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-> index 059139abce35..e6cecfd360eb 100644
-> --- a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-> +++ b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-> @@ -10,6 +10,7 @@ to non-secure vs secure interrupt line.
->  - compatible       : Should be one of:
->  
->                          "qcom,msm8916-iommu"
-> +                        "qcom,msm8953-iommu"
 
-I'm assuming Andy or Bjorn will pick this up.
 
-Will
+On 09/06/2022 13:47, Dmitry Baryshkov wrote:
+> On Thu, 9 Jun 2022 at 12:54, Alexander Martinz <amartinz@shiftphones.com>=
+ wrote:
+>>
+>> From: Dylan Van Assche <me@dylanvanassche.be>
+>>
+>> Add hsuart0 alias, firmware name and prevent garbage data on Bluetooth U=
+ART lines
+>
+> hsuart aliases are not standard. Please use serialN alias instead.
+>
+>> on the SHIFT 6mq based on the Qualcomm SDM845 chip.
+>> I discovered that these were missing by comparing the DTS with similar
+>> devices such as the Oneplus 6/6T and Dragonboard 845c.
+>>
+>> Signed-of-by: Dylan Van Assche <me@dylanvanassche.be>
+>> Tested-by: Alexander Martinz <amartinz@shiftphones.com>
+>> ---
+>>   .../boot/dts/qcom/sdm845-shift-axolotl.dts    | 33 +++++++++++++++++++
+>>   1 file changed, 33 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/ar=
+m64/boot/dts/qcom/sdm845-shift-axolotl.dts
+>> index 103cc40816fd..fa72f23ef0c2 100644
+>> --- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+>> +++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+>> @@ -20,6 +20,7 @@ / {
+>>
+>>          aliases {
+>>                  display0 =3D &framebuffer0;
+>> +               hsuart0 =3D &uart6;
+>>                  serial0 =3D &uart9;
+>>          };
+>>
+>> @@ -529,6 +530,32 @@ volume_down_resin: resin {
+>>          };
+>>   };
+>>
+>> +/*
+>> + * Prevent garbage data on bluetooth UART lines
+>> + */
+>> +&qup_uart6_default {
+>> +        pinmux {
+>> +                pins =3D "gpio45", "gpio46", "gpio47", "gpio48";
+>> +                function =3D "qup6";
+>> +        };
+>
+> This chunk should probably go into sdm845.dtsi. I'd suggest either
+> adding a separate qup_uart6_4pin or just making qup_uart6_default the
+> 4-pin UART.
+This sounds good
+>
+>> +
+>> +        cts {
+>> +                pins =3D "gpio45";
+>
+> Then the label and 'pins' can go into the dtsi, while keeping just the
+> bias and drive-strength in the platform dtsi.
+>
+>> +                bias-pull-down;
+>> +        };
+>> +
+>> +        rts-tx {
+>> +                pins =3D "gpio46", "gpio47";
+>> +                drive-strength =3D <2>;
+>> +                bias-disable;
+>> +        };
+>> +
+>> +        rx {
+>> +                pins =3D "gpio48";
+>> +                bias-pull-up;
+>> +        };
+>> +};
+>> +
+>>   &qup_uart9_default {
+>>          pinconf-rx {
+>>                  pins =3D "gpio5";
+>> @@ -667,6 +694,12 @@ &uart6 {
+>>          bluetooth {
+>>                  compatible =3D "qcom,wcn3990-bt";
+>>
+>> +               /*
+>> +                * This path is relative to the qca/
+>> +                * subdir under lib/firmware.
+>> +                */
+>> +               firmware-name =3D "axolotl/crnv21.bin";
+>
+> Do you know what is the difference between axolotl's bin and the regular =
+one?
+Just checked in a hex editor and there are some differences. This firmware =
+is
+signed on most devices but given the SHIFT6mq is secureboot off we could in
+theory use upstream firmware here - if it works. This particular device has=
+ some
+very broken wifi firmware - we have to use the firmware from the OnePlus 6 =
+to
+get wifi to work at all...
+>
+>> +
+>>                  vddio-supply =3D <&vreg_s4a_1p8>;
+>>                  vddxo-supply =3D <&vreg_l7a_1p8>;
+>>                  vddrf-supply =3D <&vreg_l17a_1p3>;
+>
+> --
+> With best wishes
+> Dmitry
+
+--
+Kind Regards,
+Caleb
+
