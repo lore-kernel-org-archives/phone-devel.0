@@ -2,81 +2,82 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06D8AC43334
-	for <phone-devel@archiver.kernel.org>; Tue,  5 Jul 2022 22:06:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A7322C433EF
+	for <phone-devel@archiver.kernel.org>; Wed,  6 Jul 2022 11:46:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229505AbiGEWGk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 5 Jul 2022 18:06:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50902 "EHLO
+        id S233355AbiGFLqX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 6 Jul 2022 07:46:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231782AbiGEWGj (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 5 Jul 2022 18:06:39 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6065C19C01;
-        Tue,  5 Jul 2022 15:06:38 -0700 (PDT)
-Received: from g550jk.localnet (31-151-115-246.dynamic.upc.nl [31.151.115.246])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id EDDA3D0A87;
-        Tue,  5 Jul 2022 22:06:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1657058766; bh=eXM/PactU0SWohQdnU6JM3exuAXvUMJXVlduTn27Kac=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=xzzqXu1cMZG1tQK66TdZI9aRVAxYUEgTNsvM+GA79k0eZ4XXF5ofXN+lpPdBQtf0h
-         HpQtJE+JXT5994OTOrxAimIzpDtuOpz/dM/k+mmUYL0d0bBAlitfWjbY/AQ7QF8qkC
-         PVegjoJGKUrSDulCe5zGGio9HSe8JElT+EzPx21s=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+        with ESMTP id S233342AbiGFLqM (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Jul 2022 07:46:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E2328E1B;
+        Wed,  6 Jul 2022 04:45:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 499B261EEF;
+        Wed,  6 Jul 2022 11:45:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51827C3411C;
+        Wed,  6 Jul 2022 11:45:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1657107943;
+        bh=aBdtVMhRidxJCeoJx5DEXlpzuQlURSLwQpWLFBNxTts=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KMVJJ+JukHbibk6ztwsiqZjPY7NNGnu5ye/kkkr65U8rnR50ws1YnUZgNFk5+4LZc
+         qrbPtRrZznfI6mp0+7/SBCTIuK0aG3D3ThJ7VLx2nNaiiNl9OpsfDK46GwzWVI7h2s
+         5Ddwh1l7nAR/g30vK7bn6t3ky+UZJFIeAD7s8RkA/GT1UGOlPd+fv2yaHwJZYA+LeP
+         oGdC0e0RO7pFN3Q/dmlVtqZVcVLeIuY7H1u1dOPKEtzBve5qL1g19QKv7seksr02zn
+         lbmy3N4magjeo+Y2st5Z7HoMGPOHMilLgnLHgoDR52kgWGTLrcjbXaeFhwRj7HJn5l
+         E+rKgbU5XqcVA==
+Date:   Wed, 6 Jul 2022 12:45:37 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
 Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Joerg Roedel <joro@8bytes.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] ARM: dts: qcom: msm8974-*: re-add remoteproc supplies
-Date:   Wed, 06 Jul 2022 00:06:05 +0200
-Message-ID: <12009239.O9o76ZdvQC@g550jk>
-In-Reply-To: <Yr5mua6i6WxoAlzB@builder.lan>
-References: <20220606160421.1641778-1-luca@z3ntu.xyz> <20220606160421.1641778-2-luca@z3ntu.xyz> <Yr5mua6i6WxoAlzB@builder.lan>
+        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] dt-bindings: qcom-iommu: Add Qualcomm MSM8953
+ compatible
+Message-ID: <20220706114536.GA2403@willie-the-truck>
+References: <20220612092218.424809-1-luca@z3ntu.xyz>
+ <20220612092218.424809-2-luca@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220612092218.424809-2-luca@z3ntu.xyz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Bjorn,
-
-On Freitag, 1. Juli 2022 05:15:05 CEST Bjorn Andersson wrote:
-> On Mon 06 Jun 11:04 CDT 2022, Luca Weiss wrote:
-> > As part of a recent cleanup commit, the remoteproc supplies for adsp and
-> > modem were removed from msm8974.dtsi and now need to be set in the
-> > device dts. Do so.
-> > 
-> > Fixes: f300826d27be ("ARM: dts: qcom-msm8974: Sort and clean up nodes")
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> > Bjorn, could you please pick this up for -fixes so it lands in an
-> > upcoming 5.19-rc?
+On Sun, Jun 12, 2022 at 11:22:13AM +0200, Luca Weiss wrote:
+> Document the compatible used for IOMMU on the msm8953 SoC.
 > 
-> As reported by lkp, this doesn't build. Am I missing something?
-
-I briefly mentioned in IRC, maybe you missed it.
-Castor is actually still missing pm8841 regulators upstream.
-I'll send this old (rebased) commit from you to add them, is that ok with you?
-
-https://github.com/msm8974-mainline/linux/commit/
-d01e20807a00e78570abf3dd91bea555dff06fa9
-
-Otherwise we can just keep castor out of this patch for now and add it later, 
-I don't really mind either way.
-
-Regards
-Luca
-
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+> Changes from v1:
+> - new patch
 > 
-> Regards,
-> Bjorn
+>  Documentation/devicetree/bindings/iommu/qcom,iommu.txt | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
+> index 059139abce35..e6cecfd360eb 100644
+> --- a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
+> +++ b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
+> @@ -10,6 +10,7 @@ to non-secure vs secure interrupt line.
+>  - compatible       : Should be one of:
+>  
+>                          "qcom,msm8916-iommu"
+> +                        "qcom,msm8953-iommu"
 
+I'm assuming Andy or Bjorn will pick this up.
 
-
-
+Will
