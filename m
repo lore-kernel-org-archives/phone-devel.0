@@ -2,70 +2,64 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 647E5CCA47F
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FAD0C43334
 	for <phone-devel@archiver.kernel.org>; Thu,  7 Jul 2022 02:31:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234935AbiGGCbq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S234869AbiGGCbq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Wed, 6 Jul 2022 22:31:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40242 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234869AbiGGCbm (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Jul 2022 22:31:42 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9B262F3B8
-        for <phone-devel@vger.kernel.org>; Wed,  6 Jul 2022 19:31:36 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-10be0d7476aso16788858fac.2
-        for <phone-devel@vger.kernel.org>; Wed, 06 Jul 2022 19:31:36 -0700 (PDT)
+        with ESMTP id S234903AbiGGCbn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 6 Jul 2022 22:31:43 -0400
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B5212F3B9
+        for <phone-devel@vger.kernel.org>; Wed,  6 Jul 2022 19:31:37 -0700 (PDT)
+Received: by mail-oi1-x234.google.com with SMTP id i3so21883028oif.13
+        for <phone-devel@vger.kernel.org>; Wed, 06 Jul 2022 19:31:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=mA1lvyszFduS/99/MChGCFetUx4AgZKBxyvoUM2pqRo=;
-        b=aiIQO+9g2cLgUtjQKUAHSsgd/s59gwdgrVajR0gjDVjthJG32PXA/CTHqfty05t2eL
-         pH8dtWhBJMqlSBhxf6K2WHsoseiubwogGVmZa6G1w8LidLjEvvvk/FyAEfmt27mmsQ66
-         7N1EsvXaCeYXxvsE5GZGdRRtzLLWuO3l++dR7XrgOkFHrY4XeYCiITWz2JxMjKFGTtI7
-         IzGco/R+xnp1QdqZ9Bqng4zRPtJ7fSRGpT5EMDjyzsWyG9Y8Vw7JdbHxQAvUuGEWz8+d
-         XBBTK/RnHzY+HZurB9hq6OEesloDCDxbq+B1MUsWz25SF1UbBUWI6vxnlvxCeKjaoXR6
-         /Acg==
+        bh=bVfzu+P0/Oi1+cRUnIH8jaYLfFSf5xLGdlqYMAcLIvY=;
+        b=FA5W3T3WzmlVkVU0ONj1xGpRqwnNZRR+tv6ANOHX/iyqk5TpX64sRJeD2K0jGaX4T8
+         0c0vsqmJrhfuKfno+nc9ZGz55HYHL2q7533MI781e+p+DuL0MeXWRd9mQX3ivPB48rPN
+         f+yS5qzH6zq3K/9MBMSaYsBkMz8Ny3DRfZG7jK23RpSR0Z5FZv7iQwDWoLsWN7fGIuS8
+         cAL5Bbmm3S1/wLYpu7AdzEiagzfDq0L2Y20e8ZeDD0lP0IT6Bl8EXwSZrt2YHg8RrdGJ
+         GNNpNnbpR6stsP5c5PacByui9PROhTeoRhaDxS9UZO+b9oKBPSxSK0gcvUZiyLS2taSk
+         TbWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=mA1lvyszFduS/99/MChGCFetUx4AgZKBxyvoUM2pqRo=;
-        b=a4p6AZmoNwj9MQGEYXn/dlYhamId39O+E8qYmx4ZBXOdfoeR5VceZO24tan18HOUfD
-         QqWa6mNrQ1tQRCNDBks8lEAJva0YgkHN0SX5neghGT9QhpnhR6x+QoSZ/XwOLyqrpjOj
-         1e47KR2iCqAPRKFe6ErlPqJfZFwrLl/zuio1RRZ2DKcuypMZes9k6PJcPQr3s41+3T+U
-         wIBBFIvwp7r9JuUJs0FCY5ZWnfNuawdm8q+X+FjeT3vP4JXeWcKusMgvUoncIjy09BFm
-         v519kFAjQ5ic37/TVTnh66D//d0TpaNWVlyLiCCI8R+BpFbMyQzGRlXSNPtHMZGx1hqo
-         5qOQ==
-X-Gm-Message-State: AJIora9DLPO1yQVrdltTxA20Vz0tNHmIY5c7Hc/pQLFe0jgFXHJeDISV
-        fNnHeKVcPr7FTKR+CKUnPQMTD9jIU8jlyw==
-X-Google-Smtp-Source: AGRyM1vkaXbgxNeCIQkTvllc+bZKt2ZAPV5Fhnj81Y0QZU0HGFQ3NlkGpBUW2P7GDcgijGtuCj0SnQ==
-X-Received: by 2002:a05:6870:7a5:b0:10c:1c39:3475 with SMTP id en37-20020a05687007a500b0010c1c393475mr1256187oab.164.1657161095773;
-        Wed, 06 Jul 2022 19:31:35 -0700 (PDT)
+        bh=bVfzu+P0/Oi1+cRUnIH8jaYLfFSf5xLGdlqYMAcLIvY=;
+        b=FWiBpU7zB/LPXkMpvVyHAuhSo7Kp/80AOPJmnkCWQhTgd/b5YVHC9IYJ+IRLErmT0J
+         UxsYbof0Yx01cyYe12hYhyr72C3/d1ZOFuH/odKU9iYAxfy7jJJ+x0yjw4gT4OV8lXFo
+         8onyH1KFLjQmoZzA9H35Kc56qmW0xvvo/yEYKhFOlS9ZS6GZdnibNVFbFvI02f8jKpw7
+         w+YIfrN9r72zqsYsJ+TtHRFVudKJpaUqn7uw1FSozH0Z3gAGfegCeP+U3HQfNJUt+M7C
+         rmR8qZyHP6T91Ge0AFSOLCjwhI7brYHOgxF5swTur1Vl5eb+HkyYJDvA0S5WgHw36sem
+         yLQw==
+X-Gm-Message-State: AJIora8Mw7Ky6NWXEWYT/SXULmTYbVuYZe8VVktMFC04bt8EYBrkY6X5
+        buiRqK3XUyqTe2Lh4ejeOrdQ1w==
+X-Google-Smtp-Source: AGRyM1sElFX4lFVOUCQI81ddsk2vbxl1O099fV4OwQsh3Zi0iYQpUVONOWqWpAQow86XpfARyajMMw==
+X-Received: by 2002:a05:6808:1aaf:b0:32e:fec8:b67c with SMTP id bm47-20020a0568081aaf00b0032efec8b67cmr1086419oib.118.1657161096800;
+        Wed, 06 Jul 2022 19:31:36 -0700 (PDT)
 Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id x48-20020a056830247000b006168c71ca4asm17024469otr.56.2022.07.06.19.31.34
+        by smtp.gmail.com with ESMTPSA id x48-20020a056830247000b006168c71ca4asm17024469otr.56.2022.07.06.19.31.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Jul 2022 19:31:35 -0700 (PDT)
+        Wed, 06 Jul 2022 19:31:36 -0700 (PDT)
 From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     phone-devel@vger.kernel.org,
-        Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     linux-arm-msm@vger.kernel.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Martin Botka <martin.botka@somainline.org>,
+To:     linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Dylan Van Assche <me@dylanvanassche.be>,
         devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] arm64: dts: qcom: sm6125: Move sdc2 pinctrl from seine-pdx201 to sm6125
-Date:   Wed,  6 Jul 2022 21:31:13 -0500
-Message-Id: <165716107314.864223.9871410484260306384.b4-ty@linaro.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: (subset) [PATCH] arm64: dts: qcom/sdm845-shift-axolotl: Enable pmi9889 LPG LED
+Date:   Wed,  6 Jul 2022 21:31:14 -0500
+Message-Id: <165716107314.864223.10951283216862917482.b4-ty@linaro.org>
 X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220508100336.127176-1-marijn.suijten@somainline.org>
-References: <20220508100336.127176-1-marijn.suijten@somainline.org>
+In-Reply-To: <20220512054439.13971-1-me@dylanvanassche.be>
+References: <20220512054439.13971-1-me@dylanvanassche.be>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -73,27 +67,20 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 8 May 2022 12:03:33 +0200, Marijn Suijten wrote:
-> Both the sdc2-on and sdc2-off pinctrl nodes are used by the
-> sdhci@4784000 node in sm6125.dtsi.  Surprisingly sdc2-off is defined in
-> sm6125, yet its sdc2-on counterpart is only defined in board-specific DT
-> for the Sony Seine PDX201 board/device resulting in an "undefined label
-> &sdc2_state_on" error if sm6125.dtsi were included elsewhere.
-> This sm6125 base dtsi should not rely on externally defined labels; the
-> properties referencing it should then also be written externally.
-> Since the sdc2-on pin configuration is board-independent just like
-> sdc2-off, move it from seine-pdx201.dts into sm6125.dtsi.
+On Thu, 12 May 2022 07:44:39 +0200, Dylan Van Assche wrote:
+> Enables the RGB notification LED on the SHIFT 6mq (sdm845-shift-axolotl)
+> with the Qualcomm Light Pulse Generator bindings by Bjorn Andersson [1].
+> Patches are merged in for-next branch of linux-leds.
+> Tested these changes on the SHIFT 6mq.
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/pavel/linux-leds.git/commit/?h=for-next&id=a8e53db46f19f67be6a26488aafb7d10c78e33bd
 > 
 > [...]
 
 Applied, thanks!
 
-[1/3] arm64: dts: qcom: sm6125: Move sdc2 pinctrl from seine-pdx201 to sm6125
-      commit: 6990640a93ba4e76dd62ca3ea1082a7354db09d7
-[2/3] arm64: dts: qcom: sm6125: Append -state suffix to pinctrl nodes
-      commit: cbfb5668aece448877fa7826cde81c9d06f4a4ac
-[3/3] arm64: dts: qcom: sm6125: Add DLL/DDR configuration on SDHCI 1/2
-      commit: e5de51e264e147d4bf882a464fb89501e9c87e14
+[1/1] arm64: dts: qcom/sdm845-shift-axolotl: Enable pmi9889 LPG LED
+      commit: 8b936253e3dad69506cb47043dd6451a0a14cf22
 
 Best regards,
 -- 
