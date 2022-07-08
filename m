@@ -2,64 +2,63 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0830ACCA480
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Jul 2022 02:00:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EA0AC433EF
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Jul 2022 02:07:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236756AbiGHCAq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 7 Jul 2022 22:00:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37868 "EHLO
+        id S236087AbiGHCHF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 7 Jul 2022 22:07:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236471AbiGHCAo (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 7 Jul 2022 22:00:44 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B87AC73912;
-        Thu,  7 Jul 2022 19:00:41 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id z12-20020a17090a7b8c00b001ef84000b8bso547724pjc.1;
-        Thu, 07 Jul 2022 19:00:41 -0700 (PDT)
+        with ESMTP id S235122AbiGHCHE (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 7 Jul 2022 22:07:04 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B0A973902;
+        Thu,  7 Jul 2022 19:07:02 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id y141so22333616pfb.7;
+        Thu, 07 Jul 2022 19:07:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
         bh=iw03oGF71b3zysC4+uPdzsUoRsfiaX31yyGGvUjpQEA=;
-        b=nEBuoVADwIexJ+LQVTY91erY0SoD5Q3tUHNfp2gAssgdApFW9RLpDHBRdFFxwV+/fK
-         CRUGM0s91FYKklZtKvZLU5ldh2jssOEawMV9j5pwhS67bC3svKwIpHPZEjpOO7m8JieG
-         Qa949j2cYxpONryyq4lE7sF5ZgTujyP3/1tmBR5AHbVdd/N0si+0b2YARcqYQCUuEkPx
-         quF6SkHIFtvzzFQXelzI7gvFWl155ZXk66bKuhjkX1rKPx5JB+6VDl8UdFhpWo4XVXHc
-         byAz1EB42D1Ttn+fZzFBwCpCGzKPSB0VVwKq1NkkfSIsFg1LIyBRMHUWHS8NqRhMkpor
-         9aIg==
+        b=HUJI3rCN5vglaVtqOsYW20GvLjw/XfFe3QttxprHu9Jkmn7LTd7906zJO+bx+N16pb
+         9TpqTRSRYoQ/nyU+IEDjD4pOLAFqiBo2u4U6pYLvegwWFvFZ3Hcw8G70SNpVCU8Kghpn
+         SGFyflaTnAwAMSo9z1RETACYf6aI+wDhMYLWCrIVBb8QHhzOBHmmckPCVea1Kg/PeeE7
+         IlNI2bZ5rYfFUs/U5EofDikZlnMxl1hDuHtJqO3wwPowQ7exxF2C+LiaTwgQ/5p/tuQe
+         FhblAPfHpXhxqeTAub0kqAnIvzoReLNKATPVzdxqHiRqz7BoARYz1GnU/tzpWWEvNg5y
+         ht9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
         bh=iw03oGF71b3zysC4+uPdzsUoRsfiaX31yyGGvUjpQEA=;
-        b=NeiOAX4Pyz1y+ErxLbDFZlPx28G3nRILgguatxu2fBmfgHB5Vsv1wj45vxYaQcYb7h
-         r1j/NDKZwO0TjbeZb4CgjfR5Cva3yeEscmzLBqdM2/yPVjhlPSk2LF/ngOpTyewjQagh
-         38uVLOuzG6/BBVs/eCLmANE3SYgKENMW3WC3ARRL1srwzvge7kxIBwOidLwM23UJf8q1
-         64ZF78eD1H9VmTLkCHlBSpTBYbc9JD6CWWkrQCm8fYduAusJy2o/F1wEMMld2h8mn73l
-         lhxOM+mWaVr65rxIGDVQ8wIlpfSipFK8gKmUlIzx8MWal0ThF1e7vuerKyWvLEDHDnoC
-         f7wA==
-X-Gm-Message-State: AJIora8+7HJhOZbEvmxpR5syyyCX+VuShF0650fkfzBPFKabLZES/nKe
-        Vv4uFAamU8viU441k2J4FrK4OQYpWWfsA0SR
-X-Google-Smtp-Source: AGRyM1tSB3xgK9+ntWkALf2Qk6bbZ30SD12dTe6vYBxGeCTQwKey1PN2QYoUG7dy2gU3iPgB4HizTA==
-X-Received: by 2002:a17:902:f608:b0:168:e92b:47e8 with SMTP id n8-20020a170902f60800b00168e92b47e8mr1200950plg.115.1657245641030;
-        Thu, 07 Jul 2022 19:00:41 -0700 (PDT)
+        b=0PIBp6yJCpwlRgz3VRPJ4FAaFiUbI+jJMkMRtDqpFmQnN31tBo4PW4S9gy9C/IX3I+
+         Mr42/BKMXR/4EKqJ+4cuQgh2E/iY5Bx67PGGDjVkehM5/6AfZ2SadGZGCGhxsla58Alk
+         D64oLF6UfZpr4I6tp/8qRMy8ScSXu9k1NgXQRPOKaDM80ypd74kGnUBu2WFllupmlT58
+         nX2LcqdHL+1mMJ2zBIDAV0V3dYq9xcC4q6kD3m6Hih8NiktNg+VYnvV5LuR+Jj8K+jPl
+         4zow+JT+Ka89U/Lr49JsE+lg+ulxPT3VDSo04eXCm7DhiycZRbV5gcm6MQMiRyjc/246
+         rSXA==
+X-Gm-Message-State: AJIora+BAvIEcyMT8whboyPsEPl6AAp/wW5qJN+gnEQu5iPXBZ1iNijI
+        gpqOGPF5l/eKvkSfTXI/J8z5YBWtb3YYLQ==
+X-Google-Smtp-Source: AGRyM1uskDR41KtaCN9OgcuAag1QaaY/iu2Jtb39o3kJlq0Bb04MVLsIfRUrVytzkQjAUfAlos1UJQ==
+X-Received: by 2002:a63:2a03:0:b0:412:518c:49d6 with SMTP id q3-20020a632a03000000b00412518c49d6mr1049855pgq.564.1657246022016;
+        Thu, 07 Jul 2022 19:07:02 -0700 (PDT)
 Received: from localhost.localdomain ([112.0.189.16])
-        by smtp.gmail.com with ESMTPSA id q14-20020a170902bd8e00b001677fa34a07sm28680514pls.43.2022.07.07.19.00.35
+        by smtp.gmail.com with ESMTPSA id w1-20020a17090a5e0100b001ec92575e83sm268584pjf.4.2022.07.07.19.06.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Jul 2022 19:00:40 -0700 (PDT)
+        Thu, 07 Jul 2022 19:07:01 -0700 (PDT)
 From:   MollySophia <mollysophia379@gmail.com>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         MollySophia <mollysophia379@gmail.com>
-Subject: [PATCH v2 1/2] arm64: dts: qcom: Add support for Xiaomi Mi Mix2s
-Date:   Fri,  8 Jul 2022 10:00:29 +0800
-Message-Id: <20220708020030.4955-1-mollysophia379@gmail.com>
+Subject: [PATCH v3 1/2] arm64: dts: qcom: Add support for Xiaomi Mi Mix2s
+Date:   Fri,  8 Jul 2022 10:06:47 +0800
+Message-Id: <20220708020648.6675-1-mollysophia379@gmail.com>
 X-Mailer: git-send-email 2.37.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
