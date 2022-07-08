@@ -2,177 +2,101 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 36813CCA479
-	for <phone-devel@archiver.kernel.org>; Fri,  8 Jul 2022 02:19:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A79CCC43334
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Jul 2022 08:45:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237050AbiGHCTX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 7 Jul 2022 22:19:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51202 "EHLO
+        id S237365AbiGHIpb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 8 Jul 2022 04:45:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236850AbiGHCTU (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 7 Jul 2022 22:19:20 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B550274343;
-        Thu,  7 Jul 2022 19:19:18 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id b2so15196765plx.7;
-        Thu, 07 Jul 2022 19:19:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=YQUS1uH91aVB+0XmXBENBE6FQndufm4Tu4vHhSYzrys=;
-        b=VP310OkbcIo5wULkEMRYyC8Jn48+GGgcFkvppM0u4eayWjHH7Uk/rFRsGkUFjJ3mCO
-         XOTxGFDYZ9Z4b8SuEhSmi3NbIvH4VeU7tauefXlcOoI29cgT4MjfQZRkOP43eP2SiWTH
-         soTTMFf8Ytc/SaoyQyb93krx13oQSkGiTgAbCBmqMiXrMnjzAB1rBs5s+9/HSUNj6iWG
-         qI7KuFzQcu33Em4UDvukzPEVv+zgNHNhgw6mgkcPtmzEIj6y2ZyrIOIAnd1OHnQy+weg
-         Oye9HksqfYbWnv9rzhbbaD/kpJFd0ooLga6Iz0k+se4ct/MZ6eskBVitHO48uzmpW8nJ
-         LPmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=YQUS1uH91aVB+0XmXBENBE6FQndufm4Tu4vHhSYzrys=;
-        b=w7ois+YayeQNXFIfDR0LFRo/O2+/RL1ag3bvnaRwWrflZ0JFPb9ulJx26IUpamIXTZ
-         JQ8gOz5WOB2UwRsF+OMi4EiHAHv8Zjhh/kcamG51nPAKfW9jYmVfrkFuavK0ssmXcGs7
-         Qs3shgawZm4xxH+8LSvdFZvANTmPjZbdmCsWxd4Jq5fSauWR2K4HOtN/4Y0Rj+O5lRMU
-         S4wYFdAc5nguVo6T0dWP22sKvAqUjesfblDg5+AXx+dLbWtZHf+zOeosNN7ZNJCSZIo5
-         30yfiDukRH4Njai9Wx5xHbn191kggUzjKtURJa1ArxDi2zWygsx7zzfTiPZ04MD+Dvuw
-         9EoA==
-X-Gm-Message-State: AJIora/1sk8jNEgM/NOiqFhIlj0MVBlVHXrmdrC1J52+X8uaUTBQNLqM
-        ajVnNrVDCDfCmx2GLeQ3V/A=
-X-Google-Smtp-Source: AGRyM1sDsSK9Mdd7E9ePhl3agk2mvYgX9I66p/yZJNZ2D+EGlTvaLBMJweE1+Ro+nVEg+T5N51uRPA==
-X-Received: by 2002:a17:90a:6809:b0:1ec:c213:56c8 with SMTP id p9-20020a17090a680900b001ecc21356c8mr8912325pjj.82.1657246758218;
-        Thu, 07 Jul 2022 19:19:18 -0700 (PDT)
-Received: from localhost.localdomain ([112.0.189.16])
-        by smtp.gmail.com with ESMTPSA id c17-20020a170902d49100b0015e8d4eb1dbsm12678820plg.37.2022.07.07.19.19.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Jul 2022 19:19:17 -0700 (PDT)
-From:   MollySophia <mollysophia379@gmail.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Molly Sophia <mollysophia379@gmail.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Subject: [PATCH 2/2] dt-bindings: display: panel: Add Novatek NT35596S panel bindings
-Date:   Fri,  8 Jul 2022 10:18:24 +0800
-Message-Id: <20220708021824.9167-2-mollysophia379@gmail.com>
-X-Mailer: git-send-email 2.37.0
-In-Reply-To: <20220708021824.9167-1-mollysophia379@gmail.com>
-References: <20220708021824.9167-1-mollysophia379@gmail.com>
+        with ESMTP id S237239AbiGHIpa (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 8 Jul 2022 04:45:30 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDF45814B6;
+        Fri,  8 Jul 2022 01:45:29 -0700 (PDT)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id CE32366015BA;
+        Fri,  8 Jul 2022 09:45:27 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1657269928;
+        bh=nL4EphTxTGIn93JKt1KWZWPGficfXAV2gqP5apqt848=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=S/tslfd35NfROb1/gP9GcNLN4NQ/6dH9fx0Uy3IpVBAO3wpMiTDiLLgKG2TTw5UFO
+         tVTnvB9Zg9WxJ3bhEcmLy4JNQI5Kct3gTnDyDoXo3SD7DNrrOBDHwj9j2KEf9Wp9Ow
+         2URxBRLhdef2HoME8wIOdN9rlYFL3cdrq2QQ92yo9HPjitetMu1kz2G7hXlTh/ejP2
+         J/nFmlvS6y4OMBHnHDdXLA1xU1TE2tmfAMO4iNtjimWyZJ0ZWlmTSIzUocq6+q20ZM
+         ox8KOEf38ZCMM0r7xGUrckoJ7x1SjEMeNqCf2WFQcP/ui5uUc0KR3iDsVhORuYnJ9k
+         1WnwqbQzoeBLA==
+Message-ID: <217695f5-55d3-e347-ea04-d30aaee6e712@collabora.com>
+Date:   Fri, 8 Jul 2022 10:45:25 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v4 0/2] MediaTek SoC ARM/ARM64 System Timer
+Content-Language: en-US
+To:     daniel.lezcano@linaro.org
+Cc:     tglx@linutronix.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, konrad.dybcio@somainline.org,
+        marijn.suijten@somainline.org, martin.botka@somainline.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        paul.bouchara@somainline.org
+References: <20220613133819.35318-1-angelogioacchino.delregno@collabora.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20220613133819.35318-1-angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add documentation for "novatek,nt35596s" panel.
+Il 13/06/22 15:38, AngeloGioacchino Del Regno ha scritto:
+> In an effort to give some love to the apparently forgotten MT6795 SoC,
+> I am upstreaming more components that are necessary to support platforms
+> powered by this one apart from a simple boot to serial console.
+> 
+> This series introduces support to start the System Timer for the CPU
+> cores found in various MediaTek SoCs including, but not limited to the
+> MT6795 Helio X10 - and will most probably unblock many developers for
+> the upstreaming of various platforms.
+> 
+> For a broad overview of why/what/when, please look at the description
+> of patch [2/2] in this series.
+> 
+> Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
+> 
+> Changes in v4:
+>   - Changed statement in documentation, now saying:
+>     "MediaTek SoCs have different timers on different platforms"
+> 
+> Changes in v3:
+>   - Merged mtk_cpux_{enable,disable}_irq() as one mtk_cpux_set_irq() function
+>     as suggested by Matthias
+> 
+> Changes in v2:
+>   - Added back a lost line in commit 2/2 (sorry, commit didn't get amended...!)
+>   - Tested again for safety
+> 
+> AngeloGioacchino Del Regno (2):
+>    dt-bindings: timer: mediatek: Add CPUX System Timer and MT6795
+>      compatible
+>    clocksource/drivers/timer-mediatek: Implement CPUXGPT timers
+> 
+>   .../bindings/timer/mediatek,mtk-timer.txt     |   6 +-
+>   drivers/clocksource/timer-mediatek.c          | 114 ++++++++++++++++++
+>   2 files changed, 119 insertions(+), 1 deletion(-)
+> 
 
-Signed-off-by: MollySophia <mollysophia379@gmail.com>
----
- .../display/panel/novatek,nt35596s.yaml       | 88 +++++++++++++++++++
- 1 file changed, 88 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/display/panel/novatek,nt35596s.yaml
 
-diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt35596s.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt35596s.yaml
-new file mode 100644
-index 000000000000..937b194a6f18
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/novatek,nt35596s.yaml
-@@ -0,0 +1,88 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/novatek,nt35596s.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Novatek NT35596S based DSI display Panels
-+
-+maintainers:
-+  - Molly Sophia <mollysophia379@gmail.com>
-+
-+description: |
-+  The nt35596s IC from Novatek is a generic DSI Panel IC used to drive dsi
-+  panels.
-+  Right now, support is added only for a JDI FHD+ LCD display panel with a
-+  resolution of 1080x2160. It is a video mode DSI panel.
-+
-+allOf:
-+  - $ref: panel-common.yaml#
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - jdi,fhd-nt35596s
-+      - const: novatek,nt35596s
-+    description: This indicates the panel manufacturer of the panel that is
-+      in turn using the NT35596S panel driver. This compatible string
-+      determines how the NT35596S panel driver is configured for the indicated
-+      panel. The novatek,nt35596s compatible shall always be provided as a fallback.
-+
-+  reset-gpios:
-+    maxItems: 1
-+    description: phandle of gpio for reset line - This should be 8mA, gpio
-+      can be configured using mux, pinctrl, pinctrl-names (active high)
-+
-+  vddi0-supply:
-+    description: phandle of the regulator that provides the supply voltage
-+      Power IC supply
-+
-+  vddpos-supply:
-+    description: phandle of the positive boost supply regulator
-+
-+  vddneg-supply:
-+    description: phandle of the negative boost supply regulator
-+
-+  reg: true
-+  port: true
-+  backlight: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - vddi0-supply
-+  - vddpos-supply
-+  - vddneg-supply
-+  - reset-gpios
-+  - port
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |+
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    dsi0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        panel@0 {
-+            compatible = "jdi,fhd-nt35596s", "novatek,nt35596s";
-+            reg = <0>;
-+            vddi0-supply = <&vreg_l14a_1p88>;
-+            vddpos-supply = <&lab>;
-+            vddneg-supply = <&ibb>;
-+
-+            backlight = <&pmi8998_wled>;
-+            reset-gpios = <&tlmm 6 GPIO_ACTIVE_HIGH>;
-+
-+            port {
-+                jdi_nt35596s_in_0: endpoint {
-+                    remote-endpoint = <&dsi0_out>;
-+                };
-+            };
-+        };
-+    };
-+
-+...
--- 
-2.37.0
+Gentle ping for this one - I need it to start upstreaming devicetrees for
+that MT6795 Xperia M5 smartphone, or it won't be able to boot.
 
+Thanks,
+Angelo
