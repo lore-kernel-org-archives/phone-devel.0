@@ -2,393 +2,1072 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 864B5C433EF
-	for <phone-devel@archiver.kernel.org>; Thu,  7 Jul 2022 15:40:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D87F5C433EF
+	for <phone-devel@archiver.kernel.org>; Fri,  8 Jul 2022 02:00:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235651AbiGGPk4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 7 Jul 2022 11:40:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59886 "EHLO
+        id S236626AbiGHCAd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 7 Jul 2022 22:00:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231320AbiGGPk4 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 7 Jul 2022 11:40:56 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11C2620BCA;
-        Thu,  7 Jul 2022 08:40:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1657208455; x=1688744455;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=K98f2lGesm9VxtLvneIAOHDNuCUd/i45m2bxaKcd7VI=;
-  b=DhMGcYdrk9xazsA4fEVbht71X7Pt9gWJiyvOFkXA7fwaYRFkzwl3XT45
-   1QmR9OJo0aVD9EwBLwREAJ/irT5zBcf361etgwqOrt96zlHRwhwT1wrOC
-   5GpRCixMBi8S0xTYLq4d0XZGSHaTWNlmeg0h/srp2sqBzCNY3v1s9Vwty
-   +RzzzVds0VILnKGqpN0oB/3zqVrnQSLBfPWkj8DjXnqSIFNNdmWjL2UCk
-   tPhxn358BDBHk1ClOwWMrWFWSIgMhHsq+PGVXnTIzu3GlwYnajpsnnogX
-   GP2yjKrpET55JjJOgaRhCnLLwTH8w5RST2/LiR6paOYq1FNpCVsshAD6Y
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10400"; a="282807844"
-X-IronPort-AV: E=Sophos;i="5.92,253,1650956400"; 
-   d="scan'208";a="282807844"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2022 08:40:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,253,1650956400"; 
-   d="scan'208";a="661429543"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 07 Jul 2022 08:40:50 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o9TcY-000MBC-12;
-        Thu, 07 Jul 2022 15:40:50 +0000
-Date:   Thu, 7 Jul 2022 23:40:11 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Caleb Connolly <caleb.connolly@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Andy Gross <agross@kernel.org>,
+        with ESMTP id S236471AbiGHCAc (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 7 Jul 2022 22:00:32 -0400
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AA1A73908;
+        Thu,  7 Jul 2022 19:00:30 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id o31-20020a17090a0a2200b001ef7bd037bbso510574pjo.0;
+        Thu, 07 Jul 2022 19:00:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iw03oGF71b3zysC4+uPdzsUoRsfiaX31yyGGvUjpQEA=;
+        b=IjfvzthAl7JkCMEgDsHtKOVc3SmWH1knKy/0IVYdyETvYfcZSinYAPAE7X/j9Dev9Q
+         lLrgICj4BtsJEx1L98CJJPO9LBACT2TDcn5XbHGs+6fQCBtlZQ5LLmLxTL3NnyasI4jg
+         49tVYYbgW9xdg7112afuHt2lznv1AW3m2PRvSH6zA0yvO38eb8WlNLUT40VINEsUzWsl
+         mNFRXcM/nZiVHvnC02+pj4dDwq4wGfAorHRltvx3H9erum0V3Yp9AaHw/IxsBwGLgypr
+         v0Mrh2Kr1anDjCH6mCEgs4HW3Gu/cUe1CTd3VbqmsM7mLPzK22ZxPQCKSO6pA3qE1ofv
+         O1Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iw03oGF71b3zysC4+uPdzsUoRsfiaX31yyGGvUjpQEA=;
+        b=qrUqE0fvXQ7qWORnAIpbqOtNumsMd9sO4MsSbAZ1nZPLvssVh1Ff59cFTTKQE5B1rK
+         1nTcQSPM7CzA/bMEX9a1lHkUPQeSIOIQsIDJmQFPGLcpNRKVzo3fgem6CMf0IiHi/qpP
+         Lzx+CrScSPV+m+ALwUeeVwt1v2jNKjg2UARVitKmU0FUKuxj893CZCBS4nJXTcsigzLS
+         PWnaV6Dj40IU11BTfWojg0SMwyvkFbvWVxE68nxLJsfp+7r0kSCR7TGM/U1fwvhFd05R
+         jCNW4w3g160F6rRey1elEL5cK8E98fw3Xj22r6wMgdZ2e3mqGWGbT+dR3Y2JqN2WVssy
+         CuyQ==
+X-Gm-Message-State: AJIora90h4CvoK4y7P3b3rW2OmsHnp3sjhO+dOfK/uCyOp0d3KEPsN0T
+        SggJbE5e7aCm6HcpGYSLFic=
+X-Google-Smtp-Source: AGRyM1vb4jTe806qjLSsfb46b5UajKUPnMav9xfAE3LS5tYoYemNQFs8n1x55ghhFQdZrdb21ynERA==
+X-Received: by 2002:a17:90a:73c5:b0:1ef:880f:fe95 with SMTP id n5-20020a17090a73c500b001ef880ffe95mr1057581pjk.95.1657245629645;
+        Thu, 07 Jul 2022 19:00:29 -0700 (PDT)
+Received: from localhost.localdomain ([112.0.189.16])
+        by smtp.gmail.com with ESMTPSA id m16-20020a17090b069000b001eab99a42efsm252363pjz.31.2022.07.07.19.00.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Jul 2022 19:00:28 -0700 (PDT)
+From:   MollySophia <mollysophia379@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, llvm@lists.linux.dev,
-        phone-devel@vger.kernel.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org
-Subject: Re: [PATCH v4 1/2] power: supply: add Qualcomm PMI8998 SMB2 Charger
- driver
-Message-ID: <202207072358.2odInqXi-lkp@intel.com>
-References: <20220706194125.1861256-2-caleb.connolly@linaro.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        MollySophia <mollysophia379@gmail.com>
+Subject: [PATCH v2 1/2] arm64: dts: qcom: Add support for Xiaomi Mi Mix2s
+Date:   Fri,  8 Jul 2022 10:00:11 +0800
+Message-Id: <20220708020012.4780-1-mollysophia379@gmail.com>
+X-Mailer: git-send-email 2.37.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220706194125.1861256-2-caleb.connolly@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Caleb,
+Add support for Xiaomi Mi Mix2s (polaris) handsets.
 
-Thank you for the patch! Perhaps something to improve:
+Currently working features:
+- UFS
+- Touchscreen
+- USB 2
+- Bluetooth
+- Wi-Fi
+- GPU
+- Venus
+- Display (need jdi-fhd-nt35596s panel driver, which I have sent a
+  patch but it haven't been into upstream yet)
 
-[auto build test WARNING on sre-power-supply/for-next]
-[also build test WARNING on robh/for-next linus/master v5.19-rc5 next-20220707]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Signed-off-by: MollySophia <mollysophia379@gmail.com>
+---
+ arch/arm64/boot/dts/qcom/Makefile             |   1 +
+ .../boot/dts/qcom/sdm845-xiaomi-polaris.dts   | 963 ++++++++++++++++++
+ 2 files changed, 964 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Caleb-Connolly/power-supply-introduce-support-for-the-Qualcomm-smb2-charger/20220707-034307
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-power-supply.git for-next
-config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20220707/202207072358.2odInqXi-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project f553287b588916de09c66e3e32bf75e5060f967f)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install arm64 cross compiling tool for clang build
-        # apt-get install binutils-aarch64-linux-gnu
-        # https://github.com/intel-lab-lkp/linux/commit/a6b315467a158024bb1af7fed00c9a5227c9b293
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Caleb-Connolly/power-supply-introduce-support-for-the-Qualcomm-smb2-charger/20220707-034307
-        git checkout a6b315467a158024bb1af7fed00c9a5227c9b293
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/power/supply/
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
->> drivers/power/supply/qcom_pmi8998_charger.c:425:5: warning: no previous prototype for function 'smb2_get_prop_usb_online' [-Wmissing-prototypes]
-   int smb2_get_prop_usb_online(struct smb2_chip *chip, int *val)
-       ^
-   drivers/power/supply/qcom_pmi8998_charger.c:425:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   int smb2_get_prop_usb_online(struct smb2_chip *chip, int *val)
-   ^
-   static 
->> drivers/power/supply/qcom_pmi8998_charger.c:486:5: warning: no previous prototype for function 'smb2_get_prop_status' [-Wmissing-prototypes]
-   int smb2_get_prop_status(struct smb2_chip *chip, int *val)
-       ^
-   drivers/power/supply/qcom_pmi8998_charger.c:486:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   int smb2_get_prop_status(struct smb2_chip *chip, int *val)
-   ^
-   static 
->> drivers/power/supply/qcom_pmi8998_charger.c:565:6: warning: no previous prototype for function 'smb2_status_change_work' [-Wmissing-prototypes]
-   void smb2_status_change_work(struct work_struct *work)
-        ^
-   drivers/power/supply/qcom_pmi8998_charger.c:565:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   void smb2_status_change_work(struct work_struct *work)
-   ^
-   static 
->> drivers/power/supply/qcom_pmi8998_charger.c:614:5: warning: no previous prototype for function 'smb2_get_iio_chan' [-Wmissing-prototypes]
-   int smb2_get_iio_chan(struct smb2_chip *chip, struct iio_channel *chan,
-       ^
-   drivers/power/supply/qcom_pmi8998_charger.c:614:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   int smb2_get_iio_chan(struct smb2_chip *chip, struct iio_channel *chan,
-   ^
-   static 
->> drivers/power/supply/qcom_pmi8998_charger.c:635:5: warning: no previous prototype for function 'smb2_get_prop_health' [-Wmissing-prototypes]
-   int smb2_get_prop_health(struct smb2_chip *chip, int *val)
-       ^
-   drivers/power/supply/qcom_pmi8998_charger.c:635:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   int smb2_get_prop_health(struct smb2_chip *chip, int *val)
-   ^
-   static 
->> drivers/power/supply/qcom_pmi8998_charger.c:736:13: warning: no previous prototype for function 'smb2_handle_batt_overvoltage' [-Wmissing-prototypes]
-   irqreturn_t smb2_handle_batt_overvoltage(int irq, void *data)
-               ^
-   drivers/power/supply/qcom_pmi8998_charger.c:736:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   irqreturn_t smb2_handle_batt_overvoltage(int irq, void *data)
-   ^
-   static 
->> drivers/power/supply/qcom_pmi8998_charger.c:754:13: warning: no previous prototype for function 'smb2_handle_usb_plugin' [-Wmissing-prototypes]
-   irqreturn_t smb2_handle_usb_plugin(int irq, void *data)
-               ^
-   drivers/power/supply/qcom_pmi8998_charger.c:754:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   irqreturn_t smb2_handle_usb_plugin(int irq, void *data)
-   ^
-   static 
->> drivers/power/supply/qcom_pmi8998_charger.c:766:13: warning: no previous prototype for function 'smb2_handle_usb_icl_change' [-Wmissing-prototypes]
-   irqreturn_t smb2_handle_usb_icl_change(int irq, void *data)
-               ^
-   drivers/power/supply/qcom_pmi8998_charger.c:766:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   irqreturn_t smb2_handle_usb_icl_change(int irq, void *data)
-   ^
-   static 
->> drivers/power/supply/qcom_pmi8998_charger.c:775:13: warning: no previous prototype for function 'smb2_handle_wdog_bark' [-Wmissing-prototypes]
-   irqreturn_t smb2_handle_wdog_bark(int irq, void *data)
-               ^
-   drivers/power/supply/qcom_pmi8998_charger.c:775:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   irqreturn_t smb2_handle_wdog_bark(int irq, void *data)
-   ^
-   static 
-   drivers/power/supply/qcom_pmi8998_charger.c:896:12: warning: initializer overrides prior initialization of this subobject [-Winitializer-overrides]
-             .addr = 1950000 / 25000 },
-                     ^~~~~~~~~~~~~~~
-   drivers/power/supply/qcom_pmi8998_charger.c:894:12: note: previous initialization is here
-           { .addr = FAST_CHARGE_CURRENT_CFG,
-                     ^~~~~~~~~~~~~~~~~~~~~~~
-   drivers/power/supply/qcom_pmi8998_charger.c:76:36: note: expanded from macro 'FAST_CHARGE_CURRENT_CFG'
-   #define FAST_CHARGE_CURRENT_CFG                         0x61
-                                                           ^~~~
-   10 warnings generated.
-
-
-vim +/smb2_get_prop_usb_online +425 drivers/power/supply/qcom_pmi8998_charger.c
-
-   424	
- > 425	int smb2_get_prop_usb_online(struct smb2_chip *chip, int *val)
-   426	{
-   427		unsigned int stat;
-   428		int rc;
-   429	
-   430		rc = regmap_read(chip->regmap, chip->base + POWER_PATH_STATUS, &stat);
-   431		if (rc < 0) {
-   432			dev_err(chip->dev, "Couldn't read POWER_PATH_STATUS! ret=%d\n",
-   433				rc);
-   434			return rc;
-   435		}
-   436	
-   437		*val = (stat & P_PATH_USE_USBIN_BIT) &&
-   438		       (stat & P_PATH_VALID_INPUT_POWER_SOURCE_STS_BIT);
-   439		return 0;
-   440	}
-   441	
-   442	/*
-   443	 * Qualcomm "automatic power source detection" aka APSD
-   444	 * tells us what type of charger we're connected to.
-   445	 */
-   446	static int smb2_apsd_get_charger_type(struct smb2_chip *chip, int *val)
-   447	{
-   448		int rc;
-   449		unsigned int apsd_stat, stat;
-   450		int usb_online;
-   451	
-   452		rc = smb2_get_prop_usb_online(chip, &usb_online);
-   453		if (rc < 0 || !usb_online) {
-   454			*val = POWER_SUPPLY_USB_TYPE_UNKNOWN;
-   455			return 0;
-   456		}
-   457	
-   458		rc = regmap_read(chip->regmap, chip->base + APSD_STATUS, &apsd_stat);
-   459		if (rc < 0) {
-   460			dev_err(chip->dev, "Failed to read apsd status, rc = %d", rc);
-   461			return rc;
-   462		}
-   463		if (!(apsd_stat & APSD_DTC_STATUS_DONE_BIT)) {
-   464			dev_err(chip->dev, "Apsd not ready");
-   465			return -EAGAIN;
-   466		}
-   467	
-   468		rc = regmap_read(chip->regmap, chip->base + APSD_RESULT_STATUS, &stat);
-   469		if (rc < 0) {
-   470			dev_err(chip->dev, "Failed to read apsd result, rc = %d", rc);
-   471			return rc;
-   472		}
-   473	
-   474		stat &= APSD_RESULT_STATUS_MASK;
-   475	
-   476		if (stat & CDP_CHARGER_BIT)
-   477			*val = POWER_SUPPLY_USB_TYPE_CDP;
-   478		else if (stat & (DCP_CHARGER_BIT | OCP_CHARGER_BIT | FLOAT_CHARGER_BIT))
-   479			*val = POWER_SUPPLY_USB_TYPE_DCP;
-   480		else /* SDP_CHARGER_BIT (or others) */
-   481			*val = POWER_SUPPLY_USB_TYPE_SDP;
-   482	
-   483		return 0;
-   484	}
-   485	
- > 486	int smb2_get_prop_status(struct smb2_chip *chip, int *val)
-   487	{
-   488		int usb_online_val;
-   489		unsigned char stat[2];
-   490		int rc;
-   491	
-   492		rc = smb2_get_prop_usb_online(chip, &usb_online_val);
-   493		if (rc < 0) {
-   494			dev_err(chip->dev, "Couldn't get usb online property rc = %d\n",
-   495				rc);
-   496			return rc;
-   497		}
-   498	
-   499		if (!usb_online_val) {
-   500			*val = POWER_SUPPLY_STATUS_DISCHARGING;
-   501			return rc;
-   502		}
-   503	
-   504		rc = regmap_bulk_read(chip->regmap,
-   505				      chip->base + BATTERY_CHARGER_STATUS_1, &stat, 2);
-   506		if (rc < 0) {
-   507			dev_err(chip->dev, "Failed to read charging status ret=%d\n",
-   508				rc);
-   509			return rc;
-   510		}
-   511	
-   512		if (stat[1] & CHARGER_ERROR_STATUS_BAT_OV_BIT) {
-   513			*val = POWER_SUPPLY_STATUS_NOT_CHARGING;
-   514			return 0;
-   515		}
-   516	
-   517		stat[0] = stat[0] & BATTERY_CHARGER_STATUS_MASK;
-   518	
-   519		switch (stat[0]) {
-   520		case TRICKLE_CHARGE:
-   521		case PRE_CHARGE:
-   522		case FAST_CHARGE:
-   523		case FULLON_CHARGE:
-   524		case TAPER_CHARGE:
-   525			*val = POWER_SUPPLY_STATUS_CHARGING;
-   526			return rc;
-   527		case DISABLE_CHARGE:
-   528			*val = POWER_SUPPLY_STATUS_NOT_CHARGING;
-   529			return rc;
-   530		case TERMINATE_CHARGE:
-   531			*val = POWER_SUPPLY_STATUS_FULL;
-   532			return rc;
-   533		case INHIBIT_CHARGE:
-   534		default:
-   535			*val = POWER_SUPPLY_STATUS_UNKNOWN;
-   536			return rc;
-   537		}
-   538	}
-   539	
-   540	static inline int smb2_get_current_limit(struct smb2_chip *chip,
-   541						 unsigned int *val)
-   542	{
-   543		int rc = regmap_read(chip->regmap, chip->base + ICL_STATUS, val);
-   544	
-   545		if (rc >= 0)
-   546			*val *= 25000;
-   547		return rc;
-   548	}
-   549	
-   550	static int smb2_set_current_limit(struct smb2_chip *chip, unsigned int val)
-   551	{
-   552		unsigned char val_raw;
-   553	
-   554		if (val > 4800000) {
-   555			dev_err(chip->dev,
-   556				"Can't set current limit higher than 4800000uA");
-   557			return -EINVAL;
-   558		}
-   559		val_raw = val / 25000;
-   560	
-   561		return regmap_write(chip->regmap, chip->base + USBIN_CURRENT_LIMIT_CFG,
-   562				    val_raw);
-   563	}
-   564	
- > 565	void smb2_status_change_work(struct work_struct *work)
-   566	{
-   567		struct smb2_chip *chip =
-   568			container_of(work, struct smb2_chip, status_change_work.work);
-   569		unsigned int charger_type, current_ua;
-   570		int usb_online, count, rc;
-   571	
-   572		smb2_get_prop_usb_online(chip, &usb_online);
-   573		if (usb_online == 0) {
-   574			chip->default_curr_limit = 0;
-   575			return;
-   576		}
-   577	
-   578		for (count = 0; count < 3; count++) {
-   579			dev_dbg(chip->dev, "get charger type retry %d\n", count);
-   580			rc = smb2_apsd_get_charger_type(chip, &charger_type);
-   581			if (rc == 0)
-   582				break;
-   583			msleep(100);
-   584		}
-   585	
-   586		if (rc < 0) {
-   587			rc = regmap_update_bits(chip->regmap, chip->base + CMD_APSD,
-   588						APSD_RERUN_BIT, APSD_RERUN_BIT);
-   589			schedule_delayed_work(&chip->status_change_work,
-   590					      msecs_to_jiffies(1500));
-   591			dev_dbg(chip->dev, "get charger type failed, rerun apsd\n");
-   592			return;
-   593		}
-   594	
-   595		switch (charger_type) {
-   596		case POWER_SUPPLY_USB_TYPE_CDP:
-   597			current_ua = CDP_CURRENT_UA;
-   598			break;
-   599		case POWER_SUPPLY_USB_TYPE_DCP:
-   600			current_ua = DCP_CURRENT_UA;
-   601			break;
-   602		case POWER_SUPPLY_USB_TYPE_SDP:
-   603		default:
-   604			current_ua = SDP_CURRENT_UA;
-   605			break;
-   606		}
-   607	
-   608		chip->default_curr_limit = current_ua;
-   609	
-   610		smb2_set_current_limit(chip, current_ua);
-   611		power_supply_changed(chip->chg_psy);
-   612	}
-   613	
- > 614	int smb2_get_iio_chan(struct smb2_chip *chip, struct iio_channel *chan,
-   615			      int *val)
-   616	{
-   617		int rc;
-   618		union power_supply_propval status;
-   619	
-   620		rc = power_supply_get_property(chip->chg_psy, POWER_SUPPLY_PROP_STATUS,
-   621					       &status);
-   622		if (rc < 0 || status.intval != POWER_SUPPLY_STATUS_CHARGING) {
-   623			*val = 0;
-   624			return 0;
-   625		}
-   626	
-   627		if (IS_ERR(chan)) {
-   628			dev_err(chip->dev, "Failed to chan, err = %li", PTR_ERR(chan));
-   629			return PTR_ERR(chan);
-   630		}
-   631	
-   632		return iio_read_channel_processed(chan, val);
-   633	}
-   634	
-
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+index 77ba2c9661d3..628b95e1012b 100644
+--- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -112,6 +112,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-apollo.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-shift-axolotl.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium-ebbg.dtb
+ dtb-$(CONFIG_ARCH_QCOM) += sdm845-xiaomi-beryllium-tianma.dtb
++dtb-$(CONFIG_ARCH_QCOM) += sdm845-xiaomi-polaris.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-lenovo-yoga-c630.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-samsung-w737.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-sony-xperia-seine-pdx201.dtb
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts
+new file mode 100644
+index 000000000000..ef8e7eb95d04
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts
+@@ -0,0 +1,963 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2020, Xilin Wu <strongtz@yeah.net>
++ * Copyright (c) 2022, Molly Sophia <mollysophia379@gmail.com>
++ */
++
++/dts-v1/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
++#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
++#include <dt-bindings/input/linux-event-codes.h>
++#include <dt-bindings/sound/qcom,q6afe.h>
++#include <dt-bindings/sound/qcom,q6asm.h>
++#include <dt-bindings/sound/qcom,q6afe.h>
++#include <dt-bindings/sound/qcom,q6asm.h>
++#include <dt-bindings/sound/qcom,q6voice.h>
++#include "sdm845.dtsi"
++#include "pm8998.dtsi"
++#include "pmi8998.dtsi"
++#include "pm8005.dtsi"
++
++/*
++ * Delete following upstream (sdm845.dtsi) reserved
++ * memory mappings which are different in this device.
++ */
++/delete-node/ &rmtfs_mem;
++/delete-node/ &adsp_mem;
++/delete-node/ &wlan_msa_mem;
++/delete-node/ &mpss_region;
++/delete-node/ &venus_mem;
++/delete-node/ &cdsp_mem;
++/delete-node/ &mba_region;
++/delete-node/ &slpi_mem;
++/delete-node/ &spss_mem;
++
++/ {
++	model = "Xiaomi Mi MIX 2s";
++	compatible = "xiaomi,polaris", "qcom,sdm845";
++	chassis-type = "handset";
++
++	/* required for bootloader to select correct board */
++	qcom,board-id = <0x2a 0x0>;
++	qcom,msm-id = <0x141 0x20001>;
++
++	aliases {
++		serial1 = &uart9;
++		hsuart0 = &uart6;
++	};
++
++	volume-keys {
++		compatible = "gpio-keys";
++		autorepeat;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&vol_up_pin_a>;
++
++		key-vol-up {
++			label = "Volume Up";
++			linux,code = <KEY_VOLUMEUP>;
++			gpios = <&pm8998_gpio 6 GPIO_ACTIVE_LOW>;
++			debounce-interval = <15>;
++		};
++	};
++
++	reserved-memory {
++		adsp_mem: memory@8c500000 {
++			reg = <0 0x8c500000 0 0x1e00000>;
++			no-map;
++		};
++
++		wlan_msa_mem: memory@8e300000 {
++			reg = <0 0x8e300000 0 0x100000>;
++			no-map;
++		};
++
++		mpss_region: memory@8e400000 {
++			reg = <0 0x8e400000 0 0x7800000>;
++			no-map;
++		};
++
++		venus_mem: memory@95c00000 {
++			reg = <0 0x95c00000 0 0x500000>;
++			no-map;
++		};
++
++		cdsp_mem: memory@96100000 {
++			reg = <0 0x96100000 0 0x800000>;
++			no-map;
++		};
++
++		mba_region: memory@96900000 {
++			reg = <0 0x96900000 0 0x200000>;
++			no-map;
++		};
++
++		slpi_mem: memory@96b00000 {
++			reg = <0 0x96b00000 0 0x1400000>;
++			no-map;
++		};
++
++		spss_mem: memory@97f00000 {
++			reg = <0 0x97f00000 0 0x100000>;
++			no-map;
++		};
++
++		rmtfs_mem: memory@f6301000 {
++			compatible = "qcom,rmtfs-mem";
++			reg = <0 0xf6301000 0 0x200000>;
++			no-map;
++
++			qcom,client-id = <1>;
++			qcom,vmid = <15>;
++		};
++	};
++
++	battery: battery {
++		compatible = "simple-battery";
++
++		charge-full-design-microamp-hours = <3400000>;
++		voltage-min-design-microvolt = <3400000>;
++		voltage-max-design-microvolt = <4400000>;
++	};
++
++	vreg_tp_vddio: tp-vddio-vreg {
++		compatible = "regulator-fixed";
++		regulator-name = "vreg_tp_vddio";
++
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++
++		gpio = <&tlmm 23 0>;
++		regulator-always-on;
++		regulator-boot-on;
++		enable-active-high;
++	};
++
++	vreg_s4a_1p8: vreg-s4a-1p8 {
++		compatible = "regulator-fixed";
++		regulator-name = "vreg_s4a_1p8";
++
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		regulator-always-on;
++	};
++};
++
++&apps_rsc {
++	pm8998-rpmh-regulators {
++		compatible = "qcom,pm8998-rpmh-regulators";
++		qcom,pmic-id = "a";
++
++		vreg_s2a_1p1: smps2 {
++			regulator-min-microvolt = <1100000>;
++			regulator-max-microvolt = <1100000>;
++		};
++
++		vreg_s3a_1p35: smps3 {
++			regulator-min-microvolt = <1352000>;
++			regulator-max-microvolt = <1352000>;
++		};
++
++		vreg_s5a_2p04: smps5 {
++			regulator-min-microvolt = <1904000>;
++			regulator-max-microvolt = <2040000>;
++		};
++
++		vreg_s7a_1p025: smps7 {
++			regulator-min-microvolt = <900000>;
++			regulator-max-microvolt = <1028000>;
++		};
++
++		vdda_mipi_dsi0_pll:
++		vdda_ufs1_core:
++		vreg_l1a_0p875: ldo1 {
++			regulator-min-microvolt = <880000>;
++			regulator-max-microvolt = <880000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l2a_1p2: ldo2 {
++			regulator-min-microvolt = <1200000>;
++			regulator-max-microvolt = <1200000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
++		};
++
++		vreg_l3a_1p0: ldo3 {
++			regulator-min-microvolt = <1000000>;
++			regulator-max-microvolt = <1000000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l5a_0p8: ldo5 {
++			regulator-min-microvolt = <800000>;
++			regulator-max-microvolt = <800000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l6a_1p8: ldo6 {
++			regulator-min-microvolt = <1856000>;
++			regulator-max-microvolt = <1856000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l7a_1p8: ldo7 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l8a_1p2: ldo8 {
++			regulator-min-microvolt = <1200000>;
++			regulator-max-microvolt = <1248000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l9a_1p8: ldo9 {
++			regulator-min-microvolt = <1704000>;
++			regulator-max-microvolt = <2928000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l10a_2p95: ldo10 {
++			regulator-min-microvolt = <1704000>;
++			regulator-max-microvolt = <2928000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l11a_1p05: ldo11 {
++			regulator-min-microvolt = <1000000>;
++			regulator-max-microvolt = <1048000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l12a_1p8: ldo12 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l13a_2p95: ldo13 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <2960000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l14a_1p8: ldo14 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1880000>;
++			regulator-always-on;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l15a_1p8: ldo15 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l16a_2p7: ldo16 {
++			regulator-min-microvolt = <2704000>;
++			regulator-max-microvolt = <2704000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l17a_1p3: ldo17 {
++			regulator-always-on;
++			regulator-min-microvolt = <1304000>;
++			regulator-max-microvolt = <1304000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l18a_2p9: ldo18 {
++			regulator-min-microvolt = <2704000>;
++			regulator-max-microvolt = <2960000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l19a_3p1: ldo19 {
++			regulator-min-microvolt = <2856000>;
++			regulator-max-microvolt = <3104000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l20a_2p95: ldo20 {
++			regulator-min-microvolt = <2704000>;
++			regulator-max-microvolt = <2960000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l21a_2p95: ldo21 {
++			regulator-min-microvolt = <2704000>;
++			regulator-max-microvolt = <2960000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l22a_3p3: ldo22 {
++			regulator-min-microvolt = <2864000>;
++			regulator-max-microvolt = <3312000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l23a_3p3: ldo23 {
++			regulator-min-microvolt = <3000000>;
++			regulator-max-microvolt = <3312000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l24a_3p075: ldo24 {
++			regulator-min-microvolt = <3088000>;
++			regulator-max-microvolt = <3088000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l25a_3p3: ldo25 {
++			regulator-always-on;
++			regulator-min-microvolt = <3000000>;
++			regulator-max-microvolt = <3312000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vdda_mipi_dsi0_1p2:
++		vdda_ufs1_1p2:
++		vreg_l26a_1p2: ldo26 {
++			regulator-min-microvolt = <1200000>;
++			regulator-max-microvolt = <1200000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l28a_3p0: ldo28 {
++			regulator-min-microvolt = <2856000>;
++			regulator-max-microvolt = <3008000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
++		};
++
++		vreg_lvs1a_1p8: lvs1 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++		};
++
++		vreg_lvs2a_1p8: lvs2 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1800000>;
++		};
++	};
++
++	pmi8998-rpmh-regulators {
++		compatible = "qcom,pmi8998-rpmh-regulators";
++		qcom,pmic-id = "b";
++
++		vreg_bob: bob {
++			regulator-min-microvolt = <3312000>;
++			regulator-max-microvolt = <3600000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_AUTO>;
++			regulator-allow-bypass;
++		};
++	};
++
++	pm8005-rpmh-regulators {
++		compatible = "qcom,pm8005-rpmh-regulators";
++		qcom,pmic-id = "c";
++
++		vreg_smp3c_0p6: smps3 {
++			regulator-always-on;
++			regulator-min-microvolt = <600000>;
++			regulator-max-microvolt = <600000>;
++		};
++	};
++};
++
++&gpi_dma0 {
++	status = "okay";
++};
++
++&gpi_dma1 {
++	status = "okay";
++};
++
++&cdsp_pas {
++	status = "okay";
++	firmware-name = "qcom/sdm845/polaris/cdsp.mbn";
++};
++
++&dsi0 {
++	status = "okay";
++	vdda-supply = <&vdda_mipi_dsi0_1p2>;
++
++	display_panel: panel@0 {
++		status = "okay";
++		compatible = "jdi,fhd-nt35596s";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0>;
++
++		vddio-supply = <&vreg_l14a_1p8>;
++		vddpos-supply = <&lab>;
++		vddneg-supply = <&ibb>;
++
++		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
++
++		backlight = <&pmi8998_wled>;
++
++		pinctrl-names = "default", "sleep";
++		pinctrl-0 = <&sde_dsi_active>;
++		pinctrl-1 = <&sde_dsi_suspend>;
++
++		port {
++			panel_in: endpoint {
++				remote-endpoint = <&dsi0_out>;
++			};
++		};
++	};
++};
++
++&dsi0_out {
++	remote-endpoint = <&panel_in>;
++	data-lanes = <0 1 2 3>;
++};
++
++&dsi0_phy {
++	status = "okay";
++	vdds-supply = <&vdda_mipi_dsi0_pll>;
++};
++
++&gcc {
++	protected-clocks = <GCC_QSPI_CORE_CLK>,
++			   <GCC_QSPI_CORE_CLK_SRC>,
++			   <GCC_QSPI_CNOC_PERIPH_AHB_CLK>,
++			   <GCC_LPASS_Q6_AXI_CLK>,
++			   <GCC_LPASS_SWAY_CLK>;
++};
++
++&gmu {
++	status = "okay";
++};
++
++&gpu {
++	status = "okay";
++
++	zap-shader {
++		memory-region = <&gpu_mem>;
++		firmware-name = "qcom/sdm845/polaris/a630_zap.mbn";
++	};
++};
++
++&ibb {
++	regulator-min-microvolt = <4600000>;
++	regulator-max-microvolt = <6000000>;
++	regulator-over-current-protection;
++	regulator-pull-down;
++	regulator-soft-start;
++	qcom,discharge-resistor-kohms = <300>;
++};
++
++&lab {
++	regulator-min-microvolt = <4600000>;
++	regulator-max-microvolt = <6000000>;
++	// regulator-over-current-protection;
++	regulator-pull-down;
++	regulator-soft-start;
++};
++
++&i2c5 {
++	#dma-cells = <3>;
++	status = "okay";
++	clock-frequency = <400000>;
++
++	dmas = <&gpi_dma0 0 5 QCOM_GPI_I2C>,
++		   <&gpi_dma0 1 5 QCOM_GPI_I2C>;
++	dma-names = "tx", "rx";
++
++	tas2559_codec: codec@4c{
++		#sound-dai-cells = <1>;
++		compatible = "ti,tas2559";
++		reg = <0x4c>;
++		ti,tas2559-reset-gpio = <&tlmm 14 0>;
++		ti,tas2560-reset-gpio = <&tlmm 25 0>;
++		ti,tas2559-addr = <0x4c>;
++		ti,tas2560-addr = <0x4d>;
++	};
++};
++
++&i2c14 {
++	#dma-cells = <3>;
++	status = "okay";
++	clock-frequency = <400000>;
++
++	dmas =  <&gpi_dma1 0 6 QCOM_GPI_I2C>,
++			<&gpi_dma1 1 6 QCOM_GPI_I2C>;
++	dma-names = "tx", "rx";
++
++	touchscreen@20 {
++		compatible = "syna,rmi4-i2c";
++		reg = <0x20>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		interrupts-extended = <&tlmm 125 0x2008>;
++
++		pinctrl-names = "default", "sleep";
++		pinctrl-0 = <&ts_int_default &ts_reset_default>;
++		pinctrl-1 = <&ts_int_sleep &ts_reset_sleep>;
++
++		vdd-supply = <&vreg_l28a_3p0>;
++		vio-supply = <&vreg_tp_vddio>;
++
++		syna,reset-delay-ms = <200>;
++		syna,startup-delay-ms = <200>;
++
++		rmi4-f01@1 {
++			reg = <0x1>;
++			syna,nosleep-mode = <0x1>;
++		};
++
++		rmi4-f12@12 {
++			reg = <0x12>;
++			syna,sensor-type = <1>;
++			syna,clip-x-low = <0>;
++			syna,clip-x-high = <1080>;
++			syna,clip-y-low = <0>;
++			syna,clip-y-high = <2160>;
++			syna,rezero-wait-ms = <200>;
++		};
++	};
++};
++
++&qup_i2c14_default {
++	mux {
++		pins = "gpio33", "gpio34";
++		function = "qup14";
++	};
++
++	config {
++		pins = "gpio33", "gpio34";
++		drive-strength = <2>;
++		bias-disable;
++	};
++};
++
++&ipa {
++	status = "okay";
++
++	memory-region = <&ipa_fw_mem>;
++	firmware-name = "qcom/sdm845/polaris/ipa_fws.mbn";
++};
++
++&slpi_pas {
++	status = "okay";
++	firmware-name = "qcom/sdm845/polaris/slpi.mbn";
++};
++
++&mdss {
++	status = "okay";
++};
++
++/* Modem/wifi*/
++&mss_pil {
++	status = "okay";
++	firmware-name = "qcom/sdm845/polaris/mba.mbn", "qcom/sdm845/polaris/modem.mbn";
++};
++
++&pm8998_gpio {
++	vol_up_pin_a: vol-up-active {
++		pins = "gpio6";
++		function = "normal";
++		input-enable;
++		bias-pull-up;
++		qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
++	};
++};
++
++&pm8998_pon {
++	resin {
++		compatible = "qcom,pm8941-resin";
++		interrupts = <0x0 0x8 1 IRQ_TYPE_EDGE_BOTH>;
++		debounce = <15625>;
++		bias-pull-up;
++		linux,code = <KEY_VOLUMEDOWN>;
++	};
++};
++
++&pmi8998_haptics {
++	status = "okay";
++
++	qcom,wave-play-rate-us = <4255>;
++};
++
++&pmi8998_charger {
++	status = "okay";
++	monitored-battery = <&battery>;
++};
++
++&pmi8998_fg {
++	status = "okay";
++
++	power-supplies = <&pmi8998_charger>;
++	monitored-battery = <&battery>;
++};
++
++&pmi8998_rradc {
++	status = "okay";
++};
++
++&pmi8998_wled {
++	status = "okay";
++	qcom,current-boost-limit = <970>;
++	qcom,ovp-millivolt = <29600>;
++	qcom,current-limit-microamp = <20000>;
++	qcom,num-strings = <2>;
++	qcom,switching-freq = <600>;
++	qcom,external-pfet;
++	qcom,cabc;
++};
++
++&q6afedai {
++	qi2s@22 {
++		reg = <22>;
++		qcom,sd-lines = <0>;
++	};
++};
++
++&q6asmdai {
++	dai@0 {
++		reg = <0>;
++	};
++
++	dai@1 {
++		reg = <1>;
++	};
++
++	dai@2 {
++		reg = <2>;
++	};
++};
++
++&q6cvp {
++	status = "okay";
++};
++
++&q6cvs {
++	status = "okay";
++};
++
++&q6mvm {
++	status = "okay";
++};
++
++&qupv3_id_0 {
++	status = "okay";
++};
++
++&qupv3_id_1 {
++	status = "okay";
++};
++
++&sound {
++	compatible = "qcom,db845c-sndcard";
++	pinctrl-0 = <&quat_mi2s_active
++			&quat_mi2s_sd0_active>;
++	pinctrl-names = "default";
++	model = "Xiaomi Mi Mix2s";
++	audio-routing =
++		"RX_BIAS", "MCLK",
++		"AMIC1", "MIC BIAS1",
++		"AMIC2", "MIC BIAS2",
++		"AMIC3", "MIC BIAS3";
++
++	mm1-dai-link {
++		link-name = "MultiMedia1";
++		cpu {
++			sound-dai = <&q6asmdai  MSM_FRONTEND_DAI_MULTIMEDIA1>;
++		};
++	};
++
++	mm2-dai-link {
++		link-name = "MultiMedia2";
++		cpu {
++			sound-dai = <&q6asmdai  MSM_FRONTEND_DAI_MULTIMEDIA2>;
++		};
++	};
++
++	mm3-dai-link {
++		link-name = "MultiMedia3";
++		cpu {
++			sound-dai = <&q6asmdai  MSM_FRONTEND_DAI_MULTIMEDIA3>;
++		};
++	};
++
++	dai-link-voicemmode1 {
++		link-name = "VoiceMMode1";
++		cpu {
++			sound-dai = <&q6voicedai VOICEMMODE1>;
++		};
++	};
++
++	tas2559-dai-link {
++		link-name = "Primary Spkr Playback";
++		cpu {
++			sound-dai = <&q6afedai QUATERNARY_MI2S_RX>;
++		};
++
++		platform {
++			sound-dai = <&q6routing>;
++		};
++
++		codec {
++			sound-dai =  <&tas2559_codec 0>;
++		};
++	};
++
++	slim-dai-link {
++		link-name = "SLIM Playback";
++		cpu {
++			sound-dai = <&q6afedai SLIMBUS_0_RX>;
++		};
++
++		platform {
++			sound-dai = <&q6routing>;
++		};
++
++		codec {
++			sound-dai =  <&wcd9340 0>;
++		};
++	};
++
++	slimcap-dai-link {
++		link-name = "SLIM Capture";
++		cpu {
++			sound-dai = <&q6afedai SLIMBUS_0_TX>;
++		};
++
++		platform {
++			sound-dai = <&q6routing>;
++		};
++
++		codec {
++			sound-dai = <&wcd9340 1>;
++		};
++	};
++};
++
++&tlmm {
++	gpio-reserved-ranges = <0 4>, <81 4>;
++
++	ts_reset_default: ts-reset-default {
++		mux {
++			pins = "gpio99";
++			function = "gpio";
++		};
++
++		config {
++			pins = "gpio99";
++			drive-strength = <16>;
++			output-high;
++		};
++	};
++
++	ts_int_default: ts-int-default {
++		mux {
++			pins = "gpio125";
++			function = "gpio";
++		};
++
++		config {
++			pins = "gpio125";
++			bias-pull-down;
++			drive-strength = <16>;
++			input-enable;
++		};
++	};
++
++	ts_reset_sleep: ts-reset-sleep {
++		mux {
++			pins = "gpio99";
++			function = "gpio";
++		};
++
++		config {
++			pins = "gpio99";
++			bias-disable;
++			drive-strength = <2>;
++		};
++	};
++
++	ts_int_sleep: ts-int-sleep {
++		mux {
++			pins = "gpio125";
++			function = "gpio";
++		};
++
++		config {
++			pins = "gpio125";
++			bias-pull-down;
++			drive-strength = <2>;
++			input-enable;
++		};
++	};
++
++	sde_dsi_active: sde-dsi-active {
++		mux {
++			pins = "gpio6", "gpio10";
++			function = "gpio";
++		};
++
++		config {
++			pins = "gpio6", "gpio10";
++			drive-strength = <8>;
++			bias-disable = <0>;
++		};
++	};
++
++	sde_dsi_suspend: sde-dsi-suspend {
++		mux {
++			pins = "gpio6", "gpio10";
++			function = "gpio";
++		};
++
++		config {
++			pins = "gpio6", "gpio10";
++			drive-strength = <2>;
++			bias-pull-down;
++		};
++	};
++
++	wcd_intr_default: wcd-intr-default {
++		pins = <54>;
++		function = "gpio";
++
++		input-enable;
++		bias-pull-down;
++		drive-strength = <2>;
++	};
++};
++
++&uart6 {
++	status = "okay";
++
++	bluetooth {
++		compatible = "qcom,wcn3990-bt";
++
++		/*
++		 * This path is relative to the qca/
++		 * subdir under lib/firmware.
++		 */
++		firmware-name = "polaris/crnv21.bin";
++
++		vddio-supply = <&vreg_s4a_1p8>;
++		vddxo-supply = <&vreg_l7a_1p8>;
++		vddrf-supply = <&vreg_l17a_1p3>;
++		vddch0-supply = <&vreg_l25a_3p3>;
++		max-speed = <3200000>;
++	};
++};
++
++&usb_1 {
++	status = "okay";
++	/* We'll use this as USB 2.0 only */
++	qcom,select-utmi-as-pipe-clk;
++};
++
++&usb_1_dwc3 {
++	dr_mode = "peripheral";
++
++	/* fastest mode for USB 2 */
++	maximum-speed = "high-speed";
++
++	/* Remove USB3 phy */
++	phys = <&usb_1_hsphy>;
++	phy-names = "usb2-phy";
++};
++
++&usb_1_hsphy {
++	status = "okay";
++
++	vdd-supply = <&vreg_l1a_0p875>;
++	vdda-pll-supply = <&vreg_l12a_1p8>;
++	vdda-phy-dpdm-supply = <&vreg_l24a_3p075>;
++
++	qcom,imp-res-offset-value = <8>;
++	qcom,hstx-trim-value = <QUSB2_V2_HSTX_TRIM_21_6_MA>;
++	qcom,preemphasis-level = <QUSB2_V2_PREEMPHASIS_5_PERCENT>;
++	qcom,preemphasis-width = <QUSB2_V2_PREEMPHASIS_WIDTH_HALF_BIT>;
++};
++
++&usb_1_qmpphy {
++	status = "okay";
++
++	vdda-phy-supply = <&vreg_l26a_1p2>;
++	vdda-pll-supply = <&vreg_l1a_0p875>;
++};
++
++&ufs_mem_hc {
++	status = "okay";
++	reset-gpios = <&tlmm 150 GPIO_ACTIVE_LOW>;
++	vcc-supply = <&vreg_l20a_2p95>;
++	vcc-max-microamp = <800000>;
++};
++
++&ufs_mem_phy {
++	status = "okay";
++	vdda-phy-supply = <&vdda_ufs1_core>;
++	vdda-pll-supply = <&vdda_ufs1_1p2>;
++};
++
++&venus {
++	status = "okay";
++	firmware-name = "qcom/sdm845/polaris/venus.mbn";
++};
++
++&wcd9340{
++	pinctrl-0 = <&wcd_intr_default>;
++	pinctrl-names = "default";
++	clock-names = "extclk";
++	clocks = <&rpmhcc RPMH_LN_BB_CLK2>;
++	reset-gpios = <&tlmm 64 0>;
++	vdd-buck-supply = <&vreg_s4a_1p8>;
++	vdd-buck-sido-supply = <&vreg_s4a_1p8>;
++	vdd-tx-supply = <&vreg_s4a_1p8>;
++	vdd-rx-supply = <&vreg_s4a_1p8>;
++	vdd-io-supply = <&vreg_s4a_1p8>;
++	qcom,micbias1-microvolt = <2700000>;
++	qcom,micbias2-microvolt = <1800000>;
++	qcom,micbias3-microvolt = <2700000>;
++	qcom,micbias4-microvolt = <2700000>;
++};
++
++&wifi {
++	status = "okay";
++
++	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
++	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
++	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
++	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
++	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
++
++	qcom,snoc-host-cap-skip-quirk;
++};
++
++/* PINCTRL - additions to nodes defined in sdm845.dtsi */
++
++&qup_uart6_default {
++	pinmux {
++		 pins = "gpio45", "gpio46", "gpio47", "gpio48";
++		 function = "qup6";
++	};
++
++	cts {
++		pins = "gpio45";
++		bias-disable;
++	};
++
++	rts-tx {
++		pins = "gpio46", "gpio47";
++		drive-strength = <2>;
++		bias-disable;
++	};
++
++	rx {
++		pins = "gpio48";
++		bias-pull-up;
++	};
++};
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.37.0
+
