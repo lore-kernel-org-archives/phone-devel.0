@@ -2,116 +2,94 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EACD5CCA479
-	for <phone-devel@archiver.kernel.org>; Sun, 10 Jul 2022 10:13:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 665A1C433EF
+	for <phone-devel@archiver.kernel.org>; Sun, 10 Jul 2022 16:54:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229549AbiGJKNh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 10 Jul 2022 06:13:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33402 "EHLO
+        id S229491AbiGJQyU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 10 Jul 2022 12:54:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbiGJKNg (ORCPT
+        with ESMTP id S229478AbiGJQyT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 10 Jul 2022 06:13:36 -0400
-Received: from mailrelay4-1.pub.mailoutpod1-cph3.one.com (mailrelay4-1.pub.mailoutpod1-cph3.one.com [46.30.210.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2B4DDD9
-        for <phone-devel@vger.kernel.org>; Sun, 10 Jul 2022 03:13:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=rsa1;
-        h=in-reply-to:content-transfer-encoding:content-type:mime-version:references:
-         message-id:subject:cc:to:from:date:from;
-        bh=rEJybCJet2Hivh6qA8E5QBR15vMK+Pp+penGzDCE/gA=;
-        b=b0/nmvN7DqiX0kkiYxY04bD70tMgShZfdVC9ZJajky7kFm6oMYGrw9ktIezVyQs2+8E4/UZfrKTZY
-         EgAn0iCUHct+pl3z5C8FcUpzhgINhlhnEb0lf20zi9BLshv9OYSLNtm3XVvBe7zNHQ4G1KmOAIi1LS
-         NwnSWdozaKCagsnN85fpy4NWwNyJWxz01jdMaHPDzUm6pvUQ2+58/pmRZVqZ/1Uy3JHjUBZQ43LNMm
-         rxOxzHa6Q1U5odiIYxfS8LvBnVyo+NDQvj8q1PpF6/sXWvy1+e2/9ftqQzVTsUxzDx6rWccZ0wiOlH
-         JCHtPfotFyQzC7EL/6WtRy1uhTRFulg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=ed1;
-        h=in-reply-to:content-transfer-encoding:content-type:mime-version:references:
-         message-id:subject:cc:to:from:date:from;
-        bh=rEJybCJet2Hivh6qA8E5QBR15vMK+Pp+penGzDCE/gA=;
-        b=zhj7p1kncuTVyhNq25SboIi49TZRRb2yMqScN0famvosUjKTzDGPhMgzllTAHyuGU0B6+UIUM/zKT
-         Z/HbU6wBA==
-X-HalOne-Cookie: c2ff1fd2e92b6addf632218b96cffdd31ae2ce00
-X-HalOne-ID: f17ef01f-0038-11ed-823d-d0431ea8bb10
-Received: from mailproxy4.cst.dirpod3-cph3.one.com (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-        by mailrelay4.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
-        id f17ef01f-0038-11ed-823d-d0431ea8bb10;
-        Sun, 10 Jul 2022 10:13:29 +0000 (UTC)
-Date:   Sun, 10 Jul 2022 12:13:27 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Molly Sophia <mollysophia379@gmail.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        Sun, 10 Jul 2022 12:54:19 -0400
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE5FECC5;
+        Sun, 10 Jul 2022 09:54:18 -0700 (PDT)
+Received: by mail-il1-f179.google.com with SMTP id a12so1873430ilp.13;
+        Sun, 10 Jul 2022 09:54:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=srd0SwVtQLc3vr70hEtn2ikS3RE4F1eFzPfbFQeWgLU=;
+        b=Dyhg04xeEx6dj/vkoG7FLasrz6iBzToeCDVQ3JjEUKIdFT5Vkp5LL6urTT9DW6/RW+
+         D2Ag4u0BBlGiwLtZgfCzopzF8HDi1Htxhg+TE9BPIMAdgqxIcPd1mmss59+UVktNP3z4
+         ++83eo2yPQsPyeM/+nEhBsIUfGHTYkgXVaLt5K+fyq1YQYBS2Oa2/EOCAwLqEVPNwFkA
+         75/l9o9ynZox1fW3p7/d1SAxeRPhrhfBfffYlQFTESXIxYpwbVZxPZGpQ+zWWmbW8LB0
+         wD7VRONkWZ2wb1W0KK09SlEcb6557u4WAebjP43WgPjGbR5lOBfLnpRGqh2KyOXZN6+A
+         K2vQ==
+X-Gm-Message-State: AJIora9vy1rariNcugAZvXKFeJLsFCv3kPmTTRNElifZLouVJjiCxJJz
+        7KmiWMC4xnkKTQSxWuBl1pjJIYL8wA==
+X-Google-Smtp-Source: AGRyM1v1x2JdWQvDCpJxBK4+b963wTLaRb1e+97cWbaaqBkOkg7g/oVHKNEb23HT8ibw4XlDGTBdAg==
+X-Received: by 2002:a05:6e02:15c5:b0:2d7:a1cf:6f87 with SMTP id q5-20020a056e0215c500b002d7a1cf6f87mr7648419ilu.30.1657472058051;
+        Sun, 10 Jul 2022 09:54:18 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id s5-20020a92d905000000b002dc0d2f7c7bsm1839960iln.4.2022.07.10.09.54.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Jul 2022 09:54:17 -0700 (PDT)
+Received: (nullmailer pid 1602127 invoked by uid 1000);
+        Sun, 10 Jul 2022 16:54:16 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     MollySophia <mollysophia379@gmail.com>
+Cc:     David Airlie <airlied@linux.ie>, linux-arm-msm@vger.kernel.org,
+        Sam Ravnborg <sam@ravnborg.org>,
         Rob Herring <robh+dt@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Daniel Vetter <daniel@ffwll.ch>, linux-kernel@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: display: panel: Add Novatek NT35596S
- panel bindings
-Message-ID: <YsqmRzxlvdoK8iK8@ravnborg.org>
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        dri-devel@lists.freedesktop.org
+In-Reply-To: <20220709141136.58298-1-mollysophia379@gmail.com>
 References: <20220709141136.58298-1-mollysophia379@gmail.com>
- <YsnpXU2w1wsXiGrs@ravnborg.org>
- <CAK0UmJBL9tj+XLa3GQHqk_gMHz9tZRoWEj=3G9zjNaPkZw9+5A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK0UmJBL9tj+XLa3GQHqk_gMHz9tZRoWEj=3G9zjNaPkZw9+5A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: display: panel: Add Novatek NT35596S panel bindings
+Date:   Sun, 10 Jul 2022 10:54:16 -0600
+Message-Id: <1657472056.244279.1602126.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Molly,
+On Sat, 09 Jul 2022 22:11:35 +0800, MollySophia wrote:
+> Add documentation for "novatek,nt35596s" panel.
+> 
+> Signed-off-by: MollySophia <mollysophia379@gmail.com>
+> ---
+>  .../display/panel/novatek,nt35596s.yaml       | 83 +++++++++++++++++++
+>  1 file changed, 83 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/display/panel/novatek,nt35596s.yaml
+> 
 
-On Sun, Jul 10, 2022 at 02:19:41PM +0800, Molly Sophia wrote:
-> Hi Sam,
-> 
-> Thanks for your suggestions.
-> 
-> Sam Ravnborg <sam@ravnborg.org> 于 2022年7月10日周日 上午4:47写道：
-> 
-> > Hi Molly,
-> >
-> > thanks for the quick response to the review comments.
-> >
-> > On Sat, Jul 09, 2022 at 10:11:35PM +0800, MollySophia wrote:
-> > > Add documentation for "novatek,nt35596s" panel.
-> > >
-> > > Signed-off-by: MollySophia <mollysophia379@gmail.com>
-> > The s-o-b needs your real name - guess the above is a concatenation of
-> > first name and surname.
-> >
-> > The binding included in this patch fails the check:
-> > $ make DT_CHECKER_FLAGS=-m dt_binding_check
-> >
-> > You may need to run:
-> > $ pip3 install dtschema --upgrade
-> >
-> > Or you may have to install some dependencies first.
-> > The problem is that the patch is missing a "reset-gpios: true"
-> >
-> > On top of this I looked at the binding - and the description
-> > this is copied from is almost identical.
-> > So another approach would be to extend the existing binding like
-> > in the following.
-> >
-> > And this also gives a good hint that maybe this can be embedded in
-> > the existing driver - and there is no need for a new driver.
-> > Could you try to give this a spin and get back on this.
-> >
-> 
-> That's reasonable. Actually, this driver was modified from
-> novatek,nt35596s, with different panel initialization commands, and it
-> seems easy to be embedded in
-> the existing driver. However, I wonder what the driver file name would
-> be...? "panel-novatek-nt35596s-nt36672a.c" or something else?
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Just keep the current driver name - we cannot embed all the supported HW
-in one driver name anyway. And then you do not break currents users in
-case they have hardwired the current driver name.
+yamllint warnings/errors:
 
-	Sam
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/display/panel/novatek,nt35596s.example.dtb: panel@0: 'reset-gpios' does not match any of the regexes: 'pinctrl-[0-9]+'
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/display/panel/novatek,nt35596s.yaml
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+
