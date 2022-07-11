@@ -2,115 +2,88 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8439C43334
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Jul 2022 21:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 856CEC43334
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Jul 2022 23:13:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230081AbiGKVl3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 11 Jul 2022 17:41:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56232 "EHLO
+        id S230209AbiGKXNX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 11 Jul 2022 19:13:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbiGKVl3 (ORCPT
+        with ESMTP id S229754AbiGKXNV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 11 Jul 2022 17:41:29 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 997F381499;
-        Mon, 11 Jul 2022 14:41:28 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-31cac89d8d6so62959787b3.2;
-        Mon, 11 Jul 2022 14:41:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=MGQCeiIJ9AkmyNDZxDCtYHiqmGwukNQ4DHAac7Z7dc4=;
-        b=Gzf8ZoxNXFao+pfJzNKD/BL7s8RFfEPS4e4a2ewPMQcDpkmcBRIXf3rZ3mDJlZY0N+
-         2AJ92hmYwpdWt17ZJaw7UMDluNKW716g5ZeqTdMR/Dx/cHAyx5O1FdsleAAWA/el1guQ
-         OOYq+1jknAI/bSZyOst3ZKGyvZAab/U05/n16v9ja147pP0pfCzo7slrztjP0TFbCJSF
-         LpWxVp/IIQKZJAerSj4txJMPjq9Zv7kX7SAJ+fjNPt4Y3aik7wXJArELI0HYJiNeNBBf
-         9OlRPAWYtDBKW+ogf742khp9G2FzQbLDf5EjW3SEm66NdSS8yyVz8UVncDyTLOwicFAW
-         mwkg==
+        Mon, 11 Jul 2022 19:13:21 -0400
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0830509EB;
+        Mon, 11 Jul 2022 16:13:20 -0700 (PDT)
+Received: by mail-io1-f52.google.com with SMTP id n68so6372897iod.3;
+        Mon, 11 Jul 2022 16:13:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=MGQCeiIJ9AkmyNDZxDCtYHiqmGwukNQ4DHAac7Z7dc4=;
-        b=hmmGULRnjeeRnqqZoqGMHrvtIf6JoIaI76Nrs5Q+ZbPVW1Wc3RtBLN/g3/voWsyG9u
-         bQa5XPCIcU/H3tm1hAyk7uoHSiQ/KhE4CUz5vTDLH9Uc9yksHNQRAj72jQUTFWIVGGl+
-         +n4n2Wf/B0XQnLyXIs+e+Fk4Ux69TQHIsai+1Tce67gb3jBE9kPhH/5ZM3XvWTJeqmFE
-         rNtQDLza5mf0nabnuJI5u73XEoIMEDLcXXQ5qrJHFDL/zv5ANELT6qsEW97Jd0q6JjYa
-         rHt8sk+qj+C6ZgtWUJtJbvDBy1ogzwsNFE4m/usg+EAsKNEKUq73uHtNO62u2+yyIXTL
-         P9HQ==
-X-Gm-Message-State: AJIora/ITsoqmrkxDiiLaoMgKooC3peKzqQl7FK8iBjxfjTsk56/VGGh
-        2PPy5HRZMVKc0y7fl/G2UOieGhWKCH5tQcHyDV8=
-X-Google-Smtp-Source: AGRyM1sVCVwsBnMatLyX5AazmHesbMbDuTsAbayrrc0I/ovjc4BUKGYM1zNyjREDPwwKBO2sKj6a5J6SynN049zYr6k=
-X-Received: by 2002:a81:4986:0:b0:31d:388b:d08d with SMTP id
- w128-20020a814986000000b0031d388bd08dmr16920977ywa.185.1657575687825; Mon, 11
- Jul 2022 14:41:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220705163136.2278662-1-vincent.knecht@mailoo.org>
- <CAHp75VfwoSqLZVbsN3DduP=SEKvr=tSfmxF1MTnYma0zh-JsXQ@mail.gmail.com>
- <e17913649e255d91bc357d3ab3e70957d05493e6.camel@mailoo.org> <CAHp75VdcT4TRZU_w-cntTt3jYTnwADcUo055vWLM8xrkWTXChg@mail.gmail.com>
-In-Reply-To: <CAHp75VdcT4TRZU_w-cntTt3jYTnwADcUo055vWLM8xrkWTXChg@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 11 Jul 2022 23:40:50 +0200
-Message-ID: <CAHp75VdNW0v2G=6HSQMkQp7iPNT3Fh8mqT4iuJg44FZmzxAdVg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] leds: Fix/Add is31fl319{0,1,3} support
-To:     Vincent Knecht <vincent.knecht@mailoo.org>
-Cc:     Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=s+xsXrHKbwgwRMOBC5ueCPd6m6uJqEs8A2pHdJgDMG0=;
+        b=Ou78mne9/ZXnw7A7sdH8KFsgtz2KpZKR5AohaLJRS0JYYu3PCiyt1e5TdJ7TpN8Go2
+         S46bT9htu3xANMrVzxPdO69UV0JORnKerFr1GwoYKfmuw77ItHCSpHeCwZP9AgKtaqWy
+         E8sOv0bTmrKEq/a27pmRUQuMD9ytch/WeXapK3HmF/eLlMBhPvgvygAzt3N/I1+FpIZp
+         ZlrtRNNRm6HCYKowYpags/U/QTtUOLlM8VinZEueJ0pGp8EDBiPKc6r1IHiX1g96tq4N
+         Zc+qQKnW+tvUUz49xusjVobnaToo6yF/MJ0tUhMDQjcOMQG66qBOkWfbuI6qdopLD/al
+         8F9Q==
+X-Gm-Message-State: AJIora+riZ49mGas9fHpO6Jx/Rdnlt1aGd7JSjPHGA/KNKx+FOTMHFBk
+        6skZnvOMHU1I0qVlsP3ocw==
+X-Google-Smtp-Source: AGRyM1smXQuLdxE0NR8tRcT+paGMEY5ZJBKF79o1+ztxVmzVmSeS4W5jT4PHCTvnuAeWHdotl+T2LQ==
+X-Received: by 2002:a05:6638:4511:b0:33f:4ccb:3139 with SMTP id bs17-20020a056638451100b0033f4ccb3139mr5647828jab.20.1657581199999;
+        Mon, 11 Jul 2022 16:13:19 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id a26-20020a029f9a000000b00331a3909e46sm3504613jam.68.2022.07.11.16.13.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Jul 2022 16:13:19 -0700 (PDT)
+Received: (nullmailer pid 448337 invoked by uid 1000);
+        Mon, 11 Jul 2022 23:13:18 -0000
+Date:   Mon, 11 Jul 2022 17:13:18 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     MollySophia <mollysophia379@gmail.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v5 2/2] dt-bindings: arm: qcom: Add Xiaomi Mi Mix2s
+ bindings
+Message-ID: <20220711231318.GA442599-robh@kernel.org>
+References: <20220709131935.50708-1-mollysophia379@gmail.com>
+ <20220709131935.50708-2-mollysophia379@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220709131935.50708-2-mollysophia379@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Jul 11, 2022 at 11:39 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Sat, Jul 9, 2022 at 11:51 AM Vincent Knecht
-> <vincent.knecht@mailoo.org> wrote:
-> > Le mardi 05 juillet 2022 =C3=A0 20:57 +0200, Andy Shevchenko a =C3=A9cr=
-it :
-> > > On Tue, Jul 5, 2022 at 6:32 PM Vincent Knecht <vincent.knecht@mailoo.=
-org> wrote:
-> > > >
-> > > > v3:
-> > > > - pick up Rob's R-b for patches 1 and 2
-> > > > - reinstate bindings docs license and maintainer
-> > > >   changes with Nikolaus agreement
-> > > > - took Andy's comments on patch 4 into account
-> > >
-> > > Thanks for the update. Nothing serious, but a few comments.
-> > >
-> > > Also a question here. Do you have plans to convert it to use device p=
-roperties?
-> >
-> > Hi Andy, and thank you for the reviews.
-> > Just sent a v4:
-> > https://lore.kernel.org/linux-leds/20220709094642.4078222-1-vincent.kne=
-cht@mailoo.org/
-> >
-> > As for converting to device properties, it will take me some more time
-> > since I'm not too familiar with the concepts and how to do it exactly.
->
-> I just sent a series [1] which is based on the top of yours. You can
-> rebase it (it fixes a couple of subtle bugs: 1) GPIO error messaging
-> during error probe, and 2) mutex destruction is out of order) or
-> handle it together with yours. It seems you possess hardware, so I
-> assume you at least can test it.
+On Sat, Jul 09, 2022 at 09:19:35PM +0800, MollySophia wrote:
+> Add documentation for "xiaomi,polaris" device.
+> 
+> Signed-off-by: MollySophia <mollysophia379@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/arm/qcom.yaml | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+> index 129cdd246223..80dff09bdc83 100644
+> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
+> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+> @@ -235,6 +235,11 @@ properties:
+>                - xiaomi,lavender
+>            - const: qcom,sdm660
+>  
+> +      - items:
+> +          - enum:
+> +              - xiaomi,polaris
+> +          - const: qcom,sdm845
 
-...missed link...
+I think there is now an entry for this as a bunch of missing 
+compatibles have been added, so you will need to rebase on the qcom 
+tree.
 
-[1]: https://lore.kernel.org/linux-leds/20220711213524.3587-1-andriy.shevch=
-enko@linux.intel.com/
-
-> > Got some hints from git history, will look into that.
-> > Also I'd like to add blink support...
-
---=20
-With Best Regards,
-Andy Shevchenko
+Rob
