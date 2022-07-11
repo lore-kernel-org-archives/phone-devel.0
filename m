@@ -2,94 +2,184 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 665A1C433EF
-	for <phone-devel@archiver.kernel.org>; Sun, 10 Jul 2022 16:54:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D2A5C433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 11 Jul 2022 07:56:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbiGJQyU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 10 Jul 2022 12:54:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52590 "EHLO
+        id S229657AbiGKH4Y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 11 Jul 2022 03:56:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbiGJQyT (ORCPT
+        with ESMTP id S229723AbiGKH4Y (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 10 Jul 2022 12:54:19 -0400
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE5FECC5;
-        Sun, 10 Jul 2022 09:54:18 -0700 (PDT)
-Received: by mail-il1-f179.google.com with SMTP id a12so1873430ilp.13;
-        Sun, 10 Jul 2022 09:54:18 -0700 (PDT)
+        Mon, 11 Jul 2022 03:56:24 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 447A11AF05
+        for <phone-devel@vger.kernel.org>; Mon, 11 Jul 2022 00:56:22 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id d16so5864151wrv.10
+        for <phone-devel@vger.kernel.org>; Mon, 11 Jul 2022 00:56:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=sKkZ7/Q/K9Q/sXgFuA0gAflfil/CLZ0p6StfFEg8nR8=;
+        b=s7i1I56YvzM46mtZQRunYDg5XIgJBb5tiEtkaWXeKEwoVS6JeIyKRh8Jvf4O5wOW+z
+         ak6CPvdefTVUYin40r8D+h0x1ulauO8TC9fe5XuasEfMn4kdr8f/iEMhCQYtPmBBGVG0
+         r3XsOtVtHFoSLyzODC+OBfUa9nj3ZaDjiEvRZ+sbkhpgEbxOCNWTJK5soE+oLcZXY14Y
+         HPtpVPPLZJGPBpjKpBkxbG+9B7fr1in762kRl+0NE3hTeeDwvvUtFW7OXi/4ouHOHhM2
+         yEqhz8zwbJpk7lWGiEZQufDi6tgDT9ozjBDYkk8kWPm2vK0YAOgfkKosNoBnVMuv7S1v
+         UNcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=srd0SwVtQLc3vr70hEtn2ikS3RE4F1eFzPfbFQeWgLU=;
-        b=Dyhg04xeEx6dj/vkoG7FLasrz6iBzToeCDVQ3JjEUKIdFT5Vkp5LL6urTT9DW6/RW+
-         D2Ag4u0BBlGiwLtZgfCzopzF8HDi1Htxhg+TE9BPIMAdgqxIcPd1mmss59+UVktNP3z4
-         ++83eo2yPQsPyeM/+nEhBsIUfGHTYkgXVaLt5K+fyq1YQYBS2Oa2/EOCAwLqEVPNwFkA
-         75/l9o9ynZox1fW3p7/d1SAxeRPhrhfBfffYlQFTESXIxYpwbVZxPZGpQ+zWWmbW8LB0
-         wD7VRONkWZ2wb1W0KK09SlEcb6557u4WAebjP43WgPjGbR5lOBfLnpRGqh2KyOXZN6+A
-         K2vQ==
-X-Gm-Message-State: AJIora9vy1rariNcugAZvXKFeJLsFCv3kPmTTRNElifZLouVJjiCxJJz
-        7KmiWMC4xnkKTQSxWuBl1pjJIYL8wA==
-X-Google-Smtp-Source: AGRyM1v1x2JdWQvDCpJxBK4+b963wTLaRb1e+97cWbaaqBkOkg7g/oVHKNEb23HT8ibw4XlDGTBdAg==
-X-Received: by 2002:a05:6e02:15c5:b0:2d7:a1cf:6f87 with SMTP id q5-20020a056e0215c500b002d7a1cf6f87mr7648419ilu.30.1657472058051;
-        Sun, 10 Jul 2022 09:54:18 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id s5-20020a92d905000000b002dc0d2f7c7bsm1839960iln.4.2022.07.10.09.54.16
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=sKkZ7/Q/K9Q/sXgFuA0gAflfil/CLZ0p6StfFEg8nR8=;
+        b=Z4m/O4CkMsDJeL/wtyI3lJKBL9y7U/0VyiZh+gYqaC0wJPGPPV1xkxAFqeIxEuDhNK
+         jlZ/Eg99Zqw9YDJVPcnRztl0yKXHBBAK8kkjxSMHY8GYL0j0BZqRNJX8npO/505+F4/Y
+         MkisCWf+NKJtKeQ0ssPUzQ9TSHXj+I0PeA/QKCXnCWHpLOXh/utTUBIey30O5947cDws
+         i/2tENf32nCF2Nkq5c0dg8ZZLssgpJjf13zjc0JbXMxV70h2a+7B1UEsCmpdnlPtNq8G
+         gJv3W3dZx+uIhgwrlXs3ir51XtQONWgtU4bjIrBcmZh4mt31m8SZsDRs4U0qlw+ZzuOA
+         ht6A==
+X-Gm-Message-State: AJIora8rqLbKoAvl+QF1A0myB6hlDRWFm6v8HV58H+PKdRDrQbSURlzB
+        YZjoosqhzhO3LcfYMsQN7y5vYg==
+X-Google-Smtp-Source: AGRyM1s6svVopaidI0OqhRnWkGg8+xnz5jCXAwHpMAKVlD9l503OW6LkbUqRx2CDpsnrcEh3ryN9Gg==
+X-Received: by 2002:a5d:68c1:0:b0:21d:8810:23c0 with SMTP id p1-20020a5d68c1000000b0021d881023c0mr16086309wrw.711.1657526180807;
+        Mon, 11 Jul 2022 00:56:20 -0700 (PDT)
+Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
+        by smtp.gmail.com with ESMTPSA id c8-20020a05600c0a4800b003a03e63e428sm13082839wmq.36.2022.07.11.00.56.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Jul 2022 09:54:17 -0700 (PDT)
-Received: (nullmailer pid 1602127 invoked by uid 1000);
-        Sun, 10 Jul 2022 16:54:16 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     MollySophia <mollysophia379@gmail.com>
-Cc:     David Airlie <airlied@linux.ie>, linux-arm-msm@vger.kernel.org,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        Mon, 11 Jul 2022 00:56:20 -0700 (PDT)
+Date:   Mon, 11 Jul 2022 08:56:18 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
-        Daniel Vetter <daniel@ffwll.ch>, linux-kernel@vger.kernel.org,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        dri-devel@lists.freedesktop.org
-In-Reply-To: <20220709141136.58298-1-mollysophia379@gmail.com>
-References: <20220709141136.58298-1-mollysophia379@gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: display: panel: Add Novatek NT35596S panel bindings
-Date:   Sun, 10 Jul 2022 10:54:16 -0600
-Message-Id: <1657472056.244279.1602126.nullmailer@robh.at.kernel.org>
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v5 4/5] mfd: sm5703: Add support for SM5703 MFD
+Message-ID: <YsvXom7CQ8qpzR5O@google.com>
+References: <20220423085319.483524-1-markuss.broks@gmail.com>
+ <20220423085319.483524-5-markuss.broks@gmail.com>
+ <Yqj+aUNLC00Tcu49@google.com>
+ <3ec8570e-a730-b572-8246-631b91f46735@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3ec8570e-a730-b572-8246-631b91f46735@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 09 Jul 2022 22:11:35 +0800, MollySophia wrote:
-> Add documentation for "novatek,nt35596s" panel.
+On Sat, 09 Jul 2022, Markuss Broks wrote:
+
+> Hi Lee,
 > 
-> Signed-off-by: MollySophia <mollysophia379@gmail.com>
-> ---
->  .../display/panel/novatek,nt35596s.yaml       | 83 +++++++++++++++++++
->  1 file changed, 83 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/panel/novatek,nt35596s.yaml
+> On 6/15/22 00:32, Lee Jones wrote:
+> > On Sat, 23 Apr 2022, Markuss Broks wrote:
+> > 
+> > > Silicon Mitus SM5703 is a multi-function device, meant to be
+> > Please avoid using the term MFD.
+> > 
+> > How is the device described in the data-sheet?
+> I don't have a data-sheet for this device. The only reference I have is
+> downstream Linux driver. Maybe a better way to call it would be PMIC?
+
+Yes, if that's what this is, PMIC sounds better.
+
+> > What do you mean by "meant to be"?
+> "designed to be", it appears that this part is almost exclusively used by
+> Samsung in its mobile phones.
+
+"designed to be" sounds better.
+
+> > > used in mobile devices. It has several modules: LDO, BUCK regulators,
+> > Modules or functions?
 > 
+> Some of "modules" are quite separate, so I decided to call it that way. How
+> should it be called?
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Functions.
 
-yamllint warnings/errors:
+> > > charger circuit, flash LED driver, a fuel gauge for monitoring the battery
+> > > and a MUIC USB switcher. The MUIC and fuel gauge parts are separate in that
+> > > they use separate i2c lines to communicate with the device, while charger
+> > "I2C"
+> > 
+> > > circuit, LED driver and regulators are on the main i2c line the device is
+> > > controlled with.
+> > > 
+> > > Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> > > ---
+> > >   MAINTAINERS                |   8 +++
+> > >   drivers/mfd/Kconfig        |  13 +++++
+> > >   drivers/mfd/Makefile       |   1 +
+> > >   drivers/mfd/sm5703.c       |  78 +++++++++++++++++++++++++++
+> > >   include/linux/mfd/sm5703.h | 105 +++++++++++++++++++++++++++++++++++++
+> > >   5 files changed, 205 insertions(+)
+> > >   create mode 100644 drivers/mfd/sm5703.c
+> > >   create mode 100644 include/linux/mfd/sm5703.h
+> > > 
+> > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > index 6157e706ed02..6125ed1a3be4 100644
+> > > --- a/MAINTAINERS
+> > > +++ b/MAINTAINERS
+> > > @@ -18172,6 +18172,14 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git dev
+> > >   F:	include/linux/srcu*.h
+> > >   F:	kernel/rcu/srcu*.c
+> > > +SM5703 MFD DRIVER
+> > > +M:	Markuss Broks <markuss.broks@gmail.com>
+> > > +S:	Maintained
+> > > +F:	Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+> > > +F:	Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
+> > > +F:	drivers/mfd/sm5703.c
+> > > +F:	drivers/regulator/sm5703-regulator.c
+> > > +
+> > >   SMACK SECURITY MODULE
+> > >   M:	Casey Schaufler <casey@schaufler-ca.com>
+> > >   L:	linux-security-module@vger.kernel.org
+> > > diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> > > index 3b59456f5545..c13a99ceae99 100644
+> > > --- a/drivers/mfd/Kconfig
+> > > +++ b/drivers/mfd/Kconfig
+> > > @@ -1237,6 +1237,19 @@ config MFD_SM501
+> > >   	  interface. The device may be connected by PCI or local bus with
+> > >   	  varying functions enabled.
+> > > +config MFD_SM5703
+> > > +	tristate "Silicon Mitus SM5703 MFD"
+> > > +	depends on I2C
+> > > +	depends on OF
+> > > +	select MFD_CORE
+> > > +	select REGMAP_I2C
+> > > +	help
+> > > +	  This is the core driver for the Silicon Mitus SM5703 multi-function
+> > Please drop the MFD term, as above.
+> > 
+> > > +	  device. This device is meant to be used in phones and it has numerous
+> > "meant to be"?
+> > 
+> > > +	  modules, including LED controller, regulators, fuel gauge, MUIC and
+> > Either "an LED controller" or "LED controllers"
+> > 
+> > Same with "charger circuit" below.
+> > 
+> > > +	  charger circuit. It also support muxing a serial interface over USB
+> > "supports"
+> > 
+> > What kind of serial?
+> UART as a standard Samsung debug port interface (619K Ohm resistor between
+> data lines is Samsung's debug cable).
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/display/panel/novatek,nt35596s.example.dtb: panel@0: 'reset-gpios' does not match any of the regexes: 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/display/panel/novatek,nt35596s.yaml
+Probably best to state that then.
 
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+-- 
+Lee Jones [李琼斯]
+Principal Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog
