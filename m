@@ -2,679 +2,174 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C606EC43334
-	for <phone-devel@archiver.kernel.org>; Tue, 12 Jul 2022 07:59:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C410C43334
+	for <phone-devel@archiver.kernel.org>; Tue, 12 Jul 2022 10:09:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232470AbiGLH7b (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 12 Jul 2022 03:59:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60988 "EHLO
+        id S232594AbiGLKJZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 12 Jul 2022 06:09:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232365AbiGLH7J (ORCPT
+        with ESMTP id S232136AbiGLKJZ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 12 Jul 2022 03:59:09 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57054AE44
-        for <phone-devel@vger.kernel.org>; Tue, 12 Jul 2022 00:58:54 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id r9so4586908lfp.10
-        for <phone-devel@vger.kernel.org>; Tue, 12 Jul 2022 00:58:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=JHyZSDoxf55LLXIvJsPS76BusFVnDpvtY13U37wxJUo=;
-        b=EtDHPXa/waCTQFSuUQ05hkVuZ8Ut7f9fAydeVk8hA4jKMj3P3FqGDjidCt725QveMd
-         S40jqmKK8ZL4G7mAt2kXaNzk87hwym5QuEwb8SZfE8Fkiq+x4a3hQtDBhCZaZbzUnxZu
-         batgs3cx9LgiO6B25DnPVA37uTkM95R9O5jg498iQSqxUUf3u8iEnbGHqyiZ2aaf/wPx
-         pWmuuSWuIPYwC7UCLaGCQzOERUqLnAR3mv2FmHhuDMbbnMGSbniiNcPS3UJf1uaKUocp
-         67AYj3CCRg/fwFUCXj88h4zPtKF5gL23zUbt3496rdNPITdeXcCex6I06HKf+2qYtQPq
-         xMWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=JHyZSDoxf55LLXIvJsPS76BusFVnDpvtY13U37wxJUo=;
-        b=I8joWwsn6lbBhNK4Z8lf2V2s3y8bnc+UxklQBm9GtHjmzuaxWafk0Re0J+9IsTf3cR
-         Z7riPU98asgbF0R9XftMRI5/9vLuJG9GpwmJFo9han4Im3UzUVwJ5Gtqw9OhAo0USegq
-         uesTXh8Jb4d1pKZmONNOoXGd0CxwmMGk8yoz4mHpjgxtPccl/0TeogFzBGbPMD2TJr8y
-         /JS4AuVpIwFw7SF0AE2X2tYdclm8AUBJWCIn/EphFpgMVA2a0ZXTGQ6liSWctQ5rpI47
-         TgqkfzNI3jZbqlTSG+l6DizZg08dw1DiyMwbO6zhsiB2Q6bpqjNsrBFmpayhazSeYcO7
-         xXFQ==
-X-Gm-Message-State: AJIora95D/4riYH9VVUKI9el5agy17oFFS0bt4Ned9Hqf3xiMh6bFWFK
-        cJwH5bDK07EsF2pDLga2qq1pjQ==
-X-Google-Smtp-Source: AGRyM1uChmj2tPksFsBCJqoUx5HknBr0ZCvz8BD5SxNBYJQ7hJEhZSDGrmJrZVfr4UyrK6nHyaQ9LQ==
-X-Received: by 2002:a05:6512:23aa:b0:489:ddb4:6f84 with SMTP id c42-20020a05651223aa00b00489ddb46f84mr5710431lfv.683.1657612732502;
-        Tue, 12 Jul 2022 00:58:52 -0700 (PDT)
-Received: from [10.0.0.8] (fwa5cab-55.bb.online.no. [88.92.171.55])
-        by smtp.gmail.com with ESMTPSA id s23-20020a056512203700b00489c59819ebsm2042550lfs.66.2022.07.12.00.58.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Jul 2022 00:58:52 -0700 (PDT)
-Message-ID: <964a0719-473e-2c41-ad6d-97f8232b200b@linaro.org>
-Date:   Tue, 12 Jul 2022 09:58:49 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v5 1/2] arm64: dts: qcom: Add support for Xiaomi Mi Mix2s
-Content-Language: en-US
-To:     MollySophia <mollysophia379@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        Tue, 12 Jul 2022 06:09:25 -0400
+Received: from msg-4.mailo.com (ip-15.mailobj.net [213.182.54.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A657AB7CD;
+        Tue, 12 Jul 2022 03:09:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
+        t=1657620541; bh=Obre5IIa+wQZbNnEgE6NenQzK6E616sCX+q9jkhLXDk=;
+        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
+         References:MIME-Version:Content-Transfer-Encoding;
+        b=dcia4nptDEadJ6VnE9bxiXu8IaBt9Sssxcw0jQ0r1NodilfmB/SvTMK58BCGgJDfY
+         qOXZyRg9k3fW8nm38CzvGVDKafz/38/bS7i7n4Gz8nxgqNVyux9IOCJMG4ag4/kyNT
+         mT2rcgTO7GW0jI1zZiT7+2hz6vub/8PkgXg1hqGI=
+Received: by b-1.in.mailobj.net [192.168.90.11] with ESMTP
+        via [213.182.55.207]
+        Tue, 12 Jul 2022 12:09:01 +0200 (CEST)
+X-EA-Auth: W4/N4DzbLXrI9f1mQEmUFubnI1GrnUsm1t2VBR7btUs5J0A7MCDUxNVTZsfweTGHnqfFZvcLtbGaEr5PB9ZThZC3PHpWesKAtHducO/ayIw=
+From:   Vincent Knecht <vincent.knecht@mailoo.org>
+To:     Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Vincent Knecht <vincent.knecht@mailoo.org>,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20220709131935.50708-1-mollysophia379@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220709131935.50708-1-mollysophia379@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        hns@goldelico.com, Rob Herring <robh@kernel.org>
+Subject: [PATCH v5 02/12] dt-bindings: leds: is31fl319x: Document variants specificities
+Date:   Tue, 12 Jul 2022 12:08:28 +0200
+Message-Id: <20220712100841.1538395-3-vincent.knecht@mailoo.org>
+X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20220712100841.1538395-1-vincent.knecht@mailoo.org>
+References: <20220712100841.1538395-1-vincent.knecht@mailoo.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 09/07/2022 15:19, MollySophia wrote:
-> Add support for Xiaomi Mi Mix2s (polaris) handsets.
-> 
-> Currently working features:
-> - UFS
-> - Touchscreen
-> - USB 2
-> - Bluetooth
-> - Wi-Fi
-> - GPU
-> - Venus
-> - Display (need jdi-fhd-nt35596s panel driver, which I have sent a
->   patch but it haven't been into upstream yet)
+Add si-en compatibles for all chip variants and add conditionals
+depending on compatibles to document variants specs:
+- possible reg addresses
+- whether audio-gain-db is supported or not
+- maximum number of leds
+- led-max-microamp values
 
-Thank you for your patch. There is something to discuss/improve.
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+---
+ .../bindings/leds/issi,is31fl319x.yaml        | 84 ++++++++++++++++++-
+ 1 file changed, 82 insertions(+), 2 deletions(-)
 
-> 
-> Signed-off-by: MollySophia <mollysophia379@gmail.com>
-> ---
->  arch/arm64/boot/dts/qcom/Makefile             |   3 +-
->  .../boot/dts/qcom/sdm845-xiaomi-polaris.dts   | 772 ++++++++++++++++++
->  2 files changed, 774 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-> index 77ba2c9661d3..d8d12bdabde2 100644
-> --- a/arch/arm64/boot/dts/qcom/Makefile
-> +++ b/arch/arm64/boot/dts/qcom/Makefile
-> @@ -111,7 +111,8 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-akatsuki.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-apollo.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-shift-axolotl.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium-ebbg.dtb
-> -dtb-$(CONFIG_ARCH_QCOM) += sdm845-xiaomi-beryllium-tianma.dtb
-> +dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium-tianma.dtb
-
-What tree is this based on? It does not look like linux-next.
-
-> +dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-polaris.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-lenovo-yoga-c630.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-samsung-w737.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-sony-xperia-seine-pdx201.dtb
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts
-> new file mode 100644
-> index 000000000000..e4654503ee43
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts
-> @@ -0,0 +1,772 @@
-> +// SPDX-License-Identifier: BSD-3-Clause
-> +/*
-> + * Copyright (c) 2020, Xilin Wu <strongtz@yeah.net>
-> + * Copyright (c) 2022, Molly Sophia <mollysophia379@gmail.com>
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
-> +#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-> +#include <dt-bindings/input/linux-event-codes.h>
-> +#include <dt-bindings/sound/qcom,q6afe.h>
-> +#include <dt-bindings/sound/qcom,q6asm.h>
-> +#include <dt-bindings/sound/qcom,q6afe.h>
-> +#include <dt-bindings/sound/qcom,q6asm.h>
-> +#include <dt-bindings/sound/qcom,q6voice.h>
-> +#include "sdm845.dtsi"
-> +#include "pm8998.dtsi"
-> +#include "pmi8998.dtsi"
-> +#include "pm8005.dtsi"
-> +
-> +/*
-> + * Delete following upstream (sdm845.dtsi) reserved
-> + * memory mappings which are different in this device.
-> + */
-> +/delete-node/ &rmtfs_mem;
-> +/delete-node/ &adsp_mem;
-> +/delete-node/ &wlan_msa_mem;
-> +/delete-node/ &mpss_region;
-> +/delete-node/ &venus_mem;
-> +/delete-node/ &cdsp_mem;
-> +/delete-node/ &mba_region;
-> +/delete-node/ &slpi_mem;
-> +/delete-node/ &spss_mem;
-> +
-> +/ {
-> +	model = "Xiaomi Mi MIX 2S";
-> +	compatible = "xiaomi,polaris", "qcom,sdm845";
-> +	chassis-type = "handset";
-> +
-> +	/* required for bootloader to select correct board */
-> +	qcom,msm-id = <0x141 0x20001>;
-> +	qcom,board-id = <0x2a 0x0>;
-> +
-> +	aliases {
-> +		serial0 = &uart9;
-> +		serial1 = &uart6;
-> +	};
-> +
-> +	volume-keys {
-
-gpio-keys
-
-> +		compatible = "gpio-keys";
-> +		autorepeat;
-> +
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&vol_up_pin_a>;
-> +
-> +		key-vol-up {
-> +			label = "Volume Up";
-> +			linux,code = <KEY_VOLUMEUP>;
-> +			gpios = <&pm8998_gpio 6 GPIO_ACTIVE_LOW>;
-> +			debounce-interval = <15>;
-> +		};
-> +	};
-> +
-> +	reserved-memory {
-> +		adsp_mem: memory@8c500000 {
-> +			reg = <0 0x8c500000 0 0x1e00000>;
-> +			no-map;
-> +		};
-> +
-> +		wlan_msa_mem: memory@8e300000 {
-> +			reg = <0 0x8e300000 0 0x100000>;
-> +			no-map;
-> +		};
-> +
-> +		mpss_region: memory@8e400000 {
-> +			reg = <0 0x8e400000 0 0x7800000>;
-> +			no-map;
-> +		};
-> +
-> +		venus_mem: memory@95c00000 {
-> +			reg = <0 0x95c00000 0 0x500000>;
-> +			no-map;
-> +		};
-> +
-> +		cdsp_mem: memory@96100000 {
-> +			reg = <0 0x96100000 0 0x800000>;
-> +			no-map;
-> +		};
-> +
-> +		mba_region: memory@96900000 {
-> +			reg = <0 0x96900000 0 0x200000>;
-> +			no-map;
-> +		};
-> +
-> +		slpi_mem: memory@96b00000 {
-> +			reg = <0 0x96b00000 0 0x1400000>;
-> +			no-map;
-> +		};
-> +
-> +		spss_mem: memory@97f00000 {
-> +			reg = <0 0x97f00000 0 0x100000>;
-> +			no-map;
-> +		};
-> +
-> +		rmtfs_mem: memory@f6301000 {
-> +			compatible = "qcom,rmtfs-mem";
-> +			reg = <0 0xf6301000 0 0x200000>;
-> +			no-map;
-> +
-> +			qcom,client-id = <1>;
-> +			qcom,vmid = <15>;
-> +		};
-> +	};
-> +
-> +	battery: battery {
-> +		compatible = "simple-battery";
-> +
-> +		charge-full-design-microamp-hours = <3400000>;
-> +		voltage-min-design-microvolt = <3400000>;
-> +		voltage-max-design-microvolt = <4400000>;
-> +	};
-> +
-> +	vreg_tp_vddio: tp-vddio-vreg {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "vreg_tp_vddio";
-> +
-> +		regulator-min-microvolt = <1800000>;
-> +		regulator-max-microvolt = <1800000>;
-> +
-> +		gpio = <&tlmm 23 0>;
-> +		regulator-always-on;
-> +		regulator-boot-on;
-> +		enable-active-high;
-> +	};
-> +
-> +	vreg_s4a_1p8: vreg-s4a-1p8 {
-
-Keep consistent naming with "regulator" prefix or suffix. Not vreg.
-
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "vreg_s4a_1p8";
-> +
-> +		regulator-min-microvolt = <1800000>;
-> +		regulator-max-microvolt = <1800000>;
-> +		regulator-always-on;
-> +	};
-> +};
-> +
-> +&apps_rsc {
-> +	pm8998-rpmh-regulators {
-> +		compatible = "qcom,pm8998-rpmh-regulators";
-> +		qcom,pmic-id = "a";
-> +
-> +		vreg_s2a_1p1: smps2 {
-> +			regulator-min-microvolt = <1100000>;
-> +			regulator-max-microvolt = <1100000>;
-> +		};
-> +
-> +		vreg_s3a_1p35: smps3 {
-> +			regulator-min-microvolt = <1352000>;
-> +			regulator-max-microvolt = <1352000>;
-> +		};
-> +
-> +		vreg_s5a_2p04: smps5 {
-> +			regulator-min-microvolt = <1904000>;
-> +			regulator-max-microvolt = <2040000>;
-> +		};
-> +
-> +		vreg_s7a_1p025: smps7 {
-> +			regulator-min-microvolt = <900000>;
-> +			regulator-max-microvolt = <1028000>;
-> +		};
-> +
-> +		vdda_mipi_dsi0_pll:
-> +		vdda_ufs1_core:
-> +		vreg_l1a_0p875: ldo1 {
-> +			regulator-min-microvolt = <880000>;
-> +			regulator-max-microvolt = <880000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l2a_1p2: ldo2 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1200000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +			regulator-always-on;
-> +		};
-> +
-> +		vreg_l3a_1p0: ldo3 {
-> +			regulator-min-microvolt = <1000000>;
-> +			regulator-max-microvolt = <1000000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l5a_0p8: ldo5 {
-> +			regulator-min-microvolt = <800000>;
-> +			regulator-max-microvolt = <800000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l6a_1p8: ldo6 {
-> +			regulator-min-microvolt = <1856000>;
-> +			regulator-max-microvolt = <1856000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l7a_1p8: ldo7 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l8a_1p2: ldo8 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1248000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l9a_1p8: ldo9 {
-> +			regulator-min-microvolt = <1704000>;
-> +			regulator-max-microvolt = <2928000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l10a_2p95: ldo10 {
-> +			regulator-min-microvolt = <1704000>;
-> +			regulator-max-microvolt = <2928000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l11a_1p05: ldo11 {
-> +			regulator-min-microvolt = <1000000>;
-> +			regulator-max-microvolt = <1048000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l12a_1p8: ldo12 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l13a_2p95: ldo13 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <2960000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l14a_1p8: ldo14 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1880000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +			regulator-always-on;
-> +		};
-> +
-> +		vreg_l15a_1p8: ldo15 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l16a_2p7: ldo16 {
-> +			regulator-min-microvolt = <2704000>;
-> +			regulator-max-microvolt = <2704000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l17a_1p3: ldo17 {
-> +			regulator-min-microvolt = <1304000>;
-> +			regulator-max-microvolt = <1304000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +			regulator-always-on;
-> +		};
-> +
-> +		vreg_l18a_2p9: ldo18 {
-> +			regulator-min-microvolt = <2704000>;
-> +			regulator-max-microvolt = <2960000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l19a_3p1: ldo19 {
-> +			regulator-min-microvolt = <2856000>;
-> +			regulator-max-microvolt = <3104000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l20a_2p95: ldo20 {
-> +			regulator-min-microvolt = <2704000>;
-> +			regulator-max-microvolt = <2960000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l21a_2p95: ldo21 {
-> +			regulator-min-microvolt = <2704000>;
-> +			regulator-max-microvolt = <2960000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l22a_3p3: ldo22 {
-> +			regulator-min-microvolt = <2864000>;
-> +			regulator-max-microvolt = <3312000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l23a_3p3: ldo23 {
-> +			regulator-min-microvolt = <3000000>;
-> +			regulator-max-microvolt = <3312000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l24a_3p075: ldo24 {
-> +			regulator-min-microvolt = <3088000>;
-> +			regulator-max-microvolt = <3088000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l25a_3p3: ldo25 {
-> +			regulator-min-microvolt = <3000000>;
-> +			regulator-max-microvolt = <3312000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +			regulator-always-on;
-> +		};
-> +
-> +		vdda_mipi_dsi0_1p2:
-> +		vdda_ufs1_1p2:
-> +		vreg_l26a_1p2: ldo26 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1200000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +		};
-> +
-> +		vreg_l28a_3p0: ldo28 {
-> +			regulator-min-microvolt = <2856000>;
-> +			regulator-max-microvolt = <3008000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +			regulator-always-on;
-> +		};
-> +
-> +		vreg_lvs1a_1p8: lvs1 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +
-> +		vreg_lvs2a_1p8: lvs2 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +	};
-> +
-> +	pmi8998-rpmh-regulators {
-> +		compatible = "qcom,pmi8998-rpmh-regulators";
-> +		qcom,pmic-id = "b";
-> +
-> +		vreg_bob: bob {
-> +			regulator-min-microvolt = <3312000>;
-> +			regulator-max-microvolt = <3600000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_AUTO>;
-> +			regulator-allow-bypass;
-> +		};
-> +	};
-> +
-> +	pm8005-rpmh-regulators {
-> +		compatible = "qcom,pm8005-rpmh-regulators";
-> +		qcom,pmic-id = "c";
-> +
-> +		vreg_smp3c_0p6: smps3 {
-> +			regulator-min-microvolt = <600000>;
-> +			regulator-max-microvolt = <600000>;
-> +			regulator-always-on;
-> +		};
-> +	};
-> +};
-> +
-> +&cdsp_pas {
-> +	firmware-name = "qcom/sdm845/polaris/cdsp.mbn";
-> +	status = "okay";
-> +};
-> +
-> +&dsi0 {
-> +	vdda-supply = <&vdda_mipi_dsi0_1p2>;
-> +	status = "okay";
-> +
-> +	display_panel: panel@0 {
-> +		compatible = "jdi,fhd-nt35596s";
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		reg = <0>;
-> +
-> +		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
-> +		vddio-supply = <&vreg_l14a_1p8>;
-> +		backlight = <&pmi8998_wled>;
-> +		vddpos-supply = <&lab>;
-> +		vddneg-supply = <&ibb>;
-> +
-> +		pinctrl-names = "default", "sleep";
-> +		pinctrl-0 = <&sde_dsi_active>;
-> +		pinctrl-1 = <&sde_dsi_suspend>;
-> +
-> +		port {
-> +			panel_in: endpoint {
-> +				remote-endpoint = <&dsi0_out>;
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&dsi0_out {
-> +	remote-endpoint = <&panel_in>;
-> +	data-lanes = <0 1 2 3>;
-> +};
-> +
-> +&dsi0_phy {
-> +	vdds-supply = <&vdda_mipi_dsi0_pll>;
-> +	status = "okay";
-> +};
-> +
-> +&gcc {
-> +	protected-clocks = <GCC_QSPI_CORE_CLK>,
-> +			   <GCC_QSPI_CORE_CLK_SRC>,
-> +			   <GCC_QSPI_CNOC_PERIPH_AHB_CLK>,
-> +			   <GCC_LPASS_Q6_AXI_CLK>,
-> +			   <GCC_LPASS_SWAY_CLK>;
-> +};
-> +
-> +&gmu {
-> +	status = "okay";
-> +};
-> +
-> +&gpi_dma0 {
-> +	status = "okay";
-> +};
-> +
-> +&gpi_dma1 {
-> +	status = "okay";
-> +};
-> +
-> +&gpu {
-> +	status = "okay";
-> +
-> +	zap-shader {
-> +		memory-region = <&gpu_mem>;
-> +		firmware-name = "qcom/sdm845/polaris/a630_zap.mbn";
-> +	};
-> +};
-> +
-> +&ibb {
-> +	regulator-min-microvolt = <4600000>;
-> +	regulator-max-microvolt = <6000000>;
-> +	regulator-over-current-protection;
-> +	regulator-pull-down;
-> +	regulator-soft-start;
-> +	qcom,discharge-resistor-kohms = <300>;
-> +};
-> +
-> +&ipa {
-> +	memory-region = <&ipa_fw_mem>;
-> +	firmware-name = "qcom/sdm845/polaris/ipa_fws.mbn";
-> +	status = "okay";
-> +};
-> +
-> +&i2c14 {
-> +	clock-frequency = <400000>;
-> +	dmas =  <&gpi_dma1 0 6 QCOM_GPI_I2C>,
-
-No need for two spaces after =. Fix it everywhere in your commit.
-
-> +			<&gpi_dma1 1 6 QCOM_GPI_I2C>;
-
-Align with opening <
-
-> +	dma-names = "tx", "rx";
-> +	status = "okay";
-> +
-> +	touchscreen@20 {
-> +		compatible = "syna,rmi4-i2c";
-> +		reg = <0x20>;
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		interrupts-extended = <&tlmm 125 0x2008>;
-> +
-> +		pinctrl-names = "default", "sleep";
-> +		pinctrl-0 = <&ts_int_default &ts_reset_default>;
-> +		pinctrl-1 = <&ts_int_sleep &ts_reset_sleep>;
-> +
-> +		vdd-supply = <&vreg_l28a_3p0>;
-> +		vio-supply = <&vreg_tp_vddio>;
-> +
-> +		syna,startup-delay-ms = <0xc8>;
-> +		syna,reset-delay-ms = <0xc8>;
-> +
-> +		rmi4-f01@1 {
-> +			syna,nosleep-mode = <0x1>;
-> +			reg = <0x1>;
-> +		};
-> +
-> +		rmi4-f12@12 {
-> +			syna,rezero-wait-ms = <0xc8>;
-> +			syna,clip-x-high = <0x438>;
-> +			syna,clip-y-high = <0x870>;
-> +			syna,sensor-type = <0x1>;
-> +			syna,clip-x-low = <0x0>;
-> +			syna,clip-y-low = <0x0>;
-> +		};
-> +	};
-> +};
-> +
-> +&lab {
-> +	regulator-min-microvolt = <4600000>;
-> +	regulator-max-microvolt = <6000000>;
-> +	regulator-soft-start;
-> +	regulator-pull-down;
-> +};
-> +
-> +&mdss {
-> +	status = "okay";
-> +};
-> +
-> +&mss_pil {
-> +	firmware-name = "qcom/sdm845/polaris/mba.mbn", "qcom/sdm845/polaris/modem.mbn";
-> +	status = "okay";
-> +};
-> +
-> +&pmi8998_rradc {
-> +	status = "okay";
-> +};
-> +
-> +&pmi8998_wled {
-> +	qcom,current-limit-microamp = <20000>;
-> +	qcom,current-boost-limit = <970>;
-> +	qcom,ovp-millivolt = <19600>;
-> +	qcom,switching-freq = <600>;
-> +	qcom,num-strings = <4>;
-> +	qcom,cabc;
-> +
-> +	status = "okay";
-> +};
-> +
-> +&pm8998_gpio {
-> +	vol_up_pin_a: vol-up-active {
-
-This does not look like passing bindings check. Schema requires state
-suffix. Did you run dtbs_check?
-
-> +		qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
-> +		function = "normal";
-> +		pins = "gpio6";
-> +		input-enable;
-> +		bias-pull-up;
-> +	};
+diff --git a/Documentation/devicetree/bindings/leds/issi,is31fl319x.yaml b/Documentation/devicetree/bindings/leds/issi,is31fl319x.yaml
+index 0d684aeeb8cd..940333f2d69c 100644
+--- a/Documentation/devicetree/bindings/leds/issi,is31fl319x.yaml
++++ b/Documentation/devicetree/bindings/leds/issi,is31fl319x.yaml
+@@ -28,6 +28,10 @@ properties:
+       - issi,is31fl3193
+       - issi,is31fl3196
+       - issi,is31fl3199
++      - si-en,sn3190
++      - si-en,sn3191
++      - si-en,sn3193
++      - si-en,sn3196
+       - si-en,sn3199
+ 
+   reg:
+@@ -61,8 +65,6 @@ patternProperties:
+         maximum: 9
+ 
+       led-max-microamp:
+-        default: 20000
+-        enum: [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000]
+         description:
+           Note that a driver will take the lowest of all LED limits
+           since the chip has a single global setting. The lowest value
+@@ -71,6 +73,84 @@ patternProperties:
+           and not the current, which will always have its peak value
+           equal to led-max-microamp.
+ 
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - issi,is31fl3190
++              - issi,is31fl3191
++              - issi,is31fl3193
++              - si-en,sn3190
++              - si-en,sn3191
++              - si-en,sn3193
++    then:
++      properties:
++        reg:
++          enum: [0x68, 0x69, 0x6a, 0x6b]
++
++        audio-gain-db: false
++
++      patternProperties:
++        "^led@[1-9]$":
++          properties:
++            led-max-microamp:
++              default: 42000
++              enum: [5000, 10000, 17500, 30000, 42000]
++    else:
++      properties:
++        reg:
++          enum: [0x64, 0x65, 0x66, 0x67]
++
++      patternProperties:
++        "^led@[1-9]$":
++          properties:
++            led-max-microamp:
++              default: 20000
++              enum: [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000]
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - issi,is31fl3190
++              - issi,is31fl3191
++              - si-en,sn3190
++              - si-en,sn3191
++    then:
++      patternProperties:
++        "^led@[1-9]$":
++          properties:
++            reg:
++              maximum: 1
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - issi,is31fl3193
++              - si-en,sn3193
++    then:
++      patternProperties:
++        "^led@[1-9]$":
++          properties:
++            reg:
++              maximum: 3
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - issi,is31fl3196
++              - si-en,sn3196
++    then:
++      patternProperties:
++        "^led@[1-9]$":
++          properties:
++            reg:
++              maximum: 6
++
+ required:
+   - compatible
+   - reg
+-- 
+2.35.3
 
 
-Best regards,
-Krzysztof
+
