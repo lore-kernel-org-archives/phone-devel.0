@@ -2,94 +2,89 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C99CC43334
-	for <phone-devel@archiver.kernel.org>; Tue, 12 Jul 2022 15:12:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DCE9C43334
+	for <phone-devel@archiver.kernel.org>; Wed, 13 Jul 2022 01:25:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234127AbiGLPM5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 12 Jul 2022 11:12:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44102 "EHLO
+        id S233443AbiGMBZp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 12 Jul 2022 21:25:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234129AbiGLPMa (ORCPT
+        with ESMTP id S233270AbiGMBZm (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 12 Jul 2022 11:12:30 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E7E1C1FE9
-        for <phone-devel@vger.kernel.org>; Tue, 12 Jul 2022 08:05:42 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id r9so10198725ljp.9
-        for <phone-devel@vger.kernel.org>; Tue, 12 Jul 2022 08:05:42 -0700 (PDT)
+        Tue, 12 Jul 2022 21:25:42 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DAABAF740;
+        Tue, 12 Jul 2022 18:25:40 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id n18so15053011lfq.1;
+        Tue, 12 Jul 2022 18:25:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=N95UeN2GEUoq/Y9MZnralNNF96wmUdf5PfFX4kSTL0Y=;
-        b=n07ma88Ez+/f2BhSUkw0P0jQFXye2PKrmW17Nqm/1jOPuvJWVZQh478f+yWd+DMO+P
-         IGEisyduu+SwOEbyhPlTVUdtNuyQFI8cn+ZfE92XXl3R269ZJ8pjf1uZsPqIRYIHh6oK
-         2Ec6K9gADqWCoqnMzZG4tMxcJddPD1figJjC6FLNwJdaMTpZC2E4JzX4rCNdUYxMyvHa
-         t1FY02WTUXXWws0Z1RBcgBq5tNpeY+5b8QZ4DNRPYqLeB4MsbreplX0yRn4ps92rvLvd
-         /9LU1cNlgvhIPRRLMK9PZHGwpkJ8/e4/IEI6A49tyE9zltvfFngqUkz+n+sUcm2B9cC6
-         Hhrw==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kWrmSNqw7RNUpJXET/KeaD+M/fKJ2fs4iPsVi56Xzlc=;
+        b=KJ3WTtZWy/gaqWn5D68477Fqo5MTFflVAPExDGJhWAAeEJMYFNc2SyuM0LGzFB/cLO
+         0vjPZ6x6LzBaY/dZgdEMDDqbsdh9TAmR+HpPDzdZ1NqUlbKJF7lsDIDe3LSKpzg6ahXI
+         exkNkhZxFM8EiZCBA0+pbOXL3XiG/3FiJFdZH1ZBuoot1+osh5ZOUoMa42Q8i1JL5GPg
+         yufCSzOk7sgthAFQERz2yIRBc7ta1U3r9a1XpfY9AUruOk1PWPgTAcHCKQaHEbNhd8JA
+         MGC+lPnA9pSD5g4B6Nkp61nZ7+8MJ4cjp05K2I4tv2I/JyZkrzsf+ALiCZJjJAd24lvo
+         ygow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=N95UeN2GEUoq/Y9MZnralNNF96wmUdf5PfFX4kSTL0Y=;
-        b=1n/HuNix5pYfApfcNKCoFGSf6FAjXXCqD3RVnKcPdQa426MefOLeMVmWHLo0UENhq4
-         7nr1IR4HPrcYhSRsJ/MwO+qOHpyNKO53jShAEeb5YmMm5tobBLlgJHOQwXmZXh+AKufA
-         s7Zo8Sj3+NP9kpD4pQ8mBzALU9bJNwZOnZOsHIvq0FFvykWgyHBRAgfS5HOYU0QDvviY
-         O2qNTEc1SWOJuFFzQuJRkclhXelDdQcOwzbHL932g5Rg02C7mO6wbdPrXAGafL93aFIc
-         6P7vVCk0MDT2tOjWXubIw0b13bpvXnBXpQavN9Yhj5n2wXTSudpPRqAYxMy8k3Rtv6ON
-         vlyg==
-X-Gm-Message-State: AJIora8d9lSfmLQI2/7hLgfIOWKHopcvunewhFb5ru/JKO/robrKKAEZ
-        wXRV1BBtQtwJxiqSGQNH8FDQsg==
-X-Google-Smtp-Source: AGRyM1sBWDmHbBkd9dAeP+xC8COTAEUF3I38MJWleTJir5VKZ2V4ivGoLVPmWVu6FOs5PSxB0VKuHA==
-X-Received: by 2002:a2e:2a41:0:b0:25d:832d:2af9 with SMTP id q62-20020a2e2a41000000b0025d832d2af9mr543465ljq.429.1657638340964;
-        Tue, 12 Jul 2022 08:05:40 -0700 (PDT)
-Received: from [10.0.0.8] (fwa5da9-171.bb.online.no. [88.93.169.171])
-        by smtp.gmail.com with ESMTPSA id f21-20020a2eb5b5000000b0025d4b0707c5sm2495651ljn.125.2022.07.12.08.05.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Jul 2022 08:05:40 -0700 (PDT)
-Message-ID: <ed28a4f5-a6f4-1f87-007a-ef7fe6c1670a@linaro.org>
-Date:   Tue, 12 Jul 2022 17:05:38 +0200
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kWrmSNqw7RNUpJXET/KeaD+M/fKJ2fs4iPsVi56Xzlc=;
+        b=MNuwSCDAFB5xC+LpbntzfFyV6wN9z6BrYTn9eb8SHZkf0rShsMibl1wO6+hrtJXbR1
+         Nw+yJ+5UzOMxkZpsBwfgEv3owO4519IDR4+SfNSvDNDr+XkVl7+TGw6zQ8LLngmVAdCM
+         Dg1N9mBEg6pzYQe2JIOH3fiaeM36zylnjkN8c1Cm2l29zrjE6+xI9u1l+4GHab8E0ISz
+         D8FOs984bn6w23mgT55wvDgw09gcirnr0/vuZ0QfkU4AaS9AJSqjhHCRK3KscP6TLDtQ
+         wL2C1CbBH0fKABYRqZpYJirMhWH3YchTXPVTRBW42inBOiGEx4C2z7bhBu+tmAfamWL1
+         VaUQ==
+X-Gm-Message-State: AJIora8WWiOm4Bq+DAaPNnFs6PyAExtKmx9vlQi5flI0XrlrseGVHt2S
+        CeINbsvd4WhuxZYGz+LDheyieuqp/KF1ey13Pjt5n+/NAQWxuAaU
+X-Google-Smtp-Source: AGRyM1v5acsNboqgbK0uyTTlYszlcwZd4ryktxElVqCtXMMl6OJMeNv1mTDGlBeanoLf1mqWAwLyRJRsTHm2/WJJWQw=
+X-Received: by 2002:a05:6512:398e:b0:481:154b:a92 with SMTP id
+ j14-20020a056512398e00b00481154b0a92mr564768lfu.110.1657675538590; Tue, 12
+ Jul 2022 18:25:38 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v6 2/2] arm64: dts: qcom: Add support for Xiaomi Mi Mix2s
-Content-Language: en-US
-To:     Molly Sophia <mollysophia379@gmail.com>,
-        Andy Gross <agross@kernel.org>,
+References: <20220712145139.9473-1-mollysophia379@gmail.com> <3a0d3e52-a403-36c5-fc39-f45dce94c1f8@linaro.org>
+In-Reply-To: <3a0d3e52-a403-36c5-fc39-f45dce94c1f8@linaro.org>
+From:   Molly Sophia <mollysophia379@gmail.com>
+Date:   Wed, 13 Jul 2022 09:25:26 +0800
+Message-ID: <CAK0UmJAdiSER0qUj3162ys4nxnni+6onY9-uVaq_=EdSnaC=CA@mail.gmail.com>
+Subject: Re: [PATCH v6 1/2] dt-bindings: arm: qcom: Add Xiaomi Mi Mix2s bindings
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Stephen Boyd <sboyd@codeaurora.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20220712145139.9473-1-mollysophia379@gmail.com>
- <20220712145139.9473-2-mollysophia379@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220712145139.9473-2-mollysophia379@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 12/07/2022 16:51, Molly Sophia wrote:
-> Add support for Xiaomi Mi Mix2s (polaris) handsets.
-> 
-> Currently working features:
-> - UFS
-> - Touchscreen
-> - USB 2
-> - Bluetooth
-> - Wi-Fi
-> - GPU
-> - Venus
-> - Display (need jdi-fhd-nt35596s panel driver, which I have sent a
->   patch but it haven't been into upstream yet)
+Hi Krzysztof,
+I will read that carefully. Sincerely apologize for the mistakes I have made.
 
-I have no clue what changed here and to what I should look.
+Molly
 
-Best regards,
-Krzysztof
+On Tue, Jul 12, 2022 at 11:05 PM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> On 12/07/2022 16:51, Molly Sophia wrote:
+> > Add documentation for "xiaomi,polaris" device.
+> >
+> > Signed-off-by: Molly Sophia <mollysophia379@gmail.com>
+>
+> This is v6 and still not changelog. No cover letter either, which would
+>  describe any dependencies.
+>
+> Sorry, you need to follow our process:
+> https://elixir.bootlin.com/linux/v5.18-rc4/source/Documentation/process/submitting-patches.rst
+>
+>
+> Best regards,
+> Krzysztof
