@@ -2,123 +2,168 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C01FDCCA479
-	for <phone-devel@archiver.kernel.org>; Wed, 13 Jul 2022 20:53:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DE08CC43334
+	for <phone-devel@archiver.kernel.org>; Thu, 14 Jul 2022 10:19:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237023AbiGMUxy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 13 Jul 2022 16:53:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47126 "EHLO
+        id S237867AbiGNKTS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 14 Jul 2022 06:19:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237303AbiGMUxp (ORCPT
+        with ESMTP id S237859AbiGNKTR (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 13 Jul 2022 16:53:45 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B55C5101CC
-        for <phone-devel@vger.kernel.org>; Wed, 13 Jul 2022 13:53:37 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-10c8e8d973eso67025fac.5
-        for <phone-devel@vger.kernel.org>; Wed, 13 Jul 2022 13:53:37 -0700 (PDT)
+        Thu, 14 Jul 2022 06:19:17 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD89521807
+        for <phone-devel@vger.kernel.org>; Thu, 14 Jul 2022 03:19:15 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id a9so1994470lfk.11
+        for <phone-devel@vger.kernel.org>; Thu, 14 Jul 2022 03:19:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=OYmf+T3lRc79u5oDlMjUbDjfxPJAcVJEHMhxiR51+Fs=;
-        b=SPhcykdTfoAFVar5hEaib1+zz9NzmHisUsycRp2UDMoNG73WmZTrMmthYDs9PJy+lk
-         E5CWEEcNe60QEHQ2UdvFucM3qtTTgDsr/oqFlA/rMjnFSzqmZn61X9WjMnh4LwwjwRc2
-         GoruyrKbxN3BuW3Rc2cJ8Whd/8PWXDmhT341ciiBYGyVNxKr+HDznUeYoFGN7kLoVNDy
-         i1dzYC6xWbnyAyttKpugkAV1rgFWYKyJpjxQZPThq09IeXIvGJEawVTlVxpKnALIF2mJ
-         O22PciPb/l5TNJxCgnTkUVfN2m5aAxEMyKqKi8LmcsepGnvx9VR9//rITXVywg/UQFTL
-         zwTA==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=yCWYh1ov1yBnCO3b57XJ5k3SmQZIpeuqoA5yH1t1vvM=;
+        b=RRVFQ2o5FU5DQxiRgMR0YoN26/nkDsjNHwUHXB/YsUCEfU2h1ssYUiyvqP7JXe/mh0
+         7zxjBEqAGKgoQiU5uKWvxNvWAhTHakJuvi6h8PWN/qVVJCDiobyUo9mgOKsd4NvrVVdA
+         XUZqzbqzUo7M/TWpBTJHmi8x6q+Iap8ccTx+sZ5Q6D6Ft/zqp0h0rONcOv1kUVKdCGBr
+         jcO8TZpZFx6x4961z13YKqYBXr+nZxQa4YUMt/c9m7j4FFJGBluMIUHR0UOfFfnCWDmW
+         wNgKuDANCcVtYPONcqy5bs8EpJG7RWKJfgsqoOhJ7Xgwp4zroPBRGm5YJ9ISurOD2YCh
+         HaGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=OYmf+T3lRc79u5oDlMjUbDjfxPJAcVJEHMhxiR51+Fs=;
-        b=h21Gfagq5M8bXTov/m0GDBoiP7ZibnHYiDsfGKg7uuncjDoBv89AbMGJcSHj4XkSGj
-         uCSrRDmTByDfOh7zuODjUTgnmsqDOrL+85EnGMZE/kZVbR2vJiuYRjbb+fHuk5jndmOB
-         m9MUU4kA2D6i7rF+JwdY8ncNEgznj/0i6iBHaVz5o+XSchnloeCPHYyAksHeRLJ8mz38
-         csBb71Cu90f9TEPwYzmx+glkpm08yfX3TJAdswwxH21XZsuzmYUH0stlCaIk5P9vVAjW
-         8/NIyDMLg5X/PoQROJacnQj90wA+IdwhOcdfn1PxFUU5J0QYP1BRW8wQfMbFqjJzfwX0
-         s6FA==
-X-Gm-Message-State: AJIora83L4MRgYHk8dNIv2ch/UKohcmNSOvwIkz7nsmAapwbk5m4VQqc
-        2Qksj6ZtigYcs1/29+VgtEt1iQ==
-X-Google-Smtp-Source: AGRyM1vw8R/0Mik936bygCkJyPGmua0fl/ZV3zFCx7E6u2dNDZEHeSILD5mtPkiG+LUPBJJ6xtRWEg==
-X-Received: by 2002:a05:6870:e0cd:b0:10c:289b:c8f0 with SMTP id a13-20020a056870e0cd00b0010c289bc8f0mr2800216oab.74.1657745617077;
-        Wed, 13 Jul 2022 13:53:37 -0700 (PDT)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id kv17-20020a056870fb9100b00101c76f7831sm6502446oab.24.2022.07.13.13.53.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Jul 2022 13:53:36 -0700 (PDT)
-Date:   Wed, 13 Jul 2022 15:53:34 -0500
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Joel Selvaraj <jo@jsfamily.in>
-Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 2/5] arm64: dts: qcom: sdm845-xiaomi-beryllium-common:
- generalize the display panel node
-Message-ID: <Ys8wzodQNI5ZrUUM@builder.lan>
-References: <20220708111207.85249-1-jo@jsfamily.in>
- <MN2PR02MB702479BBA7FE8757E577CA6DD9829@MN2PR02MB7024.namprd02.prod.outlook.com>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=yCWYh1ov1yBnCO3b57XJ5k3SmQZIpeuqoA5yH1t1vvM=;
+        b=V3jJLm+ItkpihwbfSSKcvUU3QqePK5CJ0XWMBApWL9WJBGDIixmfauh/TCX8IGj6bV
+         0Fgkkyd4Kv4Y4KY5a3fRAXMB8qAkuUEEU/g4YcQiPYe4iYGT2YZ3lv+VOf7+1jReD8g7
+         3guiZSD7U+xmZVl8uKF9NyJJku3NLsH/w+LWoyGmP1J+953VavLWXPQJs+o6aLbq6pxJ
+         rSW/LKGd/3ni2LQPLqBcPPj60+y2rzBd3lfJgBUC9FPvvfJL/BBD85Kzje1mHNzrVLU4
+         DtND1sKgjBf2Uwf6iWwZh0hRjvIHf/gkkYaLC63Zx44wrvcoVcfYjsXNSLef9kjUjEpb
+         7H/g==
+X-Gm-Message-State: AJIora8xXRjzbj4T9Thcv/uQ7N+qb72TtSOlkRmq5lgWD5DImDNT3Eeb
+        CE1vM1plQGyznI6yT8z30SmdIA==
+X-Google-Smtp-Source: AGRyM1uIY8mwk4DVrrhHyzydrC7wSPAvKj2YVPnaHr050XXhPo97i3D2sSmWKaProUzJykLj6SHgXA==
+X-Received: by 2002:a05:6512:128e:b0:489:e63d:3042 with SMTP id u14-20020a056512128e00b00489e63d3042mr4641535lfs.302.1657793954081;
+        Thu, 14 Jul 2022 03:19:14 -0700 (PDT)
+Received: from [192.168.1.211] ([37.153.55.125])
+        by smtp.gmail.com with ESMTPSA id o17-20020ac25e31000000b004891b4a4acfsm281568lfg.185.2022.07.14.03.19.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Jul 2022 03:19:13 -0700 (PDT)
+Message-ID: <192c5f16-8415-dfa1-39d2-8b404553ecd7@linaro.org>
+Date:   Thu, 14 Jul 2022 13:19:12 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <MN2PR02MB702479BBA7FE8757E577CA6DD9829@MN2PR02MB7024.namprd02.prod.outlook.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v3 00/11] drm/msm/dsi_phy: Replace parent names with
+ clk_hw pointers
+Content-Language: en-GB
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rajeev Nandan <quic_rajeevny@quicinc.com>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Jonathan Marek <jonathan@marek.ca>, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
+References: <20220629225331.357308-1-marijn.suijten@somainline.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20220629225331.357308-1-marijn.suijten@somainline.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri 08 Jul 06:12 CDT 2022, Joel Selvaraj wrote:
-
-> Make the display panel nodes generic. The tianma and ebbg variant will
-> set the compatabile property as per the display model they use.
+On 30/06/2022 01:53, Marijn Suijten wrote:
+> parent_hw pointers are easier to manage and cheaper to use than
+> repeatedly formatting the parent name and subsequently leaving the clk
+> framework to perform lookups based on that name.
 > 
-> Signed-off-by: Joel Selvaraj <jo@jsfamily.in>
-> ---
->  .../boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi     | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> This series starts out by adding extra constructors for divider, mux and
+> fixed-factor clocks that have parent_hw(s) pointer argument(s) instead
+> of some DT index or name.  Followed by individual patches performing the
+> conversion, one DSI PHY at a time.
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> index d88dc07205f7..634999cf8987 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> @@ -221,8 +221,8 @@ &dsi0 {
->  	status = "okay";
->  	vdda-supply = <&vreg_l26a_1p2>;
->  
-> -	panel@0 {
-> -		compatible = "tianma,fhd-video";
-> +	display_panel: panel@0 {
-> +		status = "disabled";
-
-Please make "status" the last property defined in the node. Same comment
-on the next 2 patches.
-
-Thanks,
-Bjorn
-
->  		reg = <0>;
->  		vddio-supply = <&vreg_l14a_1p8>;
->  		vddpos-supply = <&lab>;
-> @@ -235,7 +235,7 @@ panel@0 {
->  		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
->  
->  		port {
-> -			tianma_nt36672a_in_0: endpoint {
-> +			panel_in_0: endpoint {
->  				remote-endpoint = <&dsi0_out>;
->  			};
->  		};
-> @@ -243,7 +243,7 @@ tianma_nt36672a_in_0: endpoint {
->  };
->  
->  &dsi0_out {
-> -	remote-endpoint = <&tianma_nt36672a_in_0>;
-> +	remote-endpoint = <&panel_in_0>;
->  	data-lanes = <0 1 2 3>;
->  };
->  
-> -- 
-> 2.36.1
+> dsi_phy_28nm_8960 includes an extra fixup to replace "eternal"
+> devm_kzalloc allocations (for the lifetime of the device) with
+> stack-local char arrays, like all the other DSI PHY drivers.
 > 
+> (Questions from v1 cover letter regarding the future of these drivers
+>   is omitted for brevity.)
+> 
+> And with enough future improvements out of the way, let's round out this
+> patch-series by stating that it has been successfully tested on:
+> 
+> - Sony Nile Discovery (Xperia XA2 Ultra): 14nm;
+> - Sony Seine PDX201 (Xperia 10II): 14nm;
+> - Sony Loire Suzu (Xperia X): 28nm.
+> 
+> And no diff is observed in debugfs's clk_summary.
+> 
+> Unfortunately all other devices in my collection with a 7/10nm DSI PHY
+> have a DSC panel which we have yet to get working.
+> 
+> Changes since v2:
+> - in fixed-factor:
+>    - Reorder if - else if change to consume less diff;
+>    - Go over 80-char column lint when adding new arguments to function
+>      calls, instead of reflowing all arguments to adhere to this limit;
+>      also consuming less diff.
+> 
+> v2: https://lore.kernel.org/linux-arm-msm/20220601220747.1145095-1-marijn.suijten@somainline.org/
+> 
+> Changes since v1:
+> 
+> - Moved indentation changes to separate patch (Dmitry);
+> - dsi_phy_28nm_8960: move clock name allocation removal prior to
+>    parent_hw refactor;
+> - Remove vco_name stack-local char array in favour of reusing clk_name
+>    (Dmitry);
+> - Inserted additional patch to replace hardcoded char-array length
+>    constant 32 with sizeof(clk_name).
+> 
+> v1: https://lore.kernel.org/linux-arm-msm/20220523213837.1016542-1-marijn.suijten@somainline.org/T/#u
+> 
+> Marijn Suijten (11):
+>    clk: divider: Introduce devm_clk_hw_register_divider_parent_hw()
+>    clk: mux: Introduce devm_clk_hw_register_mux_parent_hws()
+>    clk: fixed-factor: Introduce *clk_hw_register_fixed_factor_parent_hw()
+
+Stephen, do we stand a chance of landing patches 1-3 into 5.20? We would 
+like to merge the series into 5.21 through the msm-next. Landing clk 
+patches in 5.20 would save us from using immutable branches, etc.
+
+>    drm/msm/dsi/phy: Reindent and reflow multiline function calls
+>    drm/msm/dsi_phy_28nm_8960: Use stack memory for temporary clock names
+>    drm/msm/dsi/phy: Replace hardcoded char-array length with sizeof()
+>    drm/msm/dsi_phy_28nm_8960: Replace parent names with clk_hw pointers
+>    drm/msm/dsi_phy_28nm: Replace parent names with clk_hw pointers
+>    drm/msm/dsi_phy_14nm: Replace parent names with clk_hw pointers
+>    drm/msm/dsi_phy_10nm: Replace parent names with clk_hw pointers
+>    drm/msm/dsi_phy_7nm: Replace parent names with clk_hw pointers
+> 
+>   drivers/clk/clk-fixed-factor.c                |  45 ++++-
+>   drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c    | 165 +++++++++---------
+>   drivers/gpu/drm/msm/dsi/phy/dsi_phy_14nm.c    |  55 +++---
+>   drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c    | 117 ++++++-------
+>   .../gpu/drm/msm/dsi/phy/dsi_phy_28nm_8960.c   |  90 +++++-----
+>   drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c     | 156 ++++++++---------
+>   include/linux/clk-provider.h                  |  34 ++++
+>   7 files changed, 351 insertions(+), 311 deletions(-)
+> 
+
+
+-- 
+With best wishes
+Dmitry
