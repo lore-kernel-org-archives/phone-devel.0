@@ -2,82 +2,124 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4981CC43334
-	for <phone-devel@archiver.kernel.org>; Thu, 14 Jul 2022 20:38:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D02D5C43334
+	for <phone-devel@archiver.kernel.org>; Fri, 15 Jul 2022 13:34:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240488AbiGNUik (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 14 Jul 2022 16:38:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51122 "EHLO
+        id S234845AbiGONeP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 15 Jul 2022 09:34:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240484AbiGNUij (ORCPT
+        with ESMTP id S234766AbiGONeN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 14 Jul 2022 16:38:39 -0400
-Received: from relay02.th.seeweb.it (relay02.th.seeweb.it [IPv6:2001:4b7a:2000:18::163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 168A11152;
-        Thu, 14 Jul 2022 13:38:34 -0700 (PDT)
-Received: from localhost.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 84FC61F960;
-        Thu, 14 Jul 2022 22:38:31 +0200 (CEST)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Taniya Das <tdas@codeaurora.org>,
-        Rob Herring <robh@kernel.org>,
-        Craig Tatlor <ctatlor97@gmail.com>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] clk: qcom: gcc-sdm660: Use floor ops for SDCC1 clock
-Date:   Thu, 14 Jul 2022 22:38:22 +0200
-Message-Id: <20220714203822.186448-1-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.37.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Fri, 15 Jul 2022 09:34:13 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82AB67B35E
+        for <phone-devel@vger.kernel.org>; Fri, 15 Jul 2022 06:34:11 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id mf4so9027701ejc.3
+        for <phone-devel@vger.kernel.org>; Fri, 15 Jul 2022 06:34:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair;
+        h=mime-version:content-transfer-encoding:date:message-id:to:cc
+         :subject:from:references:in-reply-to;
+        bh=8n3GoEXR9Kkk97aGJD+78x7UsJH5H1Xj3Xfn857goUA=;
+        b=tqyVOSW4NZbEYE3o1b8R3/ISFMjNTzS+t4u89ICrhpZNOg6Vo4ea0M/Hxx8zRdmvm4
+         Ls+tb53zMCsvDAha6uyMzFs5ovpxI3yaUtASFLl8yIpS5CXBM/m0ovEw5Lw73BrMDrwp
+         2xGJgz7Ll3ubL3PqNXFzl+05YnVGS+kec2OZjEUnfmJffr5P1YNJ8Cxg/Dw7yKbSb8ut
+         uv45g31iXD1jC6GGGzYnikUBeMoVtTz4qgEWtVFsWRYXyXqCc3t9BmVnQdxDHZrVrsmU
+         NzpGy09f+lKzmzXU72w5SCHLhqb6+Xj9TZ2tKelwWOJY8MAjIiEILtx6WjuC/YkYErMv
+         jwLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:content-transfer-encoding:date
+         :message-id:to:cc:subject:from:references:in-reply-to;
+        bh=8n3GoEXR9Kkk97aGJD+78x7UsJH5H1Xj3Xfn857goUA=;
+        b=z5z2P3stDqGPHVEdZG7fGb/avNZSpeuZ+XyStfkw9/FPCjZGVxRsK5573WfqbbNUj2
+         9o+ovyGbGqyPkJnUDrI/6dUQma4O8hyqX/8L8UbHEC3w5Wbaxk4G89luD2ina17Qe5IZ
+         81cklOfbYo1UtDWOvJL+hR2nJRQYyQjIGM92Vnvh8YVj3zcbOhtP5xN8YzKsXEGasWWD
+         xiljuKK7YL/WBJItqUzGpYMiqTH0WB0RkEjxKAULtw+7AK1QQ7uXqM4gmIPAKAxWZN08
+         q3ksOEu3OXOB+vcpuCUp+3glvhB+W7t7kqXBsqjxHH0EJXM3WgGnBmDyjDMPRA6S+zcR
+         NNPQ==
+X-Gm-Message-State: AJIora8D701nXP6mkAGqVfPk/jKMDvbO9BOS/qfpMtN847OipKGeRbk/
+        k20+SF/OmW+cKrpi/RmUc8YvXA==
+X-Google-Smtp-Source: AGRyM1vOHLDs/wDLOiBjr+Wk5BnQYKkiUmq25vsuDPItAluSfMnaVBZnFRiDBDuuWd85vrgSDnFI9Q==
+X-Received: by 2002:a17:907:2702:b0:72b:307b:98e6 with SMTP id w2-20020a170907270200b0072b307b98e6mr13898069ejk.658.1657892050062;
+        Fri, 15 Jul 2022 06:34:10 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id f23-20020a50fe17000000b0043a734c7393sm2824102edt.31.2022.07.15.06.34.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Jul 2022 06:34:09 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 15 Jul 2022 15:34:08 +0200
+Message-Id: <CLG9OKW0OMLX.2XWU1ZHFRR9RQ@otso>
+To:     "Luca Weiss" <luca.weiss@fairphone.com>,
+        <linux-arm-msm@vger.kernel.org>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>,
+        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
+        <devicetree@vger.kernel.org>,
+        "Georgi Djakov" <georgi.djakov@linaro.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        "Odelu Kukatla" <okukatla@codeaurora.org>
+Subject: Re: [PATCH v3 0/5] Add interconnect support for SM6350
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+X-Mailer: aerc 0.9.0
+References: <20220525144404.200390-1-luca.weiss@fairphone.com>
+In-Reply-To: <20220525144404.200390-1-luca.weiss@fairphone.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-In commit 3f905469c8ce ("clk: qcom: gcc: Use floor ops for SDCC clocks")
-floor ops were applied to SDCC2 only, but flooring is also required on
-the SDCC1 apps clock which is used by the eMMC card on Sony's Nile
-platform, and otherwise result in the typicial "Card appears
-overclocked" warnings observed on many other platforms before:
+Hi all,
 
-    mmc0: Card appears overclocked; req 52000000 Hz, actual 100000000 Hz
-    mmc0: Card appears overclocked; req 52000000 Hz, actual 100000000 Hz
-    mmc0: Card appears overclocked; req 104000000 Hz, actual 192000000 Hz
+On Wed May 25, 2022 at 4:43 PM CEST, Luca Weiss wrote:
+> This series adds interconnect support for the various NoCs found on
+> sm6350.
+>
+> A more special modification is allowing child NoC devices, like done for
+> rpm-based qcm2290 which was already merged, but now for rpmh-based
+> interconnect.
 
-Fixes: f2a76a2955c0 ("clk: qcom: Add Global Clock controller (GCC) driver for SDM660")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- drivers/clk/qcom/gcc-sdm660.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+any feedback on the two interconnect patches and the dts patch?
+Georgi? Bjorn?
 
-diff --git a/drivers/clk/qcom/gcc-sdm660.c b/drivers/clk/qcom/gcc-sdm660.c
-index 429d12193146..04b427b577a1 100644
---- a/drivers/clk/qcom/gcc-sdm660.c
-+++ b/drivers/clk/qcom/gcc-sdm660.c
-@@ -743,7 +743,7 @@ static struct clk_rcg2 sdcc1_apps_clk_src = {
- 		.name = "sdcc1_apps_clk_src",
- 		.parent_data = gcc_parent_data_xo_gpll0_gpll4_gpll0_early_div,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_xo_gpll0_gpll4_gpll0_early_div),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_floor_ops,
- 	},
- };
- 
--- 
-2.37.1
+Thanks Krzysztof for the dt-binding review!
+
+Regards
+Luca
+
+>
+> See also downstream dts:
+> https://android.googlesource.com/kernel/msm-extra/devicetree/+/refs/tags/=
+android-11.0.0_r0.81/qcom/lagoon-bus.dtsi
+>
+> Luca Weiss (5):
+>   interconnect: qcom: icc-rpmh: Support child NoC device probe
+>   dt-bindings: interconnect: qcom: Split out rpmh-common bindings
+>   dt-bindings: interconnect: Add Qualcomm SM6350 NoC support
+>   interconnect: qcom: Add SM6350 driver support
+>   arm64: dts: qcom: sm6350: Add interconnect support
+>
+>  .../interconnect/qcom,rpmh-common.yaml        |  43 ++
+>  .../bindings/interconnect/qcom,rpmh.yaml      |  22 +-
+>  .../interconnect/qcom,sm6350-rpmh.yaml        |  82 +++
+>  arch/arm64/boot/dts/qcom/sm6350.dtsi          | 109 ++++
+>  drivers/interconnect/qcom/Kconfig             |   9 +
+>  drivers/interconnect/qcom/Makefile            |   2 +
+>  drivers/interconnect/qcom/icc-rpmh.c          |   4 +
+>  drivers/interconnect/qcom/sm6350.c            | 493 ++++++++++++++++++
+>  drivers/interconnect/qcom/sm6350.h            | 139 +++++
+>  .../dt-bindings/interconnect/qcom,sm6350.h    | 148 ++++++
+>  10 files changed, 1034 insertions(+), 17 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,r=
+pmh-common.yaml
+>  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,s=
+m6350-rpmh.yaml
+>  create mode 100644 drivers/interconnect/qcom/sm6350.c
+>  create mode 100644 drivers/interconnect/qcom/sm6350.h
+>  create mode 100644 include/dt-bindings/interconnect/qcom,sm6350.h
+>
+> --=20
+> 2.36.1
 
