@@ -2,86 +2,86 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29BC6CCA479
-	for <phone-devel@archiver.kernel.org>; Sun, 17 Jul 2022 03:08:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9E62C43334
+	for <phone-devel@archiver.kernel.org>; Sun, 17 Jul 2022 21:37:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233630AbiGQDIl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 16 Jul 2022 23:08:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39470 "EHLO
+        id S232803AbiGQVg7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 17 Jul 2022 17:36:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233469AbiGQDIf (ORCPT
+        with ESMTP id S232931AbiGQVgp (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 16 Jul 2022 23:08:35 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90C7614D1F
-        for <phone-devel@vger.kernel.org>; Sat, 16 Jul 2022 20:08:34 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-10c0052da61so15610045fac.12
-        for <phone-devel@vger.kernel.org>; Sat, 16 Jul 2022 20:08:34 -0700 (PDT)
+        Sun, 17 Jul 2022 17:36:45 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D193E12762;
+        Sun, 17 Jul 2022 14:36:28 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id a9so16488615lfk.11;
+        Sun, 17 Jul 2022 14:36:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=6ZY9ppo/NgfpshR/QVcrrN7xSjQ/ifkZSAsHqjerp1g=;
-        b=yK4F1wdwXGsMObltazKE1YBGgXJ7B/3z//1oEVjrXiUIRUYezjGaZSVbaauKuTNxYt
-         PeEUZmOiM5CFRQLxA513OwYUZZdxT5GGfHaw+sVfDmiEg9XTXzVFSBWPlm95gHuvD9vb
-         hWCe+0GfYFpKQ2indy/vdeIsdnd3Wrdkw9g1hOGT7fZ9NH9W2fOpAJcOgoQf7bVfUPk8
-         fCtkxWwEM0WKD8ODV1Wqtud08OsxlIemv9pAjfo+pxH3o2i08you7Lz+Ot9gv6pTF2km
-         hshi/g7J3KyACHnjnoZ9xEQpKxdoZaRHzx8B+OaRoeb+65bKtETwClUr2FIKRm4NlPZo
-         Hphw==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mQ4UYKUzX7TyytcppzQjH+TUKoxUgRO5nyuabjhwe2w=;
+        b=iuSwtSglL2SsVyGxmwpyIFZvHF1bPJ1eudZMD5U9X3Lt+5v091w9mCSycJXoPvUBRH
+         0sITR0SWWStOS9dv8Q9ffAjpLsrwpFKEQ/ieMxGRvHjkLjc+hTPsQX9Em8yZhPR8zs7a
+         0UyEs6ocTbWd03BhITvr1vINg+u5b9fJgEYh67Ss2ghLCkQGWdFm6D2rY202LsdvYy6S
+         +RisWg80itY91QCzJMEyF2CW1eld34UUnraootd4xB0eilc/GRPGd9K0Xq9urrecBIfh
+         +Q4hHtGXSDbMXPwKJDoFYqgt5tekNXkYLLowIRniFWAXQcEkPjW2lApzD3EWwFrsMsVN
+         aooA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=6ZY9ppo/NgfpshR/QVcrrN7xSjQ/ifkZSAsHqjerp1g=;
-        b=qXR9H6/WjFvR33sUv8DmFI2H4lqdVJ6JoFAWbS4uIe95NfUyMwD5BfV3aiy0hK+5zV
-         sJviLFaIUb4Se2BVxBz8AQP4GxiU/CPZheSi6kWf7Ldp+nE1NE0nossGAbkZp1gw9Pbf
-         H1JJHvJdaF4ONX1j6RKG+bXi3apnFyyVOaGg+grv4VnFePd66IElxINQ4BSHZPBGL9L/
-         7TNAnjYdtrOjWNqBPnrrUzyTp3hYY7p1qhPfQOoVeAl1s6Wdo7W7rDTfEkzzoyJA8kd0
-         rQPevVeEY8MDXS7vChzbwxuTHpl8/u9EwdJ3aZzVivYsLWkiYvBxPHnJfm14DqbRX1AI
-         8drA==
-X-Gm-Message-State: AJIora/tG9hlaIzxUof5AHLenY/SQMb0C/G00kMMtvmkKDJgrsYuTlO8
-        FQBUXM3TYEQ+nJRDbF5UQhmE6hRYf6nQRQ==
-X-Google-Smtp-Source: AGRyM1v3nnHO6ZCxIoVgjBJgBGU1pFjvf8y7ef5TPkVxsxMBlcZmx1GEbm0kglBmRvi4ihlLzzD9lg==
-X-Received: by 2002:a05:6808:e8a:b0:32e:493b:1d8 with SMTP id k10-20020a0568080e8a00b0032e493b01d8mr13621810oil.124.1658027314277;
-        Sat, 16 Jul 2022 20:08:34 -0700 (PDT)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id z203-20020a4a49d4000000b0043577be222bsm3203928ooa.22.2022.07.16.20.08.33
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mQ4UYKUzX7TyytcppzQjH+TUKoxUgRO5nyuabjhwe2w=;
+        b=PrGGFHnxx/K7AwRzLxEfxIB7lii9kN8GYFlsi84yoUqiijJdf84e6+Idn/Go7vtRWA
+         fAIgXt5UNgPDqedpKlvRgpb5/DwpBXEldvnmqOC+1CA0AZ8g/Dwah1Gq6jlDr09QVmvI
+         nogDSod/G0DD5BnF6VRol1E7EEC/Q5EKOpEKddKVd9am7kGTaR1zrftkJ4yhQxPAIQug
+         l6wRlqfNUhThjGBZ+yelDfQSWi/QfcxlRcIdpwlPw/ySUjrf89M2MZlGoXaNWBm4B5KT
+         4T1kt1Flm2puabqnCEwrLJPshppnc6ZdHYXwmRqNIIRR5qjT2kV7uAb/Z0LDK76EGK6/
+         aRCQ==
+X-Gm-Message-State: AJIora+Ox12OxLZ62oFbtZ/TwO3Gvzwwjxoa8DemcJruEGRvRAlmWIRT
+        pGvpWZIUK+iiTFykQuOUMeFRha27/d+si6T73vXM+w==
+X-Google-Smtp-Source: AGRyM1vV8Fm/TR20xRXnhPE+sCDzHMO8U+rN72p+/bDNBYzGoQIQeteWrbLI4tkhxxIWRK6IEy0CLA==
+X-Received: by 2002:a05:6512:39d1:b0:489:d408:c0ae with SMTP id k17-20020a05651239d100b00489d408c0aemr13323975lfu.114.1658093786921;
+        Sun, 17 Jul 2022 14:36:26 -0700 (PDT)
+Received: from i-vetokaappi.home.lan (dsl-hkibng42-5673c7-93.dhcp.inet.fi. [86.115.199.93])
+        by smtp.gmail.com with ESMTPSA id w16-20020a05651234d000b00485caa0f5dfsm2251088lfr.44.2022.07.17.14.36.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Jul 2022 20:08:33 -0700 (PDT)
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     linux-arm-msm@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@collabora.com>,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: (subset) [PATCH] ARM: dts: qcom: msm8974-hammerhead: Add notification LED
-Date:   Sat, 16 Jul 2022 22:08:24 -0500
-Message-Id: <165802729676.1737676.16131388789289180300.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220505164336.13210-1-luca@z3ntu.xyz>
-References: <20220505164336.13210-1-luca@z3ntu.xyz>
+        Sun, 17 Jul 2022 14:36:26 -0700 (PDT)
+From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+        devicetree@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Stephen Boyd <sboyd@codeaurora.org>
+Subject: [PATCH 0/3] Initial Samsung Galaxy Tab 4 10.1 (SM-T530) support
+Date:   Mon, 18 Jul 2022 00:34:28 +0300
+Message-Id: <20220717213432.134486-1-matti.lehtimaki@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 5 May 2022 18:43:37 +0200, Luca Weiss wrote:
-> From: André Almeida <andrealmeid@collabora.com>
-> 
-> Nexus 5 has a RGB LED connected to the TRILED and hence channels 7, 6 and
-> 5 of the LPG. Add a node describing this.
-> 
-> 
+Add device tree node for pm8226 GPIOs and support for the Samsung Galaxy
+Tab 4 10.1 (SM-T530) tablet which is based on apq8026.
 
-Applied, thanks!
+Matti Lehtimäki (3):
+  ARM: dts: qcom: pm8226: Add node for the GPIOs
+  dt-bindings: arm: qcom: Document samsung,matissewifi device
+  ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 10.1 (SM-T530)
 
-[1/1] ARM: dts: qcom: msm8974-hammerhead: Add notification LED
-      commit: 1ea9098a81133d54b3d40d7ffd197f77881e5ecc
+ .../devicetree/bindings/arm/qcom.yaml         |   1 +
+ arch/arm/boot/dts/Makefile                    |   1 +
+ .../dts/qcom-apq8026-samsung-matissewifi.dts  | 475 ++++++++++++++++++
+ arch/arm/boot/dts/qcom-pm8226.dtsi            |  10 +
+ 4 files changed, 487 insertions(+)
+ create mode 100644 arch/arm/boot/dts/qcom-apq8026-samsung-matissewifi.dts
 
-Best regards,
 -- 
-Bjorn Andersson <bjorn.andersson@linaro.org>
+2.34.1
+
