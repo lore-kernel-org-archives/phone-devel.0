@@ -2,29 +2,26 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76135C43334
-	for <phone-devel@archiver.kernel.org>; Mon, 18 Jul 2022 21:21:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D545CCA479
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Jul 2022 21:37:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234286AbiGRVVN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 18 Jul 2022 17:21:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46498 "EHLO
+        id S234700AbiGRVhL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 18 Jul 2022 17:37:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230317AbiGRVVM (ORCPT
+        with ESMTP id S232009AbiGRVhL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 18 Jul 2022 17:21:12 -0400
-Received: from mail-4022.proton.ch (mail-4022.proton.ch [185.70.40.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FDB728721;
-        Mon, 18 Jul 2022 14:21:11 -0700 (PDT)
-Date:   Mon, 18 Jul 2022 21:21:01 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1658179269; x=1658438469;
-        bh=uuxbUlzCKdnpZQ6Bkv9TYCn2NI7EQjaHey/D4Mc3tUA=;
-        h=Date:To:From:Reply-To:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID;
-        b=IzB/Ub0GgV5wggzkvrEZqasbSUjxuJFUti94hWvwN4T9SiWQOiqfoiEZBaC+hOM8j
-         j6G+owLYtmjMfyApEl7cKA/gsN17SBCNTcV3YG/0VWGiiR4LBolk3QXt1ctiL36V2J
-         6T6OTTZOGHseIGqKwess0gITCrwBS3gYJ/eyOzFc=
+        Mon, 18 Jul 2022 17:37:11 -0400
+Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [IPv6:2a01:4f8:a0:821d::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D0E9C32476;
+        Mon, 18 Jul 2022 14:37:07 -0700 (PDT)
+Received: from localhost.localdomain (unknown [81.178.197.238])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by proxmox1.postmarketos.org (Postfix) with ESMTPSA id 585601401E0;
+        Mon, 18 Jul 2022 21:31:07 +0000 (UTC)
+From:   Caleb Connolly <caleb@connolly.tech>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
@@ -35,49 +32,43 @@ To:     Andy Gross <agross@kernel.org>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
         Sumit Semwal <sumit.semwal@linaro.org>,
-        Stephen Boyd <sboyd@codeaurora.org>,
         Caleb Connolly <caleb@connolly.tech>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-From:   Caleb Connolly <caleb@connolly.tech>
-Reply-To: Caleb Connolly <caleb@connolly.tech>
 Subject: [PATCH 1/4] Documentation: dt-bindings: arm: qcom: add google,blueline
-Message-ID: <20220718212019.1471265-2-caleb@connolly.tech>
-In-Reply-To: <20220718212019.1471265-1-caleb@connolly.tech>
-References: <20220718212019.1471265-1-caleb@connolly.tech>
-Feedback-ID: 10753939:user:proton
+Date:   Mon, 18 Jul 2022 22:30:48 +0100
+Message-Id: <20220718213051.1475108-2-caleb@connolly.tech>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220718213051.1475108-1-caleb@connolly.tech>
+References: <20220718213051.1475108-1-caleb@connolly.tech>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 Document the bindings for the Pixel 3
 
-Based on https://lore.kernel.org/all/20220521164550.91115-7-krzysztof.kozlo=
-wski@linaro.org/
+Based on https://lore.kernel.org/all/20220521164550.91115-7-krzysztof.kozlowski@linaro.org/
 
 Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 ---
  Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentatio=
-n/devicetree/bindings/arm/qcom.yaml
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
 index b727467e86c6..b3e1004673c7 100644
 --- a/Documentation/devicetree/bindings/arm/qcom.yaml
 +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
 @@ -320,6 +320,7 @@ properties:
-
+ 
        - items:
            - enum:
 +              - google,blueline
                - lenovo,yoga-c630
                - oneplus,enchilada
                - oneplus,fajita
---
+-- 
 2.36.1
-
 
