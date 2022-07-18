@@ -2,73 +2,294 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AEEBC433EF
-	for <phone-devel@archiver.kernel.org>; Mon, 18 Jul 2022 07:15:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2716C433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Jul 2022 07:58:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229888AbiGRHPv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 18 Jul 2022 03:15:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47128 "EHLO
+        id S233308AbiGRH61 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 18 Jul 2022 03:58:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229826AbiGRHPv (ORCPT
+        with ESMTP id S232898AbiGRH60 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 18 Jul 2022 03:15:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC8C111804;
-        Mon, 18 Jul 2022 00:15:50 -0700 (PDT)
+        Mon, 18 Jul 2022 03:58:26 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71F19186C8;
+        Mon, 18 Jul 2022 00:58:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C9A66134B;
-        Mon, 18 Jul 2022 07:15:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24B4C341C0;
-        Mon, 18 Jul 2022 07:15:47 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 023FBB80860;
+        Mon, 18 Jul 2022 07:58:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF40C341C8;
+        Mon, 18 Jul 2022 07:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658128549;
-        bh=Z2cmY8+eKqIV7mFoiE72EWO95/pjIwP9a1crVM1liS8=;
+        s=k20201202; t=1658131102;
+        bh=9VkCz/bfnf/qGq2/1Oq0qquI0jn6/NXBPsVwJD7f5nI=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=NaY8xlRcwPnM+zohaXrpoBcxanhOI1nvQuSyg/VK+e4A0wZ2Nuias53yuUxB4xNrH
-         fj5dbm3zxoTXbY4W2y0yHDRABf2GvRwOdtFCy4P9swUIFMlsqCNBPKfrQLcbla6wNX
-         PgOJ8V3L9ruzZEQV6HBrVre7SJBPUFj39+IboOS/Z7Cikn67hJ0RtNb/ZP3BWpfHBb
-         9gDrX23ky5OSKysC3qrmbS0mG2LrKslm1MrvvdCUUjfOCFKFfA89bV9i0ae/0jwBVP
-         VGVWxSVsOxBzJl7p34+Yt4R1F3mXPIE6Pa1Sv8+ReOrPVXxGqwm03kVL5kzuXv83px
-         5NHGKmKA0qsdA==
-Message-ID: <91613bc8-8a9e-00ed-71c9-ebf4eabed396@kernel.org>
-Date:   Mon, 18 Jul 2022 10:15:44 +0300
+        b=qoFOIwraAytdTjsX1H90InvZK44DZvKpq4U2Nq1XWousJUEXvVlG/5C9bJQUZjdiy
+         r5ebGrArIVD7qCjVS7hnUKj4H427U7b7HVkZPJeKoFm22l1V1IgaSXU7J88BqxjM2O
+         uOLG2z1UfZZb5tQoFO+cuzFtk4LvLQeMW6OBmHzehlRidUu3AnTUoSb9Coxgwfamzv
+         XKWMXngIbmjOFUPjTMWeQ6oJ61hwE7j/z/RIjg8RuP1zNHGfN1NCr9KKZ+1VK8LwDT
+         DPwEEjFLUs5AA2DDG4cXENnMOEvtXTKvl20pSqtvuKapiYxe16L7jgvT5vLzS4Xpbe
+         tpnJimxUPfilw==
+Message-ID: <22495dc6-0d55-70d0-d9f3-bcfafcae62d1@kernel.org>
+Date:   Mon, 18 Jul 2022 10:58:16 +0300
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 0/5] Add interconnect support for SM6350
+Subject: Re: [PATCH v3 5/5] arm64: dts: qcom: sm6350: Add interconnect support
 Content-Language: en-US
 To:     Luca Weiss <luca.weiss@fairphone.com>,
         linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, Odelu Kukatla <okukatla@codeaurora.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20220525144404.200390-1-luca.weiss@fairphone.com>
- <CLG9OKW0OMLX.2XWU1ZHFRR9RQ@otso>
+ <20220525144404.200390-6-luca.weiss@fairphone.com>
 From:   Georgi Djakov <djakov@kernel.org>
-In-Reply-To: <CLG9OKW0OMLX.2XWU1ZHFRR9RQ@otso>
+In-Reply-To: <20220525144404.200390-6-luca.weiss@fairphone.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-On 15.07.22 16:34, Luca Weiss wrote:
-> Hi all,
+On 25.05.22 17:44, Luca Weiss wrote:
+> Add all the different NoC providers that are found in SM6350 and
+> populate different nodes that use the interconnect properties.
 > 
-> On Wed May 25, 2022 at 4:43 PM CEST, Luca Weiss wrote:
->> This series adds interconnect support for the various NoCs found on
->> sm6350.
->>
->> A more special modification is allowing child NoC devices, like done for
->> rpm-based qcm2290 which was already merged, but now for rpmh-based
->> interconnect.
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+> Changes since v2:
+> * none
 > 
-> any feedback on the two interconnect patches and the dts patch?
-> Georgi? Bjorn?
+>   arch/arm64/boot/dts/qcom/sm6350.dtsi | 109 +++++++++++++++++++++++++++
+>   1 file changed, 109 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+> index fb1a0f662575..119073f19285 100644
+> --- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+> @@ -1,11 +1,13 @@
+>   // SPDX-License-Identifier: BSD-3-Clause
+>   /*
+>    * Copyright (c) 2021, Konrad Dybcio <konrad.dybcio@somainline.org>
+> + * Copyright (c) 2022, Luca Weiss <luca.weiss@fairphone.com>
+>    */
+>   
+>   #include <dt-bindings/clock/qcom,gcc-sm6350.h>
+>   #include <dt-bindings/clock/qcom,rpmh.h>
+>   #include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interconnect/qcom,sm6350.h>
+>   #include <dt-bindings/interrupt-controller/arm-gic.h>
+>   #include <dt-bindings/mailbox/qcom-ipcc.h>
+>   #include <dt-bindings/power/qcom-rpmpd.h>
+> @@ -539,6 +541,10 @@ i2c0: i2c@880000 {
+>   				interrupts = <GIC_SPI 601 IRQ_TYPE_LEVEL_HIGH>;
+>   				#address-cells = <1>;
+>   				#size-cells = <0>;
+> +				interconnects = <&clk_virt MASTER_QUP_CORE_0 0 &clk_virt SLAVE_QUP_CORE_0 0>,
+> +						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_0 0>,
+> +						<&aggre1_noc MASTER_QUP_0 0 &clk_virt SLAVE_EBI_CH0 0>;
+> +				interconnect-names = "qup-core", "qup-config", "qup-memory";
+>   				status = "disabled";
+>   			};
+>   
+> @@ -552,6 +558,10 @@ i2c2: i2c@888000 {
+>   				interrupts = <GIC_SPI 603 IRQ_TYPE_LEVEL_HIGH>;
+>   				#address-cells = <1>;
+>   				#size-cells = <0>;
+> +				interconnects = <&clk_virt MASTER_QUP_CORE_0 0 &clk_virt SLAVE_QUP_CORE_0 0>,
+> +						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_0 0>,
+> +						<&aggre1_noc MASTER_QUP_0 0 &clk_virt SLAVE_EBI_CH0 0>;
+> +				interconnect-names = "qup-core", "qup-config", "qup-memory";
+>   				status = "disabled";
+>   			};
+>   		};
+> @@ -578,6 +588,10 @@ i2c6: i2c@980000 {
+>   				interrupts = <GIC_SPI 353 IRQ_TYPE_LEVEL_HIGH>;
+>   				#address-cells = <1>;
+>   				#size-cells = <0>;
+> +				interconnects = <&clk_virt MASTER_QUP_CORE_1 0 &clk_virt SLAVE_QUP_CORE_1 0>,
+> +						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_1 0>,
+> +						<&aggre2_noc MASTER_QUP_1 0 &clk_virt SLAVE_EBI_CH0 0>;
+> +				interconnect-names = "qup-core", "qup-config", "qup-memory";
+>   				status = "disabled";
+>   			};
+>   
+> @@ -591,6 +605,10 @@ i2c7: i2c@984000 {
+>   				interrupts = <GIC_SPI 354 IRQ_TYPE_LEVEL_HIGH>;
+>   				#address-cells = <1>;
+>   				#size-cells = <0>;
+> +				interconnects = <&clk_virt MASTER_QUP_CORE_1 0 &clk_virt SLAVE_QUP_CORE_1 0>,
+> +						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_1 0>,
+> +						<&aggre2_noc MASTER_QUP_1 0 &clk_virt SLAVE_EBI_CH0 0>;
+> +				interconnect-names = "qup-core", "qup-config", "qup-memory";
+>   				status = "disabled";
+>   			};
+>   
+> @@ -604,6 +622,10 @@ i2c8: i2c@988000 {
+>   				interrupts = <GIC_SPI 355 IRQ_TYPE_LEVEL_HIGH>;
+>   				#address-cells = <1>;
+>   				#size-cells = <0>;
+> +				interconnects = <&clk_virt MASTER_QUP_CORE_1 0 &clk_virt SLAVE_QUP_CORE_1 0>,
+> +						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_1 0>,
+> +						<&aggre2_noc MASTER_QUP_1 0 &clk_virt SLAVE_EBI_CH0 0>;
+> +				interconnect-names = "qup-core", "qup-config", "qup-memory";
+>   				status = "disabled";
+>   			};
+>   
+> @@ -615,6 +637,9 @@ uart9: serial@98c000 {
+>   				pinctrl-names = "default";
+>   				pinctrl-0 = <&qup_uart9_default>;
+>   				interrupts = <GIC_SPI 356 IRQ_TYPE_LEVEL_HIGH>;
+> +				interconnects = <&clk_virt MASTER_QUP_CORE_1 0 &clk_virt SLAVE_QUP_CORE_1 0>,
+> +						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_1 0>;
+> +				interconnect-names = "qup-core", "qup-config";
+>   				status = "disabled";
+>   			};
+>   
+> @@ -628,11 +653,62 @@ i2c10: i2c@990000 {
+>   				interrupts = <GIC_SPI 357 IRQ_TYPE_LEVEL_HIGH>;
+>   				#address-cells = <1>;
+>   				#size-cells = <0>;
+> +				interconnects = <&clk_virt MASTER_QUP_CORE_1 0 &clk_virt SLAVE_QUP_CORE_1 0>,
+> +						<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_QUP_1 0>,
+> +						<&aggre2_noc MASTER_QUP_1 0 &clk_virt SLAVE_EBI_CH0 0>;
+> +				interconnect-names = "qup-core", "qup-config", "qup-memory";
+>   				status = "disabled";
+>   			};
+>   
+>   		};
+>   
+> +		config_noc: interconnect@1500000 {
+> +			compatible = "qcom,sm6350-config-noc";
+> +			reg = <0 0x01500000 0 0x28000>;
+> +			#interconnect-cells = <2>;
+> +			qcom,bcm-voters = <&apps_bcm_voter>;
+> +		};
+> +
+> +		system_noc: interconnect@1620000 {
+> +			compatible = "qcom,sm6350-system-noc";
+> +			reg = <0 0x01620000 0 0x17080>;
+> +			#interconnect-cells = <2>;
+> +			qcom,bcm-voters = <&apps_bcm_voter>;
+> +
+> +			clk_virt: interconnect-clk-virt {
+> +				compatible = "qcom,sm6350-clk-virt";
+> +				#interconnect-cells = <2>;
+> +				qcom,bcm-voters = <&apps_bcm_voter>;
+> +			};
+> +		};
+> +
+> +		aggre1_noc: interconnect@16e0000 {
+> +			compatible = "qcom,sm6350-aggre1-noc";
+> +			reg = <0 0x016e0000 0 0x15080>;
+> +			#interconnect-cells = <2>;
+> +			qcom,bcm-voters = <&apps_bcm_voter>;
+> +		};
+> +
+> +		aggre2_noc: interconnect@1700000 {
+> +			compatible = "qcom,sm6350-aggre2-noc";
+> +			reg = <0 0x01700000 0 0x1f880>;
+> +			#interconnect-cells = <2>;
+> +			qcom,bcm-voters = <&apps_bcm_voter>;
+> +
+> +			compute_noc: interconnect-compute-noc {
+> +				compatible = "qcom,sm6350-compute-noc";
+> +				#interconnect-cells = <2>;
+> +				qcom,bcm-voters = <&apps_bcm_voter>;
+> +			};
+> +		};
+> +
+> +		mmss_noc: interconnect@1740000 {
+> +			compatible = "qcom,sm6350-mmss-noc";
+> +			reg = <0 0x01740000 0 0x1c100>;
+> +			#interconnect-cells = <2>;
+> +			qcom,bcm-voters = <&apps_bcm_voter>;
+> +		};
+> +
+>   		ufs_mem_hc: ufs@1d84000 {
+>   			compatible = "qcom,sm6350-ufshc", "qcom,ufshc",
+>   				     "jedec,ufs-2.0";
+> @@ -933,6 +1009,10 @@ sdhc_2: sdhci@8804000 {
+>   				 <&gcc GCC_SDCC2_APPS_CLK>,
+>   				 <&rpmhcc RPMH_CXO_CLK>;
+>   			clock-names = "iface", "core", "xo";
+> +			interconnects = <&aggre2_noc MASTER_SDCC_2 0 &clk_virt SLAVE_EBI_CH0 0>,
+> +					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_SDCC_2 0>;
+> +			interconnect-names = "sdhc-ddr", "cpu-sdhc";
+> +
+>   			qcom,dll-config = <0x0007642c>;
+>   			qcom,ddr-config = <0x80040868>;
+>   			power-domains = <&rpmhpd 0>;
+> @@ -947,11 +1027,15 @@ sdhc2_opp_table: sdhc2-opp-table {
+>   				opp-100000000 {
+>   					opp-hz = /bits/ 64 <100000000>;
+>   					required-opps = <&rpmhpd_opp_svs_l1>;
+> +					opp-peak-kBps = <790000 131000>;
+> +					opp-avg-kBps = <50000 50000>;
+>   				};
+>   
+>   				opp-202000000 {
+>   					opp-hz = /bits/ 64 <202000000>;
+>   					required-opps = <&rpmhpd_opp_nom>;
+> +					opp-peak-kBps = <3190000 294000>;
+> +					opp-avg-kBps = <261438 300000>;
 
-I merged the interconnect patches.
+Just wondering where do these values come from? Are they from the downstream DT?
+The rest looks good to me.
 
 Thanks,
 Georgi
+
+>   				};
+>   			};
+>   		};
+> @@ -1017,12 +1101,33 @@ dp_phy: dp-phy@88ea200 {
+>   			};
+>   		};
+>   
+> +		dc_noc: interconnect@9160000 {
+> +			compatible = "qcom,sm6350-dc-noc";
+> +			reg = <0 0x09160000 0 0x3200>;
+> +			#interconnect-cells = <2>;
+> +			qcom,bcm-voters = <&apps_bcm_voter>;
+> +		};
+> +
+>   		system-cache-controller@9200000 {
+>   			compatible = "qcom,sm6350-llcc";
+>   			reg = <0 0x09200000 0 0x50000>, <0 0x09600000 0 0x50000>;
+>   			reg-names = "llcc_base", "llcc_broadcast_base";
+>   		};
+>   
+> +		gem_noc: interconnect@9680000 {
+> +			compatible = "qcom,sm6350-gem-noc";
+> +			reg = <0 0x09680000 0 0x3e200>;
+> +			#interconnect-cells = <2>;
+> +			qcom,bcm-voters = <&apps_bcm_voter>;
+> +		};
+> +
+> +		npu_noc: interconnect@9990000 {
+> +			compatible = "qcom,sm6350-npu-noc";
+> +			reg = <0 0x09990000 0 0x1600>;
+> +			#interconnect-cells = <2>;
+> +			qcom,bcm-voters = <&apps_bcm_voter>;
+> +		};
+> +
+>   		usb_1: usb@a6f8800 {
+>   			compatible = "qcom,sm6350-dwc3", "qcom,dwc3";
+>   			reg = <0 0x0a6f8800 0 0x400>;
+> @@ -1051,6 +1156,10 @@ usb_1: usb@a6f8800 {
+>   
+>   			resets = <&gcc GCC_USB30_PRIM_BCR>;
+>   
+> +			interconnects = <&aggre2_noc MASTER_USB3 0 &clk_virt SLAVE_EBI_CH0 0>,
+> +					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_USB3 0>;
+> +			interconnect-names = "usb-ddr", "apps-usb";
+> +
+>   			usb_1_dwc3: usb@a600000 {
+>   				compatible = "snps,dwc3";
+>   				reg = <0 0x0a600000 0 0xcd00>;
+
