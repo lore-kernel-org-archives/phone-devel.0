@@ -2,28 +2,63 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45AABCCA492
-	for <phone-devel@archiver.kernel.org>; Mon, 18 Jul 2022 21:37:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66536C433EF
+	for <phone-devel@archiver.kernel.org>; Mon, 18 Jul 2022 22:13:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233195AbiGRVhe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 18 Jul 2022 17:37:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57530 "EHLO
+        id S234344AbiGRWNt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 18 Jul 2022 18:13:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235303AbiGRVhL (ORCPT
+        with ESMTP id S234353AbiGRWNo (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 18 Jul 2022 17:37:11 -0400
-X-Greylist: delayed 359 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 18 Jul 2022 14:37:08 PDT
-Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [213.239.216.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E262F326CE;
-        Mon, 18 Jul 2022 14:37:07 -0700 (PDT)
-Received: from localhost.localdomain (unknown [81.178.197.238])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by proxmox1.postmarketos.org (Postfix) with ESMTPSA id 47E341401E9;
-        Mon, 18 Jul 2022 21:31:11 +0000 (UTC)
-From:   Caleb Connolly <caleb@connolly.tech>
-To:     Andy Gross <agross@kernel.org>,
+        Mon, 18 Jul 2022 18:13:44 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FD5C32D83
+        for <phone-devel@vger.kernel.org>; Mon, 18 Jul 2022 15:13:41 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id by8so11709989ljb.13
+        for <phone-devel@vger.kernel.org>; Mon, 18 Jul 2022 15:13:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=a33Qw4o2GwiupPnD3JLXL5y0DKLG1ElEVAAgwe0B5Bo=;
+        b=ao0wowMsVpLPxy3ybBR+HAH3Q6OYlCisAE8fvCweQhGE70BNOfO/n4E8fl3TdXrvBF
+         3VJutmdZUvV/Q4ZJXhbKCDifMZBv7vP2EpaGs0DU3L/NzuRrMv8d7Hgp3S+aDgtqRcZr
+         yJlOuJ0E9gpYwNFfHvLRYGNXhEE+UAI8VDBNIJLdf4JcmiR9iAfBI1/wjElO1DXRkEE2
+         6Ysz00ioL00RfVGtsXZQuWlUhYk+zJIx0OgRVqnJ5JJej1YsKnFWGaPFh4e3Oz0bUyiF
+         j5B/JexALOH7jczOSSBFM7GXuKRZ6GbBzYBcldg0C/5MPnGHSy6RmIgNquqt14sdFkgW
+         Oeeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=a33Qw4o2GwiupPnD3JLXL5y0DKLG1ElEVAAgwe0B5Bo=;
+        b=NvSB8JBFYcJK28GOe6kSIjcOD0qMgK6uUlMRaa6bjqmNYOaSrgU76YIHspnrS4LI9w
+         14EBYHx2wOCWl9H3fBeikY9kkucKs152GFCU4iGQ0iaSjxxxQ9IU8G52vfppmFWAPTNo
+         QssG9466D2Ki+bYTVFe36MJW9/od0F0NPiMI2DURuOJpl9CamBWEBUHH6lfQ4hmjIKGu
+         FJbfHCLnwbUVJoLroj5MSH0GJsWCwDdeGux6TsBgyuVWpzuVDge0tv+TkyToToNk0Hym
+         nlGWnBqHLKxf7Ht/6lQOKtVcJRahTJeQtyE1+EICmcB1zFq7qjIJrW5CRJpyR1Vji/4b
+         Q23A==
+X-Gm-Message-State: AJIora8jl7PR0DRpWg8w2fdRqlk9krWKwMsRc1k85NKHa8quOrpUGGWe
+        lU3v0irqTa6W7Wcma4KCUf7wVQ==
+X-Google-Smtp-Source: AGRyM1sAc32xiETAC4EkGghttf/KuN3+IrhF59X4Km0ADF/Ex7Y45lggmThZeLwkUM11zMyP296KUw==
+X-Received: by 2002:a05:651c:204a:b0:25d:4ef0:80a9 with SMTP id t10-20020a05651c204a00b0025d4ef080a9mr13875280ljo.319.1658182419767;
+        Mon, 18 Jul 2022 15:13:39 -0700 (PDT)
+Received: from [192.168.1.211] ([37.153.55.125])
+        by smtp.gmail.com with ESMTPSA id w16-20020a05651234d000b00485caa0f5dfsm2847754lfr.44.2022.07.18.15.13.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Jul 2022 15:13:39 -0700 (PDT)
+Message-ID: <d8f24aca-2cdf-413f-2b30-ad41b81be1a5@linaro.org>
+Date:   Tue, 19 Jul 2022 01:13:38 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH 2/4] arm64: dts: qcom: add sdm845-google-blueline (Pixel
+ 3)
+Content-Language: en-GB
+To:     Caleb Connolly <caleb@connolly.tech>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -33,692 +68,791 @@ To:     Andy Gross <agross@kernel.org>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
         Sumit Semwal <sumit.semwal@linaro.org>,
-        Caleb Connolly <caleb@connolly.tech>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Cc:     Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 4/4] drm: panel: Add lg sw43408 panel driver
-Date:   Mon, 18 Jul 2022 22:30:51 +0100
-Message-Id: <20220718213051.1475108-5-caleb@connolly.tech>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220718213051.1475108-1-caleb@connolly.tech>
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Kalle Valo <kvalo@kernel.org>
+Cc:     Amit Pundir <amit.pundir@linaro.org>, Vinod Koul <vkoul@kernel.org>
 References: <20220718213051.1475108-1-caleb@connolly.tech>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ <20220718213051.1475108-3-caleb@connolly.tech>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20220718213051.1475108-3-caleb@connolly.tech>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Sumit Semwal <sumit.semwal@linaro.org>
+On 19/07/2022 00:30, Caleb Connolly wrote:
+> From: Amit Pundir <amit.pundir@linaro.org>
+> 
+> This adds an initial dts for the Blueline (Pixel 3). Supported
+> functionality includes display, Debug UART, UFS, USB-C (peripheral), WiFi,
+> Bluetooth and modem.
+> 
+> Bootloader compatible board and msm IDs are needed for the kernel to boot
+> with Pixel3 bootloader, so those are added.
+> 
+> GPIOs 0 through 3 and 81 through 84 are configured to not be accessible
+> from the application CPUs, so we mark them as reserved to allow the Pixel 3
+> to boot.
+> 
+> The reserved-memory locations where obtained from downstream using
+> kernel logs:
+> https://gist.github.com/calebccff/090d10bfac3cb9e9bd98dda30b054c96
+> 
+> The rmtfs region is allocated with UIO, making it technically "dynamic".
+> It's address and size can be read from sysfs:
+> 
+> blueline:/ # cat /sys/class/uio/uio0/name
+> rmtfs
+> at /sys/class/uio/uio0/maps/map0/addr
+> 0x00000000f2701000
+> blueline:/ # cat /sys/class/uio/uio0/maps/map0/size
+> 0x0000000000200000
+> 
+> Like the OnePlus 6, it needs 1kB reserved on either side of the rmtfs
+> memory to workaround some XPU bug which would otherwise cause erroneous
+> XPU violations when accessing the rmtfs_mem region.
+> 
+> For wifi, the pixel 3 reports a board-id of 0xFF, and downstream
+> only includes a single bdwlan file. The qcom,ath10k-calibration-variant
+> property is set to ensure that the correct calibration data is used.
+> 
+> Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+> [AmitP: Cherry-picked and refactored from Bjorn's db845c dts
+>          ("arm64: dts: qcom: Add Dragonboard 845c") https://lkml.org/lkml/2019/6/6/7]
+> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> [sumits: merged commits to add board and msm ids, gpio range reservation,
+>    ufs device-reset gpio and adaptation to v5.5+ changes]
+> Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+> [vinod: Add display nodes]
+> Signed-off-by: Vinod Koul <vkoul@kernel.org>
+> [caleb: remove db845c bits, cleanup, add reserved-memory for modem/wifi]
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 
-LG SW43408 is 1080x2160, 4-lane MIPI-DSI panel, used in some Pixel3
-phones.
+Thanks for your patch, few minor items to improve.
 
-Whatever init sequence we have for this panel isn't capable of
-initialising it completely, toggling the reset gpio ever causes the
-panel to die. Until this is resolved we avoid resetting the panel. The
-disable/unprepare functions only put the panel to sleep mode and
-disable the backlight.
+> ---
+>   arch/arm64/boot/dts/qcom/Makefile             |   1 +
+>   .../boot/dts/qcom/sdm845-google-blueline.dts  | 652 ++++++++++++++++++
+>   2 files changed, 653 insertions(+)
+>   create mode 100644 arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+> index 2f8aec2cc6db..c151e17e6eb7 100644
+> --- a/arch/arm64/boot/dts/qcom/Makefile
+> +++ b/arch/arm64/boot/dts/qcom/Makefile
+> @@ -100,6 +100,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-cheza-r1.dtb
+>   dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-cheza-r2.dtb
+>   dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-cheza-r3.dtb
+>   dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-db845c.dtb
+> +dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-google-blueline.dtb
+>   dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-mtp.dtb
+>   dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-oneplus-enchilada.dtb
+>   dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-oneplus-fajita.dtb
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
+> new file mode 100644
+> index 000000000000..dec979ad9209
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-google-blueline.dts
+> @@ -0,0 +1,652 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/dts-v1/;
+> +
+> +#include <dt-bindings/dma/qcom-gpi.h>
+> +#include <dt-bindings/input/linux-event-codes.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+> +
+> +#include "sdm845.dtsi"
+> +#include "pm8998.dtsi"
+> +#include "pmi8998.dtsi"
+> +
+> +/delete-node/ &mpss_region;
+> +/delete-node/ &venus_mem;
+> +/delete-node/ &cdsp_mem;
+> +/delete-node/ &mba_region;
+> +/delete-node/ &slpi_mem;
+> +/delete-node/ &spss_mem;
+> +/delete-node/ &rmtfs_mem;
+> +
+> +/ {
+> +	model = "Google Pixel 3";
+> +	compatible = "google,blueline", "qcom,sdm845";
+> +	qcom,board-id = <0x00021505 0>;
+> +	qcom,msm-id = <321 0x20001>;
+> +
+> +	aliases {
+> +		serial0 = &uart9;
+> +		serial1 = &uart6;
+> +	};
+> +
+> +	chosen {
+> +		stdout-path = "serial0:115200n8";
+> +	};
+> +
+> +	volume-keys {
+> +		compatible = "gpio-keys";
+> +		label = "Volume keys";
+> +		autorepeat;
+> +
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&volume_up_gpio>;
+> +
+> +		vol-up {
+> +			label = "Volume Up";
+> +			linux,code = <KEY_VOLUMEUP>;
+> +			gpios = <&pm8998_gpio 6 GPIO_ACTIVE_LOW>;
+> +			debounce-interval = <15>;
+> +		};
+> +	};
+> +
+> +	reserved-memory {
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		ranges;
 
-Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
-[vinod: Add DSC support]
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-[caleb: cleanup and support turning off the panel]
-Signed-off-by: Caleb Connolly <caleb@connolly.tech>
----
- MAINTAINERS                              |   8 +
- drivers/gpu/drm/panel/Kconfig            |  11 +
- drivers/gpu/drm/panel/Makefile           |   1 +
- drivers/gpu/drm/panel/panel-lg-sw43408.c | 586 +++++++++++++++++++++++
- 4 files changed, 606 insertions(+)
- create mode 100644 drivers/gpu/drm/panel/panel-lg-sw43408.c
+These properties are already part of the sdm845.dtsi, so no need to have 
+them here.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f679152bdbad..8a2b954ad140 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6376,6 +6376,14 @@ S:	Orphan / Obsolete
- F:	drivers/gpu/drm/i810/
- F:	include/uapi/drm/i810_drm.h
- 
-+DRM DRIVER FOR LG SW43408 PANELS
-+M:	Sumit Semwal <sumit.semwal@linaro.org>
-+M:	Caleb Connolly <caleb@connolly.tech>
-+S:	Maintained
-+T:	git git://anongit.freedesktop.org/drm/drm-misc
-+F:	Documentation/devicetree/bindings/display/panel/lg,sw43408-panel.txt
-+F:	drivers/gpu/drm/panel/panel-lg-sw43408.c
-+
- DRM DRIVER FOR LVDS PANELS
- M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
- L:	dri-devel@lists.freedesktop.org
-diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index 38799effd00a..706b112794b9 100644
---- a/drivers/gpu/drm/panel/Kconfig
-+++ b/drivers/gpu/drm/panel/Kconfig
-@@ -256,6 +256,17 @@ config DRM_PANEL_LEADTEK_LTK500HD1829
- 	  24 bit RGB per pixel. It provides a MIPI DSI interface to
- 	  the host and has a built-in LED backlight.
- 
-+config DRM_PANEL_LG_SW43408
-+	tristate "LG SW43408 panel"
-+	depends on OF
-+	depends on DRM_MIPI_DSI
-+	depends on BACKLIGHT_CLASS_DEVICE
-+	help
-+	  Say Y here if you want to enable support for LG sw43408 panel.
-+	  The panel has a 1080x2160 resolution and uses
-+	  24 bit RGB per pixel. It provides a MIPI DSI interface to
-+	  the host and has a built-in LED backlight.
-+
- config DRM_PANEL_SAMSUNG_LD9040
- 	tristate "Samsung LD9040 RGB/SPI panel"
- 	depends on OF && SPI
-diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
-index 42a7ab54234b..ba26a69b74e7 100644
---- a/drivers/gpu/drm/panel/Makefile
-+++ b/drivers/gpu/drm/panel/Makefile
-@@ -25,6 +25,7 @@ obj-$(CONFIG_DRM_PANEL_LEADTEK_LTK050H3146W) += panel-leadtek-ltk050h3146w.o
- obj-$(CONFIG_DRM_PANEL_LEADTEK_LTK500HD1829) += panel-leadtek-ltk500hd1829.o
- obj-$(CONFIG_DRM_PANEL_LG_LB035Q02) += panel-lg-lb035q02.o
- obj-$(CONFIG_DRM_PANEL_LG_LG4573) += panel-lg-lg4573.o
-+obj-$(CONFIG_DRM_PANEL_LG_SW43408) += panel-lg-sw43408.o
- obj-$(CONFIG_DRM_PANEL_NEC_NL8048HL11) += panel-nec-nl8048hl11.o
- obj-$(CONFIG_DRM_PANEL_NEWVISION_NV3052C) += panel-newvision-nv3052c.o
- obj-$(CONFIG_DRM_PANEL_NOVATEK_NT35510) += panel-novatek-nt35510.o
-diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-new file mode 100644
-index 000000000000..c7b8ec7b970d
---- /dev/null
-+++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
-@@ -0,0 +1,586 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2019 Linaro Ltd
-+ * Author: Sumit Semwal <sumit.semwal@linaro.org>
-+ */
-+
-+#include <linux/backlight.h>
-+#include <linux/delay.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+
-+#include <linux/gpio/consumer.h>
-+#include <linux/regulator/consumer.h>
-+
-+#include <drm/drm_device.h>
-+#include <drm/drm_mipi_dsi.h>
-+#include <drm/drm_modes.h>
-+#include <drm/drm_panel.h>
-+#include <drm/drm_print.h>
-+#include <drm/display/drm_dsc.h>
-+#include <drm/display/drm_dsc_helper.h>
-+
-+#include <video/mipi_display.h>
-+
-+struct panel_cmd {
-+	size_t len;
-+	const char *data;
-+};
-+
-+#define _INIT_CMD(...)                                                   \
-+	{                                                                \
-+		.len = sizeof((char[]){ __VA_ARGS__ }), .data = (char[]) \
-+		{                                                        \
-+			__VA_ARGS__                                      \
-+		}                                                        \
-+	}
-+
-+static const char *const regulator_names[] = {
-+	"vddi",
-+	"vpnl",
-+};
-+
-+static const unsigned long regulator_enable_loads[] = {
-+	62000,
-+	857000,
-+};
-+
-+static const unsigned long regulator_disable_loads[] = {
-+	80,
-+	0,
-+};
-+
-+struct sw43408_panel {
-+	struct drm_panel base;
-+	struct mipi_dsi_device *link;
-+
-+	const struct drm_display_mode *mode;
-+	struct backlight_device *backlight;
-+
-+	struct regulator_bulk_data supplies[ARRAY_SIZE(regulator_names)];
-+
-+	struct gpio_desc *reset_gpio;
-+
-+	bool prepared;
-+	bool enabled;
-+};
-+
-+static const struct panel_cmd lg_sw43408_on_cmds_1[] = {
-+	_INIT_CMD(0x00, 0x53, 0x0C, 0x30),
-+	_INIT_CMD(0x00, 0x55, 0x00, 0x70, 0xDF, 0x00, 0x70, 0xDF),
-+	_INIT_CMD(0x00, 0xF7, 0x01, 0x49, 0x0C),
-+
-+	{},
-+};
-+
-+static const struct panel_cmd lg_sw43408_on_cmds_2[] = {
-+	_INIT_CMD(0x00, 0xB0, 0xAC),
-+	_INIT_CMD(0x00, 0xCD, 0x00, 0x00, 0x00, 0x19, 0x19, 0x19, 0x19, 0x19,
-+		  0x19, 0x19, 0x19, 0x19, 0x19, 0x19, 0x19, 0x19, 0x16, 0x16),
-+	_INIT_CMD(0x00, 0xCB, 0x80, 0x5C, 0x07, 0x03, 0x28),
-+	_INIT_CMD(0x00, 0xC0, 0x02, 0x02, 0x0F),
-+	_INIT_CMD(0x00, 0xE5, 0x00, 0x3A, 0x00, 0x3A, 0x00, 0x0E, 0x10),
-+	_INIT_CMD(0x00, 0xB5, 0x75, 0x60, 0x2D, 0x5D, 0x80, 0x00, 0x0A, 0x0B,
-+		  0x00, 0x05, 0x0B, 0x00, 0x80, 0x0D, 0x0E, 0x40, 0x00, 0x0C,
-+		  0x00, 0x16, 0x00, 0xB8, 0x00, 0x80, 0x0D, 0x0E, 0x40, 0x00,
-+		  0x0C, 0x00, 0x16, 0x00, 0xB8, 0x00, 0x81, 0x00, 0x03, 0x03,
-+		  0x03, 0x01, 0x01),
-+	_INIT_CMD(0x00, 0x55, 0x04, 0x61, 0xDB, 0x04, 0x70, 0xDB),
-+	_INIT_CMD(0x00, 0xB0, 0xCA),
-+
-+	{},
-+};
-+
-+static inline struct sw43408_panel *to_panel_info(struct drm_panel *panel)
-+{
-+	return container_of(panel, struct sw43408_panel, base);
-+}
-+
-+/*
-+ * Currently unable to bring up the panel after resetting, must be missing
-+ * some init commands somewhere.
-+ */
-+static __always_unused int panel_reset(struct sw43408_panel *ctx)
-+{
-+	int ret = 0, i;
-+
-+	for (i = 0; i < ARRAY_SIZE(ctx->supplies); i++) {
-+		ret = regulator_set_load(ctx->supplies[i].consumer,
-+					 regulator_enable_loads[i]);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = regulator_bulk_enable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
-+	if (ret < 0)
-+		return ret;
-+
-+	for (i = 0; i < ARRAY_SIZE(ctx->supplies); i++) {
-+		ret = regulator_set_load(ctx->supplies[i].consumer,
-+					 regulator_disable_loads[i]);
-+		if (ret) {
-+			DRM_DEV_ERROR(ctx->base.dev,
-+				      "regulator_set_load failed %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	ret = regulator_bulk_disable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
-+	if (ret < 0)
-+		return ret;
-+
-+	gpiod_set_value(ctx->reset_gpio, 0);
-+	usleep_range(9000, 10000);
-+	gpiod_set_value(ctx->reset_gpio, 1);
-+	usleep_range(1000, 2000);
-+	gpiod_set_value(ctx->reset_gpio, 0);
-+	usleep_range(9000, 10000);
-+
-+	return 0;
-+}
-+
-+static int send_mipi_cmds(struct drm_panel *panel, const struct panel_cmd *cmds)
-+{
-+	struct sw43408_panel *ctx = to_panel_info(panel);
-+	unsigned int i = 0;
-+	int err;
-+
-+	if (!cmds)
-+		return -EFAULT;
-+
-+	for (i = 0; cmds[i].len != 0; i++) {
-+		const struct panel_cmd *cmd = &cmds[i];
-+
-+		if (cmd->len == 2)
-+			err = mipi_dsi_dcs_write(ctx->link, cmd->data[1], NULL,
-+						 0);
-+		else
-+			err = mipi_dsi_dcs_write(ctx->link, cmd->data[1],
-+						 cmd->data + 2, cmd->len - 2);
-+
-+		if (err < 0)
-+			return err;
-+
-+		usleep_range((cmd->data[0]) * 1000, (1 + cmd->data[0]) * 1000);
-+	}
-+
-+	return 0;
-+}
-+
-+static int lg_panel_disable(struct drm_panel *panel)
-+{
-+	struct sw43408_panel *ctx = to_panel_info(panel);
-+
-+	backlight_disable(ctx->backlight);
-+	ctx->enabled = false;
-+
-+	return 0;
-+}
-+
-+/*
-+ * We can't currently re-initialise the panel properly after powering off.
-+ * This function will be used when this is resolved.
-+ */
-+static __always_unused int lg_panel_power_off(struct drm_panel *panel)
-+{
-+	struct sw43408_panel *ctx = to_panel_info(panel);
-+	int i, ret = 0;
-+
-+	gpiod_set_value(ctx->reset_gpio, 1);
-+
-+	for (i = 0; i < ARRAY_SIZE(ctx->supplies); i++) {
-+		ret = regulator_set_load(ctx->supplies[i].consumer,
-+					 regulator_disable_loads[i]);
-+		if (ret) {
-+			DRM_DEV_ERROR(panel->dev,
-+				      "regulator_set_load failed %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	ret = regulator_bulk_disable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
-+	if (ret) {
-+		DRM_DEV_ERROR(panel->dev, "regulator_bulk_disable failed %d\n",
-+			      ret);
-+	}
-+	return ret;
-+}
-+
-+static int lg_panel_unprepare(struct drm_panel *panel)
-+{
-+	struct sw43408_panel *ctx = to_panel_info(panel);
-+	int ret, i;
-+
-+	if (!ctx->prepared)
-+		return 0;
-+
-+	ret = mipi_dsi_dcs_set_display_off(ctx->link);
-+	if (ret < 0) {
-+		DRM_DEV_ERROR(panel->dev,
-+			      "set_display_off cmd failed ret = %d\n", ret);
-+	}
-+
-+	msleep(120);
-+
-+	ret = mipi_dsi_dcs_enter_sleep_mode(ctx->link);
-+	if (ret < 0) {
-+		DRM_DEV_ERROR(panel->dev, "enter_sleep cmd failed ret = %d\n",
-+			      ret);
-+	}
-+
-+	/* Would call panel_power_off() */
-+
-+	for (i = 0; i < ARRAY_SIZE(ctx->supplies); i++) {
-+		ret = regulator_set_load(ctx->supplies[i].consumer,
-+					 regulator_disable_loads[i]);
-+		if (ret) {
-+			DRM_DEV_ERROR(panel->dev,
-+				      "regulator_set_load failed %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	ctx->prepared = false;
-+
-+	return ret;
-+}
-+
-+static int lg_panel_prepare(struct drm_panel *panel)
-+{
-+	struct sw43408_panel *ctx = to_panel_info(panel);
-+	int err, i;
-+
-+	if (ctx->prepared)
-+		return 0;
-+
-+	/* Would call panel_reset() */
-+
-+	for (i = 0; i < ARRAY_SIZE(ctx->supplies); i++) {
-+		err = regulator_set_load(ctx->supplies[i].consumer,
-+					 regulator_enable_loads[i]);
-+		if (err)
-+			return err;
-+	}
-+
-+	err = regulator_bulk_enable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
-+	if (err < 0)
-+		return err;
-+
-+	usleep_range(9000, 10000);
-+
-+	err = mipi_dsi_dcs_write(ctx->link, MIPI_DCS_SET_GAMMA_CURVE,
-+				 (u8[]){ 0x02 }, 1);
-+	if (err < 0) {
-+		DRM_DEV_ERROR(panel->dev, "failed to set gamma curve: %d\n",
-+			      err);
-+		goto poweroff;
-+	}
-+
-+	err = mipi_dsi_dcs_set_tear_on(ctx->link,
-+				       MIPI_DSI_DCS_TEAR_MODE_VBLANK);
-+	if (err < 0) {
-+		DRM_DEV_ERROR(panel->dev, "failed to set tear on: %d\n", err);
-+		goto poweroff;
-+	}
-+
-+	err = send_mipi_cmds(panel, &lg_sw43408_on_cmds_1[0]);
-+
-+	if (err < 0) {
-+		DRM_DEV_ERROR(panel->dev,
-+			      "failed to send DCS Init 1st Code: %d\n", err);
-+		goto poweroff;
-+	}
-+
-+	err = mipi_dsi_dcs_exit_sleep_mode(ctx->link);
-+	if (err < 0) {
-+		DRM_DEV_ERROR(panel->dev, "failed to exit sleep mode: %d\n",
-+			      err);
-+		goto poweroff;
-+	}
-+
-+	msleep(135);
-+
-+	err = mipi_dsi_dcs_write(ctx->link, MIPI_DSI_COMPRESSION_MODE,
-+				 (u8[]){ 0x11 }, 0);
-+	if (err < 0) {
-+		DRM_DEV_ERROR(panel->dev,
-+			      "failed to set compression mode: %d\n", err);
-+		goto poweroff;
-+	}
-+
-+	err = send_mipi_cmds(panel, &lg_sw43408_on_cmds_2[0]);
-+
-+	if (err < 0) {
-+		DRM_DEV_ERROR(panel->dev,
-+			      "failed to send DCS Init 2nd Code: %d\n", err);
-+		goto poweroff;
-+	}
-+
-+	err = mipi_dsi_dcs_set_display_on(ctx->link);
-+	if (err < 0) {
-+		DRM_DEV_ERROR(panel->dev, "failed to Set Display ON: %d\n",
-+			      err);
-+		goto poweroff;
-+	}
-+
-+	msleep(120);
-+
-+	ctx->prepared = true;
-+
-+	return 0;
-+
-+poweroff:
-+	gpiod_set_value(ctx->reset_gpio, 1);
-+	regulator_bulk_disable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
-+	return err;
-+}
-+
-+static int lg_panel_enable(struct drm_panel *panel)
-+{
-+	struct sw43408_panel *ctx = to_panel_info(panel);
-+	struct drm_dsc_picture_parameter_set pps;
-+	int ret;
-+
-+	if (ctx->enabled)
-+		return 0;
-+
-+	ret = backlight_enable(ctx->backlight);
-+	if (ret) {
-+		DRM_DEV_ERROR(panel->dev, "Failed to enable backlight %d\n",
-+			      ret);
-+		return ret;
-+	}
-+
-+	if (!panel->dsc) {
-+		DRM_DEV_ERROR(panel->dev, "Can't find DSC\n");
-+		return -ENODEV;
-+	}
-+
-+	drm_dsc_pps_payload_pack(&pps, panel->dsc);
-+
-+	ctx->enabled = true;
-+
-+	return 0;
-+}
-+
-+static int lg_panel_get_modes(struct drm_panel *panel,
-+			      struct drm_connector *connector)
-+{
-+	struct sw43408_panel *ctx = to_panel_info(panel);
-+	const struct drm_display_mode *m = ctx->mode;
-+	struct drm_display_mode *mode;
-+
-+	mode = drm_mode_duplicate(connector->dev, m);
-+	if (!mode) {
-+		DRM_DEV_ERROR(panel->dev, "failed to add mode %ux%u\n",
-+			      m->hdisplay, m->vdisplay);
-+		return -ENOMEM;
-+	}
-+
-+	connector->display_info.width_mm = m->width_mm;
-+	connector->display_info.height_mm = m->height_mm;
-+
-+	drm_mode_set_name(mode);
-+	drm_mode_probed_add(connector, mode);
-+
-+	return 1;
-+}
-+
-+static int lg_panel_backlight_update_status(struct backlight_device *bl)
-+{
-+	struct mipi_dsi_device *dsi = bl_get_data(bl);
-+	int ret = 0;
-+	uint16_t brightness;
-+
-+	brightness = (uint16_t)backlight_get_brightness(bl);
-+	/* Brightness is sent in big-endian */
-+	brightness = cpu_to_be16(brightness);
-+
-+	ret = mipi_dsi_dcs_set_display_brightness(dsi, brightness);
-+	return ret;
-+}
-+
-+static int lg_panel_backlight_get_brightness(struct backlight_device *bl)
-+{
-+	struct mipi_dsi_device *dsi = bl_get_data(bl);
-+	int ret = 0;
-+	u16 brightness = 0;
-+
-+	ret = mipi_dsi_dcs_get_display_brightness(dsi, &brightness);
-+	if (ret < 0)
-+		return ret;
-+
-+	return brightness & 0xff;
-+}
-+
-+const struct backlight_ops lg_panel_backlight_ops = {
-+	.update_status = lg_panel_backlight_update_status,
-+	.get_brightness = lg_panel_backlight_get_brightness,
-+};
-+
-+static int lg_panel_backlight_init(struct sw43408_panel *ctx)
-+{
-+	struct device *dev = &ctx->link->dev;
-+	const struct backlight_properties props = {
-+		.type = BACKLIGHT_PLATFORM,
-+		.brightness = 255,
-+		.max_brightness = 255,
-+	};
-+
-+	ctx->backlight = devm_backlight_device_register(dev, dev_name(dev), dev,
-+							ctx->link,
-+							&lg_panel_backlight_ops,
-+							&props);
-+
-+	if (IS_ERR(ctx->backlight))
-+		return dev_err_probe(dev, PTR_ERR(ctx->backlight),
-+				     "Failed to create backlight\n");
-+
-+	return 0;
-+}
-+
-+static const struct drm_panel_funcs panel_funcs = {
-+	.disable = lg_panel_disable,
-+	.unprepare = lg_panel_unprepare,
-+	.prepare = lg_panel_prepare,
-+	.enable = lg_panel_enable,
-+	.get_modes = lg_panel_get_modes,
-+};
-+
-+static const struct drm_display_mode sw43408_default_mode = {
-+	.clock = 152340,
-+
-+	.hdisplay = 1080,
-+	.hsync_start = 1080 + 20,
-+	.hsync_end = 1080 + 20 + 32,
-+	.htotal = 1080 + 20 + 32 + 20,
-+
-+	.vdisplay = 2160,
-+	.vsync_start = 2160 + 20,
-+	.vsync_end = 2160 + 20 + 4,
-+	.vtotal = 2160 + 20 + 4 + 20,
-+
-+	.width_mm = 62,
-+	.height_mm = 124,
-+
-+	.type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
-+};
-+
-+static const struct of_device_id panel_of_match[] = {
-+	{ .compatible = "lg,sw43408", .data = &sw43408_default_mode },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, panel_of_match);
-+
-+static int panel_add(struct sw43408_panel *ctx)
-+{
-+	struct device *dev = &ctx->link->dev;
-+	int i, ret;
-+
-+	for (i = 0; i < ARRAY_SIZE(ctx->supplies); i++)
-+		ctx->supplies[i].supply = regulator_names[i];
-+
-+	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(ctx->supplies),
-+				      ctx->supplies);
-+	if (ret < 0)
-+		return ret;
-+
-+	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
-+	if (IS_ERR(ctx->reset_gpio)) {
-+		DRM_DEV_ERROR(dev, "cannot get reset gpio %ld\n",
-+			      PTR_ERR(ctx->reset_gpio));
-+		return PTR_ERR(ctx->reset_gpio);
-+	}
-+
-+	ret = lg_panel_backlight_init(ctx);
-+	if (ret < 0)
-+		return ret;
-+
-+	drm_panel_init(&ctx->base, dev, &panel_funcs, DRM_MODE_CONNECTOR_DSI);
-+
-+	drm_panel_add(&ctx->base);
-+	return ret;
-+}
-+
-+static int panel_probe(struct mipi_dsi_device *dsi)
-+{
-+	struct sw43408_panel *ctx;
-+	struct drm_dsc_config *dsc;
-+	int err;
-+
-+	ctx = devm_kzalloc(&dsi->dev, sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx)
-+		return -ENOMEM;
-+
-+	ctx->mode = of_device_get_match_data(&dsi->dev);
-+	dsi->mode_flags = MIPI_DSI_MODE_LPM;
-+	dsi->format = MIPI_DSI_FMT_RGB888;
-+	dsi->lanes = 4;
-+
-+	ctx->link = dsi;
-+	mipi_dsi_set_drvdata(dsi, ctx);
-+
-+	err = panel_add(ctx);
-+	if (err < 0)
-+		return err;
-+
-+	/* The panel is DSC panel only, set the dsc params */
-+	dsc = devm_kzalloc(&dsi->dev, sizeof(*dsc), GFP_KERNEL);
-+	if (!dsc)
-+		return -ENOMEM;
-+
-+	dsc->dsc_version_major = 0x1;
-+	dsc->dsc_version_minor = 0x1;
-+
-+	dsc->slice_height = 16;
-+	dsc->slice_width = 540;
-+	dsc->slice_count = 1;
-+	dsc->bits_per_component = 8;
-+	dsc->bits_per_pixel = 8;
-+	dsc->block_pred_enable = true;
-+
-+	ctx->base.dsc = dsc;
-+
-+	return mipi_dsi_attach(dsi);
-+}
-+
-+static int panel_remove(struct mipi_dsi_device *dsi)
-+{
-+	struct sw43408_panel *ctx = mipi_dsi_get_drvdata(dsi);
-+	int err;
-+
-+	err = lg_panel_unprepare(&ctx->base);
-+	if (err < 0)
-+		DRM_DEV_ERROR(&dsi->dev, "failed to unprepare panel: %d\n",
-+			      err);
-+
-+	err = lg_panel_disable(&ctx->base);
-+	if (err < 0)
-+		DRM_DEV_ERROR(&dsi->dev, "failed to disable panel: %d\n", err);
-+
-+	err = mipi_dsi_detach(dsi);
-+	if (err < 0)
-+		DRM_DEV_ERROR(&dsi->dev, "failed to detach from DSI host: %d\n",
-+			      err);
-+
-+	if (ctx->base.dev)
-+		drm_panel_remove(&ctx->base);
-+
-+	return 0;
-+}
-+
-+static struct mipi_dsi_driver panel_driver = {
-+	.driver = {
-+		.name = "panel-lg-sw43408",
-+		.of_match_table = panel_of_match,
-+	},
-+	.probe = panel_probe,
-+	.remove = panel_remove,
-+};
-+module_mipi_dsi_driver(panel_driver);
-+
-+MODULE_AUTHOR("Sumit Semwal <sumit.semwal@linaro.org>");
-+MODULE_DESCRIPTION("LG SW436408 MIPI-DSI LED panel");
-+MODULE_LICENSE("GPL");
+> +
+> +		mpss_region: memory@8e000000 {
+> +			reg = <0 0x8e000000 0 0x9800000>;
+> +			no-map;
+> +		};
+> +
+> +		venus_mem: venus@97800000 {
+> +			reg = <0 0x97800000 0 0x500000>;
+> +			no-map;
+> +		};
+> +
+> +		cdsp_mem: cdsp-mem@97D00000 {
+> +			reg = <0 0x97D00000 0 0x800000>;
+> +			no-map;
+> +		};
+> +
+> +		mba_region: mba@98500000 {
+> +			reg = <0 0x98500000 0 0x200000>;
+> +			no-map;
+> +		};
+> +
+> +		slpi_mem: slpi@98700000 {
+> +			reg = <0 0x98700000 0 0x1400000>;
+> +			no-map;
+> +		};
+> +
+> +		spss_mem: spss@99B00000 {
+> +			reg = <0 0x99B00000 0 0x100000>;
+> +			no-map;
+> +		};
+> +
+> +		/* rmtfs lower guard */
+> +		memory@f2700000 {
+> +			reg = <0 0xf2700000 0 0x1000>;
+> +			no-map;
+> +		};
+> +
+> +		rmtfs_mem: memory@f2701000 {
+> +			compatible = "qcom,rmtfs-mem";
+> +			reg = <0 0xf2701000 0 0x200000>;
+> +			no-map;
+> +
+> +			qcom,client-id = <1>;
+> +			qcom,vmid = <15>;
+> +		};
+> +
+> +		/* rmtfs upper guard */
+> +		memory@f2901000 {
+> +			reg = <0 0xf2901000 0 0x1000>;
+> +			no-map;
+> +		};
+> +	};
+> +
+> +	vph_pwr: vph-pwr-regulator {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vph_pwr";
+> +		regulator-min-microvolt = <3700000>;
+> +		regulator-max-microvolt = <3700000>;
+> +	};
+> +
+> +	vreg_s4a_1p8: vreg-s4a-1p8 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vreg_s4a_1p8";
+> +
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <1800000>;
+> +		regulator-always-on;
+> +		regulator-boot-on;
+> +
+> +		vin-supply = <&vph_pwr>;
+> +	};
+> +};
+> +
+> +&adsp_pas {
+> +	status = "okay";
+> +
+> +	firmware-name = "qcom/sdm845/pixel3/adsp.mbn";
+
+What about using "qcom/sdm845/blueline/adsp.mbn" instead?
+
+Bjorn, Amit?
+
+> +};
+> +
+> +&apps_rsc {
+> +	pm8998-rpmh-regulators {
+> +		compatible = "qcom,pm8998-rpmh-regulators";
+> +		qcom,pmic-id = "a";
+> +		vdd-s1-supply = <&vph_pwr>;
+> +		vdd-s2-supply = <&vph_pwr>;
+> +		vdd-s3-supply = <&vph_pwr>;
+> +		vdd-s4-supply = <&vph_pwr>;
+> +		vdd-s5-supply = <&vph_pwr>;
+> +		vdd-s6-supply = <&vph_pwr>;
+> +		vdd-s7-supply = <&vph_pwr>;
+> +		vdd-s8-supply = <&vph_pwr>;
+> +		vdd-s9-supply = <&vph_pwr>;
+> +		vdd-s10-supply = <&vph_pwr>;
+> +		vdd-s11-supply = <&vph_pwr>;
+> +		vdd-s12-supply = <&vph_pwr>;
+> +		vdd-s13-supply = <&vph_pwr>;
+> +		vdd-l1-l27-supply = <&vreg_s7a_1p025>;
+> +		vdd-l2-l8-l17-supply = <&vreg_s3a_1p35>;
+> +		vdd-l3-l11-supply = <&vreg_s7a_1p025>;
+> +		vdd-l4-l5-supply = <&vreg_s7a_1p025>;
+> +		vdd-l6-supply = <&vph_pwr>;
+> +		vdd-l7-l12-l14-l15-supply = <&vreg_s5a_2p04>;
+> +		vdd-l9-supply = <&vreg_bob>;
+> +		vdd-l10-l23-l25-supply = <&vreg_bob>;
+> +		vdd-l13-l19-l21-supply = <&vreg_bob>;
+> +		vdd-l16-l28-supply = <&vreg_bob>;
+> +		vdd-l18-l22-supply = <&vreg_bob>;
+> +		vdd-l20-l24-supply = <&vreg_bob>;
+> +		vdd-l26-supply = <&vreg_s3a_1p35>;
+> +		vin-lvs-1-2-supply = <&vreg_s4a_1p8>;
+> +
+> +		vreg_s3a_1p35: smps3 {
+> +			regulator-min-microvolt = <1352000>;
+> +			regulator-max-microvolt = <1352000>;
+> +		};
+> +
+> +		vreg_s5a_2p04: smps5 {
+> +			regulator-min-microvolt = <1904000>;
+> +			regulator-max-microvolt = <2040000>;
+> +		};
+> +
+> +		vreg_s7a_1p025: smps7 {
+> +			regulator-min-microvolt = <900000>;
+> +			regulator-max-microvolt = <1028000>;
+> +		};
+> +
+> +		vdda_mipi_dsi0_pll:
+
+Do we need this alias?
+
+> +		vreg_l1a_0p875: ldo1 {
+> +			regulator-min-microvolt = <880000>;
+> +			regulator-max-microvolt = <880000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +			regulator-boot-on;
+> +		};
+> +
+> +		vreg_l5a_0p8: ldo5 {
+> +			regulator-min-microvolt = <800000>;
+> +			regulator-max-microvolt = <800000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +		};
+> +
+> +		vreg_l12a_1p8: ldo12 {
+> +			regulator-min-microvolt = <1800000>;
+> +			regulator-max-microvolt = <1800000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +		};
+> +
+> +		vreg_l7a_1p8: ldo7 {
+> +			regulator-min-microvolt = <1800000>;
+> +			regulator-max-microvolt = <1800000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +		};
+> +
+> +		vreg_l13a_2p95: ldo13 {
+> +			regulator-min-microvolt = <1800000>;
+> +			regulator-max-microvolt = <2960000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +		};
+> +
+> +		vreg_l14a_1p88: ldo14 {
+> +			regulator-min-microvolt = <1800000>;
+> +			regulator-max-microvolt = <1800000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +			regulator-boot-on;
+> +			/*
+> +			 * We can't properly bring the panel back if it gets turned off
+> +			 * so keep it's regulators always on for now.
+> +			 */
+
+Any idea, what is the issue here? Do you have the datasheet for the panel?
+
+> +			regulator-always-on;
+> +		};
+> +
+> +		vreg_l17a_1p3: ldo17 {
+> +			regulator-min-microvolt = <1304000>;
+> +			regulator-max-microvolt = <1304000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +		};
+> +
+> +		vreg_l19a_3p3: ldo19 {
+> +			regulator-min-microvolt = <3300000>;
+> +			regulator-max-microvolt = <3312000>;
+> +			qcom,init-voltage = <3300000>;
+> +			qcom,initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +			/*
+> +			 * The touchscreen needs this to be 3.3v, which is apparently
+> +			 * quite close to the hardware limit for this LDO (3.312v)
+> +			 * It must be kept in high power mode to prevent TS brownouts
+> +			 */
+> +			regulator-allowed-modes = <RPMH_REGULATOR_MODE_HPM>;
+> +		};
+> +
+> +		vreg_l20a_2p95: ldo20 {
+> +			regulator-min-microvolt = <2960000>;
+> +			regulator-max-microvolt = <2968000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +		};
+> +
+> +		vreg_l21a_2p95: ldo21 {
+> +			regulator-min-microvolt = <2960000>;
+> +			regulator-max-microvolt = <2968000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +		};
+> +
+> +		vreg_l24a_3p075: ldo24 {
+> +			regulator-min-microvolt = <3088000>;
+> +			regulator-max-microvolt = <3088000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +		};
+> +
+> +		vreg_l25a_3p3: ldo25 {
+> +			regulator-min-microvolt = <3300000>;
+> +			regulator-max-microvolt = <3312000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +		};
+> +
+> +		vdda_mipi_dsi0_1p2:
+
+Do we need this alias?
+
+> +		vreg_l26a_1p2: ldo26 {
+> +			regulator-min-microvolt = <1200000>;
+> +			regulator-max-microvolt = <1200000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +			regulator-boot-on;
+> +		};
+> +
+> +		vreg_l28a_3p0: ldo28 {
+> +			regulator-min-microvolt = <2856000>;
+> +			regulator-max-microvolt = <3008000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> +			regulator-boot-on;
+> +			/*
+> +			 * We can't properly bring the panel back if it gets turned off
+> +			 * so keep it's regulators always on for now.
+> +			 */
+> +			regulator-always-on;
+> +		};
+> +	};
+> +
+> +	pmi8998-rpmh-regulators {
+> +		compatible = "qcom,pmi8998-rpmh-regulators";
+> +		qcom,pmic-id = "b";
+> +
+> +		vdd-bob-supply = <&vph_pwr>;
+> +
+> +		vreg_bob: bob {
+> +			regulator-min-microvolt = <3312000>;
+> +			regulator-max-microvolt = <3600000>;
+> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_AUTO>;
+> +			regulator-allow-bypass;
+> +		};
+> +	};
+> +
+> +	pm8005-rpmh-regulators {
+> +		compatible = "qcom,pm8005-rpmh-regulators";
+> +		qcom,pmic-id = "c";
+> +
+> +		vdd-s1-supply = <&vph_pwr>;
+> +		vdd-s2-supply = <&vph_pwr>;
+> +		vdd-s3-supply = <&vph_pwr>;
+> +		vdd-s4-supply = <&vph_pwr>;
+> +
+> +		vreg_s3c_0p6: smps3 {
+> +			regulator-min-microvolt = <600000>;
+> +			regulator-max-microvolt = <600000>;
+> +		};
+> +	};
+> +};
+> +
+> +&cdsp_pas {
+> +	status = "okay";
+> +	firmware-name = "qcom/sdm845/pixel3/cdsp.mbn";
+> +};
+> +
+> +&dsi0 {
+> +	status = "okay";
+> +	vdda-supply = <&vdda_mipi_dsi0_1p2>;
+> +
+> +	ports {
+> +		port@1 {
+> +			endpoint {
+> +				remote-endpoint = <&lg_sw43408_in_0>;
+> +				data-lanes = <0 1 2 3>;
+> +			};
+> +		};
+> +	};
+> +
+> +	panel@0 {
+> +		compatible = "lg,sw43408";
+> +		reg = <0>;
+> +
+> +		vddi-supply = <&vreg_l14a_1p88>;
+> +		vpnl-supply = <&vreg_l28a_3p0>;
+> +
+> +		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
+> +
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&panel_reset_pins &panel_te_pin &panel_pmgpio_pins>;
+> +
+> +		ports {
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			port@0 {
+> +				reg = <0>;
+> +				lg_sw43408_in_0: endpoint {
+> +					remote-endpoint = <&dsi0_out>;
+> +				};
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&dsi0_out {
+> +	remote-endpoint = <&lg_sw43408_in_0>;
+> +	data-lanes = <0 1 2 3>;
+> +};
+> +
+> +&dsi0_phy {
+> +	status = "okay";
+> +	vdds-supply = <&vdda_mipi_dsi0_pll>;
+> +};
+> +
+> +&gcc {
+> +	protected-clocks = <GCC_QSPI_CORE_CLK>,
+> +			   <GCC_QSPI_CORE_CLK_SRC>,
+> +			   <GCC_QSPI_CNOC_PERIPH_AHB_CLK>;
+> +};
+> +
+> +&gmu {
+> +	status = "okay";
+> +};
+> +
+> +&gpi_dma0 {
+> +	status = "okay";
+> +};
+> +
+> +&gpu {
+> +	status = "okay";
+> +
+> +	zap-shader {
+> +		memory-region = <&gpu_mem>;
+> +		firmware-name = "qcom/sdm845/pixel3/a630_zap.mbn";
+> +	};
+> +};
+> +
+> +&ipa {
+> +	status = "okay";
+> +
+> +	firmware-name = "qcom/sdm845/pixel3/ipa_fws.mbn";
+> +};
+> +
+> +&mss_pil {
+> +	status = "okay";
+> +	firmware-name = "qcom/sdm845/pixel3/mba.mbn", "qcom/sdm845/pixel3/modem.mbn";
+> +};
+> +
+> +&mdss {
+> +	status = "okay";
+> +};
+> +
+> +&mdss_mdp {
+> +	status = "okay";
+> +};
+
+Not necessary, it is a default state since the commit 4a5622c1d975 
+("arm64: dts: qcom: sdm845: Don't disable MDP explicitly")
+
+> +
+> +&pm8998_gpio {
+> +	volume_up_gpio: vol-up-active {
+> +		pins = "gpio6";
+> +		function = "normal";
+> +		input-enable;
+> +		bias-pull-up;
+> +		qcom,drive-strength = <0>;
+> +	};
+> +
+> +	panel_pmgpio_pins: panel-pmgpio-active {
+> +		pins = "gpio2", "gpio5";
+> +		function = "normal";
+> +		input-enable;
+> +		bias-disable;
+> +		power-source = <0>;
+> +	};
+> +};
+> +
+> +&pm8998_pon {
+> +	resin {
+> +		compatible = "qcom,pm8941-resin";
+> +		interrupts = <0x0 0x8 1 IRQ_TYPE_EDGE_BOTH>;
+> +		debounce = <15625>;
+> +		bias-pull-up;
+> +		linux,code = <KEY_VOLUMEDOWN>;
+> +	};
+
+Please move the (disabled, labelled) resin device to pm8998.dtsi and 
+just add status = "okay" here.
+
+> +};
+> +
+> +&qupv3_id_0 {
+> +	status = "okay";
+> +};
+> +
+> +&qupv3_id_1 {
+> +	status = "okay";
+> +};
+> +
+> +&qup_uart6_default {
+> +	pinmux {
+> +		pins = "gpio45", "gpio46", "gpio47", "gpio48";
+> +		function = "qup6";
+> +	};
+> +
+> +	cts {
+> +		pins = "gpio45";
+> +		bias-disable;
+> +	};
+> +
+> +	rts-tx {
+> +		pins = "gpio46", "gpio47";
+> +		drive-strength = <2>;
+> +		bias-disable;
+> +	};
+> +
+> +	rx {
+> +		pins = "gpio48";
+> +		bias-pull-up;
+> +	};
+> +};
+> +
+> +&qup_uart9_default {
+> +	pinconf-tx {
+> +		pins = "gpio4";
+> +		drive-strength = <2>;
+> +		bias-disable;
+> +	};
+> +
+> +	pinconf-rx {
+> +		pins = "gpio5";
+> +		drive-strength = <2>;
+> +		bias-pull-up;
+> +	};
+> +};
+> +
+> +&tlmm {
+> +	gpio-reserved-ranges = <0 4>, <81 4>;
+> +
+> +	panel_te_pin: panel-te {
+> +		mux {
+> +			pins = "gpio12";
+> +			function = "mdp_vsync";
+> +			drive-strength = <2>;
+> +			bias-disable;
+> +			input-enable;
+> +		};
+> +	};
+> +
+> +	panel_reset_pins: panel-active {
+> +		mux {
+> +			pins = "gpio6", "gpio52";
+> +			function = "gpio";
+> +			drive-strength = <8>;
+> +			bias-disable = <0>;
+> +		};
+> +	};
+> +
+> +	panel_suspend: panel-suspend {
+> +		mux {
+> +			pins = "gpio6", "gpio52";
+> +			function = "gpio";
+> +			drive-strength = <2>;
+> +			bias-pull-down;
+> +		};
+> +	};
+> +
+> +	touchscreen_reset: ts-reset {
+> +		mux {
+> +			pins = "gpio99";
+> +			function = "gpio";
+> +			drive-strength = <8>;
+> +			bias-pull-up;
+> +			//output-high;
+
+debug, can be removed?
+
+> +		};
+> +	};
+> +
+> +	touchscreen_pins: ts-pins {
+> +		mux {
+> +			pins = "gpio125";
+> +			function = "gpio";
+> +			drive-strength = <2>;
+> +			bias-disable;
+> +		};
+> +	};
+> +
+> +	touchscreen_i2c_pins: qup-i2c2-gpio {
+> +		pins = "gpio27", "gpio28";
+> +		function = "gpio";
+> +
+> +		drive-strength = <2>;
+> +		bias-disable;
+> +	};
+> +};
+> +
+> +&uart6 {
+> +	status = "okay";
+> +
+> +	bluetooth {
+> +		compatible = "qcom,wcn3990-bt";
+> +
+> +		vddio-supply = <&vreg_s4a_1p8>;
+> +		vddxo-supply = <&vreg_l7a_1p8>;
+> +		vddrf-supply = <&vreg_l17a_1p3>;
+> +		vddch0-supply = <&vreg_l25a_3p3>;
+> +		max-speed = <3200000>;
+> +	};
+> +};
+> +
+> +&uart9 {
+> +	status = "okay";
+> +};
+> +
+> +&usb_1 {
+> +	status = "okay";
+> +};
+> +
+> +&usb_1_dwc3 {
+> +	dr_mode = "peripheral";
+> +};
+> +
+> +&usb_1_hsphy {
+> +	status = "okay";
+> +
+> +	vdd-supply = <&vreg_l1a_0p875>;
+> +	vdda-pll-supply = <&vreg_l12a_1p8>;
+> +	vdda-phy-dpdm-supply = <&vreg_l24a_3p075>;
+> +
+> +	qcom,imp-res-offset-value = <8>;
+> +	qcom,hstx-trim-value = <QUSB2_V2_HSTX_TRIM_21_6_MA>;
+> +	qcom,preemphasis-level = <QUSB2_V2_PREEMPHASIS_5_PERCENT>;
+> +	qcom,preemphasis-width = <QUSB2_V2_PREEMPHASIS_WIDTH_HALF_BIT>;
+> +};
+> +
+> +&usb_1_qmpphy {
+> +	status = "okay";
+> +
+> +	vdda-phy-supply = <&vreg_l26a_1p2>;
+> +	vdda-pll-supply = <&vreg_l1a_0p875>;
+> +};
+> +
+> +&usb_2 {
+> +	status = "okay";
+> +};
+> +
+> +&usb_2_dwc3 {
+> +	dr_mode = "host";
+> +};
+> +
+> +&usb_2_hsphy {
+> +	status = "okay";
+> +
+> +	vdd-supply = <&vreg_l1a_0p875>;
+> +	vdda-pll-supply = <&vreg_l12a_1p8>;
+> +	vdda-phy-dpdm-supply = <&vreg_l24a_3p075>;
+> +
+> +	qcom,imp-res-offset-value = <8>;
+> +	qcom,hstx-trim-value = <QUSB2_V2_HSTX_TRIM_22_8_MA>;
+> +};
+> +
+> +&usb_2_qmpphy {
+> +	status = "okay";
+> +
+> +	vdda-phy-supply = <&vreg_l26a_1p2>;
+> +	vdda-pll-supply = <&vreg_l1a_0p875>;
+> +};
+> +
+> +&ufs_mem_hc {
+> +	status = "okay";
+> +
+> +	reset-gpios = <&tlmm 150 GPIO_ACTIVE_LOW>;
+> +
+> +	vcc-supply = <&vreg_l20a_2p95>;
+> +	vcc-max-microamp = <800000>;
+> +};
+> +
+> +&ufs_mem_phy {
+> +	status = "okay";
+> +
+> +	vdda-phy-supply = <&vreg_l1a_0p875>;
+> +	vdda-pll-supply = <&vreg_l26a_1p2>;
+> +};
+> +
+> +&venus {
+> +	status = "okay";
+> +	firmware-name = "qcom/sdm845/oneplus6/venus.mbn";
+
+Why are you using the oneplus6 here?
+
+> +};
+> +
+> +&wifi {
+> +	status = "okay";
+> +
+> +	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
+> +	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
+> +	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
+> +	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
+> +
+> +	qcom,snoc-host-cap-8bit-quirk;
+> +	qcom,ath10k-calibration-variant = "google_blueline";
+
+Ideally Kalle Valo should bless this string, added him to the Cc list. 
+Could you please submit the board file to the ath10k (see [1] for the 
+description and [2] for an example).
+
+
+[1] https://wireless.wiki.kernel.org/en/users/drivers/ath10k/boardfiles
+[2] 
+https://lore.kernel.org/ath10k/CAA8EJpphUrxr5gtW0=-tZh-DrKXmHkfFxWMvYRpTUGuCesGCbw@mail.gmail.com/T/#u
+
+> +};
+
+
 -- 
-2.36.1
-
+With best wishes
+Dmitry
