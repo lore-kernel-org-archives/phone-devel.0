@@ -2,105 +2,188 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9854FCCA47F
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Jul 2022 14:26:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43D80C43334
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Jul 2022 18:21:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237115AbiGSO0Q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Jul 2022 10:26:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41714 "EHLO
+        id S234946AbiGSSVh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Jul 2022 14:21:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237906AbiGSO0F (ORCPT
+        with ESMTP id S240069AbiGSSVh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Jul 2022 10:26:05 -0400
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F442727;
-        Tue, 19 Jul 2022 07:11:03 -0700 (PDT)
-Received: by mail-io1-f52.google.com with SMTP id z132so11893096iof.0;
-        Tue, 19 Jul 2022 07:11:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=Y5OqVVuKuyGM5tSfFefSufSVX//uNjIb8bTox4lv9B4=;
-        b=sbVLlffOvKsk9zAPDc5VDE7WHWprmWzqgPNrasC78yRrWgBjQsuv2OMYWrIePeJaKb
-         N/Rh5iiG57EtSelIeuoIsYeCsi21iFrHnSbZICper1hli/Lzy1o9kaXWLTZxFaSpCpcL
-         icFS/QFChlbncuXuv6zjEsmfo11IKvNArMMpHrjOsFQEIiRRl+5a+386YbB8H7wO0KJ0
-         /deaDxgJzzqmOgEu9ZzReQu2QIHDxDDKrVJ9A1MbciIGUCemKQX1IupYK8EqjrRI5Kd2
-         5CGEAm5xCYyuJ4w+OsV2AWHdbD+axZx1+92lCl6v6m4z+dH52HjQbtGuVhAfbua2gr7P
-         ze5A==
-X-Gm-Message-State: AJIora8ODp6IIgg8RB/zQFrLj4bMO/uLtBX7FafsywimdNFKuvFyN0Gc
-        CP1wYirq965SNh+TUnOn55skWhWgfg==
-X-Google-Smtp-Source: AGRyM1tmPybaNriO5iuTlCMQP3qIIAb3WcIZg9dLpekVyr22JqnJHiC9sY3jNqs/TtBNJeyAOdtU7A==
-X-Received: by 2002:a05:6638:264d:b0:33f:5cb4:935f with SMTP id n13-20020a056638264d00b0033f5cb4935fmr16848739jat.98.1658239862483;
-        Tue, 19 Jul 2022 07:11:02 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id g16-20020a926b10000000b002dc1f1a7cc2sm5853691ilc.31.2022.07.19.07.11.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Jul 2022 07:11:02 -0700 (PDT)
-Received: (nullmailer pid 1153345 invoked by uid 1000);
-        Tue, 19 Jul 2022 14:11:00 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Caleb Connolly <caleb@connolly.tech>
-Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Vinod Koul <vkoul@kernel.org>, David Airlie <airlied@linux.ie>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
+        Tue, 19 Jul 2022 14:21:37 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEE8E5C373;
+        Tue, 19 Jul 2022 11:21:34 -0700 (PDT)
+Received: from g550jk.localnet (31-151-115-246.dynamic.upc.nl [31.151.115.246])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 7B200D0A4C;
+        Tue, 19 Jul 2022 18:21:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1658254888; bh=yNpsCPGDUanSFxi0uyJcAWJyGtglJmc0S7f/ELPIoUk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=SGvBzu96ITlnxBYX6kUI+U8prandMG9rscf8d7l5wjMVaF7PsttY7X1BfLiuTD9cP
+         S6Hy9SdoOQ7gChezP8YwiBL2qYGk9injAu/VTxO3tZSTBlbrbJ9MntM3wYKz7fEQpb
+         Zeu+OuxhGMFflUIWNhLljSxHFuRU/+ucrxkeu2DY=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>
-In-Reply-To: <20220718213051.1475108-4-caleb@connolly.tech>
-References: <20220718213051.1475108-1-caleb@connolly.tech> <20220718213051.1475108-4-caleb@connolly.tech>
-Subject: Re: [PATCH 3/4] dt-bindings: panel: Add LG SW43408 MIPI-DSI panel
-Date:   Tue, 19 Jul 2022 08:11:00 -0600
-Message-Id: <1658239860.441333.1153344.nullmailer@robh.at.kernel.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/5] ARM: dts: qcom: msm8226: Add ADSP node
+Date:   Tue, 19 Jul 2022 20:21:26 +0200
+Message-ID: <2683836.mvXUDI8C0e@g550jk>
+In-Reply-To: <20220423155059.660387-3-luca@z3ntu.xyz>
+References: <20220423155059.660387-1-luca@z3ntu.xyz> <20220423155059.660387-3-luca@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 18 Jul 2022 22:30:50 +0100, Caleb Connolly wrote:
-> From: Sumit Semwal <sumit.semwal@linaro.org>
+Hi Bjorn,
+
+On Samstag, 23. April 2022 17:50:57 CEST Luca Weiss wrote:
+> Add a node for the adsp found on msm8226.
 > 
-> LG SW43408 is 1080x2160, 4-lane MIPI-DSI panel.
-> 
-> Signed-off-by: Vinod Koul <vkoul@kernel.org>
-> Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
-> [caleb: convert to yaml]
-> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+
+it seems the dt-bindings and driver patch has landed in 5.19 but I don't think 
+the 3 dts(i) patches are applied yet.
+
+Could you please check and maybe apply them?
+
+Regards
+Luca
+
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
->  .../bindings/display/panel/lg,43408.yaml      | 41 +++++++++++++++++++
->  .../display/panel/panel-simple-dsi.yaml       |  2 +
->  2 files changed, 43 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/panel/lg,43408.yaml
+>  .../boot/dts/qcom-apq8026-asus-sparrow.dts    |  2 +
+>  arch/arm/boot/dts/qcom-msm8226.dtsi           | 65 +++++++++++++++++++
+>  2 files changed, 67 insertions(+)
 > 
+> diff --git a/arch/arm/boot/dts/qcom-apq8026-asus-sparrow.dts
+> b/arch/arm/boot/dts/qcom-apq8026-asus-sparrow.dts index
+> ace8cea27949..818c1a201227 100644
+> --- a/arch/arm/boot/dts/qcom-apq8026-asus-sparrow.dts
+> +++ b/arch/arm/boot/dts/qcom-apq8026-asus-sparrow.dts
+> @@ -8,6 +8,8 @@
+>  #include "qcom-msm8226.dtsi"
+>  #include "qcom-pm8226.dtsi"
+> 
+> +/delete-node/ &adsp_region;
+> +
+>  / {
+>  	model = "ASUS ZenWatch 2";
+>  	compatible = "asus,sparrow", "qcom,apq8026";
+> diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi
+> b/arch/arm/boot/dts/qcom-msm8226.dtsi index 28eca15b5712..3016035d5e21
+> 100644
+> --- a/arch/arm/boot/dts/qcom-msm8226.dtsi
+> +++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
+> @@ -8,6 +8,7 @@
+>  #include <dt-bindings/interrupt-controller/arm-gic.h>
+>  #include <dt-bindings/clock/qcom,gcc-msm8974.h>
+>  #include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/power/qcom-rpmpd.h>
+>  #include <dt-bindings/reset/qcom,gcc-msm8974.h>
+> 
+>  / {
+> @@ -60,6 +61,11 @@ smem_region: smem@3000000 {
+>  			reg = <0x3000000 0x100000>;
+>  			no-map;
+>  		};
+> +
+> +		adsp_region: adsp@dc00000 {
+> +			reg = <0x0dc00000 0x1900000>;
+> +			no-map;
+> +		};
+>  	};
+> 
+>  	smd {
+> @@ -115,6 +121,31 @@ smem {
+>  		hwlocks = <&tcsr_mutex 3>;
+>  	};
+> 
+> +	smp2p-adsp {
+> +		compatible = "qcom,smp2p";
+> +		qcom,smem = <443>, <429>;
+> +
+> +		interrupt-parent = <&intc>;
+> +		interrupts = <GIC_SPI 158 IRQ_TYPE_EDGE_RISING>;
+> +
+> +		qcom,ipc = <&apcs 8 10>;
+> +
+> +		qcom,local-pid = <0>;
+> +		qcom,remote-pid = <2>;
+> +
+> +		adsp_smp2p_out: master-kernel {
+> +			qcom,entry-name = "master-kernel";
+> +			#qcom,smem-state-cells = <1>;
+> +		};
+> +
+> +		adsp_smp2p_in: slave-kernel {
+> +			qcom,entry-name = "slave-kernel";
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +	};
+> +
+>  	soc: soc {
+>  		compatible = "simple-bus";
+>  		#address-cells = <1>;
+> @@ -512,6 +543,40 @@ tcsr_mutex_block: syscon@fd484000 {
+>  			compatible = "syscon";
+>  			reg = <0xfd484000 0x2000>;
+>  		};
+> +
+> +		adsp: remoteproc@fe200000 {
+> +			compatible = "qcom,msm8226-adsp-pil";
+> +			reg = <0xfe200000 0x100>;
+> +
+> +			interrupts-extended = <&intc GIC_SPI 162 
+IRQ_TYPE_EDGE_RISING>,
+> +					      <&adsp_smp2p_in 
+0 IRQ_TYPE_EDGE_RISING>,
+> +					      <&adsp_smp2p_in 
+1 IRQ_TYPE_EDGE_RISING>,
+> +					      <&adsp_smp2p_in 
+2 IRQ_TYPE_EDGE_RISING>,
+> +					      <&adsp_smp2p_in 
+3 IRQ_TYPE_EDGE_RISING>;
+> +			interrupt-names = "wdog", "fatal", "ready", 
+"handover", "stop-ack";
+> +
+> +			power-domains = <&rpmpd MSM8226_VDDCX>;
+> +			power-domain-names = "cx";
+> +
+> +			clocks = <&xo_board>;
+> +			clock-names = "xo";
+> +
+> +			memory-region = <&adsp_region>;
+> +
+> +			qcom,smem-states = <&adsp_smp2p_out 0>;
+> +			qcom,smem-state-names = "stop";
+> +
+> +			status = "disabled";
+> +
+> +			smd-edge {
+> +				interrupts = <GIC_SPI 156 
+IRQ_TYPE_EDGE_RISING>;
+> +
+> +				qcom,ipc = <&apcs 8 8>;
+> +				qcom,smd-edge = <1>;
+> +
+> +				label = "lpass";
+> +			};
+> +		};
+>  	};
+> 
+>  	timer {
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-yamllint warnings/errors:
 
-dtschema/dtc warnings/errors:
-./Documentation/devicetree/bindings/display/panel/lg,43408.yaml: $id: relative path/filename doesn't match actual path or filename
-	expected: http://devicetree.org/schemas/display/panel/lg,43408.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/display/panel/lg,43408.yaml: duplicate '$id' value 'http://devicetree.org/schemas/display/panel/panel-lvds.yaml#'
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
 
