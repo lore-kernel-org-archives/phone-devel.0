@@ -2,237 +2,251 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D052CCA47F
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Jul 2022 08:46:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21891CCA47F
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Jul 2022 14:20:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235195AbiGSIpc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Jul 2022 04:45:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51922 "EHLO
+        id S239005AbiGSOUT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Jul 2022 10:20:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237097AbiGSIpZ (ORCPT
+        with ESMTP id S239903AbiGSOTf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Jul 2022 04:45:25 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FBA0357F9
-        for <phone-devel@vger.kernel.org>; Tue, 19 Jul 2022 01:45:23 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id v15so12817092ljc.1
-        for <phone-devel@vger.kernel.org>; Tue, 19 Jul 2022 01:45:23 -0700 (PDT)
+        Tue, 19 Jul 2022 10:19:35 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C15D546DB9;
+        Tue, 19 Jul 2022 06:58:49 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id y11so24930319lfs.6;
+        Tue, 19 Jul 2022 06:58:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=LHAH2NUYMzb+gHfcEBuvD4gwfDzYc08nLpdMrmdwOds=;
-        b=Hf9qT2AJbfpICrSD29yZqmB+mj74t94EVQm/cDU27MwXePgAv60Zqe/IGKC6QfaHqX
-         oPGp6p7bAzCk4E/G1lVcQd6453VNPIKBNsqjEZZq/bo3SzpoiX1fxUOzeFZ/PH8otp0u
-         fpt/WgEL4QCLjfcYItFky4eNh6+nv35duK4nHl1hTqxWtKJxZWM9GEpKtMXELx9z78FM
-         C1GQ3bcMHwmSv8UOdrEq99obVrhfqtYf61BU+tNzMGRsH6g+xYebpdsrZa1YVpwTBKoW
-         KHoYvup0QCKtBKXnfOQoNRrm3mmDAzoYNuC6SURvQYbeLhxCDLGd8Y6bXICw+jHnL727
-         aljg==
+        bh=+2aJAl0rRfbzSKkiIftk8ldOFxfh5EXLt3BAbAT41JQ=;
+        b=B/ONy45MnsJccYM7mg0CgiUa0J3wDHVOzPTDwYrw2gXv+iVdO+kVOQJMPy9qv67HFd
+         376UIbXeWBXxc1ev5+VAHnlltdzq7ICMlAIz7aK2UDeAVzi+t80CFTYtmY9B0TFovHq+
+         WS9nbWCeAuT7Y13+9jbkp/jwySDzOsaD0qTN7FOZ/bfylRLxb9g/wCnCzEUeoS+8rgpo
+         AzFpobpVUKsRSHPnQmfcIns79xY/XnXa8ZnKmkHbTgB8A9EzNVVHWLYOe/iiBh8ecw/e
+         eqUznLouomgZmwUwR0TrEDmW50HnYmveaqrPSB82Gh/xuAQxrKgzZ0T7W1ZHHn/yxFsT
+         RS6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=LHAH2NUYMzb+gHfcEBuvD4gwfDzYc08nLpdMrmdwOds=;
-        b=IA6sciUWYeUrtTJEdi+bFvoHiS1nAqgBSCLLhYlchJTlelG10aC7nh78wqsd95Hf2k
-         jF/ZdBFCmrWI1f+Yeu9wQd1h39lDGC4KklMWN1iEXgEzX+SPMH4IA7jeWOR7q7U70/kn
-         /4J/BiTWcPCmBUzqMwhlRGu2ajE9iEirif5rGviAK0m02GQ5dAcxa1T7tELBpvaKr3hw
-         gmSuIPMmSizJ6+hY5TQulqM1uQvPATdgiTf+a6gPx+HpDcydkpwa/DI0X545/vDSD+fu
-         XeuKRJImFi+scUctoRk1inuX9gp/7P/IHyYZ3njKcVExXptglVrlKDcgDSpyU7Or8Gka
-         HaXw==
-X-Gm-Message-State: AJIora+4cHpKUVdfv/bLCXRCHmD5IuqnFflwWQd32E3qaKBJSblLfTix
-        HS0prK8v2PpRUlXISCOawBvjqA==
-X-Google-Smtp-Source: AGRyM1vKeOohI6tFEuXQpGxF2ieOs2+QyZ+WNG0CgTqglEypV3aVfrKO6JATeAaSINVOUSbnRvz2qA==
-X-Received: by 2002:a2e:bc19:0:b0:25d:9c9e:d13a with SMTP id b25-20020a2ebc19000000b0025d9c9ed13amr10597512ljf.91.1658220321753;
-        Tue, 19 Jul 2022 01:45:21 -0700 (PDT)
-Received: from [192.168.115.193] (89-162-31-138.fiber.signal.no. [89.162.31.138])
-        by smtp.gmail.com with ESMTPSA id d42-20020a0565123d2a00b004795d64f37dsm3081322lfv.105.2022.07.19.01.45.20
+        bh=+2aJAl0rRfbzSKkiIftk8ldOFxfh5EXLt3BAbAT41JQ=;
+        b=4m4Dc7JFCDPJy12u5eUctOo6SoXh9Kad6gLpCfMeVd/JAW/Rwm7HkzCFDMaJ0pDi5x
+         XHWkHywlJiOIspNUrJaysy/N/a5zy3GNFGh2LXdrF7//GJ8SJu83R71j4qLPYxM3Lwen
+         QOUCo7nVY4F7ZQMURlcPUnJlloHGnKsumgTH3c3Ijat6SHWMPfJAnwOVG0DmzNs6hOmh
+         1ROkx9pUtST0dY3SegTcO1b/8VMAeXJd9RxHO3BGcAkmQ34UtYdHG/3k83QUaKsLARWN
+         /TtS+3lT6ni1hxjKZuaYVarOc0glK+OY8asXw/xGztCI32Y38BupYtK6GZlsuz/OE2Xa
+         YAwg==
+X-Gm-Message-State: AJIora9sEXqniVM688B1hNMAlxPz3+7y8M6+tjfBS7+bZ5jHrdoX/YDe
+        AcMJYfk9ALIJ/BDR78hGK30=
+X-Google-Smtp-Source: AGRyM1ur8+BWTKBaz162gwI4bD871JbUmpMCZkEqrK1qZeLrDpPwNz+LSFkAjJubVIsH51V2wxmGlQ==
+X-Received: by 2002:a05:6512:10d1:b0:489:feee:3b80 with SMTP id k17-20020a05651210d100b00489feee3b80mr17413587lfg.212.1658239127946;
+        Tue, 19 Jul 2022 06:58:47 -0700 (PDT)
+Received: from [192.168.3.10] ([194.39.226.133])
+        by smtp.gmail.com with ESMTPSA id h11-20020ac25d6b000000b00489d16820ecsm3232351lft.165.2022.07.19.06.58.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Jul 2022 01:45:21 -0700 (PDT)
-Message-ID: <f988df59-d56f-51ae-dc64-a09db305ce1c@linaro.org>
-Date:   Tue, 19 Jul 2022 10:45:19 +0200
+        Tue, 19 Jul 2022 06:58:47 -0700 (PDT)
+Message-ID: <295e1809-f6f2-ca31-5c36-be133ffdc93b@gmail.com>
+Date:   Tue, 19 Jul 2022 16:58:45 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
-Subject: Re: [PATCH 2/4] arm64: dts: qcom: add sdm845-google-blueline (Pixel
- 3)
+Subject: Re: [PATCH v5 4/5] mfd: sm5703: Add support for SM5703 MFD
 Content-Language: en-US
-To:     Caleb Connolly <caleb@connolly.tech>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Cc:     Amit Pundir <amit.pundir@linaro.org>, Vinod Koul <vkoul@kernel.org>
-References: <20220718213051.1475108-1-caleb@connolly.tech>
- <20220718213051.1475108-3-caleb@connolly.tech>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220718213051.1475108-3-caleb@connolly.tech>
-Content-Type: text/plain; charset=UTF-8
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        devicetree@vger.kernel.org
+References: <20220423085319.483524-1-markuss.broks@gmail.com>
+ <20220423085319.483524-5-markuss.broks@gmail.com>
+ <Yqj+aUNLC00Tcu49@google.com>
+ <5498bf71-66a5-957e-ed3d-13e68b982562@gmail.com>
+ <YtUXFTx1+vSrXx70@google.com>
+From:   Markuss Broks <markuss.broks@gmail.com>
+In-Reply-To: <YtUXFTx1+vSrXx70@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 18/07/2022 23:30, Caleb Connolly wrote:
-> From: Amit Pundir <amit.pundir@linaro.org>
-> 
-> This adds an initial dts for the Blueline (Pixel 3). Supported
-> functionality includes display, Debug UART, UFS, USB-C (peripheral), WiFi,
-> Bluetooth and modem.
-> 
+Hi Lee,
 
-Thank you for your patch. There is something to discuss/improve.
-
-(...)
-
-> +	volume-keys {
-> +		compatible = "gpio-keys";
-> +		label = "Volume keys";
-> +		autorepeat;
-> +
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&volume_up_gpio>;
-> +
-> +		vol-up {
-
-key-vol-up
-(DT schema requires it now)
-
-> +			label = "Volume Up";
-> +			linux,code = <KEY_VOLUMEUP>;
-> +			gpios = <&pm8998_gpio 6 GPIO_ACTIVE_LOW>;
-> +			debounce-interval = <15>;
-> +		};
-> +	};
-> +
-> +	reserved-memory {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		mpss_region: memory@8e000000 {
-> +			reg = <0 0x8e000000 0 0x9800000>;
-> +			no-map;
-> +		};
-> +
-> +		venus_mem: venus@97800000 {
-> +			reg = <0 0x97800000 0 0x500000>;
-> +			no-map;
-> +		};
-> +
-> +		cdsp_mem: cdsp-mem@97D00000 {
-> +			reg = <0 0x97D00000 0 0x800000>;
-> +			no-map;
-> +		};
-> +
-> +		mba_region: mba@98500000 {
-> +			reg = <0 0x98500000 0 0x200000>;
-> +			no-map;
-> +		};
-> +
-> +		slpi_mem: slpi@98700000 {
-> +			reg = <0 0x98700000 0 0x1400000>;
-> +			no-map;
-> +		};
-> +
-> +		spss_mem: spss@99B00000 {
-> +			reg = <0 0x99B00000 0 0x100000>;
-> +			no-map;
-> +		};
-> +
-> +		/* rmtfs lower guard */
-> +		memory@f2700000 {
-> +			reg = <0 0xf2700000 0 0x1000>;
-> +			no-map;
-> +		};
-> +
-> +		rmtfs_mem: memory@f2701000 {
-> +			compatible = "qcom,rmtfs-mem";
-> +			reg = <0 0xf2701000 0 0x200000>;
-> +			no-map;
-> +
-> +			qcom,client-id = <1>;
-> +			qcom,vmid = <15>;
-> +		};
-> +
-> +		/* rmtfs upper guard */
-> +		memory@f2901000 {
-> +			reg = <0 0xf2901000 0 0x1000>;
-> +			no-map;
-> +		};
-> +	};
-> +
-> +	vph_pwr: vph-pwr-regulator {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "vph_pwr";
-> +		regulator-min-microvolt = <3700000>;
-> +		regulator-max-microvolt = <3700000>;
-> +	};
-> +
-> +	vreg_s4a_1p8: vreg-s4a-1p8 {
-
-Please use consistent naming, so if previous was "xxx-regulator", keep
-similar pattern here.
-
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "vreg_s4a_1p8";
-> +
-> +		regulator-min-microvolt = <1800000>;
-> +		regulator-max-microvolt = <1800000>;
-> +		regulator-always-on;
-> +		regulator-boot-on;
-> +
-> +		vin-supply = <&vph_pwr>;
-> +	};
-> +};
-> +
-> +&adsp_pas {
-
-(...)
-
-> +
-> +&pm8998_gpio {
-> +	volume_up_gpio: vol-up-active {
-
-The bindings require node name to finish with "-state"
-
-> +		pins = "gpio6";
-> +		function = "normal";
-> +		input-enable;
-> +		bias-pull-up;
-> +		qcom,drive-strength = <0>;
-> +	};
-> +
-> +	panel_pmgpio_pins: panel-pmgpio-active {
-
-Ditto.
-
-> +		pins = "gpio2", "gpio5";
-> +		function = "normal";
-> +		input-enable;
-> +		bias-disable;
-> +		power-source = <0>;
-> +	};
-> +};
-> +
-> +&pm8998_pon {
-> +	resin {
-> +		compatible = "qcom,pm8941-resin";
-> +		interrupts = <0x0 0x8 1 IRQ_TYPE_EDGE_BOTH>;
-> +		debounce = <15625>;
-> +		bias-pull-up;
-> +		linux,code = <KEY_VOLUMEDOWN>;
-> +	};
-> +};
-> +
-Best regards,
-Krzysztof
+On 7/18/22 11:17, Lee Jones wrote:
+> On Fri, 15 Jul 2022, Markuss Broks wrote:
+>
+>> Hi Lee,
+>>
+>> Sorry to bother you again, but I've got additional questions while I was
+>> preparing the next version of the series:
+>>
+>> On 6/15/22 00:32, Lee Jones wrote:
+>>> On Sat, 23 Apr 2022, Markuss Broks wrote:
+>>>
+>>>> Silicon Mitus SM5703 is a multi-function device, meant to be
+>>> Please avoid using the term MFD.
+>>>
+>>> How is the device described in the data-sheet?
+>>>
+>>> What do you mean by "meant to be"?
+>>>
+>>>> used in mobile devices. It has several modules: LDO, BUCK regulators,
+>>> Modules or functions?
+>>>
+>>>> charger circuit, flash LED driver, a fuel gauge for monitoring the battery
+>>>> and a MUIC USB switcher. The MUIC and fuel gauge parts are separate in that
+>>>> they use separate i2c lines to communicate with the device, while charger
+>>> "I2C"
+>>>
+>>>> circuit, LED driver and regulators are on the main i2c line the device is
+>>>> controlled with.
+>>>>
+>>>> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+>>>> ---
+>>>>    MAINTAINERS                |   8 +++
+>>>>    drivers/mfd/Kconfig        |  13 +++++
+>>>>    drivers/mfd/Makefile       |   1 +
+>>>>    drivers/mfd/sm5703.c       |  78 +++++++++++++++++++++++++++
+>>>>    include/linux/mfd/sm5703.h | 105 +++++++++++++++++++++++++++++++++++++
+>>>>    5 files changed, 205 insertions(+)
+>>>>    create mode 100644 drivers/mfd/sm5703.c
+>>>>    create mode 100644 include/linux/mfd/sm5703.h
+>>>>
+>>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>>> index 6157e706ed02..6125ed1a3be4 100644
+>>>> --- a/MAINTAINERS
+>>>> +++ b/MAINTAINERS
+>>>> @@ -18172,6 +18172,14 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git dev
+>>>>    F:	include/linux/srcu*.h
+>>>>    F:	kernel/rcu/srcu*.c
+>>>> +SM5703 MFD DRIVER
+>>>> +M:	Markuss Broks <markuss.broks@gmail.com>
+>>>> +S:	Maintained
+>>>> +F:	Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+>>>> +F:	Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
+>>>> +F:	drivers/mfd/sm5703.c
+>>>> +F:	drivers/regulator/sm5703-regulator.c
+>>>> +
+>>>>    SMACK SECURITY MODULE
+>>>>    M:	Casey Schaufler <casey@schaufler-ca.com>
+>>>>    L:	linux-security-module@vger.kernel.org
+>>>> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+>>>> index 3b59456f5545..c13a99ceae99 100644
+>>>> --- a/drivers/mfd/Kconfig
+>>>> +++ b/drivers/mfd/Kconfig
+>>>> @@ -1237,6 +1237,19 @@ config MFD_SM501
+>>>>    	  interface. The device may be connected by PCI or local bus with
+>>>>    	  varying functions enabled.
+>>>> +config MFD_SM5703
+>>>> +	tristate "Silicon Mitus SM5703 MFD"
+>>>> +	depends on I2C
+>>>> +	depends on OF
+>>>> +	select MFD_CORE
+>>>> +	select REGMAP_I2C
+>>>> +	help
+>>>> +	  This is the core driver for the Silicon Mitus SM5703 multi-function
+>>> Please drop the MFD term, as above.
+>>>
+>>>> +	  device. This device is meant to be used in phones and it has numerous
+>>> "meant to be"?
+>>>
+>>>> +	  modules, including LED controller, regulators, fuel gauge, MUIC and
+>>> Either "an LED controller" or "LED controllers"
+>>>
+>>> Same with "charger circuit" below.
+>>>
+>>>> +	  charger circuit. It also support muxing a serial interface over USB
+>>> "supports"
+>>>
+>>> What kind of serial?
+>>>
+>>>> +	  data lines.
+>>>> +
+>>>>    config MFD_SM501_GPIO
+>>>>    	bool "Export GPIO via GPIO layer"
+>>>>    	depends on MFD_SM501 && GPIOLIB
+>>>> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+>>>> index 858cacf659d6..ca8b86736a36 100644
+>>>> --- a/drivers/mfd/Makefile
+>>>> +++ b/drivers/mfd/Makefile
+>>>> @@ -275,3 +275,4 @@ rsmu-i2c-objs			:= rsmu_core.o rsmu_i2c.o
+>>>>    rsmu-spi-objs			:= rsmu_core.o rsmu_spi.o
+>>>>    obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu-i2c.o
+>>>>    obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu-spi.o
+>>>> +obj-$(CONFIG_MFD_SM5703)	+= sm5703.o
+>>>> diff --git a/drivers/mfd/sm5703.c b/drivers/mfd/sm5703.c
+>>>> new file mode 100644
+>>>> index 000000000000..7f9838149051
+>>>> --- /dev/null
+>>>> +++ b/drivers/mfd/sm5703.c
+>>>> @@ -0,0 +1,78 @@
+>>>> +// SPDX-License-Identifier: GPL-2.0-only
+>>>> +
+>>>> +#include <linux/err.h>
+>>>> +#include <linux/delay.h>
+>>>> +#include <linux/gpio/consumer.h>
+>>>> +#include <linux/i2c.h>
+>>>> +#include <linux/mfd/core.h>
+>>>> +#include <linux/mfd/sm5703.h>
+>>>> +#include <linux/module.h>
+>>>> +#include <linux/of_device.h>
+>>>> +#include <linux/regmap.h>
+>>>> +
+>>>> +static const struct mfd_cell sm5703_devs[] = {
+>>>> +	{ .name = "sm5703-regulator", },
+>>>> +};
+>>> Where are the rest of the child drivers?
+>> Should those devices still be present even though there's no driver for them
+>> (yet) ? I have a WIP version of driver for almost every function, but I
+>> currently lack time to get them done.
+> Without them the driver-set is useless, no?
+>
+> We try to refrain from applying dead code.
+>
+> A lot of it has a tendency to stay that way.
+Well, in my opinion, having just the regulator driver is already useful 
+enough: my board (Samsung Galaxy J5 (2015) ) uses one of LDO outputs for 
+powering the touchscreen. Touchscreen is kind of vital functionality for 
+a phone so I decided to upstream parts that are necessary for it first 
+and finish up other stuff later. It's not the only board that uses 
+SM5703's regulators for supplying all different kinds of hardware, either.
+>
+> [...]
+>
+>>>> +++ b/include/linux/mfd/sm5703.h
+>>>> @@ -0,0 +1,105 @@
+>>>> +/* SPDX-License-Identifier: GPL-2.0-only */
+>>>> +
+>>>> +#ifndef _SM5703_H
+>>>> +#define _SM5703_H
+>>>> +
+>>>> +struct sm5703_dev {
+>>>> +	struct device *dev;
+>>>> +	struct regmap *regmap;
+>>>> +	struct gpio_desc *reset_gpio;
+>>>> +};
+>>>> +
+>>>> +// Regulator-related defines
+>>> No C++ style comments.
+>>>
+>>>> +#define SM5703_REG_LDO1				0x1A
+>>> I'd drop the REG parts from these.
+>> I have no issues with that, however the already upstreamed sm5703-regulator
+>> driver uses those defines. If I change the define name, how should I make
+>> changes in that driver, would it be reasonable to send an additional patch
+>> together with the new MFD series?
+> It would.  You could also keep them in for now.
+>
+> They're not a major blocker.
+>
+- Markuss
