@@ -2,132 +2,99 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DA2DCCA481
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Jul 2022 07:57:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77AE4CCA47F
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Jul 2022 08:36:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233716AbiGSH5S (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Jul 2022 03:57:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46042 "EHLO
+        id S235114AbiGSIgO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Jul 2022 04:36:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234196AbiGSH5R (ORCPT
+        with ESMTP id S235610AbiGSIgL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Jul 2022 03:57:17 -0400
-Received: from mailrelay1-1.pub.mailoutpod1-cph3.one.com (mailrelay1-1.pub.mailoutpod1-cph3.one.com [46.30.210.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E505127CF5
-        for <phone-devel@vger.kernel.org>; Tue, 19 Jul 2022 00:57:15 -0700 (PDT)
+        Tue, 19 Jul 2022 04:36:11 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B46D822BDA
+        for <phone-devel@vger.kernel.org>; Tue, 19 Jul 2022 01:36:08 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id q7so16503695lji.12
+        for <phone-devel@vger.kernel.org>; Tue, 19 Jul 2022 01:36:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=rsa1;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=2cIAQ8Q87Su0xZjwFvxWnDl7yaVEuz+orMsRxOWQtYs=;
-        b=A9TzvSRl9qa2gKDkZ7WTu/eJU9KIqJ4YckBWNGrnnbkd0WWETmYLn9/hpUxq2tLMoNWw0zf4yZDRw
-         gnZIpUFk57ynNZw2Qj5ydTQfpDrwEgKj2xndN9bWGfd76nHAL9C1olbZblsWM3qVXBIcJaFhXrwCZP
-         TP+BgeLM3xL09ajysK1R1okSt96o6C/jbdd4Zmxn//yk7c7AB9M17lsfRXLtrmTY+JzHgHlkwxSahH
-         KVKyfbdAnNz4j3ueJuzPHXwxdh1l8sTdOKWSc9kf8stZN0T7TPaQKw/G2vd35xXaa5MLDDfL6FYkB5
-         8MkwwssYPsQquP+qoV7ETWXW418du/Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=ed1;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=2cIAQ8Q87Su0xZjwFvxWnDl7yaVEuz+orMsRxOWQtYs=;
-        b=Ckq/4EfNAN8crPZdNPERFvfDyFnaOOKE8TbiBV33dgGS410bjTk0YIy/DNH+aJ+P2sHF0MpiOAfNw
-         v3EpcsTCA==
-X-HalOne-Cookie: 45e94343b7d45f836c1765849a42fe61463e522e
-X-HalOne-ID: 65e9548c-0738-11ed-a6c8-d0431ea8a283
-Received: from mailproxy1.cst.dirpod3-cph3.one.com (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-        by mailrelay1.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
-        id 65e9548c-0738-11ed-a6c8-d0431ea8a283;
-        Tue, 19 Jul 2022 07:57:13 +0000 (UTC)
-Date:   Tue, 19 Jul 2022 09:57:11 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Caleb Connolly <caleb@connolly.tech>
-Cc:     devicetree@vger.kernel.org, David Airlie <airlied@linux.ie>,
-        linux-arm-msm@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        phone-devel@vger.kernel.org,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH 3/4] dt-bindings: panel: Add LG SW43408 MIPI-DSI panel
-Message-ID: <YtZj1yV3blLOJH62@ravnborg.org>
-References: <20220718213051.1475108-1-caleb@connolly.tech>
- <20220718213051.1475108-4-caleb@connolly.tech>
- <YtZKylMu4jEa/oDp@ravnborg.org>
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :references:from:in-reply-to:content-transfer-encoding;
+        bh=Ih2Fy5cmAbEG8aUeZ5+zEsRAma5SiCd0h+PRnEnInBQ=;
+        b=x98MUCTYJFJ9Z26jtehRzVhXFT+bVTlVx7ka32+gC4lXF/vFCQFBbQqSJ1cvCpCcR6
+         dnTj87s1W25Bl/RSlTWhxMAFk/DWZMDUPJHGEgRozZwWQa1Gzxay7b5NeYjnbvHCQiC6
+         f/hmvGA6c0feZCV4UeLRoLeNZ0YdsA72rOR4DiKYbVK+CJG3llNXhfqI9FjwKH+ci33Q
+         OvDMcRDL41Y8/ZZBB97qbHz2wReWnGpxo+15X+3IhTHfj4K4J+Z7bC3k0M2GthbRMe2Y
+         /iZLhgmG/xGrDMamO41V85rE2pRJrUAe9lt9EVsNXc/gydePXGVZQnkaHhci5HOxvPtO
+         RAZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=Ih2Fy5cmAbEG8aUeZ5+zEsRAma5SiCd0h+PRnEnInBQ=;
+        b=oLhV1WOurstkgN4qCmzwp4mZaGj7LrL5JrrBDFNnb9wr821g6OPZIqVLDZudfo32AD
+         0dHiKuK1OEjqLF55p7Js5chXzNcK8f2dsqOBTNT186vuxh3M3tiJebjmKf5Vyagwmux8
+         2c0bwRuQ2kNYL+SMbv8JCcPsUGdfnEsHqA98Ei01dCN3XzkNu5qIeqFcehapw9pomM8e
+         1Sw+b6wiNKNDHI9d212hY7oCzzyScko4OA4oAL8b9bmM8TdY4z01A01L44g3v323ey8J
+         sUDbMtTWUzuxvsSdhpydKRJubv+rIX7P0AqB77E8seqAp69cWdEbiQAe/TlZ2+CITI2c
+         Z20Q==
+X-Gm-Message-State: AJIora9jL9pc8sy07/tTlW1mkPdgnTqmdGIFIkMOuM4Yi2brLystaoxQ
+        dA0VR67tA1Hr4Z+QqqwSbzj0Aw==
+X-Google-Smtp-Source: AGRyM1vV+5j0ZPlFEmdIh9COqsj7+E+TRr0bBKPc2QSCAnmyySjYW/ahXyifHPU75ZwOUj6O4xi1og==
+X-Received: by 2002:a2e:8004:0:b0:25d:80c0:1e93 with SMTP id j4-20020a2e8004000000b0025d80c01e93mr14006416ljg.210.1658219767106;
+        Tue, 19 Jul 2022 01:36:07 -0700 (PDT)
+Received: from [192.168.115.193] (89-162-31-138.fiber.signal.no. [89.162.31.138])
+        by smtp.gmail.com with ESMTPSA id i28-20020a2ea37c000000b002557c48cc4csm2534638ljn.95.2022.07.19.01.36.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Jul 2022 01:36:06 -0700 (PDT)
+Message-ID: <472e5d12-9faf-4a8f-1cfe-49f5d0449560@linaro.org>
+Date:   Tue, 19 Jul 2022 10:36:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YtZKylMu4jEa/oDp@ravnborg.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH 1/4] Documentation: dt-bindings: arm: qcom: add
+ google,blueline
+Content-Language: en-US
+To:     Caleb Connolly <caleb@connolly.tech>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <20220718213051.1475108-1-caleb@connolly.tech>
+ <20220718213051.1475108-2-caleb@connolly.tech>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220718213051.1475108-2-caleb@connolly.tech>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Caleb,
-
-On Tue, Jul 19, 2022 at 08:10:18AM +0200, Sam Ravnborg wrote:
-> Hi Caleb,
+On 18/07/2022 23:30, Caleb Connolly wrote:
+> Document the bindings for the Pixel 3
 > 
-> On Mon, Jul 18, 2022 at 10:30:50PM +0100, Caleb Connolly wrote:
-> > From: Sumit Semwal <sumit.semwal@linaro.org>
-> > 
-> > LG SW43408 is 1080x2160, 4-lane MIPI-DSI panel.
-> A few things to improve to this binding.
-> 
-> 	Sam
-> > 
-> > Signed-off-by: Vinod Koul <vkoul@kernel.org>
-> > Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
-> > [caleb: convert to yaml]
-> > Signed-off-by: Caleb Connolly <caleb@connolly.tech>
-> > ---
-> >  .../bindings/display/panel/lg,43408.yaml      | 41 +++++++++++++++++++
-> >  .../display/panel/panel-simple-dsi.yaml       |  2 +
-> >  2 files changed, 43 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/display/panel/lg,43408.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/display/panel/lg,43408.yaml b/Documentation/devicetree/bindings/display/panel/lg,43408.yaml
-> > new file mode 100644
-> > index 000000000000..0529a3aa2692
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/display/panel/lg,43408.yaml
-> > @@ -0,0 +1,41 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/display/panel/panel-lvds.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: LG SW43408 1080x2160 DSI panel
-> > +
-> > +maintainers:
-> > +  - Caleb Connolly <caleb@connolly.tech>
-> > +
-> > +description: |
-> > +  This panel is used on the Pixel 3, it is a 60hz OLED panel which
-> > +  required DSC (Display Stream Compression) and has rounded corners.
-> > +
-> > +allOf:
-> > +  - $ref: panel-common.yaml#
-> > +
-> > +properties:
-> > +  compatible:
-> > +    items:
-> > +      - const: lg,sw43408
-> > +
-> > +  vddi-supply: true
-> > +  vpnl-supply: true
-> > +  reset-gpios: true
-> > +
-> > +  backlight: false
-> > +  power-supply: false
-> No need to say anything is false, this is covered by the statement below.
-> Also, the driver uses backlight, so it should be true?
-The driver do not use backlight from the DT so disregard the last
-comment.
+> Based on https://lore.kernel.org/all/20220521164550.91115-7-krzysztof.kozlowski@linaro.org/
 
-	Sam
+Thanks for mention dependency. However this should not go to the final
+commit, thus please put such references after '---' marker.
+
+With that change:
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+> 
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+> ---
+
+Best regards,
+Krzysztof
