@@ -2,251 +2,105 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21891CCA47F
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Jul 2022 14:20:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9854FCCA47F
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Jul 2022 14:26:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239005AbiGSOUT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Jul 2022 10:20:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33778 "EHLO
+        id S237115AbiGSO0Q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Jul 2022 10:26:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239903AbiGSOTf (ORCPT
+        with ESMTP id S237906AbiGSO0F (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Jul 2022 10:19:35 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C15D546DB9;
-        Tue, 19 Jul 2022 06:58:49 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id y11so24930319lfs.6;
-        Tue, 19 Jul 2022 06:58:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=+2aJAl0rRfbzSKkiIftk8ldOFxfh5EXLt3BAbAT41JQ=;
-        b=B/ONy45MnsJccYM7mg0CgiUa0J3wDHVOzPTDwYrw2gXv+iVdO+kVOQJMPy9qv67HFd
-         376UIbXeWBXxc1ev5+VAHnlltdzq7ICMlAIz7aK2UDeAVzi+t80CFTYtmY9B0TFovHq+
-         WS9nbWCeAuT7Y13+9jbkp/jwySDzOsaD0qTN7FOZ/bfylRLxb9g/wCnCzEUeoS+8rgpo
-         AzFpobpVUKsRSHPnQmfcIns79xY/XnXa8ZnKmkHbTgB8A9EzNVVHWLYOe/iiBh8ecw/e
-         eqUznLouomgZmwUwR0TrEDmW50HnYmveaqrPSB82Gh/xuAQxrKgzZ0T7W1ZHHn/yxFsT
-         RS6Q==
+        Tue, 19 Jul 2022 10:26:05 -0400
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F442727;
+        Tue, 19 Jul 2022 07:11:03 -0700 (PDT)
+Received: by mail-io1-f52.google.com with SMTP id z132so11893096iof.0;
+        Tue, 19 Jul 2022 07:11:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=+2aJAl0rRfbzSKkiIftk8ldOFxfh5EXLt3BAbAT41JQ=;
-        b=4m4Dc7JFCDPJy12u5eUctOo6SoXh9Kad6gLpCfMeVd/JAW/Rwm7HkzCFDMaJ0pDi5x
-         XHWkHywlJiOIspNUrJaysy/N/a5zy3GNFGh2LXdrF7//GJ8SJu83R71j4qLPYxM3Lwen
-         QOUCo7nVY4F7ZQMURlcPUnJlloHGnKsumgTH3c3Ijat6SHWMPfJAnwOVG0DmzNs6hOmh
-         1ROkx9pUtST0dY3SegTcO1b/8VMAeXJd9RxHO3BGcAkmQ34UtYdHG/3k83QUaKsLARWN
-         /TtS+3lT6ni1hxjKZuaYVarOc0glK+OY8asXw/xGztCI32Y38BupYtK6GZlsuz/OE2Xa
-         YAwg==
-X-Gm-Message-State: AJIora9sEXqniVM688B1hNMAlxPz3+7y8M6+tjfBS7+bZ5jHrdoX/YDe
-        AcMJYfk9ALIJ/BDR78hGK30=
-X-Google-Smtp-Source: AGRyM1ur8+BWTKBaz162gwI4bD871JbUmpMCZkEqrK1qZeLrDpPwNz+LSFkAjJubVIsH51V2wxmGlQ==
-X-Received: by 2002:a05:6512:10d1:b0:489:feee:3b80 with SMTP id k17-20020a05651210d100b00489feee3b80mr17413587lfg.212.1658239127946;
-        Tue, 19 Jul 2022 06:58:47 -0700 (PDT)
-Received: from [192.168.3.10] ([194.39.226.133])
-        by smtp.gmail.com with ESMTPSA id h11-20020ac25d6b000000b00489d16820ecsm3232351lft.165.2022.07.19.06.58.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Jul 2022 06:58:47 -0700 (PDT)
-Message-ID: <295e1809-f6f2-ca31-5c36-be133ffdc93b@gmail.com>
-Date:   Tue, 19 Jul 2022 16:58:45 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v5 4/5] mfd: sm5703: Add support for SM5703 MFD
-Content-Language: en-US
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=Y5OqVVuKuyGM5tSfFefSufSVX//uNjIb8bTox4lv9B4=;
+        b=sbVLlffOvKsk9zAPDc5VDE7WHWprmWzqgPNrasC78yRrWgBjQsuv2OMYWrIePeJaKb
+         N/Rh5iiG57EtSelIeuoIsYeCsi21iFrHnSbZICper1hli/Lzy1o9kaXWLTZxFaSpCpcL
+         icFS/QFChlbncuXuv6zjEsmfo11IKvNArMMpHrjOsFQEIiRRl+5a+386YbB8H7wO0KJ0
+         /deaDxgJzzqmOgEu9ZzReQu2QIHDxDDKrVJ9A1MbciIGUCemKQX1IupYK8EqjrRI5Kd2
+         5CGEAm5xCYyuJ4w+OsV2AWHdbD+axZx1+92lCl6v6m4z+dH52HjQbtGuVhAfbua2gr7P
+         ze5A==
+X-Gm-Message-State: AJIora8ODp6IIgg8RB/zQFrLj4bMO/uLtBX7FafsywimdNFKuvFyN0Gc
+        CP1wYirq965SNh+TUnOn55skWhWgfg==
+X-Google-Smtp-Source: AGRyM1tmPybaNriO5iuTlCMQP3qIIAb3WcIZg9dLpekVyr22JqnJHiC9sY3jNqs/TtBNJeyAOdtU7A==
+X-Received: by 2002:a05:6638:264d:b0:33f:5cb4:935f with SMTP id n13-20020a056638264d00b0033f5cb4935fmr16848739jat.98.1658239862483;
+        Tue, 19 Jul 2022 07:11:02 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id g16-20020a926b10000000b002dc1f1a7cc2sm5853691ilc.31.2022.07.19.07.11.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Jul 2022 07:11:02 -0700 (PDT)
+Received: (nullmailer pid 1153345 invoked by uid 1000);
+        Tue, 19 Jul 2022 14:11:00 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Vinod Koul <vkoul@kernel.org>, David Airlie <airlied@linux.ie>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        devicetree@vger.kernel.org
-References: <20220423085319.483524-1-markuss.broks@gmail.com>
- <20220423085319.483524-5-markuss.broks@gmail.com>
- <Yqj+aUNLC00Tcu49@google.com>
- <5498bf71-66a5-957e-ed3d-13e68b982562@gmail.com>
- <YtUXFTx1+vSrXx70@google.com>
-From:   Markuss Broks <markuss.broks@gmail.com>
-In-Reply-To: <YtUXFTx1+vSrXx70@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>
+In-Reply-To: <20220718213051.1475108-4-caleb@connolly.tech>
+References: <20220718213051.1475108-1-caleb@connolly.tech> <20220718213051.1475108-4-caleb@connolly.tech>
+Subject: Re: [PATCH 3/4] dt-bindings: panel: Add LG SW43408 MIPI-DSI panel
+Date:   Tue, 19 Jul 2022 08:11:00 -0600
+Message-Id: <1658239860.441333.1153344.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Lee,
+On Mon, 18 Jul 2022 22:30:50 +0100, Caleb Connolly wrote:
+> From: Sumit Semwal <sumit.semwal@linaro.org>
+> 
+> LG SW43408 is 1080x2160, 4-lane MIPI-DSI panel.
+> 
+> Signed-off-by: Vinod Koul <vkoul@kernel.org>
+> Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+> [caleb: convert to yaml]
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+> ---
+>  .../bindings/display/panel/lg,43408.yaml      | 41 +++++++++++++++++++
+>  .../display/panel/panel-simple-dsi.yaml       |  2 +
+>  2 files changed, 43 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/display/panel/lg,43408.yaml
+> 
 
-On 7/18/22 11:17, Lee Jones wrote:
-> On Fri, 15 Jul 2022, Markuss Broks wrote:
->
->> Hi Lee,
->>
->> Sorry to bother you again, but I've got additional questions while I was
->> preparing the next version of the series:
->>
->> On 6/15/22 00:32, Lee Jones wrote:
->>> On Sat, 23 Apr 2022, Markuss Broks wrote:
->>>
->>>> Silicon Mitus SM5703 is a multi-function device, meant to be
->>> Please avoid using the term MFD.
->>>
->>> How is the device described in the data-sheet?
->>>
->>> What do you mean by "meant to be"?
->>>
->>>> used in mobile devices. It has several modules: LDO, BUCK regulators,
->>> Modules or functions?
->>>
->>>> charger circuit, flash LED driver, a fuel gauge for monitoring the battery
->>>> and a MUIC USB switcher. The MUIC and fuel gauge parts are separate in that
->>>> they use separate i2c lines to communicate with the device, while charger
->>> "I2C"
->>>
->>>> circuit, LED driver and regulators are on the main i2c line the device is
->>>> controlled with.
->>>>
->>>> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
->>>> ---
->>>>    MAINTAINERS                |   8 +++
->>>>    drivers/mfd/Kconfig        |  13 +++++
->>>>    drivers/mfd/Makefile       |   1 +
->>>>    drivers/mfd/sm5703.c       |  78 +++++++++++++++++++++++++++
->>>>    include/linux/mfd/sm5703.h | 105 +++++++++++++++++++++++++++++++++++++
->>>>    5 files changed, 205 insertions(+)
->>>>    create mode 100644 drivers/mfd/sm5703.c
->>>>    create mode 100644 include/linux/mfd/sm5703.h
->>>>
->>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>> index 6157e706ed02..6125ed1a3be4 100644
->>>> --- a/MAINTAINERS
->>>> +++ b/MAINTAINERS
->>>> @@ -18172,6 +18172,14 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git dev
->>>>    F:	include/linux/srcu*.h
->>>>    F:	kernel/rcu/srcu*.c
->>>> +SM5703 MFD DRIVER
->>>> +M:	Markuss Broks <markuss.broks@gmail.com>
->>>> +S:	Maintained
->>>> +F:	Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
->>>> +F:	Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml
->>>> +F:	drivers/mfd/sm5703.c
->>>> +F:	drivers/regulator/sm5703-regulator.c
->>>> +
->>>>    SMACK SECURITY MODULE
->>>>    M:	Casey Schaufler <casey@schaufler-ca.com>
->>>>    L:	linux-security-module@vger.kernel.org
->>>> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
->>>> index 3b59456f5545..c13a99ceae99 100644
->>>> --- a/drivers/mfd/Kconfig
->>>> +++ b/drivers/mfd/Kconfig
->>>> @@ -1237,6 +1237,19 @@ config MFD_SM501
->>>>    	  interface. The device may be connected by PCI or local bus with
->>>>    	  varying functions enabled.
->>>> +config MFD_SM5703
->>>> +	tristate "Silicon Mitus SM5703 MFD"
->>>> +	depends on I2C
->>>> +	depends on OF
->>>> +	select MFD_CORE
->>>> +	select REGMAP_I2C
->>>> +	help
->>>> +	  This is the core driver for the Silicon Mitus SM5703 multi-function
->>> Please drop the MFD term, as above.
->>>
->>>> +	  device. This device is meant to be used in phones and it has numerous
->>> "meant to be"?
->>>
->>>> +	  modules, including LED controller, regulators, fuel gauge, MUIC and
->>> Either "an LED controller" or "LED controllers"
->>>
->>> Same with "charger circuit" below.
->>>
->>>> +	  charger circuit. It also support muxing a serial interface over USB
->>> "supports"
->>>
->>> What kind of serial?
->>>
->>>> +	  data lines.
->>>> +
->>>>    config MFD_SM501_GPIO
->>>>    	bool "Export GPIO via GPIO layer"
->>>>    	depends on MFD_SM501 && GPIOLIB
->>>> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
->>>> index 858cacf659d6..ca8b86736a36 100644
->>>> --- a/drivers/mfd/Makefile
->>>> +++ b/drivers/mfd/Makefile
->>>> @@ -275,3 +275,4 @@ rsmu-i2c-objs			:= rsmu_core.o rsmu_i2c.o
->>>>    rsmu-spi-objs			:= rsmu_core.o rsmu_spi.o
->>>>    obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu-i2c.o
->>>>    obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu-spi.o
->>>> +obj-$(CONFIG_MFD_SM5703)	+= sm5703.o
->>>> diff --git a/drivers/mfd/sm5703.c b/drivers/mfd/sm5703.c
->>>> new file mode 100644
->>>> index 000000000000..7f9838149051
->>>> --- /dev/null
->>>> +++ b/drivers/mfd/sm5703.c
->>>> @@ -0,0 +1,78 @@
->>>> +// SPDX-License-Identifier: GPL-2.0-only
->>>> +
->>>> +#include <linux/err.h>
->>>> +#include <linux/delay.h>
->>>> +#include <linux/gpio/consumer.h>
->>>> +#include <linux/i2c.h>
->>>> +#include <linux/mfd/core.h>
->>>> +#include <linux/mfd/sm5703.h>
->>>> +#include <linux/module.h>
->>>> +#include <linux/of_device.h>
->>>> +#include <linux/regmap.h>
->>>> +
->>>> +static const struct mfd_cell sm5703_devs[] = {
->>>> +	{ .name = "sm5703-regulator", },
->>>> +};
->>> Where are the rest of the child drivers?
->> Should those devices still be present even though there's no driver for them
->> (yet) ? I have a WIP version of driver for almost every function, but I
->> currently lack time to get them done.
-> Without them the driver-set is useless, no?
->
-> We try to refrain from applying dead code.
->
-> A lot of it has a tendency to stay that way.
-Well, in my opinion, having just the regulator driver is already useful 
-enough: my board (Samsung Galaxy J5 (2015) ) uses one of LDO outputs for 
-powering the touchscreen. Touchscreen is kind of vital functionality for 
-a phone so I decided to upstream parts that are necessary for it first 
-and finish up other stuff later. It's not the only board that uses 
-SM5703's regulators for supplying all different kinds of hardware, either.
->
-> [...]
->
->>>> +++ b/include/linux/mfd/sm5703.h
->>>> @@ -0,0 +1,105 @@
->>>> +/* SPDX-License-Identifier: GPL-2.0-only */
->>>> +
->>>> +#ifndef _SM5703_H
->>>> +#define _SM5703_H
->>>> +
->>>> +struct sm5703_dev {
->>>> +	struct device *dev;
->>>> +	struct regmap *regmap;
->>>> +	struct gpio_desc *reset_gpio;
->>>> +};
->>>> +
->>>> +// Regulator-related defines
->>> No C++ style comments.
->>>
->>>> +#define SM5703_REG_LDO1				0x1A
->>> I'd drop the REG parts from these.
->> I have no issues with that, however the already upstreamed sm5703-regulator
->> driver uses those defines. If I change the define name, how should I make
->> changes in that driver, would it be reasonable to send an additional patch
->> together with the new MFD series?
-> It would.  You could also keep them in for now.
->
-> They're not a major blocker.
->
-- Markuss
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+./Documentation/devicetree/bindings/display/panel/lg,43408.yaml: $id: relative path/filename doesn't match actual path or filename
+	expected: http://devicetree.org/schemas/display/panel/lg,43408.yaml#
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/display/panel/lg,43408.yaml: duplicate '$id' value 'http://devicetree.org/schemas/display/panel/panel-lvds.yaml#'
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+
