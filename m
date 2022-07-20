@@ -2,141 +2,82 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89B6FC43334
-	for <phone-devel@archiver.kernel.org>; Wed, 20 Jul 2022 14:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE558CCA485
+	for <phone-devel@archiver.kernel.org>; Wed, 20 Jul 2022 18:09:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240774AbiGTOTT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 20 Jul 2022 10:19:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36170 "EHLO
+        id S230171AbiGTSJs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 20 Jul 2022 14:09:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240807AbiGTOTR (ORCPT
+        with ESMTP id S232249AbiGTSJn (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 20 Jul 2022 10:19:17 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D3204C605
-        for <phone-devel@vger.kernel.org>; Wed, 20 Jul 2022 07:19:16 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id d16so26320868wrv.10
-        for <phone-devel@vger.kernel.org>; Wed, 20 Jul 2022 07:19:16 -0700 (PDT)
+        Wed, 20 Jul 2022 14:09:43 -0400
+Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB216B26D
+        for <phone-devel@vger.kernel.org>; Wed, 20 Jul 2022 11:09:40 -0700 (PDT)
+Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-10d6e8990b9so9048123fac.7
+        for <phone-devel@vger.kernel.org>; Wed, 20 Jul 2022 11:09:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=p8rOXBXAqTpS6LdE3L0fRHyfdqOg9ZbjmkVTT9tGMWw=;
-        b=d4bbDHUQ2rBWarQ+0J1tXvnF2xaIa1au5YpleFcaycUd31nqCGRvq2+AmvnPYHniYv
-         w8E0a+ugnLBxRYfcEv3euDpLm5UR5rUE6MTVibSCXWNf7DHU/fkgNYYudkYnBRozMk0b
-         MXXUFe+RNk0MnSYmtKMaAJ/TjPD0x+plvEAeJNPTXCtkIur8T+M/+ZJou8IGbZAEpXwL
-         26me4PvZPpU1wsw91N2yakdCQ6BD4G9Ki+HSRhS+FXKoa0T6uf1Z6dwAZ7o8tdPcS0ME
-         bAWen/5r5lEMMYGE+vMsff+EZHJKtFfxmw6jKsqtqWhtua9F2MPZoKfl00cHk/0AAsId
-         rnyw==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=kunDZr9Y6JPcq1sMuH+ey+Qiy1eRk3ubp6HPIIz1jJw=;
+        b=ANXR3JC3bxQuM5b1p6u7etTiV20lIiUw5xrAcZXH2blgV8GU4hVbmqn8azULJyavSE
+         G6pEUsd7GbEoOApiowJ+a0vtVo5x94YuJz3mIrEUij9dvTM9tEx2V0n7YYkoLNFjvOXl
+         ANkERijHrfMwW3qnJFLnj9pAAwUFijGN6E5syDVTrGG6Fo+p7xwMyRcyVhGXilO3FA25
+         30MRaSbmnOyzX8DGm5cE5pXXXTNsFTDrm1UX9CkkmPiuZ4EEoBl4fkzfA3M1k76B+uV9
+         QvbcexQyslF1JqQyGGRGRdSv8xc+aNnUPiIb4ZGkdos6z9O4TOEtqP4xNMIEaq7wlRRP
+         aLtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=p8rOXBXAqTpS6LdE3L0fRHyfdqOg9ZbjmkVTT9tGMWw=;
-        b=fjgWv+21CzACR+OZY4oIJ6ks+69NVbzxDnoR9nsH3M10PZp+FoqgnJDdx6kb8j5Y5b
-         sGREnCaIwey0/tBuYvkmizlyQJRZfpD8GjH85pAM2+KyxxGHQGCtdO2SQ9vd3HTWnUv8
-         9s9xoDpY4V6la29WzHhqpvvVqBTHBGm767UfVXguKI6ujr53hqxkpGm+yUgIsrb7Fbj8
-         WwCI0TlReoXdX80z+YKWQio2Dt+kLCOfz89IfvCSeLE8kRlOrz0gnSIoh25iv90jFfBC
-         IMPVy0/lKvdbTChMB6UsiXLodxzospa9goSG8B2JbcSQQ2O0yekE8Iok1FBdT2IJh2il
-         kUkA==
-X-Gm-Message-State: AJIora8vBHSv7VUSRyPE8lqzSDqbFjb3w2+wQ3V/8wFf2i1DGlnQR2jo
-        jYQyH2xCPGxoq53/l7HNaAT1GA==
-X-Google-Smtp-Source: AGRyM1vfd/AlkTBCkW/ehFWCDJ8txqZSJ32LBYwBoD2v9GjFNv8uyGg6xnaibGoIVJ5ik8w08YzLIQ==
-X-Received: by 2002:adf:e6c9:0:b0:21d:7f65:f1e7 with SMTP id y9-20020adfe6c9000000b0021d7f65f1e7mr29955063wrm.151.1658326754737;
-        Wed, 20 Jul 2022 07:19:14 -0700 (PDT)
-Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
-        by smtp.gmail.com with ESMTPSA id bv3-20020a0560001f0300b0021e3e73dec6sm4875210wrb.72.2022.07.20.07.19.13
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=kunDZr9Y6JPcq1sMuH+ey+Qiy1eRk3ubp6HPIIz1jJw=;
+        b=6wyl9FDSil8YyllduVtbgJc6567TMpp7LTFt5poDjDa12cWpZpgfsRnT56sfcxBf38
+         JpeKVTGTn5iTRGkPKnwrXP6xQV0tEX14OLMFYV8txdBwVrKDBFvCmgwYy+TZfn8p8SZB
+         gZViZ8HHf3qgU7dQyLvTQZTD4C0AcgeucM6StG9qkrFUzAONKaqJsw1XQzgyBD9Kf2Db
+         9hRP926GgDdwvIUuoHXzEhCkAFElvosQKUrOaCldbl9z3tqbrR5LHC8P2m4TXLH6U+6l
+         tqPxlQS7nk7eTebNIOTn0y8tbERXmyAht2ZPe6QGC5yahT0ILnsbF8kK+zaX0atyPw0o
+         CUew==
+X-Gm-Message-State: AJIora8bDlSf5fbPPiXeiDN06hsTjrM1z+NhQbMML5k3c4bENqJ10bK+
+        9iwxByVYmffWyoroGngSRf39IQ==
+X-Google-Smtp-Source: AGRyM1spLCSSGvcDq6EqyJa5L/lKOksPme/eYbhxC3RUtEb3eGUglOjAIey/25NHx59vWCn2UekbYg==
+X-Received: by 2002:a05:6870:468f:b0:10d:3fb6:bf89 with SMTP id a15-20020a056870468f00b0010d3fb6bf89mr3221549oap.176.1658340579832;
+        Wed, 20 Jul 2022 11:09:39 -0700 (PDT)
+Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
+        by smtp.gmail.com with ESMTPSA id r131-20020acac189000000b0032e548d96e0sm1603602oif.23.2022.07.20.11.09.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jul 2022 07:19:14 -0700 (PDT)
-Date:   Wed, 20 Jul 2022 15:19:12 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 4/5] mfd: sm5703: Add support for SM5703 MFD
-Message-ID: <YtgO4J8BBqRnKPKs@google.com>
-References: <20220423085319.483524-1-markuss.broks@gmail.com>
- <20220423085319.483524-5-markuss.broks@gmail.com>
- <Yqj+aUNLC00Tcu49@google.com>
- <5498bf71-66a5-957e-ed3d-13e68b982562@gmail.com>
- <YtUXFTx1+vSrXx70@google.com>
- <295e1809-f6f2-ca31-5c36-be133ffdc93b@gmail.com>
- <Yte7Tgq3w8fowTYA@google.com>
- <4be15cff-b0af-8671-57aa-6567c0206715@gmail.com>
- <YtgDSelfobu/a/be@google.com>
- <c14698f3-8f70-4cd7-1653-ed51630806c3@gmail.com>
+        Wed, 20 Jul 2022 11:09:39 -0700 (PDT)
+From:   Bjorn Andersson <bjorn.andersson@linaro.org>
+To:     sboyd@codeaurora.org, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        newbie13xd@gmail.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, agross@kernel.org
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: (subset) [PATCH v4 1/2] dt-bindings: arm: qcom: Document lg,judyln and lg,judyp devices
+Date:   Wed, 20 Jul 2022 13:09:37 -0500
+Message-Id: <165834057116.2095894.6261608097150637601.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20220626164536.16011-1-newbie13xd@gmail.com>
+References: <20220626164536.16011-1-newbie13xd@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c14698f3-8f70-4cd7-1653-ed51630806c3@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 20 Jul 2022, Markuss Broks wrote:
+On Sun, 26 Jun 2022 12:45:36 -0400, Stefan Hansson wrote:
+> Add binding documentation for the LG G7 and LG V35 smartphones
+> which are based on Snapdragon 845 (sdm845).
+> 
+> 
 
-> On 7/20/22 16:29, Lee Jones wrote:
-> > On Wed, 20 Jul 2022, Markuss Broks wrote:
-> > > > > > > > > +static const struct mfd_cell sm5703_devs[] = {
-> > > > > > > > > +	{ .name = "sm5703-regulator", },
-> > > > > > > > > +};
-> > > > > > > > Where are the rest of the child drivers?
-> > > > > > > Should those devices still be present even though there's no driver for them
-> > > > > > > (yet) ? I have a WIP version of driver for almost every function, but I
-> > > > > > > currently lack time to get them done.
-> > > > > > Without them the driver-set is useless, no?
-> > > > > > 
-> > > > > > We try to refrain from applying dead code.
-> > > > > > 
-> > > > > > A lot of it has a tendency to stay that way.
-> > > > > Well, in my opinion, having just the regulator driver is already useful
-> > > > > enough: my board (Samsung Galaxy J5 (2015) ) uses one of LDO outputs for
-> > > > > powering the touchscreen. Touchscreen is kind of vital functionality for a
-> > > > > phone so I decided to upstream parts that are necessary for it first and
-> > > > > finish up other stuff later. It's not the only board that uses SM5703's
-> > > > > regulators for supplying all different kinds of hardware, either.
-> > > > Upstreaming functionality which is useful on its own is fine, but that
-> > > > doesn't tick all of the boxes to justify an MFD.  This is a lot of
-> > > > code which is hard to justify if it only registers a Regulator driver.
-> > > Do you think I should hold on this series until I have other things done?
-> > > Alternatively, I could make the regulator driver standalone, dedicated, but
-> > > then when I'd add other functionality I'd have to redo it and add the MFD
-> > > driver back, that I believe would be quite annoying from maintainers' and
-> > > sanity perspective. The other functions left on the main control I2C are
-> > > also not really "vital" to device's functionality (Flash LED and charger),
-> > > so the regulator function makes the most sense to be available first, which
-> > > was my motivation behind upstreaming that first.
+Applied, thanks!
 
-Can you configure your mailer to stop removing the space between
-messages please?
+[1/2] dt-bindings: arm: qcom: Document lg,judyln and lg,judyp devices
+      commit: 1ef5a4d1d03cfcdb6ea24bece9e9c63ce97764fe
 
-> > What's the reason for this being an MFD in the first place?
-
-> Well, the "main" I2C interface is shared between three functions:
-> regulators, Flash LED and charger. I call this one the "main" one because
-> the device is controlled with it: you can select internal clock rate, enable
-> or disable the PMIC and do other things that more of apply to the whole
-> PMIC, not just the separate functions (as is the case with fuel gauge and
-> MUIC I2C) . That's the reason for this being an MFD: those three functions
-> share one I2C interface. While they might not be implemented at the moment,
-> this places a foundation for adding future support.
-
-Okay, so the functions cannot be controlled separately?  That's fine.
-
-For acceptance into MFD, you need to enable more than one function.
-
+Best regards,
 -- 
-Lee Jones [李琼斯]
-Principal Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Bjorn Andersson <bjorn.andersson@linaro.org>
