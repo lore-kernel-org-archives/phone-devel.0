@@ -2,161 +2,113 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 729F5C43334
-	for <phone-devel@archiver.kernel.org>; Thu, 21 Jul 2022 16:32:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26C57CCA488
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Jul 2022 16:38:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231937AbiGUQcR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 21 Jul 2022 12:32:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37646 "EHLO
+        id S229497AbiGUQis (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 21 Jul 2022 12:38:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230451AbiGUQcQ (ORCPT
+        with ESMTP id S229782AbiGUQir (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 21 Jul 2022 12:32:16 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3D4989A5C
-        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 09:32:14 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id a9so3588796lfk.11
-        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 09:32:14 -0700 (PDT)
+        Thu, 21 Jul 2022 12:38:47 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 216747B792
+        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 09:38:45 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id r14so2482978ljp.2
+        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 09:38:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+oK+pOh8MGs7bFdJqgWR+kgnOKb6pAhLXHsdjc9P39M=;
-        b=jeV22coreGgshD+gkAquxb7fsVo72DB+o/dKajf74blBq9YB1jI8G2Y2ZB46jiDhlh
-         OgKUwryyrOPuim6TUIMc1PaoRQm3dZ6VD3Zz3BekL80J9HFLZy9pGf2V9yMM1M2wV0Mm
-         kQ5/WBt8kFGAyKSjg99cd9dytVdNLTTbl9SFYJpWmUifgVJ60aocAV0zJYWNwA/+YBlt
-         NSK8G8hafDTjjC7VYw+bMzLf8C5Na5B0BnXQ23Gw140mJN5gCLCBGHARM/zpaBL6mxeJ
-         kuJkDnJ5QaYXGSqGRirp4uHlRtnbvqh8/f+FAqWyEQUAZx62bM/9OdyLltpBWfSz1LxU
-         V3sw==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=YGG2EmCH3bS3wBtE1nLRsaoqlR5mpBzOgXAIcspF1i4=;
+        b=VrqwtoLDp0th6beh70O/VpIJb44Tn48oNwIpyGGfXQ82zAA51Bxkl2wSrzc54xQE/D
+         /eJ2dHRsI8MZGQ4pjQvVF1t8TKVtXGTYATm7677RjYbG48zJ3bxXTxpMV2cV9TW7w6Hh
+         cP7/w/VN3A/+5KoeQlod+kp0COrm9v0d6WlE/5Qy00TnKDFxsWNmx6ODhZyxJ6dhRhAM
+         Y5yy18e0BH/qdPfyxUgjkkcmyHyJTUF8q3LLiXQhN0w5N8cujj/SpkvrmEsQn7FUBMAi
+         fbHef/necwPLVOccw2clWPTxl9GZAT0WTerLlXjHRvP87YULrMVYQXyW2YtROS9ppB9u
+         0KsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=+oK+pOh8MGs7bFdJqgWR+kgnOKb6pAhLXHsdjc9P39M=;
-        b=t3CmM3k0dihoN5ofF2cedhx6b/Uam7xth2HBV/JXcEDWmy1xY1aYWNiXIm3p5tTf/+
-         1bM7bgEZMQ8Lfc8YND29QP05T9/S0RRuLU0RD4CjzdQVdEkgp5lG24gYrpfcvKgCCQtG
-         Mn3TNNDgKO+vleMw3ZFNeimLvCGXAlV9rtU7z57rwChxvcOT7jQetaRjK7+6seU+ONni
-         UvlxWIVf/0Y9oZ3kpVwHuxDDHWTPTEqzHNrR7n6mqkt3Kud3nLc4yrHxd5e6w5MW7+jZ
-         js0k/O884NRsHc4ekyej1or2YghgqRBYAfo+BPeE4DRooTBCREtWaehbdEso1pAvun5C
-         KYuQ==
-X-Gm-Message-State: AJIora/eFQuJ9ICoyRfOErsgTk7xEOrxib1o5Bw6Gj5voOd0DXJr027M
-        ASJol53QbTPEXZ/XvDv236I5m28V9h+t+Q==
-X-Google-Smtp-Source: AGRyM1tnVCiYtipecpPF2+nlfxAx4GIakxxmeBxEAhUT2vxG/jCChsvmPA2jWxbrvW3SMCP0Uf4Ahw==
-X-Received: by 2002:a05:6512:2611:b0:478:da8f:e2d8 with SMTP id bt17-20020a056512261100b00478da8fe2d8mr21957614lfb.460.1658421132859;
-        Thu, 21 Jul 2022 09:32:12 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id b5-20020a056512070500b0047da6e495b1sm536580lfs.4.2022.07.21.09.32.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jul 2022 09:32:12 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-crypto@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>
-Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        devicetree@vger.kernel.org,
-        Lionel Debieve <lionel.debieve@foss.st.com>
-Subject: [PATCH] dt-bindings: crypto: Add ST-Ericsson Ux500 CRYP
-Date:   Thu, 21 Jul 2022 18:30:10 +0200
-Message-Id: <20220721163010.1060062-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.36.1
+        bh=YGG2EmCH3bS3wBtE1nLRsaoqlR5mpBzOgXAIcspF1i4=;
+        b=1R68Ng3kZd3ip6CBVAy24JZ5Kr62B7sxqtgTaf+RiY/11e65uURJ24xtMKOpQQNKFF
+         zYsHhRGXLqaA1qons7qneedbdGeNvXha5QPxtxpW0iq4g1c3XZprI3Jr6Z+75KRhTwcZ
+         Kq/+NS+ODUvok3fWHqZWgK35F1IUjebGHi9DbJnitw0e+ObjYjDOYypev/OWgc9IxrLR
+         HGMVjoOQ4/d7ZWFh3Ba48KiJ36ylfYOCv3Qcmkn6rWx5sVw2Cs9LgyElFVd3fyh4yU33
+         qrOVfkTEyB251jtj5mHujMh6gO2pPZqASgXtIRvSUkJWxBOBC6WyKCN+D1nPviIIafdv
+         3mlw==
+X-Gm-Message-State: AJIora/q5n/o/1Ebbqs6f5YqZ08yzpBaBrqh6H/IW3pglca/eRet6BYN
+        geENj5yCymiFPS2wFaLWGnD7rQ==
+X-Google-Smtp-Source: AGRyM1sjYIxbnzkQfm9NykntHg4tQ/OMvY4AkQJhXhbKqdP/B68eLxAg+9nBCXyPn7z1aachpSTFmA==
+X-Received: by 2002:a2e:8745:0:b0:25d:eba0:9e2e with SMTP id q5-20020a2e8745000000b0025deba09e2emr247240ljj.384.1658421523172;
+        Thu, 21 Jul 2022 09:38:43 -0700 (PDT)
+Received: from [192.168.115.193] (89-162-31-138.fiber.signal.no. [89.162.31.138])
+        by smtp.gmail.com with ESMTPSA id o6-20020a056512230600b00478fc420ea6sm400437lfu.244.2022.07.21.09.38.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Jul 2022 09:38:42 -0700 (PDT)
+Message-ID: <3c781dd6-865f-e59b-17dd-c583e79ef152@linaro.org>
+Date:   Thu, 21 Jul 2022 18:38:40 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v5 0/7] MediaTek Helio X10 MT6795 - Clock drivers
+Content-Language: en-US
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        mturquette@baylibre.com, sboyd@kernel.org, p.zabel@pengutronix.de,
+        y.oudjana@protonmail.com, jason-jh.lin@mediatek.com,
+        ck.hu@mediatek.com, fparent@baylibre.com, rex-bc.chen@mediatek.com,
+        tinghan.shen@mediatek.com, chun-jie.chen@mediatek.com,
+        weiyi.lu@mediatek.com, ikjn@chromium.org, miles.chen@mediatek.com,
+        sam.shih@mediatek.com, wenst@chromium.org,
+        bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        kernel@collabora.com
+References: <20220629110254.184213-1-angelogioacchino.delregno@collabora.com>
+ <45ff2e82-caeb-9575-ce73-1bd43c37c0c5@collabora.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <45ff2e82-caeb-9575-ce73-1bd43c37c0c5@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This adds device tree bindings for the Ux500 CRYP block.
+On 21/07/2022 10:53, AngeloGioacchino Del Regno wrote:
+> Il 29/06/22 13:02, AngeloGioacchino Del Regno ha scritto:
+>> In an effort to give some love to the apparently forgotten MT6795 SoC,
+>> I am upstreaming more components that are necessary to support platforms
+>> powered by this one apart from a simple boot to serial console.
+>>
+>> This (very big) series introduces system clock, multimedia clock drivers
+>> (including resets) for this SoC.
+>>
+>> Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
+>>
+>> This series depends on, and can be merged on top of:
+>> [1]: https://patchwork.kernel.org/project/linux-mediatek/list/?series=640122
+>> [2]: https://patchwork.kernel.org/project/linux-mediatek/list/?series=637849
+>>
+> 
+> Gentle ping for this series...
+> ...I've got a lot of commits to send that depend on this one...
+> 
+> P.S.: The dependencies in [1] and [2] are already upstream.
+> 
 
-This has been used for ages in the kernel device tree for
-Ux500 but was never documented, so fill in the gap.
+You sent this message to Rob (not to others) and you did not mention
+whom are you pinging. Rob provided all necessary tags for you.
 
-Cc: devicetree@vger.kernel.org
-Cc: Lionel Debieve <lionel.debieve@foss.st.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-The relationship to the existing STM32 CRYP block is pretty
-obvious when looking at the register map. If preferred, I
-can just extend the STM32 bindings with these extra
-(generic) properties and compatibles as well.
----
- .../crypto/stericsson,ux500-cryp.yaml         | 67 +++++++++++++++++++
- 1 file changed, 67 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/crypto/stericsson,ux500-cryp.yaml
+If you want to ping someone, put proper names in "To" but best - mention
+by name.
 
-diff --git a/Documentation/devicetree/bindings/crypto/stericsson,ux500-cryp.yaml b/Documentation/devicetree/bindings/crypto/stericsson,ux500-cryp.yaml
-new file mode 100644
-index 000000000000..9653776007a0
---- /dev/null
-+++ b/Documentation/devicetree/bindings/crypto/stericsson,ux500-cryp.yaml
-@@ -0,0 +1,67 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/crypto/stericsson,ux500-cryp.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: ST Microelectronics and ST-Ericsson Ux500 CRYP bindings
-+
-+description: The Ux500 CRYP block is identical to the one found in
-+  STn8820 introduced in 2007. It seems to also be a related ancestor to the
-+  STM32 CRYP block.
-+
-+maintainers:
-+  - Linus Walleij <linus.walleij@linaro.org>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - st,stn8820-cryp
-+      - stericsson,ux500-cryp
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  resets:
-+    maxItems: 1
-+
-+  dmas:
-+    items:
-+      - description: mem2cryp DMA channel
-+      - description: cryp2mem DMA channel
-+
-+  dma-names:
-+    items:
-+      - const: mem2cryp
-+      - const: cryp2mem
-+
-+  power-domains:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - interrupts
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/reset/stericsson,db8500-prcc-reset.h>
-+    #include <dt-bindings/arm/ux500_pm_domains.h>
-+    cryp@a03cb000 {
-+      compatible = "stericsson,ux500-cryp";
-+      reg = <0xa03cb000 0x1000>;
-+      interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
-+      clocks = <&prcc_pclk 6 2>;
-+      power-domains = <&pm_domains DOMAIN_VAPE>;
-+    };
--- 
-2.36.1
-
+Best regards,
+Krzysztof
