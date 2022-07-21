@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F33CFC433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 21 Jul 2022 13:45:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D16BC43334
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Jul 2022 13:45:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230108AbiGUNpT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 21 Jul 2022 09:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48758 "EHLO
+        id S230195AbiGUNpY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 21 Jul 2022 09:45:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230150AbiGUNns (ORCPT
+        with ESMTP id S230182AbiGUNoG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 21 Jul 2022 09:43:48 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 893CB84EDD
-        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:11 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id z22so2851206lfu.7
-        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:11 -0700 (PDT)
+        Thu, 21 Jul 2022 09:44:06 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E759585D6A
+        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:13 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id u13so2865440lfn.5
+        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=e5peYR0Efclqvks8gE1Xez5fN1UPbYUQQo+StiCfVL8=;
-        b=Kedld5xfzBpCYIgbscjcyRNZ3LZV0mdUzdd6OPSW7bzd6LuE6vDnuwuCg3LsbsSbJf
-         DXN1aFoKH0/H12BYIvjgSRqjCIw4HS5iAkLf4rKSkzC97aVVwmDt+qY9oakRzmaj1AEp
-         u8AQzzAWfq+YIYe3HAZCVhKz6lDLwtHpa+XLzrn87KywTGLoFqmx0ig+KyxsQAE24hwo
-         c3xSHcegT+h7bkjc0iNXJKnFFxWkWsBpYyGsWr1lPoZVfstm3CJjp7LzsvnzoK70R4ri
-         WDSfx8iJALv2mOEvtvjt9CLFl2tgaHNlg1tRM1Ml3uEfzIZjiw2/PkOYYeH0tSQ4J8lP
-         wjQw==
+        bh=zYS++DqZZJZ4dvIqRTXxDhDnXHSI1cMkpUczRGNZhnA=;
+        b=wATY/y0gsIvlvzvPsDq1n4/lpqroSymoajpW4vR+wn2co0/W8I1suw9tXibwdimcuo
+         ca5z1C1DcPlusxluSCmtikMk/tSjPTICw+mJStRSqtZiszLq2jEbpD9ha/m5Q10VOrXi
+         2+8IVHI0u2Ns6Iynmev1bBXBEmGha22C9CA/seWpUuV1hy4p7kbCP32FSf0OMPmMH0ku
+         oVa4KdVmjzNdS4cRrIz5sfdWdXE1w9kL1XUKzbx+JeMUeIkNdJ1gXi2AtTSzPYQd+T4w
+         X0Y1j6WZZNuBQP2eyEqpc4mcScpa765ys8V6msDwNy6Ut8LOUoNwYFX49jR/W0jRGVyH
+         Va5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=e5peYR0Efclqvks8gE1Xez5fN1UPbYUQQo+StiCfVL8=;
-        b=SQPVKyIilb/HNfKJfL4xJThAAszyKe1zyZmmmA+Q1n2kxB3j5Y1bOgyBNGVqSXt2yE
-         CVzu033uU5RYrPa0ixt68iOca1oqUzo9cwr0bAJtXbwAxFOdIcyWrOGQoPDY6kvhXXfd
-         QKt4TZNhwNkBnrIPrc7Z+3MdzWCx/jWq8c5zlnNlNPxXBKokEnZMdVhvyj2aC5ZlhY0A
-         +ohcI8m7/bNCLg+4VWMhoLVyX+B0Ap7EJ/LpasNzekv/oyDnc5oJhR71HQ+1BfrHsDDf
-         dLi8mzg19Z05TepW27CxezNP6ZpAPwqeOjPYwzn5wDNWdqcsk+bhr9d/ELcVki84Qgwf
-         Yq8w==
-X-Gm-Message-State: AJIora8kTSb+RsdeFtjw0aQrYMEh7DOvtkdiJk3LapG275kVZ6S99Tp5
-        1iSaXVpQ+BswY8dYyIi+k68psA==
-X-Google-Smtp-Source: AGRyM1uBbJ1+R25sHXBzgNaAD8lR6mxDELXe22s0Ubvae8UDFz1KKJ/fxOZezmd7xEkEzob6fmfjoQ==
-X-Received: by 2002:a05:6512:32c9:b0:48a:2a34:1f53 with SMTP id f9-20020a05651232c900b0048a2a341f53mr14142009lfg.335.1658410988152;
-        Thu, 21 Jul 2022 06:43:08 -0700 (PDT)
+        bh=zYS++DqZZJZ4dvIqRTXxDhDnXHSI1cMkpUczRGNZhnA=;
+        b=N/kMpJah8EXvbO/AsWYt7KVzSNwSI8R2IJ/QlzRYbwUsYdzno58cXngqJA+rTTDme3
+         RU31/yRVuSlVcVSZVWoETDYdFZRiCImmRj4IJ8DWRKRdXcebZkjbn4dq8nZHV6cmo2B2
+         XOBsIbholws4OurV4NoMNv2f/rbka8BrLvLXPoXSbzVn2iYKlfNRsYXbp3QZ7jXrJCu7
+         Y7JoK4p0hot0rxTQXHGEjn58ONGiGROamEIS/ZlGYGnK6E/ULKhntkNmyYLzMryJaXo7
+         03xQsE1xm+q8q/vXVWV338+d7yjwgqwxz6mYai7Vn2W4sC+fFUGcv1KOa434gDdvFmAw
+         r/eg==
+X-Gm-Message-State: AJIora8gWXSTMkPWwn1bHrAc+a3mnPj2fJT5x9/ZnhSPEdtXVGCE3eqN
+        QBfkZgpVmAG0ZbMowwGK4ckXRQ==
+X-Google-Smtp-Source: AGRyM1ut2DRnSzjd5OOJ/DKEf9PjPiI2zOgsiVkU+gNjEy+OfjyoBRa+Y634aqVFaQcmUrojQWDOog==
+X-Received: by 2002:ac2:435a:0:b0:48a:73bf:7371 with SMTP id o26-20020ac2435a000000b0048a73bf7371mr424493lfl.96.1658410993483;
+        Thu, 21 Jul 2022 06:43:13 -0700 (PDT)
 Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id o23-20020ac24e97000000b004867a427026sm458568lfr.40.2022.07.21.06.43.07
+        by smtp.gmail.com with ESMTPSA id o23-20020ac24e97000000b004867a427026sm458568lfr.40.2022.07.21.06.43.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jul 2022 06:43:07 -0700 (PDT)
+        Thu, 21 Jul 2022 06:43:13 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     linux-crypto@vger.kernel.org,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S . Miller" <davem@davemloft.net>
 Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 09/15] crypto: ux500/hash: Get rid of state from request context
-Date:   Thu, 21 Jul 2022 15:40:44 +0200
-Message-Id: <20220721134050.1047866-10-linus.walleij@linaro.org>
+Subject: [PATCH 13/15] crypto: ux500/hash: Use AMBA core primecell IDs
+Date:   Thu, 21 Jul 2022 15:40:48 +0200
+Message-Id: <20220721134050.1047866-14-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220721134050.1047866-1-linus.walleij@linaro.org>
 References: <20220721134050.1047866-1-linus.walleij@linaro.org>
@@ -66,169 +66,86 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The request context is exactly for that: context state related
-to the request. The code was (ab)using the state used to store
-the hardware state for this. Move out the three variables from
-the hardware state to the request context and clean up the
-mess left behind.
+Use the AMBA (PrimeCell) bus core define and read 32bit
+CID and PID from the peripheral, then check those.
 
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/crypto/ux500/hash/hash_alg.h  | 21 +++++++--------
- drivers/crypto/ux500/hash/hash_core.c | 38 +++++++++++----------------
- 2 files changed, 26 insertions(+), 33 deletions(-)
+ drivers/crypto/ux500/hash/hash_alg.h  | 11 ++---------
+ drivers/crypto/ux500/hash/hash_core.c | 27 +++++++++++++++++++--------
+ 2 files changed, 21 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/crypto/ux500/hash/hash_alg.h b/drivers/crypto/ux500/hash/hash_alg.h
-index d9d59dba6e6e..5aa86c4855f5 100644
+index cc44d3cb21ac..96c614444fa2 100644
 --- a/drivers/crypto/ux500/hash/hash_alg.h
 +++ b/drivers/crypto/ux500/hash/hash_alg.h
-@@ -214,17 +214,10 @@ struct hash_register {
-  * @csr[52]:	HASH Context Swap Registers 0-39.
-  * @csfull:	HASH Context Swap Registers 40 ie Status flags.
-  * @csdatain:	HASH Context Swap Registers 41 ie Input data.
-- * @buffer:	Working buffer for messages going to the hardware.
-- * @length:	Length of the part of message hashed so far (floor(N/64) * 64).
-- * @index:	Valid number of bytes in buffer (N % 64).
-  *
-  * This structure is used between context switches, i.e. when ongoing jobs are
-  * interupted with new jobs. When this happens we need to store intermediate
-  * results in software.
-- *
-- * WARNING: "index" is the  member of the structure, to be sure  that "buffer"
-- * is aligned on a 4-bytes boundary. This is highly implementation dependent
-- * and MUST be checked whenever this code is ported on new platforms.
-  */
- struct hash_state {
- 	u32		temp_cr;
-@@ -233,9 +226,6 @@ struct hash_state {
- 	u32		csr[52];
- 	u32		csfull;
- 	u32		csdatain;
--	u32		buffer[HASH_BLOCK_SIZE / sizeof(u32)];
--	struct uint64	length;
--	u8		index;
- };
+@@ -63,15 +63,8 @@
+ #define HASH_STR_NBLW_MASK	0x0000001FUL
+ #define HASH_NBLW_MAX_VAL	0x1F
  
- /**
-@@ -333,13 +323,22 @@ struct hash_ctx {
+-/* PrimeCell IDs */
+-#define HASH_P_ID0		0xE0
+-#define HASH_P_ID1		0x05
+-#define HASH_P_ID2		0x38
+-#define HASH_P_ID3		0x00
+-#define HASH_CELL_ID0		0x0D
+-#define HASH_CELL_ID1		0xF0
+-#define HASH_CELL_ID2		0x05
+-#define HASH_CELL_ID3		0xB1
++/* PrimeCell ID */
++#define UX500_HASH_PID		0x003805E0U
  
- /**
-  * struct hash_ctx - The request context used for hash calculations.
-+ * @buffer:	Working buffer for messages going to the hardware.
-+ * @length:	Length of the part of message hashed so far (floor(N/64) * 64).
-+ * @index:	Valid number of bytes in buffer (N % 64).
-  * @state:	The state of the current calculations.
-  * @dma_mode:	Used in special cases (workaround), e.g. need to change to
-  *		cpu mode, if not supported/working in dma mode.
-  * @hw_initialized: Indicates if hardware is initialized for new operations.
-+ *
-+ * WARNING: "index" is the  member of the structure, to be sure  that "buffer"
-+ * is aligned on a 4-bytes boundary. This is highly implementation dependent
-+ * and MUST be checked whenever this code is ported on new platforms.
-  */
- struct hash_req_ctx {
--	struct hash_state	state;
-+	u32			buffer[HASH_BLOCK_SIZE / sizeof(u32)];
-+	struct uint64		length;
-+	u8			index;
- 	bool			dma_mode;
- 	bool			hw_initialized;
- };
+ /* Hardware access method */
+ enum hash_mode {
 diff --git a/drivers/crypto/ux500/hash/hash_core.c b/drivers/crypto/ux500/hash/hash_core.c
-index c2e8bd977f57..46dad128b6fe 100644
+index 83833cbe595f..a64edfb1cd96 100644
 --- a/drivers/crypto/ux500/hash/hash_core.c
 +++ b/drivers/crypto/ux500/hash/hash_core.c
-@@ -448,7 +448,9 @@ static int ux500_hash_init(struct ahash_request *req)
- 	if (!ctx->key)
- 		ctx->keylen = 0;
+@@ -13,6 +13,7 @@
  
--	memset(&req_ctx->state, 0, sizeof(struct hash_state));
-+	req_ctx->index = 0;
-+	req_ctx->length.low_word = 0;
-+	req_ctx->length.high_word = 0;
- 	req_ctx->hw_initialized = false;
- 	if (hash_mode == HASH_MODE_DMA) {
- 		if (req->nbytes < HASH_DMA_ALIGN_SIZE) {
-@@ -553,11 +555,11 @@ static void hash_messagepad(struct hash_device_data *device_data,
-  */
- static void hash_incrementlength(struct hash_req_ctx *ctx, u32 incr)
- {
--	ctx->state.length.low_word += incr;
-+	ctx->length.low_word += incr;
+ #define pr_fmt(fmt) "hashX hashX: " fmt
  
- 	/* Check for wrap-around */
--	if (ctx->state.length.low_word < incr)
--		ctx->state.length.high_word++;
-+	if (ctx->length.low_word < incr)
-+		ctx->length.high_word++;
- }
++#include <linux/amba/bus.h>
+ #include <linux/clk.h>
+ #include <linux/device.h>
+ #include <linux/dma-mapping.h>
+@@ -940,18 +941,28 @@ int hash_check_hw(struct hash_device_data *device_data)
+ 	unsigned int regs[] = { UX500_HASH_PERIPHID0, UX500_HASH_PERIPHID1,
+ 		UX500_HASH_PERIPHID2, UX500_HASH_PERIPHID3, UX500_HASH_CELLID0,
+ 		UX500_HASH_CELLID1, UX500_HASH_CELLID2, UX500_HASH_CELLID3 };
+-	unsigned int expected[] = { HASH_P_ID0, HASH_P_ID1, HASH_P_ID2, HASH_P_ID3,
+-		HASH_CELL_ID0, HASH_CELL_ID1, HASH_CELL_ID2, HASH_CELL_ID3 };
+ 	unsigned int val;
++	u32 pid;
++	u32 cid;
+ 	int i;
  
- /**
-@@ -872,9 +874,9 @@ static int hash_hw_final(struct ahash_request *req)
- 		}
+-	for (i = 0; i < ARRAY_SIZE(regs); i++) {
++	for (pid = 0, i = 0; i < 8; i++) {
+ 		regmap_read(device_data->map, regs[i], &val);
+-		if (val != expected[i]) {
+-			dev_err(device_data->dev, "ID word %d was %08x expected %08x\n",
+-				i, val, expected[i]);
+-			return -ENODEV;
+-		}
++		if (i < 4)
++			pid |= (val & 255) << (i * 8);
++		else
++			cid |= (val & 255) << ((i - 4) * 8);
++	}
++
++	if (cid != AMBA_CID) {
++		dev_err(device_data->dev, "AMBA CID was %08x expected %08x\n",
++			cid, AMBA_CID);
++		return -ENODEV;
++	}
++	if (pid != UX500_HASH_PID) {
++		dev_err(device_data->dev, "PID was %08x expected %08x\n",
++			pid, UX500_HASH_PID);
++		return -ENODEV;
  	}
- 
--	if (req_ctx->state.index) {
--		hash_messagepad(device_data, req_ctx->state.buffer,
--				req_ctx->state.index);
-+	if (req_ctx->index) {
-+		hash_messagepad(device_data, req_ctx->buffer,
-+				req_ctx->index);
- 	} else {
- 		HASH_SET_DCAL;
- 		while (readl(&device_data->base->str) & HASH_STR_DCAL_MASK)
-@@ -922,8 +924,8 @@ int hash_hw_update(struct ahash_request *req)
- 	struct crypto_hash_walk walk;
- 	int msg_length;
- 
--	index = req_ctx->state.index;
--	buffer = (u8 *)req_ctx->state.buffer;
-+	index = req_ctx->index;
-+	buffer = (u8 *)req_ctx->buffer;
- 
- 	msg_length = crypto_hash_walk_first(req, &walk);
- 
-@@ -931,10 +933,10 @@ int hash_hw_update(struct ahash_request *req)
- 	if (msg_length == 0)
- 		return 0;
- 
--	/* Check if ctx->state.length + msg_length
-+	/* Check if ctx->length + msg_length
- 	   overflows */
--	if (msg_length > (req_ctx->state.length.low_word + msg_length) &&
--	    HASH_HIGH_WORD_MAX_VAL == req_ctx->state.length.high_word) {
-+	if (msg_length > (req_ctx->length.low_word + msg_length) &&
-+	    req_ctx->length.high_word == HASH_HIGH_WORD_VAL_MAX) {
- 		pr_err("%s: HASH_MSG_LENGTH_OVERFLOW!\n", __func__);
- 		return crypto_hash_walk_done(&walk, -EPERM);
- 	}
-@@ -955,9 +957,9 @@ int hash_hw_update(struct ahash_request *req)
- 		msg_length = crypto_hash_walk_done(&walk, 0);
- 	}
- 
--	req_ctx->state.index = index;
-+	req_ctx->index = index;
- 	dev_dbg(device_data->dev, "%s: indata length=%d\n",
--		__func__, req_ctx->state.index);
-+		__func__, req_ctx->index);
  
  	return 0;
- }
-@@ -980,14 +982,6 @@ int hash_resume_state(struct hash_device_data *device_data,
- 		return -EPERM;
- 	}
- 
--	/* Check correctness of index and length members */
--	if (device_state->index > HASH_BLOCK_SIZE ||
--	    (device_state->length.low_word % HASH_BLOCK_SIZE) != 0) {
--		dev_err(device_data->dev, "%s: HASH_INVALID_PARAMETER!\n",
--			__func__);
--		return -EPERM;
--	}
--
- 	/*
- 	 * INIT bit. Set this bit to 0b1 to reset the HASH processor core and
- 	 * prepare the initialize the HASH accelerator to compute the message
 -- 
 2.36.1
 
