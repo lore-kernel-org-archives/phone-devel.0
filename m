@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 83640CCA48A
-	for <phone-devel@archiver.kernel.org>; Thu, 21 Jul 2022 13:44:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64B7EC3F2D4
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Jul 2022 13:44:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229840AbiGUNoJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 21 Jul 2022 09:44:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49772 "EHLO
+        id S229747AbiGUNoK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 21 Jul 2022 09:44:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229790AbiGUNnQ (ORCPT
+        with ESMTP id S229985AbiGUNnW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 21 Jul 2022 09:43:16 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EE8081B21
-        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:02 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id j26so1888955lji.1
-        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:02 -0700 (PDT)
+        Thu, 21 Jul 2022 09:43:22 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35F908048A
+        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:00 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id o7so2839129lfq.9
+        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=KTtKtpahYRj5RrvQ3U2GaLKtIGWmV90iOPLY5xwmgyQ=;
-        b=t7AnqB2RV3V6BS2xjRZKiX3uRPu8cnMe5JDuwFXelSwR/3GatO5Q5VZ7RzajZ2qyQu
-         A6ZT6B7I4pbWADQutw3FmF2q0QMcCd6DtMjpoq5ACBMgvjsARtBfUL+m7zn6L2QJgtKH
-         7nJxhuJP1vhZ/MNJ8nLgwit364aJXwzIbCAkDITDMlerwI4+2LOBZgJyF6oFtp4ZLpXG
-         DNvNnlwqT9p/x6ElGPd+qIDXNR01DYG2CcoQlhSdzaWecLLNd84/eyjZxkp7wmsdy46J
-         v3QA+pnoXokBSYgLplf1EsUIBhACMTE+MB8WXeB100kMEJ4utBucXJPhD6EATF5gYBjF
-         s7UA==
+        bh=pmSASrhJHn6ivFdlVEJYXb7R4srgTjTFkdflVpjygv8=;
+        b=IdFYhGuUDDZtzDwEay5CBmdNBTQm0pTARSgLybdSal4/UR7uz4/ls4vEupVLwS5ZMS
+         wJIZIZaxIwDThGwx21tAtohhZoXkccszD+nED/NGp+Vp1u1HOU32FzT1udkepuxGsRFH
+         huubjJDVVIYC3hizzYjeJ24clq80YQWecxgeadDabHBddkuXoT6Veibu8zU2aWYn+w38
+         L4zBYSxMs3fHJlhnYl+fqsGcDtDVwflBpZ3RNPQN8US7ErTT6ChuQcD1XiOiFUUD7QvD
+         IfGCJJISou1GTkA7VmMuQomGadNAxKDhaELBm8SCYzYVN2ZH/q4/SWc/Zpi4mXV/c0b1
+         npkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=KTtKtpahYRj5RrvQ3U2GaLKtIGWmV90iOPLY5xwmgyQ=;
-        b=3ZWGTaSRQYZmf7n0lWQ/gS4Muyo2AG5spBOmrm36tXBxcY7rVGo2iVhEZviXBnfHlF
-         bY56Wh5wr8V3MvGPV3ZhqSqkW+T6Y6oQkV1ZpU8Pq0emXVDcuvpOdNaz1TOv6Qr0wj7k
-         JlOwh7TwJV3NfqOge7fF3ENJ9hWJUCYKXKBfg2HPY/fhBF0cPRb2ohM+BMhctOR2dLC8
-         23uIhuvFP3ABzhcMIZ3a5pQM3j4uFr/XeG7Un7DNTr782Zn0Re/3m3aTXKS631/9tfac
-         82Zi3l/5b364XkYKsp8cWhGB+ZmxBCrD0G1rO77FgpiLEj08JvFRrNTm1YPhOYDomzTo
-         wc0A==
-X-Gm-Message-State: AJIora9Fy92rMaCmz218atMEF7YLTega9AN/IfLg3vfQPRA/d4JZIjZR
-        PStSFex6q6J2HaEo+/03aOOVeg==
-X-Google-Smtp-Source: AGRyM1tyyylXEb8hvr6ScBCQEhjqYd1WYVb1G8WydKAzGjpNztUbbcKBRYpMlMrNlb6DqquPbu90fA==
-X-Received: by 2002:a2e:8954:0:b0:25d:6936:849a with SMTP id b20-20020a2e8954000000b0025d6936849amr19723517ljk.370.1658410980632;
-        Thu, 21 Jul 2022 06:43:00 -0700 (PDT)
+        bh=pmSASrhJHn6ivFdlVEJYXb7R4srgTjTFkdflVpjygv8=;
+        b=7EoQI2XDWVfskK/kz8CIajQaNTw9Jh7ooIi8G+Mnn4fsCCG33O0+n6oEP4G3XfVFZd
+         dFc19ADqPVSbtf0/R7qdUGESAe/g4xTmTsIIQ9Bwp4g5nFXGfaOGPsX20kTtdhcfi/Qn
+         j8mnDSnLj+cEeYrT+/gtgckvbxvicRNQLzxrp8ocTq0+mAxcT9E25JjdP+sDdZ+nta9H
+         x0em23/HQO52TTb1OQRYA22s1xO2YrOhW193oBA71QAANPBf1lOzbAOfO1XVMibYmTu4
+         t6Vzzuj2Oj1XmDMs1XUhyFRg1Mgwyj+tmoM9xgDtrXmzERRZvjxgu04HYjozlE25OfOx
+         zS+A==
+X-Gm-Message-State: AJIora8hWGQsKXJ6Evth/R9cHHRBnbHKyW/JUG0oQt5zaPDHTbROJJTT
+        68jKoK2BEUlJxIroapOYhuLn+A==
+X-Google-Smtp-Source: AGRyM1sFV4rNCGoH1/mlb2Jg+Y6/gMWTCs6jaIazqSvm5Af7YyfWmAGFiUE0aQb3Pao0wQr5rfEgvg==
+X-Received: by 2002:a05:6512:3d11:b0:489:d28c:10d9 with SMTP id d17-20020a0565123d1100b00489d28c10d9mr21653956lfv.467.1658410977675;
+        Thu, 21 Jul 2022 06:42:57 -0700 (PDT)
 Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id o23-20020ac24e97000000b004867a427026sm458568lfr.40.2022.07.21.06.43.00
+        by smtp.gmail.com with ESMTPSA id o23-20020ac24e97000000b004867a427026sm458568lfr.40.2022.07.21.06.42.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jul 2022 06:43:00 -0700 (PDT)
+        Thu, 21 Jul 2022 06:42:57 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     linux-crypto@vger.kernel.org,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S . Miller" <davem@davemloft.net>
 Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 03/15] crypto: ux500/hash: Pass context to zero message digest
-Date:   Thu, 21 Jul 2022 15:40:38 +0200
-Message-Id: <20220721134050.1047866-4-linus.walleij@linaro.org>
+Subject: [PATCH 01/15] crypto: ux500/hash: Pass ctx to hash_setconfiguration()
+Date:   Thu, 21 Jul 2022 15:40:36 +0200
+Message-Id: <20220721134050.1047866-2-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220721134050.1047866-1-linus.walleij@linaro.org>
 References: <20220721134050.1047866-1-linus.walleij@linaro.org>
@@ -66,40 +66,86 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This function obtains the current context from the device state
-pointer, which is fragile. Pass the context explicitly instead.
+This function was dereferencing device_data->current_ctx
+to get the context. This is not a good idea, the device_data
+is serialized with an awkward semaphore construction and
+fragile.
+
+Also fix a checkpatch warning about putting compared constants
+to the right in an expression.
 
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/crypto/ux500/hash/hash_core.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/crypto/ux500/hash/hash_alg.h  |  2 +-
+ drivers/crypto/ux500/hash/hash_core.c | 15 ++++++++-------
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/crypto/ux500/hash/hash_alg.h b/drivers/crypto/ux500/hash/hash_alg.h
+index 7c9bcc15125f..26e8b7949d7c 100644
+--- a/drivers/crypto/ux500/hash/hash_alg.h
++++ b/drivers/crypto/ux500/hash/hash_alg.h
+@@ -380,7 +380,7 @@ struct hash_device_data {
+ int hash_check_hw(struct hash_device_data *device_data);
+ 
+ int hash_setconfiguration(struct hash_device_data *device_data,
+-		struct hash_config *config);
++			  struct hash_ctx *ctx);
+ 
+ void hash_begin(struct hash_device_data *device_data, struct hash_ctx *ctx);
+ 
 diff --git a/drivers/crypto/ux500/hash/hash_core.c b/drivers/crypto/ux500/hash/hash_core.c
-index fd7a862244ac..884046e87262 100644
+index 265ef3e96fdd..dfdf3e35d94f 100644
 --- a/drivers/crypto/ux500/hash/hash_core.c
 +++ b/drivers/crypto/ux500/hash/hash_core.c
-@@ -183,11 +183,10 @@ static int hash_dma_write(struct hash_ctx *ctx,
-  * @zero_digest:	True if zero_digest returned.
-  */
- static int get_empty_message_digest(
--		struct hash_device_data *device_data,
-+		struct hash_device_data *device_data, struct hash_ctx *ctx,
- 		u8 *zero_hash, u32 *zero_hash_size, bool *zero_digest)
+@@ -473,7 +473,7 @@ static int init_hash_hw(struct hash_device_data *device_data,
  {
  	int ret = 0;
--	struct hash_ctx *ctx = device_data->current_ctx;
- 	*zero_digest = false;
  
- 	/**
-@@ -889,7 +888,7 @@ static int hash_hw_final(struct ahash_request *req)
- 		 * Use a pre-calculated empty message digest
- 		 * (workaround since hw return zeroes, hw bug!?)
- 		 */
--		ret = get_empty_message_digest(device_data, &zero_hash[0],
-+		ret = get_empty_message_digest(device_data, ctx, &zero_hash[0],
- 				&zero_hash_size, &zero_digest);
- 		if (!ret && likely(zero_hash_size == ctx->digestsize) &&
- 		    zero_digest) {
+-	ret = hash_setconfiguration(device_data, &ctx->config);
++	ret = hash_setconfiguration(device_data, ctx);
+ 	if (ret) {
+ 		dev_err(device_data->dev, "%s: hash_setconfiguration() failed!\n",
+ 			__func__);
+@@ -672,11 +672,12 @@ static void hash_incrementlength(struct hash_req_ctx *ctx, u32 incr)
+  * hash_setconfiguration - Sets the required configuration for the hash
+  *                         hardware.
+  * @device_data:	Structure for the hash device.
+- * @config:		Pointer to a configuration structure.
++ * @ctx:		Current context
+  */
+ int hash_setconfiguration(struct hash_device_data *device_data,
+-			  struct hash_config *config)
++			  struct hash_ctx *ctx)
+ {
++	struct hash_config *config = &ctx->config;
+ 	int ret = 0;
+ 
+ 	if (config->algorithm != HASH_ALGO_SHA1 &&
+@@ -711,12 +712,12 @@ int hash_setconfiguration(struct hash_device_data *device_data,
+ 	 * MODE bit. This bit selects between HASH or HMAC mode for the
+ 	 * selected algorithm. 0b0 = HASH and 0b1 = HMAC.
+ 	 */
+-	if (HASH_OPER_MODE_HASH == config->oper_mode)
++	if (config->oper_mode == HASH_OPER_MODE_HASH) {
+ 		HASH_CLEAR_BITS(&device_data->base->cr,
+ 				HASH_CR_MODE_MASK);
+-	else if (HASH_OPER_MODE_HMAC == config->oper_mode) {
++	} else if (config->oper_mode == HASH_OPER_MODE_HMAC) {
+ 		HASH_SET_BITS(&device_data->base->cr, HASH_CR_MODE_MASK);
+-		if (device_data->current_ctx->keylen > HASH_BLOCK_SIZE) {
++		if (ctx->keylen > HASH_BLOCK_SIZE) {
+ 			/* Truncate key to blocksize */
+ 			dev_dbg(device_data->dev, "%s: LKEY set\n", __func__);
+ 			HASH_SET_BITS(&device_data->base->cr,
+@@ -878,7 +879,7 @@ static int hash_dma_final(struct ahash_request *req)
+ 			goto out;
+ 		}
+ 	} else {
+-		ret = hash_setconfiguration(device_data, &ctx->config);
++		ret = hash_setconfiguration(device_data, ctx);
+ 		if (ret) {
+ 			dev_err(device_data->dev,
+ 				"%s: hash_setconfiguration() failed!\n",
 -- 
 2.36.1
 
