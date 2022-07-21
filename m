@@ -2,154 +2,205 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62267C43334
-	for <phone-devel@archiver.kernel.org>; Thu, 21 Jul 2022 08:54:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B31BC433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Jul 2022 09:25:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232631AbiGUIyB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 21 Jul 2022 04:54:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56342 "EHLO
+        id S232775AbiGUJZe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 21 Jul 2022 05:25:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232651AbiGUIyA (ORCPT
+        with ESMTP id S231612AbiGUJZd (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 21 Jul 2022 04:54:00 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40B127FE4B;
-        Thu, 21 Jul 2022 01:53:59 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 53B1D66019C1;
-        Thu, 21 Jul 2022 09:53:56 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1658393637;
-        bh=PWaD409ygy+Er3xoqJTY1NemC1LqQPgB8DQibUFvffo=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=HFOn3jmV7jaLw7oD5M8TZqbVkyn5IY9/ekzUHdGUjK/NHL0uQjPZSsNphdJQoNF7r
-         KaYZk9/u1Inf/eei+TdvpOSTrp043auyfH1Mz92Z3tjnig+WQbj+BguEmG8NKpBByH
-         QXf9Jx4YBsQqBLdTKYBevHn0R7FB5FkaS0JWgai+EsUO/RTwYieoqVdeVJID3ehKMq
-         UIaXr6YLUR7zVEqt/ngzQ2UFcUi81uo6pWD2ggbRKqxjfsUOFW/laJAvAP//4+Cv23
-         nMYwM7s/NdsuIdKpiDI35PzXW+ymxuN7ejOJ8RPT/P5VjWE/urap5HmsruvVVrXCoY
-         gKam2qjT/QF6g==
-Message-ID: <45ff2e82-caeb-9575-ce73-1bd43c37c0c5@collabora.com>
-Date:   Thu, 21 Jul 2022 10:53:54 +0200
+        Thu, 21 Jul 2022 05:25:33 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3975E1835C
+        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 02:25:32 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id u19so1897054lfs.0
+        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 02:25:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=n96RspemHv4TX65Onfw5EgIeU668Xeh3IJ491ButWDA=;
+        b=aGUJ8Wwql3nBndT7r92NSLtZoQUn0/fNuBuA222WSsO2c8VIx5qTqRivY9R6SoTnHY
+         fwJ5Rh9ppUze5NxxfJ1rElwXXc2nSbzr3Mj7jcpBgfDCMFlZF5YkrREmzZzs9IzWSFzA
+         1UZ0tfryvJwlBgwY5O0Nw+O+HwlNlsmAhw9PWZ44SP6Zkvqe4wihFgJIuvp3Nph1e7Ix
+         AcMbF9PHYxzq75P89IlZT5UMaGq8rNjQ/guySEc2s4cmEoFe0aydwOnJrqJj8pZnMoL5
+         wODjhAxsNJBmqzlIIHvKCWwF5dmM6zLNrJADeGU08F8ntkUmVHz36ZfzN+UGhF1HnQYj
+         SzlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=n96RspemHv4TX65Onfw5EgIeU668Xeh3IJ491ButWDA=;
+        b=eT1Bo8eiAV6gEEzj1rXw+SUhUGyI9GGKFThxYymmMBsjxv5+8hY6fhr+IS+DtwvKEU
+         ag9lAQqdPj8upE/9rm8a9yxqf8OYxxnHPGvSqQEd+/eF3tes3atyePCDtF5XZdq/AGFT
+         UrpUlmvkSKrBk8sF568fZNtM9ZTF92NY/3ZjSi3MVj6QxLnJrXyLdvhsFqBdSVTVGlvb
+         N8BGPAdOLloqV5Wfp0VeLoK0i+pNOvSOD7pC3GpDI47PBwWBmATg/oM0+WZCJ6J1en4j
+         vgy8NjVYXgxAhsAw/WqHE+/+51PgspC760rIE67dCGILzk5orG5sKejTavhqkHr338pa
+         MLXQ==
+X-Gm-Message-State: AJIora9tHr2T+qdzV0FduIulFXwlDnH/TwxONEhfCU9KwNXdu6A57pYH
+        b0vOEbQrZN8NJWdWxwisH7fYDQ==
+X-Google-Smtp-Source: AGRyM1sQnHRfTHcPmZmra8mx6Bo0N5OMSaNYFB8TJDTyOp/6lIJ4d9p50U6fT4RliWE31XApjfyHYA==
+X-Received: by 2002:a05:6512:10c4:b0:489:de26:cef7 with SMTP id k4-20020a05651210c400b00489de26cef7mr23654431lfg.216.1658395530472;
+        Thu, 21 Jul 2022 02:25:30 -0700 (PDT)
+Received: from [192.168.115.193] (89-162-31-138.fiber.signal.no. [89.162.31.138])
+        by smtp.gmail.com with ESMTPSA id q8-20020a056512210800b00488e50527e0sm323037lfr.112.2022.07.21.02.25.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Jul 2022 02:25:29 -0700 (PDT)
+Message-ID: <995c7d48-68d1-6c61-4f86-cdd2968b5156@linaro.org>
+Date:   Thu, 21 Jul 2022 11:25:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
-Subject: Re: [PATCH v5 0/7] MediaTek Helio X10 MT6795 - Clock drivers
+Subject: Re: [PATCH 3/3] ARM: dts: qcom: Add support for Samsung Galaxy Tab 4
+ 10.1 (SM-T530)
 Content-Language: en-US
-To:     robh+dt@kernel.org
-Cc:     krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        mturquette@baylibre.com, sboyd@kernel.org, p.zabel@pengutronix.de,
-        y.oudjana@protonmail.com, jason-jh.lin@mediatek.com,
-        ck.hu@mediatek.com, fparent@baylibre.com, rex-bc.chen@mediatek.com,
-        tinghan.shen@mediatek.com, chun-jie.chen@mediatek.com,
-        weiyi.lu@mediatek.com, ikjn@chromium.org, miles.chen@mediatek.com,
-        sam.shih@mediatek.com, wenst@chromium.org,
-        bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
-        kernel@collabora.com
-References: <20220629110254.184213-1-angelogioacchino.delregno@collabora.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20220629110254.184213-1-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
+        linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        soc@kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220717213432.134486-1-matti.lehtimaki@gmail.com>
+ <20220717213432.134486-4-matti.lehtimaki@gmail.com>
+ <dc19c084-633d-9777-6dfd-b9633ac9c4ae@linaro.org>
+ <YtWiMP2O9BymNG7/@gerhold.net>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <YtWiMP2O9BymNG7/@gerhold.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 29/06/22 13:02, AngeloGioacchino Del Regno ha scritto:
-> In an effort to give some love to the apparently forgotten MT6795 SoC,
-> I am upstreaming more components that are necessary to support platforms
-> powered by this one apart from a simple boot to serial console.
+On 18/07/2022 20:10, Stephan Gerhold wrote:
+> On Mon, Jul 18, 2022 at 03:51:54PM +0200, Krzysztof Kozlowski wrote:
+>> On 17/07/2022 23:34, Matti Lehtimäki wrote:
+>>> Add a device tree for the Samsung Galaxy Tab 4 10.1 (SM-T530) wifi tablet
+>>> based on the apq8026 platform.
+>>>
+>>> Currently supported are accelerometer sensor, hall sensor, internal storage, physical
+>>> buttons (power & volume), screen (based on simple-framebuffer set up by
+>>> the bootloader) sdcard, touchscreen and USB.
+>>>
+>>> Signed-off-by: Matti LehtimÃ¤ki <matti.lehtimaki@gmail.com>
+>>
+>> Thank you for your patch. There is something to discuss/improve.
+>>
+>>> ---
+>>>  arch/arm/boot/dts/Makefile                    |   1 +
+>>>  .../dts/qcom-apq8026-samsung-matissewifi.dts  | 475 ++++++++++++++++++
+>>>  2 files changed, 476 insertions(+)
+>>>  create mode 100644 arch/arm/boot/dts/qcom-apq8026-samsung-matissewifi.dts
+>>>
+>>> diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+>>> index 5112f493f494..4d02a1740079 100644
+>>> --- a/arch/arm/boot/dts/Makefile
+>>> +++ b/arch/arm/boot/dts/Makefile
+>>> @@ -1010,6 +1010,7 @@ dtb-$(CONFIG_ARCH_QCOM) += \
+>>>  	qcom-apq8016-sbc.dtb \
+>>>  	qcom-apq8026-asus-sparrow.dtb \
+>>>  	qcom-apq8026-lg-lenok.dtb \
+>>> +	qcom-apq8026-samsung-matissewifi.dtb \
+>>>  	qcom-apq8060-dragonboard.dtb \
+>>>  	qcom-apq8064-cm-qs600.dtb \
+>>>  	qcom-apq8064-ifc6410.dtb \
+>>> diff --git a/arch/arm/boot/dts/qcom-apq8026-samsung-matissewifi.dts b/arch/arm/boot/dts/qcom-apq8026-samsung-matissewifi.dts
+>>> new file mode 100644
+>>> index 000000000000..f4c5eb9db11c
+>>> --- /dev/null
+>>> +++ b/arch/arm/boot/dts/qcom-apq8026-samsung-matissewifi.dts
+>>> @@ -0,0 +1,475 @@
+>>> +// SPDX-License-Identifier: BSD-3-Clause
+>>> +/*
+>>> + * Copyright (c) 2022, Matti LehtimÃ¤ki <matti.lehtimaki@gmail.com>
+>>> + */
+>>> +
+>>> +/dts-v1/;
+>>> +
+>>> +#include "qcom-msm8226.dtsi"
+>>> +#include "qcom-pm8226.dtsi"
+>>> +#include <dt-bindings/input/input.h>
+>>> +
+>>> +/delete-node/ &smem_region;
+>>> +
+>>> +/ {
+>>> +	model = "Samsung Galaxy Tab 4 10.1";
+>>> +	compatible = "samsung,matissewifi", "qcom,apq8026";
+>>> +	chassis-type = "tablet";
+>>> +
+>>> +	qcom,msm-id = <0xC708FF01 0 0x20000>,
+>>> +		      <0xC708FF01 1 0x20000>,
+>>> +		      <0xC708FF01 2 0x20000>,
+>>> +		      <0xC708FF01 3 0x20000>;
+>>
+>> Lower case hex and does not match bindings.
+>> https://lore.kernel.org/all/20220705130300.100882-2-krzysztof.kozlowski@linaro.org/
+>>
+>> This would need detailed explanation because it really does not look
+>> correct.
+>>
 > 
-> This (very big) series introduces system clock, multimedia clock drivers
-> (including resets) for this SoC.
+> Just to give the explanation for reference: In general, qcom,msm-id with
+> three elements is something Qualcomm used for some old platforms before
+> introducing qcom,board-id.
 > 
-> Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
+> qcom,msm-id = <X Y Z> should be equivalent to:
+>   qcom,msm-id = <X Z>;
+>   qcom,board-id = <Y 0>;
 > 
-> This series depends on, and can be merged on top of:
-> [1]: https://patchwork.kernel.org/project/linux-mediatek/list/?series=640122
-> [2]: https://patchwork.kernel.org/project/linux-mediatek/list/?series=637849
+> e.g. for apq8026-v2-mtp.dts Qualcomm used:
+>    qcom,msm-id = <199 8 0x20000>;
+>  = qcom,msm-id = <QCOM_ID_MSM8026 QCOM_BOARD_ID_MTP 0x20000>;
+>  = qcom,msm-id = <QCOM_ID_MSM8026 0x20000>;
+>    qcom,board-id = <QCOM_BOARD_ID_MTP 0>;
 > 
+> I guess old bootloaders may or may not accept the new form, depending on
+> the age of their code base.
+> 
+> Then Samsung took this and made it a lot worse, by replacing the SoC ID
+> with some random magic number (the 0xC708FF01). And what's even worse is
+> that all devices with the same SoC from Samsung use the same magic number
+> there. It is completely useless for dynamically matching the device.
+> 
+> In this case, I suggest just dropping the property because the device is
+> supported by lk2nd [1] which can be loaded as intermediary bootloader to
+> have a more standard boot process for mainline Linux. When booting
+> through lk2nd no qcom,msm-id/qcom,board-id is required, and it also adds
+> MAC addresses for WiFi/Bluetooth etc etc. :-)
+> 
+> [1]: https://github.com/msm8916-mainline/lk2nd
+> 
+>> [...]
+>>> +	reserved-memory {
+>>> +		#address-cells = <1>;
+>>> +		#size-cells = <1>;
+>>> +		ranges;
+>>> +
+>>> +		framebuffer@3200000 {
+>>
+>> Generic node names, so memory@
+>>
+> 
+> Rob specifically mentioned at some point that memory@ should not be used
+> in reserved-memory [1]. The device tree specification actually recommends
+> doing it like it is done here (at least for "framebuffer"):
+> 
+>> 3.5.2 /reserved-memory/ child nodes
+>> Following the generic-names recommended practice, node names should
+>> reflect the purpose of the node (ie. “framebuffer” or “dma-pool”).
+> 
+> [1]: https://lore.kernel.org/linux-arm-msm/CAL_Jsq+66j8Y5y+PQ+mezkaxN1pfHFKz524YUF4Lz_OU5E-mZQ@mail.gmail.com/
 
-Gentle ping for this series...
-...I've got a lot of commits to send that depend on this one...
+Thanks, makes sense a lot!
 
-P.S.: The dependencies in [1] and [2] are already upstream.
-
-Cheers,
-Angelo
-
-
-> Changes in v5:
->   - Renamed clock/reset header filenames to add vendor prefix
->   - Removed quotes for $id, $schema in commit [4/7]
-> 
-> Changes in v4:
->   - Removed unnecessary examples for clock controllers in commit [4/7]
->   - Fixed one instance of 88 columns line wrap in commit [4/7]
-> 
-> Changes in v3:
->   - Fixed typo in commit [4/7]
-> 
-> Changes in v2:
->   - Fixed yaml clock bindings as per Rob's review
->   - Added ability to compile all MT6795 clock drivers as modules
->   - Added commits to export some symbols, required to compile as module
-> AngeloGioacchino Del Regno (7):
->    dt-bindings: mediatek: Document MT6795 system controllers bindings
->    dt-bindings: clock: Add MediaTek Helio X10 MT6795 clock bindings
->    dt-bindings: reset: Add bindings for MT6795 Helio X10 reset
->      controllers
->    dt-bindings: clock: mediatek: Add clock driver bindings for MT6795
->    clk: mediatek: clk-apmixed: Remove unneeded __init annotation
->    clk: mediatek: Export required symbols to compile clk drivers as
->      module
->    clk: mediatek: Add MediaTek Helio X10 MT6795 clock drivers
-> 
->   .../arm/mediatek/mediatek,infracfg.yaml       |   2 +
->   .../bindings/arm/mediatek/mediatek,mmsys.yaml |   1 +
->   .../arm/mediatek/mediatek,pericfg.yaml        |   1 +
->   .../bindings/clock/mediatek,apmixedsys.yaml   |   1 +
->   .../bindings/clock/mediatek,mt6795-clock.yaml |  66 ++
->   .../clock/mediatek,mt6795-sys-clock.yaml      |  54 ++
->   .../bindings/clock/mediatek,topckgen.yaml     |   1 +
->   drivers/clk/mediatek/Kconfig                  |  37 ++
->   drivers/clk/mediatek/Makefile                 |   6 +
->   drivers/clk/mediatek/clk-apmixed.c            |   3 +-
->   drivers/clk/mediatek/clk-cpumux.c             |   2 +
->   drivers/clk/mediatek/clk-mt6795-apmixedsys.c  | 157 +++++
->   drivers/clk/mediatek/clk-mt6795-infracfg.c    | 148 +++++
->   drivers/clk/mediatek/clk-mt6795-mfg.c         |  50 ++
->   drivers/clk/mediatek/clk-mt6795-mm.c          | 106 +++
->   drivers/clk/mediatek/clk-mt6795-pericfg.c     | 160 +++++
->   drivers/clk/mediatek/clk-mt6795-topckgen.c    | 610 ++++++++++++++++++
->   drivers/clk/mediatek/clk-mt6795-vdecsys.c     |  55 ++
->   drivers/clk/mediatek/clk-mt6795-vencsys.c     |  50 ++
->   drivers/clk/mediatek/clk-mtk.c                |   2 +
->   drivers/clk/mediatek/reset.c                  |   1 +
->   .../dt-bindings/clock/mediatek,mt6795-clk.h   | 275 ++++++++
->   .../reset/mediatek,mt6795-resets.h            |  50 ++
->   23 files changed, 1837 insertions(+), 1 deletion(-)
->   create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
->   create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
->   create mode 100644 drivers/clk/mediatek/clk-mt6795-apmixedsys.c
->   create mode 100644 drivers/clk/mediatek/clk-mt6795-infracfg.c
->   create mode 100644 drivers/clk/mediatek/clk-mt6795-mfg.c
->   create mode 100644 drivers/clk/mediatek/clk-mt6795-mm.c
->   create mode 100644 drivers/clk/mediatek/clk-mt6795-pericfg.c
->   create mode 100644 drivers/clk/mediatek/clk-mt6795-topckgen.c
->   create mode 100644 drivers/clk/mediatek/clk-mt6795-vdecsys.c
->   create mode 100644 drivers/clk/mediatek/clk-mt6795-vencsys.c
->   create mode 100644 include/dt-bindings/clock/mediatek,mt6795-clk.h
->   create mode 100644 include/dt-bindings/reset/mediatek,mt6795-resets.h
-> 
-
-
+Best regards,
+Krzysztof
