@@ -2,185 +2,97 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7F98C433EF
-	for <phone-devel@archiver.kernel.org>; Thu, 21 Jul 2022 13:45:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AE26C433EF
+	for <phone-devel@archiver.kernel.org>; Thu, 21 Jul 2022 15:42:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbiGUNpl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 21 Jul 2022 09:45:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49246 "EHLO
+        id S232498AbiGUPm2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 21 Jul 2022 11:42:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230282AbiGUNov (ORCPT
+        with ESMTP id S233082AbiGUPls (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 21 Jul 2022 09:44:51 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C40E863CB
-        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:19 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id bp17so2880438lfb.3
-        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:19 -0700 (PDT)
+        Thu, 21 Jul 2022 11:41:48 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30DDA89E98
+        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 08:38:17 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id q7so2250623lji.12
+        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 08:38:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=jqVIpScoCCWkDYabFnlwaaN9YoNnkMmK49AqBQlpN38=;
-        b=pwObx/GcQLid5/AwpUISVuaVTzteHWScJQUuM1WEjLsOkMMiz5TsxXhF85mQdwOvaX
-         nr7CMIWIZKl2bC1SuFVblpMBnCom3gKIMCVfHlQ3re2Hj18Tis/QKuXG+hce3EP9sx4n
-         9y8RNtaZgJZvAa9QKl16XEMt8XXTQ5DzYiG15FsO0c89UQK8gEuLzy0nhCkYhj9vpScZ
-         g9Ypm9Ao4X7LLNbUK8n0f8oQKcmMpgH6rDSGG3bWXDFcjVhLFDF5jmWCoaFPBFOQTrk8
-         5PvXeelLKuNOQWezzvFe9YMsq0WBtiCKOsz7E1RfVWaJcprSOEK4rZqqlf6GkhWLRWC5
-         fwjg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ImwIGwpt7cCeVeo6/tB0/NFkI/v/+EzFEZB4ORoW/Y0=;
+        b=KC/v5ly6ZyJv8FYlRb/Cllr3uusoyAgKYMKdeFxWgb0E8a2/AK4N0PQpzEOUKwarLp
+         ZrB4F34GS+t03G6+510d9SvBHh9Id98R637d+STZxuvjfjzXYdUNWE3Wneb6adm34Yyv
+         eVH3MF7kIpuYTbZiY0grf8li8+OqB3mFQ82w4cGYDy3zi/Nttb9/ml3wEzZdMiDD3iDo
+         rSi2QNZ2Bb/RMgetrVroTRYrfzwhDafl/Cpbw8dl6283XRzuNNV1RzmJNE347szCYuug
+         DTeYuTKXdoIF0qfmAmPzHrFhtqUdGER22TWt1ect+7gsnkRjTzAgY+klc7a5vvzpWYET
+         ItjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=jqVIpScoCCWkDYabFnlwaaN9YoNnkMmK49AqBQlpN38=;
-        b=TOME6oNH2iIWPORLnIZ4sxSniZZJ5jbSfO7WzsPP0QxSuxb2MCd4IBBCJqSCHhTiEO
-         bR3GomPTS5ElNT7VG3gKKn+IvG8KjkE/08wgfNYXu5yTN9WBBTHd+ZzXT4ZaR5XkixHL
-         f2B2BpWAy4mL9HF36YRLHokMgdet6j+TojTlwOkjdONpfwniR6YJ5hAmhPbnf+m1MPPY
-         eICYuz33hSNDmZzRNShyQpILlLsaZPaYMsqsaplCKFpy+zZSoloOPuGnIPN8TYtNBg0q
-         YS75VqU3r4SGzYSzXuTD/4orfnNikRQfbGrio9LowyVl8yp2ECtVXInpTp4534biV/DV
-         AeXw==
-X-Gm-Message-State: AJIora+o+o+czOfwETTA+VrmlbLbU62jrEh2DyKPuYJrrtvvDOHPptxp
-        1/q0TQ1PZrYPt7ngWNjLz7Qg4g==
-X-Google-Smtp-Source: AGRyM1vgzjJ0BItV7slTtOxAPzurr5dvcxKAOsX1nCxr/sj7eczTLe7+VgthdYOaNjtRyAVTn8MZng==
-X-Received: by 2002:a05:6512:3fa2:b0:48a:16df:266f with SMTP id x34-20020a0565123fa200b0048a16df266fmr18593242lfa.414.1658410995946;
-        Thu, 21 Jul 2022 06:43:15 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ImwIGwpt7cCeVeo6/tB0/NFkI/v/+EzFEZB4ORoW/Y0=;
+        b=jJY4fbTzPQK2nXGrjZf+yP7EYyKU3rg30n9tYnf+lFmzK815rN/rIZGTMS103NOIsA
+         l2pLAUho2ATF4h8e++CuenBm429Uqv8n05aFwO3gIAgsaJOkzNPERkloRxxy5P7D2WSV
+         PfxlMlDe3eHe04PUvT9LtjdOJFlG1bVO2i0eNZT9VKSkFTE30NHrQDIxNbCpLPLXCLRQ
+         Wt1uoRuspaWYzGJZxytnEqsqNeMc2SEYHvS+QgT+dhqmgSWghd6Dkv4eYin7bpReymvU
+         Ih3sr9Tfp0uDaI32B4xGUyq3myOt7Z47XLeg1yvR/KATakfvSKn5g3aSE++3Dxypl7s5
+         EggQ==
+X-Gm-Message-State: AJIora/t7D3YuZBhbuXUn0kGFt0ilWtoN6x+lQTKHm0BwCXkiveof69s
+        FpBNAxuBNlRawjbrx6MwB+w2Jw==
+X-Google-Smtp-Source: AGRyM1sFV8ncsSFOG+R/NCiYPt4AHW6Op64p0IkwCvDNKDuB6FCNjd6Y3J8QUvcxe9opyRhEcRQstw==
+X-Received: by 2002:a2e:a4ba:0:b0:25d:d8b4:2c60 with SMTP id g26-20020a2ea4ba000000b0025dd8b42c60mr2943654ljm.246.1658417893333;
+        Thu, 21 Jul 2022 08:38:13 -0700 (PDT)
 Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id o23-20020ac24e97000000b004867a427026sm458568lfr.40.2022.07.21.06.43.15
+        by smtp.gmail.com with ESMTPSA id t20-20020a2e5354000000b0025deb16828esm112457ljd.76.2022.07.21.08.38.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jul 2022 06:43:15 -0700 (PDT)
+        Thu, 21 Jul 2022 08:38:12 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-crypto@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>
-Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 15/15] crypto: ux500/hash: Drop regulator handling
-Date:   Thu, 21 Jul 2022 15:40:50 +0200
-Message-Id: <20220721134050.1047866-16-linus.walleij@linaro.org>
+To:     linux-arm-kernel@lists.infradead.org, phone-devel@vger.kernel.org
+Cc:     Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH] ARM: dts: DBx500 cryp and hash used power domain
+Date:   Thu, 21 Jul 2022 17:36:10 +0200
+Message-Id: <20220721153610.1053845-1-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220721134050.1047866-1-linus.walleij@linaro.org>
-References: <20220721134050.1047866-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This "APE" voltage is not handled by a regulator but by the
-power domain, drop it.
+The cryp and hash blocks of the DBx500 uses the VAPE power domain,
+the special regulator is a leftover that is not used anymore.
 
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/crypto/ux500/hash/hash_core.c | 35 +++------------------------
- 1 file changed, 4 insertions(+), 31 deletions(-)
+ arch/arm/boot/dts/ste-dbx5x0.dtsi | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/ux500/hash/hash_core.c b/drivers/crypto/ux500/hash/hash_core.c
-index 55d27af8c9de..35bda646f49c 100644
---- a/drivers/crypto/ux500/hash/hash_core.c
-+++ b/drivers/crypto/ux500/hash/hash_core.c
-@@ -27,8 +27,6 @@
- #include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- #include <linux/crypto.h>
+diff --git a/arch/arm/boot/dts/ste-dbx5x0.dtsi b/arch/arm/boot/dts/ste-dbx5x0.dtsi
+index c28b32640254..d2a38cb8b487 100644
+--- a/arch/arm/boot/dts/ste-dbx5x0.dtsi
++++ b/arch/arm/boot/dts/ste-dbx5x0.dtsi
+@@ -1154,17 +1154,15 @@ cryp@a03cb000 {
+ 			compatible = "stericsson,ux500-cryp";
+ 			reg = <0xa03cb000 0x1000>;
+ 			interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
 -
--#include <linux/regulator/consumer.h>
- #include <linux/dmaengine.h>
- #include <linux/bitops.h>
+-			v-ape-supply = <&db8500_vape_reg>;
+ 			clocks = <&prcc_pclk 6 1>;
++			power-domains = <&pm_domains DOMAIN_VAPE>;
+ 		};
  
-@@ -247,8 +245,7 @@ static int get_empty_message_digest(
-  * hash_disable_power - Request to disable power and clock.
-  * @device_data:	Structure for the hash device.
-  *
-- * This function request for disabling power (regulator) and clock,
-- * and could also save current hw state.
-+ * This function request for disabling the clock.
-  */
- static int hash_disable_power(struct hash_device_data *device_data)
- {
-@@ -260,9 +257,6 @@ static int hash_disable_power(struct hash_device_data *device_data)
- 		goto out;
- 
- 	clk_disable(device_data->clk);
--	ret = regulator_disable(device_data->regulator);
--	if (ret)
--		dev_err(dev, "%s: regulator_disable() failed!\n", __func__);
- 
- 	device_data->power_state = false;
- 
-@@ -276,8 +270,7 @@ static int hash_disable_power(struct hash_device_data *device_data)
-  * hash_enable_power - Request to enable power and clock.
-  * @device_data:		Structure for the hash device.
-  *
-- * This function request for enabling power (regulator) and clock,
-- * and could also restore a previously saved hw state.
-+ * This function request for enabling the clock.
-  */
- static int hash_enable_power(struct hash_device_data *device_data)
- {
-@@ -286,17 +279,9 @@ static int hash_enable_power(struct hash_device_data *device_data)
- 
- 	spin_lock(&device_data->power_state_lock);
- 	if (!device_data->power_state) {
--		ret = regulator_enable(device_data->regulator);
--		if (ret) {
--			dev_err(dev, "%s: regulator_enable() failed!\n",
--				__func__);
--			goto out;
--		}
- 		ret = clk_enable(device_data->clk);
- 		if (ret) {
- 			dev_err(dev, "%s: clk_enable() failed!\n", __func__);
--			ret = regulator_disable(
--					device_data->regulator);
- 			goto out;
- 		}
- 		device_data->power_state = true;
-@@ -1575,25 +1560,17 @@ static int ux500_hash_probe(struct platform_device *pdev)
- 	spin_lock_init(&device_data->ctx_lock);
- 	spin_lock_init(&device_data->power_state_lock);
- 
--	device_data->regulator = regulator_get(dev, "v-ape");
--	if (IS_ERR(device_data->regulator)) {
--		dev_err(dev, "%s: regulator_get() failed!\n", __func__);
--		ret = PTR_ERR(device_data->regulator);
--		device_data->regulator = NULL;
--		goto out;
--	}
+ 		hash@a03c2000 {
+ 			compatible = "stericsson,ux500-hash";
+ 			reg = <0xa03c2000 0x1000>;
 -
- 	device_data->clk = devm_clk_get(dev, NULL);
- 	if (IS_ERR(device_data->clk)) {
- 		dev_err(dev, "%s: clk_get() failed!\n", __func__);
- 		ret = PTR_ERR(device_data->clk);
--		goto out_regulator;
-+		goto out;
- 	}
- 
- 	ret = clk_prepare(device_data->clk);
- 	if (ret) {
- 		dev_err(dev, "%s: clk_prepare() failed!\n", __func__);
--		goto out_regulator;
-+		goto out;
- 	}
- 
- 	/* Enable device power (and clock) */
-@@ -1637,9 +1614,6 @@ static int ux500_hash_probe(struct platform_device *pdev)
- out_clk_unprepare:
- 	clk_unprepare(device_data->clk);
- 
--out_regulator:
--	regulator_put(device_data->regulator);
--
- out:
- 	return ret;
- }
-@@ -1682,7 +1656,6 @@ static int ux500_hash_remove(struct platform_device *pdev)
- 			__func__);
- 
- 	clk_unprepare(device_data->clk);
--	regulator_put(device_data->regulator);
- 
- 	return 0;
- }
+-			v-ape-supply = <&db8500_vape_reg>;
+ 			clocks = <&prcc_pclk 6 2>;
++			power-domains = <&pm_domains DOMAIN_VAPE>;
+ 		};
+ 	};
+ };
 -- 
 2.36.1
 
