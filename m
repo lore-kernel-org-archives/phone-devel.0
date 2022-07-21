@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61AC6C433EF
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E3F55CCA487
 	for <phone-devel@archiver.kernel.org>; Thu, 21 Jul 2022 13:45:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229958AbiGUNpe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S230233AbiGUNpe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Thu, 21 Jul 2022 09:45:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49188 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229846AbiGUNod (ORCPT
+        with ESMTP id S230234AbiGUNoe (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 21 Jul 2022 09:44:33 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B73685D7D
-        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:14 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id u19so2927623lfs.0
-        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:14 -0700 (PDT)
+        Thu, 21 Jul 2022 09:44:34 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 755AE85D45
+        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:17 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id o12so1885230ljc.3
+        for <phone-devel@vger.kernel.org>; Thu, 21 Jul 2022 06:43:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=wnw+J8g0tiBhDzUiau+rb2PQi3V9NPBPTs3vvmSimvA=;
-        b=C/30z5ieecqUehs+DRtzuPB5/G+kSizttIIaABkDKMpSlvs4oOY1lTItvwUZitY155
-         JVT3fUHSfI/Sp4/5r8SP3STvPr3jM0AF6srfDc4GDa0ajcjgBlWvN90meerLs2EReuMp
-         jJr/c+jdMTCvFfzhRe03l6Ez8a0wKMmKzHu2N/PBChSQsSYva4SfJrwCEOPA6PrKVYTg
-         C2o/qoIacYS6dC/N3mfIgR3vi9J43lNccyIhOEUMGbJDlbXn3nksw0/HFrFB9ITYBILe
-         ReqRy9ETf9hZVxKkLG0dCX8DiDtzNJ6gb2TGygeeVIH7dApKtFFiBeL71vH5WoqKiyxf
-         HaDw==
+        bh=sSiRCl2FNVjumNTyEm6j/Y4BLdUSiRyHccgJSZvX0p8=;
+        b=xvYxWLfVPUki9oW3YSagPynzuhJ7u47byExdN/63UgQm1JRrj31prOliILDFlcFmXH
+         VMUitC202IBMB1aR4QW4jQ40+Pul/3nBqTW61GkLbY9PRJqKufUfpkkf34+LFvomIHvu
+         MqBK1sFZAC/6dX2voqV0S8c7Ebh0Yp3CxUbBHQrBqlO09VBb7q2hzH/YuHU9K+OPmjZN
+         PBfzXGekbwCkgNRnJC2u3GtIDiocVQaH8AbzdBvN85Nn6oYhRuXNGo3nNTm8tfaLPOYu
+         3nmUgTJjT+bm532g0737pc50VScQ13xDpBuyArdSDf7M5RxlSHw+TeaEgZNPjdlOnurt
+         K/0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=wnw+J8g0tiBhDzUiau+rb2PQi3V9NPBPTs3vvmSimvA=;
-        b=eM7aCFpWdGePinb9LOXMqIWr8UX7u6DlU2n7maxreqhgKEL81ZKxG2RD6wJi4RhUUy
-         alpRThXMxiYE4BOz44bMdEihel4f0QznZma0nEKXyLqnr+DDrop/pCaQSoYuBrk+QECs
-         JGyt3Lms8GnsGphp2WG4siVXilk9tZisv+80gIGoQGNKkxUEobu26Wh7EjjieIG7F1oy
-         2rgAQ7NIS/Mt8Zf3Ifyw0eAStc1XY3pXHgcr2A0ta0KIRxcuxm2kqE8DYAS2OmZ1EORw
-         Pjawh8fUjQ1ZRQe2FGld+RY60n72Sih5QcxpNA5QoycPbNP5cYZu27lOoSA2Ee1U/WSD
-         NL6g==
-X-Gm-Message-State: AJIora9iCMvt6K8Fd+yIwa2wvsGWBYPTdK562SZURRibkxGIj+0x9SfO
-        GecgCHxQr+RS0+k1NlhnBoXR6Q==
-X-Google-Smtp-Source: AGRyM1up3uDJL+F6wFXlokobzv+BfbbhHSmmnKFXtK5/UNG931oQbQMPOjvf5vm/UJcpy9mbBjZG+A==
-X-Received: by 2002:a05:6512:3b27:b0:489:e87e:c1ef with SMTP id f39-20020a0565123b2700b00489e87ec1efmr22562535lfv.490.1658410990833;
-        Thu, 21 Jul 2022 06:43:10 -0700 (PDT)
+        bh=sSiRCl2FNVjumNTyEm6j/Y4BLdUSiRyHccgJSZvX0p8=;
+        b=WuKi1qtjaq8YwCqxjmb6hXSK2sTveqtLF8FQyaQySdEMolOogZr4jAChaRtDCgX60N
+         3qwEpCdJEOi9MzSUS9YgT+ml0EOaqQ+Kd11UehRMQplfWc3Z9VQImEla8LEril4VbfQ6
+         hIcr8IIPZdzX/Q7BpeGuM+ADX3GroKTCCjVGPDC/HOxyvhig4us8/mylZjun/klfFdod
+         qFWNXo6G+VGRTsVdwkztf6Ed8A/yx+8DosMYJQEzyB1WrfpQkw1yQVzQYXGU9g6lv9tX
+         s5YWBEw74TIaUFPXB/XowhwgK705AS635XNbfW7ZwthcZ0/ezPNDuV9lBDw3kUF78V6H
+         KWaQ==
+X-Gm-Message-State: AJIora/ZU51H+Wy/KUypOWri2yWlbifcZnzHwosuzfrjSMX9yHTHUyfh
+        VuARw89eGWH999C2uREBaDZY17j4qDGHcg==
+X-Google-Smtp-Source: AGRyM1tjA7s4ANm+gAQnbAcC5qyPURyYcaU0iD3nUCP985Rmqk9Q6D0zIvuqbCX0BEQwJDpxUDaSUA==
+X-Received: by 2002:a05:651c:2111:b0:25d:6b28:3c96 with SMTP id a17-20020a05651c211100b0025d6b283c96mr20078491ljq.39.1658410994695;
+        Thu, 21 Jul 2022 06:43:14 -0700 (PDT)
 Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id o23-20020ac24e97000000b004867a427026sm458568lfr.40.2022.07.21.06.43.10
+        by smtp.gmail.com with ESMTPSA id o23-20020ac24e97000000b004867a427026sm458568lfr.40.2022.07.21.06.43.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jul 2022 06:43:10 -0700 (PDT)
+        Thu, 21 Jul 2022 06:43:14 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     linux-crypto@vger.kernel.org,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S . Miller" <davem@davemloft.net>
 Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 11/15] crypto: ux500/hash: Drop custom uint64 type
-Date:   Thu, 21 Jul 2022 15:40:46 +0200
-Message-Id: <20220721134050.1047866-12-linus.walleij@linaro.org>
+Subject: [PATCH 14/15] crypto: ux500/hash: Implement runtime PM
+Date:   Thu, 21 Jul 2022 15:40:49 +0200
+Message-Id: <20220721134050.1047866-15-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220721134050.1047866-1-linus.walleij@linaro.org>
 References: <20220721134050.1047866-1-linus.walleij@linaro.org>
@@ -66,126 +66,230 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Drop the homebrewn uint64 support, the kernel has a u64 type
-that works just fine so we use that instead.
+This implements runtime PM to gate the clock and regulator
+when the hash block is unused.
 
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/crypto/ux500/hash/hash_alg.h  | 19 ++----------------
- drivers/crypto/ux500/hash/hash_core.c | 28 ++++-----------------------
- 2 files changed, 6 insertions(+), 41 deletions(-)
+ drivers/crypto/ux500/hash/hash_alg.h  |  1 +
+ drivers/crypto/ux500/hash/hash_core.c | 60 +++++++++++++++++++++++----
+ 2 files changed, 52 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/crypto/ux500/hash/hash_alg.h b/drivers/crypto/ux500/hash/hash_alg.h
-index 05f0b0221a13..6a610c83e63d 100644
+index 96c614444fa2..57e4c7df4ac4 100644
 --- a/drivers/crypto/ux500/hash/hash_alg.h
 +++ b/drivers/crypto/ux500/hash/hash_alg.h
-@@ -16,9 +16,6 @@
+@@ -16,6 +16,7 @@
+ #define HASH_DMA_ALIGN_SIZE		4
  #define HASH_DMA_PERFORMANCE_MIN_SIZE	1024
  #define HASH_BYTES_PER_WORD		4
++#define UX500_HASH_AUTOSUSPEND_DELAY_MS	50
  
--/* Maximum value of the length's high word */
--#define HASH_HIGH_WORD_MAX_VAL		0xFFFFFFFFUL
--
- /* Power on Reset values HASH registers */
- #define HASH_RESET_CR_VALUE		0x0
- #define HASH_RESET_STR_VALUE		0x0
-@@ -135,18 +132,6 @@ enum hash_mode {
- 	HASH_MODE_DMA
- };
- 
--/**
-- * struct uint64 - Structure to handle 64 bits integers.
-- * @high_word:	Most significant bits.
-- * @low_word:	Least significant bits.
-- *
-- * Used to handle 64 bits integers.
-- */
--struct uint64 {
--	u32 high_word;
--	u32 low_word;
--};
--
- /**
-  * struct hash_register - Contains all registers in ux500 hash hardware.
-  * @cr:		HASH control register (0x000).
-@@ -227,7 +212,7 @@ struct hash_state {
- 	u32		csfull;
- 	u32		csdatain;
- 	u32		buffer[HASH_BLOCK_SIZE / sizeof(u32)];
--	struct uint64	length;
-+	u64		length;
- 	u8		index;
- 	bool		dma_mode;
- 	bool		hw_initialized;
-@@ -342,7 +327,7 @@ struct hash_ctx {
-  */
- struct hash_req_ctx {
- 	u32			buffer[HASH_BLOCK_SIZE / sizeof(u32)];
--	struct uint64		length;
-+	u64			length;
- 	u8			index;
- 	bool			dma_mode;
- 	bool			hw_initialized;
+ /* Number of context swap registers */
+ #define HASH_CSR_COUNT			52
 diff --git a/drivers/crypto/ux500/hash/hash_core.c b/drivers/crypto/ux500/hash/hash_core.c
-index 1edb11812c7d..390e50b2b1d2 100644
+index a64edfb1cd96..55d27af8c9de 100644
 --- a/drivers/crypto/ux500/hash/hash_core.c
 +++ b/drivers/crypto/ux500/hash/hash_core.c
-@@ -449,8 +449,7 @@ static int ux500_hash_init(struct ahash_request *req)
- 		ctx->keylen = 0;
+@@ -24,6 +24,7 @@
+ #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/regmap.h>
+ #include <linux/crypto.h>
  
- 	req_ctx->index = 0;
--	req_ctx->length.low_word = 0;
--	req_ctx->length.high_word = 0;
-+	req_ctx->length = 0;
- 	req_ctx->hw_initialized = false;
- 	if (hash_mode == HASH_MODE_DMA) {
- 		if (req->nbytes < HASH_DMA_ALIGN_SIZE) {
-@@ -545,23 +544,6 @@ static void hash_messagepad(struct hash_device_data *device_data,
- 		cpu_relax();
+@@ -438,6 +439,10 @@ static int ux500_hash_init(struct ahash_request *req)
+ 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
+ 	struct hash_ctx *ctx = crypto_ahash_ctx(tfm);
+ 	struct hash_req_ctx *req_ctx = ahash_request_ctx(req);
++	struct hash_device_data *device_data = ctx->device;
++
++	/* Power up on init() power down on final() */
++	pm_runtime_get_sync(device_data->dev);
+ 
+ 	if (!ctx->key)
+ 		ctx->keylen = 0;
+@@ -463,6 +468,7 @@ static int ux500_hash_init(struct ahash_request *req)
+ 			}
+ 		}
+ 	}
++
+ 	return 0;
  }
  
--/**
-- * hash_incrementlength - Increments the length of the current message.
-- * @ctx: Hash context
-- * @incr: Length of message processed already
-- *
-- * Overflow cannot occur, because conditions for overflow are checked in
-- * hash_hw_update.
-- */
--static void hash_incrementlength(struct hash_req_ctx *ctx, u32 incr)
--{
--	ctx->length.low_word += incr;
--
--	/* Check for wrap-around */
--	if (ctx->length.low_word < incr)
--		ctx->length.high_word++;
--}
--
- /**
-  * hash_setconfiguration - Sets the required configuration for the hash
-  *                         hardware.
-@@ -709,7 +691,7 @@ static int hash_process_data(struct hash_device_data *device_data,
- 					  (const u32 *)buffer,
- 					  HASH_BLOCK_SIZE);
- 		}
--		hash_incrementlength(req_ctx, HASH_BLOCK_SIZE);
-+		req_ctx->length += HASH_BLOCK_SIZE;
- 		data_buffer += (HASH_BLOCK_SIZE - *index);
+@@ -773,6 +779,8 @@ static int hash_dma_final(struct ahash_request *req)
+ 	memcpy(req->result, digest, ctx->digestsize);
  
- 		msg_length -= (HASH_BLOCK_SIZE - *index);
-@@ -933,10 +915,8 @@ int hash_hw_update(struct ahash_request *req)
- 	if (msg_length == 0)
- 		return 0;
+ out:
++	pm_runtime_mark_last_busy(device_data->dev);
++	pm_runtime_put_autosuspend(device_data->dev);
+ 	/**
+ 	 * Allocated in setkey, and only used in HMAC.
+ 	 */
+@@ -1023,8 +1031,11 @@ static int ahash_update(struct ahash_request *req)
+  */
+ static int ahash_final(struct ahash_request *req)
+ {
+-	int ret = 0;
++	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
++	struct hash_ctx *ctx = crypto_ahash_ctx(tfm);
++	struct hash_device_data *device_data = ctx->device;
+ 	struct hash_req_ctx *req_ctx = ahash_request_ctx(req);
++	int ret = 0;
  
--	/* Check if ctx->length + msg_length
--	   overflows */
--	if (msg_length > (req_ctx->length.low_word + msg_length) &&
--	    req_ctx->length.high_word == HASH_HIGH_WORD_VAL_MAX) {
-+	/* Check if ctx->length + msg_length overflows */
-+	if ((req_ctx->length + msg_length) < msg_length) {
- 		pr_err("%s: HASH_MSG_LENGTH_OVERFLOW!\n", __func__);
- 		return crypto_hash_walk_done(&walk, -EPERM);
+ 	pr_debug("%s: data size: %d\n", __func__, req->nbytes);
+ 
+@@ -1033,6 +1044,9 @@ static int ahash_final(struct ahash_request *req)
+ 	else
+ 		ret = hash_hw_final(req);
+ 
++	pm_runtime_mark_last_busy(device_data->dev);
++	pm_runtime_put_autosuspend(device_data->dev);
++
+ 	if (ret) {
+ 		pr_err("%s: hash_hw/dma_final() failed\n", __func__);
  	}
+@@ -1133,6 +1147,9 @@ static int ahash_import(struct ahash_request *req, const void *in)
+ 	req_ctx->hw_initialized = hstate->hw_initialized;
+ 	memcpy(req_ctx->buffer, hstate->buffer, HASH_BLOCK_SIZE);
+ 
++	/* Power up as we may have lost power being exported */
++	pm_runtime_get_sync(device_data->dev);
++
+ 	/*
+ 	 * Restore hardware state
+ 	 * INIT bit. Set this bit to 0b1 to reset the HASH processor core and
+@@ -1200,6 +1217,10 @@ static int ahash_export(struct ahash_request *req, void *out)
+ 	hstate->hw_initialized = req_ctx->hw_initialized;
+ 	memcpy(hstate->buffer, req_ctx->buffer, HASH_BLOCK_SIZE);
+ 
++	/* We can power down while exported */
++	pm_runtime_mark_last_busy(device_data->dev);
++	pm_runtime_put_autosuspend(device_data->dev);
++
+ 	return 0;
+ }
+ 
+@@ -1554,7 +1575,6 @@ static int ux500_hash_probe(struct platform_device *pdev)
+ 	spin_lock_init(&device_data->ctx_lock);
+ 	spin_lock_init(&device_data->power_state_lock);
+ 
+-	/* Enable power for HASH1 hardware block */
+ 	device_data->regulator = regulator_get(dev, "v-ape");
+ 	if (IS_ERR(device_data->regulator)) {
+ 		dev_err(dev, "%s: regulator_get() failed!\n", __func__);
+@@ -1563,7 +1583,6 @@ static int ux500_hash_probe(struct platform_device *pdev)
+ 		goto out;
+ 	}
+ 
+-	/* Enable the clock for HASH1 hardware block */
+ 	device_data->clk = devm_clk_get(dev, NULL);
+ 	if (IS_ERR(device_data->clk)) {
+ 		dev_err(dev, "%s: clk_get() failed!\n", __func__);
+@@ -1590,6 +1609,12 @@ static int ux500_hash_probe(struct platform_device *pdev)
+ 		goto out_power;
+ 	}
+ 
++	pm_runtime_set_autosuspend_delay(dev, UX500_HASH_AUTOSUSPEND_DELAY_MS);
++	pm_runtime_use_autosuspend(dev);
++	pm_runtime_get_noresume(dev);
++	pm_runtime_set_active(dev);
++	pm_runtime_enable(dev);
++
+ 	if (hash_mode == HASH_MODE_DMA)
+ 		hash_dma_setup_channel(device_data, dev);
+ 
+@@ -1602,6 +1627,7 @@ static int ux500_hash_probe(struct platform_device *pdev)
+ 		goto out_power;
+ 	}
+ 
++	pm_runtime_put_sync(dev);
+ 	dev_info(dev, "successfully registered\n");
+ 	return 0;
+ 
+@@ -1647,6 +1673,10 @@ static int ux500_hash_remove(struct platform_device *pdev)
+ 
+ 	ahash_algs_unregister_all(device_data);
+ 
++	pm_runtime_get_sync(device_data->dev);
++	pm_runtime_put_noidle(device_data->dev);
++	pm_runtime_disable(device_data->dev);
++
+ 	if (hash_disable_power(device_data))
+ 		dev_err(dev, "%s: hash_disable_power() failed\n",
+ 			__func__);
+@@ -1687,6 +1717,10 @@ static void ux500_hash_shutdown(struct platform_device *pdev)
+ 
+ 	ahash_algs_unregister_all(device_data);
+ 
++	pm_runtime_get_sync(device_data->dev);
++	pm_runtime_put_noidle(device_data->dev);
++	pm_runtime_disable(device_data->dev);
++
+ 	if (hash_disable_power(device_data))
+ 		dev_err(&pdev->dev, "%s: hash_disable_power() failed\n",
+ 			__func__);
+@@ -1694,10 +1728,10 @@ static void ux500_hash_shutdown(struct platform_device *pdev)
+ 
+ #ifdef CONFIG_PM_SLEEP
+ /**
+- * ux500_hash_suspend - Function that suspends the hash device.
++ * ux500_hash_runtime_suspend - Function that suspends the hash device.
+  * @dev:	Device to suspend.
+  */
+-static int ux500_hash_suspend(struct device *dev)
++static int ux500_hash_runtime_suspend(struct device *dev)
+ {
+ 	int ret;
+ 	struct hash_device_data *device_data;
+@@ -1712,14 +1746,15 @@ static int ux500_hash_suspend(struct device *dev)
+ 	if (ret)
+ 		dev_err(dev, "%s: hash_disable_power()\n", __func__);
+ 
++	dev_info(dev, "runtime suspended\n");
+ 	return ret;
+ }
+ 
+ /**
+- * ux500_hash_resume - Function that resume the hash device.
++ * ux500_hash_runtime_resume - Function that resume the hash device.
+  * @dev:	Device to resume.
+  */
+-static int ux500_hash_resume(struct device *dev)
++static int ux500_hash_runtime_resume(struct device *dev)
+ {
+ 	int ret = 0;
+ 	struct hash_device_data *device_data;
+@@ -1734,11 +1769,18 @@ static int ux500_hash_resume(struct device *dev)
+ 	if (ret)
+ 		dev_err(dev, "%s: hash_enable_power() failed!\n", __func__);
+ 
++	dev_info(dev, "runtime resumed\n");
++
+ 	return ret;
+ }
+ #endif
+ 
+-static SIMPLE_DEV_PM_OPS(ux500_hash_pm, ux500_hash_suspend, ux500_hash_resume);
++static const struct dev_pm_ops ux500_hash_pm_ops = {
++	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
++				pm_runtime_force_resume)
++	SET_RUNTIME_PM_OPS(ux500_hash_runtime_suspend,
++			   ux500_hash_runtime_resume, NULL)
++};
+ 
+ static const struct of_device_id ux500_hash_match[] = {
+ 	{ .compatible = "stericsson,ux500-hash" },
+@@ -1753,7 +1795,7 @@ static struct platform_driver ux500_hash_driver = {
+ 	.driver = {
+ 		.name  = "hash1",
+ 		.of_match_table = ux500_hash_match,
+-		.pm    = &ux500_hash_pm,
++		.pm    = &ux500_hash_pm_ops,
+ 	}
+ };
+ module_platform_driver(ux500_hash_driver);
 -- 
 2.36.1
 
