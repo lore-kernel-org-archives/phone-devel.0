@@ -2,77 +2,91 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D68B4C43334
-	for <phone-devel@archiver.kernel.org>; Fri, 22 Jul 2022 11:26:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14486C43334
+	for <phone-devel@archiver.kernel.org>; Sat, 23 Jul 2022 20:39:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233794AbiGVL0N (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 22 Jul 2022 07:26:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57432 "EHLO
+        id S233501AbiGWUjf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 23 Jul 2022 16:39:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234195AbiGVL0M (ORCPT
+        with ESMTP id S231768AbiGWUje (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 22 Jul 2022 07:26:12 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E10826569
-        for <phone-devel@vger.kernel.org>; Fri, 22 Jul 2022 04:26:10 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id g1so5443049edb.12
-        for <phone-devel@vger.kernel.org>; Fri, 22 Jul 2022 04:26:10 -0700 (PDT)
+        Sat, 23 Jul 2022 16:39:34 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 916111837E
+        for <phone-devel@vger.kernel.org>; Sat, 23 Jul 2022 13:39:33 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id t1so12591989lft.8
+        for <phone-devel@vger.kernel.org>; Sat, 23 Jul 2022 13:39:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=P3M+aSErzHoSEG9jae2b5t7SFzCtNxYRjinEbHlaaEg=;
-        b=Uvb4oYhPua1I3p4dj1bHinNjeOlIIo7fZIEWfnftUo+keus43ARtwRTQC1w8GcrjJr
-         fA2Ozi3Vt5wqn8Y727iP8NH9X2lp4G3NU0+imLgLdrkXnHecxuMWg5A0HSk5kI7mW7IB
-         7iYtUolxs79Te9W9VDsRPihPGRnoZ+3zj6pO+h2h/XLcuNrRTvpSM2HxwboxOcMSt1Ee
-         wkSvhVYQpKQOtlCAyHPWjz8u4QHONY5s2C8JYLIm+dBvV0sX/gch3IF3lWYSaA6nUD+8
-         C3Sp1NdQBVrkumxaXFhrtzWPOe2NHGesYa4nEYLXR1Kz64Q5l2GJ0D9hS7wbqNUTZgwS
-         11tQ==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=30Q3Mov+xUcHtaroWn9KhpjvlVfGQAQUMUdIfMSPO9g=;
+        b=VFJPJlLbZyczA6sL69wUQJp7nULarv/JKfF1X2GvlL7+xIFJWHYf/v6FTiaEFyC96W
+         tgrSEpGFZFSrybANlSuq6QxtdAiHZS/2oiHquKVFoj6IiPK5VioA4EyDiL/ndDGzD4y8
+         nq8hCWnOsaGZuzijMSSulMUEqYcUzBBNluCWYxCxleSUXjXgfcRtpwsfk8eHUR/V6tFL
+         V7YyRhoiFiuCMlwlG5CmEFUx8LNK2zreB0aHz932eVWic9fXf3LIwmW6o0jd4aiaQe7K
+         RsADfA/6EXTkhduW4rlSxIF+DplihttT9SeWl9a9CidnqU7i27p/BsuBKO7Gs+h/jY7H
+         D9Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=P3M+aSErzHoSEG9jae2b5t7SFzCtNxYRjinEbHlaaEg=;
-        b=ybyAIb83vOf/4+WW5yYZo0Dob39bMdYAGVGXtAibHcYqgBLw02Yt9Jkt927nh1zB2K
-         4v0V1siflg59DqAPyswIqIZNAJZ9gxKIqygk4ZAY9cRNRd6kXVi6RPZZpea/BgLO3MFP
-         Ys28UQbz6UiazLtm5GgOWbqbvQNzaReF4N/2h8CIj0Ypt9OXMLUVY02gpS31qFvgHSGp
-         WWL+IOvmU1hNBZjfd4XEkVK4rgJkp9/JxnMsRp1GMR6gKik9CIa9S/O9h4y2fwHCPgF+
-         835gK7O0lPSnZOgnge6/FPfyQbGf/2pnmfzcrnJWyR3QrlkaWW+TlifPisqsrdrhXNUY
-         lJkw==
-X-Gm-Message-State: AJIora9jIV04TP3YS4yz/RXQ8I78OrzBqnzYAUHeFcu02oOEQ6Exeoxj
-        eOqH3MwsASy4HfiUYB9RSvwVq+q5SLWEV+mzjfMdKEH43ds=
-X-Google-Smtp-Source: AGRyM1sV3vBgMApei403xftPsf5aD3seWxODgHl3TvETGIJW3PAXvNndZdtQbvYBFZTUwIBc5bTvt3y9E8D3rHn81JM=
-X-Received: by 2002:a05:6402:5384:b0:431:6d84:b451 with SMTP id
- ew4-20020a056402538400b004316d84b451mr154393edb.46.1658489169556; Fri, 22 Jul
- 2022 04:26:09 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=30Q3Mov+xUcHtaroWn9KhpjvlVfGQAQUMUdIfMSPO9g=;
+        b=tsN3ChynZAlfMG2S7NyUIHOxnsUvrWmD/ESFHqpUbNZ2lxdgA85SyzLTAGh28/whW2
+         NGCvYGY6c02+rNiMhRAsifSv2XbN8/xBS/9TwcCFpvOcP0PKZGtpCoSrP9gvYc8Z5rbR
+         rPakMjfYlQwBqBl8fpoG+e+pNfnP4u87h5JaTzHmzfVm5AkXSb5hDF0/vMauLyhjjohp
+         1hZ7RetCyQ3O8WYarGnYc6Yk0vrRCXYL+qAtec9sqX4GQwKyPu4DYm77aeGcSBk5P7rI
+         rOCSuK0+WQsrBFo7PL6ts35dTPNnBdsiE6UhG/ln6gQl+7c+p8VSU8gjUpE1ht1YIHjZ
+         rbAQ==
+X-Gm-Message-State: AJIora9k5yCAuZqmjFK+QKFR3Si697311cAmHJIkndY4U2Sww3YBNkks
+        D5/rkDj0yhRQfRd+qgNu8rwpujpZh1fwwVU/
+X-Google-Smtp-Source: AGRyM1vvMkuX3UzPqmEIMziQeOmAteJdFjHyqdwrQvuiIaOt4cRLcxy//GUBKdH1M/hlaoO9GVqr3Q==
+X-Received: by 2002:ac2:4d06:0:b0:48a:765d:144b with SMTP id r6-20020ac24d06000000b0048a765d144bmr2096286lfi.208.1658608772023;
+        Sat, 23 Jul 2022 13:39:32 -0700 (PDT)
+Received: from [192.168.10.173] (93.81-167-86.customer.lyse.net. [81.167.86.93])
+        by smtp.gmail.com with ESMTPSA id g1-20020a056512118100b004811bf4999csm1810451lfr.290.2022.07.23.13.39.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 23 Jul 2022 13:39:31 -0700 (PDT)
+Message-ID: <c5a73ed6-c2bb-8c99-b675-c5baa3c41f8a@linaro.org>
+Date:   Sat, 23 Jul 2022 22:39:30 +0200
 MIME-Version: 1.0
-References: <20220721134050.1047866-1-linus.walleij@linaro.org>
-In-Reply-To: <20220721134050.1047866-1-linus.walleij@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 22 Jul 2022 13:25:57 +0200
-Message-ID: <CACRpkdYi6BLwrJd9szk_vMEf_RL8E4pUQCi9i1iLk8E18DKJTQ@mail.gmail.com>
-Subject: Re: [PATCH 00/15] Ux500 hash cleanup
-To:     linux-crypto@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>
-Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v2 2/3] dt-bindings: arm: qcom: Document
+ samsung,matisse-wifi device
+Content-Language: en-US
+To:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
+        linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Stephen Boyd <sboyd@codeaurora.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220721230231.98886-1-matti.lehtimaki@gmail.com>
+ <20220721230231.98886-3-matti.lehtimaki@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220721230231.98886-3-matti.lehtimaki@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jul 21, 2022 at 3:42 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+On 22/07/2022 01:02, Matti Lehtimäki wrote:
+> Add binding documentation for Samsung Galaxy Tab 4 10.1 (2014) wifi
+> tablet which is based on Snapdragon 400 (apq8026) SoC.
+> 
+> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+> ---
 
-> This cleans up the Ux500 hash accelerator.
 
-There are still problems with the patch set, discovered after a few
-iterations of expensive tests (and logging to netconsole to not
-lose any debug messages).
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-I am ironing out the problems or at least making sure is is not
-worse than before the patches, then I will submit v2.
 
-Review comments are however most welcome!
-
-Yours,
-Linus Walleij
+Best regards,
+Krzysztof
