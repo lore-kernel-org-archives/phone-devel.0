@@ -2,101 +2,95 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1186CCA48A
-	for <phone-devel@archiver.kernel.org>; Sat, 23 Jul 2022 20:45:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E121CC43334
+	for <phone-devel@archiver.kernel.org>; Sun, 24 Jul 2022 17:24:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238470AbiGWUpL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 23 Jul 2022 16:45:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47436 "EHLO
+        id S230061AbiGXRY5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 24 Jul 2022 13:24:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238549AbiGWUpH (ORCPT
+        with ESMTP id S229829AbiGXRY4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 23 Jul 2022 16:45:07 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D52AD220
-        for <phone-devel@vger.kernel.org>; Sat, 23 Jul 2022 13:45:05 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id r14so9013302ljp.2
-        for <phone-devel@vger.kernel.org>; Sat, 23 Jul 2022 13:45:05 -0700 (PDT)
+        Sun, 24 Jul 2022 13:24:56 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CFDCE02B;
+        Sun, 24 Jul 2022 10:24:55 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id by8so10668338ljb.13;
+        Sun, 24 Jul 2022 10:24:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=oWRtJFxeA8rQDYY14YhCd5s+fzvSzxieLEOwpQYrDOY=;
-        b=fio+cSlxqlU8b4zxSMPl69tT4+qBrjVt1IhI5WOq1pt5+fb4k/HPX+uZ+hNkwuogZD
-         +7qjZZ5wUKGY7QrFzwrFinlnhDhpYBNXvqZXn1SvvwdzUX5842HbV7EqO+Ppe6WWOQoX
-         q03i8Q+fpi2+aPn2FenX3sorhZ5PF6N+IShUdaadDSRcGLhQz6odsZxBKkXcowC2qn3C
-         DmKnEJqmNOJ6wsNpq/e5IAm0FUm8k6rVRwUebF5ng4D9C68H7IHrZQ4v6N0iD1rup7YS
-         LIYCRFAW3zp2DTzsLyIhtwR3Y7+bY9ihdCnRHfmBC9vofacAt3sXebVHrKmRZTNCFHF5
-         gG3g==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=h1IRoPhmqB4vRuNc5zew/8aHo6kz9NSrPIQo4CT95z0=;
+        b=HFBAY/RSVMwHp41yLNBcJR9Mlei4cUeuWcTq1wQ6+67GOfUZ5rZKFcdaXyVwAPZqeU
+         +yckvJQPuphDXHZ+P73laCgp2pjKac/obFahk3ECHOcPPuf1+7ePfT/OkzNpKbs7LVn6
+         pcOZrRW4jvpMrbVEJe9ZiC68tksSsaUaXO0FOSZY6EGlkWaRHGAd416tvcDP5Rr8akTw
+         ZW3p3kQKBuNq9dF9HAA0cbqSgXiHWxiwD0iYpnvJ/NdxrkTZEopI4e5QXVFuyIdv/8TF
+         6MqmpiY8/kqhto4VbfGfc9tabnJ99ayvbXiIt2XEgb7TtEOwStTv7ATWoFDHhh4OLBUC
+         zelw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=oWRtJFxeA8rQDYY14YhCd5s+fzvSzxieLEOwpQYrDOY=;
-        b=JY2YQGrJAJum1RUm22KfmT7N4nXFctZec7KfCy9xLIbU3QWNkKlOamm+nAxkme8uMh
-         vNwY0neuhoZftbogo7bYwkuei20djbcEEG4G7zYoz1jTetxMmXik0Pd/9i1Q3KYxTd3b
-         mmlC9BKW63S5A2QcyJzVn0JQilk6uSEpovEjxN8mgom2fk59I0Z3QFW0tgsOvJhT+meK
-         gGY9dcUl99bI7V+Ioiww9AFobAHw+pyUrnZaXMGASjCCA2D9aBxB7s8fogbdpJtTfUGh
-         nw/LIslEQOPLkT7dHO0+/mJYitEdPnY0AtKrKcGaqLEJ2GzCjiN0ErHRn+Sv1FJvmgeM
-         kQCQ==
-X-Gm-Message-State: AJIora9ZS/1SH+R7T0/ww2RU+l7cGgqbau7TTgM3pYZSveudWjrA4bvT
-        yRQmObCI7gqQLhucxOFcKwIxSQ==
-X-Google-Smtp-Source: AGRyM1uipIB/g5ypN9oJ8cz6WSCgqhgQXxZWjhFogYY7VhE2R3ktdWk95KYkwjnbKTvzLRKm1Uw3QA==
-X-Received: by 2002:a2e:a596:0:b0:25d:687f:d9ed with SMTP id m22-20020a2ea596000000b0025d687fd9edmr1861436ljp.424.1658609103841;
-        Sat, 23 Jul 2022 13:45:03 -0700 (PDT)
-Received: from [192.168.10.173] (93.81-167-86.customer.lyse.net. [81.167.86.93])
-        by smtp.gmail.com with ESMTPSA id u23-20020a05651c141700b0025a672e97a6sm1836173lje.80.2022.07.23.13.45.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 23 Jul 2022 13:45:03 -0700 (PDT)
-Message-ID: <8d656940-567f-d8ea-8cb1-4ca37dde3e0c@linaro.org>
-Date:   Sat, 23 Jul 2022 22:45:01 +0200
+        bh=h1IRoPhmqB4vRuNc5zew/8aHo6kz9NSrPIQo4CT95z0=;
+        b=1NCTnr5dU9oa4r0g5hzeMg938qk664jcHgFKBJrakrbTCdQ5FwcI6adEZb8ZTLNWDm
+         mjjK7OWM1WpclhcAB3b9Gw2hBYHmuXwk8yfUwRCufya6MTOojyQm1VmyIgDE2mp/FQSj
+         lk85eJbqTzOcgqIlOJh+2xhEg4d6i963ApzPdAWLdUzVYDvd1sDh9pC6Hd+lh2lJJt92
+         ZkXPE/Q2PZZH7kac4HvJyf1ld6x8i8EAshR6M+iJq0on3HrTiqK7hdfc4RQ5+ZGFN8+z
+         tRTB/lsXqMt/Cz7zJYvovhBjNBZOwLk95cxOFSvtLB3hQYHTU8xQMW0UleCPeaHyB5oH
+         U4kg==
+X-Gm-Message-State: AJIora9q+ng8Cie+rLv68Y3n//nqQGL9hfXrTsgReRYX3BadGkCmGuiD
+        7HjZL00v02W3tga9pNo88izx9r+KS8RgH9TJgIk=
+X-Google-Smtp-Source: AGRyM1sPpY4z7OHtGSans/kY3N5H0W/udHQiB1vf1+1mAeXFF+Kb98lTgd6rrVkoovRDxlCt9dESew==
+X-Received: by 2002:a2e:3109:0:b0:25a:8a0c:40e2 with SMTP id x9-20020a2e3109000000b0025a8a0c40e2mr2868595ljx.26.1658683493774;
+        Sun, 24 Jul 2022 10:24:53 -0700 (PDT)
+Received: from i-vetokaappi.home.lan (dsl-hkibng42-5673c7-93.dhcp.inet.fi. [86.115.199.93])
+        by smtp.gmail.com with ESMTPSA id d7-20020a19f247000000b0048a73d83b7csm1928322lfk.133.2022.07.24.10.24.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Jul 2022 10:24:53 -0700 (PDT)
+From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+        devicetree@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Stephen Boyd <sboyd@codeaurora.org>
+Subject: [PATCH v3 0/3] Initial Samsung Galaxy Tab 4 10.1 (SM-T530) support
+Date:   Sun, 24 Jul 2022 20:24:38 +0300
+Message-Id: <20220724172442.87830-1-matti.lehtimaki@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v6 4/8] dt-bindings: clock: mediatek: Add clock driver
- bindings for MT6795
-Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, sboyd@kernel.org
-Cc:     mturquette@baylibre.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        p.zabel@pengutronix.de, y.oudjana@protonmail.com,
-        jason-jh.lin@mediatek.com, ck.hu@mediatek.com,
-        fparent@baylibre.com, rex-bc.chen@mediatek.com,
-        tinghan.shen@mediatek.com, ikjn@chromium.org,
-        miles.chen@mediatek.com, sam.shih@mediatek.com, wenst@chromium.org,
-        bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
-        kernel@collabora.com
-References: <20220722090609.52364-1-angelogioacchino.delregno@collabora.com>
- <20220722090609.52364-5-angelogioacchino.delregno@collabora.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220722090609.52364-5-angelogioacchino.delregno@collabora.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 22/07/2022 11:06, AngeloGioacchino Del Regno wrote:
-> Add the bindings for the clock drivers of the MediaTek Helio X10
-> MT6795 SoC.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->  .../bindings/clock/mediatek,mt6795-clock.yaml | 66 +++++++++++++++++++
->  .../clock/mediatek,mt6795-sys-clock.yaml      | 54 +++++++++++++++
->  2 files changed, 120 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
->  create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
+Add device tree node for pm8226 GPIOs and support for the Samsung Galaxy
+Tab 4 10.1 (SM-T530) tablet which is based on apq8026.
 
-You already got a review tag, didn't you? In v5?
+Changes in v3:
+  - Fix sdhc_2 bus width
+  - Reorder includes
 
+Changes in v2:
+  - Change codename to matisse-wifi
+  - Remove msm-id from device dts
+  - Rename pm8226 gpio node
 
-Best regards,
-Krzysztof
+Matti Lehtimäki (3):
+  ARM: dts: qcom: pm8226: Add node for the GPIOs
+  dt-bindings: arm: qcom: Document samsung,matisse-wifi device
+  ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 10.1 (SM-T530)
+
+ .../devicetree/bindings/arm/qcom.yaml         |   1 +
+ arch/arm/boot/dts/Makefile                    |   1 +
+ .../dts/qcom-apq8026-samsung-matisse-wifi.dts | 469 ++++++++++++++++++
+ arch/arm/boot/dts/qcom-pm8226.dtsi            |  10 +
+ 4 files changed, 481 insertions(+)
+ create mode 100644 arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
+
+-- 
+2.34.1
+
