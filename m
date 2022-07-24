@@ -2,65 +2,68 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03F51C433EF
-	for <phone-devel@archiver.kernel.org>; Sun, 24 Jul 2022 18:44:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB1EDCCA47C
+	for <phone-devel@archiver.kernel.org>; Sun, 24 Jul 2022 18:55:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233231AbiGXSoZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 24 Jul 2022 14:44:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33070 "EHLO
+        id S229887AbiGXSze (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 24 Jul 2022 14:55:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232988AbiGXSoY (ORCPT
+        with ESMTP id S231506AbiGXSzd (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 24 Jul 2022 14:44:24 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC48411A05
-        for <phone-devel@vger.kernel.org>; Sun, 24 Jul 2022 11:44:22 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id f14so7217551qkm.0
-        for <phone-devel@vger.kernel.org>; Sun, 24 Jul 2022 11:44:22 -0700 (PDT)
+        Sun, 24 Jul 2022 14:55:33 -0400
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93CB065E0
+        for <phone-devel@vger.kernel.org>; Sun, 24 Jul 2022 11:55:31 -0700 (PDT)
+Received: by mail-qv1-xf35.google.com with SMTP id i7so7017089qvr.8
+        for <phone-devel@vger.kernel.org>; Sun, 24 Jul 2022 11:55:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=uqLCtj81FzXR1rhJvIs1w4M+P+JCKpBnNBBvGjMwhkY=;
-        b=b5RRwEQx9QQiM2iteB1J9tDEhxTHRFV9M2mhDG+mWfrbuIpuUzbCT2yguT0ZX8Xz74
-         mzowjZAAnR0twZciOuTIMIvaNedFOYbmnb30yydFpDsPFXbjV9NoRvRxHUjH4H7ufAkw
-         VU1J3nWeFiEyLm6Y1zX4hCfKzvL4s9/jfcDUo3a0ICeZ90PT7jkQEEaU51rbQG99OvMm
-         gwCkH9wCz1aOJ05n9BcIBdtm4LvX4Vv7kUOpevhUY/S5E7dpPLoQU+eQpMuFzKq3//RS
-         q9DRJNxOt/y2Fq9NCbCERrFQCZCr9z78GLNkJSZM97gY11rCIwaipfRmJUemucK6AgH3
-         pzrA==
+        bh=BZIDWbd+e5/Q1G0dFyLVjy7eyY4n93CGPNpfz9ufq8k=;
+        b=Y/x3X31uJTRvN69iA8JzEhHsItKIPMJZshfa+bd/jj0BgkTh5+YrF4nH/331x6eMQ8
+         ZimP5N8WljYAKCHUHQXUPtfODti54bLmHHssHC3psGmOQ1x2wL3vQWNzdKDe5wdqY3Sa
+         tEReokYrGMZF6VWR0PXKEKEnxrWKpGqOKOII6pOM7iD6OEh9wHH6gbtJlxOa0w+HDBvK
+         9WfCPqQgstBgL0M8Y8v4nLRaNoDtXdvFpPH7qjMoFZtUSAk55b9biOIBVAKndTmQ/5YB
+         3f1zBf5/kDr20EFdT3GvoeW7mw+Zi37ltG/fe8mnf4SIy6WKBXP/Shnia+sPWYXMFBKw
+         SlMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=uqLCtj81FzXR1rhJvIs1w4M+P+JCKpBnNBBvGjMwhkY=;
-        b=DbCw5IXrqivod6IV/Z5FrY75SaMlBGf8/Ve6zvwcSACs+DrO7SfOR8MkCNT7WpB02X
-         9UnxsT+Z88tUX4zxsbD6DlSc2DUi2LG/EexBe63SGyObMZHS7pXH9SQ0Ymx4cRegOhvt
-         KoS/PlTltFlG+dAUmPI7MXrN/4u2PJvKlRNHEkMV+j9aeGHCbReUzYUT3h2XCFV+F19P
-         ryiXpnwzeN45o3fro0x+UbFT9FypSmJsZdugLCqoYD/sOFy06CQGyAHKIB86DrkNqAP5
-         X2uWFy7XR1mqdSF09gvsf+AAHU9GkjQSykuWU6hSePrLq3ubgQeF8bywPzA18wc3uiQb
-         zvtA==
-X-Gm-Message-State: AJIora+EYvbdkquEpWthcEbY2UowGFGYLjhs/cGQkX2e/oHWOsae6FtV
-        4YSAq/eykHWHv+jaAJSNfU3Jvb0O+cyptTYoXNEzZw==
-X-Google-Smtp-Source: AGRyM1vUDgkdDdsy8580QybhfJAvFu+1i9OFoHQ5vdHGHRp/oVSD1FiSHUQDYvIBh9xS6RcwZBGF9eySc2sErRzDKvM=
-X-Received: by 2002:ae9:f311:0:b0:6b6:30a9:1bb1 with SMTP id
- p17-20020ae9f311000000b006b630a91bb1mr6795622qkg.30.1658688261879; Sun, 24
- Jul 2022 11:44:21 -0700 (PDT)
+        bh=BZIDWbd+e5/Q1G0dFyLVjy7eyY4n93CGPNpfz9ufq8k=;
+        b=EDwfaJ9cvt8hV1uWGVmPufx9wuf3gVa3Ms6f90YjA2oLJa80oiqKeFzOmoxoX+SVFp
+         Yhc8TmIEdiOE0v+R1+PqLmOgRAax7iwLqlNBQi0oodT20EzgqvaaF1Z6PRHCY5uM5fRa
+         kzAmJu9Vcs9V5mbM+7BMwvYJQpfppRAhycNGc5wdphkDTFplRunu/xyZcynU01d5g6sk
+         bgGET7IlmP/cIozc3ZULAZJvjlcJd6iKkej5Hmt7nl8sZQ8/6HUe2XQloV9T87P76Awh
+         VIyFsoH+oStS4dNfoBom/yuHH2fqmaXMIrZI0yiUOaAKN9mTVtbsz1eMFybdx1lOsk+k
+         PFsw==
+X-Gm-Message-State: AJIora9YHeddtcaKGzqR3ngAq8CJl6jl2FAgDoDGCqIYWF1nEKaMB+9r
+        aKYxRmlqC8ZwXCqq4CElkS6djfTftrrgoS4IABhv2Q==
+X-Google-Smtp-Source: AGRyM1uhtAz31vRN2vTHNL4YCaPo/HzrRPqWvsF7BYkwB/9AbIB+WVtU7Zfj39rHx4IiBz8rcO0fuw5kZtT4pTTl5BA=
+X-Received: by 2002:ad4:5761:0:b0:473:7861:69d1 with SMTP id
+ r1-20020ad45761000000b00473786169d1mr8093947qvx.73.1658688930682; Sun, 24 Jul
+ 2022 11:55:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220724172442.87830-1-matti.lehtimaki@gmail.com> <20220724172442.87830-2-matti.lehtimaki@gmail.com>
-In-Reply-To: <20220724172442.87830-2-matti.lehtimaki@gmail.com>
+References: <20220724172442.87830-1-matti.lehtimaki@gmail.com> <20220724172442.87830-4-matti.lehtimaki@gmail.com>
+In-Reply-To: <20220724172442.87830-4-matti.lehtimaki@gmail.com>
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Sun, 24 Jul 2022 21:44:11 +0300
-Message-ID: <CAA8EJpqwpO3gu4XD8cHju=9avGb-1YGN8r1cHwgLOFVKpOFBrQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] ARM: dts: qcom: pm8226: Add node for the GPIOs
+Date:   Sun, 24 Jul 2022 21:55:19 +0300
+Message-ID: <CAA8EJpqUH_v1GXEYF62Z3DBtFu_305_h4D36aCnBr38bo5HoJw@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] ARM: dts: qcom: Add support for Samsung Galaxy Tab
+ 4 10.1 (SM-T530)
 To:     =?UTF-8?Q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
 Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        soc@kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -70,14 +73,106 @@ X-Mailing-List: phone-devel@vger.kernel.org
 On Sun, 24 Jul 2022 at 20:25, Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.c=
 om> wrote:
 >
-> The PM8226 provides 8 GPIOs. Add a node to support them.
+> Add a device tree for the Samsung Galaxy Tab 4 10.1 (SM-T530) wifi tablet
+> based on the apq8026 platform.
+>
+> Currently supported are accelerometer sensor, hall sensor,
+> internal storage, physical buttons (power & volume), screen
+> (based on simple-framebuffer set up by the bootloader), sdcard,
+> touchscreen and USB.
 >
 > Signed-off-by: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
 > ---
-> (no changes since v2)
+> Changes in v3:
+>   - Fix sdhc_2 bus width
+>   - Reorder includes
+>
+> Changes in v2:
+>   - Change codename to matisse-wifi
+>   - Remove msm-id, not needed when lk2nd is used
+>   - Remove unused labels from reserved memory regions
+>   - Rename muic node
+> ---
+>  arch/arm/boot/dts/Makefile                    |   1 +
+>  .../dts/qcom-apq8026-samsung-matisse-wifi.dts | 469 ++++++++++++++++++
+>  2 files changed, 470 insertions(+)
+>  create mode 100644 arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.d=
+ts
+>
+> diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+> index 5112f493f494..8bac4f4f8656 100644
+> --- a/arch/arm/boot/dts/Makefile
+> +++ b/arch/arm/boot/dts/Makefile
+> @@ -1010,6 +1010,7 @@ dtb-$(CONFIG_ARCH_QCOM) +=3D \
+>         qcom-apq8016-sbc.dtb \
+>         qcom-apq8026-asus-sparrow.dtb \
+>         qcom-apq8026-lg-lenok.dtb \
+> +       qcom-apq8026-samsung-matisse-wifi.dtb \
+>         qcom-apq8060-dragonboard.dtb \
+>         qcom-apq8064-cm-qs600.dtb \
+>         qcom-apq8064-ifc6410.dtb \
+> diff --git a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts b/ar=
+ch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
+> new file mode 100644
+> index 000000000000..78a119107069
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
+> @@ -0,0 +1,469 @@
+> +// SPDX-License-Identifier: BSD-3-Clause
+> +/*
+> + * Copyright (c) 2022, Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
+> + */
+> +
+> +/dts-v1/;
+> +
+> +#include <dt-bindings/input/input.h>
+> +#include "qcom-msm8226.dtsi"
+> +#include "qcom-pm8226.dtsi"
+> +
+> +/delete-node/ &smem_region;
+
+Please move this to the /reserved-memory node. having it there would
+help understanding that we are just changing the address.
+
+> +
+> +/ {
+> +       model =3D "Samsung Galaxy Tab 4 10.1";
+> +       compatible =3D "samsung,matisse-wifi", "qcom,apq8026";
+> +       chassis-type =3D "tablet";
+> +
+
+[skipped]
+
+> +       i2c-muic {
+> +               compatible =3D "i2c-gpio";
+
+Is there any reason for using i2c-gpio rather than blsp_i2c4?
+According to the pinctrl-msm8226, gpio14/15 can be mapped to the blsp.
+
+> +               sda-gpios =3D <&tlmm 14 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN=
+)>;
+> +               scl-gpios =3D <&tlmm 15 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN=
+)>;
+> +
+> +               pinctrl-names =3D "default";
+> +               pinctrl-0 =3D <&muic_i2c_default_state>;
+> +
+> +               #address-cells =3D <1>;
+> +               #size-cells =3D <0>;
+> +
+> +               muic: usb-switch@25 {
+> +                       compatible =3D "siliconmitus,sm5502-muic";
+> +                       reg =3D <0x25>;
+> +
+> +                       interrupt-parent =3D <&tlmm>;
+> +                       interrupts =3D <67 IRQ_TYPE_EDGE_FALLING>;
+> +
+> +                       pinctrl-names =3D "default";
+> +                       pinctrl-0 =3D <&muic_int_default_state>;
+> +               };
+> +       };
+
+[skipped]
 
 
 --=20
