@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99C03CCA48E
-	for <phone-devel@archiver.kernel.org>; Mon, 25 Jul 2022 14:07:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 02A4ACCA48B
+	for <phone-devel@archiver.kernel.org>; Mon, 25 Jul 2022 14:07:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235264AbiGYOHc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 25 Jul 2022 10:07:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45730 "EHLO
+        id S234405AbiGYOHb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 25 Jul 2022 10:07:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235269AbiGYOHa (ORCPT
+        with ESMTP id S235049AbiGYOH1 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Jul 2022 10:07:30 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11A4A15FEA
-        for <phone-devel@vger.kernel.org>; Mon, 25 Jul 2022 07:07:27 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id p10so10692955lfd.9
-        for <phone-devel@vger.kernel.org>; Mon, 25 Jul 2022 07:07:27 -0700 (PDT)
+        Mon, 25 Jul 2022 10:07:27 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08B3C14D35
+        for <phone-devel@vger.kernel.org>; Mon, 25 Jul 2022 07:07:26 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id by8so13233904ljb.13
+        for <phone-devel@vger.kernel.org>; Mon, 25 Jul 2022 07:07:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=uRvI4FZyi9EAerjPaenffG/YQ8jsdNde1v0863NG528=;
-        b=CX2PeM/RmnUqqvtuDcLYfqpl6eTxSkeU9motVdpORR72Hem2+0iFD/TDH+LDKEEoRz
-         jwVTAEmGFzI9iyMCCjsh1Q20nBfwVOBt3m3lpplUgfICLyiHtco1W+HQFrMAubWehyTP
-         zuF+t08i5dnYkBSAhAxAB6gjxqdY/weY4iOclDPiCq2S/ckHh2kNqK4n4Gs3QqfPzex+
-         Wp67SbjfVeiAFtZ709ycS+uGnk/9CKQY9KjWgxRpGzrFvvMx2IyhX/lR7+8dtsJG+uD6
-         uy/8jE1mAaadZtIqfpnTYaq3QA1168+/pnyGWtFkOOYnSXVOa9C11cLIH7mpnfLB2bFa
-         VCIA==
+        bh=ZWLYEfxygMjqNcWPZGRXzAM2CEyKrpm8S5gQVU/gLlY=;
+        b=ZIJv2oWwotCmwAqMhW3UumXcWXz5Gf2FFNn99IZMcNXGKMEENS8ISwkLKbHtw+NNsU
+         UxZvvFl5Cbow9Pg19p5jKwZP8QGQ01+v7yYbWDP2nwxfjOH9XqtJrfwUwGflH2IoAAGW
+         hNMG7gvXa5V4OIiAL7jlIkpx58oCFV4rNcFXAgO4ZmZeDqfl+YcBfbdaAHUXZ6mJRo6i
+         miAiz1LCG+y85CgLUgtTIbEaDXLAupMBoaV5Vv4Q9zR4jn9kJjKiEzafa4gqQJydMCfB
+         kLTnqZLJEYfO427Pyy+AIZczkk5MRyPPDc/uK88AgFpuDZXxpRxthihwORbDwiP3JrKG
+         nBHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=uRvI4FZyi9EAerjPaenffG/YQ8jsdNde1v0863NG528=;
-        b=VlpgKIvdq7Yr7Eo3kC2zDwzx/CZcLhqtVKK1tPYtVATQCuw5J3za1WOlSqVtfAf5PJ
-         qkR7Okpvs/arEe4Qn/JhcdPgrwn+nl5OE5WhoyGTAa9HXXZiDEmv0xK54PJRFzXmB2yM
-         zsmr9kpY6TsyLqV9ojL8IGfKGH3CZMJNKK2+ZX1KQtCj9DTKVzVMfnnhoouTVcOPEy+9
-         dLnwZv0EJEL2EMkCvYF4kY3bskC2h1AWHLE50RM4c1JWMCo5CCP/rQcWoN/sElqjGTqk
-         Av/jt0QI1l8PX9jYJtU5R03dkqVa+4482QooM6KGt5jAp8Ki2twgPH/J/VkoDcJEHCFN
-         4NdQ==
-X-Gm-Message-State: AJIora/KX+sTaUjgoBI9SxyPJ/7j/uCAvb/cuKvMB6nW/zSdIOYkMV4M
-        deMMWep6K24lf3rWnXFbwcBCIw==
-X-Google-Smtp-Source: AGRyM1utbeva6CvwbChtckcmDyHUNhJJhIIziA+US8OtNy6CMqzgFQD3KHkF6PepkgcFnSvqTAkiIg==
-X-Received: by 2002:ac2:5084:0:b0:48a:6e29:bf8 with SMTP id f4-20020ac25084000000b0048a6e290bf8mr4756854lfm.572.1658758047443;
-        Mon, 25 Jul 2022 07:07:27 -0700 (PDT)
+        bh=ZWLYEfxygMjqNcWPZGRXzAM2CEyKrpm8S5gQVU/gLlY=;
+        b=yGaEVc+rCaFz80c2x5ZWcgBc2RzviGFB9CWqty6rpG2AoMGgyKULFUVd4Tbp3gIVwi
+         tusrFbmIYZcRUaggG40SZwb+4Oty16UyEVzESbaEr/6CKEdzMxycUrxlmpFQPD+Xb53m
+         q3yZ8j+Qs9CZuMzT7y5kOcbacmOqYwo3BjQ8zN7yLtR8THKXS4pQZmmqnfaq/n+GHQSJ
+         msMlrMNo1wuI0S3r5fNVhEqxrfoEQGWRYb3getolc/xSFovKj8Rw5YTMi2c1wFBJ4ltp
+         0H0/kSz5KctHpqMD6sJj+4VhmLMph+EF9gdqCqb3EKEcoxKebDUxrh1eTHk7NS0QoRpp
+         CGcQ==
+X-Gm-Message-State: AJIora88vocTAV895wAIH5Gj+mUJHXRA+PIoBXqmecHB17riDOG1WC+l
+        t4GuY8LKdFN0HV4t5losfssLPg==
+X-Google-Smtp-Source: AGRyM1tQhbDtPEcMYb6kyTXB8hWFpZ0eFYmkrvzPyDeuZ0/r51E7PrQz0wwVQLzZYZnpNvpoDLq94Q==
+X-Received: by 2002:a2e:8ec7:0:b0:25e:92f:c330 with SMTP id e7-20020a2e8ec7000000b0025e092fc330mr1496341ljl.56.1658758044351;
+        Mon, 25 Jul 2022 07:07:24 -0700 (PDT)
 Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id o7-20020a05651205c700b0047f7419de4asm901127lfo.180.2022.07.25.07.07.26
+        by smtp.gmail.com with ESMTPSA id o7-20020a05651205c700b0047f7419de4asm901127lfo.180.2022.07.25.07.07.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jul 2022 07:07:27 -0700 (PDT)
+        Mon, 25 Jul 2022 07:07:23 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     linux-crypto@vger.kernel.org,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S . Miller" <davem@davemloft.net>
 Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 05/15 v2] crypto: ux500/hash: Drop bit index
-Date:   Mon, 25 Jul 2022 16:04:54 +0200
-Message-Id: <20220725140504.2398965-6-linus.walleij@linaro.org>
+Subject: [PATCH 03/15 v2] crypto: ux500/hash: Pass context to zero message digest
+Date:   Mon, 25 Jul 2022 16:04:52 +0200
+Message-Id: <20220725140504.2398965-4-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220725140504.2398965-1-linus.walleij@linaro.org>
 References: <20220725140504.2398965-1-linus.walleij@linaro.org>
@@ -66,69 +66,43 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This is some leftover code because the field is only referenced
-in a debug print and never assigned.
+This function obtains the current context from the device state
+pointer, which is fragile. Pass the context explicitly instead.
 
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
 ChangeLog v1->v2:
 - No changes
 ---
- drivers/crypto/ux500/hash/hash_alg.h  | 4 ----
- drivers/crypto/ux500/hash/hash_core.c | 4 ++--
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ drivers/crypto/ux500/hash/hash_core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/ux500/hash/hash_alg.h b/drivers/crypto/ux500/hash/hash_alg.h
-index 26e8b7949d7c..00730c0090ae 100644
---- a/drivers/crypto/ux500/hash/hash_alg.h
-+++ b/drivers/crypto/ux500/hash/hash_alg.h
-@@ -217,7 +217,6 @@ struct hash_register {
-  * @buffer:	Working buffer for messages going to the hardware.
-  * @length:	Length of the part of message hashed so far (floor(N/64) * 64).
-  * @index:	Valid number of bytes in buffer (N % 64).
-- * @bit_index:	Valid number of bits in buffer (N % 8).
-  *
-  * This structure is used between context switches, i.e. when ongoing jobs are
-  * interupted with new jobs. When this happens we need to store intermediate
-@@ -237,7 +236,6 @@ struct hash_state {
- 	u32		buffer[HASH_BLOCK_SIZE / sizeof(u32)];
- 	struct uint64	length;
- 	u8		index;
--	u8		bit_index;
- };
- 
- /**
-@@ -358,7 +356,6 @@ struct hash_req_ctx {
-  * @power_state_lock:	Spinlock for power_state.
-  * @regulator:		Pointer to the device's power control.
-  * @clk:		Pointer to the device's clock control.
-- * @restore_dev_state:	TRUE = saved state, FALSE = no saved state.
-  * @dma:		Structure used for dma.
-  */
- struct hash_device_data {
-@@ -372,7 +369,6 @@ struct hash_device_data {
- 	spinlock_t		power_state_lock;
- 	struct regulator	*regulator;
- 	struct clk		*clk;
--	bool			restore_dev_state;
- 	struct hash_state	state; /* Used for saving and resuming state */
- 	struct hash_dma		dma;
- };
 diff --git a/drivers/crypto/ux500/hash/hash_core.c b/drivers/crypto/ux500/hash/hash_core.c
-index e6e3a91ae795..e9962c8a29bd 100644
+index fd7a862244ac..884046e87262 100644
 --- a/drivers/crypto/ux500/hash/hash_core.c
 +++ b/drivers/crypto/ux500/hash/hash_core.c
-@@ -991,8 +991,8 @@ int hash_hw_update(struct ahash_request *req)
- 	}
+@@ -183,11 +183,10 @@ static int hash_dma_write(struct hash_ctx *ctx,
+  * @zero_digest:	True if zero_digest returned.
+  */
+ static int get_empty_message_digest(
+-		struct hash_device_data *device_data,
++		struct hash_device_data *device_data, struct hash_ctx *ctx,
+ 		u8 *zero_hash, u32 *zero_hash_size, bool *zero_digest)
+ {
+ 	int ret = 0;
+-	struct hash_ctx *ctx = device_data->current_ctx;
+ 	*zero_digest = false;
  
- 	req_ctx->state.index = index;
--	dev_dbg(device_data->dev, "%s: indata length=%d, bin=%d\n",
--		__func__, req_ctx->state.index, req_ctx->state.bit_index);
-+	dev_dbg(device_data->dev, "%s: indata length=%d\n",
-+		__func__, req_ctx->state.index);
- 
- 	return 0;
- }
+ 	/**
+@@ -889,7 +888,7 @@ static int hash_hw_final(struct ahash_request *req)
+ 		 * Use a pre-calculated empty message digest
+ 		 * (workaround since hw return zeroes, hw bug!?)
+ 		 */
+-		ret = get_empty_message_digest(device_data, &zero_hash[0],
++		ret = get_empty_message_digest(device_data, ctx, &zero_hash[0],
+ 				&zero_hash_size, &zero_digest);
+ 		if (!ret && likely(zero_hash_size == ctx->digestsize) &&
+ 		    zero_digest) {
 -- 
 2.36.1
 
