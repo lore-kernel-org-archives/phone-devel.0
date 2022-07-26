@@ -2,85 +2,93 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88366C43334
-	for <phone-devel@archiver.kernel.org>; Mon, 25 Jul 2022 22:45:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B50CEC43334
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Jul 2022 10:15:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237428AbiGYWpq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 25 Jul 2022 18:45:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52234 "EHLO
+        id S231864AbiGZKPk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Jul 2022 06:15:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237490AbiGYWpb (ORCPT
+        with ESMTP id S230228AbiGZKPj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Jul 2022 18:45:31 -0400
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2B18255A4;
-        Mon, 25 Jul 2022 15:45:27 -0700 (PDT)
-Received: by mail-oi1-f170.google.com with SMTP id s204so15197089oif.5;
-        Mon, 25 Jul 2022 15:45:27 -0700 (PDT)
+        Tue, 26 Jul 2022 06:15:39 -0400
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20B8D14009;
+        Tue, 26 Jul 2022 03:15:38 -0700 (PDT)
+Received: by mail-pg1-x534.google.com with SMTP id 12so12529249pga.1;
+        Tue, 26 Jul 2022 03:15:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DY8UDvduTIOCtNuHCK2D2xodcevGwkNrrMtgQMDx0U4=;
+        b=RWYTl97PkgO5lF0RfV58Ff+dY0q6bs8vrahBU7DjS7ih43wu/EAzb/gWF3budszxoA
+         F+KWJPOLv+7mv3z7HQa2hECuDcza3UP7IL8fUOhengYAzykfx8QnAIT1YoEMk774vuhy
+         0JwdduD+OnlzQEZRCEwC7KcIZbGl1ZCtWv3zT66rNBMtOoy9USw2twHv/K0jdeImgeya
+         W+VuHq7E7qRO4e70Wba4KKnD1yrcFW+fTlrPAdzqDYeLg0j4/W44VoMgum1dZdBEAn0V
+         2+eW+9oReXkdynD4zMqpqSEYa5UyMrDkxeAXjCcIrbETECmrF9MhZXSLK7iTnDu1MKNg
+         DViQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=owwtlW3rOL0CNBfDOH2DnKrzgv4WQIHmvViMboW6yHk=;
-        b=o7wslRPrDe5jMDxzqlE/JZbtpn16qrQHzSsYTCivvFq0M3IMwZEeQf135ieOdXG4MX
-         08PKMqDOlCvQuszPyPO5yzlMB53TM5nMhJWrb2onLEGYY1Kioc2I6zr5DsedWRfOAm11
-         TYQXQdK9yliUXLwvtXo94j43STTJ9F9fogVg7XVK00iMSaXfWxfbDieQuHpssHLpdMR1
-         Q7/qqHNp1MI4blLlI99FlTgn7/bm17HqqaIj19n55HwBA2ImjDqiA70vsBTxVPZnJR4z
-         ReW1VLf6XWQRo1sIMgboL1/Y43Q4BmwZUcOpmqs7nqVpCv3MW/WrlMUgAsIFlSOg0RAP
-         KqDg==
-X-Gm-Message-State: AJIora+MWI4xKMQhyiD70hAnhmypjjmh3amEo/9n0yWjfp7RTLX70VsD
-        PNsv2BkAZa9jTiD+bU+zBQ==
-X-Google-Smtp-Source: AGRyM1svwSsqAhx+tdPya8Gp0eQkBxcOlgC+d6J8MbW4VLKYGHrsTs/zO+0aGudl40kpceveJ48bmw==
-X-Received: by 2002:a05:6808:1514:b0:33a:ab72:ffa7 with SMTP id u20-20020a056808151400b0033aab72ffa7mr10961459oiw.100.1658789125525;
-        Mon, 25 Jul 2022 15:45:25 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id i6-20020aca2b06000000b0033a11fcb23bsm5317942oik.27.2022.07.25.15.45.22
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=DY8UDvduTIOCtNuHCK2D2xodcevGwkNrrMtgQMDx0U4=;
+        b=cEY4qC2UnCRWxg9FDqJMvWiy71PWGgFse/O/i4FePkHZ06cU68+u+ZMZz+b3JfAeMA
+         k7EUZb7Wpxn6nbSHIQa6F6rygB3T7fPSbi3LFzwqCNI8XsbyxAntZ7ZFAGG6Ylx+CaBS
+         7LlGszTxrGHq0H5/M9BxESOipcGe5LG3Jd62s+j6ijZ1eqQrjzjnsyetz7j8zMZ2gnZ0
+         FrH82tMb48O3/vywhCqKIgpoIdYaYs/+JP1XN/BqJjXQIDHZmZ7qHJiL4gaGh0N4U8bO
+         J94HFfL48PpfiogmPTh1B7VuKzk6HJRPiyfL6EcQH9EzCZOkevt+ehTZazP6b0K9VHNx
+         9GlA==
+X-Gm-Message-State: AJIora98fD3a/RQlOVVry8ubWmS+8PzN+pmGKkqZ+lNxrQu/jR7U5c/+
+        m+CVm//JODfdNCHiHLYc1MQ=
+X-Google-Smtp-Source: AGRyM1tXTx7wkr1bZ+J3yk8fuXY63jaLwVZDsXoBytwNpMaUaVtopL5oK6o84GNp7OgYbMXCO+iXRA==
+X-Received: by 2002:a62:3107:0:b0:52b:83e6:98ae with SMTP id x7-20020a623107000000b0052b83e698aemr17035557pfx.55.1658830537585;
+        Tue, 26 Jul 2022 03:15:37 -0700 (PDT)
+Received: from localhost.localdomain ([112.0.190.94])
+        by smtp.gmail.com with ESMTPSA id u11-20020a170902e80b00b0016d303f266dsm5515106plg.276.2022.07.26.03.15.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jul 2022 15:45:25 -0700 (PDT)
-Received: (nullmailer pid 2886877 invoked by uid 1000);
-        Mon, 25 Jul 2022 22:45:21 -0000
-Date:   Mon, 25 Jul 2022 16:45:21 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     rex-bc.chen@mediatek.com, ikjn@chromium.org, wenst@chromium.org,
-        sboyd@kernel.org, marijn.suijten@somainline.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        paul.bouchara@somainline.org, p.zabel@pengutronix.de,
-        linux-mediatek@lists.infradead.org, ck.hu@mediatek.com,
-        bgolaszewski@baylibre.com, jason-jh.lin@mediatek.com,
-        mturquette@baylibre.com, matthias.bgg@gmail.com,
-        miles.chen@mediatek.com, konrad.dybcio@somainline.org,
-        krzysztof.kozlowski+dt@linaro.org, tinghan.shen@mediatek.com,
-        ~postmarketos/upstreaming@lists.sr.ht, sam.shih@mediatek.com,
-        linux-clk@vger.kernel.org, y.oudjana@protonmail.com,
-        kernel@collabora.com, robh+dt@kernel.org, fparent@baylibre.com,
-        devicetree@vger.kernel.org, martin.botka@somainline.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v6 4/8] dt-bindings: clock: mediatek: Add clock driver
- bindings for MT6795
-Message-ID: <20220725224521.GA2886831-robh@kernel.org>
-References: <20220722090609.52364-1-angelogioacchino.delregno@collabora.com>
- <20220722090609.52364-5-angelogioacchino.delregno@collabora.com>
+        Tue, 26 Jul 2022 03:15:36 -0700 (PDT)
+From:   Molly Sophia <mollysophia379@gmail.com>
+To:     Sumit Semwal <sumit.semwal@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Molly Sophia <mollysophia379@gmail.com>
+Subject: [PATCH v3 0/2] Add driver for Novatek NT35596S panel
+Date:   Tue, 26 Jul 2022 18:15:11 +0800
+Message-Id: <20220726101513.66988-1-mollysophia379@gmail.com>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220722090609.52364-5-angelogioacchino.delregno@collabora.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 22 Jul 2022 11:06:05 +0200, AngeloGioacchino Del Regno wrote:
-> Add the bindings for the clock drivers of the MediaTek Helio X10
-> MT6795 SoC.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->  .../bindings/clock/mediatek,mt6795-clock.yaml | 66 +++++++++++++++++++
->  .../clock/mediatek,mt6795-sys-clock.yaml      | 54 +++++++++++++++
->  2 files changed, 120 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
->  create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
-> 
+These patches add support for Novatek NT35596S based JDI FHD panels,
+found in Xiaomi Mi Mix2S mobile phones.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Changes in v3:
+- Embed the support into existing driver (panel-novatek-nt36672a), as
+  these two IC are similar with different initialization commands.
+
+Changes in v2:
+- Correct items order in Makefile and improve failure handling.
+
+Molly Sophia (2):
+  dt-bindings: display: panel: Add Novatek NT35596S panel bindings
+  drm: panel: Add novatek nt35596s panel driver
+
+ .../display/panel/novatek,nt36672a.yaml       |  20 +-
+ drivers/gpu/drm/panel/Kconfig                 |   7 +-
+ .../gpu/drm/panel/panel-novatek-nt36672a.c    | 246 ++++++++++++++++--
+ 3 files changed, 247 insertions(+), 26 deletions(-)
+
+-- 
+2.37.1
+
