@@ -2,56 +2,56 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 395A6C00140
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Jul 2022 20:36:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36BACC00140
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Jul 2022 20:41:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239957AbiGZUgh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Jul 2022 16:36:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36982 "EHLO
+        id S239517AbiGZUle (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Jul 2022 16:41:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239935AbiGZUgh (ORCPT
+        with ESMTP id S238984AbiGZUld (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Jul 2022 16:36:37 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B0741EC4F
-        for <phone-devel@vger.kernel.org>; Tue, 26 Jul 2022 13:36:36 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id b25so11895570qka.11
-        for <phone-devel@vger.kernel.org>; Tue, 26 Jul 2022 13:36:36 -0700 (PDT)
+        Tue, 26 Jul 2022 16:41:33 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17DE7371BD
+        for <phone-devel@vger.kernel.org>; Tue, 26 Jul 2022 13:41:32 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id f14so11963283qkm.0
+        for <phone-devel@vger.kernel.org>; Tue, 26 Jul 2022 13:41:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=IcZsy9YU2wor9FTm49pTcQx1YMax9xpx8t5nNjMHHvw=;
-        b=mD5ODojS4ERooCgfJfZmIl+iGCoclYcJG6w6PAjhe+Tpd0JS6uSObfXtV4s4uKyR/F
-         poIhJU7SVMBqfYuuTFJPcaIMGTRMXTKuGDoQMr5NjM15hZp9fz3ugncOnLc0zVSRGK/8
-         tclhki/AYGpS5WTbT74GpcVTlKxkdAGMO6Fb9sYuh7RiqM71Tq6dD/97s89feM5TrQyy
-         GVSECQK6bxyGcWk1EjEE/Hpwgr6eJ6IYd13m25lo/qWCZLPO3GJqaZhgiheFcoMsN3/p
-         ehzKa0UWQr2ps82g9gYq5AVGF998MCJV/I5iDcs8zM3usFJHhJfKhoe+REraGV/Qkh44
-         iXPg==
+        bh=jeFixDPfE71QMWfSEPLhQ0hQsRonHTELVwxWS7yvUS0=;
+        b=S+jU8whJE0OvzGwWSxD5K+sb9CCgpxmMPNl3HkH9OF5g+tDFnVlXt5BLvj8e84b3Qe
+         5S6vZn70agIERKmCx6f0GW88foe8CyXNQIRXMlFBIL3h4B6yTXI01h459azQgealo8H4
+         Leh/QJZDIT/tCyFzWGInBK7PgoMYtzL5V5Xs8Af6DLJNA1sU5FlOhnl2QsS99r28yt4T
+         +Rz/xGsA6poNidUpQcScZh9XrgGitcZcW1yCH/Dtct9CtYzuYD7m2A+R3P1D1v2hEGkk
+         fUVZGtOByijdRka3XQGtreGsRwNg4/NVSmy5AwkRX0CGSSxt750ezLbZuCAqMfGfxo+1
+         MaTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=IcZsy9YU2wor9FTm49pTcQx1YMax9xpx8t5nNjMHHvw=;
-        b=NxB4ojIGtE+p7f+di6jlfhLfivwyyLi0RC7vE+pk3jvb5xtqb2Oz3hueVshMkkE7uF
-         S1IkkpwsKce096lsN99DNCn/wERPyDDE7XDbicp8XUsLw2trYml77TtLhzFID9WpkJGs
-         4egTlN/cbCVLD8Oi/45R3YjqjKA4Na/fT757ek41ZLRXbStlMsNVrf9k0j/RxPRstX/l
-         sv5x0mc3hLIZsG7a2PwA1mZOPao03tGqUp6YVDlvgs3KlB9iO4DIE9SIoYbKuJ0a4diX
-         1Vtf7zGYAX8jS0WYzpkuaL+UOouUn627XQJPa3060Ivc2zCZwMDCVZpy+ToEPd3Gr26d
-         4SAQ==
-X-Gm-Message-State: AJIora8J5GhMQ/CFOJp2X3YSwM1stoYCOfY4R1Uo0rillI29rOTe1LDy
-        NdGEa6FR0Hg+tJWZ4b3n3rB9GgmeA3VpABNZry7PoA==
-X-Google-Smtp-Source: AGRyM1tNx6kBPvBXmc3Kyq5jl3sNmdQSJwzJHB6zd3N2gvoT/PMYLLh0EmnZYTV1tO11UGjaUq2wMn3j2xYiMQvBKl8=
+        bh=jeFixDPfE71QMWfSEPLhQ0hQsRonHTELVwxWS7yvUS0=;
+        b=rxIVJ3iqzd63Qb3r5T6UJxZXQ7IGyGYJXdsXmXymkLftnNBrPaDlIs5C+lJEoMj6ex
+         2XZ9cuRQq9u+jkxlT6mdeoFPE4Y579pTGATFkjr8wRrRAJki8dgQ/PKFv9iRDpsawfB9
+         OQ7wPu3oPeTWZ9peY8lYkV9Z3e/Rx6p3ctpNkYDUVq5vHAWdWBSfCQz9cnLxpSNTmVnn
+         Ring9JYgGYeGfL4bPRyRapEphwt5NLVUMqLfEdoAJOPLD3YZBAeAbzpXDsEBrDOxamQj
+         X10OBL9C0FtiJ4k7Q7Rg3RlFRPHy3e6gTZ6NBCgiTqRNZfPh016+cHWM9NnhxE6y5H/Y
+         hLTQ==
+X-Gm-Message-State: AJIora/pmmFW2MM5MnTyKQ5Xi609VdiXdz1zJA1ivoFeXCdu7WzZmGx6
+        cJRZEyOdNGmvqZpUufYUz8Ps3pUkTL4PeknEuurYxw==
+X-Google-Smtp-Source: AGRyM1ugGeT6HXgm2s+CocGaha1OabRyGGWhYG97BOhDTu1yl9LfJKCkKayV4hqWRGe4iSsuMxMlD26zXuCNKOjEhKk=
 X-Received: by 2002:a05:620a:4305:b0:6a9:3829:c03 with SMTP id
- u5-20020a05620a430500b006a938290c03mr13508906qko.363.1658867795165; Tue, 26
- Jul 2022 13:36:35 -0700 (PDT)
+ u5-20020a05620a430500b006a938290c03mr13519778qko.363.1658868091261; Tue, 26
+ Jul 2022 13:41:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220726181133.3262695-1-iskren.chernev@gmail.com> <20220726181133.3262695-2-iskren.chernev@gmail.com>
-In-Reply-To: <20220726181133.3262695-2-iskren.chernev@gmail.com>
+References: <20220726181133.3262695-1-iskren.chernev@gmail.com> <20220726181133.3262695-5-iskren.chernev@gmail.com>
+In-Reply-To: <20220726181133.3262695-5-iskren.chernev@gmail.com>
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Tue, 26 Jul 2022 23:36:24 +0300
-Message-ID: <CAA8EJpoLMioMy61np6Y8Gn+Uhb8EvgU6bwuUyouuNcDz0XwByg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] dt-bindings: regulator: Document the PM6125 SPMI PMIC
+Date:   Tue, 26 Jul 2022 23:41:20 +0300
+Message-ID: <CAA8EJprtwN8OJAuM7XwTAWWBa2y71T4AmZxb+5TUnRdvZvnQTA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] regulator: qcom_spmi: Add PM6125 PMIC support
 To:     Iskren Chernev <iskren.chernev@gmail.com>
 Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
         Mark Brown <broonie@kernel.org>,
@@ -71,62 +71,15 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 On Tue, 26 Jul 2022 at 21:11, Iskren Chernev <iskren.chernev@gmail.com> wrote:
 >
-> Add support for pm6125 compatible string and add relevant supplies in QCom SPMI
-> regulator documentation.
+> Add pm6125 regulators and their sources in the QCom SPMI driver.
 >
 > Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
 > Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 
-The order of sign-offs seems incorrect. The sender's signature should
-be the last one.
+Please fix the order of sign-offs.
 
-> ---
->  .../regulator/qcom,spmi-regulator.yaml        | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.yaml
-> index 8b7c4af4b551..d8f18b441484 100644
-> --- a/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.yaml
-> +++ b/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.yaml
-> @@ -12,6 +12,7 @@ maintainers:
->  properties:
->    compatible:
->      enum:
-> +      - qcom,pm6125-regulators
->        - qcom,pm660-regulators
->        - qcom,pm660l-regulators
->        - qcom,pm8004-regulators
-> @@ -106,6 +107,24 @@ required:
->    - compatible
->
->  allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - qcom,pm6125-regulators
-> +    then:
-> +      properties:
-> +        vdd_l1_l7_l17_l18-supply: true
-> +        vdd_l2_l3_l4-supply: true
-> +        vdd_l5_l15_l19_l20_l21_l22-supply: true
-> +        vdd_l6_l8-supply: true
-> +        vdd_l9_l11-supply: true
-> +        vdd_l10_l13_l14-supply: true
-> +        vdd_l12_l16-supply: true
-> +        vdd_l23_l24-supply: true
-> +      patternProperties:
-> +        "^vdd_s[1-8]-supply$": true
-
-Add an empty line please.
-
->    - if:
->        properties:
->          compatible:
-> --
-> 2.37.1
->
+With that fixed:
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
 
 -- 
