@@ -2,145 +2,129 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B67B2C19F29
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Jul 2022 08:47:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7755C19F29
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Jul 2022 10:24:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230522AbiG0Irg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Jul 2022 04:47:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33048 "EHLO
+        id S229544AbiG0KYu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Jul 2022 06:24:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbiG0Irf (ORCPT
+        with ESMTP id S232063AbiG0KYh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Jul 2022 04:47:35 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD36220CD;
-        Wed, 27 Jul 2022 01:47:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 3C52ECE2017;
-        Wed, 27 Jul 2022 08:47:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1CAC433C1;
-        Wed, 27 Jul 2022 08:47:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658911651;
-        bh=4GuO28BznivsDSDth2Dn8Mdw0gdA1bj+aNBMQfgsvzg=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Qeiw6FahKTgJxAZujGiIyCQtO+OAtKfwtkI6PQP5YfplD2wNjTCPeJ2JzgncmNsTO
-         Uobyom2VtiwNQ3CMnMPODLwx/f3zupqWRpaATCXrl6BEdsvKxAZi9RHJTiatpKtnxa
-         JH73JF7l4G5B7C7IakWFO1jJNJz35dgP2fAKOHzTQdCVIEVEF/6Y98W4V32yAw0om2
-         RlO1LY3XhAEjlpApVFlwpgvPMAy9cjVuKVV+FLs4pWjC5A8cQa1QPQlMlSZJhRMV1w
-         zXxSkrCrX0fU7VpEDRbhwdYfFsGpphxXfbNBmCSHAh6uf6sX8IssuiC51ma3iWs8gU
-         IS6LsrY+dIRlA==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc:     Caleb Connolly <caleb@connolly.tech>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Wed, 27 Jul 2022 06:24:37 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 442D343323
+        for <phone-devel@vger.kernel.org>; Wed, 27 Jul 2022 03:24:36 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id t22so20059222lfg.1
+        for <phone-devel@vger.kernel.org>; Wed, 27 Jul 2022 03:24:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=pwRSwcrjoF7t2bTpsHDxTeVcAQajNb7y0PUjCxzEDfI=;
+        b=LS+Iq/WMoD7g4rTSAOFGbQRQsJrbsmMhE3QRamPOWaFluRlH83NztRwKKklCzLTC8V
+         6k07KZyafk3PY9EMqAGNQmuPpzd/s33fd8UYM/WMho6YDmroalSHyZiDigk+AQH4iJNh
+         wovh7QgkQCfvPkibvISyxjfZD5NR7FqPEDTJAwUsTCN1OasSb8WfLVT0ZET59CW1ZZjZ
+         Fzc/6hs2f/d0/6PbS7ewKiwEvzDzLriAjfS81OlT32ybDtt5C5z0y4K88Avoxbg0qxZj
+         kNWgJjzJEjKxJDjfKA+pDEznOoKegQRPULWet0Gs183MQAPGq8/FbztxLC5jjACU2/ID
+         eeXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=pwRSwcrjoF7t2bTpsHDxTeVcAQajNb7y0PUjCxzEDfI=;
+        b=UzcMmokBemJd7zfQv7ZtyuDMbFUurNm/JzOF9cIteCvwFLaDy9dW+baLnhT8vdcNeM
+         7amiRTooOJXel2xUT0EFg4ODF9jckWuGHUxhOgbTbBDLuAt7IvPona2eQ7cMokVpx0Hk
+         Ts5pedY3bEZJ063Xr/Vgh3o4G8pYjFWJD+PXGRmEy9PdN93s3SO27TOoQuNXOPuHrbmh
+         uBAEM/dt3mZkDYN2IHAAKSZ9MT+GJMEMmrexFEp0IcjueyxCB1l9MvqeTJSx4n1FyBme
+         ebJ825HG+Lr3DWXAr//UBV3CQx6Rpti2QmZ+HfXt0becXuz2cx0vKpujhayTrdk6R97S
+         okcw==
+X-Gm-Message-State: AJIora8Fl3x5hg7blNiIMxtmWVDYJbp0eU8tOtF28zmmbKdwT+ilPKm5
+        /lHnMbbvApHwjo4iZQ0zZMHQ4g==
+X-Google-Smtp-Source: AGRyM1tyXHCoDrQOD8dUuUL8NnbQqSpli/fmf0tsGDrueYdv2MU7LL5eZyMmjTbTitUO3XThHNJMOQ==
+X-Received: by 2002:a05:6512:114a:b0:48a:39e6:ff7d with SMTP id m10-20020a056512114a00b0048a39e6ff7dmr7678289lfg.338.1658917474613;
+        Wed, 27 Jul 2022 03:24:34 -0700 (PDT)
+Received: from [192.168.3.197] (78-26-46-173.network.trollfjord.no. [78.26.46.173])
+        by smtp.gmail.com with ESMTPSA id u7-20020ac258c7000000b0048a83ab2d32sm2251051lfo.0.2022.07.27.03.24.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Jul 2022 03:24:34 -0700 (PDT)
+Message-ID: <809e9c7d-7634-f690-675d-9eccac8c8de8@linaro.org>
+Date:   Wed, 27 Jul 2022 12:24:32 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v3 1/2] dt-bindings: display: panel: Add Novatek NT35596S
+ panel bindings
+Content-Language: en-US
+To:     Molly Sophia <mollysophia379@gmail.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         Sam Ravnborg <sam@ravnborg.org>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Amit Pundir <amit.pundir@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, ath10k@lists.infradead.org
-Subject: Re: [PATCH 2/4] arm64: dts: qcom: add sdm845-google-blueline (Pixel 3)
-References: <20220718213051.1475108-1-caleb@connolly.tech>
-        <20220718213051.1475108-3-caleb@connolly.tech>
-        <d8f24aca-2cdf-413f-2b30-ad41b81be1a5@linaro.org>
-Date:   Wed, 27 Jul 2022 11:47:25 +0300
-In-Reply-To: <d8f24aca-2cdf-413f-2b30-ad41b81be1a5@linaro.org> (Dmitry
-        Baryshkov's message of "Tue, 19 Jul 2022 01:13:38 +0300")
-Message-ID: <87o7xbosbm.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20220726101513.66988-1-mollysophia379@gmail.com>
+ <20220726101513.66988-2-mollysophia379@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220726101513.66988-2-mollysophia379@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-+ ath10k list
+On 26/07/2022 12:15, Molly Sophia wrote:
+> Add documentation for "novatek,nt35596s" panel.
+> 
+> Changes in v3:
+> - Embed the documentation into existing one (novatek,nt36672a).
+> 
+> Signed-off-by: Molly Sophia <mollysophia379@gmail.com>
+> ---
+>  .../display/panel/novatek,nt36672a.yaml       | 20 ++++++++++++-------
+>  1 file changed, 13 insertions(+), 7 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
+> index 563766d283f6..560fb66d0e5a 100644
+> --- a/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
+> +++ b/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
+> @@ -20,14 +20,20 @@ allOf:
+>  
+>  properties:
+>    compatible:
+> -    items:
+> -      - enum:
+> -          - tianma,fhd-video
+> -      - const: novatek,nt36672a
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - tianma,fhd-video
+> +          - const: novatek,nt36672a
+> +
+> +      - items:
+> +          - enum:
+> +              - jdi,fhd-nt35596s
+> +          - const: novatek,nt35596s
 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
+This entire entry should be rather before nt36672a judging by numbers:
 
-> On 19/07/2022 00:30, Caleb Connolly wrote:
->
->> From: Amit Pundir <amit.pundir@linaro.org>
->>
->> This adds an initial dts for the Blueline (Pixel 3). Supported
->> functionality includes display, Debug UART, UFS, USB-C (peripheral), WiFi,
->> Bluetooth and modem.
->>
->> Bootloader compatible board and msm IDs are needed for the kernel to boot
->> with Pixel3 bootloader, so those are added.
->>
->> GPIOs 0 through 3 and 81 through 84 are configured to not be accessible
->> from the application CPUs, so we mark them as reserved to allow the Pixel 3
->> to boot.
->>
->> The reserved-memory locations where obtained from downstream using
->> kernel logs:
->> https://gist.github.com/calebccff/090d10bfac3cb9e9bd98dda30b054c96
->>
->> The rmtfs region is allocated with UIO, making it technically "dynamic".
->> It's address and size can be read from sysfs:
->>
->> blueline:/ # cat /sys/class/uio/uio0/name
->> rmtfs
->> at /sys/class/uio/uio0/maps/map0/addr
->> 0x00000000f2701000
->> blueline:/ # cat /sys/class/uio/uio0/maps/map0/size
->> 0x0000000000200000
->>
->> Like the OnePlus 6, it needs 1kB reserved on either side of the rmtfs
->> memory to workaround some XPU bug which would otherwise cause erroneous
->> XPU violations when accessing the rmtfs_mem region.
->>
->> For wifi, the pixel 3 reports a board-id of 0xFF, and downstream
->> only includes a single bdwlan file. The qcom,ath10k-calibration-variant
->> property is set to ensure that the correct calibration data is used.
->>
->> Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
->> [AmitP: Cherry-picked and refactored from Bjorn's db845c dts
->>          ("arm64: dts: qcom: Add Dragonboard 845c") https://lkml.org/lkml/2019/6/6/7]
->> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
->> [sumits: merged commits to add board and msm ids, gpio range reservation,
->>    ufs device-reset gpio and adaptation to v5.5+ changes]
->> Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
->> [vinod: Add display nodes]
->> Signed-off-by: Vinod Koul <vkoul@kernel.org>
->> [caleb: remove db845c bits, cleanup, add reserved-memory for modem/wifi]
->> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
->
-> Thanks for your patch, few minor items to improve.
++    oneOf:
++      - items:
++          - enum:
++              - jdi,fhd-nt35596s
++          - const: novatek,nt35596s
++
++      - items:
++          - enum:
++              - tianma,fhd-video
++          - const: novatek,nt36672a
 
-[...]
 
->> +&wifi {
->> +	status = "okay";
->> +
->> +	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
->> +	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
->> +	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
->> +	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
->> +
->> +	qcom,snoc-host-cap-8bit-quirk;
->> +	qcom,ath10k-calibration-variant = "google_blueline";
->
-> Ideally Kalle Valo should bless this string, added him to the Cc list.
-> Could you please submit the board file to the ath10k (see [1] for the
-> description and [2] for an example).
-
-Thanks for CC. I prefer "google-blueline" but that's really a cosmetic
-issue.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Best regards,
+Krzysztof
