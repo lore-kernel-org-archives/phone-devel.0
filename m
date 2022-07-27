@@ -2,160 +2,125 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44C7BC04A68
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Jul 2022 18:52:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2606FC04A68
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Jul 2022 23:15:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237355AbiG0Sw0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Jul 2022 14:52:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35356 "EHLO
+        id S236888AbiG0XPK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Jul 2022 19:15:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234515AbiG0Svf (ORCPT
+        with ESMTP id S236179AbiG0XOb (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Jul 2022 14:51:35 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39EAB8C5BB;
-        Wed, 27 Jul 2022 10:47:25 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id a89so1699075edf.5;
-        Wed, 27 Jul 2022 10:47:24 -0700 (PDT)
+        Wed, 27 Jul 2022 19:14:31 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 799F84F6A2;
+        Wed, 27 Jul 2022 16:14:14 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id b11so221050eju.10;
+        Wed, 27 Jul 2022 16:14:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=V0L5AWHt0bV3SDhHbsVIxSbM57Z8DP+iuEiLSXmQC/I=;
-        b=P3Xamf3U2iZYskFha2ONWfAztZxdzgk599C944EadcyaJTY7OPo9UVU3gQrqs7qYid
-         45yznp+KLx/lYwFgQAziKJCmJrsPQgXbCy7fVTgWsLLJO41AV6DA2gTGkOlPb1VHWB9+
-         PpJQKdYRm1TbR9BZhNoV1tqnroU082DC6yIPmXW7SLzIfAQDTMcOymQUC4X5nZjLd7Dv
-         3JDmdiBUa0YyEKzzSjEkpkPTfYxwsNrmntEq5VtyZ359M4TtToqaQevNsWHVJPGjH5uC
-         ADh9Unx0UCH96ombieMmf/K4BN60gT9KQbqB/gK+NZwjEsikREzPzWJAmr4Ujm0iFRYb
-         HzVQ==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc;
+        bh=TcR/Hba16utRWgzQ8bdXRxPgeMOIHRSrEa8M8CqJAe8=;
+        b=blQu6uJ/ksKBqhhrpsET0yR3sRRpKO8zTyMyBxMBZHb7cBmfNsb19+xa6J5OtHpuZf
+         denPmiVelgTazluhPaCaJUkc4VZicW4xeY8fhJXMWey7hg5/IDDsP0Lnz8kPhMVcrmoU
+         Ac1g2Wutw6irx1dv5kjcMdZu+0YD3UJlW7xafYm/MV55JHuRTc7dfiq1RzIl0aOqSDs0
+         krBAwEtJL40MFyWUXFUcopB5KtaNkIrg2d0qrZQrbyL/knj1PDssGo9o1QRDdMQz6WX8
+         C5elhvMh1iSDgbFk+dOy8SDBw99MC9LFWSUhNQfnGnTJ0NDAk9kOpntf8KPCYriPCEcS
+         jFEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=V0L5AWHt0bV3SDhHbsVIxSbM57Z8DP+iuEiLSXmQC/I=;
-        b=P/mA+wZIpBKOIHzu5yi7E7RsTdv2oooJCjIwp2hUk1no/IJOQEZfahyS3dcS/yLLVi
-         eAOkE6pWLwWJHrmMIXaBTHYyO+DJ7kwSczV8q8Ykq+U7Q1EnqYVt26e0SZ4qKmPjfmlc
-         uN0iiQOaI8esaShu5JBVB65iS2Y/1Hwa4mxlWD5TIi9xHoVlP0PYRfW1e68cEqj+8D63
-         MJbOfxnJhcnwwlY+cVYYt1kEsUXH0diozKdy8lDiZRU9LzJedBPuquX083o+oMT9jCGP
-         h7rN6Is1+HMOSOxHxuuWUL8bHI02IMovp++fyWODMbDEaKVO6Nnhuq1BAljjF6+4jh5B
-         X/0Q==
-X-Gm-Message-State: AJIora+/ZZ5Hwy5faY8s0qhNl5ABHoi/Zu7lt7hDxLP3mPZp4mk9HuVK
-        eY8+Q2lxwJpwefexZPQHDS3Q2okmvPv6gPYZMlrDdznCks0=
-X-Google-Smtp-Source: AGRyM1taB1Rzispj7fe1jzGdNDhaQPG5/zfR5i4V+fBBpub8fw8SGHgMFoqsF+99hdbVByyBHK+F8F9mxhHvQN0TktM=
-X-Received: by 2002:a05:6402:4414:b0:434:f58c:ee2e with SMTP id
- y20-20020a056402441400b00434f58cee2emr23803215eda.362.1658944043438; Wed, 27
- Jul 2022 10:47:23 -0700 (PDT)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=TcR/Hba16utRWgzQ8bdXRxPgeMOIHRSrEa8M8CqJAe8=;
+        b=EfaxxfnesWhWhzKyNQ2KuGGMK05PfhERV3e993knBwmPCeZCtqcmK/iDJNyatwZdA8
+         QPsdDkMvMbxk4/D8efuew8J/xGTWV2CQS5lZHlAlUx5exlVPhPbkN7WNez8hKzARsZD2
+         2yTDdJn2jpN5vaM6ZHAXmM6h4Bp7Tz9kOQJNgTq7xwAB0Yq3EadorrJFjKJnBlN3E6gV
+         Ij0zAE9bPGwjhBB5xQFLC8t4HYGHfDs0xBuZRPv6N15ZH+PenkLgerpeJfM3UHDvWnik
+         k5SxkXST6NevSCY9YpQ4NoTE1IyiLyVf9sqQIH/LO377897K/sR7WTCXi7iGrKyCkqWk
+         Yu+A==
+X-Gm-Message-State: AJIora+hc6tRRYFzDf4xHJytf8xak9K4FHPZS3TEYkg2Tkq2uihgE1ck
+        4xtaaGwOqEzAXJwyjAmMWZnJjOEnjUkd+iZN
+X-Google-Smtp-Source: AGRyM1tL0RDZ8Eh6SJuyD07h37mCSFRwuyhUVDR0BMwC/BbTbxZmaeQ3MLIE83tlp7vlSYaKV5/fuA==
+X-Received: by 2002:a17:907:6ea7:b0:72f:2cf2:9aef with SMTP id sh39-20020a1709076ea700b0072f2cf29aefmr19471363ejc.215.1658963652300;
+        Wed, 27 Jul 2022 16:14:12 -0700 (PDT)
+Received: from [192.168.74.101] ([77.78.38.236])
+        by smtp.gmail.com with ESMTPSA id ck15-20020a0564021c0f00b0043adc6552d6sm10806486edb.20.2022.07.27.16.14.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Jul 2022 16:14:11 -0700 (PDT)
+Message-ID: <79077e08-4bd8-6967-748d-876589ef978e@gmail.com>
+Date:   Thu, 28 Jul 2022 02:14:10 +0300
 MIME-Version: 1.0
-References: <cover.1656883851.git.jahau@rocketmail.com> <69a512cf5b62b34415d5983a6406c3d5ba438a1d.1656883851.git.jahau@rocketmail.com>
- <CAHp75Ve5Z9OOx94FtXY77_Fwkp27D32Hn7bAG+Da++HXmupytA@mail.gmail.com> <c5643cee-8491-3fae-b9d4-ac03d86c1e8a@rocketmail.com>
-In-Reply-To: <c5643cee-8491-3fae-b9d4-ac03d86c1e8a@rocketmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 27 Jul 2022 19:46:46 +0200
-Message-ID: <CAHp75VdDdKo7rt+cik4J+_4tDRgBXhgZYc8p+dOSH4s_gtCOUg@mail.gmail.com>
-Subject: Re: [PATCH v4 10/10] iio: magnetometer: yas530: Add YAS537 variant
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v2 3/5] regulator: qcom_spmi: Add support for new
+ regulator types
+Content-Language: en-US
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Adam Skladowski <a39.skl@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Robert Marko <robimarko@gmail.com>,
+        Jorge Ramirez <jorge.ramirez-ortiz@linaro.org>,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <20220726181133.3262695-1-iskren.chernev@gmail.com>
+ <20220726181133.3262695-4-iskren.chernev@gmail.com>
+ <YuEoLteLBgd+b8sg@sirena.org.uk>
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+In-Reply-To: <YuEoLteLBgd+b8sg@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Jul 27, 2022 at 12:13 AM Jakob Hauser <jahau@rocketmail.com> wrote:
-> On 04.07.22 21:47, Andy Shevchenko wrote:
-> > On Mon, Jul 4, 2022 at 12:05 AM Jakob Hauser <jahau@rocketmail.com> wrote:
 
-...
 
-> >> +       /* Write registers according to Android driver */
-> >
-> > Would be nice to elaborate in the comment what exactly the flow is
-> > here, like "a) setting value of X;  b) ...".
+
+On 7/27/22 14:57, Mark Brown wrote:
+> On Tue, Jul 26, 2022 at 09:11:31PM +0300, Iskren Chernev wrote:
 >
-> Unfortunately, I don't know more than what the code already says. In the
-> Yamaha Android driver, this part looks like this:
-> https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/drivers/iio/magnetometer/yas_mag_drv-yas537.c#L345-L350
+>> Add support for some regulator types that are missing in this driver, all
+>> belonging to the FTSMPS426 register layout.  This is done in preparation
+>> for adding support for the PM6125 PMIC.
 >
-> The comment "Write registers according to Android driver" actually says
-> "I don't know what I'm doing here, this is copy-paste from Android".
+>> +	.set_mode		= spmi_regulator_ftsmps3_set_mode,
+>> +	.get_mode		= spmi_regulator_ftsmps426_get_mode,
 >
-> I can remove the comment if you find it inappropriate. Though from my
-> point of view the comment is ok.
+> Why are set and get asymmetric?
 
-The comment is okay for you, but for me it needs elaboration. So,
-something like above in compressed format (couple of short sentences
-to explain that nobody knows what the heck is that) will be
-appreciated.
+Because the get method, only uses AUTO and HPM, which have the same value
+for ftsmps3 and ftsmps426 (so there is no need for a new function).
 
-...
-
-> >> +       ret = regmap_write(yas5xx->map, YAS537_ADCCAL, GENMASK(1, 0));
-> >> +       if (ret)
-> >> +               return ret;
-> >> +       ret = regmap_write(yas5xx->map, YAS537_ADCCAL + 1, GENMASK(7, 3));
-> >> +       if (ret)
-> >> +               return ret;
-> >
-> > Can bulk write be used here?
+>> @@ -1473,7 +1557,7 @@ static const struct spmi_regulator_mapping supported_regulators[] = {
+>>  	SPMI_VREG(LDO,   HT_P600,  0, INF, HFS430, hfs430, ht_p600, 10000),
+>>  	SPMI_VREG(LDO,   HT_P150,  0, INF, HFS430, hfs430, ht_p150, 10000),
+>>  	SPMI_VREG(BUCK,  GP_CTL,   0, INF, SMPS,   smps,   smps,   100000),
+>> -	SPMI_VREG(BUCK,  HFS430,   0, INF, HFS430, hfs430, hfs430,  10000),
+>> +	SPMI_VREG(BUCK,  HFS430,   0,   3, HFS430, hfs430, hfs430,  10000),
 >
-> Technically yes. But in this case I strongly would like to keep the
-> single regmap_write as we go through different registers step by step
-> and write them. That way it's much better readable. And it's just these
-> two that are neighboring each other. As this happens in
-> yas537_power_on(), it isn't done very often, thus doesn't cost much
-> resources.
+> The changelog said we were adding support for new types but this looks
+> like changing an existing type.
 
-You seems program the 16-bit register with a single value, I don't
-think it's a good idea to split a such. When it's a bulk write and
-value defined with __be16 / __le16 it makes much more clear what
-hardware is and what it expects.
+The code, as written now does a different thing for BUCK, HFS430 (on
+mainline (ML) and downstream (DS) linked in the commit message). Since DS
+only supports newer stuff, to be on safe side, I kept existing behavior for
+rev 0-3 on BUCK(3)+HFS430(10), so at least DS and ML agree on pm6125
+completely.
 
-...
+The commit [1] that adds support for BUCK+HFS430 might be wrong, or it
+might be right for the time being (i.e initial revisions had different
+behavior). I'm CC-ing Jorge.
 
-> >> +       /* The interval value is static in regular operation */
-> >> +       intrvl = (YAS537_DEFAULT_SENSOR_DELAY_MS * 1000
-> >
-> > MILLI ?
->
-> What do you mean by this comment?
->
-> The suffixes _MS and _US were proposed by you in v2. I think they are fine.
+Question is is BUCK+HFS430 on common2 (ftsmps426) or common3 (ftsmps3) or
+a mix (depending on revision).
 
-1000 --> MILLI ?
-
-10^-3 sec * 10^-3 = 10^-6 sec.
-
-...
-
-> >> -       ret = yas5xx->chip_info->measure_offsets(yas5xx);
-> >> -       if (ret)
-> >> -               goto assert_reset;
-> >
-> >> +       if (yas5xx->chip_info->measure_offsets) {
-> >
-> > This can be done when you introduce this callback in the chip_info
-> > structure, so this patch won't need to shuffle code again. I.o.w. we
-> > can reduce ping-pong development in this series.
->
-> I did this change in this patch on purpose because it's the introduction
-> of YAS537 variant that's causing this change. YAS537 is the first
-> variant that doesn't use yas5xx->chip_info->measure_offsets.
->
-> Shall I move it to patch 9 nonetheless?
-
-It's a bit hard to answer yes or no, I think after you try to resplit,
-we will see what is the best for this part.
-
-> >> +               ret = yas5xx->chip_info->measure_offsets(yas5xx);
-> >> +               if (ret)
-> >> +                       goto assert_reset;
-> >> +       }
-
--- 
-With Best Regards,
-Andy Shevchenko
+[1] 0211f68e626f (regulator: qcom_spmi: add PMS405 SPMI regulator, 2019-06-17)
