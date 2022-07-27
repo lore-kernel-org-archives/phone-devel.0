@@ -2,140 +2,145 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF39CC04A68
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Jul 2022 08:35:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B67B2C19F29
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Jul 2022 08:47:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230472AbiG0IfC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Jul 2022 04:35:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52934 "EHLO
+        id S230522AbiG0Irg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Jul 2022 04:47:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230449AbiG0IfB (ORCPT
+        with ESMTP id S229501AbiG0Irf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Jul 2022 04:35:01 -0400
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98EA14598C
-        for <phone-devel@vger.kernel.org>; Wed, 27 Jul 2022 01:34:59 -0700 (PDT)
-Received: by mail-qt1-x829.google.com with SMTP id c20so12160560qtw.8
-        for <phone-devel@vger.kernel.org>; Wed, 27 Jul 2022 01:34:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dA5j1jqryALrdC4QkJMTe/X+dWRTvz0oQv4XcBgtyHM=;
-        b=lCkfuFcR4LunaAOuVYuJtg9Y7+nSXFTxPlkR0Y6zXFy5iOEATaCWXzgPpstgIDulhf
-         n0AC6D3MkPIAe/aXiqUSXJsdBHIRCQvzUtQIqgImQ86JVo840DyGNeRTgGIh3hnGw+lJ
-         odDbZX6dv32P66IlV4fOGNPU25gxSZX9jck+USKR3eWUgtvlDuZxBWNM0yE+n4kEk4Pi
-         I3W/xQyOFsYvmsiYx/5C9emDBgrS/0K3JfessiWHTzaVnRV2+JilA4LXCLzOcmztpgiT
-         syn3iYC4pxh4iJoHmRwwYidCKk/mPu++ng+1meEIYwi8Z9Ar7u4p4BUcQ4SdbeIs6G3n
-         8zpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dA5j1jqryALrdC4QkJMTe/X+dWRTvz0oQv4XcBgtyHM=;
-        b=IOXmmFhiYQBfH1MsgMl/eUcgoY6lsKlHhNvPxzUVreXoONJHCFjyl7LKfHq+xQBT7c
-         1+7H4BEcREx9bqDF+WQFyUU7kbN6lYOwsPWe8bBblJZox8kZouxMox38sske6FkP54sD
-         pV1penhPQQEUCLcIf1x1jCkZs6+4om/kywQEe/2BGsgKDAQC1BNVB2G8XH2d13lyaBXB
-         o5Z66HeyPZyRwyAli+NlHkvAqfba1f1JQ9xAYfr1ddRiXP0wUIxQm7+Ud9eYFRP/w0K7
-         TEO93teZrl0Z557i+ILG9sICOXxGqDzxnc//+KoeCnk4m2CNOzGZl7bnyZwelCS71eIP
-         BFwg==
-X-Gm-Message-State: AJIora8beu/Up1siVwUt8qKHqxgkbHjLHFHpJgShnghOoTzANdzdFtRY
-        wqsE/12eJCdV+FhFrYvZx+3mliCFCCgXvclGORj7cA==
-X-Google-Smtp-Source: AGRyM1trmWmOgcXNQisG2Jv7vVC0nCup37xjuAGBe5fvmSNzQiHe6iWbFg5N1AT0L669M3SW9/qkSNELgzYnMDrE6n4=
-X-Received: by 2002:ac8:5942:0:b0:31f:39f6:aba7 with SMTP id
- 2-20020ac85942000000b0031f39f6aba7mr9502124qtz.295.1658910898718; Wed, 27 Jul
- 2022 01:34:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220726181133.3262695-1-iskren.chernev@gmail.com>
- <20220726181133.3262695-2-iskren.chernev@gmail.com> <CAA8EJpoLMioMy61np6Y8Gn+Uhb8EvgU6bwuUyouuNcDz0XwByg@mail.gmail.com>
- <79fce900-2825-45ca-44f2-9fb94b5eeed3@gmail.com>
-In-Reply-To: <79fce900-2825-45ca-44f2-9fb94b5eeed3@gmail.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Wed, 27 Jul 2022 11:34:47 +0300
-Message-ID: <CAA8EJprk9=xBBodf0NPhXpQNeU_Rm_wK1g4hCUJq_JaV6_JJcg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] dt-bindings: regulator: Document the PM6125 SPMI PMIC
-To:     Iskren Chernev <iskren.chernev@gmail.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Adam Skladowski <a39.skl@gmail.com>,
+        Wed, 27 Jul 2022 04:47:35 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD36220CD;
+        Wed, 27 Jul 2022 01:47:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 3C52ECE2017;
+        Wed, 27 Jul 2022 08:47:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1CAC433C1;
+        Wed, 27 Jul 2022 08:47:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1658911651;
+        bh=4GuO28BznivsDSDth2Dn8Mdw0gdA1bj+aNBMQfgsvzg=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Qeiw6FahKTgJxAZujGiIyCQtO+OAtKfwtkI6PQP5YfplD2wNjTCPeJ2JzgncmNsTO
+         Uobyom2VtiwNQ3CMnMPODLwx/f3zupqWRpaATCXrl6BEdsvKxAZi9RHJTiatpKtnxa
+         JH73JF7l4G5B7C7IakWFO1jJNJz35dgP2fAKOHzTQdCVIEVEF/6Y98W4V32yAw0om2
+         RlO1LY3XhAEjlpApVFlwpgvPMAy9cjVuKVV+FLs4pWjC5A8cQa1QPQlMlSZJhRMV1w
+         zXxSkrCrX0fU7VpEDRbhwdYfFsGpphxXfbNBmCSHAh6uf6sX8IssuiC51ma3iWs8gU
+         IS6LsrY+dIRlA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     Caleb Connolly <caleb@connolly.tech>,
         Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
-        Robert Marko <robimarko@gmail.com>, devicetree@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Amit Pundir <amit.pundir@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, ath10k@lists.infradead.org
+Subject: Re: [PATCH 2/4] arm64: dts: qcom: add sdm845-google-blueline (Pixel 3)
+References: <20220718213051.1475108-1-caleb@connolly.tech>
+        <20220718213051.1475108-3-caleb@connolly.tech>
+        <d8f24aca-2cdf-413f-2b30-ad41b81be1a5@linaro.org>
+Date:   Wed, 27 Jul 2022 11:47:25 +0300
+In-Reply-To: <d8f24aca-2cdf-413f-2b30-ad41b81be1a5@linaro.org> (Dmitry
+        Baryshkov's message of "Tue, 19 Jul 2022 01:13:38 +0300")
+Message-ID: <87o7xbosbm.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 27 Jul 2022 at 10:49, Iskren Chernev <iskren.chernev@gmail.com> wrote:
->
->
->
-> On 7/26/22 23:36, Dmitry Baryshkov wrote:
-> > On Tue, 26 Jul 2022 at 21:11, Iskren Chernev <iskren.chernev@gmail.com> wrote:
-> >>
-> >> Add support for pm6125 compatible string and add relevant supplies in QCom SPMI
-> >> regulator documentation.
-> >>
-> >> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
-> >> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-> >
-> > The order of sign-offs seems incorrect. The sender's signature should
-> > be the last one.
->
-> Sure, will do!
->
-> >> ---
-> >>  .../regulator/qcom,spmi-regulator.yaml        | 19 +++++++++++++++++++
-> >>  1 file changed, 19 insertions(+)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.yaml
-> >> index 8b7c4af4b551..d8f18b441484 100644
-> >> --- a/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.yaml
-> >> +++ b/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.yaml
-> >> @@ -12,6 +12,7 @@ maintainers:
-> >>  properties:
-> >>    compatible:
-> >>      enum:
-> >> +      - qcom,pm6125-regulators
-> >>        - qcom,pm660-regulators
-> >>        - qcom,pm660l-regulators
-> >>        - qcom,pm8004-regulators
-> >> @@ -106,6 +107,24 @@ required:
-> >>    - compatible
-> >>
-> >>  allOf:
-> >> +  - if:
-> >> +      properties:
-> >> +        compatible:
-> >> +          contains:
-> >> +            enum:
-> >> +              - qcom,pm6125-regulators
-> >> +    then:
-> >> +      properties:
-> >> +        vdd_l1_l7_l17_l18-supply: true
-> >> +        vdd_l2_l3_l4-supply: true
-> >> +        vdd_l5_l15_l19_l20_l21_l22-supply: true
-> >> +        vdd_l6_l8-supply: true
-> >> +        vdd_l9_l11-supply: true
-> >> +        vdd_l10_l13_l14-supply: true
-> >> +        vdd_l12_l16-supply: true
-> >> +        vdd_l23_l24-supply: true
-> >> +      patternProperties:
-> >> +        "^vdd_s[1-8]-supply$": true
-> >
-> > Add an empty line please.
->
-> All other if-then blocks don't have newlines, shall I add one between each as
-> well?
++ ath10k list
 
-Yes, please, in a separate commit.
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
 
+> On 19/07/2022 00:30, Caleb Connolly wrote:
+>
+>> From: Amit Pundir <amit.pundir@linaro.org>
+>>
+>> This adds an initial dts for the Blueline (Pixel 3). Supported
+>> functionality includes display, Debug UART, UFS, USB-C (peripheral), WiFi,
+>> Bluetooth and modem.
+>>
+>> Bootloader compatible board and msm IDs are needed for the kernel to boot
+>> with Pixel3 bootloader, so those are added.
+>>
+>> GPIOs 0 through 3 and 81 through 84 are configured to not be accessible
+>> from the application CPUs, so we mark them as reserved to allow the Pixel 3
+>> to boot.
+>>
+>> The reserved-memory locations where obtained from downstream using
+>> kernel logs:
+>> https://gist.github.com/calebccff/090d10bfac3cb9e9bd98dda30b054c96
+>>
+>> The rmtfs region is allocated with UIO, making it technically "dynamic".
+>> It's address and size can be read from sysfs:
+>>
+>> blueline:/ # cat /sys/class/uio/uio0/name
+>> rmtfs
+>> at /sys/class/uio/uio0/maps/map0/addr
+>> 0x00000000f2701000
+>> blueline:/ # cat /sys/class/uio/uio0/maps/map0/size
+>> 0x0000000000200000
+>>
+>> Like the OnePlus 6, it needs 1kB reserved on either side of the rmtfs
+>> memory to workaround some XPU bug which would otherwise cause erroneous
+>> XPU violations when accessing the rmtfs_mem region.
+>>
+>> For wifi, the pixel 3 reports a board-id of 0xFF, and downstream
+>> only includes a single bdwlan file. The qcom,ath10k-calibration-variant
+>> property is set to ensure that the correct calibration data is used.
+>>
+>> Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+>> [AmitP: Cherry-picked and refactored from Bjorn's db845c dts
+>>          ("arm64: dts: qcom: Add Dragonboard 845c") https://lkml.org/lkml/2019/6/6/7]
+>> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+>> [sumits: merged commits to add board and msm ids, gpio range reservation,
+>>    ufs device-reset gpio and adaptation to v5.5+ changes]
+>> Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+>> [vinod: Add display nodes]
+>> Signed-off-by: Vinod Koul <vkoul@kernel.org>
+>> [caleb: remove db845c bits, cleanup, add reserved-memory for modem/wifi]
+>> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+>
+> Thanks for your patch, few minor items to improve.
+
+[...]
+
+>> +&wifi {
+>> +	status = "okay";
+>> +
+>> +	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
+>> +	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
+>> +	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
+>> +	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
+>> +
+>> +	qcom,snoc-host-cap-8bit-quirk;
+>> +	qcom,ath10k-calibration-variant = "google_blueline";
+>
+> Ideally Kalle Valo should bless this string, added him to the Cc list.
+> Could you please submit the board file to the ath10k (see [1] for the
+> description and [2] for an example).
+
+Thanks for CC. I prefer "google-blueline" but that's really a cosmetic
+issue.
 
 -- 
-With best wishes
-Dmitry
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
