@@ -2,65 +2,66 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87228C19F21
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Jul 2022 07:26:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B036FC04A68
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Jul 2022 07:49:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229592AbiG0H0g (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Jul 2022 03:26:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60750 "EHLO
+        id S229705AbiG0Htj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Jul 2022 03:49:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229971AbiG0H0d (ORCPT
+        with ESMTP id S229447AbiG0Hth (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Jul 2022 03:26:33 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F01B43E76A
-        for <phone-devel@vger.kernel.org>; Wed, 27 Jul 2022 00:26:31 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id p11so21043846lfu.5
-        for <phone-devel@vger.kernel.org>; Wed, 27 Jul 2022 00:26:31 -0700 (PDT)
+        Wed, 27 Jul 2022 03:49:37 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D02E422CB;
+        Wed, 27 Jul 2022 00:49:36 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id z18so8021703edb.10;
+        Wed, 27 Jul 2022 00:49:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=8nhJCT3rD1ItmbUeh8BkQKeiT6tXFfN/+ixSzWykvJc=;
-        b=MKIHocr4BEkDBaTzuoccGtEHNAgvpG1hjFXNhO3CIqX7f28bJgPNScExLAY37+OgsB
-         q3zwwzAIvJm8PQ4aLGmUBRe0uEleevOAwvz8hWHSUb7NcUsL6BW7A9cqS60UphudAtdu
-         WkJujEBjICB3B3GwJni1ldK1nW73K1070YzK/fpiaFx4/5V1wJUVHRRKBsx9hh4YhaVD
-         Y2ouJVY99b0mf+CmY2UovTd1Vps8YAoBz4365OUSAqgotejFu3DbA3qn6fpEHm9JUaVV
-         GrnwgqhUAjZS8id7cyFN7xyzYpRVDX0/2zyz2E9g3w3ZDu9EbdQfbya2PZ03V86M8YCR
-         q7EA==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc;
+        bh=7qrKymhpLOAPYDYIFsDNUzeQR021XnkNkwlPESUcTX8=;
+        b=FY9ZK6DN7/WlouONO+X7GQTuYKV2MQxX+NxsAxG9h3cBD5XAQJUqonvfI5qp4qOB5Q
+         ym19B8AQOzTbLQmo2n2Gmx0t4SpoqBf50VL5TRiTAyTxa+i4Yj2d2+Dd2a6oqLySyJJe
+         MFvtgnnuQdxYYqDUf90lSOotu51KM13cmu9MDpbImfwBVrYDvC0X4kaO45i2IPiJgp/M
+         cvvHCP3n+c25o6DnZEyE+O3l0/lKE6l/+wtE6pAiJMSl+YHcjuNvAdwsYCRHQh5+cYOH
+         sKf7q0xFFxSLN8MHdvsFSIwT8AK/auwulCLQB/zGBG6yIAM8odehRGMp6xtMXIMaog5m
+         OOjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=8nhJCT3rD1ItmbUeh8BkQKeiT6tXFfN/+ixSzWykvJc=;
-        b=wIhBmBcDQvZD2hK/VasA9YMggIDL/GJexQ+8VWtCQwynbtAGWeoGcizEAoRPaVKGAv
-         255jKcqN1VXP23ySwKFHG3EPg5Fb4GtlrAKKxaWIDgMSSD2B6pg5niKDuip5DvDdEG1Z
-         928qXPb9r17IlTkgkb/FjPZrQNGFsYC2cq3qiDvx4NFUDmkuy2Z+Xd+iNWlMSkWurH4n
-         jY1PstUJ36sNOHkYgnGchUXDbQWqwvSqmeyMSILTXpYOBtgTTFfq5NVr/KHK2I46V4RL
-         HBtauqx5Fmh+DjD/GHEz0Q75s4Xgtgu109F+65ylJWM9On+bKmrVKYPp4D6LvJZ3qipL
-         qQYA==
-X-Gm-Message-State: AJIora96oDNTQzrbBBjSkr1wlhZ/Gz1FsoyIuJrYYBIAVuoxEGYc/P8F
-        pQfE6WBoUUO61DzFgPbW4daWYw==
-X-Google-Smtp-Source: AGRyM1uUEpQJOmsYyeoFck+zrvHEKaVsS4IQQB/C5smIm084uy+xqPneVmF7JFoySIzAF6bFSztIrA==
-X-Received: by 2002:a19:7606:0:b0:48a:74b4:8479 with SMTP id c6-20020a197606000000b0048a74b48479mr7369691lff.441.1658906789985;
-        Wed, 27 Jul 2022 00:26:29 -0700 (PDT)
-Received: from [192.168.3.197] (78-26-46-173.network.trollfjord.no. [78.26.46.173])
-        by smtp.gmail.com with ESMTPSA id a17-20020a2eb551000000b0025dece5427asm3114746ljn.124.2022.07.27.00.26.28
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=7qrKymhpLOAPYDYIFsDNUzeQR021XnkNkwlPESUcTX8=;
+        b=Ag3D5HZIYniQISiOlna4J7vkAAF+vI4xdKfBMI8MJNuKf9d9w58GjGvXbN4nLGpJuw
+         mR2RlsmJfZy0sxu7A8PAnR2KddKdxyA9EiWp+KGqh+3q/EcDIUkTJqOdyofkWJRSNAz0
+         ireQXL8QUjppDlI6Bj25cCFvAdZyVU5Lws9l7sbTIzygvt0ZPW7DMbf0XWIiCf0a6xbG
+         m8ehH5LG5iMEUZ/7+z2aGeW/Qo7Rp0dW/GWlnbO8p/wqtugMRZdTPlY2CeXHRcJ/qA/1
+         AB9q51mOVEsgO55wudMJPVy6Lh0vpvC+hPZpFg0of46yxZAR0W/3KTFxw2bdXsyZPxvb
+         GGMw==
+X-Gm-Message-State: AJIora9q5Z8KammNEnru6qIOauVE1ZiGeQdoUG5By6qP4qJ2niIAb9c8
+        op8Ul5aKOz3pls+8bPO2fH2fHAZfn6NYKTGu
+X-Google-Smtp-Source: AGRyM1tXpncuFPJXAmibcjFfJyU4q/R3OQaxywdRzAQa2B0nQnvOw7ZLhPVOhUShHwVnwox3XPIyqw==
+X-Received: by 2002:a05:6402:1f01:b0:43a:239e:e65a with SMTP id b1-20020a0564021f0100b0043a239ee65amr21521389edb.428.1658908174880;
+        Wed, 27 Jul 2022 00:49:34 -0700 (PDT)
+Received: from [192.168.74.101] ([77.78.38.236])
+        by smtp.gmail.com with ESMTPSA id bt8-20020a0564020a4800b0043bba5ed21csm9698792edb.15.2022.07.27.00.49.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Jul 2022 00:26:29 -0700 (PDT)
-Message-ID: <7e742415-d93f-83d9-bf01-6f023a4d1a34@linaro.org>
-Date:   Wed, 27 Jul 2022 09:26:28 +0200
+        Wed, 27 Jul 2022 00:49:34 -0700 (PDT)
+Message-ID: <79fce900-2825-45ca-44f2-9fb94b5eeed3@gmail.com>
+Date:   Wed, 27 Jul 2022 10:49:32 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v2 2/5] dt-bindings: regulator: Document the PM6125 RPM
- regulators
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v2 1/5] dt-bindings: regulator: Document the PM6125 SPMI
+ PMIC
 Content-Language: en-US
-To:     Iskren Chernev <iskren.chernev@gmail.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mark Brown <broonie@kernel.org>
-Cc:     Adam Skladowski <a39.skl@gmail.com>,
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Adam Skladowski <a39.skl@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -70,50 +71,81 @@ Cc:     Adam Skladowski <a39.skl@gmail.com>,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 References: <20220726181133.3262695-1-iskren.chernev@gmail.com>
- <20220726181133.3262695-3-iskren.chernev@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220726181133.3262695-3-iskren.chernev@gmail.com>
+ <20220726181133.3262695-2-iskren.chernev@gmail.com>
+ <CAA8EJpoLMioMy61np6Y8Gn+Uhb8EvgU6bwuUyouuNcDz0XwByg@mail.gmail.com>
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+In-Reply-To: <CAA8EJpoLMioMy61np6Y8Gn+Uhb8EvgU6bwuUyouuNcDz0XwByg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 26/07/2022 20:11, Iskren Chernev wrote:
-> Document the pm6125 compatible string and available regulators in the QCom SMD
-> RPM regulator documentation.
+
+
+On 7/26/22 23:36, Dmitry Baryshkov wrote:
+> On Tue, 26 Jul 2022 at 21:11, Iskren Chernev <iskren.chernev@gmail.com> wrote:
+>>
+>> Add support for pm6125 compatible string and add relevant supplies in QCom SPMI
+>> regulator documentation.
+>>
+>> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+>> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 > 
-> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> The order of sign-offs seems incorrect. The sender's signature should
+> be the last one.
 
-Unusual SoB chain here as well.
+Sure, will do!
 
-> ---
->  .../devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml | 4 ++++
->  1 file changed, 4 insertions(+)
+>> ---
+>>  .../regulator/qcom,spmi-regulator.yaml        | 19 +++++++++++++++++++
+>>  1 file changed, 19 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.yaml
+>> index 8b7c4af4b551..d8f18b441484 100644
+>> --- a/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.yaml
+>> +++ b/Documentation/devicetree/bindings/regulator/qcom,spmi-regulator.yaml
+>> @@ -12,6 +12,7 @@ maintainers:
+>>  properties:
+>>    compatible:
+>>      enum:
+>> +      - qcom,pm6125-regulators
+>>        - qcom,pm660-regulators
+>>        - qcom,pm660l-regulators
+>>        - qcom,pm8004-regulators
+>> @@ -106,6 +107,24 @@ required:
+>>    - compatible
+>>
+>>  allOf:
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            enum:
+>> +              - qcom,pm6125-regulators
+>> +    then:
+>> +      properties:
+>> +        vdd_l1_l7_l17_l18-supply: true
+>> +        vdd_l2_l3_l4-supply: true
+>> +        vdd_l5_l15_l19_l20_l21_l22-supply: true
+>> +        vdd_l6_l8-supply: true
+>> +        vdd_l9_l11-supply: true
+>> +        vdd_l10_l13_l14-supply: true
+>> +        vdd_l12_l16-supply: true
+>> +        vdd_l23_l24-supply: true
+>> +      patternProperties:
+>> +        "^vdd_s[1-8]-supply$": true
 > 
-> diff --git a/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
-> index c233461cc980..1122a3a17f56 100644
-> --- a/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
-> +++ b/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
-> @@ -57,6 +57,9 @@ description:
+> Add an empty line please.
+
+All other if-then blocks don't have newlines, shall I add one between each as
+well?
+
+>>    - if:
+>>        properties:
+>>          compatible:
+>> --
+>> 2.37.1
+>>
 > 
->    For pm660l s1, s2, s3, s5, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, bob
 > 
-> +  For pm6125 s1, s2, s3, s4, s5, s6, s7, s8, l1, l2, l3, l5, l6, l7, l8, l9,
-> +  l10, l22, l12, l13, l14, l15, l16, l17, l18, l19, l20, l21, l22, l23, l24
-> +
->    For pma8084, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, l1, l2, l3,
->    l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19,
->    l20, l21, l22, l23, l24, l25, l26, l27, lvs1, lvs2, lvs3, lvs4, 5vs1
-> @@ -90,6 +93,7 @@ properties:
->        - qcom,rpm-pm8998-regulators
->        - qcom,rpm-pm660-regulators
->        - qcom,rpm-pm660l-regulators
-> +      - qcom,rpm-pm6125-regulators
-
-Put new entry in alphabetical order.
-
-
-Best regards,
-Krzysztof
