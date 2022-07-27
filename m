@@ -2,41 +2,65 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B9F39C04A68
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Jul 2022 11:59:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E0A5C19F2C
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Jul 2022 12:04:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232415AbiG0L76 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Jul 2022 07:59:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46062 "EHLO
+        id S232664AbiG0MEl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Jul 2022 08:04:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbiG0L76 (ORCPT
+        with ESMTP id S232672AbiG0MEj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Jul 2022 07:59:58 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CACD027CC7;
-        Wed, 27 Jul 2022 04:59:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 57A09B81FE6;
-        Wed, 27 Jul 2022 11:59:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EBB5C433C1;
-        Wed, 27 Jul 2022 11:59:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658923194;
-        bh=Vpeh+fLR8fhAePR4gpuB9Tc/Vj/mATpE0vaPAwGND38=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fTtgb4aqsEJGE/AXv02THG7FNf443jy/W8lSPkzY7uJUaAKkiAuCYKMJZEOqNhzd1
-         qS+X5MYC+GK/K6o+WuCuyQ33Yc3co8k/r+xUuWj9utCwkYlZt7HXBhpiSbJYEUxuMX
-         8WthMAZaUV6AGYTu3CL2BH+DGLJc+I6Bm5+iUod4oi0uGOIBsOf23idAlzgHUZGcHk
-         tJaZ3LWpRttedQxp8ppa1bCgiVd8vkH+0DHO/DFGfFlGOYlJDaaFnSo4qligw1qZMv
-         T3jWxAQh4GEsRu/WMdPeFtUliR1NSjjWw8LbUqfPiNxrgJzQqnCSitArnW0sJObjMn
-         5A4cecE14zJ1w==
-Date:   Wed, 27 Jul 2022 12:59:45 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Iskren Chernev <iskren.chernev@gmail.com>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Adam Skladowski <a39.skl@gmail.com>,
+        Wed, 27 Jul 2022 08:04:39 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AFC64B0F4
+        for <phone-devel@vger.kernel.org>; Wed, 27 Jul 2022 05:04:36 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id d17so24706410lfa.12
+        for <phone-devel@vger.kernel.org>; Wed, 27 Jul 2022 05:04:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=2dUZ4AGI+yDI99uFVBIAkMIhm5YNlifPEZHjyoEMmko=;
+        b=w6c+7gFc5bptabl2jpva60XhxykGU+F8kjr9idGrGrRTCUZQS4rGwI4tcucHGdLeOs
+         DUC763HNsyLc7uKz/mGXDbbicgE6tzoj93cfCWUNUnWyHpC3ATvj20W9G5rqQOS1emFC
+         gRiRCycZgA3ucoDHQD6Oy2P5UMpgYdid5MyYaAnud9EYdISYD4O/5+KXsg5NbJPzB7a4
+         5sl+2oAKeHjUCM8W3g373ZLPI4Dp6nu6Ak6yK7ZhAzi43z9g93p3waNKP1x0NLmjkyFM
+         B5TKLarYBWUPcrkHgPPlkfrfZSlnNsZZ5itwSyNVTp75Z72Cg35WzhoEqrSzLMy/mXTe
+         QhKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=2dUZ4AGI+yDI99uFVBIAkMIhm5YNlifPEZHjyoEMmko=;
+        b=xt7h7ieVWCh3uSQhoLGDMvftDA+jFAonXi9cuq/AucJxHtnW+i65oB9jtkTzf9Aq6O
+         ctsAnRbx1rf6cf+voAcT3DSGZrf6rAm0w6Dg5P+IF95N/+WQ0m0c5HsqlrByF3t617I5
+         qRnmJPJcK3sB8taUW07xKfJ9Vg75AadFCMbrsuWfGyaPaaTpjp7+doYdr7JQE5pk63W/
+         rGkxaHQw7w4ddE9wYtT06ho9gZfJB53s6ulgLbTCaF3k+CrS8LMHv67MKNxfLxLhWjaK
+         p3ggo22lroubVsDJ3sHnfcGgBawjeM7WzTb6pM8jSNQDRV32kLZBkNyi1rCp6dN1Z4vD
+         qRsw==
+X-Gm-Message-State: AJIora/E0TYhr5aWK1b42T3bS2WuaPn7wkGO7seIH8VgUP1ZzyGjfiGt
+        447LxWLGZ1WFwuZAYv/EyzI4Tg==
+X-Google-Smtp-Source: AGRyM1use5uqI8LWDKweipAVSirfmTrNH9lmQFY27iWI4XCfhQb86Ab0tNP7LerX+Ep4k+DAUtcnkw==
+X-Received: by 2002:ac2:4e0d:0:b0:48a:bc83:7fb8 with SMTP id e13-20020ac24e0d000000b0048abc837fb8mr508616lfr.623.1658923474154;
+        Wed, 27 Jul 2022 05:04:34 -0700 (PDT)
+Received: from [192.168.3.197] (78-26-46-173.network.trollfjord.no. [78.26.46.173])
+        by smtp.gmail.com with ESMTPSA id k10-20020ac257ca000000b0048a27abcc34sm1681187lfo.202.2022.07.27.05.04.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Jul 2022 05:04:33 -0700 (PDT)
+Message-ID: <028091af-b1a1-efc6-b404-dcb5b6f3589e@linaro.org>
+Date:   Wed, 27 Jul 2022 14:04:32 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v2 2/5] dt-bindings: regulator: Document the PM6125 RPM
+ regulators
+Content-Language: en-US
+To:     Iskren Chernev <iskren.chernev@gmail.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mark Brown <broonie@kernel.org>
+Cc:     Adam Skladowski <a39.skl@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -45,55 +69,54 @@ Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
         Robert Marko <robimarko@gmail.com>, devicetree@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v2 4/5] regulator: qcom_spmi: Add PM6125 PMIC support
-Message-ID: <YuEosXO1xYMY8Mul@sirena.org.uk>
 References: <20220726181133.3262695-1-iskren.chernev@gmail.com>
- <20220726181133.3262695-5-iskren.chernev@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="26sqcxpjMBeK/bO+"
-Content-Disposition: inline
-In-Reply-To: <20220726181133.3262695-5-iskren.chernev@gmail.com>
-X-Cookie: No motorized vehicles allowed.
+ <20220726181133.3262695-3-iskren.chernev@gmail.com>
+ <7e742415-d93f-83d9-bf01-6f023a4d1a34@linaro.org>
+ <73a82790-52c4-b777-b4ff-f8d361f0bd29@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <73a82790-52c4-b777-b4ff-f8d361f0bd29@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 27/07/2022 12:32, Iskren Chernev wrote:
+> 
+>>> ---
+>>>  .../devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml | 4 ++++
+>>>  1 file changed, 4 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
+>>> index c233461cc980..1122a3a17f56 100644
+>>> --- a/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
+>>> +++ b/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
+>>> @@ -57,6 +57,9 @@ description:
+>>>
+>>>    For pm660l s1, s2, s3, s5, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, bob
+>>>
+>>> +  For pm6125 s1, s2, s3, s4, s5, s6, s7, s8, l1, l2, l3, l5, l6, l7, l8, l9,
+>>> +  l10, l22, l12, l13, l14, l15, l16, l17, l18, l19, l20, l21, l22, l23, l24
+>>> +
+>>>    For pma8084, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, l1, l2, l3,
+>>>    l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, l19,
+>>>    l20, l21, l22, l23, l24, l25, l26, l27, lvs1, lvs2, lvs3, lvs4, 5vs1
+>>> @@ -90,6 +93,7 @@ properties:
+>>>        - qcom,rpm-pm8998-regulators
+>>>        - qcom,rpm-pm660-regulators
+>>>        - qcom,rpm-pm660l-regulators
+>>> +      - qcom,rpm-pm6125-regulators
+>>
+>> Put new entry in alphabetical order.
+> 
+> Will sort first (they are currently not sorted), 
 
---26sqcxpjMBeK/bO+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Arh, indeed, they are not sorted.
 
-On Tue, Jul 26, 2022 at 09:11:32PM +0300, Iskren Chernev wrote:
+> then add pm6125. Should I also
+> sort the driver code?
 
-> @@ -2245,7 +2280,6 @@ static const struct spmi_regulator_data pm660l_regu=
-lators[] =3D {
->  	{ }
->  };
->=20
-> -
->  static const struct spmi_regulator_data pm8004_regulators[] =3D {
->  	{ "s2", 0x1700, "vdd_s2", },
->  	{ "s5", 0x2000, "vdd_s5", },
+You can, but don't have to.
 
-Unrelated indentation change (I think undoing a random extra blank line
-added in the prior patch, at least there were some random extras in
-that).
-
---26sqcxpjMBeK/bO+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmLhKK8ACgkQJNaLcl1U
-h9ChSwf/aHTZnhAig+LV40j8fbrE5n7yXzXTD4fInIqXVctRS7cHh7Wjp+WSNONO
-YU/n3Bon7zJMgr80Y9Cm5nHMjjE0Yxx8vD4L7t5YoSgje/4MgX/aeu6xmoR0oOS9
-ts3jzMj9savB/ejl/W8HLFBIfqLzWQm9/TZZ3zHfDgltSbmFYxYzH2PK0j9jIlCW
-MDhDtCodu6ZSO10E6UtOC2Qm3i8An0kcQvSfSn3FroC6QfMdT6yeFZ9swCfABlW8
-M8bn/ijSjKOw2KOGNQQeT7K4mREPcCGj4e7wV7kUa/K0udio2mFEw0SXWRBSHdWy
-iSl+eL5gIBpLBmuuJzVcaEziuiBKWw==
-=UQyf
------END PGP SIGNATURE-----
-
---26sqcxpjMBeK/bO+--
+Best regards,
+Krzysztof
