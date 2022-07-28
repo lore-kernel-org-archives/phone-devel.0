@@ -2,60 +2,54 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0AF8C04A68
-	for <phone-devel@archiver.kernel.org>; Thu, 28 Jul 2022 02:04:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1285BC04A68
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Jul 2022 02:36:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234436AbiG1CEa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Jul 2022 22:04:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40006 "EHLO
+        id S234134AbiG1CgT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Jul 2022 22:36:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231584AbiG1CE3 (ORCPT
+        with ESMTP id S229618AbiG1CgS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Jul 2022 22:04:29 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E29ED50712;
-        Wed, 27 Jul 2022 19:04:27 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id q23so861445lfr.3;
-        Wed, 27 Jul 2022 19:04:27 -0700 (PDT)
+        Wed, 27 Jul 2022 22:36:18 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550AB25E8F;
+        Wed, 27 Jul 2022 19:36:18 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id x1so612400plb.3;
+        Wed, 27 Jul 2022 19:36:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pSfuGobo36quNHWVipU/P1j+8s0MOGIFxkTWPlVuisg=;
-        b=kVrA+CxmAhYaAyt2XbjfpNQhbXEJDxTm344h3jdITmfQZaozQia1vNlq+KfhEG+CIm
-         wxOXiUA3JXNFPuo7JR0uZ5YRALUrbcHzv/QadH29YU/CsUVGZ9XnwlRhLlEuV0plA2Ub
-         FuIg/vlgE8kr1x7nxK8F0DVb6o9dBkTyVSSSlGWB5FBhapYTH2zQKwUN99AhXS00GyK0
-         s4tcQuN0qhnb2JKD6onV66e0vMMDZGx7TciEDAUjVoHJwrSNsiAqntM1sapEQ+jJJg1R
-         I9FsiP5C/a4CvmC0LfQrnCN8733lP0Nc0Q2RwhUFmxCNg+It2wnqPwoLiBVycel7RMBB
-         t4qA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NdQIfx2yBoVp1XbVGjdpkzY7q06jAiqpy0iyo3m7Pa0=;
+        b=RK13hn2INVyTNO+EVC6Jv8ur0KlF4o1tmp2ID1/lA71y+8Em7LGfQyL/D3LAabJWD+
+         XxqVCraWinE+JoQEOmG2GyShj0gDD3qGmaBpzh0r73iGjJLeAlLiaDg7kNmSeLYbaE+x
+         6qvzWeVjx1SB6Iy/x8lxXd8xvuX8bHT73EkSCltjeMH9mtSzCqwdL8jKTcXW5+e1Tki5
+         JcjtO9uEJ4OS0CXe8gthFGQNZFirc8mIILU6isfHmjsQy3GkqmdR91XMHQRXVGCfhaRv
+         OnQvWr+r7FJh2F1K2hn3EHWxLHs/5ICbOXFSAyuy7oA3pCyr58RCEt7e3CjJ2S+jrdiE
+         93cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pSfuGobo36quNHWVipU/P1j+8s0MOGIFxkTWPlVuisg=;
-        b=cC22YL2G9WGMbn/RexgwPR7K0HgFAdg3aRNV8x79SDkQTCtT+T3FZ1siUhPPhHkHXX
-         mCpJpO3LjZaeAo96lYP7sHnyiRlwfj3gpiW//1TYZ+gFLL6CA01CIIUTptF+R4kxfjnE
-         lL24o8WkuRNa3M4AH82fp43KZCt103BYGn1+ct3KvNYGOrTmof4xBIfyl9W0JyA5Xx1l
-         RrcoYR0yqwy0z0mW5THauVSy+CA8rGE1wWRMoLV3vDQ0cpnUAIGnZEJJKDOhmRNnafsG
-         ftGtAr9mULGKDQjXguJp0xZR13xoZA2fpuAxY+7l2+PTs9ELT3dwSP38z2isDHhfhDEZ
-         WaQw==
-X-Gm-Message-State: AJIora+Wdy0Jjq5n3uQR4V5vpJDeAgVWO8hTTMqdpo+Qm4EGtX0HqHwu
-        wpCJhD7haCKMxEcdvV3WGp3gs3ZXUzxORIHRI7U=
-X-Google-Smtp-Source: AGRyM1sXsKkEuQYa2xUqWXJTZ0dYadBV58iuh9/OXFdD7dfr5MGre6hSXIeMyedKRD6ZDi647biJttfPLhS5srGsn50=
-X-Received: by 2002:ac2:5550:0:b0:48a:b15f:223f with SMTP id
- l16-20020ac25550000000b0048ab15f223fmr2435705lfk.181.1658973865994; Wed, 27
- Jul 2022 19:04:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220726101513.66988-1-mollysophia379@gmail.com>
- <20220726101513.66988-2-mollysophia379@gmail.com> <809e9c7d-7634-f690-675d-9eccac8c8de8@linaro.org>
-In-Reply-To: <809e9c7d-7634-f690-675d-9eccac8c8de8@linaro.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NdQIfx2yBoVp1XbVGjdpkzY7q06jAiqpy0iyo3m7Pa0=;
+        b=e/eIdGuzyCJEzfb6kJ1zQIcut9q7HyGE6t8p0vNC15XPpngo9lItq6lDDMEJkio7DH
+         u3MXNyVuA00cvEMEQ5BXMZpKAQAt6QWv6r+Arz/yWgt9oKoAfYqNsRZ1huBMeAToa8Fn
+         Z2leCZzZB4PkuL720WXnueYqLxX+HhF4sVy4J6uVmGeKXFfTG+M58V+PcJKUMFymSwgx
+         A71w98fBsnfGHBwrlje//RZqS0TYITszLYHjX9b+Qz/Q5HU5QGlTCa8cGo8dF/pUU0bz
+         Sf5+DIp0ZFPFXXwHVJtV6rPg+ZUXYVOG0rfTjxN4wfp8V0lnQNyCLqsVNnn94QqzYfGc
+         jl7w==
+X-Gm-Message-State: AJIora9k2R5TnkJa2RUzxFXElOGXjwHxFYsWQmzB64rGckrbHf03utTE
+        XoDr4V2/BHoIxoW7vWqsfI4gDolORLJ7pQ==
+X-Google-Smtp-Source: AGRyM1tJAvXnnyR2+MnboO+W1hgL7XJhlQojAqA0LGuvJUkuDLu7/OtT/Hm2Feb2JBYcqHVzl4r2Jw==
+X-Received: by 2002:a17:903:124f:b0:16b:8167:e34e with SMTP id u15-20020a170903124f00b0016b8167e34emr24436604plh.52.1658975777717;
+        Wed, 27 Jul 2022 19:36:17 -0700 (PDT)
+Received: from localhost.localdomain ([112.0.190.165])
+        by smtp.gmail.com with ESMTPSA id v12-20020aa799cc000000b00528c149fe97sm14631311pfi.89.2022.07.27.19.36.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Jul 2022 19:36:17 -0700 (PDT)
 From:   Molly Sophia <mollysophia379@gmail.com>
-Date:   Thu, 28 Jul 2022 10:04:14 +0800
-Message-ID: <CAK0UmJBkMBfGN8q-ap-zWAJWeD9-WsXErMWPtpvcDmNWiHSSvQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: display: panel: Add Novatek NT35596S
- panel bindings
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Sumit Semwal <sumit.semwal@linaro.org>,
+To:     Sumit Semwal <sumit.semwal@linaro.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         Sam Ravnborg <sam@ravnborg.org>,
         David Airlie <airlied@linux.ie>,
@@ -63,68 +57,41 @@ Cc:     Sumit Semwal <sumit.semwal@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Molly Sophia <mollysophia379@gmail.com>
+Subject: [PATCH v4 0/2] Add driver for Novatek NT35596S panel
+Date:   Thu, 28 Jul 2022 10:35:53 +0800
+Message-Id: <20220728023555.8952-1-mollysophia379@gmail.com>
+X-Mailer: git-send-email 2.37.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Thanks! I'll handle that and send the new patches later.
+These patches add support for Novatek NT35596S based JDI FHD panels,
+found in Xiaomi Mi Mix2S mobile phones.
 
-Best regards,
-Molly
+Changes in v4:
+- Correct numeric order of the items in binding.
 
-On Wed, Jul 27, 2022 at 6:24 PM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 26/07/2022 12:15, Molly Sophia wrote:
-> > Add documentation for "novatek,nt35596s" panel.
-> >
-> > Changes in v3:
-> > - Embed the documentation into existing one (novatek,nt36672a).
-> >
-> > Signed-off-by: Molly Sophia <mollysophia379@gmail.com>
-> > ---
-> >  .../display/panel/novatek,nt36672a.yaml       | 20 ++++++++++++-------
-> >  1 file changed, 13 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
-> > index 563766d283f6..560fb66d0e5a 100644
-> > --- a/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
-> > +++ b/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
-> > @@ -20,14 +20,20 @@ allOf:
-> >
-> >  properties:
-> >    compatible:
-> > -    items:
-> > -      - enum:
-> > -          - tianma,fhd-video
-> > -      - const: novatek,nt36672a
-> > +    oneOf:
-> > +      - items:
-> > +          - enum:
-> > +              - tianma,fhd-video
-> > +          - const: novatek,nt36672a
-> > +
-> > +      - items:
-> > +          - enum:
-> > +              - jdi,fhd-nt35596s
-> > +          - const: novatek,nt35596s
->
-> This entire entry should be rather before nt36672a judging by numbers:
->
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - jdi,fhd-nt35596s
-> +          - const: novatek,nt35596s
-> +
-> +      - items:
-> +          - enum:
-> +              - tianma,fhd-video
-> +          - const: novatek,nt36672a
->
->
-> Best regards,
-> Krzysztof
+Changes in v3:
+- Embed the support into existing driver (panel-novatek-nt36672a), as
+  these two IC are similar with different initialization commands.
+
+Changes in v2:
+- Correct items order in Makefile and improve failure handling.
+
+Molly Sophia (2):
+  dt-bindings: display: panel: Add Novatek NT35596S panel bindings
+  drm: panel: Add novatek nt35596s panel driver
+
+ .../display/panel/novatek,nt36672a.yaml       |  20 +-
+ drivers/gpu/drm/panel/Kconfig                 |   7 +-
+ .../gpu/drm/panel/panel-novatek-nt36672a.c    | 246 ++++++++++++++++--
+ 3 files changed, 247 insertions(+), 26 deletions(-)
+
+-- 
+2.37.1
+
