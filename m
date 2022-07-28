@@ -2,128 +2,214 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 954FAC3F6B0
-	for <phone-devel@archiver.kernel.org>; Thu, 28 Jul 2022 15:16:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DDA6C04A68
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Jul 2022 18:01:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231327AbiG1PQx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 28 Jul 2022 11:16:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58828 "EHLO
+        id S232437AbiG1SBx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 28 Jul 2022 14:01:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230073AbiG1PQw (ORCPT
+        with ESMTP id S231127AbiG1SBr (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 28 Jul 2022 11:16:52 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 569B846D93;
-        Thu, 28 Jul 2022 08:16:50 -0700 (PDT)
-Received: from mail-ed1-f48.google.com ([209.85.208.48]) by
- mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1N4R4o-1nHwPf1aDu-011SJ4; Thu, 28 Jul 2022 17:16:49 +0200
-Received: by mail-ed1-f48.google.com with SMTP id z15so2575047edc.7;
-        Thu, 28 Jul 2022 08:16:49 -0700 (PDT)
-X-Gm-Message-State: AJIora89W2UCTWHyw2Opf6RLtXodZIQWv5s1za0N2/J6HrS+owSyITSi
-        Y+Pz9FNkPhqKhnJQMwkYp0K9t9nTVaf+sinGkXs=
-X-Google-Smtp-Source: AGRyM1vWuOSQ5jkdH83jWj0RrtQb7QqIeQadUBaSrg3Qh2GudbEb/nqWHTWnFuVbZrtnJIU4rYColKF2SYdmGBop/yk=
-X-Received: by 2002:a05:6402:1d4c:b0:43b:c85f:5c95 with SMTP id
- dz12-20020a0564021d4c00b0043bc85f5c95mr28453461edb.213.1659021408962; Thu, 28
- Jul 2022 08:16:48 -0700 (PDT)
+        Thu, 28 Jul 2022 14:01:47 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61E9970E5F;
+        Thu, 28 Jul 2022 11:01:46 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id v3so2315602wrp.0;
+        Thu, 28 Jul 2022 11:01:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ugG0AkDTwXcDf7jBLOwWXze+C4ZynRnQwUWaQUR23Ys=;
+        b=b/I4rsfa8kUBcAm8R78E29ui4/MMKpjt9jVqTyV2b7BLIwreSmyDNdawoWsmrDfYkS
+         dwJPXxX2+UD8F+1GyrfzAQcJ6clzAY2aZDFq0gltcENbLihToJsBtghvbWob9xmnNziU
+         C84lj0ZiqVPXAsfruESW8hee7hrNK75gpox3z9Rq6bCmqATenken2lJeAwovcFpK4oyT
+         rcTbkxKHuHVVTe2TjQtve8OmGlfMAjeJykPa6b03fMhsA4Xju9+Sn+fNuhCOenuHDXUO
+         lCTjgMLDD57X+xYhwOQkUZaz/ODzM5t8tk9nxhEK5EOD4nqBRA0naZ1YDqvR2ff90U0F
+         E1dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ugG0AkDTwXcDf7jBLOwWXze+C4ZynRnQwUWaQUR23Ys=;
+        b=LbAq6vLH7zQ3HurhN3ePl2GdH9jnMCOi5qJCUqeNa2cH40LICa4a2MRgS9Pf9C3FSA
+         erd4qsMfNhpruPNIodCsr7I4ZMFntEYTt9ETfW/MziiwDTv8KHqg/lvO/lIrpyQCKqh7
+         91IkKaZiENpic4h19BGTt5T2fhZgH+LjUqSCt7xqhS1LDBMdbik9FoGkX4TeaMBMe5Zh
+         7Q++Ge4xmgE4x1Pu18x7aRE3pTwZNABx3USQl2aLJgiZG/kmt2vrSjCs7F5wHkzCyhWD
+         9YrNOmIxIVrEL8cUUrBp8MRnRPlUkm31EuchlCEoE2aWQzyl67GvG/94bSQ1PhN9N+Rb
+         phtw==
+X-Gm-Message-State: ACgBeo2kxswCRjknY2ycC+sUtBESIP3uRIBPBrfkISDJaAWWMalq5dAf
+        uqxd3UVxlsRah6cGzTS3xIM=
+X-Google-Smtp-Source: AA6agR6wkLpMPC1SPg1uZ+xP94dDmp9Ft06Wg4y3tbnEre1LHV+fGClqpmw1g49LZRrUuUIlhUobSQ==
+X-Received: by 2002:a5d:4dcc:0:b0:21e:e644:6af8 with SMTP id f12-20020a5d4dcc000000b0021ee6446af8mr69181wru.219.1659031304843;
+        Thu, 28 Jul 2022 11:01:44 -0700 (PDT)
+Received: from localhost.localdomain ([105.235.128.60])
+        by smtp.gmail.com with ESMTPSA id o5-20020a05600c510500b003a2d6f26babsm2154340wms.3.2022.07.28.11.01.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Jul 2022 11:01:44 -0700 (PDT)
+From:   Yassine Oudjana <yassine.oudjana@gmail.com>
+X-Google-Original-From: Yassine Oudjana <y.oudjana@protonmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        Yassine Oudjana <yassine.oudjana@gmail.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] arm64: dts: qcom: msm8996-xiaomi-*: Add LEDs
+Date:   Thu, 28 Jul 2022 19:01:20 +0100
+Message-Id: <20220728180120.97968-1-y.oudjana@protonmail.com>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-References: <20220728142824.3836-1-markuss.broks@gmail.com>
- <20220728142824.3836-3-markuss.broks@gmail.com> <CAK8P3a2fZ9O6vSEyxY1KW71pG_Oyvwxp3zTbW2GuaSD6aj+Qfw@mail.gmail.com>
- <8e694cb6-c3dc-74e3-6804-fc532f108523@gmail.com>
-In-Reply-To: <8e694cb6-c3dc-74e3-6804-fc532f108523@gmail.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 28 Jul 2022 17:16:32 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2vJFCJmeMj-vuasUhwa2=2P+hAr=ScGhT21TcjQ1Z8Aw@mail.gmail.com>
-Message-ID: <CAK8P3a2vJFCJmeMj-vuasUhwa2=2P+hAr=ScGhT21TcjQ1Z8Aw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] efi: earlycon: Add support for generic framebuffers
- and move to fbdev subsystem
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Michal Suchanek <msuchanek@suse.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Wei Ming Chen <jj251510319013@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:rCxTKLoMsKF+qy1+w1yA5c+w412i/gDEbQw04N3nxbN3DJdhvUp
- F2gi5G/PFuuJFwleT8TaffAEaAFb/JXhwkaHNVFb6akoax/3d89aZJ26aE0MHLgwFBI/j5F
- 7wgq3q7/W71RajaRDc+n/+xAJL6VvIQfawNJUW4TUs1wGdLwpsdPja/20TNIRn1/FL5eP7V
- WdFX/7d9ESsZDDIKECRGg==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:BwAYqLL4sg8=:datghrcUFVSGlpEFX0NyqP
- 6Lkk1DQlbdb4iy0idbgVhVJUNXowmZ3GafWicZaGVAy78IIP2CnDpMQBhm5X/fOuGqHvidvST
- O7pKUz4McOuP3bvFtZNACCRw2T6wOK83m/vf/LOogiZpibL4Hw/QyrVg0D7LEuYVGovOqD78K
- clt1e7fBrdsDtrSAvGdUXn1+AWJHJk6uxH31l92hVoBBkZ/lWOKu9nr/eRc6hjaYkuSqenEHi
- mPfHavXfbMbgz8GnCqvd1f4vQyygPsRyPGk1evEPro4ZqzpiaCyZCjG2WKhYMtWrXxmn7SajL
- viV4U7IVFoNu+XwST9qMb5p93S3SeA9xHVxVVkeVG+a8lVWi2hWSdOYJDRVSbTwv7saYDKd1g
- q7RgcV0XB9qgVoHz0E4l8VF88AMvozWRteT9EjLtCPyffziaIupTHxq4M2fXTjTIdp35Sl3ja
- 1yWuUnBS4yokT4NOjQH0ni2gTJ17vN7VSQ2/3J3EmqoDsylCGZxwzK0dPYPEDIlULYxrt2EOS
- qo8djFyA3AH7ejW2DK7/8Cx4+P8Vp2f3fyjNAle8U7s3grAybnHM7D4tQbIM9+o9yvKyDZ+uF
- 0cyVOq+M5ygEmCIF1AQT/hlxwR+p8pirOR6D2koqZhbd9VXohL1+fIzIPGOMdUCP5o8tcNnUc
- 34vYjbSgwTMfBTeyscHSxXlYyEAQyVHeWEpSA9j2VoGiA1gfB1EUZw6+dYyN7P/19sU5j/9JJ
- SjlfVUQEPtdlUZ1GJt9cfc3u8TpkO5o7ZJCa9pa9kBMLwDQITalhR2qVvs+kw84ACEQzjiFv5
- gznkHOw9f0/BhHvzt/qrGCzNgX1zfAXMr5qfhT/Wao4b20KtSUaEYjy1hnr051U/S8XXOYmWf
- J/7hTnlWw1OmgN/OMHfOQaZPoOxknugtub35qgrUA8QZXLYNMvk9coHpYjGNpixKvsL0s5Qu0
- XJckCnYGmwzJ0IsEZs/vNDEUa6L2iiNipIrRmtqrRVRK1J0uf5xzp
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jul 28, 2022 at 4:57 PM Markuss Broks <markuss.broks@gmail.com> wrote:
-> On 7/28/22 17:48, Arnd Bergmann wrote:
-> > On Thu, Jul 28, 2022 at 4:28 PM Markuss Broks <markuss.broks@gmail.com> wrote:
-> >>
-> >> Add early console support for generic linear framebuffer devices.
-> >> This driver supports probing from cmdline early parameters
-> >> or from the device-tree using information in simple-framebuffer node.
-> >> The EFI functionality should be retained in whole.
-> >> The driver was disabled on ARM because of a bug in early_ioremap
-> >> implementation on ARM.
-> >>
-> >> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-> >> ---
-> >>   .../admin-guide/kernel-parameters.txt         |  12 +-
-> >>   MAINTAINERS                                   |   5 +
-> >>   drivers/firmware/efi/Kconfig                  |   6 +-
-> >>   drivers/firmware/efi/Makefile                 |   1 -
-> >>   drivers/firmware/efi/earlycon.c               | 246 --------------
-> >>   drivers/video/fbdev/Kconfig                   |  11 +
-> >>   drivers/video/fbdev/Makefile                  |   1 +
-> >>   drivers/video/fbdev/earlycon.c                | 301 ++++++++++++++++++
-> >
-> > It looks like this is not actually related to fbdev, and since drivers are
-> > moving from fbdev/simplefb towards drm/simpledrm, maybe it would be
-> > better to put this into either drivers/gpu/drm/tiny/ or possibly
-> > drivers/video/console to let this be used without enabling fbdev?
->
-> Ideally this shouldn't depend on anything, because it isn't utilizing
-> any of fbdev code and won't be utilizing any of drm/console code. I
-> agree that either of those would be a better place for it, but which one
-> do you think would suit more for this driver?
+From: Yassine Oudjana <y.oudjana@protonmail.com>
 
-I think ideally this would be integrated with simpledrm in the long run,
-but I have no idea what that means in terms of future code changes.
+Add LEDs found on the Xiaomi MSM8996 devices. The devices share
+a status RGB LED mounted on the front, as well as a PWM-driven
+IR LED for remote control (sometimes known as an IR blaster).
+The Mi Note 2 has an additional pair of white LEDs used as backlights
+for the touchkeys driven by the PM8994 LPG block.
 
-Maybe Thomas Zimmermann has an idea here.
+Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+---
+ .../boot/dts/qcom/msm8996-xiaomi-common.dtsi  | 54 +++++++++++++++++++
+ .../boot/dts/qcom/msm8996-xiaomi-scorpio.dts  | 30 +++++++++++
+ 2 files changed, 84 insertions(+)
 
-        Arnd
+diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
+index 627649979891..ef9a8aa9c2b9 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
+@@ -58,6 +58,14 @@ key-dome {
+ 		};
+ 	};
+ 
++	irled {
++		compatible = "pwm-ir-tx";
++		pwms = <&pm8994_lpg 1 1000000>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&irled_default>;
++	};
++
+ 	reserved-memory {
+ 		memory@88800000 {
+ 			reg = <0x0 0x88800000 0x0 0x1400000>;
+@@ -297,6 +305,41 @@ &pm8994_resin {
+ 	linux,code = <KEY_VOLUMEDOWN>;
+ };
+ 
++&pm8994_lpg {
++	status = "okay";
++
++	qcom,power-source = <1>;
++};
++
++&pmi8994_lpg {
++	status = "okay";
++
++	qcom,power-source = <1>;
++
++	multi-led {
++		color = <LED_COLOR_ID_RGB>;
++		function = LED_FUNCTION_STATUS;
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		led@1 {
++			reg = <1>;
++			color = <LED_COLOR_ID_BLUE>;
++		};
++
++		led@2 {
++			reg = <2>;
++			color = <LED_COLOR_ID_GREEN>;
++		};
++
++		led@3 {
++			reg = <3>;
++			color = <LED_COLOR_ID_RED>;
++		};
++	};
++};
++
+ &slpi_pil {
+ 	status = "okay";
+ 
+@@ -608,6 +651,17 @@ vdd_gfx: s2 {
+ };
+ 
+ &pm8994_gpios {
++	irled_default: irled-default {
++		pinconf {
++			pins = "gpio5";
++			function = PMIC_GPIO_FUNC_FUNC1;
++			output-low;
++			qcom,drive-strength = <PMIC_GPIO_STRENGTH_HIGH>;
++			power-source = <PM8994_GPIO_S4>;
++			bias-disable;
++		};
++	};
++
+ 	wlan_en_default: wlan-en-state {
+ 		pins = "gpio8";
+ 		function = PMIC_GPIO_FUNC_NORMAL;
+diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
+index 30a9e4bed4af..0b47a659cc38 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
++++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
+@@ -116,6 +116,25 @@ &mss_pil {
+ 			"qcom/msm8996/scorpio/modem.mbn";
+ };
+ 
++&pm8994_lpg {
++	pinctrl-names = "default";
++	pinctrl-0 = <&keypad_default>;
++
++	led@3 {
++		reg = <3>;
++		color = <LED_COLOR_ID_WHITE>;
++		function = LED_FUNCTION_KBD_BACKLIGHT;
++		function-enumerator = <1>;
++	};
++
++	led@6 {
++		reg = <6>;
++		color = <LED_COLOR_ID_WHITE>;
++		function = LED_FUNCTION_KBD_BACKLIGHT;
++		function-enumerator = <0>;
++	};
++};
++
+ &q6asmdai {
+ 	dai@0 {
+ 		reg = <0>;
+@@ -258,6 +277,17 @@ &pm8994_gpios {
+ 		"PMIC_SLB",		/* GPIO_20 */
+ 		"UIM_BATT_ALARM",	/* GPIO_21 */
+ 		"NC";			/* GPIO_22 */
++
++	keypad_default: keypad-default {
++		pinconf {
++			pins = "gpio7", "gpio10";
++			function = PMIC_GPIO_FUNC_FUNC1;
++			output-low;
++			qcom,drive-strength = <PMIC_GPIO_STRENGTH_LOW>;
++			power-source = <PM8994_GPIO_S4>;
++			bias-disable;
++		};
++	};
+ };
+ 
+ &pm8994_mpps {
+-- 
+2.37.1
+
