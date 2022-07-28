@@ -2,411 +2,130 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59259C04A68
-	for <phone-devel@archiver.kernel.org>; Thu, 28 Jul 2022 02:37:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 47498C04A68
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Jul 2022 11:11:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237586AbiG1ChP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Jul 2022 22:37:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35950 "EHLO
+        id S236474AbiG1LLT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 28 Jul 2022 07:11:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237484AbiG1ChO (ORCPT
+        with ESMTP id S235501AbiG1LLT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Jul 2022 22:37:14 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E0345A882;
-        Wed, 27 Jul 2022 19:37:13 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id o3so608291ple.5;
-        Wed, 27 Jul 2022 19:37:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=WWJy9+afMOxe1MZB5oRxnjQxTPoeievVL1sbDLfuPV0=;
-        b=pOyAFXu90jk0bpAM11JpbkyEMZRdu4xkF3iG3n3RgH6DlEK1ZHAMOlpBrC1NYkOmtb
-         gPzCNnYF3FsfP5OEDz8QtTXQHtZLwvz+Q2eTbRk/4rf43dtlZQb8CSEt9xvkbArju3Nw
-         OmGxlUwkYhTSKL26skNxHa7o6B8MEWDRIroKv1xdRldGogI6wrOPm2FaN76wp9Ig8g6t
-         p8EGUCfuXXs0VNNWZsjtUTlbmcZik6bvdEcMJpnqU4AObOmALxQYuWUo8iBxrBJAY0bC
-         BIaNSfUbMFa8T62UrlphdL8NIruYVJz2w6lmaaF3XRbQvuaifkUU0deAFbuacrJUPDsr
-         dGQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=WWJy9+afMOxe1MZB5oRxnjQxTPoeievVL1sbDLfuPV0=;
-        b=fwjAPXeNRJU8Te5BGijkcXSe0FFgJm7LG6N4YyY/mpK3wJ/DofQo1yAU+/oGHZRx/D
-         vAGc00wSMK6Sp5itwOFCJoSNOvs5Z7vYSR51as/YFbTWkrosZTrwwcddDsV07vtoQ8vo
-         MwJMU28JIFJtoOpwCO7M4yw1uqul3IqAHY+w/QpGz/+VZs1K79bFY/453zJxJuuJUEZE
-         PQto9FzzNdKZbQtVTbdvL+kKylPUdpsYzfjPFOIgWpJVxVFhRcVKMDSPObuuPVdBud2d
-         9XvWEKEqmtIRlVw4EgyaRYYzYqIaydTePHMykAHg/hkWXIzCjTSD1DfwzrPi2Lr8N5Ps
-         7T+g==
-X-Gm-Message-State: AJIora84WSs0WFYjqRymSy5iUN/yP1fzVVECYHl/jkVZ7SC9LfkYZu5o
-        E7HO1Y7MpzRoACQznBJ4wmA=
-X-Google-Smtp-Source: AGRyM1s1A0Ig2mi+uzk2O/Nf9rPZWHq0oqbFeIXqxKPdxWEdLdSMLMF5Zhda4ntChv6oCY7m+Toj/g==
-X-Received: by 2002:a17:90b:1c0a:b0:1f3:1848:591c with SMTP id oc10-20020a17090b1c0a00b001f31848591cmr3021484pjb.24.1658975832739;
-        Wed, 27 Jul 2022 19:37:12 -0700 (PDT)
-Received: from localhost.localdomain ([112.0.190.165])
-        by smtp.gmail.com with ESMTPSA id v12-20020aa799cc000000b00528c149fe97sm14631311pfi.89.2022.07.27.19.37.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 19:37:12 -0700 (PDT)
-From:   Molly Sophia <mollysophia379@gmail.com>
-To:     Sumit Semwal <sumit.semwal@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
+        Thu, 28 Jul 2022 07:11:19 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28E3E664DF;
+        Thu, 28 Jul 2022 04:11:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DC52FB823DB;
+        Thu, 28 Jul 2022 11:11:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B66C433D6;
+        Thu, 28 Jul 2022 11:11:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1659006675;
+        bh=uatBAKo4u4baHcP13PJdONgrgJTyUoamsnl4XzGT4l4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=YayZKOUj3bS7fL8u56pHciHDpbF2c0PaViOBhYZ5tEXuQQcZpZ+VX7wgyB0J17hl3
+         +dFT+tVRbRRZui7gHYS1mboUtlE+DHLIrgwsQ8WlLgbJURZK+T1XsCTsRl3HqIZd3t
+         Qn2BZSBb8OsRl5yOx8pMc8PNJj+vHMtph9iEGuGBV1OBvx/0mJ+0yc9hFQBTtNstid
+         p0ckptTrnBCzzk5mURjq9xfdZ5ZuvT0t4XGfE+4SYKWRfioP8tqmynlGanPeVzX0Aq
+         ivjO8/QN15pxT09unQPhECkjEgdKr5Zg4a7VDhvY8Gjmr2OfZSnlzcHLXE5duZlQM+
+         afiTO69BmYPDA==
+Date:   Thu, 28 Jul 2022 12:11:08 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Adam Skladowski <a39.skl@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Molly Sophia <mollysophia379@gmail.com>
-Subject: [PATCH v4 2/2] drm: panel: Add novatek nt35596s panel driver
-Date:   Thu, 28 Jul 2022 10:35:55 +0800
-Message-Id: <20220728023555.8952-3-mollysophia379@gmail.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220728023555.8952-1-mollysophia379@gmail.com>
-References: <20220728023555.8952-1-mollysophia379@gmail.com>
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Robert Marko <robimarko@gmail.com>,
+        Jorge Ramirez <jorge.ramirez-ortiz@linaro.org>,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v2 3/5] regulator: qcom_spmi: Add support for new
+ regulator types
+Message-ID: <YuJuzNiQczaYi1og@sirena.org.uk>
+References: <20220726181133.3262695-1-iskren.chernev@gmail.com>
+ <20220726181133.3262695-4-iskren.chernev@gmail.com>
+ <YuEoLteLBgd+b8sg@sirena.org.uk>
+ <79077e08-4bd8-6967-748d-876589ef978e@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="dHyoJ979ZanZg/3g"
+Content-Disposition: inline
+In-Reply-To: <79077e08-4bd8-6967-748d-876589ef978e@gmail.com>
+X-Cookie: People respond to people who respond.
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Novatek NT35596s is a generic DSI IC that drives command and video mode
-panels. Add the driver for it. Currently add support for the LCD panel
-from JDI connected with this IC, as found on Xiaomi Mi Mix2s phones.
 
-Changes in v4:
-- No change.
+--dHyoJ979ZanZg/3g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Changes in v3:
-- Embed the support into existing driver (panel-novatek-nt36672a), as
-  these two IC are similar with different initialization commands.
+On Thu, Jul 28, 2022 at 02:14:10AM +0300, Iskren Chernev wrote:
+> On 7/27/22 14:57, Mark Brown wrote:
+> > On Tue, Jul 26, 2022 at 09:11:31PM +0300, Iskren Chernev wrote:
 
-Signed-off-by: Molly Sophia <mollysophia379@gmail.com>
----
- drivers/gpu/drm/panel/Kconfig                 |   7 +-
- .../gpu/drm/panel/panel-novatek-nt36672a.c    | 246 ++++++++++++++++--
- 2 files changed, 234 insertions(+), 19 deletions(-)
+> >> Add support for some regulator types that are missing in this driver, all
+> >> belonging to the FTSMPS426 register layout.  This is done in preparation
+> >> for adding support for the PM6125 PMIC.
 
-diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index 38799effd00a..ecc1b9aa6a1c 100644
---- a/drivers/gpu/drm/panel/Kconfig
-+++ b/drivers/gpu/drm/panel/Kconfig
-@@ -328,14 +328,15 @@ config DRM_PANEL_NOVATEK_NT35950
- 	  mobile phones.
- 
- config DRM_PANEL_NOVATEK_NT36672A
--	tristate "Novatek NT36672A DSI panel"
-+	tristate "Novatek NT36672A/NT35596S DSI panel"
- 	depends on OF
- 	depends on DRM_MIPI_DSI
- 	depends on BACKLIGHT_CLASS_DEVICE
- 	help
- 	  Say Y here if you want to enable support for the panels built
--	  around the Novatek NT36672A display controller, such as some
--	  Tianma panels used in a few Xiaomi Poco F1 mobile phones.
-+	  around the Novatek NT36672A or NT35596S display controller, such
-+	  as some Tianma panels used in a few Xiaomi Poco F1 mobile phones
-+	  or the JDI panels used in Xiaomi Mi Mix2S mobile phones.
- 
- config DRM_PANEL_NOVATEK_NT39016
- 	tristate "Novatek NT39016 RGB/SPI panel"
-diff --git a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
-index 231f371901e8..fcdde538d847 100644
---- a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
-+++ b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
-@@ -3,13 +3,15 @@
-  * Copyright (C) 2020 Linaro Ltd
-  * Author: Sumit Semwal <sumit.semwal@linaro.org>
-  *
-- * This driver is for the DSI interface to panels using the NT36672A display driver IC
-+ * Copyright (C) 2022 Molly Sophia <mollysophia379@gmail.com>
-+ *
-+ * This driver is for the DSI interface to panels using the NT36672A/NT35596S display driver IC
-  * from Novatek.
-  * Currently supported are the Tianma FHD+ panels found in some Xiaomi phones, including
-- * some variants of the Poco F1 phone.
-+ * some variants of the Poco F1 phone, and the JDI FHD+ panels found in Xiaomi Mi Mix2S phones.
-  *
-- * Panels using the Novatek NT37762A IC should add appropriate configuration per-panel and
-- * use this driver.
-+ * Panels using the Novatek NT37762A or NT35596S IC should add appropriate configuration
-+ * per-panel and use this driver.
-  */
- 
- #include <linux/delay.h>
-@@ -123,12 +125,14 @@ static int nt36672a_panel_unprepare(struct drm_panel *panel)
- 	if (!pinfo->prepared)
- 		return 0;
- 
--	/* send off cmds */
--	ret = nt36672a_send_cmds(panel, pinfo->desc->off_cmds,
--				 pinfo->desc->num_off_cmds);
-+	if (pinfo->desc->num_off_cmds != 0) {
-+		/* send off cmds if present */
-+		ret = nt36672a_send_cmds(panel, pinfo->desc->off_cmds,
-+					pinfo->desc->num_off_cmds);
- 
--	if (ret < 0)
--		dev_err(panel->dev, "failed to send DCS off cmds: %d\n", ret);
-+		if (ret < 0)
-+			dev_err(panel->dev, "failed to send DCS off cmds: %d\n", ret);
-+	}
- 
- 	ret = mipi_dsi_dcs_set_display_off(pinfo->link);
- 	if (ret < 0)
-@@ -211,13 +215,15 @@ static int nt36672a_panel_prepare(struct drm_panel *panel)
- 		goto poweroff;
- 	}
- 
--	/* Send rest of the init cmds */
--	err = nt36672a_send_cmds(panel, pinfo->desc->on_cmds_2,
--				 pinfo->desc->num_on_cmds_2);
-+	if (pinfo->desc->num_on_cmds_2 != 0) {
-+		/* Send rest of the init cmds if present */
-+		err = nt36672a_send_cmds(panel, pinfo->desc->on_cmds_2,
-+					pinfo->desc->num_on_cmds_2);
- 
--	if (err < 0) {
--		dev_err(panel->dev, "failed to send DCS Init 2nd Code: %d\n", err);
--		goto poweroff;
-+		if (err < 0) {
-+			dev_err(panel->dev, "failed to send DCS Init 2nd Code: %d\n", err);
-+			goto poweroff;
-+		}
- 	}
- 
- 	msleep(120);
-@@ -601,6 +607,212 @@ static const struct nt36672a_panel_desc tianma_fhd_video_panel_desc = {
- 	.num_off_cmds = ARRAY_SIZE(tianma_fhd_video_off_cmds),
- };
- 
-+static const struct nt36672a_panel_cmd jdi_nt35596s_video_on_cmds[] = {
-+	{ .data = { 0xff, 0x24 } },
-+	{ .data = { 0x9d, 0x34 } },
-+	{ .data = { 0xfb, 0x01 } },
-+	{ .data = { 0xc4, 0x25 } },
-+	{ .data = { 0xd1, 0x08 } },
-+	{ .data = { 0xd2, 0x84 } },
-+	{ .data = { 0xff, 0x26 } },
-+	{ .data = { 0xfb, 0x01 } },
-+	{ .data = { 0x03, 0x1c } },
-+	{ .data = { 0x3b, 0x08 } },
-+	{ .data = { 0x6b, 0x08 } },
-+	{ .data = { 0x97, 0x08 } },
-+	{ .data = { 0xc5, 0x08 } },
-+	{ .data = { 0xfb, 0x01 } },
-+	{ .data = { 0xff, 0x23 } },
-+	{ .data = { 0xfb, 0x01 } },
-+	{ .data = { 0x01, 0x84 } },
-+	{ .data = { 0x05, 0x2d } },
-+	{ .data = { 0x06, 0x00 } },
-+	{ .data = { 0x33, 0x07 } },
-+	{ .data = { 0x21, 0xee } },
-+	{ .data = { 0x22, 0xed } },
-+	{ .data = { 0x23, 0xea } },
-+	{ .data = { 0x24, 0xe8 } },
-+	{ .data = { 0x25, 0xe5 } },
-+	{ .data = { 0x26, 0xe2 } },
-+	{ .data = { 0x27, 0xde } },
-+	{ .data = { 0x28, 0xbb } },
-+	{ .data = { 0x29, 0x87 } },
-+	{ .data = { 0x2a, 0x77 } },
-+	{ .data = { 0x32, 0x0c } },
-+	{ .data = { 0x13, 0x3f } },
-+	{ .data = { 0x14, 0x34 } },
-+	{ .data = { 0x15, 0x2a } },
-+	{ .data = { 0x16, 0x25 } },
-+	{ .data = { 0x17, 0x9d } },
-+	{ .data = { 0x18, 0x9a } },
-+	{ .data = { 0x19, 0x97 } },
-+	{ .data = { 0x1a, 0x94 } },
-+	{ .data = { 0x1b, 0x91 } },
-+	{ .data = { 0x1c, 0x8e } },
-+	{ .data = { 0x1d, 0x8b } },
-+	{ .data = { 0x1e, 0x89 } },
-+	{ .data = { 0x1f, 0x86 } },
-+	{ .data = { 0x20, 0x83 } },
-+	{ .data = { 0xff, 0x22 } },
-+	{ .data = { 0x00, 0x0a } },
-+	{ .data = { 0x01, 0x43 } },
-+	{ .data = { 0x02, 0x5b } },
-+	{ .data = { 0x03, 0x6a } },
-+	{ .data = { 0x04, 0x7a } },
-+	{ .data = { 0x05, 0x82 } },
-+	{ .data = { 0x06, 0x85 } },
-+	{ .data = { 0x07, 0x80 } },
-+	{ .data = { 0x08, 0x7c } },
-+	{ .data = { 0x09, 0x7c } },
-+	{ .data = { 0x0a, 0x74 } },
-+	{ .data = { 0x0b, 0x71 } },
-+	{ .data = { 0x0c, 0x6e } },
-+	{ .data = { 0x0d, 0x68 } },
-+	{ .data = { 0x0e, 0x65 } },
-+	{ .data = { 0x0f, 0x5c } },
-+	{ .data = { 0x10, 0x32 } },
-+	{ .data = { 0x11, 0x18 } },
-+	{ .data = { 0x12, 0x00 } },
-+	{ .data = { 0x13, 0x00 } },
-+	{ .data = { 0x1a, 0x00 } },
-+	{ .data = { 0x1b, 0x00 } },
-+	{ .data = { 0x1c, 0x00 } },
-+	{ .data = { 0x1d, 0x00 } },
-+	{ .data = { 0x1e, 0x00 } },
-+	{ .data = { 0x1f, 0x00 } },
-+	{ .data = { 0x20, 0x00 } },
-+	{ .data = { 0x21, 0x00 } },
-+	{ .data = { 0x22, 0x00 } },
-+	{ .data = { 0x23, 0x00 } },
-+	{ .data = { 0x24, 0x00 } },
-+	{ .data = { 0x25, 0x00 } },
-+	{ .data = { 0x26, 0x00 } },
-+	{ .data = { 0x27, 0x00 } },
-+	{ .data = { 0x28, 0x00 } },
-+	{ .data = { 0x29, 0x00 } },
-+	{ .data = { 0x2a, 0x00 } },
-+	{ .data = { 0x2b, 0x00 } },
-+	{ .data = { 0x2f, 0x00 } },
-+	{ .data = { 0x30, 0x00 } },
-+	{ .data = { 0x31, 0x00 } },
-+	{ .data = { 0x32, 0x0c } },
-+	{ .data = { 0x33, 0x0c } },
-+	{ .data = { 0x34, 0x0c } },
-+	{ .data = { 0x35, 0x0b } },
-+	{ .data = { 0x36, 0x09 } },
-+	{ .data = { 0x37, 0x09 } },
-+	{ .data = { 0x38, 0x08 } },
-+	{ .data = { 0x39, 0x05 } },
-+	{ .data = { 0x3a, 0x03 } },
-+	{ .data = { 0x3b, 0x00 } },
-+	{ .data = { 0x3f, 0x00 } },
-+	{ .data = { 0x40, 0x00 } },
-+	{ .data = { 0x41, 0x00 } },
-+	{ .data = { 0x42, 0x00 } },
-+	{ .data = { 0x43, 0x00 } },
-+	{ .data = { 0x44, 0x00 } },
-+	{ .data = { 0x45, 0x00 } },
-+	{ .data = { 0x46, 0x00 } },
-+	{ .data = { 0x47, 0x00 } },
-+	{ .data = { 0x48, 0x00 } },
-+	{ .data = { 0x49, 0x03 } },
-+	{ .data = { 0x4a, 0x06 } },
-+	{ .data = { 0x4b, 0x07 } },
-+	{ .data = { 0x4c, 0x07 } },
-+	{ .data = { 0x53, 0x01 } },
-+	{ .data = { 0x54, 0x01 } },
-+	{ .data = { 0x55, 0x89 } },
-+	{ .data = { 0x56, 0x00 } },
-+	{ .data = { 0x58, 0x00 } },
-+	{ .data = { 0x68, 0x00 } },
-+	{ .data = { 0x84, 0xff } },
-+	{ .data = { 0x85, 0xff } },
-+	{ .data = { 0x86, 0x03 } },
-+	{ .data = { 0x87, 0x00 } },
-+	{ .data = { 0x88, 0x00 } },
-+	{ .data = { 0xa2, 0x20 } },
-+	{ .data = { 0xa9, 0x01 } },
-+	{ .data = { 0xaa, 0x12 } },
-+	{ .data = { 0xab, 0x13 } },
-+	{ .data = { 0xac, 0x0a } },
-+	{ .data = { 0xad, 0x74 } },
-+	{ .data = { 0xaf, 0x33 } },
-+	{ .data = { 0xb0, 0x03 } },
-+	{ .data = { 0xb1, 0x14 } },
-+	{ .data = { 0xb2, 0x42 } },
-+	{ .data = { 0xb3, 0x40 } },
-+	{ .data = { 0xb4, 0xa5 } },
-+	{ .data = { 0xb6, 0x44 } },
-+	{ .data = { 0xb7, 0x04 } },
-+	{ .data = { 0xb8, 0x14 } },
-+	{ .data = { 0xb9, 0x42 } },
-+	{ .data = { 0xba, 0x40 } },
-+	{ .data = { 0xbb, 0xa5 } },
-+	{ .data = { 0xbd, 0x44 } },
-+	{ .data = { 0xbe, 0x04 } },
-+	{ .data = { 0xbf, 0x00 } },
-+	{ .data = { 0xc0, 0x75 } },
-+	{ .data = { 0xc1, 0x6a } },
-+	{ .data = { 0xc2, 0xa5 } },
-+	{ .data = { 0xc4, 0x22 } },
-+	{ .data = { 0xc5, 0x02 } },
-+	{ .data = { 0xc6, 0x00 } },
-+	{ .data = { 0xc7, 0x95 } },
-+	{ .data = { 0xc8, 0x8a } },
-+	{ .data = { 0xc9, 0xa5 } },
-+	{ .data = { 0xcb, 0x22 } },
-+	{ .data = { 0xcc, 0x02 } },
-+	{ .data = { 0xcd, 0x00 } },
-+	{ .data = { 0xce, 0xb5 } },
-+	{ .data = { 0xcf, 0xaa } },
-+	{ .data = { 0xd0, 0xa5 } },
-+	{ .data = { 0xd2, 0x22 } },
-+	{ .data = { 0xd3, 0x02 } },
-+	{ .data = { 0xfb, 0x01 } },
-+	{ .data = { 0xff, 0x10 } },
-+	{ .data = { 0x26, 0x02 } },
-+	{ .data = { 0x35, 0x00 } },
-+	{ .data = { 0x51, 0xff } },
-+	{ .data = { 0x53, 0x24 } },
-+	{ .data = { 0x55, 0x00 } },
-+	{ .data = { 0xb0, 0x00 } },
-+};
-+
-+static const struct drm_display_mode jdi_nt35596s_video_panel_mode = {
-+	.clock = (1080 + 16 + 28 + 40) * (2160 + 7 + 4 + 24) * 60 / 1000,
-+
-+	.hdisplay = 1080,
-+	.hsync_start = 1080 + 16,
-+	.hsync_end = 1080 + 16 + 28,
-+	.htotal = 1080 + 16 + 28 + 40,
-+
-+	.vdisplay = 2160,
-+	.vsync_start = 2160 + 7,
-+	.vsync_end = 2160 + 7 + 4,
-+	.vtotal = 2160 + 7 + 4 + 24,
-+
-+	.type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
-+};
-+
-+static const struct nt36672a_panel_desc jdi_nt35596s_video_panel_desc = {
-+	.display_mode = &jdi_nt35596s_video_panel_mode,
-+
-+	.width_mm = 68,
-+	.height_mm = 136,
-+
-+	.mode_flags = MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_VIDEO |
-+		      MIPI_DSI_MODE_VIDEO_HSE | MIPI_DSI_CLOCK_NON_CONTINUOUS |
-+		      MIPI_DSI_MODE_VIDEO_BURST,
-+	.format = MIPI_DSI_FMT_RGB888,
-+	.lanes = 4,
-+	.on_cmds_1 = jdi_nt35596s_video_on_cmds,
-+	.num_on_cmds_1 = ARRAY_SIZE(jdi_nt35596s_video_on_cmds),
-+	.on_cmds_2 = NULL,
-+	.num_on_cmds_2 = 0,
-+	.off_cmds = NULL,
-+	.num_off_cmds = 0,
-+};
-+
- static int nt36672a_panel_add(struct nt36672a_panel *pinfo)
- {
- 	struct device *dev = &pinfo->link->dev;
-@@ -697,6 +909,7 @@ static void nt36672a_panel_shutdown(struct mipi_dsi_device *dsi)
- 
- static const struct of_device_id tianma_fhd_video_of_match[] = {
- 	{ .compatible = "tianma,fhd-video", .data = &tianma_fhd_video_panel_desc },
-+	{ .compatible = "jdi,fhd-nt35596s", .data = &jdi_nt35596s_video_panel_desc },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, tianma_fhd_video_of_match);
-@@ -713,5 +926,6 @@ static struct mipi_dsi_driver nt36672a_panel_driver = {
- module_mipi_dsi_driver(nt36672a_panel_driver);
- 
- MODULE_AUTHOR("Sumit Semwal <sumit.semwal@linaro.org>");
--MODULE_DESCRIPTION("NOVATEK NT36672A based MIPI-DSI LCD panel driver");
-+MODULE_AUTHOR("Molly Sophia <mollysophia379@gmail.com>");
-+MODULE_DESCRIPTION("NOVATEK NT36672A/NT35596S based MIPI-DSI LCD panel driver");
- MODULE_LICENSE("GPL");
--- 
-2.37.1
+> >> +	.set_mode		= spmi_regulator_ftsmps3_set_mode,
+> >> +	.get_mode		= spmi_regulator_ftsmps426_get_mode,
 
+> > Why are set and get asymmetric?
+
+> Because the get method, only uses AUTO and HPM, which have the same value
+> for ftsmps3 and ftsmps426 (so there is no need for a new function).
+
+This needs at least a comment.
+
+> >> @@ -1473,7 +1557,7 @@ static const struct spmi_regulator_mapping supported_regulators[] = {
+> >>  	SPMI_VREG(LDO,   HT_P600,  0, INF, HFS430, hfs430, ht_p600, 10000),
+> >>  	SPMI_VREG(LDO,   HT_P150,  0, INF, HFS430, hfs430, ht_p150, 10000),
+> >>  	SPMI_VREG(BUCK,  GP_CTL,   0, INF, SMPS,   smps,   smps,   100000),
+> >> -	SPMI_VREG(BUCK,  HFS430,   0, INF, HFS430, hfs430, hfs430,  10000),
+> >> +	SPMI_VREG(BUCK,  HFS430,   0,   3, HFS430, hfs430, hfs430,  10000),
+
+> > The changelog said we were adding support for new types but this looks
+> > like changing an existing type.
+
+> The code, as written now does a different thing for BUCK, HFS430 (on
+> mainline (ML) and downstream (DS) linked in the commit message). Since DS
+> only supports newer stuff, to be on safe side, I kept existing behavior for
+> rev 0-3 on BUCK(3)+HFS430(10), so at least DS and ML agree on pm6125
+> completely.
+
+This needs describing in the changelog, probably you need multiple
+paches here since you are making a number of different changes each of
+which needs some explanation.
+
+> The commit [1] that adds support for BUCK+HFS430 might be wrong, or it
+> might be right for the time being (i.e initial revisions had different
+> behavior). I'm CC-ing Jorge.
+
+If that's the case perhaps part of this needs to be sent as a fix.
+
+--dHyoJ979ZanZg/3g
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmLibssACgkQJNaLcl1U
+h9DhtAf9HGZVngmsBVdOb9tNCdFljmfOsvAGJxBUsuxZAG3q0GSPUYdYI0sS27ZR
+vlacNM7KemWnRIqdWg4lmM2ZMO08Hzf3gztF2f5k1A1E75qKruOW8H4TH1YAfV9z
+qXh96eYpcX3Zqois17zzTkVStKOuhlBOhsjj45upZQ6UQ767rwHJFjRtD2lGDd6i
+QwHJsFRD+YIj/0c8z3P8UyuPAddsEhdKBEGR7oyH7vgpUJRdCJaGokayCP+WYET0
+UH+G0GAyemvHvT/R6BkBf3KExigjchYj4wvQZ2+lmIXIZlm4thM790vc5kB2hVfv
+XhMEs1adyGF8yEiOW4YCqtYQKBD18g==
+=Gp6n
+-----END PGP SIGNATURE-----
+
+--dHyoJ979ZanZg/3g--
