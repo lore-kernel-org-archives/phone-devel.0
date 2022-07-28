@@ -2,81 +2,129 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4EFFC04A68
-	for <phone-devel@archiver.kernel.org>; Thu, 28 Jul 2022 00:31:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0AF8C04A68
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Jul 2022 02:04:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234389AbiG1Ab7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Jul 2022 20:31:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37810 "EHLO
+        id S234436AbiG1CEa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Jul 2022 22:04:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbiG1Ab6 (ORCPT
+        with ESMTP id S231584AbiG1CE3 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Jul 2022 20:31:58 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D81EE54CA0;
-        Wed, 27 Jul 2022 17:31:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 75B23B8229F;
-        Thu, 28 Jul 2022 00:31:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D28C433D6;
-        Thu, 28 Jul 2022 00:31:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658968315;
-        bh=cgMax9nf9qW48JMtAkUoIyip26M7Bpa8V5h47PbKfC4=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=nlqaAET4ci75hpEpVFTfRPIEF2htScl2LXIAlqXintsUaUKetcCiPAzb42chVmnkB
-         wKr9EwczFt7JxVVho5QiYakPC+GtoRtP4t0rfUVwGo9Fslccl0m+4xx7uQrCsgmCTm
-         DO7IySLE7/4lrN2Wbug+uNmq4hEj2qUCKYShnJduTcyRX+nB26mLun1a4MxFjOqyJ1
-         f2wI2hMWzsu0AaZVl7XYyzu8ulkz9VwMj5klckTi/1Y0zHSSkpKf/rEdKtDtWEXpkd
-         VpwhUErr0IIXtuOyfLAJvhkyLkJGvvPVMm6yRSH/RtCPQnAFIrj9KScMWnH2Stkk5W
-         Rj4PZYLvujSxA==
-Content-Type: text/plain; charset="utf-8"
+        Wed, 27 Jul 2022 22:04:29 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E29ED50712;
+        Wed, 27 Jul 2022 19:04:27 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id q23so861445lfr.3;
+        Wed, 27 Jul 2022 19:04:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pSfuGobo36quNHWVipU/P1j+8s0MOGIFxkTWPlVuisg=;
+        b=kVrA+CxmAhYaAyt2XbjfpNQhbXEJDxTm344h3jdITmfQZaozQia1vNlq+KfhEG+CIm
+         wxOXiUA3JXNFPuo7JR0uZ5YRALUrbcHzv/QadH29YU/CsUVGZ9XnwlRhLlEuV0plA2Ub
+         FuIg/vlgE8kr1x7nxK8F0DVb6o9dBkTyVSSSlGWB5FBhapYTH2zQKwUN99AhXS00GyK0
+         s4tcQuN0qhnb2JKD6onV66e0vMMDZGx7TciEDAUjVoHJwrSNsiAqntM1sapEQ+jJJg1R
+         I9FsiP5C/a4CvmC0LfQrnCN8733lP0Nc0Q2RwhUFmxCNg+It2wnqPwoLiBVycel7RMBB
+         t4qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pSfuGobo36quNHWVipU/P1j+8s0MOGIFxkTWPlVuisg=;
+        b=cC22YL2G9WGMbn/RexgwPR7K0HgFAdg3aRNV8x79SDkQTCtT+T3FZ1siUhPPhHkHXX
+         mCpJpO3LjZaeAo96lYP7sHnyiRlwfj3gpiW//1TYZ+gFLL6CA01CIIUTptF+R4kxfjnE
+         lL24o8WkuRNa3M4AH82fp43KZCt103BYGn1+ct3KvNYGOrTmof4xBIfyl9W0JyA5Xx1l
+         RrcoYR0yqwy0z0mW5THauVSy+CA8rGE1wWRMoLV3vDQ0cpnUAIGnZEJJKDOhmRNnafsG
+         ftGtAr9mULGKDQjXguJp0xZR13xoZA2fpuAxY+7l2+PTs9ELT3dwSP38z2isDHhfhDEZ
+         WaQw==
+X-Gm-Message-State: AJIora+Wdy0Jjq5n3uQR4V5vpJDeAgVWO8hTTMqdpo+Qm4EGtX0HqHwu
+        wpCJhD7haCKMxEcdvV3WGp3gs3ZXUzxORIHRI7U=
+X-Google-Smtp-Source: AGRyM1sXsKkEuQYa2xUqWXJTZ0dYadBV58iuh9/OXFdD7dfr5MGre6hSXIeMyedKRD6ZDi647biJttfPLhS5srGsn50=
+X-Received: by 2002:ac2:5550:0:b0:48a:b15f:223f with SMTP id
+ l16-20020ac25550000000b0048ab15f223fmr2435705lfk.181.1658973865994; Wed, 27
+ Jul 2022 19:04:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20220714203822.186448-1-marijn.suijten@somainline.org>
-References: <20220714203822.186448-1-marijn.suijten@somainline.org>
-Subject: Re: [PATCH] clk: qcom: gcc-sdm660: Use floor ops for SDCC1 clock
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Taniya Das <tdas@codeaurora.org>,
-        Rob Herring <robh@kernel.org>,
-        Craig Tatlor <ctatlor97@gmail.com>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Date:   Wed, 27 Jul 2022 17:31:53 -0700
-User-Agent: alot/0.10
-Message-Id: <20220728003155.22D28C433D6@smtp.kernel.org>
+References: <20220726101513.66988-1-mollysophia379@gmail.com>
+ <20220726101513.66988-2-mollysophia379@gmail.com> <809e9c7d-7634-f690-675d-9eccac8c8de8@linaro.org>
+In-Reply-To: <809e9c7d-7634-f690-675d-9eccac8c8de8@linaro.org>
+From:   Molly Sophia <mollysophia379@gmail.com>
+Date:   Thu, 28 Jul 2022 10:04:14 +0800
+Message-ID: <CAK0UmJBkMBfGN8q-ap-zWAJWeD9-WsXErMWPtpvcDmNWiHSSvQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: display: panel: Add Novatek NT35596S
+ panel bindings
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Sumit Semwal <sumit.semwal@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Quoting Marijn Suijten (2022-07-14 13:38:22)
-> In commit 3f905469c8ce ("clk: qcom: gcc: Use floor ops for SDCC clocks")
-> floor ops were applied to SDCC2 only, but flooring is also required on
-> the SDCC1 apps clock which is used by the eMMC card on Sony's Nile
-> platform, and otherwise result in the typicial "Card appears
-> overclocked" warnings observed on many other platforms before:
->=20
->     mmc0: Card appears overclocked; req 52000000 Hz, actual 100000000 Hz
->     mmc0: Card appears overclocked; req 52000000 Hz, actual 100000000 Hz
->     mmc0: Card appears overclocked; req 104000000 Hz, actual 192000000 Hz
->=20
-> Fixes: f2a76a2955c0 ("clk: qcom: Add Global Clock controller (GCC) driver=
- for SDM660")
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
+Thanks! I'll handle that and send the new patches later.
 
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+Best regards,
+Molly
+
+On Wed, Jul 27, 2022 at 6:24 PM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> On 26/07/2022 12:15, Molly Sophia wrote:
+> > Add documentation for "novatek,nt35596s" panel.
+> >
+> > Changes in v3:
+> > - Embed the documentation into existing one (novatek,nt36672a).
+> >
+> > Signed-off-by: Molly Sophia <mollysophia379@gmail.com>
+> > ---
+> >  .../display/panel/novatek,nt36672a.yaml       | 20 ++++++++++++-------
+> >  1 file changed, 13 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
+> > index 563766d283f6..560fb66d0e5a 100644
+> > --- a/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
+> > +++ b/Documentation/devicetree/bindings/display/panel/novatek,nt36672a.yaml
+> > @@ -20,14 +20,20 @@ allOf:
+> >
+> >  properties:
+> >    compatible:
+> > -    items:
+> > -      - enum:
+> > -          - tianma,fhd-video
+> > -      - const: novatek,nt36672a
+> > +    oneOf:
+> > +      - items:
+> > +          - enum:
+> > +              - tianma,fhd-video
+> > +          - const: novatek,nt36672a
+> > +
+> > +      - items:
+> > +          - enum:
+> > +              - jdi,fhd-nt35596s
+> > +          - const: novatek,nt35596s
+>
+> This entire entry should be rather before nt36672a judging by numbers:
+>
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - jdi,fhd-nt35596s
+> +          - const: novatek,nt35596s
+> +
+> +      - items:
+> +          - enum:
+> +              - tianma,fhd-video
+> +          - const: novatek,nt36672a
+>
+>
+> Best regards,
+> Krzysztof
