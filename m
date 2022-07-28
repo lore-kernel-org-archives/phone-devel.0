@@ -2,45 +2,61 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58BB4C04A68
-	for <phone-devel@archiver.kernel.org>; Thu, 28 Jul 2022 13:51:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 640AAC19F2B
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Jul 2022 14:07:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230342AbiG1NvE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 28 Jul 2022 09:51:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55754 "EHLO
+        id S229824AbiG1OHr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 28 Jul 2022 10:07:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231327AbiG1Nux (ORCPT
+        with ESMTP id S229538AbiG1OHr (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 28 Jul 2022 09:50:53 -0400
-Received: from mailrelay3-1.pub.mailoutpod1-cph3.one.com (mailrelay3-1.pub.mailoutpod1-cph3.one.com [46.30.210.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C739D481E9
-        for <phone-devel@vger.kernel.org>; Thu, 28 Jul 2022 06:50:49 -0700 (PDT)
+        Thu, 28 Jul 2022 10:07:47 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE1E4B4AD
+        for <phone-devel@vger.kernel.org>; Thu, 28 Jul 2022 07:07:45 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id t1so3002962lft.8
+        for <phone-devel@vger.kernel.org>; Thu, 28 Jul 2022 07:07:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=rsa1;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=81CE8cWzUiT+pbHFTXIMXYIlWow9EQ8Wvsa5Y6TihSE=;
-        b=mpQSV1lcqdnZfUqHQdsZjIZjllkBefKHfE47qVKcR0LcVGrrMg0gzsfGuXbi/Q4Pw/Gh917YDPusw
-         yEUty+79TONgN7i6IbHrVlNs1xIi1YHtp7Z8TYGLm8LItpEj3fVBG7crQtM0omFesJ9/D2E5Zd8tAk
-         uWyUGMK5/305ZYKmKc+5wbCa41ETO+e7FoKglMukQhbu55RtbFvcV/3HzTF0PtBcK/pQyEaxaiR7fX
-         x0TAwr7kc2YLAdIZy3tgDe0LF82IdgiF0NBSzFnS44XUK928uMSsH9c1nv+SMZFJFXiLXGYXt6GCFi
-         j/SnFGw7dr8j84w1sWq7vLrkPgeXR+A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=ed1;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=81CE8cWzUiT+pbHFTXIMXYIlWow9EQ8Wvsa5Y6TihSE=;
-        b=vkqXrzrQS4Ozm2e1ARR8cR3abhTvNzuqERua9aY+ZZXN9K58QRPSMD5QoDmq+Nt2PnK04ujTj6o69
-         Hhll8OIDA==
-X-HalOne-Cookie: 0d8ef64462d11d9be67ccc33377236296e9cc1f0
-X-HalOne-ID: 4828a37a-0e7c-11ed-be80-d0431ea8bb03
-Received: from mailproxy2.cst.dirpod4-cph3.one.com (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-        by mailrelay3.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
-        id 4828a37a-0e7c-11ed-be80-d0431ea8bb03;
-        Thu, 28 Jul 2022 13:50:47 +0000 (UTC)
-Date:   Thu, 28 Jul 2022 15:50:45 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=XURwmQrh3pi3kMw2kzj18VPxjyFA7fJIbFKY450RC7I=;
+        b=qRGvHVeB02lb7PCsFuzh7wZCEHah7TU2JwUE6V6ElvhENbjDki89kU8OEIUZ9iWGFC
+         BUuOdg76Z4r7uFqKrGaPCwzWTmcBvk9XDMcEiDZ0uVVWX9bHcw3Qws+QNr2wb/a8Cvmn
+         xgGzp/9b0Gaqfbf4COE+OfjCye3EM3WZhCfiOyFKtXbfdtTnmEjhQLik0UXkLFeoWW2O
+         A1IAF/qiguMdPPIsVAfRHk4l8yeTSxQFg4Lbt9nbrWBNCa4tVyi20KDydOuAFbqmHr7h
+         9Kqvwe0Lab0ngMkz08xS302Z5j2hEzgP/FNAccSHtTZhfQYWgPFv/q8i+SRHJwldY3qv
+         XKOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=XURwmQrh3pi3kMw2kzj18VPxjyFA7fJIbFKY450RC7I=;
+        b=CQo9Dd+jAItew/AvdExhOee/MkmtM5wq25A1d6ZUvnmWbCWRzGAEG+yTz5IqDvfxwo
+         znKqCgkoyMo3QU8LyJY+PC4iBv6+/vg2uk2ijZdwhIaZdXeaK5W74pQowno4T7gW9wpx
+         NW66kswme9spXnyMb2EcuhioOiWxZuZx3DohTByMLYoVGfYYIInBiLSD+dA9VWvRI13h
+         VsVBGzmQK+xA3kn2m1tgXD+JrIR8q1aNlqhOo/QdmhpH0fEELesogR4W/xPIAT44otBk
+         OuPM8IXag359ogjb1vFAHCXvRK4XpmKxDhNVMzbmc+CdUnBzKO+l2h2wAKLur/QYFwNQ
+         219g==
+X-Gm-Message-State: AJIora/en3Y6elZWqjguzzkLiFmX8IoJZxBiKnMEFQZNclhG2tW8APCX
+        2oSvNuydhjzJmpTzrn9rKehq9dF0qHR9rA==
+X-Google-Smtp-Source: AGRyM1sfj4KYcQ5fKo9HTWhxAnNgSyXWMVlNIWukceO//mHIgTAQ3IqTgcBO/4pGY1LTDh/sHPwfgQ==
+X-Received: by 2002:a19:710b:0:b0:48a:cf83:7551 with SMTP id m11-20020a19710b000000b0048acf837551mr334407lfc.137.1659017264043;
+        Thu, 28 Jul 2022 07:07:44 -0700 (PDT)
+Received: from [192.168.3.197] (78-26-46-173.network.trollfjord.no. [78.26.46.173])
+        by smtp.gmail.com with ESMTPSA id bi18-20020a05651c231200b0025e119e9276sm158570ljb.99.2022.07.28.07.07.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Jul 2022 07:07:43 -0700 (PDT)
+Message-ID: <24964892-d421-6104-c72a-187b484f99c6@linaro.org>
+Date:   Thu, 28 Jul 2022 16:07:42 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v4 2/2] drm: panel: Add novatek nt35596s panel driver
+Content-Language: en-US
+To:     Sam Ravnborg <sam@ravnborg.org>
 Cc:     Molly Sophia <mollysophia379@gmail.com>,
         Sumit Semwal <sumit.semwal@linaro.org>,
         Thierry Reding <thierry.reding@gmail.com>,
@@ -51,42 +67,46 @@ Cc:     Molly Sophia <mollysophia379@gmail.com>,
         dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] drm: panel: Add novatek nt35596s panel driver
-Message-ID: <YuKUNeazoho6LPTJ@ravnborg.org>
 References: <20220728023555.8952-1-mollysophia379@gmail.com>
  <20220728023555.8952-3-mollysophia379@gmail.com>
  <1685ecd6-cfe7-c2f1-add5-6bfff055fa06@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1685ecd6-cfe7-c2f1-add5-6bfff055fa06@linaro.org>
+ <YuKUNeazoho6LPTJ@ravnborg.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <YuKUNeazoho6LPTJ@ravnborg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Krzysztof
-On Thu, Jul 28, 2022 at 02:17:29PM +0200, Krzysztof Kozlowski wrote:
-> On 28/07/2022 04:35, Molly Sophia wrote:
-> > Novatek NT35596s is a generic DSI IC that drives command and video mode
-> > panels. Add the driver for it. Currently add support for the LCD panel
-> > from JDI connected with this IC, as found on Xiaomi Mi Mix2s phones.
-> > 
-> > Changes in v4:
-> > - No change.
-> > 
-> > Changes in v3:
-> > - Embed the support into existing driver (panel-novatek-nt36672a), as
-> >   these two IC are similar with different initialization commands.
-> > 
+On 28/07/2022 15:50, Sam Ravnborg wrote:
+> Hi Krzysztof
+> On Thu, Jul 28, 2022 at 02:17:29PM +0200, Krzysztof Kozlowski wrote:
+>> On 28/07/2022 04:35, Molly Sophia wrote:
+>>> Novatek NT35596s is a generic DSI IC that drives command and video mode
+>>> panels. Add the driver for it. Currently add support for the LCD panel
+>>> from JDI connected with this IC, as found on Xiaomi Mi Mix2s phones.
+>>>
+>>> Changes in v4:
+>>> - No change.
+>>>
+>>> Changes in v3:
+>>> - Embed the support into existing driver (panel-novatek-nt36672a), as
+>>>   these two IC are similar with different initialization commands.
+>>>
+>>
+>> This does not go to commit msg (---).
+> It depends...
 > 
-> This does not go to commit msg (---).
-It depends...
+> In the drm sub-system the general rule is if someone cares to write it,
+> then it deserves to be added to the commit message.
+> So for drm patches it is perfectly fine to have the history part
+> included in the commit message.
+> 
+> These sub-system differences does not makes it easier - I know.
 
-In the drm sub-system the general rule is if someone cares to write it,
-then it deserves to be added to the commit message.
-So for drm patches it is perfectly fine to have the history part
-included in the commit message.
+OK, but I find it weird to store "No change" in commit log :)
 
-These sub-system differences does not makes it easier - I know.
 
-	Sam
+Best regards,
+Krzysztof
