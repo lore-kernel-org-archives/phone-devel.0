@@ -2,214 +2,218 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DDA6C04A68
-	for <phone-devel@archiver.kernel.org>; Thu, 28 Jul 2022 18:01:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0F42C04A68
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Jul 2022 18:13:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232437AbiG1SBx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 28 Jul 2022 14:01:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37722 "EHLO
+        id S232310AbiG1SNT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 28 Jul 2022 14:13:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231127AbiG1SBr (ORCPT
+        with ESMTP id S229506AbiG1SNR (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 28 Jul 2022 14:01:47 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61E9970E5F;
-        Thu, 28 Jul 2022 11:01:46 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id v3so2315602wrp.0;
-        Thu, 28 Jul 2022 11:01:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ugG0AkDTwXcDf7jBLOwWXze+C4ZynRnQwUWaQUR23Ys=;
-        b=b/I4rsfa8kUBcAm8R78E29ui4/MMKpjt9jVqTyV2b7BLIwreSmyDNdawoWsmrDfYkS
-         dwJPXxX2+UD8F+1GyrfzAQcJ6clzAY2aZDFq0gltcENbLihToJsBtghvbWob9xmnNziU
-         C84lj0ZiqVPXAsfruESW8hee7hrNK75gpox3z9Rq6bCmqATenken2lJeAwovcFpK4oyT
-         rcTbkxKHuHVVTe2TjQtve8OmGlfMAjeJykPa6b03fMhsA4Xju9+Sn+fNuhCOenuHDXUO
-         lCTjgMLDD57X+xYhwOQkUZaz/ODzM5t8tk9nxhEK5EOD4nqBRA0naZ1YDqvR2ff90U0F
-         E1dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ugG0AkDTwXcDf7jBLOwWXze+C4ZynRnQwUWaQUR23Ys=;
-        b=LbAq6vLH7zQ3HurhN3ePl2GdH9jnMCOi5qJCUqeNa2cH40LICa4a2MRgS9Pf9C3FSA
-         erd4qsMfNhpruPNIodCsr7I4ZMFntEYTt9ETfW/MziiwDTv8KHqg/lvO/lIrpyQCKqh7
-         91IkKaZiENpic4h19BGTt5T2fhZgH+LjUqSCt7xqhS1LDBMdbik9FoGkX4TeaMBMe5Zh
-         7Q++Ge4xmgE4x1Pu18x7aRE3pTwZNABx3USQl2aLJgiZG/kmt2vrSjCs7F5wHkzCyhWD
-         9YrNOmIxIVrEL8cUUrBp8MRnRPlUkm31EuchlCEoE2aWQzyl67GvG/94bSQ1PhN9N+Rb
-         phtw==
-X-Gm-Message-State: ACgBeo2kxswCRjknY2ycC+sUtBESIP3uRIBPBrfkISDJaAWWMalq5dAf
-        uqxd3UVxlsRah6cGzTS3xIM=
-X-Google-Smtp-Source: AA6agR6wkLpMPC1SPg1uZ+xP94dDmp9Ft06Wg4y3tbnEre1LHV+fGClqpmw1g49LZRrUuUIlhUobSQ==
-X-Received: by 2002:a5d:4dcc:0:b0:21e:e644:6af8 with SMTP id f12-20020a5d4dcc000000b0021ee6446af8mr69181wru.219.1659031304843;
-        Thu, 28 Jul 2022 11:01:44 -0700 (PDT)
-Received: from localhost.localdomain ([105.235.128.60])
-        by smtp.gmail.com with ESMTPSA id o5-20020a05600c510500b003a2d6f26babsm2154340wms.3.2022.07.28.11.01.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Jul 2022 11:01:44 -0700 (PDT)
-From:   Yassine Oudjana <yassine.oudjana@gmail.com>
-X-Google-Original-From: Yassine Oudjana <y.oudjana@protonmail.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
-        Yassine Oudjana <yassine.oudjana@gmail.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: qcom: msm8996-xiaomi-*: Add LEDs
-Date:   Thu, 28 Jul 2022 19:01:20 +0100
-Message-Id: <20220728180120.97968-1-y.oudjana@protonmail.com>
-X-Mailer: git-send-email 2.37.1
+        Thu, 28 Jul 2022 14:13:17 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1601774DD5;
+        Thu, 28 Jul 2022 11:13:15 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 295ED1F9D9;
+        Thu, 28 Jul 2022 18:13:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1659031994; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/sPBOHCizRxOcqIb2C1bdSrs3Qlw/FAQ05Po6tZjRhc=;
+        b=AzXm5XX+MC3UpWh+dlZAGeBXIz9gtd5DL11I8CE4k4Uj+Ea5iloRIU7uu7hvohsSuWHfSZ
+        1BcBkSPHEArrqBThIL25ZWTj/JynCsD+yi0+l4EnxyZ+OZaTacmh0THOt2zk3bNf2nl1zC
+        nuKk2iH3xD34osg+BxgtE3F/+rZXMSI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1659031994;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/sPBOHCizRxOcqIb2C1bdSrs3Qlw/FAQ05Po6tZjRhc=;
+        b=DmEe4Ew8LWlNDlcIY7yZRYQhduz1tPWT79uNYPs2IKb+ina/TRIg14kvxAwqbHpbZO3xlK
+        IBKf2z+4plUYrBAw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A0CEF13427;
+        Thu, 28 Jul 2022 18:13:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id uAtRJrnR4mI5NwAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Thu, 28 Jul 2022 18:13:13 +0000
+Message-ID: <ad66bc12-ff8c-33fe-739c-879ddd3be117@suse.de>
+Date:   Thu, 28 Jul 2022 20:13:13 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH 2/2] efi: earlycon: Add support for generic framebuffers
+ and move to fbdev subsystem
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@arndb.de>,
+        Markuss Broks <markuss.broks@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Michal Suchanek <msuchanek@suse.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Wei Ming Chen <jj251510319013@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Rob Herring <robh@kernel.org>
+References: <20220728142824.3836-1-markuss.broks@gmail.com>
+ <20220728142824.3836-3-markuss.broks@gmail.com>
+ <CAK8P3a2fZ9O6vSEyxY1KW71pG_Oyvwxp3zTbW2GuaSD6aj+Qfw@mail.gmail.com>
+ <8e694cb6-c3dc-74e3-6804-fc532f108523@gmail.com>
+ <CAK8P3a2vJFCJmeMj-vuasUhwa2=2P+hAr=ScGhT21TcjQ1Z8Aw@mail.gmail.com>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <CAK8P3a2vJFCJmeMj-vuasUhwa2=2P+hAr=ScGhT21TcjQ1Z8Aw@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------fka0dzGSHEDzxZIPDv0yrwbG"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Yassine Oudjana <y.oudjana@protonmail.com>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------fka0dzGSHEDzxZIPDv0yrwbG
+Content-Type: multipart/mixed; boundary="------------wOfAjdQVOctUaTt2fnh0VO0v";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Arnd Bergmann <arnd@arndb.de>, Markuss Broks <markuss.broks@gmail.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, Ard Biesheuvel <ardb@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Helge Deller <deller@gmx.de>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Borislav Petkov <bp@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>, Kees Cook
+ <keescook@chromium.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+ Javier Martinez Canillas <javierm@redhat.com>,
+ Michal Suchanek <msuchanek@suse.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Wei Ming Chen <jj251510319013@gmail.com>,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ Tony Lindgren <tony@atomide.com>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ linux-efi <linux-efi@vger.kernel.org>,
+ "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+ Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+ dri-devel <dri-devel@lists.freedesktop.org>, Rob Herring <robh@kernel.org>
+Message-ID: <ad66bc12-ff8c-33fe-739c-879ddd3be117@suse.de>
+Subject: Re: [PATCH 2/2] efi: earlycon: Add support for generic framebuffers
+ and move to fbdev subsystem
+References: <20220728142824.3836-1-markuss.broks@gmail.com>
+ <20220728142824.3836-3-markuss.broks@gmail.com>
+ <CAK8P3a2fZ9O6vSEyxY1KW71pG_Oyvwxp3zTbW2GuaSD6aj+Qfw@mail.gmail.com>
+ <8e694cb6-c3dc-74e3-6804-fc532f108523@gmail.com>
+ <CAK8P3a2vJFCJmeMj-vuasUhwa2=2P+hAr=ScGhT21TcjQ1Z8Aw@mail.gmail.com>
+In-Reply-To: <CAK8P3a2vJFCJmeMj-vuasUhwa2=2P+hAr=ScGhT21TcjQ1Z8Aw@mail.gmail.com>
 
-Add LEDs found on the Xiaomi MSM8996 devices. The devices share
-a status RGB LED mounted on the front, as well as a PWM-driven
-IR LED for remote control (sometimes known as an IR blaster).
-The Mi Note 2 has an additional pair of white LEDs used as backlights
-for the touchkeys driven by the PM8994 LPG block.
+--------------wOfAjdQVOctUaTt2fnh0VO0v
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
----
- .../boot/dts/qcom/msm8996-xiaomi-common.dtsi  | 54 +++++++++++++++++++
- .../boot/dts/qcom/msm8996-xiaomi-scorpio.dts  | 30 +++++++++++
- 2 files changed, 84 insertions(+)
+SGkNCg0KQW0gMjguMDcuMjIgdW0gMTc6MTYgc2NocmllYiBBcm5kIEJlcmdtYW5uOg0KPiBP
+biBUaHUsIEp1bCAyOCwgMjAyMiBhdCA0OjU3IFBNIE1hcmt1c3MgQnJva3MgPG1hcmt1c3Mu
+YnJva3NAZ21haWwuY29tPiB3cm90ZToNCj4+IE9uIDcvMjgvMjIgMTc6NDgsIEFybmQgQmVy
+Z21hbm4gd3JvdGU6DQo+Pj4gT24gVGh1LCBKdWwgMjgsIDIwMjIgYXQgNDoyOCBQTSBNYXJr
+dXNzIEJyb2tzIDxtYXJrdXNzLmJyb2tzQGdtYWlsLmNvbT4gd3JvdGU6DQo+Pj4+DQo+Pj4+
+IEFkZCBlYXJseSBjb25zb2xlIHN1cHBvcnQgZm9yIGdlbmVyaWMgbGluZWFyIGZyYW1lYnVm
+ZmVyIGRldmljZXMuDQo+Pj4+IFRoaXMgZHJpdmVyIHN1cHBvcnRzIHByb2JpbmcgZnJvbSBj
+bWRsaW5lIGVhcmx5IHBhcmFtZXRlcnMNCj4+Pj4gb3IgZnJvbSB0aGUgZGV2aWNlLXRyZWUg
+dXNpbmcgaW5mb3JtYXRpb24gaW4gc2ltcGxlLWZyYW1lYnVmZmVyIG5vZGUuDQo+Pj4+IFRo
+ZSBFRkkgZnVuY3Rpb25hbGl0eSBzaG91bGQgYmUgcmV0YWluZWQgaW4gd2hvbGUuDQo+Pj4+
+IFRoZSBkcml2ZXIgd2FzIGRpc2FibGVkIG9uIEFSTSBiZWNhdXNlIG9mIGEgYnVnIGluIGVh
+cmx5X2lvcmVtYXANCj4+Pj4gaW1wbGVtZW50YXRpb24gb24gQVJNLg0KPj4+Pg0KPj4+PiBT
+aWduZWQtb2ZmLWJ5OiBNYXJrdXNzIEJyb2tzIDxtYXJrdXNzLmJyb2tzQGdtYWlsLmNvbT4N
+Cj4+Pj4gLS0tDQo+Pj4+ICAgIC4uLi9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50
+eHQgICAgICAgICB8ICAxMiArLQ0KPj4+PiAgICBNQUlOVEFJTkVSUyAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgfCAgIDUgKw0KPj4+PiAgICBkcml2ZXJzL2Zpcm13YXJl
+L2VmaS9LY29uZmlnICAgICAgICAgICAgICAgICAgfCAgIDYgKy0NCj4+Pj4gICAgZHJpdmVy
+cy9maXJtd2FyZS9lZmkvTWFrZWZpbGUgICAgICAgICAgICAgICAgIHwgICAxIC0NCj4+Pj4g
+ICAgZHJpdmVycy9maXJtd2FyZS9lZmkvZWFybHljb24uYyAgICAgICAgICAgICAgIHwgMjQ2
+IC0tLS0tLS0tLS0tLS0tDQo+Pj4+ICAgIGRyaXZlcnMvdmlkZW8vZmJkZXYvS2NvbmZpZyAg
+ICAgICAgICAgICAgICAgICB8ICAxMSArDQo+Pj4+ICAgIGRyaXZlcnMvdmlkZW8vZmJkZXYv
+TWFrZWZpbGUgICAgICAgICAgICAgICAgICB8ICAgMSArDQo+Pj4+ICAgIGRyaXZlcnMvdmlk
+ZW8vZmJkZXYvZWFybHljb24uYyAgICAgICAgICAgICAgICB8IDMwMSArKysrKysrKysrKysr
+KysrKysNCj4+Pg0KPj4+IEl0IGxvb2tzIGxpa2UgdGhpcyBpcyBub3QgYWN0dWFsbHkgcmVs
+YXRlZCB0byBmYmRldiwgYW5kIHNpbmNlIGRyaXZlcnMgYXJlDQo+Pj4gbW92aW5nIGZyb20g
+ZmJkZXYvc2ltcGxlZmIgdG93YXJkcyBkcm0vc2ltcGxlZHJtLCBtYXliZSBpdCB3b3VsZCBi
+ZQ0KPj4+IGJldHRlciB0byBwdXQgdGhpcyBpbnRvIGVpdGhlciBkcml2ZXJzL2dwdS9kcm0v
+dGlueS8gb3IgcG9zc2libHkNCj4+PiBkcml2ZXJzL3ZpZGVvL2NvbnNvbGUgdG8gbGV0IHRo
+aXMgYmUgdXNlZCB3aXRob3V0IGVuYWJsaW5nIGZiZGV2Pw0KPj4NCj4+IElkZWFsbHkgdGhp
+cyBzaG91bGRuJ3QgZGVwZW5kIG9uIGFueXRoaW5nLCBiZWNhdXNlIGl0IGlzbid0IHV0aWxp
+emluZw0KPj4gYW55IG9mIGZiZGV2IGNvZGUgYW5kIHdvbid0IGJlIHV0aWxpemluZyBhbnkg
+b2YgZHJtL2NvbnNvbGUgY29kZS4gSQ0KPj4gYWdyZWUgdGhhdCBlaXRoZXIgb2YgdGhvc2Ug
+d291bGQgYmUgYSBiZXR0ZXIgcGxhY2UgZm9yIGl0LCBidXQgd2hpY2ggb25lDQo+PiBkbyB5
+b3UgdGhpbmsgd291bGQgc3VpdCBtb3JlIGZvciB0aGlzIGRyaXZlcj8NCj4gDQo+IEkgdGhp
+bmsgaWRlYWxseSB0aGlzIHdvdWxkIGJlIGludGVncmF0ZWQgd2l0aCBzaW1wbGVkcm0gaW4g
+dGhlIGxvbmcgcnVuLA0KPiBidXQgSSBoYXZlIG5vIGlkZWEgd2hhdCB0aGF0IG1lYW5zIGlu
+IHRlcm1zIG9mIGZ1dHVyZSBjb2RlIGNoYW5nZXMuDQo+IA0KPiBNYXliZSBUaG9tYXMgWmlt
+bWVybWFubiBoYXMgYW4gaWRlYSBoZXJlLg0KDQpJdCdzIG5vdCBhIGdyYXBoaWNzIGRyaXZl
+ciwgc28gaXQgZG9lc24ndCBiZWxvbmcgdG8gZmJkZXYgb3IgRFJNLiBJJ2QgDQpwdXQgdGhl
+IGNvZGUgdW5kZXIgZHJpdmVycy92aWRlby9jb25zb2xlLg0KDQpEaXJlY3QgaW50ZWdyYXRp
+b24gd2l0aCBzaW1wbGVkcm0gKG9yIGFueSBvdGhlciBmaXJtd2FyZSBncmFwaGljcyANCmRy
+aXZlcikgaXMgcHJvYmFibHkgbm90IGFuIG9wdGlvbi4gVGhvc2UgZHJpdmVycyBvcGVyYXRl
+IG9uIHBsYXRmb3JtIA0KZGV2aWNlcywgd2hpY2ggYXJlbid0IGF2YWlsYWJsZSB3aGVuIGVh
+cmx5Y29uIHJ1bnMuDQoNClRoZXJlJ3Mgbm8gbWFuYWdlbWVudCBvZiBmcmFtZWJ1ZmZlciBv
+d25lcnNoaXAgQUZBSUNUPyBGb3IgZmJkZXYgYW5kIA0KRFJNLCB3ZSBtYW5hZ2UgdGhlIG93
+bmVyc2hpcCBvZiB0aGUgZnJhbWVidWZmZXIgbWVtb3J5LiBXaGVuIGEgZHJpdmVyIA0KdGFr
+ZXMgb3ZlciB0aGUgZnJhbWVidWZmZXIsIGl0IGZpcnN0IGhhcyB0byByZW1vdmUgYW55IGRy
+aXZlciBwcmV2aW91c2x5IA0Kb3duaW5nIHRoYXQgbWVtb3J5LiAgVGhhdCBhcHBhcmVudGx5
+IGhhc24ndCBiZWVuIGEgbmVlZCBmb3IgZWFybHkgDQpjb25zb2xlcyBzbyBmYXIgKD8pIE1h
+eWJlIHdlIHNob3VsZCBpbnRlZ3JhdGUgdGhlbSBpbnRvIHRoZSBvd25lcnNoaXAgDQptYW5h
+Z2VtZW50IChzZWUgZHJpdmVycy92aWRlby9hcGVydHVyZS5jKS4NCg0KQmVzdCByZWdhcmRz
+DQpUaG9tYXMNCg0KPiANCj4gICAgICAgICAgQXJuZA0KDQotLSANClRob21hcyBaaW1tZXJt
+YW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9u
+cyBHZXJtYW55IEdtYkgNCk1heGZlbGRzdHIuIDUsIDkwNDA5IE7DvHJuYmVyZywgR2VybWFu
+eQ0KKEhSQiAzNjgwOSwgQUcgTsO8cm5iZXJnKQ0KR2VzY2jDpGZ0c2bDvGhyZXI6IEl2byBU
+b3Rldg0K
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-index 627649979891..ef9a8aa9c2b9 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-@@ -58,6 +58,14 @@ key-dome {
- 		};
- 	};
- 
-+	irled {
-+		compatible = "pwm-ir-tx";
-+		pwms = <&pm8994_lpg 1 1000000>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&irled_default>;
-+	};
-+
- 	reserved-memory {
- 		memory@88800000 {
- 			reg = <0x0 0x88800000 0x0 0x1400000>;
-@@ -297,6 +305,41 @@ &pm8994_resin {
- 	linux,code = <KEY_VOLUMEDOWN>;
- };
- 
-+&pm8994_lpg {
-+	status = "okay";
-+
-+	qcom,power-source = <1>;
-+};
-+
-+&pmi8994_lpg {
-+	status = "okay";
-+
-+	qcom,power-source = <1>;
-+
-+	multi-led {
-+		color = <LED_COLOR_ID_RGB>;
-+		function = LED_FUNCTION_STATUS;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@1 {
-+			reg = <1>;
-+			color = <LED_COLOR_ID_BLUE>;
-+		};
-+
-+		led@2 {
-+			reg = <2>;
-+			color = <LED_COLOR_ID_GREEN>;
-+		};
-+
-+		led@3 {
-+			reg = <3>;
-+			color = <LED_COLOR_ID_RED>;
-+		};
-+	};
-+};
-+
- &slpi_pil {
- 	status = "okay";
- 
-@@ -608,6 +651,17 @@ vdd_gfx: s2 {
- };
- 
- &pm8994_gpios {
-+	irled_default: irled-default {
-+		pinconf {
-+			pins = "gpio5";
-+			function = PMIC_GPIO_FUNC_FUNC1;
-+			output-low;
-+			qcom,drive-strength = <PMIC_GPIO_STRENGTH_HIGH>;
-+			power-source = <PM8994_GPIO_S4>;
-+			bias-disable;
-+		};
-+	};
-+
- 	wlan_en_default: wlan-en-state {
- 		pins = "gpio8";
- 		function = PMIC_GPIO_FUNC_NORMAL;
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-index 30a9e4bed4af..0b47a659cc38 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-scorpio.dts
-@@ -116,6 +116,25 @@ &mss_pil {
- 			"qcom/msm8996/scorpio/modem.mbn";
- };
- 
-+&pm8994_lpg {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&keypad_default>;
-+
-+	led@3 {
-+		reg = <3>;
-+		color = <LED_COLOR_ID_WHITE>;
-+		function = LED_FUNCTION_KBD_BACKLIGHT;
-+		function-enumerator = <1>;
-+	};
-+
-+	led@6 {
-+		reg = <6>;
-+		color = <LED_COLOR_ID_WHITE>;
-+		function = LED_FUNCTION_KBD_BACKLIGHT;
-+		function-enumerator = <0>;
-+	};
-+};
-+
- &q6asmdai {
- 	dai@0 {
- 		reg = <0>;
-@@ -258,6 +277,17 @@ &pm8994_gpios {
- 		"PMIC_SLB",		/* GPIO_20 */
- 		"UIM_BATT_ALARM",	/* GPIO_21 */
- 		"NC";			/* GPIO_22 */
-+
-+	keypad_default: keypad-default {
-+		pinconf {
-+			pins = "gpio7", "gpio10";
-+			function = PMIC_GPIO_FUNC_FUNC1;
-+			output-low;
-+			qcom,drive-strength = <PMIC_GPIO_STRENGTH_LOW>;
-+			power-source = <PM8994_GPIO_S4>;
-+			bias-disable;
-+		};
-+	};
- };
- 
- &pm8994_mpps {
--- 
-2.37.1
+--------------wOfAjdQVOctUaTt2fnh0VO0v--
 
+--------------fka0dzGSHEDzxZIPDv0yrwbG
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmLi0bkFAwAAAAAACgkQlh/E3EQov+B0
+sA//U3PXzUAbSYFqCHnF//0Eu06L7FmUbkLuFwZLHUFEugcVusx0d81xpinBhNLmxKqABWfl6vj0
+qfGznuHNoSFB0tA40/piKAa4XTPL7zFuUqKocfywJfxuqLEVg2Xni1phXMX4iWXXMoUiZU9dyooH
+NXH9+5OkrHnhkANWckiwXnfdeyze1PaOZCQA5gv37J5icYz77JNOEl5wNuu619EpxZb+yIGoFHe2
+kjo4hqPKUf6DtYmQ/XYRCaUK8ulWPpgtubnM72zrdTyBqyBtXcF10rRqepVNfJoeRNoz9aINVgwI
+9YUmGIfG2mu+VXfXCVUsplQHjTIviSP6yJdKAD+Y0tN1LhgzUaojrPL6AIHtWmRUhKFOcOomqv5s
+qWmOsZ5SdUrENkzcXsYsyFdxFck3lLfljwssyC5ucQ4e1+8CK9Yb4FqqQrsovAPKsP7LatV0/FUu
+T0KThUmmIORfvPNJi/7UwuzRLcn9ynTzL38DnZxrGGQu4McaqffAbDaq1wnDZBavtvcI1OrEF71m
+nbPZ0TeYZYfNI4ewFBfL69vR56ifRx73ptnWbA72XzZ5PxR1Uz3OYen6cZIUD/WB93MO9qsuTjIk
+IsHHmA5WShkgwyoiJ+fMMcgFaHik0ak4jjcgM3XfCvVpHPondGlN27Wy1DMxiFyzNS579V7geW3f
+9wo=
+=9erw
+-----END PGP SIGNATURE-----
+
+--------------fka0dzGSHEDzxZIPDv0yrwbG--
