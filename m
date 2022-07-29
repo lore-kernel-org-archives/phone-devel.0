@@ -2,190 +2,146 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06180C00144
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Jul 2022 21:08:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C19B3C19F29
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Jul 2022 22:52:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231591AbiG2VIB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Jul 2022 17:08:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58452 "EHLO
+        id S239213AbiG2Wwc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Jul 2022 18:52:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229931AbiG2VIA (ORCPT
+        with ESMTP id S239544AbiG2Wwa (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Jul 2022 17:08:00 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5426B1EE;
-        Fri, 29 Jul 2022 14:07:57 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id m20so623765ejx.1;
-        Fri, 29 Jul 2022 14:07:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=ZnijszfNceP0fwRE0S8xAK/S1dlE8Lve0MOPfHF9xV0=;
-        b=TI9PWFbrEKrjXRos/9Uo8Fvi8+uBVB871xSPksh4fZs05WK9/lANhyvc0xbCN6tHk/
-         9dBct9Pt0lYPys6sF6tsmeWbbkabQDS+RKPHJjS/6+rSjoDY9js1grLMjcrlgo6FfzKO
-         ekPVVXajRES1UZ17yhg11U37Z0c2MlzH3X0QdQktImVIyrgkQ9OuH9S+JkKtQAmscJyc
-         mC18zyJf5bCY82iSZ6gsutlAayCQxof44H5aCu8ynT4WfBUitSS0KgrJomiycR8rk9xf
-         +3FMiaHRsSxXuqi75mu3cBhiXJ9BVSahG+cCNAwbc34xeKaP323PmI6yqr3dkOlXpwyY
-         hn/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ZnijszfNceP0fwRE0S8xAK/S1dlE8Lve0MOPfHF9xV0=;
-        b=d46danN7t0OHlC8YIfkjD0VPuZpnNyyIBgPAiHkOlnFD8yNnLAKs6wHJgNVUrxVanB
-         iSUSKzbcX+30R2VLIr3oqFiNr5ck86JbD5uIBUnbFH2ZHTsdwEPAtZvnmuUv+obYCe8x
-         GJc9NiY78BSoSB/qrcTLNVn8+v4JNMY3FfQ8TCM8U76b1h8NZRap+d/jdzndEQ0YQS7a
-         gnnxm1rMJ4VNdIwQ/iwNHfWTJ1v+CUMw2d1TGkSYBEfn5yhrAvmJLP5ysQs1f5KSLDcb
-         kGyalMD8Wvx7rmWqGAWCv/JcE1jWe0BwyonZUE8iK7Syfoy4qWYywC7LwpXNPjVOyUOb
-         dh2A==
-X-Gm-Message-State: AJIora8NJxR8byZhTOB0ZhdNfuqhgP/nDAOd8LlsIfhDEBL00oUfRNmc
-        0qM1gyRVX1ZbWSCn5vCjiIo=
-X-Google-Smtp-Source: AGRyM1s5LJD8uCF4WTdrT+orrBGrEqQdXLHZ5a3FoTVkc2Z91A5NB7j7CUbFczwBdb4cxLpFvRDo1g==
-X-Received: by 2002:a17:907:1dca:b0:72b:3cb2:81f7 with SMTP id og10-20020a1709071dca00b0072b3cb281f7mr4046672ejc.567.1659128876170;
-        Fri, 29 Jul 2022 14:07:56 -0700 (PDT)
-Received: from calypso ([80.155.25.210])
-        by smtp.gmail.com with ESMTPSA id l24-20020a056402029800b0043a7293a03dsm2922061edv.7.2022.07.29.14.07.54
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 29 Jul 2022 14:07:55 -0700 (PDT)
-From:   "Jorge Ramirez-Ortiz, Gmail" <jorge.ramirez.ortiz@gmail.com>
-X-Google-Original-From: "Jorge Ramirez-Ortiz, Gmail" <JorgeRamirez-Ortiz>
-Date:   Fri, 29 Jul 2022 23:07:53 +0200
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Iskren Chernev <iskren.chernev@gmail.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Adam Skladowski <a39.skl@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Robert Marko <robimarko@gmail.com>,
-        Jorge Ramirez-Ortiz <jorge@foundries.io>,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v2 3/5] regulator: qcom_spmi: Add support for new
- regulator types
-Message-ID: <20220729210753.GA17925@calypso>
-References: <20220726181133.3262695-1-iskren.chernev@gmail.com>
- <20220726181133.3262695-4-iskren.chernev@gmail.com>
- <YuEoLteLBgd+b8sg@sirena.org.uk>
- <79077e08-4bd8-6967-748d-876589ef978e@gmail.com>
- <YuJuzNiQczaYi1og@sirena.org.uk>
- <245f6090-9f92-8091-d8e6-735ab078c6c8@gmail.com>
- <YuPM6XqLBuA8A9eY@sirena.org.uk>
+        Fri, 29 Jul 2022 18:52:30 -0400
+Received: from sonic310-12.consmr.mail.ir2.yahoo.com (sonic310-12.consmr.mail.ir2.yahoo.com [77.238.177.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3CD2863CC
+        for <phone-devel@vger.kernel.org>; Fri, 29 Jul 2022 15:52:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1659135147; bh=1JUeSuTl5UnqmpQmXxlJ9fFmonK1o1XoIKUnYly2J6Y=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=VP0rhVRlVAbkA/z+ilXbId3ZQZWJaV7K9svgf1c2Bg7cEqKmefTqVDxRLI33PDcBqgk9QqaCt2vyRUpzNPnIb4NqwO7cMRI0MEjlPiInXZgHHJ3tEMgEslP3nFNXZH0ie3D2/Vcqcnz0WbcP3UczI31rocHKVbl/LuADHPZSWBD9zH4VvWHHLn+HlXSPmGrngXBlCTpq1F3/b4VzmSAbZpYOfDCGewnT8+yLOUIicyZ4jSbWje6gGoLwjL7iSvj2lJD2E3WnCqnKO8EkffQnLaj4SfNRwSuB6CiswE+tToKZsi/gf2dcRdiJhYoD6ig5OX9umsSWnVjgwuH9nCwy1w==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1659135147; bh=05wwq41KnAfy/tUR/JWKMXCRvwRxXP4G40yNIwRrQ3H=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=IS3EHR589kQxxf4/o0GIs2ScqQE17W4P7S844p4kmHEoC46BEuV5FENRHhJ0rhGqkgXlAAfWhQw+ErdYmuZ0UQXk6M6DQ+2VudZItE7kybLgw6qQpWxV+s+kKGF0R8AuXcaWZsUJBY41xPQn04eQ2Xn+If4MDJG5B1td8V0KFl+1z+k5a8ZMXKKMhNb3kJCOn0fhzjkloJ35HJwD8LP09xi/jDCMZHixejwfxS3tH0rwKvDqqhH8v2IWab4UTkvdfOTOdX0cMgkYK/lojvz+4lHqKEqQhJj+qoXdHLhJ4DBlAkiPRAWpWODzzP3/wKIu6Rtwb3K2Hyuger1OTEgX+A==
+X-YMail-OSG: GG9KCe8VM1nDzQZn_Uc3CaouocdfoNXjr5PENQNVmXrNhrlfyJgYhtReXcWWefM
+ FeGkkhVt4TlPkXE6Ao74U7IyUnscCAK3gaqErHRu84QNyw7PWUQzil0sKJolYaDkaeQ2O56srwCC
+ UYcCBrLKuQiHKqaNTJdaQTEEDaXbHKsze7VgQbksH4JM0RPv9sWC0KSmXPOCSVh8G.VJLSF0Nhkk
+ fTi7tlep4_uBRF2XnuRVejYDsIo0p11FTy_iIp.m4an6MpETrH70hCAaglounIbsH86RVP2tSTND
+ M_0zgVMU_rmteuiWRx5at893Zuy1MOc6oZk.tWWanuS8CIfYID6lJnldP9aCv5ccjC3_oFfAq9h7
+ rzFxZF71up1FiHBCrU_BP8Uv_Ntbrym7Bk.JlBmP5xL5JEAx6CDboZlwVu66KalQMq2JTrQ9XxU9
+ aoJNPMpCCqbxwiE4UAYPRAqJzi.KFn8cQELWEyTmR6U57XiS.yEvY7dv0sYtHqJ7pNrkS0bhDQTx
+ zE6oGrncpW4tREpPjbiqpXKyj5Q7bdlT.XSrEtPAw24WGJ3yDB9LlCDfXdG1ByLfcfziQ5SDhtOY
+ t6Qabu2l3oNz37yLKefH9qWPjubmDbBnfiVhsvmN.oMhq12TGMm_h1KQzOdBkobTC8Mh8EunGsf7
+ qULgBmRj_i7.XxyBfTIxwlUC9RxLbW9RaGzrgfLpv1XAF08GmVeJVg1JtK5BIUcWai5QTPekxHqi
+ 0nYmTC1i6gSBUwXzxAGsaSpnJBui9tLLSMlEuC0dXmgiGU6y2frUfHa8oMOd6zvoHau1IliKNj9t
+ 7tUDR5EFPeS8PyvlshqTMyy4zhEGqAFnMxTClJ9vPa4CcUgMzCxCO_ZfJNdmgWbjNhDq4J.FKHnU
+ hYVoIswu09liCZsPcYYC3pox5BALi9JSRuy5tjaA5DTR1iw2Ou.9H.cqFTkvLkv6SsGpsgs1SrAH
+ hwvp9VAn1J_DCyJfBmNlLUZwI52d04ygUI9r4g3dC1kNs4Gea9P5tHElM1Pngp0DtpIydvhIN22P
+ X.lpdR18.jHE8uE1o658hNtPnIYI.JYzuG5klTHfp9xMMzp5rC0pc3D9u5GHT3Ej5.sXLu6vVbSx
+ Op6lrAdEila0n_KYq4aMDrrZZRdur60.axN4g5iWY1.zfuHEVJ9bV8SejYFwOxMNtJpf7XTLAHtf
+ OjiAUkd8logUEXvK__U_2x2NbsTQTxBema9qm2fFv4PDSJ9S6y00BYhNb0vor2E5HHepwl.jfJrL
+ 0CT_7v1P4Hg4B8KiyqZ3ffb5ADfRGM8FBNb77jdS6nA.6EhuT2AnV1nTi6KCqWYOC9N5DhetHwVU
+ sPJgueAhW93bt0RauLLFpVw2vSJcFZMe49X4TLKLOxA1aGoYAjzW2ZDRHjTl_h0gRj28udq1e91c
+ wFn3rWT0BChOetiqSzKBm4nRomcZZW4VFIOGNbzkJ._grPOE1PbtDoN1fIt2ZD6BPzFad2NoCjK4
+ .3UYA_VZelHo0oPwcOBkMWiuUOHyYDFdw8ueiKXAVMo5suBL07QEFxEKfAsgc6SOU9UFUqNuqbol
+ oi0bXOf3rt.8xt86RsibNdoqQvSX96d0RQujcRPKPKs85EhaPIpbxrL3.38NPOCLwpTwKjqkkfiE
+ 9Y5OG8gfTwJSsfrhv_Zf5wfOeRdkEhbKNo.BhFv48Z8a86bjoxuXMLBazoeINywVQjO7UcqlXz2j
+ KaNP6yZJAySiitggVItpAdzsZ.JYZhADv79q6Xrz7lMZewDjwxOKRtycKmgPUmyAt8Aku4eAbq9K
+ cFTkhrlDcHJ6H_CH7YgGYfUTle3yDgcKFYd8e68ek6iLNnBhK_Vg7FzdXFzlMt3pHb84.gnA2tnK
+ 9KK9N4CYK1mPOumlN3vSXgrOYi7p.odaV9s663AnWYYDFssdJdZUQe9xWrhfdXejrDv5VrFqQUM7
+ uBaHuYPsyPQ_eTBq33M50T.sfd4hENqWHMU0q9zuRBpinyFebGxHi9OTcMCvFna.zZZ0jtK2flpS
+ lyDjk9M97JE.VF.W6kLHSczX5BPS0Os_gbiwsXIktV_sP6KxllYtIzL_PfdpSCdgCVr.7vy_UHcM
+ YB7OYPPe3LRkcn093GRRqCntO1zdrTZ5VeXr2qScIGEPgS4ob210HVomjrqEQO1z4mhcCiDrjoWF
+ koTGV0d1gKtYnsQN0_Zm2053je4D59A4qCg.7.3fTsQWT8Nd0pS2Q1fQWuFusp1gKePbLcC08Oqd
+ s71t9WEnxrytaC0sGE18NgOU1oTtYxAoklYL3lusXq_O5CH3b3JNfVFUronvg.6BzNGht5bX7_uJ
+ PoV8-
+X-Sonic-MF: <jahau@rocketmail.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ir2.yahoo.com with HTTP; Fri, 29 Jul 2022 22:52:27 +0000
+Received: by hermes--canary-production-ir2-d447c45b6-sqmx2 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID fa79a2b2568bda8e5dd95eac776ed450;
+          Fri, 29 Jul 2022 22:52:22 +0000 (UTC)
+Message-ID: <4dbfd85f-a79e-9340-2654-d08eea616de4@rocketmail.com>
+Date:   Sat, 30 Jul 2022 00:52:20 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YuPM6XqLBuA8A9eY@sirena.org.uk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v4 09/10] iio: magnetometer: yas530: Introduce "chip_info"
+ structure
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1656883851.git.jahau@rocketmail.com>
+ <28a2a9ec27c6fb4073149b897415475a8f04e3f7.1656883851.git.jahau@rocketmail.com>
+ <CAHp75VfGqk_q1iDyj06tEuTNoG35xjOL0_5HgokFauUz_aAwFQ@mail.gmail.com>
+ <8639301c-ae9e-54ac-919d-baeb8760a31b@rocketmail.com>
+ <CAHp75VecjLe67XfK6qgM4eZfKiTJ-UabD40i6Q_YmMpyWAWMkg@mail.gmail.com>
+ <c52e34f1-1cc3-4351-e03b-6b9bf83481b6@rocketmail.com>
+ <CAHp75Vc9cYNOTmpr+NeQQEUVtkL6hnsjToiMBa2_NGnr2zuFtQ@mail.gmail.com>
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <CAHp75Vc9cYNOTmpr+NeQQEUVtkL6hnsjToiMBa2_NGnr2zuFtQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: WebService/1.1.20447 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 29/07/22 13:04:57, Mark Brown wrote:
-> On Thu, Jul 28, 2022 at 11:59:03PM +0300, Iskren Chernev wrote:
-> > 
-> > 
-> > On 7/28/22 14:11, Mark Brown wrote:
-> > > On Thu, Jul 28, 2022 at 02:14:10AM +0300, Iskren Chernev wrote:
-> > >> On 7/27/22 14:57, Mark Brown wrote:
-> > >>> On Tue, Jul 26, 2022 at 09:11:31PM +0300, Iskren Chernev wrote:
-> > >
-> > >>>> Add support for some regulator types that are missing in this driver, all
-> > >>>> belonging to the FTSMPS426 register layout.  This is done in preparation
-> > >>>> for adding support for the PM6125 PMIC.
-> > >
-> > >>>> +	.set_mode		= spmi_regulator_ftsmps3_set_mode,
-> > >>>> +	.get_mode		= spmi_regulator_ftsmps426_get_mode,
-> > >
-> > >>> Why are set and get asymmetric?
-> > >
-> > >> Because the get method, only uses AUTO and HPM, which have the same value
-> > >> for ftsmps3 and ftsmps426 (so there is no need for a new function).
-> > >
-> > > This needs at least a comment.
-> > 
-> > I agree, I think to add the function with the right macros, and comment
-> > that it is the same now but might change in the future if support for mode
-> > modes is added.
-> > 
-> > >>>> @@ -1473,7 +1557,7 @@ static const struct spmi_regulator_mapping supported_regulators[] = {
-> > >>>>  	SPMI_VREG(LDO,   HT_P600,  0, INF, HFS430, hfs430, ht_p600, 10000),
-> > >>>>  	SPMI_VREG(LDO,   HT_P150,  0, INF, HFS430, hfs430, ht_p150, 10000),
-> > >>>>  	SPMI_VREG(BUCK,  GP_CTL,   0, INF, SMPS,   smps,   smps,   100000),
-> > >>>> -	SPMI_VREG(BUCK,  HFS430,   0, INF, HFS430, hfs430, hfs430,  10000),
-> > >>>> +	SPMI_VREG(BUCK,  HFS430,   0,   3, HFS430, hfs430, hfs430,  10000),
-> > >
-> > >>> The changelog said we were adding support for new types but this looks
-> > >>> like changing an existing type.
-> > >
-> > >> The code, as written now does a different thing for BUCK, HFS430 (on
-> > >> mainline (ML) and downstream (DS) linked in the commit message). Since DS
-> > >> only supports newer stuff, to be on safe side, I kept existing behavior for
-> > >> rev 0-3 on BUCK(3)+HFS430(10), so at least DS and ML agree on pm6125
-> > >> completely.
-> > >
-> > > This needs describing in the changelog, probably you need multiple
-> > > paches here since you are making a number of different changes each of
-> > > which needs some explanation.
-> > >
-> > >> The commit [1] that adds support for BUCK+HFS430 might be wrong, or it
-> > >> might be right for the time being (i.e initial revisions had different
-> > >> behavior). I'm CC-ing Jorge.
-> > >
-> > > If that's the case perhaps part of this needs to be sent as a fix.
-> > 
-> > The Downstream patch is adding 3 logical types:
-> > - LDO_510 -- these have new subtypes, so no existing PMICs are affected
-> > - FTSMPS3 -- this has a new subtype (0xb), so no existing PMICs are
-> >   affected
-> > - HFSMPS -- this has the same type and subtype (BUCK+HFS430) as an existing
-> >   mainline logical type (HFS430), both declaring 0-INF revisions.
-> > 
-> > So if we fully trust the downstream patch, I can make a fix for the
-> > existing BUCK+HFS430+0-INF, so it uses the slighly modified mode values.
-> > 
-> > Currently the set mode fn differs in LPM mode (5 in the common2 case and
-> > 4 in the common3 case), so if indeed downstream is correct it would mean
-> > this regulator (when turned off) was set to an invalid mode (5 has
-> > undefined meaning in common3 map) from 2019 onward.
-> > 
-> > On the other hand, if we assume downstream is wrong, then their code sets
-> > 4, which actually means RETENTION (not LPM). I really don't know how this
-> > could cause trouble. In fact downstream does a bunch of weird stuff, it
-> > doesn't "just" set to LPM (like mainline), instead there is complex logic
-> > per logical type and "initial mode". Or they're just masking this mistake
-> > ;-)
-> > 
-> > TL;DR Jorge's mail is gone, so we can't get info from the original author.
-> 
-> Jorge moved to foundries.io, copying him in in case he remembers
-> anything about this.
+Hi Andy,
 
-I am sorry, I really dont remember the details. I believe this was part of the
-QCS404 upstreaming work so it would have been tested not just by us but also by
-the release team working on the final product. Sorry I cant be of much help, it
-has been a while.
+On 29.07.22 18:08, Andy Shevchenko wrote:
+> On Fri, Jul 29, 2022 at 1:06 AM Jakob Hauser <jahau@rocketmail.com> wro=
+te:
 
-> 
-> > Another issue is I can't really test any other PMIC (and even my PMIC
-> > I can't turn off most of the regs without loosing critical functionality,
-> > and the BUCKs are kinda important :)).
-> > 
-> > So we can:
-> > 1. politely ask for somebody with access to the secret sauce to say what is
-> >    correct, at least according to the docs (with a timeout)
-> > 2. assume downstream patch is right, and fix the existing HFS430 regulator
-> > 3. maintain the current (patch) behavior, which likely won't affect older
-> >    PMICs, but is still adhering to DS patch, because it adds support for
-> >    this particular PMIC, so presumably it was tested and works with it
-> > 4. drop the pmic patch and rely on SMD
-> > 
-> > Please advice.
-> > 
-> > In any case if we go with 2 or 3, I can split out this particular (BUCK)
-> > part in a separate patch with more information/comments.
+=2E..
 
+>> Is it appropriate to include this to kernel doc? Generally I'm unsure =
+on
+>> kernel doc but I guess yes...
+>=20
+> I'm unsure if it's appropriate for static (integer) arrays, you may
+> run kernel doc script yourself and check man, html and pdf formats to
+> see if it's rendered correctly.
 
+Nope, doesn't work...
+
+It was a beginner's mistake on my side. I did check
+Documentation/doc-guide/kernel-doc.rst before and followed the "typedef"
+part, which is quite short. I thought "typedef" is a more general
+designation =E2=80=93 but after reading more on "typedef" I now know what=
+ it is :/
+https://github.com/torvalds/linux/blob/v5.18/Documentation/doc-guide/kern=
+el-doc.rst#typedef-documentation
+
+So, as far as I can see, kernel doc applies to functions, structures,
+unions, enumerations and typedefs only.
+
+I would then switch the comments to regular comments:
+
+/*
+ * t_ref_counts[] is the number of counts at reference temperature.
+ *
+ * The temperature value at YAS magnetometers is a number of counts. The
+ * values in t_ref_counts[] are the counts at the reference temperature
+ * of 20 =C2=B0C.
+ *
+ * For YAS532/533, this value is known from the Android driver. For
+ * YAS530, it was approximately measured.
+ */
+static const u16 t_ref_counts[] =3D { 182, 390, 390, };
+
+/*
+ * min_temp_celsius_x10[] is the starting point of temperature counting
+ * in 1/10:s degrees Celsius.
+ *
+ * The array min_temp_celsius_x10[] contains the temperatures where the
+ * temperature value count is 0. The values are in 1/10:s degrees
+ * Celsius to ease the further temperature calculation.
+ *
+ * These temperatures are derived from the temperature resolutions given
+ * in the data sheets.
+ */
+static const s16 min_temp_celsius_x10[] =3D { -620, -500, -500, };
+
+=2E..
+
+Kind regards,
+Jakob
