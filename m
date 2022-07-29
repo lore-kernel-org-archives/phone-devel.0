@@ -2,36 +2,36 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0F70C3F6B0
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Jul 2022 10:45:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DC35FC28B2B
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Jul 2022 10:45:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235788AbiG2KpB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Jul 2022 06:45:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39686 "EHLO
+        id S234622AbiG2KpJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Jul 2022 06:45:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234856AbiG2KpA (ORCPT
+        with ESMTP id S235355AbiG2KpE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Jul 2022 06:45:00 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 317BC8321F;
-        Fri, 29 Jul 2022 03:44:59 -0700 (PDT)
+        Fri, 29 Jul 2022 06:45:04 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56D5183F32;
+        Fri, 29 Jul 2022 03:45:03 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id F038D6601B68;
-        Fri, 29 Jul 2022 11:44:56 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id BB4FD6601B71;
+        Fri, 29 Jul 2022 11:45:00 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1659091498;
-        bh=QeRJz0RuJnUHLQciSaPN8Icqa2P19dEJD9UBWVAvvwk=;
+        s=mail; t=1659091501;
+        bh=KHcQKTlIo6mCV2UKqcNxwuM/2dLWF39lYb6bnCpx53Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J28iktrnjebj17ZFhJh7/p44DmgfY9pGQY8X8C8WU8Eiejc0k0T7c8BedGhoxvRRu
-         8YwSCakgQI+YA1LsmHgzoPV3dX1RbyNJLIFiZOuViSXU2zkmsN9l+2CCLfAW2LNnQB
-         PHPWXC13HqPdCER2bIzNZyoW9rRFt3MbbSvDY6n0/YKVZllb7Lq496FY7Nz3qnc9qQ
-         TwC1N1ezKmYYHllHxx45eD0w8oqAMEx6qX6aokQZdDTMaHuwhemoG4CLpfrToXnP1p
-         p8Z/9p8TrcJ8n/n8AdQSy9HzDSOAf2mdDMU/eskVyP4drSlnCHX4kuCvZVC+a01Rmd
-         M5VM6U/dsZHEA==
+        b=gwUT9zuOSrT8H5P4zToiy+Yl6pA2pulVODhkXMqwm+n2Nzs6hwZE28f/4cmrzq6WS
+         ScijsulJB37EnnP7WXkNM7w5t7yYLRHsE/2fB7jE2qanD/8E5xAjfqKd15wYzl2qMv
+         LqWent0iYNsl1AfUsLfcCPmrM+y/nCzMnFQ+e+N/IP1n5zdDmDiFUbITNFQ9prAUxR
+         SoXQFBSlgfMsoFkxZaHfs7PkdO2osJuM9dwrvGGbJAQ5Jlgh3lo8NVVazT38yNQA4d
+         myuTXqnCJMmMA8kjb8Rv4isxk0twfkvYhtThe1rsraIEHM///fvjhSU+CJ5EbO4SOx
+         EdZJRpVOvAPsQ==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
 To:     robh+dt@kernel.org
@@ -47,9 +47,9 @@ Cc:     krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
-Subject: [PATCH 5/8] arm64: dts: mediatek: mt6795: Add support for APDMA and wire up UART DMAs
-Date:   Fri, 29 Jul 2022 12:44:37 +0200
-Message-Id: <20220729104441.39177-6-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 7/8] dt-bindings: arm: mediatek: Add compatible for MT6795 Sony Xperia M5
+Date:   Fri, 29 Jul 2022 12:44:40 +0200
+Message-Id: <20220729104441.39177-9-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220729104441.39177-1-angelogioacchino.delregno@collabora.com>
 References: <20220729104441.39177-1-angelogioacchino.delregno@collabora.com>
@@ -59,86 +59,25 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This SoC has a DMA controller with tx/rx channels for all of the
-UART controller IPs: add the apdma node and wire up the DMAs on
-all controllers.
-When one of the UART controllers is used as a serial console,
-the DMA will be automatically ignored.
+Add a compatible for the Sony Xperia M5 smartphone.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- arch/arm64/boot/dts/mediatek/mt6795.dtsi | 34 ++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ Documentation/devicetree/bindings/arm/mediatek.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt6795.dtsi b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-index 559fec1ee123..687e0ee63503 100644
---- a/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-@@ -314,6 +314,8 @@ uart0: serial@11002000 {
- 			interrupts = <GIC_SPI 91 IRQ_TYPE_LEVEL_LOW>;
- 			clocks = <&pericfg CLK_PERI_UART0_SEL>, <&pericfg CLK_PERI_UART0>;
- 			clock-names = "baud", "bus";
-+			dmas = <&apdma 0>, <&apdma 1>;
-+			dma-names = "tx", "rx";
- 			status = "disabled";
- 		};
- 
-@@ -324,9 +326,37 @@ uart1: serial@11003000 {
- 			interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_LOW>;
- 			clocks = <&pericfg CLK_PERI_UART1_SEL>, <&pericfg CLK_PERI_UART1>;
- 			clock-names = "baud", "bus";
-+			dmas = <&apdma 2>, <&apdma 3>;
-+			dma-names = "tx", "rx";
- 			status = "disabled";
- 		};
- 
-+		apdma: dma-controller@11000380 {
-+			compatible = "mediatek,mt6795-uart-dma",
-+				     "mediatek,mt6577-uart-dma";
-+			reg = <0 0x11000380 0 0x60>,
-+			      <0 0x11000400 0 0x60>,
-+			      <0 0x11000480 0 0x60>,
-+			      <0 0x11000500 0 0x60>,
-+			      <0 0x11000580 0 0x60>,
-+			      <0 0x11000600 0 0x60>,
-+			      <0 0x11000680 0 0x60>,
-+			      <0 0x11000700 0 0x60>;
-+			interrupts = <GIC_SPI 103 IRQ_TYPE_LEVEL_LOW>,
-+				     <GIC_SPI 104 IRQ_TYPE_LEVEL_LOW>,
-+				     <GIC_SPI 105 IRQ_TYPE_LEVEL_LOW>,
-+				     <GIC_SPI 106 IRQ_TYPE_LEVEL_LOW>,
-+				     <GIC_SPI 107 IRQ_TYPE_LEVEL_LOW>,
-+				     <GIC_SPI 108 IRQ_TYPE_LEVEL_LOW>,
-+				     <GIC_SPI 109 IRQ_TYPE_LEVEL_LOW>,
-+				     <GIC_SPI 110 IRQ_TYPE_LEVEL_LOW>;
-+			dma-requests = <8>;
-+			clocks = <&pericfg CLK_PERI_AP_DMA>;
-+			clock-names = "apdma";
-+			mediatek,dma-33bits;
-+			#dma-cells = <1>;
-+		};
-+
- 		uart2: serial@11004000 {
- 			compatible = "mediatek,mt6795-uart",
- 				     "mediatek,mt6577-uart";
-@@ -334,6 +364,8 @@ uart2: serial@11004000 {
- 			interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_LOW>;
- 			clocks = <&pericfg CLK_PERI_UART2_SEL>, <&pericfg CLK_PERI_UART2>;
- 			clock-names = "baud", "bus";
-+			dmas = <&apdma 4>, <&apdma 5>;
-+			dma-names = "tx", "rx";
- 			status = "disabled";
- 		};
- 
-@@ -344,6 +376,8 @@ uart3: serial@11005000 {
- 			interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_LOW>;
- 			clocks = <&pericfg CLK_PERI_UART3_SEL>, <&pericfg CLK_PERI_UART3>;
- 			clock-names = "baud", "bus";
-+			dmas = <&apdma 6>, <&apdma 7>;
-+			dma-names = "tx", "rx";
- 			status = "disabled";
- 		};
- 	};
+diff --git a/Documentation/devicetree/bindings/arm/mediatek.yaml b/Documentation/devicetree/bindings/arm/mediatek.yaml
+index 07c0ea94e850..c162b0df299b 100644
+--- a/Documentation/devicetree/bindings/arm/mediatek.yaml
++++ b/Documentation/devicetree/bindings/arm/mediatek.yaml
+@@ -58,6 +58,7 @@ properties:
+       - items:
+           - enum:
+               - mediatek,mt6795-evb
++              - sony,xperia-m5
+           - const: mediatek,mt6795
+       - items:
+           - enum:
 -- 
 2.35.1
 
