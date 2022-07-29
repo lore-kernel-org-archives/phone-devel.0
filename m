@@ -2,112 +2,97 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD1AFC19F2C
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Jul 2022 07:57:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B4FFC00144
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Jul 2022 10:44:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235155AbiG2H5d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Jul 2022 03:57:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39434 "EHLO
+        id S235421AbiG2Ko6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Jul 2022 06:44:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235036AbiG2H5b (ORCPT
+        with ESMTP id S231218AbiG2Ko5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Jul 2022 03:57:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12DD07E027;
-        Fri, 29 Jul 2022 00:57:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Fri, 29 Jul 2022 06:44:57 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4A1883211;
+        Fri, 29 Jul 2022 03:44:53 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2F5D61BF8;
-        Fri, 29 Jul 2022 07:57:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CEAAC433D6;
-        Fri, 29 Jul 2022 07:57:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1659081450;
-        bh=kGpstCAAwPkGYsBYA0Sv1cWBhpQqBl9cZdq6KbVZpIc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=C5ZbaoWIRXMrNQTc535bsP0zIPJb4o4x7G+72avOewl26tmgUH0fnYcLGAm1TRjkG
-         wqEuTzdTP5GGSarwRrwLDIPmR7ZtpH/JQSaxOqnbgevhFJYaZFL/c+mM1lO2blfykq
-         e/98jXo2dQ75Q6EsD/pRVQ6C38alFpyauc3p8dHA=
-Date:   Fri, 29 Jul 2022 09:57:27 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Markuss Broks <markuss.broks@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Michal Suchanek <msuchanek@suse.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Wei Ming Chen <jj251510319013@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux Documentation List <linux-doc@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH 1/2] drivers: serial: earlycon: Pass device-tree node
-Message-ID: <YuOS5yUfNlTOtI6U@kroah.com>
-References: <20220728142824.3836-1-markuss.broks@gmail.com>
- <20220728142824.3836-2-markuss.broks@gmail.com>
- <YuKfaVG/ZbYtFjS/@kroah.com>
- <CAHp75Vfz8e1j4qZ6XY6WqMR4E9fKFxrTxj7P6KraXzSLk_NhxQ@mail.gmail.com>
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id AC0A96601B51;
+        Fri, 29 Jul 2022 11:44:50 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1659091491;
+        bh=AQdqE1GO0V3rreFgAXtrSDeQLlxnOolBtnCZSijQhOM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ejPq8DpUJ8FijUY0HCE1hwqrRnGZkQmBiPhNJ55XL1sQXbHsVMgjGe1BCdP+qI76Y
+         ewXDYk3rAZk5Wvt3URjsXZ527wjn580VKlMj0Cs1nvepNKKXM2MqtWDQyjkKuBvvnQ
+         fePyS983PRiJNWfYwEntuI/T3T5SKEf6UbP1aK2GyDz6hfoY9YpEhlt9K5s10T99fm
+         eXYPUHUdo2yrzYHNodmG/i+SbKZVmShsbXNYfXV+DOCI24usdP7esV8m+7qaDLB1LF
+         mQMUuJ1Hn2RgwUs9pGHW9aAYphmUDslW2I1i2AXz2G1d113krfwj6pWw+pbNdYYHxj
+         nYAo9akqERQxg==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     robh+dt@kernel.org
+Cc:     krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
+        chaotian.jing@mediatek.com, ulf.hansson@linaro.org,
+        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+        hsinyi@chromium.org, nfraprado@collabora.com,
+        allen-kh.cheng@mediatek.com, fparent@baylibre.com,
+        sam.shih@mediatek.com, sean.wang@mediatek.com,
+        long.cheng@mediatek.com, wenbin.mei@mediatek.com,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dmaengine@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: [PATCH 0/8] MT6795 Devicetrees and Sony Xperia M5
+Date:   Fri, 29 Jul 2022 12:44:32 +0200
+Message-Id: <20220729104441.39177-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75Vfz8e1j4qZ6XY6WqMR4E9fKFxrTxj7P6KraXzSLk_NhxQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jul 28, 2022 at 11:04:24PM +0200, Andy Shevchenko wrote:
-> On Thu, Jul 28, 2022 at 4:41 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> > On Thu, Jul 28, 2022 at 05:28:18PM +0300, Markuss Broks wrote:
-> > > Pass a pointer to device-tree node in case the driver probed from
-> > > OF. This makes early console drivers able to fetch options from
-> > > device-tree node properties.
-> 
-> ...
-> 
-> > > +     unsigned long node;
-> >
-> > That should not be an unsigned long, but rather an 'int'.  Something got
-> > messed up, of_setup_earlycon() should be changed to reflect this before
-> > propagating the error to other places in the kernel.
-> 
-> It's a pointer, but what puzzles me, why it can't be declared as a such:
-> 
->  struct device_node *node;
-> 
-> ?
+This series brings some more support for the MT6795 SoC, as it
+adds support for basic clock controllers (and resets) and all
+of the mtk-sd mmc controllers.
 
-It should not be a pointer, trace things backwards, it comes from a call
-to of_setup_earlycon() from early_init_dt_scan_chosen_stdout() which has
-offset declared as an int, and then does:
-	if (of_setup_earlycon(match, offset, options) == 0)
+While at it, since now it's possible to get the "first signs of
+life" out of a MT6795 smartphone platform, add a basic devicetree
+for the Sony Xperia M5 (codename "Holly") device as to start
+preparing the ground for a gradual bringup.
 
-So why would it be a node?
+This series depends on [1] my mt6795 clocks series.
 
-> > And it's not really a "node" but an "offset", right?
-> 
-> Seems no.
+P.S.: Thumbs up for the first MediaTek-powered ARM64 smartphone
+      going upstream! :-) :-) :-)
 
-Really?  What am I missing here?
+[1]: https://patchwork.kernel.org/project/linux-mediatek/list/?series=662165
 
-confused,
+AngeloGioacchino Del Regno (8):
+  dt-bindings: dma: mediatek,uart-dma: Add binding for MT6795 SoC
+  dt-bindings: mmc: Add compatible for MT6795 Helio X10 SoC
+  arm64: dts: mediatek: mt6795: Add topckgen, infra, peri clocks/resets
+  arm64: dts: mediatek: mt6795: Replace UART dummy clocks with pericfg
+  arm64: dts: mediatek: mt6795: Add support for APDMA and wire up UART
+    DMAs
+  arm64: dts: mediatek: mt6795: Add support for eMMC/SD/SDIO controllers
+  dt-bindings: arm: mediatek: Add compatible for MT6795 Sony Xperia M5
+  arm64: dts: mediatek: Add support for MT6795 Sony Xperia M5 smartphone
 
-greg k-h
+ .../devicetree/bindings/arm/mediatek.yaml     |   1 +
+ .../bindings/dma/mediatek,uart-dma.yaml       |   1 +
+ .../devicetree/bindings/mmc/mtk-sd.yaml       |   1 +
+ arch/arm64/boot/dts/mediatek/Makefile         |   1 +
+ .../dts/mediatek/mt6795-sony-xperia-m5.dts    |  90 +++++++++++++++
+ arch/arm64/boot/dts/mediatek/mt6795.dtsi      | 107 +++++++++++++++++-
+ 6 files changed, 197 insertions(+), 4 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
+
+-- 
+2.35.1
+
