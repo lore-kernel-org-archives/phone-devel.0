@@ -2,194 +2,194 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62776C3F6B0
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Jul 2022 12:00:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72732C00144
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Jul 2022 12:05:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235922AbiG2MAN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Jul 2022 08:00:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38362 "EHLO
+        id S235885AbiG2MFK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Jul 2022 08:05:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235605AbiG2MAM (ORCPT
+        with ESMTP id S235311AbiG2MFK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Jul 2022 08:00:12 -0400
-Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B14E42667
-        for <phone-devel@vger.kernel.org>; Fri, 29 Jul 2022 05:00:09 -0700 (PDT)
-Received: from [192.168.1.101] (abxi232.neoplus.adsl.tpnet.pl [83.9.2.232])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Fri, 29 Jul 2022 08:05:10 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C038C254;
+        Fri, 29 Jul 2022 05:05:06 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id CEE251F9C3;
-        Fri, 29 Jul 2022 14:00:04 +0200 (CEST)
-Message-ID: <a8fa9e22-8c3f-60b2-a0db-01cfd5c37765@somainline.org>
-Date:   Fri, 29 Jul 2022 14:00:02 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH 7/7] arm64: dts: mediatek: Add support for MT6795 Sony
- Xperia M5 smartphone
-Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, robh+dt@kernel.org
-Cc:     krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
-        chaotian.jing@mediatek.com, ulf.hansson@linaro.org,
-        matthias.bgg@gmail.com, hsinyi@chromium.org,
-        nfraprado@collabora.com, allen-kh.cheng@mediatek.com,
-        fparent@baylibre.com, sam.shih@mediatek.com,
-        sean.wang@mediatek.com, long.cheng@mediatek.com,
-        wenbin.mei@mediatek.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, phone-devel@vger.kernel.org,
+        by ams.source.kernel.org (Postfix) with ESMTPS id 63840B827A3;
+        Fri, 29 Jul 2022 12:05:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3601FC433C1;
+        Fri, 29 Jul 2022 12:05:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1659096304;
+        bh=jcgf15P25kPV3tz+Z7tn0n5Bd3MWQtID+T9e0qkTHDY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=uRNSIb3RCKOFO+BdQ1LAAbpM9dANhTuIL1xI5wARGtx1JcxuKRNi5ze+DsJ5bIr3x
+         NUcOCxxmqxwA+n1InVZ6voyTRDX6R0++SlFzBXkDj+xDCI2DPGi8D4X+qVGgKHOIV4
+         iUmBWr33W9VV8PowvkICNhH5fN0kjwfZLeQSh/s+WlgQM5q5bibW62JV34OMLevkJE
+         hGfQWe1MrHIEXjH+uYShu6tHoiupYwusRKX7jb8mg2zHhbdbwh1MYPFhmvV8oA0r3V
+         L5rcq5p5JurSFl3+3/QSgOqGNBkjPvIvR261U0aGHugxCVj9iJZ3ljvdVqNM/EXlzv
+         cQ6P94Z2Jwr+g==
+Date:   Fri, 29 Jul 2022 13:04:57 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Adam Skladowski <a39.skl@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Robert Marko <robimarko@gmail.com>,
+        Jorge Ramirez-Ortiz <jorge@foundries.io>,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
-References: <20220729104441.39177-1-angelogioacchino.delregno@collabora.com>
- <20220729104441.39177-8-angelogioacchino.delregno@collabora.com>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-In-Reply-To: <20220729104441.39177-8-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 3/5] regulator: qcom_spmi: Add support for new
+ regulator types
+Message-ID: <YuPM6XqLBuA8A9eY@sirena.org.uk>
+References: <20220726181133.3262695-1-iskren.chernev@gmail.com>
+ <20220726181133.3262695-4-iskren.chernev@gmail.com>
+ <YuEoLteLBgd+b8sg@sirena.org.uk>
+ <79077e08-4bd8-6967-748d-876589ef978e@gmail.com>
+ <YuJuzNiQczaYi1og@sirena.org.uk>
+ <245f6090-9f92-8091-d8e6-735ab078c6c8@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="nHc4xhGciUg6IkvF"
+Content-Disposition: inline
+In-Reply-To: <245f6090-9f92-8091-d8e6-735ab078c6c8@gmail.com>
+X-Cookie: Chairman of the Bored.
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
+--nHc4xhGciUg6IkvF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 29.07.2022 12:44, AngeloGioacchino Del Regno wrote:
-> Add a basic support for the Sony Xperia M5 (codename "Holly")
-> smartphone, powered by a MediaTek Helio X10 SoC.
-> 
-> This achieves a console boot.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->  arch/arm64/boot/dts/mediatek/Makefile         |  1 +
->  .../dts/mediatek/mt6795-sony-xperia-m5.dts    | 90 +++++++++++++++++++
->  2 files changed, 91 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
-> 
-> diff --git a/arch/arm64/boot/dts/mediatek/Makefile b/arch/arm64/boot/dts/mediatek/Makefile
-> index af362a085a02..72fd683c9264 100644
-> --- a/arch/arm64/boot/dts/mediatek/Makefile
-> +++ b/arch/arm64/boot/dts/mediatek/Makefile
-> @@ -3,6 +3,7 @@ dtb-$(CONFIG_ARCH_MEDIATEK) += mt2712-evb.dtb
->  dtb-$(CONFIG_ARCH_MEDIATEK) += mt6755-evb.dtb
->  dtb-$(CONFIG_ARCH_MEDIATEK) += mt6779-evb.dtb
->  dtb-$(CONFIG_ARCH_MEDIATEK) += mt6795-evb.dtb
-> +dtb-$(CONFIG_ARCH_MEDIATEK) += mt6795-sony-xperia-m5.dtb
--holly.dtb?
+On Thu, Jul 28, 2022 at 11:59:03PM +0300, Iskren Chernev wrote:
+>=20
+>=20
+> On 7/28/22 14:11, Mark Brown wrote:
+> > On Thu, Jul 28, 2022 at 02:14:10AM +0300, Iskren Chernev wrote:
+> >> On 7/27/22 14:57, Mark Brown wrote:
+> >>> On Tue, Jul 26, 2022 at 09:11:31PM +0300, Iskren Chernev wrote:
+> >
+> >>>> Add support for some regulator types that are missing in this driver=
+, all
+> >>>> belonging to the FTSMPS426 register layout.  This is done in prepara=
+tion
+> >>>> for adding support for the PM6125 PMIC.
+> >
+> >>>> +	.set_mode		=3D spmi_regulator_ftsmps3_set_mode,
+> >>>> +	.get_mode		=3D spmi_regulator_ftsmps426_get_mode,
+> >
+> >>> Why are set and get asymmetric?
+> >
+> >> Because the get method, only uses AUTO and HPM, which have the same va=
+lue
+> >> for ftsmps3 and ftsmps426 (so there is no need for a new function).
+> >
+> > This needs at least a comment.
+>=20
+> I agree, I think to add the function with the right macros, and comment
+> that it is the same now but might change in the future if support for mode
+> modes is added.
+>=20
+> >>>> @@ -1473,7 +1557,7 @@ static const struct spmi_regulator_mapping sup=
+ported_regulators[] =3D {
+> >>>>  	SPMI_VREG(LDO,   HT_P600,  0, INF, HFS430, hfs430, ht_p600, 10000),
+> >>>>  	SPMI_VREG(LDO,   HT_P150,  0, INF, HFS430, hfs430, ht_p150, 10000),
+> >>>>  	SPMI_VREG(BUCK,  GP_CTL,   0, INF, SMPS,   smps,   smps,   100000),
+> >>>> -	SPMI_VREG(BUCK,  HFS430,   0, INF, HFS430, hfs430, hfs430,  10000),
+> >>>> +	SPMI_VREG(BUCK,  HFS430,   0,   3, HFS430, hfs430, hfs430,  10000),
+> >
+> >>> The changelog said we were adding support for new types but this looks
+> >>> like changing an existing type.
+> >
+> >> The code, as written now does a different thing for BUCK, HFS430 (on
+> >> mainline (ML) and downstream (DS) linked in the commit message). Since=
+ DS
+> >> only supports newer stuff, to be on safe side, I kept existing behavio=
+r for
+> >> rev 0-3 on BUCK(3)+HFS430(10), so at least DS and ML agree on pm6125
+> >> completely.
+> >
+> > This needs describing in the changelog, probably you need multiple
+> > paches here since you are making a number of different changes each of
+> > which needs some explanation.
+> >
+> >> The commit [1] that adds support for BUCK+HFS430 might be wrong, or it
+> >> might be right for the time being (i.e initial revisions had different
+> >> behavior). I'm CC-ing Jorge.
+> >
+> > If that's the case perhaps part of this needs to be sent as a fix.
+>=20
+> The Downstream patch is adding 3 logical types:
+> - LDO_510 -- these have new subtypes, so no existing PMICs are affected
+> - FTSMPS3 -- this has a new subtype (0xb), so no existing PMICs are
+>   affected
+> - HFSMPS -- this has the same type and subtype (BUCK+HFS430) as an existi=
+ng
+>   mainline logical type (HFS430), both declaring 0-INF revisions.
+>=20
+> So if we fully trust the downstream patch, I can make a fix for the
+> existing BUCK+HFS430+0-INF, so it uses the slighly modified mode values.
+>=20
+> Currently the set mode fn differs in LPM mode (5 in the common2 case and
+> 4 in the common3 case), so if indeed downstream is correct it would mean
+> this regulator (when turned off) was set to an invalid mode (5 has
+> undefined meaning in common3 map) from 2019 onward.
+>=20
+> On the other hand, if we assume downstream is wrong, then their code sets
+> 4, which actually means RETENTION (not LPM). I really don't know how this
+> could cause trouble. In fact downstream does a bunch of weird stuff, it
+> doesn't "just" set to LPM (like mainline), instead there is complex logic
+> per logical type and "initial mode". Or they're just masking this mistake
+> ;-)
+>=20
+> TL;DR Jorge's mail is gone, so we can't get info from the original author.
 
->  dtb-$(CONFIG_ARCH_MEDIATEK) += mt6797-evb.dtb
->  dtb-$(CONFIG_ARCH_MEDIATEK) += mt6797-x20-dev.dtb
->  dtb-$(CONFIG_ARCH_MEDIATEK) += mt7622-rfb1.dtb
-> diff --git a/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts b/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
-> new file mode 100644
-> index 000000000000..94d011c4126c
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
-> @@ -0,0 +1,90 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (c) 2022, Collabora Ltd
-> + * Author: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> + */
-> +
-> +/dts-v1/;
-> +#include "mt6795.dtsi"
-> +
-> +#include <dt-bindings/gpio/gpio.h>
-Looks unused.
+Jorge moved to foundries.io, copying him in in case he remembers
+anything about this.
 
-> +
-> +/ {
-> +	model = "Sony Xperia M5";
-> +	compatible = "sony,xperia-m5", "mediatek,mt6795";
-sony,holly?
+> Another issue is I can't really test any other PMIC (and even my PMIC
+> I can't turn off most of the regs without loosing critical functionality,
+> and the BUCKs are kinda important :)).
+>=20
+> So we can:
+> 1. politely ask for somebody with access to the secret sauce to say what =
+is
+>    correct, at least according to the docs (with a timeout)
+> 2. assume downstream patch is right, and fix the existing HFS430 regulator
+> 3. maintain the current (patch) behavior, which likely won't affect older
+>    PMICs, but is still adhering to DS patch, because it adds support for
+>    this particular PMIC, so presumably it was tested and works with it
+> 4. drop the pmic patch and rely on SMD
+>=20
+> Please advice.
+>=20
+> In any case if we go with 2 or 3, I can split out this particular (BUCK)
+> part in a separate patch with more information/comments.
 
-> +	chassis-type = "handset";
-> +
-> +	aliases {
-> +		mmc0 = &mmc0;
-> +		mmc1 = &mmc1;
-> +		serial0 = &uart0;
-> +		serial1 = &uart1;
-> +	};
-> +
-> +	memory@40000000 {
-> +		device_type = "memory";
-> +		reg = <0 0x40000000 0 0x1E800000>;
-Lowercase hex in size. Also, doesn't the bootloader fill it in?
+--nHc4xhGciUg6IkvF
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +	};
-> +
-> +	reserved_memory: reserved-memory {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		/* 128 KiB reserved for ARM Trusted Firmware (BL31) */
-Is that true for all devices with this SoC, or..? If so, it may be worth
-moving this into mt6795.dtsi.
+-----BEGIN PGP SIGNATURE-----
 
-> +		bl31_secmon_reserved: secmon@43000000 {
-memory@, everywhere. Use labels to name the nodes.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmLjzOgACgkQJNaLcl1U
+h9AmpQf+INnTaVp0RXX5oHyPeWAYLVev+MUkATK//puVsxRscEVwtTB8dsZchYYr
+jMLL0tXoCtfM8TcWU+bHKaIMQagCzR6rBYN01DQEG7M43hAbINk0Zx3JSmVA95n+
+d9hVAVGGIA9j1zJo3GVSUHH+HoxF8AawxV80YgvY392iPG6vi4Ksc/GAe1EfNM5C
+C5K2RDz7OKBj/WfCLl+GwressdgcifG6rZqp9LnsFWGm4NzWjxkQuyF7NLJ1m5CT
+C8h89p0m7xCq8C/GTgpk83d3nxw+yMw3gqZXpFsB5VH38fmZ0kc2cdCrvFdCd87R
+pGtJSt0vZxL8eBYTMUUCbLZGLfzmGA==
+=1ofS
+-----END PGP SIGNATURE-----
 
-> +			no-map;
-reg goes first.
-> +			reg = <0 0x43000000 0 0x30000>;
-> +		};
-> +
-> +		/* preloader and bootloader regions cannot be touched */
-> +		preloader-region@44800000 {
-> +			no-map;
-> +			reg = <0 0x44800000 0 0x100000>;
-> +		};
-> +
-> +		bootloader-region@46000000 {
-> +			no-map;
-> +			reg = <0 0x46000000 0 0x400000>;
-> +		};
-> +	};
-> +};
-> +
-> +&pio {
-> +	uart0_pins: uart0-pins {
-> +		pins-rx {
-> +			pinmux = <PINMUX_GPIO113__FUNC_URXD0>;
-> +			bias-pull-up;
-> +			input-enable;
-> +		};
-> +		pins-tx {
-> +			pinmux = <PINMUX_GPIO114__FUNC_UTXD0>;
-> +			output-high;
-> +		};
-> +	};
-> +
-> +	uart2_pins: uart2-pins {
-> +		pins-rx {
-> +			pinmux = <PINMUX_GPIO31__FUNC_URXD2>;
-> +			bias-pull-up;
-> +			input-enable;
-> +		};
-> +		pins-tx {
-> +			pinmux = <PINMUX_GPIO32__FUNC_UTXD2>;
-> +		};
-> +	};
-> +};
-> +
-> +&uart0 {
-> +	status = "okay";
-Status last here and below, please.
-
-Konrad
-> +
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&uart0_pins>;
-> +};
-> +
-> +&uart2 {
-> +	status = "okay";
-> +
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&uart2_pins>;
-> +};
-> 
+--nHc4xhGciUg6IkvF--
