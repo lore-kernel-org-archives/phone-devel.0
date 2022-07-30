@@ -2,76 +2,98 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93ACAC19F29
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Jul 2022 23:47:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B0C7C19F2C
+	for <phone-devel@archiver.kernel.org>; Sat, 30 Jul 2022 00:54:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238900AbiG2Xrj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Jul 2022 19:47:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48918 "EHLO
+        id S239373AbiG3AyX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Jul 2022 20:54:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238240AbiG2Xrh (ORCPT
+        with ESMTP id S229599AbiG3AyW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Jul 2022 19:47:37 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71E3682FA1;
-        Fri, 29 Jul 2022 16:47:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9A95BB82A1B;
-        Fri, 29 Jul 2022 23:47:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B2BC433C1;
-        Fri, 29 Jul 2022 23:47:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659138453;
-        bh=/9DF8fECnYB2+1mLIbUvSwsHWSZQ5617h3wGyODKus8=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=fqV5DmyDyd/aGpJgkOZ/bQqpUmg7EmyY3RJtSPfzOdVhubYVxYltZRzxi1g9bC0z3
-         TaP41Cy7lC1/xcQdB3AQxl0l6oNXCV+61kLOJ28dzakZV+I0WbpbZLq6+ej3KAZyhr
-         73UrXVNSZ9KEVGVZHbQTzPtm94Dzw8ySEwV13Xq5eps2Y/Z0KKje9wHs+b91XRWNQ1
-         n2tt3rZOQ/KwwhrYKdCbDdCrfWyP8ckuphBLaUG48VE+hDNDML9ipA1A3z8dwYD+uS
-         c4LMaWk8LVdJRdkFn71x5EWsCtx/94Jic47f2wfDlUwEclUIisgDBWis5TzIPsWG/4
-         EMk6GTq0TnSgw==
-Content-Type: text/plain; charset="utf-8"
+        Fri, 29 Jul 2022 20:54:22 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF09172EF3;
+        Fri, 29 Jul 2022 17:54:20 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id o13so7653858edc.0;
+        Fri, 29 Jul 2022 17:54:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=HiX7UZw83z65upkOi8fzhvPs9EuIeKpV4I9Y1lg/dkM=;
+        b=CQoKjaEltHTvhH0yPkJeFkyXVZBJ0boHa8rjowvJXaxwlf2kImZTIDryfE7Nvwtm5a
+         4ChFsph0c0MaJauQNQ+nYWg/BHLpOhuGlQeiYK6WUqtHPZ11FcTZDmi69yUNO594XPbZ
+         nU4h6Bf8kuycorLi6Ov7fyolTlrBTcEgeuwZ/eBFNTfHTskKKp0gPqNUNUaFbF9fU5t/
+         KFqP9aGsaiwCekGxmSyjDg6fwnf/NDs97ePwQ8jtDOsPmkvXNDUOZQLJhNw+GM8N3PpZ
+         qrlOycIdQgb9j08uuYKc/DjFR48xsSis07JcFC6HktiikcjfwUeRWkrD30R8kegx28Wp
+         c3hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=HiX7UZw83z65upkOi8fzhvPs9EuIeKpV4I9Y1lg/dkM=;
+        b=Ap7EeCqYdJDpsrEx/xzSuzsSQmDwm/TdardwTH0KDHsAwpfi5uwBsRsV/g5ubRqqpl
+         ruPTLSXT2cZJfMELWgLom0mejg3rURtEHMu4aREeJzGHoZKufi4St7WdRoAcV+x7pAID
+         Tz+lTtLQMhI+j6zCDyogsSlLBJR12QSgrGL+Z2wW5Xem3zWTXaWtk4Z/ymvDpLYU+O8M
+         xYJFqxsfD+euWTYxoy8taU2HneeCrpCtxfCgi4sfPR4DMjxU81UzQ3rq1xJtj4Z8Th4W
+         1/rFqdb9vMl3zXoUUH+ih22bHrQT32rinubTb/PQWP459RPiLN8XPureuB0Oket5LOOe
+         VwwQ==
+X-Gm-Message-State: AJIora8VPmosydw7mdApN6rf+dsN/IA9Mybk9kySZJCpNixKF+avrHnx
+        gwXug9P/jiK0Xm7gKwnPLkJfuiUO73SawFQSRc4=
+X-Google-Smtp-Source: AGRyM1tUVTpxiDLTTTJzAJjWmjbGLDXV8sBbEonp2bC2OiTZrFV1hPmVHZ47eXNINQZjgXPJAkU391MxbP3NdyOA+fc=
+X-Received: by 2002:a05:6402:501d:b0:437:e000:a898 with SMTP id
+ p29-20020a056402501d00b00437e000a898mr6006440eda.265.1659142459180; Fri, 29
+ Jul 2022 17:54:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20220629225331.357308-4-marijn.suijten@somainline.org>
-References: <20220629225331.357308-1-marijn.suijten@somainline.org> <20220629225331.357308-4-marijn.suijten@somainline.org>
-Subject: Re: [PATCH v3 03/11] clk: fixed-factor: Introduce *clk_hw_register_fixed_factor_parent_hw()
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rajeev Nandan <quic_rajeevny@quicinc.com>,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Jonathan Marek <jonathan@marek.ca>, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Date:   Fri, 29 Jul 2022 16:47:31 -0700
-User-Agent: alot/0.10
-Message-Id: <20220729234733.36B2BC433C1@smtp.kernel.org>
+References: <cover.1656883851.git.jahau@rocketmail.com> <28a2a9ec27c6fb4073149b897415475a8f04e3f7.1656883851.git.jahau@rocketmail.com>
+ <CAHp75VfGqk_q1iDyj06tEuTNoG35xjOL0_5HgokFauUz_aAwFQ@mail.gmail.com>
+ <8639301c-ae9e-54ac-919d-baeb8760a31b@rocketmail.com> <CAHp75VecjLe67XfK6qgM4eZfKiTJ-UabD40i6Q_YmMpyWAWMkg@mail.gmail.com>
+ <c52e34f1-1cc3-4351-e03b-6b9bf83481b6@rocketmail.com> <CAHp75Ve_0srfZbvKJ4z8dW3Mp_a8CHSTqASSAY_SOJiD20K0eA@mail.gmail.com>
+ <30ce3ff6-14bf-19e5-e330-d7b8b30c1727@rocketmail.com>
+In-Reply-To: <30ce3ff6-14bf-19e5-e330-d7b8b30c1727@rocketmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 30 Jul 2022 02:53:42 +0200
+Message-ID: <CAHp75VdO+bZLjetjMB7o5Uqc7pUYg1P6myp7em-tdOehE=z=vg@mail.gmail.com>
+Subject: Re: [PATCH v4 09/10] iio: magnetometer: yas530: Introduce "chip_info" structure
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Quoting Marijn Suijten (2022-06-29 15:53:23)
-> Add the devres and non-devres variant of
-> clk_hw_register_fixed_factor_parent_hw() for registering a fixed factor
-> clock with clk_hw parent pointer instead of parent name.
->=20
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
+On Sat, Jul 30, 2022 at 12:56 AM Jakob Hauser <jahau@rocketmail.com> wrote:
+> On 29.07.22 18:13, Andy Shevchenko wrote:
+> > On Fri, Jul 29, 2022 at 1:06 AM Jakob Hauser <jahau@rocketmail.com> wrote:
 
-Applied to clk-next
+...
+
+> >>         static const char * const yas5xx_version_name[][2] = {
+> >
+> > yas5xx_version_names (note S at the end)
+>
+> As I understand you, it's to be applied on "yas5xx_version_names" only.
+> In the chip_info table, it would then look like:
+>
+>         .product_name = yas5xx_product_name[yas530],
+>         .version_name = yas5xx_version_names[yas530],
+>                                            ^
+>                                            S
+
+Yes.
+
+> >>                 [yas530] = { "A", "B" },
+> >>                 [yas532] = { "AB", "AC" },
+> >>                 [yas533] = { "AB", "AC" },
+> >>         };
+
+-- 
+With Best Regards,
+Andy Shevchenko
