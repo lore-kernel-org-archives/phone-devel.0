@@ -2,118 +2,155 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0745FC19F2B
-	for <phone-devel@archiver.kernel.org>; Sat, 30 Jul 2022 10:26:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E548C04A68
+	for <phone-devel@archiver.kernel.org>; Sat, 30 Jul 2022 11:33:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233597AbiG3K0R (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 30 Jul 2022 06:26:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38190 "EHLO
+        id S234109AbiG3LdU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 30 Jul 2022 07:33:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233419AbiG3K0P (ORCPT
+        with ESMTP id S231839AbiG3LdT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 30 Jul 2022 06:26:15 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A0871A387;
-        Sat, 30 Jul 2022 03:26:13 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id b16so930437edd.4;
-        Sat, 30 Jul 2022 03:26:13 -0700 (PDT)
+        Sat, 30 Jul 2022 07:33:19 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA0DB2496F;
+        Sat, 30 Jul 2022 04:33:18 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id tk8so12509659ejc.7;
+        Sat, 30 Jul 2022 04:33:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=l0Q/7yx9FyNBDJt9oRASfJ20HzyIqt7jep5RdGQdu90=;
-        b=kdqdPdfXhJMF2w1UJLc87Kqy9nPsRpmxfI7UKx53cigvdJ8cyHSe54qVTNrI6YQ0Tn
-         40e+x/LcCMjU1pxuJWC+nZ8aRHGqVld5kwZ1Kf0w2Wgur79tXLwBh8rSq7YTbVMzMqbk
-         1DVwsy130N3THSReljll0MNEFs1HbZd5Yc7XZhC6J8NFJyPr9KtVAq/ofE+uV3mQFAqm
-         YcSjWpwVAZ6pSrKIGOB2GVK7ucXlONSqQZGGXgFnYb6gbJ2qbeujZjYkqMyYIUmYZt9l
-         pXeFF3PVa+MNUjpPgdY/w8jcldeydqpOp1/z9Z+4B9V1O/PWa0bQ/CIPZBtROnIJTDNo
-         EzMQ==
+        bh=VvYg/CL1I3r8dHS3x/B2hatcu1jC3itrUA2DHNmFFd4=;
+        b=mWO91qiHEvCEjEuIS1mWxJOHRz5CQt4du4H+AJyyxZWoDto9z7/g1KdikUv3gVtcIR
+         YJhfi9OAx9+MAyVtgsCYrz6MWZX3tBGfcdLNyMxrC9JkySyjsnx8kUPDhyxzcX/AuVoh
+         TnX3b25uCTl8kNx5TRiyIBm6JRQxwjrhVz9bl2g/vLn+pYBycEOm6xTx9otbDX+32FTY
+         FZnONJW2kB63Ub1U5NABobYsaHVyNzSlCtl7FoN/6IwHoMwULdaZY3oJWrM89rzU8ZeU
+         ctduW+4nFrhu1V6hEIh9ROhI4ahz1VOsMmkyIEaLHXjva+oSc8OicUvIVgIVcFysXEFS
+         KKuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=l0Q/7yx9FyNBDJt9oRASfJ20HzyIqt7jep5RdGQdu90=;
-        b=DlYZFmDD62xjawkHSLI3Uc3PyBz2wNLDPuIl1mOYK9VV7/h91GerICRFvEsXAY6Uwp
-         niT838OU8ofu7hNCUUWhEDsLGscZVfNH+Ja+Spp8L4L/7+6lFjPz7OqD5l+uXUVWT+HI
-         M5AN0N6KnxlTcIXGd/mBgsJ/BQGDN+EuLlxIOzne3T1f6GpnoyuqN+CLTtxj7l0etTMV
-         oLkJIR0gentzF6sDeJW+57gryLTXa921YV6NW/SazwTdcNw+KDs/xfsgzKJMrW95DMZi
-         Jb7kAKcGz3WUhci0l68QHEJpnQLLgm3zgbEnD019XB7ZRs3e6LTiWbvKF9x6apNAX9SM
-         YLQA==
-X-Gm-Message-State: AJIora93ugdPyKob0ENkZa1IH3heP/No4y3ZE0XuMPHFqcqWaXxeQYyY
-        Omv4I5yALPWaePmQ7X+i6vNO+HS8M7JhO9JtiF0=
-X-Google-Smtp-Source: AGRyM1uzdkY14o0hN5mVxeuk86vh5sIURGkQFnGzfLTCYvW7dVNz/f6Do420hxAyaoLNy5TcoYGS9EXPlPGIYYkEMTM=
-X-Received: by 2002:a05:6402:2714:b0:43c:1c1:717e with SMTP id
- y20-20020a056402271400b0043c01c1717emr7419196edd.67.1659176771666; Sat, 30
- Jul 2022 03:26:11 -0700 (PDT)
+        bh=VvYg/CL1I3r8dHS3x/B2hatcu1jC3itrUA2DHNmFFd4=;
+        b=8O5P3nrgp5SApfiafieaOeHa3vaqCKXg/WFaT6/q9uerVe8WJGmwhYVKtzJ0oONJVv
+         sJP0JarvEM/wHZoXM8+k6CwOfmE1zFUcm83qjJFNx8xQvG8MM8C0CXLkNmxKxK4B5vzx
+         j/DYcb9guBIzZIeTrBYIeRZlSfJ9kvJDYGLMAOSioQEbY+ddAcPr0PRA5mF8pvkVYmZb
+         3l5AjqrD65F02RMnr6JLk7ShF5KilHSnwOhpIgG88xu1Z+zQrzmHQdILR1jZDzRhBB60
+         vfJsWVds/JDGvJ15Sngo+fMez3yareowcv17VH3phjZyylUpw8Uszn3M9YuwxYUvNrEJ
+         iPlQ==
+X-Gm-Message-State: AJIora8DUspmYN8WQ2DPK37rC8lm+dPRu5nVf4Fcdfa9oxcVI7qtMbEH
+        NAx0jWDLOKjDdpT9lac5VJ6AEoF084tIyuA46MI=
+X-Google-Smtp-Source: AGRyM1u3kTIFffjaneKqov0bWZAXQtBgZ7FyoMRx9I+4ygtJlriDYUctxrr3OgNnUpaCEI2EiIXnnVlv4toDKxzowWA=
+X-Received: by 2002:a17:907:2dab:b0:72f:f7:bdd6 with SMTP id
+ gt43-20020a1709072dab00b0072f00f7bdd6mr6184496ejc.330.1659180797115; Sat, 30
+ Jul 2022 04:33:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220728142824.3836-1-markuss.broks@gmail.com>
- <20220728142824.3836-3-markuss.broks@gmail.com> <CAHp75VdaDyyqRw9fAkUOhNjsyifeozVx6JuYXSU1HpoO+VHDNA@mail.gmail.com>
- <3c55e119-5b6f-25ab-99c9-2c99b1dfd9e9@gmail.com>
-In-Reply-To: <3c55e119-5b6f-25ab-99c9-2c99b1dfd9e9@gmail.com>
+References: <cover.1656883851.git.jahau@rocketmail.com> <69a512cf5b62b34415d5983a6406c3d5ba438a1d.1656883851.git.jahau@rocketmail.com>
+ <CAHp75Ve5Z9OOx94FtXY77_Fwkp27D32Hn7bAG+Da++HXmupytA@mail.gmail.com>
+ <c5643cee-8491-3fae-b9d4-ac03d86c1e8a@rocketmail.com> <CAHp75VdDdKo7rt+cik4J+_4tDRgBXhgZYc8p+dOSH4s_gtCOUg@mail.gmail.com>
+ <6e13daf2-179f-d37f-ace4-db5cd37be8d3@rocketmail.com> <CAHp75VdLBowZ7=6g4aFVr5zkN5Pkv7ir68vPCdkRmoFysqRz9Q@mail.gmail.com>
+ <f8071532-14c5-c2a8-ca75-f4327066817b@rocketmail.com>
+In-Reply-To: <f8071532-14c5-c2a8-ca75-f4327066817b@rocketmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 30 Jul 2022 12:25:34 +0200
-Message-ID: <CAHp75Vcu2C-+XyVtLrX8Awxb18uNx6_n3CCCVUyekL4yP755Xw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] efi: earlycon: Add support for generic framebuffers
- and move to fbdev subsystem
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Michal Suchanek <msuchanek@suse.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Wei Ming Chen <jj251510319013@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux Documentation List <linux-doc@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Rob Herring <robh@kernel.org>
+Date:   Sat, 30 Jul 2022 13:32:40 +0200
+Message-ID: <CAHp75VcPMZSpDS_S_4mM2bfq4154HVMHzZHvdJnP6oUA7RtpiQ@mail.gmail.com>
+Subject: Re: [PATCH v4 10/10] iio: magnetometer: yas530: Add YAS537 variant
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Jul 30, 2022 at 10:55 AM Markuss Broks <markuss.broks@gmail.com> wrote:
-> On 7/29/22 00:19, Andy Shevchenko wrote:
-> > On Thu, Jul 28, 2022 at 4:32 PM Markuss Broks <markuss.broks@gmail.com> wrote:
+On Sat, Jul 30, 2022 at 1:10 AM Jakob Hauser <jahau@rocketmail.com> wrote:
+> On 29.07.22 19:24, Andy Shevchenko wrote:
+> > On Fri, Jul 29, 2022 at 1:13 AM Jakob Hauser <jahau@rocketmail.com> wrote:
+> >> On 27.07.22 19:46, Andy Shevchenko wrote:
 
 ...
 
-> I suppose we could use something like:
->
-> if (region_intersects() == REGION_INTERSECTS)
-
-Yes.
-
-...
-
-> >> +       ret = sscanf(device->options, "%u,%u,%u", &info.x, &info.y, &info.depth);
-> >> +       if (ret != 3)
-> >> +               return -ENODEV;
+> >> We don't know for sure whether it is a 16-bit register or an incomplete
+> >> register naming.
 > >
-> > Don't we have some standard template of this, something like XxYxD,
-> > where X, Y, and D are respective decimal numbers?
+> > By the values you write into it seems to be a __be16 calibration
+> > register. The value to write is 0x3f8 which might ring a bell to you
+> > if you know what other values related to ADC.
 >
-> I'm not aware of this.
+> Sigh, ok, I'll apply bulk write.
+>
+> How to do it correctly? I guess:
+>
+>         __be16 buf = cpu_to_be16(GENMASK(9, 3));
 
-I believe we won't introduce more chaos in already existing formats of
-one or another thing, so I prefer to be stuck with in practice use
-(e.g. "1024x768x16" without quotes for x=1024, y=768, depth=16).
+Looks like that, yes.
+
+>         ret = regmap_bulk_write(yas5xx->map, YAS537_ADCCAL, &buf, 2);
+
+sizeof(buf)
+
+>         if (ret)
+>                 return ret;
+>
+> The whole block would then look like:
+>
+>         /* Writing ADCCAL and TRM registers */
+>         __be16 buf = cpu_to_be16(GENMASK(9, 3));
+
+(Taking into account that definitions are at the top of the function it would be
+
+  __be16 buf;
+  ...
+  buf = cpu_to_be16(...);
+
+>         ret = regmap_bulk_write(yas5xx->map, YAS537_ADCCAL, &buf, 2);
+>         if (ret)
+>                 return ret;
+>         ret = regmap_write(yas5xx->map, YAS537_TRM, GENMASK(7, 0));
+>         if (ret)
+>                 return ret;
+
+...
+
+> > To the 4100 denominator:
+> > https://github.com/XPerience-AOSP-Lollipop/android_kernel_wingtech_msm8916/blob/xpe-11.1/drivers/input/misc/yas_mag_drv-yas537.c#L235,
+> > seems you can find a lot by browsing someone's code and perhaps a Git
+> > history.
+>
+> I've seen that comment before but I don't understand its meaning.
+
+It points out that there is a SMPLTIM, which I decode as Sample Time,
+which is in 4.1 msec steps (up to 255 steps).
+
+...
+
+> >> Still I didn't get your comment. Is your intention to change the "50
+> >> milliseconds * 1000" to "50000 microseconds" in the define?
+> >>
+> >> It would look like ...
+> >>
+> >>         #define YAS537_DEFAULT_SENSOR_DELAY_US  50000
+> >>
+> >> ... though I would prefer to keep current define, as it is implemented
+> >> now and stated above:
+> >>
+> >>         #define YAS537_DEFAULT_SENSOR_DELAY_MS  50
+> >
+> > No, just to show in the actual calculation that you convert MS to US
+> > using MILLI.
+>
+> Sorry, I still don't get what you want me to do. What do you mean by
+> "using MILLI", can you elaborate?
+
+You use formula x * 1000 to convert milliseconds to microseconds. My
+suggestion is to replace 1000 with MILLI which adds information about
+exponent sign, i.e. 10^-3 (which may be important to the reader).
 
 -- 
 With Best Regards,
