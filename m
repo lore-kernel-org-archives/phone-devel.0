@@ -2,132 +2,145 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4961C19F2C
-	for <phone-devel@archiver.kernel.org>; Mon,  1 Aug 2022 03:54:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5A4BC00144
+	for <phone-devel@archiver.kernel.org>; Mon,  1 Aug 2022 11:25:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239000AbiHADyT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 31 Jul 2022 23:54:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38932 "EHLO
+        id S229935AbiHALZe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 1 Aug 2022 07:25:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbiHADyS (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 31 Jul 2022 23:54:18 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C50BD12AE8;
-        Sun, 31 Jul 2022 20:54:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1659326057; x=1690862057;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LIL0NXbRqabhEVprRkXveEeGK6nwA3ua/cchDuHt71s=;
-  b=c7m+uYR3IZu814Ph2jLOrW6cCw2RyvCV9mmo+xcRBbv1SAORlShwGcrf
-   6mNCEhSwmLSQ3qeS7spunAgQ363duD+EKXjpL890CY0KqEJbFVTQmI2C1
-   NPUoYQ0mLxRfMizs6PG2noXDDQMxi3fQ9baqdgktFKcDvTlrPKa8oHgr7
-   dojKHnxLW4nTbFfEoXQusuwWp8v80N9ZZRRv0uoJ8Vzi8piWwEhYzHB7T
-   SNrCd5anv6QA0WhHqdJ7Citba9JysWLgZBCylMl8SiAkE9FmFqnr7E1KZ
-   flzvzMMW0a0TnUl9EdTh6OLxSq70HNXSd569fZTjf6F7REGABRVPXiD0s
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10425"; a="269437613"
-X-IronPort-AV: E=Sophos;i="5.93,206,1654585200"; 
-   d="scan'208";a="269437613"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2022 20:54:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,206,1654585200"; 
-   d="scan'208";a="691322796"
-Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 31 Jul 2022 20:54:13 -0700
-Received: from kbuild by e0eace57cfef with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oIMVQ-000Elh-2s;
-        Mon, 01 Aug 2022 03:54:12 +0000
-Date:   Mon, 1 Aug 2022 11:53:13 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Iskren Chernev <iskren.chernev@gmail.com>,
+        with ESMTP id S229815AbiHALZd (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 Aug 2022 07:25:33 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11olkn2010.outbound.protection.outlook.com [40.92.20.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C9B8654C;
+        Mon,  1 Aug 2022 04:25:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AkHe3Mb8lOxwnc5UOuz7mCBWrUlXTzqhjWJS2sN6FGOlXiV3D6fFRONqIrmqaxe588YCYMIn7wX1DpbMPcinomHCbsXNmvW1ZRKlx5nACTFEbpZC0aWK7369hvFFJIfEsI8sG6u42uEPO5S5pR2dnIKlJI+efWZPbxo96fmxOCbiS3HHmmm3esEZfh9giwDCf4aCPbZAfPT8q+vKMIjXN25mu2pE/05nSyMt/IDiXkEs+24/mpVZvSFMurTqaSXqcycOkXwRmZAAdoz9G9DcVCCD+cp4C/w5YJekCA4iGvNrnRboPu7PAglvNMX6N2zqZ+P6Rh8sfxPHoNN3nNkDlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=45uYJvmiFRRIkBZ6l3uwAVEuE4iqupuqMVQJO1I17po=;
+ b=TnrNREdqWf1oqui5rYpMP01GSF3rZuVsfTSrN/Q680BekvLaaMfzI8bWNUtJD2MUCRa3Zh0/H9trH8XM4Nrq66L5FEo1d9bBkxSOGfF7YxRbn4URzU+dGFXIauc+IhABH7OcPFZSkD2tkgguE+a+xmWnyJExDGit8IY46F6C3zpTfyQIUGtcUsBz9PqMP+J6BFw0Mt67nymAnaTyxxPs94x2FL2OCeHGHM11SjBOwAXrFiKhegQhCy597N3i6DmMc8wzDVg7CzXDH0ngNueFfslDjSpC9O7RsoTHdtcpEftqUjLBNC/fSYI9FsNoB58fEf7bTSwgKXETkNV6clFVNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=45uYJvmiFRRIkBZ6l3uwAVEuE4iqupuqMVQJO1I17po=;
+ b=jEM0O0wRpC81sGY1vFbXckzBibg6LIUDLocLcNtzgZHTTTGKuSWsn+ytWyVlwJRRw8IGeCGvrQKPUkDi6JcStAS1HquBA6KnN2oD977RezpwlDdaczPlxDRGeYadN+8CiDhvw9P1xhc+zBlw86DW1qVa3JX+CO1zXTiobF6UVNGXRwXgfL7D0XPC645xBDBz1tyIrVyXW7uIzFVzr5Q5kT7N87oags7yCQV8wOcN1veGEjcCD+4v2yPPXe4Cl+z2GfUAIyxwYs2Kr0wDNcmcEtaTLoZta6QRnt6cP7/BzhU1XDXDJjTS4A0O8NOdEMpjBfSCX8ILDi11FONGZG7lIQ==
+Received: from BY5PR02MB7009.namprd02.prod.outlook.com (2603:10b6:a03:236::13)
+ by BN8PR02MB6001.namprd02.prod.outlook.com (2603:10b6:408:b6::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5482.12; Mon, 1 Aug
+ 2022 11:25:30 +0000
+Received: from BY5PR02MB7009.namprd02.prod.outlook.com
+ ([fe80::e080:d670:29c7:9180]) by BY5PR02MB7009.namprd02.prod.outlook.com
+ ([fe80::e080:d670:29c7:9180%8]) with mapi id 15.20.5482.016; Mon, 1 Aug 2022
+ 11:25:30 +0000
+From:   Joel Selvaraj <joel.selvaraj@outlook.com>
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Mark Brown <broonie@kernel.org>
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
-        Robert Marko <robimarko@gmail.com>, devicetree@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Iskren Chernev <iskren.chernev@gmail.com>,
-        Adam Skladowski <a39.skl@gmail.com>
-Subject: Re: [PATCH v3 05/13] regulator: qcom_spmi: Add support for new
- regulator types
-Message-ID: <202208011110.Bms4zAP4-lkp@intel.com>
-References: <20220731223736.1036286-6-iskren.chernev@gmail.com>
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Joel Selvaraj <joel.selvaraj@outlook.com>
+Subject: [PATCH v2 0/3] Add support for Xiaomi Poco F1 EBBG variant
+Date:   Mon,  1 Aug 2022 16:55:09 +0530
+Message-ID: <BY5PR02MB70099020AC1D181D15909F64EA9A9@BY5PR02MB7009.namprd02.prod.outlook.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN:  [wi8Yzz6Duke3jnotB4twD6+JVyuRaJtHwkDSawfFrpg/+SIjQgqywRYEueJo1M0N]
+X-ClientProxiedBy: PN2PR01CA0107.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:27::22) To BY5PR02MB7009.namprd02.prod.outlook.com
+ (2603:10b6:a03:236::13)
+X-Microsoft-Original-Message-ID: <20220801112512.209047-1-joel.selvaraj@outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220731223736.1036286-6-iskren.chernev@gmail.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a3e08ebb-0462-459b-69d7-08da73b089bf
+X-MS-Exchange-SLBlob-MailProps: EpEO96k6Wolu1z8CWDBHsiQHhdFlX8eT1MkAw907a6QDJlXAEIJ6tbQVOgjN3elvQoyypGAv6z1LkLirb5zJwZ61IiOCgbix0l2N0r6XiVqBztjlwneIgGs4XPN8LpzesKSe4sut5ocbIkkEC0nF3dJRYfJBirpCkiY89J1iPA/y6Q3v5v6f4+yHDhrkESGl6BAEennqV5j7uz44iRM4khDYYexDo7UD/CRVXDZ74FDaN3p+XDF2qkj68EqHdQoPCTE1Dbk0cSS+tzYQcHriO+yKqoL3lClpHIE8MESefuS0NZIenWeIZSANyuVcY2W8SV9K/RbpXISKlNTrKrhebMUu/fCFs8SHAleqf3Nhenkmx88ZtvCClbnR0FV3w+NTTYARWLJsvo/nt0cbnPH9+Udl8jKHDNHhmg+hmg5HgGgljxxMbXPBdRDagx8EVIgYpy92WCJlktDSlvAt9Is/fvr9kF9mFdTN0qIpO9pxY6PY/tDWFj5tFaraWE5lLCJA7vYlZUmJ7S6ydB6zAj+aV7xgn1BVySruJJrfS+NSkbVQfrQk1yOGTdc/2oZNtA2cL5NTIV1Fg84WX5e+/oM3E9pMU/cW1GKTZB0iSgc5yMM9T1CQEgVIrR5xrLmOIY8pkYego87jxeuUJasBeZLoajSPzNjZ6pl1M/XYrx1PloOHyxMeYJ9EUW2fVHtqx4qGancm6oA2OpN+Z8KXfFN8RdX77qI08J2rwolAfenOV4mVI2jjQA3M9HOje68wyrEM4hO1iRUX7ZY=
+X-MS-TrafficTypeDiagnostic: BN8PR02MB6001:EE_
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: fn96iTcjKExATj1xY2HQ5GaTNo29n8bPrzkM3AKeNxIy9y3Jq81FP2Ccfj8JQ0OtskgrGLzm+Dn2pCsWPPaikZqgy9GUcDkG0euiO7rXxSY9hH4IZtU0GV3Ssgvz0vzwEB2UQvQEpSOHvTLQ+TK2uu0N2eSmF8osRErf9qelkjUwZypTjr1f8itvDEmq0WALm64IVkMwnHSaLmotTJEmCuzHJD+7PaSFqjhoFZB8iYG6SOinLIXjgQ72ASGlFTFMJZDxKeWr5OCor5mDH/xVBBFui4KnLgWolUTFZTuVTSn3jnqYmX3bBwVed8daC5ySp0LI7g2xg0sQ2u05Yj7HycQZBCbNisr1K457UNbM8qOuxIoCBxv3VraZ2cx4EDcgvwKRzSR8EFTGNEr9CDW9TprW74iomaWa4B+9DpZpbUvw5dtzO88XpoYsG9/ScRX+IVUela/SV5rmyWffXmqORtq/LRfqPvg3TcELl8E20VAWmhEMKdTAt3Jvh9/Q6G5EspRIa68Tno5+AoY01P7wi0O2IQxoZFnESeQfzdI7+WHwHBfctF9vehgYmmkdaW+bVTirIfQxRCrEBKYYavNGt2JqgZf+f0DSmy3cV3hSMAc1F6bIBDCuSzoumHm4881D
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ismz2mJe46BaipwWjkZgy5SjG3bwtRMoruLwqvXJ14cLSXOma/ag6XfIDPUz?=
+ =?us-ascii?Q?tgctoHUSExgin33EjfIF6E/NzgqJT3yRscgmPXee0zcy+k8+aWw+ExcsSJHT?=
+ =?us-ascii?Q?ulkVML2f3EWrHdOLJAyDBO8M4m8pgq42m8VjV8x4RK7+PsGWSLLLEpSEYz7q?=
+ =?us-ascii?Q?4AZPBMmKxRDu+FnN/Pu275VWPn3I1E2PDEvIoTxEVQbn5XNyhVN3yEaEqu+y?=
+ =?us-ascii?Q?95lGu1y9CfYPi6GlDrvzXsdy6agaENRkmYOdZGTjtP64tuw2W665A+Vlc0C5?=
+ =?us-ascii?Q?O4qW+jT/BMPIJ95sBqkx/n25dzH3T6oJ3C4wehdNoL4Yir0YCz8FGkDXhqJr?=
+ =?us-ascii?Q?tRA1oybRIfmDSEhUnFxzl/QW0hvvNBxpOcVq6jRLZBlKANvXCY23OOQbNgVt?=
+ =?us-ascii?Q?WlQjoGvOr5Viq4aaPTlR5Tp7osPgaJ9URDuomZMhwPPjxjfr7dKlXgdH97ZA?=
+ =?us-ascii?Q?TsobLeQThk6IBH3XSOHQpD5+OfmbY47ddcyfPtB2cxHf+Gt32b9M4sr7UTG8?=
+ =?us-ascii?Q?uLVEeCUo35BmYkgV52FvIOhUmWn5lgeaEGmnbxQBaNsc/SgfuOcZltW7krb4?=
+ =?us-ascii?Q?iyp/dr4j0rbdncSUax/fdH/w7Fxsh67PxfueMMn13XF3auI/pP0hhkSModUt?=
+ =?us-ascii?Q?DF5KT5pfuzsrfbxBCGUcSbNy+jw4XtM3qgBikyER8XHa1orF1sB8Z+0rtvKy?=
+ =?us-ascii?Q?pouCKfwh97QWLJUK15qgfMCXaQKFTqt2bA4ht45gJLwHZbZPnHIDA4ryhGct?=
+ =?us-ascii?Q?rVixt5VnK2qO3pfVI4XrUMfPQ+Vl/bAGR87hWhGwLK695kU7csdcKJBf73nY?=
+ =?us-ascii?Q?rshQ2EpVXUL48+RqI1maMLU4dM7L2yqgIOTmvz/74iP4eRYwKpjS1WZX8gQX?=
+ =?us-ascii?Q?+zDaU67Hi+cUaRL5S7xLOqsIq//iwILWHVD04gEuQRLlml8qvCH0yAMT+5x7?=
+ =?us-ascii?Q?2OUKFa+4YNm6GsZyckk71lzBD1v+b6XVZ4YhDmDTZZnjccrPM7RYJPYrNzIC?=
+ =?us-ascii?Q?o0zS77BYZrLOdBqJqq5dfvvQ3M9jy8p1qJxpIYIgLLjyvh28rYUD/XKG7Ep+?=
+ =?us-ascii?Q?tcJQna3cv7XEfsB16IWhI3cyUr45RzXSDk5CKC2yENsygfiasr5Jy94RttIM?=
+ =?us-ascii?Q?KOgiBgwuBWVXbJggl/YP2fjvPxtXUcakfgOyi1vHTkccleqeSB4g42ytgflf?=
+ =?us-ascii?Q?f77pD4nr2kk59V+6QYwQZ/8R8u35QN9VSvEwrSJwQi/zen2Lk+4c1ke1y5+o?=
+ =?us-ascii?Q?kj3YmxciNBWItstDtDu3Uj1eWK7/pNsv33fLjo7/Q4OQ3VwDx43UPgvRngrw?=
+ =?us-ascii?Q?je+33lb6y3v2KAk6UuKEPaYJ3kHlcd7/tOmbvb5lJ5CiAA=3D=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3e08ebb-0462-459b-69d7-08da73b089bf
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB7009.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2022 11:25:30.2388
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR02MB6001
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Iskren,
+There are two variants of Xiaomi Poco F1.
+- Tianma variant with NOVATEK NT36672A panel + touchscreen manufactured
+  by Tianma
+- EBBG variant with Focaltech FT8719 panel + touchscreen manufactured
+  by EBBG
 
-I love your patch! Yet something to improve:
+The current sdm845-xiaomi-beryllium.dts represents Tianma panel variant.
 
-[auto build test ERROR on broonie-regulator/for-next]
-[also build test ERROR on next-20220728]
-[cannot apply to krzk-dt/for-next linus/master v5.19]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+To add support for the EBBG variant, let's
+- Rename sdm845-xiaomi-beryllium.dts to sdm845-xiaomi-beryllium-tianma.dts
+to be more specific.
+- Move the common nodes from tianma variant into a new common dtsi.
+- Create sdm845-xiaomi-beryllium-ebbg.dts for the EBBG variant.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Iskren-Chernev/PM6125-regulator-support/20220801-064059
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
-config: arm64-buildonly-randconfig-r005-20220731 (https://download.01.org/0day-ci/archive/20220801/202208011110.Bms4zAP4-lkp@intel.com/config)
-compiler: clang version 16.0.0 (https://github.com/llvm/llvm-project 52cd00cabf479aa7eb6dbb063b7ba41ea57bce9e)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install arm64 cross compiling tool for clang build
-        # apt-get install binutils-aarch64-linux-gnu
-        # https://github.com/intel-lab-lkp/linux/commit/3758c84ef9cec75fc09a3463506782d3179fe480
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Iskren-Chernev/PM6125-regulator-support/20220801-064059
-        git checkout 3758c84ef9cec75fc09a3463506782d3179fe480
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/regulator/
+Note:
+-----
+Both the panels are already upstreamed and the split is based on them.
+There were patches earlier for both the touchscreens, but they are not
+accepted in upstream yet. Once they are accepted, we will add them to
+respective variants.
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+Joel Selvaraj (3):
+  arm64: dts: qcom: sdm845-xiaomi-beryllium: rename to
+    sdm845-xiaomi-beryllium-tianma.dts
+  arm64: dts: qcom: sdm845-xiaomi-beryllium-common: move common nodes to
+    a common dtsi
+  arm64: dts: qcom: sdm845-xiaomi-beryllium-ebbg: introduce Xiaomi Poco
+    F1 EBBG variant
 
-All errors (new ones prefixed by >>):
-
->> drivers/regulator/qcom_spmi-regulator.c:1565:15: error: incompatible function pointer types initializing 'unsigned int (*)(struct regulator_dev *)' with an expression of type 'int (struct regulator_dev *, unsigned int)' [-Werror,-Wincompatible-function-pointer-types]
-           .get_mode               = spmi_regulator_ftsmps3_get_mode,
-                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 error generated.
-
-
-vim +1565 drivers/regulator/qcom_spmi-regulator.c
-
-  1554	
-  1555	static const struct regulator_ops spmi_ftsmps3_ops = {
-  1556		.enable			= regulator_enable_regmap,
-  1557		.disable		= regulator_disable_regmap,
-  1558		.is_enabled		= regulator_is_enabled_regmap,
-  1559		.set_voltage_sel	= spmi_regulator_ftsmps426_set_voltage,
-  1560		.set_voltage_time_sel	= spmi_regulator_set_voltage_time_sel,
-  1561		.get_voltage_sel	= spmi_regulator_ftsmps426_get_voltage,
-  1562		.map_voltage		= spmi_regulator_single_map_voltage,
-  1563		.list_voltage		= spmi_regulator_common_list_voltage,
-  1564		.set_mode		= spmi_regulator_ftsmps3_set_mode,
-> 1565		.get_mode		= spmi_regulator_ftsmps3_get_mode,
-  1566		.set_load		= spmi_regulator_common_set_load,
-  1567		.set_pull_down		= spmi_regulator_common_set_pull_down,
-  1568	};
-  1569	
+ arch/arm64/boot/dts/qcom/Makefile                      |  3 ++-
+ ...ryllium.dts => sdm845-xiaomi-beryllium-common.dtsi} |  9 +++++----
+ .../boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts     | 10 ++++++++++
+ .../boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts   | 10 ++++++++++
+ 4 files changed, 27 insertions(+), 5 deletions(-)
+ rename arch/arm64/boot/dts/qcom/{sdm845-xiaomi-beryllium.dts => sdm845-xiaomi-beryllium-common.dtsi} (98%)
+ create mode 100644 arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.37.1
+
