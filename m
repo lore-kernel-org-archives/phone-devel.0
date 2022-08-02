@@ -2,65 +2,42 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E673DC00140
-	for <phone-devel@archiver.kernel.org>; Tue,  2 Aug 2022 10:47:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D2B9C00140
+	for <phone-devel@archiver.kernel.org>; Tue,  2 Aug 2022 13:17:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236647AbiHBKrJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 2 Aug 2022 06:47:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54692 "EHLO
+        id S236115AbiHBNRz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 2 Aug 2022 09:17:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236578AbiHBKrB (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 Aug 2022 06:47:01 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 920021BEB8
-        for <phone-devel@vger.kernel.org>; Tue,  2 Aug 2022 03:46:52 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id w15so6073246ljw.1
-        for <phone-devel@vger.kernel.org>; Tue, 02 Aug 2022 03:46:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=kYGReEVOZuoydATB0Wl+C6DwDR9NNOWFvZPWcmy7Oo0=;
-        b=aLh1WRmL/UxS915aB2r7CXtv5iNzjJ1veojZpwseqyEmlFsSqxGNEr1Fr2Swe6e6Wm
-         A7UET8CZi5VYJ78MbdRphNDqF6bDRi5oXUEDS/5xL0ylLEBu9gq0xgGA2GUdrV3wJ/al
-         sv73Cym6OTe1JXoUgJFSOoXcP9c9A0DNToNhYBVvDNnPt4XsJA/ON5E50EqNTKkeeLMo
-         rENxHXYbbgsmwZ0VL2X+cy/wBI9P65pLE/skvWwMpfck/orBIz/kkg9PoF0CuXfUohBX
-         EaVXS934S2OYq+vL/FOetSxEroEl10QLhP7qzLt+b6ZVEoghzlwf2itNt9TVUH6s4rH6
-         oovQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=kYGReEVOZuoydATB0Wl+C6DwDR9NNOWFvZPWcmy7Oo0=;
-        b=N+Tg6JTKnHzBb+xc0I7EP+/dQn4nZN/eOvrg2TKrrDUdylS9E1y18wWsQDz5swm/kL
-         bLN1/WA/qC6s7SS/pav1eAb1nXq3Ryj0iDiYjyICRQ1WMd0agqNem/DVV9vVAvDMRvJX
-         mXiv9QVWmCanlAeJuApr65v9yx9V9Wgb6lvk2kBlGQCb4fZ++nI4SCAabo2i0Ov+8wMv
-         EXFeL4RF2HRPkBvysfVse98TLxe3BX8VSIqd4L6y8J9/m6gyWN8HW+NmjEfonfSij+Bf
-         ilfzPKV5PolFYExl7YsMJFvFA0ooywsG78Xox8DceyLFgZdOHHyREVjHWoMPuCfmkYiK
-         CgrA==
-X-Gm-Message-State: AJIora/GJTC469/FbGBk1mfkQ/NYGUK6f/fwmiHhaQKYVBiBM7gq+ZGl
-        yaK55uynAJDOZ2qOC9OxYXAJ9g==
-X-Google-Smtp-Source: AGRyM1uNpWiTZ6zMkYqSjTDyh2KL/069FM1E2eGC8VvEyzH2C2ow5itpXFiXzWVKA0EycotOff0MIg==
-X-Received: by 2002:a05:651c:1503:b0:24c:81df:e1f2 with SMTP id e3-20020a05651c150300b0024c81dfe1f2mr5995044ljf.182.1659437210824;
-        Tue, 02 Aug 2022 03:46:50 -0700 (PDT)
-Received: from [192.168.1.6] ([213.161.169.44])
-        by smtp.gmail.com with ESMTPSA id w5-20020ac254a5000000b0048aeafde9b8sm1277227lfk.108.2022.08.02.03.46.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Aug 2022 03:46:50 -0700 (PDT)
-Message-ID: <3f56541a-29c1-af76-0de3-b20eb81a5fa8@linaro.org>
-Date:   Tue, 2 Aug 2022 12:46:48 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v3 05/13] regulator: qcom_spmi: Add support for new
- regulator types
-Content-Language: en-US
-To:     Iskren Chernev <iskren.chernev@gmail.com>,
+        with ESMTP id S232503AbiHBNRz (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 Aug 2022 09:17:55 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A21AB12D19;
+        Tue,  2 Aug 2022 06:17:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4B345B81EF3;
+        Tue,  2 Aug 2022 13:17:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3833C433C1;
+        Tue,  2 Aug 2022 13:17:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1659446271;
+        bh=p4m28G7V5HhenGiD2H4zOI1QhZVoWGXr14bSJRSRAdg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PFXQbQPz1/L9eDzHSURbtzxxo3qdNlR+j2Fxcv8i/YkMjW80rur039virDvzrjCQt
+         7wbJawZkiTY9bGFbkjWmxkqbBXJJIlkygGCk+/MQ3wa7tMw6M5CzJtX2gfH7pOfocZ
+         fY2AFs7BiDwWiutDOasuNvlzogaKtRaFe2gkZZWb4Tp3xNZVvOfA/lcWWNd0F/h7pG
+         HVtafQyh7mmzugH4aCjIWzgvA7Ys3WfibMfMmXQRtfV2rl/Bc1Oo1NdyS3M1dior20
+         6bW+NAdletbIl5XB/HzrwQVM+tQzMYtXqYQJqUFSY4Ax4AJb9WeJoZSR1+d9ARkOdH
+         eOQnyY+qcd7ng==
+Date:   Tue, 2 Aug 2022 14:17:41 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Iskren Chernev <iskren.chernev@gmail.com>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Mark Brown <broonie@kernel.org>
-Cc:     Andy Gross <agross@kernel.org>,
+        Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
@@ -68,255 +45,60 @@ Cc:     Andy Gross <agross@kernel.org>,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Adam Skladowski <a39.skl@gmail.com>
+Subject: Re: [PATCH v3 05/13] regulator: qcom_spmi: Add support for new
+ regulator types
+Message-ID: <Yukj9bjX+O0Yab3q@sirena.org.uk>
 References: <20220731223736.1036286-1-iskren.chernev@gmail.com>
  <20220731223736.1036286-6-iskren.chernev@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220731223736.1036286-6-iskren.chernev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <3f56541a-29c1-af76-0de3-b20eb81a5fa8@linaro.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="TszTQpVlg1sWIkv4"
+Content-Disposition: inline
+In-Reply-To: <3f56541a-29c1-af76-0de3-b20eb81a5fa8@linaro.org>
+X-Cookie: Stay on the trail.
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 01/08/2022 00:37, Iskren Chernev wrote:
-> Add support for some regulator types that are missing in this driver, all
-> belonging to the FTSMPS426 register layout.  This is done in preparation
-> for adding support for the PM6125 PMIC.
-> 
-> Although these regulators conform to ftsmps426 (common 2) layout, their
-> modes are slightly offset (BYPASS, RETENTION and LPM values are one lower).
-> 
-> Also, slew rate for the FTS regulator is computed in a simpler way.
-> 
-> The inspiration for the magic constants was taken from [1]
-> 
-> [1]: https://source.codeaurora.org/quic/la/kernel/msm-5.4/commit/?h=kernel.lnx.5.4.r1-rel&id=d1220daeffaa440ffff0a8c47322eb0033bf54f5
-> 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
-> ---
->  drivers/regulator/qcom_spmi-regulator.c | 138 ++++++++++++++++++++++++
->  1 file changed, 138 insertions(+)
-> 
-> diff --git a/drivers/regulator/qcom_spmi-regulator.c b/drivers/regulator/qcom_spmi-regulator.c
-> index a2d0292a92fd..50c8ee01e0ad 100644
-> --- a/drivers/regulator/qcom_spmi-regulator.c
-> +++ b/drivers/regulator/qcom_spmi-regulator.c
-> @@ -99,6 +99,8 @@ enum spmi_regulator_logical_type {
->  	SPMI_REGULATOR_LOGICAL_TYPE_ULT_LDO,
->  	SPMI_REGULATOR_LOGICAL_TYPE_FTSMPS426,
->  	SPMI_REGULATOR_LOGICAL_TYPE_HFS430,
-> +	SPMI_REGULATOR_LOGICAL_TYPE_FTSMPS3,
-> +	SPMI_REGULATOR_LOGICAL_TYPE_LDO_510,
->  };
->  
->  enum spmi_regulator_type {
-> @@ -166,6 +168,16 @@ enum spmi_regulator_subtype {
->  	SPMI_REGULATOR_SUBTYPE_HFS430		= 0x0a,
->  	SPMI_REGULATOR_SUBTYPE_HT_P150		= 0x35,
->  	SPMI_REGULATOR_SUBTYPE_HT_P600		= 0x3d,
-> +	SPMI_REGULATOR_SUBTYPE_FTSMPS_510	= 0x0b,
-> +	SPMI_REGULATOR_SUBTYPE_LV_P150_510	= 0x71,
-> +	SPMI_REGULATOR_SUBTYPE_LV_P300_510	= 0x72,
-> +	SPMI_REGULATOR_SUBTYPE_LV_P600_510	= 0x73,
-> +	SPMI_REGULATOR_SUBTYPE_N300_510		= 0x6a,
-> +	SPMI_REGULATOR_SUBTYPE_N600_510		= 0x6b,
-> +	SPMI_REGULATOR_SUBTYPE_N1200_510	= 0x6c,
-> +	SPMI_REGULATOR_SUBTYPE_MV_P50_510	= 0x7a,
-> +	SPMI_REGULATOR_SUBTYPE_MV_P150_510	= 0x7b,
-> +	SPMI_REGULATOR_SUBTYPE_MV_P600_510	= 0x7d,
->  };
->  
->  enum spmi_common_regulator_registers {
-> @@ -193,6 +205,14 @@ enum spmi_ftsmps426_regulator_registers {
->  	SPMI_FTSMPS426_REG_VOLTAGE_ULS_MSB	= 0x69,
->  };
->  
-> +/*
-> + * Third common register layout
-> + */
-> +enum spmi_ftsmps3_regulator_registers {
-> +	SPMI_FTSMPS3_REG_STEP_CTRL		= 0x3c,
-> +};
-> +
-> +
 
-Just one blank line.
+--TszTQpVlg1sWIkv4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->  enum spmi_vs_registers {
->  	SPMI_VS_REG_OCP				= 0x4a,
->  	SPMI_VS_REG_SOFT_START			= 0x4c,
-> @@ -260,6 +280,15 @@ enum spmi_common_control_register_index {
->  
->  #define SPMI_FTSMPS426_MODE_MASK		0x07
->  
-> +/* Third common regulator mode register values */
-> +#define SPMI_FTSMPS3_MODE_BYPASS_MASK		2
-> +#define SPMI_FTSMPS3_MODE_RETENTION_MASK	3
-> +#define SPMI_FTSMPS3_MODE_LPM_MASK		4
-> +#define SPMI_FTSMPS3_MODE_AUTO_MASK		6
-> +#define SPMI_FTSMPS3_MODE_HPM_MASK		7
-> +
-> +#define SPMI_FTSMPS3_MODE_MASK			0x07
-> +
->  /* Common regulator pull down control register layout */
->  #define SPMI_COMMON_PULL_DOWN_ENABLE_MASK	0x80
->  
-> @@ -305,6 +334,9 @@ enum spmi_common_control_register_index {
->  #define SPMI_FTSMPS_STEP_MARGIN_NUM	4
->  #define SPMI_FTSMPS_STEP_MARGIN_DEN	5
->  
-> +/* slew_rate has units of uV/us. */
-> +#define SPMI_FTSMPS3_SLEW_RATE_38p4 38400
-> +
->  #define SPMI_FTSMPS426_STEP_CTRL_DELAY_MASK	0x03
->  #define SPMI_FTSMPS426_STEP_CTRL_DELAY_SHIFT	0
->  
-> @@ -554,6 +586,14 @@ static struct spmi_voltage_range ht_p600_ranges[] = {
->  	SPMI_VOLTAGE_RANGE(0, 1704000, 1704000, 1896000, 1896000, 8000),
->  };
->  
-> +static struct spmi_voltage_range nldo_510_ranges[] = {
-> +	SPMI_VOLTAGE_RANGE(0, 320000, 320000, 1304000, 1304000, 8000),
-> +};
-> +
-> +static struct spmi_voltage_range ftsmps510_ranges[] = {
-> +	SPMI_VOLTAGE_RANGE(0, 300000, 300000, 1372000, 1372000, 4000),
-> +};
-> +
->  static DEFINE_SPMI_SET_POINTS(pldo);
->  static DEFINE_SPMI_SET_POINTS(nldo1);
->  static DEFINE_SPMI_SET_POINTS(nldo2);
-> @@ -576,6 +616,8 @@ static DEFINE_SPMI_SET_POINTS(ht_nldo);
->  static DEFINE_SPMI_SET_POINTS(hfs430);
->  static DEFINE_SPMI_SET_POINTS(ht_p150);
->  static DEFINE_SPMI_SET_POINTS(ht_p600);
-> +static DEFINE_SPMI_SET_POINTS(nldo_510);
-> +static DEFINE_SPMI_SET_POINTS(ftsmps510);
->  
->  static inline int spmi_vreg_read(struct spmi_regulator *vreg, u16 addr, u8 *buf,
->  				 int len)
-> @@ -1062,6 +1104,24 @@ static unsigned int spmi_regulator_ftsmps426_get_mode(struct regulator_dev *rdev
->  	}
->  }
->  
-> +static int
-> +spmi_regulator_ftsmps3_get_mode(struct regulator_dev *rdev, unsigned int mode)
-> +{
-> +	struct spmi_regulator *vreg = rdev_get_drvdata(rdev);
-> +	u8 reg;
-> +
-> +	spmi_vreg_read(vreg, SPMI_COMMON_REG_MODE, &reg, 1);
-> +
-> +	switch (reg) {
-> +	case SPMI_FTSMPS3_MODE_HPM_MASK:
-> +		return REGULATOR_MODE_NORMAL;
-> +	case SPMI_FTSMPS3_MODE_AUTO_MASK:
-> +		return REGULATOR_MODE_FAST;
-> +	default:
-> +		return REGULATOR_MODE_IDLE;
-> +	}
-> +}
-> +
->  static int
->  spmi_regulator_common_set_mode(struct regulator_dev *rdev, unsigned int mode)
->  {
-> @@ -1108,6 +1168,33 @@ spmi_regulator_ftsmps426_set_mode(struct regulator_dev *rdev, unsigned int mode)
->  	return spmi_vreg_update_bits(vreg, SPMI_COMMON_REG_MODE, val, mask);
->  }
->  
-> +static int
-> +spmi_regulator_ftsmps3_set_mode(struct regulator_dev *rdev, unsigned int mode)
-> +{
-> +	struct spmi_regulator *vreg = rdev_get_drvdata(rdev);
-> +	u8 mask = SPMI_FTSMPS3_MODE_MASK;
-> +	u8 val;
-> +
-> +	switch (mode) {
-> +	case REGULATOR_MODE_NORMAL:
-> +		val = SPMI_FTSMPS3_MODE_HPM_MASK;
-> +		break;
-> +	case REGULATOR_MODE_FAST:
-> +		val = SPMI_FTSMPS3_MODE_AUTO_MASK;
-> +		break;
-> +	case REGULATOR_MODE_IDLE:
-> +		val = vreg->logical_type ==
-> +				SPMI_REGULATOR_LOGICAL_TYPE_FTSMPS3 ?
-> +			SPMI_FTSMPS3_MODE_RETENTION_MASK :
-> +			SPMI_FTSMPS3_MODE_LPM_MASK;
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	return spmi_vreg_update_bits(vreg, SPMI_COMMON_REG_MODE, val, mask);
-> +}
-> +
->  static int
->  spmi_regulator_common_set_load(struct regulator_dev *rdev, int load_uA)
->  {
-> @@ -1465,6 +1552,21 @@ static const struct regulator_ops spmi_hfs430_ops = {
->  	.get_mode		= spmi_regulator_ftsmps426_get_mode,
->  };
->  
-> +static const struct regulator_ops spmi_ftsmps3_ops = {
-> +	.enable			= regulator_enable_regmap,
-> +	.disable		= regulator_disable_regmap,
-> +	.is_enabled		= regulator_is_enabled_regmap,
-> +	.set_voltage_sel	= spmi_regulator_ftsmps426_set_voltage,
-> +	.set_voltage_time_sel	= spmi_regulator_set_voltage_time_sel,
-> +	.get_voltage_sel	= spmi_regulator_ftsmps426_get_voltage,
-> +	.map_voltage		= spmi_regulator_single_map_voltage,
-> +	.list_voltage		= spmi_regulator_common_list_voltage,
-> +	.set_mode		= spmi_regulator_ftsmps3_set_mode,
-> +	.get_mode		= spmi_regulator_ftsmps3_get_mode,
-> +	.set_load		= spmi_regulator_common_set_load,
-> +	.set_pull_down		= spmi_regulator_common_set_pull_down,
-> +};
-> +
->  /* Maximum possible digital major revision value */
->  #define INF 0xFF
->  
-> @@ -1549,6 +1651,16 @@ static const struct spmi_regulator_mapping supported_regulators[] = {
->  	SPMI_VREG(ULT_LDO, P300,     0, INF, ULT_LDO, ult_ldo, ult_pldo, 10000),
->  	SPMI_VREG(ULT_LDO, P150,     0, INF, ULT_LDO, ult_ldo, ult_pldo, 10000),
->  	SPMI_VREG(ULT_LDO, P50,     0, INF, ULT_LDO, ult_ldo, ult_pldo, 5000),
-> +	SPMI_VREG(LDO, LV_P150_510, 0, INF, LDO_510, ftsmps3, ht_lvpldo, 10000),
-> +	SPMI_VREG(LDO, LV_P300_510, 0, INF, LDO_510, ftsmps3, ht_lvpldo, 10000),
-> +	SPMI_VREG(LDO, LV_P600_510, 0, INF, LDO_510, ftsmps3, ht_lvpldo, 10000),
-> +	SPMI_VREG(LDO, MV_P50_510,  0, INF, LDO_510, ftsmps3, pldo660, 10000),
-> +	SPMI_VREG(LDO, MV_P150_510, 0, INF, LDO_510, ftsmps3, pldo660, 10000),
-> +	SPMI_VREG(LDO, MV_P600_510, 0, INF, LDO_510, ftsmps3, pldo660, 10000),
-> +	SPMI_VREG(LDO, N300_510,    0, INF, LDO_510, ftsmps3, nldo_510, 10000),
-> +	SPMI_VREG(LDO, N600_510,    0, INF, LDO_510, ftsmps3, nldo_510, 10000),
-> +	SPMI_VREG(LDO, N1200_510,   0, INF, LDO_510, ftsmps3, nldo_510, 10000),
-> +	SPMI_VREG(FTS, FTSMPS_510,  0, INF, FTSMPS3, ftsmps3, ftsmps510, 100000),
->  };
->  
->  static void spmi_calculate_num_voltages(struct spmi_voltage_set_points *points)
-> @@ -1696,6 +1808,27 @@ static int spmi_regulator_init_slew_rate_ftsmps426(struct spmi_regulator *vreg,
->  	return ret;
->  }
->  
-> +static int spmi_regulator_init_slew_rate_ftsmps3(struct spmi_regulator *vreg)
-> +{
-> +	int ret;
-> +	u8 reg = 0;
-> +	int delay;
-> +
-> +	ret = spmi_vreg_read(vreg, SPMI_FTSMPS3_REG_STEP_CTRL, &reg, 1);
-> +	if (ret) {
-> +		dev_err(vreg->dev, "spmi read failed, ret=%d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	delay = reg & SPMI_FTSMPS426_STEP_CTRL_DELAY_MASK;
-> +	delay >>= SPMI_FTSMPS426_STEP_CTRL_DELAY_SHIFT;
-> +
-> +
+On Tue, Aug 02, 2022 at 12:46:48PM +0200, Krzysztof Kozlowski wrote:
+> On 01/08/2022 00:37, Iskren Chernev wrote:
 
-Drop two blank lines.
+> > +/*
+> > + * Third common register layout
+> > + */
+> > +enum spmi_ftsmps3_regulator_registers {
+> > +	SPMI_FTSMPS3_REG_STEP_CTRL		=3D 0x3c,
+> > +};
+> > +
+> > +
+>=20
+> Just one blank line.
 
+Please delete unneeded context from mails when replying.  Doing this
+makes it much easier to find your reply in the message, helping ensure
+it won't be missed by people scrolling through the irrelevant quoted
+material.
 
-Best regards,
-Krzysztof
+--TszTQpVlg1sWIkv4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmLpI/QACgkQJNaLcl1U
+h9CIzQf+NuTTebaileZ8U06bnAkY26XDIkyB3jsbaiecRfzdZzXZw+icUg3nKpAG
+eZhtg6qhX9zUSrvy0e2yjmXuvfplFxgRM1kk+YNe4vUJ1NEn+K5Rq71mgUJP5djN
+vetDDdZmJ78dSTNPLLZNpNnPR2fkzFKdeBjxs2I/4N2Ci3MaGol+Tse41H34lGQX
+myMJ9KHpGHKC8I/s8rBporzSxK4L/q60srqhutdJIcOT4lyqumKbSzLBfEZwRfFv
+EWDyr0ea9Qs9RHtEVOag5+DDRqXTV40iK756MlRQic9a4ngw1l6SfB92iwalC5pV
+KKk62Ean6wM2YOVdq5jLxaTbVY0zKQ==
+=HoLP
+-----END PGP SIGNATURE-----
+
+--TszTQpVlg1sWIkv4--
