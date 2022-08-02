@@ -2,103 +2,172 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D2B9C00140
-	for <phone-devel@archiver.kernel.org>; Tue,  2 Aug 2022 13:17:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD68BC3F6B0
+	for <phone-devel@archiver.kernel.org>; Tue,  2 Aug 2022 21:27:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236115AbiHBNRz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 2 Aug 2022 09:17:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54358 "EHLO
+        id S232758AbiHBV1D (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 2 Aug 2022 17:27:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232503AbiHBNRz (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 Aug 2022 09:17:55 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A21AB12D19;
-        Tue,  2 Aug 2022 06:17:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4B345B81EF3;
-        Tue,  2 Aug 2022 13:17:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3833C433C1;
-        Tue,  2 Aug 2022 13:17:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659446271;
-        bh=p4m28G7V5HhenGiD2H4zOI1QhZVoWGXr14bSJRSRAdg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PFXQbQPz1/L9eDzHSURbtzxxo3qdNlR+j2Fxcv8i/YkMjW80rur039virDvzrjCQt
-         7wbJawZkiTY9bGFbkjWmxkqbBXJJIlkygGCk+/MQ3wa7tMw6M5CzJtX2gfH7pOfocZ
-         fY2AFs7BiDwWiutDOasuNvlzogaKtRaFe2gkZZWb4Tp3xNZVvOfA/lcWWNd0F/h7pG
-         HVtafQyh7mmzugH4aCjIWzgvA7Ys3WfibMfMmXQRtfV2rl/Bc1Oo1NdyS3M1dior20
-         6bW+NAdletbIl5XB/HzrwQVM+tQzMYtXqYQJqUFSY4Ax4AJb9WeJoZSR1+d9ARkOdH
-         eOQnyY+qcd7ng==
-Date:   Tue, 2 Aug 2022 14:17:41 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Iskren Chernev <iskren.chernev@gmail.com>,
+        with ESMTP id S232429AbiHBV0r (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 Aug 2022 17:26:47 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11olkn2010.outbound.protection.outlook.com [40.92.20.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61402638A;
+        Tue,  2 Aug 2022 14:26:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bUSHqyz2ShfMRo3Oej7+uYr1W1PWPowOiPcmWiO5n2MpDV0NhdqnlWt4agq7wLACP7iwA1+IhBZnetbf7DrCF5xw53sTDBuBB+kLQXRrVtxgo29OWlBR0GYnFgUzy6SNN7wxtOBkGu9MvOmPWd6JtzDQnjUY58shFQztg6QIs+spV0Ngr/bIGr1jAYvDTnW7qoZDyEFOSHO8W6xLh7GZeZePGv6y4T9o06dWOCy2WZLCPusNh0MLOSGQZ9XpIdGIQWYSOwfpHmG7FylO+Z6ZRx5xtS04SKOWoEy0CNkwF+sxr/zLeMSMKn8qtuRI6PB/Q6lTdgwl9cX9vZw0sTsnZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fWMVzIa3MsonwoTA4zmKlX8CudrOmMoCK7RcdG87xM4=;
+ b=HdWBaWyVwlEDi8qSBlDQ7Qgbjy+XCs6kq8uvkRodjvocjM2Zab6SNXUv6me+8CEVT+TZMtw2n1mnZdT9pKmyi/5wHcYUHYweMVx+RZM95uiwNs8taFmkVa3vMkpEgIl5rJ+t+/8aTru7cwAdH8OVvYbCnmRQimfuWxmwE6DS4UMVON0jEIgs4ap2rFKBT6NLfVpw4wLzc2sbHaTI/LIkCkpuO74JFCamjTRjwIA0kXBjsGAl5gIf1KktC5ekeZ7c2UH88kDMUtpnrNxpMK64rIowRqE44epAWgvTSYVlm0sKzdrywh5moyCq6TYlOsSXNCHigOtBjpw/Ubicpb/bbQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fWMVzIa3MsonwoTA4zmKlX8CudrOmMoCK7RcdG87xM4=;
+ b=tBa7oY9wwYbll/5ikfSdpbsARzuUewl3u670PBXFPnYgU6Nb68Ow1gPn1017S1QOfx1ckIIw2FJsf2xWJxnP4bZUADzBMgWng8IiMJhn8WeRoswdtQJjxHuAe7ueF2OdE/ClsBPcymbcAOnv3TQyJ0mzc10uGb4JMD99dNbq9nhVPx15xzxHIxyjvZ+XD27OkYzbbDav7J6FLPISZUd5Ia5QyrT/aYxuZn3fPApBdByoAsK72FYlpfCISlCeRmBR+70nCXCs3IC5WEcqSiG00Pra8nEztKZvOMHMZBtFkmzAWw+ZWDtITHc6dO0yq9yusKWPnZqps39QnSKxMy177A==
+Received: from BY5PR02MB7009.namprd02.prod.outlook.com (2603:10b6:a03:236::13)
+ by MWHPR02MB2414.namprd02.prod.outlook.com (2603:10b6:300:5c::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5482.15; Tue, 2 Aug
+ 2022 21:26:36 +0000
+Received: from BY5PR02MB7009.namprd02.prod.outlook.com
+ ([fe80::e080:d670:29c7:9180]) by BY5PR02MB7009.namprd02.prod.outlook.com
+ ([fe80::e080:d670:29c7:9180%8]) with mapi id 15.20.5504.014; Tue, 2 Aug 2022
+ 21:26:36 +0000
+Message-ID: <BY5PR02MB700935025EB9A40B9E43CA48EA9D9@BY5PR02MB7009.namprd02.prod.outlook.com>
+Date:   Wed, 3 Aug 2022 02:56:25 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0.3
+Subject: Re: [PATCH v2 2/3] arm64: dts: qcom: sdm845-xiaomi-beryllium-common:
+ move common nodes to a common dtsi
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
-        Robert Marko <robimarko@gmail.com>, devicetree@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Adam Skladowski <a39.skl@gmail.com>
-Subject: Re: [PATCH v3 05/13] regulator: qcom_spmi: Add support for new
- regulator types
-Message-ID: <Yukj9bjX+O0Yab3q@sirena.org.uk>
-References: <20220731223736.1036286-1-iskren.chernev@gmail.com>
- <20220731223736.1036286-6-iskren.chernev@gmail.com>
- <3f56541a-29c1-af76-0de3-b20eb81a5fa8@linaro.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <BY5PR02MB70099020AC1D181D15909F64EA9A9@BY5PR02MB7009.namprd02.prod.outlook.com>
+ <BY5PR02MB70091276EDE0CE4FCB6CFBD5EA9A9@BY5PR02MB7009.namprd02.prod.outlook.com>
+ <20220801185304.ozoydbmbgqe6fqdy@SoMainline.org>
+ <822b24fb-add3-b49f-d64e-15b577929edf@linaro.org>
+Content-Language: en-US
+From:   Joel Selvaraj <joel.selvaraj@outlook.com>
+In-Reply-To: <822b24fb-add3-b49f-d64e-15b577929edf@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TMN:  [6QBWqs77HXsvBMLNOVfciWEYlmash8XqXl6eBPQwlnZkXwxab9Va1K1h5KkQDe1u]
+X-ClientProxiedBy: BM1PR01CA0161.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:b00:68::31) To BY5PR02MB7009.namprd02.prod.outlook.com
+ (2603:10b6:a03:236::13)
+X-Microsoft-Original-Message-ID: <b736fca7-3efa-faee-02fd-8203fa0f87f0@outlook.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="TszTQpVlg1sWIkv4"
-Content-Disposition: inline
-In-Reply-To: <3f56541a-29c1-af76-0de3-b20eb81a5fa8@linaro.org>
-X-Cookie: Stay on the trail.
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a0e223b6-431e-44f9-03e2-08da74cdadc2
+X-MS-TrafficTypeDiagnostic: MWHPR02MB2414:EE_
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: qMWkQUKqqB3K5V6Jugwzkn6vrbCcRdphpyQV2fKtnnN6OquU6hB2z4zSRA3Q23I/zNeRiFQpkIOpjiqr7+08x1eiiFSiBqBp1AEu5Y7MxYcOSwSuRrF2TdlIWNt6fvHTt89uYXkZxCIlG13hSehbtw6z9mNhlf0OrslsBGmTzSL4Y5yNGVDQGj/Yk5nPr+w3rDXdriUyqMdCCYDYotg2M5dbGZD/bHpyPLvE158Sz+nPQ0QXtCLEV5FObaIwfc7KOMg3JJtqhJzUIL2J2yTlDK7EE1qeG+hbKpGpCLnZo6RUV8Ni+lsygTfiWmtm/ZHmZfDJhsmboklXWsdlaLYwaL17DUjohHjbXX1Zwf0QQVoaRGrMyxA6YO2kJVeOWA5vYTIOyceCtAMcs+e9upSHnKEOCD13zAoy6vyWCNJ5BV0PNEIXIVbqTPAO78+QCrvhC/A4Lc0dx7InKtxVDTdgknK7Ulr29XLU/0xFQy3zynh/48nRIJg1KLhmu3mgolJCDnhKw3NWiE8y7a6djDixFX9jZPA5GZoklsTdqkVMgAXH93/x1rWfbEbSOw91V3zLHdGXK144NK7CyABJAQ8KKC1LFFmYTCtk7pmMgGGhe0AzNcw0s6AQuS3fYo/lAiSUtJCxBYH2T6MDzlGCTtOE12ykZn56ozziRfH9ifg5iD6Oa5Myi4Hb7NOyApGP8oJA
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YUM2clRoSUFrOHVseFNQa0JHcjJLeHprdThOaWZyV1Z6LzI4eHJwTXFLemMw?=
+ =?utf-8?B?Q2diK2xUemFhRFhOVUJPSWYyQ3VHbUI1RmxPVkp3Wi9TZzMyYi9rNS9JbUFq?=
+ =?utf-8?B?cDV5eUdGM1pWS3RTNjN4Z2xYWllGSEFtZ1dmMmR0RldVTUtLVVVvek5WSkd5?=
+ =?utf-8?B?VmhLK282czNpVmFHcnlscXlqSWprQUN2cUJQckIzV0VJa3J6S1VxQ3ozYnQ2?=
+ =?utf-8?B?UjVkZElxWEVpR0lNSEtqTXhWSTByekJ6eFNDVVpRY01KVVNZVDhVUTFkNURp?=
+ =?utf-8?B?YlBldXJZR3ZKeS90MWg0QnlSU1JQQmpnZmYyamVGQmxjb0hLRTBqbStnWEJS?=
+ =?utf-8?B?VWdnTXlleFBUYWtkQ2cyL0dzQzFldTg4UEcvZnBBd3VrTEdFWURlRTgvdkZh?=
+ =?utf-8?B?QnNlZGFzWEpDWFlObWlrSTY2UEw1Y2hsTDRMY1g5aGZJeEVJNnE5MXVBWVQ0?=
+ =?utf-8?B?WWdFYXRhWDJWUVVpUXBZeGtYVjJNRmQ0enFjVmFJK1hvYmtnQ2tyQWFTUUd6?=
+ =?utf-8?B?d2xTbjJxUUtJQlAza24wKzVBczBidXlEN3dYTFNyQWhrcy9idisySy9tNWM4?=
+ =?utf-8?B?c0s1NkUwYklsdHlZVUY4dmpIWU5VUlZPQjhXMmJjNkxPTkp6YUIxWDRpWWR6?=
+ =?utf-8?B?alFyMDdOb0EvL0h2bndlaUF5VnZYanB1NzM3VzhRSGFYTUxQbXdHcGV0WWEz?=
+ =?utf-8?B?d25MRzh5WGp6aFZjejVxdlFOV1RsbzAydjRXM3IvQkhEZUx0bnBPbnlRY0hB?=
+ =?utf-8?B?cDcvK2tDQ0xRbnRGNlNqbFBMY2QzM21DSHZIbmlCemQ1L1UzN3BsdHRkemVz?=
+ =?utf-8?B?ZzJ2R0R0ZTBtbXVRZG9kdE51MjE5ekp3S3Y3ODJUcUV4dWtUNUowdjRXMktF?=
+ =?utf-8?B?UC9YODc5RWRveEY1VC8zUS9TMTFUaVNlVllzbFBaRVlGYmh0RkxiYStKZVBu?=
+ =?utf-8?B?YVl3amxkVkc2c2tpbkxNYXJPZXFLcUx2dEJIcDZWVVo3YjVKRXV3cVZnek55?=
+ =?utf-8?B?T3Z2RXg0dUtwdFU4S25qcmRMWG1hQUp6WmUreUt1eHdnMkdjeGpEOVErRTln?=
+ =?utf-8?B?Y3JVV2hmNEg3MENlQzhuZ2JQY2JpWGE1aHJ4R0lyTlBFbUx5eWJBZVpmckZX?=
+ =?utf-8?B?THhBTzIrTVQwdXliZW4wQldCNU1YNHQ4ZmdaTnpJUUptL3czcm5BSW92NmhX?=
+ =?utf-8?B?b1JvTC8rNTg3M1YzRUJsUlQ3eVVOOUthOXF5eTFNVkFIUmJiUGlEdGVLVVM3?=
+ =?utf-8?B?QkcxVFJ6RjBIV1BaQlUxMi9EWUhPeHNsd0lGOG9ZUlBqT2E2WlpOenkyV29m?=
+ =?utf-8?B?QjRYSXhCSHdkL1NUU0pCU2xNbGRvaXptWnhCN2ZXYXZmbWR0cExhSDlubGtl?=
+ =?utf-8?B?SmV4a0NONFJiOWl5TmY4M3NFRG1lUUhXbDdhcm9rK1VEdUl3dlE4Mm1ZdjBB?=
+ =?utf-8?B?QndzTi93cGxobVkrTEdxaVZYKzhpVzRwS0RKak1DdGRZSWg5V2x6Q1E1UE1K?=
+ =?utf-8?B?c2JGNXNUTkxDQnFpa05iclpHNTg5eUdoRDRSWnBIb0FBZ3pMTElYcDJ0Q0E3?=
+ =?utf-8?B?dVZxTzYxdVVHUGhXdVdTMFF5THlBbVo2ZkNmYnFKYllMSVZIN0tqajFSUGM3?=
+ =?utf-8?B?SzlEakxVVzROTkdYYi9tZ3YxcXZiUmtUOEpxVnpHR0JIMTdTYmNPdnFFcm0x?=
+ =?utf-8?B?RVdjOEY2bnJ1YWJzNW1KdXdZa2pHa25rNm94dTVYMTlSdXJMUS9MdTR6SUNW?=
+ =?utf-8?B?S2FieXA0bGF3cml2MmlseVdTQWlrWU1NYll2T3hWeGJlUkVQRW1XajJ4aEhC?=
+ =?utf-8?B?RGV1bTBtU2MybDhBSzIrdz09?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0e223b6-431e-44f9-03e2-08da74cdadc2
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB7009.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2022 21:26:36.3963
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR02MB2414
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Krzysztof Kozlowski and Marijn Suijten
 
---TszTQpVlg1sWIkv4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 02/08/22 13:16, Krzysztof Kozlowski wrote:
+> On 01/08/2022 20:53, Marijn Suijten wrote:
+>> On 2022-08-01 16:55:11, Joel Selvaraj wrote:
+>> Any summary what changed since v1?
+> 
+> +1 (although I already reviewed it)
 
-On Tue, Aug 02, 2022 at 12:46:48PM +0200, Krzysztof Kozlowski wrote:
-> On 01/08/2022 00:37, Iskren Chernev wrote:
+Will add them in v3.
 
-> > +/*
-> > + * Third common register layout
-> > + */
-> > +enum spmi_ftsmps3_regulator_registers {
-> > +	SPMI_FTSMPS3_REG_STEP_CTRL		=3D 0x3c,
-> > +};
-> > +
-> > +
->=20
-> Just one blank line.
+>> I haven't re-read what was discussed in v1, but doing it this way causes
+>> git to _not_ record this as a rename but instead state that everything
+>> has been removed from sdm845-xiaomi-beryllium-tianma.dts, and a new file
+>> sdm845-xiaomi-beryllium-common.dtsi was introduced with inconveniently
+>> almost identical contents (see the unnecessary size of the patch that
+>> follows).
+> 
+> The patch should be formatted a bit different. I agree that if combined
+> with first patch and proper settings (-M10% -C10%, optionally also
+> experiment with -B although here it looks not needed).
+> 
+> I reviewed the diff side-by-sie and there were differences (labels)
+> tricky to spot. If you generate the patch correctly, not much of review
+> is needed...
 
-Please delete unneeded context from mails when replying.  Doing this
-makes it much easier to find your reply in the message, helping ensure
-it won't be missed by people scrolling through the irrelevant quoted
-material.
+>> Instead, I'd keep the original patch with a rename from
+>> sdm845-xiaomi-beryllium.dts to sdm845-xiaomi-beryllium-common.dtsi, and
+>> _also_ update the existing:
+>>
+>> 	dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium.dtb
+>>
+>> in Makefile to match this rename so that it keeps compiling, even if
+>> that means we treat a .dtsi as a .dts which may (likely) not be treated
+>> correctly by existing build rules.
+>>
+>> If it doesn't - and this approach is probably frowned upon anyway - it
+>> is perhaps easiest to generalize sdm845-xiaomi-beryllium.dtb (as
+>> suggested above) _and_ introduce sdm845-xiaomi-beryllium-tianma.dtb
+>> _and_ update Makefile in a _single_ patch, such that everyting keeps
+>> compiling and stays consistent wrt how git treats renames.  Later
+>> patches update the compatible and add the ebbg variant.
+>>
+>> - Marijn
+>
+> Best regards,
+> Krzysztof
 
---TszTQpVlg1sWIkv4
-Content-Type: application/pgp-signature; name="signature.asc"
+I will work on v3 based on both of your comments.
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmLpI/QACgkQJNaLcl1U
-h9CIzQf+NuTTebaileZ8U06bnAkY26XDIkyB3jsbaiecRfzdZzXZw+icUg3nKpAG
-eZhtg6qhX9zUSrvy0e2yjmXuvfplFxgRM1kk+YNe4vUJ1NEn+K5Rq71mgUJP5djN
-vetDDdZmJ78dSTNPLLZNpNnPR2fkzFKdeBjxs2I/4N2Ci3MaGol+Tse41H34lGQX
-myMJ9KHpGHKC8I/s8rBporzSxK4L/q60srqhutdJIcOT4lyqumKbSzLBfEZwRfFv
-EWDyr0ea9Qs9RHtEVOag5+DDRqXTV40iK756MlRQic9a4ngw1l6SfB92iwalC5pV
-KKk62Ean6wM2YOVdq5jLxaTbVY0zKQ==
-=HoLP
------END PGP SIGNATURE-----
-
---TszTQpVlg1sWIkv4--
+Regards,
+Joel Selvaraj
