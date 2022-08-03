@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AA4DC19F2A
-	for <phone-devel@archiver.kernel.org>; Wed,  3 Aug 2022 08:06:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D216FC19F28
+	for <phone-devel@archiver.kernel.org>; Wed,  3 Aug 2022 08:58:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229475AbiHCIGO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 3 Aug 2022 04:06:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50834 "EHLO
+        id S234828AbiHCI6b (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 3 Aug 2022 04:58:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234881AbiHCIGN (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 3 Aug 2022 04:06:13 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2F30220E6
-        for <phone-devel@vger.kernel.org>; Wed,  3 Aug 2022 01:06:11 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id t1so25278210lft.8
-        for <phone-devel@vger.kernel.org>; Wed, 03 Aug 2022 01:06:11 -0700 (PDT)
+        with ESMTP id S231671AbiHCI6b (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 3 Aug 2022 04:58:31 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CE282251E;
+        Wed,  3 Aug 2022 01:58:30 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id ss3so30199431ejc.11;
+        Wed, 03 Aug 2022 01:58:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc;
-        bh=ZWDDdDUD/SeLY4Y1864eieW1iTgOf5yvfzhjZam9Gdo=;
-        b=UNQND0cz6Sg0ZYwWcksx3XWvJ3WA4eaJxJp4yui/nV3EMdbkFSaBpOGwZnon5itiyZ
-         eywb/D5cj+hY1KS92HUbT03Xzas2PMYxD5h5Q0Y0DXf4MLApk1H/im+q2nbWQuI/3srA
-         JbcxOqZhrwiuK+nf5i/uzmxpRWcKaxLW84wVDO6hw8G1VTgEX9mUuFsTcRgXNuqhqmED
-         QejTlDnrX6hYUCBUgZEX4fTFRURYsPw2lSkBZ7uWPUVZXutxAK4LsNlnQ14O34pEI+NI
-         I7UYa7XeYFObT79SeRKCG9CY6UvSMaYOTBdtpWbCHenXA7328Ga6gOZ+RoxN5Xg3UHFk
-         H/KQ==
+        bh=FMuEkX1cuR0fLJAj2NpiHvom9cpz7zgbO733+2J3n5M=;
+        b=SGxUTOZjt0kkWQ0YjILDWUI/iQqjmr3lP5rGPGLbXvgH4MKcyRQxOsgrMBGXjzgiQs
+         MZczp4aP+enl8+HSdrOxgT7hZVQWujXQtUTtxkt8jVyvzBjleWLu7intoXYVYAys7SQD
+         GbBhJGsZtpfj0L4OlcdxSRh+N6KkhQb55I82p2H1sBrneUOEc3dybg5/vKjbA94+iqs9
+         G+C22iqkWncYAEguobYF1jfeN945IpC/2DsxfI0TFp/BRIS7cnoezkIuGrBETHv6glSn
+         0K8YF5IW5wL9waVGwWi/y3mdabmKLB0MewSpccRL2paQoR/LQ7iMZG0DaJUU5MuCi71A
+         +G2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc;
-        bh=ZWDDdDUD/SeLY4Y1864eieW1iTgOf5yvfzhjZam9Gdo=;
-        b=peYeBQUCnNF1007AFNZCMAAluk3bdh9sRHuZ0dce70dxSWbJo2RK9LocnBJbR2Xnhn
-         YdnP7T2gEpkb3U6be7mxuS5yDQrvvbHlseAWmSt0N0thEMpLxZBm9YkfkRdtsY1XCw1v
-         c6akYJ1q9CU4VDEE+sFhcHuFkcUNYLXKKbBn9f8TNftnd9gAtpOcHlk35yg2sUvmTmKn
-         EjocKrKDeJ1llgD+8T/5L5/63I7dV84e/osPVNzKXBmW4WA2D0bdCTvDxxiYV2Gbp3wS
-         1lQcdhniYiWEQiDSUwuBxbQT8cda0cGQh3MI0HwlJ3VzGTtliAWzgzs7vViGLyA/ymLX
-         oFKw==
-X-Gm-Message-State: ACgBeo3jmwicaUAXNlFTl+bkVVgPsf6rMon7rS/umzm8S4DZIPxNr3og
-        9DPmVLlyzYHM2O5Kiffehcf1tA==
-X-Google-Smtp-Source: AA6agR6YIKvmWjYaexviQIzgrn1Fy4OPtC8l6gFirTc4+daaC5Q/9KztGMbcs4zaIhmKkO0ln/EelA==
-X-Received: by 2002:ac2:43c8:0:b0:48a:f0e9:fc06 with SMTP id u8-20020ac243c8000000b0048af0e9fc06mr6238061lfl.458.1659513970078;
-        Wed, 03 Aug 2022 01:06:10 -0700 (PDT)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id t9-20020ac24c09000000b0048a8586293asm2368309lfq.48.2022.08.03.01.06.09
+        bh=FMuEkX1cuR0fLJAj2NpiHvom9cpz7zgbO733+2J3n5M=;
+        b=KIkJ+UhW0DgUNQe+jiYiqN0lvDWXM0yAodhVB/58HsvBurrYVFwK/ZSSyl9L6ef79g
+         cSue8CaS942qEdumAP3s4wJH4vPzpz1Ugkg5q3oy+3kISM9ZTMXpz6YFM2UbYRgq4hnn
+         xFUhkyKmlkmoWPF7n36tHZQmvatvlOZazKJoHFPNhHRnr4YWC1ohzzK3mO4rs4DvLVv9
+         A2mSrLuUbokupDSlhfblqgeLhvmeSfjBgWqRZf7SpWmY+JAzoBfVg0lCQnY5+KRjMni8
+         KxwM/gDsVCB5t9qO3PELuGR9A+Q7ktxExmjgkB/98/qxDgmHPdV7NhEetB/zfgTgcukj
+         PZNQ==
+X-Gm-Message-State: AJIora/IRu0XMT7nAmi1bxFOyoWsvR3pV/Rb/EY/l0cT+LtPsb0f+H3j
+        s8B5eOnH8TvCS6b4wM6IgtKS0wYaRbV7tE0J
+X-Google-Smtp-Source: AGRyM1umGkFw1eJ89UsPMftjXKOKWWCI95hu2K2npgGE7MmsfMTI1ig5d5ii1qqw/Bj3tqnGkBYShQ==
+X-Received: by 2002:a17:906:8cb0:b0:72f:6ce7:3a1 with SMTP id qr48-20020a1709068cb000b0072f6ce703a1mr18951830ejc.322.1659517108472;
+        Wed, 03 Aug 2022 01:58:28 -0700 (PDT)
+Received: from [192.168.74.101] ([77.78.38.236])
+        by smtp.gmail.com with ESMTPSA id f12-20020a17090631cc00b0073086d1afe3sm3105293ejf.86.2022.08.03.01.58.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Aug 2022 01:06:09 -0700 (PDT)
-Message-ID: <89469b0d-e6aa-4d60-c93c-a99256f65445@linaro.org>
-Date:   Wed, 3 Aug 2022 11:06:08 +0300
+        Wed, 03 Aug 2022 01:58:27 -0700 (PDT)
+Message-ID: <f44fc6d2-9d3b-2c37-15dd-d002dc09b7b0@gmail.com>
+Date:   Wed, 3 Aug 2022 11:58:26 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
+ Thunderbird/91.11.0
 Subject: Re: [PATCH v3 00/13] PM6125 regulator support
-Content-Language: en-GB
-To:     Iskren Chernev <iskren.chernev@gmail.com>,
+Content-Language: en-US
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Mark Brown <broonie@kernel.org>
@@ -68,73 +68,35 @@ Cc:     Andy Gross <agross@kernel.org>,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 References: <20220731223736.1036286-1-iskren.chernev@gmail.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20220731223736.1036286-1-iskren.chernev@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <89469b0d-e6aa-4d60-c93c-a99256f65445@linaro.org>
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+In-Reply-To: <89469b0d-e6aa-4d60-c93c-a99256f65445@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 01/08/2022 01:37, Iskren Chernev wrote:
-> This patch series adds SPMI and SMD regulator support for the PM6125 found on
-> SM4250/SM6115 SoCs from QCom.
-> 
-> This code has been tested on:
-> * OnePlus Nord N100 (oneplus,billie2, SoC sm4250)
-> * Redmi 9T (redmi,lemon, SoC sm6115)
-> 
-> The main source used for this change is qpnp pm6125 support patch from caf [1]:
-> 
-> [1]: https://source.codeaurora.org/quic/la/kernel/msm-5.4/commit/?h=kernel.lnx.5.4.r1-rel&id=d1220daeffaa440ffff0a8c47322eb0033bf54f5
-> 
-> v2: https://lkml.org/lkml/2022/7/26/885
-> v1: https://lkml.org/lkml/2021/8/28/144
-> 
-> Changes from v2:
-> - split spmi new regulator support in 2 patches
-> - FTS and LDOs now have set_load and set_pull_down ops
-> - add better commit messages on spmi patches
-> - fix sob header order
-> - fix tested device info (Redmi 9T, NOT Xiaomi 9T)
-> - improve formatting in spmi binding docs
-> - sort alphabetically in smd binding docs
-> - sort alphabetically spmi pmics
-> - sort alphabetically smd pmics
-> Changes from v1:
-> - add dt-bindings
-> - split SPMI patch into new reg types and the new PMIC
-> - add correct supply mapping
-> 
-> Iskren Chernev (13):
->    dt-bindings: regulator: qcom_spmi: Improve formatting of if-then
->      blocks
->    dt-bindings: regulator: qcom_spmi: Document PM6125 PMIC
->    dt-bindings: regulator: qcom_smd: Sort compatibles alphabetically
->    dt-bindings: regulator: qcom_smd: Document PM6125 PMIC
->    regulator: qcom_spmi: Add support for new regulator types
->    regulator: qcom_spmi: Add support for HFSMPS regulator type
->    regulator: qcom_spmi: Sort pmics alphabetically (part 1)
->    regulator: qcom_spmi: Sort pmics alphabetically (part 2)
->    regulator: qcom_spmi: Add PM6125 PMIC support
->    regulator: qcom_smd: Sort pmics alphabetically (part 1)
->    regulator: qcom_smd: Sort pmics alphabetically (part 2)
->    regulator: qcom_smd: Sort pmics alphabetically (part 3)
 
-What is the reason for these part1/2 and part1/2/3 splits? I think you 
-can collapse them into two respective patches, one sorting of spmi, 
-another one sorting the smd regulators
+>>
+>> Iskren Chernev (13):
+>>    dt-bindings: regulator: qcom_spmi: Improve formatting of if-then
+>>      blocks
+>>    dt-bindings: regulator: qcom_spmi: Document PM6125 PMIC
+>>    dt-bindings: regulator: qcom_smd: Sort compatibles alphabetically
+>>    dt-bindings: regulator: qcom_smd: Document PM6125 PMIC
+>>    regulator: qcom_spmi: Add support for new regulator types
+>>    regulator: qcom_spmi: Add support for HFSMPS regulator type
+>>    regulator: qcom_spmi: Sort pmics alphabetically (part 1)
+>>    regulator: qcom_spmi: Sort pmics alphabetically (part 2)
+>>    regulator: qcom_spmi: Add PM6125 PMIC support
+>>    regulator: qcom_smd: Sort pmics alphabetically (part 1)
+>>    regulator: qcom_smd: Sort pmics alphabetically (part 2)
+>>    regulator: qcom_smd: Sort pmics alphabetically (part 3)
+>
+> What is the reason for these part1/2 and part1/2/3 splits? I think you can collapse them into two respective patches, one sorting of spmi, another one sorting the smd regulators
 
->    regulator: qcom_smd: Add PM6125 regulators support
-> 
->   .../regulator/qcom,smd-rpm-regulator.yaml     |  26 +-
->   .../regulator/qcom,spmi-regulator.yaml        |  32 ++
->   drivers/regulator/qcom_smd-regulator.c        | 400 ++++++++++--------
->   drivers/regulator/qcom_spmi-regulator.c       | 383 ++++++++++++-----
->   4 files changed, 556 insertions(+), 285 deletions(-)
-> 
-
-
--- 
-With best wishes
-Dmitry
+The reason is that if I do collapse them the diff looks much more
+complicated and it's not obvious that the sections are in-fact only moved.
+I'm not sure how these are reviewed, but casually reading the patch will
+not instill confidence.
