@@ -2,101 +2,95 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2702C19F2A
-	for <phone-devel@archiver.kernel.org>; Thu,  4 Aug 2022 16:21:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3890DC25B08
+	for <phone-devel@archiver.kernel.org>; Fri,  5 Aug 2022 13:57:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234880AbiHDQVi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 4 Aug 2022 12:21:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39638 "EHLO
+        id S238111AbiHEN5q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 5 Aug 2022 09:57:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230482AbiHDQVh (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 4 Aug 2022 12:21:37 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B53F66120;
-        Thu,  4 Aug 2022 09:21:35 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 6BFCA1C000D; Thu,  4 Aug 2022 18:21:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1659630093;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=kWEuEGyWD5cuZYPsK0JtmnKau5dObaXccnxnYn2McBc=;
-        b=SGsbS4acDy67iFtBrlo9VdHE2Zothsst7u8IpJjobkSnRzYB/xHfRkAY2RkGfOk63GnGb5
-        WchCTs4DNvdpnsxcRaM7w48BuJDV39s97MjMHK7bH8+/VmwXgzuzraso4iTbMbd2L2Tdi5
-        fXEQOqeFLChxY5RutWFG8SQDmCiQvQI=
-Date:   Thu, 4 Aug 2022 18:21:05 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     Joel Selvaraj <jo@jsfamily.in>, Andy Gross <agross@kernel.org>,
+        with ESMTP id S236440AbiHEN5n (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 5 Aug 2022 09:57:43 -0400
+Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E105C50184
+        for <phone-devel@vger.kernel.org>; Fri,  5 Aug 2022 06:57:41 -0700 (PDT)
+Received: from localhost.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 540B91F9E2;
+        Fri,  5 Aug 2022 15:57:38 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 0/5] Add support for Xiaomi Poco F1 EBBG variant
-Message-ID: <20220804162104.GA1189@bug>
-References: <MN2PR02MB702415D7BF12B7B7A41B2D38D9829@MN2PR02MB7024.namprd02.prod.outlook.com>
- <bb78f8fb-d6ea-5c37-0531-8d7584bc897b@somainline.org>
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: [PATCH v2 0/5] Add Qcom PM6125 PMIC, and use in Sony Xperia Seine PDX201
+Date:   Fri,  5 Aug 2022 15:57:24 +0200
+Message-Id: <20220805135729.1037079-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <bb78f8fb-d6ea-5c37-0531-8d7584bc897b@somainline.org>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi!
+This series adds initial support for the PM6125 PMIC, and its power key
+handling and thermal monitoring capabilities are configured for Sony's
+PDX201 (Xperia 10II).
 
-> > - Tianma variant with NOVATEK NT36672A panel + touchscreen manufactured
-> >   by Tianma
-> > - EBBG variant with Focaltech FT8719 panel + touchscreen manufactured
-> >   by EBBG
-> >=20
-> > The current sdm845-xiaomi-beryllium.dts represents tianma panel variant.
-> >=20
-> > To add support for the EBBG variant, let's split this into 3 files,
-> > - sdm845-xiaomi-beryllium-common.dtsi which contains all the common nod=
-es
-> > - sdm845-xiaomi-beryllium-tianma.dts for the tianma variant
-> > - sdm845-xiaomi-beryllium-ebbg.dts for the ebbg variant
-> >=20
-> > Note:
-> > -----
-> > Both the panels are already upstreamed and the split is based on them.
-> > There were patches earlier for both the touchscreens, but they are not
-> > accepted upstream yet. Once they are accepted, we will add them to
-> > respective variants.
-> Hi,
->=20
-> I believe this is not the correct approach. This may work short-term, but
-> you will have to prepare 2 separate images for the device and mistaking t=
-hem
-> may cause irreversible hw damage at worst, or lots of user complaining at=
- best.
-> Instead, I think it's about time we should look into implementing dynamic=
- panel
-> detection.
+One patch for pm660 is included to fix a node address mismatch with its
+reg field.
 
-It is certainly better than current state. Now user will need to decide what
-panel he has.
+Note that this series has been based on top of:
 
-> Qualcomm devices do this by parsing the command line [1], as LK/XBL
-> gives you a nice-ish string to work with that you can simply match
-> against a label. Other vendors may use custom mechanisms, such as
-> a resistor / GPIO to determine which panel (or generally hw config),
-> but implementing this mechanism would make upstreaming of lots of other
-> devices easier..
+  https://lore.kernel.org/linux-arm-msm/20220508100336.127176-1-marijn.suijten@somainline.org/T/#u
 
-I believe ideal solution would be bootloader passing the correct dtb to the
-kernel...
+To prevent conflicts with the moving around of sdc2 nodes, presuming
+that series is applied first.
 
-Best regards,								Pavel
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
+All dts patches are expected to go through the QCOM DTS tree, whereas
+the sole iio patch goes through the IIO tree.
+
+Changes since v1:
+- Dropped both pinctrl patches that have already been applied;
+- Add -us suffix to qcom,hw-settle-time properties on ADC TM5 nodes
+  (this suffix is not present on regular ADC5/VADC nodes);
+- Add -state suffix to pm6125_gpio pinctrl nodes;
+- Use PMIC_GPIO_FUNC_NORMAL instead of the string-literal "normal";
+- Removed #address-cells and #size-cells from empty pmic@1 node;
+- Removed ADC5_AMUX_THM3 / ADC5_GPIO2_100K_PU channels from the ADC5
+  patch, these are unused on my board and hence untested.
+
+v1: https://lore.kernel.org/phone-devel/20220511220613.1015472-1-marijn.suijten@somainline.org/T/#u
+
+Marijn Suijten (5):
+  arm64: dts: qcom: pm660: Use unique ADC5_VCOIN address in node name
+  iio: adc: qcom-spmi-adc5: Add missing VCOIN/GPIO[134] channels
+  arm64: dts: qcom: Add PM6125 PMIC
+  arm64: dts: qcom: sm6125-seine: Include PM6125 and configure PON
+  arm64: dts: qcom: sm6125-seine: Configure additional trinket
+    thermistors
+
+ arch/arm64/boot/dts/qcom/pm6125.dtsi          | 154 +++++++++++++++++
+ arch/arm64/boot/dts/qcom/pm660.dtsi           |   2 +-
+ .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 162 +++++++++++++++++-
+ drivers/iio/adc/qcom-spmi-adc5.c              |   8 +
+ 4 files changed, 324 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/qcom/pm6125.dtsi
+
+-- 
+2.37.1
+
