@@ -2,98 +2,130 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECDAAC25B06
-	for <phone-devel@archiver.kernel.org>; Sat,  6 Aug 2022 16:57:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F34BC19F2D
+	for <phone-devel@archiver.kernel.org>; Sat,  6 Aug 2022 21:02:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233367AbiHFQ5N (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 6 Aug 2022 12:57:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38720 "EHLO
+        id S232126AbiHFVCm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 6 Aug 2022 17:02:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233100AbiHFQ5M (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 6 Aug 2022 12:57:12 -0400
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB437DEDB;
-        Sat,  6 Aug 2022 09:57:11 -0700 (PDT)
-Received: by mail-qt1-x82d.google.com with SMTP id cr9so717490qtb.13;
-        Sat, 06 Aug 2022 09:57:11 -0700 (PDT)
+        with ESMTP id S229740AbiHFVCl (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 6 Aug 2022 17:02:41 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FB99E023;
+        Sat,  6 Aug 2022 14:02:40 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id z187so5054331pfb.12;
+        Sat, 06 Aug 2022 14:02:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=wj6684H6Kpz2ZtSUodC0U0fU86f1YKlziRI4r3cW+HI=;
-        b=BtpSlh2x5s/SOJglV0bbuGknHlFtC17/SdHTJmS3uZdZurl45R2Le81dNFTaKIU6Od
-         NXfBR45JX5zUQEBNwnkmNwVGrnem8k97ff2spSUq73FY6s+kv8gM/Ru8ze2xYNcDLMWt
-         NsPHERX877627zE1v4BgU9NYY4jNndt7MBzqQ3NF4LA5pe/aFNJhYrfB/2iSJN3dvZ2k
-         T3Xo23bCjCQu8n82clu06hLqSSDFmUayNmcBvRq7fAN2NcRPJulq530HBdfcA9SdaNbJ
-         Cy/0MQvzHjcYAQFuGtPP1miEIcsPS2jiffpfEm4jbpjIbITcbE9I9CO0LGfjyuVWFsBk
-         ls7w==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LRe7Qi9ZOxXvGGMfrErpYT9kxajfvdTVrAFtsbgdYtk=;
+        b=Ug8oeK4+D3PRIxzHwknKZrZEyz5wRGY0eZTjtvJ/IisX9fY+pJd4DjV6kbTOCPuvWA
+         JMGnhLq882lBbVBOSJCjAGvBF9fJ39NK6e4/8u/YoMGFVuLyTQTpZjVcFgSoqD9153bs
+         jfQRaUD1X9UyShSs0ZfIJLY/rNzIzI+2PD27si4QyvVAgqWwB2xLuhqZmQ0I7rarW4BH
+         +Q3GQoXgu9f+HOGn4GZDygTAvt1OpEkUoL05rXcvpwCJ3uh7nQ8T9mOnbcygc8Wugg10
+         wxJ7l9t4OjQDRp5y7gPEZDwL8McRD1ME7vTbMsVwoGwiq4513AnsBLg7EdmTjevfuWAO
+         fRaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=wj6684H6Kpz2ZtSUodC0U0fU86f1YKlziRI4r3cW+HI=;
-        b=VfX65Zu63iQ7E9F23P24qG523c+WtDDPbQnoW2SoGKpoBYaKJw4D2cOVPdj2cVYlt3
-         lXNCjPFoDAZv9gFbXjJUJqSiq7N24oKWdZVtzHqKcpa750/l3H4e6hWfJvnI497O7O3y
-         xkCA38F28LIth5eWNpp7Hr8T2Vc3PghzK8lCBMosCZ1REqb0U4HikcxsiqT2Tg9tsnXE
-         /uwqm2qsiYOCnqnkg94ANEmKiUF+ET44u8VtvWN/VhIm81zV3QE8uEszt7CY5QSZ5aHL
-         u2tNWIuJgDj4s5GBLTJh0V2SwS37FUkz3ExcMJa8ijRzIVzXYGDMMtpipJhzalQOArww
-         nj/g==
-X-Gm-Message-State: ACgBeo3Ao7pgaoosVqe4qHqZwc3WacBLDQIotTiXuvpMvfPzicp5ttfr
-        h3BmfI8bTPjlN84eaxu0JUhC4aHgcDqsziWR+v4=
-X-Google-Smtp-Source: AA6agR61xEI/w29pHlhpS9FZx9xdp0DX1Dk2bnjIJClh7I1yqul0PbHxwiEEgwD3NG9K2UtdJlDmFS2nsKEkKIZ0lIs=
-X-Received: by 2002:ac8:5784:0:b0:31f:24e:93f5 with SMTP id
- v4-20020ac85784000000b0031f024e93f5mr10304276qta.429.1659805030863; Sat, 06
- Aug 2022 09:57:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220806163255.10404-1-markuss.broks@gmail.com> <20220806163255.10404-2-markuss.broks@gmail.com>
-In-Reply-To: <20220806163255.10404-2-markuss.broks@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 6 Aug 2022 18:56:34 +0200
-Message-ID: <CAHp75VfizQY3kw3qk0des42uAwnYmv94aWQC+fVq_QQJGp-QYQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] drivers: serial: earlycon: Correct argument name
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LRe7Qi9ZOxXvGGMfrErpYT9kxajfvdTVrAFtsbgdYtk=;
+        b=UAemWPNYCKDUk4rTPtq9cxFhv7Wu+ixDiBfFzabTDrU8Q0wx2cBazTGyHNRaxPBK9n
+         JfUQbZHiPtqAnhrDiD36q5IZH3Fz9n2TvWQkuyniyU/EoHTdXIZZSo95/WzJIst20COI
+         haiN5Rv0U8eedLikDXki+oYX2+Rc47w0AO6q14IJtPUIS4LYVHB7Vjs5HGTD7Vv2Z864
+         tgyBewtYT4M+CR/GMW36cmP6YnC/8bvPYbTLCNV9uATVGpP35jdUBQjlRyGqxNUjzRKI
+         tR1l5X8RjlqJMDecfQlEHV/ZzWiZQOZIngKnKgUPxhnMThr6PezK/O0Msla3ibE7xrfZ
+         a5hQ==
+X-Gm-Message-State: ACgBeo1zWMF4GOVkLr9v9gdi8exbjAotImp0kgimhiVmO5XhurykgJrW
+        /mwVcTii3PCaxaVZQOymcFI=
+X-Google-Smtp-Source: AA6agR4fGRyXz4+DR81zHSriz0QzC5MLOtri7MUFXE3EfZsE9ma3I9nTzb/JzAQCSCesgTPOL1crAQ==
+X-Received: by 2002:a63:dd57:0:b0:41c:fd02:56d3 with SMTP id g23-20020a63dd57000000b0041cfd0256d3mr7787626pgj.427.1659819760145;
+        Sat, 06 Aug 2022 14:02:40 -0700 (PDT)
+Received: from fedora.. ([2405:201:e01d:6040:3f6e:eaa:537b:816f])
+        by smtp.gmail.com with ESMTPSA id c203-20020a624ed4000000b0052ea306a1e8sm4538815pfb.210.2022.08.06.14.02.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Aug 2022 14:02:39 -0700 (PDT)
+From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Kees Cook <keescook@chromium.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Michal Suchanek <msuchanek@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Wei Ming Chen <jj251510319013@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux Documentation List <linux-doc@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Joel Selvaraj <joelselvaraj.oss@gmail.com>
+Subject: [PATCH v3 0/2] Add support for Xiaomi Poco F1 EBBG variant
+Date:   Sun,  7 Aug 2022 02:32:18 +0530
+Message-Id: <20220806210220.31565-1-joelselvaraj.oss@gmail.com>
+X-Mailer: git-send-email 2.37.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Aug 6, 2022 at 6:37 PM Markuss Broks <markuss.broks@gmail.com> wrote:
->
-> The "node" argument is actually an offset, and it's also
-> an "int", and not "unsigned long". Correct the of_setup_earlycon
-> function.
+There are two variants of Xiaomi Poco F1.
+- Tianma variant with NOVATEK NT36672A panel + touchscreen manufactured
+  by Tianma
+- EBBG variant with Focaltech FT8719 panel + touchscreen manufactured
+  by EBBG
 
-Suggested-by: Greg KH?
+The current sdm845-xiaomi-beryllium.dts represents Tianma panel variant.
 
-> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+To add support for the EBBG variant, 
+
+In the PATCH 1/2, let's
+-----------------------
+- Rename sdm845-xiaomi-beryllium.dts to sdm845-xiaomi-beryllium-common.dtsi
+- Generalize the display panel node by assigning label, removing
+compatible property and renaming the panel endpoints to be generic.
+- Create a dts for the Tianma variant called
+sdm845-xiaomi-beryllium-tianma.dts which will inherit the common dtsi and
+set the compatible property for the respective display panel.
+- Adjust the Makefile since the sdm845-xiaomi-beryllium.dts is now called
+sdm845-xiaomi-beryllium-tianma.dts for the tianma variant.
+
+In the PATCH 2/2, let's
+-----------------------
+- Create sdm845-xiaomi-beryllium-ebbg.dts for the EBBG variant which will
+inherit the common dtsi and set the compatible property for the respective
+display panel.
+
+Changes in v3:
+--------------
+- Approach suggested by Marijn Suijten and Krzysztof Kozlowski to make
+git handle renames more appropriately and to avoid moving large chunks of
+code. Helps with reviewing the patch.
+ 
+Changes in v2:
+--------------
+- Fix issue with builds breaking across multiple commits making git bisect
+harder to find where the rename has happened.
+
+Note:
+-----
+Both the panels are already upstreamed and the split is based on them.
+There were patches earlier for both the touchscreens, but they are not
+accepted in upstream yet. Once they are accepted, we will add them to
+respective variants.
+
+Joel Selvaraj (2):
+  arm64: dts: qcom: split beryllium dts into common dtsi and tianma dts
+  arm64: dts: qcom: sdm845-xiaomi-beryllium-ebbg: introduce Xiaomi Poco
+    F1 EBBG variant
+
+ arch/arm64/boot/dts/qcom/Makefile                      |  3 ++-
+ ...ryllium.dts => sdm845-xiaomi-beryllium-common.dtsi} |  9 +++++----
+ .../boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts     | 10 ++++++++++
+ .../boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts   | 10 ++++++++++
+ 4 files changed, 27 insertions(+), 5 deletions(-)
+ rename arch/arm64/boot/dts/qcom/{sdm845-xiaomi-beryllium.dts => sdm845-xiaomi-beryllium-common.dtsi} (98%)
+ create mode 100644 arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.37.1
+
