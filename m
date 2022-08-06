@@ -2,111 +2,187 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44CCBC19F2D
-	for <phone-devel@archiver.kernel.org>; Sat,  6 Aug 2022 21:02:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53CC9C25B0E
+	for <phone-devel@archiver.kernel.org>; Sat,  6 Aug 2022 21:38:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233401AbiHFVCt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 6 Aug 2022 17:02:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45292 "EHLO
+        id S233248AbiHFViR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 6 Aug 2022 17:38:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232650AbiHFVCr (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 6 Aug 2022 17:02:47 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66BA311833;
-        Sat,  6 Aug 2022 14:02:47 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id y141so5078256pfb.7;
-        Sat, 06 Aug 2022 14:02:47 -0700 (PDT)
+        with ESMTP id S229740AbiHFViP (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 6 Aug 2022 17:38:15 -0400
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE53FB1CB;
+        Sat,  6 Aug 2022 14:38:13 -0700 (PDT)
+Received: by mail-qk1-x730.google.com with SMTP id o1so4166653qkg.9;
+        Sat, 06 Aug 2022 14:38:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=LnCYxidkbqPSIhSju2tTZKFe01JSQbzeOLwbX11AAGA=;
-        b=X4SjB28poocY80XBxfAS4UQBWvh89vlmp+kEbdLqdAy34xD/m9ryGH0elE2B5WsBml
-         FrmXfF6fR/rBexMEuo7zWEmANf4o6Ww9TkRuC9m8gsfA3iNd7olBmUWaIR4+rdO0g7GC
-         nkyMEg8u66d8Y5QW/8s/phgRzZDLTl72bV/HtpgI1y32PsSKGi7XJI6/vYSUJtjc7YUp
-         sbDUeKedHgmjiPXhr4sa0oVagt/Rvt7HfmESQNeq9S3zVS6teThicb8+zVAJWO0jRDbI
-         oci44NiGNZo1+IWJwx5Z2ks5FfOKVevJ0TahJRqUH2p/NjErWXe4IQ/SxN7+6RTYJzwm
-         f6DA==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=MfKNCdoirxc2xo2dJ2ZnrKHYVycXxfrXH8JNH8fm1Y8=;
+        b=YBzle4Bzk8bMM2eG1wG0QftAx91m2KHC2NzsZY+bkn3ddnh1U940M/jxSnYcV7UjIc
+         pKdr3JCm6dxKjr9Hb2YoyGGOlso4bztjd2UILk6zq6O2FGtlS2u6FlMhyadpHXVi+OQ4
+         VLFnXJt0xdQYzrfMfNi5GuvEG+2nm5LIWyd/WwVe/+vURptktX6hP5gZ+kqvBnq5GW/x
+         uOYMEySPd9JJ4EjR9eel8ie2TJuDeTQgonSosqk441GIXY39IMjaq9ezX4siGpJPGaNe
+         dumUqe4+XqL9xkAHhTVD7Bi6ZhQIocYnNbNY/wY9R8aWANkblzYAgHFibHzxlMWRpxl6
+         C9vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=LnCYxidkbqPSIhSju2tTZKFe01JSQbzeOLwbX11AAGA=;
-        b=MB3qMRjkf7biLzieJSGB2fg8TCvd1Mtvw35pVnfR28Z7oWai/D982+BtqQBKFhkycl
-         KRmQqFe5nchhqfz5iXcl6aDfmYrLmmXqm1fkUOZBNbroRQiExS7YrjV9/pHMRaY4ya/P
-         OpXzSpIXUwdquUR9ynI6citG6+pb/L5WOL0ZtT5o/Azf3myRGtNISFCnRrIK/kUmDbHn
-         qT3GJio8A4werC4TZT3kwpHe3GG5F7rVXLjTBU8pFX+NIviGMb48ujD6zr/B3ItkeaJc
-         hPLkytJtZ/TW8A1c0sTzKM5hG/qHDhMUu/+oZDHvpR2kJe055Xc/iI5APwo0BVXK9g2S
-         j8nw==
-X-Gm-Message-State: ACgBeo0CTs/vnGulmqcPnA+xBHAzS6G6O8H0lN/BgoDfjfa84yL7lWvY
-        HBES1a1V5wvWUvh8QvGecL5T1EgxwmFiEg==
-X-Google-Smtp-Source: AA6agR72Gz7vEJVNeKZ1E7yqvPrB0xhFZbxFctqWWpBUcJkuh50bKes31Khl2Vt0d/VyttYOzZOrqQ==
-X-Received: by 2002:a63:6a41:0:b0:41c:86b0:596b with SMTP id f62-20020a636a41000000b0041c86b0596bmr10045444pgc.582.1659819766925;
-        Sat, 06 Aug 2022 14:02:46 -0700 (PDT)
-Received: from fedora.. ([2405:201:e01d:6040:3f6e:eaa:537b:816f])
-        by smtp.gmail.com with ESMTPSA id c203-20020a624ed4000000b0052ea306a1e8sm4538815pfb.210.2022.08.06.14.02.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Aug 2022 14:02:46 -0700 (PDT)
-From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Joel Selvaraj <joelselvaraj.oss@gmail.com>
-Subject: [PATCH v3 2/2] arm64: dts: qcom: sdm845-xiaomi-beryllium-ebbg: introduce Xiaomi Poco F1 EBBG variant
-Date:   Sun,  7 Aug 2022 02:32:20 +0530
-Message-Id: <20220806210220.31565-3-joelselvaraj.oss@gmail.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220806210220.31565-1-joelselvaraj.oss@gmail.com>
-References: <20220806210220.31565-1-joelselvaraj.oss@gmail.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=MfKNCdoirxc2xo2dJ2ZnrKHYVycXxfrXH8JNH8fm1Y8=;
+        b=jhXM5SpUEo1eSYdwewxz8vqPPgQxhOtjLvk2RQ9XT9GeovHojp1n8IyQhoWaoDt351
+         NtFkS1z8g9qheIUKE14Z81XNPmrjf/+qQSIV4EMzYCoGYkiniaxgrSVXmggwBtGIzxWG
+         0ig8eQpBDnnFvtH/Mj/FUGC79hnEDLtp0XPC+iceRWD9Wd9L5uOzN6rXhtmfbBy0zcZ1
+         dIjmLThx4kmW0zhugu+YCSgfQEBxFTOlsUBOxlUVjktITgacOobFYRiFQ+IfNQjTnsvJ
+         ketooLWNvWJdU4KyJVMx2JbcC3DO7GnQzi/ios7D9k2wPtuBMJduQfF4itSX+fvQAt2k
+         2Xhg==
+X-Gm-Message-State: ACgBeo3rPao2uXUDYvenAs/rDHa+mMWQbEiQmDPj36DVQZAO7IEcw+QD
+        PX9Hg1x/2sUV7resEc7qTaNHSevmmAo3RY6VfL8=
+X-Google-Smtp-Source: AA6agR56Da74aJjiF+4nLUKRTvJqjbVZJG6Bbd44zgX3ASwhuBBjAStAwYDAMCCSp6ij5AOPtil/tLlaj2OWYcKKILA=
+X-Received: by 2002:a05:620a:8018:b0:6b6:5df:977 with SMTP id
+ ee24-20020a05620a801800b006b605df0977mr9477710qkb.320.1659821892589; Sat, 06
+ Aug 2022 14:38:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220806163255.10404-1-markuss.broks@gmail.com> <20220806163255.10404-4-markuss.broks@gmail.com>
+In-Reply-To: <20220806163255.10404-4-markuss.broks@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 6 Aug 2022 23:37:35 +0200
+Message-ID: <CAHp75VcMgFQJoFC68GCTej--44+iFWXEpjh2Q7O0XbHk588OCw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] efi: earlycon: Add support for generic
+ framebuffers and move to console subsystem
+To:     Markuss Broks <markuss.broks@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Kees Cook <keescook@chromium.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Michal Suchanek <msuchanek@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Wei Ming Chen <jj251510319013@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux Documentation List <linux-doc@vger.kernel.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Introduce support for the Xiaomi Poco F1 EBBG variant. The EBBG variant
-uses EBBG FT8719 panel manufactured by EBBG.
+On Sat, Aug 6, 2022 at 6:38 PM Markuss Broks <markuss.broks@gmail.com> wrote:
+>
+> Add early console support for generic linear framebuffer devices.
+> This driver supports probing from cmdline early parameters
+> or from the device-tree using information in simple-framebuffer node.
+> The EFI functionality should be retained in whole.
+> The driver was disabled on ARM because of a bug in early_ioremap
 
-Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
----
- arch/arm64/boot/dts/qcom/Makefile                      |  1 +
- .../boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts     | 10 ++++++++++
- 2 files changed, 11 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
+We refer to functions like func().
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index 02db413b228c..29f15031a199 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -106,6 +106,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-oneplus-fajita.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-akari.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-akatsuki.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-apollo.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium-ebbg.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium-tianma.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-shift-axolotl.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-lenovo-yoga-c630.dtb
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
-new file mode 100644
-index 000000000000..1e0be481b9da
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
-@@ -0,0 +1,10 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/dts-v1/;
-+
-+#include "sdm845-xiaomi-beryllium-common.dtsi"
-+
-+&display_panel {
-+	compatible = "ebbg,ft8719";
-+	status = "okay";
-+};
+> implementation on ARM and on IA64 because of lack of early_memremap_prot.
+
+Ditto.
+
+...
+
+> +#include <asm/early_ioremap.h>
+
+Can it be placed after linux/* ones?
+
+> +#include <linux/console.h>
+> +#include <linux/efi.h>
+> +#include <linux/font.h>
+> +#include <linux/io.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mm.h>
+> +#include <linux/of.h>
+> +#include <linux/of_fdt.h>
+> +#include <linux/serial_core.h>
+> +#include <linux/screen_info.h>
+
+...
+
+> +static int __init simplefb_earlycon_remap_fb(void)
+> +{
+> +       unsigned long mapping;
+
++ Blank line.
+
+> +       /* bail if there is no bootconsole or it has been disabled already */
+> +       if (!earlycon_console || !(earlycon_console->flags & CON_ENABLED))
+> +               return 0;
+> +
+> +       if (region_intersects(info.phys_base, info.size,
+> +                             IORESOURCE_SYSTEM_RAM, IORES_DESC_NONE) == REGION_INTERSECTS)
+> +               mapping = MEMREMAP_WB;
+> +       else
+> +               mapping = MEMREMAP_WC;
+
+> +       info.virt_base = memremap(info.phys_base, info.size, mapping);
+> +
+> +       return info.virt_base ? 0 : -ENOMEM;
+
+Easier to read the standard pattern:
+
+  if (!info.virt_base)
+    return -ENOMEM;
+
+  return 0;
+
+> +}
+
+...
+
+> +static void simplefb_earlycon_write_char(u8 *dst, unsigned char c, unsigned int h)
+> +{
+> +       const u8 *src;
+> +       int m, n, bytes;
+> +       u8 x;
+> +
+> +       bytes = BITS_TO_BYTES(font->width);
+> +       src = font->data + c * font->height * bytes + h * bytes;
+> +
+> +       for (m = 0; m < font->width; m++) {
+> +               n = m % 8;
+> +               x = *(src + m / 8);
+
+I would write it as
+
+  x = src[m / 8];
+
+> +               if ((x >> (7 - n)) & 1)
+
+> +                       memset(dst, 0xff, (info.depth / 8));
+
+Too many parentheses.
+
+> +               else
+> +                       memset(dst, 0, (info.depth / 8));
+
+Ditto.
+
+> +               dst += (info.depth / 8);
+
+Ditto.
+
+> +       }
+> +}
+
 -- 
-2.37.1
-
+With Best Regards,
+Andy Shevchenko
