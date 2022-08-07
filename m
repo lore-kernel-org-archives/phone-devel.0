@@ -2,56 +2,56 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8A99C25B0C
-	for <phone-devel@archiver.kernel.org>; Sun,  7 Aug 2022 23:07:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E198C25B0D
+	for <phone-devel@archiver.kernel.org>; Sun,  7 Aug 2022 23:07:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234303AbiHGXHi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 7 Aug 2022 19:07:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58564 "EHLO
+        id S233481AbiHGXHk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 7 Aug 2022 19:07:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232816AbiHGXHh (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 Aug 2022 19:07:37 -0400
-Received: from sonic308-19.consmr.mail.ir2.yahoo.com (sonic308-19.consmr.mail.ir2.yahoo.com [77.238.178.147])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A89B338BF
-        for <phone-devel@vger.kernel.org>; Sun,  7 Aug 2022 16:07:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1659913654; bh=rYmtJgOdAlGhRoNXlxz5JKGNwmCEyFeKqqyMbfjetF8=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=WyNrx+YEhjS7nCiOqsJz8PghheM/im8DnEo5okghCbIHkNUkaE8tpwmJexhGpea/PH7mgCjkInKBlVtyxg/KWVdkj1rIUxqLGkZvoXEE1chp+Q7mO6Jhit/9PWnuhcDqYSnCPxWSZk3j9Sjw4yLSEw84ADy1NFEF2BeRXXdje0iRDmrLT6dn/dcqkAkKTBumL5s4uYWt4wpw/5XqLzuWe8ah651bKUKm0gYy1BJuhP76/xmq6yqdGrxcdHfcgA6aOEDR7WrYBGibtkgeHTSerKNSD5jcUI9WMSUUvvuBQ7Gjfn/Qe5iQbP/uLiTsibzSPOpS6ZkL/Yk1Z2pT6LxdAQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1659913654; bh=cmhFbtHd7Gg3jvxxchS98fapl8vzO8fdx23cIVdOUPo=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=tKRJxzK7zI+AkoPJxvnf3utd1Lt4sUNeZSG7uMmnkldeGReIv3meTMvzmX4JXB2T+OqTTy/sJ2gajOcwBz95ljawW1nCPEsiVqPKqkqe8/JiWqFDqgaLkY5I09G/LJERyMtjBPU+0v3W9HrOZRf7SRE8HvLsYIldRUfuN8HG/QK9WP7TXNNkQuFgHb8BpllP7+mtEqxVH4Vt9Hv3th73FUvQcL3NDziSpZHq4SStr4IPmnDWjv919PWKfqjD4KZgR/gzBdImldQJ3OJLCr5XkTQJX6j1e2/PapIA35mW/mza3oF3vzRFRpwC8VO+/i7Zdx5pD2YKwdvfIdJZ/EYcZQ==
-X-YMail-OSG: WJJq5voVM1m4L.qvUjCyh6PbSmdsPwdtyskiiZiOYSidYTTI4skRGSYDL4igkeh
- 2oKBLztbdMRLFRbnnuQFl.7wWTBT5HExyNL8XXjPPr_7ldpUtriN3eiPm2mkJjjnQRH3gqonx8P7
- asHtkxpzBqZoZ6oDwVIhtP29gOf79O6gVbVMrV5kMk4KEh4N2m06KVa5Slh1AM5PMiUC2oDn6wAa
- FYL6KZob.YgaS9PUG.3_CZFheHFju8gS8Bv1yYLlCpDejU2vvCmg9xdq8GECaT6KD_9ZN9DjxIF1
- rrxkTZehY.mLcvxArehuVySdwMevIzfsHYF5LzoG88yp8FApVH.s2Vv_a5XbT4uKSJ4er.cgetM_
- nsPvWhQUo_EN1mmKGwN6knNwOjiM_lG22WwHqoRq5A0P2x18PBFGvrpdfnDsp3MixsE9CQdwMLQr
- XRvCVC9azSTLCLI_lAn2PkcSdIKCcXfSqH9hXxVMEDow6.mun09sYiACzBFPEunEk1IBYv2JXJ30
- uM0f3LPHAZsCahZcJZga9TJSw85x5ap74SFkW1O20p9X0WTObne0yM6rGLhdD7ZvagGZE4mi5Trp
- gAPadoEQvpP3S4GeEysgUcvII6tvTQs4yoIwLQbryMy4sqBMNtDMOoZMdDKxN4ahac7w1O41B5yk
- 6i9dYvitgX41icB9WHJjbwBG.XSx9vcmF9IiGny4cZsLpOpEVfpMB.2OEmNegtrL1h.wBUA3DhVW
- rDD.yA2zXHAUN5X2ZlRw2Nc0VnSK6US2ft.QzSWf3x276dtaWyPTwv4cmCp4gsol5tx2OIYi314Q
- XylBu0VLrfj9up7kOvMTH5hsodiFrX6TzV4xb0HZllRFI7qdWNcvNPOxa9hOp.d1aAStmeypt11m
- xmfm_JuSAvkuoJzGIGLaUaeP8wbISMmAxv2I4NLkiITyqw7QUPIPMwOo0kuwtgC86ymFwdblKqL8
- zKy69wRTXI8OVDn3i6SuSBTBlYkVP3qJVuttVTSd4rcG5be279T5WAqOcumjb4dvW_VKI8hlaotz
- tt7ufc.4kQIFed129arIhQYVntbJ.6IXYsaZro8Hn8_f4qo4FbmkgsEQ6bxQQfkS_FQTqgyUhXxK
- VRStsbw1wi_JMLOvoGw5gjy3_AlGwcSgxwj0hTAw0xzoekdD4QiCEekpLY8u88qo.jAeyiHupTg4
- ySE_GwTaiYSE9HY3ObMMICC_20REAjIwzyXVWHuphe3UmXSZI_jpVEBIT6dJ.dvtdPGnWjtQPjLk
- sD3KeWybdmOPpILgyy4wlRwsTlcP8_KpD7Fw30ri8g8qwUqFW3ACBESKgZYQ0C5GT4HV_iAHVG2F
- aseY2IN8CtcAHMaYTAKPvhqwoSvcoiY8VKOe4vnumnbYYTTcT6ZNQa5R4awZKN_FY8.4KB1PNBpC
- .rYmqMiZvqhuVqF__lZH.NcFt_a2GwqgXFeM09WLeRpLQZizQIysBGJxW3u6JvFOMEtUHVTh5C2h
- n.V2xp0XI2BqatbM2RraJHYezguZXGcXMremqE0rhYK9lxzqAumXFEUJ11P1VIa8mwfslIrHa7Wm
- DqkMn_PpSGW84Hm3rAlOYaN3c7_AY3qMiwQdGVJ733bLK32lK8rsaPQRuVDfjRxDyfwzVuhM9Unm
- HLsQFsXj1vlOi20r7mlwNefFIxKGagnFZuD.eri6F8TXtsXpSdtwT3VtJUEvIZ8tqXuieoTsNGtq
- Z9FyRjNvpXdkARC13bKphZaT2OByLQWOIu3VOM5wwNBwDSSm2x6zdfUikZR5B5SbyfQ_vKwa.gzf
- _MlKZKIhOGyO8T0VoUQ.O_iCZmOEvzojglXlEMaYZet2WgeGgEocm2zjVFlbo09FqF_FdXpi3hle
- A.DXmpZn55Z5K3dgtFG97tM3cwqnf0bPFE0X1ah8SAF0hqziiCCP5I0byrgrDvoVheRlU8lMuc.w
- ebgIKtseXH3jF6ifDUwvVHvJQzzLJTvlnI4HZ0GMtBfNYF6Cs3Q8.otusl_Xy0FUW2Sjy.niNTuo
- Bfr4KyTWBV8JFrUWMVJ0LbEDANlyfY86npVoP5VPWeANZZ.DUCbT6lm4EKjkMp3NEaeCiS1YSKTt
- vpgjUbfmf9.AqUy9.RiK6MCbA4gAYomucfTxrz2J_Jrk_HNxf2POiDEPVRKRIWstx3aKTHu7_ITN
- e9cVCIJ_5RXC2P5wHvtO6Tm3GGoBADrTwMM30R_Y1PRPkxQEwql9cZW_UhNLvWELusb97L5I28U_
- 7U0DwwPnNoBN4XNZ2I6nswZbqdOWu9faN8e1qvaf1m8spV_YNPqdVG79OevOX7nVJL9jimEM.iT6
- fviOYUzo89rxhpb4-
+        with ESMTP id S233794AbiHGXHi (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 Aug 2022 19:07:38 -0400
+Received: from sonic311-32.consmr.mail.ir2.yahoo.com (sonic311-32.consmr.mail.ir2.yahoo.com [77.238.176.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7F003891
+        for <phone-devel@vger.kernel.org>; Sun,  7 Aug 2022 16:07:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1659913655; bh=Opg3ThBOVGGnk1ZxUbIiwtDZRXpPBEgLU8xaQT4yBRQ=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=Mc6LjdlL6W2ZHQa3v560uX66WFIlInXmVnIuJ5hdl5okmDwWf7cru+zbCgqpxKCm7XsIFJpap3l16ZbQ3l+rZ/uzmB1ues3JbAY0JB0RBPHQxDcKGtuujZmsnolEsWcklPuoq3CiyKPQOF3xYjHK+XbWdXlbrT525J9AcUnr5Rj/m/c2yaGO4qOIscaLWuYz82o3Zv4epsiWN4sMx8H+JrxptweNh4tUt7nbVeprEjxK98HHoJ9yBRuI/dtOR8WNjc18t/deUyg0pS/RcucvYsVxGBmP9QvpDHPsCErG0aVU90349eb1158oOyBiziOaYUbo/DByuiBrgLhcpYRvnQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1659913655; bh=7UQfk7K66c7nWn29A8/87YBxGS+pHxn5N3JiGADxCn/=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=cOIEanBbSnEGFpXUWLcdJXzbFBCJpR7OTvkNA2aLzmQDGDd3dpA7wWoAyS6fpw1otZa6Oe5Tw2c2eYe5vkDR68p+sXViYt3hKRBnVG6wrHTQMqHNWOeBIoou3iXnu2RyNhSzxXh4OoJ4en46lJ0O2TwWcwpJi/oUJHjQSXbb2RGcdbj2OUywpQjMHyeZeT7S/Ighm6JS6thHX/2+f0qXHFpSpZm6HPClnnkIZNe2L7G3b8FpxnJLq33eWMhN1Fnquc6AR8CY4ds922XgXaGQ3r32xMbc/D3u+tocEriw3rWQNFGNUPFEokwWUy8AWpyTRAENSoU/TN5xMlUxC2dqiw==
+X-YMail-OSG: _WgWblwVM1lCN3d6.VcuxuMj12khNGRR74WoOpXy8Ur5jtW56KUS1LUwBHkWjD6
+ alLKCAu8axM2_vztsj3xIiVjLRNV7jGBJf0vCBR4X5JXsC3NU1hIYxOE0d_11bbg9p7VPFgReGrB
+ wJeIcUvNyoZPqblsLx4SydhCXk_m.MUSszm52SoyRCzBITw3JvHlceHqUBfM2RYx5nN85Y_vzk7T
+ FE8xn.1lg8EtFa8UwsmodEPA1wD.M7sSbo3HGrTGF9Cq9x41gt_n4Rq7ZGe57UXfXYLkKDVakw6l
+ ImY8tbxjU396TyuFmW4xdiEswad1xstTJ89pIODfRCUQ005f9iLVH3tYgfs2Q0XsQpCpnKCk5hy6
+ Q62D51XRE8xKihQs6uqp7yhly5iGvY5BxgQQYWLAFidRtWBtKHNJKbv5kXyY9JZ71N4kqTA4wemX
+ FJCaKw4fd6AjS6YWI4MF2AWgBs432fT.xGT38cgOgrRAGubn6zPh6T4GnAUMho5BB.FeKvcbNUP6
+ QAg0OpVjO9f4PSesQwq1_ugBObhmzfbJK9VVrmqkWcRfdt4jWMn1aHDtDvnoLdqXwS107DoT9nvn
+ 9PWTR2HxB.zdtOAmAh8gC_2IKpuGgprBGgriOikoMTZD749OUfuMkOlzjL3LA5aP_jGpzS5UImag
+ 8ldGsuvGaqglEFsqZsurKRf1wBJHSY1LVyQ9v5AdQYK9IQZYUjaU6mwkSKF5rqUQuE05J_niHni9
+ Xm3Cw8sSllC9_vV0pYPfHjdH_MlNQnWvkSQ0gZuH9SUGEi9m0mSBn8NZiu7_4fjZFqscGcwLeSZ0
+ x_0r2jpBtJEBI8ak2qL37cp1FYKrdr9qsvcZ7F4FFInOzlXAo.a.LxB5qWbUbCndMbuzzY9byFbR
+ 2sCfLqgLAE3aU1YfFqC5YuwkZggtc9WRkKHL0_TZ0Hub0AMLjAX5Shvd4S6nEtcY6FvksT2PY86w
+ zcvhJ7Nbo1_.agisW_BRfIfra9dp_zsFHIwVFg.BXXpR9FsYQB7YgMCmRnuCDYb324J0ua_xozjV
+ z4znhWic1er.O1i4bzQGDw11lxpQgrAIk3IJb6ryN8qXaZq4G..bI28LZc6QOJ4fqdU2lQ90Tybo
+ qAlDwK3DlUAGE4DPyi5leYFvdYbIrxpF6ZqQ78R.CdgJX7LYxHl4qudS7Dg9n7RauzHb9YuWINzm
+ zQkuEcBV6Ge8ivZfovITiLzLD4k1NaZH2qrzi4E9jGfoiBUXVE0.1M8a1Qm4wzA1LPUW_QGHAkft
+ 3Cou6ami2g2o19czbe5RJ9OL09QTuJCxLIWLpuuXOdpTS8vdWgwGQR4dhkDoavY5_gCSIFZgfa0p
+ g2ev_oio3ALAu0Mj64WNJdTcaeV8sFAgJxPcH5NIQyPxhnUIJCgfsqGsSQCHdDa.H.eHVpB0_Pf4
+ HrVaiBMu8C8wbrNSzn4S_2o6OtmKhrl0nAgf5TdB2nkQKx24IoOUULdmuPXXmeJZXUpcsC3nGMgJ
+ KUKhpcLq9uY0jNNpQpZyV1qrx37bXj8YKvro5gKX16srmIUMInICwOwxB6r_ExBwwf6Frl0MPlQT
+ PRmc_zbn5YaV.OMYq2rCahquzF9hQPLopseBCXIn1Ad8fuYIMyRbFQ4e5ZNJcYAEREL3S48tKm0i
+ fJIUF5xX0M8VI32sXK95sdk9QbuwHHqR2eLOssLEr8VfkQ76T9sYot6keUpn.WxaGGkPGGsQOCRX
+ zl57fmlJZHaIn.3o2GEv4PBJNb1zhXO.ujVvr9Fv8lidAV3RJ77rgbBn7PQIoEJR5.LY44vzowC8
+ HFmLdAAAD06l1DzC82RozPaVw4PV28N0oBZsQGNBzTR2L9H0B8cxR47T99bITz2QCgUhtf4h9dzr
+ lDWyHrwpY2sbqGiHSpZ2zgGXQPtyhXFGRGSdklrP8KqVwH6AOkdDCKrlDkxh4EPst3wxlvZ4WH1U
+ Bn8rOk4UjosXAKteeLaFGkUEdJn3caGmjcxVYVntAdcPDRlu_O5PznUxY2VG29A3sAE96tEvA2Ge
+ XiXHfpAASj2khunTZKhnvkyuu1iCVDfF5MXU0VJe9VgpbFVuu8FxslBOZwizxzyet9umO.LyrV4J
+ HKg.uScfKGLHqOVOGc9qLM3ji9NXBcTB8xDOy0yahCDKpRhq7Tlh6zEvvRgBwUYYG20T6oJ70u20
+ STUBZORaXKjAzgE2Ma7jsMSLilGJlUrq6YZ5FvZUARJNxm38WVpdwcB5MRqsP24_IgczpNqjl3ta
+ t3svcYsXvUe4uE4nQ29tveZqc0tp8Fm_As8Ti8Sqdc6Ibve9CO9da2J5IV9L6_0VaLKYscw_ytS0
+ NDix2hH2vxbmGrJo-
 X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ir2.yahoo.com with HTTP; Sun, 7 Aug 2022 23:07:34 +0000
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ir2.yahoo.com with HTTP; Sun, 7 Aug 2022 23:07:35 +0000
 Received: by hermes--canary-production-ir2-f74ffc99c-2vqg6 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID dc92a55cf24372a35650a28a19dee6ae;
-          Sun, 07 Aug 2022 23:07:28 +0000 (UTC)
+          Sun, 07 Aug 2022 23:07:33 +0000 (UTC)
 From:   Jakob Hauser <jahau@rocketmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -61,112 +61,110 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Jakob Hauser <jahau@rocketmail.com>
-Subject: [PATCH v5 08/14] iio: magnetometer: yas530: Apply documentation and style fixes
-Date:   Mon,  8 Aug 2022 01:06:47 +0200
-Message-Id: <5a00a21e9414ad00117b67064eb585f589abfee1.1659909060.git.jahau@rocketmail.com>
+Subject: [PATCH v5 10/14] iio: magnetometer: yas530: Add volatile registers to "chip_info"
+Date:   Mon,  8 Aug 2022 01:06:49 +0200
+Message-Id: <aa1936a9e3687cb9d112232b87db8a9f9e1a7ffa.1659909060.git.jahau@rocketmail.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <cover.1659909060.git.jahau@rocketmail.com>
 References: <cover.1659909060.git.jahau@rocketmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This commit gathers several minor changes.
-
-In the device examples, "Xiaomi" is too generic, specific devices should be
-listed here. E.g. Xiaomi Redmi 2 seems to have YAS537 but it's not fully clear
-if this applies to all its variants. Samsung Galaxy S7 is often quoted in
-conjunction with YAS537.
-
-Removed defines for device IDs of YAS537 and YAS539, they are not needed so far.
+Add volatile registers to the "chip_info" structure to ease the handling of
+different YAS variants.
 
 Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/iio/magnetometer/yamaha-yas530.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/iio/magnetometer/yamaha-yas530.c | 37 ++++++++++++++++++++++--
+ 1 file changed, 34 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-index 48995176fa39..bf0aa64ac1a2 100644
+index ecc2b61a5c4f..914f7f0a243e 100644
 --- a/drivers/iio/magnetometer/yamaha-yas530.c
 +++ b/drivers/iio/magnetometer/yamaha-yas530.c
-@@ -10,7 +10,7 @@
-  * (YAS534 is a magnetic switch, not handled)
-  * YAS535 MS-6C
-  * YAS536 MS-3W
-- * YAS537 MS-3T (2015 Samsung Galaxy S6, Note 5, Xiaomi)
-+ * YAS537 MS-3T (2015 Samsung Galaxy S6, Note 5, Galaxy S7)
-  * YAS539 MS-3S (2018 Samsung Galaxy A7 SM-A750FN)
-  *
-  * Code functions found in the MPU3050 YAS530 and YAS532 drivers
-@@ -93,10 +93,6 @@
- #define YAS532_DATA_OVERFLOW		(BIT(YAS532_DATA_BITS) - 1)
- #define YAS532_20DEGREES		390 /* Counts starting at -50 °C */
+@@ -114,6 +114,11 @@ static const char * const yas5xx_version_names[][2] = {
+ 	[yas533] = { "AB", "AC" },
+ };
  
--/* These variant IDs are known from code dumps */
--#define YAS537_DEVICE_ID		0x07 /* YAS537 (MS-3T) */
--#define YAS539_DEVICE_ID		0x08 /* YAS539 (MS-3S) */
--
- /* Turn off device regulators etc after 5 seconds of inactivity */
- #define YAS5XX_AUTOSUSPEND_DELAY_MS	5000
++static const int yas530_volatile_reg[] = {
++	YAS530_ACTUATE_INIT_COIL,
++	YAS530_MEASURE,
++};
++
+ struct yas5xx_calibration {
+ 	/* Linearization calibration x, y1, y2 */
+ 	s32 r[3];
+@@ -135,11 +140,15 @@ struct yas5xx;
+  * @devid: device ID number
+  * @product_name: product name of the YAS variant
+  * @version_name: version letter or naming
++ * @volatile_reg: device-specific volatile registers
++ * @volatile_reg_qty: quantity of device-specific volatile registers
+  */
+ struct yas5xx_chip_info {
+ 	unsigned int devid;
+ 	const char *product_name;
+ 	const char * const *version_name;
++	const int *volatile_reg;
++	int volatile_reg_qty;
+ };
  
-@@ -325,7 +321,7 @@ static int yas530_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo,
+ /**
+@@ -626,9 +635,25 @@ static const struct iio_info yas5xx_info = {
+ 
+ static bool yas5xx_volatile_reg(struct device *dev, unsigned int reg)
  {
- 	struct yas5xx_calibration *c = &yas5xx->calibration;
- 	u16 t_ref, t, x, y1, y2;
--	/* These are "signed x, signed y1 etc */
-+	/* These are signed x, signed y1 etc */
- 	s32 sx, sy1, sy2, sy, sz;
- 	int ret;
- 
-@@ -666,7 +662,10 @@ static int yas530_get_calibration_data(struct yas5xx *yas5xx)
- 		return ret;
- 	dev_dbg(yas5xx->dev, "calibration data: %16ph\n", data);
- 
-+	/* Contribute calibration data to the input pool for kernel entropy */
- 	add_device_randomness(data, sizeof(data));
+-	return reg == YAS530_ACTUATE_INIT_COIL ||
+-		reg == YAS530_MEASURE ||
+-		(reg >= YAS5XX_MEASURE_DATA && reg < YAS5XX_MEASURE_DATA + 8);
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct yas5xx *yas5xx = iio_priv(indio_dev);
++	int reg_qty;
++	int i;
 +
-+	/* Extract version */
- 	yas5xx->version = data[15] & GENMASK(1, 0);
- 
- 	/* Extract the calibration from the bitfield */
-@@ -693,6 +692,7 @@ static int yas530_get_calibration_data(struct yas5xx *yas5xx)
- 	c->r[0] = sign_extend32(FIELD_GET(GENMASK(28, 23), val), 5);
- 	c->r[1] = sign_extend32(FIELD_GET(GENMASK(20, 15), val), 5);
- 	c->r[2] = sign_extend32(FIELD_GET(GENMASK(12, 7), val), 5);
++	if (reg >= YAS5XX_MEASURE_DATA && reg < YAS5XX_MEASURE_DATA + 8)
++		return true;
 +
- 	return 0;
++	/*
++	 * YAS versions share different registers on the same address,
++	 * need to differentiate.
++	 */
++	reg_qty = yas5xx->chip_info->volatile_reg_qty;
++	for (i = 0; i < reg_qty; i++) {
++		if (reg == yas5xx->chip_info->volatile_reg[i])
++			return true;
++	}
++
++	return false;
  }
  
-@@ -714,12 +714,12 @@ static int yas532_get_calibration_data(struct yas5xx *yas5xx)
- 	dev_dbg(yas5xx->dev, "calibration data: %14ph\n", data);
+ /* TODO: enable regmap cache, using mark dirty and sync at runtime resume */
+@@ -932,16 +957,22 @@ static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
+ 		.devid = YAS530_DEVICE_ID,
+ 		.product_name = yas5xx_product_name[yas530],
+ 		.version_name = yas5xx_version_names[yas530],
++		.volatile_reg = yas530_volatile_reg,
++		.volatile_reg_qty = ARRAY_SIZE(yas530_volatile_reg),
+ 	},
+ 	[yas532] = {
+ 		.devid = YAS532_DEVICE_ID,
+ 		.product_name = yas5xx_product_name[yas532],
+ 		.version_name = yas5xx_version_names[yas532],
++		.volatile_reg = yas530_volatile_reg,
++		.volatile_reg_qty = ARRAY_SIZE(yas530_volatile_reg),
+ 	},
+ 	[yas533] = {
+ 		.devid = YAS532_DEVICE_ID,
+ 		.product_name = yas5xx_product_name[yas533],
+ 		.version_name = yas5xx_version_names[yas533],
++		.volatile_reg = yas530_volatile_reg,
++		.volatile_reg_qty = ARRAY_SIZE(yas530_volatile_reg),
+ 	},
+ };
  
- 	/* Sanity check, is this all zeroes? */
--	if (memchr_inv(data, 0x00, 13) == NULL) {
--		if (!(data[13] & BIT(7)))
--			dev_warn(yas5xx->dev, "calibration is blank!\n");
--	}
-+	if (!memchr_inv(data, 0x00, 13) && !(data[13] & BIT(7)))
-+		dev_warn(yas5xx->dev, "calibration is blank!\n");
- 
-+	/* Contribute calibration data to the input pool for kernel entropy */
- 	add_device_randomness(data, sizeof(data));
-+
- 	/* Only one bit of version info reserved here as far as we know */
- 	yas5xx->version = data[13] & BIT(0);
- 
-@@ -728,6 +728,7 @@ static int yas532_get_calibration_data(struct yas5xx *yas5xx)
- 	c->Cy1 = data[1] * 10 - 1280;
- 	c->Cy2 = data[2] * 10 - 1280;
- 	yas530_extract_calibration(&data[3], c);
-+
- 	/*
- 	 * Extract linearization:
- 	 * Linearization layout in the 32 bits at byte 10:
 -- 
 2.35.1
 
