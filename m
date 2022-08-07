@@ -2,137 +2,121 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90878C25B0D
-	for <phone-devel@archiver.kernel.org>; Sun,  7 Aug 2022 13:17:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83683C19F2A
+	for <phone-devel@archiver.kernel.org>; Sun,  7 Aug 2022 16:01:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234306AbiHGNRq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 7 Aug 2022 09:17:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40846 "EHLO
+        id S234383AbiHGQBy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 7 Aug 2022 12:01:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234304AbiHGNRn (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 Aug 2022 09:17:43 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60BFE6577;
-        Sun,  7 Aug 2022 06:17:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1659878260; x=1691414260;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cBxHBx3Qi0IAdNsBY4fZkCLfNUBPQ+PwsaBkaNTmSX8=;
-  b=AceiR5CYq4EkSuYjUoLDreqEJUOzbCi3778Q+yIUZqiCKrnHlHISFcU2
-   46vtPsoHp/XK79pBBv5sKbCvWv0KcZgiYf3Mn96mhsX1ZzLn45SZaj4PE
-   h8sJUG+6bUemwDVXIRJthiMEJ9bQybuRCC4lphSGVKRTBqJv3C59WZOW6
-   wxIBkh2uuapZgOOratztTNpnZjd1MXsQecGjuqkg5UtEfiOKF9Uz6LfR5
-   SCnHppwZ/O3XWULaUO6oWCLNyzt0A1fRa/qzZrbDO45KzcGvoOxAxICEy
-   jnSHjmpOxvBW6Imd4Pd+w6kxjijvGiS0jOTEYX8OFPkx6hUgqNau8wH7S
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10432"; a="354436929"
-X-IronPort-AV: E=Sophos;i="5.93,220,1654585200"; 
-   d="scan'208";a="354436929"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2022 06:17:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,220,1654585200"; 
-   d="scan'208";a="707129955"
-Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 07 Aug 2022 06:17:33 -0700
-Received: from kbuild by e0eace57cfef with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oKg9s-000LJq-2a;
-        Sun, 07 Aug 2022 13:17:32 +0000
-Date:   Sun, 7 Aug 2022 21:16:40 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Markuss Broks <markuss.broks@gmail.com>,
-        linux-kernel@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Kees Cook <keescook@chromium.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Michal Suchanek <msuchanek@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Wei Ming Chen <jj251510319013@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>, linux-doc@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v2 3/3] efi: earlycon: Add support for generic
- framebuffers and move to console subsystem
-Message-ID: <202208072145.yWoGkrW1-lkp@intel.com>
-References: <20220806163255.10404-4-markuss.broks@gmail.com>
+        with ESMTP id S234475AbiHGQBw (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 Aug 2022 12:01:52 -0400
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 122B6A187
+        for <phone-devel@vger.kernel.org>; Sun,  7 Aug 2022 09:01:48 -0700 (PDT)
+Date:   Sun, 07 Aug 2022 16:01:31 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1659888099; x=1660147299;
+        bh=E97y01Qgk0NfD6wZHnPXassl6h4rNnG16nJI4wW+NRo=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
+         Feedback-ID:Message-ID;
+        b=ZkIc6m0+x/UKjButZsnHohuBXNA9X/KmRuQoAyH7XPiip7z6QsUyvnULofhrYrnY5
+         5KlIhBRSYjt+7e9ZLYfTe7o95BbEMyrYTQ+Bq9KOpLsYlGvRARy24Ow+X/SVko6VD4
+         ZElgqpItqi1lpV5tKX+WfKl32CdVlWvsG8CHJwxg=
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+        phone-devel@vger.kernel.org
+Reply-To: Caleb Connolly <caleb@connolly.tech>
+Subject: Re: [PATCH 1/3] input: add event codes for user programmable switch events
+Message-ID: <4067646c-36d2-7c05-1bdd-955f8fc69924@connolly.tech>
+In-Reply-To: <Yr4timTL6mBlik0m@builder.lan>
+References: <20220516142158.1612109-1-caleb@connolly.tech> <Yr4timTL6mBlik0m@builder.lan>
+Feedback-ID: 10753939:user:proton
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220806163255.10404-4-markuss.broks@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Markuss,
-
-I love your patch! Yet something to improve:
-
-[auto build test ERROR on tty/tty-testing]
-[also build test ERROR on efi/next staging/staging-testing usb/usb-testing linus/master v5.19 next-20220805]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Markuss-Broks/Add-generic-framebuffer-support-to-EFI-earlycon-driver/20220807-003646
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20220807/202208072145.yWoGkrW1-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/97dfc2aa69b065de769a191352afe2099c52fedb
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Markuss-Broks/Add-generic-framebuffer-support-to-EFI-earlycon-driver/20220807-003646
-        git checkout 97dfc2aa69b065de769a191352afe2099c52fedb
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
->> drivers/video/console/earlycon.c:7:10: fatal error: asm/early_ioremap.h: No such file or directory
-       7 | #include <asm/early_ioremap.h>
-         |          ^~~~~~~~~~~~~~~~~~~~~
-   compilation terminated.
 
 
-vim +7 drivers/video/console/earlycon.c
+On 01/07/2022 00:11, Bjorn Andersson wrote:
+> On Mon 16 May 09:22 CDT 2022, Caleb Connolly wrote:
+>
+>> Add SW_PROG{1,2,3,4} for device switches which are handled by userspace.
+>>
+>> This can be used for devices with "generic" switches which are intended
+>> to be user-programmable, for example OnePlus phones contain a tri-state
+>> key which can be used for switching between mute/vibrate/ring, or
+>> programmed by the user to perform any arbitrary actions.
+>>
+>> These are analogous to the keys KEY_PROG{1,2,3,4} found on some
+>> keyboards.
+>>
+>> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+>
+> This looks reasonable to me.
+>
+> Dmitry, what do you think?
+Any chance someone could take a look at this? (Sorry I really should have b=
+umped
+this a few weeks ago).
+>
+> Regards,
+> Bjorn
+>
+>> ---
+>> See the next patch in this series for an example usecase.
+>> ---
+>>   include/linux/mod_devicetable.h        | 2 +-
+>>   include/uapi/linux/input-event-codes.h | 6 +++++-
+>>   2 files changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicet=
+able.h
+>> index 5da5d990ff58..45364fbeaaf7 100644
+>> --- a/include/linux/mod_devicetable.h
+>> +++ b/include/linux/mod_devicetable.h
+>> @@ -326,7 +326,7 @@ struct pcmcia_device_id {
+>>   #define INPUT_DEVICE_ID_LED_MAX=09=090x0f
+>>   #define INPUT_DEVICE_ID_SND_MAX=09=090x07
+>>   #define INPUT_DEVICE_ID_FF_MAX=09=090x7f
+>> -#define INPUT_DEVICE_ID_SW_MAX=09=090x10
+>> +#define INPUT_DEVICE_ID_SW_MAX=09=090x14
+>>   #define INPUT_DEVICE_ID_PROP_MAX=090x1f
+>>
+>>   #define INPUT_DEVICE_ID_MATCH_BUS=091
+>> diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux=
+/input-event-codes.h
+>> index dff8e7f17074..339153886a13 100644
+>> --- a/include/uapi/linux/input-event-codes.h
+>> +++ b/include/uapi/linux/input-event-codes.h
+>> @@ -917,7 +917,11 @@
+>>   #define SW_MUTE_DEVICE=09=090x0e  /* set =3D device disabled */
+>>   #define SW_PEN_INSERTED=09=090x0f  /* set =3D pen inserted */
+>>   #define SW_MACHINE_COVER=090x10  /* set =3D cover closed */
+>> -#define SW_MAX=09=09=090x10
+>> +#define SW_PROG1=09=090x11  /* set =3D program 1 (user defined) */
+>> +#define SW_PROG2=09=090x12  /* set =3D program 2 (user defined) */
+>> +#define SW_PROG3=09=090x13  /* set =3D program 3 (user defined) */
+>> +#define SW_PROG4=09=090x14  /* set =3D program 4 (user defined) */
+>> +#define SW_MAX=09=09=090x14
+>>   #define SW_CNT=09=09=09(SW_MAX+1)
+>>
+>>   /*
+>> --
+>> 2.36.1
+>>
+>>
 
-   > 7	#include <asm/early_ioremap.h>
-     8	#include <linux/console.h>
-     9	#include <linux/efi.h>
-    10	#include <linux/font.h>
-    11	#include <linux/io.h>
-    12	#include <linux/kernel.h>
-    13	#include <linux/mm.h>
-    14	#include <linux/of.h>
-    15	#include <linux/of_fdt.h>
-    16	#include <linux/serial_core.h>
-    17	#include <linux/screen_info.h>
-    18	
+--
+Kind Regards,
+Caleb
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
