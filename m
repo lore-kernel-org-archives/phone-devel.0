@@ -2,163 +2,127 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B64BC00140
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 06:32:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F9C1C25B0D
+	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 07:35:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236243AbiHHGcT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 Aug 2022 02:32:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35526 "EHLO
+        id S236452AbiHHHfl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 Aug 2022 03:35:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236177AbiHHGcS (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 02:32:18 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB5CFDF81
-        for <phone-devel@vger.kernel.org>; Sun,  7 Aug 2022 23:32:16 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id x19so2982636lfq.7
-        for <phone-devel@vger.kernel.org>; Sun, 07 Aug 2022 23:32:16 -0700 (PDT)
+        with ESMTP id S236299AbiHHHfb (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 03:35:31 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D57762F2;
+        Mon,  8 Aug 2022 00:35:30 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id ay36-20020a05600c1e2400b003a4e30d7995so6976808wmb.5;
+        Mon, 08 Aug 2022 00:35:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=TcTcVYINkT1LgQg4jB7USFvBaNV5S683l5CtEZpWSgI=;
-        b=TGZkbfF2KN2XSw0JdREuQhXjlwQCdDbgydsKd9WjxRJNii6SYwx5+oOtiKjXAJCorf
-         4ca1RBnrVNF0L8Slj1dQGmbdYey16Fwwp9MWliaUDp2cJC6waEA97E24RirVkn3lo0Wd
-         4ObKzy0CgBCnrOeszWPZ7MOHM7a3/vIJ5pC1grNGra+dfE0GOY9K8i3jgrjUpiUo2iLO
-         +RvGYv7JzjhxJ8ryIHnQmdPbGkOfNPvzrvNZbu2YRmYCG7L9Py5nE8JqmcGakLDpn+aD
-         HoS0yKBoTcZT+f4Eix+tnkH8rJwqFXSNJPNkz/O6XTPzYryRYYsK6T3/acsf8Y3YUxKl
-         FNgQ==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=pLEgpHosko6zu68c6+83D0WlNXTrwkqBiWooJQ+HKoQ=;
+        b=cq8Fvz9C8dLGc6CoNBTF+yrNT1H8Tn+yQYmIQGBUgXdaXAMTBGLYBCUnfWAp1CI1b6
+         dLqkHUFfhLQgykuG906XpztRXRLu/6N66uLz+eoFCnAOM08YCx9K+dwLQSyGjfa3/MPS
+         Daip3brjzwOqDj7u8MMDuhwarPFkz7yUzCAQV1GN9ZY1mO4d4jo4+s4MsJEs5GfnnxqD
+         D3gAMyln9hmlpQA1TRZAahCZK29B5Zzynho9AgHS8UwZSJH8tWd48gHCuBRKyfDSiKB6
+         XzvjgpzIpH67I5ldfoDgY7ieQi7wfgy4f3uBQSL5wqc3zhsJImUkIQuh2j/A9hmGgBkO
+         DKZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=TcTcVYINkT1LgQg4jB7USFvBaNV5S683l5CtEZpWSgI=;
-        b=6ndE4kaJiA6XoCr5Ck2EXoo7uJtAqSr/vcK07Nj+YIu9zwMR5rsl9+cFDKi3smHtKT
-         zP3/dk1bjCnMtS2LiWfX9HG+xHn59YM+gtGqczgg/WrX9kdCPVIbsGL8gp24OHuVZwYg
-         nAk/4tSZPranmS88lMDBKa+CpibY4upMsLbhbILHWt/aIzrwOQX9v4heTZeRCN/3PXU2
-         EOWBHMrT+RW9zyPfxE6g97/gxhqoJEFUXzDDFQuIapMH9AAYDerDLdEL3xRVpDtrLyjN
-         rnbqbpxUY06+JvtoYyws2hPzwH8UhescxRdHIZceYbquA5rvmt4RCdHFo8v9MAJ5ZD+N
-         mBUQ==
-X-Gm-Message-State: ACgBeo2WV2hkebMItmA5LDlFymdSBwJBhPWHRhwU+D7TR9tn8htlW+d1
-        8asBmol+wh/gg62gc66x9P5piA==
-X-Google-Smtp-Source: AA6agR5L7HlkTLMcyJ04cu9bbbvPKW99qL/El8g6wA5S21j2RAKlk0lSK55nP0DM01EO4L3wHGlWsQ==
-X-Received: by 2002:a05:6512:31c5:b0:48b:38cf:51f8 with SMTP id j5-20020a05651231c500b0048b38cf51f8mr5964416lfe.315.1659940335132;
-        Sun, 07 Aug 2022 23:32:15 -0700 (PDT)
-Received: from [192.168.1.39] ([83.146.140.105])
-        by smtp.gmail.com with ESMTPSA id z22-20020a2e9656000000b0025e4de48d36sm1271201ljh.94.2022.08.07.23.32.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Aug 2022 23:32:14 -0700 (PDT)
-Message-ID: <1359679e-fdc8-1d71-0ff5-a7972e118c37@linaro.org>
-Date:   Mon, 8 Aug 2022 09:32:13 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v3 1/2] arm64: dts: qcom: split beryllium dts into common
- dtsi and tianma dts
-Content-Language: en-US
-To:     Joel Selvaraj <joelselvaraj.oss@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=pLEgpHosko6zu68c6+83D0WlNXTrwkqBiWooJQ+HKoQ=;
+        b=SE/MeDxaUdrm9ReBzoDqQfPlJ/H0j+mqIGk4I8u0GdQAS59AVSH5WFO+65oDZpJaq7
+         6lDUOn5KS371VYE7Y+3Cr6MZZWlCNL7xqOnh8Ymgt40cM5uPitZB1n9p7n0VboShLJZY
+         oOpnjsLB/tsQMvX32fr6YWZlBT4OX6OmmPIVwttOUngiEI1ImsqH4dus6kRwq+dYV4LS
+         IawjXGeFFjPxWbdk4AKPfWimRpCz1hnuweljnDvfAEkGJi7GVzhUQQtH79wA/sBaEu8e
+         Gcm5Hzp6dKjqO/Ah9dLbnZwfNYwWSFlTcxo7tJEDXCSRfbFuA6oABo84mEt8ZJ0uvJVZ
+         ktFQ==
+X-Gm-Message-State: ACgBeo30Dp/r3QRXeWfkDbBvO7MoFXeUJ3GfA2luetT/V8R+pidjtOZ+
+        R47GR9OTEYryZTaREWP5C1w=
+X-Google-Smtp-Source: AA6agR7kVfS/9XyLbPXQt2uarhmODIi0OmqVGWosfq2GffwDrR1g/fyPlTEGtvz1TmjY+gG4nmjmQA==
+X-Received: by 2002:a05:600c:4e92:b0:3a3:2a1c:d005 with SMTP id f18-20020a05600c4e9200b003a32a1cd005mr16859487wmq.170.1659944128671;
+        Mon, 08 Aug 2022 00:35:28 -0700 (PDT)
+Received: from localhost.localdomain ([105.235.133.111])
+        by smtp.gmail.com with ESMTPSA id cc11-20020a5d5c0b000000b002205ffe88edsm8333364wrb.31.2022.08.08.00.35.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Aug 2022 00:35:28 -0700 (PDT)
+From:   Yassine Oudjana <yassine.oudjana@gmail.com>
+X-Google-Original-From: Yassine Oudjana <y.oudjana@protonmail.com>
+To:     Sebastian Reichel <sre@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20220806210220.31565-1-joelselvaraj.oss@gmail.com>
- <20220806210220.31565-2-joelselvaraj.oss@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220806210220.31565-2-joelselvaraj.oss@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        Yassine Oudjana <yassine.oudjana@gmail.com>,
+        Alejandro Tafalla <atafalla@dnyon.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/8] power: supply: Add driver for Qualcomm SMBCHG
+Date:   Mon,  8 Aug 2022 08:34:51 +0100
+Message-Id: <20220808073459.396278-1-y.oudjana@protonmail.com>
+X-Mailer: git-send-email 2.37.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 06/08/2022 23:02, Joel Selvaraj wrote:
-> There are two panel variants of Xiaomi Poco F1. Tianma and EBBG panel.
-> The previous beryllium dts supported the Tianma variant. In order to
-> add support for EBBG variant, the common nodes from beryllium dts are
-> moved to a new common dtsi and to make the variants distinguishable,
-> sdm845-xiaomi-beryllium.dts is now named as
-> sdm845-xiaomi-beryllium-tianma.dts
-> 
-> Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
-> ---
->  arch/arm64/boot/dts/qcom/Makefile                      |  2 +-
->  ...ryllium.dts => sdm845-xiaomi-beryllium-common.dtsi} |  9 +++++----
->  .../boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts   | 10 ++++++++++
->  3 files changed, 16 insertions(+), 5 deletions(-)
->  rename arch/arm64/boot/dts/qcom/{sdm845-xiaomi-beryllium.dts => sdm845-xiaomi-beryllium-common.dtsi} (98%)
->  create mode 100644 arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-> index 2f8aec2cc6db..02db413b228c 100644
-> --- a/arch/arm64/boot/dts/qcom/Makefile
-> +++ b/arch/arm64/boot/dts/qcom/Makefile
-> @@ -106,7 +106,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-oneplus-fajita.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-akari.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-akatsuki.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-apollo.dtb
-> -dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium.dtb
-> +dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium-tianma.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-shift-axolotl.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-lenovo-yoga-c630.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-samsung-w737.dtb
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> similarity index 98%
-> rename from arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-> rename to arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> index d88dc07205f7..83edcb1171f5 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> @@ -221,8 +221,7 @@ &dsi0 {
->  	status = "okay";
->  	vdda-supply = <&vreg_l26a_1p2>;
->  
-> -	panel@0 {
-> -		compatible = "tianma,fhd-video";
-> +	display_panel: panel@0 {
->  		reg = <0>;
->  		vddio-supply = <&vreg_l14a_1p8>;
->  		vddpos-supply = <&lab>;
-> @@ -234,8 +233,10 @@ panel@0 {
->  		backlight = <&pmi8998_wled>;
->  		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
->  
-> +		status = "disabled";
-> +
->  		port {
-> -			tianma_nt36672a_in_0: endpoint {
-> +			panel_in_0: endpoint {
->  				remote-endpoint = <&dsi0_out>;
->  			};
->  		};
-> @@ -243,7 +244,7 @@ tianma_nt36672a_in_0: endpoint {
->  };
->  
->  &dsi0_out {
-> -	remote-endpoint = <&tianma_nt36672a_in_0>;
-> +	remote-endpoint = <&panel_in_0>;
->  	data-lanes = <0 1 2 3>;
->  };
->  
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
-> new file mode 100644
-> index 000000000000..fcbef5ad2909
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
-> @@ -0,0 +1,10 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +/dts-v1/;
-> +
-> +#include "sdm845-xiaomi-beryllium-common.dtsi"
+From: Yassine Oudjana <y.oudjana@protonmail.com>
 
-Nice diff.
+This series adds a driver for the switch-mode battery charger found on PMICs
+such as PMI8994, and referred to in the vendor kernel[1] as smbcharger or
+SMBCHG. More details on this block can be found in the last patch message.
 
-However what happened to compatibles? Why do you have now two boards
-with same compatible and model name?
+This driver currently supports the charger blocks of PMI8994 and PMI8996.
+PMI8950 was also to be supported, but it was dropped due to some last minute
+issues, to be brought back at a later time once ready.
 
-Best regards,
-Krzysztof
+The OTG regulator remains unused on devices where the charger is enabled in
+this series due to lack of a consumer. Applying a patch[2] adding vbus-supply
+to DWC3 allows it to enable the OTG regulator making USB host without
+external power possible.
+
+[1] https://github.com/android-linux-stable/msm-3.18/blob/kernel.lnx.3.18.r34-rel/drivers/power/qpnp-smbcharger.c
+[2] https://lore.kernel.org/linux-usb/20200805061744.20404-1-mike.looijmans@topic.nl/
+
+Yassine Oudjana (8):
+  dt-bindings: power: supply: Add DT schema for Qualcomm SMBCHG
+  arm64: dts: qcom: pmi8994: Add SMBCHG
+  arm64: dts: qcom: pmi8996: Add SMBCHG
+  arm64: dts: qcom: msm8996-xiaomi-*: Add battery data
+  arm64: dts: qcom: msm8996-xiaomi-*: Enable SMBCHG
+  soc: qcom: Add PMIC secure register write helpers
+  util_macros.h: Add macro to find closest smaller value in array
+  power: supply: Add driver for Qualcomm SMBCHG
+
+ .../bindings/power/supply/qcom,smbchg.yaml    |  205 ++
+ MAINTAINERS                                   |   16 +
+ .../boot/dts/qcom/msm8996-xiaomi-common.dtsi  |   15 +
+ .../boot/dts/qcom/msm8996-xiaomi-gemini.dts   |    5 +
+ .../boot/dts/qcom/msm8996-xiaomi-natrium.dts  |    5 +
+ .../boot/dts/qcom/msm8996-xiaomi-scorpio.dts  |    5 +
+ arch/arm64/boot/dts/qcom/pmi8994.dtsi         |   72 +
+ arch/arm64/boot/dts/qcom/pmi8996.dtsi         |    4 +
+ drivers/power/supply/Kconfig                  |   11 +
+ drivers/power/supply/Makefile                 |    1 +
+ drivers/power/supply/qcom-smbchg.c            | 1664 +++++++++++++++++
+ drivers/power/supply/qcom-smbchg.h            |  428 +++++
+ drivers/soc/qcom/Kconfig                      |    4 +
+ drivers/soc/qcom/Makefile                     |    1 +
+ drivers/soc/qcom/pmic-sec-write.c             |   82 +
+ include/linux/util_macros.h                   |   22 +
+ include/soc/qcom/pmic-sec-write.h             |    9 +
+ 17 files changed, 2549 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/power/supply/qcom,smbchg.yaml
+ create mode 100644 drivers/power/supply/qcom-smbchg.c
+ create mode 100644 drivers/power/supply/qcom-smbchg.h
+ create mode 100644 drivers/soc/qcom/pmic-sec-write.c
+ create mode 100644 include/soc/qcom/pmic-sec-write.h
+
+-- 
+2.37.1
+
