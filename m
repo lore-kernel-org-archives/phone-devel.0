@@ -2,150 +2,136 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6980C25B0C
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 09:17:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0700C00140
+	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 09:40:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234107AbiHHJRP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 Aug 2022 05:17:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54876 "EHLO
+        id S242490AbiHHJkM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 Aug 2022 05:40:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242249AbiHHJRO (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 05:17:14 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77A9813F37
-        for <phone-devel@vger.kernel.org>; Mon,  8 Aug 2022 02:17:12 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id j3so1975882ljo.0
-        for <phone-devel@vger.kernel.org>; Mon, 08 Aug 2022 02:17:12 -0700 (PDT)
+        with ESMTP id S232190AbiHHJkL (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 05:40:11 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C1D513D5B;
+        Mon,  8 Aug 2022 02:40:10 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id v5so4524073wmj.0;
+        Mon, 08 Aug 2022 02:40:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=pMpurfdUFUXUf7fmwUQBIqLSWGdQDW67AVZBUmy36+k=;
-        b=r1xUYo+L0qxJxm9/dIt6wup1Dpe9Iqw3qDUSVLixLXaD9QnyWNaW4VNjsbYKbLWG3m
-         +q1yNGFsnSUXflkalaqeWqEBgelbQNnpDPmaAoi6GLIcxwMfzVjgTYfmavGrl2i/pnW0
-         ikrVqDzQ6vhUgeAjf9nvoPt6MqZeO8D5UKUItp34rlp2tWDJ7uRwbcWQAyK3Gw1Ftg1+
-         6m+ezM2bRgBygZCRf5C2hNWtlDJkRL4OmClSWoOZTINDNnx7jHSWBdwCoZID2laakvdC
-         d/yOvWPt7cwGbIwrby0E5TYRWXuW7NizeqFUpc2Xv0iV9pkmO0bEquvydNBKJAcXp9XD
-         qG5Q==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:message-id:cc:to:subject:from
+         :date:from:to:cc;
+        bh=E3bObQeNWfAS5QLgPfg7sUMtK4GVNOyK0s/0eKslo1E=;
+        b=n4xUNwYQrBnm7yU1iGLZpKf4avwTo8LzGpGAFml+IcMOCih7ZytxcIj9i12FoTpbfb
+         WmSv0fBhNWf99Ds83zZpeHzXoq+lR7ADgY4GVgMQHrTdlIeueoc6V7uIjfnvWdNrhibY
+         G6lqnpTzuOb7h7Yjs2jryiol0LrYnS99GndSFqzE8eTQrqFUbSq3ZdS5tLZ5+j9j+l/X
+         FjZgcy/qWFxw1RzKasEYON1VI+W9MmW77utx3YtqVea75CKjEiUCU1XdkfPI5QRmojWh
+         uB1GxDQLxnlB0PqsZebMAvLZiZ+E7PORCaJhDzYHzdCgMZVYITpi8qNRTXTL+MOf8R+c
+         +6NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=pMpurfdUFUXUf7fmwUQBIqLSWGdQDW67AVZBUmy36+k=;
-        b=ajg/Af1fTeSHNqfXLkVGdBefONrVlOS6DoSEVBIjTfbMEC7Xq14cO4vu+71UkMhAD/
-         WZJf1f6LOPH80s4dO31KIgojT1NPAVRaAqjgoW0zUPxr52pX06we2JAx1y09QYTD0dtC
-         enkbhlg6b0gUQqQQ0UNRxVuxKqXUk4Od2gWFupxpQ354nBJkV2y+D+ovHLInaRaPCVW/
-         0aVjE3QUlzKo4+126DZXXqzmxgyqt0U1yMqjhxMzUUiB/eBeo7vflcsvfaajR1Glg3Dc
-         GMfXyEYgNx34kAqPlqDSXuF3/SNugpGckfAZUPS7lxuhnrYuWuo5E0kk8dVO1I3zcmNq
-         agSg==
-X-Gm-Message-State: ACgBeo01dj1M1uz280C1Sgy1dZLiYLshNV5VTKhY6kOaf4q+DUhU9ciO
-        fNK00kLYT8Ymic7K8w+0RA485w==
-X-Google-Smtp-Source: AA6agR75FWgUDhN/Zq3dwh05o1Z/nJwA53vV5D3Tos8WHvDReDd8edBsXQCUqvN2Ob/upYWd966uvQ==
-X-Received: by 2002:a2e:8404:0:b0:250:cde7:e9e3 with SMTP id z4-20020a2e8404000000b00250cde7e9e3mr5291223ljg.289.1659950230860;
-        Mon, 08 Aug 2022 02:17:10 -0700 (PDT)
-Received: from [192.168.1.39] ([83.146.140.105])
-        by smtp.gmail.com with ESMTPSA id s13-20020a056512314d00b00477c0365b20sm1353560lfi.188.2022.08.08.02.17.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Aug 2022 02:17:09 -0700 (PDT)
-Message-ID: <4cef00b4-c184-ae78-3709-5ed520ca3375@linaro.org>
-Date:   Mon, 8 Aug 2022 12:17:06 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v2 3/5] arm64: dts: qcom: Add PM6125 PMIC
-Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        h=mime-version:references:in-reply-to:message-id:cc:to:subject:from
+         :date:x-gm-message-state:from:to:cc;
+        bh=E3bObQeNWfAS5QLgPfg7sUMtK4GVNOyK0s/0eKslo1E=;
+        b=RtT/UdKGDwR1t4djcbAZ3Qwv+VLYIn/djrfsQ//JFv3T06sh9FdZMfBP6UedNJ2MZE
+         Qbws6lal1lNpOpiJabLqf7P2+3L9bsM0oZloTJf+jHTPDUvB6gF1zByTxpoGpNP68sVm
+         c0e7AclDzctUIZdJoYjAEkNYAy2zbYxs1ll0K1CArFFj8Ep8ym4q2aOGj/6EEUPXAzvv
+         ctJb1DZyEfRZoujetT4vblL8NpKyH20W5UKNioRh/alITeasmAgDx6radVyU/BjVd5UW
+         5YCfhyGToMIcDwr4MUgMtPKzQEhSncPO+2928pbOEUwVfPlhH94hd8yzE422G80I1jCl
+         l8uQ==
+X-Gm-Message-State: ACgBeo3fmOKYsg7zrxcRfOBZ79oZj9JehOxciOEJ3RE2tMgQkIKxn4fJ
+        UfYjT3XsmDcbK73XGCIgVuWlZbPHrdE=
+X-Google-Smtp-Source: AA6agR4/6G3DlxLmRq8Mu7z7qLd96SSuOojjEF8KqJN4qHkHKABstR7DeLNpfNf3cJEbffptuI11bw==
+X-Received: by 2002:a05:600c:509:b0:3a5:2c2:fb40 with SMTP id i9-20020a05600c050900b003a502c2fb40mr15355763wmc.163.1659951608773;
+        Mon, 08 Aug 2022 02:40:08 -0700 (PDT)
+Received: from [192.168.187.232] ([105.235.133.28])
+        by smtp.gmail.com with ESMTPSA id o6-20020a05600c4fc600b003a32490c95dsm18724131wmq.35.2022.08.08.02.39.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Aug 2022 02:40:08 -0700 (PDT)
+Date:   Mon, 08 Aug 2022 10:39:47 +0100
+From:   Yassine Oudjana <yassine.oudjana@gmail.com>
+Subject: Re: [PATCH 0/8] power: supply: Add driver for Qualcomm SMBCHG
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Sebastian Reichel <sre@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20220805135729.1037079-1-marijn.suijten@somainline.org>
- <20220805135729.1037079-4-marijn.suijten@somainline.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220805135729.1037079-4-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Yassine Oudjana <y.oudjana@protonmail.com>,
+        Alejandro Tafalla <atafalla@dnyon.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Message-Id: <BUIAGR.NIMOFVJH9GVZ1@gmail.com>
+In-Reply-To: <a233730b-6ac3-2cb9-cc5c-21ca6289fadc@linaro.org>
+References: <20220808073459.396278-1-y.oudjana@protonmail.com>
+        <a233730b-6ac3-2cb9-cc5c-21ca6289fadc@linaro.org>
+X-Mailer: geary/40.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 05/08/2022 16:57, Marijn Suijten wrote:
-> This PMIC is commonly used on boards with an SM6125 SoC and looks very
-> similar in layout to the PM6150.
+
+On Mon, Aug 8 2022 at 11:41:26 +03:00:00, Krzysztof Kozlowski 
+<krzysztof.kozlowski@linaro.org> wrote:
+> On 08/08/2022 10:34, Yassine Oudjana wrote:
+>>  From: Yassine Oudjana <y.oudjana@protonmail.com>
+>> 
+>>  This series adds a driver for the switch-mode battery charger found 
+>> on PMICs
+>>  such as PMI8994, and referred to in the vendor kernel[1] as 
+>> smbcharger or
+>>  SMBCHG. More details on this block can be found in the last patch 
+>> message.
+>> 
+>>  This driver currently supports the charger blocks of PMI8994 and 
+>> PMI8996.
+>>  PMI8950 was also to be supported, but it was dropped due to some 
+>> last minute
+>>  issues, to be brought back at a later time once ready.
+>> 
+>>  The OTG regulator remains unused on devices where the charger is 
+>> enabled in
+>>  this series due to lack of a consumer. Applying a patch[2] adding 
+>> vbus-supply
+>>  to DWC3 allows it to enable the OTG regulator making USB host 
+>> without
+>>  external power possible.
+>> 
+>>  [1] 
+>> https://github.com/android-linux-stable/msm-3.18/blob/kernel.lnx.3.18.r34-rel/drivers/power/qpnp-smbcharger.c
+>>  [2] 
+>> https://lore.kernel.org/linux-usb/20200805061744.20404-1-mike.looijmans@topic.nl/
 > 
-> Downstream declares more nodes to be available, but these have been
-> omitted from this patch: the pwm/lpg block is unused on my reference
-> device making it impossible to test/validate, and the spmi-clkdiv does
-> not have a single device-tree binding using this driver yet, hence
-> inclusion is better postponed until ie. audio which uses these clocks is
-> brought up.
+> How is it different from PMI8998? I expect not that much, so this 
+> should
+> be based on existing work:
+> https://lore.kernel.org/linux-arm-msm/20220706194125.1861256-1-caleb.connolly@linaro.org/
 > 
+> Unless they are different, but then please create common parts and
+> explain the differences.
+> 
+> Best regards,
+> Krzysztof
 
-Thank you for your patch. There is something to discuss/improve.
-
-> +
-> +			xo-therm@4c {
-> +				reg = <ADC5_XO_THERM_100K_PU>;
-> +				qcom,pre-scaling = <1 1>;
-> +				qcom,hw-settle-time = <200>;
-> +				qcom,ratiometric;
-> +			};
-> +		};
-> +
-> +		pm6125_adc_tm: adc-tm@3500 {
-
-Generic node names, so either this is adc or thermal-sensor. Looks like
-thermal-sensor.
-
-> +			compatible = "qcom,spmi-adc-tm5";
-> +			reg = <0x3500>;
-> +			interrupts = <0x0 0x35 0x0 IRQ_TYPE_EDGE_RISING>;
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +			#thermal-sensor-cells = <1>;
-> +			status = "disabled";
-> +		};
-> +
-> +		pm6125_rtc: rtc@6000 {
-> +			compatible = "qcom,pm8941-rtc";
-> +			reg = <0x6000>, <0x6100>;
-> +			reg-names = "rtc", "alarm";
-> +			interrupts = <0x0 0x61 0x1 IRQ_TYPE_EDGE_RISING>;
-> +			status = "disabled";
-> +		};
-> +
-> +		pm6125_gpio: gpios@c000 {
-
-s/gpios/gpio/
-
-> +			compatible = "qcom,pm6125-gpio", "qcom,spmi-gpio";
-> +			reg = <0xc000>;
-> +			gpio-controller;
-> +			gpio-ranges = <&pm6125_gpio 0 0 9>;
-> +			#gpio-cells = <2>;
-> +			interrupt-controller;
-> +			#interrupt-cells = <2>;
-> +		};
-> +	};
-> +
-> +	pmic@1 {
-> +		compatible = "qcom,pm6125", "qcom,spmi-pmic";
-> +		reg = <0x1 SPMI_USID>;
-> +	};
-> +};
+This driver has been in slow developement for a long time before that 
+one existed, which was why no initial attempt at a common driver was 
+made. With that said however, I've been watching its development even 
+before it was sent for review, and It seems that the hardware is 
+actually quite different. For example, the original charger entirely 
+lacks the type-c functionality that exists on the second gen one. There 
+are a couple of similar registers like CMD_APSD (same address and 
+function) CHGR_CFG2 (same/similar function, different address), but 
+other than that there don't seem to be any major similarities. While I 
+guess it would technically be possible to force them into one driver 
+with multiple register tables and separate functions for most tasks, I 
+think it would just unnecessarily complicate things. One thing that is 
+common however is the secure register unlock sequence, which I have 
+separated in patch 6 to allow for its use in other drivers (the fuel 
+gauge block has secure registers too so it will also be used in an 
+upcoming fuel gauge driver).
 
 
-Best regards,
-Krzysztof
