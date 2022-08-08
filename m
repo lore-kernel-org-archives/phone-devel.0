@@ -2,119 +2,146 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29DB7C00140
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 11:48:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B972C00140
+	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 13:13:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242572AbiHHLs0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 Aug 2022 07:48:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50532 "EHLO
+        id S243148AbiHHNNA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 Aug 2022 09:13:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233073AbiHHLsZ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 07:48:25 -0400
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FB735FB4;
-        Mon,  8 Aug 2022 04:48:25 -0700 (PDT)
-Received: by mail-qk1-x72f.google.com with SMTP id o3so4884722qkk.5;
-        Mon, 08 Aug 2022 04:48:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=zIqDpdqnGlhD43JrBpe3UlPZJCsSnG6kUEyydwktWnI=;
-        b=NOIvAaNxS7KILFcF3jsqSJp+xMRTETK4S8eIt0/TMyycywbhFlpMFjydJdKCqWQqNT
-         n5TOdc6bc68Nrr/K401ttEHk/ZIJipwJVQTLtu9JaBvnWTn2+YkGTm1na8w3ysP8z1Sy
-         mC5MB1t1h6coIQyP0p9AwRBBBErbmatX9zKBiSVJHDeC0RzYFm9JK5yhZ6gH5EZdBpu7
-         8vM33jmNRE7yr781TuoKmJe9cPdXMS124Fq2+YLcHPF5Fg3MAlreAOZ9A2qTG5hyDEYT
-         P7+LSUtZZ77cyI/uWlftOBV5Z7rCg3UJd3yP9ROxjNFD7Z4fquW2ZXS6OVe3+FgMLW3Z
-         rcbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=zIqDpdqnGlhD43JrBpe3UlPZJCsSnG6kUEyydwktWnI=;
-        b=0Zw8zXxSc/46x6WT7OMW2ft5JGBpcRVrF8nTJtzs2ZQA805WK35pQuJejYGKFC5d2Z
-         YFGoIohrXWjW5F1zFeSZ78t126hynlv+ZIFm9Yq9+6i2U/n6eUjY9f7mctfJmt1qeDt/
-         LXZOzpn5DVkBVCzruHG7fU6tLn0xa0UGxSwSAQ94o3BfbAW3lPBwA5ubNn5GLNtKkAEh
-         SwsY1inpchPIX4K+SpQZ4k1e+FrZyOJULl4TDAf/ztVHxf/keOMDx+oYFC3GTHeCKdmD
-         Zz+VRyRgYbf5xWhH1xO6y+ZeyIcXjz2qt61tRXAAh1HZZvw0OITOKIyONPUe1m4NsD3O
-         GIcg==
-X-Gm-Message-State: ACgBeo3ArnGGn4vJ6uaaWaPCGEw5dtmofzfXNssNvyfsKBvPj/p8ZPsR
-        lzYetMsmCkHX8iI7ND2ax8ioPCWoHwsuH0EzRn0=
-X-Google-Smtp-Source: AA6agR7PrdQS2PvNBAr/cqXl12HZwDEHZHyClmVK4pF5hc2Bp5spaeBD+JXh3fF1HneDnTMsVmwVUgHwYinJjB7tX8g=
-X-Received: by 2002:a05:620a:254d:b0:6ab:84b8:25eb with SMTP id
- s13-20020a05620a254d00b006ab84b825ebmr13618349qko.383.1659959304307; Mon, 08
- Aug 2022 04:48:24 -0700 (PDT)
+        with ESMTP id S243070AbiHHNNA (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 09:13:00 -0400
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [5.144.164.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB08182
+        for <phone-devel@vger.kernel.org>; Mon,  8 Aug 2022 06:12:56 -0700 (PDT)
+Received: from SoMainline.org (D57D4C6E.static.ziggozakelijk.nl [213.125.76.110])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 447E31F697;
+        Mon,  8 Aug 2022 15:12:53 +0200 (CEST)
+Date:   Mon, 8 Aug 2022 15:12:51 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Joel Selvaraj <joelselvaraj.oss@gmail.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] arm64: dts: qcom: split beryllium dts into common
+ dtsi and tianma dts
+Message-ID: <20220808130940.yztpesbkgootqwds@SoMainline.org>
+References: <20220806210220.31565-1-joelselvaraj.oss@gmail.com>
+ <20220806210220.31565-2-joelselvaraj.oss@gmail.com>
 MIME-Version: 1.0
-References: <cover.1659909060.git.jahau@rocketmail.com> <a7bc9d7a7bb12a76fb217a1709fb09abd2b45892.1659909060.git.jahau@rocketmail.com>
-In-Reply-To: <a7bc9d7a7bb12a76fb217a1709fb09abd2b45892.1659909060.git.jahau@rocketmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 8 Aug 2022 13:47:48 +0200
-Message-ID: <CAHp75VegA6zzvQXEi_9-K3832o+j48Af3X8LivYY47Xav+w-xQ@mail.gmail.com>
-Subject: Re: [PATCH v5 14/14] iio: magnetometer: yas530: Add YAS537 variant
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220806210220.31565-2-joelselvaraj.oss@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Aug 8, 2022 at 1:12 AM Jakob Hauser <jahau@rocketmail.com> wrote:
->
-> This adds support for the magnetometer Yamaha YAS537. The additions are based
+On 2022-08-07 02:32:19, Joel Selvaraj wrote:
+> There are two panel variants of Xiaomi Poco F1. Tianma and EBBG panel.
+> The previous beryllium dts supported the Tianma variant. In order to
+> add support for EBBG variant, the common nodes from beryllium dts are
+> moved to a new common dtsi and to make the variants distinguishable,
+> sdm845-xiaomi-beryllium.dts is now named as
+> sdm845-xiaomi-beryllium-tianma.dts
+> 
+> Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
 
-Add support
+Nice, this is much more concise now and keeps the tree compiling _with
+this dts_ at all times, at the detriment of stuffing "many" changes in a
+single patch which is fine here, IMO.
 
-> on comparison of Yamaha Android kernel drivers for YAS532 [1] and YAS537 [2].
->
-> In the Yamaha YAS537 Android driver, there is an overflow/underflow control
-> implemented. For regular usage, this seems not necessary. A similar overflow/
-> underflow control of Yamaha YAS530/532 Android driver isn't integrated in the
-> mainline driver. It is therefore skipped for YAS537 in mainline too.
+I just hope users of this dtb notice the name changed (unless
+unreferenced dtbs get cleaned after a dirty-rebuild) when their scripts
+are inevitably hardcoded to take this specificly named dtb to flash to
+the(ir) phone.
 
-the mainline
+After giving both DTs a unique compatible as pointed out by Krzysztof,
+please add my:
 
-> Also in the Yamaha YAS537 Android driver, at the end of the reset_yas537()
-> function, a measurement is saved in "last_after_rcoil". Later on, this is
-> compared to current measurements. If the difference gets too big, a new
-> reset is initialized. The difference in measurements needs to be quite big,
-> it's hard to say if this is necessary for regular operation. Therefore this
-> isn't integrated in the mainline driver either.
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
 
-...
-
->         help
->           Say Y here to add support for the Yamaha YAS530 series of
-> -         3-Axis Magnetometers. Right now YAS530, YAS532 and YAS533 are
-> -         fully supported.
-> +         3-Axis Magnetometers. YAS530, YAS532, YAS533 and YAS537 are
-> +         supported.
-
-So, after this change the rest become partially supported?
-
-Perhaps you want to leave the original and add a new sentence like:
-
-  "The YAS537 is partially supported."
-
-?
-
-...
-
-> - * For YAS532/533, this value is known from the Android driver. For YAS530,
-
-It seems this comma is unneeded in the original comment.
-
-> - * it was approximately measured.
-> + * For YAS532/533, this value is known from the Android driver. For YAS530
-> + * and YAS537, it was approximately measured.
-
-P.S. Do you see now how your series and the end result become better?
-
--- 
-With Best Regards,
-Andy Shevchenko
+> ---
+>  arch/arm64/boot/dts/qcom/Makefile                      |  2 +-
+>  ...ryllium.dts => sdm845-xiaomi-beryllium-common.dtsi} |  9 +++++----
+>  .../boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts   | 10 ++++++++++
+>  3 files changed, 16 insertions(+), 5 deletions(-)
+>  rename arch/arm64/boot/dts/qcom/{sdm845-xiaomi-beryllium.dts => sdm845-xiaomi-beryllium-common.dtsi} (98%)
+>  create mode 100644 arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+> index 2f8aec2cc6db..02db413b228c 100644
+> --- a/arch/arm64/boot/dts/qcom/Makefile
+> +++ b/arch/arm64/boot/dts/qcom/Makefile
+> @@ -106,7 +106,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-oneplus-fajita.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-akari.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-akatsuki.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-apollo.dtb
+> -dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium.dtb
+> +dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium-tianma.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-shift-axolotl.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-lenovo-yoga-c630.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-samsung-w737.dtb
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+> similarity index 98%
+> rename from arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+> rename to arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+> index d88dc07205f7..83edcb1171f5 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+> @@ -221,8 +221,7 @@ &dsi0 {
+>  	status = "okay";
+>  	vdda-supply = <&vreg_l26a_1p2>;
+>  
+> -	panel@0 {
+> -		compatible = "tianma,fhd-video";
+> +	display_panel: panel@0 {
+>  		reg = <0>;
+>  		vddio-supply = <&vreg_l14a_1p8>;
+>  		vddpos-supply = <&lab>;
+> @@ -234,8 +233,10 @@ panel@0 {
+>  		backlight = <&pmi8998_wled>;
+>  		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
+>  
+> +		status = "disabled";
+> +
+>  		port {
+> -			tianma_nt36672a_in_0: endpoint {
+> +			panel_in_0: endpoint {
+>  				remote-endpoint = <&dsi0_out>;
+>  			};
+>  		};
+> @@ -243,7 +244,7 @@ tianma_nt36672a_in_0: endpoint {
+>  };
+>  
+>  &dsi0_out {
+> -	remote-endpoint = <&tianma_nt36672a_in_0>;
+> +	remote-endpoint = <&panel_in_0>;
+>  	data-lanes = <0 1 2 3>;
+>  };
+>  
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
+> new file mode 100644
+> index 000000000000..fcbef5ad2909
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
+> @@ -0,0 +1,10 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/dts-v1/;
+> +
+> +#include "sdm845-xiaomi-beryllium-common.dtsi"
+> +
+> +&display_panel {
+> +	compatible = "tianma,fhd-video";
+> +	status = "okay";
+> +};
+> -- 
+> 2.37.1
+> 
