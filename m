@@ -2,128 +2,163 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19837C00140
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 05:40:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B64BC00140
+	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 06:32:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233787AbiHHFkQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 Aug 2022 01:40:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35498 "EHLO
+        id S236243AbiHHGcT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 Aug 2022 02:32:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230461AbiHHFkP (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 01:40:15 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 679F3FA;
-        Sun,  7 Aug 2022 22:40:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1659937212; x=1691473212;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=L0AEyjOdy+rECcp7lQwc01b4Y++VmDWGY8GDnPBcItw=;
-  b=PtDNetw3BGlt0zYr7H7nH8HxSncsOjnaf4cA6yWqSQP/8SNXUmYdV1Ve
-   E4FohQwsQ/dipryXmo4sTT0MmBfaCu/DIX+QrnzF2iuVy+532xccQr+Qw
-   8VjXsFNWUZpJGFDRFl+IfF/hKOn9m2O4pEi0ZeZZarqZzFh0t5H9Ynd+G
-   owOE4q1psU2juqOMGh9r6GjWS0SfJliL82NsNfYiug6l5Takr3q6/7+lm
-   b8U9nQN3rzMDHwDbsgS+pHbTffRom5jTFxt7Dgq1lHwxhBRC5f/J3BpPQ
-   h7SfW1/15Rr+ABtV8+szIE9jhvrI00Vx8B2wamc4NuiOF/pUO7RSKaKTb
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10432"; a="288072216"
-X-IronPort-AV: E=Sophos;i="5.93,221,1654585200"; 
-   d="scan'208";a="288072216"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2022 22:40:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,221,1654585200"; 
-   d="scan'208";a="637165336"
-Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 07 Aug 2022 22:40:09 -0700
-Received: from kbuild by e0eace57cfef with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oKvUm-000Lwf-1R;
-        Mon, 08 Aug 2022 05:40:08 +0000
-Date:   Mon, 8 Aug 2022 13:39:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jakob Hauser <jahau@rocketmail.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Jakob Hauser <jahau@rocketmail.com>
-Subject: Re: [PATCH v5 09/14] iio: magnetometer: yas530: Introduce
- "chip_info" structure
-Message-ID: <202208081346.EWHUWCSa-lkp@intel.com>
-References: <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
+        with ESMTP id S236177AbiHHGcS (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 02:32:18 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB5CFDF81
+        for <phone-devel@vger.kernel.org>; Sun,  7 Aug 2022 23:32:16 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id x19so2982636lfq.7
+        for <phone-devel@vger.kernel.org>; Sun, 07 Aug 2022 23:32:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=TcTcVYINkT1LgQg4jB7USFvBaNV5S683l5CtEZpWSgI=;
+        b=TGZkbfF2KN2XSw0JdREuQhXjlwQCdDbgydsKd9WjxRJNii6SYwx5+oOtiKjXAJCorf
+         4ca1RBnrVNF0L8Slj1dQGmbdYey16Fwwp9MWliaUDp2cJC6waEA97E24RirVkn3lo0Wd
+         4ObKzy0CgBCnrOeszWPZ7MOHM7a3/vIJ5pC1grNGra+dfE0GOY9K8i3jgrjUpiUo2iLO
+         +RvGYv7JzjhxJ8ryIHnQmdPbGkOfNPvzrvNZbu2YRmYCG7L9Py5nE8JqmcGakLDpn+aD
+         HoS0yKBoTcZT+f4Eix+tnkH8rJwqFXSNJPNkz/O6XTPzYryRYYsK6T3/acsf8Y3YUxKl
+         FNgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=TcTcVYINkT1LgQg4jB7USFvBaNV5S683l5CtEZpWSgI=;
+        b=6ndE4kaJiA6XoCr5Ck2EXoo7uJtAqSr/vcK07Nj+YIu9zwMR5rsl9+cFDKi3smHtKT
+         zP3/dk1bjCnMtS2LiWfX9HG+xHn59YM+gtGqczgg/WrX9kdCPVIbsGL8gp24OHuVZwYg
+         nAk/4tSZPranmS88lMDBKa+CpibY4upMsLbhbILHWt/aIzrwOQX9v4heTZeRCN/3PXU2
+         EOWBHMrT+RW9zyPfxE6g97/gxhqoJEFUXzDDFQuIapMH9AAYDerDLdEL3xRVpDtrLyjN
+         rnbqbpxUY06+JvtoYyws2hPzwH8UhescxRdHIZceYbquA5rvmt4RCdHFo8v9MAJ5ZD+N
+         mBUQ==
+X-Gm-Message-State: ACgBeo2WV2hkebMItmA5LDlFymdSBwJBhPWHRhwU+D7TR9tn8htlW+d1
+        8asBmol+wh/gg62gc66x9P5piA==
+X-Google-Smtp-Source: AA6agR5L7HlkTLMcyJ04cu9bbbvPKW99qL/El8g6wA5S21j2RAKlk0lSK55nP0DM01EO4L3wHGlWsQ==
+X-Received: by 2002:a05:6512:31c5:b0:48b:38cf:51f8 with SMTP id j5-20020a05651231c500b0048b38cf51f8mr5964416lfe.315.1659940335132;
+        Sun, 07 Aug 2022 23:32:15 -0700 (PDT)
+Received: from [192.168.1.39] ([83.146.140.105])
+        by smtp.gmail.com with ESMTPSA id z22-20020a2e9656000000b0025e4de48d36sm1271201ljh.94.2022.08.07.23.32.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 Aug 2022 23:32:14 -0700 (PDT)
+Message-ID: <1359679e-fdc8-1d71-0ff5-a7972e118c37@linaro.org>
+Date:   Mon, 8 Aug 2022 09:32:13 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v3 1/2] arm64: dts: qcom: split beryllium dts into common
+ dtsi and tianma dts
+Content-Language: en-US
+To:     Joel Selvaraj <joelselvaraj.oss@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20220806210220.31565-1-joelselvaraj.oss@gmail.com>
+ <20220806210220.31565-2-joelselvaraj.oss@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220806210220.31565-2-joelselvaraj.oss@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Jakob,
+On 06/08/2022 23:02, Joel Selvaraj wrote:
+> There are two panel variants of Xiaomi Poco F1. Tianma and EBBG panel.
+> The previous beryllium dts supported the Tianma variant. In order to
+> add support for EBBG variant, the common nodes from beryllium dts are
+> moved to a new common dtsi and to make the variants distinguishable,
+> sdm845-xiaomi-beryllium.dts is now named as
+> sdm845-xiaomi-beryllium-tianma.dts
+> 
+> Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
+> ---
+>  arch/arm64/boot/dts/qcom/Makefile                      |  2 +-
+>  ...ryllium.dts => sdm845-xiaomi-beryllium-common.dtsi} |  9 +++++----
+>  .../boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts   | 10 ++++++++++
+>  3 files changed, 16 insertions(+), 5 deletions(-)
+>  rename arch/arm64/boot/dts/qcom/{sdm845-xiaomi-beryllium.dts => sdm845-xiaomi-beryllium-common.dtsi} (98%)
+>  create mode 100644 arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+> index 2f8aec2cc6db..02db413b228c 100644
+> --- a/arch/arm64/boot/dts/qcom/Makefile
+> +++ b/arch/arm64/boot/dts/qcom/Makefile
+> @@ -106,7 +106,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-oneplus-fajita.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-akari.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-akatsuki.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-apollo.dtb
+> -dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium.dtb
+> +dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium-tianma.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-shift-axolotl.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-lenovo-yoga-c630.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-samsung-w737.dtb
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+> similarity index 98%
+> rename from arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+> rename to arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+> index d88dc07205f7..83edcb1171f5 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium.dts
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+> @@ -221,8 +221,7 @@ &dsi0 {
+>  	status = "okay";
+>  	vdda-supply = <&vreg_l26a_1p2>;
+>  
+> -	panel@0 {
+> -		compatible = "tianma,fhd-video";
+> +	display_panel: panel@0 {
+>  		reg = <0>;
+>  		vddio-supply = <&vreg_l14a_1p8>;
+>  		vddpos-supply = <&lab>;
+> @@ -234,8 +233,10 @@ panel@0 {
+>  		backlight = <&pmi8998_wled>;
+>  		reset-gpios = <&tlmm 6 GPIO_ACTIVE_LOW>;
+>  
+> +		status = "disabled";
+> +
+>  		port {
+> -			tianma_nt36672a_in_0: endpoint {
+> +			panel_in_0: endpoint {
+>  				remote-endpoint = <&dsi0_out>;
+>  			};
+>  		};
+> @@ -243,7 +244,7 @@ tianma_nt36672a_in_0: endpoint {
+>  };
+>  
+>  &dsi0_out {
+> -	remote-endpoint = <&tianma_nt36672a_in_0>;
+> +	remote-endpoint = <&panel_in_0>;
+>  	data-lanes = <0 1 2 3>;
+>  };
+>  
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
+> new file mode 100644
+> index 000000000000..fcbef5ad2909
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
+> @@ -0,0 +1,10 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/dts-v1/;
+> +
+> +#include "sdm845-xiaomi-beryllium-common.dtsi"
 
-Thank you for the patch! Yet something to improve:
+Nice diff.
 
-[auto build test ERROR on v5.19]
-[also build test ERROR on next-20220805]
-[cannot apply to jic23-iio/togreg linus/master]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+However what happened to compatibles? Why do you have now two boards
+with same compatible and model name?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jakob-Hauser/iio-magnetometer-yas530-Change-data-type-of-hard_offsets-to-signed/20220808-080209
-base:    3d7cb6b04c3f3115719235cc6866b10326de34cd
-config: hexagon-randconfig-r045-20220807 (https://download.01.org/0day-ci/archive/20220808/202208081346.EWHUWCSa-lkp@intel.com/config)
-compiler: clang version 16.0.0 (https://github.com/llvm/llvm-project 5f1c7e2cc5a3c07cbc2412e851a7283c1841f520)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/2e5a660a127b0fa7ca71e3e30356dc2254ec13eb
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Jakob-Hauser/iio-magnetometer-yas530-Change-data-type-of-hard_offsets-to-signed/20220808-080209
-        git checkout 2e5a660a127b0fa7ca71e3e30356dc2254ec13eb
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash drivers/iio/magnetometer/
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
->> drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not a compile-time constant
-                   .product_name = yas5xx_product_name[yas530],
-                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 error generated.
-
-
-vim +933 drivers/iio/magnetometer/yamaha-yas530.c
-
-   929	
-   930	static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
-   931		[yas530] = {
-   932			.devid = YAS530_DEVICE_ID,
- > 933			.product_name = yas5xx_product_name[yas530],
-   934			.version_name = yas5xx_version_names[yas530],
-   935		},
-   936		[yas532] = {
-   937			.devid = YAS532_DEVICE_ID,
-   938			.product_name = yas5xx_product_name[yas532],
-   939			.version_name = yas5xx_version_names[yas532],
-   940		},
-   941		[yas533] = {
-   942			.devid = YAS532_DEVICE_ID,
-   943			.product_name = yas5xx_product_name[yas533],
-   944			.version_name = yas5xx_version_names[yas533],
-   945		},
-   946	};
-   947	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Best regards,
+Krzysztof
