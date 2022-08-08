@@ -2,96 +2,137 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EF1CC00140
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 15:56:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD5D6C00140
+	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 15:59:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238164AbiHHP4M (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 Aug 2022 11:56:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60062 "EHLO
+        id S243808AbiHHP74 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 Aug 2022 11:59:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236569AbiHHP4K (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 11:56:10 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24086A47B;
-        Mon,  8 Aug 2022 08:56:10 -0700 (PDT)
+        with ESMTP id S243283AbiHHP7z (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 11:59:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5604315713;
+        Mon,  8 Aug 2022 08:59:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CEF8EB80FCD;
-        Mon,  8 Aug 2022 15:56:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E36DC43149;
-        Mon,  8 Aug 2022 15:56:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E95E96108A;
+        Mon,  8 Aug 2022 15:59:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95761C433C1;
+        Mon,  8 Aug 2022 15:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659974167;
-        bh=v2lgBXjNZtsYzCboM1GnlUy05vvC9EjJee5FKw0cYsQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mIHwvx+tj2BxsPEjBZ0vinsl4KXkSc+hUHjGOo+mlAFTJmKRMbMY/LMLgKCe1QNv4
-         nWVNNWJGt7Id3daVXh9gG0kGjCNCY90Ec8lpHmpiS1DGviiH1Ye9GbbRrGb+16XcTk
-         luRIciiAM6aSFU/64rT51FuMNb4ojhjb2dLoLIYZ+W9kTOL0L7kKvRP7p2k9OZgB3Z
-         GtVeNG5fVpg6X/jx4l8owP7xHWDcjmfsPc734Gi4Kp9fRvQ5uBJr6nArf2AwQYpBwM
-         SN13eiIZoUhJYu5L0DT1feKn/7/6/FgwtFdgCYbKqZXXmX4XC/KvDmagMFJjHVaUCk
-         W3BZthQ+6i1fg==
-Received: by mail-vk1-f179.google.com with SMTP id x128so1554356vke.3;
-        Mon, 08 Aug 2022 08:56:07 -0700 (PDT)
-X-Gm-Message-State: ACgBeo0LKoPn+86gdnjt8QxyNSMi8FgwachBS1wcPtvnAN2QD9BgOtHz
-        zZ3EmJYhrO/f1C0WUxy9g+VwzkqwBcXFCasTCg==
-X-Google-Smtp-Source: AA6agR6IlSvPTzHVkYtc/Dl9eo8Po13k4nQJVZL4SY2rHsdelBv+y2wXVK/2+5kYFhsWJQqicxm/4R8FPkDt1nisypg=
-X-Received: by 2002:a1f:2dc2:0:b0:377:84fa:dbe5 with SMTP id
- t185-20020a1f2dc2000000b0037784fadbe5mr8008232vkt.15.1659974166257; Mon, 08
- Aug 2022 08:56:06 -0700 (PDT)
+        s=k20201202; t=1659974393;
+        bh=Z53zG6cwPszYMRBJabN7oSlgPt8lpZ7x+FSQmyyFDUw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cCfbmwUe7iaiTW+EWQhXvzJsolUZNxsRviWkmW6HGvu9uraXyNRdoLV0TB7bjUjL6
+         1sxcZQDro9h/8RwZR5ZDZAj6dKZaD6vKK2J4xxcqSFLoLK5a01OdCvLW0Ke4bmCw79
+         /G1aOSgJCgBTQ/HKbgkBCXai9kB+ZqsW4iIxlu6CFClFXVfgnQi6JRAa3FqvKz5DQg
+         0NPEbqrUwV33NDfNrtlTHx53yMSWxqUr4bY7eDdGckhz0an/lDOxiE9VMBnYlpfcsj
+         qc8wzALJS0jAZM/N7oVkdpQyfEQrhKztUgw3M0JmK2Y/Bz5bePSBNF3N0wkv/o0V7u
+         eTTRyGGYeMi4Q==
+Date:   Mon, 8 Aug 2022 08:59:50 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     kernel test robot <lkp@intel.com>,
+        Jakob Hauser <jahau@rocketmail.com>,
+        Jonathan Cameron <jic23@kernel.org>, llvm@lists.linux.dev,
+        kbuild-all@lists.01.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v5 09/14] iio: magnetometer: yas530: Introduce
+ "chip_info" structure
+Message-ID: <YvEy9uq49ZiBHtFd@dev-arch.thelio-3990X>
+References: <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
+ <202208081346.EWHUWCSa-lkp@intel.com>
+ <CAHp75VecMvtHwkA6=JxHbX0oeRg+-fXNraggBCaOxqhf9WUdzQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20220806163255.10404-1-markuss.broks@gmail.com> <20220806163255.10404-2-markuss.broks@gmail.com>
-In-Reply-To: <20220806163255.10404-2-markuss.broks@gmail.com>
-From:   Rob Herring <robh@kernel.org>
-Date:   Mon, 8 Aug 2022 09:55:54 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJE7VzqdcoDDNw2QkDHyKr4WgOrgLwsHWJa+BwPTb=A8w@mail.gmail.com>
-Message-ID: <CAL_JsqJE7VzqdcoDDNw2QkDHyKr4WgOrgLwsHWJa+BwPTb=A8w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] drivers: serial: earlycon: Correct argument name
-To:     Markuss Broks <markuss.broks@gmail.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
-        <devicetree@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>, Andy
-        Shevchenko <andy.shevchenko@gmail.com>," 
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        phone-devel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Kees Cook <keescook@chromium.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Michal Suchanek <msuchanek@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Wei Ming Chen <jj251510319013@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75VecMvtHwkA6=JxHbX0oeRg+-fXNraggBCaOxqhf9WUdzQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Aug 6, 2022 at 10:34 AM Markuss Broks <markuss.broks@gmail.com> wrote:
->
-> The "node" argument is actually an offset,
+Hi Andy,
 
-It's an offset to a node in the FDT. The fact that it is an offset is
-an internal implementation detail of the FDT format. So really, it's a
-handle to a node. 'node' is more descriptive to its purpose.
+On Mon, Aug 08, 2022 at 01:18:06PM, +0200, Andy Shevchenko wrote:
+> On Mon, Aug 8, 2022 at 7:40 AM kernel test robot <lkp@intel.com> wrote:
+> 
+> ...
+> 
+> > All errors (new ones prefixed by >>):
+> >
+> > >> drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not a compile-time constant
+> >                    .product_name = yas5xx_product_name[yas530],
+> >                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >    1 error generated.
+> 
+> What?!
+> 
+> The yas530 is a part of the enum, how come that compiler can't see
+> this? Looks like a Clang bug.
 
-> and it's also an "int", and not "unsigned long".
+That is not what clang is complaining about here, you'll see the same
+error even if you used '0', '1', or '2' here:
 
-Uh, no it's not. of_flat_dt_*() functions all take an unsigned long.
+  drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not a compile-time constant
+                  .product_name = yas5xx_product_name[0],
+                                  ^~~~~~~~~~~~~~~~~~~~~~
+  1 error generated.
 
-Rob
+It is complaining that the initializer element
+('yas5xx_product_name[yas530]', rather than just 'yas530') is not
+constant, which is a true complaint if I am reading C11 standard 6.6.7
+correctly.
+
+GCC 8+ has chosen to accept const structures as constant expressions in
+designated initializers, which it is allowed to do per 6.6.10. Nick did
+have a patch to try and match this behavior in clang but the work that
+was requested doesn't seem to be trivial so it was never finalized:
+https://reviews.llvm.org/D76096
+
+You'll see the same error with GCC 7:
+
+  drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not constant
+     .product_name = yas5xx_product_name[yas530],
+                     ^~~~~~~~~~~~~~~~~~~
+  drivers/iio/magnetometer/yamaha-yas530.c:933:19: note: (near initialization for ‘yas5xx_chip_info_tbl[0].product_name’)
+  drivers/iio/magnetometer/yamaha-yas530.c:938:19: error: initializer element is not constant
+     .product_name = yas5xx_product_name[yas532],
+                     ^~~~~~~~~~~~~~~~~~~
+  drivers/iio/magnetometer/yamaha-yas530.c:938:19: note: (near initialization for ‘yas5xx_chip_info_tbl[1].product_name’)
+  drivers/iio/magnetometer/yamaha-yas530.c:943:19: error: initializer element is not constant
+     .product_name = yas5xx_product_name[yas533],
+                     ^~~~~~~~~~~~~~~~~~~
+  drivers/iio/magnetometer/yamaha-yas530.c:943:19: note: (near initialization for ‘yas5xx_chip_info_tbl[2].product_name’)
+
+Cheers,
+Nathan
+
+> >    930  static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
+> >    931          [yas530] = {
+> >    932                  .devid = YAS530_DEVICE_ID,
+> >  > 933                  .product_name = yas5xx_product_name[yas530],
+> >    934                  .version_name = yas5xx_version_names[yas530],
+> >    935          },
+> >    936          [yas532] = {
+> >    937                  .devid = YAS532_DEVICE_ID,
+> >    938                  .product_name = yas5xx_product_name[yas532],
+> >    939                  .version_name = yas5xx_version_names[yas532],
+> >    940          },
+> >    941          [yas533] = {
+> >    942                  .devid = YAS532_DEVICE_ID,
+> >    943                  .product_name = yas5xx_product_name[yas533],
+> >    944                  .version_name = yas5xx_version_names[yas533],
+> >    945          },
+> >    946  };
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
