@@ -2,60 +2,58 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AA05C00140
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 11:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AF04C00140
+	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 11:23:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241796AbiHHLSr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 Aug 2022 07:18:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60886 "EHLO
+        id S242853AbiHHLXg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 Aug 2022 07:23:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236621AbiHHLSo (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 07:18:44 -0400
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D603DDF31;
-        Mon,  8 Aug 2022 04:18:43 -0700 (PDT)
-Received: by mail-qk1-x729.google.com with SMTP id d8so1533218qkk.1;
-        Mon, 08 Aug 2022 04:18:43 -0700 (PDT)
+        with ESMTP id S242764AbiHHLXf (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 07:23:35 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4841AB7D6;
+        Mon,  8 Aug 2022 04:23:35 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id u12so6236192qtk.0;
+        Mon, 08 Aug 2022 04:23:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=Qo8m4+JaUBO8TwCYugZyrFg+A5kM5JeZCqY5kQmlmyU=;
-        b=Pir+jptX8VRJ8EVAtD6tXT5+75IX0KYzsXb9bbzvlPsJI4v1ChlsSUQ7ERx7dk3IiD
-         6Vyxl01O5eQ+gdH+SLwH5mCCzJk2nG3uFaUOCVQhIDdhFiRP/7/+c97MbodXqF0X55Cu
-         PM/DcIRZOcUy+MYek5vf88HN1bDpUcETG98sx61TJhRbn6Qcx3U+s2smusNgAgbjdsjw
-         96GZKaN4vc8R1s2kk7ysdIh7IcO98gKfWd/EYa9EsgSblJ7s7+LlrSRfkpTS51KVAdYZ
-         Qwym4B0UhzOJtiYK3E7kR5jhR5RchxKxhdf1dSCteua13+7/D5TlUWMILmQcY7M8DCtk
-         +d5Q==
+        bh=+2krzwmHahgUXNORuk3B+a6Vitl3Ogzono33OEv+W8A=;
+        b=l5TeFUP+ySylr342GqGyF3uWd85sUUsmdA8JnRcjx6eXsRya1WltlCpK/8gMOe5A/V
+         YsEs6iotz9xgzDsCPPC6HwvgoQsR+HQDLMjhqvvVZ1qsmZl2tQ6iVY3CvKw0WFac6SIB
+         ZgmgD9w4Ei0UpYs69+JEoou+mxdA2qYdLuA6mIahkJVosaNt/lg6Y63ufyhxHN45lMge
+         w52J2C4uv8l2trO3QJGvNkQYVooenxXIZ13o7bp9kkTW+B0EkGDso8jSifobAufbCwnp
+         f4Y0yx8CeJIJ4nzEr2GlCW3lJ90EsswmstXwqA2OWr7i2Mwsfzf3zP7eU+wkVnYKTyQT
+         f2TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=Qo8m4+JaUBO8TwCYugZyrFg+A5kM5JeZCqY5kQmlmyU=;
-        b=ddx2oI6X0krNtkzIxRwePlsyyNqjAH/lq7H5aRICbRLNxMm4eQF1YVbU5VEzlQvGZT
-         TxKbxvuSllfsTMy90x5zkowl2KN7okUQ7FNq41PiVwaZ1HthrqJE4g9Jm+2YguG5vVkC
-         R4Kplxiv+9jr4YG9eHq5Mjwe6JaDH/5yQb7Q28n8A/Lii8qi5wzVib/An5ktgg/Z+/2K
-         KK5oR1eOFTiHGWIU1DcGzkbG94FTyFVX5Ci8C1/hqbfv+2BRX/b9vzb9DiGqqhJc0ABz
-         7PoF6HCRQSGjTUlFIq03rCwd+Qsub6/fYWugCyog8uCHuwGpM57/9PgRSsx4flUIZ4U0
-         ob3A==
-X-Gm-Message-State: ACgBeo2106K3d3wpEzsgrSWYLwWD1RQVfZvGPlGz++xMgSMtKTP1SNPq
-        iDNonIYFE0rzUQOiWS6gl3nGgf+602U5sJCbZ0U=
-X-Google-Smtp-Source: AA6agR4MPB6bchiE70z1ZxXE04FW0qRuKvTFfYUPlSOk6YpjiOc5I+b4ZgbaiH5i6eC9sCOplXqIf1+FTgSZmM9/U2g=
-X-Received: by 2002:a05:620a:254d:b0:6ab:84b8:25eb with SMTP id
- s13-20020a05620a254d00b006ab84b825ebmr13544878qko.383.1659957522822; Mon, 08
- Aug 2022 04:18:42 -0700 (PDT)
+        bh=+2krzwmHahgUXNORuk3B+a6Vitl3Ogzono33OEv+W8A=;
+        b=GWpF+77j+mUostlFP0Z/QtnMAmaIY0kBgKO7r+/9kRpLXq7Jj8R1J/oBK9E+e1UWhc
+         9otXZ6EdCGDByMK5F9qNeJNVnLFjxZai+kfvvryKwDY3FBMUNdEIUmQ8jDoct3L8kIed
+         +P2pHnDNlDA+cX2BwSB0K/uloLqJWgp7z/e5mlQYEo2/eFS2G0JCj0kXKIl+8VkgWFEY
+         sMjw9XStseTRCTQn9rbVxpYt/XOFfHJYQfPlGyT2yB+/t6Hg8KW2bLGbNKca19g8oOdg
+         shvPdIDoYhqJMG+r6XaQoJdMOoeCuu5y+kXSFiPoOLBRryiTjf6cglsLaX4IdoZE5d9+
+         J2pQ==
+X-Gm-Message-State: ACgBeo1GVLrS6qpSzD2xfmiczty3pF08HQj0Qo8nIZZX++yXommJeczz
+        Zn8Ar8DQfN0XFOHCID2sKCepehgAJYR75tyJ238=
+X-Google-Smtp-Source: AA6agR6YjW392Efoz1a0Rf5WLEeI9NpPi+p2DApTDKk6IDVRkFNma85RJUjnPHDH2WFpv5ekKCFn8ehKBnrb9K58PP4=
+X-Received: by 2002:a05:622a:14d2:b0:341:9fcb:79a6 with SMTP id
+ u18-20020a05622a14d200b003419fcb79a6mr15167469qtx.195.1659957814320; Mon, 08
+ Aug 2022 04:23:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
- <202208081346.EWHUWCSa-lkp@intel.com>
-In-Reply-To: <202208081346.EWHUWCSa-lkp@intel.com>
+References: <cover.1659909060.git.jahau@rocketmail.com> <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
+In-Reply-To: <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 8 Aug 2022 13:18:06 +0200
-Message-ID: <CAHp75VecMvtHwkA6=JxHbX0oeRg+-fXNraggBCaOxqhf9WUdzQ@mail.gmail.com>
+Date:   Mon, 8 Aug 2022 13:22:56 +0200
+Message-ID: <CAHp75VcS9y=cp6+G-QweVpQ6+HdEJHuMx3dBug+aSyfae-Ra8w@mail.gmail.com>
 Subject: Re: [PATCH v5 09/14] iio: magnetometer: yas530: Introduce "chip_info" structure
-To:     kernel test robot <lkp@intel.com>
-Cc:     Jakob Hauser <jahau@rocketmail.com>,
-        Jonathan Cameron <jic23@kernel.org>, llvm@lists.linux.dev,
-        kbuild-all@lists.01.org, Lars-Peter Clausen <lars@metafoo.de>,
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Linus Walleij <linus.walleij@linaro.org>,
         Hans de Goede <hdegoede@redhat.com>,
         linux-iio <linux-iio@vger.kernel.org>,
@@ -66,39 +64,38 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Aug 8, 2022 at 7:40 AM kernel test robot <lkp@intel.com> wrote:
+On Mon, Aug 8, 2022 at 1:07 AM Jakob Hauser <jahau@rocketmail.com> wrote:
+>
+> This commit introduces the "chip_info" structure approach for better variant
+> handling.
+
+Read "Submitting Patches" in the chapter which mentions "This patch"
+pattern and fix the above accordingly.
+
+> The variant to be used is now chosen by the Device Tree (enum "chip_ids"),
+> not by the chip ID in the register. However, there is a check to make sure
+> they match (using integer "id_check").
 
 ...
 
-> All errors (new ones prefixed by >>):
->
-> >> drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not a compile-time constant
->                    .product_name = yas5xx_product_name[yas530],
->                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
->    1 error generated.
+> +enum chip_ids {
+> +       yas530,
+> +       yas532,
+> +       yas533,
+> +};
 
-What?!
+So, it's an error from Clang... Workaround can be simply to use set of
+#define:s instead.
 
-The yas530 is a part of the enum, how come that compiler can't see
-this? Looks like a Clang bug.
+...
 
->    930  static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
->    931          [yas530] = {
->    932                  .devid = YAS530_DEVICE_ID,
->  > 933                  .product_name = yas5xx_product_name[yas530],
->    934                  .version_name = yas5xx_version_names[yas530],
->    935          },
->    936          [yas532] = {
->    937                  .devid = YAS532_DEVICE_ID,
->    938                  .product_name = yas5xx_product_name[yas532],
->    939                  .version_name = yas5xx_version_names[yas532],
->    940          },
->    941          [yas533] = {
->    942                  .devid = YAS532_DEVICE_ID,
->    943                  .product_name = yas5xx_product_name[yas533],
->    944                  .version_name = yas5xx_version_names[yas533],
->    945          },
->    946  };
+> +       if (id_check != yas5xx->chip_info->devid) {
+
+> +       switch (yas5xx->chip_info->devid) {
+
+You can make these kind of lines shorter by introducing a temporary variable:
+
+   struct ... *ci = yaas5xx->chip_info;
 
 -- 
 With Best Regards,
