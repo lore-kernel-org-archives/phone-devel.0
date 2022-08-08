@@ -2,62 +2,60 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16621C00140
-	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 13:24:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 940E0C25B08
+	for <phone-devel@archiver.kernel.org>; Mon,  8 Aug 2022 13:42:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243309AbiHHNYS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 Aug 2022 09:24:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35612 "EHLO
+        id S242959AbiHHNmi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 Aug 2022 09:42:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236301AbiHHNYR (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 09:24:17 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9195A38A8
-        for <phone-devel@vger.kernel.org>; Mon,  8 Aug 2022 06:24:15 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id r1-20020a05600c35c100b003a326685e7cso5816498wmq.1
-        for <phone-devel@vger.kernel.org>; Mon, 08 Aug 2022 06:24:15 -0700 (PDT)
+        with ESMTP id S243432AbiHHNme (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 Aug 2022 09:42:34 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D073FBE37
+        for <phone-devel@vger.kernel.org>; Mon,  8 Aug 2022 06:42:32 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id bx38so9832433ljb.10
+        for <phone-devel@vger.kernel.org>; Mon, 08 Aug 2022 06:42:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=/9tQ7uEY5Z8pbFwi6SIpdyCeGRig7VEPT/0C3Du8FpQ=;
-        b=shy5ZdIVs1IbXiYHLYxdjerjC0zrWDPTOEMMfKMmPG+FC6xPvhtweOp9Q60OvHidAQ
-         OYt+pZZcuPsz+YkoQ6F8V4KrPDr+oR1UiGvmElYFQkPgMUecpDlIF5Zvne2qzAc6srtL
-         PtSIkA4JpiG4hLYRN+52Aro1cDtvmYLiTBCwX0MlX9xm7FF88DWnFUBi4NpwUZaUWTC4
-         roITeVGn4zzg56HM8p6e0Yz46SBPVkPrvO1D50MFNXwkz7uRwVdl7PHEKpoaD15kGUix
-         HCaz9bqNjjCkinkMq1Qck4QsqTnJv6ju8txjUcgK+lAvy/82Lu9Sso5BNsoHB9LBkTQ6
-         1T+g==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=5H5TR7yfLLVGjO2fI6qniVBtadkhJI8/3v58NZ4+aeg=;
+        b=bXnvRJ6nOxFzSC03Dcmjii23iewhz/xPMP7mmNk40sy/2AJKnuZzqL0EDpvUGeDqb/
+         binXxXc8RW/lSPUkXLVqhu5er/MNiwqZwp/vrJZCwTGtcO5czhs8JW3MsvyjizesezH9
+         aoolBtrW1JlePDeHYPBYGqFc5VPWSRcbcjVJ5CY8x9+AQhQJVugDLttPyBce9HhO8zu1
+         DDCQ3E8qIlxi4VBrThQzAHr52rfslCZGffC5BKzyWbXnsYTJyDbrGoOXMLY1kyvppXgZ
+         vsIseXn2CRl2KBcYYl4FPmr1VD0I+kKg22MgoJJdb4r8/5WkdDE3Z3V/Z8i3Mlw2MJWD
+         J+bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=/9tQ7uEY5Z8pbFwi6SIpdyCeGRig7VEPT/0C3Du8FpQ=;
-        b=4IKGcpFDzX1TnvDQNxVvCV3vmfjqgREGz9204Qgzb0ykaKdmPSmEDTMCZjMz67uN5X
-         0HQ7H8pNJoSbMs8FrKrWseibz4wcQuvHgLtIWJm2lbOHKcmbAbLzEypiKUVSW7m/ogr9
-         OqpKfXZ69Vh7oTh7/URhZ5da6axIb28ImZmtNsanmtArLu3wXlB+PPuCs6YtRMFXMs+6
-         c2F0TyLJ4S2yxUxmQ9vOZVJx6z8fKmoILvIi2YkeoXPFGZXTk3mqA4+bNN+IJEjqarYe
-         kZz5SLR1iFjkx5VKPz7SBGxyga/9XgYn3xt3wWGzYJN3xo0PXecbaKQJxyjxG+/O7zFM
-         K2Ng==
-X-Gm-Message-State: ACgBeo2/WVvbU6aywQyzcVnIeo75BVZ/LDMMQfwNdaZOCv05LfKfUyBe
-        QWVEtvqvXd+Oiio8FDzChHg49w==
-X-Google-Smtp-Source: AA6agR4xRaklyOa845xMRnZJAEhUAhq86KTeK6IcRW5RKhgLv7hY5763BR7cbMHy0iHuUsIkldl20w==
-X-Received: by 2002:a05:600c:384e:b0:3a4:f9e9:3407 with SMTP id s14-20020a05600c384e00b003a4f9e93407mr12231522wmr.177.1659965054121;
-        Mon, 08 Aug 2022 06:24:14 -0700 (PDT)
-Received: from [192.168.1.12] ([81.178.197.238])
-        by smtp.gmail.com with ESMTPSA id v128-20020a1cac86000000b003a327b98c0asm13794826wme.22.2022.08.08.06.24.12
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=5H5TR7yfLLVGjO2fI6qniVBtadkhJI8/3v58NZ4+aeg=;
+        b=4HmCmPtKfMvKHd5DP7FNtx2SUH4AouWd4qO+jmKnR86WiA8dvw2AloOH8AEQZPqKcf
+         c2eYtoQMyvKEEixe2UboXw76N37BoZRN/P8T1tGPebp+oo7R2QsCh5Vm530ptN0XIirn
+         ZoKLs6HtgJAT2CyHPXcyqa/94ptGpHSgt+dSPwQaviDtIulilYFF7y72ptyO0CqdLVuw
+         jECUjpN5gaKptXDG2i51F+JFkQbvoRkOZ9SVRNMfsOBm4MYuvhWazzayiy8sR0YhzZtu
+         X4RaZurSRNtUIBlMOFJ80MSjjpbe5Cvq/9kIfLIUTUl2KcuulDBiRPw2F2yYpigqb6Kd
+         DD8g==
+X-Gm-Message-State: ACgBeo0SE2pcmTDPKtdnFkaMD6J2/i+jo6/7JOcfGMg4maCGdiJj9gD8
+        +RHs5QIcmCyZWOQ+SeVxZPORuw==
+X-Google-Smtp-Source: AA6agR5A2GynCEEZbEtFP8UiibR/fWKXFnx5kgKUiZ9UHHnA0JhCbjjzFv+icaTSaByKlBRw5mHQGg==
+X-Received: by 2002:a2e:b8d3:0:b0:25f:e94d:10ae with SMTP id s19-20020a2eb8d3000000b0025fe94d10aemr767505ljp.331.1659966151058;
+        Mon, 08 Aug 2022 06:42:31 -0700 (PDT)
+Received: from [192.168.1.39] ([83.146.140.105])
+        by smtp.gmail.com with ESMTPSA id t7-20020a05651c204700b0025e5a65afbbsm1369551ljo.120.2022.08.08.06.42.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Aug 2022 06:24:13 -0700 (PDT)
-Message-ID: <f16afc86-520a-f0b1-a7ea-f02cfb1c21ed@linaro.org>
-Date:   Mon, 8 Aug 2022 14:24:12 +0100
+        Mon, 08 Aug 2022 06:42:30 -0700 (PDT)
+Message-ID: <e62e2f08-5b1e-6488-375f-d4c46d7ce785@linaro.org>
+Date:   Mon, 8 Aug 2022 16:42:29 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 0/8] power: supply: Add driver for Qualcomm SMBCHG
+ Thunderbird/91.12.0
+Subject: Re: [PATCH 8/8] power: supply: Add driver for Qualcomm SMBCHG
 Content-Language: en-US
-To:     Yassine Oudjana <yassine.oudjana@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Yassine Oudjana <yassine.oudjana@gmail.com>
 Cc:     Sebastian Reichel <sre@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -70,89 +68,174 @@ Cc:     Sebastian Reichel <sre@kernel.org>,
         devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <20220808073459.396278-1-y.oudjana@protonmail.com>
- <a233730b-6ac3-2cb9-cc5c-21ca6289fadc@linaro.org>
- <BUIAGR.NIMOFVJH9GVZ1@gmail.com>
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <BUIAGR.NIMOFVJH9GVZ1@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ <20220808073459.396278-9-y.oudjana@protonmail.com>
+ <02243d57-d7aa-7aa9-4f95-24c417ff8c69@linaro.org>
+ <S0KAGR.INJ75H9K5FWO1@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <S0KAGR.INJ75H9K5FWO1@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-
-On 08/08/2022 10:39, Yassine Oudjana wrote:
+On 08/08/2022 13:05, Yassine Oudjana wrote:
 > 
-> On Mon, Aug 8 2022 at 11:41:26 +03:00:00, Krzysztof Kozlowski 
+> On Mon, Aug 8 2022 at 11:55:02 +03:00:00, Krzysztof Kozlowski 
 > <krzysztof.kozlowski@linaro.org> wrote:
 >> On 08/08/2022 10:34, Yassine Oudjana wrote:
->>>  From: Yassine Oudjana <y.oudjana@protonmail.com>
+>>>  From: Yassine Oudjana <y.oudjana@protonmail.com>
 >>>
->>>  This series adds a driver for the switch-mode battery charger found on PMICs
->>>  such as PMI8994, and referred to in the vendor kernel[1] as smbcharger or
->>>  SMBCHG. More details on this block can be found in the last patch message.
+>>>  Add a driver for the switch-mode battery charger found on
+>>>  PMICs such as PMI8994. This block is referred to in the vendor
+>>>  kernel[1] as smbcharger or SMBCHG. It has USB and DC inputs,
+>>>  and can generate VBUS for USB OTG with a boost regulator.
+>>>  It supports Qualcomm Quick Charge 2.0, and can operate along
+>>>  with a parallel charger (SMB1357, or SMB1351 for added Quick
+>>>  Charge 3.0 support) for improved efficiency at higher currents.
 >>>
->>>  This driver currently supports the charger blocks of PMI8994 and PMI8996.
->>>  PMI8950 was also to be supported, but it was dropped due to some last minute
->>>  issues, to be brought back at a later time once ready.
+>>>  At the moment, this driver supports charging off of the USB input
+>>>  at 5V with input current limit up to 3A. It also includes support
+>>>  for operating the OTG boost regulator as well as extcon
+>>>  functionality, reporting states of USB and USB_HOST with VBUS and
+>>>  charge port types.
 >>>
->>>  The OTG regulator remains unused on devices where the charger is enabled in
->>>  this series due to lack of a consumer. Applying a patch[2] adding vbus-supply
->>>  to DWC3 allows it to enable the OTG regulator making USB host without
->>>  external power possible.
+>>>  Co-developed-by: Alejandro Tafalla <atafalla@dnyon.com>
+>>>  Signed-off-by: Alejandro Tafalla <atafalla@dnyon.com>
+>>>  Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
 >>>
->>>  [1] 
->>> https://github.com/android-linux-stable/msm-3.18/blob/kernel.lnx.3.18.r34-rel/drivers/power/qpnp-smbcharger.c 
+>>>  [1] 
+>>> https://github.com/android-linux-stable/msm-3.18/blob/kernel.lnx.3.18.r34-rel/drivers/power/qpnp-smbcharger.c
+>>>  ---
+>>>   MAINTAINERS                        |    2 +
+>>>   drivers/power/supply/Kconfig       |   11 +
+>>>   drivers/power/supply/Makefile      |    1 +
+>>>   drivers/power/supply/qcom-smbchg.c | 1664 
+>>> ++++++++++++++++++++++++++++
+>>>   drivers/power/supply/qcom-smbchg.h |  428 +++++++
+>>>   5 files changed, 2106 insertions(+)
+>>>   create mode 100644 drivers/power/supply/qcom-smbchg.c
+>>>   create mode 100644 drivers/power/supply/qcom-smbchg.h
 >>>
->>>  [2] 
->>> https://lore.kernel.org/linux-usb/20200805061744.20404-1-mike.looijmans@topic.nl/ 
+>>>  diff --git a/MAINTAINERS b/MAINTAINERS
+>>>  index f6cf3a27d132..9b8693050890 100644
+>>>  --- a/MAINTAINERS
+>>>  +++ b/MAINTAINERS
+>>>  @@ -16964,6 +16964,8 @@ L:	linux-pm@vger.kernel.org
+>>>   L:	linux-arm-msm@vger.kernel.org
+>>>   S:	Maintained
+>>>   F:	Documentation/devicetree/bindings/power/supply/qcom,smbchg.yaml
+>>>  +F:	drivers/power/supply/qcom-smbchg.c
+>>>  +F:	drivers/power/supply/qcom-smbchg.h
 >>>
+>>>   QUALCOMM TSENS THERMAL DRIVER
+>>>   M:	Amit Kucheria <amitk@kernel.org>
+>>>  diff --git a/drivers/power/supply/Kconfig 
+>>> b/drivers/power/supply/Kconfig
+>>>  index 1aa8323ad9f6..246bfc118d9f 100644
+>>>  --- a/drivers/power/supply/Kconfig
+>>>  +++ b/drivers/power/supply/Kconfig
+>>>  @@ -633,6 +633,17 @@ config CHARGER_QCOM_SMBB
+>>>   	  documentation for more detail.  The base name for this driver is
+>>>   	  'pm8941_charger'.
+>>>
+>>>  +config CHARGER_QCOM_SMBCHG
+>>>  +	tristate "Qualcomm Switch-Mode Battery Charger"
 >>
->> How is it different from PMI8998? I expect not that much, so this should
->> be based on existing work:
->> https://lore.kernel.org/linux-arm-msm/20220706194125.1861256-1-caleb.connolly@linaro.org/ 
+>> As I mentioned in cover letter, this should be either squashed into
+>> Caleb's work, merged into some common part or kept separate but with
+>> clear explaining why it cannot be merged.
 >>
+>> Some incomplete review follows:
 >>
->> Unless they are different, but then please create common parts and
->> explain the differences.
+>>>  +	depends on MFD_SPMI_PMIC || COMPILE_TEST
+>>>  +	depends on OF
+>>>  +	depends on EXTCON
+>>>  +	depends on REGULATOR
+>>>  +	select QCOM_PMIC_SEC_WRITE
+>>>  +	help
+>>>  +	  Say Y to include support for the Switch-Mode Battery Charger 
+>>> block
+>>>  +	  found in Qualcomm PMICs such as PMI8994.
+>>>  +
+>>>   config CHARGER_BQ2415X
+>>>   	tristate "TI BQ2415x battery charger driver"
+>>>   	depends on I2C
+>>>  diff --git a/drivers/power/supply/Makefile 
+>>> b/drivers/power/supply/Makefile
+>>>  index 7f02f36aea55..7c2c037cd8b1 100644
+>>>  --- a/drivers/power/supply/Makefile
+>>>  +++ b/drivers/power/supply/Makefile
+>>>  @@ -83,6 +83,7 @@ obj-$(CONFIG_CHARGER_MAX8998)	+= max8998_charger.o
+>>>   obj-$(CONFIG_CHARGER_MP2629)	+= mp2629_charger.o
+>>>   obj-$(CONFIG_CHARGER_MT6360)	+= mt6360_charger.o
+>>>   obj-$(CONFIG_CHARGER_QCOM_SMBB)	+= qcom_smbb.o
+>>>  +obj-$(CONFIG_CHARGER_QCOM_SMBCHG)	+= qcom-smbchg.o
+>>>   obj-$(CONFIG_CHARGER_BQ2415X)	+= bq2415x_charger.o
+>>>   obj-$(CONFIG_CHARGER_BQ24190)	+= bq24190_charger.o
+>>>   obj-$(CONFIG_CHARGER_BQ24257)	+= bq24257_charger.o
+>>>  diff --git a/drivers/power/supply/qcom-smbchg.c 
+>>> b/drivers/power/supply/qcom-smbchg.c
+>>>  new file mode 100644
+>>>  index 000000000000..23a9667953c9
+>>>  --- /dev/null
+>>>  +++ b/drivers/power/supply/qcom-smbchg.c
+>>>  @@ -0,0 +1,1664 @@
+>>>  +// SPDX-License-Identifier: GPL-2.0-only
 >>
->> Best regards,
->> Krzysztof
+>> Several things look like based from original sources, so please retain
+>> original copyright.
 > 
-> This driver has been in slow developement for a long time before that one 
-> existed, which was why no initial attempt at a common driver was made. With that 
-> said however, I've been watching its development even before it was sent for 
-> review, and It seems that the hardware is actually quite different. For example, 
-> the original charger entirely lacks the type-c functionality that exists on the 
-> second gen one. There are a couple of similar registers like CMD_APSD (same 
-> address and function) CHGR_CFG2 (same/similar function, different address), but 
-> other than that there don't seem to be any major similarities. While I guess it 
-> would technically be possible to force them into one driver with multiple 
-> register tables and separate functions for most tasks, I think it would just 
-> unnecessarily complicate things. One thing that is common however is the secure 
-> register unlock sequence, which I have separated in patch 6 to allow for its use 
-> in other drivers (the fuel gauge block has secure registers too so it will also 
-> be used in an upcoming fuel gauge driver).
+> Do I replace the existing copyright here with the original one, just 
+> add it, or mention that this driver is based on downstream sources 
+> (maybe putting a link as well) then add it?
 
-Yes, we took the shared approach for the still work in progress fuel gauge 
-driver, and whilst there are more similarities in that block for basic 
-functionality at least, more complicated components differ quite a lot as far as 
-I'm aware.
+Add original copyright and optionally mention that it is based on
+downstream source. Links are not needed.
 
-Even for the fuel gauge, separate handlers are needed for a lot of things still:
-https://gitlab.com/sdm845-mainline/linux/-/blob/sdm845/5.19-release/drivers/power/supply/qcom_fg.c#L792
-So I don't think trying to create a common driver here is the right approach.
-
-Perhaps some abstraction is possible for the overall similarities like handling 
-the APSD, dealing with current limiting, cable detection etc, perhaps some of 
-this common code could be pulled out into a shared "helper"?
-
-Maybe this is something worth reconsidering as and when we look at adding 
-support for some of the more complicated features this hardware supports.
+>>
+>>>  +
+>>>  +static int smbchg_probe(struct platform_device *pdev)
+>>>  +{
+>>>  +	struct smbchg_chip *chip;
+>>>  +	struct regulator_config config = {};
+>>>  +	struct power_supply_config supply_config = {};
+>>>  +	int i, irq, ret;
+>>>  +
+>>>  +	chip = devm_kzalloc(&pdev->dev, sizeof(*chip), GFP_KERNEL);
+>>>  +	if (!chip)
+>>>  +		return -ENOMEM;
+>>>  +
+>>>  +	chip->dev = &pdev->dev;
+>>>  +
+>>>  +	chip->regmap = dev_get_regmap(chip->dev->parent, NULL);
+>>>  +	if (!chip->regmap) {
+>>>  +		dev_err(chip->dev, "Failed to get regmap\n");
+>>>  +		return -ENODEV;
+>>>  +	}
+>>>  +
+>>>  +	ret = of_property_read_u32(chip->dev->of_node, "reg", 
+>>> &chip->base);
+>>
+>> First: device_xxx
 > 
+> Okay.
 > 
+>> Second: what if address is bigger than u32? Shouldn't this be
+>> of_read_number or something similar in device_xxx API?
+> 
+> The address wouldn't exceed sizeof(u16). Actually now I think I 
+> should've used property_read_u16 instead. I couldn't find a device_* 
+> equivalent of of_read_number (or at least not a direct one), are you 
+> sure it exists?
 
--- 
-Kind Regards,
-Caleb (they/he)
+I think u16 would be confusing as reg size is minimum u32 (with
+address-cells==1). Instead of of_read_number(), maybe this should be
+of_get_address() (see pm8941-pwrkey.c), but there is no device_xxx()
+equivalent. Still I think it would be the most appropriate to parse
+actual address.
+
+
+
+Best regards,
+Krzysztof
