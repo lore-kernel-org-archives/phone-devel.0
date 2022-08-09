@@ -2,61 +2,101 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18E09C25B07
-	for <phone-devel@archiver.kernel.org>; Tue,  9 Aug 2022 07:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 991F4C19F2D
+	for <phone-devel@archiver.kernel.org>; Tue,  9 Aug 2022 09:12:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238917AbiHIH3w (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 Aug 2022 03:29:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53624 "EHLO
+        id S231234AbiHIJMs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 9 Aug 2022 05:12:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238847AbiHIH3v (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 Aug 2022 03:29:51 -0400
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54FDB20F55
-        for <phone-devel@vger.kernel.org>; Tue,  9 Aug 2022 00:29:50 -0700 (PDT)
-Date:   Tue, 09 Aug 2022 07:29:42 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1660030186; x=1660289386;
-        bh=fayOQDMd/PIWFyagVAiWbk5bupPGTprmhHwG5PCk1bw=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:Feedback-ID:From:To:
-         Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID;
-        b=FchnhQikPHAKTypNXdxlTYoDTEgnwpJWiARJBcC6HumYp3CtbRFKCN1DrItE7lKSE
-         WuWfhPVL9usmzp8Xvf7CYVCdqKvwoc2PaC3DDr3Atc1ij5+/YEIdW9SYs7bghbq7y6
-         wN30muvHp4HWXe/2Q1JZup3LB5O8SeuhdZR2Goxj8+zPJkYrc/60hdb6NF/nXfD96V
-         iRSRRBZ3pB0Tx8eKmTKDipzLIathMNqhLWUHRDLSgishweMBJnNxrJLNFV48dvWZ0W
-         sdiNuMgvf3If0NptmZ58ewdNvkDAL/S0aXUZvhP+hZAxlUwA8AXH8bnnOBuVdvw2wn
-         E2yCxcBqB3UGA==
-To:     markuss.broks@gmail.com
-From:   "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
-Cc:     devicetree@vger.kernel.org, dmitry.torokhov@gmail.com,
-        krzysztof.kozlowski+dt@linaro.org, linmengbo0689@protonmail.com,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, robh+dt@kernel.org,
-        rydberg@bitmath.org, ~postmarketos/upstreaming@lists.sr.ht
-Reply-To: "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
-Subject: Re: [PATCH 0/3] Add support for Imagis IST3038B
-Message-ID: <20220809072845.9855-1-linmengbo0689@protonmail.com>
-Feedback-ID: 40467236:user:proton
+        with ESMTP id S230089AbiHIJMr (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 Aug 2022 05:12:47 -0400
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149DE21824;
+        Tue,  9 Aug 2022 02:12:47 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.west.internal (Postfix) with ESMTP id 0389A32000D9;
+        Tue,  9 Aug 2022 05:12:44 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Tue, 09 Aug 2022 05:12:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=undef.tools; h=
+        cc:cc:content-transfer-encoding:date:date:from:from:in-reply-to
+        :message-id:mime-version:reply-to:sender:subject:subject:to:to;
+         s=fm1; t=1660036364; x=1660122764; bh=rB0hDcQzcfmipxIVzOCx2wq2L
+        3CxDGgdvFX9zfr40wo=; b=j3f3h8I8z89+u/np0MjbsUbJ/qyMFawKi0ER0Qhe5
+        nStveoZA6Mk8qnPfq4wYAvohEof6OKeAVV3vgRYpSvP6LqufNIKIWP1zq6Eq7Mhb
+        rOY5sQKbHKUpIgVS+krJ/u1GOwjGMo0Ob13jEjFdhpvmUWFr4GHhFw34qz27VNxr
+        Ubg2ypPuEpBeU1fmPXh59dMhGdFOvU6S1hdIxXw+byK0r1rlWxEbEZuD8+Py0edJ
+        26puMERe0G49+rR7wFAT6Vs5xJR42UDxhCGDAyYbWnNxOPGzboa6OV5cTn7nUlJl
+        bzCRl/glO44uVYGMgL9+tyuaIDk5g0DBl2phfWYiyXwXw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:message-id
+        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1660036364; x=1660122764; bh=rB0hDcQzcfmipxIVzOCx2wq2L3CxDGgdvFX
+        9zfr40wo=; b=oJFJUkDBEUD9Bn1BU4LOzSXhwRg9esjaztYvqevUB6PkioNO421
+        U+F0fLrD00b6Nj3kDtH5CVamHVeSky3IzG/0hZoJBrkGKuZibPatC/yxiZ8nowpq
+        tDzRctcbUsPOqxMlvO4U6AXVmfCsIVNJXViZ+j75Z+B6hYZbiYjnxvsxoRg1e6mH
+        HXdJNilBbtQQCigjTEriFUGwcGJ3uSunpNTTf+fyt2tiu3yoZEv9s7Mwz3S5rF8e
+        OI0r9yWrHw3YL6Dhau09FryoRi6rvd/1K+9VQ7Z3/d0lffZ0zvCZTIKyVs2LQgIK
+        K2jiuF8azRDHOSRnczxLt6QhFrFh1Zxeuhw==
+X-ME-Sender: <xms:CyXyYlpb4QPU4ZSvqSSQpwKUi_CeRk73FOdG1HZ0YYxdDGDxLnVTFA>
+    <xme:CyXyYnrd9KnS7b0pYF-0wVLaUHoiHWhIcuplR0hR6gyGO6y_l_jF16YTJlyM8O1Yv
+    uTuYAFx1omfUuQqxgg>
+X-ME-Received: <xmr:CyXyYiNBFkyRLIBo0U20yf0eZZnzLunPrKQK3CEwPGHPrU5lQRFp_HdnyUS9AO61OUsYz5BqF7ijVQdex7Iawpml3-fdbe0_zz4Ul803n-73ZJG9FVtaKzsM_Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdegtddgudefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffoggfgsedtkeertd
+    ertddtnecuhfhrohhmpehkvghrnhgvlhesuhhnuggvfhdrthhoohhlshenucggtffrrght
+    thgvrhhnpedttdeiheeggfevgeekgfehkeegleekjeelleekjeeujeektdekteefgffhke
+    dtueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehk
+    vghrnhgvlhesuhhnuggvfhdrthhoohhlsh
+X-ME-Proxy: <xmx:CyXyYg6aJg_kffOVzVibNpTdQgV8NrwggMn8IMDaj3HumbPBsxX_iQ>
+    <xmx:CyXyYk7wA4c9HPqB5l6IgdYud8Ooz0Tb5WnrKp976LZVBN5gfr0a7g>
+    <xmx:CyXyYogBYrOAANNbBx7EzUWplZjTUMxz8KaKbGf9LG51c80BV8-Jrg>
+    <xmx:DCXyYhtLJI97jbtCNPFhwJsyXGOyZfaMT4syjRBYnOuNI80Qg9SFvA>
+Feedback-ID: id76147eb:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 9 Aug 2022 05:12:41 -0400 (EDT)
+From:   kernel@undef.tools
+To:     hadess@hadess.net, hdegoede@redhat.com, dmitry.torokhov@gmail.com,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, megi@xff.cz,
+        Jarrah Gosbell <kernel@undef.tools>
+Subject: [PATCH] Input: goodix: Add support for GT1158
+Date:   Tue,  9 Aug 2022 09:12:01 +0000
+Message-Id: <20220809091200.290492-1-kernel@undef.tools>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-> Tested by Lin Meng-Bo on Samsung Galaxy Core Prime.
->
-> Cc: Lin Meng-Bo <linmengbo0689@protonmail.com>
+From: Ondrej Jirman <megi@xff.cz>
 
-As we discussed before, actually it's not real IST3038B.
-Instead, it should be IST30XXB with chip ID 0x300b300b, which can be
-identified with
-(0x40000000 | IST3038C_DIRECT_ACCESS)
-, while IST3038C uses
-(0x40001000 | IST3038C_DIRECT_ACCESS), similarly.
+This controller is used by PinePhone and PinePhone Pro. Support for
+the PinePhone Pro will be added in a later patch set.
 
-So I would suggest to hold IST3038B patches since I don't really have one.
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
+Signed-off-by: Jarrah Gosbell <kernel@undef.tools>
+---
+ drivers/input/touchscreen/goodix.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Best regards,
+diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/goodix.c
+index aa45a9fee6a0..06d4fcafb766 100644
+--- a/drivers/input/touchscreen/goodix.c
++++ b/drivers/input/touchscreen/goodix.c
+@@ -95,6 +95,7 @@ static const struct goodix_chip_data gt9x_chip_data = {
+ 
+ static const struct goodix_chip_id goodix_chip_ids[] = {
+ 	{ .id = "1151", .data = &gt1x_chip_data },
++	{ .id = "1158", .data = &gt1x_chip_data },
+ 	{ .id = "5663", .data = &gt1x_chip_data },
+ 	{ .id = "5688", .data = &gt1x_chip_data },
+ 	{ .id = "917S", .data = &gt1x_chip_data },
+-- 
+2.35.1
 
-Lin
