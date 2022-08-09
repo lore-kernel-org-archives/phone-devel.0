@@ -2,107 +2,127 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 466C4C19F2D
-	for <phone-devel@archiver.kernel.org>; Tue,  9 Aug 2022 10:18:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A505C19F2D
+	for <phone-devel@archiver.kernel.org>; Tue,  9 Aug 2022 23:23:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242227AbiHIKSl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 Aug 2022 06:18:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36184 "EHLO
+        id S229599AbiHIXXe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 9 Aug 2022 19:23:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242226AbiHIKSi (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 Aug 2022 06:18:38 -0400
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AEC71F2ED;
-        Tue,  9 Aug 2022 03:18:37 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.west.internal (Postfix) with ESMTP id 8A776320005D;
-        Tue,  9 Aug 2022 06:18:33 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Tue, 09 Aug 2022 06:18:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=undef.tools; h=
-        cc:cc:content-transfer-encoding:date:date:from:from:in-reply-to
-        :message-id:mime-version:reply-to:sender:subject:subject:to:to;
-         s=fm1; t=1660040313; x=1660126713; bh=cSaKIuo8NVh4MYoCKJvrALvtp
-        B3Wd3w5fB6WP0MFulE=; b=bjVSMc97VVSRBzi5hSU1RTjrxz9pp8XG3pM/3+8db
-        UCHHxeiLfl7/OEH4X5H4Mz0ZzXyCUJSoETDrZLnr+nq7RMZpkqqnP2GNnNP2ouoJ
-        rCT38ATQbwe10pjOIjLoeNKCm7MRoTd/825AFIW3mOy3sOJSZC91bwWQBLdHJnwe
-        AO5DNvhpFQK8W9oHqNK4iVOozwf1Y+TacDH8QE8LjNS/dHhPdiCGwir9OoVywqUk
-        yB8A6jC6o3HOL5ON/iK8oPdsW77R7ehvBQJW4R74q80/lzJ0KSXfY37WM7BP8wq2
-        8nBoKF5hdnSEjr6o0jTWh6kd45DbgEp8UMjy2B2XvifFA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:message-id
-        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1660040313; x=1660126713; bh=cSaKIuo8NVh4MYoCKJvrALvtpB3Wd3w5fB6
-        WP0MFulE=; b=cDXDx/ySgJ5LBTUjuN2h6DHGhxSvhlz6dKm55pjpdBn/NUiQihN
-        RpmUXBZjKcxhFoyolL9wytXPmxSG61mg2PIDaNZozYqTHaDWM5GWeS0mbiujafQf
-        n14t4cfGgp3jQ+OF8xVuly/XbEaXEBp1W1HhlOA7dCOnDFb39XJ7BGYTztM6rpw1
-        SDKCoGTetFbh8TTtiwOUcnLSBKph720RB0s8EOp1nIF+2z2P55FuZBRW5y+3gtS0
-        GdPjK/VOszUz9VTZ7bH8xt9fPHjNyo0xShC5CdhUqcZexW3qtCjcq88MYXG8QSAg
-        FXTP5ByyRKaBE+Eba2QL0YfTDHTiSPsuwhw==
-X-ME-Sender: <xms:eDTyYlymtfXLxhjbJTUyDEvHHpm2NLrWCrf5m6oRUpOnvjq1BGI-xA>
-    <xme:eDTyYlSZlD4m9gm7QEu3sjLeQtqK5UvaYJ-_Hdsslnnl0uqEQt_ut4FyYvgFzydon
-    IHe9pAqql_Lc9CDucw>
-X-ME-Received: <xmr:eDTyYvUY1093cc0QUPnT8Tz85G0MNbcHGuxFb_OcE6QY6lmB9Amzjild0HIodWHzdMJFRUCeL7vg0WDnZ1oKB-DkPeBEqRJHUnajcaeZkwmBU5C6zQAAIHS3vA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdegtddgvdeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffoggfgsedtkeertd
-    ertddtnecuhfhrohhmpehkvghrnhgvlhesuhhnuggvfhdrthhoohhlshenucggtffrrght
-    thgvrhhnpeduleegkeevheeifefhheeluedvjeevvdeuheeuheeuvdduveduhfegffegtd
-    dutdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgep
-    tdenucfrrghrrghmpehmrghilhhfrhhomhepkhgvrhhnvghlsehunhguvghfrdhtohholh
-    hs
-X-ME-Proxy: <xmx:eDTyYngqwfuzaVh9wK_O7YbzJrQyW1d1YJJxRyYHQiMIlP1RKCvZpw>
-    <xmx:eDTyYnCpSjDezdHwfdF70_WiHy4ctl6Fn3PBqLMjc33HltHOsXekcQ>
-    <xmx:eDTyYgJhK3j_9K466iiWlK2q2D7_ehGmd_EAwtcYy1H8dWmMBKHhGA>
-    <xmx:eTTyYp1aiVvbH92ciOKSKIjNWNGjujJUdoVvCKfIFnMvbLYcB4FblQ>
-Feedback-ID: id76147eb:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 9 Aug 2022 06:18:30 -0400 (EDT)
-From:   kernel@undef.tools
-To:     hadess@hadess.net, hdegoede@redhat.com, dmitry.torokhov@gmail.com,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     phone-devel@vger.kernel.org, megi@xff.cz,
-        Jarrah Gosbell <kernel@undef.tools>
-Subject: [PATCH] dt-bindings: input: touchscreen: add compatible string for Goodix GT1158
-Date:   Tue,  9 Aug 2022 10:16:34 +0000
-Message-Id: <20220809101633.352315-1-kernel@undef.tools>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S229456AbiHIXXd (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 Aug 2022 19:23:33 -0400
+Received: from sonic301-22.consmr.mail.ir2.yahoo.com (sonic301-22.consmr.mail.ir2.yahoo.com [77.238.176.99])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3181770E42
+        for <phone-devel@vger.kernel.org>; Tue,  9 Aug 2022 16:23:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1660087409; bh=BwdQJDAS+JtBvKGSdnYRmOH7dchyCaO/CNeXt5g+bZY=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=lAorvlyyw3idGO04rldDyWfsrNj2VVOQS0kCM76reXSpNbFMRO8mUtgD61bDpztMcur0XKIy7peBmC0EbN1wsb0RX//BMCWA0s3YCc2iwX22q3kwvartPiRD7p2EkNZJE19RXO49UEPWLsUAI3iuT5qTlOFDbHyxVAi7w94dG2swmQns4DuVpCNo85UjWadRrNVRMLxiODtRejAs2m1Ln286A8pAK3P78e+rZGKVuMKFq0lhOLsN6QFwkjUrSoyCsx+80apTPARBmK6kOrtrxIUONEm61i4equE1t4cMXV9rHEvRx8PAhazSAAgzDlcWqO51DiyzGKD4jWhOxo4jwQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1660087409; bh=3a/40YZ3yQW7TV6RpN9J4V/2tup5GSZ9zyionenBWRy=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=FRtMGtgs/U7QiijvbVyNYMPNq8/M2kgd+a8mx8HOtA7mkV0IcRakheAjbaTlKdYW3O2GihAOBi4NNBiE5ALqRdWa9EfX/ZCQ3S5PhPqE7MNDg0bv2fUToSTUNgNWPORczrHWF71HUclOoSPL6F+Z16IjVl80C8awFr+2kblj4XgMJoTblB97iPjKCilmt5dS+IxTDnNJvkcPMPC1WkzJlIn0xSganvrwd/6TJxXxRI1lC1cLIlOoiBdmd9bBZ8RAHdPVfm0jgH8HTY3/AsOh2idDWIXhHTMLy59XiJja6RGGNGfMBpvtLaN3uK3wre8/L6WWZARXkqwA6ht4w4pSxA==
+X-YMail-OSG: TUlLqUoVM1n62W3LW_8PVEpT3PNhh3yu_OFe9B4rabGAmbkG4u8lVfAk2ARqnbm
+ wxbYGW.ba01i0CLtqu8kRm7y7oAVX5qACzVbWxgYX_.jvEzltJppXhf74qqIrN4o3Psq5c5LwzfJ
+ z4651cMOAs8RGUWS9ul4go8AKlBvgcVXVPWACpCFRkspyaChonUtHehGSEEdzmf9E_.aK6VJDzS3
+ .VN5T0coc1gVLyljmmQmOpwH56XVPcvzhEL_eGzHVPTVWCBEE6UBSQdq73tTbI65Mk9ZYreyOKDI
+ sZS8zeVYpaqDT9_V0b9GYzY8GmJ7W6qQFfYGS80aEryeCcNpnE0NLFEH5_eofQDbgc0O7FQJ6ITc
+ 2O0JXef4q.diUGLEhv1lsVk0xnoVwpJm9IwUN0obmGlD4FXSAiahu9T5k93IMTFre0pEwN.N.5Do
+ tbVYhAv8DFR2gDtUzgg0yxXIXn0m3TGzUdNefpLHuzB6tDHSewzzXdPyrd0mT0OEZ4pU6N3xfLqB
+ wmL7TWrjU4dD9dJgKZSase8AzrEoTNNGbIZgl9nflKX7XPsHiByicSGMEstEdM0SxE.L_YDREVyD
+ mR8JQN4mz02UAnLZC0c1tCgLmxeqcmjV5Ap0de3j9egeCdj2fsx3kfnSCqwOd1D10JMUXSAlWbdZ
+ ASC7qdHXaLTpLDvjxUD7wqsSVVKVeaeP3Rh_5KNod8CGHB0RcRwcy3Tw5gF_zkV4iUI5Ozp1tvs9
+ BwYiiU_i1F2c_fKGDhYMNcUCTj.exn0E3HbSamRKHb2Yp44HFBd_FB8DqZ.K4XWHC7OWXq5CK2cW
+ DB6w5_RGPcOfrwL.dblgUysA8VzM5s763d.tKcyCAjxMLIa4PTOi4yxKa48rfXwN_Jlq1nvWJbhM
+ RuGIP34q2hnaqA2hCnyDH83YCkLJOnPmvPf6aNKwb8msMzU3H5txazYBdRhjwPnyePVlmZCc5BDS
+ Bpejtg42PDFpz6XFy3fsLTQ2fqslfS1gzlhGn6WUrHCZlloCTKvrbCHOJwRLZ8KxHrRAYsieIxmB
+ 3wv16JHJXBZk1mA2NGkr5QLSkUYYpRsYoTuNOCM0yNK3EofMzfsgbWkcFA.K7PONm0JLeHfrypRW
+ UhS6G_ZtlpN6OR20yw8koMhQ1GmGa7C6fswMaqauBuHWdHTndR..ZjDV.m.ffS4LfRTvE7k0fCyy
+ 6J18ltuHt40TIHbvr5yuhRAYUxMFYfMCE.Rspt7BESY9WSruEDLgK9U4odxNbxoLLqfzknnATY7v
+ 0zj9Mr35XPOjzjW94pewdZkIOeFP6CeniPjt8NdDBczLBrr1voJ_8hE5WayrYusJvZRgs34t9f9R
+ aHEsUZLiWmyREW82ed8rkgxtULdu.uVZKTxyk2yhI6hrsr7RSwl1gvV54DpWkfXc6oHHlwXIRPTd
+ WnWzKdihMz5Yqk1PBHAKKE4HF6AJgXm.Fqac.ZVOGgsBnGHD5YC3ajYTt.xcr4j7qoPjVenMCpZj
+ nG46TBsG.se9eMTe8x3_L5lHrwK31lf0wOk82asL.DExTvByISZwVjKp5h55HO_54RZP1oG2Y3sb
+ tv62O_WqEKf9FxVwL7JSqrtozHLS.946q8jzARo3zZpFEKqXd5C6mG8a8GWlgbMpAk3pLFWvvk.M
+ lc36Br9GXOxb_HM5DhHHvYjDJGy20kH82cY91qPgFpm8kPl2yTFMeBUW3vgakAN1W.Nu7xokuIzx
+ BqSrEdylt.LOGWE62G5cavSZxNywR_fz4nke8PtOcpGn43DWm0pWjnlnWq4CAizIhhkIKIXlGn5N
+ R8QKzCWQ9lA2L.ZRuzMt4WhzuStdw6_t90Hw1H2eYt3tHcEoMhKk8ebp..bQnQGYnnJkUSE.V7XK
+ lk9OpcNk2UgM3Ub5sAE_Uw528FxXTtuFfYMBI5d6xEvSNKtFZ9KabcQTv9uZADghhBKTkK_yK7sQ
+ Me5bq3ISPbiIWnYFEJBtb0fx7de0.oTYP5qkgrVwVOosX234i1wUJWLMbrzD2qz5_6CrNrQosO7W
+ kBIVH6ExUXME7FWlo4fQTdtftWOzj7.qfiScTvuaDs9uOZKxDL0wv0jZf0IwxT6P5zfV4C2me7lp
+ kIpErP1A49l6wnDzeuC3oviSCMwPNVq665HiTr6WDQw5gFTmKKE8FLtjbdre240.b2duLgl1juDl
+ mbY0Zr0PGfqqVZ9v.7o7K1CKPyWuKI8taOI5rdl6BRRGqRhJmrccerlMRVZghAlKJ1pzEFniyKyr
+ GYMMwj8hy7Z3RMhDpd4SEt6iPdcLz0QJam3oqf7vZT4vBijr_3ym6VCys_arzPXPeANzrBh4WSnb
+ xcDM-
+X-Sonic-MF: <jahau@rocketmail.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ir2.yahoo.com with HTTP; Tue, 9 Aug 2022 23:23:29 +0000
+Received: by hermes--canary-production-ir2-f74ffc99c-5fxhh (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 38d44100923a307cc7178f7ca9765083;
+          Tue, 09 Aug 2022 23:23:24 +0000 (UTC)
+Message-ID: <4fea7e1f-06a4-9d1a-892a-ac85cf4de176@rocketmail.com>
+Date:   Wed, 10 Aug 2022 01:23:23 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v5 06/14] iio: magnetometer: yas530: Rename functions and
+ registers
+Content-Language: de-DE
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1659909060.git.jahau@rocketmail.com>
+ <ca008512c5196a377042cd71254dedad3668bb44.1659909060.git.jahau@rocketmail.com>
+ <CAHp75Ve19nzSem+CCL6w77mkavSCW0LzrDTAWkfQUHJXy=QAoA@mail.gmail.com>
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <CAHp75Ve19nzSem+CCL6w77mkavSCW0LzrDTAWkfQUHJXy=QAoA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.20491 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Jarrah Gosbell <kernel@undef.tools>
+Hi Andy,
 
-Goodix GT1158 is a touchscreen chip from Goodix used in the PinePhone
-and PinePhone Pro. Patches to correct these devices dts files will be
-sent in a later patch series.
+On 08.08.22 13:08, Andy Shevchenko wrote:
+> On Mon, Aug 8, 2022 at 1:03 AM Jakob Hauser <jahau@rocketmail.com> wrote:
+>>
+>> This is a preparation for adding YAS537 variant.
+> 
+> the YAS537
 
-This driver was modified to support the GT1158 in the patch linked
-below. Add its compatible string to the device tree binding.
+OK
 
-Suggested-by: Ondrej Jirman <megi@xff.cz>
-Signed-off-by: Jarrah Gosbell <kernel@undef.tools>
-Link: https://lore.kernel.org/phone-devel/20220809091200.290492-1-kernel@undef.tools/
----
- Documentation/devicetree/bindings/input/touchscreen/goodix.yaml | 1 +
- 1 file changed, 1 insertion(+)
+>> Functions that are used only by YAS530, YAS532 and YAS533 are renamed from
+>> yas5xx to yas530. Same for the registers.
+>>
+>> To avoid part listing in function and registers names, the name of the first
+>> variant is used. Where appropriate, comments were added that these functions
+>> are used by more than one variant.
+>>
+>> Functions that will be used by all variants including YAS537 remain in the
+>> naming scheme yas5xx. Or YAS5XX for registers, respectively.
+> 
+> ..
+> 
+>>  /**
+>> - * yas5xx_get_measure() - Measure a sample of all axis and process
+>> + * yas530_get_measure() - Measure a sample of all axis and process
+>>   * @yas5xx: The device state
+>>   * @to: Temperature out
+>>   * @xo: X axis out
+>>   * @yo: Y axis out
+>>   * @zo: Z axis out
+>>   * @return: 0 on success or error code
+> 
+>> + * Used by YAS530, YAS532 and YAS533
+> 
+> In this case (multi-line comment) the period should be added to the
+> sentence. Ditto for other similar cases.
 
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/goodix.yaml b/Documentation/devicetree/bindings/input/touchscreen/goodix.yaml
-index 93f2ce3130ae..19ac9da421df 100644
---- a/Documentation/devicetree/bindings/input/touchscreen/goodix.yaml
-+++ b/Documentation/devicetree/bindings/input/touchscreen/goodix.yaml
-@@ -16,6 +16,7 @@ properties:
-   compatible:
-     enum:
-       - goodix,gt1151
-+      - goodix,gt1158
-       - goodix,gt5663
-       - goodix,gt5688
-       - goodix,gt911
--- 
-2.35.1
+OK
 
+>>   */
+
+...
+
+Kind regards,
+Jakob
