@@ -2,150 +2,101 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 099C1C19F2D
-	for <phone-devel@archiver.kernel.org>; Tue,  9 Aug 2022 23:41:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23FF6C00140
+	for <phone-devel@archiver.kernel.org>; Wed, 10 Aug 2022 22:33:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbiHIXle (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 Aug 2022 19:41:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58838 "EHLO
+        id S233512AbiHJWdg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 10 Aug 2022 18:33:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbiHIXld (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 Aug 2022 19:41:33 -0400
-Received: from sonic302-21.consmr.mail.ir2.yahoo.com (sonic302-21.consmr.mail.ir2.yahoo.com [87.248.110.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCF476447
-        for <phone-devel@vger.kernel.org>; Tue,  9 Aug 2022 16:41:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1660088489; bh=yyj6auEMoO8WoL/D2T7k+nEJrDfdGoSfd6uX3RTsiS4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=D1qmxLEagnyIxsbZ+aER3M6AHhxprwGdTkSI6S5D/8L3WprNrxuy6bYBE5zTW+a2a8ugAmZbkltAnhU99TQYYCrZ3mU0WFLakFACJN2slI+oL2Pj2SWQExS8BD4+EsXO8TUlhsrB20KuXaki5IoR5G08YhoEGV3VoCYkJvjWzz0QhoWv7HbeA/GXuMqtb2SwctnE5uV0mC248qksjkkRHJWIxsj/BfVSzgvoy9T4kJ4VgfRZA0JxUSNLHrHs8JNxsejgUW4KIHKbkO7g+w/lLX20gyVHAHucTUoE4oDl2h9GTLqxiqwTSAQTecN0j3h7p0WjcTQjRNEbitzfJvpFIA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1660088489; bh=kF8ohh8pY2wNuN21TGi/ByXdbwazhFEm/skMuH/4Uh9=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=N5A41AtF0Bh3N86HmVLmDbnBJSmjWcCbAIeIBO50XFp4hDyl1LaEtc1nAONqyKxjx9uasQTHi6Ls7zIG+DxMCaVnLc/kM7G4WSMq5WRD0UpQPfuaFcqQad1AuCVgxy5VhZw12ifTdSTSUPXRWAa5ZO13iTkF+WHaZX2EF9IzNUWHE6lIq1AVK9Wgk8vHoPUVT+KVup2s4ZLqd9T5F7BG3i0E5Ix8FQPS4red16Pi+/najeFzchwderBf4J6N9m6T3qLfMAeEBkkhqW8oCeLn+XbBMdVdFUznQI142hWSjh2OHIGhoGLQcdcHzaZE1L2StKOtr8AAQ2On3ooGNouZvw==
-X-YMail-OSG: EaNtiPoVM1lruehrOMuORG7I9_ZFgmCQPn67QSKWqHve1PDmacHM9NJFqPn4lKa
- G7UIdD.sQiItTr.nqhaBNOeUBI39uxK8QsQaq8U9h80QEp9bvRGKzUP92hSK8z7tQB5RmVBPSyi0
- DPbW0F5sWTYTPb9T8ehUEPuuqjaJiEZuHE3EyG_VHYV1gVj9fKlejRBnlE55P6wYDOGVDXv.XLH5
- vQ69L31RfnouL7wJ192kRKYAISF1qh4_MVdze_.yzxIjuR_TeMN56m5MZAmSfuLLFvw5W2J9zzPO
- zL89EeYtZmw74BNGCszMuWEB0S5di_PrP4JB_RmapyWwrJOaopL7BKYZl7kFnhP6D1hYZacq2mU5
- OfF6zcnbb3ubu9_3LnhGkPNOZ6JYo9WJjzCO5m03UcZlbMh3N4POahW86S0k76Xa1lzzXqGHNFVi
- Et_vijIV27jeNQAeVfWxn3f58YtA5apzB_c25bNJCSKluqwurW1y8oWfy0_yESEU3jlTwsA._pwo
- dBRhZnjtqo2fnHi5aKzSoldwa5r4trPDvLmIhE6gVTulKIURo7r6zHWJGm8e6qJ51PWpHV2kAMU0
- x63sWpaDhhAdUlqrNIb9vhRURm7p7O4EaYEBR5gCbcQXxkiH77ytJokdqpOcZj2hy_Hg4YlmXPzx
- 17K79XfwKv6dGXOlNr0.ehR4JKMXvWzABTtuYgmBJrSWHbbqQChaXbTs0kUoo1MhEaa7ZOLoJ1bl
- qtApzzou049024A1sMl1OBcZegne2EHui5eqjemzmv3NMMU2SCd7OHgvMMFIP1ifsDw.Di9mr6c5
- _g5mUUvAFaOXN0N3aUMDMZXaA7GnbeYKKYKtxJSHdJbJxmw7HJxQHSGZnutP7qghDiQtLExvoh4x
- bWZYJBHn3J5avjEOZQ0pmVL30jbNmA.daVOho7wdzbYzdhW8qzKqT9W.uTghXs84fbN8_dDeW4Xc
- OaOsNnGUIKTqtDVoClN1HXRH6DUOnhTFI_8iWLcJs8k5lqqkBlMxXnmPF68iyeo966PIHQdxePEc
- cLvioRbYU7.WaQ8aWwnWFk3oAMD.560uFuIDLcLjk3Wi9SQtbjcVNwJw1NwjnBOJXuN5UIdTBIkS
- 7dKhZ4MJx7EfrlG2eau6J60EN9QJaS.SlC24jEoGvoEX5kOAZJ6qgJ.JDMym099bkySDwMQqhPI1
- urC6CbyVI0f8IgzQgOJPbBn3JW40lYyNqvOLJv5FaMTnBDSMGR8j0YN6qv.LIc41_fC.uKvIaaZo
- 9ZSvrc6Urslbbs3tn_dbtmZEUKs_no1amXU4WzVObefuZaZpioC6K5DSaPnfOTkjmGw.lZ2S3gu9
- F6G6Mc.JFo5ieQo_QV_dXi7dAuYQsBvdatekWMocWpHWAzSgeO0mnV5v0aLq4Mvq.iwScvaEn1zm
- xzst8X0nRsj2izFIbmGoksOLBRfVNA5i.aEgPa.X2WchSka43.EMrjovDwGVk9_IzLWX5jkVKuDx
- vviF2LplBjeq7iCE.S.N4cJInot..VVvvhuGPTl4_bLnpHpzY0nZLcio5Go5pnQ5vRyzg8Rk28WT
- AnP3QT6I3QZQWTZUGBuyDA2RfVloZcttcbzIlCI6KWNnMnUiWQI_ijlOrsZOFbZU_4xRo3Zzpkto
- PgWwVuNVBnr_Vuk7DTwjFH_3_106nhL0UFZtuH_lJhvhKdQBUPE6iEdicdY0p575AcPDpsw2xxva
- .Y592zFafQwGheUo9rmA3NggNC9UPK3IP5A8Tpg0a5p0_Zc_SPm7tepYkvl72NcY0R1FuUBvU5ld
- kC8W6WihTR8h1wEpzJRfGkVw_8mO5RV1vxcm7I5k1rlfXX7PkZ_phsYYsrtSOmAvxzjVxkR19qBD
- BIqFGZ_wUDQHKmPJgJTY4MmtEFCiPLITF4yKlmmukMhEPUjaCASytcSZzUAd2rCbmXAcbpL2Em4D
- VEMqDgM693RK24ayiIR5vOu4Owj5CJWejTVKqX5S0ckn50YZbCS1PtOMagBIPsSUQUORimtV7xQP
- m21y90EFea6KK4T0UO1jx8SxTWB8.KZ5TA7cvuwuM_ihr9UYPxwp75Vcd.4VGsjtRGXS8xTrUf3.
- _LUfYMS9XoIt1UC0INUdigdOB4btN6sdaSbwxSlkVe1sCP7uWLOOCJ9tgNHLQJUiMe0hq1C17NlF
- i77F.2xcM4SvTZQhnueqySPrA.AZkUyFMCf1siIfNk.hyKultK_jrMhdr95bN.iacJuHzVVcBDLR
- NcbWXZddpU1yJsN5Asslq60DDQapE7fFRUMqmeYWZl8jv73bmxJ449ekA2lbIndOJW3WJcFX_51s
- 8i3ND
-X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ir2.yahoo.com with HTTP; Tue, 9 Aug 2022 23:41:29 +0000
-Received: by hermes--canary-production-ir2-f74ffc99c-pzqbs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 6f29886ae1a8611f7f272a0ac9c52f12;
-          Tue, 09 Aug 2022 23:41:25 +0000 (UTC)
-Message-ID: <850de937-8fe6-ebce-4e9d-35a617c3ade6@rocketmail.com>
-Date:   Wed, 10 Aug 2022 01:41:24 +0200
+        with ESMTP id S233491AbiHJWdf (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 10 Aug 2022 18:33:35 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA977E037;
+        Wed, 10 Aug 2022 15:33:34 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id o5-20020a17090a3d4500b001ef76490983so3486523pjf.2;
+        Wed, 10 Aug 2022 15:33:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc;
+        bh=3j0nqNxIb4WWGt44FuKaH0AOkMYtek5yMvvRues8MRo=;
+        b=WNVUzJhKmVU/WLkiU0oPj6rjE5i4uYu8VWBAktlaU4VU0KngmqNhCR6FvXt8ikr2TE
+         bEfwXWr/m7C/sNICOBV2dFy94bYwTnB61nSVv+XIpYukc5ZF3NU08N7/4+bDX/M1QFfr
+         RLop0eqI9mMNi+zobtHwlscn1mw9G101TRBNWcjINCL7w0N5AFI4YRsL5CnvARIPgtsQ
+         XCM6y4a6kBHxcNIx8akdYQVo8s9a8OI29frAa3NKk5FKsqu2BXh0zbgxyVDgaCc24QQu
+         /32plMf6LQCmruoLCCAtY05SFATwr6L887eTdYweipdA/Hg635MhSsPfK4//Ub90/+0k
+         M9Qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=3j0nqNxIb4WWGt44FuKaH0AOkMYtek5yMvvRues8MRo=;
+        b=5mAqo3aVO9ddN65wIInKmw711Rug2JfbodYzzQagl9SxiA8Ah7KYsAXQxgzZXzNGR1
+         s8j8NlMIcSUC/Ho1BR3N6RccbfGAXdiLZLi4XhAdflvdO7FfuAFcW2X8LnnxuvEgqdnn
+         eK+kdUcoxlVu42fTcxjPmnqmmIGPYr+fV5lGqX3a/eYfZ033yEY4hmHrf9zaP3k8hqNX
+         5kW6/Bh9FF4PChdrs/dfr3qdIW++QtsFSgfuEGB7NQxC3b4LybGnHemA1zKsFlBHlF22
+         qqLzKwPKGHAXgdPpxlBB738e/EMQHW2yMwaNI2UDFnbDrJ+US9rm6aNbQxoRc1VZAsfk
+         KZlw==
+X-Gm-Message-State: ACgBeo03o2McMCbhR97o9U6rrLRpfuoQj6H8PLwBIonxaBVC7cXrzi0J
+        0XkuukfSuDQPG6XUJg5FS/c=
+X-Google-Smtp-Source: AA6agR6tM+sxdnBf95t4iIxceRkJDbs1v70HQiMHw/eMZ7bEAg2t6Bdtg/orTJMMD+SensuFznuTpQ==
+X-Received: by 2002:a17:902:ed44:b0:16d:b1a2:f24 with SMTP id y4-20020a170902ed4400b0016db1a20f24mr29036608plb.145.1660170814282;
+        Wed, 10 Aug 2022 15:33:34 -0700 (PDT)
+Received: from google.com ([2620:15c:202:201:a3c8:d6b9:a5c2:1eca])
+        by smtp.gmail.com with ESMTPSA id y12-20020aa79aec000000b0052ce1737ee1sm2542174pfp.37.2022.08.10.15.33.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Aug 2022 15:33:33 -0700 (PDT)
+Date:   Wed, 10 Aug 2022 15:33:30 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/3] input: add event codes for user programmable switch
+ events
+Message-ID: <YvQyOhgSGjQLHHvv@google.com>
+References: <20220516142158.1612109-1-caleb@connolly.tech>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v5 14/14] iio: magnetometer: yas530: Add YAS537 variant
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <cover.1659909060.git.jahau@rocketmail.com>
- <a7bc9d7a7bb12a76fb217a1709fb09abd2b45892.1659909060.git.jahau@rocketmail.com>
- <CAHp75VegA6zzvQXEi_9-K3832o+j48Af3X8LivYY47Xav+w-xQ@mail.gmail.com>
-From:   Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <CAHp75VegA6zzvQXEi_9-K3832o+j48Af3X8LivYY47Xav+w-xQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.20491 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220516142158.1612109-1-caleb@connolly.tech>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Andy,
+Hi Caleb,
 
-On 08.08.22 13:47, Andy Shevchenko wrote:
-> On Mon, Aug 8, 2022 at 1:12 AM Jakob Hauser <jahau@rocketmail.com> wrote:
->>
->> This adds support for the magnetometer Yamaha YAS537. The additions are based
+On Mon, May 16, 2022 at 02:22:57PM +0000, Caleb Connolly wrote:
+> Add SW_PROG{1,2,3,4} for device switches which are handled by userspace.
 > 
-> Add support
+> This can be used for devices with "generic" switches which are intended
+> to be user-programmable, for example OnePlus phones contain a tri-state
+> key which can be used for switching between mute/vibrate/ring, or
+> programmed by the user to perform any arbitrary actions.
+> 
+> These are analogous to the keys KEY_PROG{1,2,3,4} found on some
+> keyboards.
 
-OK
+This has been proposed a few times but this goes against the spirit of
+the input subsystem where each key or switch has a defined [default]
+purpose and userspace is normally expected to act upon input events
+without paying attention to what device they actually are coming from.
+IOW if you want to deal with particular GPIO signals you are better off
+using GPIO subsystem.
 
->> on comparison of Yamaha Android kernel drivers for YAS532 [1] and YAS537 [2].
->>
->> In the Yamaha YAS537 Android driver, there is an overflow/underflow control
->> implemented. For regular usage, this seems not necessary. A similar overflow/
->> underflow control of Yamaha YAS530/532 Android driver isn't integrated in the
->> mainline driver. It is therefore skipped for YAS537 in mainline too.
-> 
-> the mainline
+In this context adding KEY_PROG1-4 was actually a mistake and we should
+try not extend it further.
 
-OK
+As fas as modeling the sliders with multiple settings goes I'd look into
+ABS events, probably ABS_MISC, with a set of values.
 
->> Also in the Yamaha YAS537 Android driver, at the end of the reset_yas537()
->> function, a measurement is saved in "last_after_rcoil". Later on, this is
->> compared to current measurements. If the difference gets too big, a new
->> reset is initialized. The difference in measurements needs to be quite big,
->> it's hard to say if this is necessary for regular operation. Therefore this
->> isn't integrated in the mainline driver either.
-> 
-> ..
-> 
->>         help
->>           Say Y here to add support for the Yamaha YAS530 series of
->> -         3-Axis Magnetometers. Right now YAS530, YAS532 and YAS533 are
->> -         fully supported.
->> +         3-Axis Magnetometers. YAS530, YAS532, YAS533 and YAS537 are
->> +         supported.
-> 
-> So, after this change the rest become partially supported?
-> 
-> Perhaps you want to leave the original and add a new sentence like:
-> 
->   "The YAS537 is partially supported."
-> 
-> ?
+Thanks.
 
-All four variants are fully supported. I changed the sentence according
-to Jonathan's suggestion in v3:
-https://lore.kernel.org/linux-iio/cover.1655509425.git.jahau@rocketmail.com/T/#m6ba6b576cdf6f86f550f7598fcf7c408ac5f2d46
-
-> 
-> ..
-> 
->> - * For YAS532/533, this value is known from the Android driver. For YAS530,
-> 
-> It seems this comma is unneeded in the original comment.
-
-I'll remove the comma here and in patch 12, where it was introduced.
-
->> - * it was approximately measured.
->> + * For YAS532/533, this value is known from the Android driver. For YAS530
->> + * and YAS537, it was approximately measured.
-> 
-> P.S. Do you see now how your series and the end result become better?
-
-The driver improves. Though we kind of get lost in details, I have the
-impression we could go on like this forever.
-
-Kind regards,
-Jakob
+-- 
+Dmitry
