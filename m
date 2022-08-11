@@ -2,101 +2,85 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23FF6C00140
-	for <phone-devel@archiver.kernel.org>; Wed, 10 Aug 2022 22:33:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86DAAC19F2A
+	for <phone-devel@archiver.kernel.org>; Thu, 11 Aug 2022 10:51:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233512AbiHJWdg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 10 Aug 2022 18:33:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36674 "EHLO
+        id S234356AbiHKKvL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 11 Aug 2022 06:51:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233491AbiHJWdf (ORCPT
+        with ESMTP id S233856AbiHKKvJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 10 Aug 2022 18:33:35 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA977E037;
-        Wed, 10 Aug 2022 15:33:34 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id o5-20020a17090a3d4500b001ef76490983so3486523pjf.2;
-        Wed, 10 Aug 2022 15:33:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=3j0nqNxIb4WWGt44FuKaH0AOkMYtek5yMvvRues8MRo=;
-        b=WNVUzJhKmVU/WLkiU0oPj6rjE5i4uYu8VWBAktlaU4VU0KngmqNhCR6FvXt8ikr2TE
-         bEfwXWr/m7C/sNICOBV2dFy94bYwTnB61nSVv+XIpYukc5ZF3NU08N7/4+bDX/M1QFfr
-         RLop0eqI9mMNi+zobtHwlscn1mw9G101TRBNWcjINCL7w0N5AFI4YRsL5CnvARIPgtsQ
-         XCM6y4a6kBHxcNIx8akdYQVo8s9a8OI29frAa3NKk5FKsqu2BXh0zbgxyVDgaCc24QQu
-         /32plMf6LQCmruoLCCAtY05SFATwr6L887eTdYweipdA/Hg635MhSsPfK4//Ub90/+0k
-         M9Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=3j0nqNxIb4WWGt44FuKaH0AOkMYtek5yMvvRues8MRo=;
-        b=5mAqo3aVO9ddN65wIInKmw711Rug2JfbodYzzQagl9SxiA8Ah7KYsAXQxgzZXzNGR1
-         s8j8NlMIcSUC/Ho1BR3N6RccbfGAXdiLZLi4XhAdflvdO7FfuAFcW2X8LnnxuvEgqdnn
-         eK+kdUcoxlVu42fTcxjPmnqmmIGPYr+fV5lGqX3a/eYfZ033yEY4hmHrf9zaP3k8hqNX
-         5kW6/Bh9FF4PChdrs/dfr3qdIW++QtsFSgfuEGB7NQxC3b4LybGnHemA1zKsFlBHlF22
-         qqLzKwPKGHAXgdPpxlBB738e/EMQHW2yMwaNI2UDFnbDrJ+US9rm6aNbQxoRc1VZAsfk
-         KZlw==
-X-Gm-Message-State: ACgBeo03o2McMCbhR97o9U6rrLRpfuoQj6H8PLwBIonxaBVC7cXrzi0J
-        0XkuukfSuDQPG6XUJg5FS/c=
-X-Google-Smtp-Source: AA6agR6tM+sxdnBf95t4iIxceRkJDbs1v70HQiMHw/eMZ7bEAg2t6Bdtg/orTJMMD+SensuFznuTpQ==
-X-Received: by 2002:a17:902:ed44:b0:16d:b1a2:f24 with SMTP id y4-20020a170902ed4400b0016db1a20f24mr29036608plb.145.1660170814282;
-        Wed, 10 Aug 2022 15:33:34 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:a3c8:d6b9:a5c2:1eca])
-        by smtp.gmail.com with ESMTPSA id y12-20020aa79aec000000b0052ce1737ee1sm2542174pfp.37.2022.08.10.15.33.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Aug 2022 15:33:33 -0700 (PDT)
-Date:   Wed, 10 Aug 2022 15:33:30 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Caleb Connolly <caleb@connolly.tech>
-Cc:     Andy Gross <agross@kernel.org>,
+        Thu, 11 Aug 2022 06:51:09 -0400
+Received: from msg-1.mailo.com (msg-1.mailo.com [213.182.54.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 311E972865;
+        Thu, 11 Aug 2022 03:51:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
+        t=1660215046; bh=7lbOrkLQlaL+wxUcC+lxwAVImAth8xZxU/409rDiSVs=;
+        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+         MIME-Version:Content-Transfer-Encoding;
+        b=Em+tth42/Zjv6d3r4OMWZ2mbxuwo0T7ltvUQRrkYFncsgdVhcaYxIHrvZzfIteyXH
+         pFEypFyx/WPG68MtBM5gJPK+uXVk9jx2meXmpzw8pScRLTIc79nFG5dTQzLGH4Wpx5
+         WSNqhHTbglOuKQHNITpW4KEvajiL/HdCQ2Hlt5nw=
+Received: by b-6.in.mailobj.net [192.168.90.16] with ESMTP
+        via [213.182.55.207]
+        Thu, 11 Aug 2022 12:50:46 +0200 (CEST)
+X-EA-Auth: ys8Oz4QKJY8y4I9vMX0BnGYNqpB4Bgz5fVr4ItE8ABwGrI0ruDmLcwR66klTEEftfDfxaz+BzKHoX6ladLXvrQ8lDecHG0zGh7EJlGriM38=
+From:   Vincent Knecht <vincent.knecht@mailoo.org>
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 1/3] input: add event codes for user programmable switch
- events
-Message-ID: <YvQyOhgSGjQLHHvv@google.com>
-References: <20220516142158.1612109-1-caleb@connolly.tech>
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     bryan.odonoghue@linaro.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org,
+        Vincent Knecht <vincent.knecht@mailoo.org>
+Subject: [PATCH] thermal: qcom: tsens-v0_1: Fix MSM8939 fourth sensor hw_id
+Date:   Thu, 11 Aug 2022 12:50:14 +0200
+Message-Id: <20220811105014.7194-1-vincent.knecht@mailoo.org>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220516142158.1612109-1-caleb@connolly.tech>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Caleb,
+Reading temperature from this sensor fails with 'Invalid argument'.
 
-On Mon, May 16, 2022 at 02:22:57PM +0000, Caleb Connolly wrote:
-> Add SW_PROG{1,2,3,4} for device switches which are handled by userspace.
-> 
-> This can be used for devices with "generic" switches which are intended
-> to be user-programmable, for example OnePlus phones contain a tri-state
-> key which can be used for switching between mute/vibrate/ring, or
-> programmed by the user to perform any arbitrary actions.
-> 
-> These are analogous to the keys KEY_PROG{1,2,3,4} found on some
-> keyboards.
+Looking at old vendor dts [1], its hw_id should be 3 instead of 4.
+Change this hw_id accordingly.
 
-This has been proposed a few times but this goes against the spirit of
-the input subsystem where each key or switch has a defined [default]
-purpose and userspace is normally expected to act upon input events
-without paying attention to what device they actually are coming from.
-IOW if you want to deal with particular GPIO signals you are better off
-using GPIO subsystem.
+[1] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/master/arch/arm/boot/dts/qcom/msm8939-common.dtsi#L511
 
-In this context adding KEY_PROG1-4 was actually a mistake and we should
-try not extend it further.
+Fixes: 332bc8ebab2c ("thermal: qcom: tsens-v0_1: Add support for MSM8939")
+Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+---
+Fixes reading GPU temperature on msm8939 idol3 with current WIP dtsi
+---
+ drivers/thermal/qcom/tsens-v0_1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-As fas as modeling the sliders with multiple settings goes I'd look into
-ABS events, probably ABS_MISC, with a set of values.
-
-Thanks.
-
+diff --git a/drivers/thermal/qcom/tsens-v0_1.c b/drivers/thermal/qcom/tsens-v0_1.c
+index f136cb350238..327f37202c69 100644
+--- a/drivers/thermal/qcom/tsens-v0_1.c
++++ b/drivers/thermal/qcom/tsens-v0_1.c
+@@ -604,7 +604,7 @@ static const struct tsens_ops ops_8939 = {
+ struct tsens_plat_data data_8939 = {
+ 	.num_sensors	= 10,
+ 	.ops		= &ops_8939,
+-	.hw_ids		= (unsigned int []){ 0, 1, 2, 4, 5, 6, 7, 8, 9, 10 },
++	.hw_ids		= (unsigned int []){ 0, 1, 2, 3, 5, 6, 7, 8, 9, 10 },
+ 
+ 	.feat		= &tsens_v0_1_feat,
+ 	.fields	= tsens_v0_1_regfields,
 -- 
-Dmitry
+2.37.1
+
+
+
