@@ -2,57 +2,57 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CEC0C2BB41
-	for <phone-devel@archiver.kernel.org>; Fri, 12 Aug 2022 21:59:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FCC0C00140
+	for <phone-devel@archiver.kernel.org>; Fri, 12 Aug 2022 22:05:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232302AbiHLV7S (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 12 Aug 2022 17:59:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42806 "EHLO
+        id S235981AbiHLWFZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 12 Aug 2022 18:05:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229966AbiHLV7Q (ORCPT
+        with ESMTP id S235643AbiHLWFY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 12 Aug 2022 17:59:16 -0400
-Received: from sonic314-19.consmr.mail.ir2.yahoo.com (sonic314-19.consmr.mail.ir2.yahoo.com [77.238.177.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85DC6B5149
-        for <phone-devel@vger.kernel.org>; Fri, 12 Aug 2022 14:59:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1660341553; bh=soju2w1mmQ5qFukSEwLFpYSnFgCDfNKRtq3CDVaWa6I=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=OrAlXbF6zndCrfQfQE8if0ulr1zFO28G38BmLvAuMtO18CDz3OgRvJerRnT9tRP9f0CCA6A/UydmFcMeAndLjz4WLz8dvdJKWbNjjnijmM3JZ2vIQ2F9jUwNzmq21wWJcTYKwLwVTFb2qKFcHfbQinZvRVH5XJzNb9xNU/f06udk0jDcAD3fJy7YHfhQH7MUD1f6x1qxb/bjYPsx+zl12ImzdjEue/wEH+P1Kr9xMaWHcU7KxAmccm9gFohf2HN74k9w12zCw7yHH1KRejaM+12N3tJ+EeO68XCeQ0QDIYiqWG4WZsNqrDSatPZXqkzu7+7z6jtZWRH99rMkOdIAPw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1660341553; bh=+sto39i1nGejNxdTEUzPOb32s1RoiXL/XKdYP0Bvqma=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=azEXT55hu4ZV9XiOzNoF4EnZse10bdKsH28O4wNKZraBR7BrEZJ/8lUttNsRG4Agbth4UL248Q0kLtcP2UlyYXo+0TloODinx96QdyiuIVOt0yWNQDKIlwGZ2ZBSntzDYeW16jqfMKkrOUrAItCfK4pGKysC5SlRrOJqaKdmiX+5rRLvvYxwCFB4j9ikDVAjVG6Dzvowt7V9vwklQCkkaMgQl5Az5Fe67ty/MHPIMv9TIwTPOh5FiqEZ+5w8E7DFsxbf7hSte4CIxq7iE+Wov/DSrhTbtkcFePbzPhdd+djG429FUbLgKe6PAyZmvIwPT4x3eNOBRxGtJVMoE8kuug==
-X-YMail-OSG: 3LhErrsVM1nvezyH2rTRju6bSrQYq5oSFOIIF2g9DBA_GlPsus8DmVaOsD7_1H2
- 13APOwMRjCOASJDQaVoNgzm3giD5O_HEzZU4nLFKBR0Cz4Pg1q5SaoPu0rKzpDK0RpuTk8JkPD9p
- 0TSkLs4g9qrOJrLh9PM8SEMIfCHJB.6sQOhTxlYZEjdNHtFWVPXdqwBbmn0S0RSRsZqsW0erulJJ
- EcbMfER.xf0W_e0a.RDMxZwkALZ0v2L3VQwuzNTo_GLJxOuNKqEIB9coe7HvGzKPrR.LWOaJCVzf
- AqKW.39izWw4.UZVEqff8Sn3lWy7sj10Yu8834pGQZENVLbwt5HZCn7iqmiVmucuZzIO5ypCO8sA
- HDzt6b_rT5nFFTm_bjV.ZO85M4v0FLDJAjAvZQQtv6Wz3PG.skA.hFL7g.l2nwNDuyTW1xYuuMF0
- uEgFqGtiKkwZ53dAr84NxtxQp4ukYtKdH9LUhhAtBcxN2InjXDJ17WorkvEW5k.CNQaaYYLL7BdL
- AX7WrQ8huLh4Ux0x1dC.Aw9n3iHZKmX7CtmMAQ5.554Vk5KNsO3MWmCYqQCmn.28onMPWhAjn9pw
- EUEJ.ERTkl_UoPbNouehtOf8.SIm7l3S4P23BEk9Gh5iJ.uLlUW8VrdGFl1yS4744GsJlLjk9_9e
- OHwYFU0HL0o8PjdzneK0EEcIKm03mpoidPrLNmQdwUGMYb2cJBUl2NGOVeSY0bHtLW7e68Ui8OIq
- bhVNZuLnsKriKWKYL_HeUTXNsDZ6gSz_N36jVSeloSZ1qPNaa_PZncWrg2nAg.YayEq3UiB.vIH7
- .AY4LPtiyDJR5r1KkV9arDuGRXsrs8ozYN6jlXqTiofV.rokeLQ4PdEo827Zu6qo8oIYe1h98Nyi
- OO8LaAdacPX_a09MvCklubnaK3xK._npEHKgSdLZh9ngVflg7GtCD61m0qcGdNxeoyqOQmPLn1tm
- coJzu0oEq9e_YCtQZsFuvS3vWJWU7vssH0grW_Pk57R_dRUZ75VjrkJMap5SO8t8BCr6GU7ZHNUz
- rid03LlH0DX33ebSM8uqg93nzf3P3tuhnIqchyJrH.mDd3Z_ud3d1WprUJoUp9qyy2OsqBfAXusS
- nefxDLct2TWPO_hE.HHY.WWhI6OV4XwRtkPMkW5NVUYPCUKZpDxf6RfQYRJxt8TMuf6OID8ABtw3
- 5WJn5LjdGv6gP0sGd4LfqequCsP0659msmvpEzR0M.BxJXqHp4hECu1gH755qGZO3SRFK18OZi2J
- mTrzecs8m1EMa06ojAjFviV9zhfT5AHAFi7pZtTru9y3db7Qg5MPcqxE7SROy7BoH8lW6YUw6alw
- .VxZJOusa7GEJe.n17MuIzI1WnMIu05VBYKO3v7MWxSCK32ELM1PDtCD_4Wp0CyTjhG2JSHDKNos
- AHBQ__KKMPAMdynevTJXNAD6olTvVBioVQNG8eT7QvUO19RvHstglGN8hwaR7Ic6d4eAS3jbnXFQ
- LaG18puKQOBxwDsFWWUlcyJEUv6I3ozC1J97SzD1kB2pJ4x9.NqoHjmdDuX7aZemTqY03ewOfbdf
- VT7ePt1b1vqLdLel30j1RAkkNqxrzhQRTcO026kxnCOFIFCFrpcqOMZr3bfHypXlK1Flx3ZrAsOV
- m_NUAyfla7drpLLOvTBXB4jC6vOQSzWl48itIFnumcN1YpAxC3djvW7OdHD6e_747xRRm0enxLOy
- dI_8e8U7XRc.sPFAT7bQWSUOBMat4FOVCr2oTRcs.WVj_C8Iv9yZ3y6xTLHCzanSwBuC3GFTtmde
- Z0IDNIGAQjAfNfGolSOlnStVS.ItP49UJiBdkg46ajYF1FwwFpu24VXnoYWqFCypNgorAE2CGBDG
- 2Z.f21eYrtv4hlU6sYGCFicvyvAlmFgFlUglk8qmCcegudgKdSkGuHPvTmiXOBDpA4SMKo8W1vdV
- 0NwrDGT44dD0kBSjg1LaCdCq2MUfC405iP2a.eR6WcEiMZtSnwr80SV3xdEtunfimGPxQJTLb1UB
- tifyu8Px1B_iXT47e0XA3KslS.6kdAfiurs7gPUwy.rZbr3zXo01KsjMKN2VFLv.vwnXfJ6WWdNG
- ZztMTnZkgUb.5NEokLRWQ17YnlictM92xcIlGbtkR7kB4lVc_tx_t3uMpDKpsHGfDsWz.ps2CC9C
- K.SmKvARNafDsneFl05srwX2hWLIea0K7NK1geBF2p0a5Xfbhjze9aGHvttfml6kgi6ltgwVrBKI
- 6n6nNBb_wCj1DgLO2Tvgi5bBEUKqCjDjzI8MiEJju94XoG_Ab_JZED0FAC1KKm.6x4KTUGvAodiz
- KQ03Ow1oQetvvBDjFO6o-
+        Fri, 12 Aug 2022 18:05:24 -0400
+Received: from sonic306-21.consmr.mail.ir2.yahoo.com (sonic306-21.consmr.mail.ir2.yahoo.com [77.238.176.207])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76FF650726
+        for <phone-devel@vger.kernel.org>; Fri, 12 Aug 2022 15:05:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1660341921; bh=PYe43HwPKQzTRJjNn52n7gP1CuESppOZLfs+lpCD3KA=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=IFKaUkFGeLCvYPu5vzbCjjmgJvWVbzr9LdJez8xdsIHD2Y/DVzHpX4LN30ww3Gop+kt+1d5RUoyxfarDV2Qm4yK2o6IjjH88rHVrRwUUBGOE89jOrGlZnuQywsKal+Dey78Z7cqbKIlspkLBAi3gDrZOyCcKhkyoCdQtuC4rzk5S2nRfb6Xu7qmf3s6dJNFAfnD88Uu9MGwyRI7nWa5Z0Y86oTuSpUof6bPz3+e0xAuBExyzrLh2jgib27ikCN14iyyjYAav7r+nDLJfnZhFLF56UwdwaOh9p6/7J1ALZKYSc0V0pFsz15Qq7M3pm8VaXb4wcmkZXnKA66r5EdfR2w==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1660341921; bh=Ug3RcSye99YjCtsKm5jteuI8mquFfcXpY+z9mqeyYQX=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=cp0auMe4gpq92spQpKoXOLGvN/RjgknZCZ/cztBlUzk1OJGrOqip3y8HfTB09iQP8vw+QR9NLJq+fw1Fy9mKvTPkdHRvAhl4vGi3z59UI8NSa95C4oH68UhOgNikDnFzMXW8qO2lwVOkYFOqP/ne7YRLVksGvJN/vjRuJO/RBtcF1g7oz2wqKmiyanIUCtZBW1bcSM5JPtvmX+6nUW6BQi3MQxd6k7zHPYtOkfG8JcrJsvmPVc2rgfPMEx9Q78+4/iym/jtxQMNkYr9s5zy84KDPw2FaofBZgzDvMDdCk9xfNR9vJu5RibLMqNt4WW6npswvKNzK04zLs4IhxtzEzA==
+X-YMail-OSG: FNUoAkYVM1laBS01NJCKE7M5jf69qU6ciT04GnBpN6Y4sos2CGzl7ZFgdDd0vwI
+ Ga7ogzm20DgTkIyAcL3vS3iQJ7nb2W3PsuaJl8eh0ojkNu8Ibe2GLuEJKYaEp90W.lef8GGGd2j1
+ xdLVaxrzcdQq4H0FrNXlFTb.EIQt3PfDBynWZmIOmRDuC4u65oeT7eso5_gnM5Pw2GAx4FTNjhzM
+ tCvjjnOKilFm1On8LMtZLsp6B.XwWjdM5iNLuSsUWHYClY9RP.qFoxHdqV5c3Zi.mLj5w.7OmGkM
+ E4tz6JvmVqc_qm7y73NAGXwS0SxUwul1D0__2SraTVHXdtYPxYT8wheI3oIONmBkN90dksH17NMj
+ S7vWRDKbZpnc5dkZPpj1fHFI_MpcO2Xeobu3g_0.UPvtZ_NLMUB_PZMoC6pjBXjWFzJPzPzyCCFa
+ U90LD4wpJbH4ZhU8okvZzwoLeORSH8GZuceCEmS7oL5DLunNwuzQESNP.nGFcpeRqHR6tJKZzqwo
+ 6zLJscI47tQA9crtUylXPVPctcHCgTLOalZLeYgTL90xwMRUlMkr2K.J4GcZVPwCwXRaNBT_H_HU
+ LGuIavS_DqQ.8UKh4_lCq..kfGQslQA.DbAzOq7iElmjJKfr_n5ci71Iail1eZ5msBC8yGk2v4Hx
+ FgFfT5C.VxFXONHZMMoCfXmwCWlS.V88hHotxpskZvq0RfzyKgxzbVzFD6cijrMkmGae02XE2yEJ
+ 7LfWLEkYs9JnZCDr5onwyywQ5Cn.iqQ4u_I2w15sys2sdOEasyaR.V0fpk84iYZhK_kZalg.SBYF
+ PLl.eZaStJqFL76JNi7ina75c0.dZxTwcQxl8hUUMiAOfRNDi1YCS58zJnggNURWUyRBupp8OlmU
+ mR.jTLlNmk9zv0hj0cROrFxjR6eXd99qay3lvbvWLtWLJK0QrpF6zUZeQNYSCH1ZYuMscjjLvQE8
+ UCdERuRXYK7Er68QwnSt84aqshRSvzIAVECcnuSMVsvn3E_5jLXvHwRiVLzFpaWEOszktdKSHzMZ
+ 0iRZIn.xXDc8SW0Tp7wC6bLYccNaiWV6fktpjTFiPMG3H85Y8n4Zji5AQ3JnFqG81JYGeJIp0zIe
+ SPdbCvmMy6OsxeqPmQj3uvVEWAZ9bfdP9OpMaBl3Duex8DLnOG.8mlCgUpMMrnwqNdiIS3ctTxba
+ vpYWF1mnjIaoLI2GLX9dE5.pGjdHQ8vrLc67XneEd1aItjo_HB469nCcXmftYQR_sA8nEIkmITiK
+ FoG6cufyIT05FFv.6MfeD8yqa4PxirASGIGnkFhUZqy_qKMFPMSJB_SXzcu6i4D0cl0fRBVw9.fT
+ UdbXN_p7UgBhujuCLkzAUkFWUQ.TJpKNB5E3K8P4SiAC5OwSEuQb_Ivt9wjjpCcgFO6YJqFQgDCW
+ icqUE_toG_FpeXdYzh_9Z_2pf1nxKpNKJMmdfeCtJccq3JJDpflEhG8qY.BMMHunGtKn3sK7AyVt
+ sVPhsSSWZ92o.vHprPgxdJLkuu.0Vt5pk.rGIQ38fEskoT2AyuBz0PcBW3WDwuVJ5oJu4bQZJE5M
+ FF_pVqSSKViWk68hGjIxK9YbT7NAn1Tk6nmyO7Ei8DAH4ixq6d8grmdI3Kp1nXh65a.KsuZyI5xP
+ E6mBotIwNCCStil5_ITklkQcWRZ8wHllZiAs27aPEOy_BXJu1I3g5YHz_FMpLeT6RGhrfJ443hXg
+ p.nXSBLROUiSm_pPUyrCuAJOXJVceERw1Ll7aoc5eM6eGEptQamO3.3BQoas3KAkZzCdU7yTCbSs
+ 36gWYNdu0bKb57VfZCBD0rWMkf49dhalx4FU0Ktu6JVD.g_ssfQ4eEELzmh4nStGePf9a8iaLB21
+ eiRk_tl7AdCQnFkFX7D1TuKy5c8g6dRYJnGD6NjJOI6j8K_oOxk23Xfx7Gu1Oc8zf6lGVr_e7dLn
+ G9.tQxNposF73syoZz8YssbVYr4.FczRIFZXIxqkIYcjy.JthVT1pzSomrvTnLsgY4OxEenr1qcv
+ Ki5fDHSzy_Z_2vMSOlJ.o3bIbCwrCgL0.UDXlhv3Y4FoiGR_uThmA5t.TWvAy7qeVffuMrI11lYG
+ KTgjbKpyEx4Hrr9ROIqaqm_vsvBhbN8BEyYqKljSuxhvuSL8CE8uk6abpnEH4P8GE9CXiQpyGrTI
+ IQm.IrBwXeig7Luplj2gu0u_5b810CJRAA8aXOUMUQM5aUnm8UmXhC0fEzsrH0yhqdyULOBzR8_N
+ 8iO_421DSNQXzucxTy2ptqeUL.ERdz22cmtBi_vKynAIVh5NylJJs6zXymhVOeQS7s..y8OKC7Ta
+ 1ObcENuV0MRZca6pHXSLc
 X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ir2.yahoo.com with HTTP; Fri, 12 Aug 2022 21:59:13 +0000
-Received: by hermes--canary-production-ir2-f74ffc99c-5bdfc (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID da2640015b5c2c3b63bd3f8312c2da46;
-          Fri, 12 Aug 2022 21:59:09 +0000 (UTC)
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ir2.yahoo.com with HTTP; Fri, 12 Aug 2022 22:05:21 +0000
+Received: by hermes--canary-production-ir2-f74ffc99c-48gl8 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c89c964524cd385a78dd9672c65b4e57;
+          Fri, 12 Aug 2022 22:05:16 +0000 (UTC)
 From:   Jakob Hauser <jahau@rocketmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -62,9 +62,9 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Jakob Hauser <jahau@rocketmail.com>
-Subject: [PATCH v6 10/14] iio: magnetometer: yas530: Add volatile registers to "chip_info"
-Date:   Fri, 12 Aug 2022 23:54:15 +0200
-Message-Id: <aeba3877933ba9d2c920b459a9037d9186c15a4f.1660337264.git.jahau@rocketmail.com>
+Subject: [PATCH v6 11/14] iio: magnetometer: yas530: Add IIO scaling to "chip_info"
+Date:   Sat, 13 Aug 2022 00:05:00 +0200
+Message-Id: <a12f892633bbee13a8856c231dc793ebbc5d3a03.1660337264.git.jahau@rocketmail.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <cover.1660337264.git.jahau@rocketmail.com>
 References: <cover.1660337264.git.jahau@rocketmail.com>
@@ -74,97 +74,86 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add volatile registers to the "chip_info" structure to ease the handling of
+Add IIO scaling to the "chip_info" structure to ease the handling to
 different YAS variants.
 
 Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
- drivers/iio/magnetometer/yamaha-yas530.c | 38 ++++++++++++++++++++++--
- 1 file changed, 35 insertions(+), 3 deletions(-)
+ drivers/iio/magnetometer/yamaha-yas530.c | 28 ++++++------------------
+ 1 file changed, 7 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-index 4fe7e8c820c3..fa317b975f8f 100644
+index fa317b975f8f..af5c090098fb 100644
 --- a/drivers/iio/magnetometer/yamaha-yas530.c
 +++ b/drivers/iio/magnetometer/yamaha-yas530.c
-@@ -102,6 +102,11 @@ enum chip_ids {
- 	yas533,
- };
- 
-+static const int yas530_volatile_reg[] = {
-+	YAS530_ACTUATE_INIT_COIL,
-+	YAS530_MEASURE,
-+};
-+
- struct yas5xx_calibration {
- 	/* Linearization calibration x, y1, y2 */
- 	s32 r[3];
-@@ -123,11 +128,15 @@ struct yas5xx;
-  * @devid: device ID number
-  * @product_name: product name of the YAS variant
+@@ -130,6 +130,7 @@ struct yas5xx;
   * @version_names: version letters or namings
-+ * @volatile_reg: device-specific volatile registers
-+ * @volatile_reg_qty: quantity of device-specific volatile registers
+  * @volatile_reg: device-specific volatile registers
+  * @volatile_reg_qty: quantity of device-specific volatile registers
++ * @scaling_val2: scaling value for IIO_CHAN_INFO_SCALE
   */
  struct yas5xx_chip_info {
  	unsigned int devid;
- 	char *product_name;
+@@ -137,6 +138,7 @@ struct yas5xx_chip_info {
  	char *version_names[2];
-+	const int *volatile_reg;
-+	int volatile_reg_qty;
+ 	const int *volatile_reg;
+ 	int volatile_reg_qty;
++	u32 scaling_val2;
  };
  
  /**
-@@ -616,9 +625,26 @@ static const struct iio_info yas5xx_info = {
- 
- static bool yas5xx_volatile_reg(struct device *dev, unsigned int reg)
- {
--	return reg == YAS530_ACTUATE_INIT_COIL ||
--		reg == YAS530_MEASURE ||
--		(reg >= YAS5XX_MEASURE_DATA && reg < YAS5XX_MEASURE_DATA + 8);
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct yas5xx *yas5xx = iio_priv(indio_dev);
-+	const struct yas5xx_chip_info *ci = yas5xx->chip_info;
-+	int reg_qty;
-+	int i;
-+
-+	if (reg >= YAS5XX_MEASURE_DATA && reg < YAS5XX_MEASURE_DATA + 8)
-+		return true;
-+
-+	/*
-+	 * YAS versions share different registers on the same address,
-+	 * need to differentiate.
-+	 */
-+	reg_qty = ci->volatile_reg_qty;
-+	for (i = 0; i < reg_qty; i++) {
-+		if (reg == ci->volatile_reg[i])
-+			return true;
-+	}
-+
-+	return false;
- }
- 
- /* TODO: enable regmap cache, using mark dirty and sync at runtime resume */
-@@ -923,16 +949,22 @@ static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
- 		.devid = YAS530_DEVICE_ID,
- 		.product_name = "YAS530 MS-3E",
+@@ -504,27 +506,8 @@ static int yas5xx_read_raw(struct iio_dev *indio_dev,
+ 		}
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+-		switch (ci->devid) {
+-		case YAS530_DEVICE_ID:
+-			/*
+-			 * Raw values of YAS530 are in picotesla. Divide by
+-			 * 100000000 (10^8) to get Gauss.
+-			 */
+-			*val = 1;
+-			*val2 = 100000000;
+-			break;
+-		case YAS532_DEVICE_ID:
+-			/*
+-			 * Raw values of YAS532 are in nanotesla. Divide by
+-			 * 100000 (10^5) to get Gauss.
+-			 */
+-			*val = 1;
+-			*val2 = 100000;
+-			break;
+-		default:
+-			dev_err(yas5xx->dev, "unknown device type\n");
+-			return -EINVAL;
+-		}
++		*val = 1;
++		*val2 = ci->scaling_val2;
+ 		return IIO_VAL_FRACTIONAL;
+ 	default:
+ 		/* Unknown request */
+@@ -951,6 +934,7 @@ static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
  		.version_names = { "A", "B" },
-+		.volatile_reg = yas530_volatile_reg,
-+		.volatile_reg_qty = ARRAY_SIZE(yas530_volatile_reg),
+ 		.volatile_reg = yas530_volatile_reg,
+ 		.volatile_reg_qty = ARRAY_SIZE(yas530_volatile_reg),
++		.scaling_val2 = 100000000, /* picotesla to Gauss */
  	},
  	[yas532] = {
  		.devid = YAS532_DEVICE_ID,
- 		.product_name = "YAS532 MS-3R",
+@@ -958,6 +942,7 @@ static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
  		.version_names = { "AB", "AC" },
-+		.volatile_reg = yas530_volatile_reg,
-+		.volatile_reg_qty = ARRAY_SIZE(yas530_volatile_reg),
+ 		.volatile_reg = yas530_volatile_reg,
+ 		.volatile_reg_qty = ARRAY_SIZE(yas530_volatile_reg),
++		.scaling_val2 = 100000, /* nanotesla to Gauss */
  	},
  	[yas533] = {
  		.devid = YAS532_DEVICE_ID,
- 		.product_name = "YAS533 MS-3F",
+@@ -965,6 +950,7 @@ static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
  		.version_names = { "AB", "AC" },
-+		.volatile_reg = yas530_volatile_reg,
-+		.volatile_reg_qty = ARRAY_SIZE(yas530_volatile_reg),
+ 		.volatile_reg = yas530_volatile_reg,
+ 		.volatile_reg_qty = ARRAY_SIZE(yas530_volatile_reg),
++		.scaling_val2 = 100000, /* nanotesla to Gauss */
  	},
  };
  
