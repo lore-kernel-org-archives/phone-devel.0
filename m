@@ -2,57 +2,57 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0240EC25B0F
-	for <phone-devel@archiver.kernel.org>; Fri, 12 Aug 2022 21:57:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DFCA8C2BB41
+	for <phone-devel@archiver.kernel.org>; Fri, 12 Aug 2022 21:57:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232206AbiHLV5C (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 12 Aug 2022 17:57:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41924 "EHLO
+        id S229646AbiHLV5E (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 12 Aug 2022 17:57:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233151AbiHLV5A (ORCPT
+        with ESMTP id S233983AbiHLV5D (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 12 Aug 2022 17:57:00 -0400
-Received: from sonic305-21.consmr.mail.ir2.yahoo.com (sonic305-21.consmr.mail.ir2.yahoo.com [77.238.177.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89CE6B5142
-        for <phone-devel@vger.kernel.org>; Fri, 12 Aug 2022 14:56:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1660341417; bh=nuMoHzZRdeYccWIDIyDSTJ5ryNgtfIJF3s4M09Vr0oU=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=Ge9a8lac4zAhLE4Son5FO/CXCn5kc/dPGgAmtDa1eslF83nMlJOj2zsFABmMukogxqOmb9kawtGsI4F2sD0pvkjS2Dm6IXcFJY03WGfk3bBqXW62KaNQT0rkf9+v7Fov82s+QpbNhw5wyY9Bj4EOBTrnPBXlineiqH/0aX3K83xQRnyMwGwz6tAApTRVmWCx4RS6Xj1oCHwiXxqNDHoQ1+9y4yPgtZrky9l1WKutqMCNYYudz+eTgl6xnDhM2wBfuviiQNpjQD0C+HSxpuEIQLsHTJbMVixaZhVctC9S7lrIqQkDFs4rR9qRTCrkGV0RMO7DW3ivqnaBy/ta3HCYVA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1660341417; bh=zqqrR3UrpbrRMJ+HiDCFCWJ9rnoFujiaifHyhdHHE7p=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=pPoE9OE+gHzY4EWbA++xNxoenUueMWFD15d4ZRUJOzW2xZplchO20uA6JyVIBZfSDapANnDVNqxQdpRXa2SZyEmnZ36TgF53luuwYTwMrxP6Ll9tbhoSHiDX8CuuznPM8dpguxtN0BxYVrh41zyzge3jgmA+Z0ncwsXpAWElTzRmzq5YjmNgd4Ges1Z8LwvreLz9eem208kwWj2HOUlU59rq+G5S8al8/g8O5DMsKXbnxAj5N4i1rZWt7XpcGZCSdDEjyC30Ck7gncrxkixKZk5MHojBrDuB9HkyEYuk0vE8uHGRD5Zy3NVfx4XQI618wJtF0U65Ao33kVVxypQdaw==
-X-YMail-OSG: uahWN0oVM1lwyiDRffZTeqLsZUZsqWqUZcQdgfiCH2GyTj4dTIa.BaD9_yZHHNH
- uxi01oLrPiDjpS.mjt0dlx8otNuVwecG4cKhynPEFduY_ZnD26URYMndC_N.JSgHzDFQ8PnQA1Fr
- r8TfGHRLnwya_6VZ.zd_F_YEwtkhzXFf0Go41k_Wvlh52WRTKXhyRdapIEprgxLvrOhqyVTJDw.Y
- YFwY5p8qL0obzU.BcfyNNf5AFhieVxAnoeJ87z.5Hr_CnZDN5ONU9zaxRXnUFb7i3aNmuidRz2LY
- Qy98wwbX75tmYLeh9jlzVwJpkW.ZP7cwBCM0EWE_1BWqFUMHfN_PtvcQ4hVj0tpuVZPX8_83XcPC
- iqnysAnD4y..5kJUB6jdKmPuTSvVjc.j3lBLVISuXF4bbhHZEZLIqPECKY6_vzrDVoNzgHrzpd4y
- I57gJ5mYyqeYTEmWMCRap4S4z6cHL3VXH6BrGFGW.0qyUGeGgd2NI_DBcW69gVFglHKOVka4dheF
- l_kMGtBq9q0hDsZWDPxoG7VPECdl.lwDIPRhd4Hma3QVxYUofdWvxcJWsyPMAdhho5O7jbxZa7pK
- lKrJtTNFKki.tAXuMVOaTKqP_jz_938pT4YDESxRLIq1o7LSgT_vQ.CTuvqkeDpyFVtojgnMwIef
- jPWmtq_vqWuYgxZCs8RM9O1XVBRsBSi7srdHDQRnmTuIc5O4SKnand1NLNkXEkkYhPjyhQdi7mTa
- DJhWpOWeqboAI7Btl.VIoNntYmhY4kB7f6SF5ZSqGxzEf0LGW5r7F3E9ua9U_aK5QPuay3S2XgVK
- .VtUfmuEcJCYZaRdigVR6pPvAY3w6gRR.lGjaPETVMR.sVTQSUM.Lm6nW9ASTQoH.Lugz30nOkuQ
- IlmuQvfOa5oFZf91dQ9AK0iS4QB2FAo82jQbrmN92Qkb.zc6TUxkeY5v9g7SFZhMg.meDweHOu9q
- DxYII.neDtKUDb_COQ2zkdzz6negQo6B11xbRPDMWodkn4Xqd2bGGU6pW3fnBFvApUn.ita4gemN
- AqmMC1THCe9vFPB8kBwMR0zXG8Lh.yQVaa3FHTFemV1pzXZZp9MQ457mHZEyE0vbEaCg6gxHn5pI
- HT4sRSAOdxuhdQ7V3xHTUybUpHlgEKUKKqm7Eg57mOwv3cXxsL7z47rJQ4MAFBc4c3HGhWIRCgRX
- dfFshBWk84Sruiqvf9nCGiLwBrVYgbBT1vH7yLyno.Vn1FrKsv4EKEkr82cLChJoP4yeGpEfvSqy
- Uab2eBp1Rvo0rsaesp2tcitOqPgGxp4Wc3WZVtnCyVz4jOCYMQ0cORm6tf.4xWXyhAmB8A.nBPKl
- pxCxp6pcvusRhR4PiRORs6721H0WGjs4fx4u3CPvbu.gygx540IXFB0uwVVzgU_0JOaMqF7yHpF.
- 0h2OcGJ7ZFydZeh.RtHBNPM7PtwjeQqmY7wbG4BaBiDiGn2C1dKlRqrNFZhI305DB4SUNQLJk._T
- BKpYPJq1RU8WzFEk0Drg224ejbBiulkF9oLubXnCHHWEyniKIo0YoUKh2VxaU0mt4yuMz4g3MQuL
- YEJqS0L5bY_5EE82ixKCuDgO5G6bXWWsOhjHwjmcu.jxYspLvV2d2zVTVae_oSqLGHT8MWd8FEzb
- RRAIug3GgqtwXHEaH7xlL1_VZEhduib6bwpytPJ3BFtzJWjkbc57A5_jarSY8SqmvxC3g.x2zIym
- o_FWBhRw2_05aSXolDmZQZSW3D1RSFHGUeRjAu6Dm0M_WJxJ6oLaEG8fINONxXh8KbFwY3wccVKu
- .zvKOVSNCpgz9tbYJ70SGv96QFgDSGSSTUIMCqNx2iBWTiPVCzUWmaHs5F954PoSOONQF2kli1Ka
- 6tNfDQPBXA4KpzPDK_s0PGHgqiSXumGuXioeY_kLPOonk3hF25tcnaobJ1KGWHMIKXfQxj34E8X5
- wgurRG.ZUyCYLpYMJMFQtFZLJHy0HqXxyCZC6aZh.w_bPHpVLcPxX3zg0Q_OH83kd_4JOiIWIZ_j
- CHnF1snDTQpKuxOKwIU5zy4.r77Gar7ad2WJtvqyYOPbUZGqvMIdd0Zr9d3YFCJM27A.zVmIy9ky
- nVNSHZSv8LSPu6u3IV_X99VvIiy41wApSLCIYrLjUrXbiYXmCDG_5nlR85.2KeGuzVt7ySV0ZXhB
- hLtUclcrH3TW4vnSuMeFk_hC.FT.PwWeak4hmvHyAkA2AknX3EHl_A04T1xXvFS90W2l7O1eRlBr
- H7RdSR4Iq9IHGNl9asnaPh6Z20uvdr1.4Y31rLjRJjN3SQZFakGAYI_VXBM0BtjiTfTY2Pkq_i3D
- dHDLaeKnIwZygOw--
+        Fri, 12 Aug 2022 17:57:03 -0400
+Received: from sonic307-54.consmr.mail.ir2.yahoo.com (sonic307-54.consmr.mail.ir2.yahoo.com [87.248.110.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C60A8B5148
+        for <phone-devel@vger.kernel.org>; Fri, 12 Aug 2022 14:57:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1660341418; bh=mIUQiLcLvAOL7SpGV1ZiJOCq32eACtPmZycCkGSkGCw=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=ZkkY7AQPKhvfe4i864U6aqnEEsxHEwS+MZUseCUOsR5gc1CWZHevptoBA6Ogygs7eSq3PGLAYjZKZHNmVF9LAwSd5J0YZVynUcCXN57MpAqgmusxQD8XxzERxoh2rcR3EImvnBK+mM0Lu1IYhp+rJqwv3nHJi2YLeuozxfX9LZ8MRUHoFhXmL6ZJcowcM3RMR/aRHkEddZf8sT5+wRGEpvpzCNfpEwbFNQ219WlQ9ZiRcwZt8RviumPAAeV3duOqusO0MYgIg+hhcu1DhVrS8zZn7H34s9P77hG/Ly2agPgNL0/cU3I3cEOoL8/OfsnGHexCOMGY3YO8sEq34ewgiQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1660341418; bh=VZVsB9Et19YPn6aP1OmcH+W3+7xLDoKoO/1qWgfgq9f=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=EWcC543b3COPx+Bi8+LnwFnjR9lvyWaDSAl7itdKRc/Z3H+tAhCdwPcX5cd+NkUh9iUa47BnZEdaxSwDaE2cNlnNv7azlUIMJpPGXzV4DP+9uBBtykMOVkVHsK7Sm0Y7n+y8FqoQSPiIhfSPznmSzQwuI541Oe12pcgG+joKV3tQ0M1vJa1P3i4A6AlgvGRDpfiCULWIWcKFQ5mq3nI/8HwW2/6mL4bpAQ1SkHIk6b1vOZAfvwpKGTERoIioWBuZVKMWlsbMXcbjQ2n1gNPBGl40SDIroI7a1ifAKcY2EzQ1vQO8Jejw47wm0aQZOPjKiPsUZzp+9g444IhUPjr8jQ==
+X-YMail-OSG: ewzIJlMVM1kOlJ_bAKj1.AVeRZVgSHvO6rPkScVgDcfo3eim27b46pwL11Gp.nS
+ UTwY2DZvYZZ08lr776B6OE6Wn3btgxN6BsdNfQZdzMB2s3Ks.8PsYg7qGin3wobR0FCGlEfqgm1A
+ sRENjDVNolIjQrjqdP9cEasIfGJr7rCRqbP0F0ZyMpucYwgfsaed1OvGSwuaBmAKdxJ.AiA8g23U
+ YEA2Uo4zJ4NQe3SJmfjDtFVuTbMgLIBNDmZI3l.QnDQGPYsFYvgmWKXmGRzLpcQOR_vbKQcspJlF
+ ihsqQyyn7h9b35wnNap_ucqUTpHlf3K5isydrDb9wFGnO80U.BinZT_P99TylApP2KpleiIz449h
+ gR3vmjy0.sSZvj4Lnx8Mhl20NTCMcwRsU23ZONUh5UXIYgEEhxErZ657I1d8sm73dlStewAPkYkN
+ v05OE_b7B3EjX2itI7VPNAnGTAhJHTZTwvgYkEKSC94Anypyi7ZIX9KxFsEPq.CFZQG1mXNknZD8
+ PkbBY7RPjORDiEhI4N0u0XEsImiGrLVuWKmJeqoU1MDP_OPrGAlKNov9CYLpWseQs_a_Qiqy3jvJ
+ m96I0xgkzvZeYxTy_pSFLXzaBlnT_CnX3ZHKCxeww1uCR19JOVHzduxLb7fhCZsMgeYNSILVLkX4
+ UjSbxcF5ytB2cbnTNvJfcg661vO7w4qMoEVKfDRFtbpDzcYMRxcZ7DyrrggvtAfNgpUoc_7.nXts
+ lAE_PSi5KiAm.OAT8iojk.We1MquV8d5hDBFxdN3qSJlcNzr1wHkB0mlTm4SYPG4H8LuBp2UAfUL
+ QCO25fwqBUaxA.m3Bsp5IXXQJcd2xzZ2fG.iNvVMsCtzj0iURsqPuF..1u0jSrL__CsEcXEOAdzv
+ BVk0dOpL04W9INK0CmJgyxnH7UCGbhFXKmBukEQ5CXGkIemLQ4clNKtD.Nf3Juhd5w002y3NPDuJ
+ h156m.ElpETeA3tAmvj0VyM60o8ZUeSjByRavLz.zWnjqCxrK_dPi.lqm0uVeQa0jsIaDYVinBbB
+ 5uk_n_eIBq3ZPW12s.PM6dgOtfjY.IuyMYtKunyjytURDQDwl8pjicEYK0Zug0drlyhmNOHS_NOA
+ hBrU9SdvXtxMI5ajB4PSVuAOdLOvdMVYzmu5azdrJ6Dct4wWBEgx9exb0GRBscWnUblb9bNHbzhS
+ xtqGeEXcS6ZgUwaqsikF7ptRBW4ACTmxprx.IJ1mWZyWsVAH9AsLDK0B8KpiBaXUlJYRDYbQk.OH
+ rBfwBqNRjZGUFTHN2S2bbhHzyRfZRTnHx23ud0sKIXfEtwbtRDgWDHvAM0C.z9aYdDMnFWuoBjWO
+ q7muHLvEm8JvYZfuZsv4G2CWUPY7zH0jac_GjpCxEp9hcsxi2jQ1EHAGD9T4Av5pc2ptrA3nm6pB
+ jJKb7Mn_4XtuIU1eSbXuqWkfq9EYg4nHn_MnXNg_mViFg..GuVZgIvczAIk0EYMj0YL3LwawM1Le
+ _Ndi0jCyfwxUGCv_DG99tovM3ymmoUNxofpmbZrTuKklobvqWtw1Rg7VJTNavpwLjRKqXpSqBDD9
+ l9OCpw7X7a6fjEPuIUBpDFHoPehW8yXJr2ETJ4xqRB3bVlN_aKDmwNt24R9Bt_En8nfNLpaXJM0D
+ LwH_pBl2iq7npkA6Bl1876b7LK2JZcH_3I6RcKXNpqt6Q5x6q9Azn.r9mfNmIqQuRCiv_glkkGZZ
+ A84InWJJmo9szF_FIeOzPda.wViVQeDkPd3PekH0oC_F6Lzk7b9hjUe.JQrzGp.Tuc4ULO96bA5w
+ ELyHaAHRPYyX5f4pZvfgUq1OgPEVLaqrAShSIldoIpetLrZl2OT_gMhRv0xm1iSlrcIzIj0YGNEm
+ In2DtOWDKD1R2BijlUWMTmsmu5jApyZgpeDX8bI42x3tRm4kJGAxyE6P5CLQa7MIJwp3EXbuulCh
+ eexyUQ84d2j.Xd5rh_7mKx1s2j5xJY.UKhjZENbOh0LzmjqqRnSFUa0Qb0QaLVHhkvDO930HTo6F
+ bwTOt9C_yCH.MW4M1t3EnlH0aYl_fcY8xUkK2qm8NrOgdQt9pBl7x5W0EhkVqVfTb.pRryT6KHxG
+ nHcmbCYJCxI3jf1fxONQnn9jF4QacQyUHvZfLQtaKlUxheUiR2PR.ESWy6GrClM3kcq3C.Xcn7me
+ qPPsIFZYNdaLHiGcHeyEpAvzrwlbRk6pPdq9Pg0vA2p7__A_fyq5qZBCUJ5ZekuUkUua3MQ70Wys
+ 7lYa68sWFMKXWgh.5pUsS6JXEHCiqP184WqS0mh5oFnQqFB_eq3Upv9xkeBZ5Y0LV8da3MaxQXM0
+ yfqmmxkDTkBEDjlWJLt4-
 X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.ir2.yahoo.com with HTTP; Fri, 12 Aug 2022 21:56:57 +0000
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ir2.yahoo.com with HTTP; Fri, 12 Aug 2022 21:56:58 +0000
 Received: by hermes--canary-production-ir2-f74ffc99c-2vqg6 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 15f5a750f82727a3561822ee8056ab25;
-          Fri, 12 Aug 2022 21:56:53 +0000 (UTC)
+          Fri, 12 Aug 2022 21:56:55 +0000 (UTC)
 From:   Jakob Hauser <jahau@rocketmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -62,9 +62,9 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Jakob Hauser <jahau@rocketmail.com>
-Subject: [PATCH v6 05/14] iio: magnetometer: yas530: Change data type of calibration coefficients
-Date:   Fri, 12 Aug 2022 23:54:10 +0200
-Message-Id: <f1e53bd6672aebe59f9b236b41374482edf888f8.1660337264.git.jahau@rocketmail.com>
+Subject: [PATCH v6 07/14] iio: magnetometer: yas530: Move printk %*ph parameters out from stack
+Date:   Fri, 12 Aug 2022 23:54:12 +0200
+Message-Id: <93b50c20adb1b2acb4cddb1ab25755070edd7c07.1660337264.git.jahau@rocketmail.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <cover.1660337264.git.jahau@rocketmail.com>
 References: <cover.1660337264.git.jahau@rocketmail.com>
@@ -74,49 +74,41 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This is a preparation for adding YAS537 variant.
+Use less stack by modifying %*ph parameters.
 
-YAS537 uses other data types on the calibration coefficients [1] than YAS530 [2]
-and YAS532 [3].
+While at it, in the function yas530_get_calibration_data(), the debug dump was
+extended to 16 elements as this is the size of the calibration data array of
+YAS530.
 
-On YAS537, at least for a4 and a7 this could matter because 8-bit unsigned data
-from the register gets stored into a signed data type, therefore this should be
-8-bit as well.
-
-For YAS530/532, on the other hand, it doesn't seem to matter. The size of a2-a9
-and k is smaller than 8-bit at extraction, also the applied math is low. And
-Cx/Cy1/Cy2, now being defined as signed 16-bit, are extracted as unsigned 8-bit
-and undergo only minor math.
-
-[1] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/drivers/iio/magnetometer/yas_mag_drv-yas537.c#L76-L78
-[2] https://github.com/NovaFusion/android_kernel_samsung_golden/blob/cm-12.1/drivers/sensor/compass/yas_mag_driver-yas530.c#L526-L527
-[3] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/drivers/iio/magnetometer/yas_mag_drv-yas532.c#L76-L77
-
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
- drivers/iio/magnetometer/yamaha-yas530.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/iio/magnetometer/yamaha-yas530.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-index 6296ea3140ef..a9d7cf3ad77f 100644
+index 40cd6bbc9952..beb48f3a959c 100644
 --- a/drivers/iio/magnetometer/yamaha-yas530.c
 +++ b/drivers/iio/magnetometer/yamaha-yas530.c
-@@ -103,9 +103,11 @@ struct yas5xx_calibration {
- 	s32 r[3];
- 	u32 f[3];
- 	/* Temperature compensation calibration */
--	s32 Cx, Cy1, Cy2;
-+	s16 Cx, Cy1, Cy2;
- 	/* Misc calibration coefficients */
--	s32 a2, a3, a4, a5, a6, a7, a8, a9, k;
-+	s8  a2, a3, a4, a6, a7, a8;
-+	s16 a5, a9;
-+	u8  k;
- 	/* clock divider */
- 	u8 dck;
- };
+@@ -664,7 +664,7 @@ static int yas530_get_calibration_data(struct yas5xx *yas5xx)
+ 	ret = regmap_bulk_read(yas5xx->map, YAS530_CAL, data, sizeof(data));
+ 	if (ret)
+ 		return ret;
+-	dev_dbg(yas5xx->dev, "calibration data: %*ph\n", 14, data);
++	dev_dbg(yas5xx->dev, "calibration data: %16ph\n", data);
+ 
+ 	add_device_randomness(data, sizeof(data));
+ 	yas5xx->version = data[15] & GENMASK(1, 0);
+@@ -711,7 +711,7 @@ static int yas532_get_calibration_data(struct yas5xx *yas5xx)
+ 	ret = regmap_bulk_read(yas5xx->map, YAS530_CAL, data, sizeof(data));
+ 	if (ret)
+ 		return ret;
+-	dev_dbg(yas5xx->dev, "calibration data: %*ph\n", 14, data);
++	dev_dbg(yas5xx->dev, "calibration data: %14ph\n", data);
+ 
+ 	/* Sanity check, is this all zeroes? */
+ 	if (memchr_inv(data, 0x00, 13) == NULL) {
 -- 
 2.35.1
 
