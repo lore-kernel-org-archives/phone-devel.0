@@ -2,105 +2,121 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4041C25B0D
-	for <phone-devel@archiver.kernel.org>; Sat, 13 Aug 2022 04:38:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 561A7C19F2D
+	for <phone-devel@archiver.kernel.org>; Sat, 13 Aug 2022 11:50:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236968AbiHMEie (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 13 Aug 2022 00:38:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39880 "EHLO
+        id S239409AbiHMLu3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 13 Aug 2022 07:50:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231424AbiHMEid (ORCPT
+        with ESMTP id S238791AbiHMLu2 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 13 Aug 2022 00:38:33 -0400
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 600E72871A;
-        Fri, 12 Aug 2022 21:38:32 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.west.internal (Postfix) with ESMTP id 0FF403200921;
-        Sat, 13 Aug 2022 00:38:30 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Sat, 13 Aug 2022 00:38:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=undef.tools; h=
-        cc:cc:content-transfer-encoding:date:date:from:from:in-reply-to
-        :message-id:mime-version:reply-to:sender:subject:subject:to:to;
-         s=fm1; t=1660365510; x=1660451910; bh=HEcNfg4CwiBsfqODwObieSZgI
-        suTV3ZpAgRuL6VBTtg=; b=NwE54rizUgYGRU5kE4pbEMAx3ul6uR36YOFRkj3sO
-        fMW2AM6rnp39EraZBCnBPm42Ymq2xEOnVmM8MaqjxCdN2qbv/WBSGM0GGTIrtT24
-        j/V/8AtDtH4H+WN2Bcp994gkAsDKlWpPGAHKuSyZR0MbqLIJQCMAW3LrLg9yNLnt
-        u3WK1MBt71/E+tIR9EfHvogHJwg1o0D1XusW9P3peOPkMUkFNH94W6ALBgsI8Ils
-        U2mX2vnx47z6FIx8Hb0xn1T0HZNp6+bWo3g/NcA0yPOv3OhBofNaTefWlzxyR/MD
-        3TifbectHtm5RweOr4Cv+WNapn1WGpdy5xYBgefH/YQAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:message-id
-        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1660365510; x=1660451910; bh=HEcNfg4CwiBsfqODwObieSZgIsuTV3ZpAgR
-        uL6VBTtg=; b=OhHgQzE/QUcnvt8UPLuOF2ZHlwaCVdeFZ7Bx1r+w9L4rFx4Ezqb
-        Y34KrqtSVZPcjcc9xDFrxcFEIuxpaGDsR+Wrb42bwGMffG1hNWDRdx1KgTB+CBb7
-        b4tjiPkuyPJw3bQ6I5NfBXNJrFbWJvCsA/mSjRCHl1CubUoTTqi+BnrV7WLXyZE0
-        J/O7MkR17kdkP2Xab4Ddy3NbP0/qpIpG5leCy6O1FkNo1ivrTvO2x4Ov/6CElxJs
-        X+YL5cmclPYfDIUa89Q7xoZq5WcmbJYeJjJBoVsWrIWlFwsDA2ST28JyPWFrjZXL
-        r0y/tUuiP8MI3109/lUall7r9ASWP2mvTYA==
-X-ME-Sender: <xms:xSr3YnhYk5WE9Q8kZexRKMNCcrRPPs3Ef9qW2IKyPmYsm-lpaPXdtA>
-    <xme:xSr3YkCXzvfiqmsP0wgQqdqVO4c-wWc2zk8WGjVUufKHMp7dCzri9ytc5mP5dpMUX
-    8qF33AmaZH8Yu09EXo>
-X-ME-Received: <xmr:xSr3YnE-OgUuD_SEi1QqjgD7PlQvNlMFIoMWW5HVMOVqZQETx7aALEh4T7uM3dyFCQH4NbmXcg4slgxh6lZ9qwbve4U6mKnbQBsUfEOCKcTBFUeJY-eG5PEQtA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdegjedgkeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepkhgvrhhnvghl
-    sehunhguvghfrdhtohholhhsnecuggftrfgrthhtvghrnheptddtieehgefgveegkefghe
-    ekgeelkeejleelkeejueejkedtkeetfefghfektdeunecuvehluhhsthgvrhfuihiivgep
-    tdenucfrrghrrghmpehmrghilhhfrhhomhepkhgvrhhnvghlsehunhguvghfrdhtohholh
-    hs
-X-ME-Proxy: <xmx:xir3YkSI9WA7s-ARKSn7rWSS-n5QDFuDlwht6o5JX_o5aLTiwEaDmg>
-    <xmx:xir3Ykzh67NkWRbrHePCTM90GjU5BJbFnMdiJGuv_ru3Unn5bzF4qw>
-    <xmx:xir3Yq7Rz6Jrqv1GSQKI5gK0szjJ430kOKiP0sCw25dMm5PAW6_wTg>
-    <xmx:xir3YrnL5-JXfp796yqk-SofX5opsl8f-cTrKtOUcIlzBIHV7swKdg>
-Feedback-ID: id76147eb:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 13 Aug 2022 00:38:27 -0400 (EDT)
-From:   kernel@undef.tools
-To:     Bastien Nocera <hadess@hadess.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Ondrej Jirman <megi@xff.cz>,
-        Jarrah Gosbell <kernel@undef.tools>,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     phone-devel@vger.kernel.org
-Subject: [PATCH] Input: goodix: Add compatible string for GT1158
-Date:   Sat, 13 Aug 2022 04:38:21 +0000
-Message-Id: <20220813043821.9981-1-kernel@undef.tools>
-X-Mailer: git-send-email 2.35.1
+        Sat, 13 Aug 2022 07:50:28 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45D4A20BF7
+        for <phone-devel@vger.kernel.org>; Sat, 13 Aug 2022 04:50:24 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id s23so1673403wmj.4
+        for <phone-devel@vger.kernel.org>; Sat, 13 Aug 2022 04:50:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=rySRLwiiIOrtSpvOJyTmWSaKJJa5oryDquhv9YZj+6o=;
+        b=YY2Jve7dPmBhnAAPknKHb75GYBe6TgB4NpBMCo7lsOxsvFBCkxz8lDcxWStY5d47Jv
+         JP031NuvuBuaA95125eUkzukVIhphwd9IBcuuJlWoUxaJdI7zgqkMFR7yBfAZnCZfKg7
+         X8ckr7JGKp0pvL9HU6UkL2rQSEaO6nxktBfeR/9r17vlYD8ntimnDfxZsHETZz7/cLbo
+         l275B+eBqhsYsTRxCKqd1YgWQzUJqQF/X87a3p4gbZHSJ3UCYK/192171gan4M5iUwkm
+         /fC8Asy0SerA+PA/uZsRVAk4/m2sSJaY7iF5AAKNh/Ap9mIhBDJUudbKN0hwI6v+Jwic
+         suUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=rySRLwiiIOrtSpvOJyTmWSaKJJa5oryDquhv9YZj+6o=;
+        b=1iZTnnAG9pe8TzWi5R79g+mID/BpdEJt6F+RYObl73E5jGxFS0SrFmPZiM/K8TabPf
+         q77/wWDGzaPnSkVFz9P6juhY6JXYs21pNhzTgwc3rJk8uythrkJVTFjbd2CxzIc/LQOK
+         GpQmWPpDISH2Wj5RaN1G8pRJmnnYyfqePM2kgMZ/EP8VKk7ZOWkSFscEIxIo0VSwhFhx
+         XID9WxGvlX2QzmSrUWxh06RwNlM6uVptzIlCBhSXRC2B8tQJuFyYa2w0ht9CSm0du+Gr
+         21Q8LRC+j5ZT1Lgl8egL59uAmTxnO2Mhme1sMZNW0wfKkUFcBRpTpG6qsiXSUx0RbCR0
+         rr+A==
+X-Gm-Message-State: ACgBeo3ukieUqrgv75uyjxi2bJzXGUdTpIWRxDntHegqmVsr508XLxFa
+        3hcNNgz7KNajesrO8dAabT33Kg==
+X-Google-Smtp-Source: AA6agR74gWIK4vbRB/zahVpfeJTmJjAaYd5j3yvMfKvXYOe/Z/7mJsBMh41qu6MV1qncnZnLUJsIKQ==
+X-Received: by 2002:a7b:ce05:0:b0:3a5:c069:25b3 with SMTP id m5-20020a7bce05000000b003a5c06925b3mr5293928wmc.87.1660391422858;
+        Sat, 13 Aug 2022 04:50:22 -0700 (PDT)
+Received: from otso.. (mobiledyn-62-240-134-27.mrsn.at. [62.240.134.27])
+        by smtp.gmail.com with ESMTPSA id h8-20020a05600c350800b003a325bd8517sm3656092wmq.5.2022.08.13.04.50.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Aug 2022 04:50:22 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] mfd: qcom-spmi-pmic: Add more PMIC SUBTYPE IDs
+Date:   Sat, 13 Aug 2022 13:48:06 +0200
+Message-Id: <20220813114806.102466-1-luca.weiss@fairphone.com>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Jarrah Gosbell <kernel@undef.tools>
+Add more IDs that are found in the downstream msm-4.19 kernel under the
+path include/linux/qpnp/qpnp-revid.h.
 
-Add compatible string for GT1158 missing from the previous patch.
-
-Fixes:	425fe4709c76 ("Input: goodix - add support for GT1158")
-Signed-off-by: Jarrah Gosbell <kernel@undef.tools>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- drivers/input/touchscreen/goodix.c | 1 +
- 1 file changed, 1 insertion(+)
+I've noticed that some hex numbers in this list have uppercase letters,
+some have lower case ones.
+If wanted I can add a patch converting all to either upper- or lower
+case. Anyone have a preference here?
 
-diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/goodix.c
-index 3974cb63708f..995169701f13 100644
---- a/drivers/input/touchscreen/goodix.c
-+++ b/drivers/input/touchscreen/goodix.c
-@@ -1557,6 +1557,7 @@ MODULE_DEVICE_TABLE(acpi, goodix_acpi_match);
- #ifdef CONFIG_OF
- static const struct of_device_id goodix_of_match[] = {
- 	{ .compatible = "goodix,gt1151" },
-+	{ .compatible = "goodix,gt1158" },
- 	{ .compatible = "goodix,gt5663" },
- 	{ .compatible = "goodix,gt5688" },
- 	{ .compatible = "goodix,gt911" },
+ include/soc/qcom/qcom-spmi-pmic.h | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/include/soc/qcom/qcom-spmi-pmic.h b/include/soc/qcom/qcom-spmi-pmic.h
+index 72398ff44719..bcb8e95d5dab 100644
+--- a/include/soc/qcom/qcom-spmi-pmic.h
++++ b/include/soc/qcom/qcom-spmi-pmic.h
+@@ -26,18 +26,32 @@
+ #define PM8901_SUBTYPE		0x0f
+ #define PM8950_SUBTYPE		0x10
+ #define PMI8950_SUBTYPE		0x11
++#define PMK8001_SUBTYPE		0x12
++#define PMI8996_SUBTYPE		0x13
+ #define PM8998_SUBTYPE		0x14
+ #define PMI8998_SUBTYPE		0x15
++#define SMB1381_SUBTYPE		0x17
+ #define PM8005_SUBTYPE		0x18
+ #define PM660L_SUBTYPE		0x1A
+ #define PM660_SUBTYPE		0x1B
++#define SMB1355_SUBTYPE		0x1C
+ #define PM8150_SUBTYPE		0x1E
+ #define PM8150L_SUBTYPE		0x1f
+ #define PM8150B_SUBTYPE		0x20
+ #define PMK8002_SUBTYPE		0x21
++#define SMB1390_SUBTYPE		0x23
+ #define PM8009_SUBTYPE		0x24
++#define PMI632_SUBTYPE		0x25
+ #define PM8150C_SUBTYPE		0x26
++#define PM6150_SUBTYPE		0x28
+ #define SMB2351_SUBTYPE		0x29
++#define PM8008_SUBTYPE		0x2C
++#define PM6125_SUBTYPE		0x2D
++#define PM7250B_SUBTYPE		0x2E
++#define PMK8350_SUBTYPE		0x2F
++#define PMR735B_SUBTYPE		0x34
++#define PM6350_SUBTYPE		0x36
++#define PM2250_SUBTYPE		0x37
+ 
+ #define PMI8998_FAB_ID_SMIC	0x11
+ #define PMI8998_FAB_ID_GF	0x30
 -- 
-2.35.1
+2.37.1
 
