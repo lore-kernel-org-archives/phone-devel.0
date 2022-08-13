@@ -2,133 +2,82 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA9F8C25B0E
-	for <phone-devel@archiver.kernel.org>; Sat, 13 Aug 2022 14:23:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0ECFEC25B0F
+	for <phone-devel@archiver.kernel.org>; Sat, 13 Aug 2022 19:57:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239608AbiHMOXe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 13 Aug 2022 10:23:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47018 "EHLO
+        id S233851AbiHMT5k (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 13 Aug 2022 15:57:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235340AbiHMOXd (ORCPT
+        with ESMTP id S229634AbiHMT5j (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 13 Aug 2022 10:23:33 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB49D220EF
-        for <phone-devel@vger.kernel.org>; Sat, 13 Aug 2022 07:23:30 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id k17so1797370wmr.2
-        for <phone-devel@vger.kernel.org>; Sat, 13 Aug 2022 07:23:30 -0700 (PDT)
+        Sat, 13 Aug 2022 15:57:39 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBEAC13CCB
+        for <phone-devel@vger.kernel.org>; Sat, 13 Aug 2022 12:57:38 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id gb36so7243555ejc.10
+        for <phone-devel@vger.kernel.org>; Sat, 13 Aug 2022 12:57:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=zXLI7lVM/yGaQM+ipIyUuHnVFPM6tjGTsAy6QU3E1Cg=;
-        b=PUO1hWJdiDKtzCpu0CyqmGKiuWjtXlKQQnRraSzE4Ak3kXH7seuBaipSUnC6bcJXzH
-         TrTkLo6RKwfucOlWOJJtJf/uFSc4a1ydliUAyg4dvBF66eatlcHHXfxJ9pHR3XwBn7W7
-         spU/gxIWAJ0Ui0r4ZLCWivrURD/GiDE7LzsiF+vGAnIxL7AhOxdcG7iLD1oFhfxZQjCE
-         GyJhcdQ2kUgV3rZ8SBW52EUKx8grpwVQ9TMnDXSeCYB7y7qwxLpZEyje11YJmjCN7pWb
-         f7is/ZrzlNMxrA63DIYL01JtFelrD/qBaWSZGTDRkPy4dTtV81qGHnUYqg8aKRKrYnIt
-         cwOA==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=JGYHeKzOnPNjlc3OvvMKt2SLhpqG2CadqQbgqAwYLc8=;
+        b=cBu1gX955Ca5O0bgIBvDOeVQmOF+rnz03U2tY9avsgtMrBGu4SqEZOYSQN7zVxHoxp
+         zMYINRKP8R63yRW+WUQxe1bY/Ooy3Bw64feqNJ/2kk14MSeUuWOteO+y5r4dN+uzJTK4
+         LeoGB0XQM6xHxXKJE51Tz6/NwLY1vhbim6561V54zz9L6PqDmeE6wuCMWnbMkFLuA1bA
+         xJPd5CtB+WKYE27WuCUl6vxHmKetIfMF5TISbZRKrmdGsA9wV21lLAPyzPlB4dQaAKvc
+         wuP/zW6nWPfXhWAY7kjCeknHDRFiWXF45q5DKjlDVI+/rwSPOt0YBLz4wl8Yuq7rTKbt
+         2qSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=zXLI7lVM/yGaQM+ipIyUuHnVFPM6tjGTsAy6QU3E1Cg=;
-        b=IErH+t1S5eQDLHTcFj6nVDcqycQh1vXyC3HZcwcSv/NJ27bkCmyWtFt3vTJhqRvwly
-         PxxF0A1U6KRIiWn7OK37/2CNuoLBauaOdoOJAWRW+SZc8/h/t+Kd+VJigEOP3rHjvnPX
-         1SoL+JPxXUP8TpUu84wP66/Mm+FoA3ks3kwC8wfQoUPgyGeT19GZV7yqldjQ/yKUiDsS
-         J5WarVYzF/4MkejlUOhz9/xBFhUE3LZJgrlJw2WXTUuG2JLWFR997pxYBu2Bnho0pZXe
-         6UuB00Cm188rA2efFZ3gZASF451EYy30V73bM3v4WSQ/B4LKdfQdA2RkHc9zAcV5xObt
-         iEDg==
-X-Gm-Message-State: ACgBeo33/7Q/UsKZj4XyfrJEitkI0RKIoAo391n2z5MhNWWxmLwcGt5T
-        g5QHwBuN75i/51M/xTpG0Ip0sQ==
-X-Google-Smtp-Source: AA6agR6stw9SsC7wnvyfz/yYO+fUxPfEvU4bLProVHWPfvCSEo9WY85AwZJMDajIUsyLnh25UxX/eg==
-X-Received: by 2002:a1c:f716:0:b0:3a1:8f0e:66b4 with SMTP id v22-20020a1cf716000000b003a18f0e66b4mr5468290wmh.140.1660400609202;
-        Sat, 13 Aug 2022 07:23:29 -0700 (PDT)
-Received: from [192.168.1.12] ([81.178.197.238])
-        by smtp.gmail.com with ESMTPSA id j11-20020adfe50b000000b00224f67bfc95sm1050855wrm.62.2022.08.13.07.23.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Aug 2022 07:23:28 -0700 (PDT)
-Message-ID: <3cb611a1-590a-673f-99a8-d5da0c5f5790@linaro.org>
-Date:   Sat, 13 Aug 2022 15:23:27 +0100
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=JGYHeKzOnPNjlc3OvvMKt2SLhpqG2CadqQbgqAwYLc8=;
+        b=Q07Z2YQJ6YuEq5EGJKav+lcocOqpQNWCxrVqPdTs6HruQHU44ciwRZdV+HtHzmhtcC
+         FZJFGWekz1I+QfaOvb2qrG8Ox27DvNBR0Dcu6gUMn+lZgaMi3i4oWL+kb0FCYw8S7228
+         wNtOjI19BaKjcwGAYLh0K4bMLIhYCsWamkMRp8gO0KeirItp2TZ1onxsaDHVYSYiuDlX
+         SQmeGF40IFwVf6CjL5Ah3A8uHzsr+cvAQDllSMB5zCwejRkER/mPDA0pI5at/39cx/JD
+         XJLBkiEc6ll1M9Y8afs+qKg8peTYTciLSyM2mH8GQ1pthBRvZVIN3HLCbgrVtHjysfVY
+         xYow==
+X-Gm-Message-State: ACgBeo1xTm9IDliyYMFnoPM0/Prx+slvp66tJ1m1H3MlYZcDHIsVfNwX
+        JL9amNypLiJ7FqDeiQv0M9cCl0iyFHzWplFCGYeS5A==
+X-Google-Smtp-Source: AA6agR6byjWAkLF7RgcR8NnyDLpre6XNFIhaJVHwkXh8pa1vGfcsOAPQBNsnrWL7KbaJndQU0ecWXrunsUrX1jcv9Ag=
+X-Received: by 2002:a17:906:5a71:b0:730:aaa1:a9ec with SMTP id
+ my49-20020a1709065a7100b00730aaa1a9ecmr6168817ejc.440.1660420656213; Sat, 13
+ Aug 2022 12:57:36 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH] mfd: qcom-spmi-pmic: Add more PMIC SUBTYPE IDs
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Lee Jones <lee.jones@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-kernel@vger.kernel.org
-References: <20220813114806.102466-1-luca.weiss@fairphone.com>
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <20220813114806.102466-1-luca.weiss@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <cover.1660337264.git.jahau@rocketmail.com> <93b50c20adb1b2acb4cddb1ab25755070edd7c07.1660337264.git.jahau@rocketmail.com>
+In-Reply-To: <93b50c20adb1b2acb4cddb1ab25755070edd7c07.1660337264.git.jahau@rocketmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sat, 13 Aug 2022 21:57:25 +0200
+Message-ID: <CACRpkdZbbyiRBbdEGJAZwM7cWDWKaLLxyHV92j263cM6aQKwbw@mail.gmail.com>
+Subject: Re: [PATCH v6 07/14] iio: magnetometer: yas530: Move printk %*ph
+ parameters out from stack
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Fri, Aug 12, 2022 at 11:56 PM Jakob Hauser <jahau@rocketmail.com> wrote:
 
+> Use less stack by modifying %*ph parameters.
+>
+> While at it, in the function yas530_get_calibration_data(), the debug dump was
+> extended to 16 elements as this is the size of the calibration data array of
+> YAS530.
+>
+> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-On 13/08/2022 12:48, Luca Weiss wrote:
-> Add more IDs that are found in the downstream msm-4.19 kernel under the
-> path include/linux/qpnp/qpnp-revid.h.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> I've noticed that some hex numbers in this list have uppercase letters,
-> some have lower case ones.
-> If wanted I can add a patch converting all to either upper- or lower
-> case. Anyone have a preference here?
-I think(?) uppercase is the standard for Qualcomm stuff.
-> 
->   include/soc/qcom/qcom-spmi-pmic.h | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
-> 
-> diff --git a/include/soc/qcom/qcom-spmi-pmic.h b/include/soc/qcom/qcom-spmi-pmic.h
-> index 72398ff44719..bcb8e95d5dab 100644
-> --- a/include/soc/qcom/qcom-spmi-pmic.h
-> +++ b/include/soc/qcom/qcom-spmi-pmic.h
-> @@ -26,18 +26,32 @@
->   #define PM8901_SUBTYPE		0x0f
->   #define PM8950_SUBTYPE		0x10
->   #define PMI8950_SUBTYPE		0x11
-> +#define PMK8001_SUBTYPE		0x12
-> +#define PMI8996_SUBTYPE		0x13
->   #define PM8998_SUBTYPE		0x14
->   #define PMI8998_SUBTYPE		0x15
-> +#define SMB1381_SUBTYPE		0x17 >   #define PM8005_SUBTYPE		0x18
->   #define PM660L_SUBTYPE		0x1A
->   #define PM660_SUBTYPE		0x1B
-> +#define SMB1355_SUBTYPE		0x1C
-The SHIFT6mq uses this and schematics suggest it doesn't support SPMI. Does it 
-make sense to include these secondary charger chips here?
->   #define PM8150_SUBTYPE		0x1E
->   #define PM8150L_SUBTYPE		0x1f
->   #define PM8150B_SUBTYPE		0x20
->   #define PMK8002_SUBTYPE		0x21
-> +#define SMB1390_SUBTYPE		0x23
->   #define PM8009_SUBTYPE		0x24
-> +#define PMI632_SUBTYPE		0x25
->   #define PM8150C_SUBTYPE		0x26
-> +#define PM6150_SUBTYPE		0x28
->   #define SMB2351_SUBTYPE		0x29
-> +#define PM8008_SUBTYPE		0x2C
-> +#define PM6125_SUBTYPE		0x2D
-> +#define PM7250B_SUBTYPE		0x2E
-> +#define PMK8350_SUBTYPE		0x2F
-> +#define PMR735B_SUBTYPE		0x34
-> +#define PM6350_SUBTYPE		0x36
-> +#define PM2250_SUBTYPE		0x37
->   
->   #define PMI8998_FAB_ID_SMIC	0x11
->   #define PMI8998_FAB_ID_GF	0x30
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
--- 
-Kind Regards,
-Caleb (they/he)
+Yours,
+Linus Walleij
