@@ -2,126 +2,111 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14244C19F2D
-	for <phone-devel@archiver.kernel.org>; Sun, 14 Aug 2022 00:42:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C37DC25B06
+	for <phone-devel@archiver.kernel.org>; Sun, 14 Aug 2022 04:09:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240098AbiHNAmE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 13 Aug 2022 20:42:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49220 "EHLO
+        id S230016AbiHNEJE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 14 Aug 2022 00:09:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236391AbiHNAlu (ORCPT
+        with ESMTP id S230083AbiHNEJB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 13 Aug 2022 20:41:50 -0400
-Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [IPv6:2001:4b7a:2000:18::164])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8187A78BF6;
-        Sat, 13 Aug 2022 17:41:48 -0700 (PDT)
-Received: from [192.168.1.101] (abxi168.neoplus.adsl.tpnet.pl [83.9.2.168])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 5ABC31F613;
-        Sun, 14 Aug 2022 02:41:44 +0200 (CEST)
-Message-ID: <f8cfc271-a674-8d0b-f65e-cd1e9aac06e1@somainline.org>
-Date:   Sun, 14 Aug 2022 02:41:43 +0200
+        Sun, 14 Aug 2022 00:09:01 -0400
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC621EC68;
+        Sat, 13 Aug 2022 21:08:59 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id BB56F5C0095;
+        Sun, 14 Aug 2022 00:08:58 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Sun, 14 Aug 2022 00:08:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=undef.tools; h=
+        cc:cc:content-transfer-encoding:date:date:from:from:in-reply-to
+        :message-id:mime-version:reply-to:sender:subject:subject:to:to;
+         s=fm1; t=1660450138; x=1660536538; bh=xlxrEcPRt7QJWiPNqdAOJW0gy
+        VsucqKY52m23/gcz0s=; b=CAQnaZV5IL6WKgz00DfL1kamOOP/xG1fVaLzcKmtd
+        1CycTSnv24tctUzn9/hZ67r4VyIbWM6TChEsQ6kc3izGLEk1rOwl+O3MECSfE6ji
+        j5dgK8m0Avm2H7+aasfWFRjLYDHEZvKWq9sUgxMt1h0rz00hsWm0P81hzmeLr9rG
+        B63r19iWaf7hlaLyvLVfAmyqmGZbWOOTPwrT9dz7yw0QZMjz/UP06zz+hmepcFgq
+        wf4BDdl4BNKtjBe6WG3JIRYikhlFUxmkyjDnO3al/7mkQHeovJ2FvyHv5YRlTfyM
+        1Rl4TlkeridmQf3JS4+37RD2HV72SCclmd8UGPZW16A3w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:message-id
+        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1660450138; x=1660536538; bh=xlxrEcPRt7QJWiPNqdAOJW0gyVsucqKY52m
+        23/gcz0s=; b=TTs0mHOjagr7WiUI13hjrxCJCz/NggxcY5MBG9u07nLJNdTQGNP
+        01LEwIVS6EhTe4yR5QpuwjXpdklznUE5+NCkHtRzoAu9vF2lV0NUQEzP2YeKfnxv
+        dm1s9ScWU7PDZLqjZUucqWZqyUczfo91Kis6KxyJGSFKI+eOKnfX8AqripYoyLCV
+        yKJMim070JOLJGCOnIc7eR2uQsJdSuFy0SD1s26KUNHAuAraYtlO4kh6SclsoXfV
+        QVrVZkt6PUrgka6mOetCpIrb7vyklHqOZxJMZNOfr5fB8oHlK+O1G6kb7X3bsxSj
+        B0DGR7ef5q/PskfA4s3t3ewRkmnEFm7gWdg==
+X-ME-Sender: <xms:WXX4YkYGPLMjFc032UaCOrv20g35mltchop1yWEf9jjHQdYzoywTlw>
+    <xme:WXX4YvarrwLB5Zwxm75EUe3dexy3Ov3SkyJ585XHJcpP9Ha-HEX5YLOx8mdOFUQ-J
+    jUFc2N3RDCcnUJmmmo>
+X-ME-Received: <xmr:WXX4Yu-Tc8tcAq-AYXXpvHGs44zQClsTPhUs9KmjO46xt3LXJ8rPZQL7nEN3Ww2FUrred_mlhGYQ7tcuEbp59SInRtY8MXpNp8VLi-Sog9EIJTZoCXwX_MFINA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdegledgkeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomheplfgrrhhrrghh
+    ucfiohhssggvlhhluceokhgvrhhnvghlsehunhguvghfrdhtohholhhsqeenucggtffrrg
+    htthgvrhhnpeejueevgfejfeeghffhfeehvdffleetheekkedvfeehieetuedtheevgefh
+    geekhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hkvghrnhgvlhesuhhnuggvfhdrthhoohhlsh
+X-ME-Proxy: <xmx:WXX4YuoiVl7Pul8-JHdIjRHge-t5f5wxpsqeTB3nDYDUZ1AaQs9y0A>
+    <xmx:WXX4YvrdBuYP29baPgf_5leEqAQ2qmp22jA2X0tFve0QVreMumNXdQ>
+    <xmx:WXX4YsS7uQs6IIkulv-qgzfFW0bKjsb1zyiFtoCDG0c_ZzME5PDYCQ>
+    <xmx:WnX4Yi3SQU_4TUCJoNyFkAvPGIc2PHR1exIqOWhVdcI-DMTJLuZlmQ>
+Feedback-ID: id76147eb:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 14 Aug 2022 00:08:54 -0400 (EDT)
+From:   Jarrah Gosbell <kernel@undef.tools>
+To:     Jacob Chen <jacob-chen@iotwrt.com>,
+        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Heiko Stuebner <heiko@sntech.de>, linux-media@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, Ondrej Jirman <megi@xff.cz>,
+        Jarrah Gosbell <kernel@undef.tools>
+Subject: [PATCH] media: rockchip: rga: Fix probe rga_parse_dt bugs
+Date:   Sun, 14 Aug 2022 04:08:07 +0000
+Message-Id: <20220814040806.7523-1-kernel@undef.tools>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH] arm64: dts: qcom: pm6350: add temp sensor and thermal
- zone config
-Content-Language: en-US
-To:     Matthias Kaehlcke <mka@chromium.org>,
-        Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220812114421.1195044-1-luca.weiss@fairphone.com>
- <81ae6a31-1f37-a677-f8f8-2340e37d3a63@linaro.org>
- <CM43WTWNP8MM.3145TGVN4208B@otso> <YvaErMmLIQaDolKR@google.com>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-In-Reply-To: <YvaErMmLIQaDolKR@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+From: Ondrej Jirman <megi@xff.cz>
 
+rga_parse_dt is missing a error return, so if some of the resources
+return DEFER_PROBE, probe will succeed without these resources.
 
-On 12.08.2022 18:49, Matthias Kaehlcke wrote:
-> On Fri, Aug 12, 2022 at 04:06:47PM +0200, Luca Weiss wrote:
->> Hi Krzysztof,
->>
->> +CC Matthias Kaehlcke (author of patch mentioned further below)
->>
->> On Fri Aug 12, 2022 at 3:36 PM CEST, Krzysztof Kozlowski wrote:
->>> On 12/08/2022 14:44, Luca Weiss wrote:
->>>> Add temp-alarm device tree node and a default configuration for the
->>>> corresponding thermal zone for this PMIC. Temperatures are based on
->>>> downstream values.
->>>>
->>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>> ---
->>>> With this config I'm getting this in dmesg, not sure if it's a warning
->>>> that should be solved or just an informative warning.
->>>>
->>>> [    0.268256] spmi-temp-alarm c440000.spmi:pmic@0:temp-alarm@2400: No ADC is configured and critical temperature is above the maximum stage 2 threshold of 140 C! Configuring stage 2 shutdown at 140 C.
->>>>
->>>> As far as I can tell, based on downstream dts this PMIC doesn't have an
->>>> ADC.
-> 
-> I don't seem to have access to the datasheet, in any case that the ADC isn't
-> configured in the downstream dts doesn't necessarily mean the PMIC doesn't
-> have one. The PM6150 has one, and it is probably relatively close to the
-> PM6350.
-> 
->>> You configure 145 and driver believes 140 is the limit, so it seems
->>> warning should be addressed.
->>
->> Hm...
->>
->>>
->>> From where did you get 145 degrees as limit? Downstream DTS?
->>
->> Yes, downstream dts[0].
->>
->> From what I can see in the downstream driver, it always disabled this
->> "software override of stage 2 and 3 shutdowns"[1]
->>
->> In mainline only since f1599f9e4cd6 ("thermal: qcom-spmi: Use PMIC
->> thermal stage 2 for critical trip points") this check exists, which is
->> not part of downstream (wasn't in 4.19 yet), where this software
->> override tries to get enabled so that thermal core can handle this.
->>
->> Any suggestion what I can do here? Maybe looking at msm-5.4 sources (and
->> associated dts) might reveal something..?
-> 
-> I wouldn't necessarily consider QC downstream code as a reliable source of
-> truth ...
-> 
->> Maybe newer SoCs/PMICs have a different config?
-> 
-> Commit aa92b3310c55 ("thermal/drivers/qcom-spmi-temp-alarm: Add support
-> for GEN2 rev 1 PMIC peripherals") added support for gen2 PMICs, which
-> actually have lower thresholds than gen1. From the log it seems that the
-> PM6350 is identified as gen1 device (max stage 2 threshold = 140 degC).
-> 
-> It seems setting the limit to 140 degC or one of the other stage 2
-> thresholds would be a reasonable course of action. stage 2 is the
-> threshold at which the PMIC is so hot that the system should shut
-> down, and 140 degC is the highest of the stage 2 thresholds. Even
-> if it was possible, what would be gained from setting the trip
-> point 5 degC higher?
-Eeeh, if it ran at anything near that for prolonged time, the heat
-would likely spread around the device causing the battery to
-eventually combust.. Qualcomm DTs say one thing, but vendor
-userspace daemons are far more conservative. Not sure if they're
-still around (should be iirc), but I would definitely
-object allowing anything inside [mainly] mobile devices to reach
-that kind of temperature..
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
+Signed-off-by: Jarrah Gosbell <kernel@undef.tools>
+---
+ drivers/media/platform/rockchip/rga/rga.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Konrad
+diff --git a/drivers/media/platform/rockchip/rga/rga.c b/drivers/media/platform/rockchip/rga/rga.c
+index 2f8df74ad0fd..b88dd7ed2036 100644
+--- a/drivers/media/platform/rockchip/rga/rga.c
++++ b/drivers/media/platform/rockchip/rga/rga.c
+@@ -815,8 +815,10 @@ static int rga_probe(struct platform_device *pdev)
+ 	mutex_init(&rga->mutex);
+ 
+ 	ret = rga_parse_dt(rga);
+-	if (ret)
++	if (ret) {
+ 		dev_err(&pdev->dev, "Unable to parse OF data\n");
++		return ret;
++	}
+ 
+ 	pm_runtime_enable(rga->dev);
+ 
+-- 
+2.35.1
+
