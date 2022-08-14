@@ -2,111 +2,126 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C37DC25B06
-	for <phone-devel@archiver.kernel.org>; Sun, 14 Aug 2022 04:09:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C694CC28B2B
+	for <phone-devel@archiver.kernel.org>; Sun, 14 Aug 2022 07:05:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbiHNEJE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 14 Aug 2022 00:09:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34586 "EHLO
+        id S240330AbiHNHFz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 14 Aug 2022 03:05:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230083AbiHNEJB (ORCPT
+        with ESMTP id S229436AbiHNHFx (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 14 Aug 2022 00:09:01 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC621EC68;
-        Sat, 13 Aug 2022 21:08:59 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id BB56F5C0095;
-        Sun, 14 Aug 2022 00:08:58 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Sun, 14 Aug 2022 00:08:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=undef.tools; h=
-        cc:cc:content-transfer-encoding:date:date:from:from:in-reply-to
-        :message-id:mime-version:reply-to:sender:subject:subject:to:to;
-         s=fm1; t=1660450138; x=1660536538; bh=xlxrEcPRt7QJWiPNqdAOJW0gy
-        VsucqKY52m23/gcz0s=; b=CAQnaZV5IL6WKgz00DfL1kamOOP/xG1fVaLzcKmtd
-        1CycTSnv24tctUzn9/hZ67r4VyIbWM6TChEsQ6kc3izGLEk1rOwl+O3MECSfE6ji
-        j5dgK8m0Avm2H7+aasfWFRjLYDHEZvKWq9sUgxMt1h0rz00hsWm0P81hzmeLr9rG
-        B63r19iWaf7hlaLyvLVfAmyqmGZbWOOTPwrT9dz7yw0QZMjz/UP06zz+hmepcFgq
-        wf4BDdl4BNKtjBe6WG3JIRYikhlFUxmkyjDnO3al/7mkQHeovJ2FvyHv5YRlTfyM
-        1Rl4TlkeridmQf3JS4+37RD2HV72SCclmd8UGPZW16A3w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:message-id
-        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1660450138; x=1660536538; bh=xlxrEcPRt7QJWiPNqdAOJW0gyVsucqKY52m
-        23/gcz0s=; b=TTs0mHOjagr7WiUI13hjrxCJCz/NggxcY5MBG9u07nLJNdTQGNP
-        01LEwIVS6EhTe4yR5QpuwjXpdklznUE5+NCkHtRzoAu9vF2lV0NUQEzP2YeKfnxv
-        dm1s9ScWU7PDZLqjZUucqWZqyUczfo91Kis6KxyJGSFKI+eOKnfX8AqripYoyLCV
-        yKJMim070JOLJGCOnIc7eR2uQsJdSuFy0SD1s26KUNHAuAraYtlO4kh6SclsoXfV
-        QVrVZkt6PUrgka6mOetCpIrb7vyklHqOZxJMZNOfr5fB8oHlK+O1G6kb7X3bsxSj
-        B0DGR7ef5q/PskfA4s3t3ewRkmnEFm7gWdg==
-X-ME-Sender: <xms:WXX4YkYGPLMjFc032UaCOrv20g35mltchop1yWEf9jjHQdYzoywTlw>
-    <xme:WXX4YvarrwLB5Zwxm75EUe3dexy3Ov3SkyJ585XHJcpP9Ha-HEX5YLOx8mdOFUQ-J
-    jUFc2N3RDCcnUJmmmo>
-X-ME-Received: <xmr:WXX4Yu-Tc8tcAq-AYXXpvHGs44zQClsTPhUs9KmjO46xt3LXJ8rPZQL7nEN3Ww2FUrred_mlhGYQ7tcuEbp59SInRtY8MXpNp8VLi-Sog9EIJTZoCXwX_MFINA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdegledgkeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomheplfgrrhhrrghh
-    ucfiohhssggvlhhluceokhgvrhhnvghlsehunhguvghfrdhtohholhhsqeenucggtffrrg
-    htthgvrhhnpeejueevgfejfeeghffhfeehvdffleetheekkedvfeehieetuedtheevgefh
-    geekhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hkvghrnhgvlhesuhhnuggvfhdrthhoohhlsh
-X-ME-Proxy: <xmx:WXX4YuoiVl7Pul8-JHdIjRHge-t5f5wxpsqeTB3nDYDUZ1AaQs9y0A>
-    <xmx:WXX4YvrdBuYP29baPgf_5leEqAQ2qmp22jA2X0tFve0QVreMumNXdQ>
-    <xmx:WXX4YsS7uQs6IIkulv-qgzfFW0bKjsb1zyiFtoCDG0c_ZzME5PDYCQ>
-    <xmx:WnX4Yi3SQU_4TUCJoNyFkAvPGIc2PHR1exIqOWhVdcI-DMTJLuZlmQ>
-Feedback-ID: id76147eb:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 14 Aug 2022 00:08:54 -0400 (EDT)
-From:   Jarrah Gosbell <kernel@undef.tools>
-To:     Jacob Chen <jacob-chen@iotwrt.com>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>, linux-media@vger.kernel.org,
-        linux-rockchip@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     phone-devel@vger.kernel.org, Ondrej Jirman <megi@xff.cz>,
-        Jarrah Gosbell <kernel@undef.tools>
-Subject: [PATCH] media: rockchip: rga: Fix probe rga_parse_dt bugs
-Date:   Sun, 14 Aug 2022 04:08:07 +0000
-Message-Id: <20220814040806.7523-1-kernel@undef.tools>
-X-Mailer: git-send-email 2.35.1
+        Sun, 14 Aug 2022 03:05:53 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05DFA638E;
+        Sun, 14 Aug 2022 00:05:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1660460753; x=1691996753;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=K4tl8ZYGeFhA+U5umZeSuWeZdwow0wgZ4xqCXX2El6g=;
+  b=kWvKwX7OzNs1TUZsS9yMEWQHdEB3sblq+R5Fh2Ze1GOt4AfelNr7+LmY
+   6H5ejAD/h+c/FvGfxb4o5oh33Cux77Md4EoYv+8n/1j6kQjvV2ep9jgSE
+   lp/oVg/3QRcC7CUpryTpBVFxqQxAhsR8VzdozcS2GfE6oPyeJVMStkccF
+   L3dyiXovgMtgLpzoWxud9uG53yeMK6XB8ZhXYoxH4XOG3IgUxaQhMvE/F
+   uUv212PP1sGnKWCl3bRTcnXhjDZayMxxqy1siL2D/g5og3SM3wHXrMALy
+   NrYTNazXPoG52um4p+MZ3LnabiO2BkwFm2QkLiY1kjQDPXOl/gBaywyY5
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10437"; a="292599116"
+X-IronPort-AV: E=Sophos;i="5.93,236,1654585200"; 
+   d="scan'208";a="292599116"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2022 00:05:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,236,1654585200"; 
+   d="scan'208";a="695675504"
+Received: from lkp-server02.sh.intel.com (HELO 8745164cafc7) ([10.239.97.151])
+  by FMSMGA003.fm.intel.com with ESMTP; 14 Aug 2022 00:05:46 -0700
+Received: from kbuild by 8745164cafc7 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oN7gv-0002bb-1c;
+        Sun, 14 Aug 2022 07:05:45 +0000
+Date:   Sun, 14 Aug 2022 15:04:57 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Markuss Broks <markuss.broks@gmail.com>,
+        linux-kernel@vger.kernel.org
+Cc:     Paul Gazzillo <paul@pgazz.com>,
+        Necip Fazil Yildiran <fazilyildiran@gmail.com>,
+        kbuild-all@lists.01.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Kees Cook <keescook@chromium.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Michal Suchanek <msuchanek@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Wei Ming Chen <jj251510319013@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>, linux-doc@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v2 3/3] efi: earlycon: Add support for generic
+ framebuffers and move to console subsystem
+Message-ID: <202208141430.Ez8EkEwO-lkp@intel.com>
+References: <20220806163255.10404-4-markuss.broks@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220806163255.10404-4-markuss.broks@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Ondrej Jirman <megi@xff.cz>
+Hi Markuss,
 
-rga_parse_dt is missing a error return, so if some of the resources
-return DEFER_PROBE, probe will succeed without these resources.
+I love your patch! Perhaps something to improve:
 
-Signed-off-by: Ondrej Jirman <megi@xff.cz>
-Signed-off-by: Jarrah Gosbell <kernel@undef.tools>
----
- drivers/media/platform/rockchip/rga/rga.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+[auto build test WARNING on tty/tty-testing]
+[also build test WARNING on efi/next staging/staging-testing usb/usb-testing linus/master v5.19 next-20220812]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/drivers/media/platform/rockchip/rga/rga.c b/drivers/media/platform/rockchip/rga/rga.c
-index 2f8df74ad0fd..b88dd7ed2036 100644
---- a/drivers/media/platform/rockchip/rga/rga.c
-+++ b/drivers/media/platform/rockchip/rga/rga.c
-@@ -815,8 +815,10 @@ static int rga_probe(struct platform_device *pdev)
- 	mutex_init(&rga->mutex);
- 
- 	ret = rga_parse_dt(rga);
--	if (ret)
-+	if (ret) {
- 		dev_err(&pdev->dev, "Unable to parse OF data\n");
-+		return ret;
-+	}
- 
- 	pm_runtime_enable(rga->dev);
- 
+url:    https://github.com/intel-lab-lkp/linux/commits/Markuss-Broks/Add-generic-framebuffer-support-to-EFI-earlycon-driver/20220807-003646
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
+config: x86_64-kismet-CONFIG_FB_EARLYCON-CONFIG_EFI_EARLYCON-0-0 (https://download.01.org/0day-ci/archive/20220814/202208141430.Ez8EkEwO-lkp@intel.com/config)
+reproduce:
+        # https://github.com/intel-lab-lkp/linux/commit/97dfc2aa69b065de769a191352afe2099c52fedb
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Markuss-Broks/Add-generic-framebuffer-support-to-EFI-earlycon-driver/20220807-003646
+        git checkout 97dfc2aa69b065de769a191352afe2099c52fedb
+        # 1. reproduce by kismet
+           # install kmax per https://github.com/paulgazz/kmax/blob/master/README.md
+           kismet --linux-ksrc=linux --selectees CONFIG_FB_EARLYCON --selectors CONFIG_EFI_EARLYCON -a=x86_64
+        # 2. reproduce by make
+           # save the config file to linux source tree
+           cd linux
+           make ARCH=x86_64 olddefconfig
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+kismet warnings: (new ones prefixed by >>)
+>> kismet: WARNING: unmet direct dependencies detected for FB_EARLYCON when selected by EFI_EARLYCON
+   
+   WARNING: unmet direct dependencies detected for FB_EARLYCON
+     Depends on [n]: VT [=y] && SERIAL_EARLYCON [=n] && !ARM && !IA64
+     Selected by [y]:
+     - EFI_EARLYCON [=y] && EFI [=y]
+
 -- 
-2.35.1
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
