@@ -2,79 +2,108 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 115E3C25B0E
-	for <phone-devel@archiver.kernel.org>; Sun, 14 Aug 2022 16:56:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6479C25B06
+	for <phone-devel@archiver.kernel.org>; Sun, 14 Aug 2022 22:02:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231491AbiHNQ4F (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 14 Aug 2022 12:56:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39916 "EHLO
+        id S240656AbiHNWCL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 14 Aug 2022 18:02:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242494AbiHNQzV (ORCPT
+        with ESMTP id S240422AbiHNWB4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 14 Aug 2022 12:55:21 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8EBBB95A1;
-        Sun, 14 Aug 2022 09:43:49 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 49A53B80B79;
-        Sun, 14 Aug 2022 16:43:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938C1C433C1;
-        Sun, 14 Aug 2022 16:43:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660495421;
-        bh=w28eigQrYF9kqUXrPHiDGC54RLAzgkZZJ8ZUkhuRrDc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cko5FOh+GYBb9X32kNljB9YAmx7a2G1rWkTX1GYT5STm/8L0uzdqP1tThbHZ6WawQ
-         VIGjRPojcCITN76ZHRHy1HJW56ywLmQWsAm+ZBHpTKPx8DtAmnK3r6mcjD2rGFg5LM
-         PpGjJ5isZd7+5ggewIYeKoscNpH5rIn4nGLrRgq5kErlP3Vx8uw8TbktfS2J124XXH
-         npV5Xv3U6RT6uRazNV3qC2sjl1e6UQ7EEREB9xDw3nV+24c4k7qvWsvQvQ/0/OX7dg
-         AQ64Pp5or7XYABEI8h2O1z4S3PSN03dlJncyNHlBZCefYslSIbyLUgssz7HXkxlxCI
-         bJquOQSNo2xGA==
-Date:   Sun, 14 Aug 2022 17:54:10 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v6 00/14] Add support for magnetometer Yamaha YAS537
-Message-ID: <20220814175410.321a66bc@jic23-huawei>
-In-Reply-To: <cover.1660337264.git.jahau@rocketmail.com>
-References: <cover.1660337264.git.jahau.ref@rocketmail.com>
-        <cover.1660337264.git.jahau@rocketmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        Sun, 14 Aug 2022 18:01:56 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E80BD11C1A;
+        Sun, 14 Aug 2022 15:01:36 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id 5540D5C0039;
+        Sun, 14 Aug 2022 18:01:36 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Sun, 14 Aug 2022 18:01:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=undef.tools; h=
+        cc:cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm1; t=1660514496; x=
+        1660600896; bh=/N3ZJwMAuJKQJaLlb+5nhdHUlf08GWvC6v41/Xejl+U=; b=x
+        lK5hEAvRjyvkoTXfINnBahnjIYJHP+GfNL0MaIZxCfWpEegPDjesCrG4oETdCh2T
+        JpxLIWJh11b28A0E3qpAcdHzp5ng8BlJsPNF9zg/LIAC3JuSBfZOcVBPdxN/ALSZ
+        JQLHpTH7nHHG6pD5kQO45vqgHj7BlVTf9CBIjGOVP56qfEdkz9OyWJSSJYjtgrJP
+        67ZAi59dU4sJX8z9EKTAgvNnA5Q8VCVOx6Hy5WBJ/pRZ30bhAC1bJivfIbDy2BVh
+        QIsZItddkgpeY3Tj1V14QZgl+qes/mwCek38q/9NHWhvB5x6fc7Ho1nyNRMYYO32
+        VjZnrH3yc1VSoXc2SCQxA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1660514496; x=
+        1660600896; bh=/N3ZJwMAuJKQJaLlb+5nhdHUlf08GWvC6v41/Xejl+U=; b=J
+        NQaUkm4Fe/AlZMS5GBleTwq4sC7yCbf0SqagIxbXqpe1CXbbEkk/WBfeDz8bIQVp
+        x4SgQD/pjUnvd2X0V5959jefvXqSkU/kiUyCjDBNJcKSJzQWYDVqLms0dXmP2a/I
+        PZqaqyMRW1fvFYSlkBuRxWU/h8uwECfcuwzUYPZj7VnKnsieSi+zjyratj3qBlsz
+        axPRn8Fzj/kI5Hg1wzGRJ5vHvZiNWW6nrGqQRQnEHR2FgXKXy8B80nO7bCZnmZQR
+        Msjys/sU5YDzi8TobV8WXB8jCNHFXHoxgbqf7foeIog1s/SqCwufY1EVQPP1hiPe
+        gsiZMveKvFlTmRFFY1pWA==
+X-ME-Sender: <xms:vnD5YsV1vQ3t6ALRWjpPp33qCgjgTKbRYQQ_O2d98f3lCRQ0Qjca7A>
+    <xme:vnD5Ygk_DMGmx__aEbWR0z7dCYMjGf38XDgsVqbNTwMgE0BqKp370G_jvfujoOtv5
+    fs063N9h6MdYwmMC_U>
+X-ME-Received: <xmr:vnD5YgZFhRS0qPf4xt93VxKcOatQuGXL-zAEtWe3cSTduvh6GDOuslRdclOtVpNl2oH_8rB6fG6oalSRhP756kJjrQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehuddgtdejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpeflrghr
+    rhgrhhcuifhoshgsvghllhcuoehkvghrnhgvlhesuhhnuggvfhdrthhoohhlsheqnecugg
+    ftrfgrthhtvghrnhepvedtgeffledtjeegkeevfeegieevgffhveeuteduleeileetffel
+    hfduheevhffgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhgvrhhnvghlsehunhguvghfrdhtohholhhs
+X-ME-Proxy: <xmx:vnD5YrUzLZOhvg1AQ4ACTDahXthnJVg1Q2f8HipwqI4rPYT3cUuVfA>
+    <xmx:vnD5Ymlm0yNblouP4Nc17d3aBbdNXyrGfQAKHDcIhL4IQ95gk-jnCg>
+    <xmx:vnD5YgeNtyZLKZ21XaVsz-LZs8VXPwDo24fa8iC5MXbcWvi3PQhe2g>
+    <xmx:wHD5Yrir-iNt9pquSWGrIzaAPRu8b4qZxo-ndXRFG-1Q4ShX6-OfmQ>
+Feedback-ID: id76147eb:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 14 Aug 2022 18:01:30 -0400 (EDT)
+Message-ID: <821647de-be45-557a-e1eb-2e70e186f2d8@undef.tools>
+Date:   Mon, 15 Aug 2022 08:01:52 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH] media: rockchip: rga: Fix probe rga_parse_dt bugs
+Content-Language: en-AU
+To:     Peter Geis <pgwipeout@gmail.com>
+Cc:     Jacob Chen <jacob-chen@iotwrt.com>,
+        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        arm-mail-list <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org, Ondrej Jirman <megi@xff.cz>
+References: <20220814040806.7523-1-kernel@undef.tools>
+ <CAMdYzYoD9kM_RNs0t=7qc9Tyt9j-cD0DEQD0sR5cEkkGifFSSA@mail.gmail.com>
+From:   Jarrah Gosbell <kernel@undef.tools>
+In-Reply-To: <CAMdYzYoD9kM_RNs0t=7qc9Tyt9j-cD0DEQD0sR5cEkkGifFSSA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 12 Aug 2022 23:54:05 +0200
-Jakob Hauser <jahau@rocketmail.com> wrote:
 
-> This patchset adds YAS537 variant to the already existing driver for
-> Yamaha YAS magnetometers.
-> 
-> Patch 1 is a fix on the current driver.
-> Patches 2-13 are cleanups and refactoring.
-> Patch 14 finally adds the YAS537 variant.
+On 8/14/22 23:12, Peter Geis wrote:
+>>          ret = rga_parse_dt(rga);
+>> -       if (ret)
+>> +       if (ret) {
+>>                  dev_err(&pdev->dev, "Unable to parse OF data\n");
+> If this can return EPROBE_DEFER, shouldn't this be dev_err_probe
+> instead of dev_err?
 
-Series applied.  That build bot issue on v5 took me rather by surprise.
-Good to see the resolution looks pretty nice.
 
-I've applied this to what will become the togreg branch after rc1 is out
-and I can rebase. In the meantime pushed out as testing so the build bots
-are forced to take another look at it on top of my current tree.
+Looking into it that does make more sense. I suspect it wasn't done this 
+way originally because dev_err_probe isn't used elsewhere in rga.c. I'll 
+send a v2 with that change shortly.
 
-Thanks to all who have been reviewing this one and to Jakob for persisting.
-Unless anyone spots anything critical, let us do as Andy suggested and
-carry out any further tweaks as follow on patches.
 
-Thanks,
+Thanks for the review.
 
-Jonathan
