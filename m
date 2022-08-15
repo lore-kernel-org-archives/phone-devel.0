@@ -2,91 +2,102 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C12EFC00140
-	for <phone-devel@archiver.kernel.org>; Mon, 15 Aug 2022 13:18:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DF1EC3F6B0
+	for <phone-devel@archiver.kernel.org>; Mon, 15 Aug 2022 18:52:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242917AbiHONSL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 15 Aug 2022 09:18:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59134 "EHLO
+        id S243407AbiHOSwH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 15 Aug 2022 14:52:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231853AbiHONSK (ORCPT
+        with ESMTP id S244395AbiHOSvF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 15 Aug 2022 09:18:10 -0400
-Received: from mail-4323.proton.ch (mail-4323.proton.ch [185.70.43.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 318BD18364;
-        Mon, 15 Aug 2022 06:18:07 -0700 (PDT)
-Date:   Mon, 15 Aug 2022 13:17:54 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1660569485; x=1660828685;
-        bh=m6uQKUSuYYtdaLvckje+IwGlC7pNQNCHt9cAc2AS6EA=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
-         Feedback-ID:Message-ID;
-        b=KVGreW3Kn50rjv9OxBASDevRa18VtkDnodKjJddCFkfeqKotP66DBr0/lWVudwGQ/
-         PDF0oLsZTwE3nO2EQifZLwXkrMEovGwxbRBJ62Uj1nYP+vNEwv33fuzzKNCTou4yVv
-         g2Hix1CuHtlrRDMivArDJgDDg771OrNW9gc2lQSM=
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Reply-To: Caleb Connolly <caleb@connolly.tech>
-Subject: Re: [PATCH 1/3] input: add event codes for user programmable switch events
-Message-ID: <70be22f4-7851-200b-9741-4032033f7bfc@connolly.tech>
-In-Reply-To: <YvQyOhgSGjQLHHvv@google.com>
-References: <20220516142158.1612109-1-caleb@connolly.tech> <YvQyOhgSGjQLHHvv@google.com>
-Feedback-ID: 10753939:user:proton
+        Mon, 15 Aug 2022 14:51:05 -0400
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C434845980
+        for <phone-devel@vger.kernel.org>; Mon, 15 Aug 2022 11:29:04 -0700 (PDT)
+Received: by mail-ot1-x330.google.com with SMTP id 53-20020a9d0838000000b006371d896343so5987014oty.10
+        for <phone-devel@vger.kernel.org>; Mon, 15 Aug 2022 11:29:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=+2lJJE7hfrkayt0qzi/fmG2izz2GLSD8nOH7tC1AeLo=;
+        b=Lc4mNTi56/32O+lgEowursl3S1QdLAWj1FpOC5XA+F8Rx3hlrgkYOxG1d54XP1PQRd
+         mRXvLbXoAcxba3284ULxJIFBNCvTT393HISNfqbcZuOLFtg+LqNpWh6FTFFT1Kn55/rk
+         zAZXdzx4ceCx8rckPOQCS1eQ62LLF9XQdJtL4mfhlygbh3m8UIe1cBmEMwyCyVggoqQ5
+         0AQrM/A7lyijOyzdtN6eZC5x/J5rIMS+uFtUFMAl/SWgdp5wlh8OC3/0n6nNp5sceRpk
+         UgecbFyp9AiB0Vs0GSuanHfZWxpaVLDqfOE02iJGWyO2aUyx6mnP3+zKwWw4DwnIGAqg
+         KVsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=+2lJJE7hfrkayt0qzi/fmG2izz2GLSD8nOH7tC1AeLo=;
+        b=dlcEtuX5lbBNobebhn3Nux+4/SDwW0gQNnUH0JcYW3gvbYgJeSSG4wjlddjLdxGjBu
+         EKTcBKv1XNoReJLyFsUCmLNXHLiCA6RaEJxC5ad5eR5tMN2MSf/vNUcWMxc8tiZL5DAq
+         7hBiVnGkXn1gYEA1L4xaJ95KnJNeDevCKWuXTV1essbeu3u6uii4xNMCmuAjMf2zy4Qy
+         IKtYm46uTiRncOEEPjZ3H2KRZJ7xcdi0IQnrpXJDnwSqA1gYKSFTPh3WRIXWCNMRCB8J
+         pr8P0Zh0cd9KxrIhewPQCfU9xmrS6If0CFDV/pli/FodrbapXMgLOWts12nlo/FiK6ZW
+         tt9A==
+X-Gm-Message-State: ACgBeo1WxiDZD/pgGjkhAYrrH+Wa54D4Lc6IdxhjvfcB91nFL4VWZyr2
+        zogaB8uVMgasZuaBFgNMiAvJo6Uhg9LLcnz4UoKkzA==
+X-Google-Smtp-Source: AA6agR76AJA44USeULweUjdFYUfN/+GbzCosXIK/UxZ4AEkVDK/VEN27cHeW+w+gAM3CyEeE2422VPU3VsRAqluGTjk=
+X-Received: by 2002:a9d:490:0:b0:636:825e:3b6 with SMTP id 16-20020a9d0490000000b00636825e03b6mr6661546otm.91.1660588143705;
+ Mon, 15 Aug 2022 11:29:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20220729104441.39177-1-angelogioacchino.delregno@collabora.com> <20220729104441.39177-3-angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20220729104441.39177-3-angelogioacchino.delregno@collabora.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Mon, 15 Aug 2022 20:28:07 +0200
+Message-ID: <CAPDyKFqqb=FC85PAMPtrfp=vn5HWB2tXqUCY4Yjd_twxL8sY=w@mail.gmail.com>
+Subject: Re: [PATCH 2/8] dt-bindings: mmc: Add compatible for MT6795 Helio X10 SoC
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        vkoul@kernel.org, chaotian.jing@mediatek.com,
+        matthias.bgg@gmail.com, hsinyi@chromium.org,
+        nfraprado@collabora.com, allen-kh.cheng@mediatek.com,
+        fparent@baylibre.com, sam.shih@mediatek.com,
+        sean.wang@mediatek.com, long.cheng@mediatek.com,
+        wenbin.mei@mediatek.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Fri, 29 Jul 2022 at 12:44, AngeloGioacchino Del Regno
+<angelogioacchino.delregno@collabora.com> wrote:
+>
+> Add a compatible string for the MT6795 SoC's mtk-sd mmc controllers.
+>
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+
+Applied for next, thanks!
+
+Kind regards
+Uffe
 
 
-On 10/08/2022 23:33, Dmitry Torokhov wrote:
-> Hi Caleb,
+> ---
+>  Documentation/devicetree/bindings/mmc/mtk-sd.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> On Mon, May 16, 2022 at 02:22:57PM +0000, Caleb Connolly wrote:
->> Add SW_PROG{1,2,3,4} for device switches which are handled by userspace.
->>
->> This can be used for devices with "generic" switches which are intended
->> to be user-programmable, for example OnePlus phones contain a tri-state
->> key which can be used for switching between mute/vibrate/ring, or
->> programmed by the user to perform any arbitrary actions.
->>
->> These are analogous to the keys KEY_PROG{1,2,3,4} found on some
->> keyboards.
-
-Hi Dmitry,
->
-> This has been proposed a few times but this goes against the spirit of
-> the input subsystem where each key or switch has a defined [default]
-> purpose and userspace is normally expected to act upon input events
-> without paying attention to what device they actually are coming from.
-> IOW if you want to deal with particular GPIO signals you are better off
-> using GPIO subsystem.
->
-> In this context adding KEY_PROG1-4 was actually a mistake and we should
-> try not extend it further.
->
-> As fas as modeling the sliders with multiple settings goes I'd look into
-> ABS events, probably ABS_MISC, with a set of values.
-
-Ah I wasn't aware of ABS_MISC, this looks like a good way to go. Thanks.
-
->
-> Thanks.
->
+> diff --git a/Documentation/devicetree/bindings/mmc/mtk-sd.yaml b/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
+> index be366cefffc2..e1ceefe0ae48 100644
+> --- a/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/mtk-sd.yaml
+> @@ -20,6 +20,7 @@ properties:
+>            - mediatek,mt2701-mmc
+>            - mediatek,mt2712-mmc
+>            - mediatek,mt6779-mmc
+> +          - mediatek,mt6795-mmc
+>            - mediatek,mt7620-mmc
+>            - mediatek,mt7622-mmc
+>            - mediatek,mt8135-mmc
 > --
-> Dmitry
-
---
-Kind Regards,
-Caleb
-
+> 2.35.1
+>
