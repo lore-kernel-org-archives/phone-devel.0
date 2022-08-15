@@ -2,110 +2,111 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 60B54C32764
-	for <phone-devel@archiver.kernel.org>; Mon, 15 Aug 2022 10:13:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 93B77C00140
+	for <phone-devel@archiver.kernel.org>; Mon, 15 Aug 2022 10:38:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242046AbiHOKN1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 15 Aug 2022 06:13:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60530 "EHLO
+        id S232195AbiHOKid (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 15 Aug 2022 06:38:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242424AbiHOKMs (ORCPT
+        with ESMTP id S229752AbiHOKic (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 15 Aug 2022 06:12:48 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AF57165A4;
-        Mon, 15 Aug 2022 03:12:47 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id u6so7172290ljk.8;
-        Mon, 15 Aug 2022 03:12:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=M6PIQlUx6Zdh6S9AJkWXOp4FOoOhzviQOAnjrgwO1aU=;
-        b=WHGZmAbVH/Rt3jRuhcbO3MFReqRlbxNEcw89HPrkihvsw/6AUsLBLpMuuStY2tYoX3
-         oSh5kwhi5Fyl8nm1nALfAIHq9Rd8FatG6DzFHJdsChe0LKyNSdl31DTqcIZKyh05TbLT
-         rOSdSfpb0UFzHzUdQS9Sef9729xmTekAkHhZFthukrCEiDrPZ3dyX6lP7NL33uWLQBMo
-         Ss6+1e+s0/kihYNcMQmeixIz4k/RNE649wo/OiAvfJgoVzmZEdodbwGGwJnaVcXoylUF
-         r+l/8C1DxdD2bACELb7jCojdgZ3iixLENaffCZsrmRk4Ax7AOzDqanM9aHHnzmj0Y8J/
-         BDKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=M6PIQlUx6Zdh6S9AJkWXOp4FOoOhzviQOAnjrgwO1aU=;
-        b=J32QinGMOv0XJxV0x4R4y6n6IU/ZuzGvtDrID4OyFRkPM8zDt+g0z3UHKh012B6PPZ
-         WDi3ewJRjULAg9i+YkaglZiNAdeilR39R9BoRD+p2dw8wTjRFgZcrqlIAQoRzricu5OK
-         cUM7v5eh979p5SuKre6oj6MlOquzGkXI5/J35lSUimp2uthzD6agbA2vmGNTHCTKCVc7
-         7iLL9ZzRuSlcMFom+i+cB1afb2paUpm3CgkBHO3ok7PD+hXOOuYGcEHeR/0fuU2yJSrA
-         wgX39KdWjpqQWrjPV3Hbsbr6UT1aTrFeAlrwxVy3HvQk6pOuuOMxDpT/gCoG9oSJBzXR
-         r05A==
-X-Gm-Message-State: ACgBeo0P4JDrkOMAinBAB7p9dJX2JETX2jFm9Ak6Ak2jJ/qtBXoxcqDs
-        +7RD+wiG0SdUtaDaBDcrFzl7i7DNgCM=
-X-Google-Smtp-Source: AA6agR6ue/K7NDIBySkoofjS+cIh1O8Y2SxFzadrHzRFoVcUPw4z2N/CPH6O60kVQGA+Ty7tgtHhRw==
-X-Received: by 2002:a2e:8885:0:b0:25e:bf9b:2de2 with SMTP id k5-20020a2e8885000000b0025ebf9b2de2mr5014503lji.367.1660558367059;
-        Mon, 15 Aug 2022 03:12:47 -0700 (PDT)
-Received: from localhost.localdomain (admv234.neoplus.adsl.tpnet.pl. [79.185.51.234])
-        by smtp.gmail.com with ESMTPSA id 18-20020ac25f52000000b0048b1ba4d2a4sm1047264lfz.265.2022.08.15.03.12.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Aug 2022 03:12:46 -0700 (PDT)
-From:   Adam Skladowski <a39.skl@gmail.com>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Adam Skladowski <a39.skl@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Sai Prakash Ranjan <quic_saipraka@quicinc.com>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Emma Anholt <emma@anholt.net>,
-        Rob Clark <robdclark@chromium.org>,
-        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
-        linux-arm-msm@vger.kernel.org, dmaengine@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
-        linux-mmc@vger.kernel.org, linux-pm@vger.kernel.org,
-        Adam Skladowski <a_skl39@protonmail.com>
-Subject: [PATCH 6/7] iommu/arm-smmu-qcom: Add SM6115 support
-Date:   Mon, 15 Aug 2022 12:09:44 +0200
-Message-Id: <20220815100952.23795-7-a39.skl@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220815100952.23795-1-a39.skl@gmail.com>
-References: <20220815100952.23795-1-a39.skl@gmail.com>
+        Mon, 15 Aug 2022 06:38:32 -0400
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B3D21117E;
+        Mon, 15 Aug 2022 03:38:32 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id ACD865C00A1;
+        Mon, 15 Aug 2022 06:38:31 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Mon, 15 Aug 2022 06:38:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=undef.tools; h=
+        cc:cc:content-transfer-encoding:date:date:from:from:in-reply-to
+        :message-id:mime-version:reply-to:sender:subject:subject:to:to;
+         s=fm1; t=1660559911; x=1660646311; bh=l7tzxS11gKHrXKaS8T9yXyMkE
+        8x+VVDK1NsLzxeV1wI=; b=kIXBtljSQPTxfbpnr5ETctb/X6WOiJlnD4gd9hjEw
+        OKl0ToDc3D71s7jvH57GssWiHJgPMFEOubFKODK4Wv0j9GJmbl4FGsHsjCxWMP/m
+        F8/NX678CEWMC9RtPrqNe0b+ClOTm61gGiVr79kDBhshx73Myoi/xtd7Gnnms1MK
+        91G67rxsdbw++uGeqm5APDsejfnUkShaozn1g+4PrdcN8BiL60e/uVC4FBJ5wgb2
+        yIMFUY2kK90lTSY2S+ut73gjguULZ0SgQIsWG0FUkCbdU41xqpplNxiqlNInOCUN
+        2B1bmMXVe67etzKC2hoKIivc3oS0fpKXtFxX3zJOJgluQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:message-id
+        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1660559911; x=1660646311; bh=l7tzxS11gKHrXKaS8T9yXyMkE8x+VVDK1Ns
+        LzxeV1wI=; b=qaVQGMPI94iPnqpZxLkN1o5MblWmMOZxwgqP6D1JQLYPVuF4jQp
+        9HM02Ep5mu/irrTMDcSRJPc+y8xAMqXkPQC8+NXGwUNoUUvdGVYtU5cZ+blEX6Xf
+        Gl3p70SP7IDVi5yDRhvsUnkuC1Wnzb9JqTvcTeGLNh9z0KWdB9KCX2D8ckvadlsV
+        EGKwDaXeu3P7yrh9emNHmXdcC1fAxMDGOvqJ94NeXlprr643e9NjPMmb8uWKeMEK
+        SZrZx9HZlvJEVAVaaUq1Akb0MR+vS3i268Nwdd2HNryzb3qjMcdhZ0S5ImA/oR/7
+        niO4NCINL1/6svi7cJ2AsbT1VZBax0JErDQ==
+X-ME-Sender: <xms:JiL6YlQGdttFvqPnpKgJwVFt2oJ0HzZtxjn9B442w0uK5Z_B9JRfzg>
+    <xme:JiL6YuxFVnAa4dAM_xsX2ZK8M92SE-3lkL2RJMh5wSklNhgpkLjx_O0IAKhl-GjWs
+    gThyH7IpoUHixgqnxU>
+X-ME-Received: <xmr:JiL6Yq0lfmxUZQ3VOr2fo8wm7cU3UKrPOD5yGFoZ5uxWLfzBIiaIn3oSfxt-avK_T7R_dgV1uHDe_YMMULWSGPb8pozY_ZnCzObPY0-E-YxLN66Hw9sMdTYlgQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehvddgfedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomheplfgrrhhrrghh
+    ucfiohhssggvlhhluceokhgvrhhnvghlsehunhguvghfrdhtohholhhsqeenucggtffrrg
+    htthgvrhhnpeejueevgfejfeeghffhfeehvdffleetheekkedvfeehieetuedtheevgefh
+    geekhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hkvghrnhgvlhesuhhnuggvfhdrthhoohhlsh
+X-ME-Proxy: <xmx:JiL6YtDk7o0FclxYF3M3-heuBfLlR8ewnFWUwu36iAW0AauqPtEuoQ>
+    <xmx:JiL6YugQTpwBo9WWoWrfORrTiMwMnMhSbIHnvn-b0Ob4uRAlBBriBw>
+    <xmx:JiL6Yho_NPdA54dkOdOsJR0-D0Mm0pV__NN39kshRbLsQCSIEyYu7g>
+    <xmx:JyL6YpPZxrLshMykFemM7UJtSTDLc8lorJWG9z80RJF8TyljzQLKTw>
+Feedback-ID: id76147eb:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 15 Aug 2022 06:38:27 -0400 (EDT)
+From:   Jarrah Gosbell <kernel@undef.tools>
+To:     Jacob Chen <jacob-chen@iotwrt.com>,
+        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Heiko Stuebner <heiko@sntech.de>, linux-media@vger.kernel.org,
+        linux-rockchip@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, Ondrej Jirman <megi@xff.cz>,
+        Jarrah Gosbell <kernel@undef.tools>
+Subject: [PATCH v2] media: rockchip: rga: Fix probe rga_parse_dt bugs
+Date:   Mon, 15 Aug 2022 10:36:22 +0000
+Message-Id: <20220815103621.86509-1-kernel@undef.tools>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the Qualcomm SM6115 platform to the list of compatible,
-this target uses MMU500 for both APSS and GPU.
+From: Ondrej Jirman <megi@xff.cz>
 
-Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+rga_parse_dt is missing a error return, so if some of the resources
+return DEFER_PROBE, probe will succeed without these resources.
+
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
+Co-developed-by: Jarrah Gosbell <kernel@undef.tools>
+Signed-off-by: Jarrah Gosbell <kernel@undef.tools>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 1 +
- 1 file changed, 1 insertion(+)
+v1 -> v2: use dev_err_probe to handle -EPROBE_DEFER.
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index b2708de25ea3..526fec79b4fe 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -432,6 +432,7 @@ static const struct of_device_id __maybe_unused qcom_smmu_impl_of_match[] = {
- 	{ .compatible = "qcom,sc8280xp-smmu-500" },
- 	{ .compatible = "qcom,sdm630-smmu-v2" },
- 	{ .compatible = "qcom,sdm845-smmu-500" },
-+	{ .compatible = "qcom,sm6115-smmu-500" },
- 	{ .compatible = "qcom,sm6125-smmu-500" },
- 	{ .compatible = "qcom,sm6350-smmu-500" },
- 	{ .compatible = "qcom,sm6375-smmu-500" },
+ drivers/media/platform/rockchip/rga/rga.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/platform/rockchip/rga/rga.c b/drivers/media/platform/rockchip/rga/rga.c
+index 2f8df74ad0fd..61b25fcf826e 100644
+--- a/drivers/media/platform/rockchip/rga/rga.c
++++ b/drivers/media/platform/rockchip/rga/rga.c
+@@ -816,7 +816,7 @@ static int rga_probe(struct platform_device *pdev)
+ 
+ 	ret = rga_parse_dt(rga);
+ 	if (ret)
+-		dev_err(&pdev->dev, "Unable to parse OF data\n");
++		return dev_err_probe(&pdev->dev, ret, "Unable to parse OF data\n");
+ 
+ 	pm_runtime_enable(rga->dev);
+ 
 -- 
-2.25.1
+2.35.1
 
