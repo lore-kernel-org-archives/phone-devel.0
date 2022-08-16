@@ -2,117 +2,360 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 950A8C32773
-	for <phone-devel@archiver.kernel.org>; Tue, 16 Aug 2022 14:04:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BE6BC2BB41
+	for <phone-devel@archiver.kernel.org>; Tue, 16 Aug 2022 19:24:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235956AbiHPOEc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 16 Aug 2022 10:04:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59574 "EHLO
+        id S237118AbiHPTYZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 16 Aug 2022 15:24:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235890AbiHPODq (ORCPT
+        with ESMTP id S237122AbiHPTYX (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 16 Aug 2022 10:03:46 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87C4322BF5
-        for <phone-devel@vger.kernel.org>; Tue, 16 Aug 2022 07:03:34 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id r17so15041460lfm.11
-        for <phone-devel@vger.kernel.org>; Tue, 16 Aug 2022 07:03:34 -0700 (PDT)
+        Tue, 16 Aug 2022 15:24:23 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F6170E7A
+        for <phone-devel@vger.kernel.org>; Tue, 16 Aug 2022 12:24:20 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id e27so9055586wra.11
+        for <phone-devel@vger.kernel.org>; Tue, 16 Aug 2022 12:24:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=Ivipl+R3KaUVhvm6+/uc6buRF+V3GiyHLaPQIyOLyJY=;
-        b=Ku1K8okvTsqZWSrom1nyEPa7LmVHnQw789D3bH6894IPwQtY+0d2dodISIkXHyeaeH
-         E8n8wJxFOkUX/r0rFiIgDkvibh5Yd8Fh+7lJB1A0tb2M+dew+gIV2JXtmwyz/xMc5f3Z
-         a3cZDinMYLRUHNhMAukJupNxPEzKF5l6XKdjbADByRRik4xEq8WRhoaM1xJDkSh2C/Kq
-         LwTPQ8FYf3rIfMQjHxkIbp+wXuFQYeHtCG8CwvXimPjjVEsoCVyfS8RAEOwIHv+JuYDD
-         wIcelH0p5cgFlROcDJTOhKnRH3QpruaVhueEvNoFCXE+sV+Yl5XpCAnqEESAgkPIMMIo
-         Vhxg==
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc;
+        bh=Sz8NNXwmI1EFfI2ysv73Yy1lOgv2a7RKnB5GY8gYwyA=;
+        b=v5Wq2TkCKJiji9wCUF2Og9fTe+WAKKIVnXpv6pmV69UDPXK/3jjiSwLZXS7rx/VfMV
+         HAlrWZpoEeUaShnaKamj3WVmo3UlZ8hZtIvOoXdAa5KPCkom8Z3cMFhFUkmBgW968cgS
+         aBkZtFa9Sc1dybQXYEg5/3Ba5sLZykMJon+ZwehL21O2uXYPv5CkhLb7OvEWDiKGdhmO
+         mYC/YwjhESSeNAV7myqJPTEk1atQ5BmqVktEgYBNPE3gh6IFFYYjupO9LHQ1SfJqD8Lf
+         fesOvFwb/2NnrwbKYPyk6cN+uadTvGGICYA9KKECIb+YoSTWR0TXCX88Alk1atyaKWce
+         urJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=Ivipl+R3KaUVhvm6+/uc6buRF+V3GiyHLaPQIyOLyJY=;
-        b=SvOFWFMhXVMEcNSE1imGnCsPnNsMD6XvTXT56C4eaqHGA+6il/BBfH1wj/30EQ8Uij
-         UQZkIQ5rLuzMN68uNAZywc7YXTyEf6ZuO23QbC0r81OhKhs6LxPrXKgZLdbTHJtVkrOQ
-         H2OlH6hSSaK3fZxkcqcPoQXUX4wltXfw3nljIHBdWdbJveGB13FAdKgOKZNs4yLlZDJf
-         N08Qqynrh5hpamSoHfRopmDyhEwhRzmsPlUBFG+dH+EGNRt6+SpibWBxjum9sCArVxFT
-         yksd3WPKFk6FgMeruN965ErBerVPHwJpgudvXm0LL21lvTL4yWJw8L0g4MNoPzhNlL2a
-         1SYQ==
-X-Gm-Message-State: ACgBeo2JxaGvOd1nY/MROHGDAN19Q0qTa09JJb0G5GT+trDW7MuzGnqc
-        tSQTNXs0zcF/xrLb+pAtL7fP3g==
-X-Google-Smtp-Source: AA6agR5zEyGUE1TDC7NRh/f0M+uxNMd9TqVSjpi8cB6WPiMB+kEZel1mzRADhq01cn8D4hMOSBpcRw==
-X-Received: by 2002:a05:6512:a82:b0:48b:1241:f4cc with SMTP id m2-20020a0565120a8200b0048b1241f4ccmr6929877lfu.141.1660658612646;
-        Tue, 16 Aug 2022 07:03:32 -0700 (PDT)
-Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id r27-20020a2eb61b000000b0025e739cd9a7sm1747902ljn.101.2022.08.16.07.03.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Aug 2022 07:03:32 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-crypto@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>
-Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH v3 16/16] crypto: ux500/hash: Use accelerated noinc MMIO
-Date:   Tue, 16 Aug 2022 16:00:49 +0200
-Message-Id: <20220816140049.102306-17-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20220816140049.102306-1-linus.walleij@linaro.org>
-References: <20220816140049.102306-1-linus.walleij@linaro.org>
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=Sz8NNXwmI1EFfI2ysv73Yy1lOgv2a7RKnB5GY8gYwyA=;
+        b=ugV0Igp8/Rr5PxAgK5/82DFsrI2B1V3v+GRTtEEBnO6yTbwK6Og3TIwYy2OYxgbOpK
+         eQ1Lb8bJSPV/YTnsIC0zLI0xpMoCAqQv8pxqt2I36bgXNnR/6khs9xSGl6ADmv2aYI0D
+         n9dv0/Zfnq3OOGKAi6ezk5YFm76Fo8//VuMc3Aag6Sjsc9on2ksKmN8IOtX6dvoFlND8
+         3NvGbEFV2cIIBcO/TBF9i4TC74EZ9HUDQSLfY9AMlzix1cyO03dTdrTbD5S5k75apUZb
+         kpJU/DXJPA44ZN0/B33QGbXsyOJtYRE8rZPa//cBMecbNWtlbGIZNVUWyiyrRWabaghe
+         k76A==
+X-Gm-Message-State: ACgBeo0bMzEkevROSvgh6N+CYJZxUXe6rUFG61IGNAcZ+RzT7AKSZCTw
+        SCszW/5RQEnohWa94YNkYXw0+Q==
+X-Google-Smtp-Source: AA6agR4aEp+iW0YMEf5emiZyDEPlFnJbsXIRLMLmehN5Xx6i+1e+VtrBCslwlFSQBGiuC8RrtaKjkg==
+X-Received: by 2002:adf:fe44:0:b0:225:325:13f6 with SMTP id m4-20020adffe44000000b00225032513f6mr6744226wrs.234.1660677858735;
+        Tue, 16 Aug 2022 12:24:18 -0700 (PDT)
+Received: from [192.168.0.12] (cpc76482-cwma10-2-0-cust629.7-3.cable.virginm.net. [86.14.22.118])
+        by smtp.gmail.com with ESMTPSA id s3-20020a5d69c3000000b00225232154d7sm240559wrw.110.2022.08.16.12.24.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Aug 2022 12:24:18 -0700 (PDT)
+Message-ID: <0ee98af7-d6df-fb3d-b1f4-42d3482bc7a9@linaro.org>
+Date:   Tue, 16 Aug 2022 20:24:16 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v4 1/2] power: supply: add Qualcomm PMI8998 SMB2 Charger
+ driver
+Content-Language: en-US
+To:     Sebastian Reichel <sre@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, llvm@lists.linux.dev,
+        phone-devel@vger.kernel.org
+References: <20220706194125.1861256-1-caleb.connolly@linaro.org>
+ <20220706194125.1861256-2-caleb.connolly@linaro.org>
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+In-Reply-To: <20220706194125.1861256-2-caleb.connolly@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-After fixes to regmap we can use accelerated MMIO access to
-quickly fill up the hash with new data.
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-ChangeLog v1->v3:
-- New patch based on v6.0-rc1
----
- drivers/crypto/ux500/hash/hash_core.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/crypto/ux500/hash/hash_core.c b/drivers/crypto/ux500/hash/hash_core.c
-index be703fe4d0ec..aa91bfecba15 100644
---- a/drivers/crypto/ux500/hash/hash_core.c
-+++ b/drivers/crypto/ux500/hash/hash_core.c
-@@ -256,18 +256,13 @@ static void hash_fill_din(struct hash_device_data *device_data,
- 			  const void *data, unsigned int len)
- {
- 	const u8 *datap = data;
-+	int evenbytes = (len / 4) * 4;
- 	u32 val;
- 
--	/*
--	 * We cannot use regmap_write_noinc() because regmap MMIO does
--	 * not support the noinc operations (requires .write() callback).
--	 * TODO: revisit when regmap MMIO supports regmap_write_noinc().
--	 */
--	while (len > 4) {
--		val = *((u32 *)datap);
--		regmap_write(device_data->map, UX500_HASH_DIN, val);
--		datap += 4;
--		len -= 4;
-+	if (evenbytes) {
-+		regmap_noinc_write(device_data->map, UX500_HASH_DIN,
-+				   data, evenbytes);
-+		len -= evenbytes;
- 	}
- 
- 	if (len) {
-@@ -1472,6 +1467,7 @@ static bool ux500_hash_reg_volatile(struct device *dev, unsigned int reg)
- {
- 	switch (reg) {
- 	case UX500_HASH_CR:
-+	case UX500_HASH_DIN:
- 	case UX500_HASH_STR:
- 	case UX500_HASH_H(0) ... UX500_HASH_H(7):
- 	case UX500_HASH_ITCR:
+On 06/07/2022 20:41, Caleb Connolly wrote:
+> Add a driver for the SMB2 charger block found in the Qualcomm PMI8998
+> and PM660.
+
+I noticed an issue in this revision which was the root-cause of the OnePlus 6 charging incredibly 
+slowly. Other SDM845 phones feature a secondary charger IC, usually the smb1135 (iirc) which was 
+able to work normally, hiding the issue, however the OnePlus 6 does not. See below.
+> 
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> ---
+> Changes since v1:
+>   * Renamed from qcom_smb2 to qcom_pmi8998_charger
+> ---
+>   drivers/power/supply/Kconfig                |    9 +
+>   drivers/power/supply/Makefile               |    1 +
+>   drivers/power/supply/qcom_pmi8998_charger.c | 1044 +++++++++++++++++++
+>   3 files changed, 1054 insertions(+)
+>   create mode 100644 drivers/power/supply/qcom_pmi8998_charger.c
+> 
+> diff --git a/drivers/power/supply/Makefile b/drivers/power/supply/Makefile
+> index 7f02f36aea55..a39e3eda6dbd 100644
+
+[snip]
+
+> +
+> +/* Init sequence derived from vendor downstream driver */
+> +static const struct smb2_register smb2_init_seq[] = {
+> +	{ .addr = AICL_RERUN_TIME_CFG, .mask = AICL_RERUN_TIME_MASK, .val = 0 },
+> +	/*
+> +	 * By default configure us as an upstream facing port
+> +	 * FIXME: for OTG we should set UFP_EN_CMD_BIT and DFP_EN_CMD_BIT both to 0
+> +	 */
+> +	{ .addr = TYPE_C_INTRPT_ENB_SOFTWARE_CTRL,
+> +	  .mask = TYPEC_POWER_ROLE_CMD_MASK | VCONN_EN_SRC_BIT |
+> +		  VCONN_EN_VALUE_BIT,
+> +	  .val = VCONN_EN_SRC_BIT | UFP_EN_CMD_BIT },
+> +	/*
+> +	 * disable Type-C factory mode and stay in Attached.SRC state when VCONN
+> +	 * over-current happens
+> +	 */
+> +	{ .addr = TYPE_C_CFG,
+> +	  .mask = FACTORY_MODE_DETECTION_EN_BIT | VCONN_OC_CFG_BIT,
+> +	  .val = 0 },
+> +	/* Configure VBUS for software control */
+> +	{ .addr = OTG_CFG, .mask = OTG_EN_SRC_CFG_BIT, .val = 0 },
+> +	{ .addr = FG_UPDATE_CFG_2_SEL,
+> +	  .mask = SOC_LT_CHG_RECHARGE_THRESH_SEL_BIT |
+> +		  VBT_LT_CHG_RECHARGE_THRESH_SEL_BIT,
+> +	  .val = VBT_LT_CHG_RECHARGE_THRESH_SEL_BIT },
+> +	/* Enable charging */
+> +	{ .addr = USBIN_OPTIONS_1_CFG, .mask = HVDCP_EN_BIT, .val = 0 },
+> +	{ .addr = CHARGING_ENABLE_CMD,
+> +	  .mask = CHARGING_ENABLE_CMD_BIT,
+> +	  .val = CHARGING_ENABLE_CMD_BIT },
+> +	/* Allow overriding the current limit */
+> +	// { .addr = USBIN_LOAD_CFG,
+> +	//   .mask = ICL_OVERRIDE_AFTER_APSD_BIT,
+> +	//   .val = ICL_OVERRIDE_AFTER_APSD_BIT },
+> +	{ .addr = CHGR_CFG2,
+> +	  .mask = CHG_EN_SRC_BIT | CHG_EN_POLARITY_BIT |
+> +		  PRETOFAST_TRANSITION_CFG_BIT | BAT_OV_ECC_BIT | I_TERM_BIT |
+> +		  AUTO_RECHG_BIT | EN_ANALOG_DROP_IN_VBATT_BIT |
+> +		  CHARGER_INHIBIT_BIT,
+> +	  .val = 0 },
+> +	/*
+> +	 * No clue what this does
+> +	 */
+> +	{ .addr = STAT_CFG,
+> +	  .mask = STAT_SW_OVERRIDE_CFG_BIT,
+> +	  .val = STAT_SW_OVERRIDE_CFG_BIT },
+> +	/*
+> +	 * Set the default SDP charger type to a 500ma USB 2.0 port
+> +	 */
+> +	{ .addr = USBIN_ICL_OPTIONS,
+> +	  .mask = USB51_MODE_BIT | USBIN_MODE_CHG_BIT,
+> +	  .val = USB51_MODE_BIT },
+> +	/*
+> +	 * Disable watchdog
+> +	 */
+> +	{ .addr = SNARL_BARK_BITE_WD_CFG, .mask = 0xff, .val = 0 },
+> +	{ .addr = WD_CFG,
+> +	  .mask = WATCHDOG_TRIGGER_AFP_EN_BIT | WDOG_TIMER_EN_ON_PLUGIN_BIT |
+> +		  BARK_WDOG_INT_EN_BIT,
+> +	  .val = 0 },
+> +	/* OnePlus init stuff from "op_set_collapse_fet" */
+> +	{ .addr = USBIN_5V_AICL_THRESHOLD_CFG,
+> +	  .mask = USBIN_5V_AICL_THRESHOLD_CFG_MASK,
+> +	  .val = 0x3 },
+> +	{ .addr = USBIN_CONT_AICL_THRESHOLD_CFG,
+> +	  .mask = USBIN_CONT_AICL_THRESHOLD_CFG_MASK,
+> +	  .val = 0x3 },
+> +	/* Yay undocumented register values! */
+> +	{ .addr = USBIN_LOAD_CFG, .mask = BIT(0) | BIT(1), .val = 0x3 },
+> +	/* Enable Automatic Input Current Limit, this will slowly ramp up the current
+> +	 * When connected to a wall charger, and automatically stop when it detects
+> +	 * the charger current limit (voltage drop?) or it reaches the programmed limit.
+> +	 */
+> +	{ .addr = USBIN_AICL_OPTIONS_CFG,
+> +	  .mask = USBIN_AICL_START_AT_MAX_BIT | USBIN_AICL_ADC_EN_BIT |
+> +		  USBIN_AICL_EN_BIT | SUSPEND_ON_COLLAPSE_USBIN_BIT |
+> +		  USBIN_HV_COLLAPSE_RESPONSE_BIT |
+> +		  USBIN_LV_COLLAPSE_RESPONSE_BIT,
+> +	  .val = USBIN_HV_COLLAPSE_RESPONSE_BIT |
+> +		 USBIN_LV_COLLAPSE_RESPONSE_BIT | USBIN_AICL_EN_BIT },
+> +	/*
+> +	 * Set pre charge current to default, the OnePlus 6 bootloader
+> +	 * sets this very conservatively.
+> +	 * NOTE: seems to be reset to zero again anyway after boot
+> +	 */
+> +	{ .addr = PRE_CHARGE_CURRENT_CFG,
+> +	  .mask = PRE_CHARGE_CURRENT_SETTING_MASK,
+> +	  .val = 500000 / 25000 },
+> +	/*
+> +	 * Set "fast charge current" to the default 2A, the OnePlus 6 also
+> +	 * sets this very conservatively.
+> +	 * NOTE: seems to be reset to zero again anyway after boot
+> +	 */
+> +	{ .addr = FAST_CHARGE_CURRENT_CFG,
+> +	  .mask = FAST_CHARGE_CURRENT_SETTING_MASK,
+> +	  .addr = 1950000 / 25000 },
+
+The .addr is set here twice, meaning the fast charge current register is not configured properly and 
+thus left at conservative bootloader values - or set to zero, I'm not sure how the compiler handles 
+this.
+
+Will be fixed in the next revision.
+> +};
+> +
+> +static int smb2_init_hw(struct smb2_chip *chip)
+> +{
+> +	int rc, i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(smb2_init_seq); i++) {
+> +		dev_dbg(chip->dev, "%d: Writing 0x%02x to 0x%02x\n", i,
+> +			smb2_init_seq[i].val, smb2_init_seq[i].addr);
+> +		rc = regmap_update_bits(chip->regmap,
+> +					chip->base + smb2_init_seq[i].addr,
+> +					smb2_init_seq[i].mask,
+> +					smb2_init_seq[i].val);
+> +		if (rc < 0)
+> +			return dev_err_probe(
+> +				chip->dev, rc,
+> +				"%s: Failed to write 0x%02x to 0x%02x\n",
+> +				__func__, smb2_init_seq[i].val,
+> +				smb2_init_seq[i].addr);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +struct smb2_irqs {
+> +	const char *name;
+> +	irqreturn_t (*handler)(int irq, void *data);
+> +};
+> +
+> +static const struct smb2_irqs irqs[] = {
+> +	{ .name = "bat-ov", .handler = smb2_handle_batt_overvoltage },
+> +	{ .name = "usb-plugin", .handler = smb2_handle_usb_plugin },
+> +	{ .name = "usbin-icl-change", .handler = smb2_handle_usb_icl_change },
+> +	{ .name = "wdog-bark", .handler = smb2_handle_wdog_bark },
+> +};
+> +
+> +static int smb2_probe(struct platform_device *pdev)
+> +{
+> +	struct power_supply_config supply_config = {};
+> +	struct smb2_chip *chip;
+> +	int rc, i, irq;
+> +
+> +	chip = devm_kzalloc(&pdev->dev, sizeof(*chip), GFP_KERNEL);
+> +	if (!chip)
+> +		return -ENOMEM;
+> +
+> +	chip->dev = &pdev->dev;
+> +	chip->name = pdev->name;
+> +
+> +	chip->regmap = dev_get_regmap(pdev->dev.parent, NULL);
+> +	if (!chip->regmap) {
+> +		return dev_err_probe(chip->dev, -ENODEV,
+> +				     "failed to locate the regmap\n");
+> +	}
+> +
+> +	rc = device_property_read_u32(chip->dev, "reg", &chip->base);
+> +	if (rc < 0) {
+> +		return dev_err_probe(chip->dev, rc,
+> +				     "Couldn't read base address\n");
+> +	}
+> +
+> +	chip->usb_in_v_chan = devm_iio_channel_get(chip->dev, "usbin_v");
+> +	if (IS_ERR(chip->usb_in_v_chan))
+> +		return dev_err_probe(
+> +			chip->dev, PTR_ERR(chip->usb_in_v_chan),
+> +			"Couldn't get usbin_v IIO channel from RRADC\n");
+> +
+> +	chip->usb_in_i_chan = devm_iio_channel_get(chip->dev, "usbin_i");
+> +	if (IS_ERR(chip->usb_in_i_chan)) {
+> +		return dev_err_probe(
+> +			chip->dev, PTR_ERR(chip->usb_in_i_chan),
+> +			"Couldn't get usbin_i IIO channel from RRADC\n");
+> +	}
+> +
+> +	rc = smb2_init_hw(chip);
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	supply_config.drv_data = chip;
+> +	supply_config.of_node = pdev->dev.of_node;
+> +
+> +	chip->chg_psy = devm_power_supply_register(chip->dev, &smb2_psy_desc,
+> +						   &supply_config);
+> +	if (IS_ERR(chip->chg_psy))
+> +		return dev_err_probe(chip->dev, PTR_ERR(chip->chg_psy),
+> +				     "failed to register power supply\n");
+> +
+> +	rc = power_supply_get_battery_info(chip->chg_psy, &chip->batt_info);
+> +	if (rc)
+> +		return dev_err_probe(chip->dev, rc,
+> +				     "Failed to get battery info\n");
+> +
+> +	rc = devm_delayed_work_autocancel(chip->dev, &chip->status_change_work,
+> +					  smb2_status_change_work);
+> +	if (rc)
+> +		return dev_err_probe(
+> +			chip->dev, rc,
+> +			"Failed to initialise status change work\n");
+> +
+> +	rc = (chip->batt_info->voltage_max_design_uv - 3487500) / 7500 + 1;
+> +	rc = regmap_update_bits(chip->regmap, chip->base + FLOAT_VOLTAGE_CFG,
+> +				FLOAT_VOLTAGE_SETTING_MASK, rc);
+> +	if (rc < 0)
+> +		return dev_err_probe(chip->dev, rc, "Couldn't set vbat max\n");
+> +
+> +	for (i = 0; i < ARRAY_SIZE(irqs); i++) {
+> +		irq = of_irq_get_byname(pdev->dev.of_node, irqs[i].name);
+> +		if (irq < 0)
+> +			return dev_err_probe(chip->dev, irq,
+> +					     "Couldn't get irq %s byname\n",
+> +					     irqs[i].name);
+> +		rc = devm_request_threaded_irq(chip->dev, irq, NULL,
+> +					       irqs[i].handler, IRQF_ONESHOT,
+> +					       irqs[i].name, chip);
+> +		if (rc < 0)
+> +			return dev_err_probe(chip->dev, irq,
+> +					     "Couldn't request irq %s\n",
+> +					     irqs[i].name);
+> +	}
+> +
+> +	platform_set_drvdata(pdev, chip);
+> +
+> +	/* Initialise charger state */
+> +	schedule_delayed_work(&chip->status_change_work, 0);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct of_device_id smb2_match_id_table[] = {
+> +	{ .compatible = "qcom,pmi8998-charger" },
+> +	{ .compatible = "qcom,pm660-charger" },
+> +	{ /* sentinal */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, smb2_match_id_table);
+> +
+> +static struct platform_driver qcom_spmi_smb2 = {
+> +	.probe = smb2_probe,
+> +	.driver = {
+> +			.name = "qcom-pmi8998-charger",
+> +			.of_match_table = smb2_match_id_table,
+> +		},
+> +};
+> +
+> +module_platform_driver(qcom_spmi_smb2);
+> +
+> +MODULE_AUTHOR("Caleb Connolly <caleb.connolly@linaro.org>");
+> +MODULE_DESCRIPTION("Qualcomm SMB2 Charger Driver");
+> +MODULE_LICENSE("GPL");
+
 -- 
-2.37.2
-
+Kind Regards,
+Caleb (they/he)
