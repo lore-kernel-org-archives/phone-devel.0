@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED33AC28B2B
-	for <phone-devel@archiver.kernel.org>; Tue, 16 Aug 2022 14:04:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD9EEC25B0E
+	for <phone-devel@archiver.kernel.org>; Tue, 16 Aug 2022 14:04:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235881AbiHPOEK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 16 Aug 2022 10:04:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57996 "EHLO
+        id S235883AbiHPOEX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 16 Aug 2022 10:04:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235880AbiHPODm (ORCPT
+        with ESMTP id S235864AbiHPODp (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 16 Aug 2022 10:03:42 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C277DA0
-        for <phone-devel@vger.kernel.org>; Tue, 16 Aug 2022 07:03:30 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id v10so10614938ljh.9
-        for <phone-devel@vger.kernel.org>; Tue, 16 Aug 2022 07:03:30 -0700 (PDT)
+        Tue, 16 Aug 2022 10:03:45 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C8FB26100
+        for <phone-devel@vger.kernel.org>; Tue, 16 Aug 2022 07:03:31 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id l21so10641930ljj.2
+        for <phone-devel@vger.kernel.org>; Tue, 16 Aug 2022 07:03:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=rF3jH/rtUdR2dYrOhKBuwcHbVAqHrocZAK7mo3xPYCg=;
-        b=B2CsJZONYIaydYyrfgBAc5tNXRqvnP8wRNofzwSTblaB0HKbrSKlJ/opaGOBOtOSqb
-         ycApkrv1zHrKl03A3GMRDFWUI5GfaW/SkXalZziGGqkC2rbC0wQ/oWX6+rrU/CkkM+0R
-         9jadcMW/PrZWXFIRm/hzC2+F6+iPqfo7/4x4Hp9vrmvZW78/cQGdc5cSEAiiL9Gdv2YU
-         VrTPH+gcnPSxwLXzFvmi7T5s/AHh0IPHeHFyAHSBFs5CzjjiXrUfuGR77UK7LuNAm9Q7
-         humMhtcgyU/lpCrOwbSQ4pr1A2ryxk79OILL9dUhM3dxtlnSRqGGivAvHfD5MksuCdmI
-         71bw==
+        bh=iGU/vTvY2BX/8BFNJIo0Zi6+OPq5P/GCaKsV9MKmlIE=;
+        b=JUvySrLf8AfkfDQXHferjf2b/51+EzSOdbTnPUEB5odg4h0YfoYDvpwoUGBv8hhI0C
+         2H2kaUpK62JhEgD1Gr63xBymd/uLs9wD89+1AmFU9AGmJonAR6pEooAnGG3/fPXJk2qc
+         W0he0f74qilfaQ3PvRZ2I0cIMfevvR67rmT+SjLVhAjoi6ZzKNJcdRf81jxECZQDvgDz
+         PlUbIIQJAs+2zFyNj9XEc9s7BUQbxCsXX0w4JOIKUxk6IyDtxPqd4Z2+1DvqjWMoJde0
+         bOtjad0ZfvlFdArBTeGs9aU9abuSpPHiDz2k4gAyy0DPjV4pizqc+383zwoPvLeZziwR
+         cq2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=rF3jH/rtUdR2dYrOhKBuwcHbVAqHrocZAK7mo3xPYCg=;
-        b=H2D76UOl6ae3UdEKdz91FlqNxoYPhlm84wcVennsx3ACZGDq3ptSicmnDCQK0A29GS
-         0iVnt9GfXYCKtG94mP0sKi9kl1EoGS+c2aq26pFfzmT1r7UG2DA3Lx036YK5/HpVZA4V
-         DtmCqSEJW0NdMxWyhoD6HMDiZeDuGo++KDSWp9Fa4LC4FWnAN5jK9QZuBbZtOdZFTs5A
-         oHHL7HsvuvkMybS7prInf2JfDQ4os3segdizSoXJMHthyEF8/VpCWg0EaZSR//I2H+pR
-         J9H97wanHU6cFAzj0bt/6wXKGgD2wzisHvrtKr+qrRqtxDKrmmrSuogGJGm8XN4WXw7A
-         GCPA==
-X-Gm-Message-State: ACgBeo3zctdiLQA9yG3bPqkjUjdeZpGpjEX3nzcIyKKClIyPmiFgnyla
-        L8PfC4rjRiA4R1lfG81SlXkVsw==
-X-Google-Smtp-Source: AA6agR7eJJ40nSspx3DYNPIKyxE12DsiM4iS6VE4Hl3zQEtS+Ed4hx5GU3HMkc92wcwZdhzXiPVFKw==
-X-Received: by 2002:a2e:8e71:0:b0:261:74ad:ab5f with SMTP id t17-20020a2e8e71000000b0026174adab5fmr5829083ljk.387.1660658607541;
-        Tue, 16 Aug 2022 07:03:27 -0700 (PDT)
+        bh=iGU/vTvY2BX/8BFNJIo0Zi6+OPq5P/GCaKsV9MKmlIE=;
+        b=iukTcdtq888bFBxK7hJUffuJeItmLOV2uARrtaGY4QA3PEUQlf2QcgkGAqBEDKjTAm
+         6BhnGkq0NT0UpCc75TJhZz0E9QNdWMYNwkGtifOyFuIaQmrQpjkm9zUuyZS8RXn9AjZ7
+         q9upyx2rPoqcjB+EtmvNBkt4zYrVbnZJoyOWkpYqpam++dxkkOtPQSFZOyUxE5KDX1rJ
+         TX/+tgT3FdoOIHaRXOc9E5ZyZCqFHZZVt8TLgUz/YLxO55ZXjBz6WIlrV4lSKoi+iY5N
+         diCSJc4ZUdXOHthSvZNVin0PCZEWgN7+ursscQL8Lv9MxOiwX5b3MYFpOB7l8ytXzTE4
+         RJTw==
+X-Gm-Message-State: ACgBeo1qHNjhgJTRuzNyoJ+xF/Oi1tJEHghIHVJaxSoBsxF7tq8eE4Cg
+        XCSBpnjmXcXH0tXKc1vAqPiBPv2y6dPNAA==
+X-Google-Smtp-Source: AA6agR5iHJzwOOs05iNGV4oO74C0ClSsUfVFWA3J3GuRgen6PQ/F4ejV8LZ9LHj/xErIwU82K2sWVw==
+X-Received: by 2002:a2e:9791:0:b0:261:6d82:7a6c with SMTP id y17-20020a2e9791000000b002616d827a6cmr6320638lji.224.1660658610158;
+        Tue, 16 Aug 2022 07:03:30 -0700 (PDT)
 Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id r27-20020a2eb61b000000b0025e739cd9a7sm1747902ljn.101.2022.08.16.07.03.26
+        by smtp.gmail.com with ESMTPSA id r27-20020a2eb61b000000b0025e739cd9a7sm1747902ljn.101.2022.08.16.07.03.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Aug 2022 07:03:27 -0700 (PDT)
+        Tue, 16 Aug 2022 07:03:29 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     linux-crypto@vger.kernel.org,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S . Miller" <davem@davemloft.net>
 Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH v3 12/16] crypto: ux500/hash: Drop regulator handling
-Date:   Tue, 16 Aug 2022 16:00:45 +0200
-Message-Id: <20220816140049.102306-13-linus.walleij@linaro.org>
+Subject: [PATCH v3 14/16] crypto: ux500/hash: Use AMBA core primecell IDs
+Date:   Tue, 16 Aug 2022 16:00:47 +0200
+Message-Id: <20220816140049.102306-15-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20220816140049.102306-1-linus.walleij@linaro.org>
 References: <20220816140049.102306-1-linus.walleij@linaro.org>
@@ -66,133 +66,90 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This "APE" voltage is not handled by a regulator but by the
-power domain, drop it.
+Use the AMBA (PrimeCell) bus core define and read 32bit
+CID and PID from the peripheral, then check those.
 
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
 ChangeLog v2->v3:
 - Rebased on v6.0-rc1
 ChangeLog v1->v2:
-- New patch after noticing the power domain is handling this
-  voltage.
+- Initialized both CID and PID to 0 appropriately.
 ---
- drivers/crypto/ux500/hash/hash_core.c | 38 +++------------------------
- 1 file changed, 4 insertions(+), 34 deletions(-)
+ drivers/crypto/ux500/hash/hash_alg.h  | 11 ++---------
+ drivers/crypto/ux500/hash/hash_core.c | 25 ++++++++++++++++++-------
+ 2 files changed, 20 insertions(+), 16 deletions(-)
 
+diff --git a/drivers/crypto/ux500/hash/hash_alg.h b/drivers/crypto/ux500/hash/hash_alg.h
+index cc44d3cb21ac..96c614444fa2 100644
+--- a/drivers/crypto/ux500/hash/hash_alg.h
++++ b/drivers/crypto/ux500/hash/hash_alg.h
+@@ -63,15 +63,8 @@
+ #define HASH_STR_NBLW_MASK	0x0000001FUL
+ #define HASH_NBLW_MAX_VAL	0x1F
+ 
+-/* PrimeCell IDs */
+-#define HASH_P_ID0		0xE0
+-#define HASH_P_ID1		0x05
+-#define HASH_P_ID2		0x38
+-#define HASH_P_ID3		0x00
+-#define HASH_CELL_ID0		0x0D
+-#define HASH_CELL_ID1		0xF0
+-#define HASH_CELL_ID2		0x05
+-#define HASH_CELL_ID3		0xB1
++/* PrimeCell ID */
++#define UX500_HASH_PID		0x003805E0U
+ 
+ /* Hardware access method */
+ enum hash_mode {
 diff --git a/drivers/crypto/ux500/hash/hash_core.c b/drivers/crypto/ux500/hash/hash_core.c
-index 5fe0720cb1f5..21657c9c79a7 100644
+index ed54e71efbb2..188e309406b2 100644
 --- a/drivers/crypto/ux500/hash/hash_core.c
 +++ b/drivers/crypto/ux500/hash/hash_core.c
-@@ -24,8 +24,6 @@
- #include <linux/mod_devicetable.h>
- #include <linux/platform_device.h>
- #include <linux/crypto.h>
--
--#include <linux/regulator/consumer.h>
- #include <linux/dmaengine.h>
- #include <linux/bitops.h>
+@@ -13,6 +13,7 @@
  
-@@ -244,22 +242,17 @@ static int get_empty_message_digest(
-  * hash_disable_power - Request to disable power and clock.
-  * @device_data:	Structure for the hash device.
-  *
-- * This function request for disabling power (regulator) and clock,
-- * and could also save current hw state.
-+ * This function request for disabling the clock.
-  */
- static int hash_disable_power(struct hash_device_data *device_data)
- {
- 	int ret = 0;
--	struct device *dev = device_data->dev;
+ #define pr_fmt(fmt) "hashX hashX: " fmt
  
- 	spin_lock(&device_data->power_state_lock);
- 	if (!device_data->power_state)
- 		goto out;
++#include <linux/amba/bus.h>
+ #include <linux/clk.h>
+ #include <linux/device.h>
+ #include <linux/dma-mapping.h>
+@@ -949,18 +950,28 @@ int hash_check_hw(struct hash_device_data *device_data)
+ 	unsigned int regs[] = { UX500_HASH_PERIPHID0, UX500_HASH_PERIPHID1,
+ 		UX500_HASH_PERIPHID2, UX500_HASH_PERIPHID3, UX500_HASH_CELLID0,
+ 		UX500_HASH_CELLID1, UX500_HASH_CELLID2, UX500_HASH_CELLID3 };
+-	unsigned int expected[] = { HASH_P_ID0, HASH_P_ID1, HASH_P_ID2, HASH_P_ID3,
+-		HASH_CELL_ID0, HASH_CELL_ID1, HASH_CELL_ID2, HASH_CELL_ID3 };
+ 	unsigned int val;
++	u32 pid = 0;
++	u32 cid = 0;
+ 	int i;
  
- 	clk_disable(device_data->clk);
--	ret = regulator_disable(device_data->regulator);
--	if (ret)
--		dev_err(dev, "%s: regulator_disable() failed!\n", __func__);
- 
- 	device_data->power_state = false;
- 
-@@ -273,8 +266,7 @@ static int hash_disable_power(struct hash_device_data *device_data)
-  * hash_enable_power - Request to enable power and clock.
-  * @device_data:		Structure for the hash device.
-  *
-- * This function request for enabling power (regulator) and clock,
-- * and could also restore a previously saved hw state.
-+ * This function request for enabling the clock.
-  */
- static int hash_enable_power(struct hash_device_data *device_data)
- {
-@@ -283,17 +275,9 @@ static int hash_enable_power(struct hash_device_data *device_data)
- 
- 	spin_lock(&device_data->power_state_lock);
- 	if (!device_data->power_state) {
--		ret = regulator_enable(device_data->regulator);
--		if (ret) {
--			dev_err(dev, "%s: regulator_enable() failed!\n",
--				__func__);
--			goto out;
+ 	for (i = 0; i < ARRAY_SIZE(regs); i++) {
+ 		regmap_read(device_data->map, regs[i], &val);
+-		if (val != expected[i]) {
+-			dev_err(device_data->dev, "ID word %d was %08x expected %08x\n",
+-				i, val, expected[i]);
+-			return -ENODEV;
 -		}
- 		ret = clk_enable(device_data->clk);
- 		if (ret) {
- 			dev_err(dev, "%s: clk_enable() failed!\n", __func__);
--			ret = regulator_disable(
--					device_data->regulator);
- 			goto out;
- 		}
- 		device_data->power_state = true;
-@@ -1487,27 +1471,17 @@ static int ux500_hash_probe(struct platform_device *pdev)
- 	spin_lock_init(&device_data->ctx_lock);
- 	spin_lock_init(&device_data->power_state_lock);
- 
--	/* Enable power for HASH1 hardware block */
--	device_data->regulator = regulator_get(dev, "v-ape");
--	if (IS_ERR(device_data->regulator)) {
--		dev_err(dev, "%s: regulator_get() failed!\n", __func__);
--		ret = PTR_ERR(device_data->regulator);
--		device_data->regulator = NULL;
--		goto out;
--	}
--
--	/* Enable the clock for HASH1 hardware block */
- 	device_data->clk = devm_clk_get(dev, NULL);
- 	if (IS_ERR(device_data->clk)) {
- 		dev_err(dev, "%s: clk_get() failed!\n", __func__);
- 		ret = PTR_ERR(device_data->clk);
--		goto out_regulator;
-+		goto out;
++		if (i < 4)
++			pid |= (val & 255) << (i * 8);
++		else
++			cid |= (val & 255) << ((i - 4) * 8);
++	}
++
++	if (cid != AMBA_CID) {
++		dev_err(device_data->dev, "AMBA CID was %08x expected %08x\n",
++			cid, AMBA_CID);
++		return -ENODEV;
++	}
++	if (pid != UX500_HASH_PID) {
++		dev_err(device_data->dev, "PID was %08x expected %08x\n",
++			pid, UX500_HASH_PID);
++		return -ENODEV;
  	}
- 
- 	ret = clk_prepare(device_data->clk);
- 	if (ret) {
- 		dev_err(dev, "%s: clk_prepare() failed!\n", __func__);
--		goto out_regulator;
-+		goto out;
- 	}
- 
- 	/* Enable device power (and clock) */
-@@ -1544,9 +1518,6 @@ static int ux500_hash_probe(struct platform_device *pdev)
- out_clk_unprepare:
- 	clk_unprepare(device_data->clk);
- 
--out_regulator:
--	regulator_put(device_data->regulator);
--
- out:
- 	return ret;
- }
-@@ -1585,7 +1556,6 @@ static int ux500_hash_remove(struct platform_device *pdev)
- 			__func__);
- 
- 	clk_unprepare(device_data->clk);
--	regulator_put(device_data->regulator);
  
  	return 0;
- }
 -- 
 2.37.2
 
