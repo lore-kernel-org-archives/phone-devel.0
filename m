@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16835C32773
-	for <phone-devel@archiver.kernel.org>; Tue, 16 Aug 2022 14:03:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBFD4C28B2B
+	for <phone-devel@archiver.kernel.org>; Tue, 16 Aug 2022 14:03:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235785AbiHPOD2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 16 Aug 2022 10:03:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57722 "EHLO
+        id S235850AbiHPODe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 16 Aug 2022 10:03:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235846AbiHPODW (ORCPT
+        with ESMTP id S235862AbiHPODZ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 16 Aug 2022 10:03:22 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 372CB3B95D
-        for <phone-devel@vger.kernel.org>; Tue, 16 Aug 2022 07:03:17 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id by6so10605881ljb.11
-        for <phone-devel@vger.kernel.org>; Tue, 16 Aug 2022 07:03:17 -0700 (PDT)
+        Tue, 16 Aug 2022 10:03:25 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84CC72C136
+        for <phone-devel@vger.kernel.org>; Tue, 16 Aug 2022 07:03:21 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id by6so10606097ljb.11
+        for <phone-devel@vger.kernel.org>; Tue, 16 Aug 2022 07:03:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=zIgIQNH9egSlrVYC+AMp4lopK69544ScTJ4QfR0a69c=;
-        b=oRWv3XNAulsRxWqEojLjrniEQIvQx0LzTNMJfjUDvFOeDHsdzyJxaFYb5cRXMyKppC
-         /+rNwxjlzSmGGJ4Pv4+W803UfWT0DvcNewRB6hnz/m0gx+Du3mDLCrAjtjrl88kM74qE
-         Cp5mFE15Wvhh3f1s27ZSqXkEu5OF+lfGor5Wrfj0l5O3pxi9S1EL7mp4o7Oe/HeiKM9F
-         LCpGNA6hlNTzY4yjQMhvU6nc35As2XQMnrf1XX4/15okUeAhhcMCa1Gnmm2K9WIvgmvR
-         zl3m+6JwMfnt6h9U4ZHnSdq7urK43SrMEou/+b5uPJ2UacoTG//+bzcX5Daadaw4uXYx
-         OCHw==
+        bh=sctki4nak4ZBSfbhd2II7H8or4YuNVPYzsqrowWkZ4E=;
+        b=f5JUTuZhfEMvSB6ln1mYJLWrWHK3VNXsVun6B98tIgrH2UdZzjUi+CRmw9p5jq6zc/
+         mFvIn+abPhojCqvHi32zTMH0KPm3JmGkawcWmysalrSIO1hbTnhNuH/P4miE8KRVSssL
+         f3hxkeqUeuWO3Z88cNwG8dNoijjoBO/1KDWuMLSQaI8rvTJMaToyJTu9i8aEXofym1CN
+         eBXg3N+DocOztz6ZN0xxnRV9K2xjgeDtiVLFxUd87hiGdmjnvqfGexlZPoNWUzrMD9MO
+         6apqIHn/W8HIZzZU0ta4bqMPfeRq68RJtWoniERoNtkL4ah8wO3cVGlXZyj7zn8k267P
+         1g8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=zIgIQNH9egSlrVYC+AMp4lopK69544ScTJ4QfR0a69c=;
-        b=agidGGMQQoHIP0igC/nuL1GmbcmX/EhSLgLyPxFEzg7nyK6JR0MOhslU4i0q40oJLK
-         qf0KO7uTutMs+COtxUt9+86AHDejCbZEBkmVxb3sWFxwmyEfpLGb7R6FWtmtkxu/9PIT
-         v139V6KASh1onwQ/2VvAusqccW4/jpJj7SCKZWxI93KlV5DQRLfbfwvg4fDGool+q8kJ
-         EFtusjeafjaumrdDWn/8rz4xbHB3fgfyj76j5xHN+cFy9Q8aUzL6Vq6ywI95nOUSdlQt
-         hqjWMWtk8BFZf3wHe+xaiHvjrBySzOvpObwnu4hLkAbVjDmjUgqJ7xE4pIv48fLbz1L9
-         E/Mw==
-X-Gm-Message-State: ACgBeo0WaFZDm7iwGjPENS1WKni7bJcMcXW9Wu3YUU/OPJjhYd9FtbWn
-        quZ5XXY8ypdajctShuvtj/v/tw==
-X-Google-Smtp-Source: AA6agR5uk6TUYZk9L+excfFGHmpc/AaXOvaka5lWnHGNqZ5L415Ll7yw0UTECfVKJMq5fnbr1HYM2g==
-X-Received: by 2002:a2e:97cd:0:b0:261:9bfc:3941 with SMTP id m13-20020a2e97cd000000b002619bfc3941mr531462ljj.110.1660658594241;
-        Tue, 16 Aug 2022 07:03:14 -0700 (PDT)
+        bh=sctki4nak4ZBSfbhd2II7H8or4YuNVPYzsqrowWkZ4E=;
+        b=XRTD+z1i5F9LjbK26w93u5yzu5xC4ep7jODrs+PDvMW47JNlDiVV0hk2L+Qhy4o6LN
+         Ilv49K84PV0fArDXeOTtEKeK2FPaJER11CZjbBqvN+PN5oNO7oMECpZyyXRSHw8N7Wee
+         NtQQSj8OIXMiMyFnbVprOza050yOjbjy2fhPNK6Iojpq5uhxiczO9f3uM6g2cOuQqcae
+         Dt24gn451e5qaCW6Y1+m09aIlg2ZRVdGHoEBWSa+b2r7QEd9lBmbsAMhfEUgoJ8N+ZaK
+         8IeTJsXtUf1CuCy7zEYczhaAQT11R4EudK7sXCwvlwYnPvoPL5cvk1cGAPIw3SjUBO/3
+         Nm1g==
+X-Gm-Message-State: ACgBeo3hfWlQ06Iu3VyKFbbqPfV2UfDkl0Oju8W32tU1UeSfbShBZqpW
+        ypnQNQiyr07L0d1OMh/ZXO7L3N3b+MXXeA==
+X-Google-Smtp-Source: AA6agR6o6w78tVBFUXeTZtdyBttUTprdNcoKY82rKt9uZTzM29vRMHra8jrDdhOnG2W8B51RL9YmlA==
+X-Received: by 2002:a2e:9147:0:b0:25e:5764:9c9f with SMTP id q7-20020a2e9147000000b0025e57649c9fmr6714667ljg.278.1660658598029;
+        Tue, 16 Aug 2022 07:03:18 -0700 (PDT)
 Received: from localhost.localdomain (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
-        by smtp.gmail.com with ESMTPSA id r27-20020a2eb61b000000b0025e739cd9a7sm1747902ljn.101.2022.08.16.07.03.13
+        by smtp.gmail.com with ESMTPSA id r27-20020a2eb61b000000b0025e739cd9a7sm1747902ljn.101.2022.08.16.07.03.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Aug 2022 07:03:13 -0700 (PDT)
+        Tue, 16 Aug 2022 07:03:17 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     linux-crypto@vger.kernel.org,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S . Miller" <davem@davemloft.net>
 Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH v3 02/16] crypto: ux500/hash: Get rid of custom device list
-Date:   Tue, 16 Aug 2022 16:00:35 +0200
-Message-Id: <20220816140049.102306-3-linus.walleij@linaro.org>
+Subject: [PATCH v3 05/16] crypto: ux500/hash: Drop bit index
+Date:   Tue, 16 Aug 2022 16:00:38 +0200
+Message-Id: <20220816140049.102306-6-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20220816140049.102306-1-linus.walleij@linaro.org>
 References: <20220816140049.102306-1-linus.walleij@linaro.org>
@@ -66,16 +66,8 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The Ux500 hash driver builds a list with one (1) hash engine
-as it is all it has, then goes to great lengths to lock the
-one device using a semaphore.
-
-Instead do what other drivers do: trust the core to do the
-right thing, add the device state to the algorithm template,
-fill it in when registering the algorithms and assign
-the device state to the context when intializing each context.
-
-This saves us from a lot of complex code.
+This is some leftover code because the field is only referenced
+in a debug print and never assigned.
 
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
@@ -84,397 +76,61 @@ ChangeLog v2->v3:
 ChangeLog v1->v2:
 - No changes
 ---
- drivers/crypto/ux500/hash/hash_core.c | 194 +++-----------------------
- 1 file changed, 17 insertions(+), 177 deletions(-)
+ drivers/crypto/ux500/hash/hash_alg.h  | 4 ----
+ drivers/crypto/ux500/hash/hash_core.c | 4 ++--
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
+diff --git a/drivers/crypto/ux500/hash/hash_alg.h b/drivers/crypto/ux500/hash/hash_alg.h
+index 26e8b7949d7c..00730c0090ae 100644
+--- a/drivers/crypto/ux500/hash/hash_alg.h
++++ b/drivers/crypto/ux500/hash/hash_alg.h
+@@ -217,7 +217,6 @@ struct hash_register {
+  * @buffer:	Working buffer for messages going to the hardware.
+  * @length:	Length of the part of message hashed so far (floor(N/64) * 64).
+  * @index:	Valid number of bytes in buffer (N % 64).
+- * @bit_index:	Valid number of bits in buffer (N % 8).
+  *
+  * This structure is used between context switches, i.e. when ongoing jobs are
+  * interupted with new jobs. When this happens we need to store intermediate
+@@ -237,7 +236,6 @@ struct hash_state {
+ 	u32		buffer[HASH_BLOCK_SIZE / sizeof(u32)];
+ 	struct uint64	length;
+ 	u8		index;
+-	u8		bit_index;
+ };
+ 
+ /**
+@@ -358,7 +356,6 @@ struct hash_req_ctx {
+  * @power_state_lock:	Spinlock for power_state.
+  * @regulator:		Pointer to the device's power control.
+  * @clk:		Pointer to the device's clock control.
+- * @restore_dev_state:	TRUE = saved state, FALSE = no saved state.
+  * @dma:		Structure used for dma.
+  */
+ struct hash_device_data {
+@@ -372,7 +369,6 @@ struct hash_device_data {
+ 	spinlock_t		power_state_lock;
+ 	struct regulator	*regulator;
+ 	struct clk		*clk;
+-	bool			restore_dev_state;
+ 	struct hash_state	state; /* Used for saving and resuming state */
+ 	struct hash_dma		dma;
+ };
 diff --git a/drivers/crypto/ux500/hash/hash_core.c b/drivers/crypto/ux500/hash/hash_core.c
-index 1662e176de44..5c2da6d42121 100644
+index fbd6335f142b..65d328d438d2 100644
 --- a/drivers/crypto/ux500/hash/hash_core.c
 +++ b/drivers/crypto/ux500/hash/hash_core.c
-@@ -19,7 +19,6 @@
- #include <linux/err.h>
- #include <linux/init.h>
- #include <linux/io.h>
--#include <linux/klist.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/mod_devicetable.h>
-@@ -59,19 +58,6 @@ static const u8 zero_message_hmac_sha256[SHA256_DIGEST_SIZE] = {
- 	0xc6, 0xc7, 0x12, 0x14, 0x42, 0x92, 0xc5, 0xad
- };
+@@ -991,8 +991,8 @@ int hash_hw_update(struct ahash_request *req)
+ 	}
  
--/**
-- * struct hash_driver_data - data specific to the driver.
-- *
-- * @device_list:	A list of registered devices to choose from.
-- * @device_allocation:	A semaphore initialized with number of devices.
-- */
--struct hash_driver_data {
--	struct klist		device_list;
--	struct semaphore	device_allocation;
--};
--
--static struct hash_driver_data	driver_data;
--
- /* Declaration of functions */
- /**
-  * hash_messagepad - Pads a message and write the nblw bits.
-@@ -86,24 +72,6 @@ static struct hash_driver_data	driver_data;
- static void hash_messagepad(struct hash_device_data *device_data,
- 			    const u32 *message, u8 index_bytes);
+ 	req_ctx->state.index = index;
+-	dev_dbg(device_data->dev, "%s: indata length=%d, bin=%d\n",
+-		__func__, req_ctx->state.index, req_ctx->state.bit_index);
++	dev_dbg(device_data->dev, "%s: indata length=%d\n",
++		__func__, req_ctx->state.index);
  
--/**
-- * release_hash_device - Releases a previously allocated hash device.
-- * @device_data:	Structure for the hash device.
-- *
-- */
--static void release_hash_device(struct hash_device_data *device_data)
--{
--	spin_lock(&device_data->ctx_lock);
--	device_data->current_ctx->device = NULL;
--	device_data->current_ctx = NULL;
--	spin_unlock(&device_data->ctx_lock);
--
--	/*
--	 * The down_interruptible part for this semaphore is called in
--	 * cryp_get_device_data.
--	 */
--	up(&driver_data.device_allocation);
--}
- 
- static void hash_dma_setup_channel(struct hash_device_data *device_data,
- 				   struct device *dev)
-@@ -354,65 +322,6 @@ static int hash_enable_power(struct hash_device_data *device_data,
- 	return ret;
+ 	return 0;
  }
- 
--/**
-- * hash_get_device_data - Checks for an available hash device and return it.
-- * @ctx:		Structure for the hash context.
-- * @device_data:	Structure for the hash device.
-- *
-- * This function check for an available hash device and return it to
-- * the caller.
-- * Note! Caller need to release the device, calling up().
-- */
--static int hash_get_device_data(struct hash_ctx *ctx,
--				struct hash_device_data **device_data)
--{
--	int			ret;
--	struct klist_iter	device_iterator;
--	struct klist_node	*device_node;
--	struct hash_device_data *local_device_data = NULL;
--
--	/* Wait until a device is available */
--	ret = down_interruptible(&driver_data.device_allocation);
--	if (ret)
--		return ret;  /* Interrupted */
--
--	/* Select a device */
--	klist_iter_init(&driver_data.device_list, &device_iterator);
--	device_node = klist_next(&device_iterator);
--	while (device_node) {
--		local_device_data = container_of(device_node,
--					   struct hash_device_data, list_node);
--		spin_lock(&local_device_data->ctx_lock);
--		/* current_ctx allocates a device, NULL = unallocated */
--		if (local_device_data->current_ctx) {
--			device_node = klist_next(&device_iterator);
--		} else {
--			local_device_data->current_ctx = ctx;
--			ctx->device = local_device_data;
--			spin_unlock(&local_device_data->ctx_lock);
--			break;
--		}
--		spin_unlock(&local_device_data->ctx_lock);
--	}
--	klist_iter_exit(&device_iterator);
--
--	if (!device_node) {
--		/**
--		 * No free device found.
--		 * Since we allocated a device with down_interruptible, this
--		 * should not be able to happen.
--		 * Number of available devices, which are contained in
--		 * device_allocation, is therefore decremented by not doing
--		 * an up(device_allocation).
--		 */
--		return -EBUSY;
--	}
--
--	*device_data = local_device_data;
--
--	return 0;
--}
--
- /**
-  * hash_hw_write_key - Writes the key to the hardware registries.
-  *
-@@ -859,14 +768,10 @@ static int hash_dma_final(struct ahash_request *req)
- 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
- 	struct hash_ctx *ctx = crypto_ahash_ctx(tfm);
- 	struct hash_req_ctx *req_ctx = ahash_request_ctx(req);
--	struct hash_device_data *device_data;
-+	struct hash_device_data *device_data = ctx->device;
- 	u8 digest[SHA256_DIGEST_SIZE];
- 	int bytes_written = 0;
- 
--	ret = hash_get_device_data(ctx, &device_data);
--	if (ret)
--		return ret;
--
- 	dev_dbg(device_data->dev, "%s: (ctx=0x%lx)!\n", __func__,
- 		(unsigned long)ctx);
- 
-@@ -944,8 +849,6 @@ static int hash_dma_final(struct ahash_request *req)
- 	memcpy(req->result, digest, ctx->digestsize);
- 
- out:
--	release_hash_device(device_data);
--
- 	/**
- 	 * Allocated in setkey, and only used in HMAC.
- 	 */
-@@ -964,13 +867,9 @@ static int hash_hw_final(struct ahash_request *req)
- 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
- 	struct hash_ctx *ctx = crypto_ahash_ctx(tfm);
- 	struct hash_req_ctx *req_ctx = ahash_request_ctx(req);
--	struct hash_device_data *device_data;
-+	struct hash_device_data *device_data = ctx->device;
- 	u8 digest[SHA256_DIGEST_SIZE];
- 
--	ret = hash_get_device_data(ctx, &device_data);
--	if (ret)
--		return ret;
--
- 	dev_dbg(device_data->dev, "%s: (ctx=0x%lx)!\n", __func__,
- 		(unsigned long)ctx);
- 
-@@ -1047,7 +946,6 @@ static int hash_hw_final(struct ahash_request *req)
- 	memcpy(req->result, digest, ctx->digestsize);
- 
- out:
--	release_hash_device(device_data);
- 
- 	/**
- 	 * Allocated in setkey, and only used in HMAC.
-@@ -1068,36 +966,29 @@ int hash_hw_update(struct ahash_request *req)
- 	int ret = 0;
- 	u8 index = 0;
- 	u8 *buffer;
--	struct hash_device_data *device_data;
- 	u8 *data_buffer;
- 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
- 	struct hash_ctx *ctx = crypto_ahash_ctx(tfm);
- 	struct hash_req_ctx *req_ctx = ahash_request_ctx(req);
-+	struct hash_device_data *device_data = ctx->device;
- 	struct crypto_hash_walk walk;
- 	int msg_length;
- 
- 	index = req_ctx->state.index;
- 	buffer = (u8 *)req_ctx->state.buffer;
- 
--	ret = hash_get_device_data(ctx, &device_data);
--	if (ret)
--		return ret;
--
- 	msg_length = crypto_hash_walk_first(req, &walk);
- 
- 	/* Empty message ("") is correct indata */
--	if (msg_length == 0) {
--		ret = 0;
--		goto release_dev;
--	}
-+	if (msg_length == 0)
-+		return 0;
- 
- 	/* Check if ctx->state.length + msg_length
- 	   overflows */
- 	if (msg_length > (req_ctx->state.length.low_word + msg_length) &&
- 	    HASH_HIGH_WORD_MAX_VAL == req_ctx->state.length.high_word) {
- 		pr_err("%s: HASH_MSG_LENGTH_OVERFLOW!\n", __func__);
--		ret = crypto_hash_walk_done(&walk, -EPERM);
--		goto release_dev;
-+		return crypto_hash_walk_done(&walk, -EPERM);
- 	}
- 
- 	/* Main loop */
-@@ -1110,7 +1001,7 @@ int hash_hw_update(struct ahash_request *req)
- 			dev_err(device_data->dev, "%s: hash_internal_hw_update() failed!\n",
- 				__func__);
- 			crypto_hash_walk_done(&walk, ret);
--			goto release_dev;
-+			return ret;
- 		}
- 
- 		msg_length = crypto_hash_walk_done(&walk, 0);
-@@ -1120,10 +1011,7 @@ int hash_hw_update(struct ahash_request *req)
- 	dev_dbg(device_data->dev, "%s: indata length=%d, bin=%d\n",
- 		__func__, req_ctx->state.index, req_ctx->state.bit_index);
- 
--release_dev:
--	release_hash_device(device_data);
--
--	return ret;
-+	return 0;
- }
- 
- /**
-@@ -1495,6 +1383,7 @@ static int hmac_sha256_setkey(struct crypto_ahash *tfm,
- struct hash_algo_template {
- 	struct hash_config conf;
- 	struct ahash_alg hash;
-+	struct hash_device_data	*device;
- };
- 
- static int hash_cra_init(struct crypto_tfm *tfm)
-@@ -1507,6 +1396,8 @@ static int hash_cra_init(struct crypto_tfm *tfm)
- 			struct hash_algo_template,
- 			hash);
- 
-+	ctx->device = hash_alg->device;
-+
- 	crypto_ahash_set_reqsize(__crypto_ahash_cast(tfm),
- 				 sizeof(struct hash_req_ctx));
- 
-@@ -1623,6 +1514,7 @@ static int ahash_algs_register_all(struct hash_device_data *device_data)
- 	int count;
- 
- 	for (i = 0; i < ARRAY_SIZE(hash_algs); i++) {
-+		hash_algs[i].device = device_data;
- 		ret = crypto_register_ahash(&hash_algs[i].hash);
- 		if (ret) {
- 			count = i;
-@@ -1723,11 +1615,6 @@ static int ux500_hash_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, device_data);
- 
--	/* Put the new device into the device list... */
--	klist_add_tail(&device_data->list_node, &driver_data.device_list);
--	/* ... and signal that a new device is available. */
--	up(&driver_data.device_allocation);
--
- 	ret = ahash_algs_register_all(device_data);
- 	if (ret) {
- 		dev_err(dev, "%s: ahash_algs_register_all() failed!\n",
-@@ -1766,10 +1653,6 @@ static int ux500_hash_remove(struct platform_device *pdev)
- 		return -ENOMEM;
- 	}
- 
--	/* Try to decrease the number of available devices. */
--	if (down_trylock(&driver_data.device_allocation))
--		return -EBUSY;
--
- 	/* Check that the device is free */
- 	spin_lock(&device_data->ctx_lock);
- 	/* current_ctx allocates a device, NULL = unallocated */
-@@ -1777,19 +1660,12 @@ static int ux500_hash_remove(struct platform_device *pdev)
- 		/* The device is busy */
- 		spin_unlock(&device_data->ctx_lock);
- 		/* Return the device to the pool. */
--		up(&driver_data.device_allocation);
- 		return -EBUSY;
- 	}
- 
- 	spin_unlock(&device_data->ctx_lock);
- 
--	/* Remove the device from the list */
--	if (klist_node_attached(&device_data->list_node))
--		klist_remove(&device_data->list_node);
--
--	/* If this was the last device, remove the services */
--	if (list_empty(&driver_data.device_list.k_list))
--		ahash_algs_unregister_all(device_data);
-+	ahash_algs_unregister_all(device_data);
- 
- 	if (hash_disable_power(device_data, false))
- 		dev_err(dev, "%s: hash_disable_power() failed\n",
-@@ -1820,9 +1696,6 @@ static void ux500_hash_shutdown(struct platform_device *pdev)
- 	spin_lock(&device_data->ctx_lock);
- 	/* current_ctx allocates a device, NULL = unallocated */
- 	if (!device_data->current_ctx) {
--		if (down_trylock(&driver_data.device_allocation))
--			dev_dbg(&pdev->dev, "%s: Cryp still in use! Shutting down anyway...\n",
--				__func__);
- 		/**
- 		 * (Allocate the device)
- 		 * Need to set this to non-null (dummy) value,
-@@ -1832,13 +1705,7 @@ static void ux500_hash_shutdown(struct platform_device *pdev)
- 	}
- 	spin_unlock(&device_data->ctx_lock);
- 
--	/* Remove the device from the list */
--	if (klist_node_attached(&device_data->list_node))
--		klist_remove(&device_data->list_node);
--
--	/* If this was the last device, remove the services */
--	if (list_empty(&driver_data.device_list.k_list))
--		ahash_algs_unregister_all(device_data);
-+	ahash_algs_unregister_all(device_data);
- 
- 	if (hash_disable_power(device_data, false))
- 		dev_err(&pdev->dev, "%s: hash_disable_power() failed\n",
-@@ -1868,9 +1735,6 @@ static int ux500_hash_suspend(struct device *dev)
- 	spin_unlock(&device_data->ctx_lock);
- 
- 	if (device_data->current_ctx == ++temp_ctx) {
--		if (down_interruptible(&driver_data.device_allocation))
--			dev_dbg(dev, "%s: down_interruptible() failed\n",
--				__func__);
- 		ret = hash_disable_power(device_data, false);
- 
- 	} else {
-@@ -1904,9 +1768,7 @@ static int ux500_hash_resume(struct device *dev)
- 		device_data->current_ctx = NULL;
- 	spin_unlock(&device_data->ctx_lock);
- 
--	if (!device_data->current_ctx)
--		up(&driver_data.device_allocation);
--	else
-+	if (device_data->current_ctx)
- 		ret = hash_enable_power(device_data, true);
- 
- 	if (ret)
-@@ -1924,7 +1786,7 @@ static const struct of_device_id ux500_hash_match[] = {
- };
- MODULE_DEVICE_TABLE(of, ux500_hash_match);
- 
--static struct platform_driver hash_driver = {
-+static struct platform_driver ux500_hash_driver = {
- 	.probe  = ux500_hash_probe,
- 	.remove = ux500_hash_remove,
- 	.shutdown = ux500_hash_shutdown,
-@@ -1934,29 +1796,7 @@ static struct platform_driver hash_driver = {
- 		.pm    = &ux500_hash_pm,
- 	}
- };
--
--/**
-- * ux500_hash_mod_init - The kernel module init function.
-- */
--static int __init ux500_hash_mod_init(void)
--{
--	klist_init(&driver_data.device_list, NULL, NULL);
--	/* Initialize the semaphore to 0 devices (locked state) */
--	sema_init(&driver_data.device_allocation, 0);
--
--	return platform_driver_register(&hash_driver);
--}
--
--/**
-- * ux500_hash_mod_fini - The kernel module exit function.
-- */
--static void __exit ux500_hash_mod_fini(void)
--{
--	platform_driver_unregister(&hash_driver);
--}
--
--module_init(ux500_hash_mod_init);
--module_exit(ux500_hash_mod_fini);
-+module_platform_driver(ux500_hash_driver);
- 
- MODULE_DESCRIPTION("Driver for ST-Ericsson UX500 HASH engine.");
- MODULE_LICENSE("GPL");
 -- 
 2.37.2
 
