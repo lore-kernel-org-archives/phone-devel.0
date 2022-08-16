@@ -2,91 +2,114 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F43AC19F2C
-	for <phone-devel@archiver.kernel.org>; Tue, 16 Aug 2022 05:41:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 196F1C32772
+	for <phone-devel@archiver.kernel.org>; Tue, 16 Aug 2022 08:02:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229927AbiHPFlH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 16 Aug 2022 01:41:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54028 "EHLO
+        id S231691AbiHPICA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 16 Aug 2022 04:02:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232078AbiHPFkt (ORCPT
+        with ESMTP id S230284AbiHPIBk (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 16 Aug 2022 01:40:49 -0400
-X-Greylist: delayed 68 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 15 Aug 2022 15:27:20 PDT
-Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [IPv6:2a01:4f8:a0:821d::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9E706CD1;
-        Mon, 15 Aug 2022 15:27:20 -0700 (PDT)
-Received: from [192.168.0.12] (cpc76482-cwma10-2-0-cust629.7-3.cable.virginm.net [86.14.22.118])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by proxmox1.postmarketos.org (Postfix) with ESMTPSA id 614F414015B;
-        Mon, 15 Aug 2022 22:27:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-        s=donut; t=1660602439;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=s4c/Vn6NcaEIBanYavvPzdPCSkOe7p2YV5ZnRO6hBVo=;
-        b=K+yGhokSqhjDbxedPjnTfMtnzoCBVOpwha9JSweOL3UkbsYYHBHuYqieLGLtus9nWhgMss
-        9j+68mD0P+dZKPBizNlr2eSWRMpb5XkXkQFx9ps4Nv3SO/5+cibj4TBjvcJSYEakViwRTi
-        W1GKZNRo9smsI1+IBrYYoJOgER6/luM=
-Message-ID: <5ea0a9d7-cd14-1acc-3bd8-828c7b5e55ad@postmarketos.org>
-Date:   Mon, 15 Aug 2022 23:27:19 +0100
+        Tue, 16 Aug 2022 04:01:40 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F24B5FAD0
+        for <phone-devel@vger.kernel.org>; Mon, 15 Aug 2022 22:21:05 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id p18so8231671plr.8
+        for <phone-devel@vger.kernel.org>; Mon, 15 Aug 2022 22:21:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc;
+        bh=0p+K0qLqxOzyQ3M+oE6bJ773iu7oRhxO3HE/oVHQgeI=;
+        b=Q84XFhLhci9sMypF2Qq1P+Ztgp7ErAQco5AR0ZLZ1SEHo124YaVRL+lvNOVVysf9P/
+         ZGF/F5dvUD2T0R9cWO2XGG+02LCY2H7kF8FIzLRGPbSlG9R2C505ZbCwcn5DzkLOWjRL
+         3p1X5J1tWUwurowbXOZLG3WRTdUFHeZfr8rkV2xAa+bMYYpcETYi2cC+WhxeuOXxew5G
+         baoTzvF5eOCA5H7vq/9nWJ9QOHqw7sAisXUVflIRBcW8FLd/SXkDdnfT4QxoNueaj7NU
+         VFVpGTw8IzYb2C+1KFeKd4zgF08vW3uA4pb/QYznp9Wbo13qfYrlhpzdMr7wkwq8wOHt
+         fAYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=0p+K0qLqxOzyQ3M+oE6bJ773iu7oRhxO3HE/oVHQgeI=;
+        b=uIBU25WHrJnfRKmc4Xwb/q12YQdPYqQuXZplDIzD9MFrP1yEzPfieiKpUfaLKVCMte
+         24a+j9/HpGC+ouZqyhVPKmWSUiRfBbiK8Ab1haVrg4DKsktBdVvL7+HW5v7aK7ff6mu8
+         yBERI+XPPxsmPQBdK2znWqmQNufQHvUe4ywxFAUgKn2ie1axPP0YkASOvJJbf1RqiUIL
+         u8w9U2dNPpjhnN6j45OjpG/aQrNcH+y91y5LiID7HZ5aYqTw//MCu99dOCWDD79C3vdr
+         IKEB3FyIi5pSaEvIgtIlBl4uZGCYKH6uqirQBteyx6NYRBaBrvzGleAkOiEdPSDcT2Q1
+         x8Eg==
+X-Gm-Message-State: ACgBeo0dElaCr3u2wfxXsmrH/O2xVb6uf3LG4zAk/NBbg3nqN57VtpuG
+        Nm6c26mbb5US3mhN8NL9ul02lQ==
+X-Google-Smtp-Source: AA6agR6chfmdgtWHQp2MitjNlKme1+yXKlKet9gzMaudy3FfMj/Cbfy8IiOC63TSrhs1532tAhnnBQ==
+X-Received: by 2002:a17:90b:1b49:b0:1f5:4203:2e4e with SMTP id nv9-20020a17090b1b4900b001f542032e4emr31106602pjb.143.1660627265141;
+        Mon, 15 Aug 2022 22:21:05 -0700 (PDT)
+Received: from localhost ([122.171.18.80])
+        by smtp.gmail.com with ESMTPSA id x12-20020a170902ec8c00b0016eecdf8978sm8012796plg.106.2022.08.15.22.21.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Aug 2022 22:21:04 -0700 (PDT)
+Date:   Tue, 16 Aug 2022 10:51:02 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sai Prakash Ranjan <quic_saipraka@quicinc.com>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Emma Anholt <emma@anholt.net>,
+        Rob Clark <robdclark@chromium.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        linux-arm-msm@vger.kernel.org, dmaengine@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+        linux-mmc@vger.kernel.org, linux-pm@vger.kernel.org,
+        Sibi Sankar <sibis@codeaurora.org>,
+        Adam Skladowski <a_skl39@protonmail.com>
+Subject: Re: [PATCH 4/7] cpufreq: Add SM6115 to cpufreq-dt-platdev blocklist
+Message-ID: <20220816052102.jdonvyxkix5n34u5@vireshk-i7>
+References: <20220815100952.23795-1-a39.skl@gmail.com>
+ <20220815100952.23795-5-a39.skl@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v3 1/2] dt-bindings: arm: rockchip: Add PinePhone Pro
- bindings
-Content-Language: en-US
-To:     Tom Fitzhenry <tom@tom-fitzhenry.me.uk>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, heiko@sntech.de
-Cc:     martijn@brixit.nl, ayufan@ayufan.eu, megi@xff.cz,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220815123004.252014-1-tom@tom-fitzhenry.me.uk>
- <4zqDGP71uKXjwgNqkEOaMdU5T3XKr7axd17DLLCEvoOEw1B_fov8tUyaGeNDyu9A1YYUkpRW2G33Uzs0CIkDoQ==@protonmail.internalid>
- <20220815123004.252014-2-tom@tom-fitzhenry.me.uk>
-From:   Caleb Connolly <kc@postmarketos.org>
-In-Reply-To: <20220815123004.252014-2-tom@tom-fitzhenry.me.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220815100952.23795-5-a39.skl@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-
-On 15/08/2022 13:30, Tom Fitzhenry wrote:
-> Document board compatible names for Pine64 PinePhonePro.
+On 15-08-22, 12:09, Adam Skladowski wrote:
+> The Qualcomm SM6115 platform uses the
+> qcom-cpufreq-hw driver, so add it to the cpufreq-dt-platdev driver's
+> blocklist.
 > 
-> https://wiki.pine64.org/wiki/PinePhone_Pro
-> 
-> Signed-off-by: Tom Fitzhenry <tom@tom-fitzhenry.me.uk>
-
-Reviewed-by: Caleb Connolly <kc@postmarketos.org>
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 > ---
->   Documentation/devicetree/bindings/arm/rockchip.yaml | 5 +++++
->   1 file changed, 5 insertions(+)
+>  drivers/cpufreq/cpufreq-dt-platdev.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/arm/rockchip.yaml b/Documentation/devicetree/bindings/arm/rockchip.yaml
-> index 7811ba64149cb..8ddedbd1ce317 100644
-> --- a/Documentation/devicetree/bindings/arm/rockchip.yaml
-> +++ b/Documentation/devicetree/bindings/arm/rockchip.yaml
-> @@ -494,6 +494,11 @@ properties:
->             - const: pine64,pinenote
->             - const: rockchip,rk3566
-> 
-> +      - description: Pine64 PinePhonePro
-> +        items:
-> +          - const: pine64,pinephone-pro
-> +          - const: rockchip,rk3399
-> +
->         - description: Pine64 Rock64
->           items:
->             - const: pine64,rock64
-> --
-> 2.37.1
-> 
+> diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
+> index 2c96de3f2d83..6ac3800db450 100644
+> --- a/drivers/cpufreq/cpufreq-dt-platdev.c
+> +++ b/drivers/cpufreq/cpufreq-dt-platdev.c
+> @@ -146,6 +146,7 @@ static const struct of_device_id blocklist[] __initconst = {
+>  	{ .compatible = "qcom,sc8180x", },
+>  	{ .compatible = "qcom,sc8280xp", },
+>  	{ .compatible = "qcom,sdm845", },
+> +	{ .compatible = "qcom,sm6115", },
+>  	{ .compatible = "qcom,sm6350", },
+>  	{ .compatible = "qcom,sm8150", },
+>  	{ .compatible = "qcom,sm8250", },
+
+Applied. Thanks.
+
+-- 
+viresh
