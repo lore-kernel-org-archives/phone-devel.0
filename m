@@ -2,113 +2,139 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5816AC25B0E
-	for <phone-devel@archiver.kernel.org>; Thu, 18 Aug 2022 21:34:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B21BC25B0E
+	for <phone-devel@archiver.kernel.org>; Fri, 19 Aug 2022 02:45:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345931AbiHRVei (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 18 Aug 2022 17:34:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51324 "EHLO
+        id S245354AbiHSCph (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 18 Aug 2022 22:45:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346002AbiHRVeg (ORCPT
+        with ESMTP id S245669AbiHSCp3 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 18 Aug 2022 17:34:36 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CD62BA9F1
-        for <phone-devel@vger.kernel.org>; Thu, 18 Aug 2022 14:34:34 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id m3so2674232ljp.8
-        for <phone-devel@vger.kernel.org>; Thu, 18 Aug 2022 14:34:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=57R1i97Exb7jiv3R+C+sLGgx2BChX5wJqOqueGuOy8o=;
-        b=BpRf1j8XsCn/7ww8tOLJtJpEEyVf9B0Nkp8dZSfI90CLV5ieBJ3CDZMbPVxru2yVXz
-         1l55Td1/RKqMyoMByybvH6bmTKczz2GHoaAtHV3VWUl3Y00PEJ8XFZO2YaqWKSmIgtUO
-         q0beRrI68dYUftzgYBU/HmlW5n9hFBxIYlEfcaydSVpzwzwllso/sppoPR7KJBMe+EZu
-         sd1gzVfaHnCD4gk5nvR/JfMkFXwk0yspHGUUoH7MJf/iiQzWqV+kFVBxVoPioup37F4u
-         +uk0PDEXhbotpzeLvczvh3m7KQm6I+UvCmXb5OPqZ20iZ6mmdKFkbICd257afSvtVG5c
-         3vyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=57R1i97Exb7jiv3R+C+sLGgx2BChX5wJqOqueGuOy8o=;
-        b=8DGo/7DTbGIPrH8X7Pz4TwD2eq18XPlvN3FjPMPiZwRWozoNhuj9AwpfZ8E0ZS4erL
-         olQAPX3ZWIkje64gO9K6XySRC9hojZoG30wrA4cWgBgmg4HrK9KpjmOxNFYmUUcuI9z7
-         x+je79fH9agiRwkhqIv5fSxdGuDM6ndi1Bb2WYwHAKv09wobF3j+3wrGqJ2wAQv92lU3
-         cIKeP3UtmSyic9+bCDTFdQ/qKHNHW5YUX08DnQAZvfHszbBVFlmnylJMZssnW0Cb4GL+
-         x5nXJkJTZ9R5vY2mVx67CO+RnmtauMIEyQVG6VUkNVvGGHowH+dtqFQFRuGQIm+gFJN3
-         NeKw==
-X-Gm-Message-State: ACgBeo3VVg/LAK65ccXnpmaLBiHiEeTzZq9U63mU+N69emAZq9aide/f
-        L3cEh/HNIOLdciW2ASp5NC5Crb9h/I0JDaAe12oYLQ==
-X-Google-Smtp-Source: AA6agR6GJXPp5/z0JTiP0q9mPDVCKJiO4ywyVq/9cFPr4MM0zelM0e/lZlpgvN0Odpiov3nkO1VEAYbE8La/yBkG2AA=
-X-Received: by 2002:a05:651c:1718:b0:261:8700:25f4 with SMTP id
- be24-20020a05651c171800b00261870025f4mr1333316ljb.229.1660858472545; Thu, 18
- Aug 2022 14:34:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220815100952.23795-1-a39.skl@gmail.com> <20220815100952.23795-4-a39.skl@gmail.com>
-In-Reply-To: <20220815100952.23795-4-a39.skl@gmail.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 18 Aug 2022 23:33:56 +0200
-Message-ID: <CAPDyKFrc5aneqqC=uGKeQ0ROx69eMJhQ1pFA3GN8d5NpXHGEEQ@mail.gmail.com>
-Subject: Re: [PATCH 3/7] dt-bindings: mmc: sdhci-msm: Document the SM6115 compatible
-To:     Adam Skladowski <a39.skl@gmail.com>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
+        Thu, 18 Aug 2022 22:45:29 -0400
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13408459BB
+        for <phone-devel@vger.kernel.org>; Thu, 18 Aug 2022 19:45:28 -0700 (PDT)
+Date:   Fri, 19 Aug 2022 02:45:10 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1660877121; x=1661136321;
+        bh=cjS4FB8Xn6Fk5xAao9JqkTW7r45Ht24vCAy8MBxAcDg=;
+        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
+         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
+         Feedback-ID:Message-ID;
+        b=GXFQhoiClE+wIsNtirNqWGkUIhyt2vHNQUIb1DLN/4kynuj6gdg9JLnRlDHmFkL//
+         Yo6RfjO8EDz3z2X6TE5k36eV/cIRyfx+2OJNz8+Qrjkj4yT9NHe2Mg/SJMsOvv+3MB
+         IebDwT28S7DKbtSPYWewq/qNvcjg0kyMOLSVR69Y=
+To:     Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Joel Selvaraj <jo@jsfamily.in>, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Vinod Koul <vkoul@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Sai Prakash Ranjan <quic_saipraka@quicinc.com>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Emma Anholt <emma@anholt.net>,
-        Rob Clark <robdclark@chromium.org>,
-        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
-        linux-arm-msm@vger.kernel.org, dmaengine@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
-        linux-mmc@vger.kernel.org, linux-pm@vger.kernel.org,
-        Stephen Boyd <swboyd@chromium.org>,
-        Sibi Sankar <sibis@codeaurora.org>
-Content-Type: text/plain; charset="UTF-8"
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Reply-To: Caleb Connolly <caleb@connolly.tech>
+Subject: Re: [PATCH 0/5] Add support for Xiaomi Poco F1 EBBG variant
+Message-ID: <bf2296e4-aa05-5b71-6217-e15e6a300ab3@connolly.tech>
+In-Reply-To: <bb78f8fb-d6ea-5c37-0531-8d7584bc897b@somainline.org>
+References: <MN2PR02MB702415D7BF12B7B7A41B2D38D9829@MN2PR02MB7024.namprd02.prod.outlook.com> <bb78f8fb-d6ea-5c37-0531-8d7584bc897b@somainline.org>
+Feedback-ID: 10753939:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 15 Aug 2022 at 12:12, Adam Skladowski <a39.skl@gmail.com> wrote:
->
-> Document the compatible for SDHCI on SM6115.
->
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-
-Applied for next, thanks!
-
-Kind regards
-Uffe
 
 
-> ---
->  Documentation/devicetree/bindings/mmc/sdhci-msm.yaml | 1 +
->  1 file changed, 1 insertion(+)
+On 08/07/2022 21:43, Konrad Dybcio wrote:
 >
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> index fc0e81c2066c..a792fa5574a0 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> @@ -41,6 +41,7 @@ properties:
->                - qcom,sdm845-sdhci
->                - qcom,sdx55-sdhci
->                - qcom,sdx65-sdhci
-> +              - qcom,sm6115-sdhci
->                - qcom,sm6125-sdhci
->                - qcom,sm6350-sdhci
->                - qcom,sm8150-sdhci
-> --
-> 2.25.1
 >
+> On 8.07.2022 13:12, Joel Selvaraj wrote:
+>> There are two variants of Xiaomi Poco F1.
+>> - Tianma variant with NOVATEK NT36672A panel + touchscreen manufactured
+>>    by Tianma
+>> - EBBG variant with Focaltech FT8719 panel + touchscreen manufactured
+>>    by EBBG
+>>
+>> The current sdm845-xiaomi-beryllium.dts represents tianma panel variant.
+>>
+>> To add support for the EBBG variant, let's split this into 3 files,
+>> - sdm845-xiaomi-beryllium-common.dtsi which contains all the common node=
+s
+>> - sdm845-xiaomi-beryllium-tianma.dts for the tianma variant
+>> - sdm845-xiaomi-beryllium-ebbg.dts for the ebbg variant
+>>
+>> Note:
+>> -----
+>> Both the panels are already upstreamed and the split is based on them.
+>> There were patches earlier for both the touchscreens, but they are not
+>> accepted upstream yet. Once they are accepted, we will add them to
+>> respective variants.
+> Hi,
+>
+> I believe this is not the correct approach. This may work short-term, but
+> you will have to prepare 2 separate images for the device and mistaking t=
+hem
+> may cause irreversible hw damage at worst, or lots of user complaining at=
+ best.
+> Instead, I think it's about time we should look into implementing dynamic=
+ panel
+> detection.
+>
+> Qualcomm devices do this by parsing the command line [1], as LK/XBL
+> gives you a nice-ish string to work with that you can simply match
+> against a label. Other vendors may use custom mechanisms, such as
+> a resistor / GPIO to determine which panel (or generally hw config),
+> but implementing this mechanism would make upstreaming of lots of other
+> devices easier..
+
+Regarding dynamic panel detection. A mechanism for choosing DT nodes based =
+on some
+generic (read: extensible) matching feature would be pretty neat....
+
+e.g. matching cmdline:
+
+panel {
+=09compatible =3D "some,w3ird-panel";
+=09/* Only attempt to probe a driver for this node if cmdline contains
+=09 * this string. How this is described and the type(s) of matching to
+=09 * use could be defined.
+=09 */
+=09match-if-cmdline =3D "msm_drm.dsi_display0=3Dsome_w3ird-panel";
+};
+
+or perhaps GPIO state:
+
+panel {
+=09compatible =3D "some,w3ird-panel";
+=09/* Only attempt to probe a driver for this node if GPIO 43 on tlmm is hi=
+gh,
+=09 * and GPIO 44 is low.
+=09 */
+=09match-if-gpios =3D <&tlmm 43 GPIO_ACTIVE_HIGH>, <&tlmm 44 GPIO_ACTIVE_LO=
+W>;
+};
+
+This certainly introduces the temptation to do awful things...
+
+>
+> This issue concerns many phones (and well, devices in general), as
+> they are seldom made with only one configuration due to supply chain
+> strategies.
+
+It would be really nice to solve this in-kernel, chainloading a bootloader =
+sometimes kinda sucks.
+>
+>
+> Konrad
+>
+> [1] https://github.com/LineageOS/android_kernel_xiaomi_sdm845/blob/lineag=
+e-19.1/drivers/gpu/drm/msm/dsi-staging/dsi_display.c
+
+--
+Kind Regards,
+Caleb
+
