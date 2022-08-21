@@ -2,82 +2,70 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43B6FC25B08
-	for <phone-devel@archiver.kernel.org>; Sun, 21 Aug 2022 00:11:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2004FC00140
+	for <phone-devel@archiver.kernel.org>; Sun, 21 Aug 2022 09:04:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235700AbiHUALe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 20 Aug 2022 20:11:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41234 "EHLO
+        id S229837AbiHUJEN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 21 Aug 2022 05:04:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230371AbiHUALZ (ORCPT
+        with ESMTP id S229484AbiHUJEM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 20 Aug 2022 20:11:25 -0400
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2605BBC2;
-        Sat, 20 Aug 2022 17:11:22 -0700 (PDT)
-Received: (Authenticated sender: n@nfraprado.net)
-        by mail.gandi.net (Postfix) with ESMTPSA id 8912BFF804;
-        Sun, 21 Aug 2022 00:11:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nfraprado.net;
-        s=gm1; t=1661040681;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ZVc/spzvVRXvcAwGLO93tueirWsgH1TzbcCXIqS2zJg=;
-        b=CSrtbKcSPKr+c/PD7wvl7QBCDvWS5Ptbe6a/G0efcVFbPQyXWAoq6ZssqmM1FIVQyMCWCi
-        LEJhrT67lNJndYhhgIJH+VIPdNHEloVKtEYBFNrSNyEPgz2t31gKiNoHnTyDa8OO8kJlmV
-        f6rCj4UddJmjUwXHzpoQOFuiqxIQuaMlWs0dqJlNWfCgr/0XwB5RR0h8Y6xq4vFB3DDSdU
-        ZOPqb1D1O3xR8Ytc9pe9RrF7crHrt2KCyzlCc6/OJQes1WlPAXDugI5fa75pdaKn0eVgTx
-        Rarc7oFRU8vHa8sXVetzcfuGqZrSlsrPs04Mw+Xuj6843Cgd0mBk3+FeNyiHfQ==
-Date:   Sat, 20 Aug 2022 20:11:14 -0400
-From:   =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <n@nfraprado.net>
-To:     Tom Fitzhenry <tom@tom-fitzhenry.me.uk>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        heiko@sntech.de, martijn@brixit.nl, ayufan@ayufan.eu, megi@xff.cz,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Sun, 21 Aug 2022 05:04:12 -0400
+X-Greylist: delayed 243 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 21 Aug 2022 02:04:12 PDT
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8AF51AD81;
+        Sun, 21 Aug 2022 02:04:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+        t=1661072650; bh=F4+DSHz7sIes0DO8tesxAnJzd37J/sIyGntlnQLZnwo=;
+        h=Date:From:To:Subject:X-My-GPG-KeyId:References:From;
+        b=Rk91ccGGF2tF4FCz7XHFy6D0qAEDJAx1YcGKYrCJr9z9TqkaKsoIkEzBfILXfTVFh
+         E8AZQ4cVjcjs1Ew68sAlv2gZ2wa6uuAYubRIs3SV0I+B3wr1yeRONa28HAkPi2A6Ug
+         sxGC8Arl2ndXSjpXKhdEaj0M86T5vseUQ4Cgg/54=
+Date:   Sun, 21 Aug 2022 11:04:10 +0200
+From:   =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+To:     =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <n@nfraprado.net>,
+        Tom Fitzhenry <tom@tom-fitzhenry.me.uk>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, heiko@sntech.de,
+        martijn@brixit.nl, ayufan@ayufan.eu, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
         linux-rockchip@lists.infradead.org, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v3 2/2] arm64: dts: rockchip: Add initial support for
  Pine64 PinePhone Pro
-Message-ID: <20220821001114.ahnb4f6hcykt5nrm@notapiano>
+Message-ID: <20220821090410.tj3jgyzjseaqpx3h@core>
+Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>,
+        =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <n@nfraprado.net>,
+        Tom Fitzhenry <tom@tom-fitzhenry.me.uk>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, heiko@sntech.de,
+        martijn@brixit.nl, ayufan@ayufan.eu, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
+ <https://xff.cz/key.txt>
 References: <20220815123004.252014-1-tom@tom-fitzhenry.me.uk>
  <20220815123004.252014-3-tom@tom-fitzhenry.me.uk>
+ <20220818030547.eblbmchutmnn6jih@notapiano>
+ <20220821090005.tshf7z2kklaet7ll@core>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220815123004.252014-3-tom@tom-fitzhenry.me.uk>
+In-Reply-To: <20220821090005.tshf7z2kklaet7ll@core>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Aug 15, 2022 at 10:30:04PM +1000, Tom Fitzhenry wrote:
-> From: Martijn Braam <martijn@brixit.nl>
-> 
-> This is a basic DT containing regulators and UART, intended to be a
-> base that myself and others can add additional nodes in future patches.
-> 
-> Tested to work: booting from eMMC, output over UART.
-> 
-> https://wiki.pine64.org/wiki/PinePhone_Pro
-> 
-> This is derived from
-> https://gitlab.com/pine64-org/linux/-/commit/261d3b5f8ac503f97da810986d1d6422430c8531
-> with fixes from https://megous.com/git/linux.
-> 
-> Signed-off-by: Martijn Braam <martijn@brixit.nl>
-> Co-developed-by: Kamil Trzciński <ayufan@ayufan.eu>
-> [no SoB, but Kamil is happy for this patch to be submitted]
-> Co-developed-by: Ondrej Jirman <megi@xff.cz>
-> Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> Co-developed-by: Tom Fitzhenry <tom@tom-fitzhenry.me.uk>
-> Signed-off-by: Tom Fitzhenry <tom@tom-fitzhenry.me.uk>
+On Sun, Aug 21, 2022 at 11:00:05AM +0200, megi xff wrote:
 
-Tested-by: Nícolas F. R. A. Prado <n@nfraprado.net>
+[...]
 
-Indeed booting from the SD card also works with this minimal DT. Also confirmed
-that eMMC, thermal sensors, power button, regulators and UART are all working.
+> The actual min/max limits that are enforced by the kernel for the board are set
+> on the CPU regulator, which are actually wrongly set in this DT. See:
+> 
+> https://dl.radxa.com/rockpi4/docs/hw/datasheets/Rockchip%20RK3399-T%20Datasheet%20V1.0-20210818.pdf
 
-Thanks,
-Nícolas
+The minimums on the regulators also seem out of range in the datasheet, for that matter.
+
+regards,
+	o.
