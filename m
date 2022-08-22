@@ -2,154 +2,104 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A109C00140
-	for <phone-devel@archiver.kernel.org>; Mon, 22 Aug 2022 00:19:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E791BC00140
+	for <phone-devel@archiver.kernel.org>; Mon, 22 Aug 2022 00:23:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232002AbiHVATH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 21 Aug 2022 20:19:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37888 "EHLO
+        id S232021AbiHVAXP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 21 Aug 2022 20:23:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231995AbiHVATF (ORCPT
+        with ESMTP id S231844AbiHVAXO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 21 Aug 2022 20:19:05 -0400
+        Sun, 21 Aug 2022 20:23:14 -0400
 Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8039B15727;
-        Sun, 21 Aug 2022 17:19:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DD503AF;
+        Sun, 21 Aug 2022 17:23:13 -0700 (PDT)
 Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id E149A5C00E4;
-        Sun, 21 Aug 2022 20:19:02 -0400 (EDT)
+        by mailout.nyi.internal (Postfix) with ESMTP id 63E205C0183;
+        Sun, 21 Aug 2022 20:23:12 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Sun, 21 Aug 2022 20:19:02 -0400
+  by compute2.internal (MEProxy); Sun, 21 Aug 2022 20:23:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        tom-fitzhenry.me.uk; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm1; t=1661127542; x=1661213942; bh=L2nkszgY5W
-        OfLgRzK4a0UTYpubHoRBwTEQkzg8BqgV8=; b=LygE7oGCZGQrEJbufqeGM76mIs
-        M/PjtSxgA2DNSOl0S9uAEKPMLttVPpdcpeQtAYCtAER1eepiE08PzrOCipnx84CC
-        7TeESltxOHCNzR00fyTlWpbr1IP/18FiyEldDA2Dfha/bS4nYa+XMzdrHwMixa1G
-        DUJ5a8pBQn62QdhtEI6aOdQSTi95UgOuaiqEoA7H632q/VL4pHOsHBSNKuyQ3Znm
-        iIQQ/N4OXJ/dPOFI0PIY8t9Z0mKX0Ju1STgytjFFtaitRQg0Eqk4p3gxb1Rga5yY
-        QvsUR+9l/dxo0uOXGrqFvDznHSIaoxWpUe4KWY1wxO3Y/goCJJB5QM/RoTTw==
+        tom-fitzhenry.me.uk; h=cc:content-transfer-encoding:content-type
+        :date:date:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to;
+         s=fm1; t=1661127792; x=1661214192; bh=+zNgsAGmXbExkylqMIpidshfU
+        kOgsclf/BPqr+bOrXo=; b=a5OXRJjCxp1SgQnWJ2bvPslnliwdjuQPaASjuNMqd
+        CkOt7Xx0bTXA+KYWLfibAgTdiA74GeokttfReUm5rrV8tPLKxpExU6SUKavhFf2y
+        XiOdcKkseNhER2oJtONeO0uJm5Sck1r1A0+zjpvX3GAYOwgAxyAZMLRkC4r3oLQM
+        EuOus2gL+n9/hsXTNQuVPV8CKoGsziagYfaWB/IHNw1GOZoFvRxev6JsJ1UWsYl5
+        QMfYAYKMLYf3JmPPxp223u/bgKvLn9R61jEMHG/3iGYrDvmTmZIrtlvLe+Qz14bo
+        MOIzDceDw4K2fgXcrFrLcAvCkgGvQu1LBYg8+ddG1JfgQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1661127542; x=
-        1661213942; bh=L2nkszgY5WOfLgRzK4a0UTYpubHoRBwTEQkzg8BqgV8=; b=o
-        gfLdqt6wbPAR0sXCwaq4zcEkmMMKZCZ/ESqK/G/zVM/WjKnbtqZAzMCCEFrpakke
-        42TvM0/0qykA39za++YftSeMEjruEGHwYgt5BPhnvURBXmiO0RdupD0oX1gEr1Ss
-        yFGXqvT6RnaoPO8aQQ0f6s4GI/fsAq5p+aFDEZ3RjuWqeKYcdeyCmwudT18oI6Dz
-        5ErkfTUsK2XLd2325kJi9K71OOvvWQuWMEwjNvhYPI8+IDDCm+GfCchb5qCBAVSg
-        RnNX2Uxd2RMdr4Pure0tQqgmy/UO2iwOXjbTPWKM3nLSBtouHHftiVjyeD/TecnR
-        W0X/RnjgwKr1r8kOqPYtg==
-X-ME-Sender: <xms:dssCYxQx4TasUzZxR4pdf88CLkmagWVgum4J6A83ATl65KXfeCrgGQ>
-    <xme:dssCY6z5X47wBkPU6Z6QuGRQr161ErGsdmg_e-10lnj8I_Gj6tEcK8uOgxB2ewUK6
-    cCOKvh5893XKkr-dQ>
-X-ME-Received: <xmr:dssCY20uHiNgRzO4861SmEehuRCZTffIVbqcGp4FOMYTFML7TtInpw5pGOfifWlUOobjYg>
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:date:feedback-id:feedback-id:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
+        :x-me-sender:x-sasl-enc; s=fm1; t=1661127792; x=1661214192; bh=+
+        zNgsAGmXbExkylqMIpidshfUkOgsclf/BPqr+bOrXo=; b=see+EMnXNoWKlmNDx
+        mLWp9rJq5bv0hnA62mQr0zhTrRQgjc16G7bZmzUxs51tnDFAy3ojA4bMCNzQI6mo
+        NG4DFlvAb6fKZZkKLI82FiDwoF4nLjsfCe3n0VfT0cFM8Tv2Nnf64P1szZ04mO5j
+        XDLWlimrh7fIt8IKb1WfhUFRkufChPADPLEE7MXRxk/vL8+SNlwU0lqVkHKc3x8F
+        o5c7Yrh5RmQkPmF0rTjrknlzVNPfskHk3CJhUTlU097AKmT57imgAsrweDwzIOjs
+        vfAdNyP0sUEMd8dAiAFQ70s4LxzH/eW1guQVK0mIXabbBfa0necrYVdzQnoU29DX
+        qEkxg==
+X-ME-Sender: <xms:cMwCY-CkUuFf4OHfFiveFnV9iBpH2QTT3-xXJ9lH7szRCR4nOkGg9A>
+    <xme:cMwCY4iPx7apyDWRxdEmLaovjqxI9JdZvli6aVWiuc4RIY_bszcRhkMmyKpPBp5Tj
+    nn4UzsUqDmDZala0w>
+X-ME-Received: <xmr:cMwCYxmlrFbmSC_zSrojVfhhCgzlWAl7RMG8QN7VJ5Bjcz8Dn-pyOb81k-buSx0l7AKmIQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdeiiedgfeehucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefkffggfgfuvfevfhfhjggtgfesth
-    ekredttdefjeenucfhrhhomhepvfhomhcuhfhithiihhgvnhhrhicuoehtohhmsehtohhm
-    qdhfihhtiihhvghnrhihrdhmvgdruhhkqeenucggtffrrghtthgvrhhnpeelgfffheegtd
-    fgudefhfdvveeviedttedthfevgeeugffgveeujeefteetteeigfenucffohhmrghinhep
-    khgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
-    hilhhfrhhomhepthhomhesthhomhdqfhhithiihhgvnhhrhidrmhgvrdhukh
-X-ME-Proxy: <xmx:dssCY5Ae76hQ1mLulG_Bfu6PZRHNyT5a5jYHGw9nrkpSxEx5zRTAgg>
-    <xmx:dssCY6gnSQxOsWLxVPM2KoD7vMVBSJyFA2tvFRyuqOCn1kPaToURcw>
-    <xmx:dssCY9pujbTvodKmvRtB_wWwNtBdLJ9UIejjG0q1AzxW2ZubDxye0w>
-    <xmx:dssCY64g--RsODk7U39RdeC3t2zOnVd4MGOw7OzydtrHAo5YMg2jyw>
+    uceurghilhhouhhtmecufedttdenucenucfjughrpefkffggfgfuvfhfhfgjtgfgsehtke
+    ertddtfeejnecuhfhrohhmpefvohhmucfhihhtiihhvghnrhihuceothhomhesthhomhdq
+    fhhithiihhgvnhhrhidrmhgvrdhukheqnecuggftrfgrthhtvghrnhepiedtleelgeelje
+    egvdeuleeguedtvefhtdeujeektddvleffjefhleethfeufedunecuffhomhgrihhnpehr
+    rggugigrrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+    hfrhhomhepthhomhesthhomhdqfhhithiihhgvnhhrhidrmhgvrdhukh
+X-ME-Proxy: <xmx:cMwCY8wtxinZO_rEoKDKlgdQEhiXgayHjSbzVrMox-uJvwAXuXVFXw>
+    <xmx:cMwCYzSM2jJzLmrYAeyFnzcqCqga4lOxJd2-dxsAtYhrN6IUDSFuQQ>
+    <xmx:cMwCY3YG29l3_9QJlOrsyP6HmyS4awvxXf7WXTh5KTmBC0eO-UOzlg>
+    <xmx:cMwCY_qsnWxDwhg7Tm3CwyeejiKEL_tdydgnZYyZC-pNDgehX73ejg>
 Feedback-ID: iefc945ae:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 21 Aug 2022 20:19:01 -0400 (EDT)
-Message-ID: <460cd42b-4192-6761-7313-268a684e1e28@tom-fitzhenry.me.uk>
-Date:   Mon, 22 Aug 2022 10:19:00 +1000
+ 21 Aug 2022 20:23:10 -0400 (EDT)
+Message-ID: <bb241882-a8c9-c2ea-a315-43d4929d4d96@tom-fitzhenry.me.uk>
+Date:   Mon, 22 Aug 2022 10:23:09 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
  Thunderbird/102.0.3
 Subject: Re: [PATCH v3 2/2] arm64: dts: rockchip: Add initial support for
  Pine64 PinePhone Pro
 Content-Language: en-US
-To:     =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <n@nfraprado.net>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        heiko@sntech.de, martijn@brixit.nl, ayufan@ayufan.eu, megi@xff.cz,
+To:     =?UTF-8?Q?Ond=c5=99ej_Jirman?= <megi@xff.cz>,
+        =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <n@nfraprado.net>,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        heiko@sntech.de, martijn@brixit.nl, ayufan@ayufan.eu,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-rockchip@lists.infradead.org, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <20220815123004.252014-1-tom@tom-fitzhenry.me.uk>
  <20220815123004.252014-3-tom@tom-fitzhenry.me.uk>
  <20220818030547.eblbmchutmnn6jih@notapiano>
+ <20220821090005.tshf7z2kklaet7ll@core>
 From:   Tom Fitzhenry <tom@tom-fitzhenry.me.uk>
-In-Reply-To: <20220818030547.eblbmchutmnn6jih@notapiano>
+In-Reply-To: <20220821090005.tshf7z2kklaet7ll@core>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 18/8/22 13:05, Nícolas F. R. A. Prado wrote:
+On 21/8/22 19:00, Ondřej Jirman wrote:
 
-> thanks for getting the upstreaming of this DT going. Some comments below.
-
-No worries, thank you for your review!
-
-> You're also adding the SD controller here. Does it work as is? If so add it to
-> the commit description as well.
-I will note this in v4.
->> +/* PinePhone Pro datasheet:
-> First comment line should be empty following the coding style [1]. Like you did
-> for the copyrights above.
+> Max voltages in OPP table are irreleavant for Pinephone Pro DT, because the CPU
+> regulators in the PMIC are capable of setting the preferred voltage or very
+> close to it.
 >
-> [1] https://www.kernel.org/doc/html/latest/process/coding-style.html#commenting
-
-I will do this in v4.
-
-> This signal is called vcc_sys in the datasheet, so I suggest we keep that name
-> here. It's not everyday that we get a device with a publicly available datasheet
-> :^).
-
-Indeed! :) I will do this in v4.
-
-> + rk818: pmic@1c {
->> +		compatible = "rockchip,rk818";
->> +		reg = <0x1c>;
->> +		interrupt-parent = <&gpio1>;
->> +		interrupts = <RK_PC5 IRQ_TYPE_LEVEL_LOW>;
->> +		#clock-cells = <1>;
->> +		clock-output-names = "xin32k", "rk808-clkout2";
-> What about keeping the datasheet names here too? clk32kout1, clk32kout2
-Per Megi's response, I'll stick with the current names.
->> +			vcc_1v8: vcc_wl: DCDC_REG4 {
->  From the datasheet, vcc_wl is actually wired to vcc3v3_sys. But looks like
-> vcc_wl is only used for bluetooth and you're not enabling it yet anyway, so just
-> drop this extra label, and it can be added when bluetooth is added (or not, and
-> then the bluetooth supply just points directly to vcc3v3_sys).
-Good catch, I will remove the vcc_wl label.
->> +			vcc_power_on: LDO_REG4 {
->> +				regulator-name = "vcc_power_on";
-> The name on the datasheet for this one is rk818_pwr_on.
-I will use the name rk818_pwr_on in v4.
->> +
->> +&cluster1_opp {
->> +	opp06 {
->> +		status = "disabled";
->> +	};
-> There's actually an opp06 node in the OPP for RK3399-T, only that the frequency
-> is slightly lower. Maybe you could keep it enabled but override the frequency?
+> The actual min/max limits that are enforced by the kernel for the board are set
+> on the CPU regulator, which are actually wrongly set in this DT. See:
 >
-> Or given the above point about the max voltages, maybe it would be best to have
-> a separate OPP table after all?
-Per Megi's response/rationale, I'll keep the existing table, but 
-re-introduce cluster1_opp/opp06 with updated frequency/voltage, aligned 
-with the RK3399-T datasheet.
->> +
->> +	opp07 {
->> +		status = "disabled";
->> +	};
->> +};
->> +
->> +&io_domains {
->> +	status = "okay";
-> Let's keep the status at the end of the node for consistency with the rest.
-I will do this in v4.
+> https://dl.radxa.com/rockpi4/docs/hw/datasheets/Rockchip%20RK3399-T%20Datasheet%20V1.0-20210818.pdf
+
+Good spot, I will fix these in v4.
+
