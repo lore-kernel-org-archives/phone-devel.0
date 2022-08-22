@@ -2,273 +2,98 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AFFE6C00140
-	for <phone-devel@archiver.kernel.org>; Sun, 21 Aug 2022 09:08:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFE1BC00140
+	for <phone-devel@archiver.kernel.org>; Mon, 22 Aug 2022 00:04:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229484AbiHUJIn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 21 Aug 2022 05:08:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37582 "EHLO
+        id S231804AbiHVAEa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 21 Aug 2022 20:04:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230030AbiHUJIm (ORCPT
+        with ESMTP id S229541AbiHVAE3 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 21 Aug 2022 05:08:42 -0400
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F88212D21
-        for <phone-devel@vger.kernel.org>; Sun, 21 Aug 2022 02:08:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-        t=1661072405; bh=ynJQrqcBA9pxR9yUbyxuuuDFYSKz2yTPBE1A5rCk+mA=;
-        h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
-        b=omGMGkba3UMpAQ8gwj4+7Dk42+KAOtRtaobizJUb0ORoBQVFC0PeROZOE2gyxxRLg
-         IfQZYNErFxS2lkmZWxzYR1AsoGLdEvV72/uxGXTIOYD8BbnNQhy/8YtgawDIJGURxG
-         KvZ6VUp5IGjI7Hw+vqLcSbsTwl68c/FUhOJcdAXA=
-Date:   Sun, 21 Aug 2022 11:00:05 +0200
-From:   =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-To:     =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <n@nfraprado.net>
-Cc:     Tom Fitzhenry <tom@tom-fitzhenry.me.uk>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, heiko@sntech.de,
-        martijn@brixit.nl, ayufan@ayufan.eu, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        Sun, 21 Aug 2022 20:04:29 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 537DE1E3E8;
+        Sun, 21 Aug 2022 17:04:28 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.nyi.internal (Postfix) with ESMTP id F3CD05C0179;
+        Sun, 21 Aug 2022 20:04:24 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Sun, 21 Aug 2022 20:04:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        tom-fitzhenry.me.uk; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm1; t=1661126664; x=1661213064; bh=mPn3++NzcT
+        ZNYJn9AdaHv9tQvAGSNSm562mzA+CXdyc=; b=ilFHpw8HUY3poGkFqCAHrPz6aw
+        ZgN1BTG5aJJmgGVknaTTq9XZdmrj8jIHTr6/ilmi3p/FWrUNrwF6HnzvaCBtXLUW
+        GiNGNBC4onqhlldQweTckLYJpNSLajxq3FetenaB1QWl+woB3elGKg5BqOCoFKHc
+        Xea40SFZ//MuCMTPwK1WgsbVCag1Ygby/zxuDDkLTtY9D8bKDYIe+96dayl7ojVD
+        CowK7aL5WE21b3xld+BxvC6MyAAF/Nx/P+KA6a58qOXdby9OJkl6Ks0l8DZOez5o
+        9Dk370KewS+ZzTKivMVZuNgk3O6qYzKAUe+7XvKLFKSZMqPSFhwmL/69MfuA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1661126664; x=
+        1661213064; bh=mPn3++NzcTZNYJn9AdaHv9tQvAGSNSm562mzA+CXdyc=; b=F
+        QmgyuT/RSJ4NopJmNdtp+JHYiuDOzqyhs+v+AtH1/MbHHd0gRwQUvXK6HvdSbpe0
+        OgnJkKuBr2lmI7u/LJ53G+Ez4IRLBP+o7SYs9UXDS9GeFsKkyxE9/+kwHQ1N7qUg
+        GniPwYh9UVattk5sfi1FgZ3H8l4eFTViUlretv0P64ZzBQB461eXRT7FZgSVTfyN
+        aNcw2tf4LktvuEFXPwF72UIk4AvzM6sHo6OdGZvS+X7FWtvKTxwMg+M0jRUdR3qj
+        PBjo2QcUicomyhc/aEdlDiNO0fGQe+UO4dq0tNrzbCL+bXddsdh6NiT4hZQhhNcp
+        ORHCEzVOVO/j/2U55JBeQ==
+X-ME-Sender: <xms:CMgCYw8RZegTH2UV70DmeaL0NztqKw4LC-Qq7BxQaFFTBb6elpPmXA>
+    <xme:CMgCY4vZJcTgmRS3JyQxGseGucI0KmI4-b6Z8NeEnJRUq290jxNJQAxcLcZ409ap1
+    C_l2ZwoVEOhUexuJQ>
+X-ME-Received: <xmr:CMgCY2DaFJOdIXat5bXQka5i_8-3aTlUUVC1yPV2UxkgPkujullImR74MGbNd2GtV7pWSQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdeiiedgfedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpefvohhm
+    ucfhihhtiihhvghnrhihuceothhomhesthhomhdqfhhithiihhgvnhhrhidrmhgvrdhukh
+    eqnecuggftrfgrthhtvghrnhepkeeuieejfeeuffekkeetgeelveejieetheeivddtjeei
+    vddvledvffdvvddtuefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomhepthhomhesthhomhdqfhhithiihhgvnhhrhidrmhgvrdhukh
+X-ME-Proxy: <xmx:CMgCYwendjHYmerqjOVV4l5A79yOidGSe4Gy6prD1siSteQqwUN5CA>
+    <xmx:CMgCY1MsTfKSaPshegZ9LNI5NF9BPCLZaKeksnJyK_-MLFjThhOJhQ>
+    <xmx:CMgCY6kNGdi8WCTvEj466LGVVBCPUIohL2QHyk2aPiMBrOlyLnHSAw>
+    <xmx:CMgCY8mxFG3gyMMX5jQ9R4gqR18e7YWILkCPfe2qdXGpMOPU4_YlRg>
+Feedback-ID: iefc945ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 21 Aug 2022 20:04:22 -0400 (EDT)
+Message-ID: <da0e45e0-e1e8-35fd-53b5-142269b830b4@tom-fitzhenry.me.uk>
+Date:   Mon, 22 Aug 2022 10:04:21 +1000
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0.3
 Subject: Re: [PATCH v3 2/2] arm64: dts: rockchip: Add initial support for
  Pine64 PinePhone Pro
-Message-ID: <20220821090005.tshf7z2kklaet7ll@core>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>,
-        =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <n@nfraprado.net>,
-        Tom Fitzhenry <tom@tom-fitzhenry.me.uk>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, heiko@sntech.de,
-        martijn@brixit.nl, ayufan@ayufan.eu, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        heiko@sntech.de
+Cc:     martijn@brixit.nl, ayufan@ayufan.eu, megi@xff.cz,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-rockchip@lists.infradead.org, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
 References: <20220815123004.252014-1-tom@tom-fitzhenry.me.uk>
  <20220815123004.252014-3-tom@tom-fitzhenry.me.uk>
- <20220818030547.eblbmchutmnn6jih@notapiano>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220818030547.eblbmchutmnn6jih@notapiano>
+ <a11bc22e-a10e-7d15-72d2-6af1d4790695@linaro.org>
+From:   Tom Fitzhenry <tom@tom-fitzhenry.me.uk>
+In-Reply-To: <a11bc22e-a10e-7d15-72d2-6af1d4790695@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Nícolas,
+On 16/8/22 17:52, Krzysztof Kozlowski wrote:
 
-On Wed, Aug 17, 2022 at 11:05:47PM -0400, Nícolas F. R. A. Prado wrote:
-> Hi Tom,
-> 
-> thanks for getting the upstreaming of this DT going. Some comments below.
-> 
-> On Mon, Aug 15, 2022 at 10:30:04PM +1000, Tom Fitzhenry wrote:
-> > From: Martijn Braam <martijn@brixit.nl>
-> > 
-> > This is a basic DT containing regulators and UART, intended to be a
-> > base that myself and others can add additional nodes in future patches.
-> > 
-> > Tested to work: booting from eMMC, output over UART.
-> 
-> You're also adding the SD controller here. Does it work as is? If so add it to
-> the commit description as well.
-> 
-> > 
-> [..]
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-> > @@ -0,0 +1,394 @@
-> > +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> > +/*
-> > + * Copyright (c) 2020 Martijn Braam <martijn@brixit.nl>
-> > + * Copyright (c) 2021 Kamil Trzciński <ayufan@ayufan.eu>
-> > + */
-> > +
-> > +/* PinePhone Pro datasheet:
-> 
-> First comment line should be empty following the coding style [1]. Like you did
-> for the copyrights above.
-> 
-> [1] https://www.kernel.org/doc/html/latest/process/coding-style.html#commenting
-> 
-> > + * https://files.pine64.org/doc/PinePhonePro/PinephonePro-Schematic-V1.0-20211127.pdf
-> > + */
-> [..]
-> > +	vcc_sysin: vcc-sysin-regulator {
-> > +		compatible = "regulator-fixed";
-> > +		regulator-name = "vcc_sysin";
-> 
-> This signal is called vcc_sys in the datasheet, so I suggest we keep that name
-> here. It's not everyday that we get a device with a publicly available datasheet
-> :^).
-> 
-> > +		regulator-always-on;
-> > +		regulator-boot-on;
-> > +	};
-> [..]
-> > +	rk818: pmic@1c {
-> > +		compatible = "rockchip,rk818";
-> > +		reg = <0x1c>;
-> > +		interrupt-parent = <&gpio1>;
-> > +		interrupts = <RK_PC5 IRQ_TYPE_LEVEL_LOW>;
-> > +		#clock-cells = <1>;
-> > +		clock-output-names = "xin32k", "rk808-clkout2";
-> 
-> What about keeping the datasheet names here too? clk32kout1, clk32kout2
+> Still wrong.
 
-Rather not. My guess is that trying to change the names will break the clock
-tree, because xin32k is hardcoded in the rk3399 clk driver as parent for
-mux_pll_p.
+My bad, I will fix this in v4.
 
-https://elixir.bootlin.com/linux/latest/source/drivers/clk/rockchip/clk-rk3399.c#L109
-
-These names are not just a cosmetic thing.
-
-> 
-> > +		pinctrl-names = "default";
-> [..]
-> > +			vcc_1v8: vcc_wl: DCDC_REG4 {
-> 
-> From the datasheet, vcc_wl is actually wired to vcc3v3_sys. But looks like
-> vcc_wl is only used for bluetooth and you're not enabling it yet anyway, so just
-> drop this extra label, and it can be added when bluetooth is added (or not, and
-> then the bluetooth supply just points directly to vcc3v3_sys).
-> 
-> > +				regulator-name = "vcc_1v8";
-> [..]
-> > +			vcc_power_on: LDO_REG4 {
-> > +				regulator-name = "vcc_power_on";
-> 
-> The name on the datasheet for this one is rk818_pwr_on.
-> 
-> > +				regulator-always-on;
-> [..]
-> > +&cluster0_opp {
-> > +	opp04 {
-> > +		status = "disabled";
-> > +	};
-> > +
-> > +	opp05 {
-> > +		status = "disabled";
-> > +	};
-> > +};
-> 
-> I saw the discussion on the previous version about using the rk3399-opp.dtsi
-> here, but the thing is, this OPP has greater values for the max voltage than the
-> maximum allowed on the OPP table you posted previously (for RK3399-T)...
-
-Max voltages in OPP table are irreleavant for Pinephone Pro DT, because the CPU
-regulators in the PMIC are capable of setting the preferred voltage or very
-close to it.
-
-The actual min/max limits that are enforced by the kernel for the board are set
-on the CPU regulator, which are actually wrongly set in this DT. See:
-
-https://dl.radxa.com/rockpi4/docs/hw/datasheets/Rockchip%20RK3399-T%20Datasheet%20V1.0-20210818.pdf
-
-+			vdd_cpu_l: DCDC_REG1 {
-+				regulator-name = "vdd_cpu_l";
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-min-microvolt = <750000>;
-+				regulator-max-microvolt = <1350000>;
-
-Should be 975000 (or at most 1300000 to fit within absmax)
-
-+				regulator-ramp-delay = <6001>;
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-
-
-+	vdd_cpu_b: regulator@40 {
-+		compatible = "silergy,syr827";
-+		reg = <0x40>;
-+		fcs,suspend-voltage-selector = <1>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&vsel1_pin>;
-+		regulator-name = "vdd_cpu_b";
-+		regulator-min-microvolt = <712500>;
-+		regulator-max-microvolt = <1500000>;
-+		regulator-ramp-delay = <1000>;
-+		regulator-always-on;
-+		regulator-boot-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
-+	};
-
-Should be 1150000 (or at most 1300000 to fit within absmax)
-
-+	vdd_gpu: regulator@41 {
-+		compatible = "silergy,syr828";
-+		reg = <0x41>;
-+		fcs,suspend-voltage-selector = <1>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&vsel2_pin>;
-+		regulator-name = "vdd_gpu";
-+		regulator-min-microvolt = <712500>;
-+		regulator-max-microvolt = <1500000>;
-
-Should be 975000 (or at most 1300000 to fit within absmax)
-
-+		regulator-ramp-delay = <1000>;
-+		regulator-always-on;
-+		regulator-boot-on;
-+
-+		regulator-state-mem {
-+			regulator-off-in-suspend;
-+		};
-+	};
-
-The max values in OPP table also still fit within abs. max values for RK3399-T,
-so they are safe in any case.
-
-> Same thing for the GPU OPP.
-> 
-> > +
-> > +&cluster1_opp {
-> > +	opp06 {
-> > +		status = "disabled";
-> > +	};
-> 
-> There's actually an opp06 node in the OPP for RK3399-T, only that the frequency
-> is slightly lower. Maybe you could keep it enabled but override the frequency?
-> 
-> Or given the above point about the max voltages, maybe it would be best to have
-> a separate OPP table after all?
-
-No separate OPP table, please, unless absolutely necessary.
-
-kind regards,
-	Ondrej
-
-> > +
-> > +	opp07 {
-> > +		status = "disabled";
-> > +	};
-> > +};
-> > +
-> > +&io_domains {
-> > +	status = "okay";
-> 
-> Let's keep the status at the end of the node for consistency with the rest.
-> 
-> With these points addressed:
-> 
-> Reviewed-by: Nícolas F. R. A. Prado <n@nfraprado.net>
-> 
-> I'll also try to give this a test shortly.
-> 
-> Thanks,
-> Nícolas
-> 
-> > +
-> > +	bt656-supply = <&vcc1v8_dvp>;
-> > +	audio-supply = <&vcca1v8_codec>;
-> > +	sdmmc-supply = <&vccio_sd>;
-> > +	gpio1830-supply = <&vcc_3v0>;
-> > +};
-> [..]
+> test your DTS with dtbs_check.
+Will do.
