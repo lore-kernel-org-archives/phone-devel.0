@@ -2,85 +2,79 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C48FC32774
-	for <phone-devel@archiver.kernel.org>; Mon, 22 Aug 2022 20:50:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A7E5EC32772
+	for <phone-devel@archiver.kernel.org>; Tue, 23 Aug 2022 18:58:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237475AbiHVUuy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 22 Aug 2022 16:50:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47556 "EHLO
+        id S233254AbiHWS6U (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 23 Aug 2022 14:58:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234517AbiHVUux (ORCPT
+        with ESMTP id S234044AbiHWS6D (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 22 Aug 2022 16:50:53 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6896C50040;
-        Mon, 22 Aug 2022 13:50:51 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id A3F7E1C0005; Mon, 22 Aug 2022 22:50:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1661201449;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=fZ/pgSVExMd0u5k55JxcceZ7T5/ac1VGYLI2Pl48nAw=;
-        b=BjtHnrzjejjTBlfHYD7qko+43NbC0qN1C1K4S0mY7A24qVUxhC1tCg0mIqxqpEUrnPgVla
-        srBaus38/LBTcnsHCLDzt12gsBpbBgyexLT6miJ+oRzX/rw1I+IX/k2JaQXXJYjwcuxFqI
-        v7Jn4drq8K1FyUHs5S63KguG+ySahcg=
-Date:   Mon, 22 Aug 2022 22:50:49 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     =?utf-8?Q?Ond=C5=99ej?= Jirman <megous@megous.com>,
-        icenowy@aosc.xyz, martijn@brixit.nl,
-        kernel list <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org, mchehab@kernel.org,
-        linux-media@vger.kernel.org
-Subject: Re: gc2145 camera driver (front camera on PinePhone)
-Message-ID: <20220822205049.GA18272@duo.ucw.cz>
-References: <20220822180531.GA27226@duo.ucw.cz>
- <20220822182058.xnpwfdjm7zmoid7y@core>
+        Tue, 23 Aug 2022 14:58:03 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04C0B118DFB;
+        Tue, 23 Aug 2022 10:26:44 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id p9so13009123pfq.13;
+        Tue, 23 Aug 2022 10:26:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc;
+        bh=eppd5oLs74ARmQ255ETS4TgVSJrmaIgYacFvA/Nd1P0=;
+        b=dGrFlNHInYhl5EvkSJQNL1rz8YYQ/qdbjBxrluE+il09ehcC50nt2bn82xcgNtipgz
+         mAjEtv+IQ0LrXzHs4zCGmZp1ERzL2VHYJFh86jy4I8iLJC1tN1Ts7pOsotNw2fCzujtl
+         iUvNPGTfJMnXn0wuordMDsIOqD5I2AJ3hPn18UFTWCdfJMZoYjYYJ7jyyItNH38MZtwP
+         pSTYmOmZ8nBD9ONohfU1R7QhPWPzSgP65vlvfJXh9HD9PWzXpll/gLdv/8wvW/lJJoGl
+         qcMX1aakGORKPn2z7KFNtQ913GdS3intc+zoe9JV77gUEfTkKX04Zp+z9B3uQan5fp3/
+         5v4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=eppd5oLs74ARmQ255ETS4TgVSJrmaIgYacFvA/Nd1P0=;
+        b=WdhuH5R/4m/taicMD+8O0NJQkCUFPZ7ubhyM4FfU2XN+S9+Q+L8SaIGfFbR9qXQNFZ
+         FKMkCOZoEyP+LYSV+ddccbGPm2mtcnDxD7oyPuTITp5hmbBuos/x0LCa1UavpEKu1pt1
+         lv2cnP70FVN9YneM4t6cx8hqbENc1mxym18KS0z4DmnLdFFVxx8dtLjEC2FwAwP9BuDE
+         7yyUeYQxtY4t1DyiUy0a1mYUz1guVEz2pFAuvVpWiwScrinNJK/hfg+TafTMmsb2RJmu
+         AjKRZ9CIBqnUkUnGwN/6xzbL5qgDkR2e/v5vtufKL/jR2QumX/qgSOZJiA5oM63dh7S7
+         v44A==
+X-Gm-Message-State: ACgBeo2nMJ79AIshxMLbsadMMh24V8UuA6Qq4awPxqc3ftg18rl9stq0
+        C3EAh/UdWF7GNhcwQza4JLM=
+X-Google-Smtp-Source: AA6agR7V4hXDTdFp8hlcPTP2dUfCsuMJHVETczrIUk1HwUihLlF5cNV+sWfPHeBKqyuYFowLrCeZSg==
+X-Received: by 2002:a63:2051:0:b0:42a:4611:a207 with SMTP id r17-20020a632051000000b0042a4611a207mr16251302pgm.62.1661275464612;
+        Tue, 23 Aug 2022 10:24:24 -0700 (PDT)
+Received: from google.com ([2620:15c:202:201:ebe5:ba37:26e1:8072])
+        by smtp.gmail.com with ESMTPSA id f16-20020a635550000000b004299489dd2bsm9571678pgm.8.2022.08.23.10.24.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Aug 2022 10:24:24 -0700 (PDT)
+Date:   Tue, 23 Aug 2022 10:24:21 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     kernel@undef.tools
+Cc:     Bastien Nocera <hadess@hadess.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ondrej Jirman <megi@xff.cz>, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH] Input: goodix: Add compatible string for GT1158
+Message-ID: <YwUNRU9udCYGTPeP@google.com>
+References: <20220813043821.9981-1-kernel@undef.tools>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="UlVJffcvxoiEqYs2"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220822182058.xnpwfdjm7zmoid7y@core>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20220813043821.9981-1-kernel@undef.tools>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Sat, Aug 13, 2022 at 04:38:21AM +0000, kernel@undef.tools wrote:
+> From: Jarrah Gosbell <kernel@undef.tools>
+> 
+> Add compatible string for GT1158 missing from the previous patch.
+> 
+> Fixes:	425fe4709c76 ("Input: goodix - add support for GT1158")
+> Signed-off-by: Jarrah Gosbell <kernel@undef.tools>
 
---UlVJffcvxoiEqYs2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied, thank you.
 
-Hi!
-
-> > I'd like to mainline support for gc2145 camera on pinephone. So far I
-> > did trivial cleanups over the Megi's driver. I started with 5.15
-> > version from Mobian.  I guess yaml description of the binding needs to
-> > be provided, too? (Would someone have a good starting point here?)
-> >=20
-> > Any hints? Are there better starting points?
->=20
-> Here's some reverse engineering work: https://xnux.eu/tablet-hacking/#017
-> that went into it, that may be helpful.
-
-Thanks for pointer. I was able to find register descriptions (etc) on
-the web, but I assume you already know about these?
-
-Best regards,
-								Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---UlVJffcvxoiEqYs2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYwPsKQAKCRAw5/Bqldv6
-8rDwAJ4gLtDlsznXiPxQoOv8TKYRJ6siuwCbBH6YrDQfUFBZ8FoTiPkbEnHrQps=
-=2MYQ
------END PGP SIGNATURE-----
-
---UlVJffcvxoiEqYs2--
+-- 
+Dmitry
