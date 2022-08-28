@@ -2,105 +2,102 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D729DC28D13
-	for <phone-devel@archiver.kernel.org>; Thu, 25 Aug 2022 09:30:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DC368ECAAA2
+	for <phone-devel@archiver.kernel.org>; Sun, 28 Aug 2022 20:57:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240415AbiHYJaj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 25 Aug 2022 05:30:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49626 "EHLO
+        id S230001AbiH1U5h (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 28 Aug 2022 16:57:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240130AbiHYJaV (ORCPT
+        with ESMTP id S229445AbiH1U5e (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 25 Aug 2022 05:30:21 -0400
-Received: from fornost.hmeau.com (helcar.hmeau.com [216.24.177.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3B845EDF3;
-        Thu, 25 Aug 2022 02:30:18 -0700 (PDT)
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
-        by fornost.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-        id 1oR9Bh-00Eyep-6u; Thu, 25 Aug 2022 19:30:10 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Thu, 25 Aug 2022 17:30:09 +0800
-Date:   Thu, 25 Aug 2022 17:30:09 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-crypto@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>
-Subject: Re: [PATCH v3 10/16] crypto: ux500/hash: Implement .export and
- .import
-Message-ID: <YwdBIfASgGMDONx4@gondor.apana.org.au>
-References: <20220816140049.102306-1-linus.walleij@linaro.org>
- <20220816140049.102306-11-linus.walleij@linaro.org>
+        Sun, 28 Aug 2022 16:57:34 -0400
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8388430F4D;
+        Sun, 28 Aug 2022 13:57:33 -0700 (PDT)
+Received: by mail-il1-x129.google.com with SMTP id t11so460755ilf.3;
+        Sun, 28 Aug 2022 13:57:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc;
+        bh=yorHfhd/+KmEpVFUDGAaD4F9KMlU0fo7Pjux9PaY7xY=;
+        b=kZknlSh97mOvFluuYbu0PP9Xa+pMb8873Td3naTZb4o6Vn/by9nfYkQmHxB3ElWmdY
+         RcBkMeoznOzYCpOJnzflOFrrM2wXRZBIC2cKgzdOvlqtJRIQllgnqYZr0RapGMPTEVqH
+         LCagT4QJPt7xKFr26JrsBTQNCg+RzIoAZTYogDn/KvrQaloeOP0pHUhVZ5jI3QRgBkan
+         fVGyHOEhvfS+ZkPfxXZgUzy5rmnse6WJJ42yvk3QH3J76MKZyRNvik/AOZpJXyYEgngi
+         h5tt2p5kXVh6BYeTsh3zwu1SrExuYhK1/SzZmA1d+Gs8aC8B/Q9NtLpKPo34Kn4jTUJJ
+         pfzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
+        bh=yorHfhd/+KmEpVFUDGAaD4F9KMlU0fo7Pjux9PaY7xY=;
+        b=h9PY2IKeJBr/zM/v1lukvSQ/8NAMtGSn3nXxPbuU9wTEjEg41xs1je8ni0D5aIR+10
+         vEUlBghBuPV7/iSFEIHFRgjZVlYxXBo7BMQcBdJ3X3bFSlxf83PtOToD4Isz2Nzv+LMl
+         EhPhLuIDv2whuENqzCa02is5ac4kilWiRi8hFAU5mYCfAKcewQXi6tHX6Ph3c4URgX2g
+         uNZ8yrMagtuJQiXjglr5TsO/CtDzuYVgWT4p1pFfix4mjeYMLaupqB5fcHONXvf5BFIv
+         iS3T08KXUZpk3miX9kvK5QpOy1BVVhpzeWZ5TZ7ugtg7vLhTyOK5coLtSTRgAeifqlmr
+         +fow==
+X-Gm-Message-State: ACgBeo1WgOF2U0qzzrWhJ/6qY8RFp3O0FywfsqZ+73Ii1R2glJ7f3uIN
+        p0LPQgTTu07LoruL9ESVX9M=
+X-Google-Smtp-Source: AA6agR6GLmSPYA6+Jy2X2IFDtgpGl/yusfM4NCxD0QsUKR8GyvrGhChKod1jPQ2vZHSj4JhwFey8aA==
+X-Received: by 2002:a92:b00f:0:b0:2d6:5628:6865 with SMTP id x15-20020a92b00f000000b002d656286865mr8339669ilh.230.1661720253016;
+        Sun, 28 Aug 2022 13:57:33 -0700 (PDT)
+Received: from fedora.. ([2604:2d80:4d8e:a000:6063:7cd5:2f24:16a6])
+        by smtp.gmail.com with ESMTPSA id k7-20020a02c767000000b00349be1ef390sm3572404jao.121.2022.08.28.13.57.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Aug 2022 13:57:32 -0700 (PDT)
+From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Joel Selvaraj <joelselvaraj.oss@gmail.com>
+Subject: [PATCH v4 1/4] dt-bindings: arm: qcom: update beryllium compatible property
+Date:   Sun, 28 Aug 2022 15:57:20 -0500
+Message-Id: <20220828205723.20834-2-joelselvaraj.oss@gmail.com>
+X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20220828205723.20834-1-joelselvaraj.oss@gmail.com>
+References: <20220828205723.20834-1-joelselvaraj.oss@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220816140049.102306-11-linus.walleij@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Aug 16, 2022 at 04:00:43PM +0200, Linus Walleij wrote:
->
-> -static int ahash_noimport(struct ahash_request *req, const void *in)
-> +static int ahash_import(struct ahash_request *req, const void *in)
->  {
-> -	return -ENOSYS;
-> +	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
-> +	struct hash_ctx *ctx = crypto_ahash_ctx(tfm);
-> +	struct hash_device_data *device_data = ctx->device;
-> +	struct hash_req_ctx *req_ctx = ahash_request_ctx(req);
-> +	const struct hash_state *hstate = in;
-> +	int hash_mode = HASH_OPER_MODE_HASH;
-> +	u32 cr;
-> +	s32 count;
-> +
-> +	/* Restore software state */
-> +	req_ctx->length = hstate->length;
-> +	req_ctx->index = hstate->index;
-> +	req_ctx->dma_mode = hstate->dma_mode;
-> +	req_ctx->hw_initialized = hstate->hw_initialized;
-> +	memcpy(req_ctx->buffer, hstate->buffer, HASH_BLOCK_SIZE);
-> +
-> +	/*
-> +	 * Restore hardware state
-> +	 * INIT bit. Set this bit to 0b1 to reset the HASH processor core and
-> +	 * prepare the initialize the HASH accelerator to compute the message
-> +	 * digest of a new message.
-> +	 */
-> +	HASH_INITIALIZE;
-> +
-> +	cr = hstate->temp_cr;
-> +	writel_relaxed(cr & HASH_CR_RESUME_MASK, &device_data->base->cr);
-> +
-> +	if (readl(&device_data->base->cr) & HASH_CR_MODE_MASK)
-> +		hash_mode = HASH_OPER_MODE_HMAC;
-> +	else
-> +		hash_mode = HASH_OPER_MODE_HASH;
-> +
-> +	for (count = 0; count < HASH_CSR_COUNT; count++) {
-> +		if ((count >= 36) && (hash_mode == HASH_OPER_MODE_HASH))
-> +			break;
-> +		writel_relaxed(hstate->csr[count],
-> +			       &device_data->base->csrx[count]);
-> +	}
-> +
-> +	writel_relaxed(hstate->csfull, &device_data->base->csfull);
-> +	writel_relaxed(hstate->csdatain, &device_data->base->csdatain);
-> +	writel_relaxed(hstate->str_reg, &device_data->base->str);
-> +	writel_relaxed(cr, &device_data->base->cr);
-> +
-> +	return 0;
->  }
+There are two panel variants of Xiaomi Poco F1. Tianma and EBBG panel.
+The previous beryllium dts supported the Tianma variant. In order to
+add support for EBBG variant, the common nodes from beryllium dts are
+moved to a new common dtsi and to make the variants distinguishable,
+sdm845-xiaomi-beryllium.dts is now named as
+sdm845-xiaomi-beryllium-tianma.dts. The board's model and compatible
+properties are also renamed to distinguish between the variants.
+So update the dt-bindings to reflect the new compatible value.
 
-At any time we may have multiple requests outstanding for a given
-tfm/device, so I'm a bit worried with the direct writes to hardware
-in the import function.
+Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
+---
+ Documentation/devicetree/bindings/arm/qcom.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Normally import just transfers data from the caller into the
-request object as a "soft" state, while the actual update/final
-functions will then move them into the hardware state as needed.
-
-Thanks,
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index fb1d00bcc847..e465ca45c07f 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -666,7 +666,7 @@ properties:
+               - sony,akatsuki-row
+               - sony,apollo-row
+               - thundercomm,db845c
+-              - xiaomi,beryllium
++              - xiaomi,beryllium-tianma
+               - xiaomi,polaris
+           - const: qcom,sdm845
+ 
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.37.2
+
