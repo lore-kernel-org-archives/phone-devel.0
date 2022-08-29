@@ -2,48 +2,49 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B3892C0502E
-	for <phone-devel@archiver.kernel.org>; Mon, 29 Aug 2022 23:48:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54DDDC0502E
+	for <phone-devel@archiver.kernel.org>; Mon, 29 Aug 2022 23:48:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229977AbiH2Xsg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 29 Aug 2022 19:48:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34826 "EHLO
+        id S229955AbiH2Xsp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 29 Aug 2022 19:48:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229962AbiH2XrY (ORCPT
+        with ESMTP id S230024AbiH2XsS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 29 Aug 2022 19:47:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3229C2CD;
-        Mon, 29 Aug 2022 16:46:55 -0700 (PDT)
+        Mon, 29 Aug 2022 19:48:18 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 121D0A894C;
+        Mon, 29 Aug 2022 16:47:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EECA361419;
-        Mon, 29 Aug 2022 23:46:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99459C433C1;
-        Mon, 29 Aug 2022 23:46:39 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id ECFCFB815DD;
+        Mon, 29 Aug 2022 23:46:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C32C43140;
+        Mon, 29 Aug 2022 23:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661816800;
-        bh=9ER5wun+g5QxP30lyOeyIxQBsJ50x1pAqroEcoW55VM=;
+        s=k20201202; t=1661816809;
+        bh=OW81wvyMt27kPdb6wCMng77CaUWg/2WZUezvbrn0ghM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VaO+k/FjG9COOuskaRCPmTZmfbH8WEqXuF2hD54SeaSlKMeTcYBID8memRg+pk+IS
-         Livc9MnjGYUiRo2jDxS8MkV5UOa5sCkB3KWYCmzeeg9nPIuFJKXBcYRKuiY4fFTtDo
-         APA5hH/50AA1sTjENO18mgpIlFALcld2jhswzSwqa8tdIjMC9H+o15Z36P1Lv+V6B9
-         6ih2AdhRVod8kAxqsYywJuA0xSDXKbwOhLVB/f/joAEyQqZ+6klffCA2rnT5P0ikWd
-         0qidYc/DFeuD2DgbIX+KWSWjbsAQLPjYursl6fRuH82t+VjuufpnMDovkc7vKIxKKE
-         Tp6Hqtr0Ay5xw==
+        b=ksnQjk4vSgPF31ExZixgMAe8d5Ft8sRdRSeZYIIFzYgrUceJPyDXrTQ27RueMjL/A
+         SzmY3UmHZqUcapCG/xdDiNhSFDmgrsr+XGOtgCemiEKg7nar+ub89FKuxb1sFusQCN
+         rNRRnGfDF8obFEarLtIYIHSRHxBiKUAFh0P9I9FDpeNisbjO+TTH/0+6REGyvSeUEc
+         Nrdp1ZL4jjB2+rDDBZ0EVbem+1E1UbHINjvASHFFHLVNs/+uxKhjMons7N/MZ/foAE
+         UBKXvWeSQbbqI7iHnZHDmXAtPFz/HD252pxx9jQ2BdIcK4tJncKIezkgyuBU7pBrNj
+         9h9rEsqEgFvvg==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     linux-arm-msm@vger.kernel.org, luca.weiss@fairphone.com
-Cc:     robh+dt@kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org, konrad.dybcio@somainline.org,
-        phone-devel@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        agross@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom: pm6150l: add missing adc channels
-Date:   Mon, 29 Aug 2022 18:46:02 -0500
-Message-Id: <166181675977.322065.12641252369185465571.b4-ty@kernel.org>
+To:     robh+dt@kernel.org, Bjorn Andersson <andersson@kernel.org>,
+        yassine.oudjana@gmail.com, konrad.dybcio@somainline.org,
+        krzysztof.kozlowski+dt@linaro.org, agross@kernel.org
+Cc:     linux-arm-msm@vger.kernel.org, y.oudjana@protonmail.com,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: msm8996-xiaomi-*: Add LEDs
+Date:   Mon, 29 Aug 2022 18:46:12 -0500
+Message-Id: <166181675986.322065.8253509414799485162.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220812114614.1195679-1-luca.weiss@fairphone.com>
-References: <20220812114614.1195679-1-luca.weiss@fairphone.com>
+In-Reply-To: <20220728180120.97968-1-y.oudjana@protonmail.com>
+References: <20220728180120.97968-1-y.oudjana@protonmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,16 +52,21 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 12 Aug 2022 13:46:15 +0200, Luca Weiss wrote:
-> Add the missing adc channels and add pre-scaling property to die_temp
-> channel, as per downstream dts.
+On Thu, 28 Jul 2022 19:01:20 +0100, Yassine Oudjana wrote:
+> From: Yassine Oudjana <y.oudjana@protonmail.com>
 > 
+> Add LEDs found on the Xiaomi MSM8996 devices. The devices share
+> a status RGB LED mounted on the front, as well as a PWM-driven
+> IR LED for remote control (sometimes known as an IR blaster).
+> The Mi Note 2 has an additional pair of white LEDs used as backlights
+> for the touchkeys driven by the PM8994 LPG block.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] arm64: dts: qcom: pm6150l: add missing adc channels
-      commit: ed3163b02a2c37744566d19fc451e6687aa2205d
+[1/1] arm64: dts: qcom: msm8996-xiaomi-*: Add LEDs
+      commit: d710fdfe484491679209ae0e11ac118da02f5d82
 
 Best regards,
 -- 
