@@ -2,119 +2,185 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A679C3DA6B
-	for <phone-devel@archiver.kernel.org>; Sun, 28 Aug 2022 20:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A83EECAAA2
+	for <phone-devel@archiver.kernel.org>; Mon, 29 Aug 2022 04:28:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229445AbiH1U5o (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 28 Aug 2022 16:57:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54246 "EHLO
+        id S229488AbiH2E2d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 29 Aug 2022 00:28:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230044AbiH1U5k (ORCPT
+        with ESMTP id S229450AbiH2E2c (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 28 Aug 2022 16:57:40 -0400
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76C4930F51;
-        Sun, 28 Aug 2022 13:57:37 -0700 (PDT)
-Received: by mail-io1-xd29.google.com with SMTP id y187so5181830iof.0;
-        Sun, 28 Aug 2022 13:57:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=yt4Ln5mavOnenD4+cxo4O1NwhU0jowj6f43C1oASLGc=;
-        b=Kb8lGCpoi9ULMjoH7+Um63Vl2BgEoNyKDu1/XJnj5L3lu2ga0F3D3PfIedoFMmCrGt
-         GokanMaQPm/WHcOTr8tnc/ty+LhWFdqPPKAVyJ/mOof1cb9RiEEhwiwgSogMniZv4Vu3
-         Dyr+JHDPH3oy+7Of2VibMmmmg0Rnv74dFiKQ3Tz/MN2fdYBS02oWRTpTBr2RIzcFxohS
-         CgMaTSPp/GTShmrViWmXwgId7s3oUHCOjgstZ+22KgufLqJO4AfKfAF41Gzh2eu3HqGc
-         h4S9ZMnHTqBdH2WXg0GVpCGkvSrKPMyumtsDcHpqDxI5GXUWr09Lvt1AS8tCwcUUqMtt
-         Q89A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=yt4Ln5mavOnenD4+cxo4O1NwhU0jowj6f43C1oASLGc=;
-        b=RdDNAYL8188hzkoN1PxyEpDZ9HfGuvbOPNOAeQTGsNIDoe+rhIJhKnqCrTfJx3rAI3
-         9h6o91Le1CFYAZ51uRrdtZOxcIe2+1NaEU+wb3bGelamsi52JvhdVhyexFz9K1BNgDNk
-         n7YsdZdu7xUPi8qmWcvnB/oHWHfR1N91l3sUBqG1BYnrSBfHfLW8YlnCKXb1dAXO3Lbd
-         Y6Fdoddtfup9nC6w3c/eCdP4i7crQK6rcHPkmv+pL1FQaZdz6zFk9D+uMe4xMtmPeyeS
-         qMSqcgdQjLtASX+nfVQq9tAXjIG16DmJfVRnJyDW/fHGT4ppjq9b4uAMmTrGWcsnnFjZ
-         PqPQ==
-X-Gm-Message-State: ACgBeo1Qb2naCcAg0XcTRz05KpOxWtQ6yCyYt1BabrNyRcI3tWujWjyk
-        mqsCcrlZn+3p3iVBhlX7tjhi3aJOCWU=
-X-Google-Smtp-Source: AA6agR5vNy6Eyx4YEGi8bcBzvZ3t+u1k+9V1F8fpQuE/+J/Q2WaN+41NTjso2y8ggZii5pisDfCcZg==
-X-Received: by 2002:a05:6638:32aa:b0:349:ecfb:80a with SMTP id f42-20020a05663832aa00b00349ecfb080amr8529975jav.73.1661720256643;
-        Sun, 28 Aug 2022 13:57:36 -0700 (PDT)
-Received: from fedora.. ([2604:2d80:4d8e:a000:6063:7cd5:2f24:16a6])
-        by smtp.gmail.com with ESMTPSA id k7-20020a02c767000000b00349be1ef390sm3572404jao.121.2022.08.28.13.57.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Aug 2022 13:57:36 -0700 (PDT)
-From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Joel Selvaraj <joelselvaraj.oss@gmail.com>
-Subject: [PATCH v4 4/4] arm64: dts: qcom: sdm845-xiaomi-beryllium-ebbg: introduce Xiaomi Poco F1 EBBG variant
-Date:   Sun, 28 Aug 2022 15:57:23 -0500
-Message-Id: <20220828205723.20834-5-joelselvaraj.oss@gmail.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20220828205723.20834-1-joelselvaraj.oss@gmail.com>
-References: <20220828205723.20834-1-joelselvaraj.oss@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Mon, 29 Aug 2022 00:28:32 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D5713DBF1;
+        Sun, 28 Aug 2022 21:28:30 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.west.internal (Postfix) with ESMTP id F12233200684;
+        Mon, 29 Aug 2022 00:28:26 -0400 (EDT)
+Received: from imap46 ([10.202.2.96])
+  by compute2.internal (MEProxy); Mon, 29 Aug 2022 00:28:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        tom-fitzhenry.me.uk; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm1; t=1661747306; x=1661833706; bh=7f5gUMyENX
+        zYFC/ZQNB5KKhl9DF71UmgTG9JV/GtQd8=; b=hmn02Qf0uEQelPuAsQJ5ZnUE4Q
+        xQmoqWN2UacAqvaRq12ZKbf5tlFwbZsKQCDAjYNhRqbmDV1c55UrdL7L698rfVJ/
+        yuXr5daTrDDI70KTiCs9qp9ZKgZxDAuzrwV8OShx7oVI35ylE2LajJzVPR9Ck4lW
+        rvTwTmMXfCJ68ZbYLUsiGBsH5m+OJWsEXmGT6WaBkGNXB13DgvLNiTnS+9baPsmz
+        m8wXdoUdKd85+15e7I8sWQNiJiqQ7Wm1+ytVVmZ6GbQJXyanIlafUmc8Mo/X1mGF
+        Z4H/7mkfLS7f0Xt1FylqVCymZI5fsUYjoS+fmMBMORNQWeBzH0tMj/NAniMg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1661747306; x=
+        1661833706; bh=7f5gUMyENXzYFC/ZQNB5KKhl9DF71UmgTG9JV/GtQd8=; b=L
+        bu4AgXDZz8O9nzp65MSNkKZIRJP8N+hz1Yx9ZEn/iY/itxZoW99UNMieTrYViYL2
+        9q6QJEsRzEAdtI9/K4ZgYBdOKqIwg2AMZ6azxM109K6PAn7u00Fl9tgGl6AoUuip
+        JfXMi+S+CvZOLpOsoXxsrk1/OE1IMkskrXe/t7fREV/ajw7VgZZzkXtqTI47QCnN
+        6P7JtRFIe9rrAbiu7KqseKbNQ2jDD1ARxpuwFL6baAvN0U8wnyGvyjA8HhRN0+at
+        fIJePQ94Ra7xmjjkHTYcyUuL1+PHd5P9OzfbU0/SEllyhj+glUYzdyWyFJGFytCd
+        jO+r0t7oziA8F625NFONA==
+X-ME-Sender: <xms:aEAMY8QrbOmutEU30XGSFse7XEDO0i1EP3LpCn45AJKtlPY7qQO-Yw>
+    <xme:aEAMY5zWBiu3rdljYwD_K5-XpWX3iP6ZaSj06CR_nywrqD1If9_WT9HY_3bwYCVjk
+    jI5BQtUFCZ-NfGmQQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdektddgkeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdfv
+    ohhmucfhihhtiihhvghnrhihfdcuoehtohhmsehtohhmqdhfihhtiihhvghnrhihrdhmvg
+    druhhkqeenucggtffrrghtthgvrhhnpeegfffffeduteeutdeikeelvefgheeigfelgfei
+    teejvefgjeekieekudehueevkeenucffohhmrghinhepmhgvghhouhhsrdgtohhmnecuve
+    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepthhomhesthho
+    mhdqfhhithiihhgvnhhrhidrmhgvrdhukh
+X-ME-Proxy: <xmx:aUAMY53g6Y1zsNxUGlwyiU7nbIpviAYJ0Avac5Yvd5aSN8x2pAAuXw>
+    <xmx:aUAMYwAdAQhqPMuN-BNnbia_ooXCTQ2ASvzexdxHuFt92OLgBnBCuQ>
+    <xmx:aUAMY1gdy2Bkb0sQh9PZHa1c6ht-vE6rNBjGNjoW0ai1cPDxUGoNnA>
+    <xmx:akAMY15NcvR_okLgwZSwTB0mv6GQU4FW2p85w5_0G-jaySqCTC5GIg>
+Feedback-ID: iefc945ae:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id EA7332A20079; Mon, 29 Aug 2022 00:28:24 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-841-g7899e99a45-fm-20220811.002-g7899e99a
+Mime-Version: 1.0
+Message-Id: <7782b803-b331-4b19-84f5-86d1f06b0259@www.fastmail.com>
+In-Reply-To: <20220822083339.o6bqlyirrm5hvjbc@core>
+References: <20220822012449.21005-1-tom@tom-fitzhenry.me.uk>
+ <20220822012449.21005-2-tom@tom-fitzhenry.me.uk>
+ <20220822083339.o6bqlyirrm5hvjbc@core>
+Date:   Mon, 29 Aug 2022 04:28:03 +0000
+From:   "Tom Fitzhenry" <tom@tom-fitzhenry.me.uk>
+To:     =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>
+Cc:     "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Heiko Stuebner" <heiko@sntech.de>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, "Martijn Braam" <martijn@brixit.nl>,
+        =?UTF-8?Q?Kamil_Trzci=C5=84ski?= <ayufan@ayufan.eu>,
+        "Caleb Connolly" <kc@postmarketos.org>,
+        =?UTF-8?Q?N=C3=ADcolas_F_=2E_R_=2E_A_=2E_Prado?= <n@nfraprado.net>
+Subject: Re: [PATCH v4 1/1] arm64: dts: rockchip: Add initial support for Pine64
+ PinePhone Pro
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Introduce support for the Xiaomi Poco F1 EBBG variant. The EBBG variant
-uses EBBG FT8719 panel manufactured by EBBG.
+Thanks for the review Megi.
 
-Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- arch/arm64/boot/dts/qcom/Makefile                 |  1 +
- .../dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts     | 15 +++++++++++++++
- 2 files changed, 16 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
+On Mon, 22 Aug 2022, at 8:33 AM, Ond=C5=99ej Jirman wrote:
+>> +			vdd_center: DCDC_REG2 {
+>> +				regulator-name =3D "vdd_center";
+>> +				regulator-always-on;
+>> +				regulator-boot-on;
+>> +				regulator-min-microvolt =3D <800000>;
+>> +				regulator-max-microvolt =3D <1350000>;
+>
+> Looks like a wrong top voltage. https://megous.com/dl/tmp/ad3dcc62bd00=
+f41f.png
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index d0bba59d2a8c..a5045bd120c1 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -128,6 +128,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-oneplus-fajita.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-akari.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-akatsuki.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-sony-xperia-tama-apollo.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium-ebbg.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-beryllium-tianma.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-polaris.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-shift-axolotl.dtb
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
-new file mode 100644
-index 000000000000..76931ebad065
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
-@@ -0,0 +1,15 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/dts-v1/;
-+
-+#include "sdm845-xiaomi-beryllium-common.dtsi"
-+
-+/ {
-+	model = "Xiaomi Pocophone F1 (EBBG)";
-+	compatible = "xiaomi,beryllium-ebbg", "qcom,sdm845";
-+};
-+
-+&display_panel {
-+	compatible = "ebbg,ft8719";
-+	status = "okay";
-+};
--- 
-2.37.2
+I will fix this in v5.
 
+>> +			vcca3v0_codec: LDO_REG1 {
+>> +				regulator-name =3D "vcca3v0_codec";
+>> +				regulator-always-on;
+>> +				regulator-boot-on;
+>
+> This should not be always on, but only enabled by the codec when neede=
+d.
+> You don't have codec described in this DT.
+
+I will fix this in v5.
+
+>> +			vcc3v0_touch: LDO_REG2 {
+>> +				regulator-name =3D "vcc3v0_touch";
+>> +				regulator-always-on;
+>> +				regulator-boot-on;
+>
+> This should not be always on. It should be enabled by touch controller,
+> when needed. You don't have touch controller described in this DT.
+
+I will fix this in v5.
+
+>> +			vcca1v8_codec: LDO_REG3 {
+>> +				regulator-name =3D "vcca1v8_codec";
+>> +				regulator-always-on;
+>> +				regulator-boot-on;
+>
+> This should not be always on, but only enabled by the codec when neede=
+d,
+> I suppose. Also modem codec is supplied by vcc1v8_codec which may need
+> a gpio configured as pull-down or drive low to be properly disabled,
+> and it is not defined in this DT. Please make sure that regulator's in=
+put
+> doesn't float and is disabled by default.
+
+I will fix this in v5, including adding a regulator for vcc1v8_codec.
+
+>> +&gpu_opp_table {
+>> +	opp00 {
+>> +		opp-hz =3D /bits/ 64 <200000000>;
+>> +		opp-microvolt =3D <825000 825000 975000>;
+>> +	};
+>> +	opp01 {
+>> +		opp-hz =3D /bits/ 64 <297000000>;
+>> +		opp-microvolt =3D <825000 825000 975000>;
+>> +	};
+>> +	opp02 {
+>> +		opp-hz =3D /bits/ 64 <400000000>;
+>> +		opp-microvolt =3D <825000 825000 975000>;
+>> +	};
+>> +	opp03 {
+>> +		opp-hz =3D /bits/ 64 <500000000>;
+>> +		opp-microvolt =3D <875000 875000 975000>;
+>> +	};
+>> +	opp04 {
+>> +		opp-hz =3D /bits/ 64 <600000000>;
+>> +		opp-microvolt =3D <925000 925000 975000>;
+>> +	};
+>
+> ^^^ Why replicate all these OPPs, when they have identical preferred v=
+oltage
+> in rk3399-opp.dtsi? Also GPU is not being enabled in the DT.
+>
+> You don't need display output support to enable the gpu right away.
+
+My bad, I had forgotten that I'd originally decided to leave this out of=
+ the first patch series. I will address this in the patch series when I =
+enable the GPU.
+
+>> +	opp05 {
+>> +		status =3D "disabled";
+>> +	};
+>> +};
+>> +
+>> +
+>
+> ^ extra space
+
+I will fix this in v5.
