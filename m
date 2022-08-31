@@ -2,75 +2,118 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AD75ECAAD4
-	for <phone-devel@archiver.kernel.org>; Wed, 31 Aug 2022 08:04:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 07760ECAAD1
+	for <phone-devel@archiver.kernel.org>; Wed, 31 Aug 2022 08:08:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231315AbiHaIEq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 31 Aug 2022 04:04:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37796 "EHLO
+        id S231373AbiHaIIm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 31 Aug 2022 04:08:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230519AbiHaIEh (ORCPT
+        with ESMTP id S231205AbiHaIIg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 31 Aug 2022 04:04:37 -0400
-Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F327C32F5;
-        Wed, 31 Aug 2022 01:04:13 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id DBE8EDF8D9;
-        Wed, 31 Aug 2022 01:03:42 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id HoFfwWJ9Hs3T; Wed, 31 Aug 2022 01:03:42 -0700 (PDT)
-From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
-        t=1661933022; bh=pTAM1GG6G97KUgnlgXB/M7yFHEvP6eRofoU5RlNqxKM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DRbLYS6OJx6shFzLIrYUFTZtfUFEPfnMa8+PbfRdSKLzinAbkNEz5gtFf2yxhlW+g
-         W4Uiw9YjLga3qQvf609FRTudkrJJm0LRGUlpcSpY12VFCJ8tRARz72yjqMt5xhWf50
-         G86nH9ClvaHXqz/FiMNdg873VidJjMMhF0skSMnFQDvyIfYqo32dKBys2whykDmoue
-         3c0HvYbmRWf86PAhGB6ivTJgr4Jcfi1iDY6s+ruU5GS/dmLGfy/R3yV1fFetnBZH41
-         UTU1zIeXOPY3UmYIQZyDpaWgOsVjrGbmQQNumLfDvub85LuxZrKX6vdEBTNKITW0GF
-         B0J1s/NS1aC3g==
-To:     festevam@gmail.com, shawnguo@kernel.org
-Cc:     martin.kepplinger@puri.sm, devicetree@vger.kernel.org,
-        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
+        Wed, 31 Aug 2022 04:08:36 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED6F0C32E3
+        for <phone-devel@vger.kernel.org>; Wed, 31 Aug 2022 01:08:33 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id g7so1884315lfe.11
+        for <phone-devel@vger.kernel.org>; Wed, 31 Aug 2022 01:08:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc;
+        bh=vmWS3ICQ2RM5oR5SXL4HEHG2SH0Ha+DMmwYwfuW5t3k=;
+        b=jihFvEFcSQl4e3CLivEhr7BRyksHlyC6vR0KffyQxa+P0SntzX9NmwAPFwpSw9lxM5
+         HxQQexiDOk+4XPag3Xk0iofS8BbQkVRPwu4MMw5cjLZp8/h7M5vgFJuTsZzIW58lI+vV
+         Cofa3JLWroLOtNooPif02GTFCYmGpoxYm5JWy6afkNCdhZwdsAnMZou3cPTmffOyBi1P
+         1SPWq68jMDgN4/muAEfyhT4TBmnwk3q4uYiF5WNCURgQyKY6mcryRAzabmTXQtc5pOS2
+         Pyf35CEvDE+zZs6hXweTY9RmBAqiHNyMyCth29UdT2WkVG+glAYJUfi2aWHiog1aySTZ
+         ySug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=vmWS3ICQ2RM5oR5SXL4HEHG2SH0Ha+DMmwYwfuW5t3k=;
+        b=bEV4q19WbuL7GAaRP/ARWZYGZcAcoCyaOT65DtsOD09q+sBajChulDFu5fOQLCPJFE
+         qFFRXo/xs3RDnYZ1VrjtnWys9uRjL4UjCTW7anNZcMdannjIVM6WoOQXWzR5sk+iRJaN
+         QYoq4FD3LPkB8x5fhmkqKA1ikvVj160sCIF47EDwKFMT0FRgKcxZsOXOjfItwkyWG8mt
+         b4zbSgg48JewQ9kkAzVw6JSuJPgsAFMGf/Sot7ACyYK94BxHzVOo4xJI5r0fYzqIqk0Q
+         lkgmHXJ50nv8rvds826Oxq0mi7YddsHt3VhmHy0CGp7nwXnYizQ46zA85FO47yz3jWBi
+         Yebw==
+X-Gm-Message-State: ACgBeo3kFhziiDLPa2xfioaqrXsvHaP9N5dvRO1VLGHkiW3F3Igozg7L
+        lLRw59tmqSAh+h/CT9vX6BBJNQ==
+X-Google-Smtp-Source: AA6agR6SuW5AwvCUsL5LauHW6Qc4LSk7bz0Kewp8m40rSFZ3lJRLnlje4nUT0nK5k6a0NRHWwRuPKw==
+X-Received: by 2002:a05:6512:10c8:b0:492:41f9:2adc with SMTP id k8-20020a05651210c800b0049241f92adcmr8383042lfg.388.1661933312287;
+        Wed, 31 Aug 2022 01:08:32 -0700 (PDT)
+Received: from [192.168.28.124] (balticom-73-99-134.balticom.lv. [109.73.99.134])
+        by smtp.gmail.com with ESMTPSA id s16-20020a056512315000b0047fa941067fsm1914757lfi.29.2022.08.31.01.08.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Aug 2022 01:08:31 -0700 (PDT)
+Message-ID: <6936b536-4b32-3f98-7393-2934eb80d952@linaro.org>
+Date:   Wed, 31 Aug 2022 11:08:30 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [PATCH v1 2/5] arm64: dts: imx8mq-librem5: add RGB pwmleds
+Content-Language: en-US
+To:     Martin Kepplinger <martin.kepplinger@puri.sm>, festevam@gmail.com,
+        shawnguo@kernel.org
+Cc:     devicetree@vger.kernel.org, kernel@pengutronix.de, kernel@puri.sm,
         linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        robh@kernel.org, Angus Ainslie <angus@akkea.ca>
-Subject: [PATCH v1 5/5] arm64: dts: imx8mq-librem5: add usb-role-switch property to dwc3
-Date:   Wed, 31 Aug 2022 10:03:01 +0200
-Message-Id: <20220831080301.1092737-6-martin.kepplinger@puri.sm>
-In-Reply-To: <20220831080301.1092737-1-martin.kepplinger@puri.sm>
+        robh@kernel.org, =?UTF-8?Q?Guido_G=c3=bcnther?= <agx@sigxcpu.org>
 References: <20220831080301.1092737-1-martin.kepplinger@puri.sm>
-MIME-Version: 1.0
+ <20220831080301.1092737-3-martin.kepplinger@puri.sm>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220831080301.1092737-3-martin.kepplinger@puri.sm>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Angus Ainslie <angus@akkea.ca>
+On 31/08/2022 11:02, Martin Kepplinger wrote:
+> From: Guido Günther <agx@sigxcpu.org>
+> 
+> Describe the RGB notification leds on the Librem 5 phone.
+> Use the common defines so we're sure to adhere to the common patterns,
+> use predefined led colors and functions so we're being warned in case
+> of deprecations.
+> 
+> Signed-off-by: Guido Günther <agx@sigxcpu.org>
+> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+> ---
+>  .../boot/dts/freescale/imx8mq-librem5.dtsi    | 26 +++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+> index 0626e4194d958..bbf49e419b498 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+> @@ -7,6 +7,7 @@
+>  
+>  #include "dt-bindings/input/input.h"
+>  #include <dt-bindings/interrupt-controller/irq.h>
+> +#include <dt-bindings/leds/common.h>
+>  #include "dt-bindings/pwm/pwm.h"
+>  #include "dt-bindings/usb/pd.h"
+>  #include "imx8mq.dtsi"
+> @@ -54,6 +55,31 @@ key-vol-up {
+>  		};
+>  	};
+>  
+> +	pwmleds {
+> +		compatible = "pwm-leds";
+> +
+> +		blue {
 
-In order to enable (PD and data) role switching on the Librem 5 phone,
-add the usb-role-switch property to imx8mq's dwc3 node.
+Test your DTS (`make dtbs_check`).
 
-Signed-off-by: Angus Ainslie <angus@akkea.ca>
-Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
----
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+Node names should be generic.
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index d5c7c35d2e85f..e685a636ca6c4 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -1302,6 +1302,7 @@ &usb_dwc3_0 {
- 	#size-cells = <0>;
- 	dr_mode = "otg";
- 	snps,dis_u3_susphy_quirk;
-+	usb-role-switch;
- 	status = "okay";
- 
- 	port@0 {
--- 
-2.30.2
 
+
+Best regards,
+Krzysztof
