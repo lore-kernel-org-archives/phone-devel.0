@@ -2,94 +2,110 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C9638C0502A
-	for <phone-devel@archiver.kernel.org>; Tue, 30 Aug 2022 10:03:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01F28ECAAD1
+	for <phone-devel@archiver.kernel.org>; Wed, 31 Aug 2022 08:03:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229756AbiH3KDy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 30 Aug 2022 06:03:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50676 "EHLO
+        id S230323AbiHaIDm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 31 Aug 2022 04:03:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230040AbiH3KDA (ORCPT
+        with ESMTP id S229863AbiHaIDj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 30 Aug 2022 06:03:00 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86AE4EA331
-        for <phone-devel@vger.kernel.org>; Tue, 30 Aug 2022 03:01:03 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id q7so14778711lfu.5
-        for <phone-devel@vger.kernel.org>; Tue, 30 Aug 2022 03:01:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=1vsrniCH21cQJi1AfySbh7bugG44hFxHE8Sy+Hntiwk=;
-        b=HzEo0niWeAC8aKQqyqFbwgRqbRe4kL4w+rFcfhEiUnl8R8zXVN5SiCXZScEe2pcOoq
-         ieRfESHyJCuGXO4Q8PPz6tANwH/2AZrOBp8KWk0vybY7qlx7YRqUkXrXVBqbBZeaey0O
-         e9UfjCbIoJsAwpR4CwbpcTroOD0yfhjfSewlAL9F01srSi/frfFDQyvWgTM8O55t1Duz
-         Q7dz9LsIj/vcuIbyZS0e9rVzFqzRTVsD76PXJ+T1kpm4XUVVTEF5f5XPwsF1mvMrQ44r
-         JPBTBRZyaxvxOE9C0AYWgvKdphdRM61pU0kKcG6uhKVEBIjdPPmNQdX4oB2QFNb03ixT
-         6kdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=1vsrniCH21cQJi1AfySbh7bugG44hFxHE8Sy+Hntiwk=;
-        b=7iHlLzKJ77KPMuuCmIyWBcsR8FZRNmcEjHb2aN5N8StSPs5QvJ5AnSTU6wowqX3JVn
-         vYIsAIgDA0Aorh/zlbrXV28iVMFDxenJHJ5TCoKcxn+9nS/cAusllok/Wtzg8oUPZqgV
-         nczcwtOdGtRF7ww3la8ws08yC5z2TlX6tpsEE8NnURp5kOVR8++S17c2QcivvFhcIL1a
-         9xqibeRDlb70qUGb26uXGRRXPVWK4G4YA3SEpZYoAtsoLBN9PWU29WG+uLS0X6fXA3uv
-         v+AgRkbGIqLuLmHBrI/DeYR93k5zy8EDrg/BOHoLSmLMFBAKvzgKvGEGIfvN0frOMdaZ
-         eKOQ==
-X-Gm-Message-State: ACgBeo1WxNG6Mlp48DKo3KHi6/AuR0gNOwjEMUzMDU8Zu/ZPxIW5Bm0H
-        BtTwlyShYEYYSAlRPcfpCtJ4YQ==
-X-Google-Smtp-Source: AA6agR6JwZ1ofnEQJEaI5BlUALdbq4Lgo8rV4qkvxdvx9GZIe4ECEls5ojSqQMsoo8Z4PgZif6hXIg==
-X-Received: by 2002:a05:6512:3b9d:b0:492:d0c5:c3a5 with SMTP id g29-20020a0565123b9d00b00492d0c5c3a5mr7209870lfv.129.1661853661270;
-        Tue, 30 Aug 2022 03:01:01 -0700 (PDT)
-Received: from [192.168.28.124] (balticom-73-99-134.balticom.lv. [109.73.99.134])
-        by smtp.gmail.com with ESMTPSA id h1-20020a05651c124100b0026181a42284sm1208849ljh.88.2022.08.30.03.00.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Aug 2022 03:01:00 -0700 (PDT)
-Message-ID: <2c1d887b-b2f8-dec7-f19b-771e0d3055a1@linaro.org>
-Date:   Tue, 30 Aug 2022 13:00:59 +0300
+        Wed, 31 Aug 2022 04:03:39 -0400
+Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C830AB99FA;
+        Wed, 31 Aug 2022 01:03:34 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id CAF5EDF5D1;
+        Wed, 31 Aug 2022 01:03:33 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id eHVmjyzaFMHl; Wed, 31 Aug 2022 01:03:33 -0700 (PDT)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
+        t=1661933013; bh=7qHCaOfhLwiXbXUxRw2B/DGm0lbeC8SuRRq3JSV3d7o=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=gMWhbEiZzi7b6oOqzzFXS7btCUFRKtoEJoJZNhU0briwOSdg/jmeuWPwgl4G3+RzU
+         z5FhcC122drJ1Ym5hMvnR0hV5QU4Z31AFJNcG9QWmFlwelcGHRS0h/jfUJ877Px+DN
+         fhpiayvTxieHo/9WqgVPknAwFWY8ft0GHAXTWcB11iyBoOBRYt6shzwjXQM6JYBq4o
+         nEAwK4jMmbkKvGT4pOI+WQUBTd5ix9yPopjwi8EcvbkZH95m0Dufe2r8dYJ8h98jA/
+         HYL0Xv1eu54Ri0vVR+o/98hPbSJeRTP8DPxSsD7NNcQ37Sg/pGJX/RzGaVjz807SSM
+         TQxQKV6pbWLjQ==
+To:     festevam@gmail.com, shawnguo@kernel.org
+Cc:     martin.kepplinger@puri.sm, devicetree@vger.kernel.org,
+        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        robh@kernel.org, =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
+Subject: [PATCH v1 2/5] arm64: dts: imx8mq-librem5: add RGB pwmleds
+Date:   Wed, 31 Aug 2022 10:02:58 +0200
+Message-Id: <20220831080301.1092737-3-martin.kepplinger@puri.sm>
+In-Reply-To: <20220831080301.1092737-1-martin.kepplinger@puri.sm>
+References: <20220831080301.1092737-1-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v4 4/4] arm64: dts: qcom: sdm845-xiaomi-beryllium-ebbg:
- introduce Xiaomi Poco F1 EBBG variant
-Content-Language: en-US
-To:     Joel Selvaraj <joelselvaraj.oss@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20220828205723.20834-1-joelselvaraj.oss@gmail.com>
- <20220828205723.20834-5-joelselvaraj.oss@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220828205723.20834-5-joelselvaraj.oss@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 28/08/2022 23:57, Joel Selvaraj wrote:
-> Introduce support for the Xiaomi Poco F1 EBBG variant. The EBBG variant
-> uses EBBG FT8719 panel manufactured by EBBG.
-> 
-> Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
-> Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
->  arch/arm64/boot/dts/qcom/Makefile                 |  1 +
+From: Guido Günther <agx@sigxcpu.org>
 
+Describe the RGB notification leds on the Librem 5 phone.
+Use the common defines so we're sure to adhere to the common patterns,
+use predefined led colors and functions so we're being warned in case
+of deprecations.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+---
+ .../boot/dts/freescale/imx8mq-librem5.dtsi    | 26 +++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+index 0626e4194d958..bbf49e419b498 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
+@@ -7,6 +7,7 @@
+ 
+ #include "dt-bindings/input/input.h"
+ #include <dt-bindings/interrupt-controller/irq.h>
++#include <dt-bindings/leds/common.h>
+ #include "dt-bindings/pwm/pwm.h"
+ #include "dt-bindings/usb/pd.h"
+ #include "imx8mq.dtsi"
+@@ -54,6 +55,31 @@ key-vol-up {
+ 		};
+ 	};
+ 
++	pwmleds {
++		compatible = "pwm-leds";
++
++		blue {
++			function = LED_FUNCTION_STATUS;
++			color = <LED_COLOR_ID_BLUE>;
++			max-brightness = <248>;
++			pwms = <&pwm2 0 50000 0>;
++		};
++
++		green {
++			function = LED_FUNCTION_STATUS;
++			color = <LED_COLOR_ID_GREEN>;
++			max-brightness = <248>;
++			pwms = <&pwm4 0 50000 0>;
++		};
++
++		red {
++			function = LED_FUNCTION_STATUS;
++			color = <LED_COLOR_ID_RED>;
++			max-brightness = <248>;
++			pwms = <&pwm3 0 50000 0>;
++		};
++	};
++
+ 	reg_aud_1v8: regulator-audio-1v8 {
+ 		compatible = "regulator-fixed";
+ 		pinctrl-names = "default";
+-- 
+2.30.2
 
-Best regards,
-Krzysztof
