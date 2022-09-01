@@ -2,115 +2,65 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54400C54EE9
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Sep 2022 08:59:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91716C64991
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Sep 2022 15:30:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234339AbiIAI7Y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Sep 2022 04:59:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36318 "EHLO
+        id S234657AbiIAPaR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 1 Sep 2022 11:30:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232840AbiIAI64 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Sep 2022 04:58:56 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F20812DA1B
-        for <phone-devel@vger.kernel.org>; Thu,  1 Sep 2022 01:58:46 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id q16so17162728ljp.8
-        for <phone-devel@vger.kernel.org>; Thu, 01 Sep 2022 01:58:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=mwYkPkbDpVvKnBCUeAO6SqNihrRVFRauQ3ciXakJntA=;
-        b=cKwqNiIrCuxruPskUUyXVi0JY9nUNWB8yP5ZQhyNNBSUopD4SsK0P8gePIAcydCr7z
-         r4crGQCX9xEDitfqH9Z6UxWKwsc02KM9E3EXGBjDxhJ/U9YJi0znHlHwoseHOaHNqiui
-         z5FuuckuAUnshfoG1UFLG0MIPBJq6sEzM/cPdZDPL7TESLplsAH2ky6hEpuJkNgWPfyp
-         nhGOokE0WMs01y19cc3exxaVmloPYyb//W6rFybNcFd/Y7AWbYNPBJ3OoozvSHzQjoJc
-         RbuI9L+mP6sPKtqx+3EBJKqzFSXH8joq7o6XRrmeh2rpGwQETP24AyyrVOF93bnLkTa9
-         8Drg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=mwYkPkbDpVvKnBCUeAO6SqNihrRVFRauQ3ciXakJntA=;
-        b=i7jVofDeC+YUOhOMch/XSU2Tf61HmRYc4eJnKsYe7S5QgGi6MGpke5YPNURwqvjV7F
-         LvpjDeOGMYDqWxLegt1LrngFITWVa8YxDauNvZROowp4OU9VJBcYvLYIGcCGW9TSDiZO
-         eJ3cdMFjlo6Fkk+RPLlZpy2PFVo5fMpcuKU1dapH2Wsiw+RTmvLtjyGU5HkPYA8tXqbn
-         3gpqS6g1EHwNTFXlwh9S8USjiy5EaY0LiEduJO1K40ujiVre7PFNpyuM480GIMlQ4JeZ
-         hJI7gPadqCDZr7uIDt+CD7Hyd5cFsT6ewZ6k9uxHoSsDFGGY5YFa1SmPXUkpN86XY+ut
-         QW+w==
-X-Gm-Message-State: ACgBeo21gyNkbEISqwnwEOQEaESPqGHGhOgOoBG6TBRq//ncAXqOOQ0f
-        X/y8+UVvgs/ghFhobLVcw6tZdA==
-X-Google-Smtp-Source: AA6agR4A/NKeMsV4Ak8gwgmbbPOMBHhorkS3+tj93KcLuvLF0EZl4lxNAvCjmnsb+w611pd+BKfYHg==
-X-Received: by 2002:a05:651c:4c9:b0:25e:7979:573a with SMTP id e9-20020a05651c04c900b0025e7979573amr9289821lji.445.1662022724895;
-        Thu, 01 Sep 2022 01:58:44 -0700 (PDT)
-Received: from [192.168.28.124] (balticom-73-99-134.balticom.lv. [109.73.99.134])
-        by smtp.gmail.com with ESMTPSA id f8-20020a05651c03c800b002663afd079fsm1263777ljp.115.2022.09.01.01.58.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Sep 2022 01:58:44 -0700 (PDT)
-Message-ID: <a9f4de46-e1ce-f8cd-2b0d-cd4bf36b1f84@linaro.org>
-Date:   Thu, 1 Sep 2022 11:58:43 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v4 3/3] ARM: dts: qcom: Add support for Samsung Galaxy Tab
- 4 10.1 (SM-T530)
-Content-Language: en-US
-To:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
-        linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        soc@kernel.org, Rob Herring <robh+dt@kernel.org>,
+        with ESMTP id S234576AbiIAPaA (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Sep 2022 11:30:00 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A56752A3;
+        Thu,  1 Sep 2022 08:29:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D3C40B827F0;
+        Thu,  1 Sep 2022 15:29:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127C8C433D7;
+        Thu,  1 Sep 2022 15:29:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662046181;
+        bh=d5ZaiJJZmZijzR8TBsyEbX8fYa3CVJ1eKnFJnVSpO6k=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Od20IUqztwDI02Q+39X4ol8oIB8R1bbqyYf+XcA34qxCu3+eas1X9AAl50I3CFUyT
+         mNTlUZ98p9Sod8HpZgBwJyNk4L3rLh2kPfY/260RCL9JbnMPvXbzIq/ZTDyRieFSGp
+         lOuSR81oIuRSHHkHMjMD8dLMeJAThPD2HbhlzZ7gLbHjHfimdogB1a04RxcL2Tvk2H
+         Ry97Io8o+1JHZny/YvDAvvo2m01szH6tbVlNSrO5gT0Am/juLUsEwoVSt7sGpQBG1E
+         pYnEb+vVQDRBbwbbMLwTH+MC0wTh1bkygajmsDYDpG5SYtjJX0k60l3KDhC4Pz+LGC
+         akk1wYOep3G8w==
+Date:   Thu, 1 Sep 2022 20:59:37 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        Robin Murphy <robin.murphy@arm.com>,
+        Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+        Luca Weiss <luca@z3ntu.xyz>, Maxime Ripard <maxime@cerno.tech>,
+        Bartosz Dudziak <bartosz.dudziak@snejp.pl>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
         linux-kernel@vger.kernel.org
-References: <20220831173207.238080-1-matti.lehtimaki@gmail.com>
- <20220831173207.238080-4-matti.lehtimaki@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220831173207.238080-4-matti.lehtimaki@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 11/14] dt-bindings: arm: cpus: Add kryo240 compatible
+Message-ID: <YxDP4Q7ExOjzNSqS@matsya>
+References: <20220901072414.1923075-1-iskren.chernev@gmail.com>
+ <20220901072414.1923075-12-iskren.chernev@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220901072414.1923075-12-iskren.chernev@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 31/08/2022 20:32, Matti Lehtimäki wrote:
-> Add a device tree for the Samsung Galaxy Tab 4 10.1 (SM-T530) wifi tablet
-> based on the apq8026 platform.
-> 
-> Currently supported are accelerometer sensor, hall sensor,
-> internal storage, physical buttons (power & volume), screen
-> (based on simple-framebuffer set up by the bootloader), sdcard,
-> touchscreen and USB.
-> 
-> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-> ---
-> Changes in v4:
->   - Move delete-node to memory-region
->   - Move usb-switch node to blsp_i2c4
-> 
+On 01-09-22, 10:24, Iskren Chernev wrote:
+> Kryo240 is found in SM4250, the slower sibling of the SM6115.
 
-(...)
+Reviewed-by: Vinod Koul <vkoul@kernel.org>
 
-> +};
-> +
-> +&rpm_requests {
-> +	pm8226-regulators {
-
-I don't think this passes bindings. Run `make dtbs_check`. I don't want
-to keep accepting DTS which does not validate and none of submiters want
-to fix this...
-
-Rebase on top of:
-https://lore.kernel.org/linux-devicetree/20220901085609.95624-1-krzysztof.kozlowski@linaro.org/T/#t
-
-Node name should be "regulators".
-
-Be sure your DTS has 0 warning.
-
-Best regards,
-Krzysztof
+-- 
+~Vinod
