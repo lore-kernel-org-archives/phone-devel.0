@@ -2,109 +2,115 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99F2FC65C0D
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Sep 2022 07:27:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54400C54EE9
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Sep 2022 08:59:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234016AbiIAH1L (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Sep 2022 03:27:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46816 "EHLO
+        id S234339AbiIAI7Y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 1 Sep 2022 04:59:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234009AbiIAH0G (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Sep 2022 03:26:06 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 804833F1D5;
-        Thu,  1 Sep 2022 00:25:05 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id u17so1836803wrp.3;
-        Thu, 01 Sep 2022 00:25:05 -0700 (PDT)
+        with ESMTP id S232840AbiIAI64 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Sep 2022 04:58:56 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F20812DA1B
+        for <phone-devel@vger.kernel.org>; Thu,  1 Sep 2022 01:58:46 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id q16so17162728ljp.8
+        for <phone-devel@vger.kernel.org>; Thu, 01 Sep 2022 01:58:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=6VaWfIMqQwWIuH48wiOxaFvCdMYIP4kQOJiPuxxadM0=;
-        b=OvNo35JDbauqpe3x9P30vcfSSWjPy+fWJ89Jp87PYKrFjQ8boMGXr8SAcZAzIRAebG
-         gs8GhdSk1whQyVnb3Mo5YP4xuYDu3xibPXrSR14ovgnS+u5/8mjM2MUdGr8MBs/8iNt8
-         JVQXECy/YYWbG4J+Mz9bhmLaYrCCc91xSWYOT4Q17BSsVOIweqbKcTFmpbO9sKONBXCv
-         qdu/gKWknhVLv3J2+2BalvyiXi6KXLjoxbx9IlsUJi8n7a4O4PibF2vCSLM+HNsnx06P
-         VLnnmW4Z6b3KPWWYIOEO+WirJAWS4WKVPwEMmVb1X/eiCroMEqDWxj19qZ8Na7lCEYYx
-         PGoQ==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc;
+        bh=mwYkPkbDpVvKnBCUeAO6SqNihrRVFRauQ3ciXakJntA=;
+        b=cKwqNiIrCuxruPskUUyXVi0JY9nUNWB8yP5ZQhyNNBSUopD4SsK0P8gePIAcydCr7z
+         r4crGQCX9xEDitfqH9Z6UxWKwsc02KM9E3EXGBjDxhJ/U9YJi0znHlHwoseHOaHNqiui
+         z5FuuckuAUnshfoG1UFLG0MIPBJq6sEzM/cPdZDPL7TESLplsAH2ky6hEpuJkNgWPfyp
+         nhGOokE0WMs01y19cc3exxaVmloPYyb//W6rFybNcFd/Y7AWbYNPBJ3OoozvSHzQjoJc
+         RbuI9L+mP6sPKtqx+3EBJKqzFSXH8joq7o6XRrmeh2rpGwQETP24AyyrVOF93bnLkTa9
+         8Drg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=6VaWfIMqQwWIuH48wiOxaFvCdMYIP4kQOJiPuxxadM0=;
-        b=xp8SFr7Q6r++eDOA0we4ZxVdi8ErRvXXi5rHDaiByPE4CbQkzUDMxSkuUOi/nSCErw
-         ynELNbCCr+DSqKGnryA7bBfQSgBoO70A7gabT81KUvVZ85+Vi7sS8Mmh95VKmnRzmot7
-         m6AUziTZESiCgGeweclo48N8L6VgHNUtXeMwOeGFtl96wtKoCcTUz/jII2DT9Zzp8PYO
-         sXlxcZS6jIN2Gdd9Oj3GrLzFhcsoIIquGgQ/wAgSnmFyG0A/6APNp1FQO5XnQosb+LUc
-         cUbzf4fPq5Hr94sFbac/LoDnIjIGP/1OKk1RhvzK2ddxtvYTNGaeuJSbZmVL7SR3WQFm
-         PLxQ==
-X-Gm-Message-State: ACgBeo0csv3rLMxEEH2KVa+G5gkisebqsuVe1ab8Ft5vwrz5IDnKb0sg
-        RIbynEExgsyf6GI4IxBt1nw=
-X-Google-Smtp-Source: AA6agR52gXzUQSFvEIvbGObr1bidRkmMGaq7HFEyiC3HcjgEoPt7GTbsou6ii3QSCLAMOhrlpssdKQ==
-X-Received: by 2002:a5d:6c6b:0:b0:225:dde:ab40 with SMTP id r11-20020a5d6c6b000000b002250ddeab40mr13860932wrz.690.1662017104138;
-        Thu, 01 Sep 2022 00:25:04 -0700 (PDT)
-Received: from localhost (87-126-55-15.ip.btc-net.bg. [87.126.55.15])
-        by smtp.gmail.com with ESMTPSA id o21-20020a05600c4fd500b003a32297598csm4740010wmq.43.2022.09.01.00.25.02
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=mwYkPkbDpVvKnBCUeAO6SqNihrRVFRauQ3ciXakJntA=;
+        b=i7jVofDeC+YUOhOMch/XSU2Tf61HmRYc4eJnKsYe7S5QgGi6MGpke5YPNURwqvjV7F
+         LvpjDeOGMYDqWxLegt1LrngFITWVa8YxDauNvZROowp4OU9VJBcYvLYIGcCGW9TSDiZO
+         eJ3cdMFjlo6Fkk+RPLlZpy2PFVo5fMpcuKU1dapH2Wsiw+RTmvLtjyGU5HkPYA8tXqbn
+         3gpqS6g1EHwNTFXlwh9S8USjiy5EaY0LiEduJO1K40ujiVre7PFNpyuM480GIMlQ4JeZ
+         hJI7gPadqCDZr7uIDt+CD7Hyd5cFsT6ewZ6k9uxHoSsDFGGY5YFa1SmPXUkpN86XY+ut
+         QW+w==
+X-Gm-Message-State: ACgBeo21gyNkbEISqwnwEOQEaESPqGHGhOgOoBG6TBRq//ncAXqOOQ0f
+        X/y8+UVvgs/ghFhobLVcw6tZdA==
+X-Google-Smtp-Source: AA6agR4A/NKeMsV4Ak8gwgmbbPOMBHhorkS3+tj93KcLuvLF0EZl4lxNAvCjmnsb+w611pd+BKfYHg==
+X-Received: by 2002:a05:651c:4c9:b0:25e:7979:573a with SMTP id e9-20020a05651c04c900b0025e7979573amr9289821lji.445.1662022724895;
+        Thu, 01 Sep 2022 01:58:44 -0700 (PDT)
+Received: from [192.168.28.124] (balticom-73-99-134.balticom.lv. [109.73.99.134])
+        by smtp.gmail.com with ESMTPSA id f8-20020a05651c03c800b002663afd079fsm1263777ljp.115.2022.09.01.01.58.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Sep 2022 00:25:03 -0700 (PDT)
-From:   Iskren Chernev <iskren.chernev@gmail.com>
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Iskren Chernev <iskren.chernev@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 13/14] dt-bindings: arm: qcom: Add compatible for oneplus,billie2 phone
-Date:   Thu,  1 Sep 2022 10:24:12 +0300
-Message-Id: <20220901072414.1923075-14-iskren.chernev@gmail.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20220901072414.1923075-1-iskren.chernev@gmail.com>
-References: <20220901072414.1923075-1-iskren.chernev@gmail.com>
+        Thu, 01 Sep 2022 01:58:44 -0700 (PDT)
+Message-ID: <a9f4de46-e1ce-f8cd-2b0d-cd4bf36b1f84@linaro.org>
+Date:   Thu, 1 Sep 2022 11:58:43 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [PATCH v4 3/3] ARM: dts: qcom: Add support for Samsung Galaxy Tab
+ 4 10.1 (SM-T530)
+Content-Language: en-US
+To:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
+        linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        soc@kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220831173207.238080-1-matti.lehtimaki@gmail.com>
+ <20220831173207.238080-4-matti.lehtimaki@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220831173207.238080-4-matti.lehtimaki@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-oneplus,billie2 (OnePlus Nord N100) is based on QualComm Snapdragon
-SM4250 SoC.
+On 31/08/2022 20:32, Matti Lehtimäki wrote:
+> Add a device tree for the Samsung Galaxy Tab 4 10.1 (SM-T530) wifi tablet
+> based on the apq8026 platform.
+> 
+> Currently supported are accelerometer sensor, hall sensor,
+> internal storage, physical buttons (power & volume), screen
+> (based on simple-framebuffer set up by the bootloader), sdcard,
+> touchscreen and USB.
+> 
+> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+> ---
+> Changes in v4:
+>   - Move delete-node to memory-region
+>   - Move usb-switch node to blsp_i2c4
+> 
 
-Add support for the same in dt-bindings.
+(...)
 
-Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
----
- Documentation/devicetree/bindings/arm/qcom.yaml | 7 +++++++
- 1 file changed, 7 insertions(+)
+> +};
+> +
+> +&rpm_requests {
+> +	pm8226-regulators {
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
-index 19c2f4314741..63cc41cd0119 100644
---- a/Documentation/devicetree/bindings/arm/qcom.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-@@ -54,6 +54,8 @@ description: |
-         sdm845
-         sdx55
-         sdx65
-+        sm4250
-+        sm6115
-         sm6125
-         sm6350
-         sm7225
-@@ -670,6 +672,11 @@ properties:
-               - xiaomi,polaris
-           - const: qcom,sdm845
- 
-+      - items:
-+          - enum:
-+              - oneplus,billie2
-+          - const: qcom,sm4250
-+
-       - items:
-           - enum:
-               - sony,pdx201
--- 
-2.37.2
+I don't think this passes bindings. Run `make dtbs_check`. I don't want
+to keep accepting DTS which does not validate and none of submiters want
+to fix this...
 
+Rebase on top of:
+https://lore.kernel.org/linux-devicetree/20220901085609.95624-1-krzysztof.kozlowski@linaro.org/T/#t
+
+Node name should be "regulators".
+
+Be sure your DTS has 0 warning.
+
+Best regards,
+Krzysztof
