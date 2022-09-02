@@ -2,85 +2,89 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71252ECAAA1
-	for <phone-devel@archiver.kernel.org>; Fri,  2 Sep 2022 05:20:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF4ADC54EE9
+	for <phone-devel@archiver.kernel.org>; Fri,  2 Sep 2022 08:42:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232221AbiIBFU4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 2 Sep 2022 01:20:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55336 "EHLO
+        id S235844AbiIBIma (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 2 Sep 2022 04:42:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbiIBFUz (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 2 Sep 2022 01:20:55 -0400
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD5618B99F;
-        Thu,  1 Sep 2022 22:20:54 -0700 (PDT)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-11e9a7135easo2312600fac.6;
-        Thu, 01 Sep 2022 22:20:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=0M41M0g1zyDSIMdScglkRscM+P47aJdZuPKP2PAMAu4=;
-        b=LpvtAYXIKuu3kw+LtR4zhkgYLFUkZqWLGU/67/nlDDrm2AvFlmHW5OHimX8VzX3APi
-         Nheq0VtWCVHU0jARIwdKfBHdZzur1b+1STrXBZIbnoDo7Ir53kEC12LZDCgSGgqGvZ8i
-         ha/uSmIrGjPYNbvLB+F6/o8fvLM0gBFJW07XDPS1NmMOQoH09rDFfGx03TqcZfbdThoc
-         Bb9AD2vF+TWf9k+eQqGAfeE7fV1BjX+KGtFhsZ/FJQOkCgKPKqOf58bZUle7t9TUrpKZ
-         Z1AphlNaCYC2PAuUPh/tHvn1eUX3FZyEKdAkNo+i+xAhIUeuQ7cRPNAHAumimkaMl3UK
-         jvJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=0M41M0g1zyDSIMdScglkRscM+P47aJdZuPKP2PAMAu4=;
-        b=6315xker9UT4LAQYB4Spspp9P3r/YKlDDV+fQnax0RE2A7W88ooIh3VQXprchZnxR+
-         z4Q+62CfkJG28GPf/r/DA3r+nq0YdnYxhHggiwvcFpN0QF+PPyPnI2sStAV9uZwg8ZsO
-         +XoNzPwDlZdf5ArcYqTHAMIKYPvgwWgRxj68r+k8ryGdObGxccnIR+egVwZivspChHCJ
-         SD7Myv/5/Ap1ujJ87RTE7MNbl2vo1O/ux8QUZfsxkuY2dz06k12vNdGOkwnwj6t17s8c
-         JuAeklnE/f556x5eiOg1LLZlZoYbo82hkOfYBGYNFLeu7BeqVwquncPJ5y4OgoZ3RtLl
-         Wgow==
-X-Gm-Message-State: ACgBeo094VcGz4CzKFQnS7AKf33dpxhSDo+2HQusfJxYFnvi2BQiqNkz
-        E07ilAKovPAXNTOJsZ+tcYHEqpRRsjm1jlI/1gqG9xWdb7M=
-X-Google-Smtp-Source: AA6agR6v9u9AxByCM705v0HqN1vsVuwmslKTgJMUvjgORtAELl7ikO4rppUmnfXm9qvfFTdKl6p6VJdovERU2aZcICE=
-X-Received: by 2002:aca:a8d4:0:b0:343:3d2b:dbb8 with SMTP id
- r203-20020acaa8d4000000b003433d2bdbb8mr1150456oie.85.1662096053969; Thu, 01
- Sep 2022 22:20:53 -0700 (PDT)
+        with ESMTP id S235817AbiIBIm3 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 2 Sep 2022 04:42:29 -0400
+Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A6829BB6B;
+        Fri,  2 Sep 2022 01:42:28 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id ABA96DFD85;
+        Fri,  2 Sep 2022 01:42:27 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id F4VVKcahdboP; Fri,  2 Sep 2022 01:42:26 -0700 (PDT)
+From:   Martin Kepplinger <martin.kepplinger@puri.sm>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
+        t=1662108146; bh=Z8NQnvM4CE3GkQthavouozUDfjffo74DWtzt1eBxpmw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=kblbKHDINMmX4v4IjKrOBZYvKPPFTFbdoXfd+FuiZ5ZvJiR6OHdL+PZATJj1tpGAt
+         MOJ/kyFDTDzMLfjrpZ1Q5ik2wqmpbxAc1AIlkQAmnTJNSZsiC7IXVONyDopHxq/jFK
+         x3CBlS++W36BhsgChogDFpwX0B/81PVfeyCG7YZX4Bvw1vfpWnXoMZGi+sJzsTPj+J
+         GSv4unDF9PTbQuamKJIYfscZVRZyvmBxCaD0zhm9BJeoQwbbvx/t/6DcSWSgxYhcq3
+         u5J0u4nABcwbAoIIdJGsUCvade7qOzhk2adyQ3uNuUWoq/VAVjeUcKlFfkVBgmAMOY
+         4Zpu46q0eaIjg==
+To:     festevam@gmail.com, shawnguo@kernel.org
+Cc:     martin.kepplinger@puri.sm, devicetree@vger.kernel.org,
+        kernel@pengutronix.de, kernel@puri.sm, krzk@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        robh@kernel.org
+Subject: [PATCH v2 0/6] arm64: dts: imx8mq-librem5: phone DT updates
+Date:   Fri,  2 Sep 2022 10:42:10 +0200
+Message-Id: <20220902084216.1259202-1-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
-References: <20220828205723.20834-1-joelselvaraj.oss@gmail.com>
- <20220828205723.20834-2-joelselvaraj.oss@gmail.com> <d9b5e312-4999-4410-03be-299e95bbe8b2@linaro.org>
-In-Reply-To: <d9b5e312-4999-4410-03be-299e95bbe8b2@linaro.org>
-From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
-Date:   Fri, 2 Sep 2022 00:20:42 -0500
-Message-ID: <CAF+P-ZoAooPFEK8dueEnQg5d5+K4QRmj-W0WsjyUV-btgBfYnw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] dt-bindings: arm: qcom: update beryllium
- compatible property
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Krzysztof Kozlowski,
+hi Shawn and all interested,
 
-> The board compatibles are not that important for ABI yet this creates
-> precedence, so I am against it. Simple renaming should not be a reason
-> to change compatibles.
+This is another small number of patches that enables more devices
+or features found on the Librem 5 phone.
 
-So what should I do now?
-1. Retain "xiaomi,beryllium" for tianma and "xiaomi,beryllium-ebbg" for ebbg?
-2. If adding new compatible is not an issue, can I do
-"xiaomi,beryllium-tianma", "xiaomi,beryllium", "qcom,sdm845" - for tianma
-"xiaomi,beryllium-ebbg", "xiaomi,beryllium", "qcom,sdm845" - for ebbg
+thank you,
 
-Kindly let me know if any other possible solution is present.
+                               martin
 
-Thank you,
-Joel Selvaraj
+revision history
+----------------
+v2: (thank you Krzysztof)
+* make led node names generic
+* add a mipi-csi syntax fix
+
+v1:
+https://lore.kernel.org/phone-devel/20220831080301.1092737-1-martin.kepplinger@puri.sm/
+
+
+
+Angus Ainslie (2):
+  arm64: dts: imx8mq-librem5: add USB type-c properties for role
+    switching
+  arm64: dts: imx8mq-librem5: add usb-role-switch property to dwc3
+
+Guido Günther (1):
+  arm64: dts: imx8mq-librem5: add RGB pwm notification leds
+
+Martin Kepplinger (2):
+  arm64: dts: imx8mq-librem5: describe the voice coil motor for focus
+    control
+  arm64: dts: imx8mq-librem5: fix mipi_csi description
+
+Sebastian Krzyszkowiak (1):
+  arm64: dts: imx8mq-librem5: Add bq25895 as max17055's power supply
+
+ .../boot/dts/freescale/imx8mq-librem5.dtsi    | 40 ++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 2 deletions(-)
+
+-- 
+2.30.2
+
