@@ -2,230 +2,85 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ABC65ECAAD1
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Sep 2022 16:20:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71252ECAAA1
+	for <phone-devel@archiver.kernel.org>; Fri,  2 Sep 2022 05:20:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234368AbiIAQUg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Sep 2022 12:20:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34544 "EHLO
+        id S232221AbiIBFU4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 2 Sep 2022 01:20:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232823AbiIAQUZ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Sep 2022 12:20:25 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85BE52F64A
-        for <phone-devel@vger.kernel.org>; Thu,  1 Sep 2022 09:20:23 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id w8so16109835lft.12
-        for <phone-devel@vger.kernel.org>; Thu, 01 Sep 2022 09:20:23 -0700 (PDT)
+        with ESMTP id S229514AbiIBFUz (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 2 Sep 2022 01:20:55 -0400
+Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD5618B99F;
+        Thu,  1 Sep 2022 22:20:54 -0700 (PDT)
+Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-11e9a7135easo2312600fac.6;
+        Thu, 01 Sep 2022 22:20:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=m+FhuVC9zsmBuPqczl82iep7EQ0hRYQKXXieJt5VGZg=;
-        b=dcWnJRXDU4JrUZbK/QiyBi/v6boEp5WzmqeDKimaZ8Dm4sQC/tY9/GHF6Dawf1FLuw
-         LvJO3UXXbRBGsdxkWdMUmFtTdLKgALBmHeF7uYdTPmrSj9dBdMo84GWuW/wC2MRdmBKH
-         Iq+9zKsJht1IK15bGi7xc0px+D+WIDXOT+O5F8NgUIFSKarDyfKGRyyf7JH2jrxMYXtT
-         qj5WzBq8f7Z2mFVIHSQM4ILDmKDKbhCTfG5MpCza5Em5vbQ0bBS4xYQ6jDR2Gfvw6TzA
-         Y/a7EElMMLP14jP9wVCn1tW8OkTJr+8leMQkyVwcPlGAjoiqqDKN+XocCw8asbT8CJMb
-         YDBA==
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=0M41M0g1zyDSIMdScglkRscM+P47aJdZuPKP2PAMAu4=;
+        b=LpvtAYXIKuu3kw+LtR4zhkgYLFUkZqWLGU/67/nlDDrm2AvFlmHW5OHimX8VzX3APi
+         Nheq0VtWCVHU0jARIwdKfBHdZzur1b+1STrXBZIbnoDo7Ir53kEC12LZDCgSGgqGvZ8i
+         ha/uSmIrGjPYNbvLB+F6/o8fvLM0gBFJW07XDPS1NmMOQoH09rDFfGx03TqcZfbdThoc
+         Bb9AD2vF+TWf9k+eQqGAfeE7fV1BjX+KGtFhsZ/FJQOkCgKPKqOf58bZUle7t9TUrpKZ
+         Z1AphlNaCYC2PAuUPh/tHvn1eUX3FZyEKdAkNo+i+xAhIUeuQ7cRPNAHAumimkaMl3UK
+         jvJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=m+FhuVC9zsmBuPqczl82iep7EQ0hRYQKXXieJt5VGZg=;
-        b=hPJqmm6VkeiEgl95JZZ7eOZKEmkEOaiwSGr4FcloI2GUOgJYmLrO05ZMoWQxt2vhNp
-         LyyruHAlfPgjBAEYU+gHqgDMFJ+kI1CuHyeuzojRc2UEzuycVTq32rRLbYxlZMW7nr9d
-         gZtluyxcYXNHHwCGBIn5Hz59ZAf7Ic6XWz7gzSOew8NvCBSwZFiapq3vqMa0LcFbfQby
-         JNHbKb2aDyXZTg7TtnbRaHUh0PGnIH1RWUA4T6O3HHM+jrZS3ZfKoU+aJ4D6kwMfdvqp
-         ZRlmJod87NzYhSZvFWnHpkgAiIrO/Gyee6uddqixpt8coliFhWxmqNu6uX9e9q2t1D9D
-         4+ow==
-X-Gm-Message-State: ACgBeo2MXeppLJP2pv+pvBzVAruJLkkXnQcLySInn0/kaBphdULSuX5+
-        OoykqNoXCIfG3qsDvG5GVYhnzQ==
-X-Google-Smtp-Source: AA6agR7qj8UkAxIk7Zimk3Lo5Lwb7oBdWKWEyGYjaKKWTeBaWKdcQuL65WY5fr/iOVNtxuivNVxKow==
-X-Received: by 2002:a05:6512:3b87:b0:494:9a8d:f74f with SMTP id g7-20020a0565123b8700b004949a8df74fmr1292105lfv.8.1662049221843;
-        Thu, 01 Sep 2022 09:20:21 -0700 (PDT)
-Received: from [192.168.28.124] (balticom-73-99-134.balticom.lv. [109.73.99.134])
-        by smtp.gmail.com with ESMTPSA id y20-20020a05651c107400b00261cd70e41asm1850937ljm.32.2022.09.01.09.20.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Sep 2022 09:20:20 -0700 (PDT)
-Message-ID: <ccd72f2b-911e-c4fd-7bbc-ce21e5a34c68@linaro.org>
-Date:   Thu, 1 Sep 2022 19:20:19 +0300
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=0M41M0g1zyDSIMdScglkRscM+P47aJdZuPKP2PAMAu4=;
+        b=6315xker9UT4LAQYB4Spspp9P3r/YKlDDV+fQnax0RE2A7W88ooIh3VQXprchZnxR+
+         z4Q+62CfkJG28GPf/r/DA3r+nq0YdnYxhHggiwvcFpN0QF+PPyPnI2sStAV9uZwg8ZsO
+         +XoNzPwDlZdf5ArcYqTHAMIKYPvgwWgRxj68r+k8ryGdObGxccnIR+egVwZivspChHCJ
+         SD7Myv/5/Ap1ujJ87RTE7MNbl2vo1O/ux8QUZfsxkuY2dz06k12vNdGOkwnwj6t17s8c
+         JuAeklnE/f556x5eiOg1LLZlZoYbo82hkOfYBGYNFLeu7BeqVwquncPJ5y4OgoZ3RtLl
+         Wgow==
+X-Gm-Message-State: ACgBeo094VcGz4CzKFQnS7AKf33dpxhSDo+2HQusfJxYFnvi2BQiqNkz
+        E07ilAKovPAXNTOJsZ+tcYHEqpRRsjm1jlI/1gqG9xWdb7M=
+X-Google-Smtp-Source: AA6agR6v9u9AxByCM705v0HqN1vsVuwmslKTgJMUvjgORtAELl7ikO4rppUmnfXm9qvfFTdKl6p6VJdovERU2aZcICE=
+X-Received: by 2002:aca:a8d4:0:b0:343:3d2b:dbb8 with SMTP id
+ r203-20020acaa8d4000000b003433d2bdbb8mr1150456oie.85.1662096053969; Thu, 01
+ Sep 2022 22:20:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH 14/14] arm64: dts: qcom: sm4250: Add support for
- oneplus-billie2
-Content-Language: en-US
-To:     Iskren Chernev <iskren.chernev@gmail.com>,
+References: <20220828205723.20834-1-joelselvaraj.oss@gmail.com>
+ <20220828205723.20834-2-joelselvaraj.oss@gmail.com> <d9b5e312-4999-4410-03be-299e95bbe8b2@linaro.org>
+In-Reply-To: <d9b5e312-4999-4410-03be-299e95bbe8b2@linaro.org>
+From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
+Date:   Fri, 2 Sep 2022 00:20:42 -0500
+Message-ID: <CAF+P-ZoAooPFEK8dueEnQg5d5+K4QRmj-W0WsjyUV-btgBfYnw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] dt-bindings: arm: qcom: update beryllium
+ compatible property
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Kees Cook <keescook@chromium.org>,
-        Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org
-References: <20220901072414.1923075-1-iskren.chernev@gmail.com>
- <20220901072414.1923075-15-iskren.chernev@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220901072414.1923075-15-iskren.chernev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 01/09/2022 10:24, Iskren Chernev wrote:
-> Add initial support for OnePlus Nord N100, based on SM4250. Currently
-> working:
-> - boots
-> - usb
-> - buildin flash storage (UFS)
-> - SD card reader
-> 
-> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
-> ---
->  .../boot/dts/qcom/sm4250-oneplus-billie2.dts  | 240 ++++++++++++++++++
->  1 file changed, 240 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts b/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
-> new file mode 100644
-> index 000000000000..c1cf0288aa5f
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
-> @@ -0,0 +1,240 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (c) 2021, Iskren Chernev <iskren.chernev@gmail.com>
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include "sm4250.dtsi"
-> +
-> +/ {
-> +	model = "OnePlus Nord N100";
-> +	compatible = "oneplus,billie2", "qcom,sm4250";
-> +
-> +	/* required for bootloader to select correct board */
-> +	qcom,msm-id = <0x1a1 0x10000 0x1bc 0x10000>;
-> +	qcom,board-id = <0x1000b 0x00>;
-> +
-> +	aliases {
-> +	};
-> +
-> +	chosen {
-> +		bootargs = "earlycon=tty0 console=tty0 clk_ignore_unused pd_ignore_unused";
+Hi Krzysztof Kozlowski,
 
-No bootargs. They are not suitable for wide-use.
+> The board compatibles are not that important for ABI yet this creates
+> precedence, so I am against it. Simple renaming should not be a reason
+> to change compatibles.
 
-> +
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		stdout-path = "framebuffer0";
-> +
-> +		framebuffer0: framebuffer@9d400000 {
-> +			compatible = "simple-framebuffer";
-> +			reg = <0 0x5c000000 0 (1600 * 720 * 4)>;
-> +			width = <720>;
-> +			height = <1600>;
-> +			stride = <(720 * 4)>;
-> +			format = "a8r8g8b8";
-> +			status= "okay";
+So what should I do now?
+1. Retain "xiaomi,beryllium" for tianma and "xiaomi,beryllium-ebbg" for ebbg?
+2. If adding new compatible is not an issue, can I do
+"xiaomi,beryllium-tianma", "xiaomi,beryllium", "qcom,sdm845" - for tianma
+"xiaomi,beryllium-ebbg", "xiaomi,beryllium", "qcom,sdm845" - for ebbg
 
-No need for status in new nodes.
+Kindly let me know if any other possible solution is present.
 
-> +		};
-> +	};
-> +
-> +	reserved-memory {
-> +		mtp_mem: memory@cc300000 {
-> +			reg = <0x00 0xcc300000 0x00 0xb00000>;
-> +			no-map;
-> +		};
-> +
-> +		param_mem: memory@cc200000 {
-> +			reg = <0x00 0xcc200000 0x00 0x100000>;
-> +			no-map;
-> +		};
-> +
-> +		bootloader_log_mem: memory@5fff7000 {
-> +			reg = <0x00 0x5fff7000 0x00 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		ramoops@cbe00000 {
-> +			compatible = "ramoops";
-> +			reg = <0x0 0xcbe00000 0x0 0x400000>;
-> +			record-size = <0x40000>;
-> +			pmsg-size = <0x200000>;
-> +			console-size = <0x40000>;
-> +			ftrace-size = <0x40000>;
-> +		};
-> +	};
-> +};
-> +
-> +&usb3 {
-> +	status = "okay";
-> +};
-> +
-> +&hsusb_phy {
-> +	status = "okay";
-
-Status is the last property. Also in other places.
-
-> +	vdd-supply = <&vreg_l4a>;
-> +	vdda-pll-supply = <&vreg_l12a>;
-> +	vdda-phy-dpdm-supply = <&vreg_l15a>;
-> +
-> +};
-> +
-> +&tlmm {
-> +	gpio-reserved-ranges = <14 4>;
-> +};
-> +
-> +&sdhc_2 {
-> +	status = "okay";
-> +	vmmc-supply = <&vreg_l22a>;
-> +	vqmmc-supply = <&vreg_l5a>;
-> +
-> +	cd-gpios = <&tlmm 88 GPIO_ACTIVE_HIGH>;
-> +
-> +	pinctrl-names = "default", "sleep";
-> +	pinctrl-0 = <&sdc2_state_on>;
-> +	pinctrl-1 = <&sdc2_state_off>;
-> +};
-> +
-> +&ufs_mem_hc {
-> +	status = "okay";
-> +	vcc-supply = <&vreg_l24a>;
-> +	vcc-max-microamp = <600000>;
-> +	vccq2-supply = <&vreg_l11a>;
-> +	vccq2-max-microamp = <600000>;
-> +};
-> +
-> +&ufs_mem_phy {
-> +	status = "okay";
-> +	vdda-phy-supply = <&vreg_l4a>;
-> +	vdda-pll-supply = <&vreg_l12a>;
-> +	vddp-ref-clk-supply = <&vreg_l18a>;
-> +};
-> +
-> +&rpm_requests {
-> +	pm6125-regulators {
-
-regulators
-
-> +		compatible = "qcom,rpm-pm6125-regulators";
-> +
-
-
-Best regards,
-Krzysztof
+Thank you,
+Joel Selvaraj
