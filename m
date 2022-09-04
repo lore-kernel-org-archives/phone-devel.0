@@ -2,88 +2,131 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A268ECAAD3
-	for <phone-devel@archiver.kernel.org>; Sun,  4 Sep 2022 19:15:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84B07C6FA82
+	for <phone-devel@archiver.kernel.org>; Sun,  4 Sep 2022 21:55:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234332AbiIDTPr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 4 Sep 2022 15:15:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51084 "EHLO
+        id S235494AbiIDVzS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 4 Sep 2022 17:55:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231225AbiIDTPq (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 4 Sep 2022 15:15:46 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA0CB2AC46
-        for <phone-devel@vger.kernel.org>; Sun,  4 Sep 2022 12:15:44 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id g7so10358519lfe.11
-        for <phone-devel@vger.kernel.org>; Sun, 04 Sep 2022 12:15:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=yxLVewTHSv4Xq6/5Z/Fr5zJXfSu3q0A9v6Ujj4sysNo=;
-        b=gY7oQffKOe8RLllBIFsceNq0mOknLJBf/z9s8U52PVRc5LJse3DXKRBtSfkYwEEM6A
-         mEzXk63I3xm0C8ZZcbbqdwrlhFY4DcmejpdHugVGE4n8DETSxa56NC8xN0rhKknCZ6Cz
-         Hh6ucgNB5VnEAJjLLLlCvWPFYRT9X0gHd/TnYsAx1L7mEPnpUDJHvEy58coAla2yGZsO
-         c2mAkNQywRzRx0WMBX7xNWE+kdU9j9kk1vl6j3+Rs/qNLb1EuLfjMv0ZQPWfpCm743RZ
-         jj0rFNSHMCSWeljZbTxf4qGS9cf9xMWIeFkVmGTlr6nlB6hstfFtcO6Ja2XbPe3Ijy2D
-         gLqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=yxLVewTHSv4Xq6/5Z/Fr5zJXfSu3q0A9v6Ujj4sysNo=;
-        b=60msNsyZxD5hePaXIQJO9pdqIvzRGA4+W4oUtyJ15Ge10foy/Fn7vJDYqnTYLQErhw
-         tfi4RB8d+t/KhPlasYAISjD0RfVOEJwt1EqWvHlcV9qD667pNrhZSJdvOnYqryRAw7CT
-         eLqw4vl1UmT0wLuKjMxecGpyJ06OK20N006KU3KnuzoIEpErUeG4UrASJ/mmCc3AGV7b
-         gF0vlVGrdOSWdEqzC231DroGlQCCtSw2Nkac3VsyjgF6jNBIWwnjzx4ZVtcBrQqCCZII
-         nNK8OoAbC7jTF5kNuiwN7SeWbHoGxyW9USwTyKbN7mJ7uTcD5c3pSbwOW9GG9InjnFDG
-         iBvQ==
-X-Gm-Message-State: ACgBeo1Y0D24ZT2ec9ITDOZOGQKEZBi+5ujQMJZGKAjmo1ZSdgFG2gX0
-        OF4BlSIzyilbnUkk0FBxG8uzJw==
-X-Google-Smtp-Source: AA6agR76U4ZjwwGZKGOS/A6eRNqmnQgw14s80bPnLr3eF672TCAKb8bB7e9alAhcpm059HJ4F7/IIQ==
-X-Received: by 2002:a05:6512:1315:b0:492:cbc8:e10d with SMTP id x21-20020a056512131500b00492cbc8e10dmr14598407lfu.41.1662318943152;
-        Sun, 04 Sep 2022 12:15:43 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id a27-20020a05651c031b00b00263630ab29dsm1093876ljp.118.2022.09.04.12.15.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Sep 2022 12:15:42 -0700 (PDT)
-Message-ID: <8c845d02-c63f-9b1c-25af-10fe705717a2@linaro.org>
-Date:   Sun, 4 Sep 2022 22:15:40 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v2 3/9] dt-bindings: nvmem: Add SoC compatible for sm6115
-Content-Language: en-US
-To:     Iskren Chernev <iskren.chernev@gmail.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        with ESMTP id S235468AbiIDVyy (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 4 Sep 2022 17:54:54 -0400
+Received: from sonic302-21.consmr.mail.ir2.yahoo.com (sonic302-21.consmr.mail.ir2.yahoo.com [87.248.110.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A75DD32EF8
+        for <phone-devel@vger.kernel.org>; Sun,  4 Sep 2022 14:52:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1662328311; bh=4DbF5I4FMpsX6B0npnQt8sXd394gUJ0bbp+vnEYLjnY=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=Y05w6rmeElLAqwnScyLarYu9mFw1T6zokyB9pxLQZL0mhsBCH9HUTckqJXKASJUTDAPXJYiOMZ/hd1h1MqHb33ktdp6k7zLI8zSjyfbGQod6DZY2aoouOm/tfQQ2Q0t57bQzMU/dx9tz+1oAFOpkweCK1V6z/suRSf4hOVVggrmNIXyGFUVBZ83MnFVGrWn7Z/1lLWvCCf7APuGqk/8wCHQCfRb4DHKpSI/xcyUcn7L+lyy6Q3wUZcpoC1IP2VSm4le8m7QgTb/if+NMdof8WY+iUdI5+TNourg+6Y77Mumo3LyZgMujo89eVb01tDIGd+hTM388O2nsc/ijQOmyKw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1662328311; bh=GJwfKxP0om793cxVLs6tIH2jsB14VA8HTsL8S/6ey6B=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=BhCUOgpzNQVJFwJw/dJOh1iDCH+plPrrkZnANl2DlIHDlteoVNbSAXJvHiynI2pbTovQdiEPx3bDZuxL2oo61oXsJxfO2H9MPerRFfgTVVoDMNrTZ+yKvsYHCdHoBArleyBVVne34pj7kKfxoIKPaE61cxuAIU7ftPNgdfJBCWfkAA3fB/6nh757AcKsdjiso8DDT+1UxEO02uG+gzzyLXrzj7BjDOss42G/IhZnBOZBrZ8eTwttRUuSZRsVO5J81wtaib03w+hw/p7mXug2bDlZBefD+wvh9+BqbxPGb+kkGVapld3fgWprornja1hBSoYmLf2YoFjrLLv1i/TVdQ==
+X-YMail-OSG: LrPAme0VM1kvTGXYpe3whBa5F7y2qnNgZ4OVPiCcl1LBcGa_TmByWJLGlrukApx
+ OQuMdK1s4TKfpgsX_E__o8SvHNqDU1nTQCwZ5Cf9qdEATMetWtRe_.vriZ0TdOi1fhsfhOwpFFd7
+ Kwe8tpXw6dxFF6BJnOF6TdU27bjLTLHf_3HGUQrP_A2pK1Jv4JCMjrpZ0ppRPPvdZduJhis_8Ews
+ eh8nhUHf1Mx2Nf3KbzGWMd.22MlAo3lIa5Fv7TvQfAEaZPTgjVIwTOgjiGdRpmnetRL9xYCd_L0I
+ wF9NtJhmeORljfM5rI3.C3w4l5v6HBA4b4v2vjNiRycRhiNF3SahHx70KxlroNJpxE2cAg5nKste
+ hJkF4Yi3Ac8aDiAmuCC2Ql15eWK6iLSabeYaIatwZyHqK9u7AGePg_DLefskSCUttymUnb0NL4xy
+ A7OGpThfx9kSzHy3sXa79UoQV7sntRFU0KDGW3jW8QxYH_qLYOE0YPS1QwfSljB21XqWTknIGzlw
+ DIOdnpOKAfUMa36yv_lWeRF1pKkQnwvY5t7hiE89LEqmYaR7YsjWhXpZC9JLLuy_EM7Ob8RAw4uQ
+ KTDD58i629S9zCGnrITxq2jDHiX4xoErMNjacJ7KL.L2Un3_XGytYp5fNxX6OQXW_mNWDXk2M7y_
+ 486MmeXH3Cb8jSIGJnAxpD63zNrsVLRf__binBgJgkA8OX.G4TPHD7axZmWytyVFTWsBdaIDVsVY
+ 87UWksrLxsvy8tvs8WdrCNK0IP3dsTGbRt_u5nJhWE2BOLrkeOwYELT2FogbkChj_LRVispjqhCf
+ beIqV5C9grsKXQ067BpMbjwzczhMZK8ra1eH50xkp0cPaNyQDXGvjUIfDidm8P7uBDpIK3CjGWfO
+ j_v4QEqUaYZJZ2l1GX2lvMCMbd4wqhEJL9uygMtmDpIKgEzpzNd9BdHSMKiEJ.R4wc5f4Zxx4c.A
+ u_8a_pRLg45TC6oaYtrye_2CmVl69jMep3umiyBxYaWlV9MuUEvUcTeXd1cOC9KCpzNuIyUpmyd2
+ IfbgxyJ7GGtY5ePDt4hswIoOJ.rKjd151prk2bK7G14A4wykwDwLxJrQZhun_a7c7YOeBalM7J6s
+ AbSu7tg0YYOK03qrLJaBaLBvc6psOLXLMZuUZlDdw.hrG3Q4BwutZn1eg.90B5vXEfIHNO_I1jBP
+ 8Zg8YNeWAbE8vlvwoWYhd.r9wKGhIUrnZ9YrWQPufLeJyCr7XbrpzA3Fhd9hdl6j7kSPCfu79xzN
+ 1RFVtuLPlvhMtpNUM6fvND9av1P8qZRc5PHt4djtSzZv1OdbIc_CEy91Ybh3I7laKXS9SVhpnOQf
+ vvJmH._CyiSvi1MwI_TaxrfX4FCppydlIOLkn8AGUOcCYpB4IxcbBsOqjMCU7qkvoOcbGvE7pZTs
+ WTLGMzHVIih8Wuk621Xt1aXFS5xPE2RchBLjWu10._sDreE8ENthVI_60v1caud3sYkzPww0RBTj
+ kk73wHK_K4LxDA14amiDYAAApo6cSS3kp61fFG8DcY6gOf5chj9t0Bhl1L3TtMW2lTQkWUfz3O7U
+ aycjFk.5PVlY7orEDh66Z_tsGH8BpfxsSTnHhndWL8KOOJjziFr2uPuq6YUG1viHZRLi87rKAQbe
+ jN2FzH59tOXjQz8cJcFStbxfv74fGyoX9fCpxWnO0oiR42dVrZvvUx9xc7AaqJvjAqR05CmOrlDQ
+ 046vFWd16OvnuLnmiEFPsxHPLhiVZJruQ6WDBNmslf1SSEfq5Y1nqvu1fPf_DCqM4fw7RFMZX6xy
+ n5mWb.oVDR9xsc_EAgPw7PW.Pj8bZMkk_BdsSqwW.G642Wl78Ie8NB8zKY.NPFPGJg6Zm9BYhBEj
+ 6byKPdTpOu7cGsLyJK0C26vztu_L2EaEJUdJIlJvJoMjYcQMgrIa7SQVYN0LjE5T.nmKRV8oWKWz
+ 773hL8YCsCMT6xwy7MNhmHzjjB0wiDnnGjdsI0imDBU70LrUVgb1HP916cAo_THcKt2JWkc0KrPC
+ Gzqzo2QKu4dZs8QYDxHW_LBVXZ5ZNYAi5u2bfU.Bpc.o7CdEeCcgqzlnV1qUVniUDWzzYPZxtaDp
+ 8K.fS9ZQTf94rDJKlkR6ttaAZPbIdL6EbdoHXoaOADpcdUg.W2sqg3bKD5g02kAY2oJOpwldMRU_
+ ZCe4n2yb0.1yCbwFABxujEZD7q1uE742D4i8gCTuUdlVB._9X4wb2YNdQ_4bgje8uXpwYJlzOkBQ
+ kM4VgXRYR32CHTNvsRX7xMEoNZ0zIqW.9dL9JMrllEntPZlgkkt2kwBjJmiQLh49U5bEyXdn_1t.
+ TYXdKk9Zj7Ujs
+X-Sonic-MF: <jahau@rocketmail.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ir2.yahoo.com with HTTP; Sun, 4 Sep 2022 21:51:51 +0000
+Received: by hermes--canary-production-ir2-85867b7b87-hqzcl (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID a523ac8b71248b793952ea3fd193d9a7;
+          Sun, 04 Sep 2022 21:51:50 +0000 (UTC)
+From:   Jakob Hauser <jahau@rocketmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Stephan Gerhold <stephan@gerhold.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-kernel@vger.kernel.org
-References: <20220903174150.3566935-1-iskren.chernev@gmail.com>
- <20220903174150.3566935-4-iskren.chernev@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220903174150.3566935-4-iskren.chernev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Jakob Hauser <jahau@rocketmail.com>
+Subject: [PATCH] arm64: dts: qcom: msm8916-samsung-serranove: Add magnetometer
+Date:   Sun,  4 Sep 2022 23:49:35 +0200
+Message-Id: <20220904214935.31032-1-jahau@rocketmail.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+References: <20220904214935.31032-1-jahau.ref@rocketmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 03/09/2022 20:41, Iskren Chernev wrote:
-> Document SoC compatible for sm6115.
-> 
-> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+Add magnetometer Yamaha YAS537 to the DeviceTree of samsung-serranove.
 
+The YAS537 variant was recently added to the Yamaha YAS magnetometers
+driver [1].
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In the DeviceTree of samsung-serranove for the Android kernel, there is
+unfortunately no information on interrupts or pinctrl [2].
 
+In the Android kernel driver for magnetometer Yamaha YAS537, there is a
+device-specific matrix to correct an ellipsoid shape of the measure values
+into a sphere shape [3]. This could be converted and applied to a mount-matrix.
+However, the current state of the mainline Yamaha YAS537 driver needs
+post-process calibration in userspace anyway, as it lacks a formula to center
+the measure values around zero. The correction of the ellipsoid into a sphere
+can be done in the post-process calibration as well.
 
-Best regards,
-Krzysztof
+A mount-matrix is needed nonetheless. When putting samsung-serranove flat on
+a table in portrait orientation heading north, the Yamaha YAS537 magnetometer
+axes natively point X+ to north, Y+ to east and Z+ into the ground, which
+corresponds to a common way to define the Earth's magnetic field coordinate
+system [4]. According to the IIO definition, it should be Y+ to north, X+ to
+east and Z+ upwards [5], which corresponds to a common device coordinate system
+and eases sensor fusing.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/iio/magnetometer/yamaha-yas530.c?id=65f79b501030678393eae0ae03d60a8151fbef55
+[2] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-eur-r03.dtsi#L318-L321
+[3] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/drivers/iio/magnetometer/yas_mag_drv-yas537.c#L105-L106
+[4] https://en.wikipedia.org/wiki/Earth%27s_magnetic_field#Characteristics
+[5] https://github.com/torvalds/linux/blob/v5.19/Documentation/devicetree/bindings/iio/mount-matrix.txt#L93-L126
+
+Cc: Stephan Gerhold <stephan@gerhold.net>
+Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+---
+ arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+index 439e89cf7878..bbd6bb3f4fd7 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+@@ -210,6 +210,15 @@ imu@6b {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&imu_irq_default>;
+ 	};
++
++	magnetometer@2e {
++		compatible = "yamaha,yas537";
++		reg = <0x2e>;
++
++		mount-matrix =  "0",  "1",  "0",
++				"1",  "0",  "0",
++				"0",  "0", "-1";
++	};
+ };
+ 
+ &blsp_i2c4 {
+-- 
+2.35.1
+
