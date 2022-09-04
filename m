@@ -2,59 +2,60 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73639C54EE9
-	for <phone-devel@archiver.kernel.org>; Sun,  4 Sep 2022 19:10:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B3FBECAAD3
+	for <phone-devel@archiver.kernel.org>; Sun,  4 Sep 2022 19:14:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229702AbiIDTKS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 4 Sep 2022 15:10:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45518 "EHLO
+        id S234559AbiIDTOr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 4 Sep 2022 15:14:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234373AbiIDTKR (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 4 Sep 2022 15:10:17 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 977F717E22
-        for <phone-devel@vger.kernel.org>; Sun,  4 Sep 2022 12:10:15 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id s15so7271848ljp.5
-        for <phone-devel@vger.kernel.org>; Sun, 04 Sep 2022 12:10:15 -0700 (PDT)
+        with ESMTP id S234419AbiIDTOq (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 4 Sep 2022 15:14:46 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 968AC13E87
+        for <phone-devel@vger.kernel.org>; Sun,  4 Sep 2022 12:14:44 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id p16so10417787lfd.6
+        for <phone-devel@vger.kernel.org>; Sun, 04 Sep 2022 12:14:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date;
-        bh=Zg+iO2cHAZ4r3CwVknTSd9WpAQ+T+PmH9eUM+TKxTdc=;
-        b=BOb1TQqLBg3Vo9NOObXNapdN3fX1o2A47xccVzPBEh3W6eETgX0cVeJZJ+Pbu3sUUd
-         e3VT1m7M2ht2A1QeJwtWSMgFH7REHFEKHtriZLobW2N6MRbsxmSI8Qf6WkuPkS4l3kyb
-         8tXScDm6Z6GeBQ6iDmT4s1HOvBCpvagV2Jiizr64YjxGMl0jv3Z3+j+KfscEOZwqfzUy
-         Oy478r+iOEZHRIC/xZoNu719WhIlen/bWReEhsqTmZ5mEbAWLY5PmUq6FKRpQHbwdgQH
-         ezy6GprCjx7XKx5F0g81Aajc8WvDtmmxc5ZtW7U0q9dtyNQZsJDl0AYj8ZWQ4c6IS7c3
-         O4pA==
+        bh=3GXh/ns1cJ/0c/GapXMPVA54+Xh4yfj4dl+7YFfWaUY=;
+        b=wkk+uEcKDPx2YAmk7uSmpiP0cgoeu8Wq1z7ZeGpxUFA5yFBN22EgebzlDhFopcYLOj
+         1cJV6h/SrBlvUo5g2hEMsQp2f3E8Fy3u1IKNiVNHx0gntkdlmJD8AmpZqwSYfmIkQZeQ
+         HwgQLVlTap+yROtvfOo03sHgJVqnY0K5MbXkFEc3twCJXVWWBhqNGWVseli7gBHPGh1d
+         +v17mkHqE5wBDmcIpl84E9AeQZ/sTw0VptttUOBPRI9NT8nz+HPtaSVaScfu3IlQZCRt
+         FjizDrvAryJQ6Wd3yy4XkYd96uEBaZ/eyKamnEkKzCYK0aK6LtUiU8pomCHY5pmL/9oW
+         wr3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=Zg+iO2cHAZ4r3CwVknTSd9WpAQ+T+PmH9eUM+TKxTdc=;
-        b=w4pZBjUfs5os1cP1k++X0OBWgZZU06RRWnLOsHmM51IlAZqEM8MRcdPTMwOFaZR/ow
-         bHWTnm8N69FVwQNp9gJDHK220+lc3HEoWdvVPATBlap0Xs/HBb8m7mt5l3lYIyqyPsrA
-         VZTfQ7l1+ZBYqbQw958ugsocA+5pR9VQMFRYQ40NRQpwfsn7hLfpBYr56hHNXJvCXVqk
-         euluxFOtKG7M9FibPxrglMkCbbki/k7JNgTidlxDJFwRBvpsEbSysQlL93py/5aM3JBj
-         S2Wd7WinlBlvxP8EdAg6MiM2Ek596pfdqsCVnKcWqt3KM91zQOrihDFl8GhkEw1xj2/j
-         Y9Vw==
-X-Gm-Message-State: ACgBeo1QCOEPtRfgA4loXGG2rSk8N6KSQ+IhQfD/miUs3DaI8NZR5Q3K
-        kGwKHG0L9X/Naa9pgIddPlwu66ym6LSe57jevkI=
-X-Google-Smtp-Source: AA6agR4G1EVK6Vkm3ynfxZbN+nIgBnYZIWjL6IipexTk4VhVtEQ6oXIt2rHZsPBpI/X/zmGj4u3Fqw==
-X-Received: by 2002:a2e:a99b:0:b0:261:b1a1:4ee9 with SMTP id x27-20020a2ea99b000000b00261b1a14ee9mr14389646ljq.366.1662318613931;
-        Sun, 04 Sep 2022 12:10:13 -0700 (PDT)
+        bh=3GXh/ns1cJ/0c/GapXMPVA54+Xh4yfj4dl+7YFfWaUY=;
+        b=SRMtIOZuZBxw3eMBl8S4yAlEO5sNnFU3tkwL0OyBPqYkCufJsmdRz8eOEyWJvP01dB
+         2/ypvyB3ERg02d4gMnml16TUWy2lJkbpM6Zf0HuoAx3D+4t85kw89U+a3KKjCWUmxAWD
+         6dx0EiEFLt3x7PUsw8lwuXpYsjmMAjGi4AcAbvtaZRIEgmwA4DpZs3Pu/mkaqgBJLDZk
+         8tTAvAC1oNQa9tdKQEt4KhP5saNi6RiyZejuWV1GGLjVbxkzZdGRwrKbp9Pfahj26Okr
+         U9WUoh4C8XVhRGim9IZgfjcHzsLO5qa44Q8pXb6Bqh6nDNXO0DGsOEmXo2E/Y2BSU+oX
+         cwvA==
+X-Gm-Message-State: ACgBeo0NnCxY7LGvZln03eZB/XeTvd0u3oiJMxEXG4+REl7Egw1u5j0H
+        4rr196NdUmbIn7P7ThL5GzS9Kw==
+X-Google-Smtp-Source: AA6agR65rv4fXBrevKCCM1P0Gy2/g/+9ZK4R6CXmOMuFjn+F7xVJkIQ1wisP9+dZws3s8X+HDpKvrg==
+X-Received: by 2002:a05:6512:1149:b0:494:9b4f:75e5 with SMTP id m9-20020a056512114900b004949b4f75e5mr6148774lfg.236.1662318883009;
+        Sun, 04 Sep 2022 12:14:43 -0700 (PDT)
 Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id k6-20020ac257c6000000b00490b5f09973sm992560lfo.92.2022.09.04.12.10.12
+        by smtp.gmail.com with ESMTPSA id t16-20020a056512209000b0048aef1abb08sm987827lfr.297.2022.09.04.12.14.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Sep 2022 12:10:13 -0700 (PDT)
-Message-ID: <199167f2-0420-8c56-5156-35005069549d@linaro.org>
-Date:   Sun, 4 Sep 2022 22:10:11 +0300
+        Sun, 04 Sep 2022 12:14:42 -0700 (PDT)
+Message-ID: <423bc933-2049-5bf8-b0ca-7e1ddc1f5852@linaro.org>
+Date:   Sun, 4 Sep 2022 22:14:40 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.13.0
-Subject: Re: [PATCH 08/14] dt-bindings: ufs: qcom: Add sm6115 binding
+Subject: Re: [PATCH v2 2/9] dt-bindings: firmware: document Qualcomm SM6115
+ SCM
 Content-Language: en-US
 To:     Iskren Chernev <iskren.chernev@gmail.com>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -63,80 +64,29 @@ Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220901072414.1923075-1-iskren.chernev@gmail.com>
- <20220901072414.1923075-9-iskren.chernev@gmail.com>
- <7804ffbe-4e27-d8bd-dbe2-75d1323da064@linaro.org>
- <89e6a200-d9af-7263-5e09-d7d824277a30@gmail.com>
+        Robert Marko <robimarko@gmail.com>,
+        Das Srinagesh <quic_gurus@quicinc.com>,
+        linux-kernel@vger.kernel.org, Adam Skladowski <a39.skl@gmail.com>
+References: <20220903174150.3566935-1-iskren.chernev@gmail.com>
+ <20220903174150.3566935-3-iskren.chernev@gmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <89e6a200-d9af-7263-5e09-d7d824277a30@gmail.com>
+In-Reply-To: <20220903174150.3566935-3-iskren.chernev@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 03/09/2022 19:54, Iskren Chernev wrote:
+On 03/09/2022 20:41, Iskren Chernev wrote:
+> Document the compatible for Qualcomm  SM6115 SCM.
 > 
-> 
-> On 9/1/22 19:11, Krzysztof Kozlowski wrote:
->> On 01/09/2022 10:24, Iskren Chernev wrote:
->>> Add SM6115 UFS to DT schema.
->>>
->>> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
->>> ---
->>>  .../devicetree/bindings/ufs/qcom,ufs.yaml     | 26 +++++++++++++++++++
->>>  1 file changed, 26 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
->>> index f2d6298d926c..7c5f6e2e6d4c 100644
->>> --- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
->>> +++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
->>> @@ -28,6 +28,7 @@ properties:
->>>            - qcom,msm8998-ufshc
->>>            - qcom,sc8280xp-ufshc
->>>            - qcom,sdm845-ufshc
->>> +          - qcom,sm6115-ufshc
->>>            - qcom,sm6350-ufshc
->>>            - qcom,sm8150-ufshc
->>>            - qcom,sm8250-ufshc
->>> @@ -178,6 +179,31 @@ allOf:
->>>            minItems: 1
->>>            maxItems: 1
->>>
->>> +  - if:
->>> +      properties:
->>> +        compatible:
->>> +          contains:
->>> +            enum:
->>> +              - qcom,sm6115-ufshc
->>> +    then:
->>> +      properties:
->>> +        clocks:
->>> +          minItems: 8
->>> +          maxItems: 8
->>> +        clock-names:
->>> +          items:
->>> +            - const: core_clk
->>> +            - const: bus_aggr_clk
->>> +            - const: iface_clk
->>> +            - const: core_clk_unipro
->>> +            - const: core_clk_ice
->>
->> Use existing name and put it in the same place as existing variant - sdm845:
->> ice_core_clk
-> 
-> The only problem with sdm845 bindings is the presence of rx_lane1_sync_clk
-> clock. I'm guessing I could pass zeros there, because it shouldn't be used. Or
-> it could be moved to last property and then min/maxItems to guard, but that is
-> a change to something more-or-less immutable.
+> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
 
-I don't understand - what is the problem here. How presence of some
-clock affects name of other clock and its place/location in list of clocks?
+There was such patch:
+https://lore.kernel.org/all/338f2929-aa67-bf63-2d66-5de48f6af1c4@linaro.org/
+
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 
 Best regards,
