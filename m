@@ -2,108 +2,89 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F41C7ECAAD3
-	for <phone-devel@archiver.kernel.org>; Mon,  5 Sep 2022 10:55:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CAC16ECAAD5
+	for <phone-devel@archiver.kernel.org>; Mon,  5 Sep 2022 16:41:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237908AbiIEKzA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 5 Sep 2022 06:55:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38322 "EHLO
+        id S231715AbiIEQlh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 5 Sep 2022 12:41:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237972AbiIEKys (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 5 Sep 2022 06:54:48 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F78C20BC1
-        for <phone-devel@vger.kernel.org>; Mon,  5 Sep 2022 03:54:43 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id z29so12524553lfb.13
-        for <phone-devel@vger.kernel.org>; Mon, 05 Sep 2022 03:54:43 -0700 (PDT)
+        with ESMTP id S232134AbiIEQle (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 5 Sep 2022 12:41:34 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07F9560527
+        for <phone-devel@vger.kernel.org>; Mon,  5 Sep 2022 09:41:33 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id x10so9778902ljq.4
+        for <phone-devel@vger.kernel.org>; Mon, 05 Sep 2022 09:41:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date;
-        bh=3EON71xpMwuE31HszjcxT0gv8fFt5vL8HY5cDtEoyUE=;
-        b=U1rmQSpkYInIJ/w1y8qPLW9s27eUufq+xhfDRiiOgutlRZ8eSnIVG0cyxQc6PX7PZq
-         V/B/5YEQNA1Xa1SLFx3AbD1wUDkbR11eIGe5mIE2HphZxL5FwvlluUgRoscbGHUiL37I
-         90zmwQ0nZFyBBWp+VIkCARI20ma06uBcRk0nVB2kMBjRC1YgN8TXwv/73t0WQSlNKM3V
-         6v6SunHROv1+f93O7tIPgkfNKneq6bpx0SHa2I+uA8PpugEhFt2QC451keADaOsUSXDt
-         NL2E9ykTKxGL4JyXKMBdGaQqgTvkf2LJ4dVQDTmL982JmKtFoF3qZkQjiCI9aq5M683Y
-         UJzg==
+        bh=T3v5751OE2r9b+b3tuHzjTy+B6krnTRYANy87il59m8=;
+        b=EU2mK70tIhkHs+x1jaGeTlHRD8s/VFjjf6K38KN6K/L4xKJV3wDZdTIHOBCPIOO8SJ
+         JvG/ORl1RSJzYoONEHsGdKvEFVGXwf38oY8GRrtzoBjO5RL4bZKHHGeQ5jnDK8k53LCT
+         ip5XJZHZc3Dph8jqOJN8flQZzFLdYWGEcv6K4xDVKBe6p4XVhJHWG1SQFE1mCbRpAyVN
+         kXJacu0Nk7F4aZ6a7ksL/LhsYHeFrbhS0d84BN4uvYlXJfSSAYluUgE9pYvxnc3Z/PCd
+         VDzdyXroe+Z5+Wk6mSWIUu6utpmpuDtVy4gLqSEcNud8XUxi6AS+VO6uvCAlTqCReo92
+         DSOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=3EON71xpMwuE31HszjcxT0gv8fFt5vL8HY5cDtEoyUE=;
-        b=g2lEowPmitYLILssD8G+DohqryOZpmKpndivXiS0QAH6KJFv2HJdXLVGuuUdz5MW4N
-         4NxrECBcSIdwkYEUoh3hs9pdRumd+sG3P1wb2NALP9T2PPOys/w41t4P1gqia6i/UY3H
-         Wm0LDcXz1ZNTvtz9hqhK/CuXnr122NyuARwra74BtLZhvqZ5mU75QKymdBVoLvzewXqp
-         R7FS2LZanw5LnnHlSL+ouVdlCzWfE9MJynYwFfTaRa+fL7gRoL/5GywuhCr1SzuZkhpq
-         eVkJoDRnp8oLAnJs8XrLJwSQq4zyVyUppl1jo5g67/F5hu+15H27RuuINRIi+Vt7X0FE
-         HV9A==
-X-Gm-Message-State: ACgBeo14zskFwei9le+UMjqQj/hGNPP9uyBeO5Li4bzKHsNkZ46lzwmi
-        SK+XoTEhTYIZejQSmA3CDS2Sew==
-X-Google-Smtp-Source: AA6agR4HAtf2siphc2MwmgM2lBhxpekezqteaTDXFaXJ9HVvuX+dtGDD8Bie5+TFY2HMGRqAUk6zxw==
-X-Received: by 2002:a05:6512:39c6:b0:48b:9d1d:fd9c with SMTP id k6-20020a05651239c600b0048b9d1dfd9cmr17826526lfu.633.1662375281813;
-        Mon, 05 Sep 2022 03:54:41 -0700 (PDT)
+        bh=T3v5751OE2r9b+b3tuHzjTy+B6krnTRYANy87il59m8=;
+        b=0JDWqDStqluAmlaw+AaoNAhNwA5VtRYWh8Z+/sinaBf3iBKMrI6HGHFTW1O7KWXno5
+         cvVqV3uOiYMkq1tdnrJSuhw1xkS+PPbzyDTQOdkYq5oPsm987YZ/uC2zgIWNXvF10076
+         NjgmO55cutgxNkp5Ix2taNGAAENtVXte1tpe4t28Ifqi8UFQ/wm+wQSAgAZWbLhaFxDY
+         t/77yPtxZPSiAbRClcxw0hlATOZeJDQXrkCmPzhOPNkn3zA7VTk66OEfagiJbCpb4Dpm
+         ty2Bc7hipG3pfMhFi0bGaKSecO63TW+/508Y2UEMVnnqq8/dyZ3dEVL/wVokXpJlK7+r
+         /V3A==
+X-Gm-Message-State: ACgBeo12aG9vCfmL7cCu00VI/tFpEtjhq7NCW5IpOgdosv91zE7NFeBb
+        oHRvV8Q7IBFXwNviYQdQyhDYnw==
+X-Google-Smtp-Source: AA6agR5ZVT41wrK0ZXXwj5GGKIpijWd1xdQLIgCf1Rj+pMVwEvIQv16ulkKT99NLOj0K+w0j3n6OZg==
+X-Received: by 2002:a2e:92c8:0:b0:25d:6ddf:e71d with SMTP id k8-20020a2e92c8000000b0025d6ddfe71dmr14349523ljh.170.1662396091440;
+        Mon, 05 Sep 2022 09:41:31 -0700 (PDT)
 Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id c5-20020ac25f65000000b0048a9603399csm1158685lfc.116.2022.09.05.03.54.40
+        by smtp.gmail.com with ESMTPSA id e1-20020a196901000000b004947555dbc2sm1238106lfc.100.2022.09.05.09.41.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Sep 2022 03:54:41 -0700 (PDT)
-Message-ID: <3933cc0c-a99c-7bda-bbb2-c7b2e9f84cf5@linaro.org>
-Date:   Mon, 5 Sep 2022 12:54:39 +0200
+        Mon, 05 Sep 2022 09:41:30 -0700 (PDT)
+Message-ID: <3a6c3b79-74c6-3549-d108-c82f72e43dfe@linaro.org>
+Date:   Mon, 5 Sep 2022 18:41:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.13.0
-Subject: Re: [PATCH 09/14] arm64: dts: qcom: sm6115: Add UFS nodes
+Subject: Re: [PATCH 1/3] mfd: qcom-spmi-pmic: Add pm7250b compatible
 Content-Language: en-US
-To:     Iskren Chernev <iskren.chernev@gmail.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20220901072414.1923075-1-iskren.chernev@gmail.com>
- <20220901072414.1923075-10-iskren.chernev@gmail.com>
- <a0204dc3-af13-6b0b-d779-0f207d1aff7e@linaro.org>
- <488be3d3-d4c4-6200-be99-b85e6ac72c34@gmail.com>
- <180f706d-3304-3a5a-82b7-f37948e5d100@linaro.org>
- <b6424212-75c1-4f42-da01-ae4ce5dc1b68@gmail.com>
+References: <20220902111055.106814-1-luca.weiss@fairphone.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <b6424212-75c1-4f42-da01-ae4ce5dc1b68@gmail.com>
+In-Reply-To: <20220902111055.106814-1-luca.weiss@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 05/09/2022 12:45, Iskren Chernev wrote:
+On 02/09/2022 13:10, Luca Weiss wrote:
+> Document the compatible for pm7250b that is used with e.g. sm6350.
 > 
->>>
->>> I'll list all remaining issues with description/explanation in v2. The fact
->>> that some bindings break on all DTBs present doesn't help either.
->>
->> We're working on this... It's quite a lot of effort, especially when new
->> warnings are being added. :)
+> Also while we're at it, sort the compatibles alphabetically.
 > 
-> I understand. Is there an up-for-grabs list, or any schema fixes are welcome?
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-Any fixes are welcomed, but check if someone did not post it. For
-bindings conversion, the easiest is with "dfn:old-schema.txt" on
-https://lore.kernel.org/all/.
 
-We have some Linaro internal tracking, but maybe it would be useful to
-expose it to avoid duplication of work and to track better what is still
-to do/fix.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-+Cc Nicolas,
-Are we interested in some public tracking not only upstream status but
-also actual things to do (like DTS fixes, DT schema conversions)? It
-might be quite a lot of effort for us, but if community is engaged, they
-would offload us in task tracking system.
 
 Best regards,
 Krzysztof
