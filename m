@@ -2,177 +2,158 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EF12AC38145
-	for <phone-devel@archiver.kernel.org>; Tue,  6 Sep 2022 19:40:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6322C6FA8C
+	for <phone-devel@archiver.kernel.org>; Tue,  6 Sep 2022 19:41:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229957AbiIFTkR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 6 Sep 2022 15:40:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48886 "EHLO
+        id S229892AbiIFTlZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 6 Sep 2022 15:41:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229868AbiIFTkK (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Sep 2022 15:40:10 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC972126D
-        for <phone-devel@vger.kernel.org>; Tue,  6 Sep 2022 12:39:50 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id i188-20020a1c3bc5000000b003a7b6ae4eb2so10245360wma.4
-        for <phone-devel@vger.kernel.org>; Tue, 06 Sep 2022 12:39:50 -0700 (PDT)
+        with ESMTP id S229953AbiIFTlY (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Sep 2022 15:41:24 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3661A80B58
+        for <phone-devel@vger.kernel.org>; Tue,  6 Sep 2022 12:41:23 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id k80so7054619ybk.10
+        for <phone-devel@vger.kernel.org>; Tue, 06 Sep 2022 12:41:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date;
-        bh=Q7k34QMFna+VMCWcVTBpDYwMMQqIocaQ24VXbz0U53E=;
-        b=fSlBCXUTu5f+ysIYWkhIOcXEh0jK1dX6We3GoYUzQZD/pi1UP7PLGgh3ddRR5nF4bd
-         IXrbHJCXywJEJD1/6lFMXsX2r6MtDTGZWi+ivQLGsdFh0rfWi0HwvRiTFhb2CKJArtDF
-         0cOn3TBXU4djET4/KpQEUGdEZGhaaUKc7Vuxs=
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=snU6sHLVFuhFuegCz2LY5uuGVktWfNxhucOSPu7x3aQ=;
+        b=wHBp6mR5w+Xd1tEiqooTyS8Ep4Ay3sazBcUaioh7iqJpCe5zfFGywdqLdgknSZqsJK
+         4s75HteCxyyHfSMbOnQtS2qWDl6/VXfV9T+suuhOYo+rtZf5Wm3TdB68SYCL4vR09YYC
+         4P0Z7IF7/ix94DimDR/5HV3HdferHNb+UzA/Ck+GNktplONrOf8twaoDpN/bpetp+fLF
+         0vnJhLCUEgIV+0JeZMnAIKc1GORmmk41xHK76om87gsTep9prhSozgYbQSpe1/hPsW/4
+         Soav00fk8802IepJ1tQy7myIPs1YAkw+jbFzpT3HUbofcQHFaS/28N1kGKNLVfAkkkfo
+         5+mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=Q7k34QMFna+VMCWcVTBpDYwMMQqIocaQ24VXbz0U53E=;
-        b=THvcOueAYRxja5XbeKFhSd6Z+Y8HqZbNXTyrVwlL/2HlJ1sale5MNHYGQtHJZysmP7
-         NPmzIzWlIWp6a8MOEblxbpQwix77azvzjR8l7sIp2BcNIfWoyBZyMPDzn1EAAkwyShfu
-         R8vNRh1Fsil1xJOcISHTPnf8/K4NJHomx0ks/udZjEuw9hOlOCJIODWvCgPMENLHmkfr
-         RBiPiyRmuBQJc1TJjbVX8lxMiGyMe3BXY1bWtnrt8+LGu92w+VdGFpqgAnkwkaJ6W/2F
-         0wP0XNhZoQtKiHx9xuO7LLqNXzVtT/uuxvpR9sq82C1KfsrkKIGhn71Awu2HYmdAC9Nf
-         fY7w==
-X-Gm-Message-State: ACgBeo1z+cKrTlCxv3Gx8vRQO7PgTLTfvad0qnJhFJG6wfI2VCGOgw5r
-        5FVA3DJjeoXhewZvnuuakkFZFw==
-X-Google-Smtp-Source: AA6agR7dO/5mx+p7Bq5UKEq1+BC5n76RbAm/1S4e5aby/E5HZfLdP8Mmz+/OpcL0OycEbj++i728uQ==
-X-Received: by 2002:a05:600c:1554:b0:3a6:23d7:1669 with SMTP id f20-20020a05600c155400b003a623d71669mr14922175wmg.70.1662493188711;
-        Tue, 06 Sep 2022 12:39:48 -0700 (PDT)
-Received: from phenom.ffwll.local (212-51-149-33.fiber7.init7.net. [212.51.149.33])
-        by smtp.gmail.com with ESMTPSA id e27-20020adf9bdb000000b0021f0ff1bc6csm8083000wrc.41.2022.09.06.12.39.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Sep 2022 12:39:48 -0700 (PDT)
-Date:   Tue, 6 Sep 2022 21:39:45 +0200
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Markuss Broks <markuss.broks@gmail.com>,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Michal Suchanek <msuchanek@suse.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Wei Ming Chen <jj251510319013@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>, linux-doc@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 2/2] efi: earlycon: Add support for generic framebuffers
- and move to fbdev subsystem
-Message-ID: <YxeiAbw0OLb7OP7V@phenom.ffwll.local>
-Mail-Followup-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Ard Biesheuvel <ardb@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Borislav Petkov <bp@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Michal Suchanek <msuchanek@suse.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Wei Ming Chen <jj251510319013@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Tony Lindgren <tony@atomide.com>, linux-doc@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Rob Herring <robh@kernel.org>
-References: <20220728142824.3836-1-markuss.broks@gmail.com>
- <20220728142824.3836-3-markuss.broks@gmail.com>
- <YuKfnAjB4gV0ki4A@kroah.com>
- <30ce6f21-0a91-81cb-8b03-5acff17c59ee@gmail.com>
- <YuKkxb7u3piHytJ8@kroah.com>
- <27b40940-b8a7-2755-1ef5-e97d6b35dd2a@gmail.com>
- <Yu9hWu8IseJlpCUK@kroah.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=snU6sHLVFuhFuegCz2LY5uuGVktWfNxhucOSPu7x3aQ=;
+        b=XcR1fnjVqocRzzXn6tYabo09PW74VKt6DKl6putQKFX4rmS7SdRW4IbKPo1nWYveBh
+         5uRghLKykn+js5XoIEGOWUBbC/Wa7maHaZPCDJx9bPfZXTQIMeTzlxMJr1x+OrkCavNq
+         LGm5t/Zz4VBMCccsFaoKdP7BPIKhGPJNJYOCbVgtw5yBpjddwhgaqS7DWrbLGb4XkWrX
+         fPRm+j18g0YtHpj/VxHc/IWH/dgJER0+XNpLFMDQKbbyrCtPtHuVJgyPrx1LQDdnnLxZ
+         fmE6awDN144D4R4DcE28iYclubngiUVzN5bXVjrgmody3rK+ZEKsJGGukfLqg0SjHP70
+         lzWw==
+X-Gm-Message-State: ACgBeo0B1gt6jN+CuRcG2VuGXze3TRbxFNZdjzHJED2g1wCmjD98+fIP
+        Gw1U+pPNRvsiZp32j7zCiogcEw9kVtYyD2XzETjYaA==
+X-Google-Smtp-Source: AA6agR5G8yckKVkmwDJ1JIT5INXPH+zDHdVVnaWJpfc1vFTYPqRYDNyyh/s08b/ty20JzitIYp4q6FTMdHOZDoDl/vU=
+X-Received: by 2002:a25:5c3:0:b0:6a9:90fb:c9e6 with SMTP id
+ 186-20020a2505c3000000b006a990fbc9e6mr203601ybf.152.1662493282333; Tue, 06
+ Sep 2022 12:41:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yu9hWu8IseJlpCUK@kroah.com>
-X-Operating-System: Linux phenom 5.18.0-4-amd64 
+References: <20220906183334.203787-1-luca@z3ntu.xyz> <20220906183334.203787-4-luca@z3ntu.xyz>
+In-Reply-To: <20220906183334.203787-4-luca@z3ntu.xyz>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Tue, 6 Sep 2022 22:41:11 +0300
+Message-ID: <CAA8EJpqjnafKyUrd1ntYFeGTDtRxgEUSu0Mg9wNGxObJ3wF0Kw@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] arm64: dts: qcom: msm8953: add MDSS
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Aug 07, 2022 at 08:53:14AM +0200, Greg Kroah-Hartman wrote:
-> On Sat, Aug 06, 2022 at 07:26:07PM +0300, Markuss Broks wrote:
-> > Hi Greg,
-> > 
-> > On 7/28/22 18:01, Greg Kroah-Hartman wrote:
-> > > On Thu, Jul 28, 2022 at 05:52:04PM +0300, Markuss Broks wrote:
-> > > > Hi Greg,
-> > > > 
-> > > > On 7/28/22 17:39, Greg Kroah-Hartman wrote:
-> > > > > On Thu, Jul 28, 2022 at 05:28:19PM +0300, Markuss Broks wrote:
-> > > > > > Add early console support for generic linear framebuffer devices.
-> > > > > > This driver supports probing from cmdline early parameters
-> > > > > > or from the device-tree using information in simple-framebuffer node.
-> > > > > > The EFI functionality should be retained in whole.
-> > > > > > The driver was disabled on ARM because of a bug in early_ioremap
-> > > > > > implementation on ARM.
-> > > > > > 
-> > > > > > Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-> > > > > > ---
-> > > > > >    .../admin-guide/kernel-parameters.txt         |  12 +-
-> > > > > >    MAINTAINERS                                   |   5 +
-> > > > > >    drivers/firmware/efi/Kconfig                  |   6 +-
-> > > > > >    drivers/firmware/efi/Makefile                 |   1 -
-> > > > > >    drivers/firmware/efi/earlycon.c               | 246 --------------
-> > > > > >    drivers/video/fbdev/Kconfig                   |  11 +
-> > > > > >    drivers/video/fbdev/Makefile                  |   1 +
-> > > > > >    drivers/video/fbdev/earlycon.c                | 301 ++++++++++++++++++
-> > > > > >    8 files changed, 327 insertions(+), 256 deletions(-)
-> > > > > >    delete mode 100644 drivers/firmware/efi/earlycon.c
-> > > > > >    create mode 100644 drivers/video/fbdev/earlycon.c
-> > > > > 
-> > > > > That should be a rename, not a delete/create, right?
-> > > > 
-> > > > Should this change be split into two separate commits,
-> > > > one for moving the file and the second for making changes?
-> > > 
-> > > Git will show a rename and modification properly, if you use -M to git
-> > > format-patch, so it should be fine.
-> > 
-> > It appears that there are so many changes Git would refuse to make it a
-> > "move" no matter what I do. What should be done here: should it be two
-> > separate commits for move/change or should it just be kept as delete/create?
-> 
-> One commit to move the file, and then add your changes on top of it
-> might be the easiest to review, right?
+On Tue, 6 Sept 2022 at 21:36, Luca Weiss <luca@z3ntu.xyz> wrote:
+>
+> From: Vladimir Lypak <vladimir.lypak@gmail.com>
+>
+> Add the MDSS, MDP and DSI nodes that are found on msm8953 SoC.
+>
+> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+> Changes since v2:
+> - add "core" clock for mdss as suggested by Dmitry Baryshkov
+>
+>  arch/arm64/boot/dts/qcom/msm8953.dtsi | 210 ++++++++++++++++++++++++++
+>  1 file changed, 210 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> index 3d11331e78d2..580333141a66 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> @@ -726,6 +726,216 @@ tcsr_phy_clk_scheme_sel: syscon@193f044 {
+>                         reg = <0x193f044 0x4>;
+>                 };
+>
+> +               mdss: mdss@1a00000 {
+> +                       compatible = "qcom,mdss";
+> +
+> +                       reg = <0x1a00000 0x1000>,
+> +                             <0x1ab0000 0x1040>;
+> +                       reg-names = "mdss_phys",
+> +                                   "vbif_phys";
+> +
+> +                       power-domains = <&gcc MDSS_GDSC>;
+> +                       interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+> +
+> +                       interrupt-controller;
+> +                       #interrupt-cells = <1>;
+> +
+> +                       clocks = <&gcc GCC_MDSS_AHB_CLK>,
+> +                                <&gcc GCC_MDSS_AXI_CLK>,
+> +                                <&gcc GCC_MDSS_VSYNC_CLK>,
+> +                                <&gcc GCC_MDSS_MDP_CLK>;
+> +                       clock-names = "iface",
+> +                                     "bus",
+> +                                     "vsync",
+> +                                     "core";
+> +
+> +                       #address-cells = <1>;
+> +                       #size-cells = <1>;
+> +                       ranges;
+> +
+> +                       status = "disabled";
+> +
+> +                       mdp: mdp@1a01000 {
+> +                               compatible = "qcom,mdp5";
 
-+1
+Could you please change this to "qcom,msm8953-mdp5", "qcom,mdp5".
 
-I think this should be a least
-- commit to move the file, as unchanged as possible
-- commit to auto-select the right mapping mode (or maybe that's only in
-  v2)
-- actual change to add the simplefb support with a clearly readable diff
+> +                               reg = <0x1a01000 0x89000>;
+> +                               reg-names = "mdp_phys";
+> +
 
-But also video/console is for Greg to maintain, I'm trying hard to not go
-even more stupid :-)
--Daniel
+[skipped]
+
+> +
+> +                       dsi0_phy: dsi-phy@1a94400 {
+
+Let's probably use a generic name 'phy' here and for dsi1_phy.
+
+The rest looks good to me.
+
+> +                               compatible = "qcom,dsi-phy-14nm-8953";
+> +                               reg = <0x1a94400 0x100>,
+> +                                     <0x1a94500 0x300>,
+> +                                     <0x1a94800 0x188>;
+> +                               reg-names = "dsi_phy",
+> +                                           "dsi_phy_lane",
+> +                                           "dsi_pll";
+> +
+> +                               #clock-cells = <1>;
+> +                               #phy-cells = <0>;
+> +
+> +                               clocks = <&gcc GCC_MDSS_AHB_CLK>, <&xo_board>;
+> +                               clock-names = "iface", "ref";
+> +
+> +                               status = "disabled";
+> +                       };
+
+
 -- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+With best wishes
+Dmitry
