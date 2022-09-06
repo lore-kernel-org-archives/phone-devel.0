@@ -2,121 +2,198 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF37DECAAA1
-	for <phone-devel@archiver.kernel.org>; Tue,  6 Sep 2022 08:49:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 875D0ECAAA1
+	for <phone-devel@archiver.kernel.org>; Tue,  6 Sep 2022 12:47:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239351AbiIFItZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 6 Sep 2022 04:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39708 "EHLO
+        id S232977AbiIFMrk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 6 Sep 2022 08:47:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238783AbiIFIsI (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Sep 2022 04:48:08 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B02179638;
-        Tue,  6 Sep 2022 01:45:34 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 9A9F61C0001; Tue,  6 Sep 2022 10:45:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1662453931;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=8SHIU3mW9MXIg4heWeGX4mWOogF29zRAR22i6C80XFw=;
-        b=ZYECbAe1b3KFoW1tl2/Ad23VJ0NnF/bvOG92+0pXf7r6u1ejIBgwWw0KFkmUlvQIucezWt
-        e4ogmA5P73EnQG4c5ywuDp1E6zq/kTJxgJ0uTD8QSUS217kB8sBJ/gJsRlhwtjyyBtGVID
-        EiD45S3UohMN5Yv3Ar3fqrCvxvRlwlo=
-Date:   Tue, 6 Sep 2022 10:45:31 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     festevam@gmail.com, shawnguo@kernel.org,
-        devicetree@vger.kernel.org, kernel@pengutronix.de, kernel@puri.sm,
-        krzk@kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-imx@nxp.com, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, robh@kernel.org,
-        Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
-Subject: Re: [PATCH v2 2/6] arm64: dts: imx8mq-librem5: add RGB pwm
- notification leds
-Message-ID: <20220906084531.GA29911@duo.ucw.cz>
-References: <20220902084216.1259202-1-martin.kepplinger@puri.sm>
- <20220902084216.1259202-3-martin.kepplinger@puri.sm>
+        with ESMTP id S232743AbiIFMrk (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Sep 2022 08:47:40 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB5B5558CE;
+        Tue,  6 Sep 2022 05:47:38 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id 187D55C00CD;
+        Tue,  6 Sep 2022 08:47:38 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Tue, 06 Sep 2022 08:47:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        tom-fitzhenry.me.uk; h=cc:cc:content-transfer-encoding:date:date
+        :from:from:in-reply-to:message-id:mime-version:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1662468458; x=1662554858; bh=IG
+        2Lf3dDLIWPiCratWjCH8g6EInTYNDYMvbp9u8bhoc=; b=QvD8YAFlV/vBjXMDxQ
+        5gqXk7oyEuuI/YWrUw7b3TX4VDKEgk2yvfK3w/PwOR3uzPUcwPE5AKEqvtBEe83y
+        2Fwe6RW4AK4zAyOF7Ose0/YtctxwMgfHP9YffU7muTeSvjdCogGdbkAi3KZ78yXa
+        sndrDVWc/g5Oee5ohYUfHwAsJoQk0RbAVZr12S9grBE1tP3qUXIyjmEA6FspCj1Z
+        14dajusFlGBQSulT8KHEbct6lmObcslwmhDM8R2sISUy8yfaheQGoZ3rOEQ/Tdzz
+        s4eOpAB2IlnEN5EjC9pww2dsl6u9VdX8MdsMuRg24TuW9FK3P9p7vjDDcxD6an8P
+        pPPw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:message-id
+        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1662468458; x=1662554858; bh=IG2Lf3dDLIWPiCratWjCH8g6EInTYNDYMvb
+        p9u8bhoc=; b=iiOh4N+JPHyQ0qOZZaZrdpxKDpHDoQBEVfD2B0w5/H3qydPq2e2
+        tv6Em4PA6KXC8BFJ/cd8aW3q2s6PQkdrBPEZr36LURvy3X7W2+GHn/Pf/RlM4ru0
+        jWAP8B886Lf6wTY7rDbuNntrL2JrnQ9GXp903vNo1Jm6EWqUILHzbfYyQwzbX5sJ
+        gYsLcyR4Mn+P61tPh1eU2Z5aNvSCoVC/9uX2BSICf/a0cbSQNWbkycaLjK9rasE2
+        IWF53ixDlnjFIW04qwHfXtnYPXKvzBkzY+er3aQeQwV4B1Fkfzprrcs9LZ5dYQXb
+        Q/2/zVutGQMLNRC9+CNRWwRxuMJd6QXAA6w==
+X-ME-Sender: <xms:aUEXYwmTap-3AQ3Up0v7gFcgLGBFxTW9cKklVISz8oJ9v1uMo7Ge-Q>
+    <xme:aUEXY_3MvEJs7_ku0GOG_haXzlk2mzUu0snitimjJDKBOWtYSwgLQCjx_qzvfCxbG
+    fuavSBhDRJshmdKHw>
+X-ME-Received: <xmr:aUEXY-rtKmGCX2tzr1FPrOcIIPObQCjXczKKgjPTERJ5zrymPtM3ESpB_fDcr1ycc-V2irmJpBgp891G9gTEAu7z2zZECgO_yEU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvdelkedgheeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepvfhomhcuhfhi
+    thiihhgvnhhrhicuoehtohhmsehtohhmqdhfihhtiihhvghnrhihrdhmvgdruhhkqeenuc
+    ggtffrrghtthgvrhhnpeefiedvgefffeethfekuefgvdduteeftdeijeduudfgjeeukedt
+    vddvfeeuteegveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
+    hrohhmpehtohhmsehtohhmqdhfihhtiihhvghnrhihrdhmvgdruhhk
+X-ME-Proxy: <xmx:aUEXY8n0onVToJiMNP8qzlqOTFia2Mv8BsyOy7_9ha-IDCQKaTieYA>
+    <xmx:aUEXY-2T3rHu_7uGw88q6SuwHpB1gp3UgS4Xq8lGZZigW7GNzAeRyA>
+    <xmx:aUEXYzuGDhrue-jMKiGVmOZAvw9fc9laV_LH0iayF3vJTr2bXij-jA>
+    <xmx:akEXY7udDuy9C4d9Q6-l8_ss2668uUysBxxv2AwY6jQNAj8mJ1AmDQ>
+Feedback-ID: iefc945ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 6 Sep 2022 08:47:35 -0400 (EDT)
+From:   Tom Fitzhenry <tom@tom-fitzhenry.me.uk>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Heiko Stuebner <heiko@sntech.de>
+Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org,
+        Tom Fitzhenry <tom@tom-fitzhenry.me.uk>
+Subject: [PATCH] arm64: dts: rockchip: add BT/wifi nodes to Pinephone Pro
+Date:   Tue,  6 Sep 2022 22:47:13 +1000
+Message-Id: <20220906124713.1683587-1-tom@tom-fitzhenry.me.uk>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="tKW2IUtsqtDRztdT"
-Content-Disposition: inline
-In-Reply-To: <20220902084216.1259202-3-martin.kepplinger@puri.sm>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Pinephone Pro includes a AzureWave AW-CM256SM wifi (sdio0) and
+bt (uart0) combo module, which is based on Cypress
+CYP43455 (BCM43455).
 
---tKW2IUtsqtDRztdT
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Tom Fitzhenry <tom@tom-fitzhenry.me.uk>
+---
+ .../dts/rockchip/rk3399-pinephone-pro.dts     | 69 +++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-Hi!
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+index 2e058c3150256..096238126e4c1 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+@@ -43,6 +43,20 @@ key-power {
+ 		};
+ 	};
+ 
++	/* Power sequence for SDIO WiFi module */
++	sdio_pwrseq: sdio-pwrseq {
++		compatible = "mmc-pwrseq-simple";
++		clocks = <&rk818 1>;
++		clock-names = "ext_clock";
++		pinctrl-names = "default";
++		pinctrl-0 = <&wifi_enable_h_pin>;
++		post-power-on-delay-ms = <100>;
++		power-off-delay-us = <500000>;
++
++		/* WL_REG_ON on module */
++		reset-gpios = <&gpio0 RK_PB2 GPIO_ACTIVE_LOW>;
++	};
++
+ 	vcc_sys: vcc-sys-regulator {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc_sys";
+@@ -360,11 +374,31 @@ vsel2_pin: vsel2-pin {
+ 		};
+ 	};
+ 
++	sdio-pwrseq {
++		wifi_enable_h_pin: wifi-enable-h-pin {
++			rockchip,pins = <0 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
+ 	sound {
+ 		vcc1v8_codec_en: vcc1v8-codec-en {
+ 			rockchip,pins = <3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_down>;
+ 		};
+ 	};
++
++	wireless-bluetooth {
++		bt_wake_pin: bt-wake-pin {
++			rockchip,pins = <2 RK_PD2 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++
++		bt_host_wake_pin: bt-host-wake-pin {
++			rockchip,pins = <0 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++
++		bt_reset_pin: bt-reset-pin {
++			rockchip,pins = <0 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
+ };
+ 
+ &sdmmc {
+@@ -380,6 +414,20 @@ &sdmmc {
+ 	status = "okay";
+ };
+ 
++&sdio0 {
++	bus-width = <4>;
++	cap-sd-highspeed;
++	cap-sdio-irq;
++	disable-wp;
++	keep-power-in-suspend;
++	mmc-pwrseq = <&sdio_pwrseq>;
++	non-removable;
++	pinctrl-names = "default";
++	pinctrl-0 = <&sdio0_bus4 &sdio0_cmd &sdio0_clk>;
++	sd-uhs-sdr104;
++	status = "okay";
++};
++
+ &sdhci {
+ 	bus-width = <8>;
+ 	mmc-hs200-1_8v;
+@@ -393,6 +441,27 @@ &tsadc {
+ 	status = "okay";
+ };
+ 
++&uart0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart0_xfer &uart0_cts &uart0_rts>;
++	uart-has-rtscts;
++	status = "okay";
++
++	bluetooth {
++		compatible = "brcm,bcm4345c5";
++		clocks = <&rk818 1>;
++		clock-names = "lpo";
++		device-wakeup-gpios = <&gpio2 RK_PD2 GPIO_ACTIVE_HIGH>;
++		host-wakeup-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_HIGH>;
++		max-speed = <1500000>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&bt_host_wake_pin &bt_wake_pin &bt_reset_pin>;
++		shutdown-gpios = <&gpio0 RK_PB1 GPIO_ACTIVE_HIGH>;
++		vbat-supply = <&vcc3v3_sys>;
++		vddio-supply = <&vcc_1v8>;
++	};
++};
++
+ &uart2 {
+ 	status = "okay";
+ };
+-- 
+2.37.1
 
-> From: Guido G=FCnther <agx@sigxcpu.org>
->=20
-> Describe the RGB notification leds on the Librem 5 phone.
-> Use the common defines so we're sure to adhere to the common patterns,
-> use predefined led colors and functions so we're being warned in case
-> of deprecations.
-
-I'd like LED lists to be cc-ed on patches like this, so that we can
-keep userland API consistent.
-
-In particular, RGB LED is very common feature on the phones, and it
-would be good to have it consistent accross them. Can you take a look
-at Documentation/leds/well-known-leds.txt, decide if your current API
-is suitable, and update the file so that we get the consistency?
-
-Thanks,
-								Pavel
-
-> +	led-controller {
-> +		compatible =3D "pwm-leds";
-> +
-> +		led-0 {
-> +			function =3D LED_FUNCTION_STATUS;
-> +			color =3D <LED_COLOR_ID_BLUE>;
-> +			max-brightness =3D <248>;
-> +			pwms =3D <&pwm2 0 50000 0>;
-> +		};
-> +
-> +		led-1 {
-> +			function =3D LED_FUNCTION_STATUS;
-> +			color =3D <LED_COLOR_ID_GREEN>;
-> +			max-brightness =3D <248>;
-> +			pwms =3D <&pwm4 0 50000 0>;
-> +		};
-> +
-> +		led-2 {
-> +			function =3D LED_FUNCTION_STATUS;
-> +			color =3D <LED_COLOR_ID_RED>;
-> +			max-brightness =3D <248>;
-> +			pwms =3D <&pwm3 0 50000 0>;
-> +		};
-> +	};
-> +
->  	reg_aud_1v8: regulator-audio-1v8 {
->  		compatible =3D "regulator-fixed";
->  		pinctrl-names =3D "default";
-> --=20
-> 2.30.2
-
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---tKW2IUtsqtDRztdT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYxcIqwAKCRAw5/Bqldv6
-8lCXAJ4x2g8SJqp5mrj7kCc6IKN20hswnwCfUZFTxFlQgSz8OdLdLfwln3PRm70=
-=EuwN
------END PGP SIGNATURE-----
-
---tKW2IUtsqtDRztdT--
