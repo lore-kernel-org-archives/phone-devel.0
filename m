@@ -2,75 +2,177 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31CC1ECAAD5
-	for <phone-devel@archiver.kernel.org>; Tue,  6 Sep 2022 18:36:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF12AC38145
+	for <phone-devel@archiver.kernel.org>; Tue,  6 Sep 2022 19:40:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229493AbiIFSgD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 6 Sep 2022 14:36:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35354 "EHLO
+        id S229957AbiIFTkR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 6 Sep 2022 15:40:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229962AbiIFSfs (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Sep 2022 14:35:48 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4C8E6AA2D;
-        Tue,  6 Sep 2022 11:35:47 -0700 (PDT)
-Received: from g550jk.arnhem.chello.nl (31-151-115-246.dynamic.upc.nl [31.151.115.246])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 4F638C761F;
-        Tue,  6 Sep 2022 18:35:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1662489316; bh=8D02+hHtP3O+A5EfJrULu2835893cFwV9lamnSBN2kI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=qmC8T6uTSfeYva6WHMV0gTAvdHS/OBauEjcOB1n58WRDfp14woU9do0OlHqNsaV3B
-         L6I9MznFtU0JAVQTP8M66VF8vMT3+3f0z9Ml76JnLdX4IpdJgj4Zqbt/5cIrQ9pWTr
-         6ucejJrdepQbff+BwVbixbo3FDyqgB4VBxeOsNRY=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Rob Herring <robh@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        iommu@lists.linux.dev, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/3] dt-bindings: qcom-iommu: Add Qualcomm MSM8953 compatible
-Date:   Tue,  6 Sep 2022 20:33:32 +0200
-Message-Id: <20220906183334.203787-2-luca@z3ntu.xyz>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220906183334.203787-1-luca@z3ntu.xyz>
-References: <20220906183334.203787-1-luca@z3ntu.xyz>
+        with ESMTP id S229868AbiIFTkK (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Sep 2022 15:40:10 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC972126D
+        for <phone-devel@vger.kernel.org>; Tue,  6 Sep 2022 12:39:50 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id i188-20020a1c3bc5000000b003a7b6ae4eb2so10245360wma.4
+        for <phone-devel@vger.kernel.org>; Tue, 06 Sep 2022 12:39:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date;
+        bh=Q7k34QMFna+VMCWcVTBpDYwMMQqIocaQ24VXbz0U53E=;
+        b=fSlBCXUTu5f+ysIYWkhIOcXEh0jK1dX6We3GoYUzQZD/pi1UP7PLGgh3ddRR5nF4bd
+         IXrbHJCXywJEJD1/6lFMXsX2r6MtDTGZWi+ivQLGsdFh0rfWi0HwvRiTFhb2CKJArtDF
+         0cOn3TBXU4djET4/KpQEUGdEZGhaaUKc7Vuxs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=Q7k34QMFna+VMCWcVTBpDYwMMQqIocaQ24VXbz0U53E=;
+        b=THvcOueAYRxja5XbeKFhSd6Z+Y8HqZbNXTyrVwlL/2HlJ1sale5MNHYGQtHJZysmP7
+         NPmzIzWlIWp6a8MOEblxbpQwix77azvzjR8l7sIp2BcNIfWoyBZyMPDzn1EAAkwyShfu
+         R8vNRh1Fsil1xJOcISHTPnf8/K4NJHomx0ks/udZjEuw9hOlOCJIODWvCgPMENLHmkfr
+         RBiPiyRmuBQJc1TJjbVX8lxMiGyMe3BXY1bWtnrt8+LGu92w+VdGFpqgAnkwkaJ6W/2F
+         0wP0XNhZoQtKiHx9xuO7LLqNXzVtT/uuxvpR9sq82C1KfsrkKIGhn71Awu2HYmdAC9Nf
+         fY7w==
+X-Gm-Message-State: ACgBeo1z+cKrTlCxv3Gx8vRQO7PgTLTfvad0qnJhFJG6wfI2VCGOgw5r
+        5FVA3DJjeoXhewZvnuuakkFZFw==
+X-Google-Smtp-Source: AA6agR7dO/5mx+p7Bq5UKEq1+BC5n76RbAm/1S4e5aby/E5HZfLdP8Mmz+/OpcL0OycEbj++i728uQ==
+X-Received: by 2002:a05:600c:1554:b0:3a6:23d7:1669 with SMTP id f20-20020a05600c155400b003a623d71669mr14922175wmg.70.1662493188711;
+        Tue, 06 Sep 2022 12:39:48 -0700 (PDT)
+Received: from phenom.ffwll.local (212-51-149-33.fiber7.init7.net. [212.51.149.33])
+        by smtp.gmail.com with ESMTPSA id e27-20020adf9bdb000000b0021f0ff1bc6csm8083000wrc.41.2022.09.06.12.39.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Sep 2022 12:39:48 -0700 (PDT)
+Date:   Tue, 6 Sep 2022 21:39:45 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Markuss Broks <markuss.broks@gmail.com>,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Michal Suchanek <msuchanek@suse.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Wei Ming Chen <jj251510319013@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>, linux-doc@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 2/2] efi: earlycon: Add support for generic framebuffers
+ and move to fbdev subsystem
+Message-ID: <YxeiAbw0OLb7OP7V@phenom.ffwll.local>
+Mail-Followup-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Markuss Broks <markuss.broks@gmail.com>,
+        linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Ard Biesheuvel <ardb@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Borislav Petkov <bp@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Michal Suchanek <msuchanek@suse.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Wei Ming Chen <jj251510319013@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Tony Lindgren <tony@atomide.com>, linux-doc@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Rob Herring <robh@kernel.org>
+References: <20220728142824.3836-1-markuss.broks@gmail.com>
+ <20220728142824.3836-3-markuss.broks@gmail.com>
+ <YuKfnAjB4gV0ki4A@kroah.com>
+ <30ce6f21-0a91-81cb-8b03-5acff17c59ee@gmail.com>
+ <YuKkxb7u3piHytJ8@kroah.com>
+ <27b40940-b8a7-2755-1ef5-e97d6b35dd2a@gmail.com>
+ <Yu9hWu8IseJlpCUK@kroah.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Yu9hWu8IseJlpCUK@kroah.com>
+X-Operating-System: Linux phenom 5.18.0-4-amd64 
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Document the compatible used for IOMMU on the msm8953 SoC.
+On Sun, Aug 07, 2022 at 08:53:14AM +0200, Greg Kroah-Hartman wrote:
+> On Sat, Aug 06, 2022 at 07:26:07PM +0300, Markuss Broks wrote:
+> > Hi Greg,
+> > 
+> > On 7/28/22 18:01, Greg Kroah-Hartman wrote:
+> > > On Thu, Jul 28, 2022 at 05:52:04PM +0300, Markuss Broks wrote:
+> > > > Hi Greg,
+> > > > 
+> > > > On 7/28/22 17:39, Greg Kroah-Hartman wrote:
+> > > > > On Thu, Jul 28, 2022 at 05:28:19PM +0300, Markuss Broks wrote:
+> > > > > > Add early console support for generic linear framebuffer devices.
+> > > > > > This driver supports probing from cmdline early parameters
+> > > > > > or from the device-tree using information in simple-framebuffer node.
+> > > > > > The EFI functionality should be retained in whole.
+> > > > > > The driver was disabled on ARM because of a bug in early_ioremap
+> > > > > > implementation on ARM.
+> > > > > > 
+> > > > > > Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> > > > > > ---
+> > > > > >    .../admin-guide/kernel-parameters.txt         |  12 +-
+> > > > > >    MAINTAINERS                                   |   5 +
+> > > > > >    drivers/firmware/efi/Kconfig                  |   6 +-
+> > > > > >    drivers/firmware/efi/Makefile                 |   1 -
+> > > > > >    drivers/firmware/efi/earlycon.c               | 246 --------------
+> > > > > >    drivers/video/fbdev/Kconfig                   |  11 +
+> > > > > >    drivers/video/fbdev/Makefile                  |   1 +
+> > > > > >    drivers/video/fbdev/earlycon.c                | 301 ++++++++++++++++++
+> > > > > >    8 files changed, 327 insertions(+), 256 deletions(-)
+> > > > > >    delete mode 100644 drivers/firmware/efi/earlycon.c
+> > > > > >    create mode 100644 drivers/video/fbdev/earlycon.c
+> > > > > 
+> > > > > That should be a rename, not a delete/create, right?
+> > > > 
+> > > > Should this change be split into two separate commits,
+> > > > one for moving the file and the second for making changes?
+> > > 
+> > > Git will show a rename and modification properly, if you use -M to git
+> > > format-patch, so it should be fine.
+> > 
+> > It appears that there are so many changes Git would refuse to make it a
+> > "move" no matter what I do. What should be done here: should it be two
+> > separate commits for move/change or should it just be kept as delete/create?
+> 
+> One commit to move the file, and then add your changes on top of it
+> might be the easiest to review, right?
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Acked-by: Rob Herring <robh@kernel.org>
----
-Changes since v2:
-- pick up tags
++1
 
- Documentation/devicetree/bindings/iommu/qcom,iommu.txt | 1 +
- 1 file changed, 1 insertion(+)
+I think this should be a least
+- commit to move the file, as unchanged as possible
+- commit to auto-select the right mapping mode (or maybe that's only in
+  v2)
+- actual change to add the simplefb support with a clearly readable diff
 
-diff --git a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-index 059139abce35..e6cecfd360eb 100644
---- a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-+++ b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-@@ -10,6 +10,7 @@ to non-secure vs secure interrupt line.
- - compatible       : Should be one of:
- 
-                         "qcom,msm8916-iommu"
-+                        "qcom,msm8953-iommu"
- 
-                      Followed by "qcom,msm-iommu-v1".
- 
+But also video/console is for Greg to maintain, I'm trying hard to not go
+even more stupid :-)
+-Daniel
 -- 
-2.37.3
-
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
