@@ -2,283 +2,59 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5AA6C6FA89
-	for <phone-devel@archiver.kernel.org>; Tue,  6 Sep 2022 18:36:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E903C6FA92
+	for <phone-devel@archiver.kernel.org>; Tue,  6 Sep 2022 18:36:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229872AbiIFSfb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 6 Sep 2022 14:35:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34584 "EHLO
+        id S229891AbiIFSfc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 6 Sep 2022 14:35:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229819AbiIFSfV (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Sep 2022 14:35:21 -0400
+        with ESMTP id S229963AbiIFSfT (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Sep 2022 14:35:19 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26ED427CC1;
-        Tue,  6 Sep 2022 11:35:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 584CD2181C;
+        Tue,  6 Sep 2022 11:35:18 -0700 (PDT)
 Received: from g550jk.arnhem.chello.nl (31-151-115-246.dynamic.upc.nl [31.151.115.246])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 7E375C7639;
-        Tue,  6 Sep 2022 18:35:17 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id A58D8C7044;
+        Tue,  6 Sep 2022 18:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1662489317; bh=H72gmUgaXJ5riJ9N1S8fwSstsAygmHGN06IKHPd3lSE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=jL08ayqOqmrwVDSGbOLSRMKHkpZ0VyC++tqICz+UNRO7dqC4XiKkCL+LqB+dqOUWt
-         kkaNp5X24mn5HekSQx1l9/2g3nUfvYszPMHBWBNPbtnW0g8wg+jER2YwOD9cvbgAdl
-         Bch8OnJvhKhZdQxOweNtJNB7YrLSxd4PHBB7k0G0=
+        t=1662489315; bh=sCt7XNGXeGMjmtAHtkSmYHqy8bJlFQumVe0mQA/VKns=;
+        h=From:To:Cc:Subject:Date;
+        b=oxGQ+UZVKsOFDXuMUiUHAN8PJ065thJuAa3kZhpkS2AmcpGB5eyP4HBxov54T+s9R
+         S54/TG4Z/5jaR/HBCyEipKxsJkwsJ35mrZ4uHotqxSIxrpO7PwUzdc9t8+CcNfgyCP
+         YHsvsTc4M9kxnuYHdpiylnpkrm5HNDnvXp2rxNKI=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Luca Weiss <luca@z3ntu.xyz>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] arm64: dts: qcom: msm8953: add MDSS
-Date:   Tue,  6 Sep 2022 20:33:34 +0200
-Message-Id: <20220906183334.203787-4-luca@z3ntu.xyz>
+        Robin Murphy <robin.murphy@arm.com>,
+        devicetree@vger.kernel.org, iommu@lists.linux.dev,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/3] MDSS support for MSM8953
+Date:   Tue,  6 Sep 2022 20:33:31 +0200
+Message-Id: <20220906183334.203787-1-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220906183334.203787-1-luca@z3ntu.xyz>
-References: <20220906183334.203787-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Vladimir Lypak <vladimir.lypak@gmail.com>
+This series adds the APPS IOMMU and the MDSS block for display that is
+found on msm8953 SoCs.
 
-Add the MDSS, MDP and DSI nodes that are found on msm8953 SoC.
+Luca Weiss (1):
+  dt-bindings: qcom-iommu: Add Qualcomm MSM8953 compatible
 
-Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
-Changes since v2:
-- add "core" clock for mdss as suggested by Dmitry Baryshkov
+Vladimir Lypak (2):
+  arm64: dts: qcom: msm8953: add APPS IOMMU
+  arm64: dts: qcom: msm8953: add MDSS
 
- arch/arm64/boot/dts/qcom/msm8953.dtsi | 210 ++++++++++++++++++++++++++
- 1 file changed, 210 insertions(+)
+ .../devicetree/bindings/iommu/qcom,iommu.txt  |   1 +
+ arch/arm64/boot/dts/qcom/msm8953.dtsi         | 246 ++++++++++++++++++
+ 2 files changed, 247 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-index 3d11331e78d2..580333141a66 100644
---- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-@@ -726,6 +726,216 @@ tcsr_phy_clk_scheme_sel: syscon@193f044 {
- 			reg = <0x193f044 0x4>;
- 		};
- 
-+		mdss: mdss@1a00000 {
-+			compatible = "qcom,mdss";
-+
-+			reg = <0x1a00000 0x1000>,
-+			      <0x1ab0000 0x1040>;
-+			reg-names = "mdss_phys",
-+				    "vbif_phys";
-+
-+			power-domains = <&gcc MDSS_GDSC>;
-+			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+
-+			clocks = <&gcc GCC_MDSS_AHB_CLK>,
-+				 <&gcc GCC_MDSS_AXI_CLK>,
-+				 <&gcc GCC_MDSS_VSYNC_CLK>,
-+				 <&gcc GCC_MDSS_MDP_CLK>;
-+			clock-names = "iface",
-+				      "bus",
-+				      "vsync",
-+				      "core";
-+
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges;
-+
-+			status = "disabled";
-+
-+			mdp: mdp@1a01000 {
-+				compatible = "qcom,mdp5";
-+				reg = <0x1a01000 0x89000>;
-+				reg-names = "mdp_phys";
-+
-+				interrupt-parent = <&mdss>;
-+				interrupts = <0>;
-+
-+				power-domains = <&gcc MDSS_GDSC>;
-+
-+				clocks = <&gcc GCC_MDSS_AHB_CLK>,
-+					 <&gcc GCC_MDSS_AXI_CLK>,
-+					 <&gcc GCC_MDSS_MDP_CLK>,
-+					 <&gcc GCC_MDSS_VSYNC_CLK>;
-+				clock-names = "iface",
-+					      "bus",
-+					      "core",
-+					      "vsync";
-+
-+				iommus = <&apps_iommu 0x15>;
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+						mdp5_intf1_out: endpoint {
-+							remote-endpoint = <&dsi0_in>;
-+						};
-+					};
-+
-+					port@1 {
-+						reg = <1>;
-+						mdp5_intf2_out: endpoint {
-+							remote-endpoint = <&dsi1_in>;
-+						};
-+					};
-+				};
-+			};
-+
-+			dsi0: dsi@1a94000 {
-+				compatible = "qcom,mdss-dsi-ctrl";
-+				reg = <0x1a94000 0x400>;
-+				reg-names = "dsi_ctrl";
-+
-+				interrupt-parent = <&mdss>;
-+				interrupts = <4>;
-+
-+				assigned-clocks = <&gcc BYTE0_CLK_SRC>,
-+						  <&gcc PCLK0_CLK_SRC>;
-+				assigned-clock-parents = <&dsi0_phy 0>,
-+							 <&dsi0_phy 1>;
-+
-+				clocks = <&gcc GCC_MDSS_MDP_CLK>,
-+					 <&gcc GCC_MDSS_AHB_CLK>,
-+					 <&gcc GCC_MDSS_AXI_CLK>,
-+					 <&gcc GCC_MDSS_BYTE0_CLK>,
-+					 <&gcc GCC_MDSS_PCLK0_CLK>,
-+					 <&gcc GCC_MDSS_ESC0_CLK>;
-+				clock-names = "mdp_core",
-+					      "iface",
-+					      "bus",
-+					      "byte",
-+					      "pixel",
-+					      "core";
-+
-+				phys = <&dsi0_phy>;
-+				phy-names = "dsi";
-+
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				status = "disabled";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+						dsi0_in: endpoint {
-+							remote-endpoint = <&mdp5_intf1_out>;
-+						};
-+					};
-+
-+					port@1 {
-+						reg = <1>;
-+						dsi0_out: endpoint {
-+						};
-+					};
-+				};
-+			};
-+
-+			dsi0_phy: dsi-phy@1a94400 {
-+				compatible = "qcom,dsi-phy-14nm-8953";
-+				reg = <0x1a94400 0x100>,
-+				      <0x1a94500 0x300>,
-+				      <0x1a94800 0x188>;
-+				reg-names = "dsi_phy",
-+					    "dsi_phy_lane",
-+					    "dsi_pll";
-+
-+				#clock-cells = <1>;
-+				#phy-cells = <0>;
-+
-+				clocks = <&gcc GCC_MDSS_AHB_CLK>, <&xo_board>;
-+				clock-names = "iface", "ref";
-+
-+				status = "disabled";
-+			};
-+
-+			dsi1: dsi@1a96000 {
-+				compatible = "qcom,mdss-dsi-ctrl";
-+				reg = <0x1a96000 0x400>;
-+				reg-names = "dsi_ctrl";
-+
-+				interrupt-parent = <&mdss>;
-+				interrupts = <5>;
-+
-+				assigned-clocks = <&gcc BYTE1_CLK_SRC>,
-+						  <&gcc PCLK1_CLK_SRC>;
-+				assigned-clock-parents = <&dsi1_phy 0>,
-+							 <&dsi1_phy 1>;
-+
-+				clocks = <&gcc GCC_MDSS_MDP_CLK>,
-+					 <&gcc GCC_MDSS_AHB_CLK>,
-+					 <&gcc GCC_MDSS_AXI_CLK>,
-+					 <&gcc GCC_MDSS_BYTE1_CLK>,
-+					 <&gcc GCC_MDSS_PCLK1_CLK>,
-+					 <&gcc GCC_MDSS_ESC1_CLK>;
-+				clock-names = "mdp_core",
-+					      "iface",
-+					      "bus",
-+					      "byte",
-+					      "pixel",
-+					      "core";
-+
-+				phys = <&dsi1_phy>;
-+				phy-names = "dsi";
-+
-+				status = "disabled";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+						dsi1_in: endpoint {
-+							remote-endpoint = <&mdp5_intf2_out>;
-+						};
-+					};
-+
-+					port@1 {
-+						reg = <1>;
-+						dsi1_out: endpoint {
-+						};
-+					};
-+				};
-+			};
-+
-+			dsi1_phy: dsi-phy@1a96400 {
-+				compatible = "qcom,dsi-phy-14nm-8953";
-+				reg = <0x1a96400 0x100>,
-+				      <0x1a96500 0x300>,
-+				      <0x1a96800 0x188>;
-+				reg-names = "dsi_phy",
-+					    "dsi_phy_lane",
-+					    "dsi_pll";
-+
-+				#clock-cells = <1>;
-+				#phy-cells = <0>;
-+
-+				clocks = <&gcc GCC_MDSS_AHB_CLK>, <&xo_board>;
-+				clock-names = "iface", "ref";
-+
-+				status = "disabled";
-+			};
-+		};
-+
- 		apps_iommu: iommu@1e00000 {
- 			compatible = "qcom,msm8953-iommu", "qcom,msm-iommu-v1";
- 			ranges  = <0 0x1e20000 0x20000>;
 -- 
 2.37.3
 
