@@ -2,134 +2,157 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F40DC38145
-	for <phone-devel@archiver.kernel.org>; Wed,  7 Sep 2022 08:44:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F6E5C54EE9
+	for <phone-devel@archiver.kernel.org>; Wed,  7 Sep 2022 15:30:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230003AbiIGIoh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 7 Sep 2022 04:44:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46852 "EHLO
+        id S229558AbiIGPah (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 7 Sep 2022 11:30:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230159AbiIGIob (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Sep 2022 04:44:31 -0400
-X-Greylist: delayed 791 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 07 Sep 2022 01:44:14 PDT
-Received: from wnew1-smtp.messagingengine.com (wnew1-smtp.messagingengine.com [64.147.123.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D07CEA3D77;
-        Wed,  7 Sep 2022 01:44:13 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.west.internal (Postfix) with ESMTP id BE3772B058E5;
-        Wed,  7 Sep 2022 04:22:26 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Wed, 07 Sep 2022 04:22:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm1; t=1662538946; x=1662542546; bh=X79Bowixk2
-        UfvY4aNNNBf2XN1vgN+OVQkvEi3n41B/0=; b=FHq3eWsWbj7AeTTcT3sCiG2Gid
-        zoMcoGnX87QaDKCL9Klc4femUTSwemZiQ3qSZVwFlxvWnOSM7bX1ZQzTRZr/ntO/
-        rUHgfMfaMnw/547ubHfdDxNcdibTQ2teOF/7DV2qlAmttNSlW7d5iyhtiWg/uUDJ
-        lO5qL1F586qegEJupGnmnHsI1IuCp/ImB2pbQwWZ70GdaaWn+oyXtexephhYdXmV
-        SQislyNm+YIIa72TtD5MTVU7il9ysVv6MvEvZIg7XCSWABdf8+1sk/oBKSO3pfZ1
-        uvi6NqIm6jxqcFGbLN03EAn7fM7h4L7Oi/Ji5N0dSTsTCHL9kkQrct9oFswQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; t=1662538946; x=1662542546; bh=X79Bowixk2UfvY4aNNNBf2XN1vgN
-        +OVQkvEi3n41B/0=; b=i2fgw7Lm2RcMVoE6K+rIusyvnZ4lyDN5dx8+fgyWxbIF
-        +AqTwmsIDN0yb6WUldLlrs74GDun+0ghaNFmnjAZTG/kG/DTX2Ue6Jo6AoIEGfnp
-        m23C0krGK+yRAnjvF9vuguVXjMShUCvrdItalepOHerr8sWvWVCUH+p2pz2BA84o
-        9CL/mCBfzT64N5Sg+EM/Sn8zu3t4Mmkl8ZGk/QCKdH6GT+U+UaWKS/+FhXt/OrSz
-        UJnDAu8M6YDAc3UEYGHiyeS8WJGorrnO8HOYrXp9DGJehh1+4dezsYWVDALjUEnt
-        h56fIcvzomWG4T8yO1l/aiAYb7MXV5HfHSWhSnNe0w==
-X-ME-Sender: <xms:wFQYY3OkJ587gJqTFniHmGsoib1jkjdGST-qEVi3IKekB1A8gjk2Ww>
-    <xme:wFQYYx9zmv0pewFSnpE2qd-qg4VthrNbv2mqpQ6fzyLh1lG1ncg64YLF8XhxEzdRd
-    HxfOqHKeDJhq7DxaTA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfedttddgtdduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:wFQYY2Q2JbiXtN04GC_Hse6TtfQrs-R6JzVpCd0xqk1-TcpRmNZX_A>
-    <xmx:wFQYY7tsyffEhqi73XQbt5gJ44AMPaQ4LgT-tZrwxuBOXwBcKVpCPw>
-    <xmx:wFQYY_cRGxurafke8L8pYB345DBK3SybXlKUd3IJpkYtG6W6mxVuLQ>
-    <xmx:wlQYYynsfP7agf-9b5bKj6YVeu5IB60g4wd5G4IyoTohz3aQSZ3gRnFKefaSHW1i>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 32FE6B60083; Wed,  7 Sep 2022 04:22:24 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-927-gf4c98c8499-fm-20220826.002-gf4c98c84
-Mime-Version: 1.0
-Message-Id: <e2e2a0c7-d859-4255-94b6-b030aa9dc277@www.fastmail.com>
-In-Reply-To: <YxfBGDg6YkIQ6Wzq@phenom.ffwll.local>
-References: <20220806163255.10404-1-markuss.broks@gmail.com>
- <20220806163255.10404-4-markuss.broks@gmail.com>
- <YxfBGDg6YkIQ6Wzq@phenom.ffwll.local>
-Date:   Wed, 07 Sep 2022 10:22:03 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Daniel Vetter" <daniel@ffwll.ch>,
-        "Markuss Broks" <markuss.broks@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
+        with ESMTP id S229563AbiIGPag (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Sep 2022 11:30:36 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA5486EF12;
+        Wed,  7 Sep 2022 08:30:34 -0700 (PDT)
+Received: from g550jk.localnet (31-151-115-246.dynamic.upc.nl [31.151.115.246])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id BEC95C7023;
+        Wed,  7 Sep 2022 15:30:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1662564630; bh=PBuavX/FI8zoNi4Yjs2NUwse88XH7Qen5TwuTvKTMFM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=uWv8uKGVTh/KDAzcw1siELCkpqZlURBcIALCy5h1bT5+OZOgnYR/yS5OzAKU/IT8W
+         DWrrGtwYeKh9WpiMUXWtH0F7EUaHUsp2namiCQUuC6x74PX7JfQwhj6ZIIRzXzzFhz
+         NZg+zJODwITdaZ9Hw9uzds8bYYNDEcRbNaSbX3MI=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        "Ard Biesheuvel" <ardb@kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Jiri Slaby" <jirislaby@kernel.org>,
-        "Helge Deller" <deller@gmx.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "Borislav Petkov" <bp@suse.de>,
-        "Kees Cook" <keescook@chromium.org>,
-        "Andrew Morton" <akpm@linux-foundation.org>,
-        "Randy Dunlap" <rdunlap@infradead.org>,
-        "Damien Le Moal" <damien.lemoal@opensource.wdc.com>,
-        "Thomas Zimmermann" <tzimmermann@suse.de>,
-        "Michal Suchanek" <msuchanek@suse.de>,
-        "Javier Martinez Canillas" <javierm@redhat.com>,
-        "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
-        "Wei Ming Chen" <jj251510319013@gmail.com>,
-        "Bartlomiej Zolnierkiewicz" <b.zolnierkie@samsung.com>,
-        "Tony Lindgren" <tony@atomide.com>, linux-doc@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v2 3/3] efi: earlycon: Add support for generic framebuffers and
- move to console subsystem
-Content-Type: text/plain
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] arm64: dts: qcom: msm8953: add MDSS
+Date:   Wed, 07 Sep 2022 17:30:30 +0200
+Message-ID: <12049260.O9o76ZdvQC@g550jk>
+In-Reply-To: <CAA8EJpqjnafKyUrd1ntYFeGTDtRxgEUSu0Mg9wNGxObJ3wF0Kw@mail.gmail.com>
+References: <20220906183334.203787-1-luca@z3ntu.xyz> <20220906183334.203787-4-luca@z3ntu.xyz> <CAA8EJpqjnafKyUrd1ntYFeGTDtRxgEUSu0Mg9wNGxObJ3wF0Kw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Sep 6, 2022, at 11:52 PM, Daniel Vetter wrote:
-> On Sat, Aug 06, 2022 at 07:32:24PM +0300, Markuss Broks wrote:
->
-> Ok I have a more fundamental issue with this than the lack of proper patch
-> splitting I mentioned in the other thread.
->
-> This is the wrong place.
->
-> drivers/video/console is about the various vt console implementations,
-> which supply a struct consw to con_register_driver.
+Hi Dmitry,
 
-You are right, that was my mistake. The original patch was for
-drivers/video/fbdev/, and I suggested moving it out of there because
-it does not depend on the fbdev subsystem, but clearly my suggestions
-of drivers/video/console was equally wrong.
+On Dienstag, 6. September 2022 21:41:11 CEST Dmitry Baryshkov wrote:
+> On Tue, 6 Sept 2022 at 21:36, Luca Weiss <luca@z3ntu.xyz> wrote:
+> > From: Vladimir Lypak <vladimir.lypak@gmail.com>
+> > 
+> > Add the MDSS, MDP and DSI nodes that are found on msm8953 SoC.
+> > 
+> > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> > Changes since v2:
+> > - add "core" clock for mdss as suggested by Dmitry Baryshkov
+> > 
+> >  arch/arm64/boot/dts/qcom/msm8953.dtsi | 210 ++++++++++++++++++++++++++
+> >  1 file changed, 210 insertions(+)
+> > 
+> > diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> > b/arch/arm64/boot/dts/qcom/msm8953.dtsi index 3d11331e78d2..580333141a66
+> > 100644
+> > --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> > +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> > @@ -726,6 +726,216 @@ tcsr_phy_clk_scheme_sel: syscon@193f044 {
+> > 
+> >                         reg = <0x193f044 0x4>;
+> >                 
+> >                 };
+> > 
+> > +               mdss: mdss@1a00000 {
+> > +                       compatible = "qcom,mdss";
+> > +
+> > +                       reg = <0x1a00000 0x1000>,
+> > +                             <0x1ab0000 0x1040>;
+> > +                       reg-names = "mdss_phys",
+> > +                                   "vbif_phys";
+> > +
+> > +                       power-domains = <&gcc MDSS_GDSC>;
+> > +                       interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+> > +
+> > +                       interrupt-controller;
+> > +                       #interrupt-cells = <1>;
+> > +
+> > +                       clocks = <&gcc GCC_MDSS_AHB_CLK>,
+> > +                                <&gcc GCC_MDSS_AXI_CLK>,
+> > +                                <&gcc GCC_MDSS_VSYNC_CLK>,
+> > +                                <&gcc GCC_MDSS_MDP_CLK>;
+> > +                       clock-names = "iface",
+> > +                                     "bus",
+> > +                                     "vsync",
+> > +                                     "core";
+> > +
+> > +                       #address-cells = <1>;
+> > +                       #size-cells = <1>;
+> > +                       ranges;
+> > +
+> > +                       status = "disabled";
+> > +
+> > +                       mdp: mdp@1a01000 {
+> > +                               compatible = "qcom,mdp5";
+> 
+> Could you please change this to "qcom,msm8953-mdp5", "qcom,mdp5".
 
-> This otoh is an (early) kernel/printk console implemented using struct
-> console. Totally different thing, and really shouldn't end up in
-> drivers/video/console imo. Somewhere in drivers/firmware might still be
-> the best place, the sysfb stuff is also there. Maybe
-> drivers/firmware/sysfb_earlycon.c?
+This would be the first dtsi using the two compatibles then, correct? Are there 
+any plans to adjust other SoCs?
 
-drivers/firmware/ is better but doesn't sound great to me either,
-since one important thing the patch does is to not make it depend
-on EFI firmware or BIOS style screen_info any more. 
+> 
+> > +                               reg = <0x1a01000 0x89000>;
+> > +                               reg-names = "mdp_phys";
+> > +
+> 
+> [skipped]
+> 
+> > +
+> > +                       dsi0_phy: dsi-phy@1a94400 {
+> 
+> Let's probably use a generic name 'phy' here and for dsi1_phy.
 
-Maybe drivers/tty/earlycon_simplefb.c would work better, keeping
-it close to the earlycon base support in drivers/tty/serial/,
-the vt console and the old simplefb driver/, without tying to too
-closely to fbdev of UEFI.
+Here also, the bindings examples all use dsi-phy@, are there any plans to 
+change that and adjust other dtsi files?
 
-     Arnd
+> 
+> The rest looks good to me.
+
+Thanks!
+
+Regards
+Luca
+
+> 
+> > +                               compatible = "qcom,dsi-phy-14nm-8953";
+> > +                               reg = <0x1a94400 0x100>,
+> > +                                     <0x1a94500 0x300>,
+> > +                                     <0x1a94800 0x188>;
+> > +                               reg-names = "dsi_phy",
+> > +                                           "dsi_phy_lane",
+> > +                                           "dsi_pll";
+> > +
+> > +                               #clock-cells = <1>;
+> > +                               #phy-cells = <0>;
+> > +
+> > +                               clocks = <&gcc GCC_MDSS_AHB_CLK>,
+> > <&xo_board>; +                               clock-names = "iface",
+> > "ref";
+> > +
+> > +                               status = "disabled";
+> > +                       };
+
+
+
+
