@@ -2,183 +2,134 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AAC4DC38145
-	for <phone-devel@archiver.kernel.org>; Wed,  7 Sep 2022 08:26:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F40DC38145
+	for <phone-devel@archiver.kernel.org>; Wed,  7 Sep 2022 08:44:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbiIGI0h (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 7 Sep 2022 04:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40030 "EHLO
+        id S230003AbiIGIoh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 7 Sep 2022 04:44:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbiIGI0g (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Sep 2022 04:26:36 -0400
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 408B5A0626;
-        Wed,  7 Sep 2022 01:26:33 -0700 (PDT)
-Received: from ip5b412258.dynamic.kabel-deutschland.de ([91.65.34.88] helo=diego.localnet)
-        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <heiko@sntech.de>)
-        id 1oVqO6-00042j-Sn; Wed, 07 Sep 2022 10:26:22 +0200
-From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To:     Tom Fitzhenry <tom@tom-fitzhenry.me.uk>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Caleb Connolly <kc@postmarketos.org>
-Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: rockchip: add BT/wifi nodes to Pinephone Pro
-Date:   Wed, 07 Sep 2022 10:26:21 +0200
-Message-ID: <46977559.XUcTiDjVJD@diego>
-In-Reply-To: <57395b20-6352-8414-3078-cdad6bbbe999@postmarketos.org>
-References: <Rk3c--Dksit7gaQSddtVEaF5_7FlNYE4KZKQKaLsRu2GXMXoBgp5C2DSPNublHMr6E135nPS2B9JkQyf6aSZjw==@protonmail.internalid> <20220906124713.1683587-1-tom@tom-fitzhenry.me.uk> <57395b20-6352-8414-3078-cdad6bbbe999@postmarketos.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+        with ESMTP id S230159AbiIGIob (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Sep 2022 04:44:31 -0400
+X-Greylist: delayed 791 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 07 Sep 2022 01:44:14 PDT
+Received: from wnew1-smtp.messagingengine.com (wnew1-smtp.messagingengine.com [64.147.123.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D07CEA3D77;
+        Wed,  7 Sep 2022 01:44:13 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.west.internal (Postfix) with ESMTP id BE3772B058E5;
+        Wed,  7 Sep 2022 04:22:26 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute3.internal (MEProxy); Wed, 07 Sep 2022 04:22:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm1; t=1662538946; x=1662542546; bh=X79Bowixk2
+        UfvY4aNNNBf2XN1vgN+OVQkvEi3n41B/0=; b=FHq3eWsWbj7AeTTcT3sCiG2Gid
+        zoMcoGnX87QaDKCL9Klc4femUTSwemZiQ3qSZVwFlxvWnOSM7bX1ZQzTRZr/ntO/
+        rUHgfMfaMnw/547ubHfdDxNcdibTQ2teOF/7DV2qlAmttNSlW7d5iyhtiWg/uUDJ
+        lO5qL1F586qegEJupGnmnHsI1IuCp/ImB2pbQwWZ70GdaaWn+oyXtexephhYdXmV
+        SQislyNm+YIIa72TtD5MTVU7il9ysVv6MvEvZIg7XCSWABdf8+1sk/oBKSO3pfZ1
+        uvi6NqIm6jxqcFGbLN03EAn7fM7h4L7Oi/Ji5N0dSTsTCHL9kkQrct9oFswQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm2; t=1662538946; x=1662542546; bh=X79Bowixk2UfvY4aNNNBf2XN1vgN
+        +OVQkvEi3n41B/0=; b=i2fgw7Lm2RcMVoE6K+rIusyvnZ4lyDN5dx8+fgyWxbIF
+        +AqTwmsIDN0yb6WUldLlrs74GDun+0ghaNFmnjAZTG/kG/DTX2Ue6Jo6AoIEGfnp
+        m23C0krGK+yRAnjvF9vuguVXjMShUCvrdItalepOHerr8sWvWVCUH+p2pz2BA84o
+        9CL/mCBfzT64N5Sg+EM/Sn8zu3t4Mmkl8ZGk/QCKdH6GT+U+UaWKS/+FhXt/OrSz
+        UJnDAu8M6YDAc3UEYGHiyeS8WJGorrnO8HOYrXp9DGJehh1+4dezsYWVDALjUEnt
+        h56fIcvzomWG4T8yO1l/aiAYb7MXV5HfHSWhSnNe0w==
+X-ME-Sender: <xms:wFQYY3OkJ587gJqTFniHmGsoib1jkjdGST-qEVi3IKekB1A8gjk2Ww>
+    <xme:wFQYYx9zmv0pewFSnpE2qd-qg4VthrNbv2mqpQ6fzyLh1lG1ncg64YLF8XhxEzdRd
+    HxfOqHKeDJhq7DxaTA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfedttddgtdduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:wFQYY2Q2JbiXtN04GC_Hse6TtfQrs-R6JzVpCd0xqk1-TcpRmNZX_A>
+    <xmx:wFQYY7tsyffEhqi73XQbt5gJ44AMPaQ4LgT-tZrwxuBOXwBcKVpCPw>
+    <xmx:wFQYY_cRGxurafke8L8pYB345DBK3SybXlKUd3IJpkYtG6W6mxVuLQ>
+    <xmx:wlQYYynsfP7agf-9b5bKj6YVeu5IB60g4wd5G4IyoTohz3aQSZ3gRnFKefaSHW1i>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 32FE6B60083; Wed,  7 Sep 2022 04:22:24 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-927-gf4c98c8499-fm-20220826.002-gf4c98c84
+Mime-Version: 1.0
+Message-Id: <e2e2a0c7-d859-4255-94b6-b030aa9dc277@www.fastmail.com>
+In-Reply-To: <YxfBGDg6YkIQ6Wzq@phenom.ffwll.local>
+References: <20220806163255.10404-1-markuss.broks@gmail.com>
+ <20220806163255.10404-4-markuss.broks@gmail.com>
+ <YxfBGDg6YkIQ6Wzq@phenom.ffwll.local>
+Date:   Wed, 07 Sep 2022 10:22:03 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Daniel Vetter" <daniel@ffwll.ch>,
+        "Markuss Broks" <markuss.broks@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        "Jonathan Corbet" <corbet@lwn.net>,
+        "Ard Biesheuvel" <ardb@kernel.org>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        "Jiri Slaby" <jirislaby@kernel.org>,
+        "Helge Deller" <deller@gmx.de>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        "Borislav Petkov" <bp@suse.de>,
+        "Kees Cook" <keescook@chromium.org>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
+        "Randy Dunlap" <rdunlap@infradead.org>,
+        "Damien Le Moal" <damien.lemoal@opensource.wdc.com>,
+        "Thomas Zimmermann" <tzimmermann@suse.de>,
+        "Michal Suchanek" <msuchanek@suse.de>,
+        "Javier Martinez Canillas" <javierm@redhat.com>,
+        "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+        "Wei Ming Chen" <jj251510319013@gmail.com>,
+        "Bartlomiej Zolnierkiewicz" <b.zolnierkie@samsung.com>,
+        "Tony Lindgren" <tony@atomide.com>, linux-doc@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v2 3/3] efi: earlycon: Add support for generic framebuffers and
+ move to console subsystem
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Am Dienstag, 6. September 2022, 19:38:38 CEST schrieb Caleb Connolly:
-> 
-> On 06/09/2022 13:47, Tom Fitzhenry wrote:
-> > Pinephone Pro includes a AzureWave AW-CM256SM wifi (sdio0) and
-> > bt (uart0) combo module, which is based on Cypress
-> > CYP43455 (BCM43455).
-> > 
-> > Signed-off-by: Tom Fitzhenry <tom@tom-fitzhenry.me.uk>
-> > ---
-> >   .../dts/rockchip/rk3399-pinephone-pro.dts     | 69 +++++++++++++++++++
-> >   1 file changed, 69 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-> > index 2e058c3150256..096238126e4c1 100644
-> > --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-> > +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-> > @@ -43,6 +43,20 @@ key-power {
-> >   		};
-> >   	};
-> > 
-> > +	/* Power sequence for SDIO WiFi module */
-> 
-> This comment isn't needed, instead give the node a better name/label
-> > +	sdio_pwrseq: sdio-pwrseq {
-> 
-> 	wifi_pwrseq: sdio-pwrseq-wifi {
+On Tue, Sep 6, 2022, at 11:52 PM, Daniel Vetter wrote:
+> On Sat, Aug 06, 2022 at 07:32:24PM +0300, Markuss Broks wrote:
+>
+> Ok I have a more fundamental issue with this than the lack of proper patch
+> splitting I mentioned in the other thread.
+>
+> This is the wrong place.
+>
+> drivers/video/console is about the various vt console implementations,
+> which supply a struct consw to con_register_driver.
 
-I guess, I'd move the components around a tiny bit and go with
+You are right, that was my mistake. The original patch was for
+drivers/video/fbdev/, and I suggested moving it out of there because
+it does not depend on the fbdev subsystem, but clearly my suggestions
+of drivers/video/console was equally wrong.
 
-	wifi_pwrseq: sdio-wifi-pwrseq {
+> This otoh is an (early) kernel/printk console implemented using struct
+> console. Totally different thing, and really shouldn't end up in
+> drivers/video/console imo. Somewhere in drivers/firmware might still be
+> the best place, the sysfb stuff is also there. Maybe
+> drivers/firmware/sysfb_earlycon.c?
 
-So far everywhere the "-pwrseq" is at the end and while I don't
-think that this is enforced (yet), keeping some sort of consistency
-might be nice :-) 
+drivers/firmware/ is better but doesn't sound great to me either,
+since one important thing the patch does is to not make it depend
+on EFI firmware or BIOS style screen_info any more. 
 
+Maybe drivers/tty/earlycon_simplefb.c would work better, keeping
+it close to the earlycon base support in drivers/tty/serial/,
+the vt console and the old simplefb driver/, without tying to too
+closely to fbdev of UEFI.
 
-Heiko
-
-
-> > +		compatible = "mmc-pwrseq-simple";
-> > +		clocks = <&rk818 1>;
-> > +		clock-names = "ext_clock";
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&wifi_enable_h_pin>;
-> > +		post-power-on-delay-ms = <100>;
-> > +		power-off-delay-us = <500000>;
-> > +
-> > +		/* WL_REG_ON on module */
-> > +		reset-gpios = <&gpio0 RK_PB2 GPIO_ACTIVE_LOW>;
-> > +	};
-> > +
-> >   	vcc_sys: vcc-sys-regulator {
-> >   		compatible = "regulator-fixed";
-> >   		regulator-name = "vcc_sys";
-> > @@ -360,11 +374,31 @@ vsel2_pin: vsel2-pin {
-> >   		};
-> >   	};
-> > 
-> > +	sdio-pwrseq {
-> > +		wifi_enable_h_pin: wifi-enable-h-pin {
-> > +			rockchip,pins = <0 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
-> > +		};
-> > +	};
-> > +
-> >   	sound {
-> >   		vcc1v8_codec_en: vcc1v8-codec-en {
-> >   			rockchip,pins = <3 RK_PA4 RK_FUNC_GPIO &pcfg_pull_down>;
-> >   		};
-> >   	};
-> > +
-> > +	wireless-bluetooth {
-> > +		bt_wake_pin: bt-wake-pin {
-> > +			rockchip,pins = <2 RK_PD2 RK_FUNC_GPIO &pcfg_pull_none>;
-> > +		};
-> > +
-> > +		bt_host_wake_pin: bt-host-wake-pin {
-> > +			rockchip,pins = <0 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
-> > +		};
-> > +
-> > +		bt_reset_pin: bt-reset-pin {
-> > +			rockchip,pins = <0 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
-> > +		};
-> > +	};
-> >   };
-> > 
-> >   &sdmmc {
-> > @@ -380,6 +414,20 @@ &sdmmc {
-> >   	status = "okay";
-> >   };
-> > 
-> > +&sdio0 {
-> > +	bus-width = <4>;
-> > +	cap-sd-highspeed;
-> > +	cap-sdio-irq;
-> > +	disable-wp;
-> > +	keep-power-in-suspend;
-> > +	mmc-pwrseq = <&sdio_pwrseq>;
-> > +	non-removable;
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&sdio0_bus4 &sdio0_cmd &sdio0_clk>;
-> > +	sd-uhs-sdr104;
-> > +	status = "okay";
-> > +};
-> > +
-> >   &sdhci {
-> >   	bus-width = <8>;
-> >   	mmc-hs200-1_8v;
-> > @@ -393,6 +441,27 @@ &tsadc {
-> >   	status = "okay";
-> >   };
-> > 
-> > +&uart0 {
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&uart0_xfer &uart0_cts &uart0_rts>;
-> > +	uart-has-rtscts;
-> > +	status = "okay";
-> > +
-> > +	bluetooth {
-> > +		compatible = "brcm,bcm4345c5";
-> > +		clocks = <&rk818 1>;
-> > +		clock-names = "lpo";
-> > +		device-wakeup-gpios = <&gpio2 RK_PD2 GPIO_ACTIVE_HIGH>;
-> > +		host-wakeup-gpios = <&gpio0 RK_PA4 GPIO_ACTIVE_HIGH>;
-> > +		max-speed = <1500000>;
-> > +		pinctrl-names = "default";
-> > +		pinctrl-0 = <&bt_host_wake_pin &bt_wake_pin &bt_reset_pin>;
-> > +		shutdown-gpios = <&gpio0 RK_PB1 GPIO_ACTIVE_HIGH>;
-> > +		vbat-supply = <&vcc3v3_sys>;
-> > +		vddio-supply = <&vcc_1v8>;
-> > +	};
-> > +};
-> > +
-> >   &uart2 {
-> >   	status = "okay";
-> >   };
-> > --
-> > 2.37.1
-> > 
-> 
-
-
-
-
+     Arnd
