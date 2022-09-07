@@ -2,157 +2,143 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F6E5C54EE9
-	for <phone-devel@archiver.kernel.org>; Wed,  7 Sep 2022 15:30:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 809CCC54EE9
+	for <phone-devel@archiver.kernel.org>; Wed,  7 Sep 2022 21:27:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbiIGPah (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 7 Sep 2022 11:30:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50788 "EHLO
+        id S229896AbiIGV14 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 7 Sep 2022 17:27:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbiIGPag (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Sep 2022 11:30:36 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA5486EF12;
-        Wed,  7 Sep 2022 08:30:34 -0700 (PDT)
-Received: from g550jk.localnet (31-151-115-246.dynamic.upc.nl [31.151.115.246])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id BEC95C7023;
-        Wed,  7 Sep 2022 15:30:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1662564630; bh=PBuavX/FI8zoNi4Yjs2NUwse88XH7Qen5TwuTvKTMFM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=uWv8uKGVTh/KDAzcw1siELCkpqZlURBcIALCy5h1bT5+OZOgnYR/yS5OzAKU/IT8W
-         DWrrGtwYeKh9WpiMUXWtH0F7EUaHUsp2namiCQUuC6x74PX7JfQwhj6ZIIRzXzzFhz
-         NZg+zJODwITdaZ9Hw9uzds8bYYNDEcRbNaSbX3MI=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        with ESMTP id S229477AbiIGV1z (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Sep 2022 17:27:55 -0400
+Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [5.144.164.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C963DBB01A
+        for <phone-devel@vger.kernel.org>; Wed,  7 Sep 2022 14:27:52 -0700 (PDT)
+Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 2EB531F9DF;
+        Wed,  7 Sep 2022 23:27:49 +0200 (CEST)
+Date:   Wed, 7 Sep 2022 23:27:47 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] arm64: dts: qcom: msm8953: add MDSS
-Date:   Wed, 07 Sep 2022 17:30:30 +0200
-Message-ID: <12049260.O9o76ZdvQC@g550jk>
-In-Reply-To: <CAA8EJpqjnafKyUrd1ntYFeGTDtRxgEUSu0Mg9wNGxObJ3wF0Kw@mail.gmail.com>
-References: <20220906183334.203787-1-luca@z3ntu.xyz> <20220906183334.203787-4-luca@z3ntu.xyz> <CAA8EJpqjnafKyUrd1ntYFeGTDtRxgEUSu0Mg9wNGxObJ3wF0Kw@mail.gmail.com>
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] arm64: dts: qcom: Add PM6125 PMIC
+Message-ID: <20220907212747.i2y6qi75avhavyr4@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+References: <20220805135729.1037079-1-marijn.suijten@somainline.org>
+ <20220805135729.1037079-4-marijn.suijten@somainline.org>
+ <4cef00b4-c184-ae78-3709-5ed520ca3375@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4cef00b4-c184-ae78-3709-5ed520ca3375@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Dmitry,
-
-On Dienstag, 6. September 2022 21:41:11 CEST Dmitry Baryshkov wrote:
-> On Tue, 6 Sept 2022 at 21:36, Luca Weiss <luca@z3ntu.xyz> wrote:
-> > From: Vladimir Lypak <vladimir.lypak@gmail.com>
+On 2022-08-08 12:17:06, Krzysztof Kozlowski wrote:
+> On 05/08/2022 16:57, Marijn Suijten wrote:
+> > This PMIC is commonly used on boards with an SM6125 SoC and looks very
+> > similar in layout to the PM6150.
 > > 
-> > Add the MDSS, MDP and DSI nodes that are found on msm8953 SoC.
+> > Downstream declares more nodes to be available, but these have been
+> > omitted from this patch: the pwm/lpg block is unused on my reference
+> > device making it impossible to test/validate, and the spmi-clkdiv does
+> > not have a single device-tree binding using this driver yet, hence
+> > inclusion is better postponed until ie. audio which uses these clocks is
+> > brought up.
 > > 
-> > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> > Changes since v2:
-> > - add "core" clock for mdss as suggested by Dmitry Baryshkov
-> > 
-> >  arch/arm64/boot/dts/qcom/msm8953.dtsi | 210 ++++++++++++++++++++++++++
-> >  1 file changed, 210 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> > b/arch/arm64/boot/dts/qcom/msm8953.dtsi index 3d11331e78d2..580333141a66
-> > 100644
-> > --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> > +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> > @@ -726,6 +726,216 @@ tcsr_phy_clk_scheme_sel: syscon@193f044 {
-> > 
-> >                         reg = <0x193f044 0x4>;
-> >                 
-> >                 };
-> > 
-> > +               mdss: mdss@1a00000 {
-> > +                       compatible = "qcom,mdss";
-> > +
-> > +                       reg = <0x1a00000 0x1000>,
-> > +                             <0x1ab0000 0x1040>;
-> > +                       reg-names = "mdss_phys",
-> > +                                   "vbif_phys";
-> > +
-> > +                       power-domains = <&gcc MDSS_GDSC>;
-> > +                       interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
-> > +
-> > +                       interrupt-controller;
-> > +                       #interrupt-cells = <1>;
-> > +
-> > +                       clocks = <&gcc GCC_MDSS_AHB_CLK>,
-> > +                                <&gcc GCC_MDSS_AXI_CLK>,
-> > +                                <&gcc GCC_MDSS_VSYNC_CLK>,
-> > +                                <&gcc GCC_MDSS_MDP_CLK>;
-> > +                       clock-names = "iface",
-> > +                                     "bus",
-> > +                                     "vsync",
-> > +                                     "core";
-> > +
-> > +                       #address-cells = <1>;
-> > +                       #size-cells = <1>;
-> > +                       ranges;
-> > +
-> > +                       status = "disabled";
-> > +
-> > +                       mdp: mdp@1a01000 {
-> > +                               compatible = "qcom,mdp5";
 > 
-> Could you please change this to "qcom,msm8953-mdp5", "qcom,mdp5".
+> Thank you for your patch. There is something to discuss/improve.
 
-This would be the first dtsi using the two compatibles then, correct? Are there 
-any plans to adjust other SoCs?
+I can respin the series with the suggested changes (and the iio patch
+removed as that has now been applied), but note that all other PMIC dtsi
+files as of -next today still carry the "wrong" adc-tm or gpios node
+names.  Are there plans to patch those up too (if not already in a
+series that I missed)?
 
-> 
-> > +                               reg = <0x1a01000 0x89000>;
-> > +                               reg-names = "mdp_phys";
+- Marijn
+
 > > +
-> 
-> [skipped]
-> 
+> > +			xo-therm@4c {
+> > +				reg = <ADC5_XO_THERM_100K_PU>;
+> > +				qcom,pre-scaling = <1 1>;
+> > +				qcom,hw-settle-time = <200>;
+> > +				qcom,ratiometric;
+> > +			};
+> > +		};
 > > +
-> > +                       dsi0_phy: dsi-phy@1a94400 {
+> > +		pm6125_adc_tm: adc-tm@3500 {
 > 
-> Let's probably use a generic name 'phy' here and for dsi1_phy.
-
-Here also, the bindings examples all use dsi-phy@, are there any plans to 
-change that and adjust other dtsi files?
-
+> Generic node names, so either this is adc or thermal-sensor. Looks like
+> thermal-sensor.
 > 
-> The rest looks good to me.
-
-Thanks!
-
-Regards
-Luca
-
+> > +			compatible = "qcom,spmi-adc-tm5";
+> > +			reg = <0x3500>;
+> > +			interrupts = <0x0 0x35 0x0 IRQ_TYPE_EDGE_RISING>;
+> > +			#address-cells = <1>;
+> > +			#size-cells = <0>;
+> > +			#thermal-sensor-cells = <1>;
+> > +			status = "disabled";
+> > +		};
+> > +
+> > +		pm6125_rtc: rtc@6000 {
+> > +			compatible = "qcom,pm8941-rtc";
+> > +			reg = <0x6000>, <0x6100>;
+> > +			reg-names = "rtc", "alarm";
+> > +			interrupts = <0x0 0x61 0x1 IRQ_TYPE_EDGE_RISING>;
+> > +			status = "disabled";
+> > +		};
+> > +
+> > +		pm6125_gpio: gpios@c000 {
 > 
-> > +                               compatible = "qcom,dsi-phy-14nm-8953";
-> > +                               reg = <0x1a94400 0x100>,
-> > +                                     <0x1a94500 0x300>,
-> > +                                     <0x1a94800 0x188>;
-> > +                               reg-names = "dsi_phy",
-> > +                                           "dsi_phy_lane",
-> > +                                           "dsi_pll";
+> s/gpios/gpio/
+> 
+> > +			compatible = "qcom,pm6125-gpio", "qcom,spmi-gpio";
+> > +			reg = <0xc000>;
+> > +			gpio-controller;
+> > +			gpio-ranges = <&pm6125_gpio 0 0 9>;
+> > +			#gpio-cells = <2>;
+> > +			interrupt-controller;
+> > +			#interrupt-cells = <2>;
+> > +		};
+> > +	};
 > > +
-> > +                               #clock-cells = <1>;
-> > +                               #phy-cells = <0>;
-> > +
-> > +                               clocks = <&gcc GCC_MDSS_AHB_CLK>,
-> > <&xo_board>; +                               clock-names = "iface",
-> > "ref";
-> > +
-> > +                               status = "disabled";
-> > +                       };
-
-
-
-
+> > +	pmic@1 {
+> > +		compatible = "qcom,pm6125", "qcom,spmi-pmic";
+> > +		reg = <0x1 SPMI_USID>;
+> > +	};
+> > +};
+> 
+> 
+> Best regards,
+> Krzysztof
