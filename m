@@ -2,179 +2,98 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48156C6FA89
-	for <phone-devel@archiver.kernel.org>; Thu,  8 Sep 2022 16:14:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49761C38145
+	for <phone-devel@archiver.kernel.org>; Thu,  8 Sep 2022 17:52:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231752AbiIHQOf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 8 Sep 2022 12:14:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60206 "EHLO
+        id S231468AbiIHRwN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 8 Sep 2022 13:52:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231945AbiIHQOJ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Sep 2022 12:14:09 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8B1BE9020
-        for <phone-devel@vger.kernel.org>; Thu,  8 Sep 2022 09:13:45 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id c10so11025311ljj.2
-        for <phone-devel@vger.kernel.org>; Thu, 08 Sep 2022 09:13:45 -0700 (PDT)
+        with ESMTP id S229842AbiIHRwM (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Sep 2022 13:52:12 -0400
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2114D99DE;
+        Thu,  8 Sep 2022 10:52:11 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id t14so20139283wrx.8;
+        Thu, 08 Sep 2022 10:52:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date;
-        bh=VGZLHz/DjSRVcLx6zUosYKxPYPae57PloyXxh6yBjFE=;
-        b=dsFVeRa1bSoDF3YlyFpkO0lUc4GxEkNbkxSgLKPZSQ7ZHTqR+W5InuYk65I3E2AmMB
-         JUZThfrZ7O1XQMWK+UTdm7WVCI/SEO7pL2wWtVGYrmbxwDcTUduzMASmwh1gV58Hlf3p
-         YbeY2EQkGkZaT0R40q8NOTTGjPzjvnT9nAz9H9NryVyLR3m8w6KL9MHEQk4/kSE0dHEG
-         TMTrfFIIb9BmsHmnG71qLRtuUpg1yBOHqdzrL9DoPSjbyqjGtS1CcHyIbQklqL/3ta29
-         9rVrdXk4VorUaSjYwrt84b+ffPKmsH1L2czLQV9VVRqzx2EBcLzbjkppdG2XJR5phRcD
-         lh7Q==
+        bh=kT+2AbTrH1Kh7uAi7sVUDrkL8YeDLjiGtQ85nst8gfU=;
+        b=eUcl9Y0xLe5I1Pus5u74csvo/LKTlohSmCxPX+tbDeSL8iGEViZmBkXiZ3VWD0Upb0
+         2mO2ePdJpdfgmdIkZJw2OWHce4Etar9/2uwx+eWAfsMk/xYvMG8kWDL9lFMTihWUF/fV
+         bAXfVAJZsThVpObTsyA9GhaBhbAj+Zfl0M6dIXAQ7k355UQZurA+m/tnDm2RVa0AoNol
+         Wat9+o0uEhzf4Q9TL65H97HxJUe/5OZwkpQI8m5RfZ4TRTxG20QARrA78afMW1s01a4I
+         791yhCMweJ6cS5t/6LhoghDmmbnsGX5CKYjtnGo3zWWH4MtUSJHkpauzP2CtE9z8EUqY
+         G4nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=VGZLHz/DjSRVcLx6zUosYKxPYPae57PloyXxh6yBjFE=;
-        b=bJEZnVMZkgK+uIaWgv00SMldsr2Zgxp5VY3SwW1YZ3douRh+/2pSiFEfYdM2PccJx8
-         KncEGJzS/OtKlIPO1Kal+mb0QF2h5k5siRNZrHec6mMtDTIA5xdY1EF6vGrpHXRAMuEO
-         v8nnVNXABKpm+mP0eslySbtDUsKwc/fSHZFVQ1a0hSo6RAQLsP9Rj+LU9Ue3n+drnGCQ
-         Sidq04J1uTyoPVQxotQNSnwPacaaU1d0SA+4gLAYdpCxZIMDqYOEvg1hIs+i6hqMFx77
-         JS27lIBwlRHr7A172HZ+kNaefo2O3l1RwzEPd1WTqY+dkPyk/Xe/Rw55Douo4fRSfjHP
-         hOnw==
-X-Gm-Message-State: ACgBeo1Qh+VhMaC89BN8MpPRx+XYu6MYUsVlP2HUzghPsBU1KjjSjQEM
-        my80lNJA+4wGO8KMnLdTVoBASZy43SP0Sg==
-X-Google-Smtp-Source: AA6agR5euMPFHV8tq4RX29WSwoo6iMXfa2emLRM698nFMAI6coSP8baP1dOf8aabxmfysCJGeKnvPw==
-X-Received: by 2002:a2e:a7cc:0:b0:269:18c5:4ded with SMTP id x12-20020a2ea7cc000000b0026918c54dedmr2760227ljp.476.1662653624162;
-        Thu, 08 Sep 2022 09:13:44 -0700 (PDT)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id v12-20020a056512348c00b0048a7c162bbesm3082779lfr.279.2022.09.08.09.13.43
+        bh=kT+2AbTrH1Kh7uAi7sVUDrkL8YeDLjiGtQ85nst8gfU=;
+        b=Jwg4W/8o2wtxaa1fPDtdz2Be0skmBldtZm6urrbsJ41akfLrcTTU4Gs9iDcsW8Vbw8
+         SZ8vR3BPTvHGW7RA3//WHsdf1r2jiEiNoHkn5e0MUEGdL2vKXf7x0V3lkJJyORhiPxPa
+         QGDDIv7e1vOhlygT43gM2vGsk5HYRxFPyI+i2hTc0WEXkPFLHoGmwNh9OKq5v0fwgbqL
+         1ysi05TM4I8qUNmLDSwZGXaG4t9ODRA7uZWG14F/wwUCRSJl/XGBRenipgpQELoc8qJ+
+         k+ItbhA2XUOyLnU6DCmzV/pnslFO50ojEmBMAalIChTAn59oE7CrtZQ2/ngJD93nfCQ4
+         5PZw==
+X-Gm-Message-State: ACgBeo1qP4VJOJeRTc5RpevmLBCEmIGk14qWOwjoWvD3BhnqjxEuQLv4
+        /GiamulItUkFeH8UMEBPv1g=
+X-Google-Smtp-Source: AA6agR6ac9wu3/ypYFwz28EfERWFSyeR30QK/KsEUG2H6NdnyQUu/tU98reF2mS37pHqFLnbL2ZBhw==
+X-Received: by 2002:a5d:64cf:0:b0:220:6d8e:1db0 with SMTP id f15-20020a5d64cf000000b002206d8e1db0mr5580917wri.564.1662659529837;
+        Thu, 08 Sep 2022 10:52:09 -0700 (PDT)
+Received: from [192.168.74.101] ([77.78.20.135])
+        by smtp.gmail.com with ESMTPSA id v11-20020adfe4cb000000b00228a17f92fesm14705767wrm.51.2022.09.08.10.52.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Sep 2022 09:13:43 -0700 (PDT)
-Message-ID: <ab80670a-267a-45d8-92d0-750e7dce5682@linaro.org>
-Date:   Thu, 8 Sep 2022 19:13:43 +0300
+        Thu, 08 Sep 2022 10:52:09 -0700 (PDT)
+Message-ID: <843b8280-5e71-c008-0ca2-4d289ca6e7da@gmail.com>
+Date:   Thu, 8 Sep 2022 20:52:10 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH v3 3/3] arm64: dts: qcom: msm8953: add MDSS
-Content-Language: en-GB
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Andy Gross <agross@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v2 9/9] arm64: dts: qcom: sm4250: Add support for
+ oneplus-billie2
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220906183334.203787-1-luca@z3ntu.xyz>
- <20220906183334.203787-4-luca@z3ntu.xyz>
- <CAA8EJpqjnafKyUrd1ntYFeGTDtRxgEUSu0Mg9wNGxObJ3wF0Kw@mail.gmail.com>
- <12049260.O9o76ZdvQC@g550jk>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <12049260.O9o76ZdvQC@g550jk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org
+References: <20220903174150.3566935-1-iskren.chernev@gmail.com>
+ <20220903174150.3566935-10-iskren.chernev@gmail.com>
+ <e655cddd-677b-f277-667f-48107671db2a@linaro.org>
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+In-Reply-To: <e655cddd-677b-f277-667f-48107671db2a@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 07/09/2022 18:30, Luca Weiss wrote:
-> Hi Dmitry,
-> 
-> On Dienstag, 6. September 2022 21:41:11 CEST Dmitry Baryshkov wrote:
->> On Tue, 6 Sept 2022 at 21:36, Luca Weiss <luca@z3ntu.xyz> wrote:
->>> From: Vladimir Lypak <vladimir.lypak@gmail.com>
->>>
->>> Add the MDSS, MDP and DSI nodes that are found on msm8953 SoC.
->>>
->>> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
->>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
->>> ---
->>> Changes since v2:
->>> - add "core" clock for mdss as suggested by Dmitry Baryshkov
->>>
->>>   arch/arm64/boot/dts/qcom/msm8953.dtsi | 210 ++++++++++++++++++++++++++
->>>   1 file changed, 210 insertions(+)
->>>
->>> diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi
->>> b/arch/arm64/boot/dts/qcom/msm8953.dtsi index 3d11331e78d2..580333141a66
->>> 100644
->>> --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
->>> +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
->>> @@ -726,6 +726,216 @@ tcsr_phy_clk_scheme_sel: syscon@193f044 {
->>>
->>>                          reg = <0x193f044 0x4>;
->>>                  
->>>                  };
->>>
->>> +               mdss: mdss@1a00000 {
->>> +                       compatible = "qcom,mdss";
->>> +
->>> +                       reg = <0x1a00000 0x1000>,
->>> +                             <0x1ab0000 0x1040>;
->>> +                       reg-names = "mdss_phys",
->>> +                                   "vbif_phys";
->>> +
->>> +                       power-domains = <&gcc MDSS_GDSC>;
->>> +                       interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
->>> +
->>> +                       interrupt-controller;
->>> +                       #interrupt-cells = <1>;
->>> +
->>> +                       clocks = <&gcc GCC_MDSS_AHB_CLK>,
->>> +                                <&gcc GCC_MDSS_AXI_CLK>,
->>> +                                <&gcc GCC_MDSS_VSYNC_CLK>,
->>> +                                <&gcc GCC_MDSS_MDP_CLK>;
->>> +                       clock-names = "iface",
->>> +                                     "bus",
->>> +                                     "vsync",
->>> +                                     "core";
->>> +
->>> +                       #address-cells = <1>;
->>> +                       #size-cells = <1>;
->>> +                       ranges;
->>> +
->>> +                       status = "disabled";
->>> +
->>> +                       mdp: mdp@1a01000 {
->>> +                               compatible = "qcom,mdp5";
->>
->> Could you please change this to "qcom,msm8953-mdp5", "qcom,mdp5".
-> 
-> This would be the first dtsi using the two compatibles then, correct? Are there
-> any plans to adjust other SoCs?
 
-Yes, this is a long-going plan. Having just "qcom,mdp5" doesn't allow 
-switching between mdp5 and dpu1 drivers. Thus I'd ask to add per-SoC 
-compat strings.
 
-It's up to you (and Rob/Krzysztof) whether to leave just one compat 
-string or have both of them: a per-soc one and a generic one.
+On 9/6/22 11:33, Krzysztof Kozlowski wrote:
+> On 03/09/2022 19:41, Iskren Chernev wrote:
+>> Remaining issues from make dtbs_check:
+>> - rpm-requests: it doesn't like the pm6125-regulators subnode. Every other
+>>   DTS I checked is written in this way.
+>
+> Yes, I sent patches for it, already merged, so please rebase on linux-next.
+>
+> https://lore.kernel.org/all/20220828084341.112146-1-krzysztof.kozlowski@linaro.org/
+>
+> Please rebase and test with
+> Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
 
-> 
->>
->>> +                               reg = <0x1a01000 0x89000>;
->>> +                               reg-names = "mdp_phys";
->>> +
->>
->> [skipped]
->>
->>> +
->>> +                       dsi0_phy: dsi-phy@1a94400 {
->>
->> Let's probably use a generic name 'phy' here and for dsi1_phy.
-> 
-> Here also, the bindings examples all use dsi-phy@, are there any plans to
-> change that and adjust other dtsi files?
-
-Yes, sc7280 already uses phy@ for both DSI and eDP PHYs.
-
-> 
->>
->> The rest looks good to me.
-> 
-> Thanks!
--- 
-With best wishes
-Dmitry
-
+It looks like this patch covers SPMI regulators. In most devices RPM/H (i.e
+indirect) regulators are used, so this doesn't fix it for me.
