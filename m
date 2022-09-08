@@ -2,78 +2,71 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30232C6FA8D
-	for <phone-devel@archiver.kernel.org>; Thu,  8 Sep 2022 08:09:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 322F0C38145
+	for <phone-devel@archiver.kernel.org>; Thu,  8 Sep 2022 10:36:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231359AbiIHIJy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 8 Sep 2022 04:09:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56240 "EHLO
+        id S229835AbiIHKgR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 8 Sep 2022 06:36:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231377AbiIHIJr (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Sep 2022 04:09:47 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1702A20F6F
-        for <phone-devel@vger.kernel.org>; Thu,  8 Sep 2022 01:09:45 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id a70so7014131edf.10
-        for <phone-devel@vger.kernel.org>; Thu, 08 Sep 2022 01:09:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=S1qXKiCajjh/Uipc8YgMZjzlpJicWnNYZECRNVm1W44=;
-        b=YUOI2kYGVp8TedktBBfFdNobEmHj7S9Q1LO8y/r2tvlZZ+5ZC4wlQhkhl1SEtvc4cP
-         F8XJfH9efVRhKhKBlrIduz313st7Jm3Ay4LLP9V5gtcdxIruOaGROH2A2qaODRX7H/ua
-         0Su8QeZwPmjFNoNx9t/sC8yFpobFSwGGGbMtMNlEXPce22uejctJNRxxDegKT6OegWUg
-         xLelMTTz2OPFcT79j0o7xF8ZimSkWQRyIB+3N6jF39pwaJ3byW8+tFfI3QBTAkbd6TSv
-         XNLXIUdaszwnMZZCzxaOOQ9kVY7yf5ayJPm+udIirSx11k5DxI+p4ARltB8EWRgoSXXT
-         gGNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=S1qXKiCajjh/Uipc8YgMZjzlpJicWnNYZECRNVm1W44=;
-        b=Yy0eWRCHq+vfZ/z/CDNNoc/q3VSIvxRZ1j8twHtqlPLACk4quYDXIghD5yceqHUXkM
-         wUYCMpLQZBAqIPBkTzdFhhPdwNUfIDdGCtEFSSWqPyt1L5sUb364hqNZzrVOLGAwIDlt
-         KXs4KW2DB/8sCRgFa2ow6C8YHDNR1s/rpnzp6lQXyJEY35Fx9t7hzRo8kN/V83584y4X
-         XHQiMZrh+DMY4zaOXPsUPgJ/qk2QElMGmQHI4yURIRYcOYngVUsWrX1Npdf9deas8I6G
-         jqeOcLtjzwxBfeZHYcaQAWARCxiN9+sN0PpwArVBdY9XvoqgxxpCTBjYRLyR0pMZn0IE
-         IS1Q==
-X-Gm-Message-State: ACgBeo0ksqusVRTCZKQXJ+dOd2HQm+CHcavBTbHe++vncitzaJhhTbPa
-        mr8h8ZXT3NmxtX2muC/nzcqgwJ7VOMl9quiuOFkQzg==
-X-Google-Smtp-Source: AA6agR4Ul4v+ifKJUG+DffGG6giEHITRYdE5Bt6AKV97jrthkmExLFsd8TA3X6Foj57Noofm4ulq1/3/4JopmDpgxeQ=
-X-Received: by 2002:a05:6402:2691:b0:43d:ba10:854b with SMTP id
- w17-20020a056402269100b0043dba10854bmr5936048edd.158.1662624583635; Thu, 08
- Sep 2022 01:09:43 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220903174150.3566935-1-iskren.chernev@gmail.com> <20220903174150.3566935-5-iskren.chernev@gmail.com>
-In-Reply-To: <20220903174150.3566935-5-iskren.chernev@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 8 Sep 2022 10:09:32 +0200
-Message-ID: <CACRpkdYwc=py6s0CqGZgusH4yQA+ZqQGYgeWqcv+NDpnSwt3Vw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/9] dt-bindings: pinctrl: qcom: sm6115: Add reserved ranges
-To:     Iskren Chernev <iskren.chernev@gmail.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        with ESMTP id S229546AbiIHKgQ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Sep 2022 06:36:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12C5799B7D;
+        Thu,  8 Sep 2022 03:36:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AACEF61C50;
+        Thu,  8 Sep 2022 10:36:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A8FC433D6;
+        Thu,  8 Sep 2022 10:36:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662633374;
+        bh=DcnqZRnwLXuCJ325syeXI+k0aeFY+oaFwD/58GLiR+I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GD7d0+xBkLfoSXdhm5qwtn56WCIC+BZZvw66xPZLmLzrzJdaS624JndynNyyxyou7
+         jCImtE0r+d1zHATxQlI1/PLHH98LRWpn77FXG/JaigZ/cyE6/SX1hWXkuk0Dul4q7n
+         YdxHnsO5kOOsLUBAcvXBN/oS3nbOfj7TyrlKCcwvFbH/Zkoxqe4DyFVOQjkvIY0DfY
+         HyE7kCCkPcy/TqE/A/ynp+Y9kaDdKNbM1pDg/6ZKJBvF9Go0Kl3GT3lsznE887NiGb
+         VC8lNUTKCvXqCPFqNJ6oD96ByvlbAfgwh0eXfbCauL1Xka4odD7d6T6NemtzFjMym2
+         y0cOSnTBDjUJQ==
+Date:   Thu, 8 Sep 2022 11:36:07 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Luca Weiss <luca.weiss@fairphone.com>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Stephen Boyd <sboyd@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] mfd: qcom-spmi-pmic: Add pm7250b compatible
+Message-ID: <YxnFl8qZ2sj/n7sq@google.com>
+References: <20220902111055.106814-1-luca.weiss@fairphone.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220902111055.106814-1-luca.weiss@fairphone.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Sep 3, 2022 at 7:42 PM Iskren Chernev <iskren.chernev@gmail.com> wrote:
+On Fri, 02 Sep 2022, Luca Weiss wrote:
 
-> Ideally this and similar common properties will be inherited so you
-> won't need to paste them in every pinctrl binding.
->
-> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+> Document the compatible for pm7250b that is used with e.g. sm6350.
+> 
+> Also while we're at it, sort the compatibles alphabetically.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 
-This patch 4/9 applied to the pinctrl tree.
+Applied, thanks.
 
-Yours,
-Linus Walleij
+-- 
+Lee Jones [李琼斯]
