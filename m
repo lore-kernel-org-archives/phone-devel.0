@@ -2,98 +2,107 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49761C38145
-	for <phone-devel@archiver.kernel.org>; Thu,  8 Sep 2022 17:52:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92556C6FA8A
+	for <phone-devel@archiver.kernel.org>; Thu,  8 Sep 2022 19:44:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231468AbiIHRwN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 8 Sep 2022 13:52:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40254 "EHLO
+        id S229476AbiIHToX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 8 Sep 2022 15:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229842AbiIHRwM (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Sep 2022 13:52:12 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2114D99DE;
-        Thu,  8 Sep 2022 10:52:11 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id t14so20139283wrx.8;
-        Thu, 08 Sep 2022 10:52:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=kT+2AbTrH1Kh7uAi7sVUDrkL8YeDLjiGtQ85nst8gfU=;
-        b=eUcl9Y0xLe5I1Pus5u74csvo/LKTlohSmCxPX+tbDeSL8iGEViZmBkXiZ3VWD0Upb0
-         2mO2ePdJpdfgmdIkZJw2OWHce4Etar9/2uwx+eWAfsMk/xYvMG8kWDL9lFMTihWUF/fV
-         bAXfVAJZsThVpObTsyA9GhaBhbAj+Zfl0M6dIXAQ7k355UQZurA+m/tnDm2RVa0AoNol
-         Wat9+o0uEhzf4Q9TL65H97HxJUe/5OZwkpQI8m5RfZ4TRTxG20QARrA78afMW1s01a4I
-         791yhCMweJ6cS5t/6LhoghDmmbnsGX5CKYjtnGo3zWWH4MtUSJHkpauzP2CtE9z8EUqY
-         G4nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=kT+2AbTrH1Kh7uAi7sVUDrkL8YeDLjiGtQ85nst8gfU=;
-        b=Jwg4W/8o2wtxaa1fPDtdz2Be0skmBldtZm6urrbsJ41akfLrcTTU4Gs9iDcsW8Vbw8
-         SZ8vR3BPTvHGW7RA3//WHsdf1r2jiEiNoHkn5e0MUEGdL2vKXf7x0V3lkJJyORhiPxPa
-         QGDDIv7e1vOhlygT43gM2vGsk5HYRxFPyI+i2hTc0WEXkPFLHoGmwNh9OKq5v0fwgbqL
-         1ysi05TM4I8qUNmLDSwZGXaG4t9ODRA7uZWG14F/wwUCRSJl/XGBRenipgpQELoc8qJ+
-         k+ItbhA2XUOyLnU6DCmzV/pnslFO50ojEmBMAalIChTAn59oE7CrtZQ2/ngJD93nfCQ4
-         5PZw==
-X-Gm-Message-State: ACgBeo1qP4VJOJeRTc5RpevmLBCEmIGk14qWOwjoWvD3BhnqjxEuQLv4
-        /GiamulItUkFeH8UMEBPv1g=
-X-Google-Smtp-Source: AA6agR6ac9wu3/ypYFwz28EfERWFSyeR30QK/KsEUG2H6NdnyQUu/tU98reF2mS37pHqFLnbL2ZBhw==
-X-Received: by 2002:a5d:64cf:0:b0:220:6d8e:1db0 with SMTP id f15-20020a5d64cf000000b002206d8e1db0mr5580917wri.564.1662659529837;
-        Thu, 08 Sep 2022 10:52:09 -0700 (PDT)
-Received: from [192.168.74.101] ([77.78.20.135])
-        by smtp.gmail.com with ESMTPSA id v11-20020adfe4cb000000b00228a17f92fesm14705767wrm.51.2022.09.08.10.52.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Sep 2022 10:52:09 -0700 (PDT)
-Message-ID: <843b8280-5e71-c008-0ca2-4d289ca6e7da@gmail.com>
-Date:   Thu, 8 Sep 2022 20:52:10 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v2 9/9] arm64: dts: qcom: sm4250: Add support for
- oneplus-billie2
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        with ESMTP id S232197AbiIHTnn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Sep 2022 15:43:43 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D46113678;
+        Thu,  8 Sep 2022 12:42:59 -0700 (PDT)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 288IL8T5006901;
+        Thu, 8 Sep 2022 19:42:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=date : from : to :
+ cc : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=qcppdkim1; bh=+cS73rrDkyOuLNhfpMJJhhp7XpBkoLFM24d3JoVknoY=;
+ b=IPWq7nxBB4Nda9FfX5MjZuR/quqZYXORrgUVSP+Te3B45Jkj3+k0Nhu5RjvMETrCo2X3
+ RBnpCsLtd3yVVdpmO0GFoyP9oBQmtBsD7ATMuuU0po9lh2JoIgfnLWgsjBvX88TdoMiy
+ /YklBmRTGnstCQS/uNxpWF/cPjbYG+JrW4zhaDhmpapS9UYfA02SdoCwiIFJmSgyYUNz
+ 4FjJ9w9Hf55r5sYh7qHgP+p0fpQZ+WujFGjBOa7taWlnz8augGcDsE+ouynjcmAaPbeL
+ phP2E/NeyHqh8MnWmVdtc5vQnAk6ZMSYtbx5uJ6SSx6ELPKyBKp3YlvPOTwts5CpmBF3 9w== 
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jf1swuedr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 08 Sep 2022 19:42:37 +0000
+Received: from nasanex01b.na.qualcomm.com (corens_vlan604_snip.qualcomm.com [10.53.140.1])
+        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 288JgaNo020665
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 8 Sep 2022 19:42:36 GMT
+Received: from quicinc.com (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Thu, 8 Sep 2022
+ 12:42:36 -0700
+Date:   Thu, 8 Sep 2022 12:42:34 -0700
+From:   Guru Das Srinagesh <quic_gurus@quicinc.com>
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+CC:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>,
+        <phone-devel@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
         Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Kees Cook <keescook@chromium.org>,
-        Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org
+        Robert Marko <robimarko@gmail.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/9] dt-bindings: firmware: document Qualcomm SM6115
+ SCM
+Message-ID: <20220908194234.GA21316@quicinc.com>
 References: <20220903174150.3566935-1-iskren.chernev@gmail.com>
- <20220903174150.3566935-10-iskren.chernev@gmail.com>
- <e655cddd-677b-f277-667f-48107671db2a@linaro.org>
-From:   Iskren Chernev <iskren.chernev@gmail.com>
-In-Reply-To: <e655cddd-677b-f277-667f-48107671db2a@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20220903174150.3566935-3-iskren.chernev@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20220903174150.3566935-3-iskren.chernev@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 08yHSMp7mIoajSSfbLi5IZNfTvYLbcI4
+X-Proofpoint-ORIG-GUID: 08yHSMp7mIoajSSfbLi5IZNfTvYLbcI4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-08_12,2022-09-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 bulkscore=0 impostorscore=0 adultscore=0 priorityscore=1501
+ mlxscore=0 spamscore=0 malwarescore=0 clxscore=1011 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209080070
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Sep 03 2022 20:41, Iskren Chernev wrote:
+> Document the compatible for Qualcomm  SM6115 SCM.
+> 
+> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
 
+Reviewed-by: Guru Das Srinagesh <quic_gurus@quicinc.com>
 
-On 9/6/22 11:33, Krzysztof Kozlowski wrote:
-> On 03/09/2022 19:41, Iskren Chernev wrote:
->> Remaining issues from make dtbs_check:
->> - rpm-requests: it doesn't like the pm6125-regulators subnode. Every other
->>   DTS I checked is written in this way.
->
-> Yes, I sent patches for it, already merged, so please rebase on linux-next.
->
-> https://lore.kernel.org/all/20220828084341.112146-1-krzysztof.kozlowski@linaro.org/
->
-> Please rebase and test with
-> Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
-
-It looks like this patch covers SPMI regulators. In most devices RPM/H (i.e
-indirect) regulators are used, so this doesn't fix it for me.
+> ---
+>  Documentation/devicetree/bindings/firmware/qcom,scm.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/firmware/qcom,scm.yaml b/Documentation/devicetree/bindings/firmware/qcom,scm.yaml
+> index 9fdeee07702f..c5b76c9f7ad0 100644
+> --- a/Documentation/devicetree/bindings/firmware/qcom,scm.yaml
+> +++ b/Documentation/devicetree/bindings/firmware/qcom,scm.yaml
+> @@ -44,6 +44,7 @@ properties:
+>            - qcom,scm-sdm845
+>            - qcom,scm-sdx55
+>            - qcom,scm-sdx65
+> +          - qcom,scm-sm6115
+>            - qcom,scm-sm6125
+>            - qcom,scm-sm6350
+>            - qcom,scm-sm8150
+> -- 
+> 2.37.2
+> 
