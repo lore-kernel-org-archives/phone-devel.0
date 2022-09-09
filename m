@@ -2,103 +2,88 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD804ECAAA1
-	for <phone-devel@archiver.kernel.org>; Fri,  9 Sep 2022 09:46:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EBCAECAAA1
+	for <phone-devel@archiver.kernel.org>; Fri,  9 Sep 2022 14:40:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231544AbiIIJqE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 9 Sep 2022 05:46:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57036 "EHLO
+        id S231788AbiIIOj7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 9 Sep 2022 10:39:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231587AbiIIJp6 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Sep 2022 05:45:58 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81387C483A
-        for <phone-devel@vger.kernel.org>; Fri,  9 Sep 2022 02:45:56 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id e20so1768796wri.13
-        for <phone-devel@vger.kernel.org>; Fri, 09 Sep 2022 02:45:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=VpThbe8guKkTwpHrdYNBDJk5GWCovHFUSJ8RnnMnk6g=;
-        b=Tn08c/5JrTkDYxf9JP+BQRqJAKtzTBpuTTVsrsWIfFmY3BKIup/asMRrLQSoChOYHp
-         tNhuNH1d0f3+4ufoQZ/irHZNIpXh18tmWUHTRuV8lR7Hqb2BuTPDMM6+lpEQGxaxqt9j
-         PIc0kk+FesFhVgmL091Fkdz4NQROCzjXAdHxdAJExzgjO21FFUwmSkHzysyhIXRyxOwR
-         cwoSbhj2S74bTWf6SLGSMEWOHaTgLEDJKUDYLgmDWdwZXsdcc3PfB7iejktrwWceAf9f
-         xyZ0l/7/sHQuIQvNk7rT78nRUAMWyV9M4xlwhnOax4HGvUpB46cCRWcck9Tb493iNgDz
-         LsMg==
+        with ESMTP id S232043AbiIIOj5 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Sep 2022 10:39:57 -0400
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D639F2DAB9;
+        Fri,  9 Sep 2022 07:39:52 -0700 (PDT)
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-12803ac8113so4383119fac.8;
+        Fri, 09 Sep 2022 07:39:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=VpThbe8guKkTwpHrdYNBDJk5GWCovHFUSJ8RnnMnk6g=;
-        b=QagCSEP9HOHBfxyxuFPdEnyLBFH6FvjoWBp+Rokr7z/jBZG/3cQxoyBfffzjWj4Tqz
-         TQBkvIC3FREYGwjEyAXfh+Z6mQM/e5fUOwB+rnAg4WIn29TfG0my3VdlTUoxmlS/adCC
-         81M1eNIVajUhiMyyeqJoj4TfvXaBrcqM8C4dTKGY54HRZ5yCYrTb0PnY5eIt/NbYmzE7
-         auygjOM/f3MDlDcBwAvjXtPeYHmsOwVx4Dl84S5fBHYM0QuzygEF50sMM01bM/nY1wT6
-         NPXynfXALNI0nWl32o5P2owUET3b5Ow3qKWMJgdbDvJP94Jn3/FXDrlv3IcIRAFFEvHf
-         8VWA==
-X-Gm-Message-State: ACgBeo2xaj9LAUtZ8KbnfoGTndBqCdzVqSkzMWu6WT5FmbljlpG8svSZ
-        4nKahDdfx7njJ29x8VcUhTQHTQ==
-X-Google-Smtp-Source: AA6agR5w63EZsxEPD4It3zid2cpGCTqxvsFLMwsJC8Y+tyuxAZb7LkaKpwpIWBOYGI+L0ngJVJME7w==
-X-Received: by 2002:a05:6000:10d2:b0:228:d60b:6d5a with SMTP id b18-20020a05600010d200b00228d60b6d5amr7168864wrx.146.1662716754958;
-        Fri, 09 Sep 2022 02:45:54 -0700 (PDT)
-Received: from [192.168.86.238] (cpc90716-aztw32-2-0-cust825.18-1.cable.virginm.net. [86.26.103.58])
-        by smtp.googlemail.com with ESMTPSA id k4-20020a5d4284000000b002286670bafasm82563wrq.48.2022.09.09.02.45.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Sep 2022 02:45:53 -0700 (PDT)
-Message-ID: <1b4084bc-2ec6-e2fe-5a0c-40a3409b7b9b@linaro.org>
-Date:   Fri, 9 Sep 2022 10:45:52 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2 3/9] dt-bindings: nvmem: Add SoC compatible for sm6115
-Content-Language: en-US
-To:     Iskren Chernev <iskren.chernev@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=ftf0UiBiLz6oFjDNarvElWVwFaQsvk8ZXx/a/CGTdUA=;
+        b=glcYjFQn/spcxFV3Xbqgd1TpuMc+lKgGTMDl/afa5uuSuN9Hqk3gsmqQ/a71Z+Zzin
+         vxsJXgeltKUv0GrQNHv+yS9IHGJHVAkKzscA+99dS32t25oaA5oN9S5lKTA8yMrnRcdX
+         S3qJHTgamA1onWuW/VWt58hnEwLyZ2z7mKuLIl/NpH6cbUB4Ni5Z56p39u0bJu0ZoW+Z
+         +WH0YTyxL1XQMyPRJpUNwGQhrCbAZYL/pe2B49iJBTSRoTsRsXUor9qF0nJAa2lESmr3
+         dBuJMPeu19jEYJCEyr1G4gKOz00fv2ieRH0vylSGv4QMuayTjyF05u7JJmtYuOdClunY
+         hvjA==
+X-Gm-Message-State: ACgBeo12AK38bKgxJ8W0Zy66aZGTo7J0Van8MAz9sMVJuVPzEO5RwUfD
+        9eGn6PWAL/0+b8BjUofqCg==
+X-Google-Smtp-Source: AA6agR5sH9jO7ewRPhu2gd//ThcK3OpubXNqMdFFa9cMj5yim/Bj6Us12fZJ2x/42Jw0BfKu1F4DjA==
+X-Received: by 2002:a05:6808:152a:b0:344:c8d1:27e1 with SMTP id u42-20020a056808152a00b00344c8d127e1mr3922484oiw.294.1662734391944;
+        Fri, 09 Sep 2022 07:39:51 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id 19-20020a9d0113000000b006391bdbb361sm340925otu.31.2022.09.09.07.39.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Sep 2022 07:39:51 -0700 (PDT)
+Received: (nullmailer pid 1025314 invoked by uid 1000);
+        Fri, 09 Sep 2022 14:39:50 -0000
+Date:   Fri, 9 Sep 2022 09:39:50 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Luca Weiss <luca.weiss@fairphone.com>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-kernel@vger.kernel.org
-References: <20220903174150.3566935-1-iskren.chernev@gmail.com>
- <20220903174150.3566935-4-iskren.chernev@gmail.com>
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <20220903174150.3566935-4-iskren.chernev@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v2] dt-bindings: qcom,pdc: convert to YAML
+Message-ID: <20220909143950.GA992904-robh@kernel.org>
+References: <20220103074348.6039-1-luca.weiss@fairphone.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220103074348.6039-1-luca.weiss@fairphone.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-
-On 03/09/2022 18:41, Iskren Chernev wrote:
-> Document SoC compatible for sm6115.
+On Mon, Jan 03, 2022 at 08:43:48AM +0100, Luca Weiss wrote:
+> Convert the PDC interrupt controller bindings to YAML.
 > 
-> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
 > ---
-
-Applied thanks,
-
---srini
->   Documentation/devicetree/bindings/nvmem/qcom,qfprom.yaml | 1 +
->   1 file changed, 1 insertion(+)
+> Changes since v1:
+> * Adjust description of second reg-name as suggested by Maulik Shah
 > 
-> diff --git a/Documentation/devicetree/bindings/nvmem/qcom,qfprom.yaml b/Documentation/devicetree/bindings/nvmem/qcom,qfprom.yaml
-> index dede8892ee01..54053e16b8fd 100644
-> --- a/Documentation/devicetree/bindings/nvmem/qcom,qfprom.yaml
-> +++ b/Documentation/devicetree/bindings/nvmem/qcom,qfprom.yaml
-> @@ -26,6 +26,7 @@ properties:
->             - qcom,sc7180-qfprom
->             - qcom,sc7280-qfprom
->             - qcom,sdm845-qfprom
-> +          - qcom,sm6115-qfprom
->         - const: qcom,qfprom
->   
->     reg:
+> @Rob Herring: Hope it's ok to keep your R-b given the above changes
+> 
+> This patch depends on the following patch, which fixed sm8250 & sm8350
+> compatibles and adds sm6350.
+> https://lore.kernel.org/linux-arm-msm/20211213082614.22651-4-luca.weiss@fairphone.com/
+> 
+>  .../interrupt-controller/qcom,pdc.txt         | 77 -----------------
+>  .../interrupt-controller/qcom,pdc.yaml        | 86 +++++++++++++++++++
+>  2 files changed, 86 insertions(+), 77 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.txt
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/qcom,pdc.yaml
+
+In checking top compatibles without schemas[1][2], I found this. Now 
+applied with sm8150 compatible which was the only change since this.
+
+Rob
+
+[1] https://gitlab.com/robherring/linux-dt/-/jobs/3005191129
+[2] https://gitlab.com/robherring/linux-dt/-/jobs/3005191129/artifacts/file/all-compatible-warnings.log
