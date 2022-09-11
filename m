@@ -2,89 +2,105 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34487C54EE9
-	for <phone-devel@archiver.kernel.org>; Sun, 11 Sep 2022 13:31:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BDD74C54EE9
+	for <phone-devel@archiver.kernel.org>; Sun, 11 Sep 2022 16:47:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230292AbiIKNbC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 11 Sep 2022 09:31:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46126 "EHLO
+        id S229561AbiIKQru (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 11 Sep 2022 12:47:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230204AbiIKNbB (ORCPT
+        with ESMTP id S229512AbiIKQrt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 11 Sep 2022 09:31:01 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6D252CE13
-        for <phone-devel@vger.kernel.org>; Sun, 11 Sep 2022 06:30:59 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id a14so5500304ljj.8
-        for <phone-devel@vger.kernel.org>; Sun, 11 Sep 2022 06:30:59 -0700 (PDT)
+        Sun, 11 Sep 2022 12:47:49 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1DD62250D;
+        Sun, 11 Sep 2022 09:47:48 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id u18so11155286lfo.8;
+        Sun, 11 Sep 2022 09:47:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=ZjdYZup4hi3M7uU6008ZlQ2fxrTrRXAq7VJNcgGePcM=;
-        b=sbJ7wXb5kTSc8AAFdwvRQdd+PVXXYYQOnf/uBCOShZwedclF4AwzdIFIog8PtnkmlH
-         cnmdNrRjTGPeo+/vPq4V9tM7FVdq3NpnHOEd6fWimIGo4hnVrhERhZL3Gzu/Rx2/gNAo
-         vz+EP9657hFzpw//HTZMTpFPtqPLVMvD9250KCt87T/kQaHGzoZgfZ0GqZJuYbye6rRV
-         pp7AORI020E2kyjPQIGd+862yBbsPzRx3yBg1waPVLxnvPMRdSxeJoX35U2iJtjz+RMS
-         59Yzdmy9joveJyylXQkKfMveGjxW9hsQ/ExZN+Lx/ffHUXY1+Aoh8InWLkR0Vy0lVhXT
-         lY2w==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=HA8nCOkAXI5pWr8NFRVcvP55LL8wQ30TATKKXBfMRyc=;
+        b=DxbH2ZufBCubLKCARbp0AtY6qiRL3bqH90OBBrqcb+7cKV487M+lN8gndTCeRd8meK
+         UMZ53331umiv8/SxccsV9+wuA5LkqQ7COuQhPuKnWd6gQ8PszLUUurtcYeRR9vw00j9E
+         bUmlSe7rFOl2fCIWIum4A0daapmr4XuKCMeAw1XBRjpP8MgJPw92OOkZ7wDbza/bHI6h
+         EOa2jouzLHuGYONrOLfjvY7EJ3IfKhKlkLkzN8VKYCeEmr/jN7BZdXvjIKmTksrhP1Ti
+         kuUogtc+Bmh59ACeZvHDB97JBJghXwAVDk7zP1+g4eS4kzUQJcvsatbx749NISqmbz/l
+         h/IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=ZjdYZup4hi3M7uU6008ZlQ2fxrTrRXAq7VJNcgGePcM=;
-        b=zymC/mw/lR8yboYsD9wwDGedD+uSi5fpV4UR3JTX7Ua2pphIem0JzPxb9SXRQpXHZk
-         FivY+xsdXWOFo2jcOhQLl3akGrL6qn2alREO1XqzvL0vDzVYiROdOOpJh0lLdI3mNW37
-         a/bzMdkzQEuYtFAbkaOZgXK1uLW6eoC+oXMSH93LjwPNgZvBa5GK7Ur3ujkbkVxtpb28
-         mQowi68fDl6PFRsr/Sdnd8C+Ap5QwEwcWsX5q9wS3T5Aoym4VyFxoKlCf0xseHVV15hO
-         5Kroh6ewoSH1aiqW0qTxUveyeq35BLAtvAebVvOgg9sKPxcvm4nIN1N4rLJDCibks3c9
-         ajWA==
-X-Gm-Message-State: ACgBeo2kSpQqdF3aXGSyFrgdY0Hh0vpBeIlR2uTaq20UXGJuvrvg5cC4
-        XFefT/fq64fq5+8OEQvPOk1Eig==
-X-Google-Smtp-Source: AA6agR407SxA2qhyTMLTWVfeK2LQFV3uqfjQbJ8mN8zjxZfMzZjW5772CX7prkwwVBFrUiWkXnsfkg==
-X-Received: by 2002:a2e:808f:0:b0:26a:b498:2c87 with SMTP id i15-20020a2e808f000000b0026ab4982c87mr6723966ljg.279.1662903058171;
-        Sun, 11 Sep 2022 06:30:58 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id w18-20020a05651234d200b0049a3f2b1193sm233621lfr.154.2022.09.11.06.30.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Sep 2022 06:30:57 -0700 (PDT)
-Message-ID: <5b8e8da6-0bd6-cf26-5c2b-887cd1d4475e@linaro.org>
-Date:   Sun, 11 Sep 2022 15:30:56 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v3 6/9] dt-bindings: phy: qcom,qmp-ufs: Fix SM6115 clocks,
- regs
-Content-Language: en-US
-To:     Iskren Chernev <iskren.chernev@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=HA8nCOkAXI5pWr8NFRVcvP55LL8wQ30TATKKXBfMRyc=;
+        b=tCRXQj1YWJs+4EXelaBV+JDydqBLP+HOOy3/CB2JlpD6FEC0xSMiziy/7Spj3ETV81
+         icd4sh9C2Mx2QavBnSYxbmw4pmfXucMyxwgRSrd6aXMNqz1W33jcEuscQKERAZcKzlss
+         /VuPzJo8IKwWvxGJRyQH9jLVAzZ09D4z4izTbD2F3Hq5bSTVRmizvyKVrDDx0UsDXdE9
+         9/DZM8vHm99ulX1UdKthbPgZOOo5lkMHLXW5VbOyQQ40msvl4+AO2jPnkzH26uurr3NZ
+         RZOJry0u4rZynNdAEw1eE2dXQOBFdPFFLr/CA4ekcEn3G5coANYuk0xi4xpRiDfNBcKW
+         sjVw==
+X-Gm-Message-State: ACgBeo1mBlZ0FBQu72+GTkaQv35Sp8f7G28Vry8YmHWlA2PS+xppsI1I
+        OGypErEs+Vz65ATY0FpxB/HWHXJRuUUOMA==
+X-Google-Smtp-Source: AA6agR6jPn7ZnXiofy86/eT+/HFxp4+3XPCj9LGowRvuJFpj0MicEk1o403HrgX83+C7lcmEZWf5Rw==
+X-Received: by 2002:ac2:4e10:0:b0:49a:d44b:426 with SMTP id e16-20020ac24e10000000b0049ad44b0426mr144007lfr.234.1662914867090;
+        Sun, 11 Sep 2022 09:47:47 -0700 (PDT)
+Received: from localhost.localdomain (adld177.neoplus.adsl.tpnet.pl. [79.185.7.177])
+        by smtp.gmail.com with ESMTPSA id h1-20020a0565123c8100b004979e231fafsm664501lfv.38.2022.09.11.09.47.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Sep 2022 09:47:46 -0700 (PDT)
+From:   Adam Skladowski <a39.skl@gmail.com>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Adam Skladowski <a39.skl@gmail.com>,
         Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Vinod Koul <vkoul@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20220910143213.477261-1-iskren.chernev@gmail.com>
- <20220910143213.477261-7-iskren.chernev@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220910143213.477261-7-iskren.chernev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/2] Add DISPCC driver for SM6115
+Date:   Sun, 11 Sep 2022 18:46:17 +0200
+Message-Id: <20220911164635.182973-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 10/09/2022 16:32, Iskren Chernev wrote:
-> The Sm6115 UFS PHY has 2 clocks and 3 regs.
+This patch series introduce support for SM6115 display clock controller,
+this driver is based on QCM2290 one.
 
+Changes since v1
+================
+1. Changed bindings file names to Vendor,SoC-IP format.
+2. Changed include in dispcc-sm6115 to reflect name change of bindings.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Changes since v2
+================
+1. Changed maintainer email.
+2. Converted driver to use .index instead of fw_name.
+3. Removed parents which had no passed clock.
+4. Updated YAML to reflect changes above.
+5. Adjusted driver based on Bjorn's feedback.
 
+Adam Skladowski (2):
+  dt-bindings: clock: add QCOM SM6115 display clock bindings
+  clk: qcom: Add display clock controller driver for SM6115
 
-Best regards,
-Krzysztof
+ .../bindings/clock/qcom,sm6115-dispcc.yaml    |  70 ++
+ drivers/clk/qcom/Kconfig                      |   9 +
+ drivers/clk/qcom/Makefile                     |   1 +
+ drivers/clk/qcom/dispcc-sm6115.c              | 608 ++++++++++++++++++
+ .../dt-bindings/clock/qcom,sm6115-dispcc.h    |  36 ++
+ 5 files changed, 724 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/clock/qcom,sm6115-dispcc.yaml
+ create mode 100644 drivers/clk/qcom/dispcc-sm6115.c
+ create mode 100644 include/dt-bindings/clock/qcom,sm6115-dispcc.h
+
+-- 
+2.25.1
+
