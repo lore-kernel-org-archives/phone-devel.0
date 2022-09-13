@@ -2,108 +2,95 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 52623C6FA82
-	for <phone-devel@archiver.kernel.org>; Mon, 12 Sep 2022 17:00:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7FAAC54EE9
+	for <phone-devel@archiver.kernel.org>; Tue, 13 Sep 2022 12:24:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229781AbiILRAW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 12 Sep 2022 13:00:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52870 "EHLO
+        id S231814AbiIMMYq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 13 Sep 2022 08:24:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229827AbiILRAU (ORCPT
+        with ESMTP id S230408AbiIMMYq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 12 Sep 2022 13:00:20 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15CF311C2B
-        for <phone-devel@vger.kernel.org>; Mon, 12 Sep 2022 10:00:18 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id u132so9208653pfc.6
-        for <phone-devel@vger.kernel.org>; Mon, 12 Sep 2022 10:00:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=sfYBJC32ETGyteiWg3YC9wQpy2EzrGHLM+DajwGhI4I=;
-        b=b9P3PVEQ9u6tuw4txhn443NBSCEH8tCVzgKr4rmIdZFsA7TJUheFOKJC7L39lri40z
-         4NKkxjzd8vuOT7w+CY7VVC18Frtz41ldO3BbwB9sK6olTDNV6ACrIw2EDDG6MAesNhe1
-         HoyK7EUtVSQBKgfpLvJ8kxwvN9xIbYqR/OLJuC4F9TzSeEbDUck+kq6bHLY1Zny2exPt
-         IqNkab7JEGth4ZT2EjQRjbbVSNUHFK+XAKjKitJzYTRglRw4sIjKlqmebilPV/ZI3+tg
-         st2WDmMsWFCwxApJhzVm9K0UYRehYXzLWdGzitqjmizle8lMy5vaj7DGoHakP4Eam9LX
-         Kr1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=sfYBJC32ETGyteiWg3YC9wQpy2EzrGHLM+DajwGhI4I=;
-        b=Yk4DFSttFgivNDSUFU39p9R0hyZmvlco0eIGYJLHH6hYPpTicPSMJLsWCMZNQAF6Rk
-         r19h+eaKSpHFLg5NVBFjjjWLEIgd2X/H7d6LQ2EcstjCHdZd/vfA4xu78W91cyOmWiei
-         cmSmAXhPbeSuXblHBfns6oN1fpgrK0JKWsquQZqMxkZUoSgAxsUGc/tWTWBaGr+oGZhc
-         mllulLZSYrKuAcCT6GueK6NFhoVM8Daft92ge/Xk8gWeqY+5AvanfVZC2/swr4l5M8uJ
-         Z6kXvIIM6P9QMj7172gZsAwN/d03hm1KoMEbCi7ISg05NFz/vE1+8VvSEwyk+YzCHL9o
-         g6KA==
-X-Gm-Message-State: ACgBeo3uPeJSoRp1TH6pgZM6dl3mbKQp+AE/o+UsokZja4ho+s5g26Bs
-        /RemczqQuv9figjfZscymb/ZGg==
-X-Google-Smtp-Source: AA6agR4X4xWoT+7YRcOdp1xsn8Z9iuWeLxFphBLc3/8KNvPhY5ySw4xeAoZBvddlZJmKeRi76+goxQ==
-X-Received: by 2002:a63:fc13:0:b0:42b:890d:5954 with SMTP id j19-20020a63fc13000000b0042b890d5954mr24154219pgi.200.1663002017237;
-        Mon, 12 Sep 2022 10:00:17 -0700 (PDT)
-Received: from ?IPV6:2401:4900:1c60:5362:9d7f:2354:1d0a:78e3? ([2401:4900:1c60:5362:9d7f:2354:1d0a:78e3])
-        by smtp.gmail.com with ESMTPSA id pg2-20020a17090b1e0200b001fd7fe7d369sm5442265pjb.54.2022.09.12.10.00.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Sep 2022 10:00:16 -0700 (PDT)
-Message-ID: <333abaaa-4e56-7a4e-a4a1-f3f54970a21e@linaro.org>
-Date:   Mon, 12 Sep 2022 22:30:11 +0530
+        Tue, 13 Sep 2022 08:24:46 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8323BF7E;
+        Tue, 13 Sep 2022 05:24:44 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 9F4366602002;
+        Tue, 13 Sep 2022 13:24:42 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1663071883;
+        bh=lqKYHK+jQ54kghN28zfF/tumKglgXjRx6YmQ9KWbw+A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NynmfhUvfJWntxZ4sIiFXCjoUYUFJ3HGvqC4dWFXUEM2ogxiFTBWEmheTrdAZoJXi
+         fbYDwq0Lmt+0ySjrQkh+7tVJaJVvzKK9gaSthpGfJb+Kde6PnkZjEC/nKU6JrbvT3O
+         2i8AgOtftcd0pPnV1d1qrq2dw0IFV1bpa9pCcV829UphDsPJpwXbWEW2EwmOURzbEx
+         pstYrvisAem55dY/vP3zjMQNC/vy1Olp68u6e+uU9mZIiEDLuf2JoO5OfplU8UEoOD
+         Zzme72LTCLqO1BcAo8TMGjhSB0soalIXdh2uf6HyvChuoxFVihCgFVkKFnacn9NSNO
+         fGsvgw43oxf4w==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     joro@8bytes.org
+Cc:     yong.wu@mediatek.com, will@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        iommu@lists.linux-foundation.org,
+        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, paul.bouchara@somainline.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v5 0/3] MediaTek Helio X10 MT6795 - M4U/IOMMU Support
+Date:   Tue, 13 Sep 2022 14:24:25 +0200
+Message-Id: <20220913122428.374280-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v3 5/9] dt-bindings: mmc: sdhci-msm: Add pinctrl-1
- property
-Content-Language: en-US
-To:     Iskren Chernev <iskren.chernev@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220910143213.477261-1-iskren.chernev@gmail.com>
- <20220910143213.477261-6-iskren.chernev@gmail.com>
-From:   Bhupesh Sharma <bhupesh.sharma@linaro.org>
-In-Reply-To: <20220910143213.477261-6-iskren.chernev@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+In an effort to give some love to the apparently forgotten MT6795 SoC,
+I am upstreaming more components that are necessary to support platforms
+powered by this one apart from a simple boot to serial console.
+
+This series introduces support for the IOMMUs found on this SoC.
+
+Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
+
+Changes in v5:
+ - Rebased on next-20220912
+
+Changes in v4:
+ - Retitled mtk_iommu commits to iommu/mediatek as suggested by Yong Wu
+ - Removed unused M4U_LARB5_ID definition
+ - Rebased on next-20220624 and
+   https://patchwork.kernel.org/project/linux-mediatek/list/?series=650969
+
+Changes in v3:
+ - Added new flag as suggested by Yong Wu
+ - Rebased on top of https://patchwork.kernel.org/project/linux-mediatek/list/?series=648784
+
+Changes in v2:
+ - Rebased on top of https://patchwork.kernel.org/project/linux-mediatek/list/?series=642681
 
 
-On 9/10/22 8:02 PM, Iskren Chernev wrote:
-> Most mmc blocks contain two pinctrls, default and sleep. But then
-> dt-schema complains about pinctrl-1 not being defined.
-> 
-> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
-> ---
->   Documentation/devicetree/bindings/mmc/sdhci-msm.yaml | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> index a792fa5574a0..775476d7f9f0 100644
-> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-> @@ -97,6 +97,10 @@ properties:
->       description:
->         Should specify pin control groups used for this controller.
->   
-> +  pinctrl-1:
-> +    description:
-> +      Should specify sleep pin control groups used for this controller.
-> +
->     resets:
->       maxItems: 1
->   
+AngeloGioacchino Del Regno (3):
+  dt-bindings: mediatek: Add bindings for MT6795 M4U
+  iommu/mediatek: Introduce new flag TF_PORT_TO_ADDR_MT8173
+  iommu/mediatek: Add support for MT6795 Helio X10 M4Us
+ .../bindings/iommu/mediatek,iommu.yaml        |  4 +
+ drivers/iommu/mtk_iommu.c                     | 21 +++-
+ drivers/memory/mtk-smi.c                      |  1 +
+ include/dt-bindings/memory/mt6795-larb-port.h | 95 +++++++++++++++++++
+ 4 files changed, 119 insertions(+), 2 deletions(-)
+ create mode 100644 include/dt-bindings/memory/mt6795-larb-port.h
 
-Reviewed-by: Bhupesh Sharma <bhupesh.sharma@linaro.org>
+-- 
+2.37.2
 
-Thanks.
