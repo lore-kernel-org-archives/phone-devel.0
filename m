@@ -2,145 +2,102 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BF65ECAAD3
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Sep 2022 11:59:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E2CC8C6FA82
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Sep 2022 14:02:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230022AbiINL7O (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Sep 2022 07:59:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50096 "EHLO
+        id S229970AbiINOCu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Sep 2022 10:02:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230030AbiINL7H (ORCPT
+        with ESMTP id S229964AbiINOCO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Sep 2022 07:59:07 -0400
-Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 802147D7BF;
-        Wed, 14 Sep 2022 04:59:01 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 57730E0FB7;
-        Wed, 14 Sep 2022 04:58:31 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id d7N0A5w4eyZy; Wed, 14 Sep 2022 04:58:30 -0700 (PDT)
-Date:   Wed, 14 Sep 2022 13:58:08 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
-        t=1663156710; bh=lBd6GXJ3wPOnH/QiUaG6oifUeJRoTS3Bd9+aDFujht4=;
-        h=Date:From:To:Subject:From;
-        b=k3aQV+q7sa6uuCqXsGWxJRNGDd92fJpaIOKgsu0g7LGup2RvsS2SkJo7jK28YhWyi
-         APho/OdYnxPUpRuSCvze7Pwds9g++2EqGfRJkjquLpmpBwBBSMippT5LwQrJNi/xFm
-         34ZLLIM1EQoAdiLPfILt2zH/c8OOY46UqRxxT9PXMm5nCJ96+WLalJc2bDN6oJMZ6F
-         8gtjzK9mZdbukvI1rvr2MHpAe+Z04lwUxSPkWlgqedFDkCYOdw2jCqTYNUCt9Be9KW
-         UGQzrREsWdNJJJn8I7oOaq/AQF+EHs41YdDgkXG8xC+40gGxCipN4i9unkVOK1eLdm
-         z+lSUdi06cf7A==
-From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-To:     Steve Longerbeam <slongerbeam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@puri.sm, phone-devel@vger.kernel.org
-Subject: [PATCH 1/2] media: imx: Round line size to 4 bytes
-Message-ID: <20220914113436.1503790-1-dorota.czaplejewicz@puri.sm>
-Organization: Purism
+        Wed, 14 Sep 2022 10:02:14 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBC2E78BCA
+        for <phone-devel@vger.kernel.org>; Wed, 14 Sep 2022 07:01:24 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id q21so25443093lfo.0
+        for <phone-devel@vger.kernel.org>; Wed, 14 Sep 2022 07:01:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=tkQ2gij3IWVpYWf59I81AFLezwcjvGUELvmkiUnZplU=;
+        b=DFsG/LkzdyNq1ygpJt5ZhZ/qbXe9ZrqRf+2XsUYliUGNaapd3HjPRYqrrFDHkpuP8U
+         KDKCf2COGFoasFQC/T+eL9HTpvJqCw8QuOtrfwaM+2d7GN5DoEwic9ggsc3s+ST97nlB
+         9OE8ywg4y3gncpe8jvI0Xd6FkFE/MepNk5idJYeKKcVuFDvH7IfaV+aEqhMaP9YC8YXO
+         6I9vCkqbZgZ7zYbICIMNdCod5B8N2084jF+WlOdNm3pfBLfeWC/V0VYe2fkGMQVkF9dF
+         LRywsPVL7WlsFAI1OH0bP+LbU1nLX9uzYoxQBJMD3N/i7FjZPVN6pZmXuAX0YzwFwjli
+         KiDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=tkQ2gij3IWVpYWf59I81AFLezwcjvGUELvmkiUnZplU=;
+        b=BLuHSA3Kx2Rm6qd2kT6nfcNRu1od4sBagOgyNTFgV7ONkUqUSqr/vzpYBHwieTAutP
+         W2MNepIV0zwz4RNcu9u5DQOmJ7heenklqdn7nc79k9NyfGVeVhBNYcevu1B7VYw3gWzI
+         dsz+a3U37Ul0yw3mr0vrGLHbh0KebzkGAtweaUoXrvmNpQ2nEPZ2iHX09CXv8z2QF/a2
+         zmJu0T43TnqawTJ4t1NuuDMNVZ4o0RDI6Lrwz4rAkfLRNrr8Ij3njPxsMfEBg+AG4HQw
+         WAyXf9QE+DDqNIqsDqMX5Tf848J7jcjPnhCH0QmkPXYdkyh4fkYn8dJKY97gjyZ1UjZP
+         L4rA==
+X-Gm-Message-State: ACgBeo0NH73Xqo3ieyllKh2NQOlnbhWZsmSzzFBZ6fSnBgKBmBGXRWXW
+        dW7TDa8/LJQCwqAvqj5AczKaUFk5dawGCnx+La9Ulw==
+X-Google-Smtp-Source: AA6agR7X61E5vyWoRMVEAMnwI7yhahS3J9/2twMcEzs8aFUjVsC6q4tksh5kS0GIjvek6Xxz9vgbIFRwYNfpaT7SPTY=
+X-Received: by 2002:ac2:4c42:0:b0:497:9dfe:e870 with SMTP id
+ o2-20020ac24c42000000b004979dfee870mr11527722lfk.184.1663164083141; Wed, 14
+ Sep 2022 07:01:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_//_7_vU7zTeYx5tO9_.AIcp6";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+References: <20220910143213.477261-1-iskren.chernev@gmail.com> <20220910143213.477261-6-iskren.chernev@gmail.com>
+In-Reply-To: <20220910143213.477261-6-iskren.chernev@gmail.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 14 Sep 2022 16:00:46 +0200
+Message-ID: <CAPDyKFp5kLF2kkFg3n5ZNzp3oX7hU-SAj9iSoJKDX7PAQxU75A@mail.gmail.com>
+Subject: Re: [PATCH v3 5/9] dt-bindings: mmc: sdhci-msm: Add pinctrl-1 property
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
---Sig_//_7_vU7zTeYx5tO9_.AIcp6
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Sat, 10 Sept 2022 at 16:32, Iskren Chernev <iskren.chernev@gmail.com> wrote:
+>
+> Most mmc blocks contain two pinctrls, default and sleep. But then
+> dt-schema complains about pinctrl-1 not being defined.
+>
+> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
 
-This has been broken in e352833d, which does not actually copy the logic
-from 056f9af9.
+Applied for next, thanks!
 
-Section 13.7.6.13 "CSI Image Parameter Register" of the
-i.MX 8M Quad Applications Processors Reference Manual
-states that the line size should be divisible by 8 bytes.
-However, the hardware also accepts sizes divisible by 4 bytes.
-
-This patch accepts line sizes divisible 4-bytes in non-planar mode.
-
-Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
----
-Hi,
-
-in recent kernels, I've noticed that the Librem 5 camera driver no longer w=
-orks. The s5k3l6xx out of tree sensor driver uses sizes divisible by 4 and =
-not by 8, for which I submitted the patch 056f9af9 . The new kernels no lon=
-ger accept sizes divisible by 4.
-
-I tracked down the source: previously, the video device on the imx8m used i=
-mx_media_mbus_fmt_to_pix_fmt. e352833d introduced imx7_csi_mbus_fmt_to_pix_=
-fmt, which is what is used now exclusively. However, imx7_csi_mbus_fmt_to_p=
-ix_fmt *does not* contain the same logic, and does not provide an explanati=
-on why the logic is different.
-
-I don't know why the "imx_*" is not used any more on the i.MX8M SoC, but I =
-presume that "imx7_*" is the correct code path. That indicates that "imx_*"=
- is *not* the correct code for this SoC.
-
-Under those assumptions, I added the relaxed rounding to the "imx7_*" funct=
-ion, to match what the SoC can do (patch 1). I also reverted my original pa=
-tch (patch 2), because if "imx7_*" is the correct function for my SoC, then=
- I had never intended to mess with whatever other SoC is handled by the "im=
-x_" function.
-
-Cheers,
-Dorota
-
- drivers/staging/media/imx/imx7-media-csi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/staging/media/imx/imx7-media-csi.c b/drivers/staging/m=
-edia/imx/imx7-media-csi.c
-index 643547bfa90f..bafbb5ef08d5 100644
---- a/drivers/staging/media/imx/imx7-media-csi.c
-+++ b/drivers/staging/media/imx/imx7-media-csi.c
-@@ -1000,10 +1000,10 @@ static int imx7_csi_mbus_fmt_to_pix_fmt(struct v4l2=
-_pix_format *pix,
- 	}
-=20
- 	/* Round up width for minimum burst size */
--	width =3D round_up(mbus->width, 8);
-+	width =3D round_up(mbus->width, 4);
-=20
- 	/* Round up stride for IDMAC line start address alignment */
--	stride =3D round_up((width * cc->bpp) >> 3, 8);
-+	stride =3D round_up((width * cc->bpp) >> 3, 4);
-=20
- 	pix->width =3D width;
- 	pix->height =3D mbus->height;
---=20
-2.37.3
+Kind regards
+Uffe
 
 
---Sig_//_7_vU7zTeYx5tO9_.AIcp6
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmMhwdAACgkQADBpX4S8
-ZncCcQ//falHr+LJFMHENDl4d2MOkyUiQLbaZDimP6Sr8c9oFKvdBt57DEdh7bHl
-qp7wiARfP+itGVunBVwN80lZIGRIXlBctzx7lYSKyf8vc9OYhgZ/Ml9j5BhmefAG
-hRSSdlLg/JypqgdZn7FOBo9KrzMH8SUAJY4J5pTiA/pgUQ2tcbB0xIQztCWnXUST
-c84dA5fhNMTLT0Fsqug5Z4gIWWSul/nQvvksfVL+4/M+BN7tjpSBP08Hk6YeMHy/
-G/6/Tbb/1wHR7vqcLBM0BzHLy7QwJMLVugmqzWnu8QhrHHjCrOKXalUi/kFQ9z+q
-B/KoinQIGpb+BkAFxT+8LMy4r9J98EreyZRu/lxbPE9Wg6XsfKRKmUA1bxL3iYai
-Ve31PDk5gq/1gDpyjuGDw7hm3+8VOPP7PE3PS+8qrxwmTHaBNBPMzw8jznMAof7+
-z0uwdMga/PxzyKLQU6+zdpOpfMGwhiii0ZF8U0CvaYGSyb1t2g7IHfIz/lCl8RbQ
-0iYrQ06qEdsN4iuepqN9EZAMKSFRoi7pCB8gZo+HLq2KAEr1RCmfEAJD1BqI9H99
-nBV4jfcUz27XlM8YAjJ7R4kXsenWYSz7G+MGd/VIC1rMR+txur139EgdB8z4rw06
-4tD3j6tYlif6uZ9m/L2ObYtGCZbh+FGlziywfyUsiZXTw7gxnEs=
-=u5/B
------END PGP SIGNATURE-----
-
---Sig_//_7_vU7zTeYx5tO9_.AIcp6--
+> ---
+>  Documentation/devicetree/bindings/mmc/sdhci-msm.yaml | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
+> index a792fa5574a0..775476d7f9f0 100644
+> --- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
+> @@ -97,6 +97,10 @@ properties:
+>      description:
+>        Should specify pin control groups used for this controller.
+>
+> +  pinctrl-1:
+> +    description:
+> +      Should specify sleep pin control groups used for this controller.
+> +
+>    resets:
+>      maxItems: 1
+>
+> --
+> 2.37.2
+>
