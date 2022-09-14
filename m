@@ -2,114 +2,120 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5CACC54EE9
-	for <phone-devel@archiver.kernel.org>; Tue, 13 Sep 2022 21:38:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BF52ECAAD8
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Sep 2022 11:59:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbiIMViV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 13 Sep 2022 17:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60394 "EHLO
+        id S230019AbiINL7B (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Sep 2022 07:59:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbiIMViU (ORCPT
+        with ESMTP id S230022AbiINL6z (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 13 Sep 2022 17:38:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A488E61B10;
-        Tue, 13 Sep 2022 14:38:19 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F3B4615BF;
-        Tue, 13 Sep 2022 21:38:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21D5C433D6;
-        Tue, 13 Sep 2022 21:38:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663105098;
-        bh=ySzPYixkG3ZBWTadxbOwMb02JswJwS60s+/FJORSLeo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SAUsbfW4VrqJc9Bkj903IaJBYN1LcigoJDj3f7V0ZVv6aFOIbqJr9X9IbdWDrhbC/
-         NJugMROJ5O4cS6ZMaYaO23/e+PcLZ8jAvL/WuD7F9IoWGMdzYuFYh885S8VTdd+7fG
-         FwB17x1qIwl1/jmz36XeU1M1yHHWSiofkRsiHFprL7XPBP6KOAq2kWgIdzl2mnXIkj
-         JOsY5FnT6psL/3gKFa96sDyaE0DJUF9nWMbbRwc8ikN5+6p/BYjNSI9/lnusWi4FZr
-         J+wPzBDAulVZoay06XMRwpVXf/Bz9RLmTb8OSPVnjD5jce7CbYXY1FhFkgpp1N81xo
-         yOwoKWv1Zg1aw==
-Date:   Tue, 13 Sep 2022 16:38:15 -0500
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Iskren Chernev <iskren.chernev@gmail.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 7/9] arm64: dts: qcom: sm6115: Add basic soc dtsi
-Message-ID: <20220913213815.bvw2pro6f3mj3q6z@builder.lan>
-References: <20220910143213.477261-1-iskren.chernev@gmail.com>
- <20220910143213.477261-8-iskren.chernev@gmail.com>
+        Wed, 14 Sep 2022 07:58:55 -0400
+Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B6BC7E01A;
+        Wed, 14 Sep 2022 04:58:54 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id D3C06E0F93;
+        Wed, 14 Sep 2022 04:58:23 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id R02vuMtXWq3E; Wed, 14 Sep 2022 04:58:23 -0700 (PDT)
+Date:   Wed, 14 Sep 2022 13:58:15 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
+        t=1663156703; bh=6Cy4wlXEsbh2KFaV8g1LkVJeWFmWKSLXGZ3+KMzj9/E=;
+        h=Date:From:To:Subject:In-Reply-To:References:From;
+        b=QDPB+0GUoQT6b2OU+Tx/dvo9BVZ31KGGsNRwgagbjVDxPcd/WBlQdThsL+Zai111T
+         7KwsZduhHuyFM/ONcfgHJS8w7my0Bb/j21/GuUWyT0/OjO/BBzICzN/4ZwY2ekmn47
+         hNAjteW2j4P//W1sWXGyJV98BM0tHpDBIFaglecRWweDNtwFgWkbvSeMaWS2/Yw3E2
+         HhAQNfln++pkknKfUdyY/t03a9fPhA1xJ3iJTCQ7w6hJjI+sz1YtopXPwSsNyy7T7x
+         XxK7/1NFwTg/KK1L4GFmziWuHnyCoH67qbi34sa5AEkvyPm8Z6nfk18DZYQ8XFX2ZU
+         xIzCwBiK34sjA==
+From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+To:     Steve Longerbeam <slongerbeam@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@puri.sm, phone-devel@vger.kernel.org
+Subject: [PATCH 2/2] Revert "media: imx: Round line size to 4 bytes"
+Message-ID: <20220914113436.1503790-2-dorota.czaplejewicz@puri.sm>
+In-Reply-To: <20220914113436.1503790-1-dorota.czaplejewicz@puri.sm>
+References: <20220914113436.1503790-1-dorota.czaplejewicz@puri.sm>
+Organization: Purism
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220910143213.477261-8-iskren.chernev@gmail.com>
+Content-Type: multipart/signed; boundary="Sig_/YX3pqtpGeBOz/ycx14pb+iH";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Sep 10, 2022 at 05:32:11PM +0300, Iskren Chernev wrote:
-[..]
-> diff --git a/arch/arm64/boot/dts/qcom/sm6115.dtsi b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-[..]
-> +
-> +	smem {
-> +		compatible = "qcom,smem";
+--Sig_/YX3pqtpGeBOz/ycx14pb+iH
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Please move the compatible, qcom,rpm-msg-ram and hwlocks into the
-&smem_mem node.
+This reverts commit 056f9af9fbebb81ebc972540122fb3bdad81d8b1.
 
-> +		memory-region = <&smem_mem>;
-> +		qcom,rpm-msg-ram = <&rpm_msg_ram>;
-> +		hwlocks = <&tcsr_mutex 3>;
-> +	};
-> +
-> +	soc: soc {
+The method is no longer getting called on the i.MX8, meaning that
+the responsibility for this functionality has been moved entirely to
+imx7_csi_mbus_fmt_to_pix_fmt.
 
-I expect that you should be told that you're missing a @0 on your soc.
+Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+---
+ drivers/staging/media/imx/imx-media-utils.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> +		compatible = "simple-bus";
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		ranges = <0 0 0 0xffffffff>;
-> +
-> +		tlmm: pinctrl@500000 {
+diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/=
+media/imx/imx-media-utils.c
+index 73cf0d855967..294c808b2ebe 100644
+--- a/drivers/staging/media/imx/imx-media-utils.c
++++ b/drivers/staging/media/imx/imx-media-utils.c
+@@ -545,13 +545,13 @@ int imx_media_mbus_fmt_to_pix_fmt(struct v4l2_pix_for=
+mat *pix,
+ 	}
+=20
+ 	/* Round up width for minimum burst size */
+-	width =3D round_up(mbus->width, 4);
++	width =3D round_up(mbus->width, 8);
+=20
+ 	/* Round up stride for IDMAC line start address alignment */
+ 	if (cc->planar)
+ 		stride =3D round_up(width, 16);
+ 	else
+-		stride =3D round_up((width * cc->bpp) >> 3, 4);
++		stride =3D round_up((width * cc->bpp) >> 3, 8);
+=20
+ 	pix->width =3D width;
+ 	pix->height =3D mbus->height;
+--=20
+2.37.3
 
-Please sort your nodes based on address, followed by node name
-alphabetically, followed by label.
 
-> +			compatible = "qcom,sm6115-tlmm";
-> +			reg = <0x500000 0x400000>, <0x900000 0x400000>, <0xd00000 0x400000>;
+--Sig_/YX3pqtpGeBOz/ycx14pb+iH
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-Please pad your address to 8 digits, to make it faster to see if the
-sort order makes sense.
+-----BEGIN PGP SIGNATURE-----
 
-> +			reg-names = "west", "south", "east";
-> +			interrupts = <GIC_SPI 227 IRQ_TYPE_LEVEL_HIGH>;
-> +			gpio-controller;
-> +			gpio-ranges = <&tlmm 0 0 121>;
-> +			#gpio-cells = <2>;
-> +			interrupt-controller;
-> +			#interrupt-cells = <2>;
-> +
-[..]
-> +	};
-> +
-> +	timer {
-> +		compatible = "arm,armv8-timer";
-> +		interrupts = <GIC_PPI 1 0xf08>,
-> +			     <GIC_PPI 2 0xf08>,
-> +			     <GIC_PPI 3 0xf08>,
-> +			     <GIC_PPI 0 0xf08>;
+iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmMhwdcACgkQADBpX4S8
+ZncOlRAAnYd6aqRm9Jxu3Yt/QBLmrQKMKDg0MkwZaudSnDtCQCGuPnQihWEuCFvK
+3V1CKH6MjmrJ5Aj22YzpnX5hmtBZ3qJJMLPErKejc29ppK5jqmYmMx6FpAGZHwtV
+lhUUQ5/cEtbbDtx3eYJi8c8niu3rzHhn6y6UOrtHs/UYQKVMVdT/bYwp1qtd9OuI
+k+mDMR2raxwdCe5GaQhCgAe/YoaenPyqTXYBtrpG3KFVBHrBY2cShy9ZRyRwXIw3
+YiZZ5l23eKgQsnrHZuwj+fNQ5e+MDxdmxj3WjBrt5UfxYKzZv2TaeFQgrcxrbQ4S
+cYCkeCOJpuXiCPTv6xZhFaAsli9E55Pn+J+vEC/VY79UUJnrB88oE+p1US7Z6H+V
+5F0duTfUdAslzURhMHfra0wvZ9vPQadQawa29a4pMayqnz1mZeBED+5dDt32l82e
+HlbKL1M2+uvanrXF1twmdXZmByrTv1F4pGv44MTutAobWsoKkM5kc+B3Mwi5wfeR
+q98ErStCNb1Xf2W5nWrS3qlE/dYsjjABG/k6R9dioeJyX20ms3pXT2JUia8aP2bJ
+xDNknxeCmBm83eKyIr2KyVQzUS/UZPsYOtsWGV6L5dRLVpW9flxJqKGdf/WROlWv
+5EZss2gXY3Q7KrmTkF4BK+UIfMk3InUebrPrN/bAA6Yf2oKigVc=
+=vqCl
+-----END PGP SIGNATURE-----
 
-Please use (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW) for your flags.
-
-Regards,
-Bjorn
+--Sig_/YX3pqtpGeBOz/ycx14pb+iH--
