@@ -2,71 +2,39 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 658FCC6FA82
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Sep 2022 14:31:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F50CECAAD3
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Sep 2022 15:26:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230019AbiINObG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Sep 2022 10:31:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53856 "EHLO
+        id S229621AbiINP0q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Sep 2022 11:26:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230032AbiINObB (ORCPT
+        with ESMTP id S229671AbiINP0o (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Sep 2022 10:31:01 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545B63ED5C;
-        Wed, 14 Sep 2022 07:30:57 -0700 (PDT)
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28EDYUjD030201;
-        Wed, 14 Sep 2022 14:30:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2022-7-12;
- bh=dc/NiuMrYfRr4DE4y2bA+FF+i6UEsb81lhEWDFAwCIE=;
- b=sjg475HqZw3dW9p49+gnxhSsqOt9xmVCmRHZa/SyWJTIes0lpZDfJMhrqA9aTAm1Fva+
- Q2Gvy5qbXPCDcy76WZgf469mI54S+M0MQj0rwCACUH7VkM8yw5CdRuPvRzYnEaVAikA4
- Goy1UMKLjmID7QDrBcuRmh3XEKGUsK5lCzwFfwPEAiv2z4UqC+lDe+IvTlp1MjMPkL0V
- ezOuUCoWar+tuamgeG3hCuJe4SItshMB6zNNY6CqT9ETEg27hjr+RVAgLz3IAjgjHbpu
- l6Vk3Iq2Kn5rPpWNy/GFGUUxA5vcueNkuPqP8YDgykBaLq2jLUX6n/LrazDFocmjmCgT fw== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3jjxydth0d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 14 Sep 2022 14:30:06 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 28EDZbBQ009644;
-        Wed, 14 Sep 2022 14:30:05 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3jjyecrqyf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 14 Sep 2022 14:30:05 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MoEtCTyoa46nexrR4GhPS3zglqX7oMrjt2yrKkDcvLd5ygXT8mcxuabmK9HVD9cD4VumDL5c1uyOvuMqCM60BAy4c7XSkZfeDFexuuCUDAnl4bSweszAJ1AST3RT4XZxdB6a0+5+YaTRNK0dsyexR6Kiv8hSXsVKYe1pAUkxzYhIqd0xSjfWETm2V84miudkl1pl3cPBb4Aweojxs8PPe662Jz3dSLzdy6/oAZ+vtE82qUp6MuuP8QJmXVuSoEO2FTsNKj8vlpuuDcUuc7DDhLixh9wKKkcMEIDDhAvdpKwslCAHbsI+AHHQDtVRQ2rNU2j0Sap229ktz74lHl+Vxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dc/NiuMrYfRr4DE4y2bA+FF+i6UEsb81lhEWDFAwCIE=;
- b=ddLy4zUMa/Rk+zRidwaieGNHy8vTBWlITQkig8a2fSwnQVZS6NSdsj+ASq5ImPHA/dLCPJgKY3OYqYompBILtWLDN1wkwEJJohT7VHmV2gLYKOtz+4DKDz220onSPSnmSeYYgkBIF+L3vU2Q6pq5MFlgOaYMRT5kceqCG+s0BdmvyQdNybBfV/fK+Y/AO/ffu3uJJNjPcncv1aVylePfYw0C+1AYar0JroR8TxGbdKgliEzUNH1EFQT/bx/SpOEdlH5D4y8SX1pC3I0gTb8cNG6qASrwX5fjOKcez26jlkSXQx0q4fWY8l9mCPB4xTPbKv1x5IHrvqxG7T+Lzqca5g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dc/NiuMrYfRr4DE4y2bA+FF+i6UEsb81lhEWDFAwCIE=;
- b=aMU20XS9CMOgdfaKGSKHKd6uMWMbOz9l3icSo4YcNuKtn9l1VFr90B4mN2Lhu5r0ixHbyvGRjDV2IOOn9g+8aEXd6Gp0QwqStOgAnNywRbFr1sDtHVJ0BSUJjR++HV52PKYHbZuM3yxmGgQmZwI6iA6bpkScJEu2pNwA1T0UjM8=
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28) by CO6PR10MB5633.namprd10.prod.outlook.com
- (2603:10b6:303:148::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.16; Wed, 14 Sep
- 2022 14:30:03 +0000
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::a493:38d9:86ee:73d6]) by MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::a493:38d9:86ee:73d6%6]) with mapi id 15.20.5612.022; Wed, 14 Sep 2022
- 14:30:03 +0000
-Date:   Wed, 14 Sep 2022 17:29:48 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Steve Longerbeam <slongerbeam@gmail.com>,
+        Wed, 14 Sep 2022 11:26:44 -0400
+Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D03297E823;
+        Wed, 14 Sep 2022 08:26:42 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by comms.puri.sm (Postfix) with ESMTP id 46870E04A4;
+        Wed, 14 Sep 2022 08:26:12 -0700 (PDT)
+Received: from comms.puri.sm ([127.0.0.1])
+        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ToQhBhfMY8wI; Wed, 14 Sep 2022 08:26:11 -0700 (PDT)
+Date:   Wed, 14 Sep 2022 17:26:00 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
+        t=1663169171; bh=GRd0Er8cQRzg8b9o6N6209YQvGuoI3bMVzGgJgqeQA0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Vbsktjz81ajC+5URgeBDFHzm9asyXTsk/lvVl5hh4Ug11pxkXCjvoyQtp9AJMBwVL
+         whUfKjM+oRL4NC7qxBlXwl0gnfsiV/TK4XcdYMCWfvxniOn3o6YaPCICI83oHoJFaE
+         dihOYCJON3j/TWtds+c2BhuONlpycZRFDxXSWSCfZ0Ki886HwdQLjIAlklqtNsLpgm
+         DwePa7+CO2LW8g0pv2yA+rM4FX1XEus/SGXPhGJydnklF3a3nPZu2JfA5uWOG/u8/o
+         fhYMOGtbn7+AaIySt6cIlFsBQsIiXB1/UpeswuLeXBSj7HWKQMqFSi7i11G6jhJTRJ
+         XX5dGQ3I0MiYw==
+From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Steve Longerbeam <slongerbeam@gmail.com>,
         Philipp Zabel <p.zabel@pengutronix.de>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -79,115 +47,103 @@ Cc:     Steve Longerbeam <slongerbeam@gmail.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         kernel@puri.sm, phone-devel@vger.kernel.org
 Subject: Re: [PATCH 1/2] media: imx: Round line size to 4 bytes
-Message-ID: <YyHlXMHuUHBqipd0@kadam>
+Message-ID: <20220914172600.0666326b.dorota.czaplejewicz@puri.sm>
+In-Reply-To: <YyHlXMHuUHBqipd0@kadam>
 References: <20220914113436.1503790-1-dorota.czaplejewicz@puri.sm>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220914113436.1503790-1-dorota.czaplejewicz@puri.sm>
-X-ClientProxiedBy: MR2P264CA0103.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:500:33::19) To MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28)
+        <YyHlXMHuUHBqipd0@kadam>
+Organization: Purism
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWHPR1001MB2365:EE_|CO6PR10MB5633:EE_
-X-MS-Office365-Filtering-Correlation-Id: c38d4911-00bc-4ee4-465c-08da965d9cf3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Gyev/11tcF62mjvWbDEvioCSzRW/OfsV6xTig+she21yUe6u6abu9yQzTd6ZZwhkVSYfnzJibtLLskljdew5YfYJ53dMKdzpp5AWzPsGKFxIXvnH4HU9giCMUOD5CASH/5WYnDwDEo9/jS5wF44ByZEyqkT/JxtXl9SkwfxTiDsIJLqi/ePExLRwX/MynEZOPizfbTWDoTcCtCHc8bacdtxrCkH3ZZptbkBrATg69V97NkXLFYew07PZmJVv5qXlBp60yVmISqF4+h4m9/ifz1cWBYhBF7puDcUZnAe1TwZfUwc9uH3Jh7M2ACi9+WXuKHqJW2QY/UkN33YzgGXYc4LyunsECBTt162Y292nKdWp/xhIdxK/29eFLhXikILVQsrW5uc5kCrnxsUu3Yo2zuqDvd4Ug+kXXShETlhXx0ItLyZQ7cWVKNTOPJ97JR0EYmPgLap960BdCcJfCNQ+lo1cqgZtMghhdEUGyn3s++DDTVUMQIyjahqMwgpk4CLj2VM/CGTWrkcnFDhxTqiv7F4iKMMQGroeZxIrQ+brypdubPDefyNv0bC0+7ZlaKowIfIbHcXGeeXiFxd5M0QSNOnZOcTMwC9AJa21dw+PsB36bQfPzKQxVZYDgIM+sFVM/5DrxAXu9xMhDzRGwuSBi2QY8YXGHfFMKgt/W/lERLccbwjEKlvipbjTHxqDvSdLDLNppmMSxxaYFpCRPfUmKA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(7916004)(366004)(136003)(396003)(346002)(39860400002)(376002)(451199015)(66476007)(6506007)(8676002)(7416002)(6486002)(2906002)(33716001)(6512007)(54906003)(186003)(86362001)(8936002)(110136005)(83380400001)(38100700002)(5660300002)(6666004)(44832011)(66556008)(316002)(66946007)(41300700001)(26005)(9686003)(478600001)(4326008);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?KabTw7TeO/WKaCp0GZLPr7Ib8NB8ieoWCYwoKLbJauErgfzFjhaIBzb+S57r?=
- =?us-ascii?Q?L20lEqvxpT62KVOnlgyRwwKVI14A0fpVRxcc6pj6gBPNlGxZ/5STpk9K2zrY?=
- =?us-ascii?Q?vlpjV6qz58y7JrPBXSMpFnF1EB9XzdIun193QLCWhwF5QZJYXnhklTWqk6HF?=
- =?us-ascii?Q?GDeBlnprRe87UKLB2tiGHl+zuzrzXvRPWmF+NIVkk63oN+OWLLR0MITUsWvG?=
- =?us-ascii?Q?1vJIWBYfiMeV5eCrlzrGBaf5NBmvr7RjdovHnUpIwpPnxCZE1USayZY0czIM?=
- =?us-ascii?Q?pRX1k0GRG39NpIth757ax7ziqJX3OyQD09g2RnQE8P8odbjdHxWboHJapbxf?=
- =?us-ascii?Q?r1YwhAtZaaenowNU96tRRVZxpdai3edBv3uA4azZwCUTHV1wVIby5SoWx2Zh?=
- =?us-ascii?Q?tfMSgqYOy8P713sTPb9e2/u1UUxOSj2itxtv3H7qJ3IpwNRg847XdzbO6FpQ?=
- =?us-ascii?Q?FDdtZMZCTXEQDHvi98ZC3HAX80oJLLInwNA5gPptZ88QON7yrt9In7HJfXfg?=
- =?us-ascii?Q?q6Bd5CQgzVA492vSl4VR4bz5qjgZeXx6A5KPq3sc4O4SrWlHdlsyLJlrK02G?=
- =?us-ascii?Q?iSR0xPbsilHva6rTTrXlh2g3ulKGTq4aQcsF0n8OjTe1AlqoT/l5u95a6ofT?=
- =?us-ascii?Q?Ay7QP4d+vBAIfWfpT7QIDsFZcxPlEVo6adhsDTHHN3jvFVCZZ8OcYu1ETvDb?=
- =?us-ascii?Q?p4qHnPi7GkeKnNU3djPnKk0n743kaVLyO5pUoiCJ0rBRz5vT2aQPVDvetZTR?=
- =?us-ascii?Q?cteS2r2B5hDQWDxQf2zbEgZJluVWsZtrOtFdo4ngQq3gr3ziT0XQzqSoxG8o?=
- =?us-ascii?Q?tXiuTioAoCdv5NB8ir2u3mistC+OSOgIc8rTo7xGA3flfQAnvVC4OoceFYVV?=
- =?us-ascii?Q?FWdGZK7nPEdEiWuRbAm+VpXUCJv2/1w2z1WC8q8HiVBGV99USV7WRukQq7kk?=
- =?us-ascii?Q?UnQzIWSiznoXiALrIYlYoVOKbdgriwExk8NfEdehi4kYwAWgL6b9wmvO+HE0?=
- =?us-ascii?Q?X7hqmtjdbpMUsxfUEB/t+VDdO16RtsCTiARDqUCp/Xm3KvvGay2sEt1IxWgH?=
- =?us-ascii?Q?7qc3D8sKi4LO/tF7dtG3PNck4FeYIL/5DD2mQ/98jxk6+uLSDaLegekAvt4x?=
- =?us-ascii?Q?7REXPMykyH6mEDGzO+F+Cn3SkNEJ01usvnhBLyfpjF+UCsfY1fZSVqNDBcR9?=
- =?us-ascii?Q?vxDrznn2VuRVMl76FIrrUnhDyQhjRpkSA5iUoASXp5eTGTAUsuf+63WN6sqo?=
- =?us-ascii?Q?Pa781Dz5B79+CCnrdI7wO0xXCVt0l16uI8gjLjZYu6cGFMK7WkTI/+eMsScD?=
- =?us-ascii?Q?/3BcuDzkQwKipCJhGjxWEqhsQjl+IqUPzdqapq5GAA8g4rCLlV8WFKS4tWZv?=
- =?us-ascii?Q?qyywJKe1ZA5MDgF3wtQFF8K45ba/cJ9C7De8unVxhhSsH5c7eP7H+FbCKOjW?=
- =?us-ascii?Q?sadZlXbGDmBP3hUGRLG4SgrDi18NG27d7p0P0hfS6CbnHqWBFG3F0g78oS33?=
- =?us-ascii?Q?riCFDt4rNjX5ozDnrgRUX4KlokPdWqy9KMY0W0aK3NbJi4NnvtjoCFBzljDk?=
- =?us-ascii?Q?blzdNGNtIgjNDgbC64n0vOAOy2SVmFYBY6fcKMTe?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c38d4911-00bc-4ee4-465c-08da965d9cf3
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2022 14:30:03.8785
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Wh8XKI2IqmGkSgvszlbGiJkNZN9p0QK1nSZghQhS5oQ5UQ7lGovByc4HgtyqvZXK8kIgJqsSD335fsoDpYePHdD9CNwCGZ7VDoeheLJWFAk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR10MB5633
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-14_06,2022-09-14_04,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 adultscore=0
- phishscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2208220000
- definitions=main-2209140070
-X-Proofpoint-ORIG-GUID: o85LNAwnNDPj_Wi2KA8YVr_IrHuLD_HF
-X-Proofpoint-GUID: o85LNAwnNDPj_Wi2KA8YVr_IrHuLD_HF
+Content-Type: multipart/signed; boundary="Sig_/j8w0hyz.ZiK=Yh=0nN_TgSS";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Sep 14, 2022 at 01:58:08PM +0200, Dorota Czaplejewicz wrote:
-> This has been broken in e352833d, which does not actually copy the logic
-> from 056f9af9.
-> 
+--Sig_/j8w0hyz.ZiK=Yh=0nN_TgSS
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-There is no commit 056f9af9.  Always the human readable subject for the
-patch.  Also use 12 characters and not 8 so we don't get two commits
-with the same hash.
+Hi,
 
-Please add a Fixes tag.
-Fixes: e352833d32e6 ("media: staging: media: imx: imx7-media-csi: Import format helpers")
+On Wed, 14 Sep 2022 17:29:48 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-A Fixes tag can be used to automatically determine if a patch needs a
-backport or not.  It's just useful information as well.
+> On Wed, Sep 14, 2022 at 01:58:08PM +0200, Dorota Czaplejewicz wrote:
+> > This has been broken in e352833d, which does not actually copy the logic
+> > from 056f9af9.
+> >  =20
+>=20
+> There is no commit 056f9af9.  Always the human readable subject for the
+> patch.  Also use 12 characters and not 8 so we don't get two commits
+> with the same hash.
 
-> Section 13.7.6.13 "CSI Image Parameter Register" of the
-> i.MX 8M Quad Applications Processors Reference Manual
-> states that the line size should be divisible by 8 bytes.
-> However, the hardware also accepts sizes divisible by 4 bytes.
-> 
-> This patch accepts line sizes divisible 4-bytes in non-planar mode.
-> 
-> Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-> ---
-> Hi,
-> 
-> in recent kernels, I've noticed that the Librem 5 camera driver no longer works. The s5k3l6xx out of tree sensor driver uses sizes divisible by 4 and not by 8, for which I submitted the patch 056f9af9 . The new kernels no longer accept sizes divisible by 4.
-> 
+Thanks. Unbeknownst to me, no one ever applied or rejected the patch series=
+ I sent and saw under 056f9af9.
 
-This information needs to be in the commit message.  Otherwise the
-commit message just sounds like theory and abstraction which we do not
-care about.  We do care about real hardware which is not working and
-especially if it used to work.
+I'll send a fresh series in a moment.
 
-I'm not really qualified to review the details of this patch.
-Laurent is best qualified to review this.  He'll get this message
-because he's subscribed to the lists but it's also good to CC him as
-well because he's probably drowning in email like the rest of us.  I've
-added him.
+Cheers
+--Dorota
+>=20
+> Please add a Fixes tag.
+> Fixes: e352833d32e6 ("media: staging: media: imx: imx7-media-csi: Import =
+format helpers")
+>=20
+> A Fixes tag can be used to automatically determine if a patch needs a
+> backport or not.  It's just useful information as well.
+>=20
+> > Section 13.7.6.13 "CSI Image Parameter Register" of the
+> > i.MX 8M Quad Applications Processors Reference Manual
+> > states that the line size should be divisible by 8 bytes.
+> > However, the hardware also accepts sizes divisible by 4 bytes.
+> >=20
+> > This patch accepts line sizes divisible 4-bytes in non-planar mode.
+> >=20
+> > Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+> > ---
+> > Hi,
+> >=20
+> > in recent kernels, I've noticed that the Librem 5 camera driver no long=
+er works. The s5k3l6xx out of tree sensor driver uses sizes divisible by 4 =
+and not by 8, for which I submitted the patch 056f9af9 . The new kernels no=
+ longer accept sizes divisible by 4.
+> >  =20
+>=20
+> This information needs to be in the commit message.  Otherwise the
+> commit message just sounds like theory and abstraction which we do not
+> care about.  We do care about real hardware which is not working and
+> especially if it used to work.
+>=20
+> I'm not really qualified to review the details of this patch.
+> Laurent is best qualified to review this.  He'll get this message
+> because he's subscribed to the lists but it's also good to CC him as
+> well because he's probably drowning in email like the rest of us.  I've
+> added him.
+>=20
+> regards,
+> dan carpenter
+>=20
 
-regards,
-dan carpenter
 
+--Sig_/j8w0hyz.ZiK=Yh=0nN_TgSS
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmMh8ogACgkQADBpX4S8
+Znfllw/+LcG/SOyQ3hwUs7MwKwIDVZJe14dBhMUAqEyfl2dq+UapNpAQC9kl7+Nz
+XJn4ix4mhtK9X6W180uCMwQmARWpp/SqLENvyY+3WFDSubQ+prOVhSZ0F2SPeig0
+H0/CdwbXJcSNzpUhm1k3Zyp0UaOzGKxAUVTr87jJYr3GchqM3m5ZVREtf8vEE48G
+q5SucKQ1Rc1B6cwqCAHJMF0Jj8do8Fs0NousILkaUCaPt/sH07nN0S43LiiFrH7z
+xPvGc2lQP2e82TfflARa42nXYap2LUOf4fEdSe2+VSQmpunpT/uMX0VkT4QpTSsf
+GwlaK6obeh/4CvI57t4hNRkJD9A8gr3L2zkEN4sQuFkesnE3sROiSXzKZLvBEoWx
+i4aTPLvkC95HgoycjK9D9A+Nbf6g/laIa5C4CVRQuKkfnuY05jdIQ+uXjI/0IwQC
+CJY3XPfMkd60PfiE7dZK6iAD92u7WbNCH8jrzQhE1+h3YVhXsIudRRQ7VGecLWZK
+wnPn0nMg3fjs5Vh7QI4WZG2bzH3kXVrZx/vQigsOBOdDakchAPl1mZNGuv1L6Gww
+rp+HMiPudloJG1d+eurZhLFzQRKUtB+WRFZ/7LmxnuXRIkpe6XqStvGr6KXE0471
++EQd6VVf+WSOYiRHkYtgQSh/mCbyefJkHZlfjXYIhZR2kztY7DY=
+=JWjV
+-----END PGP SIGNATURE-----
+
+--Sig_/j8w0hyz.ZiK=Yh=0nN_TgSS--
