@@ -2,70 +2,84 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B6A9C6FA91
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Sep 2022 18:46:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9872AC32771
+	for <phone-devel@archiver.kernel.org>; Thu, 15 Sep 2022 19:26:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229613AbiIOSqb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 15 Sep 2022 14:46:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44468 "EHLO
+        id S229766AbiIOT0D (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 15 Sep 2022 15:26:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229561AbiIOSqa (ORCPT
+        with ESMTP id S229763AbiIOTZy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 15 Sep 2022 14:46:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D809A955;
-        Thu, 15 Sep 2022 11:46:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 891BB625F5;
-        Thu, 15 Sep 2022 18:46:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C07C4347C;
-        Thu, 15 Sep 2022 18:46:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663267589;
-        bh=4aQoWqQIlT7CgalHAG9G4oWuQNvk1txMTZ7ASFZJVZo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Kwfqm0b58S9XHaA6SXwpIQshMRQzgrbBbnZqdSOBNDw7dSBwkis/h4bHKrUmtIpMN
-         Nje8LYcT1BeruQbVbUB4Rq0oGY37Rt7hMFzDzMaWngEvs7QW+uAU0sqiCqLXvo0dpS
-         4cWXBxbK7GHF+Orgm60KwUmuXT/vtu79UcRmk4XywsZ2sm6UnpTik609XHVRk0zqRG
-         zLk47HItonSTwNEYJez7yx2p4YRKwwCfO2rQdiiWgc9tL5NsOqARGD5NWV5A80Zt63
-         IVYOYJfBuhyYHr+o9XCCcpWHr2WJfdFrHZysmvc50kFrCZuA2TouQhoellVlXARNqa
-         TZBRRYpacb+Gg==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     luca@z3ntu.xyz, linux-arm-msm@vger.kernel.org
-Cc:     robh+dt@kernel.org, agross@kernel.org, phone-devel@vger.kernel.org,
-        mathieu.poirier@linaro.org, krzysztof.kozlowski+dt@linaro.org,
-        mani@kernel.org, devicetree@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH 1/5] dt-bindings: remoteproc: qcom: pas: Add MSM8226 adsp
-Date:   Thu, 15 Sep 2022 13:46:26 -0500
-Message-Id: <166326758064.847092.18364479017237684349.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220423155059.660387-1-luca@z3ntu.xyz>
-References: <20220423155059.660387-1-luca@z3ntu.xyz>
+        Thu, 15 Sep 2022 15:25:54 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC5EC38479;
+        Thu, 15 Sep 2022 12:25:51 -0700 (PDT)
+Received: from g550jk.localnet (31-151-115-246.dynamic.upc.nl [31.151.115.246])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 9A3F3C17AF;
+        Thu, 15 Sep 2022 19:25:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1663269949; bh=pG6rNu+xBVtdF6lIbK5/MTm5x53xJnK8SaUNXzXLpiI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=ZnuEvWhUqWz1yGuHuWH7Ym9xDE/mlMVABda1gLNAb1Oh2veqg7RICtgi15aakUegp
+         edoR2gF/bHDa6rx8r17gvs3NQYnQ3i6prEPOkfu17ysAJeP9fAcc3FwRD8IDZuSBU7
+         ei/DPpTER44TZPojnpMgR/Gz/5EVeBHve19SkPcI=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        marcel@holtmann.org, "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: bluetooth: broadcom: add BCM43430A0 & BCM43430A1
+Date:   Thu, 15 Sep 2022 21:25:49 +0200
+Message-ID: <2956343.mvXUDI8C0e@g550jk>
+In-Reply-To: <20220225204138.935022-1-luca@z3ntu.xyz>
+References: <20220225204138.935022-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 23 Apr 2022 17:50:55 +0200, Luca Weiss wrote:
-> Add the compatible for the adsp found in MSM8226.
+Hi all,
+
+On Freitag, 25. Februar 2022 21:41:37 CEST Luca Weiss wrote:
+> Document the compatible string for BCM43430A0 bluetooth used in lg-lenok
+> and BCM43430A1 used in asus-sparrow.
 > 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+
+Can someone please apply this patch? It still seems to apply without fuzz.
+
+Regards
+Luca
+
+> ---
+> Changes in v2:
+> - add bcm43430a1 too, adjust commit message to reflect that
 > 
+>  Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml
+> b/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml index
+> 5aac094fd217..dd035ca639d4 100644
+> --- a/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml
+> +++ b/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml
+> @@ -19,6 +19,8 @@ properties:
+>        - brcm,bcm4329-bt
+>        - brcm,bcm4330-bt
+>        - brcm,bcm4334-bt
+> +      - brcm,bcm43430a0-bt
+> +      - brcm,bcm43430a1-bt
+>        - brcm,bcm43438-bt
+>        - brcm,bcm4345c5
+>        - brcm,bcm43540-bt
 
-Applied, thanks!
 
-[3/5] ARM: dts: qcom: msm8226: Add ADSP node
-      commit: 25ba74dd60022f2fa1630405d6eba7c37f45b13a
-[4/5] ARM: dts: qcom: apq8026-asus-sparrow: Enable ADSP
-      commit: 268c661c172d783540f34a132290e78342bae3c5
-[5/5] ARM: dts: qcom: apq8026-lg-lenok: Enable ADSP
-      commit: 5cbd20166f0ac7ae0272d25401b6ec5472482a19
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+
