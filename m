@@ -2,117 +2,212 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0E94ECAAD3
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Sep 2022 11:36:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F398C6FA8A
+	for <phone-devel@archiver.kernel.org>; Thu, 15 Sep 2022 14:40:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbiIOLgI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 15 Sep 2022 07:36:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60172 "EHLO
+        id S230353AbiIOOkl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 15 Sep 2022 10:40:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229599AbiIOLgA (ORCPT
+        with ESMTP id S230287AbiIOOkP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 15 Sep 2022 07:36:00 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F19B19A952
-        for <phone-devel@vger.kernel.org>; Thu, 15 Sep 2022 04:35:58 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id y17so36400391ejo.6
-        for <phone-devel@vger.kernel.org>; Thu, 15 Sep 2022 04:35:58 -0700 (PDT)
+        Thu, 15 Sep 2022 10:40:15 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E801E3C1
+        for <phone-devel@vger.kernel.org>; Thu, 15 Sep 2022 07:38:03 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id g3so10311833wrq.13
+        for <phone-devel@vger.kernel.org>; Thu, 15 Sep 2022 07:38:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=d1PF4A4boDjofVzPABAZCXmsEh3HYlGwljIdr1GvZSY=;
-        b=otFuK1b0JYh824F62FadqTGHIlSv28ORFGj0Po+O5iD4qf/XgeaA1TBuw5AX+BvMX1
-         S0zbhI1+R5Zv/fazlRyvkjWZpSoatyoievQ/ZlnlTl2son/8Af0xNHSMGcg4rxh1gvMK
-         QQW+8YukXq5F2H8dftQlqSF7ouXyxB4qGZzI64IwI3mqYhk6pYwTqaMhwEpA2awQvmd1
-         Cju+K2AI4ZzdqjrxizSSoE3CJmhUZzm6x4gBlOxc2irPdpPcb7kcIV5XaNag9ZCtAdKL
-         nuDO8DxvuO7dYLlwkkzlmuW8FzWIYyf2WpF5N+BZyrRnYxBwHJA+3Ih9prqfWyGtE/Mg
-         3gPw==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=6mZeceF7rfeZc7wJjrZqqoRnOO4JaL00mHNu2FRG14A=;
+        b=vygv4IzQcLnnr7H8d8pLsom5/lZ9uzs+1LXwo7J04btfubOfqRNSKwnMvkrcnpjTii
+         Weei4djnAVZ754kl7b6ogCd3lOAvaNmLBL8g5rdpzf657zQPdkx9nZf46TtmyQtVtBkD
+         2gEwpMQvMAU5C0bq16V+gE2WzYzlAd4CnBNCP+uDXghtF9Tc24zxOgp/QquUfkMcfNJH
+         kdy0ZYIcOPFkXhT4ehRR89DR6fzFeXHg80hNsLguczOUNrxV+qWkwOCNEe3IGiI3u6Ih
+         p4r1KXU/PPLtEsYD5+3eIJEAIVjFC/KDV95eHQaBOjievWoNFP/7sDRhvQMoXNIpOL1r
+         +FOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=d1PF4A4boDjofVzPABAZCXmsEh3HYlGwljIdr1GvZSY=;
-        b=oty0c4CidGXO3rBgNx1orQpcXl+uGI/3YIFmEWEc+uLp38OjzotbpC0GEk1ixMThdp
-         vK8NoeurzfCnddJdVI+MW5qDlGdEis4BsoEpJlNOaNojSb0OWlZE9TgsRyyH8ofD51Pd
-         j46Fuhb+BhSNINxDlplWxBiNItEWOs8Dj5TRAAMBACRn6x9Rm/M81KEfBCJCzkBxZwOz
-         3novPMuIk9wPd0MGrhiYkqd7HZJVeSMFUHfQ9LT+YKQY/F70w7Xg1ca00Uwy3AuJ72Ut
-         IluJy+1mJGpfz+21Ap2H9leyRhrIN1fMIigim1t/BaR+7ZR6puXd8+p/mVlRA8KzOANa
-         P1Cw==
-X-Gm-Message-State: ACgBeo0YeZxhgUIo4GP4ZcvpQzId3YGDPPvkXzL8eWfE9NJR40z5zbHx
-        Jq1Nba0bfMwHkL+/uHjMefVGvg==
-X-Google-Smtp-Source: AA6agR6uIndMgHYkaS4uybZJbwSLEfFeKw1jYmyds8Mv50OPSJUBarei9PR9ooqlse+45+4k5Lx9Bw==
-X-Received: by 2002:a17:907:9603:b0:742:9ed3:3af2 with SMTP id gb3-20020a170907960300b007429ed33af2mr28653453ejc.510.1663241757579;
-        Thu, 15 Sep 2022 04:35:57 -0700 (PDT)
-Received: from otso.. (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id fi24-20020a1709073ad800b0072af4af2f46sm8910424ejc.74.2022.09.15.04.35.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Sep 2022 04:35:57 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] mfd: qcom-spmi-pmic: Add more PMIC SUBTYPE IDs
-Date:   Thu, 15 Sep 2022 13:35:21 +0200
-Message-Id: <20220915113523.44074-2-luca.weiss@fairphone.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220915113523.44074-1-luca.weiss@fairphone.com>
-References: <20220915113523.44074-1-luca.weiss@fairphone.com>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=6mZeceF7rfeZc7wJjrZqqoRnOO4JaL00mHNu2FRG14A=;
+        b=mxcdj08D+Txpfxeftpb38Ov56FxJDqfH0UZdWSa3Qot9LIpWOuZQjmq4j5aH91n745
+         ULIyDuFak87ZDf7r2aOpCEbXrN0IglQeuYpSKK9de3wWHbcTn660oS0trQQHcgzBer7Q
+         XkTn07gPQNx4AJIPmoteodtLLXaWLG2LncSur63FARcn9LLtT1y7pTVzmBHpikQzT3Q4
+         KzCq9Nb0hueGl81c+ENi6jlM6Nk6fIDMhvqGcWEidxbFMrBhSV1wjHhfwe7iy7/bak1K
+         pUzzVsD7M4QO72B3qR/qvXWNo9bL+bnMJq9KDW5QYhf8iv2lxJGgDzo0ku+6w8nntjkL
+         YtkA==
+X-Gm-Message-State: ACgBeo2Nef9gxU3XDHWVgBnF3yUBFT0qwLaZaTXh6oBtQOT3dG8B0OtV
+        VcgIAENotY86aOO/k+53kBWpCQ==
+X-Google-Smtp-Source: AA6agR4moNalga88Hitwb5FNf96LKA4F6ZPVlakO5ZVEyEVtBOcJf4hHJ/dslkC/QAR93cJHIAXdWQ==
+X-Received: by 2002:adf:db44:0:b0:22a:56eb:927f with SMTP id f4-20020adfdb44000000b0022a56eb927fmr15358975wrj.627.1663252678566;
+        Thu, 15 Sep 2022 07:37:58 -0700 (PDT)
+Received: from [10.119.22.201] ([89.101.193.72])
+        by smtp.gmail.com with ESMTPSA id q123-20020a1c4381000000b003a84375d0d1sm3060464wma.44.2022.09.15.07.37.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 Sep 2022 07:37:57 -0700 (PDT)
+Message-ID: <aa728ce9-8d70-a497-8062-1320a583f28c@linaro.org>
+Date:   Thu, 15 Sep 2022 15:37:56 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [PATCH v3 9/9] arm64: dts: qcom: sm4250: Add support for
+ oneplus-billie2
+Content-Language: en-US
+To:     Bjorn Andersson <andersson@kernel.org>,
+        Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org
+References: <20220910143213.477261-1-iskren.chernev@gmail.com>
+ <20220910143213.477261-10-iskren.chernev@gmail.com>
+ <20220913213007.gdk27nxjzmagbdzn@builder.lan>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220913213007.gdk27nxjzmagbdzn@builder.lan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add more IDs that are found in the downstream msm-4.19 kernel under the
-path include/linux/qpnp/qpnp-revid.h.
+On 13/09/2022 22:30, Bjorn Andersson wrote:
+> On Sat, Sep 10, 2022 at 05:32:13PM +0300, Iskren Chernev wrote:
+>> Add initial support for OnePlus Nord N100, based on SM4250. Currently
+>> working:
+>> - boots
+>> - usb
+>> - buildin flash storage (UFS)
+>> - SD card reader
+>>
+>> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+>> ---
+>>  arch/arm64/boot/dts/qcom/Makefile             |   1 +
+>>  .../boot/dts/qcom/sm4250-oneplus-billie2.dts  | 241 ++++++++++++++++++
+>>  2 files changed, 242 insertions(+)
+>>  create mode 100644 arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+>> index f4126f7e7640..5d2570b600e0 100644
+>> --- a/arch/arm64/boot/dts/qcom/Makefile
+>> +++ b/arch/arm64/boot/dts/qcom/Makefile
+>> @@ -137,6 +137,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-polaris.dtb
+>>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-shift-axolotl.dtb
+>>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-lenovo-yoga-c630.dtb
+>>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-samsung-w737.dtb
+>> +dtb-$(CONFIG_ARCH_QCOM)	+= sm4250-oneplus-billie2.dtb
+>>  dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-sony-xperia-seine-pdx201.dtb
+>>  dtb-$(CONFIG_ARCH_QCOM)	+= sm6350-sony-xperia-lena-pdx213.dtb
+>>  dtb-$(CONFIG_ARCH_QCOM)	+= sm7225-fairphone-fp4.dtb
+>> diff --git a/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts b/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
+>> new file mode 100644
+>> index 000000000000..b9094f1efca0
+>> --- /dev/null
+>> +++ b/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
+>> @@ -0,0 +1,241 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+> 
+> Would it be possible for you to dual license this?
+> 
+>> +/*
+>> + * Copyright (c) 2021, Iskren Chernev <iskren.chernev@gmail.com>
+>> + */
+>> +
+>> +/dts-v1/;
+>> +
+>> +#include "sm4250.dtsi"
+>> +
+>> +/ {
+>> +	model = "OnePlus Nord N100";
+>> +	compatible = "oneplus,billie2", "qcom,sm4250";
+>> +
+>> +	/* required for bootloader to select correct board */
+>> +	qcom,msm-id = <0x1a1 0x10000 0x1bc 0x10000>;
+>> +	qcom,board-id = <0x1000b 0x00>;
+>> +
+>> +	aliases {
+>> +	};
+>> +
+>> +	chosen {
+>> +		#address-cells = <2>;
+>> +		#size-cells = <2>;
+>> +		ranges;
+>> +
+>> +		stdout-path = "framebuffer0";
+>> +
+>> +		framebuffer0: framebuffer@9d400000 {
+>> +			compatible = "simple-framebuffer";
+>> +			reg = <0 0x5c000000 0 (1600 * 720 * 4)>;
+>> +			width = <720>;
+>> +			height = <1600>;
+>> +			stride = <(720 * 4)>;
+>> +			format = "a8r8g8b8";
+>> +		};
+>> +	};
+>> +};
+>> +
+>> +&xo_board {
+>> +	clock-frequency = <19200000>;
+>> +};
+>> +
+>> +&sleep_clk {
+>> +	clock-frequency = <32764>;
+>> +};
+>> +
+>> +&reserved_memory {
+> 
+> As the number of nodes grow it would be nice if these were sorted
+> alphabetically.
+> 
+>> +	bootloader_log_mem: memory@5fff7000 {
+>> +		reg = <0x00 0x5fff7000 0x00 0x8000>;
+>> +		no-map;
+>> +	};
+>> +
+>> +	ramoops@cbe00000 {
+>> +		compatible = "ramoops";
+>> +		reg = <0x0 0xcbe00000 0x0 0x400000>;
+>> +		record-size = <0x40000>;
+>> +		pmsg-size = <0x200000>;
+>> +		console-size = <0x40000>;
+>> +		ftrace-size = <0x40000>;
+>> +	};
+>> +
+>> +	param_mem: memory@cc200000 {
+>> +		reg = <0x00 0xcc200000 0x00 0x100000>;
+>> +		no-map;
+>> +	};
+>> +
+>> +	mtp_mem: memory@cc300000 {
+>> +		reg = <0x00 0xcc300000 0x00 0xb00000>;
+>> +		no-map;
+>> +	};
+>> +};
+>> +
+>> +&usb3 {
+>> +	status = "okay";
+>> +};
+> [..]
+>> +&rpm_requests {
+>> +	regulators-0 {
+> 
+> Is there a reason why you don't call this node pm6125-regulators ?
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
-Changes since v2:
-* Convert hex numbers lowercase
-* Remove SMB* IDs added in v1, given it's not sure they're actually spmi
-  pmics or just i2c pmics (keep SMB2351 because it supports spmi)
+It's the follow up of:
+https://lore.kernel.org/all/20220901093243.134288-1-krzysztof.kozlowski@linaro.org/
 
- include/soc/qcom/qcom-spmi-pmic.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Node names should be rather generic, so just regulators.
 
-diff --git a/include/soc/qcom/qcom-spmi-pmic.h b/include/soc/qcom/qcom-spmi-pmic.h
-index fde0148d0077..c47cc71a999e 100644
---- a/include/soc/qcom/qcom-spmi-pmic.h
-+++ b/include/soc/qcom/qcom-spmi-pmic.h
-@@ -26,6 +26,8 @@
- #define PM8901_SUBTYPE		0x0f
- #define PM8950_SUBTYPE		0x10
- #define PMI8950_SUBTYPE		0x11
-+#define PMK8001_SUBTYPE		0x12
-+#define PMI8996_SUBTYPE		0x13
- #define PM8998_SUBTYPE		0x14
- #define PMI8998_SUBTYPE		0x15
- #define PM8005_SUBTYPE		0x18
-@@ -36,8 +38,17 @@
- #define PM8150B_SUBTYPE		0x20
- #define PMK8002_SUBTYPE		0x21
- #define PM8009_SUBTYPE		0x24
-+#define PMI632_SUBTYPE		0x25
- #define PM8150C_SUBTYPE		0x26
-+#define PM6150_SUBTYPE		0x28
- #define SMB2351_SUBTYPE		0x29
-+#define PM8008_SUBTYPE		0x2c
-+#define PM6125_SUBTYPE		0x2d
-+#define PM7250B_SUBTYPE		0x2e
-+#define PMK8350_SUBTYPE		0x2f
-+#define PMR735B_SUBTYPE		0x34
-+#define PM6350_SUBTYPE		0x36
-+#define PM2250_SUBTYPE		0x37
- 
- #define PMI8998_FAB_ID_SMIC	0x11
- #define PMI8998_FAB_ID_GF	0x30
--- 
-2.37.3
 
+Best regards,
+Krzysztof
