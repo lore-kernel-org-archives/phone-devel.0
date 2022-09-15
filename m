@@ -2,95 +2,70 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97480ECAAA1
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Sep 2022 14:52:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B6A9C6FA91
+	for <phone-devel@archiver.kernel.org>; Thu, 15 Sep 2022 18:46:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230303AbiIOOwx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 15 Sep 2022 10:52:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55214 "EHLO
+        id S229613AbiIOSqb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 15 Sep 2022 14:46:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230006AbiIOOwv (ORCPT
+        with ESMTP id S229561AbiIOSqa (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 15 Sep 2022 10:52:51 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DF8A4CA31
-        for <phone-devel@vger.kernel.org>; Thu, 15 Sep 2022 07:52:49 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id a2so6771718lfb.6
-        for <phone-devel@vger.kernel.org>; Thu, 15 Sep 2022 07:52:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=MGF6Hdj1kAaXiRS0wW3SjCRTt2IYAVcbko6YhwAB5Qo=;
-        b=yCYk4vNdr4C7RcK23GqAdk23sl1W1M6nzJ6UyseDQohU4rFxHRMWsaYzZUQ+rCGSMy
-         c1a5rz6hVTbAkvWNoKrbMZEPmPDBXH11JUs8Ctc/iGOTIyjr7zmD7BXw3IJyeUNCsjOn
-         OB+lMz9q0uXB1Y7ZzTzdG1qo+C3yyYSfFpbZTt4x28o3QDOrCn9mguaqnjqYfTVF6bK1
-         s0EYz6bGlVBroTtBxMUIvfojXIXdsJvYjdWwPj+xzK3EYTkrRrhAs/c2C9T4m2uwhXu1
-         /TZXbduLThrlxenxoeJP3jems/lOWXNvEAfwPQUYz/lgWmnkr2DrMigEoNaU3llrlIkC
-         La1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=MGF6Hdj1kAaXiRS0wW3SjCRTt2IYAVcbko6YhwAB5Qo=;
-        b=gU4utNVqEvv4APUXvAqj6i9xp+H29LVwhGTqWKHC+COCR47Qz4f+3maMNaRcrcayjF
-         P+CJacO+GW8O8ysKQsINrMT3JUKWBhw6Cr52TKANE7b0/R9dg1drT/MwwoIJhkvSvph6
-         pD06XOh4mkIFKIOS+J46hI0VpkIkDiWhCb8k3bd2Z1gXzYy6/YYvhxqJS0ZlobD1dRkO
-         24JWAfSeQS7hDJBmrRKsxlzW0wkFsJ3h0h64lrLe5aXb/leSE9Tgg1h9d3tfbRk6paZS
-         Cy3M2nkvNept43whqvhlJW3B8YESUY+IevvfVYgeW8INzfKjd4bb0BjEGVhX1AVAOI3+
-         W6yA==
-X-Gm-Message-State: ACrzQf0ArwKkC74yYAQ1MXM7jBy0POUAf1C2aHDOsr7Y8ABCPlP49fl6
-        TJ7F8UCfBKQodlBoSlBFUR4uWw==
-X-Google-Smtp-Source: AMsMyM4cRt2dHuWVj44Cc+swIEBBJ8MIf5gkhzKpuNJRcpuXbfDMvrLjiInXFw4elSjYO91zE/DVIQ==
-X-Received: by 2002:a05:6512:b28:b0:49d:ca3d:5935 with SMTP id w40-20020a0565120b2800b0049dca3d5935mr98480lfu.608.1663253567721;
-        Thu, 15 Sep 2022 07:52:47 -0700 (PDT)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id s13-20020a056512214d00b0049311968ca4sm2999809lfr.261.2022.09.15.07.52.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Sep 2022 07:52:47 -0700 (PDT)
-Message-ID: <a59b7a9e-95ec-9e44-01af-6a35f2e300f8@linaro.org>
-Date:   Thu, 15 Sep 2022 17:52:46 +0300
+        Thu, 15 Sep 2022 14:46:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D809A955;
+        Thu, 15 Sep 2022 11:46:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 891BB625F5;
+        Thu, 15 Sep 2022 18:46:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C07C4347C;
+        Thu, 15 Sep 2022 18:46:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663267589;
+        bh=4aQoWqQIlT7CgalHAG9G4oWuQNvk1txMTZ7ASFZJVZo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Kwfqm0b58S9XHaA6SXwpIQshMRQzgrbBbnZqdSOBNDw7dSBwkis/h4bHKrUmtIpMN
+         Nje8LYcT1BeruQbVbUB4Rq0oGY37Rt7hMFzDzMaWngEvs7QW+uAU0sqiCqLXvo0dpS
+         4cWXBxbK7GHF+Orgm60KwUmuXT/vtu79UcRmk4XywsZ2sm6UnpTik609XHVRk0zqRG
+         zLk47HItonSTwNEYJez7yx2p4YRKwwCfO2rQdiiWgc9tL5NsOqARGD5NWV5A80Zt63
+         IVYOYJfBuhyYHr+o9XCCcpWHr2WJfdFrHZysmvc50kFrCZuA2TouQhoellVlXARNqa
+         TZBRRYpacb+Gg==
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     luca@z3ntu.xyz, linux-arm-msm@vger.kernel.org
+Cc:     robh+dt@kernel.org, agross@kernel.org, phone-devel@vger.kernel.org,
+        mathieu.poirier@linaro.org, krzysztof.kozlowski+dt@linaro.org,
+        mani@kernel.org, devicetree@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH 1/5] dt-bindings: remoteproc: qcom: pas: Add MSM8226 adsp
+Date:   Thu, 15 Sep 2022 13:46:26 -0500
+Message-Id: <166326758064.847092.18364479017237684349.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20220423155059.660387-1-luca@z3ntu.xyz>
+References: <20220423155059.660387-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.1
-Subject: Re: [PATCH v3 2/2] mfd: qcom-spmi-pmic: Add more PMIC SUBTYPE IDs
-Content-Language: en-GB
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org
-References: <20220915113523.44074-1-luca.weiss@fairphone.com>
- <20220915113523.44074-2-luca.weiss@fairphone.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20220915113523.44074-2-luca.weiss@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 15/09/2022 14:35, Luca Weiss wrote:
-> Add more IDs that are found in the downstream msm-4.19 kernel under the
-> path include/linux/qpnp/qpnp-revid.h.
+On Sat, 23 Apr 2022 17:50:55 +0200, Luca Weiss wrote:
+> Add the compatible for the adsp found in MSM8226.
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> Changes since v2:
-> * Convert hex numbers lowercase
-> * Remove SMB* IDs added in v1, given it's not sure they're actually spmi
->    pmics or just i2c pmics (keep SMB2351 because it supports spmi)
 > 
->   include/soc/qcom/qcom-spmi-pmic.h | 11 +++++++++++
->   1 file changed, 11 insertions(+)
 
+Applied, thanks!
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+[3/5] ARM: dts: qcom: msm8226: Add ADSP node
+      commit: 25ba74dd60022f2fa1630405d6eba7c37f45b13a
+[4/5] ARM: dts: qcom: apq8026-asus-sparrow: Enable ADSP
+      commit: 268c661c172d783540f34a132290e78342bae3c5
+[5/5] ARM: dts: qcom: apq8026-lg-lenok: Enable ADSP
+      commit: 5cbd20166f0ac7ae0272d25401b6ec5472482a19
 
+Best regards,
 -- 
-With best wishes
-Dmitry
-
+Bjorn Andersson <andersson@kernel.org>
