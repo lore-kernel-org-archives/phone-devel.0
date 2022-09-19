@@ -2,100 +2,70 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC02BC6FA82
-	for <phone-devel@archiver.kernel.org>; Mon, 19 Sep 2022 20:17:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 07741C6FA82
+	for <phone-devel@archiver.kernel.org>; Mon, 19 Sep 2022 20:48:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbiISURw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 19 Sep 2022 16:17:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45274 "EHLO
+        id S229872AbiISUss (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 19 Sep 2022 16:48:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229717AbiISURp (ORCPT
+        with ESMTP id S229866AbiISUsk (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 19 Sep 2022 16:17:45 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E3524333A;
-        Mon, 19 Sep 2022 13:17:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Mon, 19 Sep 2022 16:48:40 -0400
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [5.144.164.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F8984AD5F
+        for <phone-devel@vger.kernel.org>; Mon, 19 Sep 2022 13:48:37 -0700 (PDT)
+Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4ABEAB8116D;
-        Mon, 19 Sep 2022 20:17:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FDCC433D6;
-        Mon, 19 Sep 2022 20:17:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663618662;
-        bh=eLnSfNg94p3dmevcszHxKEUBtga5UOC1oT5V7Ff96ic=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AnmhoQiqIWssaceXNzxDmMLpVCMK+Wn2cIOPOF542JbKO4urTK9eJf3vQnBnSsJRt
-         JkOjNMaUaIEL6wawwBZD4Mun1WuZj34fcvRZZg4Gv6bWDk2kqU4qPTOJFsh6zHK2+v
-         wbJePqHOOBa0+U5kvmSKqYVHyt65OzP2BUMXefVRtWkOagBc1mFloSZ+EG9aKLRmP8
-         DG6GuUW7T0uKyuMRe/rfRinszwIqwSRcB+WO+5CJOElakfMb2DUJ2WjzB3IMPVbmpM
-         P0HAxbf6OMkTdzD/wnZarPq1Xdube0eB7IQW42DmXgzMCaVInYCQJ3+NoPcF0CSvQh
-         q4DnDFqw5WMMw==
-Date:   Mon, 19 Sep 2022 15:17:38 -0500
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Vincent Knecht <vincent.knecht@mailoo.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, bryan.odonoghue@linaro.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH] thermal: qcom: tsens-v0_1: Fix MSM8939 fourth sensor
- hw_id
-Message-ID: <20220919201738.wkdzizmj5lhq2hk2@builder.lan>
-References: <20220811105014.7194-1-vincent.knecht@mailoo.org>
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 9EC593F5FA;
+        Mon, 19 Sep 2022 22:48:35 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/5] dt-bindings: mfd: qcom-spmi-pmic: Add pm6125 compatible
+Date:   Mon, 19 Sep 2022 22:48:22 +0200
+Message-Id: <20220919204826.215845-2-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.37.3
+In-Reply-To: <20220919204826.215845-1-marijn.suijten@somainline.org>
+References: <20220919204826.215845-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220811105014.7194-1-vincent.knecht@mailoo.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Aug 11, 2022 at 12:50:14PM +0200, Vincent Knecht wrote:
-> Reading temperature from this sensor fails with 'Invalid argument'.
-> 
-> Looking at old vendor dts [1], its hw_id should be 3 instead of 4.
-> Change this hw_id accordingly.
-> 
-> [1] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/master/arch/arm/boot/dts/qcom/msm8939-common.dtsi#L511
-> 
-> Fixes: 332bc8ebab2c ("thermal: qcom: tsens-v0_1: Add support for MSM8939")
-> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+Document support for the pm6125, typically paired with the sm6125 SoC.
 
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+---
+ Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Regards,
-Bjorn
+diff --git a/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml b/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
+index 65cbc6dee545..a6ee8c7f7738 100644
+--- a/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
++++ b/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
+@@ -35,6 +35,7 @@ properties:
+       - enum:
+           - qcom,pm660
+           - qcom,pm660l
++          - qcom,pm6125
+           - qcom,pm6150
+           - qcom,pm6150l
+           - qcom,pm6350
+-- 
+2.37.3
 
-> ---
-> Fixes reading GPU temperature on msm8939 idol3 with current WIP dtsi
-> ---
->  drivers/thermal/qcom/tsens-v0_1.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/thermal/qcom/tsens-v0_1.c b/drivers/thermal/qcom/tsens-v0_1.c
-> index f136cb350238..327f37202c69 100644
-> --- a/drivers/thermal/qcom/tsens-v0_1.c
-> +++ b/drivers/thermal/qcom/tsens-v0_1.c
-> @@ -604,7 +604,7 @@ static const struct tsens_ops ops_8939 = {
->  struct tsens_plat_data data_8939 = {
->  	.num_sensors	= 10,
->  	.ops		= &ops_8939,
-> -	.hw_ids		= (unsigned int []){ 0, 1, 2, 4, 5, 6, 7, 8, 9, 10 },
-> +	.hw_ids		= (unsigned int []){ 0, 1, 2, 3, 5, 6, 7, 8, 9, 10 },
->  
->  	.feat		= &tsens_v0_1_feat,
->  	.fields	= tsens_v0_1_regfields,
-> -- 
-> 2.37.1
-> 
-> 
-> 
