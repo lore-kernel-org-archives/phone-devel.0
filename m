@@ -2,25 +2,26 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 658B4C6FA90
-	for <phone-devel@archiver.kernel.org>; Mon, 19 Sep 2022 20:48:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C28F4ECAAA1
+	for <phone-devel@archiver.kernel.org>; Mon, 19 Sep 2022 21:00:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229902AbiISUsy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 19 Sep 2022 16:48:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45592 "EHLO
+        id S229726AbiISVA1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 19 Sep 2022 17:00:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229887AbiISUsm (ORCPT
+        with ESMTP id S229879AbiISVAT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 19 Sep 2022 16:48:42 -0400
+        Mon, 19 Sep 2022 17:00:19 -0400
 Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [5.144.164.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02ADC4A83B;
-        Mon, 19 Sep 2022 13:48:40 -0700 (PDT)
-Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E32B4BA7E
+        for <phone-devel@vger.kernel.org>; Mon, 19 Sep 2022 14:00:15 -0700 (PDT)
+Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 2C14D3F613;
-        Mon, 19 Sep 2022 22:48:39 +0200 (CEST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id A2A5C3F5CC;
+        Mon, 19 Sep 2022 23:00:10 +0200 (CEST)
+Date:   Mon, 19 Sep 2022 23:00:08 +0200
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -30,214 +31,85 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         <angelogioacchino.delregno@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
         Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 5/5] arm64: dts: qcom: sm6125-seine: Configure additional trinket thermistors
-Date:   Mon, 19 Sep 2022 22:48:26 +0200
-Message-Id: <20220919204826.215845-6-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220919204826.215845-1-marijn.suijten@somainline.org>
+Subject: Re: [PATCH v3 0/5] Add Qcom PM6125 PMIC, and use in Sony Xperia
+ Seine PDX201
+Message-ID: <20220919210008.5i5e74bl5gxxfbnh@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20220919204826.215845-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220919204826.215845-1-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-In addition to PMIC-specific (pm6125) thermistors downstream extends
-this set with the rf-pa0/rf-pa1, quiet, camera-flash and UFS/eMMC
-thermistors in sm6125 (trinket) board and seine-specific DT files.  All
-thermistors report sensible temperature readings in userspace.
+On 2022-09-19 22:48:21, Marijn Suijten wrote:
+> This series adds initial support for the PM6125 PMIC, and its power key
+> handling and thermal monitoring capabilities are configured for Sony's
+> PDX201 (Xperia 10II).
+> 
+> One patch for pm660 is included to fix a node address mismatch with its
+> reg field.
+> 
+> Changes since v2:
+> - Rebased on v6.0-rc6 to drop dependent DT patches;
+> - Dropped iio patch which has already been picked into Jonathan's tree;
+> - Added qcom,pm6125 compatible in new yaml-ified SPMI-PMIC dt-bindings.
 
-The sensors are also added to their respective Thermal Monitor node,
-with thermal zones to match where applicable: emmc-ufs and camera-flash
-are not available on the TM5 block, hence cannot be configured with a
-tripping point and will not have a thermal zone.
+And
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
----
- .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 151 ++++++++++++++++++
- 1 file changed, 151 insertions(+)
+    - Renamed `pm6125_gpio: gpios@c000` node to `gpio`;
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-index e01ea35f9a62..5d41def2ccc9 100644
---- a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-+++ b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-@@ -9,6 +9,7 @@
- #include "pm6125.dtsi"
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/input/gpio-keys.h>
-+#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
- 
- / {
- 	/* required for bootloader to select correct board */
-@@ -80,12 +81,162 @@ cmdline_mem: memory@ffd00000 {
- 			no-map;
- 		};
- 	};
-+
-+	thermal-zones {
-+		rf-pa0-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm6125_adc_tm 0>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+
-+		quiet-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <5000>;
-+			thermal-sensors = <&pm6125_adc_tm 1>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+
-+		xo-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm6125_adc_tm 2>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+
-+		rf-pa1-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm6125_adc_tm 3>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+	};
- };
- 
- &hsusb_phy1 {
- 	status = "okay";
- };
- 
-+&pm6125_adc {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&camera_flash_therm &emmc_ufs_therm &rf_pa1_therm>;
-+
-+	rf-pa0-therm@4d {
-+		reg = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+
-+	quiet-therm@4e {
-+		reg = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+
-+	camera-flash-therm@52 {
-+		reg = <ADC5_GPIO1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+
-+	emmc-ufs-therm@54 {
-+		reg = <ADC5_GPIO3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+
-+	rf-pa1-therm@55 {
-+		reg = <ADC5_GPIO4_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+};
-+
-+&pm6125_adc_tm {
-+	status = "okay";
-+
-+	rf-pa0-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm6125_adc ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+
-+	quiet-therm@1 {
-+		reg = <1>;
-+		io-channels = <&pm6125_adc ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+
-+	xo-therm@2 {
-+		reg = <2>;
-+		io-channels = <&pm6125_adc ADC5_XO_THERM_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+
-+	rf-pa1-therm@3 {
-+		reg = <3>;
-+		io-channels = <&pm6125_adc ADC5_GPIO4_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+};
-+
-+&pm6125_gpio {
-+	camera_flash_therm: camera-flash-therm-state {
-+		pins = "gpio3";
-+		function = PMIC_GPIO_FUNC_NORMAL;
-+		bias-high-impedance;
-+	};
-+
-+	emmc_ufs_therm: emmc-ufs-therm-state {
-+		pins = "gpio6";
-+		function = PMIC_GPIO_FUNC_NORMAL;
-+		bias-high-impedance;
-+	};
-+
-+	rf_pa1_therm: rf-pa1-therm-state {
-+		pins = "gpio7";
-+		function = PMIC_GPIO_FUNC_NORMAL;
-+		bias-high-impedance;
-+	};
-+};
-+
- &pon_pwrkey {
- 	status = "okay";
- };
--- 
-2.37.3
+of course, as requested by Krzysztof.
 
+- Marijn
+
+> 
+> v2: https://lore.kernel.org/linux-arm-msm/20220805135729.1037079-1-marijn.suijten@somainline.org/T/#u
+> 
+> Changes since v1:
+> - Dropped both pinctrl patches that have already been applied;
+> - Add -us suffix to qcom,hw-settle-time properties on ADC TM5 nodes
+>   (this suffix is not present on regular ADC5/VADC nodes);
+> - Add -state suffix to pm6125_gpio pinctrl nodes;
+> - Use PMIC_GPIO_FUNC_NORMAL instead of the string-literal "normal";
+> - Removed #address-cells and #size-cells from empty pmic@1 node;
+> - Removed ADC5_AMUX_THM3 / ADC5_GPIO2_100K_PU channels from the ADC5
+>   patch, these are unused on my board and hence untested.
+> 
+> v1: https://lore.kernel.org/phone-devel/20220511220613.1015472-1-marijn.suijten@somainline.org/T/#u
+> 
+> Marijn Suijten (5):
+>   dt-bindings: mfd: qcom-spmi-pmic: Add pm6125 compatible
+>   arm64: dts: qcom: pm660: Use unique ADC5_VCOIN address in node name
+>   arm64: dts: qcom: Add PM6125 PMIC
+>   arm64: dts: qcom: sm6125-seine: Include PM6125 and configure PON
+>   arm64: dts: qcom: sm6125-seine: Configure additional trinket
+>     thermistors
+> 
+>  .../bindings/mfd/qcom,spmi-pmic.yaml          |   1 +
+>  arch/arm64/boot/dts/qcom/pm6125.dtsi          | 154 +++++++++++++++++
+>  arch/arm64/boot/dts/qcom/pm660.dtsi           |   2 +-
+>  .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 162 +++++++++++++++++-
+>  4 files changed, 317 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/arm64/boot/dts/qcom/pm6125.dtsi
+> 
+> --
+> 2.37.3
+> 
