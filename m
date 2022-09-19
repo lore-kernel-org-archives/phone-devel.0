@@ -2,53 +2,53 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1A2CC6FA90
-	for <phone-devel@archiver.kernel.org>; Mon, 19 Sep 2022 18:06:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5E15C6FA91
+	for <phone-devel@archiver.kernel.org>; Mon, 19 Sep 2022 18:06:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbiISSGk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 19 Sep 2022 14:06:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58870 "EHLO
+        id S231377AbiISSGq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 19 Sep 2022 14:06:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230206AbiISSGj (ORCPT
+        with ESMTP id S230385AbiISSGo (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 19 Sep 2022 14:06:39 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37DE845980;
-        Mon, 19 Sep 2022 11:06:38 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id b5so387994wrr.5;
-        Mon, 19 Sep 2022 11:06:38 -0700 (PDT)
+        Mon, 19 Sep 2022 14:06:44 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C146445F5B;
+        Mon, 19 Sep 2022 11:06:42 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id c2-20020a1c3502000000b003b2973dafb7so5243615wma.2;
+        Mon, 19 Sep 2022 11:06:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=QfWW3Bgk8p54Ws6mo7HUHIpRuHazfcXLyPjujKD+Bao=;
-        b=Lr550RupUK0YccgUrYx5Sfx29b8xaU5VmqyKT8Lh0Uh0nnGUtgtzv3mulSxLthCH3I
-         aF4hb4wITBc6rd03wYiz4+Mwo2sjBmjbrM4yJg1DcQbECHCzCzwQSJSuhWxDU7YEllCf
-         OsLvOse6aF2Cvv0wDaxPGooQnig5mOVxr5msEyfz6Q+2y8GivItHFo2FyDnJI+xmksne
-         CIvLHaq1hkF6eW8jgoTI1IObi2osqHgEECfecWrsY8Vfo1BJd7twnXUVqSKwMk4ruHYo
-         aUZZmU5JH6y2nnzUMfmfszlVJPLUwL5hrEAhRl/DJxHrUsx71YajRNoj4kppZiFMZTby
-         4vUg==
+        bh=nFv4Tohd2giyViEtmIJ+DkJDZX8rBCWBLAqJ264IXgc=;
+        b=DzprM+EVmuciNfN5MjSEQFntwLFiXzYspWF+B8bHoRhRHYpGlIVNhYHAe7LVd+vnr2
+         9BCGJDWuiMto327LPx14iISVBQ5Qj3fWVvHvF9LCn6M41LDDRFpLJEBaw8tT9iDodJjN
+         VcefXkiyM+p062WpDtMt1T82mQNKf3nGj+5So538bvFvLFfj4mTxg+1Oo8CS4mvB93Bt
+         QDPaFnA0kZfDZUTVOihlCCBUn9N7+6NslsFCG4mq1lTTcTpxipqx36udcZVym3apBMaX
+         HkuadDB+Zaf6ZNvgpPCIUhA1upFAb+aPU1F/FQuj8ruv//jwYPhX3lCUGaOiYM50PD/9
+         h04w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=QfWW3Bgk8p54Ws6mo7HUHIpRuHazfcXLyPjujKD+Bao=;
-        b=xZG89ybW7naGonLCcLu/IPHiIGp6lR77uNSMVcHD2Wi4Gv6j1N1M9IWbFbsRpZpx5Q
-         89+JCjIONjoxnza8FsIxrifRnl6uAW+Ry0zxN8Whublxgl5uxkAQtTLh5aoeNGeCGlUY
-         xZwescE1rRKtfTeijy4ztwj6zR/12G4UPl1VPjgVyrZqpqrVzXa30n1GozN56i2Wz/j3
-         N5dCl34N/rBFKKSi6WtL7YkhwU+75mJjuWTDWu2+Rz6zxmj1FiTGVJyqSe0VD891io+D
-         h+cCLWKYQo0uIOy4/pvY/gAQa8XCQH+gxca1XjPHzySwkR844G4tRu+iAzmjXa5RNauI
-         0OUw==
-X-Gm-Message-State: ACrzQf0nNIgjsWYOQ0XKW8PrMRGJ0/DKE+wYgdVRlKti/U4SPiQonkwD
-        h8DP9+ZHgWVAlCbyO+rJbEw=
-X-Google-Smtp-Source: AMsMyM62KrjeHWnEOgnvk6O0kZn16SPBrxKiWIb47tnj0HtXUNHOA1P1cViRE2UsK14mhJC9zYTQLQ==
-X-Received: by 2002:a5d:588e:0:b0:22a:feea:6c09 with SMTP id n14-20020a5d588e000000b0022afeea6c09mr3878663wrf.112.1663610796663;
-        Mon, 19 Sep 2022 11:06:36 -0700 (PDT)
+        bh=nFv4Tohd2giyViEtmIJ+DkJDZX8rBCWBLAqJ264IXgc=;
+        b=k6IfS4SV+fgQtSFq3z0GF6+2c8/xtxFVmkRNJex5eT0G+9kMKdx06Uk6lKMhAdRw/p
+         oJTqaRlVL66C6gSSzuW4AUEOWmcDPfZZdZsG0cHgFRzJKpywP/kVg/YC6k4a2qkNRkHn
+         n9dOS1pct82/V8qEjNaPOolWbVd1YCVW0Xe3GinIQnWTySqDT+M4IUdYfGg97W5iYTUS
+         rG4u6DrusJamGmDAgbshn9VIEZTyhhwQ63QQjue6HhaElhdnzbLhcsPMCRuaIDL/SK4I
+         nmrxnuqqR6l0n0Hoo+nnkWjo4s9FFcPJtTGMXLz78rjJWIHhsDYZfvYNSjLfA77rh1GE
+         DHyA==
+X-Gm-Message-State: ACgBeo2oFSQLocl2N///qSL4KHEw+0GeEpQAQ9wBcLB5yFpSEjPMrFlt
+        C3VH3Iq7SNzLlbNS1QPh07s=
+X-Google-Smtp-Source: AA6agR7WFHf/c/7ZGkKNjSowQOgBbUt0q40ZFOAhfWInvty/BMFYjQ17wi0j/rWq2kman714us9Bsw==
+X-Received: by 2002:a7b:c84c:0:b0:3b3:3faa:10c3 with SMTP id c12-20020a7bc84c000000b003b33faa10c3mr20015521wml.94.1663610801419;
+        Mon, 19 Sep 2022 11:06:41 -0700 (PDT)
 Received: from localhost ([77.78.20.135])
-        by smtp.gmail.com with ESMTPSA id e5-20020adff345000000b0022ac672654dsm14895071wrp.58.2022.09.19.11.06.35
+        by smtp.gmail.com with ESMTPSA id o13-20020a05600c4fcd00b003b332a7bf15sm15051410wmq.7.2022.09.19.11.06.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Sep 2022 11:06:36 -0700 (PDT)
+        Mon, 19 Sep 2022 11:06:41 -0700 (PDT)
 From:   Iskren Chernev <iskren.chernev@gmail.com>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -56,14 +56,15 @@ To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         Iskren Chernev <iskren.chernev@gmail.com>,
-        Caleb Connolly <caleb@connolly.tech>,
         Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Vinod Koul <vkoul@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v4 3/8] dt-bindings: arm: qcom: Add compatible for oneplus,billie2 phone
-Date:   Mon, 19 Sep 2022 21:06:13 +0300
-Message-Id: <20220919180618.1840194-4-iskren.chernev@gmail.com>
+        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4 5/8] dt-bindings: phy: qcom,qmp-ufs: Fix SM6115 clocks, regs
+Date:   Mon, 19 Sep 2022 21:06:15 +0300
+Message-Id: <20220919180618.1840194-6-iskren.chernev@gmail.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20220919180618.1840194-1-iskren.chernev@gmail.com>
 References: <20220919180618.1840194-1-iskren.chernev@gmail.com>
@@ -73,43 +74,42 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-oneplus,billie2 (OnePlus Nord N100) is based on QualComm Snapdragon
-SM4250 SoC.
-
-Add support for the same in dt-bindings.
+The Sm6115 UFS PHY has 2 clocks and 3 regs.
 
 Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Caleb Connolly <caleb@connolly.tech>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- Documentation/devicetree/bindings/arm/qcom.yaml | 7 +++++++
- 1 file changed, 7 insertions(+)
+ Documentation/devicetree/bindings/phy/qcom,qmp-ufs-phy.yaml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
-index 1b5ac6b02bc5..35cfc1ef7522 100644
---- a/Documentation/devicetree/bindings/arm/qcom.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-@@ -54,6 +54,8 @@ description: |
-         sdm845
-         sdx55
-         sdx65
-+        sm4250
-+        sm6115
-         sm6125
-         sm6350
-         sm7225
-@@ -690,6 +692,11 @@ properties:
-               - xiaomi,polaris
-           - const: qcom,sdm845
- 
-+      - items:
-+          - enum:
-+              - oneplus,billie2
-+          - const: qcom,sm4250
-+
-       - items:
-           - enum:
-               - sony,pdx201
+diff --git a/Documentation/devicetree/bindings/phy/qcom,qmp-ufs-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,qmp-ufs-phy.yaml
+index 6e3c186b9972..815c375d0f7b 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,qmp-ufs-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,qmp-ufs-phy.yaml
+@@ -121,6 +121,7 @@ allOf:
+               - qcom,sc8180x-qmp-ufs-phy
+               - qcom,sc8280xp-qmp-ufs-phy
+               - qcom,sdm845-qmp-ufs-phy
++              - qcom,sm6115-qmp-ufs-phy
+               - qcom,sm6350-qmp-ufs-phy
+               - qcom,sm8150-qmp-ufs-phy
+               - qcom,sm8250-qmp-ufs-phy
+@@ -180,7 +181,6 @@ allOf:
+           contains:
+             enum:
+               - qcom,sc8180x-qmp-ufs-phy
+-              - qcom,sm6115-qmp-ufs-phy
+     then:
+       patternProperties:
+         "^phy@[0-9a-f]+$":
+@@ -198,6 +198,7 @@ allOf:
+           contains:
+             enum:
+               - qcom,msm8996-qmp-ufs-phy
++              - qcom,sm6115-qmp-ufs-phy
+     then:
+       patternProperties:
+         "^phy@[0-9a-f]+$":
 -- 
 2.37.3
 
