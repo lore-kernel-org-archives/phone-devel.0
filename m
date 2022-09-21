@@ -2,93 +2,105 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC452C6FA82
-	for <phone-devel@archiver.kernel.org>; Tue, 20 Sep 2022 08:39:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32A25ECAAD8
+	for <phone-devel@archiver.kernel.org>; Wed, 21 Sep 2022 06:12:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229731AbiITIjC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 20 Sep 2022 04:39:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33598 "EHLO
+        id S229640AbiIUGMS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 21 Sep 2022 02:12:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231128AbiITIiB (ORCPT
+        with ESMTP id S229630AbiIUGMR (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 20 Sep 2022 04:38:01 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF1D46AA13
-        for <phone-devel@vger.kernel.org>; Tue, 20 Sep 2022 01:36:36 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id x27so2662726lfu.0
-        for <phone-devel@vger.kernel.org>; Tue, 20 Sep 2022 01:36:35 -0700 (PDT)
+        Wed, 21 Sep 2022 02:12:17 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89C07F111
+        for <phone-devel@vger.kernel.org>; Tue, 20 Sep 2022 23:12:14 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id u9so11261887ejy.5
+        for <phone-devel@vger.kernel.org>; Tue, 20 Sep 2022 23:12:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=ZbRFqzUyyPs/92M9rsG+H3wBK/tL2k42vf0PEe2H8lQ=;
-        b=akOhfTTZcbKEr04isFguHpEzcRFBLPTfducL1VfutUAj9lxobBnFV8hguHd/LqGIQ5
-         tDWvm30uFjsT0NEtvxvHgA1MhL+7P43IZ2WiaCmCa6SBr7MyIEZnsPcWiLE81Jgrilw+
-         I0lInYKr339PmYiTkLj/4yKnhw/mD7Ltv1U3JD8KL09TvwGWSP20Q4uz4vHQ5BwrwxES
-         A17QNu99EioWMi1wp3OhMtxlDagtoXEA/H1DBPfkrwzcsrpY8UwqD8x4kleUccThPMHP
-         UDM+FUKDx+jz8SHDZv4vOoNTJErIAwNCzxV8Usz6wsIkHi3OSr/x5op9YdZphGkKmyrL
-         q1Hw==
+        d=fairphone.com; s=fair;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
+        bh=lcpfMgoa9N5r9lcnt2RlUpWbc6msSc6IQloKQmZo7QU=;
+        b=yzXRiYeez2V75KbyVbU8GwVQAu5zaLl3C7EGPOhDNQP0Wfjhfoj9Jj02Uvr85Qti+j
+         6cVzGEsYxmrmKiXR+ojzSFk2skPlZKpQAVGEBD5qP4p/zZ7YV7AcsJK+KPJj2MKy9VuR
+         rDtDeWVgdH8lxdHWrUkwI13EqXkF0iapWSE7aqW2G30FgEuhzPoCpT0E31pNmGCtl4Mh
+         xboN5TMsfDYKjU+HJKaW0wXoqDHM3Z5BkkuHUn54zKmC4A26M8/I3JSGL30BvsYEAQfh
+         ajmGjtSTP9GQTat98Wun4tQomtl6wNRDLL3yXENNcmtwN06/if9g8U5a+0eInCOOPnP7
+         poTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=ZbRFqzUyyPs/92M9rsG+H3wBK/tL2k42vf0PEe2H8lQ=;
-        b=MobG9nBMqDFge6vw2pE9/0dcZom7vRJsWdbl1ZJacSODW6jOuBhmeWBCyC0D6KRZzi
-         6xUFvmia3S7a+xvnO3r91bgVNzfJWBQMsovOFepcAFtJ0vGOqjaoFAWA5iwGhbN7sCMP
-         XHHIeUqxQ57YgNhtysatX4mES9sATBh+ZRSmRZsMHLJrEqYraBmh72y0Qt//xePJSxU3
-         zfHFH5SGm2d/BP8mX2twdZoj7wI/j1liswpOMhUAHFSRpwI0Qyf+wFcsAIy2U/1dZHpN
-         iZER8y0gxmJs87m2AZyN9dFvGbsPYquB15rQ18uIIaHtJ8GbUHcid3u1rL+t1pPk0cul
-         XZVQ==
-X-Gm-Message-State: ACrzQf3y9mEd00AlbwnzGpVBlBTvRqr2UXQVUBA5oQ29UudErUePkwCr
-        yYrm1lmaPZ4lnEgRT5jRgJ2f4g==
-X-Google-Smtp-Source: AMsMyM5tQWKY+m5B2U0jnpYXtMNrv+a87LiHZ0GcZGdQpCm5wTPGOdx59QJN77eY2oFR+FW0Y15+bQ==
-X-Received: by 2002:a05:6512:78e:b0:49a:d9ae:3051 with SMTP id x14-20020a056512078e00b0049ad9ae3051mr7294395lfr.203.1663662991823;
-        Tue, 20 Sep 2022 01:36:31 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id d25-20020ac25ed9000000b00492e570e036sm205874lfq.54.2022.09.20.01.36.30
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date;
+        bh=lcpfMgoa9N5r9lcnt2RlUpWbc6msSc6IQloKQmZo7QU=;
+        b=QrkiOM2nfN/kOhW0yUZanKfaIbs0btqDdNIiTZoVZLrGPCaEZhd4xPoQu6Aayav9zw
+         lj7k2rfORWyaUJh/i2Po4Cq8PwFma0pcfgPjrkTtYpY2z82PXZgHebvGMwEQx5UUxou8
+         4jweeNpifppC3bXFIT+W0ulhQf4pKqHBdX8JO9EoZ2Lf7T53PNvpz1fy6HHldumUxi0W
+         TTgjsANtcceLYvJOGlhxoaUg4z/+/WVJKL6GhgMvXIQbqGY0uUUWNWEg1xFwwB9uwNhY
+         MSKIY0r9yjn1uscV1UmNIWOQ7HRezz8IdWAXuDkzS5Su1ykUcknSuVON2u5iHeGLW+uj
+         +DSQ==
+X-Gm-Message-State: ACrzQf3h7FrJTZQ33wgeuxtUQNbvLrY8NM80IxLan/rIq/oU8BSduKoL
+        GeyC4iOsBv5R+Vlru4IE9mFpFRS9KgHhyQ==
+X-Google-Smtp-Source: AMsMyM5DxnCWvp1MzGJ34gI4csKiVSg8hpAWNYpamSC7doET6MwhCDs47yqVYMepof5kAxk/cfuPcQ==
+X-Received: by 2002:a17:907:a40f:b0:77b:b3c7:28b6 with SMTP id sg15-20020a170907a40f00b0077bb3c728b6mr19610878ejc.637.1663740733421;
+        Tue, 20 Sep 2022 23:12:13 -0700 (PDT)
+Received: from localhost (212095005231.public.telering.at. [212.95.5.231])
+        by smtp.gmail.com with ESMTPSA id x14-20020a05640226ce00b004544bdd56a4sm1136595edd.89.2022.09.20.23.12.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Sep 2022 01:36:31 -0700 (PDT)
-Message-ID: <0ec65132-7d7a-2f8d-cc16-cb76efc343d6@linaro.org>
-Date:   Tue, 20 Sep 2022 10:36:30 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v3 1/5] dt-bindings: mfd: qcom-spmi-pmic: Add pm6125
- compatible
-Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220919204826.215845-1-marijn.suijten@somainline.org>
- <20220919204826.215845-2-marijn.suijten@somainline.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220919204826.215845-2-marijn.suijten@somainline.org>
+        Tue, 20 Sep 2022 23:12:12 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date:   Wed, 21 Sep 2022 08:12:11 +0200
+Message-Id: <CN1UV8GZPKW8.3KT1X7WYEM4K5@otso>
+To:     "Lee Jones" <lee.jones@linaro.org>
+Cc:     <linux-arm-msm@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>,
+        "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+        "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>,
+        "Caleb Connolly" <caleb.connolly@linaro.org>,
+        <linux-kernel@vger.kernel.org>, "Lee Jones" <lee@kernel.org>
+Subject: Re: [PATCH v3 1/2] mfd: qcom-spmi-pmic: convert hex numbers
+ lowercase
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+X-Mailer: aerc 0.12.0
+References: <20220915113523.44074-1-luca.weiss@fairphone.com>
+ <YylwxQSulh7C48T7@google.com>
+In-Reply-To: <YylwxQSulh7C48T7@google.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 19/09/2022 22:48, Marijn Suijten wrote:
-> Document support for the pm6125, typically paired with the sm6125 SoC.
-> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Hi Lee, hi Caleb
 
+On Tue Sep 20, 2022 at 9:50 AM CEST, Lee Jones wrote:
+> On Thu, 15 Sep 2022, Luca Weiss wrote:
+>
+> > There are some IDs that are written in uppercase. For consistency
+> > convert them to lowercase.
+> >=20
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> > Changes since v2:
+> > * Split out to separate patch
+> >=20
+> >  include/soc/qcom/qcom-spmi-pmic.h | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> These aren't MFD patches.  Please reword the subject.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Do you have any suggestion what subject to use then? The most I can
+think of is "soc: qcom: " which is sometimes used for other files in
+this include directory.
+I've used the current subject because the previous two patches touching
+this file had this subject also.
 
+Regards
+Luca
 
-Best regards,
-Krzysztof
+>
+> --=20
+> DEPRECATED: Please use lee@kernel.org
+
