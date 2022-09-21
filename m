@@ -2,105 +2,122 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 32A25ECAAD8
-	for <phone-devel@archiver.kernel.org>; Wed, 21 Sep 2022 06:12:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E227CC6FA90
+	for <phone-devel@archiver.kernel.org>; Wed, 21 Sep 2022 09:15:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbiIUGMS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 21 Sep 2022 02:12:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38908 "EHLO
+        id S230138AbiIUJPN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 21 Sep 2022 05:15:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229630AbiIUGMR (ORCPT
+        with ESMTP id S229842AbiIUJPN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 21 Sep 2022 02:12:17 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89C07F111
-        for <phone-devel@vger.kernel.org>; Tue, 20 Sep 2022 23:12:14 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id u9so11261887ejy.5
-        for <phone-devel@vger.kernel.org>; Tue, 20 Sep 2022 23:12:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date;
-        bh=lcpfMgoa9N5r9lcnt2RlUpWbc6msSc6IQloKQmZo7QU=;
-        b=yzXRiYeez2V75KbyVbU8GwVQAu5zaLl3C7EGPOhDNQP0Wfjhfoj9Jj02Uvr85Qti+j
-         6cVzGEsYxmrmKiXR+ojzSFk2skPlZKpQAVGEBD5qP4p/zZ7YV7AcsJK+KPJj2MKy9VuR
-         rDtDeWVgdH8lxdHWrUkwI13EqXkF0iapWSE7aqW2G30FgEuhzPoCpT0E31pNmGCtl4Mh
-         xboN5TMsfDYKjU+HJKaW0wXoqDHM3Z5BkkuHUn54zKmC4A26M8/I3JSGL30BvsYEAQfh
-         ajmGjtSTP9GQTat98Wun4tQomtl6wNRDLL3yXENNcmtwN06/if9g8U5a+0eInCOOPnP7
-         poTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date;
-        bh=lcpfMgoa9N5r9lcnt2RlUpWbc6msSc6IQloKQmZo7QU=;
-        b=QrkiOM2nfN/kOhW0yUZanKfaIbs0btqDdNIiTZoVZLrGPCaEZhd4xPoQu6Aayav9zw
-         lj7k2rfORWyaUJh/i2Po4Cq8PwFma0pcfgPjrkTtYpY2z82PXZgHebvGMwEQx5UUxou8
-         4jweeNpifppC3bXFIT+W0ulhQf4pKqHBdX8JO9EoZ2Lf7T53PNvpz1fy6HHldumUxi0W
-         TTgjsANtcceLYvJOGlhxoaUg4z/+/WVJKL6GhgMvXIQbqGY0uUUWNWEg1xFwwB9uwNhY
-         MSKIY0r9yjn1uscV1UmNIWOQ7HRezz8IdWAXuDkzS5Su1ykUcknSuVON2u5iHeGLW+uj
-         +DSQ==
-X-Gm-Message-State: ACrzQf3h7FrJTZQ33wgeuxtUQNbvLrY8NM80IxLan/rIq/oU8BSduKoL
-        GeyC4iOsBv5R+Vlru4IE9mFpFRS9KgHhyQ==
-X-Google-Smtp-Source: AMsMyM5DxnCWvp1MzGJ34gI4csKiVSg8hpAWNYpamSC7doET6MwhCDs47yqVYMepof5kAxk/cfuPcQ==
-X-Received: by 2002:a17:907:a40f:b0:77b:b3c7:28b6 with SMTP id sg15-20020a170907a40f00b0077bb3c728b6mr19610878ejc.637.1663740733421;
-        Tue, 20 Sep 2022 23:12:13 -0700 (PDT)
-Received: from localhost (212095005231.public.telering.at. [212.95.5.231])
-        by smtp.gmail.com with ESMTPSA id x14-20020a05640226ce00b004544bdd56a4sm1136595edd.89.2022.09.20.23.12.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Sep 2022 23:12:12 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 21 Sep 2022 08:12:11 +0200
-Message-Id: <CN1UV8GZPKW8.3KT1X7WYEM4K5@otso>
-To:     "Lee Jones" <lee.jones@linaro.org>
-Cc:     <linux-arm-msm@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>,
-        "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
-        "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>,
-        "Caleb Connolly" <caleb.connolly@linaro.org>,
-        <linux-kernel@vger.kernel.org>, "Lee Jones" <lee@kernel.org>
-Subject: Re: [PATCH v3 1/2] mfd: qcom-spmi-pmic: convert hex numbers
- lowercase
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-X-Mailer: aerc 0.12.0
-References: <20220915113523.44074-1-luca.weiss@fairphone.com>
- <YylwxQSulh7C48T7@google.com>
-In-Reply-To: <YylwxQSulh7C48T7@google.com>
+        Wed, 21 Sep 2022 05:15:13 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF0FF1839B;
+        Wed, 21 Sep 2022 02:15:11 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 18242660036C;
+        Wed, 21 Sep 2022 10:15:09 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1663751710;
+        bh=EiRhcdjMAvK68XwbsPAfNJWxzXLfjiDxAFg97+OnM3Q=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Q4xKpEJgX2winmbdAikpVJgmJcdwETePiYoggN3OB73G/HQ6LH0RbgoxGbcsjfWwk
+         9y1lunbqVwGlIcaEF8mE6P0epui3DQtZpgEthfqIHvRFIIiSBFD3gvhB7qTmMhBoVF
+         u3UjrN1iHrIQX6z9q2yY3Xyqm/No5d7lJfi2vrvOc6hl41hxGsRHaOuLq5mFyszF8K
+         0RmQtGVallqzijiOu5+8G/svPoUu9ufL2HM887zhUmJAGoqPoSlRkiiMqm3jPvpiqP
+         ntNYxJwa15/hI2rF3Uyu9xQZtthoTm7GzvKQ3jmYzXLu/vvIWeHf7wdpoLIGEB6bi9
+         W0EfoaaXwtjMQ==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     mturquette@baylibre.com, sboyd@kernel.org
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        matthias.bgg@gmail.com, p.zabel@pengutronix.de,
+        y.oudjana@protonmail.com, angelogioacchino.delregno@collabora.com,
+        jason-jh.lin@mediatek.com, ck.hu@mediatek.com,
+        fparent@baylibre.com, rex-bc.chen@mediatek.com,
+        tinghan.shen@mediatek.com, ikjn@chromium.org,
+        miles.chen@mediatek.com, sam.shih@mediatek.com, wenst@chromium.org,
+        bgolaszewski@baylibre.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-clk@vger.kernel.org,
+        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
+        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, kernel@collabora.com
+Subject: [RESEND PATCH v6 0/8] MediaTek Helio X10 MT6795 - Clock drivers
+Date:   Wed, 21 Sep 2022 11:14:47 +0200
+Message-Id: <20220921091455.41327-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.37.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Lee, hi Caleb
+In an effort to give some love to the apparently forgotten MT6795 SoC,
+I am upstreaming more components that are necessary to support platforms
+powered by this one apart from a simple boot to serial console.
 
-On Tue Sep 20, 2022 at 9:50 AM CEST, Lee Jones wrote:
-> On Thu, 15 Sep 2022, Luca Weiss wrote:
->
-> > There are some IDs that are written in uppercase. For consistency
-> > convert them to lowercase.
-> >=20
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> > Changes since v2:
-> > * Split out to separate patch
-> >=20
-> >  include/soc/qcom/qcom-spmi-pmic.h | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> These aren't MFD patches.  Please reword the subject.
+This (very big) series introduces system clock, multimedia clock drivers
+(including resets) for this SoC.
 
-Do you have any suggestion what subject to use then? The most I can
-think of is "soc: qcom: " which is sometimes used for other files in
-this include directory.
-I've used the current subject because the previous two patches touching
-this file had this subject also.
+Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
 
-Regards
-Luca
+AngeloGioacchino Del Regno (8):
+  dt-bindings: mediatek: Document MT6795 system controllers bindings
+  dt-bindings: clock: Add MediaTek Helio X10 MT6795 clock bindings
+  dt-bindings: reset: Add bindings for MT6795 Helio X10 reset
+    controllers
+  dt-bindings: clock: mediatek: Add clock driver bindings for MT6795
+  clk: mediatek: clk-apmixed: Remove unneeded __init annotation
+  clk: mediatek: Export required symbols to compile clk drivers as
+    module
+  clk: mediatek: clk-apmixed: Add helper function to unregister
+    ref2usb_tx
+  clk: mediatek: Add MediaTek Helio X10 MT6795 clock drivers
 
->
-> --=20
-> DEPRECATED: Please use lee@kernel.org
+ .../arm/mediatek/mediatek,infracfg.yaml       |   2 +
+ .../bindings/arm/mediatek/mediatek,mmsys.yaml |   1 +
+ .../arm/mediatek/mediatek,pericfg.yaml        |   1 +
+ .../bindings/clock/mediatek,apmixedsys.yaml   |   1 +
+ .../bindings/clock/mediatek,mt6795-clock.yaml |  66 ++
+ .../clock/mediatek,mt6795-sys-clock.yaml      |  54 ++
+ .../bindings/clock/mediatek,topckgen.yaml     |   1 +
+ drivers/clk/mediatek/Kconfig                  |  37 ++
+ drivers/clk/mediatek/Makefile                 |   6 +
+ drivers/clk/mediatek/clk-apmixed.c            |  12 +-
+ drivers/clk/mediatek/clk-cpumux.c             |   2 +
+ drivers/clk/mediatek/clk-mt6795-apmixedsys.c  | 157 +++++
+ drivers/clk/mediatek/clk-mt6795-infracfg.c    | 151 +++++
+ drivers/clk/mediatek/clk-mt6795-mfg.c         |  50 ++
+ drivers/clk/mediatek/clk-mt6795-mm.c          | 132 ++++
+ drivers/clk/mediatek/clk-mt6795-pericfg.c     | 160 +++++
+ drivers/clk/mediatek/clk-mt6795-topckgen.c    | 610 ++++++++++++++++++
+ drivers/clk/mediatek/clk-mt6795-vdecsys.c     |  55 ++
+ drivers/clk/mediatek/clk-mt6795-vencsys.c     |  50 ++
+ drivers/clk/mediatek/clk-mtk.c                |   2 +
+ drivers/clk/mediatek/clk-mtk.h                |   1 +
+ drivers/clk/mediatek/reset.c                  |   1 +
+ .../dt-bindings/clock/mediatek,mt6795-clk.h   | 275 ++++++++
+ .../reset/mediatek,mt6795-resets.h            |  53 ++
+ 24 files changed, 1879 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-clock.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt6795-sys-clock.yaml
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-apmixedsys.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-infracfg.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-mfg.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-mm.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-pericfg.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-topckgen.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-vdecsys.c
+ create mode 100644 drivers/clk/mediatek/clk-mt6795-vencsys.c
+ create mode 100644 include/dt-bindings/clock/mediatek,mt6795-clk.h
+ create mode 100644 include/dt-bindings/reset/mediatek,mt6795-resets.h
+
+-- 
+2.37.2
 
