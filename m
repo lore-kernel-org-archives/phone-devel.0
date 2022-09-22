@@ -2,118 +2,113 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14D66C6FA90
-	for <phone-devel@archiver.kernel.org>; Thu, 22 Sep 2022 08:31:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79B53C6FA86
+	for <phone-devel@archiver.kernel.org>; Thu, 22 Sep 2022 10:21:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230091AbiIVIbS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 22 Sep 2022 04:31:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49520 "EHLO
+        id S231391AbiIVKVB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 22 Sep 2022 06:21:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbiIVIa7 (ORCPT
+        with ESMTP id S231452AbiIVKU6 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 22 Sep 2022 04:30:59 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 434D427FFD
-        for <phone-devel@vger.kernel.org>; Thu, 22 Sep 2022 01:30:45 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id k3-20020a05600c1c8300b003b4fa1a85f8so830039wms.3
-        for <phone-devel@vger.kernel.org>; Thu, 22 Sep 2022 01:30:45 -0700 (PDT)
+        Thu, 22 Sep 2022 06:20:58 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67C67B2D98
+        for <phone-devel@vger.kernel.org>; Thu, 22 Sep 2022 03:20:57 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id cc5so14756349wrb.6
+        for <phone-devel@vger.kernel.org>; Thu, 22 Sep 2022 03:20:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=iiP5WxsmM08egN8Zd3VKahEfzDPV1pVkJseoPD9eLPk=;
-        b=1XeTXPTpv4Xr78v9UwUnDaZpojwU8djR8O6eKC2fnCpUpkDZxKlWOszOtuiNqVqr1r
-         HD1y0pA41bl5vU/U8FWrimTPG5kmi1mKGqGDGLn6KZKkD6xnNWgrVSn8vwWmSwYMMrZH
-         MjOWKw4NCpEZEhPPjBGvUPV1WG5xGDvorxXAaDBvPEguvvoFWG8YeO+1kEYt3HumdOhj
-         gyi9V8hqwnuMFZuhr0RvdammDzcGXHVN+m5XoWHFn8HrgFReFDqoOyeKr82V8+ehJZ03
-         zPtrJ2SmJW1YS7h8gCrHExgDWBIRDWVqOZ0zuuQTpo+Xw++aVkP4KyUFniu95CtfJN51
-         Su4A==
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=6sV4IF1wLSw//pDLHYCBfBqE1hSLB1xpdVDSwgnvdOw=;
+        b=MH00jCSAwDeZQy5J9S5RPwa4RCE+0+jOV+1xXnwRqw4SyfBq/U/EOOBZZlClST2sEy
+         wvotUAf+BpQpbVC1OE0EUrw+nbgiKFXZLJjSWBf6fpxys5pVZ5Ajd/n3TrKHMxlyq7QR
+         twt7VJquNyHnSiS1AziDMpRlWJ/PbVQbnHLXQ70gAp5RsFXumbP/EEEXp6fUjXY/kSdb
+         bwMYNRI2/D7UUFbhWez8Qovj6klpGlD8sGgshNRob45V8/3WGOWYCO49XRfGkDAob4T2
+         wzuijinnFgFLjuy1ah+ZSKgNnJ5sIrzAFh6HL3tMx8e2mNIEUhD/TOZr4H3ukw3a9c2K
+         PcWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=iiP5WxsmM08egN8Zd3VKahEfzDPV1pVkJseoPD9eLPk=;
-        b=p7LoyfNW+n/f8age/7cJ39SkJT2xmhrGhM9qBVexEiMlTWwGRE+8wTkE1AAhAwhBLE
-         z/h6L7q0WR+3ovzl8Hvi72G5XbngLjr+9kkHvbfZaX0BpyUD6eeRj1sjKCxqYt4QP0vl
-         derT+rf9Y7xMjGWuHriutcZNmknvFNFxhV5J5ulfjYDlmpGc0r4fQL6OnfAfTPYswKSU
-         rOyFf6Yy+7SoF/Ji1nJCPOEot2TLncZ/gipNN+u49j1erQMDLRxbmgBufZ5vpOsy7W0d
-         OPjKRDyGG2f1Za6JJCFI3/HSNmMHqEyDNnYGTgMd0iXcYbiP/oG0qkmcXmhyWFfo22u9
-         U6WA==
-X-Gm-Message-State: ACrzQf2Jo85CMYJqlvsrC+1CGaHA3JF/VSv9wyJpc3NXZc3TVocEJ7Bj
-        3BxwHfPaPS//+CZrRXA3O1rbuQ==
-X-Google-Smtp-Source: AMsMyM5xCD3bZ7cOaflNn8eLhKutB9PAFKoRpiFINooFLSQ6qEpA2ePRz+j9eOGWh8jpZqY4S49ssg==
-X-Received: by 2002:a05:600c:4e94:b0:3b4:b416:46c3 with SMTP id f20-20020a05600c4e9400b003b4b41646c3mr1496005wmq.149.1663835443850;
-        Thu, 22 Sep 2022 01:30:43 -0700 (PDT)
-Received: from otso.. (212095005231.public.telering.at. [212.95.5.231])
-        by smtp.gmail.com with ESMTPSA id q17-20020a5d61d1000000b00228b3ff1f5dsm5088476wrv.117.2022.09.22.01.30.42
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=6sV4IF1wLSw//pDLHYCBfBqE1hSLB1xpdVDSwgnvdOw=;
+        b=kf7RtqtwZfMsLMjXDdp4oOlcLirikW/OixndotgMenIcnpnPne1SCKzACvqr3XQfUm
+         Pgfag1oqoN1BZQPlD1o6aI7a/cgzayC0BWA7eEElq2z5DTO/lOgb5jOqVDHUdbhkpYF5
+         fxdCxKC8vYWziE/ZSUysG3ZFs55T9PweQCrB1Z2GUfS3S2lB04Bpa4GHbWiHlfD/t9ri
+         EgHz+FmRA4gzFwr2a4Jw9B5U7cbUme4rfqaggObtgb7xUDwdveHV+utH8kFztONf1/Cg
+         MuAvYzhwCc128FGdmV6rhnughcd2By4GZ3VNUHbteP06g9aDju0Ftxwn/CeS3ODLwAYR
+         5BQw==
+X-Gm-Message-State: ACrzQf2f8Pn8XKaz7qR0RcD0Gpb/Z+bDNIuqllb0VsQ72MS+MviN52gk
+        K+eY57FjntQSlVVFymJ9iBKTiw==
+X-Google-Smtp-Source: AMsMyM5RP4LC33bEHoOHdwjemykgfCkChqb/iZSJnmjLuKFWJeoJVCtXEqfzWpFXRLjB/dE9bynq8Q==
+X-Received: by 2002:a5d:4444:0:b0:22a:2a64:a0fd with SMTP id x4-20020a5d4444000000b0022a2a64a0fdmr1555646wrr.293.1663842055575;
+        Thu, 22 Sep 2022 03:20:55 -0700 (PDT)
+Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
+        by smtp.gmail.com with ESMTPSA id g17-20020a5d4891000000b0022a2bacabbasm4913089wrq.31.2022.09.22.03.20.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Sep 2022 01:30:43 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
+        Thu, 22 Sep 2022 03:20:55 -0700 (PDT)
+Date:   Thu, 22 Sep 2022 11:20:53 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Caleb Connolly <caleb.connolly@linaro.org>
+Cc:     Luca Weiss <luca.weiss@fairphone.com>,
+        linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Lee Jones <lee.jones@linaro.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH v4 2/2] soc: qcom: spmi-pmic: add more PMIC SUBTYPE IDs
-Date:   Thu, 22 Sep 2022 10:29:23 +0200
-Message-Id: <20220922082925.17975-2-luca.weiss@fairphone.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220922082925.17975-1-luca.weiss@fairphone.com>
-References: <20220922082925.17975-1-luca.weiss@fairphone.com>
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        linux-kernel@vger.kernel.org, Lee Jones <lee@kernel.org>
+Subject: Re: [PATCH v3 1/2] mfd: qcom-spmi-pmic: convert hex numbers lowercase
+Message-ID: <Yyw3Ba08SWNVTIfI@google.com>
+References: <20220915113523.44074-1-luca.weiss@fairphone.com>
+ <YylwxQSulh7C48T7@google.com>
+ <CN1UV8GZPKW8.3KT1X7WYEM4K5@otso>
+ <b7551b18-887a-c895-b347-776bb537ae9f@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b7551b18-887a-c895-b347-776bb537ae9f@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add more IDs that are found in the downstream msm-4.19 kernel under the
-path include/linux/qpnp/qpnp-revid.h.
+On Wed, 21 Sep 2022, Caleb Connolly wrote:
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
----
-Changes since v3:
-* reword subject
-* pick up tags
+> 
+> 
+> On 21/09/2022 07:12, Luca Weiss wrote:
+> > Hi Lee, hi Caleb
+> > 
+> > On Tue Sep 20, 2022 at 9:50 AM CEST, Lee Jones wrote:
+> > > On Thu, 15 Sep 2022, Luca Weiss wrote:
+> > > 
+> > > > There are some IDs that are written in uppercase. For consistency
+> > > > convert them to lowercase.
+> > > > 
+> > > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > > > ---
+> > > > Changes since v2:
+> > > > * Split out to separate patch
+> > > > 
+> > > >   include/soc/qcom/qcom-spmi-pmic.h | 6 +++---
+> > > >   1 file changed, 3 insertions(+), 3 deletions(-)
+> > > 
+> > > These aren't MFD patches.  Please reword the subject.
+> > 
+> > Do you have any suggestion what subject to use then? The most I can
+> > think of is "soc: qcom: " which is sometimes used for other files in
+> > this include directory.
+> > I've used the current subject because the previous two patches touching
+> > this file had this subject also.
+> 
+> This file just contains platform data which used to be in the qcom SPMI
+> PMIC driver. In hindsight, maybe it would have been better suited in
+> include/linux/mfd but I don't think it matters too much. I guess it makes
+> sense to follow convention for the directory and treat it like the other
+> platform headers, maybe something like:
+> 
+> soc: qcom: spmi-pmic: convert hex numbers to lowercase
 
- include/soc/qcom/qcom-spmi-pmic.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Agree.
 
-diff --git a/include/soc/qcom/qcom-spmi-pmic.h b/include/soc/qcom/qcom-spmi-pmic.h
-index fde0148d0077..c47cc71a999e 100644
---- a/include/soc/qcom/qcom-spmi-pmic.h
-+++ b/include/soc/qcom/qcom-spmi-pmic.h
-@@ -26,6 +26,8 @@
- #define PM8901_SUBTYPE		0x0f
- #define PM8950_SUBTYPE		0x10
- #define PMI8950_SUBTYPE		0x11
-+#define PMK8001_SUBTYPE		0x12
-+#define PMI8996_SUBTYPE		0x13
- #define PM8998_SUBTYPE		0x14
- #define PMI8998_SUBTYPE		0x15
- #define PM8005_SUBTYPE		0x18
-@@ -36,8 +38,17 @@
- #define PM8150B_SUBTYPE		0x20
- #define PMK8002_SUBTYPE		0x21
- #define PM8009_SUBTYPE		0x24
-+#define PMI632_SUBTYPE		0x25
- #define PM8150C_SUBTYPE		0x26
-+#define PM6150_SUBTYPE		0x28
- #define SMB2351_SUBTYPE		0x29
-+#define PM8008_SUBTYPE		0x2c
-+#define PM6125_SUBTYPE		0x2d
-+#define PM7250B_SUBTYPE		0x2e
-+#define PMK8350_SUBTYPE		0x2f
-+#define PMR735B_SUBTYPE		0x34
-+#define PM6350_SUBTYPE		0x36
-+#define PM2250_SUBTYPE		0x37
- 
- #define PMI8998_FAB_ID_SMIC	0x11
- #define PMI8998_FAB_ID_GF	0x30
 -- 
-2.37.3
-
+DEPRECATED: Please use lee@kernel.org
