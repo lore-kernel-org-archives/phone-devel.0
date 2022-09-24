@@ -2,40 +2,42 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CBC8CC07E9D
-	for <phone-devel@archiver.kernel.org>; Sat, 24 Sep 2022 14:52:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F642C07E9D
+	for <phone-devel@archiver.kernel.org>; Sat, 24 Sep 2022 15:31:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233549AbiIXOwL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 24 Sep 2022 10:52:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35216 "EHLO
+        id S233827AbiIXPbI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 24 Sep 2022 11:31:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233426AbiIXOwK (ORCPT
+        with ESMTP id S233940AbiIXPao (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 24 Sep 2022 10:52:10 -0400
+        Sat, 24 Sep 2022 11:30:44 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A368364DE;
-        Sat, 24 Sep 2022 07:52:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EB7D2666;
+        Sat, 24 Sep 2022 08:30:30 -0700 (PDT)
 Received: from g550jk.fritz.box (212095005231.public.telering.at [212.95.5.231])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 8C8DEC0C33;
-        Sat, 24 Sep 2022 14:51:37 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id D2774C6F7F;
+        Sat, 24 Sep 2022 15:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1664031098; bh=bKyVedPZa4km9j+csKKXD11TZymZMcgUVZtwAX6VjgM=;
+        t=1664033427; bh=zV910eCqFNnfwi2bNmNVba6poAJMtaqZWIluNorpGww=;
         h=From:To:Cc:Subject:Date;
-        b=D0sUfF9vdILMT0v9wBQQ4IB5yiCqahL780qVwVRF5Hs1/lWZcAXo7/XUc4MRR8dbd
-         eVXR9raRJmJGvUZieT20ToZdDg/lxE44Z68Y8oMWRI5ohKLQofLpX5WbhxIDnpMavN
-         sPCeRqii2bwSVERS4hSfAoST48EAb8cf4sf0dDrY=
+        b=jYiokasqVqKaAJOIG6yJB6FtYFPiJ3ayo58/chffmyvQQqJ6jSVnxlH+KZn4LL1nn
+         RrDVp41psJvXJL8+gP1x0UcDJqFbBN8CtKOqfYw1YilSwRi0Syt7aJupS1wqqaXb2G
+         uWtb1CMsy6ahnWlexl7mQ0WyQXe6S3frfB+vEqoY=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: qcom: fix node name for rpm-msg-ram
-Date:   Sat, 24 Sep 2022 16:51:25 +0200
-Message-Id: <20220924145126.24978-1-luca@z3ntu.xyz>
+Subject: [PATCH v2 1/2] dt-bindings: arm: qcom: Document huawei,sturgeon device
+Date:   Sat, 24 Sep 2022 17:29:36 +0200
+Message-Id: <20220924152937.4076-1-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -43,58 +45,30 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Adjust the name to match the bindings and fix the following validation
-error:
-
-<snip>/arch/arm/boot/dts/qcom-apq8026-huawei-sturgeon.dtb: memory@fc428000: $nodename:0: 'memory@fc428000' does not match '^sram(@.*)?'
-        From schema: <snip>/Documentation/devicetree/bindings/sram/sram.yaml
+Document the Huawei Watch ("sturgeon") which is a smartwatch based on
+Snapdragon 400 SoC.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- arch/arm/boot/dts/qcom-apq8084.dtsi | 2 +-
- arch/arm/boot/dts/qcom-msm8226.dtsi | 2 +-
- arch/arm/boot/dts/qcom-msm8974.dtsi | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+Changes in v2:
+* Pick up tags
 
-diff --git a/arch/arm/boot/dts/qcom-apq8084.dtsi b/arch/arm/boot/dts/qcom-apq8084.dtsi
-index f2fb7c975af8..0c9efdcd4374 100644
---- a/arch/arm/boot/dts/qcom-apq8084.dtsi
-+++ b/arch/arm/boot/dts/qcom-apq8084.dtsi
-@@ -394,7 +394,7 @@ tcsr_mutex: hwlock@fd484000 {
- 			#hwlock-cells = <1>;
- 		};
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index b6257683a700..67ff967ea3ad 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -114,6 +114,7 @@ properties:
+       - items:
+           - enum:
+               - asus,sparrow
++              - huawei,sturgeon
+               - lg,lenok
+           - const: qcom,apq8026
  
--		rpm_msg_ram: memory@fc428000 {
-+		rpm_msg_ram: sram@fc428000 {
- 			compatible = "qcom,rpm-msg-ram";
- 			reg = <0xfc428000 0x4000>;
- 		};
-diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
-index 3b6e746a4af9..70cea141bc44 100644
---- a/arch/arm/boot/dts/qcom-msm8226.dtsi
-+++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
-@@ -527,7 +527,7 @@ frame@f9028000 {
- 			};
- 		};
- 
--		rpm_msg_ram: memory@fc428000 {
-+		rpm_msg_ram: sram@fc428000 {
- 			compatible = "qcom,rpm-msg-ram";
- 			reg = <0xfc428000 0x4000>;
- 		};
-diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
-index 7a9be0acf3f5..6e6530d20234 100644
---- a/arch/arm/boot/dts/qcom-msm8974.dtsi
-+++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
-@@ -1056,7 +1056,7 @@ gcc: clock-controller@fc400000 {
- 			reg = <0xfc400000 0x4000>;
- 		};
- 
--		rpm_msg_ram: memory@fc428000 {
-+		rpm_msg_ram: sram@fc428000 {
- 			compatible = "qcom,rpm-msg-ram";
- 			reg = <0xfc428000 0x4000>;
- 		};
 -- 
 2.37.3
 
