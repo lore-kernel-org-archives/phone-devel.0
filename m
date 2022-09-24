@@ -2,121 +2,88 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85E16C07E9D
-	for <phone-devel@archiver.kernel.org>; Sat, 24 Sep 2022 16:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C3C2C32771
+	for <phone-devel@archiver.kernel.org>; Sat, 24 Sep 2022 16:51:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233562AbiIXQjE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 24 Sep 2022 12:39:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
+        id S231156AbiIXQvo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 24 Sep 2022 12:51:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233405AbiIXQjE (ORCPT
+        with ESMTP id S231324AbiIXQvn (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 24 Sep 2022 12:39:04 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BE227CB48
-        for <phone-devel@vger.kernel.org>; Sat, 24 Sep 2022 09:39:02 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id i26so4687018lfp.11
-        for <phone-devel@vger.kernel.org>; Sat, 24 Sep 2022 09:39:02 -0700 (PDT)
+        Sat, 24 Sep 2022 12:51:43 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A663552DFA
+        for <phone-devel@vger.kernel.org>; Sat, 24 Sep 2022 09:51:41 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id s6so4748021lfo.7
+        for <phone-devel@vger.kernel.org>; Sat, 24 Sep 2022 09:51:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date;
-        bh=UN7dIy5bKqPGCHAvZ6RCx2KKfneFm8jKTHL6ecufoDA=;
-        b=mVderDBC0HH08MVkJlNWWaMuX9Uy+dZ09IDw5z/QycijWXh4HJdYAakyKlkZVqZltK
-         ib+yGSQXrCRHVF24k8Z8r1/6/BwogwRVz0y3Nn6aNO/suC0R+PpAY/bw2edm1EHOd4EX
-         fDakEc4Mjb9wd4T3ew3OebRtfB96/0TfQUeilsx+P5AF0Re0F6i3vYBR2Tw8EYnjNnNL
-         WDq3Bzzr6oioNdAe2h3GzgIai4NZ8W0Hogj/uj1iM4zIfraw6GrHxANDdXJq6evs1d5k
-         ZIr6dHheJABrNzwiIyUjmzkh1GsbnzBf1M4PTh0wiveN8bZRoLHYS98q2uUgnKksh2iw
-         WiAg==
+        bh=gNYZXt17DV/TexDp3xUIxIPFrk7l1dxnMeGcWYpvKqc=;
+        b=JNWiIDzI1b8sukTpns+Lk7aRagy1FgJ9qdsApmFw7kCKjKULcSd3II2b4295RHm+fs
+         u4jVIsiUnYO7BMciotcDLM9bjeh4pMMuTY14i5VFQNV0mWLk8wgaenqMGdgKo/iWBXDJ
+         Hi1yEHtdLkN8PzxCfQU8ijPetRANQN5VTRAUYmOyTeLMrlH5fp4J1YBI5ZoclLf/RioV
+         PtamN7Pj19znhKOOy5yDx4n5SXaBR0OZ7C/Xu9z0XMbmoNdnNN0YNj6aUZYqOJHky9n0
+         b+T48tKY+S0Ebz6B5Oq/hJn9G3groJf2uyJwxBzeQp7h2RUvp3qkP7Mr5F7SgxLycvlF
+         VDNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=UN7dIy5bKqPGCHAvZ6RCx2KKfneFm8jKTHL6ecufoDA=;
-        b=baJhK9n7xS28ZYQdjc3XDhyb5ROd+ieRcmhHTfaA+5EtrWJP3h2pZ88SNu2ZOKqHsL
-         OY07o44F2zRl0sLiC2v2iSJRdvVaXtR0bpUjHgy5YXShKE/HfbTuJaoWJIQ2UoGs7nG3
-         kHTTtWljOXW0AJlGsLJ9ig7Da2rmXRt7tt8ghuMoS/v6j0yMUFtSI3XnrtLllsRTN9fz
-         FV1a+vOauMC48tqlodtDbZeead2OWo1p/Wl5uerv2gNprCW3z7j27cvV9Q5SFHkaIMrk
-         nDPGJwkcO96F67RCB0amckhSyYA2Dui56PiCnwLGIasqotvQIqlMMrcAB4LbW3ImfZIP
-         RmaQ==
-X-Gm-Message-State: ACrzQf3JEgeheXNAOG13ZXANUCMK3Ud766CNVTMsZmqrTyHURvmpouys
-        R1UA+dh4gXao/7Gq2GF4TursWw==
-X-Google-Smtp-Source: AMsMyM4LUkwxRtPvLlV/99Vshl39R68/lx1p+A7GnsUxLlQYo5FCnzw6uQgxz4o7vtVVbIQ7nmPieg==
-X-Received: by 2002:a05:6512:308f:b0:49a:5a59:aa25 with SMTP id z15-20020a056512308f00b0049a5a59aa25mr5220074lfd.44.1664037540847;
-        Sat, 24 Sep 2022 09:39:00 -0700 (PDT)
-Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id j12-20020a056512344c00b00494a1b242dasm1946332lfr.14.2022.09.24.09.38.59
+        bh=gNYZXt17DV/TexDp3xUIxIPFrk7l1dxnMeGcWYpvKqc=;
+        b=46qRlEwuyL62DdQcH1XVfiuVjVKa59zlrPV8ySDaRHdn+o5U5hPldsRGpfOJXC1kng
+         nG5so+UXvkLPlc7vIQHvX2JW8vThGX4MuAgsyS6CYGKUL9HP1G/IBD3plr+fD+gjBffh
+         IXIutxhcs+jwMVY6xeppKdoW2Wv6XO87l+GpnnYyaL/9ufkN/4RV4G0+I/cenHvA3m59
+         2LvlNRS13fmd92tS6iN8+eeDPGcKT+9HjxsF+A9XOia6Hj18oSXEaSQlKUIabBKzkKS2
+         xU8SmvTmxn+9f7rYdIBg+oxjtFlaqjdBEez058gyNfKGvzNn6qunZtPyjUfIqEex104S
+         +Yzg==
+X-Gm-Message-State: ACrzQf2bzN945JZw5/X5R0neEUxcqM2KKfTqiHmst6NoNat/+a3q/DMO
+        Qnx/jgAH9sw05Z3XIG0qDonn90k7cgYo7w==
+X-Google-Smtp-Source: AMsMyM5CHH/ZsNiW9lJ5OD7gJPm901E5o8Bx2ECC2tyQ1epDZOqy2PL/sJufViaObBxO3YpcKjiQ3g==
+X-Received: by 2002:a05:6512:22ce:b0:497:499e:c966 with SMTP id g14-20020a05651222ce00b00497499ec966mr5231439lfu.402.1664038300021;
+        Sat, 24 Sep 2022 09:51:40 -0700 (PDT)
+Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id s13-20020a05651c048d00b00262fae1ffe6sm1822913ljc.110.2022.09.24.09.51.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 24 Sep 2022 09:39:00 -0700 (PDT)
-Message-ID: <9ef673f2-4296-8761-4d7a-dca323ba272e@linaro.org>
-Date:   Sat, 24 Sep 2022 19:38:58 +0300
+        Sat, 24 Sep 2022 09:51:39 -0700 (PDT)
+Message-ID: <a14ed141-4839-cf91-10fc-f4e03f969e0e@linaro.org>
+Date:   Sat, 24 Sep 2022 18:51:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH] thermal: qcom: tsens-v0_1: Fix MSM8939 fourth sensor
- hw_id
-Content-Language: en-GB
-To:     Vincent Knecht <vincent.knecht@mailoo.org>,
+ Thunderbird/102.3.0
+Subject: Re: [PATCH] ARM: dts: qcom: fix node name for rpm-msg-ram
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Shawn Guo <shawn.guo@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     bryan.odonoghue@linaro.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org
-References: <20220811105014.7194-1-vincent.knecht@mailoo.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20220811105014.7194-1-vincent.knecht@mailoo.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220924145126.24978-1-luca@z3ntu.xyz>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220924145126.24978-1-luca@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 11/08/2022 13:50, Vincent Knecht wrote:
-> Reading temperature from this sensor fails with 'Invalid argument'.
+On 24/09/2022 16:51, Luca Weiss wrote:
+> Adjust the name to match the bindings and fix the following validation
+> error:
 > 
-> Looking at old vendor dts [1], its hw_id should be 3 instead of 4.
-> Change this hw_id accordingly.
-> 
-> [1] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/master/arch/arm/boot/dts/qcom/msm8939-common.dtsi#L511
-> 
-> Fixes: 332bc8ebab2c ("thermal: qcom: tsens-v0_1: Add support for MSM8939")
-> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+> <snip>/arch/arm/boot/dts/qcom-apq8026-huawei-sturgeon.dtb: memory@fc428000: $nodename:0: 'memory@fc428000' does not match '^sram(@.*)?'
+>         From schema: <snip>/Documentation/devicetree/bindings/sram/sram.yaml
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-Daniel, gracious ping for getting this patch into 6.1.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-> ---
-> Fixes reading GPU temperature on msm8939 idol3 with current WIP dtsi
-> ---
->   drivers/thermal/qcom/tsens-v0_1.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/thermal/qcom/tsens-v0_1.c b/drivers/thermal/qcom/tsens-v0_1.c
-> index f136cb350238..327f37202c69 100644
-> --- a/drivers/thermal/qcom/tsens-v0_1.c
-> +++ b/drivers/thermal/qcom/tsens-v0_1.c
-> @@ -604,7 +604,7 @@ static const struct tsens_ops ops_8939 = {
->   struct tsens_plat_data data_8939 = {
->   	.num_sensors	= 10,
->   	.ops		= &ops_8939,
-> -	.hw_ids		= (unsigned int []){ 0, 1, 2, 4, 5, 6, 7, 8, 9, 10 },
-> +	.hw_ids		= (unsigned int []){ 0, 1, 2, 3, 5, 6, 7, 8, 9, 10 },
->   
->   	.feat		= &tsens_v0_1_feat,
->   	.fields	= tsens_v0_1_regfields,
-
--- 
-With best wishes
-Dmitry
+Best regards,
+Krzysztof
 
