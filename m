@@ -2,113 +2,79 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79B53C6FA86
-	for <phone-devel@archiver.kernel.org>; Thu, 22 Sep 2022 10:21:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2441AC32771
+	for <phone-devel@archiver.kernel.org>; Sat, 24 Sep 2022 14:23:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231391AbiIVKVB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 22 Sep 2022 06:21:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39706 "EHLO
+        id S230507AbiIXOXK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 24 Sep 2022 10:23:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231452AbiIVKU6 (ORCPT
+        with ESMTP id S229893AbiIXOXJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 22 Sep 2022 06:20:58 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67C67B2D98
-        for <phone-devel@vger.kernel.org>; Thu, 22 Sep 2022 03:20:57 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id cc5so14756349wrb.6
-        for <phone-devel@vger.kernel.org>; Thu, 22 Sep 2022 03:20:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=6sV4IF1wLSw//pDLHYCBfBqE1hSLB1xpdVDSwgnvdOw=;
-        b=MH00jCSAwDeZQy5J9S5RPwa4RCE+0+jOV+1xXnwRqw4SyfBq/U/EOOBZZlClST2sEy
-         wvotUAf+BpQpbVC1OE0EUrw+nbgiKFXZLJjSWBf6fpxys5pVZ5Ajd/n3TrKHMxlyq7QR
-         twt7VJquNyHnSiS1AziDMpRlWJ/PbVQbnHLXQ70gAp5RsFXumbP/EEEXp6fUjXY/kSdb
-         bwMYNRI2/D7UUFbhWez8Qovj6klpGlD8sGgshNRob45V8/3WGOWYCO49XRfGkDAob4T2
-         wzuijinnFgFLjuy1ah+ZSKgNnJ5sIrzAFh6HL3tMx8e2mNIEUhD/TOZr4H3ukw3a9c2K
-         PcWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=6sV4IF1wLSw//pDLHYCBfBqE1hSLB1xpdVDSwgnvdOw=;
-        b=kf7RtqtwZfMsLMjXDdp4oOlcLirikW/OixndotgMenIcnpnPne1SCKzACvqr3XQfUm
-         Pgfag1oqoN1BZQPlD1o6aI7a/cgzayC0BWA7eEElq2z5DTO/lOgb5jOqVDHUdbhkpYF5
-         fxdCxKC8vYWziE/ZSUysG3ZFs55T9PweQCrB1Z2GUfS3S2lB04Bpa4GHbWiHlfD/t9ri
-         EgHz+FmRA4gzFwr2a4Jw9B5U7cbUme4rfqaggObtgb7xUDwdveHV+utH8kFztONf1/Cg
-         MuAvYzhwCc128FGdmV6rhnughcd2By4GZ3VNUHbteP06g9aDju0Ftxwn/CeS3ODLwAYR
-         5BQw==
-X-Gm-Message-State: ACrzQf2f8Pn8XKaz7qR0RcD0Gpb/Z+bDNIuqllb0VsQ72MS+MviN52gk
-        K+eY57FjntQSlVVFymJ9iBKTiw==
-X-Google-Smtp-Source: AMsMyM5RP4LC33bEHoOHdwjemykgfCkChqb/iZSJnmjLuKFWJeoJVCtXEqfzWpFXRLjB/dE9bynq8Q==
-X-Received: by 2002:a5d:4444:0:b0:22a:2a64:a0fd with SMTP id x4-20020a5d4444000000b0022a2a64a0fdmr1555646wrr.293.1663842055575;
-        Thu, 22 Sep 2022 03:20:55 -0700 (PDT)
-Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
-        by smtp.gmail.com with ESMTPSA id g17-20020a5d4891000000b0022a2bacabbasm4913089wrq.31.2022.09.22.03.20.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Sep 2022 03:20:55 -0700 (PDT)
-Date:   Thu, 22 Sep 2022 11:20:53 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Caleb Connolly <caleb.connolly@linaro.org>
-Cc:     Luca Weiss <luca.weiss@fairphone.com>,
-        linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-kernel@vger.kernel.org, Lee Jones <lee@kernel.org>
-Subject: Re: [PATCH v3 1/2] mfd: qcom-spmi-pmic: convert hex numbers lowercase
-Message-ID: <Yyw3Ba08SWNVTIfI@google.com>
-References: <20220915113523.44074-1-luca.weiss@fairphone.com>
- <YylwxQSulh7C48T7@google.com>
- <CN1UV8GZPKW8.3KT1X7WYEM4K5@otso>
- <b7551b18-887a-c895-b347-776bb537ae9f@linaro.org>
+        Sat, 24 Sep 2022 10:23:09 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4941CA99E8;
+        Sat, 24 Sep 2022 07:23:07 -0700 (PDT)
+Received: from g550jk.fritz.box (212095005231.public.telering.at [212.95.5.231])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 0F805C0C33;
+        Sat, 24 Sep 2022 14:22:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1664029354; bh=EGEQk47etgfby3MwL6kaa8c9zClOyk0rfXJQBVnRfuY=;
+        h=From:To:Cc:Subject:Date;
+        b=VZ5wqPcZE4+SfBOG0OM16NIYFKR4E/+cW4l/zf9vcJqGOQ731chJhl6+Im1rMNAKy
+         /vWt+hdLvUpHgRfIO3cpA2ZTppnP/N/xNO7aPqXwNxuoAf064x5KRctamZ2E8mS76I
+         UHuXhbo/9kKMOU7YaZWfxbfhHC3/Ytou+Vy8Gg8o=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-bluetooth@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3] dt-bindings: bluetooth: broadcom: add BCM43430A0 & BCM43430A1
+Date:   Sat, 24 Sep 2022 16:21:55 +0200
+Message-Id: <20220924142154.14217-1-luca@z3ntu.xyz>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b7551b18-887a-c895-b347-776bb537ae9f@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 21 Sep 2022, Caleb Connolly wrote:
+Document the compatible string for BCM43430A0 bluetooth used in lg-lenok
+and BCM43430A1 used in asus-sparrow.
 
-> 
-> 
-> On 21/09/2022 07:12, Luca Weiss wrote:
-> > Hi Lee, hi Caleb
-> > 
-> > On Tue Sep 20, 2022 at 9:50 AM CEST, Lee Jones wrote:
-> > > On Thu, 15 Sep 2022, Luca Weiss wrote:
-> > > 
-> > > > There are some IDs that are written in uppercase. For consistency
-> > > > convert them to lowercase.
-> > > > 
-> > > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > > > ---
-> > > > Changes since v2:
-> > > > * Split out to separate patch
-> > > > 
-> > > >   include/soc/qcom/qcom-spmi-pmic.h | 6 +++---
-> > > >   1 file changed, 3 insertions(+), 3 deletions(-)
-> > > 
-> > > These aren't MFD patches.  Please reword the subject.
-> > 
-> > Do you have any suggestion what subject to use then? The most I can
-> > think of is "soc: qcom: " which is sometimes used for other files in
-> > this include directory.
-> > I've used the current subject because the previous two patches touching
-> > this file had this subject also.
-> 
-> This file just contains platform data which used to be in the qcom SPMI
-> PMIC driver. In hindsight, maybe it would have been better suited in
-> include/linux/mfd but I don't think it matters too much. I guess it makes
-> sense to follow convention for the directory and treat it like the other
-> platform headers, maybe something like:
-> 
-> soc: qcom: spmi-pmic: convert hex numbers to lowercase
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Rob Herring <robh@kernel.org>
+---
+Changes in v3:
+* pick up tags
+* resend
 
-Agree.
+ Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml b/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml
+index 445b2a553625..d8d56076d656 100644
+--- a/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml
++++ b/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml
+@@ -19,6 +19,8 @@ properties:
+       - brcm,bcm4329-bt
+       - brcm,bcm4330-bt
+       - brcm,bcm4334-bt
++      - brcm,bcm43430a0-bt
++      - brcm,bcm43430a1-bt
+       - brcm,bcm43438-bt
+       - brcm,bcm4345c5
+       - brcm,bcm43540-bt
 -- 
-DEPRECATED: Please use lee@kernel.org
+2.37.3
+
