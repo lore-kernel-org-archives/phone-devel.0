@@ -2,182 +2,121 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E44CC07E9D
-	for <phone-devel@archiver.kernel.org>; Sat, 24 Sep 2022 15:46:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85E16C07E9D
+	for <phone-devel@archiver.kernel.org>; Sat, 24 Sep 2022 16:39:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233543AbiIXPq1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 24 Sep 2022 11:46:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44236 "EHLO
+        id S233562AbiIXQjE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 24 Sep 2022 12:39:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229946AbiIXPq0 (ORCPT
+        with ESMTP id S233405AbiIXQjE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 24 Sep 2022 11:46:26 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A35FB33378;
-        Sat, 24 Sep 2022 08:46:25 -0700 (PDT)
-Received: from g550jk.fritz.box (212095005231.public.telering.at [212.95.5.231])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 85591C5454;
-        Sat, 24 Sep 2022 15:46:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1664034384; bh=2qVah0NTVzbzDmE2/bG0X7crY2tbomDl2Bsriq7bfVM=;
-        h=From:To:Cc:Subject:Date;
-        b=ZCmY2e/dvACM4fMeFCaj/E8z8TMVUQFogGUwlMrcGwz5EOznVbct/ROW5QOe01KTc
-         iGBVBXGp06ZruhwGCOHYMFKBcvCEFZz1peZUjBK2kxNkqr2FnqbnKrjI4D8AiYGQdP
-         pYT4e/walVnXFzEB6r9mf6m8Dv/J1l0qYijhz/Ys=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: qcom: add 'chassis-type' property
-Date:   Sat, 24 Sep 2022 17:44:22 +0200
-Message-Id: <20220924154422.9896-1-luca@z3ntu.xyz>
-X-Mailer: git-send-email 2.37.3
+        Sat, 24 Sep 2022 12:39:04 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BE227CB48
+        for <phone-devel@vger.kernel.org>; Sat, 24 Sep 2022 09:39:02 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id i26so4687018lfp.11
+        for <phone-devel@vger.kernel.org>; Sat, 24 Sep 2022 09:39:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=UN7dIy5bKqPGCHAvZ6RCx2KKfneFm8jKTHL6ecufoDA=;
+        b=mVderDBC0HH08MVkJlNWWaMuX9Uy+dZ09IDw5z/QycijWXh4HJdYAakyKlkZVqZltK
+         ib+yGSQXrCRHVF24k8Z8r1/6/BwogwRVz0y3Nn6aNO/suC0R+PpAY/bw2edm1EHOd4EX
+         fDakEc4Mjb9wd4T3ew3OebRtfB96/0TfQUeilsx+P5AF0Re0F6i3vYBR2Tw8EYnjNnNL
+         WDq3Bzzr6oioNdAe2h3GzgIai4NZ8W0Hogj/uj1iM4zIfraw6GrHxANDdXJq6evs1d5k
+         ZIr6dHheJABrNzwiIyUjmzkh1GsbnzBf1M4PTh0wiveN8bZRoLHYS98q2uUgnKksh2iw
+         WiAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=UN7dIy5bKqPGCHAvZ6RCx2KKfneFm8jKTHL6ecufoDA=;
+        b=baJhK9n7xS28ZYQdjc3XDhyb5ROd+ieRcmhHTfaA+5EtrWJP3h2pZ88SNu2ZOKqHsL
+         OY07o44F2zRl0sLiC2v2iSJRdvVaXtR0bpUjHgy5YXShKE/HfbTuJaoWJIQ2UoGs7nG3
+         kHTTtWljOXW0AJlGsLJ9ig7Da2rmXRt7tt8ghuMoS/v6j0yMUFtSI3XnrtLllsRTN9fz
+         FV1a+vOauMC48tqlodtDbZeead2OWo1p/Wl5uerv2gNprCW3z7j27cvV9Q5SFHkaIMrk
+         nDPGJwkcO96F67RCB0amckhSyYA2Dui56PiCnwLGIasqotvQIqlMMrcAB4LbW3ImfZIP
+         RmaQ==
+X-Gm-Message-State: ACrzQf3JEgeheXNAOG13ZXANUCMK3Ud766CNVTMsZmqrTyHURvmpouys
+        R1UA+dh4gXao/7Gq2GF4TursWw==
+X-Google-Smtp-Source: AMsMyM4LUkwxRtPvLlV/99Vshl39R68/lx1p+A7GnsUxLlQYo5FCnzw6uQgxz4o7vtVVbIQ7nmPieg==
+X-Received: by 2002:a05:6512:308f:b0:49a:5a59:aa25 with SMTP id z15-20020a056512308f00b0049a5a59aa25mr5220074lfd.44.1664037540847;
+        Sat, 24 Sep 2022 09:39:00 -0700 (PDT)
+Received: from [192.168.1.211] ([37.153.55.125])
+        by smtp.gmail.com with ESMTPSA id j12-20020a056512344c00b00494a1b242dasm1946332lfr.14.2022.09.24.09.38.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 24 Sep 2022 09:39:00 -0700 (PDT)
+Message-ID: <9ef673f2-4296-8761-4d7a-dca323ba272e@linaro.org>
+Date:   Sat, 24 Sep 2022 19:38:58 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH] thermal: qcom: tsens-v0_1: Fix MSM8939 fourth sensor
+ hw_id
+Content-Language: en-GB
+To:     Vincent Knecht <vincent.knecht@mailoo.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Shawn Guo <shawn.guo@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     bryan.odonoghue@linaro.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org
+References: <20220811105014.7194-1-vincent.knecht@mailoo.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20220811105014.7194-1-vincent.knecht@mailoo.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the chassis-type property to arm32 Qualcomm watches, phones and
-tablets.
+On 11/08/2022 13:50, Vincent Knecht wrote:
+> Reading temperature from this sensor fails with 'Invalid argument'.
+> 
+> Looking at old vendor dts [1], its hw_id should be 3 instead of 4.
+> Change this hw_id accordingly.
+> 
+> [1] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/master/arch/arm/boot/dts/qcom/msm8939-common.dtsi#L511
+> 
+> Fixes: 332bc8ebab2c ("thermal: qcom: tsens-v0_1: Add support for MSM8939")
+> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts                      | 1 +
- arch/arm/boot/dts/qcom-apq8064-asus-nexus7-flo.dts               | 1 +
- arch/arm/boot/dts/qcom-apq8064-sony-xperia-lagan-yuga.dts        | 1 +
- arch/arm/boot/dts/qcom-msm8226-samsung-s3ve3g.dts                | 1 +
- arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts         | 1 +
- arch/arm/boot/dts/qcom-msm8974-sony-xperia-rhine-amami.dts       | 1 +
- arch/arm/boot/dts/qcom-msm8974-sony-xperia-rhine-honami.dts      | 1 +
- arch/arm/boot/dts/qcom-msm8974pro-fairphone-fp2.dts              | 1 +
- arch/arm/boot/dts/qcom-msm8974pro-samsung-klte.dts               | 1 +
- arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts | 1 +
- 10 files changed, 10 insertions(+)
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-diff --git a/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts b/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
-index 193569f0ca5f..bda9f6d84510 100644
---- a/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
-+++ b/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
-@@ -13,6 +13,7 @@
- / {
- 	model = "LG G Watch R";
- 	compatible = "lg,lenok", "qcom,apq8026";
-+	chassis-type = "watch";
- 	qcom,board-id = <132 0x0a>;
- 	qcom,msm-id = <199 0x20000>;
- 
-diff --git a/arch/arm/boot/dts/qcom-apq8064-asus-nexus7-flo.dts b/arch/arm/boot/dts/qcom-apq8064-asus-nexus7-flo.dts
-index fee278e32cb6..94fbc94dc7c8 100644
---- a/arch/arm/boot/dts/qcom-apq8064-asus-nexus7-flo.dts
-+++ b/arch/arm/boot/dts/qcom-apq8064-asus-nexus7-flo.dts
-@@ -6,6 +6,7 @@
- / {
- 	model = "Asus Nexus7(flo)";
- 	compatible = "asus,nexus7-flo", "qcom,apq8064";
-+	chassis-type = "tablet";
- 
- 	aliases {
- 		serial0 = &gsbi7_serial;
-diff --git a/arch/arm/boot/dts/qcom-apq8064-sony-xperia-lagan-yuga.dts b/arch/arm/boot/dts/qcom-apq8064-sony-xperia-lagan-yuga.dts
-index c07c5474750d..dcf735c6a842 100644
---- a/arch/arm/boot/dts/qcom-apq8064-sony-xperia-lagan-yuga.dts
-+++ b/arch/arm/boot/dts/qcom-apq8064-sony-xperia-lagan-yuga.dts
-@@ -8,6 +8,7 @@
- / {
- 	model = "Sony Xperia Z";
- 	compatible = "sony,xperia-yuga", "qcom,apq8064";
-+	chassis-type = "handset";
- 
- 	aliases {
- 		serial0 = &gsbi5_serial;
-diff --git a/arch/arm/boot/dts/qcom-msm8226-samsung-s3ve3g.dts b/arch/arm/boot/dts/qcom-msm8226-samsung-s3ve3g.dts
-index 290e1df631f0..6a082ad4418a 100644
---- a/arch/arm/boot/dts/qcom-msm8226-samsung-s3ve3g.dts
-+++ b/arch/arm/boot/dts/qcom-msm8226-samsung-s3ve3g.dts
-@@ -8,6 +8,7 @@
- / {
- 	model = "Samsung Galaxy S III Neo";
- 	compatible = "samsung,s3ve3g", "qcom,msm8226";
-+	chassis-type = "handset";
- 
- 	aliases {
- 		serial0 = &blsp1_uart3;
-diff --git a/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts b/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-index 6daceaa87802..fdbcf84f173c 100644
---- a/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-+++ b/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-@@ -9,6 +9,7 @@
- / {
- 	model = "LGE MSM 8974 HAMMERHEAD";
- 	compatible = "lge,hammerhead", "qcom,msm8974";
-+	chassis-type = "handset";
- 
- 	aliases {
- 		serial0 = &blsp1_uart1;
-diff --git a/arch/arm/boot/dts/qcom-msm8974-sony-xperia-rhine-amami.dts b/arch/arm/boot/dts/qcom-msm8974-sony-xperia-rhine-amami.dts
-index 68d5626bf491..9f2ab5c122d0 100644
---- a/arch/arm/boot/dts/qcom-msm8974-sony-xperia-rhine-amami.dts
-+++ b/arch/arm/boot/dts/qcom-msm8974-sony-xperia-rhine-amami.dts
-@@ -4,6 +4,7 @@
- / {
- 	model = "Sony Xperia Z1 Compact";
- 	compatible = "sony,xperia-amami", "qcom,msm8974";
-+	chassis-type = "handset";
- };
- 
- &smbb {
-diff --git a/arch/arm/boot/dts/qcom-msm8974-sony-xperia-rhine-honami.dts b/arch/arm/boot/dts/qcom-msm8974-sony-xperia-rhine-honami.dts
-index ea6a941d8f8c..9028f17e5c4a 100644
---- a/arch/arm/boot/dts/qcom-msm8974-sony-xperia-rhine-honami.dts
-+++ b/arch/arm/boot/dts/qcom-msm8974-sony-xperia-rhine-honami.dts
-@@ -4,4 +4,5 @@
- / {
- 	model = "Sony Xperia Z1";
- 	compatible = "sony,xperia-honami", "qcom,msm8974";
-+	chassis-type = "handset";
- };
-diff --git a/arch/arm/boot/dts/qcom-msm8974pro-fairphone-fp2.dts b/arch/arm/boot/dts/qcom-msm8974pro-fairphone-fp2.dts
-index ff6e0066768b..c4680358aaa3 100644
---- a/arch/arm/boot/dts/qcom-msm8974pro-fairphone-fp2.dts
-+++ b/arch/arm/boot/dts/qcom-msm8974pro-fairphone-fp2.dts
-@@ -9,6 +9,7 @@
- / {
- 	model = "Fairphone 2";
- 	compatible = "fairphone,fp2", "qcom,msm8974";
-+	chassis-type = "handset";
- 
- 	aliases {
- 		mmc0 = &sdhc_1;
-diff --git a/arch/arm/boot/dts/qcom-msm8974pro-samsung-klte.dts b/arch/arm/boot/dts/qcom-msm8974pro-samsung-klte.dts
-index 983e10c3d863..08c43bf86b92 100644
---- a/arch/arm/boot/dts/qcom-msm8974pro-samsung-klte.dts
-+++ b/arch/arm/boot/dts/qcom-msm8974pro-samsung-klte.dts
-@@ -8,6 +8,7 @@
- / {
- 	model = "Samsung Galaxy S5";
- 	compatible = "samsung,klte", "qcom,msm8974";
-+	chassis-type = "handset";
- 
- 	aliases {
- 		serial0 = &blsp1_uart1;
-diff --git a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-index 3f45f5c5d37b..85348562e861 100644
---- a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-+++ b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-@@ -9,6 +9,7 @@
- / {
- 	model = "Sony Xperia Z2 Tablet";
- 	compatible = "sony,xperia-castor", "qcom,msm8974";
-+	chassis-type = "tablet";
- 
- 	aliases {
- 		serial0 = &blsp1_uart2;
+Daniel, gracious ping for getting this patch into 6.1.
+
+> ---
+> Fixes reading GPU temperature on msm8939 idol3 with current WIP dtsi
+> ---
+>   drivers/thermal/qcom/tsens-v0_1.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/thermal/qcom/tsens-v0_1.c b/drivers/thermal/qcom/tsens-v0_1.c
+> index f136cb350238..327f37202c69 100644
+> --- a/drivers/thermal/qcom/tsens-v0_1.c
+> +++ b/drivers/thermal/qcom/tsens-v0_1.c
+> @@ -604,7 +604,7 @@ static const struct tsens_ops ops_8939 = {
+>   struct tsens_plat_data data_8939 = {
+>   	.num_sensors	= 10,
+>   	.ops		= &ops_8939,
+> -	.hw_ids		= (unsigned int []){ 0, 1, 2, 4, 5, 6, 7, 8, 9, 10 },
+> +	.hw_ids		= (unsigned int []){ 0, 1, 2, 3, 5, 6, 7, 8, 9, 10 },
+>   
+>   	.feat		= &tsens_v0_1_feat,
+>   	.fields	= tsens_v0_1_regfields,
+
 -- 
-2.37.3
+With best wishes
+Dmitry
 
