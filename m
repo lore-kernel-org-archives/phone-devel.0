@@ -2,81 +2,82 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B9577C54EE9
-	for <phone-devel@archiver.kernel.org>; Sun, 25 Sep 2022 06:27:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC6C4C04A95
+	for <phone-devel@archiver.kernel.org>; Sun, 25 Sep 2022 16:13:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbiIYG1J (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 25 Sep 2022 02:27:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34026 "EHLO
+        id S231142AbiIYQNn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 25 Sep 2022 12:13:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbiIYG1H (ORCPT
+        with ESMTP id S232204AbiIYQNk (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 25 Sep 2022 02:27:07 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00A953E770;
-        Sat, 24 Sep 2022 23:27:06 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id v186so3817348pfv.11;
-        Sat, 24 Sep 2022 23:27:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=figvH0TFF8KUninkiSzsZB9ZDnznmKVoOGYr8J4oiTw=;
-        b=EPQ46ZPafKCrXLBqT0pKN5ucNwF6hGnMi3WCJ9R5V1/B0KMsi+RsC6cIOREklJcrKe
-         UCh8pcyhZFFrTVhZMfptRyxFCg6onXVq/yiC0X4nf28LryL9hjyGjY8/nUeOG1fVLvjn
-         5ohmhouNB07lXF7NFUuRSxfSXe/s0BdzNsGf3CCzqAVNJQkj7214v/TKGwRAxpbyevoT
-         T1ZeVRYs6QGo1LCw4knop2UhXVI1boXzHmIuesdH32z1Aln3RlypRKs7pVZIHPF86CKE
-         sOLwl7WHgyyYoUsec4oxMMSS7Sx+xDSRbzOFQUbIvEZg2KkZxS/FYKpy0lTbT7PxLpPI
-         M05A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=figvH0TFF8KUninkiSzsZB9ZDnznmKVoOGYr8J4oiTw=;
-        b=1QApttYwJlyFhj4ukFywsQpMC4kwXFfTadqd9SoPpDXq2KUlIthdHBdhQ6a8Bwkbsw
-         dtq1Z+30h/BJpNPLPQktkEqFK9PNwmLbWk4vxkp57Sr3lt3gSNOq125RqiXMTFMJS1dg
-         FTPBTXmFCqNpUHRdGiV38Q+uSLWxv51ZQPwpIim0a38W6Ng1MDJnM44u1HR34S86oXKq
-         xCyW1t9qg+Q/vgufaUX/108VNRnHyxw1uktu8YuWxgPX6iILjwwKW96c+dLl1MhKO68z
-         tf03cEOowRBBBoWE0MArehv7De4BFmPjR6L4l42AZX/kKG/an0klbEnCt9QS62/zZi9b
-         TYww==
-X-Gm-Message-State: ACrzQf28MLkvmjokffZD3I5ArvCh10r7vato+czbtRwTnMoCfIazg1ht
-        LUaw4xSwIINIJrlUGACHUt0=
-X-Google-Smtp-Source: AMsMyM6dR0K6JP5HP/gIn1nFWPsx5ZuJL5pSPAUigvAlQE+1kTa+/BtAxVe3/tIvUkpfa9IfAUbVEQ==
-X-Received: by 2002:a05:6a00:e1b:b0:537:7c74:c405 with SMTP id bq27-20020a056a000e1b00b005377c74c405mr17188516pfb.43.1664087226221;
-        Sat, 24 Sep 2022 23:27:06 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:37c:3916:9a45:14cc])
-        by smtp.gmail.com with ESMTPSA id bb11-20020a170902bc8b00b0016c57657977sm8725482plb.41.2022.09.24.23.27.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Sep 2022 23:27:05 -0700 (PDT)
-Date:   Sat, 24 Sep 2022 23:27:02 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+        Sun, 25 Sep 2022 12:13:40 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B6192C66A;
+        Sun, 25 Sep 2022 09:13:36 -0700 (PDT)
+Received: from g550jk.. (2a02-8388-6582-fe80-0000-0000-0000-0006.cable.dynamic.v6.surfer.at [IPv6:2a02:8388:6582:fe80::6])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 3A6F7C70AF;
+        Sun, 25 Sep 2022 16:13:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1664122413; bh=erdiCxZ8T7FcIaqDJLtAw5Fr6IV0GHUaZke+uh6Zg9w=;
+        h=From:To:Cc:Subject:Date;
+        b=umPK3Y7b90BTp7DuHokZemgcqwyA+SZw18HoeXmQelT/Khj/bOJc1VXvwzJ4X69kg
+         oCtJ1nHp2TowLTCNjl/s3qZSvMhvTvU7+SLkVDqCs3uhsCJudaj20He2uDVx2qN5eI
+         1NxIeUtHdaDBC3jhLHYxcMBX2wehV7TF0bwiK3MU=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: input: qcom,pm8xxx-vib: convert to yaml
-Message-ID: <Yy/0tuXJs+c40akh@google.com>
-References: <20220917155705.2284-1-luca@z3ntu.xyz>
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] ARM: dts: qcom: fix msm8974 tsens compatible
+Date:   Sun, 25 Sep 2022 18:13:16 +0200
+Message-Id: <20220925161317.76356-1-luca@z3ntu.xyz>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220917155705.2284-1-luca@z3ntu.xyz>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Sep 17, 2022 at 05:57:00PM +0200, Luca Weiss wrote:
-> Convert the PM8xxx PMIC Vibrator bindings to dt-schema.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Bindings mandate the use of the fallback compatible qcom,tsens-v0_1 for
+msm8974. Add it to fix the warning.
 
-Applied, thank you.
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ arch/arm/boot/dts/qcom-apq8084.dtsi | 2 +-
+ arch/arm/boot/dts/qcom-msm8974.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/arch/arm/boot/dts/qcom-apq8084.dtsi b/arch/arm/boot/dts/qcom-apq8084.dtsi
+index f2fb7c975af8..defc0602d750 100644
+--- a/arch/arm/boot/dts/qcom-apq8084.dtsi
++++ b/arch/arm/boot/dts/qcom-apq8084.dtsi
+@@ -258,7 +258,7 @@ tsens_backup: backup@440 {
+ 		};
+ 
+ 		tsens: thermal-sensor@fc4a8000 {
+-			compatible = "qcom,msm8974-tsens";
++			compatible = "qcom,msm8974-tsens", "qcom,tsens-v0_1";
+ 			reg = <0xfc4a9000 0x1000>, /* TM */
+ 			      <0xfc4a8000 0x1000>; /* SROT */
+ 			nvmem-cells = <&tsens_calib>, <&tsens_backup>;
+diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
+index 7a9be0acf3f5..cf8af99a4864 100644
+--- a/arch/arm/boot/dts/qcom-msm8974.dtsi
++++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
+@@ -1116,7 +1116,7 @@ cnoc: interconnect@fc480000 {
+ 		};
+ 
+ 		tsens: thermal-sensor@fc4a9000 {
+-			compatible = "qcom,msm8974-tsens";
++			compatible = "qcom,msm8974-tsens", "qcom,tsens-v0_1";
+ 			reg = <0xfc4a9000 0x1000>, /* TM */
+ 			      <0xfc4a8000 0x1000>; /* SROT */
+ 			nvmem-cells = <&tsens_calib>, <&tsens_backup>;
 -- 
-Dmitry
+2.37.3
+
