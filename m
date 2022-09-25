@@ -2,135 +2,81 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E836DC07E9D
-	for <phone-devel@archiver.kernel.org>; Sat, 24 Sep 2022 22:15:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9577C54EE9
+	for <phone-devel@archiver.kernel.org>; Sun, 25 Sep 2022 06:27:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229573AbiIXWPe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 24 Sep 2022 18:15:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38710 "EHLO
+        id S229621AbiIYG1J (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 25 Sep 2022 02:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234019AbiIXWPd (ORCPT
+        with ESMTP id S229515AbiIYG1H (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 24 Sep 2022 18:15:33 -0400
-Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B5F6371B4
-        for <phone-devel@vger.kernel.org>; Sat, 24 Sep 2022 15:15:32 -0700 (PDT)
-Date:   Sat, 24 Sep 2022 22:15:23 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1664057730; x=1664316930;
-        bh=vibURvDK8C9+axigLopCKC5jQEsrmsW5ulpcMBkfZGs=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID;
-        b=ogp8N9s8hO2Z1JgKo/5W0A0nXSZWm841x2LEGIK5ontx8mZj3iHofDM2FfcW0xXCA
-         hQlBelr+s6pZsD3i5PbLgcFYDIfSMVJUjjhcYsZDs8mFyqvz7T2CIcpgLMRT794Nxu
-         LTvjLCfBv2fMy9pyBBhE0KsVePuGee7jWTQvey28=
-To:     Nia Espera <a5b6@riseup.net>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 2/2] drivers: gpu: drm: remove support for sofef00 driver on s6e3fc2x01 panel
-Message-ID: <f8a2b974-7f95-c158-5d52-3a9582fcd28c@connolly.tech>
-In-Reply-To: <20220924203616.63325-3-a5b6@riseup.net>
-References: <20220924203616.63325-1-a5b6@riseup.net> <20220924203616.63325-3-a5b6@riseup.net>
-Feedback-ID: 10753939:user:proton
+        Sun, 25 Sep 2022 02:27:07 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00A953E770;
+        Sat, 24 Sep 2022 23:27:06 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id v186so3817348pfv.11;
+        Sat, 24 Sep 2022 23:27:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=figvH0TFF8KUninkiSzsZB9ZDnznmKVoOGYr8J4oiTw=;
+        b=EPQ46ZPafKCrXLBqT0pKN5ucNwF6hGnMi3WCJ9R5V1/B0KMsi+RsC6cIOREklJcrKe
+         UCh8pcyhZFFrTVhZMfptRyxFCg6onXVq/yiC0X4nf28LryL9hjyGjY8/nUeOG1fVLvjn
+         5ohmhouNB07lXF7NFUuRSxfSXe/s0BdzNsGf3CCzqAVNJQkj7214v/TKGwRAxpbyevoT
+         T1ZeVRYs6QGo1LCw4knop2UhXVI1boXzHmIuesdH32z1Aln3RlypRKs7pVZIHPF86CKE
+         sOLwl7WHgyyYoUsec4oxMMSS7Sx+xDSRbzOFQUbIvEZg2KkZxS/FYKpy0lTbT7PxLpPI
+         M05A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=figvH0TFF8KUninkiSzsZB9ZDnznmKVoOGYr8J4oiTw=;
+        b=1QApttYwJlyFhj4ukFywsQpMC4kwXFfTadqd9SoPpDXq2KUlIthdHBdhQ6a8Bwkbsw
+         dtq1Z+30h/BJpNPLPQktkEqFK9PNwmLbWk4vxkp57Sr3lt3gSNOq125RqiXMTFMJS1dg
+         FTPBTXmFCqNpUHRdGiV38Q+uSLWxv51ZQPwpIim0a38W6Ng1MDJnM44u1HR34S86oXKq
+         xCyW1t9qg+Q/vgufaUX/108VNRnHyxw1uktu8YuWxgPX6iILjwwKW96c+dLl1MhKO68z
+         tf03cEOowRBBBoWE0MArehv7De4BFmPjR6L4l42AZX/kKG/an0klbEnCt9QS62/zZi9b
+         TYww==
+X-Gm-Message-State: ACrzQf28MLkvmjokffZD3I5ArvCh10r7vato+czbtRwTnMoCfIazg1ht
+        LUaw4xSwIINIJrlUGACHUt0=
+X-Google-Smtp-Source: AMsMyM6dR0K6JP5HP/gIn1nFWPsx5ZuJL5pSPAUigvAlQE+1kTa+/BtAxVe3/tIvUkpfa9IfAUbVEQ==
+X-Received: by 2002:a05:6a00:e1b:b0:537:7c74:c405 with SMTP id bq27-20020a056a000e1b00b005377c74c405mr17188516pfb.43.1664087226221;
+        Sat, 24 Sep 2022 23:27:06 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:37c:3916:9a45:14cc])
+        by smtp.gmail.com with ESMTPSA id bb11-20020a170902bc8b00b0016c57657977sm8725482plb.41.2022.09.24.23.27.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Sep 2022 23:27:05 -0700 (PDT)
+Date:   Sat, 24 Sep 2022 23:27:02 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: input: qcom,pm8xxx-vib: convert to yaml
+Message-ID: <Yy/0tuXJs+c40akh@google.com>
+References: <20220917155705.2284-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220917155705.2284-1-luca@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Sat, Sep 17, 2022 at 05:57:00PM +0200, Luca Weiss wrote:
+> Convert the PM8xxx PMIC Vibrator bindings to dt-schema.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
+Applied, thank you.
 
-On 24/09/2022 21:36, Nia Espera wrote:
-> Removes functionality from sofef00 panel driver which allowed it to
-> drive the s6e3fc2x01 panel
->
-> Signed-off-by: Nia Espera <a5b6@riseup.net>
-
-Reviewed-by: Caleb Connolly <caleb@connolly.tech>
-> ---
->   drivers/gpu/drm/panel/Kconfig                 |  6 +++---
->   drivers/gpu/drm/panel/panel-samsung-sofef00.c | 18 ------------------
->   2 files changed, 3 insertions(+), 21 deletions(-)
->
-> diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfi=
-g
-> index ee62d5d8828a..62b9cb6acd05 100644
-> --- a/drivers/gpu/drm/panel/Kconfig
-> +++ b/drivers/gpu/drm/panel/Kconfig
-> @@ -547,16 +547,16 @@ config DRM_PANEL_SAMSUNG_S6E8AA0
->   =09select VIDEOMODE_HELPERS
->
->   config DRM_PANEL_SAMSUNG_SOFEF00
-> -=09tristate "Samsung sofef00/s6e3fc2x01 OnePlus 6/6T DSI cmd mode panels=
-"
-> +=09tristate "Samsung sofef00 OnePlus 6 DSI cmd mode panel"
->   =09depends on OF
->   =09depends on DRM_MIPI_DSI
->   =09depends on BACKLIGHT_CLASS_DEVICE
->   =09select VIDEOMODE_HELPERS
->   =09help
->   =09  Say Y or M here if you want to enable support for the Samsung AMOL=
-ED
-> -=09  command mode panels found in the OnePlus 6/6T smartphones.
-> +=09  command mode panel found in the OnePlus 6 smartphone.
->
-> -=09  The panels are 2280x1080@60Hz and 2340x1080@60Hz respectively
-> +=09  The panel is 2280x1080@60Hz
->
->   config DRM_PANEL_SAMSUNG_S6E3FC2X01
->   =09tristate "Samsung s6e3fc2x01 OnePlus 6T DSI cmd mode panel"
-> diff --git a/drivers/gpu/drm/panel/panel-samsung-sofef00.c b/drivers/gpu/=
-drm/panel/panel-samsung-sofef00.c
-> index bd02af81a4fe..68e58b9b8c5c 100644
-> --- a/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-> +++ b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-> @@ -181,20 +181,6 @@ static const struct drm_display_mode enchilada_panel=
-_mode =3D {
->   =09.height_mm =3D 145,
->   };
->
-> -static const struct drm_display_mode fajita_panel_mode =3D {
-> -=09.clock =3D (1080 + 72 + 16 + 36) * (2340 + 32 + 4 + 18) * 60 / 1000,
-> -=09.hdisplay =3D 1080,
-> -=09.hsync_start =3D 1080 + 72,
-> -=09.hsync_end =3D 1080 + 72 + 16,
-> -=09.htotal =3D 1080 + 72 + 16 + 36,
-> -=09.vdisplay =3D 2340,
-> -=09.vsync_start =3D 2340 + 32,
-> -=09.vsync_end =3D 2340 + 32 + 4,
-> -=09.vtotal =3D 2340 + 32 + 4 + 18,
-> -=09.width_mm =3D 68,
-> -=09.height_mm =3D 145,
-> -};
-> -
->   static int sofef00_panel_get_modes(struct drm_panel *panel, struct drm_=
-connector *connector)
->   {
->   =09struct drm_display_mode *mode;
-> @@ -327,10 +313,6 @@ static const struct of_device_id sofef00_panel_of_ma=
-tch[] =3D {
->   =09=09.compatible =3D "samsung,sofef00",
->   =09=09.data =3D &enchilada_panel_mode,
->   =09},
-> -=09{ // OnePlus 6T / fajita
-> -=09=09.compatible =3D "samsung,s6e3fc2x01",
-> -=09=09.data =3D &fajita_panel_mode,
-> -=09},
->   =09{ /* sentinel */ }
->   };
->   MODULE_DEVICE_TABLE(of, sofef00_panel_of_match);
-> --
-> 2.37.3
->
-
---
-Kind Regards,
-Caleb
-
+-- 
+Dmitry
