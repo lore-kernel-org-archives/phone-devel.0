@@ -2,28 +2,28 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 95223C54EE9
-	for <phone-devel@archiver.kernel.org>; Sun, 25 Sep 2022 19:07:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64CB4C04A95
+	for <phone-devel@archiver.kernel.org>; Sun, 25 Sep 2022 20:21:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232965AbiIYTHH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 25 Sep 2022 15:07:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58874 "EHLO
+        id S231841AbiIYUV4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 25 Sep 2022 16:21:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231893AbiIYTHH (ORCPT
+        with ESMTP id S230173AbiIYUVz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 25 Sep 2022 15:07:07 -0400
+        Sun, 25 Sep 2022 16:21:55 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33FEF2980F;
-        Sun, 25 Sep 2022 12:07:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6F7F2612B;
+        Sun, 25 Sep 2022 13:21:54 -0700 (PDT)
 Received: from g550jk.. (2a02-8388-6582-fe80-0000-0000-0000-0006.cable.dynamic.v6.surfer.at [IPv6:2a02:8388:6582:fe80::6])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id D3F42C7994;
-        Sun, 25 Sep 2022 19:06:31 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 28B46C78D0;
+        Sun, 25 Sep 2022 20:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1664132792; bh=uhvXYd6jF1/10Qg7Vcx2EOxbSxHTNsKux15fh4UZwEg=;
+        t=1664137312; bh=dBhg2i9VbI4tROrm8sG5HnARD1c5C/VJOwF6+8C7fTI=;
         h=From:To:Cc:Subject:Date;
-        b=i4YnorHCxDddONfGTSHlXYebtInD5RZm5wQT5H8iPBoJVO1+JqSiQMDqxZ+47WGzo
-         4diWbfT1SLMdmj6wLNgoIyu6GtY0gPznGzP9NPyGptLiIFjhfFZLgKLjxOQu8JtFQ+
-         DIJIOCG5A4+TQRAljY+sXsWWIsIFf6A4kEkI0Y+8=
+        b=duDgC2cz8jcVEo1s4tDc1Ni+jB+An74D0jqAovmJiOEN7uzXENG1HrmXHcpbduTDS
+         JagqAMh1oaKh3PJybvGTa/MQKD8WtfIY46xgn/sm1/VTfGDGvJeEwXsGeEezN4u/0S
+         Prc0RGBGixWwPWyEHYmgBk8ZYmrb6d2SAk89zgHw=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -33,9 +33,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: qcom: pmx65: use node name "gpio" for spmi-gpio
-Date:   Sun, 25 Sep 2022 21:06:21 +0200
-Message-Id: <20220925190622.111505-1-luca@z3ntu.xyz>
+Subject: [PATCH] ARM: dts: qcom-pma8084: fix vadc channel node names
+Date:   Sun, 25 Sep 2022 22:21:43 +0200
+Message-Id: <20220925202143.123208-1-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -43,27 +43,51 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-All other usages of qcom,spmi-gpio use the gpio@ node name, and this is
-also validated by the dt binding check. Fix it.
+Node names for the channel are supposed to be adc-chan@REG.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- arch/arm/boot/dts/qcom-pmx65.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/qcom-pma8084.dtsi | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-pmx65.dtsi b/arch/arm/boot/dts/qcom-pmx65.dtsi
-index abf229a8b75a..1c7fdf59c1f5 100644
---- a/arch/arm/boot/dts/qcom-pmx65.dtsi
-+++ b/arch/arm/boot/dts/qcom-pmx65.dtsi
-@@ -20,7 +20,7 @@ pmx65_temp: temp-alarm@a00 {
- 			#thermal-sensor-cells = <0>;
- 		};
+diff --git a/arch/arm/boot/dts/qcom-pma8084.dtsi b/arch/arm/boot/dts/qcom-pma8084.dtsi
+index e77602e9f95c..7ad573c7b4ac 100644
+--- a/arch/arm/boot/dts/qcom-pma8084.dtsi
++++ b/arch/arm/boot/dts/qcom-pma8084.dtsi
+@@ -64,22 +64,27 @@ pma8084_vadc: adc@3100 {
+ 			#size-cells = <0>;
+ 			#io-channel-cells = <1>;
  
--		pmx65_gpios: pinctrl@8800 {
-+		pmx65_gpios: gpio@8800 {
- 			compatible = "qcom,pmx65-gpio", "qcom,spmi-gpio";
- 			reg = <0x8800>;
- 			gpio-controller;
+-			die_temp {
++			adc-chan@8 {
+ 				reg = <VADC_DIE_TEMP>;
+ 			};
+-			ref_625mv {
++
++			adc-chan@9 {
+ 				reg = <VADC_REF_625MV>;
+ 			};
+-			ref_1250v {
++
++			adc-chan@10 {
+ 				reg = <VADC_REF_1250MV>;
+ 			};
+-			ref_buf_625mv {
++
++			adc-chan@12 {
+ 				reg = <VADC_SPARE1>;
+ 			};
+-			ref_gnd {
++
++			adc-chan@14 {
+ 				reg = <VADC_GND_REF>;
+ 			};
+-			ref_vdd {
++
++			adc-chan@15 {
+ 				reg = <VADC_VDD_VADC>;
+ 			};
+ 		};
 -- 
 2.37.3
 
