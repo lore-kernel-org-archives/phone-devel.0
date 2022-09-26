@@ -2,69 +2,150 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EDE3C32771
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Sep 2022 15:05:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B79DFC07E9D
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Sep 2022 16:11:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235632AbiIZPFe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 26 Sep 2022 11:05:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39986 "EHLO
+        id S235938AbiIZQLl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Sep 2022 12:11:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235117AbiIZPEr (ORCPT
+        with ESMTP id S234488AbiIZQLM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 26 Sep 2022 11:04:47 -0400
-X-Greylist: delayed 3600 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 26 Sep 2022 06:37:18 PDT
-Received: from mail.8bytes.org (mail.8bytes.org [IPv6:2a01:238:42d9:3f00:e505:6202:4f0c:f051])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C706AAED84;
-        Mon, 26 Sep 2022 06:37:17 -0700 (PDT)
-Received: from 8bytes.org (p549ad5ad.dip0.t-ipconnect.de [84.154.213.173])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.8bytes.org (Postfix) with ESMTPSA id 31E9E222642;
-        Mon, 26 Sep 2022 13:38:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-        s=default; t=1664192335;
-        bh=u0B6XPViiyWAnRZXSeK3V+bLPIyGlSA8ECSz5x8D8I8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZEqsYVedeZ/S22GY2PmZZFTx5QoCi/yyLT0EvXbZ/Y0/R5kCT0OMvho5Z7ZZKuEm+
-         695rmfuM1KAIoA2A8lOOzCZADpZEhtQOeT7XGFt6We3XPi6BV+ZEiHlQOHDIgMkUuv
-         VCjt5TZenOeF+Gax2SE0JLbG8KYjMXEpvmQlQ5iRFy2VyAE7pr8o8aefkc60UwsvFw
-         /Mdls73oTev7ahdys3cyZDqkAtluDq2VEGZ7LMe/TY0NGVx1XwcQTyD5qUgIesrvA1
-         gXPycW1mcGN5Mmmq4zzoAd/vPLo4jfFHfiAOQY6ViRn10oi0Wa/lsJz6Pnq/R4D/Ar
-         cd0mqIWkN6wRw==
-Date:   Mon, 26 Sep 2022 13:38:53 +0200
-From:   Joerg Roedel <joro@8bytes.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     yong.wu@mediatek.com, will@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        iommu@lists.linux-foundation.org,
-        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        konrad.dybcio@somainline.org, marijn.suijten@somainline.org,
-        martin.botka@somainline.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, paul.bouchara@somainline.org
-Subject: Re: [PATCH v6 0/3] MediaTek Helio X10 MT6795 - M4U/IOMMU Support
-Message-ID: <YzGPTbRhT1d/EIs9@8bytes.org>
-References: <20220913151148.412312-1-angelogioacchino.delregno@collabora.com>
+        Mon, 26 Sep 2022 12:11:12 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4725727C;
+        Mon, 26 Sep 2022 07:58:38 -0700 (PDT)
+Received: from g550jk.localnet (2a02-8388-6582-fe80-0000-0000-0000-0006.cable.dynamic.v6.surfer.at [IPv6:2a02:8388:6582:fe80::6])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 3E228C78D3;
+        Mon, 26 Sep 2022 14:57:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1664204279; bh=+gRELho+elraLKMrRC6MdHj9PsEtvYJMfn8C8YeYSdw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=aw78OVKzM/k2C43ruye/FvslE7NxrZLiGFo1QidJFG6q5QqI6Kfa5djYnsHldlxwm
+         wWm5TTClK6NeRvuXlZFpM8ii4u+/dAMT0uRrfActoJNI+DnjfqJj3hZa1q435lKmF+
+         hktet3hJOsDxVXyjNJZe0PTE/yWfLZozp2OHS0Og=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org, neil.armstrong@linaro.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: qcom-pma8084: fix vadc channel node names
+Date:   Mon, 26 Sep 2022 16:57:58 +0200
+Message-ID: <2647127.mvXUDI8C0e@g550jk>
+In-Reply-To: <98960452-9f48-7b4d-9aa6-55c0002ad1b4@linaro.org>
+References: <20220925202143.123208-1-luca@z3ntu.xyz> <98960452-9f48-7b4d-9aa6-55c0002ad1b4@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220913151148.412312-1-angelogioacchino.delregno@collabora.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Sep 13, 2022 at 05:11:45PM +0200, AngeloGioacchino Del Regno wrote:
-> AngeloGioacchino Del Regno (3):
->   dt-bindings: mediatek: Add bindings for MT6795 M4U
->   iommu/mediatek: Introduce new flag TF_PORT_TO_ADDR_MT8173
->   iommu/mediatek: Add support for MT6795 Helio X10 M4Us
-> 
->  .../bindings/iommu/mediatek,iommu.yaml        |  4 +
->  drivers/iommu/mtk_iommu.c                     | 21 +++-
->  include/dt-bindings/memory/mt6795-larb-port.h | 95 +++++++++++++++++++
->  3 files changed, 118 insertions(+), 2 deletions(-)
->  create mode 100644 include/dt-bindings/memory/mt6795-larb-port.h
+Hi Neil,
 
-Applied, thanks.
+On Montag, 26. September 2022 10:27:54 CEST Neil Armstrong wrote:
+> On 25/09/2022 22:21, Luca Weiss wrote:
+> > Node names for the channel are supposed to be adc-chan@REG.
+> > 
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> > 
+> >   arch/arm/boot/dts/qcom-pma8084.dtsi | 17 +++++++++++------
+> >   1 file changed, 11 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/arch/arm/boot/dts/qcom-pma8084.dtsi
+> > b/arch/arm/boot/dts/qcom-pma8084.dtsi index e77602e9f95c..7ad573c7b4ac
+> > 100644
+> > --- a/arch/arm/boot/dts/qcom-pma8084.dtsi
+> > +++ b/arch/arm/boot/dts/qcom-pma8084.dtsi
+> > @@ -64,22 +64,27 @@ pma8084_vadc: adc@3100 {
+> > 
+> >   			#size-cells = <0>;
+> >   			#io-channel-cells = <1>;
+> > 
+> > -			die_temp {
+> > +			adc-chan@8 {
+> > 
+> >   				reg = <VADC_DIE_TEMP>;
+> >   			
+> >   			};
+> > 
+> > -			ref_625mv {
+> > +
+> > +			adc-chan@9 {
+> > 
+> >   				reg = <VADC_REF_625MV>;
+> >   			
+> >   			};
+> > 
+> > -			ref_1250v {
+> > +
+> > +			adc-chan@10 {
+> > 
+> >   				reg = <VADC_REF_1250MV>;
+> >   			
+> >   			};
+> > 
+> > -			ref_buf_625mv {
+> > +
+> > +			adc-chan@12 {
+> > 
+> >   				reg = <VADC_SPARE1>;
+> >   			
+> >   			};
+> > 
+> > -			ref_gnd {
+> > +
+> > +			adc-chan@14 {
+> > 
+> >   				reg = <VADC_GND_REF>;
+> >   			
+> >   			};
+> > 
+> > -			ref_vdd {
+> > +
+> > +			adc-chan@15 {
+> > 
+> >   				reg = <VADC_VDD_VADC>;
+> >   			
+> >   			};
+> >   		
+> >   		};
+> 
+> I don't see where this is required, bindings doesn't mandate this naming:
+> 
+> patternProperties:
+> 
+>     "^.*@[0-9a-f]+$":
+
+They don't require the "adc-chan" part (although dt nodes are supposed to have 
+common names and adc-chan is used for adc for that; and dt node names are not 
+supposed to have underscores), but this validation error happens without this 
+commit:
+
+<snip>/arch/arm/boot/dts/qcom-apq8084-ifc6540.dtb: pma8084@0: adc@3100: 
+'oneOf' conditional failed, one must be fixed:
+        '#address-cells', '#size-cells', 'die_temp', 'ref_1250v', 'ref_625mv', 
+'ref_buf_625mv', 'ref_gnd', 'ref_vdd' do not match any of the regexes: 
+'pinctrl-[0-9]+'
+        'die_temp', 'ref_1250v', 'ref_625mv', 'ref_buf_625mv', 'ref_gnd', 
+'ref_vdd' do not match any of the regexes: '^.*@[0-9a-f]+$', 'pinctrl-[0-9]+'
+        'qcom,spmi-iadc' was expected
+        From schema: <snip>/Documentation/devicetree/bindings/mfd/qcom,spmi-
+pmic.yaml
+
+So while e.g. ref-vdd@15 would also work, adc-chan@15 is more correct.
+
+Regards
+Luca
+
+
+> Neil
+
+
+
+
