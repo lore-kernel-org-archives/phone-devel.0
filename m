@@ -2,25 +2,25 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1A2DC6FA8E
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Sep 2022 19:02:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F121C32771
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Sep 2022 19:02:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230214AbiIZTCM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 26 Sep 2022 15:02:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50248 "EHLO
+        id S230286AbiIZTCN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Sep 2022 15:02:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229861AbiIZTCJ (ORCPT
+        with ESMTP id S230249AbiIZTCK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 26 Sep 2022 15:02:09 -0400
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [5.144.164.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B42B86FD4;
-        Mon, 26 Sep 2022 12:02:06 -0700 (PDT)
+        Mon, 26 Sep 2022 15:02:10 -0400
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [5.144.164.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36576870A0
+        for <phone-devel@vger.kernel.org>; Mon, 26 Sep 2022 12:02:08 -0700 (PDT)
 Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id C72E03F59C;
-        Mon, 26 Sep 2022 21:02:04 +0200 (CEST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id F274D3F59A;
+        Mon, 26 Sep 2022 21:02:03 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -35,9 +35,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4 5/5] arm64: dts: qcom: sm6125-seine: Configure additional trinket thermistors
-Date:   Mon, 26 Sep 2022 21:01:48 +0200
-Message-Id: <20220926190148.283805-6-marijn.suijten@somainline.org>
+Subject: [PATCH v4 4/5] arm64: dts: qcom: sm6125-seine: Include PM6125 and configure PON
+Date:   Mon, 26 Sep 2022 21:01:47 +0200
+Message-Id: <20220926190148.283805-5-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20220926190148.283805-1-marijn.suijten@somainline.org>
 References: <20220926190148.283805-1-marijn.suijten@somainline.org>
@@ -47,197 +47,45 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-In addition to PMIC-specific (pm6125) thermistors downstream extends
-this set with the rf-pa0/rf-pa1, quiet, camera-flash and UFS/eMMC
-thermistors in sm6125 (trinket) board and seine-specific DT files.  All
-thermistors report sensible temperature readings in userspace.
-
-The sensors are also added to their respective Thermal Monitor node,
-with thermal zones to match where applicable: emmc-ufs and camera-flash
-are not available on the TM5 block, hence cannot be configured with a
-tripping point and will not have a thermal zone.
+The Sony Xperia Seine board uses the PM6125; include it and configure
+the PON buttons that provide the power and volume-up key.
 
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 ---
- .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 151 ++++++++++++++++++
- 1 file changed, 151 insertions(+)
+ .../boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-index 684c3ae6668f..6361dda83124 100644
+index 6a8b88cc4385..684c3ae6668f 100644
 --- a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
 +++ b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-@@ -9,6 +9,7 @@
- #include "pm6125.dtsi"
+@@ -6,8 +6,8 @@
+ /dts-v1/;
+ 
+ #include "sm6125.dtsi"
++#include "pm6125.dtsi"
  #include <dt-bindings/gpio/gpio.h>
+-#include <dt-bindings/input/input.h>
  #include <dt-bindings/input/gpio-keys.h>
-+#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
  
  / {
- 	/* required for bootloader to select correct board */
-@@ -80,12 +81,162 @@ cmdline_mem: memory@ffd00000 {
- 			no-map;
- 		};
- 	};
-+
-+	thermal-zones {
-+		rf-pa0-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm6125_adc_tm 0>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+
-+		quiet-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <5000>;
-+			thermal-sensors = <&pm6125_adc_tm 1>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+
-+		xo-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm6125_adc_tm 2>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+
-+		rf-pa1-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm6125_adc_tm 3>;
-+
-+			trips {
-+				active-config0 {
-+					temperature = <125000>;
-+					hysteresis = <1000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+	};
- };
- 
- &hsusb_phy1 {
+@@ -86,6 +86,15 @@ &hsusb_phy1 {
  	status = "okay";
  };
  
-+&pm6125_adc {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&camera_flash_therm &emmc_ufs_therm &rf_pa1_therm>;
-+
-+	rf-pa0-therm@4d {
-+		reg = <ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+
-+	quiet-therm@4e {
-+		reg = <ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+
-+	camera-flash-therm@52 {
-+		reg = <ADC5_GPIO1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+
-+	emmc-ufs-therm@54 {
-+		reg = <ADC5_GPIO3_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+
-+	rf-pa1-therm@55 {
-+		reg = <ADC5_GPIO4_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time = <200>;
-+		qcom,pre-scaling = <1 1>;
-+	};
-+};
-+
-+&pm6125_adc_tm {
++&pon_pwrkey {
 +	status = "okay";
-+
-+	rf-pa0-therm@0 {
-+		reg = <0>;
-+		io-channels = <&pm6125_adc ADC5_AMUX_THM1_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+
-+	quiet-therm@1 {
-+		reg = <1>;
-+		io-channels = <&pm6125_adc ADC5_AMUX_THM2_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+
-+	xo-therm@2 {
-+		reg = <2>;
-+		io-channels = <&pm6125_adc ADC5_XO_THERM_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
-+
-+	rf-pa1-therm@3 {
-+		reg = <3>;
-+		io-channels = <&pm6125_adc ADC5_GPIO4_100K_PU>;
-+		qcom,ratiometric;
-+		qcom,hw-settle-time-us = <200>;
-+	};
 +};
 +
-+&pm6125_gpio {
-+	camera_flash_therm: camera-flash-therm-state {
-+		pins = "gpio3";
-+		function = PMIC_GPIO_FUNC_NORMAL;
-+		bias-high-impedance;
-+	};
-+
-+	emmc_ufs_therm: emmc-ufs-therm-state {
-+		pins = "gpio6";
-+		function = PMIC_GPIO_FUNC_NORMAL;
-+		bias-high-impedance;
-+	};
-+
-+	rf_pa1_therm: rf-pa1-therm-state {
-+		pins = "gpio7";
-+		function = PMIC_GPIO_FUNC_NORMAL;
-+		bias-high-impedance;
-+	};
++&pon_resin {
++	status = "okay";
++	linux,code = <KEY_VOLUMEUP>;
 +};
 +
- &pon_pwrkey {
- 	status = "okay";
- };
+ &sdc2_off_state {
+ 	sd-cd-pins {
+ 		pins = "gpio98";
 -- 
 2.37.3
 
