@@ -2,184 +2,97 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87C02C32771
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Sep 2022 16:45:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 65261C32771
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Sep 2022 19:02:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229791AbiIZQpp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 26 Sep 2022 12:45:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34718 "EHLO
+        id S230137AbiIZTCI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Sep 2022 15:02:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229839AbiIZQpQ (ORCPT
+        with ESMTP id S229780AbiIZTCG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 26 Sep 2022 12:45:16 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D9C893218
-        for <phone-devel@vger.kernel.org>; Mon, 26 Sep 2022 08:34:03 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id d42so11558723lfv.0
-        for <phone-devel@vger.kernel.org>; Mon, 26 Sep 2022 08:34:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=F5npTjbMuhkZGTbiPdd9I0BH4rth5Gn8Gik7w91MPEQ=;
-        b=COyNBYSScAS0o8DDp+/0tPXmTexBHDJ8u+KWYzRSdPHkoRQmBZUmJXS8LLbSozyY+q
-         NCFkzGM/3t/i5zCm5VLW5RWigE0uzDey/6LVZ7DD2zOqyCpZCVzJtr5CYAD5fJvCljUV
-         KZU1RDSjJ2aZmOnMJqiE6QvMP222ve4kgfy28zHelpSvWzaqO4mk33NMM5HIuyG6Z830
-         yN8qmT5CuxbULXrSdjoiyPJYmtvFZq8+zQqJdYD9+vxevjD+2JWTA7aIHjKLbX4RkSIe
-         RUivF14k9gDk5Ff9QrCG8zoewQg13qrlpoxYzt5tYxV4LsXHy0qwjiuAW9iGZjm91vAX
-         Ni1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=F5npTjbMuhkZGTbiPdd9I0BH4rth5Gn8Gik7w91MPEQ=;
-        b=6F0OlbJWvU/MNTNP8hRRfEoQrVikIy3ynjO+h+7uAtyn3BPwgZMU8vTNJ+T6w1OuHU
-         7iB1wGSWUdPJV3fuo7+NHrGdUvSauJTQXn3LpcvCoU1I5giu0RBeJcpgH6sRmcXFvfyQ
-         nC9KsYLpen77NgBQFOGr6jJC4gBtFZxX+mRjFjjkTINK/dHoKrX7U8R682DDF16iJrdc
-         x7QFVU1E+59BNJE4JdLP8s9Pu4aeo66KE3dWINwJFaTUIWPqmQn3gvnUSkN/lDhUCBaL
-         csoT2q0eRVGLQnhoaxrINfoEfhkd+1PBez5TB4V2PdRf5VYUg96d0TyVItgmotxyXuWy
-         Bgcw==
-X-Gm-Message-State: ACrzQf1++8j/ZkXiGGdm4bmsBPZP7owUGCz+sULustEh7Qf8m595Q21M
-        rYwibhJurb8ui1bv9thEszifbMQ/UtBAYw==
-X-Google-Smtp-Source: AMsMyM6tMFemy+xGBNnt6gYp5DB31dPiL5kIfOf1LKc4vRAi/zdjV4hXeir/ybWPBzYvF++N0Z3T9A==
-X-Received: by 2002:a05:6512:3f08:b0:4a1:af5e:5643 with SMTP id y8-20020a0565123f0800b004a1af5e5643mr4484835lfa.86.1664206441267;
-        Mon, 26 Sep 2022 08:34:01 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id f3-20020a056512092300b0049486c66140sm2573546lft.119.2022.09.26.08.32.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Sep 2022 08:32:57 -0700 (PDT)
-Message-ID: <15611981-19b3-5124-83da-7f9a699ef62f@linaro.org>
-Date:   Mon, 26 Sep 2022 17:32:54 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH] ARM: dts: qcom-pma8084: fix vadc channel node names
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
-        neil.armstrong@linaro.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+        Mon, 26 Sep 2022 15:02:06 -0400
+Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [5.144.164.167])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B015B85FB6;
+        Mon, 26 Sep 2022 12:02:03 -0700 (PDT)
+Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 3B9EA3F434;
+        Mon, 26 Sep 2022 21:02:00 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220925202143.123208-1-luca@z3ntu.xyz>
- <98960452-9f48-7b4d-9aa6-55c0002ad1b4@linaro.org> <2647127.mvXUDI8C0e@g550jk>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <2647127.mvXUDI8C0e@g550jk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: [PATCH v4 0/5] Add Qcom PM6125 PMIC and use in Sony Xperia Seine PDX201
+Date:   Mon, 26 Sep 2022 21:01:43 +0200
+Message-Id: <20220926190148.283805-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.37.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 26/09/2022 16:57, Luca Weiss wrote:
-> Hi Neil,
-> 
-> On Montag, 26. September 2022 10:27:54 CEST Neil Armstrong wrote:
->> On 25/09/2022 22:21, Luca Weiss wrote:
->>> Node names for the channel are supposed to be adc-chan@REG.
->>>
->>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
->>> ---
->>>
->>>   arch/arm/boot/dts/qcom-pma8084.dtsi | 17 +++++++++++------
->>>   1 file changed, 11 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/arch/arm/boot/dts/qcom-pma8084.dtsi
->>> b/arch/arm/boot/dts/qcom-pma8084.dtsi index e77602e9f95c..7ad573c7b4ac
->>> 100644
->>> --- a/arch/arm/boot/dts/qcom-pma8084.dtsi
->>> +++ b/arch/arm/boot/dts/qcom-pma8084.dtsi
->>> @@ -64,22 +64,27 @@ pma8084_vadc: adc@3100 {
->>>
->>>   			#size-cells = <0>;
->>>   			#io-channel-cells = <1>;
->>>
->>> -			die_temp {
->>> +			adc-chan@8 {
->>>
->>>   				reg = <VADC_DIE_TEMP>;
->>>   			
->>>   			};
->>>
->>> -			ref_625mv {
->>> +
->>> +			adc-chan@9 {
->>>
->>>   				reg = <VADC_REF_625MV>;
->>>   			
->>>   			};
->>>
->>> -			ref_1250v {
->>> +
->>> +			adc-chan@10 {
->>>
->>>   				reg = <VADC_REF_1250MV>;
->>>   			
->>>   			};
->>>
->>> -			ref_buf_625mv {
->>> +
->>> +			adc-chan@12 {
->>>
->>>   				reg = <VADC_SPARE1>;
->>>   			
->>>   			};
->>>
->>> -			ref_gnd {
->>> +
->>> +			adc-chan@14 {
->>>
->>>   				reg = <VADC_GND_REF>;
->>>   			
->>>   			};
->>>
->>> -			ref_vdd {
->>> +
->>> +			adc-chan@15 {
->>>
->>>   				reg = <VADC_VDD_VADC>;
->>>   			
->>>   			};
->>>   		
->>>   		};
->>
->> I don't see where this is required, bindings doesn't mandate this naming:
->>
->> patternProperties:
->>
->>     "^.*@[0-9a-f]+$":
-> 
-> They don't require the "adc-chan" part (although dt nodes are supposed to have 
-> common names and adc-chan is used for adc for that; and dt node names are not 
-> supposed to have underscores), but this validation error happens without this 
-> commit:
-> 
-> <snip>/arch/arm/boot/dts/qcom-apq8084-ifc6540.dtb: pma8084@0: adc@3100: 
-> 'oneOf' conditional failed, one must be fixed:
->         '#address-cells', '#size-cells', 'die_temp', 'ref_1250v', 'ref_625mv', 
-> 'ref_buf_625mv', 'ref_gnd', 'ref_vdd' do not match any of the regexes: 
-> 'pinctrl-[0-9]+'
->         'die_temp', 'ref_1250v', 'ref_625mv', 'ref_buf_625mv', 'ref_gnd', 
-> 'ref_vdd' do not match any of the regexes: '^.*@[0-9a-f]+$', 'pinctrl-[0-9]+'
->         'qcom,spmi-iadc' was expected
->         From schema: <snip>/Documentation/devicetree/bindings/mfd/qcom,spmi-
-> pmic.yaml
-> 
-> So while e.g. ref-vdd@15 would also work, adc-chan@15 is more correct.
+This series adds initial support for the PM6125 PMIC, and its power key
+handling and thermal monitoring capabilities are configured for Sony's
+PDX201 (Xperia 10II).
 
-The commit msg is not precise here. What the nodes are missing is unit
-address (required by VADC bindings) and replace of underscore (coding
-style). I think bindings do not require the adc-chan and we could apply
-here rule from DT spec that node name should reflect it's
-purpose/function, so die-temp@xxxx could be fine. Other places use
-already adc-chan, so consistency could be an argument. But anyway commit
-msg is not really describing why you are doing this.
+One patch for pm660 is included to fix a node address mismatch with its
+reg field.
 
-Best regards,
-Krzysztof
+Changes since v3:
+- Rebased on next-20220923 to fix (diff-context) conflicts with:
+  - https://lore.kernel.org/all/20220902111055.106814-1-luca.weiss@fairphone.com/
+  - https://lore.kernel.org/all/20220912061746.6311-35-krzysztof.kozlowski@linaro.org/
+
+v3: https://lore.kernel.org/linux-arm-msm/20220919204826.215845-1-marijn.suijten@somainline.org/T/#t
+
+Changes since v2:
+- Rebased on v6.0-rc6 to drop dependent DT patches;
+- Dropped iio patch which has already been picked into Jonathan's tree;
+- Added qcom,pm6125 compatible in new yaml-ified SPMI-PMIC dt-bindings.
+
+v2: https://lore.kernel.org/linux-arm-msm/20220805135729.1037079-1-marijn.suijten@somainline.org/T/#u
+
+Changes since v1:
+- Dropped both pinctrl patches that have already been applied;
+- Add -us suffix to qcom,hw-settle-time properties on ADC TM5 nodes
+  (this suffix is not present on regular ADC5/VADC nodes);
+- Add -state suffix to pm6125_gpio pinctrl nodes;
+- Use PMIC_GPIO_FUNC_NORMAL instead of the string-literal "normal";
+- Removed #address-cells and #size-cells from empty pmic@1 node;
+- Removed ADC5_AMUX_THM3 / ADC5_GPIO2_100K_PU channels from the ADC5
+  patch, these are unused on my board and hence untested.
+
+v1: https://lore.kernel.org/phone-devel/20220511220613.1015472-1-marijn.suijten@somainline.org/T/#u
+
+Marijn Suijten (5):
+  dt-bindings: mfd: qcom-spmi-pmic: Add pm6125 compatible
+  arm64: dts: qcom: pm660: Use unique ADC5_VCOIN address in node name
+  arm64: dts: qcom: Add PM6125 PMIC
+  arm64: dts: qcom: sm6125-seine: Include PM6125 and configure PON
+  arm64: dts: qcom: sm6125-seine: Configure additional trinket
+    thermistors
+
+ .../bindings/mfd/qcom,spmi-pmic.yaml          |   1 +
+ arch/arm64/boot/dts/qcom/pm6125.dtsi          | 154 +++++++++++++++++
+ arch/arm64/boot/dts/qcom/pm660.dtsi           |   2 +-
+ .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 162 +++++++++++++++++-
+ 4 files changed, 317 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/qcom/pm6125.dtsi
+
+--
+2.37.3
 
