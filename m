@@ -2,88 +2,101 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81267C6FA8E
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Sep 2022 08:00:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06133C6FA8E
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Sep 2022 08:19:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234229AbiIZIAt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 26 Sep 2022 04:00:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40932 "EHLO
+        id S233480AbiIZITq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Sep 2022 04:19:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234241AbiIZH7s (ORCPT
+        with ESMTP id S233420AbiIZITn (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 26 Sep 2022 03:59:48 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFD6AAE47;
-        Mon, 26 Sep 2022 00:57:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 98C59B8191D;
-        Mon, 26 Sep 2022 07:57:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7912C433C1;
-        Mon, 26 Sep 2022 07:57:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664179053;
-        bh=QTLA3YF9AiEQybUyFdQhFkFoVISeKnQ7EdbSa++0Axs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RRmyuA3Q9PagzbLzSRoZTo+wXGCJ1DiipDin0Wnu1TOstTjft4Rz9a9Iz311J1WLg
-         9H9qaTXpS6vm6pWnDmsLP5r8KtGUcwtNt3OWUKDIPuf1pYLbkV1sc5ZPWLuCSNL3cz
-         y4V43NHxoWikICnqNazKmdHmqAKuPD4bTrvUT7dEqoRXkHD3PSWD+jmRF8FuwgMtP8
-         m7EOSg4h1JoCC8zaAulKtAFiXk+9A1y1fW2QmCHNZQE7F7sKPcUOaVPGWc5MoGRwq7
-         RlB0NWgjx6/o74BtmBTo+lK6MYKOvEPwQqXkiLo3XBaWgbDzQbtu+H8frDkOF0+7lt
-         Lo9giEsSGfGXg==
-Date:   Mon, 26 Sep 2022 08:57:26 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Mon, 26 Sep 2022 04:19:43 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BA49A475
+        for <phone-devel@vger.kernel.org>; Mon, 26 Sep 2022 01:19:41 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id n40-20020a05600c3ba800b003b49aefc35fso3260911wms.5
+        for <phone-devel@vger.kernel.org>; Mon, 26 Sep 2022 01:19:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:organization:from:reply-to
+         :references:cc:to:content-language:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date;
+        bh=jKQIIfv2SW4ou+kZFFsY1IMYg5mAOYRQt6YkKfTElQc=;
+        b=hzu6+mpr5ZSXCUGWDhOrCiA/RBD+DXSpHdsd8IElxDjzrXFdb3sr8oFx8ARIvmEnU8
+         9Yinz7wN9grihuTOp1JZ/qKreV/y5zG20wh6Qkmo8ZLwHJm1RJQkRz00VZ6cVA+uod6S
+         LtRMwurY8TVYUc9KSZUs+NosyBOK/1uf8kYSmx7cN90vCWQ6UoByAwWRw6ZISYyfE0KG
+         t4/AYgL5Bd1KBtAcOn4wylwUPsTlE5yYpUK6vgERQ0D52zyNb7Kx6HtEaGjpmWiT4O+S
+         4skgGauyUl9wAKzx3oCjkfNONXIltgHLrn9T8pzkgAI+cQh2kDaBSHy5nAqW+tMimkCv
+         CKuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:organization:from:reply-to
+         :references:cc:to:content-language:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date;
+        bh=jKQIIfv2SW4ou+kZFFsY1IMYg5mAOYRQt6YkKfTElQc=;
+        b=wOiBcpUddCsJoMAs25cv23iUK53+kUkqN+KhIkcaGQUXGJdu9K0BTjwFmOieynnuxz
+         2VHlBQWDRTO8t1XaPurbH7YmK1/bm38DzxpBZsUlKg0TFx8xt1pQ++Nwg2Heuqe0FZgX
+         gf6equCo5hmLaq1m5It7IZbaemRoP0lzMpLGoWy6kU3reDfycnK/7Vpd+7IpL629NpRz
+         z8IwflZFFQES0LFuPxYAiYpavtmpOpKpV07csykrkuCFnacJp3fFb90NjWY+q/t4IJ6z
+         o2ayPQw+hjt4536s8q+jpiDlX/JK5YnPfrhxTLfRm8Q+4jBZqpyH1w0QTjaC0ibTV2cO
+         02kw==
+X-Gm-Message-State: ACrzQf3ZKuTbR2uHgwsHav2sXvfdr+8WNzsh5FajUiRyjrPtFQ5y/7u6
+        mAFkD5D4TbLUARD9rWhvbfqsog==
+X-Google-Smtp-Source: AMsMyM5a2SkwBGXm2LWW0e7JAvd4yKtan0bGn2F204UAj1PUgOIhbzsX8e7mgfY9oj1t+aeGqTbWdw==
+X-Received: by 2002:a7b:c056:0:b0:3b4:e007:2050 with SMTP id u22-20020a7bc056000000b003b4e0072050mr21229837wmc.38.1664180380142;
+        Mon, 26 Sep 2022 01:19:40 -0700 (PDT)
+Received: from [192.168.27.65] (home.beaume.starnux.net. [82.66.176.246])
+        by smtp.gmail.com with ESMTPSA id v9-20020a5d4a49000000b0022a3a887ceasm8776476wrs.49.2022.09.26.01.19.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Sep 2022 01:19:39 -0700 (PDT)
+Message-ID: <07e63329-b3b7-736e-1de3-625af5c4541f@linaro.org>
+Date:   Mon, 26 Sep 2022 10:19:32 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] ARM: dts: qcom: pmx65: use node name "gpio" for spmi-gpio
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] dt-bindings: mfd: qcom-spmi-pmic: Add pm6125
- compatible
-Message-ID: <YzFbZkN8gSjJm9nS@google.com>
-References: <20220919204826.215845-1-marijn.suijten@somainline.org>
- <20220919204826.215845-2-marijn.suijten@somainline.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220919204826.215845-2-marijn.suijten@somainline.org>
+References: <20220925190622.111505-1-luca@z3ntu.xyz>
+Reply-To: neil.armstrong@linaro.org
+From:   Neil Armstrong <neil.armstrong@linaro.org>
+Organization: Linaro Developer Services
+In-Reply-To: <20220925190622.111505-1-luca@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 19 Sep 2022, Marijn Suijten wrote:
-
-> Document support for the pm6125, typically paired with the sm6125 SoC.
+On 25/09/2022 21:06, Luca Weiss wrote:
+> All other usages of qcom,spmi-gpio use the gpio@ node name, and this is
+> also validated by the dt binding check. Fix it.
 > 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
->  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 1 +
->  1 file changed, 1 insertion(+)
+>   arch/arm/boot/dts/qcom-pmx65.dtsi | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boot/dts/qcom-pmx65.dtsi b/arch/arm/boot/dts/qcom-pmx65.dtsi
+> index abf229a8b75a..1c7fdf59c1f5 100644
+> --- a/arch/arm/boot/dts/qcom-pmx65.dtsi
+> +++ b/arch/arm/boot/dts/qcom-pmx65.dtsi
+> @@ -20,7 +20,7 @@ pmx65_temp: temp-alarm@a00 {
+>   			#thermal-sensor-cells = <0>;
+>   		};
+>   
+> -		pmx65_gpios: pinctrl@8800 {
+> +		pmx65_gpios: gpio@8800 {
+>   			compatible = "qcom,pmx65-gpio", "qcom,spmi-gpio";
+>   			reg = <0x8800>;
+>   			gpio-controller;
 
-Doesn't apply cleanly.  Please rebase.
-
-> diff --git a/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml b/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
-> index 65cbc6dee545..a6ee8c7f7738 100644
-> --- a/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
-> +++ b/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
-> @@ -35,6 +35,7 @@ properties:
->        - enum:
->            - qcom,pm660
->            - qcom,pm660l
-> +          - qcom,pm6125
->            - qcom,pm6150
->            - qcom,pm6150l
->            - qcom,pm6350
-
--- 
-Lee Jones [李琼斯]
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
