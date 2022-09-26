@@ -2,54 +2,53 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27D04C6FA82
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Sep 2022 03:02:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40974C6FA82
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Sep 2022 04:45:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233264AbiIZDCF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 25 Sep 2022 23:02:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49576 "EHLO
+        id S230060AbiIZEpx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Sep 2022 00:45:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233202AbiIZDCA (ORCPT
+        with ESMTP id S232357AbiIZEpw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 25 Sep 2022 23:02:00 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 189542C121
-        for <phone-devel@vger.kernel.org>; Sun, 25 Sep 2022 20:01:57 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id lh5so11223452ejb.10
-        for <phone-devel@vger.kernel.org>; Sun, 25 Sep 2022 20:01:57 -0700 (PDT)
+        Mon, 26 Sep 2022 00:45:52 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D27224BF2
+        for <phone-devel@vger.kernel.org>; Sun, 25 Sep 2022 21:45:44 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id hy2so11493619ejc.8
+        for <phone-devel@vger.kernel.org>; Sun, 25 Sep 2022 21:45:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=Skd+l8JquKxTkT+d04SuRhlV1yn9RBCkYSqV8apRUX8=;
-        b=fMDjGMFeZ+MEZfjBLeXyZXO+5QURbDxXo1FUsSS2j688UXbghiFGIb5sDWVtiLfaTu
-         HifASisiYD84FYcN4xahhmp+HSp/Fjyzm68aXl8cTDtA67mLClwfSSukEs6aYvvKicqJ
-         DUEZqyaPDMlZkZcP8+NrKcf+0HixlqbnoQch0=
+        bh=inQx/B+myoBQVAF3vsFN8D/0R7rZQjwNrUieRpG8clU=;
+        b=j/uFU1KOCRqduTJlrlEoIn6ttforECuEoaRHf2Jkb1/p00FI72BhA+ja0+iw0yrlSt
+         PyWtg1GZTi4rAHzt4bV8b93gt95RdcPppHsOHk7Sj0JJB63rSc1AZSvmj5mmHrUTV55b
+         9Srf43HDAj1z8qqOrmCkboDh9b2nghcIx73IA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=Skd+l8JquKxTkT+d04SuRhlV1yn9RBCkYSqV8apRUX8=;
-        b=Bao5FRF9DUSLap6V1+wBfFc4TSHWawrEKGpz4tNNL64GUk3vZzCx4Jr8AyCyFu8iTD
-         bP1/SyQpGpOYj+QpGNFKRRoibzg5+9SlztlYFhYiw6t0WUPgDcmvsof42a4jPKst7TPK
-         lYloyGZeIspLV6opZRUk4XsepTYIVuBUDjlrX6tT0+F48B9zOn9SbS1dzv1HESONYJAB
-         Mf2M3QOv8+bX9G1itIZo874jwBc2S4WHvqz8mWJzxeHne6DvUyakf17jIzmQ413hV9b2
-         OEYmh1UvFej2AX5U5c7OHwK6CWZFxSHGi27u0Qw+vFi2JOS9PSnzjoDxCgsQs6xki84R
-         jhBg==
-X-Gm-Message-State: ACrzQf381O7CKsXkT1uA6XUuJd06VJzSt4wVrvJaMemDbLXFcEXqyy5H
-        xVR5oNnpti9NciEElv+uBDioIcA2oSnrZTtrOEIN3A==
-X-Google-Smtp-Source: AMsMyM7o8MwQQBDwguXkozM6n/umhwviFw/Nfd+rhMxsOtT2UejSuJCqg8qOL0/MW/9zxPZApsONr4Gwd23XXRSuZkU=
-X-Received: by 2002:a17:907:7f93:b0:781:dbee:dece with SMTP id
- qk19-20020a1709077f9300b00781dbeedecemr16459188ejc.323.1664161315561; Sun, 25
- Sep 2022 20:01:55 -0700 (PDT)
+        bh=inQx/B+myoBQVAF3vsFN8D/0R7rZQjwNrUieRpG8clU=;
+        b=zOQpnA/T78HMxIXzdbzG/HaOAp0E/jVgr9mAyO6efr29MovtqCJlZ5UvOiP2DsxxZ+
+         YQkO67GLNAVDKgRap2Dy3PFl6Iiy8olUn5cg6NTzZx7oZBywxS3jgUOHYTyqCv29nYkq
+         vUjmH5TmhVI1S/f9g/7vPY3+DINtBZhGG+oK2PKWBUyyUsXThEkK/qXo6yKqPlU1nMKu
+         e3kYOu95f01W++JTR8XfcnVXjZWq0vlPzHeiC63wy/GdjuZGI7eW+LPyZIzWu/GNNHVv
+         HqmwxC2PG4dn4yJJJ13S+jOEAPVXXFCC4iFYUK5v4HBXO/6Qv+sVtKOoys+fiCyJNQO4
+         xVdw==
+X-Gm-Message-State: ACrzQf1b3HpBCq6OyR7cUUnlYeDumXWg3yT7v5ZAbm0mQ6YMGDNFCdlK
+        SCAMfcoIrx0JKZ8ssUvKch3VJxcDz6UBjf3yE2nsGw==
+X-Google-Smtp-Source: AMsMyM50baM0xEgY1j/hLICZS6Ro1n/Ox33rLV2Rl1Yb22kNPgKw8xFU3i402SgQ5Dfectw+su70alxJjafTx80ETlM=
+X-Received: by 2002:a17:906:8455:b0:773:c45b:d970 with SMTP id
+ e21-20020a170906845500b00773c45bd970mr16452870ejy.46.1664167542843; Sun, 25
+ Sep 2022 21:45:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220921091455.41327-1-angelogioacchino.delregno@collabora.com> <20220921091455.41327-8-angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20220921091455.41327-8-angelogioacchino.delregno@collabora.com>
+References: <20220921091455.41327-1-angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20220921091455.41327-1-angelogioacchino.delregno@collabora.com>
 From:   Chen-Yu Tsai <wenst@chromium.org>
-Date:   Mon, 26 Sep 2022 11:01:44 +0800
-Message-ID: <CAGXv+5Hr6LYEZ8_3Z07XAVPbbSHZiwjR2QTrv9LdhwpYn35TFw@mail.gmail.com>
-Subject: Re: [RESEND PATCH v6 7/8] clk: mediatek: clk-apmixed: Add helper
- function to unregister ref2usb_tx
+Date:   Mon, 26 Sep 2022 12:45:31 +0800
+Message-ID: <CAGXv+5HayW7XFcPJyV4xWvndmLau5T068nc_XYEbyiFX=pMzVQ@mail.gmail.com>
+Subject: Re: [RESEND PATCH v6 0/8] MediaTek Helio X10 MT6795 - Clock drivers
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
 Cc:     mturquette@baylibre.com, sboyd@kernel.org, robh+dt@kernel.org,
@@ -73,15 +72,29 @@ X-Mailing-List: phone-devel@vger.kernel.org
 On Wed, Sep 21, 2022 at 5:15 PM AngeloGioacchino Del Regno
 <angelogioacchino.delregno@collabora.com> wrote:
 >
-> The ref2usb_tx clock was introduced a long time ago and, at that time,
-> the MediaTek clock drivers were using CLK_OF_DECLARE, so they would
-> never unregister.
+> In an effort to give some love to the apparently forgotten MT6795 SoC,
+> I am upstreaming more components that are necessary to support platforms
+> powered by this one apart from a simple boot to serial console.
 >
-> Nowadays, unregistering clock drivers is a thing, as we're registering
-> them as platform_driver and allowing them to be kernel modules: add a
-> helper function to cleanup the ref2usb_tx clock during error handling
-> and upon module removal.
+> This (very big) series introduces system clock, multimedia clock drivers
+> (including resets) for this SoC.
 >
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
+>
+> AngeloGioacchino Del Regno (8):
+>   dt-bindings: mediatek: Document MT6795 system controllers bindings
+>   dt-bindings: clock: Add MediaTek Helio X10 MT6795 clock bindings
+>   dt-bindings: reset: Add bindings for MT6795 Helio X10 reset
+>     controllers
+>   dt-bindings: clock: mediatek: Add clock driver bindings for MT6795
+>   clk: mediatek: clk-apmixed: Remove unneeded __init annotation
+>   clk: mediatek: Export required symbols to compile clk drivers as
+>     module
+>   clk: mediatek: clk-apmixed: Add helper function to unregister
+>     ref2usb_tx
+>   clk: mediatek: Add MediaTek Helio X10 MT6795 clock drivers
 
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+I've queued this series up here [1] and will send a pull request to
+the clock maintainer later this week.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/wens/linux.git/log/?h=clk-mtk-for-6.1
