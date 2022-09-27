@@ -2,229 +2,111 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6302C07E9D
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Sep 2022 19:02:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75610C32771
+	for <phone-devel@archiver.kernel.org>; Tue, 27 Sep 2022 03:13:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231221AbiIZTCP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 26 Sep 2022 15:02:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50244 "EHLO
+        id S231309AbiI0DNK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Sep 2022 23:13:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229780AbiIZTCK (ORCPT
+        with ESMTP id S230469AbiI0DMK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 26 Sep 2022 15:02:10 -0400
-Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [5.144.164.168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E9AB84E43;
-        Mon, 26 Sep 2022 12:02:07 -0700 (PDT)
-Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Mon, 26 Sep 2022 23:12:10 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D4E421E1E;
+        Mon, 26 Sep 2022 20:09:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 33B4E3F598;
-        Mon, 26 Sep 2022 21:02:03 +0200 (CEST)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9495CB80DAB;
+        Tue, 27 Sep 2022 03:09:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641CFC433C1;
+        Tue, 27 Sep 2022 03:09:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664248189;
+        bh=5alXme/iG0Q2Mzk003ElCEPHonmuGvo4KYhWd730jdo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jr+IfCGayJhZN8Z1h6NUhmMgQmfHRkh5g+DrWrQlpiCCbIH8QIA7JEA47F/W6H+1O
+         FbeQ2/0FFmYP521UZkMjia47O2zA5fWd+rD8vrgGl+GH9lffjFj5HOITfhrlv5KWEn
+         vvKbpVev42H8RmuGATB2JOmSIoB+deFWHSkrx20wuIcYawRVDksgusCN996VNA2nPa
+         pNAVnMWvW8/UFgurZkolLIEL9XG7vVhH4g3jUJhhATh87QuX7qEITo00cNyHq4PeMW
+         kIVsTDj5/sCdmb0aBRy0qPSdEauJuUl10zuGh7MNVEhiqIPXb6dzOzEabo+9xqdOZs
+         J8QJ4m8P1iwvw==
+Date:   Mon, 26 Sep 2022 22:09:46 -0500
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Adam Skladowski <a39.skl@gmail.com>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4 3/5] arm64: dts: qcom: Add PM6125 PMIC
-Date:   Mon, 26 Sep 2022 21:01:46 +0200
-Message-Id: <20220926190148.283805-4-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220926190148.283805-1-marijn.suijten@somainline.org>
-References: <20220926190148.283805-1-marijn.suijten@somainline.org>
+Subject: Re: [PATCH v3 1/2] dt-bindings: clock: add QCOM SM6115 display clock
+ bindings
+Message-ID: <20220927030946.5acxedwvut6ifdmx@builder.lan>
+References: <20220911164635.182973-1-a39.skl@gmail.com>
+ <20220911164635.182973-2-a39.skl@gmail.com>
+ <20220913152620.GA3762864-robh@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220913152620.GA3762864-robh@kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This PMIC is commonly used on boards with an SM6125 SoC and looks very
-similar in layout to the PM6150.
+On Tue, Sep 13, 2022 at 10:26:20AM -0500, Rob Herring wrote:
+> On Sun, Sep 11, 2022 at 06:46:18PM +0200, Adam Skladowski wrote:
+> > Add device tree bindings for display clock controller for
+> > Qualcomm Technology Inc's SM6115 SoC.
+> > 
+> > Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> > ---
+> >  .../bindings/clock/qcom,sm6115-dispcc.yaml    | 70 +++++++++++++++++++
+> >  .../dt-bindings/clock/qcom,sm6115-dispcc.h    | 36 ++++++++++
+> >  2 files changed, 106 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/clock/qcom,sm6115-dispcc.yaml
+> >  create mode 100644 include/dt-bindings/clock/qcom,sm6115-dispcc.h
+> > 
+> > diff --git a/Documentation/devicetree/bindings/clock/qcom,sm6115-dispcc.yaml b/Documentation/devicetree/bindings/clock/qcom,sm6115-dispcc.yaml
+> > new file mode 100644
+> > index 000000000000..a6bf363b5015
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/clock/qcom,sm6115-dispcc.yaml
+> > @@ -0,0 +1,70 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/clock/qcom,sm6115-dispcc.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Qualcomm Display Clock Controller Binding for SM6115
+> 
+> s/Binding //
+> 
+> > +
+> > +maintainers:
+> > +  - Bjorn Andersson <andersson@kernel.org>
+> > +
+> > +description: |
+> 
+> Don't need '|' when no formatting to preserve.
+> 
 
-Downstream declares more nodes to be available, but these have been
-omitted from this patch: the pwm/lpg block is unused on my reference
-device making it impossible to test/validate, and the spmi-clkdiv does
-not have a single device-tree binding using this driver yet, hence
-inclusion is better postponed until ie. audio which uses these clocks is
-brought up.
+This follows the other dispcc bindings, where I think the intention is
+to keep the formatting over "See also". In contrast to the other dispcc
+bindings the "See also" has a ':' at the end in this proposal...
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
----
- arch/arm64/boot/dts/qcom/pm6125.dtsi | 154 +++++++++++++++++++++++++++
- 1 file changed, 154 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/pm6125.dtsi
+> With those fixes,
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-diff --git a/arch/arm64/boot/dts/qcom/pm6125.dtsi b/arch/arm64/boot/dts/qcom/pm6125.dtsi
-new file mode 100644
-index 000000000000..1c8ccda26ffb
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/pm6125.dtsi
-@@ -0,0 +1,154 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+
-+#include <dt-bindings/iio/qcom,spmi-vadc.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/input/linux-event-codes.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/spmi/spmi.h>
-+
-+/ {
-+	thermal-zones {
-+		pm6125-thermal {
-+			polling-delay-passive = <100>;
-+			polling-delay = <0>;
-+
-+			thermal-sensors = <&pm6125_temp>;
-+
-+			trips {
-+				trip0 {
-+					temperature = <95000>;
-+					hysteresis = <0>;
-+					type = "passive";
-+				};
-+
-+				trip1 {
-+					temperature = <115000>;
-+					hysteresis = <0>;
-+					type = "hot";
-+				};
-+
-+				trip2 {
-+					temperature = <145000>;
-+					hysteresis = <0>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&spmi_bus {
-+	pmic@0 {
-+		compatible = "qcom,pm6125", "qcom,spmi-pmic";
-+		reg = <0x0 SPMI_USID>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		pm6125_pon: pon@800 {
-+			compatible = "qcom,pm8998-pon";
-+			reg = <0x800>;
-+			mode-bootloader = <0x2>;
-+			mode-recovery = <0x1>;
-+
-+			pon_pwrkey: pwrkey {
-+				compatible = "qcom,pm8941-pwrkey";
-+				interrupts = <0x0 0x8 0x0 IRQ_TYPE_EDGE_BOTH>;
-+				debounce = <15625>;
-+				linux,code = <KEY_POWER>;
-+				bias-pull-up;
-+				status = "disabled";
-+			};
-+
-+			pon_resin: resin {
-+				compatible = "qcom,pm8941-resin";
-+				interrupts = <0x0 0x8 0x1 IRQ_TYPE_EDGE_BOTH>;
-+				debounce = <15625>;
-+				bias-pull-up;
-+				status = "disabled";
-+			};
-+		};
-+
-+		pm6125_temp: temp-alarm@2400 {
-+			compatible = "qcom,spmi-temp-alarm";
-+			reg = <0x2400>;
-+			interrupts = <0x0 0x24 0x0 IRQ_TYPE_EDGE_RISING>;
-+			io-channels = <&pm6125_adc ADC5_DIE_TEMP>;
-+			io-channel-names = "thermal";
-+			#thermal-sensor-cells = <0>;
-+		};
-+
-+		pm6125_adc: adc@3100 {
-+			compatible = "qcom,spmi-adc5";
-+			reg = <0x3100>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			interrupts = <0x0 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
-+			#io-channel-cells = <1>;
-+
-+			ref-gnd@0 {
-+				reg = <ADC5_REF_GND>;
-+				qcom,pre-scaling = <1 1>;
-+			};
-+
-+			vref-1p25@1 {
-+				reg = <ADC5_1P25VREF>;
-+				qcom,pre-scaling = <1 1>;
-+			};
-+
-+			die-temp@6 {
-+				reg = <ADC5_DIE_TEMP>;
-+				qcom,pre-scaling = <1 1>;
-+			};
-+
-+			vph-pwr@83 {
-+				reg = <ADC5_VPH_PWR>;
-+				qcom,pre-scaling = <1 3>;
-+			};
-+
-+			vcoin@85 {
-+				reg = <ADC5_VCOIN>;
-+				qcom,pre-scaling = <1 3>;
-+			};
-+
-+			xo-therm@4c {
-+				reg = <ADC5_XO_THERM_100K_PU>;
-+				qcom,pre-scaling = <1 1>;
-+				qcom,hw-settle-time = <200>;
-+				qcom,ratiometric;
-+			};
-+		};
-+
-+		pm6125_adc_tm: adc-tm@3500 {
-+			compatible = "qcom,spmi-adc-tm5";
-+			reg = <0x3500>;
-+			interrupts = <0x0 0x35 0x0 IRQ_TYPE_EDGE_RISING>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			#thermal-sensor-cells = <1>;
-+			status = "disabled";
-+		};
-+
-+		pm6125_rtc: rtc@6000 {
-+			compatible = "qcom,pm8941-rtc";
-+			reg = <0x6000>, <0x6100>;
-+			reg-names = "rtc", "alarm";
-+			interrupts = <0x0 0x61 0x1 IRQ_TYPE_EDGE_RISING>;
-+			status = "disabled";
-+		};
-+
-+		pm6125_gpio: gpio@c000 {
-+			compatible = "qcom,pm6125-gpio", "qcom,spmi-gpio";
-+			reg = <0xc000>;
-+			gpio-controller;
-+			gpio-ranges = <&pm6125_gpio 0 0 9>;
-+			#gpio-cells = <2>;
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
-+	};
-+
-+	pmic@1 {
-+		compatible = "qcom,pm6125", "qcom,spmi-pmic";
-+		reg = <0x1 SPMI_USID>;
-+	};
-+};
--- 
-2.37.3
+I took the liberty of fixing up the description to align with the others
+and applied this, with your R-b.
 
+Regards,
+Bjorn
