@@ -2,28 +2,63 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45665C32771
-	for <phone-devel@archiver.kernel.org>; Wed, 28 Sep 2022 08:23:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6914C32771
+	for <phone-devel@archiver.kernel.org>; Wed, 28 Sep 2022 08:30:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233486AbiI1IXq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 28 Sep 2022 04:23:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41626 "EHLO
+        id S233880AbiI1IaS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 28 Sep 2022 04:30:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233416AbiI1IXp (ORCPT
+        with ESMTP id S233699AbiI1IaI (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 28 Sep 2022 04:23:45 -0400
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [5.144.164.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E4A7E335
-        for <phone-devel@vger.kernel.org>; Wed, 28 Sep 2022 01:23:44 -0700 (PDT)
-Received: from SoMainline.org (D57D4C6E.static.ziggozakelijk.nl [213.125.76.110])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id CF5EB1F52C;
-        Wed, 28 Sep 2022 10:23:41 +0200 (CEST)
-Date:   Wed, 28 Sep 2022 10:23:40 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+        Wed, 28 Sep 2022 04:30:08 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9FFE53021
+        for <phone-devel@vger.kernel.org>; Wed, 28 Sep 2022 01:30:05 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id z4so1460809lft.2
+        for <phone-devel@vger.kernel.org>; Wed, 28 Sep 2022 01:30:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=NCs5vawQU96pEooh4cqbFuck7uG4MvVs+nCclYJ20Lc=;
+        b=izxF/Q1zZ+0VT46yoktPGdqNU3gKyH3DV0xGCXmhsQI0OCUsYpmvzfmNyAJFRYxGZX
+         RtqorzvQxpeSVHRc+l2xzolAwvOj6Jbj8ClFbiPK/FBqZAgNr1s3SNNT73Y9T9eY8lzH
+         f1nXlErTNLOzTL9g5uibixKpp47kKtcC/6hfSc63MBt6TT0ccyr6S+LAv5JORm4HarU+
+         dGGcGX9ZZMHpwYrXS5uXTQLPP7Lxme25KN/AdH4Fml+pmPqJHK0J3s3wOsxJewRjZ3Sf
+         3pQRnviXH/5+V4qAs3lZNJ8fTKaYitFjG4lcrHHxdFMn32dNrPF5XeKLSSn/GxZWwynf
+         YSzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=NCs5vawQU96pEooh4cqbFuck7uG4MvVs+nCclYJ20Lc=;
+        b=NRu0J9S3OlkAHntvO2YyOCkX88MwTnWw6XaHNvX6oQ/LLinQ+zZJ+4+IrgyVm3WaKY
+         g3iFZQg6QZQOQqJHFbFCIorCDxkvOuCMz9KWkxxSwU+bbyIKKvhMpvfkIvrOAkKh/NhK
+         cy7TYJ0A4tIMoQqWz1/VNQISg4BzH9cXO1TbUctyU4YvLe4FBvPxWu0knpxpfXUCJG5L
+         fiEfzgATlYzV8fpuTaNQpZ8nT8W5DlsVD1g+XEQopEjsCE5r7r5xS2ZvXpNcRRjhn44a
+         tfb0oU8rNwoxWShTnW5Bc/2I1le5pjcovOTo/DzxRe6Izf9k+Igmj6TDuUBdjxtyhQTj
+         Hg0w==
+X-Gm-Message-State: ACrzQf1BPZ3sQYVhwNMX38hB1J85ErxtXNLwl8VguctClRq4nw5FmmDz
+        iL6Kj2w5LHaWeBYghUH8bNopPQ==
+X-Google-Smtp-Source: AMsMyM7WVCkxYWM9czOkGqjZbJb1PFZ7Z6R2P1OEocB90/+Nr7YuvYckWdW0uC++w6j+Xcl1lkxb5Q==
+X-Received: by 2002:a05:6512:798:b0:497:aa2b:8b10 with SMTP id x24-20020a056512079800b00497aa2b8b10mr13910475lfr.636.1664353804044;
+        Wed, 28 Sep 2022 01:30:04 -0700 (PDT)
+Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id k20-20020a05651c10b400b0026aba858fbfsm371190ljn.137.2022.09.28.01.30.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Sep 2022 01:30:02 -0700 (PDT)
+Message-ID: <2bd60261-a977-3225-8d41-4987252e6abb@linaro.org>
+Date:   Wed, 28 Sep 2022 10:30:00 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH v4 1/5] dt-bindings: mfd: qcom-spmi-pmic: Add pm6125
+ compatible
+Content-Language: en-US
+To:     Marijn Suijten <marijn.suijten@somainline.org>
 Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
@@ -36,62 +71,40 @@ Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/5] dt-bindings: mfd: qcom-spmi-pmic: Add pm6125
- compatible
-Message-ID: <20220928082340.mkn23ersrtzb5oth@SoMainline.org>
 References: <20220926190148.283805-1-marijn.suijten@somainline.org>
  <20220926190148.283805-2-marijn.suijten@somainline.org>
  <052630d0-299e-e468-b2dd-266d371e2b0f@linaro.org>
  <20220928081055.p66huqct2wnrsrdx@SoMainline.org>
  <3f2e62f5-a6e4-7011-3f5b-29a6657eae79@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3f2e62f5-a6e4-7011-3f5b-29a6657eae79@linaro.org>
+ <20220928082340.mkn23ersrtzb5oth@SoMainline.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220928082340.mkn23ersrtzb5oth@SoMainline.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-09-28 10:14:05, Krzysztof Kozlowski wrote:
-> On 28/09/2022 10:10, Marijn Suijten wrote:
-> > On 2022-09-28 09:35:40, Krzysztof Kozlowski wrote:
-> >> On 26/09/2022 21:01, Marijn Suijten wrote:
-> >>> Document support for the pm6125, typically paired with the sm6125 SoC.
-> >>>
-> >>> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> >>> ---
-> >>>  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 1 +
-> >>>  1 file changed, 1 insertion(+)
-> >>
-> >>
-> >> Please add Acked-by/Reviewed-by tags when posting new versions. However,
-> >> there's no need to repost patches *only* to add the tags. The upstream
-> >> maintainer will do that for acks received on the version they apply.
-> >>
-> >> https://elixir.bootlin.com/linux/v5.17/source/Documentation/process/submitting-patches.rst#L540
-> >>
-> >> If a tag was not added on purpose, please state why and what changed.
-> >>
-> >>
-> >> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > 
-> > https://lore.kernel.org/linux-arm-msm/0ec65132-7d7a-2f8d-cc16-cb76efc343d6@linaro.org/
-> > 
-> > Thanks, I thought of it this morning while browsing lore, but only got
-> > to a screen just now so you beat me to it by ~30 minutes.
-> > 
-> > No need to lecture me on the rules, but I can't promise this won't
-> > happen again.
+On 28/09/2022 10:23, Marijn Suijten wrote:
+>>
+>>
+>> This is a automated message, don't get it too personal. A lot of people
+>> are not aware they have to do it, so I just one, same reply. I don't
+>> know whether you are aware of the process and just forgot to include it.
+>> If that's the case, just ignore the message.
 > 
-> 
-> This is a automated message, don't get it too personal. A lot of people
-> are not aware they have to do it, so I just one, same reply. I don't
-> know whether you are aware of the process and just forgot to include it.
-> If that's the case, just ignore the message.
+> That's useful, what software are you using for this?  Perhaps I can run
+> it as well, both to preempt myself and others.
 
-That's useful, what software are you using for this?  Perhaps I can run
-it as well, both to preempt myself and others.
-(Side-note: I should get accustomed to `b4 shazam` to automatically pick
- this up from the list, instead of rebasing / re-applying local patches)
+https://gitlab.com/robherring/pw-utils/-/blob/master/mail-add-acks-reply
+https://gitlab.com/robherring/pw-utils/-/blob/master/pw-review#L97
 
-- Marijn
+> (Side-note: I should get accustomed to `b4 shazam` to automatically pick
+>  this up from the list, instead of rebasing / re-applying local patches)
+
+Would be nice if b4 could update patches in current branch adding the
+tags... but git reset --hard && b4 shazam should work as well.
+
+Best regards,
+Krzysztof
+
