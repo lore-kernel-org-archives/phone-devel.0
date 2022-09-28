@@ -2,129 +2,91 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 948EBC04A95
-	for <phone-devel@archiver.kernel.org>; Wed, 28 Sep 2022 15:08:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C662BC32771
+	for <phone-devel@archiver.kernel.org>; Wed, 28 Sep 2022 15:44:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234569AbiI1PIj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 28 Sep 2022 11:08:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56260 "EHLO
+        id S233720AbiI1Pou (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 28 Sep 2022 11:44:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234590AbiI1PIW (ORCPT
+        with ESMTP id S232989AbiI1Poq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 28 Sep 2022 11:08:22 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C4A8A61C3;
-        Wed, 28 Sep 2022 08:07:57 -0700 (PDT)
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28SD7VxB025413;
-        Wed, 28 Sep 2022 15:07:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=/47Ht7//mhgwSWimy2C3slpI0VY99tiss+qSnQf+Sfw=;
- b=RB+nyOF5BKH9l9x72j6mwe6cTjqK8+V+snuF0a7Y9cfhSJ7XKA/6khGfVu3+uOccMGWG
- hr8LBR4/omYzcI2k5PjdLwFSFztf1GzNNstdVPSybKMLCODSTrqkcnyJeBhkMVi15A+J
- IgV41I21qQkUkgN2zPpH6hLVn7kgcwuZXa/+mMgvfGBuwZNwGrPdCcyspUs4tH0xtQ4o
- L5k8rjYynPnNzb/aCL/WCxxG6OYTPyqeDuVVSepsFqTB61czt+b9sRiQV+tedtG2SisJ
- H+bJZaC1Sx1c10pi5khNGoetHnNVyGOwXZbnwhhKL5VkuVGg3PHEoH25d8SCRgD4YMTa Aw== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3jvpuv8dv9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 28 Sep 2022 15:07:46 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 28SF7jGa022777
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 28 Sep 2022 15:07:45 GMT
-Received: from [10.216.28.222] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 28 Sep
- 2022 08:07:41 -0700
-Message-ID: <fef52129-a2be-58a9-3725-a4fd345661c4@quicinc.com>
-Date:   Wed, 28 Sep 2022 20:37:37 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH] clk: qcom: gcc-sm6350: Update the .pwrsts for usb gdscs
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        <linux-arm-msm@vger.kernel.org>
-CC:     <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
+        Wed, 28 Sep 2022 11:44:46 -0400
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C972A31345
+        for <phone-devel@vger.kernel.org>; Wed, 28 Sep 2022 08:44:41 -0700 (PDT)
+Received: by mail-qk1-x730.google.com with SMTP id c19so8101208qkm.7
+        for <phone-devel@vger.kernel.org>; Wed, 28 Sep 2022 08:44:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=5VOCWcgoIsE/Ai5qpSZYr71NDjI2Cp8fJOu50Q8l/5U=;
+        b=XutHlQR+0NPVe/vdY3DgPVuRIpUanyWgtQAVORqNe0Xz5VDNquT360t8jD613El0J8
+         hPe102ZNvG5YG3fLSJVMl21VbEOIgeisxG6eBImQqO/C+pVVUoGUxSrEX8/f9vGo0hxx
+         5w18vt4hGlpQ9wCtvDds5/2tGL8MiOt23CL40=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=5VOCWcgoIsE/Ai5qpSZYr71NDjI2Cp8fJOu50Q8l/5U=;
+        b=l8b97zPpM4L80rBh+jwXpspa+c1LBODlnxbyAdCOv+fVT0ML1CPqphancpS9kcFnMU
+         lS/Sg+L39/gdfiq84xAqV6Z6/01qOtQWX2W5mpVT5ttuvAk4MvKu0zbDPz4z+BYqilPh
+         TnusZwnrDG1npmndyuRuzwKBe99mfouLgQtPJ1AZi7l4I2F447zxEqZXQcqvEfmtYnJh
+         jWxzrV3sy0vSwfmcMBlbD594gQb4EemFgwYcvx3+YuIR0kkUwiNTBqejtAflPhhU9bSg
+         3ghcwFzqqW31tWlsPw9DOabQXwgdabK5fdepfgahEiQ1uS4MPJy90CY32MBdYY9ON2Dk
+         y8NQ==
+X-Gm-Message-State: ACrzQf3E3iqZ+aj1zJfIw0LuvbJnHrvCrWazFYpRpHs43vRnM8u2y6qw
+        6c29LJ4y9ONweKkMT0pXN1neXw==
+X-Google-Smtp-Source: AMsMyM75sbeQKpLJRmaKGZvXkO+iZIio9WRSyymNmbzDHvF0X5OLH+JKbKG/mtRK99YHvJzKgZF8BQ==
+X-Received: by 2002:a05:620a:957:b0:6cd:ed32:ed2e with SMTP id w23-20020a05620a095700b006cded32ed2emr22041149qkw.48.1664379880623;
+        Wed, 28 Sep 2022 08:44:40 -0700 (PDT)
+Received: from meerkat.local (bras-base-mtrlpq5031w-grc-33-142-113-79-147.dsl.bell.ca. [142.113.79.147])
+        by smtp.gmail.com with ESMTPSA id h2-20020a05620a244200b006ccc96c78easm3249668qkn.134.2022.09.28.08.44.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Sep 2022 08:44:39 -0700 (PDT)
+Date:   Wed, 28 Sep 2022 11:44:37 -0400
+From:   Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, <linux-clk@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20220928132853.179425-1-luca.weiss@fairphone.com>
-From:   Rajendra Nayak <quic_rjendra@quicinc.com>
-In-Reply-To: <20220928132853.179425-1-luca.weiss@fairphone.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 49Yj00eN_HOGd0TL_YvxXg39YnWeUfAf
-X-Proofpoint-ORIG-GUID: 49Yj00eN_HOGd0TL_YvxXg39YnWeUfAf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-28_06,2022-09-28_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 phishscore=0 mlxlogscore=999 spamscore=0 suspectscore=0
- malwarescore=0 clxscore=1011 priorityscore=1501 mlxscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209280089
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] dt-bindings: mfd: qcom-spmi-pmic: Add pm6125
+ compatible
+Message-ID: <20220928154437.if3x2zf5yozhy5kt@meerkat.local>
+References: <20220926190148.283805-1-marijn.suijten@somainline.org>
+ <20220926190148.283805-2-marijn.suijten@somainline.org>
+ <052630d0-299e-e468-b2dd-266d371e2b0f@linaro.org>
+ <20220928081055.p66huqct2wnrsrdx@SoMainline.org>
+ <3f2e62f5-a6e4-7011-3f5b-29a6657eae79@linaro.org>
+ <20220928082340.mkn23ersrtzb5oth@SoMainline.org>
+ <2bd60261-a977-3225-8d41-4987252e6abb@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2bd60261-a977-3225-8d41-4987252e6abb@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Wed, Sep 28, 2022 at 10:30:00AM +0200, Krzysztof Kozlowski wrote:
+> > (Side-note: I should get accustomed to `b4 shazam` to automatically pick
+> >  this up from the list, instead of rebasing / re-applying local patches)
+> 
+> Would be nice if b4 could update patches in current branch adding the
+> tags... but git reset --hard && b4 shazam should work as well.
 
-On 9/28/2022 6:58 PM, Luca Weiss wrote:
-> The USB controllers on sm6350 do not retain the state when
-> the system goes into low power state and the GDSCs are
-> turned off.
-> 
-> This can be observed by the USB connection not coming back alive after
-> putting the device into suspend, essentially breaking USB.
-> 
-> Fix this by updating the .pwrsts for the USB GDSCs so they only
-> transition to retention state in low power.
-> 
-> Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> Similar to sc7180 & sc7280 patches that have been applied recently:
-> https://lore.kernel.org/linux-arm-msm/20220927170516.zrkzn3xl7oedzi4l@builder.lan/T/
-> 
-> @Rajendra Nayak: Maybe you know a bit more about the internals of
-> sm6350&sm7225. As described in the commit message USB just stops working
-> after suspend, with this it comes back after wakeup from suspend and
-> continues working. If any details in the commit message are somehow
-> wrong or I can add something, please let me know!
+FYI, it can do just that using "b4 trailers -uF [msgid]". See:
+https://b4.docs.kernel.org/en/stable-0.10.y/contributor/trailers.html
 
-ah right, this seems like the exact same case as sc7180 and sc7280,
-the only additional thing to mention perhaps is that these SoCs
-only support CX RET (I don't know but I am guessing they don't support
-CX PowerCollapse since you said your change worked) and hence there are
-no cxcs entries populated.
-
-> Thanks for fixing this on sc7180&sc7280!
-> 
->   drivers/clk/qcom/gcc-sm6350.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
-> index 69412400efa4..9b4e4bb05963 100644
-> --- a/drivers/clk/qcom/gcc-sm6350.c
-> +++ b/drivers/clk/qcom/gcc-sm6350.c
-> @@ -2316,7 +2316,7 @@ static struct gdsc usb30_prim_gdsc = {
->   	.pd = {
->   		.name = "usb30_prim_gdsc",
->   	},
-> -	.pwrsts = PWRSTS_OFF_ON,
-> +	.pwrsts = PWRSTS_RET_ON,
->   };
->   
->   static struct gdsc ufs_phy_gdsc = {
+-K
