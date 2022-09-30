@@ -2,71 +2,88 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EBB73C43219
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Sep 2022 16:45:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 289C4C4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 30 Sep 2022 12:31:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235930AbiI2Qpq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Sep 2022 12:45:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59990 "EHLO
+        id S229646AbiI3Mba (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 30 Sep 2022 08:31:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235922AbiI2Qpn (ORCPT
+        with ESMTP id S230257AbiI3Mb3 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Sep 2022 12:45:43 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 193FB1176F9;
-        Thu, 29 Sep 2022 09:45:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Fri, 30 Sep 2022 08:31:29 -0400
+Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7FF5106517
+        for <phone-devel@vger.kernel.org>; Fri, 30 Sep 2022 05:31:23 -0700 (PDT)
+Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 62F9DB82366;
-        Thu, 29 Sep 2022 16:45:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E831C43141;
-        Thu, 29 Sep 2022 16:45:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664469939;
-        bh=RU7BmP5Ql0DSymD3nPR+25XUkv4WRt4tITI9LnKOcNA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G3VwGI9X1eVQlICptnrTyV/D7AUk1bGaMswPZrYPbsAVdt2DU4RUR4S6Lg0vCZQaF
-         7Mpdesiik6SUJE//NEfOfYvtHsochHGDq4PZMpCHq8OM2wLXTGghJ9A6HKzPkreaWO
-         Lu4tCI8Aw8JggGknYMt9gOm7BAX33AWWG4AK9miD6wASSinGMNuCcZV4/hrMrVtY1V
-         5+bLev/dLpA10eUbh00+J1J3pnkxJB34ZHjweeoC+bf3Luwe6gVVeStIMy4gu5sz72
-         oxIJI9iUf7nMkfWH9+Szj1bKBtYqSc+qXuEBXcqPXgAdnPKyzdT893zQdeekuj0DEN
-         F0jN7f4UUJURQ==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     luca.weiss@fairphone.com, linux-arm-msm@vger.kernel.org
-Cc:     agross@kernel.org, quic_rjendra@quicinc.com,
-        mturquette@baylibre.com, linux-kernel@vger.kernel.org,
-        sboyd@kernel.org, phone-devel@vger.kernel.org,
-        konrad.dybcio@somainline.org, linux-clk@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH] clk: qcom: gcc-sm6350: Update the .pwrsts for usb gdscs
-Date:   Thu, 29 Sep 2022 11:45:34 -0500
-Message-Id: <166446992873.1979534.9316423661140953351.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220928132853.179425-1-luca.weiss@fairphone.com>
-References: <20220928132853.179425-1-luca.weiss@fairphone.com>
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 6F5AA1F67D;
+        Fri, 30 Sep 2022 14:31:20 +0200 (CEST)
+Date:   Fri, 30 Sep 2022 14:31:18 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] dt-bindings: mfd: qcom-spmi-pmic: Add pm6125
+ compatible
+Message-ID: <20220930123118.nkmajihodvxgqdvw@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20220926190148.283805-1-marijn.suijten@somainline.org>
+ <20220926190148.283805-2-marijn.suijten@somainline.org>
+ <052630d0-299e-e468-b2dd-266d371e2b0f@linaro.org>
+ <20220928081055.p66huqct2wnrsrdx@SoMainline.org>
+ <3f2e62f5-a6e4-7011-3f5b-29a6657eae79@linaro.org>
+ <20220928082340.mkn23ersrtzb5oth@SoMainline.org>
+ <2bd60261-a977-3225-8d41-4987252e6abb@linaro.org>
+ <20220928154437.if3x2zf5yozhy5kt@meerkat.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220928154437.if3x2zf5yozhy5kt@meerkat.local>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 28 Sep 2022 15:28:54 +0200, Luca Weiss wrote:
-> The USB controllers on sm6350 do not retain the state when
-> the system goes into low power state and the GDSCs are
-> turned off.
+On 2022-09-28 11:44:37, Konstantin Ryabitsev wrote:
+> On Wed, Sep 28, 2022 at 10:30:00AM +0200, Krzysztof Kozlowski wrote:
+> > > (Side-note: I should get accustomed to `b4 shazam` to automatically pick
+> > >  this up from the list, instead of rebasing / re-applying local patches)
+> > 
+> > Would be nice if b4 could update patches in current branch adding the
+> > tags... but git reset --hard && b4 shazam should work as well.
 > 
-> This can be observed by the USB connection not coming back alive after
-> putting the device into suspend, essentially breaking USB.
-> 
-> [...]
+> FYI, it can do just that using "b4 trailers -uF [msgid]". See:
+> https://b4.docs.kernel.org/en/stable-0.10.y/contributor/trailers.html
 
-Applied, thanks!
+That's super cool and will save a lot of time.  I'll also have to get
+accustomed to `b4 prep` and `b4 send`, though typically prefer to look
+at the `diff` between two `format-patch` revisions to make sure the
+changelog is complete and no erratic changes made it in.
 
-[1/1] clk: qcom: gcc-sm6350: Update the .pwrsts for usb gdscs
-      commit: a01ef02093ac45cc4991dbf93134c3cb4c293c32
-
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+- Marijn
