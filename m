@@ -2,42 +2,58 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A22AC433F5
-	for <phone-devel@archiver.kernel.org>; Sat,  1 Oct 2022 20:28:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40B46C433FE
+	for <phone-devel@archiver.kernel.org>; Sat,  1 Oct 2022 20:37:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbiJAU2R (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 1 Oct 2022 16:28:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36740 "EHLO
+        id S229591AbiJAUhW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 1 Oct 2022 16:37:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbiJAU2Q (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 1 Oct 2022 16:28:16 -0400
-Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A27541993
-        for <phone-devel@vger.kernel.org>; Sat,  1 Oct 2022 13:28:15 -0700 (PDT)
-Received: from [192.168.1.101] (95.49.31.201.neoplus.adsl.tpnet.pl [95.49.31.201])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        with ESMTP id S229470AbiJAUhV (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 1 Oct 2022 16:37:21 -0400
+Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [5.144.164.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 879D21C92A;
+        Sat,  1 Oct 2022 13:37:20 -0700 (PDT)
+Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id C97B8202FB;
-        Sat,  1 Oct 2022 22:28:12 +0200 (CEST)
-Message-ID: <6b76b7a4-cf18-345b-629f-f10d608433a1@somainline.org>
-Date:   Sat, 1 Oct 2022 22:28:12 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH 3/5] drm/msm/dsi: Account for DSC's bits_per_pixel having
- 4 fractional bits
-Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 52146200D5;
+        Sat,  1 Oct 2022 22:37:18 +0200 (CEST)
+Date:   Sat, 1 Oct 2022 22:37:17 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Vinod Koul <vkoul@kernel.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+        Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH 3/5] drm/msm/dsi: Account for DSC's bits_per_pixel having
+ 4 fractional bits
+Message-ID: <20221001203717.3cgzlh3xeadk45ia@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
         Daniel Vetter <daniel@ffwll.ch>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
         Sean Paul <sean@poorly.run>,
@@ -51,17 +67,18 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Marek Vasut <marex@denx.de>
 References: <20221001190807.358691-1-marijn.suijten@somainline.org>
  <20221001190807.358691-4-marijn.suijten@somainline.org>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20221001190807.358691-4-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Doing some self-review as these patches accrued some bit-rot while
+waiting to be sent.
 
-
-On 1.10.2022 21:08, Marijn Suijten wrote:
+On 2022-10-01 21:08:05, Marijn Suijten wrote:
 > drm_dsc_config's bits_per_pixel field holds a fractional value with 4
 > bits, which all panel drivers should adhere to for
 > drm_dsc_pps_payload_pack() to generate a valid payload.  All code in the
@@ -74,9 +91,6 @@ On 1.10.2022 21:08, Marijn Suijten wrote:
 > Fixes: b9080324d6ca ("drm/msm/dsi: add support for dsc data")
 > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 > ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-
-Konrad
 >  drivers/gpu/drm/msm/dsi/dsi_host.c | 34 +++++++++++++++++++++++-------
 >  1 file changed, 26 insertions(+), 8 deletions(-)
 > 
@@ -89,10 +103,21 @@ Konrad
 >  	u32 bytes_in_slice;
 >  	u32 eol_byte_num;
 > +	int bpp = dsc->bits_per_pixel >> 4;
+
+This should have been u16 instead of int.
+
 > +
 > +	if (dsc->bits_per_pixel & 0xf)
+
+Should there be a define for this mask?
+
 > +		/* dsi_populate_dsc_params() already caught this case */
 > +		pr_err("DSI does not support fractional bits_per_pixel\n");
+
+This file mostly uses pr_err(), but it's probably cleaner to use
+DRM_DEV_ERROR(&msm_host->pdev->dev, ...) even though it's not prevalent
+yet?
+
 >  
 >  	/* first calculate dsc parameters and then program
 >  	 * compress mode registers
@@ -140,6 +165,11 @@ Konrad
 >  	int final_value, final_scale;
 >  	int i;
 > +	int bpp = dsc->bits_per_pixel >> 4;
+
+Same u16 here.
+
+- Marijn
+
 > +
 > +	if (dsc->bits_per_pixel & 0xf) {
 > +		pr_err("DSI does not support fractional bits_per_pixel\n");
@@ -187,3 +217,6 @@ Konrad
 >  
 >  	data = (dsc->initial_xmit_delay * target_bpp_x16) / 16;
 >  	final_value =  dsc->rc_model_size - data + num_extra_mux_bits;
+> -- 
+> 2.37.3
+> 
