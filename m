@@ -2,35 +2,40 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A6607C433F5
-	for <phone-devel@archiver.kernel.org>; Sat,  1 Oct 2022 19:08:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2958C433FE
+	for <phone-devel@archiver.kernel.org>; Sat,  1 Oct 2022 20:19:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229683AbiJATIr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 1 Oct 2022 15:08:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33576 "EHLO
+        id S229638AbiJAUT3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 1 Oct 2022 16:19:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229702AbiJATIg (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 1 Oct 2022 15:08:36 -0400
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [5.144.164.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 407B83A4BA;
-        Sat,  1 Oct 2022 12:08:33 -0700 (PDT)
-Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        with ESMTP id S229598AbiJAUT2 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 1 Oct 2022 16:19:28 -0400
+Received: from relay02.th.seeweb.it (relay02.th.seeweb.it [5.144.164.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38069386BA
+        for <phone-devel@vger.kernel.org>; Sat,  1 Oct 2022 13:19:27 -0700 (PDT)
+Received: from [192.168.1.101] (95.49.31.201.neoplus.adsl.tpnet.pl [95.49.31.201])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id A30C02037E;
-        Sat,  1 Oct 2022 21:08:31 +0200 (CEST)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 4E1441F672;
+        Sat,  1 Oct 2022 22:19:24 +0200 (CEST)
+Message-ID: <588a89b0-23d5-8d4c-52cb-5f0cfe391e6e@somainline.org>
+Date:   Sat, 1 Oct 2022 22:19:23 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH 1/5] drm/msm/dsi: Remove useless math in DSC calculation
+Content-Language: en-US
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Vinod Koul <vkoul@kernel.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
@@ -42,54 +47,48 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Vladimir Lypak <vladimir.lypak@gmail.com>,
         dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-        Lyude Paul <lyude@redhat.com>
-Subject: [PATCH 5/5] drm/dsc: Prevent negative BPG offsets from shadowing adjacent bitfields
-Date:   Sat,  1 Oct 2022 21:08:07 +0200
-Message-Id: <20221001190807.358691-6-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20221001190807.358691-1-marijn.suijten@somainline.org>
+        Marek Vasut <marex@denx.de>
 References: <20221001190807.358691-1-marijn.suijten@somainline.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ <20221001190807.358691-2-marijn.suijten@somainline.org>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+In-Reply-To: <20221001190807.358691-2-marijn.suijten@somainline.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-msm's dsi_host specifies negative BPG offsets which fill the full 8 bits
-of a char thanks to two's complement: this however results in those bits
-bleeding into the next parameter when the field is only expected to
-contain 6-bit wide values.
-As a consequence random slices appear corrupted on-screen (tested on a
-Sony Tama Akatsuki device with sdm845).
 
-Use AND operators to limit all values that constitute the RC Range
-parameter fields to their expected size.
 
-Fixes: b9080324d6ca ("drm/msm/dsi: add support for dsc data")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- drivers/gpu/drm/display/drm_dsc_helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+On 1.10.2022 21:08, Marijn Suijten wrote:
+> Multiplying a value by 2 and adding 1 to it always results in a value
+> that is uneven, and that 1 gets truncated immediately when performing
+> integer division by 2 again.  There is no "rounding" possible here.
+> 
+> Fixes: b9080324d6ca ("drm/msm/dsi: add support for dsc data")
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 
-diff --git a/drivers/gpu/drm/display/drm_dsc_helper.c b/drivers/gpu/drm/display/drm_dsc_helper.c
-index c869c6e51e2b..2e7ef242685d 100644
---- a/drivers/gpu/drm/display/drm_dsc_helper.c
-+++ b/drivers/gpu/drm/display/drm_dsc_helper.c
-@@ -243,11 +243,11 @@ void drm_dsc_pps_payload_pack(struct drm_dsc_picture_parameter_set *pps_payload,
- 	 */
- 	for (i = 0; i < DSC_NUM_BUF_RANGES; i++) {
- 		pps_payload->rc_range_parameters[i] =
--			cpu_to_be16((dsc_cfg->rc_range_params[i].range_min_qp <<
-+			cpu_to_be16(((dsc_cfg->rc_range_params[i].range_min_qp & 0x1f) <<
- 				     DSC_PPS_RC_RANGE_MINQP_SHIFT) |
--				    (dsc_cfg->rc_range_params[i].range_max_qp <<
-+				    ((dsc_cfg->rc_range_params[i].range_max_qp & 0x1f) <<
- 				     DSC_PPS_RC_RANGE_MAXQP_SHIFT) |
--				    (dsc_cfg->rc_range_params[i].range_bpg_offset));
-+				    (dsc_cfg->rc_range_params[i].range_bpg_offset & 0x3f));
- 	}
- 
- 	/* PPS 88 */
--- 
-2.37.3
-
+Konrad
+>  drivers/gpu/drm/msm/dsi/dsi_host.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+> index 8e4bc586c262..e05bae647431 100644
+> --- a/drivers/gpu/drm/msm/dsi/dsi_host.c
+> +++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+> @@ -1864,12 +1864,7 @@ static int dsi_populate_dsc_params(struct drm_dsc_config *dsc)
+>  	data = 2048 * (dsc->rc_model_size - dsc->initial_offset + num_extra_mux_bits);
+>  	dsc->slice_bpg_offset = DIV_ROUND_UP(data, groups_total);
+>  
+> -	/* bpp * 16 + 0.5 */
+> -	data = dsc->bits_per_pixel * 16;
+> -	data *= 2;
+> -	data++;
+> -	data /= 2;
+> -	target_bpp_x16 = data;
+> +	target_bpp_x16 = dsc->bits_per_pixel * 16;
+>  
+>  	data = (dsc->initial_xmit_delay * target_bpp_x16) / 16;
+>  	final_value =  dsc->rc_model_size - data + num_extra_mux_bits;
