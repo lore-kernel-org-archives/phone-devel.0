@@ -2,155 +2,98 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 47048C4167B
-	for <phone-devel@archiver.kernel.org>; Sun,  2 Oct 2022 12:30:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 697E7C433FE
+	for <phone-devel@archiver.kernel.org>; Sun,  2 Oct 2022 13:19:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229965AbiJBMaD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 2 Oct 2022 08:30:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36188 "EHLO
+        id S229835AbiJBNT0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 2 Oct 2022 09:19:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229810AbiJBM3x (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 2 Oct 2022 08:29:53 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03BB313EA0;
-        Sun,  2 Oct 2022 05:29:43 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id g1so13088681lfu.12;
-        Sun, 02 Oct 2022 05:29:43 -0700 (PDT)
+        with ESMTP id S229832AbiJBNTZ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 2 Oct 2022 09:19:25 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45EAF459A6
+        for <phone-devel@vger.kernel.org>; Sun,  2 Oct 2022 06:19:22 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id 13so17470877ejn.3
+        for <phone-devel@vger.kernel.org>; Sun, 02 Oct 2022 06:19:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=tSDcJlqQNFjQidf92tfYh99jD2wD2Br/7/lRU6P6wMg=;
-        b=Dimv7vxPQZpWrJp/PddtVyf0puzE34C3348XRZbpYqHJIszjrYgI2cmTn+Qzlg63OI
-         BMcZbLSzXQp+eZTY5LpBAfrv0dlDkifZetoRyZ6vJubGY+obEj5eb0qjWLm5dCmgzW9n
-         w7RQTzvEuQFC/GiyfYGCGeRhDJi/UchnaHC5lLehBo45an2rkgnFKs3s5nr5++b0oVnl
-         tZtrvZDYdA6jUbiv6AUvpLtgspsp+w0wsblVSQ8Qe9CZ3a0Oj2Zc1qWACx0i0qWmG4u+
-         mEIG60P0fA5aNdYriOY0lJYJ5ERxCxKjfBvvQZBT75vG0CmfZh17KdqGih8Q+PKnkHHv
-         EKfg==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date;
+        bh=j5VIVRriTeMDEX6uw2Y4xbQwFPhK4bKzLdrKvFJvgWY=;
+        b=eD/dIrkrEXHvc6HN3YLNoYEkOWq089SFWTiGMpQW+NmuNbxs8b0sWgmUdIpFvqLBPo
+         4RhQPeYXGWkqL1N4TDA2cYcj3cRwX3euqIMvKVb17pn2rZBNFezeAtTJV4GnFQeDFaR8
+         LO5IiLsc4XuDQn7jL7c+FIOGOO7fNGBKZtEKrLOpjqyWi3/obHGDjr+skM3tDOdCgA3b
+         /bGmYcOJY1VqunFv9y3Q3Re+j5Y1e3nyZ6PVy3MvQ9Jm6UIVo5miBkOQn0GAIRPv+9cX
+         qasPpzvU6HiOXbzeWfWikuRG6ZNOB26FymdDuZw/NewlyX3YibeMWJmKN+TvwW5vUUAl
+         HHqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=tSDcJlqQNFjQidf92tfYh99jD2wD2Br/7/lRU6P6wMg=;
-        b=LLJ4+xY4Fa29i/qoh4GSMilAj6qQDGSFMF5hVW4LUqSJWBjqI32LUFA6gcK3lmwhRA
-         p1tGLP2wJsP4fZQtFSKddMPJGFE+8/mL42y6FSfLceUYfXfNcblubxYT5rnFXj9sSqSQ
-         V6vgI9jZAcNJVfSAbYMz9qpSx/ErejOMEE9kr2sDHjUFAoPy0OO7DDyEe2YagYu/0fxQ
-         LbBUTod1Y3VdN0Fx6lnnY9kXTxoArPf+yVupQOGkicLLKMZnlDRCNRP+NVYr0aSQnpx8
-         aOKaO8MA977A1GQB6BLO0ER3xjjDb6rdnJzZnQ3uZgpZpnHf/iUdt9A09X94Ik2FTGBU
-         1MKg==
-X-Gm-Message-State: ACrzQf1MgEi8REATJNRZjn+mFy0x98CX5Q8ukoQExk3jmUdsRAcw5AIV
-        ki5sSOB7kD3IJcPy0FkTw9VtYmfCkn0dcw==
-X-Google-Smtp-Source: AMsMyM4KWd3a64QztwV2L6NJ6Y/3q1iKGAJcM23lokj28JK5mZFg1ngDpgpFZ6yMmWoS7hOxyDYWZQ==
-X-Received: by 2002:a05:6512:b8e:b0:497:fef2:80e2 with SMTP id b14-20020a0565120b8e00b00497fef280e2mr5462075lfv.257.1664713781677;
-        Sun, 02 Oct 2022 05:29:41 -0700 (PDT)
-Received: from i-vetokaappi.home.lan (dsl-hkibng42-5673c7-93.dhcp.inet.fi. [86.115.199.93])
-        by smtp.gmail.com with ESMTPSA id v18-20020a197412000000b0049493c14b17sm1064948lfe.181.2022.10.02.05.29.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Oct 2022 05:29:41 -0700 (PDT)
-From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rayyan Ansari <rayyan@ansari.sh>,
-        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v1 5/6] ARM: dts: qcom: msm8226: Add CCI bus
-Date:   Sun,  2 Oct 2022 15:28:57 +0300
-Message-Id: <20221002122859.75525-6-matti.lehtimaki@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221002122859.75525-1-matti.lehtimaki@gmail.com>
-References: <20221002122859.75525-1-matti.lehtimaki@gmail.com>
+        bh=j5VIVRriTeMDEX6uw2Y4xbQwFPhK4bKzLdrKvFJvgWY=;
+        b=jQnu+Fsh5Hcwr4E2MO54f4hZ0nhVJ3csmXymmJO/1FfFVKe0GQM3tKQdt/IWrgdmqe
+         izPpDOKp1bKFONedJYb/LrAcvTuqgktJXb2e2u4xGPn5RLaRP7oeVJGnv7Z6K3cLzPMR
+         QWlEgbGuS/bXyVYesJuhreKPkVfRvIkCsUTAsDmlfNb+2qdzaK96gWZEjWZZ3dsbYDRe
+         ORKJVIf3MV3pI+8PhbzpVLcO7TJzVfewhf1NLks2K6tG58ucSuAKuzOci5Es8EspocbR
+         deMBd4FF10zelNQGQITVAzxhCYAIPf3909rh3bx0xeCzyFnWjMg4kzHleQbFhhLcBw7h
+         JSSA==
+X-Gm-Message-State: ACrzQf2ryOld3sRydB62IhLPd0qWiz+4m9qXgGkaz0TL+D4Gc5sOi34b
+        zQ8yGi8v668CMhnKCht2gkYYqf+F9pKuAv0ZMJ5jd8U380k=
+X-Google-Smtp-Source: AMsMyM6iABEfAOs5DtiWbQTwYgEPjrgjh3sVpQ1UOTEoRS7Z3axNDaneB55QeVHNVhkv9tJs8L5HL/ahTxM5gVH2O38=
+X-Received: by 2002:a17:907:843:b0:73a:5b0e:8352 with SMTP id
+ ww3-20020a170907084300b0073a5b0e8352mr12396036ejb.438.1664716760535; Sun, 02
+ Oct 2022 06:19:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20221002122859.75525-1-matti.lehtimaki@gmail.com> <20221002122859.75525-5-matti.lehtimaki@gmail.com>
+In-Reply-To: <20221002122859.75525-5-matti.lehtimaki@gmail.com>
+From:   Loic Poulain <loic.poulain@linaro.org>
+Date:   Sun, 2 Oct 2022 15:18:44 +0200
+Message-ID: <CAMZdPi99qiCagqehoTyCuE19CeP-WvvePgHaSqGku-qBHg0xvQ@mail.gmail.com>
+Subject: Re: [PATCH v1 4/6] i2c: qcom-cci: Add MSM8226 compatible
+To:     =?UTF-8?Q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Rayyan Ansari <rayyan@ansari.sh>,
+        Robert Foss <robert.foss@linaro.org>,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Rayyan Ansari <rayyan@ansari.sh>
+On Sun, 2 Oct 2022 at 14:29, Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.co=
+m> wrote:
+>
+> From: Rayyan Ansari <rayyan@ansari.sh>
+>
+> Add a compatible for MSM8226's Camera Control Interface, which is
+> similar to the one used on MSM8916.
+>
+> Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
+> Signed-off-by: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
 
-Add a node for the Camera Control Interface I2C bus found on MSM8226.
+Reviewed-by: Loic Poulain <loic.poulain@linaro.org>
 
-Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
----
- arch/arm/boot/dts/qcom-msm8226.dtsi | 44 +++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
-
-diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
-index e039128028bc..f5411e209d7b 100644
---- a/arch/arm/boot/dts/qcom-msm8226.dtsi
-+++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
-@@ -7,6 +7,7 @@
- 
- #include <dt-bindings/interrupt-controller/arm-gic.h>
- #include <dt-bindings/clock/qcom,gcc-msm8974.h>
-+#include <dt-bindings/clock/qcom,mmcc-msm8974.h>
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/power/qcom-rpmpd.h>
- #include <dt-bindings/reset/qcom,gcc-msm8974.h>
-@@ -298,6 +299,33 @@ blsp1_i2c5: i2c@f9927000 {
- 			#size-cells = <0>;
- 		};
- 
-+		cci: cci@fda0c000 {
-+			compatible = "qcom,msm8226-cci";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0xfda0c000 0x1000>;
-+			interrupts = <GIC_SPI 50 IRQ_TYPE_EDGE_RISING>;
-+			clocks = <&mmcc CAMSS_TOP_AHB_CLK>,
-+				 <&mmcc CAMSS_CCI_CCI_AHB_CLK>,
-+				 <&mmcc CAMSS_CCI_CCI_CLK>;
-+			clock-names = "camss_top_ahb",
-+				      "cci_ahb",
-+				      "cci";
-+
-+			pinctrl-names = "default", "sleep";
-+			pinctrl-0 = <&cci_default>;
-+			pinctrl-1 = <&cci_sleep>;
-+
-+			status = "disabled";
-+
-+			cci_i2c0: i2c-bus@0 {
-+				reg = <0>;
-+				clock-frequency = <400000>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+			};
-+		};
-+
- 		usb: usb@f9a55000 {
- 			compatible = "qcom,ci-hdrc";
- 			reg = <0xf9a55000 0x200>,
-@@ -397,6 +425,22 @@ blsp1_i2c5_pins: blsp1-i2c5 {
- 				bias-disable;
- 			};
- 
-+			cci_default: cci-default-state {
-+				pins = "gpio29", "gpio30";
-+				function = "cci_i2c0";
-+
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
-+			cci_sleep: cci-sleep-state {
-+				pins = "gpio29", "gpio30";
-+				function = "gpio";
-+
-+				drive-strength = <2>;
-+				bias-disable;
-+			};
-+
- 			sdhc1_default_state: sdhc1-default-state {
- 				clk {
- 					pins = "sdc1_clk";
--- 
-2.34.1
-
+> ---
+>  drivers/i2c/busses/i2c-qcom-cci.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/i2c/busses/i2c-qcom-cci.c b/drivers/i2c/busses/i2c-q=
+com-cci.c
+> index ea48e6a9cfca..87739fb4388b 100644
+> --- a/drivers/i2c/busses/i2c-qcom-cci.c
+> +++ b/drivers/i2c/busses/i2c-qcom-cci.c
+> @@ -807,6 +807,7 @@ static const struct cci_data cci_v2_data =3D {
+>  };
+>
+>  static const struct of_device_id cci_dt_match[] =3D {
+> +       { .compatible =3D "qcom,msm8226-cci", .data =3D &cci_v1_data},
+>         { .compatible =3D "qcom,msm8916-cci", .data =3D &cci_v1_data},
+>         { .compatible =3D "qcom,msm8974-cci", .data =3D &cci_v1_5_data},
+>         { .compatible =3D "qcom,msm8996-cci", .data =3D &cci_v2_data},
+> --
+> 2.34.1
+>
