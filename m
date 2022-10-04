@@ -2,156 +2,125 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64A8EC433F5
-	for <phone-devel@archiver.kernel.org>; Tue,  4 Oct 2022 21:57:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 73DE4C433FE
+	for <phone-devel@archiver.kernel.org>; Tue,  4 Oct 2022 22:12:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229555AbiJDV5w (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 4 Oct 2022 17:57:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49798 "EHLO
+        id S230160AbiJDWMK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 4 Oct 2022 18:12:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229598AbiJDV5u (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 4 Oct 2022 17:57:50 -0400
-Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [5.144.164.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0B1C3055E
-        for <phone-devel@vger.kernel.org>; Tue,  4 Oct 2022 14:57:48 -0700 (PDT)
+        with ESMTP id S231284AbiJDWLp (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 4 Oct 2022 18:11:45 -0400
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C435B6C111
+        for <phone-devel@vger.kernel.org>; Tue,  4 Oct 2022 15:11:37 -0700 (PDT)
 Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 3A869200F1;
-        Tue,  4 Oct 2022 23:57:46 +0200 (CEST)
-Date:   Tue, 4 Oct 2022 23:57:45 +0200
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 5CD8A20088;
+        Wed,  5 Oct 2022 00:11:35 +0200 (CEST)
+Date:   Wed, 5 Oct 2022 00:11:34 +0200
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     Abhinav Kumar <quic_abhinavk@quicinc.com>
 Cc:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
+        Vinod Koul <vkoul@kernel.org>, freedreno@lists.freedesktop.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        linux-arm-msm@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        dri-devel@lists.freedesktop.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Martin Botka <martin.botka@somainline.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Sean Paul <sean@poorly.run>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
         Alex Deucher <alexander.deucher@amd.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-        Lyude Paul <lyude@redhat.com>
-Subject: Re: [PATCH 5/5] drm/dsc: Prevent negative BPG offsets from shadowing
- adjacent bitfields
-Message-ID: <20221004215745.zdfvulqx4exlujgk@SoMainline.org>
+        Sean Paul <sean@poorly.run>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/5] drm/msm/dpu1: Account for DSC's bits_per_pixel
+ having 4 fractional bits
+Message-ID: <20221004221134.roino4u2waawgh6u@SoMainline.org>
 Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
         phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
+        Vinod Koul <vkoul@kernel.org>, freedreno@lists.freedesktop.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        linux-arm-msm@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        dri-devel@lists.freedesktop.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Martin Botka <martin.botka@somainline.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Sean Paul <sean@poorly.run>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
         Alex Deucher <alexander.deucher@amd.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-        Lyude Paul <lyude@redhat.com>
+        Sean Paul <sean@poorly.run>, linux-kernel@vger.kernel.org
 References: <20221001190807.358691-1-marijn.suijten@somainline.org>
- <20221001190807.358691-6-marijn.suijten@somainline.org>
- <55d7e20b-79cd-ece6-b643-8b542beb7474@quicinc.com>
+ <20221001190807.358691-5-marijn.suijten@somainline.org>
+ <7f7a5d78-e50f-b6af-bb3e-bbfbc7fa5f75@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <55d7e20b-79cd-ece6-b643-8b542beb7474@quicinc.com>
+In-Reply-To: <7f7a5d78-e50f-b6af-bb3e-bbfbc7fa5f75@quicinc.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-10-04 13:22:25, Abhinav Kumar wrote:
+On 2022-10-04 10:03:07, Abhinav Kumar wrote:
+> 
 > 
 > On 10/1/2022 12:08 PM, Marijn Suijten wrote:
-> > msm's dsi_host specifies negative BPG offsets which fill the full 8 bits
-> > of a char thanks to two's complement: this however results in those bits
-> > bleeding into the next parameter when the field is only expected to
-> > contain 6-bit wide values.
-> > As a consequence random slices appear corrupted on-screen (tested on a
-> > Sony Tama Akatsuki device with sdm845).
+> > According to the comment this DPU register contains the bits per pixel
+> > as a 6.4 fractional value, conveniently matching the contents of
+> > bits_per_pixel in struct drm_dsc_config which also uses 4 fractional
+> > bits.  However, the downstream source this implementation was
+> > copy-pasted from has its bpp field stored _without_ fractional part.
 > > 
-> > Use AND operators to limit all values that constitute the RC Range
-> > parameter fields to their expected size.
+> > This makes the entire convoluted math obsolete as it is impossible to
+> > pull those 4 fractional bits out of thin air, by somehow trying to reuse
+> > the lowest 2 bits of a non-fractional bpp (lsb = bpp % 4??).
 > > 
-> > Fixes: b9080324d6ca ("drm/msm/dsi: add support for dsc data")
+> > The rest of the code merely attempts to keep the integer part a multiple
+> > of 4, which is rendered useless thanks to data |= dsc->bits_per_pixel <<
+> > 12; already filling up those bits anyway (but not on downstream).
+> > 
+> > Fixes: c110cfd1753e ("drm/msm/disp/dpu1: Add support for DSC")
 > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > ---
-> >   drivers/gpu/drm/display/drm_dsc_helper.c | 6 +++---
-> >   1 file changed, 3 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/display/drm_dsc_helper.c b/drivers/gpu/drm/display/drm_dsc_helper.c
-> > index c869c6e51e2b..2e7ef242685d 100644
-> > --- a/drivers/gpu/drm/display/drm_dsc_helper.c
-> > +++ b/drivers/gpu/drm/display/drm_dsc_helper.c
-> > @@ -243,11 +243,11 @@ void drm_dsc_pps_payload_pack(struct drm_dsc_picture_parameter_set *pps_payload,
-> >   	 */
-> >   	for (i = 0; i < DSC_NUM_BUF_RANGES; i++) {
-> >   		pps_payload->rc_range_parameters[i] =
-> > -			cpu_to_be16((dsc_cfg->rc_range_params[i].range_min_qp <<
-> > +			cpu_to_be16(((dsc_cfg->rc_range_params[i].range_min_qp & 0x1f) <<
-> >   				     DSC_PPS_RC_RANGE_MINQP_SHIFT) |
-> > -				    (dsc_cfg->rc_range_params[i].range_max_qp <<
-> > +				    ((dsc_cfg->rc_range_params[i].range_max_qp & 0x1f) <<
-> >   				     DSC_PPS_RC_RANGE_MAXQP_SHIFT) |
-> > -				    (dsc_cfg->rc_range_params[i].range_bpg_offset));
-> > +				    (dsc_cfg->rc_range_params[i].range_bpg_offset & 0x3f));
-> >   	}
-> >   
 > 
-> Looking at some examples of this for other vendors, they have managed to 
-> limit the value to 6 bits in their drivers:
-> 
-> https://gitlab.freedesktop.org/drm/msm/-/blob/msm-next/drivers/gpu/drm/i915/display/intel_vdsc.c#L532
-> 
-> https://gitlab.freedesktop.org/drm/msm/-/blob/msm-next/drivers/gpu/drm/amd/display/dc/dsc/rc_calc_dpi.c#L87
-> 
-> Perhaps, msm should do the same thing instead of the helper change.
+> Many of this bugs are because the downstream code from which this 
+> implementation was derived wasnt the latest perhaps?
 
-Thanks, I should have done my due-diligence and look up how other
-drivers dealt with this, but wasn't immediately expecting negative
-values elsewhere.
+Perhaps, this code is "identical" to what I'm looking at in some
+downstream 4.14 / 4.19, where the upstream struct for DSC either wasn't
+there or wasn't used.  We have to find and address these bugs one by one
+to make our panels work, and this series gets one platform (sdm845) down
+but has more work pending for others (sm8250 has my current focus).
 
-Alas, as explained in the cover letter I opted to perform the masking in
-the PPS packing code as the DSC block code also reads these values, and
-would suddenly write 6-bit intead of 8-bit values to the
-DSC_RANGE_BPG_OFFSET registers.  Quick testing on the mentioned sdm845
-platform shows no regressions, but I'm not sure if that's safe to rely
-on?
+Or are you suggesting to "redo" the DSC integration work based on a
+(much) newer display techpack (SDE driver)?
 
-> If you want to move to helper, other drivers need to be changed too to 
-> remove duplicate & 0x3f.
+> Earlier, downstream had its own DSC struct maybe leading to this 
+> redundant math but now we have migrated over to use the upstream struct 
+> drm_dsc_config.
 
-Sure, we only have to confirm whether those drivers also read back the
-value(s) in rc_range_params, and expect / allow this to be 8 instead of
-6 bits.
+Found the 3-year-old `disp: msm: use upstream dsc config data` commit
+that makes this change.  It carries a similar comment:
 
-> FWIW, this too has already been fixed in the latest downstream driver too.
+    /* integer bpp support only */
 
-What is this supposed to mean?  Is there a downstream DPU project that
-has pending patches needing to be upstreamed?  Or is the downstream SDE,
-techpack/display, or whatever it is called nowadays, slowly using more
-DRM structs like drm_dsc_config and this drm_dsc_pps_payload_pack()
-helper function as pointed out in an earlier mail?
+The superfluous math was howerver removed earlier, in:
 
-Offtopic: are SDE and DPU growing closer together, hopefully achieving
-feature parity allowing the SDE project to be dropped in favour of a
-fully upstreamed DPU driver for day-one out-of-the-box mainline support
-for new SoCs (as long as work is published and on its way upstream)?
+    disp: msm: fix dsc parameters related to 10 bpc 10 bpp
 
 - Marijn
+
+> That being said, this patch LGTM
+> Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
