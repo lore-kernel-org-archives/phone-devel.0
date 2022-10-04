@@ -2,41 +2,40 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EF004C433FE
-	for <phone-devel@archiver.kernel.org>; Tue,  4 Oct 2022 00:30:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EB28C433FE
+	for <phone-devel@archiver.kernel.org>; Tue,  4 Oct 2022 04:43:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229699AbiJDAag (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 3 Oct 2022 20:30:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36582 "EHLO
+        id S229481AbiJDEnH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 4 Oct 2022 00:43:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229781AbiJDAad (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 3 Oct 2022 20:30:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 100D7167FF;
-        Mon,  3 Oct 2022 17:30:32 -0700 (PDT)
+        with ESMTP id S229463AbiJDEnH (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 4 Oct 2022 00:43:07 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D8FD39B93;
+        Mon,  3 Oct 2022 21:43:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CC9B61155;
-        Tue,  4 Oct 2022 00:30:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1546EC433D6;
-        Tue,  4 Oct 2022 00:30:27 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C5697B818F6;
+        Tue,  4 Oct 2022 04:43:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECE7C433C1;
+        Tue,  4 Oct 2022 04:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664843430;
-        bh=oazTfsFDNvT2Iz6N7NI+gpkBcG9p2DmNk1jSJYgpP2k=;
+        s=k20201202; t=1664858583;
+        bh=eYy7EY3wMGZQPeArL+2hroT5fu2zAsiPf6zlIP9+Gm0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NQ35wMlT3S54e72vo+EytanCuWVMEhbhjQr779jzFBQXZ1k2l6lwYAugejfkTewtn
-         SKVbKue79GjDtCzBGDTQaXFlDQuS7tyhViby6VveExlP9Ox2bvv3m9D4trX74NQPtU
-         QenGKJj5n8PXIGTzRConO33yvAcU8tNLlTZPvpF/u7/GBM+15QDp/90xh4/5nNYEc9
-         BLXjjgQPtP360/6dYn44QGQ7R0mOMwB9YhyxBg32COC4X6WXos0dkxfsPG6rg6gjZb
-         KdAmpTorBSLUsQ0vSyxDhHDiVog2FBBv4sQNlnUxVXwHUEIs9q8982O5wi/erdWAWg
-         3t1HS91i1dyLg==
-Date:   Mon, 3 Oct 2022 19:30:25 -0500
-From:   Bjorn Andersson <andersson@kernel.org>
+        b=LwErs2ts4afxfSLyft8B10Lg3CRv3yfwGdn0RW2OozMWrmg6HpA9ebRxLny+aKKNl
+         ojMXD2JpInZesbJ5C5dH6v8X5akzAA/PjKH29ojszQdp4omrh4g9jD8HIkv6lVIx6o
+         htDoicY1k3fY3qPJ8ieSkRUnT0gitArCGM71VhiHUHHTn1cJB9DQ30yxOM9LhMPvXu
+         uAOTAWNlYUfxhGG3pg+o94/mxZBf2EBaVpfPMmIb9k6XY0egzYdYhqZPDxd0S8YLEs
+         fdlv5dGGUhf24B0/I15ZuweoCf4kZifJzlhds7tyC65N6caF0T1wCIcK82HzKarQbK
+         fIEzbrfEwVgOw==
+Date:   Tue, 4 Oct 2022 10:12:58 +0530
+From:   Vinod Koul <vkoul@kernel.org>
 To:     Marijn Suijten <marijn.suijten@somainline.org>
 Cc:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
@@ -53,65 +52,40 @@ Cc:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
         Douglas Anderson <dianders@chromium.org>,
         Vladimir Lypak <vladimir.lypak@gmail.com>,
         dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-        Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH 2/5] drm/msm/dsi: Remove repeated calculation of
- slice_per_intf
-Message-ID: <20221004003025.vyd5rnswpdb5n5g3@baldur>
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org
+Subject: Re: [PATCH 0/5] drm: Fix math issues in MSM DSC implementation
+Message-ID: <Yzu50ly1AxZwmyvi@matsya>
 References: <20221001190807.358691-1-marijn.suijten@somainline.org>
- <20221001190807.358691-3-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221001190807.358691-3-marijn.suijten@somainline.org>
+In-Reply-To: <20221001190807.358691-1-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Oct 01, 2022 at 09:08:04PM +0200, Marijn Suijten wrote:
-> slice_per_intf is already computed for intf_width, which holds the same
-> value as hdisplay.
+On 01-10-22, 21:08, Marijn Suijten wrote:
+> Various removals of complex yet unnecessary math, fixing all uses of
+> drm_dsc_config::bits_per_pixel to deal with the fact that this field
+> includes four fractional bits, and finally an approach for dealing with
+> dsi_host setting negative values in range_bpg_offset, resulting in
+> overflow inside drm_dsc_pps_payload_pack().
 > 
-> Fixes: 08802f515c3c ("drm/msm/dsi: Add support for DSC configuration")
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Note that updating the static bpg_offset array to limit the size of
+> these negative values to 6 bits changes what would be written to the DPU
+> hardware at register(s) DSC_RANGE_BPG_OFFSET, hence the choice has been
+> made to cover up for this while packing the value into a smaller field
+> instead.
 
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Thanks for fixing these. I dont have my pixel3 availble but changes lgtm
 
-> ---
->  drivers/gpu/drm/msm/dsi/dsi_host.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-> index e05bae647431..cb6f2fa11f58 100644
-> --- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-> +++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-> @@ -842,7 +842,7 @@ static void dsi_ctrl_config(struct msm_dsi_host *msm_host, bool enable,
->  static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mode, u32 hdisplay)
->  {
->  	struct drm_dsc_config *dsc = msm_host->dsc;
-> -	u32 reg, intf_width, reg_ctrl, reg_ctrl2;
-> +	u32 reg, reg_ctrl, reg_ctrl2;
->  	u32 slice_per_intf, total_bytes_per_intf;
->  	u32 pkt_per_line;
->  	u32 bytes_in_slice;
-> @@ -851,8 +851,7 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
->  	/* first calculate dsc parameters and then program
->  	 * compress mode registers
->  	 */
-> -	intf_width = hdisplay;
-> -	slice_per_intf = DIV_ROUND_UP(intf_width, dsc->slice_width);
-> +	slice_per_intf = DIV_ROUND_UP(hdisplay, dsc->slice_width);
->  
->  	/* If slice_per_pkt is greater than slice_per_intf
->  	 * then default to 1. This can happen during partial
-> @@ -861,7 +860,6 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
->  	if (slice_per_intf > dsc->slice_count)
->  		dsc->slice_count = 1;
->  
-> -	slice_per_intf = DIV_ROUND_UP(hdisplay, dsc->slice_width);
->  	bytes_in_slice = DIV_ROUND_UP(dsc->slice_width * dsc->bits_per_pixel, 8);
->  
->  	dsc->slice_chunk_size = bytes_in_slice;
-> -- 
-> 2.37.3
-> 
+Reviewed-by: Vinod Koul <vkoul@kernel.org>
+
+> Altogether this series is responsible for solving _all_ Display Stream
+> Compression issues and artifacts on the Sony Tama (sdm845) Akatsuki
+> smartphone (2880x1440p).
+
+Does it need two dsi lanes?
+
+-- 
+~Vinod
