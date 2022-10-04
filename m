@@ -2,38 +2,27 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EB28C433FE
-	for <phone-devel@archiver.kernel.org>; Tue,  4 Oct 2022 04:43:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6EDFC433F5
+	for <phone-devel@archiver.kernel.org>; Tue,  4 Oct 2022 09:52:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbiJDEnH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 4 Oct 2022 00:43:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51150 "EHLO
+        id S229734AbiJDJws (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 4 Oct 2022 05:52:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbiJDEnH (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 4 Oct 2022 00:43:07 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D8FD39B93;
-        Mon,  3 Oct 2022 21:43:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229722AbiJDJwS (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 4 Oct 2022 05:52:18 -0400
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [5.144.164.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6C55C26;
+        Tue,  4 Oct 2022 02:51:19 -0700 (PDT)
+Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C5697B818F6;
-        Tue,  4 Oct 2022 04:43:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECE7C433C1;
-        Tue,  4 Oct 2022 04:43:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664858583;
-        bh=eYy7EY3wMGZQPeArL+2hroT5fu2zAsiPf6zlIP9+Gm0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LwErs2ts4afxfSLyft8B10Lg3CRv3yfwGdn0RW2OozMWrmg6HpA9ebRxLny+aKKNl
-         ojMXD2JpInZesbJ5C5dH6v8X5akzAA/PjKH29ojszQdp4omrh4g9jD8HIkv6lVIx6o
-         htDoicY1k3fY3qPJ8ieSkRUnT0gitArCGM71VhiHUHHTn1cJB9DQ30yxOM9LhMPvXu
-         uAOTAWNlYUfxhGG3pg+o94/mxZBf2EBaVpfPMmIb9k6XY0egzYdYhqZPDxd0S8YLEs
-         fdlv5dGGUhf24B0/I15ZuweoCf4kZifJzlhds7tyC65N6caF0T1wCIcK82HzKarQbK
-         fIEzbrfEwVgOw==
-Date:   Tue, 4 Oct 2022 10:12:58 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 4972C3F2EB;
+        Tue,  4 Oct 2022 11:51:16 +0200 (CEST)
+Date:   Tue, 4 Oct 2022 11:51:14 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Vinod Koul <vkoul@kernel.org>
 Cc:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
@@ -54,38 +43,78 @@ Cc:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
         dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org
 Subject: Re: [PATCH 0/5] drm: Fix math issues in MSM DSC implementation
-Message-ID: <Yzu50ly1AxZwmyvi@matsya>
+Message-ID: <20221004095114.tr2gk76epbycflfa@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Vinod Koul <vkoul@kernel.org>, phone-devel@vger.kernel.org,
+        Rob Clark <robdclark@gmail.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org
 References: <20221001190807.358691-1-marijn.suijten@somainline.org>
+ <Yzu50ly1AxZwmyvi@matsya>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221001190807.358691-1-marijn.suijten@somainline.org>
+In-Reply-To: <Yzu50ly1AxZwmyvi@matsya>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 01-10-22, 21:08, Marijn Suijten wrote:
-> Various removals of complex yet unnecessary math, fixing all uses of
-> drm_dsc_config::bits_per_pixel to deal with the fact that this field
-> includes four fractional bits, and finally an approach for dealing with
-> dsi_host setting negative values in range_bpg_offset, resulting in
-> overflow inside drm_dsc_pps_payload_pack().
+On 2022-10-04 10:12:58, Vinod Koul wrote:
+> On 01-10-22, 21:08, Marijn Suijten wrote:
+> > Various removals of complex yet unnecessary math, fixing all uses of
+> > drm_dsc_config::bits_per_pixel to deal with the fact that this field
+> > includes four fractional bits, and finally an approach for dealing with
+> > dsi_host setting negative values in range_bpg_offset, resulting in
+> > overflow inside drm_dsc_pps_payload_pack().
+> > 
+> > Note that updating the static bpg_offset array to limit the size of
+> > these negative values to 6 bits changes what would be written to the DPU
+> > hardware at register(s) DSC_RANGE_BPG_OFFSET, hence the choice has been
+> > made to cover up for this while packing the value into a smaller field
+> > instead.
 > 
-> Note that updating the static bpg_offset array to limit the size of
-> these negative values to 6 bits changes what would be written to the DPU
-> hardware at register(s) DSC_RANGE_BPG_OFFSET, hence the choice has been
-> made to cover up for this while packing the value into a smaller field
-> instead.
+> Thanks for fixing these. I dont have my pixel3 availble but changes lgtm
+> 
+> Reviewed-by: Vinod Koul <vkoul@kernel.org>
 
-Thanks for fixing these. I dont have my pixel3 availble but changes lgtm
+Thanks; any comment on the self-review I sent in for patch 3 and 5?
 
-Reviewed-by: Vinod Koul <vkoul@kernel.org>
+> > Altogether this series is responsible for solving _all_ Display Stream
+> > Compression issues and artifacts on the Sony Tama (sdm845) Akatsuki
+> > smartphone (2880x1440p).
+> 
+> Does it need two dsi lanes?
 
-> Altogether this series is responsible for solving _all_ Display Stream
-> Compression issues and artifacts on the Sony Tama (sdm845) Akatsuki
-> smartphone (2880x1440p).
+This panel has the default of four dsi data lanes enabled:
 
-Does it need two dsi lanes?
+https://github.com/sonyxperiadev/kernel/blob/f956fbd9a234033bd18234d456a2c32c126b38f3/arch/arm64/boot/dts/qcom/dsi-panel-somc-akatsuki.dtsi#L74-L77
 
--- 
-~Vinod
+Unless you are referring to dual-dsi (ctrl/phy); this panel doesn't have
+a dual connection, but I do have devices on sm8350/sm8450 with a
+"4k"@120Hz display that have this, in case you want it to be tested?
+
+However, for the time being I'm focussing on a similar panel (4 data
+lanes, single DSI ctrl/phy) on sm8250 which keeps showing corrupted /
+garbled data and resulting in ping-pong timeouts.  I haven't yet
+confirmed if this is due to the "integration" of the pingpong block with
+the intf (since relevant registers and interrupts still seem to be
+accessible), a mismatching resource topology, or a misconfiguration
+elswhere.  Relevant panel dts if you're interested:
+
+https://github.com/sonyxperiadev/kernel/blob/e70161ec43b147b0b02578d05ab64552fd2df2cd/arch/arm64/boot/dts/somc/dsi-panel-sofef03_m-fhd_plus.dtsi
+
+- Marijn
