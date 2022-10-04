@@ -2,119 +2,153 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6EDFC433F5
-	for <phone-devel@archiver.kernel.org>; Tue,  4 Oct 2022 09:52:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C31BBC433FE
+	for <phone-devel@archiver.kernel.org>; Tue,  4 Oct 2022 14:34:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbiJDJws (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 4 Oct 2022 05:52:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59242 "EHLO
+        id S229815AbiJDOeR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 4 Oct 2022 10:34:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229722AbiJDJwS (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 4 Oct 2022 05:52:18 -0400
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [5.144.164.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6C55C26;
-        Tue,  4 Oct 2022 02:51:19 -0700 (PDT)
-Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 4972C3F2EB;
-        Tue,  4 Oct 2022 11:51:16 +0200 (CEST)
-Date:   Tue, 4 Oct 2022 11:51:14 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Vinod Koul <vkoul@kernel.org>
-Cc:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        with ESMTP id S229653AbiJDOeP (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 4 Oct 2022 10:34:15 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 498314F3B5;
+        Tue,  4 Oct 2022 07:34:14 -0700 (PDT)
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 294EB9i6002780;
+        Tue, 4 Oct 2022 14:33:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=WfTJ1BN+M6nmsr8qs0O40lSy+N3imqFByhXaLIkXntM=;
+ b=XLsxRQSKrsQ8FXmBC+z+Ls0lQB4gNSmSOV2UtUZOZtSdZXt0u0uzG/XgMxVmdcAYXxw+
+ 4NxfD0ZbalVATiS2Pq+abTtp3Q91kueELbBMeTW0SIYYDRIwWNFwhJy1+GBvC7yBSBGa
+ dW7gX0ClbCee+qhd+F5W7hn9GFpuCZzOvW/7QcY2/3jUbTF5eBnxPp6FmAMypV984Ief
+ C5hNeCaGJSG3sZpEUjB1DR1/DjzKttm6yFxpaKoSMLAaBbT6RFT1exlcHwLSL7czXmzL
+ kGpKW5Uy/sQKzhUUbyoaJ5psHZxmwAMjqfBPFVq7Ip7i6CCo5oAKZkpNrv06snTwuCip bA== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k0m88gax5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 04 Oct 2022 14:33:55 +0000
+Received: from pps.filterd (NALASPPMTA04.qualcomm.com [127.0.0.1])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 294EXsWm028981;
+        Tue, 4 Oct 2022 14:33:54 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 3jxemkke1f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 04 Oct 2022 14:33:54 +0000
+Received: from NALASPPMTA04.qualcomm.com (NALASPPMTA04.qualcomm.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 294EXsPY028969;
+        Tue, 4 Oct 2022 14:33:54 GMT
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 294EXsBs028962
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 04 Oct 2022 14:33:54 +0000
+Received: from [10.111.163.178] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Tue, 4 Oct 2022
+ 07:33:51 -0700
+Message-ID: <7ded0eb3-ef99-1979-ffb6-c639288bd863@quicinc.com>
+Date:   Tue, 4 Oct 2022 07:33:49 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [Freedreno] [PATCH 1/5] drm/msm/dsi: Remove useless math in DSC
+ calculation
+Content-Language: en-US
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        <phone-devel@vger.kernel.org>, Rob Clark <robdclark@gmail.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
+        Vinod Koul <vkoul@kernel.org>
+CC:     Marek Vasut <marex@denx.de>, <freedreno@lists.freedesktop.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        <linux-arm-msm@vger.kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        <dri-devel@lists.freedesktop.org>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Martin Botka <martin.botka@somainline.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        Daniel Vetter <daniel@ffwll.ch>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
         Alex Deucher <alexander.deucher@amd.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org
-Subject: Re: [PATCH 0/5] drm: Fix math issues in MSM DSC implementation
-Message-ID: <20221004095114.tr2gk76epbycflfa@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Vinod Koul <vkoul@kernel.org>, phone-devel@vger.kernel.org,
-        Rob Clark <robdclark@gmail.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org
+        Sean Paul <sean@poorly.run>, <linux-kernel@vger.kernel.org>
 References: <20221001190807.358691-1-marijn.suijten@somainline.org>
- <Yzu50ly1AxZwmyvi@matsya>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yzu50ly1AxZwmyvi@matsya>
+ <20221001190807.358691-2-marijn.suijten@somainline.org>
+From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <20221001190807.358691-2-marijn.suijten@somainline.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: nrWLAZvh5E4vhZVpB4ewKLCUViSWfdlo
+X-Proofpoint-ORIG-GUID: nrWLAZvh5E4vhZVpB4ewKLCUViSWfdlo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-10-04_06,2022-09-29_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
+ adultscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0 phishscore=0
+ impostorscore=0 suspectscore=0 bulkscore=0 mlxlogscore=999
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210040093
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-10-04 10:12:58, Vinod Koul wrote:
-> On 01-10-22, 21:08, Marijn Suijten wrote:
-> > Various removals of complex yet unnecessary math, fixing all uses of
-> > drm_dsc_config::bits_per_pixel to deal with the fact that this field
-> > includes four fractional bits, and finally an approach for dealing with
-> > dsi_host setting negative values in range_bpg_offset, resulting in
-> > overflow inside drm_dsc_pps_payload_pack().
-> > 
-> > Note that updating the static bpg_offset array to limit the size of
-> > these negative values to 6 bits changes what would be written to the DPU
-> > hardware at register(s) DSC_RANGE_BPG_OFFSET, hence the choice has been
-> > made to cover up for this while packing the value into a smaller field
-> > instead.
+
+
+On 10/1/2022 12:08 PM, Marijn Suijten wrote:
+> Multiplying a value by 2 and adding 1 to it always results in a value
+> that is uneven, and that 1 gets truncated immediately when performing
+> integer division by 2 again.  There is no "rounding" possible here.
 > 
-> Thanks for fixing these. I dont have my pixel3 availble but changes lgtm
+> Fixes: b9080324d6ca ("drm/msm/dsi: add support for dsc data")
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+>   drivers/gpu/drm/msm/dsi/dsi_host.c | 7 +------
+>   1 file changed, 1 insertion(+), 6 deletions(-)
 > 
-> Reviewed-by: Vinod Koul <vkoul@kernel.org>
+> diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+> index 8e4bc586c262..e05bae647431 100644
+> --- a/drivers/gpu/drm/msm/dsi/dsi_host.c
+> +++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+> @@ -1864,12 +1864,7 @@ static int dsi_populate_dsc_params(struct drm_dsc_config *dsc)
+>   	data = 2048 * (dsc->rc_model_size - dsc->initial_offset + num_extra_mux_bits);
+>   	dsc->slice_bpg_offset = DIV_ROUND_UP(data, groups_total);
+>   
+> -	/* bpp * 16 + 0.5 */
+> -	data = dsc->bits_per_pixel * 16;
+> -	data *= 2;
+> -	data++;
+> -	data /= 2;
+> -	target_bpp_x16 = data;
+> +	target_bpp_x16 = dsc->bits_per_pixel * 16;
+>   
+Since this patch is titled, "remove useless math", even the 
+target_bpp_x16 math looks redundant to me,
 
-Thanks; any comment on the self-review I sent in for patch 3 and 5?
+first we do
 
-> > Altogether this series is responsible for solving _all_ Display Stream
-> > Compression issues and artifacts on the Sony Tama (sdm845) Akatsuki
-> > smartphone (2880x1440p).
-> 
-> Does it need two dsi lanes?
+target_bpp_x16 = dsc->bits_per_pixel * 16;
 
-This panel has the default of four dsi data lanes enabled:
+then in the next line we do
 
-https://github.com/sonyxperiadev/kernel/blob/f956fbd9a234033bd18234d456a2c32c126b38f3/arch/arm64/boot/dts/qcom/dsi-panel-somc-akatsuki.dtsi#L74-L77
+data = (dsc->initial_xmit_delay * target_bpp_x16) / 16;
 
-Unless you are referring to dual-dsi (ctrl/phy); this panel doesn't have
-a dual connection, but I do have devices on sm8350/sm8450 with a
-"4k"@120Hz display that have this, in case you want it to be tested?
+the *16 and /16 will cancel out here.
 
-However, for the time being I'm focussing on a similar panel (4 data
-lanes, single DSI ctrl/phy) on sm8250 which keeps showing corrupted /
-garbled data and resulting in ping-pong timeouts.  I haven't yet
-confirmed if this is due to the "integration" of the pingpong block with
-the intf (since relevant registers and interrupts still seem to be
-accessible), a mismatching resource topology, or a misconfiguration
-elswhere.  Relevant panel dts if you're interested:
+Instead we can just do
 
-https://github.com/sonyxperiadev/kernel/blob/e70161ec43b147b0b02578d05ab64552fd2df2cd/arch/arm64/boot/dts/somc/dsi-panel-sofef03_m-fhd_plus.dtsi
+data = (dsc->initial_xmit_delay * dsc->drm->bits_per_pixel) ?
 
-- Marijn
+>   	data = (dsc->initial_xmit_delay * target_bpp_x16) / 16;
+>   	final_value =  dsc->rc_model_size - data + num_extra_mux_bits;
