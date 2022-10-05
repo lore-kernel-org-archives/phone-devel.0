@@ -2,212 +2,98 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00C79C433FE
-	for <phone-devel@archiver.kernel.org>; Wed,  5 Oct 2022 15:34:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E105DC4332F
+	for <phone-devel@archiver.kernel.org>; Wed,  5 Oct 2022 18:17:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230246AbiJEPeC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 5 Oct 2022 11:34:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49616 "EHLO
+        id S230290AbiJESRP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 5 Oct 2022 14:17:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230360AbiJEPeA (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 Oct 2022 11:34:00 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4ADC77E94;
-        Wed,  5 Oct 2022 08:33:53 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 295FJqlL024692;
-        Wed, 5 Oct 2022 15:33:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=pPShslKtDcKhs1DoTYJVYGFbNVdIcHpNSP0dfUz/3A8=;
- b=mXc4KJbAIO9TtcijhW8xIamKhychlbpTMNu1hYKl/31zzfzWSEuGDvAL9qCy2IjNGwkE
- BGluuU7NGFoaKzn0neGMWjAreWbGEAhxG0++gZdMxrBOf8PVJsFIxqxAq4aEYaBHSaxT
- +r4x0cbEhhQGiCkmnyBoZ8z7uygdwIDmKe7s1zCmeL9wkQW9M5IpesQ3XIUI0TqlFQGr
- eZ1HVZ32sO8YKdN076eAn555E+e1GHqIPBPn/+ZrpgvdoU57NREd85y8co9f4jbuNXcc
- yNUZtbZ1MwYg7ybtvL4WpNXvTaI6b0ZYNeGAysaSZJKseI//B5VBTZ8L2HRg7wcHQqII 3Q== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k0escug7f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 05 Oct 2022 15:33:30 +0000
-Received: from pps.filterd (NALASPPMTA01.qualcomm.com [127.0.0.1])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 295FUnTr024827;
-        Wed, 5 Oct 2022 15:33:29 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by NALASPPMTA01.qualcomm.com (PPS) with ESMTPS id 3jxemkprsq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 05 Oct 2022 15:33:29 +0000
-Received: from NALASPPMTA01.qualcomm.com (NALASPPMTA01.qualcomm.com [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 295FXTYv026781;
-        Wed, 5 Oct 2022 15:33:29 GMT
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (PPS) with ESMTPS id 295FXSI3026779
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 05 Oct 2022 15:33:29 +0000
-Received: from [10.38.242.178] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 5 Oct 2022
- 08:33:24 -0700
-Message-ID: <57732804-9eb1-2f92-f2cd-0ae66f3e28cd@quicinc.com>
-Date:   Wed, 5 Oct 2022 08:33:23 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: [PATCH 5/5] drm/dsc: Prevent negative BPG offsets from shadowing
- adjacent bitfields
-Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        <phone-devel@vger.kernel.org>, Rob Clark <robdclark@gmail.com>,
+        with ESMTP id S230223AbiJESRO (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 Oct 2022 14:17:14 -0400
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AE4F4DB53
+        for <phone-devel@vger.kernel.org>; Wed,  5 Oct 2022 11:17:11 -0700 (PDT)
+Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id CC8EB3F5B8;
+        Wed,  5 Oct 2022 20:17:08 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
+        Vinod Koul <vkoul@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>,
         Thomas Zimmermann <tzimmermann@suse.de>,
         Javier Martinez Canillas <javierm@redhat.com>,
         Alex Deucher <alexander.deucher@amd.com>,
         Douglas Anderson <dianders@chromium.org>,
         Vladimir Lypak <vladimir.lypak@gmail.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
-        Lyude Paul <lyude@redhat.com>
-References: <20221001190807.358691-1-marijn.suijten@somainline.org>
- <20221001190807.358691-6-marijn.suijten@somainline.org>
- <55d7e20b-79cd-ece6-b643-8b542beb7474@quicinc.com>
- <20221004215745.zdfvulqx4exlujgk@SoMainline.org>
- <1a5ed43e-914e-079d-96bf-c9e3912a9473@quicinc.com>
- <20221004223940.stfsyvubx7ecd3a3@SoMainline.org>
-From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <20221004223940.stfsyvubx7ecd3a3@SoMainline.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: WzHDpl8xPPlxpi_KbQxVYE88nZlVV2UB
-X-Proofpoint-ORIG-GUID: WzHDpl8xPPlxpi_KbQxVYE88nZlVV2UB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-05_03,2022-10-05_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 mlxlogscore=999
- phishscore=0 bulkscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210050097
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org
+Subject: [PATCH v2 0/7] drm/msm: Fix math issues in MSM DSC implementation
+Date:   Wed,  5 Oct 2022 20:16:50 +0200
+Message-Id: <20221005181657.784375-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.38.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Various removals of complex yet unnecessary math, fixing all uses of
+drm_dsc_config::bits_per_pixel to deal with the fact that this field
+includes four fractional bits, and finally making sure that
+range_bpg_offset contains values 6-bits wide to prevent overflows in
+drm_dsc_pps_payload_pack().
 
+Altogether this series is responsible for solving _all_ Display Stream
+Compression issues and artifacts on the Sony Tama (sdm845) Akatsuki
+smartphone (2880x1440p).
 
-On 10/4/2022 3:39 PM, Marijn Suijten wrote:
-> On 2022-10-04 15:31:10, Abhinav Kumar wrote:
->>
->>
->> On 10/4/2022 2:57 PM, Marijn Suijten wrote:
->>> [..]
->>> Alas, as explained in the cover letter I opted to perform the masking in
->>> the PPS packing code as the DSC block code also reads these values, and
->>> would suddenly write 6-bit intead of 8-bit values to the
->>> DSC_RANGE_BPG_OFFSET registers.  Quick testing on the mentioned sdm845
->>> platform shows no regressions, but I'm not sure if that's safe to rely
->>> on?
->>
->> I looked up the MDP_DSC_0_RANGE_BPG_OFFSET_* registers.
->> They take only a 6-bit value according to the SW documentation ( bits 5:0 )
->>
->> It was always expecting only a 6-bit value and not 8.
->>
->> So this change is safe.
-> 
-> Ack, I think that implies I should make this change and move the masks
-> to the DSI driver?
+Changes since v1:
 
-hmm .... downstream seems to have the & just before the reg write
+- Propagate r-b's, except (obviously) in patches that were (heavily)
+  modified;
+- Remove accidental debug code in dsi_cmd_dma_add;
+- Move Range BPG Offset masking out of DCS PPS packing, back into the
+  DSI driver when it is assigned to drm_dsc_config (this series is now
+  strictly focusing on drm/msm again);
+- Replace modulo-check resulting in conditional increment with
+  DIV_ROUND_UP;
+- Remove repeated calculation of slice_chunk_size;
+- Use u16 instead of int when handling bits_per_pixel;
+- Use DRM_DEV_ERROR instead of pr_err in DSI code;
+- Also remove redundant target_bpp_x16 variable.
 
-https://git.codelinaro.org/clo/la/platform/vendor/opensource/display-drivers/-/blob/DISPLAY.LA.2.0.r1-08000-WAIPIO.0/msm/sde/sde_hw_dsc_1_2.c#L310
+v1: https://lore.kernel.org/linux-arm-msm/20221001190807.358691-1-marijn.suijten@somainline.org/T/#u
 
-But yes, we can move this to the dsi calculation to match what others 
-are doing. I am fine with that.
+Marijn Suijten (7):
+  drm/msm/dsi: Remove useless math in DSC calculations
+  drm/msm/dsi: Remove repeated calculation of slice_per_intf
+  drm/msm/dsi: Use DIV_ROUND_UP instead of conditional increment on
+    modulo
+  drm/msm/dsi: Reuse earlier computed dsc->slice_chunk_size
+  drm/msm/dsi: Account for DSC's bits_per_pixel having 4 fractional bits
+  drm/msm/dpu1: Account for DSC's bits_per_pixel having 4 fractional
+    bits
+  drm/msm/dsi: Prevent signed BPG offsets from bleeding into adjacent
+    bits
 
-> 
->>>> If you want to move to helper, other drivers need to be changed too to
->>>> remove duplicate & 0x3f.
->>>
->>> Sure, we only have to confirm whether those drivers also read back the
->>> value(s) in rc_range_params, and expect / allow this to be 8 instead of
->>> 6 bits.
->>>
->>>> FWIW, this too has already been fixed in the latest downstream driver too.
->>>
->>> What is this supposed to mean?  Is there a downstream DPU project that
->>> has pending patches needing to be upstreamed?  Or is the downstream SDE,
->>> techpack/display, or whatever it is called nowadays, slowly using more
->>> DRM structs like drm_dsc_config and this drm_dsc_pps_payload_pack()
->>> helper function as pointed out in an earlier mail?
->>>
->>
->> No, what I meant was, the version of downstream driver based on which
->> the upstream DSC was made seems to be an older version. Downstream
->> drivers keep getting updated and we always keep trying to align with
->> upstream structs.
->>
->> This is true not just for DSC but even other blocks.
->>
->> So as part of that effort, we started using struct drm_dsc_config . That
->> change was made on newer chipsets. But the downstream SW on sdm845 based
->> on which the DSC was upstreamed seems like didnt have that. Hence all
->> this redundant math happened.
->>
->> So this comment was more of a explanation about why this issue happened
->> even though latest downstream didnt have this issue.
-> 
-> Thanks, I understood most of that but wasn't aware these exact "issues"
-> were also addressed downstream (by i.e. also using the upstream
-> structs).
-> 
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c | 11 +----
+ drivers/gpu/drm/msm/dsi/dsi_host.c         | 56 ++++++++++------------
+ 2 files changed, 28 insertions(+), 39 deletions(-)
 
-Even I wasnt. When I was reviewing this series, it seemed like a valid 
-change so I checked the latest downstream code like i always do to see 
-whether and how this is handled and found that these issues were 
-addressed there so thought i would update that here.
+--
+2.38.0
 
->>> Offtopic: are SDE and DPU growing closer together, hopefully achieving
->>> feature parity allowing the SDE project to be dropped in favour of a
->>> fully upstreamed DPU driver for day-one out-of-the-box mainline support
->>> for new SoCs (as long as work is published and on its way upstream)?
->>>
->>
->> There is still a lot of gap between SDE and DPU drivers at this point.
->> We keep trying to upstream as many features as possible to minimize the
->> gap but there is still a lot of work to do.
-> 
-> Glad to hear, but that sounds like a very hard to close gap unless
-> downstream "just works on DPU" instead of having parallel development on
-> two "competing" drivers for the exact same hardware.
-> 
-Its not really parallel development OR competing drivers.
-The design of these features downstream (not just DSC but many others) 
-is quite different because some of the downstream designs wont get 
-accepted upstream as its tightly coupled with our 
-compositor/device-tree. Thats where we are slowly trying to implement 
-these in an upstream compatible way.
-
-BTW, that being said. Its not always the case that every issue seen 
-upstream has already been fixed downstream. In fact, on some occasions 
-we found something fixed in upstream in a better way and ported them 
-downstream too.
-
-Thanks
-
-Abhinav
-> - Marijn
