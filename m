@@ -2,101 +2,205 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9180AC433FE
-	for <phone-devel@archiver.kernel.org>; Wed,  5 Oct 2022 18:59:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFA52C433FE
+	for <phone-devel@archiver.kernel.org>; Wed,  5 Oct 2022 19:32:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231289AbiJES7N (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 5 Oct 2022 14:59:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38948 "EHLO
+        id S231348AbiJETcB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 5 Oct 2022 15:32:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231255AbiJES7F (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 Oct 2022 14:59:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 973A87FF90;
-        Wed,  5 Oct 2022 11:59:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 12E666179A;
-        Wed,  5 Oct 2022 18:59:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04CEC433C1;
-        Wed,  5 Oct 2022 18:59:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664996343;
-        bh=fShVYGORz+pxKk3l5e/CAy7Op7CsutLFdVOiaLOeDWE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aY1NRKK/N+TvuM+qny2SBgt4iFfZ7NtMcdjreWNPbKY4LPsN4dii05qD3xS39Cpik
-         j6RPuRGmsO4b3OoGXZbaU1Zt1CLh7hY5DKkYV80+VutV6Ms2HveZ4ZiNOfiFaAlywY
-         41d6cBiCuQulJpv+pVP3zPiCwBtqjTvrOTxGPUfQkjguW1acaaGQzHolRCKB7YteU4
-         FNYcV2EJgGWCc+3TVlrS8N2biRjEDYUhEoWtnCznRIuWMydSTyeDsSCpU09ZpBgekU
-         QlZKzxrtL4hJsprReNdiz93YrK4sQpgpm5Iv4wWiYM4cxKpMLKxgQXWdzQmfhVLZC2
-         R5PUC7L+Kyzww==
-Date:   Wed, 5 Oct 2022 20:58:58 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Matti =?utf-8?Q?Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rayyan Ansari <rayyan@ansari.sh>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 4/6] i2c: qcom-cci: Add MSM8226 compatible
-Message-ID: <Yz3T8reZDbtUMjAh@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Matti =?utf-8?Q?Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-        linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rayyan Ansari <rayyan@ansari.sh>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Robert Foss <robert.foss@linaro.org>, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221002122859.75525-1-matti.lehtimaki@gmail.com>
- <20221002122859.75525-5-matti.lehtimaki@gmail.com>
+        with ESMTP id S231335AbiJETcA (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 Oct 2022 15:32:00 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10CEF77E9F
+        for <phone-devel@vger.kernel.org>; Wed,  5 Oct 2022 12:31:55 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id 81so14103464ybf.7
+        for <phone-devel@vger.kernel.org>; Wed, 05 Oct 2022 12:31:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=pNtNncR0wpG+RZXZr5KeeJhXaAoqohkUyg5Z94mN40s=;
+        b=eze16KyzdJ5hwJ2phuh1n3FB+XyFgZfEOKeoxcX86f8I4EsycFU0JzP6v64Z9I7hwM
+         luAR1jmz4nZ0lYx6P+TN4JE4xM5GA1jl4RhGpNZQMa29n9eOmAcWnmzmfRDDQdNwHiiP
+         O8C2MeRIDJm27WzWNXQSciNu0lXJPOik22kTXE/+VW/jbhw5SGoAjOPau9aGDSfZWL2g
+         yZ63Pe9JvG8zgT0tmhdhBvMXGjOK2fcjiaxmp4N7GwFnY1+M67rO4c8BLep86Rs7DV/h
+         GBLefRqpEmw/W5Emf7k2pBk4r0jjg68jqBKGoa6ji/QfheMWW5hyr73hB9AkDGuJlnxJ
+         ImLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=pNtNncR0wpG+RZXZr5KeeJhXaAoqohkUyg5Z94mN40s=;
+        b=OF5bgmI25SBcWyB3EdnGUELc8maQkT/MWVRg4CS1Mn7Y0vqziaLOh6Or+HbunISQW3
+         OQsHLtweqxbcaqJsnpT6B0vQZTfMLP1iAlN5TCATm4B8VJu5d4apfNt+SqpLDu8r14lJ
+         uU9cCGxTM0/XwFEplmhOcebMMm5kHb9N7Ajj9W99UwYTAIgmjk98o2aaWIANeYOMeXtE
+         aSMfMDJ9iIkbkKe09ObqZJIGZa3tVfdJknKPZsLiaX3oU5LWvd1hsWP09hKdyfhli9pA
+         5xT6m5DNZ7AbK6KSJwcYaOUnMWHGiTemi/EV+7qdlKmIspoyjJfjIz5XwW10TZgPoZUw
+         tGZA==
+X-Gm-Message-State: ACrzQf3NmeOwO3gtUGqtXc4yI8WCzIJas/8tDfmuWgeGq8/TsCDsrXE8
+        oR2SW8BqxEcUgROq40wPXONCF9uf83d3v+GSfW3kTw==
+X-Google-Smtp-Source: AMsMyM7CcJKKTb5CQJ62Px6sdKcviE/zaAzyLJdaB+lxId5akeMpt+XTMLRld1K+DLepysr5m0r1h7WGBGRvkIxIwtg=
+X-Received: by 2002:a5b:c:0:b0:6bd:f84c:b63e with SMTP id a12-20020a5b000c000000b006bdf84cb63emr1449786ybp.275.1664998314594;
+ Wed, 05 Oct 2022 12:31:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Q1IH0lgTUIi7laTL"
-Content-Disposition: inline
-In-Reply-To: <20221002122859.75525-5-matti.lehtimaki@gmail.com>
+References: <20221005181657.784375-1-marijn.suijten@somainline.org> <20221005181657.784375-6-marijn.suijten@somainline.org>
+In-Reply-To: <20221005181657.784375-6-marijn.suijten@somainline.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Wed, 5 Oct 2022 22:31:43 +0300
+Message-ID: <CAA8EJpr=0w0KReqNW2jP8DzvXLgo_o6bKmwMOed2sXb6d8HKhg@mail.gmail.com>
+Subject: Re: [PATCH v2 5/7] drm/msm/dsi: Account for DSC's bits_per_pixel
+ having 4 fractional bits
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+        David Airlie <airlied@linux.ie>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Wed, 5 Oct 2022 at 21:17, Marijn Suijten
+<marijn.suijten@somainline.org> wrote:
+>
+> drm_dsc_config's bits_per_pixel field holds a fractional value with 4
+> bits, which all panel drivers should adhere to for
+> drm_dsc_pps_payload_pack() to generate a valid payload.  All code in the
+> DSI driver here seems to assume that this field doesn't contain any
+> fractional bits, hence resulting in the wrong values being computed.
+> Since none of the calculations leave any room for fractional bits or
+> seem to indicate any possible area of support, disallow such values
+> altogether.
+>
+> Fixes: b9080324d6ca ("drm/msm/dsi: add support for dsc data")
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+>  drivers/gpu/drm/msm/dsi/dsi_host.c | 25 +++++++++++++++++--------
+>  1 file changed, 17 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+> index f42794cdd4c1..4717d49d76be 100644
+> --- a/drivers/gpu/drm/msm/dsi/dsi_host.c
+> +++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+> @@ -33,7 +33,7 @@
+>
+>  #define DSI_RESET_TOGGLE_DELAY_MS 20
+>
+> -static int dsi_populate_dsc_params(struct drm_dsc_config *dsc);
+> +static int dsi_populate_dsc_params(struct msm_dsi_host *msm_host, struct drm_dsc_config *dsc);
+>
+>  static int dsi_get_version(const void __iomem *base, u32 *major, u32 *minor)
+>  {
+> @@ -908,6 +908,7 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+>         u32 va_end = va_start + mode->vdisplay;
+>         u32 hdisplay = mode->hdisplay;
+>         u32 wc;
+> +       int ret;
+>
+>         DBG("");
+>
+> @@ -943,7 +944,9 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+>                 /* we do the calculations for dsc parameters here so that
+>                  * panel can use these parameters
+>                  */
+> -               dsi_populate_dsc_params(dsc);
+> +               ret = dsi_populate_dsc_params(msm_host, dsc);
+> +               if (ret)
+> +                       return;
+>
+>                 /* Divide the display by 3 but keep back/font porch and
+>                  * pulse width same
+> @@ -1769,7 +1772,7 @@ static char bpg_offset[DSC_NUM_BUF_RANGES] = {
+>         2, 0, 0, -2, -4, -6, -8, -8, -8, -10, -10, -12, -12, -12, -12
+>  };
+>
+> -static int dsi_populate_dsc_params(struct drm_dsc_config *dsc)
+> +static int dsi_populate_dsc_params(struct msm_dsi_host *msm_host, struct drm_dsc_config *dsc)
+>  {
+>         int mux_words_size;
+>         int groups_per_line, groups_total;
+> @@ -1780,6 +1783,12 @@ static int dsi_populate_dsc_params(struct drm_dsc_config *dsc)
+>         int data;
+>         int final_value, final_scale;
+>         int i;
+> +       u16 bpp = dsc->bits_per_pixel >> 4;
+> +
+> +       if (dsc->bits_per_pixel & 0xf) {
+> +               DRM_DEV_ERROR(&msm_host->pdev->dev, "DSI does not support fractional bits_per_pixel\n");
+> +               return -EINVAL;
+> +       }
+>
+>         dsc->rc_model_size = 8192;
+>         dsc->first_line_bpg_offset = 12;
+> @@ -1801,7 +1810,7 @@ static int dsi_populate_dsc_params(struct drm_dsc_config *dsc)
+>         }
+>
+>         dsc->initial_offset = 6144; /* Not bpp 12 */
+> -       if (dsc->bits_per_pixel != 8)
+> +       if (bpp != 8)
+>                 dsc->initial_offset = 2048;     /* bpp = 12 */
+>
+>         mux_words_size = 48;            /* bpc == 8/10 */
+> @@ -1824,14 +1833,14 @@ static int dsi_populate_dsc_params(struct drm_dsc_config *dsc)
+>          * params are calculated
+>          */
+>         groups_per_line = DIV_ROUND_UP(dsc->slice_width, 3);
+> -       dsc->slice_chunk_size = DIV_ROUND_UP(dsc->slice_width * dsc->bits_per_pixel, 8);
+> +       dsc->slice_chunk_size = DIV_ROUND_UP(dsc->slice_width * bpp, 8);
 
---Q1IH0lgTUIi7laTL
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'd still prefer if we can get closer to drm_dsc_compute_rc_parameters().
+The mentioned function has the following code:
 
-On Sun, Oct 02, 2022 at 03:28:56PM +0300, Matti Lehtim=C3=A4ki wrote:
-> From: Rayyan Ansari <rayyan@ansari.sh>
->=20
-> Add a compatible for MSM8226's Camera Control Interface, which is
-> similar to the one used on MSM8916.
->=20
-> Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
-> Signed-off-by: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
+vdsc_cfg->slice_chunk_size = DIV_ROUND_UP(vdsc_cfg->slice_width *
 
-Applied to for-current, thanks!
+vdsc_cfg->bits_per_pixel,
+                                                          (8 * 16));
+
+In fact, could you please take a look if we can switch to using this
+function and drop our code?
+
+>
+>         /* rbs-min */
+>         min_rate_buffer_size =  dsc->rc_model_size - dsc->initial_offset +
+> -                               dsc->initial_xmit_delay * dsc->bits_per_pixel +
+> +                               dsc->initial_xmit_delay * bpp +
+>                                 groups_per_line * dsc->first_line_bpg_offset;
+>
+> -       hrd_delay = DIV_ROUND_UP(min_rate_buffer_size, dsc->bits_per_pixel);
+> +       hrd_delay = DIV_ROUND_UP(min_rate_buffer_size, bpp);
+>
+>         dsc->initial_dec_delay = hrd_delay - dsc->initial_xmit_delay;
+>
+> @@ -1854,7 +1863,7 @@ static int dsi_populate_dsc_params(struct drm_dsc_config *dsc)
+>         data = 2048 * (dsc->rc_model_size - dsc->initial_offset + num_extra_mux_bits);
+>         dsc->slice_bpg_offset = DIV_ROUND_UP(data, groups_total);
+>
+> -       data = dsc->initial_xmit_delay * dsc->bits_per_pixel;
+> +       data = dsc->initial_xmit_delay * bpp;
+>         final_value =  dsc->rc_model_size - data + num_extra_mux_bits;
+>         dsc->final_offset = final_value;
+>
+> --
+> 2.38.0
+>
 
 
---Q1IH0lgTUIi7laTL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmM90/IACgkQFA3kzBSg
-KbYpRg/9FRx053pd4b8VtJn3spyzHu1e76JJAECwAZeJ3XgQSmsSY6XRL3scWjJe
-qwioy1bGODQExTU7ac272yc5QplSnn87VkKu+w0DAJsQlg+61kqk7AXG63apiPDJ
-alBjL4RonMasU4tdyh9D0yyIwpI9HE4a5IBczCkOwwYcs1LIEfI9VX1iWiRkfY7M
-myKF35nXCHAB8KMkNr3BtFZZbkS5gb34Z+CMXF5uZrtSOR65Oijn9WYc/hSFU062
-3R+S2CGkepbGekTbYYxKhsYj5XDLFvI1hw8ao6UpaPK5EklKNk/pzgE0lhlxXZmB
-CTxPMYDdOJ273ZGOTYcpVwsx6Inwlbn0aJd7wCEt7stjykKKkuRqSHqswHBEm+4P
-9v3h1FgAZ3QU4sX11tRa3IleYyJbRLXepsohkiNmw/WilgVeUwvM5pgQKZPH52cJ
-4KPedd8FIXtr8dU+GQ8YS2I4AQfsweyzpc+EGWVMpKKKdVMCC4CILzupaf9LYlIo
-mz7DFJqVWO7byHMqYpN8MAq9mHDRprKhLiYJkChtGUsg2A2OVbi08OcJGCx8SMV8
-GV/qOPD6vxUUruko9J9MkSj0ztmPNM4NC5wJoXr+Juj4roUUaVQjrzWWjQlp1UIN
-gYIw+QKzVBIWlnsvFAf2u4UIe13jNlNL8qji3lmlrLFV97bL2KM=
-=0wmN
------END PGP SIGNATURE-----
-
---Q1IH0lgTUIi7laTL--
+-- 
+With best wishes
+Dmitry
