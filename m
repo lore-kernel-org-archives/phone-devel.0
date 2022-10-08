@@ -2,92 +2,72 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B1B3C433F5
-	for <phone-devel@archiver.kernel.org>; Sat,  8 Oct 2022 00:28:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DC58C433FE
+	for <phone-devel@archiver.kernel.org>; Sat,  8 Oct 2022 13:12:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229808AbiJHA20 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 7 Oct 2022 20:28:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43486 "EHLO
+        id S229580AbiJHNMo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 8 Oct 2022 09:12:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229777AbiJHA2V (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 7 Oct 2022 20:28:21 -0400
-Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [213.239.216.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 59BBBBE2CF;
-        Fri,  7 Oct 2022 17:28:17 -0700 (PDT)
-Received: from [192.168.20.2] (unknown [77.239.252.99])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by proxmox1.postmarketos.org (Postfix) with ESMTPSA id 0E66C1400F8;
-        Sat,  8 Oct 2022 00:28:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-        s=donut; t=1665188895;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=f0zdQeYgf/ToW2BBlsYl7mtXmi8A/E12FwtrlpMw834=;
-        b=y2slcH71PCWLYvM1D/ge/XIMHeAX0ypPRFiTMOfcB4WB5grIYnNPFS0DgyhRXqZo67pjw7
-        fU0h3VvKjyL7XBuurKYslV2QYJdbmrTeWwD3b6aes4f+FssClFNZYEiepynYlv4pUa9ax1
-        TKSAzdSqcwSc3g4Y9Kg0IorXD8TEsYI=
-Message-ID: <fd332d80-b237-08be-e6d1-903364bd5ceb@postmarketos.org>
-Date:   Sat, 8 Oct 2022 03:28:14 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [PATCH v2 1/2] drivers: gpu: drm: add driver for samsung
- s6e3fc2x01 cmd mode panel
-Content-Language: en-US
-To:     Nia Espera <a5b6@riseup.net>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        with ESMTP id S229590AbiJHNMn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 8 Oct 2022 09:12:43 -0400
+X-Greylist: delayed 93431 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 08 Oct 2022 06:12:40 PDT
+Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 031B13ED66;
+        Sat,  8 Oct 2022 06:12:39 -0700 (PDT)
+Received: from fews1.riseup.net (fews1-pn.riseup.net [10.0.1.83])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
+         client-signature RSA-PSS (2048 bits) client-digest SHA256)
+        (Client CN "mail.riseup.net", Issuer "R3" (not verified))
+        by mx0.riseup.net (Postfix) with ESMTPS id 4Ml5FM0G60z9sBk;
+        Sat,  8 Oct 2022 13:12:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+        t=1665234759; bh=UPOia2gKXevh7S7Rz8ugfNl6OojhvizVLjwPYJRn+14=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Q0p6qq697jv1U9IWnDG6eIwt7pqzAHXjk4JWYtjSlQdYhKUeJ+HLAZH0tGiArK4IT
+         BqwMzdebphjb7SozdLPVhadjBeIMnGKsfHIMF5QQI8Tu1NqeQMBmhxyYMBQEyjFbDa
+         9M6XhCOotJAyao1UBaZsKNYFQaMgwGnW29O2xjbY=
+X-Riseup-User-ID: A3154A88590887777476615470DF5FB010718936FD254B9E07E0996EC81B7ECC
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+         by fews1.riseup.net (Postfix) with ESMTPSA id 4Ml5FH6YqDz5vNH;
+        Sat,  8 Oct 2022 13:12:35 +0000 (UTC)
+From:   Nia Espera <a5b6@riseup.net>
+To:     Thierry Reding <thierry.reding@gmail.com>,
         Sam Ravnborg <sam@ravnborg.org>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>, linux-kernel@vger.kernel.org,
         dri-devel@lists.freedesktop.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20221007111442.51481-1-a5b6@riseup.net>
- <20221007111442.51481-2-a5b6@riseup.net>
-From:   Alexey Minnekhanov <alexeymin@postmarketos.org>
-In-Reply-To: <20221007111442.51481-2-a5b6@riseup.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        Nia Espera <a5b6@riseup.net>
+Subject: [PATCH v3 0/2] Samsung s6e3fc2x01 panel driver for OnePlus 6T
+Date:   Sat,  8 Oct 2022 15:11:59 +0200
+Message-Id: <20221008131201.540185-1-a5b6@riseup.net>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
+This patch series adds proper support for the panel used in OnePlus 6T
+smartphones (s6e3fc2x01). Previously, the panel relied on the driver
+used by the sofef00 panel which failed to properly initialise it after
+a reset.
 
-On 07.10.2022 14:14, Nia Espera wrote:
+Nia Espera (2):
+  drivers: gpu: drm: add driver for samsung s6e3fc2x01 cmd mode panel
+  drivers: gpu: drm: remove support for sofef00 driver on s6e3fc2x01
+    panel
 
-> +
-> +#define dsi_dcs_write_seq(dsi, seq...) do {				\
-> +		static const u8 d[] = { seq };				\
-> +		int ret;						\
-> +		ret = mipi_dsi_dcs_write_buffer(dsi, d, ARRAY_SIZE(d));	\
-> +		if (ret < 0)						\
-> +			return ret;					\
-> +	} while (0)
-> +
-
-There is now a standard macro for this - mipi_dsi_dcs_write_seq() [1] , 
-so you don't need to reinvent it.
-
-> +static void samsung_s6e3fc2x01_reset(struct samsung_s6e3fc2x01 *ctx)
-> +{
-> +	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-> +	usleep_range(5000, 6000);
-> +	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-> +	usleep_range(2000, 3000);
-> +	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-> +	usleep_range(10000, 11000);
-> +}
-
-There is a high chance that first gpiod_set_value() is not needed, only 
-the last 2.
-
-[1] https://elixir.bootlin.com/linux/latest/C/ident/mipi_dsi_dcs_write_seq
+ MAINTAINERS                                   |   5 +
+ drivers/gpu/drm/panel/Kconfig                 |  18 +-
+ drivers/gpu/drm/panel/Makefile                |   1 +
+ .../gpu/drm/panel/panel-samsung-s6e3fc2x01.c  | 388 ++++++++++++++++++
+ drivers/gpu/drm/panel/panel-samsung-sofef00.c |  18 -
+ 5 files changed, 409 insertions(+), 21 deletions(-)
+ create mode 100644 drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c
 
 -- 
-Regards
-Alexey Minnekhanov
+2.38.0
+
