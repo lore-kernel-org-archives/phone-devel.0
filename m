@@ -2,126 +2,136 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A6C3C433FE
-	for <phone-devel@archiver.kernel.org>; Sat,  8 Oct 2022 13:13:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99C7AC433F5
+	for <phone-devel@archiver.kernel.org>; Sat,  8 Oct 2022 18:40:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229587AbiJHNN1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 8 Oct 2022 09:13:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52268 "EHLO
+        id S229531AbiJHSkE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 8 Oct 2022 14:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229676AbiJHNNZ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 8 Oct 2022 09:13:25 -0400
-Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0E5B52084;
-        Sat,  8 Oct 2022 06:13:21 -0700 (PDT)
-Received: from fews1.riseup.net (fews1-pn.riseup.net [10.0.1.83])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
-         client-signature RSA-PSS (2048 bits) client-digest SHA256)
-        (Client CN "mail.riseup.net", Issuer "R3" (not verified))
-        by mx0.riseup.net (Postfix) with ESMTPS id 4Ml5G90XjVz9scH;
-        Sat,  8 Oct 2022 13:13:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
-        t=1665234801; bh=gnBsNEwM/S9PWvUObRoQlFNCY33roZKRpy1dn0jtxok=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=emSc0gqCUKQW42V6JYa3M/wKOYykH90vytIU0O3jf0NuqriCVPiUJB7P2fvoxPhU+
-         1kZuoO2aQcREFCEy5uroiBkeTdD0OmBYp0Dd/lcXuxX3n3ms5eFBGDnoq3eALFe4bW
-         j1faTVK7JfMFkLb75ZtNm0NTIKc5QXoxuLa7snd4=
-X-Riseup-User-ID: 3783ACED89D999CB73A1EC90BE730AA5623AFE1B022D29E56059CF3EC65D5E90
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-         by fews1.riseup.net (Postfix) with ESMTPSA id 4Ml5G623Bvz5vNH;
-        Sat,  8 Oct 2022 13:13:18 +0000 (UTC)
-From:   Nia Espera <a5b6@riseup.net>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        Nia Espera <a5b6@riseup.net>,
-        Caleb Connolly <caleb@connolly.tech>
-Subject: [PATCH v3 2/2] drivers: gpu: drm: remove support for sofef00 driver on s6e3fc2x01 panel
-Date:   Sat,  8 Oct 2022 15:12:03 +0200
-Message-Id: <20221008131201.540185-3-a5b6@riseup.net>
-In-Reply-To: <20221008131201.540185-1-a5b6@riseup.net>
-References: <20221008131201.540185-1-a5b6@riseup.net>
+        with ESMTP id S229459AbiJHSkD (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 8 Oct 2022 14:40:03 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBA811C401
+        for <phone-devel@vger.kernel.org>; Sat,  8 Oct 2022 11:39:59 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id t4so4610376wmj.5
+        for <phone-devel@vger.kernel.org>; Sat, 08 Oct 2022 11:39:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5qH5NNc/K0QTO3Py3yp57L7/2aPQOFrGVLYf3wX60PU=;
+        b=x9OnQu1YUs++g+yzHHJu1hlyaupBkGIAtoSLehwpZd5W2/4411EMAdxXi7V/ikIo38
+         KMeNQgHIUMEjJkIcK0AUzi2s5JqiI4Ag/bY5bIrnDHUfu/nXhas6pCw5aStJIqk+meP6
+         6ZWfVib8m6KLVs0jc2zkVNR1zu8SDCCF9BqdwxD6XfUnPZGeMp4i8Kd6bsO6t1U4ADZN
+         XRtFd0w5tPJp/Uhen7MA3IISygVwRNaKjqJQp0gYd+XGjmLUNO1as7/nfbeDLB1MHBsr
+         YKtCWRsiL0JuI7qpqyUcaxWTcWVFwggA35qUqA3ZhEwbKVSbKsgEFprtEnR9Y/zEB94/
+         NTHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5qH5NNc/K0QTO3Py3yp57L7/2aPQOFrGVLYf3wX60PU=;
+        b=koR6vj/aNt6sbRjC8Ks5ESzHdKpUbuzV92RQweTcOCyjJKCsyORUj1QBXkInDZk5oy
+         3U7FXpM0ReouAwLv12J6oW7XEsZQCThgKf4ua292ZAeXKgm7m9bb76SZ59t7EjGWAkFd
+         wgkbE3nvIasXB2tujhNI29VqXQdQtug49GG/3exEM8StnBKaS5OLwKDd74Wu2VhdWcCi
+         myeSl+XmnOQIsUfAEZrzmS0gKHGnnPHb/Y57KvxHfoRpAujdjCmudZzLAh2zUjg8A1O4
+         INPA+X06QvSyZAK0VtpAdXRTXrVMiDtSgYB0ONzj8RZsZ3hwM5YLEeNDqQOkfkhpcSuB
+         5K9A==
+X-Gm-Message-State: ACrzQf3wzkdHak0hUxocsQYkuB+Zxszx5RR/r16vuYoTEUm/Ts1n7PGF
+        dQGsz9x2+FALj3di71wu/Cblmg==
+X-Google-Smtp-Source: AMsMyM5dqqudgJzWOQqhaHjNuofbSHEK3Y5wvff8htUxlmCqARQqHg6R2UBA7Xx19CIcKp9JyIr18Q==
+X-Received: by 2002:a05:600c:3515:b0:3b4:a0fa:c4e1 with SMTP id h21-20020a05600c351500b003b4a0fac4e1mr7275771wmq.191.1665254398468;
+        Sat, 08 Oct 2022 11:39:58 -0700 (PDT)
+Received: from localhost.localdomain (cpc76482-cwma10-2-0-cust629.7-3.cable.virginm.net. [86.14.22.118])
+        by smtp.gmail.com with ESMTPSA id m38-20020a05600c3b2600b003b4ff30e566sm28325194wms.3.2022.10.08.11.39.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Oct 2022 11:39:57 -0700 (PDT)
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+To:     linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        Sebastian Reichel <sre@kernel.org>
+Cc:     Bjorn Andersson <andersson@kernel.org>,
+        phone-devel@vger.kernel.org,
+        Joel Selvaraj <joelselvaraj.oss@gmail.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        devicetree@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        Tom Rix <trix@redhat.com>
+Subject: [PATCH v6 0/2] power: supply: introduce support for the Qualcomm smb2 charger
+Date:   Sat,  8 Oct 2022 19:37:50 +0100
+Message-Id: <20221008183753.249514-1-caleb.connolly@linaro.org>
+X-Mailer: git-send-email 2.38.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Removes functionality from sofef00 panel driver which allowed it to
-drive the s6e3fc2x01 panel
+Add a driver for the Qualcomm PMI8998/PM660 Switch-Mode Battery Charger.
+This is the second generation SMB charger, and replaces the previous
+SMBB hardware found in older PMICs.
 
-Signed-off-by: Nia Espera <a5b6@riseup.net>
-Reviewed-by: Caleb Connolly <caleb@connolly.tech>
----
- drivers/gpu/drm/panel/Kconfig                 |  6 +++---
- drivers/gpu/drm/panel/panel-samsung-sofef00.c | 18 ------------------
- 2 files changed, 3 insertions(+), 21 deletions(-)
+This driver provides basic support for initialising the hardware,
+configuring the USB input current limit and reporting information about
+the state of the charger. Features like type-c dual role support and OTG
+switching will be added in future patches.
 
-diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index 0dd5e1ec5644..1addbd7e4790 100644
---- a/drivers/gpu/drm/panel/Kconfig
-+++ b/drivers/gpu/drm/panel/Kconfig
-@@ -547,16 +547,16 @@ config DRM_PANEL_SAMSUNG_S6E8AA0
- 	select VIDEOMODE_HELPERS
- 
- config DRM_PANEL_SAMSUNG_SOFEF00
--	tristate "Samsung sofef00/s6e3fc2x01 OnePlus 6/6T DSI cmd mode panels"
-+	tristate "Samsung sofef00 OnePlus 6 DSI cmd mode panel"
- 	depends on OF
- 	depends on DRM_MIPI_DSI
- 	depends on BACKLIGHT_CLASS_DEVICE
- 	select VIDEOMODE_HELPERS
- 	help
- 	  Say Y or M here if you want to enable support for the Samsung AMOLED
--	  command mode panels found in the OnePlus 6/6T smartphones.
-+	  command mode panel found in the OnePlus 6 smartphone.
- 
--	  The panels are 2280x1080@60Hz and 2340x1080@60Hz respectively
-+	  The panel is 2280x1080@60Hz
- 
- config DRM_PANEL_SAMSUNG_S6E3FC2X01
- 	tristate "Samsung s6e3fc2x01 OnePlus 6T DSI cmd mode panel"
-diff --git a/drivers/gpu/drm/panel/panel-samsung-sofef00.c b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-index bd02af81a4fe..68e58b9b8c5c 100644
---- a/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-+++ b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-@@ -181,20 +181,6 @@ static const struct drm_display_mode enchilada_panel_mode = {
- 	.height_mm = 145,
- };
- 
--static const struct drm_display_mode fajita_panel_mode = {
--	.clock = (1080 + 72 + 16 + 36) * (2340 + 32 + 4 + 18) * 60 / 1000,
--	.hdisplay = 1080,
--	.hsync_start = 1080 + 72,
--	.hsync_end = 1080 + 72 + 16,
--	.htotal = 1080 + 72 + 16 + 36,
--	.vdisplay = 2340,
--	.vsync_start = 2340 + 32,
--	.vsync_end = 2340 + 32 + 4,
--	.vtotal = 2340 + 32 + 4 + 18,
--	.width_mm = 68,
--	.height_mm = 145,
--};
--
- static int sofef00_panel_get_modes(struct drm_panel *panel, struct drm_connector *connector)
- {
- 	struct drm_display_mode *mode;
-@@ -327,10 +313,6 @@ static const struct of_device_id sofef00_panel_of_match[] = {
- 		.compatible = "samsung,sofef00",
- 		.data = &enchilada_panel_mode,
- 	},
--	{ // OnePlus 6T / fajita
--		.compatible = "samsung,s6e3fc2x01",
--		.data = &fajita_panel_mode,
--	},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sofef00_panel_of_match);
+This patch series depends on my previous series adding support for
+the Round Robin ADC which is used for reading the USB voltage and
+current, it is currently queued in linux-next, and can be found here:
+https://lore.kernel.org/linux-arm-msm/20220429220904.137297-1-caleb.connolly@linaro.org/
+This has now been merged
+
+Changes since v5:
+ * Rework IRQ initialisation to support per-IRQ configuration
+ * Add support waking up the device on cable plug/unplug
+   * This fixes a bug where when attaching/detaching a cable while
+     in suspend, userspace wouldn't reflect the new state.
+     Thanks Joel for catching this.
+
+Changes since v4:
+ * Fix typo when setting FAST_CHARGE_CURRENT_CFG - the OnePlus 6 now charges
+   properly!
+ * Limited charge current to 1A until we better understand the thermal
+   protection features and how to use them.
+ * Address Sebastian's comments (thanks for your patience with this)
+ * re-run clang-format
+
+Changes since v3:
+ * Drop DTS patches, to be sent in a future series
+ * Add POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT so that the charger will
+   be exposed as a cooling device,
+   see https://lore.kernel.org/linux-pm/164f2458-fb66-f238-7143-bdbe1e200870@linaro.org
+ * Run clang-format and prevent it from breaking the formatting of the
+   defines
+ * Apply Sebastian's suggested fixes
+
+Changes since v2:
+ * Use devm_delayed_work_autocancel
+ * Minor driver fixes
+ * Pick up Krzysztof's R-b on the DT patch
+
+Changes since v1:
+ * Rename the driver to pmi8998_charger
+ * Drop unnecessary (and very broken) mutex
+ * Rework the driver based on feedback to v1
+ * Fix some minor bugs and improve Automatic Input Current Limit support
+
+Caleb Connolly (2):
+  power: supply: add Qualcomm PMI8998 SMB2 Charger driver
+  dt-bindings: power: supply: qcom,pmi8998-charger: add bindings for
+    smb2 driver
+
+ .../power/supply/qcom,pmi8998-charger.yaml    |   82 ++
+ drivers/power/supply/Kconfig                  |   16 +
+ drivers/power/supply/Makefile                 |    1 +
+ drivers/power/supply/qcom_pmi8998_charger.c   | 1090 +++++++++++++++++
+ 4 files changed, 1189 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/power/supply/qcom,pmi8998-charger.yaml
+ create mode 100644 drivers/power/supply/qcom_pmi8998_charger.c
+
 -- 
 2.38.0
 
