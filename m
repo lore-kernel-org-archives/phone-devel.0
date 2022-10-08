@@ -2,52 +2,53 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99C7AC433F5
-	for <phone-devel@archiver.kernel.org>; Sat,  8 Oct 2022 18:40:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8FF55C43217
+	for <phone-devel@archiver.kernel.org>; Sat,  8 Oct 2022 18:40:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229531AbiJHSkE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 8 Oct 2022 14:40:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38540 "EHLO
+        id S229675AbiJHSkJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 8 Oct 2022 14:40:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbiJHSkD (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 8 Oct 2022 14:40:03 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBA811C401
-        for <phone-devel@vger.kernel.org>; Sat,  8 Oct 2022 11:39:59 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id t4so4610376wmj.5
-        for <phone-devel@vger.kernel.org>; Sat, 08 Oct 2022 11:39:59 -0700 (PDT)
+        with ESMTP id S229634AbiJHSkI (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 8 Oct 2022 14:40:08 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F44A22516
+        for <phone-devel@vger.kernel.org>; Sat,  8 Oct 2022 11:40:04 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id u10so11575331wrq.2
+        for <phone-devel@vger.kernel.org>; Sat, 08 Oct 2022 11:40:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5qH5NNc/K0QTO3Py3yp57L7/2aPQOFrGVLYf3wX60PU=;
-        b=x9OnQu1YUs++g+yzHHJu1hlyaupBkGIAtoSLehwpZd5W2/4411EMAdxXi7V/ikIo38
-         KMeNQgHIUMEjJkIcK0AUzi2s5JqiI4Ag/bY5bIrnDHUfu/nXhas6pCw5aStJIqk+meP6
-         6ZWfVib8m6KLVs0jc2zkVNR1zu8SDCCF9BqdwxD6XfUnPZGeMp4i8Kd6bsO6t1U4ADZN
-         XRtFd0w5tPJp/Uhen7MA3IISygVwRNaKjqJQp0gYd+XGjmLUNO1as7/nfbeDLB1MHBsr
-         YKtCWRsiL0JuI7qpqyUcaxWTcWVFwggA35qUqA3ZhEwbKVSbKsgEFprtEnR9Y/zEB94/
-         NTHA==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EgD3kP0sSWca4YlP6hR+kz5HlaxlTP+KMXKfvr3kHec=;
+        b=b6GVfGW5JnhTrvqehLVkLkkzJWiN982+Yjnjisk8UQVjWn1Yff400hD6AH1yMsy78x
+         Aid2a8rStuTW4NK3w5iiOkdJoFTmmU66egoGFJYVv34Nn2heRyyUUVeCT43Yt7c7Rm1O
+         CTV4Sv0LtVKPse42CNQ0BsmK+ESeJXLbQ/ggAR4A9HR4gDZK1mYnshBY71MEeDqppskh
+         5mXlEMcjL9d4iH2ltfh/Bvd5Ah7RQfpMtY2tBcxW9tScVhBAFtnioeUYmJgbGE6TRg9Q
+         WGfKJlD+6GoqTyqHEcAs1BgR7eGW7f6D97/YbGcBOJHSJrsmaeExkoW9C/SDL+27i1vX
+         UGTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5qH5NNc/K0QTO3Py3yp57L7/2aPQOFrGVLYf3wX60PU=;
-        b=koR6vj/aNt6sbRjC8Ks5ESzHdKpUbuzV92RQweTcOCyjJKCsyORUj1QBXkInDZk5oy
-         3U7FXpM0ReouAwLv12J6oW7XEsZQCThgKf4ua292ZAeXKgm7m9bb76SZ59t7EjGWAkFd
-         wgkbE3nvIasXB2tujhNI29VqXQdQtug49GG/3exEM8StnBKaS5OLwKDd74Wu2VhdWcCi
-         myeSl+XmnOQIsUfAEZrzmS0gKHGnnPHb/Y57KvxHfoRpAujdjCmudZzLAh2zUjg8A1O4
-         INPA+X06QvSyZAK0VtpAdXRTXrVMiDtSgYB0ONzj8RZsZ3hwM5YLEeNDqQOkfkhpcSuB
-         5K9A==
-X-Gm-Message-State: ACrzQf3wzkdHak0hUxocsQYkuB+Zxszx5RR/r16vuYoTEUm/Ts1n7PGF
-        dQGsz9x2+FALj3di71wu/Cblmg==
-X-Google-Smtp-Source: AMsMyM5dqqudgJzWOQqhaHjNuofbSHEK3Y5wvff8htUxlmCqARQqHg6R2UBA7Xx19CIcKp9JyIr18Q==
-X-Received: by 2002:a05:600c:3515:b0:3b4:a0fa:c4e1 with SMTP id h21-20020a05600c351500b003b4a0fac4e1mr7275771wmq.191.1665254398468;
-        Sat, 08 Oct 2022 11:39:58 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EgD3kP0sSWca4YlP6hR+kz5HlaxlTP+KMXKfvr3kHec=;
+        b=xUqOULoPbkhkksZRKhwRRcJ9QPN5G0urgqiZ6Dkhwx2ZEORqoCOCLMaZqYxzw50YHw
+         MTvniTpGImPuJhcE0TK3ba9o7jo6U2Df8mlLAi3Wfwtu8chd7ZfFZhXJ/YLjBizfnuC1
+         qdJ0nBHUbhx434wny/w4vJqt2O/ed8CHBsIn39htDKdXcjSv3nFzDBNqJRzJ9SlfLFXf
+         jwnElgkwMNVSVvhhMCkMuxUpJIbnmRbBOymlri3M1GpNgJXwXRTmBOO72wxXkaEgNPDu
+         W+MIZoAUcsZ1FRtVTFrp7nI5TquKLuCVw2y9FNYQF32xX7jFJpWZOJ4zx06vrSArv6be
+         mjRA==
+X-Gm-Message-State: ACrzQf1r8jtKMeFT7QQ/jfV+Eni1HAmmRHOC1v+KK+7YMddAmv4f71vK
+        +7iOmdjRDqz1X8o96Dmx4NbkQQ==
+X-Google-Smtp-Source: AMsMyM6JzbCD/vOcJXmuExnmgBlsqiJfszhrDlcEyT5u9xQNubX6MXHbri4HR+9+gp6gxO6Rxr3Peg==
+X-Received: by 2002:a5d:6484:0:b0:22e:3456:37fa with SMTP id o4-20020a5d6484000000b0022e345637famr6403075wri.203.1665254402785;
+        Sat, 08 Oct 2022 11:40:02 -0700 (PDT)
 Received: from localhost.localdomain (cpc76482-cwma10-2-0-cust629.7-3.cable.virginm.net. [86.14.22.118])
-        by smtp.gmail.com with ESMTPSA id m38-20020a05600c3b2600b003b4ff30e566sm28325194wms.3.2022.10.08.11.39.57
+        by smtp.gmail.com with ESMTPSA id m38-20020a05600c3b2600b003b4ff30e566sm28325194wms.3.2022.10.08.11.40.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Oct 2022 11:39:57 -0700 (PDT)
+        Sat, 08 Oct 2022 11:40:02 -0700 (PDT)
 From:   Caleb Connolly <caleb.connolly@linaro.org>
 To:     linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
         Sebastian Reichel <sre@kernel.org>
@@ -55,83 +56,120 @@ Cc:     Bjorn Andersson <andersson@kernel.org>,
         phone-devel@vger.kernel.org,
         Joel Selvaraj <joelselvaraj.oss@gmail.com>,
         Caleb Connolly <caleb.connolly@linaro.org>,
-        devicetree@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-        Tom Rix <trix@redhat.com>
-Subject: [PATCH v6 0/2] power: supply: introduce support for the Qualcomm smb2 charger
-Date:   Sat,  8 Oct 2022 19:37:50 +0100
-Message-Id: <20221008183753.249514-1-caleb.connolly@linaro.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v6 2/2] dt-bindings: power: supply: qcom,pmi8998-charger: add bindings for smb2 driver
+Date:   Sat,  8 Oct 2022 19:37:52 +0100
+Message-Id: <20221008183753.249514-3-caleb.connolly@linaro.org>
 X-Mailer: git-send-email 2.38.0
+In-Reply-To: <20221008183753.249514-1-caleb.connolly@linaro.org>
+References: <20221008183753.249514-1-caleb.connolly@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add a driver for the Qualcomm PMI8998/PM660 Switch-Mode Battery Charger.
-This is the second generation SMB charger, and replaces the previous
-SMBB hardware found in older PMICs.
+Add devicetree bindings for the Qualcomm PMI8998/PM660 SMB2 charger
+driver.
 
-This driver provides basic support for initialising the hardware,
-configuring the USB input current limit and reporting information about
-the state of the charger. Features like type-c dual role support and OTG
-switching will be added in future patches.
-
-This patch series depends on my previous series adding support for
-the Round Robin ADC which is used for reading the USB voltage and
-current, it is currently queued in linux-next, and can be found here:
-https://lore.kernel.org/linux-arm-msm/20220429220904.137297-1-caleb.connolly@linaro.org/
-This has now been merged
-
-Changes since v5:
- * Rework IRQ initialisation to support per-IRQ configuration
- * Add support waking up the device on cable plug/unplug
-   * This fixes a bug where when attaching/detaching a cable while
-     in suspend, userspace wouldn't reflect the new state.
-     Thanks Joel for catching this.
-
-Changes since v4:
- * Fix typo when setting FAST_CHARGE_CURRENT_CFG - the OnePlus 6 now charges
-   properly!
- * Limited charge current to 1A until we better understand the thermal
-   protection features and how to use them.
- * Address Sebastian's comments (thanks for your patience with this)
- * re-run clang-format
-
-Changes since v3:
- * Drop DTS patches, to be sent in a future series
- * Add POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT so that the charger will
-   be exposed as a cooling device,
-   see https://lore.kernel.org/linux-pm/164f2458-fb66-f238-7143-bdbe1e200870@linaro.org
- * Run clang-format and prevent it from breaking the formatting of the
-   defines
- * Apply Sebastian's suggested fixes
-
-Changes since v2:
- * Use devm_delayed_work_autocancel
- * Minor driver fixes
- * Pick up Krzysztof's R-b on the DT patch
-
-Changes since v1:
- * Rename the driver to pmi8998_charger
- * Drop unnecessary (and very broken) mutex
- * Rework the driver based on feedback to v1
- * Fix some minor bugs and improve Automatic Input Current Limit support
-
-Caleb Connolly (2):
-  power: supply: add Qualcomm PMI8998 SMB2 Charger driver
-  dt-bindings: power: supply: qcom,pmi8998-charger: add bindings for
-    smb2 driver
-
- .../power/supply/qcom,pmi8998-charger.yaml    |   82 ++
- drivers/power/supply/Kconfig                  |   16 +
- drivers/power/supply/Makefile                 |    1 +
- drivers/power/supply/qcom_pmi8998_charger.c   | 1090 +++++++++++++++++
- 4 files changed, 1189 insertions(+)
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ .../power/supply/qcom,pmi8998-charger.yaml    | 82 +++++++++++++++++++
+ 1 file changed, 82 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/power/supply/qcom,pmi8998-charger.yaml
- create mode 100644 drivers/power/supply/qcom_pmi8998_charger.c
 
+diff --git a/Documentation/devicetree/bindings/power/supply/qcom,pmi8998-charger.yaml b/Documentation/devicetree/bindings/power/supply/qcom,pmi8998-charger.yaml
+new file mode 100644
+index 000000000000..277c47e048b6
+--- /dev/null
++++ b/Documentation/devicetree/bindings/power/supply/qcom,pmi8998-charger.yaml
+@@ -0,0 +1,82 @@
++# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/power/supply/qcom,pmi8998-charger.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm PMI8998/PM660 Switch-Mode Battery Charger "2"
++
++maintainers:
++  - Caleb Connolly <caleb.connolly@linaro.org>
++
++properties:
++  compatible:
++    enum:
++      - qcom,pmi8998-charger
++      - qcom,pm660-charger
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 4
++
++  interrupt-names:
++    items:
++      - const: usb-plugin
++      - const: bat-ov
++      - const: wdog-bark
++      - const: usbin-icl-change
++
++  io-channels:
++    items:
++      - description: USB in current in uA
++      - description: USB in voltage in uV
++
++  io-channel-names:
++    items:
++      - const: usbin_i
++      - const: usbin_v
++
++  monitored-battery:
++    description: phandle to the simple-battery node
++    $ref: /schemas/types.yaml#/definitions/phandle
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - interrupt-names
++  - io-channels
++  - io-channel-names
++  - monitored-battery
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    pmic {
++      #address-cells = <1>;
++      #size-cells = <0>;
++      #interrupt-cells = <4>;
++
++      charger@1000 {
++        compatible = "qcom,pmi8998-charger";
++        reg = <0x1000>;
++
++        interrupts = <0x2 0x12 0x2 IRQ_TYPE_EDGE_BOTH>,
++                     <0x2 0x13 0x4 IRQ_TYPE_EDGE_BOTH>,
++                     <0x2 0x13 0x6 IRQ_TYPE_EDGE_RISING>,
++                     <0x2 0x16 0x1 IRQ_TYPE_EDGE_RISING>;
++        interrupt-names = "usb-plugin", "bat-ov", "wdog-bark", "usbin-icl-change";
++
++        io-channels = <&pmi8998_rradc 3>,
++                      <&pmi8998_rradc 4>;
++        io-channel-names = "usbin_i",
++                           "usbin_v";
++
++        monitored-battery = <&battery>;
++      };
++    };
 -- 
 2.38.0
 
