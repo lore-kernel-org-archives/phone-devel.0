@@ -2,100 +2,108 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 171A9C433F5
-	for <phone-devel@archiver.kernel.org>; Sun,  9 Oct 2022 15:20:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01209C433FE
+	for <phone-devel@archiver.kernel.org>; Sun,  9 Oct 2022 18:48:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230060AbiJIPUz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 9 Oct 2022 11:20:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52538 "EHLO
+        id S229590AbiJISsk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 9 Oct 2022 14:48:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbiJIPUx (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 9 Oct 2022 11:20:53 -0400
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F13312744
-        for <phone-devel@vger.kernel.org>; Sun,  9 Oct 2022 08:20:51 -0700 (PDT)
-Received: by mail-qt1-x82f.google.com with SMTP id c23so1338078qtw.8
-        for <phone-devel@vger.kernel.org>; Sun, 09 Oct 2022 08:20:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PtmFqjT+2Uw9ekR8AQKScDoSKoJcTvA+kcZCIeG6oq4=;
-        b=KqX/KN6P3M3yYlcrPJy87hfLLJLTpKsHGIXEuOlV+wCttQCJCqYUbKN18EFkuopl+w
-         H/3BC3oFnO4o/vK6/8raD7nP1z4+ODRMuGfJ67KxOneGnD03rMZ3i5aNHENMdlm6Bg48
-         N2y8dcqZ2mWXMC9Be4RzwdxIR3+HRLEeO0mQ8O4jLeLH1u/car72310lZH7T8yShEZXj
-         j/Yz26laBngA4pFM18mFD9ZSYw25yYNbnjmMdOEvJ2ERI1T+pcm1UfydkHjOBtyMXywP
-         +C7DLFHmoylhAgrwVvAv2N6dI8Gs7EqXEU9q4rwBRyVQjcPDk/vXbN778MIL2fAjI6Fu
-         djkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PtmFqjT+2Uw9ekR8AQKScDoSKoJcTvA+kcZCIeG6oq4=;
-        b=r7VGH3IafcE7XRR/qgZBdihynoz6B+R652tdIZocYhJn/MHWs6VCjFP9BXE5X+M+Ld
-         3w65FSJ+QQKNf1J88ms6KwaCl00PHw2Bd7rrr84IOT8KZH7PCCtPIDTN1jOSD0OQBVwK
-         MYor3D52CjDSmZTRVQuxp+T2IKOBzo0q6evfiFbdA+BbtmJT9JErWq8go8agDgrhw/Vs
-         TIQJDma1PsCV6DPRU/5MFzg+kJtpzcg7ZJXXfk5JSJwzIB0bHuKSHgCu/E/QaMQHrqox
-         MBB+oaN7Eo/vLSCExvHCilQkHiI9Rr/wnY2yy3IjR+kmrSAv/itboVd35vPZboKYwFiz
-         PUPQ==
-X-Gm-Message-State: ACrzQf0i8I3vXiuSMK2BaZAmr7Vno7ddFdAvGbkugpa9V/SLl5CPL7wO
-        EFzImJiLa+j8Hdx2B77SS3HztA==
-X-Google-Smtp-Source: AMsMyM4coSDJb1c+NpjvnMGN/zXpDh8x3svdOrktycy8QY05hsF4bT7iUQWvuAjK0cE7Rn9wKhj9Qg==
-X-Received: by 2002:ac8:5786:0:b0:35c:aa82:303 with SMTP id v6-20020ac85786000000b0035caa820303mr11751749qta.343.1665328850288;
-        Sun, 09 Oct 2022 08:20:50 -0700 (PDT)
-Received: from [192.168.1.57] (cpe-72-225-192-120.nyc.res.rr.com. [72.225.192.120])
-        by smtp.gmail.com with ESMTPSA id bl23-20020a05620a1a9700b006ce30a5f892sm3628926qkb.102.2022.10.09.08.20.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Oct 2022 08:20:49 -0700 (PDT)
-Message-ID: <dc79648b-fccd-dce8-11d0-1ad53204b1f4@linaro.org>
-Date:   Sun, 9 Oct 2022 17:18:36 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [PATCH v1 1/3] arm64: defconfig: Enable pattern LED trigger
-Content-Language: en-US
-To:     =?UTF-8?Q?Guido_G=c3=bcnther?= <agx@sigxcpu.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-        Bjorn Andersson <andersson@kernel.org>,
+        with ESMTP id S230316AbiJISsj (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 9 Oct 2022 14:48:39 -0400
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B387F29378
+        for <phone-devel@vger.kernel.org>; Sun,  9 Oct 2022 11:48:37 -0700 (PDT)
+Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 775AD1F939;
+        Sun,  9 Oct 2022 20:48:34 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Vinod Koul <vkoul@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
-        phone-devel@vger.kernel.org, kernel@puri.sm
-References: <cover.1665318256.git.agx@sigxcpu.org>
- <bdfeb1419eee32feb4b68f317423b7df7068569d.1665318256.git.agx@sigxcpu.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <bdfeb1419eee32feb4b68f317423b7df7068569d.1665318256.git.agx@sigxcpu.org>
-Content-Type: text/plain; charset=UTF-8
+        Vinod Koul <vkoul@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Douglas Anderson <dianders@chromium.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 00/10] drm/msm: Fix math issues in MSM DSC implementation
+Date:   Sun,  9 Oct 2022 20:48:14 +0200
+Message-Id: <20221009184824.457416-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.38.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 09/10/2022 14:26, Guido Günther wrote:
-> This allows devices to easily use LED patterns from userspace.
+Various removals of complex yet unnecessary math, fixing all uses of
+drm_dsc_config::bits_per_pixel to deal with the fact that this field
+includes four fractional bits, and finally making sure that
+range_bpg_offset contains values 6-bits wide to prevent overflows in
+drm_dsc_pps_payload_pack().
 
-Devices could use LED patterns even before. You need to explain why this
-should go to our defconfig which is used mostly by us, kernel
-developers. Not by end-users.
+Altogether this series is responsible for solving _all_ Display Stream
+Compression issues and artifacts on the Sony Tama (sdm845) Akatsuki
+smartphone (2880x1440p).
 
-> 
-> Signed-off-by: Guido Günther <agx@sigxcpu.org>
-> ---
+Changes since v2:
+- Generalize mux_word_size setting depending on bits_per_component;
+- Migrate DSI's DSC calculations to drm_dsc_compute_rc_parameters(),
+  implicitly addressing existing math issues;
+- Disallow any bits_per_component other than 8, until hardcoded values
+  are updated and tested to support such cases.
 
-Best regards,
-Krzysztof
+v2: https://lore.kernel.org/linux-arm-msm/20221005181657.784375-1-marijn.suijten@somainline.org/T/#u
+
+Changes since v1:
+
+- Propagate r-b's, except (obviously) in patches that were (heavily)
+  modified;
+- Remove accidental debug code in dsi_cmd_dma_add;
+- Move Range BPG Offset masking out of DCS PPS packing, back into the
+  DSI driver when it is assigned to drm_dsc_config (this series is now
+  strictly focusing on drm/msm again);
+- Replace modulo-check resulting in conditional increment with
+  DIV_ROUND_UP;
+- Remove repeated calculation of slice_chunk_size;
+- Use u16 instead of int when handling bits_per_pixel;
+- Use DRM_DEV_ERROR instead of pr_err in DSI code;
+- Also remove redundant target_bpp_x16 variable.
+
+v1: https://lore.kernel.org/linux-arm-msm/20221001190807.358691-1-marijn.suijten@somainline.org/T/#u
+
+Marijn Suijten (10):
+  drm/msm/dsi: Remove useless math in DSC calculations
+  drm/msm/dsi: Remove repeated calculation of slice_per_intf
+  drm/msm/dsi: Use DIV_ROUND_UP instead of conditional increment on
+    modulo
+  drm/msm/dsi: Reuse earlier computed dsc->slice_chunk_size
+  drm/msm/dsi: Appropriately set dsc->mux_word_size based on bpc
+  drm/msm/dsi: Migrate to drm_dsc_compute_rc_parameters()
+  drm/msm/dsi: Disallow 8 BPC DSC configuration for alternative BPC
+    values
+  drm/msm/dsi: Account for DSC's bits_per_pixel having 4 fractional bits
+  drm/msm/dpu1: Account for DSC's bits_per_pixel having 4 fractional
+    bits
+  drm/msm/dsi: Prevent signed BPG offsets from bleeding into adjacent
+    bits
+
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c |  11 +-
+ drivers/gpu/drm/msm/dsi/dsi_host.c         | 121 ++++++---------------
+ 2 files changed, 37 insertions(+), 95 deletions(-)
+
+--
+2.38.0
 
