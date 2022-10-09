@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDD06C433FE
-	for <phone-devel@archiver.kernel.org>; Sun,  9 Oct 2022 18:54:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BB4DC433FE
+	for <phone-devel@archiver.kernel.org>; Sun,  9 Oct 2022 18:55:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230086AbiJISyy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 9 Oct 2022 14:54:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56908 "EHLO
+        id S230161AbiJISzy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 9 Oct 2022 14:55:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229974AbiJISyx (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 9 Oct 2022 14:54:53 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C067310FC9
-        for <phone-devel@vger.kernel.org>; Sun,  9 Oct 2022 11:54:50 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id m14so11119921ljg.2
-        for <phone-devel@vger.kernel.org>; Sun, 09 Oct 2022 11:54:50 -0700 (PDT)
+        with ESMTP id S230104AbiJISzx (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 9 Oct 2022 14:55:53 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30B41DEF3
+        for <phone-devel@vger.kernel.org>; Sun,  9 Oct 2022 11:55:52 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id b1so8862582lfs.7
+        for <phone-devel@vger.kernel.org>; Sun, 09 Oct 2022 11:55:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=HfHIwCu6ix9Kna+8PuTHr1cR5KLg2VwjNd612N/VBhk=;
-        b=icnrUwOEYqqXpM7lGG58XUOx4f2Lfbh+szDyq/Oe6bhXj/POCjjfWnVv56wQN0iwsJ
-         E6g1tPHS1qRwPYcYRhrBJ2Yxk1F+p+9FJK3NV/dtSPE05H37fPv7KlBx9pYr5hhzn2i7
-         KHh1zgLVPLyORveVb5L0CmFIzIo/GE2OjHF96QOJRzKH7W2E2MgHYhghbtizM+z5Gw50
-         Ivz/RRcDmG2BmoELfTXehCmSD6lD5ipKIPLIjVlHHPFpHhJ9b0aLqTwsX858zhDkixxx
-         j7kk/FEInm/WizXGsyU3JE1SDukQxNXNxQRM5BGqUGwl3PQYuFBQnzwdoptCVfX40AaS
-         R3Ew==
+        bh=qH4ZdZe+x9C/mI7GHILlpyuEO7Jb1CNK+ic7+GHbAPg=;
+        b=U67pc2OnzYA36zslKIYqtHiPcMCpSF7wMvMSO3Ncc7e7XL4rSnYrEgUVrEq5SVQ3Jk
+         uK9TEAAsUiahgTYMsFuMpELEL3XYe1l1WY4z7K8NtsVsxGL7kjDBGRSZS622q3mb5vrK
+         bFtZI96xetuaJyGuSbGpTMzg1sWCiBdqiJX7ifEXJ/NW8yldlwsFFwncDIutLsMQFFIA
+         9A0qENGe9B0nTnApk7TRWE4myDf2aK20z5RQ0McOfYvLuURpLcy7rrFc1hQJqBPu3YxO
+         ppd1k+MPhESgcA/+n31BW1JR6etJ4e/nWL/S09r9Oyn+ppQEJwhEPcbmkhAs4lcoNuEr
+         H9ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HfHIwCu6ix9Kna+8PuTHr1cR5KLg2VwjNd612N/VBhk=;
-        b=IzdgoKK/b7pO8NOQiZRQM+RY+7WCtYs5Dg4cJJapqtj0ltx21ZZMjUpV7LBLgkdCnT
-         EY83YO8g5cSyyfHSLwrrbvF9L7KdDuVruVKCuc7XhwJbgo4XEzQmAIR7CDg80QLZTTb7
-         q6+fbOw8rCh0V+oqrPu4A///JZd+U7AYiAHGzQx/IYNzeE+N1owVn2is3JiMJv4R+ixK
-         mUzE5qgNT0+BHsnya/huGQMAEPYE6naBsGWr0tf3ALTc/x77wbwU2lfh1ph4JeeN2ll/
-         mhGltM1BJk6dJUqAvtLHhXsXYUIl4b9EnqWgjPKwllhWzGNyLnO1K1Yx0JusUkOcJQCy
-         vlzg==
-X-Gm-Message-State: ACrzQf0mLBahvnFust5Ql87saSgA9srT5zb1pzFbW26HEE/RAiaDyXd+
-        FCuvWpgGiSy2rBm/NURQuzxe2w==
-X-Google-Smtp-Source: AMsMyM6CRg4uBwxkS7rjTe5Yf0/rhGdcCtjAb5V9AqMemVPwKziC/xVhAt3f7dUbsd0ZGixqPW5KAQ==
-X-Received: by 2002:a2e:9f51:0:b0:26c:3db9:3660 with SMTP id v17-20020a2e9f51000000b0026c3db93660mr5559612ljk.528.1665341689141;
-        Sun, 09 Oct 2022 11:54:49 -0700 (PDT)
+        bh=qH4ZdZe+x9C/mI7GHILlpyuEO7Jb1CNK+ic7+GHbAPg=;
+        b=wfNGy9xeRLBSNhc+yrd1/WvvQzYa369XVTVnkZMaOR3NUeulp04W16Zrc5Ur7rDJKU
+         eP0m2hQKqPKN/zCrhDAFWcz4hFhglXRy6bFDslYBFwl9U37PdgWCaZh9s4oync4i8wVy
+         Kq0r4bvg9Uo9oAC1fOFucL/v/1SiHAPcK/j6tkDWK51yrkpqV4TqBeuidEIJiN8PEIgN
+         9Ic0VkM+gTFYTXGP55bcXP8nI9jMV9GrTT0G5GTxan8Ym70tb3qIeLI+u0P+kYB5UIl8
+         RpIwwtLhFmHyQFE9spxz2kI2v5xpEC6ongQz+E3dUMh7nWsDdf4bTe6fN9fhRJYwK7Z7
+         BBVw==
+X-Gm-Message-State: ACrzQf0xZFePXsOEg0G3vnUkhTaxGtU2ttVIh1maBQIFK28X2cV2N1Cz
+        wNr8rLLuXmKw1jBQj4/zLykyVjAb7snm/A==
+X-Google-Smtp-Source: AMsMyM5XudCQ8+NtBNRpwa0An+WQMISOz2GaDYRpbDg8sJiqOjSyAFsOtplF00BqphiaiAFA/WnMKQ==
+X-Received: by 2002:a05:6512:6d2:b0:4a2:4f62:270 with SMTP id u18-20020a05651206d200b004a24f620270mr5064072lff.143.1665341750545;
+        Sun, 09 Oct 2022 11:55:50 -0700 (PDT)
 Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id g3-20020a19ee03000000b00494716e4f23sm1113741lfb.111.2022.10.09.11.54.48
+        by smtp.gmail.com with ESMTPSA id h15-20020ac250cf000000b00499b27a329esm1108791lfm.300.2022.10.09.11.55.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Oct 2022 11:54:48 -0700 (PDT)
-Message-ID: <7b72e9bf-9736-59b7-7355-db6b1c643e85@linaro.org>
-Date:   Sun, 9 Oct 2022 21:54:48 +0300
+        Sun, 09 Oct 2022 11:55:50 -0700 (PDT)
+Message-ID: <a36325ea-b1a1-4137-97c0-a76ad72a7c87@linaro.org>
+Date:   Sun, 9 Oct 2022 21:55:49 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.1
-Subject: Re: [PATCH v3 04/10] drm/msm/dsi: Reuse earlier computed
- dsc->slice_chunk_size
+Subject: Re: [PATCH v3 05/10] drm/msm/dsi: Appropriately set
+ dsc->mux_word_size based on bpc
 Content-Language: en-GB
 To:     Marijn Suijten <marijn.suijten@somainline.org>,
         phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
@@ -74,9 +74,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
 References: <20221009184824.457416-1-marijn.suijten@somainline.org>
- <20221009184824.457416-5-marijn.suijten@somainline.org>
+ <20221009184824.457416-6-marijn.suijten@somainline.org>
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20221009184824.457416-5-marijn.suijten@somainline.org>
+In-Reply-To: <20221009184824.457416-6-marijn.suijten@somainline.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -84,16 +84,19 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 09/10/2022 21:48, Marijn Suijten wrote:
-> dsi_populate_dsc_params() is called prior to dsi_update_dsc_timing() and
-> already computes a value for slice_chunk_size, whose value doesn't need
-> to be recomputed and re-set here.
+> This field is currently unread but will come into effect when duplicated
+> code below is migrated to call drm_dsc_compute_rc_parameters(), which
+> uses the bpc-dependent value of the local variable mux_words_size in
+> much the same way.
 > 
-> Fixes: 08802f515c3c ("drm/msm/dsi: Add support for DSC configuration")
+> The hardcoded constant seems to be a remnant from the `/* bpc 8 */`
+> comment right above, indicating that this group of field assignments is
+> applicable to bpc = 8 exclusively and should probably bail out on
+> different bpc values, until constants for other bpc values are added (or
+> the current ones are confirmed to be correct across multiple bpc's).
+> 
+> Fixes: b9080324d6ca ("drm/msm/dsi: add support for dsc data")
 > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-> ---
->   drivers/gpu/drm/msm/dsi/dsi_host.c | 9 ++-------
->   1 file changed, 2 insertions(+), 7 deletions(-)
 
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
