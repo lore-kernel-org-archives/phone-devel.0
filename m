@@ -2,95 +2,77 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13E31C433F5
-	for <phone-devel@archiver.kernel.org>; Sun,  9 Oct 2022 02:33:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81D03C4332F
+	for <phone-devel@archiver.kernel.org>; Sun,  9 Oct 2022 12:36:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229882AbiJICdf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 8 Oct 2022 22:33:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34348 "EHLO
+        id S230043AbiJIMgs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 9 Oct 2022 08:36:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229865AbiJICdc (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 8 Oct 2022 22:33:32 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AED14367AE;
-        Sat,  8 Oct 2022 19:33:31 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id y4so1695461iof.3;
-        Sat, 08 Oct 2022 19:33:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eKgMiGJ4xMxKYE+sQjNHKzDaMNVrm+oHUpyMXCSQTDs=;
-        b=NYxjOsB+i0Q2ncUgRrwdIlyCeHGXDiDQMmC2QhU/GxeAdvqZz4Jqs83TVFyc/xxPHF
-         xoxeAcjCNNk9cT36I2UsTNFh1MpzMgFw2RqsKQP1t9QKQfWaF0oQFKYuULT+bPNb1ULK
-         olXhHsfMph/NoI5REHcWMZwWXYzwhSec67GlMSVFje4mN5bn1i/18t/EQl2LTQPy5372
-         Dcs3UhVWPx01WuR08asoh6m4cksqAs92QVS7BkG9wHbGdNS9kcSRc31yPGsMdTjFkINi
-         pyG1PqaxlVn2HM/r2L5klq1kOrBxlJvCN1+E29HNVzNNUff5699oF8Z/C7MNgI+vRbyN
-         lmUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eKgMiGJ4xMxKYE+sQjNHKzDaMNVrm+oHUpyMXCSQTDs=;
-        b=u5lO+knmXDvYyNdHFrFQhUCgmi0mrQY3naYW6H6lg/gKesn3SN7llBhxGXbABN2WdA
-         qC8miME9oBHzoQhTakrbO1Qi5ybPSbzsG1eO+iWwZ3cnxxxAgfMaPaXbiEGAmhmfojBU
-         u5KYxrtBPNT/ZXiE+D3VfUk5qYzJmhaneCBNIhR7ek2YVMjcM7GPz46qoZvAvk14ULLS
-         TYPVuL0MaNTlC4xO8S3pFmOwO8fJtud/aWL++R+mJCVMZ8bp7AYnMlq4tI0bqYf7zBjo
-         7ccjmK3ALlv2VhKoPYb9bmmvHpwAyZfRKSpuQu2YDeeC5vjNNzVq8vWciZVayphD3Ljg
-         VvWA==
-X-Gm-Message-State: ACrzQf0dP2vIxzN55AW2nsu6NYubxeFwtazdGbPWFKwlxMZYwAHFJOhj
-        3CdRePqtNfUufFYrvy2Mw2M=
-X-Google-Smtp-Source: AMsMyM5GzbjwHI/Y3eo0drTr+O2Tna+hX32qEn8v3GHuwVNW5h74J0HM80QYq2XPcO73lKQxp6N5LQ==
-X-Received: by 2002:a05:6602:98:b0:6a2:1723:bee1 with SMTP id h24-20020a056602009800b006a21723bee1mr5195402iob.58.1665282810832;
-        Sat, 08 Oct 2022 19:33:30 -0700 (PDT)
-Received: from ?IPV6:2604:2d80:4d87:cd00:9f51:32d7:1177:67d? ([2604:2d80:4d87:cd00:9f51:32d7:1177:67d])
-        by smtp.gmail.com with ESMTPSA id v14-20020a92ab0e000000b002faa9fe86bfsm2449714ilh.56.2022.10.08.19.33.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Oct 2022 19:33:30 -0700 (PDT)
-Message-ID: <f488fa30-a307-96f6-fe85-271cdc48faa3@gmail.com>
-Date:   Sat, 8 Oct 2022 21:33:28 -0500
+        with ESMTP id S229617AbiJIMgr (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 9 Oct 2022 08:36:47 -0400
+Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC90B2983F;
+        Sun,  9 Oct 2022 05:36:45 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by honk.sigxcpu.org (Postfix) with ESMTP id F2D93FB02;
+        Sun,  9 Oct 2022 14:27:00 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at honk.sigxcpu.org
+Received: from honk.sigxcpu.org ([127.0.0.1])
+        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 0lfdrkTZG03R; Sun,  9 Oct 2022 14:26:59 +0200 (CEST)
+From:   =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
+        Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+        Vinod Koul <vkoul@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
+        phone-devel@vger.kernel.org, kernel@puri.sm
+Subject: [PATCH v1 1/3] arm64: defconfig: Enable pattern LED trigger
+Date:   Sun,  9 Oct 2022 14:26:53 +0200
+Message-Id: <bdfeb1419eee32feb4b68f317423b7df7068569d.1665318256.git.agx@sigxcpu.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <cover.1665318256.git.agx@sigxcpu.org>
+References: <cover.1665318256.git.agx@sigxcpu.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH v6 1/2] power: supply: add Qualcomm PMI8998 SMB2 Charger
- driver
-Content-Language: en-US
-To:     Caleb Connolly <caleb.connolly@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        Sebastian Reichel <sre@kernel.org>
-Cc:     Bjorn Andersson <andersson@kernel.org>,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-References: <20221008183753.249514-1-caleb.connolly@linaro.org>
- <20221008183753.249514-2-caleb.connolly@linaro.org>
-From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
-In-Reply-To: <20221008183753.249514-2-caleb.connolly@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
+This allows devices to easily use LED patterns from userspace.
 
-On 08/10/22 13:37, Caleb Connolly wrote:
-> Add a driver for the SMB2 charger block found in the Qualcomm PMI8998
-> and PM660.
-> This driver adds initial support for detecting USB cables and managing
-> basic battery charging.
-> 
-> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+---
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-I can confirm that this driver works as expected on boot and when
-suspended/resumed. Tested in my Xiaomi Poco F1 running postmarketOS.
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 5b167649097e..68642b8aac3f 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -956,6 +956,7 @@ CONFIG_LEDS_TRIGGER_HEARTBEAT=y
+ CONFIG_LEDS_TRIGGER_CPU=y
+ CONFIG_LEDS_TRIGGER_DEFAULT_ON=y
+ CONFIG_LEDS_TRIGGER_PANIC=y
++CONFIG_LEDS_TRIGGER_PATTERN=m
+ CONFIG_EDAC=y
+ CONFIG_EDAC_GHES=y
+ CONFIG_EDAC_LAYERSCAPE=m
+-- 
+2.35.1
 
-Tested-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
-
-Regards
-Joel Selvaraj
