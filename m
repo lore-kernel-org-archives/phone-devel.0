@@ -2,24 +2,24 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 585B2C4332F
-	for <phone-devel@archiver.kernel.org>; Sun,  9 Oct 2022 18:48:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C82BAC4167B
+	for <phone-devel@archiver.kernel.org>; Sun,  9 Oct 2022 18:48:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbiJISsl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 9 Oct 2022 14:48:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42996 "EHLO
+        id S230345AbiJISso (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 9 Oct 2022 14:48:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230338AbiJISsj (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 9 Oct 2022 14:48:39 -0400
-Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [5.144.164.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9D852937A
-        for <phone-devel@vger.kernel.org>; Sun,  9 Oct 2022 11:48:38 -0700 (PDT)
+        with ESMTP id S230306AbiJISsn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 9 Oct 2022 14:48:43 -0400
+Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [5.144.164.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B50A629375
+        for <phone-devel@vger.kernel.org>; Sun,  9 Oct 2022 11:48:42 -0700 (PDT)
 Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 6427B1F925;
-        Sun,  9 Oct 2022 20:48:36 +0200 (CEST)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 48A791F963;
+        Sun,  9 Oct 2022 20:48:40 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
@@ -38,9 +38,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Vladimir Lypak <vladimir.lypak@gmail.com>,
         linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 01/10] drm/msm/dsi: Remove useless math in DSC calculations
-Date:   Sun,  9 Oct 2022 20:48:15 +0200
-Message-Id: <20221009184824.457416-2-marijn.suijten@somainline.org>
+Subject: [PATCH v3 03/10] drm/msm/dsi: Use DIV_ROUND_UP instead of conditional increment on modulo
+Date:   Sun,  9 Oct 2022 20:48:17 +0200
+Message-Id: <20221009184824.457416-4-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.38.0
 In-Reply-To: <20221009184824.457416-1-marijn.suijten@somainline.org>
 References: <20221009184824.457416-1-marijn.suijten@somainline.org>
@@ -50,49 +50,31 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Multiplying a value by 2 and adding 1 to it always results in a value
-that is uneven, and that 1 gets truncated immediately when performing
-integer division by 2 again.  There is no "rounding" possible here.
-
-After that target_bpp_x16 is used to store a multiplication of
-bits_per_pixel by 16 which is only ever read to immediately be divided
-by 16 again, and is elided in much the same way.
+This exact same math is used to compute bytes_in_slice above in
+dsi_update_dsc_timing(), also used to fill slice_chunk_size.
 
 Fixes: b9080324d6ca ("drm/msm/dsi: add support for dsc data")
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index 8e4bc586c262..70077d1f0f21 100644
+index c746ed5d61f9..48c966375ffa 100644
 --- a/drivers/gpu/drm/msm/dsi/dsi_host.c
 +++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -1784,7 +1784,6 @@ static int dsi_populate_dsc_params(struct drm_dsc_config *dsc)
- 	int hrd_delay;
- 	int pre_num_extra_mux_bits, num_extra_mux_bits;
- 	int slice_bits;
--	int target_bpp_x16;
- 	int data;
- 	int final_value, final_scale;
- 	int i;
-@@ -1864,14 +1863,7 @@ static int dsi_populate_dsc_params(struct drm_dsc_config *dsc)
- 	data = 2048 * (dsc->rc_model_size - dsc->initial_offset + num_extra_mux_bits);
- 	dsc->slice_bpg_offset = DIV_ROUND_UP(data, groups_total);
+@@ -1829,9 +1829,7 @@ static int dsi_populate_dsc_params(struct drm_dsc_config *dsc)
+ 	 * params are calculated
+ 	 */
+ 	groups_per_line = DIV_ROUND_UP(dsc->slice_width, 3);
+-	dsc->slice_chunk_size = dsc->slice_width * dsc->bits_per_pixel / 8;
+-	if ((dsc->slice_width * dsc->bits_per_pixel) % 8)
+-		dsc->slice_chunk_size++;
++	dsc->slice_chunk_size = DIV_ROUND_UP(dsc->slice_width * dsc->bits_per_pixel, 8);
  
--	/* bpp * 16 + 0.5 */
--	data = dsc->bits_per_pixel * 16;
--	data *= 2;
--	data++;
--	data /= 2;
--	target_bpp_x16 = data;
--
--	data = (dsc->initial_xmit_delay * target_bpp_x16) / 16;
-+	data = dsc->initial_xmit_delay * dsc->bits_per_pixel;
- 	final_value =  dsc->rc_model_size - data + num_extra_mux_bits;
- 	dsc->final_offset = final_value;
- 
+ 	/* rbs-min */
+ 	min_rate_buffer_size =  dsc->rc_model_size - dsc->initial_offset +
 -- 
 2.38.0
 
