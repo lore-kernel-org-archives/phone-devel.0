@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7027C4332F
-	for <phone-devel@archiver.kernel.org>; Sun,  9 Oct 2022 18:54:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BDD06C433FE
+	for <phone-devel@archiver.kernel.org>; Sun,  9 Oct 2022 18:54:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230396AbiJISyH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 9 Oct 2022 14:54:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53608 "EHLO
+        id S230086AbiJISyy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 9 Oct 2022 14:54:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230391AbiJISyE (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 9 Oct 2022 14:54:04 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C03D2D75D
-        for <phone-devel@vger.kernel.org>; Sun,  9 Oct 2022 11:53:56 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id b2so13834332lfp.6
-        for <phone-devel@vger.kernel.org>; Sun, 09 Oct 2022 11:53:56 -0700 (PDT)
+        with ESMTP id S229974AbiJISyx (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 9 Oct 2022 14:54:53 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C067310FC9
+        for <phone-devel@vger.kernel.org>; Sun,  9 Oct 2022 11:54:50 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id m14so11119921ljg.2
+        for <phone-devel@vger.kernel.org>; Sun, 09 Oct 2022 11:54:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=7WCwiylqT6GqGn/jQAt5LTbt6Cb7+upuDOK5iWkS3jg=;
-        b=Dr+PFWXcabmj8/2V1PzeN71F1E4EPjMkeUYtJFnsQHESjhxU3KvTPrTuD94jE3KuEI
-         HiH+VvgGX+AZouib+u2vnBtJPxCnsaOoek4wTSf4WiVuoIDSdiIA6tjvk36Ir3j3EZz0
-         Wrt7FkofRlb04ZybpjzJr3tgF0IbwbzAo8AEU9XUwFne2jBratY7GZFno7MRr7b3fwfa
-         0LC8kgDS4PyNnt/+1IOKXqHF4+zge3mmnBwJxbtSGREvuy4ac7hthsC70aGmmz3y43Do
-         rPyOkNf4kurOLLC+jTJhExl9ANmUWgaSa123RRnFoAr5AgRSiWaaxZpNaN2AA6YL84Fy
-         ojSw==
+        bh=HfHIwCu6ix9Kna+8PuTHr1cR5KLg2VwjNd612N/VBhk=;
+        b=icnrUwOEYqqXpM7lGG58XUOx4f2Lfbh+szDyq/Oe6bhXj/POCjjfWnVv56wQN0iwsJ
+         E6g1tPHS1qRwPYcYRhrBJ2Yxk1F+p+9FJK3NV/dtSPE05H37fPv7KlBx9pYr5hhzn2i7
+         KHh1zgLVPLyORveVb5L0CmFIzIo/GE2OjHF96QOJRzKH7W2E2MgHYhghbtizM+z5Gw50
+         Ivz/RRcDmG2BmoELfTXehCmSD6lD5ipKIPLIjVlHHPFpHhJ9b0aLqTwsX858zhDkixxx
+         j7kk/FEInm/WizXGsyU3JE1SDukQxNXNxQRM5BGqUGwl3PQYuFBQnzwdoptCVfX40AaS
+         R3Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7WCwiylqT6GqGn/jQAt5LTbt6Cb7+upuDOK5iWkS3jg=;
-        b=CLXYd+kyAufoFr94y+o30z9kdUlnu7LRZhJRvi8xftMx/Xtz3eE7V+3EMN6lSitWe9
-         n98tvv0cT5QXqUCqiP5Rm5L4VXL0EpIaHPyds7JW6fZ1YwlZz+lppUrrWopba3HxPqAI
-         jY299xA0fBaYJXuWTgfXveF4TKid1LTvUWzgKkCnD3DuV6yOfRxpB5iqBjs1CX7owNvx
-         7TXnc9fNWRJVnAoikqbIQu3zvlaPFjIGzH8IKQDCtKaXbhQG3iy/UFhUeZx2skhev8o0
-         d3wmDCPlb6EBWtev7iMZTYi0g6rLVffuglRfGv4CjWIcoFqHd3bRBkX6y9nrX2SArd54
-         4mBA==
-X-Gm-Message-State: ACrzQf1tO402AxOG6zkj68LrwpI+PyZDA0Jy3S4BOpVntKOTWn9+sIbT
-        kZKwo0OqAGi9XdPpwPfnLMDQ5w==
-X-Google-Smtp-Source: AMsMyM49x3SFTxuNraxtl+xaUGhpszx7zJd4wy4vtk748DI0fbZBp5t1rl3xL96NhqsqzF3BC4RKcQ==
-X-Received: by 2002:ac2:5e79:0:b0:4a2:3eeb:a7cb with SMTP id a25-20020ac25e79000000b004a23eeba7cbmr4704971lfr.263.1665341634743;
-        Sun, 09 Oct 2022 11:53:54 -0700 (PDT)
+        bh=HfHIwCu6ix9Kna+8PuTHr1cR5KLg2VwjNd612N/VBhk=;
+        b=IzdgoKK/b7pO8NOQiZRQM+RY+7WCtYs5Dg4cJJapqtj0ltx21ZZMjUpV7LBLgkdCnT
+         EY83YO8g5cSyyfHSLwrrbvF9L7KdDuVruVKCuc7XhwJbgo4XEzQmAIR7CDg80QLZTTb7
+         q6+fbOw8rCh0V+oqrPu4A///JZd+U7AYiAHGzQx/IYNzeE+N1owVn2is3JiMJv4R+ixK
+         mUzE5qgNT0+BHsnya/huGQMAEPYE6naBsGWr0tf3ALTc/x77wbwU2lfh1ph4JeeN2ll/
+         mhGltM1BJk6dJUqAvtLHhXsXYUIl4b9EnqWgjPKwllhWzGNyLnO1K1Yx0JusUkOcJQCy
+         vlzg==
+X-Gm-Message-State: ACrzQf0mLBahvnFust5Ql87saSgA9srT5zb1pzFbW26HEE/RAiaDyXd+
+        FCuvWpgGiSy2rBm/NURQuzxe2w==
+X-Google-Smtp-Source: AMsMyM6CRg4uBwxkS7rjTe5Yf0/rhGdcCtjAb5V9AqMemVPwKziC/xVhAt3f7dUbsd0ZGixqPW5KAQ==
+X-Received: by 2002:a2e:9f51:0:b0:26c:3db9:3660 with SMTP id v17-20020a2e9f51000000b0026c3db93660mr5559612ljk.528.1665341689141;
+        Sun, 09 Oct 2022 11:54:49 -0700 (PDT)
 Received: from [192.168.1.211] ([37.153.55.125])
-        by smtp.gmail.com with ESMTPSA id t27-20020a2e8e7b000000b0026dfe55be7fsm1306222ljk.63.2022.10.09.11.53.54
+        by smtp.gmail.com with ESMTPSA id g3-20020a19ee03000000b00494716e4f23sm1113741lfb.111.2022.10.09.11.54.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Oct 2022 11:53:54 -0700 (PDT)
-Message-ID: <8fdeeefb-8410-98cb-0c2b-60a580fd0e36@linaro.org>
-Date:   Sun, 9 Oct 2022 21:53:53 +0300
+        Sun, 09 Oct 2022 11:54:48 -0700 (PDT)
+Message-ID: <7b72e9bf-9736-59b7-7355-db6b1c643e85@linaro.org>
+Date:   Sun, 9 Oct 2022 21:54:48 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.1
-Subject: Re: [PATCH v3 03/10] drm/msm/dsi: Use DIV_ROUND_UP instead of
- conditional increment on modulo
+Subject: Re: [PATCH v3 04/10] drm/msm/dsi: Reuse earlier computed
+ dsc->slice_chunk_size
 Content-Language: en-GB
 To:     Marijn Suijten <marijn.suijten@somainline.org>,
         phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
@@ -74,9 +74,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
 References: <20221009184824.457416-1-marijn.suijten@somainline.org>
- <20221009184824.457416-4-marijn.suijten@somainline.org>
+ <20221009184824.457416-5-marijn.suijten@somainline.org>
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20221009184824.457416-4-marijn.suijten@somainline.org>
+In-Reply-To: <20221009184824.457416-5-marijn.suijten@somainline.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -84,15 +84,16 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 09/10/2022 21:48, Marijn Suijten wrote:
-> This exact same math is used to compute bytes_in_slice above in
-> dsi_update_dsc_timing(), also used to fill slice_chunk_size.
+> dsi_populate_dsc_params() is called prior to dsi_update_dsc_timing() and
+> already computes a value for slice_chunk_size, whose value doesn't need
+> to be recomputed and re-set here.
 > 
-> Fixes: b9080324d6ca ("drm/msm/dsi: add support for dsc data")
+> Fixes: 08802f515c3c ("drm/msm/dsi: Add support for DSC configuration")
 > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 > Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 > ---
->   drivers/gpu/drm/msm/dsi/dsi_host.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
+>   drivers/gpu/drm/msm/dsi/dsi_host.c | 9 ++-------
+>   1 file changed, 2 insertions(+), 7 deletions(-)
 
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
