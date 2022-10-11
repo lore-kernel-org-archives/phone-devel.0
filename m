@@ -2,74 +2,99 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 753D5C433F5
-	for <phone-devel@archiver.kernel.org>; Tue, 11 Oct 2022 05:39:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66899C433FE
+	for <phone-devel@archiver.kernel.org>; Tue, 11 Oct 2022 07:51:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229513AbiJKFjZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 11 Oct 2022 01:39:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33990 "EHLO
+        id S229833AbiJKHv0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 11 Oct 2022 03:51:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbiJKFjZ (ORCPT
+        with ESMTP id S229494AbiJKHvY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 11 Oct 2022 01:39:25 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 599437B1F7;
-        Mon, 10 Oct 2022 22:39:24 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 87E8880FE;
-        Tue, 11 Oct 2022 05:30:36 +0000 (UTC)
-Date:   Tue, 11 Oct 2022 08:39:22 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Sicelo <absicsz@gmail.com>
-Cc:     linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        maemo-leste@lists.dyne.org, Felipe Balbi <balbi@kernel.org>,
-        phone-devel@vger.kernel.org, Bin Liu <b-liu@ti.com>,
-        Rob Herring <robh@kernel.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: [maemo-leste] USB PHY Initialization Fails on Nokia N900 Since
- 5.19
-Message-ID: <Y0UBindrJa1ptyR0@atomide.com>
-References: <Y0PhEOl+MwlQ8HAD@tp440p.steeds.sam>
+        Tue, 11 Oct 2022 03:51:24 -0400
+Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7A18E3A
+        for <phone-devel@vger.kernel.org>; Tue, 11 Oct 2022 00:51:23 -0700 (PDT)
+Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 3D3FC2063E;
+        Tue, 11 Oct 2022 09:51:21 +0200 (CEST)
+Date:   Tue, 11 Oct 2022 09:51:19 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>, Vinod Koul <vkoul@kernel.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 10/10] drm/msm/dsi: Prevent signed BPG offsets from
+ bleeding into adjacent bits
+Message-ID: <20221011075119.tvn5j5jm6aqnhqv2@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>, Vinod Koul <vkoul@kernel.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20221009184824.457416-1-marijn.suijten@somainline.org>
+ <20221009185316.462522-3-marijn.suijten@somainline.org>
+ <408bf6a2-47fe-3eaf-7235-578d33a576c9@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y0PhEOl+MwlQ8HAD@tp440p.steeds.sam>
+In-Reply-To: <408bf6a2-47fe-3eaf-7235-578d33a576c9@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
+On 2022-10-09 22:14:16, Dmitry Baryshkov wrote:
+> On 09/10/2022 21:53, Marijn Suijten wrote:
+> > The bpg_offset array contains negative BPG offsets which fill the full 8
+> > bits of a char thanks to two's complement: this however results in those
+> > bits bleeding into the next field when the value is packed into DSC PPS
+> > by the drm_dsc_helper function, which only expects range_bpg_offset to
+> > contain 6-bit wide values.  As a consequence random slices appear
+> > corrupted on-screen (tested on a Sony Tama Akatsuki device with sdm845).
+> > 
+> > Use AND operators to limit these two's complement values to 6 bits,
+> > similar to the AMD and i915 drivers.
+> > 
+> > Fixes: b9080324d6ca ("drm/msm/dsi: add support for dsc data")
+> > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> 
+> 
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> 
+> Side note: the DSC params tables are more or less common between amd, 
+> i916 and msm drivers. It might be worth moving them to the DSC helpers 
+> from the individual drivers. This would mean such masks handling can go 
+> into the helper too.
 
-Adding Rob and HNS to Cc too for commit cf081d009c44 ("usb: musb: Set the
-DT node on the child device").
+I'll queue this up in my list and perhaps tackle it in the next round of
+DSC fixes, assuming things don't get too big.
 
-* Sicelo <absicsz@gmail.com> [221010 09:00]:
-> I have tried to bisect, but due to inexperience and lack of proper
-> tooling (e.g. no serial console), I have not been able to pinpoint the
-> cause of the error so far. However, on linux 6.0 with cf081d009c447647
-> reverted, there is a more detailed trace in dmesg - the same trace
-> appeared in other kernel versions while bisecting:
+If there are no more reviews I'll respin v4 with your review picked up
+and patch 7/10 reworked or reordered to have access to the msm_host
+pointer added in 8/10 (see kernel test robot mail).
 
-To me it seems that we now somehow have a probe issue for musb depending
-on how it gets probed depending on the following line:
-
-device_set_of_node_from_dev(&musb->dev, &pdev->dev);
-
-I think commit 239071064732 ("partially Revert "usb: musb: Set the DT node
-on the child device"") fixed the issue for omap3 that still uses hwmod
-by removing the device_set_of_node_from_dev(). However, it somehow broke
-SoCs using ti-sysc like omap4.
-
-My guess is commit 239071064732 will fix the issue for you?
-
-I'm not sure what the proper fix here might be to have both working
-though :)
-
-FYI, I have a pending patch set to convert omap3 also to probe with
-ti-sysc for musb, but seems like there's some other issue here that
-should be fixed first.
-
-Regards,
-
-Tony
-
+- Marijn
