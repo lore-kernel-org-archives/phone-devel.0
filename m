@@ -2,112 +2,90 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ADF7DC43217
-	for <phone-devel@archiver.kernel.org>; Thu, 13 Oct 2022 09:36:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2E11C433FE
+	for <phone-devel@archiver.kernel.org>; Thu, 13 Oct 2022 13:41:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229507AbiJMJgx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 13 Oct 2022 05:36:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37100 "EHLO
+        id S229824AbiJMNlU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 13 Oct 2022 09:41:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbiJMJgw (ORCPT
+        with ESMTP id S229819AbiJMNlS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 13 Oct 2022 05:36:52 -0400
-Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E155AD9A8;
-        Thu, 13 Oct 2022 02:36:50 -0700 (PDT)
-Received: from SoMainline.org (D57D4C6E.static.ziggozakelijk.nl [213.125.76.110])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id CE7933F757;
-        Thu, 13 Oct 2022 11:36:47 +0200 (CEST)
-Date:   Thu, 13 Oct 2022 11:36:46 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Abhinav Kumar <quic_abhinavk@quicinc.com>
-Cc:     phone-devel@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        David Airlie <airlied@gmail.com>,
-        linux-arm-msm@vger.kernel.org,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        dri-devel@lists.freedesktop.org,
-        Douglas Anderson <dianders@chromium.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Martin Botka <martin.botka@somainline.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Daniel Vetter <daniel@ffwll.ch>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        freedreno@lists.freedesktop.org, Sean Paul <sean@poorly.run>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [Freedreno] [PATCH v3 06/10] drm/msm/dsi: Migrate to
- drm_dsc_compute_rc_parameters()
-Message-ID: <20221013093646.c65mbjc6oekd7gha@SoMainline.org>
-References: <20221009184824.457416-1-marijn.suijten@somainline.org>
- <20221009185058.460688-1-marijn.suijten@somainline.org>
- <5c178d7e-5022-f5e5-791d-d3800114b42b@quicinc.com>
+        Thu, 13 Oct 2022 09:41:18 -0400
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 901FD5A159
+        for <phone-devel@vger.kernel.org>; Thu, 13 Oct 2022 06:41:16 -0700 (PDT)
+Received: by mail-qt1-x82a.google.com with SMTP id jr1so1081117qtb.0
+        for <phone-devel@vger.kernel.org>; Thu, 13 Oct 2022 06:41:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KfmEgQuQVh7sTBmqJ0VUPOWywieYxc2ZYWNI1q6xxkM=;
+        b=m7VC4poWRxJmtaAHaMM31ThEfzElZ6O9xDTexyesxF9+tAuMlB9okvMdWIQIbpZRab
+         lfyXIBDjGQ7PEMRwGd8V+ORRJRIdpxfrkJF2rGEUmGSVNzqVEVnE49Q76NktnfSB2od1
+         cs080AfipvWFO3fPZIEDii/reoH7m0zVr2xUSiF4wGG6TZ5EDkHXgUZpfFctSHHtWGul
+         0bJWyUWuaBOfOTWZ6NA4IQfMQ6VY0evvj74Y3FVtck+5iyXNHxqDOV17upBHCFj/XQlL
+         Fig5CCf49g0Lgeu2pqIjr/HQkc73LkKuQO1pOJ2a7BN5Ndi/TyZn8+MdhSqZbupHPKn7
+         fhJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KfmEgQuQVh7sTBmqJ0VUPOWywieYxc2ZYWNI1q6xxkM=;
+        b=w9HRR4WsYoaAH7rPzqzOxl2aOzN4NUCZctHQDFQ0PqUWKe3cOMAQihTsdc9SwHWPhP
+         kGaxaDecLNaa/BD42n8b33L3EMc2aYSZokTZsJL0brbAiVlrvOaRQzuqPkvq/ppfVrLz
+         239xE1h/52I0kGqfVeaM2xE/bcDGFBB3wdsNxbA+YCDr/kZo8J1KXQbsB/obdWFys88O
+         UTNMQhGwTcCIy+UV66aonwqk+YHAHdv75j2w1JcSegenIT1UDdj7xY2nSRJTX6AObvyH
+         Y31JnGmT0BsSQ5RMyL05Mrd6k0Alc5wlBfKcUYDsL0maYcn8muiOch/pbodLDXrAn1wa
+         WkPQ==
+X-Gm-Message-State: ACrzQf0v/pOiwOXQYINO8zYKQ5pqU6VQ49vMVyYv7P+Y4G4ZKLBKq1nR
+        JWK+O+wRxddNUvYtBGpRik9L+Q==
+X-Google-Smtp-Source: AMsMyM6Yeebymip42Gn94hyjo2aEpwIcg+DQ9YQgBwfVTw3CqEJJ95fFwLXiRpj2B1Xm48vHnDeqww==
+X-Received: by 2002:ac8:5e11:0:b0:39c:b869:491f with SMTP id h17-20020ac85e11000000b0039cb869491fmr9642738qtx.315.1665668475630;
+        Thu, 13 Oct 2022 06:41:15 -0700 (PDT)
+Received: from [192.168.1.57] (cpe-72-225-192-120.nyc.res.rr.com. [72.225.192.120])
+        by smtp.gmail.com with ESMTPSA id o19-20020a05620a2a1300b006cddf59a600sm18876143qkp.34.2022.10.13.06.41.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Oct 2022 06:41:14 -0700 (PDT)
+Message-ID: <861dd64f-0443-db69-ef81-900973f2fa11@linaro.org>
+Date:   Thu, 13 Oct 2022 09:39:03 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5c178d7e-5022-f5e5-791d-d3800114b42b@quicinc.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.2
+Subject: Re: [PATCH] dt-bindings: qcom,pdc: Add missing compatibles
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20221013091208.356739-1-luca.weiss@fairphone.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221013091208.356739-1-luca.weiss@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-10-12 16:03:06, Abhinav Kumar wrote:
+On 13/10/2022 05:12, Luca Weiss wrote:
+> Document the compatibles that are already in use in the upstream Linux
+> kernel to resolve dtbs_check warnings.
 > 
-> 
-> On 10/9/2022 11:50 AM, Marijn Suijten wrote:
-> > As per the FIXME this code is entirely duplicate with what is already
-> > provided inside drm_dsc_compute_rc_parameters(), and it is yet unknown
-> > why this comment was put in place instead of resolved from the get-go.
-> > Not only does it save on duplication, it would have also spared certain
-> > issues.
-> > 
-> > For example, this code from downstream assumed dsc->bits_per_pixel to
-> > contain an integer value, whereas the upstream drm_dsc_config struct has
-> > it with 4 fractional bits.  drm_dsc_compute_rc_parameters() already
-> > accounts for this feat, and the sole remaining use of
-> > dsc->bits_per_pixel inside dsi_populate_dsc_params() will be addressed
-> > in a separate patch.
-> > 
-> 
-> This is a nice cleanup! Thanks for doing this. I would actually like to 
-> move towards the drm_dsc_compute_rc_parameters() API.
-> 
-> But I would like to hold back this change till Vinod clarifies because 
-> Vinod had mentioned that with drm_dsc_compute_rc_parameters() he was 
-> seeing a mismatch in the computation of two values.
-> 
-> slice_bpg_offset and the final_offset.
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-Unsurprisingly so because final_offset, and slice_bpg_offset through
-initial_offset depend directly on bits_per_pixel.  The main takeaway of
-this series is that Vinod was interpreting this field as integer instead
-of containing 4 fractional bits.  If he updates his the panel driver [1]
-to set bits_per_pixel = 8 << 4 instead of just 8 to account for this,
-the values should check out once again.
 
-[1]: https://git.linaro.org/people/vinod.koul/kernel.git/commit/?h=topic/pixel3_5.18-rc1&id=1d7d98ad564f1ec69e7525e07418918d90f247a1
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Once Vinod (or someone else in the posession of a Pixel 3) confirms
-this, I can respin this series and more explicitly explain why the FIXME
-was put in place, instead of being resolved outright?
+Best regards,
+Krzysztof
 
-- Marijn
-
-> 
-> The difference between the upstream drm_dsc_compute_rc_parameters() and 
-> dsi_populate_dsc_params() causing this was not clear to me from his 
-> explanation earlier.
-> 
-> So this was left as a to-do item.
-> 
-> I would like this to be re-tested on pixel3 and check if this works for 
-> vinod. If not, i think its the right time to debug why and not delay 
-> this more.
-> 
-> Thanks
-> 
-> Abhinav
