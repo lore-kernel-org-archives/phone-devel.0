@@ -2,31 +2,31 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07B0AC4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 13 Oct 2022 19:46:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9783C4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 13 Oct 2022 19:47:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229792AbiJMTqh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 13 Oct 2022 15:46:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53462 "EHLO
+        id S229648AbiJMTra (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 13 Oct 2022 15:47:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229763AbiJMTqh (ORCPT
+        with ESMTP id S229491AbiJMTr3 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 13 Oct 2022 15:46:37 -0400
-Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [5.144.164.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9425A18B48E
-        for <phone-devel@vger.kernel.org>; Thu, 13 Oct 2022 12:46:35 -0700 (PDT)
+        Thu, 13 Oct 2022 15:47:29 -0400
+Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D04B9188ABC
+        for <phone-devel@vger.kernel.org>; Thu, 13 Oct 2022 12:47:28 -0700 (PDT)
 Received: from [192.168.1.101] (95.49.31.41.neoplus.adsl.tpnet.pl [95.49.31.41])
         (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 295091F67B;
-        Thu, 13 Oct 2022 21:46:33 +0200 (CEST)
-Message-ID: <d30719b0-137a-d375-dc28-d6bdd212b9c4@somainline.org>
-Date:   Thu, 13 Oct 2022 21:46:32 +0200
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 7995F1F67B;
+        Thu, 13 Oct 2022 21:47:26 +0200 (CEST)
+Message-ID: <34557cdc-d78c-6fb4-84ec-d848f7b9aacb@somainline.org>
+Date:   Thu, 13 Oct 2022 21:47:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.0
-Subject: Re: [PATCH 2/3] ARM: dts: qcom: apq8084: fix compatible for l2-cache
+Subject: Re: [PATCH 3/3] ARM: dts: qcom: apq8064: fix coresight compatible
 Content-Language: en-US
 To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -36,9 +36,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20221013190657.48499-1-luca@z3ntu.xyz>
- <20221013190657.48499-2-luca@z3ntu.xyz>
+ <20221013190657.48499-3-luca@z3ntu.xyz>
 From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-In-Reply-To: <20221013190657.48499-2-luca@z3ntu.xyz>
+In-Reply-To: <20221013190657.48499-3-luca@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -48,27 +48,27 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 
 On 13.10.2022 21:06, Luca Weiss wrote:
-> The compatible "qcom,arch-cache" for l2-cache does not exist, and all
-> other Qualcomm boards use just "cache" for it. Fix it.
+> There's a typo missing the arm, prefix of arm,coresight-etb10. Fix it to
+> make devicetree validation happier.
 > 
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
 Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 
 Konrad
->  arch/arm/boot/dts/qcom-apq8084.dtsi | 2 +-
+>  arch/arm/boot/dts/qcom-apq8064.dtsi | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm/boot/dts/qcom-apq8084.dtsi b/arch/arm/boot/dts/qcom-apq8084.dtsi
-> index f2fb7c975af8..e910b1f7c9ed 100644
-> --- a/arch/arm/boot/dts/qcom-apq8084.dtsi
-> +++ b/arch/arm/boot/dts/qcom-apq8084.dtsi
-> @@ -72,7 +72,7 @@ cpu@3 {
+> diff --git a/arch/arm/boot/dts/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom-apq8064.dtsi
+> index 942aa2278355..a39b940d5853 100644
+> --- a/arch/arm/boot/dts/qcom-apq8064.dtsi
+> +++ b/arch/arm/boot/dts/qcom-apq8064.dtsi
+> @@ -1615,7 +1615,7 @@ wifi {
 >  		};
 >  
->  		L2: l2-cache {
-> -			compatible = "qcom,arch-cache";
-> +			compatible = "cache";
->  			cache-level = <2>;
->  			qcom,saw = <&saw_l2>;
->  		};
+>  		etb@1a01000 {
+> -			compatible = "coresight-etb10", "arm,primecell";
+> +			compatible = "arm,coresight-etb10", "arm,primecell";
+>  			reg = <0x1a01000 0x1000>;
+>  
+>  			clocks = <&rpmcc RPM_QDSS_CLK>;
