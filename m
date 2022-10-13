@@ -2,86 +2,85 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2E11C433FE
-	for <phone-devel@archiver.kernel.org>; Thu, 13 Oct 2022 13:41:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E538AC4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 13 Oct 2022 13:42:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229824AbiJMNlU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 13 Oct 2022 09:41:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35756 "EHLO
+        id S229672AbiJMNmj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 13 Oct 2022 09:42:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229819AbiJMNlS (ORCPT
+        with ESMTP id S229971AbiJMNmd (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 13 Oct 2022 09:41:18 -0400
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 901FD5A159
-        for <phone-devel@vger.kernel.org>; Thu, 13 Oct 2022 06:41:16 -0700 (PDT)
-Received: by mail-qt1-x82a.google.com with SMTP id jr1so1081117qtb.0
-        for <phone-devel@vger.kernel.org>; Thu, 13 Oct 2022 06:41:16 -0700 (PDT)
+        Thu, 13 Oct 2022 09:42:33 -0400
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34DE8115419
+        for <phone-devel@vger.kernel.org>; Thu, 13 Oct 2022 06:42:30 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id z8so1059223qtv.5
+        for <phone-devel@vger.kernel.org>; Thu, 13 Oct 2022 06:42:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=KfmEgQuQVh7sTBmqJ0VUPOWywieYxc2ZYWNI1q6xxkM=;
-        b=m7VC4poWRxJmtaAHaMM31ThEfzElZ6O9xDTexyesxF9+tAuMlB9okvMdWIQIbpZRab
-         lfyXIBDjGQ7PEMRwGd8V+ORRJRIdpxfrkJF2rGEUmGSVNzqVEVnE49Q76NktnfSB2od1
-         cs080AfipvWFO3fPZIEDii/reoH7m0zVr2xUSiF4wGG6TZ5EDkHXgUZpfFctSHHtWGul
-         0bJWyUWuaBOfOTWZ6NA4IQfMQ6VY0evvj74Y3FVtck+5iyXNHxqDOV17upBHCFj/XQlL
-         Fig5CCf49g0Lgeu2pqIjr/HQkc73LkKuQO1pOJ2a7BN5Ndi/TyZn8+MdhSqZbupHPKn7
-         fhJA==
+        bh=XXjjiElFGFaUrCJj+dRuEG0KTD7h125bNssmscTrZRg=;
+        b=xVKPQcWL8F/a6ARO8rNoXrl1cvunKwp4q/r04mHDbbnQtr9Soc4XX8jefFbzZURsSD
+         IEGy7hL5u+kvhaEUR56cDLuvicOjhqDRSL1dhx5t0vlUSoNdri3Ftoo39kPVfyDsWXU3
+         s8lsFMEapI2xNlFiuuxHq1d5WsfG+T56sz0St8kC/24Ejky+sgvVXLAVaesa6I/jzCR0
+         P76ungnM4uVcXNQrO7bJhWHUVMiYtlNk7wpRSI3ScuNT7vw4ZVRRjPm7HhHJbuNbUp3i
+         VfABNumm2STNSnY8DYjvlwxgQzFSegMisVuVBRLflJEZXCRM0N93NyM/JkI439CZjUwp
+         iThg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KfmEgQuQVh7sTBmqJ0VUPOWywieYxc2ZYWNI1q6xxkM=;
-        b=w9HRR4WsYoaAH7rPzqzOxl2aOzN4NUCZctHQDFQ0PqUWKe3cOMAQihTsdc9SwHWPhP
-         kGaxaDecLNaa/BD42n8b33L3EMc2aYSZokTZsJL0brbAiVlrvOaRQzuqPkvq/ppfVrLz
-         239xE1h/52I0kGqfVeaM2xE/bcDGFBB3wdsNxbA+YCDr/kZo8J1KXQbsB/obdWFys88O
-         UTNMQhGwTcCIy+UV66aonwqk+YHAHdv75j2w1JcSegenIT1UDdj7xY2nSRJTX6AObvyH
-         Y31JnGmT0BsSQ5RMyL05Mrd6k0Alc5wlBfKcUYDsL0maYcn8muiOch/pbodLDXrAn1wa
-         WkPQ==
-X-Gm-Message-State: ACrzQf0v/pOiwOXQYINO8zYKQ5pqU6VQ49vMVyYv7P+Y4G4ZKLBKq1nR
-        JWK+O+wRxddNUvYtBGpRik9L+Q==
-X-Google-Smtp-Source: AMsMyM6Yeebymip42Gn94hyjo2aEpwIcg+DQ9YQgBwfVTw3CqEJJ95fFwLXiRpj2B1Xm48vHnDeqww==
-X-Received: by 2002:ac8:5e11:0:b0:39c:b869:491f with SMTP id h17-20020ac85e11000000b0039cb869491fmr9642738qtx.315.1665668475630;
-        Thu, 13 Oct 2022 06:41:15 -0700 (PDT)
+        bh=XXjjiElFGFaUrCJj+dRuEG0KTD7h125bNssmscTrZRg=;
+        b=h75QA4NDL12SGl9tCI3kgDrXmNnLaRkbMqkrhf/G/4lMPAVvLM0k9Z97Fn7NWKW++B
+         jt1O18bVjrUA9JjhJwVSmF1dIBG5DoUQyM0sufIFAFZwRVIiK3ALOBbnx2gsvz6lv7H1
+         CA0ukegdiwguE1CxcZD+XyB/9VzdHdDHl0EulJEAESrpj9wFAyQ5XlqSvFT/W6qPy4Lj
+         hPLyiI0qFF6yFIHtXY79qZFJkONSFALVYZt063b+g5tBZQVaKyka8YcAz6DshViFBnpU
+         W83q1fUuJIuPZ65bCTgd7iRFIOJ/Jx8BzqzyopgYPYlm8r7EmVfHBqvOZBuraiMsrVAA
+         z7DQ==
+X-Gm-Message-State: ACrzQf3Dcy6v+HkdQozVa9QLhCZm7EB+ULPPU1wqvnhtuWVYbdbHBbcb
+        jz19NKp+RBDoKrOfvvrKqgZQuW20S7Byhg==
+X-Google-Smtp-Source: AMsMyM4pCP7S/IglP64nQs1ADdFxdYjtGYD6+xf+acQmZNAVjgGjowN2s5+LpUGn6/KnpPpEQKD2bA==
+X-Received: by 2002:ae9:e848:0:b0:6ee:92d5:94e4 with SMTP id a69-20020ae9e848000000b006ee92d594e4mr6659213qkg.404.1665668547297;
+        Thu, 13 Oct 2022 06:42:27 -0700 (PDT)
 Received: from [192.168.1.57] (cpe-72-225-192-120.nyc.res.rr.com. [72.225.192.120])
-        by smtp.gmail.com with ESMTPSA id o19-20020a05620a2a1300b006cddf59a600sm18876143qkp.34.2022.10.13.06.41.14
+        by smtp.gmail.com with ESMTPSA id do31-20020a05620a2b1f00b006ea5a9984d1sm16286383qkb.94.2022.10.13.06.42.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Oct 2022 06:41:14 -0700 (PDT)
-Message-ID: <861dd64f-0443-db69-ef81-900973f2fa11@linaro.org>
-Date:   Thu, 13 Oct 2022 09:39:03 -0400
+        Thu, 13 Oct 2022 06:42:26 -0700 (PDT)
+Message-ID: <fc043110-8db5-ede3-3bdb-5e0c3d1d0e26@linaro.org>
+Date:   Thu, 13 Oct 2022 09:40:15 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.2
-Subject: Re: [PATCH] dt-bindings: qcom,pdc: Add missing compatibles
+Subject: Re: [PATCH] arm64: dts: qcom: msm8996: remove bogus ufs_variant node
 Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        linux-arm-msm@vger.kernel.org
+To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20221013091208.356739-1-luca.weiss@fairphone.com>
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221012215613.32054-1-luca@z3ntu.xyz>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221013091208.356739-1-luca.weiss@fairphone.com>
+In-Reply-To: <20221012215613.32054-1-luca@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 13/10/2022 05:12, Luca Weiss wrote:
-> Document the compatibles that are already in use in the upstream Linux
-> kernel to resolve dtbs_check warnings.
+On 12/10/2022 17:56, Luca Weiss wrote:
+> This ufs_variant node seems to be a remnant from downstream devicetree.
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> As it doesn't seem to be used by anything upstream, remove it from the
+> dtsi.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
 
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
