@@ -2,88 +2,183 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71475C43217
-	for <phone-devel@archiver.kernel.org>; Thu, 13 Oct 2022 21:19:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB313C4321E
+	for <phone-devel@archiver.kernel.org>; Sat, 15 Oct 2022 09:10:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230141AbiJMVTU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 13 Oct 2022 17:19:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
+        id S229712AbiJOJK3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 15 Oct 2022 05:10:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230140AbiJMVTQ (ORCPT
+        with ESMTP id S229702AbiJOJK2 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 13 Oct 2022 17:19:16 -0400
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBA9895BD
-        for <phone-devel@vger.kernel.org>; Thu, 13 Oct 2022 14:19:11 -0700 (PDT)
-Received: by mail-qk1-x732.google.com with SMTP id z30so1294428qkz.13
-        for <phone-devel@vger.kernel.org>; Thu, 13 Oct 2022 14:19:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AdQa4Sc6lXPDk4eLVgKrBJoxIwtdDyftfTuzXhtgqag=;
-        b=xXiLtrZxmTJB0QUjoV2MP5lRyPH9qYiv0ttgpO9VVSoyoWFECmEGWcP9HH/6IL+6i6
-         XU/Is8HVR8PbwCHLAAyAp4GCfrWse7/omn3aEEzTdy8GUQyjzffw5RkSnNNphDS+S02F
-         pVq8itm6asblEVoFLtJ84jkH7yHO66BoFnyzHimOR5Y2lluV8mCR3DBkUPp3QZXSU8gz
-         5L/9LFdXgWh6Quic86DuupCKA62r3xtj6/renFCxaXKb7WPgtJ36wIEXOS9bPxhB5lzI
-         4UeNQdze9t69+l2na90cg7iS625zDyb1Fd15Te2pm/+8/eago27aEi6Ew0Jl0kdHlH1O
-         gWiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AdQa4Sc6lXPDk4eLVgKrBJoxIwtdDyftfTuzXhtgqag=;
-        b=6deEBkRpbNix4e4DMO5yLSzDOV7jg+ziGFzAcu7Qqp+rOqellX68bsh7ckRwedoBPb
-         tLw62N9sUkEVflA0hIpQCCiKZW0Uep6SfSZI5GsCso4WR+TqTxEAhhuruiAbcmK99pKj
-         ylWnvL+jJe1MtA0pTJwV7XqS+B+GTnqaRsWkGppaeZqVJwKUjIRIRwLXDNX40jAS4c45
-         T3liQWJBoVoEXPxbrHR6x+G2r4lEJf/5BqmqGmbnYEunc0s/gDA5I3+Wkmg3uG2nqzcu
-         CplgmdOMWhpofw3yHyCqW/u2ocX5xrnmE6zAl7BzubdTOh+5u1bgrK+JUb3WXk7nWuO3
-         khIQ==
-X-Gm-Message-State: ACrzQf3gmU3HJEJ+RiJJqSjcECC0KddR9+LIkq1KkpkZTegPZQpRp+0m
-        huF7PxVRkRmxoyyziODmo/W5qw==
-X-Google-Smtp-Source: AMsMyM5FSEL4ZcJOm04pRm55VzmthYq47dNfsl4AJ3TG7oDdZBUrvCAwTXawIX1+kP1G3VxgQ/pFvg==
-X-Received: by 2002:a05:620a:4622:b0:6ee:bd1f:fef1 with SMTP id br34-20020a05620a462200b006eebd1ffef1mr1569030qkb.778.1665695950902;
-        Thu, 13 Oct 2022 14:19:10 -0700 (PDT)
-Received: from [192.168.1.57] (cpe-72-225-192-120.nyc.res.rr.com. [72.225.192.120])
-        by smtp.gmail.com with ESMTPSA id s19-20020a05620a0bd300b006bb8b5b79efsm661373qki.129.2022.10.13.14.19.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Oct 2022 14:19:10 -0700 (PDT)
-Message-ID: <f824335c-893e-33a8-5889-df817ab5362a@linaro.org>
-Date:   Thu, 13 Oct 2022 17:16:58 -0400
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH 2/3] ARM: dts: qcom: apq8084: fix compatible for l2-cache
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
+        Sat, 15 Oct 2022 05:10:28 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 363B765C7;
+        Sat, 15 Oct 2022 02:10:27 -0700 (PDT)
+Received: from g550jk.arnhem.chello.nl (31-151-115-246.dynamic.upc.nl [31.151.115.246])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 71151C9D52;
+        Sat, 15 Oct 2022 09:10:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1665825023; bh=6JCUCll7KO+Z8XkfLAf6x6nD8Nh28IVWwpklTXnuBvQ=;
+        h=From:To:Cc:Subject:Date;
+        b=xL2TEOfrWgC9oD2frtEPnEsWPK6BfI/fewj2w9WtEv/nSjtJUgzVEDdZs+qWl6MLi
+         Dwdx56ybv7akkYHyMk8Y/NWtMI/pLWcbgGav+YYcxETaYjMKumcAvBa4ooPi2lvtDD
+         +BN58acoOof/6ktNA2+N7v2Xf5Gk2TY3+NSWrweo=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221013190657.48499-1-luca@z3ntu.xyz>
- <20221013190657.48499-2-luca@z3ntu.xyz>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221013190657.48499-2-luca@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] dt-bindings: clock: Convert qcom,lcc to DT schema
+Date:   Sat, 15 Oct 2022 11:09:44 +0200
+Message-Id: <20221015090946.448820-1-luca@z3ntu.xyz>
+X-Mailer: git-send-email 2.38.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 13/10/2022 15:06, Luca Weiss wrote:
-> The compatible "qcom,arch-cache" for l2-cache does not exist, and all
-> other Qualcomm boards use just "cache" for it. Fix it.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Convert the text bindings for the lcc to yaml format. Doing this showed
+that clocks and clock-names were not documented, so fix that now.
 
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ .../devicetree/bindings/clock/qcom,lcc.txt    | 22 -----
+ .../devicetree/bindings/clock/qcom,lcc.yaml   | 88 +++++++++++++++++++
+ 2 files changed, 88 insertions(+), 22 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/clock/qcom,lcc.txt
+ create mode 100644 Documentation/devicetree/bindings/clock/qcom,lcc.yaml
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+diff --git a/Documentation/devicetree/bindings/clock/qcom,lcc.txt b/Documentation/devicetree/bindings/clock/qcom,lcc.txt
+deleted file mode 100644
+index a3c78aa88038..000000000000
+--- a/Documentation/devicetree/bindings/clock/qcom,lcc.txt
++++ /dev/null
+@@ -1,22 +0,0 @@
+-Qualcomm LPASS Clock & Reset Controller Binding
+-------------------------------------------------
+-
+-Required properties :
+-- compatible : shall contain only one of the following:
+-
+-			"qcom,lcc-msm8960"
+-			"qcom,lcc-apq8064"
+-			"qcom,lcc-ipq8064"
+-			"qcom,lcc-mdm9615"
+-
+-- reg : shall contain base register location and length
+-- #clock-cells : shall contain 1
+-- #reset-cells : shall contain 1
+-
+-Example:
+-	clock-controller@28000000 {
+-		compatible = "qcom,lcc-ipq8064";
+-		reg = <0x28000000 0x1000>;
+-		#clock-cells = <1>;
+-		#reset-cells = <1>;
+-	};
+diff --git a/Documentation/devicetree/bindings/clock/qcom,lcc.yaml b/Documentation/devicetree/bindings/clock/qcom,lcc.yaml
+new file mode 100644
+index 000000000000..03c99435d342
+--- /dev/null
++++ b/Documentation/devicetree/bindings/clock/qcom,lcc.yaml
+@@ -0,0 +1,88 @@
++# SPDX-License-Identifier: GPL-2.0-only
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/clock/qcom,lcc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm LPASS Clock & Reset Controller Binding
++
++maintainers:
++  - Bjorn Andersson <andersson@kernel.org>
++
++properties:
++  compatible:
++    enum:
++      - qcom,lcc-apq8064
++      - qcom,lcc-ipq8064
++      - qcom,lcc-mdm9615
++      - qcom,lcc-msm8960
++
++  clocks:
++    minItems: 8
++    maxItems: 8
++
++  clock-names:
++    minItems: 8
++    maxItems: 8
++
++  '#clock-cells':
++    const: 1
++
++  '#reset-cells':
++    const: 1
++
++  reg:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - '#clock-cells'
++  - '#reset-cells'
++
++additionalProperties: false
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - qcom,lcc-apq8064
++              - qcom,lcc-msm8960
++    then:
++      properties:
++        clocks:
++          items:
++            - description: Board PXO source
++            - description: PLL 4 Vote clock
++            - description: MI2S codec clock
++            - description: Mic I2S codec clock
++            - description: Mic I2S spare clock
++            - description: Speaker I2S codec clock
++            - description: Speaker I2S spare clock
++            - description: PCM codec clock
++
++        clock-names:
++          items:
++            - const: pxo
++            - const: pll4_vote
++            - const: mi2s_codec_clk
++            - const: codec_i2s_mic_codec_clk
++            - const: spare_i2s_mic_codec_clk
++            - const: codec_i2s_spkr_codec_clk
++            - const: spare_i2s_spkr_codec_clk
++            - const: pcm_codec_clk
++
++      required:
++        - clocks
++        - clock-names
++
++examples:
++  - |
++    clock-controller@28000000 {
++        compatible = "qcom,lcc-ipq8064";
++        reg = <0x28000000 0x1000>;
++        #clock-cells = <1>;
++        #reset-cells = <1>;
++    };
+-- 
+2.38.0
 
