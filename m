@@ -2,161 +2,120 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2A6AC43219
-	for <phone-devel@archiver.kernel.org>; Sat, 15 Oct 2022 13:06:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B52DDC4332F
+	for <phone-devel@archiver.kernel.org>; Sat, 15 Oct 2022 17:30:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229815AbiJONGR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 15 Oct 2022 09:06:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54000 "EHLO
+        id S229655AbiJORac (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 15 Oct 2022 13:30:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbiJONGQ (ORCPT
+        with ESMTP id S229554AbiJORab (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 15 Oct 2022 09:06:16 -0400
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D8E140E2F
-        for <phone-devel@vger.kernel.org>; Sat, 15 Oct 2022 06:06:14 -0700 (PDT)
-Received: by mail-qt1-x82d.google.com with SMTP id s3so5288666qtn.12
-        for <phone-devel@vger.kernel.org>; Sat, 15 Oct 2022 06:06:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TBNDWb/PUcfIBjVY7nryISHx24x9THNIcQMhnCQu8a0=;
-        b=psYq027JfEzzbK4E60x4LX4q7Vhlj2I1XUKQAilBWc+ExEOX+Zwp5+IksHLho0owp3
-         mb+leoQnlfmj+GZuwy6Ju444R43BH2cCaiwPHJJ7ddBvMxkCbSFEM4KMHuVygaVBVzGw
-         FFPdK72zr8DgmsR0B99ka8AItcsp9GI7/Qlcjh0hRPgWDDkyWn9as7+SneS2ZdIrnCMZ
-         SeLe1/k3r55lkFwSZNFjQrWhDZCGy2ptjn+AgfcGgmaCCSZ3ERNdVLvNEBt0HFSANG1u
-         AwqZABH/VnA9Q4WBKXfsWqQTwwntiIQRZcOBVgcb6uT3zE59w5qNU+Rirg5xDdXpk8dW
-         a3AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TBNDWb/PUcfIBjVY7nryISHx24x9THNIcQMhnCQu8a0=;
-        b=fLtzYpy8LKI6Z5RSLYTyOCgMVRJmmZiTZRsiOo4eJbpZzok5XGadYJcDPUXupujNpB
-         Ywrjp+9orMIwyrP5mLLuiFvzWW+oVcoHXTmAmVbMJ2QABqVHMtdlhs9dbL4PoQWdVhOf
-         T4QmydWeo8j0KnyQvS2Ce5TrFAlRgFPfY+R59pfHuqJccOOArqSpIO7uvN3vV6o9qhk1
-         tyvbYwrScTJmjyK5iZMQzlzy0m91KMSI4tiU9yoTfUSnC55i04m85kU43cK0Ve1GfID4
-         A4kbAVWrrExX4+XWpFO/UP0VfXHXwssj3vBRAaXrp9AjZ2pDTvw1lNsTJZYYI4OxB/pS
-         1RxA==
-X-Gm-Message-State: ACrzQf3Ke/u0VHFAf2HqKWJXaT34ZeGCgrLTJO4iu7/ueMwahJxAnXvV
-        FwBp/+o9zos/oyi1jKN8YIkndw==
-X-Google-Smtp-Source: AMsMyM68XCtlhc18qhR76sv5R8jMSEOf9gyOaszHbt0cP995dakcvcmIUwSNr07yseUpSAV9CGhYtQ==
-X-Received: by 2002:ac8:4d4a:0:b0:39c:d99c:dbce with SMTP id x10-20020ac84d4a000000b0039cd99cdbcemr1774966qtv.511.1665839173409;
-        Sat, 15 Oct 2022 06:06:13 -0700 (PDT)
-Received: from ?IPV6:2601:42:0:3450:161:5720:79e9:9739? ([2601:42:0:3450:161:5720:79e9:9739])
-        by smtp.gmail.com with ESMTPSA id fe13-20020a05622a4d4d00b003994bbe91bdsm3897889qtb.60.2022.10.15.06.06.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Oct 2022 06:06:12 -0700 (PDT)
-Message-ID: <c8f33e83-1329-e549-d739-24b33f8633ba@linaro.org>
-Date:   Sat, 15 Oct 2022 09:06:11 -0400
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH] dt-bindings: clock: Convert qcom,lcc to DT schema
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Sat, 15 Oct 2022 13:30:31 -0400
+Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62E09252A7;
+        Sat, 15 Oct 2022 10:30:27 -0700 (PDT)
+Date:   Sat, 15 Oct 2022 17:30:13 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1665855025; x=1666114225;
+        bh=DkDUqYsIo4WD6IeoCvcUlhuchiJ68MTUFWYeBqoljY4=;
+        h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+         Subject:Reply-To:Feedback-ID:Message-ID;
+        b=Sw/PwmuQCDhWwZXq8NvwyUot9fBwp5Y6usJuOMs9v147/fLo+mUb1xDf1TCPusCv2
+         ruD9+xzlnNAgyXJOE+ubRWXf5jB6ujp1ZkvC7p/y0u458hgs19v/L3q4am7/A9aZPR
+         JCbfowjoJSzw8uOZwJUuEIFZ26EWbUpffIgs1U3I=
+To:     caleb@connolly.tech
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     krzysztof.kozlowski@linaro.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        devicetree@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Jeff LaBundy <jeff@labundy.com>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221015090946.448820-1-luca@z3ntu.xyz>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221015090946.448820-1-luca@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        linux-arm-msm@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Rob Herring <robh+dt@kernel.org>, Tom Rix <trix@redhat.com>
+Subject: [PATCH v7 0/2] input: introduce support for Qualcomm SPMI haptics
+Message-ID: <20221015172915.1436236-1-caleb@connolly.tech>
+Feedback-ID: 10753939:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 15/10/2022 05:09, Luca Weiss wrote:
-> Convert the text bindings for the lcc to yaml format. Doing this showed
-> that clocks and clock-names were not documented, so fix that now.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  .../devicetree/bindings/clock/qcom,lcc.txt    | 22 -----
->  .../devicetree/bindings/clock/qcom,lcc.yaml   | 88 +++++++++++++++++++
->  2 files changed, 88 insertions(+), 22 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/clock/qcom,lcc.txt
->  create mode 100644 Documentation/devicetree/bindings/clock/qcom,lcc.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/clock/qcom,lcc.txt b/Documentation/devicetree/bindings/clock/qcom,lcc.txt
-> deleted file mode 100644
-> index a3c78aa88038..000000000000
-> --- a/Documentation/devicetree/bindings/clock/qcom,lcc.txt
-> +++ /dev/null
-> @@ -1,22 +0,0 @@
-> -Qualcomm LPASS Clock & Reset Controller Binding
-> -------------------------------------------------
-> -
-> -Required properties :
-> -- compatible : shall contain only one of the following:
-> -
-> -			"qcom,lcc-msm8960"
-> -			"qcom,lcc-apq8064"
-> -			"qcom,lcc-ipq8064"
-> -			"qcom,lcc-mdm9615"
-> -
-> -- reg : shall contain base register location and length
-> -- #clock-cells : shall contain 1
-> -- #reset-cells : shall contain 1
-> -
-> -Example:
-> -	clock-controller@28000000 {
-> -		compatible = "qcom,lcc-ipq8064";
-> -		reg = <0x28000000 0x1000>;
-> -		#clock-cells = <1>;
-> -		#reset-cells = <1>;
-> -	};
-> diff --git a/Documentation/devicetree/bindings/clock/qcom,lcc.yaml b/Documentation/devicetree/bindings/clock/qcom,lcc.yaml
-> new file mode 100644
-> index 000000000000..03c99435d342
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/qcom,lcc.yaml
-> @@ -0,0 +1,88 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/clock/qcom,lcc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm LPASS Clock & Reset Controller Binding
+This series introduces a driver for the SPMI haptics hardware block
+found in Qualcomm PMICs. SPMI haptics support LRA (Linear Resonant
+Actuator) style haptics, as well as ERM (Eccentric Rotating Mass).
+It also supports several modes of driving the haptics, e.g. by loading
+the pattern to play into an internal buffer, or using PWM.
 
-Drop "Binding"
+More information about the hardware can be found here:
+        https://gitlab.com/sdm845-mainline/linux/-/wikis/PMI8998-QPNP-Hapti=
+cs
 
-> +
-> +maintainers:
-> +  - Bjorn Andersson <andersson@kernel.org>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - qcom,lcc-apq8064
-> +      - qcom,lcc-ipq8064
-> +      - qcom,lcc-mdm9615
-> +      - qcom,lcc-msm8960
-> +
-> +  clocks:
-> +    minItems: 8
+This driver has been written based on downstream sources as no public
+documentation is available. It includes initial support for LRA haptics
+in buffer mode, this combination seems to be the most common and will
+enable haptics on the OnePlus 6 and 6T, PocoPhone F1, OnePlus 5 and
+several other Qualcomm devices with mainline kernel support.
 
-Drop minItems
+The driver is implemented using the ff-memless (forcefeedback) input
+framework and makes an attempt to control the strength of vibration relativ=
+e
+to the magnitude set from userspace.
 
-> +    maxItems: 8
-> +
-> +  clock-names:
-> +    minItems: 8
+Changes since v6:
+ - Apply Krzysztof's dt-bindings suggestions
+ - Rename qcom,wave-play-rate-us to qcom,wave-play-duration-us and
+   add a comment explaining the name change compared to downstream.
+ - Add COMPILE_TEST to kconfig
 
-Drop minItems
+Changes since v5:
+ - Fix dt schema errors
+ - Fix typo (thanks Vincent)
 
-Best regards,
-Krzysztof
+Changes since v4:
+ - Significant rewrite and cleanup
+ - switch to dev_err_probe()
+ - Run through clang-format
+
+Changes since v3:
+ - Adjust example DTS to avoid creating new warnings in dt_binding_check
+ - Address warnings from kernel test robot.
+
+Changes since v2:
+ - Addressed Rob's comments on dt-bindings (I'm not sure what to do
+   about the pmic compatible?)
+ - Fixed some typos
+
+Changes since v1:
+ - Replace old QPNP naming with SPMI
+ - Address Bjorn's comments on the driver, various style and code cleanups
+ - Address Bjorn's comments on the DT bindings and DTS
+ - Pickup patches from Joel and Jami to enable haptics on the OnePlus 5
+   and Poco F1.
+
+Caleb Connolly (2):
+  dt-bindings: input: document Qualcomm PMI8998 haptics driver
+  input: add Qualcomm SPMI haptics driver
+
+ .../bindings/input/qcom,pmi8998-haptics.yaml  |  73 ++
+ drivers/input/misc/Kconfig                    |  15 +
+ drivers/input/misc/Makefile                   |   1 +
+ drivers/input/misc/qcom-pmi8998-haptics.c     | 690 ++++++++++++++++++
+ 4 files changed, 779 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/qcom,pmi8998-ha=
+ptics.yaml
+ create mode 100644 drivers/input/misc/qcom-pmi8998-haptics.c
+
+--
+2.38.0
+
 
