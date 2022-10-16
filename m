@@ -2,128 +2,94 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1E68C4332F
-	for <phone-devel@archiver.kernel.org>; Sun, 16 Oct 2022 14:41:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15909C433FE
+	for <phone-devel@archiver.kernel.org>; Sun, 16 Oct 2022 14:53:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229751AbiJPOk7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 16 Oct 2022 10:40:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45674 "EHLO
+        id S229798AbiJPOxi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 16 Oct 2022 10:53:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbiJPOk6 (ORCPT
+        with ESMTP id S229734AbiJPOxh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 16 Oct 2022 10:40:58 -0400
-Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B3AE3B9AF;
-        Sun, 16 Oct 2022 07:40:58 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id AE8D7DF919;
-        Sun, 16 Oct 2022 07:40:27 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Zy-5r13ibeDh; Sun, 16 Oct 2022 07:40:26 -0700 (PDT)
-Date:   Sun, 16 Oct 2022 16:39:28 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
-        t=1665931226; bh=W0L64e3HzKHkWHGerf0WHl/H2DONAMdk6gTSQ4fNdTQ=;
-        h=Date:From:To:Subject:From;
-        b=MlCG9O2oVZUmje8MmQvatYPJUdnaXr005yNJZIFe70CU1pElMsar9IHaIt+kmD2lw
-         7IXa+LsfgOdhuHMWny2WNuY2K5w/LtsH2Z+qZL0TQSCb5/N9sC6mf80M7w1PpFegRj
-         vZcjWqykUs8dpv7s3wuVXTGxTZgxBK3kUS2S+i1qg8Ev8qqbh/cjVTMcS+u48SJkHK
-         BC0RxNUxid/QIWxyXHqacrQsrf6v0rBBXDgtkB8LWY1fh9zHTO8i2tsEmbmc44fWfH
-         tRUn96ccfNtpmqDlTmKtJI3BeVESX+G1AIz2X1fbfNW464Ro4ZH7lS29HdxSSxCReJ
-         Y5ygQj6ugN32w==
-From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Steve Longerbeam <slongerbeam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@puri.sm, phone-devel@vger.kernel.org
-Subject: [PATCHv3 1/1 RESEND] media: imx: Round line size to 4 bytes
-Message-ID: <20221016163928.1ef0a4fe.dorota.czaplejewicz@puri.sm>
-Organization: Purism
+        Sun, 16 Oct 2022 10:53:37 -0400
+Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFC833F30C
+        for <phone-devel@vger.kernel.org>; Sun, 16 Oct 2022 07:53:35 -0700 (PDT)
+Received: by mail-qt1-x832.google.com with SMTP id a24so6406482qto.10
+        for <phone-devel@vger.kernel.org>; Sun, 16 Oct 2022 07:53:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M617hUvDTpcFldbMirW8IIk1uyeowTMveYy1yVY2fm0=;
+        b=oYhVG46jOla5tkhSF0Jlqh1Ynjmnbw+LFwUsB7noqbu1FtN/o3MmL7qYcuQH0uSLrc
+         GvnSlCwIAg0klW50RN7piUw2pKm1pRUAjggKPHWSrZ3wr+fQXRHIkzOmywtrkQc3Qi3v
+         10n5fzQ+MNMTwNwyimpRkOKhav1ndvI8sGJhxQc5uGCO7WrAF7LLTlSrIgaA+00GQ/yt
+         NehaavngrV8ziMgWWXnnSJrB6pEA9mzD5Y4HX6y5AdMQHS8jnpfijk4mp0vD7OLLXVvn
+         2IOiQ0rQowYB4v7k4K1cLwpWz+pOM83ZUOvAn0wkjA51hddD7S5pnnEh5DU26EtCPZZk
+         WPSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M617hUvDTpcFldbMirW8IIk1uyeowTMveYy1yVY2fm0=;
+        b=gu8ZIh0mXKyOM5WkwpuqdJfdRkVZBrp3ioAKE6VYXdTtnMtepPs3b81nyYt+p+z8rS
+         fortJsmUDFXMxzOEH8ALLbDuBQIh0zlvcgf4LfsuK0GRQUTDeeHLUMgr5n4w4/yA4VCx
+         YykF5WzbMO3M8dLR/suNEVOgbE9xMBbD+dtZohKdLJ/Un5HrC0tLkyiuYCDybDX7cVbz
+         ykd0Y30uE1pDA36vkpg0Pswi/DV/MAQOv7NNZReYqq978YYcdiWLP1hC0hiRdt0+5UWe
+         wG93T9Lk0rV5E11ARPtbrNiwXowG6xjZ3T+z+0wS+NXqnVAB5dL6vo2qw/YYga/Q8emR
+         ATtA==
+X-Gm-Message-State: ACrzQf1ix5fIEeFOakWS2SB0Tnn4R0CHj4kCAbEVlccc77HT8tcCwuI4
+        gIkaAZuALnilFcfD5CWQ73h3oQ==
+X-Google-Smtp-Source: AMsMyM7EoF905CSD7P1QLRs54RDbWyurGOEQ+o4lDGC81gASGR8Yp7CprIB3QIAQlpjWkVq0WSEwrQ==
+X-Received: by 2002:a05:622a:651:b0:398:5034:9e85 with SMTP id a17-20020a05622a065100b0039850349e85mr5406552qtb.277.1665932014173;
+        Sun, 16 Oct 2022 07:53:34 -0700 (PDT)
+Received: from ?IPV6:2601:42:0:3450:9b13:d679:7b5b:6921? ([2601:42:0:3450:9b13:d679:7b5b:6921])
+        by smtp.gmail.com with ESMTPSA id de4-20020a05620a370400b006e07228ed53sm6890016qkb.18.2022.10.16.07.53.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 16 Oct 2022 07:53:32 -0700 (PDT)
+Message-ID: <bc1aa679-7173-c9a3-c35c-1da8b6c6f1f2@linaro.org>
+Date:   Sun, 16 Oct 2022 10:53:28 -0400
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/QpoY6r56b903uL_dAD/ortP";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.2
+Subject: Re: [PATCH v7 1/2] dt-bindings: input: document Qualcomm PMI8998
+ haptics driver
+To:     Caleb Connolly <caleb@connolly.tech>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        devicetree@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Jeff LaBundy <jeff@labundy.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Rob Herring <robh+dt@kernel.org>, Tom Rix <trix@redhat.com>
+References: <20221015172915.1436236-1-caleb@connolly.tech>
+ <20221015172915.1436236-2-caleb@connolly.tech>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221015172915.1436236-2-caleb@connolly.tech>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
---Sig_/QpoY6r56b903uL_dAD/ortP
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Section 13.7.6.13 "CSI Image Parameter Register" of the
-i.MX 8M Quad Applications Processors Reference Manual
-states that the line size should be divisible by 8 bytes.
-However, the hardware also accepts sizes divisible by 4 bytes,
-which are needed to fully utilize the S5K3L6XX sensors.
-
-This patch accepts line sizes divisible by 4 bytes.
-
-Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
----
-Hello,
-
-the Librem 5 is using an out-of-tree driver for s5k3l6xx, and rounding to 4=
- is optimal to operate it.
-
-This revision improves the commit message.
-
-Cheers,
-Dorota Czaplejewicz
-
- drivers/staging/media/imx/imx7-media-csi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/staging/media/imx/imx7-media-csi.c b/drivers/staging/m=
-edia/imx/imx7-media-csi.c
-index a0553c24cce4..af821b410c3f 100644
---- a/drivers/staging/media/imx/imx7-media-csi.c
-+++ b/drivers/staging/media/imx/imx7-media-csi.c
-@@ -999,10 +999,10 @@ static int imx7_csi_mbus_fmt_to_pix_fmt(struct v4l2_p=
-ix_format *pix,
- 	}
-=20
- 	/* Round up width for minimum burst size */
--	width =3D round_up(mbus->width, 8);
-+	width =3D round_up(mbus->width, 4);
-=20
- 	/* Round up stride for IDMAC line start address alignment */
--	stride =3D round_up((width * cc->bpp) >> 3, 8);
-+	stride =3D round_up((width * cc->bpp) >> 3, 4);
-=20
- 	pix->width =3D width;
- 	pix->height =3D mbus->height;
---=20
-2.37.3
+On 15/10/2022 13:30, Caleb Connolly wrote:
+> Add bindings for qcom PMIC PMI8998 haptics driver.
+> 
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 
 
---Sig_/QpoY6r56b903uL_dAD/ortP
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
------BEGIN PGP SIGNATURE-----
+Best regards,
+Krzysztof
 
-iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmNMF6AACgkQADBpX4S8
-Znc18Q//ZXmRYoc4koc60UEB7ck4lTlcbVygMZYzL90FsKffHt0SP9FfNIW/o0zt
-CtyoFABKucBevZDcIBh5yACDrcJCe5lJWoSoLHN9vh6ozPo0AlqGFEYcFqT1THZQ
-aQH+1PmJ2U7DX8fAtu3yPJALoAwTCeUQUsRtFIM5//wf4kQzZoynO1uoTokOR8Nn
-TPteseorgNrLqmPkiTtgrVzoXf5UWpt0RzZd25AHDcOElSOoWnabsEIaJ+VgfZ2W
-I06AnV9Dkr6c++9moMwRl+HGCrr0K6c6jcuji0n/CRnG863jD5zURSfyXdW480eU
-dgaNqRmJQw/fOmP5S0/MiFTvnIv0LT0rumqX+ZHIAResnWlw6D7Fh/hkVLOsOh23
-4zxc8CfFyG6b8uRePnJa3AbfqO62duLwu9JTGzrglNiIn3v74p9nD7hvkLyNDE2m
-QLpkLPVVJA6IjODkCBEQmuscJ6M0ZnFSieGVV/xY374rgU6qef+EIhUBsn69lfvh
-5fti4aKXidGSwFBzQWC57A8wjcMWA+B+Ym23J2eazgtka1gCe86UFGosbYZMpYyZ
-muRVmaRQcHrOuhXNQXgjrvCKLsYhT0gIn6nbswaqWlWPHvQPrRq965/Mflir3lFA
-3KB2gVhIHtNO+RWgwMIC+LsbV/Uf1aQSjgK12gloXaJnIP6HwOQ=
-=Omue
------END PGP SIGNATURE-----
-
---Sig_/QpoY6r56b903uL_dAD/ortP--
