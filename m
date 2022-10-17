@@ -2,157 +2,168 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A70B7C4332F
-	for <phone-devel@archiver.kernel.org>; Mon, 17 Oct 2022 14:31:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E76A0C433FE
+	for <phone-devel@archiver.kernel.org>; Mon, 17 Oct 2022 16:28:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229954AbiJQObt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 17 Oct 2022 10:31:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34758 "EHLO
+        id S230004AbiJQQ27 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 17 Oct 2022 12:28:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230411AbiJQObr (ORCPT
+        with ESMTP id S230023AbiJQQ24 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 17 Oct 2022 10:31:47 -0400
-Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98A08659FD;
-        Mon, 17 Oct 2022 07:31:45 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 4F130DF771;
-        Mon, 17 Oct 2022 07:31:14 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 4C8rzvhNkA2M; Mon, 17 Oct 2022 07:31:13 -0700 (PDT)
-Date:   Mon, 17 Oct 2022 16:30:59 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
-        t=1666017073; bh=o+aJRKJ3sFKSwuftgFx085zenCbITyr/0J/mwErAjJo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BXF57OTkVnlR2p2KP9rqaWlk/KYEM2WTlIwB7RfX/02zllRU/7p/cGgK3w9IpY6qL
-         NRu1P37vyhD1wFF0i+C1Wm3aiyu2ON/jGOGXs91mpbm+N8bz3Wzf9ToxJML1Tt3rVl
-         Kl/BtBEgedrOHgIQ515Qa5bnc86Ood8nUdr6h23EuEAPc4vvGKysLeGosDPc+7Qrkz
-         zHZl5WYDsWM7QR2gjpBom/vv8qgZqB/lM/WW/UKctma60JcSdqc8IDvgMhceFwoLti
-         udG4sC+DUFD3y79QiZ3X8vvaL+V/LChZ32bonoDCaia1ZyPXt95Q8fKwskvvTxNDLc
-         sMk2/YlXaOz6Q==
-From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Steve Longerbeam <slongerbeam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@puri.sm, phone-devel@vger.kernel.org
-Subject: Re: [PATCHv3 1/1 RESEND] media: imx: Round line size to 4 bytes
-Message-ID: <20221017163059.377ac677.dorota.czaplejewicz@puri.sm>
-In-Reply-To: <Y00SSRMFuL3Drjd4@pendragon.ideasonboard.com>
-References: <20221016163928.1ef0a4fe.dorota.czaplejewicz@puri.sm>
-        <Y00SSRMFuL3Drjd4@pendragon.ideasonboard.com>
-Organization: Purism
+        Mon, 17 Oct 2022 12:28:56 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA926E893;
+        Mon, 17 Oct 2022 09:28:55 -0700 (PDT)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29HG3KeI031996;
+        Mon, 17 Oct 2022 16:28:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=60xV+pokAo84lrILwTyJMaGkHQPqhN9mPzhriNTOuRo=;
+ b=Ltl8MfRphzyhnzjz8OLffELjgbv0n1dmHXriQvY4uiSIkgOyxWkJNtGhNNH7A2MCK0FP
+ azgOR4voJfPe2RuT/919xJ62RCl5vdhPuSSLWUQLaeczN3R4JOQWrF58zhRQG56sUMhj
+ j13MzJhdn4/969SnbqfjSz/o8svS47Ibv2PrJ5rHUgCpMFlkJKxcrSTPRg5a+ulZkEDI
+ MMdUmUCV/XCproKOBDas+ZMx+pKZAKVUs/X0Qo+bpmRTsnQb/Ja4RlbwBK9AdMzyK5BB
+ IvA6mZBuhZHAEiNGN59AE+WDcDLlGNiioFaVnvC8761+lh3VWudPUcdUbjCU7aBwUgDz wQ== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3k7m6ucebu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 17 Oct 2022 16:28:30 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29HGSTEN010552
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 17 Oct 2022 16:28:29 GMT
+Received: from [10.111.167.160] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Mon, 17 Oct
+ 2022 09:28:25 -0700
+Message-ID: <7557b80c-d4fb-efe1-7440-edb934f63487@quicinc.com>
+Date:   Mon, 17 Oct 2022 09:28:15 -0700
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/QmAeHAJcc4AAIcgpE63DMc3";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [Freedreno] [PATCH v3 06/10] drm/msm/dsi: Migrate to
+ drm_dsc_compute_rc_parameters()
+Content-Language: en-US
+To:     Caleb Connolly <caleb@connolly.tech>,
+        Marijn Suijten <marijn.suijten@somainline.org>
+CC:     <phone-devel@vger.kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        David Airlie <airlied@gmail.com>,
+        <linux-arm-msm@vger.kernel.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        <dri-devel@lists.freedesktop.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Martin Botka <martin.botka@somainline.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        <freedreno@lists.freedesktop.org>, Sean Paul <sean@poorly.run>,
+        <linux-kernel@vger.kernel.org>, Newbyte <newbie13xd@gmail.com>
+References: <20221009184824.457416-1-marijn.suijten@somainline.org>
+ <20221009185058.460688-1-marijn.suijten@somainline.org>
+ <5c178d7e-5022-f5e5-791d-d3800114b42b@quicinc.com>
+ <20221013093646.c65mbjc6oekd7gha@SoMainline.org>
+ <32af4444-9c88-eb0f-eda7-24fa0418aff6@quicinc.com>
+ <20221017085944.2r24uqg73irmziqm@SoMainline.org>
+ <0642a664-3eed-21b7-a417-c6c607908f51@connolly.tech>
+From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <0642a664-3eed-21b7-a417-c6c607908f51@connolly.tech>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: w1IDz3mtBX6oAYMkDaydVeqIsDUdLPjM
+X-Proofpoint-GUID: w1IDz3mtBX6oAYMkDaydVeqIsDUdLPjM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-17_13,2022-10-17_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ bulkscore=0 spamscore=0 malwarescore=0 mlxlogscore=999 priorityscore=1501
+ suspectscore=0 clxscore=1011 adultscore=0 impostorscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
+ definitions=main-2210170095
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
---Sig_/QmAeHAJcc4AAIcgpE63DMc3
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Mon, 17 Oct 2022 11:28:57 +0300
-Laurent Pinchart <laurent.pinchart@ideasonboard.com> wrote:
-
-> Hi Dorota,
->=20
-> Thank you for the patch.
->=20
-> On Sun, Oct 16, 2022 at 04:39:28PM +0200, Dorota Czaplejewicz wrote:
-> > Section 13.7.6.13 "CSI Image Parameter Register" of the
-> > i.MX 8M Quad Applications Processors Reference Manual
-> > states that the line size should be divisible by 8 bytes.
-> > However, the hardware also accepts sizes divisible by 4 bytes,
-> > which are needed to fully utilize the S5K3L6XX sensors.
-> >=20
-> > This patch accepts line sizes divisible by 4 bytes. =20
->=20
-> The patch itself looks fine, but I always worry when we depart from the
-> documentation (sometimes that's a worry about documentation inaccuracies
-> :-)). In this particular case, we need to test the change on i.MX7 too,
-> as the alignment constraints could be platform-specific.
->=20
-I don't have access to any i.MX7 hardware, unfortunately. I can help anyone=
- who does and wants to test this.
-
-> I would also very much appreciate feedback from NXP on this. There's a
-> risk of ill side-effects that I would prefer ruling out very clearly.
-
-I posted a question on the NXP forum: https://community.nxp.com/t5/i-MX-Pro=
-cessors/i-MX8MQ-CSI-line-size-constraint-documentation-mistake/m-p/1538629#=
-M196448
-
---Dorota
->=20
-> > Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-> > ---
-> > Hello,
-> >=20
-> > the Librem 5 is using an out-of-tree driver for s5k3l6xx, and rounding =
-to 4 is optimal to operate it.
-> >=20
-> > This revision improves the commit message.
-> >=20
-> > Cheers,
-> > Dorota Czaplejewicz
-> >=20
-> >  drivers/staging/media/imx/imx7-media-csi.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/staging/media/imx/imx7-media-csi.c b/drivers/stagi=
-ng/media/imx/imx7-media-csi.c
-> > index a0553c24cce4..af821b410c3f 100644
-> > --- a/drivers/staging/media/imx/imx7-media-csi.c
-> > +++ b/drivers/staging/media/imx/imx7-media-csi.c
-> > @@ -999,10 +999,10 @@ static int imx7_csi_mbus_fmt_to_pix_fmt(struct v4=
-l2_pix_format *pix,
-> >  	}
-> > =20
-> >  	/* Round up width for minimum burst size */
-> > -	width =3D round_up(mbus->width, 8);
-> > +	width =3D round_up(mbus->width, 4);
-> > =20
-> >  	/* Round up stride for IDMAC line start address alignment */
-> > -	stride =3D round_up((width * cc->bpp) >> 3, 8);
-> > +	stride =3D round_up((width * cc->bpp) >> 3, 4);
-> > =20
-> >  	pix->width =3D width;
-> >  	pix->height =3D mbus->height; =20
->=20
 
 
---Sig_/QmAeHAJcc4AAIcgpE63DMc3
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+On 10/17/2022 6:37 AM, Caleb Connolly wrote:
+> 
+> 
+> On 17/10/2022 09:59, Marijn Suijten wrote:
+>> On 2022-10-13 09:02:44, Abhinav Kumar wrote:
+>>> On 10/13/2022 2:36 AM, Marijn Suijten wrote:
+>>>> On 2022-10-12 16:03:06, Abhinav Kumar wrote:
+>>>>> [..]
+>>>>> But I would like to hold back this change till Vinod clarifies because
+>>>>> Vinod had mentioned that with drm_dsc_compute_rc_parameters() he was
+>>>>> seeing a mismatch in the computation of two values.
+>>>>>
+>>>>> slice_bpg_offset and the final_offset.
+>>>>
+>>>> Unsurprisingly so because final_offset, and slice_bpg_offset through
+>>>> initial_offset depend directly on bits_per_pixel.  The main takeaway of
+>>>> this series is that Vinod was interpreting this field as integer instead
+>>>> of containing 4 fractional bits.  If he updates his the panel driver [1]
+>>>> to set bits_per_pixel = 8 << 4 instead of just 8 to account for this,
+>>>> the values should check out once again.
+>>>>
+>>>> [1]: https://git.linaro.org/people/vinod.koul/kernel.git/commit/?h=topic/pixel3_5.18-rc1&id=1d7d98ad564f1ec69e7525e07418918d90f247a1
+>>>>
+>>>> Once Vinod (or someone else in the posession of a Pixel 3) confirms
+>>>> this, I can respin this series and more explicitly explain why the FIXME
+>>>> was put in place, instead of being resolved outright?
+>>>>
+>>>> - Marijn
+>>>
+>>> Makes perfect sense to me.
+>>>
+>>> Will just wait for Vinod's tested-by.
+>>
+>> Unfortunately Vinod doesn't have access to this device anymore, but
+>> Caleb recently sent the support series including display driver for
+>> Pixel 3 and is picking up the testing.  User "Newbyte" from #linux-msm
+>> promised to test on the LG G7 to have even more input samples.
+> 
+> Hi,
+> 
+> I'm hoping to pick the Pixel 3 stuff back up at some point, but right now there
+> seem to be quite a few issues outside of DSC which make testing it a bit of a pain.
+> 
+> I gave Marijn's series [1] a go but wasn't able to get anything usable out of the
+> panel, however I doubt this is a DSC issue as I've always needed some hacks to
+> get the panel working - I've never had any success with it without skipping both
+> the initial panel reset and sending the PPS payload.
+> 
+> I think if Marijn has managed to initialise a panel properly then the lack of
+> Pixel 3 for validation shouldn't be a blocker to merge these fixes.
+> 
+> [1]:
+> https://lore.kernel.org/linux-arm-msm/20221009184824.457416-1-marijn.suijten@somainline.org/
+> 
+>>
+>> - Marijn
 
------BEGIN PGP SIGNATURE-----
+Alright, the onus is then on Vinod/ users of pixel3 to report/debug 
+whatever issues arise out of this computation.
 
-iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmNNZyMACgkQADBpX4S8
-Znc74hAAiYKFNGGfNNsBLc3PbZgtbYTGiZaB8Ow2s/3CVjCwVrnK0wnmL0DnHSnI
-vn3RjQ/GD2Ul2yeaJaNGOar7Uyk5ZmnyQTqJxJdQOWl01GHDW52A+uIG+Boz0fry
-sRkMGt2TtUSuFF5dRINb1bzsdIxXhjxanDiAGVimwZNA93atIhsPNFMvdA0iPtyH
-lvAY88s6X3zP4l289Xgx8MNoOgNPBqqnJkBM7qcRyMf60MdddYmjz43/2D6AbNvZ
-Wt4MKCoPWlur8Nl6u0oEI2SxDb8LEKLhg542sCKq4T9/8wDUoAU9iUnRRVTOMeqf
-9/CeHNY7opXcqyux/zL2yQ/9u+q2WdPWVpavGorINbtLRJ423eNBz8qa/qPhYrGv
-KUtYT5iMwKZHyBmizBsLH7nfZ+6Bq1WIPwASs4ibsJmzqzMhXFogsZrAg+FLaVGC
-zM6TU6SpjSSBdRSWFgBsF+vId2ThD6C8u1ebKGGTEd8Gg6iLpNZ7IRaLdo/YHnD8
-Q5yy7qUH3klPKLfPYMHtGs+rCwyZPUvOyfWouojg70sDmfSyYePgDkOvroa2dZ0Q
-lyG87d2zzTQ2Wp6YRSguSI329wZIQoq/qzP2NesY4wHcZIDCrVKZyfnVFNRp9KiG
-2PKynGL8eQ508zqYMdXvVXyTRa6TyVobHLTXnQhrrApAifISNCU=
-=hZK2
------END PGP SIGNATURE-----
+Patch itself LGTM, hence
 
---Sig_/QmAeHAJcc4AAIcgpE63DMc3--
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+
+> 
+> --
+> Kind Regards,
+> Caleb
+> 
