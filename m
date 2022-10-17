@@ -2,96 +2,109 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64C84C4332F
-	for <phone-devel@archiver.kernel.org>; Mon, 17 Oct 2022 07:21:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77421C433FE
+	for <phone-devel@archiver.kernel.org>; Mon, 17 Oct 2022 08:29:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229818AbiJQHVC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 17 Oct 2022 03:21:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45592 "EHLO
+        id S229728AbiJQI3c (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 17 Oct 2022 04:29:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230193AbiJQHVB (ORCPT
+        with ESMTP id S229760AbiJQI3a (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 17 Oct 2022 03:21:01 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB0E5A176
-        for <phone-devel@vger.kernel.org>; Mon, 17 Oct 2022 00:20:57 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id a3so17160630wrt.0
-        for <phone-devel@vger.kernel.org>; Mon, 17 Oct 2022 00:20:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uHmVhCl0HtIsCNUv1vhNNpI4KWXeC+TR+yxWNqfso50=;
-        b=dRF1C+tMcrUm0A7kVrnb6ZkonA7wm6736FZD98+wKRpEEEu2vIcgnV2dx5krCflau6
-         gZaaQ0XMlwflOg3qUsZUQqQksF4oyZm9ldo8yBazsf3lxN6kaDfLzFZdaLpUdtPV2aHg
-         k/MUnr0wIlRILW8mqFT5gMLezng6rWYnSmYsaeqLfaeyufIvkmBER3Tv1G90iiDTgm+Y
-         m1DVpA6bjXE83huVmS2Bgej30aODA70l+up3E6QRkqG0kQceBCAeAgBd4qer+tf/f0Al
-         9EHSplCuvO2kREFIwPcw5VKvabC7J2FDargpWgkzjHYLJZ1R+75B3aLf1QsCop85A4aJ
-         0pug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uHmVhCl0HtIsCNUv1vhNNpI4KWXeC+TR+yxWNqfso50=;
-        b=r4aL19h6TfDxsrrMzk33DAecIfLpSH9nXx1+cG2weNxeRF/XJBSmQkq2nDlESrCfdd
-         /jBeLNXMjoeNss3bICnOSk0JWpszg5hAEqEWYVR1ucddqeApsu3HML1DN8O2BZ45TfWM
-         RtF8GEFDM1ALjMfK/pJrNGSsaLi5PaGsNvD+KB4ZFyveiFIGztUkVee82xf1IZ7Gzn1M
-         BkYGwUHW1BTEsvnyH+JJAqwUSvO+jkgoEDLXpsCjrkxuRR0r9ezFjlU/5XNPumdQGHrj
-         OGC35E+1NOfeBnRnFRpruAQfmBlJ1Kfk95FHxsHeiOAYMB1s+qvpJTIB9YfDAjv+NLQ4
-         j/Fw==
-X-Gm-Message-State: ACrzQf1azql/mKOD+2bbWTrrOtiI8fEkVJ0HrMGk9ZC2lpDRoJ/QoMl8
-        OBAJ6YjxJzBhNsn6Hwa3NiFyUA==
-X-Google-Smtp-Source: AMsMyM5hnWJzG38N6N1rkatI/oqF7gOK3q/thTVZsPX1xK3F8THWoC5Imf6vPDIncvhWjXnRFocn1w==
-X-Received: by 2002:adf:e7c9:0:b0:22e:3524:9b4b with SMTP id e9-20020adfe7c9000000b0022e35249b4bmr5030706wrn.520.1665991255501;
-        Mon, 17 Oct 2022 00:20:55 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:ea6:24ea:3fe7:64b9? ([2a05:6e02:1041:c10:ea6:24ea:3fe7:64b9])
-        by smtp.googlemail.com with ESMTPSA id o39-20020a05600c512700b003b4ff30e566sm26519975wms.3.2022.10.17.00.20.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Oct 2022 00:20:55 -0700 (PDT)
-Message-ID: <9f859ba2-3f72-6f6f-7a5f-dae3a8b38c5e@linaro.org>
-Date:   Mon, 17 Oct 2022 09:20:53 +0200
+        Mon, 17 Oct 2022 04:29:30 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E3CFDB7;
+        Mon, 17 Oct 2022 01:29:23 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1BFE6CCF;
+        Mon, 17 Oct 2022 10:29:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1665995361;
+        bh=sVZCLSgX6k6MUk9kICNW2SQeppujn+8ITE9dOx6WEps=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=TQhfME+rXpgkfi5VecYtgR3HKbcRwya1/4W3jPJMEBnxuiGmSzEyzF2XdDd5Y+wqR
+         IGqbu1ShhI9VMJN/B9CpfUkn6ENgIDt+qpphx4KYNYu7HkDHvdukGGInjGgaMRe8hK
+         JGAWGgxTkYSfaF/PeWIXn3jh9cPWDq/13EuBbxJA=
+Date:   Mon, 17 Oct 2022 11:28:57 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
+Cc:     Steve Longerbeam <slongerbeam@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel@puri.sm, phone-devel@vger.kernel.org
+Subject: Re: [PATCHv3 1/1 RESEND] media: imx: Round line size to 4 bytes
+Message-ID: <Y00SSRMFuL3Drjd4@pendragon.ideasonboard.com>
+References: <20221016163928.1ef0a4fe.dorota.czaplejewicz@puri.sm>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH 5/5] dt-bindings: thermal: tsens: Add sm8450 compatible
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221016090035.565350-1-luca@z3ntu.xyz>
- <20221016090035.565350-5-luca@z3ntu.xyz>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20221016090035.565350-5-luca@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221016163928.1ef0a4fe.dorota.czaplejewicz@puri.sm>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 16/10/2022 11:00, Luca Weiss wrote:
-> Document the tsens-v2 compatible for sm8450 SoC.
+Hi Dorota,
+
+Thank you for the patch.
+
+On Sun, Oct 16, 2022 at 04:39:28PM +0200, Dorota Czaplejewicz wrote:
+> Section 13.7.6.13 "CSI Image Parameter Register" of the
+> i.MX 8M Quad Applications Processors Reference Manual
+> states that the line size should be divisible by 8 bytes.
+> However, the hardware also accepts sizes divisible by 4 bytes,
+> which are needed to fully utilize the S5K3L6XX sensors.
 > 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> This patch accepts line sizes divisible by 4 bytes.
+
+The patch itself looks fine, but I always worry when we depart from the
+documentation (sometimes that's a worry about documentation inaccuracies
+:-)). In this particular case, we need to test the change on i.MX7 too,
+as the alignment constraints could be platform-specific.
+
+I would also very much appreciate feedback from NXP on this. There's a
+risk of ill side-effects that I would prefer ruling out very clearly.
+
+> Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
 > ---
-
-Applied, thanks
-
+> Hello,
+> 
+> the Librem 5 is using an out-of-tree driver for s5k3l6xx, and rounding to 4 is optimal to operate it.
+> 
+> This revision improves the commit message.
+> 
+> Cheers,
+> Dorota Czaplejewicz
+> 
+>  drivers/staging/media/imx/imx7-media-csi.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/staging/media/imx/imx7-media-csi.c b/drivers/staging/media/imx/imx7-media-csi.c
+> index a0553c24cce4..af821b410c3f 100644
+> --- a/drivers/staging/media/imx/imx7-media-csi.c
+> +++ b/drivers/staging/media/imx/imx7-media-csi.c
+> @@ -999,10 +999,10 @@ static int imx7_csi_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
+>  	}
+>  
+>  	/* Round up width for minimum burst size */
+> -	width = round_up(mbus->width, 8);
+> +	width = round_up(mbus->width, 4);
+>  
+>  	/* Round up stride for IDMAC line start address alignment */
+> -	stride = round_up((width * cc->bpp) >> 3, 8);
+> +	stride = round_up((width * cc->bpp) >> 3, 4);
+>  
+>  	pix->width = width;
+>  	pix->height = mbus->height;
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+Regards,
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Laurent Pinchart
