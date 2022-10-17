@@ -2,109 +2,94 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77421C433FE
-	for <phone-devel@archiver.kernel.org>; Mon, 17 Oct 2022 08:29:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 697B8C43219
+	for <phone-devel@archiver.kernel.org>; Mon, 17 Oct 2022 09:00:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229728AbiJQI3c (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 17 Oct 2022 04:29:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56158 "EHLO
+        id S230424AbiJQJAg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 17 Oct 2022 05:00:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229760AbiJQI3a (ORCPT
+        with ESMTP id S230423AbiJQJAY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 17 Oct 2022 04:29:30 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E3CFDB7;
-        Mon, 17 Oct 2022 01:29:23 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1BFE6CCF;
-        Mon, 17 Oct 2022 10:29:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1665995361;
-        bh=sVZCLSgX6k6MUk9kICNW2SQeppujn+8ITE9dOx6WEps=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TQhfME+rXpgkfi5VecYtgR3HKbcRwya1/4W3jPJMEBnxuiGmSzEyzF2XdDd5Y+wqR
-         IGqbu1ShhI9VMJN/B9CpfUkn6ENgIDt+qpphx4KYNYu7HkDHvdukGGInjGgaMRe8hK
-         JGAWGgxTkYSfaF/PeWIXn3jh9cPWDq/13EuBbxJA=
-Date:   Mon, 17 Oct 2022 11:28:57 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-Cc:     Steve Longerbeam <slongerbeam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@puri.sm, phone-devel@vger.kernel.org
-Subject: Re: [PATCHv3 1/1 RESEND] media: imx: Round line size to 4 bytes
-Message-ID: <Y00SSRMFuL3Drjd4@pendragon.ideasonboard.com>
-References: <20221016163928.1ef0a4fe.dorota.czaplejewicz@puri.sm>
+        Mon, 17 Oct 2022 05:00:24 -0400
+Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [5.144.164.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77ABD1740C;
+        Mon, 17 Oct 2022 02:00:05 -0700 (PDT)
+Received: from SoMainline.org (D57D4C6E.static.ziggozakelijk.nl [213.125.76.110])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 7F1683EED4;
+        Mon, 17 Oct 2022 11:00:01 +0200 (CEST)
+Date:   Mon, 17 Oct 2022 10:59:44 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc:     phone-devel@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        David Airlie <airlied@gmail.com>,
+        linux-arm-msm@vger.kernel.org,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        dri-devel@lists.freedesktop.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Martin Botka <martin.botka@somainline.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Daniel Vetter <daniel@ffwll.ch>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        freedreno@lists.freedesktop.org, Sean Paul <sean@poorly.run>,
+        linux-kernel@vger.kernel.org, Newbyte <newbie13xd@gmail.com>,
+        Caleb Connolly <caleb@connolly.tech>
+Subject: Re: [Freedreno] [PATCH v3 06/10] drm/msm/dsi: Migrate to
+ drm_dsc_compute_rc_parameters()
+Message-ID: <20221017085944.2r24uqg73irmziqm@SoMainline.org>
+References: <20221009184824.457416-1-marijn.suijten@somainline.org>
+ <20221009185058.460688-1-marijn.suijten@somainline.org>
+ <5c178d7e-5022-f5e5-791d-d3800114b42b@quicinc.com>
+ <20221013093646.c65mbjc6oekd7gha@SoMainline.org>
+ <32af4444-9c88-eb0f-eda7-24fa0418aff6@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221016163928.1ef0a4fe.dorota.czaplejewicz@puri.sm>
+In-Reply-To: <32af4444-9c88-eb0f-eda7-24fa0418aff6@quicinc.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Dorota,
-
-Thank you for the patch.
-
-On Sun, Oct 16, 2022 at 04:39:28PM +0200, Dorota Czaplejewicz wrote:
-> Section 13.7.6.13 "CSI Image Parameter Register" of the
-> i.MX 8M Quad Applications Processors Reference Manual
-> states that the line size should be divisible by 8 bytes.
-> However, the hardware also accepts sizes divisible by 4 bytes,
-> which are needed to fully utilize the S5K3L6XX sensors.
+On 2022-10-13 09:02:44, Abhinav Kumar wrote:
+> On 10/13/2022 2:36 AM, Marijn Suijten wrote:
+> > On 2022-10-12 16:03:06, Abhinav Kumar wrote:
+> >> [..]
+> >> But I would like to hold back this change till Vinod clarifies because
+> >> Vinod had mentioned that with drm_dsc_compute_rc_parameters() he was
+> >> seeing a mismatch in the computation of two values.
+> >>
+> >> slice_bpg_offset and the final_offset.
+> > 
+> > Unsurprisingly so because final_offset, and slice_bpg_offset through
+> > initial_offset depend directly on bits_per_pixel.  The main takeaway of
+> > this series is that Vinod was interpreting this field as integer instead
+> > of containing 4 fractional bits.  If he updates his the panel driver [1]
+> > to set bits_per_pixel = 8 << 4 instead of just 8 to account for this,
+> > the values should check out once again.
+> > 
+> > [1]: https://git.linaro.org/people/vinod.koul/kernel.git/commit/?h=topic/pixel3_5.18-rc1&id=1d7d98ad564f1ec69e7525e07418918d90f247a1
+> > 
+> > Once Vinod (or someone else in the posession of a Pixel 3) confirms
+> > this, I can respin this series and more explicitly explain why the FIXME
+> > was put in place, instead of being resolved outright?
+> > 
+> > - Marijn
 > 
-> This patch accepts line sizes divisible by 4 bytes.
-
-The patch itself looks fine, but I always worry when we depart from the
-documentation (sometimes that's a worry about documentation inaccuracies
-:-)). In this particular case, we need to test the change on i.MX7 too,
-as the alignment constraints could be platform-specific.
-
-I would also very much appreciate feedback from NXP on this. There's a
-risk of ill side-effects that I would prefer ruling out very clearly.
-
-> Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-> ---
-> Hello,
+> Makes perfect sense to me.
 > 
-> the Librem 5 is using an out-of-tree driver for s5k3l6xx, and rounding to 4 is optimal to operate it.
-> 
-> This revision improves the commit message.
-> 
-> Cheers,
-> Dorota Czaplejewicz
-> 
->  drivers/staging/media/imx/imx7-media-csi.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/staging/media/imx/imx7-media-csi.c b/drivers/staging/media/imx/imx7-media-csi.c
-> index a0553c24cce4..af821b410c3f 100644
-> --- a/drivers/staging/media/imx/imx7-media-csi.c
-> +++ b/drivers/staging/media/imx/imx7-media-csi.c
-> @@ -999,10 +999,10 @@ static int imx7_csi_mbus_fmt_to_pix_fmt(struct v4l2_pix_format *pix,
->  	}
->  
->  	/* Round up width for minimum burst size */
-> -	width = round_up(mbus->width, 8);
-> +	width = round_up(mbus->width, 4);
->  
->  	/* Round up stride for IDMAC line start address alignment */
-> -	stride = round_up((width * cc->bpp) >> 3, 8);
-> +	stride = round_up((width * cc->bpp) >> 3, 4);
->  
->  	pix->width = width;
->  	pix->height = mbus->height;
+> Will just wait for Vinod's tested-by.
 
--- 
-Regards,
+Unfortunately Vinod doesn't have access to this device anymore, but
+Caleb recently sent the support series including display driver for
+Pixel 3 and is picking up the testing.  User "Newbyte" from #linux-msm
+promised to test on the LG G7 to have even more input samples.
 
-Laurent Pinchart
+- Marijn
