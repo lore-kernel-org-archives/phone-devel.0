@@ -2,75 +2,160 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D250C43219
-	for <phone-devel@archiver.kernel.org>; Tue, 18 Oct 2022 03:11:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA0C1C433FE
+	for <phone-devel@archiver.kernel.org>; Tue, 18 Oct 2022 18:29:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231500AbiJRDLy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 17 Oct 2022 23:11:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35624 "EHLO
+        id S229981AbiJRS3n (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 18 Oct 2022 14:29:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229822AbiJRDJw (ORCPT
+        with ESMTP id S229869AbiJRS3h (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 17 Oct 2022 23:09:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EC189AFF0;
-        Mon, 17 Oct 2022 20:07:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B21C61369;
-        Tue, 18 Oct 2022 03:07:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44ACFC43147;
-        Tue, 18 Oct 2022 03:07:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666062445;
-        bh=RuQ0qyzLyCZ8UbmT38wc6p1T9N+BAk8sE8gaFRQ32Kc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jg4K+bucB7CfGN/2s5IRFsjY8sGjKSIrodw1Eu1qMJ4Tj1LG5tdmw4a+jTDexUHyl
-         0D7J/eG7EqUlhsSevd/1Tp3KL2S7W7d2D2Xat40z8uPClCsyGOAxn1S6231Yb0lsWM
-         CGS3ChCcjqUJbjtH6846pLoVhE1bGKmmR4r+qzwH5cYA7PwBlB/vy0MG7PNZTtgcQX
-         DZ3nU5Lf7Go0/IaFJ57VI7zr00kwDFr6AfeOnEgKaAOPoIuJiNItWoVZS5jh3mGIST
-         NjKaESoc1INArVF6LrDyNgYCiWOmxfRnkm5B6MxUw54jiIXLzaxvine1lkIfmbvEsy
-         ePcF3WsxuXnVg==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     luca@z3ntu.xyz, linux-arm-msm@vger.kernel.org
-Cc:     robin.murphy@arm.com, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-        Konrad Dybcio <konrad.dybcio@somainline.org>
-Subject: Re: (subset) [PATCH v4 0/3] MDSS support for MSM8953
-Date:   Mon, 17 Oct 2022 22:05:57 -0500
-Message-Id: <166606235863.3553294.17596125386082772765.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221016161554.673006-1-luca@z3ntu.xyz>
-References: <20221016161554.673006-1-luca@z3ntu.xyz>
+        Tue, 18 Oct 2022 14:29:37 -0400
+Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 258251A80E;
+        Tue, 18 Oct 2022 11:29:31 -0700 (PDT)
+Date:   Tue, 18 Oct 2022 18:29:12 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
+        s=protonmail; t=1666117769; x=1666376969;
+        bh=39j/N8FEDTlg592aMy449d8TbNb26ue3BrX+9fClMEM=;
+        h=Date:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID;
+        b=Qpcad0zWnJwbQrjv1rdxAt5LKpcayscF7lm64ACGbl5l7l/uQayJSBgXpzh6Zc6vi
+         520RxBhqtNNxC/RgCVhxYGnaSVaPqdl4vA9CsehNB/ULSbWdSsAwkt8hH8QmkLpB+X
+         4hB2Wv+ASQsbEBztvIzLrPcTGiRC90f9SngAovCk=
+From:   Caleb Connolly <caleb@connolly.tech>
+Cc:     krzysztof.kozlowski@linaro.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        devicetree@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Jeff LaBundy <jeff@labundy.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Rob Herring <robh+dt@kernel.org>, Tom Rix <trix@redhat.com>
+Subject: Re: [PATCH v7 1/2] dt-bindings: input: document Qualcomm PMI8998 haptics driver
+Message-ID: <e588abdb-6817-25cf-dd9e-be23044e1e94@connolly.tech>
+In-Reply-To: <20221015172915.1436236-2-caleb@connolly.tech>
+References: <20221015172915.1436236-1-caleb@connolly.tech> <20221015172915.1436236-2-caleb@connolly.tech>
+Feedback-ID: 10753939:user:proton
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 16 Oct 2022 18:15:50 +0200, Luca Weiss wrote:
-> This series adds the APPS IOMMU and the MDSS block for display that is
-> found on msm8953 SoCs.
-> 
-> Luca Weiss (1):
->   dt-bindings: qcom-iommu: Add Qualcomm MSM8953 compatible
-> 
-> Vladimir Lypak (2):
->   arm64: dts: qcom: msm8953: add APPS IOMMU
->   arm64: dts: qcom: msm8953: add MDSS
-> 
-> [...]
 
-Applied, thanks!
 
-[2/3] arm64: dts: qcom: msm8953: add APPS IOMMU
-      commit: c0b9575a36069f52f09fbe9b8f7a9db940cb952c
-[3/3] arm64: dts: qcom: msm8953: add MDSS
-      commit: cf6c35d1bc89e0942c379f841e1d9095fc66d642
+On 15/10/2022 18:30, Caleb Connolly wrote:
+> Add bindings for qcom PMIC PMI8998 haptics driver.
+>
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+> ---
+>   .../bindings/input/qcom,pmi8998-haptics.yaml  | 73 +++++++++++++++++++
+>   1 file changed, 73 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/input/qcom,pmi8998=
+-haptics.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/input/qcom,pmi8998-haptics=
+.yaml b/Documentation/devicetree/bindings/input/qcom,pmi8998-haptics.yaml
+> new file mode 100644
+> index 000000000000..d43324cceb89
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/input/qcom,pmi8998-haptics.yaml
+> @@ -0,0 +1,73 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright 2020 Unisoc Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/input/qcom,pmi8998-haptics.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm PMI8998/PM660 Haptics
+> +
+> +maintainers:
+> +  - Caleb Connolly <caleb@connolly.tech>
+> +
+> +description: |
+> +  Qualcomm SPMI haptics is a peripheral on some QTI PMICs. It supports l=
+inear resonant
+> +  actuators and eccentric rotating mass type haptics commonly found in m=
+obile devices.
+> +  It supports multiple sources of wave data such as an internal buffer, =
+direct play
+> +  (from kernel or userspace) as well as an audio output mode.
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - enum:
+> +          - qcom,pmi8998-haptics
+> +          - qcom,pm660-charger
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+I've just noticed this typo! Will respin and fix...
+
+> +          - qcom,pmi8996-haptics
+> +          - qcom,pmi8941-haptics
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 2
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: short
+> +      - const: play
+> +
+> +  qcom,wave-play-duration-us:
+> +    description: |
+> +      Wave sample duration in microseconds, 1/f where f
+> +      is the resonant frequency of the actuator.
+> +      This property is named qcom,wave-play-rate-us in
+> +      downstream kernels.
+> +    minimum: 0
+> +    maximum: 20475
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - qcom,wave-play-rate-us
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spmi {
+> +      #address-cells =3D <1>;
+> +      #size-cells =3D <0>;
+> +      pmi8998_haptics: haptics@c000 {
+> +        compatible =3D "qcom,pmi8998-haptics";
+> +        reg =3D <0xc000>;
+> +
+> +        interrupts =3D <0x3 0xc0 0x0 IRQ_TYPE_EDGE_BOTH>,
+> +                     <0x3 0xc0 0x1 IRQ_TYPE_EDGE_BOTH>;
+> +        interrupt-names =3D "short", "play";
+> +
+> +        qcom,wave-play-rate-us =3D <4255>;
+> +      };
+> +    };
+> --
+> 2.38.0
+>
+
+--
+Kind Regards,
+Caleb
+
