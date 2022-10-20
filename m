@@ -2,171 +2,104 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62E6BC4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 20 Oct 2022 14:28:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A7F2C433FE
+	for <phone-devel@archiver.kernel.org>; Thu, 20 Oct 2022 14:53:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230211AbiJTO2Q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 20 Oct 2022 10:28:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51806 "EHLO
+        id S229615AbiJTOxK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 20 Oct 2022 10:53:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbiJTO2M (ORCPT
+        with ESMTP id S229691AbiJTOxJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 20 Oct 2022 10:28:12 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4AC11AFA8A
-        for <phone-devel@vger.kernel.org>; Thu, 20 Oct 2022 07:28:09 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id sc25so47785972ejc.12
-        for <phone-devel@vger.kernel.org>; Thu, 20 Oct 2022 07:28:09 -0700 (PDT)
+        Thu, 20 Oct 2022 10:53:09 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFEA33B988
+        for <phone-devel@vger.kernel.org>; Thu, 20 Oct 2022 07:53:07 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id q9so242825ejd.0
+        for <phone-devel@vger.kernel.org>; Thu, 20 Oct 2022 07:53:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=fairphone.com; s=fair;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7QR1IqMPTQfafYMBcRZyO6+upzIaAEmghcFFaL+GXdY=;
-        b=vegGHfEDzAlS0VlymlKs1Ypplgljzlzyspn1r1KOwHstsAMU9QtfZ18RgALUIIPhrZ
-         yWprS/+oaZXitf5/ng9chHACmDYZusFYBdjlCm+SRcGUd6aBvlX+yCE1Qr0bzstWM9QF
-         0hOYwp5OOlmp4LNb8BEsmOWfMzexAfIjoEwuAXtK7vXZIjrj62Cqdm1dOTwrWeovIpnI
-         qLQzmLeAjdcbjJ7GMQEGdXmPZIyraOUd26r9u53Mq7uolJggmiH0L+A3Xn86t9Mqn2tR
-         XJReD5jrMuqINxnVCjQwZdyqKXhzmUq2kSSq24z6EJgyttB23Fi+INruZJw+dEQbHDRx
-         i6mg==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iDGNVxNBG5DnP2O72JRwhZ79bFRdgRafb7U2+dHA6NI=;
+        b=HQx6beIGe/7vsiKgB9fdxAVCuvcdbkQg+VQX6cKRsc+Gu2PI/mHpj5LeOPIAJXmziM
+         +gSPF02UrS5CAMYnQTdZCGvU9PP6fjDkOTBfUlQ5yIN0VeNH2RbKyXy0un3FvjX+lHA1
+         o6gpyV/iQBb3aFE3FpY9lGrCvezZA0rEW+Gk+OP9jc2i7nzek1ENKKOTWwYXa0FBeaS2
+         DbyxcM7AIaKGFf0haYiX/biPZcdBTp+ORTfmCYyQeu6tZ/ZRziQBgp+tW1leWRQwo4DQ
+         jhZ5azqVFMc2dtaPNro2vcAwaYNuSRvBE5cHnN/PL+CGBDY3eQHvu2UDa7KqwFLAvk0A
+         IsXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=7QR1IqMPTQfafYMBcRZyO6+upzIaAEmghcFFaL+GXdY=;
-        b=lNDEb71KzZPffqJbZUrDVB+DL31ileYJqbFt0W6R7m2I/htyP8VhUOlXAweKXcGSUS
-         bXAbOOVnePzqj5RZte47XteSQWlYdH9MNuXjJmPIXh61XnqInqn0m5cxEqpqJ7CxQ6PB
-         GodvM116uwEiCL7dUS9kgy4LMSwVplV1spZ91L7uySgCFqV7Seoeij5du88Vvllhtv0I
-         zKja4+XObMgOApQTRr4ZYIUc20c+F68i0JPUWRXe6EGc8rXoG3syF+xq8eFfaQjYBIVw
-         SsbIo9mhlEvmDsMz4J6xiMGLSpEVEA04PT6J/aw++LsIXmUwfAmi5gk3FMOcUPI2bSQe
-         dygg==
-X-Gm-Message-State: ACrzQf1z9jZvEDhgqIMNHzYDKQtR0kkhYF3+upXfMNU+ym0qAYWo/P+K
-        tNQwNqg649ZF1yEJaD4u/+atbg==
-X-Google-Smtp-Source: AMsMyM6c3vjC3h2UKyDABM7/Zth6iJYEdeiBBn9C/o6MJ8pVRnDGnQgdHus11l/HJYKNgBqDaxsozQ==
-X-Received: by 2002:a17:907:2e01:b0:78d:f24b:7330 with SMTP id ig1-20020a1709072e0100b0078df24b7330mr11097959ejc.604.1666276088208;
-        Thu, 20 Oct 2022 07:28:08 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id v1-20020a170906292100b0078116c361d9sm10614246ejd.10.2022.10.20.07.28.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Oct 2022 07:28:07 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Thu, 20 Oct 2022 16:28:07 +0200
-Message-Id: <CNQTKQWNZIH9.61TJWGH1K44F@otso>
-Cc:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
-        "Konrad Dybcio" <konrad.dybcio@somainline.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] arm64: dts: qcom: pm6350: add temp sensor and thermal
- zone config
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Matthias Kaehlcke" <mka@chromium.org>
-X-Mailer: aerc 0.12.0
-References: <20220812114421.1195044-1-luca.weiss@fairphone.com>
- <81ae6a31-1f37-a677-f8f8-2340e37d3a63@linaro.org>
- <CM43WTWNP8MM.3145TGVN4208B@otso> <YvaErMmLIQaDolKR@google.com>
-In-Reply-To: <YvaErMmLIQaDolKR@google.com>
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iDGNVxNBG5DnP2O72JRwhZ79bFRdgRafb7U2+dHA6NI=;
+        b=jKZxyLu2ifbEaT30OSbQbk3H9iFyJ3hLNu4qAWV5WZ/bX2AXNFbM+UH1Bugw32sS0c
+         IVA++Ve1BOYqxhJGGzM2AAcfV7OuY7ylE4aUOownVZwsHkwUa8Fn0TAywMSZhJ6TnntO
+         ajTjAsZ98NeTYTYENc8sr76Gpb+Z2hH/HBjlkrbkKCtYtFTnzAuHQrHjex6t6g0VKv0s
+         DpbDkU79cyz49KuYgngYEbN+bkZgqvD8KIew5Ib0F8YgFvgnt4vJgiSrfUscCE6iTBPk
+         TClLEV5TPWMhoR2BT4ik28YA4ngBM+DPZBHn5k96RKcPtqe1YTHV3yCHFjJczZzNKQQo
+         26Gg==
+X-Gm-Message-State: ACrzQf2qtFoZn5PHkDzqnRF9O1+ad/I8eHAiU8eI4PHQ5vk4TUezHBMi
+        L3nDn/UYupNbQmuCnxWCHBID2A==
+X-Google-Smtp-Source: AMsMyM6SH+STgAR7RMIyUn6RoKLYTwg+3oKL+R4KBRsq3rVx6bqFAsr50CDvjDox3CEvXE5KgDFlmA==
+X-Received: by 2002:a17:907:c78e:b0:78d:138a:ec4b with SMTP id tz14-20020a170907c78e00b0078d138aec4bmr11231917ejc.381.1666277586545;
+        Thu, 20 Oct 2022 07:53:06 -0700 (PDT)
+Received: from otso.. (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id fk26-20020a056402399a00b0044dbecdcd29sm12088479edb.12.2022.10.20.07.53.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Oct 2022 07:53:06 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        David Collins <collinsd@codeaurora.org>,
+        Guru Das Srinagesh <gurus@codeaurora.org>,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] thermal/drivers/qcom/temp-alarm: fix inaccurate warning for gen2
+Date:   Thu, 20 Oct 2022 16:52:37 +0200
+Message-Id: <20221020145237.942146-1-luca.weiss@fairphone.com>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Matthias,
+On gen2 chips the stage2 threshold is not 140 degC but 125 degC.
 
-sorry for the delay in getting back to you.
+Make the warning message clearer by using this variable and also by
+including the temperature that was checked for.
 
-On Fri Aug 12, 2022 at 6:49 PM CEST, Matthias Kaehlcke wrote:
-> On Fri, Aug 12, 2022 at 04:06:47PM +0200, Luca Weiss wrote:
-> > Hi Krzysztof,
-> >=20
-> > +CC Matthias Kaehlcke (author of patch mentioned further below)
-> >=20
-> > On Fri Aug 12, 2022 at 3:36 PM CEST, Krzysztof Kozlowski wrote:
-> > > On 12/08/2022 14:44, Luca Weiss wrote:
-> > > > Add temp-alarm device tree node and a default configuration for the
-> > > > corresponding thermal zone for this PMIC. Temperatures are based on
-> > > > downstream values.
-> > > >=20
-> > > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > > > ---
-> > > > With this config I'm getting this in dmesg, not sure if it's a warn=
-ing
-> > > > that should be solved or just an informative warning.
-> > > >=20
-> > > > [    0.268256] spmi-temp-alarm c440000.spmi:pmic@0:temp-alarm@2400:=
- No ADC is configured and critical temperature is above the maximum stage 2=
- threshold of 140 C! Configuring stage 2 shutdown at 140 C.
-> > > >=20
-> > > > As far as I can tell, based on downstream dts this PMIC doesn't hav=
-e an
-> > > > ADC.
->
-> I don't seem to have access to the datasheet, in any case that the ADC is=
-n't
-> configured in the downstream dts doesn't necessarily mean the PMIC doesn'=
-t
-> have one. The PM6150 has one, and it is probably relatively close to the
-> PM6350.
+Fixes: aa92b3310c55 ("thermal/drivers/qcom-spmi-temp-alarm: Add support for GEN2 rev 1 PMIC peripherals")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ drivers/thermal/qcom/qcom-spmi-temp-alarm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Too bad :(
+diff --git a/drivers/thermal/qcom/qcom-spmi-temp-alarm.c b/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
+index be785ab37e53..ad84978109e6 100644
+--- a/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
++++ b/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
+@@ -252,7 +252,8 @@ static int qpnp_tm_update_critical_trip_temp(struct qpnp_tm_chip *chip,
+ 			disable_s2_shutdown = true;
+ 		else
+ 			dev_warn(chip->dev,
+-				 "No ADC is configured and critical temperature is above the maximum stage 2 threshold of 140 C! Configuring stage 2 shutdown at 140 C.\n");
++				 "No ADC is configured and critical temperature %d mC is above the maximum stage 2 threshold of %ld mC! Configuring stage 2 shutdown at %ld mC.\n",
++				 temp, stage2_threshold_max, stage2_threshold_max);
+ 	}
+ 
+ skip:
+-- 
+2.38.1
 
->
-> > > You configure 145 and driver believes 140 is the limit, so it seems
-> > > warning should be addressed.
-> >=20
-> > Hm...
-> >=20
-> > >
-> > > From where did you get 145 degrees as limit? Downstream DTS?
-> >=20
-> > Yes, downstream dts[0].
-> >=20
-> > From what I can see in the downstream driver, it always disabled this
-> > "software override of stage 2 and 3 shutdowns"[1]
-> >=20
-> > In mainline only since f1599f9e4cd6 ("thermal: qcom-spmi: Use PMIC
-> > thermal stage 2 for critical trip points") this check exists, which is
-> > not part of downstream (wasn't in 4.19 yet), where this software
-> > override tries to get enabled so that thermal core can handle this.
-> >=20
-> > Any suggestion what I can do here? Maybe looking at msm-5.4 sources (an=
-d
-> > associated dts) might reveal something..?
->
-> I wouldn't necessarily consider QC downstream code as a reliable source o=
-f
-> truth ...
->
-> > Maybe newer SoCs/PMICs have a different config?
->
-> Commit aa92b3310c55 ("thermal/drivers/qcom-spmi-temp-alarm: Add support
-> for GEN2 rev 1 PMIC peripherals") added support for gen2 PMICs, which
-> actually have lower thresholds than gen1. From the log it seems that the
-> PM6350 is identified as gen1 device (max stage 2 threshold =3D 140 degC).
-
-PM6350 is detected as QPNP_TM_SUBTYPE_GEN2 so gen2 actually. Just the
-log message is hardcoded to 140 degC, the if above actually has
-stage2_threshold_max =3D 125000 (125degC) and stage2_threshold_min =3D
-110000 (110degC) so lower than 140 (basically like you said).
-
->
-> It seems setting the limit to 140 degC or one of the other stage 2
-> thresholds would be a reasonable course of action. stage 2 is the
-> threshold at which the PMIC is so hot that the system should shut
-> down, and 140 degC is the highest of the stage 2 thresholds. Even
-> if it was possible, what would be gained from setting the trip
-> point 5 degC higher?
-
-Based on this, do you think it's reasonable to just set the limit to
-125 degC and be done with it? Or some other way to resolve this? I'd of
-course mention in the commit message that I've decreased the value from
-145 (msm-4.19) to 125.
-
-Regards
-Luca
