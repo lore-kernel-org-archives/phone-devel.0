@@ -2,160 +2,171 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA0C1C433FE
-	for <phone-devel@archiver.kernel.org>; Tue, 18 Oct 2022 18:29:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62E6BC4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 20 Oct 2022 14:28:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229981AbiJRS3n (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 18 Oct 2022 14:29:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57380 "EHLO
+        id S230211AbiJTO2Q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 20 Oct 2022 10:28:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229869AbiJRS3h (ORCPT
+        with ESMTP id S229649AbiJTO2M (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 18 Oct 2022 14:29:37 -0400
-Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 258251A80E;
-        Tue, 18 Oct 2022 11:29:31 -0700 (PDT)
-Date:   Tue, 18 Oct 2022 18:29:12 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=connolly.tech;
-        s=protonmail; t=1666117769; x=1666376969;
-        bh=39j/N8FEDTlg592aMy449d8TbNb26ue3BrX+9fClMEM=;
-        h=Date:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID;
-        b=Qpcad0zWnJwbQrjv1rdxAt5LKpcayscF7lm64ACGbl5l7l/uQayJSBgXpzh6Zc6vi
-         520RxBhqtNNxC/RgCVhxYGnaSVaPqdl4vA9CsehNB/ULSbWdSsAwkt8hH8QmkLpB+X
-         4hB2Wv+ASQsbEBztvIzLrPcTGiRC90f9SngAovCk=
-From:   Caleb Connolly <caleb@connolly.tech>
-Cc:     krzysztof.kozlowski@linaro.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        devicetree@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Jeff LaBundy <jeff@labundy.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Rob Herring <robh+dt@kernel.org>, Tom Rix <trix@redhat.com>
-Subject: Re: [PATCH v7 1/2] dt-bindings: input: document Qualcomm PMI8998 haptics driver
-Message-ID: <e588abdb-6817-25cf-dd9e-be23044e1e94@connolly.tech>
-In-Reply-To: <20221015172915.1436236-2-caleb@connolly.tech>
-References: <20221015172915.1436236-1-caleb@connolly.tech> <20221015172915.1436236-2-caleb@connolly.tech>
-Feedback-ID: 10753939:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        Thu, 20 Oct 2022 10:28:12 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4AC11AFA8A
+        for <phone-devel@vger.kernel.org>; Thu, 20 Oct 2022 07:28:09 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id sc25so47785972ejc.12
+        for <phone-devel@vger.kernel.org>; Thu, 20 Oct 2022 07:28:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7QR1IqMPTQfafYMBcRZyO6+upzIaAEmghcFFaL+GXdY=;
+        b=vegGHfEDzAlS0VlymlKs1Ypplgljzlzyspn1r1KOwHstsAMU9QtfZ18RgALUIIPhrZ
+         yWprS/+oaZXitf5/ng9chHACmDYZusFYBdjlCm+SRcGUd6aBvlX+yCE1Qr0bzstWM9QF
+         0hOYwp5OOlmp4LNb8BEsmOWfMzexAfIjoEwuAXtK7vXZIjrj62Cqdm1dOTwrWeovIpnI
+         qLQzmLeAjdcbjJ7GMQEGdXmPZIyraOUd26r9u53Mq7uolJggmiH0L+A3Xn86t9Mqn2tR
+         XJReD5jrMuqINxnVCjQwZdyqKXhzmUq2kSSq24z6EJgyttB23Fi+INruZJw+dEQbHDRx
+         i6mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7QR1IqMPTQfafYMBcRZyO6+upzIaAEmghcFFaL+GXdY=;
+        b=lNDEb71KzZPffqJbZUrDVB+DL31ileYJqbFt0W6R7m2I/htyP8VhUOlXAweKXcGSUS
+         bXAbOOVnePzqj5RZte47XteSQWlYdH9MNuXjJmPIXh61XnqInqn0m5cxEqpqJ7CxQ6PB
+         GodvM116uwEiCL7dUS9kgy4LMSwVplV1spZ91L7uySgCFqV7Seoeij5du88Vvllhtv0I
+         zKja4+XObMgOApQTRr4ZYIUc20c+F68i0JPUWRXe6EGc8rXoG3syF+xq8eFfaQjYBIVw
+         SsbIo9mhlEvmDsMz4J6xiMGLSpEVEA04PT6J/aw++LsIXmUwfAmi5gk3FMOcUPI2bSQe
+         dygg==
+X-Gm-Message-State: ACrzQf1z9jZvEDhgqIMNHzYDKQtR0kkhYF3+upXfMNU+ym0qAYWo/P+K
+        tNQwNqg649ZF1yEJaD4u/+atbg==
+X-Google-Smtp-Source: AMsMyM6c3vjC3h2UKyDABM7/Zth6iJYEdeiBBn9C/o6MJ8pVRnDGnQgdHus11l/HJYKNgBqDaxsozQ==
+X-Received: by 2002:a17:907:2e01:b0:78d:f24b:7330 with SMTP id ig1-20020a1709072e0100b0078df24b7330mr11097959ejc.604.1666276088208;
+        Thu, 20 Oct 2022 07:28:08 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id v1-20020a170906292100b0078116c361d9sm10614246ejd.10.2022.10.20.07.28.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Oct 2022 07:28:07 -0700 (PDT)
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=UTF-8
+Date:   Thu, 20 Oct 2022 16:28:07 +0200
+Message-Id: <CNQTKQWNZIH9.61TJWGH1K44F@otso>
+Cc:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <bjorn.andersson@linaro.org>,
+        "Konrad Dybcio" <konrad.dybcio@somainline.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] arm64: dts: qcom: pm6350: add temp sensor and thermal
+ zone config
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Matthias Kaehlcke" <mka@chromium.org>
+X-Mailer: aerc 0.12.0
+References: <20220812114421.1195044-1-luca.weiss@fairphone.com>
+ <81ae6a31-1f37-a677-f8f8-2340e37d3a63@linaro.org>
+ <CM43WTWNP8MM.3145TGVN4208B@otso> <YvaErMmLIQaDolKR@google.com>
+In-Reply-To: <YvaErMmLIQaDolKR@google.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Matthias,
 
+sorry for the delay in getting back to you.
 
-On 15/10/2022 18:30, Caleb Connolly wrote:
-> Add bindings for qcom PMIC PMI8998 haptics driver.
+On Fri Aug 12, 2022 at 6:49 PM CEST, Matthias Kaehlcke wrote:
+> On Fri, Aug 12, 2022 at 04:06:47PM +0200, Luca Weiss wrote:
+> > Hi Krzysztof,
+> >=20
+> > +CC Matthias Kaehlcke (author of patch mentioned further below)
+> >=20
+> > On Fri Aug 12, 2022 at 3:36 PM CEST, Krzysztof Kozlowski wrote:
+> > > On 12/08/2022 14:44, Luca Weiss wrote:
+> > > > Add temp-alarm device tree node and a default configuration for the
+> > > > corresponding thermal zone for this PMIC. Temperatures are based on
+> > > > downstream values.
+> > > >=20
+> > > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > > > ---
+> > > > With this config I'm getting this in dmesg, not sure if it's a warn=
+ing
+> > > > that should be solved or just an informative warning.
+> > > >=20
+> > > > [    0.268256] spmi-temp-alarm c440000.spmi:pmic@0:temp-alarm@2400:=
+ No ADC is configured and critical temperature is above the maximum stage 2=
+ threshold of 140 C! Configuring stage 2 shutdown at 140 C.
+> > > >=20
+> > > > As far as I can tell, based on downstream dts this PMIC doesn't hav=
+e an
+> > > > ADC.
 >
-> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
-> ---
->   .../bindings/input/qcom,pmi8998-haptics.yaml  | 73 +++++++++++++++++++
->   1 file changed, 73 insertions(+)
->   create mode 100644 Documentation/devicetree/bindings/input/qcom,pmi8998=
--haptics.yaml
+> I don't seem to have access to the datasheet, in any case that the ADC is=
+n't
+> configured in the downstream dts doesn't necessarily mean the PMIC doesn'=
+t
+> have one. The PM6150 has one, and it is probably relatively close to the
+> PM6350.
+
+Too bad :(
+
 >
-> diff --git a/Documentation/devicetree/bindings/input/qcom,pmi8998-haptics=
-.yaml b/Documentation/devicetree/bindings/input/qcom,pmi8998-haptics.yaml
-> new file mode 100644
-> index 000000000000..d43324cceb89
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/input/qcom,pmi8998-haptics.yaml
-> @@ -0,0 +1,73 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright 2020 Unisoc Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/input/qcom,pmi8998-haptics.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm PMI8998/PM660 Haptics
-> +
-> +maintainers:
-> +  - Caleb Connolly <caleb@connolly.tech>
-> +
-> +description: |
-> +  Qualcomm SPMI haptics is a peripheral on some QTI PMICs. It supports l=
-inear resonant
-> +  actuators and eccentric rotating mass type haptics commonly found in m=
-obile devices.
-> +  It supports multiple sources of wave data such as an internal buffer, =
-direct play
-> +  (from kernel or userspace) as well as an audio output mode.
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - qcom,pmi8998-haptics
-> +          - qcom,pm660-charger
-
-I've just noticed this typo! Will respin and fix...
-
-> +          - qcom,pmi8996-haptics
-> +          - qcom,pmi8941-haptics
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 2
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: short
-> +      - const: play
-> +
-> +  qcom,wave-play-duration-us:
-> +    description: |
-> +      Wave sample duration in microseconds, 1/f where f
-> +      is the resonant frequency of the actuator.
-> +      This property is named qcom,wave-play-rate-us in
-> +      downstream kernels.
-> +    minimum: 0
-> +    maximum: 20475
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - qcom,wave-play-rate-us
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    spmi {
-> +      #address-cells =3D <1>;
-> +      #size-cells =3D <0>;
-> +      pmi8998_haptics: haptics@c000 {
-> +        compatible =3D "qcom,pmi8998-haptics";
-> +        reg =3D <0xc000>;
-> +
-> +        interrupts =3D <0x3 0xc0 0x0 IRQ_TYPE_EDGE_BOTH>,
-> +                     <0x3 0xc0 0x1 IRQ_TYPE_EDGE_BOTH>;
-> +        interrupt-names =3D "short", "play";
-> +
-> +        qcom,wave-play-rate-us =3D <4255>;
-> +      };
-> +    };
-> --
-> 2.38.0
+> > > You configure 145 and driver believes 140 is the limit, so it seems
+> > > warning should be addressed.
+> >=20
+> > Hm...
+> >=20
+> > >
+> > > From where did you get 145 degrees as limit? Downstream DTS?
+> >=20
+> > Yes, downstream dts[0].
+> >=20
+> > From what I can see in the downstream driver, it always disabled this
+> > "software override of stage 2 and 3 shutdowns"[1]
+> >=20
+> > In mainline only since f1599f9e4cd6 ("thermal: qcom-spmi: Use PMIC
+> > thermal stage 2 for critical trip points") this check exists, which is
+> > not part of downstream (wasn't in 4.19 yet), where this software
+> > override tries to get enabled so that thermal core can handle this.
+> >=20
+> > Any suggestion what I can do here? Maybe looking at msm-5.4 sources (an=
+d
+> > associated dts) might reveal something..?
 >
+> I wouldn't necessarily consider QC downstream code as a reliable source o=
+f
+> truth ...
+>
+> > Maybe newer SoCs/PMICs have a different config?
+>
+> Commit aa92b3310c55 ("thermal/drivers/qcom-spmi-temp-alarm: Add support
+> for GEN2 rev 1 PMIC peripherals") added support for gen2 PMICs, which
+> actually have lower thresholds than gen1. From the log it seems that the
+> PM6350 is identified as gen1 device (max stage 2 threshold =3D 140 degC).
 
---
-Kind Regards,
-Caleb
+PM6350 is detected as QPNP_TM_SUBTYPE_GEN2 so gen2 actually. Just the
+log message is hardcoded to 140 degC, the if above actually has
+stage2_threshold_max =3D 125000 (125degC) and stage2_threshold_min =3D
+110000 (110degC) so lower than 140 (basically like you said).
 
+>
+> It seems setting the limit to 140 degC or one of the other stage 2
+> thresholds would be a reasonable course of action. stage 2 is the
+> threshold at which the PMIC is so hot that the system should shut
+> down, and 140 degC is the highest of the stage 2 thresholds. Even
+> if it was possible, what would be gained from setting the trip
+> point 5 degC higher?
+
+Based on this, do you think it's reasonable to just set the limit to
+125 degC and be done with it? Or some other way to resolve this? I'd of
+course mention in the commit message that I've decreased the value from
+145 (msm-4.19) to 125.
+
+Regards
+Luca
