@@ -2,104 +2,81 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A7F2C433FE
-	for <phone-devel@archiver.kernel.org>; Thu, 20 Oct 2022 14:53:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C700C433FE
+	for <phone-devel@archiver.kernel.org>; Fri, 21 Oct 2022 14:23:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229615AbiJTOxK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 20 Oct 2022 10:53:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34764 "EHLO
+        id S230314AbiJUOXb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 21 Oct 2022 10:23:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229691AbiJTOxJ (ORCPT
+        with ESMTP id S229752AbiJUOXa (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 20 Oct 2022 10:53:09 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFEA33B988
-        for <phone-devel@vger.kernel.org>; Thu, 20 Oct 2022 07:53:07 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id q9so242825ejd.0
-        for <phone-devel@vger.kernel.org>; Thu, 20 Oct 2022 07:53:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iDGNVxNBG5DnP2O72JRwhZ79bFRdgRafb7U2+dHA6NI=;
-        b=HQx6beIGe/7vsiKgB9fdxAVCuvcdbkQg+VQX6cKRsc+Gu2PI/mHpj5LeOPIAJXmziM
-         +gSPF02UrS5CAMYnQTdZCGvU9PP6fjDkOTBfUlQ5yIN0VeNH2RbKyXy0un3FvjX+lHA1
-         o6gpyV/iQBb3aFE3FpY9lGrCvezZA0rEW+Gk+OP9jc2i7nzek1ENKKOTWwYXa0FBeaS2
-         DbyxcM7AIaKGFf0haYiX/biPZcdBTp+ORTfmCYyQeu6tZ/ZRziQBgp+tW1leWRQwo4DQ
-         jhZ5azqVFMc2dtaPNro2vcAwaYNuSRvBE5cHnN/PL+CGBDY3eQHvu2UDa7KqwFLAvk0A
-         IsXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iDGNVxNBG5DnP2O72JRwhZ79bFRdgRafb7U2+dHA6NI=;
-        b=jKZxyLu2ifbEaT30OSbQbk3H9iFyJ3hLNu4qAWV5WZ/bX2AXNFbM+UH1Bugw32sS0c
-         IVA++Ve1BOYqxhJGGzM2AAcfV7OuY7ylE4aUOownVZwsHkwUa8Fn0TAywMSZhJ6TnntO
-         ajTjAsZ98NeTYTYENc8sr76Gpb+Z2hH/HBjlkrbkKCtYtFTnzAuHQrHjex6t6g0VKv0s
-         DpbDkU79cyz49KuYgngYEbN+bkZgqvD8KIew5Ib0F8YgFvgnt4vJgiSrfUscCE6iTBPk
-         TClLEV5TPWMhoR2BT4ik28YA4ngBM+DPZBHn5k96RKcPtqe1YTHV3yCHFjJczZzNKQQo
-         26Gg==
-X-Gm-Message-State: ACrzQf2qtFoZn5PHkDzqnRF9O1+ad/I8eHAiU8eI4PHQ5vk4TUezHBMi
-        L3nDn/UYupNbQmuCnxWCHBID2A==
-X-Google-Smtp-Source: AMsMyM6SH+STgAR7RMIyUn6RoKLYTwg+3oKL+R4KBRsq3rVx6bqFAsr50CDvjDox3CEvXE5KgDFlmA==
-X-Received: by 2002:a17:907:c78e:b0:78d:138a:ec4b with SMTP id tz14-20020a170907c78e00b0078d138aec4bmr11231917ejc.381.1666277586545;
-        Thu, 20 Oct 2022 07:53:06 -0700 (PDT)
-Received: from otso.. (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id fk26-20020a056402399a00b0044dbecdcd29sm12088479edb.12.2022.10.20.07.53.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Oct 2022 07:53:06 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
+        Fri, 21 Oct 2022 10:23:30 -0400
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CA0B27CFE6;
+        Fri, 21 Oct 2022 07:23:29 -0700 (PDT)
+Date:   Fri, 21 Oct 2022 14:23:18 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1666362203; x=1666621403;
+        bh=5H/7a/xKSWSzrueIagX7V6sArKHXi7j+GtA083jFCVs=;
+        h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+         Subject:Reply-To:Feedback-ID:Message-ID;
+        b=zYZAk67kmlx5KRet5AghQNAhqidx5BqnIQH9eD/0MHQY3qAl8xuoUkm58PhuIB7az
+         K6sG8UcHjE85JCZ2t4YlnXnFwjjCqh3evMajgwz0303vb/xEbKN1rJ4oKZ5ApZP/l1
+         CUtAd3fRM5OQzVup3VzP+rRuG0ceK3GcRFglD/KKsBZF1sEwW3AOcxeA5eLkOkQ2kc
+         nq3B9lFFR5l4bUzq1P+2FBiIODJkKRtkVWRpv99AcsICA7ifq8xSwUZvPtLwKs6Ksc
+         g6VfyrHdUgRj0uUfomrbiJI5aGot1qkMx0w+JQkuNjQVd1Q7YjI2wbUpKIOGfmWINW
+         SHXavAQEsFifA==
+To:     Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+From:   Harry Austen <hpausten@protonmail.com>
+Cc:     Harry Austen <hpausten@protonmail.com>,
+        Yassine Oudjana <y.oudjana@protonmail.com>,
         Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        David Collins <collinsd@codeaurora.org>,
-        Guru Das Srinagesh <gurus@codeaurora.org>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] thermal/drivers/qcom/temp-alarm: fix inaccurate warning for gen2
-Date:   Thu, 20 Oct 2022 16:52:37 +0200
-Message-Id: <20221020145237.942146-1-luca.weiss@fairphone.com>
-X-Mailer: git-send-email 2.38.1
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: [PATCH 0/4] Initial OnePlus 3(T) Support
+Message-ID: <20221021142242.129276-1-hpausten@protonmail.com>
+Feedback-ID: 53116287:user:proton
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On gen2 chips the stage2 threshold is not 140 degC but 125 degC.
+This patch series adds support for the OnePlus 3 and OnePlus 3T mobile
+phones based on the Qualcomm MSM8996 SoC. Currently includes support for
+the following:
 
-Make the warning message clearer by using this variable and also by
-including the temperature that was checked for.
+- UART console via PCB test pads
+- Qualcomm Atheros QCA6174 WiFi and Bluetooth
+- NXP TFA9890 Speaker Amplifier
+- TI BQ27541 Battery Fuel Gauge
+- Synaptics RMI4 Touchscreen
+- UFS Storage
 
-Fixes: aa92b3310c55 ("thermal/drivers/qcom-spmi-temp-alarm: Add support for GEN2 rev 1 PMIC peripherals")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/thermal/qcom/qcom-spmi-temp-alarm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Harry Austen (4):
+  arm64: dts: qcom: msm8996: standardize blsp indexing
+  arm64: boot: dts: msm8996: add blsp1_i2c6 node
+  dt-bindings: arm: qcom: add oneplus3(t) devices
+  arm64: dts: qcom: msm8996: add support for oneplus3(t)
 
-diff --git a/drivers/thermal/qcom/qcom-spmi-temp-alarm.c b/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
-index be785ab37e53..ad84978109e6 100644
---- a/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
-+++ b/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
-@@ -252,7 +252,8 @@ static int qpnp_tm_update_critical_trip_temp(struct qpnp_tm_chip *chip,
- 			disable_s2_shutdown = true;
- 		else
- 			dev_warn(chip->dev,
--				 "No ADC is configured and critical temperature is above the maximum stage 2 threshold of 140 C! Configuring stage 2 shutdown at 140 C.\n");
-+				 "No ADC is configured and critical temperature %d mC is above the maximum stage 2 threshold of %ld mC! Configuring stage 2 shutdown at %ld mC.\n",
-+				 temp, stage2_threshold_max, stage2_threshold_max);
- 	}
- 
- skip:
--- 
+ .../devicetree/bindings/arm/qcom.yaml         |   2 +
+ arch/arm64/boot/dts/qcom/Makefile             |   2 +
+ .../boot/dts/qcom/msm8996-oneplus-common.dtsi | 794 ++++++++++++++++++
+ arch/arm64/boot/dts/qcom/msm8996-oneplus3.dts |  44 +
+ .../arm64/boot/dts/qcom/msm8996-oneplus3t.dts |  45 +
+ arch/arm64/boot/dts/qcom/msm8996.dtsi         |  49 +-
+ 6 files changed, 927 insertions(+), 9 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8996-oneplus-common.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8996-oneplus3.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8996-oneplus3t.dts
+
+--
 2.38.1
+
 
