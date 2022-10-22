@@ -2,326 +2,235 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D46CC433FE
-	for <phone-devel@archiver.kernel.org>; Fri, 21 Oct 2022 14:44:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC841C433FE
+	for <phone-devel@archiver.kernel.org>; Sat, 22 Oct 2022 11:16:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbiJUOoK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 21 Oct 2022 10:44:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32890 "EHLO
+        id S230310AbiJVLQB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 22 Oct 2022 07:16:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230491AbiJUOoH (ORCPT
+        with ESMTP id S230308AbiJVLPn (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 21 Oct 2022 10:44:07 -0400
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77F8327FE9C
-        for <phone-devel@vger.kernel.org>; Fri, 21 Oct 2022 07:44:04 -0700 (PDT)
-Received: by mail-qv1-xf29.google.com with SMTP id x15so1967290qvp.1
-        for <phone-devel@vger.kernel.org>; Fri, 21 Oct 2022 07:44:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=L9E2Nh9JCh9Weq2el7EDwv+5jLkQ9cN8xA7BcV160IM=;
-        b=iSxVe63o7DZnZf0Yl4Vy6Gax+8aiMbkSTuAWZrlgTh8YnxJWfjvAfcOnai4R16sOw6
-         CeNXsJ49U5J2O3x1/bk4Ay2kLKMbQyM0b0+rmlv/Kx566DH1it1xnPE8/3e4/C3AF2SI
-         RpT5hXsfBQfzpN5B6riZ0QzU11Pg77m67noSqGmOMEC5pAJou/dbc1U0iks3dKnGUUnF
-         s/hGN66qPSrNVpoCZWxdNjSslkIO5j/v7wDJbARv9SZh7LRMRf/+d3qJvd9vCW+3xSKe
-         do6SVynmKbR6rGLwht97gAuu/fq+A0LfcstnOBIJ2PttNGS8Xnn/rr7MISgGefEdLpjU
-         SN/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L9E2Nh9JCh9Weq2el7EDwv+5jLkQ9cN8xA7BcV160IM=;
-        b=UmwZmFh7n8IjeHtIDTzRNr8l6Gcfu4S/Z6ojFTIob1tefMBqW4tEM624GzxS6xaxby
-         A/39mG8/k57g23XtdzNMpKEflXiHVSzeUQeagW1ZDiJDFtUQp6Bo1ozbCzpUx9cHdUZC
-         x9i1dq98ZskNIBTTJ8mAMdb582VLbAOF9+yFoz2bJDQOK2az27MMxIUbUbpBJINSXffi
-         HmISlda6tsBNG7MD9i5Jud88rNRAj6HL/uLDtWJ+6zvFIXW6dxUKXZEF+bbstuZM5rhr
-         +W0IQQnlRIKhBYSELlFC/Okl9gF+D32/E+gxpWaSjD5QyQP/I94kEtMDHCHevV87XwFZ
-         1jvw==
-X-Gm-Message-State: ACrzQf1uC8LT8NCNU0jkx5B9RStmvoCqSoXZnU0/zjugcGqbfaHvpifH
-        inSQoS+J3AaOkWe00jbxHpYogA==
-X-Google-Smtp-Source: AMsMyM6L5F1z4Y8HkPth9is5INygwhuEOB8jOMMouzgClIT2ll0hlQx4rDa9KzC5W4+khrgkuqWhKA==
-X-Received: by 2002:a05:6214:508a:b0:4b4:13bc:ae8d with SMTP id kk10-20020a056214508a00b004b413bcae8dmr16905337qvb.87.1666363443197;
-        Fri, 21 Oct 2022 07:44:03 -0700 (PDT)
-Received: from [192.168.10.124] (pool-72-83-177-149.washdc.east.verizon.net. [72.83.177.149])
-        by smtp.gmail.com with ESMTPSA id j12-20020a05620a288c00b006b640efe6dasm9710675qkp.132.2022.10.21.07.44.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Oct 2022 07:44:02 -0700 (PDT)
-Message-ID: <78a117d5-b4be-8389-c909-9f8525b151d8@linaro.org>
-Date:   Fri, 21 Oct 2022 10:44:01 -0400
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH 4/4] arm64: dts: qcom: msm8996: add support for
- oneplus3(t)
-Content-Language: en-US
-To:     Harry Austen <hpausten@protonmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Sat, 22 Oct 2022 07:15:43 -0400
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B521F034D;
+        Sat, 22 Oct 2022 03:39:02 -0700 (PDT)
+Date:   Sat, 22 Oct 2022 10:38:53 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1666435138; x=1666694338;
+        bh=FSMHblkq3aMPppIFi+ouRLxXT2wvIHP2QO5iAeoXj84=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID;
+        b=tLwhdNXIkkoB5XezU8PTKELoe/kZWk5P+9jMdvXrhE6QvhkfHUg6mGU02qv6myBdg
+         W8sWPWFqHoTOcmDCxUK5HAS0MWOfZCNTvUxiMUH0i81dsuh8Ce5B8Xc9PkH6O2SjaN
+         zGoH9NkLBdgLAMFSrcACLfaLWn2n7R1ISKEpVHEr+PnfD4euK9HpBqB4KK7/GLk3p0
+         oZyCuJ4bfbdExdb/cTVlsAw2Am5EVhBLsCXe0cqF9m2smibJC0C3p+/BswGFQMQrKy
+         8PWZqcLIXFOqRjgbtAN5aSuiHR7MCHlGouB/LR5orc75UbwqDMmBnODyBvEztnt4Te
+         W/A6bnd4k2r8w==
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From:   Harry Austen <hpausten@protonmail.com>
+Cc:     Bjorn Andersson <andersson@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Yassine Oudjana <y.oudjana@protonmail.com>,
         Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20221021142242.129276-1-hpausten@protonmail.com>
- <20221021142242.129276-5-hpausten@protonmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221021142242.129276-5-hpausten@protonmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 4/4] arm64: dts: qcom: msm8996: add support for oneplus3(t)
+Message-ID: <wqHFrd3UmaUsRa21931VRDSHnIiusqzv3AIu7nynQkRhvAloHPmNaDvpCCGkdZoeKtZBDI_Rl9As8ehNW4EwpN47yhFJnY3-6hQkurhWy48=@protonmail.com>
+In-Reply-To: <78a117d5-b4be-8389-c909-9f8525b151d8@linaro.org>
+References: <20221021142242.129276-1-hpausten@protonmail.com> <20221021142242.129276-5-hpausten@protonmail.com> <78a117d5-b4be-8389-c909-9f8525b151d8@linaro.org>
+Feedback-ID: 53116287:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 21/10/2022 10:24, Harry Austen wrote:
-> Add initial support for OnePlus 3 and 3T mobile phones. They are based
-> on the MSM8996 SoC.
-> 
-> Co-developed-by: Yassine Oudjana <y.oudjana@protonmail.com>
-> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-> Signed-off-by: Harry Austen <hpausten@protonmail.com>
-> ---
->  arch/arm64/boot/dts/qcom/Makefile             |   2 +
->  .../boot/dts/qcom/msm8996-oneplus-common.dtsi | 794 ++++++++++++++++++
->  arch/arm64/boot/dts/qcom/msm8996-oneplus3.dts |  44 +
->  .../arm64/boot/dts/qcom/msm8996-oneplus3t.dts |  45 +
->  4 files changed, 885 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/qcom/msm8996-oneplus-common.dtsi
->  create mode 100644 arch/arm64/boot/dts/qcom/msm8996-oneplus3.dts
->  create mode 100644 arch/arm64/boot/dts/qcom/msm8996-oneplus3t.dts
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-> index d7669a7cee9f..0380ac4fb196 100644
-> --- a/arch/arm64/boot/dts/qcom/Makefile
-> +++ b/arch/arm64/boot/dts/qcom/Makefile
-> @@ -33,6 +33,8 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-satsuki.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-sumire.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= msm8994-sony-xperia-kitakami-suzuran.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= msm8996-mtp.dtb
-> +dtb-$(CONFIG_ARCH_QCOM)	+= msm8996-oneplus3.dtb
-> +dtb-$(CONFIG_ARCH_QCOM)	+= msm8996-oneplus3t.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= msm8996-sony-xperia-tone-dora.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= msm8996-sony-xperia-tone-kagura.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= msm8996-sony-xperia-tone-keyaki.dtb
-> diff --git a/arch/arm64/boot/dts/qcom/msm8996-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/msm8996-oneplus-common.dtsi
-> new file mode 100644
-> index 000000000000..41eb6f28e9a4
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/msm8996-oneplus-common.dtsi
-> @@ -0,0 +1,794 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
+On Friday, October 21st, 2022 at 3:44 PM, Krzysztof Kozlowski <krzysztof.ko=
+zlowski@linaro.org> wrote:
+[...]
+> > +++ b/arch/arm64/boot/dts/qcom/msm8996-oneplus-common.dtsi
+> > @@ -0,0 +1,794 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+>=20
+>=20
+> Are you sure this is GPL-2.0 only? Didn't you derive it from downstream
+> OnePlus DTS?
 
-Are you sure this is GPL-2.0 only? Didn't you derive it from downstream
-OnePlus DTS?
+Yes development of these devicetrees was aided by downstream DTS, all of wh=
+ich appear to have
+GPL-2.0 only headers, e.g. see msm8996-mtp.dts [1].
 
-> +/*
-> + * Copyright (c) 2022, The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#include "msm8996.dtsi"
-> +#include "pm8994.dtsi"
-> +#include "pmi8994.dtsi"
-> +#include "pmi8996.dtsi"
-> +#include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
-> +#include <dt-bindings/sound/qcom,q6afe.h>
-> +#include <dt-bindings/sound/qcom,q6asm.h>
-> +#include <dt-bindings/sound/qcom,wcd9335.h>
-> +
-> +/ {
-> +	aliases {
-> +		serial0 = &blsp1_uart2;
-> +		serial1 = &blsp2_uart2;
-> +	};
-> +
-> +	battery: battery {
-> +		compatible = "simple-battery";
-> +
-> +		constant-charge-current-max-microamp = <3000000>;
-> +		voltage-min-design-microvolt = <3400000>;
-> +	};
-> +
-> +	chosen {
-> +		stdout-path = "serial1:115200n8";
-> +	};
-> +
-> +	clocks {
-> +		compatible = "simple-bus";
+>=20
+> > +/*
+> > + * Copyright (c) 2022, The Linux Foundation. All rights reserved.
+> > + */
+> > +
+> > +#include "msm8996.dtsi"
+> > +#include "pm8994.dtsi"
+> > +#include "pmi8994.dtsi"
+> > +#include "pmi8996.dtsi"
+> > +#include <dt-bindings/gpio/gpio.h>
+> > +#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+> > +#include <dt-bindings/sound/qcom,q6afe.h>
+> > +#include <dt-bindings/sound/qcom,q6asm.h>
+> > +#include <dt-bindings/sound/qcom,wcd9335.h>
+> > +
+> > +/ {
+> > + aliases {
+> > + serial0 =3D &blsp1_uart2;
+> > + serial1 =3D &blsp2_uart2;
+> > + };
+> > +
+> > + battery: battery {
+> > + compatible =3D "simple-battery";
+> > +
+> > + constant-charge-current-max-microamp =3D <3000000>;
+> > + voltage-min-design-microvolt =3D <3400000>;
+> > + };
+> > +
+> > + chosen {
+> > + stdout-path =3D "serial1:115200n8";
+> > + };
+> > +
+> > + clocks {
+> > + compatible =3D "simple-bus";
+>=20
+>=20
+> This is not a bus of clocks...
 
-This is not a bus of clocks...
+Will remove in v2.
 
-> +
-> +		divclk4: divclk4 {
+>=20
+> > +
+> > + divclk4: divclk4 {
+>=20
+>=20
+> Use common suffix or prefix for node names and generic name.
+>=20
+> This clock is anyway a bit weird - same frequency as sleep clk.
+>=20
+> > + compatible =3D "fixed-clock";
+> > + pinctrl-names =3D "default";
+> > + pinctrl-0 =3D <&divclk4_pin_a>;
+>=20
+>=20
+> This is a PMIC pin? So is it a PMIC clk?
 
-Use common suffix or prefix for node names and generic name.
+These two clocks are described in the same way as other current MSM8996 DTs=
+ (e.g. apq8096-db820c.dts
+and msm8996-xiaomi-common.dtsi). Happy to change if you think there is a be=
+tter way to describe them?
+Yes, these clocks originate from within the PM8994 PMIC as per the datashee=
+t [2]. GPIO_15 is
+configured with the DIV_CLK1 alt function and routes to the MCLK pin of the=
+ WCD9225 audio codec.
+GPIO_18 is configured with the SLEEP_CLK5 alt function and provides the SUS=
+CLK_32KHZ input to the
+Atheros QCA6174 WiFi/BT chip.
 
-This clock is anyway a bit weird - same frequency as sleep clk.
+>=20
+> > + #clock-cells =3D <0>;
+> > + clock-frequency =3D <32768>;
+> > + clock-output-names =3D "divclk4";
+> > + };
+> > +
+> > + div1_mclk: divclk1 {
+> > + compatible =3D "gpio-gate-clock";
+> > + pinctrl-names =3D "default";
+> > + pinctrl-0 =3D <&audio_mclk>;
+> > + #clock-cells =3D <0>;
+> > + clocks =3D <&rpmcc RPM_SMD_DIV_CLK1>;
+> > + enable-gpios =3D <&pm8994_gpios 15 GPIO_ACTIVE_HIGH>;
+> > + };
+> > + };
+> > +
+> > + reserved-memory {
+> > + ramoops@ac000000 {
+> > + compatible =3D "ramoops";
+> > + reg =3D <0 0xac000000 0 0x200000>;
+> > + record-size =3D <0x20000>;
+> > + console-size =3D <0x100000>;
+> > + pmsg-size =3D <0x80000>;
+> > + };
+> > + };
+> > +
+> > + vph_pwr: vph-pwr-regulator {
+> > + compatible =3D "regulator-fixed";
+> > + regulator-name =3D "vph_pwr";
+> > + regulator-min-microvolt =3D <3700000>;
+> > + regulator-max-microvolt =3D <3700000>;
+> > + regulator-always-on;
+> > + regulator-boot-on;
+> > + };
+> > +
+> > + wlan_en: wlan-en-1-8v {
+>=20
+>=20
+> Use common suffix or prefix. You already used "-regulator" suffix before.
 
+Will fix in v2.
 
-> +			compatible = "fixed-clock";
-> +			pinctrl-names = "default";
-> +			pinctrl-0 = <&divclk4_pin_a>;
+>=20
+> > + compatible =3D "regulator-fixed";
+> > + pinctrl-names =3D "default";
+> > + pinctrl-0 =3D <&wlan_en_gpios>;
+> > + regulator-name =3D "wlan-en-regulator";
+> > + regulator-min-microvolt =3D <1800000>;
+> > + regulator-max-microvolt =3D <1800000>;
+> > +
+> > + gpio =3D <&pm8994_gpios 8 GPIO_ACTIVE_HIGH>;
+> > +
+> > + /* WLAN card specific delay */
+> > + startup-delay-us =3D <70000>;
+> > + enable-active-high;
+> > + };
+> > +};
+> > +
+> > +&adsp_pil {
+> > + status =3D "okay";
+> > +};
+> > +
+> > +&blsp1_i2c3 {
+> > + status =3D "okay";
+> > +
+> > + tfa9890_amp: audio-codec@36 {
+> > + compatible =3D "nxp,tfa9890";
+> > + reg =3D <0x36>;
+> > + #sound-dai-cells =3D <0>;
+> > + };
+> > +};
+> > +
+> > +&blsp1_i2c6 {
+> > + status =3D "okay";
+> > +
+> > + bq27541: fuel-gauge@55 {
+> > + compatible =3D "ti,bq27541";
+> > + reg =3D <0x55>;
+> > + };
+> > +};
+> > +
+> > +&blsp1_uart2 {
+> > + label =3D "BT-UART";
+> > + status =3D "okay";
+>=20
+>=20
+> Status is a last property.
 
-This is a PMIC pin? So is it a PMIC clk?
+Will fix all of these in v2.
 
-> +			#clock-cells = <0>;
-> +			clock-frequency = <32768>;
-> +			clock-output-names = "divclk4";
-> +		};
-> +
-> +		div1_mclk: divclk1 {
-> +			compatible = "gpio-gate-clock";
-> +			pinctrl-names = "default";
-> +			pinctrl-0 = <&audio_mclk>;
-> +			#clock-cells = <0>;
-> +			clocks = <&rpmcc RPM_SMD_DIV_CLK1>;
-> +			enable-gpios = <&pm8994_gpios 15 GPIO_ACTIVE_HIGH>;
-> +		};
-> +	};
-> +
-> +	reserved-memory {
-> +		ramoops@ac000000 {
-> +			compatible = "ramoops";
-> +			reg = <0 0xac000000 0 0x200000>;
-> +			record-size = <0x20000>;
-> +			console-size = <0x100000>;
-> +			pmsg-size = <0x80000>;
-> +		};
-> +	};
-> +
-> +	vph_pwr: vph-pwr-regulator {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "vph_pwr";
-> +		regulator-min-microvolt = <3700000>;
-> +		regulator-max-microvolt = <3700000>;
-> +		regulator-always-on;
-> +		regulator-boot-on;
-> +	};
-> +
-> +	wlan_en: wlan-en-1-8v {
+>=20
+> Best regards,
+> Krzysztof
 
-Use common suffix or prefix. You already used "-regulator" suffix before.
+Thanks for the review!
+Harry
 
-> +		compatible = "regulator-fixed";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&wlan_en_gpios>;
-> +		regulator-name = "wlan-en-regulator";
-> +		regulator-min-microvolt = <1800000>;
-> +		regulator-max-microvolt = <1800000>;
-> +
-> +		gpio = <&pm8994_gpios 8 GPIO_ACTIVE_HIGH>;
-> +
-> +		/* WLAN card specific delay */
-> +		startup-delay-us = <70000>;
-> +		enable-active-high;
-> +	};
-> +};
-> +
-> +&adsp_pil {
-> +	status = "okay";
-> +};
-> +
-> +&blsp1_i2c3 {
-> +	status = "okay";
-> +
-> +	tfa9890_amp: audio-codec@36 {
-> +		compatible = "nxp,tfa9890";
-> +		reg = <0x36>;
-> +		#sound-dai-cells = <0>;
-> +	};
-> +};
-> +
-> +&blsp1_i2c6 {
-> +	status = "okay";
-> +
-> +	bq27541: fuel-gauge@55 {
-> +		compatible = "ti,bq27541";
-> +		reg = <0x55>;
-> +	};
-> +};
-> +
-> +&blsp1_uart2 {
-> +	label = "BT-UART";
-> +	status = "okay";
-
-Status is a last property.
-
-> +	uart-has-rtscts;
-> +
-> +	bluetooth {
-> +		compatible = "qcom,qca6174-bt";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&bt_en_gpios>;
-> +		enable-gpios = <&pm8994_gpios 19 GPIO_ACTIVE_HIGH>;
-> +		clocks = <&divclk4>;
-> +	};
-> +};
-> +
-> +&blsp2_i2c1 {
-> +	status = "okay";
-> +};
-> +
-> +&blsp2_i2c6 {
-> +	status = "okay";
-> +
-> +	synaptics_rmi4_i2c: touchscreen@20 {
-> +		compatible = "syna,rmi4-i2c";
-> +		reg = <0x20>;
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		interrupts-extended = <&tlmm 125 IRQ_TYPE_EDGE_FALLING>;
-> +		pinctrl-names = "default", "sleep";
-> +		pinctrl-0 = <&touch_default>;
-> +		pinctrl-1 = <&touch_suspend>;
-> +		vdd-supply = <&vreg_l22a_3p0>;
-> +		vio-supply = <&vreg_s4a_1p8>;
-> +		syna,reset-delay-ms = <200>;
-> +		syna,startup-delay-ms = <200>;
-> +
-> +		rmi4-f01@1 {
-> +			reg = <0x1>;
-> +			syna,nosleep-mode = <1>;
-> +		};
-> +
-> +		rmi4-f12@12 {
-> +			reg = <0x12>;
-> +			syna,sensor-type = <1>;
-> +			touchscreen-x-mm = <68>;
-> +			touchscreen-y-mm = <122>;
-> +		};
-> +	};
-> +};
-> +
-> +&blsp2_uart2 {
-> +	status = "okay";
-
-Status is last.
-
-> +	pinctrl-names = "default", "sleep";
-> +	pinctrl-0 = <&blsp2_uart2_2pins_default>;
-> +	pinctrl-1 = <&blsp2_uart2_2pins_sleep>;
-> +};
-> +
-> +&camss {
-> +	vdda-supply = <&vreg_l2a_1p25>;
-> +};
-> +
-> +&dsi0 {
-> +	status = "okay";
-
-And so on...
-
-> +
-> +	vdda-supply = <&vreg_l2a_1p25>;
-> +	vcca-supply = <&vreg_l22a_3p0>;
-> +};
-
-
-Best regards,
-Krzysztof
-
+[1]: https://github.com/OnePlusOSS/android_kernel_oneplus_msm8996/blob/onep=
+lus3/6.0.1/arch/arm/boot/dts/qcom/msm8996-mtp.dtsi
+[2]: https://developer.qualcomm.com/qfile/35466/lm80-p2751-5_c.pdf
