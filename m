@@ -2,146 +2,171 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF237FA3743
-	for <phone-devel@archiver.kernel.org>; Fri, 28 Oct 2022 07:54:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4A57C38A02
+	for <phone-devel@archiver.kernel.org>; Fri, 28 Oct 2022 18:33:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229893AbiJ1HyU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 28 Oct 2022 03:54:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49820 "EHLO
+        id S229765AbiJ1Sdl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 28 Oct 2022 14:33:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229940AbiJ1HyT (ORCPT
+        with ESMTP id S229491AbiJ1Sdl (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 28 Oct 2022 03:54:19 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9BA1C0710
-        for <phone-devel@vger.kernel.org>; Fri, 28 Oct 2022 00:54:17 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id x2so6741817edd.2
-        for <phone-devel@vger.kernel.org>; Fri, 28 Oct 2022 00:54:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hp4/jQvbIENnP1QtwrwaDwXz/OkxdZKv0tvGrojWyT4=;
-        b=MjpM9MZ7KQ626nARv3VQkkMBWuqaYLA6tkr1hOd6GZ6IAtXB4zudJ4/iuy9hAz458Y
-         tEI167n/yqixhstwbRoAcgOvgZ5kKQ7iJf3Zv0yuL/tB/p2uCBMZls68h18JOHYPQV8X
-         2sqqBopQf1M93sNmQIK1oOAk+fi8GYwIigwZYoe3T7I397UzonpZPRaF0MD/XL3AGTFa
-         HfzoW2auUjhvGYQba1WKljPugn7/u5PuByl5ff0q4tRocNkS13rRrma6G1MBo9oCnTsH
-         qajoTRk2kFwVfiibOtu9V/a7RWdvfsr2rbIhVJ8VSXt3JwuMYSZw7Jtz/RPeRZQ9hJku
-         w/0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hp4/jQvbIENnP1QtwrwaDwXz/OkxdZKv0tvGrojWyT4=;
-        b=5D9B980PjwBICbelXUuTjtMuFI3sjrAa0DG4EjQWfKxpQpjil22D1jcGP2rPhIRqsw
-         BHnvYRH1r7TDwOX/afCuJW3UF9Wek2zFPq/wLHqNHWBErYYeXfu5va0QT+jFw7xMBU2i
-         CxQNSNRkx5cCMkGN/gMrs1INu0GNS04IyLGVDxNUv+bKMuEVtRFNrS3rI6EbTG2E1hH1
-         wuRPtQQGPcXMyABWZJZ+qzxFc7aBEp2K8hVEGRMt/Sgn3YCEub6ZXHb8oUotad1sbkPM
-         jeUqAXD36ZmLF/1UfwU9MlEOBdU5pRXRfgt6killcqZfC7zSyoIQp3G8/VoEUrBTGHhs
-         +oyw==
-X-Gm-Message-State: ACrzQf3E/bxov2UPJhBCLAlXXOON6fHf2EGc1iXK8GiWcXD/fnnF+ObM
-        zAiA6xCiSc4a+TE2LbIxl8cuYQ==
-X-Google-Smtp-Source: AMsMyM7THOtjXHLgJ6CYUAmJKnXAQalP7vJeG16re2V6aCrp9nYdbkbV3EHye5aN5aatiizbQvx7Eg==
-X-Received: by 2002:a05:6402:414f:b0:456:c2c1:23ec with SMTP id x15-20020a056402414f00b00456c2c123ecmr50812155eda.420.1666943656207;
-        Fri, 28 Oct 2022 00:54:16 -0700 (PDT)
-Received: from otso.. (31-151-115-246.dynamic.upc.nl. [31.151.115.246])
-        by smtp.gmail.com with ESMTPSA id v8-20020a170906b00800b0078dce9984afsm1776009ejy.220.2022.10.28.00.54.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Oct 2022 00:54:15 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] arm64: dts: qcom: pm6150l: add temp sensor and thermal zone config
-Date:   Fri, 28 Oct 2022 09:54:05 +0200
-Message-Id: <20221028075405.124809-2-luca.weiss@fairphone.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221028075405.124809-1-luca.weiss@fairphone.com>
-References: <20221028075405.124809-1-luca.weiss@fairphone.com>
+        Fri, 28 Oct 2022 14:33:41 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72BB5229E6A;
+        Fri, 28 Oct 2022 11:33:40 -0700 (PDT)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29SAsqh1016745;
+        Fri, 28 Oct 2022 18:33:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=D0lmQtYsP2sAfYk9mMKID7PcUZDPOUW3YzJiwXK2JzE=;
+ b=G7xuzpIe+o+RtP1kNlaXmiWnRzm1/SbP439CrEd9o6micKe5IyTzdOMmwDrOW2L7+EC5
+ 8uxyv2GxmhbEq7RAUXhl5DUo1xeUaCkB/5RpExT3UGkAAkhQZ8ZT2QSL+fUjfSy06ZMT
+ vTczZSXd9Vn0WCtaRp3a3z0gGKf+FV63X3EjulCOR0dLXXCEX705jDYSqycMjZacWMSM
+ P8ynIfzGyoX0Kap1GtHZZZdfahLsNDQ6JdiJRdarJZ2UraQ84CL9ZPO8cpiQunKHATck
+ IdYuALWyP0hHhap6Gpeh5N1QInKd0WXevtplitOI1eq16jc1K9bXi4rwxHbDIU7DBlcz 2w== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kfw05c6t3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 28 Oct 2022 18:33:27 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 29SIXQ98019269
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 28 Oct 2022 18:33:26 GMT
+Received: from [10.38.246.117] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Fri, 28 Oct
+ 2022 11:33:23 -0700
+Message-ID: <99744fda-a3b8-f97a-294c-78e512d865bc@quicinc.com>
+Date:   Fri, 28 Oct 2022 11:33:21 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [PATCH v4 00/10] drm/msm: Fix math issues in MSM DSC
+ implementation
+Content-Language: en-US
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        <phone-devel@vger.kernel.org>, Rob Clark <robdclark@gmail.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>
+CC:     <~postmarketos/upstreaming@lists.sr.ht>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Douglas Anderson <dianders@chromium.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <freedreno@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+References: <20221026182824.876933-1-marijn.suijten@somainline.org>
+From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <20221026182824.876933-1-marijn.suijten@somainline.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: mHQt4GtM411GT24KVna7PtTSVR7uxgxe
+X-Proofpoint-ORIG-GUID: mHQt4GtM411GT24KVna7PtTSVR7uxgxe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-28_10,2022-10-27_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999 mlxscore=0
+ priorityscore=1501 adultscore=0 impostorscore=0 clxscore=1011
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2210280116
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add temp-alarm device tree node and a default configuration for the
-corresponding thermal zone for this PMIC. Temperatures are based on
-downstream values, except for trip2 where 125°C is used instead of 145°C
-due to limitations without a configured ADC.
+Hi Marijn
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
-Changes in v2:
-* new patch, very similar to pm6350 one
+On 10/26/2022 11:28 AM, Marijn Suijten wrote:
+> Various removals of complex yet unnecessary math, fixing all uses of
+> drm_dsc_config::bits_per_pixel to deal with the fact that this field
+> includes four fractional bits, and finally making sure that
+> range_bpg_offset contains values 6-bits wide to prevent overflows in
+> drm_dsc_pps_payload_pack().
+> 
+> Altogether this series is responsible for solving _all_ Display Stream
+> Compression issues and artifacts on the Sony Tama (sdm845) Akatsuki
+> smartphone (2880x1440p).
+> 
+> Changes since v3:
+> - Swap patch 7 and 8 to make sure msm_host is available inside
+>    dsi_populate_dsc_params();
+> - Reword patch 6 (Migrate to drm_dsc_compute_rc_parameters()) to more
+>    clearly explain why the FIXME wasn't solved initially, but why it can
+>    (and should!) be resolved now.
+> 
+> v3: https://lore.kernel.org/linux-arm-msm/20221009184824.457416-1-marijn.suijten@somainline.org/T/#u
+> 
+> Changes since v2:
+> - Generalize mux_word_size setting depending on bits_per_component;
+> - Migrate DSI's DSC calculations to drm_dsc_compute_rc_parameters(),
+>    implicitly addressing existing math issues;
+> - Disallow any bits_per_component other than 8, until hardcoded values
+>    are updated and tested to support such cases.
+> 
+> v2: https://lore.kernel.org/linux-arm-msm/20221005181657.784375-1-marijn.suijten@somainline.org/T/#u
+> 
+> Changes since v1:
+> 
+> - Propagate r-b's, except (obviously) in patches that were (heavily)
+>    modified;
+> - Remove accidental debug code in dsi_cmd_dma_add;
+> - Move Range BPG Offset masking out of DCS PPS packing, back into the
+>    DSI driver when it is assigned to drm_dsc_config (this series is now
+>    strictly focusing on drm/msm again);
+> - Replace modulo-check resulting in conditional increment with
+>    DIV_ROUND_UP;
+> - Remove repeated calculation of slice_chunk_size;
+> - Use u16 instead of int when handling bits_per_pixel;
+> - Use DRM_DEV_ERROR instead of pr_err in DSI code;
+> - Also remove redundant target_bpp_x16 variable.
+> 
+> v1: https://lore.kernel.org/linux-arm-msm/20221001190807.358691-1-marijn.suijten@somainline.org/T/#u
+> 
+> Marijn Suijten (10):
+>    drm/msm/dsi: Remove useless math in DSC calculations
+>    drm/msm/dsi: Remove repeated calculation of slice_per_intf
+>    drm/msm/dsi: Use DIV_ROUND_UP instead of conditional increment on
+>      modulo
+>    drm/msm/dsi: Reuse earlier computed dsc->slice_chunk_size
+>    drm/msm/dsi: Appropriately set dsc->mux_word_size based on bpc
+>    drm/msm/dsi: Migrate to drm_dsc_compute_rc_parameters()
+>    drm/msm/dsi: Account for DSC's bits_per_pixel having 4 fractional bits
+>    drm/msm/dsi: Disallow 8 BPC DSC configuration for alternative BPC
+>      values
+>    drm/msm/dpu1: Account for DSC's bits_per_pixel having 4 fractional
+>      bits
+>    drm/msm/dsi: Prevent signed BPG offsets from bleeding into adjacent
+>      bits
+> 
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c |  11 +-
+>   drivers/gpu/drm/msm/dsi/dsi_host.c         | 121 ++++++---------------
+>   2 files changed, 37 insertions(+), 95 deletions(-)
+> 
+> --
+> 2.38.1
+> 
 
- arch/arm64/boot/dts/qcom/pm6150l.dtsi | 38 +++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+To keep the -fixes cycle to have only critical fixes (others are 
+important too but are cleanups), I was thinking of absorbing patches 
+7,8,9 and 10 alone in the -fixes cycle and for patches 1-6, will go 
+through the 6.2 push.
 
-diff --git a/arch/arm64/boot/dts/qcom/pm6150l.dtsi b/arch/arm64/boot/dts/qcom/pm6150l.dtsi
-index f02c223ef448..3f7e047cfc06 100644
---- a/arch/arm64/boot/dts/qcom/pm6150l.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pm6150l.dtsi
-@@ -5,6 +5,37 @@
- #include <dt-bindings/interrupt-controller/irq.h>
- #include <dt-bindings/spmi/spmi.h>
- 
-+/ {
-+	thermal-zones {
-+		pm6150l-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+
-+			thermal-sensors = <&pm6150l_temp>;
-+
-+			trips {
-+				trip0 {
-+					temperature = <95000>;
-+					hysteresis = <0>;
-+					type = "passive";
-+				};
-+
-+				trip1 {
-+					temperature = <115000>;
-+					hysteresis = <0>;
-+					type = "hot";
-+				};
-+
-+				trip2 {
-+					temperature = <125000>;
-+					hysteresis = <0>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+	};
-+};
-+
- &spmi_bus {
- 	pm6150l_lsid4: pmic@4 {
- 		compatible = "qcom,pm6150l", "qcom,spmi-pmic";
-@@ -12,6 +43,13 @@ pm6150l_lsid4: pmic@4 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 
-+		pm6150l_temp: temp-alarm@2400 {
-+			compatible = "qcom,spmi-temp-alarm";
-+			reg = <0x2400>;
-+			interrupts = <0x4 0x24 0x0 IRQ_TYPE_EDGE_BOTH>;
-+			#thermal-sensor-cells = <0>;
-+		};
-+
- 		pm6150l_adc: adc@3100 {
- 			compatible = "qcom,spmi-adc5";
- 			reg = <0x3100>;
--- 
-2.38.1
+Let me know if there are any concerns if we just take patches 7,8,9 and 
+10 separately.
 
+Thanks
+
+Abhinav
