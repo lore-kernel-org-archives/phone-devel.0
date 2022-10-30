@@ -2,73 +2,82 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62354FA3742
-	for <phone-devel@archiver.kernel.org>; Sat, 29 Oct 2022 01:18:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 981D8FA3745
+	for <phone-devel@archiver.kernel.org>; Sun, 30 Oct 2022 07:32:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229772AbiJ2BSx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 28 Oct 2022 21:18:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47468 "EHLO
+        id S229904AbiJ3Hcv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 30 Oct 2022 03:32:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbiJ2BSw (ORCPT
+        with ESMTP id S229515AbiJ3Hcq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 28 Oct 2022 21:18:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C040B20FB09;
-        Fri, 28 Oct 2022 18:18:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Sun, 30 Oct 2022 03:32:46 -0400
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [5.144.164.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48C5E2DA;
+        Sun, 30 Oct 2022 00:32:44 -0700 (PDT)
+Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AA6762976;
-        Sat, 29 Oct 2022 01:18:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307D0C433B5;
-        Sat, 29 Oct 2022 01:18:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667006330;
-        bh=/2Wc5OD2XyLapd2X9sypJNrvSP9/MDQPgKJDh6cmt4s=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uZU700ClSKx8vyyx0hwxnB66BGCZoqFeSLwpoHV03ZeESVdjpjGHSn+ok3GTXpkf9
-         42J0jk/0QmoU4AVxUgyHav1d9pQDqdpz7EH/nk9lZ23mTXx2ovbHMGSaX2hO5toSKV
-         Wtoh8WfBwyJ8nvozDkgMl47lpKgIaRSuEIm6wYQh8p+n8ab2x5aofw5BLb+MUhIs34
-         m5NOWxqefGBWDBNA/VeUQ3s79WM+2NROAeEnx16GuC47rIToBHuW0HfcsgKkdXop6L
-         FnjwVs99ZgqUbYutDmVogUWLGwA4ZB8zfsAoB2soHcshQPtnHbJd4Mp1EAeVWLFFjz
-         dd/FPUFqfLcSg==
-Date:   Sat, 29 Oct 2022 09:18:41 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 240B41F948;
+        Sun, 30 Oct 2022 08:32:42 +0100 (CET)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Vinod Koul <vkoul@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
-        phone-devel@vger.kernel.org, kernel@puri.sm
-Subject: Re: [PATCH v1 3/3] arm64: dts: librem5-devkit: Use function and
- color rather than label
-Message-ID: <20221029011841.GG125525@dragon>
-References: <cover.1665318256.git.agx@sigxcpu.org>
- <2d249e5fbb3a77a6ca8eb6ecbbf97ac8ce3ef371.1665318256.git.agx@sigxcpu.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 01/10] arm64: dts: qcom: sm6350: Add resets for SDHCI 1/2
+Date:   Sun, 30 Oct 2022 08:32:23 +0100
+Message-Id: <20221030073232.22726-2-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221030073232.22726-1-marijn.suijten@somainline.org>
+References: <20221030073232.22726-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2d249e5fbb3a77a6ca8eb6ecbbf97ac8ce3ef371.1665318256.git.agx@sigxcpu.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Oct 09, 2022 at 02:26:55PM +0200, Guido Günther wrote:
-> Use predefined colors and function rather than making up a random label.
-> 
-> Signed-off-by: Guido Günther <agx@sigxcpu.org>
+Make sure the SDHCI hardware is properly reset before interacting with
+it, to protect against any possibly indeterminate state left by the
+bootloader.
 
-Applied, thanks!
+Suggested-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+---
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index c39de7d3ace0..a3ae765d9781 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -490,6 +490,7 @@ sdhc_1: mmc@7c4000 {
+ 				 <&gcc GCC_SDCC1_APPS_CLK>,
+ 				 <&rpmhcc RPMH_CXO_CLK>;
+ 			clock-names = "iface", "core", "xo";
++			resets = <&gcc GCC_SDCC1_BCR>;
+ 			qcom,dll-config = <0x000f642c>;
+ 			qcom,ddr-config = <0x80040868>;
+ 			power-domains = <&rpmhpd SM6350_CX>;
+@@ -1068,6 +1069,7 @@ sdhc_2: mmc@8804000 {
+ 				 <&gcc GCC_SDCC2_APPS_CLK>,
+ 				 <&rpmhcc RPMH_CXO_CLK>;
+ 			clock-names = "iface", "core", "xo";
++			resets = <&gcc GCC_SDCC2_BCR>;
+ 			interconnects = <&aggre2_noc MASTER_SDCC_2 0 &clk_virt SLAVE_EBI_CH0 0>,
+ 					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_SDCC_2 0>;
+ 			interconnect-names = "sdhc-ddr", "cpu-sdhc";
+-- 
+2.38.1
+
