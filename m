@@ -2,103 +2,325 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B312C38A02
-	for <phone-devel@archiver.kernel.org>; Sun, 30 Oct 2022 20:56:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E1CFC38A02
+	for <phone-devel@archiver.kernel.org>; Sun, 30 Oct 2022 22:02:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbiJ3U4A (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 30 Oct 2022 16:56:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37698 "EHLO
+        id S229692AbiJ3WB6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 30 Oct 2022 18:01:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbiJ3Uz7 (ORCPT
+        with ESMTP id S229597AbiJ3WB5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 30 Oct 2022 16:55:59 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F3329595
-        for <phone-devel@vger.kernel.org>; Sun, 30 Oct 2022 13:55:58 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id o12so16484723lfq.9
-        for <phone-devel@vger.kernel.org>; Sun, 30 Oct 2022 13:55:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=die5s22JFGHWfLYrkKoRiqA+KQ+nwR1SmfRQBT6vj1E=;
-        b=iyZTwdWtzbOBX0MsxVqwY8LOQ3siCVFy3uelSKg8X9IzOhyxMkZsk+KxkyM/fq2NDH
-         aC4G85b3IGd0+1xnrCD0u/1YOGc2cSEFTU4igcy41mgI3f3BklkzMe7LP6SCmYTy10qR
-         9Km0LSKdyXK0zpMkB3SnFQql6Gw4jPst4p3V3olBy1u4n+8fxfo0Angv20I0lczbZFwZ
-         TCnQ8S7kPrCa6k0KcUjHBrDtFu82kC7KUUWCrphyBKnxCEQLspInkKOBGtiLSrHtINKz
-         d/I0w6kNMf8mnSwTfrwxQ8JobKOy5POv78fszHencrXxmsAqdblGLu0gFv0dYT6f5CKl
-         gAJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=die5s22JFGHWfLYrkKoRiqA+KQ+nwR1SmfRQBT6vj1E=;
-        b=u2hY/0o2UBcfgsLuexvGCFRNtzhtp5KtGbhFvmIlk6ZfOoXnO9a7bdOGAl9wH8B4p7
-         8SqNiFCPIK9j38mN4FOgDnUMjkuxGFUNbRNfXDxJ7TgGJGJluw/tuntJW99XyDueWGNy
-         Z4AIoCUWNmQotIKQZRnJZJlLXlNAnp6MX7KsYg72xnOfod+SjzMiaTAdTpbvCeCQxlXd
-         nty4hz6ezN7PZ+mDS/PCtJUYGJtb/7YCqZgQQon2lMuEdCk7SGaA0nbqEhGY+AXa7j/N
-         kNo/3f904vSJaR9yt7PAoHvosaWxZpm7RaApcCpZsWLafCTyzuoQnCTEtPAXHBk2s5KT
-         s+sw==
-X-Gm-Message-State: ACrzQf0hi+WgKUUFrXTUHOoiAw8+v3By3iL1BY7U4GeSeCbwRRUrFt8D
-        zVYSroEUE9KBDZZ4BZIlIpY1Og==
-X-Google-Smtp-Source: AMsMyM5MFGlvFQ9ho7WcB1vvjrE9G4b28qctaguEGZ5K+hKnKZosGzpRyCiG9eUgxcOUFFt8krjwkA==
-X-Received: by 2002:a05:6512:318d:b0:4a2:9e80:3acb with SMTP id i13-20020a056512318d00b004a29e803acbmr4213261lfe.488.1667163356929;
-        Sun, 30 Oct 2022 13:55:56 -0700 (PDT)
-Received: from Fecusia.lan (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
-        by smtp.gmail.com with ESMTPSA id 190-20020a2e05c7000000b0026f9cb6d10fsm963612ljf.45.2022.10.30.13.55.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Oct 2022 13:55:56 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Sebastian Reichel <sre@kernel.org>,
-        Marcus Cooper <codekipper@gmail.com>
-Cc:     linux-pm@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
-        phone-devel@vger.kernel.org
-Subject: [PATCH] power: supply: ab8500: Defer thermal zone probe
-Date:   Sun, 30 Oct 2022 21:55:54 +0100
-Message-Id: <20221030205554.335633-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.37.3
+        Sun, 30 Oct 2022 18:01:57 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C35C6173;
+        Sun, 30 Oct 2022 15:01:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F18C1B8106E;
+        Sun, 30 Oct 2022 22:01:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0464C43470;
+        Sun, 30 Oct 2022 22:01:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667167313;
+        bh=PTddCbOvBcGoJz9y6uoPrxjHNey64Rs4moExDo18JNo=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=oBj+p4LD61npVqFTDN/1z67vIhtPjMl3nm9Bw85cdKp2SsodE1hdREk/tDZ7SXfr2
+         MHMgNu9iKmezbLwTugt02OGnKJsaczKeaauODrE1ZxYOJxDCepsbkBMJJ5DISprNWt
+         gz/Cf3Ub6wQoJfR5bENJp3bXySIAwc2Q8nyP7gmUu5InE5N3LFj/+9s5rxeA8FxWV7
+         GIpb+Uluiu5oabZEdVuZH8zxx2mNnixkQKojweQLYpEGGAxYwclUYE2ywppcx6rWd0
+         6awfqJmVaO8FozNfmDFzWE4sqd68GKDGci9UxvpBqBgb5WJmcZSPnmmhzCls3YU4yu
+         Ht8ELXerH7yNg==
+Received: by mail-lf1-f41.google.com with SMTP id f37so16625228lfv.8;
+        Sun, 30 Oct 2022 15:01:53 -0700 (PDT)
+X-Gm-Message-State: ACrzQf2ifE0WEKPkw66GY2cAgbAJ+8mC2JEZ/PcDGRlUZc9N+AgurfQp
+        PRFzc5jW7OQmFqnb4QvND5HxkFGSBBvHBFxhiQ==
+X-Google-Smtp-Source: AMsMyM7bW4oZVcI6LfaIeb+D2pMd4aIh+5780YF8WjoT6K4m0oJ3/Jwzr5TWckfqyNhNSgM9wxkKYBm/MKYXrTTj2L8=
+X-Received: by 2002:a19:f24b:0:b0:4ab:cd12:d282 with SMTP id
+ d11-20020a19f24b000000b004abcd12d282mr4215098lfk.74.1667167311542; Sun, 30
+ Oct 2022 15:01:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20221030194311.197909-1-a39.skl@gmail.com> <20221030194311.197909-2-a39.skl@gmail.com>
+In-Reply-To: <20221030194311.197909-2-a39.skl@gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Sun, 30 Oct 2022 17:01:42 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqL3Yq53m6D_eELurkJjDCWZuvMtACbUnqpLymWAuFh=OQ@mail.gmail.com>
+Message-ID: <CAL_JsqL3Yq53m6D_eELurkJjDCWZuvMtACbUnqpLymWAuFh=OQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] arm64: dts: qcom: Add MSM8976 device tree
+To:     Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The call thermal_zone_get_zone_by_name() used to return the
-thermal zone right away, but recent refactorings in the
-thermal core has changed this so the thermal zone used by
-the battery is probed later, and the call returns -ENODEV.
+On Sun, Oct 30, 2022 at 2:43 PM Adam Skladowski <a39.skl@gmail.com> wrote:
+>
+> Add a base DT for MSM8976 SoC.
+>
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> ---
+>  arch/arm64/boot/dts/qcom/msm8976.dtsi | 1357 +++++++++++++++++++++++++
+>  1 file changed, 1357 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/qcom/msm8976.dtsi
+>
+> diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+> new file mode 100644
+> index 0000000000000..461593eb04635
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+> @@ -0,0 +1,1357 @@
+> +// SPDX-License-Identifier: BSD-3-Clause
+> +/* Copyright (c) 2022, The Linux Foundation. All rights reserved. */
+> +
+> +#include <dt-bindings/clock/qcom,gcc-msm8976.h>
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/arm-gic.h>
+> +#include <dt-bindings/power/qcom-rpmpd.h>
+> +#include <dt-bindings/thermal/thermal.h>
+> +
+> +/ {
+> +       interrupt-parent = <&intc>;
+> +
+> +       #address-cells = <2>;
+> +       #size-cells = <2>;
+> +
+> +       chosen { };
+> +
+> +       clocks {
 
-This was always quite fragile. If we get -ENODEV, then
-return a -EPROBE_DEFER and try again later.
+Drop the container node.
 
-Cc: phone-devel@vger.kernel.org
-Fixes: 2b0e7ac0841b ("power: supply: ab8500: Integrate thermal zone")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/power/supply/ab8500_btemp.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+> +               sleep_clk: sleep-clk {
+> +                       compatible = "fixed-clock";
+> +                       #clock-cells = <0>;
+> +                       clock-frequency = <32768>;
+> +               };
+> +
+> +               xo_board: xo-board {
+> +                       compatible = "fixed-clock";
+> +                       #clock-cells = <0>;
+> +                       clock-frequency = <19200000>;
+> +                       clock-output-names = "xo";
+> +               };
+> +       };
+> +
+> +       cpus {
+> +               #address-cells = <1>;
+> +               #size-cells = <0>;
+> +
+> +               CPU0: cpu@0 {
+> +                       device_type = "cpu";
+> +                       compatible = "arm,cortex-a53";
+> +                       reg = <0x0>;
+> +                       enable-method = "psci";
+> +                       capacity-dmips-mhz = <1024>;
+> +                       next-level-cache = <&L2_0>;
+> +                       #cooling-cells = <2>;
+> +
+> +                       l1-icache {
+> +                               compatible = "cache";
+> +                       };
+> +                       l1-dcache {
+> +                               compatible = "cache";
+> +                       };
 
-diff --git a/drivers/power/supply/ab8500_btemp.c b/drivers/power/supply/ab8500_btemp.c
-index 863fabe05bdc..307ee6f71042 100644
---- a/drivers/power/supply/ab8500_btemp.c
-+++ b/drivers/power/supply/ab8500_btemp.c
-@@ -725,7 +725,14 @@ static int ab8500_btemp_probe(struct platform_device *pdev)
- 	/* Get thermal zone and ADC */
- 	di->tz = thermal_zone_get_zone_by_name("battery-thermal");
- 	if (IS_ERR(di->tz)) {
--		return dev_err_probe(dev, PTR_ERR(di->tz),
-+		ret = PTR_ERR(di->tz);
-+		/*
-+		 * This usually just means we are probing before the thermal
-+		 * zone, so just defer.
-+		 */
-+		if (ret == -ENODEV)
-+			ret = -EPROBE_DEFER;
-+		return dev_err_probe(dev, ret,
- 				     "failed to get battery thermal zone\n");
- 	}
- 	di->bat_ctrl = devm_iio_channel_get(dev, "bat_ctrl");
--- 
-2.37.3
+The cpu node is also the L1 cache(s). You've got a mixture here with
+'next-level-cache' in the cpu node. Drop these nodes.
 
+> +               };
+> +
+> +               CPU1: cpu@1 {
+> +                       device_type = "cpu";
+> +                       compatible = "arm,cortex-a53";
+> +                       reg = <0x1>;
+> +                       enable-method = "psci";
+> +                       capacity-dmips-mhz = <1024>;
+> +                       next-level-cache = <&L2_0>;
+> +                       #cooling-cells = <2>;
+> +
+> +                       l1-icache {
+> +                               compatible = "cache";
+> +                       };
+> +                       l1-dcache {
+> +                               compatible = "cache";
+> +                       };
+> +               };
+> +
+> +               CPU2: cpu@2 {
+> +                       device_type = "cpu";
+> +                       compatible = "arm,cortex-a53";
+> +                       reg = <0x2>;
+> +                       enable-method = "psci";
+> +                       capacity-dmips-mhz = <1024>;
+> +                       next-level-cache = <&L2_0>;
+> +                       #cooling-cells = <2>;
+> +
+> +                       l1-icache {
+> +                               compatible = "cache";
+> +                       };
+> +                       l1-dcache {
+> +                               compatible = "cache";
+> +                       };
+> +               };
+> +
+> +               CPU3: cpu@3 {
+> +                       device_type = "cpu";
+> +                       compatible = "arm,cortex-a53";
+> +                       reg = <0x3>;
+> +                       enable-method = "psci";
+> +                       capacity-dmips-mhz = <1024>;
+> +                       next-level-cache = <&L2_0>;
+> +                       #cooling-cells = <2>;
+> +
+> +                       l1-icache {
+> +                               compatible = "cache";
+> +                       };
+> +                       l1-dcache {
+> +                               compatible = "cache";
+> +                       };
+> +               };
+> +
+> +               CPU4: cpu@100 {
+> +                       device_type = "cpu";
+> +                       compatible = "arm,cortex-a72";
+> +                       reg = <0x100>;
+> +                       enable-method = "psci";
+> +                       capacity-dmips-mhz = <1830>;
+> +                       next-level-cache = <&L2_1>;
+> +                       #cooling-cells = <2>;
+> +
+> +                       l1-icache {
+> +                               compatible = "cache";
+> +                       };
+> +                       l1-dcache {
+> +                               compatible = "cache";
+> +                       };
+> +               };
+> +
+> +               CPU5: cpu@101 {
+> +                       device_type = "cpu";
+> +                       compatible = "arm,cortex-a72";
+> +                       reg = <0x101>;
+> +                       enable-method = "psci";
+> +                       capacity-dmips-mhz = <1830>;
+> +                       next-level-cache = <&L2_1>;
+> +                       #cooling-cells = <2>;
+> +
+> +                       l1-icache {
+> +                               compatible = "cache";
+> +                       };
+> +                       l1-dcache {
+> +                               compatible = "cache";
+> +                       };
+> +               };
+> +
+> +               CPU6: cpu@102 {
+> +                       device_type = "cpu";
+> +                       compatible = "arm,cortex-a72";
+> +                       reg = <0x102>;
+> +                       enable-method = "psci";
+> +                       capacity-dmips-mhz = <1830>;
+> +                       next-level-cache = <&L2_1>;
+> +                       #cooling-cells = <2>;
+> +
+> +                       l1-icache {
+> +                               compatible = "cache";
+> +                       };
+> +                       l1-dcache {
+> +                               compatible = "cache";
+> +                       };
+> +               };
+> +
+> +               CPU7: cpu@103 {
+> +                       device_type = "cpu";
+> +                       compatible = "arm,cortex-a72";
+> +                       reg = <0x103>;
+> +                       enable-method = "psci";
+> +                       capacity-dmips-mhz = <1830>;
+> +                       next-level-cache = <&L2_1>;
+> +                       #cooling-cells = <2>;
+> +
+> +                       l1-icache {
+> +                               compatible = "cache";
+> +                       };
+> +                       l1-dcache {
+> +                               compatible = "cache";
+> +                       };
+> +               };
+> +
+> +               cpu-map {
+> +                       cluster0 {
+> +                               core0 {
+> +                                       cpu = <&CPU0>;
+> +                               };
+> +                               core1 {
+> +                                       cpu = <&CPU1>;
+> +                               };
+> +                               core2 {
+> +                                       cpu = <&CPU2>;
+> +                               };
+> +                               core3 {
+> +                                       cpu = <&CPU3>;
+> +                               };
+> +                       };
+> +
+> +                       cluster1 {
+> +                               core0 {
+> +                                       cpu = <&CPU4>;
+> +                               };
+> +                               core1 {
+> +                                       cpu = <&CPU5>;
+> +                               };
+> +                               core2 {
+> +                                       cpu = <&CPU6>;
+> +                               };
+> +                               core3 {
+> +                                       cpu = <&CPU7>;
+> +                               };
+> +                       };
+> +               };
+> +
+> +               L2_0: l2-cache_0 {
+> +                       compatible = "cache";
+> +                       cache-level = <2>;
+
+Unified? Needs 'unified-cache' property.
+
+> +               };
+> +
+> +               L2_1: l2-cache_1 {
+> +                       compatible = "cache";
+> +                       cache-level = <2>;
+> +               };
+> +       };
+> +
+> +       firmware {
+> +               scm: scm {
+> +                       compatible = "qcom,scm-msm8976", "qcom,scm";
+> +                       clocks = <&gcc GCC_CRYPTO_CLK>,
+> +                                <&gcc GCC_CRYPTO_AXI_CLK>,
+> +                                <&gcc GCC_CRYPTO_AHB_CLK>;
+> +                       clock-names = "core", "bus", "iface";
+> +                       #reset-cells = <1>;
+> +               };
+> +       };
+> +
+> +       memory {
+
+Needs a unit-address.
+
+> +               device_type = "memory";
+> +               /* We expect the bootloader to fill in the reg */
+
+Isn't the base address known?
+
+> +               reg = <0 0 0 0>;
+> +       };
