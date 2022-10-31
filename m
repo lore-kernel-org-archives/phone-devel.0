@@ -2,71 +2,114 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9A1FFA374D
-	for <phone-devel@archiver.kernel.org>; Mon, 31 Oct 2022 17:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AB05ECAAA1
+	for <phone-devel@archiver.kernel.org>; Mon, 31 Oct 2022 18:10:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbiJaR5p (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 31 Oct 2022 13:57:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36694 "EHLO
+        id S229556AbiJaSKg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 31 Oct 2022 14:10:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbiJaR5p (ORCPT
+        with ESMTP id S229469AbiJaSKg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 31 Oct 2022 13:57:45 -0400
+        Mon, 31 Oct 2022 14:10:36 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63A3712AEB;
-        Mon, 31 Oct 2022 10:57:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC59100E;
+        Mon, 31 Oct 2022 11:10:33 -0700 (PDT)
 Received: from g550jk.arnhem.chello.nl (31-151-115-246.dynamic.upc.nl [31.151.115.246])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id A9EEDD03F3;
-        Mon, 31 Oct 2022 17:57:41 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 1B387D03F1;
+        Mon, 31 Oct 2022 18:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1667239061; bh=D4aOP4rVu2Hox79R9QC9lulgqlPpIOo4CTGeNtePUpo=;
+        t=1667239832; bh=03cs4/GWsyd+zjE3smFFK0Esd6yU/N6x5URAFrq3wvo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=E8kC0TMXVnEKfEtMDBVFpXPv9e4+sYSqBZlMucxv7MUOgevjjBcgCqtYOwW9fyp27
-         Bh/wmLUMRdpJMZotHhtp3YQyLRtVpJ511ExaP1Jjyoiak5WgMMLvgNqMKZISn9EzCP
-         qDbdm4v25Vh9U+ZMmdpgtfNu0y0G8kUhpFWqmiUE=
+        b=jxb/3OdvVt08kmnwvFljeu24VvqY+2DSRdzzVQ2SxLOtTeA1gR941UQzO+9K7RrxL
+         CDwSrosLe8DWgoRZvcMlLPLhAt8ngoXJV+TFpBGRs3ysckQJjeQZXy6EwZ5HnmC/qO
+         wH8MNrq371XiaApjahIBXERXqBZZWLQvA18tyJOk=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         afd@ti.com, Luca Weiss <luca@z3ntu.xyz>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] ARM: dts: qcom: pm8941: rename misc node name
-Date:   Mon, 31 Oct 2022 18:57:16 +0100
-Message-Id: <20221031175717.942237-3-luca@z3ntu.xyz>
+Subject: [PATCH v2 2/2] ARM: dts: qcom: pm8941: fix vadc channel node names
+Date:   Mon, 31 Oct 2022 19:10:22 +0100
+Message-Id: <20221031181022.947412-2-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221031175717.942237-1-luca@z3ntu.xyz>
-References: <20221031175717.942237-1-luca@z3ntu.xyz>
+In-Reply-To: <20221031181022.947412-1-luca@z3ntu.xyz>
+References: <20221031181022.947412-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The spmi-pmic bindings is now using usb-detect@ for this node, so adjust
-the dts to match.
+The spmi-vadc bindings require the '@' in the node.
 
+Additionally change the node name to adc-chan which both makes it a
+generic node name and also removes the underscore from it.
+
+At the same time sort the nodes by reg value.
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- arch/arm/boot/dts/qcom-pm8941.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+* Make commit message more accurate
+* Make number actually hex in node address (made it decimal before)
+
+ arch/arm/boot/dts/qcom-pm8941.dtsi | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
 diff --git a/arch/arm/boot/dts/qcom-pm8941.dtsi b/arch/arm/boot/dts/qcom-pm8941.dtsi
-index 7a4467e03aa1..863e598591b7 100644
+index 863e598591b7..a9e83836bf86 100644
 --- a/arch/arm/boot/dts/qcom-pm8941.dtsi
 +++ b/arch/arm/boot/dts/qcom-pm8941.dtsi
-@@ -27,7 +27,7 @@ pwrkey@800 {
- 			bias-pull-up;
+@@ -101,26 +101,33 @@ pm8941_vadc: adc@3100 {
+ 			#size-cells = <0>;
+ 			#io-channel-cells = <1>;
+ 
+-			bat_temp {
+-				reg = <VADC_LR_MUX1_BAT_THERM>;
++
++			adc-chan@6 {
++				reg = <VADC_VBAT_SNS>;
+ 			};
+-			die_temp {
++
++			adc-chan@8 {
+ 				reg = <VADC_DIE_TEMP>;
+ 			};
+-			ref_625mv {
++
++			adc-chan@9 {
+ 				reg = <VADC_REF_625MV>;
+ 			};
+-			ref_1250v {
++
++			adc-chan@a {
+ 				reg = <VADC_REF_1250MV>;
+ 			};
+-			ref_gnd {
++
++			adc-chan@e {
+ 				reg = <VADC_GND_REF>;
+ 			};
+-			ref_vdd {
++
++			adc-chan@f {
+ 				reg = <VADC_VDD_VADC>;
+ 			};
+-			vbat_sns {
+-				reg = <VADC_VBAT_SNS>;
++
++			adc-chan@30 {
++				reg = <VADC_LR_MUX1_BAT_THERM>;
+ 			};
  		};
  
--		usb_id: misc@900 {
-+		usb_id: usb-detect@900 {
- 			compatible = "qcom,pm8941-misc";
- 			reg = <0x900>;
- 			interrupts = <0x0 0x9 0 IRQ_TYPE_EDGE_BOTH>;
 -- 
 2.38.1
 
