@@ -2,255 +2,1472 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B239FA3743
-	for <phone-devel@archiver.kernel.org>; Mon, 31 Oct 2022 19:43:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45D7DECAAA1
+	for <phone-devel@archiver.kernel.org>; Mon, 31 Oct 2022 21:03:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbiJaTnm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 31 Oct 2022 15:43:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54888 "EHLO
+        id S229742AbiJaVDG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 31 Oct 2022 17:03:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbiJaTnl (ORCPT
+        with ESMTP id S229542AbiJaVDF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 31 Oct 2022 15:43:41 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89C5C65CA;
-        Mon, 31 Oct 2022 12:43:39 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 29VJhZiZ066105;
-        Mon, 31 Oct 2022 14:43:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1667245415;
-        bh=E4/XqI68hgTr9u4QRp9FIQLVyYZxnimzcjygXJlxaZ0=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=Jtn+Hyt43uQGBnh7W7ptGwv2SVajDd74sG7K1V4trvRWA/yU+iJZTL25PqWvie0Gf
-         CaZxT7y8UE2FgouOotyfnnQF+Up2B0JjMqgpKYLpzGSKV/PiCzaQh6GPyLbj6u2c7x
-         CXLAVTcZC3rHOVSaaedwyliaOslsEdakB5+/0U7E=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 29VJhZJU030466
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 31 Oct 2022 14:43:35 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Mon, 31
- Oct 2022 14:43:34 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
- Frontend Transport; Mon, 31 Oct 2022 14:43:34 -0500
-Received: from [10.250.35.234] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 29VJhYSE121609;
-        Mon, 31 Oct 2022 14:43:34 -0500
-Message-ID: <7bbea2c1-f67d-c03e-1191-e2fd73832be1@ti.com>
-Date:   Mon, 31 Oct 2022 14:43:34 -0500
+        Mon, 31 Oct 2022 17:03:05 -0400
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [5.144.164.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE0013CC8
+        for <phone-devel@vger.kernel.org>; Mon, 31 Oct 2022 14:02:52 -0700 (PDT)
+Received: from [192.168.1.101] (95.49.29.156.neoplus.adsl.tpnet.pl [95.49.29.156])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 8CC253EAF5;
+        Mon, 31 Oct 2022 22:02:49 +0100 (CET)
+Message-ID: <4dda8dbb-a951-2207-32f6-2d6748e75087@somainline.org>
+Date:   Mon, 31 Oct 2022 22:02:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v2] dt-bindings: input: Convert ti,drv260x to DT schema
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, <linux-input@vger.kernel.org>
-CC:     <phone-devel@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Thunderbird/102.4.1
+Subject: Re: [PATCH 1/1] arm64: dts: qcom: Add MSM8976 device tree
+To:     Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20221031164141.919134-1-luca@z3ntu.xyz>
-From:   Andrew Davis <afd@ti.com>
-In-Reply-To: <20221031164141.919134-1-luca@z3ntu.xyz>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20221030194311.197909-1-a39.skl@gmail.com>
+ <20221030194311.197909-2-a39.skl@gmail.com>
+Content-Language: en-US
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+In-Reply-To: <20221030194311.197909-2-a39.skl@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 10/31/22 11:41 AM, Luca Weiss wrote:
-> Convert the drv260x haptics binding to DT schema format.
+
+
+On 30.10.2022 20:42, Adam Skladowski wrote:
+> Add a base DT for MSM8976 SoC.
 > 
-> The only notable change from .txt format is that vbat-supply is not
-> actually required, so don't make it a required property.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 > ---
-> @Andrew Davis: You maintain some other TI bindings, would you be willing
-> to also maintain this one? It was originally written by Dan Murphy but
-> apparently Dan no longer works for TI.
-> 
+>  arch/arm64/boot/dts/qcom/msm8976.dtsi | 1357 +++++++++++++++++++++++++
+Not sure if code that's not compiled anywhere will be accepted.
 
-Sure, I can take them,
 
-Acked-by: Andrew Davis <afd@ti.com>
-
-> Changes since v1:
-> * add $ref to types as suggested by Rob
-> * change maintainer
+>  1 file changed, 1357 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/qcom/msm8976.dtsi
 > 
->   .../devicetree/bindings/input/ti,drv260x.txt  |  50 ---------
->   .../devicetree/bindings/input/ti,drv260x.yaml | 102 ++++++++++++++++++
->   2 files changed, 102 insertions(+), 50 deletions(-)
->   delete mode 100644 Documentation/devicetree/bindings/input/ti,drv260x.txt
->   create mode 100644 Documentation/devicetree/bindings/input/ti,drv260x.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/input/ti,drv260x.txt b/Documentation/devicetree/bindings/input/ti,drv260x.txt
-> deleted file mode 100644
-> index 4c5312eaaa85..000000000000
-> --- a/Documentation/devicetree/bindings/input/ti,drv260x.txt
-> +++ /dev/null
-> @@ -1,50 +0,0 @@
-> -* Texas Instruments - drv260x Haptics driver family
-> -
-> -Required properties:
-> -	- compatible - One of:
-> -		"ti,drv2604" - DRV2604
-> -		"ti,drv2605" - DRV2605
-> -		"ti,drv2605l" - DRV2605L
-> -	- reg -  I2C slave address
-> -	- vbat-supply - Required supply regulator
-> -	- mode - Power up mode of the chip (defined in include/dt-bindings/input/ti-drv260x.h)
-> -		DRV260X_LRA_MODE - Linear Resonance Actuator mode (Piezoelectric)
-> -		DRV260X_LRA_NO_CAL_MODE - This is a LRA Mode but there is no calibration
-> -				sequence during init.  And the device is configured for real
-> -				time playback mode (RTP mode).
-> -		DRV260X_ERM_MODE - Eccentric Rotating Mass mode (Rotary vibrator)
-> -	- library-sel - These are ROM based waveforms pre-programmed into the IC.
-> -				This should be set to set the library to use at power up.
-> -				(defined in include/dt-bindings/input/ti-drv260x.h)
-> -		DRV260X_LIB_EMPTY - Do not use a pre-programmed library
-> -		DRV260X_ERM_LIB_A - Pre-programmed Library
-> -		DRV260X_ERM_LIB_B - Pre-programmed Library
-> -		DRV260X_ERM_LIB_C - Pre-programmed Library
-> -		DRV260X_ERM_LIB_D - Pre-programmed Library
-> -		DRV260X_ERM_LIB_E - Pre-programmed Library
-> -		DRV260X_ERM_LIB_F - Pre-programmed Library
-> -		DRV260X_LIB_LRA - Pre-programmed LRA Library
-> -
-> -Optional properties:
-> -	- enable-gpio - gpio pin to enable/disable the device.
-> -	- vib-rated-mv - The rated voltage of the actuator in millivolts.
-> -			  If this is not set then the value will be defaulted to
-> -			  3.2 v.
-> -	- vib-overdrive-mv - The overdrive voltage of the actuator in millivolts.
-> -			  If this is not set then the value will be defaulted to
-> -			  3.2 v.
-> -Example:
-> -
-> -haptics: haptics@5a {
-> -	compatible = "ti,drv2605l";
-> -	reg = <0x5a>;
-> -	vbat-supply = <&vbat>;
-> -	enable-gpio = <&gpio1 28 GPIO_ACTIVE_HIGH>;
-> -	mode = <DRV260X_LRA_MODE>;
-> -	library-sel = <DRV260X_LIB_LRA>;
-> -	vib-rated-mv = <3200>;
-> -	vib-overdrive-mv = <3200>;
-> -}
-> -
-> -For more product information please see the link below:
-> -http://www.ti.com/product/drv2605
-> diff --git a/Documentation/devicetree/bindings/input/ti,drv260x.yaml b/Documentation/devicetree/bindings/input/ti,drv260x.yaml
+> diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
 > new file mode 100644
-> index 000000000000..d8b9b9d5d9d9
+> index 0000000000000..461593eb04635
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/input/ti,drv260x.yaml
-> @@ -0,0 +1,102 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/input/ti,drv260x.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+> @@ -0,0 +1,1357 @@
+> +// SPDX-License-Identifier: BSD-3-Clause
+> +/* Copyright (c) 2022, The Linux Foundation. All rights reserved. */
 > +
-> +title: Texas Instruments - drv260x Haptics driver family
+> +#include <dt-bindings/clock/qcom,gcc-msm8976.h>
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/arm-gic.h>
+> +#include <dt-bindings/power/qcom-rpmpd.h>
+> +#include <dt-bindings/thermal/thermal.h>
 > +
-> +maintainers:
-> +  - Andrew Davis <afd@ti.com>
+> +/ {
+> +	interrupt-parent = <&intc>;
 > +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,drv2604
-> +      - ti,drv2605
-> +      - ti,drv2605l
+> +	#address-cells = <2>;
+> +	#size-cells = <2>;
 > +
-> +  reg:
-> +    maxItems: 1
+> +	chosen { };
 > +
-> +  vbat-supply:
-> +    description: Power supply to the haptic motor
+> +	clocks {
+> +		sleep_clk: sleep-clk {
+> +			compatible = "fixed-clock";
+> +			#clock-cells = <0>;
+> +			clock-frequency = <32768>;
+> +		};
 > +
-> +  mode:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Power up mode of the chip
-> +      (defined in include/dt-bindings/input/ti-drv260x.h)
+> +		xo_board: xo-board {
+> +			compatible = "fixed-clock";
+> +			#clock-cells = <0>;
+> +			clock-frequency = <19200000>;
+Let me directly quote Krzysztof:
+
+"""
+This a DTSI for the SoC and these clocks do not exist on the SoC. So as
+usual - either they are part of board, or at least you move there the
+frequency to indicate that, or put them in DTSI and include from the board.
+
+See entire thread:
+https://lore.kernel.org/linux-arm-msm/9fbe1bf5-a84d-c56b-1c0e-6848ee3d30fe@linaro.org/
+"""
+> +			clock-output-names = "xo";
+> +		};
+> +	};
 > +
-> +      DRV260X_LRA_MODE
-> +        Linear Resonance Actuator mode (Piezoelectric)
+> +	cpus {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
 > +
-> +      DRV260X_LRA_NO_CAL_MODE
-> +        This is a LRA Mode but there is no calibration sequence during init.
-> +        And the device is configured for real time playback mode (RTP mode).
+> +		CPU0: cpu@0 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a53";
+> +			reg = <0x0>;
+> +			enable-method = "psci";
+> +			capacity-dmips-mhz = <1024>;
+> +			next-level-cache = <&L2_0>;
+> +			#cooling-cells = <2>;
 > +
-> +      DRV260X_ERM_MODE
-> +        Eccentric Rotating Mass mode (Rotary vibrator)
-> +    enum: [ 0, 1, 2 ]
+> +			l1-icache {
+> +				compatible = "cache";
+> +			};
+> +			l1-dcache {
+> +				compatible = "cache";
+> +			};
+> +		};
 > +
-> +  library-sel:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      These are ROM based waveforms pre-programmed into the IC.
-> +      This should be set to set the library to use at power up.
-> +      (defined in include/dt-bindings/input/ti-drv260x.h)
+> +		CPU1: cpu@1 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a53";
+> +			reg = <0x1>;
+> +			enable-method = "psci";
+> +			capacity-dmips-mhz = <1024>;
+> +			next-level-cache = <&L2_0>;
+> +			#cooling-cells = <2>;
 > +
-> +      DRV260X_LIB_EMPTY - Do not use a pre-programmed library
-> +      DRV260X_ERM_LIB_A - Pre-programmed Library
-> +      DRV260X_ERM_LIB_B - Pre-programmed Library
-> +      DRV260X_ERM_LIB_C - Pre-programmed Library
-> +      DRV260X_ERM_LIB_D - Pre-programmed Library
-> +      DRV260X_ERM_LIB_E - Pre-programmed Library
-> +      DRV260X_ERM_LIB_F - Pre-programmed Library
-> +      DRV260X_LIB_LRA - Pre-programmed LRA Library
-> +    enum: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
+> +			l1-icache {
+> +				compatible = "cache";
+> +			};
+> +			l1-dcache {
+> +				compatible = "cache";
+> +			};
+> +		};
 > +
-> +  enable-gpio:
-> +    maxItems: 1
+> +		CPU2: cpu@2 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a53";
+> +			reg = <0x2>;
+> +			enable-method = "psci";
+> +			capacity-dmips-mhz = <1024>;
+> +			next-level-cache = <&L2_0>;
+> +			#cooling-cells = <2>;
 > +
-> +  vib-rated-mv:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      The rated voltage of the actuator in millivolts.
-> +      If this is not set then the value will be defaulted to 3200 mV.
+> +			l1-icache {
+> +				compatible = "cache";
+> +			};
+> +			l1-dcache {
+> +				compatible = "cache";
+> +			};
+> +		};
 > +
-> +  vib-overdrive-mv:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      The overdrive voltage of the actuator in millivolts.
-> +      If this is not set then the value will be defaulted to 3200 mV.
+> +		CPU3: cpu@3 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a53";
+> +			reg = <0x3>;
+> +			enable-method = "psci";
+> +			capacity-dmips-mhz = <1024>;
+> +			next-level-cache = <&L2_0>;
+> +			#cooling-cells = <2>;
 > +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - enable-gpio
-> +  - mode
-> +  - library-sel
+> +			l1-icache {
+> +				compatible = "cache";
+> +			};
+> +			l1-dcache {
+> +				compatible = "cache";
+> +			};
+> +		};
 > +
-> +additionalProperties: false
+> +		CPU4: cpu@100 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a72";
+> +			reg = <0x100>;
+> +			enable-method = "psci";
+> +			capacity-dmips-mhz = <1830>;
+> +			next-level-cache = <&L2_1>;
+> +			#cooling-cells = <2>;
 > +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/input/ti-drv260x.h>
+> +			l1-icache {
+> +				compatible = "cache";
+> +			};
+> +			l1-dcache {
+> +				compatible = "cache";
+> +			};
+> +		};
 > +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
+> +		CPU5: cpu@101 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a72";
+> +			reg = <0x101>;
+> +			enable-method = "psci";
+> +			capacity-dmips-mhz = <1830>;
+> +			next-level-cache = <&L2_1>;
+> +			#cooling-cells = <2>;
 > +
-> +        haptics@5a {
-> +            compatible = "ti,drv2605l";
-> +            reg = <0x5a>;
-> +            vbat-supply = <&vbat>;
-> +            enable-gpio = <&gpio1 28 GPIO_ACTIVE_HIGH>;
-> +            mode = <DRV260X_LRA_MODE>;
-> +            library-sel = <DRV260X_LIB_LRA>;
-> +            vib-rated-mv = <3200>;
-> +            vib-overdrive-mv = <3200>;
-> +        };
-> +    };
+> +			l1-icache {
+> +				compatible = "cache";
+> +			};
+> +			l1-dcache {
+> +				compatible = "cache";
+> +			};
+> +		};
+> +
+> +		CPU6: cpu@102 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a72";
+> +			reg = <0x102>;
+> +			enable-method = "psci";
+> +			capacity-dmips-mhz = <1830>;
+> +			next-level-cache = <&L2_1>;
+> +			#cooling-cells = <2>;
+> +
+> +			l1-icache {
+> +				compatible = "cache";
+> +			};
+> +			l1-dcache {
+> +				compatible = "cache";
+> +			};
+> +		};
+> +
+> +		CPU7: cpu@103 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a72";
+> +			reg = <0x103>;
+> +			enable-method = "psci";
+> +			capacity-dmips-mhz = <1830>;
+> +			next-level-cache = <&L2_1>;
+> +			#cooling-cells = <2>;
+> +
+> +			l1-icache {
+> +				compatible = "cache";
+> +			};
+> +			l1-dcache {
+> +				compatible = "cache";
+> +			};
+> +		};
+> +
+> +		cpu-map {
+> +			cluster0 {
+> +				core0 {
+> +					cpu = <&CPU0>;
+> +				};
+> +				core1 {
+> +					cpu = <&CPU1>;
+> +				};
+> +				core2 {
+> +					cpu = <&CPU2>;
+> +				};
+> +				core3 {
+> +					cpu = <&CPU3>;
+> +				};
+> +			};
+> +
+> +			cluster1 {
+> +				core0 {
+> +					cpu = <&CPU4>;
+> +				};
+> +				core1 {
+> +					cpu = <&CPU5>;
+> +				};
+> +				core2 {
+> +					cpu = <&CPU6>;
+> +				};
+> +				core3 {
+> +					cpu = <&CPU7>;
+> +				};
+> +			};
+> +		};
+> +
+> +		L2_0: l2-cache_0 {
+> +			compatible = "cache";
+> +			cache-level = <2>;
+> +		};
+> +
+> +		L2_1: l2-cache_1 {
+> +			compatible = "cache";
+> +			cache-level = <2>;
+> +		};
+> +	};
+> +
+> +	firmware {
+> +		scm: scm {
+> +			compatible = "qcom,scm-msm8976", "qcom,scm";
+> +			clocks = <&gcc GCC_CRYPTO_CLK>,
+> +				 <&gcc GCC_CRYPTO_AXI_CLK>,
+> +				 <&gcc GCC_CRYPTO_AHB_CLK>;
+> +			clock-names = "core", "bus", "iface";
+> +			#reset-cells = <1>;
+> +		};
+> +	};
+> +
+> +	memory {
+memory@address, you can check what bootloader passes here in sysfs
+> +		device_type = "memory";
+> +		/* We expect the bootloader to fill in the reg */
+> +		reg = <0 0 0 0>;
+and also add the address here.
+
+> +	};
+> +
+> +	pmu {
+> +		compatible = "arm,cortex-a53-pmu";
+> +		interrupts = <GIC_PPI 7 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_HIGH)>;
+> +	};
+> +
+> +	psci {
+> +		compatible = "arm,psci-1.0";
+> +		method = "smc";
+> +	};
+> +
+> +	reserved-memory {
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		ranges;
+> +
+> +		cont_splash_mem: memory@83000000 {
+> +			reg = <0x0 0x83000000 0x0 0x2800000>;
+> +		};
+If it's not used for simplefb and not used as a carveout in drm/msm
+(one can do that instead of dynamic allocation), it just takes up memory.
+
+
+> +
+> +		ext_region: memory@85b00000 {
+> +			reg = <0x0 0x85b00000 0x0 0x500000>;
+> +			no-map;
+> +		};
+> +
+> +		msm_imem: memory@86000000 {
+compatible = "qcom,msm8976-imem", "syscon", "simple-mfd";
+rename to sram@86..
++ move to mmio
+you can check qcs404 for reference
+
+> +			reg = <0x0 0x86000000 0x0 0x300000>;
+> +			no-map;
+> +		};
+> +
+> +		smem_mem: memory@86300000 {
+> +			compatible = "qcom,smem";
+> +			reg = <0x0 0x86300000 0x0 0x100000>;
+> +			qcom,rpm-msg-ram = <&rpm_msg_ram>;
+> +			hwlocks = <&tcsr_mutex 3>;
+> +			no-map;
+> +		};
+> +
+> +		memory@86400000 {
+> +			reg = <0x0 0x86400000 0x0 0x800000>;
+> +			no-map;
+> +		};
+> +
+> +		mpss_mem: memory@86c00000 {
+> +			reg = <0x0 0x86c00000 0x0 0x5600000>;
+> +			no-map;
+> +		};
+> +
+> +		adsp_fw_mem: memory@8c200000 {
+> +			reg = <0x0 0x8c200000 0x0 0x1000000>;
+> +			no-map;
+> +		};
+> +
+> +		wcnss_fw_mem: memory@8d200000 {
+> +			reg = <0x0 0x8d200000 0x0 0x2600000>;
+> +			no-map;
+> +		};
+> +
+> +		venus_mem: memory@8f800000 {
+> +			reg = <0x0 0x8f800000 0x0 0x500000>;
+> +			no-map;
+> +		};
+> +
+> +		memory@d5700000 {
+> +			compatible = "qcom,rmtfs-mem";
+> +			reg = <0x0 0xd5700000 0x0 0x200000>;
+> +			no-map;
+> +
+> +			qcom,client-id = <1>;
+> +		};
+> +
+> +		mba_mem: mba_mem@d5a00000 {
+> +			reg = <0x0 0xd5a00000 0x0 0x100000>;
+> +			no-map;
+> +		};
+> +	};
+> +
+> +	smd {
+> +		compatible = "qcom,smd";
+> +
+> +		rpm {
+> +			interrupts = <GIC_SPI 168 IRQ_TYPE_EDGE_RISING>;
+> +			qcom,ipc = <&apcs 8 0>;
+> +			qcom,smd-edge = <15>;
+> +
+> +			rpm_requests: rpm-requests {
+> +				compatible = "qcom,rpm-msm8976";
+> +				qcom,smd-channels = "rpm_requests";
+> +
+> +				rpmcc: rpmcc {
+> +					compatible = "qcom,rpmcc-msm8976", "qcom,rpmcc";
+> +					clocks = <&xo_board>;
+> +					clock-names = "xo";
+> +					#clock-cells = <1>;
+> +				};
+> +
+> +				rpmpd: power-controller {
+> +					compatible = "qcom,msm8976-rpmpd";
+> +					#power-domain-cells = <1>;
+> +					operating-points-v2 = <&rpmpd_opp_table>;
+> +
+> +					clocks = <&xo_board>;
+> +					clock-names = "ref";
+> +
+> +					rpmpd_opp_table: opp-table {
+> +						compatible = "operating-points-v2";
+> +
+> +						rpmpd_opp_ret: opp1 {
+> +							opp-level = <RPM_SMD_LEVEL_RETENTION>;
+> +						};
+> +
+> +						rpmpd_opp_ret_plus: opp2 {
+> +							opp-level = <RPM_SMD_LEVEL_RETENTION_PLUS>;
+> +						};
+> +
+> +						rpmpd_opp_min_svs: opp3 {
+> +							opp-level = <RPM_SMD_LEVEL_MIN_SVS>;
+> +						};
+> +
+> +						rpmpd_opp_low_svs: opp4 {
+> +							opp-level = <RPM_SMD_LEVEL_LOW_SVS>;
+> +						};
+> +
+> +						rpmpd_opp_svs: opp5 {
+> +							opp-level = <RPM_SMD_LEVEL_SVS>;
+> +						};
+> +
+> +						rpmpd_opp_svs_plus: opp6 {
+> +							opp-level = <RPM_SMD_LEVEL_SVS_PLUS>;
+> +						};
+> +
+> +						rpmpd_opp_nom: opp7 {
+> +							opp-level = <RPM_SMD_LEVEL_NOM>;
+> +						};
+> +
+> +						rpmpd_opp_nom_plus: opp8 {
+> +							opp-level = <RPM_SMD_LEVEL_NOM_PLUS>;
+> +						};
+> +
+> +						rpmpd_opp_turbo: opp9 {
+> +							opp-level = <RPM_SMD_LEVEL_TURBO>;
+> +						};
+> +					};
+> +				};
+> +			};
+> +		};
+> +	};
+> +
+> +	smsm {
+> +		compatible = "qcom,smsm";
+> +
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		qcom,ipc-1 = <&apcs 8 13>;
+> +		qcom,ipc-3 = <&apcs 8 19>;
+> +
+> +		apps_smsm: apps@0 {
+> +			reg = <0>;
+> +
+> +			#qcom,smem-state-cells = <1>;
+> +		};
+> +
+> +		hexagon_smsm: hexagon@1 {
+> +			reg = <1>;
+> +			interrupts = <GIC_SPI 290 IRQ_TYPE_EDGE_RISING>;
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +
+> +		wcnss_smsm: wcnss@6 {
+> +			reg = <6>;
+> +			interrupts = <GIC_SPI 144 IRQ_TYPE_EDGE_RISING>;
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +	};
+> +
+> +	smp2p-adsp {
+> +		compatible = "qcom,smp2p";
+> +		qcom,smem = <443>, <429>;
+> +
+> +		interrupts = <GIC_SPI 291 IRQ_TYPE_EDGE_RISING>;
+> +
+> +		mboxes = <&apcs 10>;
+> +
+> +		qcom,local-pid = <0>;
+> +		qcom,remote-pid = <2>;
+> +
+> +		smp2p_adsp_out: master-kernel {
+> +			qcom,entry-name = "master-kernel";
+> +			#qcom,smem-state-cells = <1>;
+> +		};
+> +
+> +		smp2p_adsp_in: slave-kernel {
+> +			qcom,entry-name = "slave-kernel";
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +	};
+> +
+> +	smp2p-modem {
+> +		compatible = "qcom,smp2p";
+> +		qcom,smem = <435>, <428>;
+> +
+> +		interrupts = <GIC_SPI 27 IRQ_TYPE_EDGE_RISING>;
+> +
+> +		qcom,ipc = <&apcs 8 14>;
+> +
+> +		qcom,local-pid = <0>;
+> +		qcom,remote-pid = <1>;
+> +
+> +		modem_smp2p_out: master-kernel {
+> +			qcom,entry-name = "master-kernel";
+> +
+> +			#qcom,smem-state-cells = <1>;
+> +		};
+> +
+> +		modem_smp2p_in: slave-kernel {
+> +			qcom,entry-name = "slave-kernel";
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +	};
+> +
+> +	smp2p-wcnss {
+> +		compatible = "qcom,smp2p";
+> +		qcom,smem = <451>, <431>;
+> +
+> +		interrupts = <GIC_SPI 143 IRQ_TYPE_EDGE_RISING>;
+> +
+> +		qcom,ipc = <&apcs 8 18>;
+> +
+> +		qcom,local-pid = <0>;
+> +		qcom,remote-pid = <4>;
+> +
+> +		wcnss_smp2p_out: master-kernel {
+> +			qcom,entry-name = "master-kernel";
+> +
+> +			#qcom,smem-state-cells = <1>;
+> +		};
+> +
+> +		wcnss_smp2p_in: slave-kernel {
+> +			qcom,entry-name = "slave-kernel";
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +	};
+> +
+> +	soc: soc@0 {
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges = <0 0 0 0xffffffff>;
+> +		compatible = "simple-bus";
+> +
+> +		rpm_msg_ram: sram@60000 {
+> +			compatible = "qcom,rpm-msg-ram";
+> +			reg = <0x60000 0x8000>;
+Pad addr to 8 hex digits, please.
+
+> +		};
+> +
+> +		rng@22000 {
+This node should be above rpm_msg_ram address-wise.
+
+> +			compatible = "qcom,prng";
+> +			reg = <0x00022000 0x1000>;
+> +			clocks = <&gcc GCC_PRNG_AHB_CLK>;
+> +			clock-names = "core";
+> +		};
+> +
+> +		qfprom@a4000 {
+> +			compatible = "qcom,qfprom";
+> +			reg = <0x000a4000 0x1000>;
+> +			#address-cells = <1>;
+> +			#size-cells = <1>;
+> +
+> +			tsens_caldata: caldata@218 {
+> +				reg = <0x218 0x18>;
+> +			};
+> +		};
+> +
+> +		tsens0: thermal-sensor@4a9000 {
+> +			compatible = "qcom,msm8976-tsens", "qcom,tsens-v1";
+> +			reg = <0x4a9000 0x1000>, /* TM */
+> +			      <0x4a8000 0x1000>; /* SROT */
+> +			#qcom,sensors = <11>;
+> +			interrupts = <GIC_SPI 184 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "uplow";
+> +			nvmem-cells = <&tsens_caldata>;
+> +			nvmem-cell-names = "calib";
+> +			#thermal-sensor-cells = <1>;
+> +		};
+> +
+> +		restart@4ab000 {
+> +			compatible = "qcom,pshold";
+> +			reg = <0x4ab000 0x4>;
+> +		};
+> +
+> +		tlmm: pinctrl@1000000 {
+> +			compatible = "qcom,msm8976-pinctrl";
+> +			reg = <0x1000000 0x300000>;
+> +			interrupts = <GIC_SPI 208 IRQ_TYPE_LEVEL_HIGH>;
+> +			gpio-controller;
+> +			gpio-ranges = <&tlmm 0 0 158>;
+> +			#gpio-cells = <2>;
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +
+> +			mdss_te_default: mdss-te-pins {
+Subnodes are supposed to have a -pins suffix, parent nodes should end in -state.
+
+> +				pins = "gpio24";
+> +				function = "mdp_vsync";
+> +				drive-strength = <2>;
+> +				bias-pull-down;
+> +			};
+> +
+> +			sdc1_clk_on: sdc1-clk-on-state {
+> +				pins = "sdc1_clk";
+> +				bias-disable;
+> +				drive-strength = <16>;
+> +			};
+> +
+> +			sdc1_clk_off: sdc1-clk-off-state {
+> +				pins = "sdc1_clk";
+> +				bias-disable;
+> +				drive-strength = <2>;
+> +			};
+> +
+> +			sdc1_cmd_on: sdc1-cmd-on-state {
+> +				pins = "sdc1_cmd";
+> +				bias-disable;
+> +				drive-strength = <10>;
+> +			};
+> +
+> +			sdc1_cmd_off: sdc1-cmd-off-state {
+> +				pins = "sdc1_cmd";
+> +				bias-disable;
+> +				drive-strength = <2>;
+> +			};
+> +
+> +			sdc1_data_on: sdc1-data-on-state {
+> +				pins = "sdc1_data";
+> +				bias-pull-up;
+> +				drive-strength = <10>;
+> +			};
+> +
+> +			sdc1_data_off: sdc1-data-off-state {
+> +				pins = "sdc1_data";
+> +				bias-pull-up;
+> +				drive-strength = <2>;
+> +			};
+> +
+> +			sdc1_rclk_on: sdc1-rclk-on-state {
+> +				pins = "sdc1_rclk";
+> +				bias-pull-down;
+> +			};
+> +
+> +			sdc1_rclk_off: sdc1-rclk-off-state {
+> +				pins = "sdc1_rclk";
+> +				bias-pull-down;
+> +			};
+> +
+> +			sdc2_clk_on: sdc2-clk-on-state {
+> +				pins = "sdc2_clk";
+> +				drive-strength = <16>;
+> +				bias-disable;
+> +			};
+> +
+> +			sdc2_clk_off: sdc2-clk-off-state {
+> +				pins = "sdc2_clk";
+> +				bias-disable;
+> +				drive-strength = <2>;
+> +			};
+> +
+> +			sdc2_cmd_on: sdc2-cmd-on-state {
+> +				pins = "sdc2_cmd";
+> +				bias-pull-up;
+> +				drive-strength = <10>;
+> +			};
+> +
+> +			sdc2_cmd_off: sdc2-cmd-off-state {
+> +				pins = "sdc2_cmd";
+> +				bias-pull-up;
+> +				drive-strength = <2>;
+> +			};
+> +
+> +			sdc2_data_on: sdc2-data-on-state {
+> +				pins = "sdc2_data";
+> +				bias-pull-up;
+> +				drive-strength = <10>;
+> +			};
+> +
+> +			sdc2_data_off: sdc2-data-off-state {
+> +				pins = "sdc2_data";
+> +				bias-pull-up;
+> +				drive-strength = <2>;
+> +			};
+> +
+> +			sdc2_cd_on: cd-on-state {
+> +				pins = "gpio100";
+> +				function = "gpio";
+> +				drive-strength = <2>;
+> +				bias-pull-up;
+> +			};
+> +
+> +			sdc2_cd_off: cd-off-state {
+> +				pins = "gpio100";
+> +				function = "gpio";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			gpio_key_default: gpio-key-default-state {
+> +				pins = "gpio113";
+> +				function = "gpio";
+> +				drive-strength = <2>;
+> +				bias-pull-up;
+> +			};
+> +
+> +			i2c_1_default: i2c-1-default-state {
+> +				pins = "gpio2", "gpio3";
+> +				function = "blsp_i2c1";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_1_sleep: i2c-1-sleep-state {
+> +				pins = "gpio2", "gpio3";
+> +				function = "gpio";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_2_default: i2c-2-default-state {
+> +				pins = "gpio6", "gpio7";
+> +				function = "blsp_i2c2";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_2_sleep: i2c-2-sleep-state {
+> +				pins = "gpio6", "gpio7";
+> +				function = "gpio";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_3_default: i2c-3-default-state {
+> +				pins = "gpio10", "gpio11";
+> +				function = "blsp_i2c3";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_3_sleep: i2c-3-sleep-state {
+> +				pins = "gpio10", "gpio11";
+> +				function = "gpio";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_4_default: i2c-4-default-state {
+> +				pins = "gpio14", "gpio15";
+> +				function = "blsp_i2c4";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_4_sleep: i2c-4-sleep-state {
+> +				pins = "gpio14", "gpio15";
+> +				function = "gpio";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_5_default: i2c-5-default-state {
+> +				pins = "gpio136", "gpio137";
+> +				function = "blsp_i2c5";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_5_sleep: i2c-5-sleep-state {
+> +				pins = "gpio136", "gpio137";
+> +				function = "gpio";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_6_default: i2c-6-default-state {
+> +				pins = "gpio22", "gpio23";
+> +				function = "blsp_i2c6";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_6_sleep: i2c-6-sleep-state {
+> +				pins = "gpio22", "gpio23";
+> +				function = "gpio";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_7_default: i2c-7-default-state {
+> +				pins = "gpio110", "gpio111";
+> +				function = "blsp_i2c7";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_7_sleep: i2c-7-sleep-state {
+> +				pins = "gpio110", "gpio111";
+> +				function = "gpio";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_8_default: i2c-8-default-state {
+> +				pins = "gpio18", "gpio19";
+> +				function = "blsp_i2c8";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +
+> +			i2c_8_sleep: i2c-8-sleep-state {
+> +				pins = "gpio18", "gpio19";
+> +				function = "gpio";
+> +				drive-strength = <2>;
+> +				bias-disable;
+> +			};
+> +		};
+> +
+> +		gcc: clock-controller@1800000 {
+> +			compatible = "qcom,gcc-msm8976-v1.1";
+> +			reg = <0x1800000 0x80000>;
+Please pad addr to 8 hex digits.
+
+> +			#clock-cells = <1>;
+> +			#reset-cells = <1>;
+> +			#power-domain-cells = <1>;
+> +			clocks = <&xo_board>,
+> +				 <&xo_board>,
+Any reason SMD XO doesn't fit here?
+> +				 <&dsi0_phy 1>,
+> +				 <&dsi0_phy 0>,
+> +				 <&dsi1_phy 1>,
+> +				 <&dsi1_phy 0>;
+> +			clock-names = "xo",
+> +				      "xo_a",
+> +				      "dsi0pll",
+> +				      "dsi0pllbyte",
+> +				      "dsi1pll",
+> +				      "dsi1pllbyte";
+> +		};
+> +
+> +		tcsr_mutex: hwlock@1905000 {
+> +			compatible = "qcom,tcsr-mutex";
+> +			reg = <0x1905000 0x20000>;
+Please pad addr to 8 hex digits.
+
+> +			#hwlock-cells = <1>;
+> +		};
+> +
+> +		tcsr: syscon@1937000 {
+> +			compatible = "syscon";
+> +			reg = <0x1937000 0x30000>;
+Please pad addr to 8 hex digits.
+
+> +		};
+> +
+> +		mdss: mdss@1a00000 {
+> +			compatible = "qcom,mdss";
+> +
+> +			reg = <0x1a00000 0x1000>,
+> +			      <0x1ab0000 0x1040>;
+Please pad addr to 8 hex digits here and in all subnodes.
+
+> +			reg-names = "mdss_phys",
+> +				    "vbif_phys";
+> +
+> +			power-domains = <&gcc MDSS_GDSC>;
+> +			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <1>;
+> +
+> +			clocks = <&gcc GCC_MDSS_AHB_CLK>,
+> +				 <&gcc GCC_MDSS_AXI_CLK>,
+> +				 <&gcc GCC_MDSS_VSYNC_CLK>,
+> +				 <&gcc GCC_MDSS_MDP_CLK>;
+> +			clock-names = "iface",
+> +				      "bus",
+> +				      "vsync",
+> +				      "core";
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <1>;
+> +			ranges;
+> +
+> +			status = "disabled";
+> +
+> +			mdp: mdp@1a01000 {
+> +				compatible = "qcom,mdp5";
+> +				reg = <0x1a01000 0x89000>;
+> +				reg-names = "mdp_phys";
+> +
+> +				interrupt-parent = <&mdss>;
+> +				interrupts = <0>;
+> +
+> +				power-domains = <&gcc MDSS_GDSC>;
+> +
+> +				clocks = <&gcc GCC_MDSS_AHB_CLK>,
+> +					 <&gcc GCC_MDSS_AXI_CLK>,
+> +					 <&gcc GCC_MDSS_MDP_CLK>,
+> +					 <&gcc GCC_MDSS_VSYNC_CLK>,
+> +					 <&gcc GCC_MDP_TBU_CLK>,
+> +					 <&gcc GCC_MDP_RT_TBU_CLK>;
+> +				clock-names = "iface",
+> +					      "bus",
+> +					      "core",
+> +					      "vsync",
+> +					      "tbu",
+> +					      "tbu_rt";
+> +				iommus = <&apps_iommu 0x17>;
+> +
+> +				ports {
+> +					#address-cells = <1>;
+> +					#size-cells = <0>;
+> +
+> +					port@0 {
+> +						reg = <0>;
+> +						mdp5_intf1_out: endpoint {
+> +							remote-endpoint = <&dsi0_in>;
+> +						};
+> +					};
+> +
+> +					port@1 {
+> +						reg = <1>;
+> +						mdp5_intf2_out: endpoint {
+> +							remote-endpoint = <&dsi1_in>;
+> +						};
+> +					};
+> +				};
+> +			};
+> +
+> +			dsi0: dsi@1a94000 {
+> +				compatible = "qcom,mdss-dsi-ctrl";
+> +				reg = <0x1a94000 0x2d4>;
+> +				reg-names = "dsi_ctrl";
+> +
+> +				interrupt-parent = <&mdss>;
+> +				interrupts = <4>;
+> +
+> +				assigned-clocks = <&gcc GCC_MDSS_BYTE0_CLK_SRC>,
+> +						  <&gcc GCC_MDSS_PCLK0_CLK_SRC>;
+> +				assigned-clock-parents = <&dsi0_phy 0>,
+> +							 <&dsi0_phy 1>;
+> +
+> +				clocks = <&gcc GCC_MDSS_MDP_CLK>,
+> +					 <&gcc GCC_MDSS_AHB_CLK>,
+> +					 <&gcc GCC_MDSS_AXI_CLK>,
+> +					 <&gcc GCC_MDSS_BYTE0_CLK>,
+> +					 <&gcc GCC_MDSS_PCLK0_CLK>,
+> +					 <&gcc GCC_MDSS_ESC0_CLK>;
+> +				clock-names = "mdp_core",
+> +					      "iface",
+> +					      "bus",
+> +					      "byte",
+> +					      "pixel",
+> +					      "core";
+> +
+> +				phys = <&dsi0_phy>;
+> +
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +
+> +				status = "disabled";
+> +
+> +				ports {
+> +					#address-cells = <1>;
+> +					#size-cells = <0>;
+> +
+> +					port@0 {
+> +						reg = <0>;
+> +						dsi0_in: endpoint {
+> +							remote-endpoint = <&mdp5_intf1_out>;
+> +						};
+> +					};
+> +
+> +					port@1 {
+> +						reg = <1>;
+> +						dsi0_out: endpoint {
+> +						};
+> +					};
+> +				};
+> +			};
+> +
+> +			dsi0_phy: phy@1a94400 {
+> +				compatible = "qcom,dsi-phy-28nm-hpm-fam-b";
+> +				reg = <0x1a94400 0x20c>,
+> +				      <0x1a94b80 0x2c>,
+> +				      <0x1a94a00 0xd4>;
+> +				reg-names = "dsi_phy",
+> +					    "dsi_phy_regulator",
+> +					    "dsi_pll";
+> +
+> +				#clock-cells = <1>;
+> +				#phy-cells = <0>;
+> +
+> +				clocks = <&gcc GCC_MDSS_AHB_CLK>, <&xo_board>;
+> +				clock-names = "iface", "ref";
+> +
+> +				status = "disabled";
+> +			};
+> +
+> +			dsi1: dsi@1a96000 {
+> +				compatible = "qcom,mdss-dsi-ctrl";
+> +				reg = <0x1a96000 0x2d4>;
+> +				reg-names = "dsi_ctrl";
+> +
+> +				interrupt-parent = <&mdss>;
+> +				interrupts = <5>;
+> +
+> +				assigned-clocks = <&gcc GCC_MDSS_BYTE1_CLK_SRC>,
+> +						  <&gcc GCC_MDSS_PCLK1_CLK_SRC>;
+> +				assigned-clock-parents = <&dsi1_phy 0>,
+> +							 <&dsi1_phy 1>;
+> +
+> +				clocks = <&gcc GCC_MDSS_MDP_CLK>,
+> +					 <&gcc GCC_MDSS_AHB_CLK>,
+> +					 <&gcc GCC_MDSS_AXI_CLK>,
+> +					 <&gcc GCC_MDSS_BYTE1_CLK>,
+> +					 <&gcc GCC_MDSS_PCLK1_CLK>,
+> +					 <&gcc GCC_MDSS_ESC1_CLK>;
+> +				clock-names = "mdp_core",
+> +					      "iface",
+> +					      "bus",
+> +					      "byte",
+> +					      "pixel",
+> +					      "core";
+> +
+> +				phys = <&dsi1_phy>;
+> +
+> +				status = "disabled";
+> +
+> +				ports {
+> +					#address-cells = <1>;
+> +					#size-cells = <0>;
+> +
+> +					port@0 {
+> +						reg = <0>;
+> +						dsi1_in: endpoint {
+> +							remote-endpoint = <&mdp5_intf2_out>;
+> +						};
+> +					};
+> +
+> +					port@1 {
+> +						reg = <1>;
+> +						dsi1_out: endpoint {
+> +						};
+> +					};
+> +				};
+> +			};
+> +
+> +			dsi1_phy: phy@1a96400 {
+> +				compatible = "qcom,dsi-phy-28nm-hpm-fam-b";
+> +				reg = <0x1a96400 0x20c>,
+> +				      <0x1a96b80 0x2c>,
+> +				      <0x1a96a00 0xd4>;
+> +				reg-names = "dsi_phy",
+> +					    "dsi_phy_regulator",
+> +					    "dsi_pll";
+> +
+> +				#clock-cells = <1>;
+> +				#phy-cells = <0>;
+> +
+> +				clocks = <&gcc GCC_MDSS_AHB_CLK>, <&xo_board>;
+> +				clock-names = "iface", "ref";
+> +
+> +				status = "disabled";
+> +			};
+> +		};
+> +
+> +		apps_iommu: iommu@1e00000 {
+> +			compatible = "qcom,msm-iommu-v1";
+> +			ranges  = <0 0x1e20000 0x20000>;
+Please pad addr to 8 hex digits.
+> +
+> +			clocks = <&gcc GCC_SMMU_CFG_CLK>,
+> +				 <&gcc GCC_APSS_TCU_CLK>;
+> +			clock-names = "iface", "bus";
+> +
+> +			qcom,iommu-secure-id = <17>;
+> +
+> +			#address-cells = <1>;
+> +			#iommu-cells = <1>;
+> +			#size-cells = <1>;
+> +
+> +			// mdp_0
+Please use /* C-style */ comments.
+
+> +			iommu-ctx@17000 {
+> +				compatible = "qcom,msm-iommu-v1-ns";
+> +				reg = <0x17000 0x1000>;
+Please pad addr to 8 hex digits. I see it happening a lot below,
+so I'll stop repeating myself.
+> +				interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
+> +			};
+> +
+> +		};
+> +
+> +		spmi_bus: spmi@200f000 {
+> +			compatible = "qcom,spmi-pmic-arb";
+> +			reg = <0x200f000 0x1000>,
+> +			      <0x2400000 0x800000>,
+> +			      <0x2c00000 0x800000>,
+> +			      <0x3800000 0x200000>,
+> +			      <0x200a000 0x2100>;
+> +			reg-names = "core", "chnls", "obsrvr", "intr", "cnfg";
+> +			interrupt-names = "periph_irq";
+> +			interrupts = <GIC_SPI 190 IRQ_TYPE_LEVEL_HIGH>;
+> +			qcom,ee = <0>;
+> +			qcom,channel = <0>;
+> +			interrupt-controller;
+> +
+> +			#interrupt-cells = <4>;
+> +			#address-cells = <2>;
+> +			#size-cells = <0>;
+> +		};
+> +
+> +		sdhc_1: mmc@7824900 {
+> +			compatible = "qcom,sdhci-msm-v4";
+> +
+> +			reg = <0x7824900 0x500>, <0x7824000 0x800>;
+> +			reg-names = "hc", "core";
+> +
+> +			interrupts = <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "hc_irq", "pwr_irq";
+> +
+> +			clocks = <&gcc GCC_SDCC1_AHB_CLK>,
+> +				 <&gcc GCC_SDCC1_APPS_CLK>,
+> +				 <&xo_board>;
+> +			clock-names = "iface", "core", "xo";
+> +
+> +			power-domains = <&rpmpd MSM8976_VDDCX>;
+> +			operating-points-v2 = <&sdhc1_opp_table>;
+> +
+> +			pinctrl-names = "default", "sleep";
+> +			pinctrl-0 = <&sdc1_clk_on &sdc1_cmd_on &sdc1_data_on &sdc1_rclk_on>;
+> +			pinctrl-1 = <&sdc1_clk_off &sdc1_cmd_off &sdc1_data_off &sdc1_rclk_off>;
+> +
+> +			mmc-hs400-1_8v;
+> +			mmc-hs200-1_8v;
+> +			mmc-ddr-1_8v;
+> +			bus-width = <8>;
+> +			non-removable;
+> +
+> +			status = "disabled";
+> +
+> +			sdhc1_opp_table: opp-table-sdhc1 {
+> +				compatible = "operating-points-v2";
+> +
+> +				opp-100000000 {
+> +					opp-hz = /bits/ 64 <100000000>;
+> +					required-opps = <&rpmpd_opp_svs>;
+> +				};
+> +
+> +				opp-186400000 {
+> +					opp-hz = /bits/ 64 <186400000>;
+> +					required-opps = <&rpmpd_opp_nom>;
+> +				};
+> +
+> +				opp-372800000 {
+> +					opp-hz = /bits/ 64 <372800000>;
+> +					required-opps = <&rpmpd_opp_nom>;
+> +				};
+> +			};
+> +		};
+> +
+> +		sdhc_2: mmc@7864900 {
+> +			compatible = "qcom,sdhci-msm-v4";
+> +
+> +			reg = <0x7864900 0x500>, <0x7864000 0x800>;
+> +			reg-names = "hc", "core";
+> +
+> +			interrupts = <GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 221 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "hc_irq", "pwr_irq";
+> +
+> +			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
+> +				 <&gcc GCC_SDCC2_APPS_CLK>,
+> +				 <&xo_board>;
+> +			clock-names = "iface", "core", "xo";
+> +
+> +			power-domains = <&rpmpd MSM8976_VDDCX>;
+> +			operating-points-v2 = <&sdhc2_opp_table>;
+> +
+> +			pinctrl-names = "default", "sleep";
+> +			pinctrl-0 = <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on>;
+> +			pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off>;
+> +
+> +			bus-width = <4>;
+> +
+> +			status = "disabled";
+> +
+> +			sdhc2_opp_table: opp-table-sdhc2 {
+> +				compatible = "operating-points-v2";
+> +
+> +				opp-50000000 {
+> +					opp-hz = /bits/ 64 <50000000>;
+> +					required-opps = <&rpmpd_opp_svs>;
+> +				};
+> +
+> +				opp-200000000 {
+> +					opp-hz = /bits/ 64 <200000000>;
+> +					required-opps = <&rpmpd_opp_nom>;
+> +				};
+> +			};
+> +		};
+> +
+> +		i2c_1: i2c@78b5000 {
+> +			compatible = "qcom,i2c-qup-v2.2.1";
+> +			reg = <0x78b5000 0x600>;
+> +			interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
+> +			clock-names = "core", "iface";
+> +			clocks = <&gcc GCC_BLSP1_QUP1_I2C_APPS_CLK>,
+> +				 <&gcc GCC_BLSP1_AHB_CLK>;
+> +
+> +			pinctrl-names = "default", "sleep";
+> +			pinctrl-0 = <&i2c_1_default>;
+> +			pinctrl-1 = <&i2c_1_sleep>;
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c_2: i2c@78b6000 {
+> +			compatible = "qcom,i2c-qup-v2.2.1";
+> +			reg = <0x78b6000 0x600>;
+> +			interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>;
+> +			clock-names = "core", "iface";
+> +			clocks = <&gcc GCC_BLSP1_QUP2_I2C_APPS_CLK>,
+> +				 <&gcc GCC_BLSP1_AHB_CLK>;
+> +
+> +			pinctrl-names = "default", "sleep";
+> +			pinctrl-0 = <&i2c_2_default>;
+> +			pinctrl-1 = <&i2c_2_sleep>;
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c_3: i2c@78b7000 {
+> +			compatible = "qcom,i2c-qup-v2.2.1";
+> +			reg = <0x78b7000 0x600>;
+> +			interrupts = <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>;
+> +			clock-names = "core", "iface";
+> +			clocks = <&gcc GCC_BLSP1_QUP3_I2C_APPS_CLK>,
+> +				 <&gcc GCC_BLSP1_AHB_CLK>;
+> +			pinctrl-names = "default", "sleep";
+> +			pinctrl-0 = <&i2c_3_default>;
+> +			pinctrl-1 = <&i2c_3_sleep>;
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c_4: i2c@78b8000 {
+> +			compatible = "qcom,i2c-qup-v2.2.1";
+> +			reg = <0x78b8000 0x600>;
+> +			interrupts = <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>;
+> +			clock-names = "core", "iface";
+> +			clocks = <&gcc GCC_BLSP1_QUP4_I2C_APPS_CLK>,
+> +				 <&gcc GCC_BLSP1_AHB_CLK>;
+> +			pinctrl-names = "default", "sleep";
+> +			pinctrl-0 = <&i2c_4_default>;
+> +			pinctrl-1 = <&i2c_4_sleep>;
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c_5: i2c@7af5000 {
+> +			compatible = "qcom,i2c-qup-v2.2.1";
+> +			reg = <0x7af5000 0x600>;
+> +			interrupts = <GIC_SPI 299 IRQ_TYPE_LEVEL_HIGH>;
+> +			clock-names = "core", "iface";
+> +			clocks = <&gcc GCC_BLSP2_QUP1_I2C_APPS_CLK>,
+> +				 <&gcc GCC_BLSP2_AHB_CLK>;
+> +			pinctrl-names = "default", "sleep";
+> +			pinctrl-0 = <&i2c_5_default>;
+> +			pinctrl-1 = <&i2c_5_sleep>;
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c_6: i2c@7af6000 {
+> +			compatible = "qcom,i2c-qup-v2.2.1";
+> +			reg = <0x7af6000 0x600>;
+> +			interrupts = <GIC_SPI 300 IRQ_TYPE_LEVEL_HIGH>;
+> +			clock-names = "core", "iface";
+> +			clocks = <&gcc GCC_BLSP2_QUP2_I2C_APPS_CLK>,
+> +				 <&gcc GCC_BLSP2_AHB_CLK>;
+> +			pinctrl-names = "default", "sleep";
+> +			pinctrl-0 = <&i2c_6_default>;
+> +			pinctrl-1 = <&i2c_6_sleep>;
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c_7: i2c@7af7000 {
+> +			compatible = "qcom,i2c-qup-v2.2.1";
+> +			reg = <0x7af7000 0x600>;
+> +			interrupts = <GIC_SPI 301 IRQ_TYPE_LEVEL_HIGH>;
+> +			clock-names = "core", "iface";
+> +			clocks = <&gcc GCC_BLSP2_QUP3_I2C_APPS_CLK>,
+> +				 <&gcc GCC_BLSP2_AHB_CLK>;
+> +			pinctrl-names = "default", "sleep";
+> +			pinctrl-0 = <&i2c_7_default>;
+> +			pinctrl-1 = <&i2c_7_sleep>;
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			status = "disabled";
+> +		};
+> +
+> +		i2c_8: i2c@7af8000 {
+> +			compatible = "qcom,i2c-qup-v2.2.1";
+> +			reg = <0x7af8000 0x600>;
+> +			interrupts = <GIC_SPI 302 IRQ_TYPE_LEVEL_HIGH>;
+> +			clock-names = "core", "iface";
+> +			clocks = <&gcc GCC_BLSP2_QUP4_I2C_APPS_CLK>,
+> +				 <&gcc GCC_BLSP2_AHB_CLK>;
+> +			pinctrl-names = "default", "sleep";
+> +			pinctrl-0 = <&i2c_8_default>;
+> +			pinctrl-1 = <&i2c_8_sleep>;
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			status = "disabled";
+> +		};
+> +
+> +		intc: interrupt-controller@b000000 {
+> +			compatible = "qcom,msm-qgic2";
+> +			interrupt-controller;
+> +			#interrupt-cells = <3>;
+> +			reg = <0x0b000000 0x1000>, <0x0b002000 0x1000>;
+reg second, please
+
+> +		};
+> +
+> +		apcs: mailbox@b011000 {
+> +			compatible = "qcom,msm8976-apcs-kpss-global", "syscon";
+> +			reg = <0xb011000 0x1000>;
+> +			#mbox-cells = <1>;
+> +		};
+> +
+> +		timer@b120000 {
+> +			compatible = "arm,armv7-timer-mem";
+> +			reg = <0xb120000 0x1000>;
+> +			#address-cells = <0x01>;
+> +			#size-cells = <0x01>;
+> +			ranges;
+> +
+> +			frame@b121000 {
+> +				frame-number = <0>;
+> +				interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>,
+> +					     <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+> +				reg = <0xb121000 0x1000>,
+> +				      <0xb122000 0x1000>;
+reg first, please, here and below.
+
+Konrad
+
+> +			};
+> +
+> +			frame@b123000 {
+> +				frame-number = <1>;
+> +				interrupts = <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>;
+> +				reg = <0xb123000 0x1000>;
+> +				status = "disabled";
+> +			};
+> +
+> +			frame@b124000 {
+> +				frame-number = <2>;
+> +				interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
+> +				reg = <0xb124000 0x1000>;
+> +				status = "disabled";
+> +			};
+> +
+> +			frame@b125000 {
+> +				frame-number = <3>;
+> +				interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>;
+> +				reg = <0xb125000 0x1000>;
+> +				status = "disabled";
+> +			};
+> +
+> +			frame@b126000 {
+> +				frame-number = <4>;
+> +				interrupts = <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>;
+> +				reg = <0xb126000 0x1000>;
+> +				status = "disabled";
+> +			};
+> +
+> +			frame@b127000 {
+> +				frame-number = <5>;
+> +				interrupts = <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>;
+> +				reg = <0xb127000 0x1000>;
+> +				status = "disabled";
+> +			};
+> +
+> +			frame@b128000 {
+> +				frame-number = <6>;
+> +				interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
+> +				reg = <0xb128000 0x1000>;
+> +				status = "disabled";
+> +			};
+> +		};
+> +	};
+> +
+> +	timer {
+> +		compatible = "arm,armv8-timer";
+> +		interrupts = <GIC_PPI 2 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+> +			     <GIC_PPI 3 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+> +			     <GIC_PPI 4 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
+> +			     <GIC_PPI 1 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>;
+> +	};
+> +};
