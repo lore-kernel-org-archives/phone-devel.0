@@ -2,77 +2,95 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54269ECAAA1
-	for <phone-devel@archiver.kernel.org>; Mon, 31 Oct 2022 17:40:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66485FA3741
+	for <phone-devel@archiver.kernel.org>; Mon, 31 Oct 2022 17:45:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231442AbiJaRkd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 31 Oct 2022 13:40:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39610 "EHLO
+        id S231755AbiJaRpo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 31 Oct 2022 13:45:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbiJaRkT (ORCPT
+        with ESMTP id S231315AbiJaRpn (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 31 Oct 2022 13:40:19 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52E1610554;
-        Mon, 31 Oct 2022 10:40:19 -0700 (PDT)
-Received: from g550jk.arnhem.chello.nl (31-151-115-246.dynamic.upc.nl [31.151.115.246])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id ABBB2D01B5;
-        Mon, 31 Oct 2022 17:39:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1667237987; bh=GDhGOeBuz53WBcObyjQCoYK9JeJOabBRag+IKc2FGBI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=JoSqj/1W/uDUg2GQrW5U0IcaduRAVV2IIybMw2Q0K3xncFjfNry+DXhvploM3T1rv
-         UWIxFDcoV6w/He1lSk5Q17aA6t4PZd+Vs8SKDmlZ3Ma/2PZ0YzKsnKwlw8XDG+UBco
-         2HmUxGqyUykXfbhXa7aJ8e09zxP0Q3CHmU6wRDlA=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afd@ti.com, Luca Weiss <luca@z3ntu.xyz>,
-        Andy Gross <agross@kernel.org>,
+        Mon, 31 Oct 2022 13:45:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B88FE7A;
+        Mon, 31 Oct 2022 10:45:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA53361321;
+        Mon, 31 Oct 2022 17:45:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E40C433C1;
+        Mon, 31 Oct 2022 17:45:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667238341;
+        bh=rjgTmcKDAxlJvcA5pJN0GLaEBlB1F2FJMD5/TrTeCcY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PlPNNrhZwkAPoXfoFBoHE24FZegbfX4RPmDLvF32wytSKL+5GayI9elwxUjb7hFye
+         sc/na08t+pYUHeBh3KzGckCFZ0BGPMCKITUMReinZsnonraMvgnACiin/Y3yCRPIcU
+         YTWszstpQzJnxxb5LzCXvqGssoB5Ne1nM17i3mZ3IJzALDhEvkgtAK5sZlEW+7rIOb
+         t2h/1Adjoot082UANFdXDUkWxMowwHGZ84+Lsrw3ZHmGdgOmre+y5lsKYaoZyHgkgs
+         daB8fQ5HE38Z2PLCTlK5m0PxAf7lrrcM4NQJUt26FrUgi2gg0Njspqi9EFYU2g3NA1
+         v+6QOh6nNACSw==
+Date:   Mon, 31 Oct 2022 17:45:34 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afd@ti.com, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Wesley Cheng <quic_wcheng@quicinc.com>,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH v2 2/3] regulator: dt-bindings: qcom,usb-vbus-regulator: change node name
-Date:   Mon, 31 Oct 2022 18:39:32 +0100
-Message-Id: <20221031173933.936147-2-luca@z3ntu.xyz>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221031173933.936147-1-luca@z3ntu.xyz>
+Subject: Re: [PATCH v2 2/3] regulator: dt-bindings: qcom,usb-vbus-regulator:
+ change node name
+Message-ID: <Y2AJvt0SnHTnU7G0@sirena.org.uk>
 References: <20221031173933.936147-1-luca@z3ntu.xyz>
+ <20221031173933.936147-2-luca@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="iE2RTExTjAExk+11"
+Content-Disposition: inline
+In-Reply-To: <20221031173933.936147-2-luca@z3ntu.xyz>
+X-Cookie: Sign here without admitting guilt.
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-usb-vbus-regulator is a better generic node name than dcdc to change the
-example to match.
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
-Changes in v2:
-* New patch
+--iE2RTExTjAExk+11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- .../devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml  | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, Oct 31, 2022 at 06:39:32PM +0100, Luca Weiss wrote:
+> usb-vbus-regulator is a better generic node name than dcdc to change the
+> example to match.
 
-diff --git a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
-index dbe78cd4adba..b1cff3adb21b 100644
---- a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
-+++ b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
-@@ -33,7 +33,7 @@ examples:
-      pm8150b {
-         #address-cells = <1>;
-         #size-cells = <0>;
--        pm8150b_vbus: dcdc@1100 {
-+        pm8150b_vbus: usb-vbus-regulator@1100 {
-             compatible = "qcom,pm8150b-vbus-reg";
-             reg = <0x1100>;
-         };
--- 
-2.38.1
+You've not copied me on the rest of the series so I've no idea what's
+going on with dependencies.  When sending a patch series it is important
+to ensure that all the various maintainers understand what the
+relationship between the patches as the expecation is that there will be
+interdependencies.  Either copy everyone on the whole series or at least
+copy them on the cover letter and explain what's going on.  If there are
+no strong interdependencies then it's generally simplest to just send
+the patches separately to avoid any possible confusion.
 
+--iE2RTExTjAExk+11
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmNgCb4ACgkQJNaLcl1U
+h9BikggAhJyyRzQkdokSQKyPACIFit3CNqmGUEgsngrl7YDroJ99vbkYS2XRV8xw
+GnrOvxJwKddDz9puHdwqjv/PTcXHVvxzC2WCd+o9Ml/ap5KPQI837SK3tXDiiYQ4
+tXfRB9Qa0cHBzXPWU/wlE69sgtJ3Mez8KmiY0hjVqmRyYmbjLuhX30L8Qpjyiz+t
+3mvDg9sARu/v+bigaAtI1LrNyklEIjCbTh9SK9VXz7DqouL102rWuoCx5/j7/YSh
+CxGHK0oatlE+weK2khC3tHYXlO/OhWlSOKzggl8X+tRivcT9E9A6k7zD+jdIHyJm
+i0+STwz8Jmp4TvewVdp1O9d2hrLIrQ==
+=yhLt
+-----END PGP SIGNATURE-----
+
+--iE2RTExTjAExk+11--
