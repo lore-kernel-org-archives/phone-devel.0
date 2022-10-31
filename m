@@ -2,41 +2,41 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 499B1FA3741
-	for <phone-devel@archiver.kernel.org>; Mon, 31 Oct 2022 18:11:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AFE69ECAAA1
+	for <phone-devel@archiver.kernel.org>; Mon, 31 Oct 2022 18:25:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229545AbiJaSLE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 31 Oct 2022 14:11:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51100 "EHLO
+        id S229909AbiJaSZI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 31 Oct 2022 14:25:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbiJaSLD (ORCPT
+        with ESMTP id S229476AbiJaSZH (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 31 Oct 2022 14:11:03 -0400
+        Mon, 31 Oct 2022 14:25:07 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 465CFF14;
-        Mon, 31 Oct 2022 11:11:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E54F4D80;
+        Mon, 31 Oct 2022 11:25:05 -0700 (PDT)
 Received: from g550jk.arnhem.chello.nl (31-151-115-246.dynamic.upc.nl [31.151.115.246])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 9CB72CFEA4;
-        Mon, 31 Oct 2022 18:10:31 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 2BA7CD03F1;
+        Mon, 31 Oct 2022 18:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1667239831; bh=i42qv3Hr7FKl1J9sbq/JpgJ5uEkM4T+MkVM2bNzRhiM=;
+        t=1667240704; bh=7iBgek2JhQmhnFtXHoGRmTx0yH0Ccd14S9GW/5t6pqA=;
         h=From:To:Cc:Subject:Date;
-        b=p4AKdEyMBjJaQy6L/iBRhDsawnvL23pKZa9JuT2DiGgCQWcuMHAPZu0Hl2/5/moCQ
-         E184udnL7SwQCbg5AVRNgd/QsnfnDuhy6XkZxP8aW8kgQzLa86zLVjjo16mikNVE+p
-         /ZpbMe8M8gsumqZbyIoIy0TnWXrDzvjsikkC6ksM=
+        b=h7dN2NmmyBT7y2iKa4vKczh+OqKqzBYxukUc4OiQJiWi4rjECNgRpuJAcKgEkLWOD
+         Se47FJJP5crCFoSPZf54v0Xt/EsF+ksYGXU2FzZ7TCsLBA78jELvmuFOW18ZIkyCIj
+         JeWzQx8jByRKd5zACLqDNcXxkeyzRQSri+kyYNsY=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         afd@ti.com, Luca Weiss <luca@z3ntu.xyz>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] ARM: dts: qcom-pma8084: fix vadc channel node names
-Date:   Mon, 31 Oct 2022 19:10:21 +0100
-Message-Id: <20221031181022.947412-1-luca@z3ntu.xyz>
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] dt-bindings: iio/adc: qcom,spmi-iadc: use double compatibles
+Date:   Mon, 31 Oct 2022 19:24:54 +0100
+Message-Id: <20221031182456.952648-1-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -44,58 +44,42 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The spmi-vadc bindings require the '@' in the node.
-
-Additionally change the node name to adc-chan which both makes it a
-generic node name and also removes the underscore from it.
+As in other bindings, let's use specific compatibles together with the
+fallback compatible. Adjust the bindings for it.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
 Changes in v2:
-* Make commit message more accurate
-* Make number actually hex in node address (made it decimal before)
+* New patch
 
- arch/arm/boot/dts/qcom-pma8084.dtsi | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ .../devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml        | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-pma8084.dtsi b/arch/arm/boot/dts/qcom-pma8084.dtsi
-index 0da6c1a5d547..2dd4c6aa71c9 100644
---- a/arch/arm/boot/dts/qcom-pma8084.dtsi
-+++ b/arch/arm/boot/dts/qcom-pma8084.dtsi
-@@ -64,22 +64,27 @@ pma8084_vadc: adc@3100 {
- 			#size-cells = <0>;
- 			#io-channel-cells = <1>;
+diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml
+index 2a94db688830..fa855baa368c 100644
+--- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml
+@@ -18,7 +18,10 @@ description: |
  
--			die_temp {
-+			adc-chan@8 {
- 				reg = <VADC_DIE_TEMP>;
- 			};
--			ref_625mv {
-+
-+			adc-chan@9 {
- 				reg = <VADC_REF_625MV>;
- 			};
--			ref_1250v {
-+
-+			adc-chan@a {
- 				reg = <VADC_REF_1250MV>;
- 			};
--			ref_buf_625mv {
-+
-+			adc-chan@c {
- 				reg = <VADC_SPARE1>;
- 			};
--			ref_gnd {
-+
-+			adc-chan@e {
- 				reg = <VADC_GND_REF>;
- 			};
--			ref_vdd {
-+
-+			adc-chan@f {
- 				reg = <VADC_VDD_VADC>;
- 			};
- 		};
+ properties:
+   compatible:
+-    const: qcom,spmi-iadc
++    items:
++      - enum:
++          - qcom,pm8941-iadc
++      - const: qcom,spmi-iadc
+ 
+   reg:
+     description: IADC base address and length in the SPMI PMIC register map
+@@ -50,7 +53,7 @@ examples:
+         #address-cells = <1>;
+         #size-cells = <0>;
+         pmic_iadc: adc@3600 {
+-            compatible = "qcom,spmi-iadc";
++            compatible = "qcom,pm8941-iadc", "qcom,spmi-iadc";
+             reg = <0x3600>;
+             interrupts = <0x0 0x36 0x0 IRQ_TYPE_EDGE_RISING>;
+             qcom,external-resistor-micro-ohms = <10000>;
 -- 
 2.38.1
 
