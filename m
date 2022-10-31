@@ -2,335 +2,82 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE5EEFA3741
-	for <phone-devel@archiver.kernel.org>; Mon, 31 Oct 2022 21:21:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0ABC2ECAAA1
+	for <phone-devel@archiver.kernel.org>; Mon, 31 Oct 2022 21:45:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229719AbiJaVVf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 31 Oct 2022 17:21:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36734 "EHLO
+        id S229744AbiJaVpK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 31 Oct 2022 17:45:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229816AbiJaVVe (ORCPT
+        with ESMTP id S229827AbiJaVpG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 31 Oct 2022 17:21:34 -0400
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FEAD13FA2;
-        Mon, 31 Oct 2022 14:21:32 -0700 (PDT)
-Received: from [192.168.1.101] (95.49.29.156.neoplus.adsl.tpnet.pl [95.49.29.156])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 0FB463EAF3;
-        Mon, 31 Oct 2022 22:21:30 +0100 (CET)
-Message-ID: <c6d23544-bd12-63f3-f37d-1d66cba43196@somainline.org>
-Date:   Mon, 31 Oct 2022 22:21:29 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: [PATCH v5 8/8] arm64: dts: qcom: sm4250: Add support for
- oneplus-billie2
-Content-Language: en-US
-To:     Iskren Chernev <iskren.chernev@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Mon, 31 Oct 2022 17:45:06 -0400
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 196B1140D9;
+        Mon, 31 Oct 2022 14:44:53 -0700 (PDT)
+Received: by mail-oi1-f172.google.com with SMTP id m204so2417605oib.6;
+        Mon, 31 Oct 2022 14:44:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XjxwkLQZ4tD75LnXvg548BEqZdFlUP3QqZ10JPMVReU=;
+        b=BZqOSSwAgfdKxY/O1DDOAEYo30HU8t9mgb5pk9cs3SDJ2l/MqU0ziTCBMSnqQy7fth
+         f2CUrs6Rtv6Gli2gCsuDLL5MLrACF5okpOBxcorQRm1RTPTJ/Epbia5B0+uCjF8IACKh
+         oiqN2TUf03BrHn8B+1EFUyuiV2W+M1uj9ZvWfGmJIRwRqnVsZDGm6QqnntEkhrMj/BvM
+         lbU30gUCb7+0qlaIFlaNxgyRowKdB5KcELBwkE0+VZDDYuTii1aMwYpvQcMSrqPcu4VP
+         RZNHbBTSf6XT/VohFs41F0DvRZyTtrZFtMJnQ6R+OgojeFYZcrocexlA7FgVhgaGHtoI
+         K3vg==
+X-Gm-Message-State: ACrzQf2OgMm2i6qMMH7+PTmzGvEjHW0q31uhz3dvIjiV/sEFgXTmeykr
+        V3rCOwXLvGjLCnto+0jeNizaQxcr3g==
+X-Google-Smtp-Source: AMsMyM4FkjjF3koz07xQw5qHaDhFn1B7/s9//njaVGmLQtfJGo/aRGkm59Po/5eVIkIDKiMtBKRB6Q==
+X-Received: by 2002:a05:6808:1483:b0:354:a36e:5b with SMTP id e3-20020a056808148300b00354a36e005bmr15884883oiw.35.1667252692254;
+        Mon, 31 Oct 2022 14:44:52 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id i3-20020a4addc3000000b0049201e2b8f4sm2806653oov.4.2022.10.31.14.44.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Oct 2022 14:44:51 -0700 (PDT)
+Received: (nullmailer pid 3622272 invoked by uid 1000);
+        Mon, 31 Oct 2022 21:44:53 -0000
+Date:   Mon, 31 Oct 2022 16:44:53 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Iskren Chernev <iskren.chernev@gmail.com>
+Cc:     Adam Skladowski <a39.skl@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Gross <agross@kernel.org>, phone-devel@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org
+Subject: Re: [PATCH v5 3/8] dt-bindings: dmaengine: qcom: gpi: add compatible
+ for SM6115
+Message-ID: <166725269282.3622215.12274868256756111136.robh@kernel.org>
 References: <20221030094258.486428-1-iskren.chernev@gmail.com>
- <20221030094258.486428-9-iskren.chernev@gmail.com>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-In-Reply-To: <20221030094258.486428-9-iskren.chernev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20221030094258.486428-4-iskren.chernev@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221030094258.486428-4-iskren.chernev@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-
-On 30.10.2022 10:42, Iskren Chernev wrote:
-> Add initial support for OnePlus Nord N100, based on SM4250. Currently
-> working:
-> - boots
-> - usb
-> - built-in flash storage (UFS)
-> - SD card reader
+On Sun, 30 Oct 2022 11:42:53 +0200, Iskren Chernev wrote:
+> From: Adam Skladowski <a39.skl@gmail.com>
 > 
+> Document the compatible for GPI DMA controller on SM6115 SoC.
+> 
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 > Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
 > ---
->  arch/arm64/boot/dts/qcom/Makefile             |   1 +
->  .../boot/dts/qcom/sm4250-oneplus-billie2.dts  | 241 ++++++++++++++++++
->  2 files changed, 242 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
+>  Documentation/devicetree/bindings/dma/qcom,gpi.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-> index b0558d3389e5..eb2a58b8af5f 100644
-> --- a/arch/arm64/boot/dts/qcom/Makefile
-> +++ b/arch/arm64/boot/dts/qcom/Makefile
-> @@ -142,6 +142,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-polaris.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-shift-axolotl.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-lenovo-yoga-c630.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-samsung-w737.dtb
-> +dtb-$(CONFIG_ARCH_QCOM)	+= sm4250-oneplus-billie2.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-sony-xperia-seine-pdx201.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm6350-sony-xperia-lena-pdx213.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm7225-fairphone-fp4.dtb
-> diff --git a/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts b/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
-> new file mode 100644
-> index 000000000000..a3f1c7c41fd7
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
-> @@ -0,0 +1,241 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-> +/*
-> + * Copyright (c) 2021, Iskren Chernev <iskren.chernev@gmail.com>
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include "sm4250.dtsi"
-> +
-> +/ {
-> +	model = "OnePlus Nord N100";
-> +	compatible = "oneplus,billie2", "qcom,sm4250";
-> +
-> +	/* required for bootloader to select correct board */
-> +	qcom,msm-id = <0x1a1 0x10000 0x1bc 0x10000>;
-> +	qcom,board-id = <0x1000b 0x00>;
-> +
-> +	aliases {
-> +	};
-> +
-> +	chosen {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		stdout-path = "framebuffer0";
-> +
-> +		framebuffer0: framebuffer@9d400000 {
-> +			compatible = "simple-framebuffer";
-> +			reg = <0 0x5c000000 0 (1600 * 720 * 4)>;
-> +			width = <720>;
-> +			height = <1600>;
-> +			stride = <(720 * 4)>;
-> +			format = "a8r8g8b8";
-> +		};
-> +	};
-> +};
-> +
-> +&reserved_memory {
-> +	bootloader_log_mem: memory@5fff7000 {
-> +		reg = <0x0 0x5fff7000 0x0 0x8000>;
-> +		no-map;
-> +	};
-> +
-> +	ramoops@cbe00000 {
-> +		compatible = "ramoops";
-> +		reg = <0x0 0xcbe00000 0x0 0x400000>;
-> +		record-size = <0x40000>;
-> +		pmsg-size = <0x200000>;
-> +		console-size = <0x40000>;
-> +		ftrace-size = <0x40000>;
-> +	};
-> +
-> +	param_mem: memory@cc200000 {
-> +		reg = <0x0 0xcc200000 0x0 0x100000>;
-> +		no-map;
-> +	};
-> +
-> +	mtp_mem: memory@cc300000 {
-> +		reg = <0x00 0xcc300000 0x00 0xb00000>;
-0x00 -> 0x0 for consistency?
 
-Other than that, lgtm
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
-
-Konrad
-> +		no-map;
-> +	};
-> +};
-> +
-> +&rpm_requests {
-> +	regulators-0 {
-> +		compatible = "qcom,rpm-pm6125-regulators";
-> +
-> +		vreg_s6a: s6 {
-> +			regulator-min-microvolt = <320000>;
-> +			regulator-max-microvolt = <1456000>;
-> +		};
-> +
-> +		vreg_s7a: s7 {
-> +			regulator-min-microvolt = <1280000>;
-> +			regulator-max-microvolt = <2040000>;
-> +		};
-> +
-> +		vreg_s8a: s8 {
-> +			regulator-min-microvolt = <1064000>;
-> +			regulator-max-microvolt = <1304000>;
-> +		};
-> +
-> +		vreg_l1a: l1 {
-> +			regulator-min-microvolt = <952000>;
-> +			regulator-max-microvolt = <1152000>;
-> +		};
-> +
-> +		vreg_l4a: l4 {
-> +			regulator-min-microvolt = <488000>;
-> +			regulator-max-microvolt = <1000000>;
-> +		};
-> +
-> +		vreg_l5a: l5 {
-> +			regulator-min-microvolt = <1648000>;
-> +			regulator-max-microvolt = <3056000>;
-> +		};
-> +
-> +		vreg_l6a: l6 {
-> +			regulator-min-microvolt = <576000>;
-> +			regulator-max-microvolt = <656000>;
-> +		};
-> +
-> +		vreg_l7a: l7 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1304000>;
-> +		};
-> +
-> +		vreg_l8a: l8 {
-> +			regulator-min-microvolt = <400000>;
-> +			regulator-max-microvolt = <728000>;
-> +		};
-> +
-> +		vreg_l9a: l9 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <2000000>;
-> +		};
-> +
-> +		vreg_l10a: l10 {
-> +			regulator-min-microvolt = <1704000>;
-> +			regulator-max-microvolt = <1904000>;
-> +		};
-> +
-> +		vreg_l11a: l11 {
-> +			regulator-min-microvolt = <1704000>;
-> +			regulator-max-microvolt = <1952000>;
-> +		};
-> +
-> +		vreg_l12a: l12 {
-> +			regulator-min-microvolt = <1624000>;
-> +			regulator-max-microvolt = <1984000>;
-> +		};
-> +
-> +		vreg_l13a: l13 {
-> +			regulator-min-microvolt = <1504000>;
-> +			regulator-max-microvolt = <1952000>;
-> +		};
-> +
-> +		vreg_l14a: l14 {
-> +			regulator-min-microvolt = <1704000>;
-> +			regulator-max-microvolt = <1904000>;
-> +		};
-> +
-> +		vreg_l15a: l15 {
-> +			regulator-min-microvolt = <2920000>;
-> +			regulator-max-microvolt = <3232000>;
-> +		};
-> +
-> +		vreg_l16a: l16 {
-> +			regulator-min-microvolt = <1704000>;
-> +			regulator-max-microvolt = <1904000>;
-> +		};
-> +
-> +		vreg_l17a: l17 {
-> +			regulator-min-microvolt = <1152000>;
-> +			regulator-max-microvolt = <1304000>;
-> +		};
-> +
-> +		vreg_l18a: l18 {
-> +			regulator-min-microvolt = <1104000>;
-> +			regulator-max-microvolt = <1304000>;
-> +		};
-> +
-> +		vreg_l19a: l19 {
-> +			regulator-min-microvolt = <1624000>;
-> +			regulator-max-microvolt = <3304000>;
-> +		};
-> +
-> +		vreg_l20a: l20 {
-> +			regulator-min-microvolt = <1624000>;
-> +			regulator-max-microvolt = <3304000>;
-> +		};
-> +
-> +		vreg_l21a: l21 {
-> +			regulator-min-microvolt = <2400000>;
-> +			regulator-max-microvolt = <3544000>;
-> +		};
-> +
-> +		vreg_l22a: l22 {
-> +			regulator-min-microvolt = <2952000>;
-> +			regulator-max-microvolt = <3304000>;
-> +		};
-> +
-> +		vreg_l23a: l23 {
-> +			regulator-min-microvolt = <3296000>;
-> +			regulator-max-microvolt = <3304000>;
-> +		};
-> +
-> +		vreg_l24a: l24 {
-> +			regulator-min-microvolt = <2704000>;
-> +			regulator-max-microvolt = <3544000>;
-> +		};
-> +	};
-> +};
-> +
-> +&sleep_clk {
-> +	clock-frequency = <32764>;
-> +};
-> +
-> +&sdhc_2 {
-> +	vmmc-supply = <&vreg_l22a>;
-> +	vqmmc-supply = <&vreg_l5a>;
-> +
-> +	cd-gpios = <&tlmm 88 GPIO_ACTIVE_HIGH>;
-> +
-> +	status = "okay";
-> +};
-> +
-> +&tlmm {
-> +	gpio-reserved-ranges = <14 4>;
-> +};
-> +
-> +&ufs_mem_hc {
-> +	vcc-supply = <&vreg_l24a>;
-> +	vcc-max-microamp = <600000>;
-> +	vccq2-supply = <&vreg_l11a>;
-> +	vccq2-max-microamp = <600000>;
-> +	status = "okay";
-> +};
-> +
-> +&ufs_mem_phy {
-> +	vdda-phy-supply = <&vreg_l4a>;
-> +	vdda-pll-supply = <&vreg_l12a>;
-> +	vddp-ref-clk-supply = <&vreg_l18a>;
-> +	status = "okay";
-> +};
-> +
-> +&usb_1 {
-> +	status = "okay";
-> +};
-> +
-> +&usb_1_hsphy {
-> +	vdd-supply = <&vreg_l4a>;
-> +	vdda-pll-supply = <&vreg_l12a>;
-> +	vdda-phy-dpdm-supply = <&vreg_l15a>;
-> +	status = "okay";
-> +};
-> +
-> +&xo_board {
-> +	clock-frequency = <19200000>;
-> +};
+Acked-by: Rob Herring <robh@kernel.org>
