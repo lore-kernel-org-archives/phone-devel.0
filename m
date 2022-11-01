@@ -2,162 +2,168 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E0D1C433FE
-	for <phone-devel@archiver.kernel.org>; Tue,  1 Nov 2022 12:40:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03175C4332F
+	for <phone-devel@archiver.kernel.org>; Tue,  1 Nov 2022 16:18:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230264AbiKAMj7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 1 Nov 2022 08:39:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54514 "EHLO
+        id S230249AbiKAQSt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 1 Nov 2022 12:18:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230308AbiKAMj6 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 1 Nov 2022 08:39:58 -0400
-Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDA64DC3;
-        Tue,  1 Nov 2022 05:39:56 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 08310DFD80;
-        Tue,  1 Nov 2022 05:39:56 -0700 (PDT)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id n8xqYZIp4340; Tue,  1 Nov 2022 05:39:55 -0700 (PDT)
-Date:   Tue, 1 Nov 2022 13:38:34 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
-        t=1667306394; bh=8pSgzIaLQUUfbOme6bXDDC/enrDA6us6WNpJ2EgyvtU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nO2VBvvK+96us5sgtdwcOe6qTN5aDqfwOsD9TEzSxgZOQKUyxdh5J71mH/hEpZeUt
-         HAGcMuncdAfi+NyjIHUPhxT7jpzXKtV+oF8Jb9TYqEYQV9yxbukyyHhYlQziafhIsI
-         SinXXDrPEogVQQ2IaDtdbMGwK2VC2m4tvLbNFeDkPkK5bYY/NjH/f+GscGYMMW+Njy
-         U8jlEqm01Fh3QqrNAmjIbeyWjctHY9317sKvFa5JjV3dVQN4WKYPGKektd0zLBwNZR
-         2ZU9ZrPrXIfP8hsdq8nourjVDZ/kNFLlv565tw7+XHfj52s5b86FC/esKfpS43WDBj
-         SwOImfPtjRiYQ==
-From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Steve Longerbeam <slongerbeam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@puri.sm, phone-devel@vger.kernel.org
-Subject: Re: [PATCHv3 1/1 RESEND] media: imx: Round line size to 4 bytes
-Message-ID: <20221101133834.0c1a20db.dorota.czaplejewicz@puri.sm>
-In-Reply-To: <20221017163059.377ac677.dorota.czaplejewicz@puri.sm>
-References: <20221016163928.1ef0a4fe.dorota.czaplejewicz@puri.sm>
-        <Y00SSRMFuL3Drjd4@pendragon.ideasonboard.com>
-        <20221017163059.377ac677.dorota.czaplejewicz@puri.sm>
-Organization: Purism
+        with ESMTP id S229517AbiKAQSr (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 1 Nov 2022 12:18:47 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6E991C914;
+        Tue,  1 Nov 2022 09:18:44 -0700 (PDT)
+Received: from g550jk.arnhem.chello.nl (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 418EDD0407;
+        Tue,  1 Nov 2022 16:18:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1667319493; bh=zvhQPufC5PJD5XQqj1MudupKvZYKF2uHkrkysvJe8u0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=Kx3L2s3t8otKxH6N+dczDfJnDgo+6Y/yE2+rFBiKk6SI17cJMGE4MuMuoaRARUvM1
+         Lhj7FoVt9ZYdo6+dP501rjkDBFUy0rF11Sz7G7HzFGQ11SWozD1dxuUkGYd8E6+wIj
+         pPlxvdJLWIhk05io5I43Eyw4DKBcFQCqXfLufCT8=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        AngeloGioacchino Del Regno <kholk11@gmail.com>,
+        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 2/2] arm64: dts: qcom: Add configuration for PMI8950 peripheral
+Date:   Tue,  1 Nov 2022 17:18:00 +0100
+Message-Id: <20221101161801.1058969-2-luca@z3ntu.xyz>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221101161801.1058969-1-luca@z3ntu.xyz>
+References: <20221101161801.1058969-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/yFuW051.LWjJmsi2ZVzB1l6";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
---Sig_/yFuW051.LWjJmsi2ZVzB1l6
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+From: AngeloGioacchino Del Regno <kholk11@gmail.com>
 
-Hi all,
+The PMI8950 features integrated peripherals like ADC, GPIO controller,
+MPPs and others.
 
-On Mon, 17 Oct 2022 16:30:59 +0200
-Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm> wrote:
+[luca@z3ntu.xyz: remove pm8950, style changes for 2022 standards, add wled]
+Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Changes since v2:
+* Pick up patch, and adjust as mentioned above sign-offs
 
-> Hi,
->=20
-> On Mon, 17 Oct 2022 11:28:57 +0300
-> Laurent Pinchart <laurent.pinchart@ideasonboard.com> wrote:
->=20
+ arch/arm64/boot/dts/qcom/pmi8950.dtsi | 97 +++++++++++++++++++++++++++
+ 1 file changed, 97 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/pmi8950.dtsi
 
-[snip]
+diff --git a/arch/arm64/boot/dts/qcom/pmi8950.dtsi b/arch/arm64/boot/dts/qcom/pmi8950.dtsi
+new file mode 100644
+index 000000000000..32d27e2187e3
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/pmi8950.dtsi
+@@ -0,0 +1,97 @@
++// SPDX-License-Identifier: GPL-2.0
++// Copyright (c) 2019, AngeloGioacchino Del Regno <kholk11@gmail.com>
++
++#include <dt-bindings/iio/qcom,spmi-vadc.h>
++#include <dt-bindings/interrupt-controller/irq.h>
++#include <dt-bindings/spmi/spmi.h>
++
++&spmi_bus {
++	pmic@2 {
++		compatible = "qcom,pmi8950", "qcom,spmi-pmic";
++		reg = <0x2 SPMI_USID>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		pmi8950_vadc: adc@3100 {
++			compatible = "qcom,spmi-vadc";
++			reg = <0x3100>;
++			interrupts = <0x2 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			#io-channel-cells = <1>;
++
++			adc-chan@0 {
++				reg = <VADC_USBIN>;
++				qcom,pre-scaling = <1 4>;
++				label = "usbin";
++			};
++
++			adc-chan@1 {
++				reg = <VADC_DCIN>;
++				qcom,pre-scaling = <1 4>;
++				label = "dcin";
++			};
++
++			adc-chan@2 {
++				reg = <VADC_VCHG_SNS>;
++				qcom,pre-scaling = <1 1>;
++				label = "vchg_sns";
++			};
++
++			adc-chan@9 {
++				reg = <VADC_REF_625MV>;
++				qcom,pre-scaling = <1 1>;
++				label = "ref_625mv";
++			};
++
++			adc-chan@a {
++				reg = <VADC_REF_1250MV>;
++				qcom,pre-scaling = <1 1>;
++				label = "ref_1250v";
++			};
++
++			adc-chan@d {
++				reg = <VADC_SPARE2>;
++				qcom,pre-scaling = <1 1>;
++				label = "chg_temp";
++			};
++		};
++
++		pmi8950_mpps: mpps@a000 {
++			compatible = "qcom,pmi8950-mpp", "qcom,spmi-mpp";
++			reg = <0xa000>;
++			gpio-controller;
++			gpio-ranges = <&pmi8950_mpps 0 0 4>;
++			#gpio-cells = <2>;
++			interrupt-controller;
++			#interrupt-cells = <2>;
++		};
++
++		pmi8950_gpio: gpio@c000 {
++			compatible = "qcom,pmi8950-gpio", "qcom,spmi-gpio";
++			reg = <0xc000>;
++			gpio-controller;
++			gpio-ranges = <&pmi8950_gpio 0 0 2>;
++			#gpio-cells = <2>;
++			interrupt-controller;
++			#interrupt-cells = <2>;
++		};
++	};
++
++	pmic@3 {
++		compatible = "qcom,pmi8950", "qcom,spmi-pmic";
++		reg = <0x3 SPMI_USID>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		pmi8950_wled: leds@d800 {
++			compatible = "qcom,pmi8950-wled";
++			reg = <0xd800>, <0xd900>;
++			interrupts = <0x3 0xd8 0x02 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "short";
++			label = "backlight";
++
++			status = "disabled";
++		};
++	};
++};
+-- 
+2.38.1
 
-> > I would also very much appreciate feedback from NXP on this. There's a
-> > risk of ill side-effects that I would prefer ruling out very clearly. =
-=20
->=20
-> I posted a question on the NXP forum: https://community.nxp.com/t5/i-MX-P=
-rocessors/i-MX8MQ-CSI-line-size-constraint-documentation-mistake/m-p/153862=
-9#M196448
->=20
-
-This question received a reply from NXP today: https://community.nxp.com/t5=
-/i-MX-Processors/i-MX8MQ-CSI-line-size-constraint-documentation-mistake/m-p=
-/1546872/highlight/true#M197067
-
-Quoting NXP's answer:
-
-> Do I understand correctly, that streams divisible by 4=C3=974 will work o=
-n other i.MX8 hardware too? - Yes
-> Will those kind of resolutions work on i.MX7 series CSI hardware? - Yes
-
-which implies no bad side effects the way I read it. Is this sufficient for=
- the kernel?
-
-Cheers,
-Dorota
-
-> >  =20
-> > > Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-> > > ---
-> > > Hello,
-> > >=20
-> > > the Librem 5 is using an out-of-tree driver for s5k3l6xx, and roundin=
-g to 4 is optimal to operate it.
-> > >=20
-> > > This revision improves the commit message.
-> > >=20
-> > > Cheers,
-> > > Dorota Czaplejewicz
-> > >=20
-> > >  drivers/staging/media/imx/imx7-media-csi.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > >=20
-> > > diff --git a/drivers/staging/media/imx/imx7-media-csi.c b/drivers/sta=
-ging/media/imx/imx7-media-csi.c
-> > > index a0553c24cce4..af821b410c3f 100644
-> > > --- a/drivers/staging/media/imx/imx7-media-csi.c
-> > > +++ b/drivers/staging/media/imx/imx7-media-csi.c
-> > > @@ -999,10 +999,10 @@ static int imx7_csi_mbus_fmt_to_pix_fmt(struct =
-v4l2_pix_format *pix,
-> > >  	}
-> > > =20
-> > >  	/* Round up width for minimum burst size */
-> > > -	width =3D round_up(mbus->width, 8);
-> > > +	width =3D round_up(mbus->width, 4);
-> > > =20
-> > >  	/* Round up stride for IDMAC line start address alignment */
-> > > -	stride =3D round_up((width * cc->bpp) >> 3, 8);
-> > > +	stride =3D round_up((width * cc->bpp) >> 3, 4);
-> > > =20
-> > >  	pix->width =3D width;
-> > >  	pix->height =3D mbus->height;   =20
-> >  =20
->=20
-
-
---Sig_/yFuW051.LWjJmsi2ZVzB1l6
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmNhE0oACgkQADBpX4S8
-Zndgig/+NUo8ob5DtHGxljZKFEQIJLIQ1MtT+2F01irA6OSs/6aq6eeK+QCRDBxG
-z4/cmsPmg/297ysGdIgHaXt3bS2hnpKMy0fbEFAptLrLcJoxJ1/8PC+4bjdtyniv
-cWGI7C2HmOJAzXzly0jJlB9neeSNAu0U0nEx3R5oYVTXY5voKMHf02G2hPtBIxj0
-pe4zN7g+9sSaCFSOmdRkUizv26tIjGkgQDdljfC9pkOj4xl/DoGsA7nrJHlZB/vI
-/eafm/LQg4oqQ/zgB1GmnbJFqQQh1w8TJyYl+81yRqUAeJKqEIv4MKeojYlqFSFW
-uC4z62K/sHp02J/KXL9qxpwe+uEo1mtD3h/xQIY2kILKtP/mmRzk+tcoIqM0ojsh
-a7rmPT6yb49gfJFdjF3Q0eRkqm7bw6ZnVwzAwuWeXH42/Nx4svB7T4GBfJ0XulrX
-RPBa2o83QdEMcUqOfsD9HkVD3OkwCof7ADB6jAxenPnhhjClnGjFhcvHkvFUJpsG
-aSMYr8HT1UqFGam1d5P/lZeh0J2g/E1tqT0cb8pzRsNvnjSZAFWJjO99QEHocMiG
-Gg2hs+V9wbm32rlwurkZ+dyDzD370QVPL5yIK4WG0X0NAS9Hp9lYmVyKFXSRU0MZ
-Y7CdMqCQxGBftfPixDbm2nHuFBrx0wksX3BtxIPb1HTMOvaGBPI=
-=WMeo
------END PGP SIGNATURE-----
-
---Sig_/yFuW051.LWjJmsi2ZVzB1l6--
