@@ -2,115 +2,106 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6114EC4332F
-	for <phone-devel@archiver.kernel.org>; Wed,  2 Nov 2022 10:39:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D295C4332F
+	for <phone-devel@archiver.kernel.org>; Wed,  2 Nov 2022 10:40:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231127AbiKBKjn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 2 Nov 2022 06:39:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53484 "EHLO
+        id S231205AbiKBKkE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 2 Nov 2022 06:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231130AbiKBKjL (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 2 Nov 2022 06:39:11 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C85019004
-        for <phone-devel@vger.kernel.org>; Wed,  2 Nov 2022 03:38:32 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id fn7-20020a05600c688700b003b4fb113b86so981935wmb.0
-        for <phone-devel@vger.kernel.org>; Wed, 02 Nov 2022 03:38:32 -0700 (PDT)
+        with ESMTP id S230507AbiKBKj2 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 2 Nov 2022 06:39:28 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7AA29837
+        for <phone-devel@vger.kernel.org>; Wed,  2 Nov 2022 03:38:50 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id bk15so23832014wrb.13
+        for <phone-devel@vger.kernel.org>; Wed, 02 Nov 2022 03:38:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:reply-to:organization:from
+        h=content-transfer-encoding:in-reply-to:organization:from:reply-to
          :references:cc:to:content-language:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=hRYCRL/SBQ45Ja/04fjZY/45c3An/3ZI+v6TZQZgOFs=;
-        b=JkjxUWpdZACAbfgRAF8iqhXJ/9ga/2EeSTQJMmEiZPH6vIlZdzVFvJujbP30Y9VN0r
-         evr3SnPsLcUFNrW6Fat3FEFpwWgVNAXyKaDdMiZsqf5w0+6V6aGk8hmRyoM0bhNABD/Y
-         lbXeXdwmOHD95Mx7m2KpQhUyssC8D6igfIa/Yeb1aPkLmbUCUFFeJEC9trFTbqO+Fcrj
-         kGjd4MfPFtZnQ7HYhXkF/p237RXpQB5ucgS+GaaSR7KZNt23Zq4goV3vG7k/T2U+lMi9
-         XxVdCFBzoFyeqlxhnBndvV9wqL+xTvT52eVIByvylSheN432OE3ucWCDAf/l5Lqes+AL
-         d/Ag==
+        bh=ESVIl7kj46BPvNO9QdqByWm3nJ2rwuYRwjFwZ3R2h+Q=;
+        b=M1ZiwSaFsisrWHJ/y3ZoFTMvhmDaGS2CyB1NDRK/f/sFj5Qm4JT/ljSt9ppTtEoLQB
+         4NKeDJgDRWXkFZLWdnhGoeYfRHnX6/3YIEMKXN9PHLA2J05q5OW7Grc2JN+XI8juEViU
+         qLNPJLvfjDdkC8JUMucupxlj42krS61LxT7W0lWE8I58GBcJz9gsY4rMmQd6+B7V6ah1
+         7mMFsYxX7u5sV+MnpFoEHYyArBEHqOA/jObL0zPajuuT7S9xkfg988IG0aykJ7UNWgJx
+         Q3d6lP76i9AE8Ggutj1n8qCuP0T/rsqR6YJkLOsh9vfXJ0hC9lwVVYt8gZS9cZaFJzHc
+         L62Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:reply-to:organization:from
+        h=content-transfer-encoding:in-reply-to:organization:from:reply-to
          :references:cc:to:content-language:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hRYCRL/SBQ45Ja/04fjZY/45c3An/3ZI+v6TZQZgOFs=;
-        b=jlrs6fcAH6KN9K5ctGXw3nVHKobcYKTviZ0b3G/m5I2xy9BkJj0Yn+DKAFxPMpR7a+
-         B8ta9Wvl4DlTw5RUVA1aFGpEWrF6Gn4vjfzjckiH5UYjWm2R5IvFU9V+AiqnchDA+mgs
-         Lt3+ivBhSOK8v0sPCztm86tKbSNKilMcvBwpcWMPF7JNCKwTJs/0ptb7oXUPU9zmdIJ5
-         ao98Vo2CWWI4L+dzmSSC0fsGigRqCvld/yPdYbthUL4dsIVFBpqdM/ts3og6XgTGUwob
-         OnlfL9NMS15CMCO6X+ozq9YttibkJwNxRVj5OFVb5zG2dUMp9YQQTYFq5EwyOACAiHCX
-         064g==
-X-Gm-Message-State: ACrzQf1PY6g8lPjVj0nDjNgDzlSKG4ZceHaWaWZ9gYii7z0ZlcbEu/fm
-        Xvq30BD1dqlpCcNVBqTCKadhyVF9vp5Xy0jV
-X-Google-Smtp-Source: AMsMyM7+g1dcKLFTAyXXyWWdBiZhU3NGuGjw8oKD1SRd73NeAVaUVT5p/5IUP9D2SvUeXDKXmcIvSQ==
-X-Received: by 2002:a05:600c:42c9:b0:3cf:69d4:72d9 with SMTP id j9-20020a05600c42c900b003cf69d472d9mr12879993wme.93.1667385510803;
-        Wed, 02 Nov 2022 03:38:30 -0700 (PDT)
+        bh=ESVIl7kj46BPvNO9QdqByWm3nJ2rwuYRwjFwZ3R2h+Q=;
+        b=lsM2l4zrB+WhI15lqOq4X2e2o/HBRw7nMETd1jjVQ6N7alaoNM97uRaiGzlIUPF077
+         QgHuvRmf9nkb625K0/3FivP5VP/J32J4CT17dm0b2XjeE0lp7ZUdrzk1KrQ0le4nevp2
+         vr0ibhQGxvC+r+9Q97clBlVa2TxWvVcOqJEI8P6pv9wZ/qza7kLZVrVtouqpKS53tYIO
+         okAMYMAHzHzTXRX7Pr5ayYhIiEaCIrcTyulAXv5mJ7hs4FVeTffL12M8/ffLIWrKnojQ
+         5UakPzxUH+dmyMl2Z2wlejESdGah83TBKZxkKWGdsdvJGElfvGtE3l0bRCoIzc+WnwCJ
+         m90w==
+X-Gm-Message-State: ACrzQf0tyY2xA0WRDxEmnkzYWd37gnAcgkbxe9W1RBasyf8e04oPUzyM
+        CV0sPqVG3NjhsKn5E3tl+9yGoQ==
+X-Google-Smtp-Source: AMsMyM50o5tIKkNMewp4JlUDoNpxXY/QOQgV3dKFQsAxXK8d4i+5IU2V63sqmG+TL7AeanS03YlI9w==
+X-Received: by 2002:a05:6000:18a2:b0:22e:72fd:c5d0 with SMTP id b2-20020a05600018a200b0022e72fdc5d0mr14579385wri.682.1667385528704;
+        Wed, 02 Nov 2022 03:38:48 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:982:cbb0:6bae:ac40:a798:cbb4? ([2a01:e0a:982:cbb0:6bae:ac40:a798:cbb4])
-        by smtp.gmail.com with ESMTPSA id x21-20020a1c7c15000000b003b492753826sm1546169wmc.43.2022.11.02.03.38.29
+        by smtp.gmail.com with ESMTPSA id t9-20020a05600c198900b003c701c12a17sm1868001wmq.12.2022.11.02.03.38.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Nov 2022 03:38:30 -0700 (PDT)
-Message-ID: <ea0fd9da-4fdc-9d9b-f3ea-e74fae6d3723@linaro.org>
-Date:   Wed, 2 Nov 2022 11:38:29 +0100
+        Wed, 02 Nov 2022 03:38:48 -0700 (PDT)
+Message-ID: <f2dd0188-29dc-f651-5712-8d84804ebd58@linaro.org>
+Date:   Wed, 2 Nov 2022 11:38:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.3
-Subject: Re: [PATCH v2 2/3] regulator: dt-bindings: qcom,usb-vbus-regulator:
- change node name
+Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: pm8150b: change vbus-regulator
+ node name
 Content-Language: en-US
 To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         afd@ti.com, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Wesley Cheng <quic_wcheng@quicinc.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20221031173933.936147-1-luca@z3ntu.xyz>
- <20221031173933.936147-2-luca@z3ntu.xyz>
+ <20221031173933.936147-3-luca@z3ntu.xyz>
+Reply-To: neil.armstrong@linaro.org
 From:   Neil Armstrong <neil.armstrong@linaro.org>
 Organization: Linaro Developer Services
-Reply-To: neil.armstrong@linaro.org
-In-Reply-To: <20221031173933.936147-2-luca@z3ntu.xyz>
+In-Reply-To: <20221031173933.936147-3-luca@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
-
 On 31/10/2022 18:39, Luca Weiss wrote:
-> usb-vbus-regulator is a better generic node name than dcdc to change the
-> example to match.
-
-Subject is wrong, should be something like:
-dt-bindings: regulator: qcom,usb-vbus-regulator: update example node name
-
+> Use the node name as now defined in the spmi-pmic bindings.
 > 
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
 > Changes in v2:
 > * New patch
 > 
->   .../devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml  | 2 +-
+>   arch/arm64/boot/dts/qcom/pm8150b.dtsi | 2 +-
 >   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
-> index dbe78cd4adba..b1cff3adb21b 100644
-> --- a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
-> +++ b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
-> @@ -33,7 +33,7 @@ examples:
->        pm8150b {
->           #address-cells = <1>;
->           #size-cells = <0>;
-> -        pm8150b_vbus: dcdc@1100 {
-> +        pm8150b_vbus: usb-vbus-regulator@1100 {
->               compatible = "qcom,pm8150b-vbus-reg";
->               reg = <0x1100>;
->           };
+> diff --git a/arch/arm64/boot/dts/qcom/pm8150b.dtsi b/arch/arm64/boot/dts/qcom/pm8150b.dtsi
+> index cdded791d96e..66752cc063d6 100644
+> --- a/arch/arm64/boot/dts/qcom/pm8150b.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/pm8150b.dtsi
+> @@ -53,7 +53,7 @@ pon@800 {
+>   			status = "disabled";
+>   		};
+>   
+> -		pm8150b_vbus: dcdc@1100 {
+> +		pm8150b_vbus: usb-vbus-regulator@1100 {
+>   			compatible = "qcom,pm8150b-vbus-reg";
+>   			status = "disabled";
+>   			reg = <0x1100>;
 
-Thanks,
-Neil
+
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
