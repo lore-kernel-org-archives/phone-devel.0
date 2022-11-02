@@ -2,106 +2,104 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D295C4332F
-	for <phone-devel@archiver.kernel.org>; Wed,  2 Nov 2022 10:40:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9E22C433FE
+	for <phone-devel@archiver.kernel.org>; Wed,  2 Nov 2022 13:55:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231205AbiKBKkE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 2 Nov 2022 06:40:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53550 "EHLO
+        id S230395AbiKBNz2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 2 Nov 2022 09:55:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230507AbiKBKj2 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 2 Nov 2022 06:39:28 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7AA29837
-        for <phone-devel@vger.kernel.org>; Wed,  2 Nov 2022 03:38:50 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id bk15so23832014wrb.13
-        for <phone-devel@vger.kernel.org>; Wed, 02 Nov 2022 03:38:50 -0700 (PDT)
+        with ESMTP id S229752AbiKBNz1 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 2 Nov 2022 09:55:27 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB1C929C88
+        for <phone-devel@vger.kernel.org>; Wed,  2 Nov 2022 06:55:21 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id o4so24677568wrq.6
+        for <phone-devel@vger.kernel.org>; Wed, 02 Nov 2022 06:55:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:organization:from:reply-to
-         :references:cc:to:content-language:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ESVIl7kj46BPvNO9QdqByWm3nJ2rwuYRwjFwZ3R2h+Q=;
-        b=M1ZiwSaFsisrWHJ/y3ZoFTMvhmDaGS2CyB1NDRK/f/sFj5Qm4JT/ljSt9ppTtEoLQB
-         4NKeDJgDRWXkFZLWdnhGoeYfRHnX6/3YIEMKXN9PHLA2J05q5OW7Grc2JN+XI8juEViU
-         qLNPJLvfjDdkC8JUMucupxlj42krS61LxT7W0lWE8I58GBcJz9gsY4rMmQd6+B7V6ah1
-         7mMFsYxX7u5sV+MnpFoEHYyArBEHqOA/jObL0zPajuuT7S9xkfg988IG0aykJ7UNWgJx
-         Q3d6lP76i9AE8Ggutj1n8qCuP0T/rsqR6YJkLOsh9vfXJ0hC9lwVVYt8gZS9cZaFJzHc
-         L62Q==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=liIWxgnrKB54svAZTpFgbikolxVnlfVc0BGgGZkfhjg=;
+        b=Z9Y0jFYRdBXTbT/NsetraCzA6Hx/LsJK8GvYTwmGE7/44i5Dos9kQhq4dyTmyLbP+6
+         PfJdJNfxHY4KFvT+XX97pojpx1ufh/8Up64nZcKAmyVqDq9nzPOgtGzG5PmE9V/LgW1w
+         /EU7qjBFX04dYaGRArio8gk19Cbw5xbsAxtxNqXmxXtBhtwVP6atTXX1ui3h/Gnt13BM
+         0O6/r05ywa3CbkZ4NmLrSxi4aFxbDJHoDSSdzzatYfCldit1bn+1ZLyxrOjXZ95qmoJM
+         MHubLiH2tyKfgaRnLU6RoJgmbm7q3SgwNBVfpatEPe4Cyu3hutzQ2QTT40rAfcis7qPh
+         C9pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:from:reply-to
-         :references:cc:to:content-language:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ESVIl7kj46BPvNO9QdqByWm3nJ2rwuYRwjFwZ3R2h+Q=;
-        b=lsM2l4zrB+WhI15lqOq4X2e2o/HBRw7nMETd1jjVQ6N7alaoNM97uRaiGzlIUPF077
-         QgHuvRmf9nkb625K0/3FivP5VP/J32J4CT17dm0b2XjeE0lp7ZUdrzk1KrQ0le4nevp2
-         vr0ibhQGxvC+r+9Q97clBlVa2TxWvVcOqJEI8P6pv9wZ/qza7kLZVrVtouqpKS53tYIO
-         okAMYMAHzHzTXRX7Pr5ayYhIiEaCIrcTyulAXv5mJ7hs4FVeTffL12M8/ffLIWrKnojQ
-         5UakPzxUH+dmyMl2Z2wlejESdGah83TBKZxkKWGdsdvJGElfvGtE3l0bRCoIzc+WnwCJ
-         m90w==
-X-Gm-Message-State: ACrzQf0tyY2xA0WRDxEmnkzYWd37gnAcgkbxe9W1RBasyf8e04oPUzyM
-        CV0sPqVG3NjhsKn5E3tl+9yGoQ==
-X-Google-Smtp-Source: AMsMyM50o5tIKkNMewp4JlUDoNpxXY/QOQgV3dKFQsAxXK8d4i+5IU2V63sqmG+TL7AeanS03YlI9w==
-X-Received: by 2002:a05:6000:18a2:b0:22e:72fd:c5d0 with SMTP id b2-20020a05600018a200b0022e72fdc5d0mr14579385wri.682.1667385528704;
-        Wed, 02 Nov 2022 03:38:48 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:982:cbb0:6bae:ac40:a798:cbb4? ([2a01:e0a:982:cbb0:6bae:ac40:a798:cbb4])
-        by smtp.gmail.com with ESMTPSA id t9-20020a05600c198900b003c701c12a17sm1868001wmq.12.2022.11.02.03.38.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Nov 2022 03:38:48 -0700 (PDT)
-Message-ID: <f2dd0188-29dc-f651-5712-8d84804ebd58@linaro.org>
-Date:   Wed, 2 Nov 2022 11:38:47 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: pm8150b: change vbus-regulator
- node name
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afd@ti.com, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        bh=liIWxgnrKB54svAZTpFgbikolxVnlfVc0BGgGZkfhjg=;
+        b=23n3HwgKA9fv9Q0X2Ez2QjfzHVTXqzJgQRbeGPOG2xjAlAdIgQiqTfWLghah6Nzr0u
+         NXwUBOJI0GvuHsGPZnAGdOiPc2rX4MV7nCu5ctbu0NCXtBcgIrYyzFzr0vDSRK8agcQp
+         x/3rKvbotNFHDyyQiq2Apv5rdz4oB65Za74BVfLBUAYMWHjtJmq6JBp/GAjJhazkO8eV
+         uLklxxEbikAFqMC3iN2dCg7lXrbyMa/WhUBh9AdOc2kqOLB705OsTqNdx7awjaUCV5J9
+         tp3ZyKeBiTDlRpouTxnyBC2PvxXEyopIouuWu8NvbYwah3oxFtNXroYVDwVasMu+hKfJ
+         jzfg==
+X-Gm-Message-State: ACrzQf3VMbsKJWoQ3YBTuxaArE7H9MWwfVjVIu4qPQj29PaBlBFw8jKV
+        T5UU5eIWd6EcmaSUZGIcEVkl0w==
+X-Google-Smtp-Source: AMsMyM402qsrhIO6ldQJS2gMhEnDQv3oqTkbMUS2+MeWiGtoJh42ic09+34ohyg5+1+SYhUV3rE4KA==
+X-Received: by 2002:a5d:598d:0:b0:236:8ef5:867d with SMTP id n13-20020a5d598d000000b002368ef5867dmr14927482wri.162.1667397320480;
+        Wed, 02 Nov 2022 06:55:20 -0700 (PDT)
+Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
+        by smtp.gmail.com with ESMTPSA id b9-20020a5d45c9000000b0022e36c1113fsm12491311wrs.13.2022.11.02.06.55.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Nov 2022 06:55:20 -0700 (PDT)
+Date:   Wed, 2 Nov 2022 13:55:18 +0000
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Kiran Gunda <kgunda@codeaurora.org>,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221031173933.936147-1-luca@z3ntu.xyz>
- <20221031173933.936147-3-luca@z3ntu.xyz>
-Reply-To: neil.armstrong@linaro.org
-From:   Neil Armstrong <neil.armstrong@linaro.org>
-Organization: Linaro Developer Services
-In-Reply-To: <20221031173933.936147-3-luca@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 1/2] dt-bindings: backlight: qcom-wled: Add PMI8950
+ compatible
+Message-ID: <Y2J2xp9w4Hvethb7@maple.lan>
+References: <20221101161801.1058969-1-luca@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221101161801.1058969-1-luca@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 31/10/2022 18:39, Luca Weiss wrote:
-> Use the node name as now defined in the spmi-pmic bindings.
-> 
+On Tue, Nov 01, 2022 at 05:17:59PM +0100, Luca Weiss wrote:
+> Document the compatible for the wled block found in PMI8950.
+>
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+
+FWIW:
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+
+
 > ---
-> Changes in v2:
+> Changes since v2:
 > * New patch
-> 
->   arch/arm64/boot/dts/qcom/pm8150b.dtsi | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/pm8150b.dtsi b/arch/arm64/boot/dts/qcom/pm8150b.dtsi
-> index cdded791d96e..66752cc063d6 100644
-> --- a/arch/arm64/boot/dts/qcom/pm8150b.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/pm8150b.dtsi
-> @@ -53,7 +53,7 @@ pon@800 {
->   			status = "disabled";
->   		};
->   
-> -		pm8150b_vbus: dcdc@1100 {
-> +		pm8150b_vbus: usb-vbus-regulator@1100 {
->   			compatible = "qcom,pm8150b-vbus-reg";
->   			status = "disabled";
->   			reg = <0x1100>;
-
-
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+>
+>  Documentation/devicetree/bindings/leds/backlight/qcom-wled.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Documentation/devicetree/bindings/leds/backlight/qcom-wled.yaml b/Documentation/devicetree/bindings/leds/backlight/qcom-wled.yaml
+> index 4c15693f7a01..5ac8605a53b1 100644
+> --- a/Documentation/devicetree/bindings/leds/backlight/qcom-wled.yaml
+> +++ b/Documentation/devicetree/bindings/leds/backlight/qcom-wled.yaml
+> @@ -19,6 +19,7 @@ properties:
+>    compatible:
+>      enum:
+>        - qcom,pm8941-wled
+> +      - qcom,pmi8950-wled
+>        - qcom,pmi8994-wled
+>        - qcom,pmi8998-wled
+>        - qcom,pm660l-wled
+> --
+> 2.38.1
+>
