@@ -2,96 +2,139 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BA01C433FE
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Nov 2022 15:31:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20BFAC433FE
+	for <phone-devel@archiver.kernel.org>; Fri,  4 Nov 2022 19:17:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231905AbiKDPbA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 4 Nov 2022 11:31:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42322 "EHLO
+        id S229819AbiKDTRO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 4 Nov 2022 15:17:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232516AbiKDPa7 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Nov 2022 11:30:59 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33D2626551
-        for <phone-devel@vger.kernel.org>; Fri,  4 Nov 2022 08:30:57 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id f27so14255371eje.1
-        for <phone-devel@vger.kernel.org>; Fri, 04 Nov 2022 08:30:57 -0700 (PDT)
+        with ESMTP id S229549AbiKDTRI (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Nov 2022 15:17:08 -0400
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAD5548769
+        for <phone-devel@vger.kernel.org>; Fri,  4 Nov 2022 12:17:07 -0700 (PDT)
+Received: by mail-qk1-x72c.google.com with SMTP id k4so3666467qkj.8
+        for <phone-devel@vger.kernel.org>; Fri, 04 Nov 2022 12:17:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=l0/8QLq6i9UBaQrWixxpT1QN5F499hppxzKmDfSPo+o=;
-        b=QEPWfvV5o0/xQrLseMnsrB2cPgofxv3zH/nstHYd2ezRCYfPwC8IKVAHC/RDJpIAOm
-         QNi1POh6NYqgDxggTNQt77PFFTL3YbTyP6Q1+uTZQYDDSHa7wuWbJbqtJf/cX2bUUohM
-         245D5iJmIRgkb5mgPEhTPsiM1JBVQ4XU6qH/1Hu8qDhG392OsVwob5TS5yGG2C2MQD3i
-         QjZ/J4LHUFzaPDjoH3ujwaWhvYPpkcrmc4C5xpcZNXUu9CGVpCKgs4ttn7nYfhO4yLjh
-         vVPHK2vAULnKhoCyKzvVXLgTw3eZmKoyclloKeHJOs+yGWqXDJ5hbgPdr5bQNNMFe+m1
-         J89g==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=A3IQuXma0cjf2XddXrRe8ESj+gGbbWZ0MQ+tC4zj4Es=;
+        b=Z6EyrOpVxPv9TAsb7BTYoQW7CNbsYZWdk+Fr1gKr9GL9OvufRSAxWryOMvUOQ7SX7H
+         GtjWn2iEEYB/9OO7+GbV2KI+j9dr6fGl/LffGFO/OFSPUgrbddtqucNZFbMn0uEC6tv2
+         QRUPVgKG+CW32ru3iITtYHiidMSGjJTYdmBRYuyVpYLcZSfU8Rcml78x1G+OtOE7x1em
+         z4FHvqycOK7FYeX57qY0mGWTlYPvACqIJVyXMEm1r51qXNYSiCrH4HHrx4BvUE4PmrYM
+         bTSPZr1nivB1LpPo6nAzDwr552lxLB83wcZNcIn9/A8OSdl6nrGTA4V1JcM6j5Du1SGg
+         nHMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l0/8QLq6i9UBaQrWixxpT1QN5F499hppxzKmDfSPo+o=;
-        b=akZ9PecKP61fhCoHttY09JN2p0aTP8eydkgGz5fBZJmBosGMpLsadJ9a0kFHjCuXs2
-         cxtvBVqw89/w7DSJDUluf2t7475dMrL9wfyMEeIkG4RdQeK2EFIYL4KP0t2Rt0391moi
-         n2vth4DnLr3Oy+JLlZbD2u5OP4rnRF65XBk6GNyDOc/VD5yKM1W8eJ1kYnEkD0XRkQwL
-         BRCCiP5+BTE2LNCVy2UVl9jq0D2pnuKJG6B8kM4j0Bld5ZSpuCRaCwFgk9O0ad6Q71QV
-         vldAdts2AxNC8JtH3uUTob7KJFGMY36Dwmc/B6sJxz3l1kF6BBHRPaCUqNgFSVlTQ2aA
-         +h9A==
-X-Gm-Message-State: ACrzQf0VI7fVfN+7N3ea2QiUNZ/Tf5P51HYG+ilmkj8LvI9KN3JX8szh
-        u7c8Im14U/4KqhVj4ynsEfwLig==
-X-Google-Smtp-Source: AMsMyM6Qm9G+ineNjR0kpLmP9LlNavjWQ8XENp+/k3yVxBWw3w6JPL3+riB7tItz0v4wzrMvO80ICA==
-X-Received: by 2002:a17:906:3852:b0:78d:b3d2:97a9 with SMTP id w18-20020a170906385200b0078db3d297a9mr34237279ejc.565.1667575855783;
-        Fri, 04 Nov 2022 08:30:55 -0700 (PDT)
-Received: from otso.arnhem.chello.nl (k10064.upc-k.chello.nl. [62.108.10.64])
-        by smtp.gmail.com with ESMTPSA id es11-20020a056402380b00b00458898fe90asm2059971edb.5.2022.11.04.08.30.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Nov 2022 08:30:55 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Venkata Narendra Kumar Gutta <vnkgutta@codeaurora.org>,
-        Evan Green <evgreen@chromium.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH] soc: qcom: llcc: make irq truly optional
-Date:   Fri,  4 Nov 2022 16:30:41 +0100
-Message-Id: <20221104153041.412020-1-luca.weiss@fairphone.com>
-X-Mailer: git-send-email 2.38.1
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A3IQuXma0cjf2XddXrRe8ESj+gGbbWZ0MQ+tC4zj4Es=;
+        b=vJMfU0SQPHyP9DVk5NRuO4tj9mx5k24QfNca45dhXFFaJoPrJHCo9KjuhVOOYJGfwX
+         tGF+LuF9/EI79LA0vewVYt3B9L8pIdOYSReDSQaZvStiWQY2Yu3bcbwksD4IWcpLBMTC
+         AdDv8MZQMwbuyOhOU0uBgknmXvbpvz2Ccfsw/eiXS0Z1r8TzEY2GE4rSPYazsoC9OTqb
+         vsVK8Q+7+5Bv0hLyevAZvjreP1fI4inQe03Wp1zpZnDxbhWSnsVVU4pJmTAN6a6EBZyc
+         3ftZpdOyYxbJ1h27OQwnl6xR6Aw7pMeOD0R2IUkwFO7dTDX4RKRyrhrWiyq0OjXh/b3j
+         JQhA==
+X-Gm-Message-State: ACrzQf2JyLBZrbOBJVtYK93y3wRBH5nh3DZlz9BMMNxT8SfR45VKcWAU
+        sLxdn7enfvcWPuqXyxInwp8LMg==
+X-Google-Smtp-Source: AMsMyM6xbn9mzynOw8KybXlugzplo7nLIe11G4YCPG/JyHuRwL/LdTZuRgcA3eFMTFoUtLAu6VKDKg==
+X-Received: by 2002:a37:f502:0:b0:6f8:c3b2:51b9 with SMTP id l2-20020a37f502000000b006f8c3b251b9mr26954851qkk.616.1667589426961;
+        Fri, 04 Nov 2022 12:17:06 -0700 (PDT)
+Received: from ?IPV6:2601:586:5000:570:aad6:acd8:4ed9:299b? ([2601:586:5000:570:aad6:acd8:4ed9:299b])
+        by smtp.gmail.com with ESMTPSA id y12-20020a37f60c000000b006cfaee39ccesm3366383qkj.114.2022.11.04.12.17.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Nov 2022 12:17:06 -0700 (PDT)
+Message-ID: <1880c054-08d9-3901-f44e-290d1fd27ed4@linaro.org>
+Date:   Fri, 4 Nov 2022 15:17:04 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v5 8/8] arm64: dts: qcom: sm4250: Add support for
+ oneplus-billie2
+Content-Language: en-US
+To:     Iskren Chernev <iskren.chernev@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <20221030094258.486428-1-iskren.chernev@gmail.com>
+ <20221030094258.486428-9-iskren.chernev@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221030094258.486428-9-iskren.chernev@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The function platform_get_irq prints an error message into the kernel
-log when the irq isn't found.
+On 30/10/2022 05:42, Iskren Chernev wrote:
+> Add initial support for OnePlus Nord N100, based on SM4250. Currently
+> working:
+> - boots
+> - usb
+> - built-in flash storage (UFS)
+> - SD card reader
+> 
+> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+> ---
+>  arch/arm64/boot/dts/qcom/Makefile             |   1 +
+>  .../boot/dts/qcom/sm4250-oneplus-billie2.dts  | 241 ++++++++++++++++++
+>  2 files changed, 242 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+> index b0558d3389e5..eb2a58b8af5f 100644
+> --- a/arch/arm64/boot/dts/qcom/Makefile
+> +++ b/arch/arm64/boot/dts/qcom/Makefile
+> @@ -142,6 +142,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-polaris.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-shift-axolotl.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-lenovo-yoga-c630.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-samsung-w737.dtb
+> +dtb-$(CONFIG_ARCH_QCOM)	+= sm4250-oneplus-billie2.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-sony-xperia-seine-pdx201.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sm6350-sony-xperia-lena-pdx213.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sm7225-fairphone-fp4.dtb
+> diff --git a/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts b/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
+> new file mode 100644
+> index 000000000000..a3f1c7c41fd7
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
+> @@ -0,0 +1,241 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+> +/*
+> + * Copyright (c) 2021, Iskren Chernev <iskren.chernev@gmail.com>
+> + */
+> +
+> +/dts-v1/;
+> +
+> +#include "sm4250.dtsi"
+> +
+> +/ {
+> +	model = "OnePlus Nord N100";
+> +	compatible = "oneplus,billie2", "qcom,sm4250";
+> +
+> +	/* required for bootloader to select correct board */
+> +	qcom,msm-id = <0x1a1 0x10000 0x1bc 0x10000>;
+> +	qcom,board-id = <0x1000b 0x00>;
 
-Since the interrupt is actually optional and not provided by some SoCs,
-use platform_get_irq_optional which does not print an error message.
+These are currently not allowed for SM4250. If there are really needed,
+please justify it and update
+Documentation/devicetree/bindings/arm/qcom.yaml. Then also update
+include/dt-bindings/arm/qcom,ids.h and socinfo driver.
 
-Fixes: c081f3060fab ("soc: qcom: Add support to register LLCC EDAC driver")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/soc/qcom/llcc-qcom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
-index 8b7e8118f3ce..82c3cfdcc560 100644
---- a/drivers/soc/qcom/llcc-qcom.c
-+++ b/drivers/soc/qcom/llcc-qcom.c
-@@ -849,7 +849,7 @@ static int qcom_llcc_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err;
- 
--	drv_data->ecc_irq = platform_get_irq(pdev, 0);
-+	drv_data->ecc_irq = platform_get_irq_optional(pdev, 0);
- 	if (drv_data->ecc_irq >= 0) {
- 		llcc_edac = platform_device_register_data(&pdev->dev,
- 						"qcom_llcc_edac", -1, drv_data,
--- 
-2.38.1
+Best regards,
+Krzysztof
 
