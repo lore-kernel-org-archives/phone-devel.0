@@ -2,146 +2,87 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 280A7C433FE
-	for <phone-devel@archiver.kernel.org>; Sun,  6 Nov 2022 03:21:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80ACDC4332F
+	for <phone-devel@archiver.kernel.org>; Sun,  6 Nov 2022 12:13:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229548AbiKFDV0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 5 Nov 2022 23:21:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41970 "EHLO
+        id S229862AbiKFMNY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 6 Nov 2022 07:13:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229591AbiKFDVZ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 5 Nov 2022 23:21:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C20064E6;
-        Sat,  5 Nov 2022 20:21:24 -0700 (PDT)
+        with ESMTP id S229817AbiKFMNX (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 6 Nov 2022 07:13:23 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D60A726E;
+        Sun,  6 Nov 2022 04:13:21 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D19860BBD;
-        Sun,  6 Nov 2022 03:21:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF56C433C1;
-        Sun,  6 Nov 2022 03:21:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E57760C54;
+        Sun,  6 Nov 2022 12:13:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC207C433C1;
+        Sun,  6 Nov 2022 12:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667704883;
-        bh=uo16t8cEGzkDl8P1XkrWm8bn7vLJjjVFWx9yFSRAmEY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QOZMCU7J+zakwMcDY0mr3lq6YDNRVoZ4U+dKWVP5TsCbmHQcMEV1Tj9JuYxVJMwph
-         fEs+MsDUyZsEoI0QMT2XALe42vqPVZchOOpcdHmiH90Z+cNeT3AfPqojGTxSljzEn7
-         kXfIimJ3X2Y+yZcfpe9mbVs8Hs+m/O7BDyNHhr5M9t2aIb8Ef15Mo/Cbf3GgLHHhPC
-         6K3t8slaJVhPktG741mzzEoPZMvwzlCAYkRoylmJUDuA0sujxAN3ujEWMw4oDKPKiC
-         lfp+x0erd+zFZVzPQYSh/aNrWqGHwkGaGdBesDWQeaP5zjsuEBCt6GVQcP2ptnJflw
-         y3sDEz4g+gbFQ==
-Date:   Sat, 5 Nov 2022 22:21:20 -0500
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Nia Espera <a5b6@riseup.net>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        Caleb Connolly <caleb@connolly.tech>
-Subject: Re: [PATCH v3 2/2] drivers: gpu: drm: remove support for sofef00
- driver on s6e3fc2x01 panel
-Message-ID: <20221106032120.44qxxjdy57e7sqbx@builder.lan>
-References: <20221008131201.540185-1-a5b6@riseup.net>
- <20221008131201.540185-3-a5b6@riseup.net>
+        s=k20201202; t=1667736800;
+        bh=n7I0dfh4J22AKYzyGTJXvVtld9av1k13Mzj9MWHRvtw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=HxeB+8akcnzj8crEMbCHkEU2HpNJkll3UynQkNIXLbk/dRWogZZOSjGrLDB9rYBwz
+         E1tsW1FkeuTrRYVUj18u4C1NZ7tvRjHXWZ9X8Cvyvzr/lOgh6xqSZShydv9jKRI8/F
+         K3fpUpCNpiY6QfzfwLFl+HS/wMpN09nmfW1t3EJsWieqy9dnKT46M7yShWJsXMogi5
+         uwfmt/fjdA4DVZFjuWmZmRd+5i/HXrl9RzQHYf/qr9vAsvoCVPpyRnKpgifP8JV2ES
+         TAfrZJdxkxVPYLU2uHeYWnwk3axWKpAEBUkSzwRHqz3gHUnIfs4CFqgY4YS/f6Ub35
+         aa3tr9aEEoXoQ==
+Date:   Sun, 6 Nov 2022 12:13:10 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afd@ti.com, Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio/adc: qcom,spmi-iadc: use double
+ compatibles
+Message-ID: <20221106121310.3ad643be@jic23-huawei>
+In-Reply-To: <20221102163136.GA4004075-robh@kernel.org>
+References: <20221031182456.952648-1-luca@z3ntu.xyz>
+        <20221102163136.GA4004075-robh@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221008131201.540185-3-a5b6@riseup.net>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Oct 08, 2022 at 03:12:03PM +0200, Nia Espera wrote:
+On Wed, 2 Nov 2022 11:31:36 -0500
+Rob Herring <robh@kernel.org> wrote:
 
-Same comment as on patch 1 regarding $subject prefix.
-
-> Removes functionality from sofef00 panel driver which allowed it to
-> drive the s6e3fc2x01 panel
+> On Mon, Oct 31, 2022 at 07:24:54PM +0100, Luca Weiss wrote:
+> > As in other bindings, let's use specific compatibles together with the
+> > fallback compatible. Adjust the bindings for it.  
 > 
-
-This states what the removed code relates to, but not why you're doing
-it.
-
-> Signed-off-by: Nia Espera <a5b6@riseup.net>
-> Reviewed-by: Caleb Connolly <caleb@connolly.tech>
-> ---
->  drivers/gpu/drm/panel/Kconfig                 |  6 +++---
->  drivers/gpu/drm/panel/panel-samsung-sofef00.c | 18 ------------------
->  2 files changed, 3 insertions(+), 21 deletions(-)
+> You should state users are already doing this.
 > 
-> diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-> index 0dd5e1ec5644..1addbd7e4790 100644
-> --- a/drivers/gpu/drm/panel/Kconfig
-> +++ b/drivers/gpu/drm/panel/Kconfig
-> @@ -547,16 +547,16 @@ config DRM_PANEL_SAMSUNG_S6E8AA0
->  	select VIDEOMODE_HELPERS
->  
->  config DRM_PANEL_SAMSUNG_SOFEF00
-> -	tristate "Samsung sofef00/s6e3fc2x01 OnePlus 6/6T DSI cmd mode panels"
-> +	tristate "Samsung sofef00 OnePlus 6 DSI cmd mode panel"
->  	depends on OF
->  	depends on DRM_MIPI_DSI
->  	depends on BACKLIGHT_CLASS_DEVICE
->  	select VIDEOMODE_HELPERS
->  	help
->  	  Say Y or M here if you want to enable support for the Samsung AMOLED
-> -	  command mode panels found in the OnePlus 6/6T smartphones.
-> +	  command mode panel found in the OnePlus 6 smartphone.
->  
-> -	  The panels are 2280x1080@60Hz and 2340x1080@60Hz respectively
-> +	  The panel is 2280x1080@60Hz
->  
->  config DRM_PANEL_SAMSUNG_S6E3FC2X01
->  	tristate "Samsung s6e3fc2x01 OnePlus 6T DSI cmd mode panel"
-> diff --git a/drivers/gpu/drm/panel/panel-samsung-sofef00.c b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-> index bd02af81a4fe..68e58b9b8c5c 100644
-> --- a/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-> +++ b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
-> @@ -181,20 +181,6 @@ static const struct drm_display_mode enchilada_panel_mode = {
->  	.height_mm = 145,
->  };
->  
-> -static const struct drm_display_mode fajita_panel_mode = {
-> -	.clock = (1080 + 72 + 16 + 36) * (2340 + 32 + 4 + 18) * 60 / 1000,
-> -	.hdisplay = 1080,
-> -	.hsync_start = 1080 + 72,
-> -	.hsync_end = 1080 + 72 + 16,
-> -	.htotal = 1080 + 72 + 16 + 36,
-> -	.vdisplay = 2340,
-> -	.vsync_start = 2340 + 32,
-> -	.vsync_end = 2340 + 32 + 4,
-> -	.vtotal = 2340 + 32 + 4 + 18,
-> -	.width_mm = 68,
-> -	.height_mm = 145,
-> -};
-> -
->  static int sofef00_panel_get_modes(struct drm_panel *panel, struct drm_connector *connector)
->  {
->  	struct drm_display_mode *mode;
-> @@ -327,10 +313,6 @@ static const struct of_device_id sofef00_panel_of_match[] = {
->  		.compatible = "samsung,sofef00",
->  		.data = &enchilada_panel_mode,
->  	},
-> -	{ // OnePlus 6T / fajita
-> -		.compatible = "samsung,s6e3fc2x01",
+I can fix that up whilst applying.  However it raises the question:
+Should I treat this as a fix, or a tidy up (that can wait for next merge window)?
 
-But keeping this in a separate patch means that for a while we have two
-implementations of this compatible. I think it would be prettier to
-squash the two patches - and clarify in the commit message why you're
-creating an additional driver.
+I'm also fine with this going with the other patch in the series (that lore
+found for me as it didn't go to linux-iio) if that makes more sense.
 
-Regards,
-Bjorn
+If that happens
 
-> -		.data = &fajita_panel_mode,
-> -	},
->  	{ /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(of, sofef00_panel_of_match);
-> -- 
-> 2.38.0
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+Jonathan
+
+> > 
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> > Changes in v2:
+> > * New patch
+> > 
+> >  .../devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml        | 7 +++++--
+> >  1 file changed, 5 insertions(+), 2 deletions(-)  
 > 
+> Acked-by: Rob Herring <robh@kernel.org>
+
