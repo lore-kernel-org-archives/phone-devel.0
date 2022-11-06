@@ -2,74 +2,118 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F8D3C4332F
-	for <phone-devel@archiver.kernel.org>; Sat,  5 Nov 2022 14:22:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DA8FC4332F
+	for <phone-devel@archiver.kernel.org>; Sun,  6 Nov 2022 03:17:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbiKEOWJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 5 Nov 2022 10:22:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39328 "EHLO
+        id S229567AbiKFDR6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 5 Nov 2022 23:17:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbiKEOWI (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 5 Nov 2022 10:22:08 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2255BBF69;
-        Sat,  5 Nov 2022 07:22:08 -0700 (PDT)
-Received: from g550jk.. (unknown [46.183.103.8])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id A961CCE809;
-        Sat,  5 Nov 2022 14:21:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1667658118; bh=F7ulIQSAklv8bkqHi8uNDnqlnBOKAGuuRsdUaEDvNcQ=;
-        h=From:To:Cc:Subject:Date;
-        b=fBfkCH8wlinKsUZlhD688lPYWopPmng88j89oXMNUUyJI6gZXV9cGXnh4EdRZlP7p
-         b4DuPvDOFxQoRLG7DXJ+4M21oC46e0whXaR5uN9pGtPCk9TWp+ObJ6SijI6M/BrjvR
-         47YEYzzpY17Rw6qblZEQL6XGti3MsACS7ghTzkQw=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     iommu@lists.linux.dev
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Rob Herring <robh@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v5] dt-bindings: iommu: qcom: Add Qualcomm MSM8953 compatible
-Date:   Sat,  5 Nov 2022 15:20:17 +0100
-Message-Id: <20221105142016.93406-1-luca@z3ntu.xyz>
-X-Mailer: git-send-email 2.38.1
+        with ESMTP id S229548AbiKFDR4 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 5 Nov 2022 23:17:56 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5BF05FB9;
+        Sat,  5 Nov 2022 20:17:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 408F3B80683;
+        Sun,  6 Nov 2022 03:17:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D965C433D6;
+        Sun,  6 Nov 2022 03:17:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667704672;
+        bh=iXN6QTp9N3xZfo64V68cgv+Kq1hePQWIpnKArPOxGcE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HtMWU6CXuHFVtmmuBuLxQc47wWBR+J8RMjieWFPlDveugMk2zCiN9HjMZgxBLuZPp
+         a+JoBlXf/36BGSbhfezWqtJS+eXHJL5HNN/pQCXIdL9WSLzDFdd/RDeKKpYIawsbuL
+         rBwe2zF9X0f+DrU6tNMWZbLkxqoxjN969qfPypBxIjJ1Y2VIMSOxrJbyEz+oDMet3L
+         cNZC1kDpGebXhBflMVGxhyWwiztRsPBOSVufiT43kWRd/85ox6hqpDyHK2kGC1oWE5
+         VjvwMsY4Amhm/VB5MkAeAo2QChGeyNC5BvIjgUjuckn8YtBRzxcXZzEahwlJJxwgYL
+         UATBe6OQrrofQ==
+Date:   Sat, 5 Nov 2022 22:17:50 -0500
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     Nia Espera <a5b6@riseup.net>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        Caleb Connolly <caleb@connolly.tech>
+Subject: Re: [PATCH v3 1/2] drivers: gpu: drm: add driver for samsung
+ s6e3fc2x01 cmd mode panel
+Message-ID: <20221106031750.juw3fsy27wchqdqp@builder.lan>
+References: <20221008131201.540185-1-a5b6@riseup.net>
+ <20221008131201.540185-2-a5b6@riseup.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221008131201.540185-2-a5b6@riseup.net>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Document the compatible used for IOMMU on the msm8953 SoC.
+On Sat, Oct 08, 2022 at 03:12:01PM +0200, Nia Espera wrote:
+> Adds a dedicated driver for the Samsung s6e3fc2x01 panel used in OnePlus
+> 6T smartphones which was previously driven by the sofef00 panel driver
+> 
+> Signed-off-by: Nia Espera <a5b6@riseup.net>
+> Reviewed-by: Caleb Connolly <caleb@connolly.tech>
+> ---
+>  MAINTAINERS                                   |   5 +
+>  drivers/gpu/drm/panel/Kconfig                 |  12 +
+>  drivers/gpu/drm/panel/Makefile                |   1 +
+>  .../gpu/drm/panel/panel-samsung-s6e3fc2x01.c  | 388 ++++++++++++++++++
 
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
-Changes in v5:
-* Change subject so it hopefully gets noticed by iommu maintainers
-  (thanks Krzysztof, maybe this helps..)
+git log --oneline drivers/gpu/drm/panel indicates that the $subject
+prefix should be "drm/panel:"
 
- Documentation/devicetree/bindings/iommu/qcom,iommu.txt | 1 +
- 1 file changed, 1 insertion(+)
+[..]
+> diff --git a/drivers/gpu/drm/panel/Makefile b/drivers/gpu/drm/panel/Makefile
+> index 6d493b9d64fe..b54de8812e91 100644
+> --- a/drivers/gpu/drm/panel/Makefile
+> +++ b/drivers/gpu/drm/panel/Makefile
+> @@ -56,6 +56,7 @@ obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E63M0_DSI) += panel-samsung-s6e63m0-dsi.o
+>  obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E88A0_AMS452EF01) += panel-samsung-s6e88a0-ams452ef01.o
+>  obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E8AA0) += panel-samsung-s6e8aa0.o
+>  obj-$(CONFIG_DRM_PANEL_SAMSUNG_SOFEF00) += panel-samsung-sofef00.o
+> +obj-$(CONFIG_DRM_PANEL_SAMSUNG_S6E3FC2X01) += panel-samsung-s6e3fc2x01.o
+>  obj-$(CONFIG_DRM_PANEL_SEIKO_43WVF1G) += panel-seiko-43wvf1g.o
+>  obj-$(CONFIG_DRM_PANEL_SHARP_LQ101R1SX01) += panel-sharp-lq101r1sx01.o
+>  obj-$(CONFIG_DRM_PANEL_SHARP_LS037V7DW01) += panel-sharp-ls037v7dw01.o
+> diff --git a/drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c b/drivers/gpu/drm/panel/panel-samsung-s6e3fc2x01.c
+[..]
+> +static int s6e3fc2x01_panel_bl_update_status(struct backlight_device *bl)
+> +{
+> +	struct mipi_dsi_device *dsi = bl_get_data(bl);
+> +	int err;
+> +	u16 brightness;
+> +
+> +	brightness = (u16)backlight_get_brightness(bl);
+> +	// This panel needs the high and low bytes swapped for the brightness value
 
-diff --git a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-index 059139abce35..e6cecfd360eb 100644
---- a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-+++ b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-@@ -10,6 +10,7 @@ to non-secure vs secure interrupt line.
- - compatible       : Should be one of:
- 
-                         "qcom,msm8916-iommu"
-+                        "qcom,msm8953-iommu"
- 
-                      Followed by "qcom,msm-iommu-v1".
- 
--- 
-2.38.1
+/* */ please
 
+> +	brightness = __swab16(brightness);
+> +
+> +	err = mipi_dsi_dcs_set_display_brightness(dsi, brightness);
+
+This returns a valid <= 0, so it would be nicer with just
+
+	return mipi_dsi_dsc_set_display_brightness(...);
+
+> +	if (err < 0)
+> +		return err;
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct backlight_ops s6e3fc2x01_panel_bl_ops = {
+> +	.update_status = s6e3fc2x01_panel_bl_update_status,
+> +};
+> +
+
+Regards,
+Bjorn
