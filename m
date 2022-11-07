@@ -2,82 +2,149 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E062C3A589
-	for <phone-devel@archiver.kernel.org>; Mon,  7 Nov 2022 03:15:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66B0FC433FE
+	for <phone-devel@archiver.kernel.org>; Mon,  7 Nov 2022 09:02:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231424AbiKGDPG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 6 Nov 2022 22:15:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36024 "EHLO
+        id S231489AbiKGJCE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 7 Nov 2022 04:02:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231127AbiKGDOa (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 6 Nov 2022 22:14:30 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47145120B3;
-        Sun,  6 Nov 2022 19:13:14 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F1676B80D99;
-        Mon,  7 Nov 2022 03:13:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92324C43146;
-        Mon,  7 Nov 2022 03:13:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667790790;
-        bh=cGAJjbZeuhUhO/pFsR5dnPtnKFHkFJOaQQC+3rpOCPE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aHfhy2McPNyp3V/6keDTcw6fRr9NUvfC5X/A3h7h4IzkFX6UaW8MAPPlpwEyujoY6
-         d0ha+OquMBl+EOPsqpxeGH5whOqIcPaa5ySRX1zHSg5/sSPORzAPgencZir5b3aojZ
-         /vnMy7Fo/twoxKDsz+TEVnb/4R8BKlfax9jpNLNRQJdVRFUmbbg0fEBrJAlBX3I9Z6
-         fwHwSUrlTT3iJ7xCBLcvG62YZVvt/z1dWt8xAwLwSvYdomrzCEujQ3FvPuPsAQEBO6
-         a83Mb2qjrX4MrTstc/V839dV8Yq1bbNAAtwMSS/1v6rhb8dbInlAtIyt4XWgnwIdyD
-         iLmv7x4VvF0Xg==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     phone-devel@vger.kernel.org, marijn.suijten@somainline.org,
-        Andy Gross <agross@kernel.org>, konrad.dybcio@somainline.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org,
-        angelogioacchino.delregno@somainline.org,
-        linux-kernel@vger.kernel.org, sboyd@kernel.org,
-        martin.botka@somainline.org, lee@kernel.org,
-        jami.kettunen@somainline.org
-Subject: Re: [PATCH v4 0/5] Add Qcom PM6125 PMIC and use in Sony Xperia Seine PDX201
-Date:   Sun,  6 Nov 2022 21:12:28 -0600
-Message-Id: <166779074253.500303.17337687098112948998.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220926190148.283805-1-marijn.suijten@somainline.org>
-References: <20220926190148.283805-1-marijn.suijten@somainline.org>
+        with ESMTP id S231596AbiKGJCC (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Nov 2022 04:02:02 -0500
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D092A12AFA;
+        Mon,  7 Nov 2022 01:02:00 -0800 (PST)
+Received: by mail-ej1-x629.google.com with SMTP id f5so28245514ejc.5;
+        Mon, 07 Nov 2022 01:02:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cW5LkWgcRlMNKLV3GazkMSxbvLqyy3R2vB1Tb2XIh4k=;
+        b=FJtmWIUmERN0XZT6R7B0ZeZ/AZdoSIRjpHX24tLtPg4vmwpC7n0lbmli9A4ArzUdwN
+         RjvCoyOzDdt4RlQBTatgdGY6PzoivWqC2mialFJUMEZR5NSiTdXsoazK+js3Gj1H6WDw
+         +k/F/62Kt/i1N06Fb8X298f0xqPxepzkyVPnSDqC8u2C94jZP3EA1AkhgwaxmvQa5YCs
+         7ArUDSo/AL6n+Wk4itecHmVXWtIuqGgl4fSrDqITk6kj9cDjkyYYFx2tQtmrMXsfCRK/
+         5qIp548tPhscmU8YVqrmMb44IcmIzZmNfkrNwM+U3g5Q5N654YFd/xB3sMlL8kt+CAmu
+         I0Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cW5LkWgcRlMNKLV3GazkMSxbvLqyy3R2vB1Tb2XIh4k=;
+        b=GuTeWnFzX2hdN6ji+zMF30NBNQeLpkMe07pzlRsA828hGplEUb7vS7BjuRI35wonUQ
+         3H9Ix8pe+TFvvrT+R17wPpnNdwzclZu799XH2IGVBfzFoAnPS6gl0VUCJ+dZxe8GRcw2
+         IdC+L2hA2rOpLwoAYOvVYZ4cBfeLn9RVLxaroaTA3ftsKT8bXf2g7JX9c3ACUkP2W706
+         U1UVMfElEJieZhmDv4aaxG7w0tIe8UyItaAWyLIz5fTJ9+vI1FfS7/X2g/arz2NR/uVj
+         ktBgt5elTks8BZbhnAb+ZyNWLGPRu7hNUMz3xnEKb1648iembeb009pMtyxAlVRu+KfI
+         VPqA==
+X-Gm-Message-State: ACrzQf1EYeMklbzs6PcmFZvdYRoKjUqnTprdZPVUUU7h6jm6n7ClzYqm
+        YG80+9EP5iJFojo36I0OXRA=
+X-Google-Smtp-Source: AMsMyM5EN3f0b4ueU4DZk3y/oY0gnVreX+TZQctLnAwmzjUlOuqffd20LFevB1oZ2YD5YFmR7WPWIA==
+X-Received: by 2002:a17:907:3f19:b0:7a3:2317:4221 with SMTP id hq25-20020a1709073f1900b007a323174221mr46310466ejc.562.1667811719295;
+        Mon, 07 Nov 2022 01:01:59 -0800 (PST)
+Received: from [192.168.74.101] ([77.78.20.135])
+        by smtp.gmail.com with ESMTPSA id k18-20020a05640212d200b0044ef2ac2650sm3793355edx.90.2022.11.07.01.01.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Nov 2022 01:01:58 -0800 (PST)
+Message-ID: <fa8450f5-13c5-17b7-a239-768554b150e5@gmail.com>
+Date:   Mon, 7 Nov 2022 11:01:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [PATCH v5 8/8] arm64: dts: qcom: sm4250: Add support for
+ oneplus-billie2
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <20221030094258.486428-1-iskren.chernev@gmail.com>
+ <20221030094258.486428-9-iskren.chernev@gmail.com>
+ <1880c054-08d9-3901-f44e-290d1fd27ed4@linaro.org>
+From:   Iskren Chernev <iskren.chernev@gmail.com>
+In-Reply-To: <1880c054-08d9-3901-f44e-290d1fd27ed4@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 26 Sep 2022 21:01:43 +0200, Marijn Suijten wrote:
-> This series adds initial support for the PM6125 PMIC, and its power key
-> handling and thermal monitoring capabilities are configured for Sony's
-> PDX201 (Xperia 10II).
-> 
-> One patch for pm660 is included to fix a node address mismatch with its
-> reg field.
-> 
-> [...]
 
-Applied, thanks!
 
-[1/5] dt-bindings: mfd: qcom-spmi-pmic: Add pm6125 compatible
-      commit: 3da503c26ec572628802b4ffbe738a5d373cd3f6
-[2/5] arm64: dts: qcom: pm660: Use unique ADC5_VCOIN address in node name
-      commit: 02549ba5de0a09a27616496c3512db5af4ad7862
-[3/5] arm64: dts: qcom: Add PM6125 PMIC
-      commit: 7c969c6e216654cab8b124383dd99a276049994d
-[4/5] arm64: dts: qcom: sm6125-seine: Include PM6125 and configure PON
-      commit: 7401035f2ef8841d0db9724507b45841d16894b6
-[5/5] arm64: dts: qcom: sm6125-seine: Configure additional trinket thermistors
-      commit: 4ba146dd8897353e4e18a12c7866127f85c251e7
+On 11/4/22 21:17, Krzysztof Kozlowski wrote:
+> On 30/10/2022 05:42, Iskren Chernev wrote:
+>> Add initial support for OnePlus Nord N100, based on SM4250. Currently
+>> working:
+>> - boots
+>> - usb
+>> - built-in flash storage (UFS)
+>> - SD card reader
+>>
+>> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+>> ---
+>>  arch/arm64/boot/dts/qcom/Makefile             |   1 +
+>>  .../boot/dts/qcom/sm4250-oneplus-billie2.dts  | 241 ++++++++++++++++++
+>>  2 files changed, 242 insertions(+)
+>>  create mode 100644 arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+>> index b0558d3389e5..eb2a58b8af5f 100644
+>> --- a/arch/arm64/boot/dts/qcom/Makefile
+>> +++ b/arch/arm64/boot/dts/qcom/Makefile
+>> @@ -142,6 +142,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-xiaomi-polaris.dtb
+>>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-shift-axolotl.dtb
+>>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-lenovo-yoga-c630.dtb
+>>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm850-samsung-w737.dtb
+>> +dtb-$(CONFIG_ARCH_QCOM)	+= sm4250-oneplus-billie2.dtb
+>>  dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-sony-xperia-seine-pdx201.dtb
+>>  dtb-$(CONFIG_ARCH_QCOM)	+= sm6350-sony-xperia-lena-pdx213.dtb
+>>  dtb-$(CONFIG_ARCH_QCOM)	+= sm7225-fairphone-fp4.dtb
+>> diff --git a/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts b/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
+>> new file mode 100644
+>> index 000000000000..a3f1c7c41fd7
+>> --- /dev/null
+>> +++ b/arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dts
+>> @@ -0,0 +1,241 @@
+>> +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+>> +/*
+>> + * Copyright (c) 2021, Iskren Chernev <iskren.chernev@gmail.com>
+>> + */
+>> +
+>> +/dts-v1/;
+>> +
+>> +#include "sm4250.dtsi"
+>> +
+>> +/ {
+>> +	model = "OnePlus Nord N100";
+>> +	compatible = "oneplus,billie2", "qcom,sm4250";
+>> +
+>> +	/* required for bootloader to select correct board */
+>> +	qcom,msm-id = <0x1a1 0x10000 0x1bc 0x10000>;
+>> +	qcom,board-id = <0x1000b 0x00>;
+>
+> These are currently not allowed for SM4250. If there are really needed,
+> please justify it and update
+> Documentation/devicetree/bindings/arm/qcom.yaml. Then also update
+> include/dt-bindings/arm/qcom,ids.h and socinfo driver.
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+I'm having some trouble with testing this ATM. If this is the only patch
+with remaining complaints, the rest can be merged (because there is other
+work prepped for 4250/6115 that depends on it), and once billie2 is figured
+out it could be merged separately.
+
+> Best regards,
+> Krzysztof
+
+Regards,
+Iskren
