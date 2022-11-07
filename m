@@ -2,48 +2,47 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 388DAC4332F
-	for <phone-devel@archiver.kernel.org>; Mon,  7 Nov 2022 03:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E389CC4332F
+	for <phone-devel@archiver.kernel.org>; Mon,  7 Nov 2022 03:14:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230469AbiKGDNJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 6 Nov 2022 22:13:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34832 "EHLO
+        id S231260AbiKGDOc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 6 Nov 2022 22:14:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230423AbiKGDMz (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 6 Nov 2022 22:12:55 -0500
+        with ESMTP id S231156AbiKGDNz (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 6 Nov 2022 22:13:55 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EFE8DFB0;
-        Sun,  6 Nov 2022 19:12:50 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0051511C1D;
+        Sun,  6 Nov 2022 19:13:07 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 37D85B80D7C;
-        Mon,  7 Nov 2022 03:12:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14104C4347C;
-        Mon,  7 Nov 2022 03:12:47 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8F566B80D8E;
+        Mon,  7 Nov 2022 03:13:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BF0C433C1;
+        Mon,  7 Nov 2022 03:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667790767;
-        bh=eHVb7ZciPLVALoLFYWEq9rlBEq8qxMdq9ufQ9uYRkms=;
+        s=k20201202; t=1667790785;
+        bh=3mEwzCwgosBBIlSpvycu5fwB0sXss+tK+aeYmxTn28s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uqFvO7JIcnSlS6mJZwkd9bE17zGBWsYaBJgZCLgfDWQYwsfcVOK1koC5sE6ejYo+V
-         k3nYF8+QdIkXzX/3NT7DZLzFuuIE47mSEc1gXESwi/lH+VUowQl6dNsDCFZde3Wdan
-         SPHebRQvd1pgeKO+Lpnj4paeW06/lRHoGuT/BOkJ3KOQvpoCXJIqZX9Q+pTvCpiK7K
-         03u6RBk1is4bp6IMwRAM1Ky4BIlMH3SmOWQMapwfWZ10ogOcngZ13/hE/S6bDbEGyc
-         Jk29aT01FaoT8zac1/zyOLmqNy+C99Z5zSzZUBX28S7FjZY89kUniGRUvBk2hFCDbY
-         LyAKmpRbl2pog==
+        b=R6CQQwZhydI8LC5dso0QvhwyH55XUPUBinhh8FZ0ASAMG09n1qxFYGHghRgH5zEQu
+         TVXHRidGp7y0Fiafj9PQfbO7pFPIKOY5b06xLt8SMVXYctMFLCNNoNuPW4YJY8vfx1
+         ikT3YdYnZc+lNrM/qmjUNtU9rD9LJrttlCp/e7nOrNXYZRBMuYB91cCfftnloS+v8y
+         WIWLn/mMh0MJPofO4YcILW0geBBhkmlny2e5zbcrdRPQ+wNtle0/7o+nrzEglEZ/V3
+         inwluB+kH8//SdVLYfXhJUkTHVAG9JZNGZVKIOjPc36rcLht/czC+KrP3jQKoPROCI
+         JlH8R8XTAciZg==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     Rob Herring <robh+dt@kernel.org>,
-        krzysztof.kozlowski+dt@linaro.org, hpausten@protonmail.com
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, konrad.dybcio@somainline.org,
-        y.oudjana@protonmail.com, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>
-Subject: Re: [PATCH v2 0/4] Initial OnePlus 3(T) Support
-Date:   Sun,  6 Nov 2022 21:12:05 -0600
-Message-Id: <166779074264.500303.8835095295944116089.b4-ty@kernel.org>
+To:     linux-arm-msm@vger.kernel.org, luca.weiss@fairphone.com
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, evgreen@chromium.org,
+        konrad.dybcio@somainline.org, linux-kernel@vger.kernel.org,
+        vnkgutta@codeaurora.org, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>
+Subject: Re: [PATCH] soc: qcom: llcc: make irq truly optional
+Date:   Sun,  6 Nov 2022 21:12:23 -0600
+Message-Id: <166779074269.500303.16334557002713010360.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221023204505.115141-1-hpausten@protonmail.com>
-References: <20221023204505.115141-1-hpausten@protonmail.com>
+In-Reply-To: <20221104153041.412020-1-luca.weiss@fairphone.com>
+References: <20221104153041.412020-1-luca.weiss@fairphone.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,30 +50,20 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 23 Oct 2022 20:45:16 +0000, Harry Austen wrote:
-> Changes from v1
-> ---------------
-> v1: https://lore.kernel.org/all/20221021142242.129276-1-hpausten@protonmail.com/
-> - fix node name DT schema problems
-> - removed "simple-bus" compatible from /clocks node
-> - use common "-clk" suffix for divclk1/4 node names
-> - use common "-regulator" suffix for wlan-en regulator node name
-> - move status properties last in all nodes
-> - fixed copyright to be assigned to myself, since I don't work for LF
-> - add Krzysztof's Rb tag to bindings patch
+On Fri, 4 Nov 2022 16:30:41 +0100, Luca Weiss wrote:
+> The function platform_get_irq prints an error message into the kernel
+> log when the irq isn't found.
+> 
+> Since the interrupt is actually optional and not provided by some SoCs,
+> use platform_get_irq_optional which does not print an error message.
+> 
 > 
 > [...]
 
 Applied, thanks!
 
-[1/4] arm64: dts: qcom: msm8996: standardize blsp indexing
-      commit: 1a94ba5b44c5448c7ec962a5ce66eb12a6042288
-[2/4] arm64: boot: dts: msm8996: add blsp1_i2c6 node
-      commit: 18c32de673bf3ade651979be48e9a14bfe612487
-[3/4] dt-bindings: arm: qcom: add oneplus3(t) devices
-      commit: ce5d6ba21ae6c83fc2db385f9202272ca0d403f2
-[4/4] arm64: dts: qcom: msm8996: add support for oneplus3(t)
-      commit: 5a134c940cd368b72d5bcf24132b8f951be9a4c1
+[1/1] soc: qcom: llcc: make irq truly optional
+      commit: c882c899ead3545102a4d71b5fbe73b9e4bc2657
 
 Best regards,
 -- 
