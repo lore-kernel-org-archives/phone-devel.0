@@ -2,48 +2,50 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C849C433FE
-	for <phone-devel@archiver.kernel.org>; Tue,  8 Nov 2022 01:28:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CE791C433FE
+	for <phone-devel@archiver.kernel.org>; Tue,  8 Nov 2022 01:35:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233507AbiKHB2y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 7 Nov 2022 20:28:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50358 "EHLO
+        id S233152AbiKHBfG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 7 Nov 2022 20:35:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233329AbiKHB2Z (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Nov 2022 20:28:25 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 754492CCA6;
-        Mon,  7 Nov 2022 17:28:07 -0800 (PST)
+        with ESMTP id S233178AbiKHBfF (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Nov 2022 20:35:05 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A92ABFC2;
+        Mon,  7 Nov 2022 17:35:04 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3417BB816DD;
-        Tue,  8 Nov 2022 01:28:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AE3C43144;
-        Tue,  8 Nov 2022 01:28:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 46AAD6139D;
+        Tue,  8 Nov 2022 01:35:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CC5C4347C;
+        Tue,  8 Nov 2022 01:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667870884;
-        bh=FP97IcSbPmd3bIEDid95eErj3OOgawoY96h2JYd3HQo=;
+        s=k20201202; t=1667871303;
+        bh=VbHtwiRY9OrRcqTZTxylig5/x3MC+EqH11/EcgSsNa8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tRAk2FlzuFq/bwO39xdFtTzTJbwi8IlfUGbRjZY/h6/wfDfk3hoKzr03U/RI60Ol4
-         kRXkgjQ9nDdfXwzLNe63gzfwpklwy4PP3awzPyeVkkULxTI65eF4VGUNbKDf+Fsghu
-         ialD2FKf/zs/qs4pW8lE3BMg/ljG/hJ8dCJguGNg31VK6uftdp/rIw1ivBE921uJX/
-         /M0lhT58jLhRvsYoa+pQUKdHxdoMZXsi8mlFUac0Ggqp77sMn4BemLEa+BwxWaQQU5
-         Op9aMjPm+Ju3dUWPaY8iINN7iczkZT79UMDPNZGeL//BUGTqu3nX20wyZCgDeTd9yb
-         KYYz8mtuldBqA==
+        b=VWBE9yzzMyLiLN6q/6wYb/7IWK9zU71a0tE9xTvGa0JXRDuv3/bSHJqnGZVxtPxuq
+         NnCc+OOwcmfl48BnPKFluIV6w/iFbx5ZqsiwM2ad25v5rwfS+QiYpluzrSkVuVGJmD
+         5Zbq6y+m+y8RfrCRIuEUPI3MRR5CuBkw8D/0tNHRMTOQFo8MrpOReeCL+Tw4sIs2+D
+         0TPAjC3ymldiz1xkEjDUv1GoKfthpyKxmtP3gLAdw45IwF9K+ztmVdShP5uo4tVOHZ
+         cWsSa/WzX3IB52OejiLIfnMw1nVh4zPXiEx6hs3ZRsHXw8gCvD1+AbJwSBWlfm43hH
+         Z/LkN+Vw0FwoA==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     linux-arm-msm@vger.kernel.org, matti.lehtimaki@gmail.com
-Cc:     devicetree@vger.kernel.org, rayyan@ansari.sh, robh+dt@kernel.org,
+To:     phone-devel@vger.kernel.org, marijn.suijten@somainline.org
+Cc:     agross@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         ~postmarketos/upstreaming@lists.sr.ht,
-        konrad.dybcio@somainline.org, krzysztof.kozlowski+dt@linaro.org,
-        agross@kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH v1 1/6] ARM: dts: qcom: msm8226: Add MMCC node
-Date:   Mon,  7 Nov 2022 19:27:34 -0600
-Message-Id: <166787084687.599230.11115238688435014299.b4-ty@kernel.org>
+        linux-kernel@vger.kernel.org,
+        angelogioacchino.delregno@somainline.org,
+        jami.kettunen@somainline.org, martin.botka@somainline.org,
+        robh+dt@kernel.org, devicetree@vger.kernel.org,
+        konrad.dybcio@somainline.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: sm6125: Enable Command Queue Engine (CQE) for SDHCI 1
+Date:   Mon,  7 Nov 2022 19:35:00 -0600
+Message-Id: <166787129212.608852.6548286601468082055.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221002122859.75525-2-matti.lehtimaki@gmail.com>
-References: <20221002122859.75525-1-matti.lehtimaki@gmail.com> <20221002122859.75525-2-matti.lehtimaki@gmail.com>
+In-Reply-To: <20221107214702.311271-1-marijn.suijten@somainline.org>
+References: <20221107214702.311271-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,17 +53,20 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 2 Oct 2022 15:28:53 +0300, Matti Lehtimäki wrote:
-> From: Rayyan Ansari <rayyan@ansari.sh>
+On Mon, 7 Nov 2022 22:47:01 +0100, Marijn Suijten wrote:
+> Downstream sources confirm sm6125 supports CQE, and after fixing the
+> reg name for this range [1] this feature probes and enables correctly:
 > 
-> Add a node for the Multimedia Clock Controller found on MSM8226.
+>     [    0.391950] sdhci_msm 4744000.mmc: mmc0: CQE init: success
 > 
+> [1]: https://lore.kernel.org/all/20221026163646.37433-1-krzysztof.kozlowski@linaro.org/
 > 
+> [...]
 
 Applied, thanks!
 
-[1/6] ARM: dts: qcom: msm8226: Add MMCC node
-      commit: ad789f571d93419882aad66515640f649e63bf95
+[1/1] arm64: dts: qcom: sm6125: Enable Command Queue Engine (CQE) for SDHCI 1
+      commit: f53152d1d4e6c711bb9728611bbe0b32deda36b1
 
 Best regards,
 -- 
