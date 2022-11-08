@@ -2,108 +2,175 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EFD0DC433FE
-	for <phone-devel@archiver.kernel.org>; Tue,  8 Nov 2022 04:41:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 65DFBC433FE
+	for <phone-devel@archiver.kernel.org>; Tue,  8 Nov 2022 09:30:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232411AbiKHElO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 7 Nov 2022 23:41:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53178 "EHLO
+        id S233300AbiKHJaE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 8 Nov 2022 04:30:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232125AbiKHElN (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Nov 2022 23:41:13 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A035E0C5;
-        Mon,  7 Nov 2022 20:41:12 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2400B61466;
-        Tue,  8 Nov 2022 04:41:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17A9C433C1;
-        Tue,  8 Nov 2022 04:41:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667882471;
-        bh=u+aMSC7NtK/eF/XnaxPejrZT3LQ1++Bwr4IovOzzV24=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IWRfF3klqBvKduJp26siphyeNq3/RNm+nQkelqIna629PgV8dlx2m5+L7iJ/t2Isl
-         CEBTukWsBpBnf8uLp9k3v3BvT8dovqFTIaIlF0vSt2euKYlIZFQe4PgFSYulFmmAEr
-         Zk3KiHQMNF8skaoacDySPbl2cYzMTSuoVikmI66kLBdfqMXz/6XmabefgHk22meK1A
-         vxhHNPSX0nLU0airdnO+Jm4QT2lPKkvK/t2lB1yTAnXy2kyVCn9FOAaA6BsWm6gK55
-         4h3E+//4Ae+v3izNeGulcQpVBmWZGbcS7yZmWPjAlzrUH8r8693DBVsYaS7OkSwnLR
-         QpYkHuETB4zRg==
-Date:   Mon, 7 Nov 2022 22:41:08 -0600
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Yassine Oudjana <yassine.oudjana@gmail.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        with ESMTP id S233789AbiKHJ3v (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 8 Nov 2022 04:29:51 -0500
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E764925C44
+        for <phone-devel@vger.kernel.org>; Tue,  8 Nov 2022 01:29:49 -0800 (PST)
+Received: by mail-lj1-x230.google.com with SMTP id d3so20202291ljl.1
+        for <phone-devel@vger.kernel.org>; Tue, 08 Nov 2022 01:29:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rOVmsonL+k/0HZVK2nxpFgpQMHWhsli4Q3QlCw0qmsE=;
+        b=tDhHK71PxNsz0WNgtB/w97HLA516yj+UB6dkiAiSfyEHunUfai9u2vudUgCSjnZK4g
+         XI212VYIzT3Z+8kAiNxqL44J0IDz9EM7L3a/5hY3TcY0mCcDlWjy1fKU610hHLUwsIQD
+         fFP+Eh2u7g8oP0fWT2YC+pbmkzlY0bAnFBuEgUa5Ueb5UjR/UQGUMk9TspPhb7/vGvdX
+         4vjAT1iZDFUTnIOncRdoPRk5iPbMhvDc4tkiwBGsF7GV/R7SLGvcmlSeCL8pz6M0YM7T
+         rw9ymsI/bExsNZV4Rxiq7izCA9+5l2J9B5A0HtYIj2ceFX1E3i31FYCC44Ssg9ZrBITd
+         nXeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rOVmsonL+k/0HZVK2nxpFgpQMHWhsli4Q3QlCw0qmsE=;
+        b=1VvmxncC+HictC6RNOnneUbkAJy/qN3ly85OnyeGMljniTqdtXwHaM6VEikG4KUkq/
+         SWugo8lgXm4SiWtOm1+Hq/Uhzsa+IFRvvHkUNxh+la5tzE3I6jp0ccG0QQ3GuHmjPQI4
+         BAUf8jg/1AsWzeeo8MM7DXG4DAhtv2gORlLUwYrAg50Fd1GqnkMhPnQj59mQOaVtSeHW
+         HMT4rdOTN2bDsPFli8CdDAwY70Kw2xk3EF0MyHvSpR7SOSioMS+uYoENKoLWaYVDxrSu
+         YtjggfYOLR0PDV63VoW/kLONfNT0NOry6P4bSSvlmAQAO8IrqNcd2W9OGsoNFbtEiHXf
+         9Biw==
+X-Gm-Message-State: ACrzQf0b7qi/y458HLrXZ+9olZzkmqvrBdOePirX20MXv1ttfTMxIj+m
+        3LhhTJgm7j4xAaCOClwzl89NGg==
+X-Google-Smtp-Source: AMsMyM40579+zfxIe+Ql7/outiP4k9BXLWi8yzxj8i7/ri53RvHNqLkyvFPwfRVxa4oQ6UqtiowIyw==
+X-Received: by 2002:a2e:a211:0:b0:277:1888:e14b with SMTP id h17-20020a2ea211000000b002771888e14bmr6331047ljm.339.1667899788261;
+        Tue, 08 Nov 2022 01:29:48 -0800 (PST)
+Received: from [192.168.0.20] (088156142199.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.199])
+        by smtp.gmail.com with ESMTPSA id o4-20020a05651205c400b0048ae518364dsm1721417lfo.148.2022.11.08.01.29.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Nov 2022 01:29:47 -0800 (PST)
+Message-ID: <13d80a37-9202-480c-94ec-13cb1abce305@linaro.org>
+Date:   Tue, 8 Nov 2022 10:29:46 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v3 4/4] arm64: dts: qcom: add sdm670 and pixel 3a device
+ trees
+Content-Language: en-US
+To:     Richard Acayan <mailingradian@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Yassine Oudjana <y.oudjana@protonmail.com>
-Subject: Re: [PATCH] arm64: dts: qcom: msm8996pro-xiaomi-scorpio: Remove DSI
- PHY clocks from MMCC
-Message-ID: <20221108044108.se3et4do5q2dspsb@builder.lan>
-References: <20221107114016.356112-1-y.oudjana@protonmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221107114016.356112-1-y.oudjana@protonmail.com>
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Robert Marko <robimarko@gmail.com>,
+        Guru Das Srinagesh <quic_gurus@quicinc.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20221108030411.59409-1-mailingradian@gmail.com>
+ <20221108030411.59409-5-mailingradian@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221108030411.59409-5-mailingradian@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Nov 07, 2022 at 02:40:17PM +0300, Yassine Oudjana wrote:
-> From: Yassine Oudjana <y.oudjana@protonmail.com>
+On 08/11/2022 04:04, Richard Acayan wrote:
+> The Qualcomm Snapdragon 670 has been out for a while. Add a device tree
+> for it and the Google Pixel 3a as the first device.
 > 
-> Having DSI PHY clocks listed in the MMCC node while MDSS is disabled makes
-> it defer probe indefinitely, resulting in simplefb and other blocks that
-> depend on its clocks to defer probe as well. Remove DSI PHY clocks from
-> MMCC to let it probe with MDSS disabled.
+> The Pixel 3a has the same bootloader issue as the Pixel 3 and will not work
+> on Android 10 bootloaders or later until it gets fixed for the Pixel 3.
 > 
-
-Isn't this a generic problem that we will have all over the place, where
-we describe incoming clocks from all PHYs and then only enable the ones
-actually available on each platform?
-
-Am I missing something special with this case? I think the kernel need
-to handle this.
-
-Regards,
-Bjorn
-
-> Fixes: 48aa636285ad ("arm64: dts: qcom: msm8996: add clocks to the MMCC device node")
-> Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+> SoC Initial Features:
+>  - power management
+>  - clocks
+>  - pinctrl
+>  - eMMC
+>  - USB 2.0
+>  - GENI I2C
+>  - IOMMU
+>  - RPMh
+>  - interrupts
+> 
+> Device-Specific Initial Features:
+>  - side buttons (keys)
+>  - regulators
+>  - touchscreen
+> 
+> Signed-off-by: Richard Acayan <mailingradian@gmail.com>
 > ---
->  .../boot/dts/qcom/msm8996pro-xiaomi-scorpio.dts     | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  arch/arm64/boot/dts/qcom/Makefile             |    1 +
+>  .../boot/dts/qcom/sdm670-google-sargo.dts     |  533 ++++++++
+>  arch/arm64/boot/dts/qcom/sdm670.dtsi          | 1160 +++++++++++++++++
+>  3 files changed, 1694 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts
+>  create mode 100644 arch/arm64/boot/dts/qcom/sdm670.dtsi
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-scorpio.dts b/arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-scorpio.dts
-> index 7bf6ad1a214b..c68c2dadd7b4 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-scorpio.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8996pro-xiaomi-scorpio.dts
-> @@ -113,6 +113,19 @@ &mdss {
->  	status = "disabled";
->  };
->  
-> +&mmcc {
-> +	/*
-> +	 * Remove non-essential DSI PHY clocks to allow MMCC to probe
-> +	 * with MDSS disabled.
-> +	 */
-> +	clocks = <&xo_board>,
-> +		 <&gcc GCC_MMSS_NOC_CFG_AHB_CLK>,
-> +		 <&gcc GPLL0>;
-> +	clock-names = "xo",
-> +		      "gcc_mmss_noc_cfg_ahb_clk",
-> +		      "gpll0";
-> +};
+> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+> index b0558d3389e5..4eb5d8829efb 100644
+> --- a/arch/arm64/boot/dts/qcom/Makefile
+> +++ b/arch/arm64/boot/dts/qcom/Makefile
+> @@ -124,6 +124,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm630-sony-xperia-nile-voyager.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm632-fairphone-fp3.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm636-sony-xperia-ganges-mermaid.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm660-xiaomi-lavender.dtb
+> +dtb-$(CONFIG_ARCH_QCOM)	+= sdm670-google-sargo.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-cheza-r1.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-cheza-r2.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sdm845-cheza-r3.dtb
+> diff --git a/arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts b/arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts
+> new file mode 100644
+> index 000000000000..fe3f61f8a348
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts
+> @@ -0,0 +1,533 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Device tree for Google Pixel 3a, adapted from google-blueline device tree,
+> + * xiaomi-lavender device tree, and oneplus-common device tree.
+> + *
+> + * Copyright (c) 2022, Richard Acayan. All rights reserved.
+> + */
 > +
->  &mss_pil {
->  	firmware-name = "qcom/msm8996/scorpio/mba.mbn",
->  			"qcom/msm8996/scorpio/modem.mbn";
-> -- 
-> 2.38.1
-> 
+> +/dts-v1/;
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/input/input.h>
+> +#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+> +#include <dt-bindings/power/qcom-rpmpd.h>
+> +#include "sdm670.dtsi"
+> +#include "pm660.dtsi"
+> +#include "pm660l.dtsi"
+> +
+> +/delete-node/ &mpss_region;
+> +/delete-node/ &venus_mem;
+> +/delete-node/ &wlan_msa_mem;
+> +/delete-node/ &cdsp_mem;
+> +/delete-node/ &mba_region;
+> +/delete-node/ &adsp_mem;
+> +/delete-node/ &ipa_fw_mem;
+> +/delete-node/ &ipa_gsi_mem;
+> +/delete-node/ &gpu_mem;
+> +
+> +/ {
+> +	model = "Google Pixel 3a";
+> +	compatible = "google,sargo", "qcom,sdm670";
+> +	qcom,board-id = <0x00041e05 0>;
+> +	qcom,msm-id = <321 0x20001>;
+
+These two are not allowed for your platform. If you tested your DTS, you
+would see:
+
+ /: qcom,board-id: False schema does not allow [[269829, 0]]
+ /: qcom,msm-id: False schema does not allow [[321, 131073]]
+
+This must be fixed.
+
+Best regards,
+Krzysztof
+
