@@ -2,48 +2,48 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E289C4167D
-	for <phone-devel@archiver.kernel.org>; Tue,  8 Nov 2022 01:28:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24C86C43219
+	for <phone-devel@archiver.kernel.org>; Tue,  8 Nov 2022 01:28:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233247AbiKHB16 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 7 Nov 2022 20:27:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50020 "EHLO
+        id S233290AbiKHB2A (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 7 Nov 2022 20:28:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233187AbiKHB14 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Nov 2022 20:27:56 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF2C72AE12;
-        Mon,  7 Nov 2022 17:27:54 -0800 (PST)
+        with ESMTP id S233279AbiKHB17 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Nov 2022 20:27:59 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38E372AE06;
+        Mon,  7 Nov 2022 17:27:59 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BA8E611F4;
-        Tue,  8 Nov 2022 01:27:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166B5C43143;
-        Tue,  8 Nov 2022 01:27:53 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E92E3B816DD;
+        Tue,  8 Nov 2022 01:27:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99782C433C1;
+        Tue,  8 Nov 2022 01:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667870874;
-        bh=3rIhWhWaO/IhkSOEqoQG5y/c79UcKpSiyf3xTXVinD4=;
+        s=k20201202; t=1667870876;
+        bh=Cnbws5G7KGmfRLaIrW95vot+pUVUXpve3ZRx28df1JU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jz3iIZMe6pL/rIL9Elm05Xwt//0QsMabqjxHScDpN3cm6Dsm1fkHCkT2SDXDp6aDq
-         QunJBHd6a+Wd8pBNF7y8hDN7wQZqTo8uVdgTaLbOxonhAf40QTEob09qWOJ4WmNzkY
-         pkZl6c03oDdLZw0aEYOFlb3biPFyqRlnHripFPot3mKoGuVKb6HHPh5l4shM8QVeZS
-         jiFsJ1PYrqG7LGw5SKAruRSIZQG5CMYP4uGN1OsaDF1ivPJ8gKrrweLc3ZT4kEGq5x
-         HOGFe47qUl7WiDm+UXejhEt6b2X23HNUxHHv91RLeGRKuuGNm5bHwudPwdx8hmXc2U
-         ZRdxveIlskojg==
+        b=slbkL+TBZKDaHXEJUy8GkTxbUOSAQwEAM4xSqVMZt7q/yDJNssJRummIK1z4fR2xo
+         /f6w9b6tEPoKAA9KhYkgByIqE9iUzGLuDN6S9fG1CP08pC/7a8jqIEAWz3KhrreloY
+         UO97Z+HpxuPzrZ41vpsCjNfVfWr+d9xtZOGMTPtrgh0rYANysXJ3rVbHRsdAUXCMA5
+         BTR+/bdqL1GnfIMPRTrwG2EJ4K+lmAoWSHQrSlEfekhdTL+JPCyJi71UcYiYCZOY3R
+         GeSLRP7O72pD1HihuOm7eL1aF4Al6Aa0zJKyu6KFN82yvLPRejyC7NZUMX8VeXNNrM
+         FOvb7RLTicBaA==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     linux-arm-msm@vger.kernel.org, luca.weiss@fairphone.com
+To:     luca@z3ntu.xyz, linux-arm-msm@vger.kernel.org
 Cc:     devicetree@vger.kernel.org, robh+dt@kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         konrad.dybcio@somainline.org, krzysztof.kozlowski+dt@linaro.org,
-        agross@kernel.org, phone-devel@vger.kernel.org,
+        agross@kernel.org, afd@ti.com, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH v2 1/2] arm64: dts: qcom: pm6350: add temp sensor and thermal zone config
-Date:   Mon,  7 Nov 2022 19:27:26 -0600
-Message-Id: <166787084681.599230.14951776882326244215.b4-ty@kernel.org>
+Subject: Re: (subset) [PATCH v2 1/2] ARM: dts: qcom-pma8084: fix vadc channel node names
+Date:   Mon,  7 Nov 2022 19:27:28 -0600
+Message-Id: <166787084684.599230.9451669404904525907.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221028075405.124809-1-luca.weiss@fairphone.com>
-References: <20221028075405.124809-1-luca.weiss@fairphone.com>
+In-Reply-To: <20221031181022.947412-1-luca@z3ntu.xyz>
+References: <20221031181022.947412-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,20 +51,20 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 28 Oct 2022 09:54:04 +0200, Luca Weiss wrote:
-> Add temp-alarm device tree node and a default configuration for the
-> corresponding thermal zone for this PMIC. Temperatures are based on
-> downstream values, except for trip2 where 125°C is used instead of 145°C
-> due to limitations without a configured ADC.
+On Mon, 31 Oct 2022 19:10:21 +0100, Luca Weiss wrote:
+> The spmi-vadc bindings require the '@' in the node.
+> 
+> Additionally change the node name to adc-chan which both makes it a
+> generic node name and also removes the underscore from it.
 > 
 > 
 
 Applied, thanks!
 
-[1/2] arm64: dts: qcom: pm6350: add temp sensor and thermal zone config
-      commit: 16c0c46f38183573de5361d278772cfed2090b1c
-[2/2] arm64: dts: qcom: pm6150l: add temp sensor and thermal zone config
-      commit: ce1b5eb74b3ef042b1c797f04e8683e7cad34ae6
+[1/2] ARM: dts: qcom-pma8084: fix vadc channel node names
+      commit: 31eab2bb9c1ddf8a9ab5a1e4dc59446eeed2ea9e
+[2/2] ARM: dts: qcom: pm8941: fix vadc channel node names
+      commit: c5ef315a38fb36779adadbafbcce2274a3dec0d2
 
 Best regards,
 -- 
