@@ -2,48 +2,48 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24C86C43219
-	for <phone-devel@archiver.kernel.org>; Tue,  8 Nov 2022 01:28:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1B73C433FE
+	for <phone-devel@archiver.kernel.org>; Tue,  8 Nov 2022 01:28:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233290AbiKHB2A (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S233219AbiKHB2A (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Mon, 7 Nov 2022 20:28:00 -0500
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233279AbiKHB17 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Nov 2022 20:27:59 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38E372AE06;
-        Mon,  7 Nov 2022 17:27:59 -0800 (PST)
+        with ESMTP id S232815AbiKHB14 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Nov 2022 20:27:56 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DEC52AE19;
+        Mon,  7 Nov 2022 17:27:56 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E92E3B816DD;
-        Tue,  8 Nov 2022 01:27:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99782C433C1;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ECDE161373;
         Tue,  8 Nov 2022 01:27:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE3AC433D6;
+        Tue,  8 Nov 2022 01:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667870876;
-        bh=Cnbws5G7KGmfRLaIrW95vot+pUVUXpve3ZRx28df1JU=;
+        s=k20201202; t=1667870875;
+        bh=GFsF+Y5GqYcWdLjkcGOB9BRTtB8F4Uoi7P3A7bNIvyU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=slbkL+TBZKDaHXEJUy8GkTxbUOSAQwEAM4xSqVMZt7q/yDJNssJRummIK1z4fR2xo
-         /f6w9b6tEPoKAA9KhYkgByIqE9iUzGLuDN6S9fG1CP08pC/7a8jqIEAWz3KhrreloY
-         UO97Z+HpxuPzrZ41vpsCjNfVfWr+d9xtZOGMTPtrgh0rYANysXJ3rVbHRsdAUXCMA5
-         BTR+/bdqL1GnfIMPRTrwG2EJ4K+lmAoWSHQrSlEfekhdTL+JPCyJi71UcYiYCZOY3R
-         GeSLRP7O72pD1HihuOm7eL1aF4Al6Aa0zJKyu6KFN82yvLPRejyC7NZUMX8VeXNNrM
-         FOvb7RLTicBaA==
+        b=umx9MldoW5952lcOA4FfDVE4AtOaBbofar89tFc7Vb5AV6p5PnFXvnHTTEeVCDoO8
+         V9b5O70DDIdmoWQkYzInqhD281/ezLJ6z4/fbjtDjnyCJNBWY/D6dyO+6w+5ItSyyt
+         ZvXqvQ3RFjzqwXjBGUP1WOkltyz1JQHsKetl5nFiFXNb00+2F0qMliCllyMwjIQ/Uo
+         GI68GxFXyDMyW3O3qItRp8ndTs3PlCpF9xZZ7QIWbRIAMuzTdlkkiPq6zytWSPmMkH
+         BySFlT7gTo3UyZEGH2bU8CluhDolVw0ntQjfVVXaxMd5cooY04ROq8qwQfijV/SSzo
+         K0T6I5GTPEu5Q==
 From:   Bjorn Andersson <andersson@kernel.org>
 To:     luca@z3ntu.xyz, linux-arm-msm@vger.kernel.org
-Cc:     devicetree@vger.kernel.org, robh+dt@kernel.org,
+Cc:     devicetree@vger.kernel.org, robh+dt@kernel.org, sboyd@kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         konrad.dybcio@somainline.org, krzysztof.kozlowski+dt@linaro.org,
         agross@kernel.org, afd@ti.com, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH v2 1/2] ARM: dts: qcom-pma8084: fix vadc channel node names
-Date:   Mon,  7 Nov 2022 19:27:28 -0600
-Message-Id: <166787084684.599230.9451669404904525907.b4-ty@kernel.org>
+        linux-kernel@vger.kernel.org, lee@kernel.org
+Subject: Re: (subset) [PATCH 1/3] dt-bindings: mfd: qcom,spmi-pmic: rename extcon node name
+Date:   Mon,  7 Nov 2022 19:27:27 -0600
+Message-Id: <166787084684.599230.17834459930926701866.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221031181022.947412-1-luca@z3ntu.xyz>
-References: <20221031181022.947412-1-luca@z3ntu.xyz>
+In-Reply-To: <20221031175717.942237-1-luca@z3ntu.xyz>
+References: <20221031175717.942237-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,20 +51,16 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 31 Oct 2022 19:10:21 +0100, Luca Weiss wrote:
-> The spmi-vadc bindings require the '@' in the node.
-> 
-> Additionally change the node name to adc-chan which both makes it a
-> generic node name and also removes the underscore from it.
+On Mon, 31 Oct 2022 18:57:14 +0100, Luca Weiss wrote:
+> extcon is a Linux-specific name and shouldn't be a part of the dts. Make
+> it be called usb-detect@ instead.
 > 
 > 
 
 Applied, thanks!
 
-[1/2] ARM: dts: qcom-pma8084: fix vadc channel node names
-      commit: 31eab2bb9c1ddf8a9ab5a1e4dc59446eeed2ea9e
-[2/2] ARM: dts: qcom: pm8941: fix vadc channel node names
-      commit: c5ef315a38fb36779adadbafbcce2274a3dec0d2
+[3/3] ARM: dts: qcom: pm8941: rename misc node name
+      commit: 52c47b894b260c3e5102bb4b3e77772734508bcf
 
 Best regards,
 -- 
