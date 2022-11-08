@@ -2,74 +2,70 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE14CC4332F
-	for <phone-devel@archiver.kernel.org>; Mon,  7 Nov 2022 21:47:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E289C4167D
+	for <phone-devel@archiver.kernel.org>; Tue,  8 Nov 2022 01:28:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233569AbiKGVrT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 7 Nov 2022 16:47:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36766 "EHLO
+        id S233247AbiKHB16 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 7 Nov 2022 20:27:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233389AbiKGVrS (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Nov 2022 16:47:18 -0500
-Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [5.144.164.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69229B853;
-        Mon,  7 Nov 2022 13:47:17 -0800 (PST)
-Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        with ESMTP id S233187AbiKHB14 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Nov 2022 20:27:56 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF2C72AE12;
+        Mon,  7 Nov 2022 17:27:54 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 511471F541;
-        Mon,  7 Nov 2022 22:47:15 +0100 (CET)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BA8E611F4;
+        Tue,  8 Nov 2022 01:27:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166B5C43143;
+        Tue,  8 Nov 2022 01:27:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667870874;
+        bh=3rIhWhWaO/IhkSOEqoQG5y/c79UcKpSiyf3xTXVinD4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=jz3iIZMe6pL/rIL9Elm05Xwt//0QsMabqjxHScDpN3cm6Dsm1fkHCkT2SDXDp6aDq
+         QunJBHd6a+Wd8pBNF7y8hDN7wQZqTo8uVdgTaLbOxonhAf40QTEob09qWOJ4WmNzkY
+         pkZl6c03oDdLZw0aEYOFlb3biPFyqRlnHripFPot3mKoGuVKb6HHPh5l4shM8QVeZS
+         jiFsJ1PYrqG7LGw5SKAruRSIZQG5CMYP4uGN1OsaDF1ivPJ8gKrrweLc3ZT4kEGq5x
+         HOGFe47qUl7WiDm+UXejhEt6b2X23HNUxHHv91RLeGRKuuGNm5bHwudPwdx8hmXc2U
+         ZRdxveIlskojg==
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     linux-arm-msm@vger.kernel.org, luca.weiss@fairphone.com
+Cc:     devicetree@vger.kernel.org, robh+dt@kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        konrad.dybcio@somainline.org, krzysztof.kozlowski+dt@linaro.org,
+        agross@kernel.org, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: qcom: sm6125: Enable Command Queue Engine (CQE) for SDHCI 1
-Date:   Mon,  7 Nov 2022 22:47:01 +0100
-Message-Id: <20221107214702.311271-1-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.38.1
+Subject: Re: (subset) [PATCH v2 1/2] arm64: dts: qcom: pm6350: add temp sensor and thermal zone config
+Date:   Mon,  7 Nov 2022 19:27:26 -0600
+Message-Id: <166787084681.599230.14951776882326244215.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20221028075405.124809-1-luca.weiss@fairphone.com>
+References: <20221028075405.124809-1-luca.weiss@fairphone.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Downstream sources confirm sm6125 supports CQE, and after fixing the
-reg name for this range [1] this feature probes and enables correctly:
+On Fri, 28 Oct 2022 09:54:04 +0200, Luca Weiss wrote:
+> Add temp-alarm device tree node and a default configuration for the
+> corresponding thermal zone for this PMIC. Temperatures are based on
+> downstream values, except for trip2 where 125°C is used instead of 145°C
+> due to limitations without a configured ADC.
+> 
+> 
 
-    [    0.391950] sdhci_msm 4744000.mmc: mmc0: CQE init: success
+Applied, thanks!
 
-[1]: https://lore.kernel.org/all/20221026163646.37433-1-krzysztof.kozlowski@linaro.org/
+[1/2] arm64: dts: qcom: pm6350: add temp sensor and thermal zone config
+      commit: 16c0c46f38183573de5361d278772cfed2090b1c
+[2/2] arm64: dts: qcom: pm6150l: add temp sensor and thermal zone config
+      commit: ce1b5eb74b3ef042b1c797f04e8683e7cad34ae6
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- arch/arm64/boot/dts/qcom/sm6125.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-index b27f42f19fae..7b5c09547b73 100644
---- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-@@ -1061,6 +1061,8 @@ sdhc_1: mmc@4744000 {
- 
- 			bus-width = <8>;
- 			non-removable;
-+			supports-cqe;
-+
- 			status = "disabled";
- 		};
- 
+Best regards,
 -- 
-2.38.1
-
+Bjorn Andersson <andersson@kernel.org>
