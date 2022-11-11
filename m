@@ -2,83 +2,81 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77070C4332F
-	for <phone-devel@archiver.kernel.org>; Fri, 11 Nov 2022 15:00:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6C0DC43217
+	for <phone-devel@archiver.kernel.org>; Fri, 11 Nov 2022 15:19:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234802AbiKKPAT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 11 Nov 2022 10:00:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59768 "EHLO
+        id S234434AbiKKPTZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 11 Nov 2022 10:19:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234755AbiKKO7i (ORCPT
+        with ESMTP id S234446AbiKKPTE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 11 Nov 2022 09:59:38 -0500
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C44654D5;
-        Fri, 11 Nov 2022 06:59:37 -0800 (PST)
-Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 588EC6602A6A;
-        Fri, 11 Nov 2022 14:59:35 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1668178776;
-        bh=MdaH8KbjjoGPf2cEN4UiKaUO79dviS/rWyElqvdnnE4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=avd20eghOS5K6gOklGt3Sm3Gek5pwuQ/Aprzihhp3r8z/4UR6W7kxHJx5sNNeobr7
-         9kClPGQaLigcVaBg+USNAimBjhTtD/X6KVpD5IufbPeVEDrpeKJ30eW29jkVzFYuyf
-         6Ap7rYhLr9CnWU63kHmHTS/Vo8ez9Iph7bPpmkUV0ZcP1+EBN/NxK7aPTBvddXs6fk
-         sU7L9eoyP7DTvVKvwZ2gL8xAv/x1U4w/lGTegKMjgutPNlQWOGdxncqZ+pZAeo3zaD
-         J1s0vvFOJi/FvhDNn+LZbTm6XwM9CYcwiNaHtZE1zwy4ENckVOBuKUWuaxWYYesS7f
-         hBGGpZCQPyOYQ==
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-To:     agross@kernel.org
+        Fri, 11 Nov 2022 10:19:04 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 29D958291C;
+        Fri, 11 Nov 2022 07:18:19 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E15CD1FB;
+        Fri, 11 Nov 2022 07:18:24 -0800 (PST)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 546EA3F73D;
+        Fri, 11 Nov 2022 07:18:16 -0800 (PST)
+Message-ID: <d677f7c1-8c99-4bb0-d363-7a538b38a83a@arm.com>
+Date:   Fri, 11 Nov 2022 15:18:10 +0000
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH v2 3/8] iommu/arm-smmu: Add definition for
+ ARM_SMMU_CB_FSRRESTORE
+Content-Language: en-GB
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, agross@kernel.org
 Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, joro@8bytes.org,
-        will@kernel.org, robin.murphy@arm.com, robh+dt@kernel.org,
+        will@kernel.org, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, robdclark@gmail.com,
         linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         marijn.suijten@somainline.org, kernel@collabora.com,
         luca@z3ntu.xyz, a39.skl@gmail.com, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v2 8/8] dt-bindings: iommu: qcom,iommu: Document MSM8976 compatible
-Date:   Fri, 11 Nov 2022 15:59:19 +0100
-Message-Id: <20221111145919.221159-9-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221111145919.221159-1-angelogioacchino.delregno@collabora.com>
+        ~postmarketos/upstreaming@lists.sr.ht
 References: <20221111145919.221159-1-angelogioacchino.delregno@collabora.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ <20221111145919.221159-4-angelogioacchino.delregno@collabora.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <20221111145919.221159-4-angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add "qcom,msm8976-iommu" to support IOMMUs on this SoC.
+On 11/11/2022 2:59 pm, AngeloGioacchino Del Regno wrote:
+> In preparation for adding a proper context bank reset sequence in
+> qcom_iommu, add a definition for the implementation defined Fault
+> Status Restore register (FSRRESTORE).
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- Documentation/devicetree/bindings/iommu/qcom,iommu.txt | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+It's not implementation defined, it's architectural. But I don't follow 
+why we should need this. If we're resetting FSR, we don't need to 
+restore any previous value to it; all we want to do is clear it, which 
+we do already via its own mechanism.
 
-diff --git a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-index b762772f80e7..b7a5822ac00d 100644
---- a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-+++ b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-@@ -9,7 +9,8 @@ to non-secure vs secure interrupt line.
- 
- - compatible       : Should be one of:
- 
--                        "qcom,msm8916-iommu"
-+                        - "qcom,msm8916-iommu"
-+                        - "qcom,msm8976-iommu"
- 
-                      Followed by one of:
- 
--- 
-2.38.1
+Thanks,
+Robin.
 
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> ---
+>   drivers/iommu/arm/arm-smmu/arm-smmu.h | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.h b/drivers/iommu/arm/arm-smmu/arm-smmu.h
+> index 703fd5817ec1..5015138799c5 100644
+> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.h
+> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.h
+> @@ -219,6 +219,7 @@ enum arm_smmu_cbar_type {
+>   					 ARM_SMMU_FSR_TF |		\
+>   					 ARM_SMMU_FSR_IGN)
+>   
+> +#define ARM_SMMU_CB_FSRRESTORE		0x5c
+>   #define ARM_SMMU_CB_FAR			0x60
+>   
+>   #define ARM_SMMU_CB_FSYNR0		0x68
