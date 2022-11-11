@@ -2,36 +2,36 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4D5EC4167B
-	for <phone-devel@archiver.kernel.org>; Fri, 11 Nov 2022 13:59:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A8A8C4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 11 Nov 2022 13:59:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234119AbiKKN7Q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 11 Nov 2022 08:59:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59596 "EHLO
+        id S234202AbiKKN7Y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 11 Nov 2022 08:59:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234109AbiKKN6v (ORCPT
+        with ESMTP id S233950AbiKKN7A (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 11 Nov 2022 08:58:51 -0500
+        Fri, 11 Nov 2022 08:59:00 -0500
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18057742D2;
-        Fri, 11 Nov 2022 05:55:42 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A3128B2F6;
+        Fri, 11 Nov 2022 05:55:50 -0800 (PST)
 Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id E2ED96602A5A;
-        Fri, 11 Nov 2022 13:55:39 +0000 (GMT)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 30BF46602A5C;
+        Fri, 11 Nov 2022 13:55:42 +0000 (GMT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1668174940;
-        bh=XDujAn0ZeYKReEqH3WwrDRbPR8DoO7W2378dAKf4P6w=;
+        s=mail; t=1668174943;
+        bh=Zf7m6jLp2JACg2AkUZYo4eLC63C+UuS3mbPUkyrlclQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hzM22CMbpHIYs4+DUMrnQ2LGSeIGTK0W+D2Ep4UKA6F4EXRzhmnSSl31+Rqrn/AcC
-         zaDhrcOdFuVXMW22Sa9JLsa3joMbb40EZjv19EC0JtZL1LD6XaJBINI8UM3JCrEAz4
-         +Sgz8gc01CRJNrUFxGgPO/2RhOhco0EaRjMKq+mmqSlQr/ymrvS6e4uUC+1i6IWGsf
-         0QIL/7MtTufaARaEameRpY/daftaQvodSUMLDtQL7KFoLNsAwDRF7vkIdlNtHvJvhe
-         SbMKsWizdNtGIekU5ue/0P1RqAW9V7J8YQJvrPA6hmVHuHriWU/AM1BdyJ5ys+qv6D
-         FsPY/ya6t96SQ==
+        b=BPprOpb8mi3DmWEWvZ12B4yp7ibqJPZBoEBxhEIVSFmWqYAPhsNyS+8YW/Gqa4sP+
+         u3pKvDOTYeS6M53Ui+0IilQ46cSjbkzd+qAmyDakpo/zaX6Jid4O+/NfWyHhjEEH0G
+         AgChFR0zIvF0JO8LiO8Vmru5hqTLL75ATuJyWPD52NFIXtEj/9l8mxxIZOSuYQUacX
+         hpgXR4av8vVXYu8GnQ6nxfdnE8CYNA+U5mtv079QyWCjy6vqCT+XBlTgBOxIu7oXEh
+         nzOSIp7+mm6dvD3wCNrskSh53FzdTf1WSR+5O+LU2W6RuH80GtBOTw8KfzGbPEvUPm
+         Wpqsi3OISLNFw==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
 To:     agross@kernel.org
@@ -46,9 +46,9 @@ Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, joro@8bytes.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 3/7] iommu/qcom: Properly reset the IOMMU context
-Date:   Fri, 11 Nov 2022 14:55:21 +0100
-Message-Id: <20221111135525.204134-4-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 5/7] dt-bindings: iommu: qcom,iommu: Document QSMMU v2 compatibles
+Date:   Fri, 11 Nov 2022 14:55:23 +0100
+Message-Id: <20221111135525.204134-6-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221111135525.204134-1-angelogioacchino.delregno@collabora.com>
 References: <20221111135525.204134-1-angelogioacchino.delregno@collabora.com>
@@ -58,60 +58,40 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Avoid context faults by resetting the context(s) entirely at
-detach_dev() time and also do the same before programming the
-context for domain initialization.
+Add compatible strings for "qcom,msm-iommu-v2" for the inner node,
+"qcom,msm-iommu-v2-ns" and "qcom,msm-iommu-v2-sec" for the context
+bank nodes to support Qualcomm's secure fw "SMMU v2" implementation.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- drivers/iommu/arm/arm-smmu/qcom_iommu.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/iommu/qcom,iommu.txt | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/qcom_iommu.c b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-index 491a8093f3d6..5b127ac41b5e 100644
---- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-+++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-@@ -223,6 +223,20 @@ static irqreturn_t qcom_iommu_fault(int irq, void *dev)
- 	return IRQ_HANDLED;
- }
+diff --git a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
+index 7d4e0a18b08e..b762772f80e7 100644
+--- a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
++++ b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
+@@ -11,7 +11,10 @@ to non-secure vs secure interrupt line.
  
-+static void qcom_iommu_reset_ctx(struct qcom_iommu_ctx *ctx)
-+{
-+	iommu_writel(ctx, ARM_SMMU_CB_FAR, 0);
-+	iommu_writel(ctx, ARM_SMMU_CB_FSR, 0);
-+	iommu_writel(ctx, ARM_SMMU_CB_S1_MAIR1, 0);
-+	iommu_writel(ctx, ARM_SMMU_CB_PAR, 0);
-+	iommu_writel(ctx, ARM_SMMU_CB_S1_MAIR0, 0);
-+	iommu_writel(ctx, ARM_SMMU_CB_SCTLR, 0);
-+	iommu_writel(ctx, ARM_SMMU_CB_TCR2, 0);
-+	iommu_writel(ctx, ARM_SMMU_CB_TCR, 0);
-+	iommu_writeq(ctx, ARM_SMMU_CB_TTBR0, 0);
-+	iommu_writeq(ctx, ARM_SMMU_CB_TTBR1, 0);
-+}
+                         "qcom,msm8916-iommu"
+ 
+-                     Followed by "qcom,msm-iommu-v1".
++                     Followed by one of:
 +
- static int qcom_iommu_init_domain(struct iommu_domain *domain,
- 				  struct qcom_iommu_dev *qcom_iommu,
- 				  struct device *dev)
-@@ -273,6 +287,8 @@ static int qcom_iommu_init_domain(struct iommu_domain *domain,
- 			ctx->secure_init = true;
- 		}
++                        - "qcom,msm-iommu-v1"
++                        - "qcom,msm-iommu-v2"
  
-+		qcom_iommu_reset_ctx(ctx);
-+
- 		/* TTBRs */
- 		iommu_writeq(ctx, ARM_SMMU_CB_TTBR0,
- 				pgtbl_cfg.arm_lpae_s1_cfg.ttbr |
-@@ -401,8 +417,8 @@ static void qcom_iommu_detach_dev(struct iommu_domain *domain, struct device *de
- 	for (i = 0; i < fwspec->num_ids; i++) {
- 		struct qcom_iommu_ctx *ctx = to_ctx(qcom_domain, fwspec->ids[i]);
+ - clock-names      : Should be a pair of "iface" (required for IOMMUs
+                      register group access) and "bus" (required for
+@@ -36,6 +39,8 @@ to non-secure vs secure interrupt line.
+   - compatible     : Should be one of:
+         - "qcom,msm-iommu-v1-ns"  : non-secure context bank
+         - "qcom,msm-iommu-v1-sec" : secure context bank
++        - "qcom,msm-iommu-v2-ns"  : non-secure QSMMUv2/QSMMU500 context bank
++        - "qcom,msm-iommu-v2-sec" : secure QSMMUv2/QSMMU500 context bank
+   - reg            : Base address and size of context bank within the iommu
+   - interrupts     : The context fault irq.
  
--		/* Disable the context bank: */
--		iommu_writel(ctx, ARM_SMMU_CB_SCTLR, 0);
-+		/* Disable and reset the context bank */
-+		qcom_iommu_reset_ctx(ctx);
- 
- 		ctx->domain = NULL;
- 	}
 -- 
 2.38.1
 
