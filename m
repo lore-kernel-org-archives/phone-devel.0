@@ -2,138 +2,85 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FE54C4321E
-	for <phone-devel@archiver.kernel.org>; Fri, 11 Nov 2022 11:54:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5804C4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 11 Nov 2022 13:59:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233542AbiKKLyd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 11 Nov 2022 06:54:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56004 "EHLO
+        id S234089AbiKKN7I (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 11 Nov 2022 08:59:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233521AbiKKLyb (ORCPT
+        with ESMTP id S234087AbiKKN6j (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 11 Nov 2022 06:54:31 -0500
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B490961BB8
-        for <phone-devel@vger.kernel.org>; Fri, 11 Nov 2022 03:54:29 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id s12so7291555edd.5
-        for <phone-devel@vger.kernel.org>; Fri, 11 Nov 2022 03:54:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NCVwunyaKvAdCSc7+ksCaN6h6L9GquZf6jiNJ/6LP7k=;
-        b=woOl93F0RydXcCB1h83FNgDeJ8OncI/BW8vFGImGW4/6S/7GFi5LhEUaT5zxeJT8NX
-         Pa2uIS8JPQ1UuRDTw1gsr8yNk+B1k8+8vcYuV+J416+/4ZN72i34mJf+rpaYP+XO88Ro
-         yOeD1ENrl/hubOCmzmGU/9aRde4Ni5DClG8NTDfkKCbdaSQkVRNzGKdtej8NjJyoXHmi
-         pkwCRFNfj2EHnSw7idU9KS0wiOJpIT+9pOtqQqkxmvafW4QNn0c0W9vKp3SBlyw4fju2
-         oFG5A/nPDCWoPlX7uD10pgGlb3tRHXfT7y4rJSv1NXebBPpD64Ikh4581/Q5CwH6hyYc
-         OzLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NCVwunyaKvAdCSc7+ksCaN6h6L9GquZf6jiNJ/6LP7k=;
-        b=CDWMq14XiTA+wV3cJ0wtxx8i/oXeBbYtQQJzF3B5Burf1EUxZlE3UdDaX+FX0lJhSe
-         oxj/zz0S+Rb1tOrBE/WKp5L689YS3ygNEnkG4wF8CekwvKNf7XnrAAd4p7Yl7/4s9rix
-         p0jI7rR0mNGDKLGPNOGy/UtPUDfMkE2puPPpc89FWuQ44EF2aSrBAgvzl5vCkMz5NfVc
-         M8UqKR5dBMVaAbIHS8+MH++h7p6IDXc0YHXsz13yQYlWkEdisABKzYmYEffPrduGby9y
-         d5DJPoSIq7idbS1ZmtxlCc2Cnxpo+qGdvlXEjIbh6Dj2h324L1QxXIgAaWumkdfXbPa/
-         xCOg==
-X-Gm-Message-State: ANoB5pnB2f3ShmwVspwsSytP75PuxaDUxYWjeHboJOsIMy5tAtmietHc
-        0WjXeDw28UmO2vpsogAkzCFakw==
-X-Google-Smtp-Source: AA0mqf4M0ZcLgiTBE35+G/kyXf6GRpwJfYWwoAgBSfNcF+YK0DVIDxpQJeEH19gBVpmnPV62PR8jMQ==
-X-Received: by 2002:aa7:d5d4:0:b0:458:e00e:5a85 with SMTP id d20-20020aa7d5d4000000b00458e00e5a85mr1164414eds.171.1668167668306;
-        Fri, 11 Nov 2022 03:54:28 -0800 (PST)
-Received: from otso.arnhem.chello.nl (k10064.upc-k.chello.nl. [62.108.10.64])
-        by smtp.gmail.com with ESMTPSA id kz6-20020a17090777c600b007adb86a1e1csm770859ejc.186.2022.11.11.03.54.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Nov 2022 03:54:27 -0800 (PST)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Sibi Sankar <sibis@codeaurora.org>,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] remoteproc: qcom_q6v5_pas: detach power domains on remove
-Date:   Fri, 11 Nov 2022 12:54:14 +0100
-Message-Id: <20221111115414.153961-2-luca.weiss@fairphone.com>
+        Fri, 11 Nov 2022 08:58:39 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCC7671F17;
+        Fri, 11 Nov 2022 05:55:38 -0800 (PST)
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 8716D6602A52;
+        Fri, 11 Nov 2022 13:55:36 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1668174937;
+        bh=LijwJ0RmVh6sVYM4cnacY5afmNKiiWA/4pJEZ0mBzwQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=f/magWOmTbhaJ7yOcrdCB4vpTY14fooCQ/4z27+btrWXNyNHwv/aWjxw0S1FNLy1G
+         TPIVRfjBbBofRrxZlxOM4P+GCBwAh+fcILKUptzUytv4k6pEDCTras99c8eVlT3GLS
+         slUQtbuSPcaRSDGxNAZwRq60CyP7uDMbOF5FOXvobRkeoWVz8CSSsRcYsoIG9PLh5A
+         13M6VbGJnS0ie8xytrni0gT21WP++DhhXisPz3Dzc7S8x6G8kqAUzEObJX7w4uGMc4
+         nDYRUiozqlVMkIppqUih4kjxmQoF3kK7msnvjR6Oe4dHF7I3XIVZENr2RN1y+BroWQ
+         4PT6RqnGH3OIQ==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     agross@kernel.org
+Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, joro@8bytes.org,
+        will@kernel.org, robin.murphy@arm.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, robdclark@gmail.com,
+        linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        marijn.suijten@somainline.org, kernel@collabora.com,
+        luca@z3ntu.xyz, a39.skl@gmail.com, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 0/7] Add support for Qualcomm's legacy IOMMU v2
+Date:   Fri, 11 Nov 2022 14:55:18 +0100
+Message-Id: <20221111135525.204134-1-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221111115414.153961-1-luca.weiss@fairphone.com>
-References: <20221111115414.153961-1-luca.weiss@fairphone.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-We need to detach from the power domains also on remove, not just on
-probe fail so a subsequent probe works as expected.
+This series adds support for handling "v2" firmware's IOMMU, found
+on at least MSM8956 and MSM8976 (some other SoCs also need the same
+but I honestly don't remember which ones precisely).
 
-Otherwise the following error appears on re-probe:
+This is strictly required to get functional IOMMUs on these SoCs.
 
-[   29.452005] sysfs: cannot create duplicate filename '/devices/genpd:0:3000000.remoteproc'
-[   29.477121] CPU: 1 PID: 483 Comm: sh Tainted: G        W          6.1.0-rc4-00075-g71a113770bda #78
-[   29.510319] Hardware name: Fairphone 4 (DT)
-[   29.538335] Call trace:
-[   29.564470]  dump_backtrace.part.0+0xe0/0xf0
-[   29.592602]  show_stack+0x18/0x30
-[   29.619616]  dump_stack_lvl+0x64/0x80
-[   29.646834]  dump_stack+0x18/0x34
-[   29.673541]  sysfs_warn_dup+0x60/0x7c
-[   29.700592]  sysfs_create_dir_ns+0xec/0x110
-[   29.728057]  kobject_add_internal+0xb8/0x374
-[   29.755530]  kobject_add+0x9c/0x104
-[   29.782072]  device_add+0xbc/0x8a0
-[   29.808445]  device_register+0x20/0x30
-[   29.835175]  genpd_dev_pm_attach_by_id+0xa4/0x190
-[   29.862851]  genpd_dev_pm_attach_by_name+0x3c/0xb0
-[   29.890472]  dev_pm_domain_attach_by_name+0x20/0x30
-[   29.918212]  adsp_probe+0x278/0x580
-[   29.944384]  platform_probe+0x68/0xc0
-[   29.970603]  really_probe+0xbc/0x2dc
-[   29.996662]  __driver_probe_device+0x78/0xe0
-[   30.023491]  device_driver_attach+0x48/0xac
-[   30.050215]  bind_store+0xb8/0x114
-[   30.075957]  drv_attr_store+0x24/0x3c
-[   30.101874]  sysfs_kf_write+0x44/0x54
-[   30.127751]  kernfs_fop_write_iter+0x120/0x1f0
-[   30.154448]  vfs_write+0x1ac/0x380
-[   30.179937]  ksys_write+0x70/0x104
-[   30.205274]  __arm64_sys_write+0x1c/0x2c
-[   30.231060]  invoke_syscall+0x48/0x114
-[   30.256594]  el0_svc_common.constprop.0+0x44/0xec
-[   30.283183]  do_el0_svc+0x2c/0xd0
-[   30.308320]  el0_svc+0x2c/0x84
-[   30.333059]  el0t_64_sync_handler+0xf4/0x120
-[   30.359001]  el0t_64_sync+0x18c/0x190
-[   30.384385] kobject_add_internal failed for genpd:0:3000000.remoteproc with -EEXIST, don't try to register things with the same name in the same directory.
-[   30.406029] remoteproc remoteproc0: releasing 3000000.remoteproc
-[   30.416064] qcom_q6v5_pas: probe of 3000000.remoteproc failed with error -17
+I'm sorry for not performing a much needed schema conversion on
+qcom,iommu.txt, but I really didn't have time to do that :-(
 
-Fixes: 17ee2fb4e856 ("remoteproc: qcom: pas: Vote for active/proxy power domains")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/remoteproc/qcom_q6v5_pas.c | 1 +
- 1 file changed, 1 insertion(+)
+This series was tested on Sony Xperia X and X Compact (MSM8956):
+ADSP, LPASS, Venus, MSS, MDP and GPU are happy :-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index d830bf13c32c..747155c85085 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -573,6 +573,7 @@ static int adsp_remove(struct platform_device *pdev)
- 	qcom_remove_sysmon_subdev(adsp->sysmon);
- 	qcom_remove_smd_subdev(adsp->rproc, &adsp->smd_subdev);
- 	qcom_remove_ssr_subdev(adsp->rproc, &adsp->ssr_subdev);
-+	adsp_pds_detach(adsp, adsp->proxy_pds, adsp->proxy_pd_count);
- 	rproc_free(adsp->rproc);
- 	device_init_wakeup(adsp->dev, false);
- 
+AngeloGioacchino Del Regno (7):
+  dt-bindings: iommu: qcom,iommu: Document qcom,ctx-num property
+  iommu/qcom: Use the asid read from device-tree if specified
+  iommu/qcom: Properly reset the IOMMU context
+  iommu/qcom: Index contexts by asid number to allow asid 0
+  dt-bindings: iommu: qcom,iommu: Document QSMMU v2 compatibles
+  iommu/qcom: Add support for QSMMUv2 and QSMMU-500 secured contexts
+  dt-bindings: iommu: qcom,iommu: Document MSM8976 compatible
+
+ .../devicetree/bindings/iommu/qcom,iommu.txt  | 11 ++-
+ drivers/iommu/arm/arm-smmu/qcom_iommu.c       | 77 +++++++++++++++----
+ 2 files changed, 69 insertions(+), 19 deletions(-)
+
 -- 
 2.38.1
 
