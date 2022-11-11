@@ -2,158 +2,154 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E3B8C433FE
-	for <phone-devel@archiver.kernel.org>; Thu, 10 Nov 2022 15:19:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1170C4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 11 Nov 2022 00:18:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231519AbiKJPTl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 10 Nov 2022 10:19:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35560 "EHLO
+        id S231320AbiKKAS6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 10 Nov 2022 19:18:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231524AbiKJPTP (ORCPT
+        with ESMTP id S229777AbiKKAS5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 10 Nov 2022 10:19:15 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5E072E9ED
-        for <phone-devel@vger.kernel.org>; Thu, 10 Nov 2022 07:18:47 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id f7so3565491edc.6
-        for <phone-devel@vger.kernel.org>; Thu, 10 Nov 2022 07:18:47 -0800 (PST)
+        Thu, 10 Nov 2022 19:18:57 -0500
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F01013CC4;
+        Thu, 10 Nov 2022 16:18:55 -0800 (PST)
+Received: by mail-io1-xd35.google.com with SMTP id y6so2583859iof.9;
+        Thu, 10 Nov 2022 16:18:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6VwCgF4hFF5U/01CMcYx8VspG2pIsl2trPvqOv5dL9I=;
-        b=WNeRqSfluqeqzoleeeZHGwTdul0BoO3yfmaQ5TlEvwM9KtN/3x8eKBzpimvMkv+56H
-         BX/vgj4L0svnGZ6MZYxL8qa3mB+FF+YlBXhDWEWa2GKyNRsGJUEVcmFZABpAkMonU3gf
-         OTXGh4ss+WhSIXNI4sVu/hFmfT7dPHIGQaUoX717l++CPdXD/JhDZU4WCW65X5gLa0fn
-         36RTA+Wmw5AgtdssnebjQSGu0tQaYS44y/mX4GZfWc9bfHK7JR/8YteCVHwxBLyIPGFv
-         NE6i35Lqb0woHU6tmMLO0vjt3Aq/lOP09cFckrT/S97jgMY7KhzdjgggUase3PIzO+5j
-         UGdQ==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OOo4SlvSYIOiiuy0BanXYMqfarUb0SF2ty1xhFNdmnE=;
+        b=nRFIY9VGGIOwfnuPc6t4kHopKZPYwsMGQDje5X+2U1KHyRLZWmVn0hTFyuuMnRkUR+
+         XRiS7uWCIRwCgBcL4iJ9+/HNKgFjJPHSDm/BE3CzEyvQJMOJaK6mf6/YbcpJKllPR9WB
+         tDJ0+9RZ4wUtXfl5P8jZBSgKwlw/BX5rdxmy+h9V/+4YBL139DhH/ufI7ZojN7iZM2pz
+         /QasToHzjwq0gFD2/tfAwetCkcCxR8Egt5Y2LzWTqaidA4q4/+fTMTt+Gp16PSEZgpw6
+         s6ZsTn1q3FPk346veNFGDsEUijk7McA5ARD+CNdiZv32TubMnKxDwPBW+TN67TZlKfAq
+         tyqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6VwCgF4hFF5U/01CMcYx8VspG2pIsl2trPvqOv5dL9I=;
-        b=Ax+1NTlpyP+fz84Sn5poy4sMwQvE8/0GdF7TPGUsS7IKKBuvmzqeOHxIPtK9/YIRtG
-         QYMW9pQlBN9aoOo+1UrF1rToNYuZgFhp/HlfmgVDSgiTdmA0YZLB1HTotZb/zfR1GJ9t
-         KpWfVpESYKA4uFc58l1jg3WglZmMR0H4i4FxNGHkq5TeuRtT6pWLHXrsR6NAtm7E4OSq
-         Xi+rDRH55mzDPYPGr2ng+Ey4dh8Nbx5jXDpDjqsMOjURsZ2MW9ZsFxt3GtsFQD4MWMcF
-         NYgf6KbipjkJP3wM8c9fw605IRET7vyAWzpQWqPhtBE/QgZh6iOLJDoOy+bv7ObaqJ1C
-         /RUQ==
-X-Gm-Message-State: ACrzQf17VRnWc3IZ3XDuYHbHWK1/IFVhV27QXA78dRPy/GGMOHL+HbE6
-        TBflbg1iMq6qI4vbB0snunBVKQ==
-X-Google-Smtp-Source: AMsMyM6JVAg4toZj+0Ru5Vwcj0hROuP+eRUw9hdyComNcQ/IgB6GpZKskhywvOW/q+KzrQ1T90Qelw==
-X-Received: by 2002:a05:6402:b64:b0:461:60e8:7ac3 with SMTP id cb4-20020a0564020b6400b0046160e87ac3mr2377641edb.80.1668093525658;
-        Thu, 10 Nov 2022 07:18:45 -0800 (PST)
-Received: from [192.168.31.208] ([194.29.137.22])
-        by smtp.gmail.com with ESMTPSA id mf16-20020a170906cb9000b0073c80d008d5sm7212255ejb.122.2022.11.10.07.18.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Nov 2022 07:18:45 -0800 (PST)
-Message-ID: <a5caff28-6dc8-aee8-2c25-1d3810ec8434@linaro.org>
-Date:   Thu, 10 Nov 2022 16:18:42 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.4.1
-Subject: Re: [PATCH] arm64: dts: qcom: sm7225-fairphone-fp4: Enable SD card
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OOo4SlvSYIOiiuy0BanXYMqfarUb0SF2ty1xhFNdmnE=;
+        b=7ko/ZA72ckzgUc5E2E8eM6Fjg4HtC1GnR7w51FpNkWZs/+gtJOugNZhNdZksB1Bqwo
+         DKDqqQGdiZrqdrhxJxJMF4QSTH1NO1yCuCPqaxs79mJlgUmHvlvwJ+mE+4/9rVnnlkRW
+         kvQBAtWn46xxGV0tBhnoa9R1t5duUimlJpOh+nPqfrQmts4WX+Q7q/kb3Q0hSS7J+7kZ
+         BAwXMLspWYUAMvrIKg0Fz4P4iyqOe8d+XmePK308Ycq5Hy1Sc8+836XDhCQCa5hAR2be
+         EXAc9x0lW4hF9Rcvr3yCJeTLCd3cJomLNCMz0uvy4wHsAAP9harwJaeCS0HWOKQKICDx
+         1EpQ==
+X-Gm-Message-State: ACrzQf1sPtFaUDZD0SfbT6XipsEM3ePEaqrHunQsQB2i7fSr0G7UBysX
+        QHnMq4mBL+QLLn5C8gr3p4Q=
+X-Google-Smtp-Source: AMsMyM7JYY2ROReRJCPYMJwG9O0lZeX7mP1eBDVcFq2I+Puc6oRTV+TaW8GTwMDOcvv6vB90mGdFgQ==
+X-Received: by 2002:a02:740b:0:b0:375:b32f:7c75 with SMTP id o11-20020a02740b000000b00375b32f7c75mr3680131jac.162.1668125934657;
+        Thu, 10 Nov 2022 16:18:54 -0800 (PST)
+Received: from localhost ([2607:fea8:a2e2:2d00::61cc])
+        by smtp.gmail.com with ESMTPSA id v5-20020a056602058500b00688faad4741sm236050iox.24.2022.11.10.16.18.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Nov 2022 16:18:54 -0800 (PST)
+From:   Richard Acayan <mailingradian@gmail.com>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221110151507.53650-1-luca.weiss@fairphone.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20221110151507.53650-1-luca.weiss@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Chanho Park <chanho61.park@samsung.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Iskren Chernev <iskren.chernev@gmail.com>,
+        Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+        Richard Acayan <mailingradian@gmail.com>,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Robert Marko <robimarko@gmail.com>,
+        Guru Das Srinagesh <quic_gurus@quicinc.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: [PATCH v4 0/4] Initial SDM670 and Pixel 3a support
+Date:   Thu, 10 Nov 2022 19:18:15 -0500
+Message-Id: <20221111001818.124901-1-mailingradian@gmail.com>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Changes since v3:
+ - remove qcom,msm-id and qcom,board-id (4/4)
 
+Changes since v2:
+ - remove intc address and size cells (4/4)
+ - move apps_rsc label property down (4/4)
+ - move properties in intc (4/4)
+ - remove leading zeroes in iommus (4/4)
+ - change 0x0 to 0 in regs except cpu (4/4)
+ - change 0 to 0x0 in memory regs (4/4)
+ - convert hex to decimal in rmi4 #cells properties (4/4)
 
-On 10/11/2022 16:15, Luca Weiss wrote:
-> Fairphone 4 uses sdhc_2 for the SD card, configure the pins for it and
-> enable it.
-> 
-> The regulators which are exclusively used for SDHCI have their maximum
-> voltage decreased to what downstream sets on the consumer side, like on
-> many other platforms and allowed to set the load.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Changes since v1:
+ - remove i2c interconnects (4/4)
+ - change regulator phandle names (4/4)
+ - change regulators node names (4/4)
+ - remove clock-output-names from xo-board (4/4)
+ - remove vdd-supply from touchscreen (4/4)
+ - move clocks to device dts (4/4)
+ - reorder pmic nodes, root nodes, and phandle references in dts (4/4)
+ - move status properties to bottom of nodes (4/4)
+ - accumulate commit message tags (1-3/4)
 
-Konrad
->   .../boot/dts/qcom/sm7225-fairphone-fp4.dts    | 39 ++++++++++++++++++-
->   1 file changed, 37 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> index 30c94fd4fe61..1cb14051ab1b 100644
-> --- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> +++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> @@ -279,8 +279,12 @@ vreg_l5e: ldo5 {
->   
->   		vreg_l6e: ldo6 {
->   			regulator-min-microvolt = <1700000>;
-> -			regulator-max-microvolt = <3544000>;
-> +			regulator-max-microvolt = <2950000>;
->   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +			regulator-allow-set-load;
-> +			regulator-allowed-modes =
-> +				<RPMH_REGULATOR_MODE_LPM
-> +				 RPMH_REGULATOR_MODE_HPM>;
->   		};
->   
->   		vreg_l7e: ldo7 {
-> @@ -297,8 +301,12 @@ vreg_l8e: ldo8 {
->   
->   		vreg_l9e: ldo9 {
->   			regulator-min-microvolt = <2700000>;
-> -			regulator-max-microvolt = <3544000>;
-> +			regulator-max-microvolt = <2960000>;
->   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-> +			regulator-allow-set-load;
-> +			regulator-allowed-modes =
-> +				<RPMH_REGULATOR_MODE_LPM
-> +				 RPMH_REGULATOR_MODE_HPM>;
->   		};
->   
->   		vreg_l10e: ldo10 {
-> @@ -424,6 +432,33 @@ &qupv3_id_1 {
->   	status = "okay";
->   };
->   
-> +&sdc2_off_state {
-> +	sd-cd-pins {
-> +		pins = "gpio94";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-disable;
-> +	};
-> +};
-> +
-> +&sdc2_on_state {
-> +	sd-cd-pins {
-> +		pins = "gpio94";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-pull-up;
-> +	};
-> +};
-> +
-> +&sdhc_2 {
-> +	vmmc-supply = <&vreg_l9e>;
-> +	vqmmc-supply = <&vreg_l6e>;
-> +
-> +	cd-gpios = <&tlmm 94 GPIO_ACTIVE_LOW>;
-> +
-> +	status = "okay";
-> +};
-> +
->   &tlmm {
->   	gpio-reserved-ranges = <13 4>, <56 2>;
->   };
+Do not apply this series yet. It is only for review comments. It can be
+applied once the "qcom,sdm670-smmu-500" compatible string gets added (or
+now if you don't care about handling an unnecessary quirk).
+
+This adds the device trees and bindings to support the Qualcomm
+Snapdragon 670 and Google Pixel 3a. This patch series, specifically the
+last patch, depends on:
+
+[PATCH v4 0/3] SDM670 Global Clocks
+  https://lore.kernel.org/all/20220914013922.198778-1-mailingradian@gmail.com/T/
+[PATCH v2 0/2] RPMh Support for PM660 and PM660L
+  https://lore.kernel.org/all/20220920223331.150635-1-mailingradian@gmail.com/T/
+[PATCH v2 0/2] SDM670 RPMh Clocks
+  https://lore.kernel.org/all/20220920223734.151135-1-mailingradian@gmail.com/T/
+[PATCH v2 0/2] SDM670 USB 2.0 support
+  https://lore.kernel.org/all/20220922024656.178529-1-mailingradian@gmail.com/T/
+[PATCH 0/2] SDM670 SDHCI support
+  https://lore.kernel.org/all/20220923014322.33620-1-mailingradian@gmail.com/T/
+[PATCH v2 0/2] SDM670 Power Domains
+  https://lore.kernel.org/all/20221004221130.14076-1-mailingradian@gmail.com/T/
+[PATCH v10 0/3] SDM670 Pin Control Driver
+  https://lore.kernel.org/all/20221014001934.4995-1-mailingradian@gmail.com/T/
+[PATCH v6 0/4] SDM670 GPI DMA support
+  https://lore.kernel.org/all/20221018005740.23952-1-mailingradian@gmail.com/T/
+[RFC PATCH v2 0/11] iommu/arm-smmu-qcom: Rework Qualcomm SMMU bindings and implementation
+  https://lore.kernel.org/linux-arm-msm/20221102184420.534094-1-dmitry.baryshkov@linaro.org/T/
+[PATCH v4 0/1] iommu: SMMU for SDM670
+  https://lore.kernel.org/linux-arm-msm/20221108025847.58352-1-mailingradian@gmail.com/T/
+
+Richard Acayan (4):
+  dt-bindings: arm: cpus: add qcom kryo 360 compatible
+  dt-bindings: arm: qcom: add sdm670 and pixel 3a compatible
+  dt-bindings: firmware: scm: add sdm670 compatible
+  arm64: dts: qcom: add sdm670 and pixel 3a device trees
+
+ .../devicetree/bindings/arm/cpus.yaml         |    1 +
+ .../devicetree/bindings/arm/qcom.yaml         |    6 +
+ .../bindings/firmware/qcom,scm.yaml           |    1 +
+ arch/arm64/boot/dts/qcom/Makefile             |    1 +
+ .../boot/dts/qcom/sdm670-google-sargo.dts     |  531 ++++++++
+ arch/arm64/boot/dts/qcom/sdm670.dtsi          | 1160 +++++++++++++++++
+ 6 files changed, 1700 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/sdm670-google-sargo.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/sdm670.dtsi
+
+P.S.: Thank you to all the maintainers and reviewers who went through
+everything and made helpful comments!
+
+-- 
+2.38.1
+
