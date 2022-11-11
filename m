@@ -2,136 +2,115 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1827BC433FE
-	for <phone-devel@archiver.kernel.org>; Fri, 11 Nov 2022 08:36:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFEE9C433FE
+	for <phone-devel@archiver.kernel.org>; Fri, 11 Nov 2022 11:54:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232675AbiKKIgm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 11 Nov 2022 03:36:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56730 "EHLO
+        id S233320AbiKKLya (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 11 Nov 2022 06:54:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232471AbiKKIgl (ORCPT
+        with ESMTP id S229675AbiKKLy3 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 11 Nov 2022 03:36:41 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DC52654D3;
-        Fri, 11 Nov 2022 00:36:40 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id y16so5504598wrt.12;
-        Fri, 11 Nov 2022 00:36:40 -0800 (PST)
+        Fri, 11 Nov 2022 06:54:29 -0500
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CDF03FB97
+        for <phone-devel@vger.kernel.org>; Fri, 11 Nov 2022 03:54:28 -0800 (PST)
+Received: by mail-ej1-x630.google.com with SMTP id kt23so12033256ejc.7
+        for <phone-devel@vger.kernel.org>; Fri, 11 Nov 2022 03:54:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3LdKiDa3X5sRwQrkwBd9fsnonVBgPFP/Q0DkSX0juAw=;
-        b=bfRj7QxjEbM/niJkaWqqiz0trKfDz4MiqicdQJwv9oRoVzm47d0EGJ6eXu3tHaQiHE
-         Ugyp05pCuAD2GFL2AicQM4tQggjVqrtd6r7PLcEk9LnbEYS/tOWV2G7Wd0OFORhQVYmZ
-         xJdmnSEnqlRfLV1oM+XGa2TXnhaG7GV6AvDQPBEfOaRM4iMPqonz4npkO4OW/c31H6wI
-         EhZkO2HnbPHCzog7XSelGYmpU6litGhPVm7emL1lpyiDl1t4EE09MqAHO/Qsd3JO/4uI
-         kCFOXDuOVO3hpZu8G8Wl/izyHLYno8ymnqgnJDxpLL8SlgNPimorIW11tLEp03pPzHFI
-         BOSA==
+        d=fairphone.com; s=fair;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KT+IyUbDPgQQlWcRFzbSRfNvsGmzKx+Z/uhCme7VWmc=;
+        b=kVCO20cy5h0hDmnQoPeqHuKZrVNqVsfbNR1k3H9g+pDEMYkfizlmqWzDbuKrsViL1M
+         2F4P6UINavWtbo/IlrFZsMLvrR5zjl8yxcF77Oazajh9lAvtv9Qcqf1aMzDU9/KI0SzZ
+         vn3X4zR4kbSijDnL2S5rNHPQ4rb1BL0twyBEA7kjewSaxBoOk+ONGQ/pCH13NMR1gqHT
+         Q08HqlbE6SKMZ1EQnbL57ldNAaSS/jkO3tm1eVq/xBU6+bhMv0ckilxN3CVabwJZeE6e
+         I/aqQF0d4H1+lIZCShy83MfQuir35Arn+pEod6egWz4W6sw8OfDZR1TmMXsrOPQsTiZ+
+         MxFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3LdKiDa3X5sRwQrkwBd9fsnonVBgPFP/Q0DkSX0juAw=;
-        b=kHfIBfmVdkpRybFB9xzu1QVqHPIEsESNNt88DVIlo5zNJknor6ZFiS4F4u3sSUAaWd
-         F6whm5MupSzwFFFw751qQl5fkd1uyV/tyJ90Y25ePqGEuAVNEcHYPgSIbOdVc5LixJIT
-         sCFCptz9ATvFvT+GB/ZRpwxHIUZ7mOGjPY94P73062QoTpaRRJGv7iit925xpTyrJiO6
-         lmJfRgsxlmjct3ttFUm9CzBwL7gCCCiMgRNUGnYqhSIVoNbSIF4vLIbocYEgDhvFAMx9
-         CoH+5trO9rRhaSl45mKcnS8f0HM84XmWjw/UfqxFQWL+WmBRZYNaCTur/GPmZ5cx+SDy
-         6LYg==
-X-Gm-Message-State: ANoB5pmLyhZ9FxeTUgGzR/QoYSamwgzx2JlH3hbMSD4EYH1F1XEfmuSP
-        lsSJDe+FNVZOiRezQw6sBRc=
-X-Google-Smtp-Source: AA0mqf5zJnBWSewYJi5CZXCHSfIqp/EIZEL1KUO2jeV1UtAmzpZYjV0gKz5oXlS+9igqzhly82U9UQ==
-X-Received: by 2002:a5d:538d:0:b0:236:6b8e:3a3f with SMTP id d13-20020a5d538d000000b002366b8e3a3fmr577678wrv.159.1668155798966;
-        Fri, 11 Nov 2022 00:36:38 -0800 (PST)
-Received: from tp440p.steeds.sam ([69.63.64.50])
-        by smtp.gmail.com with ESMTPSA id k7-20020a05600c1c8700b003c6b7f5567csm12067507wms.0.2022.11.11.00.36.36
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KT+IyUbDPgQQlWcRFzbSRfNvsGmzKx+Z/uhCme7VWmc=;
+        b=A90c6A6YKDQMMvUhiD+9S9KoCjcZRf4+vsPWxC/O+nLIL0BuPa855nbm5SXl4JhcWN
+         nCn231SaIzz8kUo9VF3i7b5HLYwFOJ498pmAaUaenQojrKC524TSTJhZQKjtziGIekHT
+         1Au1aMb9hapFZdm4kid0zPgyWi3rJrS8/LztjpJSPpcVcy+h54eqg2yChkVlcIjtljhW
+         WBuSduqRVvKpg7EAUQd/rt0bfBH7IoxbDSAV0Yv8MCD6i2MebKoMAN3N9hVlGlzlZbyT
+         dJS1G8qYvkhA7KonS9gn/CbSFtDJfx9lHbbooMrL5fzuXIZrxMs2Ww+XvlJij0d4RXAF
+         v5fw==
+X-Gm-Message-State: ANoB5pnox3BbVXZoEL55tK+hw0G4t6Nnx0JAYaJAF+r8j0D6s66e6g2U
+        Xt2leN7FOUIWvcegfdCMrqZPbA==
+X-Google-Smtp-Source: AA0mqf51E4kTEKCPNnbmq3zFSgb7r6KxMO7F0HshK6l1kGpAw8myLB5RotXH1wK5b7pzP59BHhz0Cw==
+X-Received: by 2002:a17:906:3c14:b0:7ae:c9d4:7073 with SMTP id h20-20020a1709063c1400b007aec9d47073mr1295102ejg.711.1668167666768;
+        Fri, 11 Nov 2022 03:54:26 -0800 (PST)
+Received: from otso.arnhem.chello.nl (k10064.upc-k.chello.nl. [62.108.10.64])
+        by smtp.gmail.com with ESMTPSA id kz6-20020a17090777c600b007adb86a1e1csm770859ejc.186.2022.11.11.03.54.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Nov 2022 00:36:38 -0800 (PST)
-Date:   Fri, 11 Nov 2022 10:36:33 +0200
-From:   Sicelo <absicsz@gmail.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        maemo-leste@lists.dyne.org, Felipe Balbi <balbi@kernel.org>,
-        phone-devel@vger.kernel.org, Bin Liu <b-liu@ti.com>,
-        Rob Herring <robh@kernel.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: [maemo-leste] USB PHY Initialization Fails on Nokia N900 Since
- 5.19
-Message-ID: <Y24JkS3tykIZRH+A@tp440p.steeds.sam>
-References: <Y0PhEOl+MwlQ8HAD@tp440p.steeds.sam>
- <Y0UBindrJa1ptyR0@atomide.com>
- <Y0VI+/XJs8nsazwE@tp440p.steeds.sam>
+        Fri, 11 Nov 2022 03:54:26 -0800 (PST)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Siddharth Gupta <sidgup@codeaurora.org>,
+        Rishabh Bhatnagar <rishabhb@codeaurora.org>,
+        Sibi Sankar <quic_sibis@quicinc.com>,
+        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] remoteproc: qcom_q6v5_pas: disable wakeup on probe fail or remove
+Date:   Fri, 11 Nov 2022 12:54:13 +0100
+Message-Id: <20221111115414.153961-1-luca.weiss@fairphone.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y0VI+/XJs8nsazwE@tp440p.steeds.sam>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Oct 11, 2022 at 12:44:11PM +0200, Sicelo wrote:
-> On Tue, Oct 11, 2022 at 08:39:22AM +0300, Tony Lindgren wrote:
-> > To me it seems that we now somehow have a probe issue for musb depending
-> > on how it gets probed depending on the following line:
-> > 
-> > device_set_of_node_from_dev(&musb->dev, &pdev->dev);
-> > 
-> 
-> Thanks for the suggestion. However, 239071064732 does not fix it for me.
-> With that in place, there is no trace created automatically, but dmesg
-> shows:
-> 
->   [    1.389648] musb-hdrc musb-hdrc.0.auto: error -ENXIO: IRQ mc not found
-> 
-> I wonder if there is something to update on the N900 dts perhaps, in
-> connection with the recent musb changes?
-> 
+Leaving wakeup enabled during probe fail (-EPROBE_DEFER) or remove makes
+the subsequent probe fail.
 
-Good day
+[    3.749454] remoteproc remoteproc0: releasing 3000000.remoteproc
+[    3.752949] qcom_q6v5_pas: probe of 3000000.remoteproc failed with error -17
+[    3.878935] remoteproc remoteproc0: releasing 4080000.remoteproc
+[    3.887602] qcom_q6v5_pas: probe of 4080000.remoteproc failed with error -17
+[    4.319552] remoteproc remoteproc0: releasing 8300000.remoteproc
+[    4.332716] qcom_q6v5_pas: probe of 8300000.remoteproc failed with error -17
 
-Just for further testing, I added the very ugly patch below. Applied on
-vanilla 6.1-rc3 (i.e. containing 239071064732), USB works normally on
-the N900.
+Fix this by disabling wakeup in both cases so the driver can properly
+probe on the next try.
 
-I copied the irq numbers from omap3xxx.dtsi. Does this give us any hints
-regarding the cause and resolution of this issue?
+Fixes: a781e5aa5911 ("remoteproc: core: Prevent system suspend during remoteproc recovery")
+Fixes: dc86c129b4fb ("remoteproc: qcom: pas: Mark devices as wakeup capable")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ drivers/remoteproc/qcom_q6v5_pas.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Regards
-Sicelo
-
-
-
-
-diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
-index 03027c6fa3ab..440c917c0133 100644
---- a/drivers/usb/musb/musb_core.c
-+++ b/drivers/usb/musb/musb_core.c
-@@ -2613,7 +2613,8 @@ musb_init_controller(struct device *dev, int nIrq, void __iomem *ctrl)
- static int musb_probe(struct platform_device *pdev)
- {
-        struct device   *dev = &pdev->dev;
--       int             irq = platform_get_irq_byname(pdev, "mc");
-+       //int           irq = platform_get_irq_byname(pdev, "mc");
-+       int irq = 92;
-        void __iomem    *base;
-
-        if (irq <= 0)
-diff --git a/drivers/usb/musb/musbhsdma.c b/drivers/usb/musb/musbhsdma.c
-index 7acd1635850d..6c03a5301d01 100644
---- a/drivers/usb/musb/musbhsdma.c
-+++ b/drivers/usb/musb/musbhsdma.c
-@@ -416,7 +416,8 @@ musbhs_dma_controller_create(struct musb *musb, void __iomem *base)
-        struct musb_dma_controller *controller;
-        struct device *dev = musb->controller;
-        struct platform_device *pdev = to_platform_device(dev);
--       int irq = platform_get_irq_byname(pdev, "dma");
-+       //int irq = platform_get_irq_byname(pdev, "dma");
-+       int irq= 93;
-
-        if (irq <= 0) {
-                dev_err(dev, "No DMA interrupt line!\n");
-
-
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index 6afd0941e552..d830bf13c32c 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -557,6 +557,7 @@ static int adsp_probe(struct platform_device *pdev)
+ 	adsp_pds_detach(adsp, adsp->proxy_pds, adsp->proxy_pd_count);
+ free_rproc:
+ 	rproc_free(rproc);
++	device_init_wakeup(adsp->dev, false);
+ 
+ 	return ret;
+ }
+@@ -573,6 +574,7 @@ static int adsp_remove(struct platform_device *pdev)
+ 	qcom_remove_smd_subdev(adsp->rproc, &adsp->smd_subdev);
+ 	qcom_remove_ssr_subdev(adsp->rproc, &adsp->ssr_subdev);
+ 	rproc_free(adsp->rproc);
++	device_init_wakeup(adsp->dev, false);
+ 
+ 	return 0;
+ }
+-- 
+2.38.1
 
