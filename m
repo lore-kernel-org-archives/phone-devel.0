@@ -2,81 +2,71 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6C0DC43217
-	for <phone-devel@archiver.kernel.org>; Fri, 11 Nov 2022 15:19:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67C89C4167D
+	for <phone-devel@archiver.kernel.org>; Sat, 12 Nov 2022 03:51:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234434AbiKKPTZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 11 Nov 2022 10:19:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42568 "EHLO
+        id S234658AbiKLDv5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 11 Nov 2022 22:51:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234446AbiKKPTE (ORCPT
+        with ESMTP id S234646AbiKLDv4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 11 Nov 2022 10:19:04 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 29D958291C;
-        Fri, 11 Nov 2022 07:18:19 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E15CD1FB;
-        Fri, 11 Nov 2022 07:18:24 -0800 (PST)
-Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 546EA3F73D;
-        Fri, 11 Nov 2022 07:18:16 -0800 (PST)
-Message-ID: <d677f7c1-8c99-4bb0-d363-7a538b38a83a@arm.com>
-Date:   Fri, 11 Nov 2022 15:18:10 +0000
+        Fri, 11 Nov 2022 22:51:56 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4D9C2D747;
+        Fri, 11 Nov 2022 19:51:55 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AB4A62154;
+        Sat, 12 Nov 2022 03:51:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269BDC4347C;
+        Sat, 12 Nov 2022 03:51:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668225114;
+        bh=mcU+pY8vTW2ys9RdXmXcJSaCF8nKqubGEp/anon6emA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Ws3Rb2asvxRQeEj6YwOVuMwD2QfbzBGudl5K2mDfjc52Uv9xGN9He3illObM/itIK
+         DSE4+FtGWBrNtzYHcrNzLkkPnG8efXLkl6EhhJ1oUrMTGgiiBqNU0CwjT8o1htTs6r
+         6eqUyLtwJbdExmCXpmsR3XWCia9ky5Dei3SAnfUhG6sgBH7fqAXB+JuXoxhnOW0nr4
+         ZMjqMc3AW1OUrZ6T/1L7B/yHUHibN3EqHdpMBMb6ESOfkHLy0gMf60KzZX6kFOoeTD
+         y/dixEKHSrNklMBhNhx+GzP3UUYY3HtvCLZ41w2eXd2hdCFEOMj7uii6pCO9M1O48E
+         FmH5ISQ8C0BKw==
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     luca.weiss@fairphone.com, linux-arm-msm@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
+        konrad.dybcio@somainline.org, agross@kernel.org,
+        phone-devel@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        robh+dt@kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: sm7225-fairphone-fp4: Enable SD card
+Date:   Fri, 11 Nov 2022 21:51:48 -0600
+Message-Id: <166822510241.978218.471352169889276371.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20221110151507.53650-1-luca.weiss@fairphone.com>
+References: <20221110151507.53650-1-luca.weiss@fairphone.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v2 3/8] iommu/arm-smmu: Add definition for
- ARM_SMMU_CB_FSRRESTORE
-Content-Language: en-GB
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, agross@kernel.org
-Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, joro@8bytes.org,
-        will@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, robdclark@gmail.com,
-        linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        marijn.suijten@somainline.org, kernel@collabora.com,
-        luca@z3ntu.xyz, a39.skl@gmail.com, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-References: <20221111145919.221159-1-angelogioacchino.delregno@collabora.com>
- <20221111145919.221159-4-angelogioacchino.delregno@collabora.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <20221111145919.221159-4-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 11/11/2022 2:59 pm, AngeloGioacchino Del Regno wrote:
-> In preparation for adding a proper context bank reset sequence in
-> qcom_iommu, add a definition for the implementation defined Fault
-> Status Restore register (FSRRESTORE).
-
-It's not implementation defined, it's architectural. But I don't follow 
-why we should need this. If we're resetting FSR, we don't need to 
-restore any previous value to it; all we want to do is clear it, which 
-we do already via its own mechanism.
-
-Thanks,
-Robin.
-
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->   drivers/iommu/arm/arm-smmu/arm-smmu.h | 1 +
->   1 file changed, 1 insertion(+)
+On Thu, 10 Nov 2022 16:15:06 +0100, Luca Weiss wrote:
+> Fairphone 4 uses sdhc_2 for the SD card, configure the pins for it and
+> enable it.
 > 
-> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.h b/drivers/iommu/arm/arm-smmu/arm-smmu.h
-> index 703fd5817ec1..5015138799c5 100644
-> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.h
-> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.h
-> @@ -219,6 +219,7 @@ enum arm_smmu_cbar_type {
->   					 ARM_SMMU_FSR_TF |		\
->   					 ARM_SMMU_FSR_IGN)
->   
-> +#define ARM_SMMU_CB_FSRRESTORE		0x5c
->   #define ARM_SMMU_CB_FAR			0x60
->   
->   #define ARM_SMMU_CB_FSYNR0		0x68
+> The regulators which are exclusively used for SDHCI have their maximum
+> voltage decreased to what downstream sets on the consumer side, like on
+> many other platforms and allowed to set the load.
+> 
+> [...]
+
+Applied, thanks!
+
+[1/1] arm64: dts: qcom: sm7225-fairphone-fp4: Enable SD card
+      commit: 94262a18d74b85704a025855819582b5e256c8f0
+
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
