@@ -2,84 +2,88 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C41FCC4332F
-	for <phone-devel@archiver.kernel.org>; Mon, 14 Nov 2022 10:54:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9F05C4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 14 Nov 2022 13:45:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235758AbiKNKyv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 14 Nov 2022 05:54:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50990 "EHLO
+        id S236229AbiKNNpJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 14 Nov 2022 08:45:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229816AbiKNKyu (ORCPT
+        with ESMTP id S229762AbiKNNpI (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 14 Nov 2022 05:54:50 -0500
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C8D66468;
-        Mon, 14 Nov 2022 02:54:43 -0800 (PST)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        Mon, 14 Nov 2022 08:45:08 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6769F23E9F;
+        Mon, 14 Nov 2022 05:45:07 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id B20F76601E4C;
-        Mon, 14 Nov 2022 10:54:40 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1668423282;
-        bh=5RCv+9s4hD9rM0U7ey7QcmHhKUXJv0zWQbwP4P1/eks=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=GtqAwvHKhgKgWI3ewuKyRKW/vPBpLlRSDT3EX08GVI76bTBlbcheO61x5bIrqrGhW
-         mFrbYZvoKvMZEEhqZmZaqMuiA8+U0JyOkdo2YonZaFrLnoRcLSmUE41q7KbYwQzYtn
-         k77wCRLgTviavyVPqKAGtKWEoLqwZnBrWG+VO5y7STBZv6DdZEKyfqUhHMDewnYJD7
-         QdSVhVC7c9dQGVIbiaucjDTr2MYxCSzW4QZTjvHP2oLwq1RNnEEweKL15/CU8XS9wn
-         iEAZBwsTylg9sG+D6ZBPo/zbaa82e/3bzTaLKISQwabsM/7beb71d2jJQh+FA3fBIw
-         zd50wrzs+ziGQ==
-Message-ID: <b01091e0-993e-5dbb-ad69-c80d253fef76@collabora.com>
-Date:   Mon, 14 Nov 2022 11:54:38 +0100
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 04F646119A;
+        Mon, 14 Nov 2022 13:45:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79688C433D6;
+        Mon, 14 Nov 2022 13:45:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668433506;
+        bh=MYstW8SE3ONnJctPeqr+ypLXgBUU9RqG63/tZbCw9f4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=JNm4ryaTUbwZAcb504Qddb3MW7lWhRXZRE7IHgjg8OKOpTUJP+N/9qNeZFC5aFp/g
+         Z3uVIj+iDf5xv++yrZ/mhRnOuJsOimuXnoZs5jFbsMA5rJaivXMX21JudfwynwwQGr
+         F2hQ/l6yDGg3ZXDfEE7LBpGc8pzXNqugX4f5zkX+OMCHxyULeAgZCrpdQHAF1Aak9i
+         uJ3xHKEgvOAEMfcUWyGE+XyeXw3I3C/BGgqvb9+/cdedEmtfcEb/+rv358MX0s/Fas
+         ZW1k9/CMrRWzouPZ9OC7gLBOhhp+1s8tO3Kqld7E6iJn3haiBYY8CnEUAJwgQlRhum
+         wvijOtoWmlFTA==
+Date:   Mon, 14 Nov 2022 13:44:59 +0000
+From:   Will Deacon <will@kernel.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     iommu@lists.linux.dev, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Rob Herring <robh@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Joerg Roedel <joro@8bytes.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] dt-bindings: iommu: qcom: Add Qualcomm MSM8953
+ compatible
+Message-ID: <20221114134458.GD30263@willie-the-truck>
+References: <20221105142016.93406-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: Re: [PATCH 1/7] dt-bindings: iommu: qcom,iommu: Document qcom,ctx-num
- property
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        agross@kernel.org
-Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, joro@8bytes.org,
-        will@kernel.org, robin.murphy@arm.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, robdclark@gmail.com,
-        linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        marijn.suijten@somainline.org, kernel@collabora.com,
-        luca@z3ntu.xyz, a39.skl@gmail.com, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-References: <20221111135525.204134-1-angelogioacchino.delregno@collabora.com>
- <20221111135525.204134-2-angelogioacchino.delregno@collabora.com>
- <c0dca253-77a0-2a0a-8a03-2a727512eedb@linaro.org>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <c0dca253-77a0-2a0a-8a03-2a727512eedb@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221105142016.93406-1-luca@z3ntu.xyz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 14/11/22 09:23, Krzysztof Kozlowski ha scritto:
-> On 11/11/2022 14:55, AngeloGioacchino Del Regno wrote:
->> Add a new "qcom,ctx-num" property to force an ASID number on IOMMU
->> contexts where required.
->>
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->> ---
->>   Documentation/devicetree/bindings/iommu/qcom,iommu.txt | 1 +
+On Sat, Nov 05, 2022 at 03:20:17PM +0100, Luca Weiss wrote:
+> Document the compatible used for IOMMU on the msm8953 SoC.
 > 
-> This is already a v2:
-> https://lore.kernel.org/all/20220527212901.29268-1-konrad.dybcio@somainline.org/
+> Acked-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+> Changes in v5:
+> * Change subject so it hopefully gets noticed by iommu maintainers
+>   (thanks Krzysztof, maybe this helps..)
 > 
-> and your v2 was a v3...
+>  Documentation/devicetree/bindings/iommu/qcom,iommu.txt | 1 +
+>  1 file changed, 1 insertion(+)
 > 
+> diff --git a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
+> index 059139abce35..e6cecfd360eb 100644
+> --- a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
+> +++ b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
+> @@ -10,6 +10,7 @@ to non-secure vs secure interrupt line.
+>  - compatible       : Should be one of:
+>  
+>                          "qcom,msm8916-iommu"
+> +                        "qcom,msm8953-iommu"
+>  
+>                       Followed by "qcom,msm-iommu-v1".
 
-I honestly didn't remember that this got sent again 5 months ago... besides,
-I have to send a new version anyway because of a code fix, should I name it v3?
+I'd expect the MSM maintainers (i.e Andy and Bjorn) to pick this up.
 
-Regards,
-Angelo
+Will
